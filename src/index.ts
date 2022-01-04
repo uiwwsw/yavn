@@ -14,11 +14,20 @@ interface Sentence {
   duration?: number;
   audio?: string;
 }
+// type Prompt = (Sentence[] | Charactor | Choice)[];
+// interface Prompt {
+//   charactor: Charactor;
+//   sentence: (Sentence | Choice)[];
+// }
 interface Prompt {
-  sentence: Sentence[];
   charactor: Charactor;
-  choice?: Choice;
+  sentence: (number | string)[];
 }
+// interface Prompt {
+//   sentence: Sentence[];
+//   charactor: Charactor;
+//   choice?: Choice;
+// }
 interface Background {
   image?: string;
   position?: string;
@@ -30,4 +39,11 @@ interface Scene {
 }
 interface Game {
   scene: Scene[];
+}
+
+class Game {
+  scene: Scene[];
+  constructor(scene: Scene[]) {
+    this.scene = scene;
+  }
 }
