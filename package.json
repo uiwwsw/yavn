@@ -1,0 +1,26 @@
+{
+  "name": "visual-novel",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "https://uiwwsw@github.com/uiwwsw/visual-novel.git",
+  "author": "matthew <uiwwsw@icloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npx webpack watch",
+    "build": "npx webpack build"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.5.1",
+    "mini-css-extract-plugin": "^2.4.5",
+    "sass": "^1.45.2",
+    "sass-loader": "^12.4.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}
