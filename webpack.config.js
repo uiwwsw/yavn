@@ -36,7 +36,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", "scss"],
   },
   // output: {
   //   filename: "bundle.js",
@@ -45,7 +45,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name]",
-    library: "ux-components",
+    library: "visual-novel",
     libraryTarget: "umd",
     globalObject: "this",
     umdNamedDefine: true,
