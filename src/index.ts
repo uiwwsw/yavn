@@ -6,6 +6,7 @@ interface State {
   interface?: boolean;
   setting?: boolean;
   gameover?: boolean;
+  wordStep: number[];
   chapter: number;
   scene: number;
 }
@@ -22,7 +23,7 @@ interface Charactor {
 interface Sentence {
   word: string;
   wait?: number;
-  duration?: number;
+  wordStep?: number;
   audio?: string;
   enter?: boolean;
 }
@@ -63,9 +64,6 @@ interface Chapter {
   scene: Scene[];
   assets: Assets[];
 }
-interface Game {
-  chapter: Chapter[];
-}
 class Canvas {
   protected width = 0;
   protected height = 0;
@@ -73,7 +71,6 @@ class Canvas {
   protected context = this.#canvas.getContext("2d");
   constructor() {
     this.resizing(800, 600);
-    this.requestAnimationFrame();
   }
 
   protected requestAnimationFrame() {
@@ -110,18 +107,19 @@ class Canvas {
 // }
 class Game extends Canvas {
   // class Game extends Dom {
-  #chapter: Chapter[];
-  #assets: Id<Assets[]>;
-  protected state?: State;
+  readonly wordStep = 1 / 5;
+  protected chapter: Chapter[];
+  protected assets: Id<Assets[]>;
+  protected state: State;
 
   constructor(chapter: Chapter[]) {
     super();
     this.onLoad();
-    this.#chapter = chapter;
-    this.#assets = Array(this.#chapter.length)
+    this.chapter = chapter;
+    this.assets = Array(this.chapter.length)
       .fill(null)
       .reduce((a, _, i) => {
-        const v = this.#chapter[i].assets.reduce(
+        const v = this.chapter[i].assets.reduce(
           (a, v) => ({
             ...a,
             [v.url]: v,
@@ -131,13 +129,17 @@ class Game extends Canvas {
         return { ...a, ...v };
       }, {});
     addEventListener("keypress", this.addEventListener.bind(this));
-    // this.#assets = [{url}]
+    this.requestAnimationFrame();
+
+    // this.assets = [{url}]
   }
+
   onSave() {}
   onLoad() {
     this.state = {
       chapter: 0,
       scene: 0,
+      wordStep: [0],
     };
   }
   addEventListener(e: KeyboardEvent) {
@@ -159,23 +161,63 @@ class Game extends Canvas {
     }
   }
   scene() {
+    const width = 600;
     const height = 200;
+    const word = this.chapter[0].scene[0].prompt[0].sentence[0].word;
+    const wordStep =
+      this.chapter[0].scene[0].prompt[0].sentence[0].wordStep || this.wordStep;
     this.context.fillStyle = "black";
     this.context.fillRect(0, this.height - height, this.width, height);
     this.context.font = "48px serif";
     this.context.fillStyle = "white";
-    this.context.fillText(
-      "djalwkdjalwkjdlajldalwjdlaw",
-      0,
-      this.height - height + 100
-    );
+    for (const _index in this.state.wordStep) {
+      const index = +_index;
+      const startIndex = this.state.wordStep[index - 1] || 0;
+      const endIndex = this.state.wordStep[index];
+      // if (index > 2) break;
+      this.context.fillText(
+        word.substring(startIndex, endIndex),
+        (this.width - width) / 2,
+        this.height - height + 100 + index * 50,
+        width
+      );
+      // this.state.wordStep[+index] += wordStep;
+      if (index === this.state.wordStep.length - 1)
+        if (
+          this.context.measureText(
+            word.substring(startIndex, endIndex + wordStep)
+          ).width > width
+        ) {
+          this.state.wordStep.push(this.state.wordStep[+index]);
+        } else {
+          this.state.wordStep[+index] += wordStep;
+        }
+    }
+    // if (
+    //   this.context.measureText(word.substring(0, this.isWordStep)).width > width
+    // ) {
+    // }
+    // while (line <= this.isWordLine) {
+    //   if (
+    //     this.context.measureText(word.substring(0, this.isWordStep)).width >
+    //     width
+    //   ) {
+    //     this.isWordLine = 1;
+    //   }
+    //   this.context.fillText(
+    //     word.substring(0, this.isWordStep),
+    //     (this.width - width) / 2,
+    //     this.height - height + 100 + line * 50,
+    //     width
+    //   );
+    // }
   }
 
   draw() {
     super.draw();
     // console.log("djlakwdaw", this);
-    this.interface();
     this.scene();
+    this.interface();
   }
 }
 const dd = new Game([
@@ -188,7 +230,9 @@ const dd = new Game([
               name: "matthew",
               images: {},
             },
-            sentence: [{ word: "테스트세트스으" }],
+            sentence: [
+              { word: "테스트세트스으 rkske 가나다 간다ㅏ... 아저앚마앚" },
+            ],
           },
         ],
         background: {
