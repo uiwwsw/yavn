@@ -6,9 +6,13 @@ interface State {
   interface?: boolean;
   setting?: boolean;
   gameover?: boolean;
-  wordStep: number[];
+  wordStep: number;
   chapter: number;
   scene: number;
+  prompt: number;
+  sentence: number;
+  wording: boolean;
+  line: number;
 }
 interface Choice {
   question: Sentence;
@@ -25,7 +29,6 @@ interface Sentence {
   wait?: number;
   wordStep?: number;
   audio?: string;
-  enter?: boolean;
 }
 // type Prompt = (Sentence[] | Charactor | Choice)[];
 // interface Prompt {
@@ -49,6 +52,7 @@ interface Background {
 }
 interface Scene {
   prompt: Prompt[];
+  id?: string;
   save?: boolean;
   background: Background;
 }
@@ -134,18 +138,60 @@ class Game extends Canvas {
     // this.assets = [{url}]
   }
 
+  get isChapter() {
+    return this.chapter.length;
+  }
+  get isScene() {
+    return this.chapter[this.state.chapter].scene.length;
+  }
+  get isPrompt() {
+    return this.chapter[this.state.chapter].scene[this.state.scene].prompt
+      .length;
+  }
+  get isSentence() {
+    return this.chapter[this.state.chapter].scene[this.state.scene].prompt[
+      this.state.prompt
+    ].sentence.length;
+  }
+
   onSave() {}
   onLoad() {
     this.state = {
       chapter: 0,
       scene: 0,
-      wordStep: [0],
+      prompt: 0,
+      sentence: 0,
+      wordStep: 0,
+      line: 0,
+      wording: true,
     };
   }
   addEventListener(e: KeyboardEvent) {
+    console.log(e.key);
     switch (e.key) {
       case "i":
         this.state.interface = !this.state.interface;
+        break;
+      case "Enter":
+        if (this.state.wording) {
+          return (this.state.wordStep = 99);
+        } else {
+          this.state.wordStep = 0;
+          this.state.wording = true;
+        }
+        if (this.state.sentence < this.isSentence)
+          return (this.state.sentence += 1);
+        else this.state.sentence = 0;
+        if (this.state.prompt < this.isPrompt) return (this.state.prompt += 1);
+        else this.state.prompt = 0;
+        if (this.state.scene < this.isScene) return (this.state.sentence += 1);
+        else this.state.sentence = 0;
+        if (this.state.chapter < this.isChapter)
+          return (this.state.chapter += 1);
+
+        // else this.state.sentence = 0;
+
+        // this.state.interface = !this.state.interface;
         break;
     }
   }
@@ -154,70 +200,66 @@ class Game extends Canvas {
 
   render() {}
 
-  interface() {
+  drawInterface() {
     if (this.state?.interface) {
       this.context.fillStyle = "black";
       this.context.fillRect(0, 0, this.width, this.height);
     }
   }
-  scene() {
+  drawPrompt() {
     const width = 600;
     const height = 200;
-    const word = this.chapter[0].scene[0].prompt[0].sentence[0].word;
+    const word = this.chapter[this.state.chapter]?.scene[
+      this.state.scene
+    ]?.prompt[this.state.prompt]?.sentence[this.state.sentence]?.word
+      .split(" ")
+      .reduce((a, v) => {
+        const x = a + v;
+        const arr = x.split("\n");
+        const length = arr[arr.length - 1].length;
+        return length > 15 ? a + "\n" + v : x;
+      }, "")
+      .split("\n");
     const wordStep =
-      this.chapter[0].scene[0].prompt[0].sentence[0].wordStep || this.wordStep;
+      this.chapter[this.state.chapter].scene[this.state.scene].prompt[
+        this.state.prompt
+      ].sentence[this.state.sentence].wordStep || this.wordStep;
     this.context.fillStyle = "black";
     this.context.fillRect(0, this.height - height, this.width, height);
     this.context.font = "48px serif";
     this.context.fillStyle = "white";
-    for (const _index in this.state.wordStep) {
+    for (const _index in word) {
       const index = +_index;
-      const startIndex = this.state.wordStep[index - 1] || 0;
-      const endIndex = this.state.wordStep[index];
+      // const startIndex = this.state.wordStep[index - 1] || 0;
+      const endIndex = this.state.line === index ? this.state.wordStep : 99;
+      const line = word[index];
       // if (index > 2) break;
       this.context.fillText(
-        word.substring(startIndex, endIndex),
+        line.substring(0, endIndex),
         (this.width - width) / 2,
         this.height - height + 100 + index * 50,
         width
       );
-      // this.state.wordStep[+index] += wordStep;
-      if (index === this.state.wordStep.length - 1)
-        if (
-          this.context.measureText(
-            word.substring(startIndex, endIndex + wordStep)
-          ).width > width
-        ) {
-          this.state.wordStep.push(this.state.wordStep[+index]);
-        } else {
-          this.state.wordStep[+index] += wordStep;
+      if (line === line.substring(0, endIndex)) {
+        if (word.length - 1 > this.state.line) {
+          this.state.wordStep = 0;
+          this.state.line += 1;
         }
+      } else {
+        this.state.wordStep += wordStep;
+        break;
+      }
+      // } else {
+      //   this.state.wordStep = [0];
+      // }
     }
-    // if (
-    //   this.context.measureText(word.substring(0, this.isWordStep)).width > width
-    // ) {
-    // }
-    // while (line <= this.isWordLine) {
-    //   if (
-    //     this.context.measureText(word.substring(0, this.isWordStep)).width >
-    //     width
-    //   ) {
-    //     this.isWordLine = 1;
-    //   }
-    //   this.context.fillText(
-    //     word.substring(0, this.isWordStep),
-    //     (this.width - width) / 2,
-    //     this.height - height + 100 + line * 50,
-    //     width
-    //   );
-    // }
   }
 
   draw() {
     super.draw();
     // console.log("djlakwdaw", this);
-    this.scene();
-    this.interface();
+    this.drawPrompt();
+    this.drawInterface();
   }
 }
 const dd = new Game([
@@ -232,6 +274,14 @@ const dd = new Game([
             },
             sentence: [
               { word: "테스트세트스으 rkske 가나다 간다ㅏ... 아저앚마앚" },
+              {
+                word: "우후앚암 djkla jajwjlk jl jlawj lajwl jw lkj wlkj l aj dawkdjla wjlkjl jlj l",
+                wordStep: 1 / 2,
+              },
+              {
+                word: "우후앚암",
+                wordStep: 1 / 2,
+              },
             ],
           },
         ],
