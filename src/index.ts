@@ -139,19 +139,22 @@ class Game extends Canvas {
   }
 
   get isChapter() {
-    return this.chapter.length;
+    return this.chapter.length - 1;
   }
   get isScene() {
-    return this.chapter[this.state.chapter].scene.length;
+    return this.chapter[this.state.chapter].scene.length - 1;
   }
   get isPrompt() {
-    return this.chapter[this.state.chapter].scene[this.state.scene].prompt
-      .length;
+    return (
+      this.chapter[this.state.chapter].scene[this.state.scene].prompt.length - 1
+    );
   }
   get isSentence() {
-    return this.chapter[this.state.chapter].scene[this.state.scene].prompt[
-      this.state.prompt
-    ].sentence.length;
+    return (
+      this.chapter[this.state.chapter].scene[this.state.scene].prompt[
+        this.state.prompt
+      ].sentence.length - 1
+    );
   }
 
   onSave() {}
@@ -167,7 +170,7 @@ class Game extends Canvas {
     };
   }
   addEventListener(e: KeyboardEvent) {
-    console.log(e.key);
+    console.log(e.key, this.isSentence);
     switch (e.key) {
       case "i":
         this.state.interface = !this.state.interface;
@@ -190,10 +193,7 @@ class Game extends Canvas {
         else this.state.sentence = 0;
         if (this.state.chapter < this.isChapter)
           return (this.state.chapter += 1);
-
-        // else this.state.sentence = 0;
-
-        // this.state.interface = !this.state.interface;
+        else this.state.chapter = 0;
         break;
     }
   }
@@ -213,6 +213,7 @@ class Game extends Canvas {
     return b;
   }
   drawPrompt() {
+    // console.log(this.state);
     const width = 600;
     const height = 200;
     const word = this.chapter[this.state.chapter]?.scene[
@@ -223,7 +224,7 @@ class Game extends Canvas {
         const x = a + v;
         const arr = x.split("\n");
         const length = this.getByteLengthOfString(arr[arr.length - 1]);
-        return length > 30 ? a + "\n" + v : x;
+        return length > 25 ? a + "\n" + v : x;
       }, "")
       .split("\n");
     const wordStep =
@@ -236,10 +237,8 @@ class Game extends Canvas {
     this.context.fillStyle = "white";
     for (const _index in word) {
       const index = +_index;
-      // const startIndex = this.state.wordStep[index - 1] || 0;
       const endIndex = this.state.line === index ? this.state.wordStep : 99;
       const line = word[index];
-      // if (index > 2) break;
       this.context.fillText(
         line.substring(0, endIndex),
         (this.width - width) / 2,
@@ -247,7 +246,7 @@ class Game extends Canvas {
         width
       );
       if (line === line.substring(0, endIndex)) {
-        if (word.length - 1 > this.state.line) {
+        if (word.length - 1 > this.state.line && this.state.line === index) {
           this.state.wordStep = 0;
           this.state.line += 1;
         } else {
@@ -262,11 +261,22 @@ class Game extends Canvas {
       // }
     }
   }
+  drawCharactor() {
+    const charactor =
+      this.chapter[this.state.chapter]?.scene[this.state.scene]?.prompt[
+        this.state.prompt
+      ]?.charactor;
+    this.context.fillStyle = "black";
+    this.context.fillRect(0, 100, 100, 100);
+    this.context.font = "24px serif";
+    this.context.fillStyle = "white";
+    this.context.fillText(charactor.name, 0, 150);
+  }
 
   draw() {
     super.draw();
-    // console.log("djlakwdaw", this);
     this.drawPrompt();
+    this.drawCharactor();
     this.drawInterface();
   }
 }
@@ -281,14 +291,29 @@ const dd = new Game([
               images: {},
             },
             sentence: [
-              // { word: "테스트세트스으 rkske 가나다 간다ㅏ... 아저앚마앚" },
               {
                 word: "우후앚암 djkla jajwjlk jl jlawj lajwl jw lkj wlkj l aj dawkdjla wjlkjl jlj l",
                 wordStep: 1 / 2,
               },
               {
-                word: "우후앚암",
+                word: "우후앚암 dnglgl gkgkgk dhdhdkwkd dkwjdkw",
+                wordStep: 1 / 6,
+              },
+            ],
+          },
+          {
+            charactor: {
+              name: "dad",
+              images: {},
+            },
+            sentence: [
+              {
+                word: "호호호",
                 wordStep: 1 / 2,
+              },
+              {
+                word: "히히히",
+                wordStep: 1 / 6,
               },
             ],
           },
