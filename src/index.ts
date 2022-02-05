@@ -3,15 +3,16 @@ enum ASSET_TYPE {
   IMAGE,
 }
 interface State {
-  inventory?: boolean;
+  interface?: boolean;
   setting?: boolean;
   gameover?: boolean;
-  line: number;
-  cursor: number;
-  propmt: number;
+  wordStep: number;
   chapter: number;
   scene: number;
+  prompt: number;
   sentence: number;
+  wording: boolean;
+  line: number;
 }
 interface Choice {
   question: Sentence;
@@ -25,7 +26,8 @@ interface Charactor {
 }
 interface Sentence {
   word: string;
-  promptSpeed?: number;
+  wait?: number;
+  wordStep?: number;
   audio?: string;
 }
 // type Prompt = (Sentence[] | Charactor | Choice)[];
@@ -50,6 +52,7 @@ interface Background {
 }
 interface Scene {
   prompt: Prompt[];
+  id?: string;
   save?: boolean;
   background: Background;
 }
@@ -66,8 +69,6 @@ interface Chapter {
   assets: Assets[];
 }
 class Canvas {
-  protected pause = false;
-  protected freese = false;
   protected width = 0;
   protected height = 0;
   #canvas = document.getElementById("visual-novel") as HTMLCanvasElement;
@@ -76,9 +77,10 @@ class Canvas {
     this.resizing(800, 600);
   }
 
-  protected startFrame() {
-    if (!this.freese) this.draw();
-    requestAnimationFrame(() => this.startFrame());
+  protected requestAnimationFrame() {
+    this.draw();
+    // this.requestAnimationFrame();
+    requestAnimationFrame(this.requestAnimationFrame.bind(this));
   }
   protected resizing(width: number, height: number) {
     this.width = width;
@@ -109,7 +111,7 @@ class Canvas {
 // }
 class Game extends Canvas {
   // class Game extends Dom {
-  readonly promptSpeed = 1 / 5;
+  readonly wordStep = 1 / 5;
   protected chapter: Chapter[];
   protected assets: Id<Assets[]>;
   protected state: State;
@@ -131,9 +133,28 @@ class Game extends Canvas {
         return { ...a, ...v };
       }, {});
     addEventListener("keypress", this.addEventListener.bind(this));
-    this.startFrame();
+    this.requestAnimationFrame();
 
     // this.assets = [{url}]
+  }
+
+  get isChapter() {
+    return this.chapter.length - 1;
+  }
+  get isScene() {
+    return this.chapter[this.state.chapter].scene.length - 1;
+  }
+  get isPrompt() {
+    return (
+      this.chapter[this.state.chapter].scene[this.state.scene].prompt.length - 1
+    );
+  }
+  get isSentence() {
+    return (
+      this.chapter[this.state.chapter].scene[this.state.scene].prompt[
+        this.state.prompt
+      ].sentence.length - 1
+    );
   }
 
   onSave() {}
@@ -141,27 +162,38 @@ class Game extends Canvas {
     this.state = {
       chapter: 0,
       scene: 0,
-      propmt: 0,
+      prompt: 0,
       sentence: 0,
+      wordStep: 0,
       line: 0,
-      cursor: 0,
+      wording: true,
     };
   }
   addEventListener(e: KeyboardEvent) {
+    console.log(e.key, this.isSentence);
     switch (e.key) {
       case "i":
-        this.pause = !this.pause;
-        this.state.inventory = !this.state.inventory;
+        this.state.interface = !this.state.interface;
         break;
       case "Enter":
-        if (this.state.line >= this.isSentence.length) {
-          this.state.propmt += 1;
-          this.state.cursor = 0;
-          this.state.line = 0;
+        if (this.state.wording) {
+          this.state.line = 99;
+          return (this.state.wordStep = 99);
         } else {
-          this.state.line += 1;
+          this.state.wordStep = 0;
+          this.state.line = 0;
+          this.state.wording = true;
         }
-        // this.state.promptSpeed = [0];
+        if (this.state.sentence < this.isSentence)
+          return (this.state.sentence += 1);
+        else this.state.sentence = 0;
+        if (this.state.prompt < this.isPrompt) return (this.state.prompt += 1);
+        else this.state.prompt = 0;
+        if (this.state.scene < this.isScene) return (this.state.sentence += 1);
+        else this.state.sentence = 0;
+        if (this.state.chapter < this.isChapter)
+          return (this.state.chapter += 1);
+        else this.state.chapter = 0;
         break;
     }
   }
@@ -170,131 +202,82 @@ class Game extends Canvas {
 
   render() {}
 
-  drawInventory() {
-    if (this.state?.inventory) {
+  drawInterface() {
+    if (this.state?.interface) {
       this.context.fillStyle = "black";
       this.context.fillRect(0, 0, this.width, this.height);
     }
   }
-
-  get isSentence() {
-    return this.chapter[this.state.chapter].scene[this.state.scene].prompt[
-      this.state.propmt
-    ].sentence;
+  getByteLengthOfString(s: string, b = 0, i = 0, c = 0) {
+    for (b = i = 0; (c = s.charCodeAt(i++)); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
+    return b;
   }
-  drawScene() {
-    // const width = 600;
-    // const height = 200;
-    // const promptSpeed = this.isSentence.promptSpeed || this.promptSpeed;
-    // this.context.fillStyle = "black";
-    // this.context.fillRect(0, this.height - height, this.width, height);
-    // this.context.font = "48px serif";
-    // this.context.fillStyle = "white";
-    // for (const _index in this.state.promptSpeed) {
-    //   const index = +_index;
-    //   const startIndex = this.state.promptSpeed[index - 1] || 0;
-    //   const endIndex = this.state.promptSpeed[index];
-    //   const word = this.isSentence.word.substring(startIndex, endIndex);
-    //   this.context.fillText(
-    //     word,
-    //     (this.width - width) / 2,
-    //     this.height - height + 100 + index * 50,
-    //     width
-    //   );
-    //   if (index === this.state.promptSpeed.length - 1) {
-    //     if (this.state.promptSpeed[index] > this.isSentence.word.length) {
-    //       break;
-    //     }
-    //     const nextWord = this.isSentence.word.substring(
-    //       startIndex,
-    //       endIndex + promptSpeed
-    //     );
-    //     if (this.context.measureText(nextWord).width > width) {
-    //       this.state.promptSpeed.push(this.state.promptSpeed[index]);
-    //       // console.log("dawdawdawdawdawd");
-    //     } else {
-    //       this.state.promptSpeed[index] += promptSpeed;
-    //     }
-    //   }
-    // }
-  }
-
   drawPrompt() {
+    // console.log(this.state);
     const width = 600;
     const height = 200;
-
+    const word = this.chapter[this.state.chapter]?.scene[
+      this.state.scene
+    ]?.prompt[this.state.prompt]?.sentence[this.state.sentence]?.word
+      .split(" ")
+      .reduce((a, v) => {
+        const x = a + v;
+        const arr = x.split("\n");
+        const length = this.getByteLengthOfString(arr[arr.length - 1]);
+        return length > 25 ? a + "\n" + v : x;
+      }, "")
+      .split("\n");
+    const wordStep =
+      this.chapter[this.state.chapter].scene[this.state.scene].prompt[
+        this.state.prompt
+      ].sentence[this.state.sentence].wordStep || this.wordStep;
     this.context.fillStyle = "black";
     this.context.fillRect(0, this.height - height, this.width, height);
     this.context.font = "48px serif";
     this.context.fillStyle = "white";
-    for (const _index in this.isSentence) {
+    for (const _index in word) {
       const index = +_index;
-      const promptSpeed =
-        this.isSentence[index].promptSpeed || this.promptSpeed;
-      let word = this.isSentence[index].word;
-
-      if (this.state.line < index) break;
-      if (this.state.line === index) {
-        word = word.substring(0, this.state.cursor);
-      }
-      this.state.cursor += promptSpeed;
+      const endIndex = this.state.line === index ? this.state.wordStep : 99;
+      const line = word[index];
       this.context.fillText(
-        word,
+        line.substring(0, endIndex),
         (this.width - width) / 2,
         this.height - height + 100 + index * 50,
         width
       );
-      if (word === this.isSentence[index].word && this.state.line <= index) {
-        this.state.line += 1;
-        this.state.cursor = 0;
+      if (line === line.substring(0, endIndex)) {
+        if (word.length - 1 > this.state.line && this.state.line === index) {
+          this.state.wordStep = 0;
+          this.state.line += 1;
+        } else {
+          this.state.wording = false;
+        }
+      } else {
+        this.state.wordStep += wordStep;
+        break;
       }
-      // const startIndex = this.state.line < index
-      // const endIndex = this.state.promptSpeed;
-      // const word = this.isSentence.word.substring(startIndex, endIndex);
-      // this.context.fillText(
-      //   word,
-      //   (this.width - width) / 2,
-      //   this.height - height + 100 + index * 50,
-      //   width
-      // );
-      // // console.log(this.isSentence.word[index], index);
-      // // console.log("=============");
-      // // console.log(word);
-      // if (index === this.state.promptSpeed.length - 1) {
-      //   if (word === this.isSentence.word[index]) {
-      //     if (this.isSentence.word.length > this.state.promptSpeed.length) {
-      //       this.state.promptSpeed.push(0);
-      //     }
-      //   } else {
-      //     this.state.promptSpeed[index] += promptSpeed;
-      //   }
-      // }
-
-      // if (index === this.state.promptSpeed.length - 1) {
-      //   if (this.state.promptSpeed[index] > this.isSentence.word.length) {
-      //     break;
-      //   }
-      //   const nextWord = this.isSentence.word[index].substring(
-      //     startIndex,
-      //     endIndex + promptSpeed
-      //   );
-      //   if (this.context.measureText(nextWord).width > width) {
-      //     this.state.promptSpeed.push(0);
-      //     // console.log("dawdawdawdawdawd");
-      //   } else {
-      //     this.state.promptSpeed[index] += promptSpeed;
-      //   }
+      // } else {
+      //   this.state.wordStep = [0];
       // }
     }
+  }
+  drawCharactor() {
+    const charactor =
+      this.chapter[this.state.chapter]?.scene[this.state.scene]?.prompt[
+        this.state.prompt
+      ]?.charactor;
+    this.context.fillStyle = "black";
+    this.context.fillRect(0, 100, 100, 100);
+    this.context.font = "24px serif";
+    this.context.fillStyle = "white";
+    this.context.fillText(charactor.name, 0, 150);
   }
 
   draw() {
     super.draw();
-    if (!this.pause) {
-      this.drawScene();
-      this.drawPrompt();
-    }
-    this.drawInventory();
+    this.drawPrompt();
+    this.drawCharactor();
+    this.drawInterface();
   }
 }
 const dd = new Game([
@@ -309,24 +292,28 @@ const dd = new Game([
             },
             sentence: [
               {
-                word: "안녕하세요",
+                word: "우후앚암 djkla jajwjlk jl jlawj lajwl jw lkj wlkj l aj dawkdjla wjlkjl jlj l",
+                wordStep: 1 / 2,
               },
               {
-                word: "반가워요",
+                word: "우후앚암 dnglgl gkgkgk dhdhdkwkd dkwjdkw",
+                wordStep: 1 / 6,
               },
             ],
           },
           {
             charactor: {
-              name: "matthew",
+              name: "dad",
               images: {},
             },
             sentence: [
               {
-                word: "안녕하세요",
+                word: "호호호",
+                wordStep: 1 / 2,
               },
               {
-                word: "반가워요",
+                word: "히히히",
+                wordStep: 1 / 6,
               },
             ],
           },
