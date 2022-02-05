@@ -174,9 +174,11 @@ class Game extends Canvas {
         break;
       case "Enter":
         if (this.state.wording) {
+          this.state.line = 99;
           return (this.state.wordStep = 99);
         } else {
           this.state.wordStep = 0;
+          this.state.line = 0;
           this.state.wording = true;
         }
         if (this.state.sentence < this.isSentence)
@@ -206,6 +208,10 @@ class Game extends Canvas {
       this.context.fillRect(0, 0, this.width, this.height);
     }
   }
+  getByteLengthOfString(s: string, b = 0, i = 0, c = 0) {
+    for (b = i = 0; (c = s.charCodeAt(i++)); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
+    return b;
+  }
   drawPrompt() {
     const width = 600;
     const height = 200;
@@ -216,8 +222,8 @@ class Game extends Canvas {
       .reduce((a, v) => {
         const x = a + v;
         const arr = x.split("\n");
-        const length = arr[arr.length - 1].length;
-        return length > 15 ? a + "\n" + v : x;
+        const length = this.getByteLengthOfString(arr[arr.length - 1]);
+        return length > 30 ? a + "\n" + v : x;
       }, "")
       .split("\n");
     const wordStep =
@@ -244,6 +250,8 @@ class Game extends Canvas {
         if (word.length - 1 > this.state.line) {
           this.state.wordStep = 0;
           this.state.line += 1;
+        } else {
+          this.state.wording = false;
         }
       } else {
         this.state.wordStep += wordStep;
@@ -273,7 +281,7 @@ const dd = new Game([
               images: {},
             },
             sentence: [
-              { word: "테스트세트스으 rkske 가나다 간다ㅏ... 아저앚마앚" },
+              // { word: "테스트세트스으 rkske 가나다 간다ㅏ... 아저앚마앚" },
               {
                 word: "우후앚암 djkla jajwjlk jl jlawj lajwl jw lkj wlkj l aj dawkdjla wjlkjl jlj l",
                 wordStep: 1 / 2,
