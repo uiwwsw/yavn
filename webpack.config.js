@@ -1,5 +1,7 @@
+const webpack = require("webpack");
 const path = require("path");
 
+// Try the environment variable, otherwise use root
 module.exports = {
   mode: "development",
   entry: {

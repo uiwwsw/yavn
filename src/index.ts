@@ -2,6 +2,10 @@ enum ASSET_TYPE {
   AUDIO,
   IMAGE,
 }
+interface Emation<T> {
+  normal: T;
+  angry?: T;
+}
 interface State {
   interface?: boolean;
   setting?: boolean;
@@ -18,12 +22,12 @@ interface Choice {
   question: Sentence;
   answer: string[];
 }
-interface Charactor {
-  name: string;
-  images: {
-    [Key: string]: string;
-  };
-}
+// interface Charactor {
+//   name: string;
+//   images: {
+//     [key: string]: string;
+//   };
+// }
 interface Sentence {
   word: string;
   wait?: number;
@@ -109,6 +113,14 @@ class Canvas {
 //     );
 //   }
 // }
+class Charactor {
+  name: string;
+  images: Emation<string>;
+  constructor({ name, images }: { name: string; images: Emation<string> }) {
+    this.name = name;
+    this.images = images;
+  }
+}
 class Game extends Canvas {
   // class Game extends Dom {
   readonly wordStep = 1 / 5;
@@ -266,11 +278,18 @@ class Game extends Canvas {
       this.chapter[this.state.chapter]?.scene[this.state.scene]?.prompt[
         this.state.prompt
       ]?.charactor;
-    this.context.fillStyle = "black";
-    this.context.fillRect(0, 100, 100, 100);
-    this.context.font = "24px serif";
-    this.context.fillStyle = "white";
-    this.context.fillText(charactor.name, 0, 150);
+    // this.context.fillStyle = "black";
+    // this.context.fillRect(0, 100, 100, 100);
+    // this.context.font = "24px serif";
+    const image = new Image(); // Using optional size for image
+    image.src = charactor.images.normal;
+
+    // Load an image of intrinsic size 300x227 in CSS pixels
+    image.onload = () => {
+      this.context.drawImage(image, 0, 0, 100, 100);
+    };
+    // this.context.fillStyle = "black";
+    // this.context.fillText(charactor.name, 0, 150);
   }
 
   draw() {
@@ -280,16 +299,21 @@ class Game extends Canvas {
     this.drawInterface();
   }
 }
+const matt = new Charactor({
+  name: "matt",
+  images: { normal: "src/assets/sunset-1373171__480.jpeg" },
+});
+const dadd = new Charactor({
+  name: "dadd",
+  images: { normal: "src/assets/shutterstock_376532611.jpeg" },
+});
 const dd = new Game([
   {
     scene: [
       {
         prompt: [
           {
-            charactor: {
-              name: "matthew",
-              images: {},
-            },
+            charactor: matt,
             sentence: [
               {
                 word: "우후앚암 djkla jajwjlk jl jlawj lajwl jw lkj wlkj l aj dawkdjla wjlkjl jlj l",
@@ -302,10 +326,7 @@ const dd = new Game([
             ],
           },
           {
-            charactor: {
-              name: "dad",
-              images: {},
-            },
+            charactor: dadd,
             sentence: [
               {
                 word: "호호호",
