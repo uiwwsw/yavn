@@ -1,25 +1,28 @@
 {
   "name": "visual-novel",
-  "version": "1.0.0",
-  "main": "dist/index.js",
-  "repository": "https://uiwwsw@github.com/uiwwsw/visual-novel.git",
-  "author": "matthew <uiwwsw@icloud.com>",
-  "license": "MIT",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "npx webpack watch",
-    "build": "npx webpack build"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.7",
-    "@babel/preset-env": "^7.16.7",
-    "babel-loader": "^8.2.3",
-    "css-loader": "^6.5.1",
-    "sass": "^1.45.2",
-    "sass-loader": "^12.4.0",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.2.6",
-    "typescript": "^4.5.2",
-    "webpack": "^5.64.4",
-    "webpack-cli": "^4.9.1"
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
   }
 }
