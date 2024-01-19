@@ -1,0 +1,41 @@
+.fade {
+  opacity: 0;
+  &:empty {
+    display: none;
+  }
+  &--in {
+    animation: fade-in 1000ms;
+  }
+  &--stay {
+    animation: fade-stay 1000ms;
+  }
+  &--out {
+    animation: fade-out 1000ms;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-stay {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

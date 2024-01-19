@@ -1,0 +1,8 @@
+words:
+  # plugins
+  - commitlint
+  - tailwindcss
+ignoreWords:
+  - noopener
+ignorePaths:
+  - '**/node_modules/**'
