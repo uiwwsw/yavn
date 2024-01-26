@@ -5,12 +5,9 @@ interface ScriptProps {
   level: number;
   onComplete: () => void;
 }
-interface sentence {
-  message: string;
-}
 interface Chapter {
   image: string;
-  sentences: sentence[];
+  sentences: string[];
   character: Character;
   place: Place;
 }
@@ -22,7 +19,7 @@ const Script = ({ level, onComplete }: ScriptProps) => {
   const place = useMemo(() => scene?.place, [scene]);
   const image = useMemo(() => scene?.image, [scene]);
   const sentence = useMemo(() => scene?.sentences?.[step[1]], [scene, step]);
-  const maxSentence = useMemo(() => scene?.sentences.length, [scene, step]);
+  const maxSentence = useMemo(() => scene?.sentences.length ?? 0, [scene, step]);
   const maxStep = useMemo(() => chapter.length, [chapter]);
   const nextScene = () => {
     let nextSentence = step[1] + 1;
@@ -47,11 +44,13 @@ const Script = ({ level, onComplete }: ScriptProps) => {
   }, [level]);
   // return { character, place, image, script, nextScene };
   return (
-    <div onClick={nextScene} className="text-white">
-      <span>{character}</span>
+    <div onClick={nextScene} className="absolute inset-0">
       <span>{image}</span>
-      <span>{place}</span>
-      <div>{sentence?.message}</div>
+      {place ? <span>{place}</span> : null}
+      <div className="absolute inset-0 top-auto flex gap-2 border-t p-2">
+        <span>{character}</span>
+        <p className="min-h-16 flex-auto">{sentence}</p>
+      </div>
     </div>
   );
 };

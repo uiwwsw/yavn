@@ -9,7 +9,12 @@ const MainPage = () => {
   //   if (!storage.isStart) navigate('/splash');
   // }, [storage]);
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <motion.div
+      className="relative h-full w-full border text-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <Script level={0} onComplete={() => console.log('dwdwa')} />
     </motion.div>
   );
