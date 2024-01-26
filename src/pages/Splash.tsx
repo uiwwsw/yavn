@@ -1,6 +1,5 @@
 import Fade from '@/Fade';
 import { useStorageContext } from '@/StorageContext';
-import { useNavigate } from 'react-router-dom';
 import reactLogo from '$/react.svg';
 import typescriptLogo from '$/typescript.svg';
 import tailwindcssLogo from '$/tailwindcss.svg';

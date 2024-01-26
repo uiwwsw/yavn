@@ -17,12 +17,12 @@ interface Chapter {
 const Script = ({ level, onComplete }: ScriptProps) => {
   const [step, setStep] = useState([0, 0]);
   const [chapter, setChapter] = useState<Chapter[]>([]);
-  const scene: Chapter | undefined = useMemo(() => chapter[step[0]], [chapter, step]);
-  const character = useMemo(() => scene.character, [scene]);
-  const place = useMemo(() => scene.place, [scene]);
-  const image = useMemo(() => scene.image, [scene]);
-  const sentence = useMemo(() => scene.sentences?.[step[1]], [scene, step]);
-  const maxSentence = useMemo(() => scene.sentences.length, [scene, step]);
+  const scene = useMemo(() => (chapter.length ? chapter[step[0]] : null), [chapter, step]);
+  const character = useMemo(() => scene?.character, [scene]);
+  const place = useMemo(() => scene?.place, [scene]);
+  const image = useMemo(() => scene?.image, [scene]);
+  const sentence = useMemo(() => scene?.sentences?.[step[1]], [scene, step]);
+  const maxSentence = useMemo(() => scene?.sentences.length, [scene, step]);
   const maxStep = useMemo(() => chapter.length, [chapter]);
   const nextScene = () => {
     let nextSentence = step[1] + 1;
