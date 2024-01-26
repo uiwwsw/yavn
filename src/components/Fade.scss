@@ -1,41 +1,16 @@
 .fade {
-  opacity: 0;
-  &:empty {
-    display: none;
-  }
+  @apply opacity-0 transition-opacity;
+  @apply empty:hidden;
   &--in {
-    animation: fade-in 1000ms;
+    @apply animate-fade--in opacity-100;
   }
   &--stay {
-    animation: fade-stay 1000ms;
+    @apply animate-fade--stay opacity-100;
   }
   &--out {
-    animation: fade-out 1000ms;
+    @apply animate-fade--out;
   }
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-stay {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fade-out {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
+  &--change {
+    @apply animate-fade--change;
   }
 }

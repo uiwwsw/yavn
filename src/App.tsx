@@ -1,23 +1,16 @@
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-
 import MainPage from '@/Main';
-import StartLayout from '@/Start';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SplashPage from '@/Splash';
+import StartPage from '@/Start';
+import { useStorageContext } from '@/StorageContext';
 
 const App = () => {
+  const { page } = useStorageContext();
   return (
-    <Router>
-      <Routes>
-        <Route element={<StartLayout />}>
-          <Route path="/" element={<MainPage />} />
-        </Route>
-        {/* <Route element={<StartLayout />}>
-          <Route path="/" element={<Main />} />
-        </Route> */}
-        {/* <Route path={ROUTES_PATH['/sign-out']} element={<SignOut />} /> */}
-      </Routes>
-    </Router>
+    <>
+      {page === undefined && <SplashPage />}
+      {page === 'start' && <StartPage />}
+      {page === 'game' && <MainPage />}
+    </>
   );
 };
 

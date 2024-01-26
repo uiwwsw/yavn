@@ -3,3 +3,12 @@
 @tailwind utilities;
 
 @import './components/Fade';
+html {
+  @apply flex h-screen w-screen items-center bg-black;
+}
+body {
+  @apply m-auto h-[480px] w-[640px];
+}
+#root {
+  @apply h-full w-full;
+}
