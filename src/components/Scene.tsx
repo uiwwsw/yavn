@@ -1,8 +1,8 @@
 import { Character } from '!/character/domain';
 import { Place } from '!/place/domain';
 import { useEffect, useMemo, useState } from 'react';
-interface ScriptProps {
-  level: number;
+interface SceneProps {
+  chapter: number;
   onComplete: () => void;
 }
 interface Chapter {
@@ -11,7 +11,7 @@ interface Chapter {
   character: Character;
   place: Place;
 }
-const Script = ({ level, onComplete }: ScriptProps) => {
+const Scene = ({ chapter:level, onComplete }: SceneProps) => {
   const [step, setStep] = useState([0, 0]);
   const [chapter, setChapter] = useState<Chapter[]>([]);
   const scene = useMemo(() => (chapter.length ? chapter[step[0]] : null), [chapter, step]);
@@ -38,11 +38,10 @@ const Script = ({ level, onComplete }: ScriptProps) => {
   useEffect(() => {
     (async () => {
       const res = await fetch(`/chapter${level}.json`);
-      console.log(res);
       setChapter(await res.json());
     })();
   }, [level]);
-  // return { character, place, image, script, nextScene };
+  // return { character, place, image, Scene, nextScene };
   return (
     <div onClick={nextScene} className="absolute inset-0">
       <span>{image}</span>
@@ -55,4 +54,4 @@ const Script = ({ level, onComplete }: ScriptProps) => {
   );
 };
 
-export default Script;
+export default Scene;

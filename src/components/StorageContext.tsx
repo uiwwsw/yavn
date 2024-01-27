@@ -1,7 +1,7 @@
 import useSession from '#/useSession';
 import { ReactNode, createContext, useContext } from 'react';
 export interface SessionStorage {
-  page: 'start' | 'game';
+  page: 'startMenu' | 'start' | 'load';
   inventory: boolean;
 }
 interface StorageProviderProps {

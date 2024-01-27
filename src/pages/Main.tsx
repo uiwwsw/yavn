@@ -1,7 +1,7 @@
 // import reactLogo from './assets/react.svg';
 // import viteLogo from '/vite.svg';
 
-import Script from '@/Script';
+import Scene from '@/Scene';
 import { motion } from 'framer-motion';
 
 const MainPage = () => {
@@ -15,7 +15,7 @@ const MainPage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Script level={0} onComplete={() => console.log('dwdwa')} />
+      <Scene chapter={0} onComplete={() => console.log('dwdwa')} />
     </motion.div>
   );
 };

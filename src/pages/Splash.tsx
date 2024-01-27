@@ -9,7 +9,7 @@ import swrLogo from '$/swr.svg';
 const SplashPage = () => {
   const { addStorage } = useStorageContext();
   const handleComplete = async () => {
-    addStorage({ page: 'start' });
+    addStorage({ page: 'startMenu' });
   };
   return (
     <Fade onComplete={handleComplete} className="flex h-full w-full items-center justify-center text-white">

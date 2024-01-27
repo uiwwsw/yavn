@@ -4,14 +4,14 @@ import Button from '@/Button';
 import { useStorageContext } from '@/StorageContext';
 import { motion } from 'framer-motion';
 
-const StartPage = () => {
+const StartMenuPage = () => {
   const { addStorage } = useStorageContext();
 
   const handleStart = () => {
-    addStorage({ page: 'game' });
+    addStorage({ page: 'start' });
   };
   const handleLoad = () => {
-    addStorage({ page: 'game' });
+    addStorage({ page: 'start' });
   };
   return (
     <motion.div
@@ -23,11 +23,11 @@ const StartPage = () => {
       <h1 className="text-center text-5xl">visual novel</h1>
       <p className="text-right">made by react</p>
       <div className="absolute inset-0 top-auto m-auto flex w-3/5 flex-col gap-3">
-        <Button onClick={handleStart}>시작하기</Button>
+        <Button autoFocus onClick={handleStart}>시작하기</Button>
         <Button onClick={handleLoad}>불러오기</Button>
       </div>
     </motion.div>
   );
 };
 
-export default StartPage;
+export default StartMenuPage;
