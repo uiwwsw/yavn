@@ -1,17 +1,18 @@
 import { Character } from '!/character/domain';
 import { Place } from '!/place/domain';
 import { useEffect, useMemo, useState } from 'react';
+import Sentence, { SentenceProps } from './Sentence';
 interface SceneProps {
   chapter: number;
   onComplete: () => void;
 }
 interface Chapter {
   image: string;
-  sentences: string[];
+  sentences: SentenceProps['data'][];
   character: Character;
   place: Place;
 }
-const Scene = ({ chapter:level, onComplete }: SceneProps) => {
+const Scene = ({ chapter: level, onComplete }: SceneProps) => {
   const [step, setStep] = useState([0, 0]);
   const [chapter, setChapter] = useState<Chapter[]>([]);
   const scene = useMemo(() => (chapter.length ? chapter[step[0]] : null), [chapter, step]);
@@ -48,7 +49,7 @@ const Scene = ({ chapter:level, onComplete }: SceneProps) => {
       {place ? <span>{place}</span> : null}
       <div className="absolute inset-0 top-auto flex gap-2 border-t p-2">
         <span>{character}</span>
-        <p className="min-h-16 flex-auto">{sentence}</p>
+        <Sentence data={sentence} />
       </div>
     </div>
   );
