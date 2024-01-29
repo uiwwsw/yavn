@@ -10,7 +10,7 @@ interface Sentence {
 export interface SentenceProps {
   data?: string | Sentence | Sentence[];
   isComplete: boolean;
-  onComplete: () => {};
+  onComplete: () => void;
 }
 const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
@@ -20,10 +20,13 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   const step = useMemo(() => Math.min(_step, _sentences.length - 1), [_step, _sentences]);
 
   const isComplete = useMemo(() => {
-    if (isCompleteProp) return true;
     return _sentences.length <= _step;
   }, [_sentences, _step, isCompleteProp]);
-  const cursor = useMemo(() => (isComplete ? Infinity : _cursor), [_sentences, _step, _cursor]);
+
+  const cursor = useMemo(
+    () => (isCompleteProp || isComplete ? Infinity : _cursor),
+    [_sentences, _step, _cursor, isCompleteProp],
+  );
 
   const sentence = useMemo(() => {
     return _sentences[step] ?? { message: '', duration: 0 };
