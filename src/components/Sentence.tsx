@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 interface Sentence {
   duration: number;
   message: string;
+  sound?: string;
 }
 export interface SentenceProps {
   data?: string | Sentence | Sentence[];
@@ -28,9 +29,7 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
     [_sentences, _step, _cursor, isCompleteProp],
   );
 
-  const sentence = useMemo(() => {
-    return _sentences[step] ?? { message: '', duration: 0 };
-  }, [_sentences, step]);
+  const sentence = useMemo(() => _sentences[step] ?? { message: '', duration: 0 }, [_sentences, step]);
   const sentences = useMemo(() => {
     let msg = '';
     for (const index in _sentences) {
@@ -43,6 +42,9 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   }, [_sentences, cursor, step]);
   const duration = useMemo(() => {
     return sentence.duration;
+  }, [_sentences, step]);
+  const sound = useMemo(() => {
+    return sentence.sound;
   }, [_sentences, step]);
   const isEndCursor = useMemo(() => {
     return sentence.message.length + 1 <= cursor;
@@ -70,16 +72,30 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   }, [isComplete]);
 
   return (
-    <p>
-      {sentences}
-      {isComplete ? (
-        ''
-      ) : (
-        <span className="animate-ping" style={{ animationDuration: `${duration}ms` }}>
-          |
-        </span>
-      )}
-    </p>
+    <>
+      {sound && <audio src={sound} autoPlay />}
+      <p className="flex flex-auto">
+        {sentences}
+        {isComplete ? (
+          <span className="ml-auto w-fit animate-pulse">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
+            </svg>
+          </span>
+        ) : (
+          <span className="animate-ping" style={{ animationDuration: `${duration}ms` }}>
+            |
+          </span>
+        )}
+      </p>
+    </>
   );
 };
 

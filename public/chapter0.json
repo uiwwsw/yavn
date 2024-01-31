@@ -1,20 +1,20 @@
 [
   {
-    "image": "aaa",
+    "bgm": "/chapter0/noti.wav",
     "sentences": [
       [
         {
           "message": "안녕하세요",
-          "duration": 1000
+          "duration": 300
         },
         {
           "message": "반갑습니다.",
-          "duration": 1000
+          "duration": 200
         }
       ],
       "반갑습3333니다."
     ],
     "character": "matthew",
-    "place": "home"
+    "place": "matthew-house"
   }
 ]
