@@ -20,10 +20,11 @@ const StartMenuPage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <h1 className="text-center text-5xl">visual novel</h1>
-      <p className="text-right">made by react</p>
+      <img src="/start.png" alt="시작화면" />
       <div className="absolute inset-0 top-auto m-auto flex w-3/5 flex-col gap-3">
-        <Button autoFocus onClick={handleStart}>시작하기</Button>
+        <Button autoFocus onClick={handleStart}>
+          시작하기
+        </Button>
         <Button onClick={handleLoad}>불러오기</Button>
       </div>
     </motion.div>

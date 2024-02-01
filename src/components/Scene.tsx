@@ -71,10 +71,15 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
     <div onClick={nextScene} className="absolute inset-0">
       <audio src={bgm} autoPlay />
       {character && (
-        <img className="absolute z-10 w-1/2" style={characterPosition} src={assets[character]?.image} alt={character} />
+        <img
+          className="absolute bottom-0 z-10 w-1/2"
+          style={characterPosition}
+          src={assets[character]?.image}
+          alt={character}
+        />
       )}
       {place && <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />}
-      <div className="absolute inset-0 top-auto flex gap-2 border-t p-2" style={sentencePosition}>
+      <div className="absolute inset-0 top-auto z-20 flex gap-2 border-t p-2" style={sentencePosition}>
         <span>{character}</span>
         <Sentence data={sentence} isComplete={complete} onComplete={handleComplete} />
       </div>

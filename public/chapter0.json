@@ -1,18 +1,18 @@
 [
   {
-    "bgm": "/chapter0/noti.wav",
     "sentences": [
+      "안녕하세요.",
+      "반갑습니다.",
       [
         {
-          "message": "안녕하세요",
-          "duration": 300
+          "message": "저는 프론트엔드 개발자",
+          "duration": 50
         },
         {
-          "message": "반갑습니다.",
-          "duration": 200
+          "sound": "/chapter0/noti.wav",
+          "message": " 매튜입니다."
         }
-      ],
-      "반갑습3333니다."
+      ]
     ],
     "character": "matthew",
     "place": "matthew-house"

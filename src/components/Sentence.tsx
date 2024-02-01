@@ -41,7 +41,7 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
     return msg;
   }, [_sentences, cursor, step]);
   const duration = useMemo(() => {
-    return sentence.duration;
+    return sentence.duration ?? 300;
   }, [_sentences, step]);
   const sound = useMemo(() => {
     return sentence.sound;
@@ -51,7 +51,6 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   }, [_sentences, step, cursor]);
   useEffect(() => {
     if (!data) return;
-
     if (data instanceof Array) setSentences(data);
     else if (data instanceof Object) setSentences([data]);
     else setSentences([{ message: data, duration: 300 }]);
@@ -82,11 +81,11 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
               className="h-6 w-6"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
             </svg>
           </span>
         ) : (
