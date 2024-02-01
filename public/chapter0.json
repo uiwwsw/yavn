@@ -5,16 +5,80 @@
       "반갑습니다.",
       [
         {
-          "message": "저는 프론트엔드 개발자",
-          "duration": 50
+          "message": "저는",
+          "duration": 100
+        },
+        {
+          "message": "프론트엔드 개발자"
         },
         {
           "sound": "/chapter0/noti.wav",
-          "message": " 매튜입니다."
+          "message": "매튜입니다.",
+          "duration": 100
+        }
+      ],
+      [
+        {
+          "message": "해당 프로젝트는"
+        },
+        {
+          "message": "간단한",
+          "duration": 200
+        },
+        {
+          "message": "비주얼 노블 게임을 위한"
+        },
+        {
+          "message": "react",
+          "duration": 200
+        },
+        {
+          "message": "프로젝트입니다."
         }
       ]
     ],
     "character": "matthew",
     "place": "matthew-house"
+  },
+  {
+    "sentences": [
+      "안녕하세요.",
+      "반갑습니다.",
+      [
+        {
+          "message": "저는",
+          "duration": 100
+        },
+        {
+          "message": "프론트엔드 개발자"
+        },
+        {
+          "sound": "/chapter0/noti.wav",
+          "message": "매튜입니다.",
+          "duration": 100
+        }
+      ],
+      [
+        {
+          "message": "해당 프로젝트는"
+        },
+        {
+          "message": "간단한",
+          "duration": 200
+        },
+        {
+          "message": "비주얼 노블 게임을 위한"
+        },
+        {
+          "message": "react",
+          "duration": 200
+        },
+        {
+          "message": "프로젝트입니다."
+        }
+      ]
+    ],
+    "character": "matthew",
+    "place": "street"
   }
 ]

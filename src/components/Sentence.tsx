@@ -13,12 +13,13 @@ export interface SentenceProps {
   isComplete: boolean;
   onComplete: () => void;
 }
+const defaultDuration = 70;
 const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
 
-  const step = useMemo(() => Math.min(_step, _sentences.length - 1), [_step, _sentences]);
+  const step = useMemo(() => Math.min(_step, _sentences.length), [_step, _sentences]);
 
   const isComplete = useMemo(() => {
     return _sentences.length <= _step;
@@ -33,15 +34,15 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   const sentences = useMemo(() => {
     let msg = '';
     for (const index in _sentences) {
-      if (step < +index) break;
-      if (step === +index) msg += _sentences[index].message.substring(0, cursor);
-      else msg += _sentences[index].message;
+      if (!isCompleteProp && step < +index) break;
+      if (step === +index) msg = (msg ? `${msg} ` : '') + _sentences[index].message.substring(0, cursor);
+      else msg = (msg ? `${msg} ` : '') + _sentences[index].message;
     }
 
     return msg;
-  }, [_sentences, cursor, step]);
+  }, [_sentences, cursor, step, isCompleteProp]);
   const duration = useMemo(() => {
-    return sentence.duration ?? 300;
+    return sentence.duration || defaultDuration;
   }, [_sentences, step]);
   const sound = useMemo(() => {
     return sentence.sound;
@@ -53,7 +54,7 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
     if (!data) return;
     if (data instanceof Array) setSentences(data);
     else if (data instanceof Object) setSentences([data]);
-    else setSentences([{ message: data, duration: 300 }]);
+    else setSentences([{ message: data, duration: defaultDuration }]);
     setStep(0);
   }, [data]);
   useEffect(() => {
@@ -64,12 +65,11 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   }, [_sentences, step, isComplete]);
 
   useEffect(() => {
-    if (isEndCursor) setStep((prev) => prev + 1);
+    if (isEndCursor) setStep(step + 1);
   }, [isEndCursor]);
   useEffect(() => {
     if (isComplete) onComplete();
   }, [isComplete]);
-
   return (
     <>
       {sound && <audio src={sound} autoPlay />}

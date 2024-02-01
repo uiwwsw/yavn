@@ -17,7 +17,7 @@ const MainPage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Scene chapter={level} onComplete={() => setLevel(level + 1)} />
+      <Scene chapter={level} onComplete={() => setLevel((prev) => prev + 1)} />
     </motion.div>
   );
 };
