@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, StyleHTMLAttributes, createContext, useContext, useState } from 'react';
+import { CSSProperties, ReactNode, createContext, useContext, useState } from 'react';
 interface UiProviderProps {
   children?: ReactNode;
 }
