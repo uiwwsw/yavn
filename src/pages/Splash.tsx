@@ -4,6 +4,7 @@ import reactLogo from '$/react.svg';
 import typescriptLogo from '$/typescript.svg';
 import tailwindcssLogo from '$/tailwindcss.svg';
 import swrLogo from '$/swr.svg';
+import chatgptLogo from '$/chatgpt.png';
 // import viteLogo from '/vite.svg';
 
 const SplashPage = () => {
@@ -31,6 +32,10 @@ const SplashPage = () => {
           SWR
         </span>
       </div>
+      <span className="text-7xl">
+        <img src={chatgptLogo} width={100} alt="ChatGPT" />
+        ChatGPT
+      </span>
     </Fade>
   );
 };

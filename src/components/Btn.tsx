@@ -5,7 +5,7 @@ interface ButtonProps {
   children?: ReactNode;
   onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
 }
-const Button = ({ children, ...props }: ButtonProps) => {
+const Btn = ({ children, ...props }: ButtonProps) => {
   return (
     <button
       {...props}
@@ -17,4 +17,4 @@ const Button = ({ children, ...props }: ButtonProps) => {
   );
 };
 
-export default Button;
+export default Btn;

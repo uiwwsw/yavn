@@ -2,14 +2,13 @@
 // import viteLogo from '/vite.svg';
 
 import Scene from '@/Scene';
+import { useStorageContext } from '@/StorageContext';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
-const MainPage = () => {
-  const [level, setLevel] = useState(0);
-  // useEffect(() => {
-  //   if (!storage.isStart) navigate('/splash');
-  // }, [storage]);
+const GamePage = () => {
+  const { level, addStorage } = useStorageContext();
+
+  const handleGoSavePage = () => addStorage({ page: 'save', level });
   return (
     <motion.div
       className="relative h-full w-full border text-white"
@@ -17,9 +16,9 @@ const MainPage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Scene chapter={level} onComplete={() => setLevel((prev) => prev + 1)} />
+      <Scene chapter={level ?? 0} onComplete={handleGoSavePage} />
     </motion.div>
   );
 };
 
-export default MainPage;
+export default GamePage;

@@ -2,6 +2,9 @@ words:
   # plugins
   - commitlint
   - tailwindcss
+  - noti
+  # 지역명
+  - kongju
 ignoreWords:
   - noopener
 ignorePaths:

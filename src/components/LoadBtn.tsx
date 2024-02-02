@@ -1,0 +1,27 @@
+import { ChangeEvent, ReactNode } from 'react';
+
+interface ButtonProps {
+  children?: ReactNode;
+  onChange: (level: number) => void;
+}
+const LoadBtn = ({ children, onChange }: ButtonProps) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const blob = new Blob([files[0]]);
+    const text = await blob.text();
+    onChange(JSON.parse(text));
+  };
+  return (
+    <label
+      className="inline-flex justify-center rounded-sm border bg-black p-3 py-1 hover:animate-pulse focus:animate-pulse"
+      style={{ animationDuration: '500ms' }}
+    >
+      <span>{children}</span>
+      <input className="hidden" type="file" onChange={handleChange} />
+    </label>
+  );
+};
+
+export default LoadBtn;

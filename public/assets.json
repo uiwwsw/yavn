@@ -7,5 +7,11 @@
   },
   "street": {
     "image": "/assets/street.jpg"
+  },
+  "amoeba": {
+    "image": "/assets/amoeba.jpg"
+  },
+  "kongju": {
+    "image": "/assets/amoeba.jpg"
   }
 }

@@ -9,7 +9,7 @@ interface Asset {
   image: string;
   bgm?: string;
 }
-type Assets = {
+export type Assets = {
   [key: string]: Asset;
 };
 interface Chapter {
@@ -38,7 +38,9 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
     () => (direct ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }),
     [direct],
   );
-  const handleComplete = () => setComplete(true);
+  const handleComplete = () => {
+    setComplete(true);
+  };
   const nextScene = () => {
     if (!complete) return handleComplete();
     setComplete(false);
@@ -64,8 +66,10 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
   }, [character, changePosition]);
   useEffect(() => {
     getJson(`chapter${level}`).then((x) => setChapter(x));
-    getJson(`assets`).then((x) => setAssets(x));
   }, [level]);
+  useEffect(() => {
+    getJson(`assets`).then((x) => setAssets(x));
+  }, []);
   // return { character, place, image, Scene, nextScene };
   return (
     <div onClick={nextScene} className="absolute inset-0">
@@ -79,10 +83,12 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
         />
       )}
       {place && <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />}
-      <div className="absolute inset-0 top-auto z-20 flex gap-2 border-t p-2" style={sentencePosition}>
-        <span>{character}</span>
-        <Sentence data={sentence} isComplete={complete} onComplete={handleComplete} />
-      </div>
+      {sentence && (
+        <div className="absolute inset-0 top-auto z-20 flex gap-2 border-t p-2" style={sentencePosition}>
+          <span>{character}</span>
+          <Sentence data={sentence} isComplete={complete} onComplete={handleComplete} />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import useSession from '#/useSession';
 import { ReactNode, createContext, useContext } from 'react';
 export interface SessionStorage {
-  page: 'startMenu' | 'start' | 'load';
+  level: number;
+  page: 'startMenu' | 'game' | 'save';
   inventory: boolean;
 }
 interface StorageProviderProps {
@@ -13,6 +14,7 @@ interface ContextProps extends Partial<SessionStorage> {
 }
 const StorageContext = createContext<ContextProps>({
   page: undefined,
+  level: undefined,
   inventory: false,
   addStorage: () => null,
   clearStorage: () => null,

@@ -1,17 +1,18 @@
 import SplashPage from '@/Splash';
 import { useStorageContext } from './StorageContext';
 import StartMenuPage from '@/StartMenu';
-import MainPage from '@/Main';
+import GamePage from '@/Game';
+import SavePage from '@/Save';
 
 const Routes = () => {
   const { page } = useStorageContext();
   switch (page) {
     case 'startMenu':
       return <StartMenuPage />;
-    case 'start':
-      return <MainPage />;
-    case 'load':
-      return <MainPage />;
+    case 'game':
+      return <GamePage />;
+    case 'save':
+      return <SavePage />;
     default:
       return <SplashPage />;
   }
