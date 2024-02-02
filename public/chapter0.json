@@ -18,7 +18,7 @@
         },
         {
           "sound": "/chapter0/noti.wav",
-          "message": "윤창원",
+          "message": "윤창원!",
           "duration": 340
         },
         {
@@ -48,6 +48,23 @@
         },
         {
           "message": "프로젝트로 시작했습니다."
+        }
+      ],
+      [
+        {
+          "message": "chapter${0}.json에 챕터마다 스크립트를 작성하고,"
+        },
+        {
+          "message": "케릭터랑 배경은 assets.json 작성해두면"
+        },
+        {
+          "message": "간단한 게임이 완성되는거죠."
+        },
+        {
+          "message": "원래 인벤토리까지 지원할 생각이었는데,"
+        },
+        {
+          "message": "그렇게 되면 너무 무거워질것 같아요. 그건 빼기로"
         }
       ],
       [
