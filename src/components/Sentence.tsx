@@ -35,8 +35,8 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
     let msg = '';
     for (const index in _sentences) {
       if (!isCompleteProp && step < +index) break;
-      if (step === +index) msg = (msg ? `${msg} ` : '') + _sentences[index].message.substring(0, cursor);
-      else msg = (msg ? `${msg} ` : '') + _sentences[index].message;
+      if (step === +index) msg += _sentences[index].message.substring(0, cursor);
+      else msg += _sentences[index].message;
     }
 
     return msg;
@@ -73,7 +73,7 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   return (
     <>
       {sound && <audio src={sound} autoPlay />}
-      <p className="relative flex-auto">
+      <p className="relative flex-auto whitespace-pre-line">
         {sentences}
         {isComplete ? (
           <span className="ml-auto block w-fit animate-pulse">

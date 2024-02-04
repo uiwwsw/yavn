@@ -14,11 +14,11 @@
           "duration": 200
         },
         {
-          "message": "프론트엔드 개발자"
+          "message": " 프론트엔드 개발자"
         },
         {
           "sound": "/chapter0/noti.wav",
-          "message": "윤창원!",
+          "message": " 윤창원! ",
           "duration": 340
         },
         {
@@ -29,131 +29,112 @@
   },
   {
     "character": "matthew",
-    "place": "matthew-house",
-    "sentences": [
-      [
-        {
-          "message": "해당 프로젝트는"
-        },
-        {
-          "message": "간단한",
-          "duration": 200
-        },
-        {
-          "message": "비주얼 노블 게임을 위한"
-        },
-        {
-          "message": "REACT",
-          "duration": 200
-        },
-        {
-          "message": "프로젝트로 시작했습니다."
-        }
-      ],
-      [
-        {
-          "message": "chapter${0}.json에 챕터마다 스크립트를 작성하고,"
-        },
-        {
-          "message": "케릭터랑 배경은 assets.json 작성해두면"
-        },
-        {
-          "message": "간단한 게임이 완성되는거죠."
-        },
-        {
-          "message": "원래 인벤토리까지 지원할 생각이었는데,"
-        },
-        {
-          "message": "그렇게 되면 너무 무거워질것 같아요. 그건 빼기로"
-        }
-      ],
-      [
-        {
-          "message": "데모를 뭐로 만들까 하다가"
-        },
-        {
-          "message": "재밌는",
-          "duration": 200
-        },
-        {
-          "message": "이력서를 만들면 어떨까 합니다."
-        }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
     "place": "kongju",
     "sentences": [
       [
         {
-          "message": "건축학 전공으로, 한국에서는 공학계열로 나뉘고 유럽 국가에서는 예술계열로 나뉘는 등"
+          "message": "저는 "
         },
         {
-          "message": "여러 학문을 합친것 같은 특징이 있습니다."
-        },
-        {
-          "message": "디자인분야에서 보자면, 가장 큰걸 만들고 과정이 오래 걸립니다."
-        },
-        {
-          "message": "공학계열에서는 누구보다 감성적이여야 하는, 쉼터를 담당하고 있습니다."
-        },
-        {
-          "message": "비주얼 노블 게임을 위한"
-        },
-        {
-          "message": "react",
+          "message": "건축학을 ",
           "duration": 200
         },
         {
-          "message": "프로젝트입니다."
+          "message": "전공했습니다. \n"
         },
         {
-          "message": "만"
+          "message": "그리고 ",
+          "duration": 100
         },
         {
-          "message": "......",
-          "duration": 2000
+          "message": "현재는 개발자로",
+          "duration": 230
         },
         {
-          "message": "제 이력서를 대신 하려 합니다.",
-          "duration": 2000
+          "message": "전공과 멀어졌지만"
         }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "amoeba",
-    "sentences": [
+      ],
       [
         {
-          "message": "해당 프로젝트는"
-        },
-        {
-          "message": "간단한",
+          "message": "저는 여전히 ",
           "duration": 200
         },
         {
-          "message": "비주얼 노블 게임을 위한"
+          "message": "건축을 하고 있습니다. \n"
         },
         {
-          "message": "react",
+          "message": "단지 결과물이 "
+        },
+        {
+          "message": "건물이 ",
           "duration": 200
         },
         {
-          "message": "프로젝트입니다."
+          "message": "아닌 "
         },
         {
-          "message": "만"
+          "message": "코드로 ",
+          "duration": 200
         },
         {
-          "message": "......",
-          "duration": 2000
+          "message": "바꼈을 뿐이죠."
+        }
+      ],
+      [
+        {
+          "message": "프로그래머의 뇌",
+          "duration": 300
         },
         {
-          "message": "제 이력서를 대신 하려 합니다.",
-          "duration": 2000
+          "message": "라는 ",
+          "duration": 250
+        },
+        {
+          "message": "책에서 ",
+          "duration": 200
+        },
+        {
+          "message": "개발자는 ",
+          "duration": 400
+        },
+        {
+          "message": "수학보다 ",
+          "duration": 300
+        },
+        {
+          "message": "오히려 ",
+          "duration": 200
+        },
+        {
+          "message": "언어와 관련된 ",
+          "duration": 300
+        },
+        {
+          "message": "뇌 ",
+          "duration": 400
+        },
+        {
+          "message": "부분을 ",
+          "duration": 300
+        },
+        {
+          "message": "더 많이 사용한다고 ",
+          "duration": 200
+        },
+        {
+          "message": "합니다."
+        }
+      ],
+      [
+        {
+          "message": "복합적인 역량이 필요한 "
+        },
+        {
+          "message": "건축처럼 ",
+          "duration": 200
+        },
+        {
+          "message": "말이죠."
         }
       ]
     ]

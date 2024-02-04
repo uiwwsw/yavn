@@ -22,7 +22,7 @@ interface Chapter {
   audio?: string;
 }
 const Scene = ({ chapter: level, onComplete }: SceneProps) => {
-  const [direct, setDirect] = useState(false);
+  const [direct, setDirect] = useState<boolean>();
   const [assets, setAssets] = useState<Assets>({});
   const [step, setStep] = useState([0, 0]);
   const [chapter, setChapter] = useState<Chapter[]>([]);
@@ -39,9 +39,9 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
   const sentence = useMemo(() => scene?.sentences?.[step[1]], [scene, step]);
   const maxSentence = useMemo(() => scene?.sentences.length ?? 0, [scene, step]);
   const maxStep = useMemo(() => chapter.length, [chapter]);
-  const characterPosition: CSSProperties = useMemo(() => (direct ? { left: 0 } : { right: 0 }), [direct]);
+  const characterPosition: CSSProperties = useMemo(() => (direct ? { right: 0 } : { left: 0 }), [direct]);
   const sentencePosition: CSSProperties = useMemo(
-    () => (direct ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }),
+    () => (direct ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }),
     [direct],
   );
   const handleComplete = () => {
@@ -77,7 +77,6 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
       setAssets(a);
     });
   }, [level]);
-  console.log(assetList);
   // return { character, place, image, Scene, nextScene };
   return (
     <Assets assets={assetList}>
@@ -93,7 +92,10 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
         )}
         {place && <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />}
         {sentence && (
-          <div className="absolute inset-0 top-auto z-20 flex gap-2 border-t p-2" style={sentencePosition}>
+          <div
+            className="absolute inset-0 top-auto z-20 flex gap-2 border-t bg-white bg-opacity-75 p-2 text-black"
+            style={sentencePosition}
+          >
             <span>{character}</span>
             <Sentence data={sentence} isComplete={complete} onComplete={handleComplete} />
           </div>
