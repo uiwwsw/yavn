@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useMemo, useState } from 'react';
 import Sentence, { SentenceProps } from './Sentence';
 import { getJson } from '#/getJson';
+import useDebounce from '#/useDebounce';
 interface SceneProps {
   chapter: number;
   onComplete: () => void;
@@ -41,6 +42,13 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
   const handleComplete = () => {
     setComplete(true);
   };
+  const onChangePosition = useDebounce(() => {
+    setDirect((prev) => {
+      const res = !prev;
+      if (changePosition) return !res;
+      return res;
+    });
+  });
   const nextScene = () => {
     if (!complete) return handleComplete();
     setComplete(false);
@@ -57,13 +65,7 @@ const Scene = ({ chapter: level, onComplete }: SceneProps) => {
     // onComplete
     // setStep()
   };
-  useEffect(() => {
-    setDirect((prev) => {
-      const res = !prev;
-      if (changePosition) return !res;
-      return res;
-    });
-  }, [character, changePosition]);
+  useEffect(() => onChangePosition(), [character, changePosition]);
   useEffect(() => {
     getJson(`chapter${level}`).then((x) => setChapter(x));
   }, [level]);
