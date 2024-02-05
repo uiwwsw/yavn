@@ -22,16 +22,8 @@
           "duration": 340
         },
         {
-          "message": "입니다."
-        }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "kongju",
-    "sentences": [
-      [
+          "message": "입니다.\n"
+        },
         {
           "message": "저는 "
         },
@@ -40,31 +32,22 @@
           "duration": 200
         },
         {
-          "message": "전공했습니다. \n"
+          "message": "전공한 "
         },
         {
-          "message": "그래서 ",
-          "duration": 100
-        },
-        {
-          "message": "현재",
-          "duration": 230
-        },
-        {
-          "message": "비 전공 개발자이지만"
+          "message": "비 전공 개발자입니다."
         }
       ],
       [
         {
-          "message": "건축은 "
-        },
-        {
-          "message": "준 전공쯤? \n",
-          "asset": "exclamation",
+          "message": "하지만 ",
           "duration": 200
         },
         {
-          "message": "되지 않나 싶습니다."
+          "message": "건축학을 졸업한 건축도로써 \n"
+        },
+        {
+          "message": "개발에 준 전공쯤은 된다고 생각합니다."
         }
       ],
       "그 이유는...",
@@ -74,6 +57,7 @@
           "message": "계획 단계에 우선, 요구사항을 정리하여\n"
         },
         {
+          "asset": "now",
           "message": "(현재) 가능한것과 불가능한것을 나눕니다.\n",
           "duration": 200
         },

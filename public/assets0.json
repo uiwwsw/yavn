@@ -26,5 +26,8 @@
   },
   "exclamation": {
     "audio": "/chapter0/noti.wav"
+  },
+  "now": {
+    "audio": "/chapter0/now.png"
   }
 }
