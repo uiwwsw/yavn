@@ -2,7 +2,7 @@ import { CSSProperties, useEffect, useMemo, useState } from 'react';
 import Sentence, { SentenceProps } from './Sentence';
 import { getJson } from '#/getJson';
 import useDebounce from '#/useDebounce';
-import Assets from './Assets';
+import Assets from './Preload';
 interface SceneProps {
   chapter: number;
   onComplete: () => void;

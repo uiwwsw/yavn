@@ -17,7 +17,7 @@
           "message": " 프론트엔드 개발자"
         },
         {
-          "sound": "/chapter0/noti.wav",
+          "asset": "exclamation",
           "message": " 윤창원! ",
           "duration": 340
         },
@@ -43,54 +43,81 @@
           "message": "전공했습니다. \n"
         },
         {
-          "message": "그리고 ",
+          "message": "그래서 ",
           "duration": 100
         },
         {
-          "message": "현재는 개발자로",
+          "message": "현재",
           "duration": 230
         },
         {
-          "message": "전공과 멀어졌지만"
+          "message": "비 전공 개발자이지만"
         }
       ],
       [
         {
-          "message": "저는 여전히 ",
+          "message": "건축은 "
+        },
+        {
+          "message": "준 전공쯤? \n",
+          "asset": "exclamation",
           "duration": 200
         },
         {
-          "message": "건축을 하고 있습니다. \n"
+          "message": "되지 않나 싶습니다."
+        }
+      ],
+      "그 이유는...",
+      "건물을 짓는것과 코드를 만드는 게 비슷하기 때문입니다.",
+      [
+        {
+          "message": "계획 단계에 우선, 요구사항을 정리하여\n"
         },
         {
-          "message": "단지 결과물이 "
-        },
-        {
-          "message": "건물이 ",
+          "message": "(현재) 가능한것과 불가능한것을 나눕니다.\n",
           "duration": 200
         },
         {
-          "message": "아닌 "
+          "message": "그리고 포기할 수 있는 것과 포기로 인해\n(미래) 가능해지는것 사이에서의 조율을 잘 해야만 "
         },
         {
-          "message": "코드로 ",
-          "duration": 200
+          "message": "'좋은'",
+          "asset": "good",
+          "duration": 500
         },
         {
-          "message": "바꼈을 뿐이죠."
+          "message": "결과를 얻을 수 있습니다."
         }
       ],
       [
         {
-          "message": "프로그래머의 뇌",
+          "message": "수학적 사고, 언어적 사고 두 가지 모두가 중요하고"
+        },
+        {
+          "message": "공학과 예술적 감각 모두가 중요한 건축"
+        }
+      ]
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "architecture",
+    "sentences": [
+      [
+        {
+          "message": "건축도 ",
           "duration": 300
         },
         {
-          "message": "라는 ",
+          "message": "비슷합니다.",
+          "duration": 200
+        },
+        {
+          "message": "공학과 예술 사이에서 두 가지의 역량이 모두 필요하듯",
           "duration": 250
         },
         {
-          "message": "책에서 ",
+          "message": "개발도  ",
           "duration": 200
         },
         {

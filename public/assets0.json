@@ -3,7 +3,8 @@
     "image": "/chapter0/matthew.png"
   },
   "matthew-house": {
-    "image": "/chapter0/matthew-house.png"
+    "image": "/chapter0/matthew-house.png",
+    "audio": "/chapter0/matthew-house.mp3"
   },
   "street": {
     "image": "/chapter0/street.jpg"
@@ -13,6 +14,15 @@
   },
   "kongju": {
     "image": "/chapter0/kongju.jpg"
+  },
+  "programmer": {
+    "image": "/chapter0/programmer.jpg"
+  },
+  "architecture": {
+    "image": "/chapter0/architecture.jpg"
+  },
+  "good": {
+    "image": "/chapter0/good.png"
   },
   "exclamation": {
     "audio": "/chapter0/noti.wav"

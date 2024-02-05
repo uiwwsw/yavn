@@ -1,7 +1,7 @@
 import Fade from '@/Fade';
 import { useStorageContext } from '@/StorageContext';
 
-import Assets from '@/Assets';
+import Assets from '@/Preload';
 // import viteLogo from '/vite.svg';
 
 const SplashPage = () => {
@@ -20,7 +20,7 @@ const SplashPage = () => {
         '/splash/chatgpt.png',
       ]}
     >
-      <Fade onComplete={handleComplete} className="flex h-full w-full items-center justify-center text-white">
+      <Fade onComplete={handleComplete} className="flex h-full items-center justify-center text-white">
         <span className="text-7xl">
           <img src="/splash/typescript.svg" width={100} alt="타입스크립트" />
           Typescript

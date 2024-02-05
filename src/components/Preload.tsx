@@ -1,18 +1,19 @@
 import { ReactNode, useLayoutEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
-interface AssetsProps {
+interface PreloadProps {
   assets: string[];
   children: ReactNode;
 }
-const audioType = '.wav';
-const Assets = ({ assets, children }: AssetsProps) => {
+const audioTypes = ['.wav', '.mp3', '.ogg'];
+
+const Preload = ({ assets, children }: PreloadProps) => {
   const [load, setLoad] = useState(false);
   useLayoutEffect(() => {
-    console.log(assets, '!!!!!');
     if (assets.length)
       Promise.all(
         assets.map(async (asset) => {
-          if (asset.endsWith(audioType)) {
+          if (audioTypes.some((type) => asset.endsWith(type))) {
             const ado = new Audio();
             ado.src = asset;
             return new Promise((res) => {
@@ -27,9 +28,10 @@ const Assets = ({ assets, children }: AssetsProps) => {
         }),
       ).then(() => setLoad(true));
   }, [assets]);
-  console.log(load);
   return load ? (
-    children
+    <motion.div className="h-full w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      {children}
+    </motion.div>
   ) : (
     <div className="h-full w-full">
       <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
@@ -71,4 +73,4 @@ const Assets = ({ assets, children }: AssetsProps) => {
   );
 };
 
-export default Assets;
+export default Preload;

@@ -1,20 +1,22 @@
 // import reactLogo from './assets/react.svg';
-
-import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Assets } from '@/Game';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 // import viteLogo from '/vite.svg';
 interface Sentence {
   duration: number;
   message: string;
-  sound?: string;
+  asset?: string;
 }
 export interface SentenceProps {
+  assets?: Assets;
   data?: string | Sentence | Sentence[];
   isComplete: boolean;
   onComplete: () => void;
 }
 const defaultDuration = 100;
-const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
+const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
@@ -26,9 +28,10 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
     return _sentences.length <= _step;
   }, [_sentences, _step]);
 
-  const cursor = useMemo(() => {
-    return isCompleteProp || isComplete ? Infinity : _cursor;
-  }, [_sentences, _cursor, isCompleteProp]);
+  const cursor = useMemo(
+    () => (isCompleteProp || isComplete ? Infinity : _cursor),
+    [_sentences, _cursor, isCompleteProp],
+  );
 
   const sentence = useMemo(() => _sentences[step] ?? { message: '', duration: 0 }, [_sentences, step]);
   const sentences = useMemo(() => {
@@ -41,15 +44,19 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
 
     return msg;
   }, [_sentences, cursor, step, isCompleteProp]);
-  const duration = useMemo(() => {
-    return sentence.duration ?? defaultDuration;
-  }, [_sentences, step]);
-  const sound = useMemo(() => {
-    return sentence.sound;
-  }, [_sentences, step]);
-  const isEndCursor = useMemo(() => {
-    return sentence.message.length <= cursor;
-  }, [_sentences, step, cursor]);
+  const duration = useMemo(() => sentence.duration ?? defaultDuration, [_sentences, step]);
+  // const asset = useMemo(() => sentence.asset, [_sentences, step]);
+  const assetArray = useMemo(() => {
+    if (isCompleteProp) return _sentences.map((x) => x.asset).filter((x) => x) as string[];
+    let array = [];
+    for (const index in _sentences) {
+      if (!isCompleteProp && step < +index) break;
+      if (step >= +index) array.push(_sentences[index].asset);
+    }
+
+    return array.filter((x) => x) as string[];
+  }, [_sentences, step, isCompleteProp]);
+  const isEndCursor = useMemo(() => sentence.message.length <= cursor, [_sentences, step, cursor]);
   useEffect(() => {
     if (!data) return;
     if (data instanceof Array) setSentences(data);
@@ -72,7 +79,23 @@ const Sentence = ({ data, isComplete: isCompleteProp, onComplete }: SentenceProp
   }, [isComplete]);
   return (
     <>
-      {sound && <audio src={sound} autoPlay />}
+      {assets &&
+        assetArray &&
+        assetArray.map((x, i, { length }) => (
+          <Fragment key={i}>
+            {assets[x].audio && <audio src={assets[x].audio} autoPlay />}
+            {assets[x].image && (
+              <motion.img
+                className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 object-contain transition-all"
+                style={{ marginLeft: (i - length + 1) * -100 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                src={assets[x].image}
+              />
+            )}
+          </Fragment>
+        ))}
       <p className="relative flex-auto whitespace-pre-line">
         {sentences}
         {isComplete ? (
