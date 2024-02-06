@@ -17,7 +17,7 @@ const Preload = ({ assets, children }: PreloadProps) => {
             const ado = new Audio();
             ado.src = asset;
             return new Promise((res) => {
-              ado.oncanplay = () => res(true);
+              ado.onloadedmetadata = () => res(true);
             });
           }
           const img = new Image();
