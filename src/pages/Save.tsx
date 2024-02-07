@@ -30,9 +30,9 @@ const SavePage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <h1>PAUSE</h1>
+      <h1>챕터{level} 끝</h1>
       <Btn onClick={handleSave}>저장</Btn>
-      <Btn onClick={handleGame}>저장없이 시작</Btn>
+      <Btn onClick={handleGame}>바로 시작</Btn>
     </motion.div>
   );
 };

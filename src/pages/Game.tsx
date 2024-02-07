@@ -4,7 +4,7 @@ import { getJson } from '#/getJson';
 import useDebounce from '#/useDebounce';
 import Preload from '@/Preload';
 import { useStorageContext } from '@/StorageContext';
-interface Asset {
+export interface Asset {
   image?: string;
   audio?: string;
 }
@@ -70,9 +70,11 @@ const Game = () => {
     // onComplete
     // setStep()
   };
-  useEffect(() => onChangePosition(), [character, changePosition]);
   useEffect(() => {
-    Promise.all([getJson(`chapter${level}`), getJson(`assets${0}`)]).then(([c, a]) => {
+    character && onChangePosition();
+  }, [character, changePosition]);
+  useEffect(() => {
+    Promise.all([getJson<Chapter[]>(`chapter${level}`), getJson<Assets>(`assets${level}`)]).then(([c, a]) => {
       setChapter(c);
       setAssets(a);
     });

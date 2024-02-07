@@ -1,0 +1,108 @@
+[
+  {
+    "sentences": [
+      {
+        "message": "CHAPTER 1",
+        "duration": 340
+      }
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "matthew-house",
+    "sentences": [
+      [
+        {
+          "message": "",
+          "duration": 200
+        },
+        {
+          "message": "그리고 포기할 수 있는 것과 포기로 인해\n(미래) 가능해지는것 사이에서의 조율을 잘 해야만 "
+        },
+        {
+          "message": "'좋은'",
+          "asset": "good",
+          "duration": 500
+        },
+        {
+          "message": "결과를 얻을 수 있습니다."
+        }
+      ],
+      [
+        {
+          "message": "수학적 사고, 언어적 사고 두 가지 모두가 중요하고"
+        },
+        {
+          "message": "공학과 예술적 감각 모두가 중요한 건축"
+        }
+      ]
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "architecture",
+    "sentences": [
+      [
+        {
+          "message": "건축도 ",
+          "duration": 300
+        },
+        {
+          "message": "비슷합니다.",
+          "duration": 200
+        },
+        {
+          "message": "공학과 예술 사이에서 두 가지의 역량이 모두 필요하듯",
+          "duration": 250
+        },
+        {
+          "message": "개발도  ",
+          "duration": 200
+        },
+        {
+          "message": "개발자는 ",
+          "duration": 400
+        },
+        {
+          "message": "수학보다 ",
+          "duration": 300
+        },
+        {
+          "message": "오히려 ",
+          "duration": 200
+        },
+        {
+          "message": "언어와 관련된 ",
+          "duration": 300
+        },
+        {
+          "message": "뇌 ",
+          "duration": 400
+        },
+        {
+          "message": "부분을 ",
+          "duration": 300
+        },
+        {
+          "message": "더 많이 사용한다고 ",
+          "duration": 200
+        },
+        {
+          "message": "합니다."
+        }
+      ],
+      [
+        {
+          "message": "복합적인 역량이 필요한 "
+        },
+        {
+          "message": "건축처럼 ",
+          "duration": 200
+        },
+        {
+          "message": "말이죠."
+        }
+      ]
+    ]
+  }
+]
