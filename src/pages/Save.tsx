@@ -25,14 +25,18 @@ const SavePage = () => {
   };
   return (
     <motion.div
-      className="relative h-full w-full border text-white"
+      className="relative flex h-full w-full items-center border text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <h1>챕터{level} 끝</h1>
-      <Btn onClick={handleSave}>저장</Btn>
-      <Btn onClick={handleGame}>바로 시작</Btn>
+      <div className="flex w-full flex-col items-center gap-3 p-5">
+        <h1 className="text-center">챕터{level} 끝</h1>
+        <Btn onClick={handleSave}>저장</Btn>
+        <Btn autoFocus onClick={handleGame}>
+          바로 시작
+        </Btn>
+      </div>
     </motion.div>
   );
 };

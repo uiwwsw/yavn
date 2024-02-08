@@ -1,7 +1,7 @@
 // import reactLogo from './assets/react.svg';
 import { motion } from 'framer-motion';
 import { Assets } from '@/Game';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 // import viteLogo from '/vite.svg';
 interface Sentence {
@@ -57,6 +57,14 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
     return array.filter((x) => x) as string[];
   }, [_sentences, step, isCompleteProp]);
   const isEndCursor = useMemo(() => sentence.message.length <= cursor, [_sentences, step, cursor]);
+  const marginLeft = useCallback(
+    (index: number, arr: string[]) => {
+      if (!assets) return 0;
+      const audioLength = arr.slice(index, step).filter((x) => assets[x].audio).length;
+      return (index - arr.length + 1 + audioLength) * -100;
+    },
+    [assets],
+  );
   useEffect(() => {
     if (!data) return;
     if (data instanceof Array) setSentences(data);
@@ -81,13 +89,13 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
     <>
       {assets &&
         assetArray &&
-        assetArray.map((x, i, { length }) => (
+        assetArray.map((x, i, arr) => (
           <Fragment key={i}>
             {assets[x].audio && <audio src={assets[x].audio} autoPlay />}
             {assets[x].image && (
               <motion.img
                 className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 object-contain transition-all"
-                style={{ marginLeft: (i - length + 1) * -100 }}
+                style={{ marginLeft: marginLeft(i, arr) }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

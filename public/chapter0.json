@@ -2,7 +2,7 @@
   {
     "sentences": [
       {
-        "message": "클릭을 통해 빠른 건너뛰기가 가능합니다.",
+        "message": "화면 클릭 시 건너뛰기가 가능합니다.",
         "duration": 200
       }
     ]
@@ -41,12 +41,17 @@
           "message": "이자 \n"
         },
         {
-          "message": "Visual novel ",
+          "message": "Visual novel",
+          "duration": 100
+        },
+        {
+          "message": " ",
           "duration": 100,
           "asset": "exclamation"
         },
         {
-          "message": " 의 제작자 입니다. "
+          "message": " 의 제작자 입니다. ",
+          "asset": "good"
         }
       ],
       [
@@ -78,6 +83,18 @@
           "duration": 200
         }
       ]
+    ]
+  },
+  {
+    "sentences": [
+      {
+        "message": "프로젝트 설명이 끝났습니다. ",
+        "duration": 200
+      },
+      {
+        "message": "이제 실제 게임이 시작되야하는데 아직 완성 못했어요.",
+        "duration": 200
+      }
     ]
   }
 ]

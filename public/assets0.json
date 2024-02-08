@@ -1,14 +1,17 @@
 {
   "matthew": {
-    "image": "/chapter0/matthew.png"
+    "image": "/assets/matthew.png"
   },
   "matthew-house": {
-    "image": "/chapter0/matthew-house.png"
+    "image": "/assets/matthew-house.png"
   },
   "thumbs": {
-    "image": "/chapter0/thumbs.gif"
+    "image": "/assets/thumbs.gif"
+  },
+  "good": {
+    "image": "/assets/good.png"
   },
   "exclamation": {
-    "audio": "/chapter0/noti.wav"
+    "audio": "/assets/noti.wav"
   }
 }

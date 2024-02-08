@@ -22,7 +22,7 @@ const StartMenuPage = () => {
   }, []);
   return (
     <Assets assets={assets}>
-      <audio src={asset.audio}></audio>
+      <audio src={asset.audio} autoPlay />
       <div className="relative h-full text-white">
         <img className="h-full w-full object-cover" src={asset.image} alt="시작화면" />
         <div className="absolute inset-0 top-auto m-auto flex w-3/5 flex-col gap-3 pb-10">
