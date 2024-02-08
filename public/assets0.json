@@ -4,5 +4,11 @@
   },
   "matthew-house": {
     "image": "/chapter0/matthew-house.png"
+  },
+  "thumbs": {
+    "image": "/chapter0/thumbs.gif"
+  },
+  "exclamation": {
+    "audio": "/chapter0/noti.wav"
   }
 }

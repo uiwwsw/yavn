@@ -1,5 +1,13 @@
 [
   {
+    "sentences": [
+      {
+        "message": "클릭을 통해 빠른 건너뛰기가 가능합니다.",
+        "duration": 200
+      }
+    ]
+  },
+  {
     "character": "matthew",
     "place": "matthew-house",
     "sentences": [
@@ -8,29 +16,68 @@
         "message": "반갑습니다.",
         "duration": 150
       },
+
       [
         {
-          "message": "저는 ",
+          "message": "저는 이 게임, "
+        },
+        {
+          "message": "[매튜의 모험]",
           "duration": 200
         },
         {
-          "message": "프론트엔드 개발자 ",
-          "duration": 50
+          "message": "의 "
         },
         {
-          "message": "매튜 ",
-          "duration": 340
+          "message": "주인공",
+          "duration": 200
         },
         {
-          "message": "입니다."
+          "message": "!",
+          "duration": 500,
+          "asset": "thumbs"
+        },
+        {
+          "message": "이자 \n"
+        },
+        {
+          "message": "Visual novel ",
+          "duration": 100,
+          "asset": "exclamation"
+        },
+        {
+          "message": " 의 제작자 입니다. "
         }
       ],
-      "챕터 1에서는 경력에 대해, ",
-      "챕터 2에서는 잡다한 이야기를 해볼까 합니다.",
-      {
-        "message": "(클릭을 통해 빠른 건너뛰기가 가능합니다.)",
-        "duration": 200
-      }
+      [
+        {
+          "message": "이 게임을 만든 Visual novel의 목적은 \n"
+        },
+        {
+          "message": "JSON파일만 수정할 수 있으면 "
+        },
+        {
+          "message": "누구나! \n",
+          "duration": 200
+        },
+        {
+          "message": "게임을 개발할 수 있도록 하는 데에 있습니다."
+        }
+      ],
+      [
+        {
+          "message": "필요한 assets을 준비하고\n"
+        },
+        {
+          "message": "json을 수정해보세요."
+        }
+      ],
+      [
+        {
+          "message": "주인공이 되어보세요!",
+          "duration": 200
+        }
+      ]
     ]
   }
 ]

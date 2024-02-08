@@ -13,34 +13,30 @@
     "sentences": [
       [
         {
-          "message": "신입때 SI업체는 많은 경험을 \n"
+          "message": "남들보다 빠른 레벨업을 원할 경우, "
         },
         {
-          "message": "그것도 ",
+          "message": "두 가지의 선택지가 있습니다.\n"
+        },
+        {
+          "message": "사냥을 많이 하거나\n"
+        },
+        {
+          "message": "경험치가 높은 퀘스트를 하거나 인데요."
+        }
+      ],
+      [
+        {
+          "message": "제가 다닌 첫 회사는 "
+        },
+        {
+          "message": "두 가지 다 만족하는 회사",
           "duration": 200
         },
         {
-          "message": "책임은 있지만 "
-        },
-        {
-          "message": "권한은 없는.",
-          "duration": 300
-        },
-        {
-          "message": "이런 상황에서 많은 프로젝트들은 "
-        },
-        {
-          "message": "성장의 부스터 역할을 합니다. "
+          "message": "였습니다."
         }
       ]
-    ]
-  },
-  {
-    "sentences": [
-      {
-        "message": "CHAPTER 1. 전문성 강화",
-        "duration": 340
-      }
     ]
   }
 ]
