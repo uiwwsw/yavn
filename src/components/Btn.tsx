@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, KeyboardEvent, MouseEvent, ReactNode } from 'react';
+import { ButtonHTMLAttributes, MouseEvent, ReactNode } from 'react';
 
 interface ButtonProps {
   autoFocus?: ButtonHTMLAttributes<HTMLButtonElement>['autoFocus'];
