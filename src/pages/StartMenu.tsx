@@ -19,7 +19,19 @@ const StartMenuPage = () => {
   };
   useEffect(() => {
     getJson<Asset>(`start`).then((x) => setAsset(x));
+    // window.addEventListener('keydown', function (e) {
+    //   const keyCode = e.code;
+    //   if (keyCode === 'ArrowUp') {
+    //     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+    //   }
+    //   console.log(keyCode);
+    //   if (keyCode === 'ArrowDown') {
+    //     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+    //     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ShiftLeft' }));
+    //   }
+    // });
   }, []);
+
   return (
     <Assets assets={assets}>
       <audio src={asset.audio} autoPlay />

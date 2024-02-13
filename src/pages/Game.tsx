@@ -74,10 +74,14 @@ const Game = () => {
     character && onChangePosition();
   }, [character, changePosition]);
   useEffect(() => {
-    Promise.all([getJson<Chapter[]>(`chapter${level}`), getJson<Assets>(`assets${level}`)]).then(([c, a]) => {
-      setChapter(c);
-      setAssets(a);
-    });
+    Promise.all([getJson<Chapter[]>(`chapter${level}`), getJson<Assets>(`assets${level}`)])
+      .then(([c, a]) => {
+        setChapter(c);
+        setAssets(a);
+      })
+      .catch(() => {
+        addStorage({ page: 'credit', level: 0 });
+      });
   }, [level]);
   // return { character, place, image, Scene, nextScene };
   return (

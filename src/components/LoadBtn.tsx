@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, MouseEvent, ReactNode } from 'react';
 
 interface ButtonProps {
   children?: ReactNode;
@@ -13,10 +13,16 @@ const LoadBtn = ({ children, onChange }: ButtonProps) => {
     const text = await blob.text();
     onChange(JSON.parse(text));
   };
+  const handleOver = (e: MouseEvent<HTMLLabelElement>) => {
+    const target = e.currentTarget;
+    if (target) target.focus();
+  };
   return (
     <label
-      className="inline-flex justify-center rounded-sm border bg-black p-3 py-1 hover:animate-pulse focus:animate-pulse"
+      className="inline-flex cursor-pointer justify-center rounded-sm border bg-black p-3 py-1 hover:animate-pulse focus:animate-pulse"
       style={{ animationDuration: '500ms' }}
+      onMouseOver={handleOver}
+      tabIndex={0}
     >
       <span>{children}</span>
       <input className="hidden" type="file" onChange={handleChange} />
