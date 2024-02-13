@@ -1,4 +1,4 @@
-import { AnimationEvent, ReactNode, useMemo, useState } from 'react';
+import { AnimationEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 
 // import reactLogo from './assets/react.svg';
 // import viteLogo from '/vite.svg';
@@ -43,7 +43,10 @@ const Fade = ({ children, onComplete, className: classNameProp }: FadeProps) => 
         break;
     }
   };
-  //   const = { }
+  useEffect(() => {
+    window.addEventListener('keydown', handleClick);
+    return () => window.removeEventListener('keydown', handleClick);
+  }, []);
   return (
     <div className={`fade ${className}`} onAnimationEnd={handleEnd} onClick={handleClick}>
       {current}

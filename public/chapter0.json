@@ -50,7 +50,7 @@
           "asset": "exclamation"
         },
         {
-          "message": " 의 제작자 입니다. ",
+          "message": " 의 제작자인 Matthew 입니다. ",
           "asset": "good"
         }
       ],
@@ -92,7 +92,15 @@
         "duration": 200
       },
       {
-        "message": "이제 실제 게임이 시작되야하는데 아직 완성 못했어요.",
+        "message": "이제 실제 게임이 시작되야하는데",
+        "duration": 200
+      },
+      {
+        "message": "...",
+        "duration": 200
+      },
+      {
+        "message": "아직 완성 못했습니다. ㅠ.ㅠ",
         "duration": 200
       }
     ]

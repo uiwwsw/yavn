@@ -55,6 +55,7 @@ const Game = () => {
     });
   });
   const nextScene = () => {
+    console.log(complete);
     if (!complete) return handleComplete();
     setComplete(false);
     let nextSentence = step[1] + 1;
@@ -67,8 +68,9 @@ const Game = () => {
     if (nextStep >= maxStep) return handleGoSavePage();
 
     setStep([nextStep, nextSentence]);
-    // onComplete
-    // setStep()
+  };
+  const handleEnter = (e: KeyboardEvent) => {
+    if (e.code === 'Enter') nextScene();
   };
   useEffect(() => {
     character && onChangePosition();
@@ -83,6 +85,10 @@ const Game = () => {
         addStorage({ page: 'credit', level: 0 });
       });
   }, [level]);
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+    return () => window.removeEventListener('keydown', handleEnter);
+  }, [complete]);
   // return { character, place, image, Scene, nextScene };
   return (
     <Preload assets={assetList}>
