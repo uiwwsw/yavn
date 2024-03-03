@@ -25,5 +25,17 @@
   },
   "uprise": {
     "image": "/assets/uprise.jpg"
+  },
+  "react": {
+    "image": "/assets/react.png"
+  },
+  "next": {
+    "image": "/assets/next.png"
+  },
+  "nuxt": {
+    "image": "/assets/nuxt.png"
+  },
+  "svelte": {
+    "image": "/assets/svelte.png"
   }
 }
