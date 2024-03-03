@@ -36,7 +36,8 @@
           "message": "건축에 대해서는 \n"
         },
         {
-          "message": "사실 하나도 생각나지 않습니다."
+          "message": "사실 하나도 생각나지 않습니다.",
+          "asset": "bad"
         }
       ],
       [
@@ -80,7 +81,7 @@
           "duration": 250
         },
         {
-          "message": "바뀌었을 뿐.",
+          "message": "바뀌었다고 말이죠.",
           "asset": "exclamation"
         }
       ]

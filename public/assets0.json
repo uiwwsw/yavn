@@ -11,6 +11,9 @@
   "good": {
     "image": "/assets/good.png"
   },
+  "bad": {
+    "image": "/assets/bad.gif"
+  },
   "exclamation": {
     "audio": "/assets/noti.wav"
   },
