@@ -5,13 +5,25 @@
   "matthew-house": {
     "image": "/assets/matthew-house.png"
   },
-  "thumbs": {
-    "image": "/assets/thumbs.gif"
+  "architecture": {
+    "image": "/assets/architecture.jpg"
   },
   "good": {
     "image": "/assets/good.png"
   },
   "exclamation": {
     "audio": "/assets/noti.wav"
+  },
+  "amoeba": {
+    "image": "/assets/amoeba.jpg"
+  },
+  "interpark": {
+    "image": "/assets/interpark.jpg"
+  },
+  "wisebirds": {
+    "image": "/assets/wisebirds.jpg"
+  },
+  "uprise": {
+    "image": "/assets/uprise.jpg"
   }
 }

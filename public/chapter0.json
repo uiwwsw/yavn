@@ -12,75 +12,124 @@
     "place": "matthew-house",
     "sentences": [
       "안녕하세요.",
-      {
-        "message": "반갑습니다.",
-        "duration": 150
-      },
-
       [
         {
-          "message": "저는 이 게임, "
+          "message": "저는 "
         },
         {
-          "message": "[매튜의 모험]",
-          "duration": 200
+          "message": "건축학 ",
+          "duration": 250
         },
         {
-          "message": "의 "
+          "message": "전공의 ",
+          "asset": "architecture"
         },
         {
-          "message": "주인공",
-          "duration": 200
+          "message": "개발자 윤창원입니다."
+        }
+      ],
+      [
+        {
+          "message": "건축에서 배운 직접적인 기술은 \n"
         },
         {
-          "message": "!",
-          "duration": 500,
-          "asset": "thumbs"
+          "message": "(캐드, 도면) \n"
         },
         {
-          "message": "이자 \n"
-        },
+          "message": "사실 하나도 생각나지 않습니다."
+        }
+      ],
+      [
         {
-          "message": "Visual novel",
-          "duration": 100
-        },
-        {
-          "message": " ",
-          "duration": 100,
+          "message": "하지만,\n",
           "asset": "exclamation"
         },
         {
-          "message": " 의 제작자인 Matthew 입니다. ",
-          "asset": "good"
+          "message": "규모가 큰 프로젝트를 정해진 시간 내 완성하는 "
+        },
+        {
+          "message": "과정을 터득했습니다."
+        }
+      ],
+      {
+        "message": "그래서 저는 여전히 건축을 하고 있다고 생각합니다."
+      },
+      {
+        "message": "웹디자인 교육 4개월 중 1달 정도의 퍼블리싱 교육이 개발교육에는 전부입니다."
+      }
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "amoeba",
+    "sentences": [
+      [
+        {
+          "message": "아메바 라는 웹에이전시에서 개발자로 첫 업무를 시작했습니다.\n"
+        },
+        {
+          "message": "이때 디멘딩한 업무들 덕분에 빠르게 성장할 수 있었습니다.\n"
+        },
+        {
+          "message": "특히, 업무량이 많은 문제를 해결하기 위해 우선순위를 나누는 훈련을 할 수 있었습니다."
+        }
+      ]
+    ]
+  },{
+    "character": "matthew",
+    "place": "interpark",
+    "sentences": [
+      [
+        {
+          "message": "인터파크에서 UI개발자가 되었습니다.\n"
+        },
+        {
+          "message": "티켓과 투어 부문의 UI를 맡았는데\n"
+        },
+        {
+          "message": "팀원들과 동반 성장을 좋아하는 성향 덕분에 리서치를 제일 많이한 팀원이 되었습니다."
+        }
+      ]
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "wisebirds",
+    "sentences": [
+      [
+        {
+          "message": "와이즈버즈라는 온라인 광고회사에서 프론트엔드 개발자로 일했습니다.\n"
+        },
+        {
+          "message": "자체 서비스의 프론트엔드 유지보수 및 백오피스 웹서비스 두가지를 개발 및 런칭하고\n"
+        },
+        {
+          "message": "크롬 확장 프로그램, 타입스크립트 도입등의 업무외 성과가 있습니다."
+        }
+      ]
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "uprise",
+    "sentences": [
+      [
+        {
+          "message": "업라이즈라는 회사에서는 밀도 높은 경험을 했습니다.\n"
+        },
+        {
+          "message": "혼자 일한 기간동안에는 책임감 덕분에 낮밤새벽 할것 없이 일을 했고\n"
+        },
+        {
+          "message": "덕분에 가장 일 많이한 팀원으로 뽑히기도 했습니다."
         }
       ],
       [
         {
-          "message": "이 게임을 만든 Visual novel의 목적은 \n"
+          "message": "리더가 부재인 동안은 임시리더 역할을 담당했고\n"
         },
         {
-          "message": "JSON파일만 수정할 수 있으면 "
-        },
-        {
-          "message": "누구나! \n",
-          "duration": 200
-        },
-        {
-          "message": "게임을 개발할 수 있도록 하는 데에 있습니다."
-        }
-      ],
-      [
-        {
-          "message": "필요한 assets을 준비하고\n"
-        },
-        {
-          "message": "json을 수정해보세요."
-        }
-      ],
-      [
-        {
-          "message": "주인공이 되어보세요!",
-          "duration": 200
+          "message": "뷰에서 스벨트로 포팅하는 작업을 하며 설계에 대해 배울 수 있었습니다."
         }
       ]
     ]
@@ -88,19 +137,7 @@
   {
     "sentences": [
       {
-        "message": "프로젝트 설명이 끝났습니다. ",
-        "duration": 200
-      },
-      {
-        "message": "이제 실제 게임이 시작되야하는데",
-        "duration": 200
-      },
-      {
-        "message": "...",
-        "duration": 200
-      },
-      {
-        "message": "아직 완성 못했습니다. ㅠ.ㅠ",
+        "message": "To be continue",
         "duration": 200
       }
     ]
