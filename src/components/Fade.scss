@@ -1,16 +1,4 @@
 .fade {
   @apply opacity-0 transition-opacity;
   @apply empty:hidden;
-  &--in {
-    @apply animate-fade--in opacity-100;
-  }
-  &--stay {
-    @apply animate-fade--stay opacity-100;
-  }
-  &--out {
-    @apply animate-fade--out;
-  }
-  &--change {
-    @apply animate-fade--change;
-  }
 }
