@@ -1,0 +1,35 @@
+{
+  "matthew": {
+    "image": "/assets/matthew.png"
+  },
+  "developer": {
+    "image": "/assets/developer.jpg"
+  },
+  "conversation": {
+    "image": "/assets/conversation.png"
+  },
+  "now": {
+    "image": "/assets/now.png"
+  },
+  "street": {
+    "image": "/assets/street.jpg"
+  },
+  "thumbs": {
+    "image": "/assets/thumbs.gif"
+  },
+  "react": {
+    "image": "/assets/react.png"
+  },
+  "next": {
+    "image": "/assets/next.png"
+  },
+  "svelte": {
+    "image": "/assets/svelte.png"
+  },
+  "nuxt": {
+    "image": "/assets/nuxt.png"
+  },
+  "noti": {
+    "audio": "/assets/noti.wav"
+  }
+}
