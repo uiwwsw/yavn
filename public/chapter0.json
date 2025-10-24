@@ -235,10 +235,15 @@
   },
   {
     "sentences": [
-      {
-        "message": "To be continue",
-        "duration": 200
-      }
+      [
+        {
+          "message": "매튜의 모험은 아직 시작에 불과합니다.\\n"
+        },
+        {
+          "message": "다음 챕터에서는 제가 쌓아 온 협업 이야기를 들려드릴게요.",
+          "asset": "next"
+        }
+      ]
     ]
   }
 ]
