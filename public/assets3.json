@@ -3,36 +3,36 @@
     "image": "/assets/matthew.png"
   },
   "세라": {
-    "image": "/assets/sora.svg"
+    "image": "/assets/character-sera.svg"
   },
   "루크": {
-    "image": "/assets/aria.svg"
+    "image": "/assets/character-luke.svg"
   },
   "엘리": {
-    "image": "/assets/noah.svg"
+    "image": "/assets/character-elly.svg"
   },
   "해리": {
-    "image": "/assets/programmer.jpg"
+    "image": "/assets/character-harry.svg"
   },
   "그리드": {
-    "image": "/assets/grit-signal.svg"
+    "image": "/assets/character-grid.svg"
   },
   "아메바 폐허": {
-    "image": "/assets/amoeba.jpg"
+    "image": "/assets/bg-amoeba-ruins.svg"
   },
   "세미티에스 공업도시": {
-    "image": "/assets/code-lab.svg"
+    "image": "/assets/bg-industrial-city.svg"
   },
   "업라이즈 시타델": {
-    "image": "/assets/uprise.jpg"
+    "image": "/assets/bg-uprise-citadel.svg"
   },
   "한국일보 요새": {
-    "image": "/assets/history.png"
+    "image": "/assets/bg-korea-fortress.svg"
   },
   "낭비 없는 왕국": {
-    "image": "/assets/strategy-room.svg"
+    "image": "/assets/bg-efficient-kingdom.svg"
   },
   "내면의 제단": {
-    "image": "/assets/matthew-home-garden.svg"
+    "image": "/assets/bg-inner-sanctum.svg"
   }
 }

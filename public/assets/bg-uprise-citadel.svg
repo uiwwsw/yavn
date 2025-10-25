@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg-bg-uprise-citadel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg-bg-uprise-citadel)" />
+  <g opacity="0.25" fill="rgba(255,255,255,0.5)">
+    <circle cx="260" cy="180" r="140" />
+    <circle cx="560" cy="360" r="220" />
+    <circle cx="1320" cy="240" r="180" />
+    <circle cx="1620" cy="520" r="260" />
+    <circle cx="960" cy="760" r="260" />
+  </g>
+  <path d="M0 860 C 320 740 640 980 960 860 C1280 740 1600 980 1920 860 L1920 1080 L0 1080 Z" fill="rgba(15,23,42,0.25)" />
+  <text x="5%" y="90%" font-family="'Pretendard','Noto Sans KR',sans-serif" font-size="120" fill="rgba(255,255,255,0.75)">Uprise Citadel</text>
+</svg>

@@ -12,75 +12,75 @@
     "image": "/assets/matthew.png"
   },
   "street": {
-    "image": "/assets/street.jpg"
+    "image": "/assets/bg-street-night.svg"
   },
   "thumbs": {
-    "image": "/assets/thumbs.gif"
+    "image": "/assets/icon-thumbs.svg"
   },
   "conversation": {
-    "image": "/assets/conversation.png"
+    "image": "/assets/icon-conversation.svg"
   },
   "noti": {
     "audio": "/assets/noti.wav"
   },
   "programmer": {
-    "image": "/assets/programmer.jpg"
+    "image": "/assets/icon-programmer.svg"
   },
   "developer": {
-    "image": "/assets/developer.jpg"
+    "image": "/assets/bg-developer-studio.svg"
   },
   "innovation-hub": {
-    "image": "/assets/innovation-hub.svg"
+    "image": "/assets/icon-innovation.svg"
   },
   "strategy-room": {
-    "image": "/assets/strategy-room.svg"
+    "image": "/assets/bg-matthew-strategy.svg"
   },
   "code-lab": {
-    "image": "/assets/code-lab.svg"
+    "image": "/assets/icon-code-lab.svg"
   },
   "matthew-home-lab": {
-    "image": "/assets/matthew-home-lab.svg"
+    "image": "/assets/bg-matthew-lab.svg"
   },
   "matthew-home-strategy": {
-    "image": "/assets/matthew-home-strategy.svg"
+    "image": "/assets/bg-matthew-strategy.svg"
   },
   "matthew-home-garden": {
-    "image": "/assets/matthew-home-garden.svg"
+    "image": "/assets/bg-matthew-garden.svg"
   },
   "grit-signal": {
-    "image": "/assets/grit-signal.svg"
+    "image": "/assets/icon-grit.svg"
   },
   "momentum": {
-    "image": "/assets/momentum.svg"
+    "image": "/assets/icon-momentum.svg"
   },
   "emoji-focus": {
-    "image": "/assets/emoji-focus.svg"
+    "image": "/assets/icon-focus.svg"
   },
   "emoji-relief": {
-    "image": "/assets/emoji-relief.svg"
+    "image": "/assets/icon-relief.svg"
   },
   "emoji-joy": {
-    "image": "/assets/emoji-joy.svg"
+    "image": "/assets/icon-joy.svg"
   },
   "emoji-steady": {
-    "image": "/assets/emoji-steady.svg"
+    "image": "/assets/icon-steady.svg"
   },
   "aria": {
-    "image": "/assets/aria.svg"
+    "image": "/assets/character-aria.svg"
   },
   "noah": {
-    "image": "/assets/noah.svg"
+    "image": "/assets/character-noah.svg"
   },
   "sora": {
-    "image": "/assets/sora.svg"
+    "image": "/assets/character-sora.svg"
   },
   "history": {
-    "image": "/assets/history.png"
+    "image": "/assets/icon-history.svg"
   },
   "kongju": {
-    "image": "/assets/kongju.jpg"
+    "image": "/assets/icon-kongju.svg"
   },
   "now": {
-    "image": "/assets/now.png"
+    "image": "/assets/bg-now-studio.svg"
   }
 }
