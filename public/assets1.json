@@ -2,6 +2,15 @@
   "matthew": {
     "image": "/assets/matthew.png"
   },
+  "매튜 전략가": {
+    "image": "/assets/matthew.png"
+  },
+  "매튜 탐험가": {
+    "image": "/assets/matthew.png"
+  },
+  "매튜 멘토": {
+    "image": "/assets/matthew.png"
+  },
   "street": {
     "image": "/assets/street.jpg"
   },
@@ -29,11 +38,32 @@
   "code-lab": {
     "image": "/assets/code-lab.svg"
   },
+  "matthew-home-lab": {
+    "image": "/assets/matthew-home-lab.svg"
+  },
+  "matthew-home-strategy": {
+    "image": "/assets/matthew-home-strategy.svg"
+  },
+  "matthew-home-garden": {
+    "image": "/assets/matthew-home-garden.svg"
+  },
   "grit-signal": {
     "image": "/assets/grit-signal.svg"
   },
   "momentum": {
     "image": "/assets/momentum.svg"
+  },
+  "emoji-focus": {
+    "image": "/assets/emoji-focus.svg"
+  },
+  "emoji-relief": {
+    "image": "/assets/emoji-relief.svg"
+  },
+  "emoji-joy": {
+    "image": "/assets/emoji-joy.svg"
+  },
+  "emoji-steady": {
+    "image": "/assets/emoji-steady.svg"
   },
   "aria": {
     "image": "/assets/aria.svg"

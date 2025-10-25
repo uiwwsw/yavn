@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810">
+  <defs>
+    <linearGradient id="dawnSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="100%" stop-color="#bfdbfe" />
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#86efac" />
+      <stop offset="100%" stop-color="#22c55e" />
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="810" fill="url(#dawnSky)" />
+  <rect y="520" width="1440" height="290" fill="url(#grass)" />
+  <g opacity="0.15">
+    <circle cx="240" cy="520" r="220" fill="#166534" />
+    <circle cx="420" cy="500" r="180" fill="#047857" />
+    <circle cx="620" cy="540" r="200" fill="#15803d" />
+    <circle cx="980" cy="500" r="230" fill="#047857" />
+    <circle cx="1180" cy="520" r="180" fill="#16a34a" />
+  </g>
+  <rect x="320" y="260" width="800" height="300" rx="30" fill="#fefce8" opacity="0.8" />
+  <path d="M360 300h720v12H360zm0 80h480v12H360zm0 80h640v12H360z" fill="#94a3b8" opacity="0.7" />
+  <g fill="#f97316" opacity="0.6">
+    <circle cx="220" cy="160" r="48" />
+    <circle cx="1180" cy="200" r="42" />
+    <circle cx="960" cy="140" r="36" />
+  </g>
+  <path d="M160 640h1120" stroke="#14532d" stroke-width="6" stroke-dasharray="24 16" opacity="0.4" />
+</svg>
