@@ -3,31 +3,31 @@
     "image": "/assets/matthew.png"
   },
   "developer": {
-    "image": "/assets/developer.jpg"
+    "image": "/assets/bg-developer-studio.svg"
   },
   "conversation": {
-    "image": "/assets/conversation.png"
+    "image": "/assets/bg-conversation-lounge.svg"
   },
   "now": {
-    "image": "/assets/now.png"
+    "image": "/assets/bg-now-studio.svg"
   },
   "street": {
-    "image": "/assets/street.jpg"
+    "image": "/assets/bg-street-night.svg"
   },
   "thumbs": {
-    "image": "/assets/thumbs.gif"
+    "image": "/assets/icon-thumbs.svg"
   },
   "react": {
-    "image": "/assets/react.png"
+    "image": "/assets/icon-react.svg"
   },
   "next": {
-    "image": "/assets/next.png"
+    "image": "/assets/icon-next.svg"
   },
   "svelte": {
-    "image": "/assets/svelte.png"
+    "image": "/assets/icon-svelte.svg"
   },
   "nuxt": {
-    "image": "/assets/nuxt.png"
+    "image": "/assets/icon-nuxt.svg"
   },
   "noti": {
     "audio": "/assets/noti.wav"

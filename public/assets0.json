@@ -1,98 +1,98 @@
 {
   "별빛 기록관 엘리시아": {
-    "image": "/assets/programmer.jpg"
+    "image": "/assets/character-elysia.svg"
   },
   "항로 설계사 매튜": {
     "image": "/assets/matthew.png"
   },
   "시간 연금술사 이온": {
-    "image": "/assets/good.png"
+    "image": "/assets/character-ion.svg"
   },
   "리액트 정령 노바": {
-    "image": "/assets/react.png"
+    "image": "/assets/character-nova.svg"
   },
   "타입스크립트 비서관 루멘": {
-    "image": "/assets/developer.jpg"
+    "image": "/assets/character-lumen.svg"
   },
   "스타일 베틀 실피": {
-    "image": "/assets/svelte.png"
+    "image": "/assets/character-sylphie.svg"
   },
   "길드 항해 지도": {
-    "image": "/assets/history.png"
+    "image": "/assets/icon-guild-map.svg"
   },
   "guild-hall": {
-    "image": "/assets/innovation-hub.svg"
+    "image": "/assets/bg-guild-hall.svg"
   },
   "starlit-archive": {
     "image": "/assets/matthew-house.png"
   },
   "status-observatory": {
-    "image": "/assets/code-lab.svg"
+    "image": "/assets/bg-status-observatory.svg"
   },
   "chronicle-deck": {
-    "image": "/assets/history.png"
+    "image": "/assets/bg-chronicle-deck.svg"
   },
   "history": {
-    "image": "/assets/history.png"
+    "image": "/assets/icon-history.svg"
   },
   "architecture": {
-    "image": "/assets/architecture.jpg"
+    "image": "/assets/icon-architecture.svg"
   },
   "good": {
-    "image": "/assets/good.png"
+    "image": "/assets/icon-good.svg"
   },
   "bad": {
-    "image": "/assets/bad.gif"
+    "image": "/assets/icon-bad.svg"
   },
   "exclamation": {
     "audio": "/assets/noti.wav"
   },
   "amoeba": {
-    "image": "/assets/amoeba.jpg"
+    "image": "/assets/icon-amoeba.svg"
   },
   "interpark": {
-    "image": "/assets/interpark.jpg"
+    "image": "/assets/icon-interpark.svg"
   },
   "wisebirds": {
-    "image": "/assets/wisebirds.jpg"
+    "image": "/assets/icon-wisebirds.svg"
   },
   "uprise": {
-    "image": "/assets/uprise.jpg"
+    "image": "/assets/icon-uprise.svg"
   },
   "react": {
-    "image": "/assets/react.png"
+    "image": "/assets/icon-react.svg"
   },
   "typescript": {
-    "image": "/assets/developer.jpg"
+    "image": "/assets/icon-typescript.svg"
   },
   "css": {
-    "image": "/assets/programmer.jpg"
+    "image": "/assets/icon-css.svg"
   },
   "nuxt": {
-    "image": "/assets/nuxt.png"
+    "image": "/assets/icon-nuxt.svg"
   },
   "svelte": {
-    "image": "/assets/svelte.png"
+    "image": "/assets/icon-svelte.svg"
   },
   "street": {
-    "image": "/assets/street.jpg"
+    "image": "/assets/bg-street-night.svg"
   },
   "grit-signal": {
-    "image": "/assets/grit-signal.svg"
+    "image": "/assets/icon-grit.svg"
   },
   "momentum": {
-    "image": "/assets/momentum.svg"
+    "image": "/assets/icon-momentum.svg"
   },
   "conversation": {
-    "image": "/assets/conversation.png"
+    "image": "/assets/icon-conversation.svg"
   },
   "innovation-hub": {
-    "image": "/assets/innovation-hub.svg"
+    "image": "/assets/icon-innovation.svg"
   },
   "code-lab": {
-    "image": "/assets/code-lab.svg"
+    "image": "/assets/icon-code-lab.svg"
   },
   "next": {
-    "image": "/assets/next.png"
+    "image": "/assets/icon-next.svg"
   }
 }
