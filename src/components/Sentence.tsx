@@ -1,7 +1,7 @@
 // import reactLogo from './assets/react.svg';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Assets } from '@/Game';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // import viteLogo from '/vite.svg';
 interface Sentence {
@@ -87,23 +87,38 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
   }, [isComplete]);
   return (
     <>
-      {assets &&
-        assetArray &&
-        assetArray.map((x, i, arr) => (
-          <Fragment key={i}>
-            {assets[x].audio && <audio src={assets[x].audio} autoPlay />}
-            {assets[x].image && (
-              <motion.img
-                className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 object-contain transition-all"
-                style={{ marginLeft: marginLeft(i, arr) }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                src={assets[x].image}
-              />
-            )}
-          </Fragment>
-        ))}
+      {assets && assetArray && (
+        <>
+          {assetArray.map((x, i) => {
+            const asset = assets[x];
+            if (!asset?.audio) return null;
+            return <audio key={`audio-${x}-${i}`} src={asset.audio} autoPlay />;
+          })}
+          <AnimatePresence initial={false}>
+            {assetArray.map((x, i, arr) => {
+              const asset = assets[x];
+              if (!asset?.image) return null;
+              const offset = marginLeft(i, arr);
+              return (
+                <motion.img
+                  key={`image-${x}-${i}`}
+                  className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 object-contain"
+                  src={asset.image}
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.95, x: offset - 12 }}
+                  animate={{ opacity: 1, scale: 1, x: offset }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    opacity: { duration: 0.25, ease: 'easeOut' },
+                    scale: { duration: 0.4, ease: 'easeOut' },
+                    x: { type: 'spring', stiffness: 260, damping: 26 },
+                  }}
+                />
+              );
+            })}
+          </AnimatePresence>
+        </>
+      )}
       <p className="relative flex-auto whitespace-pre-line">
         {sentences}
         {isComplete ? (
