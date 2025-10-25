@@ -20,6 +20,30 @@
   "developer": {
     "image": "/assets/developer.jpg"
   },
+  "innovation-hub": {
+    "image": "/assets/innovation-hub.svg"
+  },
+  "strategy-room": {
+    "image": "/assets/strategy-room.svg"
+  },
+  "code-lab": {
+    "image": "/assets/code-lab.svg"
+  },
+  "grit-signal": {
+    "image": "/assets/grit-signal.svg"
+  },
+  "momentum": {
+    "image": "/assets/momentum.svg"
+  },
+  "aria": {
+    "image": "/assets/aria.svg"
+  },
+  "noah": {
+    "image": "/assets/noah.svg"
+  },
+  "sora": {
+    "image": "/assets/sora.svg"
+  },
   "history": {
     "image": "/assets/history.png"
   },

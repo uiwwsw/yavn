@@ -1,0 +1,27 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="labGradient" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+    <linearGradient id="lineGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#labGradient)" rx="32"/>
+  <g stroke="url(#lineGlow)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+    <path d="M160 200h480"/>
+    <path d="M160 260h480"/>
+    <path d="M160 320h480"/>
+    <path d="M160 380h480"/>
+  </g>
+  <g fill="#a5f3fc" font-family="'Fira Code', monospace" font-size="22">
+    <text x="200" y="230">const focus = grit.map(sprint =&gt; sprint * 1.2);</text>
+    <text x="200" y="290">const resilience = Math.min(health, determination);</text>
+    <text x="200" y="350">deploy({ product: 'Conveyor Client', stack: ['Next.js','SWR','Tailwind'] });</text>
+    <text x="200" y="410">migrate('Nuxt', 'SvelteKit', { duration: '4weeks' });</text>
+  </g>
+  <circle cx="160" cy="120" r="40" fill="#0ea5e9" opacity="0.35"/>
+  <circle cx="640" cy="480" r="60" fill="#22d3ee" opacity="0.25"/>
+</svg>
