@@ -1,12 +1,36 @@
 {
-  "matthew": {
+  "의문의 남자": {
+    "image": "/assets/programmer.jpg"
+  },
+  "매튜": {
     "image": "/assets/matthew.png"
   },
-  "matthew-house": {
-    "image": "/assets/matthew-house.png"
+  "상태창 수정구": {
+    "image": "/assets/good.png"
   },
-  "architecture": {
-    "image": "/assets/architecture.jpg"
+  "리액트 정령": {
+    "image": "/assets/react.png"
+  },
+  "타입스크립트 그리모어": {
+    "image": "/assets/developer.jpg"
+  },
+  "CSS 실타래": {
+    "image": "/assets/svelte.png"
+  },
+  "길드 지도": {
+    "image": "/assets/history.png"
+  },
+  "guild-hall": {
+    "image": "/assets/innovation-hub.svg"
+  },
+  "status-chamber": {
+    "image": "/assets/code-lab.svg"
+  },
+  "dungeon-map": {
+    "image": "/assets/history.png"
+  },
+  "history": {
+    "image": "/assets/history.png"
   },
   "good": {
     "image": "/assets/good.png"
@@ -32,6 +56,12 @@
   "react": {
     "image": "/assets/react.png"
   },
+  "typescript": {
+    "image": "/assets/developer.jpg"
+  },
+  "css": {
+    "image": "/assets/programmer.jpg"
+  },
   "next": {
     "image": "/assets/next.png"
   },
@@ -40,9 +70,6 @@
   },
   "svelte": {
     "image": "/assets/svelte.png"
-  },
-  "history": {
-    "image": "/assets/history.png"
   },
   "street": {
     "image": "/assets/street.jpg"
@@ -53,17 +80,8 @@
   "momentum": {
     "image": "/assets/momentum.svg"
   },
-  "sora": {
-    "image": "/assets/sora.svg"
-  },
   "conversation": {
     "image": "/assets/conversation.png"
-  },
-  "noah": {
-    "image": "/assets/noah.svg"
-  },
-  "strategy-room": {
-    "image": "/assets/strategy-room.svg"
   },
   "innovation-hub": {
     "image": "/assets/innovation-hub.svg"
