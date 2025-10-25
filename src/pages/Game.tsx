@@ -32,6 +32,10 @@ const Game = () => {
   );
   const scene = useMemo(() => (chapter.length ? chapter[step[0]] : null), [chapter, step]);
   const character = useMemo(() => scene?.character, [scene]);
+  const characterName = useMemo(
+    () => (character ? character.replace(/\s*\n\s*/g, ' ') : ''),
+    [character],
+  );
   const changePosition = useMemo(() => scene?.changePosition, [scene]);
   const place = useMemo(() => scene?.place, [scene]);
   const sentence = useMemo(() => scene?.sentences?.[step[1]], [scene, step]);
@@ -129,7 +133,7 @@ const Game = () => {
             className="absolute bottom-0 z-10 w-1/2"
             style={characterPosition}
             src={characterImage}
-            alt={displayCharacter}
+            alt={characterName || displayCharacter}
           />
         )}
         {place && assets[place]?.image && (
@@ -140,7 +144,7 @@ const Game = () => {
             className="absolute inset-0 top-auto z-20 flex gap-2 border-t bg-white bg-opacity-75 p-2 text-black"
             style={sentencePosition}
           >
-            <span>{character}</span>
+            <span>{characterName}</span>
             <Sentence assets={assets} data={sentence} isComplete={complete} onComplete={handleComplete} />
           </div>
         )}
