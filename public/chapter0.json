@@ -1,73 +1,77 @@
 [
   {
-    "character": "매튜",
-    "place": "황혼 격납고",
     "sentences": [
       [
-        { "message": "엘리, 네가 불러낸 새 임무가 바로 이 격납고인가?" }
+        { "message": "CHAPTER 1 — 잊혀진 코드의 나라 (아메바 시절)" }
       ],
       [
-        { "message": "도시 전체를 덮은 오래된 빌드 냄새가 다시 피어오르는군." }
-      ]
-    ]
-  },
-  {
-    "character": "엘리",
-    "place": "황혼 격납고",
-    "sentences": [
-      [
-        { "message": "그래, 매튜. 이곳에서 모든 노선이 꼬여 버렸어." }
+        { "message": "배경: UI 마법의 근원지, ‘아메바 왕국’." }
       ],
       [
-        { "message": "한 번 더 처음부터 짜야 해. 이번엔 완전히." }
+        { "message": "상징: 첫 시작, 순수한 코드의 탐구." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "황혼 격납고",
+    "place": "아메바 왕국",
     "sentences": [
       [
-        { "message": "좋아. 초점은 명확해. 팀 전원의 동선을 재부팅하지." }
-      ],
+        { "message": "여긴… 나의 첫 전장인가." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "아메바 왕국",
+    "sentences": [
       [
-        { "message": "모든 감각을 하나로 묶는다.", "asset": "emotion-determination" }
+        { "message": "처음엔 다 그렇죠. HTML과 SCSS, 자바스크립트가 얽혀 있는 곳이에요." }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "아메바 왕국",
+    "sentences": [
+      [
+        { "message": "엘지 프로젝트의 UI를 맡았다고? 그건 보통이 아니지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "아메바 왕국",
+    "sentences": [
+      [
+        { "message": "UI라… 보이는 걸 만드는 건 단순해 보이지만, 사실은 ‘보이지 않는 것’을 다루는 일이지." }
       ]
     ]
   },
   {
     "character": "그리드",
-    "place": "황혼 격납고",
+    "place": "아메바 왕국",
     "sentences": [
       [
-        { "message": "재부팅이라… 네가 태웠던 불씨를 다시 부르겠다는 뜻이지?" }
-      ],
-      [
-        { "message": "이번엔 완전히 태우고 사라지지 않게 해 봐." }
-      ]
-    ]
-  },
-  {
-    "character": "엘리",
-    "place": "나선 도서관",
-    "sentences": [
-      [
-        { "message": "자료실을 새로 정리해 뒀어." }
-      ],
-      [
-        { "message": "각 배경과 장비는 여섯 개뿐. 우린 그 안에서 다시 세계를 만들어야 해." }
+        { "message": "완벽을 추구하겠지. 또 한 번 스스로를 태울 거야." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "나선 도서관",
+    "place": "아메바 왕국",
     "sentences": [
       [
-        { "message": "제약이 곧 설계의 라인이지." }
-      ],
+        { "message": "완벽이라기보다, ‘정확함’을 배운 거야." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "아메바 왕국",
+    "sentences": [
       [
-        { "message": "여섯 개의 공간으로 여섯 장의 궤도를 그려 보자.", "asset": "emotion-hope" }
+        { "message": "그래요. 첫걸음치고는 너무 뜨거워서 불탔지만, 당신의 Grit은 이미 피어났죠." }
       ]
     ]
   }

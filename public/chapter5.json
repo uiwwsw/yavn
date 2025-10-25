@@ -1,0 +1,114 @@
+[
+  {
+    "sentences": [
+      [
+        { "message": "CHAPTER 6 — 그리드의 각성 (자기 성찰과 완성)" }
+      ],
+      [
+        { "message": "배경: 현실과 내면이 교차하는 디지털 심연." }
+      ],
+      [
+        { "message": "상징: 완성, 균형, 그리고 새로운 시작." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "이제 마지막이군, 매튜." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "넌 내 안의 불이자 그림자였지." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "이젠 날 없애려는 건가?" }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "아니, 통합하려는 거야." }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "지식과 균형이 합쳐질 때, 진짜 엔지니어가 탄생하지." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "이제야 당신의 ‘UI’가 완성됐네요. 겉뿐 아니라 ‘내면의 인터페이스’까지요." }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "(고개를 끄덕이며) 듬직하군, 리더." }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "이제 너는 코드로 세상을 설계할 수 있어." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "(미소) 이제야 알겠어. 나의 모험은 ‘완성’이 아니라 ‘지속’이야." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "…그렇군. 그릿이란, 끝까지 불타오르는 의지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        { "message": "그래, 난 매튜. 그리고 나는… Grit이다." }
+      ]
+    ]
+  }
+]
