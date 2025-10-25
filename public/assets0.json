@@ -1,36 +1,42 @@
 {
-  "의문의 남자": {
+  "별빛 기록관 엘리시아": {
     "image": "/assets/programmer.jpg"
   },
-  "매튜": {
+  "항로 설계사 매튜": {
     "image": "/assets/matthew.png"
   },
-  "상태창 수정구": {
+  "시간 연금술사 이온": {
     "image": "/assets/good.png"
   },
-  "리액트 정령": {
+  "리액트 정령 노바": {
     "image": "/assets/react.png"
   },
-  "타입스크립트 그리모어": {
+  "타입스크립트 비서관 루멘": {
     "image": "/assets/developer.jpg"
   },
-  "CSS 실타래": {
+  "스타일 베틀 실피": {
     "image": "/assets/svelte.png"
   },
-  "길드 지도": {
+  "길드 항해 지도": {
     "image": "/assets/history.png"
   },
   "guild-hall": {
     "image": "/assets/innovation-hub.svg"
   },
-  "status-chamber": {
+  "starlit-archive": {
+    "image": "/assets/matthew-house.png"
+  },
+  "status-observatory": {
     "image": "/assets/code-lab.svg"
   },
-  "dungeon-map": {
+  "chronicle-deck": {
     "image": "/assets/history.png"
   },
   "history": {
     "image": "/assets/history.png"
+  },
+  "architecture": {
+    "image": "/assets/architecture.jpg"
   },
   "good": {
     "image": "/assets/good.png"
@@ -62,9 +68,6 @@
   "css": {
     "image": "/assets/programmer.jpg"
   },
-  "next": {
-    "image": "/assets/next.png"
-  },
   "nuxt": {
     "image": "/assets/nuxt.png"
   },
@@ -88,5 +91,8 @@
   },
   "code-lab": {
     "image": "/assets/code-lab.svg"
+  },
+  "next": {
+    "image": "/assets/next.png"
   }
 }
