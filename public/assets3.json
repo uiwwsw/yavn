@@ -1,0 +1,38 @@
+{
+  "매튜": {
+    "image": "/assets/matthew.png"
+  },
+  "세라": {
+    "image": "/assets/sora.svg"
+  },
+  "루크": {
+    "image": "/assets/aria.svg"
+  },
+  "엘리": {
+    "image": "/assets/noah.svg"
+  },
+  "해리": {
+    "image": "/assets/programmer.jpg"
+  },
+  "그리드": {
+    "image": "/assets/grit-signal.svg"
+  },
+  "아메바 폐허": {
+    "image": "/assets/amoeba.jpg"
+  },
+  "세미티에스 공업도시": {
+    "image": "/assets/code-lab.svg"
+  },
+  "업라이즈 시타델": {
+    "image": "/assets/uprise.jpg"
+  },
+  "한국일보 요새": {
+    "image": "/assets/history.png"
+  },
+  "낭비 없는 왕국": {
+    "image": "/assets/strategy-room.svg"
+  },
+  "내면의 제단": {
+    "image": "/assets/matthew-home-garden.svg"
+  }
+}
