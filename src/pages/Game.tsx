@@ -140,7 +140,7 @@ const Game = () => {
             className="absolute inset-0 top-auto z-20 flex gap-2 border-t bg-white bg-opacity-75 p-2 text-black"
             style={sentencePosition}
           >
-            <span>{character}</span>
+            <span className="whitespace-nowrap">{character}</span>
             <Sentence assets={assets} data={sentence} isComplete={complete} onComplete={handleComplete} />
           </div>
         )}
