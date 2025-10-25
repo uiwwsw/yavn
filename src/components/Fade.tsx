@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Children, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface FadeProps {
@@ -11,14 +11,6 @@ type Phase = 'enter' | 'stay' | 'exit' | 'change';
 
 const phases: Phase[] = ['enter', 'stay', 'exit', 'change'];
 
-const variants = {
-  initial: { opacity: 0 },
-  enter: { opacity: 1, transition: { duration: 1 } },
-  stay: { opacity: 1, transition: { duration: 1 } },
-  exit: { opacity: 0, transition: { duration: 1 } },
-  change: { opacity: 0, transition: { duration: 0.01 } },
-};
-
 const Fade = ({ children, onComplete, className }: FadeProps) => {
   const childArray = useMemo(() => Children.toArray(children), [children]);
   const length = childArray.length;
@@ -27,6 +19,41 @@ const Fade = ({ children, onComplete, className }: FadeProps) => {
   const phase = phases[phaseIndex];
   const current = childArray[step] ?? null;
   const isLast = step >= length - 1;
+  const prefersReducedMotion = useReducedMotion();
+
+  const variants = useMemo(() => {
+    if (prefersReducedMotion) {
+      return {
+        initial: { opacity: 0 },
+        enter: { opacity: 1, transition: { duration: 0.5, ease: 'easeInOut' } },
+        stay: { opacity: 1 },
+        exit: { opacity: 0, transition: { duration: 0.4, ease: 'easeInOut' } },
+        change: { opacity: 0, transition: { duration: 0.1 } },
+      } satisfies Record<Phase | 'initial', object>;
+    }
+
+    const shared = { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
+
+    return {
+      initial: { opacity: 0, scale: 0.98 },
+      enter: {
+        opacity: 1,
+        scale: 1,
+        transition: shared,
+      },
+      stay: { opacity: 1, scale: 1 },
+      exit: {
+        opacity: 0,
+        scale: 1.01,
+        transition: shared,
+      },
+      change: {
+        opacity: 0,
+        scale: 0.98,
+        transition: { duration: 0.18, ease: [0.4, 0, 0.2, 1] },
+      },
+    } satisfies Record<Phase | 'initial', object>;
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     setStep(0);
