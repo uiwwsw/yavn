@@ -2,233 +2,155 @@
   {
     "sentences": [
       {
-        "message": "화면 클릭 시 건너뛰기가 가능합니다.",
+        "message": "화면을 살짝 건드리면 다음 장면이 펼쳐집니다.",
         "duration": 200
       }
     ]
   },
   {
     "character": "matthew",
-    "place": "matthew-house",
+    "place": "history",
     "sentences": [
-      "안녕하세요.",
       [
         {
-          "message": "저는 "
+          "message": "옛날 옛적, 건축가의 꿈을 꾸던 소년이 있었답니다.\n"
         },
         {
-          "message": "건축학 ",
+          "message": "그 소년은 지금의 저, 매튜이며",
           "duration": 250
         },
         {
-          "message": "전공의 ",
+          "message": "콘크리트 대신 코드로 성을 짓기로 결심했지요.",
           "asset": "architecture"
+        }
+      ],
+      "대학 스튜디오에서 배운 도면 정리는 지금도 제 노트를 채우는 규칙으로 남아 있습니다.",
+      [
+        {
+          "message": "도면을 펼치듯 업무를 나누고,",
+          "duration": 250
         },
         {
-          "message": "개발자 "
+          "message": "완성된 결과를 보면 마음속에서 작은 종이 울립니다.",
+          "asset": "good"
+        }
+      ]
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "street",
+    "sentences": [
+      "그래서 저는 새벽마다 도시를 가로질러 달리며 다음 모험을 준비하곤 했어요.",
+      [
+        {
+          "message": "해 뜨기 전의 고요는 저에게",
+          "duration": 250
         },
         {
-          "message": "윤창원입니다."
+          "message": "집념의 신호",
+          "asset": "grit-signal"
+        },
+        {
+          "message": "를 보내주곤 했습니다."
         }
       ],
       [
         {
-          "message": "건축에 대해서는 \n"
+          "message": "저는 스스로를",
+          "duration": 250
         },
         {
-          "message": "사실 하나도 생각나지 않습니다.",
-          "asset": "bad"
+          "message": "꾸준한 모험가",
+          "asset": "momentum"
+        },
+        {
+          "message": "라고 소개합니다."
         }
-      ],
+      ]
+    ]
+  },
+  {
+    "character": "sora",
+    "place": "conversation",
+    "sentences": [
+      "안녕하세요, 저는 매튜와 동행하는 전략가 소라예요.",
       [
         {
-          "message": "하지만,\n",
-          "asset": "exclamation",
+          "message": "매튜는 지도를 펼치듯 일정을 세밀하게 나누고",
           "duration": 250
         },
         {
-          "message": "규모가 "
-        },
+          "message": "모든 팀원의 속도를 맞춰줍니다.",
+          "asset": "conversation"
+        }
+      ],
+      "새벽 회의에도 웃음을 잃지 않는 그의 성실함은 모두에게 영감을 줍니다."
+    ]
+  },
+  {
+    "character": "noah",
+    "place": "strategy-room",
+    "sentences": [
+      "저는 이야기를 기록하는 면접관 노아입니다.",
+      "매튜에게 어떻게 이런 삶을 살아왔냐고 묻자 그는 이렇게 말했죠.",
+      [
         {
-          "message": "큰~ ",
+          "message": "\"제 삶은",
           "duration": 250
         },
         {
-          "message": "프로젝트를 ",
+          "message": "협력",
+          "asset": "conversation"
+        },
+        {
+          "message": "과",
           "duration": 250
         },
         {
-          "message": "정해진 시간 내 완성하는 "
+          "message": "성장",
+          "asset": "innovation-hub"
         },
         {
-          "message": "일련의 과정은 확실하게 터득했습니다.",
+          "message": "을 향한 여정이었어요.\""
+        }
+      ]
+    ]
+  },
+  {
+    "character": "matthew",
+    "place": "innovation-hub",
+    "sentences": [
+      "저는 동료와 인터뷰어가 함께 펼쳐주는 질문을 지도 삼아 다음 길을 설계합니다.",
+      [
+        {
+          "message": "코드 한 줄마다",
+          "duration": 250
+        },
+        {
+          "message": "새로운 발견",
+          "asset": "code-lab"
+        },
+        {
+          "message": "을 기록하고",
+          "duration": 250
+        },
+        {
+          "message": "팀과 나누는 이야기를 소중히 간직합니다.",
           "asset": "good"
         }
       ],
       [
         {
-          "message": "그래서 저는 여전히 건축을 하고 있다고 생각합니다.\n"
-        },
-        {
-          "message": "...",
-          "duration": 550
-        },
-        {
-          "message": "건축 재료만 "
-        },
-        {
-          "message": "콘크리트에서 코드로 ",
+          "message": "다음 모험을 위해",
           "duration": 250
         },
         {
-          "message": "바뀌었다고 말이죠.",
-          "asset": "exclamation"
-        }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "amoeba",
-    "sentences": [
-      [
-        {
-          "message": "아메바 라는 웹에이전시에서 개발자로 첫 업무를 시작했습니다.\n"
+          "message": "새로운 아틀리에",
+          "asset": "history"
         },
         {
-          "message": "디멘딩한 업무가 빠른 성장을 가능하게 했지만\n"
-        },
-        {
-          "message": "업무 시간이 늘어나는 부작용은 피할 수 없었습니다."
-        }
-      ],
-      [
-        {
-          "message": "저는 야근을 안하는 직원이었는데\n"
-        },
-        {
-          "message": "대신, 새벽일찍, 문 열기도 전에 출근해본 직원으로 유명했습니다."
-        }
-      ],
-      {
-        "message": "사회생활에 있어서 일정은 절대적이라 생각합니다."
-      },
-      {
-        "message": "일정을 완벽히 할 수 있는건 계획과 데일리 체크에 있다고 생각합니다."
-      },
-      [
-        {
-          "message": "야근은 직원의 진심은 보여줄 수 있지만,\n"
-        },
-        {
-          "message": "조기 출근은 물리적인 시간을 더 확보할 수 있습니다.\n"
-        },
-        {
-          "message": "(개인적으로는 뇌도 빨리 연산할 수 있다고 생각합니다.)"
-        }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "interpark",
-    "sentences": [
-      [
-        {
-          "message": "인터파크에서 UI개발자로 일했습니다.\n"
-        },
-        {
-          "message": "티켓과 투어 부문의 UI를 맡았는데\n"
-        },
-        {
-          "message": "팀원들과 동반 성장을 좋아하는 성향 덕분에 리서치를 제일 많이 한 직원으로 뽑혔습니다."
-        }
-      ],
-      [
-        {
-          "message": "특히,\n"
-        },
-        {
-          "message": "제이쿼리 대신 자바스크립트를 써도 되는 이유,\n"
-        },
-        {
-          "message": "돔 갯수와 퍼포먼스의 상관관계 같은 리서치가 기억에 남습니다."
-        }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "wisebirds",
-    "sentences": [
-      [
-        {
-          "message": "와이즈버즈라는 온라인 광고회사에서 프론트엔드 개발자로 일했습니다.\n"
-        },
-        {
-          "message": "자체 서비스의 프론트엔드 유지보수 및\n"
-        },
-        {
-          "message": "사내결제시스템, 디자인 클라우드 서비스라는 사내 서비스를 런칭했습니다."
-        }
-      ],
-      [
-        {
-          "message": "무난한 업무량일때는 업무를 만들어서 하는 타입이란걸 알게 됐습니다.\n"
-        },
-        {
-          "message": "크롬 확장 프로그램과 팀내 타입스크립트 도입등\n"
-        },
-        {
-          "message": "실제 회사 대부분의 직원이 사용하는 크롬확장프로그램을 개발했고\n"
-        },
-        {
-          "message": "프론트엔드개발자가 부족한 문제를 해결하기 위해 타입스크립트 도입 및 백엔드 개발자에게 교육 및 팔로업하여 신규 프로젝트를 진행한 경험이 있습니다."
-        }
-      ]
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "uprise",
-    "sentences": [
-      [
-        {
-          "message": "업라이즈라는 회사에서는 밀도 높은 경험을 했습니다.\n"
-        },
-        {
-          "message": "혼자 일한 기간동안에는 책임감 덕분에 낮밤새벽 할것 없이 일을 했고\n"
-        },
-        {
-          "message": "덕분에 가장 일 많이 한 팀원으로 뽑히기도 했습니다."
-        }
-      ],
-      [
-        {
-          "message": "리더가 부재인 동안은 임시리더 역할을 담당했고\n"
-        },
-        {
-          "message": "Nuxt에서 ",
-          "asset": "nuxt"
-        },
-        {
-          "message": "SvelteKit로 ",
-          "asset": "svelte"
-        },
-        {
-          "message": "포팅하는 작업을 하며 아키텍쳐에 대해 배울 수 있었습니다."
-        }
-      ],
-      [
-        {
-          "message": "현재도 이때 배운 클린아키텍쳐에 영향을 받은 아키텍쳐를 "
-        },
-        {
-          "message": "React ",
-          "asset": "react"
-        },
-        {
-          "message": " 버전으로 개발하여 사용하고 있습니다."
+          "message": "를 열 준비가 되었답니다."
         }
       ]
     ]
@@ -237,10 +159,10 @@
     "sentences": [
       [
         {
-          "message": "매튜의 모험은 아직 시작에 불과합니다.\\n"
+          "message": "매튜의 모험은 이제 막 첫 장을 넘겼습니다.\\n"
         },
         {
-          "message": "다음 챕터에서는 제가 쌓아 온 협업 이야기를 들려드릴게요.",
+          "message": "다음 챕터에서는 우리가 쌓아 온 협업의 마법을 들려드릴게요.",
           "asset": "next"
         }
       ]
