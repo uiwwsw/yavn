@@ -1,4 +1,7 @@
 .fade {
-  @apply opacity-0 transition-opacity;
+  @apply opacity-0;
   @apply empty:hidden;
+  will-change: opacity, transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
