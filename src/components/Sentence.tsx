@@ -9,6 +9,11 @@ interface Sentence {
   message: string;
   asset?: string;
 }
+interface AssetEntry {
+  name: string;
+  index: number;
+  key: string;
+}
 export interface SentenceProps {
   assets?: Assets;
   data?: string | Sentence | Sentence[];
@@ -46,22 +51,26 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
   }, [_sentences, cursor, step, isCompleteProp]);
   const duration = useMemo(() => sentence.duration ?? defaultDuration, [_sentences, step]);
   // const asset = useMemo(() => sentence.asset, [_sentences, step]);
-  const assetArray = useMemo(() => {
-    if (isCompleteProp) return _sentences.map((x) => x.asset).filter((x) => x) as string[];
-    let array = [];
-    for (const index in _sentences) {
-      if (!isCompleteProp && step < +index) break;
-      if (step >= +index) array.push(_sentences[index].asset);
-    }
+  const assetArray = useMemo<AssetEntry[]>(() => {
+    const entries = _sentences
+      .map((sentence, index) =>
+        sentence.asset ? { name: sentence.asset, index, key: `${index}-${sentence.asset}` } : null,
+      )
+      .filter((entry): entry is AssetEntry => Boolean(entry));
 
-    return array.filter((x) => x) as string[];
+    if (isCompleteProp) return entries;
+
+    const currentIndex = Math.min(Math.max(step, 0), _sentences.length - 1);
+    const current = entries.find((entry) => entry.index === currentIndex);
+
+    return current ? [current] : [];
   }, [_sentences, step, isCompleteProp]);
   const isEndCursor = useMemo(() => sentence.message.length <= cursor, [_sentences, step, cursor]);
   const marginLeft = useCallback(
-    (index: number, arr: string[]) => {
+    (index: number, arr: AssetEntry[]) => {
       if (!assets) return 0;
-      const audioLength = arr.slice(index, step).filter((x) => assets[x].audio).length;
-      return (index - arr.length + 1 + audioLength) * -100;
+      const audioLength = arr.slice(index).filter((entry) => assets[entry.name]?.audio).length;
+      return (index - (arr.length - 1) + audioLength) * -100;
     },
     [assets],
   );
@@ -89,19 +98,19 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
     <>
       {assets && assetArray && (
         <>
-          {assetArray.map((x, i) => {
-            const asset = assets[x];
+          {assetArray.map(({ name, key }) => {
+            const asset = assets[name];
             if (!asset?.audio) return null;
-            return <audio key={`audio-${x}-${i}`} src={asset.audio} autoPlay />;
+            return <audio key={`audio-${key}`} src={asset.audio} autoPlay />;
           })}
           <AnimatePresence initial={false}>
-            {assetArray.map((x, i, arr) => {
-              const asset = assets[x];
+            {assetArray.map(({ name, key }, i, arr) => {
+              const asset = assets[name];
               if (!asset?.image) return null;
               const offset = marginLeft(i, arr);
               return (
                 <motion.img
-                  key={`image-${x}-${i}`}
+                  key={`image-${key}`}
                   className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 object-contain"
                   src={asset.image}
                   alt=""

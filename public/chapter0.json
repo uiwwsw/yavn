@@ -1,117 +1,175 @@
 [
   {
     "sentences": [
-      {
-        "message": "화면을 터치하면 매튜의 모험이 전진합니다.",
-        "duration": 200
-      }
-    ]
-  },
-  {
-    "character": "의문의 남자",
-    "place": "guild-hall",
-    "sentences": [
       [
         {
-          "message": "빛바랜 길드홀에 낮고 침착한 목소리가 울립니다.",
-          "duration": 240
+          "message": "화면을 터치하면 연대기가 흘러갑니다.",
+          "duration": 200
         }
       ],
       [
         {
-          "message": "\"87년생 용사, 매튜를 찾는가?\"",
-          "duration": 240
-        }
-      ],
-      [
-        {
-          "message": "그는 낡은 기록지도를 펼쳐 당신에게 건넵니다.",
-          "asset": "history"
+          "message": "별빛 기록관이 서사를 펼칠 준비를 마쳤습니다.",
+          "duration": 220
         }
       ]
     ]
   },
   {
-    "character": "매튜",
-    "place": "guild-hall",
+    "character": "별빛 기록관 엘리시아",
+    "place": "starlit-archive",
     "sentences": [
-      "나는 개인서비스성공이라는 목표를 품은 1987년생 용사, 매튜.",
       [
         {
-          "message": "길드는 나에게",
-          "duration": 220
-        },
-        {
-          "message": "새로운 도전을",
-          "asset": "good"
-        },
-        {
-          "message": "약속했습니다.",
+          "message": "은하수처럼 빛나는 서고에 잔잔한 목소리가 울립니다.",
           "duration": 220
         }
       ],
-      "이제 나의 스탯을 점검하고 다음 원정을 준비해야겠군."
+      [
+        {
+          "message": "\"환영합니다, 새벽 길드의 신화 기록을 열람하러 오셨군요.\"",
+          "duration": 220,
+          "asset": "exclamation"
+        }
+      ],
+      [
+        {
+          "message": "오늘은 항로 설계사 매튜의 연대기를 펼쳐 보려 합니다.",
+          "duration": 220
+        }
+      ]
     ]
   },
   {
-    "character": "상태창 수정구",
-    "place": "status-chamber",
+    "character": "항로 설계사 매튜",
+    "place": "starlit-archive",
     "sentences": [
       [
         {
-          "message": "팅! 매튜의 현재 레벨은",
+          "message": "안녕하세요.",
+          "duration": 200
+        }
+      ],
+      [
+        {
+          "message": "저는",
           "duration": 200
         },
         {
-          "message": "47",
-          "asset": "momentum"
+          "message": " 건축학",
+          "asset": "architecture"
         },
         {
-          "message": ". 집중과 실행력은 최대치에 가깝습니다.",
+          "message": "을 탐험하던 시절을 지나",
+          "duration": 220
+        },
+        {
+          "message": " 코드로 항로를 짜는 설계사 매튜입니다.",
           "duration": 220
         }
       ],
       [
         {
-          "message": "그의 체력은 새벽 러닝으로 다져진",
+          "message": "도면의 기억은 흐릿하지만",
           "duration": 220
         },
         {
-          "message": "강인함",
+          "message": " 일정과 협업의 맥박만큼은",
+          "asset": "momentum"
+        },
+        {
+          "message": " 지금도 선명합니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "콘크리트 대신 코드로 구조를 지으며",
+          "duration": 220
+        },
+        {
+          "message": " 팀이 시간 안에 도착하도록 길을 냅니다.",
+          "duration": 220,
+          "asset": "good"
+        }
+      ]
+    ]
+  },
+  {
+    "character": "시간 연금술사 이온",
+    "place": "status-observatory",
+    "sentences": [
+      [
+        {
+          "message": "팅! 매튜의 현 레벨은",
+          "duration": 200
+        },
+        {
+          "message": " 47",
+          "asset": "momentum"
+        },
+        {
+          "message": ". 집중력과 실행력의 궤도가 맞물려 있습니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "새벽 러닝으로 다져진 체력은",
+          "duration": 220
+        },
+        {
+          "message": " 강인한 근성",
           "asset": "grit-signal"
         },
         {
-          "message": "으로 표현되는군요.",
+          "message": "으로 안정적으로 빛나고 있군요.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "시간표를 조율하는 능력은 길드에서도 손꼽힙니다.",
           "duration": 220
         }
       ]
     ]
   },
   {
-    "character": "리액트 정령",
-    "place": "status-chamber",
+    "character": "리액트 정령 노바",
+    "place": "status-observatory",
     "sentences": [
       [
         {
-          "message": "나는 매튜의 주 기술,",
+          "message": "나는 매튜의 주력 기술,",
           "duration": 220
         },
         {
-          "message": "리액트",
+          "message": " 리액트",
           "asset": "react"
         },
         {
-          "message": "를 형상화한 정령.",
+          "message": "를 형상화한 정령 노바.",
           "duration": 220
         }
       ],
-      "컴포넌트 조합과 상태 전투는 이미 S랭크에 도달했지.",
-      "새로운 UI 던전이 나타나면 내가 가장 먼저 앞장설 거야."
+      [
+        {
+          "message": "컴포넌트를 조합하고 상태를 전투처럼 다루는 솜씨는 이미 S랭크.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "새로운 UI 던전이 열리면 내가 먼저 발광할 거야.",
+          "duration": 220
+        }
+      ]
     ]
   },
   {
-    "character": "타입스크립트 그리모어",
-    "place": "status-chamber",
+    "character": "타입스크립트 비서관 루멘",
+    "place": "status-observatory",
     "sentences": [
       [
         {
@@ -119,21 +177,31 @@
           "duration": 220
         },
         {
-          "message": "타입스크립트",
+          "message": " 타입스크립트",
           "asset": "typescript"
         },
         {
-          "message": "가 빛을 냅니다.",
+          "message": " 비서관 루멘이 보증합니다.",
           "duration": 220
         }
       ],
-      "정확한 타입 주술로 팀원들의 혼란을 지워내는 것이 내 역할이죠.",
-      "최근엔 제네릭의 미궁도 단숨에 정복했습니다."
+      [
+        {
+          "message": "강력한 타입은 협업자들에게도 안심할 수 있는 방패가 되죠.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "루틴한 업무도 제너릭과 유틸 함수로 경량화했습니다.",
+          "duration": 220
+        }
+      ]
     ]
   },
   {
-    "character": "CSS 실타래",
-    "place": "status-chamber",
+    "character": "스타일 베틀 실피",
+    "place": "status-observatory",
     "sentences": [
       [
         {
@@ -141,81 +209,139 @@
           "duration": 220
         },
         {
-          "message": "CSS",
+          "message": " CSS",
           "asset": "css"
         },
         {
-          "message": "실타래가 엮어낸 예술.",
+          "message": " 베틀 실피가 직조한 예술.",
           "duration": 220
         }
       ],
-      "Tailwind, Sass, 순정 CSS까지 다양한 무늬를 즉시 꺼내 보여줄 수 있어요.",
-      "매튜가 상상하는 UI는 이 실타래를 통해 현실이 됩니다."
+      [
+        {
+          "message": "Tailwind, Sass, 순정 CSS까지 다양한 무늬를 즉시 꺼내 보입니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "매튜가 상상한 인터페이스는 내 실타래를 통해 현실이 됩니다.",
+          "duration": 220
+        }
+      ]
     ]
   },
   {
-    "character": "길드 지도",
-    "place": "dungeon-map",
+    "character": "길드 항해 지도",
+    "place": "chronicle-deck",
     "sentences": [
       [
         {
-          "message": "과거의 전장은",
+          "message": "첫 항해지는",
           "duration": 220
         },
         {
-          "message": "아메바 던전",
+          "message": " 아메바 웹에이전시",
           "asset": "amoeba"
         },
         {
-          "message": "과",
+          "message": "였습니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "디멘딩한 파도 속에서도 새벽 출항을 습관으로 만들어 시간을 확보했죠.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "다음은",
           "duration": 220
         },
         {
-          "message": "인터파크 요새",
+          "message": " 인터파크 요새",
           "asset": "interpark"
         },
         {
-          "message": "였지요.",
+          "message": "에서 UI를 새로 배치했습니다.",
           "duration": 220
         }
       ],
       [
         {
-          "message": "그 뒤로는",
-          "duration": 220
-        },
-        {
-          "message": "와이즈버즈 항구",
-          "asset": "wisebirds"
-        },
-        {
-          "message": "와",
-          "duration": 220
-        },
-        {
-          "message": "업라이즈 공중성채",
-          "asset": "uprise"
-        },
-        {
-          "message": "를 연달아 공략했습니다.",
+          "message": "돔의 수와 퍼포먼스 사이 관계를 끝없이 탐색한 연구 기록이 남아 있습니다.",
           "duration": 220
         }
       ],
-      "모든 던전에서 매튜는 팀을 이끌며 제품을 완성시키고 경험치를 쌓았답니다."
+      [
+        {
+          "message": "와이즈버즈 항구에서는",
+          "duration": 220
+        },
+        {
+          "message": " 팀 전체가 사용하는",
+          "duration": 220
+        },
+        {
+          "message": " 크롬 확장 도구",
+          "asset": "conversation"
+        },
+        {
+          "message": "를 개항하고",
+          "duration": 220
+        },
+        {
+          "message": " 타입스크립트",
+          "asset": "typescript"
+        },
+        {
+          "message": " 도입을 주도했습니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "업라이즈 공중성채에서는",
+          "duration": 220
+        },
+        {
+          "message": " Nuxt",
+          "asset": "nuxt"
+        },
+        {
+          "message": "에서",
+          "duration": 220
+        },
+        {
+          "message": " SvelteKit",
+          "asset": "svelte"
+        },
+        {
+          "message": "으로 포팅하며 아키텍처 감각을 확장했지요.",
+          "duration": 220
+        }
+      ]
     ]
   },
   {
-    "character": "매튜",
+    "character": "항로 설계사 매튜",
     "place": "guild-hall",
     "sentences": [
-      "이제 남은 건 나만의 개인 서비스가 전설이 되는 순간뿐.",
       [
         {
-          "message": "동료가 필요한 곳에는",
+          "message": "지금 나는 길드의 새벽 창가에서 다음 항해 지도를 펼칩니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "동료가 필요한 현장에는",
           "duration": 220
         },
         {
-          "message": "협업",
+          "message": " 협업",
           "asset": "conversation"
         },
         {
@@ -223,26 +349,49 @@
           "duration": 220
         },
         {
-          "message": "새로운 시장에는",
+          "message": " 새로운 시장에는",
+          "duration": 220
+        },
+        {
+          "message": " 창의력",
           "asset": "innovation-hub"
         },
         {
-          "message": "창의력을",
-          "duration": 220
-        },
-        {
-          "message": "비출 거야.",
+          "message": "의 빛을 비출 겁니다.",
           "duration": 220
         }
       ],
-      "의문의 남자여, 다음 장에서도 나를 지켜봐줘."
+      [
+        {
+          "message": "길드는 아직 쓰이지 않은 항해지를 가득 품고 있으니까요.",
+          "duration": 220
+        }
+      ]
+    ]
+  },
+  {
+    "character": "별빛 기록관 엘리시아",
+    "place": "starlit-archive",
+    "sentences": [
+      [
+        {
+          "message": "연대기의 마지막 페이지를 덮으며 그녀가 속삭입니다.",
+          "duration": 220
+        }
+      ],
+      [
+        {
+          "message": "\"이 기록은 계속해서 쓰일 예정입니다. 다음 장에서 다시 만나요.\"",
+          "duration": 220
+        }
+      ]
     ]
   },
   {
     "sentences": [
       [
         {
-          "message": "매튜의 기록은 아직 쓰는 중입니다.\\n",
+          "message": "매튜의 기록은 아직 진행 중입니다.\\n",
           "duration": 220
         },
         {
