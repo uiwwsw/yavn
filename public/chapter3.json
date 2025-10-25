@@ -1,90 +1,77 @@
 [
   {
     "sentences": [
-      [ { "message": "CHAPTER 3 — 별빛 강당의 리부트 선언" } ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "별빛 강당",
-    "sentences": [
       [
-        { "message": "자, 무대가 준비됐어. 이제 진짜로 시작하자." }
+        { "message": "CHAPTER 4 — 세미티에스의 요새 (Semites 시절)" }
       ],
       [
-        { "message": "우리가 다시 쓴 서사는 오늘 여기서 공개된다." }
-      ]
-    ]
-  },
-  {
-    "character": "그리드",
-    "place": "별빛 강당",
-    "sentences": [
-      [
-        { "message": "예전의 너라면 혼자 모든 걸 끌어안았겠지." }
+        { "message": "배경: 반도체 제국의 거대한 공장." }
       ],
       [
-        { "message": "지금의 넌 여섯 장의 공간과 여섯 명의 목소리를 조합했군." }
-      ]
-    ]
-  },
-  {
-    "character": "엘리",
-    "place": "별빛 강당",
-    "sentences": [
-      [
-        { "message": "서버, 영상, 음향 모두 정상." }
-      ],
-      [
-        { "message": "이모지 감정 트랙도 잘 작동해. 준비 끝!", "asset": "emotion-surprise" }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "별빛 강당",
-    "sentences": [
-      [
-        { "message": "관객 채널과 채팅을 연결했어. 피드백 루프를 놓치지 말자." }
-      ],
-      [
-        { "message": "첫 대사는 누가 가져갈래?" }
+        { "message": "상징: 구조 설계, 리더십, 그리고 협업의 본질." }
       ]
     ]
   },
   {
     "character": "루크",
-    "place": "별빛 강당",
+    "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "이미 대본은 돌고 있지. 매튜, 네가 첫 줄을 던져." }
-      ],
+        { "message": "모노레포라… 이제 아키텍처 단위로 싸우는군." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "세미티에스 요새",
+    "sentences": [
       [
-        { "message": "우리가 지켜볼게.", "asset": "emotion-support" }
+        { "message": "클라이언트 웹서비스, Next, SWR, Tailwind… 기술의 불꽃이 예쁘네요." }
       ]
     ]
   },
   {
     "character": "해리",
-    "place": "별빛 강당",
+    "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "응답 속도 체크 완료. 관객의 심박도도 안정적이야." }
-      ],
-      [
-        { "message": "매튜, 마이크 켰다." }
+        { "message": "예쁘기만 하면 안 되지. 빨라야 해." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "별빛 강당",
+    "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "모두 고마워. 이제 우리의 목소리로 세상을 리팩토링하자." }
-      ],
+        { "message": "(웃으며) 그건 내 전문이지. 하지만 이번엔 혼자가 아니야." }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "세미티에스 요새",
+    "sentences": [
       [
-        { "message": "여섯 장의 무대는 다시 확장될 거야. 하지만 우리는 이 시작을 잊지 않겠지.", "asset": "emotion-hope" }
+        { "message": "프론트와 백을 모두 설계하다니, 그건 ‘리더의 일’이지." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "세미티에스 요새",
+    "sentences": [
+      [
+        { "message": "리더는 가장 외로운 법. 결국 또 네가 모든 걸 책임질 거야." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "세미티에스 요새",
+    "sentences": [
+      [
+        { "message": "그게 나야. 책임은 무겁지만, 그 무게가 나를 단련시킨다." }
       ]
     ]
   }

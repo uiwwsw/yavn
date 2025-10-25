@@ -1,0 +1,87 @@
+[
+  {
+    "sentences": [
+      [
+        { "message": "CHAPTER 5 — 한국일보의 빛 (Korea Times 프로젝트)" }
+      ],
+      [
+        { "message": "배경: 디지털 기사 관리 시스템 ‘햄스 요새’." }
+      ],
+      [
+        { "message": "상징: 집요함과 혁신의 융합." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "매튜, 기사가 폭주하고 있어요!" }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "로그 분석 완료! 서버가 매 3초마다 끊기고 있어!" }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "(눈을 감고) …패턴이 보여. async, await, 그리고 사람의 인내심." }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "코드뿐 아니라 사람도 동기화해야 하지 않겠어?" }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "네 불이 다시 타오르고 있군. 이번엔 제어할 수 있겠어?" }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "아니, 이번엔 불을 ‘길들이는 법’을 배웠어." }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "스타트업의 속도, 언론의 정밀함, 두 세계를 아우르는 코드라… 흥미롭군." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "드디어 진짜 ‘리더’의 모습이에요." }
+      ]
+    ]
+  }
+]

@@ -1,78 +1,95 @@
 [
   {
     "sentences": [
-      [ { "message": "CHAPTER 2 — 공중 정원의 결계" } ]
-    ]
-  },
-  {
-    "character": "해리",
-    "place": "공중 정원",
-    "sentences": [
       [
-        { "message": "여긴 바람이 거꾸로 불어. 대사마다 이전 버전이 새어 나와." }
+        { "message": "CHAPTER 3 — 업라이즈의 그림자 (Uprise & Heybit 시절)" }
       ],
       [
-        { "message": "코드 가지치기를 어디서부터 해야 할까?" }
+        { "message": "배경: 암호화된 데이터 왕국 ‘업라이즈 시타델’." }
+      ],
+      [
+        { "message": "상징: 집중력, 몰입, 그리고 건강의 경계." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "공중 정원",
+    "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "해리, 우리에겐 여섯 장의 배경만 있다." }
-      ],
-      [
-        { "message": "그래도 이야기를 다시 엮을 수 있다는 걸 보여 주자." }
+        { "message": "이곳이… 암호의 탑인가?" }
       ]
     ]
   },
   {
     "character": "엘리",
-    "place": "공중 정원",
+    "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "스크립트 역사 전체를 압축했어. 필요 없는 호출은 전부 삭제." }
-      ],
-      [
-        { "message": "남은 건 우리 감정뿐. 이모지 캔버스로 리듬을 그려 보자.", "asset": "emotion-relief" }
+        { "message": "맞아. 너의 코드가 금융을 움직이는 세계야." }
       ]
     ]
   },
   {
     "character": "세라",
-    "place": "공중 정원",
+    "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "그림자 캐릭터들도 다 정리했어. 이제 진짜 여섯 명만 무대에 설 거야." }
-      ],
-      [
-        { "message": "루크, 네 배포 순서 체크 끝났어?" }
-      ]
-    ]
-  },
-  {
-    "character": "루크",
-    "place": "공중 정원",
-    "sentences": [
-      [
-        { "message": "모든 경로 확인 완료. 매튜, 이제 결정을 내려." }
-      ],
-      [
-        { "message": "우리가 다시 쓰는 첫 장면은 어디로 향하지?", "asset": "emotion-determination" }
+        { "message": "Shadow DOM 컴포넌트를 만든다고요? 대체 무슨 마법이에요?" }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "공중 정원",
+    "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "마지막 무대는 별빛 강당이야. 그곳에서 우리의 리부트를 선언하자." }
-      ],
+        { "message": "재사용성과 디자인 싱크를 모두 만족시키는… 코드의 마법이지." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "업라이즈 시타델",
+    "sentences": [
       [
-        { "message": "모두, 준비 완료 상태를 유지해." }
+        { "message": "그 대가로 네 건강이 타들어가고 있군." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "괜찮아. 집중이 깨지면 세상도 깨지는 법이야." }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "하지만 스타트업은 ‘속도’만으론 오래 못 가." }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "맞아. 네가 만드는 건 기술이 아니라 ‘지속가능한 시스템’이야." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "그럼 이번엔 ‘균형’을 배우지. 집중과 분산, 그것이 진짜 코드다." }
       ]
     ]
   }

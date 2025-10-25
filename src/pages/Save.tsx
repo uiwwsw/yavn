@@ -8,7 +8,8 @@ import { useMemo } from 'react';
 
 const SavePage = () => {
   const { level, addStorage } = useStorageContext();
-  const nextLevel = useMemo(() => (level ?? 0) + 1, [level]);
+  const chapterNumber = useMemo(() => (level ?? 0) + 1, [level]);
+  const nextLevel = useMemo(() => chapterNumber, [chapterNumber]);
 
   const handleGame = () => addStorage({ level: nextLevel, page: 'game' });
   const handleSave = () => {
@@ -31,7 +32,7 @@ const SavePage = () => {
       exit={{ opacity: 0 }}
     >
       <div className="flex w-full flex-col items-center gap-3 p-5">
-        <h1 className="text-center">챕터{level} 끝</h1>
+        <h1 className="text-center">챕터{chapterNumber} 끝</h1>
         <Btn onClick={handleSave}>저장</Btn>
         <Btn autoFocus onClick={handleGame}>
           바로 시작
