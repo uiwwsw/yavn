@@ -1,0 +1,11 @@
+<svg width="400" height="520" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="520" rx="48" fill="#dbeafe"/>
+  <circle cx="200" cy="180" r="96" fill="#fee2e2"/>
+  <path d="M110 172c24-52 156-52 180 0" fill="#1f2937"/>
+  <circle cx="165" cy="185" r="12" fill="#0f172a"/>
+  <circle cx="235" cy="185" r="12" fill="#0f172a"/>
+  <path d="M160 225c24 18 64 18 80 0" fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+  <rect x="120" y="280" width="160" height="140" rx="32" fill="#334155"/>
+  <text x="200" y="360" font-family="'Pretendard', 'Noto Sans KR', sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#f8fafc">NOAH</text>
+  <text x="200" y="395" font-family="'Pretendard', 'Noto Sans KR', sans-serif" font-size="16" text-anchor="middle" fill="#f8fafc" opacity="0.7">Backend Lead</text>
+</svg>

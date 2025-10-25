@@ -1,0 +1,17 @@
+<svg width="400" height="520" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ariaHair" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="520" rx="48" fill="#e0f2fe"/>
+  <circle cx="200" cy="180" r="96" fill="#fef9c3"/>
+  <path d="M110 170c30-60 150-60 180 0" fill="url(#ariaHair)"/>
+  <circle cx="165" cy="180" r="10" fill="#0f172a"/>
+  <circle cx="235" cy="180" r="10" fill="#0f172a"/>
+  <path d="M160 220c20 24 60 24 80 0" fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+  <rect x="120" y="280" width="160" height="140" rx="32" fill="#0ea5e9"/>
+  <text x="200" y="360" font-family="'Pretendard', 'Noto Sans KR', sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">ARIA</text>
+  <text x="200" y="395" font-family="'Pretendard', 'Noto Sans KR', sans-serif" font-size="16" text-anchor="middle" fill="#0f172a" opacity="0.7">Product Owner</text>
+</svg>

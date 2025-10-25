@@ -1,0 +1,23 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="strategyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#strategyGradient)" rx="32"/>
+  <g stroke="#0ea5e9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M140 180l120 80-60 120-120-80z" opacity="0.6"/>
+    <path d="M320 140l160 60-40 160-160-60z" opacity="0.45"/>
+    <path d="M540 180l140 100-60 140-140-100z" opacity="0.3"/>
+  </g>
+  <g fill="#0f172a" font-family="'Pretendard', 'Noto Sans KR', sans-serif">
+    <text x="180" y="120" font-size="36" font-weight="700">Strategy Room</text>
+    <text x="180" y="160" font-size="20" opacity="0.6">결정과 대화가 기하학처럼 정돈되는 공간</text>
+  </g>
+  <g stroke="#0284c7" stroke-width="2" opacity="0.35">
+    <circle cx="200" cy="420" r="58" fill="#bae6fd"/>
+    <circle cx="360" cy="420" r="48" fill="#cffafe"/>
+    <circle cx="520" cy="420" r="68" fill="#e0f2fe"/>
+  </g>
+</svg>
