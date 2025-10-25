@@ -1,141 +1,107 @@
 [
   {
     "sentences": [
-      {
-        "message": "챕터 1 : 집요한 협업 실험실"
-      }
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "innovation-hub",
-    "sentences": [
       [
         {
-          "message": "새 프로젝트가 시작되면 저는 먼저 팀의 지도를 그립니다.\n"
+          "message": "챕터 1 : 매튜의 집요한 모험은 다시 집에서 시작됩니다."
         },
         {
-          "message": "SP4 반도체 장비 웹서비스와 햄스 구축에서 축적한 흐름이 머릿속에서 다시 펼쳐집니다.",
-          "asset": "grit-signal"
-        }
-      ],
-      [
-        {
-          "message": "목표를 정의하고 리스크를 표시하며, 집중할 시간대를 먼저 확보하죠.\n"
-        },
-        {
-          "message": "집요한 노력은 제 본능이고 그래서 저는 스스로를"
-        },
-        {
-          "message": " 끈질긴 전략가",
-          "duration": 250
-        },
-        {
-          "message": "라 부릅니다.",
-          "asset": "momentum"
-        }
-      ],
-      {
-        "message": "그 덕분에 팀은 새벽보다 빠르게, 그러나 안정적으로 출발합니다."
-      }
-    ]
-  },
-  {
-    "character": "aria",
-    "place": "strategy-room",
-    "sentences": [
-      [
-        {
-          "message": "\"매튜의 노트에는 항상 고객 여정이 먼저 그려져 있어요.\"\n"
-        },
-        {
-          "message": "\"요구사항이 바뀌면 단숨에 새로운 경로를 제시하죠.\"",
-          "asset": "momentum"
-        }
-      ],
-      {
-        "message": "\"그의 빠른 대응 덕분에 우리는 스타트업다운 속도를 유지하면서도 품질을 지킬 수 있었어요.\""
-      },
-      [
-        {
-          "message": "\"그리고 그는 팀의 리소스를 아껴 쓰는 진짜 의미의 짠돌이입니다.\"\n"
-        },
-        {
-          "message": "\"낭비 없는 실험 계획이 우리를 더 멀리 데려가죠.\""
+          "message": "오늘도 저는 전략 노트를 펴고 마음을 가다듬습니다.",
+          "asset": "emoji-steady"
         }
       ]
     ]
   },
   {
-    "character": "noah",
-    "place": "code-lab",
+    "character": "매튜 전략가",
+    "place": "matthew-home-strategy",
     "sentences": [
       [
         {
-          "message": "저는 매튜와 함께 모노레포를 세팅했습니다.\n"
+          "message": "새벽 공기를 가르는 건 전면 보드에 그려 둔 하루의 전투 계획입니다."
         },
         {
-          "message": "Next.js, SWR, Tailwind 조합으로 컨베이어 클라이언트를 안정화했죠.",
-          "asset": "code-lab"
+          "message": "고객 시나리오와 리스크, 집중할 시간을 한 줄씩 정리하며 호흡을 고릅니다.",
+          "asset": "emoji-focus"
         }
       ],
-      {
-        "message": "그는 레거시와 신규 스택의 연결 고리를 집요하게 찾아서 백엔드와 프론트엔드의 간극을 메웠습니다."
-      },
       [
         {
-          "message": "새벽 배포 대신 사용자 교육을 열자고 제안한 것도 그였어요.",
-          "asset": "grit-signal"
+          "message": "SP4 반도체 웹서비스에서 다져 둔 집요한 리듬이 손끝에서 다시 살아납니다."
         },
         {
-          "message": " 기술은 결국 사람을 향한다는 말을 몸소 보여줬죠."
+          "message": "전략과 실행의 간격을 줄이는 것이 오늘도 제 첫 번째 임무입니다."
         }
       ]
     ]
   },
   {
-    "character": "sora",
-    "place": "strategy-room",
+    "character": "매튜 탐험가",
+    "place": "matthew-home-lab",
     "sentences": [
-      {
-        "message": "디자인 싱크가 어긋날 틈이 없었던 이유는 매튜가 만든 쉐도우 돔 컴포넌트 라이브러리 덕분입니다."
-      },
       [
         {
-          "message": "그는 Nuxt 레거시를 스벨트킷으로 옮기면서도 브랜드 감도를 지켜냈고",
-          "asset": "momentum"
+          "message": "데스크 위 모니터에는 모노레포 구조도와 사용자 여정이 나란히 켜져 있습니다."
         },
         {
-          "message": " 저는 그 위에서 더 대담한 인터랙션을 제안할 수 있었어요."
+          "message": "Nuxt와 SvelteKit 사이의 브릿지를 검토하며 최적의 실험 경로를 계산하죠.",
+          "asset": "emoji-focus"
         }
       ],
-      {
-        "message": "회의가 길어져도 그는 끝까지 집중력을 유지하면서 우리 모두가 웃으며 결론을 내리도록 도와줍니다."
-      }
+      [
+        {
+          "message": "협업 채널에서 파트너들이 보낸 질문을 읽을 때면 미소가 번집니다."
+        },
+        {
+          "message": "제가 깔아 둔 가드레일 덕분에 모두가 안심하고 속도를 낼 수 있거든요.",
+          "asset": "emoji-joy"
+        }
+      ]
     ]
   },
   {
-    "character": "matthew",
-    "place": "innovation-hub",
+    "character": "매튜 멘토",
+    "place": "matthew-home-strategy",
     "sentences": [
       [
         {
-          "message": "제 장점은 결과를 향해 끈질기게 몰입하는 능력이고,\n"
+          "message": "영상 회의 속 동료들은 오늘도 제가 먼저 고객 관점을 짚어 주길 기대합니다."
         },
         {
-          "message": "단점은 때로 몸을 혹사한다는 점입니다."
+          "message": "요구사항이 바뀌면 새로운 경로를 바로 제시하며 팀의 체력을 지킵니다."
         }
       ],
-      {
-        "message": "그래서 산과 자전거 위에서 체력을 다지고, 중요도에 따라 집중을 분배하는 법을 배웠습니다."
-      },
       [
         {
-          "message": "고객과 팀의 만족도를 위해",
-          "asset": "grit-signal"
+          "message": "집요한 추진력은 때로 과도한 에너지 소비를 불러오기도 합니다."
         },
         {
-          "message": " 저는 오늘도 전략과 실행 사이를 오가며 집요한 에너지를 채워 넣습니다."
+          "message": "그래서 저는 일정마다 휴식 루틴을 적어 두고 스스로를 챙깁니다.",
+          "asset": "emoji-relief"
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜 탐험가",
+    "place": "matthew-home-garden",
+    "sentences": [
+      [
+        {
+          "message": "잠깐의 숨 고르기는 집 안뜰의 작은 정원에서 이어집니다."
+        },
+        {
+          "message": "자전거와 등산이 떠오르며 다음 모험을 위한 체력을 다시 채웁니다.",
+          "asset": "emoji-steady"
+        }
+      ],
+      [
+        {
+          "message": "기술은 결국 사람을 향한다는 다짐을 마음속에서 다시 한번 크게 외칩니다."
+        },
+        {
+          "message": "이 다짐이 저를 다시 작업실로 이끌고 새로운 도약을 준비하게 하죠.",
+          "asset": "emoji-joy"
         }
       ]
     ]
@@ -144,11 +110,11 @@
     "sentences": [
       [
         {
-          "message": "다음 챕터에서는 제가 어떻게 성장 환경을 설계했는지 들려드릴게요.\n"
+          "message": "다음 챕터에서는 매튜가 성장 환경을 어떻게 설계했는지 더 깊이 살펴보겠습니다."
         },
         {
-          "message": "준비되셨다면 계속 모험을 이어가죠!",
-          "asset": "momentum"
+          "message": "준비되셨다면 함께 모험을 계속 이어가요!",
+          "asset": "emoji-joy"
         }
       ]
     ]

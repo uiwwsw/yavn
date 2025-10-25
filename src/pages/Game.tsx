@@ -1,7 +1,6 @@
 import { CSSProperties, useEffect, useMemo, useState } from 'react';
 import Sentence, { SentenceProps } from '@/Sentence';
 import { getJson } from '#/getJson';
-import useDebounce from '#/useDebounce';
 import Preload from '@/Preload';
 import { useStorageContext } from '@/StorageContext';
 export interface Asset {
@@ -46,14 +45,13 @@ const Game = () => {
   const handleComplete = () => {
     setComplete(true);
   };
-  const onChangePosition = useDebounce(() => {
+  const onChangePosition = () => {
     setDirect((prev) => {
       if (prev === undefined) return false;
-      const res = !prev;
-      if (changePosition) return !res;
-      return res;
+      if (changePosition) return prev;
+      return !prev;
     });
-  });
+  };
   const nextScene = () => {
     console.log(complete);
     if (!complete) return handleComplete();
