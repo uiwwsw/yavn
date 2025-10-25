@@ -1,124 +1,78 @@
 [
   {
     "sentences": [
-      {
-        "message": "챕터 2 : 앞으로의 여정"
-      }
+      [ { "message": "CHAPTER 2 — 공중 정원의 결계" } ]
     ]
   },
   {
-    "character": "matthew",
-    "place": "developer",
+    "character": "해리",
+    "place": "공중 정원",
     "sentences": [
       [
-        {
-          "message": "지금 저는 더 나은 사용자 경험을 위한 설계를 계속 실험하고 있습니다.\n"
-        },
-        {
-          "message": "새로운 도구를 발견하면 작은 실험부터 시작합니다.",
-          "asset": "thumbs"
-        }
-      ],
-      {
-        "message": "실패한 실험도 기록으로 남겨 두고 다음 팀원이 다시 시도할 수 있게 합니다."
-      }
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "conversation",
-    "sentences": [
-      [
-        {
-          "message": "비즈니스 목표를 들으면 곧장 화면을 그리지 않습니다.\n"
-        },
-        {
-          "message": "데이터와 흐름을 먼저 질문하죠.",
-          "asset": "conversation"
-        }
+        { "message": "여긴 바람이 거꾸로 불어. 대사마다 이전 버전이 새어 나와." }
       ],
       [
-        {
-          "message": "그 다음에야 기획서와 디자인을 맞추고\n"
-        },
-        {
-          "message": "개발 일정과 리스크를 스스로 제안합니다."
-        }
-      ],
-      {
-        "message": "이렇게 만들어진 로드맵은 팀에게 신뢰를 줍니다."
-      }
-    ]
-  },
-  {
-    "character": "matthew",
-    "place": "now",
-    "sentences": [
-      [
-        {
-          "message": "요즘은 React와 Next로 구축한 디자인 시스템을 발전시키고 있습니다.\n"
-        },
-        {
-          "message": "필요하다면 Svelte나 Nuxt도 적극적으로 실험합니다.",
-          "asset": "react"
-        }
-      ],
-      [
-        {
-          "message": "상황에 맞는 도구를 고르는 능력 덕분에\n"
-        },
-        {
-          "message": "새로운 프로젝트에서도 빠르게 MVP를 완성할 수 있었습니다.",
-          "asset": "next"
-        }
-      ],
-      [
-        {
-          "message": "도구가 바뀌어도 사용자를 향한 마음은 같다는 것을\n"
-        },
-        {
-          "message": "늘 마음에 새기고 있습니다.",
-          "asset": "svelte"
-        }
-      ],
-      [
-        {
-          "message": "필요하다면 백엔드와 인프라까지 살펴보며\n"
-        },
-        {
-          "message": "전체 여정을 연결합니다.",
-          "asset": "nuxt"
-        }
+        { "message": "코드 가지치기를 어디서부터 해야 할까?" }
       ]
     ]
   },
   {
-    "character": "matthew",
-    "place": "street",
+    "character": "매튜",
+    "place": "공중 정원",
     "sentences": [
       [
-        {
-          "message": "제가 원하는 팀은 함께 배우고 성장하는 동료가 있는 곳입니다.\n"
-        },
-        {
-          "message": "그래서 저는 항상 지식을 공유하고, 기록하며, 다음 사람을 생각합니다."
-        }
+        { "message": "해리, 우리에겐 여섯 장의 배경만 있다." }
       ],
-      {
-        "message": "당신과 함께 다음 모험을 펼칠 날을 기대하고 있습니다."
-      }
+      [
+        { "message": "그래도 이야기를 다시 엮을 수 있다는 걸 보여 주자." }
+      ]
     ]
   },
   {
+    "character": "엘리",
+    "place": "공중 정원",
     "sentences": [
       [
-        {
-          "message": "매튜의 모험에 함께해 주셔서 감사합니다.\n"
-        },
-        {
-          "message": "이제 크레딧으로 이동해 더 많은 이야기를 나눠요!",
-          "asset": "noti"
-        }
+        { "message": "스크립트 역사 전체를 압축했어. 필요 없는 호출은 전부 삭제." }
+      ],
+      [
+        { "message": "남은 건 우리 감정뿐. 이모지 캔버스로 리듬을 그려 보자.", "asset": "emotion-relief" }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "공중 정원",
+    "sentences": [
+      [
+        { "message": "그림자 캐릭터들도 다 정리했어. 이제 진짜 여섯 명만 무대에 설 거야." }
+      ],
+      [
+        { "message": "루크, 네 배포 순서 체크 끝났어?" }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "공중 정원",
+    "sentences": [
+      [
+        { "message": "모든 경로 확인 완료. 매튜, 이제 결정을 내려." }
+      ],
+      [
+        { "message": "우리가 다시 쓰는 첫 장면은 어디로 향하지?", "asset": "emotion-determination" }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "공중 정원",
+    "sentences": [
+      [
+        { "message": "마지막 무대는 별빛 강당이야. 그곳에서 우리의 리부트를 선언하자." }
+      ],
+      [
+        { "message": "모두, 준비 완료 상태를 유지해." }
       ]
     ]
   }

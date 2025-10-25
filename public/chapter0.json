@@ -1,403 +1,73 @@
 [
   {
+    "character": "매튜",
+    "place": "황혼 격납고",
     "sentences": [
       [
-        {
-          "message": "화면을 터치하면 연대기가 흘러갑니다.",
-          "duration": 200
-        }
+        { "message": "엘리, 네가 불러낸 새 임무가 바로 이 격납고인가?" }
       ],
       [
-        {
-          "message": "별빛 기록관이 서사를 펼칠 준비를 마쳤습니다.",
-          "duration": 220
-        }
+        { "message": "도시 전체를 덮은 오래된 빌드 냄새가 다시 피어오르는군." }
       ]
     ]
   },
   {
-    "character": "별빛 기록관 엘리시아",
-    "place": "starlit-archive",
+    "character": "엘리",
+    "place": "황혼 격납고",
     "sentences": [
       [
-        {
-          "message": "은하수처럼 빛나는 서고에 잔잔한 목소리가 울립니다.",
-          "duration": 220
-        }
+        { "message": "그래, 매튜. 이곳에서 모든 노선이 꼬여 버렸어." }
       ],
       [
-        {
-          "message": "\"환영합니다, 새벽 길드의 신화 기록을 열람하러 오셨군요.\"",
-          "duration": 220,
-          "asset": "exclamation"
-        }
-      ],
-      [
-        {
-          "message": "오늘은 항로 설계사 매튜의 연대기를 펼쳐 보려 합니다.",
-          "duration": 220
-        }
+        { "message": "한 번 더 처음부터 짜야 해. 이번엔 완전히." }
       ]
     ]
   },
   {
-    "character": "항로 설계사 매튜",
-    "place": "starlit-archive",
+    "character": "매튜",
+    "place": "황혼 격납고",
     "sentences": [
       [
-        {
-          "message": "안녕하세요.",
-          "duration": 200
-        }
+        { "message": "좋아. 초점은 명확해. 팀 전원의 동선을 재부팅하지." }
       ],
       [
-        {
-          "message": "저는",
-          "duration": 200
-        },
-        {
-          "message": " 건축학",
-          "asset": "architecture"
-        },
-        {
-          "message": "을 탐험하던 시절을 지나",
-          "duration": 220
-        },
-        {
-          "message": " 코드로 항로를 짜는 설계사 매튜입니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "도면의 기억은 흐릿하지만",
-          "duration": 220
-        },
-        {
-          "message": " 일정과 협업의 맥박만큼은",
-          "asset": "momentum"
-        },
-        {
-          "message": " 지금도 선명합니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "콘크리트 대신 코드로 구조를 지으며",
-          "duration": 220
-        },
-        {
-          "message": " 팀이 시간 안에 도착하도록 길을 냅니다.",
-          "duration": 220,
-          "asset": "good"
-        }
+        { "message": "모든 감각을 하나로 묶는다.", "asset": "emotion-determination" }
       ]
     ]
   },
   {
-    "character": "시간 연금술사 이온",
-    "place": "status-observatory",
+    "character": "그리드",
+    "place": "황혼 격납고",
     "sentences": [
       [
-        {
-          "message": "팅! 매튜의 현 레벨은",
-          "duration": 200
-        },
-        {
-          "message": " 47",
-          "asset": "momentum"
-        },
-        {
-          "message": ". 집중력과 실행력의 궤도가 맞물려 있습니다.",
-          "duration": 220
-        }
+        { "message": "재부팅이라… 네가 태웠던 불씨를 다시 부르겠다는 뜻이지?" }
       ],
       [
-        {
-          "message": "새벽 러닝으로 다져진 체력은",
-          "duration": 220
-        },
-        {
-          "message": " 강인한 근성",
-          "asset": "grit-signal"
-        },
-        {
-          "message": "으로 안정적으로 빛나고 있군요.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "시간표를 조율하는 능력은 길드에서도 손꼽힙니다.",
-          "duration": 220
-        }
+        { "message": "이번엔 완전히 태우고 사라지지 않게 해 봐." }
       ]
     ]
   },
   {
-    "character": "리액트 정령 노바",
-    "place": "status-observatory",
+    "character": "엘리",
+    "place": "나선 도서관",
     "sentences": [
       [
-        {
-          "message": "나는 매튜의 주력 기술,",
-          "duration": 220
-        },
-        {
-          "message": " 리액트",
-          "asset": "react"
-        },
-        {
-          "message": "를 형상화한 정령 노바.",
-          "duration": 220
-        }
+        { "message": "자료실을 새로 정리해 뒀어." }
       ],
       [
-        {
-          "message": "컴포넌트를 조합하고 상태를 전투처럼 다루는 솜씨는 이미 S랭크.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "새로운 UI 던전이 열리면 내가 먼저 발광할 거야.",
-          "duration": 220
-        }
+        { "message": "각 배경과 장비는 여섯 개뿐. 우린 그 안에서 다시 세계를 만들어야 해." }
       ]
     ]
   },
   {
-    "character": "타입스크립트 비서관 루멘",
-    "place": "status-observatory",
+    "character": "매튜",
+    "place": "나선 도서관",
     "sentences": [
       [
-        {
-          "message": "페이지마다 안전을 더하는 매튜의 숙련도,",
-          "duration": 220
-        },
-        {
-          "message": " 타입스크립트",
-          "asset": "typescript"
-        },
-        {
-          "message": " 비서관 루멘이 보증합니다.",
-          "duration": 220
-        }
+        { "message": "제약이 곧 설계의 라인이지." }
       ],
       [
-        {
-          "message": "강력한 타입은 협업자들에게도 안심할 수 있는 방패가 되죠.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "루틴한 업무도 제너릭과 유틸 함수로 경량화했습니다.",
-          "duration": 220
-        }
-      ]
-    ]
-  },
-  {
-    "character": "스타일 베틀 실피",
-    "place": "status-observatory",
-    "sentences": [
-      [
-        {
-          "message": "부드러운 인터랙션과 반짝이는 레이아웃은",
-          "duration": 220
-        },
-        {
-          "message": " CSS",
-          "asset": "css"
-        },
-        {
-          "message": " 베틀 실피가 직조한 예술.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "Tailwind, Sass, 순정 CSS까지 다양한 무늬를 즉시 꺼내 보입니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "매튜가 상상한 인터페이스는 내 실타래를 통해 현실이 됩니다.",
-          "duration": 220
-        }
-      ]
-    ]
-  },
-  {
-    "character": "길드 항해 지도",
-    "place": "chronicle-deck",
-    "sentences": [
-      [
-        {
-          "message": "첫 항해지는",
-          "duration": 220
-        },
-        {
-          "message": " 아메바 웹에이전시",
-          "asset": "amoeba"
-        },
-        {
-          "message": "였습니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "디멘딩한 파도 속에서도 새벽 출항을 습관으로 만들어 시간을 확보했죠.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "다음은",
-          "duration": 220
-        },
-        {
-          "message": " 인터파크 요새",
-          "asset": "interpark"
-        },
-        {
-          "message": "에서 UI를 새로 배치했습니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "돔의 수와 퍼포먼스 사이 관계를 끝없이 탐색한 연구 기록이 남아 있습니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "와이즈버즈 항구에서는",
-          "duration": 220
-        },
-        {
-          "message": " 팀 전체가 사용하는",
-          "duration": 220
-        },
-        {
-          "message": " 크롬 확장 도구",
-          "asset": "conversation"
-        },
-        {
-          "message": "를 개항하고",
-          "duration": 220
-        },
-        {
-          "message": " 타입스크립트",
-          "asset": "typescript"
-        },
-        {
-          "message": " 도입을 주도했습니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "업라이즈 공중성채에서는",
-          "duration": 220
-        },
-        {
-          "message": " Nuxt",
-          "asset": "nuxt"
-        },
-        {
-          "message": "에서",
-          "duration": 220
-        },
-        {
-          "message": " SvelteKit",
-          "asset": "svelte"
-        },
-        {
-          "message": "으로 포팅하며 아키텍처 감각을 확장했지요.",
-          "duration": 220
-        }
-      ]
-    ]
-  },
-  {
-    "character": "항로 설계사 매튜",
-    "place": "guild-hall",
-    "sentences": [
-      [
-        {
-          "message": "지금 나는 길드의 새벽 창가에서 다음 항해 지도를 펼칩니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "동료가 필요한 현장에는",
-          "duration": 220
-        },
-        {
-          "message": " 협업",
-          "asset": "conversation"
-        },
-        {
-          "message": "의 불꽃을,",
-          "duration": 220
-        },
-        {
-          "message": " 새로운 시장에는",
-          "duration": 220
-        },
-        {
-          "message": " 창의력",
-          "asset": "innovation-hub"
-        },
-        {
-          "message": "의 빛을 비출 겁니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "길드는 아직 쓰이지 않은 항해지를 가득 품고 있으니까요.",
-          "duration": 220
-        }
-      ]
-    ]
-  },
-  {
-    "character": "별빛 기록관 엘리시아",
-    "place": "starlit-archive",
-    "sentences": [
-      [
-        {
-          "message": "연대기의 마지막 페이지를 덮으며 그녀가 속삭입니다.",
-          "duration": 220
-        }
-      ],
-      [
-        {
-          "message": "\"이 기록은 계속해서 쓰일 예정입니다. 다음 장에서 다시 만나요.\"",
-          "duration": 220
-        }
-      ]
-    ]
-  },
-  {
-    "sentences": [
-      [
-        {
-          "message": "매튜의 기록은 아직 진행 중입니다.\\n",
-          "duration": 220
-        },
-        {
-          "message": "다음 챕터에서 새 모험이 이어집니다.",
-          "asset": "next"
-        }
+        { "message": "여섯 개의 공간으로 여섯 장의 궤도를 그려 보자.", "asset": "emotion-hope" }
       ]
     ]
   }
