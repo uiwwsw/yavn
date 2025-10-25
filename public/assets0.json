@@ -40,5 +40,35 @@
   },
   "svelte": {
     "image": "/assets/svelte.png"
+  },
+  "history": {
+    "image": "/assets/history.png"
+  },
+  "street": {
+    "image": "/assets/street.jpg"
+  },
+  "grit-signal": {
+    "image": "/assets/grit-signal.svg"
+  },
+  "momentum": {
+    "image": "/assets/momentum.svg"
+  },
+  "sora": {
+    "image": "/assets/sora.svg"
+  },
+  "conversation": {
+    "image": "/assets/conversation.png"
+  },
+  "noah": {
+    "image": "/assets/noah.svg"
+  },
+  "strategy-room": {
+    "image": "/assets/strategy-room.svg"
+  },
+  "innovation-hub": {
+    "image": "/assets/innovation-hub.svg"
+  },
+  "code-lab": {
+    "image": "/assets/code-lab.svg"
   }
 }
