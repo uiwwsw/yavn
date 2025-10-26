@@ -1,5 +1,6 @@
 [
   {
+    "place": "디지털 심연",
     "sentences": [
       [
         {
@@ -423,6 +424,7 @@
     ]
   },
   {
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -434,7 +436,7 @@
   },
   {
     "character": "세라",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -445,7 +447,7 @@
   },
   {
     "character": "엘리",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -456,7 +458,7 @@
   },
   {
     "character": "루크",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -468,7 +470,7 @@
   },
   {
     "character": "그리드",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -480,7 +482,7 @@
   },
   {
     "character": "매튜",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -492,7 +494,7 @@
   },
   {
     "character": "세라",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -504,7 +506,7 @@
   },
   {
     "character": "루크",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -515,7 +517,7 @@
   },
   {
     "character": "엘리",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -527,7 +529,7 @@
   },
   {
     "character": "매튜",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -538,7 +540,7 @@
   },
   {
     "character": "그리드",
-    "place": "잊혀진 코드의 나라",
+    "place": "Refactor Core",
     "sentences": [
       [
         {
@@ -549,6 +551,7 @@
     ]
   },
   {
+    "place": "디지털 심연",
     "sentences": [
       [
         {
