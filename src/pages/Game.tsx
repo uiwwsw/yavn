@@ -37,7 +37,16 @@ const Game = () => {
   const sentence = useMemo(() => scene?.sentences?.[step[1]], [scene, step]);
   const maxSentence = useMemo(() => scene?.sentences.length ?? 0, [scene, step]);
   const maxStep = useMemo(() => chapter.length, [chapter]);
-  const characterPosition: CSSProperties = useMemo(() => (direct ? { right: 0 } : { left: 0 }), [direct]);
+  const characterPosition: CSSProperties = useMemo(() => {
+    type HorizontalSide = 'left' | 'right';
+    const activeSide: HorizontalSide = direct ? 'right' : 'left';
+    const inactiveSide: HorizontalSide = direct ? 'left' : 'right';
+
+    return {
+      [activeSide]: 0,
+      [inactiveSide]: 'auto',
+    } as CSSProperties;
+  }, [direct]);
   const sentencePosition: CSSProperties = useMemo(
     () => (direct ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }),
     [direct],
