@@ -2,16 +2,24 @@
   {
     "sentences": [
       [
-        { "message": "CHAPTER 4 — 세미티에스의 요새 (Semites 시절)" }
+        {
+          "message": "CHAPTER 4 — 세미티에스의 요새 (Semites 시절)"
+        }
       ],
       [
-        { "message": "배경: 반도체 제국의 거대한 공장." }
+        {
+          "message": "배경: 반도체 제국의 거대한 공장."
+        }
       ],
       [
-        { "message": "상징: 구조 설계, 리더십, 그리고 협업의 본질." }
+        {
+          "message": "상징: 구조 설계, 리더십, 그리고 협업의 본질."
+        }
       ],
       [
-        { "message": "키워드: 모노레포, 도메인 설계, 판단 로그." }
+        {
+          "message": "키워드: 모노레포, 도메인 설계, 판단 로그."
+        }
       ]
     ]
   },
@@ -20,10 +28,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "모노레포 지도 펼쳐봐. 모듈 경계부터 다시 긋자.", "asset": ["emoji-gear", "emoji-bolt"] }
+        {
+          "message": "모노레포 지도 펼쳐봐. 모듈 경계부터 다시 긋자.",
+          "asset": [
+            "emoji-gear",
+            "emoji-bolt"
+          ]
+        }
       ],
       [
-        { "message": "한 번 잘못 그으면 전선 전체가 꼬여." }
+        {
+          "message": "한 번 잘못 그으면 전선 전체가 꼬여."
+        }
+      ],
+      [
+        {
+          "message": "도면 옆에 커피 얼룩이 번지면 안 돼. 다들 전용 컵받침 챙겨.",
+          "asset": [
+            "emoji-gear",
+            "emoji-smile"
+          ]
+        }
       ]
     ]
   },
@@ -32,10 +57,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "그러니까 도메인 별로 전선을 끊어 배치하려 해.", "asset": ["emoji-fire", "emoji-gear"] }
+        {
+          "message": "그러니까 도메인 별로 전선을 끊어 배치하려 해.",
+          "asset": [
+            "emoji-fire",
+            "emoji-gear"
+          ]
+        }
       ],
       [
-        { "message": "각 서비스가 독립적으로 배포되면서도, 공통 라이브러리는 진화하도록." }
+        {
+          "message": "각 서비스가 독립적으로 배포되면서도, 공통 라이브러리는 진화하도록."
+        }
+      ],
+      [
+        {
+          "message": "오늘 밤엔 회로 대신 별 좀 보자. 천장 개방해둔 거 기억하지?",
+          "asset": [
+            "emoji-sunrise",
+            "emoji-relaxed"
+          ]
+        }
       ]
     ]
   },
@@ -44,10 +86,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "디자인 시스템도 그 구조에 맞춰 리팩토링할게요.", "asset": ["emoji-sparkle", "emoji-star"] }
+        {
+          "message": "디자인 시스템도 그 구조에 맞춰 리팩토링할게요.",
+          "asset": [
+            "emoji-sparkle",
+            "emoji-star"
+          ]
+        }
       ],
       [
-        { "message": "공장 인력이 바뀌어도 인터페이스는 같은 언어를 말하게 해야죠." }
+        {
+          "message": "공장 인력이 바뀌어도 인터페이스는 같은 언어를 말하게 해야죠."
+        }
+      ],
+      [
+        {
+          "message": "디자인 QA 중간에 군고구마라도 구워 먹을까요? 공장 열기가 아깝네요.",
+          "asset": [
+            "emoji-fire",
+            "emoji-smile"
+          ]
+        }
       ]
     ]
   },
@@ -56,10 +115,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "퍼포먼스 로거를 붙였어. 공정 한 번 멈추면 손해가 산처럼 쌓여.", "asset": ["emoji-bolt", "emoji-surprised"] }
+        {
+          "message": "퍼포먼스 로거를 붙였어. 공정 한 번 멈추면 손해가 산처럼 쌓여.",
+          "asset": [
+            "emoji-bolt",
+            "emoji-surprised"
+          ]
+        }
       ],
       [
-        { "message": "캐시 정책까지 명세로 박아둬." }
+        {
+          "message": "캐시 정책까지 명세로 박아둬."
+        }
+      ],
+      [
+        {
+          "message": "로그 이름에 농담 붙이면 안 돼? 밤새 보다 보면 웃음이라도 필요하거든.",
+          "asset": [
+            "emoji-speech",
+            "emoji-surprised"
+          ]
+        }
       ]
     ]
   },
@@ -68,10 +144,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "이제 네 역할은 조립이 아니라 지휘야.", "asset": ["emoji-handshake", "emoji-sunrise"] }
+        {
+          "message": "이제 네 역할은 조립이 아니라 지휘야.",
+          "asset": [
+            "emoji-handshake",
+            "emoji-sunrise"
+          ]
+        }
       ],
       [
-        { "message": "회의를 줄이는 대신 결정 로그를 남겨. 사람들은 리더의 판단 근거를 믿으니까." }
+        {
+          "message": "회의를 줄이는 대신 결정 로그를 남겨. 사람들은 리더의 판단 근거를 믿으니까."
+        }
+      ],
+      [
+        {
+          "message": "지휘관도 점심은 챙겨. 내가 김밥 말아왔으니까 회의실에서 나눠 먹자.",
+          "asset": [
+            "emoji-handshake",
+            "emoji-leaf"
+          ]
+        }
       ]
     ]
   },
@@ -80,10 +173,26 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "결정이 쌓일수록 부담도 더해진다.", "asset": ["emoji-bolt"] }
+        {
+          "message": "결정이 쌓일수록 부담도 더해진다.",
+          "asset": [
+            "emoji-bolt"
+          ]
+        }
       ],
       [
-        { "message": "모든 결과에 서명할 생각이야?" }
+        {
+          "message": "모든 결과에 서명할 생각이야?"
+        }
+      ],
+      [
+        {
+          "message": "너 덕분에 내 수첩엔 경고 대신 기대가 늘었어. 기분이 묘하군.",
+          "asset": [
+            "emoji-star",
+            "emoji-speech"
+          ]
+        }
       ]
     ]
   },
@@ -92,10 +201,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "그래. 대신 서명을 분산할 팀을 만들 거야.", "asset": ["emoji-handshake", "emoji-muscle"] }
+        {
+          "message": "그래. 대신 서명을 분산할 팀을 만들 거야.",
+          "asset": [
+            "emoji-handshake",
+            "emoji-muscle"
+          ]
+        }
       ],
       [
-        { "message": "리뷰어와 오너를 명확히 나누고, 실패를 기록하는 문화를 박제하자." }
+        {
+          "message": "리뷰어와 오너를 명확히 나누고, 실패를 기록하는 문화를 박제하자."
+        }
+      ],
+      [
+        {
+          "message": "분산된 서명 리스트에 농담 섹션도 넣자. 웃음이 있어야 책임도 버틸 수 있어.",
+          "asset": [
+            "emoji-smile",
+            "emoji-handshake"
+          ]
+        }
       ]
     ]
   },
@@ -104,10 +230,27 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "이미 문서 도구에 섹션 만들어뒀어요.", "asset": ["emoji-speech", "emoji-smile"] }
+        {
+          "message": "이미 문서 도구에 섹션 만들어뒀어요.",
+          "asset": [
+            "emoji-speech",
+            "emoji-smile"
+          ]
+        }
       ],
       [
-        { "message": "각 파트 리드가 한 주의 결정을 스스로 적게 하면, 당신 어깨도 가벼워질 거예요." }
+        {
+          "message": "각 파트 리드가 한 주의 결정을 스스로 적게 하면, 당신 어깨도 가벼워질 거예요."
+        }
+      ],
+      [
+        {
+          "message": "회고 문서에 낙서 칸 하나 만들었어요. 다들 그림 실력도 공유해요.",
+          "asset": [
+            "emoji-sparkle",
+            "emoji-speech"
+          ]
+        }
       ]
     ]
   },
@@ -116,10 +259,26 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "좋아, 이제야 군단이 보이네.", "asset": ["emoji-star"] }
+        {
+          "message": "좋아, 이제야 군단이 보이네.",
+          "asset": [
+            "emoji-star"
+          ]
+        }
       ],
       [
-        { "message": "그리드, 네 주인이 드디어 허리를 폈다." }
+        {
+          "message": "그리드, 네 주인이 드디어 허리를 폈다."
+        }
+      ],
+      [
+        {
+          "message": "군단이라면 군가도 있어야지. 회의 전에 우리가 만든 비트 한번 틀어볼까?",
+          "asset": [
+            "emoji-rocket",
+            "emoji-sparkle"
+          ]
+        }
       ]
     ]
   },
@@ -128,10 +287,26 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "허리를 펴면 넘어지기도 쉬운 법.", "asset": ["emoji-gear"] }
+        {
+          "message": "허리를 펴면 넘어지기도 쉬운 법.",
+          "asset": [
+            "emoji-gear"
+          ]
+        }
       ],
       [
-        { "message": "하지만... 나도 슬슬 기대가 되는데." }
+        {
+          "message": "하지만... 나도 슬슬 기대가 되는데."
+        }
+      ],
+      [
+        {
+          "message": "기대는 무섭지만 달콤해. 그래서 더 조심히 걸을게.",
+          "asset": [
+            "emoji-relaxed",
+            "emoji-star"
+          ]
+        }
       ]
     ]
   },
@@ -140,7 +315,22 @@
     "place": "세미티에스 요새",
     "sentences": [
       [
-        { "message": "우린 함께 지탱할 거야. 이 공장의 리듬은 이제 우리의 언어니까.", "asset": ["emoji-sparkle", "emoji-handshake"] }
+        {
+          "message": "우린 함께 지탱할 거야. 이 공장의 리듬은 이제 우리의 언어니까.",
+          "asset": [
+            "emoji-sparkle",
+            "emoji-handshake"
+          ]
+        }
+      ],
+      [
+        {
+          "message": "오늘 퇴근길엔 공장 뒤 언덕에서 바람 좀 쐬고 가자. 이 리듬을 밖에서도 느껴보고 싶어.",
+          "asset": [
+            "emoji-leaf",
+            "emoji-sunrise"
+          ]
+        }
       ]
     ]
   }

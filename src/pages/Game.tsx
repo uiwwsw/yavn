@@ -42,6 +42,7 @@ const Game = () => {
     () => (direct ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }),
     [direct],
   );
+  const speakerSide = useMemo<'left' | 'right'>(() => (direct ? 'right' : 'left'), [direct]);
   const handleGoSavePage = () => addStorage({ page: 'save', level });
 
   const handleComplete = () => {
@@ -141,7 +142,13 @@ const Game = () => {
             style={sentencePosition}
           >
             <span className="whitespace-nowrap">{character}</span>
-            <Sentence assets={assets} data={sentence} isComplete={complete} onComplete={handleComplete} />
+            <Sentence
+              assets={assets}
+              data={sentence}
+              isComplete={complete}
+              onComplete={handleComplete}
+              speakerSide={speakerSide}
+            />
           </div>
         )}
       </div>
