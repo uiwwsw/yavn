@@ -107,24 +107,20 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
               if (!asset?.image) return null;
               const offset = marginLeft(i, arr);
               return (
-                <div
+                <motion.img
                   key={`image-${key}`}
-                  className="pointer-events-none fixed inset-0 flex items-center justify-center"
-                >
-                  <motion.img
-                    className="max-h-40 max-w-40 object-contain"
-                    src={asset.image}
-                    alt=""
-                    initial={{ opacity: 0, scale: 0.95, x: offset - 12 }}
-                    animate={{ opacity: 1, scale: 1, x: offset }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{
-                      opacity: { duration: 0.25, ease: 'easeOut' },
-                      scale: { duration: 0.4, ease: 'easeOut' },
-                      x: { type: 'spring', stiffness: 260, damping: 26 },
-                    }}
-                  />
-                </div>
+                  className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 transform object-contain"
+                  src={asset.image}
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.95, x: offset - 12 }}
+                  animate={{ opacity: 1, scale: 1, x: offset }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    opacity: { duration: 0.25, ease: 'easeOut' },
+                    scale: { duration: 0.4, ease: 'easeOut' },
+                    x: { type: 'spring', stiffness: 260, damping: 26 },
+                  }}
+                />
               );
             })}
           </AnimatePresence>
