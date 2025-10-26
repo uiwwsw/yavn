@@ -9,6 +9,9 @@
       ],
       [
         { "message": "상징: 집요함과 혁신의 융합." }
+      ],
+      [
+        { "message": "키워드: 뉴스 워크플로, 자동화, 현장 공감." }
       ]
     ]
   },
@@ -17,7 +20,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "매튜, 기사가 폭주하고 있어요!" }
+        { "message": "에디터가 멈추면 기자들이 전부 슬랙에 난리쳐요!", "asset": ["emoji-surprised", "emoji-speech"] }
+      ],
+      [
+        { "message": "리치텍스트 모듈부터 안정화해야 해요." }
       ]
     ]
   },
@@ -26,7 +32,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "로그 분석 완료! 서버가 매 3초마다 끊기고 있어!" }
+        { "message": "로그를 파봤는데, 번들 캐시가 꼬였더라.", "asset": ["emoji-gear", "emoji-bolt"] }
+      ],
+      [
+        { "message": "즉시 롤백 포인트를 만들어둬." }
       ]
     ]
   },
@@ -35,7 +44,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "(눈을 감고) …패턴이 보여. async, await, 그리고 사람의 인내심." }
+        { "message": "비동기 호출을 조립하는 대신, 파이프라인을 재정의하자.", "asset": ["emoji-fire", "emoji-gear"] }
+      ],
+      [
+        { "message": "문서 작성-검수-발행을 하나의 상태 머신으로 묶어서 오류를 줄일 수 있어." }
       ]
     ]
   },
@@ -44,7 +56,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "코드뿐 아니라 사람도 동기화해야 하지 않겠어?" }
+        { "message": "그리고 기자들의 목소리부터 들어.", "asset": ["emoji-speech", "emoji-handshake"] }
+      ],
+      [
+        { "message": "현장과 개발이 같은 페이지를 읽어야 진짜 혁신이 완성돼." }
       ]
     ]
   },
@@ -53,7 +68,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "네 불이 다시 타오르고 있군. 이번엔 제어할 수 있겠어?" }
+        { "message": "또다시 네 불꽃이 과열되고 있군.", "asset": ["emoji-fire"] }
+      ],
+      [
+        { "message": "이번엔 주변을 태우지 않을 자신 있나?" }
       ]
     ]
   },
@@ -62,7 +80,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "아니, 이번엔 불을 ‘길들이는 법’을 배웠어." }
+        { "message": "있어. 불꽃을 채널링하는 법을 배웠으니까.", "asset": ["emoji-fire", "emoji-leaf"] }
+      ],
+      [
+        { "message": "버그 대시보드와 슬랙 봇을 연결해서, 불길이 나기 전에 알람을 울릴 거야." }
       ]
     ]
   },
@@ -71,7 +92,10 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "스타트업의 속도, 언론의 정밀함, 두 세계를 아우르는 코드라… 흥미롭군." }
+        { "message": "그럼 난 데이터 레이크에서 독자 행동을 분석해서 피드백 루프를 닫아줄게.", "asset": ["emoji-rocket", "emoji-star"] }
+      ],
+      [
+        { "message": "성공 기준을 공유해야 우리가 같은 방향으로 달리지." }
       ]
     ]
   },
@@ -80,7 +104,34 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "드디어 진짜 ‘리더’의 모습이에요." }
+        { "message": "UX 리서치 일정도 기사〮편집〮배포 흐름에 맞춰 재설계했어요.", "asset": ["emoji-smile", "emoji-sparkle"] }
+      ],
+      [
+        { "message": "이제 모든 스프린트 회의에서 독자 여정 지표를 함께 보게 될 거예요." }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "흐음, 이 정도면 언론사가 아니라 기술회사 같군.", "asset": ["emoji-star"] }
+      ],
+      [
+        { "message": "그래도 방심은 금물이다. 실시간 트래픽은 언제든 폭발해." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "햄스 요새",
+    "sentences": [
+      [
+        { "message": "알아. 그래서 시스템이 대신 긴장하도록 만들었어.", "asset": ["emoji-gear", "emoji-muscle"] }
+      ],
+      [
+        { "message": "우리는 서로의 마음을 돌보고, 도구는 위기를 감지하도록." }
       ]
     ]
   }

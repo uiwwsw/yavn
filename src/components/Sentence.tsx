@@ -5,9 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // import viteLogo from '/vite.svg';
 interface Sentence {
-  duration: number;
+  duration?: number;
   message: string;
-  asset?: string;
+  asset?: string | string[];
 }
 interface AssetEntry {
   name: string;
@@ -52,18 +52,16 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
   const duration = useMemo(() => sentence.duration ?? defaultDuration, [_sentences, step]);
   // const asset = useMemo(() => sentence.asset, [_sentences, step]);
   const assetArray = useMemo<AssetEntry[]>(() => {
-    const entries = _sentences
-      .map((sentence, index) =>
-        sentence.asset ? { name: sentence.asset, index, key: `${index}-${sentence.asset}` } : null,
-      )
-      .filter((entry): entry is AssetEntry => Boolean(entry));
+    const entries = _sentences.flatMap((sentence, index) => {
+      if (!sentence.asset) return [];
+      const assetNames = Array.isArray(sentence.asset) ? sentence.asset : [sentence.asset];
+      return assetNames.map((name, assetIndex) => ({ name, index, key: `${index}-${assetIndex}-${name}` }));
+    });
 
     if (isCompleteProp) return entries;
 
     const currentIndex = Math.min(Math.max(step, 0), _sentences.length - 1);
-    const current = entries.find((entry) => entry.index === currentIndex);
-
-    return current ? [current] : [];
+    return entries.filter((entry) => entry.index === currentIndex);
   }, [_sentences, step, isCompleteProp]);
   const isEndCursor = useMemo(() => sentence.message.length <= cursor, [_sentences, step, cursor]);
   const marginLeft = useCallback(
