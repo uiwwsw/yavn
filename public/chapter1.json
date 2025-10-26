@@ -2,136 +2,214 @@
   {
     "sentences": [
       [
-        { "message": "CHAPTER 2 — 데이터의 불꽃 (인터파크 & 와이즈버즈 시절)" }
-      ],
-      [
-        { "message": "배경: 거대한 코드 시장 ‘인터파크 성채’와 ‘와이즈버즈 연구소’." }
-      ],
-      [
-        { "message": "상징: 도전과 도입, 팀 리빌드의 시작." }
-      ],
-      [
-        { "message": "키워드: 데이터 이입, 조직 재편, 실험 정신." }
+        { "message": "CHAPTER 2 — 세미티에스의 불꽃 (The Flame of Semites)" }
       ]
     ]
   },
   {
     "character": "루크",
-    "place": "인터파크 성채",
+    "place": "세미티에스 공업도시",
     "sentences": [
       [
-        { "message": "새로운 언어가 등장했어. 타입스크립트, Vue, 그리고 끝없는 데이터 스트림.", "asset": ["emoji-rocket", "emoji-gear"] }
-      ],
-      [
-        { "message": "규칙을 익히는 건 빠를수록 좋아. 그래야 시장이 뒤집혀도 손이 먼저 움직이지." }
+        { "message": "새 빌드가 또 깨졌어. CI/CD가 멈췄다고." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "인터파크 성채",
+    "place": "세미티에스 공업도시",
     "sentences": [
       [
-        { "message": "문법은 다르지만 해결해야 할 문제는 같아. 의미를 잃지 않는 UI를 만드는 것.", "asset": ["emoji-fire", "emoji-speech"] }
-      ],
-      [
-        { "message": "이번엔 데이터 흐름까지 내 통제 안에 두겠어." }
+        { "message": "(노트북을 보며) Jenkins 로그 보여줘." }
       ]
     ]
   },
   {
     "character": "세라",
-    "place": "와이즈버즈 연구소",
+    "place": "세미티에스 공업도시",
     "sentences": [
       [
-        { "message": "사용자 리서치 결과 공유해요. 검색 레이어에서 대부분 이탈하더라고요.", "asset": ["emoji-speech", "emoji-leaf"] }
-      ],
-      [
-        { "message": "UI는 설명이 아니라 경험이니까, 당신 말투 대신 유저의 손을 빌릴게요." }
+        { "message": "네가 만든 pipeline이잖아. 이제 네가 책임져." }
       ]
     ]
   },
   {
-    "character": "해리",
-    "place": "와이즈버즈 연구소",
+    "character": "매튜",
+    "place": "세미티에스 공업도시",
     "sentences": [
       [
-        { "message": "속도 지표 업데이트! 전환율이 2%만 떨어져도 광고 수익이 갈려.", "asset": ["emoji-bolt", "emoji-surprised"] }
-      ],
-      [
-        { "message": "실험은 좋지만, 실패 로그도 바로 복구할 프로토콜 세팅해줘." }
+        { "message": "그래, 이건 내 책임이지." }
       ]
     ]
   },
   {
     "character": "엘리",
-    "place": "인터파크 성채",
+    "place": "세미티에스 공업도시",
     "sentences": [
       [
-        { "message": "팀을 다시 짜보자. 네가 직접 설계한 워크플로가 필요해.", "asset": ["emoji-handshake", "emoji-sparkle"] }
-      ],
-      [
-        { "message": "도입은 혼자 하는 게 아니야. 사람을 움직일 언어와 리듬을 정해야지." }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "인터파크 성채",
-    "sentences": [
-      [
-        { "message": "그래서 회고를 매일로 바꾸고, 리뷰 룰을 전부 모듈화했어.", "asset": ["emoji-gear", "emoji-speech"] }
-      ],
-      [
-        { "message": "나는 이제 손이 아니라 흐름을 조율하는 사람이다." }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "와이즈버즈 연구소",
-    "sentences": [
-      [
-        { "message": "덕분에 접근성 체크리스트가 언어처럼 굴러가기 시작했어요.", "asset": ["emoji-smile", "emoji-star"] }
-      ],
-      [
-        { "message": "팀이 왜 움직이는지 각자 말할 수 있게 문서를 짜둘게요." }
-      ]
-    ]
-  },
-  {
-    "character": "그리드",
-    "place": "인터파크 성채",
-    "sentences": [
-      [
-        { "message": "하지만 넌 여전히 완벽한 답을 찾을 때까지 잠들지 못하잖아.", "asset": ["emoji-bolt"] }
-      ],
-      [
-        { "message": "이번엔 누구에게 기대려 하지도 않지?" }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "인터파크 성채",
-    "sentences": [
-      [
-        { "message": "기대는 해. 책임을 나누기 위해 시스템을 만들고 있으니까.", "asset": ["emoji-handshake", "emoji-muscle"] }
-      ],
-      [
-        { "message": "새벽을 버티는 불씨는 혼자지만, 새벽을 여는 태양은 모두에게 나눌 거야." }
+        { "message": "완벽주의자들끼리 모이면 항상 폭발하지. (웃음)" }
       ]
     ]
   },
   {
     "character": "루크",
-    "place": "인터파크 성채",
+    "place": "세미티에스 공업도시",
     "sentences": [
       [
-        { "message": "흐음, 네 목소리에 리더 톤이 묻어난다.", "asset": ["emoji-star"] }
-      ],
+        { "message": "폭발은 둘째치고… 이번엔 진짜 서버가 녹겠어." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "세미티에스 공업도시",
+    "sentences": [
       [
-        { "message": "그 불꽃이 팀을 델타로 만들 수 있을지 지켜보지." }
+        { "message": "이럴 줄 알았지. 매튜는 항상 ‘예술’을 만들다가 ‘화재’를 일으키거든." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "(웃으며) 불이 있어야 빛도 있지." }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "(문을 박차고 들어오며) 매튜! 또 무슨 짓이야? 런칭 72시간 남았어!" }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "해리, 들어봐. 이 구조는 오래 못 가. 지금 리빌드하지 않으면—" }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "리빌드? 미쳤어? 그건 자폭이야!" }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "(조용히) 사실… 매튜 말이 맞아." }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "뭐? 언제부터 네가 그 편이었어?" }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "이 구조, 오래된 벽돌 위에 새 건물을 올린 거야. 균열 나면 끝이지." }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "시간은 없지만, 방법은 있지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "맞아. 단 하나의 불꽃으로 통합하자." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "`Monorepo Field — Activate.`" }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "…와, 전부 하나의 코드 트리 안으로 들어갔어." }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "효율이 두 배야. 빌드 시간 절반." }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "이게… 이렇게 단순했단 말이야?" }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "단순한 해답일수록, 가장 구현하기 어렵지." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "(어둠 속에서) 단순함은 완벽함보다 더 위험하다. 네가 통제할 수 있다고 착각하게 만들지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        { "message": "착각이라도 좋아. 난 이 불로 세상을 밝힐 테니까." }
       ]
     ]
   }

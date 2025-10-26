@@ -2,145 +2,142 @@
   {
     "sentences": [
       [
-        { "message": "CHAPTER 4 — 세미티에스의 요새 (Semites 시절)" }
-      ],
-      [
-        { "message": "배경: 반도체 제국의 거대한 공장." }
-      ],
-      [
-        { "message": "상징: 구조 설계, 리더십, 그리고 협업의 본질." }
-      ],
-      [
-        { "message": "키워드: 모노레포, 도메인 설계, 판단 로그." }
-      ]
-    ]
-  },
-  {
-    "character": "루크",
-    "place": "세미티에스 요새",
-    "sentences": [
-      [
-        { "message": "모노레포 지도 펼쳐봐. 모듈 경계부터 다시 긋자.", "asset": ["emoji-gear", "emoji-bolt"] }
-      ],
-      [
-        { "message": "한 번 잘못 그으면 전선 전체가 꼬여." }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "세미티에스 요새",
-    "sentences": [
-      [
-        { "message": "그러니까 도메인 별로 전선을 끊어 배치하려 해.", "asset": ["emoji-fire", "emoji-gear"] }
-      ],
-      [
-        { "message": "각 서비스가 독립적으로 배포되면서도, 공통 라이브러리는 진화하도록." }
+        { "message": "CHAPTER 4 — 한국일보 요새의 기사 (Knight of the Fortress)" }
       ]
     ]
   },
   {
     "character": "세라",
-    "place": "세미티에스 요새",
+    "place": "한국일보 요새",
     "sentences": [
       [
-        { "message": "디자인 시스템도 그 구조에 맞춰 리팩토링할게요.", "asset": ["emoji-sparkle", "emoji-star"] }
-      ],
-      [
-        { "message": "공장 인력이 바뀌어도 인터페이스는 같은 언어를 말하게 해야죠." }
+        { "message": "기사 API가 미쳐 날뛰고 있어!" }
       ]
     ]
   },
   {
-    "character": "해리",
-    "place": "세미티에스 요새",
+    "character": "루크",
+    "place": "한국일보 요새",
     "sentences": [
       [
-        { "message": "퍼포먼스 로거를 붙였어. 공정 한 번 멈추면 손해가 산처럼 쌓여.", "asset": ["emoji-bolt", "emoji-surprised"] }
-      ],
-      [
-        { "message": "캐시 정책까지 명세로 박아둬." }
+        { "message": "로그가 3초마다 폭발해!" }
       ]
     ]
   },
   {
     "character": "엘리",
-    "place": "세미티에스 요새",
+    "place": "한국일보 요새",
     "sentences": [
       [
-        { "message": "이제 네 역할은 조립이 아니라 지휘야.", "asset": ["emoji-handshake", "emoji-sunrise"] }
-      ],
-      [
-        { "message": "회의를 줄이는 대신 결정 로그를 남겨. 사람들은 리더의 판단 근거를 믿으니까." }
-      ]
-    ]
-  },
-  {
-    "character": "그리드",
-    "place": "세미티에스 요새",
-    "sentences": [
-      [
-        { "message": "결정이 쌓일수록 부담도 더해진다.", "asset": ["emoji-bolt"] }
-      ],
-      [
-        { "message": "모든 결과에 서명할 생각이야?" }
+        { "message": "캐시 서버가 감당 못 해!" }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "세미티에스 요새",
+    "place": "한국일보 요새",
     "sentences": [
       [
-        { "message": "그래. 대신 서명을 분산할 팀을 만들 거야.", "asset": ["emoji-handshake", "emoji-muscle"] }
-      ],
-      [
-        { "message": "리뷰어와 오너를 명확히 나누고, 실패를 기록하는 문화를 박제하자." }
+        { "message": "(차분히) 로그 패턴 분석 중… 음, 반복된 ID 호출." }
       ]
     ]
   },
   {
     "character": "세라",
-    "place": "세미티에스 요새",
+    "place": "한국일보 요새",
     "sentences": [
       [
-        { "message": "이미 문서 도구에 섹션 만들어뒀어요.", "asset": ["emoji-speech", "emoji-smile"] }
-      ],
-      [
-        { "message": "각 파트 리드가 한 주의 결정을 스스로 적게 하면, 당신 어깨도 가벼워질 거예요." }
-      ]
-    ]
-  },
-  {
-    "character": "루크",
-    "place": "세미티에스 요새",
-    "sentences": [
-      [
-        { "message": "좋아, 이제야 군단이 보이네.", "asset": ["emoji-star"] }
-      ],
-      [
-        { "message": "그리드, 네 주인이 드디어 허리를 폈다." }
-      ]
-    ]
-  },
-  {
-    "character": "그리드",
-    "place": "세미티에스 요새",
-    "sentences": [
-      [
-        { "message": "허리를 펴면 넘어지기도 쉬운 법.", "asset": ["emoji-gear"] }
-      ],
-      [
-        { "message": "하지만... 나도 슬슬 기대가 되는데." }
+        { "message": "대체 어떻게 그걸 한눈에—" }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "세미티에스 요새",
+    "place": "한국일보 요새",
     "sentences": [
       [
-        { "message": "우린 함께 지탱할 거야. 이 공장의 리듬은 이제 우리의 언어니까.", "asset": ["emoji-sparkle", "emoji-handshake"] }
+        { "message": "내가 만든 구조니까. (눈을 감으며) 지금, 수술 들어간다." }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "위험하다고!" }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "멈춰, 매튜. 넌 이번엔 자신을 잃을 거야." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "그럼 잃고 나서 다시 찾으면 되지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "`Cleanse(Node, \"truth\");`" }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "전원이 안정됐어!" }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "데이터 루프 사라졌어!" }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "서버 복구 완료!" }
+      ]
+    ]
+  },
+  {
+    "character": "해리",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "(숨을 고르며) 넌 또… 불가능을 해냈군." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "한국일보 요새",
+    "sentences": [
+      [
+        { "message": "(미소) 불가능은 그리드가 만든 환상이야. 난 환상도 디버그하지." }
       ]
     ]
   }

@@ -2,16 +2,7 @@
   {
     "sentences": [
       [
-        { "message": "CHAPTER 3 — 업라이즈의 그림자 (Uprise & Heybit 시절)" }
-      ],
-      [
-        { "message": "배경: 암호화된 데이터 왕국 ‘업라이즈 시타델’." }
-      ],
-      [
-        { "message": "상징: 집중력, 몰입, 그리고 건강의 경계." }
-      ],
-      [
-        { "message": "키워드: 암호화, 재사용 컴포넌트, 회복 루틴." }
+        { "message": "CHAPTER 3 — 업라이즈의 그림자 (The Shadow of Uprise)" }
       ]
     ]
   },
@@ -20,10 +11,7 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "터미널이 숨을 쉬는 소리가 들려. 암호화 키가 심장박동 같아.", "asset": ["emoji-bolt", "emoji-rocket"] }
-      ],
-      [
-        { "message": "여기서는 한 줄이 천만 원을 움직이겠지." }
+        { "message": "여긴… 업라이즈 시타델." }
       ]
     ]
   },
@@ -32,10 +20,7 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "그래서 네 눈빛이 달라졌구나. 금융은 속도와 신뢰의 동시 통역을 요구해.", "asset": ["emoji-handshake", "emoji-star"] }
-      ],
-      [
-        { "message": "문서화부터 암호화 플로우까지, 모두가 읽을 언어로 남겨." }
+        { "message": "네가 만든 암호화 프로토콜이 봉인된 곳이지." }
       ]
     ]
   },
@@ -44,10 +29,16 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "Shadow DOM 라이브러리 초안 가져왔어요!", "asset": ["emoji-sparkle", "emoji-gear"] }
-      ],
+        { "message": "(주위를 둘러보며) 여전히 이 도시, 숨이 막히게 복잡하네." }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "업라이즈 시타델",
+    "sentences": [
       [
-        { "message": "디자이너랑 직접 대화할 수 있도록, 토큰 시스템도 열어둘게요." }
+        { "message": "코드가 아니라 미로야. 누가 이런 구조를 짰대?" }
       ]
     ]
   },
@@ -56,10 +47,7 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "좋아, 재사용성과 커스터마이징을 동시에 잡자.", "asset": ["emoji-gear", "emoji-rocket"] }
-      ],
-      [
-        { "message": "우리가 만든 컴포넌트가 파생 서비스를 품을 수 있게 구조를 개방해야 해." }
+        { "message": "(쓴웃음) …나지." }
       ]
     ]
   },
@@ -68,10 +56,7 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "그 대신 네 잠은 닫히겠지.", "asset": ["emoji-bolt"] }
-      ],
-      [
-        { "message": "몰입은 칼날이야. 스스로를 벨 각오가 되어 있나?" }
+        { "message": "과거의 네가 만든 감옥. 불완전한 암호, 끝없는 재귀, 신뢰 없는 서명." }
       ]
     ]
   },
@@ -80,22 +65,7 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "칼날을 칼집에 넣는 법부터 배운다.", "asset": ["emoji-leaf", "emoji-relaxed"] }
-      ],
-      [
-        { "message": "집중 시간을 측정해서 한계를 넘지 않게 스스로를 끊어내겠어." }
-      ]
-    ]
-  },
-  {
-    "character": "해리",
-    "place": "업라이즈 시타델",
-    "sentences": [
-      [
-        { "message": "좋았어! 모니터링 봇이 새벽마다 울부짖는 걸 내가 막아줄게.", "asset": ["emoji-surprised", "emoji-speech"] }
-      ],
-      [
-        { "message": "대신 장애 보고는 30분 이내에 다큐먼트로 남겨. 투자자도 읽게 될 테니까." }
+        { "message": "(눈을 감으며) 그땐 속도만 봤지. 신뢰는 뒤로 밀었어." }
       ]
     ]
   },
@@ -104,10 +74,16 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "그리고 팀에 '집중 스프린트' 룰을 도입하자.", "asset": ["emoji-handshake", "emoji-sunrise"] }
-      ],
+        { "message": "그건 누구나 거치는 실수야." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "업라이즈 시타델",
+    "sentences": [
       [
-        { "message": "시간을 태우는 대신 에너지를 순환시켜. 그래야 다음 전투를 준비하지." }
+        { "message": "하지만 넌 그 실수를 반복했지. 불완전한 완벽을 믿었어." }
       ]
     ]
   },
@@ -116,10 +92,16 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "그래, 몰입과 회복을 쌍으로 묶을게.", "asset": ["emoji-leaf", "emoji-muscle"] }
-      ],
+        { "message": "(고개를 들며) 이제는 달라. 이젠 속도가 아니라, 신뢰를 컴파일할 거야." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "업라이즈 시타델",
+    "sentences": [
       [
-        { "message": "내 코드는 자산을 지키는 방패고, 나는 방패를 관리하는 사람이다." }
+        { "message": "`Decrypt(\"truth\");`" }
       ]
     ]
   },
@@ -128,10 +110,43 @@
     "place": "업라이즈 시타델",
     "sentences": [
       [
-        { "message": "그러면 우린 더 이상 번아웃을 무용담으로 소비하지 않아도 되겠네요.", "asset": ["emoji-smile", "emoji-speech"] }
-      ],
+        { "message": "데이터 정화 중… 가시화 완료!" }
+      ]
+    ]
+  },
+  {
+    "character": "루크",
+    "place": "업라이즈 시타델",
+    "sentences": [
       [
-        { "message": "다음 회의엔 건강 지표도 대시보드에 넣어둘게요." }
+        { "message": "이거 봐, 에러가 사라졌어!" }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "아니, 통합됐어. 네가 만든 그림자를 네가 감쌌어." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "빛으로 어둠을 지우지 마라, 매튜. 어둠은 기억이니까." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        { "message": "기억은 사라지지 않아. 단지 의미가 바뀔 뿐이지." }
       ]
     ]
   }
