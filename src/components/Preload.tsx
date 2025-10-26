@@ -33,8 +33,8 @@ const Preload = ({ assets, children }: PreloadProps) => {
       {children}
     </motion.div>
   ) : (
-    <div className="h-full w-full">
-      <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <div className="flex h-full w-full items-center justify-center">
+      <svg className="h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
         <circle fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="15" r="15" cx="40" cy="65">
           <animate
             attributeName="cy"
