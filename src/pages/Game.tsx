@@ -141,7 +141,13 @@ const Game = () => {
             style={sentencePosition}
           >
             <span className="whitespace-nowrap">{character}</span>
-            <Sentence assets={assets} data={sentence} isComplete={complete} onComplete={handleComplete} />
+            <Sentence
+              assets={assets}
+              data={sentence}
+              direct={direct}
+              isComplete={complete}
+              onComplete={handleComplete}
+            />
           </div>
         )}
       </div>

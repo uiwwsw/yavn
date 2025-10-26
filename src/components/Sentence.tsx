@@ -17,11 +17,12 @@ interface AssetEntry {
 export interface SentenceProps {
   assets?: Assets;
   data?: string | Sentence | Sentence[];
+  direct?: boolean;
   isComplete: boolean;
   onComplete: () => void;
 }
 const defaultDuration = 100;
-const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
+const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
@@ -68,9 +69,10 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
     (index: number, arr: AssetEntry[]) => {
       if (!assets) return 0;
       const audioLength = arr.slice(index).filter((entry) => assets[entry.name]?.audio).length;
-      return (index - (arr.length - 1) + audioLength) * -100;
+      const baseOffset = (index - (arr.length - 1) + audioLength) * -100;
+      return direct ? baseOffset * -1 : baseOffset;
     },
-    [assets],
+    [assets, direct],
   );
   useEffect(() => {
     if (!data) return;
@@ -106,13 +108,14 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: Sent
               const asset = assets[name];
               if (!asset?.image) return null;
               const offset = marginLeft(i, arr);
+              const initialOffset = direct ? offset + 20 : offset - 20;
               return (
                 <motion.img
                   key={`image-${key}`}
                   className="fixed left-1/2 top-1/2 max-h-40 max-w-40 transform object-contain"
                   src={asset.image}
                   alt=""
-                  initial={{ opacity: 0, scale: 0.95, x: offset - 20 }}
+                  initial={{ opacity: 0, scale: 0.95, x: initialOffset }}
                   animate={{ opacity: 1, scale: 1, x: offset }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{
