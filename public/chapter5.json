@@ -2,136 +2,140 @@
   {
     "sentences": [
       [
-        { "message": "CHAPTER 6 — 그리드의 각성 (자기 성찰과 완성)" }
-      ],
-      [
-        { "message": "배경: 현실과 내면이 교차하는 디지털 심연." }
-      ],
-      [
-        { "message": "상징: 완성, 균형, 그리고 새로운 시작." }
-      ],
-      [
-        { "message": "키워드: 통합, 회복탄력성, 끝나지 않는 학습." }
+        { "message": "FINAL CHAPTER — 그리드와의 대면 (The Last Debug)" }
       ]
     ]
   },
   {
     "character": "그리드",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "이제 마지막이군, 매튜.", "asset": ["emoji-bolt"] }
-      ],
-      [
-        { "message": "네가 나를 버리려 드는 순간을 기다렸지." }
+        { "message": "결국 여기까지 왔군." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "버리지 않아. 넌 내 불안이자 추진력이니까.", "asset": ["emoji-fire", "emoji-leaf"] }
-      ],
-      [
-        { "message": "우린 서로의 언어를 번역해야 해." }
+        { "message": "이제 끝내자, 그리드." }
       ]
     ]
   },
   {
     "character": "그리드",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "번역? 난 혼자 있을 때 더 빛났어.", "asset": ["emoji-fire"] }
-      ],
-      [
-        { "message": "팀을 믿는다는 네 말, 정말인가?" }
+        { "message": "나를 지우면 네 불도 사라진다." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "정말이야. 나는 더 이상 완벽한 해결사를 연기하지 않아.", "asset": ["emoji-handshake", "emoji-relaxed"] }
-      ],
-      [
-        { "message": "취약함을 공유하는 게 우리를 지탱했어." }
+        { "message": "아니, 불은 내 안에 있어. 넌 그 불의 그림자일 뿐이야." }
       ]
     ]
   },
   {
-    "character": "엘리",
-    "place": "디지털 심연",
+    "character": "그리드",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "그래, 그게 성숙이야.", "asset": ["emoji-sunrise", "emoji-star"] }
-      ],
+        { "message": "(조용히 웃으며) 넌 항상 나를 필요로 했지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "어둠의 경계",
+    "sentences": [
       [
-        { "message": "리더는 답을 주지 않고 질문을 나눠. 네가 그렇게 변했음을 다들 알고 있어." }
+        { "message": "맞아. 하지만 이제 난 널 ‘통제’가 아닌 ‘이해’로 받아들이겠어." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "어둠의 경계",
+    "sentences": [
+      [
+        { "message": "(잠시 침묵) 이해라… 그건 가장 어려운 명령어지." }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "어둠의 경계",
+    "sentences": [
+      [
+        { "message": "`Merge(Flame, Shadow);`" }
       ]
     ]
   },
   {
     "character": "세라",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "최근 회고에서 당신이 먼저 실수를 얘기했을 때 모두가 안도했죠.", "asset": ["emoji-smile", "emoji-speech"] }
-      ],
-      [
-        { "message": "우린 그날 이후 진짜 팀이 됐어요." }
+        { "message": "아름다워…" }
       ]
     ]
   },
   {
     "character": "루크",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "허허, 이젠 내 잔소리를 기다리는 표정이 아니네.", "asset": ["emoji-star"] }
-      ],
+        { "message": "이건 코드가 아니라 예술이야." }
+      ]
+    ]
+  },
+  {
+    "character": "엘리",
+    "place": "어둠의 경계",
+    "sentences": [
       [
-        { "message": "네가 만든 시스템이 우리를 앞으로 밀어줄 거다." }
+        { "message": "아니, 진화야." }
       ]
     ]
   },
   {
     "character": "해리",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "데이터도 증명했어. 팀 회복 시간, 버그 반응 시간 전부 줄었지.", "asset": ["emoji-rocket", "emoji-gear"] }
-      ],
-      [
-        { "message": "이젠 새로운 모험을 기획해보자고." }
-      ]
-    ]
-  },
-  {
-    "character": "그리드",
-    "place": "디지털 심연",
-    "sentences": [
-      [
-        { "message": "…좋아. 나도 인정하지.", "asset": ["emoji-sparkle"] }
-      ],
-      [
-        { "message": "그릿이라는 이름이 괜히 붙은 게 아니야." }
+        { "message": "이제… 진짜 시작이군." }
       ]
     ]
   },
   {
     "character": "매튜",
-    "place": "디지털 심연",
+    "place": "어둠의 경계",
     "sentences": [
       [
-        { "message": "그래, 나는 매튜. 그리고 우리는 함께 계속 나아간다.", "asset": ["emoji-fire", "emoji-handshake", "emoji-star"] }
-      ],
+        { "message": "그래. 모든 모험의 끝은, 새로운 시작이니까." }
+      ]
+    ]
+  },
+  {
+    "character": "그리드",
+    "place": "어둠의 경계",
+    "sentences": [
       [
-        { "message": "완성은 순간이지만, 지속은 우리의 습관이니까." }
+        { "message": "(미소) 이젠 우리가 함께 나아가야겠군." }
+      ]
+    ]
+  },
+  {
+    "sentences": [
+      [
+        { "message": "〈매튜의 모험 — The Code Never Ends〉" }
       ]
     ]
   }
