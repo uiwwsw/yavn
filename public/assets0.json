@@ -56,6 +56,24 @@
   "별빛 강당": {
     "image": "/assets/bg-6.png"
   },
+  "잊혀진 코드의 나라": {
+    "image": "/assets/bg-1.png"
+  },
+  "세미티에스 공업도시": {
+    "image": "/assets/bg-2.png"
+  },
+  "한국일보 요새": {
+    "image": "/assets/bg-3.png"
+  },
+  "낭비 없는 왕국": {
+    "image": "/assets/bg-4.png"
+  },
+  "Refactor Core": {
+    "image": "/assets/bg-5.png"
+  },
+  "현실 세계": {
+    "image": "/assets/bg-6.png"
+  },
   "emoji-bolt": {
     "image": "/assets/emoji-bolt.svg"
   },
