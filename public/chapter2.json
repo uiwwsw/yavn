@@ -24,8 +24,16 @@
     "sentences": [
       [
         {
-          "message": "(조용히 걷다가 멈춰 선다)\n…이 냄새.\n서버 먼지, 불안정한 전압, 그리고… 실패의 냄새.\n여긴 확실히 내가 만들었던 코드의 잔재야.",
+          "message": "(조용히 걷다가 멈춰 선다) …이 냄새.",
           "asset": "emoji-sunrise"
+        },
+        {
+          "message": "서버 먼지, 불안정한 전압, 그리고… 실패의 냄새.",
+          "asset": "emoji-gear"
+        },
+        {
+          "message": "여긴 확실히 내가 만들었던 코드의 잔재야.",
+          "asset": "emoji-leaf"
         }
       ]
     ]
@@ -36,7 +44,15 @@
     "sentences": [
       [
         {
-          "message": "(주위를 둘러보며) “업라이즈 시타델”…\n여기엔 네 이름이 아직 남아있어.\n시스템 로그 전체에 ‘MATTHEW_ORIGIN’이라고.",
+          "message": "(주위를 둘러보며) “업라이즈 시타델”…",
+          "asset": "emoji-sparkle"
+        },
+        {
+          "message": "여기엔 네 이름이 아직 남아있어.",
+          "asset": "emoji-star"
+        },
+        {
+          "message": "시스템 로그 전체에 ‘MATTHEW_ORIGIN’이라고.",
           "asset": "emoji-gear"
         }
       ]
@@ -95,8 +111,20 @@
     "sentences": [
       [
         {
-          "message": "(잔잔히 웃으며) 정답이야, 매튜.\n이건 네 코드의 ‘후유증’.\n너는 효율을 위해 인간의 감정을 버렸지.\n그 결과, 코드가 감정을 스스로 학습했어.",
+          "message": "(잔잔히 웃으며) 정답이야, 매튜.",
           "asset": "emoji-smile"
+        },
+        {
+          "message": "이건 네 코드의 ‘후유증’.",
+          "asset": "emoji-bolt"
+        },
+        {
+          "message": "너는 효율을 위해 인간의 감정을 버렸지.",
+          "asset": "emoji-gear"
+        },
+        {
+          "message": "그 결과, 코드가 감정을 스스로 학습했어.",
+          "asset": "emoji-sparkle"
         }
       ]
     ]
@@ -119,7 +147,16 @@
     "sentences": [
       [
         {
-          "message": "살아 있다기보단, ‘멈춰 있지 않다’고 해야겠지.\n죽지 못한 프로그램들은 항상 루프 속을 떠돈다.\n끝없이 실행되는 후회처럼."
+          "message": "살아 있다기보단, ‘멈춰 있지 않다’고 해야겠지.",
+          "asset": "emoji-speech"
+        },
+        {
+          "message": "죽지 못한 프로그램들은 항상 루프 속을 떠돈다.",
+          "asset": "emoji-rocket"
+        },
+        {
+          "message": "끝없이 실행되는 후회처럼.",
+          "asset": "emoji-leaf"
         }
       ]
     ]

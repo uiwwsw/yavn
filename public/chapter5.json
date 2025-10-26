@@ -29,7 +29,8 @@
       ],
       [
         {
-          "message": "마지막 장소답게, 정말 고요하군."
+          "message": "마지막 장소답게, 정말 고요하군.",
+          "asset": "emoji-sunrise"
         }
       ]
     ]
@@ -136,7 +137,12 @@
       ],
       [
         {
-          "message": "불완전함과 타협하겠다는 거야? 그럼 넌 더 이상 '개발자'가 아니야."
+          "message": "불완전함과 타협하겠다는 거야?",
+          "asset": "emoji-bolt"
+        },
+        {
+          "message": "그럼 넌 더 이상 '개발자'가 아니야.",
+          "asset": "emoji-fire"
         }
       ]
     ]
@@ -163,22 +169,26 @@
     "sentences": [
       [
         {
-          "message": "변화는 혼돈이야."
+          "message": "변화는 혼돈이야.",
+          "asset": "emoji-bolt"
         }
       ],
       [
         {
-          "message": "혼돈은 낭비고, 낭비는 파멸이지."
+          "message": "혼돈은 낭비고, 낭비는 파멸이지.",
+          "asset": "emoji-fire"
         }
       ],
       [
         {
-          "message": "넌 이 세계를 그렇게 만들었잖아."
+          "message": "넌 이 세계를 그렇게 만들었잖아.",
+          "asset": "emoji-speech"
         }
       ],
       [
         {
-          "message": "완벽을 버리고, 균형이랍시고 불안정한 시스템을 남겼지."
+          "message": "완벽을 버리고, 균형이랍시고 불안정한 시스템을 남겼지.",
+          "asset": "emoji-gear"
         }
       ]
     ]
@@ -189,22 +199,26 @@
     "sentences": [
       [
         {
-          "message": "그래, 불안정하지."
+          "message": "그래, 불안정하지.",
+          "asset": "emoji-leaf"
         }
       ],
       [
         {
-          "message": "하지만 살아 있잖아."
+          "message": "하지만 살아 있잖아.",
+          "asset": "emoji-sunrise"
         }
       ],
       [
         {
-          "message": "완벽한 코드엔 생명이 없어."
+          "message": "완벽한 코드엔 생명이 없어.",
+          "asset": "emoji-gear"
         }
       ],
       [
         {
-          "message": "그건 단지, 정지된 신의 사체일 뿐이야."
+          "message": "그건 단지, 정지된 신의 사체일 뿐이야.",
+          "asset": "emoji-sparkle"
         }
       ]
     ]
@@ -388,22 +402,26 @@
       ],
       [
         {
-          "message": "집요함, 완벽주의, 그리고 그 끝없는 욕망."
+          "message": "집요함, 완벽주의, 그리고 그 끝없는 욕망.",
+          "asset": "emoji-bolt"
         }
       ],
       [
         {
-          "message": "그건 악이 아니야."
+          "message": "그건 악이 아니야.",
+          "asset": "emoji-leaf"
         }
       ],
       [
         {
-          "message": "단지 방향을 잃은 열정일 뿐이야."
+          "message": "단지 방향을 잃은 열정일 뿐이야.",
+          "asset": "emoji-sparkle"
         }
       ],
       [
         {
-          "message": "이제 그 열정을, 목적 없는 불꽃이 아니라 온기의 불빛으로 바꿀 때야."
+          "message": "이제 그 열정을, 목적 없는 불꽃이 아니라 온기의 불빛으로 바꿀 때야.",
+          "asset": "emoji-sunrise"
         }
       ]
     ]
@@ -506,12 +524,14 @@
     "sentences": [
       [
         {
-          "message": "그리드를… 내 안으로 통합했어."
+          "message": "그리드를… 내 안으로 통합했어.",
+          "asset": "emoji-fire"
         }
       ],
       [
         {
-          "message": "이제 우린 둘이 아니라 하나야."
+          "message": "이제 우린 둘이 아니라 하나야.",
+          "asset": "emoji-star"
         }
       ]
     ]
