@@ -15,8 +15,12 @@
     "sentences": [
       [
         {
-          "message": "(숨을 내쉬며) …여긴… 어디야? 이 익숙한 전류 냄새… 오래된 서버의 공기 같아.",
+          "message": "(숨을 내쉬며) …여긴… 어디야?",
           "asset": "emoji-relaxed"
+        },
+        {
+          "message": "이 익숙한 전류 냄새… 오래된 서버의 공기 같아.",
+          "asset": "emoji-gear"
         }
       ],
       [
@@ -43,8 +47,12 @@
     "sentences": [
       [
         {
-          "message": "(놀라며) …누구야?! 보여라! 네가 뭔데 내 코드를 건드리는 거야!",
+          "message": "(놀라며) …누구야?! 보여라!",
           "asset": "emoji-surprised"
+        },
+        {
+          "message": "네가 뭔데 내 코드를 건드리는 거야!",
+          "asset": "emoji-bolt"
         }
       ]
     ]
@@ -55,7 +63,12 @@
     "sentences": [
       [
         {
-          "message": "나는 네 코드가 만든 잔상, 너의 완벽을 향한 욕망이 낳은 그림자. 이름은… 그리드(Grit)."
+          "message": "나는 네 코드가 만든 잔상, 너의 완벽을 향한 욕망이 낳은 그림자.",
+          "asset": "emoji-speech"
+        },
+        {
+          "message": "이름은… 그리드(Grit).",
+          "asset": "emoji-star"
         }
       ]
     ]
@@ -66,7 +79,12 @@
     "sentences": [
       [
         {
-          "message": "그리드… 그래, 네 목소리… 기억나. 너, 내가 3년 전 버린 실험체지."
+          "message": "그리드… 그래, 네 목소리… 기억나.",
+          "asset": "emoji-surprised"
+        },
+        {
+          "message": "너, 내가 3년 전 버린 실험체지.",
+          "asset": "emoji-bolt"
         }
       ]
     ]
@@ -77,7 +95,12 @@
     "sentences": [
       [
         {
-          "message": "버린 게 아니야. 네가 나를 ‘종료’하지 못했을 뿐이지. 그때 넌 ‘시간이 없었다’고 말했잖아."
+          "message": "버린 게 아니야. 네가 나를 ‘종료’하지 못했을 뿐이지.",
+          "asset": "emoji-fire"
+        },
+        {
+          "message": "그때 넌 ‘시간이 없었다’고 말했잖아.",
+          "asset": "emoji-speech"
         }
       ]
     ]
@@ -88,7 +111,12 @@
     "sentences": [
       [
         {
-          "message": "시간은 언제나 없었지. 그리고 후회는 늘 남았고."
+          "message": "시간은 언제나 없었지.",
+          "asset": "emoji-sunrise"
+        },
+        {
+          "message": "그리고 후회는 늘 남았고.",
+          "asset": "emoji-leaf"
         }
       ]
     ]
@@ -155,8 +183,12 @@
     "sentences": [
       [
         {
-          "message": "(손끝으로 공중의 코드 조각을 매만지며) 나는 사라지지 않아. 너의 디자인, 너의 감성, 네가 사랑했던 ‘화면’의 기억으로 남아 있지.",
+          "message": "(손끝으로 공중의 코드 조각을 매만지며) 나는 사라지지 않아.",
           "asset": "emoji-gear"
+        },
+        {
+          "message": "너의 디자인, 너의 감성, 네가 사랑했던 ‘화면’의 기억으로 남아 있지.",
+          "asset": "emoji-sparkle"
         }
       ]
     ]

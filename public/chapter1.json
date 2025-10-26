@@ -69,7 +69,8 @@
           "asset": "emoji-star"
         },
         {
-          "message": "너 화장실 간 게 언제야? 눈 밑에 다크서클이 데이터베이스처럼 쌓였어."
+          "message": "너 화장실 간 게 언제야? 눈 밑에 다크서클이 데이터베이스처럼 쌓였어.",
+          "asset": "emoji-bolt"
         }
       ]
     ]
@@ -80,7 +81,12 @@
     "sentences": [
       [
         {
-          "message": "…시간 아깝잖아. 코드는 기다려주지 않아."
+          "message": "…시간 아깝잖아.",
+          "asset": "emoji-sunrise"
+        },
+        {
+          "message": "코드는 기다려주지 않아.",
+          "asset": "emoji-gear"
         }
       ]
     ]
@@ -107,7 +113,12 @@
           "asset": "emoji-rocket"
         },
         {
-          "message": "집중은 불꽃이야. 잠깐 꺼줘야 타오르지."
+          "message": "집중은 불꽃이야.",
+          "asset": "emoji-fire"
+        },
+        {
+          "message": "잠깐 꺼줘야 타오르지.",
+          "asset": "emoji-sparkle"
         }
       ]
     ]
@@ -175,7 +186,12 @@
     "sentences": [
       [
         {
-          "message": "지금 농담할 때가 아니야! 데이터 플로우가 역류하고 있어. API 호출이 폭발 직전이야!"
+          "message": "지금 농담할 때가 아니야! 데이터 플로우가 역류하고 있어.",
+          "asset": "emoji-bolt"
+        },
+        {
+          "message": "API 호출이 폭발 직전이야!",
+          "asset": "emoji-fire"
         }
       ]
     ]

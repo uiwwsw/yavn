@@ -35,7 +35,16 @@
     "sentences": [
       [
         {
-          "message": "터미널을 보니까 단순한 서버 과부하가 아니야. 데이터 루프, 자동 크롤링 버그, API 스파이크… 마치 누군가 고의로 기사를 공격적으로 복제하는 것 같아."
+          "message": "터미널을 보니까 단순한 서버 과부하가 아니야.",
+          "asset": "emoji-gear"
+        },
+        {
+          "message": "데이터 루프, 자동 크롤링 버그, API 스파이크…",
+          "asset": "emoji-bolt"
+        },
+        {
+          "message": "마치 누군가 고의로 기사를 공격적으로 복제하는 것 같아.",
+          "asset": "emoji-fire"
         }
       ]
     ]
@@ -46,7 +55,16 @@
     "sentences": [
       [
         {
-          "message": "정보의 홍수. 진실과 거짓의 경계가 사라지는 시대. 우린 ‘기사’라는 이름의 빛을 다루지만, 그 빛이 세상을 태울 수도 있지."
+          "message": "정보의 홍수.",
+          "asset": "emoji-sparkle"
+        },
+        {
+          "message": "진실과 거짓의 경계가 사라지는 시대.",
+          "asset": "emoji-leaf"
+        },
+        {
+          "message": "우린 ‘기사’라는 이름의 빛을 다루지만, 그 빛이 세상을 태울 수도 있지.",
+          "asset": "emoji-fire"
         }
       ]
     ]
@@ -68,8 +86,20 @@
     "sentences": [
       [
         {
-          "message": "(성문을 밀치며 등장) 좋은 철학이군. 하지만 요새가 불타고 있어, 매튜! 편집 시스템이 다운되고, API는 끊겼어! 모든 기자의 원고가 공중으로 날아가고 있어!",
+          "message": "(성문을 밀치며 등장) 좋은 철학이군.",
           "asset": "emoji-rocket"
+        },
+        {
+          "message": "하지만 요새가 불타고 있어, 매튜!",
+          "asset": "emoji-fire"
+        },
+        {
+          "message": "편집 시스템이 다운되고, API는 끊겼어!",
+          "asset": "emoji-bolt"
+        },
+        {
+          "message": "모든 기자의 원고가 공중으로 날아가고 있어!",
+          "asset": "emoji-star"
         }
       ]
     ]
