@@ -2,16 +2,24 @@
   {
     "sentences": [
       [
-        { "message": "CHAPTER 5 — 한국일보의 빛 (Korea Times 프로젝트)" }
+        {
+          "message": "CHAPTER 5 — 한국일보의 빛 (Korea Times 프로젝트)"
+        }
       ],
       [
-        { "message": "배경: 디지털 기사 관리 시스템 ‘햄스 요새’." }
+        {
+          "message": "배경: 디지털 기사 관리 시스템 ‘햄스 요새’."
+        }
       ],
       [
-        { "message": "상징: 집요함과 혁신의 융합." }
+        {
+          "message": "상징: 집요함과 혁신의 융합."
+        }
       ],
       [
-        { "message": "키워드: 뉴스 워크플로, 자동화, 현장 공감." }
+        {
+          "message": "키워드: 뉴스 워크플로, 자동화, 현장 공감."
+        }
       ]
     ]
   },
@@ -20,10 +28,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "에디터가 멈추면 기자들이 전부 슬랙에 난리쳐요!", "asset": ["emoji-surprised", "emoji-speech"] }
+        {
+          "message": "에디터가 멈추면 기자들이 전부 슬랙에 난리쳐요!",
+          "asset": [
+            "emoji-surprised",
+            "emoji-speech"
+          ]
+        }
       ],
       [
-        { "message": "리치텍스트 모듈부터 안정화해야 해요." }
+        {
+          "message": "리치텍스트 모듈부터 안정화해야 해요."
+        }
+      ],
+      [
+        {
+          "message": "기자 분들이 야식 보내준대요. 밤에 김치전 냄새 나면 제 탓이에요.",
+          "asset": [
+            "emoji-speech",
+            "emoji-smile"
+          ]
+        }
       ]
     ]
   },
@@ -32,10 +57,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "로그를 파봤는데, 번들 캐시가 꼬였더라.", "asset": ["emoji-gear", "emoji-bolt"] }
+        {
+          "message": "로그를 파봤는데, 번들 캐시가 꼬였더라.",
+          "asset": [
+            "emoji-gear",
+            "emoji-bolt"
+          ]
+        }
       ],
       [
-        { "message": "즉시 롤백 포인트를 만들어둬." }
+        {
+          "message": "즉시 롤백 포인트를 만들어둬."
+        }
+      ],
+      [
+        {
+          "message": "롤백 포인트엔 코드네임 붙여둬. '호랑이', '고양이'처럼 기억나게.",
+          "asset": [
+            "emoji-gear",
+            "emoji-star"
+          ]
+        }
       ]
     ]
   },
@@ -44,10 +86,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "비동기 호출을 조립하는 대신, 파이프라인을 재정의하자.", "asset": ["emoji-fire", "emoji-gear"] }
+        {
+          "message": "비동기 호출을 조립하는 대신, 파이프라인을 재정의하자.",
+          "asset": [
+            "emoji-fire",
+            "emoji-gear"
+          ]
+        }
       ],
       [
-        { "message": "문서 작성-검수-발행을 하나의 상태 머신으로 묶어서 오류를 줄일 수 있어." }
+        {
+          "message": "문서 작성-검수-발행을 하나의 상태 머신으로 묶어서 오류를 줄일 수 있어."
+        }
+      ],
+      [
+        {
+          "message": "상태 머신 다이어그램 옆에 기자 사진 붙여둘래. 우리가 위해 달리는 사람들이니까.",
+          "asset": [
+            "emoji-handshake",
+            "emoji-sparkle"
+          ]
+        }
       ]
     ]
   },
@@ -56,10 +115,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "그리고 기자들의 목소리부터 들어.", "asset": ["emoji-speech", "emoji-handshake"] }
+        {
+          "message": "그리고 기자들의 목소리부터 들어.",
+          "asset": [
+            "emoji-speech",
+            "emoji-handshake"
+          ]
+        }
       ],
       [
-        { "message": "현장과 개발이 같은 페이지를 읽어야 진짜 혁신이 완성돼." }
+        {
+          "message": "현장과 개발이 같은 페이지를 읽어야 진짜 혁신이 완성돼."
+        }
+      ],
+      [
+        {
+          "message": "현장 인터뷰 갈 때 나도 따라가도 돼? 새벽 공기 맡으면 각성되더라.",
+          "asset": [
+            "emoji-sunrise",
+            "emoji-smile"
+          ]
+        }
       ]
     ]
   },
@@ -68,10 +144,26 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "또다시 네 불꽃이 과열되고 있군.", "asset": ["emoji-fire"] }
+        {
+          "message": "또다시 네 불꽃이 과열되고 있군.",
+          "asset": [
+            "emoji-fire"
+          ]
+        }
       ],
       [
-        { "message": "이번엔 주변을 태우지 않을 자신 있나?" }
+        {
+          "message": "이번엔 주변을 태우지 않을 자신 있나?"
+        }
+      ],
+      [
+        {
+          "message": "과열? 맞아. 하지만 요즘 너 덕분에 난 온도를 재는 방법도 배우고 있어.",
+          "asset": [
+            "emoji-fire",
+            "emoji-relaxed"
+          ]
+        }
       ]
     ]
   },
@@ -80,10 +172,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "있어. 불꽃을 채널링하는 법을 배웠으니까.", "asset": ["emoji-fire", "emoji-leaf"] }
+        {
+          "message": "있어. 불꽃을 채널링하는 법을 배웠으니까.",
+          "asset": [
+            "emoji-fire",
+            "emoji-leaf"
+          ]
+        }
       ],
       [
-        { "message": "버그 대시보드와 슬랙 봇을 연결해서, 불길이 나기 전에 알람을 울릴 거야." }
+        {
+          "message": "버그 대시보드와 슬랙 봇을 연결해서, 불길이 나기 전에 알람을 울릴 거야."
+        }
+      ],
+      [
+        {
+          "message": "알람이 울리기 전에 커피도 내려두자. 경보 뒤에 웃음이 와야 마음이 진정되거든.",
+          "asset": [
+            "emoji-speech",
+            "emoji-smile"
+          ]
+        }
       ]
     ]
   },
@@ -92,10 +201,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "그럼 난 데이터 레이크에서 독자 행동을 분석해서 피드백 루프를 닫아줄게.", "asset": ["emoji-rocket", "emoji-star"] }
+        {
+          "message": "그럼 난 데이터 레이크에서 독자 행동을 분석해서 피드백 루프를 닫아줄게.",
+          "asset": [
+            "emoji-rocket",
+            "emoji-star"
+          ]
+        }
       ],
       [
-        { "message": "성공 기준을 공유해야 우리가 같은 방향으로 달리지." }
+        {
+          "message": "성공 기준을 공유해야 우리가 같은 방향으로 달리지."
+        }
+      ],
+      [
+        {
+          "message": "독자 데이터 분석 끝나면 우리 동네 빵집 쿠폰도 공유할게. 달콤함이 혁신을 부르지.",
+          "asset": [
+            "emoji-star",
+            "emoji-leaf"
+          ]
+        }
       ]
     ]
   },
@@ -104,10 +230,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "UX 리서치 일정도 기사〮편집〮배포 흐름에 맞춰 재설계했어요.", "asset": ["emoji-smile", "emoji-sparkle"] }
+        {
+          "message": "UX 리서치 일정도 기사〮편집〮배포 흐름에 맞춰 재설계했어요.",
+          "asset": [
+            "emoji-smile",
+            "emoji-sparkle"
+          ]
+        }
       ],
       [
-        { "message": "이제 모든 스프린트 회의에서 독자 여정 지표를 함께 보게 될 거예요." }
+        {
+          "message": "이제 모든 스프린트 회의에서 독자 여정 지표를 함께 보게 될 거예요."
+        }
+      ],
+      [
+        {
+          "message": "독자 여정 리뷰 끝나면 팟캐스트 추천도 돌릴까요? 이야기 나눌 주제가 많아요.",
+          "asset": [
+            "emoji-speech",
+            "emoji-sparkle"
+          ]
+        }
       ]
     ]
   },
@@ -116,10 +259,26 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "흐음, 이 정도면 언론사가 아니라 기술회사 같군.", "asset": ["emoji-star"] }
+        {
+          "message": "흐음, 이 정도면 언론사가 아니라 기술회사 같군.",
+          "asset": [
+            "emoji-star"
+          ]
+        }
       ],
       [
-        { "message": "그래도 방심은 금물이다. 실시간 트래픽은 언제든 폭발해." }
+        {
+          "message": "그래도 방심은 금물이다. 실시간 트래픽은 언제든 폭발해."
+        }
+      ],
+      [
+        {
+          "message": "트래픽 폭발 대비 매뉴얼에 농담 한 줄 넣어둬. 비상시 웃음이 제일 귀하거든.",
+          "asset": [
+            "emoji-bolt",
+            "emoji-smile"
+          ]
+        }
       ]
     ]
   },
@@ -128,10 +287,27 @@
     "place": "햄스 요새",
     "sentences": [
       [
-        { "message": "알아. 그래서 시스템이 대신 긴장하도록 만들었어.", "asset": ["emoji-gear", "emoji-muscle"] }
+        {
+          "message": "알아. 그래서 시스템이 대신 긴장하도록 만들었어.",
+          "asset": [
+            "emoji-gear",
+            "emoji-muscle"
+          ]
+        }
       ],
       [
-        { "message": "우리는 서로의 마음을 돌보고, 도구는 위기를 감지하도록." }
+        {
+          "message": "우리는 서로의 마음을 돌보고, 도구는 위기를 감지하도록."
+        }
+      ],
+      [
+        {
+          "message": "오늘 밤엔 기사 대신 별빛을 아카이브하자. 새벽 공기가 우릴 지켜줄 거야.",
+          "asset": [
+            "emoji-sunrise",
+            "emoji-leaf"
+          ]
+        }
       ]
     ]
   }
