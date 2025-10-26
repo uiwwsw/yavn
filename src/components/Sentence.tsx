@@ -1,7 +1,7 @@
 // import reactLogo from './assets/react.svg';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Assets } from '@/Game';
-import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // import viteLogo from '/vite.svg';
 interface Sentence {
@@ -19,53 +19,9 @@ export interface SentenceProps {
   data?: string | Sentence | Sentence[];
   isComplete: boolean;
   onComplete: () => void;
-  speakerSide?: 'left' | 'right';
 }
 const defaultDuration = 100;
-type AnchorType = 'head' | 'mouth' | 'body' | 'ambient';
-
-interface EmojiMeta {
-  anchor: AnchorType;
-  scale?: number;
-  offsetX?: number;
-  offsetY?: number;
-  revealAt?: number;
-  delay?: number;
-}
-
-const ANCHOR_POSITIONS: Record<'left' | 'right', Record<AnchorType, CSSProperties>> = {
-  left: {
-    head: { top: '28%', left: '26%' },
-    mouth: { top: '56%', left: '32%' },
-    body: { top: '66%', left: '30%' },
-    ambient: { top: '32%', left: '45%' },
-  },
-  right: {
-    head: { top: '28%', right: '26%' },
-    mouth: { top: '56%', right: '32%' },
-    body: { top: '66%', right: '30%' },
-    ambient: { top: '32%', right: '45%' },
-  },
-};
-
-const EMOJI_META: Record<string, EmojiMeta> = {
-  'emoji-bolt': { anchor: 'head', scale: 1.2, offsetX: -12, offsetY: -24, revealAt: 0.5 },
-  'emoji-fire': { anchor: 'body', scale: 1.25, offsetY: -8, revealAt: 0.55 },
-  'emoji-gear': { anchor: 'body', scale: 1.1, offsetX: -6, revealAt: 0.45 },
-  'emoji-handshake': { anchor: 'body', scale: 1.05, offsetY: 10, revealAt: 0.6 },
-  'emoji-leaf': { anchor: 'ambient', scale: 1, offsetX: 18, offsetY: -6, revealAt: 0.4, delay: 0.1 },
-  'emoji-muscle': { anchor: 'body', scale: 1.1, offsetX: 6, offsetY: 6, revealAt: 0.55 },
-  'emoji-relaxed': { anchor: 'mouth', scale: 1.05, offsetY: 8, revealAt: 0.6 },
-  'emoji-rocket': { anchor: 'ambient', scale: 1.2, offsetX: -30, offsetY: -18, revealAt: 0.45 },
-  'emoji-smile': { anchor: 'mouth', scale: 0.95, offsetY: 4, revealAt: 0.5 },
-  'emoji-sparkle': { anchor: 'ambient', scale: 1.15, offsetX: 8, offsetY: -30, revealAt: 0.4, delay: 0.05 },
-  'emoji-speech': { anchor: 'mouth', scale: 1, offsetX: 14, revealAt: 0.55 },
-  'emoji-star': { anchor: 'ambient', scale: 1.1, offsetX: -18, offsetY: -18, revealAt: 0.45 },
-  'emoji-sunrise': { anchor: 'ambient', scale: 1.05, offsetX: 24, offsetY: 6, revealAt: 0.5 },
-  'emoji-surprised': { anchor: 'mouth', scale: 1.1, offsetY: -2, revealAt: 0.55 },
-};
-
-const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete, speakerSide = 'left' }: SentenceProps) => {
+const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
@@ -95,13 +51,6 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete, speake
   }, [_sentences, cursor, step, isCompleteProp]);
   const duration = useMemo(() => sentence.duration ?? defaultDuration, [_sentences, step]);
   // const asset = useMemo(() => sentence.asset, [_sentences, step]);
-  const currentSentenceIndex = useMemo(() => {
-    if (_sentences.length === 0) return -1;
-    if (step < 0) return 0;
-    if (step >= _sentences.length) return _sentences.length - 1;
-    return step;
-  }, [_sentences, step]);
-
   const assetArray = useMemo<AssetEntry[]>(() => {
     const entries = _sentences.flatMap((sentence, index) => {
       if (!sentence.asset) return [];
@@ -111,14 +60,18 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete, speake
 
     if (isCompleteProp) return entries;
 
-    if (currentSentenceIndex < 0) return [];
-    return entries.filter((entry) => entry.index <= currentSentenceIndex);
-  }, [_sentences, currentSentenceIndex, isCompleteProp]);
+    const currentIndex = Math.min(Math.max(step, 0), _sentences.length - 1);
+    return entries.filter((entry) => entry.index === currentIndex);
+  }, [_sentences, step, isCompleteProp]);
   const isEndCursor = useMemo(() => sentence.message.length <= cursor, [_sentences, step, cursor]);
-  const revealRatio = useMemo(() => {
-    if (!sentence.message.length) return 1;
-    return Math.min(cursor / sentence.message.length, 1);
-  }, [sentence, cursor]);
+  const marginLeft = useCallback(
+    (index: number, arr: AssetEntry[]) => {
+      if (!assets) return 0;
+      const audioLength = arr.slice(index).filter((entry) => assets[entry.name]?.audio).length;
+      return (index - (arr.length - 1) + audioLength) * -100;
+    },
+    [assets],
+  );
   useEffect(() => {
     if (!data) return;
     if (data instanceof Array) setSentences(data);
@@ -143,60 +96,34 @@ const Sentence = ({ assets, data, isComplete: isCompleteProp, onComplete, speake
     <>
       {assets && assetArray && (
         <>
-      {assetArray
-        .filter((entry) => entry.index === currentSentenceIndex)
-        .map(({ name, key }) => {
-          const asset = assets?.[name];
-          if (!asset?.audio) return null;
-          return <audio key={`audio-${key}`} src={asset.audio} autoPlay />;
-        })}
-      <AnimatePresence initial={false}>
-        {assetArray.map(({ name, key, index }) => {
-          const asset = assets?.[name];
-          if (!asset?.image) return null;
-          const meta = EMOJI_META[name] ?? { anchor: 'body' };
-          const anchor = ANCHOR_POSITIONS[speakerSide][meta.anchor];
-          if (!anchor) return null;
-          const isPastSentence = index < currentSentenceIndex;
-          const threshold = meta.revealAt ?? 0.65;
-          const shouldShow =
-            isCompleteProp || isPastSentence || (index === currentSentenceIndex && revealRatio >= threshold);
-          if (!shouldShow) return null;
-
-          const size = 96 * (meta.scale ?? 1);
-          const translateX = meta.offsetX ?? 0;
-          const translateY = meta.offsetY ?? 0;
-          const baseTransform = speakerSide === 'right' ? 'translate(50%, -50%)' : 'translate(-50%, -50%)';
-          const style: CSSProperties = {
-            position: 'absolute',
-            pointerEvents: 'none',
-            ...anchor,
-            width: `${size}px`,
-            height: `${size}px`,
-            transform: `${baseTransform} translate(${translateX}px, ${translateY}px)`,
-          };
-
-          const delay = (meta.delay ?? 0) + (isPastSentence ? 0 : 0.05);
-
-          return (
-            <motion.img
-              key={`image-${key}`}
-              className="z-30 select-none object-contain drop-shadow-[0_10px_25px_rgba(0,0,0,0.35)]"
-              style={style}
-              src={asset.image}
-              alt=""
-              initial={{ opacity: 0, scale: 0.92, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 12 }}
-              transition={{
-                opacity: { duration: 0.3, ease: 'easeOut', delay },
-                scale: { duration: 0.35, ease: 'easeOut', delay },
-                y: { type: 'spring', stiffness: 180, damping: 20, delay },
-              }}
-            />
-          );
-        })}
-      </AnimatePresence>
+          {assetArray.map(({ name, key }) => {
+            const asset = assets[name];
+            if (!asset?.audio) return null;
+            return <audio key={`audio-${key}`} src={asset.audio} autoPlay />;
+          })}
+          <AnimatePresence initial={false}>
+            {assetArray.map(({ name, key }, i, arr) => {
+              const asset = assets[name];
+              if (!asset?.image) return null;
+              const offset = marginLeft(i, arr);
+              return (
+                <motion.img
+                  key={`image-${key}`}
+                  className="fixed left-1/2 top-1/2 max-h-40 max-w-40 -translate-x-1/2 -translate-y-1/2 object-contain"
+                  src={asset.image}
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.95, x: offset - 12 }}
+                  animate={{ opacity: 1, scale: 1, x: offset }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    opacity: { duration: 0.25, ease: 'easeOut' },
+                    scale: { duration: 0.4, ease: 'easeOut' },
+                    x: { type: 'spring', stiffness: 260, damping: 26 },
+                  }}
+                />
+              );
+            })}
+          </AnimatePresence>
         </>
       )}
       <p className="relative flex-auto whitespace-pre-line">

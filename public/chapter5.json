@@ -2,24 +2,16 @@
   {
     "sentences": [
       [
-        {
-          "message": "CHAPTER 6 — 그리드의 각성 (자기 성찰과 완성)"
-        }
+        { "message": "CHAPTER 6 — 그리드의 각성 (자기 성찰과 완성)" }
       ],
       [
-        {
-          "message": "배경: 현실과 내면이 교차하는 디지털 심연."
-        }
+        { "message": "배경: 현실과 내면이 교차하는 디지털 심연." }
       ],
       [
-        {
-          "message": "상징: 완성, 균형, 그리고 새로운 시작."
-        }
+        { "message": "상징: 완성, 균형, 그리고 새로운 시작." }
       ],
       [
-        {
-          "message": "키워드: 통합, 회복탄력성, 끝나지 않는 학습."
-        }
+        { "message": "키워드: 통합, 회복탄력성, 끝나지 않는 학습." }
       ]
     ]
   },
@@ -28,26 +20,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "이제 마지막이군, 매튜.",
-          "asset": [
-            "emoji-bolt"
-          ]
-        }
+        { "message": "이제 마지막이군, 매튜.", "asset": ["emoji-bolt"] }
       ],
       [
-        {
-          "message": "네가 나를 버리려 드는 순간을 기다렸지."
-        }
-      ],
-      [
-        {
-          "message": "마지막이라도 내 농담은 잊지 마. 너를 깨우던 건 비꼼뿐만이 아니었으니까.",
-          "asset": [
-            "emoji-speech",
-            "emoji-bolt"
-          ]
-        }
+        { "message": "네가 나를 버리려 드는 순간을 기다렸지." }
       ]
     ]
   },
@@ -56,27 +32,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "버리지 않아. 넌 내 불안이자 추진력이니까.",
-          "asset": [
-            "emoji-fire",
-            "emoji-leaf"
-          ]
-        }
+        { "message": "버리지 않아. 넌 내 불안이자 추진력이니까.", "asset": ["emoji-fire", "emoji-leaf"] }
       ],
       [
-        {
-          "message": "우린 서로의 언어를 번역해야 해."
-        }
-      ],
-      [
-        {
-          "message": "불안이 덕분에 내가 달리죠. 잠깐 쉬면서 차 한잔하자.",
-          "asset": [
-            "emoji-relaxed",
-            "emoji-leaf"
-          ]
-        }
+        { "message": "우린 서로의 언어를 번역해야 해." }
       ]
     ]
   },
@@ -85,26 +44,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "번역? 난 혼자 있을 때 더 빛났어.",
-          "asset": [
-            "emoji-fire"
-          ]
-        }
+        { "message": "번역? 난 혼자 있을 때 더 빛났어.", "asset": ["emoji-fire"] }
       ],
       [
-        {
-          "message": "팀을 믿는다는 네 말, 정말인가?"
-        }
-      ],
-      [
-        {
-          "message": "혼자 빛난다 믿었지만, 요즘은 스탠드 조명이 좋더라. 다들 함께 비추니까.",
-          "asset": [
-            "emoji-star",
-            "emoji-smile"
-          ]
-        }
+        { "message": "팀을 믿는다는 네 말, 정말인가?" }
       ]
     ]
   },
@@ -113,27 +56,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "정말이야. 나는 더 이상 완벽한 해결사를 연기하지 않아.",
-          "asset": [
-            "emoji-handshake",
-            "emoji-relaxed"
-          ]
-        }
+        { "message": "정말이야. 나는 더 이상 완벽한 해결사를 연기하지 않아.", "asset": ["emoji-handshake", "emoji-relaxed"] }
       ],
       [
-        {
-          "message": "취약함을 공유하는 게 우리를 지탱했어."
-        }
-      ],
-      [
-        {
-          "message": "취약함을 말한 날 밤엔 만화책도 읽었어. 마음을 가볍게 하는 법을 배우는 중이야.",
-          "asset": [
-            "emoji-speech",
-            "emoji-sparkle"
-          ]
-        }
+        { "message": "취약함을 공유하는 게 우리를 지탱했어." }
       ]
     ]
   },
@@ -142,27 +68,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "그래, 그게 성숙이야.",
-          "asset": [
-            "emoji-sunrise",
-            "emoji-star"
-          ]
-        }
+        { "message": "그래, 그게 성숙이야.", "asset": ["emoji-sunrise", "emoji-star"] }
       ],
       [
-        {
-          "message": "리더는 답을 주지 않고 질문을 나눠. 네가 그렇게 변했음을 다들 알고 있어."
-        }
-      ],
-      [
-        {
-          "message": "질문 나누기 전에 스트레칭도 잊지 말자. 몸이 편해야 마음이 열린다.",
-          "asset": [
-            "emoji-muscle",
-            "emoji-leaf"
-          ]
-        }
+        { "message": "리더는 답을 주지 않고 질문을 나눠. 네가 그렇게 변했음을 다들 알고 있어." }
       ]
     ]
   },
@@ -171,27 +80,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "최근 회고에서 당신이 먼저 실수를 얘기했을 때 모두가 안도했죠.",
-          "asset": [
-            "emoji-smile",
-            "emoji-speech"
-          ]
-        }
+        { "message": "최근 회고에서 당신이 먼저 실수를 얘기했을 때 모두가 안도했죠.", "asset": ["emoji-smile", "emoji-speech"] }
       ],
       [
-        {
-          "message": "우린 그날 이후 진짜 팀이 됐어요."
-        }
-      ],
-      [
-        {
-          "message": "회고 끝나고 떡볶이 먹으러 가요. 그날 이후 팀 채팅방 이모지도 더 다양해졌어요.",
-          "asset": [
-            "emoji-fire",
-            "emoji-smile"
-          ]
-        }
+        { "message": "우린 그날 이후 진짜 팀이 됐어요." }
       ]
     ]
   },
@@ -200,26 +92,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "허허, 이젠 내 잔소리를 기다리는 표정이 아니네.",
-          "asset": [
-            "emoji-star"
-          ]
-        }
+        { "message": "허허, 이젠 내 잔소리를 기다리는 표정이 아니네.", "asset": ["emoji-star"] }
       ],
       [
-        {
-          "message": "네가 만든 시스템이 우리를 앞으로 밀어줄 거다."
-        }
-      ],
-      [
-        {
-          "message": "시스템 자랑은 내가 대신 해줄게. 너는 오늘만큼은 음악 리스트나 공유해.",
-          "asset": [
-            "emoji-sparkle",
-            "emoji-speech"
-          ]
-        }
+        { "message": "네가 만든 시스템이 우리를 앞으로 밀어줄 거다." }
       ]
     ]
   },
@@ -228,27 +104,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "데이터도 증명했어. 팀 회복 시간, 버그 반응 시간 전부 줄었지.",
-          "asset": [
-            "emoji-rocket",
-            "emoji-gear"
-          ]
-        }
+        { "message": "데이터도 증명했어. 팀 회복 시간, 버그 반응 시간 전부 줄었지.", "asset": ["emoji-rocket", "emoji-gear"] }
       ],
       [
-        {
-          "message": "이젠 새로운 모험을 기획해보자고."
-        }
-      ],
-      [
-        {
-          "message": "새 모험에는 나침반이 필요하잖아. 데이터 대시보드에 작은 별 아이콘 추가해둘게.",
-          "asset": [
-            "emoji-star",
-            "emoji-rocket"
-          ]
-        }
+        { "message": "이젠 새로운 모험을 기획해보자고." }
       ]
     ]
   },
@@ -257,26 +116,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "…좋아. 나도 인정하지.",
-          "asset": [
-            "emoji-sparkle"
-          ]
-        }
+        { "message": "…좋아. 나도 인정하지.", "asset": ["emoji-sparkle"] }
       ],
       [
-        {
-          "message": "그릿이라는 이름이 괜히 붙은 게 아니야."
-        }
-      ],
-      [
-        {
-          "message": "인정하는 김에 우리도 휴가 계획 짜볼까? 쉼도 그릿의 일부라며.",
-          "asset": [
-            "emoji-relaxed",
-            "emoji-sunrise"
-          ]
-        }
+        { "message": "그릿이라는 이름이 괜히 붙은 게 아니야." }
       ]
     ]
   },
@@ -285,28 +128,10 @@
     "place": "디지털 심연",
     "sentences": [
       [
-        {
-          "message": "그래, 나는 매튜. 그리고 우리는 함께 계속 나아간다.",
-          "asset": [
-            "emoji-fire",
-            "emoji-handshake",
-            "emoji-star"
-          ]
-        }
+        { "message": "그래, 나는 매튜. 그리고 우리는 함께 계속 나아간다.", "asset": ["emoji-fire", "emoji-handshake", "emoji-star"] }
       ],
       [
-        {
-          "message": "완성은 순간이지만, 지속은 우리의 습관이니까."
-        }
-      ],
-      [
-        {
-          "message": "다음 장면은 모두 함께 쓰자. 나레이션 대신 합창으로.",
-          "asset": [
-            "emoji-handshake",
-            "emoji-sparkle"
-          ]
-        }
+        { "message": "완성은 순간이지만, 지속은 우리의 습관이니까." }
       ]
     ]
   }
