@@ -15,7 +15,6 @@ interface Chapter {
   sentences: SentenceProps['data'][];
   character: string;
   place: string;
-  background?: string;
 }
 const Game = () => {
   const { level, addStorage } = useStorageContext();
@@ -27,8 +26,6 @@ const Game = () => {
   const [complete, setComplete] = useState(false);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
-  const [displayPlace, setDisplayPlace] = useState<string>();
-  const [backgroundImage, setBackgroundImage] = useState<string>();
   const assetList = useMemo(
     () => Object.values(assets).flatMap((x) => Object.values(x).filter((x) => x) as string[]),
     [assets],
@@ -45,7 +42,6 @@ const Game = () => {
     () => (direct ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }),
     [direct],
   );
-  const backgroundKey = useMemo(() => scene?.background ?? scene?.place, [scene]);
   const handleGoSavePage = () => addStorage({ page: 'save', level });
 
   const handleComplete = () => {
@@ -123,44 +119,10 @@ const Game = () => {
     window.addEventListener('keydown', handleEnter);
     return () => window.removeEventListener('keydown', handleEnter);
   }, [complete]);
-  useEffect(() => {
-    if (!backgroundKey) {
-      setDisplayPlace(undefined);
-      setBackgroundImage(undefined);
-      return;
-    }
-    const src = assets[backgroundKey]?.image;
-    if (!src) {
-      setDisplayPlace(undefined);
-      setBackgroundImage(undefined);
-      return;
-    }
-    if (displayPlace === backgroundKey && backgroundImage === src) return;
-    let canceled = false;
-    const img = new Image();
-    img.src = src;
-    const handleLoad = () => {
-      if (canceled) return;
-      setDisplayPlace(backgroundKey);
-      setBackgroundImage(src);
-    };
-    if (img.complete) handleLoad();
-    else img.addEventListener('load', handleLoad, { once: true });
-    return () => {
-      canceled = true;
-      img.removeEventListener('load', handleLoad);
-    };
-  }, [assets, backgroundImage, backgroundKey, displayPlace]);
   // return { character, place, image, Scene, nextScene };
   return (
     <Preload assets={assetList}>
-      <div onClick={nextScene} className="absolute inset-0 overflow-hidden bg-slate-900">
-        <div className="pointer-events-none absolute inset-0">
-          {backgroundImage && displayPlace && (
-            <img className="absolute inset-0 h-full w-full object-cover" src={backgroundImage} alt={displayPlace} />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 opacity-80" />
-        </div>
+      <div onClick={nextScene} className="absolute inset-0">
         {place && assets[place]?.audio && <audio src={assets[place]?.audio} autoPlay />}
         {displayCharacter && characterImage && (
           <img
@@ -169,6 +131,9 @@ const Game = () => {
             src={characterImage}
             alt={displayCharacter}
           />
+        )}
+        {place && assets[place]?.image && (
+          <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />
         )}
         {sentence && (
           <div
