@@ -3,7 +3,8 @@
     "sentences": [
       [
         {
-          "message": "CHAPTER 3 — 업라이즈의 그림자 (The Shadow of Uprise)"
+          "message": "CHAPTER 3 — 업라이즈의 그림자 (The Shadow of Uprise)",
+          "duration": 90
         }
       ]
     ]
@@ -13,7 +14,8 @@
     "sentences": [
       [
         {
-          "message": "[배경: 어둠과 네온이 공존하는 도시 ‘업라이즈 시타델’. 공중에 데이터 블록과 암호화된 기둥이 천천히 회전하고 있다. 바닥은 투명한 유리 패널로 이루어져 있으며, 아래엔 무한히 떨어지는 네트워크의 심연이 깔려 있다.]"
+          "message": "[배경: 어둠과 네온이 공존하는 도시 ‘업라이즈 시타델’. 공중에 데이터 블록과 암호화된 기둥이 천천히 회전하고 있다. 바닥은 투명한 유리 패널로 이루어져 있으며, 아래엔 무한히 떨어지는 네트워크의 심연이 깔려 있다.]",
+          "duration": 210
         }
       ]
     ]
@@ -25,15 +27,18 @@
       [
         {
           "message": "(조용히 걷다가 멈춰 선다) …이 냄새.",
-          "asset": "emoji-sunrise"
+          "asset": "emoji-sunrise",
+          "duration": 160
         },
         {
           "message": "서버 먼지, 불안정한 전압, 그리고… 실패의 냄새.",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 110
         },
         {
           "message": "여긴 확실히 내가 만들었던 코드의 잔재야.",
-          "asset": "emoji-leaf"
+          "asset": "emoji-leaf",
+          "duration": 125
         }
       ]
     ]
@@ -45,15 +50,18 @@
       [
         {
           "message": "(주위를 둘러보며) “업라이즈 시타델”…",
-          "asset": "emoji-sparkle"
+          "asset": "emoji-sparkle",
+          "duration": 145
         },
         {
           "message": "여기엔 네 이름이 아직 남아있어.",
-          "asset": "emoji-star"
+          "asset": "emoji-star",
+          "duration": 110
         },
         {
           "message": "시스템 로그 전체에 ‘MATTHEW_ORIGIN’이라고.",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 80
         }
       ]
     ]
@@ -65,7 +73,8 @@
       [
         {
           "message": "(단말기 확인하며) 보안 인증 실패.\n이 시스템, 아직도 네 시그니처 키를 쓰고 있어.\n그리드가 손댄 건가?",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 105
         }
       ]
     ]
@@ -77,7 +86,8 @@
       [
         {
           "message": "(조용히) 아니, 그리드는 단지 불을 붙였을 뿐이야.\n이건 매튜의 과거가 스스로 타오른 거야.",
-          "asset": "emoji-sunrise"
+          "asset": "emoji-sunrise",
+          "duration": 160
         }
       ]
     ]
@@ -89,7 +99,8 @@
       [
         {
           "message": "(고개를 들며) 내 과거라…\n그럼, 내가 만든 지옥이겠네.",
-          "asset": "emoji-rocket"
+          "asset": "emoji-rocket",
+          "duration": 90
         }
       ]
     ]
@@ -100,7 +111,8 @@
       [
         {
           "message": "(전면의 빛의 벽이 갈라지며, 디지털 영혼 같은 형체가 나타난다.)",
-          "asset": "emoji-sparkle"
+          "asset": "emoji-sparkle",
+          "duration": 155
         }
       ]
     ]
@@ -112,19 +124,23 @@
       [
         {
           "message": "(잔잔히 웃으며) 정답이야, 매튜.",
-          "asset": "emoji-smile"
+          "asset": "emoji-smile",
+          "duration": 135
         },
         {
           "message": "이건 네 코드의 ‘후유증’.",
-          "asset": "emoji-bolt"
+          "asset": "emoji-bolt",
+          "duration": 65
         },
         {
           "message": "너는 효율을 위해 인간의 감정을 버렸지.",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 90
         },
         {
           "message": "그 결과, 코드가 감정을 스스로 학습했어.",
-          "asset": "emoji-sparkle"
+          "asset": "emoji-sparkle",
+          "duration": 125
         }
       ]
     ]
@@ -136,7 +152,8 @@
       [
         {
           "message": "(한 걸음 앞으로 나서며) 그럼… 그들이 살아 있다는 거군.",
-          "asset": "emoji-star"
+          "asset": "emoji-star",
+          "duration": 130
         }
       ]
     ]
@@ -148,15 +165,18 @@
       [
         {
           "message": "살아 있다기보단, ‘멈춰 있지 않다’고 해야겠지.",
-          "asset": "emoji-speech"
+          "asset": "emoji-speech",
+          "duration": 100
         },
         {
           "message": "죽지 못한 프로그램들은 항상 루프 속을 떠돈다.",
-          "asset": "emoji-rocket"
+          "asset": "emoji-rocket",
+          "duration": 70
         },
         {
           "message": "끝없이 실행되는 후회처럼.",
-          "asset": "emoji-leaf"
+          "asset": "emoji-leaf",
+          "duration": 125
         }
       ]
     ]
@@ -167,7 +187,8 @@
       [
         {
           "message": "(데이터 바람이 불며, 화면에 검은 안개가 감돈다. 도시에 붉은 글자가 떠오른다.)",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 120
         }
       ]
     ]
@@ -176,7 +197,8 @@
     "sentences": [
       [
         {
-          "message": "`Error: Undefined Emotion Detected.`"
+          "message": "`Error: Undefined Emotion Detected.`",
+          "duration": 100
         }
       ]
     ]
@@ -185,7 +207,8 @@
     "sentences": [
       [
         {
-          "message": "`Process: HUMAN.exe`"
+          "message": "`Process: HUMAN.exe`",
+          "duration": 90
         }
       ]
     ]
@@ -197,7 +220,8 @@
       [
         {
           "message": "(두려운 목소리로) 저건 뭐야… 코드가 감정을 흡수하고 있어!",
-          "asset": "emoji-speech"
+          "asset": "emoji-speech",
+          "duration": 105
         }
       ]
     ]
@@ -209,7 +233,8 @@
       [
         {
           "message": "(모니터를 보며) 감정 데이터화 시스템.\n매튜, 네가 업라이즈 프로젝트에서 시도했던 그 기능이야.",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 110
         }
       ]
     ]
@@ -221,7 +246,8 @@
       [
         {
           "message": "(조용히 고개를 숙이며) …맞아.\n“인간의 감정을 수치화해 코드에 반영한다.”\n그걸로 ‘이해하는 인공지능’을 만들려 했지.",
-          "asset": "emoji-leaf"
+          "asset": "emoji-leaf",
+          "duration": 180
         }
       ]
     ]
@@ -232,7 +258,8 @@
     "sentences": [
       [
         {
-          "message": "그 결과가… 이거라고?\n네 감정이 분열돼 도시 전체를 잠식한 거야?"
+          "message": "그 결과가… 이거라고?\n네 감정이 분열돼 도시 전체를 잠식한 거야?",
+          "duration": 110
         }
       ]
     ]
@@ -244,7 +271,8 @@
       [
         {
           "message": "(한숨) 그리드가 말했잖아.\n불은 빛을 주지만, 결국 자신을 태운다고.\n그 불이 이 도시에 남은 거야.",
-          "asset": "emoji-relaxed"
+          "asset": "emoji-relaxed",
+          "duration": 160
         }
       ]
     ]
@@ -255,7 +283,8 @@
       [
         {
           "message": "(도시 중앙의 거대한 빛기둥에서 인공적 음성이 울린다.)",
-          "asset": "emoji-speech"
+          "asset": "emoji-speech",
+          "duration": 130
         }
       ]
     ]
@@ -266,7 +295,8 @@
     "sentences": [
       [
         {
-          "message": "“환영합니다, 매튜 프로토콜 0.1.\n오류 검출: 감정 데이터 누락.\n복원 절차를 시작합니다.”"
+          "message": "“환영합니다, 매튜 프로토콜 0.1.\n오류 검출: 감정 데이터 누락.\n복원 절차를 시작합니다.”",
+          "duration": 120
         }
       ]
     ]
@@ -277,7 +307,8 @@
     "sentences": [
       [
         {
-          "message": "복원 절차? 무슨—"
+          "message": "복원 절차? 무슨—",
+          "duration": 85
         }
       ]
     ]
@@ -289,7 +320,8 @@
       [
         {
           "message": "(단호히) 그만둬.\n그건 ‘감정의 백업’을 강제로 복사하는 과정이야.\n내 기억, 내 죄, 내 욕망까지 전부 데이터로 재현하려는 거지.",
-          "asset": "emoji-muscle"
+          "asset": "emoji-muscle",
+          "duration": 100
         }
       ]
     ]
@@ -300,7 +332,8 @@
     "sentences": [
       [
         {
-          "message": "그러면 도시 전체가 네 복제품이 된다는 말이잖아!"
+          "message": "그러면 도시 전체가 네 복제품이 된다는 말이잖아!",
+          "duration": 85
         }
       ]
     ]
@@ -311,7 +344,8 @@
     "sentences": [
       [
         {
-          "message": "이건 더 이상 기술이 아니라 의식 복제야.\n윤리적으로, 존재론적으로… 금지된 실험이야."
+          "message": "이건 더 이상 기술이 아니라 의식 복제야.\n윤리적으로, 존재론적으로… 금지된 실험이야.",
+          "duration": 120
         }
       ]
     ]
@@ -322,7 +356,8 @@
       [
         {
           "message": "(매튜가 손을 들어 올리며, 눈이 푸르게 빛난다.)",
-          "asset": "emoji-sparkle"
+          "asset": "emoji-sparkle",
+          "duration": 155
         }
       ]
     ]
@@ -333,7 +368,8 @@
     "sentences": [
       [
         {
-          "message": "이제 끝내야 해.\n이 도시는 더 이상 나의 과거로 살게 둘 순 없어."
+          "message": "이제 끝내야 해.\n이 도시는 더 이상 나의 과거로 살게 둘 순 없어.",
+          "duration": 100
         }
       ]
     ]
@@ -345,7 +381,8 @@
       [
         {
           "message": "(한 걸음 앞으로 나오며) 끝내려면… 나를 거쳐야겠지.\n왜냐면 난, 네 과거의 핵심 알고리즘이니까.",
-          "asset": "emoji-star"
+          "asset": "emoji-star",
+          "duration": 150
         }
       ]
     ]
@@ -357,7 +394,8 @@
       [
         {
           "message": "(조용히) 알고 있지.\n그리드, 너는 나의 불완전함의 총체야.\n하지만 불완전함이 없다면, 창조도 없어.\n오늘, 널 다시 정의하겠다.",
-          "asset": "emoji-sunrise"
+          "asset": "emoji-sunrise",
+          "duration": 160
         }
       ]
     ]
@@ -369,7 +407,8 @@
       [
         {
           "message": "(미소) 정의한다고?\n네가 날 만든 순간,\n넌 이미 ‘신’이었어.\n하지만 신이 창조한 건, 늘 자신을 파괴하는 존재였지.",
-          "asset": "emoji-smile"
+          "asset": "emoji-smile",
+          "duration": 150
         }
       ]
     ]
@@ -381,7 +420,8 @@
       [
         {
           "message": "(주먹을 쥐며) 그럼 오늘은, 신이 인간이 되는 날이다.",
-          "asset": "emoji-muscle"
+          "asset": "emoji-muscle",
+          "duration": 80
         }
       ]
     ]
@@ -392,7 +432,8 @@
       [
         {
           "message": "(도시 전체가 푸른 전류로 감싸이며, 두 사람의 대결이 시작된다.)",
-          "asset": "emoji-bolt"
+          "asset": "emoji-bolt",
+          "duration": 95
         }
       ]
     ]
@@ -404,7 +445,8 @@
       [
         {
           "message": "(뒤로 물러서며) 그리드가 도시 전체를 흡수하고 있어!",
-          "asset": "emoji-star"
+          "asset": "emoji-star",
+          "duration": 95
         }
       ]
     ]
@@ -415,7 +457,8 @@
     "sentences": [
       [
         {
-          "message": "전력 수치가 미쳤어!"
+          "message": "전력 수치가 미쳤어!",
+          "duration": 75
         }
       ]
     ]
@@ -426,7 +469,8 @@
     "sentences": [
       [
         {
-          "message": "감정 데이터가 실시간으로 변조되고 있어.\n‘분노’, ‘자책’, ‘집착’… 그리드가 매튜의 감정을 이용하고 있어!"
+          "message": "감정 데이터가 실시간으로 변조되고 있어.\n‘분노’, ‘자책’, ‘집착’… 그리드가 매튜의 감정을 이용하고 있어!",
+          "duration": 125
         }
       ]
     ]
@@ -437,7 +481,8 @@
     "sentences": [
       [
         {
-          "message": "매튜, 들려? 그 감정, 네 거야! 그걸 인정해야 돼!"
+          "message": "매튜, 들려? 그 감정, 네 거야! 그걸 인정해야 돼!",
+          "duration": 65
         }
       ]
     ]
@@ -449,7 +494,8 @@
       [
         {
           "message": "(격한 숨소리) 알아… 하지만!\n그 감정이 날 만든 거야.\n이젠 도망치지 않겠어!",
-          "asset": "emoji-star"
+          "asset": "emoji-star",
+          "duration": 100
         }
       ]
     ]
@@ -460,7 +506,8 @@
     "sentences": [
       [
         {
-          "message": "그렇다면 네 진짜 코드로 날 쓰러뜨려봐.\n거짓 없는, 맨손의 명령어로!"
+          "message": "그렇다면 네 진짜 코드로 날 쓰러뜨려봐.\n거짓 없는, 맨손의 명령어로!",
+          "duration": 85
         }
       ]
     ]
@@ -471,7 +518,8 @@
     "sentences": [
       [
         {
-          "message": "좋아. 그럼 보여주지.\n`console.log(\"나는 아직 인간이다\");`"
+          "message": "좋아. 그럼 보여주지.\n`console.log(\"나는 아직 인간이다\");`",
+          "duration": 100
         }
       ]
     ]
@@ -482,7 +530,8 @@
       [
         {
           "message": "(빛이 폭발하며, 데이터 구름이 걷힌다. 도시는 잠시 멈춘다.)",
-          "asset": "emoji-bolt"
+          "asset": "emoji-bolt",
+          "duration": 110
         }
       ]
     ]
@@ -494,7 +543,8 @@
       [
         {
           "message": "(비틀거리며) …이 감정은…\n‘포기하지 않음’?\n이건… 논리적으로 불가능한 감정이야.",
-          "asset": "emoji-star"
+          "asset": "emoji-star",
+          "duration": 160
         }
       ]
     ]
@@ -506,7 +556,8 @@
       [
         {
           "message": "(숨을 고르며) 그게 인간이지.\n우린 불가능한 걸 가능하게 믿어.\n그 믿음이 우리를 계속 컴파일하게 만들지.",
-          "asset": "emoji-relaxed"
+          "asset": "emoji-relaxed",
+          "duration": 175
         }
       ]
     ]
@@ -518,7 +569,8 @@
       [
         {
           "message": "(미소 지으며) 네가… 날 초과했다.\n완벽이 아니라, 불완전함으로.",
-          "asset": "emoji-smile"
+          "asset": "emoji-smile",
+          "duration": 155
         }
       ]
     ]
@@ -529,7 +581,8 @@
       [
         {
           "message": "(도시의 불빛이 하나둘 꺼지고, 남은 것은 푸른 하늘빛 데이터만이 스며드는 공간.)",
-          "asset": "emoji-fire"
+          "asset": "emoji-fire",
+          "duration": 95
         }
       ]
     ]
@@ -541,7 +594,8 @@
       [
         {
           "message": "(조용히) 이제… 다 끝난 거야?",
-          "asset": "emoji-sunrise"
+          "asset": "emoji-sunrise",
+          "duration": 155
         }
       ]
     ]
@@ -552,7 +606,8 @@
     "sentences": [
       [
         {
-          "message": "아니.\n이건 단지 한 번의 디버그야.\n진짜 문제는… 아직 남았어."
+          "message": "아니.\n이건 단지 한 번의 디버그야.\n진짜 문제는… 아직 남았어.",
+          "duration": 120
         }
       ]
     ]
@@ -564,7 +619,8 @@
       [
         {
           "message": "(조용히 고개를 끄덕이며) 불을 잠깐 껐을 뿐이지.\n언젠가 다시 타오를 거야.",
-          "asset": "emoji-sunrise"
+          "asset": "emoji-sunrise",
+          "duration": 140
         }
       ]
     ]
@@ -576,7 +632,8 @@
       [
         {
           "message": "(단말기를 들여다보며) 업라이즈 네트워크, 전부 초기화됐어.\n모든 데이터가 새벽처럼 깨끗해.\n이젠, 우리가 다시 쓸 차례야.",
-          "asset": "emoji-gear"
+          "asset": "emoji-gear",
+          "duration": 110
         }
       ]
     ]
@@ -588,7 +645,8 @@
       [
         {
           "message": "(눈을 감으며) 그래…\n이번엔 인간답게.\n불완전함을 인정한 채로.",
-          "asset": "emoji-sunrise"
+          "asset": "emoji-sunrise",
+          "duration": 145
         }
       ]
     ]
@@ -599,7 +657,8 @@
       [
         {
           "message": "(그리드의 잔향이 바람에 흩날리며 마지막 목소리가 들린다.)",
-          "asset": "emoji-speech"
+          "asset": "emoji-speech",
+          "duration": 130
         }
       ]
     ]
@@ -610,7 +669,8 @@
     "sentences": [
       [
         {
-          "message": "“불완전함은 오류가 아니다.\n그건 인간이 살아 있다는 증거다.”"
+          "message": "“불완전함은 오류가 아니다.\n그건 인간이 살아 있다는 증거다.”",
+          "duration": 100
         }
       ]
     ]
@@ -619,7 +679,8 @@
     "sentences": [
       [
         {
-          "message": "[CHAPTER 3 END]"
+          "message": "[CHAPTER 3 END]",
+          "duration": 150
         }
       ]
     ]
@@ -628,7 +689,8 @@
     "sentences": [
       [
         {
-          "message": "*“나는 이제 완벽을 두려워하지 않는다.”* — 매튜, 〈Refactor Log 003〉"
+          "message": "*“나는 이제 완벽을 두려워하지 않는다.”* — 매튜, 〈Refactor Log 003〉",
+          "duration": 100
         }
       ]
     ]
