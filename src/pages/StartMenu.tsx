@@ -26,7 +26,7 @@ const StartMenuPage = () => {
       <audio src={asset.audio} autoPlay />
       <div className="relative h-full text-white">
         <img className="h-full w-full object-contain" src={asset.image} alt="시작화면" />
-        <div className="absolute inset-0 bottom-auto m-auto flex w-3/5 flex-col gap-3 pb-10">
+        <div className="absolute inset-4 bottom-auto m-auto flex w-3/5 flex-col gap-3 pb-10">
           <Btn autoFocus onClick={handleStart}>
             시작하기
           </Btn>
