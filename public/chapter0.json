@@ -315,6 +315,49 @@
     ]
   },
   {
+    "character": "매튜",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "(고개를 끄덕이며) 알아, 루크. 그런데 이번엔 네가 어떻게 생각하느냐에 따라 길이 달라질지도 몰라.",
+          "duration": 130
+        }
+      ],
+      {
+        "prompt": "루크에게 어떻게 설득할까?",
+        "choices": [
+          {
+            "text": "진심을 담아 차분하게 설명한다",
+            "goTo": {
+              "id": "calm-response"
+            }
+          },
+          {
+            "text": "가볍게 농담을 던지며 분위기를 누그러뜨린다"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "calm-response",
+    "character": "루크",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "(잠시 침묵하다가) 네가 그 정도로 말하니 한번 믿어봐야겠군. 그래, 네 계획대로 해보자.",
+          "duration": 135
+        }
+      ]
+    ],
+    "next": {
+      "id": "shared-path"
+    }
+  },
+  {
+    "id": "shared-path",
     "character": "세라",
     "place": "잊혀진 코드의 나라",
     "sentences": [

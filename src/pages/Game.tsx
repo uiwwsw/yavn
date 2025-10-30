@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
 import Sentence, { SentenceProps } from '@/Sentence';
 import { getJson } from '#/getJson';
 import Preload from '@/Preload';
@@ -10,11 +10,32 @@ export interface Asset {
 export type Assets = {
   [key: string]: Asset;
 };
+interface ChoiceDestination {
+  chapter?: number;
+  sentence?: number;
+  id?: string;
+}
+interface ChoiceOption {
+  text: string;
+  goTo?: ChoiceDestination;
+}
+interface ChoiceNode {
+  prompt?: string;
+  choices: ChoiceOption[];
+}
+type ChapterSentence = SentenceProps['data'] | ChoiceNode;
+const isChoiceNode = (value: ChapterSentence | undefined): value is ChoiceNode => {
+  if (!value) return false;
+  if (typeof value !== 'object') return false;
+  return 'choices' in value && Array.isArray((value as ChoiceNode).choices);
+};
 interface Chapter {
+  id?: string;
   changePosition?: true;
-  sentences: SentenceProps['data'][];
+  sentences: ChapterSentence[];
   character: string;
   place: string;
+  next?: ChoiceDestination;
 }
 const Game = () => {
   const { level, addStorage } = useStorageContext();
@@ -24,6 +45,8 @@ const Game = () => {
   const [step, setStep] = useState([0, 0]);
   const [chapter, setChapter] = useState<Chapter[]>([]);
   const [complete, setComplete] = useState(false);
+  const [auto, setAuto] = useState(false);
+  const [activeChoice, setActiveChoice] = useState<ChoiceNode | null>(null);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
   const assetList = useMemo(
@@ -35,8 +58,13 @@ const Game = () => {
   const changePosition = useMemo(() => scene?.changePosition, [scene]);
   const place = useMemo(() => scene?.place, [scene]);
   const sentence = useMemo(() => scene?.sentences?.[step[1]], [scene, step]);
-  const maxSentence = useMemo(() => scene?.sentences.length ?? 0, [scene, step]);
+  const sentenceData = useMemo<SentenceProps['data'] | undefined>(() => {
+    if (!sentence || isChoiceNode(sentence)) return undefined;
+    return sentence;
+  }, [sentence]);
+  const maxSentence = useMemo(() => scene?.sentences.length ?? 0, [scene]);
   const maxStep = useMemo(() => chapter.length, [chapter]);
+  const sceneNext = useMemo(() => scene?.next, [scene]);
   const characterPosition: CSSProperties = useMemo(() => {
     type HorizontalSide = 'left' | 'right';
     const activeSide: HorizontalSide = direct ? 'right' : 'left';
@@ -51,11 +79,11 @@ const Game = () => {
     () => (direct ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }),
     [direct],
   );
-  const handleGoSavePage = () => addStorage({ page: 'save', level });
+  const handleGoSavePage = useCallback(() => addStorage({ page: 'save', level }), [addStorage, level]);
 
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     setComplete(true);
-  };
+  }, []);
   const onChangePosition = () => {
     setDirect((prev) => {
       if (prev === undefined) return false;
@@ -63,24 +91,88 @@ const Game = () => {
       return !prev;
     });
   };
-  const nextScene = () => {
-    console.log(complete);
-    if (!complete) return handleComplete();
-    setComplete(false);
+
+  const resolveDestination = useCallback(
+    (destination?: ChoiceDestination): [number, number] | null => {
+      if (!destination) return null;
+
+      let chapterIndex: number | undefined;
+      if (destination.id) {
+        chapterIndex = chapter.findIndex((item) => item.id === destination.id);
+        if (chapterIndex === -1) return null;
+      } else if (destination.chapter !== undefined) {
+        chapterIndex = destination.chapter;
+      } else {
+        chapterIndex = step[0];
+      }
+
+      if (chapterIndex < 0 || chapterIndex >= chapter.length) return null;
+
+      const targetScene = chapter[chapterIndex];
+      const maxSentences = targetScene?.sentences?.length ?? 0;
+      if (!maxSentences) return null;
+
+      const sentenceIndex = destination.sentence ?? 0;
+      const clampedSentence = Math.max(0, Math.min(sentenceIndex, maxSentences - 1));
+
+      return [chapterIndex, clampedSentence];
+    },
+    [chapter, step],
+  );
+
+  const advanceToNext = useCallback(() => {
     let nextSentence = step[1] + 1;
     let nextStep = step[0];
 
     if (nextSentence >= maxSentence) {
       nextSentence = 0;
+
+      if (sceneNext) {
+        const target = resolveDestination(sceneNext);
+        if (target) {
+          setStep(target);
+          return;
+        }
+      }
+
       nextStep += 1;
     }
-    if (nextStep >= maxStep) return handleGoSavePage();
+
+    if (nextStep >= maxStep) {
+      handleGoSavePage();
+      return;
+    }
 
     setStep([nextStep, nextSentence]);
-  };
-  const handleEnter = (e: KeyboardEvent) => {
-    if (e.code === 'Enter') nextScene();
-  };
+  }, [handleGoSavePage, maxSentence, maxStep, resolveDestination, sceneNext, step]);
+
+  const nextScene = useCallback(() => {
+    if (activeChoice) return;
+    if (!complete) return handleComplete();
+    setComplete(false);
+    advanceToNext();
+  }, [activeChoice, advanceToNext, complete, handleComplete]);
+
+  const handleChoiceSelect = useCallback(
+    (option: ChoiceOption) => {
+      setActiveChoice(null);
+      setComplete(false);
+      const target = resolveDestination(option.goTo);
+      if (target) {
+        setStep(target);
+        return;
+      }
+      advanceToNext();
+    },
+    [advanceToNext, resolveDestination],
+  );
+
+  const handleEnter = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.code === 'Enter') nextScene();
+    },
+    [nextScene],
+  );
   useEffect(() => {
     character && onChangePosition();
   }, [character, changePosition]);
@@ -119,19 +211,53 @@ const Game = () => {
       .then(([c, a]) => {
         setChapter(c);
         setAssets(a);
+        setStep([0, 0]);
+        setComplete(false);
+        setActiveChoice(null);
       })
       .catch(() => {
         addStorage({ page: 'credit', level: 0 });
       });
-  }, [level]);
+  }, [level, addStorage]);
   useEffect(() => {
     window.addEventListener('keydown', handleEnter);
     return () => window.removeEventListener('keydown', handleEnter);
-  }, [complete]);
-  // return { character, place, image, Scene, nextScene };
+  }, [handleEnter]);
+
+  useEffect(() => {
+    if (isChoiceNode(sentence)) {
+      setActiveChoice(sentence);
+      return;
+    }
+    setActiveChoice(null);
+  }, [sentence]);
+
+  useEffect(() => {
+    if (!auto || !complete || activeChoice) return;
+    const timer = setTimeout(() => {
+      nextScene();
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [auto, complete, activeChoice, nextScene]);
+
   return (
     <Preload assets={assetList}>
       <div onClick={nextScene} className="absolute inset-0">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-4">
+          <label
+            className="pointer-events-auto flex items-center gap-2 rounded bg-white/80 px-3 py-1 text-sm font-semibold text-black shadow"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <input
+              type="checkbox"
+              className="h-4 w-4"
+              checked={auto}
+              onChange={(e) => setAuto(e.target.checked)}
+              onClick={(e) => e.stopPropagation()}
+            />
+            자동
+          </label>
+        </div>
         {place && assets[place]?.audio && <audio src={assets[place]?.audio} autoPlay />}
         {displayCharacter && characterImage && (
           <img
@@ -150,13 +276,34 @@ const Game = () => {
             style={sentencePosition}
           >
             <span className="whitespace-nowrap">{character}</span>
-            <Sentence
-              assets={assets}
-              data={sentence}
-              direct={direct}
-              isComplete={complete}
-              onComplete={handleComplete}
-            />
+            {sentenceData && (
+              <Sentence
+                assets={assets}
+                data={sentenceData}
+                direct={direct}
+                isComplete={complete}
+                onComplete={handleComplete}
+              />
+            )}
+            {activeChoice && (
+              <div className="flex flex-1 flex-col gap-2" onClick={(e) => e.stopPropagation()}>
+                {activeChoice.prompt && <p className="whitespace-pre-line">{activeChoice.prompt}</p>}
+                <div className="flex flex-col gap-2">
+                  {activeChoice.choices.map((choice, index) => (
+                    <button
+                      key={`${choice.text}-${index}`}
+                      className="rounded border border-black bg-white/90 px-3 py-2 text-left font-medium hover:bg-black hover:text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleChoiceSelect(choice);
+                      }}
+                    >
+                      {choice.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
