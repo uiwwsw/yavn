@@ -36,6 +36,70 @@
     ]
   },
   {
+    "place": "디지털 심연",
+    "sentences": [
+      [
+        {
+          "message": "(희미한 속삭임이 감긴다) \"매튜… 매튜?\"",
+          "asset": "emoji-speech",
+          "duration": 120
+        }
+      ],
+      {
+        "prompt": "속삭이는 목소리에 어떻게 반응할까?",
+        "choices": [
+          {
+            "text": "눈을 뜨고 대답한다",
+            "goTo": {
+              "id": "respond-call"
+            }
+          },
+          {
+            "text": "조금 더 기다린다",
+            "goTo": {
+              "id": "wait-call"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "respond-call",
+    "character": "매튜",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "(눈꺼풀을 떨며) …여기 있어. 누구야, 날 부르는 건?",
+          "asset": "emoji-surprised",
+          "duration": 120
+        }
+      ]
+    ],
+    "next": {
+      "id": "call-merge"
+    }
+  },
+  {
+    "id": "wait-call",
+    "character": "매튜",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "(숨을 고르며) 아직… 조금만 더. 이건… 꿈인가?",
+          "asset": "emoji-relaxed",
+          "duration": 130
+        }
+      ]
+    ],
+    "next": {
+      "id": "call-merge"
+    }
+  },
+  {
+    "id": "call-merge",
     "sentences": [
       [
         {
