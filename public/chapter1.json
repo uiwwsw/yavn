@@ -147,10 +147,67 @@
           "asset": "emoji-rocket",
           "duration": 90
         }
-      ]
+      ],
+      {
+        "prompt": "루크와 세라의 걱정에 어떻게 답할까?",
+        "choices": [
+          {
+            "text": "잠깐 휴식을 받아들이고 모두에게 커피를 권한다",
+            "goTo": {
+              "id": "chapter1-coffee-break"
+            }
+          },
+          {
+            "text": "시간이 없다고 말하며 마지막 노드를 끝내겠다고 고집한다",
+            "goTo": {
+              "id": "chapter1-last-node"
+            }
+          },
+          {
+            "text": "걱정해준 마음에 감사하며 함께 숨을 고르자고 제안한다"
+          }
+        ]
+      }
     ]
   },
   {
+    "id": "chapter1-coffee-break",
+    "character": "세라",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        {
+          "message": "(컵을 건네며) 오늘은 내가 새로 내린 블렌드야. 향 좀 맡아봐.",
+          "duration": 125
+        },
+        {
+          "message": "디버깅도 결국 리듬이니까.",
+          "duration": 95
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter1-resume"
+    }
+  },
+  {
+    "id": "chapter1-last-node",
+    "character": "루크",
+    "place": "세미티에스 공업도시",
+    "sentences": [
+      [
+        {
+          "message": "(눈을 가늘게 뜨며) 또 그 집요함이군. 좋아, 대신 기록 다 남겨둬. 실패하면 회고 때 다 꺼낼 거니까.",
+          "duration": 150
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter1-resume"
+    }
+  },
+  {
+    "id": "chapter1-resume",
     "character": "루크",
     "place": "세미티에스 공업도시",
     "sentences": [
@@ -660,10 +717,73 @@
           "message": "이번엔 다를 거야. 이 불은 세상을 태우기 위한 게 아니라, 밝히기 위한 불이야.",
           "duration": 100
         }
-      ]
+      ],
+      {
+        "prompt": "그리드에게 어떤 신념을 보여줄까?",
+        "choices": [
+          {
+            "text": "불꽃의 위험을 인정하며 모두의 안전장치를 약속한다",
+            "goTo": {
+              "id": "chapter1-safety-vow"
+            }
+          },
+          {
+            "text": "완벽을 향한 욕망 대신 협업의 가치를 강조한다",
+            "goTo": {
+              "id": "chapter1-collab-credo"
+            }
+          },
+          {
+            "text": "그리드의 힘을 빌려 함께 새로운 질서를 만들자고 제안한다"
+          }
+        ]
+      }
     ]
   },
   {
+    "id": "chapter1-safety-vow",
+    "character": "매튜",
+    "place": "황혼 격납고",
+    "sentences": [
+      [
+        {
+          "message": "(손을 내밀며) 네가 두려워한 건 통제 없는 불이었지. 이번엔 안전망부터 깔았어.",
+          "duration": 140
+        },
+        {
+          "message": "우리 팀이 감시하고, 루크가 제동을 잡아.",
+          "duration": 110
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter1-post-credo"
+    }
+  },
+  {
+    "id": "chapter1-collab-credo",
+    "character": "세라",
+    "place": "황혼 격납고",
+    "sentences": [
+      [
+        {
+          "message": "(옆에서 덧붙이며) 그리드, 우린 네 불꽃이 필요해. 하지만 혼자선 새벽을 못 여는 거 알지?",
+          "duration": 150
+        }
+      ],
+      [
+        {
+          "message": "함께 짠 코드는 네가 꿈꾸던 질서보다 훨씬 단단해질 거야.",
+          "duration": 135
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter1-post-credo"
+    }
+  },
+  {
+    "id": "chapter1-post-credo",
     "character": "그리드",
     "place": "황혼 격납고",
     "sentences": [
