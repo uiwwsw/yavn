@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Sentence, { SentenceProps } from '@/Sentence';
 import { getJson } from '#/getJson';
 import Preload from '@/Preload';
@@ -29,6 +29,7 @@ const isChoiceNode = (value: ChapterSentence | undefined): value is ChoiceNode =
   if (typeof value !== 'object') return false;
   return 'choices' in value && Array.isArray((value as ChoiceNode).choices);
 };
+type SentenceObject = Extract<NonNullable<SentenceProps['data']>, { message: string }>;
 interface Chapter {
   id?: string;
   changePosition?: true;
@@ -47,8 +48,11 @@ const Game = () => {
   const [complete, setComplete] = useState(false);
   const [auto, setAuto] = useState(false);
   const [activeChoice, setActiveChoice] = useState<ChoiceNode | null>(null);
+  const [completedAt, setCompletedAt] = useState<number | null>(null);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
+  const completeRef = useRef(complete);
+  const activeChoiceRef = useRef(activeChoice);
   const assetList = useMemo(
     () => Object.values(assets).flatMap((x) => Object.values(x).filter((x) => x) as string[]),
     [assets],
@@ -83,6 +87,7 @@ const Game = () => {
 
   const handleComplete = useCallback(() => {
     setComplete(true);
+    setCompletedAt(Date.now());
   }, []);
   const onChangePosition = () => {
     setDirect((prev) => {
@@ -150,6 +155,7 @@ const Game = () => {
     if (activeChoice) return;
     if (!complete) return handleComplete();
     setComplete(false);
+    setCompletedAt(null);
     advanceToNext();
   }, [activeChoice, advanceToNext, complete, handleComplete]);
 
@@ -157,6 +163,7 @@ const Game = () => {
     (option: ChoiceOption) => {
       setActiveChoice(null);
       setComplete(false);
+      setCompletedAt(null);
       const target = resolveDestination(option.goTo);
       if (target) {
         setStep(target);
@@ -213,6 +220,7 @@ const Game = () => {
         setAssets(a);
         setStep([0, 0]);
         setComplete(false);
+        setCompletedAt(null);
         setActiveChoice(null);
       })
       .catch(() => {
@@ -233,12 +241,62 @@ const Game = () => {
   }, [sentence]);
 
   useEffect(() => {
+    completeRef.current = complete;
+  }, [complete]);
+
+  useEffect(() => {
+    activeChoiceRef.current = activeChoice;
+  }, [activeChoice]);
+
+  const parseSentenceData = useCallback((data: SentenceProps['data'] | undefined) => {
+    if (!data) return [] as { message: string; duration: number }[];
+    const defaultDuration = 100;
+    const normalise = (entry: string | SentenceObject) => {
+      if (typeof entry === 'string') {
+        return { message: entry, duration: defaultDuration };
+      }
+
+      return {
+        message: typeof entry.message === 'string' ? entry.message : '',
+        duration: typeof entry.duration === 'number' ? entry.duration : defaultDuration,
+      };
+    };
+
+    if (Array.isArray(data)) {
+      return (data as SentenceObject[]).map((entry) => normalise(entry));
+    }
+
+    if (typeof data === 'string') {
+      return [normalise(data)];
+    }
+
+    return [normalise(data as SentenceObject)];
+  }, []);
+
+  const autoAdvanceDelay = useMemo(() => {
+    const entries = parseSentenceData(sentenceData);
+    if (!entries.length) return 1800;
+    const typingTime = entries.reduce((total, entry) => total + entry.message.length * entry.duration, 0);
+    const buffer = entries.reduce((total, entry) => total + entry.message.length * 20, 0);
+    return Math.max(1800, Math.min(5000, Math.round(typingTime * 0.5 + buffer)));
+  }, [parseSentenceData, sentenceData]);
+
+  useEffect(() => {
     if (!auto || !complete || activeChoice) return;
-    const timer = setTimeout(() => {
+    if (!completedAt) return;
+
+    const elapsed = Date.now() - completedAt;
+    const delay = Math.max(0, autoAdvanceDelay - elapsed);
+
+    const timer = window.setTimeout(() => {
+      if (!auto) return;
+      if (!completeRef.current) return;
+      if (activeChoiceRef.current) return;
       nextScene();
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [auto, complete, activeChoice, nextScene]);
+    }, delay);
+
+    return () => window.clearTimeout(timer);
+  }, [auto, complete, activeChoice, autoAdvanceDelay, completedAt, nextScene]);
 
   return (
     <Preload assets={assetList}>
