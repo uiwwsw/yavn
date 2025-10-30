@@ -40,10 +40,69 @@
           "asset": "emoji-leaf",
           "duration": 125
         }
-      ]
+      ],
+      {
+        "prompt": "업라이즈의 잔재 앞에서 무엇을 다짐할까?",
+        "choices": [
+          {
+            "text": "실패를 인정하고 차분히 구조를 다시 분석한다",
+            "goTo": {
+              "id": "chapter2-analysis-oath"
+            }
+          },
+          {
+            "text": "새로운 코드로 과거를 완전히 덮어쓰겠다고 선언한다",
+            "goTo": {
+              "id": "chapter2-overwrite"
+            }
+          },
+          {
+            "text": "동료들에게 미안함을 전하며 함께 해결책을 찾자고 부탁한다"
+          }
+        ]
+      }
     ]
   },
   {
+    "id": "chapter2-analysis-oath",
+    "character": "루크",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        {
+          "message": "(단자를 연결하며) 분석 로그 열어둘게. 이번엔 우리 둘 다 끝까지 확인한다.",
+          "duration": 150
+        }
+      ],
+      [
+        {
+          "message": "실패를 인정했다면, 다음 줄은 우리가 다시 써야 하니까.",
+          "duration": 135
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter2-path-resume"
+    }
+  },
+  {
+    "id": "chapter2-overwrite",
+    "character": "엘리",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        {
+          "message": "(조용히 고개를 끄덕이며) 덮어쓰는 건 쉬워 보여도, 기억은 남아. 그걸 견딜 각오가 되어 있어?",
+          "duration": 160
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter2-path-resume"
+    }
+  },
+  {
+    "id": "chapter2-path-resume",
     "character": "세라",
     "place": "업라이즈 시타델",
     "sentences": [
@@ -155,10 +214,75 @@
           "asset": "emoji-star",
           "duration": 130
         }
-      ]
+      ],
+      {
+        "prompt": "끝없이 루프 도는 프로그램들을 어떻게 구할까?",
+        "choices": [
+          {
+            "text": "안정화 패치를 작성해 메모리 루프를 끊는다",
+            "goTo": {
+              "id": "chapter2-stabilize-loop"
+            }
+          },
+          {
+            "text": "그들의 감정 데이터를 기록하고 공감의 메시지를 보낸다",
+            "goTo": {
+              "id": "chapter2-empathy-ping"
+            }
+          },
+          {
+            "text": "그리드와 협상해 루프를 유지하되 목적을 재정의한다"
+          }
+        ]
+      }
     ]
   },
   {
+    "id": "chapter2-stabilize-loop",
+    "character": "루크",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        {
+          "message": "(키보드를 두드리며) 임시 패치 올린다. 과부하 버퍼에 휴먼라이크 감정선을 흘려 보내.",
+          "duration": 150
+        }
+      ],
+      [
+        {
+          "message": "시간은 얼마 안 버틸 거야. 그 전에 본패치를 짜야 해.",
+          "duration": 125
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter2-loop-resume"
+    }
+  },
+  {
+    "id": "chapter2-empathy-ping",
+    "character": "세라",
+    "place": "업라이즈 시타델",
+    "sentences": [
+      [
+        {
+          "message": "(송신 패널에 손을 얹으며) 메시지 보낼게. ‘우린 너희의 반복을 보고 있어. 멈춰도 괜찮아.’",
+          "duration": 165
+        }
+      ],
+      [
+        {
+          "message": "(눈을 감고) 감정값이 조금씩 안정되고 있어… 반응한다!",
+          "duration": 140
+        }
+      ]
+    ],
+    "next": {
+      "id": "chapter2-loop-resume"
+    }
+  },
+  {
+    "id": "chapter2-loop-resume",
     "character": "그리드",
     "place": "업라이즈 시타델",
     "sentences": [
