@@ -112,7 +112,7 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, onComplete
               return (
                 <motion.img
                   key={`image-${key}`}
-                  className={`fixed top-1/2 max-h-40 max-w-40 transform object-contain ${direct ? 'right-1/2' : 'left-1/2'}`}
+                  className={`fixed top-1/2 max-h-24 max-w-24 md:max-h-36 md:max-w-36 transform object-contain ${direct ? 'right-1/2' : 'left-1/2'}`}
                   src={asset.image}
                   alt=""
                   initial={{ opacity: 0, scale: 0.95, x: initialOffset }}
