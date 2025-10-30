@@ -1,5 +1,13 @@
 # Visual Novel ✨
 
+<div align="right">
+
+[🇰🇷 한국어](#readme-ko) | [🇺🇸 English](#readme-en)
+
+</div>
+
+<a id="readme-ko"></a>
+
 **Visual Novel**은 JSON만으로 감각적인 웹 비주얼 노블을 제작할 수 있는 React 기반 툴킷입니다.
 플레이어(엔진)와 제너레이터가 한데 묶여 있어, 데이터를 정의하면 즉시 웹에서 재생 가능한 작품이 완성됩니다.
 직관적인 데이터 구조와 반응형 UI 컴포넌트를 통해, 시나리오에 몰입하는 데만 집중하세요.
@@ -12,7 +20,7 @@
 ## Matthew's Adventure — 매튜의 모험
 > "코드와 감성이 만나는 순간"
 
-라이브러리의 모든 기능은 시연작 **매튜의 모험**에서 확인할 수 있습니다. 
+라이브러리의 모든 기능은 시연작 **매튜의 모험**에서 확인할 수 있습니다.
 영웅 매튜와 동료들의 여정을 한 편의 대서사시로 풀어낸 이 예제는 다음과 같은 특징을 보여줍니다.
 
 - 챕터별 복합 장면 연출 (`public/chapter0.json` ~ `public/chapter5.json`)
@@ -110,3 +118,118 @@ src/
 이 프로젝트에 포함된 모든 아트/오디오 리소스는 각 제작자의 라이선스를 따릅니다. 배포 시 반드시 사용 권한을 확인하고, 크레딧 표기를 잊지 마세요.
 
 이제 당신만의 매튜를 만들어 보세요. 🚀
+
+---
+
+<a id="readme-en"></a>
+
+**Visual Novel** is a React-powered toolkit that lets you craft immersive web visual novels using nothing but JSON.
+Because the player (engine) and generator ship together, defining your data instantly produces a playable experience in the browser.
+With intuitive data structures and responsive UI components, you can focus solely on storytelling.
+
+## Why Visual Novel?
+- **JSON-first authoring**: A Git-friendly structure where scenarios, assets, and saves are all maintained as plain text.
+- **Style-forward defaults**: Polished UI and animations out of the box—lightly adjust colors, fonts, and interactions to match your brand.
+- **Built for the web**: Powered by the Vite + React stack for instant development and deployment.
+
+## Matthew's Adventure
+> "Where code meets emotion."
+
+Experience every feature through the showcase story **Matthew's Adventure**.
+Follow Matthew and his companions on an epic journey that highlights the toolkit's capabilities:
+
+- Chapter-driven set pieces (`public/chapter0.json` ~ `public/chapter5.json`)
+- Rich character and background art (`public/assets/*.png`, `public/assets0.json`)
+- Save/load system (`public/sampleSave.json`)
+- Custom splash and start screens (`public/start.png`, `public/start.json`)
+
+Clone the repository, launch the dev server, and Matthew's Adventure will be ready to play immediately.
+
+## Quick Start
+1. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+2. **Run the dev server** (default port `5173`)
+   ```bash
+   pnpm dev
+   ```
+   Visit `http://localhost:5173` in your browser to play through the start screen and demo story.
+3. **Create a production build**
+   ```bash
+   pnpm build
+   ```
+4. **Preview the bundle**
+   ```bash
+   pnpm preview
+   ```
+
+## Project Structure at a Glance
+```
+public/
+├── assets/              # Static assets for characters, backgrounds, effects
+├── assets{N}.json       # Chapter-specific asset definitions (image/audio key-value pairs)
+├── chapter{N}.json      # Scenario files tying together scenes and dialogue
+├── start.json           # Start screen background and music configuration
+├── sampleSave.json      # Example save data
+└── splash/              # Loading and splash imagery
+src/
+├── components/          # UI components (dialogue box, choices, etc.)
+├── pages/               # Routing and top-level screens
+└── contexts/            # Session and state management
+```
+
+## Writing Scenarios
+Author each scene as an array in `chapter{N}.json`.
+
+```json
+[
+  {
+    "character": "Matthew",
+    "place": "Amoeba Kingdom",
+    "changePosition": true,
+    "sentences": [
+      "A new adventure awaits!",
+      { "message": "Chase the light!", "duration": 60 },
+      [
+        { "message": "Gather the crew", "asset": "emoji-rocket" },
+        { "message": "Protect the kingdom!" }
+      ]
+    ]
+  }
+]
+```
+
+- **`character` / `place` / `asset`**: Reference keys defined in `assets{N}.json`.
+- **`sentences`**: Dialogue entries played sequentially.
+  - Strings render as-is.
+  - Objects follow `{ "message": string, "duration"?: number, "asset"?: string }` to control typing speed and visual flair.
+  - Nested arrays let you present several lines consecutively within a single scene.
+
+### Declaring Assets (`assets{N}.json`)
+```json
+{
+  "Matthew": { "image": "/assets/character-matthew.png" },
+  "Amoeba Kingdom": { "image": "/assets/bg-1.png" },
+  "emoji-rocket": { "image": "/assets/emoji-rocket.svg" }
+}
+```
+- `image`: Path to static imagery such as PNG or SVG files placed on screen.
+- `audio`: Path to sound effects or background tracks that accompany the line.
+
+Add the required assets to `public/assets/` (or similar) and make sure the paths match.
+
+### Saving & Resuming
+- Finishing a chapter triggers a save screen that downloads a JSON file with the next chapter's state.
+- Upload that file to resume play exactly where you left off.
+- The toolkit also leverages `sessionStorage`, so progress persists within the same tab after refresh.
+
+## Customization Ideas
+- **Swap the start/splash screens**: Replace the imagery and music in `public/start.*` and `public/splash/`.
+- **Tweak the UI**: Modify React components under `src/components/` and `src/pages/` to tailor animations, interactions, and layouts.
+- **Extend the theme**: Tailwind CSS is ready to go—enhance colors and typography via `tailwind.config.js` and global styles.
+
+## License & Credits
+All art and audio assets bundled with this project follow their creators' licenses. Confirm usage rights before distribution and credit the original authors.
+
+Bring your own Matthew to life. 🚀
