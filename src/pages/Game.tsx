@@ -275,10 +275,10 @@ const Game = () => {
 
   const autoAdvanceDelay = useMemo(() => {
     const entries = parseSentenceData(sentenceData);
-    if (!entries.length) return 1800;
+    if (!entries.length) return 500;
     const typingTime = entries.reduce((total, entry) => total + entry.message.length * entry.duration, 0);
     const buffer = entries.reduce((total, entry) => total + entry.message.length * 20, 0);
-    return Math.max(1800, Math.min(5000, Math.round(typingTime * 0.5 + buffer)));
+    return Math.max(500, Math.min(5000, Math.round(typingTime * 0.5 + buffer)));
   }, [parseSentenceData, sentenceData]);
 
   useEffect(() => {
