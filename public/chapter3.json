@@ -111,7 +111,7 @@
       [
         {
           "message": "(성문을 밀치며 등장) 좋은 철학이군.",
-          "asset": "emoji-rocket",
+          "asset": "emoji-bolt",
           "duration": 70
         },
         {
@@ -223,7 +223,7 @@
       [
         {
           "message": "(한숨) 매튜, 그 표정… 또 그때처럼이네. 불타는 눈빛. 모두를 구하겠다는 그 무모한 완벽주의.",
-          "asset": "emoji-relaxed",
+          "asset": "emoji-leaf",
           "duration": 180
         }
       ]
@@ -284,7 +284,7 @@
       [
         {
           "message": "(입꼬리를 올리며) 좋아, 스타트업 길드가 다시 뭉쳤군. 이제 남은 건—리더의 명령뿐이지.",
-          "asset": "emoji-star",
+          "asset": "emoji-smile",
           "duration": 110
         }
       ]
@@ -612,7 +612,7 @@
       [
         {
           "message": "(어깨를 툭 치며) 이번엔 진짜 끝난 거지?",
-          "asset": "emoji-star",
+          "asset": "emoji-smile",
           "duration": 105
         }
       ]

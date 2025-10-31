@@ -119,7 +119,6 @@
         },
         {
           "message": "시스템 로그 전체에 ‘MATTHEW_ORIGIN’이라고.",
-          "asset": "emoji-gear",
           "duration": 80
         }
       ]
@@ -211,7 +210,7 @@
       [
         {
           "message": "(한 걸음 앞으로 나서며) 그럼… 그들이 살아 있다는 거군.",
-          "asset": "emoji-star",
+          "asset": "emoji-surprised",
           "duration": 130
         }
       ],
@@ -395,7 +394,7 @@
       [
         {
           "message": "(한숨) 그리드가 말했잖아.\n불은 빛을 주지만, 결국 자신을 태운다고.\n그 불이 이 도시에 남은 거야.",
-          "asset": "emoji-relaxed",
+          "asset": "emoji-leaf",
           "duration": 160
         }
       ]
@@ -569,7 +568,7 @@
       [
         {
           "message": "(뒤로 물러서며) 그리드가 도시 전체를 흡수하고 있어!",
-          "asset": "emoji-star",
+          "asset": "emoji-bolt",
           "duration": 95
         }
       ]
@@ -618,7 +617,7 @@
       [
         {
           "message": "(격한 숨소리) 알아… 하지만!\n그 감정이 날 만든 거야.\n이젠 도망치지 않겠어!",
-          "asset": "emoji-star",
+          "asset": "emoji-fire",
           "duration": 100
         }
       ]
