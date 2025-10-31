@@ -17,7 +17,7 @@
       [
         {
           "message": "(숨을 내쉬며) …여긴… 어디야?",
-          "asset": "emoji-relaxed",
+          "asset": "emoji-surprised",
           "duration": 185
         },
         {
@@ -140,7 +140,6 @@
         },
         {
           "message": "이름은… 그리드(Grit).",
-          "asset": "emoji-star",
           "duration": 130
         }
       ]
@@ -176,7 +175,6 @@
         },
         {
           "message": "그때 넌 ‘시간이 없었다’고 말했잖아.",
-          "asset": "emoji-speech",
           "duration": 100
         }
       ]
@@ -189,7 +187,6 @@
       [
         {
           "message": "시간은 언제나 없었지.",
-          "asset": "emoji-sunrise",
           "duration": 125
         },
         {
@@ -286,7 +283,7 @@
       [
         {
           "message": "(쓴웃음) 그때 네가 말했잖아. \"매튜, 사람은 코드보다 불완전해야 아름다워.\" 근데 난 그 말을 무시했어.",
-          "asset": "emoji-smile",
+          "asset": "emoji-leaf",
           "duration": 140
         }
       ]
@@ -453,7 +450,7 @@
       [
         {
           "message": "(팔짱을 끼며) 둘이 만나면 늘 이 모양이지. 코드보다 대사가 더 길어.",
-          "asset": "emoji-muscle",
+          "asset": "emoji-smile",
           "duration": 80
         }
       ]
@@ -789,7 +786,7 @@
       [
         {
           "message": "(조용히 사라지며) 그럼, 나도 기다리마. 너의 다음 리빌드가… 실패하지 않기를.",
-          "asset": "emoji-sunrise",
+          "asset": "emoji-sparkle",
           "duration": 160
         }
       ]

@@ -26,7 +26,7 @@
       [
         {
           "message": "(조용히 눈을 뜨며) 여긴… 아무 소리도 없네.",
-          "asset": "emoji-star",
+          "asset": "emoji-sunrise",
           "duration": 145
         }
       ],
@@ -652,7 +652,7 @@
       [
         {
           "message": "(공간이 천천히 해체되며, 매튜가 현실로 돌아온다. 그의 눈빛은 더 이상 불타지 않는다. 대신 따뜻하게 빛난다.)",
-          "asset": "emoji-fire",
+          "asset": "emoji-sunrise",
           "duration": 130
         }
       ]

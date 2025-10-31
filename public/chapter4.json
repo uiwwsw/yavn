@@ -35,7 +35,7 @@
       [
         {
           "message": "(황폐한 탑을 보며) …아무것도 없어서 ‘낭비가 없다’는 뜻 아닐까?",
-          "asset": "emoji-star",
+          "asset": "emoji-leaf",
           "duration": 110
         }
       ]
@@ -48,7 +48,7 @@
       [
         {
           "message": "(손을 허공에 내밀며) 아니, 여긴 완전한 시스템이었어. 과거엔 데이터가 손실도 없었고, 모든 프로세스가 완벽하게 순환했지. 문제는… ‘변화가 사라졌다는 것’이야.",
-          "asset": "emoji-handshake",
+          "asset": "emoji-gear",
           "duration": 170
         }
       ]
@@ -152,7 +152,7 @@
       [
         {
           "message": "(작게 웃으며) 그러니까 여긴… 매튜가 만든 ‘지옥’이네. 완벽함의 지옥.",
-          "asset": "emoji-smile",
+          "asset": "emoji-leaf",
           "duration": 140
         }
       ]
@@ -392,7 +392,7 @@
       [
         {
           "message": "(짙은 그림자 속에서 나타나며) 또다시 자신을 희생하겠다고? 넌 불타야만 깨닫는 건가?",
-          "asset": "emoji-rocket",
+          "asset": "emoji-fire",
           "duration": 60
         }
       ]
@@ -527,7 +527,7 @@
       [
         {
           "message": "(왕국 위로 햇살이 비친다. 부서진 탑이 서서히 정렬되고, 코드들이 따뜻한 색으로 빛난다.)",
-          "asset": "emoji-gear",
+          "asset": "emoji-sunrise",
           "duration": 140
         }
       ]

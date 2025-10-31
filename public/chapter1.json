@@ -21,7 +21,7 @@
       [
         {
           "message": "(손에 커피를 들고) 또… 밤샜군, 매튜.",
-          "asset": "emoji-handshake",
+          "asset": "emoji-relaxed",
           "duration": 135
         }
       ]
@@ -72,7 +72,7 @@
       [
         {
           "message": "(책상에 턱을 괴며) 완성이 아니라 집착이겠지.",
-          "asset": "emoji-star",
+          "asset": "emoji-relaxed",
           "duration": 110
         },
         {
@@ -90,12 +90,10 @@
       [
         {
           "message": "…시간 아깝잖아.",
-          "asset": "emoji-sunrise",
           "duration": 135
         },
         {
           "message": "코드는 기다려주지 않아.",
-          "asset": "emoji-gear",
           "duration": 90
         }
       ]
@@ -121,7 +119,7 @@
       [
         {
           "message": "(뒤에서 천천히 등장) 멈추는 것도 기술이지.",
-          "asset": "emoji-rocket",
+          "asset": "emoji-sparkle",
           "duration": 85
         },
         {
@@ -131,7 +129,6 @@
         },
         {
           "message": "잠깐 꺼줘야 타오르지.",
-          "asset": "emoji-sparkle",
           "duration": 125
         }
       ]
@@ -144,7 +141,7 @@
       [
         {
           "message": "(고개를 들며) 나한테 집중은… 숨쉬는 거야.",
-          "asset": "emoji-rocket",
+          "asset": "emoji-fire",
           "duration": 90
         }
       ],
@@ -237,7 +234,7 @@
       [
         {
           "message": "(문을 박차고 들어오며) 얘들아, 또 터졌냐?!",
-          "asset": "emoji-star",
+          "asset": "emoji-bolt",
           "duration": 90
         }
       ]
@@ -250,7 +247,7 @@
       [
         {
           "message": "(귀를 막으며) 사운드 이펙트 좀 낮춰줘요, 길드장님.",
-          "asset": "emoji-star",
+          "asset": "emoji-relaxed",
           "duration": 110
         }
       ]
@@ -281,7 +278,7 @@
       [
         {
           "message": "(화면을 보며) 프록시 서버가 버티질 못해요. 세 개가 이미 다운됐어요.",
-          "asset": "emoji-star",
+          "asset": "emoji-gear",
           "duration": 110
         }
       ]
@@ -306,7 +303,7 @@
       [
         {
           "message": "(조용히) …구조가 문제야.",
-          "asset": "emoji-sunrise",
+          "asset": "emoji-gear",
           "duration": 160
         }
       ]
@@ -383,7 +380,7 @@
       [
         {
           "message": "(조용히) …그 말, 멋지네.",
-          "asset": "emoji-sunrise",
+          "asset": "emoji-smile",
           "duration": 160
         }
       ]
@@ -420,7 +417,7 @@
       [
         {
           "message": "(손가락을 두드리며) …좋아, 해봐. 대신 네 이름 걸고.",
-          "asset": "emoji-muscle",
+          "asset": "emoji-bolt",
           "duration": 100
         }
       ]
@@ -445,7 +442,7 @@
       [
         {
           "message": "(고개를 저으며) 이건 자폭이야.",
-          "asset": "emoji-star",
+          "asset": "emoji-fire",
           "duration": 110
         }
       ]
@@ -522,7 +519,7 @@
       [
         {
           "message": "(눈을 좁히며) 저건… 네가 직접 짠 빌드 엔진인가?",
-          "asset": "emoji-star",
+          "asset": "emoji-gear",
           "duration": 125
         }
       ]
@@ -673,7 +670,7 @@
       [
         {
           "message": "(어둠 속에서 천천히 등장) 또 불을 붙였군, 매튜.",
-          "asset": "emoji-rocket",
+          "asset": "emoji-sparkle",
           "duration": 85
         },
         {
@@ -690,7 +687,7 @@
       [
         {
           "message": "(고개를 돌리며) 그리드… 네가 여기까지 따라왔군.",
-          "asset": "emoji-star",
+          "asset": "emoji-surprised",
           "duration": 130
         }
       ]
@@ -790,7 +787,7 @@
       [
         {
           "message": "(비웃음) 모든 불은 처음엔 빛이었지. 하지만 결국, 연기로 변하더군.",
-          "asset": "emoji-smile",
+          "asset": "emoji-fire",
           "duration": 120
         }
       ]
@@ -803,7 +800,7 @@
       [
         {
           "message": "(조용히) …그리드. 넌 그의 과거인가?",
-          "asset": "emoji-sunrise",
+          "asset": "emoji-gear",
           "duration": 155
         }
       ]
@@ -833,7 +830,7 @@
       [
         {
           "message": "(나직하게) 그럼 인간이면 어때? 불완전해야 아름답다니까.",
-          "asset": "emoji-star",
+          "asset": "emoji-sunrise",
           "duration": 105
         }
       ]
@@ -963,7 +960,7 @@
       [
         {
           "message": "(놀란 듯) …돌아왔다.",
-          "asset": "emoji-star",
+          "asset": "emoji-surprised",
           "duration": 130
         }
       ]
@@ -1025,7 +1022,7 @@
       [
         {
           "message": "(피곤한 얼굴로 고개를 들며) 괜찮아. 불씨는 남아있어야 해.",
-          "asset": "emoji-rocket",
+          "asset": "emoji-relaxed",
           "duration": 70
         },
         {
