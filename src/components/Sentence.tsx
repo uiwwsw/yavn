@@ -1,7 +1,7 @@
 // import reactLogo from './assets/react.svg';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Assets } from '@/Game';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
 
 // import viteLogo from '/vite.svg';
 interface Sentence {
@@ -19,10 +19,12 @@ export interface SentenceProps {
   data?: string | Sentence | Sentence[];
   direct?: boolean;
   isComplete: boolean;
+  auto?: boolean;
+  autoProgress?: number;
   onComplete: () => void;
 }
 const defaultDuration = 100;
-const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, onComplete }: SentenceProps) => {
+const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, autoProgress, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
@@ -94,6 +96,21 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, onComplete
   useEffect(() => {
     if (isComplete) onComplete();
   }, [isComplete]);
+  const showAutoProgress = useMemo(() => Boolean(auto && isCompleteProp), [auto, isCompleteProp]);
+  const clampedAutoProgress = useMemo(() => {
+    if (!showAutoProgress) return 0;
+    const value = typeof autoProgress === 'number' && Number.isFinite(autoProgress) ? autoProgress : 0;
+    return Math.max(0, Math.min(1, value));
+  }, [autoProgress, showAutoProgress]);
+
+  const gaugeStyle = useMemo<CSSProperties | undefined>(() => {
+    if (!showAutoProgress) return undefined;
+    const percent = Math.round(clampedAutoProgress * 10000) / 100;
+    return {
+      background: `conic-gradient(rgba(0, 0, 0, 0.75) 0% ${percent}%, rgba(0, 0, 0, 0.15) ${percent}% 100%)`,
+    };
+  }, [clampedAutoProgress, showAutoProgress]);
+
   return (
     <>
       {assets && assetArray && (
@@ -133,16 +150,24 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, onComplete
         {sentences}
         {isComplete ? (
           <span className="ml-auto block w-fit animate-pulse">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
-            </svg>
+            <span className="relative inline-flex h-8 w-8 items-center justify-center">
+              {showAutoProgress && (
+                <>
+                  <span className="absolute inset-0 rounded-full" style={gaugeStyle} />
+                  <span className="absolute inset-[3px] rounded-full bg-white/80" />
+                </>
+              )}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
+              </svg>
+            </span>
           </span>
         ) : (
           <span className="animate-ping" style={{ animationDuration: `${duration}ms` }}>

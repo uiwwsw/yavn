@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
 import Sentence, { SentenceProps } from '@/Sentence';
 import { getJson } from '#/getJson';
 import Preload from '@/Preload';
@@ -51,8 +51,7 @@ const Game = () => {
   const [completedAt, setCompletedAt] = useState<number | null>(null);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
-  const completeRef = useRef(complete);
-  const activeChoiceRef = useRef(activeChoice);
+  const [autoProgress, setAutoProgress] = useState(0);
   const assetList = useMemo(
     () => Object.values(assets).flatMap((x) => Object.values(x).filter((x) => x) as string[]),
     [assets],
@@ -154,6 +153,7 @@ const Game = () => {
   const nextScene = useCallback(() => {
     if (activeChoice) return;
     if (!complete) return handleComplete();
+    setAutoProgress(0);
     setComplete(false);
     setCompletedAt(null);
     advanceToNext();
@@ -164,6 +164,7 @@ const Game = () => {
       setActiveChoice(null);
       setComplete(false);
       setCompletedAt(null);
+      setAutoProgress(0);
       const target = resolveDestination(option.goTo);
       if (target) {
         setStep(target);
@@ -222,6 +223,7 @@ const Game = () => {
         setComplete(false);
         setCompletedAt(null);
         setActiveChoice(null);
+        setAutoProgress(0);
       })
       .catch(() => {
         addStorage({ page: 'credit', level: 0 });
@@ -239,14 +241,6 @@ const Game = () => {
     }
     setActiveChoice(null);
   }, [sentence]);
-
-  useEffect(() => {
-    completeRef.current = complete;
-  }, [complete]);
-
-  useEffect(() => {
-    activeChoiceRef.current = activeChoice;
-  }, [activeChoice]);
 
   const parseSentenceData = useCallback((data: SentenceProps['data'] | undefined) => {
     if (!data) return [] as { message: string; duration: number }[];
@@ -282,21 +276,34 @@ const Game = () => {
   }, [parseSentenceData, sentenceData]);
 
   useEffect(() => {
-    if (!auto || !complete || activeChoice) return;
-    if (!completedAt) return;
+    if (!auto || !complete || activeChoice || !completedAt) {
+      setAutoProgress(0);
+      return;
+    }
 
-    const elapsed = Date.now() - completedAt;
-    const delay = Math.max(0, autoAdvanceDelay - elapsed);
+    let animationFrame: number;
+    const start = completedAt;
+    setAutoProgress(0);
 
-    const timer = window.setTimeout(() => {
-      if (!auto) return;
-      if (!completeRef.current) return;
-      if (activeChoiceRef.current) return;
-      nextScene();
-    }, delay);
+    const update = () => {
+      const elapsed = Date.now() - start;
+      const progress = autoAdvanceDelay <= 0 ? 1 : Math.min(1, elapsed / autoAdvanceDelay);
+      setAutoProgress(progress);
 
-    return () => window.clearTimeout(timer);
-  }, [auto, complete, activeChoice, autoAdvanceDelay, completedAt, nextScene]);
+      if (progress >= 1) {
+        nextScene();
+        return;
+      }
+
+      animationFrame = window.requestAnimationFrame(update);
+    };
+
+    animationFrame = window.requestAnimationFrame(update);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, [auto, complete, activeChoice, completedAt, autoAdvanceDelay, nextScene]);
 
   return (
     <Preload assets={assetList}>
@@ -340,6 +347,8 @@ const Game = () => {
                 data={sentenceData}
                 direct={direct}
                 isComplete={complete}
+                auto={auto}
+                autoProgress={autoProgress}
                 onComplete={handleComplete}
               />
             )}
