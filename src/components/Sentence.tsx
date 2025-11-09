@@ -23,7 +23,7 @@ export interface SentenceProps {
   autoProgress?: number;
   onComplete: () => void;
 }
-const defaultDuration = 100;
+const defaultDuration = 70;
 const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, autoProgress, onComplete }: SentenceProps) => {
   const [_sentences, setSentences] = useState<Sentence[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
@@ -146,35 +146,41 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, auto
           </AnimatePresence>
         </>
       )}
-      <p className="relative flex-auto whitespace-pre-line">
-        {sentences}
-        {isComplete ? (
-          <span className="ml-auto block w-fit animate-pulse">
-            <span className="relative inline-flex h-8 w-8 items-center justify-center">
-              {showAutoProgress && (
-                <>
-                  <span className="absolute inset-0 rounded-full" style={gaugeStyle} />
-                  <span className="absolute inset-[3px] rounded-full bg-white/80" />
-                </>
-              )}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
-              </svg>
+      <div className="relative flex flex-auto items-end gap-4">
+        <span className="flex-1 whitespace-pre-line leading-relaxed">
+          {sentences}
+          {!isComplete && (
+            <span className="ml-1 inline-block animate-ping align-baseline" style={{ animationDuration: `${duration}ms` }}>
+              |
             </span>
-          </span>
-        ) : (
-          <span className="animate-ping" style={{ animationDuration: `${duration}ms` }}>
-            |
-          </span>
-        )}
-      </p>
+          )}
+        </span>
+        <span
+          className={`relative inline-flex h-10 w-10 items-center justify-center transition-opacity ${
+            isCompleteProp ? 'opacity-100 animate-pulse' : 'opacity-60'
+          }`}
+        >
+          {showAutoProgress && (
+            <>
+              <span className="absolute inset-0 rounded-full" style={gaugeStyle} />
+              <span className="absolute inset-[3px] rounded-full bg-white/80" />
+            </>
+          )}
+          {!showAutoProgress && (
+            <span className="absolute inset-0 rounded-full bg-white/60" />
+          )}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="relative h-6 w-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
+          </svg>
+        </span>
+      </div>
     </>
   );
 };
