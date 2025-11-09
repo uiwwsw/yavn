@@ -244,7 +244,7 @@ const Game = () => {
 
   const parseSentenceData = useCallback((data: SentenceProps['data'] | undefined) => {
     if (!data) return [] as { message: string; duration: number }[];
-    const defaultDuration = 100;
+    const defaultDuration = 70;
     const normalise = (entry: string | SentenceObject) => {
       if (typeof entry === 'string') {
         return { message: entry, duration: defaultDuration };
@@ -271,9 +271,16 @@ const Game = () => {
     const entries = parseSentenceData(sentenceData);
     if (!entries.length) return 500;
     const typingTime = entries.reduce((total, entry) => total + entry.message.length * entry.duration, 0);
-    const buffer = entries.reduce((total, entry) => total + entry.message.length * 20, 0);
-    return Math.max(500, Math.min(5000, Math.round(typingTime * 0.5 + buffer)));
+    const buffer = entries.reduce((total, entry) => total + entry.message.length * 12, 0);
+    return Math.max(350, Math.min(4000, Math.round(typingTime * 0.4 + buffer)));
   }, [parseSentenceData, sentenceData]);
+
+  useEffect(() => {
+    if (!auto) return;
+    if (!complete || activeChoice) return;
+    setAutoProgress(0);
+    setCompletedAt(Date.now());
+  }, [auto, complete, activeChoice]);
 
   useEffect(() => {
     if (!auto || !complete || activeChoice || !completedAt) {
