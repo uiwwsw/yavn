@@ -6,7 +6,7 @@ import LoadBtn from '@/LoadBtn';
 import Assets from '@/Preload';
 import { useEffect, useMemo, useState } from 'react';
 import { getJson } from '#/getJson';
-import { Asset } from './Game';
+import { Asset } from '#/novelTypes';
 const StartMenuPage = () => {
   const { addStorage } = useStorageContext();
   const [asset, setAsset] = useState<Asset>({});

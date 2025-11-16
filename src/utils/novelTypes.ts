@@ -1,0 +1,47 @@
+export interface Asset {
+  image?: string;
+  audio?: string;
+}
+
+export type Assets = Record<string, Asset>;
+
+export interface SentenceEntry {
+  duration?: number;
+  message: string;
+  asset?: string | string[];
+}
+
+export type SentenceData = string | SentenceEntry | SentenceEntry[];
+
+export interface ChoiceDestination {
+  chapter?: number;
+  sentence?: number;
+  id?: string;
+}
+
+export interface ChoiceOption {
+  text: string;
+  goTo?: ChoiceDestination;
+}
+
+export interface ChoiceNode {
+  prompt?: string;
+  choices: ChoiceOption[];
+}
+
+export type ChapterSentence = SentenceData | ChoiceNode;
+
+export interface Chapter {
+  id?: string;
+  changePosition?: true;
+  sentences: ChapterSentence[];
+  character: string;
+  place: string;
+  next?: ChoiceDestination;
+}
+
+export const isChoiceNode = (value: ChapterSentence | undefined): value is ChoiceNode => {
+  if (!value) return false;
+  if (typeof value !== 'object') return false;
+  return 'choices' in value && Array.isArray((value as ChoiceNode).choices);
+};
