@@ -38,7 +38,7 @@ export interface BattleStats {
   speed: number;
 }
 
-export type BattleSkillType = 'attack' | 'heal';
+export type BattleSkillType = 'attack' | 'heal' | 'defend' | 'evade';
 
 export interface BattleSkill {
   id: string;

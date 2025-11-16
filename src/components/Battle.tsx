@@ -5,6 +5,7 @@ import { getPartyDefinitions } from '#/battleData';
 interface BattleProps {
   config: BattleConfig;
   onComplete: (result: 'win' | 'lose') => void;
+  partyStats?: Record<string, BattleStats>;
 }
 
 interface CharacterState {
@@ -12,6 +13,8 @@ interface CharacterState {
   hp: number;
   stats: BattleStats;
   skills: BattleSkill[];
+  guard?: number;
+  evade?: number;
 }
 
 interface EnemyState extends BattleEnemyConfig {
@@ -29,14 +32,23 @@ const useBattleLog = (initial: string) => {
   return { log, pushLog, reset } as const;
 };
 
-const Battle = ({ config, onComplete }: BattleProps) => {
-  const partyDefinitions = useMemo(() => getPartyDefinitions(config.party), [config.party]);
+const SKILL_TYPE_LABELS: Record<BattleSkill['type'], string> = {
+  attack: '공격',
+  heal: '회복',
+  defend: '방어',
+  evade: '회피',
+};
+
+const Battle = ({ config, onComplete, partyStats }: BattleProps) => {
+  const partyDefinitions = useMemo(() => getPartyDefinitions(config.party, partyStats), [config.party, partyStats]);
   const [players, setPlayers] = useState<CharacterState[]>(() =>
     partyDefinitions.map((character) => ({
       name: character.name,
       stats: character.stats,
       skills: character.skills,
       hp: character.stats.maxHp,
+      guard: undefined,
+      evade: undefined,
     })),
   );
   const [enemy, setEnemy] = useState<EnemyState>({
@@ -53,6 +65,8 @@ const Battle = ({ config, onComplete }: BattleProps) => {
         stats: character.stats,
         skills: character.skills,
         hp: character.stats.maxHp,
+        guard: undefined,
+        evade: undefined,
       })),
     );
     setEnemy({ ...config.enemy, hp: config.enemy.stats.maxHp });
@@ -87,6 +101,28 @@ const Battle = ({ config, onComplete }: BattleProps) => {
         return;
       }
 
+      if (skill.type === 'defend') {
+        setPlayers((prev) =>
+          prev.map((character, index) =>
+            index === activePlayerIndex ? { ...character, guard: skill.power } : character,
+          ),
+        );
+        pushLog(`${activePlayer.name}이 ${skill.name}으로 방어 태세를 갖췄습니다.`);
+        setTurn('enemy');
+        return;
+      }
+
+      if (skill.type === 'evade') {
+        setPlayers((prev) =>
+          prev.map((character, index) =>
+            index === activePlayerIndex ? { ...character, evade: skill.power } : character,
+          ),
+        );
+        pushLog(`${activePlayer.name}이 ${skill.name}으로 회피를 준비합니다.`);
+        setTurn('enemy');
+        return;
+      }
+
       setEnemy((prev) => {
         const damage = calculateDamage(activePlayer.stats.attack, skill.power, prev.stats.defense);
         const nextHp = clamp(prev.hp - damage, 0, prev.stats.maxHp);
@@ -103,19 +139,73 @@ const Battle = ({ config, onComplete }: BattleProps) => {
     if (enemy.hp <= 0) return;
 
     const timeout = window.setTimeout(() => {
+      const skillList = enemy.skills ?? [
+        { id: 'enemy-strike', name: '글리치 스트라이크', description: '', power: 6, type: 'attack' as const },
+      ];
+      const skill = skillList[Math.floor(Math.random() * skillList.length)];
+
+      if (skill.type === 'heal') {
+        let healed = 0;
+        setEnemy((prevEnemy) => {
+          const nextHp = clamp(prevEnemy.hp + skill.power, 0, prevEnemy.stats.maxHp);
+          healed = nextHp - prevEnemy.hp;
+          return { ...prevEnemy, hp: nextHp };
+        });
+        pushLog(`${enemy.name}의 ${skill.name}! ${healed > 0 ? `${enemy.name}이 ${healed} 회복했다.` : '효과가 없다.'}`);
+        setTurn('player');
+        return;
+      }
+
+      let detailText = '';
       setPlayers((prev) => {
         const alive = prev.filter((character) => character.hp > 0);
-        if (!alive.length) return prev;
+        if (!alive.length) {
+          detailText = '공격할 대상이 없습니다.';
+          return prev;
+        }
         const target = alive[Math.floor(Math.random() * alive.length)];
         const targetIndex = prev.findIndex((character) => character.name === target.name);
-        const skillList = enemy.skills ?? [{ id: 'enemy-strike', name: '글리치 스트라이크', description: '', power: 6, type: 'attack' }];
-        const skill = skillList[Math.floor(Math.random() * skillList.length)];
-        const damage = calculateDamage(enemy.stats.attack, skill.power, target.stats.defense);
-        pushLog(`${enemy.name}의 ${skill.name}! ${target.name}이 ${damage} 피해.`);
-        return prev.map((character, index) =>
-          index === targetIndex ? { ...character, hp: clamp(character.hp - damage, 0, character.stats.maxHp) } : character,
-        );
+
+        return prev.map((character, index) => {
+          if (index !== targetIndex) return character;
+          const messages: string[] = [];
+          let damage = calculateDamage(enemy.stats.attack, skill.power, character.stats.defense);
+          let guardValue = character.guard;
+          let evadeValue = character.evade;
+
+          if (evadeValue) {
+            const success = Math.random() * 100 < evadeValue;
+            messages.push(success ? `${character.name}이 회피에 성공했다!` : `${character.name}의 회피 시도가 실패했다.`);
+            if (success) {
+              damage = 0;
+            }
+            evadeValue = undefined;
+          }
+
+          if (damage > 0 && guardValue) {
+            const reduced = Math.max(1, Math.round(damage * (1 - guardValue / 100)));
+            if (reduced !== damage) {
+              messages.push(`${character.name}이 방어 태세로 피해를 ${damage - reduced} 감소시켰다.`);
+            }
+            damage = reduced;
+            guardValue = undefined;
+          }
+
+          if (damage > 0) {
+            messages.push(`${character.name}이 ${damage} 피해를 입었다.`);
+          }
+
+          detailText = messages.join(' ') || `${character.name}에게 영향이 없다.`;
+
+          return {
+            ...character,
+            guard: guardValue,
+            evade: evadeValue,
+            hp: clamp(character.hp - damage, 0, character.stats.maxHp),
+          };
+        });
       });
+      pushLog(`${enemy.name}의 ${skill.name}! ${detailText}`.trim());
       setTurn('player');
     }, 650);
 
@@ -135,6 +225,13 @@ const Battle = ({ config, onComplete }: BattleProps) => {
   }, [players, onComplete]);
 
   const enemyHpPercent = Math.round((enemy.hp / enemy.stats.maxHp) * 100);
+  const enemySkillList = useMemo<BattleSkill[]>(
+    () =>
+      enemy.skills ?? [
+        { id: 'enemy-strike', name: '글리치 스트라이크', description: '예측 불가능한 기본 공격.', power: 6, type: 'attack' },
+      ],
+    [enemy.skills],
+  );
 
   return (
     <div className="flex h-full flex-col justify-between bg-slate-950 text-white">
@@ -157,6 +254,34 @@ const Battle = ({ config, onComplete }: BattleProps) => {
               />
             </div>
             <p className="mt-2 text-sm text-slate-300">HP {enemy.hp} / {enemy.stats.maxHp}</p>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-300">
+              <div className="flex items-center justify-between">
+                <span>공격</span>
+                <span>{enemy.stats.attack}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>방어</span>
+                <span>{enemy.stats.defense}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>속도</span>
+                <span>{enemy.stats.speed}</span>
+              </div>
+            </div>
+            <div className="mt-4 rounded-2xl border border-white/5 bg-black/20 p-3 text-sm text-slate-200">
+              <p className="text-xs uppercase text-slate-400">스킬</p>
+              <ul className="mt-2 space-y-2 text-xs text-slate-300">
+                {enemySkillList.map((skill) => (
+                  <li key={skill.id} className="rounded-xl bg-slate-900/40 p-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-white">{skill.name}</span>
+                      <span className="text-[11px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">{skill.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
             <p className="text-xs uppercase text-slate-400">Party</p>
@@ -177,6 +302,40 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                         style={{ width: `${percent}%` }}
                       />
                     </div>
+                    <dl className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+                      <div className="flex items-center justify-between">
+                        <dt>공격</dt>
+                        <dd>{character.stats.attack}</dd>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <dt>방어</dt>
+                        <dd>{character.stats.defense}</dd>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <dt>속도</dt>
+                        <dd>{character.stats.speed}</dd>
+                      </div>
+                    </dl>
+                    {(character.guard || character.evade) && (
+                      <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
+                        {character.guard && (
+                          <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-200">방어 {character.guard}%</span>
+                        )}
+                        {character.evade && (
+                          <span className="rounded-full bg-sky-500/20 px-2 py-0.5 text-sky-200">회피 {character.evade}%</span>
+                        )}
+                      </div>
+                    )}
+                    <div className="mt-3 text-[11px] text-slate-300">
+                      <p className="text-[10px] uppercase tracking-widest text-slate-500">보유 스킬</p>
+                      <div className="mt-1 flex flex-wrap gap-2">
+                        {character.skills.map((skill) => (
+                          <span key={skill.id} className="rounded-full bg-white/10 px-2 py-1 text-white/80">
+                            {skill.name} ({SKILL_TYPE_LABELS[skill.type]})
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 );
               })}
@@ -194,7 +353,10 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                   disabled={turn !== 'player' || enemy.hp <= 0}
                   onClick={() => handlePlayerSkill(skill)}
                 >
-                  <p className="font-semibold">{skill.name}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-semibold">{skill.name}</p>
+                    <span className="text-[11px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
+                  </div>
                   <p className="text-xs text-slate-300">{skill.description}</p>
                 </button>
               ))}
