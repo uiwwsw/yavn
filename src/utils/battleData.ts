@@ -1,4 +1,4 @@
-import { BattleCharacterDefinition } from '#/novelTypes';
+import { BattleCharacterDefinition, BattleStats } from '#/novelTypes';
 
 const defaultSkill = {
   id: 'basic-attack',
@@ -32,6 +32,13 @@ export const CHARACTER_LIBRARY: Record<string, BattleCharacterDefinition> = {
         power: 10,
         type: 'heal',
       },
+      {
+        id: 'debug-stance',
+        name: '디펜스 모드',
+        description: '다음 공격을 50% 감소시키는 방어 태세를 갖춥니다.',
+        power: 50,
+        type: 'defend',
+      },
     ],
   },
   세라: {
@@ -56,6 +63,13 @@ export const CHARACTER_LIBRARY: Record<string, BattleCharacterDefinition> = {
         description: '아군의 손상을 빠르게 복구합니다.',
         power: 8,
         type: 'heal',
+      },
+      {
+        id: 'prediction-dodge',
+        name: '예측 회피',
+        description: '적의 움직임을 계산하여 다음 공격을 60% 확률로 피합니다.',
+        power: 60,
+        type: 'evade',
       },
     ],
   },
@@ -82,6 +96,13 @@ export const CHARACTER_LIBRARY: Record<string, BattleCharacterDefinition> = {
         power: 6,
         type: 'heal',
       },
+      {
+        id: 'fortress-stance',
+        name: '철벽 태세',
+        description: '다음 공격을 70%까지 막아내는 완벽한 방어 자세.',
+        power: 70,
+        type: 'defend',
+      },
     ],
   },
 };
@@ -100,7 +121,16 @@ export const getCharacterDefinition = (name: string): BattleCharacterDefinition 
     skills: [defaultSkill],
   };
 
-export const getPartyDefinitions = (names?: string[]) => {
+export const getDefaultPartyStats = () =>
+  Object.fromEntries(
+    Object.values(CHARACTER_LIBRARY).map((character) => [character.name, { ...character.stats }]),
+  );
+
+export const getPartyDefinitions = (names?: string[], statOverrides?: Record<string, BattleStats>) => {
   const party = names && names.length > 0 ? names : DEFAULT_PARTY;
-  return party.map((member) => getCharacterDefinition(member));
+  return party.map((member) => {
+    const definition = getCharacterDefinition(member);
+    const override = statOverrides?.[member];
+    return override ? { ...definition, stats: { ...override } } : definition;
+  });
 };
