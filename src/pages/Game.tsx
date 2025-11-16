@@ -29,7 +29,6 @@ const isChoiceNode = (value: ChapterSentence | undefined): value is ChoiceNode =
   if (typeof value !== 'object') return false;
   return 'choices' in value && Array.isArray((value as ChoiceNode).choices);
 };
-type SentenceObject = Extract<NonNullable<SentenceProps['data']>, { message: string }>;
 interface Chapter {
   id?: string;
   changePosition?: true;
@@ -242,38 +241,7 @@ const Game = () => {
     setActiveChoice(null);
   }, [sentence]);
 
-  const parseSentenceData = useCallback((data: SentenceProps['data'] | undefined) => {
-    if (!data) return [] as { message: string; duration: number }[];
-    const defaultDuration = 70;
-    const normalise = (entry: string | SentenceObject) => {
-      if (typeof entry === 'string') {
-        return { message: entry, duration: defaultDuration };
-      }
-
-      return {
-        message: typeof entry.message === 'string' ? entry.message : '',
-        duration: typeof entry.duration === 'number' ? entry.duration : defaultDuration,
-      };
-    };
-
-    if (Array.isArray(data)) {
-      return (data as SentenceObject[]).map((entry) => normalise(entry));
-    }
-
-    if (typeof data === 'string') {
-      return [normalise(data)];
-    }
-
-    return [normalise(data as SentenceObject)];
-  }, []);
-
-  const autoAdvanceDelay = useMemo(() => {
-    const entries = parseSentenceData(sentenceData);
-    if (!entries.length) return 500;
-    const typingTime = entries.reduce((total, entry) => total + entry.message.length * entry.duration, 0);
-    const buffer = entries.reduce((total, entry) => total + entry.message.length * 12, 0);
-    return Math.max(350, Math.min(4000, Math.round(typingTime * 0.4 + buffer)));
-  }, [parseSentenceData, sentenceData]);
+  const autoAdvanceDelay = useMemo(() => 1000, []);
 
   useEffect(() => {
     if (!auto) return;
