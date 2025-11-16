@@ -125,7 +125,6 @@
       ]
     ],
     "battle": {
-      "flag": true,
       "description": "Refactor Core - 긴급 방어 프로토콜",
       "encounter": "오염된 루틴이 나타났다!",
       "party": [
@@ -353,6 +352,51 @@
     ]
   },
   {
+    "character": "시스템",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 감정 아카이브 구역에서 정체불명의 스펙터가 감지되었습니다.",
+          "duration": 110
+        }
+      ]
+    ],
+    "battle": {
+      "description": "감정 아카이브 방어",
+      "encounter": "로그 스펙터가 나타났다!",
+      "party": [
+        "매튜",
+        "세라"
+      ],
+      "enemy": {
+        "name": "로그 스펙터",
+        "stats": {
+          "maxHp": 160,
+          "attack": 17,
+          "defense": 9,
+          "speed": 10
+        },
+        "skills": [
+          {
+            "id": "echo-burst",
+            "name": "에코 버스트",
+            "description": "반복 오류를 증폭시켜 파장을 일으킵니다.",
+            "power": 10,
+            "type": "attack"
+          },
+          {
+            "id": "drain-packet",
+            "name": "드레인 패킷",
+            "description": "패킷을 흡수해 체력을 빼앗습니다.",
+            "power": 8,
+            "type": "attack"
+          }
+        ]
+      }
+    }
+  },
+  {
     "sentences": [
       [
         {
@@ -401,6 +445,52 @@
     ]
   },
   {
+    "character": "시스템",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 관문 캐시가 공격받고 있습니다. 루크가 방화벽을 재부팅합니다.",
+          "duration": 100
+        }
+      ]
+    ],
+    "battle": {
+      "description": "입구 방화벽 재부팅",
+      "encounter": "패킷 히드라가 길을 막았다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "패킷 히드라",
+        "stats": {
+          "maxHp": 190,
+          "attack": 19,
+          "defense": 11,
+          "speed": 8
+        },
+        "skills": [
+          {
+            "id": "latency-lash",
+            "name": "레이턴시 래시",
+            "description": "느려진 신호를 채찍처럼 휘둘러 공격합니다.",
+            "power": 11,
+            "type": "attack"
+          },
+          {
+            "id": "bandwidth-crush",
+            "name": "대역폭 크러시",
+            "description": "데이터 홍수를 일으켜 파티를 압박합니다.",
+            "power": 9,
+            "type": "attack"
+          }
+        ]
+      }
+    }
+  },
+  {
     "character": "매튜",
     "place": "잊혀진 코드의 나라",
     "sentences": [
@@ -424,6 +514,52 @@
         }
       ]
     ]
+  },
+  {
+    "character": "시스템",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 메모리 협곡에 캐시 팬텀이 떠올랐습니다.",
+          "duration": 115
+        }
+      ]
+    ],
+    "battle": {
+      "description": "캐시 팬텀 청소",
+      "encounter": "캐시 팬텀이 나타났다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "캐시 팬텀",
+        "stats": {
+          "maxHp": 200,
+          "attack": 18,
+          "defense": 12,
+          "speed": 9
+        },
+        "skills": [
+          {
+            "id": "phase-swipe",
+            "name": "페이즈 스와이프",
+            "description": "위상을 흐리며 관통 공격을 가합니다.",
+            "power": 12,
+            "type": "attack"
+          },
+          {
+            "id": "cache-drain",
+            "name": "캐시 드레인",
+            "description": "보조 데이터를 빼앗아 파티를 약화시킵니다.",
+            "power": 9,
+            "type": "attack"
+          }
+        ]
+      }
+    }
   },
   {
     "character": "매튜",
@@ -507,6 +643,52 @@
     ]
   },
   {
+    "character": "시스템",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 루프 파수꾼이 진영을 스캔합니다.",
+          "duration": 100
+        }
+      ]
+    ],
+    "battle": {
+      "description": "루프 파수꾼 추적",
+      "encounter": "루프 파수꾼이 출현했다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "루프 파수꾼",
+        "stats": {
+          "maxHp": 210,
+          "attack": 20,
+          "defense": 12,
+          "speed": 11
+        },
+        "skills": [
+          {
+            "id": "cycle-lance",
+            "name": "사이클 랜스",
+            "description": "루프 에너지를 모아 일점을 찌릅니다.",
+            "power": 12,
+            "type": "attack"
+          },
+          {
+            "id": "reset-storm",
+            "name": "리셋 스톰",
+            "description": "시간을 되감아 파티를 흔듭니다.",
+            "power": 10,
+            "type": "attack"
+          }
+        ]
+      }
+    }
+  },
+  {
     "character": "매튜",
     "place": "잊혀진 코드의 나라",
     "sentences": [
@@ -554,6 +736,52 @@
         }
       ]
     ]
+  },
+  {
+    "character": "시스템",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 메모리 헌터가 감정 로그를 추적합니다.",
+          "duration": 105
+        }
+      ]
+    ],
+    "battle": {
+      "description": "메모리 헌터 억제",
+      "encounter": "메모리 헌터가 추격해왔다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "메모리 헌터",
+        "stats": {
+          "maxHp": 205,
+          "attack": 19,
+          "defense": 10,
+          "speed": 12
+        },
+        "skills": [
+          {
+            "id": "trace-bite",
+            "name": "트레이스 바이트",
+            "description": "기억의 경로를 물어뜯어 피해를 줍니다.",
+            "power": 11,
+            "type": "attack"
+          },
+          {
+            "id": "overflow-howl",
+            "name": "오버플로우 하울",
+            "description": "과부하 파동으로 전원을 흔듭니다.",
+            "power": 9,
+            "type": "attack"
+          }
+        ]
+      }
+    }
   },
   {
     "sentences": [
@@ -614,6 +842,52 @@
         }
       ]
     ]
+  },
+  {
+    "character": "시스템",
+    "place": "잊혀진 코드의 나라",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 패럴랙스 레이스가 UI 층을 찢어냅니다.",
+          "duration": 120
+        }
+      ]
+    ],
+    "battle": {
+      "description": "패럴랙스 균열 봉합",
+      "encounter": "패럴랙스 레이스가 출현했다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "패럴랙스 레이스",
+        "stats": {
+          "maxHp": 220,
+          "attack": 21,
+          "defense": 13,
+          "speed": 12
+        },
+        "skills": [
+          {
+            "id": "mirror-strike",
+            "name": "미러 스트라이크",
+            "description": "사라진 궤적을 겹쳐 공격합니다.",
+            "power": 12,
+            "type": "attack"
+          },
+          {
+            "id": "phase-scream",
+            "name": "페이즈 스크림",
+            "description": "다중 위상을 울려 정신을 교란합니다.",
+            "power": 11,
+            "type": "attack"
+          }
+        ]
+      }
+    }
   },
   {
     "character": "루크",
@@ -678,6 +952,52 @@
         ]
       }
     ]
+  },
+  {
+    "character": "시스템",
+    "place": "Refactor Core",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 섀도우 옵티마이저가 회랑을 차단했습니다.",
+          "duration": 120
+        }
+      ]
+    ],
+    "battle": {
+      "description": "섀도우 옵티마이저 추방",
+      "encounter": "섀도우 옵티마이저가 회랑을 가로막았다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "섀도우 옵티마이저",
+        "stats": {
+          "maxHp": 240,
+          "attack": 22,
+          "defense": 14,
+          "speed": 11
+        },
+        "skills": [
+          {
+            "id": "compress-crush",
+            "name": "컴프레스 크러시",
+            "description": "데이터를 압축하여 강력한 타격을 가합니다.",
+            "power": 13,
+            "type": "attack"
+          },
+          {
+            "id": "prune-wave",
+            "name": "프룬 웨이브",
+            "description": "불필요한 코드를 잘라내며 충격파를 만듭니다.",
+            "power": 11,
+            "type": "attack"
+          }
+        ]
+      }
+    }
   },
   {
     "character": "그리드",
@@ -816,6 +1136,52 @@
         }
       ]
     ]
+  },
+  {
+    "character": "시스템",
+    "place": "Refactor Core",
+    "sentences": [
+      [
+        {
+          "message": "[경보] 커널 워든이 루프 개방을 거부합니다.",
+          "duration": 130
+        }
+      ]
+    ],
+    "battle": {
+      "description": "커널 워든 검증",
+      "encounter": "커널 워든이 길을 가로막는다!",
+      "party": [
+        "매튜",
+        "세라",
+        "루크"
+      ],
+      "enemy": {
+        "name": "커널 워든",
+        "stats": {
+          "maxHp": 260,
+          "attack": 24,
+          "defense": 15,
+          "speed": 12
+        },
+        "skills": [
+          {
+            "id": "kernel-judgement",
+            "name": "커널 저지먼트",
+            "description": "커널 규약을 발동해 단일 대상을 심판합니다.",
+            "power": 14,
+            "type": "attack"
+          },
+          {
+            "id": "system-lock",
+            "name": "시스템 록",
+            "description": "모든 스레드를 고정시켜 움직임을 봉쇄합니다.",
+            "power": 12,
+            "type": "attack"
+          }
+        ]
+      }
+    }
   },
   {
     "character": "매튜",

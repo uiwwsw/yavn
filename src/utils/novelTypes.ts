@@ -61,7 +61,6 @@ export interface BattleEnemyConfig {
 }
 
 export interface BattleConfig {
-  flag?: boolean;
   description?: string;
   encounter?: string;
   enemy: BattleEnemyConfig;

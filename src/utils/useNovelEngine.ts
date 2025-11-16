@@ -54,7 +54,7 @@ const useNovelEngine = ({
     const scene = chapters[step[0]] ?? null;
     const sentence = scene?.sentences?.[step[1]];
     const sentenceData = isChoiceNode(sentence) ? undefined : (sentence as SentenceData | undefined);
-    const battle = scene?.battle && scene?.battle.flag !== false ? scene.battle : undefined;
+    const battle = scene?.battle;
     return {
       scene,
       sentence,
