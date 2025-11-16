@@ -31,6 +31,43 @@ export interface ChoiceNode {
 
 export type ChapterSentence = SentenceData | ChoiceNode;
 
+export interface BattleStats {
+  maxHp: number;
+  attack: number;
+  defense: number;
+  speed: number;
+}
+
+export type BattleSkillType = 'attack' | 'heal';
+
+export interface BattleSkill {
+  id: string;
+  name: string;
+  description: string;
+  power: number;
+  type: BattleSkillType;
+}
+
+export interface BattleCharacterDefinition {
+  name: string;
+  stats: BattleStats;
+  skills: BattleSkill[];
+}
+
+export interface BattleEnemyConfig {
+  name: string;
+  stats: BattleStats;
+  skills?: BattleSkill[];
+}
+
+export interface BattleConfig {
+  flag?: boolean;
+  description?: string;
+  encounter?: string;
+  enemy: BattleEnemyConfig;
+  party?: string[];
+}
+
 export interface Chapter {
   id?: string;
   changePosition?: true;
@@ -38,6 +75,7 @@ export interface Chapter {
   character: string;
   place: string;
   next?: ChoiceDestination;
+  battle?: BattleConfig;
 }
 
 export const isChoiceNode = (value: ChapterSentence | undefined): value is ChoiceNode => {

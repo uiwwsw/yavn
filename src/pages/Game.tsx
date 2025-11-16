@@ -3,6 +3,7 @@ import Sentence from '@/Sentence';
 import Preload from '@/Preload';
 import { useStorageContext } from '@/StorageContext';
 import useNovelEngine from '#/useNovelEngine';
+import Battle from '@/Battle';
 
 const Game = () => {
   const { level, addStorage } = useStorageContext();
@@ -29,6 +30,8 @@ const Game = () => {
     sentencePosition,
     activeChoice,
     complete,
+    battle: battleConfig,
+    forceNextScene,
   } = useNovelEngine({
     level,
     onChapterEnd: handleGoSavePage,
@@ -37,10 +40,27 @@ const Game = () => {
 
   const handleEnter = useCallback(
     (e: KeyboardEvent) => {
+      if (battleConfig) return;
       if (e.code === 'Enter') nextScene();
     },
-    [nextScene],
+    [battleConfig, nextScene],
   );
+
+  const handleBattleComplete = useCallback(
+    (result: 'win' | 'lose') => {
+      if (result === 'win') {
+        forceNextScene();
+        return;
+      }
+      addStorage({ page: 'gameOver', level: level ?? 0 });
+    },
+    [addStorage, forceNextScene, level],
+  );
+
+  const handleBackgroundClick = useCallback(() => {
+    if (battleConfig) return;
+    nextScene();
+  }, [battleConfig, nextScene]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleEnter);
@@ -49,12 +69,15 @@ const Game = () => {
 
   return (
     <Preload assets={assetList}>
-      <div onClick={nextScene} className="absolute inset-0">
-        <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-4">
-          <label
-            className="pointer-events-auto flex items-center gap-2 rounded bg-white/80 px-3 py-1 text-sm font-semibold text-black shadow"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {battleConfig ? (
+        <Battle config={battleConfig} onComplete={handleBattleComplete} />
+      ) : (
+        <div onClick={handleBackgroundClick} className="absolute inset-0">
+          <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-4">
+            <label
+              className="pointer-events-auto flex items-center gap-2 rounded bg-white/80 px-3 py-1 text-sm font-semibold text-black shadow"
+              onClick={(e) => e.stopPropagation()}
+            >
             <input
               type="checkbox"
               className="h-4 w-4"
@@ -115,7 +138,8 @@ const Game = () => {
             )}
           </div>
         )}
-      </div>
+        </div>
+      )}
     </Preload>
   );
 };

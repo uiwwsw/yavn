@@ -108,7 +108,57 @@
           "duration": 100
         }
       ]
-    ]
+    ],
+    "next": {
+      "id": "refactor-battle"
+    }
+  },
+  {
+    "character": "시스템",
+    "place": "Refactor Core",
+    "sentences": [
+      [
+        {
+          "message": "[경보] Refactor Core에 교란 신호 감지",
+          "duration": 80
+        }
+      ]
+    ],
+    "battle": {
+      "flag": true,
+      "description": "Refactor Core - 긴급 방어 프로토콜",
+      "encounter": "오염된 루틴이 나타났다!",
+      "party": [
+        "매튜",
+        "세라"
+      ],
+      "enemy": {
+        "name": "부패한 루틴",
+        "stats": {
+          "maxHp": 150,
+          "attack": 16,
+          "defense": 8,
+          "speed": 8
+        },
+        "skills": [
+          {
+            "id": "glitch-whip",
+            "name": "글리치 휩",
+            "description": "불안정한 코드 조각을 휘둘러 공격합니다.",
+            "power": 9,
+            "type": "attack"
+          },
+          {
+            "id": "corrupt-wave",
+            "name": "코럽트 웨이브",
+            "description": "오염된 파장을 방출해 파티를 덮칩니다.",
+            "power": 7,
+            "type": "attack"
+          }
+        ]
+      }
+    },
+    "id": "refactor-battle"
   },
   {
     "character": "매튜",
