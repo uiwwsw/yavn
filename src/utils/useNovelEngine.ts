@@ -2,6 +2,7 @@ import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react'
 import { getJson } from '#/getJson';
 import {
   Assets,
+  BattleConfig,
   Chapter,
   ChoiceDestination,
   ChoiceNode,
@@ -28,6 +29,7 @@ interface SceneState {
   next: ChoiceDestination | undefined;
   maxSentence: number;
   maxStep: number;
+  battle: BattleConfig | undefined;
 }
 
 const useNovelEngine = ({
@@ -52,6 +54,7 @@ const useNovelEngine = ({
     const scene = chapters[step[0]] ?? null;
     const sentence = scene?.sentences?.[step[1]];
     const sentenceData = isChoiceNode(sentence) ? undefined : (sentence as SentenceData | undefined);
+    const battle = scene?.battle && scene?.battle.flag !== false ? scene.battle : undefined;
     return {
       scene,
       sentence,
@@ -62,10 +65,11 @@ const useNovelEngine = ({
       next: scene?.next,
       maxSentence: scene?.sentences?.length ?? 0,
       maxStep: chapters.length,
+      battle,
     };
   }, [chapters, step]);
 
-  const { sentence, sentenceData, character, place, changePosition, next, maxSentence, maxStep } = sceneState;
+  const { sentence, sentenceData, character, place, changePosition, next, maxSentence, maxStep, battle } = sceneState;
 
   const assetList = useMemo(
     () => Object.values(assets).flatMap((x) => Object.values(x).filter((item) => Boolean(item)) as string[]),
@@ -170,6 +174,11 @@ const useNovelEngine = ({
     resetSceneProgress();
     advanceToNext();
   }, [activeChoice, advanceToNext, complete, handleComplete, resetSceneProgress]);
+
+  const forceNextScene = useCallback(() => {
+    resetSceneProgress();
+    advanceToNext();
+  }, [advanceToNext, resetSceneProgress]);
 
   const handleChoiceSelect = useCallback(
     (option: ChoiceOption) => {
@@ -321,6 +330,8 @@ const useNovelEngine = ({
     sentencePosition,
     activeChoice,
     complete,
+    battle,
+    forceNextScene,
   };
 };
 
