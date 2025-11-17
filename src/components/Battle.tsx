@@ -324,7 +324,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                 return (
                   <div
                     key={character.name}
-                    className={`space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isActive ? 'border-emerald-400 shadow-inner shadow-emerald-400/30' : 'border-white/10'}`}
+                    className={`space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isActive ? 'border-emerald-400 shadow-inner shadow-emerald-400/30' : 'border-white/10'} ${isActive ? 'block' : 'hidden sm:block'}`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-sm font-semibold">
