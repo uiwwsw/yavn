@@ -9,6 +9,12 @@ html {
 body {
   @apply m-auto h-[480px] w-[640px];
 }
+
+@media (max-width: 640px) {
+  body {
+    @apply m-0 h-screen w-screen;
+  }
+}
 #root {
   @apply h-full w-full;
 }

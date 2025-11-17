@@ -32,7 +32,7 @@ const getNextAlive = (characters: CharacterState[], afterIndex = -1) => {
 const useBattleLog = (initial: string) => {
   const [log, setLog] = useState<string[]>([initial]);
   const pushLog = useCallback((entry: string) => {
-    setLog((prev) => [...prev, entry].slice(-10));
+    setLog((prev) => [entry, ...prev]);
   }, []);
   const reset = useCallback((message: string) => setLog([message]), []);
   return { log, pushLog, reset } as const;
@@ -290,9 +290,9 @@ const Battle = ({ config, onComplete }: BattleProps) => {
         ? lastActiveIndex
         : getNextAlive(players);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
+    <div className="flex min-h-full items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
       <div className="w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
-        <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,3fr)_minmax(260px,1.15fr)]">
+        <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,3fr)_minmax(144px,1.15fr)]">
           <div className="space-y-3 overflow-hidden">
             <header className="flex flex-col gap-3 rounded-lg border border-white/5 bg-gradient-to-r from-slate-950/80 to-slate-900/80 p-3 shadow-inner shadow-black/30 sm:flex-row sm:items-center sm:justify-between">
               <div className="space-y-1 text-left">
@@ -301,8 +301,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                 <p className="text-[12px] text-slate-200">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
               </div>
               <div className="w-full min-w-[240px] max-w-sm rounded-lg border border-white/10 bg-slate-950/80 px-3 py-2 text-right text-xs shadow">
-                <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-slate-400">
-                  <span className="text-left text-[10px] text-emerald-200">적</span>
+                <div className="flex items-center justify-end text-[11px] uppercase tracking-[0.2em] text-slate-200">
                   <span className="font-semibold text-white">{enemy.name}</span>
                 </div>
                 <div className="mt-1 h-2 rounded-full bg-white/10">
@@ -311,14 +310,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                     style={{ width: `${enemyHpPercent}%` }}
                   />
                 </div>
-                <div className="mt-1 flex flex-wrap justify-end gap-2 text-[10px] text-slate-300">
-                  <span>
-                    HP {enemy.hp} / {enemy.stats.maxHp}
-                  </span>
-                  <span>ATK {enemy.stats.attack}</span>
-                  <span>DEF {enemy.stats.defense}</span>
-                  <span>SPD {enemy.stats.speed}</span>
-                </div>
+                <div className="mt-1 text-[10px] text-slate-200">HP {enemy.hp} / {enemy.stats.maxHp}</div>
               </div>
             </header>
 
@@ -359,7 +351,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                       </div>
                       <div className="max-h-40 overflow-y-auto pr-1">
                         <div
-                          className="grid grid-flow-col auto-cols-[minmax(140px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-3"
+                          className="grid grid-flow-col auto-cols-[minmax(150px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-2 xl:grid-cols-3"
                         >
                           {character.skills.map((skill) => (
                             <button
@@ -384,13 +376,13 @@ const Battle = ({ config, onComplete }: BattleProps) => {
             </section>
           </div>
 
-          <aside className="flex h-28 flex-col rounded-lg border border-white/10 bg-slate-900/80 shadow-inner shadow-black/30 lg:h-full">
+          <aside className="flex h-28 min-h-0 flex-col rounded-lg border border-white/10 bg-slate-900/80 shadow-inner shadow-black/30 lg:h-full">
             <div className="flex items-center justify-between px-3 py-2 text-[11px] uppercase tracking-[0.3em] text-slate-300">
               <span className="text-emerald-200">전투 로그</span>
-              <span className="text-[10px] text-slate-500">최근 10개</span>
+              <span className="text-[10px] text-slate-500">전체</span>
             </div>
             <ul
-              className="mt-0 flex max-h-[2.1rem] min-h-[2.1rem] flex-row-reverse gap-2 overflow-x-auto whitespace-nowrap border-t border-white/5 bg-black/25 px-2 py-1 text-[11px] leading-5 text-emerald-100 lg:max-h-none lg:min-h-0 lg:flex-1 lg:flex-col-reverse lg:gap-0 lg:space-y-2 lg:overflow-y-auto lg:overflow-x-visible lg:whitespace-normal lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
+              className="mt-0 flex flex-1 min-h-0 flex-col gap-2 overflow-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px] lg:max-h-[382px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
