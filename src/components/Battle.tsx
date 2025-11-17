@@ -32,7 +32,7 @@ const getNextAlive = (characters: CharacterState[], afterIndex = -1) => {
 const useBattleLog = (initial: string) => {
   const [log, setLog] = useState<string[]>([initial]);
   const pushLog = useCallback((entry: string) => {
-    setLog((prev) => [...prev, entry]);
+    setLog((prev) => [entry, ...prev]);
   }, []);
   const reset = useCallback((message: string) => setLog([message]), []);
   return { log, pushLog, reset } as const;
@@ -382,7 +382,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
               <span className="text-[10px] text-slate-500">전체</span>
             </div>
             <ul
-              className="mt-0 flex flex-1 min-h-0 flex-col-reverse gap-2 overflow-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px] lg:max-h-[382px]"
+              className="mt-0 flex flex-1 min-h-0 flex-col gap-2 overflow-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px] lg:max-h-[382px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
