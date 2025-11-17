@@ -64,7 +64,7 @@ export interface BattleConfig {
   description?: string;
   encounter?: string;
   enemy: BattleEnemyConfig;
-  party?: string[];
+  party: string[];
 }
 
 export interface Chapter {

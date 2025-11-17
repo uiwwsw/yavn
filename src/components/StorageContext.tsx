@@ -1,11 +1,9 @@
 import useSession from '#/useSession';
 import { ReactNode, createContext, useContext } from 'react';
-import { BattleStats } from '#/novelTypes';
 export interface SessionStorage {
   level: number;
   page: 'startMenu' | 'game' | 'save' | 'credit' | 'gameOver';
   inventory: boolean;
-  partyStats?: Record<string, BattleStats>;
 }
 interface StorageProviderProps {
   children?: ReactNode;
@@ -18,7 +16,6 @@ const StorageContext = createContext<ContextProps>({
   page: undefined,
   level: undefined,
   inventory: false,
-  partyStats: undefined,
   addStorage: () => null,
   clearStorage: () => null,
 });

@@ -6,7 +6,7 @@ import useNovelEngine from '#/useNovelEngine';
 import Battle from '@/Battle';
 
 const Game = () => {
-  const { level, addStorage, partyStats } = useStorageContext();
+  const { level, addStorage } = useStorageContext();
   const handleGoSavePage = useCallback(() => addStorage({ page: 'save', level }), [addStorage, level]);
   const handleGoCreditPage = useCallback(() => addStorage({ page: 'credit', level: 0 }), [addStorage]);
 
@@ -70,7 +70,7 @@ const Game = () => {
   return (
     <Preload assets={assetList}>
       {battleConfig ? (
-        <Battle config={battleConfig} onComplete={handleBattleComplete} partyStats={partyStats} />
+        <Battle config={battleConfig} onComplete={handleBattleComplete} />
       ) : (
         <div onClick={handleBackgroundClick} className="absolute inset-0">
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-4">
