@@ -390,7 +390,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
               <span className="text-[10px] text-slate-500">전체</span>
             </div>
             <ul
-              className="mt-0 flex flex-1 flex-col-reverse gap-2 overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
+              className="mt-0 flex flex-1 flex-col gap-2 overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
