@@ -289,7 +289,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
       : lastActiveIndex !== null && lastActiveIndex >= 0
         ? lastActiveIndex
         : getNextAlive(players);
-  const recentLog = log.slice(0, 3);
+  const recentLog = log.length ? [log[0]] : [];
   return (
     <div className="flex min-h-full items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
       <div className="relative w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
@@ -318,7 +318,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
             <div className="flex items-center justify-between text-[11px] text-slate-200">
               <span className="text-white/90">아군의 행동을 선택하세요.</span>
             </div>
-            <div className="grid gap-2 md:grid-cols-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:pb-2 lg:pr-2">
+            <div className="grid gap-2">
               {players.map((character, index) => {
                 const percent = Math.round((character.hp / character.stats.maxHp) * 100);
                 const isActive = index === activePlayerIndex && phase === 'player';
@@ -327,7 +327,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                 return (
                   <div
                     key={character.name}
-                    className={`min-w-0 space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isHighlighted ? 'border-emerald-400 shadow-inner shadow-emerald-400/25' : 'border-white/10'} ${isHighlighted ? 'block' : 'hidden sm:block'} lg:block lg:min-w-[260px] lg:flex-shrink-0`}
+                    className={`min-w-0 space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isHighlighted ? 'border-emerald-400 shadow-inner shadow-emerald-400/25' : 'border-white/10'} ${isHighlighted ? 'block' : 'hidden'}`}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="flex items-center gap-2 text-sm font-semibold text-white">
