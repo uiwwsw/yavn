@@ -10,7 +10,6 @@ const defaultSkill = {
 };
 
 interface CharacterLibraryFile {
-  defaultParty: string[];
   library: BattleCharacterDefinition[];
 }
 
@@ -19,8 +18,6 @@ const characterLibrary = characterData as CharacterLibraryFile;
 export const CHARACTER_LIBRARY: Record<string, BattleCharacterDefinition> = Object.fromEntries(
   characterLibrary.library.map((character) => [character.name, character]),
 );
-
-export const DEFAULT_PARTY = characterLibrary.defaultParty;
 
 export const getCharacterDefinition = (name: string): BattleCharacterDefinition =>
   CHARACTER_LIBRARY[name] ?? {
@@ -40,7 +37,7 @@ export const getDefaultPartyStats = () =>
   );
 
 export const getPartyDefinitions = (names?: string[], statOverrides?: Record<string, BattleStats>) => {
-  const party = names && names.length > 0 ? names : DEFAULT_PARTY;
+  const party = names ?? [];
   return party.map((member) => {
     const definition = getCharacterDefinition(member);
     const override = statOverrides?.[member];
