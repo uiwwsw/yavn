@@ -92,6 +92,17 @@ const Battle = ({ config, onComplete }: BattleProps) => {
 
   const activePlayer = activePlayerIndex !== null && activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
 
+  useEffect(() => {
+    if (phase !== 'player') return;
+
+    const current =
+      activePlayerIndex !== null && activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
+    if (current && current.hp > 0) return;
+
+    const fallback = getNextAlive(players);
+    setActivePlayerIndex(fallback === -1 ? null : fallback);
+  }, [phase, players, activePlayerIndex]);
+
   const advancePlayerTurn = useCallback((nextPlayers: CharacterState[]) => {
     setActivePlayerIndex((current) => {
       const nextIndex = getNextAlive(nextPlayers, current ?? -1);
