@@ -290,7 +290,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
         ? lastActiveIndex
         : getNextAlive(players);
   return (
-    <div className="flex items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
+    <div className="flex min-h-full items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
       <div className="w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
         <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,3fr)_minmax(144px,1.15fr)]">
           <div className="space-y-3 overflow-hidden">
