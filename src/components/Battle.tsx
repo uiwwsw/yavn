@@ -370,7 +370,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
 
           <div className="flex flex-col rounded-lg border border-white/10 bg-slate-900/70 p-3">
             <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">전투 로그</p>
-            <ul className="mt-2 flex-1 space-y-1 overflow-y-auto rounded-md border border-white/5 bg-black/30 p-2 font-mono text-emerald-100">
+            <ul className="mt-2 max-h-64 space-y-1 overflow-y-auto rounded-md border border-white/5 bg-black/30 p-2 font-mono text-emerald-100 sm:max-h-80">
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded bg-white/5 px-2 py-1 text-left text-xs tracking-tight">
                   {entry}
