@@ -390,7 +390,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
               <span className="text-[10px] text-slate-500">최근 10개</span>
             </div>
             <ul
-              className="mt-0 flex max-h-[1.9rem] min-h-[1.9rem] flex-col-reverse space-y-1 [--tw-space-y-reverse:1] overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-1 text-[11px] leading-5 text-emerald-100 lg:max-h-none lg:min-h-0 lg:flex-1 lg:flex-col lg:space-y-2 lg:[--tw-space-y-reverse:0] lg:overflow-y-auto lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
+              className="mt-0 flex max-h-[2.1rem] min-h-[2.1rem] flex-row-reverse gap-2 overflow-x-auto whitespace-nowrap border-t border-white/5 bg-black/25 px-2 py-1 text-[11px] leading-5 text-emerald-100 lg:max-h-none lg:min-h-0 lg:flex-1 lg:flex-col lg:gap-0 lg:space-y-2 lg:overflow-y-auto lg:overflow-x-visible lg:whitespace-normal lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
