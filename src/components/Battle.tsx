@@ -289,108 +289,108 @@ const Battle = ({ config, onComplete }: BattleProps) => {
       : lastActiveIndex !== null && lastActiveIndex >= 0
         ? lastActiveIndex
         : getNextAlive(players);
+  const recentLog = log.length ? [log[0]] : [];
   return (
     <div className="flex min-h-full items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
-      <div className="w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
-        <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,3fr)_minmax(144px,1.15fr)]">
-          <div className="space-y-3 overflow-hidden">
-            <header className="flex flex-col gap-3 rounded-lg border border-white/5 bg-gradient-to-r from-slate-950/80 to-slate-900/80 p-3 shadow-inner shadow-black/30 sm:flex-row sm:items-center sm:justify-between">
-              <div className="space-y-1 text-left">
-                <p className="text-[11px] uppercase tracking-[0.35em] text-emerald-300">전투</p>
-                <p className="text-base font-semibold leading-tight text-white md:text-lg">{config.description ?? '시스템 교란체를 포착했습니다.'}</p>
-                <p className="text-[12px] text-slate-200">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
+      <div className="relative w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
+        <div className="space-y-3 lg:h-full">
+          <header className="flex flex-col gap-3 rounded-lg border border-white/5 bg-gradient-to-r from-slate-950/80 to-slate-900/80 p-3 shadow-inner shadow-black/30 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1 text-left">
+              <p className="text-[11px] uppercase tracking-[0.35em] text-emerald-300">전투</p>
+              <p className="text-base font-semibold leading-tight text-white md:text-lg">{config.description ?? '시스템 교란체를 포착했습니다.'}</p>
+              <p className="text-[12px] text-slate-200">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
+            </div>
+            <div className="w-full min-w-[240px] max-w-sm rounded-lg border border-white/10 bg-slate-950/80 px-3 py-2 text-right text-xs shadow">
+              <div className="flex items-center justify-end text-[11px] uppercase tracking-[0.2em] text-slate-200">
+                <span className="font-semibold text-white">{enemy.name}</span>
               </div>
-              <div className="w-full min-w-[240px] max-w-sm rounded-lg border border-white/10 bg-slate-950/80 px-3 py-2 text-right text-xs shadow">
-                <div className="flex items-center justify-end text-[11px] uppercase tracking-[0.2em] text-slate-200">
-                  <span className="font-semibold text-white">{enemy.name}</span>
-                </div>
-                <div className="mt-1 h-2 rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400"
-                    style={{ width: `${enemyHpPercent}%` }}
-                  />
-                </div>
-                <div className="mt-1 text-[10px] text-slate-200">HP {enemy.hp} / {enemy.stats.maxHp}</div>
+              <div className="mt-1 h-2 rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400"
+                  style={{ width: `${enemyHpPercent}%` }}
+                />
               </div>
-            </header>
+              <div className="mt-1 text-[10px] text-slate-200">HP {enemy.hp} / {enemy.stats.maxHp}</div>
+            </div>
+          </header>
 
-            <section className="space-y-3 rounded-lg border border-white/10 bg-slate-950/70 p-3 text-sm shadow-inner shadow-black/20">
-              <div className="flex items-center justify-between text-[11px] text-slate-200">
-                <span className="text-white/90">아군의 행동을 선택하세요.</span>
-              </div>
-              <div className="grid gap-2 md:grid-cols-2">
-                {players.map((character, index) => {
-                  const percent = Math.round((character.hp / character.stats.maxHp) * 100);
-                  const isActive = index === activePlayerIndex && phase === 'player';
-                  const isHighlighted = index === highlightedIndex;
-                  const canAct = isActive && enemy.hp > 0 && character.hp > 0;
-                  return (
-                    <div
-                      key={character.name}
-                      className={`min-w-0 space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isHighlighted ? 'border-emerald-400 shadow-inner shadow-emerald-400/25' : 'border-white/10'} ${isHighlighted ? 'block' : 'hidden sm:block'}`}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="flex items-center gap-2 text-sm font-semibold text-white">
-                          <span className={`h-2 w-2 rounded-full ${character.hp > 0 ? 'bg-emerald-400' : 'bg-slate-500'}`} />
-                          <span className="truncate">{character.name}</span>
-                        </span>
-                        <span className="text-[11px] text-slate-200">HP {character.hp} / {character.stats.maxHp}</span>
-                      </div>
-                      <div className="h-2 rounded-full bg-white/10">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-400"
-                          style={{ width: `${percent}%` }}
-                        />
-                      </div>
-                      <div className="flex flex-wrap gap-2 text-[11px] text-slate-200">
-                        <span>ATK {character.stats.attack}</span>
-                        <span>DEF {character.stats.defense}</span>
-                        <span>SPD {character.stats.speed}</span>
-                        {character.guard && <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-100">방어 {character.guard}%</span>}
-                        {character.evade && <span className="rounded-full bg-sky-500/20 px-2 py-0.5 text-sky-100">회피 {character.evade}%</span>}
-                      </div>
-                      <div className="max-h-40 overflow-y-auto pr-1">
-                        <div
-                          className="grid grid-flow-col auto-cols-[minmax(150px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-2 xl:grid-cols-3"
-                        >
-                          {character.skills.map((skill) => (
-                            <button
-                              key={skill.id}
-                              className={`group flex flex-col rounded-md border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 px-2 py-1.5 text-left transition ${canAct ? 'hover:border-emerald-400 hover:from-slate-800 hover:to-slate-700' : 'opacity-50'}`}
-                              disabled={!canAct}
-                              onClick={() => handlePlayerSkill(skill)}
-                            >
-                              <div className="flex items-center justify-between text-[12px] font-semibold text-white">
-                                <span className="truncate">{skill.name}</span>
-                                <span className="rounded bg-emerald-500/20 px-1.5 text-[10px] text-emerald-100">{SKILL_TYPE_LABELS[skill.type]}</span>
-                              </div>
-                              <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-200">{skill.description}</p>
-                            </button>
-                          ))}
-                        </div>
+          <section className="space-y-3 rounded-lg border border-white/10 bg-slate-950/70 p-3 text-sm shadow-inner shadow-black/20">
+            <div className="flex items-center justify-between text-[11px] text-slate-200">
+              <span className="text-white/90">아군의 행동을 선택하세요.</span>
+            </div>
+            <div className="grid gap-2">
+              {players.map((character, index) => {
+                const percent = Math.round((character.hp / character.stats.maxHp) * 100);
+                const isActive = index === activePlayerIndex && phase === 'player';
+                const isHighlighted = index === highlightedIndex;
+                const canAct = isActive && enemy.hp > 0 && character.hp > 0;
+                return (
+                  <div
+                    key={character.name}
+                    className={`min-w-0 space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isHighlighted ? 'border-emerald-400 shadow-inner shadow-emerald-400/25' : 'border-white/10'} ${isHighlighted ? 'block' : 'hidden'}`}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="flex items-center gap-2 text-sm font-semibold text-white">
+                        <span className={`h-2 w-2 rounded-full ${character.hp > 0 ? 'bg-emerald-400' : 'bg-slate-500'}`} />
+                        <span className="truncate">{character.name}</span>
+                      </span>
+                      <span className="text-[11px] text-slate-200">HP {character.hp} / {character.stats.maxHp}</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-white/10">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-400"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-[11px] text-slate-200">
+                      <span>ATK {character.stats.attack}</span>
+                      <span>DEF {character.stats.defense}</span>
+                      <span>SPD {character.stats.speed}</span>
+                      {character.guard && <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-100">방어 {character.guard}%</span>}
+                      {character.evade && <span className="rounded-full bg-sky-500/20 px-2 py-0.5 text-sky-100">회피 {character.evade}%</span>}
+                    </div>
+                    <div className="max-h-40 overflow-y-auto pr-1">
+                      <div
+                        className="grid grid-flow-col auto-cols-[minmax(150px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-2 xl:grid-cols-3"
+                      >
+                        {character.skills.map((skill) => (
+                          <button
+                            key={skill.id}
+                            className={`group flex flex-col rounded-md border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 px-2 py-1.5 text-left transition ${canAct ? 'hover:border-emerald-400 hover:from-slate-800 hover:to-slate-700' : 'opacity-50'}`}
+                            disabled={!canAct}
+                            onClick={() => handlePlayerSkill(skill)}
+                          >
+                            <div className="flex items-center justify-between text-[12px] font-semibold text-white">
+                              <span className="truncate">{skill.name}</span>
+                              <span className="rounded bg-emerald-500/20 px-1.5 text-[10px] text-emerald-100">{SKILL_TYPE_LABELS[skill.type]}</span>
+                            </div>
+                            <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-200">{skill.description}</p>
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </section>
-          </div>
-
-          <aside className="flex h-28 min-h-0 flex-col rounded-lg border border-white/10 bg-slate-900/80 shadow-inner shadow-black/30 lg:h-full">
-            <div className="flex items-center justify-between px-3 py-2 text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              <span className="text-emerald-200">전투 로그</span>
-              <span className="text-[10px] text-slate-500">전체</span>
+                  </div>
+                );
+              })}
             </div>
-            <ul
-              className="mt-0 flex flex-1 min-h-0 flex-col gap-2 overflow-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px] lg:max-h-[382px]"
-            >
-              {log.map((entry, index) => (
-                <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
-                  {entry}
-                </li>
-              ))}
-            </ul>
-          </aside>
+          </section>
+        </div>
+
+        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
+          <div className="flex w-full max-w-2xl flex-col gap-2">
+            {recentLog.map((entry, index) => (
+              <div
+                key={`${entry}-${index}`}
+                className="animate-fade-in rounded-lg border border-emerald-400/30 bg-slate-900/90 px-3 py-2 text-[12px] shadow-lg shadow-emerald-500/20 backdrop-blur"
+              >
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-emerald-200">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  로그
+                </div>
+                <p className="text-[13px] text-emerald-50">{entry}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
