@@ -32,7 +32,7 @@ const getNextAlive = (characters: CharacterState[], afterIndex = -1) => {
 const useBattleLog = (initial: string) => {
   const [log, setLog] = useState<string[]>([initial]);
   const pushLog = useCallback((entry: string) => {
-    setLog((prev) => [...prev, entry].slice(-10));
+    setLog((prev) => [...prev, entry]);
   }, []);
   const reset = useCallback((message: string) => setLog([message]), []);
   return { log, pushLog, reset } as const;
@@ -387,10 +387,10 @@ const Battle = ({ config, onComplete }: BattleProps) => {
           <aside className="flex h-28 flex-col rounded-lg border border-white/10 bg-slate-900/80 shadow-inner shadow-black/30 lg:h-full">
             <div className="flex items-center justify-between px-3 py-2 text-[11px] uppercase tracking-[0.3em] text-slate-300">
               <span className="text-emerald-200">전투 로그</span>
-              <span className="text-[10px] text-slate-500">최근 10개</span>
+              <span className="text-[10px] text-slate-500">전체</span>
             </div>
             <ul
-              className="mt-0 flex max-h-[2.1rem] min-h-[2.1rem] flex-row-reverse gap-2 overflow-x-auto whitespace-nowrap border-t border-white/5 bg-black/25 px-2 py-1 text-[11px] leading-5 text-emerald-100 lg:max-h-none lg:min-h-0 lg:flex-1 lg:flex-col-reverse lg:gap-0 lg:space-y-2 lg:overflow-y-auto lg:overflow-x-visible lg:whitespace-normal lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
+              className="mt-0 flex flex-1 flex-col-reverse gap-2 overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
