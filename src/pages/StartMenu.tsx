@@ -4,13 +4,13 @@ import Btn from '@/Btn';
 import { useStorageContext } from '@/StorageContext';
 import LoadBtn from '@/LoadBtn';
 import Assets from '@/Preload';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getJson } from '#/getJson';
-import { Asset } from './Game';
+import { Asset } from '#/novelTypes';
 const StartMenuPage = () => {
   const { addStorage } = useStorageContext();
   const [asset, setAsset] = useState<Asset>({});
-  const assets = useMemo(() => Object.values(asset), [asset]);
+  const assets = Object.values(asset);
   const handleStart = () => {
     addStorage({ page: 'game', level: 0 });
   };
@@ -26,11 +26,15 @@ const StartMenuPage = () => {
       <audio src={asset.audio} autoPlay />
       <div className="relative h-full text-white">
         <img className="h-full w-full object-contain" src={asset.image} alt="시작화면" />
-        <div className="absolute inset-4 bottom-auto m-auto flex w-3/5 flex-col gap-3 pb-10">
-          <Btn autoFocus onClick={handleStart}>
-            시작하기
-          </Btn>
-          <LoadBtn onChange={handleLoad}>불러오기</LoadBtn>
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-end justify-start gap-4 p-6">
+          <div className="pointer-events-auto w-full max-w-xl rounded-3xl border border-white/10 bg-black/70 p-5 text-sm backdrop-blur">
+            <div className="flex flex-col gap-3">
+              <Btn autoFocus onClick={handleStart}>
+                시작하기
+              </Btn>
+              <LoadBtn onChange={handleLoad}>불러오기</LoadBtn>
+            </div>
+          </div>
         </div>
       </div>
     </Assets>

@@ -1,14 +1,9 @@
 // import reactLogo from './assets/react.svg';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Assets } from '@/Game';
 import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { Assets, SentenceData, SentenceEntry } from '#/novelTypes';
 
 // import viteLogo from '/vite.svg';
-interface Sentence {
-  duration?: number;
-  message: string;
-  asset?: string | string[];
-}
 interface AssetEntry {
   name: string;
   index: number;
@@ -16,7 +11,7 @@ interface AssetEntry {
 }
 export interface SentenceProps {
   assets?: Assets;
-  data?: string | Sentence | Sentence[];
+  data?: SentenceData;
   direct?: boolean;
   isComplete: boolean;
   auto?: boolean;
@@ -25,7 +20,7 @@ export interface SentenceProps {
 }
 const defaultDuration = 70;
 const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, autoProgress, onComplete }: SentenceProps) => {
-  const [_sentences, setSentences] = useState<Sentence[]>([]);
+  const [_sentences, setSentences] = useState<SentenceEntry[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
 
@@ -77,10 +72,19 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, auto
     [assets, direct],
   );
   useEffect(() => {
-    if (!data) return;
-    if (data instanceof Array) setSentences(data);
-    else if (data instanceof Object) setSentences([data]);
-    else setSentences([{ message: data, duration: defaultDuration }]);
+    if (!data) {
+      setSentences([]);
+      setStep(-1);
+      return;
+    }
+
+    if (Array.isArray(data)) {
+      setSentences(data);
+    } else if (typeof data === 'object') {
+      setSentences([data]);
+    } else {
+      setSentences([{ message: data, duration: defaultDuration }]);
+    }
     setStep(0);
   }, [data]);
   useEffect(() => {
