@@ -5,7 +5,6 @@ import { getPartyDefinitions } from '#/battleData';
 interface BattleProps {
   config: BattleConfig;
   onComplete: (result: 'win' | 'lose') => void;
-  partyStats?: Record<string, BattleStats>;
 }
 
 interface CharacterState {
@@ -39,8 +38,8 @@ const SKILL_TYPE_LABELS: Record<BattleSkill['type'], string> = {
   evade: '회피',
 };
 
-const Battle = ({ config, onComplete, partyStats }: BattleProps) => {
-  const partyDefinitions = useMemo(() => getPartyDefinitions(config.party, partyStats), [config.party, partyStats]);
+const Battle = ({ config, onComplete }: BattleProps) => {
+  const partyDefinitions = useMemo(() => getPartyDefinitions(config.party), [config.party]);
   const [players, setPlayers] = useState<CharacterState[]>(() =>
     partyDefinitions.map((character) => ({
       name: character.name,
@@ -234,86 +233,130 @@ const Battle = ({ config, onComplete, partyStats }: BattleProps) => {
   );
 
   return (
-    <div className="flex h-full flex-col justify-between bg-slate-950 text-white">
-      <div className="flex flex-1 flex-col gap-4 p-6">
-        <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Battle</p>
-          <h2 className="text-2xl font-semibold">{config.description ?? '시스템 교란체를 포착했습니다.'}</h2>
-          <p className="text-sm text-slate-300">
-            {turn === 'player' ? '스킬을 선택하여 공격하세요.' : '적의 행동을 기다리는 중입니다.'}
+    <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-slate-950 via-[#050b13] to-slate-950 text-white">
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.25),_transparent_60%)]" />
+      </div>
+      <div className="relative z-10 flex flex-1 flex-col gap-6 p-6">
+        <header className="text-center">
+          <p className="text-xs uppercase tracking-[0.4em] text-emerald-300">Battle Phase</p>
+          <h2 className="mt-2 text-3xl font-semibold">{config.description ?? '시스템 교란체를 포착했습니다.'}</h2>
+          <p className="mt-1 text-sm text-slate-300">
+            {turn === 'player' ? '명령을 선택하여 적을 제압하세요.' : '적이 움직이는 동안 숨을 고릅니다...'}
           </p>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p className="text-xs uppercase text-slate-400">Enemy</p>
-            <h3 className="text-xl font-semibold">{enemy.name}</h3>
-            <div className="mt-3 h-3 rounded-full bg-white/10">
-              <div
-                className="h-full rounded-full bg-red-400"
-                style={{ width: `${enemyHpPercent}%` }}
-              />
+        </header>
+        <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+          <div className="flex-1 rounded-[2.5rem] border border-white/10 bg-black/40 p-6 shadow-2xl shadow-emerald-500/10 backdrop-blur">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Enemy</p>
+            <h3 className="text-2xl font-semibold">{enemy.name}</h3>
+            <p className="mt-1 text-sm text-slate-300">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
+            <div className="mt-6 space-y-3">
+              <div className="h-4 rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400"
+                  style={{ width: `${enemyHpPercent}%` }}
+                />
+              </div>
+              <p className="text-sm text-slate-200">
+                HP {enemy.hp} / {enemy.stats.maxHp}
+              </p>
+              <dl className="grid grid-cols-3 gap-3 text-xs uppercase text-slate-300">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
+                  <dt className="text-[10px] tracking-[0.4em] text-slate-400">ATK</dt>
+                  <dd className="text-lg font-semibold text-white">{enemy.stats.attack}</dd>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
+                  <dt className="text-[10px] tracking-[0.4em] text-slate-400">DEF</dt>
+                  <dd className="text-lg font-semibold text-white">{enemy.stats.defense}</dd>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
+                  <dt className="text-[10px] tracking-[0.4em] text-slate-400">SPD</dt>
+                  <dd className="text-lg font-semibold text-white">{enemy.stats.speed}</dd>
+                </div>
+              </dl>
             </div>
-            <p className="mt-2 text-sm text-slate-300">HP {enemy.hp} / {enemy.stats.maxHp}</p>
-            <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-300">
-              <div className="flex items-center justify-between">
-                <span>공격</span>
-                <span>{enemy.stats.attack}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>방어</span>
-                <span>{enemy.stats.defense}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>속도</span>
-                <span>{enemy.stats.speed}</span>
-              </div>
-            </div>
-            <div className="mt-4 rounded-2xl border border-white/5 bg-black/20 p-3 text-sm text-slate-200">
-              <p className="text-xs uppercase text-slate-400">스킬</p>
-              <ul className="mt-2 space-y-2 text-xs text-slate-300">
+            <div className="mt-6 rounded-2xl border border-white/5 bg-black/40 p-4 text-sm text-slate-200">
+              <p className="text-[11px] uppercase tracking-[0.4em] text-slate-500">예상 패턴</p>
+              <div className="mt-3 flex flex-wrap gap-2">
                 {enemySkillList.map((skill) => (
-                  <li key={skill.id} className="rounded-xl bg-slate-900/40 p-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-white">{skill.name}</span>
-                      <span className="text-[11px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
-                    </div>
-                    <p className="text-[11px] text-slate-400">{skill.description}</p>
-                  </li>
+                  <span key={skill.id} className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs">
+                    {skill.name}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p className="text-xs uppercase text-slate-400">Party</p>
-            <div className="mt-2 flex flex-col gap-3">
+          <div className="rounded-[2.5rem] border border-white/10 bg-black/30 p-6 text-sm">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Battle Log</p>
+            <ul className="mt-3 space-y-2 font-mono text-emerald-100">
+              {log.map((entry, index) => (
+                <li key={`${entry}-${index}`} className="rounded-lg bg-black/40 px-3 py-2 text-left text-xs tracking-tight">
+                  {entry}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="grid gap-4 rounded-[2.5rem] border border-white/10 bg-black/40 p-4 text-sm md:grid-cols-[320px,1fr]">
+          <div className="rounded-2xl border border-white/5 bg-slate-950/80 p-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Command</p>
+            {activePlayer ? (
+              <>
+                <p className="mt-1 text-sm text-white">
+                  {activePlayer.name} <span className="text-slate-400">대기 중</span>
+                </p>
+                <div className="mt-3 space-y-2">
+                  {activePlayer.skills.map((skill) => (
+                    <button
+                      key={skill.id}
+                      className="flex w-full flex-col rounded-xl border border-white/10 bg-gradient-to-r from-slate-900 to-slate-800 px-4 py-3 text-left transition hover:border-emerald-400 hover:from-slate-800 hover:to-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      disabled={turn !== 'player' || enemy.hp <= 0}
+                      onClick={() => handlePlayerSkill(skill)}
+                    >
+                      <div className="flex items-center justify-between text-sm font-semibold">
+                        <span>{skill.name}</span>
+                        <span className="text-[11px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
+                      </div>
+                      <p className="text-xs text-slate-300">{skill.description}</p>
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="mt-3 text-slate-300">행동 가능한 캐릭터가 없습니다.</p>
+            )}
+          </div>
+          <div className="rounded-2xl border border-white/5 bg-slate-950/60 p-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Party</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {players.map((character) => {
                 const percent = Math.round((character.hp / character.stats.maxHp) * 100);
                 return (
-                  <div key={character.name} className="rounded-xl border border-white/5 bg-slate-900/60 p-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">{character.name}</span>
-                      <span className="text-sm text-slate-300">
+                  <div key={character.name} className="rounded-2xl border border-white/10 bg-black/40 p-3">
+                    <div className="flex items-center justify-between text-sm font-semibold">
+                      <span>{character.name}</span>
+                      <span className="text-xs text-slate-300">
                         HP {character.hp} / {character.stats.maxHp}
                       </span>
                     </div>
                     <div className="mt-2 h-2 rounded-full bg-white/10">
                       <div
-                        className="h-full rounded-full bg-emerald-400"
+                        className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-400"
                         style={{ width: `${percent}%` }}
                       />
                     </div>
-                    <dl className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-slate-300">
-                      <div className="flex items-center justify-between">
-                        <dt>공격</dt>
-                        <dd>{character.stats.attack}</dd>
+                    <dl className="mt-3 grid grid-cols-3 gap-2 text-[11px] text-slate-300">
+                      <div className="text-center">
+                        <dt className="text-[9px] uppercase tracking-[0.3em] text-slate-500">ATK</dt>
+                        <dd className="text-sm font-semibold">{character.stats.attack}</dd>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <dt>방어</dt>
-                        <dd>{character.stats.defense}</dd>
+                      <div className="text-center">
+                        <dt className="text-[9px] uppercase tracking-[0.3em] text-slate-500">DEF</dt>
+                        <dd className="text-sm font-semibold">{character.stats.defense}</dd>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <dt>속도</dt>
-                        <dd>{character.stats.speed}</dd>
+                      <div className="text-center">
+                        <dt className="text-[9px] uppercase tracking-[0.3em] text-slate-500">SPD</dt>
+                        <dd className="text-sm font-semibold">{character.stats.speed}</dd>
                       </div>
                     </dl>
                     {(character.guard || character.evade) && (
@@ -328,10 +371,10 @@ const Battle = ({ config, onComplete, partyStats }: BattleProps) => {
                     )}
                     <div className="mt-3 text-[11px] text-slate-300">
                       <p className="text-[10px] uppercase tracking-widest text-slate-500">보유 스킬</p>
-                      <div className="mt-1 flex flex-wrap gap-2">
+                      <div className="mt-1 flex flex-wrap gap-1">
                         {character.skills.map((skill) => (
-                          <span key={skill.id} className="rounded-full bg-white/10 px-2 py-1 text-white/80">
-                            {skill.name} ({SKILL_TYPE_LABELS[skill.type]})
+                          <span key={skill.id} className="rounded-full bg-white/10 px-2 py-0.5 text-white/80">
+                            {skill.name}
                           </span>
                         ))}
                       </div>
@@ -341,37 +384,6 @@ const Battle = ({ config, onComplete, partyStats }: BattleProps) => {
               })}
             </div>
           </div>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs uppercase text-slate-400">Active Skills</p>
-          {activePlayer ? (
-            <div className="mt-3 grid gap-3 md:grid-cols-2">
-              {activePlayer.skills.map((skill) => (
-                <button
-                  key={skill.id}
-                  className="rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-left text-sm transition hover:border-emerald-300 hover:bg-emerald-500/10 disabled:cursor-not-allowed disabled:opacity-60"
-                  disabled={turn !== 'player' || enemy.hp <= 0}
-                  onClick={() => handlePlayerSkill(skill)}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="font-semibold">{skill.name}</p>
-                    <span className="text-[11px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
-                  </div>
-                  <p className="text-xs text-slate-300">{skill.description}</p>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <p className="mt-3 text-sm text-slate-300">행동 가능한 캐릭터가 없습니다.</p>
-          )}
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-          <p className="text-xs uppercase text-slate-400">Battle Log</p>
-          <ul className="mt-2 space-y-1 text-sm text-slate-200">
-            {log.map((entry, index) => (
-              <li key={`${entry}-${index}`}>{entry}</li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
