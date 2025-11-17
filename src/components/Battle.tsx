@@ -22,6 +22,13 @@ interface EnemyState extends BattleEnemyConfig {
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
+const getNextAlive = (characters: CharacterState[], afterIndex = -1) => {
+  for (let i = afterIndex + 1; i < characters.length; i += 1) {
+    if (characters[i].hp > 0) return i;
+  }
+  return -1;
+};
+
 const useBattleLog = (initial: string) => {
   const [log, setLog] = useState<string[]>([initial]);
   const pushLog = useCallback((entry: string) => {
@@ -54,27 +61,49 @@ const Battle = ({ config, onComplete }: BattleProps) => {
     ...config.enemy,
     hp: config.enemy.stats.maxHp,
   });
-  const [turn, setTurn] = useState<'player' | 'enemy'>('player');
-  const { log, pushLog, reset: resetLog } = useBattleLog(config.encounter ?? `${config.enemy.name} 이(가) 나타났다!`);
-
-  useEffect(() => {
-    setPlayers(
+  const [phase, setPhase] = useState<'player' | 'enemy'>('player');
+  const [activePlayerIndex, setActivePlayerIndex] = useState<number | null>(() =>
+    getNextAlive(
       partyDefinitions.map((character) => ({
         name: character.name,
         stats: character.stats,
         skills: character.skills,
         hp: character.stats.maxHp,
-        guard: undefined,
-        evade: undefined,
-      })),
-    );
+      } as CharacterState)),
+    ),
+  );
+  const { log, pushLog, reset: resetLog } = useBattleLog(config.encounter ?? `${config.enemy.name} 이(가) 나타났다!`);
+
+  useEffect(() => {
+    const nextPlayers = partyDefinitions.map((character) => ({
+      name: character.name,
+      stats: character.stats,
+      skills: character.skills,
+      hp: character.stats.maxHp,
+      guard: undefined,
+      evade: undefined,
+    }));
+    setPlayers(nextPlayers);
     setEnemy({ ...config.enemy, hp: config.enemy.stats.maxHp });
-    setTurn('player');
+    setPhase('player');
+    setActivePlayerIndex(getNextAlive(nextPlayers));
     resetLog(config.encounter ?? `${config.enemy.name} 이(가) 나타났다!`);
   }, [config, config.enemy, config.encounter, partyDefinitions, resetLog]);
 
-  const activePlayerIndex = useMemo(() => players.findIndex((character) => character.hp > 0), [players]);
-  const activePlayer = activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
+  const activePlayer = activePlayerIndex !== null && activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
+
+  const advancePlayerTurn = useCallback(
+    (nextPlayers: CharacterState[]) => {
+      const nextIndex = activePlayerIndex === null ? getNextAlive(nextPlayers) : getNextAlive(nextPlayers, activePlayerIndex);
+      if (nextIndex === -1) {
+        setPhase('enemy');
+        setActivePlayerIndex(null);
+        return;
+      }
+      setActivePlayerIndex(nextIndex);
+    },
+    [activePlayerIndex],
+  );
 
   const calculateDamage = useCallback(
     (attackerAttack: number, skillPower: number, targetDefense: number) => Math.max(1, attackerAttack + skillPower - targetDefense),
@@ -83,42 +112,48 @@ const Battle = ({ config, onComplete }: BattleProps) => {
 
   const handlePlayerSkill = useCallback(
     (skill: BattleSkill) => {
-      if (!activePlayer || turn !== 'player') return;
+      if (!activePlayer || activePlayerIndex === null || phase !== 'player') return;
 
       if (skill.type === 'heal') {
-        setPlayers((prev) =>
-          prev.map((character, index) => {
+        let updated: CharacterState[] = [];
+        setPlayers((prev) => {
+          updated = prev.map((character, index) => {
             if (index !== activePlayerIndex) return character;
             const nextHp = clamp(character.hp + skill.power, 0, character.stats.maxHp);
             if (nextHp !== character.hp) {
               pushLog(`${character.name}이 ${skill.name}으로 ${nextHp - character.hp} 회복!`);
             }
             return { ...character, hp: nextHp };
-          }),
-        );
-        setTurn('enemy');
+          });
+          return updated;
+        });
+        advancePlayerTurn(updated);
         return;
       }
 
       if (skill.type === 'defend') {
-        setPlayers((prev) =>
-          prev.map((character, index) =>
+        let updated: CharacterState[] = [];
+        setPlayers((prev) => {
+          updated = prev.map((character, index) =>
             index === activePlayerIndex ? { ...character, guard: skill.power } : character,
-          ),
-        );
+          );
+          return updated;
+        });
         pushLog(`${activePlayer.name}이 ${skill.name}으로 방어 태세를 갖췄습니다.`);
-        setTurn('enemy');
+        advancePlayerTurn(updated);
         return;
       }
 
       if (skill.type === 'evade') {
-        setPlayers((prev) =>
-          prev.map((character, index) =>
+        let updated: CharacterState[] = [];
+        setPlayers((prev) => {
+          updated = prev.map((character, index) =>
             index === activePlayerIndex ? { ...character, evade: skill.power } : character,
-          ),
-        );
+          );
+          return updated;
+        });
         pushLog(`${activePlayer.name}이 ${skill.name}으로 회피를 준비합니다.`);
-        setTurn('enemy');
+        advancePlayerTurn(updated);
         return;
       }
 
@@ -128,13 +163,13 @@ const Battle = ({ config, onComplete }: BattleProps) => {
         pushLog(`${activePlayer.name}의 ${skill.name}! ${prev.name}에게 ${damage} 피해.`);
         return { ...prev, hp: nextHp };
       });
-      setTurn('enemy');
+      advancePlayerTurn(players);
     },
-    [activePlayer, turn, activePlayerIndex, pushLog, calculateDamage],
+    [activePlayer, activePlayerIndex, phase, advancePlayerTurn, pushLog, calculateDamage, players],
   );
 
   useEffect(() => {
-    if (turn !== 'enemy') return;
+    if (phase !== 'enemy') return;
     if (enemy.hp <= 0) return;
 
     const timeout = window.setTimeout(() => {
@@ -151,21 +186,24 @@ const Battle = ({ config, onComplete }: BattleProps) => {
           return { ...prevEnemy, hp: nextHp };
         });
         pushLog(`${enemy.name}의 ${skill.name}! ${healed > 0 ? `${enemy.name}이 ${healed} 회복했다.` : '효과가 없다.'}`);
-        setTurn('player');
+        setPhase('player');
+        setActivePlayerIndex(getNextAlive(players));
         return;
       }
 
       let detailText = '';
+      let updated: CharacterState[] = [];
       setPlayers((prev) => {
         const alive = prev.filter((character) => character.hp > 0);
         if (!alive.length) {
           detailText = '공격할 대상이 없습니다.';
+          updated = prev;
           return prev;
         }
         const target = alive[Math.floor(Math.random() * alive.length)];
         const targetIndex = prev.findIndex((character) => character.name === target.name);
 
-        return prev.map((character, index) => {
+        updated = prev.map((character, index) => {
           if (index !== targetIndex) return character;
           const messages: string[] = [];
           let damage = calculateDamage(enemy.stats.attack, skill.power, character.stats.defense);
@@ -203,13 +241,16 @@ const Battle = ({ config, onComplete }: BattleProps) => {
             hp: clamp(character.hp - damage, 0, character.stats.maxHp),
           };
         });
+
+        return updated;
       });
       pushLog(`${enemy.name}의 ${skill.name}! ${detailText}`.trim());
-      setTurn('player');
+      setPhase('player');
+      setActivePlayerIndex(getNextAlive(updated));
     }, 650);
 
     return () => window.clearTimeout(timeout);
-  }, [turn, enemy, pushLog, calculateDamage]);
+  }, [phase, enemy, players, pushLog, calculateDamage]);
 
   useEffect(() => {
     if (enemy.hp > 0) return;
@@ -233,91 +274,127 @@ const Battle = ({ config, onComplete }: BattleProps) => {
   );
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-slate-950 via-[#050b13] to-slate-950 text-white">
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.25),_transparent_60%)]" />
+    <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-slate-950 via-[#0a1321] to-slate-950 text-white">
+      <div className="pointer-events-none absolute inset-0 opacity-60">
+        <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.18),_transparent_55%)]" />
       </div>
-      <div className="relative z-10 flex flex-1 flex-col gap-6 p-6">
-        <header className="text-center">
-          <p className="text-xs uppercase tracking-[0.4em] text-emerald-300">Battle Phase</p>
-          <h2 className="mt-2 text-3xl font-semibold">{config.description ?? '시스템 교란체를 포착했습니다.'}</h2>
-          <p className="mt-1 text-sm text-slate-300">
-            {turn === 'player' ? '명령을 선택하여 적을 제압하세요.' : '적이 움직이는 동안 숨을 고릅니다...'}
-          </p>
+      <div className="relative z-10 grid h-full grid-rows-[auto,1fr,auto] gap-4 p-4">
+        <header className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.4em] text-emerald-300">전투 개시</p>
+            <h2 className="text-xl font-semibold md:text-2xl">{config.description ?? '시스템 교란체를 포착했습니다.'}</h2>
+            <p className="text-xs text-slate-300 md:text-sm">
+              {phase === 'player' ? '각 전사가 순서대로 명령을 기다립니다.' : '적이 움직입니다. 방어 태세를 유지하세요.'}
+            </p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-right text-xs uppercase tracking-[0.3em] text-emerald-200">
+            {phase === 'player' ? 'Player Turn' : 'Enemy Turn'}
+          </div>
         </header>
-        <div className="flex flex-1 flex-col gap-6 lg:flex-row">
-          <div className="flex-1 rounded-[2.5rem] border border-white/10 bg-black/40 p-6 shadow-2xl shadow-emerald-500/10 backdrop-blur">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Enemy</p>
-            <h3 className="text-2xl font-semibold">{enemy.name}</h3>
-            <p className="mt-1 text-sm text-slate-300">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
-            <div className="mt-6 space-y-3">
-              <div className="h-4 rounded-full bg-white/10">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400"
-                  style={{ width: `${enemyHpPercent}%` }}
-                />
+
+        <div className="grid flex-1 grid-rows-2 gap-4 lg:grid-rows-1 lg:grid-cols-[1.1fr,0.9fr]">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-inner shadow-emerald-500/20">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.08),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(239,68,68,0.08),transparent_30%)]" />
+            <div className="relative flex h-full flex-col gap-4 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.4em] text-slate-400">Enemy</p>
+                  <h3 className="text-xl font-semibold md:text-2xl">{enemy.name}</h3>
+                  <p className="text-xs text-slate-300 md:text-sm">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-right text-[11px] uppercase tracking-[0.3em] text-slate-300">
+                  SPD {enemy.stats.speed}
+                </div>
               </div>
-              <p className="text-sm text-slate-200">
-                HP {enemy.hp} / {enemy.stats.maxHp}
-              </p>
-              <dl className="grid grid-cols-3 gap-3 text-xs uppercase text-slate-300">
-                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
-                  <dt className="text-[10px] tracking-[0.4em] text-slate-400">ATK</dt>
+              <div className="space-y-2">
+                <div className="h-3 rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400"
+                    style={{ width: `${enemyHpPercent}%` }}
+                  />
+                </div>
+                <p className="text-sm text-slate-200">
+                  HP {enemy.hp} / {enemy.stats.maxHp}
+                </p>
+              </div>
+              <dl className="grid grid-cols-3 gap-2 text-xs uppercase text-slate-300">
+                <div className="rounded-lg border border-white/10 bg-white/5 p-2 text-center">
+                  <dt className="text-[10px] tracking-[0.35em] text-slate-500">ATK</dt>
                   <dd className="text-lg font-semibold text-white">{enemy.stats.attack}</dd>
                 </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
-                  <dt className="text-[10px] tracking-[0.4em] text-slate-400">DEF</dt>
+                <div className="rounded-lg border border-white/10 bg-white/5 p-2 text-center">
+                  <dt className="text-[10px] tracking-[0.35em] text-slate-500">DEF</dt>
                   <dd className="text-lg font-semibold text-white">{enemy.stats.defense}</dd>
                 </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
-                  <dt className="text-[10px] tracking-[0.4em] text-slate-400">SPD</dt>
+                <div className="rounded-lg border border-white/10 bg-white/5 p-2 text-center">
+                  <dt className="text-[10px] tracking-[0.35em] text-slate-500">SPD</dt>
                   <dd className="text-lg font-semibold text-white">{enemy.stats.speed}</dd>
                 </div>
               </dl>
-            </div>
-            <div className="mt-6 rounded-2xl border border-white/5 bg-black/40 p-4 text-sm text-slate-200">
-              <p className="text-[11px] uppercase tracking-[0.4em] text-slate-500">예상 패턴</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {enemySkillList.map((skill) => (
-                  <span key={skill.id} className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs">
-                    {skill.name}
-                  </span>
-                ))}
+              <div className="mt-auto rounded-xl border border-white/5 bg-black/40 p-3 text-xs text-slate-200">
+                <p className="text-[10px] uppercase tracking-[0.35em] text-slate-500">예상 스킬</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {enemySkillList.map((skill) => (
+                    <span key={skill.id} className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[11px]">
+                      {skill.name}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          <div className="rounded-[2.5rem] border border-white/10 bg-black/30 p-6 text-sm">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Battle Log</p>
-            <ul className="mt-3 space-y-2 font-mono text-emerald-100">
-              {log.map((entry, index) => (
-                <li key={`${entry}-${index}`} className="rounded-lg bg-black/40 px-3 py-2 text-left text-xs tracking-tight">
-                  {entry}
-                </li>
-              ))}
-            </ul>
+
+          <div className="grid grid-rows-[1fr,auto] gap-3 rounded-2xl border border-white/10 bg-black/40 p-4 text-sm">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">Battle Log</p>
+              <ul className="mt-2 space-y-2 font-mono text-emerald-100">
+                {log.map((entry, index) => (
+                  <li key={`${entry}-${index}`} className="rounded-lg border border-white/5 bg-black/50 px-3 py-2 text-left text-xs tracking-tight">
+                    {entry}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-slate-300">
+              <span>턴 순서</span>
+              <div className="flex flex-wrap gap-1">
+                {players
+                  .map((player, index) => ({ player, index }))
+                  .filter(({ player }) => player.hp > 0)
+                  .map(({ player, index }) => (
+                    <span
+                      key={player.name}
+                      className={`rounded-full px-2 py-1 text-[11px] ${index === activePlayerIndex && phase === 'player' ? 'bg-emerald-500/30 text-white' : 'bg-white/10 text-slate-200'}`}
+                    >
+                      {player.name}
+                    </span>
+                  ))}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="grid gap-4 rounded-[2.5rem] border border-white/10 bg-black/40 p-4 text-sm md:grid-cols-[320px,1fr]">
-          <div className="rounded-2xl border border-white/5 bg-slate-950/80 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Command</p>
+
+        <div className="grid gap-3 rounded-2xl border border-white/10 bg-black/45 p-4 text-sm lg:grid-cols-[1.1fr,0.9fr]">
+          <div className="rounded-xl border border-white/5 bg-slate-950/80 p-4">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">Command</p>
             {activePlayer ? (
               <>
                 <p className="mt-1 text-sm text-white">
-                  {activePlayer.name} <span className="text-slate-400">대기 중</span>
+                  {activePlayer.name} <span className="text-emerald-300">행동 대기</span>
                 </p>
-                <div className="mt-3 space-y-2">
+                <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3">
                   {activePlayer.skills.map((skill) => (
                     <button
                       key={skill.id}
-                      className="flex w-full flex-col rounded-xl border border-white/10 bg-gradient-to-r from-slate-900 to-slate-800 px-4 py-3 text-left transition hover:border-emerald-400 hover:from-slate-800 hover:to-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
-                      disabled={turn !== 'player' || enemy.hp <= 0}
+                      className="group flex flex-col rounded-lg border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 px-3 py-2 text-left text-xs transition hover:border-emerald-400 hover:from-slate-800 hover:to-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      disabled={phase !== 'player' || enemy.hp <= 0}
                       onClick={() => handlePlayerSkill(skill)}
                     >
                       <div className="flex items-center justify-between text-sm font-semibold">
-                        <span>{skill.name}</span>
-                        <span className="text-[11px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
+                        <span className="truncate">{skill.name}</span>
+                        <span className="text-[10px] text-emerald-200">{SKILL_TYPE_LABELS[skill.type]}</span>
                       </div>
-                      <p className="text-xs text-slate-300">{skill.description}</p>
+                      <p className="mt-1 line-clamp-2 text-[11px] text-slate-300">{skill.description}</p>
                     </button>
                   ))}
                 </div>
@@ -326,15 +403,22 @@ const Battle = ({ config, onComplete }: BattleProps) => {
               <p className="mt-3 text-slate-300">행동 가능한 캐릭터가 없습니다.</p>
             )}
           </div>
-          <div className="rounded-2xl border border-white/5 bg-slate-950/60 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Party</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {players.map((character) => {
+          <div className="rounded-xl border border-white/5 bg-slate-950/70 p-4">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">Party</p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              {players.map((character, index) => {
                 const percent = Math.round((character.hp / character.stats.maxHp) * 100);
+                const isActive = index === activePlayerIndex && phase === 'player';
                 return (
-                  <div key={character.name} className="rounded-2xl border border-white/10 bg-black/40 p-3">
+                  <div
+                    key={character.name}
+                    className={`rounded-xl border bg-black/40 p-3 transition ${isActive ? 'border-emerald-400 shadow-inner shadow-emerald-400/40' : 'border-white/10'}`}
+                  >
                     <div className="flex items-center justify-between text-sm font-semibold">
-                      <span>{character.name}</span>
+                      <span className="flex items-center gap-2">
+                        <span className={`h-2 w-2 rounded-full ${character.hp > 0 ? 'bg-emerald-400' : 'bg-slate-500'}`} />
+                        {character.name}
+                      </span>
                       <span className="text-xs text-slate-300">
                         HP {character.hp} / {character.stats.maxHp}
                       </span>
@@ -347,15 +431,15 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                     </div>
                     <dl className="mt-3 grid grid-cols-3 gap-2 text-[11px] text-slate-300">
                       <div className="text-center">
-                        <dt className="text-[9px] uppercase tracking-[0.3em] text-slate-500">ATK</dt>
+                        <dt className="text-[9px] uppercase tracking-[0.25em] text-slate-500">ATK</dt>
                         <dd className="text-sm font-semibold">{character.stats.attack}</dd>
                       </div>
                       <div className="text-center">
-                        <dt className="text-[9px] uppercase tracking-[0.3em] text-slate-500">DEF</dt>
+                        <dt className="text-[9px] uppercase tracking-[0.25em] text-slate-500">DEF</dt>
                         <dd className="text-sm font-semibold">{character.stats.defense}</dd>
                       </div>
                       <div className="text-center">
-                        <dt className="text-[9px] uppercase tracking-[0.3em] text-slate-500">SPD</dt>
+                        <dt className="text-[9px] uppercase tracking-[0.25em] text-slate-500">SPD</dt>
                         <dd className="text-sm font-semibold">{character.stats.speed}</dd>
                       </div>
                     </dl>

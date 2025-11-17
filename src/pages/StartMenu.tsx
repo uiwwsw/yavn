@@ -29,10 +29,7 @@ const StartMenuPage = () => {
         <div className="pointer-events-none absolute inset-0 flex flex-col items-end justify-end gap-4 p-6">
           <div className="pointer-events-auto w-full max-w-xl rounded-3xl border border-white/10 bg-black/70 p-5 text-sm backdrop-blur">
             <p className="text-base font-semibold text-white">원정대 준비 완료</p>
-            <p className="mt-1 text-slate-300">
-              캐릭터의 능력치는 <code className="rounded bg-white/10 px-1">characters.json</code>에서 관리되며, 설정을 건드리지 않아도
-              균형 잡힌 파티로 즉시 모험을 시작할 수 있습니다.
-            </p>
+            <p className="mt-1 text-slate-300">균형 잡힌 파티로 즉시 모험을 시작할 수 있습니다.</p>
             <div className="mt-4 flex flex-col gap-3">
               <Btn autoFocus onClick={handleStart}>
                 시작하기
