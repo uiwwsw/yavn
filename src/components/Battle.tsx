@@ -301,8 +301,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                 <p className="text-[12px] text-slate-200">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
               </div>
               <div className="w-full min-w-[240px] max-w-sm rounded-lg border border-white/10 bg-slate-950/80 px-3 py-2 text-right text-xs shadow">
-                <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-slate-400">
-                  <span className="text-left text-[10px] text-emerald-200">적</span>
+                <div className="flex items-center justify-end text-[11px] uppercase tracking-[0.2em] text-slate-200">
                   <span className="font-semibold text-white">{enemy.name}</span>
                 </div>
                 <div className="mt-1 h-2 rounded-full bg-white/10">
@@ -311,14 +310,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                     style={{ width: `${enemyHpPercent}%` }}
                   />
                 </div>
-                <div className="mt-1 flex flex-wrap justify-end gap-2 text-[10px] text-slate-300">
-                  <span>
-                    HP {enemy.hp} / {enemy.stats.maxHp}
-                  </span>
-                  <span>ATK {enemy.stats.attack}</span>
-                  <span>DEF {enemy.stats.defense}</span>
-                  <span>SPD {enemy.stats.speed}</span>
-                </div>
+                <div className="mt-1 text-[10px] text-slate-200">HP {enemy.hp} / {enemy.stats.maxHp}</div>
               </div>
             </header>
 
@@ -359,7 +351,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
                       </div>
                       <div className="max-h-40 overflow-y-auto pr-1">
                         <div
-                          className="grid grid-flow-col auto-cols-[minmax(140px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-3"
+                          className="grid grid-flow-col auto-cols-[minmax(150px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-2 xl:grid-cols-3"
                         >
                           {character.skills.map((skill) => (
                             <button
@@ -384,13 +376,13 @@ const Battle = ({ config, onComplete }: BattleProps) => {
             </section>
           </div>
 
-          <aside className="flex h-28 flex-col rounded-lg border border-white/10 bg-slate-900/80 shadow-inner shadow-black/30 lg:h-full">
+          <aside className="flex h-28 min-h-0 flex-col rounded-lg border border-white/10 bg-slate-900/80 shadow-inner shadow-black/30 lg:h-full">
             <div className="flex items-center justify-between px-3 py-2 text-[11px] uppercase tracking-[0.3em] text-slate-300">
               <span className="text-emerald-200">전투 로그</span>
               <span className="text-[10px] text-slate-500">전체</span>
             </div>
             <ul
-              className="mt-0 flex flex-1 flex-col gap-2 overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
+              className="mt-0 flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
