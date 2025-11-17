@@ -292,7 +292,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
   return (
     <div className="flex items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
       <div className="w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
-        <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,3fr)_minmax(260px,1.15fr)]">
+        <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,3fr)_minmax(144px,1.15fr)]">
           <div className="space-y-3 overflow-hidden">
             <header className="flex flex-col gap-3 rounded-lg border border-white/5 bg-gradient-to-r from-slate-950/80 to-slate-900/80 p-3 shadow-inner shadow-black/30 sm:flex-row sm:items-center sm:justify-between">
               <div className="space-y-1 text-left">
@@ -382,7 +382,7 @@ const Battle = ({ config, onComplete }: BattleProps) => {
               <span className="text-[10px] text-slate-500">전체</span>
             </div>
             <ul
-              className="mt-0 flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px]"
+              className="mt-0 flex flex-1 min-h-0 flex-col-reverse gap-2 overflow-auto border-t border-white/5 bg-black/25 px-2 py-2 text-[11px] leading-5 text-emerald-100 lg:gap-0 lg:space-y-2 lg:border-t-0 lg:bg-transparent lg:p-3 lg:text-[12px] lg:max-h-[382px]"
             >
               {log.map((entry, index) => (
                 <li key={`${entry}-${index}`} className="rounded border border-white/5 bg-slate-800/60 px-2 py-1 text-left">
