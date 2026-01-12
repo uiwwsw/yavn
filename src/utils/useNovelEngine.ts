@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { getJson } from '#/getJson';
 import {
   Assets,
@@ -49,10 +49,15 @@ const useNovelEngine = ({
   const [completedAt, setCompletedAt] = useState<number | null>(null);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
+  
+  const loadCancelledRef = useRef(false);
+  const animationFrameRef = useRef<number>();
+
+  const [chapterIndex, sentenceIndex] = step;
 
   const sceneState = useMemo<SceneState>(() => {
-    const scene = chapters[step[0]] ?? null;
-    const sentence = scene?.sentences?.[step[1]];
+    const scene = chapters[chapterIndex] ?? null;
+    const sentence = scene?.sentences?.[sentenceIndex];
     const sentenceData = isChoiceNode(sentence) ? undefined : (sentence as SentenceData | undefined);
     const battle = scene?.battle;
     return {
@@ -67,7 +72,7 @@ const useNovelEngine = ({
       maxStep: chapters.length,
       battle,
     };
-  }, [chapters, step]);
+  }, [chapters, chapterIndex, sentenceIndex]);
 
   const { sentence, sentenceData, character, place, changePosition, next, maxSentence, maxStep, battle } = sceneState;
 
@@ -218,14 +223,13 @@ const useNovelEngine = ({
 
     if (displayCharacter === character && characterImage === src) return;
 
-    let canceled = false;
     setDisplayCharacter(undefined);
     setCharacterImage(undefined);
 
     const img = new Image();
     img.src = src;
     const handleLoad = () => {
-      if (canceled) return;
+      if (loadCancelledRef.current) return;
       setDisplayCharacter(character);
       setCharacterImage(src);
     };
@@ -234,16 +238,17 @@ const useNovelEngine = ({
     else img.addEventListener('load', handleLoad, { once: true });
 
     return () => {
-      canceled = true;
+      loadCancelledRef.current = true;
       img.removeEventListener('load', handleLoad);
+      setTimeout(() => { loadCancelledRef.current = false; }, 0);
     };
   }, [assets, character, characterImage, displayCharacter]);
 
   useEffect(() => {
-    let canceled = false;
+    loadCancelledRef.current = false;
     Promise.all([getJson<Chapter[]>(`chapter${level}`), getJson<Assets>(`assets${level}`)])
       .then(([chapterData, assetData]) => {
-        if (canceled) return;
+        if (loadCancelledRef.current) return;
         setChapters(chapterData);
         setAssets(assetData);
         setStep([0, 0]);
@@ -254,11 +259,11 @@ const useNovelEngine = ({
         setCharacterImage(undefined);
       })
       .catch(() => {
-        if (!canceled) onLoadError();
+        if (!loadCancelledRef.current) onLoadError();
       });
 
     return () => {
-      canceled = true;
+      loadCancelledRef.current = true;
     };
   }, [level, onLoadError, resetSceneProgress]);
 
@@ -286,7 +291,6 @@ const useNovelEngine = ({
       return;
     }
 
-    let animationFrame: number;
     const start = completedAt;
     setAutoProgress(0);
 
@@ -300,13 +304,15 @@ const useNovelEngine = ({
         return;
       }
 
-      animationFrame = window.requestAnimationFrame(update);
+      animationFrameRef.current = window.requestAnimationFrame(update);
     };
 
-    animationFrame = window.requestAnimationFrame(update);
+    animationFrameRef.current = window.requestAnimationFrame(update);
 
     return () => {
-      window.cancelAnimationFrame(animationFrame);
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, [activeChoice, auto, autoAdvanceDelay, complete, completedAt, nextScene]);
 

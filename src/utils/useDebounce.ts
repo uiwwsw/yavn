@@ -1,16 +1,35 @@
-import { EventHandler, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-const useDebounce = <T extends EventHandler<any>>(fn?: T, delay: number = 300) => {
-  if (!fn) return () => null;
-  if (!delay) return fn;
-  const sto = useRef(setTimeout(() => null));
-  const handleRun = (e?: unknown) => {
-    if (sto.current) clearTimeout(sto.current);
+const useDebounce = <T extends (...args: unknown[]) => void>(fn: T | undefined, delay: number = 300) => {
+  const timeoutRef = useRef<number | null>(null);
 
-    sto.current = setTimeout(() => fn(e), delay);
-  };
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
-  return handleRun;
+  return useCallback(
+    (...args: Parameters<T>) => {
+      if (!fn) return;
+
+      if (!delay) {
+        fn(...args);
+        return;
+      }
+
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = window.setTimeout(() => {
+        fn(...args);
+      }, delay);
+    },
+    [delay, fn],
+  );
 };
 
 export default useDebounce;

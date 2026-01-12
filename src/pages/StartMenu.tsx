@@ -1,7 +1,7 @@
 // import viteLogo from '/vite.svg';
 
 import Btn from '@/Btn';
-import { useStorageContext } from '@/StorageContext';
+import { useStorageContext } from '@/useStorageContext';
 import LoadBtn from '@/LoadBtn';
 import Assets from '@/Preload';
 import { useEffect, useState } from 'react';

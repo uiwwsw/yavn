@@ -1,7 +1,7 @@
 // import viteLogo from '/vite.svg';
 
 import Btn from '@/Btn';
-import { useStorageContext } from '@/StorageContext';
+import { useStorageContext } from '@/useStorageContext';
 import { motion } from 'framer-motion';
 
 const CreditPage = () => {

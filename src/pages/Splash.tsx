@@ -1,5 +1,5 @@
 import Fade from '@/Fade';
-import { useStorageContext } from '@/StorageContext';
+import { useStorageContext } from '@/useStorageContext';
 
 import Assets from '@/Preload';
 // import viteLogo from '/vite.svg';

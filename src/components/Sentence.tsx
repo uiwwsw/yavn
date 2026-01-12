@@ -1,58 +1,109 @@
-// import reactLogo from './assets/react.svg';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, ReactNode, type CSSProperties, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Assets, SentenceData, SentenceEntry } from '#/novelTypes';
 
-// import viteLogo from '/vite.svg';
 interface AssetEntry {
   name: string;
   index: number;
   key: string;
 }
+
 export interface SentenceProps {
   assets?: Assets;
   data?: SentenceData;
   direct?: boolean;
   isComplete: boolean;
-  auto?: boolean;
-  autoProgress?: number;
   onComplete: () => void;
+  prefix?: ReactNode;
+  onProgress?: (cursor: number) => void;
 }
+
 const defaultDuration = 70;
-const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, autoProgress, onComplete }: SentenceProps) => {
+
+const clampMs = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+
+const getSpeechDelayMs = (baseMs: number, lastChar: string | undefined) => {
+  const base = Number.isFinite(baseMs) && baseMs > 0 ? baseMs : defaultDuration;
+  const jitter = Math.round((Math.random() * 0.3 - 0.12) * base);
+
+  if (!lastChar) return clampMs(base + jitter, 10, 220);
+
+  if (lastChar === ' ') return clampMs(Math.round(base * 0.35) + jitter, 10, 140);
+  if (lastChar === '\n') return clampMs(Math.round(base * 1.2) + jitter, 10, 260);
+
+  if (/[.?!]/.test(lastChar)) return clampMs(Math.round(base * 4.2) + jitter, 40, 520);
+  if (/[,]/.test(lastChar)) return clampMs(Math.round(base * 2.0) + jitter, 20, 360);
+  if (/[;:]/.test(lastChar)) return clampMs(Math.round(base * 2.4) + jitter, 20, 380);
+  if (/[”"']/u.test(lastChar)) return clampMs(Math.round(base * 0.75) + jitter, 10, 240);
+  if (/[…]/u.test(lastChar)) return clampMs(Math.round(base * 3.0) + jitter, 30, 520);
+
+  return clampMs(base + jitter, 10, 260);
+};
+
+const Sentence = ({
+  assets,
+  data,
+  direct,
+  isComplete: isCompleteProp,
+  onComplete,
+  prefix,
+  onProgress,
+}: SentenceProps) => {
   const [_sentences, setSentences] = useState<SentenceEntry[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
   const [_step, setStep] = useState<number>(-1);
 
-  const step = useMemo(() => Math.min(_step, _sentences.length), [_step, _sentences]);
+  const step = Math.min(_step, _sentences.length);
 
   const isComplete = useMemo(() => {
-    if (_cursor === 0) return false;
-    return _sentences.length <= _step;
-  }, [_sentences, _step]);
+    if (_sentences.length === 0) return false;
+    return _step >= _sentences.length;
+  }, [_sentences.length, _step]);
 
-  const cursor = useMemo(
-    () => (isCompleteProp || isComplete ? Infinity : _cursor),
-    [_sentences, _cursor, isCompleteProp],
-  );
+  const cursor = isCompleteProp || isComplete ? Number.POSITIVE_INFINITY : _cursor;
 
-  const sentence = useMemo(() => _sentences[step] ?? { message: '', duration: 0 }, [_sentences, step]);
-  const sentences = useMemo(() => {
-    let msg = '';
-    for (const index in _sentences) {
-      if (!isCompleteProp && step < +index) break;
-      if (step === +index) msg += _sentences[index].message.substring(0, cursor);
-      else msg += _sentences[index].message;
+  const sentence = _sentences[step] ?? { message: '', duration: 0 };
+  const baseDuration = sentence.duration ?? defaultDuration;
+
+  const renderedSentence = useMemo<ReactNode>(() => {
+    const nodes: ReactNode[] = [];
+
+    for (let index = 0; index < _sentences.length; index += 1) {
+      if (!isCompleteProp && step < index) break;
+
+      const entry = _sentences[index];
+      if (index < step) {
+        nodes.push(entry.message);
+        continue;
+      }
+
+      if (index === step) {
+        const visible = entry.message.substring(0, cursor);
+        if (!visible) continue;
+
+        const prefix = visible.slice(0, -1);
+        const last = visible.slice(-1);
+
+        if (prefix) nodes.push(prefix);
+        nodes.push(
+          <span key={`pop-${index}-${visible.length}`} className="dialogue-pop">
+            {last}
+          </span>,
+        );
+        continue;
+      }
+
+      nodes.push(entry.message);
     }
 
-    return msg;
-  }, [_sentences, cursor, step, isCompleteProp]);
-  const duration = useMemo(() => sentence.duration ?? defaultDuration, [_sentences, step]);
-  // const asset = useMemo(() => sentence.asset, [_sentences, step]);
+    return <>{nodes}</>;
+  }, [_sentences, cursor, isCompleteProp, step]);
+
   const assetArray = useMemo<AssetEntry[]>(() => {
-    const entries = _sentences.flatMap((sentence, index) => {
-      if (!sentence.asset) return [];
-      const assetNames = Array.isArray(sentence.asset) ? sentence.asset : [sentence.asset];
+    const entries = _sentences.flatMap((sentenceEntry, index) => {
+      if (!sentenceEntry.asset) return [];
+      const assetNames = Array.isArray(sentenceEntry.asset) ? sentenceEntry.asset : [sentenceEntry.asset];
       return assetNames.map((name, assetIndex) => ({ name, index, key: `${index}-${assetIndex}-${name}` }));
     });
 
@@ -61,20 +112,15 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, auto
     const currentIndex = Math.min(Math.max(step, 0), _sentences.length - 1);
     return entries.filter((entry) => entry.index === currentIndex);
   }, [_sentences, step, isCompleteProp]);
-  const isEndCursor = useMemo(() => sentence.message.length <= cursor, [_sentences, step, cursor]);
-  const marginLeft = useCallback(
-    (index: number, arr: AssetEntry[]) => {
-      if (!assets) return 0;
-      const audioLength = arr.slice(index).filter((entry) => assets[entry.name]?.audio).length;
-      const baseOffset = (index - (arr.length - 1) + audioLength) * -100;
-      return direct ? baseOffset * -1 : baseOffset;
-    },
-    [assets, direct],
-  );
+
+  const isEndCursor = step < _sentences.length && sentence.message.length <= cursor;
+
+
   useEffect(() => {
     if (!data) {
       setSentences([]);
       setStep(-1);
+      setCursor(0);
       return;
     }
 
@@ -85,35 +131,68 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, auto
     } else {
       setSentences([{ message: data, duration: defaultDuration }]);
     }
+
     setStep(0);
-  }, [data]);
-  useEffect(() => {
-    if (!duration || isComplete) return;
     setCursor(0);
-    const sti = setInterval(() => setCursor((prev) => prev + 1), duration);
-    return () => clearInterval(sti);
-  }, [_sentences, step, isComplete]);
+  }, [data]);
 
   useEffect(() => {
-    if (isEndCursor) setStep(step + 1);
-  }, [isEndCursor]);
-  useEffect(() => {
-    if (isComplete) onComplete();
-  }, [isComplete]);
-  const showAutoProgress = useMemo(() => Boolean(auto && isCompleteProp), [auto, isCompleteProp]);
-  const clampedAutoProgress = useMemo(() => {
-    if (!showAutoProgress) return 0;
-    const value = typeof autoProgress === 'number' && Number.isFinite(autoProgress) ? autoProgress : 0;
-    return Math.max(0, Math.min(1, value));
-  }, [autoProgress, showAutoProgress]);
+    if (step < 0) return;
+    setCursor(0);
+  }, [step]);
 
-  const gaugeStyle = useMemo<CSSProperties | undefined>(() => {
-    if (!showAutoProgress) return undefined;
-    const percent = Math.round(clampedAutoProgress * 10000) / 100;
-    return {
-      background: `conic-gradient(rgba(0, 0, 0, 0.75) 0% ${percent}%, rgba(0, 0, 0, 0.15) ${percent}% 100%)`,
+  useEffect(() => {
+    if (isCompleteProp || isComplete) return;
+
+    const message = sentence.message;
+    if (!message) return;
+    if (_cursor >= message.length) return;
+
+    const lastChar = _cursor > 0 ? message[_cursor - 1] : undefined;
+    const delayMs = getSpeechDelayMs(baseDuration, lastChar);
+
+    const timeout = window.setTimeout(() => {
+      setCursor((prev) => prev + 1);
+    }, delayMs);
+
+    return () => window.clearTimeout(timeout);
+  }, [baseDuration, isComplete, isCompleteProp, _cursor, sentence.message]);
+
+  useEffect(() => {
+    onProgress?.(_cursor);
+  }, [_cursor, onProgress]);
+
+
+  useEffect(() => {
+    if (!isEndCursor) return;
+    setStep((prev) => (prev >= _sentences.length ? prev : prev + 1));
+  }, [_sentences.length, isEndCursor]);
+
+  useEffect(() => {
+    if (isComplete && !isCompleteProp) onComplete();
+  }, [isComplete, isCompleteProp, onComplete]);
+
+  const [rootBounds, setRootBounds] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.getElementById('root');
+    if (!root) return;
+
+    const update = () => {
+      const rect = root.getBoundingClientRect();
+      setRootBounds({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
     };
-  }, [clampedAutoProgress, showAutoProgress]);
+
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, true);
+
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update, true);
+    };
+  }, []);
 
   return (
     <>
@@ -124,69 +203,71 @@ const Sentence = ({ assets, data, direct, isComplete: isCompleteProp, auto, auto
             if (!asset?.audio) return null;
             return <audio key={`audio-${key}`} src={asset.audio} autoPlay />;
           })}
-          <AnimatePresence initial={false}>
-            {assetArray.map(({ name, key }, i, arr) => {
-              const asset = assets[name];
-              if (!asset?.image) return null;
-              const offset = marginLeft(i, arr);
-              const initialOffset = direct ? offset + 20 : offset - 20;
-              return (
-                <motion.img
-                  key={`image-${key}`}
-                  className={`fixed top-1/2 max-h-24 max-w-24 md:max-h-36 md:max-w-36 transform object-contain ${direct ? 'right-1/2' : 'left-1/2'}`}
-                  src={asset.image}
-                  alt=""
-                  initial={{ opacity: 0, scale: 0.95, x: initialOffset }}
-                  animate={{ opacity: 1, scale: 1, x: offset }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{
-                    opacity: { duration: 0.25, ease: 'easeOut' },
-                    scale: { duration: 0.4, ease: 'easeOut' },
-                    x: { type: 'spring', stiffness: 260, damping: 26 },
-                  }}
-                />
-              );
-            })}
-          </AnimatePresence>
+
+          {typeof document !== 'undefined' &&
+            rootBounds &&
+            createPortal(
+              <div
+                className="pointer-events-none"
+                style={{
+                  position: 'fixed',
+                  left: rootBounds.left,
+                  top: rootBounds.top,
+                  width: rootBounds.width,
+                  height: rootBounds.height,
+                  zIndex: 9999,
+                }}
+              >
+                <AnimatePresence initial={false}>
+                  {assetArray.map(({ name, key }, index) => {
+                    const asset = assets[name];
+                    if (!asset?.image) return null;
+
+                    const size = rootBounds.width < 520 ? 56 : 72;
+                    const gap = 10;
+                    const base = 18 + index * (size + gap);
+
+                    const stickerStyle: CSSProperties = {
+                      position: 'absolute',
+                      bottom: 96,
+                      width: size,
+                      height: size,
+                      left: direct ? undefined : base,
+                      right: direct ? base : undefined,
+                    };
+
+                    return (
+                      <motion.div
+                        key={`sticker-${key}`}
+                        style={stickerStyle}
+                        initial={{ opacity: 0, scale: 0.85, y: 10, rotate: direct ? 2 : -2 }}
+                        animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+                        exit={{ opacity: 0, scale: 0.92, y: 8 }}
+                        transition={{
+                          opacity: { duration: 0.18, ease: 'easeOut' },
+                          scale: { type: 'spring', stiffness: 260, damping: 18 },
+                          y: { type: 'spring', stiffness: 240, damping: 20 },
+                        }}
+                      >
+                        <div className="h-full w-full rounded-xl border border-white/10 bg-black/25 p-1 shadow-2xl shadow-black/60 backdrop-blur">
+                          <img className="h-full w-full object-contain" src={asset.image} alt="" />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>,
+              document.body,
+            )}
         </>
       )}
-      <div className="relative flex flex-auto items-end gap-4">
-        <span className="flex-1 whitespace-pre-line leading-relaxed">
-          {sentences}
-          {!isComplete && (
-            <span className="ml-1 inline-block animate-ping align-baseline" style={{ animationDuration: `${duration}ms` }}>
-              |
-            </span>
-          )}
-        </span>
-        <span
-          className={`relative inline-flex h-10 w-10 items-center justify-center transition-opacity ${
-            isCompleteProp ? 'opacity-100 animate-pulse' : 'opacity-60'
-          }`}
-        >
-          {showAutoProgress && (
-            <>
-              <span className="absolute inset-0 rounded-full" style={gaugeStyle} />
-              <span className="absolute inset-[3px] rounded-full bg-white/80" />
-            </>
-          )}
-          {!showAutoProgress && (
-            <span className="absolute inset-0 rounded-full bg-white/60" />
-          )}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="relative h-6 w-6"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
-          </svg>
-        </span>
-      </div>
+      <span className="whitespace-pre-line leading-relaxed">
+        {prefix}
+        {renderedSentence}
+        {!isCompleteProp && !isComplete && <span className="terminal-cursor">▍</span>}
+      </span>
     </>
   );
 };
 
-export default Sentence;
+export default memo(Sentence);

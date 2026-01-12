@@ -1,4 +1,4 @@
-import { SessionStorage } from '@/StorageContext';
+import type { SessionStorage } from '@/StorageContext';
 import { useEffect, useMemo, useState } from 'react';
 const ID = 'session';
 const init: string = sessionStorage.getItem(ID) ?? '{}';

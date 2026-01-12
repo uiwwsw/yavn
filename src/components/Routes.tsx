@@ -1,5 +1,5 @@
 import SplashPage from '@/Splash';
-import { useStorageContext } from './StorageContext';
+import { useStorageContext } from './useStorageContext';
 import StartMenuPage from '@/StartMenu';
 import GamePage from '@/Game';
 import SavePage from '@/Save';

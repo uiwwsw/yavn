@@ -1,9 +1,24 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Sentence from '@/Sentence';
 import Preload from '@/Preload';
-import { useStorageContext } from '@/StorageContext';
+import { useStorageContext } from '@/useStorageContext';
 import useNovelEngine from '#/useNovelEngine';
 import Battle from '@/Battle';
+import type { ChoiceOption, SentenceData, SentenceEntry } from '#/novelTypes';
+
+type ConsoleLine = {
+  id: number;
+  speaker: string;
+  text: string;
+};
+
+const MAX_CONSOLE_LINES = 200;
+
+const flattenSentenceData = (data: SentenceData): string => {
+  if (typeof data === 'string') return data;
+  if (Array.isArray(data)) return data.map((entry) => entry.message).join('');
+  return (data as SentenceEntry).message;
+};
 
 const Game = () => {
   const { level, addStorage } = useStorageContext();
@@ -15,7 +30,6 @@ const Game = () => {
     assetList,
     auto,
     setAuto,
-    autoProgress,
     character,
     characterImage,
     characterPosition,
@@ -27,7 +41,6 @@ const Game = () => {
     place,
     sentence,
     sentenceData,
-    sentencePosition,
     activeChoice,
     complete,
     battle: battleConfig,
@@ -37,6 +50,98 @@ const Game = () => {
     onChapterEnd: handleGoSavePage,
     onLoadError: handleGoCreditPage,
   });
+
+  const consoleViewportRef = useRef<HTMLDivElement | null>(null);
+  const isConsoleTypingRef = useRef(false);
+  const userScrolledRef = useRef(false);
+
+  const currentSentenceRef = useRef<unknown>(null);
+  const lastSentenceLineRef = useRef<{ speaker: string; text: string } | null>(null);
+  const nextConsoleIdRef = useRef(0);
+
+  const [consoleLines, setConsoleLines] = useState<ConsoleLine[]>([]);
+  const [consoleTick, setConsoleTick] = useState(0);
+
+  const scrollConsoleToBottom = useCallback(() => {
+    const el = consoleViewportRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, []);
+
+  const appendConsoleLine = useCallback(
+    (speaker: string, text: string) => {
+      const trimmed = text.trimEnd();
+      if (!trimmed) return;
+
+      // 새 출력이 나오면(새 로그/선택) 다시 하단 고정으로 돌아간다.
+      userScrolledRef.current = false;
+
+      setConsoleLines((prev) => {
+        const id = (nextConsoleIdRef.current += 1);
+        const next = [...prev, { id, speaker, text: trimmed }];
+        return next.length > MAX_CONSOLE_LINES ? next.slice(next.length - MAX_CONSOLE_LINES) : next;
+      });
+    },
+    [],
+  );
+
+  useEffect(() => {
+    setConsoleLines([]);
+    currentSentenceRef.current = null;
+    lastSentenceLineRef.current = null;
+    nextConsoleIdRef.current = 0;
+  }, [level]);
+
+  const consoleSpeaker = character ?? 'SYSTEM';
+
+  useEffect(() => {
+    const typing = !battleConfig && Boolean(sentenceData) && !activeChoice && !complete;
+    isConsoleTypingRef.current = typing;
+    if (typing || activeChoice) {
+      // 다음 글이 나오기 시작하거나(타이핑), 선택지가 열리면 하단 고정으로 복귀.
+      userScrolledRef.current = false;
+    }
+  }, [activeChoice, battleConfig, complete, sentenceData]);
+
+  useEffect(() => {
+    if (battleConfig) return;
+    if (!sentence) return;
+
+    if (currentSentenceRef.current !== sentence) {
+      // 새 문장이 시작되면(타이핑 시작) 자동으로 하단 고정.
+      userScrolledRef.current = false;
+
+      if (currentSentenceRef.current !== null && lastSentenceLineRef.current) {
+        appendConsoleLine(lastSentenceLineRef.current.speaker, lastSentenceLineRef.current.text);
+      }
+
+      currentSentenceRef.current = sentence;
+      lastSentenceLineRef.current = sentenceData ? { speaker: consoleSpeaker, text: flattenSentenceData(sentenceData) } : null;
+    }
+  }, [appendConsoleLine, battleConfig, consoleSpeaker, sentence, sentenceData]);
+
+  useEffect(() => {
+    if (battleConfig) return;
+    if (!consoleViewportRef.current) return;
+
+    // 글이 나오는 중(타이핑)에는 항상 하단 고정.
+    // 멈춰있을 때는 유저가 스크롤한 경우에만 유지.
+    if (isConsoleTypingRef.current || !userScrolledRef.current) {
+      window.requestAnimationFrame(() => {
+        scrollConsoleToBottom();
+      });
+    }
+  }, [activeChoice, battleConfig, complete, consoleLines.length, consoleTick, scrollConsoleToBottom]);
+
+  const handleConsoleProgress = useCallback(() => setConsoleTick((prev) => prev + 1), []);
+
+  const handleConsoleChoiceSelect = useCallback(
+    (choice: ChoiceOption) => {
+      appendConsoleLine('사용자', choice.text);
+      handleChoiceSelect(choice);
+    },
+    [appendConsoleLine, handleChoiceSelect],
+  );
 
   const handleEnter = useCallback(
     (e: KeyboardEvent) => {
@@ -57,6 +162,8 @@ const Game = () => {
     [addStorage, forceNextScene, level],
   );
 
+  const handleExitToTitle = useCallback(() => addStorage({ page: 'startMenu', level: 0 }), [addStorage]);
+
   const handleBackgroundClick = useCallback(() => {
     if (battleConfig) return;
     nextScene();
@@ -67,10 +174,30 @@ const Game = () => {
     return () => window.removeEventListener('keydown', handleEnter);
   }, [handleEnter]);
 
+  const consolePrefix = useMemo(
+    () => (
+      <>
+        <span className="text-emerald-300">&gt;</span>{' '}
+        <span className="text-white/70">{consoleSpeaker}</span>
+        <span className="text-white/40">:</span>{' '}
+      </>
+    ),
+    [consoleSpeaker],
+  );
+
+  const consoleDockClass = useMemo(() => {
+    return direct ? 'justify-start' : 'justify-end';
+  }, [direct]);
+
+  const consoleHeightClass = useMemo(() => {
+    // 기본은 3줄 정도 보이게
+    return activeChoice ? 'h-[clamp(160px,36vh,220px)]' : 'h-[106px]';
+  }, [activeChoice]);
+
   return (
     <Preload assets={assetList}>
       {battleConfig ? (
-        <Battle config={battleConfig} onComplete={handleBattleComplete} />
+        <Battle config={battleConfig} onComplete={handleBattleComplete} onExitToTitle={handleExitToTitle} />
       ) : (
         <div onClick={handleBackgroundClick} className="absolute inset-0">
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-4">
@@ -78,66 +205,110 @@ const Game = () => {
               className="pointer-events-auto flex items-center gap-2 rounded bg-white/80 px-3 py-1 text-sm font-semibold text-black shadow"
               onClick={(e) => e.stopPropagation()}
             >
-            <input
-              type="checkbox"
-              className="h-4 w-4"
-              checked={auto}
-              onChange={(e) => setAuto(e.target.checked)}
-              onClick={(e) => e.stopPropagation()}
-            />
-            자동
-          </label>
-        </div>
-        {place && assets[place]?.audio && <audio src={assets[place]?.audio} autoPlay />}
-        {displayCharacter && characterImage && (
-          <img
-            className="absolute bottom-0 z-10 w-1/2"
-            style={characterPosition}
-            src={characterImage}
-            alt={displayCharacter}
-          />
-        )}
-        {place && assets[place]?.image && (
-          <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />
-        )}
-        {sentence && (
-          <div
-            className="absolute inset-0 top-auto z-20 flex gap-2 border-t bg-white bg-opacity-75 p-2 text-black"
-            style={sentencePosition}
-          >
-            <span className="whitespace-nowrap">{character}</span>
-            {sentenceData && (
-              <Sentence
-                assets={assets}
-                data={sentenceData}
-                direct={direct}
-                isComplete={complete}
-                auto={auto}
-                autoProgress={autoProgress}
-                onComplete={handleComplete}
+              <input
+                type="checkbox"
+                className="h-4 w-4"
+                checked={auto}
+                onChange={(e) => setAuto(e.target.checked)}
+                onClick={(e) => e.stopPropagation()}
               />
-            )}
-            {activeChoice && (
-              <div className="flex flex-1 flex-col gap-2" onClick={(e) => e.stopPropagation()}>
-                {activeChoice.prompt && <p className="whitespace-pre-line">{activeChoice.prompt}</p>}
-                <div className="flex flex-col gap-2">
-                  {activeChoice.choices.map((choice, index) => (
-                    <button
-                      key={`${choice.text}-${index}`}
-                      className="rounded border border-black bg-white/90 px-3 py-2 text-left font-medium hover:bg-black hover:text-white"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleChoiceSelect(choice);
-                      }}
-                    >
-                      {choice.text}
-                    </button>
-                  ))}
+              자동
+            </label>
+          </div>
+          {place && assets[place]?.audio && <audio src={assets[place]?.audio} autoPlay />}
+          {displayCharacter && characterImage && (
+            <img className="absolute bottom-0 z-10 w-1/2" style={characterPosition} src={characterImage} alt={displayCharacter} />
+          )}
+          {place && assets[place]?.image && (
+            <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />
+          )}
+          {sentence && (
+            <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-3 pb-2`}>
+              <div className={`pointer-events-auto flex ${consoleHeightClass} w-full flex-col overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b]/60 shadow-2xl backdrop-blur-md`}>
+                <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e]/80 px-3 py-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+                    <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+                    <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+                  </div>
+                  <div className="text-[12px] text-white/70">Console</div>
+                  <div className="w-12" />
+                </div>
+
+                <div className="flex flex-1 flex-col overflow-hidden px-3 py-1 font-mono text-[12px] leading-[1.6] text-white/90">
+                  <div
+                    ref={consoleViewportRef}
+                    onScroll={(e) => {
+                      const el = e.currentTarget;
+
+                      if (isConsoleTypingRef.current) {
+                        el.scrollTop = el.scrollHeight;
+                        return;
+                      }
+
+                      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
+                      userScrolledRef.current = !nearBottom;
+                    }}
+                    className="hide-scrollbar flex-1 overflow-y-auto overflow-x-hidden pr-1"
+                  >
+                    <div className="space-y-1">
+                      {consoleLines.map((line) => (
+                        <div key={line.id} className="whitespace-pre-wrap break-words">
+                          <span className="text-emerald-300">&gt;</span>{' '}
+                          <span className="text-white/70">{line.speaker}</span>
+                          <span className="text-white/40">:</span>{' '}
+                          <span className="text-white/90">{line.text}</span>
+                        </div>
+                      ))}
+
+                      {sentenceData && !activeChoice && (
+                        <div className="whitespace-pre-wrap break-words">
+                          <Sentence
+                            assets={assets}
+                            data={sentenceData}
+                            direct={direct}
+                            isComplete={complete}
+                            onComplete={handleComplete}
+                            prefix={consolePrefix}
+                            onProgress={handleConsoleProgress}
+                          />
+                        </div>
+                      )}
+
+                      {activeChoice && (
+                        <div className="space-y-2">
+                          {activeChoice.prompt && (
+                            <div className="whitespace-pre-wrap break-words">
+                              <span className="text-emerald-300">&gt;</span>{' '}
+                              <span className="text-white/70">{consoleSpeaker}</span>
+                              <span className="text-white/40">:</span>{' '}
+                              <span className="text-white/90">{activeChoice.prompt}</span>
+                            </div>
+                          )}
+                          <div className="space-y-1">
+                            {activeChoice.choices.map((choice, index) => (
+                              <button
+                                key={`${choice.text}-${index}`}
+                                type="button"
+                                className="w-full rounded border border-white/15 bg-white/5 px-2 py-1 text-left text-[12px] text-white/90 hover:bg-white/10"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleConsoleChoiceSelect(choice);
+                                }}
+                              >
+                                <span className="text-emerald-200">[{index + 1}]</span> {choice.text}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
                 </div>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
         </div>
       )}
     </Preload>

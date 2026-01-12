@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BattleConfig, BattleEnemyConfig, BattleSkill, BattleStats } from '#/novelTypes';
 import { getPartyDefinitions } from '#/battleData';
 
 interface BattleProps {
   config: BattleConfig;
   onComplete: (result: 'win' | 'lose') => void;
+  onExitToTitle: () => void;
 }
 
 interface CharacterState {
@@ -12,13 +13,27 @@ interface CharacterState {
   hp: number;
   stats: BattleStats;
   skills: BattleSkill[];
-  guard?: number;
-  evade?: number;
 }
 
 interface EnemyState extends BattleEnemyConfig {
   hp: number;
 }
+
+type Phase = 'player' | 'enemy';
+
+type LogEffect = 'push' | 'none';
+
+interface PendingLog {
+  id: number;
+  text: string;
+  effect: LogEffect;
+}
+
+interface LogLine extends PendingLog {}
+
+const MAX_BUFFER_LINES = 240;
+const CHAR_DELAY_MS = 26;
+const LINE_GAP_DELAY_MS = 180;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
@@ -29,369 +44,508 @@ const getNextAlive = (characters: CharacterState[], afterIndex = -1) => {
   return -1;
 };
 
-const useBattleLog = (initial: string) => {
-  const [log, setLog] = useState<string[]>([initial]);
-  const pushLog = useCallback((entry: string) => {
-    setLog((prev) => [entry, ...prev]);
-  }, []);
-  const reset = useCallback((message: string) => setLog([message]), []);
-  return { log, pushLog, reset } as const;
+const calculateDamage = (attackerAttack: number, skillPower: number, targetDefense: number) =>
+  Math.max(1, attackerAttack + skillPower - targetDefense);
+
+const pickSkill = (skills: BattleSkill[] | undefined) => {
+  if (!skills || skills.length === 0) {
+    return { id: 'enemy-strike', name: '글리치 스트라이크', description: '', power: 6, type: 'attack' as const };
+  }
+  return skills[Math.floor(Math.random() * skills.length)];
 };
 
-const SKILL_TYPE_LABELS: Record<BattleSkill['type'], string> = {
-  attack: '공격',
-  heal: '회복',
-  defend: '방어',
-  evade: '회피',
+const BASIC_ATTACK_SKILL: BattleSkill = {
+  id: 'basic-attack',
+  name: '일반 공격',
+  description: '적을 공격한다.',
+  power: 6,
+  type: 'attack',
 };
 
-const Battle = ({ config, onComplete }: BattleProps) => {
+const pickSignatureSkill = (skills: BattleSkill[]) =>
+  skills.find((skill) => skill.type === 'attack' || skill.type === 'heal') ?? skills[0];
+
+const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
   const partyDefinitions = useMemo(() => getPartyDefinitions(config.party), [config.party]);
+
   const [players, setPlayers] = useState<CharacterState[]>(() =>
     partyDefinitions.map((character) => ({
       name: character.name,
       stats: character.stats,
       skills: character.skills,
       hp: character.stats.maxHp,
-      guard: undefined,
-      evade: undefined,
     })),
   );
-  const [enemy, setEnemy] = useState<EnemyState>({
+
+  const [enemy, setEnemy] = useState<EnemyState>(() => ({
     ...config.enemy,
     hp: config.enemy.stats.maxHp,
-  });
-  const [phase, setPhase] = useState<'player' | 'enemy'>('player');
-  const [activePlayerIndex, setActivePlayerIndex] = useState<number | null>(() =>
-    getNextAlive(
-      partyDefinitions.map((character) => ({
-        name: character.name,
-        stats: character.stats,
-        skills: character.skills,
-        hp: character.stats.maxHp,
-      } as CharacterState)),
-    ),
-  );
-  const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(() =>
-    getNextAlive(
-      partyDefinitions.map((character) => ({
-        name: character.name,
-        stats: character.stats,
-        skills: character.skills,
-        hp: character.stats.maxHp,
-      } as CharacterState)),
-    ),
-  );
-  const { log, pushLog, reset: resetLog } = useBattleLog(config.encounter ?? `${config.enemy.name} 이(가) 나타났다!`);
+  }));
 
-  useEffect(() => {
+  const [phase, setPhase] = useState<Phase>('player');
+  const [activePlayerIndex, setActivePlayerIndex] = useState<number>(() => getNextAlive(players));
+
+  const [outcome, setOutcome] = useState<'win' | 'lose' | null>(null);
+  const [didStaggerLog, setDidStaggerLog] = useState(false);
+
+  const logIdRef = useRef(0);
+  const [lines, setLines] = useState<LogLine[]>([]);
+  const [queue, setQueue] = useState<PendingLog[]>([]);
+  const [typing, setTyping] = useState<(PendingLog & { index: number }) | null>(null);
+
+  const logViewportRef = useRef<HTMLDivElement | null>(null);
+  const stickToBottomRef = useRef(true);
+
+  const [commandText, setCommandText] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const enqueue = useCallback((text: string, effect: LogEffect = 'none') => {
+    const id = (logIdRef.current += 1);
+    setQueue((prev) => [...prev, { id, text, effect }]);
+  }, []);
+
+  const resetTerminal = useCallback(() => {
+    logIdRef.current = 0;
+    stickToBottomRef.current = true;
+    setLines([]);
+    setQueue([]);
+    setTyping(null);
+  }, []);
+
+  const resetBattle = useCallback(() => {
     const nextPlayers = partyDefinitions.map((character) => ({
       name: character.name,
       stats: character.stats,
       skills: character.skills,
       hp: character.stats.maxHp,
-      guard: undefined,
-      evade: undefined,
     }));
+
+    resetTerminal();
     setPlayers(nextPlayers);
     setEnemy({ ...config.enemy, hp: config.enemy.stats.maxHp });
-    setPhase('player');
+    setOutcome(null);
+    setDidStaggerLog(false);
+    setCommandText('');
+
     const firstAlive = getNextAlive(nextPlayers);
     setActivePlayerIndex(firstAlive);
-    setLastActiveIndex(firstAlive);
-    resetLog(config.encounter ?? `${config.enemy.name} 이(가) 나타났다!`);
-  }, [config, config.enemy, config.encounter, partyDefinitions, resetLog]);
 
-  const activePlayer = activePlayerIndex !== null && activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
+    const enemyFirst = Math.random() < 0.5;
+    setPhase(enemyFirst ? 'enemy' : 'player');
 
-  useEffect(() => {
-    if (activePlayerIndex !== null && activePlayerIndex >= 0) {
-      setLastActiveIndex(activePlayerIndex);
+    enqueue('적이 나타났다.');
+
+    const partyLeader = nextPlayers[0]?.name ?? '일행';
+    if (enemyFirst) {
+      enqueue(`${partyLeader} 일행이 당황했다.`);
+    } else {
+      enqueue(`${partyLeader}의 차례다.`);
     }
-  }, [activePlayerIndex]);
+  }, [config.enemy, enqueue, partyDefinitions, resetTerminal]);
 
   useEffect(() => {
-    if (phase !== 'player') return;
+    resetBattle();
+  }, [resetBattle]);
 
-    const current =
-      activePlayerIndex !== null && activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
-    if (current && current.hp > 0) return;
+  useEffect(() => {
+    if (typing) return;
+    if (queue.length === 0) return;
 
-    const fallback = getNextAlive(players);
-    setActivePlayerIndex(fallback === -1 ? null : fallback);
-  }, [phase, players, activePlayerIndex]);
+    const [next, ...rest] = queue;
+    setQueue(rest);
+    setTyping({ ...next, index: 0 });
+  }, [queue, typing]);
 
-  const advancePlayerTurn = useCallback((nextPlayers: CharacterState[]) => {
-    setActivePlayerIndex((current) => {
-      const nextIndex = getNextAlive(nextPlayers, current ?? -1);
-      if (nextIndex === -1) {
-        setPhase('enemy');
-        return null;
-      }
-      return nextIndex;
-    });
-  }, []);
+  useEffect(() => {
+    if (!typing) return;
 
-  const calculateDamage = useCallback(
-    (attackerAttack: number, skillPower: number, targetDefense: number) => Math.max(1, attackerAttack + skillPower - targetDefense),
-    [],
-  );
-
-  const handlePlayerSkill = useCallback(
-    (skill: BattleSkill) => {
-      if (!activePlayer || activePlayerIndex === null || phase !== 'player') return;
-
-      if (skill.type === 'heal') {
-        const nextPlayers = players.map((character, index) => {
-          if (index !== activePlayerIndex) return character;
-          const nextHp = clamp(character.hp + skill.power, 0, character.stats.maxHp);
-          if (nextHp !== character.hp) {
-            pushLog(`${character.name}이 ${skill.name}으로 ${nextHp - character.hp} 회복!`);
-          }
-          return { ...character, hp: nextHp };
+    if (typing.index >= typing.text.length) {
+      const finished = typing;
+      const timeout = window.setTimeout(() => {
+        setLines((prev) => {
+          const next = [...prev, { id: finished.id, text: finished.text, effect: finished.effect }];
+          return next.length > MAX_BUFFER_LINES ? next.slice(next.length - MAX_BUFFER_LINES) : next;
         });
-        setPlayers(nextPlayers);
-        advancePlayerTurn(nextPlayers);
-        return;
-      }
-
-      if (skill.type === 'defend') {
-        const nextPlayers = players.map((character, index) =>
-          index === activePlayerIndex ? { ...character, guard: skill.power } : character,
-        );
-        setPlayers(nextPlayers);
-        pushLog(`${activePlayer.name}이 ${skill.name}으로 방어 태세를 갖췄습니다.`);
-        advancePlayerTurn(nextPlayers);
-        return;
-      }
-
-      if (skill.type === 'evade') {
-        const nextPlayers = players.map((character, index) =>
-          index === activePlayerIndex ? { ...character, evade: skill.power } : character,
-        );
-        setPlayers(nextPlayers);
-        pushLog(`${activePlayer.name}이 ${skill.name}으로 회피를 준비합니다.`);
-        advancePlayerTurn(nextPlayers);
-        return;
-      }
-
-      setEnemy((prev) => {
-        const damage = calculateDamage(activePlayer.stats.attack, skill.power, prev.stats.defense);
-        const nextHp = clamp(prev.hp - damage, 0, prev.stats.maxHp);
-        pushLog(`${activePlayer.name}의 ${skill.name}! ${prev.name}에게 ${damage} 피해.`);
-        return { ...prev, hp: nextHp };
-      });
-      advancePlayerTurn(players);
-    },
-    [activePlayer, activePlayerIndex, phase, advancePlayerTurn, pushLog, calculateDamage, players],
-  );
-
-  useEffect(() => {
-    if (phase !== 'enemy') return;
-    if (enemy.hp <= 0) return;
+        setTyping(null);
+      }, LINE_GAP_DELAY_MS);
+      return () => window.clearTimeout(timeout);
+    }
 
     const timeout = window.setTimeout(() => {
-      const skillList = enemy.skills ?? [
-        { id: 'enemy-strike', name: '글리치 스트라이크', description: '', power: 6, type: 'attack' as const },
-      ];
-      const skill = skillList[Math.floor(Math.random() * skillList.length)];
-
-      if (skill.type === 'heal') {
-        let healed = 0;
-        setEnemy((prevEnemy) => {
-          const nextHp = clamp(prevEnemy.hp + skill.power, 0, prevEnemy.stats.maxHp);
-          healed = nextHp - prevEnemy.hp;
-          return { ...prevEnemy, hp: nextHp };
-        });
-        pushLog(`${enemy.name}의 ${skill.name}! ${healed > 0 ? `${enemy.name}이 ${healed} 회복했다.` : '효과가 없다.'}`);
-        setPhase('player');
-        setActivePlayerIndex(getNextAlive(players));
-        return;
-      }
-
-      let detailText = '';
-      let updated: CharacterState[] = [];
-      setPlayers((prev) => {
-        const alive = prev.filter((character) => character.hp > 0);
-        if (!alive.length) {
-          detailText = '공격할 대상이 없습니다.';
-          updated = prev;
-          return prev;
-        }
-        const target = alive[Math.floor(Math.random() * alive.length)];
-        const targetIndex = prev.findIndex((character) => character.name === target.name);
-
-        updated = prev.map((character, index) => {
-          if (index !== targetIndex) return character;
-          const messages: string[] = [];
-          let damage = calculateDamage(enemy.stats.attack, skill.power, character.stats.defense);
-          let guardValue = character.guard;
-          let evadeValue = character.evade;
-
-          if (evadeValue) {
-            const success = Math.random() * 100 < evadeValue;
-            messages.push(success ? `${character.name}이 회피에 성공했다!` : `${character.name}의 회피 시도가 실패했다.`);
-            if (success) {
-              damage = 0;
-            }
-            evadeValue = undefined;
-          }
-
-          if (damage > 0 && guardValue) {
-            const reduced = Math.max(1, Math.round(damage * (1 - guardValue / 100)));
-            if (reduced !== damage) {
-              messages.push(`${character.name}이 방어 태세로 피해를 ${damage - reduced} 감소시켰다.`);
-            }
-            damage = reduced;
-            guardValue = undefined;
-          }
-
-          if (damage > 0) {
-            messages.push(`${character.name}이 ${damage} 피해를 입었다.`);
-          }
-
-          detailText = messages.join(' ') || `${character.name}에게 영향이 없다.`;
-
-          return {
-            ...character,
-            guard: guardValue,
-            evade: evadeValue,
-            hp: clamp(character.hp - damage, 0, character.stats.maxHp),
-          };
-        });
-
-        return updated;
+      setTyping((prev) => {
+        if (!prev) return prev;
+        return { ...prev, index: prev.index + 1 };
       });
-      pushLog(`${enemy.name}의 ${skill.name}! ${detailText}`.trim());
-      setPhase('player');
-      setActivePlayerIndex(getNextAlive(updated));
-    }, 650);
+    }, CHAR_DELAY_MS);
 
     return () => window.clearTimeout(timeout);
-  }, [phase, enemy, players, pushLog, calculateDamage]);
+  }, [typing]);
+
+  const protagonistIndex = 0;
+  const protagonist = players[protagonistIndex];
+
+  const readyForInput =
+    outcome === null && phase === 'player' && queue.length === 0 && typing === null && activePlayerIndex >= 0;
+
+  useEffect(() => {
+    if (!readyForInput) return;
+    inputRef.current?.focus();
+  }, [readyForInput]);
+
+  const typingIndex = typing?.index ?? 0;
+  useEffect(() => {
+    const el = logViewportRef.current;
+    if (!el) return;
+    if (!stickToBottomRef.current) return;
+    window.requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
+  }, [lines, typingIndex]);
+
+  const endAsLose = useCallback(
+    (leaderName: string) => {
+      if (outcome) return;
+      enqueue(`${leaderName}가 쓰러졌다.`);
+      enqueue('GAME OVER.');
+      setOutcome('lose');
+    },
+    [enqueue, outcome],
+  );
+
+  useEffect(() => {
+    if (!protagonist) return;
+    if (protagonist.hp > 0) return;
+    endAsLose(protagonist.name);
+  }, [endAsLose, protagonist]);
+
+  const endAsWin = useCallback(() => {
+    if (outcome) return;
+    enqueue(`“${enemy.name}”이 쓰러졌다.`);
+    enqueue('VICTORY.');
+    setOutcome('win');
+  }, [enemy.name, enqueue, outcome]);
 
   useEffect(() => {
     if (enemy.hp > 0) return;
-    const timeout = window.setTimeout(() => onComplete('win'), 600);
-    return () => window.clearTimeout(timeout);
-  }, [enemy.hp, onComplete]);
+    endAsWin();
+  }, [enemy.hp, endAsWin]);
+
+  const performEnemyTurn = useCallback(() => {
+    if (outcome) return;
+
+    const skill = pickSkill(enemy.skills);
+
+    if (skill.type === 'heal') {
+      const nextHp = clamp(enemy.hp + skill.power, 0, enemy.stats.maxHp);
+      setEnemy((prev) => ({ ...prev, hp: nextHp }));
+      enqueue(`“${enemy.name}”이 “${skill.name}”을 했다.`);
+      enqueue(`“${enemy.name}”이 회복했다. ${nextHp}/${enemy.stats.maxHp}`);
+
+      const nextIndex = getNextAlive(players);
+      setActivePlayerIndex(nextIndex);
+      setPhase('player');
+      if (nextIndex >= 0) enqueue(`${players[nextIndex].name}의 차례다.`);
+      return;
+    }
+
+    const aliveTargets = players.filter((character) => character.hp > 0);
+    if (aliveTargets.length === 0) {
+      enqueue(`“${enemy.name}”이 “${skill.name}”을 했다.`);
+      enqueue('공격할 대상이 없다.');
+      setPhase('player');
+      return;
+    }
+
+    const defaultTarget = players[protagonistIndex]?.hp > 0 ? players[protagonistIndex] : undefined;
+    const target = defaultTarget ?? aliveTargets[Math.floor(Math.random() * aliveTargets.length)];
+    const targetIndex = players.findIndex((character) => character.name === target.name);
+
+    const damage = calculateDamage(enemy.stats.attack, skill.power, target.stats.defense);
+
+    let nextHp = target.hp;
+    const updatedPlayers = players.map((character, index) => {
+      if (index !== targetIndex) return character;
+      nextHp = clamp(character.hp - damage, 0, character.stats.maxHp);
+      return { ...character, hp: nextHp };
+    });
+
+    setPlayers(updatedPlayers);
+
+    enqueue(`“${enemy.name}”이 “${skill.name}”을 했다.`, 'push');
+    enqueue(`“${target.name}”가 피해를 입었다. ${nextHp}/${target.stats.maxHp}`);
+
+    const nextIndex = getNextAlive(updatedPlayers);
+    setActivePlayerIndex(nextIndex);
+    setPhase('player');
+    if (nextIndex >= 0) enqueue(`${updatedPlayers[nextIndex].name}의 차례다.`);
+  }, [enemy, enqueue, outcome, players, protagonistIndex]);
 
   useEffect(() => {
-    if (players.some((character) => character.hp > 0)) return;
-    const timeout = window.setTimeout(() => onComplete('lose'), 600);
+    if (outcome) return;
+    if (phase !== 'enemy') return;
+    if (typing || queue.length) return;
+
+    const timeout = window.setTimeout(() => {
+      performEnemyTurn();
+    }, 420);
+
     return () => window.clearTimeout(timeout);
-  }, [players, onComplete]);
+  }, [outcome, phase, performEnemyTurn, queue.length, typing]);
 
-  const enemyHpPercent = Math.round((enemy.hp / enemy.stats.maxHp) * 100);
-  const highlightedIndex =
-    activePlayerIndex !== null && activePlayerIndex >= 0
-      ? activePlayerIndex
-      : lastActiveIndex !== null && lastActiveIndex >= 0
-        ? lastActiveIndex
-        : getNextAlive(players);
-  const recentLog = log.length ? [log[0]] : [];
+  const advancePlayerTurn = useCallback(
+    (updatedPlayers: CharacterState[]) => {
+      const nextIndex = getNextAlive(updatedPlayers, activePlayerIndex);
+      if (nextIndex === -1) {
+        setPhase('enemy');
+        setActivePlayerIndex(getNextAlive(updatedPlayers));
+        return;
+      }
+      setActivePlayerIndex(nextIndex);
+      enqueue(`${updatedPlayers[nextIndex].name}의 차례다.`);
+    },
+    [activePlayerIndex, enqueue],
+  );
+
+  const performPlayerSkill = useCallback(
+    (action: 'basic' | 'signature') => {
+      if (outcome) return;
+      if (phase !== 'player') return;
+      if (typing || queue.length) return;
+      if (activePlayerIndex < 0) return;
+
+      const actor = players[activePlayerIndex];
+      if (!actor || actor.hp <= 0) return;
+
+      const signature = pickSignatureSkill(actor.skills);
+      const chosen = action === 'basic' ? BASIC_ATTACK_SKILL : signature;
+      if (!chosen) {
+        enqueue(`${actor.name}는 행동할 수 없다.`);
+        advancePlayerTurn(players);
+        return;
+      }
+
+      if (chosen.type === 'heal') {
+        let healedAmount = 0;
+        const updatedPlayers = players.map((character, index) => {
+          if (index !== activePlayerIndex) return character;
+          const nextHp = clamp(character.hp + chosen.power, 0, character.stats.maxHp);
+          healedAmount = nextHp - character.hp;
+          return { ...character, hp: nextHp };
+        });
+
+        setPlayers(updatedPlayers);
+        enqueue(`“${actor.name}”가 “${chosen.name}”을 했다.`, 'push');
+        enqueue(
+          healedAmount > 0
+            ? `“${actor.name}”이 ${healedAmount} 회복했다. ${updatedPlayers[activePlayerIndex].hp}/${actor.stats.maxHp}`
+            : `“${actor.name}”의 회복은 효과가 없다. ${updatedPlayers[activePlayerIndex].hp}/${actor.stats.maxHp}`,
+        );
+        advancePlayerTurn(updatedPlayers);
+        return;
+      }
+
+      if (chosen.type !== 'attack') {
+        enqueue(`“${actor.name}”는 지금 “${chosen.name}”을 사용할 수 없다.`);
+        advancePlayerTurn(players);
+        return;
+      }
+
+      const damage = calculateDamage(actor.stats.attack, chosen.power, enemy.stats.defense);
+      const nextEnemyHp = clamp(enemy.hp - damage, 0, enemy.stats.maxHp);
+      setEnemy((prev) => ({ ...prev, hp: nextEnemyHp }));
+
+      if (action === 'basic') {
+        enqueue(`${actor.name}가 일반 공격을 했다.`, 'push');
+      } else {
+        enqueue(`“${actor.name}”가 “${chosen.name}”을 했다.`, 'push');
+      }
+      enqueue(`“${enemy.name}”이 ${damage} 피해를 받았다. ${nextEnemyHp}/${enemy.stats.maxHp}`);
+
+      const staggerThreshold = Math.ceil(enemy.stats.maxHp * 0.25);
+      if (!didStaggerLog && nextEnemyHp > 0 && nextEnemyHp <= staggerThreshold) {
+        setDidStaggerLog(true);
+        enqueue(`“${enemy.name}”이 휘청거린다.`);
+      }
+
+      if (nextEnemyHp <= 0) {
+        return;
+      }
+
+      const updatedPlayers = [...players];
+      advancePlayerTurn(updatedPlayers);
+    },
+    [
+      activePlayerIndex,
+      advancePlayerTurn,
+      didStaggerLog,
+      enemy.hp,
+      enemy.name,
+      enemy.stats.defense,
+      enemy.stats.maxHp,
+      enqueue,
+      outcome,
+      phase,
+      players,
+      queue.length,
+      typing,
+    ],
+  );
+
+  const handleCommand = useCallback(
+    (raw: string) => {
+      const value = raw.trim();
+      if (value === '1') {
+        performPlayerSkill('basic');
+        return;
+      }
+      if (value === '2') {
+        performPlayerSkill('signature');
+        return;
+      }
+      enqueue('알 수 없는 명령이다. 1 또는 2를 입력해라.');
+    },
+    [enqueue, performPlayerSkill],
+  );
+
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      if (!readyForInput) return;
+      const current = commandText;
+      setCommandText('');
+      handleCommand(current);
+    },
+    [commandText, handleCommand, readyForInput],
+  );
+
+  const activeActor = activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
+  const signatureSkill = activeActor ? pickSignatureSkill(activeActor.skills) : undefined;
+
+  const showOverlay = outcome !== null && typing === null && queue.length === 0;
+
   return (
-    <div className="flex min-h-full items-center justify-center bg-slate-950/95 px-3 py-6 text-white">
-      <div className="relative w-full max-w-6xl rounded-xl border border-white/10 bg-slate-900/85 p-3 shadow-2xl lg:max-h-[96vh]">
-        <div className="space-y-3 lg:h-full">
-          <header className="flex flex-col gap-3 rounded-lg border border-white/5 bg-gradient-to-r from-slate-950/80 to-slate-900/80 p-3 shadow-inner shadow-black/30 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-1 text-left">
-              <p className="text-[11px] uppercase tracking-[0.35em] text-emerald-300">전투</p>
-              <p className="text-base font-semibold leading-tight text-white md:text-lg">{config.description ?? '시스템 교란체를 포착했습니다.'}</p>
-              <p className="text-[12px] text-slate-200">{config.encounter ?? '앞을 가로막는 존재가 나타났다.'}</p>
-            </div>
-            <div className="w-full min-w-[240px] max-w-sm rounded-lg border border-white/10 bg-slate-950/80 px-3 py-2 text-right text-xs shadow">
-              <div className="flex items-center justify-end text-[11px] uppercase tracking-[0.2em] text-slate-200">
-                <span className="font-semibold text-white">{enemy.name}</span>
-              </div>
-              <div className="mt-1 h-2 rounded-full bg-white/10">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400"
-                  style={{ width: `${enemyHpPercent}%` }}
-                />
-              </div>
-              <div className="mt-1 text-[10px] text-slate-200">HP {enemy.hp} / {enemy.stats.maxHp}</div>
-            </div>
-          </header>
-
-          <section className="space-y-3 rounded-lg border border-white/10 bg-slate-950/70 p-3 text-sm shadow-inner shadow-black/20">
-            <div className="flex items-center justify-between text-[11px] text-slate-200">
-              <span className="text-white/90">아군의 행동을 선택하세요.</span>
-            </div>
-            <div className="grid gap-2">
-              {players.map((character, index) => {
-                const percent = Math.round((character.hp / character.stats.maxHp) * 100);
-                const isActive = index === activePlayerIndex && phase === 'player';
-                const isHighlighted = index === highlightedIndex;
-                const canAct = isActive && enemy.hp > 0 && character.hp > 0;
-                return (
-                  <div
-                    key={character.name}
-                    className={`min-w-0 space-y-2 rounded-lg border bg-black/30 p-3 text-[13px] transition ${isHighlighted ? 'border-emerald-400 shadow-inner shadow-emerald-400/25' : 'border-white/10'} ${isHighlighted ? 'block' : 'hidden'}`}
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="flex items-center gap-2 text-sm font-semibold text-white">
-                        <span className={`h-2 w-2 rounded-full ${character.hp > 0 ? 'bg-emerald-400' : 'bg-slate-500'}`} />
-                        <span className="truncate">{character.name}</span>
-                      </span>
-                      <span className="text-[11px] text-slate-200">HP {character.hp} / {character.stats.maxHp}</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-white/10">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-400"
-                        style={{ width: `${percent}%` }}
-                      />
-                    </div>
-                    <div className="flex flex-wrap gap-2 text-[11px] text-slate-200">
-                      <span>ATK {character.stats.attack}</span>
-                      <span>DEF {character.stats.defense}</span>
-                      <span>SPD {character.stats.speed}</span>
-                      {character.guard && <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-100">방어 {character.guard}%</span>}
-                      {character.evade && <span className="rounded-full bg-sky-500/20 px-2 py-0.5 text-sky-100">회피 {character.evade}%</span>}
-                    </div>
-                    <div className="max-h-40 overflow-y-auto pr-1">
-                      <div
-                        className="grid grid-flow-col auto-cols-[minmax(150px,1fr)] gap-2 overflow-x-auto whitespace-nowrap text-[11px] sm:grid-flow-row sm:grid-cols-2 sm:overflow-x-visible sm:whitespace-normal lg:grid-cols-2 xl:grid-cols-3"
-                      >
-                        {character.skills.map((skill) => (
-                          <button
-                            key={skill.id}
-                            className={`group flex flex-col rounded-md border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 px-2 py-1.5 text-left transition ${canAct ? 'hover:border-emerald-400 hover:from-slate-800 hover:to-slate-700' : 'opacity-50'}`}
-                            disabled={!canAct}
-                            onClick={() => handlePlayerSkill(skill)}
-                          >
-                            <div className="flex items-center justify-between text-[12px] font-semibold text-white">
-                              <span className="truncate">{skill.name}</span>
-                              <span className="rounded bg-emerald-500/20 px-1.5 text-[10px] text-emerald-100">{SKILL_TYPE_LABELS[skill.type]}</span>
-                            </div>
-                            <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-200">{skill.description}</p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
+    <div className="flex h-full w-full items-center justify-center bg-black">
+      <div className="relative h-full w-full overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b] shadow-2xl">
+        <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e] px-3 py-2">
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+            <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+            <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+          </div>
+          <div className="text-[12px] text-white/70">Terminal</div>
+          <div className="w-12" />
         </div>
 
-        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
-          <div className="flex w-full max-w-2xl flex-col gap-2">
-            {recentLog.map((entry, index) => (
-              <div
-                key={`${entry}-${index}`}
-                className="animate-fade-in rounded-lg border border-emerald-400/30 bg-slate-900/90 px-3 py-2 text-[12px] shadow-lg shadow-emerald-500/20 backdrop-blur"
-              >
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-emerald-200">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  로그
+        <div className="flex h-[calc(100%-40px)] flex-col overflow-hidden px-4 py-3 font-mono text-[13px] leading-relaxed text-white/90">
+          <div
+
+            ref={logViewportRef}
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              stickToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
+            }}
+            className="hide-scrollbar flex-1 overflow-y-auto overflow-x-hidden pr-1"
+          >
+            <div className="space-y-1">
+              {lines.map((line) => (
+                <div
+                  key={line.id}
+                  className={`whitespace-pre-wrap break-words ${line.effect === 'push' ? 'terminal-push' : ''}`}
+                >
+                  {line.text}
                 </div>
-                <p className="text-[13px] text-emerald-50">{entry}</p>
+              ))}
+              {typing && (
+                <div
+                  className={`whitespace-pre-wrap break-words ${typing.effect === 'push' ? 'terminal-push' : ''}`}
+                >
+                  {typing.text.slice(0, typing.index)}
+                  <span className="terminal-cursor">▍</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-3 space-y-2">
+            {readyForInput && (
+              <div className="flex items-center gap-2 text-[12px] text-white/80">
+                <button
+                  type="button"
+                  className="rounded border border-white/20 bg-white/5 px-2 py-1 hover:bg-white/10"
+                  onClick={() => performPlayerSkill('basic')}
+                >
+                  공격 1
+                </button>
+                <button
+                  type="button"
+                  className="rounded border border-white/20 bg-white/5 px-2 py-1 hover:bg-white/10"
+                  onClick={() => performPlayerSkill('signature')}
+                >
+                  {signatureSkill ? `${signatureSkill.name} 2` : '스킬 2'}
+                </button>
               </div>
-            ))}
+            )}
+
+            <form onSubmit={handleSubmit} className="flex items-center gap-2">
+              <span className="text-emerald-300">&gt;</span>
+              <input
+                ref={inputRef}
+                value={commandText}
+                onChange={(e) => setCommandText(e.target.value)}
+                disabled={!readyForInput}
+                placeholder={readyForInput ? '_....' : ''}
+                className="w-full bg-transparent text-white/90 outline-none placeholder:text-white/30 disabled:opacity-50"
+              />
+            </form>
           </div>
         </div>
+
+        {showOverlay && outcome === 'lose' && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/70 px-4">
+            <div className="w-full max-w-sm rounded-lg border border-red-400/40 bg-black/80 p-5 font-mono text-white">
+              <div className="text-center">
+                <div className="text-[11px] uppercase tracking-[0.35em] text-red-300">System Halted</div>
+                <div className="mt-1 text-2xl font-semibold">GAME OVER</div>
+              </div>
+              <div className="mt-4 space-y-2">
+                <button
+                  type="button"
+                  className="w-full rounded border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
+                  onClick={resetBattle}
+                >
+                  다시 싸우기
+                </button>
+                <button
+                  type="button"
+                  className="w-full rounded border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
+                  onClick={onExitToTitle}
+                >
+                  종료
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showOverlay && outcome === 'win' && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/60 px-4">
+            <div className="w-full max-w-sm rounded-lg border border-emerald-400/40 bg-black/80 p-5 font-mono text-white">
+              <div className="text-center">
+                <div className="text-[11px] uppercase tracking-[0.35em] text-emerald-200">Session Cleared</div>
+                <div className="mt-1 text-2xl font-semibold">VICTORY</div>
+              </div>
+              <div className="mt-4">
+                <button
+                  type="button"
+                  className="w-full rounded border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
+                  onClick={() => onComplete('win')}
+                >
+                  계속
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

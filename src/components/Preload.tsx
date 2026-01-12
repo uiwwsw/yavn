@@ -1,4 +1,4 @@
-import { ReactNode, useLayoutEffect, useState } from 'react';
+import { ReactNode, useLayoutEffect, useState, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 interface PreloadProps {
@@ -9,25 +9,34 @@ const audioTypes = ['.wav', '.mp3', '.ogg'];
 
 const Preload = ({ assets, children }: PreloadProps) => {
   const [load, setLoad] = useState(false);
+  
+  const preloadAsset = useCallback(async (asset: string) => {
+    if (audioTypes.some((type) => asset.endsWith(type))) {
+      const ado = new Audio();
+      ado.src = asset;
+      return new Promise<void>((res) => {
+        ado.onloadedmetadata = () => res();
+        ado.onerror = () => res();
+      });
+    }
+    const img = new Image();
+    img.src = asset;
+    return new Promise<void>((res) => {
+      img.onload = () => res();
+      img.onerror = () => res();
+    });
+  }, []);
+
   useLayoutEffect(() => {
-    if (assets.length)
-      Promise.all(
-        assets.map(async (asset) => {
-          if (audioTypes.some((type) => asset.endsWith(type))) {
-            const ado = new Audio();
-            ado.src = asset;
-            return new Promise((res) => {
-              ado.onloadedmetadata = () => res(true);
-            });
-          }
-          const img = new Image();
-          img.src = asset;
-          return new Promise((res) => {
-            img.onload = () => res(true);
-          });
-        }),
-      ).then(() => setLoad(true));
-  }, [assets]);
+    if (assets.length === 0) {
+      setLoad(true);
+      return;
+    }
+    
+    Promise.all(assets.map(preloadAsset))
+      .then(() => setLoad(true))
+      .catch(() => setLoad(true)); // 실패해도 계속 진행
+  }, [assets, preloadAsset]);
   return load ? (
     <motion.div className="h-full w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {children}
@@ -73,4 +82,4 @@ const Preload = ({ assets, children }: PreloadProps) => {
   );
 };
 
-export default Preload;
+export default memo(Preload);
