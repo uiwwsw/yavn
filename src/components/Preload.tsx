@@ -1,48 +1,74 @@
-import { ReactNode, useLayoutEffect, useState, memo, useCallback } from 'react';
+import { ReactNode, memo, useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface PreloadProps {
   assets: string[];
   children: ReactNode;
 }
-const audioTypes = ['.wav', '.mp3', '.ogg'];
+
+const audioTypes = ['.wav', '.mp3', '.ogg', '.m4a'];
 
 const Preload = ({ assets, children }: PreloadProps) => {
-  const [load, setLoad] = useState(false);
-  
+  const [loaded, setLoaded] = useState(false);
+
+  const assetList = useMemo(() => {
+    const unique = new Set<string>();
+    for (const asset of assets) {
+      if (!asset) continue;
+      unique.add(asset);
+    }
+    return Array.from(unique);
+  }, [assets]);
+
   const preloadAsset = useCallback(async (asset: string) => {
     if (audioTypes.some((type) => asset.endsWith(type))) {
-      const ado = new Audio();
-      ado.src = asset;
-      return new Promise<void>((res) => {
-        ado.onloadedmetadata = () => res();
-        ado.onerror = () => res();
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.src = asset;
+      return new Promise<void>((resolve) => {
+        audio.onloadedmetadata = () => resolve();
+        audio.onerror = () => resolve();
       });
     }
+
     const img = new Image();
+    img.decoding = 'async';
     img.src = asset;
-    return new Promise<void>((res) => {
-      img.onload = () => res();
-      img.onerror = () => res();
+    return new Promise<void>((resolve) => {
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
     });
   }, []);
 
   useLayoutEffect(() => {
-    if (assets.length === 0) {
-      setLoad(true);
+    let cancelled = false;
+
+    setLoaded(false);
+
+    if (assetList.length === 0) {
+      setLoaded(true);
       return;
     }
-    
-    Promise.all(assets.map(preloadAsset))
-      .then(() => setLoad(true))
-      .catch(() => setLoad(true)); // 실패해도 계속 진행
-  }, [assets, preloadAsset]);
-  return load ? (
+
+    Promise.all(assetList.map(preloadAsset))
+      .then(() => {
+        if (!cancelled) setLoaded(true);
+      })
+      .catch(() => {
+        if (!cancelled) setLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [assetList, preloadAsset]);
+
+  return loaded ? (
     <motion.div className="h-full w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {children}
     </motion.div>
   ) : (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center bg-black">
       <svg className="h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
         <circle fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="15" r="15" cx="40" cy="65">
           <animate
