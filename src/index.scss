@@ -4,15 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 html {
-  @apply flex h-screen w-screen items-center bg-black;
+  @apply flex w-screen items-center bg-black;
+  height: 100dvh;
 }
 body {
   @apply m-auto h-[480px] w-[640px];
+  overflow: hidden;
 }
 
 @media (max-width: 640px) {
+  html {
+    height: 100dvh;
+  }
   body {
-    @apply m-0 h-screen w-screen;
+    @apply m-0 w-screen;
+    height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
   }
 }
 #root {

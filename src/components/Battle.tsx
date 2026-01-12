@@ -1,9 +1,16 @@
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import SceneControls from '@/SceneControls';
+
 import { BattleConfig, BattleEnemyConfig, BattleSkill, BattleStats } from '#/novelTypes';
 import { getPartyDefinitions } from '#/battleData';
 
 interface BattleProps {
   config: BattleConfig;
+  auto: boolean;
+  onAutoChange: (next: boolean) => void;
+  pass: boolean;
+  onPassChange: (next: boolean) => void;
   onComplete: (result: 'win' | 'lose') => void;
   onExitToTitle: () => void;
 }
@@ -65,7 +72,7 @@ const BASIC_ATTACK_SKILL: BattleSkill = {
 const pickSignatureSkill = (skills: BattleSkill[]) =>
   skills.find((skill) => skill.type === 'attack' || skill.type === 'heal') ?? skills[0];
 
-const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
+const Battle = ({ config, auto, onAutoChange, pass, onPassChange, onComplete, onExitToTitle }: BattleProps) => {
   const partyDefinitions = useMemo(() => getPartyDefinitions(config.party), [config.party]);
 
   const [players, setPlayers] = useState<CharacterState[]>(() =>
@@ -95,6 +102,8 @@ const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
 
   const logViewportRef = useRef<HTMLDivElement | null>(null);
   const stickToBottomRef = useRef(true);
+  const passTimeoutRef = useRef<number | null>(null);
+  const winCompleteRef = useRef(false);
 
   const [commandText, setCommandText] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -187,6 +196,7 @@ const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
   const readyForInput =
     outcome === null && phase === 'player' && queue.length === 0 && typing === null && activePlayerIndex >= 0;
 
+
   useEffect(() => {
     if (!readyForInput) return;
     inputRef.current?.focus();
@@ -229,6 +239,20 @@ const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
     if (enemy.hp > 0) return;
     endAsWin();
   }, [enemy.hp, endAsWin]);
+
+  useEffect(() => {
+    if (outcome !== 'win') return;
+    if (typing !== null) return;
+    if (queue.length !== 0) return;
+    if (winCompleteRef.current) return;
+
+    winCompleteRef.current = true;
+    const timeout = window.setTimeout(() => {
+      onComplete('win');
+    }, 520);
+
+    return () => window.clearTimeout(timeout);
+  }, [onComplete, outcome, queue.length, typing]);
 
   const performEnemyTurn = useCallback(() => {
     if (outcome) return;
@@ -421,22 +445,53 @@ const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
   const activeActor = activePlayerIndex >= 0 ? players[activePlayerIndex] : undefined;
   const signatureSkill = activeActor ? pickSignatureSkill(activeActor.skills) : undefined;
 
-  const showOverlay = outcome !== null && typing === null && queue.length === 0;
+  useEffect(() => {
+    if (passTimeoutRef.current) {
+      window.clearTimeout(passTimeoutRef.current);
+      passTimeoutRef.current = null;
+    }
+
+    if (!pass) return;
+    if (!readyForInput) return;
+
+    const shouldUseSignature = Boolean(
+      signatureSkill &&
+        (signatureSkill.type === 'attack' ||
+          (signatureSkill.type === 'heal' && activeActor && activeActor.hp < activeActor.stats.maxHp * 0.7)),
+    );
+
+    passTimeoutRef.current = window.setTimeout(() => {
+      performPlayerSkill(shouldUseSignature ? 'signature' : 'basic');
+    }, 420);
+
+    return () => {
+      if (passTimeoutRef.current) {
+        window.clearTimeout(passTimeoutRef.current);
+        passTimeoutRef.current = null;
+      }
+    };
+  }, [activeActor, pass, performPlayerSkill, readyForInput, signatureSkill]);
+
+  const showOverlay = outcome === 'lose' && typing === null && queue.length === 0;
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-black">
-      <div className="relative h-full w-full overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b] shadow-2xl">
-        <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e] px-3 py-2">
+      <div className="relative flex h-full w-full flex-col overflow-hidden rounded-none border-0 bg-[#0b0b0b] shadow-2xl sm:rounded-xl sm:border sm:border-white/15">
+        <div className="relative flex items-center border-b border-white/10 bg-[#1e1e1e] px-2 py-1.5 sm:px-3 sm:py-2">
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
             <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
             <span className="h-3 w-3 rounded-full bg-[#28c840]" />
           </div>
-          <div className="text-[12px] text-white/70">Terminal</div>
-          <div className="w-12" />
+
+          <div className="absolute left-1/2 -translate-x-1/2 text-[11px] text-white/70 sm:text-[12px]">Terminal</div>
+
+          <div className="ml-auto flex items-center" onClick={(e) => e.stopPropagation()}>
+            <SceneControls auto={auto} onAutoChange={onAutoChange} pass={pass} onPassChange={onPassChange} />
+          </div>
         </div>
 
-        <div className="flex h-[calc(100%-40px)] flex-col overflow-hidden px-4 py-3 font-mono text-[13px] leading-relaxed text-white/90">
+        <div className="flex flex-1 flex-col overflow-hidden px-3 py-2 font-mono text-[12px] leading-relaxed text-white/90 sm:px-4 sm:py-3 sm:text-[13px]">
           <div
 
             ref={logViewportRef}
@@ -466,19 +521,19 @@ const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
             </div>
           </div>
 
-          <div className="mt-3 space-y-2">
+          <div className="mt-2 space-y-2 sm:mt-3">
             {readyForInput && (
-              <div className="flex items-center gap-2 text-[12px] text-white/80">
+              <div className="flex flex-wrap items-center gap-2 text-[11px] text-white/80 sm:text-[12px]">
                 <button
                   type="button"
-                  className="rounded border border-white/20 bg-white/5 px-2 py-1 hover:bg-white/10"
+                  className="min-w-[5.5rem] flex-1 truncate rounded border border-white/20 bg-white/5 px-2 py-1 hover:bg-white/10"
                   onClick={() => performPlayerSkill('basic')}
                 >
                   공격 1
                 </button>
                 <button
                   type="button"
-                  className="rounded border border-white/20 bg-white/5 px-2 py-1 hover:bg-white/10"
+                  className="min-w-[5.5rem] flex-1 truncate rounded border border-white/20 bg-white/5 px-2 py-1 hover:bg-white/10"
                   onClick={() => performPlayerSkill('signature')}
                 >
                   {signatureSkill ? `${signatureSkill.name} 2` : '스킬 2'}
@@ -527,25 +582,6 @@ const Battle = ({ config, onComplete, onExitToTitle }: BattleProps) => {
           </div>
         )}
 
-        {showOverlay && outcome === 'win' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/60 px-4">
-            <div className="w-full max-w-sm rounded-lg border border-emerald-400/40 bg-black/80 p-5 font-mono text-white">
-              <div className="text-center">
-                <div className="text-[11px] uppercase tracking-[0.35em] text-emerald-200">Session Cleared</div>
-                <div className="mt-1 text-2xl font-semibold">VICTORY</div>
-              </div>
-              <div className="mt-4">
-                <button
-                  type="button"
-                  className="w-full rounded border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
-                  onClick={() => onComplete('win')}
-                >
-                  계속
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

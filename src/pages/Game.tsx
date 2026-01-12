@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Sentence from '@/Sentence';
-import Preload from '@/Preload';
-import { useStorageContext } from '@/useStorageContext';
-import useNovelEngine from '#/useNovelEngine';
+
 import Battle from '@/Battle';
+import Preload from '@/Preload';
+import SceneControls from '@/SceneControls';
+import Sentence from '@/Sentence';
+import { useStorageContext } from '@/useStorageContext';
+
+import useNovelEngine from '#/useNovelEngine';
 import type { ChoiceOption, SentenceData, SentenceEntry } from '#/novelTypes';
 
 type ConsoleLine = {
@@ -22,6 +25,10 @@ const flattenSentenceData = (data: SentenceData): string => {
 
 const Game = () => {
   const { level, addStorage } = useStorageContext();
+  const [passMode, setPassMode] = useState(false);
+
+  const passAdvanceTimeoutRef = useRef<number | null>(null);
+  const passChoiceTimeoutRef = useRef<number | null>(null);
   const handleGoSavePage = useCallback(() => addStorage({ page: 'save', level }), [addStorage, level]);
   const handleGoCreditPage = useCallback(() => addStorage({ page: 'credit', level: 0 }), [addStorage]);
 
@@ -137,6 +144,11 @@ const Game = () => {
 
   const handleConsoleChoiceSelect = useCallback(
     (choice: ChoiceOption) => {
+      if (passChoiceTimeoutRef.current) {
+        window.clearTimeout(passChoiceTimeoutRef.current);
+        passChoiceTimeoutRef.current = null;
+      }
+
       appendConsoleLine('사용자', choice.text);
       handleChoiceSelect(choice);
     },
@@ -174,6 +186,57 @@ const Game = () => {
     return () => window.removeEventListener('keydown', handleEnter);
   }, [handleEnter]);
 
+  useEffect(() => {
+    if (passAdvanceTimeoutRef.current) {
+      window.clearTimeout(passAdvanceTimeoutRef.current);
+      passAdvanceTimeoutRef.current = null;
+    }
+
+    if (!passMode) return;
+    if (battleConfig) return;
+    if (activeChoice) return;
+    if (!complete) return;
+
+    passAdvanceTimeoutRef.current = window.setTimeout(() => {
+      nextScene();
+    }, 240);
+
+    return () => {
+      if (passAdvanceTimeoutRef.current) {
+        window.clearTimeout(passAdvanceTimeoutRef.current);
+        passAdvanceTimeoutRef.current = null;
+      }
+    };
+  }, [activeChoice, battleConfig, complete, nextScene, passMode]);
+
+  useEffect(() => {
+    if (passChoiceTimeoutRef.current) {
+      window.clearTimeout(passChoiceTimeoutRef.current);
+      passChoiceTimeoutRef.current = null;
+    }
+
+    if (!passMode) return;
+    if (battleConfig) return;
+    if (!activeChoice) return;
+    if (!activeChoice.choices.length) return;
+
+    passChoiceTimeoutRef.current = window.setTimeout(() => {
+      const index = Math.floor(Math.random() * activeChoice.choices.length);
+      const picked = activeChoice.choices[index];
+      if (!picked) return;
+
+      appendConsoleLine('PASS', picked.text);
+      handleChoiceSelect(picked);
+    }, 520);
+
+    return () => {
+      if (passChoiceTimeoutRef.current) {
+        window.clearTimeout(passChoiceTimeoutRef.current);
+        passChoiceTimeoutRef.current = null;
+      }
+    };
+  }, [activeChoice, appendConsoleLine, battleConfig, handleChoiceSelect, passMode]);
+
   const consolePrefix = useMemo(
     () => (
       <>
@@ -197,23 +260,21 @@ const Game = () => {
   return (
     <Preload assets={assetList}>
       {battleConfig ? (
-        <Battle config={battleConfig} onComplete={handleBattleComplete} onExitToTitle={handleExitToTitle} />
+        <Battle
+          config={battleConfig}
+          auto={auto}
+          onAutoChange={setAuto}
+          pass={passMode}
+          onPassChange={setPassMode}
+          onComplete={handleBattleComplete}
+          onExitToTitle={handleExitToTitle}
+        />
       ) : (
         <div onClick={handleBackgroundClick} className="absolute inset-0">
-          <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-4">
-            <label
-              className="pointer-events-auto flex items-center gap-2 rounded bg-white/80 px-3 py-1 text-sm font-semibold text-black shadow"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <input
-                type="checkbox"
-                className="h-4 w-4"
-                checked={auto}
-                onChange={(e) => setAuto(e.target.checked)}
-                onClick={(e) => e.stopPropagation()}
-              />
-              자동
-            </label>
+          <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 sm:p-4">
+            <div onClick={(e) => e.stopPropagation()}>
+              <SceneControls auto={auto} onAutoChange={setAuto} pass={passMode} onPassChange={setPassMode} />
+            </div>
           </div>
           {place && assets[place]?.audio && <audio src={assets[place]?.audio} autoPlay />}
           {displayCharacter && characterImage && (
@@ -223,7 +284,7 @@ const Game = () => {
             <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />
           )}
           {sentence && (
-            <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-3 pb-2`}>
+            <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] sm:px-3 sm:pb-2`}>
               <div className={`pointer-events-auto flex ${consoleHeightClass} w-full flex-col overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b]/60 shadow-2xl backdrop-blur-md`}>
                 <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e]/80 px-3 py-1.5">
                   <div className="flex items-center gap-2">
