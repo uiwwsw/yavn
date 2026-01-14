@@ -8,6 +8,12 @@
   "그리드": {
     "image": "/assets/character-grid.png"
   },
+  "경비병": {
+    "image": "/assets/character-grid.png"
+  },
+  "상인": {
+    "image": "/assets/character-grid.png"
+  },
   "세라": {
     "image": "/assets/character-sera.png"
   },
@@ -17,13 +23,13 @@
   "해리": {
     "image": "/assets/character-harry.png"
   },
-  "아메바 왕국": {
+  "변두리 마을 입구": {
     "image": "/assets/bg-1.png"
   },
-  "인터파크 성채": {
+  "마을 광장": {
     "image": "/assets/bg-2.png"
   },
-  "와이즈버즈 연구소": {
+  "여관 복도 / 밤": {
     "image": "/assets/bg-3.png"
   },
   "업라이즈 시타델": {

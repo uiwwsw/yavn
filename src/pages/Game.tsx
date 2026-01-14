@@ -70,6 +70,23 @@ const Game = () => {
   const [consoleLines, setConsoleLines] = useState<ConsoleLine[]>([]);
   const [consoleTick, setConsoleTick] = useState(0);
 
+  // Background Fade State
+  const [displayPlace, setDisplayPlace] = useState(place);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    if (place === displayPlace) return;
+
+    if (!isFading) {
+      setIsFading(true);
+      const timeout = setTimeout(() => {
+        setDisplayPlace(place);
+        setIsFading(false);
+      }, 500); // Wait for fade out
+      return () => clearTimeout(timeout);
+    }
+  }, [place, displayPlace, isFading]);
+
   const scrollConsoleToBottom = useCallback(() => {
     const el = consoleViewportRef.current;
     if (!el) return;
@@ -150,7 +167,7 @@ const Game = () => {
         passChoiceTimeoutRef.current = null;
       }
 
-      appendConsoleLine('사용자', choice.text);
+      appendConsoleLine('매튜', choice.text);
       handleChoiceSelect(choice);
     },
     [appendConsoleLine, handleChoiceSelect],
@@ -255,8 +272,24 @@ const Game = () => {
 
   const consoleHeightClass = useMemo(() => {
     // 기본은 3줄 정도 보이게
-    return activeChoice ? 'h-[clamp(160px,36vh,220px)]' : 'h-[106px]';
+    return activeChoice ? 'h-[clamp(160px,36vh,220px)]' : 'h-[118px]';
   }, [activeChoice]);
+
+  /* Sequential Choice Logic */
+  const [choiceStage, setChoiceStage] = useState(0);
+
+  useEffect(() => {
+    setChoiceStage(0);
+  }, [activeChoice]);
+
+  // If there is NO prompt, we normally start showing choices immediately?
+  // Let's assume stage 0 = prompt (if any), stage 1 = choice 0, stage 2 = choice 1...
+  // If prompt is missing, we might need auto-advance or just treat stage 0 as "start"
+  useEffect(() => {
+    if (activeChoice && !activeChoice.prompt && choiceStage === 0) {
+      setChoiceStage(1);
+    }
+  }, [activeChoice, choiceStage]);
 
   return (
     <Preload assets={assetList}>
@@ -281,8 +314,12 @@ const Game = () => {
           {displayCharacter && characterImage && (
             <img className="absolute bottom-0 z-10 w-1/2" style={characterPosition} src={characterImage} alt={displayCharacter} />
           )}
-          {place && assets[place]?.image && (
-            <img className="absolute h-full w-full object-cover" src={assets[place]?.image} alt={place} />
+          {displayPlace && assets[displayPlace]?.image && (
+            <img
+              className={`absolute h-full w-full object-cover transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+              src={assets[displayPlace]?.image}
+              alt={displayPlace}
+            />
           )}
           {sentence && (
             <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] sm:px-3 sm:pb-2`}>
@@ -345,30 +382,60 @@ const Game = () => {
                               <span className="text-emerald-300">&gt;</span>{' '}
                               <span className="text-white/70">{consoleSpeaker}</span>
                               <span className="text-white/40">:</span>{' '}
-                              <span className="text-white/90">{activeChoice.prompt}</span>
+                              <span className="text-white/90">
+                                <Sentence
+                                  data={activeChoice.prompt}
+                                  isComplete={choiceStage > 0}
+                                  onComplete={() => setChoiceStage((prev) => Math.max(prev, 1))}
+                                  onProgress={handleConsoleProgress}
+                                />
+                              </span>
                             </div>
                           )}
                           <div className="space-y-1">
-                            {activeChoice.choices.map((choice, index) => (
-                              <button
-                                key={`${choice.text}-${index}`}
-                                type="button"
-                                className="w-full rounded border border-white/15 bg-white/5 px-2 py-1 text-left text-[12px] text-white/90 hover:bg-white/10"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleConsoleChoiceSelect(choice);
-                                }}
-                              >
-                                <span className="text-emerald-200">[{index + 1}]</span> {choice.text}
-                              </button>
-                            ))}
+                            {activeChoice.choices.map((choice, index) => {
+                              const promptOffset = activeChoice.prompt ? 1 : 0;
+                              const canRender = choiceStage >= promptOffset + index;
+                              if (!canRender) return null;
+
+                              return (
+                                <button
+                                  key={`${choice.text}-${index}`}
+                                  type="button"
+                                  className="w-full rounded border border-white/15 bg-white/5 px-2 py-1 text-left text-[12px] text-white/90 hover:bg-white/10"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleConsoleChoiceSelect(choice);
+                                  }}
+                                >
+                                  <span className="text-emerald-200">[{index + 1}]</span>{' '}
+                                  <Sentence
+                                    key={choice.text}
+                                    data={choice.text}
+                                    isComplete={Boolean(passChoiceTimeoutRef.current) || choiceStage > promptOffset + index}
+                                    onComplete={() => setChoiceStage((prev) => Math.max(prev, promptOffset + index + 1))}
+                                    onProgress={handleConsoleProgress}
+                                  />
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
-
                 </div>
+
+                {sentenceData && !activeChoice && (
+                  <div
+                    className={`flex items-center gap-2 px-3 pb-1 transition-opacity duration-500 ${complete ? 'opacity-100' : 'opacity-50'}`}
+                  >
+                    <div className="flex animate-pulse items-center gap-2">
+                      <span className="font-bold text-white">&gt;</span>
+                      <span className="text-[11px] text-white/70 sm:text-[12px]">엔터나 클릭해주세요</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, ReactNode, type CSSProperties, useEffect, useMemo, useState } from 'react';
+import { memo, ReactNode, type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Assets, SentenceData, SentenceEntry } from '#/novelTypes';
 
@@ -17,6 +17,8 @@ export interface SentenceProps {
   onComplete: () => void;
   prefix?: ReactNode;
   onProgress?: (cursor: number) => void;
+  className?: string;
+  showCursor?: boolean;
 }
 
 const defaultDuration = 70;
@@ -49,6 +51,8 @@ const Sentence = ({
   onComplete,
   prefix,
   onProgress,
+  className,
+  showCursor = true,
 }: SentenceProps) => {
   const [_sentences, setSentences] = useState<SentenceEntry[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
@@ -134,7 +138,10 @@ const Sentence = ({
 
     setStep(0);
     setCursor(0);
+    hasCalledComplete.current = false;
   }, [data]);
+
+  const hasCalledComplete = useRef(false);
 
   useEffect(() => {
     if (step < 0) return;
@@ -169,7 +176,10 @@ const Sentence = ({
   }, [_sentences.length, isEndCursor]);
 
   useEffect(() => {
-    if (isComplete && !isCompleteProp) onComplete();
+    if (isComplete && !isCompleteProp && !hasCalledComplete.current) {
+      hasCalledComplete.current = true;
+      onComplete();
+    }
   }, [isComplete, isCompleteProp, onComplete]);
 
   const [rootBounds, setRootBounds] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
@@ -261,10 +271,10 @@ const Sentence = ({
             )}
         </>
       )}
-      <span className="whitespace-pre-line leading-relaxed">
+      <span className={`whitespace-pre-line leading-relaxed${className ? ` ${className}` : ''}`}>
         {prefix}
         {renderedSentence}
-        {!isCompleteProp && !isComplete && <span className="terminal-cursor">▍</span>}
+        {!isCompleteProp && !isComplete && showCursor && <span className="terminal-cursor">▍</span>}
       </span>
     </>
   );

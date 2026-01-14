@@ -3,10 +3,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 html {
   @apply flex w-screen items-center bg-black;
   height: 100dvh;
 }
+
 body {
   @apply m-auto h-[480px] w-[640px];
   overflow: hidden;
@@ -16,6 +18,7 @@ body {
   html {
     height: 100dvh;
   }
+
   body {
     @apply m-0 w-screen;
     height: 100dvh;
@@ -23,6 +26,7 @@ body {
     padding-top: env(safe-area-inset-top);
   }
 }
+
 #root {
   @apply h-full w-full;
 }
@@ -33,6 +37,7 @@ body {
       opacity: 0;
       transform: translateY(8px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -49,6 +54,7 @@ body {
       opacity: 0;
       transform: translateX(-20px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -59,10 +65,12 @@ body {
     0% {
       width: 100%;
     }
+
     50% {
       width: 110%;
       background: #ef4444;
     }
+
     100% {
       width: var(--target-width);
       background: linear-gradient(to right, #ef4444, #f97316);
@@ -70,9 +78,12 @@ body {
   }
 
   @keyframes pulse-glow {
-    0%, 100% {
+
+    0%,
+    100% {
       box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
     }
+
     50% {
       box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.3);
     }
@@ -101,7 +112,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
     transform: translateX(-100%);
     transition: transform 0.6s;
   }
@@ -119,7 +130,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     transform: translateX(-100%);
     transition: transform 0.4s;
   }
@@ -134,10 +145,12 @@ body {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+
     50% {
       opacity: 0.8;
       transform: translateY(-20px) scale(1.2);
     }
+
     100% {
       opacity: 0;
       transform: translateY(-40px) scale(0.8);
@@ -150,9 +163,12 @@ body {
 
   /* 회복 애니메이션 */
   @keyframes heal-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
       box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
     }
+
     50% {
       box-shadow: 0 0 20px 10px rgba(34, 197, 94, 0.3);
     }
@@ -168,6 +184,7 @@ body {
       opacity: 0;
       transform: scale(0.5);
     }
+
     100% {
       opacity: 1;
       transform: scale(1);
@@ -180,10 +197,14 @@ body {
 
   /* 터미널 커서/푸시 효과 */
   @keyframes terminal-cursor-blink {
-    0%, 49% {
+
+    0%,
+    49% {
       opacity: 1;
     }
-    50%, 100% {
+
+    50%,
+    100% {
       opacity: 0;
     }
   }
@@ -193,52 +214,63 @@ body {
     margin-left: 2px;
     animation: terminal-cursor-blink 1s step-end infinite;
     color: rgba(52, 211, 153, 0.9);
+    vertical-align: text-bottom;
+    line-height: 1;
+    height: 1em;
+    width: 0.6em;
+    position: relative;
+    top: 0.1em;
+  }
+}
+
+@keyframes terminal-push {
+  0% {
+    transform: translateX(0);
   }
 
-  @keyframes terminal-push {
-    0% {
-      transform: translateX(0);
-    }
-    28% {
-      transform: translateX(10px);
-    }
-    48% {
-      transform: translateX(-6px);
-    }
-    68% {
-      transform: translateX(4px);
-    }
-    100% {
-      transform: translateX(0);
-    }
+  28% {
+    transform: translateX(10px);
   }
 
-  .terminal-push {
-    animation: terminal-push 240ms ease-out;
+  48% {
+    transform: translateX(-6px);
   }
 
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  68% {
+    transform: translateX(4px);
   }
 
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.terminal-push {
+  animation: terminal-push 240ms ease-out;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes dialogue-pop {
+  from {
+    opacity: 0.55;
+    transform: translateY(2px);
   }
 
-  @keyframes dialogue-pop {
-    from {
-      opacity: 0.55;
-      transform: translateY(2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-  .dialogue-pop {
-    display: inline-block;
-    animation: dialogue-pop 120ms ease-out;
-  }
+.dialogue-pop {
+  display: inline-block;
+  animation: dialogue-pop 120ms ease-out;
 }
