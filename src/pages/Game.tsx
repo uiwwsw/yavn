@@ -27,7 +27,7 @@ const Game = () => {
   const { level, addStorage } = useStorageContext();
   const [passMode, setPassMode] = useState(false);
 
-  const passAdvanceTimeoutRef = useRef<number | null>(null);
+
   const passChoiceTimeoutRef = useRef<number | null>(null);
   const handleGoSavePage = useCallback(() => addStorage({ page: 'save', level }), [addStorage, level]);
   const handleGoCreditPage = useCallback(() => addStorage({ page: 'credit', level: 0 }), [addStorage]);
