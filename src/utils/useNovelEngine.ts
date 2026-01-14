@@ -74,7 +74,13 @@ const useNovelEngine = ({
     };
   }, [chapters, chapterIndex, sentenceIndex]);
 
-  const { sentence, sentenceData, character, place, changePosition, next, maxSentence, maxStep, battle } = sceneState;
+  const { sentence, sentenceData, character, place: scenePlace, changePosition, next, maxSentence, maxStep, battle } = sceneState;
+
+  const [place, setPlace] = useState<string>();
+
+  useEffect(() => {
+    if (scenePlace) setPlace(scenePlace);
+  }, [scenePlace]);
 
   const assetList = useMemo(
     () => Object.values(assets).flatMap((x) => Object.values(x).filter((item) => Boolean(item)) as string[]),

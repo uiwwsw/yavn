@@ -2,118 +2,22 @@
   "매튜": {
     "image": "/assets/character-matthew.png"
   },
-  "엘리": {
-    "image": "/assets/character-elly.png"
-  },
-  "그리드": {
-    "image": "/assets/character-grid.png"
-  },
   "세라": {
     "image": "/assets/character-sera.png"
   },
   "루크": {
     "image": "/assets/character-luke.png"
   },
-  "해리": {
-    "image": "/assets/character-harry.png"
+  "병사": {
+    "image": "/assets/character-grid.png"
   },
-  "아메바 왕국": {
-    "image": "/assets/bg-1.png"
-  },
-  "인터파크 성채": {
-    "image": "/assets/bg-2.png"
-  },
-  "와이즈버즈 연구소": {
-    "image": "/assets/bg-3.png"
-  },
-  "업라이즈 시타델": {
-    "image": "/assets/bg-4.png"
-  },
-  "세미티에스 요새": {
-    "image": "/assets/bg-5.png"
-  },
-  "햄스 요새": {
+  "왕도-외곽-길-흐린-낮": {
     "image": "/assets/bg-6.png"
   },
-  "디지털 심연": {
+  "검문소-낮": {
     "image": "/assets/bg-1.png"
   },
-  "황혼 격납고": {
+  "검문소-너머-해질녘": {
     "image": "/assets/bg-1.png"
-  },
-  "나선 도서관": {
-    "image": "/assets/bg-2.png"
-  },
-  "신호 교차로": {
-    "image": "/assets/bg-3.png"
-  },
-  "공명 실험실": {
-    "image": "/assets/bg-4.png"
-  },
-  "공중 정원": {
-    "image": "/assets/bg-5.png"
-  },
-  "별빛 강당": {
-    "image": "/assets/bg-6.png"
-  },
-  "emoji-bolt": {
-    "image": "/assets/emoji-bolt.svg"
-  },
-  "emoji-fire": {
-    "image": "/assets/emoji-fire.svg"
-  },
-  "emoji-gear": {
-    "image": "/assets/emoji-gear.svg"
-  },
-  "emoji-handshake": {
-    "image": "/assets/emoji-handshake.svg"
-  },
-  "emoji-leaf": {
-    "image": "/assets/emoji-leaf.svg"
-  },
-  "emoji-muscle": {
-    "image": "/assets/emoji-muscle.svg"
-  },
-  "emoji-relaxed": {
-    "image": "/assets/emoji-relaxed.svg"
-  },
-  "emoji-rocket": {
-    "image": "/assets/emoji-rocket.svg"
-  },
-  "emoji-smile": {
-    "image": "/assets/emoji-smile.svg"
-  },
-  "emoji-sparkle": {
-    "image": "/assets/emoji-sparkle.svg"
-  },
-  "emoji-speech": {
-    "image": "/assets/emoji-speech.svg"
-  },
-  "emoji-star": {
-    "image": "/assets/emoji-star.svg"
-  },
-  "emoji-sunrise": {
-    "image": "/assets/emoji-sunrise.svg"
-  },
-  "emoji-surprised": {
-    "image": "/assets/emoji-surprised.svg"
-  },
-  "잊혀진 코드의 나라": {
-    "image": "/assets/bg-1.png"
-  },
-  "세미티에스 공업도시": {
-    "image": "/assets/bg-2.png"
-  },
-  "한국일보 요새": {
-    "image": "/assets/bg-3.png"
-  },
-  "낭비 없는 왕국": {
-    "image": "/assets/bg-4.png"
-  },
-  "Refactor Core": {
-    "image": "/assets/bg-5.png"
-  },
-  "현실 세계": {
-    "image": "/assets/bg-6.png"
   }
 }

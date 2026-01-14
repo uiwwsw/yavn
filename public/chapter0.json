@@ -1,6 +1,6 @@
 [
   {
-    "place": "변두리 마을 입구",
+    "place": "변두리-마을-입구",
     "sentences": [
       [
         {
@@ -12,7 +12,7 @@
   },
   {
     "character": "매튜",
-    "place": "변두리 마을 입구",
+    "place": "변두리-마을-입구",
     "sentences": [
       [
         {
@@ -28,7 +28,7 @@
   },
   {
     "character": "경비병",
-    "place": "변두리 마을 입구",
+    "place": "변두리-마을-입구",
     "sentences": [
       [
         {
@@ -44,7 +44,7 @@
   },
   {
     "character": "매튜",
-    "place": "변두리 마을 입구",
+    "place": "변두리-마을-입구",
     "sentences": [
       [
         {
@@ -55,7 +55,7 @@
     ]
   },
   {
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -67,7 +67,7 @@
   },
   {
     "character": "상인",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -83,7 +83,7 @@
   },
   {
     "character": "매튜",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -95,7 +95,7 @@
   },
   {
     "character": "세라",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -111,7 +111,7 @@
   },
   {
     "character": "매튜",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -123,7 +123,7 @@
   },
   {
     "character": "세라",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -139,7 +139,7 @@
   },
   {
     "character": "세라",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -155,7 +155,7 @@
   },
   {
     "character": "매튜",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -167,7 +167,7 @@
   },
   {
     "character": "세라",
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       [
         {
@@ -182,7 +182,7 @@
     ]
   },
   {
-    "place": "마을 광장",
+    "place": "마을-광장",
     "sentences": [
       {
         "prompt": "이 말에 어떻게 반응할까?",
@@ -256,7 +256,7 @@
   },
   {
     "id": "act1-night",
-    "place": "여관 복도 / 밤",
+    "place": "여관-복도-밤",
     "sentences": [
       [
         {
@@ -268,7 +268,7 @@
   },
   {
     "character": "세라",
-    "place": "여관 복도 / 밤",
+    "place": "여관-복도-밤",
     "sentences": [
       [
         {
@@ -284,7 +284,7 @@
   },
   {
     "character": "매튜",
-    "place": "여관 복도 / 밤",
+    "place": "여관-복도-밤",
     "sentences": [
       [
         {
@@ -296,7 +296,7 @@
   },
   {
     "character": "세라",
-    "place": "여관 복도 / 밤",
+    "place": "여관-복도-밤",
     "sentences": [
       [
         {
@@ -312,7 +312,7 @@
   },
   {
     "character": "매튜",
-    "place": "여관 복도 / 밤",
+    "place": "여관-복도-밤",
     "sentences": [
       [
         {

@@ -77,6 +77,9 @@ const Sentence = ({
       if (!isCompleteProp && step < index) break;
 
       const entry = _sentences[index];
+
+      if (index > 0) nodes.push(' ');
+
       if (index < step) {
         nodes.push(entry.message);
         continue;
@@ -274,7 +277,7 @@ const Sentence = ({
       <span className={`whitespace-pre-line leading-relaxed${className ? ` ${className}` : ''}`}>
         {prefix}
         {renderedSentence}
-        {!isCompleteProp && !isComplete && showCursor && <span className="terminal-cursor">▍</span>}
+        {!isCompleteProp && !isComplete && showCursor && <span className="terminal-cursor has-prefix">▍</span>}
       </span>
     </>
   );

@@ -19,7 +19,7 @@ const MAX_CONSOLE_LINES = 200;
 
 const flattenSentenceData = (data: SentenceData): string => {
   if (typeof data === 'string') return data;
-  if (Array.isArray(data)) return data.map((entry) => entry.message).join('');
+  if (Array.isArray(data)) return data.map((entry) => entry.message).join(' ');
   return (data as SentenceEntry).message;
 };
 
@@ -81,11 +81,12 @@ const Game = () => {
       setIsFading(true);
       const timeout = setTimeout(() => {
         setDisplayPlace(place);
-        setIsFading(false);
-      }, 500); // Wait for fade out
+        // Break batching to ensure DOM updates with opacity-0 before fading in
+        setTimeout(() => setIsFading(false), 50);
+      }, 500); // Wait for fade out (or wait for initial load)
       return () => clearTimeout(timeout);
     }
-  }, [place, displayPlace, isFading]);
+  }, [place, displayPlace]);
 
   const scrollConsoleToBottom = useCallback(() => {
     const el = consoleViewportRef.current;
@@ -173,13 +174,7 @@ const Game = () => {
     [appendConsoleLine, handleChoiceSelect],
   );
 
-  const handleEnter = useCallback(
-    (e: KeyboardEvent) => {
-      if (battleConfig) return;
-      if (e.code === 'Enter') nextScene();
-    },
-    [battleConfig, nextScene],
-  );
+
 
   const handleBattleComplete = useCallback(
     (result: 'win' | 'lose') => {
@@ -199,61 +194,64 @@ const Game = () => {
     nextScene();
   }, [battleConfig, nextScene]);
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleEnter);
-    return () => window.removeEventListener('keydown', handleEnter);
-  }, [handleEnter]);
+  /* Sequential Choice Logic */
+  const [choiceStage, setChoiceStage] = useState(0);
+  const [selectedChoiceIndex, setSelectedChoiceIndex] = useState<number | null>(null);
+  const [shake, setShake] = useState(false);
 
   useEffect(() => {
-    if (passAdvanceTimeoutRef.current) {
-      window.clearTimeout(passAdvanceTimeoutRef.current);
-      passAdvanceTimeoutRef.current = null;
+    setChoiceStage(0);
+    setSelectedChoiceIndex(null);
+    setShake(false);
+  }, [activeChoice]);
+
+  // If there is NO prompt, we normally start showing choices immediately?
+  // Let's assume stage 0 = prompt (if any), stage 1 = choice 0, stage 2 = choice 1...
+  // If prompt is missing, we might need auto-advance or just treat stage 0 as "start"
+  useEffect(() => {
+    if (activeChoice && !activeChoice.prompt && choiceStage === 0) {
+      setChoiceStage(1);
     }
+  }, [activeChoice, choiceStage]);
 
-    if (!passMode) return;
-    if (battleConfig) return;
-    if (activeChoice) return;
-    if (!complete) return;
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (battleConfig) return;
 
-    passAdvanceTimeoutRef.current = window.setTimeout(() => {
-      nextScene();
-    }, 240);
+      // Handle Enter
+      if (e.code === 'Enter') {
+        if (activeChoice) {
+          if (selectedChoiceIndex !== null && activeChoice.choices[selectedChoiceIndex]) {
+            handleConsoleChoiceSelect(activeChoice.choices[selectedChoiceIndex]);
+          } else {
+            setShake(true);
+            setTimeout(() => setShake(false), 400);
+          }
+          return;
+        }
+        nextScene();
+        return;
+      }
 
-    return () => {
-      if (passAdvanceTimeoutRef.current) {
-        window.clearTimeout(passAdvanceTimeoutRef.current);
-        passAdvanceTimeoutRef.current = null;
+      // Handle Number Keys for Choices
+      if (activeChoice) {
+        const key = e.key;
+        const num = parseInt(key, 10);
+        if (!isNaN(num)) {
+          if (num >= 1 && num <= activeChoice.choices.length) {
+            setSelectedChoiceIndex(num - 1);
+          } else {
+            setShake(true);
+            setTimeout(() => setShake(false), 400);
+            setSelectedChoiceIndex(null);
+          }
+        }
       }
     };
-  }, [activeChoice, battleConfig, complete, nextScene, passMode]);
 
-  useEffect(() => {
-    if (passChoiceTimeoutRef.current) {
-      window.clearTimeout(passChoiceTimeoutRef.current);
-      passChoiceTimeoutRef.current = null;
-    }
-
-    if (!passMode) return;
-    if (battleConfig) return;
-    if (!activeChoice) return;
-    if (!activeChoice.choices.length) return;
-
-    passChoiceTimeoutRef.current = window.setTimeout(() => {
-      const index = Math.floor(Math.random() * activeChoice.choices.length);
-      const picked = activeChoice.choices[index];
-      if (!picked) return;
-
-      appendConsoleLine('PASS', picked.text);
-      handleChoiceSelect(picked);
-    }, 520);
-
-    return () => {
-      if (passChoiceTimeoutRef.current) {
-        window.clearTimeout(passChoiceTimeoutRef.current);
-        passChoiceTimeoutRef.current = null;
-      }
-    };
-  }, [activeChoice, appendConsoleLine, battleConfig, handleChoiceSelect, passMode]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeChoice, battleConfig, handleConsoleChoiceSelect, nextScene, selectedChoiceIndex]);
 
   const consolePrefix = useMemo(
     () => (
@@ -274,22 +272,6 @@ const Game = () => {
     // 기본은 3줄 정도 보이게
     return activeChoice ? 'h-[clamp(160px,36vh,220px)]' : 'h-[118px]';
   }, [activeChoice]);
-
-  /* Sequential Choice Logic */
-  const [choiceStage, setChoiceStage] = useState(0);
-
-  useEffect(() => {
-    setChoiceStage(0);
-  }, [activeChoice]);
-
-  // If there is NO prompt, we normally start showing choices immediately?
-  // Let's assume stage 0 = prompt (if any), stage 1 = choice 0, stage 2 = choice 1...
-  // If prompt is missing, we might need auto-advance or just treat stage 0 as "start"
-  useEffect(() => {
-    if (activeChoice && !activeChoice.prompt && choiceStage === 0) {
-      setChoiceStage(1);
-    }
-  }, [activeChoice, choiceStage]);
 
   return (
     <Preload assets={assetList}>
@@ -398,17 +380,24 @@ const Game = () => {
                               const canRender = choiceStage >= promptOffset + index;
                               if (!canRender) return null;
 
+                              const isSelected = selectedChoiceIndex === index;
+
                               return (
                                 <button
                                   key={`${choice.text}-${index}`}
                                   type="button"
-                                  className="w-full rounded border border-white/15 bg-white/5 px-2 py-1 text-left text-[12px] text-white/90 hover:bg-white/10"
+                                  className={`w-full rounded border px-2 py-1 text-left text-[12px] transition-colors ${isSelected
+                                    ? 'border-emerald-500/50 bg-emerald-500/20 text-white'
+                                    : 'border-white/15 bg-white/5 text-white/90 hover:bg-white/10'
+                                    }`}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleConsoleChoiceSelect(choice);
                                   }}
                                 >
-                                  <span className="text-emerald-200">[{index + 1}]</span>{' '}
+                                  <span className={isSelected ? 'text-emerald-300 font-bold' : 'text-emerald-200'}>
+                                    [{index + 1}]
+                                  </span>{' '}
                                   <Sentence
                                     key={choice.text}
                                     data={choice.text}
@@ -426,13 +415,16 @@ const Game = () => {
                   </div>
                 </div>
 
-                {sentenceData && !activeChoice && (
+                {(sentenceData || activeChoice) && (
                   <div
-                    className={`flex items-center gap-2 px-3 pb-1 transition-opacity duration-500 ${complete ? 'opacity-100' : 'opacity-50'}`}
+                    className={`flex items-center gap-2 px-3 pb-1 transition-opacity duration-500 ${complete || activeChoice ? 'opacity-100' : 'opacity-50'} ${shake ? 'shake' : ''}`}
                   >
-                    <div className="flex animate-pulse items-center gap-2">
-                      <span className="font-bold text-white">&gt;</span>
-                      <span className="text-[11px] text-white/70 sm:text-[12px]">엔터나 클릭해주세요</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white text-[12px]">&gt;</span>
+                      <span className="text-[11px] text-white/70 sm:text-[12px]">
+                        {activeChoice ? '숫자를 입력 후 엔터를 입력해주세요' : '엔터나 클릭해주세요'}
+                        {(complete || activeChoice) && <span className="terminal-cursor static">▍</span>}
+                      </span>
                     </div>
                   </div>
                 )}
