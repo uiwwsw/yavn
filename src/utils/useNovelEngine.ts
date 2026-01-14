@@ -49,7 +49,7 @@ const useNovelEngine = ({
   const [completedAt, setCompletedAt] = useState<number | null>(null);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
-  
+
   const loadCancelledRef = useRef(false);
   const animationFrameRef = useRef<number>();
 
@@ -338,6 +338,7 @@ const useNovelEngine = ({
     complete,
     battle,
     forceNextScene,
+    step,
   };
 };
 

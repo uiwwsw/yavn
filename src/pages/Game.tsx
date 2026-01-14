@@ -52,6 +52,7 @@ const Game = () => {
     complete,
     battle: battleConfig,
     forceNextScene,
+    step,
   } = useNovelEngine({
     level,
     onChapterEnd: handleGoSavePage,
@@ -325,6 +326,7 @@ const Game = () => {
                       {sentenceData && !activeChoice && (
                         <div className="whitespace-pre-wrap break-words">
                           <Sentence
+                            key={`${step[0]}-${step[1]}`}
                             assets={assets}
                             data={sentenceData}
                             direct={direct}
