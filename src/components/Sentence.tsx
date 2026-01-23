@@ -56,6 +56,8 @@ const Sentence = ({
 }: SentenceProps) => {
   const [_sentences, setSentences] = useState<SentenceEntry[]>([]);
   const [_cursor, setCursor] = useState<number>(0);
+  // Preload image assets to ensure quick display even for short dialogues
+  const [preloadedImages, setPreloadedImages] = useState<Record<string, boolean>>({});
   const [_step, setStep] = useState<number>(-1);
 
   const step = Math.min(_step, _sentences.length);
@@ -119,6 +121,21 @@ const Sentence = ({
     const currentIndex = Math.min(Math.max(step, 0), _sentences.length - 1);
     return entries.filter((entry) => entry.index === currentIndex);
   }, [_sentences, step, isCompleteProp]);
+
+  // Preload currently referenced asset images
+  useEffect(() => {
+    const toLoad = assetArray
+      .map((a) => assets?.[a.name]?.image)
+      .filter((src): src is string => typeof src === 'string');
+    toLoad.forEach((src) => {
+      if (preloadedImages[src]) return;
+      const img = new Image();
+      const onDone = () => setPreloadedImages((p) => ({ ...p, [src]: true }));
+      img.onload = onDone;
+      img.onerror = onDone;
+      img.src = src;
+    });
+  }, [assetArray, assets, preloadedImages]);
 
   const isEndCursor = step < _sentences.length && sentence.message.length <= cursor;
 
@@ -263,7 +280,11 @@ const Sentence = ({
                         }}
                       >
                         <div className="h-full w-full rounded-xl border border-white/10 bg-black/25 p-1 shadow-2xl shadow-black/60 backdrop-blur">
-                          <img className="h-full w-full object-contain" src={asset.image} alt="" />
+                          {preloadedImages[asset.image] ? (
+                            <img className="h-full w-full object-contain" src={asset.image} alt="" />
+                          ) : (
+                            <div style={{ width: size, height: size, background: 'rgba(255,255,255,0.08)' }} />
+                          )}
                         </div>
                       </motion.div>
                     );

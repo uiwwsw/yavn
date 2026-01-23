@@ -20,7 +20,7 @@
     "sentences": [
       [
         {
-          "message": "한 잔 더?",
+          "message": "한 잔 더 하시겠어요?",
           "duration": 100
         }
       ]
@@ -32,12 +32,12 @@
     "sentences": [
       [
         {
-          "message": "응.",
+          "message": "그래.",
           "duration": 80
         },
         {
-          "message": "오늘은 좀 길어질 것 같아.",
-          "duration": 130
+          "message": "오늘은 좀 길어질 것 같으니까.",
+          "duration": 120
         }
       ]
     ]
@@ -47,12 +47,12 @@
     "sentences": [
       [
         {
-          "message": "주인은 묻지 않고 따른다.",
+          "message": "주인은 묻지 않고 잔을 채운다.",
           "duration": 110
         },
         {
-          "message": "세라는 잠깐 매튜를 본다. “지금 말 걸어도 되나?”라는 눈빛이다. 매튜는 어깨를 으쓱한다.",
-          "duration": 160
+          "message": "세라가 매튜를 힐끗 본다. 지금 말 걸어도 괜찮을까? 매튜는 어깨를 으쓱한다.",
+          "duration": 150
         }
       ]
     ]
@@ -63,7 +63,7 @@
     "sentences": [
       [
         {
-          "message": "아까 “돌아온 사람”이라고 했죠.",
+          "message": "아까 '돌아온 사람'이라고 하셨죠.",
           "duration": 120
         }
       ]
@@ -75,7 +75,7 @@
     "sentences": [
       [
         {
-          "message": "그랬나.",
+          "message": "…그랬나.",
           "duration": 80
         }
       ]
@@ -99,7 +99,7 @@
     "sentences": [
       [
         {
-          "message": "보통이 아니니까.",
+          "message": "보통 상황이 아니니까.",
           "duration": 100
         }
       ]
@@ -110,8 +110,8 @@
     "sentences": [
       [
         {
-          "message": "루크는 잔을 내려다보다가, 갑자기 웃는다. 아주 짧게.",
-          "duration": 140
+          "message": "루크가 잔을 내려다보다가 피식 웃는다. 아주 짧게.",
+          "duration": 130
         }
       ]
     ]
@@ -122,7 +122,7 @@
     "sentences": [
       [
         {
-          "message": "성에서 뭐 들었어?",
+          "message": "성에서 무슨 말 들었어?",
           "duration": 110
         }
       ]
@@ -134,7 +134,7 @@
     "sentences": [
       [
         {
-          "message": "기다린다는 말이요.",
+          "message": "그저 기다리라고만 하더군요.",
           "duration": 110
         }
       ]
@@ -146,8 +146,8 @@
     "sentences": [
       [
         {
-          "message": "늘 그 말이지.",
-          "duration": 100
+          "message": "역시… 언제나 똑같은 소리지.",
+          "duration": 110
         }
       ]
     ]
@@ -158,7 +158,7 @@
     "sentences": [
       [
         {
-          "message": "전에 왔을 때도요?",
+          "message": "예전에 오셨을 때도 그랬나요?",
           "duration": 110
         }
       ]
@@ -174,7 +174,7 @@
           "duration": 60
         },
         {
-          "message": "전에 왔을 땐 말이 좀 더 많았어.",
+          "message": "예전엔… 말이 좀 더 많았지.",
           "duration": 130
         }
       ]
@@ -186,7 +186,7 @@
     "sentences": [
       [
         {
-          "message": "뭐가 달랐어요?",
+          "message": "뭐가 달라진 건가요?",
           "duration": 100
         }
       ]
@@ -198,7 +198,7 @@
     "sentences": [
       [
         {
-          "message": "그땐 “희망”이라는 단어를 썼거든.",
+          "message": "그땐 '희망'이라는 단어를 썼거든.",
           "duration": 130
         }
       ]
@@ -222,12 +222,12 @@
     "sentences": [
       [
         {
-          "message": "“기대”도 아니고 “부탁”도 아니고 그냥…",
-          "duration": 140
+          "message": "'기대'도 아니고, '부탁'도 아니고…",
+          "duration": 130
         },
         {
-          "message": "기다림.",
-          "duration": 80
+          "message": "그냥 기다림.",
+          "duration": 90
         }
       ]
     ]
@@ -249,12 +249,12 @@
     "sentences": [
       [
         {
-          "message": "전에… 영웅이었어요?",
+          "message": "혹시… 예전에 영웅이셨나요?",
           "duration": 120
         },
         {
-          "message": "(질문이 튀어나오자 세라는 스스로도 놀란다)",
-          "duration": 120
+          "message": "…앗, 실례했습니다!",
+          "duration": 100
         }
       ]
     ]
@@ -276,7 +276,7 @@
     "sentences": [
       [
         {
-          "message": "영웅은 실패하면 이름이 남아.",
+          "message": "영웅은… 실패하면 이름이 남지.",
           "duration": 120
         }
       ]
@@ -300,11 +300,11 @@
     "sentences": [
       [
         {
-          "message": "실패했는데 아무도 이름을 안 부르면",
+          "message": "실패했는데 아무도 이름을 부르지 않으면…",
           "duration": 130
         },
         {
-          "message": "그냥 지나간 사람이지.",
+          "message": "그냥 지나간 사람일 뿐이야.",
           "duration": 110
         }
       ]
@@ -332,8 +332,8 @@
           "duration": 120
         },
         {
-          "message": "(잠깐 정적)",
-          "duration": 160
+          "message": "…",
+          "duration": 140
         }
       ]
     ]
@@ -344,8 +344,8 @@
     "sentences": [
       [
         {
-          "message": "누가요?",
-          "duration": 80
+          "message": "누구의 이름을요?",
+          "duration": 90
         }
       ]
     ]
@@ -356,8 +356,8 @@
     "sentences": [
       [
         {
-          "message": "나.",
-          "duration": 60
+          "message": "…내 이름을.",
+          "duration": 80
         }
       ]
     ]
@@ -367,7 +367,7 @@
     "sentences": [
       [
         {
-          "message": "루크는 말을 거기서 끊는다. 의도적으로.",
+          "message": "루크가 말을 거기서 끊는다. 더 이상 말하지 않기로 한 듯하다.",
           "duration": 140
         }
       ]
@@ -379,7 +379,7 @@
     "sentences": [
       [
         {
-          "message": "또 한 잔?",
+          "message": "또 한 잔 하시겠어요?",
           "duration": 100
         }
       ]
@@ -402,7 +402,7 @@
     "sentences": [
       [
         {
-          "message": "루크가 자리에서 일어나며 말한다. 매튜와 세라를 보지 않고.",
+          "message": "루크가 자리에서 일어난다. 매튜와 세라를 보지 않고 말한다.",
           "duration": 140
         }
       ]
@@ -414,7 +414,7 @@
     "sentences": [
       [
         {
-          "message": "아까 말한 거 잊어.",
+          "message": "아까 한 말은 잊어.",
           "duration": 110
         }
       ]
@@ -438,8 +438,8 @@
     "sentences": [
       [
         {
-          "message": "다.",
-          "duration": 60
+          "message": "전부 다.",
+          "duration": 70
         }
       ]
     ]
@@ -450,7 +450,7 @@
     "sentences": [
       [
         {
-          "message": "(독백) 잊으라고 말할수록 사람은 기억한다.",
+          "message": "잊으라고 하면… 더 기억하게 되는 법인데.",
           "duration": 130
         }
       ]
@@ -461,7 +461,7 @@
     "sentences": [
       [
         {
-          "message": "루크는 문 앞에서 멈춘다.",
+          "message": "루크가 문 앞에서 걸음을 멈춘다.",
           "duration": 120
         }
       ]
@@ -473,7 +473,7 @@
     "sentences": [
       [
         {
-          "message": "마왕 얘기, 진짜로 할 거면 내일 해.",
+          "message": "마왕 얘기… 진짜로 할 거면 내일 해.",
           "duration": 130
         }
       ]
@@ -485,7 +485,7 @@
     "sentences": [
       [
         {
-          "message": "왜 내일이요?",
+          "message": "왜 내일이에요?",
           "duration": 100
         }
       ]
@@ -497,7 +497,7 @@
     "sentences": [
       [
         {
-          "message": "술집에선 진짜 이유가 너무 쉽게 나와.",
+          "message": "술집에선… 진짜 이유가 너무 쉽게 나오거든.",
           "duration": 140
         }
       ]
@@ -531,19 +531,19 @@
         "prompt": "다음 날, 이야기는 어디로 흘러갈까?",
         "choices": [
           {
-            "text": "루크가 아무 일 없다는 듯 등장",
+            "text": "루크가 아무 일 없다는 듯 등장한다",
             "goTo": {
               "id": "act2-next-morning"
             }
           },
           {
-            "text": "세라가 매튜에게, 루크에 대해 묻는다",
+            "text": "세라가 매튜에게 루크에 대해 물어본다",
             "goTo": {
               "id": "act2-sera-digs"
             }
           },
           {
-            "text": "성 밖에서 작은 사건 발생",
+            "text": "성 밖에서 작은 사건이 발생한다",
             "goTo": {
               "id": "act2-event"
             }
