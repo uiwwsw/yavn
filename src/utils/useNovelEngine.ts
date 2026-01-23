@@ -52,6 +52,7 @@ const useNovelEngine = ({
 
   const loadCancelledRef = useRef(false);
   const animationFrameRef = useRef<number>();
+  const initializationRef = useRef<number | null>(null);
 
   const [chapterIndex, sentenceIndex] = step;
 
@@ -251,10 +252,15 @@ const useNovelEngine = ({
   }, [assets, character, characterImage, displayCharacter]);
 
   useEffect(() => {
+    const currentInit = Date.now();
+    initializationRef.current = currentInit;
+    
     loadCancelledRef.current = false;
     Promise.all([getJson<Chapter[]>(`chapter${level}`), getJson<Assets>(`assets${level}`)])
       .then(([chapterData, assetData]) => {
-        if (loadCancelledRef.current) return;
+        if (loadCancelledRef.current || initializationRef.current !== currentInit) {
+          return;
+        }
         setChapters(chapterData);
         setAssets(assetData);
         setStep([0, 0]);
@@ -265,11 +271,16 @@ const useNovelEngine = ({
         setCharacterImage(undefined);
       })
       .catch(() => {
-        if (!loadCancelledRef.current) onLoadError();
+        if (!loadCancelledRef.current && initializationRef.current === currentInit) {
+          onLoadError();
+        }
       });
 
     return () => {
       loadCancelledRef.current = true;
+      if (initializationRef.current === currentInit) {
+        initializationRef.current = null;
+      }
     };
   }, [level, onLoadError, resetSceneProgress]);
 

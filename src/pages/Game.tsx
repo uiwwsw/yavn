@@ -59,6 +59,16 @@ const Game = () => {
     onLoadError: handleGoCreditPage,
   });
 
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (assets && Object.keys(assets).length > 0) {
+      setIsInitialized(true);
+    } else {
+      setIsInitialized(false);
+    }
+  }, [assets]);
+
   const consoleViewportRef = useRef<HTMLDivElement | null>(null);
   const isConsoleTypingRef = useRef(false);
   const userScrolledRef = useRef(false);
@@ -116,7 +126,7 @@ const Game = () => {
     currentSentenceRef.current = null;
     lastSentenceLineRef.current = null;
     nextConsoleIdRef.current = 0;
-  }, [level]);
+  }, [level, isInitialized]);
 
   const consoleSpeaker = character ?? 'SYSTEM';
 
@@ -132,6 +142,7 @@ const Game = () => {
   useEffect(() => {
     if (battleConfig) return;
     if (!sentence) return;
+    if (!isInitialized) return;
 
     if (currentSentenceRef.current !== sentence) {
       // 새 문장이 시작되면(타이핑 시작) 자동으로 하단 고정.
@@ -144,7 +155,7 @@ const Game = () => {
       currentSentenceRef.current = sentence;
       lastSentenceLineRef.current = sentenceData ? { speaker: consoleSpeaker, text: flattenSentenceData(sentenceData) } : null;
     }
-  }, [appendConsoleLine, battleConfig, consoleSpeaker, sentence, sentenceData]);
+  }, [appendConsoleLine, battleConfig, consoleSpeaker, sentence, sentenceData, isInitialized]);
 
   useEffect(() => {
     if (battleConfig) return;

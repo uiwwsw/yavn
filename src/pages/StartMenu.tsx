@@ -63,7 +63,9 @@ const StartMenuPage = () => {
 
     const warmChapterZero = async () => {
       try {
-        const data = await getJson<Assets>('assets0');
+        // Use fetch without cache-busting to allow browser caching for preloading
+        const res = await fetch('/assets0.json');
+        const data = await res.json() as Assets;
         if (cancelled) return;
 
         const urls = Array.from(
@@ -78,7 +80,7 @@ const StartMenuPage = () => {
 
     const timeout = window.setTimeout(() => {
       warmChapterZero();
-    }, 0);
+    }, 500); // Slight delay to avoid competing with game initialization
 
     return () => {
       cancelled = true;
@@ -92,7 +94,7 @@ const StartMenuPage = () => {
       <div className="relative h-full w-full overflow-hidden bg-black text-white">
         {asset.image && (
           <img
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-contain"
             src={asset.image}
             alt="시작화면"
             loading="eager"
@@ -100,9 +102,9 @@ const StartMenuPage = () => {
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/0 via-black/35 to-black/70" />
 
-        <div className="relative flex h-full w-full flex-col items-center justify-end p-6">
+        <div className="relative flex h-full w-full flex-col items-center justify-start p-6">
           <div className="w-full max-w-md rounded-2xl border border-white/10 bg-black/55 p-5 backdrop-blur-md">
             <div className="flex flex-col gap-3">
               <Btn autoFocus onClick={handleStart}>
