@@ -1,6 +1,7 @@
 export interface Asset {
   image?: string;
   audio?: string;
+  music?: string;
 }
 
 export type Assets = Record<string, Asset>;
@@ -60,6 +61,12 @@ export interface BattleEnemyConfig {
   skills?: BattleSkill[];
 }
 
+export interface MusicConfig {
+  situational?: string;
+  overrideLocation?: boolean;
+  fadeDuration?: number;
+}
+
 export interface BattleConfig {
   description?: string;
   encounter?: string;
@@ -75,6 +82,16 @@ export interface Chapter {
   place: string;
   next?: ChoiceDestination;
   battle?: BattleConfig;
+  music?: MusicConfig;
+}
+
+export type MusicPriority = 'situational' | 'location' | 'chapter';
+
+export interface MusicState {
+  current: string | null;
+  priority: MusicPriority;
+  isPlaying: boolean;
+  volume: number;
 }
 
 export const isChoiceNode = (value: ChapterSentence | undefined): value is ChoiceNode => {

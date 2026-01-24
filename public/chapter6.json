@@ -330,6 +330,10 @@
         ]
     },
     {
+        "place": "왕도-외곽-밤",
+        "music": {
+            "situational": "25 - Finale.ogg"
+        },
         "sentences": [
             [
                 {

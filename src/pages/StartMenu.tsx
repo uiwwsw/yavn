@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 
 import Btn from '@/Btn';
 import LoadBtn from '@/LoadBtn';
@@ -26,17 +26,35 @@ const preloadLoose = (url: string) => {
 const StartMenuPage = () => {
   const { addStorage } = useStorageContext();
   const [asset, setAsset] = useState<Asset>({});
+  const [audioPlayed, setAudioPlayed] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const preloadAssets = useMemo(() => {
     const list = [asset.image, asset.audio].filter(Boolean) as string[];
     return Array.from(new Set(list));
   }, [asset.audio, asset.image]);
 
+  const attemptAudioPlay = useCallback(async () => {
+    if (!asset.audio || audioPlayed) return;
+    
+    try {
+      if (audioRef.current) {
+        audioRef.current.volume = 0.3;
+        await audioRef.current.play();
+        setAudioPlayed(true);
+      }
+    } catch (error) {
+      console.log('Audio autoplay prevented, will try user interaction');
+    }
+  }, [asset.audio, audioPlayed]);
+
   const handleStart = () => {
+    attemptAudioPlay();
     addStorage({ page: 'game', level: 0 });
   };
 
   const handleLoad = (level: number) => {
+    attemptAudioPlay();
     addStorage({ page: 'game', level });
   };
 
@@ -88,9 +106,49 @@ const StartMenuPage = () => {
     };
   }, [asset.image]);
 
+  // Enhanced audio management
+  useEffect(() => {
+    if (!asset.audio) return;
+
+    const audio = new Audio(asset.audio);
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.volume = 0.3;
+    audioRef.current = audio;
+
+    // Try to play immediately
+    const tryPlay = async () => {
+      try {
+        await audio.play();
+        setAudioPlayed(true);
+      } catch (error) {
+        console.log('Audio autoplay blocked - requires user interaction');
+        // Set up event listeners for user interaction
+        const handleFirstInteraction = () => {
+          audio.play().then(() => {
+            setAudioPlayed(true);
+            document.removeEventListener('click', handleFirstInteraction);
+            document.removeEventListener('keydown', handleFirstInteraction);
+          }).catch(console.error);
+        };
+
+        document.addEventListener('click', handleFirstInteraction, { once: true });
+        document.addEventListener('keydown', handleFirstInteraction, { once: true });
+      }
+    };
+
+    tryPlay();
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [asset.audio]);
+
   return (
     <Preload assets={preloadAssets}>
-      {asset.audio && <audio src={asset.audio} autoPlay />}
       <div className="relative h-full w-full overflow-hidden bg-black text-white">
         {asset.image && (
           <img

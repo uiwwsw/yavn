@@ -1,4 +1,7 @@
 {
+  "main-bg": {
+    "music": "/music/town.ogg"
+  },
   "매튜": {
     "image": "/assets/character-matthew.png"
   },
@@ -12,9 +15,13 @@
     "image": "/assets/character-grid.png"
   },
   "술집-늦은-오후": {
-    "image": "/assets/bg-3.png"
+    "image": "/assets/bg-3.png",
+    "music": "/music/tavern-afternoon.ogg"
   },
   "emoji-fire": {
     "image": "/assets/emoji-fire.svg"
+  },
+  "tense-moment": {
+    "music": "/music/danger.ogg"
   }
 }

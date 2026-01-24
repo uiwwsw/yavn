@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Battle from '@/Battle';
+import { BackgroundMusicManager } from '@/BackgroundMusicManager';
 import Preload from '@/Preload';
 import SceneControls from '@/SceneControls';
 import Sentence from '@/Sentence';
@@ -53,6 +54,8 @@ const Game = () => {
     battle: battleConfig,
     forceNextScene,
     step,
+    musicState,
+    updateMusicState,
   } = useNovelEngine({
     level,
     onChapterEnd: handleGoSavePage,
@@ -126,7 +129,7 @@ const Game = () => {
     currentSentenceRef.current = null;
     lastSentenceLineRef.current = null;
     nextConsoleIdRef.current = 0;
-  }, [level, isInitialized]);
+  }, [level]);
 
   const consoleSpeaker = character ?? 'SYSTEM';
 
@@ -285,166 +288,172 @@ const Game = () => {
   }, [activeChoice]);
 
   return (
-    <Preload assets={assetList}>
-      {battleConfig ? (
-        <Battle
-          config={battleConfig}
-          auto={auto}
-          onAutoChange={setAuto}
-          pass={passMode}
-          onPassChange={setPassMode}
-          onComplete={handleBattleComplete}
-          onExitToTitle={handleExitToTitle}
-        />
-      ) : (
-        <div onClick={handleBackgroundClick} className="absolute inset-0">
-          <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 sm:p-4">
-            <div onClick={(e) => e.stopPropagation()}>
-              <SceneControls auto={auto} onAutoChange={setAuto} pass={passMode} onPassChange={setPassMode} />
-            </div>
-          </div>
-          {place && assets[place]?.audio && <audio src={assets[place]?.audio} autoPlay />}
-          {displayCharacter && characterImage && (
-            <img className="absolute bottom-0 z-10 w-1/2" style={characterPosition} src={characterImage} alt={displayCharacter} />
-          )}
-          {displayPlace && assets[displayPlace]?.image && (
-            <img
-              className={`absolute h-full w-full object-cover transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
-              src={assets[displayPlace]?.image}
-              alt={displayPlace}
-            />
-          )}
-          {sentence && (
-            <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] sm:px-3 sm:pb-2`}>
-              <div className={`pointer-events-auto flex ${consoleHeightClass} w-full flex-col overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b]/60 shadow-2xl backdrop-blur-md`}>
-                <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e]/80 px-3 py-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-                    <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-                    <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-                  </div>
-                  <div className="text-[12px] text-white/70">Console</div>
-                  <div className="w-12" />
-                </div>
-
-                <div className="flex flex-1 flex-col overflow-hidden px-3 py-1 font-mono text-[12px] leading-[1.6] text-white/90">
-                  <div
-                    ref={consoleViewportRef}
-                    onScroll={(e) => {
-                      const el = e.currentTarget;
-
-                      if (isConsoleTypingRef.current) {
-                        el.scrollTop = el.scrollHeight;
-                        return;
-                      }
-
-                      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
-                      userScrolledRef.current = !nearBottom;
-                    }}
-                    className="hide-scrollbar flex-1 overflow-y-auto overflow-x-hidden pr-1"
-                  >
-                    <div className="space-y-1">
-                      {consoleLines.map((line) => (
-                        <div key={line.id} className="whitespace-pre-wrap break-words">
-                          <span className="text-emerald-300">&gt;</span>{' '}
-                          <span className="text-white/70">{line.speaker}</span>
-                          <span className="text-white/40">:</span>{' '}
-                          <span className="text-white/90">{line.text}</span>
-                        </div>
-                      ))}
-
-                      {sentenceData && !activeChoice && (
-                        <div className="whitespace-pre-wrap break-words">
-                          <Sentence
-                            key={`${step[0]}-${step[1]}`}
-                            assets={assets}
-                            data={sentenceData}
-                            direct={direct}
-                            isComplete={complete}
-                            onComplete={handleComplete}
-                            prefix={consolePrefix}
-                            onProgress={handleConsoleProgress}
-                          />
-                        </div>
-                      )}
-
-                      {activeChoice && (
-                        <div className="space-y-2">
-                          {activeChoice.prompt && (
-                            <div className="whitespace-pre-wrap break-words">
-                              <span className="text-emerald-300">&gt;</span>{' '}
-                              <span className="text-white/70">{consoleSpeaker}</span>
-                              <span className="text-white/40">:</span>{' '}
-                              <span className="text-white/90">
-                                <Sentence
-                                  data={activeChoice.prompt}
-                                  isComplete={choiceStage > 0}
-                                  onComplete={() => setChoiceStage((prev) => Math.max(prev, 1))}
-                                  onProgress={handleConsoleProgress}
-                                />
-                              </span>
-                            </div>
-                          )}
-                          <div className="space-y-1">
-                            {activeChoice.choices.map((choice, index) => {
-                              const promptOffset = activeChoice.prompt ? 1 : 0;
-                              const canRender = choiceStage >= promptOffset + index;
-                              if (!canRender) return null;
-
-                              const isSelected = selectedChoiceIndex === index;
-
-                              return (
-                                <button
-                                  key={`${choice.text}-${index}`}
-                                  type="button"
-                                  className={`w-full rounded border px-2 py-1 text-left text-[12px] transition-colors ${isSelected
-                                    ? 'border-emerald-500/50 bg-emerald-500/20 text-white'
-                                    : 'border-white/15 bg-white/5 text-white/90 hover:bg-white/10'
-                                    }`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleConsoleChoiceSelect(choice);
-                                  }}
-                                >
-                                  <span className={isSelected ? 'text-emerald-300 font-bold' : 'text-emerald-200'}>
-                                    [{index + 1}]
-                                  </span>{' '}
-                                  <Sentence
-                                    key={choice.text}
-                                    data={choice.text}
-                                    isComplete={Boolean(passChoiceTimeoutRef.current) || choiceStage > promptOffset + index}
-                                    onComplete={() => setChoiceStage((prev) => Math.max(prev, promptOffset + index + 1))}
-                                    onProgress={handleConsoleProgress}
-                                  />
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {(sentenceData || activeChoice) && (
-                  <div
-                    className={`flex items-center gap-2 px-3 pb-1 transition-opacity duration-500 ${complete || activeChoice ? 'opacity-100' : 'opacity-50'} ${shake ? 'shake' : ''}`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-white text-[12px]">&gt;</span>
-                      <span className="text-[11px] text-white/70 sm:text-[12px]">
-                        {activeChoice ? '숫자를 입력 후 엔터를 입력해주세요' : '엔터나 클릭해주세요'}
-                        {(complete || activeChoice) && <span className="terminal-cursor static">▍</span>}
-                      </span>
-                    </div>
-                  </div>
-                )}
+    <>
+      <BackgroundMusicManager
+        musicState={musicState}
+        onStateChange={updateMusicState}
+      />
+      <Preload assets={assetList}>
+        {battleConfig ? (
+          <Battle
+            config={battleConfig}
+            auto={auto}
+            onAutoChange={setAuto}
+            pass={passMode}
+            onPassChange={setPassMode}
+            onComplete={handleBattleComplete}
+            onExitToTitle={handleExitToTitle}
+          />
+        ) : (
+          <div onClick={handleBackgroundClick} className="absolute inset-0">
+            <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 sm:p-4">
+              <div onClick={(e) => e.stopPropagation()}>
+                <SceneControls auto={auto} onAutoChange={setAuto} pass={passMode} onPassChange={setPassMode} />
               </div>
             </div>
-          )}
-        </div>
-      )}
-    </Preload>
+
+            {displayCharacter && characterImage && (
+              <img className="absolute bottom-0 z-10 w-1/2" style={characterPosition} src={characterImage} alt={displayCharacter} />
+            )}
+            {displayPlace && assets[displayPlace]?.image && (
+              <img
+                className={`absolute h-full w-full object-cover transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+                src={assets[displayPlace]?.image}
+                alt={displayPlace}
+              />
+            )}
+            {sentence && (
+              <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] sm:px-3 sm:pb-2`}>
+                <div className={`pointer-events-auto flex ${consoleHeightClass} w-full flex-col overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b]/60 shadow-2xl backdrop-blur-md`}>
+                  <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e]/80 px-3 py-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+                      <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+                      <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="text-[12px] text-white/70">Console</div>
+                    <div className="w-12" />
+                  </div>
+
+                  <div className="flex flex-1 flex-col overflow-hidden px-3 py-1 font-mono text-[12px] leading-[1.6] text-white/90">
+                    <div
+                      ref={consoleViewportRef}
+                      onScroll={(e) => {
+                        const el = e.currentTarget;
+
+                        if (isConsoleTypingRef.current) {
+                          el.scrollTop = el.scrollHeight;
+                          return;
+                        }
+
+                        const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
+                        userScrolledRef.current = !nearBottom;
+                      }}
+                      className="hide-scrollbar flex-1 overflow-y-auto overflow-x-hidden pr-1"
+                    >
+                      <div className="space-y-1">
+                        {consoleLines.map((line) => (
+                          <div key={line.id} className="whitespace-pre-wrap break-words">
+                            <span className="text-emerald-300">&gt;</span>{' '}
+                            <span className="text-white/70">{line.speaker}</span>
+                            <span className="text-white/40">:</span>{' '}
+                            <span className="text-white/90">{line.text}</span>
+                          </div>
+                        ))}
+
+                        {sentenceData && !activeChoice && (
+                          <div className="whitespace-pre-wrap break-words">
+                            <Sentence
+                              key={`${step[0]}-${step[1]}`}
+                              assets={assets}
+                              data={sentenceData}
+                              direct={direct}
+                              isComplete={complete}
+                              onComplete={handleComplete}
+                              prefix={consolePrefix}
+                              onProgress={handleConsoleProgress}
+                            />
+                          </div>
+                        )}
+
+                        {activeChoice && (
+                          <div className="space-y-2">
+                            {activeChoice.prompt && (
+                              <div className="whitespace-pre-wrap break-words">
+                                <span className="text-emerald-300">&gt;</span>{' '}
+                                <span className="text-white/70">{consoleSpeaker}</span>
+                                <span className="text-white/40">:</span>{' '}
+                                <span className="text-white/90">
+                                  <Sentence
+                                    data={activeChoice.prompt}
+                                    isComplete={choiceStage > 0}
+                                    onComplete={() => setChoiceStage((prev) => Math.max(prev, 1))}
+                                    onProgress={handleConsoleProgress}
+                                  />
+                                </span>
+                              </div>
+                            )}
+                            <div className="space-y-1">
+                              {activeChoice.choices.map((choice, index) => {
+                                const promptOffset = activeChoice.prompt ? 1 : 0;
+                                const canRender = choiceStage >= promptOffset + index;
+                                if (!canRender) return null;
+
+                                const isSelected = selectedChoiceIndex === index;
+
+                                return (
+                                  <button
+                                    key={`${choice.text}-${index}`}
+                                    type="button"
+                                    className={`w-full rounded border px-2 py-1 text-left text-[12px] transition-colors ${isSelected
+                                      ? 'border-emerald-500/50 bg-emerald-500/20 text-white'
+                                      : 'border-white/15 bg-white/5 text-white/90 hover:bg-white/10'
+                                      }`}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleConsoleChoiceSelect(choice);
+                                    }}
+                                  >
+                                    <span className={isSelected ? 'text-emerald-300 font-bold' : 'text-emerald-200'}>
+                                      [{index + 1}]
+                                    </span>{' '}
+                                    <Sentence
+                                      key={choice.text}
+                                      data={choice.text}
+                                      isComplete={Boolean(passChoiceTimeoutRef.current) || choiceStage > promptOffset + index}
+                                      onComplete={() => setChoiceStage((prev) => Math.max(prev, promptOffset + index + 1))}
+                                      onProgress={handleConsoleProgress}
+                                    />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {(sentenceData || activeChoice) && (
+                    <div
+                      className={`flex items-center gap-2 px-3 pb-1 transition-opacity duration-500 ${complete || activeChoice ? 'opacity-100' : 'opacity-50'} ${shake ? 'shake' : ''}`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-white text-[12px]">&gt;</span>
+                        <span className="text-[11px] text-white/70 sm:text-[12px]">
+                          {activeChoice ? '숫자를 입력 후 엔터를 입력해주세요' : '엔터나 클릭해주세요'}
+                          {(complete || activeChoice) && <span className="terminal-cursor static">▍</span>}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </Preload>
+    </>
   );
 };
 

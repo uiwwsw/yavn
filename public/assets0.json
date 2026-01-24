@@ -1,4 +1,7 @@
 {
+  "main-bg": {
+    "music": "/music/chapter-0-main.ogg"
+  },
   "매튜": {
     "image": "/assets/character-matthew.png"
   },
@@ -12,12 +15,15 @@
     "image": "/assets/character-grid.png"
   },
   "변두리-마을-입구": {
-    "image": "/assets/bg-1.png"
+    "image": "/assets/bg-1.png",
+    "music": "/music/opening.ogg"
   },
   "마을-광장": {
-    "image": "/assets/bg-2.png"
+    "image": "/assets/bg-2.png",
+    "music": "/music/town.ogg"
   },
   "여관-복도-밤": {
-    "image": "/assets/bg-3.png"
+    "image": "/assets/bg-3.png",
+    "music": "/music/sanctuary.ogg"
   }
 }

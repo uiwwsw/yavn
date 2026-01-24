@@ -10,6 +10,7 @@ import {
   ChapterSentence,
   SentenceData,
   isChoiceNode,
+  MusicState,
 } from '#/novelTypes';
 
 interface UseNovelEngineOptions {
@@ -49,6 +50,12 @@ const useNovelEngine = ({
   const [completedAt, setCompletedAt] = useState<number | null>(null);
   const [displayCharacter, setDisplayCharacter] = useState<string>();
   const [characterImage, setCharacterImage] = useState<string>();
+  const [musicState, setMusicState] = useState<MusicState>({
+    current: null,
+    priority: 'chapter',
+    isPlaying: false,
+    volume: 0.5,
+  });
 
   const loadCancelledRef = useRef(false);
   const animationFrameRef = useRef<number>();
@@ -75,9 +82,88 @@ const useNovelEngine = ({
     };
   }, [chapters, chapterIndex, sentenceIndex]);
 
-  const { sentence, sentenceData, character, place: scenePlace, changePosition, next, maxSentence, maxStep, battle } = sceneState;
+  const { sentence, sentenceData, character, place: scenePlace, changePosition, next, maxSentence, maxStep, battle, scene } = sceneState;
 
   const [place, setPlace] = useState<string>();
+
+  // Music management functions
+
+  const updateMusicState = useCallback((newState: Partial<MusicState>) => {
+    setMusicState(prev => ({ ...prev, ...newState }));
+  }, []);
+
+  // Handle chapter main-bg music
+  useEffect(() => {
+    const mainBgAsset = assets['main-bg'];
+    if (mainBgAsset?.music) {
+      const manager = (window as any).backgroundMusicManager;
+      if (manager) {
+        // Always try to play main-bg music when assets are loaded
+        manager.playMusic(mainBgAsset.music, 'chapter');
+      }
+    }
+  }, [assets]);
+
+  // Debug: Log music state changes
+  useEffect(() => {
+    console.log('Music state:', musicState);
+  }, [musicState]);
+
+  // Handle location-based music
+  useEffect(() => {
+    if (!place || musicState.priority === 'situational') return;
+    
+    const placeAsset = assets[place];
+    if (placeAsset?.music && musicState.priority !== 'location') {
+      console.log(`🎵 Changing to location music: ${place} -> ${placeAsset.music}`);
+      updateMusicState({ current: placeAsset.music, priority: 'location', isPlaying: true });
+      const manager = (window as any).backgroundMusicManager;
+      if (manager) {
+        manager.playMusic(placeAsset.music, 'location');
+      }
+    } else if (!placeAsset?.music && musicState.priority === 'location') {
+      // Return to chapter music when no location music
+      console.log('🎵 No location music, returning to chapter music');
+      const mainBgAsset = assets['main-bg'];
+      if (mainBgAsset?.music) {
+        updateMusicState({ current: mainBgAsset.music, priority: 'chapter', isPlaying: true });
+        const manager = (window as any).backgroundMusicManager;
+        if (manager) {
+          manager.returnToPreviousPriority();
+        }
+      }
+    }
+  }, [place, assets, musicState.priority, updateMusicState]);
+
+  // Handle situational music from scene
+  useEffect(() => {
+    if (!scene?.music) return;
+
+    const { situational } = scene.music;
+    if (situational && assets[situational]?.music) {
+      const musicUrl = assets[situational].music;
+      console.log(`🎵 Playing situational music: ${situational} -> ${musicUrl}`);
+      updateMusicState({ current: musicUrl, priority: 'situational', isPlaying: true });
+      const manager = (window as any).backgroundMusicManager;
+      if (manager) {
+        manager.playMusic(musicUrl, 'situational');
+      }
+    }
+  }, [scene, assets, updateMusicState]);
+
+  // Cleanup situational music when changing scenes
+  useEffect(() => {
+    if (musicState.priority === 'situational' && musicState.current) {
+      const currentAssetKey = Object.keys(assets).find(key => assets[key]?.music === musicState.current);
+      if (currentAssetKey && scene?.music?.situational !== currentAssetKey) {
+        updateMusicState({ priority: 'chapter' });
+        const manager = (window as any).backgroundMusicManager;
+        if (manager) {
+          manager.returnToPreviousPriority();
+        }
+      }
+    }
+  }, [scene, assets, musicState.current, musicState.priority, updateMusicState]);
 
   useEffect(() => {
     if (scenePlace) setPlace(scenePlace);
@@ -356,6 +442,8 @@ const useNovelEngine = ({
     battle,
     forceNextScene,
     step,
+    musicState,
+    updateMusicState,
   };
 };
 

@@ -551,5 +551,50 @@
         ]
       }
     ]
+  },
+  {
+    "id": "act2-event",
+    "character": "매튜",
+    "place": "왕도-외곽-길-흐린-낮",
+    "music": {
+      "situational": "jrpg_battle_full.mp3"
+    },
+    "sentences": [
+      [
+        {
+          "message": "무언가 다가온다...!",
+          "duration": 100
+        }
+      ]
+    ],
+    "battle": {
+      "description": "갑작스러운 조우!",
+      "enemy": {
+        "name": "수상한 나그네",
+        "stats": {
+          "maxHp": 50,
+          "attack": 8,
+          "defense": 3,
+          "speed": 5
+        }
+      },
+      "party": ["매튜", "세라"]
+    }
+  },
+  {
+    "id": "after-battle",
+    "character": "세라",
+    "place": "왕도-외곽-길-흐린-낮",
+    "music": {
+      "situational": "victory-fanfare"
+    },
+    "sentences": [
+      [
+        {
+          "message": "무사했네요.",
+          "duration": 100
+        }
+      ]
+    ]
   }
 ]

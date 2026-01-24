@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { memo, ReactNode, type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Assets, SentenceData, SentenceEntry } from '#/novelTypes';
+import { Assets, SentenceData, SentenceEntry } from '../utils/novelTypes';
+import { getTypingSoundGenerator } from '../utils/typingSoundGenerator';
 
 interface AssetEntry {
   name: string;
@@ -179,6 +180,10 @@ const Sentence = ({
     const delayMs = getSpeechDelayMs(baseDuration, lastChar);
 
     const timeout = window.setTimeout(() => {
+      // 타자 사운드 재생
+      const typingSoundGenerator = getTypingSoundGenerator();
+      typingSoundGenerator.playMechanicalKey();
+      
       setCursor((prev) => prev + 1);
     }, delayMs);
 

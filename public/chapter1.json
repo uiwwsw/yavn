@@ -119,6 +119,9 @@
   {
     "character": "루크",
     "place": "술집-늦은-오후",
+    "music": {
+      "situational": "danger.ogg"
+    },
     "sentences": [
       [
         {
