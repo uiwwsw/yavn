@@ -43,6 +43,8 @@
       z-index: 9999;
       opacity: 1;
       transition: opacity 0.5s ease-out;
+      cursor: pointer;
+      /* Add cursor pointer to indicate clickable */
     }
 
     #initial-loader.hide {
@@ -75,23 +77,21 @@
       font-size: 1.2rem;
       font-weight: 600;
       border-radius: 0.75rem;
-      cursor: pointer;
+      /* removed cursor pointer from here as parent has it */
       transition: all 0.3s ease;
       box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       letter-spacing: 0.02em;
       min-width: 200px;
+      pointer-events: none;
+      /* Let the parent handle the click */
     }
 
-    .start-button:hover {
-      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 30px rgba(139, 92, 246, 0.4);
-    }
-
-    .start-button:active {
-      transform: translateY(0);
-    }
+    /* Keep hover effect logic if we want, or remove. 
+       Since pointer-events is none, hover won't trigger on the button element itself. 
+       We can add hover effect to the container or just leave it static. 
+       For now, let's simplify the button style since it's just a visual label now. 
+    */
 
     .loader-spinner {
       width: 60px;
@@ -132,8 +132,8 @@
   </div>
   <div id="root"></div>
   <script>
-    // 시작 버튼 클릭 시 로딩 화면 숨기기
-    document.getElementById('start-button').addEventListener('click', function () {
+    // 화면 전체 클릭 시 로딩 화면 숨기기
+    document.getElementById('initial-loader').addEventListener('click', function () {
       const loader = document.getElementById('initial-loader');
 
       loader.classList.add('hide');
