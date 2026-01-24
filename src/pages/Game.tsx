@@ -267,6 +267,33 @@ const Game = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeChoice, battleConfig, handleConsoleChoiceSelect, nextScene, selectedChoiceIndex]);
 
+  // Handle Pass Mode Auto Choice
+  useEffect(() => {
+    // Check if choice rendering is fully complete
+    const promptOffset = activeChoice?.prompt ? 1 : 0;
+    const totalStages = (activeChoice?.choices?.length ?? 0) + promptOffset;
+    const isReady = activeChoice && choiceStage >= totalStages;
+
+    if (!passMode || !isReady || !activeChoice) return;
+
+    if (passChoiceTimeoutRef.current) {
+      window.clearTimeout(passChoiceTimeoutRef.current);
+    }
+
+    passChoiceTimeoutRef.current = window.setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * activeChoice.choices.length);
+      const choice = activeChoice.choices[randomIndex];
+      handleConsoleChoiceSelect(choice);
+    }, 1000);
+
+    return () => {
+      if (passChoiceTimeoutRef.current) {
+        window.clearTimeout(passChoiceTimeoutRef.current);
+        passChoiceTimeoutRef.current = null;
+      }
+    };
+  }, [passMode, activeChoice, choiceStage, handleConsoleChoiceSelect]);
+
   const consolePrefix = useMemo(
     () => (
       <>
@@ -306,7 +333,7 @@ const Game = () => {
           />
         ) : (
           <div onClick={handleBackgroundClick} className="absolute inset-0">
-            <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 sm:p-4">
+            <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 pt-[calc(env(safe-area-inset-top)+0.5rem)] sm:p-4">
               <div onClick={(e) => e.stopPropagation()}>
                 <SceneControls auto={auto} onAutoChange={setAuto} pass={passMode} onPassChange={setPassMode} />
               </div>

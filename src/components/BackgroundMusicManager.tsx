@@ -14,6 +14,15 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
   const fadeTimeoutRef = useRef<number | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const currentMusicRef = useRef<string | null>(musicState.current);
+  const currentPriorityRef = useRef<MusicPriority>(musicState.priority);
+
+  // Sync refs with state
+  useEffect(() => {
+    currentMusicRef.current = musicState.current;
+    currentPriorityRef.current = musicState.priority;
+  }, [musicState.current, musicState.priority]);
+
   // Priority order: situational > location > chapter
   const getPriorityValue = (priority: MusicPriority): number => {
     switch (priority) {
@@ -62,6 +71,11 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
       try {
         await audioRef.current.play();
         fadeIn(500);
+
+        // Update refs
+        currentMusicRef.current = musicUrl;
+        currentPriorityRef.current = priority;
+
         onStateChange({ current: musicUrl, priority, isPlaying: true });
         console.log(`🎵 Pending music now playing: ${musicUrl} (${priority})`);
         delete (window as any).pendingMusic;
@@ -102,8 +116,16 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
     }, stepDuration);
   }, []);
 
+  // Debug: Mount/Unmount
+  useEffect(() => {
+    console.log('🎵 [BackgroundMusicManager] MOUNTED');
+    return () => console.log('🎵 [BackgroundMusicManager] UNMOUNTED');
+  }, []);
+
   const playMusic = useCallback(async (musicUrl: string, priority: MusicPriority) => {
     console.log(`🎵 [BackgroundMusicManager] playMusic CALLED: ${musicUrl} (${priority})`);
+    console.log(`🎵 [BackgroundMusicManager] Current State: ref=${currentMusicRef.current}, state=${musicState.current}`);
+    console.log(`🎵 [BackgroundMusicManager] Current Priority: ref=${currentPriorityRef.current}, state=${musicState.priority}`);
 
     if (!audioRef.current) {
       console.error("🎵 [BackgroundMusicManager] audioRef.current is NULL!");
@@ -114,22 +136,59 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
     const isOgg = musicUrl.endsWith('.ogg');
     if (isOgg) {
       const canPlay = audioRef.current.canPlayType('audio/ogg');
-      console.log(`🎵 [BackgroundMusicManager] Format check: OGG -> ${canPlay || 'no'}`);
+      // console.log(`🎵 [BackgroundMusicManager] Format check: OGG -> ${canPlay || 'no'}`);
     }
 
-    const currentPriorityValue = getPriorityValue(musicState.priority);
+    const currentPriorityValue = getPriorityValue(currentPriorityRef.current);
     const newPriorityValue = getPriorityValue(priority);
 
+    // Check if same music is pending (waiting for user interaction)
+    const pendingMusic = (window as any).pendingMusic;
+    if (pendingMusic && pendingMusic.musicUrl === musicUrl) {
+      if (newPriorityValue > getPriorityValue(pendingMusic.priority)) {
+        console.log(`🎵 [BackgroundMusicManager] Upgrading pending priority: ${pendingMusic.priority} -> ${priority}`);
+        (window as any).pendingMusic.priority = priority;
+      } else {
+        console.log(`🎵 [BackgroundMusicManager] Already pending ${musicUrl}. Waiting for interaction.`);
+      }
+      return; // user interaction will handle this
+    }
+
+    // Check if same music is already playing
+    if (currentMusicRef.current === musicUrl) {
+      if (newPriorityValue > currentPriorityValue) {
+        console.log(`🎵 [BackgroundMusicManager] Upgrading priority for ${musicUrl}: ${currentPriorityRef.current} -> ${priority}`);
+        currentPriorityRef.current = priority; // Sync ref
+        onStateChange({ priority });
+      } else {
+        console.log(`🎵 [BackgroundMusicManager] Skipping playback: Already playing ${musicUrl}`);
+      }
+      return; // Do not restart
+    }
+
     // If no current music or new music has higher priority, play it
-    if (!musicState.current || newPriorityValue > currentPriorityValue) {
+    if (!currentMusicRef.current || newPriorityValue > currentPriorityValue) {
       const playAudio = async () => {
         if (audioRef.current) {
-          audioRef.current.src = musicUrl;
+          // Only reset src if it's different to avoid reloading
+          // Note: src property is absolute, so we check if it ends with the musicUrl
+          if (!audioRef.current.src.endsWith(musicUrl)) {
+            audioRef.current.src = musicUrl;
+          }
+
           audioRef.current.loop = true;
           try {
             console.log(`🎵 [BackgroundMusicManager] Calling play() for: ${musicUrl}`);
             await audioRef.current.play();
-            fadeIn(!musicState.current ? 1000 : 500);
+            fadeIn(!currentMusicRef.current ? 1000 : 500);
+
+            // Update refs immediately
+            currentMusicRef.current = musicUrl;
+            currentPriorityRef.current = priority;
+
+            // Clear any pending music since we successfully played
+            delete (window as any).pendingMusic;
+
             onStateChange({ current: musicUrl, priority, isPlaying: true });
             console.log(`🎵 [BackgroundMusicManager] PLAY SUCCESS: ${musicUrl}`);
           } catch (error: any) {
@@ -144,7 +203,7 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
         }
       };
 
-      if (musicState.current && newPriorityValue > currentPriorityValue) {
+      if (currentMusicRef.current && newPriorityValue > currentPriorityValue) {
         fadeOut(500, playAudio);
       } else {
         playAudio();
@@ -152,12 +211,12 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
     }
     // If same or lower priority, don't change
     else {
-      console.log(`🎵 [BackgroundMusicManager] Blocked: ${musicUrl} (${priority}) - lower priority than current: ${musicState.current} (${musicState.priority})`);
+      console.log(`🎵 [BackgroundMusicManager] Blocked: ${musicUrl} (${priority}) - lower priority than current: ${currentMusicRef.current} (${currentPriorityRef.current})`);
     }
-  }, [musicState.priority, musicState.current, fadeOut, fadeIn, onStateChange, enableAudio]);
+  }, [fadeOut, fadeIn, onStateChange, enableAudio]);
 
   const stopMusic = useCallback((priority: MusicPriority) => {
-    const currentPriorityValue = getPriorityValue(musicState.priority);
+    const currentPriorityValue = getPriorityValue(currentPriorityRef.current);
     const stopPriorityValue = getPriorityValue(priority);
 
     // Only stop if the priority matches or is higher
@@ -166,16 +225,25 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
         if (audioRef.current) {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
+
+          // Update refs
+          currentMusicRef.current = null;
+          currentPriorityRef.current = 'chapter';
+
           onStateChange({ current: null, priority: 'chapter', isPlaying: false });
         }
       });
     }
-  }, [musicState.priority, fadeOut, onStateChange]);
+  }, [fadeOut, onStateChange]);
 
   const returnToPreviousPriority = useCallback(async () => {
     // This will be called when situational music ends
     // Logic to return to location or chapter music will be handled by the engine
     fadeOut(500, async () => {
+      // Update refs
+      currentMusicRef.current = null;
+      currentPriorityRef.current = 'chapter';
+
       onStateChange({ current: null, priority: 'chapter', isPlaying: false });
       // Engine will trigger appropriate music change
     });

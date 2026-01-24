@@ -22,7 +22,11 @@ const SavePage = () => {
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url); // URL 해제
-    handleGame();
+
+    // 다운로드 시작 후 다음 챕터로 이동
+    setTimeout(() => {
+      handleGame();
+    }, 100);
   };
   return (
     <motion.div
