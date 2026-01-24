@@ -134,9 +134,9 @@ export const BackgroundMusicManager: React.FC<BackgroundMusicManagerProps> = ({
 
     // Check format support
     const isOgg = musicUrl.endsWith('.ogg');
-    if (isOgg) {
-      const canPlay = audioRef.current.canPlayType('audio/ogg');
-      // console.log(`🎵 [BackgroundMusicManager] Format check: OGG -> ${canPlay || 'no'}`);
+    if (isOgg && audioRef.current) {
+      // Just checking support for debug if needed, but not using variable to avoid lint error
+      audioRef.current.canPlayType('audio/ogg');
     }
 
     const currentPriorityValue = getPriorityValue(currentPriorityRef.current);
