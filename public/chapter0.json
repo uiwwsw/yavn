@@ -502,13 +502,6 @@
         "message": "젠장, 될 대로 되라지! [플레임 버스트]!",
         "visuals": [
           {
-            "asset": "화염-폭발",
-            "layout": "stretch",
-            "animation": "zoom-in",
-            "duration": 500,
-            "className": "fixed inset-0 w-full h-full z-100 object-cover scale-150"
-          },
-          {
             "asset": "effect2",
             "layout": "center",
             "animation": "shake",

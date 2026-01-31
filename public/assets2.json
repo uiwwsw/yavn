@@ -1,0 +1,24 @@
+{
+    "main-bg": {
+        "music": "/music/danger.ogg"
+    },
+    "제9-폐광": {
+        "image": "/assets/bg.png",
+        "music": "/music/danger.ogg"
+    },
+    "광산-괴물": {
+        "image": "/assets/monster2.png"
+    },
+    "기억의-결정": {
+        "image": "/assets/effect1.png"
+    },
+    "루시안": {
+        "image": "/assets/lucid.png"
+    },
+    "에코": {
+        "image": "/assets/echo.png"
+    },
+    "효과-번개": {
+        "image": "/assets/effect2.png"
+    }
+}
