@@ -1,29 +1,53 @@
 {
   "main-bg": {
-    "music": "/music/chapter-0-main.ogg"
+    "music": "/music/mystery.mp3"
   },
-  "매튜": {
-    "image": "/assets/character-matthew.png"
+  "chapter0title": {
+    "image": "/assets/chapter0title.png",
+    "style": {
+      "width": "100%",
+      "height": "100%",
+      "objectFit": "contain"
+    }
   },
-  "세라": {
-    "image": "/assets/character-sera.png"
+  "cloud": {
+    "image": "/assets/cloud.png"
   },
-  "경비병": {
-    "image": "/assets/character-grid.png"
+  "effect1": {
+    "image": "/assets/effect1.png"
   },
-  "상인": {
-    "image": "/assets/character-grid.png"
+  "effect2": {
+    "image": "/assets/effect2.png"
   },
-  "변두리-마을-입구": {
-    "image": "/assets/bg-1.png",
-    "music": "/music/opening.ogg"
+  "루시안": {
+    "image": "/assets/lucid.png"
   },
-  "마을-광장": {
-    "image": "/assets/bg-2.png",
-    "music": "/music/town.ogg"
+  "에코": {
+    "image": "/assets/echo.png"
   },
-  "여관-복도-밤": {
-    "image": "/assets/bg-3.png",
-    "music": "/music/sanctuary.ogg"
+  "monster1": {
+    "image": "/assets/monster1.png"
+  },
+  "monster2": {
+    "image": "/assets/monster2.png"
+  },
+  "망각의-짐승": {
+    "image": "/assets/monster1.png"
+  },
+  "think": {
+    "image": "/assets/think.png"
+  },
+  "폐허-기차역": {
+    "image": "/assets/bg.png",
+    "music": "/music/danger.ogg"
+  },
+  "쇠사슬": {
+    "image": "/assets/emoji-handshake.svg"
+  },
+  "화염-폭발": {
+    "image": "/assets/emoji-fire.svg"
+  },
+  "번개": {
+    "image": "/assets/emoji-bolt.svg"
   }
 }

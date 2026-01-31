@@ -27,6 +27,7 @@ const StartMenuPage = () => {
   const { addStorage } = useStorageContext();
   const [asset, setAsset] = useState<Asset>({});
   const [audioPlayed, setAudioPlayed] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const preloadAssets = useMemo(() => {
@@ -36,7 +37,7 @@ const StartMenuPage = () => {
 
   const attemptAudioPlay = useCallback(async () => {
     if (!asset.audio || audioPlayed) return;
-    
+
     try {
       if (audioRef.current) {
         audioRef.current.volume = 0.3;
@@ -47,6 +48,11 @@ const StartMenuPage = () => {
       console.log('Audio autoplay prevented, will try user interaction');
     }
   }, [asset.audio, audioPlayed]);
+
+  const handleInteract = () => {
+    setShowMenu(true);
+    attemptAudioPlay();
+  };
 
   const handleStart = () => {
     attemptAudioPlay();
@@ -149,7 +155,10 @@ const StartMenuPage = () => {
 
   return (
     <Preload assets={preloadAssets}>
-      <div className="relative h-full w-full overflow-hidden bg-black text-white">
+      <div
+        className="relative h-full w-full cursor-pointer overflow-hidden bg-black text-white"
+        onClick={handleInteract}
+      >
         {asset.image && (
           <img
             className="absolute inset-0 h-full w-full object-contain"
@@ -160,18 +169,33 @@ const StartMenuPage = () => {
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/0 via-black/35 to-black/70" />
+        <div className={`absolute inset-0 bg-black/60 transition-opacity duration-1000 ${showMenu ? 'opacity-100' : 'opacity-0'}`} />
 
-        <div className="relative flex h-full w-full flex-col items-center justify-start p-6">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-black/55 p-5 backdrop-blur-md">
-            <div className="flex flex-col gap-3">
-              <Btn autoFocus onClick={handleStart}>
-                시작하기
-              </Btn>
-              <LoadBtn onChange={handleLoad}>불러오기</LoadBtn>
-            </div>
+        <div className={`relative flex h-full w-full flex-col items-center justify-center p-6 transition-all duration-700 ${showMenu ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'}`}>
+          <div className="flex w-full max-w-sm flex-col gap-6">
+            <Btn
+              onClick={handleStart}
+              className="group relative overflow-hidden border-2 border-white/20 bg-black/40 px-8 py-4 text-xl font-bold tracking-widest text-white backdrop-blur-sm transition-all hover:border-white/60 hover:bg-black/60 hover:scale-105 active:scale-95"
+            >
+              <span className="relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">시작하기</span>
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+            </Btn>
+
+            <LoadBtn
+              onChange={handleLoad}
+              className="group relative overflow-hidden border-2 border-white/20 bg-black/40 px-8 py-4 text-xl font-bold tracking-widest text-white backdrop-blur-sm transition-all hover:border-white/60 hover:bg-black/60 hover:scale-105 active:scale-95"
+            >
+              <span className="relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">불러오기</span>
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+            </LoadBtn>
           </div>
         </div>
+
+        {!showMenu && (
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/50 animate-pulse text-lg tracking-widest font-light">
+            아무 곳이나 클릭하세요
+          </div>
+        )}
       </div>
     </Preload>
   );

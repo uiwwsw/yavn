@@ -1,7 +1,50 @@
+export type VisualAnimation =
+  | 'fade-in'
+  | 'fade-out'
+  | 'fade-in-slow'
+  | 'fade-out-slow'
+  | 'shake'
+  | 'shake-hard'
+  | 'flash'
+  | 'float'
+  | 'pulse'
+  | 'impact'
+  | 'slide-in-left'
+  | 'slide-in-right'
+  | 'slide-out-left'
+  | 'slide-out-right'
+  | 'move-left-right'
+  | 'zoom-in'
+  | 'zoom-out'
+  | 'none';
+
+export type VisualLayout =
+  | 'sticker'   // Legacy: small icon at bottom
+  | 'center'    // Centered in the screen (e.g., items, artifacts)
+  | 'fit'       // Object-fit contain within the screen (e.g., character portraits)
+  | 'stretch'   // Full screen (100vw/100vh)
+  | 'root'      // Matches the #root game container exactly (Default for new visuals)
+  | 'fixed';    // Fixed position (requires custom style)
+
+export interface VisualConfig {
+  asset: string;
+  animation?: VisualAnimation;
+  layout?: VisualLayout;
+  duration?: number;
+  delay?: number;
+  style?: React.CSSProperties;
+  className?: string;
+  wait?: boolean; // Wait for animation to finish?
+}
+
 export interface Asset {
   image?: string;
   audio?: string;
   music?: string;
+  video?: string;
+  animation?: VisualAnimation;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export type Assets = Record<string, Asset>;
@@ -9,7 +52,8 @@ export type Assets = Record<string, Asset>;
 export interface SentenceEntry {
   duration?: number;
   message: string;
-  asset?: string | string[];
+  asset?: string | string[]; // Deprecated, use visuals for complex cases but keep for simpler ones
+  visuals?: VisualConfig[];
 }
 
 export type SentenceData = string | SentenceEntry | SentenceEntry[];

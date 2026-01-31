@@ -5,7 +5,7 @@ import { StorageContext } from './StorageContextContext';
 
 export interface SessionStorage {
   level: number;
-  page: 'startMenu' | 'game' | 'save' | 'credit' | 'gameOver';
+  page: 'startMenu' | 'game' | 'save' | 'credit' | 'gameOver' | 'toBeContinued';
   inventory: boolean;
 }
 interface StorageProviderProps {

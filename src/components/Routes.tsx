@@ -5,6 +5,7 @@ import GamePage from '@/Game';
 import SavePage from '@/Save';
 import CreditPage from '@/Credit';
 import GameOverPage from '@/GameOver';
+import ToBeContinuedPage from '@/ToBeContinued';
 
 const Routes = () => {
   const { page } = useStorageContext();
@@ -19,6 +20,8 @@ const Routes = () => {
       return <CreditPage />;
     case 'gameOver':
       return <GameOverPage />;
+    case 'toBeContinued':
+      return <ToBeContinuedPage />;
     default:
       return <SplashPage />;
   }

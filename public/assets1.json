@@ -23,5 +23,29 @@
   },
   "tense-moment": {
     "music": "/music/danger.ogg"
+  },
+  "루시안": {
+    "image": "/assets/lucid.png"
+  },
+  "에코": {
+    "image": "/assets/echo.png"
+  },
+  "황혼의-평원": {
+    "image": "/assets/bg.png",
+    "music": "/music/prelude.ogg"
+  },
+  "회색-궤도": {
+    "image": "/assets/world.png",
+    "music": "/music/town.ogg"
+  },
+  "제9-정거장": {
+    "image": "/assets/bg.png",
+    "music": "/music/mystery.mp3"
+  },
+  "역무원": {
+    "image": "/assets/station-worker.png"
+  },
+  "행인": {
+    "image": "/assets/monster1.png"
   }
 }

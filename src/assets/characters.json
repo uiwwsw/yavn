@@ -95,6 +95,24 @@
           "type": "heal"
         }
       ]
+    },
+    {
+      "name": "루시안",
+      "stats": {
+        "maxHp": 150,
+        "attack": 20,
+        "defense": 10,
+        "speed": 15
+      },
+      "skills": [
+        {
+          "id": "flame-burst",
+          "name": "플레임 버스트",
+          "description": "거대한 화염 폭발을 일으켜 적 전체를 소멸시킵니다.",
+          "power": 100,
+          "type": "attack"
+        }
+      ]
     }
   ]
 }

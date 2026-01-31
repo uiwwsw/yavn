@@ -1,208 +1,45 @@
 [
   {
-    "place": "변두리-마을-입구",
-    "sentences": [
-      [
-        {
-          "message": "[배경: 흙길. 작은 울타리와 닳은 이정표. 마을은 조용하다.]",
-          "duration": 140
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "변두리-마을-입구",
-    "sentences": [
-      [
-        {
-          "message": "이 마을… 지도에는 표시되어 있는데 이름이 뭐였더라.",
-          "duration": 120
-        },
-        {
-          "message": "뭐, 별일 없는 평화로운 마을이겠지.",
-          "duration": 120
-        }
-      ]
-    ]
-  },
-  {
-    "character": "경비병",
-    "place": "변두리-마을-입구",
-    "sentences": [
-      [
-        {
-          "message": "여행자시군요. 이 마을은 특별한 게 없으니 그냥 지나가시죠.",
-          "duration": 120
-        },
-        {
-          "message": "쉬고 가실 거면 여관이 있습니다. 딱히 볼 건 없지만요.",
-          "duration": 120
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "변두리-마을-입구",
-    "sentences": [
-      [
-        {
-          "message": "하하… 참 솔직하시네요.",
-          "duration": 110
-        }
-      ]
-    ]
-  },
-  {
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "[배경: 우물과 벤치. 사람은 있지만 바쁘지 않다.]",
-          "duration": 140
-        }
-      ]
-    ]
-  },
-  {
-    "character": "상인",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "사과 남았어요. 오늘 건 신선하답니다.",
-          "duration": 110
-        },
-        {
-          "message": "가격은 3골드. 이게 정가예요.",
-          "duration": 110
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "뭔가… 모두들 조심스러워 보이는군.",
-          "duration": 120
-        }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "여기 자리 있었죠?",
-          "duration": 90
-        },
-        {
-          "message": "없어도 상관없어요. 이미 앉았으니까.",
-          "duration": 110
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "꽤 당당하시네요.",
-          "duration": 100
-        }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "여행자시죠? 얼굴이 다르니까 바로 알겠어요.",
-          "duration": 120
-        },
-        {
-          "message": "이 마을 사람들은… 다들 괜찮은 척하는 얼굴이거든요.",
-          "duration": 130
-        }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "혹시 아침에 여기 계셨나요?",
-          "duration": 100
-        },
-        {
-          "message": "…아니면 됐어요. 그냥 확인 차 여쭤본 거예요.",
-          "duration": 120
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "확인이라니, 무슨 일이라도?",
-          "duration": 100
-        }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "마을-광장",
-    "sentences": [
-      [
-        {
-          "message": "사람이 한 명 쓰러졌거든요.",
-          "duration": 100
-        },
-        {
-          "message": "근데 지금은 아무 일도 없었던 것처럼 되어 있어요.",
-          "duration": 130
-        }
-      ]
-    ]
-  },
-  {
-    "place": "마을-광장",
     "sentences": [
       {
-        "prompt": "이 말에 어떻게 반응할까?",
-        "choices": [
+        "message": "",
+        "duration": 4000,
+        "visuals": [
           {
-            "text": "그럴 수도 있겠네요.",
-            "goTo": {
-              "id": "act1-neutral"
-            }
+            "asset": "chapter0title",
+            "layout": "root",
+            "animation": "fade-in",
+            "duration": 1500
           },
           {
-            "text": "확실히 좀 이상하긴 하네요.",
-            "goTo": {
-              "id": "act1-curious"
-            }
-          },
+            "asset": "chapter0title",
+            "layout": "root",
+            "animation": "fade-out",
+            "duration": 1000,
+            "delay": 3000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension",
+      "fadeDuration": 2000
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "duration": 2000,
+        "visuals": [
           {
-            "text": "너무 신경 쓰지 않는 게 좋을 것 같아요.",
-            "goTo": {
-              "id": "act1-dismiss"
+            "asset": "cloud",
+            "layout": "root",
+            "animation": "float",
+            "duration": 15000,
+            "style": {
+              "opacity": 0.4
             }
           }
         ]
@@ -210,126 +47,490 @@
     ]
   },
   {
-    "id": "act1-neutral",
-    "character": "매튜",
+    "character": "???",
     "sentences": [
-      [
-        {
-          "message": "사람 기억이란 게 원래 그렇잖아요.",
-          "duration": 120
+      {
+        "message": "..."
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...차가워. 여기가... 어디지? 아니, 그것보다... 나는...",
+        "duration": 2500
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "..."
+      },
+      {
+        "message": "..."
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "크윽...!"
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "animation": "zoom-in",
+            "duration": 300,
+            "className": "scale-150"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "뭐야, 저건...! 도망쳐야 해. 다리가... 다리가 움직이지 않아!",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "animation": "pulse",
+            "duration": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "..."
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "이건...?",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "style": {
+              "opacity": 0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "think",
+            "layout": "center",
+            "animation": "pulse",
+            "duration": 2000,
+            "style": {
+              "opacity": 0.6,
+              "scale": 1.5
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "나는... 이 감각을 알고 있어. 글자가... 아니야. 이건 '공식'이다."
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "effect1",
+            "layout": "center",
+            "animation": "move-left-right",
+            "duration": 1000,
+            "style": {
+              "opacity": 0.7
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "\"구속하라... [체인 바인드(Chain Bind)]!\"",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "style": {
+              "opacity": 1
+            }
+          },
+          {
+            "asset": "effect1",
+            "layout": "center",
+            "animation": "pulse",
+            "duration": 1000,
+            "style": {
+              "scale": 2,
+              "opacity": 0.8
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "animation": "shake",
+            "duration": 600
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "character": "괴물",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "그아아아악!",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "animation": "fade-out",
+            "duration": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "effect1",
+            "layout": "center",
+            "animation": "float",
+            "duration": 3000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "하아... 하아... 내가 방금, 마법을 쓴 건가? 기억이 없어. 이름도, 나이도... 그런데 이 책을 다루는 법만은 선명해."
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "..."
+      },
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "animation": "fade-in",
+            "duration": 1500,
+            "className": "opacity-50"
+          },
+          {
+            "asset": "monster2",
+            "layout": "fixed",
+            "animation": "fade-in",
+            "duration": 1500,
+            "delay": 500,
+            "style": {
+              "right": "10%",
+              "top": "30%",
+              "width": "150px",
+              "opacity": 0.3
+            }
+          },
+          {
+            "asset": "monster1",
+            "layout": "fixed",
+            "animation": "fade-in",
+            "duration": 1500,
+            "delay": 800,
+            "style": {
+              "left": "10%",
+              "top": "30%",
+              "width": "150px",
+              "opacity": 0.3
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "character": "???",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "말도 안 돼... 저런 게 더 있다고? 지금 내 몸 상태로는 무리야."
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "..."
+      }
+    ]
+  },
+  {
+    "character": "에코",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...오른쪽 30도. 마력 밀도 부족. 그 주문으로는 뚫을 수 없어."
+      }
+    ]
+  },
+  {
+    "character": "루시안",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "누구냐!"
+      }
+    ]
+  },
+  {
+    "character": "에코",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "..."
+      }
+    ]
+  },
+  {
+    "character": "에코",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "페이지 42. [플레임 버스트]. 그걸 써. 당신이 '루시안'이라면, 할 수 있을 거야."
+      }
+    ]
+  },
+  {
+    "character": "루시안",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "루시안...? 그게 내 이름인가?"
+      }
+    ]
+  },
+  {
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
+    "sentences": [
+      {
+        "message": "...",
+        "visuals": [
+          {
+            "asset": "monster1",
+            "layout": "center",
+            "animation": "zoom-in",
+            "duration": 200,
+            "className": "scale-110"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "battle": {
+      "enemy": {
+        "name": "괴물 무리",
+        "stats": {
+          "maxHp": 50,
+          "attack": 8,
+          "defense": 0,
+          "speed": 5
         }
+      },
+      "party": [
+        "루시안"
       ]
-    ],
-    "next": {
-      "id": "act1-night"
     }
   },
   {
-    "id": "act1-curious",
-    "character": "매튜",
+    "character": "루시안",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
     "sentences": [
-      [
-        {
-          "message": "아무 일도 없었던 것처럼 된다는 게… 확실히 이상하긴 하네요.",
-          "duration": 130
-        }
-      ]
-    ],
-    "next": {
-      "id": "act1-night"
-    }
-  },
-  {
-    "id": "act1-dismiss",
-    "character": "매튜",
-    "sentences": [
-      [
-        {
-          "message": "이 마을이 원래 그런가 봐요.",
-          "duration": 110
-        }
-      ]
-    ],
-    "next": {
-      "id": "act1-night"
-    }
-  },
-  {
-    "id": "act1-night",
-    "place": "여관-복도-밤",
-    "sentences": [
-      [
-        {
-          "message": "[배경: 어두운 복도. 문틈에서 희미한 빛.]",
-          "duration": 140
-        }
-      ]
+      {
+        "message": "젠장, 될 대로 되라지! [플레임 버스트]!",
+        "visuals": [
+          {
+            "asset": "화염-폭발",
+            "layout": "stretch",
+            "animation": "zoom-in",
+            "duration": 500,
+            "className": "fixed inset-0 w-full h-full z-100 object-cover scale-150"
+          },
+          {
+            "asset": "effect2",
+            "layout": "center",
+            "animation": "shake",
+            "duration": 1000,
+            "style": {
+              "scale": 1.5,
+              "opacity": 0.8
+            }
+          }
+        ]
+      }
     ]
   },
   {
-    "character": "세라",
-    "place": "여관-복도-밤",
+    "place": "폐허-기차역",
+    "music": {
+      "situational": "calm-tension"
+    },
     "sentences": [
-      [
-        {
-          "message": "괜히 말 꺼낸 걸 수도 있어요.",
-          "duration": 110
-        },
-        {
-          "message": "그래도 아무도 말 안 하면… 제가 이상한 사람이 되잖아요.",
-          "duration": 140
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "여관-복도-밤",
-    "sentences": [
-      [
-        {
-          "message": "이미 좀 그런 것 같은데요?",
-          "duration": 100
-        }
-      ]
-    ]
-  },
-  {
-    "character": "세라",
-    "place": "여관-복도-밤",
-    "sentences": [
-      [
-        {
-          "message": "알아요.",
-          "duration": 80
-        },
-        {
-          "message": "그래서… 내일 저랑 같이 가요.",
-          "duration": 120
-        }
-      ]
-    ]
-  },
-  {
-    "character": "매튜",
-    "place": "여관-복도-밤",
-    "sentences": [
-      [
-        {
-          "message": "이 선택이 이렇게 길어질 줄은… 그땐 몰랐지.",
-          "duration": 140
-        }
-      ]
-    ]
-  },
-  {
-    "sentences": [
-      [
-        {
-          "message": "[ACT 1 종료] 이 마을에서는 아무 일도 일어나지 않았다. 적어도 그렇게들 말하고 있었다.",
-          "duration": 160
-        }
-      ]
+      {
+        "message": "..."
+      }
     ]
   }
 ]

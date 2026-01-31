@@ -3,8 +3,9 @@ import { ChangeEvent, MouseEvent, ReactNode } from 'react';
 interface ButtonProps {
   children?: ReactNode;
   onChange: (level: number) => void;
+  className?: string;
 }
-const LoadBtn = ({ children, onChange }: ButtonProps) => {
+const LoadBtn = ({ children, onChange, className = '' }: ButtonProps) => {
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -19,7 +20,7 @@ const LoadBtn = ({ children, onChange }: ButtonProps) => {
   };
   return (
     <label
-      className="inline-flex cursor-pointer justify-center rounded-sm border bg-black p-3 py-1 hover:animate-pulse focus:animate-pulse"
+      className={`inline-flex cursor-pointer justify-center rounded-sm border bg-black p-3 py-1 hover:animate-pulse focus:animate-pulse ${className}`}
       style={{ animationDuration: '500ms' }}
       onMouseOver={handleOver}
       tabIndex={0}

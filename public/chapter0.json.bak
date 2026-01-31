@@ -1,0 +1,335 @@
+[
+  {
+    "place": "변두리-마을-입구",
+    "sentences": [
+      [
+        {
+          "message": "[배경: 흙길. 작은 울타리와 닳은 이정표. 마을은 조용하다.]",
+          "duration": 140
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "변두리-마을-입구",
+    "sentences": [
+      [
+        {
+          "message": "이 마을… 지도에는 표시되어 있는데 이름이 뭐였더라.",
+          "duration": 120
+        },
+        {
+          "message": "뭐, 별일 없는 평화로운 마을이겠지.",
+          "duration": 120
+        }
+      ]
+    ]
+  },
+  {
+    "character": "경비병",
+    "place": "변두리-마을-입구",
+    "sentences": [
+      [
+        {
+          "message": "여행자시군요. 이 마을은 특별한 게 없으니 그냥 지나가시죠.",
+          "duration": 120
+        },
+        {
+          "message": "쉬고 가실 거면 여관이 있습니다. 딱히 볼 건 없지만요.",
+          "duration": 120
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "변두리-마을-입구",
+    "sentences": [
+      [
+        {
+          "message": "하하… 참 솔직하시네요.",
+          "duration": 110
+        }
+      ]
+    ]
+  },
+  {
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "[배경: 우물과 벤치. 사람은 있지만 바쁘지 않다.]",
+          "duration": 140
+        }
+      ]
+    ]
+  },
+  {
+    "character": "상인",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "사과 남았어요. 오늘 건 신선하답니다.",
+          "duration": 110
+        },
+        {
+          "message": "가격은 3골드. 이게 정가예요.",
+          "duration": 110
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "뭔가… 모두들 조심스러워 보이는군.",
+          "duration": 120
+        }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "여기 자리 있었죠?",
+          "duration": 90
+        },
+        {
+          "message": "없어도 상관없어요. 이미 앉았으니까.",
+          "duration": 110
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "꽤 당당하시네요.",
+          "duration": 100
+        }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "여행자시죠? 얼굴이 다르니까 바로 알겠어요.",
+          "duration": 120
+        },
+        {
+          "message": "이 마을 사람들은… 다들 괜찮은 척하는 얼굴이거든요.",
+          "duration": 130
+        }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "혹시 아침에 여기 계셨나요?",
+          "duration": 100
+        },
+        {
+          "message": "…아니면 됐어요. 그냥 확인 차 여쭤본 거예요.",
+          "duration": 120
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "확인이라니, 무슨 일이라도?",
+          "duration": 100
+        }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "마을-광장",
+    "sentences": [
+      [
+        {
+          "message": "사람이 한 명 쓰러졌거든요.",
+          "duration": 100
+        },
+        {
+          "message": "근데 지금은 아무 일도 없었던 것처럼 되어 있어요.",
+          "duration": 130
+        }
+      ]
+    ]
+  },
+  {
+    "place": "마을-광장",
+    "sentences": [
+      {
+        "prompt": "이 말에 어떻게 반응할까?",
+        "choices": [
+          {
+            "text": "그럴 수도 있겠네요.",
+            "goTo": {
+              "id": "act1-neutral"
+            }
+          },
+          {
+            "text": "확실히 좀 이상하긴 하네요.",
+            "goTo": {
+              "id": "act1-curious"
+            }
+          },
+          {
+            "text": "너무 신경 쓰지 않는 게 좋을 것 같아요.",
+            "goTo": {
+              "id": "act1-dismiss"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "act1-neutral",
+    "character": "매튜",
+    "sentences": [
+      [
+        {
+          "message": "사람 기억이란 게 원래 그렇잖아요.",
+          "duration": 120
+        }
+      ]
+    ],
+    "next": {
+      "id": "act1-night"
+    }
+  },
+  {
+    "id": "act1-curious",
+    "character": "매튜",
+    "sentences": [
+      [
+        {
+          "message": "아무 일도 없었던 것처럼 된다는 게… 확실히 이상하긴 하네요.",
+          "duration": 130
+        }
+      ]
+    ],
+    "next": {
+      "id": "act1-night"
+    }
+  },
+  {
+    "id": "act1-dismiss",
+    "character": "매튜",
+    "sentences": [
+      [
+        {
+          "message": "이 마을이 원래 그런가 봐요.",
+          "duration": 110
+        }
+      ]
+    ],
+    "next": {
+      "id": "act1-night"
+    }
+  },
+  {
+    "id": "act1-night",
+    "place": "여관-복도-밤",
+    "sentences": [
+      [
+        {
+          "message": "[배경: 어두운 복도. 문틈에서 희미한 빛.]",
+          "duration": 140
+        }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "여관-복도-밤",
+    "sentences": [
+      [
+        {
+          "message": "괜히 말 꺼낸 걸 수도 있어요.",
+          "duration": 110
+        },
+        {
+          "message": "그래도 아무도 말 안 하면… 제가 이상한 사람이 되잖아요.",
+          "duration": 140
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "여관-복도-밤",
+    "sentences": [
+      [
+        {
+          "message": "이미 좀 그런 것 같은데요?",
+          "duration": 100
+        }
+      ]
+    ]
+  },
+  {
+    "character": "세라",
+    "place": "여관-복도-밤",
+    "sentences": [
+      [
+        {
+          "message": "알아요.",
+          "duration": 80
+        },
+        {
+          "message": "그래서… 내일 저랑 같이 가요.",
+          "duration": 120
+        }
+      ]
+    ]
+  },
+  {
+    "character": "매튜",
+    "place": "여관-복도-밤",
+    "sentences": [
+      [
+        {
+          "message": "이 선택이 이렇게 길어질 줄은… 그땐 몰랐지.",
+          "duration": 140
+        }
+      ]
+    ]
+  },
+  {
+    "sentences": [
+      [
+        {
+          "message": "[ACT 1 종료] 이 마을에서는 아무 일도 일어나지 않았다. 적어도 그렇게들 말하고 있었다.",
+          "duration": 160
+        }
+      ]
+    ]
+  }
+]
