@@ -104,7 +104,7 @@ const Sentence = ({
 
         nodes.push(
           <motion.span
-            key={`${index}-${visible.length}`}
+            key={index}
             initial={{ opacity: 0, y: 1 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.1 }}
