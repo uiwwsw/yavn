@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, ReactNode, type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Assets, SentenceData, SentenceEntry } from '../utils/novelTypes';
 import { getTypingSoundGenerator } from '../utils/typingSoundGenerator';
@@ -90,7 +90,11 @@ const Sentence = ({
       if (index > 0) nodes.push(' ');
 
       if (index < step) {
-        nodes.push(entry.message);
+        nodes.push(
+          <span key={index} role="text">
+            {entry.message}
+          </span>
+        );
         continue;
       }
 
@@ -98,23 +102,39 @@ const Sentence = ({
         const visible = entry.message.substring(0, cursor);
         if (!visible) continue;
 
-        const prefix = visible.slice(0, -1);
-        const last = visible.slice(-1);
-
-        if (prefix) nodes.push(prefix);
         nodes.push(
-          <span key={`pop-${index}-${visible.length}`} className="dialogue-pop">
-            {last}
-          </span>,
+          <motion.span
+            key={`${index}-${visible.length}`}
+            initial={{ opacity: 0, y: 1 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.1 }}
+            role="text"
+            aria-label={visible}
+          >
+            {visible}
+          </motion.span>
         );
-        continue;
+
+        if (showCursor && !isCompleteProp && !isComplete) {
+          nodes.push(
+            <span key="cursor" className="animate-pulse duration-700 text-emerald-400" aria-hidden="true">
+              ▍
+            </span>
+          );
+        }
+        break;
       }
 
-      nodes.push(entry.message);
+      // Completed sentences
+      nodes.push(
+        <span key={index} role="text">
+          {entry.message}
+        </span>
+      );
     }
 
-    return <>{nodes}</>;
-  }, [_sentences, cursor, isCompleteProp, step]);
+    return nodes;
+  }, [_sentences, step, cursor, showCursor, isCompleteProp, isComplete]);
 
   const assetArray = useMemo<AssetEntry[]>(() => {
     const entries = _sentences.flatMap((sentenceEntry, index) => {
@@ -262,6 +282,15 @@ const Sentence = ({
 
   return (
     <>
+      <div className={className} role="log" aria-live="polite" aria-atomic="false">
+        {prefix && (
+          <span className="mr-2 font-bold" aria-hidden="true">
+            {prefix}
+          </span>
+        )}
+        {renderedSentence}
+      </div>
+
       {assets && assetArray && (
         <>
           {assetArray.map(({ name, key }) => {
@@ -467,13 +496,8 @@ const Sentence = ({
             )}
         </>
       )}
-      <span className={`whitespace-pre-line leading-relaxed${className ? ` ${className}` : ''}`}>
-        {prefix}
-        {renderedSentence}
-        {!isCompleteProp && !isComplete && showCursor && <span className="terminal-cursor has-prefix">▍</span>}
-      </span>
     </>
   );
 };
 
-export default memo(Sentence);
+export default Sentence;

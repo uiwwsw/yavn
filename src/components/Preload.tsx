@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { ReactNode, memo, useEffect, useMemo, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface PreloadProps {
@@ -6,69 +6,93 @@ interface PreloadProps {
   children: ReactNode;
 }
 
+const MAX_CONCURRENT = 5;
 const audioTypes = ['.wav', '.mp3', '.ogg', '.m4a'];
 
 const Preload = ({ assets, children }: PreloadProps) => {
-  const [loaded, setLoaded] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+  const mountedRef = useRef(true);
 
   const assetList = useMemo(() => {
-    const unique = new Set<string>();
-    for (const asset of assets) {
-      if (!asset) continue;
-      unique.add(asset);
-    }
-    return Array.from(unique);
+    return Array.from(new Set(assets.filter(Boolean)));
   }, [assets]);
 
-  const preloadAsset = useCallback(async (asset: string) => {
-    if (audioTypes.some((type) => asset.endsWith(type))) {
-      const audio = new Audio();
-      audio.preload = 'auto';
-      audio.src = asset;
-      return new Promise<void>((resolve) => {
-        audio.onloadedmetadata = () => resolve();
-        audio.onerror = () => resolve();
-      });
-    }
-
-    const img = new Image();
-    img.decoding = 'async';
-    img.src = asset;
-    return new Promise<void>((resolve) => {
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-    });
-  }, []);
-
-  useLayoutEffect(() => {
-    let cancelled = false;
-
-    setLoaded(false);
-
+  useEffect(() => {
+    mountedRef.current = true;
     if (assetList.length === 0) {
-      setLoaded(true);
+      setIsComplete(true);
       return;
     }
 
-    Promise.all(assetList.map(preloadAsset))
-      .then(() => {
-        if (!cancelled) setLoaded(true);
-      })
-      .catch(() => {
-        if (!cancelled) setLoaded(true);
-      });
+    setIsComplete(false);
+    setProgress(0);
+
+    let activeDownloads = 0;
+    let currentIndex = 0;
+    let loadedCount = 0;
+    const total = assetList.length;
+
+    const loadAsset = async (asset: string) => {
+      try {
+        if (audioTypes.some((type) => asset.endsWith(type))) {
+          await new Promise<void>((resolve) => {
+            const audio = new Audio();
+            audio.onloadeddata = () => resolve();
+            audio.onerror = () => resolve(); // Don't block on error
+            audio.src = asset;
+          });
+        } else {
+          await new Promise<void>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+            img.src = asset;
+          });
+        }
+      } catch (e) {
+        // Ignore errors
+      }
+    };
+
+    const processQueue = () => {
+      if (!mountedRef.current) return;
+
+      // Check completion
+      if (loadedCount >= total) {
+        setIsComplete(true);
+        return;
+      }
+
+      // Fill queue
+      while (activeDownloads < MAX_CONCURRENT && currentIndex < total) {
+        const asset = assetList[currentIndex];
+        currentIndex++;
+        activeDownloads++;
+
+        loadAsset(asset).finally(() => {
+          if (!mountedRef.current) return;
+          activeDownloads--;
+          loadedCount++;
+          setProgress((loadedCount / total) * 100);
+          processQueue();
+        });
+      }
+    };
+
+    processQueue();
 
     return () => {
-      cancelled = true;
+      mountedRef.current = false;
     };
-  }, [assetList, preloadAsset]);
+  }, [assetList]);
 
-  return loaded ? (
+  return isComplete ? (
     <motion.div className="h-full w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {children}
     </motion.div>
   ) : (
-    <div className="flex h-full w-full items-center justify-center bg-black">
+    <div className="flex flex-col h-full w-full items-center justify-center bg-black gap-4">
       <svg className="h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
         <circle fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="15" r="15" cx="40" cy="65">
           <animate
@@ -104,6 +128,16 @@ const Preload = ({ assets, children }: PreloadProps) => {
           ></animate>
         </circle>
       </svg>
+      {/* Progress Bar */}
+      <div className="w-48 h-1 bg-white/20 rounded-full overflow-hidden">
+        <motion.div
+          className="h-full bg-emerald-500"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.1 }}
+        />
+      </div>
+      <div className="text-white/50 text-xs font-mono">{Math.round(progress)}%</div>
     </div>
   );
 };

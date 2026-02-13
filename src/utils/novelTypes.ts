@@ -143,3 +143,52 @@ export const isChoiceNode = (value: ChapterSentence | undefined): value is Choic
   if (typeof value !== 'object') return false;
   return 'choices' in value && Array.isArray((value as ChoiceNode).choices);
 };
+
+// ============ 새로운 타입 정의 ============
+
+// 게임 설정
+export interface GameSettings {
+  textSpeed: number;        // 0.5 ~ 2.0
+  bgmVolume: number;        // 0.0 ~ 1.0
+  sfxVolume: number;        // 0.0 ~ 1.0
+  autoSpeed: number;        // 1000 ~ 5000 (ms)
+  skipMode: 'unread' | 'all';
+  displayMode: 'window' | 'fullscreen';
+  hapticFeedback: boolean;
+}
+
+// 저장 데이터
+export interface SaveData {
+  slot: number;
+  timestamp: number;
+  level: number;
+  chapterIndex: number;
+  sentenceIndex: number;
+  screenshot?: string;      // base64 thumbnail
+  playTime: number;
+  chapterTitle: string;
+  characterName?: string;
+  placeName?: string;
+}
+
+// 게임 전체 상태
+export interface GameState {
+  settings: GameSettings;
+  saves: SaveData[];
+  unlockedCGs: string[];
+  playTime: number;
+  readSentences: Set<string>;
+  currentSave?: SaveData;
+}
+
+// 백로그 항목
+export interface BacklogEntry {
+  id: string;
+  character: string;
+  text: string;
+  timestamp: number;
+}
+
+// 유틸리티 타입
+export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
+export type Nullable<T> = T | null;

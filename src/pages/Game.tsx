@@ -6,10 +6,17 @@ import { BackgroundMusicManager } from '@/BackgroundMusicManager';
 import Preload from '@/Preload';
 import SceneControls from '@/SceneControls';
 import Sentence from '@/Sentence';
+import Backlog from '@/Backlog';
+import GameSettings from '@/GameSettings';
+import SaveSlots from '@/SaveSlots';
 import { useStorageContext } from '@/useStorageContext';
+import { useSettings } from '../contexts/SettingsContext';
 
 import useNovelEngine from '#/useNovelEngine';
-import type { ChoiceOption, SentenceData, SentenceEntry } from '#/novelTypes';
+import type { ChoiceOption, SentenceData, SentenceEntry, BacklogEntry } from '#/novelTypes';
+import { useKeyboardNavigation } from '../hooks/useKeyboardNavigation';
+import { useTouchGestures } from '../hooks/useTouchGestures';
+import { performQuickSave, performQuickLoad } from '../utils/QuickSave';
 
 type ConsoleLine = {
   id: number;
@@ -27,8 +34,18 @@ const flattenSentenceData = (data: SentenceData): string => {
 
 const Game = () => {
   const { level, addStorage } = useStorageContext();
+  const { settings } = useSettings();
   const [passMode, setPassMode] = useState(false);
 
+  // UI State
+  const [showSettings, setShowSettings] = useState(false);
+  const [showBacklog, setShowBacklog] = useState(false);
+  const [showSaveSlots, setShowSaveSlots] = useState(false);
+  const [saveSlotsMode, setSaveSlotsMode] = useState<'save' | 'load'>('save');
+  const [showUI, setShowUI] = useState(true);
+
+  // Quick Load State
+  const [pendingLoadStep, setPendingLoadStep] = useState<number | null>(null);
 
   const passChoiceTimeoutRef = useRef<number | null>(null);
   const handleGoSavePage = useCallback(() => addStorage({ page: 'save', level }), [addStorage, level]);
@@ -57,21 +74,36 @@ const Game = () => {
     step,
     musicState,
     updateMusicState,
+    goToStep,
   } = useNovelEngine({
     level,
+    initialSentenceIndex: pendingLoadStep ?? 0,
+    autoAdvanceDelay: settings.autoSpeed, // Use setting value
     onChapterEnd: handleGoSavePage,
     onLoadError: handleGoToBeContinued,
   });
+
+  // Clear pending load step after successful initialization
+  useEffect(() => {
+    if (assets && Object.keys(assets).length > 0 && pendingLoadStep !== null) {
+      setPendingLoadStep(null);
+    }
+  }, [assets, pendingLoadStep]);
 
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     if (assets && Object.keys(assets).length > 0) {
       setIsInitialized(true);
+      // 자동 저장 (챕터 시작 시 또는 로드 직후)
+      // 실제로는 중요한 포인트에서만 하는게 좋지만 일단은 간단하게
+      if (step[1] === 0) {
+        // autoSave functionality can be added here
+      }
     } else {
       setIsInitialized(false);
     }
-  }, [assets]);
+  }, [assets, step]);
 
   const consoleViewportRef = useRef<HTMLDivElement | null>(null);
   const isConsoleTypingRef = useRef(false);
@@ -95,9 +127,9 @@ const Game = () => {
       setIsFading(true);
       const timeout = setTimeout(() => {
         setDisplayPlace(place);
-        // Break batching to ensure DOM updates with opacity-0 before fading in
         setTimeout(() => setIsFading(false), 50);
-      }, 500); // Wait for fade out (or wait for initial load)
+      }, 500);
+
       return () => clearTimeout(timeout);
     }
   }, [place, displayPlace]);
@@ -113,7 +145,6 @@ const Game = () => {
       const trimmed = text.trimEnd();
       if (!trimmed) return;
 
-      // 새 출력이 나오면(새 로그/선택) 다시 하단 고정으로 돌아간다.
       userScrolledRef.current = false;
 
       setConsoleLines((prev) => {
@@ -138,7 +169,6 @@ const Game = () => {
     const typing = !battleConfig && Boolean(sentenceData) && !activeChoice && !complete;
     isConsoleTypingRef.current = typing;
     if (typing || activeChoice) {
-      // 다음 글이 나오기 시작하거나(타이핑), 선택지가 열리면 하단 고정으로 복귀.
       userScrolledRef.current = false;
     }
   }, [activeChoice, battleConfig, complete, sentenceData]);
@@ -149,7 +179,6 @@ const Game = () => {
     if (!isInitialized) return;
 
     if (currentSentenceRef.current !== sentence) {
-      // 새 문장이 시작되면(타이핑 시작) 자동으로 하단 고정.
       userScrolledRef.current = false;
 
       if (currentSentenceRef.current !== null && lastSentenceLineRef.current) {
@@ -165,8 +194,6 @@ const Game = () => {
     if (battleConfig) return;
     if (!consoleViewportRef.current) return;
 
-    // 글이 나오는 중(타이핑)에는 항상 하단 고정.
-    // 멈춰있을 때는 유저가 스크롤한 경우에만 유지.
     if (isConsoleTypingRef.current || !userScrolledRef.current) {
       window.requestAnimationFrame(() => {
         scrollConsoleToBottom();
@@ -189,7 +216,96 @@ const Game = () => {
     [appendConsoleLine, handleChoiceSelect],
   );
 
+  /* Helper Actions */
+  const handleQuickSave = useCallback(() => {
+    if (!sentenceData) return;
+    performQuickSave({
+      level: level ?? 0,
+      chapterIndex: step[0],
+      sentenceIndex: step[1],
+      playTime: 0, // TODO: Implement play time tracking
+      chapterTitle: `Chapter ${level}`, // TODO: Get actual title
+      characterName: consoleSpeaker,
+      placeName: place,
+      // Screenshot can be added here if we use html2canvas or similar
+    });
+    alert('퀵 세이브 되었습니다.'); // TODO: Toast notification
+  }, [level, step, consoleSpeaker, place, sentenceData]);
 
+  const handleQuickLoad = useCallback(() => {
+    const data = performQuickLoad();
+    if (!data) {
+      alert('퀵 세이브 데이터가 없습니다.');
+      return;
+    }
+
+    if (data.level !== level) {
+      setPendingLoadStep(data.sentenceIndex);
+      addStorage({ page: 'game', level: data.level });
+    } else {
+      goToStep([data.chapterIndex, data.sentenceIndex]);
+    }
+  }, [level, addStorage, goToStep]);
+
+  const handleManualSave = useCallback(() => {
+    setSaveSlotsMode('save');
+    setShowSaveSlots(true);
+  }, []);
+
+  const handleManualLoad = useCallback(() => {
+    setSaveSlotsMode('load');
+    setShowSaveSlots(true);
+  }, []);
+
+  const handleSlotLoad = useCallback((data: any) => { // Type should be SaveData but using any to avoid import issues
+    if (data.level !== level) {
+      setPendingLoadStep(data.sentenceIndex);
+      addStorage({ page: 'game', level: data.level });
+    } else {
+      goToStep([data.chapterIndex, data.sentenceIndex]);
+    }
+    setShowSaveSlots(false);
+  }, [level, addStorage, goToStep]);
+
+  /* Keyboard Navigation */
+  useKeyboardNavigation({
+    onNext: () => {
+      if (!showBacklog && !showSettings && !activeChoice) {
+        nextScene();
+      }
+    },
+    onSkip: () => setPassMode((prev) => !prev),
+    onAuto: () => setAuto((prev) => !prev),
+    onMenu: () => {
+      if (showBacklog) setShowBacklog(false);
+      else if (showSettings) setShowSettings(false);
+      else setShowSettings(true);
+    },
+    onBacklog: () => setShowBacklog((prev) => !prev),
+    onQuickSave: handleQuickSave,
+    onQuickLoad: handleQuickLoad,
+    onHideUI: () => setShowUI((prev) => !prev),
+    onChoice: (index) => {
+      if (activeChoice && index >= 0 && index < activeChoice.choices.length) {
+        handleConsoleChoiceSelect(activeChoice.choices[index]);
+      }
+    }
+  });
+
+  /* Touch Gestures */
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useTouchGestures(wrapperRef, {
+    onTap: () => {
+      if (!showBacklog && !showSettings && !activeChoice && !battleConfig) {
+        nextScene();
+      }
+    },
+    onSwipeUp: () => setShowUI(false),
+    onSwipeDown: () => setShowBacklog(true),
+    onSwipeLeft: () => { }, // Future use
+    onSwipeRight: () => setShowUI(true),
+    onLongPress: () => setShowSettings(true),
+  });
 
   const handleBattleComplete = useCallback(
     (result: 'win' | 'lose') => {
@@ -220,57 +336,14 @@ const Game = () => {
     setShake(false);
   }, [activeChoice]);
 
-  // If there is NO prompt, we normally start showing choices immediately?
-  // Let's assume stage 0 = prompt (if any), stage 1 = choice 0, stage 2 = choice 1...
-  // If prompt is missing, we might need auto-advance or just treat stage 0 as "start"
   useEffect(() => {
     if (activeChoice && !activeChoice.prompt && choiceStage === 0) {
       setChoiceStage(1);
     }
   }, [activeChoice, choiceStage]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (battleConfig) return;
-
-      // Handle Enter
-      if (e.code === 'Enter') {
-        if (activeChoice) {
-          if (selectedChoiceIndex !== null && activeChoice.choices[selectedChoiceIndex]) {
-            handleConsoleChoiceSelect(activeChoice.choices[selectedChoiceIndex]);
-          } else {
-            setShake(true);
-            setTimeout(() => setShake(false), 400);
-          }
-          return;
-        }
-        nextScene();
-        return;
-      }
-
-      // Handle Number Keys for Choices
-      if (activeChoice) {
-        const key = e.key;
-        const num = parseInt(key, 10);
-        if (!isNaN(num)) {
-          if (num >= 1 && num <= activeChoice.choices.length) {
-            setSelectedChoiceIndex(num - 1);
-          } else {
-            setShake(true);
-            setTimeout(() => setShake(false), 400);
-            setSelectedChoiceIndex(null);
-          }
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeChoice, battleConfig, handleConsoleChoiceSelect, nextScene, selectedChoiceIndex]);
-
   // Handle Pass Mode Auto Choice
   useEffect(() => {
-    // Check if choice rendering is fully complete
     const promptOffset = activeChoice?.prompt ? 1 : 0;
     const totalStages = (activeChoice?.choices?.length ?? 0) + promptOffset;
     const isReady = activeChoice && choiceStage >= totalStages;
@@ -285,7 +358,7 @@ const Game = () => {
       const randomIndex = Math.floor(Math.random() * activeChoice.choices.length);
       const choice = activeChoice.choices[randomIndex];
       handleConsoleChoiceSelect(choice);
-    }, 1000);
+    }, 100 / settings.textSpeed); // Faster in pass mode, dependent on text speed
 
     return () => {
       if (passChoiceTimeoutRef.current) {
@@ -293,7 +366,7 @@ const Game = () => {
         passChoiceTimeoutRef.current = null;
       }
     };
-  }, [passMode, activeChoice, choiceStage, handleConsoleChoiceSelect]);
+  }, [passMode, activeChoice, choiceStage, handleConsoleChoiceSelect, settings.textSpeed]);
 
   const consolePrefix = useMemo(
     () => {
@@ -318,16 +391,44 @@ const Game = () => {
   }, [direct]);
 
   const consoleHeightClass = useMemo(() => {
-    // 기본은 3줄 정도 보이게
     return activeChoice ? 'h-[clamp(160px,36vh,220px)]' : 'h-[118px]';
   }, [activeChoice]);
 
+  // Backlog Data transformation
+  const backlogEntries: BacklogEntry[] = useMemo(() => {
+    return consoleLines.map(line => ({
+      id: line.id.toString(),
+      character: line.speaker,
+      text: line.text,
+      timestamp: Date.now() // Approximated
+    }));
+  }, [consoleLines]);
+
   return (
-    <>
+    <div ref={wrapperRef} className="h-full w-full">
       <BackgroundMusicManager
         musicState={musicState}
-        onStateChange={updateMusicState}
+        onStateChange={updateMusicState} // This needs to be checked if onStateChange exists in BackgroundMusicManager
       />
+      <GameSettings isOpen={showSettings} onClose={() => setShowSettings(false)} />
+      <Backlog entries={backlogEntries} isOpen={showBacklog} onClose={() => setShowBacklog(false)} />
+      {showSaveSlots && (
+        <SaveSlots
+          mode={saveSlotsMode}
+          onClose={() => setShowSaveSlots(false)}
+          onLoad={handleSlotLoad}
+          currentData={sentenceData ? {
+            level: level ?? 0,
+            chapterIndex: step[0],
+            sentenceIndex: step[1],
+            playTime: 0,
+            chapterTitle: `Chapter ${level}`,
+            characterName: consoleSpeaker,
+            placeName: place,
+          } : undefined}
+        />
+      )}
+
       <Preload assets={assetList}>
         {battleConfig ? (
           <Battle
@@ -340,10 +441,22 @@ const Game = () => {
             onExitToTitle={handleExitToTitle}
           />
         ) : (
-          <div onClick={handleBackgroundClick} className="absolute inset-0">
-            <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 pt-[calc(env(safe-area-inset-top)+0.5rem)] sm:p-4">
+          <div className="absolute inset-0">
+            {/* Click area for touching background */}
+            <div className="absolute inset-0 z-0" onClick={handleBackgroundClick} />
+
+            <div className={`pointer-events-none absolute left-0 right-0 top-0 z-30 flex justify-start p-2 pt-[calc(env(safe-area-inset-top)+0.5rem)] sm:p-4 transition-opacity duration-300 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
               <div onClick={(e) => e.stopPropagation()}>
-                <SceneControls auto={auto} onAutoChange={setAuto} pass={passMode} onPassChange={setPassMode} />
+                <SceneControls
+                  auto={auto}
+                  onAutoChange={setAuto}
+                  pass={passMode}
+                  onPassChange={setPassMode}
+                  onBacklogOpen={() => setShowBacklog(true)}
+                  onSettingsOpen={() => setShowSettings(true)}
+                  onSaveOpen={handleManualSave}
+                  onLoadOpen={handleManualLoad}
+                />
               </div>
             </div>
 
@@ -355,7 +468,7 @@ const Game = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className="absolute bottom-0 z-10 max-h-96 object-contain"
+                  className="pointer-events-none absolute bottom-0 z-10 max-h-96 object-contain"
                   style={characterPosition}
                   src={characterImage}
                   alt={displayCharacter}
@@ -364,13 +477,14 @@ const Game = () => {
             </AnimatePresence>
             {displayPlace && assets[displayPlace]?.image && (
               <img
-                className={`absolute h-full w-full object-cover transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+                className={`pointer-events-none absolute h-full w-full object-cover transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
                 src={assets[displayPlace]?.image}
                 alt={displayPlace}
               />
             )}
+
             {sentence && (
-              <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] sm:px-3 sm:pb-2`}>
+              <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 flex ${consoleDockClass} px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] sm:px-3 sm:pb-2 transition-opacity duration-300 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
                 <div className={`pointer-events-auto flex ${consoleHeightClass} w-full flex-col overflow-hidden rounded-xl border border-white/15 bg-[#0b0b0b]/60 shadow-2xl backdrop-blur-md`}>
                   <div className="flex items-center justify-between border-b border-white/10 bg-[#1e1e1e]/80 px-3 py-1.5">
                     <div className="flex items-center gap-2">
@@ -504,7 +618,7 @@ const Game = () => {
           </div>
         )}
       </Preload>
-    </>
+    </div>
   );
 };
 

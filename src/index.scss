@@ -21,7 +21,7 @@ body {
 
   body {
     @apply m-0 w-screen;
-    height: 70dvh;
+    height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
     padding-top: env(safe-area-inset-top);
   }
@@ -304,4 +304,18 @@ body {
   60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+/* Range Input Custom Styling */
+input[type=range] {
+  @apply bg-transparent;
+  -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+  outline: none;
 }

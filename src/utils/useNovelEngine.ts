@@ -15,6 +15,7 @@ import {
 
 interface UseNovelEngineOptions {
   level?: number;
+  initialSentenceIndex?: number;
   autoAdvanceDelay?: number;
   onChapterEnd: () => void;
   onLoadError: () => void;
@@ -35,6 +36,7 @@ interface SceneState {
 
 const useNovelEngine = ({
   level = 0,
+  initialSentenceIndex = 0,
   autoAdvanceDelay = 1000,
   onChapterEnd,
   onLoadError,
@@ -112,7 +114,7 @@ const useNovelEngine = ({
   // Handle location-based music
   useEffect(() => {
     if (!place || musicState.priority === 'situational') return;
-    
+
     const placeAsset = assets[place];
     if (placeAsset?.music && musicState.priority !== 'location') {
       console.log(`🎵 Changing to location music: ${place} -> ${placeAsset.music}`);
@@ -340,7 +342,7 @@ const useNovelEngine = ({
   useEffect(() => {
     const currentInit = Date.now();
     initializationRef.current = currentInit;
-    
+
     loadCancelledRef.current = false;
     Promise.all([getJson<Chapter[]>(`chapter${level}`), getJson<Assets>(`assets${level}`)])
       .then(([chapterData, assetData]) => {
@@ -349,7 +351,7 @@ const useNovelEngine = ({
         }
         setChapters(chapterData);
         setAssets(assetData);
-        setStep([0, 0]);
+        setStep([0, initialSentenceIndex]);
         setDirect(undefined);
         resetSceneProgress();
         setActiveChoice(null);
@@ -368,7 +370,7 @@ const useNovelEngine = ({
         initializationRef.current = null;
       }
     };
-  }, [level, onLoadError, resetSceneProgress]);
+  }, [level, initialSentenceIndex, onLoadError, resetSceneProgress]);
 
   useEffect(() => {
     if (isChoiceNode(sentence)) {
@@ -444,6 +446,7 @@ const useNovelEngine = ({
     step,
     musicState,
     updateMusicState,
+    goToStep,
   };
 };
 

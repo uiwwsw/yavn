@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 
 import Btn from '@/Btn';
 import LoadBtn from '@/LoadBtn';
@@ -172,23 +173,31 @@ const StartMenuPage = () => {
         <div className={`absolute inset-0 bg-black/60 transition-opacity duration-1000 ${showMenu ? 'opacity-100' : 'opacity-0'}`} />
 
         <div className={`relative flex h-full w-full flex-col items-center justify-center p-6 transition-all duration-700 ${showMenu ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'}`}>
-          <div className="flex w-full max-w-sm flex-col gap-6">
-            <Btn
-              onClick={handleStart}
-              className="group relative overflow-hidden border-2 border-white/20 bg-black/40 px-8 py-4 text-xl font-bold tracking-widest text-white backdrop-blur-sm transition-all hover:border-white/60 hover:bg-black/60 hover:scale-105 active:scale-95"
-            >
-              <span className="relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">시작하기</span>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-            </Btn>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10 flex flex-col items-center gap-8"
+          >
+            <h1 className="select-none font-black text-6xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+              VISUAL NOVEL
+            </h1>
 
-            <LoadBtn
-              onChange={handleLoad}
-              className="group relative overflow-hidden border-2 border-white/20 bg-black/40 px-8 py-4 text-xl font-bold tracking-widest text-white backdrop-blur-sm transition-all hover:border-white/60 hover:bg-black/60 hover:scale-105 active:scale-95"
-            >
-              <span className="relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">불러오기</span>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-            </LoadBtn>
-          </div>
+            <div className="flex flex-col gap-4 w-52">
+              <Btn onClick={handleStart} className="group relative overflow-hidden bg-white/10 hover:bg-white/20 transition-all duration-300 py-3 rounded-lg border border-white/10">
+                <span className="relative z-10 group-hover:tracking-widest transition-all duration-300 font-bold">START</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              </Btn>
+
+              <LoadBtn onChange={handleLoad} className="group relative overflow-hidden bg-white/10 hover:bg-white/20 transition-all duration-300 py-3 rounded-lg border border-white/10">
+                <span className="relative z-10 group-hover:tracking-widest transition-all duration-300 font-bold">LOAD</span>
+              </LoadBtn>
+            </div>
+
+            <div className="mt-8 text-[10px] text-white/30 tracking-[0.2em] uppercase">
+              Press any key to start
+            </div>
+          </motion.div>
         </div>
 
         {!showMenu && (
