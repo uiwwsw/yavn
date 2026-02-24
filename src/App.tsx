@@ -16,14 +16,29 @@ function useAdvanceByKey() {
 }
 
 export default function App() {
-  const { background, foregroundBg, characters, dialog, effect, error, busy, isFinished, game } = useVNStore();
+  const {
+    background,
+    foregroundBg,
+    characters,
+    dialog,
+    effect,
+    error,
+    busy,
+    isFinished,
+    game,
+    chapterIndex,
+    chapterTotal,
+    chapterLoading,
+    chapterLoadingProgress,
+    chapterLoadingMessage,
+  } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'sample' | 'uploaded'>('launcher');
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (window.location.pathname === '/sample') {
       setBootMode('sample');
-      void loadGameFromUrl('/sample.yaml');
+      void loadGameFromUrl('/sample/');
     } else {
       setBootMode('launcher');
     }
@@ -63,6 +78,9 @@ export default function App() {
             ZIP 업로드
             <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
           </label>
+          <a className="sample-zip-link" href="/sample/sample.zip" download>
+            sample.zip 다운로드
+          </a>
           <a className="sample-link" href="/sample">
             샘플 게임 보기
           </a>
@@ -78,14 +96,44 @@ export default function App() {
       {background && <img className="bg" src={background} alt="background" />}
 
       <div className="char-layer">
-        {characters.left && <img className="char left" src={characters.left.image} alt={characters.left.id} />}
-        {characters.center && <img className="char center" src={characters.center.image} alt={characters.center.id} />}
-        {characters.right && <img className="char right" src={characters.right.image} alt={characters.right.id} />}
+        {characters.left && (
+          <img
+            key={`left-${characters.left.id}-${characters.left.image}`}
+            className="char left"
+            src={characters.left.image}
+            alt={characters.left.id}
+            loading="eager"
+            decoding="async"
+          />
+        )}
+        {characters.center && (
+          <img
+            key={`center-${characters.center.id}-${characters.center.image}`}
+            className="char center"
+            src={characters.center.image}
+            alt={characters.center.id}
+            loading="eager"
+            decoding="async"
+          />
+        )}
+        {characters.right && (
+          <img
+            key={`right-${characters.right.id}-${characters.right.image}`}
+            className="char right"
+            src={characters.right.image}
+            alt={characters.right.id}
+            loading="eager"
+            decoding="async"
+          />
+        )}
       </div>
       {foregroundBg && <img className="bg-foreground" src={foregroundBg} alt="foreground background" />}
 
       <div className="hud">
-        <div className="meta">{game?.meta.title ?? 'Loading...'}</div>
+        <div className="meta">
+          {game?.meta.title ?? 'Loading...'}
+          {chapterTotal > 0 ? ` (${chapterIndex}/${chapterTotal})` : ''}
+        </div>
         <div className="hint">{uploading ? 'ZIP Loading...' : 'Click / Enter / Space'}</div>
       </div>
 
@@ -105,6 +153,16 @@ export default function App() {
             </div>
           )}
           {error.details && <div className="error-details">{error.details}</div>}
+        </div>
+      )}
+
+      {chapterLoading && (
+        <div className="chapter-loading">
+          <div className="chapter-loading-title">{chapterLoadingMessage ?? 'Chapter loading...'}</div>
+          <div className="chapter-loading-bar">
+            <span style={{ width: `${Math.floor(chapterLoadingProgress * 100)}%` }} />
+          </div>
+          <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
         </div>
       )}
     </div>

@@ -1,0 +1,186 @@
+meta:
+  title: "잠긴 다실의 비명 - 하편"
+  author: "VN Engine Demo"
+  version: "1.0"
+
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
+assets:
+  backgrounds:
+    mountain_rain: assets/bg/mountain_rain.svg
+    ryokan_hall: assets/bg/ryokan_hall.svg
+    tea_room: assets/bg/tea_room.svg
+    police_tape: assets/bg/police_tape.svg
+
+  characters:
+    conan:
+      base: assets/char/conan/base.svg
+      emotions:
+        think: assets/char/conan/think.svg
+        serious: assets/char/conan/serious.svg
+
+    ran:
+      base: assets/char/ran/base.svg
+      emotions:
+        surprised: assets/char/ran/surprised.svg
+        worried: assets/char/ran/worried.svg
+
+    kogoro:
+      base: assets/char/kogoro/base.svg
+      emotions:
+        proud: assets/char/kogoro/proud.svg
+        angry: assets/char/kogoro/angry.svg
+
+    kenji:
+      base: assets/char/kenji/base.svg
+      emotions:
+        angry: assets/char/kenji/angry.svg
+
+    reiko:
+      base: assets/char/reiko/base.svg
+      emotions:
+        nervous: assets/char/reiko/nervous.svg
+
+    shinichi:
+      base: assets/char/shinichi/base.svg
+      emotions:
+        cold: assets/char/shinichi/cold.svg
+
+    haruo:
+      base: assets/char/haruo/base.svg
+      emotions:
+        scared: assets/char/haruo/scared.svg
+
+  music:
+    rain: assets/music/rain.wav
+    tension: assets/music/tension.wav
+    mystery: assets/music/mystery.wav
+
+  sfx:
+    thunder: assets/sfx/thunder.wav
+    scream: assets/sfx/scream.wav
+    door: assets/sfx/door.wav
+
+script:
+  - scene: reenactment
+  - scene: culprit_reveal
+  - scene: resolution
+
+scenes:
+  reenactment:
+    actions:
+      - bg: ryokan_hall
+      - bgFront: police_tape
+      - music: tension
+      - char:
+          id: shinichi
+          position: right
+          emotion: cold
+      - char:
+          id: reiko
+          position: left
+          emotion: nervous
+      - char:
+          id: conan
+          position: center
+          emotion: think
+      - say:
+          text: "코난은 사건 당시 동선을 그대로 재현하게 했다."
+      - say:
+          char: 코난
+          text: "신이치 씨, 당신이 피해자와 마지막으로 말다툼했죠."
+      - say:
+          char: 신이치
+          text: "맞아. 하지만 그 뒤론 다실에 들어가지 않았어."
+      - effect: darken
+      - say:
+          char: 코난
+          text: "거짓말이야. 당신 외투 소매에 있던 찻잎 가루가 증거야."
+      - char:
+          id: reiko
+          position: left
+          emotion: nervous
+      - say:
+          char: 레이코
+          text: "저도 봤어요… 그분이 복도 끝 창고에서 뭔가를 꺼내는 걸."
+      - effect: blur
+      - sound: thunder
+      - say:
+          text: "순간, 신이치의 표정이 차갑게 굳었다."
+      - goto: culprit_reveal
+
+  culprit_reveal:
+    actions:
+      - bg: tea_room
+      - clearBgFront: true
+      - music: mystery
+      - char:
+          id: conan
+          position: center
+          emotion: serious
+      - char:
+          id: shinichi
+          position: right
+          emotion: cold
+      - char:
+          id: kogoro
+          position: left
+          emotion: angry
+      - say:
+          char: 코난
+          text: "<speed=25>트릭은 간단해. 당신은 먼저 다실에 숨어 있다가 켄지를 찔렀어.</speed>"
+      - say:
+          char: 코난
+          text: "그리고 빗장에 묶어둔 낚싯줄을 문틈으로 빼, 밖에서 당겨 밀실처럼 꾸몄지."
+      - effect: zoom
+      - say:
+          char: 코고로
+          text: "결정적 증거는 줄이 스친 문틀의 미세한 긁힘 자국이다!"
+      - char:
+          id: shinichi
+          position: right
+          emotion: cold
+      - effect: tilt
+      - say:
+          char: 신이치
+          text: "……하, 어린애 주제에."
+      - effect: flash
+      - say:
+          char: 신이치
+          text: "<speed=20>그래, 내가 죽였다. 계약서를 빼앗기면 전부 끝이었으니까.</speed>"
+      - goto: resolution
+
+  resolution:
+    actions:
+      - bg: police_tape
+      - music: tension
+      - char:
+          id: ran
+          position: left
+          emotion: worried
+      - char:
+          id: conan
+          position: center
+          emotion: think
+      - char:
+          id: kogoro
+          position: right
+          emotion: proud
+      - say:
+          text: "잠시 후, 경찰이 도착해 신이치를 연행했다."
+      - sound: door
+      - wait: 600
+      - say:
+          char: 란
+          text: "코난, 또 네가 사건을 푼 거지…?"
+      - say:
+          char: 코난
+          text: "아하하… 우연이야, 란 누나."
+      - effect: pulse
+      - say:
+          text: "폭우는 잦아들고, 료칸엔 다시 고요가 찾아왔다."
+      - say:
+          text: "<speed=22>CASE CLOSED</speed>"

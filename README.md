@@ -1,6 +1,6 @@
 # Visual Novel Engine (Web)
 
-YAML DSL(`sample/sample.yaml`)을 읽어 웹에서 실행하는 비주얼노벨 엔진입니다.
+YAML DSL(`sample/1.yaml`, `sample/2.yaml`...)을 숫자 순서로 읽어 웹에서 실행하는 비주얼노벨 엔진입니다.
 
 ## 실행
 
@@ -12,6 +12,12 @@ npm run dev
 라우팅:
 - `/sample`: 샘플 게임 즉시 실행
 - `/`: ZIP 업로드 가이드 + ZIP 업로드 후 즉시 실행
+
+## 챕터 로딩 규칙
+
+- ZIP 또는 폴더에 `0.yaml`, `1.yaml`, `2.yaml`... 형태가 있으면 숫자 순서대로 자동 실행됩니다.
+- `0.yaml`이 없으면 `1.yaml`부터 시작합니다.
+- 각 챕터 시작 전에 해당 YAML의 에셋을 전부 프리로드하고 로딩 UI를 표시합니다.
 
 ## 구현 범위
 
@@ -25,7 +31,9 @@ npm run dev
 
 ## 샘플 구조
 
-- `sample/sample.yaml`
+- `sample/1.yaml`
+- `sample/2.yaml`
+- `sample/sample.zip`
 - `sample/assets/bg/*.svg`
 - `sample/assets/char/**.svg`
 - `sample/assets/music/*.wav`

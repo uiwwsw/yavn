@@ -1,5 +1,5 @@
 meta:
-  title: "잠긴 다실의 비명"
+  title: "잠긴 다실의 비명 - 상편"
   author: "VN Engine Demo"
   version: "1.0"
 
@@ -68,6 +68,7 @@ script:
   - scene: incident
   - scene: discovery
   - scene: conan_arrives
+  - scene: investigation
 
 scenes:
   incident:
@@ -92,10 +93,10 @@ scenes:
           position: right
           emotion: cold
       - say:
-          char: kenji
+          char: 켄지
           text: "<speed=25>이 계약, 지금 당장 철회하지 않으면 끝장이야!</speed>"
       - say:
-          char: shinichi
+          char: 신이치
           text: "협박으로 해결될 문제는 아니지."
       - char:
           id: reiko
@@ -105,13 +106,13 @@ scenes:
           position: center
           emotion: nervous
       - say:
-          char: reiko
+          char: 레이코
           text: "두 분 다, 여기선 그만하시죠…"
       - effect: pulse
       - effect: shake
       - sound: thunder
       - say:
-          char: kenji
+          char: 켄지
           text: "<speed=20>닥쳐! 네가 끼어들 일이 아니야!</speed>"
       - say:
           text: "격렬한 말다툼 끝에, 미즈하라는 다실 안으로 들어가 문을 잠갔다."
@@ -138,7 +139,7 @@ scenes:
           position: left
           emotion: scared
       - say:
-          char: haruo
+          char: 하루오
           text: "이, 이럴 수가…!"
       - say:
           text: "바닥에는 피를 흘린 채 쓰러진 미즈하라 켄지."
@@ -183,27 +184,27 @@ scenes:
           position: center
           emotion: think
       - say:
-          char: ran
+          char: 란
           text: "아저씨! 큰일이에요! 사람이 죽었대요!"
       - say:
-          char: kogoro
+          char: 코고로
           text: "<speed=25>흥! 역시 나, 명탐정 모리 코고로의 차례군.</speed>"
       - char:
           id: ran
           position: left
           emotion: worried
       - say:
-          char: ran
+          char: 란
           text: "아저씨, 현장이 너무 이상해요… 뭔가 놓치고 있는 것 같아요."
       - char:
           id: kogoro
           position: right
           emotion: angry
       - say:
-          char: kogoro
+          char: 코고로
           text: "현장 보존부터다! 아무도 함부로 다실에 접근하지 마!"
       - say:
-          char: conan
+          char: 코난
           text: "……(밀실, 폭우, 그리고 다툼.)"
       - char:
           id: conan
@@ -211,14 +212,52 @@ scenes:
           emotion: serious
       - effect: zoom
       - say:
-          char: conan
+          char: 코난
           text: "<speed=45>뭔가 이상해… 이 사건, 단순하지 않아.</speed>"
-      - wait: 800
+      - goto: investigation
+
+  investigation:
+    actions:
+      - bg: tea_room
+      - music: mystery
+      - clearBgFront: true
+      - char:
+          id: conan
+          position: center
+          emotion: serious
+      - char:
+          id: ran
+          position: left
+          emotion: worried
+      - char:
+          id: kogoro
+          position: right
+          emotion: angry
       - say:
-          text: "소년 탐정, 에도가와 코난."
+          char: 코난
+          text: "다실 문고리를 안쪽에서 잠갔다면, 범인은 어떻게 빠져나갔지?"
       - say:
-          text: "그의 추리가, 지금부터 시작된다."
-      - effect: tilt
+          text: "코난의 시선이 찻상 위의 젖은 찻잔과 바닥의 진흙 자국에 멈췄다."
+      - effect: zoom
+      - say:
+          char: 코난
+          text: "<speed=45>비가 오던 밤에, 신발에 진흙이 하나도 없다…? 누군가 미리 안에 있었다.</speed>"
+      - char:
+          id: ran
+          position: left
+          emotion: surprised
+      - say:
+          char: 란
+          text: "그럼 범인이 피해자보다 먼저 다실에 숨어 있었다는 거야?"
+      - char:
+          id: kogoro
+          position: right
+          emotion: proud
+      - say:
+          char: 코고로
+          text: "좋아! 용의자 전원을 복도로 집합시켜라!"
+      - effect: pulse
+      - sound: door
       - effect: flash
       - say:
-          text: "<speed=20>— 사건 조사 시작 —</speed>"
+          text: "<speed=20>다음 장에서 범인의 정체가 드러난다…</speed>"

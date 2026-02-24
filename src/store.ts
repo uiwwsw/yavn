@@ -13,6 +13,11 @@ type VNState = {
   baseUrl: string;
   assetOverrides: Record<string, string>;
   error?: VNError;
+  chapterIndex: number;
+  chapterTotal: number;
+  chapterLoading: boolean;
+  chapterLoadingProgress: number;
+  chapterLoadingMessage?: string;
   currentSceneId: string;
   actionIndex: number;
   background?: string;
@@ -25,6 +30,8 @@ type VNState = {
   waitingInput: boolean;
   isFinished: boolean;
   setError: (error?: VNError) => void;
+  setChapterMeta: (index: number, total: number) => void;
+  setChapterLoading: (loading: boolean, progress?: number, message?: string) => void;
   setGame: (game: GameData, baseUrl: string, assetOverrides?: Record<string, string>) => void;
   setCursor: (sceneId: string, actionIndex: number) => void;
   setBackground: (url: string) => void;
@@ -49,6 +56,11 @@ const initialDialog: DialogState = {
 export const useVNStore = create<VNState>((set) => ({
   baseUrl: '/',
   assetOverrides: {},
+  chapterIndex: 0,
+  chapterTotal: 0,
+  chapterLoading: false,
+  chapterLoadingProgress: 0,
+  chapterLoadingMessage: undefined,
   currentSceneId: '',
   actionIndex: 0,
   characters: {},
@@ -57,6 +69,9 @@ export const useVNStore = create<VNState>((set) => ({
   waitingInput: false,
   isFinished: false,
   setError: (error) => set({ error }),
+  setChapterMeta: (chapterIndex, chapterTotal) => set({ chapterIndex, chapterTotal }),
+  setChapterLoading: (chapterLoading, chapterLoadingProgress = 0, chapterLoadingMessage) =>
+    set({ chapterLoading, chapterLoadingProgress, chapterLoadingMessage }),
   setGame: (game, baseUrl, assetOverrides = {}) =>
     set({
       game,
@@ -97,5 +112,8 @@ export const useVNStore = create<VNState>((set) => ({
       busy: false,
       waitingInput: false,
       isFinished: false,
+      chapterLoading: false,
+      chapterLoadingProgress: 0,
+      chapterLoadingMessage: undefined,
     }),
 }));
