@@ -377,6 +377,54 @@ body,
   opacity: 0.8;
 }
 
+.ending-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 8, 14, 0.72);
+}
+
+.ending-card {
+  width: min(420px, calc(100% - 32px));
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(160deg, rgba(20, 26, 38, 0.96), rgba(17, 12, 25, 0.95));
+  padding: 22px 20px;
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+.ending-card h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+  color: #ffe0a6;
+}
+
+.ending-card p {
+  margin: 12px 0 0;
+  color: #e8edf6;
+  line-height: 1.55;
+}
+
+.ending-restart {
+  margin-top: 16px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f6d484, #eeb14e);
+  color: #1f1505;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.ending-restart:hover {
+  filter: brightness(1.05);
+}
+
 .effect-shake {
   animation: shake 0.28s ease;
 }

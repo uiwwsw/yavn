@@ -1,6 +1,6 @@
 # Visual Novel Engine (Web)
 
-YAML DSL(`sample/1.yaml`, `sample/2.yaml`...)을 숫자 순서로 읽어 웹에서 실행하는 비주얼노벨 엔진입니다.
+YAML DSL(`public/sample/1.yaml`, `public/sample/2.yaml`...)을 숫자 순서로 읽어 웹에서 실행하는 비주얼노벨 엔진입니다.
 
 ## 실행
 
@@ -27,14 +27,14 @@ npm run dev
 4. `goto` 점프, `wait` 타이머, `shake/flash` 이펙트
 5. `localStorage` 오토세이브(씬/액션 포인터)
 6. 에러 오버레이(YAML parse 에러 line/column, 스키마/참조 에러)
-7. 샘플 게임 + 초기 에셋(`sample/`)
+7. 샘플 게임 + 초기 에셋(`public/sample/`)
 
 ## 샘플 구조
 
-- `sample/1.yaml`
-- `sample/2.yaml`
-- `sample/sample.zip`
-- `sample/assets/bg/*.svg`
-- `sample/assets/char/**.svg`
-- `sample/assets/music/*.wav`
-- `sample/assets/sfx/*.wav`
+- `public/sample/1.yaml`
+- `public/sample/2.yaml`
+- `public/sample/sample.zip`
+- `public/sample/assets/bg/*.svg`
+- `public/sample/assets/char/**.svg`
+- `public/sample/assets/music/*.wav`
+- `public/sample/assets/sfx/*.wav`

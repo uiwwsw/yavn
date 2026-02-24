@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { handleAdvance, loadGameFromUrl, loadGameFromZip } from './engine';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { handleAdvance, loadGameFromUrl, loadGameFromZip, restartFromBeginning } from './engine';
 import { useVNStore } from './store';
 
 function useAdvanceByKey() {
@@ -62,6 +62,11 @@ export default function App() {
     setBootMode('uploaded');
     await loadGameFromZip(file);
     setUploading(false);
+  };
+
+  const onRestart = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    void restartFromBeginning();
   };
 
   if (bootMode === 'launcher') {
@@ -210,6 +215,18 @@ export default function App() {
             <span style={{ width: `${Math.floor(chapterLoadingProgress * 100)}%` }} />
           </div>
           <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
+        </div>
+      )}
+
+      {isFinished && (
+        <div className="ending-overlay">
+          <div className="ending-card">
+            <h2>THE END</h2>
+            <p>모든 챕터를 끝까지 플레이했습니다.</p>
+            <button type="button" className="ending-restart" onClick={onRestart}>
+              처음부터 다시 시작
+            </button>
+          </div>
         </div>
       )}
     </div>

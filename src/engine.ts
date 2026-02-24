@@ -871,3 +871,14 @@ export function handleAdvance() {
 
   runToNextPause();
 }
+
+export async function restartFromBeginning() {
+  if (preparedChapters.length === 0) {
+    return;
+  }
+  localStorage.removeItem(AUTOSAVE_KEY);
+  clearTimers();
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+  await startChapter(0);
+}
