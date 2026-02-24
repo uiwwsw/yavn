@@ -1,0 +1,209 @@
+:root {
+  font-family: 'Trebuchet MS', 'Noto Sans KR', sans-serif;
+  color: #f6f2e8;
+  background: radial-gradient(circle at 20% 20%, #42515f, #191919 60%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(140deg, #10222d, #3d2232);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(11, 14, 26, 0.35), rgba(12, 8, 4, 0.7));
+  z-index: 2;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: fadeIn 0.5s ease;
+}
+
+.char-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.char {
+  position: absolute;
+  bottom: 18vh;
+  max-height: 68vh;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.45));
+  animation: riseIn 0.35s ease;
+}
+
+.left {
+  left: 8%;
+}
+
+.center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.right {
+  right: 8%;
+}
+
+.hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}
+
+.dialog-box {
+  position: absolute;
+  z-index: 6;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  min-height: 162px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(to bottom, rgba(15, 23, 28, 0.9), rgba(23, 16, 25, 0.88));
+  backdrop-filter: blur(4px);
+}
+
+.speaker {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffde9a;
+  margin-bottom: 8px;
+}
+
+.text {
+  font-size: 20px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  min-height: 84px;
+}
+
+.status {
+  text-align: right;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.error-overlay {
+  position: absolute;
+  z-index: 10;
+  inset: 20px;
+  background: rgba(20, 5, 8, 0.95);
+  border: 1px solid #ff6c7f;
+  border-radius: 10px;
+  padding: 16px;
+  overflow: auto;
+}
+
+.error-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.error-body {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.error-pos,
+.error-details {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.effect-shake {
+  animation: shake 0.28s ease;
+}
+
+.effect-flash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  background: rgba(255, 255, 255, 0.88);
+  pointer-events: none;
+  animation: flash 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes flash {
+  from { opacity: 0.95; }
+  to { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .char {
+    max-height: 58vh;
+    bottom: 22vh;
+  }
+
+  .text {
+    font-size: 17px;
+    min-height: 72px;
+  }
+
+  .dialog-box {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+}

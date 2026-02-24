@@ -1,0 +1,175 @@
+meta:
+  title: "잠긴 다실의 비명"
+  author: "VN Engine Demo"
+  version: "1.0"
+
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
+assets:
+  backgrounds:
+    mountain_rain: assets/bg/mountain_rain.svg
+    ryokan_hall: assets/bg/ryokan_hall.svg
+    tea_room: assets/bg/tea_room.svg
+    police_tape: assets/bg/police_tape.svg
+
+  characters:
+    conan:
+      base: assets/char/conan/base.svg
+      emotions:
+        think: assets/char/conan/think.svg
+        serious: assets/char/conan/serious.svg
+
+    ran:
+      base: assets/char/ran/base.svg
+      emotions:
+        surprised: assets/char/ran/surprised.svg
+        worried: assets/char/ran/worried.svg
+
+    kogoro:
+      base: assets/char/kogoro/base.svg
+      emotions:
+        proud: assets/char/kogoro/proud.svg
+        angry: assets/char/kogoro/angry.svg
+
+    kenji:
+      base: assets/char/kenji/base.svg
+      emotions:
+        angry: assets/char/kenji/angry.svg
+
+    reiko:
+      base: assets/char/reiko/base.svg
+      emotions:
+        nervous: assets/char/reiko/nervous.svg
+
+    shinichi:
+      base: assets/char/shinichi/base.svg
+      emotions:
+        cold: assets/char/shinichi/cold.svg
+
+    haruo:
+      base: assets/char/haruo/base.svg
+      emotions:
+        scared: assets/char/haruo/scared.svg
+
+  music:
+    rain: assets/music/rain.wav
+    tension: assets/music/tension.wav
+    mystery: assets/music/mystery.wav
+
+  sfx:
+    thunder: assets/sfx/thunder.wav
+    scream: assets/sfx/scream.wav
+    door: assets/sfx/door.wav
+
+script:
+  - scene: incident
+  - scene: discovery
+  - scene: conan_arrives
+
+scenes:
+  incident:
+    actions:
+      - bg: mountain_rain
+      - music: rain
+      - say:
+          text: "산속 깊은 곳, 폭우에 고립된 고급 전통 료칸."
+      - bg: tea_room
+      - char:
+          id: kenji
+          position: left
+          emotion: angry
+      - char:
+          id: shinichi
+          position: right
+          emotion: cold
+      - say:
+          char: kenji
+          text: "<speed=25>이 계약, 지금 당장 철회하지 않으면 끝장이야!</speed>"
+      - say:
+          char: shinichi
+          text: "협박으로 해결될 문제는 아니지."
+      - char:
+          id: reiko
+          position: center
+          emotion: nervous
+      - say:
+          char: reiko
+          text: "두 분 다, 여기선 그만하시죠…"
+      - effect: shake
+      - sound: thunder
+      - say:
+          char: kenji
+          text: "<speed=20>닥쳐! 네가 끼어들 일이 아니야!</speed>"
+      - say:
+          text: "격렬한 말다툼 끝에, 미즈하라는 다실 안으로 들어가 문을 잠갔다."
+      - sound: door
+      - wait: 800
+      - sound: scream
+      - effect: flash
+      - say:
+          text: "<speed=15>꺄아아아악!!</speed>"
+      - goto: discovery
+
+  discovery:
+    actions:
+      - music: tension
+      - bg: tea_room
+      - say:
+          text: "문을 부수고 들어간 다실 안."
+      - char:
+          id: haruo
+          position: left
+          emotion: scared
+      - say:
+          char: haruo
+          text: "이, 이럴 수가…!"
+      - say:
+          text: "바닥에는 피를 흘린 채 쓰러진 미즈하라 켄지."
+      - say:
+          text: "방 안에는 범인의 흔적도, 탈출 경로도 보이지 않는다."
+      - say:
+          text: "<speed=45>문은 안쪽에서 잠겨 있었고, 창문은 빗물로 흠뻑 젖어 있었다.</speed>"
+      - wait: 1000
+      - say:
+          text: "완벽한 밀실 살인 사건."
+      - goto: conan_arrives
+
+  conan_arrives:
+    actions:
+      - bg: ryokan_hall
+      - music: mystery
+      - char:
+          id: ran
+          position: left
+          emotion: surprised
+      - char:
+          id: kogoro
+          position: right
+          emotion: proud
+      - char:
+          id: conan
+          position: center
+          emotion: think
+      - say:
+          char: ran
+          text: "아저씨! 큰일이에요! 사람이 죽었대요!"
+      - say:
+          char: kogoro
+          text: "<speed=25>흥! 역시 나, 명탐정 모리 코고로의 차례군.</speed>"
+      - say:
+          char: conan
+          text: "……(밀실, 폭우, 그리고 다툼.)"
+      - say:
+          char: conan
+          text: "<speed=45>뭔가 이상해… 이 사건, 단순하지 않아.</speed>"
+      - wait: 800
+      - say:
+          text: "소년 탐정, 에도가와 코난."
+      - say:
+          text: "그의 추리가, 지금부터 시작된다."
+      - effect: flash
+      - say:
+          text: "<speed=20>— 사건 조사 시작 —</speed>"

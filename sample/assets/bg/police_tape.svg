@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#111"/>
+  <rect x="0" y="420" width="1920" height="120" fill="#f8d200"/>
+  <rect x="0" y="560" width="1920" height="120" fill="#f8d200"/>
+  <text x="120" y="500" font-size="72" fill="#202020" font-family="sans-serif">POLICE LINE</text>
+  <text x="120" y="640" font-size="72" fill="#202020" font-family="sans-serif">DO NOT CROSS</text>
+</svg>
