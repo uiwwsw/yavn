@@ -1,8 +1,18 @@
+import JSZip from 'jszip';
 import { useVNStore } from './store';
 import { parseGameYaml } from './parser';
 import type { GameData } from './types';
 
 const AUTOSAVE_KEY = 'vn-engine-autosave';
+const EFFECT_DURATIONS: Record<string, number> = {
+  shake: 280,
+  flash: 350,
+  zoom: 420,
+  blur: 420,
+  darken: 500,
+  pulse: 500,
+  tilt: 320,
+};
 
 let waitTimer: number | undefined;
 let typeTimer: number | undefined;
@@ -25,6 +35,17 @@ function clearTimers() {
 }
 
 function resolveAsset(baseUrl: string, path: string): string {
+  const overrides = useVNStore.getState().assetOverrides;
+  if (overrides[path]) {
+    return overrides[path];
+  }
+  const normalized = path.replace(/^\.?\//, '');
+  if (overrides[normalized]) {
+    return overrides[normalized];
+  }
+  if (/^(blob:|data:|https?:)/i.test(path)) {
+    return path;
+  }
   try {
     return new URL(path, baseUrl).toString();
   } catch {
@@ -166,6 +187,22 @@ function runToNextPause(loopGuard = 0) {
   if ('bg' in action) {
     const path = game.assets.backgrounds[action.bg];
     useVNStore.getState().setBackground(resolveAsset(state.baseUrl, path));
+    useVNStore.getState().setForegroundBg(undefined);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('bgFront' in action) {
+    const path = game.assets.backgrounds[action.bgFront];
+    useVNStore.getState().setForegroundBg(resolveAsset(state.baseUrl, path));
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('clearBgFront' in action) {
+    useVNStore.getState().setForegroundBg(undefined);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -204,7 +241,8 @@ function runToNextPause(loopGuard = 0) {
 
   if ('effect' in action) {
     useVNStore.getState().setEffect(action.effect);
-    effectTimer = window.setTimeout(() => useVNStore.getState().setEffect(undefined), 350);
+    const duration = EFFECT_DURATIONS[action.effect] ?? 350;
+    effectTimer = window.setTimeout(() => useVNStore.getState().setEffect(undefined), duration);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -261,7 +299,7 @@ export async function loadGameFromUrl(url: string) {
   }
 
   const baseUrl = new URL('.', new URL(url, window.location.origin)).toString();
-  useVNStore.getState().setGame(result.data, baseUrl);
+  useVNStore.getState().setGame(result.data, baseUrl, {});
 
   const save = result.data.settings.autoSave ? loadProgress() : undefined;
   if (save && result.data.scenes[save.sceneId]) {
@@ -269,6 +307,52 @@ export async function loadGameFromUrl(url: string) {
   }
 
   runToNextPause();
+}
+
+export async function loadGameFromZip(file: File) {
+  clearTimers();
+  useVNStore.getState().setError(undefined);
+  useVNStore.getState().resetPresentation();
+  playMusic(undefined);
+
+  try {
+    const zip = await JSZip.loadAsync(file);
+    const files = Object.values(zip.files).filter((entry) => !entry.dir);
+    const yamlFile =
+      files.find((entry) => /(^|\/)sample\.ya?ml$/i.test(entry.name)) ??
+      files.find((entry) => /\.ya?ml$/i.test(entry.name));
+
+    if (!yamlFile) {
+      useVNStore.getState().setError({ message: 'ZIP 안에서 .yaml 또는 .yml 파일을 찾지 못했습니다.' });
+      return;
+    }
+
+    const raw = await yamlFile.async('text');
+    const parsed = parseGameYaml(raw);
+    if (!parsed.data) {
+      useVNStore.getState().setError(parsed.error);
+      return;
+    }
+
+    const yamlDir = yamlFile.name.includes('/') ? yamlFile.name.slice(0, yamlFile.name.lastIndexOf('/') + 1) : '';
+    const assetOverrides: Record<string, string> = {};
+
+    for (const entry of files) {
+      const relativeToYaml = entry.name.startsWith(yamlDir) ? entry.name.slice(yamlDir.length) : entry.name;
+      const blob = await entry.async('blob');
+      const blobUrl = URL.createObjectURL(blob);
+      assetOverrides[relativeToYaml] = blobUrl;
+      assetOverrides[`./${relativeToYaml}`] = blobUrl;
+      assetOverrides[entry.name] = blobUrl;
+    }
+
+    useVNStore.getState().setGame(parsed.data, window.location.href, assetOverrides);
+    runToNextPause();
+  } catch (error) {
+    useVNStore.getState().setError({
+      message: error instanceof Error ? error.message : 'ZIP 처리 중 오류가 발생했습니다.',
+    });
+  }
 }
 
 export function handleAdvance() {

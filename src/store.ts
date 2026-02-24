@@ -11,10 +11,12 @@ type DialogState = {
 type VNState = {
   game?: GameData;
   baseUrl: string;
+  assetOverrides: Record<string, string>;
   error?: VNError;
   currentSceneId: string;
   actionIndex: number;
   background?: string;
+  foregroundBg?: string;
   characters: Partial<Record<Position, CharacterSlot>>;
   currentMusic?: string;
   dialog: DialogState;
@@ -23,9 +25,10 @@ type VNState = {
   waitingInput: boolean;
   isFinished: boolean;
   setError: (error?: VNError) => void;
-  setGame: (game: GameData, baseUrl: string) => void;
+  setGame: (game: GameData, baseUrl: string, assetOverrides?: Record<string, string>) => void;
   setCursor: (sceneId: string, actionIndex: number) => void;
   setBackground: (url: string) => void;
+  setForegroundBg: (url?: string) => void;
   setCharacter: (position: Position, slot: CharacterSlot) => void;
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
@@ -45,6 +48,7 @@ const initialDialog: DialogState = {
 
 export const useVNStore = create<VNState>((set) => ({
   baseUrl: '/',
+  assetOverrides: {},
   currentSceneId: '',
   actionIndex: 0,
   characters: {},
@@ -53,14 +57,16 @@ export const useVNStore = create<VNState>((set) => ({
   waitingInput: false,
   isFinished: false,
   setError: (error) => set({ error }),
-  setGame: (game, baseUrl) =>
+  setGame: (game, baseUrl, assetOverrides = {}) =>
     set({
       game,
       baseUrl,
+      assetOverrides,
       error: undefined,
       currentSceneId: game.script[0].scene,
       actionIndex: 0,
       background: undefined,
+      foregroundBg: undefined,
       characters: {},
       currentMusic: undefined,
       dialog: initialDialog,
@@ -71,6 +77,7 @@ export const useVNStore = create<VNState>((set) => ({
     }),
   setCursor: (sceneId, actionIndex) => set({ currentSceneId: sceneId, actionIndex }),
   setBackground: (url) => set({ background: url }),
+  setForegroundBg: (foregroundBg) => set({ foregroundBg }),
   setCharacter: (position, slot) =>
     set((state) => ({ characters: { ...state.characters, [position]: slot } })),
   setMusic: (url) => set({ currentMusic: url }),
@@ -82,6 +89,7 @@ export const useVNStore = create<VNState>((set) => ({
   resetPresentation: () =>
     set({
       background: undefined,
+      foregroundBg: undefined,
       characters: {},
       currentMusic: undefined,
       dialog: initialDialog,

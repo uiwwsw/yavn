@@ -9,7 +9,9 @@ npm install
 npm run dev
 ```
 
-기본 로딩 파일: `/sample.yaml` (Vite `publicDir: sample` 설정)
+라우팅:
+- `/sample`: 샘플 게임 즉시 실행
+- `/`: ZIP 업로드 가이드 + ZIP 업로드 후 즉시 실행
 
 ## 구현 범위
 

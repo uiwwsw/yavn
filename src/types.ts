@@ -17,6 +17,8 @@ export type CharAction = {
 
 export type Action =
   | { bg: string }
+  | { bgFront: string }
+  | { clearBgFront: true }
   | { music: string }
   | { sound: string }
   | CharAction

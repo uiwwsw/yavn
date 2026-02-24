@@ -80,7 +80,13 @@ scenes:
       - char:
           id: kenji
           position: left
+      - char:
+          id: kenji
+          position: left
           emotion: angry
+      - char:
+          id: shinichi
+          position: right
       - char:
           id: shinichi
           position: right
@@ -94,10 +100,14 @@ scenes:
       - char:
           id: reiko
           position: center
+      - char:
+          id: reiko
+          position: center
           emotion: nervous
       - say:
           char: reiko
           text: "두 분 다, 여기선 그만하시죠…"
+      - effect: pulse
       - effect: shake
       - sound: thunder
       - say:
@@ -108,6 +118,7 @@ scenes:
       - sound: door
       - wait: 800
       - sound: scream
+      - effect: blur
       - effect: flash
       - say:
           text: "<speed=15>꺄아아아악!!</speed>"
@@ -122,6 +133,9 @@ scenes:
       - char:
           id: haruo
           position: left
+      - char:
+          id: haruo
+          position: left
           emotion: scared
       - say:
           char: haruo
@@ -132,9 +146,15 @@ scenes:
           text: "방 안에는 범인의 흔적도, 탈출 경로도 보이지 않는다."
       - say:
           text: "<speed=45>문은 안쪽에서 잠겨 있었고, 창문은 빗물로 흠뻑 젖어 있었다.</speed>"
+      - effect: darken
       - wait: 1000
       - say:
           text: "완벽한 밀실 살인 사건."
+      - bgFront: police_tape
+      - effect: flash
+      - sound: thunder
+      - say:
+          text: "료칸은 즉시 통제되었고, 다실 주변엔 폴리스 라인이 설치되었다."
       - goto: conan_arrives
 
   conan_arrives:
@@ -144,11 +164,20 @@ scenes:
       - char:
           id: ran
           position: left
+      - char:
+          id: ran
+          position: left
           emotion: surprised
       - char:
           id: kogoro
           position: right
+      - char:
+          id: kogoro
+          position: right
           emotion: proud
+      - char:
+          id: conan
+          position: center
       - char:
           id: conan
           position: center
@@ -159,9 +188,28 @@ scenes:
       - say:
           char: kogoro
           text: "<speed=25>흥! 역시 나, 명탐정 모리 코고로의 차례군.</speed>"
+      - char:
+          id: ran
+          position: left
+          emotion: worried
+      - say:
+          char: ran
+          text: "아저씨, 현장이 너무 이상해요… 뭔가 놓치고 있는 것 같아요."
+      - char:
+          id: kogoro
+          position: right
+          emotion: angry
+      - say:
+          char: kogoro
+          text: "현장 보존부터다! 아무도 함부로 다실에 접근하지 마!"
       - say:
           char: conan
           text: "……(밀실, 폭우, 그리고 다툼.)"
+      - char:
+          id: conan
+          position: center
+          emotion: serious
+      - effect: zoom
       - say:
           char: conan
           text: "<speed=45>뭔가 이상해… 이 사건, 단순하지 않아.</speed>"
@@ -170,6 +218,7 @@ scenes:
           text: "소년 탐정, 에도가와 코난."
       - say:
           text: "그의 추리가, 지금부터 시작된다."
+      - effect: tilt
       - effect: flash
       - say:
           text: "<speed=20>— 사건 조사 시작 —</speed>"

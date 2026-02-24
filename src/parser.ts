@@ -31,6 +31,13 @@ export function parseGameYaml(raw: string): { data?: GameData; error?: VNError }
             },
           };
         }
+        if ('bgFront' in action && !data.assets.backgrounds[action.bgFront]) {
+          return {
+            error: {
+              message: `scene '${sceneId}' uses missing foreground background '${action.bgFront}'`,
+            },
+          };
+        }
         if ('music' in action && !data.assets.music[action.music]) {
           return {
             error: {

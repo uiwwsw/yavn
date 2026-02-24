@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 const actionSchema = z.union([
   z.object({ bg: z.string() }),
+  z.object({ bgFront: z.string() }),
+  z.object({ clearBgFront: z.literal(true) }),
   z.object({ music: z.string() }),
   z.object({ sound: z.string() }),
   z.object({ wait: z.number().nonnegative() }),

@@ -16,6 +16,57 @@ body,
   margin: 0;
 }
 
+.launcher {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at 20% 20%, #2c4d66, #151722 62%);
+}
+
+.launcher-card {
+  width: min(680px, 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: linear-gradient(to bottom, rgba(12, 18, 24, 0.92), rgba(21, 14, 22, 0.92));
+  padding: 24px;
+}
+
+.launcher-card h1 {
+  margin: 0 0 12px;
+}
+
+.launcher-card p {
+  margin: 0 0 18px;
+  line-height: 1.6;
+}
+
+.zip-upload {
+  display: inline-block;
+  background: #f2c96b;
+  color: #2d1b00;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.zip-upload input {
+  display: none;
+}
+
+.sample-link {
+  color: #dce8ff;
+}
+
+.launcher-error {
+  margin-top: 14px;
+  color: #ff9ba8;
+  font-size: 14px;
+}
+
 .app {
   position: relative;
   width: 100%;
@@ -45,6 +96,17 @@ body,
   position: absolute;
   inset: 0;
   z-index: 3;
+}
+
+.bg-foreground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 4;
+  pointer-events: none;
+  animation: fadeIn 0.28s ease;
 }
 
 .char {
@@ -156,6 +218,34 @@ body,
   animation: flash 0.35s ease;
 }
 
+.effect-zoom {
+  animation: zoomPulse 0.42s ease;
+}
+
+.effect-blur .bg,
+.effect-blur .char-layer,
+.effect-blur .dialog-box {
+  animation: blurPulse 0.42s ease;
+}
+
+.effect-darken::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.72);
+  animation: darkenPulse 0.5s ease;
+}
+
+.effect-pulse {
+  animation: brightnessPulse 0.5s ease;
+}
+
+.effect-tilt {
+  animation: tiltPulse 0.32s ease;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -188,6 +278,37 @@ body,
 @keyframes flash {
   from { opacity: 0.95; }
   to { opacity: 0; }
+}
+
+@keyframes zoomPulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blurPulse {
+  0% { filter: blur(0); }
+  45% { filter: blur(4px); }
+  100% { filter: blur(0); }
+}
+
+@keyframes darkenPulse {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes brightnessPulse {
+  0% { filter: brightness(1); }
+  40% { filter: brightness(1.3); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes tiltPulse {
+  0% { transform: rotate(0deg); }
+  30% { transform: rotate(-0.7deg); }
+  65% { transform: rotate(0.6deg); }
+  100% { transform: rotate(0deg); }
 }
 
 @media (max-width: 768px) {
