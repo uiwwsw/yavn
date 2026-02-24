@@ -32,6 +32,7 @@ let waitTimer: number | undefined;
 let typeTimer: number | undefined;
 let effectTimer: number | undefined;
 let bgmAudio: HTMLAudioElement | undefined;
+let bgmNeedsUnlock = false;
 let preparedChapters: PreparedChapter[] = [];
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
@@ -67,6 +68,7 @@ function resetSession() {
   useVNStore.getState().setChapterLoading(false, 0);
   useVNStore.getState().setError(undefined);
   useVNStore.getState().resetPresentation();
+  bgmNeedsUnlock = false;
   playMusic(undefined);
 }
 
@@ -149,9 +151,17 @@ function playMusic(url?: string) {
       bgmAudio.pause();
       bgmAudio = undefined;
     }
+    bgmNeedsUnlock = false;
     return;
   }
   if (bgmAudio?.src === url) {
+    if (bgmNeedsUnlock || bgmAudio.paused) {
+      void bgmAudio.play().then(() => {
+        bgmNeedsUnlock = false;
+      }).catch(() => {
+        bgmNeedsUnlock = true;
+      });
+    }
     return;
   }
   if (bgmAudio) {
@@ -160,13 +170,31 @@ function playMusic(url?: string) {
   bgmAudio = new Audio(url);
   bgmAudio.loop = true;
   bgmAudio.volume = 0.6;
-  void bgmAudio.play().catch(() => undefined);
+  void bgmAudio.play().then(() => {
+    bgmNeedsUnlock = false;
+  }).catch(() => {
+    bgmNeedsUnlock = true;
+  });
 }
 
 function playSound(url: string) {
   const audio = new Audio(url);
   audio.volume = 0.8;
   void audio.play().catch(() => undefined);
+}
+
+export function unlockAudioFromGesture() {
+  if (!bgmAudio) {
+    return;
+  }
+  if (!bgmNeedsUnlock && !bgmAudio.paused) {
+    return;
+  }
+  void bgmAudio.play().then(() => {
+    bgmNeedsUnlock = false;
+  }).catch(() => {
+    bgmNeedsUnlock = true;
+  });
 }
 
 function incrementCursor() {

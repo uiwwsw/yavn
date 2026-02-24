@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { handleAdvance, loadGameFromUrl, loadGameFromZip, restartFromBeginning } from './engine';
+import { handleAdvance, loadGameFromUrl, loadGameFromZip, restartFromBeginning, unlockAudioFromGesture } from './engine';
 import { useVNStore } from './store';
 
 function useAdvanceByKey() {
@@ -7,6 +7,7 @@ function useAdvanceByKey() {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
+        unlockAudioFromGesture();
         handleAdvance();
       }
     };
@@ -143,7 +144,13 @@ export default function App() {
   }
 
   return (
-    <div className={`app ${effectClass}`} onClick={() => handleAdvance()}>
+    <div
+      className={`app ${effectClass}`}
+      onClick={() => {
+        unlockAudioFromGesture();
+        handleAdvance();
+      }}
+    >
       <div className="overlay" />
       {background && <img className="bg" src={background} alt="background" />}
 
