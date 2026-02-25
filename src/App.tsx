@@ -1,5 +1,16 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { handleAdvance, loadGameFromUrl, loadGameFromZip, restartFromBeginning, unlockAudioFromGesture } from './engine';
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import {
+  completeVideoCutscene,
+  handleAdvance,
+  loadGameFromUrl,
+  loadGameFromZip,
+  resetVideoSkipProgress,
+  restartFromBeginning,
+  revealVideoSkipGuide,
+  skipVideoCutscene,
+  unlockAudioFromGesture,
+  updateVideoSkipProgress,
+} from './engine';
 import { Live2DCharacter } from './Live2DCharacter';
 import { useVNStore } from './store';
 import type { CharacterSlot, Position } from './types';
@@ -34,9 +45,15 @@ export default function App() {
     chapterLoading,
     chapterLoadingProgress,
     chapterLoadingMessage,
+    videoCutscene,
   } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'sample' | 'uploaded'>('launcher');
   const [uploading, setUploading] = useState(false);
+  const holdTimerRef = useRef<number | undefined>(undefined);
+  const holdStartRef = useRef<number>(0);
+  const holdingRef = useRef(false);
+  const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const youtubePlayerId = 'vn-cutscene-youtube-player';
 
   useEffect(() => {
     if (window.location.pathname === '/sample') {
@@ -50,6 +67,81 @@ export default function App() {
   useAdvanceByKey();
 
   const effectClass = effect ? `effect-${effect}` : '';
+
+  useEffect(() => {
+    return () => {
+      if (holdTimerRef.current) {
+        window.clearInterval(holdTimerRef.current);
+        holdTimerRef.current = undefined;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (!videoCutscene.active || !videoCutscene.youtubeId) {
+        return;
+      }
+      if (typeof event.data !== 'string') {
+        return;
+      }
+      let payload: { event?: string; info?: number; id?: string } | undefined;
+      try {
+        payload = JSON.parse(event.data) as { event?: string; info?: number; id?: string };
+      } catch {
+        return;
+      }
+      if (payload.event === 'onStateChange' && payload.info === 0 && payload.id === youtubePlayerId) {
+        completeVideoCutscene();
+      }
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [videoCutscene.active, videoCutscene.youtubeId]);
+
+  const clearHold = () => {
+    holdingRef.current = false;
+    holdStartRef.current = 0;
+    if (holdTimerRef.current) {
+      window.clearInterval(holdTimerRef.current);
+      holdTimerRef.current = undefined;
+    }
+    resetVideoSkipProgress();
+  };
+
+  const onVideoPointerDown = () => {
+    if (!videoCutscene.active) {
+      return;
+    }
+    revealVideoSkipGuide();
+    if (!videoCutscene.guideVisible || holdingRef.current) {
+      return;
+    }
+    holdingRef.current = true;
+    holdStartRef.current = performance.now();
+    holdTimerRef.current = window.setInterval(() => {
+      if (!holdingRef.current) {
+        return;
+      }
+      const elapsed = performance.now() - holdStartRef.current;
+      const ratio = elapsed / Math.max(1, videoCutscene.holdToSkipMs);
+      updateVideoSkipProgress(ratio);
+      if (ratio >= 1) {
+        clearHold();
+        skipVideoCutscene();
+      }
+    }, 16);
+  };
+
+  const onVideoPointerUp = () => {
+    clearHold();
+  };
+
+  useEffect(() => {
+    if (!videoCutscene.active) {
+      clearHold();
+    }
+  }, [videoCutscene.active]);
 
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
     if (!slot) {
@@ -168,6 +260,10 @@ export default function App() {
     <div
       className={`app ${effectClass}`}
       onClick={() => {
+        if (videoCutscene.active) {
+          revealVideoSkipGuide();
+          return;
+        }
         unlockAudioFromGesture();
         handleAdvance();
       }}
@@ -182,6 +278,62 @@ export default function App() {
       </div>
       {foregroundBg && <img className="bg-foreground" src={foregroundBg} alt="foreground background" />}
 
+      {videoCutscene.active && (
+        <div className="video-cutscene-overlay">
+          {videoCutscene.youtubeId ? (
+            <iframe
+              id={youtubePlayerId}
+              ref={youtubeIframeRef}
+              className="video-cutscene-frame"
+              src={`https://www.youtube.com/embed/${videoCutscene.youtubeId}?autoplay=1&mute=0&playsinline=1&controls=0&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+              title="Cutscene"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              onLoad={() => {
+                const target = youtubeIframeRef.current?.contentWindow;
+                if (!target) {
+                  return;
+                }
+                target.postMessage(
+                  JSON.stringify({
+                    event: 'command',
+                    func: 'addEventListener',
+                    args: ['onStateChange'],
+                    id: youtubePlayerId,
+                  }),
+                  '*',
+                );
+              }}
+            />
+          ) : (
+            <video
+              className="video-cutscene-frame"
+              src={videoCutscene.src}
+              autoPlay
+              playsInline
+              onEnded={() => completeVideoCutscene()}
+            />
+          )}
+          <div
+            className="video-cutscene-interaction"
+            onClick={(event) => {
+              event.stopPropagation();
+              revealVideoSkipGuide();
+            }}
+            onPointerDown={onVideoPointerDown}
+            onPointerUp={onVideoPointerUp}
+            onPointerCancel={onVideoPointerUp}
+            onPointerLeave={onVideoPointerUp}
+          />
+          <div className={`video-skip-guide ${videoCutscene.guideVisible ? 'visible' : ''}`}>
+            <span>길게 눌러 건너뛰기</span>
+            <div className="video-skip-progress">
+              <i style={{ width: `${Math.floor(videoCutscene.skipProgress * 100)}%` }} />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="hud">
         <div className="meta">
           {game?.meta.title ?? 'Loading...'}
@@ -190,7 +342,7 @@ export default function App() {
         <div className="hint">{uploading ? 'ZIP Loading...' : 'Click / Enter / Space'}</div>
       </div>
 
-      <div className="dialog-box">
+      <div className={`dialog-box ${videoCutscene.active ? 'hidden' : ''}`}>
         <div className="speaker">{dialog.speaker ?? 'Narration'}</div>
         <div className="text">{dialog.visibleText}</div>
         <div className="status">{busy ? '...' : isFinished ? 'End' : 'Next'}</div>

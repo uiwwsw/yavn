@@ -1,8 +1,6 @@
 @font-face {
   font-family: 'SUITE Variable';
-  src:
-    url('/font/SUITE-Variable.woff2') format('woff2'),
-    url('/fonts/SUITE-Variable.woff2') format('woff2');
+  src: url('/fonts/SUITE-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -315,6 +313,76 @@ body,
   border: 1px solid rgba(255, 255, 255, 0.25);
   background: linear-gradient(to bottom, rgba(15, 23, 28, 0.9), rgba(23, 16, 25, 0.88));
   backdrop-filter: blur(4px);
+}
+
+.dialog-box.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-cutscene-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  background: #000;
+  display: grid;
+  place-items: center;
+}
+
+.video-cutscene-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-cutscene-interaction {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  touch-action: none;
+}
+
+.video-skip-guide {
+  position: absolute;
+  z-index: 2;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: min(420px, 90vw);
+  max-width: 90vw;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(15, 20, 27, 0.78);
+  padding: 10px 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.video-skip-guide.visible {
+  opacity: 1;
+}
+
+.video-skip-guide span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.video-skip-progress {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.video-skip-progress i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #ffcf76, #ff8d73);
+  transition: width 0.05s linear;
 }
 
 .speaker {

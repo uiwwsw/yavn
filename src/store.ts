@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { CharacterSlot, GameData, Position, VNError } from './types';
+import type { CharacterSlot, GameData, Position, VNError, VideoCutsceneState } from './types';
 
 type DialogState = {
   speaker?: string;
@@ -26,6 +26,7 @@ type VNState = {
   currentMusic?: string;
   dialog: DialogState;
   effect?: string;
+  videoCutscene: VideoCutsceneState;
   busy: boolean;
   waitingInput: boolean;
   isFinished: boolean;
@@ -40,6 +41,8 @@ type VNState = {
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
   setEffect: (effect?: string) => void;
+  setVideoCutscene: (video: Partial<VideoCutsceneState>) => void;
+  clearVideoCutscene: () => void;
   setBusy: (busy: boolean) => void;
   setWaitingInput: (waiting: boolean) => void;
   setFinished: (finished: boolean) => void;
@@ -51,6 +54,15 @@ const initialDialog: DialogState = {
   fullText: '',
   visibleText: '',
   typing: false,
+};
+
+const initialVideoCutscene: VideoCutsceneState = {
+  active: false,
+  src: undefined,
+  youtubeId: undefined,
+  holdToSkipMs: 800,
+  guideVisible: false,
+  skipProgress: 0,
 };
 
 export const useVNStore = create<VNState>((set) => ({
@@ -65,6 +77,7 @@ export const useVNStore = create<VNState>((set) => ({
   actionIndex: 0,
   characters: {},
   dialog: initialDialog,
+  videoCutscene: initialVideoCutscene,
   busy: false,
   waitingInput: false,
   isFinished: false,
@@ -85,6 +98,7 @@ export const useVNStore = create<VNState>((set) => ({
       characters: {},
       currentMusic: undefined,
       dialog: initialDialog,
+      videoCutscene: initialVideoCutscene,
       effect: undefined,
       busy: false,
       waitingInput: false,
@@ -98,6 +112,8 @@ export const useVNStore = create<VNState>((set) => ({
   setMusic: (url) => set({ currentMusic: url }),
   setDialog: (dialog) => set((state) => ({ dialog: { ...state.dialog, ...dialog } })),
   setEffect: (effect) => set({ effect }),
+  setVideoCutscene: (video) => set((state) => ({ videoCutscene: { ...state.videoCutscene, ...video } })),
+  clearVideoCutscene: () => set({ videoCutscene: initialVideoCutscene }),
   setBusy: (busy) => set({ busy }),
   setWaitingInput: (waitingInput) => set({ waitingInput }),
   setFinished: (isFinished) => set({ isFinished }),
@@ -108,6 +124,7 @@ export const useVNStore = create<VNState>((set) => ({
       characters: {},
       currentMusic: undefined,
       dialog: initialDialog,
+      videoCutscene: initialVideoCutscene,
       effect: undefined,
       busy: false,
       waitingInput: false,

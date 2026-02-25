@@ -6,6 +6,12 @@ const actionSchema = z.union([
   z.object({ clearBgFront: z.literal(true) }),
   z.object({ music: z.string() }),
   z.object({ sound: z.string() }),
+  z.object({
+    video: z.object({
+      src: z.string().min(1),
+      holdToSkipMs: z.number().int().positive().max(5000).optional(),
+    }),
+  }),
   z.object({ wait: z.number().nonnegative() }),
   z.object({ effect: z.string() }),
   z.object({ goto: z.string() }),

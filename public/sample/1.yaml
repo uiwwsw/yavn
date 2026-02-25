@@ -73,6 +73,8 @@ script:
 scenes:
   incident:
     actions:
+      - video:
+          src: https://youtu.be/Tzehle954lQ
       - bg: mountain_rain
       - music: rain
       - say:
@@ -261,3 +263,5 @@ scenes:
       - effect: flash
       - say:
           text: "<speed=20>다음 장에서 범인의 정체가 드러난다…</speed>"
+      - video:
+          src: https://youtu.be/y2g4KgBh440

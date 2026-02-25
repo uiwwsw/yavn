@@ -29,6 +29,7 @@ const AUTOSAVE_KEY = 'vn-engine-autosave';
 const MAX_CHAPTERS = 100;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
 const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
+const DEFAULT_VIDEO_HOLD_TO_SKIP_MS = 800;
 const EFFECT_DURATIONS: Record<string, number> = {
   shake: 280,
   flash: 350,
@@ -250,6 +251,7 @@ function resetSession() {
   useVNStore.getState().setChapterLoading(false, 0);
   useVNStore.getState().setError(undefined);
   useVNStore.getState().resetPresentation();
+  useVNStore.getState().clearVideoCutscene();
   bgmNeedsUnlock = false;
   playMusic(undefined);
 }
@@ -551,6 +553,13 @@ function collectAssetPaths(game: GameData): string[] {
   }
   Object.values(game.assets.music).forEach((path) => paths.add(path));
   Object.values(game.assets.sfx).forEach((path) => paths.add(path));
+  for (const scene of Object.values(game.scenes)) {
+    for (const action of scene.actions) {
+      if ('video' in action && !extractYouTubeVideoId(action.video.src)) {
+        paths.add(action.video.src);
+      }
+    }
+  }
   return [...paths];
 }
 
@@ -608,9 +617,74 @@ function detectMimeType(path: string): string | undefined {
   if (lower.endsWith('.wav')) return 'audio/wav';
   if (lower.endsWith('.mp3')) return 'audio/mpeg';
   if (lower.endsWith('.ogg')) return 'audio/ogg';
+  if (lower.endsWith('.mp4')) return 'video/mp4';
+  if (lower.endsWith('.webm')) return 'video/webm';
+  if (lower.endsWith('.mov')) return 'video/quicktime';
   if (lower.endsWith('.json')) return 'application/json';
   if (lower.endsWith('.yaml') || lower.endsWith('.yml')) return 'text/yaml';
   return undefined;
+}
+
+function startVideoCutscene(src: string, holdToSkipMs?: number) {
+  const resolvedSrc = resolveAsset(useVNStore.getState().baseUrl, src);
+  const youtubeId = extractYouTubeVideoId(src) ?? extractYouTubeVideoId(resolvedSrc);
+  useVNStore.getState().setBusy(true);
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+  useVNStore.getState().setVideoCutscene({
+    active: true,
+    src: resolvedSrc,
+    youtubeId,
+    holdToSkipMs:
+      typeof holdToSkipMs === 'number'
+        ? Math.max(300, Math.min(5000, Math.floor(holdToSkipMs)))
+        : DEFAULT_VIDEO_HOLD_TO_SKIP_MS,
+    guideVisible: false,
+    skipProgress: 0,
+  });
+}
+
+function finishVideoCutscene() {
+  const state = useVNStore.getState();
+  if (!state.videoCutscene.active) {
+    return;
+  }
+  useVNStore.getState().clearVideoCutscene();
+  useVNStore.getState().setBusy(false);
+  incrementCursor();
+  runToNextPause();
+}
+
+export function revealVideoSkipGuide() {
+  const state = useVNStore.getState();
+  if (!state.videoCutscene.active) {
+    return;
+  }
+  useVNStore.getState().setVideoCutscene({ guideVisible: true });
+}
+
+export function updateVideoSkipProgress(progress: number) {
+  const state = useVNStore.getState();
+  if (!state.videoCutscene.active) {
+    return;
+  }
+  useVNStore.getState().setVideoCutscene({ skipProgress: Math.max(0, Math.min(1, progress)) });
+}
+
+export function resetVideoSkipProgress() {
+  const state = useVNStore.getState();
+  if (!state.videoCutscene.active) {
+    return;
+  }
+  useVNStore.getState().setVideoCutscene({ skipProgress: 0 });
+}
+
+export function skipVideoCutscene() {
+  finishVideoCutscene();
+}
+
+export function completeVideoCutscene() {
+  finishVideoCutscene();
 }
 
 async function warmImageDecodeUrl(url: string) {
@@ -920,6 +994,11 @@ function runToNextPause(loopGuard = 0) {
     return;
   }
 
+  if ('video' in action) {
+    startVideoCutscene(action.video.src, action.video.holdToSkipMs);
+    return;
+  }
+
   if ('say' in action) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = parsed.speed ?? game.settings.textSpeed;
@@ -1213,7 +1292,14 @@ export async function loadGameFromZip(file: File) {
 
 export function handleAdvance() {
   const state = useVNStore.getState();
-  if (!state.game || state.busy || state.isFinished || state.chapterLoading) {
+  if (!state.game || state.isFinished || state.chapterLoading) {
+    return;
+  }
+  if (state.videoCutscene.active) {
+    revealVideoSkipGuide();
+    return;
+  }
+  if (state.busy) {
     return;
   }
 
@@ -1242,6 +1328,7 @@ export async function restartFromBeginning() {
   }
   localStorage.removeItem(AUTOSAVE_KEY);
   clearTimers();
+  useVNStore.getState().clearVideoCutscene();
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
   await startChapter(0);

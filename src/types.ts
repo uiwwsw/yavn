@@ -15,6 +15,13 @@ export type CharAction = {
   };
 };
 
+export type VideoAction = {
+  video: {
+    src: string;
+    holdToSkipMs?: number;
+  };
+};
+
 export type Action =
   | { bg: string }
   | { bgFront: string }
@@ -23,6 +30,7 @@ export type Action =
   | { sound: string }
   | CharAction
   | SayAction
+  | VideoAction
   | { wait: number }
   | { effect: string }
   | { goto: string };
@@ -63,6 +71,15 @@ export type CharacterSlot = {
   kind: 'image' | 'live2d';
   source: string;
   emotion?: string;
+};
+
+export type VideoCutsceneState = {
+  active: boolean;
+  src?: string;
+  youtubeId?: string;
+  holdToSkipMs: number;
+  guideVisible: boolean;
+  skipProgress: number;
 };
 
 export type VNError = {

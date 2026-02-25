@@ -28,12 +28,24 @@ npm run dev
 ## 구현 범위
 
 1. YAML 로드 + Zod 스키마 검증
-2. 액션 인터프리터(`bg`, `music`, `sound`, `char`, `say`, `wait`, `effect`, `goto`)
+2. 액션 인터프리터(`bg`, `music`, `sound`, `char`, `say`, `wait`, `effect`, `goto`, `video`)
 3. 타이핑 효과 + `<speed=...>` 인라인 속도 태그
 4. `goto` 점프, `wait` 타이머, `shake/flash` 이펙트
 5. `localStorage` 오토세이브(씬/액션 포인터)
 6. 에러 오버레이(YAML parse 에러 line/column, 스키마/참조 에러)
 7. 샘플 게임 + 초기 에셋(`public/sample/`)
+
+## Video 컷신 액션
+
+```yaml
+- video:
+    src: assets/cutscene/intro.mp4
+    holdToSkipMs: 900
+```
+
+- `src`: 파일 경로 또는 YouTube URL
+- 영상 재생 중 클릭하면 "길게 눌러 건너뛰기" 가이드가 노출됩니다.
+- 가이드 노출 후 길게 누르면 즉시 컷신을 종료하고 다음 게임 액션으로 복귀합니다.
 
 ## 샘플 구조
 
