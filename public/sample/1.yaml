@@ -258,6 +258,18 @@ scenes:
       - say:
           char: 코고로
           text: "좋아! 용의자 전원을 복도로 집합시켜라!"
+      - say:
+          char: 코난
+          text: "잠긴 문 안에서 외친 마지막 말은 무엇이었지?"
+      - input:
+          correct: "예"
+          errors:
+            - "잘 생각해봐."
+            - "아니, 반댓말은?"
+            - "정답: 예"
+      - say:
+          char: 코난
+          text: "맞아. 피해자의 마지막 대답은 '예'였어."
       - effect: pulse
       - sound: door
       - effect: flash

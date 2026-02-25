@@ -1,5 +1,23 @@
 import { z } from 'zod';
 
+const inputActionSchema = z
+  .union([
+    z.string().min(1).transform((correct) => ({
+      correct,
+      errors: ['정답이 아닙니다.'],
+    })),
+    z
+      .object({
+        correct: z.string().min(1),
+        errors: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]).optional(),
+      })
+      .transform(({ correct, errors }) => ({
+        correct,
+        errors: Array.isArray(errors) ? errors : errors ? [errors] : ['정답이 아닙니다.'],
+      })),
+  ])
+  .transform((input) => input);
+
 const actionSchema = z.union([
   z.object({ bg: z.string() }),
   z.object({ bgFront: z.string() }),
@@ -11,6 +29,9 @@ const actionSchema = z.union([
       src: z.string().min(1),
       holdToSkipMs: z.number().int().positive().max(5000).optional(),
     }),
+  }),
+  z.object({
+    input: inputActionSchema,
   }),
   z.object({ wait: z.number().nonnegative() }),
   z.object({ effect: z.string() }),

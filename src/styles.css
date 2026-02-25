@@ -330,11 +330,21 @@ body,
 }
 
 .video-cutscene-frame {
+  border: 0;
+  background: #000;
+}
+
+.video-cutscene-frame-youtube {
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.video-cutscene-frame-native {
   width: 100%;
   height: 100%;
-  border: 0;
   object-fit: contain;
-  background: #000;
 }
 
 .video-cutscene-interaction {
@@ -357,11 +367,13 @@ body,
   background: rgba(15, 20, 27, 0.78);
   padding: 10px 14px;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s ease;
 }
 
 .video-skip-guide.visible {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .video-skip-guide span {
@@ -403,6 +415,43 @@ body,
   text-align: right;
   font-size: 13px;
   opacity: 0.75;
+}
+
+.input-gate-form {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.input-gate-field {
+  flex: 1;
+  min-width: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: rgba(7, 11, 16, 0.72);
+  color: #f7f4ee;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.input-gate-field::placeholder {
+  color: rgba(235, 239, 245, 0.55);
+}
+
+.input-gate-submit {
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f3d28f, #ebb15a);
+  color: #221503;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 68px;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.input-gate-submit:hover {
+  filter: brightness(1.04);
 }
 
 .error-overlay {

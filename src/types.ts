@@ -22,6 +22,13 @@ export type VideoAction = {
   };
 };
 
+export type InputAction = {
+  input: {
+    correct: string;
+    errors: string[];
+  };
+};
+
 export type Action =
   | { bg: string }
   | { bgFront: string }
@@ -31,6 +38,7 @@ export type Action =
   | CharAction
   | SayAction
   | VideoAction
+  | InputAction
   | { wait: number }
   | { effect: string }
   | { goto: string };
@@ -80,6 +88,13 @@ export type VideoCutsceneState = {
   holdToSkipMs: number;
   guideVisible: boolean;
   skipProgress: number;
+};
+
+export type InputGateState = {
+  active: boolean;
+  correct: string;
+  errors: string[];
+  attemptCount: number;
 };
 
 export type VNError = {

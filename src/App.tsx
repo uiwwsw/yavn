@@ -8,6 +8,7 @@ import {
   restartFromBeginning,
   revealVideoSkipGuide,
   skipVideoCutscene,
+  submitInputAnswer,
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
@@ -18,6 +19,13 @@ import type { CharacterSlot, Position } from './types';
 function useAdvanceByKey() {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName.toLowerCase();
+        if (target.isContentEditable || tag === 'input' || tag === 'textarea') {
+          return;
+        }
+      }
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         unlockAudioFromGesture();
@@ -46,9 +54,11 @@ export default function App() {
     chapterLoadingProgress,
     chapterLoadingMessage,
     videoCutscene,
+    inputGate,
   } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'sample' | 'uploaded'>('launcher');
   const [uploading, setUploading] = useState(false);
+  const [inputAnswer, setInputAnswer] = useState('');
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
@@ -76,6 +86,12 @@ export default function App() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!inputGate.active) {
+      setInputAnswer('');
+    }
+  }, [inputGate.active]);
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
@@ -284,10 +300,10 @@ export default function App() {
             <iframe
               id={youtubePlayerId}
               ref={youtubeIframeRef}
-              className="video-cutscene-frame"
-              src={`https://www.youtube.com/embed/${videoCutscene.youtubeId}?autoplay=1&mute=0&playsinline=1&controls=0&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+              className="video-cutscene-frame video-cutscene-frame-youtube"
+              src={`https://www.youtube.com/embed/${videoCutscene.youtubeId}?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
               title="Cutscene"
-              allow="autoplay; encrypted-media; picture-in-picture"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               referrerPolicy="strict-origin-when-cross-origin"
               onLoad={() => {
                 const target = youtubeIframeRef.current?.contentWindow;
@@ -307,7 +323,7 @@ export default function App() {
             />
           ) : (
             <video
-              className="video-cutscene-frame"
+              className="video-cutscene-frame video-cutscene-frame-native"
               src={videoCutscene.src}
               autoPlay
               playsInline
@@ -325,7 +341,13 @@ export default function App() {
             onPointerCancel={onVideoPointerUp}
             onPointerLeave={onVideoPointerUp}
           />
-          <div className={`video-skip-guide ${videoCutscene.guideVisible ? 'visible' : ''}`}>
+          <div
+            className={`video-skip-guide ${videoCutscene.guideVisible ? 'visible' : ''}`}
+            onPointerDown={onVideoPointerDown}
+            onPointerUp={onVideoPointerUp}
+            onPointerCancel={onVideoPointerUp}
+            onPointerLeave={onVideoPointerUp}
+          >
             <span>길게 눌러 건너뛰기</span>
             <div className="video-skip-progress">
               <i style={{ width: `${Math.floor(videoCutscene.skipProgress * 100)}%` }} />
@@ -345,7 +367,34 @@ export default function App() {
       <div className={`dialog-box ${videoCutscene.active ? 'hidden' : ''}`}>
         <div className="speaker">{dialog.speaker ?? 'Narration'}</div>
         <div className="text">{dialog.visibleText}</div>
-        <div className="status">{busy ? '...' : isFinished ? 'End' : 'Next'}</div>
+        {inputGate.active && (
+          <form
+            className="input-gate-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              submitInputAnswer(inputAnswer);
+              setInputAnswer('');
+            }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <input
+              className="input-gate-field"
+              type="text"
+              value={inputAnswer}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              placeholder="정답 입력"
+              onChange={(event) => setInputAnswer(event.target.value)}
+              onClick={(event) => event.stopPropagation()}
+            />
+            <button type="submit" className="input-gate-submit" onClick={(event) => event.stopPropagation()}>
+              확인
+            </button>
+          </form>
+        )}
+        <div className="status">{busy ? '...' : isFinished ? 'End' : inputGate.active ? '입력 대기' : 'Next'}</div>
       </div>
 
       {error && (

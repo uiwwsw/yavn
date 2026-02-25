@@ -224,3 +224,7 @@ scenes:
 
       - say:
           text: "<speed=20>— 사건 조사 시작 —</speed>"
+      - input: "예"
+      - say:
+          char: conan
+          text: "정답이야. 다음 단서로 가자."

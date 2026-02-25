@@ -544,6 +544,19 @@ function typeDialog(text: string, speed: number, onDone: () => void) {
   }, Math.max(16, Math.floor(1000 / cps)));
 }
 
+function normalizeInputAnswer(value: string): string {
+  return value.trim();
+}
+
+function getInputErrorMessage(errors: string[], attemptCount: number): string {
+  const lastIdx = errors.length - 1;
+  if (lastIdx < 0) {
+    return '정답이 아닙니다.';
+  }
+  const idx = Math.max(0, Math.min(attemptCount - 1, lastIdx));
+  return errors[idx];
+}
+
 function collectAssetPaths(game: GameData): string[] {
   const paths = new Set<string>();
   Object.values(game.assets.backgrounds).forEach((path) => paths.add(path));
@@ -630,6 +643,7 @@ function startVideoCutscene(src: string, holdToSkipMs?: number) {
   const youtubeId = extractYouTubeVideoId(src) ?? extractYouTubeVideoId(resolvedSrc);
   useVNStore.getState().setBusy(true);
   useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
   useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
   useVNStore.getState().setVideoCutscene({
     active: true,
@@ -911,6 +925,7 @@ function runToNextPause(loopGuard = 0) {
 
     useVNStore.getState().setFinished(true);
     useVNStore.getState().setWaitingInput(false);
+    useVNStore.getState().clearInputGate();
     return;
   }
 
@@ -999,9 +1014,27 @@ function runToNextPause(loopGuard = 0) {
     return;
   }
 
+  if ('input' in action) {
+    useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().setInputGate({
+      active: true,
+      correct: action.input.correct,
+      errors: action.input.errors,
+      attemptCount: 0,
+    });
+    useVNStore.getState().setDialog({
+      speaker: undefined,
+      fullText: '정답을 입력하세요.',
+      visibleText: '정답을 입력하세요.',
+      typing: false,
+    });
+    return;
+  }
+
   if ('say' in action) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = parsed.speed ?? game.settings.textSpeed;
+    useVNStore.getState().clearInputGate();
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().setDialog({
       speaker: getSpeakerName(game, action.say.char),
@@ -1304,6 +1337,9 @@ export function handleAdvance() {
   }
 
   if (state.waitingInput) {
+    if (state.inputGate.active) {
+      return;
+    }
     if (state.dialog.typing && state.game.settings.clickToInstant) {
       if (typeTimer) {
         window.clearInterval(typeTimer);
@@ -1313,6 +1349,7 @@ export function handleAdvance() {
       return;
     }
     useVNStore.getState().setWaitingInput(false);
+    useVNStore.getState().clearInputGate();
     useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
     incrementCursor();
     runToNextPause();
@@ -1330,6 +1367,35 @@ export async function restartFromBeginning() {
   clearTimers();
   useVNStore.getState().clearVideoCutscene();
   useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
   useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
   await startChapter(0);
+}
+
+export function submitInputAnswer(rawAnswer: string) {
+  const state = useVNStore.getState();
+  if (!state.game || !state.waitingInput || !state.inputGate.active) {
+    return;
+  }
+
+  const typed = normalizeInputAnswer(rawAnswer);
+  const expected = normalizeInputAnswer(state.inputGate.correct);
+  if (typed === expected) {
+    useVNStore.getState().setWaitingInput(false);
+    useVNStore.getState().clearInputGate();
+    useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+    incrementCursor();
+    runToNextPause();
+    return;
+  }
+
+  const nextAttempt = state.inputGate.attemptCount + 1;
+  const message = getInputErrorMessage(state.inputGate.errors, nextAttempt);
+  useVNStore.getState().setInputGate({ attemptCount: nextAttempt });
+  useVNStore.getState().setDialog({
+    speaker: undefined,
+    fullText: message,
+    visibleText: message,
+    typing: false,
+  });
 }
