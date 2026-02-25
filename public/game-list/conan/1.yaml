@@ -74,7 +74,7 @@ scenes:
   cold_open:
     actions:
       - video:
-          src: https://youtu.be/Tzehle954lQ
+          src: assets/video/intro.mp4
           holdToSkipMs: 1000
       - bg: mountain_rain
       - music: rain

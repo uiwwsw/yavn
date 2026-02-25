@@ -552,6 +552,7 @@ export default function App() {
               className="video-cutscene-frame video-cutscene-frame-native"
               src={videoCutscene.src}
               autoPlay
+              muted
               playsInline
               onEnded={() => completeVideoCutscene()}
             />

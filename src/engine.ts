@@ -1607,6 +1607,16 @@ function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByK
   for (const [key, value] of Object.entries(cloned.assets.sfx)) {
     cloned.assets.sfx[key] = replace(value);
   }
+  for (const scene of Object.values(cloned.scenes)) {
+    for (const action of scene.actions) {
+      if ('video' in action) {
+        const src = action.video.src;
+        if (!extractYouTubeVideoId(src)) {
+          action.video.src = replace(src);
+        }
+      }
+    }
+  }
 
   if (missing.length > 0) {
     throw new Error(`ZIP asset mapping failed. Missing: ${missing.slice(0, 8).join(', ')}`);
