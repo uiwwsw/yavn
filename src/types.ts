@@ -62,6 +62,7 @@ export type ClearStickerTarget =
 export type SayAction = {
   say: {
     char?: string;
+    with?: string[];
     text: string;
   };
 };

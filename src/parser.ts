@@ -31,6 +31,27 @@ export function parseGameYaml(raw: string): { data?: GameData; error?: VNError }
       }
     }
 
+    const validateCharacterRef = (sceneId: string, fieldLabel: string, value: string): VNError | undefined => {
+      const speaker = parseSpeakerRef(value);
+      if (speaker.invalid || !speaker.id) {
+        return {
+          message: `scene '${sceneId}' has invalid ${fieldLabel} '${value}' (use 'characterId' or 'characterId.emotion')`,
+        };
+      }
+      const charDef = data.assets.characters[speaker.id];
+      if (!charDef) {
+        return {
+          message: `scene '${sceneId}' uses missing speaker character '${speaker.id}' in ${fieldLabel}`,
+        };
+      }
+      if (speaker.emotion && !charDef.emotions?.[speaker.emotion]) {
+        return {
+          message: `scene '${sceneId}' uses missing emotion '${speaker.emotion}' for speaker '${speaker.id}' in ${fieldLabel}`,
+        };
+      }
+      return undefined;
+    };
+
     for (const [sceneId, scene] of Object.entries(data.scenes)) {
       for (const action of scene.actions) {
         if ('goto' in action && !data.scenes[action.goto]) {
@@ -76,28 +97,17 @@ export function parseGameYaml(raw: string): { data?: GameData; error?: VNError }
           };
         }
         if ('say' in action && action.say.char) {
-          const speaker = parseSpeakerRef(action.say.char);
-          if (speaker.invalid || !speaker.id) {
-            return {
-              error: {
-                message: `scene '${sceneId}' has invalid say.char '${action.say.char}' (use 'characterId' or 'characterId.emotion')`,
-              },
-            };
+          const error = validateCharacterRef(sceneId, 'say.char', action.say.char);
+          if (error) {
+            return { error };
           }
-          const charDef = data.assets.characters[speaker.id];
-          if (!charDef) {
-            return {
-              error: {
-                message: `scene '${sceneId}' uses missing speaker character '${speaker.id}' in say.char`,
-              },
-            };
-          }
-          if (speaker.emotion && !charDef.emotions?.[speaker.emotion]) {
-            return {
-              error: {
-                message: `scene '${sceneId}' uses missing emotion '${speaker.emotion}' for speaker '${speaker.id}'`,
-              },
-            };
+        }
+        if ('say' in action && Array.isArray(action.say.with)) {
+          for (const [index, withChar] of action.say.with.entries()) {
+            const error = validateCharacterRef(sceneId, `say.with[${index}]`, withChar);
+            if (error) {
+              return { error };
+            }
           }
         }
       }

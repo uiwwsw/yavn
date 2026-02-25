@@ -105,6 +105,7 @@ const actionSchema = z.union([
   z.object({
     say: z.object({
       char: z.string().optional(),
+      with: z.array(z.string().min(1)).optional(),
       text: z.string(),
     }),
   }),

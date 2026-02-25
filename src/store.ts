@@ -25,6 +25,7 @@ type VNState = {
   stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
   speakerOrder: string[];
+  visibleCharacterIds: string[];
   currentMusic?: string;
   dialog: DialogState;
   effect?: string;
@@ -44,6 +45,7 @@ type VNState = {
   clearAllStickers: () => void;
   setCharacter: (position: Position, slot: CharacterSlot) => void;
   promoteSpeaker: (speakerId?: string) => void;
+  setVisibleCharacters: (ids: string[]) => void;
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
   setEffect: (effect?: string) => void;
@@ -94,6 +96,7 @@ export const useVNStore = create<VNState>((set) => ({
   stickers: {},
   characters: {},
   speakerOrder: [],
+  visibleCharacterIds: [],
   dialog: initialDialog,
   videoCutscene: initialVideoCutscene,
   inputGate: initialInputGate,
@@ -116,6 +119,7 @@ export const useVNStore = create<VNState>((set) => ({
       stickers: {},
       characters: {},
       speakerOrder: [],
+      visibleCharacterIds: [],
       currentMusic: undefined,
       dialog: initialDialog,
       videoCutscene: initialVideoCutscene,
@@ -155,6 +159,16 @@ export const useVNStore = create<VNState>((set) => ({
       next.unshift(speakerId);
       return { speakerOrder: next };
     }),
+  setVisibleCharacters: (ids) => {
+    const unique = Array.from(
+      new Set(
+        ids
+          .map((id) => id.trim())
+          .filter((id) => id.length > 0),
+      ),
+    );
+    set({ visibleCharacterIds: unique });
+  },
   setMusic: (url) => set({ currentMusic: url }),
   setDialog: (dialog) => set((state) => ({ dialog: { ...state.dialog, ...dialog } })),
   setEffect: (effect) => set({ effect }),
@@ -171,6 +185,7 @@ export const useVNStore = create<VNState>((set) => ({
       stickers: {},
       characters: {},
       speakerOrder: [],
+      visibleCharacterIds: [],
       currentMusic: undefined,
       dialog: initialDialog,
       videoCutscene: initialVideoCutscene,

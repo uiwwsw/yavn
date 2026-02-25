@@ -4,6 +4,7 @@ import { parseGameYaml } from './parser';
 import type {
   CharacterSlot,
   GameData,
+  Position,
   StickerEnterEffect,
   StickerEnterOptions,
   StickerLeaveEffect,
@@ -647,19 +648,92 @@ function parseInlineSpeed(text: string): { speed?: number; text: string } {
   };
 }
 
-function getSpeakerName(_game: GameData, id?: string) {
-  if (!id) {
-    return { speakerId: undefined, speakerName: undefined };
+function parseCharacterRef(raw?: string): { id?: string; emotion?: string } {
+  if (!raw) {
+    return {};
   }
-  const trimmed = id.trim();
+  const trimmed = raw.trim();
   if (!trimmed) {
-    return { speakerId: undefined, speakerName: undefined };
+    return {};
   }
-  const [speakerId] = trimmed.split('.', 2);
-  if (!speakerId) {
-    return { speakerId: undefined, speakerName: undefined };
+  const [id, emotion] = trimmed.split('.', 2);
+  if (!id) {
+    return {};
   }
-  return { speakerId, speakerName: speakerId };
+  return { id, emotion };
+}
+
+function resolveSayPresentation(char?: string, withChars?: string[]): {
+  speakerId?: string;
+  speakerName?: string;
+  visibleCharacterIds: string[];
+  emotionRefs: Array<{ id: string; emotion?: string }>;
+} {
+  const speaker = parseCharacterRef(char);
+  if (!speaker.id) {
+    return {
+      speakerId: undefined,
+      speakerName: undefined,
+      visibleCharacterIds: [],
+      emotionRefs: [],
+    };
+  }
+
+  const withRefs = (withChars ?? [])
+    .map((raw) => parseCharacterRef(raw))
+    .filter((ref): ref is { id: string; emotion?: string } => Boolean(ref.id));
+  const visibleCharacterIds = [speaker.id];
+  const visibleSet = new Set(visibleCharacterIds);
+  for (const ref of withRefs) {
+    if (visibleSet.has(ref.id)) {
+      continue;
+    }
+    visibleSet.add(ref.id);
+    visibleCharacterIds.push(ref.id);
+  }
+
+  return {
+    speakerId: speaker.id,
+    speakerName: speaker.id,
+    visibleCharacterIds,
+    emotionRefs: [{ id: speaker.id, emotion: speaker.emotion }, ...withRefs],
+  };
+}
+
+function syncCharacterEmotions(
+  game: GameData,
+  baseUrl: string,
+  refs: Array<{ id: string; emotion?: string }>,
+) {
+  const emotionById = new Map<string, string>();
+  for (const ref of refs) {
+    if (!ref.emotion) {
+      continue;
+    }
+    emotionById.set(ref.id, ref.emotion);
+  }
+  if (emotionById.size === 0) {
+    return;
+  }
+
+  const state = useVNStore.getState();
+  const positions: Position[] = ['left', 'center', 'right'];
+  for (const position of positions) {
+    const slot = state.characters[position];
+    if (!slot) {
+      continue;
+    }
+    const emotion = emotionById.get(slot.id);
+    if (!emotion) {
+      continue;
+    }
+    const charDef = game.assets.characters[slot.id];
+    if (!charDef) {
+      continue;
+    }
+    const assetPath = charDef.emotions?.[emotion] ?? charDef.base;
+    useVNStore.getState().setCharacter(position, buildCharacterSlot(baseUrl, slot.id, assetPath, emotion));
+  }
 }
 
 function saveProgress(sceneId: string, actionIndex: number) {
@@ -1048,6 +1122,8 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   const clearAllStickers = useVNStore.getState().clearAllStickers;
   const setChar = useVNStore.getState().setCharacter;
   const setMusic = useVNStore.getState().setMusic;
+  const setVisibleCharacters = useVNStore.getState().setVisibleCharacters;
+  const promoteSpeaker = useVNStore.getState().promoteSpeaker;
 
   while (guard < 20000) {
     guard += 1;
@@ -1108,6 +1184,14 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
     if ('goto' in action) {
       sceneId = action.goto;
       actionIndex = 0;
+      continue;
+    }
+    if ('say' in action) {
+      const presentation = resolveSayPresentation(action.say.char, action.say.with);
+      promoteSpeaker(presentation.speakerId);
+      setVisibleCharacters(presentation.visibleCharacterIds);
+      syncCharacterEmotions(game, chapter.baseUrl, presentation.emotionRefs);
+      actionIndex += 1;
       continue;
     }
 
@@ -1327,13 +1411,15 @@ function runToNextPause(loopGuard = 0) {
   if ('say' in action) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = parsed.speed ?? game.settings.textSpeed;
-    const speaker = getSpeakerName(game, action.say.char);
+    const presentation = resolveSayPresentation(action.say.char, action.say.with);
     useVNStore.getState().clearInputGate();
-    useVNStore.getState().promoteSpeaker(speaker.speakerId);
+    useVNStore.getState().promoteSpeaker(presentation.speakerId);
+    useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
+    syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().setDialog({
-      speaker: speaker.speakerName,
-      speakerId: speaker.speakerId,
+      speaker: presentation.speakerName,
+      speakerId: presentation.speakerId,
       fullText: parsed.text,
       visibleText: '',
       typing: true,

@@ -21,6 +21,7 @@ Type your story. Play your novel.
 - 챕터 단위 Lazy Load + 다음 챕터 백그라운드 프리로드
 - YAML 스키마 검증(Zod) + 라인/컬럼 기반 에러 오버레이
 - 대사 타이핑 효과 + `<speed=...>` 인라인 속도 제어
+- `say.with` 기반 화자 중심 캐릭터 노출(기본 1인 + 추가 동시 노출)
 - `video`, `input`, `sticker`, `effect` 등 연출/상호작용 액션 내장
 - ZIP 업로드 즉시 실행 + 샘플 ZIP 다운로드 + GitHub PR 공유 버튼
 - 모바일까지 고려한 연출(캐릭터 우선순위/컷신 스킵 UX)
@@ -53,6 +54,10 @@ assets:
       base: assets/char/conan/base.png
       emotions:
         serious: assets/char/conan/serious.png
+    코고로:
+      base: assets/char/kogoro/base.png
+      emotions:
+        angry: assets/char/kogoro/angry.png
 
 script:
   - scene: intro
@@ -62,13 +67,23 @@ scenes:
     actions:
       - bg: tea_room
       - char:
+          id: 코고로
+          position: left
+          emotion: angry
+      - char:
           id: 코난
           position: center
           emotion: serious
       - say:
           char: 코난.serious
+          with:
+            - 코고로.angry
           text: "<speed=24>범인은 이 안에 있어.</speed>"
 ```
+
+노트:
+- `say.char`가 있으면 해당 화자 1명이 기본 노출되고, `say.with`로 지정한 캐릭터만 추가 노출됩니다.
+- `say.char`가 없는 내레이션은 캐릭터를 숨기고 텍스트에 집중합니다.
 
 실제 예시는 [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)에서 확인할 수 있습니다.
 

@@ -60,6 +60,7 @@ export default function App() {
     stickers,
     characters,
     speakerOrder,
+    visibleCharacterIds,
     dialog,
     effect,
     error,
@@ -130,6 +131,7 @@ export default function App() {
   useAdvanceByKey();
 
   const effectClass = effect ? `effect-${effect}` : '';
+  const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
     [
       { position: 'left' as const, slot: characters.left },
@@ -137,7 +139,13 @@ export default function App() {
       { position: 'right' as const, slot: characters.right },
     ] as const
   )
-    .filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot))
+    .filter((entry): entry is { position: Position; slot: CharacterSlot } => {
+      const slot = entry.slot;
+      if (!slot) {
+        return false;
+      }
+      return visibleCharacterSet.has(slot.id);
+    })
     .sort((a, b) => {
       const aRank = speakerOrder.indexOf(a.slot.id);
       const bRank = speakerOrder.indexOf(b.slot.id);
@@ -275,7 +283,7 @@ export default function App() {
   }, [bootMode, dialog.visibleText, inputGate.active, updateStickerSafeInset, videoCutscene.active]);
 
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
-    if (!slot) {
+    if (!slot || !visibleCharacterSet.has(slot.id)) {
       return null;
     }
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;

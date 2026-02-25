@@ -124,9 +124,13 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
+          with:
+            - 신이치.cold
           text: "신이치 씨. 당신은 켄지가 계약 증거를 공개하기 전에 입을 막으려 했어."
       - say:
           char: 코고로.angry
+          with:
+            - 코난.serious
           text: "문틀 긁힘, 창고 배수구 줄 조각, 소매 찻잎. 전부 네 동선과 맞는다."
       - effect: shake
       - say:
@@ -172,6 +176,8 @@ scenes:
           text: "잠시 후, 경찰이 료칸에 도착해 신이치와 레이코를 분리 연행했다."
       - say:
           char: 코고로.proud
+          with:
+            - 란.worried
           text: "흠! 역시 사건은 논리와 관찰이다!"
       - say:
           char: 란
