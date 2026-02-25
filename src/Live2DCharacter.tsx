@@ -88,9 +88,10 @@ function applyEmotion(model: Live2DModelInstance, emotion?: string) {
 type Props = {
   slot: CharacterSlot;
   position: Position;
+  className?: string;
 };
 
-export function Live2DCharacter({ slot, position }: Props) {
+export function Live2DCharacter({ slot, position, className }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string>();
 
@@ -186,7 +187,7 @@ export function Live2DCharacter({ slot, position }: Props) {
   }, [slot.source, slot.emotion]);
 
   return (
-    <div className={`char char-live2d ${position}`}>
+    <div className={`char char-live2d ${position}${className ? ` ${className}` : ''}`}>
       <div ref={mountRef} className="char-live2d-mount" />
       {error && <div className="char-live2d-error">{error}</div>}
     </div>

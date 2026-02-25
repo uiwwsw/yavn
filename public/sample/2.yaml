@@ -16,40 +16,40 @@ assets:
     police_tape: assets/bg/police_tape.svg
 
   characters:
-    conan:
+    코난:
       base: assets/char/conan/base.png
       emotions:
         think: assets/char/conan/think.png
         serious: assets/char/conan/serious.png
 
-    ran:
+    란:
       base: assets/char/ran/base.svg
       emotions:
         surprised: assets/char/ran/surprised.svg
         worried: assets/char/ran/worried.svg
 
-    kogoro:
+    코고로:
       base: assets/char/kogoro/base.svg
       emotions:
         proud: assets/char/kogoro/proud.svg
         angry: assets/char/kogoro/angry.svg
 
-    kenji:
+    켄지:
       base: assets/char/kenji/base.svg
       emotions:
         angry: assets/char/kenji/angry.svg
 
-    reiko:
+    레이코:
       base: assets/char/reiko/base.svg
       emotions:
         nervous: assets/char/reiko/nervous.svg
 
-    shinichi:
+    신이치:
       base: assets/char/shinichi/base.svg
       emotions:
         cold: assets/char/shinichi/cold.svg
 
-    haruo:
+    하루오:
       base: assets/char/haruo/base.svg
       emotions:
         scared: assets/char/haruo/scared.svg
@@ -76,15 +76,15 @@ scenes:
       - bgFront: police_tape
       - music: tension
       - char:
-          id: shinichi
+          id: 신이치
           position: right
           emotion: cold
       - char:
-          id: reiko
+          id: 레이코
           position: left
           emotion: nervous
       - char:
-          id: conan
+          id: 코난
           position: center
           emotion: think
       - say:
@@ -100,7 +100,7 @@ scenes:
           char: 코난
           text: "거짓말이야. 당신 외투 소매에 있던 찻잎 가루가 증거야."
       - char:
-          id: reiko
+          id: 레이코
           position: left
           emotion: nervous
       - say:
@@ -118,19 +118,19 @@ scenes:
       - clearBgFront: true
       - music: mystery
       - char:
-          id: conan
+          id: 코난
           position: center
           emotion: serious
       - char:
-          id: shinichi
+          id: 신이치
           position: right
           emotion: cold
       - char:
-          id: kogoro
+          id: 코고로
           position: left
           emotion: angry
       - say:
-          char: 코난
+          char: 코난.serious
           text: "<speed=25>트릭은 간단해. 당신은 먼저 다실에 숨어 있다가 켄지를 찔렀어.</speed>"
       - say:
           char: 코난
@@ -140,7 +140,7 @@ scenes:
           char: 코고로
           text: "결정적 증거는 줄이 스친 문틀의 미세한 긁힘 자국이다!"
       - char:
-          id: shinichi
+          id: 신이치
           position: right
           emotion: cold
       - effect: tilt
@@ -149,7 +149,7 @@ scenes:
           text: "……하, 어린애 주제에."
       - effect: flash
       - say:
-          char: 신이치
+          char: 신이치.cold
           text: "<speed=20>그래, 내가 죽였다. 계약서를 빼앗기면 전부 끝이었으니까.</speed>"
       - goto: resolution
 
@@ -158,15 +158,15 @@ scenes:
       - bg: police_tape
       - music: tension
       - char:
-          id: ran
+          id: 란
           position: left
           emotion: worried
       - char:
-          id: conan
+          id: 코난
           position: center
           emotion: think
       - char:
-          id: kogoro
+          id: 코고로
           position: right
           emotion: proud
       - say:

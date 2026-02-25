@@ -48,8 +48,6 @@ export default function App() {
     busy,
     isFinished,
     game,
-    chapterIndex,
-    chapterTotal,
     chapterLoading,
     chapterLoadingProgress,
     chapterLoadingMessage,
@@ -77,6 +75,9 @@ export default function App() {
   useAdvanceByKey();
 
   const effectClass = effect ? `effect-${effect}` : '';
+  const activeSpeakerId = dialog.speakerId;
+  const hasActiveSpeaker =
+    typeof activeSpeakerId === 'string' && Object.values(characters).some((slot) => slot?.id === activeSpeakerId);
 
   useEffect(() => {
     return () => {
@@ -163,13 +164,22 @@ export default function App() {
     if (!slot) {
       return null;
     }
+    const emphasisClass = hasActiveSpeaker ? (slot.id === activeSpeakerId ? 'char-active' : 'char-inactive') : '';
+    const className = `char ${position}${emphasisClass ? ` ${emphasisClass}` : ''}`;
     if (slot.kind === 'live2d') {
-      return <Live2DCharacter key={`${position}-${slot.id}-${slot.source}-${slot.emotion ?? ''}`} slot={slot} position={position} />;
+      return (
+        <Live2DCharacter
+          key={`${position}-${slot.id}-${slot.source}-${slot.emotion ?? ''}`}
+          slot={slot}
+          position={position}
+          className={emphasisClass}
+        />
+      );
     }
     return (
       <img
         key={`${position}-${slot.id}-${slot.source}`}
-        className={`char ${position}`}
+        className={className}
         src={slot.source}
         alt={slot.id}
         loading="eager"
@@ -359,7 +369,6 @@ export default function App() {
       <div className="hud">
         <div className="meta">
           {game?.meta.title ?? 'Loading...'}
-          {chapterTotal > 0 ? ` (${chapterIndex}/${chapterTotal})` : ''}
         </div>
         <div className="hint">{uploading ? 'ZIP Loading...' : 'Click / Enter / Space'}</div>
       </div>

@@ -237,15 +237,19 @@ body,
 }
 
 .char {
+  --char-offset-x: 0%;
+  --char-scale: 1;
   position: absolute;
   bottom: 18vh;
   max-height: 68vh;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
   will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
+  transition: transform 180ms ease-out;
   backface-visibility: hidden;
   contain: paint;
   animation: riseInSide 0.35s ease;
+  z-index: 3;
 }
 
 .char-live2d {
@@ -281,12 +285,20 @@ body,
 
 .center {
   left: 50%;
-  transform: translate3d(-50%, 0, 0);
+  --char-offset-x: -50%;
   animation-name: riseInCenter;
 }
 
 .right {
   right: 8%;
+}
+
+.char-active {
+  z-index: 5;
+}
+
+.char-inactive {
+  z-index: 2;
 }
 
 .hud {
@@ -623,22 +635,22 @@ body,
 @keyframes riseInSide {
   from {
     opacity: 0;
-    transform: translate3d(0, 10px, 0);
+    transform: translate3d(var(--char-offset-x), 10px, 0) scale(var(--char-scale));
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
   }
 }
 
 @keyframes riseInCenter {
   from {
     opacity: 0;
-    transform: translate3d(-50%, 10px, 0);
+    transform: translate3d(-50%, 10px, 0) scale(var(--char-scale));
   }
   to {
     opacity: 1;
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0) scale(var(--char-scale));
   }
 }
 
@@ -710,6 +722,10 @@ body,
   .char {
     max-height: 58vh;
     bottom: 22vh;
+  }
+
+  .char-inactive {
+    --char-scale: 0.7;
   }
 
   .text {

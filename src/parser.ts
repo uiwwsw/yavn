@@ -3,6 +3,22 @@ import { ZodError } from 'zod';
 import { gameSchema } from './schema';
 import type { GameData, VNError } from './types';
 
+function parseSpeakerRef(raw: string): { id?: string; emotion?: string; invalid: boolean } {
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return { invalid: true };
+  }
+  const parts = trimmed.split('.');
+  if (parts.length > 2 || parts.some((part) => part.length === 0)) {
+    return { invalid: true };
+  }
+  return {
+    id: parts[0],
+    emotion: parts[1],
+    invalid: false,
+  };
+}
+
 export function parseGameYaml(raw: string): { data?: GameData; error?: VNError } {
   try {
     const parsed = load(raw);
@@ -58,6 +74,31 @@ export function parseGameYaml(raw: string): { data?: GameData; error?: VNError }
               message: `scene '${sceneId}' uses missing character '${action.char.id}'`,
             },
           };
+        }
+        if ('say' in action && action.say.char) {
+          const speaker = parseSpeakerRef(action.say.char);
+          if (speaker.invalid || !speaker.id) {
+            return {
+              error: {
+                message: `scene '${sceneId}' has invalid say.char '${action.say.char}' (use 'characterId' or 'characterId.emotion')`,
+              },
+            };
+          }
+          const charDef = data.assets.characters[speaker.id];
+          if (!charDef) {
+            return {
+              error: {
+                message: `scene '${sceneId}' uses missing speaker character '${speaker.id}' in say.char`,
+              },
+            };
+          }
+          if (speaker.emotion && !charDef.emotions?.[speaker.emotion]) {
+            return {
+              error: {
+                message: `scene '${sceneId}' uses missing emotion '${speaker.emotion}' for speaker '${speaker.id}'`,
+              },
+            };
+          }
         }
       }
     }

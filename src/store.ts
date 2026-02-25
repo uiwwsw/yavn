@@ -3,6 +3,7 @@ import type { CharacterSlot, GameData, InputGateState, Position, VNError, VideoC
 
 type DialogState = {
   speaker?: string;
+  speakerId?: string;
   fullText: string;
   visibleText: string;
   typing: boolean;
@@ -54,6 +55,7 @@ type VNState = {
 
 const initialDialog: DialogState = {
   speaker: undefined,
+  speakerId: undefined,
   fullText: '',
   visibleText: '',
   typing: false,

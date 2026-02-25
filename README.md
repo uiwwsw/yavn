@@ -1,6 +1,6 @@
 # Visual Novel Engine (Web)
 
-YAML DSL(`public/sample/1.yaml`, `public/sample/2.yaml`...)을 숫자 순서로 읽어 웹에서 실행하는 비주얼노벨 엔진입니다.
+YAML DSL(`public/sample/1.yaml`, `public/sample/2.yaml`...)을 숫자 순서로 감지하고, 현재 챕터만 지연 로드해 웹에서 실행하는 비주얼노벨 엔진입니다.
 
 개발 가이드:
 - [DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)
@@ -20,7 +20,11 @@ npm run dev
 
 - ZIP 또는 폴더에 `0.yaml`, `1.yaml`, `2.yaml`... 형태가 있으면 숫자 순서대로 자동 실행됩니다.
 - `0.yaml`이 없으면 `1.yaml`부터 시작합니다.
+- 최초 시작 시에는 현재 챕터 YAML만 파싱하고, 다음 챕터 YAML은 백그라운드에서 프리로드(파싱 캐시)합니다.
 - 각 챕터 시작 전에 해당 YAML의 에셋을 전부 프리로드하고 로딩 UI를 표시합니다.
+- 로딩 UI는 챕터 분수(`1/2`) 대신 일반 문구를 사용합니다.
+- 로딩 UI는 최소 600ms 유지되며, 100% 도달 후 200ms 유지한 뒤 닫힙니다.
+- 좌측 상단 HUD도 챕터 분수(`N/M`)를 표시하지 않고 제목만 표시합니다.
 
 ## 음악 URL 사용
 
@@ -28,15 +32,23 @@ npm run dev
 - YouTube 링크(`youtu.be`, `youtube.com/watch`, `youtube.com/shorts`, `youtube.com/embed`)도 BGM으로 재생됩니다.
 - 브라우저 정책상 첫 클릭/키 입력 전에는 자동 재생이 제한될 수 있습니다.
 
+## `say.char` 규칙
+
+- `say.char`는 `assets.characters`의 키와 동일해야 합니다.
+- 형식: `캐릭터ID` 또는 `캐릭터ID.emotion` (예: `conan`, `conan.serious`)
+- 발화자 라벨은 `.` 앞부분(ID) 기준으로 표시됩니다.
+- 한글 이름을 표시하려면 캐릭터 키 자체를 한글로 선언하면 됩니다(예: `코난`, `코난.진지`).
+
 ## 구현 범위
 
-1. YAML 로드 + Zod 스키마 검증
+1. 챕터 단위 지연 YAML 로드 + Zod 스키마 검증
 2. 액션 인터프리터(`bg`, `music`, `sound`, `char`, `say`, `wait`, `effect`, `goto`, `video`, `input`)
 3. 타이핑 효과 + `<speed=...>` 인라인 속도 태그
 4. `goto` 점프, `wait` 타이머, `shake/flash` 이펙트
 5. `localStorage` 오토세이브(씬/액션 포인터)
 6. 에러 오버레이(YAML parse 에러 line/column, 스키마/참조 에러)
 7. 샘플 게임 + 초기 에셋(`public/sample/`)
+8. 모바일 발화자 강조 연출(발화자 최상단 노출, 비발화자 30% 축소, 전환 시 부드러운 크기 트랜지션)
 
 ## Video 컷신 액션
 

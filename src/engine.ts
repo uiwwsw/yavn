@@ -27,6 +27,8 @@ declare global {
 
 const AUTOSAVE_KEY = 'vn-engine-autosave';
 const MAX_CHAPTERS = 100;
+const MIN_CHAPTER_LOADING_MS = 600;
+const CHAPTER_LOADED_HOLD_MS = 200;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
 const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
 const DEFAULT_VIDEO_HOLD_TO_SKIP_MS = 800;
@@ -48,9 +50,11 @@ type SaveProgress = {
 
 type PreparedChapter = {
   name: string;
-  game: GameData;
   baseUrl: string;
   assetOverrides: Record<string, string>;
+  loadGame: () => Promise<GameData>;
+  game?: GameData;
+  gamePromise?: Promise<GameData>;
 };
 
 let waitTimer: number | undefined;
@@ -65,6 +69,39 @@ let youtubePlayer: YouTubePlayer | undefined;
 let preparedChapters: PreparedChapter[] = [];
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
+
+async function waitNextFrame(): Promise<void> {
+  await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+}
+
+async function waitMs(ms: number): Promise<void> {
+  if (ms <= 0) {
+    return;
+  }
+  await new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function ensureChapterGame(chapter: PreparedChapter): Promise<GameData> {
+  if (chapter.game) {
+    return chapter.game;
+  }
+  if (chapter.gamePromise) {
+    return chapter.gamePromise;
+  }
+
+  chapter.gamePromise = chapter
+    .loadGame()
+    .then((game) => {
+      chapter.game = game;
+      return game;
+    })
+    .catch((error) => {
+      chapter.gamePromise = undefined;
+      throw error;
+    });
+
+  return chapter.gamePromise;
+}
 
 function clearTimers() {
   if (waitTimer) {
@@ -396,9 +433,17 @@ function parseInlineSpeed(text: string): { speed?: number; text: string } {
 
 function getSpeakerName(_game: GameData, id?: string) {
   if (!id) {
-    return undefined;
+    return { speakerId: undefined, speakerName: undefined };
   }
-  return id;
+  const trimmed = id.trim();
+  if (!trimmed) {
+    return { speakerId: undefined, speakerName: undefined };
+  }
+  const [speakerId] = trimmed.split('.', 2);
+  if (!speakerId) {
+    return { speakerId: undefined, speakerName: undefined };
+  }
+  return { speakerId, speakerName: speakerId };
 }
 
 function saveProgress(sceneId: string, actionIndex: number) {
@@ -644,7 +689,7 @@ function startVideoCutscene(src: string, holdToSkipMs?: number) {
   useVNStore.getState().setBusy(true);
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().clearInputGate();
-  useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+  useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   useVNStore.getState().setVideoCutscene({
     active: true,
     src: resolvedSrc,
@@ -714,8 +759,8 @@ async function warmImageDecodeUrl(url: string) {
   });
 }
 
-async function preloadChapterAssets(chapter: PreparedChapter, chapterLabel: string) {
-  const paths = collectAssetPaths(chapter.game);
+async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, chapterLabel: string) {
+  const paths = collectAssetPaths(game);
   if (paths.length === 0) {
     useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loading...`);
     return;
@@ -770,8 +815,7 @@ async function preloadChapterAssets(chapter: PreparedChapter, chapterLabel: stri
   }
 }
 
-function restorePresentationToCursor(chapter: PreparedChapter, resume: SaveProgress) {
-  const game = chapter.game;
+function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, resume: SaveProgress) {
   const sceneOrder = game.script.map((entry) => entry.scene);
   if (sceneOrder.length === 0) {
     return;
@@ -857,22 +901,38 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
     return;
   }
 
-  activeChapterIndex = chapterIndex;
-  useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
-  const chapterLabel = `Chapter ${chapterIndex + 1}/${preparedChapters.length}`;
+  try {
+    activeChapterIndex = chapterIndex;
+    useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
+    const chapterLabel = 'Chapter';
+    const loadStartedAt = performance.now();
+    useVNStore.getState().setChapterLoading(true, 0, `${chapterLabel} loading...`);
+    const game = await ensureChapterGame(chapter);
+    await preloadChapterAssets(chapter, game, chapterLabel);
+    const elapsed = performance.now() - loadStartedAt;
+    await waitMs(MIN_CHAPTER_LOADING_MS - elapsed);
+    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loaded`);
+    await waitNextFrame();
+    await waitMs(CHAPTER_LOADED_HOLD_MS);
+    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
 
-  useVNStore.getState().setChapterLoading(true, 0, `${chapterLabel} loading...`);
-  await preloadChapterAssets(chapter, chapterLabel);
-  useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
+    useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
 
-  useVNStore.getState().setGame(chapter.game, chapter.baseUrl, chapter.assetOverrides);
+    if (resume && resume.chapterIndex === chapterIndex && game.scenes[resume.sceneId]) {
+      restorePresentationToCursor(chapter, game, resume);
+      useVNStore.getState().setCursor(resume.sceneId, resume.actionIndex);
+    }
 
-  if (resume && resume.chapterIndex === chapterIndex && chapter.game.scenes[resume.sceneId]) {
-    restorePresentationToCursor(chapter, resume);
-    useVNStore.getState().setCursor(resume.sceneId, resume.actionIndex);
+    const nextChapter = preparedChapters[chapterIndex + 1];
+    if (nextChapter) {
+      void ensureChapterGame(nextChapter).catch(() => undefined);
+    }
+
+    runToNextPause();
+  } catch (error) {
+    useVNStore.getState().setChapterLoading(false, 0);
+    useVNStore.getState().setError({ message: error instanceof Error ? error.message : 'Failed to start chapter' });
   }
-
-  runToNextPause();
 }
 
 async function startPreparedChapters(chapters: PreparedChapter[]) {
@@ -880,7 +940,7 @@ async function startPreparedChapters(chapters: PreparedChapter[]) {
   useVNStore.getState().setChapterMeta(1, chapters.length);
 
   const save = loadProgress();
-  if (save && save.chapterIndex >= 0 && save.chapterIndex < chapters.length && chapters[save.chapterIndex].game.scenes[save.sceneId]) {
+  if (save && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
     await startChapter(save.chapterIndex, save);
     return;
   }
@@ -1024,6 +1084,7 @@ function runToNextPause(loopGuard = 0) {
     });
     useVNStore.getState().setDialog({
       speaker: undefined,
+      speakerId: undefined,
       fullText: '정답을 입력하세요.',
       visibleText: '정답을 입력하세요.',
       typing: false,
@@ -1034,10 +1095,12 @@ function runToNextPause(loopGuard = 0) {
   if ('say' in action) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = parsed.speed ?? game.settings.textSpeed;
+    const speaker = getSpeakerName(game, action.say.char);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().setDialog({
-      speaker: getSpeakerName(game, action.say.char),
+      speaker: speaker.speakerName,
+      speakerId: speaker.speakerId,
       fullText: parsed.text,
       visibleText: '',
       typing: true,
@@ -1065,17 +1128,55 @@ async function fetchYamlIfExists(url: string): Promise<string | undefined> {
   return text;
 }
 
-function parseChapterFromYaml(raw: string, name: string, baseUrl: string, assetOverrides: Record<string, string>): PreparedChapter {
+async function hasYamlFileAtUrl(url: string): Promise<boolean> {
+  try {
+    const head = await fetch(url, { method: 'HEAD' });
+    if (head.ok) {
+      const contentType = (head.headers.get('content-type') ?? '').toLowerCase();
+      return !contentType.includes('text/html');
+    }
+    if (head.status !== 405 && head.status !== 501) {
+      return false;
+    }
+  } catch {
+    // Some hosts block HEAD while GET is allowed.
+  }
+
+  const fallback = await fetchYamlIfExists(url);
+  return fallback !== undefined;
+}
+
+function parseGameFromYaml(raw: string, name: string, baseUrl: string, assetOverrides: Record<string, string>): GameData {
   const result = parseGameYaml(raw);
   if (!result.data) {
     throw new Error(`${name}: ${result.error?.message ?? 'YAML parse error'}`);
   }
-  const game = materializeGameAssets(result.data, baseUrl, assetOverrides);
+  return materializeGameAssets(result.data, baseUrl, assetOverrides);
+}
+
+function createUrlChapter(url: string, name: string): PreparedChapter {
+  const baseUrl = new URL('.', url).toString();
+  const assetOverrides: Record<string, string> = {};
   return {
     name,
-    game,
     baseUrl,
     assetOverrides,
+    loadGame: async () => {
+      const raw = await fetchYamlIfExists(url);
+      if (raw === undefined) {
+        throw new Error(`${name}: Failed to load yaml: ${url}`);
+      }
+      return parseGameFromYaml(raw, name, baseUrl, assetOverrides);
+    },
+  };
+}
+
+function createInMemoryChapter(raw: string, name: string, baseUrl: string, assetOverrides: Record<string, string>): PreparedChapter {
+  return {
+    name,
+    baseUrl,
+    assetOverrides,
+    loadGame: async () => parseGameFromYaml(raw, name, baseUrl, assetOverrides),
   };
 }
 
@@ -1205,29 +1306,29 @@ export async function loadGameFromUrl(url: string) {
 
     const zeroUrl = new URL('0.yaml', baseUrl).toString();
     const oneUrl = new URL('1.yaml', baseUrl).toString();
-    const zeroText = await fetchYamlIfExists(zeroUrl);
+    const hasZero = await hasYamlFileAtUrl(zeroUrl);
 
-    if (zeroText !== undefined) {
-      chapters.push(parseChapterFromYaml(zeroText, '0.yaml', new URL('.', zeroUrl).toString(), {}));
+    if (hasZero) {
+      chapters.push(createUrlChapter(zeroUrl, '0.yaml'));
       for (let chapterNo = 1; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
         const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-        const chapterText = await fetchYamlIfExists(chapterUrl);
-        if (chapterText === undefined) {
+        const exists = await hasYamlFileAtUrl(chapterUrl);
+        if (!exists) {
           break;
         }
-        chapters.push(parseChapterFromYaml(chapterText, `${chapterNo}.yaml`, new URL('.', chapterUrl).toString(), {}));
+        chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`));
       }
     } else {
-      const oneText = await fetchYamlIfExists(oneUrl);
-      if (oneText !== undefined) {
-        chapters.push(parseChapterFromYaml(oneText, '1.yaml', new URL('.', oneUrl).toString(), {}));
+      const hasOne = await hasYamlFileAtUrl(oneUrl);
+      if (hasOne) {
+        chapters.push(createUrlChapter(oneUrl, '1.yaml'));
         for (let chapterNo = 2; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
           const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-          const chapterText = await fetchYamlIfExists(chapterUrl);
-          if (chapterText === undefined) {
+          const exists = await hasYamlFileAtUrl(chapterUrl);
+          if (!exists) {
             break;
           }
-          chapters.push(parseChapterFromYaml(chapterText, `${chapterNo}.yaml`, new URL('.', chapterUrl).toString(), {}));
+          chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`));
         }
       }
     }
@@ -1239,7 +1340,14 @@ export async function loadGameFromUrl(url: string) {
           useVNStore.getState().setError({ message: `Failed to load yaml: ${absolute.toString()}` });
           return;
         }
-        chapters.push(parseChapterFromYaml(fallbackText, absolute.pathname.split('/').pop() ?? 'chapter.yaml', new URL('.', absolute).toString(), {}));
+        chapters.push(
+          createInMemoryChapter(
+            fallbackText,
+            absolute.pathname.split('/').pop() ?? 'chapter.yaml',
+            new URL('.', absolute).toString(),
+            {},
+          ),
+        );
       } else {
         useVNStore.getState().setError({
           message: 'Numbered chapter YAML not found. Add 0.yaml or 1.yaml.',
@@ -1300,17 +1408,18 @@ export async function loadGameFromZip(file: File) {
     const chapters: PreparedChapter[] = [];
     for (const yamlEntry of selectedYaml) {
       const yamlDir = yamlEntry.name.includes('/') ? yamlEntry.name.slice(0, yamlEntry.name.lastIndexOf('/') + 1) : '';
-      const raw = await yamlEntry.async('text');
-      const parsed = parseGameYaml(raw);
-      if (!parsed.data) {
-        throw new Error(`${yamlEntry.name}: ${parsed.error?.message ?? 'YAML parse error'}`);
-      }
-      const materialized = materializeGameAssetsFromZip(parsed.data, yamlDir, zipUrlByKey);
       chapters.push({
         name: yamlEntry.name,
-        game: materialized,
         baseUrl: window.location.href,
         assetOverrides: blobMap,
+        loadGame: async () => {
+          const raw = await yamlEntry.async('text');
+          const parsed = parseGameYaml(raw);
+          if (!parsed.data) {
+            throw new Error(`${yamlEntry.name}: ${parsed.error?.message ?? 'YAML parse error'}`);
+          }
+          return materializeGameAssetsFromZip(parsed.data, yamlDir, zipUrlByKey);
+        },
       });
     }
 
@@ -1350,7 +1459,7 @@ export function handleAdvance() {
     }
     useVNStore.getState().setWaitingInput(false);
     useVNStore.getState().clearInputGate();
-    useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+    useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
     incrementCursor();
     runToNextPause();
     return;
@@ -1368,7 +1477,7 @@ export async function restartFromBeginning() {
   useVNStore.getState().clearVideoCutscene();
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().clearInputGate();
-  useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+  useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   await startChapter(0);
 }
 
@@ -1383,7 +1492,7 @@ export function submitInputAnswer(rawAnswer: string) {
   if (typed === expected) {
     useVNStore.getState().setWaitingInput(false);
     useVNStore.getState().clearInputGate();
-    useVNStore.getState().setDialog({ speaker: undefined, fullText: '', visibleText: '', typing: false });
+    useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
     incrementCursor();
     runToNextPause();
     return;
@@ -1394,6 +1503,7 @@ export function submitInputAnswer(rawAnswer: string) {
   useVNStore.getState().setInputGate({ attemptCount: nextAttempt });
   useVNStore.getState().setDialog({
     speaker: undefined,
+    speakerId: undefined,
     fullText: message,
     visibleText: message,
     typing: false,

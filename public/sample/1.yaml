@@ -16,40 +16,40 @@ assets:
     police_tape: assets/bg/police_tape.svg
 
   characters:
-    conan:
+    코난:
       base: assets/char/conan/base.png
       emotions:
         think: assets/char/conan/think.png
         serious: assets/char/conan/serious.png
 
-    ran:
+    란:
       base: assets/char/ran/base.svg
       emotions:
         surprised: assets/char/ran/surprised.svg
         worried: assets/char/ran/worried.svg
 
-    kogoro:
+    코고로:
       base: assets/char/kogoro/base.svg
       emotions:
         proud: assets/char/kogoro/proud.svg
         angry: assets/char/kogoro/angry.svg
 
-    kenji:
+    켄지:
       base: assets/char/kenji/base.svg
       emotions:
         angry: assets/char/kenji/angry.svg
 
-    reiko:
+    레이코:
       base: assets/char/reiko/base.svg
       emotions:
         nervous: assets/char/reiko/nervous.svg
 
-    shinichi:
+    신이치:
       base: assets/char/shinichi/base.svg
       emotions:
         cold: assets/char/shinichi/cold.svg
 
-    haruo:
+    하루오:
       base: assets/char/haruo/base.svg
       emotions:
         scared: assets/char/haruo/scared.svg
@@ -81,17 +81,17 @@ scenes:
           text: "산속 깊은 곳, 폭우에 고립된 고급 전통 료칸."
       - bg: tea_room
       - char:
-          id: kenji
+          id: 켄지
           position: left
       - char:
-          id: kenji
+          id: 켄지
           position: left
           emotion: angry
       - char:
-          id: shinichi
+          id: 신이치
           position: right
       - char:
-          id: shinichi
+          id: 신이치
           position: right
           emotion: cold
       - say:
@@ -101,10 +101,10 @@ scenes:
           char: 신이치
           text: "협박으로 해결될 문제는 아니지."
       - char:
-          id: reiko
+          id: 레이코
           position: center
       - char:
-          id: reiko
+          id: 레이코
           position: center
           emotion: nervous
       - say:
@@ -134,10 +134,10 @@ scenes:
       - say:
           text: "문을 부수고 들어간 다실 안."
       - char:
-          id: haruo
+          id: 하루오
           position: left
       - char:
-          id: haruo
+          id: 하루오
           position: left
           emotion: scared
       - say:
@@ -165,24 +165,24 @@ scenes:
       - bg: ryokan_hall
       - music: mystery
       - char:
-          id: ran
+          id: 란
           position: left
       - char:
-          id: ran
+          id: 란
           position: left
           emotion: surprised
       - char:
-          id: kogoro
+          id: 코고로
           position: right
       - char:
-          id: kogoro
+          id: 코고로
           position: right
           emotion: proud
       - char:
-          id: conan
+          id: 코난
           position: center
       - char:
-          id: conan
+          id: 코난
           position: center
           emotion: think
       - say:
@@ -192,14 +192,14 @@ scenes:
           char: 코고로
           text: "<speed=25>흥! 역시 나, 명탐정 모리 코고로의 차례군.</speed>"
       - char:
-          id: ran
+          id: 란
           position: left
           emotion: worried
       - say:
           char: 란
           text: "아저씨, 현장이 너무 이상해요… 뭔가 놓치고 있는 것 같아요."
       - char:
-          id: kogoro
+          id: 코고로
           position: right
           emotion: angry
       - say:
@@ -209,12 +209,12 @@ scenes:
           char: 코난
           text: "……(밀실, 폭우, 그리고 다툼.)"
       - char:
-          id: conan
+          id: 코난
           position: center
           emotion: serious
       - effect: zoom
       - say:
-          char: 코난
+          char: 코난.serious
           text: "<speed=45>뭔가 이상해… 이 사건, 단순하지 않아.</speed>"
       - goto: investigation
 
@@ -224,15 +224,15 @@ scenes:
       - music: mystery
       - clearBgFront: true
       - char:
-          id: conan
+          id: 코난
           position: center
           emotion: serious
       - char:
-          id: ran
+          id: 란
           position: left
           emotion: worried
       - char:
-          id: kogoro
+          id: 코고로
           position: right
           emotion: angry
       - say:
@@ -245,14 +245,14 @@ scenes:
           char: 코난
           text: "<speed=45>비가 오던 밤에, 신발에 진흙이 하나도 없다…? 누군가 미리 안에 있었다.</speed>"
       - char:
-          id: ran
+          id: 란
           position: left
           emotion: surprised
       - say:
           char: 란
           text: "그럼 범인이 피해자보다 먼저 다실에 숨어 있었다는 거야?"
       - char:
-          id: kogoro
+          id: 코고로
           position: right
           emotion: proud
       - say:
