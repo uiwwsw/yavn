@@ -85,6 +85,7 @@ export default function App() {
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
+  const sampleZipUrl = '/sample.zip';
   const shareByPrUrl = 'https://github.com/uiwwsw/visual-novel/compare';
 
   useEffect(() => {
@@ -385,6 +386,9 @@ export default function App() {
           </p>
 
           <div className="launcher-cta">
+            <a className="sample-download-link" href={sampleZipUrl} download>
+              샘플 파일 다운받기 (ZIP)
+            </a>
             <label className="zip-upload">
               게임 실행해보기 (ZIP 올려서)
               <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
@@ -393,7 +397,7 @@ export default function App() {
               게임 공유하기 (PR)
             </a>
           </div>
-          <p className="launcher-cta-note">공유를 원하면 포크/브랜치에서 작업 후 PR을 열어 주세요.</p>
+          <p className="launcher-cta-note">샘플 ZIP으로 구조를 먼저 확인하고, 공유를 원하면 포크/브랜치에서 PR을 열어 주세요.</p>
 
           <section className="launcher-section">
             <h2>게임 리스트</h2>
@@ -417,19 +421,23 @@ export default function App() {
             <h2>어떻게 동작하나</h2>
             <ol className="how-list">
               <li>
-                <strong>1. YAML 작성</strong>
+                <strong>1. 샘플 ZIP 확인</strong>
+                <span>`샘플 파일 다운받기 (ZIP)` 버튼으로 기본 파일 구조를 먼저 확인합니다.</span>
+              </li>
+              <li>
+                <strong>2. YAML 작성</strong>
                 <span>대사/연출을 `1.yaml` 같은 파일로 작성합니다.</span>
               </li>
               <li>
-                <strong>2. 에셋 ZIP 압축</strong>
+                <strong>3. 에셋 ZIP 압축</strong>
                 <span>이미지/사운드를 `assets/...` 구조로 묶어 ZIP을 만듭니다.</span>
               </li>
               <li>
-                <strong>3. 업로드 즉시 실행</strong>
+                <strong>4. 업로드 즉시 실행</strong>
                 <span>`게임 실행해보기 (ZIP 올려서)` 버튼으로 바로 플레이합니다.</span>
               </li>
               <li>
-                <strong>4. 공유는 PR</strong>
+                <strong>5. 공유는 PR</strong>
                 <span>`게임 공유하기 (PR)` 버튼으로 GitHub PR 생성 페이지로 이동합니다.</span>
               </li>
             </ol>
@@ -456,6 +464,10 @@ export default function App() {
             <div className="faq-item">
               <strong>게임은 어디서 실행하나요?</strong>
               <p>`게임 리스트`에서 원하는 게임을 선택하거나, ZIP을 업로드해 즉시 실행할 수 있습니다.</p>
+            </div>
+            <div className="faq-item">
+              <strong>개발 전에 참고할 파일이 있나요?</strong>
+              <p>`샘플 파일 다운받기 (ZIP)` 버튼으로 기본 예시 파일(`public/sample.zip`)을 받을 수 있습니다.</p>
             </div>
             <div className="faq-item">
               <strong>내 게임을 홈페이지에 올리려면?</strong>

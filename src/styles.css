@@ -91,6 +91,24 @@ body,
   display: none;
 }
 
+.sample-download-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-height: 42px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #f3dfb7;
+  border: 1px solid rgba(249, 207, 140, 0.72);
+  background: rgba(67, 40, 14, 0.55);
+}
+
+.sample-download-link:hover {
+  background: rgba(88, 52, 18, 0.72);
+}
+
 .share-pr-link {
   display: inline-flex;
   align-items: center;
@@ -992,6 +1010,7 @@ body,
   }
 
   .game-entry-link,
+  .sample-download-link,
   .zip-upload,
   .share-pr-link {
     width: 100%;

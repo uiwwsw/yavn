@@ -361,6 +361,7 @@ scenes:
 - 번호 파일이 없으면 단일 YAML URL fallback 시도
 
 ### ZIP 로딩(`/`)
+- 런처의 `샘플 파일 다운받기 (ZIP)` 버튼으로 예시 파일(`public/sample.zip`)을 내려받아 구조를 먼저 확인할 수 있습니다.
 - 런처의 `게임 실행해보기 (ZIP 올려서)` 버튼으로 ZIP을 선택하면 즉시 실행됩니다.
 - 런처의 `게임 공유하기 (PR)` 버튼은 GitHub PR 생성 페이지로 이동합니다.
 - ZIP 내부 YAML 중 `0.yaml`, `1.yaml`...이 있으면 번호순 실행
@@ -458,6 +459,7 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 ## 14) 문서 변경 로그
 
 - 2026-02-25: `say.char`를 생략한 대사에서 기본 `Narration` 라벨을 제거하고, 화자 이름 영역을 비워 표시하도록 동작을 변경.
+- 2026-02-25: 홈 런처에 `샘플 파일 다운받기 (ZIP)` 버튼을 추가해 `public/sample.zip`을 바로 내려받아 개발 전 파일 구조를 확인할 수 있도록 수정.
 - 2026-02-25: `clearSticker` 객체형(`id`, `leave`)을 추가해 스티커 퇴장 이펙트(`fadeOut`, `wipeLeft`, `wipeRight`)와 지속시간/이징/지연 제어를 지원.
 - 2026-02-25: 스티커 등장 이펙트에 `wipeLeft`를 추가.
 - 2026-02-25: `sticker.enter` 옵션을 추가해 스티커 등장 이펙트(`fadeIn/scaleIn/popIn/slide/wipe/blur/rotate`)와 지속시간/이징/지연 제어를 지원.

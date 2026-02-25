@@ -17,7 +17,7 @@ npm run dev
 라우팅:
 
 - `/game-list/:gameId`: 게임 리스트 폴더 기반 게임 즉시 실행
-- `/`: 런처(게임 실행해보기 ZIP 업로드 + 게임 공유하기 PR 이동)
+- `/`: 런처(샘플 ZIP 다운로드 + 게임 실행해보기 ZIP 업로드 + 게임 공유하기 PR 이동)
 
 ## 챕터 로딩 규칙
 
@@ -31,6 +31,7 @@ npm run dev
 
 ## 홈 런처 버튼
 
+- `샘플 파일 다운받기 (ZIP)`: 샘플 예시 ZIP(`public/sample.zip`)을 다운로드합니다.
 - `게임 실행해보기 (ZIP 올려서)`: ZIP 파일을 업로드해 즉시 실행합니다.
 - `게임 공유하기 (PR)`: GitHub PR 생성 화면(`https://github.com/uiwwsw/visual-novel/compare`)으로 이동합니다.
 
