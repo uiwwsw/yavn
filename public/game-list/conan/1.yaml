@@ -188,11 +188,15 @@ scenes:
           id: tape
           image: police_tape
           x: 0
-          y: 70
+          y: 30
           width: 120
-          anchorX: center
+          anchorX: left
           anchorY: top
           zIndex: 1
+          enter:
+            effect: wipeLeft
+            duration: 360
+            easing: ease-out
       - char:
           id: 코난
           position: center

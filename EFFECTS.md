@@ -58,3 +58,49 @@ YAML 액션에서 `- effect: <name>` 형태로 넣으면 됩니다.
 
 - 이펙트는 짧은 순간 연출용입니다. 여러 이펙트를 연속으로 배치하면 장면 템포를 쉽게 조절할 수 있습니다.
 - 미구현 이름을 넣으면 기본 지속시간(약 350ms)으로만 처리되고, 화면 변화는 없습니다.
+
+## Sticker Enter Effects
+
+`sticker` 액션에서는 `enter` 옵션으로 스티커 등장 이펙트를 지정할 수 있습니다.
+
+```yaml
+- sticker:
+    id: clue
+    image: police_tape
+    enter:
+      effect: wipeCenterX
+      duration: 420
+      easing: ease-out
+      delay: 0
+```
+
+지원 이름:
+- `none`
+- `fadeIn`
+- `wipeLeft`
+- `scaleIn`
+- `popIn`
+- `slideUp`
+- `slideDown`
+- `slideLeft`
+- `slideRight`
+- `wipeCenterX`
+- `wipeCenterY`
+- `blurIn`
+- `rotateIn`
+
+`clearSticker`에서는 `leave`로 퇴장 이펙트를 줄 수 있습니다.
+
+```yaml
+- clearSticker:
+    id: clue
+    leave:
+      effect: wipeRight
+      duration: 280
+```
+
+지원 이름:
+- `none`
+- `fadeOut`
+- `wipeLeft`
+- `wipeRight`

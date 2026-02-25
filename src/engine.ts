@@ -1,7 +1,16 @@
 import JSZip from 'jszip';
 import { useVNStore } from './store';
 import { parseGameYaml } from './parser';
-import type { CharacterSlot, GameData, StickerLength, StickerSlot } from './types';
+import type {
+  CharacterSlot,
+  GameData,
+  StickerEnterEffect,
+  StickerEnterOptions,
+  StickerLeaveEffect,
+  StickerLeaveOptions,
+  StickerLength,
+  StickerSlot,
+} from './types';
 
 type YouTubePlayer = {
   playVideo?: () => void;
@@ -41,6 +50,14 @@ const EFFECT_DURATIONS: Record<string, number> = {
   pulse: 500,
   tilt: 320,
 };
+const DEFAULT_STICKER_ENTER_EFFECT: StickerEnterEffect = 'fadeIn';
+const DEFAULT_STICKER_ENTER_DURATION = 280;
+const DEFAULT_STICKER_ENTER_EASING = 'ease';
+const DEFAULT_STICKER_ENTER_DELAY = 0;
+const DEFAULT_STICKER_LEAVE_EFFECT: StickerLeaveEffect = 'none';
+const DEFAULT_STICKER_LEAVE_DURATION = 220;
+const DEFAULT_STICKER_LEAVE_EASING = 'ease';
+const DEFAULT_STICKER_LEAVE_DELAY = 0;
 
 type SaveProgress = {
   chapterIndex: number;
@@ -69,6 +86,8 @@ let youtubePlayer: YouTubePlayer | undefined;
 let preparedChapters: PreparedChapter[] = [];
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
+let stickerRenderKeySeed = 0;
+const clearStickerTimers = new Map<string, number>();
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -116,6 +135,10 @@ function clearTimers() {
     window.clearTimeout(effectTimer);
     effectTimer = undefined;
   }
+  for (const timer of clearStickerTimers.values()) {
+    window.clearTimeout(timer);
+  }
+  clearStickerTimers.clear();
 }
 
 function clearObjectUrls() {
@@ -370,6 +393,73 @@ function clampOpacity(value: number | undefined): number {
   return Math.max(0, Math.min(1, value));
 }
 
+function clampStickerTiming(value: number | undefined, fallback: number): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return fallback;
+  }
+  return Math.max(0, Math.min(5000, Math.floor(value)));
+}
+
+function normalizeStickerEnter(
+  enter: StickerEnterEffect | StickerEnterOptions | undefined,
+): Pick<StickerSlot, 'enterEffect' | 'enterDuration' | 'enterEasing' | 'enterDelay'> {
+  if (!enter) {
+    return {
+      enterEffect: DEFAULT_STICKER_ENTER_EFFECT,
+      enterDuration: DEFAULT_STICKER_ENTER_DURATION,
+      enterEasing: DEFAULT_STICKER_ENTER_EASING,
+      enterDelay: DEFAULT_STICKER_ENTER_DELAY,
+    };
+  }
+
+  if (typeof enter === 'string') {
+    return {
+      enterEffect: enter,
+      enterDuration: DEFAULT_STICKER_ENTER_DURATION,
+      enterEasing: DEFAULT_STICKER_ENTER_EASING,
+      enterDelay: DEFAULT_STICKER_ENTER_DELAY,
+    };
+  }
+
+  const easing = typeof enter.easing === 'string' && enter.easing.trim().length > 0 ? enter.easing.trim() : DEFAULT_STICKER_ENTER_EASING;
+  return {
+    enterEffect: enter.effect ?? DEFAULT_STICKER_ENTER_EFFECT,
+    enterDuration: clampStickerTiming(enter.duration, DEFAULT_STICKER_ENTER_DURATION),
+    enterEasing: easing,
+    enterDelay: clampStickerTiming(enter.delay, DEFAULT_STICKER_ENTER_DELAY),
+  };
+}
+
+function normalizeStickerLeave(
+  leave: StickerLeaveEffect | StickerLeaveOptions | undefined,
+): Pick<StickerSlot, 'leaveEffect' | 'leaveDuration' | 'leaveEasing' | 'leaveDelay'> {
+  if (!leave) {
+    return {
+      leaveEffect: DEFAULT_STICKER_LEAVE_EFFECT,
+      leaveDuration: DEFAULT_STICKER_LEAVE_DURATION,
+      leaveEasing: DEFAULT_STICKER_LEAVE_EASING,
+      leaveDelay: DEFAULT_STICKER_LEAVE_DELAY,
+    };
+  }
+
+  if (typeof leave === 'string') {
+    return {
+      leaveEffect: leave,
+      leaveDuration: DEFAULT_STICKER_LEAVE_DURATION,
+      leaveEasing: DEFAULT_STICKER_LEAVE_EASING,
+      leaveDelay: DEFAULT_STICKER_LEAVE_DELAY,
+    };
+  }
+
+  const easing = typeof leave.easing === 'string' && leave.easing.trim().length > 0 ? leave.easing.trim() : DEFAULT_STICKER_LEAVE_EASING;
+  return {
+    leaveEffect: leave.effect ?? DEFAULT_STICKER_LEAVE_EFFECT,
+    leaveDuration: clampStickerTiming(leave.duration, DEFAULT_STICKER_LEAVE_DURATION),
+    leaveEasing: easing,
+    leaveDelay: clampStickerTiming(leave.delay, DEFAULT_STICKER_LEAVE_DELAY),
+  };
+}
+
 function buildStickerSlot(
   baseUrl: string,
   id: string,
@@ -384,8 +474,11 @@ function buildStickerSlot(
     rotate?: number;
     opacity?: number;
     zIndex?: number;
+    enter?: StickerEnterEffect | StickerEnterOptions;
   },
 ): StickerSlot {
+  const enter = normalizeStickerEnter(placement.enter);
+  const leave = normalizeStickerLeave(undefined);
   return {
     id,
     source: resolveAsset(baseUrl, imagePath),
@@ -398,7 +491,70 @@ function buildStickerSlot(
     rotate: typeof placement.rotate === 'number' ? placement.rotate : 0,
     opacity: clampOpacity(placement.opacity),
     zIndex: typeof placement.zIndex === 'number' ? placement.zIndex : 0,
+    enterEffect: enter.enterEffect,
+    enterDuration: enter.enterDuration,
+    enterEasing: enter.enterEasing,
+    enterDelay: enter.enterDelay,
+    leaveEffect: leave.leaveEffect,
+    leaveDuration: leave.leaveDuration,
+    leaveEasing: leave.leaveEasing,
+    leaveDelay: leave.leaveDelay,
+    leaving: false,
+    renderKey: ++stickerRenderKeySeed,
   };
+}
+
+function parseClearStickerTarget(target: string | { id: string; leave?: StickerLeaveEffect | StickerLeaveOptions }): {
+  id: string;
+  leave?: StickerLeaveEffect | StickerLeaveOptions;
+} {
+  if (typeof target === 'string') {
+    return { id: target };
+  }
+  return { id: target.id, leave: target.leave };
+}
+
+function cancelStickerClearTimer(id: string) {
+  const timer = clearStickerTimers.get(id);
+  if (typeof timer === 'number') {
+    window.clearTimeout(timer);
+    clearStickerTimers.delete(id);
+  }
+}
+
+function clearStickerWithLeave(id: string, leave?: StickerLeaveEffect | StickerLeaveOptions): void {
+  if (id === 'all') {
+    const stickerIds = Object.keys(useVNStore.getState().stickers);
+    for (const stickerId of stickerIds) {
+      clearStickerWithLeave(stickerId, leave);
+    }
+    return;
+  }
+
+  cancelStickerClearTimer(id);
+  const sticker = useVNStore.getState().stickers[id];
+  if (!sticker) {
+    return;
+  }
+  const normalizedLeave = normalizeStickerLeave(leave);
+  if (normalizedLeave.leaveEffect === 'none') {
+    useVNStore.getState().clearSticker(id);
+    return;
+  }
+
+  useVNStore.getState().setSticker({
+    ...sticker,
+    ...normalizedLeave,
+    leaving: true,
+    renderKey: ++stickerRenderKeySeed,
+  });
+
+  const totalMs = Math.max(0, normalizedLeave.leaveDelay + normalizedLeave.leaveDuration);
+  const timer = window.setTimeout(() => {
+    clearStickerTimers.delete(id);
+    useVNStore.getState().clearSticker(id);
+  }, totalMs);
+  clearStickerTimers.set(id, timer);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -922,15 +1078,17 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
     }
     if ('sticker' in action) {
       const path = game.assets.backgrounds[action.sticker.image];
+      cancelStickerClearTimer(action.sticker.id);
       setSticker(buildStickerSlot(chapter.baseUrl, action.sticker.id, path, action.sticker));
       actionIndex += 1;
       continue;
     }
     if ('clearSticker' in action) {
-      if (action.clearSticker === 'all') {
+      const target = parseClearStickerTarget(action.clearSticker);
+      if (target.id === 'all') {
         clearAllStickers();
       } else {
-        clearSticker(action.clearSticker);
+        clearSticker(target.id);
       }
       actionIndex += 1;
       continue;
@@ -1065,6 +1223,7 @@ function runToNextPause(loopGuard = 0) {
 
   if ('sticker' in action) {
     const path = game.assets.backgrounds[action.sticker.image];
+    cancelStickerClearTimer(action.sticker.id);
     useVNStore.getState().setSticker(buildStickerSlot(state.baseUrl, action.sticker.id, path, action.sticker));
     incrementCursor();
     runToNextPause(loopGuard + 1);
@@ -1072,10 +1231,14 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('clearSticker' in action) {
-    if (action.clearSticker === 'all') {
+    const target = parseClearStickerTarget(action.clearSticker);
+    if (target.id === 'all' && !target.leave) {
+      for (const id of Object.keys(useVNStore.getState().stickers)) {
+        cancelStickerClearTimer(id);
+      }
       useVNStore.getState().clearAllStickers();
     } else {
-      useVNStore.getState().clearSticker(action.clearSticker);
+      clearStickerWithLeave(target.id, target.leave);
     }
     incrementCursor();
     runToNextPause(loopGuard + 1);
@@ -1166,6 +1329,7 @@ function runToNextPause(loopGuard = 0) {
     const textSpeed = parsed.speed ?? game.settings.textSpeed;
     const speaker = getSpeakerName(game, action.say.char);
     useVNStore.getState().clearInputGate();
+    useVNStore.getState().promoteSpeaker(speaker.speakerId);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().setDialog({
       speaker: speaker.speakerName,

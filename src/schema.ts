@@ -19,6 +19,40 @@ const inputActionSchema = z
   .transform((input) => input);
 
 const stickerLengthSchema = z.union([z.number(), z.string().min(1)]);
+const stickerEnterEffectSchema = z.enum([
+  'none',
+  'fadeIn',
+  'wipeLeft',
+  'scaleIn',
+  'popIn',
+  'slideUp',
+  'slideDown',
+  'slideLeft',
+  'slideRight',
+  'wipeCenterX',
+  'wipeCenterY',
+  'blurIn',
+  'rotateIn',
+]);
+const stickerLeaveEffectSchema = z.enum(['none', 'fadeOut', 'wipeLeft', 'wipeRight']);
+const stickerEnterSchema = z.union([
+  stickerEnterEffectSchema,
+  z.object({
+    effect: stickerEnterEffectSchema.optional(),
+    duration: z.number().int().nonnegative().max(5000).optional(),
+    easing: z.string().min(1).max(64).optional(),
+    delay: z.number().int().nonnegative().max(5000).optional(),
+  }),
+]);
+const stickerLeaveSchema = z.union([
+  stickerLeaveEffectSchema,
+  z.object({
+    effect: stickerLeaveEffectSchema.optional(),
+    duration: z.number().int().nonnegative().max(5000).optional(),
+    easing: z.string().min(1).max(64).optional(),
+    delay: z.number().int().nonnegative().max(5000).optional(),
+  }),
+]);
 
 const actionSchema = z.union([
   z.object({ bg: z.string() }),
@@ -35,9 +69,18 @@ const actionSchema = z.union([
       rotate: z.number().optional(),
       opacity: z.number().min(0).max(1).optional(),
       zIndex: z.number().int().optional(),
+      enter: stickerEnterSchema.optional(),
     }),
   }),
-  z.object({ clearSticker: z.string().min(1) }),
+  z.object({
+    clearSticker: z.union([
+      z.string().min(1),
+      z.object({
+        id: z.string().min(1),
+        leave: stickerLeaveSchema.optional(),
+      }),
+    ]),
+  }),
   z.object({ music: z.string() }),
   z.object({ sound: z.string() }),
   z.object({

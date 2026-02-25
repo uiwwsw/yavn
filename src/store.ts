@@ -24,6 +24,7 @@ type VNState = {
   background?: string;
   stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
+  speakerOrder: string[];
   currentMusic?: string;
   dialog: DialogState;
   effect?: string;
@@ -42,6 +43,7 @@ type VNState = {
   clearSticker: (id: string) => void;
   clearAllStickers: () => void;
   setCharacter: (position: Position, slot: CharacterSlot) => void;
+  promoteSpeaker: (speakerId?: string) => void;
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
   setEffect: (effect?: string) => void;
@@ -91,6 +93,7 @@ export const useVNStore = create<VNState>((set) => ({
   actionIndex: 0,
   stickers: {},
   characters: {},
+  speakerOrder: [],
   dialog: initialDialog,
   videoCutscene: initialVideoCutscene,
   inputGate: initialInputGate,
@@ -112,6 +115,7 @@ export const useVNStore = create<VNState>((set) => ({
       background: undefined,
       stickers: {},
       characters: {},
+      speakerOrder: [],
       currentMusic: undefined,
       dialog: initialDialog,
       videoCutscene: initialVideoCutscene,
@@ -142,6 +146,15 @@ export const useVNStore = create<VNState>((set) => ({
   clearAllStickers: () => set({ stickers: {} }),
   setCharacter: (position, slot) =>
     set((state) => ({ characters: { ...state.characters, [position]: slot } })),
+  promoteSpeaker: (speakerId) =>
+    set((state) => {
+      if (!speakerId) {
+        return state;
+      }
+      const next = state.speakerOrder.filter((id) => id !== speakerId);
+      next.unshift(speakerId);
+      return { speakerOrder: next };
+    }),
   setMusic: (url) => set({ currentMusic: url }),
   setDialog: (dialog) => set((state) => ({ dialog: { ...state.dialog, ...dialog } })),
   setEffect: (effect) => set({ effect }),
@@ -157,6 +170,7 @@ export const useVNStore = create<VNState>((set) => ({
       background: undefined,
       stickers: {},
       characters: {},
+      speakerOrder: [],
       currentMusic: undefined,
       dialog: initialDialog,
       videoCutscene: initialVideoCutscene,

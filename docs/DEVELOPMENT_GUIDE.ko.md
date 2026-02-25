@@ -132,6 +132,11 @@ assets:
     anchorX: center
     anchorY: top
     zIndex: 1
+    enter:
+      effect: wipeCenterX
+      duration: 420
+      easing: ease-out
+      delay: 0
 ```
 
 노트:
@@ -145,6 +150,24 @@ assets:
 - `rotate`: 회전 각도(deg), 기본 `0`
 - `opacity`: `0~1`, 기본 `1`
 - `zIndex`: 스티커 간 앞뒤 순서, 기본 `0`
+- `enter`: 등장 이펙트 옵션
+  - 축약형: `enter: fadeIn`
+  - 상세형: `enter.effect`, `enter.duration(ms)`, `enter.easing`, `enter.delay(ms)`
+  - 지원 효과:
+    - `none`
+    - `fadeIn`
+    - `wipeLeft`
+    - `scaleIn`
+    - `popIn`
+    - `slideUp`
+    - `slideDown`
+    - `slideLeft`
+    - `slideRight`
+    - `wipeCenterX`
+    - `wipeCenterY`
+    - `blurIn`
+    - `rotateIn`
+- 스티커 레이어는 다이얼로그 박스와 겹치지 않도록 다이얼로그 상단까지만 렌더링됩니다(다이얼로그 높이 변화 시 자동 반영).
 
 ### `clearSticker`
 스티커 제거.
@@ -154,6 +177,20 @@ assets:
 # 전체 제거
 - clearSticker: all
 ```
+
+```yaml
+- clearSticker:
+    id: tape
+    leave:
+      effect: fadeOut
+      duration: 240
+```
+
+노트:
+- 객체형에서는 `id`와 `leave`를 함께 사용 가능
+- `leave` 축약형: `leave: fadeOut`
+- `leave` 상세형: `leave.effect`, `leave.duration(ms)`, `leave.easing`, `leave.delay(ms)`
+- `leave` 지원 효과: `none`, `fadeOut`, `wipeLeft`, `wipeRight`
 
 ### `music`
 BGM 재생(루프).
@@ -197,14 +234,16 @@ BGM 재생(루프).
 ```
 
 노트:
-- `char` 생략 시 내레이션 처리
+- `char` 생략 시 발화자 라벨을 표시하지 않음(기본 `Narration` 라벨 없음)
 - `say.char`는 반드시 캐릭터 에셋 키를 사용해야 함: `캐릭터ID` 또는 `캐릭터ID.emotion`
 - `say.char: conan.serious`처럼 감정을 붙이면 발화자 표시는 `conan`(점 `.` 앞부분)으로 처리
 - 한국어 이름을 표시하고 싶으면 캐릭터 에셋 키 자체를 한국어로 선언하면 됨(예: `코난`, `코난.진지`)
 - `<speed=숫자>...</speed>`로 해당 대사만 속도 오버라이드 가능
-- 모바일에서는 발화자(`say.char`)와 동일한 ID 캐릭터를 최상단으로 노출하고, 발화자가 아닌 캐릭터는 30% 축소(scale 0.7)해 겹침을 줄입니다.
-- 발화자 전환으로 크기가 바뀔 때는 transform 트랜지션(180ms ease-out)으로 부드럽게 전환됩니다.
-- 발화자 ID가 없는 내레이션(`char` 생략)일 때는 축소를 적용하지 않습니다.
+- 발화자 우선순위는 `say.char` 발생 순서로 관리합니다. 최신 발화자=1순위, 그 이전 발화자=2순위, 3순위...로 누적됩니다(삭제 없음).
+- 화면의 캐릭터 z-index는 이 우선순위를 그대로 사용합니다. 즉, 1순위가 항상 최상단이며 직전 발화자는 자동으로 2순위가 됩니다.
+- 실제 렌더링 순위는 매 프레임 화면에 존재하는 캐릭터(left/center/right)만 대상으로 재계산하며, 동률일 때는 위치 우선순위(center > left > right)로 고정 정렬합니다.
+- 모바일에서는 1순위 캐릭터를 원본 크기로 유지하고, 2순위 이하 캐릭터는 30% 축소(scale 0.7)해 겹침을 줄입니다.
+- 우선순위 전환으로 크기가 바뀔 때는 transform 트랜지션(180ms ease-out)으로 부드럽게 전환됩니다.
 
 ```yaml
 - say:
@@ -418,6 +457,11 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-25: `say.char`를 생략한 대사에서 기본 `Narration` 라벨을 제거하고, 화자 이름 영역을 비워 표시하도록 동작을 변경.
+- 2026-02-25: `clearSticker` 객체형(`id`, `leave`)을 추가해 스티커 퇴장 이펙트(`fadeOut`, `wipeLeft`, `wipeRight`)와 지속시간/이징/지연 제어를 지원.
+- 2026-02-25: 스티커 등장 이펙트에 `wipeLeft`를 추가.
+- 2026-02-25: `sticker.enter` 옵션을 추가해 스티커 등장 이펙트(`fadeIn/scaleIn/popIn/slide/wipe/blur/rotate`)와 지속시간/이징/지연 제어를 지원.
+- 2026-02-25: `sticker-layer` 렌더 영역을 다이얼로그 박스 상단까지로 제한해 스티커가 다이얼로그 UI와 겹치지 않도록 조정.
 - 2026-02-25: 홈 런처 CTA를 목적별로 분리. `게임 실행해보기 (ZIP 올려서)` 버튼은 ZIP 즉시 실행, `게임 공유하기 (PR)` 버튼은 GitHub PR 생성 페이지 이동으로 정리.
 - 2026-02-25: `bgFront`/`clearBgFront`를 제거하고 `sticker`/`clearSticker` 액션으로 대체. 스티커 위치/크기/앵커/회전/투명도/z-index 지정 규칙을 추가.
 - 2026-02-25: 런처의 샘플 고정 링크를 제거하고 `public/game-list/` 폴더 기반 동적 게임 리스트 영역을 추가. `/game-list/:gameId` URL 부트 로딩과 `index.json` 매니페스트 생성(`predev`/`prebuild`) 흐름을 문서화.
@@ -430,6 +474,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - 2026-02-25: 모바일 발화자 강조(원본/30% 축소) 전환 시 캐릭터 크기 변화에 transform 트랜지션(180ms ease-out)을 추가.
 - 2026-02-25: `say.char` 규칙을 `캐릭터ID`/`캐릭터ID.emotion`으로 명확화하고, 파서가 캐릭터/감정 키를 검증하도록 강화. 발화자 표시는 점(`.`) 앞 ID를 사용하도록 정리.
 - 2026-02-25: 모바일 캐릭터 강조 동작 추가. `say.char`의 발화자 캐릭터를 최상단(z-index 우선)으로 표시하고, 비발화 캐릭터는 30% 축소해 겹침을 줄이도록 수정.
+- 2026-02-25: 캐릭터 강조 로직을 active/inactive 2상태에서 발화자 우선순위(1,2,3...) 기반으로 변경. `say.char`가 발생할 때마다 해당 캐릭터를 1순위로 이동시키고, 화면 z-index도 동일 순서로 정렬하도록 수정.
+- 2026-02-25: 화면 캐릭터 정렬 시 동률 처리 보강. 화면에 있는 캐릭터 집합만 대상으로 순위를 재계산하고, 위치 tie-breaker(center > left > right)를 적용해 order 중복을 방지.
 - 2026-02-25: YouTube 컷신 모바일 동작 정리(기본 음소거 자동재생, 플레이어 컨트롤 직접 터치 가능), 스킵 가이드 동작 문구를 로컬 영상 기준으로 명확화.
 - 2026-02-25: YouTube 컷신 렌더링을 16:9 고정 레터박스로 조정해 모바일 세로 화면에서 좌우 크롭이 발생하지 않도록 수정.
 - 2026-02-25: YouTube 컷신 스킵 가이드를 상단 우측으로 이동하고, 홀드 스킵 시작 조건을 보정해 모바일에서 즉시 길게 눌러 건너뛰기가 동작하도록 수정.

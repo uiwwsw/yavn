@@ -78,11 +78,15 @@ scenes:
           id: tape
           image: police_tape
           x: 0
-          y: 70
+          y: 30
           width: 120
-          anchorX: center
+          anchorX: left
           anchorY: top
           zIndex: 1
+          enter:
+            effect: fadeIn
+            duration: 280
+            easing: ease-out
       - music: mystery
       - say:
           text: "제3장 - 벽 너머의 목격자"
@@ -116,7 +120,11 @@ scenes:
   clue_gate:
     actions:
       - bg: tea_room
-      - clearSticker: tape
+      - clearSticker:
+          id: tape
+          leave:
+            effect: fadeOut
+            duration: 220
       - music: tension
       - char:
           id: 코난

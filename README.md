@@ -3,6 +3,7 @@
 YAML DSL(`public/game-list/conan/1.yaml`, `public/game-list/conan/2.yaml`...)을 숫자 순서로 감지하고, 현재 챕터만 지연 로드해 웹에서 실행하는 비주얼노벨 엔진입니다.
 
 개발 가이드:
+
 - [DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)
 - [SAMPLE_EXPANSION_PLAN.ko.md](<home>/visual-novel/docs/SAMPLE_EXPANSION_PLAN.ko.md)
 
@@ -14,6 +15,7 @@ npm run dev
 ```
 
 라우팅:
+
 - `/game-list/:gameId`: 게임 리스트 폴더 기반 게임 즉시 실행
 - `/`: 런처(게임 실행해보기 ZIP 업로드 + 게임 공유하기 PR 이동)
 
@@ -43,6 +45,7 @@ npm run dev
 - `say.char`는 `assets.characters`의 키와 동일해야 합니다.
 - 형식: `캐릭터ID` 또는 `캐릭터ID.emotion` (예: `conan`, `conan.serious`)
 - 발화자 라벨은 `.` 앞부분(ID) 기준으로 표시됩니다.
+- `say.char`를 생략하면 발화자 라벨을 표시하지 않습니다(이전 `Narration` 기본 라벨 제거).
 - 한글 이름을 표시하려면 캐릭터 키 자체를 한글로 선언하면 됩니다(예: `코난`, `코난.진지`).
 
 ## 구현 범위
@@ -50,11 +53,12 @@ npm run dev
 1. 챕터 단위 지연 YAML 로드 + Zod 스키마 검증
 2. 액션 인터프리터(`bg`, `sticker`, `clearSticker`, `music`, `sound`, `char`, `say`, `wait`, `effect`, `goto`, `video`, `input`)
 3. 타이핑 효과 + `<speed=...>` 인라인 속도 태그
-4. `goto` 점프, `wait` 타이머, `shake/flash` 이펙트
-5. `localStorage` 오토세이브(씬/액션 포인터)
-6. 에러 오버레이(YAML parse 에러 line/column, 스키마/참조 에러)
-7. 게임 리스트 폴더 기반 샘플 게임 + 초기 에셋(`public/game-list/conan/`)
-8. 모바일 발화자 강조 연출(발화자 최상단 노출, 비발화자 30% 축소, 전환 시 부드러운 크기 트랜지션)
+4. `goto` 점프, `wait` 타이머, 전역 화면 이펙트(`shake/flash/...`)
+5. 스티커 등장 이펙트(`sticker.enter`: fade/scale/slide/wipe/blur/rotate)
+6. `localStorage` 오토세이브(씬/액션 포인터)
+7. 에러 오버레이(YAML parse 에러 line/column, 스키마/참조 에러)
+8. 게임 리스트 폴더 기반 샘플 게임 + 초기 에셋(`public/game-list/conan/`)
+9. 발화자 우선순위 연출(최신 발화자 1순위, 직전 발화자 2순위... 순으로 z-index 정렬, 모바일에서 1순위 외 30% 축소)
 
 ## Video 컷신 액션
 
@@ -84,6 +88,11 @@ npm run dev
     anchorX: center
     anchorY: top
     zIndex: 1
+    enter:
+      effect: wipeCenterX
+      duration: 420
+      easing: ease-out
+      delay: 0
 ```
 
 ```yaml
@@ -92,9 +101,27 @@ npm run dev
 - clearSticker: all
 ```
 
+```yaml
+- clearSticker:
+    id: tape
+    leave:
+      effect: fadeOut
+      duration: 240
+```
+
 - `sticker.image`는 `assets.backgrounds`에 선언된 키를 사용합니다.
 - `x`, `y`, `width`, `height`는 숫자면 `%`, 문자열이면 CSS 길이값(예: `320px`, `24vw`)으로 처리됩니다.
 - 앵커(`anchorX`, `anchorY`)로 기준점을 정해 위치를 직관적으로 맞출 수 있습니다.
+- 스티커는 다이얼로그 박스 영역과 겹치지 않도록 다이얼로그 상단까지만 렌더링됩니다.
+- `enter`로 스티커 등장 이펙트를 지정할 수 있습니다.
+  - 축약형: `enter: fadeIn`
+  - 상세형: `enter.effect`, `enter.duration(ms)`, `enter.easing`, `enter.delay(ms)`
+- `clearSticker`는 문자열(`tape`, `all`) 또는 객체(`id`, `leave`) 형식을 지원합니다.
+  - `leave` 축약형: `leave: fadeOut`
+  - `leave` 상세형: `leave.effect`, `leave.duration(ms)`, `leave.easing`, `leave.delay(ms)`
+  - 지원 효과:
+    - 등장(`enter`): `none`, `fadeIn`, `wipeLeft`, `scaleIn`, `popIn`, `slideUp`, `slideDown`, `slideLeft`, `slideRight`, `wipeCenterX`, `wipeCenterY`, `blurIn`, `rotateIn`
+    - 퇴장(`leave`): `none`, `fadeOut`, `wipeLeft`, `wipeRight`
 
 ## 정답 입력 액션
 
@@ -128,4 +155,3 @@ npm run dev
 - `public/game-list/conan/assets/char/**.(png|svg)`
 - `public/game-list/conan/assets/music/*.wav`
 - `public/game-list/conan/assets/sfx/*.wav`
-- `public/game-list/conan.zip`

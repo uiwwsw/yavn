@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   completeVideoCutscene,
   handleAdvance,
@@ -15,6 +15,7 @@ import {
 import { Live2DCharacter } from './Live2DCharacter';
 import { useVNStore } from './store';
 import type { CharacterSlot, Position } from './types';
+import type { CSSProperties } from 'react';
 
 type GameListManifestEntry = {
   id: string;
@@ -24,6 +25,12 @@ type GameListManifestEntry = {
 
 type GameListManifest = {
   games: GameListManifestEntry[];
+};
+
+const POSITION_TIEBREAKER: Record<Position, number> = {
+  center: 0,
+  left: 1,
+  right: 2,
 };
 
 function useAdvanceByKey() {
@@ -52,6 +59,7 @@ export default function App() {
     background,
     stickers,
     characters,
+    speakerOrder,
     dialog,
     effect,
     error,
@@ -73,6 +81,9 @@ export default function App() {
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const appRef = useRef<HTMLDivElement | null>(null);
+  const dialogBoxRef = useRef<HTMLDivElement | null>(null);
+  const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   const shareByPrUrl = 'https://github.com/uiwwsw/visual-novel/compare';
 
@@ -100,7 +111,7 @@ export default function App() {
     return () => {
       disposed = true;
     };
-  }, []);
+  }, [bootMode]);
 
   useEffect(() => {
     const pathname = window.location.pathname;
@@ -118,9 +129,28 @@ export default function App() {
   useAdvanceByKey();
 
   const effectClass = effect ? `effect-${effect}` : '';
-  const activeSpeakerId = dialog.speakerId;
-  const hasActiveSpeaker =
-    typeof activeSpeakerId === 'string' && Object.values(characters).some((slot) => slot?.id === activeSpeakerId);
+  const orderedCharacters = (
+    [
+      { position: 'left' as const, slot: characters.left },
+      { position: 'center' as const, slot: characters.center },
+      { position: 'right' as const, slot: characters.right },
+    ] as const
+  )
+    .filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot))
+    .sort((a, b) => {
+      const aRank = speakerOrder.indexOf(a.slot.id);
+      const bRank = speakerOrder.indexOf(b.slot.id);
+      const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
+      const bPriority = bRank >= 0 ? bRank : Number.MAX_SAFE_INTEGER;
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+      return POSITION_TIEBREAKER[a.position] - POSITION_TIEBREAKER[b.position];
+    });
+  const orderByPosition = new Map<Position, number>();
+  orderedCharacters.forEach((entry, idx) => {
+    orderByPosition.set(entry.position, idx + 1);
+  });
 
   useEffect(() => {
     return () => {
@@ -203,19 +233,64 @@ export default function App() {
     }
   }, [videoCutscene.active]);
 
+  const updateStickerSafeInset = useCallback(() => {
+    const appEl = appRef.current;
+    const dialogEl = dialogBoxRef.current;
+    if (!appEl || !dialogEl) {
+      return;
+    }
+    const appRect = appEl.getBoundingClientRect();
+    const dialogRect = dialogEl.getBoundingClientRect();
+    const nextInset = Math.max(0, Math.ceil(appRect.bottom - dialogRect.top));
+    setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
+  }, []);
+
+  useLayoutEffect(() => {
+    updateStickerSafeInset();
+    const raf1 = window.requestAnimationFrame(updateStickerSafeInset);
+    const raf2 = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(updateStickerSafeInset);
+    });
+    const appEl = appRef.current;
+    const dialogEl = dialogBoxRef.current;
+    window.addEventListener('resize', updateStickerSafeInset);
+    if (!appEl || !dialogEl || typeof ResizeObserver === 'undefined') {
+      return () => {
+        window.cancelAnimationFrame(raf1);
+        window.cancelAnimationFrame(raf2);
+        window.removeEventListener('resize', updateStickerSafeInset);
+      };
+    }
+
+    const observer = new ResizeObserver(updateStickerSafeInset);
+    observer.observe(appEl);
+    observer.observe(dialogEl);
+    return () => {
+      window.cancelAnimationFrame(raf1);
+      window.cancelAnimationFrame(raf2);
+      observer.disconnect();
+      window.removeEventListener('resize', updateStickerSafeInset);
+    };
+  }, [bootMode, dialog.visibleText, inputGate.active, updateStickerSafeInset, videoCutscene.active]);
+
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
     if (!slot) {
       return null;
     }
-    const emphasisClass = hasActiveSpeaker ? (slot.id === activeSpeakerId ? 'char-active' : 'char-inactive') : '';
-    const className = `char ${position}${emphasisClass ? ` ${emphasisClass}` : ''}`;
+    const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
+    const zIndex = Math.max(1, 1000 - order);
+    const charStyle = {
+      zIndex,
+      '--char-mobile-scale': order === 1 ? 1 : 0.7,
+    } as CSSProperties;
+    const className = `char ${position}`;
     if (slot.kind === 'live2d') {
       return (
         <Live2DCharacter
           key={`${position}-${slot.id}-${slot.source}-${slot.emotion ?? ''}`}
           slot={slot}
           position={position}
-          className={emphasisClass}
+          style={charStyle}
         />
       );
     }
@@ -227,6 +302,7 @@ export default function App() {
         alt={slot.id}
         loading="eager"
         decoding="async"
+        style={charStyle}
       />
     );
   };
@@ -241,13 +317,9 @@ export default function App() {
     const translateY =
       sticker.anchorY === 'top' ? '0%' : sticker.anchorY === 'bottom' ? '-100%' : '-50%';
     return (
-      <img
-        key={`${sticker.id}-${sticker.source}`}
+      <div
+        key={`${sticker.id}-${sticker.source}-${sticker.renderKey}`}
         className="sticker"
-        src={sticker.source}
-        alt={sticker.id}
-        loading="eager"
-        decoding="async"
         style={{
           left: sticker.x,
           top: sticker.y,
@@ -256,8 +328,26 @@ export default function App() {
           opacity: sticker.opacity,
           zIndex: sticker.zIndex,
           transform: `translate(${translateX}, ${translateY}) rotate(${sticker.rotate}deg)`,
-        }}
-      />
+          '--sticker-enter-duration': `${sticker.enterDuration}ms`,
+          '--sticker-enter-easing': sticker.enterEasing,
+          '--sticker-enter-delay': `${sticker.enterDelay}ms`,
+          '--sticker-leave-duration': `${sticker.leaveDuration}ms`,
+          '--sticker-leave-easing': sticker.leaveEasing,
+          '--sticker-leave-delay': `${sticker.leaveDelay}ms`,
+        } as CSSProperties}
+      >
+        <img
+          className={`sticker-visual ${sticker.leaving ? `sticker-leave-${sticker.leaveEffect}` : `sticker-enter-${sticker.enterEffect}`}`}
+          src={sticker.source}
+          alt={sticker.id}
+          loading="eager"
+          decoding="async"
+          style={{
+            width: sticker.width ? '100%' : undefined,
+            height: sticker.height ? '100%' : undefined,
+          }}
+        />
+      </div>
     );
   };
 
@@ -381,6 +471,7 @@ export default function App() {
 
   return (
     <div
+      ref={appRef}
       className={`app ${effectClass}`}
       onClick={() => {
         if (videoCutscene.active) {
@@ -399,7 +490,9 @@ export default function App() {
         {renderCharacter(characters.center, 'center')}
         {renderCharacter(characters.right, 'right')}
       </div>
-      <div className="sticker-layer">{Object.keys(stickers).map(renderSticker)}</div>
+      <div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>
+        {Object.keys(stickers).map(renderSticker)}
+      </div>
 
       {videoCutscene.active && (
         <div className="video-cutscene-overlay">
@@ -470,8 +563,8 @@ export default function App() {
         <div className="hint">{uploading ? 'ZIP Loading...' : 'Click / Enter / Space'}</div>
       </div>
 
-      <div className={`dialog-box ${videoCutscene.active ? 'hidden' : ''}`}>
-        <div className="speaker">{dialog.speaker ?? 'Narration'}</div>
+      <div ref={dialogBoxRef} className={`dialog-box ${videoCutscene.active ? 'hidden' : ''}`}>
+        {dialog.speaker && <div className="speaker">{dialog.speaker}</div>}
         <div className="text">{dialog.visibleText}</div>
         {inputGate.active && (
           <form

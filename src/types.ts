@@ -2,6 +2,35 @@ export type Position = 'left' | 'center' | 'right';
 export type StickerAnchorX = 'left' | 'center' | 'right';
 export type StickerAnchorY = 'top' | 'center' | 'bottom';
 export type StickerLength = number | string;
+export type StickerEnterEffect =
+  | 'none'
+  | 'fadeIn'
+  | 'wipeLeft'
+  | 'scaleIn'
+  | 'popIn'
+  | 'slideUp'
+  | 'slideDown'
+  | 'slideLeft'
+  | 'slideRight'
+  | 'wipeCenterX'
+  | 'wipeCenterY'
+  | 'blurIn'
+  | 'rotateIn';
+
+export type StickerEnterOptions = {
+  effect?: StickerEnterEffect;
+  duration?: number;
+  easing?: string;
+  delay?: number;
+};
+export type StickerLeaveEffect = 'none' | 'fadeOut' | 'wipeLeft' | 'wipeRight';
+
+export type StickerLeaveOptions = {
+  effect?: StickerLeaveEffect;
+  duration?: number;
+  easing?: string;
+  delay?: number;
+};
 
 export type StickerPlacement = {
   x?: StickerLength;
@@ -13,6 +42,7 @@ export type StickerPlacement = {
   rotate?: number;
   opacity?: number;
   zIndex?: number;
+  enter?: StickerEnterEffect | StickerEnterOptions;
 };
 
 export type StickerAction = {
@@ -21,6 +51,13 @@ export type StickerAction = {
     image: string;
   } & StickerPlacement;
 };
+
+export type ClearStickerTarget =
+  | string
+  | {
+      id: string;
+      leave?: StickerLeaveEffect | StickerLeaveOptions;
+    };
 
 export type SayAction = {
   say: {
@@ -54,7 +91,7 @@ export type InputAction = {
 export type Action =
   | { bg: string }
   | StickerAction
-  | { clearSticker: string }
+  | { clearSticker: ClearStickerTarget }
   | { music: string }
   | { sound: string }
   | CharAction
@@ -115,6 +152,16 @@ export type StickerSlot = {
   rotate: number;
   opacity: number;
   zIndex: number;
+  enterEffect: StickerEnterEffect;
+  enterDuration: number;
+  enterEasing: string;
+  enterDelay: number;
+  leaveEffect: StickerLeaveEffect;
+  leaveDuration: number;
+  leaveEasing: string;
+  leaveDelay: number;
+  leaving: boolean;
+  renderKey: number;
 };
 
 export type VideoCutsceneState = {

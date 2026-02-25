@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import type { CharacterSlot, Position } from './types';
 
 const PIXI_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js';
@@ -89,9 +90,10 @@ type Props = {
   slot: CharacterSlot;
   position: Position;
   className?: string;
+  style?: CSSProperties;
 };
 
-export function Live2DCharacter({ slot, position, className }: Props) {
+export function Live2DCharacter({ slot, position, className, style }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string>();
 
@@ -187,7 +189,7 @@ export function Live2DCharacter({ slot, position, className }: Props) {
   }, [slot.source, slot.emotion]);
 
   return (
-    <div className={`char char-live2d ${position}${className ? ` ${className}` : ''}`}>
+    <div className={`char char-live2d ${position}${className ? ` ${className}` : ''}`} style={style}>
       <div ref={mountRef} className="char-live2d-mount" />
       {error && <div className="char-live2d-error">{error}</div>}
     </div>

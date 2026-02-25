@@ -266,18 +266,101 @@ body,
   inset: 0;
   z-index: 4;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .sticker {
   position: absolute;
   max-width: none;
   pointer-events: none;
-  animation: fadeIn 0.28s ease;
+  --sticker-enter-duration: 280ms;
+  --sticker-enter-easing: ease;
+  --sticker-enter-delay: 0ms;
+  --sticker-leave-duration: 220ms;
+  --sticker-leave-easing: ease;
+  --sticker-leave-delay: 0ms;
+}
+
+.sticker-visual {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+}
+
+.sticker-enter-none {
+  animation: none;
+}
+
+.sticker-enter-fadeIn {
+  animation: stickerFadeIn var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-wipeLeft {
+  animation: stickerWipeLeft var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-scaleIn {
+  animation: stickerScaleIn var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-popIn {
+  animation: stickerPopIn var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-slideUp {
+  animation: stickerSlideUp var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-slideDown {
+  animation: stickerSlideDown var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-slideLeft {
+  animation: stickerSlideLeft var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-slideRight {
+  animation: stickerSlideRight var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-wipeCenterX {
+  animation: stickerWipeCenterX var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-wipeCenterY {
+  animation: stickerWipeCenterY var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-blurIn {
+  animation: stickerBlurIn var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-enter-rotateIn {
+  animation: stickerRotateIn var(--sticker-enter-duration) var(--sticker-enter-easing) var(--sticker-enter-delay) both;
+}
+
+.sticker-leave-none {
+  animation: none;
+}
+
+.sticker-leave-fadeOut {
+  animation: stickerFadeOut var(--sticker-leave-duration) var(--sticker-leave-easing) var(--sticker-leave-delay) both;
+}
+
+.sticker-leave-wipeLeft {
+  animation: stickerLeaveWipeLeft var(--sticker-leave-duration) var(--sticker-leave-easing) var(--sticker-leave-delay) both;
+}
+
+.sticker-leave-wipeRight {
+  animation: stickerLeaveWipeRight var(--sticker-leave-duration) var(--sticker-leave-easing) var(--sticker-leave-delay) both;
 }
 
 .char {
   --char-offset-x: 0%;
   --char-scale: 1;
+  --char-mobile-scale: 1;
   position: absolute;
   bottom: 18vh;
   max-height: 68vh;
@@ -330,14 +413,6 @@ body,
 
 .right {
   right: 8%;
-}
-
-.char-active {
-  z-index: 5;
-}
-
-.char-inactive {
-  z-index: 2;
 }
 
 .hud {
@@ -671,6 +746,170 @@ body,
   }
 }
 
+@keyframes stickerFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes stickerFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes stickerWipeLeft {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes stickerScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes stickerPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes stickerSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stickerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stickerSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes stickerSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes stickerWipeCenterX {
+  from {
+    opacity: 0;
+    clip-path: inset(0 50% 0 50%);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes stickerWipeCenterY {
+  from {
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes stickerBlurIn {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes stickerRotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-9deg) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes stickerLeaveWipeLeft {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@keyframes stickerLeaveWipeRight {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
 @keyframes riseInSide {
   from {
     opacity: 0;
@@ -761,10 +1000,7 @@ body,
   .char {
     max-height: 58vh;
     bottom: 22vh;
-  }
-
-  .char-inactive {
-    --char-scale: 0.7;
+    --char-scale: var(--char-mobile-scale);
   }
 
   .text {
@@ -782,7 +1018,7 @@ body,
 @media (prefers-reduced-motion: reduce) {
   .char,
   .bg,
-  .sticker,
+  .sticker-visual,
   .effect-shake,
   .effect-zoom,
   .effect-pulse,
