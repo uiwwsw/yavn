@@ -1,0 +1,204 @@
+meta:
+  title: "잠긴 다실의 비명 - 제3장 재현되는 밤"
+  author: "VN Engine Demo"
+  version: "2.0"
+
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
+assets:
+  backgrounds:
+    mountain_rain: assets/bg/mountain_rain.png
+    ryokan_hall: assets/bg/ryokan_hall.png
+    tea_room: assets/bg/tea_room.png
+    police_tape: assets/bg/police_tape.svg
+
+  characters:
+    코난:
+      base: assets/char/conan/base.png
+      emotions:
+        think: assets/char/conan/think.png
+        serious: assets/char/conan/serious.png
+
+    란:
+      base: assets/char/ran/base.svg
+      emotions:
+        surprised: assets/char/ran/surprised.svg
+        worried: assets/char/ran/worried.svg
+
+    코고로:
+      base: assets/char/kogoro/base.svg
+      emotions:
+        proud: assets/char/kogoro/proud.svg
+        angry: assets/char/kogoro/angry.svg
+
+    켄지:
+      base: assets/char/kenji/base.svg
+      emotions:
+        angry: assets/char/kenji/angry.svg
+
+    레이코:
+      base: assets/char/reiko/base.svg
+      emotions:
+        nervous: assets/char/reiko/nervous.svg
+
+    신이치:
+      base: assets/char/shinichi/base.svg
+      emotions:
+        cold: assets/char/shinichi/cold.svg
+
+    하루오:
+      base: assets/char/haruo/base.svg
+      emotions:
+        scared: assets/char/haruo/scared.svg
+
+  music:
+    rain: assets/music/rain.wav
+    tension: assets/music/tension.wav
+    mystery: assets/music/mystery.wav
+
+  sfx:
+    thunder: assets/sfx/thunder.wav
+    scream: assets/sfx/scream.wav
+    door: assets/sfx/door.wav
+
+script:
+  - scene: evidence_table
+  - scene: clue_gate
+  - scene: reenactment
+  - scene: fracture
+
+scenes:
+  evidence_table:
+    actions:
+      - bg: ryokan_hall
+      - sticker:
+          id: tape
+          image: police_tape
+          x: 0
+          y: 70
+          width: 120
+          anchorX: center
+          anchorY: top
+          zIndex: 1
+      - music: mystery
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - char:
+          id: 코고로
+          position: right
+          emotion: angry
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - say:
+          text: "임시 증거 테이블 위에는 젖은 찻잔, 문틀 사진, 외투가 올려져 있었다."
+      - say:
+          char: 코난
+          text: "핵심은 세 가지야. 찻상의 가루, 소매 상태, 문틀 긁힘."
+      - say:
+          char: 코고로
+          text: "문틀 긁힘은 확실히 줄 같은 게 스친 흔적이다."
+      - say:
+          char: 란
+          text: "근데 찻상 가루는 왜 그렇게 중요해?"
+      - say:
+          char: 코난.serious
+          text: "범인이 현장 안에 오래 있었단 증거이기 때문이야."
+
+  clue_gate:
+    actions:
+      - bg: tea_room
+      - clearSticker: tape
+      - music: tension
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - say:
+          char: 코난.serious
+          text: "외투 소매에서 검출된 건 혈흔이 아니라 무엇이었지?"
+      - input:
+          correct: "찻잎"
+          errors:
+            - "힌트: 다실 안에서만 묻을 수 있는 미세 가루야."
+            - "차와 관련된 단어를 입력해봐."
+            - "정답은 찻잎. 이걸로 알리바이가 무너져."
+      - effect: pulse
+      - say:
+          text: "소매의 미세한 찻잎 가루는 '다실 안 체류'를 지목했다."
+      - say:
+          char: 코난
+          text: "이제 트릭을 재현하면 범인의 이동이 설명돼."
+
+  reenactment:
+    actions:
+      - bg: tea_room
+      - music: mystery
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - say:
+          text: "코난은 문 앞에서 사건 당시 동선을 다시 연기하게 했다."
+      - sound: door
+      - say:
+          char: 코난
+          text: "범인은 먼저 다실 안 소실에 숨는다. 피해자가 들어온 뒤 공격."
+      - effect: darken
+      - say:
+          char: 코난
+          text: "그리고 빗장 고리에 묶은 줄을 문틈으로 빼서, 바깥에서 당긴다."
+      - effect: zoom
+      - say:
+          char: 코고로
+          text: "그래서 안에서 잠긴 것처럼 보였군!"
+      - sound: thunder
+      - say:
+          char: 신이치
+          text: "전부 추측일 뿐이야. 줄은 어디 있지?"
+      - say:
+          char: 코난.serious
+          text: "창고 배수구에서 잘린 끝부분이 발견됐어."
+
+  fracture:
+    actions:
+      - bg: mountain_rain
+      - music: tension
+      - char:
+          id: 하루오
+          position: left
+          emotion: scared
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - say:
+          char: 하루오.scared
+          text: "저... 사실 창고에서 실타래 같은 걸 본 것 같아요. 무서워서 말 못 했어요."
+      - effect: tilt
+      - say:
+          char: 신이치
+          text: "입 다물어, 괜한 소리 하지 마."
+      - say:
+          char: 코난
+          text: "협박은 끝났어. 이제 남은 건 동기와 공범 여부야."
+      - say:
+          text: "비가 잦아드는 대신, 사람들의 표정은 더 어두워졌다."

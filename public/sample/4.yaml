@@ -1,0 +1,192 @@
+meta:
+  title: "잠긴 다실의 비명 - 제4장 끝나지 않은 계산"
+  author: "VN Engine Demo"
+  version: "2.0"
+
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
+assets:
+  backgrounds:
+    mountain_rain: assets/bg/mountain_rain.png
+    ryokan_hall: assets/bg/ryokan_hall.png
+    tea_room: assets/bg/tea_room.png
+    police_tape: assets/bg/police_tape.svg
+
+  characters:
+    코난:
+      base: assets/char/conan/base.png
+      emotions:
+        think: assets/char/conan/think.png
+        serious: assets/char/conan/serious.png
+
+    란:
+      base: assets/char/ran/base.svg
+      emotions:
+        surprised: assets/char/ran/surprised.svg
+        worried: assets/char/ran/worried.svg
+
+    코고로:
+      base: assets/char/kogoro/base.svg
+      emotions:
+        proud: assets/char/kogoro/proud.svg
+        angry: assets/char/kogoro/angry.svg
+
+    켄지:
+      base: assets/char/kenji/base.svg
+      emotions:
+        angry: assets/char/kenji/angry.svg
+
+    레이코:
+      base: assets/char/reiko/base.svg
+      emotions:
+        nervous: assets/char/reiko/nervous.svg
+
+    신이치:
+      base: assets/char/shinichi/base.svg
+      emotions:
+        cold: assets/char/shinichi/cold.svg
+
+    하루오:
+      base: assets/char/haruo/base.svg
+      emotions:
+        scared: assets/char/haruo/scared.svg
+
+  music:
+    rain: assets/music/rain.wav
+    tension: assets/music/tension.wav
+    mystery: assets/music/mystery.wav
+
+  sfx:
+    thunder: assets/sfx/thunder.wav
+    scream: assets/sfx/scream.wav
+    door: assets/sfx/door.wav
+
+script:
+  - scene: final_gate
+  - scene: culprit_reveal
+  - scene: handoff
+  - scene: epilogue
+
+scenes:
+  final_gate:
+    actions:
+      - bg: tea_room
+      - music: mystery
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - say:
+          char: 코난.serious
+          text: "문을 밀실로 보이게 만든 핵심 도구는 무엇이었지?"
+      - input:
+          correct: "낚싯줄"
+          errors:
+            - "힌트: 얇고 질긴 줄, 문틈으로 뺄 수 있었어."
+            - "낚시할 때 쓰는 그 줄이야."
+            - "정답은 낚싯줄. 트릭의 핵심 도구다."
+      - effect: flash
+      - say:
+          text: "사건의 퍼즐 마지막 조각이 맞춰졌다."
+
+  culprit_reveal:
+    actions:
+      - bg: ryokan_hall
+      - sticker:
+          id: tape
+          image: police_tape
+          x: 0
+          y: 70
+          width: 120
+          anchorX: center
+          anchorY: top
+          zIndex: 1
+      - music: tension
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 코고로
+          position: left
+          emotion: angry
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - say:
+          char: 코난.serious
+          text: "신이치 씨. 당신은 켄지가 계약 증거를 공개하기 전에 입을 막으려 했어."
+      - say:
+          char: 코고로.angry
+          text: "문틀 긁힘, 창고 배수구 줄 조각, 소매 찻잎. 전부 네 동선과 맞는다."
+      - effect: shake
+      - say:
+          char: 신이치.cold
+          text: "...그래. 내가 찔렀다. 하지만 난 혼자가 아니었어."
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - say:
+          char: 레이코.nervous
+          text: "저는... 피를 본 뒤 무서워서 현장 정리만 도왔어요..."
+      - effect: darken
+      - say:
+          char: 코난
+          text: "공범인지 사후 은폐인지, 그건 경찰 조사에서 밝혀질 거야."
+
+  handoff:
+    actions:
+      - bg: police_tape
+      - clearSticker: tape
+      - music: tension
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - sound: door
+      - wait: 500
+      - say:
+          text: "잠시 후, 경찰이 료칸에 도착해 신이치와 레이코를 분리 연행했다."
+      - say:
+          char: 코고로.proud
+          text: "흠! 역시 사건은 논리와 관찰이다!"
+      - say:
+          char: 란
+          text: "아저씨, 절반은 코난 덕분인 거 알죠...?"
+      - effect: pulse
+      - say:
+          char: 코난
+          text: "아하하... 나는 그냥 시계를 잘 본 것뿐이야."
+
+  epilogue:
+    actions:
+      - bg: mountain_rain
+      - music: rain
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          text: "새벽이 되자 비는 가늘어졌다."
+      - say:
+          text: "계약서보다 무거운 건, 서로를 믿지 못한 시간이었다."
+      - wait: 700
+      - effect: blur
+      - say:
+          text: "<speed=24>잠긴 것은 문이 아니라, 사람의 마음이었는지도 모른다.</speed>"
+      - wait: 500
+      - say:
+          text: "<speed=20>CASE CLOSED</speed>"

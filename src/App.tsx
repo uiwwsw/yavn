@@ -40,7 +40,7 @@ function useAdvanceByKey() {
 export default function App() {
   const {
     background,
-    foregroundBg,
+    stickers,
     characters,
     dialog,
     effect,
@@ -188,6 +188,36 @@ export default function App() {
     );
   };
 
+  const renderSticker = (id: string) => {
+    const sticker = stickers[id];
+    if (!sticker) {
+      return null;
+    }
+    const translateX =
+      sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
+    const translateY =
+      sticker.anchorY === 'top' ? '0%' : sticker.anchorY === 'bottom' ? '-100%' : '-50%';
+    return (
+      <img
+        key={`${sticker.id}-${sticker.source}`}
+        className="sticker"
+        src={sticker.source}
+        alt={sticker.id}
+        loading="eager"
+        decoding="async"
+        style={{
+          left: sticker.x,
+          top: sticker.y,
+          width: sticker.width,
+          height: sticker.height,
+          opacity: sticker.opacity,
+          zIndex: sticker.zIndex,
+          transform: `translate(${translateX}, ${translateY}) rotate(${sticker.rotate}deg)`,
+        }}
+      />
+    );
+  };
+
   const onUploadZip = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = '';
@@ -302,7 +332,7 @@ export default function App() {
         {renderCharacter(characters.center, 'center')}
         {renderCharacter(characters.right, 'right')}
       </div>
-      {foregroundBg && <img className="bg-foreground" src={foregroundBg} alt="foreground background" />}
+      <div className="sticker-layer">{Object.keys(stickers).map(renderSticker)}</div>
 
       {videoCutscene.active && (
         <div className="video-cutscene-overlay">

@@ -225,13 +225,16 @@ body,
   contain: layout paint;
 }
 
-.bg-foreground {
+.sticker-layer {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   z-index: 4;
+  pointer-events: none;
+}
+
+.sticker {
+  position: absolute;
+  max-width: none;
   pointer-events: none;
   animation: fadeIn 0.28s ease;
 }
@@ -743,7 +746,7 @@ body,
 @media (prefers-reduced-motion: reduce) {
   .char,
   .bg,
-  .bg-foreground,
+  .sticker,
   .effect-shake,
   .effect-zoom,
   .effect-pulse,

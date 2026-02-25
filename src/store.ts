@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { CharacterSlot, GameData, InputGateState, Position, VNError, VideoCutsceneState } from './types';
+import type { CharacterSlot, GameData, InputGateState, Position, StickerSlot, VNError, VideoCutsceneState } from './types';
 
 type DialogState = {
   speaker?: string;
@@ -22,7 +22,7 @@ type VNState = {
   currentSceneId: string;
   actionIndex: number;
   background?: string;
-  foregroundBg?: string;
+  stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
   currentMusic?: string;
   dialog: DialogState;
@@ -38,7 +38,9 @@ type VNState = {
   setGame: (game: GameData, baseUrl: string, assetOverrides?: Record<string, string>) => void;
   setCursor: (sceneId: string, actionIndex: number) => void;
   setBackground: (url: string) => void;
-  setForegroundBg: (url?: string) => void;
+  setSticker: (sticker: StickerSlot) => void;
+  clearSticker: (id: string) => void;
+  clearAllStickers: () => void;
   setCharacter: (position: Position, slot: CharacterSlot) => void;
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
@@ -87,6 +89,7 @@ export const useVNStore = create<VNState>((set) => ({
   chapterLoadingMessage: undefined,
   currentSceneId: '',
   actionIndex: 0,
+  stickers: {},
   characters: {},
   dialog: initialDialog,
   videoCutscene: initialVideoCutscene,
@@ -107,7 +110,7 @@ export const useVNStore = create<VNState>((set) => ({
       currentSceneId: game.script[0].scene,
       actionIndex: 0,
       background: undefined,
-      foregroundBg: undefined,
+      stickers: {},
       characters: {},
       currentMusic: undefined,
       dialog: initialDialog,
@@ -120,7 +123,23 @@ export const useVNStore = create<VNState>((set) => ({
     }),
   setCursor: (sceneId, actionIndex) => set({ currentSceneId: sceneId, actionIndex }),
   setBackground: (url) => set({ background: url }),
-  setForegroundBg: (foregroundBg) => set({ foregroundBg }),
+  setSticker: (sticker) =>
+    set((state) => ({
+      stickers: {
+        ...state.stickers,
+        [sticker.id]: sticker,
+      },
+    })),
+  clearSticker: (id) =>
+    set((state) => {
+      if (!(id in state.stickers)) {
+        return state;
+      }
+      const next = { ...state.stickers };
+      delete next[id];
+      return { stickers: next };
+    }),
+  clearAllStickers: () => set({ stickers: {} }),
   setCharacter: (position, slot) =>
     set((state) => ({ characters: { ...state.characters, [position]: slot } })),
   setMusic: (url) => set({ currentMusic: url }),
@@ -136,7 +155,7 @@ export const useVNStore = create<VNState>((set) => ({
   resetPresentation: () =>
     set({
       background: undefined,
-      foregroundBg: undefined,
+      stickers: {},
       characters: {},
       currentMusic: undefined,
       dialog: initialDialog,

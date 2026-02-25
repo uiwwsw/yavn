@@ -1,7 +1,7 @@
 meta:
-  title: "잠긴 다실의 비명 - 상편"
+  title: "잠긴 다실의 비명 - 제1장 폭우의 초대"
   author: "VN Engine Demo"
-  version: "1.0"
+  version: "2.0"
 
 settings:
   textSpeed: 38
@@ -65,21 +65,34 @@ assets:
     door: assets/sfx/door.wav
 
 script:
-  - scene: incident
-  - scene: discovery
-  - scene: conan_arrives
-  - scene: investigation
+  - scene: cold_open
+  - scene: contract_conflict
+  - scene: locked_room_scream
+  - scene: first_lockdown
 
 scenes:
-  incident:
+  cold_open:
     actions:
       - video:
           src: https://youtu.be/Tzehle954lQ
+          holdToSkipMs: 1000
       - bg: mountain_rain
       - music: rain
       - say:
-          text: "산속 깊은 곳, 폭우에 고립된 고급 전통 료칸."
+          text: "산맥을 휘감는 비구름이 료칸 지붕을 두드렸다."
+      - wait: 400
+      - sound: thunder
+      - effect: darken
+      - say:
+          text: "도로는 끊겼고, 외부와의 연락도 불안정했다."
+      - say:
+          text: "이 밤, 이곳에 모인 사람들은 모두 같은 계약서의 당사자였다."
+      - goto: contract_conflict
+
+  contract_conflict:
+    actions:
       - bg: tea_room
+      - music: mystery
       - char:
           id: 켄지
           position: left
@@ -94,12 +107,6 @@ scenes:
           id: 신이치
           position: right
           emotion: cold
-      - say:
-          char: 켄지
-          text: "<speed=25>이 계약, 지금 당장 철회하지 않으면 끝장이야!</speed>"
-      - say:
-          char: 신이치
-          text: "협박으로 해결될 문제는 아니지."
       - char:
           id: 레이코
           position: center
@@ -108,172 +115,106 @@ scenes:
           position: center
           emotion: nervous
       - say:
-          char: 레이코
-          text: "두 분 다, 여기선 그만하시죠…"
-      - effect: pulse
+          char: 켄지.angry
+          text: "<speed=24>지금 당장 지분 이전 계약을 파기해. 아니면 네 비밀 장부를 공개하겠어.</speed>"
+      - say:
+          char: 신이치.cold
+          text: "협상은 가능하지만, 협박은 거래가 아니지."
+      - say:
+          char: 레이코.nervous
+          text: "두 분 다, 오늘은 투자자 보고 전날이에요. 여기서 싸우시면..."
       - effect: shake
-      - sound: thunder
       - say:
           char: 켄지
-          text: "<speed=20>닥쳐! 네가 끼어들 일이 아니야!</speed>"
-      - say:
-          text: "격렬한 말다툼 끝에, 미즈하라는 다실 안으로 들어가 문을 잠갔다."
-      - sound: door
-      - wait: 800
-      - sound: scream
-      - effect: blur
-      - effect: flash
-      - say:
-          text: "<speed=15>꺄아아아악!!</speed>"
-      - goto: discovery
-
-  discovery:
-    actions:
-      - music: tension
-      - bg: tea_room
-      - say:
-          text: "문을 부수고 들어간 다실 안."
+          text: "레이코, 넌 빠져. 이건 회사의 목줄이 걸린 문제야."
       - char:
           id: 하루오
-          position: left
-      - char:
-          id: 하루오
-          position: left
+          position: center
           emotion: scared
       - say:
-          char: 하루오
-          text: "이, 이럴 수가…!"
-      - say:
-          text: "바닥에는 피를 흘린 채 쓰러진 미즈하라 켄지."
-      - say:
-          text: "방 안에는 범인의 흔적도, 탈출 경로도 보이지 않는다."
-      - say:
-          text: "<speed=45>문은 안쪽에서 잠겨 있었고, 창문은 빗물로 흠뻑 젖어 있었다.</speed>"
-      - effect: darken
-      - wait: 1000
-      - say:
-          text: "완벽한 밀실 살인 사건."
-      - bgFront: police_tape
-      - effect: flash
-      - sound: thunder
-      - say:
-          text: "료칸은 즉시 통제되었고, 다실 주변엔 폴리스 라인이 설치되었다."
-      - goto: conan_arrives
-
-  conan_arrives:
-    actions:
-      - bg: ryokan_hall
-      - music: mystery
+          char: 하루오.scared
+          text: "저기... 복도 끝 창고 문이 아까부터 열려 있었어요. 누가 정리한 줄 알았는데..."
       - char:
-          id: 란
-          position: left
-      - char:
-          id: 란
-          position: left
-          emotion: surprised
-      - char:
-          id: 코고로
-          position: right
-      - char:
-          id: 코고로
-          position: right
-          emotion: proud
-      - char:
-          id: 코난
+          id: 레이코
           position: center
+          emotion: nervous
+      - say:
+          char: 신이치
+          text: "쓸데없는 이야기 말고, 켄지. 넌 지금 증거가 없잖아."
+      - say:
+          char: 켄지
+          text: "증거는 곧 보여주지. 나 혼자 있는 자리에서 말해주마."
+      - sound: door
+      - say:
+          text: "켄지는 찻상 위 서류 봉투를 움켜쥔 채 다실 안쪽 소실로 들어가 문을 잠갔다."
+      - goto: locked_room_scream
+
+  locked_room_scream:
+    actions:
+      - bg: tea_room
+      - music: tension
+      - wait: 700
+      - say:
+          text: "복도의 시계가 9시 30분을 가리킬 즈음."
+      - sound: thunder
+      - effect: flash
+      - wait: 300
+      - sound: scream
+      - effect: blur
+      - say:
+          text: "<speed=16>꺄아아아악!!</speed>"
+      - say:
+          char: 란
+          text: "아저씨! 안에서 비명이 났어요!"
+      - char:
+          id: 코고로
+          position: right
+          emotion: angry
+      - say:
+          char: 코고로.angry
+          text: "모두 물러서! 문에서 손 떼!"
+      - sound: door
+      - effect: shake
+      - say:
+          text: "문이 부서지고, 싸늘한 피 냄새가 다실에 퍼졌다."
+      - goto: first_lockdown
+
+  first_lockdown:
+    actions:
+      - bg: tea_room
+      - sticker:
+          id: tape
+          image: police_tape
+          x: 0
+          y: 70
+          width: 120
+          anchorX: center
+          anchorY: top
+          zIndex: 1
       - char:
           id: 코난
           position: center
           emotion: think
-      - say:
-          char: 란
-          text: "아저씨! 큰일이에요! 사람이 죽었대요!"
-      - say:
-          char: 코고로
-          text: "<speed=25>흥! 역시 나, 명탐정 모리 코고로의 차례군.</speed>"
       - char:
           id: 란
           position: left
           emotion: worried
-      - say:
-          char: 란
-          text: "아저씨, 현장이 너무 이상해요… 뭔가 놓치고 있는 것 같아요."
       - char:
           id: 코고로
           position: right
           emotion: angry
       - say:
-          char: 코고로
-          text: "현장 보존부터다! 아무도 함부로 다실에 접근하지 마!"
+          text: "바닥에는 켄지가 쓰러져 있었다. 상처는 하나, 출혈은 치명적이었다."
       - say:
           char: 코난
-          text: "……(밀실, 폭우, 그리고 다툼.)"
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
+          text: "창문은 안에서 잠겨 있고, 바닥 흙자국도 거의 없어..."
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "<speed=45>뭔가 이상해… 이 사건, 단순하지 않아.</speed>"
-      - goto: investigation
-
-  investigation:
-    actions:
-      - bg: tea_room
-      - music: mystery
-      - clearBgFront: true
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - char:
-          id: 란
-          position: left
-          emotion: worried
-      - char:
-          id: 코고로
-          position: right
-          emotion: angry
-      - say:
-          char: 코난
-          text: "다실 문고리를 안쪽에서 잠갔다면, 범인은 어떻게 빠져나갔지?"
-      - say:
-          text: "코난의 시선이 찻상 위의 젖은 찻잔과 바닥의 진흙 자국에 멈췄다."
-      - effect: zoom
-      - say:
-          char: 코난
-          text: "<speed=45>비가 오던 밤에, 신발에 진흙이 하나도 없다…? 누군가 미리 안에 있었다.</speed>"
-      - char:
-          id: 란
-          position: left
-          emotion: surprised
-      - say:
-          char: 란
-          text: "그럼 범인이 피해자보다 먼저 다실에 숨어 있었다는 거야?"
-      - char:
-          id: 코고로
-          position: right
-          emotion: proud
+          text: "밀실처럼 보이게 만든 누군가가 있어."
       - say:
           char: 코고로
-          text: "좋아! 용의자 전원을 복도로 집합시켜라!"
+          text: "지금부터 전원 격리다. 한 명도 복도를 벗어나지 마!"
+      - wait: 500
       - say:
-          char: 코난
-          text: "잠긴 문 안에서 외친 마지막 말은 무엇이었지?"
-      - input:
-          correct: "예"
-          errors:
-            - "잘 생각해봐."
-            - "아니, 반댓말은?"
-            - "정답: 예"
-      - say:
-          char: 코난
-          text: "맞아. 피해자의 마지막 대답은 '예'였어."
-      - effect: pulse
-      - sound: door
-      - effect: flash
-      - say:
-          text: "<speed=20>다음 장에서 범인의 정체가 드러난다…</speed>"
-      - video:
-          src: https://youtu.be/y2g4KgBh440
+          text: "현장은 봉쇄되었고, 폭우 속 첫 조사가 시작되었다."

@@ -98,8 +98,8 @@ assets:
 
 엔진이 지원하는 액션:
 - `bg`
-- `bgFront`
-- `clearBgFront`
+- `sticker`
+- `clearSticker`
 - `music`
 - `sound`
 - `char`
@@ -113,24 +113,46 @@ assets:
 아래는 각각의 사용법입니다.
 
 ### `bg`
-배경 교체. 전면 배경(`bgFront`)은 자동으로 제거됩니다.
+배경 교체.
 
 ```yaml
 - bg: hall
 ```
 
-### `bgFront`
-전면 배경(오버레이) 표시.
+### `sticker`
+특정 위치에 이미지를 붙이는 오버레이 스티커 표시/갱신.
 
 ```yaml
-- bgFront: police_tape
+- sticker:
+    id: tape
+    image: police_tape
+    x: 50
+    y: 0
+    width: 120
+    anchorX: center
+    anchorY: top
+    zIndex: 1
 ```
 
-### `clearBgFront`
-전면 배경 제거.
+노트:
+- `image`는 `assets.backgrounds` 키를 사용
+- `id`가 같으면 기존 스티커를 갱신(위치/크기/이미지 변경)
+- `x`, `y`, `width`, `height`:
+  - 숫자 입력 시 `%`로 처리
+  - 문자열 입력 시 CSS 길이값으로 처리(예: `320px`, `24vw`, `40%`)
+- `anchorX`: `left | center | right` (기본 `center`)
+- `anchorY`: `top | center | bottom` (기본 `center`)
+- `rotate`: 회전 각도(deg), 기본 `0`
+- `opacity`: `0~1`, 기본 `1`
+- `zIndex`: 스티커 간 앞뒤 순서, 기본 `0`
+
+### `clearSticker`
+스티커 제거.
 
 ```yaml
-- clearBgFront: true
+- clearSticker: tape
+# 전체 제거
+- clearSticker: all
 ```
 
 ### `music`
@@ -356,7 +378,7 @@ assets:
 파서에서 검증하는 핵심:
 - `script`가 없는 씬 참조하면 에러
 - `goto` 대상 씬 누락 시 에러
-- `bg`, `bgFront`, `music`, `sound`, `char.id`가 `assets`에 없으면 에러
+- `bg`, `sticker.image`, `music`, `sound`, `char.id`가 `assets`에 없으면 에러
 
 YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
@@ -367,6 +389,17 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - 긴장감은 `wait + effect + sound` 조합으로 구성
 - 챕터 끝에 `video`나 강한 `effect`를 배치해 다음 챕터 연결점 생성
 - 추리/퀴즈 구간은 `input`을 사용하고 마지막 오류 메시지를 힌트로 설계
+
+## 12-1) 장편 샘플 제작 순서(권장)
+
+- 1단계: 사건을 `기(도입) / 승(충돌) / 전(재현) / 결(해결)` 4축으로 먼저 고정
+- 2단계: 축별 목표를 씬으로 쪼개고, 씬당 목적을 하나로 제한
+- 3단계: 플레이어 개입 지점에 `input` 게이트를 배치해 핵심 단서를 기억 고정
+- 4단계: 챕터 파일(`1.yaml`, `2.yaml`...)로 분리해 템포를 관리
+- 5단계: 챕터 전환부에 `effect`, `wait`, `music` 전환을 집중 배치
+
+참고:
+- 장편 샘플 설계 문서: [SAMPLE_EXPANSION_PLAN.ko.md](<home>/visual-novel/docs/SAMPLE_EXPANSION_PLAN.ko.md)
 
 ## 13) 기능 변경 시 문서 업데이트 규칙
 
@@ -380,6 +413,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-25: `bgFront`/`clearBgFront`를 제거하고 `sticker`/`clearSticker` 액션으로 대체. 스티커 위치/크기/앵커/회전/투명도/z-index 지정 규칙을 추가.
+- 2026-02-25: 샘플 장편화 워크플로(스토리 축 설정 → 씬 분해 → input 게이트 배치 → 챕터 분리) 가이드를 추가.
 - 2026-02-25: 좌측 상단 HUD 메타에서 챕터 분수(`N/M`) 표기를 제거해 제목만 표시하도록 수정.
 - 2026-02-25: 챕터 로딩 UI에 최소 표시 시간(600ms)과 완료 상태 유지 시간(100% 후 200ms)을 추가해 너무 빠르게 닫히는 체감을 완화.
 - 2026-02-25: 챕터 로딩 UI 문구에서 `N/M` 표기를 제거하고, 로딩 오버레이가 닫히기 전 100% 상태를 한 프레임 표시하도록 조정.

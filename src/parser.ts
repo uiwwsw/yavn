@@ -47,10 +47,10 @@ export function parseGameYaml(raw: string): { data?: GameData; error?: VNError }
             },
           };
         }
-        if ('bgFront' in action && !data.assets.backgrounds[action.bgFront]) {
+        if ('sticker' in action && !data.assets.backgrounds[action.sticker.image]) {
           return {
             error: {
-              message: `scene '${sceneId}' uses missing foreground background '${action.bgFront}'`,
+              message: `scene '${sceneId}' uses missing sticker image '${action.sticker.image}'`,
             },
           };
         }

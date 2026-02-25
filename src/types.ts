@@ -1,4 +1,26 @@
 export type Position = 'left' | 'center' | 'right';
+export type StickerAnchorX = 'left' | 'center' | 'right';
+export type StickerAnchorY = 'top' | 'center' | 'bottom';
+export type StickerLength = number | string;
+
+export type StickerPlacement = {
+  x?: StickerLength;
+  y?: StickerLength;
+  width?: StickerLength;
+  height?: StickerLength;
+  anchorX?: StickerAnchorX;
+  anchorY?: StickerAnchorY;
+  rotate?: number;
+  opacity?: number;
+  zIndex?: number;
+};
+
+export type StickerAction = {
+  sticker: {
+    id: string;
+    image: string;
+  } & StickerPlacement;
+};
 
 export type SayAction = {
   say: {
@@ -31,8 +53,8 @@ export type InputAction = {
 
 export type Action =
   | { bg: string }
-  | { bgFront: string }
-  | { clearBgFront: true }
+  | StickerAction
+  | { clearSticker: string }
   | { music: string }
   | { sound: string }
   | CharAction
@@ -79,6 +101,20 @@ export type CharacterSlot = {
   kind: 'image' | 'live2d';
   source: string;
   emotion?: string;
+};
+
+export type StickerSlot = {
+  id: string;
+  source: string;
+  x: string;
+  y: string;
+  width?: string;
+  height?: string;
+  anchorX: StickerAnchorX;
+  anchorY: StickerAnchorY;
+  rotate: number;
+  opacity: number;
+  zIndex: number;
 };
 
 export type VideoCutsceneState = {

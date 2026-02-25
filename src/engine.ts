@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import { useVNStore } from './store';
 import { parseGameYaml } from './parser';
-import type { CharacterSlot, GameData } from './types';
+import type { CharacterSlot, GameData, StickerLength, StickerSlot } from './types';
 
 type YouTubePlayer = {
   playVideo?: () => void;
@@ -338,6 +338,66 @@ function buildCharacterSlot(baseUrl: string, id: string, basePath: string, emoti
     kind: 'image',
     source,
     emotion,
+  };
+}
+
+function toCssLength(value: StickerLength | undefined, fallback: string): string {
+  if (typeof value === 'number') {
+    return `${value}%`;
+  }
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : fallback;
+  }
+  return fallback;
+}
+
+function toCssSize(value: StickerLength | undefined): string | undefined {
+  if (typeof value === 'number') {
+    return `${value}%`;
+  }
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : undefined;
+  }
+  return undefined;
+}
+
+function clampOpacity(value: number | undefined): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return 1;
+  }
+  return Math.max(0, Math.min(1, value));
+}
+
+function buildStickerSlot(
+  baseUrl: string,
+  id: string,
+  imagePath: string,
+  placement: {
+    x?: StickerLength;
+    y?: StickerLength;
+    width?: StickerLength;
+    height?: StickerLength;
+    anchorX?: StickerSlot['anchorX'];
+    anchorY?: StickerSlot['anchorY'];
+    rotate?: number;
+    opacity?: number;
+    zIndex?: number;
+  },
+): StickerSlot {
+  return {
+    id,
+    source: resolveAsset(baseUrl, imagePath),
+    x: toCssLength(placement.x, '50%'),
+    y: toCssLength(placement.y, '50%'),
+    width: toCssSize(placement.width),
+    height: toCssSize(placement.height),
+    anchorX: placement.anchorX ?? 'center',
+    anchorY: placement.anchorY ?? 'center',
+    rotate: typeof placement.rotate === 'number' ? placement.rotate : 0,
+    opacity: clampOpacity(placement.opacity),
+    zIndex: typeof placement.zIndex === 'number' ? placement.zIndex : 0,
   };
 }
 
@@ -827,7 +887,9 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   let musicUrl: string | undefined;
 
   const setBg = useVNStore.getState().setBackground;
-  const setFg = useVNStore.getState().setForegroundBg;
+  const setSticker = useVNStore.getState().setSticker;
+  const clearSticker = useVNStore.getState().clearSticker;
+  const clearAllStickers = useVNStore.getState().clearAllStickers;
   const setChar = useVNStore.getState().setCharacter;
   const setMusic = useVNStore.getState().setMusic;
 
@@ -855,17 +917,21 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
 
     if ('bg' in action) {
       setBg(resolveAsset(chapter.baseUrl, game.assets.backgrounds[action.bg]));
-      setFg(undefined);
       actionIndex += 1;
       continue;
     }
-    if ('bgFront' in action) {
-      setFg(resolveAsset(chapter.baseUrl, game.assets.backgrounds[action.bgFront]));
+    if ('sticker' in action) {
+      const path = game.assets.backgrounds[action.sticker.image];
+      setSticker(buildStickerSlot(chapter.baseUrl, action.sticker.id, path, action.sticker));
       actionIndex += 1;
       continue;
     }
-    if ('clearBgFront' in action) {
-      setFg(undefined);
+    if ('clearSticker' in action) {
+      if (action.clearSticker === 'all') {
+        clearAllStickers();
+      } else {
+        clearSticker(action.clearSticker);
+      }
       actionIndex += 1;
       continue;
     }
@@ -992,22 +1058,25 @@ function runToNextPause(loopGuard = 0) {
   if ('bg' in action) {
     const path = game.assets.backgrounds[action.bg];
     useVNStore.getState().setBackground(resolveAsset(state.baseUrl, path));
-    useVNStore.getState().setForegroundBg(undefined);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
   }
 
-  if ('bgFront' in action) {
-    const path = game.assets.backgrounds[action.bgFront];
-    useVNStore.getState().setForegroundBg(resolveAsset(state.baseUrl, path));
+  if ('sticker' in action) {
+    const path = game.assets.backgrounds[action.sticker.image];
+    useVNStore.getState().setSticker(buildStickerSlot(state.baseUrl, action.sticker.id, path, action.sticker));
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
   }
 
-  if ('clearBgFront' in action) {
-    useVNStore.getState().setForegroundBg(undefined);
+  if ('clearSticker' in action) {
+    if (action.clearSticker === 'all') {
+      useVNStore.getState().clearAllStickers();
+    } else {
+      useVNStore.getState().clearSticker(action.clearSticker);
+    }
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;

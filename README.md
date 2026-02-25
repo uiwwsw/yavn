@@ -4,6 +4,7 @@ YAML DSL(`public/sample/1.yaml`, `public/sample/2.yaml`...)을 숫자 순서로 
 
 개발 가이드:
 - [DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)
+- [SAMPLE_EXPANSION_PLAN.ko.md](<home>/visual-novel/docs/SAMPLE_EXPANSION_PLAN.ko.md)
 
 ## 실행
 
@@ -42,7 +43,7 @@ npm run dev
 ## 구현 범위
 
 1. 챕터 단위 지연 YAML 로드 + Zod 스키마 검증
-2. 액션 인터프리터(`bg`, `music`, `sound`, `char`, `say`, `wait`, `effect`, `goto`, `video`, `input`)
+2. 액션 인터프리터(`bg`, `sticker`, `clearSticker`, `music`, `sound`, `char`, `say`, `wait`, `effect`, `goto`, `video`, `input`)
 3. 타이핑 효과 + `<speed=...>` 인라인 속도 태그
 4. `goto` 점프, `wait` 타이머, `shake/flash` 이펙트
 5. `localStorage` 오토세이브(씬/액션 포인터)
@@ -65,6 +66,30 @@ npm run dev
 - YouTube 컷신은 모바일 세로 화면에서도 16:9 비율을 유지해 좌우 크롭 없이 전체 프레임을 보여줍니다(레터박스).
 - "길게 눌러 건너뛰기" 가이드는 하단 중앙에 표시됩니다.
 - 가이드 노출 후 길게 누르면 즉시 컷신을 종료하고 다음 게임 액션으로 복귀합니다.
+
+## Sticker 액션
+
+```yaml
+- sticker:
+    id: tape
+    image: police_tape # assets.backgrounds 키
+    x: 50
+    y: 0
+    width: 120
+    anchorX: center
+    anchorY: top
+    zIndex: 1
+```
+
+```yaml
+- clearSticker: tape
+# 또는 전체 제거
+- clearSticker: all
+```
+
+- `sticker.image`는 `assets.backgrounds`에 선언된 키를 사용합니다.
+- `x`, `y`, `width`, `height`는 숫자면 `%`, 문자열이면 CSS 길이값(예: `320px`, `24vw`)으로 처리됩니다.
+- 앵커(`anchorX`, `anchorY`)로 기준점을 정해 위치를 직관적으로 맞출 수 있습니다.
 
 ## 정답 입력 액션
 
@@ -90,8 +115,10 @@ npm run dev
 
 - `public/sample/1.yaml`
 - `public/sample/2.yaml`
+- `public/sample/3.yaml`
+- `public/sample/4.yaml`
 - `public/sample/sample.zip`
-- `public/sample/assets/bg/*.svg`
-- `public/sample/assets/char/**.svg`
+- `public/sample/assets/bg/*.(png|svg)`
+- `public/sample/assets/char/**.(png|svg)`
 - `public/sample/assets/music/*.wav`
 - `public/sample/assets/sfx/*.wav`

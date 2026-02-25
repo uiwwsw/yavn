@@ -18,10 +18,26 @@ const inputActionSchema = z
   ])
   .transform((input) => input);
 
+const stickerLengthSchema = z.union([z.number(), z.string().min(1)]);
+
 const actionSchema = z.union([
   z.object({ bg: z.string() }),
-  z.object({ bgFront: z.string() }),
-  z.object({ clearBgFront: z.literal(true) }),
+  z.object({
+    sticker: z.object({
+      id: z.string().min(1),
+      image: z.string().min(1),
+      x: stickerLengthSchema.optional(),
+      y: stickerLengthSchema.optional(),
+      width: stickerLengthSchema.optional(),
+      height: stickerLengthSchema.optional(),
+      anchorX: z.enum(['left', 'center', 'right']).optional(),
+      anchorY: z.enum(['top', 'center', 'bottom']).optional(),
+      rotate: z.number().optional(),
+      opacity: z.number().min(0).max(1).optional(),
+      zIndex: z.number().int().optional(),
+    }),
+  }),
+  z.object({ clearSticker: z.string().min(1) }),
   z.object({ music: z.string() }),
   z.object({ sound: z.string() }),
   z.object({
