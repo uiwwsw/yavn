@@ -60,7 +60,9 @@ export type GameData = {
 
 export type CharacterSlot = {
   id: string;
-  image: string;
+  kind: 'image' | 'live2d';
+  source: string;
+  emotion?: string;
 };
 
 export type VNError = {

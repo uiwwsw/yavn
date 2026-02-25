@@ -1,10 +1,34 @@
 import JSZip from 'jszip';
 import { useVNStore } from './store';
 import { parseGameYaml } from './parser';
-import type { GameData } from './types';
+import type { CharacterSlot, GameData } from './types';
+
+type YouTubePlayer = {
+  playVideo?: () => void;
+  pauseVideo?: () => void;
+  stopVideo?: () => void;
+  loadVideoById?: (videoId: string) => void;
+  setVolume?: (volume: number) => void;
+};
+
+type YouTubeGlobal = {
+  Player: new (element: string | HTMLElement, options: Record<string, unknown>) => YouTubePlayer;
+  PlayerState?: {
+    PLAYING: number;
+  };
+};
+
+declare global {
+  interface Window {
+    YT?: YouTubeGlobal;
+    onYouTubeIframeAPIReady?: (() => void) | undefined;
+  }
+}
 
 const AUTOSAVE_KEY = 'vn-engine-autosave';
 const MAX_CHAPTERS = 100;
+const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
+const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
 const EFFECT_DURATIONS: Record<string, number> = {
   shake: 280,
   flash: 350,
@@ -33,6 +57,10 @@ let typeTimer: number | undefined;
 let effectTimer: number | undefined;
 let bgmAudio: HTMLAudioElement | undefined;
 let bgmNeedsUnlock = false;
+let bgmCurrentKind: 'audio' | 'youtube' | undefined;
+let bgmCurrentKey: string | undefined;
+let youtubeApiPromise: Promise<YouTubeGlobal> | undefined;
+let youtubePlayer: YouTubePlayer | undefined;
 let preparedChapters: PreparedChapter[] = [];
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
@@ -57,6 +85,160 @@ function clearObjectUrls() {
     URL.revokeObjectURL(url);
   }
   objectUrls = [];
+}
+
+function extractYouTubeVideoId(url: string): string | undefined {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return undefined;
+  }
+
+  const host = parsed.hostname.replace(/^www\./i, '').toLowerCase();
+  const isYouTubeHost = host === 'youtu.be' || host.endsWith('youtube.com') || host.endsWith('youtube-nocookie.com');
+  if (!isYouTubeHost) {
+    return undefined;
+  }
+
+  if (host === 'youtu.be') {
+    const shortId = parsed.pathname.split('/').filter(Boolean)[0];
+    return shortId || undefined;
+  }
+
+  if (parsed.pathname === '/watch') {
+    const watchId = parsed.searchParams.get('v') ?? undefined;
+    return watchId || undefined;
+  }
+
+  const segments = parsed.pathname.split('/').filter(Boolean);
+  if (segments.length >= 2 && ['embed', 'shorts', 'live'].includes(segments[0])) {
+    return segments[1] || undefined;
+  }
+
+  return undefined;
+}
+
+function ensureYouTubePlayerHost(): HTMLElement {
+  let host = document.getElementById(YOUTUBE_PLAYER_HOST_ID);
+  if (!host) {
+    host = document.createElement('div');
+    host.id = YOUTUBE_PLAYER_HOST_ID;
+    host.style.position = 'fixed';
+    host.style.left = '-10000px';
+    host.style.top = '-10000px';
+    host.style.width = '1px';
+    host.style.height = '1px';
+    host.style.opacity = '0';
+    host.style.pointerEvents = 'none';
+    document.body.appendChild(host);
+  }
+  return host;
+}
+
+async function loadYouTubeApi(): Promise<YouTubeGlobal> {
+  if (window.YT?.Player) {
+    return window.YT;
+  }
+  if (youtubeApiPromise) {
+    return youtubeApiPromise;
+  }
+
+  youtubeApiPromise = new Promise<YouTubeGlobal>((resolve, reject) => {
+    const previousHandler = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      previousHandler?.();
+      if (!window.YT?.Player) {
+        reject(new Error('YouTube API loaded without Player'));
+        return;
+      }
+      resolve(window.YT);
+    };
+
+    const existing = document.querySelector(`script[src="${YOUTUBE_IFRAME_API_URL}"]`);
+    if (existing) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = YOUTUBE_IFRAME_API_URL;
+    script.async = true;
+    script.onerror = () => reject(new Error('Failed to load YouTube iframe API'));
+    document.head.appendChild(script);
+  }).catch((error) => {
+    youtubeApiPromise = undefined;
+    throw error;
+  });
+
+  return youtubeApiPromise;
+}
+
+function stopAudioBgm() {
+  if (!bgmAudio) {
+    return;
+  }
+  bgmAudio.pause();
+  bgmAudio = undefined;
+}
+
+function stopYouTubeBgm() {
+  youtubePlayer?.stopVideo?.();
+}
+
+async function playYouTubeMusic(videoId: string) {
+  bgmNeedsUnlock = true;
+  try {
+    const YT = await loadYouTubeApi();
+    const host = ensureYouTubePlayerHost();
+    const onReady = () => {
+      if (bgmCurrentKind !== 'youtube' || bgmCurrentKey !== videoId) {
+        return;
+      }
+      youtubePlayer?.setVolume?.(60);
+      youtubePlayer?.playVideo?.();
+    };
+    const onStateChange = (event: { data: number }) => {
+      const playingState = window.YT?.PlayerState?.PLAYING;
+      if (typeof playingState === 'number' && event.data === playingState) {
+        bgmNeedsUnlock = false;
+      }
+    };
+    const onError = () => {
+      bgmNeedsUnlock = true;
+    };
+
+    if (!youtubePlayer) {
+      youtubePlayer = new YT.Player(host, {
+        width: '1',
+        height: '1',
+        videoId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          rel: 0,
+          loop: 1,
+          playlist: videoId,
+          playsinline: 1,
+          origin: window.location.origin,
+        },
+        events: {
+          onReady,
+          onStateChange,
+          onError,
+          onAutoplayBlocked: onError,
+        },
+      });
+      return;
+    }
+
+    youtubePlayer.loadVideoById?.(videoId);
+    youtubePlayer.setVolume?.(60);
+    youtubePlayer.playVideo?.();
+  } catch {
+    bgmNeedsUnlock = true;
+  }
 }
 
 function resetSession() {
@@ -96,6 +278,107 @@ function resolveAssetWithOverrides(baseUrl: string, path: string, overrides: Rec
 
 function resolveAsset(baseUrl: string, path: string): string {
   return resolveAssetWithOverrides(baseUrl, path, useVNStore.getState().assetOverrides);
+}
+
+function isJsonAsset(path: string): boolean {
+  return /\.json$/i.test(path);
+}
+
+function buildCharacterSlot(baseUrl: string, id: string, basePath: string, emotion?: string): CharacterSlot {
+  const source = resolveAsset(baseUrl, basePath);
+  if (isJsonAsset(basePath) || isJsonAsset(source)) {
+    return {
+      id,
+      kind: 'live2d',
+      source,
+      emotion,
+    };
+  }
+  return {
+    id,
+    kind: 'image',
+    source,
+    emotion,
+  };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function rewriteLive2DModelJson(raw: string, resolveRef: (relativePath: string) => string | undefined): string | undefined {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return undefined;
+  }
+  if (!isRecord(parsed)) {
+    return undefined;
+  }
+
+  const fileRefs = parsed.FileReferences;
+  if (!isRecord(fileRefs)) {
+    return undefined;
+  }
+
+  let changed = false;
+  const resolveString = (value: unknown): string | undefined => {
+    if (typeof value !== 'string' || /^(blob:|data:|https?:)/i.test(value)) {
+      return undefined;
+    }
+    return resolveRef(value);
+  };
+  const rewriteStringField = (container: Record<string, unknown>, key: string) => {
+    const next = resolveString(container[key]);
+    if (next && next !== container[key]) {
+      container[key] = next;
+      changed = true;
+    }
+  };
+
+  rewriteStringField(fileRefs, 'Moc');
+  rewriteStringField(fileRefs, 'Physics');
+  rewriteStringField(fileRefs, 'Pose');
+  rewriteStringField(fileRefs, 'UserData');
+  rewriteStringField(fileRefs, 'DisplayInfo');
+
+  const textures = fileRefs.Textures;
+  if (Array.isArray(textures)) {
+    const rewrittenTextures = textures.map((entry) => resolveString(entry) ?? entry);
+    fileRefs.Textures = rewrittenTextures;
+    if (textures.some((entry, idx) => rewrittenTextures[idx] !== entry)) {
+      changed = true;
+    }
+  }
+
+  const expressions = fileRefs.Expressions;
+  if (Array.isArray(expressions)) {
+    for (const expression of expressions) {
+      if (!isRecord(expression)) {
+        continue;
+      }
+      rewriteStringField(expression, 'File');
+    }
+  }
+
+  const motions = fileRefs.Motions;
+  if (isRecord(motions)) {
+    for (const motionGroup of Object.values(motions)) {
+      if (!Array.isArray(motionGroup)) {
+        continue;
+      }
+      for (const motion of motionGroup) {
+        if (!isRecord(motion)) {
+          continue;
+        }
+        rewriteStringField(motion, 'File');
+        rewriteStringField(motion, 'Sound');
+      }
+    }
+  }
+
+  return changed ? JSON.stringify(parsed) : undefined;
 }
 
 function parseInlineSpeed(text: string): { speed?: number; text: string } {
@@ -147,14 +430,31 @@ function loadProgress(): SaveProgress | undefined {
 
 function playMusic(url?: string) {
   if (!url) {
-    if (bgmAudio) {
-      bgmAudio.pause();
-      bgmAudio = undefined;
-    }
+    stopAudioBgm();
+    stopYouTubeBgm();
+    bgmCurrentKind = undefined;
+    bgmCurrentKey = undefined;
     bgmNeedsUnlock = false;
     return;
   }
-  if (bgmAudio?.src === url) {
+
+  const youtubeVideoId = extractYouTubeVideoId(url);
+  if (youtubeVideoId) {
+    stopAudioBgm();
+    if (bgmCurrentKind === 'youtube' && bgmCurrentKey === youtubeVideoId) {
+      if (bgmNeedsUnlock) {
+        youtubePlayer?.playVideo?.();
+      }
+      return;
+    }
+    bgmCurrentKind = 'youtube';
+    bgmCurrentKey = youtubeVideoId;
+    void playYouTubeMusic(youtubeVideoId);
+    return;
+  }
+
+  stopYouTubeBgm();
+  if (bgmCurrentKind === 'audio' && bgmCurrentKey === url && bgmAudio) {
     if (bgmNeedsUnlock || bgmAudio.paused) {
       void bgmAudio.play().then(() => {
         bgmNeedsUnlock = false;
@@ -164,12 +464,12 @@ function playMusic(url?: string) {
     }
     return;
   }
-  if (bgmAudio) {
-    bgmAudio.pause();
-  }
+  stopAudioBgm();
   bgmAudio = new Audio(url);
   bgmAudio.loop = true;
   bgmAudio.volume = 0.6;
+  bgmCurrentKind = 'audio';
+  bgmCurrentKey = url;
   void bgmAudio.play().then(() => {
     bgmNeedsUnlock = false;
   }).catch(() => {
@@ -184,6 +484,13 @@ function playSound(url: string) {
 }
 
 export function unlockAudioFromGesture() {
+  if (!bgmCurrentKind) {
+    return;
+  }
+  if (bgmCurrentKind === 'youtube') {
+    youtubePlayer?.playVideo?.();
+    return;
+  }
   if (!bgmAudio) {
     return;
   }
@@ -301,6 +608,7 @@ function detectMimeType(path: string): string | undefined {
   if (lower.endsWith('.wav')) return 'audio/wav';
   if (lower.endsWith('.mp3')) return 'audio/mpeg';
   if (lower.endsWith('.ogg')) return 'audio/ogg';
+  if (lower.endsWith('.json')) return 'application/json';
   if (lower.endsWith('.yaml') || lower.endsWith('.yml')) return 'text/yaml';
   return undefined;
 }
@@ -341,7 +649,13 @@ async function preloadChapterAssets(chapter: PreparedChapter, chapterLabel: stri
       resolvedUrl = existing;
     } else {
       const sourceUrl = resolveAssetWithOverrides(chapter.baseUrl, path, chapter.assetOverrides);
-      if (/^(blob:|data:)/i.test(sourceUrl)) {
+      if (/^(blob:|data:|https?:)/i.test(sourceUrl)) {
+        resolvedUrl = sourceUrl;
+      } else if (isJsonAsset(path)) {
+        const response = await fetch(sourceUrl, { cache: 'force-cache' });
+        if (!response.ok) {
+          throw new Error(`Failed to preload asset: ${path}`);
+        }
         resolvedUrl = sourceUrl;
       } else {
         const response = await fetch(sourceUrl, { cache: 'force-cache' });
@@ -425,11 +739,8 @@ function restorePresentationToCursor(chapter: PreparedChapter, resume: SaveProgr
     }
     if ('char' in action) {
       const charDef = game.assets.characters[action.char.id];
-      const imagePath = action.char.emotion ? charDef.emotions?.[action.char.emotion] ?? charDef.base : charDef.base;
-      setChar(action.char.position, {
-        id: action.char.id,
-        image: resolveAsset(chapter.baseUrl, imagePath),
-      });
+      const assetPath = action.char.emotion ? charDef.emotions?.[action.char.emotion] ?? charDef.base : charDef.base;
+      setChar(action.char.position, buildCharacterSlot(chapter.baseUrl, action.char.id, assetPath, action.char.emotion));
       actionIndex += 1;
       continue;
     }
@@ -573,12 +884,12 @@ function runToNextPause(loopGuard = 0) {
 
   if ('char' in action) {
     const charDef = game.assets.characters[action.char.id];
-    const imagePath = action.char.emotion
+    const assetPath = action.char.emotion
       ? charDef.emotions?.[action.char.emotion] ?? charDef.base
       : charDef.base;
     useVNStore
       .getState()
-      .setCharacter(action.char.position, { id: action.char.id, image: resolveAsset(state.baseUrl, imagePath) });
+      .setCharacter(action.char.position, buildCharacterSlot(state.baseUrl, action.char.id, assetPath, action.char.emotion));
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -708,6 +1019,30 @@ function resolveZipAssetUrl(
   }
 
   return undefined;
+}
+
+async function rewriteLive2DJsonEntriesInZip(
+  files: JSZip.JSZipObject[],
+  blobMap: Record<string, string>,
+  zipUrlByKey: Map<string, string>,
+) {
+  const jsonEntries = files.filter((entry) => isJsonAsset(entry.name));
+  for (const entry of jsonEntries) {
+    const normalizedName = normalizeAssetKey(entry.name);
+    const modelDir = normalizedName.includes('/') ? normalizedName.slice(0, normalizedName.lastIndexOf('/') + 1) : '';
+    const rawJson = await entry.async('text');
+    const rewritten = rewriteLive2DModelJson(rawJson, (relativePath) =>
+      resolveZipAssetUrl(relativePath, modelDir, zipUrlByKey),
+    );
+    if (!rewritten) {
+      continue;
+    }
+    const blob = new Blob([rewritten], { type: 'application/json' });
+    const blobUrl = URL.createObjectURL(blob);
+    objectUrls.push(blobUrl);
+    setAssetOverride(blobMap, entry.name, blobUrl);
+    zipUrlByKey.set(normalizedName.toLowerCase(), blobUrl);
+  }
 }
 
 function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByKey: Map<string, string>): GameData {
@@ -848,6 +1183,7 @@ export async function loadGameFromZip(file: File) {
       setAssetOverride(blobMap, entry.name, blobUrl);
       zipUrlByKey.set(normalizeAssetKey(entry.name).toLowerCase(), blobUrl);
     }
+    await rewriteLive2DJsonEntriesInZip(files, blobMap, zipUrlByKey);
 
     const chapters: PreparedChapter[] = [];
     for (const yamlEntry of selectedYaml) {

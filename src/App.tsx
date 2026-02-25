@@ -1,6 +1,8 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { handleAdvance, loadGameFromUrl, loadGameFromZip, restartFromBeginning, unlockAudioFromGesture } from './engine';
+import { Live2DCharacter } from './Live2DCharacter';
 import { useVNStore } from './store';
+import type { CharacterSlot, Position } from './types';
 
 function useAdvanceByKey() {
   useEffect(() => {
@@ -48,6 +50,25 @@ export default function App() {
   useAdvanceByKey();
 
   const effectClass = effect ? `effect-${effect}` : '';
+
+  const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
+    if (!slot) {
+      return null;
+    }
+    if (slot.kind === 'live2d') {
+      return <Live2DCharacter key={`${position}-${slot.id}-${slot.source}-${slot.emotion ?? ''}`} slot={slot} position={position} />;
+    }
+    return (
+      <img
+        key={`${position}-${slot.id}-${slot.source}`}
+        className={`char ${position}`}
+        src={slot.source}
+        alt={slot.id}
+        loading="eager"
+        decoding="async"
+      />
+    );
+  };
 
   const onUploadZip = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -155,36 +176,9 @@ export default function App() {
       {background && <img className="bg" src={background} alt="background" />}
 
       <div className="char-layer">
-        {characters.left && (
-          <img
-            key={`left-${characters.left.id}-${characters.left.image}`}
-            className="char left"
-            src={characters.left.image}
-            alt={characters.left.id}
-            loading="eager"
-            decoding="async"
-          />
-        )}
-        {characters.center && (
-          <img
-            key={`center-${characters.center.id}-${characters.center.image}`}
-            className="char center"
-            src={characters.center.image}
-            alt={characters.center.id}
-            loading="eager"
-            decoding="async"
-          />
-        )}
-        {characters.right && (
-          <img
-            key={`right-${characters.right.id}-${characters.right.image}`}
-            className="char right"
-            src={characters.right.image}
-            alt={characters.right.id}
-            loading="eager"
-            decoding="async"
-          />
-        )}
+        {renderCharacter(characters.left, 'left')}
+        {renderCharacter(characters.center, 'center')}
+        {renderCharacter(characters.right, 'right')}
       </div>
       {foregroundBg && <img className="bg-foreground" src={foregroundBg} alt="foreground background" />}
 

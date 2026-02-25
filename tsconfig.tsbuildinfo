@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/engine.ts","./src/main.tsx","./src/parser.ts","./src/schema.ts","./src/store.ts","./src/types.ts"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/live2dcharacter.tsx","./src/engine.ts","./src/main.tsx","./src/parser.ts","./src/schema.ts","./src/store.ts","./src/types.ts"],"version":"5.9.3"}

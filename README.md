@@ -19,6 +19,12 @@ npm run dev
 - `0.yaml`이 없으면 `1.yaml`부터 시작합니다.
 - 각 챕터 시작 전에 해당 YAML의 에셋을 전부 프리로드하고 로딩 UI를 표시합니다.
 
+## 음악 URL 사용
+
+- `assets.music` 값에 로컬 파일 경로 대신 `https://...` URL을 그대로 넣을 수 있습니다.
+- YouTube 링크(`youtu.be`, `youtube.com/watch`, `youtube.com/shorts`, `youtube.com/embed`)도 BGM으로 재생됩니다.
+- 브라우저 정책상 첫 클릭/키 입력 전에는 자동 재생이 제한될 수 있습니다.
+
 ## 구현 범위
 
 1. YAML 로드 + Zod 스키마 검증
