@@ -10,17 +10,17 @@ settings:
 
 assets:
   backgrounds:
-    mountain_rain: assets/bg/mountain_rain.svg
-    ryokan_hall: assets/bg/ryokan_hall.svg
-    tea_room: assets/bg/tea_room.svg
+    mountain_rain: assets/bg/mountain_rain.png
+    ryokan_hall: assets/bg/ryokan_hall.png
+    tea_room: assets/bg/tea_room.png
     police_tape: assets/bg/police_tape.svg
 
   characters:
     conan:
-      base: assets/char/conan/base.svg
+      base: assets/char/conan/base.png
       emotions:
-        think: assets/char/conan/think.svg
-        serious: assets/char/conan/serious.svg
+        think: assets/char/conan/think.png
+        serious: assets/char/conan/serious.png
 
     ran:
       base: assets/char/ran/base.svg

@@ -86,7 +86,7 @@ export default function App() {
             <a className="sample-link sample-link-primary" href="/sample">
               샘플 게임 보기
             </a>
-            <a className="sample-zip-link" href="/sample/sample.zip" download>
+            <a className="sample-zip-link" href="/sample.zip" download>
               sample.zip 다운로드
             </a>
             <label className="zip-upload">
