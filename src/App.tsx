@@ -131,6 +131,27 @@ export default function App() {
 
   useAdvanceByKey();
 
+  useEffect(() => {
+    const preventDefault = (event: Event) => {
+      const target = event.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName.toLowerCase();
+        if (target.isContentEditable || tag === 'input' || tag === 'textarea') {
+          return;
+        }
+      }
+      event.preventDefault();
+    };
+    document.addEventListener('contextmenu', preventDefault);
+    document.addEventListener('dragstart', preventDefault);
+    document.addEventListener('selectstart', preventDefault);
+    return () => {
+      document.removeEventListener('contextmenu', preventDefault);
+      document.removeEventListener('dragstart', preventDefault);
+      document.removeEventListener('selectstart', preventDefault);
+    };
+  }, []);
+
   const effectClass = effect ? `effect-${effect}` : '';
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
