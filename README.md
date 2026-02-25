@@ -26,6 +26,7 @@ Type your story. Play your novel.
 - 로컬/YouTube 컷신 기본 음소거 자동재생 + 길게 눌러 스킵 UX
 - ZIP 업로드 시 로컬 컷신 경로(`video.src`)도 blob URL로 자동 치환
 - `input` 게이트 노출 시 입력창 자동 포커스
+- 엔딩 시 영화식 롤링 크레딧 + 하단 고정 `게임 다시 시작하기` 버튼
 - ZIP 업로드 즉시 실행 + 샘플 ZIP 다운로드 + GitHub PR 공유 버튼
 - 모바일까지 고려한 연출(캐릭터 우선순위/컷신 스킵 UX)
 
@@ -48,6 +49,13 @@ pnpm dev
 ```yaml
 meta:
   title: "명탐정 코난 외전: 다실의 비밀"
+  author:
+    name: "uiwwsw"
+    contacts:
+      - "Email: creator@yavn.dev"
+      - label: "LinkedIn"
+        value: "linkedin.com/in/uiwwsw"
+        href: "https://linkedin.com/in/uiwwsw"
 
 assets:
   backgrounds:

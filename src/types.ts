@@ -107,10 +107,23 @@ export type Scene = {
   actions: Action[];
 };
 
+export type AuthorContactObject = {
+  label?: string;
+  value: string;
+  href?: string;
+};
+
+export type AuthorContact = string | AuthorContactObject;
+
+export type AuthorMetaObject = {
+  name?: string;
+  contacts?: AuthorContact[];
+};
+
 export type GameData = {
   meta: {
     title: string;
-    author?: string;
+    author?: string | AuthorMetaObject;
     version?: string;
   };
   settings: {

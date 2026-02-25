@@ -37,7 +37,13 @@ pnpm dev
 ```yaml
 meta:
   title: "게임 제목" # 게임에 표시될 타이틀
-  author: "작성자" # 선택
+  author: # 선택 (문자열 또는 객체)
+    name: "작성자"
+    contacts:
+      - "Email: writer@example.com"
+      - label: "LinkedIn"
+        value: "linkedin.com/in/writer"
+        href: "https://linkedin.com/in/writer"
   version: "1.0" # 선택
 
 settings:
@@ -65,7 +71,10 @@ scenes:
 
 ### `meta`
 - `title`: 게임 제목
-- `author`: 작성자(선택)
+- `author`: 작성자 정보(선택)
+  - 문자열: `"작성자명"`
+  - 객체: `name` + `contacts[]`
+  - `contacts[]` 원소는 문자열 또는 `{ label?, value, href? }`
 - `version`: 버전(선택)
 
 ### `settings`
@@ -446,7 +455,7 @@ assets:
 
 - `autoSave: true`면 현재 챕터/씬/액션 포인터가 `localStorage`에 저장
 - 새로고침 시 저장 지점부터 이어서 실행
-- 엔딩 후 "처음부터 다시 시작"은 저장을 지우고 1챕터부터 시작
+- 엔딩 후 영화식 롤링 크레딧이 노출되며, 하단 고정 `게임 다시 시작하기` 버튼으로 저장을 지우고 1챕터부터 다시 시작
 - `input` 액션 활성 중에는 클릭/Enter/Space로 강제 진행 불가
 
 ## 11) 검증/오류 처리
@@ -518,6 +527,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-25: 엔딩 UI를 팝업 카드에서 영화식 롤링 크레딧으로 변경하고, 하단 고정 `게임 다시 시작하기` 버튼으로 재시작 흐름을 유지.
+- 2026-02-25: `meta.author`를 확장해 문자열과 객체(`name`, `contacts[]`)를 모두 지원하도록 스키마/가이드를 갱신.
 - 2026-02-25: `input` 게이트가 활성화되면 입력창이 자동으로 포커스되도록 동작을 추가.
 - 2026-02-25: `say.with`를 추가하고 캐릭터 노출 정책을 화자 중심으로 변경. 기본은 `say.char` 1인 노출, `say.with` 지정 캐릭터만 추가 노출, `say.char` 없는 내레이션은 캐릭터를 모두 숨기도록 정리.
 - 2026-02-25: 개발 가이드에 AI 기반 제작 동선 추가(읽기 순서, 스토리→YAML 프롬프트 사용법, 초안 후 연출 고도화 절차, 추가 기능 체크리스트).

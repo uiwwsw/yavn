@@ -14,7 +14,7 @@ import {
 } from './engine';
 import { Live2DCharacter } from './Live2DCharacter';
 import { useVNStore } from './store';
-import type { CharacterSlot, Position } from './types';
+import type { AuthorMetaObject, CharacterSlot, Position } from './types';
 import type { CSSProperties } from 'react';
 
 type GameListManifestEntry = {
@@ -32,6 +32,46 @@ const POSITION_TIEBREAKER: Record<Position, number> = {
   left: 1,
   right: 2,
 };
+
+type CreditContactLine = {
+  label?: string;
+  value: string;
+  href?: string;
+};
+
+function normalizeAuthorCredit(author: string | AuthorMetaObject | undefined): {
+  name?: string;
+  contacts: CreditContactLine[];
+} {
+  if (!author) {
+    return { contacts: [] };
+  }
+
+  if (typeof author === 'string') {
+    const name = author.trim();
+    return name ? { name, contacts: [] } : { contacts: [] };
+  }
+
+  const name = author.name?.trim() || undefined;
+  const contacts: CreditContactLine[] = [];
+  for (const contact of author.contacts ?? []) {
+    if (typeof contact === 'string') {
+      const value = contact.trim();
+      if (value) {
+        contacts.push({ value });
+      }
+      continue;
+    }
+    const value = contact.value?.trim();
+    if (!value) {
+      continue;
+    }
+    const label = contact.label?.trim();
+    const href = contact.href?.trim();
+    contacts.push({ label: label || undefined, value, href: href || undefined });
+  }
+  return { name, contacts };
+}
 
 function useAdvanceByKey() {
   useEffect(() => {
@@ -85,6 +125,14 @@ export default function App() {
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const appRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
+  const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
+  const endingCreditsContentRef = useRef<HTMLDivElement | null>(null);
+  const endingBottomBarRef = useRef<HTMLDivElement | null>(null);
+  const creditsOffsetRef = useRef(0);
+  const creditsRafRef = useRef<number | null>(null);
+  const creditsLastTsRef = useRef<number | null>(null);
+  const [creditsOffset, setCreditsOffset] = useState(0);
+  const [showEndingRestart, setShowEndingRestart] = useState(false);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   const sampleZipUrl = '/sample.zip';
@@ -153,6 +201,8 @@ export default function App() {
   }, []);
 
   const effectClass = effect ? `effect-${effect}` : '';
+  const authorCredit = normalizeAuthorCredit(game?.meta.author);
+  const hasAuthorCredit = Boolean(authorCredit.name) || authorCredit.contacts.length > 0;
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
     [
@@ -185,12 +235,106 @@ export default function App() {
 
   useEffect(() => {
     return () => {
+      if (creditsRafRef.current !== null) {
+        window.cancelAnimationFrame(creditsRafRef.current);
+        creditsRafRef.current = null;
+      }
       if (holdTimerRef.current) {
         window.clearInterval(holdTimerRef.current);
         holdTimerRef.current = undefined;
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!isFinished) {
+      setShowEndingRestart(false);
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setShowEndingRestart(true);
+    }, 1000);
+    return () => window.clearTimeout(timer);
+  }, [isFinished]);
+
+  useEffect(() => {
+    if (!isFinished) {
+      if (creditsRafRef.current !== null) {
+        window.cancelAnimationFrame(creditsRafRef.current);
+        creditsRafRef.current = null;
+      }
+      creditsLastTsRef.current = null;
+      creditsOffsetRef.current = 0;
+      setCreditsOffset(0);
+      return;
+    }
+
+    const setupAndStart = () => {
+      const rollEl = endingCreditsRollRef.current;
+      const contentEl = endingCreditsContentRef.current;
+      const bottomBarEl = endingBottomBarRef.current;
+      if (!rollEl || !contentEl || !bottomBarEl) {
+        return;
+      }
+
+      const rollRect = rollEl.getBoundingClientRect();
+      const contentRect = contentEl.getBoundingClientRect();
+      const hiddenStartGap = 16;
+      const startOffset = rollRect.bottom - contentRect.top + hiddenStartGap;
+      creditsOffsetRef.current = startOffset;
+      setCreditsOffset(startOffset);
+      creditsLastTsRef.current = null;
+
+      const pxPerSecond = 120;
+      const stopGap = 20;
+
+      const step = (ts: number) => {
+        const latestRollEl = endingCreditsRollRef.current;
+        const latestContentEl = endingCreditsContentRef.current;
+        const latestBottomBarEl = endingBottomBarRef.current;
+        if (!latestRollEl || !latestContentEl || !latestBottomBarEl) {
+          creditsRafRef.current = null;
+          return;
+        }
+
+        const latestContentRect = latestContentEl.getBoundingClientRect();
+        const latestBottomBarRect = latestBottomBarEl.getBoundingClientRect();
+        const targetBottom = latestBottomBarRect.top - stopGap;
+        if (latestContentRect.bottom <= targetBottom) {
+          creditsRafRef.current = null;
+          return;
+        }
+
+        const prevTs = creditsLastTsRef.current;
+        creditsLastTsRef.current = ts;
+        const deltaSec = prevTs == null ? 0 : Math.max(0, (ts - prevTs) / 1000);
+        let nextOffset = creditsOffsetRef.current - pxPerSecond * deltaSec;
+        const projectedBottom = latestContentRect.bottom - pxPerSecond * deltaSec;
+        if (projectedBottom <= targetBottom) {
+          nextOffset += targetBottom - projectedBottom;
+          creditsOffsetRef.current = nextOffset;
+          setCreditsOffset(nextOffset);
+          creditsRafRef.current = null;
+          return;
+        }
+        creditsOffsetRef.current = nextOffset;
+        setCreditsOffset(nextOffset);
+        creditsRafRef.current = window.requestAnimationFrame(step);
+      };
+
+      creditsRafRef.current = window.requestAnimationFrame(step);
+    };
+
+    const setupRaf = window.requestAnimationFrame(setupAndStart);
+    return () => {
+      window.cancelAnimationFrame(setupRaf);
+      if (creditsRafRef.current !== null) {
+        window.cancelAnimationFrame(creditsRafRef.current);
+        creditsRafRef.current = null;
+      }
+      creditsLastTsRef.current = null;
+    };
+  }, [isFinished]);
 
   useEffect(() => {
     if (!inputGate.active) {
@@ -671,12 +815,65 @@ export default function App() {
 
       {isFinished && (
         <div className="ending-overlay">
-          <div className="ending-card">
-            <h2>THE END</h2>
-            <p>모든 챕터를 끝까지 플레이했습니다.</p>
-            <button type="button" className="ending-restart" onClick={onRestart}>
-              처음부터 다시 시작
-            </button>
+          <div className="ending-credits-screen" aria-label="엔딩 크레딧">
+            <div className="ending-credits-roll" ref={endingCreditsRollRef}>
+              <div
+                className="ending-credits-content"
+                ref={endingCreditsContentRef}
+                style={{ transform: `translateY(${creditsOffset}px)` }}
+              >
+                <h2>THE END</h2>
+                <p className="ending-credits-message">게임이 종료되었습니다.</p>
+
+                <section className="ending-credits-section">
+                  <h3>CREATED BY</h3>
+                  {hasAuthorCredit ? (
+                    <>
+                      {authorCredit.name && <p className="ending-credits-line ending-credits-name">{authorCredit.name}</p>}
+                      {authorCredit.contacts.map((contact, index) => (
+                        <p className="ending-credits-line" key={`${contact.value}-${index}`}>
+                          {contact.label ? `${contact.label}: ` : ''}
+                          {contact.href ? (
+                            <a href={contact.href} target="_blank" rel="noreferrer">
+                              {contact.value}
+                            </a>
+                          ) : (
+                            contact.value
+                          )}
+                        </p>
+                      ))}
+                    </>
+                  ) : (
+                    <p className="ending-credits-line">제작자 정보 없음</p>
+                  )}
+                </section>
+
+                <section className="ending-credits-section">
+                  <h3>POWERED BY</h3>
+                  <p className="ending-credits-line ending-credits-name">YAVN (야븐)</p>
+                  <p className="ending-credits-line">Type your story. Play your novel.</p>
+                  <p className="ending-credits-line">
+                    <a href="https://yavn.vercel.app" target="_blank" rel="noreferrer">
+                      https://yavn.vercel.app
+                    </a>
+                  </p>
+                  <p className="ending-credits-line">
+                    <a href="https://github.com/uiwwsw/visual-novel" target="_blank" rel="noreferrer">
+                      https://github.com/uiwwsw/visual-novel
+                    </a>
+                  </p>
+                </section>
+              </div>
+            </div>
+            <div
+              className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`}
+              ref={endingBottomBarRef}
+              aria-hidden={!showEndingRestart}
+            >
+              <button type="button" className="ending-restart" onClick={onRestart}>
+                게임 다시 시작하기
+              </button>
+            </div>
           </div>
         </div>
       )}

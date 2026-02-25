@@ -1,6 +1,15 @@
 meta:
   title: "명탐정 코난 외전: 다실의 비밀"
-  author: "uiwwsw"
+  author:
+    name: "uiwwsw"
+    contacts:
+      - "Email: creator@yavn.dev"
+      - label: "Homepage"
+        value: "yavn.vercel.app"
+        href: "https://yavn.vercel.app"
+      - label: "LinkedIn"
+        value: "linkedin.com/in/uiwwsw"
+        href: "https://linkedin.com/in/uiwwsw"
   version: "2.0"
 
 settings:

@@ -111,10 +111,24 @@ const actionSchema = z.union([
   }),
 ]);
 
+const authorContactSchema = z.union([
+  z.string(),
+  z.object({
+    label: z.string().optional(),
+    value: z.string(),
+    href: z.string().optional(),
+  }),
+]);
+
+const authorObjectSchema = z.object({
+  name: z.string().optional(),
+  contacts: z.array(authorContactSchema).optional(),
+});
+
 export const gameSchema = z.object({
   meta: z.object({
     title: z.string(),
-    author: z.string().optional(),
+    author: z.union([z.string(), authorObjectSchema]).optional(),
     version: z.string().optional(),
   }),
   settings: z.object({
