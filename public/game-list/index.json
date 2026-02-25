@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-02-25T06:35:36.235Z",
+  "games": [
+    {
+      "id": "conan",
+      "name": "Conan",
+      "path": "/game-list/conan/"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Visual Novel Engine (Web)
 
-YAML DSL(`public/sample/1.yaml`, `public/sample/2.yaml`...)을 숫자 순서로 감지하고, 현재 챕터만 지연 로드해 웹에서 실행하는 비주얼노벨 엔진입니다.
+YAML DSL(`public/game-list/conan/1.yaml`, `public/game-list/conan/2.yaml`...)을 숫자 순서로 감지하고, 현재 챕터만 지연 로드해 웹에서 실행하는 비주얼노벨 엔진입니다.
 
 개발 가이드:
 - [DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)
@@ -14,7 +14,7 @@ npm run dev
 ```
 
 라우팅:
-- `/sample`: 샘플 게임 즉시 실행
+- `/game-list/:gameId`: 게임 리스트 폴더 기반 게임 즉시 실행
 - `/`: ZIP 업로드 가이드 + ZIP 업로드 후 즉시 실행
 
 ## 챕터 로딩 규칙
@@ -48,7 +48,7 @@ npm run dev
 4. `goto` 점프, `wait` 타이머, `shake/flash` 이펙트
 5. `localStorage` 오토세이브(씬/액션 포인터)
 6. 에러 오버레이(YAML parse 에러 line/column, 스키마/참조 에러)
-7. 샘플 게임 + 초기 에셋(`public/sample/`)
+7. 게임 리스트 폴더 기반 샘플 게임 + 초기 에셋(`public/game-list/conan/`)
 8. 모바일 발화자 강조 연출(발화자 최상단 노출, 비발화자 30% 축소, 전환 시 부드러운 크기 트랜지션)
 
 ## Video 컷신 액션
@@ -111,14 +111,15 @@ npm run dev
 - 오답 횟수가 `errors` 길이를 넘으면 마지막 메시지를 계속 보여줍니다.
 - 축약형 `input: "정답"` 문법도 지원합니다.
 
-## 샘플 구조
+## 게임 리스트 구조
 
-- `public/sample/1.yaml`
-- `public/sample/2.yaml`
-- `public/sample/3.yaml`
-- `public/sample/4.yaml`
-- `public/sample/sample.zip`
-- `public/sample/assets/bg/*.(png|svg)`
-- `public/sample/assets/char/**.(png|svg)`
-- `public/sample/assets/music/*.wav`
-- `public/sample/assets/sfx/*.wav`
+- `public/game-list/index.json` (`predev`/`prebuild`에서 자동 생성)
+- `public/game-list/conan/1.yaml`
+- `public/game-list/conan/2.yaml`
+- `public/game-list/conan/3.yaml`
+- `public/game-list/conan/4.yaml`
+- `public/game-list/conan/assets/bg/*.(png|svg)`
+- `public/game-list/conan/assets/char/**.(png|svg)`
+- `public/game-list/conan/assets/music/*.wav`
+- `public/game-list/conan/assets/sfx/*.wav`
+- `public/game-list/conan.zip`

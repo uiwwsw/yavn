@@ -6,7 +6,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://visual-novel-iota.vercel.app/sample</loc>
+    <loc>https://visual-novel-iota.vercel.app/game-list/conan/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

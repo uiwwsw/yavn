@@ -16,6 +16,16 @@ import { Live2DCharacter } from './Live2DCharacter';
 import { useVNStore } from './store';
 import type { CharacterSlot, Position } from './types';
 
+type GameListManifestEntry = {
+  id: string;
+  name: string;
+  path: string;
+};
+
+type GameListManifest = {
+  games: GameListManifestEntry[];
+};
+
 function useAdvanceByKey() {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -54,7 +64,9 @@ export default function App() {
     videoCutscene,
     inputGate,
   } = useVNStore();
-  const [bootMode, setBootMode] = useState<'launcher' | 'sample' | 'uploaded'>('launcher');
+  const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
+  const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
+  const [gameListError, setGameListError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const holdTimerRef = useRef<number | undefined>(undefined);
@@ -64,12 +76,42 @@ export default function App() {
   const youtubePlayerId = 'vn-cutscene-youtube-player';
 
   useEffect(() => {
-    if (window.location.pathname === '/sample') {
-      setBootMode('sample');
-      void loadGameFromUrl('/sample/');
-    } else {
-      setBootMode('launcher');
+    let disposed = false;
+    const loadGameList = async () => {
+      try {
+        const response = await fetch('/game-list/index.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`게임 목록을 불러오지 못했습니다. (HTTP ${response.status})`);
+        }
+        const parsed = (await response.json()) as GameListManifest;
+        if (!disposed) {
+          setGameList(Array.isArray(parsed.games) ? parsed.games : []);
+          setGameListError(null);
+        }
+      } catch (error) {
+        if (!disposed) {
+          setGameList([]);
+          setGameListError(error instanceof Error ? error.message : '게임 목록을 불러오지 못했습니다.');
+        }
+      }
+    };
+    void loadGameList();
+    return () => {
+      disposed = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const gameListMatch = pathname.match(/^\/game-list\/([^/]+)\/?$/);
+    if (gameListMatch) {
+      const gameId = decodeURIComponent(gameListMatch[1]);
+      setBootMode('gameList');
+      void loadGameFromUrl(`/game-list/${gameId}/`);
+      return;
     }
+
+    setBootMode('launcher');
   }, []);
 
   useAdvanceByKey();
@@ -252,17 +294,29 @@ export default function App() {
           </p>
 
           <div className="launcher-cta">
-            <a className="sample-link sample-link-primary" href="/sample">
-              샘플 게임 보기
-            </a>
-            <a className="sample-zip-link" href="/sample.zip" download>
-              sample.zip 다운로드
-            </a>
             <label className="zip-upload">
               내 ZIP 업로드
               <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
             </label>
           </div>
+
+          <section className="launcher-section">
+            <h2>게임 리스트</h2>
+            {gameListError && <p className="game-list-error">{gameListError}</p>}
+            {!gameListError && gameList.length === 0 && (
+              <p className="game-list-empty">`public/game-list/` 아래에 게임 폴더를 추가하면 여기에 표시됩니다.</p>
+            )}
+            {!gameListError && gameList.length > 0 && (
+              <div className="game-list-grid">
+                {gameList.map((entry) => (
+                  <a key={entry.id} className="game-entry-link" href={entry.path}>
+                    <strong>{entry.name}</strong>
+                    <span>{entry.path}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </section>
 
           <section className="launcher-section">
             <h2>어떻게 동작하나</h2>
@@ -301,8 +355,8 @@ export default function App() {
               <p>복잡한 코드 없이 YAML 중심으로 시나리오를 구성해 빠르게 제작할 수 있습니다.</p>
             </div>
             <div className="faq-item">
-              <strong>샘플은 어디서 확인하나요?</strong>
-              <p>`샘플 게임 보기`로 즉시 플레이하고, `sample.zip 다운로드`로 구조를 확인할 수 있습니다.</p>
+              <strong>게임은 어디서 실행하나요?</strong>
+              <p>`게임 리스트`에서 원하는 게임을 선택하거나, ZIP을 업로드해 즉시 실행할 수 있습니다.</p>
             </div>
           </section>
 

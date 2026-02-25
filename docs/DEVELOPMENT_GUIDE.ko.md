@@ -15,7 +15,7 @@ pnpm install
 pnpm dev
 ```
 
-- `/sample`: `public/sample/`의 샘플 게임 실행
+- `/game-list/:gameId`: `public/game-list/<gameId>/`의 게임 실행
 - `/`: ZIP 업로드 런처
 
 ## 2) 최소 YAML 골격
@@ -312,7 +312,9 @@ scenes:
 
 ## 7) 챕터 로딩 규칙
 
-### URL 로딩(`/sample` 등)
+### URL 로딩(`/game-list/:gameId` 등)
+- 런처(`/`)는 `public/game-list/index.json`을 읽어 게임 목록을 동적으로 노출합니다.
+- `index.json`은 `predev`, `prebuild`에서 `public/game-list/` 하위 폴더를 스캔해 자동 생성됩니다.
 - `0.yaml`이 있으면 `0,1,2...` 순으로 로딩
 - `0.yaml`이 없고 `1.yaml`이 있으면 `1,2,3...` 순으로 로딩
 - 초기 진입 시에는 시작 챕터 YAML만 파싱하고, 다음 챕터 YAML은 백그라운드에서 프리로드(파싱 캐시)합니다.
@@ -407,13 +409,14 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 1. 이 문서의 해당 섹션
 2. [README.md](<home>/visual-novel/README.md) 구현 범위/예시
-3. 샘플 YAML(`public/sample/*.yaml` 또는 `sample.yaml`)의 실제 사용 예시
+3. 게임 예시 YAML(`public/game-list/<gameId>/*.yaml` 또는 `sample.yaml`)의 실제 사용 예시
 
 권장: 아래 변경 로그를 같이 갱신하세요.
 
 ## 14) 문서 변경 로그
 
 - 2026-02-25: `bgFront`/`clearBgFront`를 제거하고 `sticker`/`clearSticker` 액션으로 대체. 스티커 위치/크기/앵커/회전/투명도/z-index 지정 규칙을 추가.
+- 2026-02-25: 런처의 샘플 고정 링크를 제거하고 `public/game-list/` 폴더 기반 동적 게임 리스트 영역을 추가. `/game-list/:gameId` URL 부트 로딩과 `index.json` 매니페스트 생성(`predev`/`prebuild`) 흐름을 문서화.
 - 2026-02-25: 샘플 장편화 워크플로(스토리 축 설정 → 씬 분해 → input 게이트 배치 → 챕터 분리) 가이드를 추가.
 - 2026-02-25: 좌측 상단 HUD 메타에서 챕터 분수(`N/M`) 표기를 제거해 제목만 표시하도록 수정.
 - 2026-02-25: 챕터 로딩 UI에 최소 표시 시간(600ms)과 완료 상태 유지 시간(100% 후 200ms)을 추가해 너무 빠르게 닫히는 체감을 완화.
