@@ -91,6 +91,30 @@ body,
   display: none;
 }
 
+.share-pr-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-height: 42px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #f3e7cf;
+  border: 1px solid rgba(255, 234, 196, 0.6);
+  background: rgba(44, 30, 17, 0.65);
+}
+
+.share-pr-link:hover {
+  background: rgba(63, 42, 24, 0.76);
+}
+
+.launcher-cta-note {
+  margin: 9px 0 0;
+  font-size: 0.9rem;
+  color: #dcccae;
+}
+
 .game-list-grid {
   display: grid;
   gap: 10px;
@@ -729,7 +753,8 @@ body,
   }
 
   .game-entry-link,
-  .zip-upload {
+  .zip-upload,
+  .share-pr-link {
     width: 100%;
   }
 

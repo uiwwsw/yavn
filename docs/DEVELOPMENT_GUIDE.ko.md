@@ -16,7 +16,7 @@ pnpm dev
 ```
 
 - `/game-list/:gameId`: `public/game-list/<gameId>/`의 게임 실행
-- `/`: ZIP 업로드 런처
+- `/`: 런처(`게임 실행해보기 (ZIP 올려서)` + `게임 공유하기 (PR)`)
 
 ## 2) 최소 YAML 골격
 
@@ -321,6 +321,8 @@ scenes:
 - 번호 파일이 없으면 단일 YAML URL fallback 시도
 
 ### ZIP 로딩(`/`)
+- 런처의 `게임 실행해보기 (ZIP 올려서)` 버튼으로 ZIP을 선택하면 즉시 실행됩니다.
+- 런처의 `게임 공유하기 (PR)` 버튼은 GitHub PR 생성 페이지로 이동합니다.
 - ZIP 내부 YAML 중 `0.yaml`, `1.yaml`...이 있으면 번호순 실행
 - 번호 YAML이 없으면 `sample.yaml` 우선, 없으면 파일명 사전순 첫 YAML 실행
 - 초기 진입 시에는 시작 챕터 YAML만 파싱하고, 다음 챕터 YAML은 백그라운드에서 프리로드(파싱 캐시)합니다.
@@ -415,6 +417,7 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-25: 홈 런처 CTA를 목적별로 분리. `게임 실행해보기 (ZIP 올려서)` 버튼은 ZIP 즉시 실행, `게임 공유하기 (PR)` 버튼은 GitHub PR 생성 페이지 이동으로 정리.
 - 2026-02-25: `bgFront`/`clearBgFront`를 제거하고 `sticker`/`clearSticker` 액션으로 대체. 스티커 위치/크기/앵커/회전/투명도/z-index 지정 규칙을 추가.
 - 2026-02-25: 런처의 샘플 고정 링크를 제거하고 `public/game-list/` 폴더 기반 동적 게임 리스트 영역을 추가. `/game-list/:gameId` URL 부트 로딩과 `index.json` 매니페스트 생성(`predev`/`prebuild`) 흐름을 문서화.
 - 2026-02-25: 샘플 장편화 워크플로(스토리 축 설정 → 씬 분해 → input 게이트 배치 → 챕터 분리) 가이드를 추가.

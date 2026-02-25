@@ -74,6 +74,7 @@ export default function App() {
   const holdingRef = useRef(false);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
+  const shareByPrUrl = 'https://github.com/uiwwsw/visual-novel/compare';
 
   useEffect(() => {
     let disposed = false;
@@ -290,15 +291,19 @@ export default function App() {
           <p className="launcher-lead">
             무엇인지: 가장 심플한 타이포 기반 게임엔진입니다.
             <br />
-            어떻게 동작하나: YAML과 에셋을 ZIP으로 업로드하면 즉시 플레이됩니다.
+            어떻게 쓰나: ZIP으로 바로 실행해볼 수 있고, 공유는 PR로 등록합니다.
           </p>
 
           <div className="launcher-cta">
             <label className="zip-upload">
-              내 ZIP 업로드
+              게임 실행해보기 (ZIP 올려서)
               <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
             </label>
+            <a className="share-pr-link" href={shareByPrUrl} target="_blank" rel="noreferrer">
+              게임 공유하기 (PR)
+            </a>
           </div>
+          <p className="launcher-cta-note">공유를 원하면 포크/브랜치에서 작업 후 PR을 열어 주세요.</p>
 
           <section className="launcher-section">
             <h2>게임 리스트</h2>
@@ -331,7 +336,11 @@ export default function App() {
               </li>
               <li>
                 <strong>3. 업로드 즉시 실행</strong>
-                <span>ZIP 업로드 직후 게임이 바로 시작됩니다.</span>
+                <span>`게임 실행해보기 (ZIP 올려서)` 버튼으로 바로 플레이합니다.</span>
+              </li>
+              <li>
+                <strong>4. 공유는 PR</strong>
+                <span>`게임 공유하기 (PR)` 버튼으로 GitHub PR 생성 페이지로 이동합니다.</span>
               </li>
             </ol>
           </section>
@@ -357,6 +366,10 @@ export default function App() {
             <div className="faq-item">
               <strong>게임은 어디서 실행하나요?</strong>
               <p>`게임 리스트`에서 원하는 게임을 선택하거나, ZIP을 업로드해 즉시 실행할 수 있습니다.</p>
+            </div>
+            <div className="faq-item">
+              <strong>내 게임을 홈페이지에 올리려면?</strong>
+              <p>`게임 공유하기 (PR)` 버튼으로 PR을 생성해 공유 요청을 등록하면 됩니다.</p>
             </div>
           </section>
 
