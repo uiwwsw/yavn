@@ -377,8 +377,8 @@ export default function App() {
     return (
       <div className="launcher">
         <div className="launcher-card">
-          <p className="launcher-eyebrow">TYPO-DRIVEN WEB VN ENGINE</p>
-          <h1>YAML + ZIP으로 바로 실행되는 비주얼노벨 엔진</h1>
+          <p className="launcher-eyebrow">YAVN (야븐)</p>
+          <h1>Type your story. Play your novel.</h1>
           <p className="launcher-lead">
             무엇인지: 가장 심플한 타이포 기반 게임엔진입니다.
             <br />

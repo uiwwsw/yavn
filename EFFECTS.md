@@ -1,4 +1,4 @@
-# Visual Novel Engine Effects
+# YAVN (야븐) Effects
 
 아래 이펙트는 현재 엔진에서 바로 사용 가능합니다.
 YAML 액션에서 `- effect: <name>` 형태로 넣으면 됩니다.
