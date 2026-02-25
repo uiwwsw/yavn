@@ -18,6 +18,20 @@ pnpm dev
 - `/game-list/:gameId`: `public/game-list/<gameId>/`의 게임 실행
 - `/`: 런처(`게임 실행해보기 (ZIP 올려서)` + `게임 공유하기 (PR)`)
 
+## 1-1) 무엇부터 읽고 만들까? (추천 순서)
+
+처음 제작할 때는 아래 순서가 가장 빠릅니다.
+
+1. [README.md](<home>/visual-novel/README.md)의 `YAML DSL Example`로 최소 골격 확인
+2. 실제 샘플 YAML 확인:
+   - [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)
+   - [public/game-list/conan/2.yaml](<home>/visual-novel/public/game-list/conan/2.yaml)
+   - [public/game-list/conan/3.yaml](<home>/visual-novel/public/game-list/conan/3.yaml)
+   - [public/game-list/conan/4.yaml](<home>/visual-novel/public/game-list/conan/4.yaml)
+3. 자연어 스토리 초안을 YAML로 바꾸고 싶으면 프롬프트 사용:
+   - [YAML_STORY_TO_DSL_PROMPT.ko.md](<home>/visual-novel/docs/YAML_STORY_TO_DSL_PROMPT.ko.md)
+4. 생성된 YAML을 실행해 에러/템포를 확인하고, 필요한 연출을 추가
+
 ## 2) 최소 YAML 골격
 
 ```yaml
@@ -435,7 +449,26 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - 챕터 끝에 `video`나 강한 `effect`를 배치해 다음 챕터 연결점 생성
 - 추리/퀴즈 구간은 `input`을 사용하고 마지막 오류 메시지를 힌트로 설계
 
-## 12-1) 장편 샘플 제작 순서(권장)
+## 12-1) AI 초안 → 플레이 가능한 빌드 워크플로
+
+1. 작가가 자유 형식으로 스토리 작성(캐릭터/장소/사건/결말 포함)
+2. [YAML_STORY_TO_DSL_PROMPT.ko.md](<home>/visual-novel/docs/YAML_STORY_TO_DSL_PROMPT.ko.md) 프롬프트에 스토리를 붙여 YAML 초안 생성
+3. 초안 실행 후, 장면 목적이 약한 구간부터 정리:
+   - 장면 분할(`scene`) 재조정
+   - 대사 템포(`<speed=...>`) 보정
+   - `goto` 흐름 단순화
+4. 연출/인터랙션 고도화:
+   - 인트로/컷신: `video`
+   - 긴장 연출: `effect + sound + wait`
+   - 화면 오브젝트 연출: `sticker`, `clearSticker`
+   - 유저 참여 게이트: `input`
+5. 마지막으로 챕터(`1.yaml`, `2.yaml`...) 분리 후 로딩/템포 점검
+
+노트:
+- AI 초안은 "구조 생성"에 강하고, 완성도는 수동 편집에서 올라갑니다.
+- 기존 프로젝트를 수정할 때는 "기존 YAML 유지 + 부분 수정" 방식이 안전합니다.
+
+## 12-2) 장편 샘플 제작 순서(권장)
 
 - 1단계: 사건을 `기(도입) / 승(충돌) / 전(재현) / 결(해결)` 4축으로 먼저 고정
 - 2단계: 축별 목표를 씬으로 쪼개고, 씬당 목적을 하나로 제한
@@ -445,6 +478,16 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 참고:
 - 장편 샘플 설계 문서: [SAMPLE_EXPANSION_PLAN.ko.md](<home>/visual-novel/docs/SAMPLE_EXPANSION_PLAN.ko.md)
+
+## 12-3) 자주 놓치는 추가 기능 체크리스트
+
+- `sticker.enter`, `clearSticker.leave`로 등장/퇴장 이펙트까지 제어
+- `music`에 YouTube URL 사용 가능(배경음 운영 간편)
+- `video`는 로컬 파일/YouTube 모두 사용 가능, 길게 눌러 스킵 지원
+- `input`은 축약형(`input: "정답"`)과 상세형(`correct/errors`) 모두 지원
+- 캐릭터 감정은 `say.char`와 `char.emotion`을 함께 써야 화면/이름 일관성이 좋아짐
+- 모바일 겹침 완화를 위해 주요 발화 캐릭터 중심으로 장면을 구성
+- `0.yaml/1.yaml...` 챕터 분리 시 초기 로딩 체감이 좋아짐(지연 로드 + 프리로드)
 
 ## 13) 기능 변경 시 문서 업데이트 규칙
 
@@ -458,6 +501,7 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-25: 개발 가이드에 AI 기반 제작 동선 추가(읽기 순서, 스토리→YAML 프롬프트 사용법, 초안 후 연출 고도화 절차, 추가 기능 체크리스트).
 - 2026-02-25: `say.char`를 생략한 대사에서 기본 `Narration` 라벨을 제거하고, 화자 이름 영역을 비워 표시하도록 동작을 변경.
 - 2026-02-25: 홈 런처에 `샘플 파일 다운받기 (ZIP)` 버튼을 추가해 `public/sample.zip`을 바로 내려받아 개발 전 파일 구조를 확인할 수 있도록 수정.
 - 2026-02-25: `clearSticker` 객체형(`id`, `leave`)을 추가해 스티커 퇴장 이펙트(`fadeOut`, `wipeLeft`, `wipeRight`)와 지속시간/이징/지연 제어를 지원.

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://visual-novel-iota.vercel.app/sitemap.xml
+Sitemap: https://yavn.vercel.app/sitemap.xml

@@ -125,6 +125,7 @@ src/
 ## Docs
 
 - 개발 가이드: [docs/DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)
+- 스토리→YAML 변환 프롬프트: [docs/YAML_STORY_TO_DSL_PROMPT.ko.md](<home>/visual-novel/docs/YAML_STORY_TO_DSL_PROMPT.ko.md)
 - 샘플 확장 계획: [docs/SAMPLE_EXPANSION_PLAN.ko.md](<home>/visual-novel/docs/SAMPLE_EXPANSION_PLAN.ko.md)
 
 ## Development
