@@ -23,37 +23,36 @@ assets:
         serious: assets/char/conan/serious.png
 
     란:
-      base: assets/char/ran/base.svg
+      base: assets/char/ran/base.png
       emotions:
-        surprised: assets/char/ran/surprised.svg
-        worried: assets/char/ran/worried.svg
+        surprised: assets/char/ran/surprised.png
+        worried: assets/char/ran/worried.png
 
     코고로:
-      base: assets/char/kogoro/base.svg
+      base: assets/char/kogoro/base.png
       emotions:
-        proud: assets/char/kogoro/proud.svg
-        angry: assets/char/kogoro/angry.svg
+        proud: assets/char/kogoro/proud.png
+        angry: assets/char/kogoro/angry.png
 
     켄지:
-      base: assets/char/kenji/base.svg
+      base: assets/char/kenji/base.png
       emotions:
-        angry: assets/char/kenji/angry.svg
+        angry: assets/char/kenji/angry.png
 
     레이코:
-      base: assets/char/reiko/base.svg
+      base: assets/char/reiko/base.png
       emotions:
-        nervous: assets/char/reiko/nervous.svg
+        nervous: assets/char/reiko/nervous.png
 
     신이치:
-      base: assets/char/shinichi/base.svg
+      base: assets/char/shinichi/base.png
       emotions:
-        cold: assets/char/shinichi/cold.svg
+        cold: assets/char/shinichi/cold.png
 
     하루오:
-      base: assets/char/haruo/base.svg
+      base: assets/char/haruo/base.png
       emotions:
-        scared: assets/char/haruo/scared.svg
-
+        scared: assets/char/haruo/scared.png
   music:
     rain: assets/music/rain.wav
     tension: assets/music/tension.wav
