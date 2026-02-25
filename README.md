@@ -23,6 +23,7 @@ Type your story. Play your novel.
 - 대사 타이핑 효과 + `<speed=...>` 인라인 속도 제어
 - `say.with` 기반 화자 중심 캐릭터 노출(기본 1인 + 추가 동시 노출)
 - `video`, `input`, `sticker`, `effect` 등 연출/상호작용 액션 내장
+- `input` 게이트 노출 시 입력창 자동 포커스
 - ZIP 업로드 즉시 실행 + 샘플 ZIP 다운로드 + GitHub PR 공유 버튼
 - 모바일까지 고려한 연출(캐릭터 우선순위/컷신 스킵 UX)
 
@@ -84,6 +85,7 @@ scenes:
 노트:
 - `say.char`가 있으면 해당 화자 1명이 기본 노출되고, `say.with`로 지정한 캐릭터만 추가 노출됩니다.
 - `say.char`가 없는 내레이션은 캐릭터를 숨기고 텍스트에 집중합니다.
+- `chat.with`는 지원하지 않으며, 같은 목적은 `say.with`를 사용합니다.
 
 실제 예시는 [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)에서 확인할 수 있습니다.
 

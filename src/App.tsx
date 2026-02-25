@@ -82,6 +82,7 @@ export default function App() {
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const appRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
@@ -173,7 +174,12 @@ export default function App() {
   useEffect(() => {
     if (!inputGate.active) {
       setInputAnswer('');
+      return;
     }
+    const rafId = window.requestAnimationFrame(() => {
+      inputFieldRef.current?.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(rafId);
   }, [inputGate.active]);
 
   useEffect(() => {
@@ -598,9 +604,11 @@ export default function App() {
             onClick={(event) => event.stopPropagation()}
           >
             <input
+              ref={inputFieldRef}
               className="input-gate-field"
               type="text"
               value={inputAnswer}
+              autoFocus
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}

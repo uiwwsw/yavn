@@ -143,12 +143,17 @@ scenes:
           text: "신이치 씨, 9시 20분부터 35분까지 어디에 있었죠?"
       - say:
           char: 신이치.cold
+          with:
+            - 레이코.nervous
+            - 하루오.scared
           text: "복도 흡연실 앞. 비 때문에 창문만 보고 있었어."
       - say:
           char: 코난
           text: "레이코 씨는요?"
       - say:
           char: 레이코.nervous
+          with:
+            - 코난.serious
           text: "저는 다실 맞은편 계산실에서 결제 전표를 정리했어요."
       - say:
           char: 코난
