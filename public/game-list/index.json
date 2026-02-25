@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-25T06:35:36.235Z",
+  "generatedAt": "2026-02-25T06:49:30.864Z",
   "games": [
     {
       "id": "conan",
-      "name": "Conan",
+      "name": "명탐정 코난 외전: 다실의 비밀",
       "path": "/game-list/conan/"
     }
   ]

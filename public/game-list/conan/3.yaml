@@ -1,5 +1,5 @@
 meta:
-  title: "잠긴 다실의 비명 - 제3장 재현되는 밤"
+  title: "명탐정 코난 외전: 다실의 비밀"
   author: "VN Engine Demo"
   version: "2.0"
 
@@ -84,6 +84,8 @@ scenes:
           anchorY: top
           zIndex: 1
       - music: mystery
+      - say:
+          text: "제3장 - 벽 너머의 목격자"
       - char:
           id: 코난
           position: center

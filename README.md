@@ -119,6 +119,7 @@ npm run dev
 ## 게임 리스트 구조
 
 - `public/game-list/index.json` (`predev`/`prebuild`에서 자동 생성)
+- `index.json`의 게임 표시명(`games[].name`)은 각 게임의 대표 YAML(`0.yaml` 우선, 없으면 `1.yaml`/`sample.yaml`/사전순 첫 YAML)의 `meta.title`을 우선 사용합니다.
 - `public/game-list/conan/1.yaml`
 - `public/game-list/conan/2.yaml`
 - `public/game-list/conan/3.yaml`

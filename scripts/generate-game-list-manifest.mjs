@@ -1,5 +1,6 @@
-import { mkdir, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { load as parseYaml } from 'js-yaml';
 
 const workspaceRoot = process.cwd();
 const gameListDir = path.join(workspaceRoot, 'public', 'game-list');
@@ -12,6 +13,51 @@ const toTitle = (slug) =>
     .map((token) => token.charAt(0).toUpperCase() + token.slice(1))
     .join(' ');
 
+const pickRepresentativeYaml = (yamlNames) => {
+  const numbered = yamlNames
+    .map((name) => {
+      const match = name.match(/^(\d+)\.ya?ml$/i);
+      return match ? { name, order: Number(match[1]) } : null;
+    })
+    .filter((value) => value !== null)
+    .sort((a, b) => a.order - b.order);
+  if (numbered.length > 0) {
+    return numbered[0].name;
+  }
+
+  const sampleYaml = yamlNames.find((name) => /^sample\.ya?ml$/i.test(name));
+  if (sampleYaml) {
+    return sampleYaml;
+  }
+
+  return [...yamlNames].sort((a, b) => a.localeCompare(b))[0];
+};
+
+async function resolveGameDisplayName(gameDirPath, gameId, yamlNames) {
+  const selectedYaml = pickRepresentativeYaml(yamlNames);
+  if (!selectedYaml) {
+    return toTitle(gameId);
+  }
+
+  try {
+    const yamlText = await readFile(path.join(gameDirPath, selectedYaml), 'utf8');
+    const parsed = parseYaml(yamlText);
+    if (parsed && typeof parsed === 'object') {
+      const meta = parsed.meta;
+      if (meta && typeof meta === 'object' && typeof meta.title === 'string') {
+        const title = meta.title.trim();
+        if (title.length > 0) {
+          return title;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn(`[game-list] Failed to parse ${gameId}/${selectedYaml}:`, error);
+  }
+
+  return toTitle(gameId);
+}
+
 async function collectGameFolders() {
   await mkdir(gameListDir, { recursive: true });
   const entries = await readdir(gameListDir, { withFileTypes: true });
@@ -21,13 +67,14 @@ async function collectGameFolders() {
   for (const folder of folders) {
     const gameDirPath = path.join(gameListDir, folder.name);
     const files = await readdir(gameDirPath, { withFileTypes: true });
-    const hasYaml = files.some((file) => file.isFile() && /\.ya?ml$/i.test(file.name));
-    if (!hasYaml) {
+    const yamlNames = files.filter((file) => file.isFile() && /\.ya?ml$/i.test(file.name)).map((file) => file.name);
+    if (yamlNames.length === 0) {
       continue;
     }
+    const displayName = await resolveGameDisplayName(gameDirPath, folder.name, yamlNames);
     games.push({
       id: folder.name,
-      name: toTitle(folder.name),
+      name: displayName,
       path: `/game-list/${encodeURIComponent(folder.name)}/`,
     });
   }

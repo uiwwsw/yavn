@@ -1,5 +1,5 @@
 meta:
-  title: "잠긴 다실의 비명 - 제4장 끝나지 않은 계산"
+  title: "명탐정 코난 외전: 다실의 비밀"
   author: "VN Engine Demo"
   version: "2.0"
 
@@ -75,6 +75,8 @@ scenes:
     actions:
       - bg: tea_room
       - music: mystery
+      - say:
+          text: "제4장 - 다실의 비밀, 하나의 진실"
       - char:
           id: 코난
           position: center

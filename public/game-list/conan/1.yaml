@@ -1,5 +1,5 @@
 meta:
-  title: "잠긴 다실의 비명 - 제1장 폭우의 초대"
+  title: "명탐정 코난 외전: 다실의 비밀"
   author: "VN Engine Demo"
   version: "2.0"
 
@@ -78,6 +78,8 @@ scenes:
           holdToSkipMs: 1000
       - bg: mountain_rain
       - music: rain
+      - say:
+          text: "제1장 - 고요한 다실의 초대장"
       - say:
           text: "산맥을 휘감는 비구름이 료칸 지붕을 두드렸다."
       - wait: 400

@@ -1,5 +1,5 @@
 meta:
-  title: "잠긴 다실의 비명 - 제2장 흔들리는 알리바이"
+  title: "명탐정 코난 외전: 다실의 비밀"
   author: "VN Engine Demo"
   version: "2.0"
 
@@ -84,6 +84,8 @@ scenes:
           anchorY: top
           zIndex: 1
       - music: mystery
+      - say:
+          text: "제2장 - 끊긴 찻잔의 시간"
       - char:
           id: 코고로
           position: right
