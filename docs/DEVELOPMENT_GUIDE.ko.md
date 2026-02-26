@@ -2,6 +2,15 @@
 
 이 문서는 이 프로젝트에서 YAML DSL로 게임을 제작할 때 필요한 기능을 한 번에 정리한 실무 가이드입니다.
 
+## 빠른 네비게이션
+
+- [1) 빠른 시작](#1-빠른-시작)
+- [2) 최소 YAML 골격](#2-최소-yaml-골격)
+- [5) 액션 전체 목록](#5-액션-전체-목록)
+- [7) 챕터 로딩 규칙](#7-챕터-로딩-규칙)
+- [12) 제작 권장 패턴](#12-제작-권장-패턴)
+- [14) 문서 변경 로그](#14-문서-변경-로그)
+
 ## 0) 읽는 법 / 주석 규칙
 
 - 코드블록 안 `# ...` 는 YAML 주석입니다. 그대로 두어도 실행에는 영향이 없습니다.
@@ -23,14 +32,18 @@ pnpm dev
 처음 제작할 때는 아래 순서가 가장 빠릅니다.
 
 1. [README.md](<home>/visual-novel/README.md)의 `YAML DSL Example`로 최소 골격 확인
-2. 실제 샘플 YAML 확인:
+2. 최신 루트 분기 샘플 YAML 확인:
    - [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)
+   - [public/game-list/conan/routes/shinichi/1.yaml](<home>/visual-novel/public/game-list/conan/routes/shinichi/1.yaml)
+   - [public/game-list/conan/routes/reiko/1.yaml](<home>/visual-novel/public/game-list/conan/routes/reiko/1.yaml)
+   - [public/game-list/conan/conclusion/1.yaml](<home>/visual-novel/public/game-list/conan/conclusion/1.yaml)
+3. 레거시 연속 챕터 샘플 참고(비교용):
    - [public/game-list/conan/2.yaml](<home>/visual-novel/public/game-list/conan/2.yaml)
    - [public/game-list/conan/3.yaml](<home>/visual-novel/public/game-list/conan/3.yaml)
    - [public/game-list/conan/4.yaml](<home>/visual-novel/public/game-list/conan/4.yaml)
-3. 자연어 스토리 초안을 YAML로 바꾸고 싶으면 프롬프트 사용:
+4. 자연어 스토리 초안을 YAML로 바꾸고 싶으면 프롬프트 사용:
    - [YAML_STORY_TO_DSL_PROMPT.ko.md](<home>/visual-novel/docs/YAML_STORY_TO_DSL_PROMPT.ko.md)
-4. 생성된 YAML을 실행해 에러/템포를 확인하고, 필요한 연출을 추가
+5. 생성된 YAML을 실행해 에러/템포를 확인하고, 필요한 연출을 추가
 
 ## 2) 최소 YAML 골격
 
@@ -60,6 +73,9 @@ assets:
 state: # 선택
   defaults: # 분기 상태 기본값
     trust: 0
+    truth_point: 0
+    mistake_count: 0
+    comeback_chance: 1
     suspect: ""
     culprit_answer: ""
 
@@ -359,6 +375,22 @@ BGM 재생(루프).
 - goto: ./31       # 루트 31.yaml으로 점프(확장자 생략 가능)
 ```
 
+루트 분기 + 공통 결론 합류 예시:
+
+```yaml
+# 1.yaml
+- choice:
+    prompt: "누구를 먼저 지목할까?"
+    options:
+      - text: "신이치"
+        goto: ./routes/shinichi/1.yaml
+      - text: "레이코"
+        goto: ./routes/reiko/1.yaml
+
+# routes/shinichi/2.yaml (또는 routes/reiko/2.yaml)
+- goto: ./conclusion/1.yaml
+```
+
 노트:
 - 챕터 경로 `goto`는 **항상 게임 루트 기준**으로 해석됩니다.
 - 챕터 경로로 이동하면 해당 번호부터 같은 폴더의 `N+1` 챕터를 순차 로드합니다.
@@ -543,7 +575,15 @@ scenes:
 ```text
 my-game.zip
   1.yaml
-  2.yaml
+  routes/
+    shinichi/
+      1.yaml
+      2.yaml
+    reiko/
+      1.yaml
+      2.yaml
+  conclusion/
+    1.yaml
   assets/
     bg/
     char/
@@ -645,6 +685,91 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - 모바일 겹침 완화를 위해 주요 발화 캐릭터 중심으로 장면을 구성
 - `0.yaml/1.yaml...` 챕터 분리 시 초기 로딩 체감이 좋아짐(지연 로드 + 프리로드)
 
+## 12-4) 필수 루트 누락 시 되돌리기 패턴
+
+플레이어가 진행은 했지만 필수 루트(예: 열쇠 획득, 핵심 단서)를 거치지 않은 경우, `branch`로 누락을 감지해 보충 루트로 되돌린 뒤 원 경로에 합류시키는 방식입니다.
+
+```yaml
+state:
+  defaults:
+    has_key: false
+
+scenes:
+  locked_room_gate:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: has_key
+                op: eq
+                value: true
+              goto: open_locked_room
+          default: key_route_intro
+
+  key_route_intro:
+    actions:
+      - say:
+          text: "문을 열 열쇠가 필요하다."
+      - goto: key_route_find
+
+  key_route_find:
+    actions:
+      - set:
+          has_key: true
+      - goto: locked_room_gate
+```
+
+노트:
+- 엔진이 자동으로 과거 선택을 되감아주지 않으므로, 복귀/합류는 YAML에서 명시적으로 설계해야 합니다.
+- 누락 루트 보강 후에는 `set`으로 완료 플래그를 올리고 원 게이트로 되돌려야 반복 루프를 방지할 수 있습니다.
+
+## 12-5) 멀티엔딩 설계 템플릿
+
+권장 순서:
+1. `state.defaults`에 엔딩 판정 변수 선언 (`truth_point`, `mistake_count`, `culprit_answer` 등)
+2. 중간 선택/입력에서 `set/add`로 누적
+3. 결론 챕터에서 필요 시 명시형 실패 분기(`ending: bad_end`)
+4. 마지막 장면까지 도달하면 `endingRules` + `defaultEnding`으로 자동 판정
+
+```yaml
+endings:
+  true_end:
+    title: "TRUE END"
+  normal_end:
+    title: "NORMAL END"
+  bad_end:
+    title: "BAD END"
+
+endingRules:
+  - when:
+      all:
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+        - var: truth_point
+          op: gte
+          value: 4
+        - var: mistake_count
+          op: lte
+          value: 1
+    ending: true_end
+  - when:
+      all:
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+        - var: truth_point
+          op: gte
+          value: 2
+    ending: normal_end
+
+defaultEnding: bad_end
+```
+
+노트:
+- `ending` 액션을 쓰면 해당 지점에서 즉시 종료되며 `endingRules`보다 우선합니다.
+- `endingRules`는 위에서 아래로 첫 매칭 우선이므로, 더 엄격한 조건을 먼저 배치해야 합니다.
+
 ## 13) 기능 변경 시 문서 업데이트 규칙
 
 새 기능을 개발하거나 기존 동작을 바꿀 때 아래를 반드시 같이 수정합니다.
@@ -657,6 +782,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-26: 코난 최신 샘플 구조를 루트 분기 기준(`1.yaml -> routes/* -> conclusion/1.yaml`)으로 문서 전반에 반영. README/가이드/프롬프트의 예시 경로를 정합화하고, 필수 루트 누락 복귀 패턴 및 멀티엔딩 템플릿 섹션을 추가.
+- 2026-02-26: 스토리→YAML 프롬프트 문서를 현재 스키마 기준으로 정정. `input`은 객체형(`prompt/correct/errors?/saveAs?/routes?`) 중심으로 안내하고, `set/add/choice/branch/ending/endings/endingRules/defaultEnding` 반영 규칙을 보강.
 - 2026-02-26: 분기 DSL V2를 추가. `state.defaults`, `set/add`, `choice`, `branch`, `ending`, `endings`, `endingRules`, `defaultEnding`, `input.saveAs/routes`를 도입하고 자동저장에 분기 상태(`routeVars/routeHistory/resolvedEndingId`)를 포함하도록 갱신. `goto`의 챕터 경로 점프(`./a/5.yaml`, `./31`)와 경로 점프 후 번호 순차 진행 규칙을 추가.
 - 2026-02-26: `게임 다시 시작하기` 클릭 시 엔딩 오버레이가 즉시 닫히도록 재시작 흐름을 보정해, 로딩 중 엔딩 텍스트가 바뀌어 보이는 현상을 제거.
 - 2026-02-25: 엔딩 UI를 팝업 카드에서 영화식 롤링 크레딧으로 변경하고, 하단 고정 `게임 다시 시작하기` 버튼으로 재시작 흐름을 유지.
@@ -690,6 +817,6 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - 2026-02-25: 컷신 인터랙션을 기존 방식으로 복원(YouTube 위 인터랙션 레이어, 탭 시 가이드 표시, 하단 중앙 길게 눌러 스킵).
 - 2026-02-25: 로컬(mp4) 컷신도 브라우저 자동재생 정책에 맞춰 기본 음소거 자동재생으로 동작하도록 정리.
 - 2026-02-25: ZIP 로딩 시 `video.src` 로컬 경로의 blob 치환 누락을 수정해 인트로 컷신(mp4)이 정상 재생되도록 보완.
-- 2026-02-25: `input` 스키마를 확장해 `input: "정답"` 축약형과 `errors` 생략/단일 문자열 입력을 허용하도록 수정.
+- 2026-02-25: `input` 게이트 스키마를 객체형(`prompt`, `correct`, `errors?`, `saveAs?`, `routes?`)으로 정리하고, `errors` 생략 시 기본 메시지를 사용하도록 동작을 정비.
 - 2026-02-25: `input` 정답 입력 게이트 문법/동작 추가, 전체 기능 가이드 최초 정리.
 - 2026-02-25: 명칭 혼동 방지를 위해 `chat.with`는 미지원이고 `say.with`만 유효하다는 규칙을 `say` 섹션에 명시.

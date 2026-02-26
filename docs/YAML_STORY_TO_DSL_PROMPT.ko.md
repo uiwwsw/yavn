@@ -18,16 +18,18 @@
 설명 문장, 코드펜스, 주석, 해설을 절대 출력하지 말고 YAML 본문만 출력해라.
 
 [출력 규칙]
-- 반드시 최상위 키를 정확히 이 순서로 출력:
-  meta, settings, assets, script, scenes
+- 반드시 최상위 키를 다음 순서로 출력:
+  meta, settings, assets, state(선택), endings(선택), endingRules(선택), defaultEnding(선택), script, scenes
 - 반드시 유효 YAML이어야 한다(탭 금지, 공백 들여쓰기)
 - scene id는 영문/숫자/언더스코어만 사용 (예: intro_1)
 - script에 등장한 scene은 scenes에 모두 정의되어야 한다
 - goto로 이동한 scene id는 반드시 scenes에 존재해야 한다
-- say.char를 사용할 때는 assets.characters의 키 또는 "캐릭터ID.emotion" 형식만 사용
+  (단, 챕터 경로 goto("./routes/shinichi/1.yaml" 같은 형태)는 예외)
+- say.char/say.with를 사용할 때는 assets.characters의 키 또는 "캐릭터ID.emotion" 형식만 사용
+- set/add/branch/input.saveAs/endingRules에서 쓰는 변수는 state.defaults에 반드시 선언
 - 실제 리소스 파일 경로를 모르면 임시 경로를 생성하되 일관성 유지
 - 입력에 없는 세부설정은 안전한 기본값 사용
-- `effect`는 아래 내장 이름만 사용:
+- effect는 아래 내장 이름만 사용:
   shake, flash, zoom, blur, darken, pulse, tilt
 
 [허용 액션 타입]
@@ -49,8 +51,31 @@
     src: string
     holdToSkipMs: 1~5000 정수 (선택)
 - input:
-    문자열 정답 또는
-    { correct: string, errors?: string 또는 string[] }
+    prompt: string
+    correct: string
+    errors?: string[]
+    saveAs?: string
+    routes?:
+      - equals: string
+        set?: map
+        add?: map(number)
+        goto?: string
+- set: { key: boolean|number|string, ... }
+- add: { key: number, ... }
+- choice:
+    key?: string
+    prompt: string
+    options:
+      - text: string
+        set?: map
+        add?: map(number)
+        goto?: string
+- branch:
+    cases:
+      - when: condition
+        goto: string
+    default?: string
+- ending: string
 - wait: 0 이상 숫자
 - effect: shake|flash|zoom|blur|darken|pulse|tilt
 - goto: string
@@ -60,9 +85,15 @@
     emotion: string (선택)
 - say:
     char: string (선택)
+    with: string[] (선택)
     text: string
 
-[필수 YAML 골격]
+[condition 문법]
+- Leaf: { var, op, value }
+- Composite: { all: [] } | { any: [] } | { not: {} }
+- op: eq | ne | gt | gte | lt | lte | in
+
+[권장 YAML 골격]
 meta:
   title: "게임 제목"
   author: "작성자"
@@ -78,6 +109,36 @@ assets:
   characters: {}
   music: {}
   sfx: {}
+
+state:
+  defaults:
+    trust: 0
+    truth_point: 0
+    mistake_count: 0
+    comeback_chance: 1
+    suspect: ""
+    culprit_answer: ""
+
+endings:
+  true_end:
+    title: "TRUE END"
+  normal_end:
+    title: "NORMAL END"
+  bad_end:
+    title: "BAD END"
+
+endingRules:
+  - when:
+      all:
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+        - var: truth_point
+          op: gte
+          value: 4
+    ending: true_end
+
+defaultEnding: bad_end
 
 script:
   - scene: intro
@@ -102,19 +163,20 @@ scenes:
 - 입장/퇴장/표정: char
 - 대사/나레이션: say
 - 긴장/충격: effect, sound, wait
-- 분기/다음 흐름 명시: goto
-- 질문/정답 맞히기 상황: input
-- 이펙트 자동 선택 규칙:
-  - 물리 충격/폭발/문파손/격한 반응: shake
-  - 번개/순간 전환/강조 컷: flash
-  - 단서 확대/집중: zoom
-  - 혼란/어지러움/공포: blur
-  - 분위기 급강하/침잠/암전 톤: darken
-  - 긴장 점층/심박 고조: pulse
-  - 심리적 흔들림/불안정 시점: tilt
-  - 장면당 effect 남용 금지(핵심 비트 중심으로 배치)
+- 플레이어 질문/응답: input
+- 분기 선택: choice
+- 조건 자동 분기: branch
+- 상태 누적: set/add
+- 결말 확정: ending 또는 endingRules/defaultEnding
 
-4) 텍스트 처리
+4) 루트 분기 설계 규칙
+- 루트 분기 구조를 만들 때는 아래를 권장:
+  - 1.yaml에서 choice로 ./routes/*/1.yaml로 분기
+  - 각 루트 마지막에서 ./conclusion/1.yaml로 합류
+- 필수 루트 누락 보정이 필요하면 branch로 체크 후 누락 루트로 이동:
+  - 예: has_key가 false면 key_route로 보낸 뒤 set으로 true 처리 후 원 게이트 복귀
+
+5) 텍스트 처리
 - 원문 문장을 가능한 유지하되, YAML 문자열로 안전하게 이스케이프
 - 감정 기반 속도 규칙:
   - 기본은 settings.textSpeed(권장 38)
@@ -122,11 +184,12 @@ scenes:
   - 일반 대화: 36~42
   - 긴장/단호/집중: 42~52
   - 분노/공포/패닉/다급함: 52~66
-  - 속도 연출이 필요한 대사에만 `<speed=숫자>문장</speed>`를 적용
+  - 속도 연출이 필요한 대사에만 <speed=숫자>문장</speed>를 적용
   - 같은 장면 내 속도 변화는 감정 전환 지점에서만 적용
 
-5) 검증
+6) 검증
 - 누락 scene, 잘못된 참조, 빈 script 금지
+- state.defaults 미선언 변수 참조 금지
 - 최종 출력은 YAML만
 
 [원문 스토리]
@@ -140,7 +203,7 @@ scenes:
 아래 문장을 기존 YAML과 함께 추가로 보내면 됩니다.
 
 ```text
-아래 YAML의 구조(meta/settings/assets/script/scenes)는 유지하고,
+아래 YAML의 구조(meta/settings/assets/state/endings/endingRules/defaultEnding/script/scenes)는 유지하고,
 내가 말한 수정사항만 반영해서 전체 YAML을 다시 출력해줘.
 출력은 YAML만.
 ```

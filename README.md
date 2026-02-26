@@ -69,21 +69,26 @@ settings:
 assets:
   backgrounds:
     tea_room: assets/bg/tea_room.png
+    hall: assets/bg/ryokan_hall.png
   characters:
     코난:
       base: assets/char/conan/base.png
       emotions:
         serious: assets/char/conan/serious.png
-    코고로:
-      base: assets/char/kogoro/base.png
-      emotions:
-        angry: assets/char/kogoro/angry.png
+    신이치:
+      base: assets/char/shinichi/base.png
+    레이코:
+      base: assets/char/reiko/base.png
   music: {}
   sfx: {}
 
 state:
   defaults:
     trust: 0
+    truth_point: 0
+    mistake_count: 0
+    comeback_chance: 1
+    has_key: false
     suspect: ""
     culprit_answer: ""
 
@@ -97,59 +102,55 @@ endings:
 
 endingRules:
   - when:
-      var: trust
-      op: gte
-      value: 2
+      all:
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+        - var: truth_point
+          op: gte
+          value: 4
+        - var: trust
+          op: gte
+          value: 3
     ending: true_end
 defaultEnding: bad_end
 
 script:
   - scene: intro
+  - scene: route_entry
 
 scenes:
   intro:
     actions:
       - bg: tea_room
       - char:
-          id: 코고로
-          position: left
-          emotion: angry
-      - char:
           id: 코난
           position: center
           emotion: serious
+      - say:
+          text: "이번 사건은 루트 분기 + 공통 결론 구조로 진행된다."
+      - goto: route_entry
+
+  route_entry:
+    actions:
       - choice:
-          key: first_probe
-          prompt: "누구를 먼저 추궁할까?"
+          key: route_entry
+          prompt: "초기 지목을 고르자."
           options:
             - text: "신이치"
               set:
                 suspect: "신이치"
               add:
                 trust: 1
-              goto: accuse_shinichi
+                truth_point: 1
+              goto: ./routes/shinichi/1.yaml
             - text: "레이코"
               set:
                 suspect: "레이코"
-              goto: accuse_reiko
-
-  accuse_shinichi:
-    actions:
-      - input:
-          prompt: "범인의 이름을 입력해봐."
-          correct: "신이치"
-          errors:
-            - "다시 생각해봐."
-          saveAs: culprit_answer
-          routes:
-            - equals: "신이치"
               add:
-                trust: 1
-      - ending: true_end
-
-  accuse_reiko:
-    actions:
-      - ending: bad_end
+                trust: -1
+                mistake_count: 1
+              goto: ./routes/reiko/1.yaml
 ```
 
 노트:
@@ -162,7 +163,49 @@ scenes:
 - 챕터 경로 `goto`는 항상 게임 루트 기준이며, 대상 챕터부터 같은 폴더 번호 순서로 이어서 진행됩니다.
 - `../b/3.yaml` 같은 상대 상위 경로는 지원하지 않습니다. 루트 절대경로(`./b/3.yaml` 또는 `/b/3.yaml`)만 사용합니다.
 
-실제 예시는 [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)에서 확인할 수 있습니다.
+실제 예시:
+- [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)
+- [public/game-list/conan/routes/shinichi/1.yaml](<home>/visual-novel/public/game-list/conan/routes/shinichi/1.yaml)
+- [public/game-list/conan/routes/reiko/1.yaml](<home>/visual-novel/public/game-list/conan/routes/reiko/1.yaml)
+- [public/game-list/conan/conclusion/1.yaml](<home>/visual-novel/public/game-list/conan/conclusion/1.yaml)
+
+## Branch Patterns (실무 패턴)
+
+필수 루트 강제 진입 패턴:
+
+```yaml
+- branch:
+    cases:
+      - when:
+          var: has_key
+          op: eq
+          value: true
+        goto: open_locked_room
+    default: key_route_intro
+```
+
+실수 누적/회복 패턴:
+
+```yaml
+- choice:
+    prompt: "증거 해석을 고르자."
+    options:
+      - text: "정황만 본다"
+        add:
+          mistake_count: 1
+          trust: -1
+      - text: "핵심 물증을 검증한다"
+        add:
+          truth_point: 1
+          trust: 1
+```
+
+공통 결론 합류 패턴:
+
+```yaml
+# routes/shinichi/2.yaml, routes/reiko/2.yaml 등 각 루트 마지막
+- goto: ./conclusion/1.yaml
+```
 
 ## Supported Actions
 
@@ -209,9 +252,18 @@ public/
     index.json
     conan/
       1.yaml
-      2.yaml
-      3.yaml
-      4.yaml
+      routes/
+        shinichi/
+          1.yaml
+          2.yaml
+        reiko/
+          1.yaml
+          2.yaml
+      conclusion/
+        1.yaml
+      2.yaml  # legacy/reference
+      3.yaml  # legacy/reference
+      4.yaml  # legacy/reference
       assets/
 src/
   engine.ts
