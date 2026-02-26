@@ -3,8 +3,14 @@ import { useVNStore } from './store';
 import { parseGameYaml } from './parser';
 import type {
   CharacterSlot,
+  ConditionNode,
   GameData,
+  InputRoute,
   Position,
+  RouteHistoryEntry,
+  RouteVarValue,
+  StateAddMap,
+  StateSetMap,
   StickerEnterEffect,
   StickerEnterOptions,
   StickerLeaveEffect,
@@ -36,7 +42,7 @@ declare global {
 }
 
 const AUTOSAVE_KEY = 'vn-engine-autosave';
-const MAX_CHAPTERS = 100;
+const MAX_CHAPTERS = 101;
 const MIN_CHAPTER_LOADING_MS = 600;
 const CHAPTER_LOADED_HOLD_MS = 200;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
@@ -62,11 +68,16 @@ const DEFAULT_STICKER_LEAVE_DELAY = 0;
 
 type SaveProgress = {
   chapterIndex: number;
+  chapterPath?: string;
   sceneId: string;
   actionIndex: number;
+  routeVars: Record<string, RouteVarValue>;
+  routeHistory: RouteHistoryEntry[];
+  resolvedEndingId?: string;
 };
 
 type PreparedChapter = {
+  pathKey: string;
   name: string;
   baseUrl: string;
   assetOverrides: Record<string, string>;
@@ -74,6 +85,8 @@ type PreparedChapter = {
   game?: GameData;
   gamePromise?: Promise<GameData>;
 };
+
+type RuntimeMode = 'url' | 'zip' | undefined;
 
 let waitTimer: number | undefined;
 let typeTimer: number | undefined;
@@ -89,6 +102,11 @@ let activeChapterIndex = 0;
 let objectUrls: string[] = [];
 let stickerRenderKeySeed = 0;
 const clearStickerTimers = new Map<string, number>();
+let runtimeMode: RuntimeMode;
+let urlGameRootBase = '';
+let zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
+let zipBlobAssetMap: Record<string, string> = {};
+let zipAssetUrlByKey = new Map<string, string>();
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -308,6 +326,11 @@ function resetSession() {
   clearObjectUrls();
   preparedChapters = [];
   activeChapterIndex = 0;
+  runtimeMode = undefined;
+  urlGameRootBase = '';
+  zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
+  zipBlobAssetMap = {};
+  zipAssetUrlByKey = new Map<string, string>();
   useVNStore.getState().setChapterMeta(0, 0);
   useVNStore.getState().setChapterLoading(false, 0);
   useVNStore.getState().setError(undefined);
@@ -737,10 +760,15 @@ function syncCharacterEmotions(
 }
 
 function saveProgress(sceneId: string, actionIndex: number) {
+  const state = useVNStore.getState();
   const payload: SaveProgress = {
     chapterIndex: activeChapterIndex,
+    chapterPath: getCurrentChapterPathKey(),
     sceneId,
     actionIndex,
+    routeVars: state.routeVars,
+    routeHistory: state.routeHistory,
+    resolvedEndingId: state.resolvedEndingId,
   };
   localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(payload));
 }
@@ -751,14 +779,51 @@ function loadProgress(): SaveProgress | undefined {
     return undefined;
   }
   try {
-    const parsed = JSON.parse(raw) as Partial<SaveProgress> & { sceneId?: string; actionIndex?: number };
+    const parsed = JSON.parse(raw) as Partial<SaveProgress> & {
+      sceneId?: string;
+      actionIndex?: number;
+      chapterPath?: unknown;
+      routeVars?: unknown;
+      routeHistory?: unknown;
+      resolvedEndingId?: unknown;
+    };
     if (typeof parsed.sceneId !== 'string' || typeof parsed.actionIndex !== 'number') {
       return undefined;
     }
+    const routeVars: Record<string, RouteVarValue> = {};
+    if (parsed.routeVars && typeof parsed.routeVars === 'object' && !Array.isArray(parsed.routeVars)) {
+      for (const [key, value] of Object.entries(parsed.routeVars as Record<string, unknown>)) {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          routeVars[key] = value;
+        }
+      }
+    }
+    const routeHistory = Array.isArray(parsed.routeHistory)
+      ? (parsed.routeHistory.filter((entry): entry is RouteHistoryEntry => {
+          if (!entry || typeof entry !== 'object') {
+            return false;
+          }
+          const value = entry as Partial<RouteHistoryEntry>;
+          return (
+            (value.kind === 'choice' || value.kind === 'input') &&
+            typeof value.key === 'string' &&
+            typeof value.value === 'string' &&
+            typeof value.sceneId === 'string' &&
+            typeof value.actionIndex === 'number'
+          );
+        }) as RouteHistoryEntry[])
+      : [];
     return {
       chapterIndex: typeof parsed.chapterIndex === 'number' ? parsed.chapterIndex : 0,
+      chapterPath:
+        typeof parsed.chapterPath === 'string'
+          ? normalizeGotoChapterTarget(parsed.chapterPath) ?? normalizeChapterPathKey(parsed.chapterPath)
+          : undefined,
       sceneId: parsed.sceneId,
       actionIndex: parsed.actionIndex,
+      routeVars,
+      routeHistory,
+      resolvedEndingId: typeof parsed.resolvedEndingId === 'string' ? parsed.resolvedEndingId : undefined,
     };
   } catch {
     return undefined;
@@ -892,6 +957,124 @@ function getInputErrorMessage(errors: string[], attemptCount: number): string {
   return errors[idx];
 }
 
+function applySetToVars(target: Record<string, RouteVarValue>, setMap?: StateSetMap): void {
+  if (!setMap) {
+    return;
+  }
+  for (const [key, value] of Object.entries(setMap)) {
+    target[key] = value;
+  }
+}
+
+function applyAddToVars(target: Record<string, RouteVarValue>, addMap?: StateAddMap): void {
+  if (!addMap) {
+    return;
+  }
+  for (const [key, delta] of Object.entries(addMap)) {
+    const current = target[key];
+    if (typeof current !== 'number') {
+      continue;
+    }
+    target[key] = current + delta;
+  }
+}
+
+function applyStateSet(setMap?: StateSetMap): void {
+  if (!setMap) {
+    return;
+  }
+  useVNStore.getState().patchRouteVars(setMap);
+}
+
+function applyStateAdd(addMap?: StateAddMap): void {
+  if (!addMap) {
+    return;
+  }
+  useVNStore.getState().addRouteVars(addMap);
+}
+
+function compareConditionLeaf(
+  left: RouteVarValue,
+  op: 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'in',
+  right: RouteVarValue | RouteVarValue[],
+): boolean {
+  switch (op) {
+    case 'eq':
+      return !Array.isArray(right) && left === right;
+    case 'ne':
+      return !Array.isArray(right) && left !== right;
+    case 'gt':
+      return typeof left === 'number' && !Array.isArray(right) && typeof right === 'number' && left > right;
+    case 'gte':
+      return typeof left === 'number' && !Array.isArray(right) && typeof right === 'number' && left >= right;
+    case 'lt':
+      return typeof left === 'number' && !Array.isArray(right) && typeof right === 'number' && left < right;
+    case 'lte':
+      return typeof left === 'number' && !Array.isArray(right) && typeof right === 'number' && left <= right;
+    case 'in':
+      return Array.isArray(right) && right.includes(left);
+    default:
+      return false;
+  }
+}
+
+function evaluateCondition(condition: ConditionNode, vars: Record<string, RouteVarValue>): boolean {
+  if ('all' in condition) {
+    return condition.all.every((entry) => evaluateCondition(entry, vars));
+  }
+  if ('any' in condition) {
+    return condition.any.some((entry) => evaluateCondition(entry, vars));
+  }
+  if ('not' in condition) {
+    return !evaluateCondition(condition.not, vars);
+  }
+  const left = vars[condition.var];
+  return compareConditionLeaf(left, condition.op, condition.value);
+}
+
+function resolveAutoEndingId(game: GameData, vars: Record<string, RouteVarValue>): string | undefined {
+  const endingRules = game.endingRules ?? [];
+  for (const rule of endingRules) {
+    if (!evaluateCondition(rule.when, vars)) {
+      continue;
+    }
+    if (game.endings?.[rule.ending]) {
+      return rule.ending;
+    }
+  }
+
+  if (game.defaultEnding && game.endings?.[game.defaultEnding]) {
+    return game.defaultEnding;
+  }
+
+  return undefined;
+}
+
+function finishStory(endingId?: string): void {
+  useVNStore.getState().setResolvedEndingId(endingId);
+  useVNStore.getState().setFinished(true);
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  const state = useVNStore.getState();
+  if (state.game?.settings.autoSave) {
+    saveProgress(state.currentSceneId, state.actionIndex);
+  }
+}
+
+function mergeRouteVarsWithDefaults(
+  defaults: Record<string, RouteVarValue> | undefined,
+  current: Record<string, RouteVarValue>,
+  override?: Record<string, RouteVarValue>,
+): Record<string, RouteVarValue> {
+  return {
+    ...(defaults ?? {}),
+    ...current,
+    ...(override ?? {}),
+  };
+}
+
 function collectAssetPaths(game: GameData): string[] {
   const paths = new Set<string>();
   Object.values(game.assets.backgrounds).forEach((path) => paths.add(path));
@@ -939,6 +1122,52 @@ function collapsePathDots(path: string): string {
   return stack.join('/');
 }
 
+function normalizeChapterPathKey(rawPath: string): string {
+  const normalized = collapsePathDots(rawPath.replace(/^(\.\/|\/)+/, ''));
+  return `./${normalized}`;
+}
+
+function chapterPathKeyToFilePath(pathKey: string): string {
+  return pathKey.replace(/^(\.\/|\/)+/, '');
+}
+
+function parseNumberedChapterPath(pathKey: string): { dir: string; number: number } | undefined {
+  const filePath = chapterPathKeyToFilePath(pathKey);
+  const match = filePath.match(/^(.*\/)?(\d+)\.ya?ml$/i);
+  if (!match) {
+    return undefined;
+  }
+  return {
+    dir: match[1] ?? '',
+    number: Number(match[2]),
+  };
+}
+
+function getCurrentChapterPathKey(): string | undefined {
+  return preparedChapters[activeChapterIndex]?.pathKey;
+}
+
+function normalizeGotoChapterTarget(rawTarget: string): string | undefined {
+  const trimmed = rawTarget.trim();
+  if (!trimmed.startsWith('./') && !trimmed.startsWith('/')) {
+    return undefined;
+  }
+  const normalizedSlashes = trimmed.replace(/\\/g, '/');
+  const withoutPrefix = normalizedSlashes.replace(/^(\.\/|\/)+/, '');
+  if (!withoutPrefix) {
+    return undefined;
+  }
+  if (withoutPrefix.split('/').some((segment) => segment === '..')) {
+    return undefined;
+  }
+  const withExt = /\.(ya?ml)$/i.test(withoutPrefix) ? withoutPrefix : `${withoutPrefix}.yaml`;
+  return normalizeChapterPathKey(withExt);
+}
+
+function buildNumberedChapterCandidatePaths(dir: string, number: number): string[] {
+  return [`${dir}${number}.yaml`, `${dir}${number}.yml`];
+}
+
 function setAssetOverride(overrides: Record<string, string>, path: string, url: string) {
   overrides[path] = url;
   const normalized = normalizeAssetKey(path);
@@ -979,6 +1208,7 @@ function startVideoCutscene(src: string, holdToSkipMs?: number) {
   useVNStore.getState().setBusy(true);
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   useVNStore.getState().setVideoCutscene({
     active: true,
@@ -1124,6 +1354,12 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   const setMusic = useVNStore.getState().setMusic;
   const setVisibleCharacters = useVNStore.getState().setVisibleCharacters;
   const promoteSpeaker = useVNStore.getState().promoteSpeaker;
+  const restoreVars = mergeRouteVarsWithDefaults(game.state?.defaults, {});
+  const historyByCursor = new Map<string, RouteHistoryEntry>();
+  for (const entry of resume.routeHistory) {
+    const key = `${entry.sceneId}:${entry.actionIndex}`;
+    historyByCursor.set(key, entry);
+  }
 
   while (guard < 20000) {
     guard += 1;
@@ -1181,7 +1417,91 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       actionIndex += 1;
       continue;
     }
+    if ('set' in action) {
+      applySetToVars(restoreVars, action.set);
+      actionIndex += 1;
+      continue;
+    }
+    if ('add' in action) {
+      applyAddToVars(restoreVars, action.add);
+      actionIndex += 1;
+      continue;
+    }
+    if ('choice' in action) {
+      const history = historyByCursor.get(`${sceneId}:${actionIndex}`);
+      if (history?.kind === 'choice') {
+        const selected = action.choice.options.find((option) => option.text === history.value);
+        if (selected) {
+          applySetToVars(restoreVars, selected.set);
+          applyAddToVars(restoreVars, selected.add);
+          if (selected.goto) {
+            const chapterTarget = normalizeGotoChapterTarget(selected.goto);
+            if (chapterTarget) {
+              break;
+            }
+            sceneId = selected.goto;
+            actionIndex = 0;
+            continue;
+          }
+        }
+      }
+      actionIndex += 1;
+      continue;
+    }
+    if ('branch' in action) {
+      const matched = action.branch.cases.find((branchCase) => evaluateCondition(branchCase.when, restoreVars));
+      if (matched) {
+        const chapterTarget = normalizeGotoChapterTarget(matched.goto);
+        if (chapterTarget) {
+          break;
+        }
+        sceneId = matched.goto;
+        actionIndex = 0;
+        continue;
+      }
+      if (action.branch.default) {
+        const chapterTarget = normalizeGotoChapterTarget(action.branch.default);
+        if (chapterTarget) {
+          break;
+        }
+        sceneId = action.branch.default;
+        actionIndex = 0;
+        continue;
+      }
+      actionIndex += 1;
+      continue;
+    }
+    if ('input' in action) {
+      const history = historyByCursor.get(`${sceneId}:${actionIndex}`);
+      if (history?.kind === 'input') {
+        if (action.input.saveAs) {
+          restoreVars[action.input.saveAs] = history.value;
+        }
+        const matchedRoute = action.input.routes.find(
+          (route) => normalizeInputAnswer(route.equals) === normalizeInputAnswer(history.value),
+        );
+        if (matchedRoute) {
+          applySetToVars(restoreVars, matchedRoute.set);
+          applyAddToVars(restoreVars, matchedRoute.add);
+          if (matchedRoute.goto) {
+            const chapterTarget = normalizeGotoChapterTarget(matchedRoute.goto);
+            if (chapterTarget) {
+              break;
+            }
+            sceneId = matchedRoute.goto;
+            actionIndex = 0;
+            continue;
+          }
+        }
+      }
+      actionIndex += 1;
+      continue;
+    }
     if ('goto' in action) {
+      const chapterTarget = normalizeGotoChapterTarget(action.goto);
+      if (chapterTarget) {
+        break;
+      }
       sceneId = action.goto;
       actionIndex = 0;
       continue;
@@ -1225,10 +1545,27 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
     useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
 
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
+    const defaults = game.state?.defaults;
+    const currentRouteVars = useVNStore.getState().routeVars;
 
-    if (resume && resume.chapterIndex === chapterIndex && game.scenes[resume.sceneId]) {
+    const currentPathKey = chapter.pathKey;
+    const canResumeHere =
+      !!resume &&
+      !!game.scenes[resume.sceneId] &&
+      ((!!resume.chapterPath && normalizeChapterPathKey(resume.chapterPath) === currentPathKey) ||
+        (!resume.chapterPath && resume.chapterIndex === chapterIndex));
+
+    if (resume && canResumeHere) {
+      useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars, resume.routeVars));
+      useVNStore.getState().clearRouteHistory();
+      for (const entry of resume.routeHistory) {
+        useVNStore.getState().pushRouteHistory(entry);
+      }
+      useVNStore.getState().setResolvedEndingId(resume.resolvedEndingId);
       restorePresentationToCursor(chapter, game, resume);
       useVNStore.getState().setCursor(resume.sceneId, resume.actionIndex);
+    } else {
+      useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars));
     }
 
     const nextChapter = preparedChapters[chapterIndex + 1];
@@ -1243,17 +1580,118 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
   }
 }
 
-async function startPreparedChapters(chapters: PreparedChapter[]) {
+async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0, resume?: SaveProgress) {
   preparedChapters = chapters;
-  useVNStore.getState().setChapterMeta(1, chapters.length);
+  useVNStore.getState().setChapterMeta(Math.min(startIndex + 1, chapters.length), chapters.length);
 
-  const save = loadProgress();
-  if (save && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
-    await startChapter(save.chapterIndex, save);
+  if (resume && startIndex >= 0 && startIndex < chapters.length) {
+    await startChapter(startIndex, resume);
     return;
   }
 
-  await startChapter(0);
+  await startChapter(Math.max(0, Math.min(startIndex, chapters.length - 1)));
+}
+
+async function resolveUrlChapterPath(dir: string, number: number, preferredExt: 'yaml' | 'yml' = 'yaml'): Promise<string | undefined> {
+  if (!urlGameRootBase) {
+    return undefined;
+  }
+  const orderedExts: Array<'yaml' | 'yml'> = preferredExt === 'yml' ? ['yml', 'yaml'] : ['yaml', 'yml'];
+  for (const ext of orderedExts) {
+    const filePath = `${dir}${number}.${ext}`;
+    const chapterUrl = new URL(filePath, urlGameRootBase).toString();
+    if (await hasYamlFileAtUrl(chapterUrl)) {
+      return filePath;
+    }
+  }
+  return undefined;
+}
+
+async function resolveSequenceFromChapterPath(
+  pathKey: string,
+): Promise<{ chapters: PreparedChapter[]; startIndex: number } | undefined> {
+  const normalizedKey = normalizeChapterPathKey(pathKey);
+  const numbered = parseNumberedChapterPath(normalizedKey);
+
+  if (runtimeMode === 'url') {
+    if (!urlGameRootBase) {
+      return undefined;
+    }
+
+    if (!numbered) {
+      const filePath = chapterPathKeyToFilePath(normalizedKey);
+      const chapterUrl = new URL(filePath, urlGameRootBase).toString();
+      if (!(await hasYamlFileAtUrl(chapterUrl))) {
+        return undefined;
+      }
+      return {
+        chapters: [createUrlChapter(chapterUrl, filePath, normalizeChapterPathKey(filePath))],
+        startIndex: 0,
+      };
+    }
+
+    const preferredExt = /\.yml$/i.test(normalizedKey) ? 'yml' : 'yaml';
+    const chapters: PreparedChapter[] = [];
+    for (let current = numbered.number; current < MAX_CHAPTERS; current += 1) {
+      const filePath = await resolveUrlChapterPath(numbered.dir, current, preferredExt);
+      if (!filePath) {
+        break;
+      }
+      const chapterUrl = new URL(filePath, urlGameRootBase).toString();
+      chapters.push(createUrlChapter(chapterUrl, filePath, normalizeChapterPathKey(filePath)));
+    }
+    if (chapters.length === 0) {
+      return undefined;
+    }
+    return { chapters, startIndex: 0 };
+  }
+
+  if (runtimeMode === 'zip') {
+    if (!numbered) {
+      const chapterEntry = zipYamlByPathKey.get(normalizedKey);
+      if (!chapterEntry) {
+        return undefined;
+      }
+      return {
+        chapters: [createZipChapter(normalizedKey, chapterEntry)],
+        startIndex: 0,
+      };
+    }
+
+    const chapters: PreparedChapter[] = [];
+    for (let current = numbered.number; current < MAX_CHAPTERS; current += 1) {
+      const candidates = buildNumberedChapterCandidatePaths(numbered.dir, current);
+      const foundPath = candidates.map((candidate) => normalizeChapterPathKey(candidate)).find((key) => zipYamlByPathKey.has(key));
+      if (!foundPath) {
+        break;
+      }
+      const chapterEntry = zipYamlByPathKey.get(foundPath);
+      if (!chapterEntry) {
+        break;
+      }
+      chapters.push(createZipChapter(foundPath, chapterEntry));
+    }
+    if (chapters.length === 0) {
+      return undefined;
+    }
+    return { chapters, startIndex: 0 };
+  }
+
+  return undefined;
+}
+
+async function jumpToChapterPath(pathKey: string): Promise<void> {
+  const resolved = await resolveSequenceFromChapterPath(pathKey);
+  if (!resolved) {
+    useVNStore.getState().setError({ message: `Chapter not found for goto target: ${pathKey}` });
+    return;
+  }
+
+  useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  await startPreparedChapters(resolved.chapters, resolved.startIndex);
 }
 
 function runToNextPause(loopGuard = 0) {
@@ -1291,9 +1729,7 @@ function runToNextPause(loopGuard = 0) {
       return;
     }
 
-    useVNStore.getState().setFinished(true);
-    useVNStore.getState().setWaitingInput(false);
-    useVNStore.getState().clearInputGate();
+    finishStory(resolveAutoEndingId(game, state.routeVars));
     return;
   }
 
@@ -1370,8 +1806,78 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('goto' in action) {
+    const chapterTarget = normalizeGotoChapterTarget(action.goto);
+    if (chapterTarget) {
+      void jumpToChapterPath(chapterTarget);
+      return;
+    }
     setCursor(action.goto, 0);
     runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('set' in action) {
+    applyStateSet(action.set);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('add' in action) {
+    applyStateAdd(action.add);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('choice' in action) {
+    useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().clearInputGate();
+    useVNStore.getState().setChoiceGate({
+      active: true,
+      key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
+      prompt: action.choice.prompt,
+      options: action.choice.options,
+    });
+    useVNStore.getState().setDialog({
+      speaker: undefined,
+      speakerId: undefined,
+      fullText: action.choice.prompt,
+      visibleText: action.choice.prompt,
+      typing: false,
+    });
+    return;
+  }
+
+  if ('branch' in action) {
+    const matchedCase = action.branch.cases.find((branchCase) => evaluateCondition(branchCase.when, state.routeVars));
+    if (matchedCase) {
+      const chapterTarget = normalizeGotoChapterTarget(matchedCase.goto);
+      if (chapterTarget) {
+        void jumpToChapterPath(chapterTarget);
+      } else {
+        setCursor(matchedCase.goto, 0);
+        runToNextPause(loopGuard + 1);
+      }
+      return;
+    }
+    if (action.branch.default) {
+      const chapterTarget = normalizeGotoChapterTarget(action.branch.default);
+      if (chapterTarget) {
+        void jumpToChapterPath(chapterTarget);
+      } else {
+        setCursor(action.branch.default, 0);
+        runToNextPause(loopGuard + 1);
+      }
+      return;
+    }
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('ending' in action) {
+    finishStory(action.ending);
     return;
   }
 
@@ -1392,17 +1898,21 @@ function runToNextPause(loopGuard = 0) {
 
   if ('input' in action) {
     useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().clearChoiceGate();
     useVNStore.getState().setInputGate({
       active: true,
+      prompt: action.input.prompt,
       correct: action.input.correct,
       errors: action.input.errors,
       attemptCount: 0,
+      saveAs: action.input.saveAs,
+      routes: action.input.routes,
     });
     useVNStore.getState().setDialog({
       speaker: undefined,
       speakerId: undefined,
-      fullText: '정답을 입력하세요.',
-      visibleText: '정답을 입력하세요.',
+      fullText: action.input.prompt,
+      visibleText: action.input.prompt,
       typing: false,
     });
     return;
@@ -1413,6 +1923,7 @@ function runToNextPause(loopGuard = 0) {
     const textSpeed = parsed.speed ?? game.settings.textSpeed;
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
     useVNStore.getState().clearInputGate();
+    useVNStore.getState().clearChoiceGate();
     useVNStore.getState().promoteSpeaker(presentation.speakerId);
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
@@ -1473,10 +1984,11 @@ function parseGameFromYaml(raw: string, name: string, baseUrl: string, assetOver
   return materializeGameAssets(result.data, baseUrl, assetOverrides);
 }
 
-function createUrlChapter(url: string, name: string): PreparedChapter {
+function createUrlChapter(url: string, name: string, pathKey: string): PreparedChapter {
   const baseUrl = new URL('.', url).toString();
   const assetOverrides: Record<string, string> = {};
   return {
+    pathKey,
     name,
     baseUrl,
     assetOverrides,
@@ -1490,8 +2002,15 @@ function createUrlChapter(url: string, name: string): PreparedChapter {
   };
 }
 
-function createInMemoryChapter(raw: string, name: string, baseUrl: string, assetOverrides: Record<string, string>): PreparedChapter {
+function createInMemoryChapter(
+  raw: string,
+  name: string,
+  baseUrl: string,
+  assetOverrides: Record<string, string>,
+  pathKey: string,
+): PreparedChapter {
   return {
+    pathKey,
     name,
     baseUrl,
     assetOverrides,
@@ -1625,12 +2144,32 @@ function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByK
   return cloned;
 }
 
+function createZipChapter(pathKey: string, yamlEntry: JSZip.JSZipObject): PreparedChapter {
+  const yamlDir = yamlEntry.name.includes('/') ? yamlEntry.name.slice(0, yamlEntry.name.lastIndexOf('/') + 1) : '';
+  return {
+    pathKey,
+    name: yamlEntry.name,
+    baseUrl: window.location.href,
+    assetOverrides: zipBlobAssetMap,
+    loadGame: async () => {
+      const raw = await yamlEntry.async('text');
+      const parsed = parseGameYaml(raw);
+      if (!parsed.data) {
+        throw new Error(`${yamlEntry.name}: ${parsed.error?.message ?? 'YAML parse error'}`);
+      }
+      return materializeGameAssetsFromZip(parsed.data, yamlDir, zipAssetUrlByKey);
+    },
+  };
+}
+
 export async function loadGameFromUrl(url: string) {
   resetSession();
 
   try {
     const absolute = new URL(url, window.location.origin);
     const baseUrl = url.endsWith('.yaml') || url.endsWith('.yml') ? new URL('.', absolute).toString() : absolute.toString();
+    runtimeMode = 'url';
+    urlGameRootBase = baseUrl;
     const chapters: PreparedChapter[] = [];
 
     const zeroUrl = new URL('0.yaml', baseUrl).toString();
@@ -1638,26 +2177,26 @@ export async function loadGameFromUrl(url: string) {
     const hasZero = await hasYamlFileAtUrl(zeroUrl);
 
     if (hasZero) {
-      chapters.push(createUrlChapter(zeroUrl, '0.yaml'));
+      chapters.push(createUrlChapter(zeroUrl, '0.yaml', normalizeChapterPathKey('0.yaml')));
       for (let chapterNo = 1; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
         const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
         const exists = await hasYamlFileAtUrl(chapterUrl);
         if (!exists) {
           break;
         }
-        chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`));
+        chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
       }
     } else {
       const hasOne = await hasYamlFileAtUrl(oneUrl);
       if (hasOne) {
-        chapters.push(createUrlChapter(oneUrl, '1.yaml'));
+        chapters.push(createUrlChapter(oneUrl, '1.yaml', normalizeChapterPathKey('1.yaml')));
         for (let chapterNo = 2; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
           const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
           const exists = await hasYamlFileAtUrl(chapterUrl);
           if (!exists) {
             break;
           }
-          chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`));
+          chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
         }
       }
     }
@@ -1675,6 +2214,7 @@ export async function loadGameFromUrl(url: string) {
             absolute.pathname.split('/').pop() ?? 'chapter.yaml',
             new URL('.', absolute).toString(),
             {},
+            normalizeChapterPathKey(absolute.pathname.split('/').pop() ?? 'chapter.yaml'),
           ),
         );
       } else {
@@ -1685,7 +2225,23 @@ export async function loadGameFromUrl(url: string) {
       }
     }
 
-    await startPreparedChapters(chapters);
+    const save = loadProgress();
+    if (save?.chapterPath) {
+      const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
+      if (resumeSequence) {
+        await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
+        return;
+      }
+    }
+
+    if (save && !save.chapterPath && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
+      await startPreparedChapters(chapters, save.chapterIndex, save);
+      return;
+    }
+
+    useVNStore.getState().clearRouteHistory();
+    useVNStore.getState().setResolvedEndingId(undefined);
+    await startPreparedChapters(chapters, 0);
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);
     useVNStore.getState().setError({ message: error instanceof Error ? error.message : 'Failed to load game' });
@@ -1696,6 +2252,7 @@ export async function loadGameFromZip(file: File) {
   resetSession();
 
   try {
+    runtimeMode = 'zip';
     const zip = await JSZip.loadAsync(file);
     const files = Object.values(zip.files).filter((entry) => !entry.dir);
     const yamlFiles = files.filter((entry) => /\.ya?ml$/i.test(entry.name));
@@ -1705,9 +2262,14 @@ export async function loadGameFromZip(file: File) {
       return;
     }
 
+    zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
+    for (const entry of yamlFiles) {
+      zipYamlByPathKey.set(normalizeChapterPathKey(entry.name), entry);
+    }
+
     const numbered = yamlFiles
       .map((entry) => {
-        const match = entry.name.match(/(?:^|\/)(\d+)\.ya?ml$/i);
+        const match = entry.name.match(/^(\d+)\.ya?ml$/i);
         return match ? { entry, order: Number(match[1]) } : null;
       })
       .filter((v): v is { entry: (typeof yamlFiles)[number]; order: number } => v !== null)
@@ -1733,26 +2295,31 @@ export async function loadGameFromZip(file: File) {
       zipUrlByKey.set(normalizeAssetKey(entry.name).toLowerCase(), blobUrl);
     }
     await rewriteLive2DJsonEntriesInZip(files, blobMap, zipUrlByKey);
+    zipBlobAssetMap = blobMap;
+    zipAssetUrlByKey = zipUrlByKey;
 
     const chapters: PreparedChapter[] = [];
     for (const yamlEntry of selectedYaml) {
-      const yamlDir = yamlEntry.name.includes('/') ? yamlEntry.name.slice(0, yamlEntry.name.lastIndexOf('/') + 1) : '';
-      chapters.push({
-        name: yamlEntry.name,
-        baseUrl: window.location.href,
-        assetOverrides: blobMap,
-        loadGame: async () => {
-          const raw = await yamlEntry.async('text');
-          const parsed = parseGameYaml(raw);
-          if (!parsed.data) {
-            throw new Error(`${yamlEntry.name}: ${parsed.error?.message ?? 'YAML parse error'}`);
-          }
-          return materializeGameAssetsFromZip(parsed.data, yamlDir, zipUrlByKey);
-        },
-      });
+      const pathKey = normalizeChapterPathKey(yamlEntry.name);
+      chapters.push(createZipChapter(pathKey, yamlEntry));
     }
 
-    await startPreparedChapters(chapters);
+    const save = loadProgress();
+    if (save?.chapterPath) {
+      const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
+      if (resumeSequence) {
+        await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
+        return;
+      }
+    }
+    if (save && !save.chapterPath && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
+      await startPreparedChapters(chapters, save.chapterIndex, save);
+      return;
+    }
+
+    useVNStore.getState().clearRouteHistory();
+    useVNStore.getState().setResolvedEndingId(undefined);
+    await startPreparedChapters(chapters, 0);
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);
     useVNStore.getState().setError({
@@ -1775,7 +2342,7 @@ export function handleAdvance() {
   }
 
   if (state.waitingInput) {
-    if (state.inputGate.active) {
+    if (state.inputGate.active || state.choiceGate.active) {
       return;
     }
     if (state.dialog.typing && state.game.settings.clickToInstant) {
@@ -1804,10 +2371,84 @@ export async function restartFromBeginning() {
   localStorage.removeItem(AUTOSAVE_KEY);
   clearTimers();
   useVNStore.getState().clearVideoCutscene();
+  useVNStore.getState().setFinished(false);
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  useVNStore.getState().setRouteVars({});
+  useVNStore.getState().clearRouteHistory();
+  useVNStore.getState().setResolvedEndingId(undefined);
   await startChapter(0);
+}
+
+function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
+  const state = useVNStore.getState();
+  const historyKey = state.inputGate.saveAs ?? `${state.currentSceneId}:${state.actionIndex}`;
+  if (state.inputGate.saveAs) {
+    useVNStore.getState().patchRouteVars({ [state.inputGate.saveAs]: answer });
+  }
+  useVNStore.getState().pushRouteHistory({
+    kind: 'input',
+    key: historyKey,
+    value: answer,
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
+  });
+  applyStateSet(matchedRoute?.set);
+  applyStateAdd(matchedRoute?.add);
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  if (matchedRoute?.goto) {
+    const chapterTarget = normalizeGotoChapterTarget(matchedRoute.goto);
+    if (chapterTarget) {
+      void jumpToChapterPath(chapterTarget);
+      return;
+    }
+    setCursor(matchedRoute.goto, 0);
+  } else {
+    incrementCursor();
+  }
+  runToNextPause();
+}
+
+export function submitChoiceOption(optionIndex: number) {
+  const state = useVNStore.getState();
+  if (!state.game || !state.waitingInput || !state.choiceGate.active) {
+    return;
+  }
+
+  const selected = state.choiceGate.options[optionIndex];
+  if (!selected) {
+    return;
+  }
+
+  useVNStore.getState().pushRouteHistory({
+    kind: 'choice',
+    key: state.choiceGate.key,
+    value: selected.text,
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
+  });
+  applyStateSet(selected.set);
+  applyStateAdd(selected.add);
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  if (selected.goto) {
+    const chapterTarget = normalizeGotoChapterTarget(selected.goto);
+    if (chapterTarget) {
+      void jumpToChapterPath(chapterTarget);
+      return;
+    }
+    setCursor(selected.goto, 0);
+  } else {
+    incrementCursor();
+  }
+  runToNextPause();
 }
 
 export function submitInputAnswer(rawAnswer: string) {
@@ -1817,13 +2458,15 @@ export function submitInputAnswer(rawAnswer: string) {
   }
 
   const typed = normalizeInputAnswer(rawAnswer);
+  const matchedRoute = state.inputGate.routes.find((route) => normalizeInputAnswer(route.equals) === typed);
+  if (matchedRoute) {
+    completeInputSuccess(typed, matchedRoute);
+    return;
+  }
+
   const expected = normalizeInputAnswer(state.inputGate.correct);
   if (typed === expected) {
-    useVNStore.getState().setWaitingInput(false);
-    useVNStore.getState().clearInputGate();
-    useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
-    incrementCursor();
-    runToNextPause();
+    completeInputSuccess(typed);
     return;
   }
 

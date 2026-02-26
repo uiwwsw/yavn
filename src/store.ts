@@ -1,5 +1,16 @@
 import { create } from 'zustand';
-import type { CharacterSlot, GameData, InputGateState, Position, StickerSlot, VNError, VideoCutsceneState } from './types';
+import type {
+  CharacterSlot,
+  ChoiceGateState,
+  GameData,
+  InputGateState,
+  Position,
+  RouteHistoryEntry,
+  RouteVarValue,
+  StickerSlot,
+  VNError,
+  VideoCutsceneState,
+} from './types';
 
 type DialogState = {
   speaker?: string;
@@ -31,6 +42,10 @@ type VNState = {
   effect?: string;
   videoCutscene: VideoCutsceneState;
   inputGate: InputGateState;
+  choiceGate: ChoiceGateState;
+  routeVars: Record<string, RouteVarValue>;
+  routeHistory: RouteHistoryEntry[];
+  resolvedEndingId?: string;
   busy: boolean;
   waitingInput: boolean;
   isFinished: boolean;
@@ -53,6 +68,14 @@ type VNState = {
   clearVideoCutscene: () => void;
   setInputGate: (inputGate: Partial<InputGateState>) => void;
   clearInputGate: () => void;
+  setChoiceGate: (choiceGate: Partial<ChoiceGateState>) => void;
+  clearChoiceGate: () => void;
+  setRouteVars: (routeVars: Record<string, RouteVarValue>) => void;
+  patchRouteVars: (routeVars: Record<string, RouteVarValue>) => void;
+  addRouteVars: (routeVars: Record<string, number>) => void;
+  pushRouteHistory: (entry: RouteHistoryEntry) => void;
+  clearRouteHistory: () => void;
+  setResolvedEndingId: (endingId?: string) => void;
   setBusy: (busy: boolean) => void;
   setWaitingInput: (waiting: boolean) => void;
   setFinished: (finished: boolean) => void;
@@ -78,9 +101,19 @@ const initialVideoCutscene: VideoCutsceneState = {
 
 const initialInputGate: InputGateState = {
   active: false,
+  prompt: '',
   correct: '',
   errors: [],
   attemptCount: 0,
+  saveAs: undefined,
+  routes: [],
+};
+
+const initialChoiceGate: ChoiceGateState = {
+  active: false,
+  key: '',
+  prompt: '',
+  options: [],
 };
 
 export const useVNStore = create<VNState>((set) => ({
@@ -100,6 +133,10 @@ export const useVNStore = create<VNState>((set) => ({
   dialog: initialDialog,
   videoCutscene: initialVideoCutscene,
   inputGate: initialInputGate,
+  choiceGate: initialChoiceGate,
+  routeVars: {},
+  routeHistory: [],
+  resolvedEndingId: undefined,
   busy: false,
   waitingInput: false,
   isFinished: false,
@@ -108,7 +145,7 @@ export const useVNStore = create<VNState>((set) => ({
   setChapterLoading: (chapterLoading, chapterLoadingProgress = 0, chapterLoadingMessage) =>
     set({ chapterLoading, chapterLoadingProgress, chapterLoadingMessage }),
   setGame: (game, baseUrl, assetOverrides = {}) =>
-    set({
+    set((state) => ({
       game,
       baseUrl,
       assetOverrides,
@@ -124,11 +161,15 @@ export const useVNStore = create<VNState>((set) => ({
       dialog: initialDialog,
       videoCutscene: initialVideoCutscene,
       inputGate: initialInputGate,
+      choiceGate: initialChoiceGate,
+      routeVars: state.routeVars,
+      routeHistory: state.routeHistory,
+      resolvedEndingId: state.resolvedEndingId,
       effect: undefined,
       busy: false,
       waitingInput: false,
       isFinished: false,
-    }),
+    })),
   setCursor: (sceneId, actionIndex) => set({ currentSceneId: sceneId, actionIndex }),
   setBackground: (url) => set({ background: url }),
   setSticker: (sticker) =>
@@ -176,6 +217,31 @@ export const useVNStore = create<VNState>((set) => ({
   clearVideoCutscene: () => set({ videoCutscene: initialVideoCutscene }),
   setInputGate: (inputGate) => set((state) => ({ inputGate: { ...state.inputGate, ...inputGate } })),
   clearInputGate: () => set({ inputGate: initialInputGate }),
+  setChoiceGate: (choiceGate) => set((state) => ({ choiceGate: { ...state.choiceGate, ...choiceGate } })),
+  clearChoiceGate: () => set({ choiceGate: initialChoiceGate }),
+  setRouteVars: (routeVars) => set({ routeVars }),
+  patchRouteVars: (routeVars) =>
+    set((state) => ({
+      routeVars: {
+        ...state.routeVars,
+        ...routeVars,
+      },
+    })),
+  addRouteVars: (routeVars) =>
+    set((state) => {
+      const next = { ...state.routeVars };
+      for (const [key, delta] of Object.entries(routeVars)) {
+        const current = next[key];
+        if (typeof current !== 'number') {
+          continue;
+        }
+        next[key] = current + delta;
+      }
+      return { routeVars: next };
+    }),
+  pushRouteHistory: (entry) => set((state) => ({ routeHistory: [...state.routeHistory, entry] })),
+  clearRouteHistory: () => set({ routeHistory: [] }),
+  setResolvedEndingId: (resolvedEndingId) => set({ resolvedEndingId }),
   setBusy: (busy) => set({ busy }),
   setWaitingInput: (waitingInput) => set({ waitingInput }),
   setFinished: (isFinished) => set({ isFinished }),
@@ -190,6 +256,10 @@ export const useVNStore = create<VNState>((set) => ({
       dialog: initialDialog,
       videoCutscene: initialVideoCutscene,
       inputGate: initialInputGate,
+      choiceGate: initialChoiceGate,
+      routeVars: {},
+      routeHistory: [],
+      resolvedEndingId: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,

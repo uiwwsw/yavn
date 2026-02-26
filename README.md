@@ -22,11 +22,15 @@ Type your story. Play your novel.
 - YAML 스키마 검증(Zod) + 라인/컬럼 기반 에러 오버레이
 - 대사 타이핑 효과 + `<speed=...>` 인라인 속도 제어
 - `say.with` 기반 화자 중심 캐릭터 노출(기본 1인 + 추가 동시 노출)
-- `video`, `input`, `sticker`, `effect` 등 연출/상호작용 액션 내장
+- `video`, `input`, `choice`, `branch`, `ending` 등 연출/분기 액션 내장
+- `set/add` 기반 분기 상태(`bool/number/string`) 누적 + 자동저장 복원
+- `endingRules` + `defaultEnding` 기반 자동 엔딩 판정(명시 `ending` 우선)
 - 로컬/YouTube 컷신 기본 음소거 자동재생 + 길게 눌러 스킵 UX
 - ZIP 업로드 시 로컬 컷신 경로(`video.src`)도 blob URL로 자동 치환
 - `input` 게이트 노출 시 입력창 자동 포커스
+- `choice` 게이트 노출 시 클릭 강제 진행 차단
 - 엔딩 시 영화식 롤링 크레딧 + 하단 고정 `게임 다시 시작하기` 버튼
+- `게임 다시 시작하기` 클릭 시 엔딩 오버레이 즉시 종료 후 1챕터 재로딩
 - ZIP 업로드 즉시 실행 + 샘플 ZIP 다운로드 + GitHub PR 공유 버튼
 - 모바일까지 고려한 연출(캐릭터 우선순위/컷신 스킵 UX)
 
@@ -57,6 +61,11 @@ meta:
         value: "linkedin.com/in/uiwwsw"
         href: "https://linkedin.com/in/uiwwsw"
 
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
 assets:
   backgrounds:
     tea_room: assets/bg/tea_room.png
@@ -69,6 +78,30 @@ assets:
       base: assets/char/kogoro/base.png
       emotions:
         angry: assets/char/kogoro/angry.png
+  music: {}
+  sfx: {}
+
+state:
+  defaults:
+    trust: 0
+    suspect: ""
+    culprit_answer: ""
+
+endings:
+  true_end:
+    title: "TRUE END"
+    message: "진실에 도달했다."
+  bad_end:
+    title: "BAD END"
+    message: "결정적 단서를 놓쳤다."
+
+endingRules:
+  - when:
+      var: trust
+      op: gte
+      value: 2
+    ending: true_end
+defaultEnding: bad_end
 
 script:
   - scene: intro
@@ -85,17 +118,49 @@ scenes:
           id: 코난
           position: center
           emotion: serious
-      - say:
-          char: 코난.serious
-          with:
-            - 코고로.angry
-          text: "<speed=24>범인은 이 안에 있어.</speed>"
+      - choice:
+          key: first_probe
+          prompt: "누구를 먼저 추궁할까?"
+          options:
+            - text: "신이치"
+              set:
+                suspect: "신이치"
+              add:
+                trust: 1
+              goto: accuse_shinichi
+            - text: "레이코"
+              set:
+                suspect: "레이코"
+              goto: accuse_reiko
+
+  accuse_shinichi:
+    actions:
+      - input:
+          prompt: "범인의 이름을 입력해봐."
+          correct: "신이치"
+          errors:
+            - "다시 생각해봐."
+          saveAs: culprit_answer
+          routes:
+            - equals: "신이치"
+              add:
+                trust: 1
+      - ending: true_end
+
+  accuse_reiko:
+    actions:
+      - ending: bad_end
 ```
 
 노트:
 - `say.char`가 있으면 해당 화자 1명이 기본 노출되고, `say.with`로 지정한 캐릭터만 추가 노출됩니다.
 - `say.char`가 없는 내레이션은 캐릭터를 숨기고 텍스트에 집중합니다.
 - `chat.with`는 지원하지 않으며, 같은 목적은 `say.with`를 사용합니다.
+- `input.routes`/`branch.cases`는 첫 매칭 우선으로 분기됩니다.
+- 자동 저장에는 `chapter/scene/action`뿐 아니라 `routeVars/routeHistory/resolvedEndingId`도 포함됩니다.
+- `goto`는 씬 ID뿐 아니라 챕터 파일 경로도 받을 수 있습니다(`./a/5.yaml`, `./31`).
+- 챕터 경로 `goto`는 항상 게임 루트 기준이며, 대상 챕터부터 같은 폴더 번호 순서로 이어서 진행됩니다.
+- `../b/3.yaml` 같은 상대 상위 경로는 지원하지 않습니다. 루트 절대경로(`./b/3.yaml` 또는 `/b/3.yaml`)만 사용합니다.
 
 실제 예시는 [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)에서 확인할 수 있습니다.
 
@@ -113,6 +178,11 @@ scenes:
 - `goto`
 - `video`
 - `input`
+- `set`
+- `add`
+- `choice`
+- `branch`
+- `ending`
 
 상세 사용법은 [docs/DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)에 정리되어 있습니다.
 

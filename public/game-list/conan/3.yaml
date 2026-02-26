@@ -1,7 +1,7 @@
 meta:
   title: "명탐정 코난 외전: 다실의 비밀"
   author: "uiwwsw"
-  version: "2.0"
+  version: "3.0"
 
 settings:
   textSpeed: 38
@@ -53,6 +53,7 @@ assets:
       base: assets/char/haruo/base.png
       emotions:
         scared: assets/char/haruo/scared.png
+
   music:
     rain: assets/music/rain.wav
     tension: assets/music/tension.wav
@@ -63,11 +64,26 @@ assets:
     scream: assets/sfx/scream.wav
     door: assets/sfx/door.wav
 
+state:
+  defaults:
+    trust: 0
+    found_key: false
+    suspect: ""
+    culprit_answer: ""
+    alliance: ""
+    timeline_answer: ""
+    clue_word: ""
+
 script:
   - scene: evidence_table
   - scene: clue_gate
+  - scene: wrong_clue
   - scene: reenactment
   - scene: fracture
+  - scene: fracture_confident
+  - scene: fracture_reiko
+  - scene: fracture_uncertain
+  - scene: chapter3_outro
 
 scenes:
   evidence_table:
@@ -103,18 +119,7 @@ scenes:
           emotion: worried
       - say:
           text: "임시 증거 테이블 위에는 젖은 찻잔, 문틀 사진, 외투가 올려져 있었다."
-      - say:
-          char: 코난
-          text: "핵심은 세 가지야. 찻상의 가루, 소매 상태, 문틀 긁힘."
-      - say:
-          char: 코고로
-          text: "문틀 긁힘은 확실히 줄 같은 게 스친 흔적이다."
-      - say:
-          char: 란
-          text: "근데 찻상 가루는 왜 그렇게 중요해?"
-      - say:
-          char: 코난.serious
-          text: "범인이 현장 안에 오래 있었단 증거이기 때문이야."
+      - goto: clue_gate
 
   clue_gate:
     actions:
@@ -129,21 +134,33 @@ scenes:
           id: 코난
           position: center
           emotion: serious
-      - say:
-          char: 코난.serious
-          text: "외투 소매에서 검출된 건 혈흔이 아니라 무엇이었지?"
       - input:
+          prompt: "외투 소매에서 검출된 건 무엇이었지?"
           correct: "찻잎"
           errors:
             - "힌트: 다실 안에서만 묻을 수 있는 미세 가루야."
             - "차와 관련된 단어를 입력해봐."
-            - "정답은 찻잎. 이걸로 알리바이가 무너져."
+            - "정답은 찻잎."
+          saveAs: clue_word
+          routes:
+            - equals: "찻잎"
+              set:
+                found_key: true
+              add:
+                trust: 1
+              goto: reenactment
+            - equals: "혈흔"
+              add:
+                trust: -1
+              goto: wrong_clue
+
+  wrong_clue:
+    actions:
       - effect: pulse
       - say:
-          text: "소매의 미세한 찻잎 가루는 '다실 안 체류'를 지목했다."
-      - say:
           char: 코난
-          text: "이제 트릭을 재현하면 범인의 이동이 설명돼."
+          text: "혈흔처럼 보였지만 성분이 달라. 다시 정리하자."
+      - goto: clue_gate
 
   reenactment:
     actions:
@@ -175,18 +192,71 @@ scenes:
       - say:
           char: 코고로
           text: "그래서 안에서 잠긴 것처럼 보였군!"
-      - sound: thunder
-      - say:
-          char: 신이치
-          text: "전부 추측일 뿐이야. 줄은 어디 있지?"
-      - say:
-          char: 코난.serious
-          text: "창고 배수구에서 잘린 끝부분이 발견됐어."
+      - goto: fracture
 
   fracture:
     actions:
       - bg: mountain_rain
       - music: tension
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: found_key
+                    op: eq
+                    value: true
+                  - var: trust
+                    op: gte
+                    value: 2
+              goto: fracture_confident
+            - when:
+                var: suspect
+                op: eq
+                value: "레이코"
+              goto: fracture_reiko
+          default: fracture_uncertain
+
+  fracture_confident:
+    actions:
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - say:
+          char: 코난.serious
+          text: "이제 남은 건 동기뿐이야. 트릭은 이미 밝혀졌어."
+      - set:
+          suspect: "신이치"
+      - add:
+          trust: 1
+      - goto: chapter3_outro
+
+  fracture_reiko:
+    actions:
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 레이코.nervous
+          text: "저는 협박받아서... 현장 정리만 도왔어요."
+      - say:
+          char: 코난
+          text: "그 말이 사실이면 주범은 따로 있어."
+      - add:
+          trust: 0
+      - goto: chapter3_outro
+
+  fracture_uncertain:
+    actions:
       - char:
           id: 하루오
           position: left
@@ -195,19 +265,16 @@ scenes:
           id: 코난
           position: center
           emotion: think
-      - char:
-          id: 신이치
-          position: right
-          emotion: cold
       - say:
-          char: 하루오.scared
-          text: "저... 사실 창고에서 실타래 같은 걸 본 것 같아요. 무서워서 말 못 했어요."
+          text: "증언은 남아 있는데 연결고리가 아직 약했다."
+      - add:
+          trust: -1
+      - goto: chapter3_outro
+
+  chapter3_outro:
+    actions:
+      - sound: thunder
       - effect: tilt
       - say:
-          char: 신이치
-          text: "입 다물어, 괜한 소리 하지 마."
-      - say:
-          char: 코난
-          text: "협박은 끝났어. 이제 남은 건 동기와 공범 여부야."
-      - say:
           text: "비가 잦아드는 대신, 사람들의 표정은 더 어두워졌다."
+      - goto: ./4.yaml

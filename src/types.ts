@@ -82,11 +82,84 @@ export type VideoAction = {
   };
 };
 
+export type RouteVarValue = boolean | number | string;
+export type ConditionOperator = 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'in';
+
+export type ConditionLeaf = {
+  var: string;
+  op: ConditionOperator;
+  value: RouteVarValue | RouteVarValue[];
+};
+
+export type ConditionNode =
+  | ConditionLeaf
+  | {
+      all: ConditionNode[];
+    }
+  | {
+      any: ConditionNode[];
+    }
+  | {
+      not: ConditionNode;
+    };
+
+export type StateSetMap = Record<string, RouteVarValue>;
+export type StateAddMap = Record<string, number>;
+
+export type InputRoute = {
+  equals: string;
+  set?: StateSetMap;
+  add?: StateAddMap;
+  goto?: string;
+};
+
 export type InputAction = {
   input: {
+    prompt: string;
     correct: string;
     errors: string[];
+    saveAs?: string;
+    routes: InputRoute[];
   };
+};
+
+export type SetAction = {
+  set: StateSetMap;
+};
+
+export type AddAction = {
+  add: StateAddMap;
+};
+
+export type ChoiceOption = {
+  text: string;
+  set?: StateSetMap;
+  add?: StateAddMap;
+  goto?: string;
+};
+
+export type ChoiceAction = {
+  choice: {
+    key?: string;
+    prompt: string;
+    options: ChoiceOption[];
+  };
+};
+
+export type BranchCase = {
+  when: ConditionNode;
+  goto: string;
+};
+
+export type BranchAction = {
+  branch: {
+    cases: BranchCase[];
+    default?: string;
+  };
+};
+
+export type EndingAction = {
+  ending: string;
 };
 
 export type Action =
@@ -99,6 +172,11 @@ export type Action =
   | SayAction
   | VideoAction
   | InputAction
+  | SetAction
+  | AddAction
+  | ChoiceAction
+  | BranchAction
+  | EndingAction
   | { wait: number }
   | { effect: string }
   | { goto: string };
@@ -118,6 +196,16 @@ export type AuthorContact = string | AuthorContactObject;
 export type AuthorMetaObject = {
   name?: string;
   contacts?: AuthorContact[];
+};
+
+export type EndingDefinition = {
+  title: string;
+  message?: string;
+};
+
+export type EndingRule = {
+  when: ConditionNode;
+  ending: string;
 };
 
 export type GameData = {
@@ -143,6 +231,12 @@ export type GameData = {
     music: Record<string, string>;
     sfx: Record<string, string>;
   };
+  state?: {
+    defaults: Record<string, RouteVarValue>;
+  };
+  endings?: Record<string, EndingDefinition>;
+  endingRules?: EndingRule[];
+  defaultEnding?: string;
   script: Array<{ scene: string }>;
   scenes: Record<string, Scene>;
 };
@@ -189,9 +283,27 @@ export type VideoCutsceneState = {
 
 export type InputGateState = {
   active: boolean;
+  prompt: string;
   correct: string;
   errors: string[];
   attemptCount: number;
+  saveAs?: string;
+  routes: InputRoute[];
+};
+
+export type ChoiceGateState = {
+  active: boolean;
+  key: string;
+  prompt: string;
+  options: ChoiceOption[];
+};
+
+export type RouteHistoryEntry = {
+  kind: 'choice' | 'input';
+  key: string;
+  value: string;
+  sceneId: string;
+  actionIndex: number;
 };
 
 export type VNError = {

@@ -57,6 +57,25 @@ assets:
   music: {}
   sfx: {}
 
+state: # 선택
+  defaults: # 분기 상태 기본값
+    trust: 0
+    suspect: ""
+    culprit_answer: ""
+
+endings: # 선택 (ending 액션/자동 판정 시 필요)
+  true_end:
+    title: "TRUE END"
+    message: "진실에 도달했다."
+
+endingRules: # 선택 (자동 엔딩 판정)
+  - when:
+      var: trust
+      op: gte
+      value: 2
+    ending: true_end
+defaultEnding: true_end # 선택
+
 script:
   - scene: intro # 시작 씬
 
@@ -87,6 +106,17 @@ scenes:
 - `characters`: 캐릭터 ID → 기본 이미지 + 감정별 이미지
 - `music`: BGM ID → 파일 경로/URL
 - `sfx`: 효과음 ID → 파일 경로/URL
+
+### `state.defaults`
+- 분기 상태 변수 기본값 선언
+- 값 타입: `boolean | number | string`
+- `set/add/choice/input.saveAs/branch/endingRules`에서 참조하는 변수는 반드시 여기에 선언해야 함
+
+### `endings` / `endingRules` / `defaultEnding`
+- `endings`: 엔딩 ID별 제목/메시지 정의
+- `endingRules`: 스토리 종료 시 자동 엔딩 판정 규칙(첫 매칭 우선)
+- `defaultEnding`: 어떤 규칙도 매칭되지 않을 때 사용할 기본 엔딩
+- 명시형 `ending` 액션이 있으면 자동 판정보다 항상 우선
 
 ## 4) 에셋 선언 방법
 
@@ -132,6 +162,11 @@ assets:
 - `goto`
 - `video`
 - `input`
+- `set`
+- `add`
+- `choice`
+- `branch`
+- `ending`
 
 아래는 각각의 사용법입니다.
 
@@ -317,6 +352,19 @@ BGM 재생(루프).
 - goto: reveal
 ```
 
+챕터 파일 경로 점프도 지원:
+
+```yaml
+- goto: ./a/5.yaml # a/5.yaml부터 시작
+- goto: ./31       # 루트 31.yaml으로 점프(확장자 생략 가능)
+```
+
+노트:
+- 챕터 경로 `goto`는 **항상 게임 루트 기준**으로 해석됩니다.
+- 챕터 경로로 이동하면 해당 번호부터 같은 폴더의 `N+1` 챕터를 순차 로드합니다.
+- `../b/3.yaml` 같은 상대 상위 경로는 지원하지 않으며, `./b/3.yaml` 또는 `/b/3.yaml`처럼 루트 절대경로만 허용합니다.
+- 예: `./50.yaml` 진행 중 `goto: ./a/5.yaml` → `a/5, a/6, ...` 진행, 이후 `a/12`에서 `goto: ./31`이면 루트 `31.yaml`부터 다시 진행.
+
 ### `video`
 인트로/컷신 영상 재생.
 
@@ -338,31 +386,107 @@ BGM 재생(루프).
 - `holdToSkipMs` 기본값 `800`, 허용 범위 `300~5000`
 
 ### `input`
-정답 입력 게이트. 정답을 입력해야 다음 액션으로 진행.
+입력 게이트. `prompt`를 보여주고 답변을 받아 분기/상태 저장에 사용.
 
 ```yaml
 - input:
-    correct: "예" # 정답
+    prompt: "범인의 이름을 입력해줘."
+    correct: "신이치"
     errors:
-      - "잘 생각해봐." # 1회 오답
-      - "아니, 반댓말은?" # 2회 오답
-      - "정답: 예" # 3회 이상 오답(마지막 메시지 고정)
-```
-
-축약형:
-
-```yaml
-- input: "예"
+      - "다시 생각해봐."
+      - "문틈 줄 트릭을 떠올려봐."
+      - "정답은 신이치야."
+    saveAs: culprit_answer
+    routes:
+      - equals: "신이치"
+        add:
+          trust: 1
+        goto: reveal
+      - equals: "레이코"
+        add:
+          trust: -1
+        goto: wrong_route
 ```
 
 동작:
-- 입력값과 `correct`를 앞뒤 공백 `trim` 후 비교
-- 입력 게이트가 화면에 나타나면 입력창이 자동 포커스됨
-- 오답 시 시도 횟수 +1
-- `errors[n-1]` 출력
-- 오답 횟수가 `errors` 길이를 넘으면 마지막 메시지 고정 출력
-- `errors`를 생략하면 기본 메시지 `정답이 아닙니다.` 사용
-- `errors`는 문자열 1개 또는 문자열 배열 모두 허용
+- 입력값은 앞뒤 공백 `trim` 후 비교
+- `routes`가 있으면 `equals` 첫 매칭 우선으로 즉시 분기
+- 라우트가 매칭되지 않으면 `correct`와 비교해 정답 통과 여부를 판단
+- `saveAs`를 지정하면 통과한 입력값을 해당 string 변수에 저장
+- 오답 시 시도 횟수 +1, `errors[n-1]` 출력
+- 오답 횟수가 `errors` 길이를 넘으면 마지막 메시지를 고정 출력
+- 입력 게이트가 화면에 나타나면 입력창 자동 포커스
+
+### `set`
+상태 변수 값을 직접 설정.
+
+```yaml
+- set:
+    suspect: "신이치"
+    found_key: true
+```
+
+### `add`
+number 상태 변수에 증감 적용.
+
+```yaml
+- add:
+    trust: 1
+```
+
+### `choice`
+선택지 게이트. 선택 결과로 상태 변경/씬 분기 가능.
+
+```yaml
+- choice:
+    key: chapter1_probe
+    prompt: "누구를 먼저 추궁할까?"
+    options:
+      - text: "신이치"
+        set:
+          suspect: "신이치"
+        add:
+          trust: 1
+        goto: accuse_shinichi
+      - text: "레이코"
+        set:
+          suspect: "레이코"
+        goto: accuse_reiko
+```
+
+노트:
+- `key`를 주면 이력 식별이 쉬워집니다(미지정 시 `sceneId:actionIndex` 자동 키 사용)
+- `choice` 활성 중에는 클릭/Enter/Space 강제 진행 불가
+
+### `branch`
+조건식 평가로 자동 분기. 첫 매칭 우선.
+
+```yaml
+- branch:
+    cases:
+      - when:
+          all:
+            - var: found_key
+              op: eq
+              value: true
+            - var: trust
+              op: gte
+              value: 2
+        goto: good_route
+    default: bad_route
+```
+
+조건식:
+- Leaf: `{ var, op, value }`
+- Composite: `{ all: [] }`, `{ any: [] }`, `{ not: {} }`
+- `op`: `eq | ne | gt | gte | lt | lte | in`
+
+### `ending`
+명시형 엔딩 종료. 자동 엔딩 판정보다 항상 우선.
+
+```yaml
+- ending: true_end
+```
 
 ## 6) 씬 구성 규칙
 
@@ -453,10 +577,11 @@ assets:
 
 ## 10) 저장/재시작/입력 제약
 
-- `autoSave: true`면 현재 챕터/씬/액션 포인터가 `localStorage`에 저장
+- `autoSave: true`면 `chapter/scene/action` 포인터와 `routeVars/routeHistory/resolvedEndingId`가 함께 `localStorage`에 저장
 - 새로고침 시 저장 지점부터 이어서 실행
 - 엔딩 후 영화식 롤링 크레딧이 노출되며, 하단 고정 `게임 다시 시작하기` 버튼으로 저장을 지우고 1챕터부터 다시 시작
-- `input` 액션 활성 중에는 클릭/Enter/Space로 강제 진행 불가
+- `게임 다시 시작하기` 클릭 시 엔딩 오버레이는 즉시 닫히고, 챕터 로딩이 완료되면 1챕터부터 재개됩니다.
+- `input` 또는 `choice` 활성 중에는 클릭/Enter/Space로 강제 진행 불가
 
 ## 11) 검증/오류 처리
 
@@ -464,6 +589,9 @@ assets:
 - `script`가 없는 씬 참조하면 에러
 - `goto` 대상 씬 누락 시 에러
 - `bg`, `sticker.image`, `music`, `sound`, `char.id`가 `assets`에 없으면 에러
+- `ending/defaultEnding/endingRules`가 존재하지 않는 엔딩 ID를 참조하면 에러
+- `set/add/branch/input.saveAs`가 `state.defaults` 미선언 변수를 참조하면 에러
+- `add` 대상이 number 변수가 아니면 에러
 
 YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
@@ -473,7 +601,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - 긴 대사는 `<speed=...>`로 속도 변주
 - 긴장감은 `wait + effect + sound` 조합으로 구성
 - 챕터 끝에 `video`나 강한 `effect`를 배치해 다음 챕터 연결점 생성
-- 추리/퀴즈 구간은 `input`을 사용하고 마지막 오류 메시지를 힌트로 설계
+- 추리/퀴즈 구간은 `input.routes`를 함께 써서 답변별 분기를 설계
+- 분기 누적은 `set/add`로 모으고, 결말 직전 `branch` 또는 `endingRules`로 엔딩을 판정
 
 ## 12-1) AI 초안 → 플레이 가능한 빌드 워크플로
 
@@ -510,7 +639,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 - `sticker.enter`, `clearSticker.leave`로 등장/퇴장 이펙트까지 제어
 - `music`에 YouTube URL 사용 가능(배경음 운영 간편)
 - `video`는 로컬 파일/YouTube 모두 사용 가능, 길게 눌러 스킵 지원
-- `input`은 축약형(`input: "정답"`)과 상세형(`correct/errors`) 모두 지원
+- `input`은 `prompt/correct/errors/saveAs/routes` 구조를 사용해 답변 저장과 분기를 함께 설계
+- 선택지는 `choice`, 조건 자동 분기는 `branch`, 결말 마감은 `ending/endingRules`로 조합
 - 캐릭터 감정은 `say.char`와 `char.emotion`을 함께 써야 화면/이름 일관성이 좋아짐
 - 모바일 겹침 완화를 위해 주요 발화 캐릭터 중심으로 장면을 구성
 - `0.yaml/1.yaml...` 챕터 분리 시 초기 로딩 체감이 좋아짐(지연 로드 + 프리로드)
@@ -527,6 +657,8 @@ YAML 파싱 에러는 line/column을 포함해 오버레이에 노출됩니다.
 
 ## 14) 문서 변경 로그
 
+- 2026-02-26: 분기 DSL V2를 추가. `state.defaults`, `set/add`, `choice`, `branch`, `ending`, `endings`, `endingRules`, `defaultEnding`, `input.saveAs/routes`를 도입하고 자동저장에 분기 상태(`routeVars/routeHistory/resolvedEndingId`)를 포함하도록 갱신. `goto`의 챕터 경로 점프(`./a/5.yaml`, `./31`)와 경로 점프 후 번호 순차 진행 규칙을 추가.
+- 2026-02-26: `게임 다시 시작하기` 클릭 시 엔딩 오버레이가 즉시 닫히도록 재시작 흐름을 보정해, 로딩 중 엔딩 텍스트가 바뀌어 보이는 현상을 제거.
 - 2026-02-25: 엔딩 UI를 팝업 카드에서 영화식 롤링 크레딧으로 변경하고, 하단 고정 `게임 다시 시작하기` 버튼으로 재시작 흐름을 유지.
 - 2026-02-25: `meta.author`를 확장해 문자열과 객체(`name`, `contacts[]`)를 모두 지원하도록 스키마/가이드를 갱신.
 - 2026-02-25: `input` 게이트가 활성화되면 입력창이 자동으로 포커스되도록 동작을 추가.

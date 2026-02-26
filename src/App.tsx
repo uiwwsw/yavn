@@ -9,6 +9,7 @@ import {
   revealVideoSkipGuide,
   skipVideoCutscene,
   submitInputAnswer,
+  submitChoiceOption,
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
@@ -112,6 +113,8 @@ export default function App() {
     chapterLoadingMessage,
     videoCutscene,
     inputGate,
+    choiceGate,
+    resolvedEndingId,
   } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
@@ -203,6 +206,9 @@ export default function App() {
   const effectClass = effect ? `effect-${effect}` : '';
   const authorCredit = normalizeAuthorCredit(game?.meta.author);
   const hasAuthorCredit = Boolean(authorCredit.name) || authorCredit.contacts.length > 0;
+  const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
+  const endingTitle = resolvedEnding?.title ?? 'THE END';
+  const endingMessage = resolvedEnding?.message ?? '게임이 종료되었습니다.';
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
     [
@@ -451,7 +457,7 @@ export default function App() {
       observer.disconnect();
       window.removeEventListener('resize', updateStickerSafeInset);
     };
-  }, [bootMode, dialog.visibleText, inputGate.active, updateStickerSafeInset, videoCutscene.active]);
+  }, [bootMode, choiceGate.active, dialog.visibleText, inputGate.active, updateStickerSafeInset, videoCutscene.active]);
 
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
     if (!slot || !visibleCharacterSet.has(slot.id)) {
@@ -787,7 +793,28 @@ export default function App() {
             </button>
           </form>
         )}
-        <div className="status">{busy ? '...' : isFinished ? 'End' : inputGate.active ? '입력 대기' : 'Next'}</div>
+        {choiceGate.active && (
+          <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
+            <div className="choice-gate-options">
+              {choiceGate.options.map((option, index) => (
+                <button
+                  key={`${choiceGate.key}-${option.text}-${index}`}
+                  type="button"
+                  className="choice-gate-option"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    submitChoiceOption(index);
+                  }}
+                >
+                  {option.text}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="status">
+          {busy ? '...' : isFinished ? 'End' : inputGate.active ? '입력 대기' : choiceGate.active ? '선택 대기' : 'Next'}
+        </div>
       </div>
 
       {error && (
@@ -822,8 +849,9 @@ export default function App() {
                 ref={endingCreditsContentRef}
                 style={{ transform: `translateY(${creditsOffset}px)` }}
               >
-                <h2>THE END</h2>
-                <p className="ending-credits-message">게임이 종료되었습니다.</p>
+                <h2>{endingTitle}</h2>
+                <p className="ending-credits-message">{endingMessage}</p>
+                {resolvedEndingId && <p className="ending-credits-line">ENDING ID: {resolvedEndingId}</p>}
 
                 <section className="ending-credits-section">
                   <h3>CREATED BY</h3>

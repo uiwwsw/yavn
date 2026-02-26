@@ -1,7 +1,7 @@
 meta:
   title: "명탐정 코난 외전: 다실의 비밀"
   author: "uiwwsw"
-  version: "2.0"
+  version: "3.0"
 
 settings:
   textSpeed: 38
@@ -53,6 +53,7 @@ assets:
       base: assets/char/haruo/base.png
       emotions:
         scared: assets/char/haruo/scared.png
+
   music:
     rain: assets/music/rain.wav
     tension: assets/music/tension.wav
@@ -63,11 +64,27 @@ assets:
     scream: assets/sfx/scream.wav
     door: assets/sfx/door.wav
 
+state:
+  defaults:
+    trust: 0
+    found_key: false
+    suspect: ""
+    culprit_answer: ""
+    alliance: ""
+    timeline_answer: ""
+    clue_word: ""
+
 script:
   - scene: corridor_briefing
   - scene: witness_round
+  - scene: inquiry_shinichi
+  - scene: inquiry_reiko
   - scene: clock_gate
+  - scene: false_timeline
   - scene: hidden_mismatch
+  - scene: pressure_shinichi
+  - scene: pressure_group
+  - scene: chapter2_outro
 
 scenes:
   corridor_briefing:
@@ -103,19 +120,11 @@ scenes:
           emotion: think
       - say:
           char: 코고로.proud
-          text: "좋아, 명탐정 모리 코고로가 사건 개요를 정리한다!"
-      - say:
-          char: 코고로
-          text: "피해자는 켄지. 사망 원인은 흉기에 의한 출혈."
-      - say:
-          char: 코고로
-          text: "문과 창문은 잠겨 있었고, 비명 직후 문이 파손됐다."
+          text: "좋아, 지금부터 알리바이를 분 단위로 정리한다!"
       - say:
           char: 코난
-          text: "중요한 건 시각이야. 누가 언제 어디 있었는지 전부 맞춰야 해."
-      - say:
-          char: 란
-          text: "모두 같은 시간대를 다르게 말하고 있어..."
+          text: "누가 먼저 무너지느냐가 핵심이야."
+      - goto: witness_round
 
   witness_round:
     actions:
@@ -139,34 +148,53 @@ scenes:
           position: center
           emotion: scared
       - say:
-          char: 코난
-          text: "신이치 씨, 9시 20분부터 35분까지 어디에 있었죠?"
+          text: "세 사람의 증언은 분 단위에서 계속 엇갈렸다."
+      - choice:
+          key: chapter2_probe
+          prompt: "누구를 먼저 집중 추궁할까?"
+          options:
+            - text: "신이치부터 추궁"
+              set:
+                suspect: "신이치"
+              add:
+                trust: 1
+              goto: inquiry_shinichi
+            - text: "레이코부터 추궁"
+              set:
+                suspect: "레이코"
+              add:
+                trust: 0
+              goto: inquiry_reiko
+
+  inquiry_shinichi:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 신이치.cold
+          text: "신이치 씨, 9시 20분부터 35분까지 어디 있었죠?"
       - say:
           char: 신이치.cold
-          with:
-            - 레이코.nervous
-            - 하루오.scared
           text: "복도 흡연실 앞. 비 때문에 창문만 보고 있었어."
       - say:
           char: 코난
-          text: "레이코 씨는요?"
-      - say:
-          char: 레이코.nervous
-          with:
-            - 코난.serious
-          text: "저는 다실 맞은편 계산실에서 결제 전표를 정리했어요."
-      - say:
-          char: 코난
-          text: "하루오 씨, 당신은 창고 문이 열렸다고 했죠. 정확히 언제죠?"
-      - say:
-          char: 하루오.scared
-          text: "9시 25분쯤이요... 아니, 20분이었나... 너무 떨려서..."
-      - effect: tilt
-      - say:
-          text: "세 사람의 증언은 분 단위에서 계속 엇갈렸다."
+          text: "좋아요. 그 진술, 곧 다시 확인하죠."
+      - goto: clock_gate
+
+  inquiry_reiko:
+    actions:
       - say:
           char: 코난.serious
-          text: "정확한 시간 하나만 고정하면, 거짓말도 고정돼."
+          with:
+            - 레이코.nervous
+          text: "레이코 씨, 계산실에 있었다는 근거를 말해줘요."
+      - say:
+          char: 레이코.nervous
+          text: "결제 전표 정리 중이었어요. 시계는 9시 반 직전이었고요."
+      - say:
+          char: 코난
+          text: "좋아요. 그 시간부터 맞춰봅시다."
+      - goto: clock_gate
 
   clock_gate:
     actions:
@@ -176,52 +204,93 @@ scenes:
           id: 코난
           position: center
           emotion: serious
-      - say:
-          char: 코난.serious
-          text: "복도 시계와 비명 시각을 맞춰보자. 피해자의 비명이 들린 시각은?"
       - input:
+          prompt: "피해자의 비명이 들린 시각을 24시간 형식으로 입력해줘."
           correct: "21:30"
           errors:
             - "24시간 표기로 입력해봐."
             - "힌트: 복도 시계 바늘이 6을 가리켰어."
-            - "정답은 21:30. 이 시각이 모든 진술의 기준이야."
-      - effect: flash
-      - say:
-          text: "시각이 고정되자, 진술의 빈틈이 도드라지기 시작했다."
+            - "정답은 21:30이야."
+          saveAs: timeline_answer
+          routes:
+            - equals: "21:30"
+              add:
+                trust: 1
+              goto: hidden_mismatch
+            - equals: "21:20"
+              add:
+                trust: -1
+              goto: false_timeline
+
+  false_timeline:
+    actions:
+      - effect: tilt
       - say:
           char: 코난
-          text: "이제 누가 '9시 30분 직전'에 다실 주변을 벗어났는지 보자."
+          text: "그 시각이면 문이 파손된 타이밍과 안 맞아. 다시 계산해보자."
+      - goto: clock_gate
 
   hidden_mismatch:
     actions:
       - bg: tea_room
       - music: tension
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: trust
+                    op: gte
+                    value: 2
+                  - var: alliance
+                    op: eq
+                    value: "레이코"
+              goto: pressure_shinichi
+          default: pressure_group
+
+  pressure_shinichi:
+    actions:
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - say:
+          char: 코난.serious
+          text: "신이치 씨 외투 소매, 빗속에 있었다면 더 젖어야 해요."
+      - say:
+          char: 신이치
+          text: "내가 어디 있었든, 살인과는 상관없어."
+      - add:
+          trust: 1
+      - goto: chapter2_outro
+
+  pressure_group:
+    actions:
       - char:
           id: 코난
           position: center
           emotion: think
       - char:
-          id: 신이치
-          position: right
-          emotion: cold
-      - char:
           id: 레이코
           position: left
           emotion: nervous
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
       - say:
-          char: 코난
-          text: "신이치 씨 외투 소매, 빗속에 있었다면 더 젖어야 해요."
-      - say:
-          char: 신이치
-          text: "내가 어디 있었든, 살인과는 상관없어."
-      - say:
-          char: 레이코
-          text: "그분... 방금 전까지 손을 계속 씻고 있었어요."
-      - effect: zoom
-      - say:
-          char: 코난.serious
-          text: "씻어낸 건 피가 아니라, 찻잎 가루일 가능성이 높아."
+          text: "누군가 시각을 어긋나게 기억하도록 유도한 흔적이 남아 있었다."
+      - set:
+          suspect: "신이치"
+      - goto: chapter2_outro
+
+  chapter2_outro:
+    actions:
       - sound: thunder
       - effect: darken
       - say:
           text: "첫 번째 거짓 알리바이가 무너졌다."
+      - goto: ./3.yaml

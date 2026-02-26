@@ -613,6 +613,38 @@ textarea,
   filter: brightness(1.04);
 }
 
+.choice-gate {
+  margin-top: 10px;
+}
+
+.choice-gate-options {
+  display: grid;
+  gap: 8px;
+}
+
+.choice-gate-option {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 8px;
+  background: rgba(20, 28, 37, 0.78);
+  color: #f7f4ee;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.choice-gate-option:hover {
+  border-color: rgba(247, 208, 141, 0.8);
+  background: rgba(42, 30, 17, 0.84);
+}
+
+.choice-gate-option:focus-visible {
+  outline: 2px solid #f7d08d;
+  outline-offset: 1px;
+}
+
 .error-overlay {
   position: absolute;
   z-index: 10;

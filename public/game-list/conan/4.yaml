@@ -1,7 +1,7 @@
 meta:
   title: "명탐정 코난 외전: 다실의 비밀"
   author: "uiwwsw"
-  version: "2.0"
+  version: "3.0"
 
 settings:
   textSpeed: 38
@@ -53,6 +53,7 @@ assets:
       base: assets/char/haruo/base.png
       emotions:
         scared: assets/char/haruo/scared.png
+
   music:
     rain: assets/music/rain.wav
     tension: assets/music/tension.wav
@@ -63,11 +64,56 @@ assets:
     scream: assets/sfx/scream.wav
     door: assets/sfx/door.wav
 
+state:
+  defaults:
+    trust: 0
+    found_key: false
+    suspect: ""
+    culprit_answer: ""
+    alliance: ""
+    timeline_answer: ""
+    clue_word: ""
+
+endings:
+  true_end:
+    title: "TRUE END"
+    message: "모든 증언을 연결해 완전한 진실에 도달했다."
+  normal_end:
+    title: "NORMAL END"
+    message: "사건은 해결됐지만, 모든 의문이 사라지진 않았다."
+  bad_end:
+    title: "BAD END"
+    message: "결정적 한 수를 놓쳐 진실이 흐려졌다."
+
+endingRules:
+  - when:
+      all:
+        - var: trust
+          op: gte
+          value: 4
+        - var: found_key
+          op: eq
+          value: true
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+    ending: true_end
+  - when:
+      var: trust
+      op: gte
+      value: 2
+    ending: normal_end
+
+defaultEnding: bad_end
+
 script:
   - scene: final_gate
+  - scene: false_accuse
   - scene: culprit_reveal
-  - scene: handoff
-  - scene: epilogue
+  - scene: handoff_true
+  - scene: handoff_normal
+  - scene: handoff_chaos
+  - scene: epilogue_auto
 
 scenes:
   final_gate:
@@ -80,18 +126,43 @@ scenes:
           id: 코난
           position: center
           emotion: serious
-      - say:
-          char: 코난.serious
-          text: "문을 밀실로 보이게 만든 핵심 도구는 무엇이었지?"
       - input:
-          correct: "낚싯줄"
+          prompt: "문을 밀실로 보이게 만든 핵심 인물을 입력해줘."
+          correct: "신이치"
           errors:
-            - "힌트: 얇고 질긴 줄, 문틈으로 뺄 수 있었어."
-            - "낚시할 때 쓰는 그 줄이야."
-            - "정답은 낚싯줄. 트릭의 핵심 도구다."
-      - effect: flash
+            - "현장 동선과 외투 단서를 함께 떠올려봐."
+            - "문틈 줄 트릭을 실행할 위치를 생각해봐."
+            - "정답은 신이치야."
+          saveAs: culprit_answer
+          routes:
+            - equals: "신이치"
+              set:
+                suspect: "신이치"
+              add:
+                trust: 1
+              goto: culprit_reveal
+            - equals: "레이코"
+              set:
+                suspect: "레이코"
+              add:
+                trust: -1
+              goto: false_accuse
+
+  false_accuse:
+    actions:
+      - bg: ryokan_hall
+      - music: tension
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 코난
+          position: center
+          emotion: think
       - say:
-          text: "사건의 퍼즐 마지막 조각이 맞춰졌다."
+          text: "코난의 지목은 빗나갔고, 진술은 다시 안개 속으로 흩어졌다."
+      - ending: bad_end
 
   culprit_reveal:
     actions:
@@ -124,70 +195,52 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
-          with:
-            - 신이치.cold
-          text: "신이치 씨. 당신은 켄지가 계약 증거를 공개하기 전에 입을 막으려 했어."
-      - say:
-          char: 코고로.angry
-          with:
-            - 코난.serious
-          text: "문틀 긁힘, 창고 배수구 줄 조각, 소매 찻잎. 전부 네 동선과 맞는다."
-      - effect: shake
+          text: "신이치 씨. 당신은 계약 증거가 공개되기 전에 입을 막으려 했어."
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: trust
+                    op: gte
+                    value: 4
+                  - var: suspect
+                    op: eq
+                    value: "신이치"
+              goto: handoff_true
+            - when:
+                var: trust
+                op: gte
+                value: 2
+              goto: handoff_normal
+          default: handoff_chaos
+
+  handoff_true:
+    actions:
+      - effect: flash
       - say:
           char: 신이치.cold
-          text: "...그래. 내가 찔렀다. 하지만 난 혼자가 아니었어."
-      - char:
-          id: 레이코
-          position: left
-          emotion: nervous
+          text: "...그래. 내가 찔렀다. 도망칠 생각은 없다."
       - say:
-          char: 레이코.nervous
-          text: "저는... 피를 본 뒤 무서워서 현장 정리만 도왔어요..."
+          char: 코고로.angry
+          text: "현행범으로 체포한다!"
+      - ending: true_end
+
+  handoff_normal:
+    actions:
       - effect: darken
       - say:
           char: 코난
-          text: "공범인지 사후 은폐인지, 그건 경찰 조사에서 밝혀질 거야."
+          text: "자백은 확보했지만, 공범 여부는 추가 조사가 필요해."
+      - goto: epilogue_auto
 
-  handoff:
+  handoff_chaos:
     actions:
-      - bg: police_tape
-      - clearSticker:
-          id: tape
-          leave:
-            effect: wipeRight
-            duration: 300
-            easing: ease-out
-      - music: tension
-      - char:
-          id: 란
-          position: left
-          emotion: worried
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - char:
-          id: 코고로
-          position: right
-          emotion: proud
-      - sound: door
-      - wait: 500
+      - effect: shake
       - say:
-          text: "잠시 후, 경찰이 료칸에 도착해 신이치와 레이코를 분리 연행했다."
-      - say:
-          char: 코고로.proud
-          with:
-            - 란.worried
-          text: "흠! 역시 사건은 논리와 관찰이다!"
-      - say:
-          char: 란
-          text: "아저씨, 절반은 코난 덕분인 거 알죠...?"
-      - effect: pulse
-      - say:
-          char: 코난
-          text: "아하하... 나는 그냥 시계를 잘 본 것뿐이야."
+          text: "핵심 진술이 갈라지며 현장은 다시 혼란에 빠졌다."
+      - ending: bad_end
 
-  epilogue:
+  epilogue_auto:
     actions:
       - bg: mountain_rain
       - music: rain
@@ -199,10 +252,7 @@ scenes:
           text: "새벽이 되자 비는 가늘어졌다."
       - say:
           text: "계약서보다 무거운 건, 서로를 믿지 못한 시간이었다."
-      - wait: 700
-      - effect: blur
-      - say:
-          text: "<speed=24>잠긴 것은 문이 아니라, 사람의 마음이었는지도 모른다.</speed>"
       - wait: 500
+      - effect: blur
       - say:
           text: "<speed=20>CASE CLOSED</speed>"

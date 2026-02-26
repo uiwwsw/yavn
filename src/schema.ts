@@ -1,22 +1,43 @@
 import { z } from 'zod';
 
-const inputActionSchema = z
-  .union([
-    z.string().min(1).transform((correct) => ({
-      correct,
-      errors: ['정답이 아닙니다.'],
-    })),
-    z
-      .object({
-        correct: z.string().min(1),
-        errors: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]).optional(),
-      })
-      .transform(({ correct, errors }) => ({
-        correct,
-        errors: Array.isArray(errors) ? errors : errors ? [errors] : ['정답이 아닙니다.'],
-      })),
-  ])
-  .transform((input) => input);
+const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]);
+const stateSetMapSchema = z.record(routeVarValueSchema);
+const stateAddMapSchema = z.record(z.number());
+
+const conditionSchema: z.ZodType = z.lazy(() =>
+  z.union([
+    z.object({
+      var: z.string().min(1),
+      op: z.enum(['eq', 'ne', 'gt', 'gte', 'lt', 'lte', 'in']),
+      value: z.union([routeVarValueSchema, z.array(routeVarValueSchema).min(1)]),
+    }),
+    z.object({ all: z.array(conditionSchema).min(1) }),
+    z.object({ any: z.array(conditionSchema).min(1) }),
+    z.object({ not: conditionSchema }),
+  ]),
+);
+
+const inputRouteSchema = z.object({
+  equals: z.string().min(1),
+  set: stateSetMapSchema.optional(),
+  add: stateAddMapSchema.optional(),
+  goto: z.string().min(1).optional(),
+});
+
+const inputActionSchema = z.object({
+  prompt: z.string().min(1),
+  correct: z.string().min(1),
+  errors: z.array(z.string().min(1)).min(1).optional(),
+  saveAs: z.string().min(1).optional(),
+  routes: z.array(inputRouteSchema).optional(),
+});
+
+const choiceOptionSchema = z.object({
+  text: z.string().min(1),
+  set: stateSetMapSchema.optional(),
+  add: stateAddMapSchema.optional(),
+  goto: z.string().min(1).optional(),
+});
 
 const stickerLengthSchema = z.union([z.number(), z.string().min(1)]);
 const stickerEnterEffectSchema = z.enum([
@@ -90,8 +111,37 @@ const actionSchema = z.union([
     }),
   }),
   z.object({
-    input: inputActionSchema,
+    input: inputActionSchema.transform((input) => ({
+      prompt: input.prompt,
+      correct: input.correct,
+      errors: input.errors && input.errors.length > 0 ? input.errors : ['정답이 아닙니다.'],
+      saveAs: input.saveAs,
+      routes: input.routes ?? [],
+    })),
   }),
+  z.object({ set: stateSetMapSchema }),
+  z.object({ add: stateAddMapSchema }),
+  z.object({
+    choice: z.object({
+      key: z.string().min(1).optional(),
+      prompt: z.string().min(1),
+      options: z.array(choiceOptionSchema).min(1),
+    }),
+  }),
+  z.object({
+    branch: z.object({
+      cases: z
+        .array(
+          z.object({
+            when: conditionSchema,
+            goto: z.string().min(1),
+          }),
+        )
+        .min(1),
+      default: z.string().min(1).optional(),
+    }),
+  }),
+  z.object({ ending: z.string().min(1) }),
   z.object({ wait: z.number().nonnegative() }),
   z.object({ effect: z.string() }),
   z.object({ goto: z.string() }),
@@ -147,6 +197,28 @@ export const gameSchema = z.object({
     music: z.record(z.string()),
     sfx: z.record(z.string()),
   }),
+  state: z
+    .object({
+      defaults: z.record(routeVarValueSchema),
+    })
+    .optional(),
+  endings: z
+    .record(
+      z.object({
+        title: z.string().min(1),
+        message: z.string().optional(),
+      }),
+    )
+    .optional(),
+  endingRules: z
+    .array(
+      z.object({
+        when: conditionSchema,
+        ending: z.string().min(1),
+      }),
+    )
+    .optional(),
+  defaultEnding: z.string().min(1).optional(),
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(
     z.object({
