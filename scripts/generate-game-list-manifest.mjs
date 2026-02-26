@@ -33,8 +33,22 @@ const pickRepresentativeYaml = (yamlNames) => {
   return [...yamlNames].sort((a, b) => a.localeCompare(b))[0];
 };
 
-async function resolveGameDisplayName(gameDirPath, gameId, yamlNames) {
-  const selectedYaml = pickRepresentativeYaml(yamlNames);
+async function resolveGameDisplayName(gameDirPath, gameId, chapterYamlNames) {
+  const configPath = path.join(gameDirPath, 'config.yaml');
+  try {
+    const configText = await readFile(configPath, 'utf8');
+    const config = parseYaml(configText);
+    if (config && typeof config === 'object' && typeof config.title === 'string') {
+      const title = config.title.trim();
+      if (title.length > 0) {
+        return title;
+      }
+    }
+  } catch (error) {
+    console.warn(`[game-list] Failed to parse ${gameId}/config.yaml:`, error);
+  }
+
+  const selectedYaml = pickRepresentativeYaml(chapterYamlNames);
   if (!selectedYaml) {
     return toTitle(gameId);
   }
@@ -43,9 +57,9 @@ async function resolveGameDisplayName(gameDirPath, gameId, yamlNames) {
     const yamlText = await readFile(path.join(gameDirPath, selectedYaml), 'utf8');
     const parsed = parseYaml(yamlText);
     if (parsed && typeof parsed === 'object') {
-      const meta = parsed.meta;
-      if (meta && typeof meta === 'object' && typeof meta.title === 'string') {
-        const title = meta.title.trim();
+      const legacyMeta = parsed.meta;
+      if (legacyMeta && typeof legacyMeta === 'object' && typeof legacyMeta.title === 'string') {
+        const title = legacyMeta.title.trim();
         if (title.length > 0) {
           return title;
         }
@@ -68,10 +82,11 @@ async function collectGameFolders() {
     const gameDirPath = path.join(gameListDir, folder.name);
     const files = await readdir(gameDirPath, { withFileTypes: true });
     const yamlNames = files.filter((file) => file.isFile() && /\.ya?ml$/i.test(file.name)).map((file) => file.name);
-    if (yamlNames.length === 0) {
+    const chapterYamlNames = yamlNames.filter((name) => !/^(config|base)\.ya?ml$/i.test(name));
+    if (chapterYamlNames.length === 0) {
       continue;
     }
-    const displayName = await resolveGameDisplayName(gameDirPath, folder.name, yamlNames);
+    const displayName = await resolveGameDisplayName(gameDirPath, folder.name, chapterYamlNames);
     games.push({
       id: folder.name,
       name: displayName,

@@ -1,99 +1,208 @@
-meta:
-  title: "명탐정 코난 외전: 다실의 비밀"
-  author:
-    name: "uiwwsw"
-    contacts:
-      - "Email: creator@yavn.dev"
-      - label: "Homepage"
-        value: "yavn.vercel.app"
-        href: "https://yavn.vercel.app"
-      - label: "LinkedIn"
-        value: "linkedin.com/in/uiwwsw"
-        href: "https://linkedin.com/in/uiwwsw"
-  version: "4.0"
-
-settings:
-  textSpeed: 38
-  autoSave: true
-  clickToInstant: true
-
-assets:
-  backgrounds:
-    mountain_rain: assets/bg/mountain_rain.png
-    tea_room: assets/bg/tea_room.png
-
-  characters:
-    코난:
-      base: assets/char/conan/base.png
-      emotions:
-        think: assets/char/conan/think.png
-        serious: assets/char/conan/serious.png
-
-    란:
-      base: assets/char/ran/base.png
-      emotions:
-        worried: assets/char/ran/worried.png
-
-    코고로:
-      base: assets/char/kogoro/base.png
-      emotions:
-        angry: assets/char/kogoro/angry.png
-
-    신이치:
-      base: assets/char/shinichi/base.png
-      emotions:
-        cold: assets/char/shinichi/cold.png
-
-    레이코:
-      base: assets/char/reiko/base.png
-      emotions:
-        nervous: assets/char/reiko/nervous.png
-
-  music:
-    rain: assets/music/rain.wav
-    mystery: assets/music/mystery.wav
-
-  sfx:
-    thunder: assets/sfx/thunder.wav
-
-state:
-  defaults:
-    trust: 0
-    truth_point: 0
-    mistake_count: 0
-    comeback_chance: 1
-    route_origin: ""
-    suspect: ""
-    culprit_answer: ""
-
 script:
-  - scene: cold_open
-  - scene: suspect_gate
+  - scene: op_teaser_video
+  - scene: tea_room_arrival
+  - scene: guest_rollcall
+  - scene: calm_smalltalk
+  - scene: owner_last_pour
+  - scene: offscreen_incident
+  - scene: locked_room_setup
+  - scene: first_hypothesis_gate
+  - scene: handoff
 
 scenes:
-  cold_open:
+  op_teaser_video:
     actions:
       - bg: mountain_rain
       - music: rain
+      - video:
+          src: assets/video/intro.mp4
+          holdToSkipMs: 900
+      - say:
+          text: "비 내리는 산중의 다실. 사건은 늘, 가장 조용한 얼굴로 문을 연다."
+      - say:
+          char: 코난.think
+          text: "(협박장이 왔다고 했지... 장난으로 끝날 분위기는 아냐.)"
+
+  tea_room_arrival:
+    actions:
+      - bg: tea_room
+      - music: mystery
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - sound: door
+      - say:
+          char: 란
+          with:
+            - 코난.serious
+            - 코고로.proud
+          text: "와... 공기부터 다르네. 아빠, 의뢰인이 정말 불안해 보였어."
+      - say:
+          char: 코고로.proud
+          with:
+            - 란.worried
+          text: "훗, 걱정 마라! 명탐정 모리 코고로가 온 이상 사건은 반쯤 해결이야!"
+      - say:
+          char: 코난.think
+          with:
+            - 란.worried
+            - 코고로.proud
+          text: "(반쯤...? 보통 저 말 다음에 일이 더 커지는데.)"
+
+  guest_rollcall:
+    actions:
+      - char:
+          id: 켄지
+          position: left
+          emotion: angry
+      - char:
+          id: 신이치
+          position: center
+          emotion: cold
+      - char:
+          id: 레이코
+          position: right
+          emotion: nervous
+      - say:
+          char: 코난
+          with:
+            - 켄지.angry
+            - 신이치.cold
+            - 레이코.nervous
+          text: "켄지 씨는 주인과 사업 충돌, 신이치 씨는 오래된 지인, 레이코 씨는 전통차 연구가..."
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
+      - say:
+          char: 코난.think
+          with:
+            - 하루오.scared
+          text: "(그리고 말 없는 단골, 하루오 씨. 침묵이 길수록 기록은 중요해진다.)"
+
+  calm_smalltalk:
+    actions:
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 코고로
+          position: center
+          emotion: proud
+      - say:
+          char: 레이코
+          with:
+            - 신이치.cold
+          text: "오늘 우림은 88도 기준으로 맞췄어요. 1도만 벗어나도 떫은 향이 먼저 올라와요."
+      - say:
+          char: 신이치.cold
+          with:
+            - 레이코.nervous
+          text: "주인은 늘 같은 순서로 잔을 채웠죠. 습관은 생각보다 배신하지 않습니다."
+      - say:
+          char: 켄지.angry
+          with:
+            - 코고로.proud
+          text: "난 그런 건 몰라. 진하게만 나와."
+      - say:
+          char: 코고로.angry
+          with:
+            - 켄지.angry
+          text: "그래! 사건도 결국 직감이야!"
+      - say:
+          char: 코난.think
+          with:
+            - 란.worried
+          text: "(직감은 마지막에 쓰는 거야, 아저씨.)"
+
+  owner_last_pour:
+    actions:
+      - bg: tea_room
       - char:
           id: 코난
           position: center
           emotion: think
       - say:
-          text: "제1장 - 갈림길의 지목"
+          text: "다실 주인은 마지막 차를 직접 따르겠다며 주전자 뚜껑을 다시 눌러 닫았다."
+      - wait: 520
       - say:
-          text: "폭우 속 료칸, 첫 지목 하나가 수사의 방향을 갈랐다."
-      - sound: thunder
-      - effect: darken
-      - say:
-          char: 코난
-          text: "처음 판단이 틀려도 아직 끝난 건 아니야. 다만 실수는 누적된다."
-      - goto: suspect_gate
+          char: 코난.think
+          text: "(손놀림이 익숙해... 마치 미리 정해 둔 순서처럼.)"
 
-  suspect_gate:
+  offscreen_incident:
+    actions:
+      - wait: 420
+      - sound: scream
+      - effect: flash
+      - effect: darken
+      - char:
+          id: 란
+          position: left
+          emotion: surprised
+      - say:
+          char: 란.surprised
+          with:
+            - 코난.serious
+          text: "꺄악! 안쪽에서 쓰러지는 소리가 났어!"
+      - sound: thunder
+      - say:
+          char: 코고로.angry
+          with:
+            - 란.surprised
+            - 코난.serious
+          text: "모두 멈춰! 누구도 찻상에 손대지 마!"
+
+  locked_room_setup:
+    actions:
+      - bg: ryokan_hall
+      - sticker:
+          id: tape_lock
+          image: police_tape
+          x: 50
+          y: 52
+          width: 92
+          anchorX: center
+          anchorY: center
+          zIndex: 5
+          enter:
+            effect: wipeCenterX
+            duration: 420
+      - say:
+          char: 코난.serious
+          with:
+            - 코고로.angry
+          text: "문은 안에서 잠겼고, 창문도 내부 잠금. 외부 침입은 배제해도 돼."
+      - set:
+          locked_room_confirmed: true
+      - add:
+          truth_point: 1
+      - clearSticker:
+          id: tape_lock
+          leave:
+            effect: wipeRight
+            duration: 260
+      - effect: zoom
+      - say:
+          char: 코난.think
+          text: "(밀실은 포장지일 뿐이야. 독이 들어간 '순간'이 핵심이지.)"
+
+  first_hypothesis_gate:
     actions:
       - bg: tea_room
-      - music: mystery
       - char:
           id: 신이치
           position: right
@@ -103,26 +212,38 @@ scenes:
           position: left
           emotion: nervous
       - char:
-          id: 코고로
+          id: 켄지
           position: center
           emotion: angry
       - choice:
-          key: route_entry
-          prompt: "초기 진술, 누구를 먼저 범인으로 지목할까?"
+          key: first_hypothesis
+          prompt: "첫 추적 대상을 정하자."
           options:
-            - text: "신이치를 지목한다"
+            - text: "신이치의 발언과 잔 순서부터 파고든다"
               set:
                 route_origin: "shinichi"
                 suspect: "신이치"
               add:
                 trust: 1
                 truth_point: 1
-              goto: ./routes/shinichi/1.yaml
-            - text: "레이코를 지목한다"
+            - text: "레이코의 향 증언부터 압박한다"
               set:
                 route_origin: "reiko"
                 suspect: "레이코"
               add:
-                trust: -1
                 mistake_count: 1
-              goto: ./routes/reiko/1.yaml
+                trust: -1
+            - text: "켄지의 동기와 분노부터 쫓는다"
+              set:
+                route_origin: "kenji"
+                suspect: "켄지"
+              add:
+                mistake_count: 1
+
+  handoff:
+    actions:
+      - effect: pulse
+      - say:
+          char: 코난
+          text: "좋아, 이제부터는 감이 아니라 증거로 간다."
+      - goto: ./2.yaml

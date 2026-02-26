@@ -1,0 +1,62 @@
+assets:
+  backgrounds:
+    mountain_rain: /assets/bg/mountain_rain.png
+    ryokan_hall: /assets/bg/ryokan_hall.png
+    tea_room: /assets/bg/tea_room.png
+    police_tape: /assets/bg/police_tape.svg
+  characters:
+    코난:
+      base: /assets/char/conan/base.png
+      emotions:
+        think: /assets/char/conan/think.png
+        serious: /assets/char/conan/serious.png
+    란:
+      base: /assets/char/ran/base.png
+      emotions:
+        surprised: /assets/char/ran/surprised.png
+        worried: /assets/char/ran/worried.png
+    코고로:
+      base: /assets/char/kogoro/base.png
+      emotions:
+        proud: /assets/char/kogoro/proud.png
+        angry: /assets/char/kogoro/angry.png
+    켄지:
+      base: /assets/char/kenji/base.png
+      emotions:
+        angry: /assets/char/kenji/angry.png
+    신이치:
+      base: /assets/char/shinichi/base.png
+      emotions:
+        cold: /assets/char/shinichi/cold.png
+    레이코:
+      base: /assets/char/reiko/base.png
+      emotions:
+        nervous: /assets/char/reiko/nervous.png
+    하루오:
+      base: /assets/char/haruo/base.png
+      emotions:
+        scared: /assets/char/haruo/scared.png
+  music:
+    rain: /assets/music/rain.wav
+    mystery: /assets/music/mystery.wav
+    tension: /assets/music/tension.wav
+  sfx:
+    thunder: /assets/sfx/thunder.wav
+    scream: /assets/sfx/scream.wav
+    door: /assets/sfx/door.wav
+state:
+  trust: 0
+  truth_point: 0
+  mistake_count: 0
+  comeback_chance: 1
+  route_origin: ""
+  suspect: ""
+  culprit_answer: ""
+  timeline_answer: ""
+  clue_word: ""
+  locked_room_confirmed: false
+  kettle_trick_known: false
+  metal_smell_flag: false
+  final_confidence: 0
+  witness_priority: ""
+  room_reconstruction_ok: false

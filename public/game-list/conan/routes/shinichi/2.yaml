@@ -1,63 +1,15 @@
-meta:
-  title: "명탐정 코난 외전: 다실의 비밀"
-  author: "uiwwsw"
-  version: "4.0"
-
-settings:
-  textSpeed: 38
-  autoSave: true
-  clickToInstant: true
-
-assets:
-  backgrounds:
-    mountain_rain: ../../assets/bg/mountain_rain.png
-    tea_room: ../../assets/bg/tea_room.png
-
-  characters:
-    코난:
-      base: ../../assets/char/conan/base.png
-      emotions:
-        think: ../../assets/char/conan/think.png
-        serious: ../../assets/char/conan/serious.png
-
-    신이치:
-      base: ../../assets/char/shinichi/base.png
-      emotions:
-        cold: ../../assets/char/shinichi/cold.png
-
-    레이코:
-      base: ../../assets/char/reiko/base.png
-      emotions:
-        nervous: ../../assets/char/reiko/nervous.png
-
-    코고로:
-      base: ../../assets/char/kogoro/base.png
-      emotions:
-        angry: ../../assets/char/kogoro/angry.png
-
-  music:
-    mystery: ../../assets/music/mystery.wav
-    tension: ../../assets/music/tension.wav
-
-state:
-  defaults:
-    trust: 0
-    truth_point: 0
-    mistake_count: 0
-    comeback_chance: 1
-    route_origin: ""
-    suspect: ""
-    culprit_answer: ""
-
 script:
-  - scene: pressure_start
-  - scene: suspect_cross_gate
-  - scene: wrong_push
-  - scene: salvage_gate
+  - scene: pressure_intro
+  - scene: statement_cross
+  - scene: cross_fail_loop
+  - scene: decisive_input
+  - scene: pressure_branch
+  - scene: direct_lock
+  - scene: doubt_lock
   - scene: route_outro
 
 scenes:
-  pressure_start:
+  pressure_intro:
     actions:
       - bg: mountain_rain
       - music: tension
@@ -66,87 +18,128 @@ scenes:
           position: center
           emotion: serious
       - char:
-          id: 코고로
-          position: left
-          emotion: angry
-      - say:
-          text: "신이치 루트 2 - 진술 균열"
-      - say:
-          char: 코난.serious
-          text: "여기서 방향을 잘못 틀면, 초반 정답 루트였어도 배드엔딩으로 미끄러진다."
-      - goto: suspect_cross_gate
-
-  suspect_cross_gate:
-    actions:
-      - bg: tea_room
-      - char:
           id: 신이치
           position: right
           emotion: cold
+      - say:
+          text: "신이치 루트 2 - 진술 붕괴"
+      - say:
+          char: 코난.serious
+          with:
+            - 신이치.cold
+          text: "네 알리바이는 단어마다 모순이 있어. 이제 하나씩 닫아보자."
+
+  statement_cross:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
       - choice:
-          key: shinichi_route2_cross
-          prompt: "어느 검증을 먼저 걸까?"
+          key: shinichi_cross
+          prompt: "교차 검증의 첫 타점을 선택"
           options:
-            - text: "신이치 외투의 젖은 흔적과 찻잎 성분을 대조한다"
+            - text: "찻잎 성분표와 외투 섬유를 대조한다"
               set:
                 suspect: "신이치"
               add:
-                truth_point: 1
+                truth_point: 2
                 trust: 1
-              goto: salvage_gate
-            - text: "레이코 단독 동기만으로 종결하려 한다"
+              goto: decisive_input
+            - text: "레이코의 떨리는 말투만 근거로 삼는다"
               set:
                 suspect: "레이코"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: wrong_push
+              goto: cross_fail_loop
 
-  wrong_push:
+  cross_fail_loop:
     actions:
       - effect: shake
-      - char:
-          id: 레이코
-          position: left
-          emotion: nervous
       - say:
-          text: "증언이 꼬였고, 모두가 다시 반발하기 시작했다."
+          char: 코난.think
+          text: "감정으로 밀면 반발만 커져. 증거로 다시 간다."
       - branch:
           cases:
             - when:
                 var: mistake_count
                 op: gte
-                value: 3
-              goto: route_outro
-          default: salvage_gate
+                value: 4
+              goto: decisive_input
+          default: statement_cross
 
-  salvage_gate:
+  decisive_input:
     actions:
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - choice:
-          key: shinichi_route2_salvage
-          prompt: "최종 보고서에 무엇을 핵심 근거로 적을까?"
-          options:
-            - text: "문틈 줄 트릭과 외투 찻잎을 함께 기록한다"
+      - input:
+          prompt: "레이코의 최종 진술에서 남은 핵심 표현은?"
+          correct: "금속 냄새"
+          saveAs: clue_word
+          errors:
+            - "차 본연의 향이 아니라 이질적인 냄새야."
+            - "힌트: 금속성."
+            - "정답은 금속 냄새."
+          routes:
+            - equals: "금속 냄새"
               set:
                 suspect: "신이치"
+                metal_smell_flag: true
               add:
-                truth_point: 1
+                truth_point: 2
+                final_confidence: 1
                 trust: 1
-              goto: route_outro
-            - text: "레이코의 불안한 표정만 범행 근거로 고수한다"
-              set:
-                suspect: "레이코"
+              goto: pressure_branch
+            - equals: "찻잎 향"
               add:
                 mistake_count: 1
-                trust: -1
-              goto: route_outro
+              goto: pressure_branch
+            - equals: "젖은 나무 냄새"
+              add:
+                mistake_count: 1
+              goto: pressure_branch
+
+  pressure_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: final_confidence
+                    op: gte
+                    value: 4
+                  - var: trust
+                    op: gte
+                    value: 2
+                  - var: mistake_count
+                    op: lte
+                    value: 2
+              goto: direct_lock
+          default: doubt_lock
+
+  direct_lock:
+    actions:
+      - effect: zoom
+      - say:
+          char: 코난.serious
+          text: "좋아, 이제 결론 회의에서 바로 끝낸다. 빠져나갈 구멍은 없어."
+      - add:
+          final_confidence: 2
+      - goto: route_outro
+
+  doubt_lock:
+    actions:
+      - effect: blur
+      - say:
+          char: 코난.think
+          text: "범인상은 맞지만 설득력은 아직 불안정해. 결론에서 한 번 더 다듬어야 해."
+      - add:
+          final_confidence: 1
+      - goto: route_outro
 
   route_outro:
     actions:
       - say:
-          text: "모든 진술이 결론 회의실로 모이기 시작했다."
-      - goto: ./conclusion/1.yaml
+          char: 코난
+          text: "결론 회의로 간다. 이제, 트릭의 이름을 말할 시간이다."
+      - goto: /conclusion/1.yaml

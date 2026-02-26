@@ -1,112 +1,19 @@
-meta:
-  title: "명탐정 코난 외전: 다실의 비밀"
-  author: "uiwwsw"
-  version: "4.0"
-
-settings:
-  textSpeed: 38
-  autoSave: true
-  clickToInstant: true
-
-assets:
-  backgrounds:
-    mountain_rain: ../assets/bg/mountain_rain.png
-    ryokan_hall: ../assets/bg/ryokan_hall.png
-    tea_room: ../assets/bg/tea_room.png
-
-  characters:
-    코난:
-      base: ../assets/char/conan/base.png
-      emotions:
-        think: ../assets/char/conan/think.png
-        serious: ../assets/char/conan/serious.png
-
-    신이치:
-      base: ../assets/char/shinichi/base.png
-      emotions:
-        cold: ../assets/char/shinichi/cold.png
-
-    레이코:
-      base: ../assets/char/reiko/base.png
-      emotions:
-        nervous: ../assets/char/reiko/nervous.png
-
-    코고로:
-      base: ../assets/char/kogoro/base.png
-      emotions:
-        angry: ../assets/char/kogoro/angry.png
-
-  music:
-    rain: ../assets/music/rain.wav
-    mystery: ../assets/music/mystery.wav
-    tension: ../assets/music/tension.wav
-
-  sfx:
-    thunder: ../assets/sfx/thunder.wav
-
-state:
-  defaults:
-    trust: 0
-    truth_point: 0
-    mistake_count: 0
-    comeback_chance: 1
-    route_origin: ""
-    suspect: ""
-    culprit_answer: ""
-
-endings:
-  true_end:
-    title: "TRUE END"
-    message: "모든 선택의 오류를 교정하고, 완전한 진실에 도달했다."
-  normal_end:
-    title: "NORMAL END"
-    message: "핵심 진실은 밝혔지만, 흔들린 순간들이 여운으로 남았다."
-  bad_end:
-    title: "BAD END"
-    message: "누적된 오판이 끝내 결론을 무너뜨렸다."
-
-endingRules:
-  - when:
-      all:
-        - var: culprit_answer
-          op: eq
-          value: "신이치"
-        - var: truth_point
-          op: gte
-          value: 4
-        - var: trust
-          op: gte
-          value: 3
-        - var: mistake_count
-          op: lte
-          value: 1
-    ending: true_end
-  - when:
-      all:
-        - var: culprit_answer
-          op: eq
-          value: "신이치"
-        - var: truth_point
-          op: gte
-          value: 2
-        - var: mistake_count
-          op: lte
-          value: 2
-    ending: normal_end
-
-defaultEnding: bad_end
-
 script:
-  - scene: precheck
+  - scene: final_intro
+  - scene: sleeping_kogoro
+  - scene: reasoning_tone_branch
+  - scene: kogoro_voice_sharp
+  - scene: kogoro_voice_shaky
   - scene: final_accuse_gate
   - scene: wrong_answer_check
-  - scene: comeback_intro
   - scene: comeback_gate
-  - scene: verdict_path
-  - scene: ending_roll
+  - scene: verdict_branch
+  - scene: true_epilogue
+  - scene: normal_epilogue
+  - scene: bad_epilogue
 
 scenes:
-  precheck:
+  final_intro:
     actions:
       - bg: tea_room
       - music: mystery
@@ -115,29 +22,81 @@ scenes:
           position: center
           emotion: serious
       - say:
-          text: "결론 챕터 - 마지막 회의"
+          char: 코난.serious
+          text: "이제 결론이다. 밀실 트릭은 이미 틀이 잡혔어."
+      - wait: 380
+      - say:
+          char: 코난.think
+          text: "(한 번에 끝낸다. 흔들리면 여기서 전부 무너져.)"
+      - goto: sleeping_kogoro
+
+  sleeping_kogoro:
+    actions:
+      - bg: ryokan_hall
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - effect: flash
+      - sound: door
+      - say:
+          text: "순간, 코고로의 목소리가 멎고 회의장은 숨을 삼켰다."
+      - say:
+          char: 코난.think
+          with:
+            - 코고로.angry
+          text: "(아저씨, 이번에도 잠깐만 빌릴게.)"
+      - add:
+          final_confidence: 1
+      - goto: reasoning_tone_branch
+
+  reasoning_tone_branch:
+    actions:
       - branch:
           cases:
             - when:
-                var: mistake_count
-                op: gte
-                value: 3
-              goto: hard_fail
-          default: final_accuse_gate
+                all:
+                  - var: final_confidence
+                    op: gte
+                    value: 5
+                  - var: trust
+                    op: gte
+                    value: 2
+              goto: kogoro_voice_sharp
+          default: kogoro_voice_shaky
 
-  hard_fail:
+  kogoro_voice_sharp:
     actions:
-      - bg: ryokan_hall
-      - music: tension
-      - sound: thunder
-      - effect: shake
+      - effect: zoom
       - say:
-          text: "핵심 실수가 너무 많이 누적되어, 결론 회의는 시작부터 붕괴했다."
-      - ending: bad_end
+          char: 코난.serious
+          text: "독은 찻잔에 탄 게 아니다. 주전자 뚜껑 안쪽에서 떨어졌다."
+      - say:
+          char: 코난.serious
+          text: "그리고 피해자 잔의 순서를 알고 있던 사람만 이 트릭을 쓸 수 있어."
+      - goto: final_accuse_gate
+
+  kogoro_voice_shaky:
+    actions:
+      - effect: darken
+      - say:
+          char: 코난.think
+          text: "핵심은 같다. 독은 뚜껑 안쪽... 다만 아직 연결 고리를 더 보여줘야 해."
+      - say:
+          char: 란.worried
+          with:
+            - 코난.think
+          text: "코난... 아니, 아빠 말이 맞다면 범인은 잔 순서를 알고 있던 사람이라는 거지?"
+      - goto: final_accuse_gate
 
   final_accuse_gate:
     actions:
-      - bg: ryokan_hall
+      - bg: tea_room
+      - music: tension
       - char:
           id: 신이치
           position: right
@@ -146,15 +105,21 @@ scenes:
           id: 레이코
           position: left
           emotion: nervous
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
       - choice:
-          key: conclusion_final_accuse
-          prompt: "최종 지목. 누가 밀실 트릭을 실행했나?"
+          key: final_accuse
+          prompt: "밀실 트릭을 실행한 범인은 누구인가?"
           options:
             - text: "신이치"
               set:
                 culprit_answer: "신이치"
                 suspect: "신이치"
-              goto: verdict_path
+              add:
+                final_confidence: 1
+              goto: verdict_branch
             - text: "레이코"
               set:
                 culprit_answer: "레이코"
@@ -163,9 +128,20 @@ scenes:
                 mistake_count: 1
                 trust: -1
               goto: wrong_answer_check
+            - text: "켄지"
+              set:
+                culprit_answer: "켄지"
+                suspect: "켄지"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: wrong_answer_check
 
   wrong_answer_check:
     actions:
+      - say:
+          char: 코난.think
+          text: "(아직은 끝이 아니야. 단 한 번, 정정 기회가 남아 있다.)"
       - branch:
           cases:
             - when:
@@ -175,30 +151,19 @@ scenes:
                     value: 1
                   - var: truth_point
                     op: gte
-                    value: 2
+                    value: 5
                   - var: mistake_count
                     op: lte
-                    value: 2
-              goto: comeback_intro
-          default: final_bad
-
-  comeback_intro:
-    actions:
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - say:
-          char: 코난
-          text: "아직 논리가 완전히 끊기진 않았어. 딱 한 번만 더 지목해."
-      - set:
-          comeback_chance: 0
-      - goto: comeback_gate
+                    value: 4
+              goto: comeback_gate
+          default: bad_epilogue
 
   comeback_gate:
     actions:
+      - set:
+          comeback_chance: 0
       - choice:
-          key: conclusion_comeback
+          key: final_comeback
           prompt: "재지목 기회(1회). 최종 범인은?"
           options:
             - text: "신이치"
@@ -208,44 +173,113 @@ scenes:
               add:
                 truth_point: 1
                 trust: 1
-              goto: verdict_path
+                final_confidence: 1
+              goto: verdict_branch
             - text: "레이코"
               set:
                 culprit_answer: "레이코"
                 suspect: "레이코"
               add:
                 mistake_count: 1
-              goto: final_bad
+              goto: bad_epilogue
+            - text: "켄지"
+              set:
+                culprit_answer: "켄지"
+                suspect: "켄지"
+              add:
+                mistake_count: 1
+              goto: bad_epilogue
 
-  final_bad:
+  verdict_branch:
     actions:
-      - bg: mountain_rain
-      - music: tension
-      - effect: darken
-      - say:
-          text: "재기회마저 놓치며, 진실은 끝내 흐릿해졌다."
-      - ending: bad_end
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: culprit_answer
+                    op: eq
+                    value: "신이치"
+                  - var: truth_point
+                    op: gte
+                    value: 9
+                  - var: mistake_count
+                    op: lte
+                    value: 2
+                  - var: trust
+                    op: gte
+                    value: 2
+                  - var: final_confidence
+                    op: gte
+                    value: 6
+                  - var: clue_word
+                    op: in
+                    value:
+                      - "금속"
+                      - "금속 냄새"
+                      - "쇠"
+                      - "쇠 냄새"
+              goto: true_epilogue
+            - when:
+                all:
+                  - var: culprit_answer
+                    op: eq
+                    value: "신이치"
+                  - var: truth_point
+                    op: gte
+                    value: 6
+                  - var: final_confidence
+                    op: gte
+                    value: 3
+                  - var: mistake_count
+                    op: lte
+                    value: 5
+              goto: normal_epilogue
+          default: bad_epilogue
 
-  verdict_path:
-    actions:
-      - char:
-          id: 코고로
-          position: left
-          emotion: angry
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - say:
-          char: 코난.serious
-          text: "문틈 줄 트릭과 외투의 찻잎. 답은 하나야."
-      - goto: ending_roll
-
-  ending_roll:
+  true_epilogue:
     actions:
       - bg: mountain_rain
       - music: rain
+      - effect: zoom
       - say:
-          text: "새벽 공기 속에서 사건의 결말이 조용히 내려앉았다."
+          char: 코난.serious
+          text: "주전자 뚜껑 안쪽의 독, 그리고 왼쪽 손잡이 잔 순서. 답은 하나였어."
       - say:
-          text: "이후 엔딩은 당신이 쌓아온 선택의 누적으로 판정된다."
+          char: 신이치.cold
+          with:
+            - 코난.serious
+          text: "...맞아. 연구를 빼앗긴 날부터, 난 이미 선을 넘고 있었지."
+      - say:
+          char: 란.worried
+          with:
+            - 코난.serious
+          text: "차 한 잔의 습관이... 결국 진실을 드러냈네."
+      - ending: true_end
+
+  normal_epilogue:
+    actions:
+      - bg: mountain_rain
+      - music: rain
+      - effect: blur
+      - say:
+          char: 코난.think
+          text: "범인은 맞췄다. 하지만 몇 번의 오판이 진실의 속도를 늦췄어."
+      - say:
+          char: 코고로.angry
+          with:
+            - 코난.think
+          text: "크흠... 뭐, 결론은 내 이름으로 잘 정리됐으니 된 거지!"
+      - ending: normal_end
+
+  bad_epilogue:
+    actions:
+      - bg: mountain_rain
+      - music: tension
+      - sound: thunder
+      - effect: shake
+      - say:
+          char: 코난.think
+          text: "단서를 놓쳤다... 이 상태로는 누구도 완전히 납득시키지 못해."
+      - say:
+          text: "폭우가 그친 뒤에도, 다실의 비밀은 흐린 채 남았다."
+      - ending: bad_end

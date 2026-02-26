@@ -1,7 +1,73 @@
 import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
-import { gameSchema } from './schema';
+import { baseLayerSchema, chapterSchema, configSchema, gameSchema } from './schema';
 import type { ConditionNode, GameData, RouteVarValue, VNError } from './types';
+
+type ConfigYamlData = {
+  title: string;
+  author?: GameData['meta']['author'];
+  version?: string;
+  textSpeed: number;
+  autoSave: boolean;
+  clickToInstant: boolean;
+  endings?: GameData['endings'];
+  endingRules?: GameData['endingRules'];
+  defaultEnding?: GameData['defaultEnding'];
+};
+
+type LayerAssets = {
+  backgrounds?: GameData['assets']['backgrounds'];
+  characters?: GameData['assets']['characters'];
+  music?: GameData['assets']['music'];
+  sfx?: GameData['assets']['sfx'];
+};
+
+type LayerYamlData = {
+  assets?: LayerAssets;
+  state?: Record<string, RouteVarValue>;
+};
+
+type ChapterYamlData = LayerYamlData & {
+  script: GameData['script'];
+  scenes: GameData['scenes'];
+};
+
+export type ParsedConfigYaml = {
+  sourcePath: string;
+  sourceDir: string;
+  data: ConfigYamlData;
+};
+
+export type ParsedBaseYaml = {
+  sourcePath: string;
+  sourceDir: string;
+  data: LayerYamlData;
+};
+
+export type ParsedChapterYaml = {
+  sourcePath: string;
+  sourceDir: string;
+  data: ChapterYamlData;
+};
+
+type ResolveChapterInput = {
+  config: ParsedConfigYaml;
+  bases: ParsedBaseYaml[];
+  chapter: ParsedChapterYaml;
+};
+
+const LEGACY_TOP_LEVEL_KEYS = ['meta', 'settings'] as const;
+const CONFIG_ONLY_KEYS = [
+  'title',
+  'author',
+  'version',
+  'textSpeed',
+  'autoSave',
+  'clickToInstant',
+  'endings',
+  'endingRules',
+  'defaultEnding',
+] as const;
 
 function parseSpeakerRef(raw: string): { id?: string; emotion?: string; invalid: boolean } {
   const trimmed = raw.trim();
@@ -190,10 +256,463 @@ function validateAddMap(
   return undefined;
 }
 
-export function parseGameYaml(raw: string): { data?: GameData; error?: VNError } {
+function normalizePath(rawPath: string): string {
+  return rawPath.replace(/\\/g, '/');
+}
+
+function collapsePathDots(path: string): string {
+  const normalized = normalizePath(path);
+  const parts = normalized.split('/');
+  const stack: string[] = [];
+  for (const part of parts) {
+    if (!part || part === '.') {
+      continue;
+    }
+    if (part === '..') {
+      if (stack.length > 0) {
+        stack.pop();
+      }
+      continue;
+    }
+    stack.push(part);
+  }
+  return stack.join('/');
+}
+
+function normalizeSourcePath(sourcePath: string): string {
+  const normalized = normalizePath(sourcePath).replace(/^\.\//, '');
+  return normalized.length > 0 ? normalized : 'unknown.yaml';
+}
+
+function getSourceDir(sourcePath: string): string {
+  const normalized = normalizeSourcePath(sourcePath);
+  const idx = normalized.lastIndexOf('/');
+  if (idx < 0) {
+    return '';
+  }
+  return normalized.slice(0, idx + 1);
+}
+
+function isExternalPath(path: string): boolean {
+  return /^(blob:|data:|https?:|[a-z][a-z0-9+.-]*:)/i.test(path);
+}
+
+function canonicalizeDeclaredPath(path: string, sourceDir: string): string | undefined {
+  const trimmed = path.trim();
+  if (!trimmed) {
+    return undefined;
+  }
+  if (isExternalPath(trimmed)) {
+    return trimmed;
+  }
+  const normalized = normalizePath(trimmed);
+  const joined = normalized.startsWith('/') ? normalized.slice(1) : `${sourceDir}${normalized}`;
+  const collapsed = collapsePathDots(joined);
+  return collapsed.length > 0 ? collapsed : undefined;
+}
+
+function parseYamlRoot(raw: string): { value?: Record<string, unknown>; error?: VNError } {
   try {
     const parsed = load(raw);
-    const data = gameSchema.parse(parsed) as GameData;
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return { error: { message: 'YAML root must be an object map' } };
+    }
+    return { value: parsed as Record<string, unknown> };
+  } catch (err) {
+    if (err instanceof YAMLException) {
+      return {
+        error: {
+          message: err.reason || 'Invalid YAML',
+          line: err.mark?.line !== undefined ? err.mark.line + 1 : undefined,
+          column: err.mark?.column !== undefined ? err.mark.column + 1 : undefined,
+          details: err.message,
+        },
+      };
+    }
+    return {
+      error: {
+        message: err instanceof Error ? err.message : 'Unknown parse error',
+      },
+    };
+  }
+}
+
+function mapZodError(error: ZodError, sourcePath?: string): VNError {
+  const issue = error.issues[0];
+  const prefix = sourcePath ? `${sourcePath}: ` : '';
+  return {
+    message: `${prefix}Schema validation failed at ${issue.path.join('.') || 'root'}: ${issue.message}`,
+    details: error.issues.map((v) => `${v.path.join('.') || 'root'}: ${v.message}`).join(' | '),
+  };
+}
+
+function firstIncludedKey<T extends readonly string[]>(obj: Record<string, unknown>, keys: T): T[number] | undefined {
+  return keys.find((key) => hasOwn(obj, key));
+}
+
+function canonicalizeLayerAssets(
+  assets: LayerAssets | undefined,
+  sourceDir: string,
+  sourcePath: string,
+): { data?: GameData['assets']; error?: VNError } {
+  if (!assets) {
+    return { data: undefined };
+  }
+
+  const result: GameData['assets'] = {
+    backgrounds: {},
+    characters: {},
+    music: {},
+    sfx: {},
+  };
+
+  for (const [key, value] of Object.entries(assets.backgrounds ?? {})) {
+    const normalized = canonicalizeDeclaredPath(value, sourceDir);
+    if (!normalized) {
+      return {
+        error: {
+          message: `${sourcePath}: assets.backgrounds.${key} has invalid path '${value}'`,
+        },
+      };
+    }
+    result.backgrounds[key] = normalized;
+  }
+
+  for (const [charKey, charDef] of Object.entries(assets.characters ?? {})) {
+    const base = canonicalizeDeclaredPath(charDef.base, sourceDir);
+    if (!base) {
+      return {
+        error: {
+          message: `${sourcePath}: assets.characters.${charKey}.base has invalid path '${charDef.base}'`,
+        },
+      };
+    }
+    const emotions: Record<string, string> = {};
+    for (const [emoKey, emoPath] of Object.entries(charDef.emotions ?? {})) {
+      const normalized = canonicalizeDeclaredPath(emoPath, sourceDir);
+      if (!normalized) {
+        return {
+          error: {
+            message: `${sourcePath}: assets.characters.${charKey}.emotions.${emoKey} has invalid path '${emoPath}'`,
+          },
+        };
+      }
+      emotions[emoKey] = normalized;
+    }
+    result.characters[charKey] = {
+      base,
+      ...(Object.keys(emotions).length > 0 ? { emotions } : {}),
+    };
+  }
+
+  for (const [key, value] of Object.entries(assets.music ?? {})) {
+    const normalized = canonicalizeDeclaredPath(value, sourceDir);
+    if (!normalized) {
+      return {
+        error: {
+          message: `${sourcePath}: assets.music.${key} has invalid path '${value}'`,
+        },
+      };
+    }
+    result.music[key] = normalized;
+  }
+
+  for (const [key, value] of Object.entries(assets.sfx ?? {})) {
+    const normalized = canonicalizeDeclaredPath(value, sourceDir);
+    if (!normalized) {
+      return {
+        error: {
+          message: `${sourcePath}: assets.sfx.${key} has invalid path '${value}'`,
+        },
+      };
+    }
+    result.sfx[key] = normalized;
+  }
+
+  if (
+    Object.keys(result.backgrounds).length === 0 &&
+    Object.keys(result.characters).length === 0 &&
+    Object.keys(result.music).length === 0 &&
+    Object.keys(result.sfx).length === 0
+  ) {
+    return { data: undefined };
+  }
+
+  return { data: result };
+}
+
+function canonicalizeSceneVideoPaths(
+  scenes: GameData['scenes'],
+  sourceDir: string,
+  sourcePath: string,
+): { data?: GameData['scenes']; error?: VNError } {
+  const cloned = structuredClone(scenes);
+  for (const [sceneId, scene] of Object.entries(cloned)) {
+    for (const [actionIndex, action] of scene.actions.entries()) {
+      if (!('video' in action)) {
+        continue;
+      }
+      const normalized = canonicalizeDeclaredPath(action.video.src, sourceDir);
+      if (!normalized) {
+        return {
+          error: {
+            message: `${sourcePath}: scenes.${sceneId}.actions[${actionIndex}].video.src has invalid path '${action.video.src}'`,
+          },
+        };
+      }
+      action.video.src = normalized;
+    }
+  }
+  return { data: cloned };
+}
+
+export function parseConfigYaml(raw: string, sourcePath: string): { data?: ParsedConfigYaml; error?: VNError } {
+  const normalizedSourcePath = normalizeSourcePath(sourcePath);
+  const parsedRoot = parseYamlRoot(raw);
+  if (!parsedRoot.value) {
+    if (!parsedRoot.error) {
+      return { error: { message: `${normalizedSourcePath}: failed to parse YAML` } };
+    }
+    return { error: { ...parsedRoot.error, message: `${normalizedSourcePath}: ${parsedRoot.error.message}` } };
+  }
+
+  const legacyKey = firstIncludedKey(parsedRoot.value, LEGACY_TOP_LEVEL_KEYS);
+  if (legacyKey) {
+    return {
+      error: {
+        message: `${normalizedSourcePath}: legacy top-level key '${legacyKey}' is not allowed in YAML V3 (use flattened config keys).`,
+      },
+    };
+  }
+
+  try {
+    const parsed = configSchema.parse(parsedRoot.value) as ConfigYamlData;
+    return {
+      data: {
+        sourcePath: normalizedSourcePath,
+        sourceDir: getSourceDir(normalizedSourcePath),
+        data: parsed,
+      },
+    };
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return { error: mapZodError(err, normalizedSourcePath) };
+    }
+    return { error: { message: err instanceof Error ? err.message : 'Unknown parse error' } };
+  }
+}
+
+export function parseBaseYaml(raw: string, sourcePath: string): { data?: ParsedBaseYaml; error?: VNError } {
+  const normalizedSourcePath = normalizeSourcePath(sourcePath);
+  const parsedRoot = parseYamlRoot(raw);
+  if (!parsedRoot.value) {
+    if (!parsedRoot.error) {
+      return { error: { message: `${normalizedSourcePath}: failed to parse YAML` } };
+    }
+    return { error: { ...parsedRoot.error, message: `${normalizedSourcePath}: ${parsedRoot.error.message}` } };
+  }
+
+  if (hasOwn(parsedRoot.value, 'script') || hasOwn(parsedRoot.value, 'scenes')) {
+    return {
+      error: {
+        message: `${normalizedSourcePath}: base.yaml cannot declare script/scenes (only assets and state are allowed).`,
+      },
+    };
+  }
+
+  const legacyKey = firstIncludedKey(parsedRoot.value, LEGACY_TOP_LEVEL_KEYS);
+  if (legacyKey) {
+    return {
+      error: {
+        message: `${normalizedSourcePath}: '${legacyKey}' is not allowed in base.yaml.`,
+      },
+    };
+  }
+
+  const configOnly = firstIncludedKey(parsedRoot.value, CONFIG_ONLY_KEYS);
+  if (configOnly) {
+    return {
+      error: {
+        message: `${normalizedSourcePath}: '${configOnly}' is config.yaml-only and cannot appear in base.yaml.`,
+      },
+    };
+  }
+
+  try {
+    const parsed = baseLayerSchema.parse(parsedRoot.value) as LayerYamlData;
+    const sourceDir = getSourceDir(normalizedSourcePath);
+    const assetsResult = canonicalizeLayerAssets(parsed.assets, sourceDir, normalizedSourcePath);
+    if (assetsResult.error) {
+      return { error: assetsResult.error };
+    }
+    return {
+      data: {
+        sourcePath: normalizedSourcePath,
+        sourceDir,
+        data: {
+          assets: assetsResult.data,
+          state: parsed.state,
+        },
+      },
+    };
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return { error: mapZodError(err, normalizedSourcePath) };
+    }
+    return { error: { message: err instanceof Error ? err.message : 'Unknown parse error' } };
+  }
+}
+
+export function parseChapterYaml(raw: string, sourcePath: string): { data?: ParsedChapterYaml; error?: VNError } {
+  const normalizedSourcePath = normalizeSourcePath(sourcePath);
+  const parsedRoot = parseYamlRoot(raw);
+  if (!parsedRoot.value) {
+    if (!parsedRoot.error) {
+      return { error: { message: `${normalizedSourcePath}: failed to parse YAML` } };
+    }
+    return { error: { ...parsedRoot.error, message: `${normalizedSourcePath}: ${parsedRoot.error.message}` } };
+  }
+
+  const legacyKey = firstIncludedKey(parsedRoot.value, LEGACY_TOP_LEVEL_KEYS);
+  if (legacyKey) {
+    return {
+      error: {
+        message: `${normalizedSourcePath}: '${legacyKey}' is not allowed in chapter YAML V3.`,
+      },
+    };
+  }
+
+  const configOnly = firstIncludedKey(parsedRoot.value, CONFIG_ONLY_KEYS);
+  if (configOnly) {
+    return {
+      error: {
+        message: `${normalizedSourcePath}: '${configOnly}' is config.yaml-only and cannot appear in chapter YAML.`,
+      },
+    };
+  }
+
+  try {
+    const parsed = chapterSchema.parse(parsedRoot.value) as ChapterYamlData;
+    const sourceDir = getSourceDir(normalizedSourcePath);
+    const assetsResult = canonicalizeLayerAssets(parsed.assets, sourceDir, normalizedSourcePath);
+    if (assetsResult.error) {
+      return { error: assetsResult.error };
+    }
+    const scenesResult = canonicalizeSceneVideoPaths(parsed.scenes, sourceDir, normalizedSourcePath);
+    if (scenesResult.error) {
+      return { error: scenesResult.error };
+    }
+    return {
+      data: {
+        sourcePath: normalizedSourcePath,
+        sourceDir,
+        data: {
+          assets: assetsResult.data,
+          state: parsed.state,
+          script: parsed.script,
+          scenes: scenesResult.data ?? parsed.scenes,
+        },
+      },
+    };
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return { error: mapZodError(err, normalizedSourcePath) };
+    }
+    return { error: { message: err instanceof Error ? err.message : 'Unknown parse error' } };
+  }
+}
+
+function mergeLayerAssets(target: GameData['assets'], source?: LayerAssets) {
+  if (!source) {
+    return;
+  }
+  Object.assign(target.backgrounds, source.backgrounds ?? {});
+  Object.assign(target.characters, source.characters ?? {});
+  Object.assign(target.music, source.music ?? {});
+  Object.assign(target.sfx, source.sfx ?? {});
+}
+
+function mergeLayerState(
+  targetDefaults: Record<string, RouteVarValue>,
+  sourceState: Record<string, RouteVarValue> | undefined,
+  sourcePath: string,
+  keySource: Map<string, string>,
+): VNError | undefined {
+  if (!sourceState) {
+    return undefined;
+  }
+
+  for (const [key, value] of Object.entries(sourceState)) {
+    const previous = targetDefaults[key];
+    if (hasOwn(targetDefaults as Record<string, unknown>, key) && typeof previous !== typeof value) {
+      const previousSource = keySource.get(key) ?? 'unknown';
+      return {
+        message: `${sourcePath}: state.${key} type '${typeof value}' conflicts with '${typeof previous}' from ${previousSource}.`,
+      };
+    }
+    targetDefaults[key] = value;
+    keySource.set(key, sourcePath);
+  }
+
+  return undefined;
+}
+
+export function resolveChapterGame(input: ResolveChapterInput): { data?: GameData; error?: VNError } {
+  const mergedAssets: GameData['assets'] = {
+    backgrounds: {},
+    characters: {},
+    music: {},
+    sfx: {},
+  };
+  const mergedDefaults: Record<string, RouteVarValue> = {};
+  const defaultSourceByKey = new Map<string, string>();
+
+  for (const layer of input.bases) {
+    mergeLayerAssets(mergedAssets, layer.data.assets);
+    const stateError = mergeLayerState(mergedDefaults, layer.data.state, layer.sourcePath, defaultSourceByKey);
+    if (stateError) {
+      return { error: stateError };
+    }
+  }
+
+  mergeLayerAssets(mergedAssets, input.chapter.data.assets);
+  const chapterStateError = mergeLayerState(
+    mergedDefaults,
+    input.chapter.data.state,
+    input.chapter.sourcePath,
+    defaultSourceByKey,
+  );
+  if (chapterStateError) {
+    return { error: chapterStateError };
+  }
+
+  const merged: GameData = {
+    meta: {
+      title: input.config.data.title,
+      author: input.config.data.author,
+      version: input.config.data.version,
+    },
+    settings: {
+      textSpeed: input.config.data.textSpeed,
+      autoSave: input.config.data.autoSave,
+      clickToInstant: input.config.data.clickToInstant,
+    },
+    assets: mergedAssets,
+    script: input.chapter.data.script,
+    scenes: input.chapter.data.scenes,
+    ...(Object.keys(mergedDefaults).length > 0 ? { state: { defaults: mergedDefaults } } : {}),
+    ...(input.config.data.endings ? { endings: input.config.data.endings } : {}),
+    ...(input.config.data.endingRules ? { endingRules: input.config.data.endingRules } : {}),
+    ...(input.config.data.defaultEnding ? { defaultEnding: input.config.data.defaultEnding } : {}),
+  };
+
+  return validateGameData(merged);
+}
+
+export function validateGameData(data: GameData): { data?: GameData; error?: VNError } {
+  try {
+    gameSchema.parse(data);
+
     const defaults = data.state?.defaults ?? {};
 
     const scriptSceneIds = new Set(data.script.map((entry) => entry.scene));
@@ -443,24 +962,8 @@ export function parseGameYaml(raw: string): { data?: GameData; error?: VNError }
 
     return { data };
   } catch (err) {
-    if (err instanceof YAMLException) {
-      return {
-        error: {
-          message: err.reason || 'Invalid YAML',
-          line: err.mark?.line !== undefined ? err.mark.line + 1 : undefined,
-          column: err.mark?.column !== undefined ? err.mark.column + 1 : undefined,
-          details: err.message,
-        },
-      };
-    }
     if (err instanceof ZodError) {
-      const issue = err.issues[0];
-      return {
-        error: {
-          message: `Schema validation failed at ${issue.path.join('.') || 'root'}: ${issue.message}`,
-          details: err.issues.map((v) => `${v.path.join('.') || 'root'}: ${v.message}`).join(' | '),
-        },
-      };
+      return { error: mapZodError(err) };
     }
     return {
       error: {

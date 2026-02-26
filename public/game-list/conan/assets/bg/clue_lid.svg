@@ -1,0 +1,8 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" fill="#10151e"/>
+  <rect x="120" y="100" width="960" height="520" rx="32" fill="#dfe7ef" stroke="#3f556e" stroke-width="8"/>
+  <text x="600" y="225" text-anchor="middle" font-size="56" font-weight="700" fill="#24374c">단서 카드 #2</text>
+  <text x="600" y="330" text-anchor="middle" font-size="50" font-weight="700" fill="#24374c">주전자 뚜껑 안쪽 가루</text>
+  <text x="600" y="422" text-anchor="middle" font-size="38" fill="#2f465f">특정 각도로 기울일 때만 떨어진다</text>
+  <text x="600" y="500" text-anchor="middle" font-size="34" fill="#4f647c">금속 냄새 증언과 연결되는 결정적 물증</text>
+</svg>

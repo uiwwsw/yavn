@@ -1,6 +1,14 @@
 import JSZip from 'jszip';
 import { useVNStore } from './store';
-import { parseGameYaml } from './parser';
+import {
+  parseBaseYaml,
+  parseChapterYaml,
+  parseConfigYaml,
+  resolveChapterGame,
+  type ParsedBaseYaml,
+  type ParsedChapterYaml,
+  type ParsedConfigYaml,
+} from './parser';
 import type {
   CharacterSlot,
   ConditionNode,
@@ -107,6 +115,13 @@ let urlGameRootBase = '';
 let zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
 let zipBlobAssetMap: Record<string, string> = {};
 let zipAssetUrlByKey = new Map<string, string>();
+let yamlTextCache = new Map<string, Promise<string | undefined>>();
+let yamlExistenceCache = new Map<string, Promise<boolean>>();
+let parsedConfigCache: ParsedConfigYaml | undefined;
+let parsedConfigPromise: Promise<ParsedConfigYaml> | undefined;
+let parsedBaseCache = new Map<string, Promise<ParsedBaseYaml | undefined>>();
+let parsedChapterCache = new Map<string, Promise<ParsedChapterYaml>>();
+let resolvedChapterGameCache = new Map<string, Promise<GameData>>();
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -331,6 +346,13 @@ function resetSession() {
   zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
   zipBlobAssetMap = {};
   zipAssetUrlByKey = new Map<string, string>();
+  yamlTextCache = new Map<string, Promise<string | undefined>>();
+  yamlExistenceCache = new Map<string, Promise<boolean>>();
+  parsedConfigCache = undefined;
+  parsedConfigPromise = undefined;
+  parsedBaseCache = new Map<string, Promise<ParsedBaseYaml | undefined>>();
+  parsedChapterCache = new Map<string, Promise<ParsedChapterYaml>>();
+  resolvedChapterGameCache = new Map<string, Promise<GameData>>();
   useVNStore.getState().setChapterMeta(0, 0);
   useVNStore.getState().setChapterLoading(false, 0);
   useVNStore.getState().setError(undefined);
@@ -1599,8 +1621,7 @@ async function resolveUrlChapterPath(dir: string, number: number, preferredExt: 
   const orderedExts: Array<'yaml' | 'yml'> = preferredExt === 'yml' ? ['yml', 'yaml'] : ['yaml', 'yml'];
   for (const ext of orderedExts) {
     const filePath = `${dir}${number}.${ext}`;
-    const chapterUrl = new URL(filePath, urlGameRootBase).toString();
-    if (await hasYamlFileAtUrl(chapterUrl)) {
+    if (await hasYamlByPathKey(filePath)) {
       return filePath;
     }
   }
@@ -1620,12 +1641,11 @@ async function resolveSequenceFromChapterPath(
 
     if (!numbered) {
       const filePath = chapterPathKeyToFilePath(normalizedKey);
-      const chapterUrl = new URL(filePath, urlGameRootBase).toString();
-      if (!(await hasYamlFileAtUrl(chapterUrl))) {
+      if (!(await hasYamlByPathKey(filePath))) {
         return undefined;
       }
       return {
-        chapters: [createUrlChapter(chapterUrl, filePath, normalizeChapterPathKey(filePath))],
+        chapters: [createUrlChapter(new URL(filePath, urlGameRootBase).toString(), filePath, normalizeChapterPathKey(filePath))],
         startIndex: 0,
       };
     }
@@ -1976,68 +1996,220 @@ async function hasYamlFileAtUrl(url: string): Promise<boolean> {
   return fallback !== undefined;
 }
 
-function parseGameFromYaml(raw: string, name: string, baseUrl: string, assetOverrides: Record<string, string>): GameData {
-  const result = parseGameYaml(raw);
-  if (!result.data) {
-    throw new Error(`${name}: ${result.error?.message ?? 'YAML parse error'}`);
+function getYamlFileUrlForPathKey(pathKey: string): string {
+  if (!urlGameRootBase) {
+    throw new Error('Game root URL is not initialized.');
   }
-  return materializeGameAssets(result.data, baseUrl, assetOverrides);
+  return new URL(chapterPathKeyToFilePath(pathKey), urlGameRootBase).toString();
 }
 
-function createUrlChapter(url: string, name: string, pathKey: string): PreparedChapter {
-  const baseUrl = new URL('.', url).toString();
+async function loadYamlTextByPathKey(pathKey: string): Promise<string | undefined> {
+  const normalizedPathKey = normalizeChapterPathKey(pathKey);
+  const cached = yamlTextCache.get(normalizedPathKey);
+  if (cached) {
+    return cached;
+  }
+
+  const promise = (async () => {
+    if (runtimeMode === 'url') {
+      if (!urlGameRootBase) {
+        return undefined;
+      }
+      return fetchYamlIfExists(getYamlFileUrlForPathKey(normalizedPathKey));
+    }
+    if (runtimeMode === 'zip') {
+      const entry = zipYamlByPathKey.get(normalizedPathKey);
+      if (!entry) {
+        return undefined;
+      }
+      return entry.async('text');
+    }
+    return undefined;
+  })();
+  yamlTextCache.set(normalizedPathKey, promise);
+  return promise;
+}
+
+async function hasYamlByPathKey(pathKey: string): Promise<boolean> {
+  const normalizedPathKey = normalizeChapterPathKey(pathKey);
+  const cachedText = yamlTextCache.get(normalizedPathKey);
+  if (cachedText) {
+    return (await cachedText) !== undefined;
+  }
+
+  const cached = yamlExistenceCache.get(normalizedPathKey);
+  if (cached) {
+    return cached;
+  }
+
+  const promise = (async () => {
+    if (runtimeMode === 'url') {
+      if (!urlGameRootBase) {
+        return false;
+      }
+      return hasYamlFileAtUrl(getYamlFileUrlForPathKey(normalizedPathKey));
+    }
+    if (runtimeMode === 'zip') {
+      return zipYamlByPathKey.has(normalizedPathKey);
+    }
+    return false;
+  })();
+  yamlExistenceCache.set(normalizedPathKey, promise);
+  return promise;
+}
+
+async function loadParsedConfigDocument(): Promise<ParsedConfigYaml> {
+  if (parsedConfigCache) {
+    return parsedConfigCache;
+  }
+  if (parsedConfigPromise) {
+    return parsedConfigPromise;
+  }
+
+  parsedConfigPromise = (async () => {
+    const configPathKey = normalizeChapterPathKey('config.yaml');
+    const raw = await loadYamlTextByPathKey(configPathKey);
+    if (raw === undefined) {
+      throw new Error('config.yaml not found at game root.');
+    }
+    const parsed = parseConfigYaml(raw, chapterPathKeyToFilePath(configPathKey));
+    if (!parsed.data) {
+      throw new Error(parsed.error?.message ?? 'Failed to parse config.yaml');
+    }
+    parsedConfigCache = parsed.data;
+    return parsed.data;
+  })();
+
+  try {
+    return await parsedConfigPromise;
+  } finally {
+    parsedConfigPromise = undefined;
+  }
+}
+
+async function loadParsedBaseDocument(pathKey: string): Promise<ParsedBaseYaml | undefined> {
+  const normalizedPathKey = normalizeChapterPathKey(pathKey);
+  const cached = parsedBaseCache.get(normalizedPathKey);
+  if (cached) {
+    return cached;
+  }
+
+  const promise = (async () => {
+    const exists = await hasYamlByPathKey(normalizedPathKey);
+    if (!exists) {
+      return undefined;
+    }
+    const raw = await loadYamlTextByPathKey(normalizedPathKey);
+    if (raw === undefined) {
+      return undefined;
+    }
+    const parsed = parseBaseYaml(raw, chapterPathKeyToFilePath(normalizedPathKey));
+    if (!parsed.data) {
+      throw new Error(parsed.error?.message ?? `Failed to parse base layer: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
+    }
+    return parsed.data;
+  })();
+
+  parsedBaseCache.set(normalizedPathKey, promise);
+  return promise;
+}
+
+async function loadParsedChapterDocument(pathKey: string): Promise<ParsedChapterYaml> {
+  const normalizedPathKey = normalizeChapterPathKey(pathKey);
+  const cached = parsedChapterCache.get(normalizedPathKey);
+  if (cached) {
+    return cached;
+  }
+
+  const promise = (async () => {
+    const raw = await loadYamlTextByPathKey(normalizedPathKey);
+    if (raw === undefined) {
+      throw new Error(`Failed to load yaml: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
+    }
+    const parsed = parseChapterYaml(raw, chapterPathKeyToFilePath(normalizedPathKey));
+    if (!parsed.data) {
+      throw new Error(parsed.error?.message ?? `Failed to parse chapter yaml: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
+    }
+    return parsed.data;
+  })();
+
+  parsedChapterCache.set(normalizedPathKey, promise);
+  return promise;
+}
+
+function getBaseLayerPathKeys(chapterPathKey: string): string[] {
+  const normalizedPathKey = normalizeChapterPathKey(chapterPathKey);
+  const filePath = chapterPathKeyToFilePath(normalizedPathKey);
+  const directory = filePath.includes('/') ? filePath.slice(0, filePath.lastIndexOf('/')) : '';
+  const segments = directory.length > 0 ? directory.split('/').filter((segment) => segment.length > 0) : [];
+  const paths = [normalizeChapterPathKey('base.yaml')];
+  let current = '';
+  for (const segment of segments) {
+    current = current ? `${current}/${segment}` : segment;
+    paths.push(normalizeChapterPathKey(`${current}/base.yaml`));
+  }
+  return [...new Set(paths)];
+}
+
+async function loadResolvedChapterGame(pathKey: string): Promise<GameData> {
+  const normalizedPathKey = normalizeChapterPathKey(pathKey);
+  const cached = resolvedChapterGameCache.get(normalizedPathKey);
+  if (cached) {
+    return cached;
+  }
+
+  const promise = (async () => {
+    const config = await loadParsedConfigDocument();
+    const chapter = await loadParsedChapterDocument(normalizedPathKey);
+    const basePathKeys = getBaseLayerPathKeys(normalizedPathKey);
+    const bases: ParsedBaseYaml[] = [];
+    for (const basePathKey of basePathKeys) {
+      const baseLayer = await loadParsedBaseDocument(basePathKey);
+      if (baseLayer) {
+        bases.push(baseLayer);
+      }
+    }
+
+    const resolved = resolveChapterGame({
+      config,
+      bases,
+      chapter,
+    });
+    if (!resolved.data) {
+      throw new Error(resolved.error?.message ?? `Failed to resolve chapter: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
+    }
+
+    if (runtimeMode === 'zip') {
+      return materializeGameAssetsFromZip(resolved.data, '', zipAssetUrlByKey);
+    }
+    return resolved.data;
+  })();
+
+  resolvedChapterGameCache.set(normalizedPathKey, promise);
+  return promise;
+}
+
+function createUrlChapter(_url: string, name: string, pathKey: string): PreparedChapter {
   const assetOverrides: Record<string, string> = {};
   return {
     pathKey,
     name,
-    baseUrl,
+    baseUrl: urlGameRootBase,
     assetOverrides,
-    loadGame: async () => {
-      const raw = await fetchYamlIfExists(url);
-      if (raw === undefined) {
-        throw new Error(`${name}: Failed to load yaml: ${url}`);
-      }
-      return parseGameFromYaml(raw, name, baseUrl, assetOverrides);
-    },
+    loadGame: async () => loadResolvedChapterGame(pathKey),
   };
 }
 
-function createInMemoryChapter(
-  raw: string,
-  name: string,
-  baseUrl: string,
-  assetOverrides: Record<string, string>,
-  pathKey: string,
-): PreparedChapter {
+function createInMemoryChapter(raw: string, name: string, pathKey: string): PreparedChapter {
+  const normalizedPathKey = normalizeChapterPathKey(pathKey);
+  yamlTextCache.set(normalizedPathKey, Promise.resolve(raw));
   return {
-    pathKey,
+    pathKey: normalizedPathKey,
     name,
-    baseUrl,
-    assetOverrides,
-    loadGame: async () => parseGameFromYaml(raw, name, baseUrl, assetOverrides),
+    baseUrl: urlGameRootBase,
+    assetOverrides: {},
+    loadGame: async () => loadResolvedChapterGame(normalizedPathKey),
   };
-}
-
-function materializeGameAssets(game: GameData, baseUrl: string, assetOverrides: Record<string, string>): GameData {
-  const cloned = structuredClone(game);
-  for (const [key, value] of Object.entries(cloned.assets.backgrounds)) {
-    cloned.assets.backgrounds[key] = resolveAssetWithOverrides(baseUrl, value, assetOverrides);
-  }
-  for (const charDef of Object.values(cloned.assets.characters)) {
-    charDef.base = resolveAssetWithOverrides(baseUrl, charDef.base, assetOverrides);
-    if (charDef.emotions) {
-      for (const [emoKey, emoPath] of Object.entries(charDef.emotions)) {
-        charDef.emotions[emoKey] = resolveAssetWithOverrides(baseUrl, emoPath, assetOverrides);
-      }
-    }
-  }
-  for (const [key, value] of Object.entries(cloned.assets.music)) {
-    cloned.assets.music[key] = resolveAssetWithOverrides(baseUrl, value, assetOverrides);
-  }
-  for (const [key, value] of Object.entries(cloned.assets.sfx)) {
-    cloned.assets.sfx[key] = resolveAssetWithOverrides(baseUrl, value, assetOverrides);
-  }
-  return cloned;
 }
 
 function resolveZipAssetUrl(
@@ -2145,20 +2317,12 @@ function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByK
 }
 
 function createZipChapter(pathKey: string, yamlEntry: JSZip.JSZipObject): PreparedChapter {
-  const yamlDir = yamlEntry.name.includes('/') ? yamlEntry.name.slice(0, yamlEntry.name.lastIndexOf('/') + 1) : '';
   return {
     pathKey,
     name: yamlEntry.name,
     baseUrl: window.location.href,
     assetOverrides: zipBlobAssetMap,
-    loadGame: async () => {
-      const raw = await yamlEntry.async('text');
-      const parsed = parseGameYaml(raw);
-      if (!parsed.data) {
-        throw new Error(`${yamlEntry.name}: ${parsed.error?.message ?? 'YAML parse error'}`);
-      }
-      return materializeGameAssetsFromZip(parsed.data, yamlDir, zipAssetUrlByKey);
-    },
+    loadGame: async () => loadResolvedChapterGame(pathKey),
   };
 }
 
@@ -2170,29 +2334,36 @@ export async function loadGameFromUrl(url: string) {
     const baseUrl = url.endsWith('.yaml') || url.endsWith('.yml') ? new URL('.', absolute).toString() : absolute.toString();
     runtimeMode = 'url';
     urlGameRootBase = baseUrl;
+
+    const hasConfig = await hasYamlByPathKey('config.yaml');
+    if (!hasConfig) {
+      useVNStore.getState().setError({ message: 'config.yaml not found at game root.' });
+      return;
+    }
+
     const chapters: PreparedChapter[] = [];
 
     const zeroUrl = new URL('0.yaml', baseUrl).toString();
     const oneUrl = new URL('1.yaml', baseUrl).toString();
-    const hasZero = await hasYamlFileAtUrl(zeroUrl);
+    const hasZero = await hasYamlByPathKey('0.yaml');
 
     if (hasZero) {
       chapters.push(createUrlChapter(zeroUrl, '0.yaml', normalizeChapterPathKey('0.yaml')));
       for (let chapterNo = 1; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
         const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-        const exists = await hasYamlFileAtUrl(chapterUrl);
+        const exists = await hasYamlByPathKey(`${chapterNo}.yaml`);
         if (!exists) {
           break;
         }
         chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
       }
     } else {
-      const hasOne = await hasYamlFileAtUrl(oneUrl);
+      const hasOne = await hasYamlByPathKey('1.yaml');
       if (hasOne) {
         chapters.push(createUrlChapter(oneUrl, '1.yaml', normalizeChapterPathKey('1.yaml')));
         for (let chapterNo = 2; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
           const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-          const exists = await hasYamlFileAtUrl(chapterUrl);
+          const exists = await hasYamlByPathKey(`${chapterNo}.yaml`);
           if (!exists) {
             break;
           }
@@ -2212,8 +2383,6 @@ export async function loadGameFromUrl(url: string) {
           createInMemoryChapter(
             fallbackText,
             absolute.pathname.split('/').pop() ?? 'chapter.yaml',
-            new URL('.', absolute).toString(),
-            {},
             normalizeChapterPathKey(absolute.pathname.split('/').pop() ?? 'chapter.yaml'),
           ),
         );
@@ -2256,6 +2425,7 @@ export async function loadGameFromZip(file: File) {
     const zip = await JSZip.loadAsync(file);
     const files = Object.values(zip.files).filter((entry) => !entry.dir);
     const yamlFiles = files.filter((entry) => /\.ya?ml$/i.test(entry.name));
+    const chapterCandidateYamlFiles = yamlFiles.filter((entry) => !/(^|\/)(config|base)\.ya?ml$/i.test(entry.name));
 
     if (yamlFiles.length === 0) {
       useVNStore.getState().setError({ message: 'ZIP 안에서 .yaml 또는 .yml 파일을 찾지 못했습니다.' });
@@ -2267,7 +2437,13 @@ export async function loadGameFromZip(file: File) {
       zipYamlByPathKey.set(normalizeChapterPathKey(entry.name), entry);
     }
 
-    const numbered = yamlFiles
+    const hasConfig = await hasYamlByPathKey('config.yaml');
+    if (!hasConfig) {
+      useVNStore.getState().setError({ message: 'config.yaml not found at game root.' });
+      return;
+    }
+
+    const numbered = chapterCandidateYamlFiles
       .map((entry) => {
         const match = entry.name.match(/^(\d+)\.ya?ml$/i);
         return match ? { entry, order: Number(match[1]) } : null;
@@ -2279,9 +2455,14 @@ export async function loadGameFromZip(file: File) {
       numbered.length > 0
         ? numbered.map((item) => item.entry)
         : [
-            yamlFiles.find((entry) => /(^|\/)sample\.ya?ml$/i.test(entry.name)) ??
-              [...yamlFiles].sort((a, b) => a.name.localeCompare(b.name))[0],
+            chapterCandidateYamlFiles.find((entry) => /(^|\/)sample\.ya?ml$/i.test(entry.name)) ??
+              [...chapterCandidateYamlFiles].sort((a, b) => a.name.localeCompare(b.name))[0],
           ];
+
+    if (selectedYaml.length === 0 || !selectedYaml[0]) {
+      useVNStore.getState().setError({ message: '실행 가능한 챕터 YAML(예: 0.yaml, 1.yaml, sample.yaml)을 찾지 못했습니다.' });
+      return;
+    }
 
     const blobMap: Record<string, string> = {};
     const zipUrlByKey = new Map<string, string>();

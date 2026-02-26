@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]);
-const stateSetMapSchema = z.record(routeVarValueSchema);
-const stateAddMapSchema = z.record(z.number());
+export const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]);
+export const stateSetMapSchema = z.record(routeVarValueSchema);
+export const stateAddMapSchema = z.record(z.number());
 
-const conditionSchema: z.ZodType = z.lazy(() =>
+export const conditionSchema: z.ZodType = z.lazy(() =>
   z.union([
     z.object({
       var: z.string().min(1),
@@ -75,7 +75,7 @@ const stickerLeaveSchema = z.union([
   }),
 ]);
 
-const actionSchema = z.union([
+export const actionSchema = z.union([
   z.object({ bg: z.string() }),
   z.object({
     sticker: z.object({
@@ -161,7 +161,7 @@ const actionSchema = z.union([
   }),
 ]);
 
-const authorContactSchema = z.union([
+export const authorContactSchema = z.union([
   z.string(),
   z.object({
     label: z.string().optional(),
@@ -170,10 +170,82 @@ const authorContactSchema = z.union([
   }),
 ]);
 
-const authorObjectSchema = z.object({
+export const authorObjectSchema = z.object({
   name: z.string().optional(),
   contacts: z.array(authorContactSchema).optional(),
 });
+
+export const endingDefinitionSchema = z.object({
+  title: z.string().min(1),
+  message: z.string().optional(),
+});
+
+export const endingRuleSchema = z.object({
+  when: conditionSchema,
+  ending: z.string().min(1),
+});
+
+const characterAssetsSchema = z.record(
+  z.object({
+    base: z.string(),
+    emotions: z.record(z.string()).optional(),
+  }),
+);
+
+const fullAssetsSchema = z.object({
+  backgrounds: z.record(z.string()),
+  characters: characterAssetsSchema,
+  music: z.record(z.string()),
+  sfx: z.record(z.string()),
+});
+
+export const layerAssetsSchema = z
+  .object({
+    backgrounds: z.record(z.string()).optional(),
+    characters: characterAssetsSchema.optional(),
+    music: z.record(z.string()).optional(),
+    sfx: z.record(z.string()).optional(),
+  })
+  .strict();
+
+export const layerStateSchema = z.record(routeVarValueSchema);
+export const runtimeStateSchema = z.object({
+  defaults: z.record(routeVarValueSchema),
+});
+
+export const configSchema = z
+  .object({
+    title: z.string().min(1),
+    author: z.union([z.string(), authorObjectSchema]).optional(),
+    version: z.string().optional(),
+    textSpeed: z.number().positive(),
+    autoSave: z.boolean(),
+    clickToInstant: z.boolean(),
+    endings: z.record(endingDefinitionSchema).optional(),
+    endingRules: z.array(endingRuleSchema).optional(),
+    defaultEnding: z.string().min(1).optional(),
+  })
+  .strict();
+
+export const baseLayerSchema = z
+  .object({
+    assets: layerAssetsSchema.optional(),
+    state: layerStateSchema.optional(),
+  })
+  .strict();
+
+export const chapterSchema = z
+  .object({
+    assets: layerAssetsSchema.optional(),
+    state: layerStateSchema.optional(),
+    script: z.array(z.object({ scene: z.string() })).min(1),
+    scenes: z.record(
+      z.object({
+        actions: z.array(actionSchema),
+      }),
+    ),
+  })
+  .strict();
 
 export const gameSchema = z.object({
   meta: z.object({
@@ -186,38 +258,10 @@ export const gameSchema = z.object({
     autoSave: z.boolean(),
     clickToInstant: z.boolean(),
   }),
-  assets: z.object({
-    backgrounds: z.record(z.string()),
-    characters: z.record(
-      z.object({
-        base: z.string(),
-        emotions: z.record(z.string()).optional(),
-      }),
-    ),
-    music: z.record(z.string()),
-    sfx: z.record(z.string()),
-  }),
-  state: z
-    .object({
-      defaults: z.record(routeVarValueSchema),
-    })
-    .optional(),
-  endings: z
-    .record(
-      z.object({
-        title: z.string().min(1),
-        message: z.string().optional(),
-      }),
-    )
-    .optional(),
-  endingRules: z
-    .array(
-      z.object({
-        when: conditionSchema,
-        ending: z.string().min(1),
-      }),
-    )
-    .optional(),
+  assets: fullAssetsSchema,
+  state: runtimeStateSchema.optional(),
+  endings: z.record(endingDefinitionSchema).optional(),
+  endingRules: z.array(endingRuleSchema).optional(),
   defaultEnding: z.string().min(1).optional(),
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(

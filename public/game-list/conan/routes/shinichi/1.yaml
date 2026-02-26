@@ -1,152 +1,193 @@
-meta:
-  title: "명탐정 코난 외전: 다실의 비밀"
-  author: "uiwwsw"
-  version: "4.0"
-
-settings:
-  textSpeed: 38
-  autoSave: true
-  clickToInstant: true
-
-assets:
-  backgrounds:
-    ryokan_hall: ../../assets/bg/ryokan_hall.png
-    tea_room: ../../assets/bg/tea_room.png
-
-  characters:
-    코난:
-      base: ../../assets/char/conan/base.png
-      emotions:
-        think: ../../assets/char/conan/think.png
-        serious: ../../assets/char/conan/serious.png
-
-    신이치:
-      base: ../../assets/char/shinichi/base.png
-      emotions:
-        cold: ../../assets/char/shinichi/cold.png
-
-    레이코:
-      base: ../../assets/char/reiko/base.png
-      emotions:
-        nervous: ../../assets/char/reiko/nervous.png
-
-    하루오:
-      base: ../../assets/char/haruo/base.png
-      emotions:
-        scared: ../../assets/char/haruo/scared.png
-
-  music:
-    mystery: ../../assets/music/mystery.wav
-    tension: ../../assets/music/tension.wav
-
-  sfx:
-    thunder: ../../assets/sfx/thunder.wav
-
-state:
-  defaults:
-    trust: 0
-    truth_point: 0
-    mistake_count: 0
-    comeback_chance: 1
-    route_origin: ""
-    suspect: ""
-    culprit_answer: ""
-
 script:
   - scene: route_start
-  - scene: clue_priority_gate
-  - scene: timeline_gate
-  - scene: timeline_fail
+  - scene: metal_smell_input
+  - scene: metal_fail_loop
+  - scene: kettle_demo_choice
+  - scene: timeline_recheck_input
+  - scene: analysis_split
+  - scene: sharp_line
+  - scene: weak_line
   - scene: route_outro
 
 scenes:
   route_start:
     actions:
-      - bg: ryokan_hall
+      - bg: tea_room
       - music: mystery
       - char:
           id: 코난
           position: center
           emotion: serious
-      - say:
-          text: "신이치 루트 1 - 첫 압박"
-      - say:
-          char: 코난.serious
-          text: "정면 돌파를 택했어. 하지만 중간 선택 하나만 틀려도 흐름은 무너진다."
-      - goto: clue_priority_gate
-
-  clue_priority_gate:
-    actions:
-      - bg: tea_room
       - char:
           id: 신이치
           position: right
           emotion: cold
+      - say:
+          text: "신이치 루트 1 - 정면 추적"
+      - say:
+          char: 신이치.cold
+          with:
+            - 코난.serious
+          text: "모호한 추측은 의미 없어. 증명해 봐, 코난 군."
+      - say:
+          char: 코난.think
+          with:
+            - 신이치.cold
+          text: "(좋아. 네가 원하는 대로, 논리로 끝내주지.)"
+
+  metal_smell_input:
+    actions:
       - char:
           id: 레이코
           position: left
           emotion: nervous
-      - choice:
-          key: shinichi_route1_clue
-          prompt: "먼저 검증할 단서를 고르자."
-          options:
-            - text: "문틈 줄 마찰흔부터 확인한다"
+      - input:
+          prompt: "레이코의 증언에서 핵심이 된 냄새 단어는?"
+          correct: "금속"
+          saveAs: clue_word
+          errors:
+            - "찻잎 본래 향과는 다른 결이었어."
+            - "힌트: 쇠붙이처럼 차갑고 건조한 냄새."
+            - "정답은 금속."
+          routes:
+            - equals: "금속"
               set:
-                suspect: "신이치"
+                metal_smell_flag: true
               add:
                 truth_point: 1
                 trust: 1
-              goto: timeline_gate
-            - text: "레이코의 표정만 근거로 몰아붙인다"
+              goto: kettle_demo_choice
+            - equals: "금속 냄새"
               set:
-                suspect: "레이코"
+                metal_smell_flag: true
+              add:
+                truth_point: 1
+              goto: kettle_demo_choice
+            - equals: "탄내"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: timeline_gate
+              goto: metal_fail_loop
 
-  timeline_gate:
+  metal_fail_loop:
     actions:
-      - music: tension
+      - effect: tilt
+      - say:
+          char: 코난.think
+          text: "단어 하나 틀리면 진술 연결이 끊겨. 다시 잡을래?"
+      - choice:
+          key: shinichi_retry_smell
+          prompt: "실패 분기 처리"
+          options:
+            - text: "향 단서를 다시 입력한다"
+              goto: metal_smell_input
+            - text: "패널티를 받고 다음 검증으로 넘어간다"
+              add:
+                mistake_count: 1
+              goto: kettle_demo_choice
+
+  kettle_demo_choice:
+    actions:
+      - bg: ryokan_hall
+      - char:
+          id: 코고로
+          position: left
+          emotion: angry
       - char:
           id: 코난
           position: center
-          emotion: think
+          emotion: serious
+      - choice:
+          key: shinichi_kettle_demo
+          prompt: "보고서 첫 문장을 고르자."
+          options:
+            - text: "뚜껑 안쪽 가루는 특정 각도에서만 떨어진다"
+              set:
+                kettle_trick_known: true
+              add:
+                truth_point: 2
+                final_confidence: 1
+              goto: timeline_recheck_input
+            - text: "밀실의 분위기가 수상했다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_recheck_input
+
+  timeline_recheck_input:
+    actions:
+      - music: tension
       - input:
-          prompt: "비명이 들린 시각을 24시간 형식으로 입력해줘."
-          correct: "21:30"
+          prompt: "주인이 먼저 따르던 잔의 방향은?"
+          correct: "왼쪽 손잡이 잔부터"
           errors:
-            - "시계 바늘 위치를 다시 떠올려봐."
-            - "힌트: 9시 30분이었어."
-            - "정답은 21:30."
+            - "핵심은 손잡이 방향 습관."
+            - "힌트: 왼쪽 정렬부터 시작했어."
+            - "정답은 왼쪽 손잡이 잔부터."
           routes:
-            - equals: "21:30"
+            - equals: "왼쪽 손잡이 잔부터"
               add:
                 truth_point: 1
-                trust: 1
-              goto: route_outro
-            - equals: "21:20"
+                final_confidence: 2
+              goto: analysis_split
+            - equals: "오른쪽 잔부터"
+              add:
+                mistake_count: 1
+              goto: analysis_split
+            - equals: "무작위"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: timeline_fail
-            - equals: "22:00"
-              add:
-                mistake_count: 1
-                trust: -1
-              goto: timeline_fail
+              goto: analysis_split
 
-  timeline_fail:
+  analysis_split:
     actions:
-      - sound: thunder
-      - effect: tilt
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: truth_point
+                    op: gte
+                    value: 7
+                  - var: mistake_count
+                    op: lte
+                    value: 1
+              goto: sharp_line
+          default: weak_line
+
+  sharp_line:
+    actions:
+      - effect: zoom
       - say:
-          char: 코난
-          text: "그 시각이면 문 파손 타이밍과 안 맞아. 다시 계산하자."
-      - goto: timeline_gate
+          char: 코난.serious
+          text: "논리축이 완성됐어. 이제 남은 건 자백을 끌어내는 것뿐이야."
+      - add:
+          final_confidence: 2
+          trust: 1
+      - goto: route_outro
+
+  weak_line:
+    actions:
+      - effect: pulse
+      - say:
+          char: 코난.think
+          text: "맞는 조각은 많아. 그런데 결론으로 닫기엔 아직 헐겁다."
+      - choice:
+          key: shinichi_weak_patch
+          prompt: "약한 결론선을 어떻게 보강할까?"
+          options:
+            - text: "향 증언과 뚜껑 가루를 다시 묶는다"
+              add:
+                truth_point: 1
+                final_confidence: 1
+            - text: "동기 추정으로 압박만 높인다"
+              add:
+                mistake_count: 1
+      - goto: route_outro
 
   route_outro:
     actions:
       - say:
-          text: "첫 번째 시간축은 맞췄다. 이제 진술 붕괴를 확정해야 한다."
+          char: 코난
+          text: "좋아, 신이치 루트의 토대는 완성. 2차 압박으로 들어간다."
       - goto: ./routes/shinichi/2.yaml

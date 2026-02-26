@@ -8,31 +8,11 @@ Type your story. Play your novel.
 [![Vite](https://img.shields.io/badge/vite-6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/react-18-61DAFB?logo=react&logoColor=111)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![GitHub stars](https://img.shields.io/github/stars/uiwwsw/visual-novel?style=flat)](https://github.com/uiwwsw/visual-novel/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/uiwwsw/visual-novel?style=flat)](https://github.com/uiwwsw/visual-novel/network/members)
 
 </div>
 
-`YAVN (야븐)`은 숫자 챕터 YAML(`0.yaml`, `1.yaml`, `2.yaml`...)을 자동 감지하고, **현재 챕터만 지연 로드**해서 빠르게 실행하는 비주얼노벨 엔진입니다.
-런처/ZIP 실행/PR 공유 흐름까지 포함되어 있어, 게임 제작과 배포 실험을 바로 시작할 수 있습니다.
-
-## Why this project
-
-- 챕터 단위 Lazy Load + 다음 챕터 백그라운드 프리로드
-- YAML 스키마 검증(Zod) + 라인/컬럼 기반 에러 오버레이
-- 대사 타이핑 효과 + `<speed=...>` 인라인 속도 제어
-- `say.with` 기반 화자 중심 캐릭터 노출(기본 1인 + 추가 동시 노출)
-- `video`, `input`, `choice`, `branch`, `ending` 등 연출/분기 액션 내장
-- `set/add` 기반 분기 상태(`bool/number/string`) 누적 + 자동저장 복원
-- `endingRules` + `defaultEnding` 기반 자동 엔딩 판정(명시 `ending` 우선)
-- 로컬/YouTube 컷신 기본 음소거 자동재생 + 길게 눌러 스킵 UX
-- ZIP 업로드 시 로컬 컷신 경로(`video.src`)도 blob URL로 자동 치환
-- `input` 게이트 노출 시 입력창 자동 포커스
-- `choice` 게이트 노출 시 클릭 강제 진행 차단
-- 엔딩 시 영화식 롤링 크레딧 + 하단 고정 `게임 다시 시작하기` 버튼
-- `게임 다시 시작하기` 클릭 시 엔딩 오버레이 즉시 종료 후 1챕터 재로딩
-- ZIP 업로드 즉시 실행 + 샘플 ZIP 다운로드 + GitHub PR 공유 버튼
-- 모바일까지 고려한 연출(캐릭터 우선순위/컷신 스킵 UX)
+`YAVN`은 YAML 기반 비주얼노벨 엔진입니다.
+현재 DSL은 **YAML V3**이며, 전역/공통/챕터 선언을 분리합니다.
 
 ## Quick Start
 
@@ -48,166 +28,110 @@ pnpm dev
 - `/`: 런처(샘플 ZIP 다운로드, ZIP 업로드 실행, PR 공유)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 게임 즉시 실행
 
-## YAML DSL Example
+## YAML V3 구조 (필수)
+
+### 1) 루트 `config.yaml` (필수)
 
 ```yaml
-meta:
-  title: "명탐정 코난 외전: 다실의 비밀"
-  author:
-    name: "uiwwsw"
-    contacts:
-      - "Email: creator@yavn.dev"
-      - label: "LinkedIn"
-        value: "linkedin.com/in/uiwwsw"
-        href: "https://linkedin.com/in/uiwwsw"
-
-settings:
-  textSpeed: 38
-  autoSave: true
-  clickToInstant: true
-
-assets:
-  backgrounds:
-    tea_room: assets/bg/tea_room.png
-    hall: assets/bg/ryokan_hall.png
-  characters:
-    코난:
-      base: assets/char/conan/base.png
-      emotions:
-        serious: assets/char/conan/serious.png
-    신이치:
-      base: assets/char/shinichi/base.png
-    레이코:
-      base: assets/char/reiko/base.png
-  music: {}
-  sfx: {}
-
-state:
-  defaults:
-    trust: 0
-    truth_point: 0
-    mistake_count: 0
-    comeback_chance: 1
-    has_key: false
-    suspect: ""
-    culprit_answer: ""
-
+title: "게임 제목"
+author:
+  name: "작성자"
+  contacts:
+    - "Email: writer@example.com"
+version: "1.0"
+textSpeed: 38
+autoSave: true
+clickToInstant: true
 endings:
   true_end:
     title: "TRUE END"
-    message: "진실에 도달했다."
   bad_end:
     title: "BAD END"
-    message: "결정적 단서를 놓쳤다."
-
 endingRules:
   - when:
-      all:
-        - var: culprit_answer
-          op: eq
-          value: "신이치"
-        - var: truth_point
-          op: gte
-          value: 4
-        - var: trust
-          op: gte
-          value: 3
+      var: score
+      op: gte
+      value: 3
     ending: true_end
 defaultEnding: bad_end
+```
+
+### 2) 폴더 `base.yaml` (선택, 계층 병합)
+
+```yaml
+assets:
+  backgrounds:
+    hall: assets/bg/hall.png
+  characters:
+    conan:
+      base: assets/char/conan/base.png
+      emotions:
+        serious: assets/char/conan/serious.png
+  music:
+    mystery: assets/music/mystery.wav
+  sfx:
+    door: assets/sfx/door.wav
+state:
+  score: 0
+  suspect: ""
+```
+
+### 3) 챕터 YAML (`1.yaml`, `routes/a/1.yaml` 등)
+
+```yaml
+assets: # 선택
+  characters:
+    guest:
+      base: assets/char/guest/base.png
 
 script:
   - scene: intro
-  - scene: route_entry
 
 scenes:
   intro:
     actions:
-      - bg: tea_room
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
+      - bg: hall
       - say:
-          text: "이번 사건은 루트 분기 + 공통 결론 구조로 진행된다."
-      - goto: route_entry
-
-  route_entry:
-    actions:
-      - choice:
-          key: route_entry
-          prompt: "초기 지목을 고르자."
-          options:
-            - text: "신이치"
-              set:
-                suspect: "신이치"
-              add:
-                trust: 1
-                truth_point: 1
-              goto: ./routes/shinichi/1.yaml
-            - text: "레이코"
-              set:
-                suspect: "레이코"
-              add:
-                trust: -1
-                mistake_count: 1
-              goto: ./routes/reiko/1.yaml
+          text: "시작"
 ```
 
-노트:
-- `say.char`가 있으면 해당 화자 1명이 기본 노출되고, `say.with`로 지정한 캐릭터만 추가 노출됩니다.
-- `say.char`가 없는 내레이션은 캐릭터를 숨기고 텍스트에 집중합니다.
-- `chat.with`는 지원하지 않으며, 같은 목적은 `say.with`를 사용합니다.
-- `input.routes`/`branch.cases`는 첫 매칭 우선으로 분기됩니다.
-- 자동 저장에는 `chapter/scene/action`뿐 아니라 `routeVars/routeHistory/resolvedEndingId`도 포함됩니다.
-- `goto`는 씬 ID뿐 아니라 챕터 파일 경로도 받을 수 있습니다(`./a/5.yaml`, `./31`).
-- 챕터 경로 `goto`는 항상 게임 루트 기준이며, 대상 챕터부터 같은 폴더 번호 순서로 이어서 진행됩니다.
-- `../b/3.yaml` 같은 상대 상위 경로는 지원하지 않습니다. 루트 절대경로(`./b/3.yaml` 또는 `/b/3.yaml`)만 사용합니다.
+## V3 계약 요약
 
-실제 예시:
-- [public/game-list/conan/1.yaml](<home>/visual-novel/public/game-list/conan/1.yaml)
-- [public/game-list/conan/routes/shinichi/1.yaml](<home>/visual-novel/public/game-list/conan/routes/shinichi/1.yaml)
-- [public/game-list/conan/routes/reiko/1.yaml](<home>/visual-novel/public/game-list/conan/routes/reiko/1.yaml)
-- [public/game-list/conan/conclusion/1.yaml](<home>/visual-novel/public/game-list/conan/conclusion/1.yaml)
+- `config.yaml`은 게임 루트에 **필수**입니다.
+- `config.yaml` 전용 필드:
+  - `title`, `author`, `version`
+  - `textSpeed`, `autoSave`, `clickToInstant`
+  - `endings`, `endingRules`, `defaultEnding`
+- `base.yaml` 허용 필드: `assets`, `state`
+- 챕터 YAML 허용 필드:
+  - 필수: `script`, `scenes`
+  - 선택: `assets`, `state`
+- `meta/settings` 레거시 포맷은 지원하지 않습니다.
 
-## Branch Patterns (실무 패턴)
+## 병합 규칙
 
-필수 루트 강제 진입 패턴:
+레이어 순서:
+- `config.yaml`
+- 루트 `base.yaml`
+- 하위 폴더 `base.yaml` (상위 -> 하위)
+- 챕터 YAML
 
-```yaml
-- branch:
-    cases:
-      - when:
-          var: has_key
-          op: eq
-          value: true
-        goto: open_locked_room
-    default: key_route_intro
-```
+우선순위:
+- 자식 우선
+- `assets`는 카테고리 키 단위 병합
+- `state`는 키 단위 병합, 동일 키 타입 충돌 시 에러
+- 작성 DSL은 `state` 평면 맵을 사용하며, 런타임 내부에서는 `state.defaults`로 정규화됩니다.
+- `script/scenes`는 챕터 YAML만 사용
+- `endings/endingRules/defaultEnding`은 `config.yaml`만 사용
 
-실수 누적/회복 패턴:
+## 경로 규칙
 
-```yaml
-- choice:
-    prompt: "증거 해석을 고르자."
-    options:
-      - text: "정황만 본다"
-        add:
-          mistake_count: 1
-          trust: -1
-      - text: "핵심 물증을 검증한다"
-        add:
-          truth_point: 1
-          trust: 1
-```
+- `/...`: 게임 루트 기준
+- `./...`, `../...`: 선언 YAML 파일 위치 기준
+- `assets/...` 같은 bare 경로: 선언 YAML 파일 위치 기준
+- 내부적으로 asset/video 경로는 게임 루트 기준 canonical key로 정규화됩니다.
 
-공통 결론 합류 패턴:
-
-```yaml
-# routes/shinichi/2.yaml, routes/reiko/2.yaml 등 각 루트 마지막
-- goto: ./conclusion/1.yaml
-```
-
-## Supported Actions
+## 지원 액션
 
 - `bg`
 - `sticker`
@@ -227,70 +151,33 @@ scenes:
 - `branch`
 - `ending`
 
-상세 사용법은 [docs/DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)에 정리되어 있습니다.
+## `script` 실행 의미
 
-## Chapter Loading Rules
+- `script`는 챕터의 기본 scene 진행 순서입니다.
+- 엔진은 `script[0]`에서 시작하고, 현재 scene의 action을 모두 소비하면 `script`의 다음 scene으로 이동합니다.
+- `goto: scene_id`는 scene 점프입니다. 점프한 scene이 끝나면 그 scene의 `script` 위치 다음 scene으로 이어집니다.
+- `goto: ./...` 또는 `goto: /...`는 챕터 점프입니다.
+- 권장: `goto` 대상 scene도 `script`에 포함해 두세요. (`script`에 없는 scene 종료 시 다음 계산 기준이 모호해집니다.)
 
-- `0.yaml`이 있으면 `0`부터, 없으면 `1.yaml`부터 시작
-- 시작 시 현재 챕터만 파싱, 다음 챕터는 백그라운드 프리로드
-- 챕터 진입 전 해당 YAML 에셋 프리로드 + 로딩 UI 노출
-- 로딩 UI는 최소 600ms 유지, 100% 이후 200ms 뒤 종료
-- HUD/로딩에서 챕터 분수(`N/M`) 대신 일반 문구/제목 중심 표시
+## 챕터 로딩 규칙
 
-## Launcher UX
+- `0.yaml`이 있으면 `0,1,2...` 순서
+- 없고 `1.yaml`이 있으면 `1,2,3...` 순서
+- `goto: ./routes/a/1.yaml`처럼 경로 점프 가능
+- 경로 점프 후 같은 폴더의 번호 챕터를 순차 진행
+- `../`를 포함한 챕터 `goto`는 허용하지 않습니다.
 
-`/` 페이지 버튼:
-- `샘플 파일 다운받기 (ZIP)`
-- `게임 실행해보기 (ZIP 올려서)`
-- `게임 공유하기 (PR)` → GitHub compare 화면으로 이동
+## 샘플
 
-## Project Structure
+- `public/game-list/conan/config.yaml`
+- `public/game-list/conan/base.yaml`
+- `public/game-list/conan/routes/base.yaml`
+- `public/game-list/conan/1.yaml`
+- `public/game-list/conan/routes/shinichi/1.yaml`
+- `public/game-list/conan/routes/reiko/1.yaml`
+- `public/game-list/conan/conclusion/1.yaml`
 
-```text
-public/
-  game-list/
-    index.json
-    conan/
-      1.yaml
-      routes/
-        shinichi/
-          1.yaml
-          2.yaml
-        reiko/
-          1.yaml
-          2.yaml
-      conclusion/
-        1.yaml
-      2.yaml  # legacy/reference
-      3.yaml  # legacy/reference
-      4.yaml  # legacy/reference
-      assets/
-src/
-  engine.ts
-  parser.ts
-  schema.ts
-```
+## 개발 메모
 
-## Docs
-
-- 개발 가이드: [docs/DEVELOPMENT_GUIDE.ko.md](<home>/visual-novel/docs/DEVELOPMENT_GUIDE.ko.md)
-- 스토리→YAML 변환 프롬프트: [docs/YAML_STORY_TO_DSL_PROMPT.ko.md](<home>/visual-novel/docs/YAML_STORY_TO_DSL_PROMPT.ko.md)
-- 샘플 확장 계획: [docs/SAMPLE_EXPANSION_PLAN.ko.md](<home>/visual-novel/docs/SAMPLE_EXPANSION_PLAN.ko.md)
-
-## Development
-
-```bash
-pnpm dev      # 로컬 개발 서버
-pnpm build    # 프로덕션 빌드
-pnpm preview  # 빌드 결과 미리보기
-```
-
-## Contributing
-
-1. `public/game-list/<your-game>/`에 YAML과 에셋 추가
-2. 루트(`/`)에서 ZIP으로 실행 확인
-3. PR 생성 (`게임 공유하기 (PR)` 버튼 활용 가능)
-
----
-
-프로젝트 목표는 간단합니다: **작가/기획자가 YAML만으로 연출 가능한 VN을 빠르게 웹에서 실행**할 수 있게 만드는 것.
+- 런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성됩니다.
+- 표시명은 `config.yaml.title`을 우선 사용합니다.

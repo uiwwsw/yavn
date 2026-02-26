@@ -1,0 +1,4 @@
+assets:
+  backgrounds:
+    clue_cup: ../assets/bg/clue_cup.svg
+    clue_lid: ../assets/bg/clue_lid.svg

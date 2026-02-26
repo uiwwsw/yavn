@@ -1,0 +1,64 @@
+title: "명탐정 코난 외전: 다실의 비밀"
+author:
+  name: "uiwwsw"
+  contacts:
+    - "Email: creator@yavn.dev"
+    - label: "Homepage"
+      value: "yavn.vercel.app"
+      href: "https://yavn.vercel.app"
+    - label: "LinkedIn"
+      value: "linkedin.com/in/uiwwsw"
+      href: "https://linkedin.com/in/uiwwsw"
+version: "5.0"
+textSpeed: 38
+autoSave: true
+clickToInstant: true
+endings:
+  true_end:
+    title: "TRUE END"
+    message: "주전자 트릭과 습관의 연결고리를 완벽히 증명했다."
+  normal_end:
+    title: "NORMAL END"
+    message: "범인은 밝혔지만, 오판의 흔적이 결론에 그림자를 남겼다."
+  bad_end:
+    title: "BAD END"
+    message: "밀실의 진실은 끝내 흐릿하게 남았다."
+endingRules:
+  - when:
+      all:
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+        - var: truth_point
+          op: gte
+          value: 8
+        - var: mistake_count
+          op: lte
+          value: 2
+        - var: trust
+          op: gte
+          value: 2
+        - var: final_confidence
+          op: gte
+          value: 4
+        - var: clue_word
+          op: in
+          value:
+            - "금속"
+            - "금속 냄새"
+            - "쇠"
+            - "쇠 냄새"
+    ending: true_end
+  - when:
+      all:
+        - var: culprit_answer
+          op: eq
+          value: "신이치"
+        - var: truth_point
+          op: gte
+          value: 5
+        - var: mistake_count
+          op: lte
+          value: 4
+    ending: normal_end
+defaultEnding: bad_end

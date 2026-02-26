@@ -1,62 +1,12 @@
-meta:
-  title: "명탐정 코난 외전: 다실의 비밀"
-  author: "uiwwsw"
-  version: "4.0"
-
-settings:
-  textSpeed: 38
-  autoSave: true
-  clickToInstant: true
-
-assets:
-  backgrounds:
-    ryokan_hall: ../../assets/bg/ryokan_hall.png
-    tea_room: ../../assets/bg/tea_room.png
-
-  characters:
-    코난:
-      base: ../../assets/char/conan/base.png
-      emotions:
-        think: ../../assets/char/conan/think.png
-        serious: ../../assets/char/conan/serious.png
-
-    신이치:
-      base: ../../assets/char/shinichi/base.png
-      emotions:
-        cold: ../../assets/char/shinichi/cold.png
-
-    레이코:
-      base: ../../assets/char/reiko/base.png
-      emotions:
-        nervous: ../../assets/char/reiko/nervous.png
-
-    하루오:
-      base: ../../assets/char/haruo/base.png
-      emotions:
-        scared: ../../assets/char/haruo/scared.png
-
-  music:
-    mystery: ../../assets/music/mystery.wav
-    tension: ../../assets/music/tension.wav
-
-  sfx:
-    thunder: ../../assets/sfx/thunder.wav
-
-state:
-  defaults:
-    trust: 0
-    truth_point: 0
-    mistake_count: 0
-    comeback_chance: 1
-    route_origin: ""
-    suspect: ""
-    culprit_answer: ""
-
 script:
   - scene: route_start
   - scene: bias_gate
-  - scene: timeline_gate
-  - scene: timeline_fail
+  - scene: clue_card_sequence
+  - scene: timeline_fix_input
+  - scene: recovery_gate
+  - scene: recovery_branch
+  - scene: rescue_success
+  - scene: rescue_fail
   - scene: route_outro
 
 scenes:
@@ -68,12 +18,22 @@ scenes:
           id: 코난
           position: center
           emotion: think
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
       - say:
-          text: "레이코 루트 1 - 오판의 시작"
+          text: "레이코 루트 1 - 오판 복구"
       - say:
-          char: 코난
-          text: "초기 지목은 빗나갔지만, 아직 되돌릴 수 있어."
-      - goto: bias_gate
+          char: 하루오.scared
+          with:
+            - 코난.think
+          text: "...난 못 봤어. 근데, 냄새가 이상했던 건 기억해."
+      - say:
+          char: 코난.think
+          with:
+            - 하루오.scared
+          text: "(짧지만 정확한 증언이야. 이런 건 절대 놓치면 안 돼.)"
 
   bias_gate:
     actions:
@@ -87,65 +47,155 @@ scenes:
           position: right
           emotion: cold
       - choice:
-          key: reiko_route1_bias
-          prompt: "다음 조사 방향을 고르자."
+          key: reiko_bias
+          prompt: "초기 오판 구간. 조사 방향을 정하자."
           options:
             - text: "레이코를 계속 몰아붙인다"
               set:
                 suspect: "레이코"
+                witness_priority: "reiko"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: timeline_gate
-            - text: "신이치의 우산 이동 동선을 먼저 확인한다"
+            - text: "신이치의 우산 동선을 먼저 확인한다"
               set:
                 suspect: "신이치"
+                witness_priority: "shinichi"
               add:
                 truth_point: 1
                 trust: 1
-              goto: timeline_gate
 
-  timeline_gate:
+  clue_card_sequence:
+    actions:
+      - effect: zoom
+      - sticker:
+          id: clue_cup_card
+          image: clue_cup
+          x: 50
+          y: 42
+          width: 78
+          anchorX: center
+          anchorY: center
+          zIndex: 6
+          enter:
+            effect: popIn
+            duration: 340
+      - say:
+          char: 코난
+          text: "단서 1. 피해자 잔만 손잡이 방향이 달랐어."
+      - clearSticker:
+          id: clue_cup_card
+          leave:
+            effect: wipeRight
+            duration: 240
+      - sticker:
+          id: clue_lid_card
+          image: clue_lid
+          x: 50
+          y: 42
+          width: 78
+          anchorX: center
+          anchorY: center
+          zIndex: 6
+          enter:
+            effect: slideUp
+            duration: 320
+      - say:
+          char: 코난.serious
+          with:
+            - 레이코.nervous
+          text: "단서 2. 주전자 뚜껑 안쪽 가루는 각도에 따라 특정 잔에만 섞인다."
+      - set:
+          kettle_trick_known: true
+      - clearSticker:
+          id: clue_lid_card
+          leave:
+            effect: fadeOut
+            duration: 200
+
+  timeline_fix_input:
     actions:
       - music: tension
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
       - input:
-          prompt: "문 파손 직후, 소매가 비정상적으로 마른 쪽은 누구였지?"
+          prompt: "비명 직후 소매가 비정상적으로 말라 있던 사람은?"
           correct: "신이치"
           errors:
-            - "외투 상태를 다시 비교해봐."
-            - "힌트: 빗속 동선과 소매 건조 상태가 충돌해."
+            - "빗속 동선과 소매 상태를 함께 보자."
+            - "힌트: 우산 동선이 비어 있는 사람."
             - "정답은 신이치."
           routes:
             - equals: "신이치"
               set:
                 suspect: "신이치"
               add:
-                truth_point: 1
+                truth_point: 2
                 trust: 1
-              goto: route_outro
+              goto: recovery_gate
             - equals: "레이코"
               set:
                 suspect: "레이코"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: timeline_fail
+              goto: recovery_gate
 
-  timeline_fail:
+  recovery_gate:
     actions:
-      - sound: thunder
+      - choice:
+          key: reiko_recovery
+          prompt: "보고서 핵심 문장을 고르자."
+          options:
+            - text: "손잡이 방향과 뚜껑 가루를 함께 제시한다"
+              set:
+                room_reconstruction_ok: true
+              add:
+                truth_point: 1
+                final_confidence: 1
+            - text: "레이코의 불안한 태도만 강조한다"
+              set:
+                room_reconstruction_ok: false
+              add:
+                mistake_count: 1
+                trust: -1
+
+  recovery_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: suspect
+                    op: eq
+                    value: "신이치"
+                  - var: room_reconstruction_ok
+                    op: eq
+                    value: true
+              goto: rescue_success
+          default: rescue_fail
+
+  rescue_success:
+    actions:
+      - effect: zoom
+      - say:
+          char: 코난.serious
+          text: "좋아, 오판 구간을 복구했다. 결론 회의에서 반전 가능해."
+      - add:
+          final_confidence: 1
+      - goto: route_outro
+
+  rescue_fail:
+    actions:
       - effect: pulse
       - say:
-          char: 코난
-          text: "그 답으로는 젖은 외투와 시간축이 연결되지 않아. 다시 보자."
-      - goto: timeline_gate
+          char: 코난.think
+          text: "흐름은 살렸지만 아직 불안정해. 결론에서 실수하면 바로 무너진다."
+      - add:
+          mistake_count: 1
+      - goto: route_outro
 
   route_outro:
     actions:
       - say:
-          text: "초기 오판을 교정할 단서는 확보했다. 다음 단계로 간다."
+          char: 코난
+          text: "다음 단계로 간다. 남은 건 마지막 고리 하나야."
       - goto: ./routes/reiko/2.yaml
