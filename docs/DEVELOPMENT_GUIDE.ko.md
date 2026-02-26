@@ -152,6 +152,7 @@ scenes:
 - `goto: ./routes/shinichi/1.yaml` 형태의 챕터 점프 지원
 - 점프 대상부터 같은 폴더의 번호 파일을 순차 진행
 - `../`를 포함한 챕터 `goto`는 지원하지 않음
+- 로딩 오버레이는 첫 화면에서 노출되는 Live2D 캐릭터가 실제 `ready/error`를 보고할 때까지 유지되며, 이후에만 `loaded`로 전환됩니다.
 
 ## 8-0) 에피소드형 탐문 라운지 패턴 (Conan 샘플)
 
@@ -220,8 +221,13 @@ scenes:
 - Cubism Core는 `public/vendor/live2d/live2dcubismcore.min.js`에서 로드합니다.
 - 코어 스크립트 로드 URL은 `live2dcubismcore.min.js?v=5-r.5-beta.3.1`로 고정해 브라우저 캐시로 인한 구버전 코어 잔존을 방지합니다.
 - Cubism Core v53에서 `drawables.renderOrders`가 비어 있고 `model.getRenderOrders()`만 존재하는 경우를 런타임 호환 패치로 보정합니다.
+- Live2D 중앙 배치에서 CSS `transform` 기반 오프셋을 제거해 포인터 좌표(클릭/드래그 시 시선 반응) 불일치를 완화합니다.
+- `easy-cl2d` 입력 좌표는 캔버스 `offsetLeft/offsetTop` 대신 `getBoundingClientRect()` 기준 로컬 좌표로 보정하고, 캔버스 내부에서 시작한 포인터만 드래그 추적해 슬롯 위치(`left/center/right`)별 시선 반응 편차를 줄입니다.
+- 캔버스 리사이즈는 `devicePixelRatio`를 반영한 드로잉 버퍼 크기(`clientWidth/Height * DPR`)를 사용해 고해상도 화면에서 입력 좌표와 렌더 좌표 불일치를 완화합니다.
 - URL 기반 게임은 `model directory + relative file references` 방식으로 로드해 텍스처/모션 경로를 안정적으로 해석합니다.
 - ZIP(blob URL) 로딩은 `model3.json`의 blob 절대 참조를 모델 디렉터리 기준 상대 키로 재작성해 동일 런타임 경로 규칙을 유지합니다.
+- 챕터 프리로드 단계에서 `model3.json`을 파싱해 `Moc/Physics/Pose/UserData/DisplayInfo/Textures/Expressions/Motions` 참조 자산을 재귀 큐로 선로딩합니다.
+- 첫 scene pause 시점에 노출된 Live2D 슬롯(`left/center/right`)의 ready/error 신호를 수집해 로딩 오버레이 해제 시점을 동기화합니다.
 - 로딩 전에 `Moc`와 첫 `Textures[]` 항목을 선검사하고, 실패 시 즉시 오류 문구를 표시합니다.
 - 로딩이 장시간 완료되지 않으면 내부 `state`/텍스처 카운트를 기반으로 정체(stalled) 진단 메시지를 표시합니다.
 - Cubism Core 또는 모델 리소스 로드 실패 시 캐릭터 레이어에 오류 문구를 표시합니다.
@@ -343,6 +349,9 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-26: Live2D 포인터 입력을 캔버스 실좌표(`getBoundingClientRect`) 기준으로 보정하고, 캔버스 내부 시작 드래그만 추적하도록 조정해 `center` 슬롯에서 크게 나타나던 시선 오프셋 문제를 수정. 동시에 캔버스 리사이즈에 `devicePixelRatio`를 반영해 고해상도 좌표 불일치를 완화.
+- 2026-02-26: 챕터 로딩 오버레이 해제 시점을 첫 scene의 Live2D ready/error 신호와 동기화하고, `model3.json` 내부 의존성(`Moc/Textures/Motions/Expressions` 등)까지 프리로드 큐에 포함하도록 동작을 확장.
+- 2026-02-26: Live2D 캐릭터 중앙 배치에서 `transform` 오프셋을 제거해 클릭/드래그 시 시선 추적 좌표 어긋남을 수정.
 - 2026-02-26: `choice`/`input` 액션에 `char`/`with` 필드를 추가해 `say` 없이도 캐릭터 노출과 표정 동기화를 지정할 수 있도록 확장.
 - 2026-02-26: 엔딩 크레딧 롤은 초기 자동 스크롤 구간에서 입력을 잠그고(`pointer-events: none`), 자동 스크롤 종료 후에만 수동 스크롤을 허용하도록 동작을 조정.
 - 2026-02-26: Cubism Core v53 + `easy-cl2d` 조합에서 `drawables.renderOrders` 부재로 발생하던 WebGL 렌더러 크래시(`Cannot read properties of undefined (reading '0')`)를 `getRenderOrders()` 호환 보정으로 수정.

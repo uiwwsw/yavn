@@ -214,6 +214,7 @@ scenes:
 - `goto: ./routes/a/1.yaml`처럼 경로 점프 가능
 - 경로 점프 후 같은 폴더의 번호 챕터를 순차 진행
 - `../`를 포함한 챕터 `goto`는 허용하지 않습니다.
+- 챕터 로딩 오버레이는 첫 화면에 노출되는 Live2D 캐릭터가 실제로 `ready/error` 상태를 보고할 때까지 유지됩니다.
 
 ## Conan 샘플 분기 구조
 
@@ -259,7 +260,11 @@ scenes:
 - 현재 Live2D 실행은 Cubism 5 모델(`moc3 v6`, `model3.json`)을 포함해 Cubism Core 호환 범위를 기준으로 렌더링합니다.
 - 코어 스크립트는 `live2dcubismcore.min.js?v=5-r.5-beta.3.1`로 로드해 브라우저 캐시로 인한 구버전 코어 잔존을 방지합니다.
 - Cubism Core v53에서 `renderOrders` 구조가 달라진 케이스를 위해 런타임 호환 패치를 적용해 `easy-cl2d` 렌더러 크래시(`undefined[0]`)를 방지합니다.
+- Live2D 캐릭터의 중앙 배치는 CSS `transform` 기반 오프셋을 제거해 포인터 추적 좌표(클릭/드래그 시 시선 반응) 불일치를 줄였습니다.
+- Live2D 포인터 좌표는 캔버스의 `getBoundingClientRect()` 기준 로컬 좌표로 보정하고, 드래그 시작 지점이 캔버스 내부일 때만 추적하도록 조정해 `left/center/right` 위치 간 시선 추적 오차를 줄였습니다.
+- Live2D 캔버스 리사이즈는 `devicePixelRatio`를 반영한 실제 드로잉 버퍼 크기를 사용해 고해상도 화면에서 입력 좌표와 렌더 좌표 불일치를 완화합니다.
 - Live2D 로더는 URL 게임에서 모델 디렉터리 기준 상대 참조를 우선 사용하고, ZIP(blob) 로딩에서는 blob 참조를 상대 키로 재작성해 텍스처/모션 경로를 안정화합니다.
+- 챕터 프리로드는 `model3.json` 내부 참조(`Moc/Physics/Pose/UserData/DisplayInfo/Textures/Expressions/Motions`)까지 확장해 Live2D 본 로딩 지연을 줄입니다.
 - Live2D 로딩 전에 `moc3`/첫 텍스처를 선검사하고, 장시간 로딩 정체 시 상태 코드(`state`)와 텍스처 카운트 진단 메시지를 표시합니다.
 - `public/vendor/live2d/*` 및 `public/game-list/live2dtest/assets/char/ren_pro_ko/*`는 Live2D 별도 라이선스 적용 자산이며, 배포/상업 이용 전 각 라이선스 조건을 확인해야 합니다.
 - 비디오 컷신 재생 중 탭 전환/브라우저 포커스 이탈 후 복귀하면 자동으로 재생 복구를 시도합니다. (`visibilitychange`, `focus`, `pageshow`)

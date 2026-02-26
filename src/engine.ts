@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import {
   parseBaseYaml,
@@ -53,6 +54,7 @@ const AUTOSAVE_KEY = 'vn-engine-autosave';
 const MAX_CHAPTERS = 101;
 const MIN_CHAPTER_LOADING_MS = 600;
 const CHAPTER_LOADED_HOLD_MS = 200;
+const LIVE2D_READY_TIMEOUT_MS = 12000;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
 const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
 const DEFAULT_VIDEO_HOLD_TO_SKIP_MS = 800;
@@ -340,6 +342,7 @@ async function playYouTubeMusic(videoId: string) {
 function resetSession() {
   clearTimers();
   clearObjectUrls();
+  resetLive2DLoadTracker();
   preparedChapters = [];
   activeChapterIndex = 0;
   runtimeMode = undefined;
@@ -391,6 +394,155 @@ function resolveAsset(baseUrl: string, path: string): string {
 
 function isJsonAsset(path: string): boolean {
   return /\.json$/i.test(path);
+}
+
+function isMoc3Asset(path: string): boolean {
+  return /\.moc3$/i.test(path);
+}
+
+function isLive2DModelJsonAsset(path: string): boolean {
+  return /\.model3\.json$/i.test(path);
+}
+
+function shouldFetchPreloadAsset(path: string): boolean {
+  return isJsonAsset(path) || isMoc3Asset(path);
+}
+
+function normalizeAbsoluteAssetUrl(path: string): string {
+  if (/^\/(https?:|blob:|data:)/i.test(path)) {
+    return path.slice(1);
+  }
+  return path;
+}
+
+function makePreloadQueueKey(path: string): string {
+  if (/^data:/i.test(path)) {
+    return path;
+  }
+  if (/^(blob:|https?:)/i.test(path)) {
+    return normalizeAbsoluteAssetUrl(path);
+  }
+  return normalizeAssetKey(path).toLowerCase();
+}
+
+function resolveLive2DReferencePath(parentPath: string, rawRef: string): string {
+  const ref = rawRef.trim();
+  if (!ref) {
+    return ref;
+  }
+  if (/^(blob:|data:|https?:)/i.test(ref)) {
+    return ref;
+  }
+  if (/^(https?:|blob:)/i.test(parentPath)) {
+    try {
+      return new URL(ref, parentPath).toString();
+    } catch {
+      return ref;
+    }
+  }
+  const parentNormalized = normalizeAssetKey(parentPath);
+  const parentDir = parentNormalized.includes('/') ? parentNormalized.slice(0, parentNormalized.lastIndexOf('/') + 1) : '';
+  if (ref.startsWith('/')) {
+    return ref;
+  }
+  return collapsePathDots(`${parentDir}${ref}`);
+}
+
+function collectLive2DDependencyPathsFromModelJson(rawJson: string): string[] {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawJson);
+  } catch {
+    return [];
+  }
+  if (!isRecord(parsed)) {
+    return [];
+  }
+
+  const fileRefs = parsed.FileReferences;
+  if (!isRecord(fileRefs)) {
+    return [];
+  }
+
+  const dependencies = new Set<string>();
+  const append = (value: unknown) => {
+    if (typeof value !== 'string') {
+      return;
+    }
+    const normalized = value.trim();
+    if (!normalized) {
+      return;
+    }
+    dependencies.add(normalized);
+  };
+
+  append(fileRefs.Moc);
+  append(fileRefs.Physics);
+  append(fileRefs.Pose);
+  append(fileRefs.UserData);
+  append(fileRefs.DisplayInfo);
+
+  if (Array.isArray(fileRefs.Textures)) {
+    for (const texture of fileRefs.Textures) {
+      append(texture);
+    }
+  }
+
+  if (Array.isArray(fileRefs.Expressions)) {
+    for (const expression of fileRefs.Expressions) {
+      if (!isRecord(expression)) {
+        continue;
+      }
+      append(expression.File);
+    }
+  }
+
+  if (isRecord(fileRefs.Motions)) {
+    for (const motionGroup of Object.values(fileRefs.Motions)) {
+      if (!Array.isArray(motionGroup)) {
+        continue;
+      }
+      for (const motion of motionGroup) {
+        if (!isRecord(motion)) {
+          continue;
+        }
+        append(motion.File);
+        append(motion.Sound);
+      }
+    }
+  }
+
+  return [...dependencies];
+}
+
+function collectVisibleLive2DLoadKeys(): string[] {
+  const state = useVNStore.getState();
+  const visible = new Set(state.visibleCharacterIds);
+  const keys: string[] = [];
+  const positions: Position[] = ['left', 'center', 'right'];
+  for (const position of positions) {
+    const slot = state.characters[position];
+    if (!slot || slot.kind !== 'live2d') {
+      continue;
+    }
+    if (!visible.has(slot.id)) {
+      continue;
+    }
+    keys.push(buildLive2DLoadKey(position, slot));
+  }
+  return keys;
+}
+
+async function waitForVisibleLive2DReady(chapterLabel: string): Promise<void> {
+  const keys = collectVisibleLive2DLoadKeys();
+  if (keys.length === 0) {
+    return;
+  }
+  useVNStore.getState().setChapterLoading(true, 0.99, `${chapterLabel} preparing Live2D...`);
+  const waited = await waitForLive2DLoad(keys, LIVE2D_READY_TIMEOUT_MS);
+  if (waited.timedOut) {
+    console.warn(`[YAVN] Live2D ready wait timed out: ${waited.resolved}/${waited.total}`);
+  }
 }
 
 function buildCharacterSlot(baseUrl: string, id: string, basePath: string, emotion?: string): CharacterSlot {
@@ -1303,50 +1455,73 @@ async function warmImageDecodeUrl(url: string) {
 }
 
 async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, chapterLabel: string) {
-  const paths = collectAssetPaths(game);
-  if (paths.length === 0) {
+  const initialPaths = collectAssetPaths(game);
+  if (initialPaths.length === 0) {
     useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loading...`);
     return;
   }
 
-  for (let idx = 0; idx < paths.length; idx += 1) {
-    const path = paths[idx];
+  const queue: string[] = [];
+  const queued = new Set<string>();
+  let processed = 0;
+  let progress = 0;
+
+  const enqueue = (path: string) => {
+    const trimmed = path.trim();
+    if (!trimmed) {
+      return;
+    }
+    const key = makePreloadQueueKey(trimmed);
+    if (queued.has(key)) {
+      return;
+    }
+    queued.add(key);
+    queue.push(trimmed);
+  };
+
+  const preloadSingle = async (path: string) => {
     const normalized = normalizeAssetKey(path);
     const existing =
       chapter.assetOverrides[path] ??
       chapter.assetOverrides[normalized] ??
       chapter.assetOverrides[`./${normalized}`] ??
       chapter.assetOverrides[`/${normalized}`];
-    let resolvedUrl: string | undefined;
+    const normalizedPath = normalizeAbsoluteAssetUrl(path);
+    let resolvedUrl: string;
 
-    if (/^(blob:|data:)/i.test(path)) {
-      resolvedUrl = path;
-    } else if (existing && /^(blob:|data:)/i.test(existing)) {
-      resolvedUrl = existing;
+    if (/^(blob:|data:|https?:)/i.test(normalizedPath)) {
+      resolvedUrl = normalizedPath;
+    } else if (existing && /^(blob:|data:|https?:)/i.test(existing)) {
+      resolvedUrl = normalizeAbsoluteAssetUrl(existing);
     } else {
-      const sourceUrl = resolveAssetWithOverrides(chapter.baseUrl, path, chapter.assetOverrides);
-      if (/^(blob:|data:|https?:)/i.test(sourceUrl)) {
-        resolvedUrl = sourceUrl;
-      } else if (isJsonAsset(path)) {
-        const response = await fetch(sourceUrl, { cache: 'force-cache' });
-        if (!response.ok) {
-          throw new Error(`Failed to preload asset: ${path}`);
-        }
-        resolvedUrl = sourceUrl;
-      } else {
-        const response = await fetch(sourceUrl, { cache: 'force-cache' });
-        if (!response.ok) {
-          throw new Error(`Failed to preload asset: ${path}`);
-        }
-        const blob = await response.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        objectUrls.push(blobUrl);
-        setAssetOverride(chapter.assetOverrides, path, blobUrl);
-        resolvedUrl = blobUrl;
-      }
+      resolvedUrl = normalizeAbsoluteAssetUrl(resolveAssetWithOverrides(chapter.baseUrl, path, chapter.assetOverrides));
     }
 
-    if (resolvedUrl && isImageAsset(path)) {
+    let fetchedJson: string | undefined;
+    const shouldFetch = shouldFetchPreloadAsset(path) || shouldFetchPreloadAsset(resolvedUrl);
+    if (shouldFetch) {
+      const response = await fetch(resolvedUrl, { cache: 'force-cache' });
+      if (!response.ok) {
+        throw new Error(`Failed to preload asset: ${path}`);
+      }
+      if (isJsonAsset(path) || isJsonAsset(resolvedUrl)) {
+        fetchedJson = await response.text();
+      } else {
+        await response.arrayBuffer();
+      }
+    } else if (!/^(blob:|data:|https?:)/i.test(resolvedUrl)) {
+      const response = await fetch(resolvedUrl, { cache: 'force-cache' });
+      if (!response.ok) {
+        throw new Error(`Failed to preload asset: ${path}`);
+      }
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      objectUrls.push(blobUrl);
+      setAssetOverride(chapter.assetOverrides, path, blobUrl);
+      resolvedUrl = blobUrl;
+    }
+
+    if (isImageAsset(path) || isImageAsset(resolvedUrl)) {
       try {
         await warmImageDecodeUrl(resolvedUrl);
       } catch {
@@ -1354,7 +1529,29 @@ async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, ch
       }
     }
 
-    useVNStore.getState().setChapterLoading(true, (idx + 1) / paths.length, `${chapterLabel} loading...`);
+    if (fetchedJson && (isLive2DModelJsonAsset(path) || isLive2DModelJsonAsset(resolvedUrl))) {
+      const references = collectLive2DDependencyPathsFromModelJson(fetchedJson);
+      for (const reference of references) {
+        const resolvedReference = resolveLive2DReferencePath(resolvedUrl, reference);
+        if (!resolvedReference) {
+          continue;
+        }
+        enqueue(resolvedReference);
+      }
+    }
+  };
+
+  for (const path of initialPaths) {
+    enqueue(path);
+  }
+
+  while (processed < queue.length) {
+    const path = queue[processed];
+    await preloadSingle(path);
+    processed += 1;
+    const stepProgress = queue.length > 0 ? processed / queue.length : 1;
+    progress = Math.max(progress, stepProgress);
+    useVNStore.getState().setChapterLoading(true, Math.min(progress, 0.98), `${chapterLabel} loading...`);
   }
 }
 
@@ -1554,6 +1751,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
 
   try {
     activeChapterIndex = chapterIndex;
+    resetLive2DLoadTracker();
     useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
     const chapterLabel = 'Chapter';
     const loadStartedAt = performance.now();
@@ -1562,10 +1760,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
     await preloadChapterAssets(chapter, game, chapterLabel);
     const elapsed = performance.now() - loadStartedAt;
     await waitMs(MIN_CHAPTER_LOADING_MS - elapsed);
-    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loaded`);
-    await waitNextFrame();
-    await waitMs(CHAPTER_LOADED_HOLD_MS);
-    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
+    useVNStore.getState().setChapterLoading(true, 0.99, `${chapterLabel} preparing scene...`);
 
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
     const defaults = game.state?.defaults;
@@ -1597,6 +1792,20 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
     }
 
     runToNextPause();
+    if (activeChapterIndex !== chapterIndex) {
+      return;
+    }
+
+    await waitNextFrame();
+    await waitForVisibleLive2DReady(chapterLabel);
+    if (activeChapterIndex !== chapterIndex) {
+      return;
+    }
+
+    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loaded`);
+    await waitNextFrame();
+    await waitMs(CHAPTER_LOADED_HOLD_MS);
+    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);
     useVNStore.getState().setError({ message: error instanceof Error ? error.message : 'Failed to start chapter' });

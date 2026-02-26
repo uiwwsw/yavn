@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { createModelView, startup, Ticker } from 'easy-cl2d';
+import { markLive2DLoadError, markLive2DLoadReady } from './live2dLoadTracker';
 import type { CharacterSlot, Position } from './types';
 
 const CUBISM_CORE_SCRIPT_URL = '/vendor/live2d/live2dcubismcore.min.js?v=5-r.5-beta.3.1';
@@ -48,6 +49,23 @@ type Live2DViewModel = {
   startRandomMotion?: (group: string, priority: number) => void;
 };
 
+type Live2DPointerView = {
+  onTouchBegan: (pointX: number, pointY: number) => void;
+  onTouchMove: (pointX: number, pointY: number) => void;
+  onTouchEnd: (pointX: number, pointY: number) => void;
+};
+
+type Live2DPointerSubdelegate = {
+  canvas: HTMLCanvasElement;
+  _view?: Live2DPointerView | null;
+  _captured?: boolean;
+  onPointerDown?: (pageX: number, pageY: number) => void;
+  onPointerMove?: (pageX: number, pageY: number) => void;
+  onPointerUp?: (pageX: number, pageY: number) => void;
+  onTouchCancel?: (pageX: number, pageY: number) => void;
+  __yavnPointerPatched?: boolean;
+};
+
 type Live2DInternalModel = Live2DViewModel & {
   _state?: number;
   _textureCount?: number;
@@ -55,6 +73,7 @@ type Live2DInternalModel = Live2DViewModel & {
   _modelSetting?: {
     getTextureCount?: () => number;
   };
+  _subdelegate?: Live2DPointerSubdelegate;
 };
 
 type Live2DViewHandle = {
@@ -405,6 +424,106 @@ async function preflightModelAssets(directory: string, modelJson: Live2DModelJso
   }
 }
 
+function waitForModelReady(
+  getModel: () => Live2DInternalModel | undefined,
+  isCancelled: () => boolean,
+  timeoutMs = 12000,
+): Promise<boolean> {
+  return new Promise<boolean>((resolve) => {
+    const startedAt = performance.now();
+    const tick = () => {
+      if (isCancelled()) {
+        resolve(false);
+        return;
+      }
+      const model = getModel();
+      if (model?._state === 22) {
+        resolve(true);
+        return;
+      }
+      if (performance.now() - startedAt >= timeoutMs) {
+        resolve(false);
+        return;
+      }
+      window.requestAnimationFrame(tick);
+    };
+    tick();
+  });
+}
+
+function resolveLocalPoint(pageX: number, pageY: number, canvas: HTMLCanvasElement): { x: number; y: number; inside: boolean } {
+  const rect = canvas.getBoundingClientRect();
+  const clientX = pageX - window.scrollX;
+  const clientY = pageY - window.scrollY;
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+  return { x, y, inside };
+}
+
+function patchPointerMapping(model: Live2DInternalModel | undefined): void {
+  const subdelegate = model?._subdelegate;
+  if (!subdelegate || subdelegate.__yavnPointerPatched) {
+    return;
+  }
+
+  subdelegate.onPointerDown = (pageX: number, pageY: number) => {
+    const view = subdelegate._view;
+    if (!view) {
+      return;
+    }
+    const local = resolveLocalPoint(pageX, pageY, subdelegate.canvas);
+    if (!local.inside) {
+      subdelegate._captured = false;
+      return;
+    }
+    subdelegate._captured = true;
+    view.onTouchBegan(local.x, local.y);
+  };
+
+  subdelegate.onPointerMove = (pageX: number, pageY: number) => {
+    if (!subdelegate._captured) {
+      return;
+    }
+    const view = subdelegate._view;
+    if (!view) {
+      return;
+    }
+    const local = resolveLocalPoint(pageX, pageY, subdelegate.canvas);
+    view.onTouchMove(local.x, local.y);
+  };
+
+  subdelegate.onPointerUp = (pageX: number, pageY: number) => {
+    const captured = !!subdelegate._captured;
+    subdelegate._captured = false;
+    if (!captured) {
+      return;
+    }
+    const view = subdelegate._view;
+    if (!view) {
+      return;
+    }
+    const local = resolveLocalPoint(pageX, pageY, subdelegate.canvas);
+    view.onTouchEnd(local.x, local.y);
+  };
+
+  subdelegate.onTouchCancel = (pageX: number, pageY: number) => {
+    const captured = !!subdelegate._captured;
+    subdelegate._captured = false;
+    if (!captured) {
+      return;
+    }
+    const view = subdelegate._view;
+    if (!view) {
+      return;
+    }
+    const local = resolveLocalPoint(pageX, pageY, subdelegate.canvas);
+    view.onTouchEnd(local.x, local.y);
+  };
+
+  subdelegate.__yavnPointerPatched = true;
+}
+
 function formatLoadError(error: unknown): string {
   if (error instanceof Error && error.message.trim()) {
     return error.message;
@@ -460,11 +579,12 @@ function applyEmotion(model: Live2DViewModel | undefined, emotion?: string): voi
 type Props = {
   slot: CharacterSlot;
   position: Position;
+  trackingKey: string;
   className?: string;
   style?: CSSProperties;
 };
 
-export function Live2DCharacter({ slot, position, className, style }: Props) {
+export function Live2DCharacter({ slot, position, trackingKey, className, style }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<Live2DViewModel>();
   const [error, setError] = useState<string>();
@@ -530,13 +650,17 @@ export function Live2DCharacter({ slot, position, className, style }: Props) {
             }
           },
         }) as unknown as Live2DViewHandle;
+        patchPointerMapping(modelView.inner as Live2DInternalModel | undefined);
 
         const resize = () => {
           if (!modelView || !mountRef.current) {
             return;
           }
-          const width = Math.max(mountRef.current.clientWidth, 1);
-          const height = Math.max(mountRef.current.clientHeight, 1);
+          const widthCss = Math.max(mountRef.current.clientWidth, 1);
+          const heightCss = Math.max(mountRef.current.clientHeight, 1);
+          const dpr = Math.max(window.devicePixelRatio || 1, 1);
+          const width = Math.max(Math.round(widthCss * dpr), 1);
+          const height = Math.max(Math.round(heightCss * dpr), 1);
           modelView.resizeCanvas(width, height);
         };
 
@@ -560,10 +684,24 @@ export function Live2DCharacter({ slot, position, className, style }: Props) {
           const expectedTextureLabel = typeof expectedTextureCount === 'number' ? expectedTextureCount : '?';
           const stateLabel = typeof inner._state === 'number' ? inner._state : '?';
           setError(`Live2D loading stalled (state=${stateLabel}, textures=${loadedTextureCount}/${expectedTextureLabel})`);
+          markLive2DLoadError(trackingKey);
         }, 8000);
+
+        const ready = await waitForModelReady(
+          () => modelView?.inner as Live2DInternalModel | undefined,
+          () => cancelled,
+        );
+        if (!ready || cancelled) {
+          if (!cancelled) {
+            markLive2DLoadError(trackingKey);
+          }
+          return;
+        }
+        markLive2DLoadReady(trackingKey);
       } catch (err) {
         if (!cancelled) {
           setError(formatLoadError(err));
+          markLive2DLoadError(trackingKey);
         }
       }
     };
@@ -590,7 +728,7 @@ export function Live2DCharacter({ slot, position, className, style }: Props) {
         mountRef.current.innerHTML = '';
       }
     };
-  }, [slot.source]);
+  }, [slot.source, trackingKey]);
 
   useEffect(() => {
     applyEmotion(modelRef.current, slot.emotion);

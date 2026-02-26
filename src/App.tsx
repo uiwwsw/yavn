@@ -14,6 +14,7 @@ import {
   updateVideoSkipProgress,
 } from './engine';
 import { Live2DCharacter } from './Live2DCharacter';
+import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import type { AuthorMetaObject, CharacterSlot, Position } from './types';
 import type { CSSProperties, SyntheticEvent } from 'react';
@@ -676,6 +677,7 @@ export default function App() {
           key={`${position}-${slot.id}-${slot.source}`}
           slot={slot}
           position={position}
+          trackingKey={buildLive2DLoadKey(position, slot)}
           style={charStyle}
         />
       );
