@@ -181,6 +181,7 @@ export default function App() {
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   const sampleZipUrl = '/sample.zip';
   const shareByPrUrl = 'https://github.com/uiwwsw/visual-novel/compare';
+  const isDialogHidden = videoCutscene.active || chapterLoading || !game;
 
   useEffect(() => {
     let disposed = false;
@@ -987,7 +988,7 @@ export default function App() {
         <div className="hint">{uploading ? 'ZIP Loading...' : 'Click / Enter / Space'}</div>
       </div>
 
-      <div ref={dialogBoxRef} className={`dialog-box ${videoCutscene.active ? 'hidden' : ''}`}>
+      <div ref={dialogBoxRef} className={`dialog-box ${isDialogHidden ? 'hidden' : ''}`}>
         {dialog.speaker && <div className="speaker">{dialog.speaker}</div>}
         <div className="text">{dialog.visibleText}</div>
         {inputGate.active && (
