@@ -116,6 +116,8 @@ export type InputRoute = {
 export type InputAction = {
   input: {
     prompt: string;
+    char?: string;
+    with?: string[];
     correct: string;
     errors: string[];
     saveAs?: string;
@@ -144,6 +146,8 @@ export type ChoiceAction = {
   choice: {
     key?: string;
     prompt: string;
+    char?: string;
+    with?: string[];
     forgiveOnceDefault?: boolean;
     forgiveMessage?: string;
     options: ChoiceOption[];

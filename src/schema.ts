@@ -26,6 +26,8 @@ const inputRouteSchema = z.object({
 
 const inputActionSchema = z.object({
   prompt: z.string().min(1),
+  char: z.string().min(1).optional(),
+  with: z.array(z.string().min(1)).optional(),
   correct: z.string().min(1),
   errors: z.array(z.string().min(1)).min(1).optional(),
   saveAs: z.string().min(1).optional(),
@@ -115,6 +117,8 @@ export const actionSchema = z.union([
   z.object({
     input: inputActionSchema.transform((input) => ({
       prompt: input.prompt,
+      char: input.char,
+      with: input.with,
       correct: input.correct,
       errors: input.errors && input.errors.length > 0 ? input.errors : ['정답이 아닙니다.'],
       saveAs: input.saveAs,
@@ -127,6 +131,8 @@ export const actionSchema = z.union([
     choice: z.object({
       key: z.string().min(1).optional(),
       prompt: z.string().min(1),
+      char: z.string().min(1).optional(),
+      with: z.array(z.string().min(1)).optional(),
       forgiveOnceDefault: z.boolean().optional(),
       forgiveMessage: z.string().min(1).optional(),
       options: z.array(choiceOptionSchema).min(1),

@@ -1,0 +1,11 @@
+assets:
+  characters:
+    렌:
+      base: /assets/char/ren_pro_ko/runtime/ren.model3.json
+      emotions:
+        exp_01: /assets/char/ren_pro_ko/runtime/ren.model3.json
+        exp_02: /assets/char/ren_pro_ko/runtime/ren.model3.json
+        exp_03: /assets/char/ren_pro_ko/runtime/ren.model3.json
+        exp_04: /assets/char/ren_pro_ko/runtime/ren.model3.json
+        exp_05: /assets/char/ren_pro_ko/runtime/ren.model3.json
+        Idle: /assets/char/ren_pro_ko/runtime/ren.model3.json

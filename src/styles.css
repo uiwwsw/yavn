@@ -560,13 +560,19 @@ textarea,
 
 .char-live2d-error {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -22px;
-  font-size: 11px;
+  left: 6%;
+  right: 6%;
+  bottom: 8%;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 158, 170, 0.45);
+  background: rgba(16, 17, 26, 0.74);
+  font-size: 12px;
+  line-height: 1.35;
   color: #ffd1d9;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
 }
 
 .left {
@@ -731,7 +737,6 @@ textarea,
       transparent 10px,
       transparent 15px
     );
-  transition: width 0.05s linear;
   box-shadow: 0 0 14px rgba(255, 148, 74, 0.48);
 }
 
@@ -946,6 +951,14 @@ textarea,
   -webkit-overflow-scrolling: touch;
   padding: 22px 0 108px;
   mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 86%, transparent 100%);
+}
+
+.ending-credits-roll.locked {
+  pointer-events: none;
+}
+
+.ending-credits-roll.unlocked {
+  pointer-events: auto;
 }
 
 .ending-credits-roll:focus-visible {

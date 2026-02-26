@@ -1,10 +1,15 @@
 {
-  "generatedAt": "2026-02-26T05:59:48.646Z",
+  "generatedAt": "2026-02-26T09:34:38.966Z",
   "games": [
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 다실의 비밀",
       "path": "/game-list/conan/"
+    },
+    {
+      "id": "live2dtest",
+      "name": "Live2D 테스트: 렌 수다",
+      "path": "/game-list/live2dtest/"
     }
   ]
 }

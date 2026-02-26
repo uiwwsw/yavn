@@ -16,7 +16,7 @@ import {
 import { Live2DCharacter } from './Live2DCharacter';
 import { useVNStore } from './store';
 import type { AuthorMetaObject, CharacterSlot, Position } from './types';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, SyntheticEvent } from 'react';
 
 type GameListManifestEntry = {
   id: string;
@@ -163,6 +163,7 @@ export default function App() {
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const appRef = useRef<HTMLDivElement | null>(null);
@@ -170,8 +171,8 @@ export default function App() {
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
-  const endingAutoScrollPausedRef = useRef(false);
   const [endingCreditsReady, setEndingCreditsReady] = useState(false);
+  const [endingCreditsScrollUnlocked, setEndingCreditsScrollUnlocked] = useState(false);
   const [endingTopSpacerPx, setEndingTopSpacerPx] = useState(0);
   const [showEndingRestart, setShowEndingRestart] = useState(false);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
@@ -363,13 +364,16 @@ export default function App() {
     });
   }, [game?.meta.title, isFinished, resolvedEndingId]);
 
-  const pauseEndingAutoScroll = useCallback(() => {
-    endingAutoScrollPausedRef.current = true;
-    if (endingAutoScrollRafRef.current !== null) {
-      window.cancelAnimationFrame(endingAutoScrollRafRef.current);
-      endingAutoScrollRafRef.current = null;
-    }
-  }, []);
+  const handleEndingCreditsInput = useCallback(
+    (event: SyntheticEvent<HTMLDivElement>) => {
+      if (endingCreditsScrollUnlocked) {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    [endingCreditsScrollUnlocked],
+  );
 
   useEffect(() => {
     if (!isFinished) {
@@ -377,14 +381,14 @@ export default function App() {
         window.cancelAnimationFrame(endingAutoScrollRafRef.current);
         endingAutoScrollRafRef.current = null;
       }
-      endingAutoScrollPausedRef.current = false;
       endingAutoScrollLastTsRef.current = null;
       setEndingCreditsReady(false);
+      setEndingCreditsScrollUnlocked(false);
       setEndingTopSpacerPx(0);
       return;
     }
-    endingAutoScrollPausedRef.current = false;
     setEndingCreditsReady(false);
+    setEndingCreditsScrollUnlocked(false);
 
     const setupRaf = window.requestAnimationFrame(() => {
       const rollEl = endingCreditsRollRef.current;
@@ -399,10 +403,6 @@ export default function App() {
 
       const pxPerSecond = 120;
       const step = (ts: number) => {
-        if (endingAutoScrollPausedRef.current) {
-          endingAutoScrollRafRef.current = null;
-          return;
-        }
         const latestRollEl = endingCreditsRollRef.current;
         if (!latestRollEl) {
           endingAutoScrollRafRef.current = null;
@@ -410,6 +410,7 @@ export default function App() {
         }
         const maxScrollTop = Math.max(0, latestRollEl.scrollHeight - latestRollEl.clientHeight);
         if (maxScrollTop <= 0) {
+          setEndingCreditsScrollUnlocked(true);
           endingAutoScrollRafRef.current = null;
           return;
         }
@@ -419,6 +420,7 @@ export default function App() {
         const nextScrollTop = Math.min(maxScrollTop, latestRollEl.scrollTop + pxPerSecond * deltaSec);
         latestRollEl.scrollTop = nextScrollTop;
         if (nextScrollTop >= maxScrollTop - 0.5) {
+          setEndingCreditsScrollUnlocked(true);
           endingAutoScrollRafRef.current = null;
           return;
         }
@@ -477,6 +479,48 @@ export default function App() {
     return () => window.cancelAnimationFrame(rafId);
   }, [choiceGate.active, choiceGate.key, choiceGate.options.length]);
 
+  const postYouTubeCommand = useCallback(
+    (func: string, args: unknown[] = []) => {
+      const target = youtubeIframeRef.current?.contentWindow;
+      if (!target) {
+        return;
+      }
+      target.postMessage(
+        JSON.stringify({
+          event: 'command',
+          func,
+          args,
+          id: youtubePlayerId,
+        }),
+        '*',
+      );
+    },
+    [youtubePlayerId],
+  );
+
+  const resumeNativeCutsceneVideo = useCallback(() => {
+    const video = nativeVideoRef.current;
+    if (!video || video.ended) {
+      return;
+    }
+    video.muted = true;
+    void video.play().catch(() => {
+      // Ignore autoplay-policy failures.
+    });
+  }, []);
+
+  const resumeVideoCutscenePlayback = useCallback(() => {
+    if (!videoCutscene.active) {
+      return;
+    }
+    if (videoCutscene.youtubeId) {
+      postYouTubeCommand('mute');
+      postYouTubeCommand('playVideo');
+      return;
+    }
+    resumeNativeCutsceneVideo();
+  }, [postYouTubeCommand, resumeNativeCutsceneVideo, videoCutscene.active, videoCutscene.youtubeId]);
+
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       if (!videoCutscene.active || !videoCutscene.youtubeId) {
@@ -491,13 +535,44 @@ export default function App() {
       } catch {
         return;
       }
-      if (payload.event === 'onStateChange' && payload.info === 0 && payload.id === youtubePlayerId) {
+      if (payload.event !== 'onStateChange' || payload.id !== youtubePlayerId) {
+        return;
+      }
+      if (payload.info === 0) {
         completeVideoCutscene();
+        return;
+      }
+      if (payload.info === 2 && document.visibilityState === 'visible') {
+        postYouTubeCommand('playVideo');
       }
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, [videoCutscene.active, videoCutscene.youtubeId]);
+  }, [postYouTubeCommand, videoCutscene.active, videoCutscene.youtubeId, youtubePlayerId]);
+
+  useEffect(() => {
+    if (!videoCutscene.active) {
+      return;
+    }
+    const onVisibilityChange = () => {
+      if (document.visibilityState !== 'visible') {
+        return;
+      }
+      resumeVideoCutscenePlayback();
+    };
+    const onWindowFocus = () => {
+      resumeVideoCutscenePlayback();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('focus', onWindowFocus);
+    window.addEventListener('pageshow', onWindowFocus);
+    onVisibilityChange();
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('focus', onWindowFocus);
+      window.removeEventListener('pageshow', onWindowFocus);
+    };
+  }, [resumeVideoCutscenePlayback, videoCutscene.active]);
 
   const clearHold = () => {
     holdingRef.current = false;
@@ -517,6 +592,7 @@ export default function App() {
     if (!videoCutscene.guideVisible || holdingRef.current) {
       return;
     }
+    resetVideoSkipProgress();
     holdingRef.current = true;
     holdStartRef.current = performance.now();
     holdTimerRef.current = window.setInterval(() => {
@@ -597,7 +673,7 @@ export default function App() {
     if (slot.kind === 'live2d') {
       return (
         <Live2DCharacter
-          key={`${position}-${slot.id}-${slot.source}-${slot.emotion ?? ''}`}
+          key={`${position}-${slot.id}-${slot.source}`}
           slot={slot}
           position={position}
           style={charStyle}
@@ -848,29 +924,28 @@ export default function App() {
               allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               referrerPolicy="strict-origin-when-cross-origin"
               onLoad={() => {
-                const target = youtubeIframeRef.current?.contentWindow;
-                if (!target) {
-                  return;
-                }
-                target.postMessage(
-                  JSON.stringify({
-                    event: 'command',
-                    func: 'addEventListener',
-                    args: ['onStateChange'],
-                    id: youtubePlayerId,
-                  }),
-                  '*',
-                );
+                postYouTubeCommand('addEventListener', ['onStateChange']);
+                postYouTubeCommand('mute');
+                postYouTubeCommand('playVideo');
               }}
             />
           ) : (
             <video
+              ref={nativeVideoRef}
               className="video-cutscene-frame video-cutscene-frame-native"
               src={videoCutscene.src}
               autoPlay
               muted
               playsInline
               onEnded={() => completeVideoCutscene()}
+              onPause={() => {
+                if (!videoCutscene.active || document.visibilityState !== 'visible') {
+                  return;
+                }
+                window.requestAnimationFrame(() => {
+                  resumeNativeCutsceneVideo();
+                });
+              }}
             />
           )}
           <div
@@ -1009,13 +1084,13 @@ export default function App() {
           <div className="ending-overlay-decoration" aria-hidden="true" />
           <div className="ending-credits-screen" aria-label="엔딩 크레딧">
             <div
-              className="ending-credits-roll"
+              className={`ending-credits-roll ${endingCreditsScrollUnlocked ? 'unlocked' : 'locked'}`}
               ref={endingCreditsRollRef}
-              tabIndex={0}
-              onWheel={pauseEndingAutoScroll}
-              onPointerDown={pauseEndingAutoScroll}
-              onTouchStart={pauseEndingAutoScroll}
-              onKeyDown={pauseEndingAutoScroll}
+              tabIndex={endingCreditsScrollUnlocked ? 0 : -1}
+              onWheel={handleEndingCreditsInput}
+              onPointerDown={handleEndingCreditsInput}
+              onTouchStart={handleEndingCreditsInput}
+              onKeyDown={handleEndingCreditsInput}
             >
               <div className="ending-credits-inner" style={{ visibility: endingCreditsReady ? 'visible' : 'hidden' }}>
                 <div className="ending-credits-spacer ending-credits-spacer-top" style={{ height: `${endingTopSpacerPx}px` }} />

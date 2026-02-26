@@ -1852,6 +1852,7 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('choice' in action) {
+    const presentation = resolveSayPresentation(action.choice.char, action.choice.with);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setChoiceGate({
@@ -1863,9 +1864,14 @@ function runToNextPause(loopGuard = 0) {
       forgivenOptionIndexes: [],
       options: action.choice.options,
     });
+    if (presentation.speakerId) {
+      useVNStore.getState().promoteSpeaker(presentation.speakerId);
+      useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
+      syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
+    }
     useVNStore.getState().setDialog({
-      speaker: undefined,
-      speakerId: undefined,
+      speaker: presentation.speakerName,
+      speakerId: presentation.speakerId,
       fullText: action.choice.prompt,
       visibleText: action.choice.prompt,
       typing: false,
@@ -1921,6 +1927,7 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('input' in action) {
+    const presentation = resolveSayPresentation(action.input.char, action.input.with);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearChoiceGate();
     useVNStore.getState().setInputGate({
@@ -1932,9 +1939,14 @@ function runToNextPause(loopGuard = 0) {
       saveAs: action.input.saveAs,
       routes: action.input.routes,
     });
+    if (presentation.speakerId) {
+      useVNStore.getState().promoteSpeaker(presentation.speakerId);
+      useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
+      syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
+    }
     useVNStore.getState().setDialog({
-      speaker: undefined,
-      speakerId: undefined,
+      speaker: presentation.speakerName,
+      speakerId: presentation.speakerId,
       fullText: action.input.prompt,
       visibleText: action.input.prompt,
       typing: false,

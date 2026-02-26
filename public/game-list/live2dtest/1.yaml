@@ -1,0 +1,17 @@
+script:
+  - scene: ren_live2d_drag_test
+
+scenes:
+  ren_live2d_drag_test:
+    actions:
+      - char:
+          id: 렌
+          position: center
+          emotion: Idle
+      - choice:
+          key: live2d_drag_test
+          prompt: "이리저리 클릭 드래그해보며 Live2D 테스트해보세요."
+          char: 렌.Idle
+          options:
+            - text: "테스트 끝"
+              goto: ren_live2d_drag_test
