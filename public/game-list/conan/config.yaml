@@ -9,29 +9,29 @@ author:
     - label: "LinkedIn"
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
-version: "5.0"
+version: "7.0"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
 endings:
   true_end:
     title: "TRUE END"
-    message: "주전자 트릭과 습관의 연결고리를 완벽히 증명했다."
+    message: "다섯 단서를 완전히 맞물려 다실 사건의 진실을 끝까지 증명했다."
   normal_end:
     title: "NORMAL END"
-    message: "범인은 밝혔지만, 오판의 흔적이 결론에 그림자를 남겼다."
+    message: "범인은 특정했지만 연결 고리 일부가 비어 있어 여운을 남겼다."
   bad_end:
     title: "BAD END"
-    message: "밀실의 진실은 끝내 흐릿하게 남았다."
+    message: "단서 사슬이 끊겨 사건의 결말이 흐릿하게 닫혔다."
 endingRules:
   - when:
       all:
         - var: culprit_answer
           op: eq
-          value: "신이치"
-        - var: truth_point
+          value: "레이코"
+        - var: deduction_score
           op: gte
-          value: 8
+          value: 10
         - var: mistake_count
           op: lte
           value: 2
@@ -40,25 +40,33 @@ endingRules:
           value: 2
         - var: final_confidence
           op: gte
-          value: 4
-        - var: clue_word
-          op: in
-          value:
-            - "금속"
-            - "금속 냄새"
-            - "쇠"
-            - "쇠 냄새"
+          value: 6
+        - var: clue_rim_reagent
+          op: eq
+          value: true
+        - var: clue_haruo_wipe
+          op: eq
+          value: true
+        - var: clue_order_note
+          op: eq
+          value: true
+        - var: reiko_motive_open
+          op: eq
+          value: true
     ending: true_end
   - when:
       all:
         - var: culprit_answer
           op: eq
-          value: "신이치"
-        - var: truth_point
+          value: "레이코"
+        - var: deduction_score
           op: gte
-          value: 5
+          value: 6
+        - var: final_confidence
+          op: gte
+          value: 3
         - var: mistake_count
           op: lte
-          value: 4
+          value: 5
     ending: normal_end
 defaultEnding: bad_end

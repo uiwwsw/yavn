@@ -1,0 +1,65 @@
+script:
+  - scene: rain_hook
+  - scene: object_flash
+  - scene: blackout_title
+  - scene: handoff
+
+scenes:
+  rain_hook:
+    actions:
+      - bg: rain_corridor
+      - music: rain
+      - video:
+          src: assets/video/intro.mp4
+          holdToSkipMs: 900
+      - effect: blur
+      - sound: thunder
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          text: "폭우가 복도를 때리던 밤, 다실 안쪽에서 누군가 의도적으로 동선을 꼬고 있었다."
+      - say:
+          char: 코난.think
+          text: "(비명은 아직 없는데 공기가 너무 급해... 누군가 준비를 끝냈어.)"
+      - wait: 420
+
+  object_flash:
+    actions:
+      - bg: tea_room
+      - effect: zoom
+      - sticker:
+          id: lid_cut
+          image: clue_cup
+          x: 50
+          y: 36
+          width: 62
+          anchorX: center
+          anchorY: center
+          enter:
+            effect: blurIn
+            duration: 380
+      - sound: cup_clink
+      - say:
+          text: "피해자 찻잔 가장자리를 스치는 하얀 손수건. 그리고 주전자 뚜껑이 두 번 눌렸다."
+      - clearSticker:
+          id: lid_cut
+          leave:
+            effect: fadeOut
+            duration: 220
+      - wait: 320
+
+  blackout_title:
+    actions:
+      - effect: darken
+      - sound: scream
+      - say:
+          text: "곧이어, 복도를 가르던 비명이 료칸 전체를 얼어붙게 만들었다."
+      - wait: 260
+      - say:
+          text: "명탐정 코난 외전: 다실의 비밀"
+
+  handoff:
+    actions:
+      - goto: /1.yaml

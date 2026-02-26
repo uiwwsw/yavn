@@ -73,6 +73,7 @@ const DEFAULT_STICKER_LEAVE_EFFECT: StickerLeaveEffect = 'none';
 const DEFAULT_STICKER_LEAVE_DURATION = 220;
 const DEFAULT_STICKER_LEAVE_EASING = 'ease';
 const DEFAULT_STICKER_LEAVE_DELAY = 0;
+const DEFAULT_CHOICE_FORGIVE_MESSAGE = '한 번은 넘어갈게. 다시 선택해 주세요.';
 
 type SaveProgress = {
   chapterIndex: number;
@@ -1857,6 +1858,9 @@ function runToNextPause(loopGuard = 0) {
       active: true,
       key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
       prompt: action.choice.prompt,
+      forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,
+      forgiveMessage: action.choice.forgiveMessage,
+      forgivenOptionIndexes: [],
       options: action.choice.options,
     });
     useVNStore.getState().setDialog({
@@ -2603,6 +2607,23 @@ export function submitChoiceOption(optionIndex: number) {
 
   const selected = state.choiceGate.options[optionIndex];
   if (!selected) {
+    return;
+  }
+
+  const effectiveForgiveOnce = selected.forgiveOnce ?? state.choiceGate.forgiveOnceDefault;
+  const alreadyForgiven = state.choiceGate.forgivenOptionIndexes.includes(optionIndex);
+  if (effectiveForgiveOnce && !alreadyForgiven) {
+    useVNStore.getState().setChoiceGate({
+      forgivenOptionIndexes: [...state.choiceGate.forgivenOptionIndexes, optionIndex],
+    });
+    const message = selected.forgiveMessage ?? state.choiceGate.forgiveMessage ?? DEFAULT_CHOICE_FORGIVE_MESSAGE;
+    useVNStore.getState().setDialog({
+      speaker: undefined,
+      speakerId: undefined,
+      fullText: message,
+      visibleText: message,
+      typing: false,
+    });
     return;
   }
 

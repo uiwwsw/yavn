@@ -1,0 +1,133 @@
+script:
+  - scene: lounge_intro
+  - scene: all_done_check
+  - scene: all_done_bonus
+  - scene: route_select
+  - scene: early_exit_confirm
+  - scene: early_exit_penalty_branch
+  - scene: early_exit_penalty_3
+  - scene: early_exit_penalty_2
+  - scene: early_exit_penalty_1
+  - scene: move_to_conclusion
+
+scenes:
+  lounge_intro:
+    actions:
+      - bg: ryokan_hall
+      - music: tension
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 코난.think
+          text: "단서 정리실로 돌아왔다. 아직 만나지 않은 사람부터 차례로 확인하자."
+      - goto: all_done_check
+
+  all_done_check:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: investigation_count
+                op: gte
+                value: 4
+              goto: all_done_bonus
+          default: route_select
+
+  all_done_bonus:
+    actions:
+      - set:
+          early_exit_taken: false
+      - add:
+          deduction_score: 1
+          final_confidence: 1
+          trust: 1
+      - say:
+          char: 코난.serious
+          text: "네 명 모두 확인했다. 이제 집합 추리로 넘어가자."
+      - goto: move_to_conclusion
+
+  route_select:
+    actions:
+      - choice:
+          key: route_select
+          prompt: "다음으로 대면할 사람을 고르자."
+          options:
+            - text: "신이치와 대면한다"
+              goto: /routes/shinichi/1.yaml
+            - text: "레이코와 대면한다"
+              goto: /routes/reiko/1.yaml
+            - text: "켄지와 대면한다"
+              goto: /routes/kenji/1.yaml
+            - text: "하루오와 대면한다"
+              goto: /routes/haruo/1.yaml
+            - text: "중간 정리 회의로 이동한다"
+              goto: early_exit_confirm
+
+  early_exit_confirm:
+    actions:
+      - choice:
+          key: early_exit_confirm
+          prompt: "지금 정리 회의로 넘어갈까?"
+          options:
+            - text: "아직 더 탐문한다"
+              goto: route_select
+            - text: "지금 정리 회의로 간다"
+              set:
+                early_exit_taken: true
+              goto: early_exit_penalty_branch
+
+  early_exit_penalty_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: investigation_count
+                op: gte
+                value: 3
+              goto: early_exit_penalty_3
+            - when:
+                var: investigation_count
+                op: gte
+                value: 2
+              goto: early_exit_penalty_2
+          default: early_exit_penalty_1
+
+  early_exit_penalty_3:
+    actions:
+      - add:
+          final_confidence: -1
+      - say:
+          char: 코난.think
+          text: "한 축을 남겼다. 설득력 한 칸을 포기하고 간다."
+      - goto: move_to_conclusion
+
+  early_exit_penalty_2:
+    actions:
+      - add:
+          deduction_score: -1
+          final_confidence: -2
+      - say:
+          char: 코난.think
+          text: "절반만 확인했다. 연결 사슬이 분명 약해질 거야."
+      - goto: move_to_conclusion
+
+  early_exit_penalty_1:
+    actions:
+      - add:
+          deduction_score: -2
+          final_confidence: -3
+          trust: -1
+          mistake_count: 1
+      - say:
+          char: 코난.think
+          text: "너무 서둘렀어. 이 상태면 결론이 쉽게 흔들릴 수 있어."
+      - goto: move_to_conclusion
+
+  move_to_conclusion:
+    actions:
+      - say:
+          char: 코난
+          text: "집합 추리로 이동한다."
+      - goto: /conclusion/1.yaml

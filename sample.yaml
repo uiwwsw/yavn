@@ -1,0 +1,100 @@
+# YAML V3 chapter snippet example:
+# branch + choice + goto + early-exit penalty pattern (investigation lounge)
+
+script:
+  - scene: all_done_check
+  - scene: route_select
+  - scene: early_exit_confirm
+  - scene: penalty_branch
+  - scene: penalty_3
+  - scene: penalty_2
+  - scene: penalty_1
+  - scene: move_to_conclusion
+
+scenes:
+  all_done_check:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: investigation_count
+                op: gte
+                value: 4
+              goto: move_to_conclusion
+          default: route_select
+
+  route_select:
+    actions:
+      - choice:
+          key: sample_route_select
+          prompt: "다음으로 대면할 인물을 고르자."
+          options:
+            - text: "신이치"
+              goto: /routes/shinichi/1.yaml
+            - text: "레이코"
+              goto: /routes/reiko/1.yaml
+            - text: "켄지"
+              goto: /routes/kenji/1.yaml
+            - text: "하루오"
+              goto: /routes/haruo/1.yaml
+            - text: "중간 정리 회의로 이동"
+              goto: early_exit_confirm
+
+  early_exit_confirm:
+    actions:
+      - choice:
+          key: sample_early_exit
+          prompt: "지금 정리 회의로 넘어갈까?"
+          forgiveOnceDefault: true
+          forgiveMessage: "성급해. 이번 한 번은 정정할 기회를 줄게."
+          options:
+            - text: "아직 더 탐문한다"
+              forgiveOnce: false
+              goto: route_select
+            - text: "지금 이동한다"
+              forgiveMessage: "리스크가 커. 정말 지금 이동할지 다시 골라."
+              set:
+                early_exit_taken: true
+              goto: penalty_branch
+
+  penalty_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: investigation_count
+                op: gte
+                value: 3
+              goto: penalty_3
+            - when:
+                var: investigation_count
+                op: gte
+                value: 2
+              goto: penalty_2
+          default: penalty_1
+
+  penalty_3:
+    actions:
+      - add:
+          final_confidence: -1
+      - goto: move_to_conclusion
+
+  penalty_2:
+    actions:
+      - add:
+          deduction_score: -1
+          final_confidence: -2
+      - goto: move_to_conclusion
+
+  penalty_1:
+    actions:
+      - add:
+          deduction_score: -2
+          final_confidence: -3
+          trust: -1
+          mistake_count: 1
+      - goto: move_to_conclusion
+
+  move_to_conclusion:
+    actions:
+      - goto: /conclusion/1.yaml

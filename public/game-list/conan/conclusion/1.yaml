@@ -2,8 +2,12 @@ script:
   - scene: final_intro
   - scene: sleeping_kogoro
   - scene: reasoning_tone_branch
-  - scene: kogoro_voice_sharp
-  - scene: kogoro_voice_shaky
+  - scene: sharp_reasoning
+  - scene: cautious_reasoning
+  - scene: coverage_branch
+  - scene: full_coverage_line
+  - scene: partial_coverage_line
+  - scene: early_exit_line
   - scene: final_accuse_gate
   - scene: wrong_answer_check
   - scene: comeback_gate
@@ -15,7 +19,7 @@ script:
 scenes:
   final_intro:
     actions:
-      - bg: tea_room
+      - bg: case_board
       - music: mystery
       - char:
           id: 코난
@@ -23,11 +27,11 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
-          text: "이제 결론이다. 밀실 트릭은 이미 틀이 잡혔어."
-      - wait: 380
+          text: "이제 집합 추리다. 단서들을 한 줄로 묶어야 해."
+      - wait: 340
       - say:
           char: 코난.think
-          text: "(한 번에 끝낸다. 흔들리면 여기서 전부 무너져.)"
+          text: "(뚜껑 두 번은 미끼, 핵심은 찻잔 가장자리 반응... 그리고 동기 문서.)"
       - goto: sleeping_kogoro
 
   sleeping_kogoro:
@@ -44,7 +48,7 @@ scenes:
       - effect: flash
       - sound: door
       - say:
-          text: "순간, 코고로의 목소리가 멎고 회의장은 숨을 삼켰다."
+          text: "순간, 회의실 공기가 멎었다. 모두가 코고로의 다음 한마디를 기다렸다."
       - say:
           char: 코난.think
           with:
@@ -66,31 +70,70 @@ scenes:
                   - var: trust
                     op: gte
                     value: 2
-              goto: kogoro_voice_sharp
-          default: kogoro_voice_shaky
+              goto: sharp_reasoning
+          default: cautious_reasoning
 
-  kogoro_voice_sharp:
+  sharp_reasoning:
     actions:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "독은 찻잔에 탄 게 아니다. 주전자 뚜껑 안쪽에서 떨어졌다."
+          text: "독은 찻물에 직접 들어간 게 아니다. 찻잔 가장자리의 시약 반응이 핵심이었다."
       - say:
           char: 코난.serious
-          text: "그리고 피해자 잔의 순서를 알고 있던 사람만 이 트릭을 쓸 수 있어."
-      - goto: final_accuse_gate
+          text: "뚜껑을 두 번 누른 동작은 시선을 빼앗기 위한 미끼였어."
+      - goto: coverage_branch
 
-  kogoro_voice_shaky:
+  cautious_reasoning:
     actions:
       - effect: darken
       - say:
           char: 코난.think
-          text: "핵심은 같다. 독은 뚜껑 안쪽... 다만 아직 연결 고리를 더 보여줘야 해."
+          text: "핵심 축은 같다. 찻잔 가장자리 반응과 미끼 동작을 함께 봐야 한다."
       - say:
           char: 란.worried
           with:
             - 코난.think
-          text: "코난... 아니, 아빠 말이 맞다면 범인은 잔 순서를 알고 있던 사람이라는 거지?"
+          text: "그럼 범인은 반응 시점과 잔 순서를 동시에 알고 있던 사람이네..."
+      - goto: coverage_branch
+
+  coverage_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: investigation_count
+                op: gte
+                value: 4
+              goto: full_coverage_line
+          default: partial_coverage_line
+
+  full_coverage_line:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "네 명 대면을 모두 마쳤다. 이제 빈칸은 없다."
+      - goto: final_accuse_gate
+
+  partial_coverage_line:
+    actions:
+      - say:
+          char: 코난.think
+          text: "아직 비어 있는 대면 축이 있다. 마지막 선택은 더 신중해야 해."
+      - branch:
+          cases:
+            - when:
+                var: early_exit_taken
+                op: eq
+                value: true
+              goto: early_exit_line
+          default: final_accuse_gate
+
+  early_exit_line:
+    actions:
+      - say:
+          char: 코난.think
+          text: "중간 정리로 일찍 넘어온 대가를 감수하더라도, 지금 가진 증거로 끝까지 간다."
       - goto: final_accuse_gate
 
   final_accuse_gate:
@@ -111,19 +154,17 @@ scenes:
           emotion: serious
       - choice:
           key: final_accuse
-          prompt: "밀실 트릭을 실행한 범인은 누구인가?"
+          prompt: "모든 단서를 종합했을 때 범인은 누구인가?"
           options:
-            - text: "신이치"
-              set:
-                culprit_answer: "신이치"
-                suspect: "신이치"
-              add:
-                final_confidence: 1
-              goto: verdict_branch
             - text: "레이코"
               set:
                 culprit_answer: "레이코"
-                suspect: "레이코"
+              add:
+                final_confidence: 1
+              goto: verdict_branch
+            - text: "신이치"
+              set:
+                culprit_answer: "신이치"
               add:
                 mistake_count: 1
                 trust: -1
@@ -131,7 +172,13 @@ scenes:
             - text: "켄지"
               set:
                 culprit_answer: "켄지"
-                suspect: "켄지"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: wrong_answer_check
+            - text: "하루오"
+              set:
+                culprit_answer: "하루오"
               add:
                 mistake_count: 1
                 trust: -1
@@ -141,7 +188,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "(아직은 끝이 아니야. 단 한 번, 정정 기회가 남아 있다.)"
+          text: "(아직 끝은 아니야. 단 한 번, 정정 기회가 남아 있어.)"
       - branch:
           cases:
             - when:
@@ -149,7 +196,7 @@ scenes:
                   - var: comeback_chance
                     op: gte
                     value: 1
-                  - var: truth_point
+                  - var: deduction_score
                     op: gte
                     value: 5
                   - var: mistake_count
@@ -166,26 +213,29 @@ scenes:
           key: final_comeback
           prompt: "재지목 기회(1회). 최종 범인은?"
           options:
-            - text: "신이치"
-              set:
-                culprit_answer: "신이치"
-                suspect: "신이치"
-              add:
-                truth_point: 1
-                trust: 1
-                final_confidence: 1
-              goto: verdict_branch
             - text: "레이코"
               set:
                 culprit_answer: "레이코"
-                suspect: "레이코"
+              add:
+                deduction_score: 1
+                trust: 1
+                final_confidence: 1
+              goto: verdict_branch
+            - text: "신이치"
+              set:
+                culprit_answer: "신이치"
               add:
                 mistake_count: 1
               goto: bad_epilogue
             - text: "켄지"
               set:
                 culprit_answer: "켄지"
-                suspect: "켄지"
+              add:
+                mistake_count: 1
+              goto: bad_epilogue
+            - text: "하루오"
+              set:
+                culprit_answer: "하루오"
               add:
                 mistake_count: 1
               goto: bad_epilogue
@@ -198,10 +248,10 @@ scenes:
                 all:
                   - var: culprit_answer
                     op: eq
-                    value: "신이치"
-                  - var: truth_point
+                    value: "레이코"
+                  - var: deduction_score
                     op: gte
-                    value: 9
+                    value: 10
                   - var: mistake_count
                     op: lte
                     value: 2
@@ -211,20 +261,25 @@ scenes:
                   - var: final_confidence
                     op: gte
                     value: 6
-                  - var: clue_word
-                    op: in
-                    value:
-                      - "금속"
-                      - "금속 냄새"
-                      - "쇠"
-                      - "쇠 냄새"
+                  - var: clue_rim_reagent
+                    op: eq
+                    value: true
+                  - var: clue_haruo_wipe
+                    op: eq
+                    value: true
+                  - var: clue_order_note
+                    op: eq
+                    value: true
+                  - var: reiko_motive_open
+                    op: eq
+                    value: true
               goto: true_epilogue
             - when:
                 all:
                   - var: culprit_answer
                     op: eq
-                    value: "신이치"
-                  - var: truth_point
+                    value: "레이코"
+                  - var: deduction_score
                     op: gte
                     value: 6
                   - var: final_confidence
@@ -243,17 +298,17 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "주전자 뚜껑 안쪽의 독, 그리고 왼쪽 손잡이 잔 순서. 답은 하나였어."
+          text: "잔 가장자리 반응, 잔 순서 메모, 닦는 동작, 계약서 수정 시각... 전부 레이코를 가리켰어."
       - say:
-          char: 신이치.cold
+          char: 레이코.nervous
           with:
             - 코난.serious
-          text: "...맞아. 연구를 빼앗긴 날부터, 난 이미 선을 넘고 있었지."
+          text: "...연구를 빼앗긴다고 생각한 순간, 돌이킬 선을 넘었어요."
       - say:
           char: 란.worried
           with:
             - 코난.serious
-          text: "차 한 잔의 습관이... 결국 진실을 드러냈네."
+          text: "차 한 잔의 습관이 결국 진실을 열었네..."
       - ending: true_end
 
   normal_epilogue:
@@ -263,12 +318,12 @@ scenes:
       - effect: blur
       - say:
           char: 코난.think
-          text: "범인은 맞췄다. 하지만 몇 번의 오판이 진실의 속도를 늦췄어."
+          text: "범인은 맞췄다. 하지만 몇 개의 빈칸이 진실의 무게를 가볍게 만들었어."
       - say:
           char: 코고로.angry
           with:
             - 코난.think
-          text: "크흠... 뭐, 결론은 내 이름으로 잘 정리됐으니 된 거지!"
+          text: "크흠... 그래도 결론은 제대로 도착했으니 된 거지!"
       - ending: normal_end
 
   bad_epilogue:
@@ -279,7 +334,7 @@ scenes:
       - effect: shake
       - say:
           char: 코난.think
-          text: "단서를 놓쳤다... 이 상태로는 누구도 완전히 납득시키지 못해."
+          text: "단서 사슬이 끊겼다... 이 상태로는 누구도 완전히 납득시킬 수 없어."
       - say:
           text: "폭우가 그친 뒤에도, 다실의 비밀은 흐린 채 남았다."
       - ending: bad_end

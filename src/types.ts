@@ -136,12 +136,16 @@ export type ChoiceOption = {
   set?: StateSetMap;
   add?: StateAddMap;
   goto?: string;
+  forgiveOnce?: boolean;
+  forgiveMessage?: string;
 };
 
 export type ChoiceAction = {
   choice: {
     key?: string;
     prompt: string;
+    forgiveOnceDefault?: boolean;
+    forgiveMessage?: string;
     options: ChoiceOption[];
   };
 };
@@ -295,6 +299,9 @@ export type ChoiceGateState = {
   active: boolean;
   key: string;
   prompt: string;
+  forgiveOnceDefault: boolean;
+  forgiveMessage?: string;
+  forgivenOptionIndexes: number[];
   options: ChoiceOption[];
 };
 

@@ -113,6 +113,9 @@ const initialChoiceGate: ChoiceGateState = {
   active: false,
   key: '',
   prompt: '',
+  forgiveOnceDefault: false,
+  forgiveMessage: undefined,
+  forgivenOptionIndexes: [],
   options: [],
 };
 

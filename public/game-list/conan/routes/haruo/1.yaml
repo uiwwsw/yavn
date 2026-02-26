@@ -1,0 +1,149 @@
+script:
+  - scene: entry_guard
+  - scene: revisit_notice
+  - scene: intro
+  - scene: first_probe
+  - scene: retry_notice
+  - scene: second_probe
+  - scene: success_line
+  - scene: fail_line
+  - scene: outro
+
+scenes:
+  entry_guard:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: visited_haruo
+                op: eq
+                value: true
+              goto: revisit_notice
+          default: intro
+
+  revisit_notice:
+    actions:
+      - bg: ryokan_hall
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 하루오.scared
+          with:
+            - 코난.think
+          text: "더 짜내면 기억이 흐려질 것 같아... 다음 사람부터 봐줘."
+      - goto: /routes/hub/1.yaml
+
+  intro:
+    actions:
+      - bg: ryokan_hall
+      - music: mystery
+      - set:
+          visited_haruo: true
+      - add:
+          investigation_count: 1
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - say:
+          char: 하루오.scared
+          with:
+            - 코난.think
+          text: "...난 봤어. 누군가 피해자 잔 가장자리를 닦고 바로 물러났어."
+      - say:
+          char: 코난.think
+          with:
+            - 란.worried
+          text: "좋아, 그 침묵 기록이 이번 사건의 시간축을 완성할 거야."
+
+  first_probe:
+    actions:
+      - choice:
+          key: haruo_first_probe
+          prompt: "하루오의 관찰에서 가장 먼저 고정할 사실은?"
+          options:
+            - text: "닦는 동작이 비명 직전 찻잔 가장자리에서 있었다"
+              set:
+                clue_haruo_wipe: true
+              add:
+                deduction_score: 2
+                trust: 1
+              goto: success_line
+            - text: "말수가 적으니 기록 전체를 보류한다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: retry_notice
+            - text: "뚜껑 동작만 중요하니 닦는 장면은 무시한다"
+              add:
+                mistake_count: 1
+              goto: retry_notice
+
+  retry_notice:
+    actions:
+      - say:
+          char: 코난.think
+          text: "한 번만 더. 침묵은 공백이 아니라 고정된 기록이야."
+      - goto: second_probe
+
+  second_probe:
+    actions:
+      - choice:
+          key: haruo_second_probe
+          prompt: "재선택: 어떤 문장을 채택할까?"
+          options:
+            - text: "닦는 동작이 비명 직전 찻잔 가장자리에서 있었다"
+              set:
+                clue_haruo_wipe: true
+                clue_rim_reagent: true
+              add:
+                deduction_score: 1
+              goto: success_line
+            - text: "시선이 흔들렸으니 장면 전체를 폐기한다"
+              add:
+                mistake_count: 1
+              goto: fail_line
+            - text: "표정이 불안했으니 다른 사람 공모로 본다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: fail_line
+
+  success_line:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "좋아, 닦는 동작이 잠겼다. 찻잔 가장자리 시약 가설이 완성된다."
+      - add:
+          final_confidence: 1
+      - goto: outro
+
+  fail_line:
+    actions:
+      - say:
+          char: 코난.think
+          text: "하루오 축은 아직 약해. 결론에서 추가 보강이 필요해."
+      - add:
+          final_confidence: -1
+      - goto: outro
+
+  outro:
+    actions:
+      - say:
+          char: 코난
+          text: "하루오 대면 종료. 조사 라운지로 복귀한다."
+      - goto: /routes/hub/1.yaml

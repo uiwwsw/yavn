@@ -1,19 +1,52 @@
 script:
-  - scene: route_start
-  - scene: metal_smell_input
-  - scene: metal_fail_loop
-  - scene: kettle_demo_choice
-  - scene: timeline_recheck_input
-  - scene: analysis_split
-  - scene: sharp_line
-  - scene: weak_line
-  - scene: route_outro
+  - scene: entry_guard
+  - scene: revisit_notice
+  - scene: intro
+  - scene: first_input
+  - scene: retry_notice
+  - scene: second_input
+  - scene: success_line
+  - scene: fail_line
+  - scene: outro
 
 scenes:
-  route_start:
+  entry_guard:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: visited_shinichi
+                op: eq
+                value: true
+              goto: revisit_notice
+          default: intro
+
+  revisit_notice:
     actions:
       - bg: tea_room
-      - music: mystery
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 신이치.cold
+          with:
+            - 코난.think
+          text: "동일 질문 반복은 효율이 낮습니다. 다른 축을 확인하시죠."
+      - goto: /routes/hub/1.yaml
+
+  intro:
+    actions:
+      - bg: tea_room
+      - music: tension
+      - set:
+          visited_shinichi: true
+      - add:
+          investigation_count: 1
       - char:
           id: 코난
           position: center
@@ -23,171 +56,104 @@ scenes:
           position: right
           emotion: cold
       - say:
-          text: "신이치 루트 1 - 정면 추적"
-      - say:
           char: 신이치.cold
           with:
             - 코난.serious
-          text: "모호한 추측은 의미 없어. 증명해 봐, 코난 군."
-      - say:
-          char: 코난.think
-          with:
-            - 신이치.cold
-          text: "(좋아. 네가 원하는 대로, 논리로 끝내주지.)"
-
-  metal_smell_input:
-    actions:
-      - char:
-          id: 레이코
-          position: left
-          emotion: nervous
-      - input:
-          prompt: "레이코의 증언에서 핵심이 된 냄새 단어는?"
-          correct: "금속"
-          saveAs: clue_word
-          errors:
-            - "찻잎 본래 향과는 다른 결이었어."
-            - "힌트: 쇠붙이처럼 차갑고 건조한 냄새."
-            - "정답은 금속."
-          routes:
-            - equals: "금속"
-              set:
-                metal_smell_flag: true
-              add:
-                truth_point: 1
-                trust: 1
-              goto: kettle_demo_choice
-            - equals: "금속 냄새"
-              set:
-                metal_smell_flag: true
-              add:
-                truth_point: 1
-              goto: kettle_demo_choice
-            - equals: "탄내"
-              add:
-                mistake_count: 1
-                trust: -1
-              goto: metal_fail_loop
-
-  metal_fail_loop:
-    actions:
-      - effect: tilt
-      - say:
-          char: 코난.think
-          text: "단어 하나 틀리면 진술 연결이 끊겨. 다시 잡을래?"
-      - choice:
-          key: shinichi_retry_smell
-          prompt: "실패 분기 처리"
-          options:
-            - text: "향 단서를 다시 입력한다"
-              goto: metal_smell_input
-            - text: "패널티를 받고 다음 검증으로 넘어간다"
-              add:
-                mistake_count: 1
-              goto: kettle_demo_choice
-
-  kettle_demo_choice:
-    actions:
-      - bg: ryokan_hall
-      - char:
-          id: 코고로
-          position: left
-          emotion: angry
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - choice:
-          key: shinichi_kettle_demo
-          prompt: "보고서 첫 문장을 고르자."
-          options:
-            - text: "뚜껑 안쪽 가루는 특정 각도에서만 떨어진다"
-              set:
-                kettle_trick_known: true
-              add:
-                truth_point: 2
-                final_confidence: 1
-              goto: timeline_recheck_input
-            - text: "밀실의 분위기가 수상했다"
-              add:
-                mistake_count: 1
-                trust: -1
-              goto: timeline_recheck_input
-
-  timeline_recheck_input:
-    actions:
-      - music: tension
-      - input:
-          prompt: "주인이 먼저 따르던 잔의 방향은?"
-          correct: "왼쪽 손잡이 잔부터"
-          errors:
-            - "핵심은 손잡이 방향 습관."
-            - "힌트: 왼쪽 정렬부터 시작했어."
-            - "정답은 왼쪽 손잡이 잔부터."
-          routes:
-            - equals: "왼쪽 손잡이 잔부터"
-              add:
-                truth_point: 1
-                final_confidence: 2
-              goto: analysis_split
-            - equals: "오른쪽 잔부터"
-              add:
-                mistake_count: 1
-              goto: analysis_split
-            - equals: "무작위"
-              add:
-                mistake_count: 1
-                trust: -1
-              goto: analysis_split
-
-  analysis_split:
-    actions:
-      - branch:
-          cases:
-            - when:
-                all:
-                  - var: truth_point
-                    op: gte
-                    value: 7
-                  - var: mistake_count
-                    op: lte
-                    value: 1
-              goto: sharp_line
-          default: weak_line
-
-  sharp_line:
-    actions:
-      - effect: zoom
+          text: "숫자와 순서만 남깁시다. 기억은 그 두 가지로 충분합니다."
       - say:
           char: 코난.serious
-          text: "논리축이 완성됐어. 이제 남은 건 자백을 끌어내는 것뿐이야."
-      - add:
-          final_confidence: 2
-          trust: 1
-      - goto: route_outro
+          text: "좋아. 잔 배치 기억부터 검증한다."
 
-  weak_line:
+  first_input:
     actions:
-      - effect: pulse
-      - say:
-          char: 코난.think
-          text: "맞는 조각은 많아. 그런데 결론으로 닫기엔 아직 헐겁다."
-      - choice:
-          key: shinichi_weak_patch
-          prompt: "약한 결론선을 어떻게 보강할까?"
-          options:
-            - text: "향 증언과 뚜껑 가루를 다시 묶는다"
+      - input:
+          prompt: "신이치가 말한 '피해자 잔 번호'는? (1~4)"
+          correct: "2"
+          errors:
+            - "범위는 1~4. 신이치는 숫자를 또렷이 말했다."
+            - "힌트: 신이치는 두 번째 잔을 먼저 언급했어."
+            - "정답은 2."
+          routes:
+            - equals: "2"
+              set:
+                clue_order_note: true
               add:
-                truth_point: 1
+                deduction_score: 2
                 final_confidence: 1
-            - text: "동기 추정으로 압박만 높인다"
+                trust: 1
+              goto: success_line
+            - equals: "1"
               add:
                 mistake_count: 1
-      - goto: route_outro
+              goto: retry_notice
+            - equals: "3"
+              add:
+                mistake_count: 1
+              goto: retry_notice
+            - equals: "4"
+              add:
+                mistake_count: 1
+              goto: retry_notice
 
-  route_outro:
+  retry_notice:
+    actions:
+      - say:
+          char: 코난.think
+          text: "한 번만 더 확인하자. 감정이 아니라 숫자만 붙잡아."
+      - goto: second_input
+
+  second_input:
+    actions:
+      - input:
+          prompt: "재확인: 피해자 잔 번호는? (1~4)"
+          correct: "2"
+          errors:
+            - "마지막 기회야. 신이치 진술의 숫자를 다시 떠올려."
+            - "힌트는 그대로 2."
+            - "정답은 2."
+          routes:
+            - equals: "2"
+              set:
+                clue_order_note: true
+              add:
+                deduction_score: 1
+                trust: 1
+              goto: success_line
+            - equals: "1"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: fail_line
+            - equals: "3"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: fail_line
+            - equals: "4"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: fail_line
+
+  success_line:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "좋아, 잔 순서 메모가 잠겼다. 누가 순서를 알았는지 범위가 줄었어."
+      - goto: outro
+
+  fail_line:
+    actions:
+      - say:
+          char: 코난.think
+          text: "아직 잔 순서 축이 느슨해. 다른 대면에서 빈칸을 메워야 해."
+      - add:
+          final_confidence: -1
+      - goto: outro
+
+  outro:
     actions:
       - say:
           char: 코난
-          text: "좋아, 신이치 루트의 토대는 완성. 2차 압박으로 들어간다."
-      - goto: ./routes/shinichi/2.yaml
+          text: "신이치 대면 종료. 조사 라운지로 복귀한다."
+      - goto: /routes/hub/1.yaml

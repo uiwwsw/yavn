@@ -1,201 +1,158 @@
 script:
-  - scene: route_start
-  - scene: bias_gate
-  - scene: clue_card_sequence
-  - scene: timeline_fix_input
-  - scene: recovery_gate
-  - scene: recovery_branch
-  - scene: rescue_success
-  - scene: rescue_fail
-  - scene: route_outro
+  - scene: entry_guard
+  - scene: revisit_notice
+  - scene: intro
+  - scene: first_probe
+  - scene: retry_notice
+  - scene: second_probe
+  - scene: motive_branch
+  - scene: motive_open_line
+  - scene: motive_half_line
+  - scene: outro
 
 scenes:
-  route_start:
+  entry_guard:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: visited_reiko
+                op: eq
+                value: true
+              goto: revisit_notice
+          default: intro
+
+  revisit_notice:
     actions:
       - bg: ryokan_hall
-      - music: mystery
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - char:
-          id: 하루오
-          position: right
-          emotion: scared
-      - say:
-          text: "레이코 루트 1 - 오판 복구"
-      - say:
-          char: 하루오.scared
-          with:
-            - 코난.think
-          text: "...난 못 봤어. 근데, 냄새가 이상했던 건 기억해."
-      - say:
-          char: 코난.think
-          with:
-            - 하루오.scared
-          text: "(짧지만 정확한 증언이야. 이런 건 절대 놓치면 안 돼.)"
-
-  bias_gate:
-    actions:
-      - bg: tea_room
       - char:
           id: 레이코
           position: left
           emotion: nervous
       - char:
-          id: 신이치
-          position: right
-          emotion: cold
-      - choice:
-          key: reiko_bias
-          prompt: "초기 오판 구간. 조사 방향을 정하자."
-          options:
-            - text: "레이코를 계속 몰아붙인다"
-              set:
-                suspect: "레이코"
-                witness_priority: "reiko"
-              add:
-                mistake_count: 1
-                trust: -1
-            - text: "신이치의 우산 동선을 먼저 확인한다"
-              set:
-                suspect: "신이치"
-                witness_priority: "shinichi"
-              add:
-                truth_point: 1
-                trust: 1
-
-  clue_card_sequence:
-    actions:
-      - effect: zoom
-      - sticker:
-          id: clue_cup_card
-          image: clue_cup
-          x: 50
-          y: 42
-          width: 78
-          anchorX: center
-          anchorY: center
-          zIndex: 6
-          enter:
-            effect: popIn
-            duration: 340
+          id: 코난
+          position: center
+          emotion: think
       - say:
-          char: 코난
-          text: "단서 1. 피해자 잔만 손잡이 방향이 달랐어."
-      - clearSticker:
-          id: clue_cup_card
-          leave:
-            effect: wipeRight
-            duration: 240
-      - sticker:
-          id: clue_lid_card
-          image: clue_lid
-          x: 50
-          y: 42
-          width: 78
-          anchorX: center
-          anchorY: center
-          zIndex: 6
-          enter:
-            effect: slideUp
-            duration: 320
-      - say:
-          char: 코난.serious
+          char: 레이코.nervous
           with:
-            - 레이코.nervous
-          text: "단서 2. 주전자 뚜껑 안쪽 가루는 각도에 따라 특정 잔에만 섞인다."
-      - set:
-          kettle_trick_known: true
-      - clearSticker:
-          id: clue_lid_card
-          leave:
-            effect: fadeOut
-            duration: 200
+            - 코난.think
+          text: "같은 질문이면 더 떨릴 것 같아요... 다른 단서를 먼저 보시죠."
+      - goto: /routes/hub/1.yaml
 
-  timeline_fix_input:
+  intro:
     actions:
-      - music: tension
-      - input:
-          prompt: "비명 직후 소매가 비정상적으로 말라 있던 사람은?"
-          correct: "신이치"
-          errors:
-            - "빗속 동선과 소매 상태를 함께 보자."
-            - "힌트: 우산 동선이 비어 있는 사람."
-            - "정답은 신이치."
-          routes:
-            - equals: "신이치"
-              set:
-                suspect: "신이치"
-              add:
-                truth_point: 2
-                trust: 1
-              goto: recovery_gate
-            - equals: "레이코"
-              set:
-                suspect: "레이코"
-              add:
-                mistake_count: 1
-                trust: -1
-              goto: recovery_gate
+      - bg: tea_room
+      - music: mystery
+      - set:
+          visited_reiko: true
+      - add:
+          investigation_count: 1
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.think
+          text: "88도에서 향이 바뀌는 순간이 있어요. 오늘도 그 순간이 짧게 어긋났어요."
+      - say:
+          char: 코난.think
+          text: "감각과 수치를 함께 맞춰보자. 흔들림을 줄일 수 있어."
 
-  recovery_gate:
+  first_probe:
     actions:
       - choice:
-          key: reiko_recovery
-          prompt: "보고서 핵심 문장을 고르자."
+          key: reiko_first_probe
+          prompt: "레이코 발언에서 먼저 검증할 축은?"
           options:
-            - text: "손잡이 방향과 뚜껑 가루를 함께 제시한다"
+            - text: "88도 기록과 잔 가장자리 반응 시간을 대조한다"
               set:
-                room_reconstruction_ok: true
+                clue_rim_reagent: true
               add:
-                truth_point: 1
-                final_confidence: 1
-            - text: "레이코의 불안한 태도만 강조한다"
-              set:
-                room_reconstruction_ok: false
+                deduction_score: 2
+              goto: motive_branch
+            - text: "떨리는 말투를 바로 범행 신호로 본다"
               add:
                 mistake_count: 1
                 trust: -1
+              goto: retry_notice
+            - text: "켄지와의 말다툼만 근거로 묶는다"
+              add:
+                mistake_count: 1
+              goto: retry_notice
 
-  recovery_branch:
+  retry_notice:
+    actions:
+      - say:
+          char: 코난.think
+          text: "한 번만 더. 감정이 아니라 측정 가능한 값으로 고르자."
+      - goto: second_probe
+
+  second_probe:
+    actions:
+      - choice:
+          key: reiko_second_probe
+          prompt: "재선택: 어떤 항목이 실증 가능한가?"
+          options:
+            - text: "88도 기록과 잔 가장자리 반응 시간을 대조한다"
+              set:
+                clue_rim_reagent: true
+              add:
+                deduction_score: 1
+              goto: motive_branch
+            - text: "말투 흔들림만으로 결론낸다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: motive_half_line
+            - text: "분위기만 근거로 확정한다"
+              add:
+                mistake_count: 1
+              goto: motive_half_line
+
+  motive_branch:
     actions:
       - branch:
           cases:
             - when:
-                all:
-                  - var: suspect
-                    op: eq
-                    value: "신이치"
-                  - var: room_reconstruction_ok
-                    op: eq
-                    value: true
-              goto: rescue_success
-          default: rescue_fail
+                var: clue_rim_reagent
+                op: eq
+                value: true
+              goto: motive_open_line
+          default: motive_half_line
 
-  rescue_success:
+  motive_open_line:
     actions:
-      - effect: zoom
+      - sound: notebook_flip
       - say:
           char: 코난.serious
-          text: "좋아, 오판 구간을 복구했다. 결론 회의에서 반전 가능해."
+          text: "계약서 수정 시간과 연구노트 원본이 맞물렸다. 동기가 드러났어."
+      - set:
+          reiko_motive_open: true
       - add:
+          deduction_score: 2
           final_confidence: 1
-      - goto: route_outro
+          trust: 1
+      - goto: outro
 
-  rescue_fail:
+  motive_half_line:
     actions:
-      - effect: pulse
       - say:
           char: 코난.think
-          text: "흐름은 살렸지만 아직 불안정해. 결론에서 실수하면 바로 무너진다."
+          text: "레이코 축은 아직 반쯤만 열렸어. 결론에서 보조 근거로만 써야 해."
       - add:
           mistake_count: 1
-      - goto: route_outro
+      - goto: outro
 
-  route_outro:
+  outro:
     actions:
       - say:
           char: 코난
-          text: "다음 단계로 간다. 남은 건 마지막 고리 하나야."
-      - goto: ./routes/reiko/2.yaml
+          text: "레이코 대면 종료. 조사 라운지로 복귀한다."
+      - goto: /routes/hub/1.yaml

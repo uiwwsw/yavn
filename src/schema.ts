@@ -37,6 +37,8 @@ const choiceOptionSchema = z.object({
   set: stateSetMapSchema.optional(),
   add: stateAddMapSchema.optional(),
   goto: z.string().min(1).optional(),
+  forgiveOnce: z.boolean().optional(),
+  forgiveMessage: z.string().min(1).optional(),
 });
 
 const stickerLengthSchema = z.union([z.number(), z.string().min(1)]);
@@ -125,6 +127,8 @@ export const actionSchema = z.union([
     choice: z.object({
       key: z.string().min(1).optional(),
       prompt: z.string().min(1),
+      forgiveOnceDefault: z.boolean().optional(),
+      forgiveMessage: z.string().min(1).optional(),
       options: z.array(choiceOptionSchema).min(1),
     }),
   }),

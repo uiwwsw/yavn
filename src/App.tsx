@@ -5,7 +5,6 @@ import {
   loadGameFromUrl,
   loadGameFromZip,
   resetVideoSkipProgress,
-  restartFromBeginning,
   revealVideoSkipGuide,
   skipVideoCutscene,
   submitInputAnswer,
@@ -28,6 +27,9 @@ type GameListManifest = {
   games: GameListManifestEntry[];
 };
 
+const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
+const VN_STORAGE_PREFIX = 'vn-';
+
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
   left: 1,
@@ -39,6 +41,66 @@ type CreditContactLine = {
   value: string;
   href?: string;
 };
+
+function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined {
+  const normalizedTitle = gameTitle?.trim();
+  if (!normalizedTitle) {
+    return undefined;
+  }
+  const gameListMatch = window.location.pathname.match(/^\/game-list\/([^/]+)\/?$/);
+  const gameKey = gameListMatch ? decodeURIComponent(gameListMatch[1]) : normalizedTitle;
+  if (!gameKey) {
+    return undefined;
+  }
+  return `${ENDING_PROGRESS_STORAGE_PREFIX}${gameKey}`;
+}
+
+function parseEndingProgress(raw: string | null): string[] {
+  if (!raw) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return Array.from(new Set(parsed.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0)));
+  } catch {
+    return [];
+  }
+}
+
+function clearVNLocalData(): void {
+  try {
+    const localKeys: string[] = [];
+    for (let idx = 0; idx < localStorage.length; idx += 1) {
+      const key = localStorage.key(idx);
+      if (key?.startsWith(VN_STORAGE_PREFIX)) {
+        localKeys.push(key);
+      }
+    }
+    for (const key of localKeys) {
+      localStorage.removeItem(key);
+    }
+  } catch {
+    // Ignore storage failures and continue with reload.
+  }
+
+  try {
+    const sessionKeys: string[] = [];
+    for (let idx = 0; idx < sessionStorage.length; idx += 1) {
+      const key = sessionStorage.key(idx);
+      if (key?.startsWith(VN_STORAGE_PREFIX)) {
+        sessionKeys.push(key);
+      }
+    }
+    for (const key of sessionKeys) {
+      sessionStorage.removeItem(key);
+    }
+  } catch {
+    // Ignore storage failures and continue with reload.
+  }
+}
 
 function normalizeAuthorCredit(author: string | AuthorMetaObject | undefined): {
   name?: string;
@@ -129,13 +191,13 @@ export default function App() {
   const appRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
-  const endingCreditsContentRef = useRef<HTMLDivElement | null>(null);
-  const endingBottomBarRef = useRef<HTMLDivElement | null>(null);
-  const creditsOffsetRef = useRef(0);
-  const creditsRafRef = useRef<number | null>(null);
-  const creditsLastTsRef = useRef<number | null>(null);
-  const [creditsOffset, setCreditsOffset] = useState(0);
+  const endingAutoScrollRafRef = useRef<number | null>(null);
+  const endingAutoScrollLastTsRef = useRef<number | null>(null);
+  const endingAutoScrollPausedRef = useRef(false);
+  const [endingCreditsReady, setEndingCreditsReady] = useState(false);
+  const [endingTopSpacerPx, setEndingTopSpacerPx] = useState(0);
   const [showEndingRestart, setShowEndingRestart] = useState(false);
+  const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   const sampleZipUrl = '/sample.zip';
@@ -209,6 +271,14 @@ export default function App() {
   const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
   const endingTitle = resolvedEnding?.title ?? 'THE END';
   const endingMessage = resolvedEnding?.message ?? '게임이 종료되었습니다.';
+  const totalEndingCount = Object.keys(game?.endings ?? {}).length;
+  const seenEndingIdsInCurrentGame = seenEndingIds.filter((endingId) => Boolean(game?.endings?.[endingId]));
+  const seenEndingCount = seenEndingIdsInCurrentGame.length;
+  const endingCompletionPercent = totalEndingCount > 0 ? Math.round((seenEndingCount / totalEndingCount) * 100) : 0;
+  const endingCollectionDone = totalEndingCount > 0 && seenEndingCount >= totalEndingCount;
+  const seenEndingTitles = seenEndingIdsInCurrentGame
+    .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
+    .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
     [
@@ -241,9 +311,9 @@ export default function App() {
 
   useEffect(() => {
     return () => {
-      if (creditsRafRef.current !== null) {
-        window.cancelAnimationFrame(creditsRafRef.current);
-        creditsRafRef.current = null;
+      if (endingAutoScrollRafRef.current !== null) {
+        window.cancelAnimationFrame(endingAutoScrollRafRef.current);
+        endingAutoScrollRafRef.current = null;
       }
       if (holdTimerRef.current) {
         window.clearInterval(holdTimerRef.current);
@@ -264,83 +334,109 @@ export default function App() {
   }, [isFinished]);
 
   useEffect(() => {
-    if (!isFinished) {
-      if (creditsRafRef.current !== null) {
-        window.cancelAnimationFrame(creditsRafRef.current);
-        creditsRafRef.current = null;
-      }
-      creditsLastTsRef.current = null;
-      creditsOffsetRef.current = 0;
-      setCreditsOffset(0);
+    const storageKey = resolveEndingProgressStorageKey(game?.meta.title);
+    if (!storageKey) {
+      setSeenEndingIds([]);
       return;
     }
+    setSeenEndingIds(parseEndingProgress(localStorage.getItem(storageKey)));
+  }, [game?.meta.title]);
 
-    const setupAndStart = () => {
+  useEffect(() => {
+    if (!isFinished || !resolvedEndingId) {
+      return;
+    }
+    const storageKey = resolveEndingProgressStorageKey(game?.meta.title);
+    if (!storageKey) {
+      return;
+    }
+    setSeenEndingIds((prev) => {
+      if (prev.includes(resolvedEndingId)) {
+        return prev;
+      }
+      const next = [...prev, resolvedEndingId];
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(next));
+      } catch {
+        // Ignore storage failures and keep in-memory progress.
+      }
+      return next;
+    });
+  }, [game?.meta.title, isFinished, resolvedEndingId]);
+
+  const pauseEndingAutoScroll = useCallback(() => {
+    endingAutoScrollPausedRef.current = true;
+    if (endingAutoScrollRafRef.current !== null) {
+      window.cancelAnimationFrame(endingAutoScrollRafRef.current);
+      endingAutoScrollRafRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isFinished) {
+      if (endingAutoScrollRafRef.current !== null) {
+        window.cancelAnimationFrame(endingAutoScrollRafRef.current);
+        endingAutoScrollRafRef.current = null;
+      }
+      endingAutoScrollPausedRef.current = false;
+      endingAutoScrollLastTsRef.current = null;
+      setEndingCreditsReady(false);
+      setEndingTopSpacerPx(0);
+      return;
+    }
+    endingAutoScrollPausedRef.current = false;
+    setEndingCreditsReady(false);
+
+    const setupRaf = window.requestAnimationFrame(() => {
       const rollEl = endingCreditsRollRef.current;
-      const contentEl = endingCreditsContentRef.current;
-      const bottomBarEl = endingBottomBarRef.current;
-      if (!rollEl || !contentEl || !bottomBarEl) {
+      if (!rollEl) {
         return;
       }
-
-      const rollRect = rollEl.getBoundingClientRect();
-      const contentRect = contentEl.getBoundingClientRect();
-      const hiddenStartGap = 16;
-      const startOffset = rollRect.bottom - contentRect.top + hiddenStartGap;
-      creditsOffsetRef.current = startOffset;
-      setCreditsOffset(startOffset);
-      creditsLastTsRef.current = null;
+      const topSpacer = Math.max(0, rollEl.clientHeight + 16);
+      setEndingTopSpacerPx(topSpacer);
+      rollEl.scrollTop = 0;
+      setEndingCreditsReady(true);
+      endingAutoScrollLastTsRef.current = null;
 
       const pxPerSecond = 120;
-      const stopGap = 20;
-
       const step = (ts: number) => {
+        if (endingAutoScrollPausedRef.current) {
+          endingAutoScrollRafRef.current = null;
+          return;
+        }
         const latestRollEl = endingCreditsRollRef.current;
-        const latestContentEl = endingCreditsContentRef.current;
-        const latestBottomBarEl = endingBottomBarRef.current;
-        if (!latestRollEl || !latestContentEl || !latestBottomBarEl) {
-          creditsRafRef.current = null;
+        if (!latestRollEl) {
+          endingAutoScrollRafRef.current = null;
           return;
         }
-
-        const latestContentRect = latestContentEl.getBoundingClientRect();
-        const latestBottomBarRect = latestBottomBarEl.getBoundingClientRect();
-        const targetBottom = latestBottomBarRect.top - stopGap;
-        if (latestContentRect.bottom <= targetBottom) {
-          creditsRafRef.current = null;
+        const maxScrollTop = Math.max(0, latestRollEl.scrollHeight - latestRollEl.clientHeight);
+        if (maxScrollTop <= 0) {
+          endingAutoScrollRafRef.current = null;
           return;
         }
-
-        const prevTs = creditsLastTsRef.current;
-        creditsLastTsRef.current = ts;
+        const prevTs = endingAutoScrollLastTsRef.current;
+        endingAutoScrollLastTsRef.current = ts;
         const deltaSec = prevTs == null ? 0 : Math.max(0, (ts - prevTs) / 1000);
-        let nextOffset = creditsOffsetRef.current - pxPerSecond * deltaSec;
-        const projectedBottom = latestContentRect.bottom - pxPerSecond * deltaSec;
-        if (projectedBottom <= targetBottom) {
-          nextOffset += targetBottom - projectedBottom;
-          creditsOffsetRef.current = nextOffset;
-          setCreditsOffset(nextOffset);
-          creditsRafRef.current = null;
+        const nextScrollTop = Math.min(maxScrollTop, latestRollEl.scrollTop + pxPerSecond * deltaSec);
+        latestRollEl.scrollTop = nextScrollTop;
+        if (nextScrollTop >= maxScrollTop - 0.5) {
+          endingAutoScrollRafRef.current = null;
           return;
         }
-        creditsOffsetRef.current = nextOffset;
-        setCreditsOffset(nextOffset);
-        creditsRafRef.current = window.requestAnimationFrame(step);
+        endingAutoScrollRafRef.current = window.requestAnimationFrame(step);
       };
+      endingAutoScrollRafRef.current = window.requestAnimationFrame(step);
+    });
 
-      creditsRafRef.current = window.requestAnimationFrame(step);
-    };
-
-    const setupRaf = window.requestAnimationFrame(setupAndStart);
     return () => {
       window.cancelAnimationFrame(setupRaf);
-      if (creditsRafRef.current !== null) {
-        window.cancelAnimationFrame(creditsRafRef.current);
-        creditsRafRef.current = null;
+      if (endingAutoScrollRafRef.current !== null) {
+        window.cancelAnimationFrame(endingAutoScrollRafRef.current);
+        endingAutoScrollRafRef.current = null;
       }
-      creditsLastTsRef.current = null;
+      endingAutoScrollLastTsRef.current = null;
     };
-  }, [isFinished]);
+  }, [isFinished, resolvedEndingId]);
 
   useEffect(() => {
     if (!inputGate.active) {
@@ -553,39 +649,51 @@ export default function App() {
     setUploading(false);
   };
 
-  const onRestart = (event: MouseEvent<HTMLButtonElement>) => {
+  const onHardReset = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    void restartFromBeginning();
+    clearVNLocalData();
+    window.location.reload();
   };
 
   if (bootMode === 'launcher') {
     return (
       <div className="launcher">
+        <div className="launcher-noise" aria-hidden="true" />
         <div className="launcher-card">
-          <p className="launcher-eyebrow">YAVN (야븐)</p>
-          <h1>Type your story. Play your novel.</h1>
-          <p className="launcher-lead">
-            무엇인지: 가장 심플한 타이포 기반 게임엔진입니다.
-            <br />
-            어떻게 쓰나: ZIP으로 바로 실행해볼 수 있고, 공유는 PR로 등록합니다.
-          </p>
+          <section className="launcher-hero">
+            <p className="launcher-eyebrow">YAVN (야븐) // RETRO NARRATIVE ENGINE</p>
+            <h1>비주얼노블을 위한 텍스트 중심 게임 엔진</h1>
+            <p className="launcher-lead">
+              YAML 기반으로 시나리오와 연출을 빠르게 구성하고, ZIP 업로드로 즉시 플레이합니다.
+              <br />
+              샘플로 시작하고 PR로 공유하는 제작 플로우를 기본으로 제공합니다.
+            </p>
+          </section>
 
-          <div className="launcher-cta">
-            <a className="sample-download-link" href={sampleZipUrl} download>
-              샘플 파일 다운받기 (ZIP)
-            </a>
-            <label className="zip-upload">
-              게임 실행해보기 (ZIP 올려서)
-              <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
-            </label>
-            <a className="share-pr-link" href={shareByPrUrl} target="_blank" rel="noreferrer">
-              게임 공유하기 (PR)
-            </a>
-          </div>
-          <p className="launcher-cta-note">샘플 ZIP으로 구조를 먼저 확인하고, 공유를 원하면 포크/브랜치에서 PR을 열어 주세요.</p>
+          <section className="launcher-panel launcher-actions-panel">
+            <h2 className="launcher-panel-title">START PANEL</h2>
+            <div className="launcher-actions">
+              <a className="sample-download-link launcher-action launcher-action-secondary" href={sampleZipUrl} download>
+                샘플 파일 다운받기 (ZIP)
+              </a>
+              <label className="zip-upload launcher-action launcher-action-primary">
+                게임 실행해보기 (ZIP 올려서)
+                <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
+              </label>
+              <a
+                className="share-pr-link launcher-action launcher-action-ghost"
+                href={shareByPrUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                게임 공유하기 (PR)
+              </a>
+            </div>
+            <p className="launcher-cta-note">샘플 구조를 확인한 뒤, 포크/브랜치에서 PR로 공유를 요청해 주세요.</p>
+          </section>
 
-          <section className="launcher-section">
-            <h2>게임 리스트</h2>
+          <section className="launcher-panel">
+            <h2 className="launcher-panel-title">GAME LIST</h2>
             {gameListError && <p className="game-list-error">{gameListError}</p>}
             {!gameListError && gameList.length === 0 && (
               <p className="game-list-empty">`public/game-list/` 아래에 게임 폴더를 추가하면 여기에 표시됩니다.</p>
@@ -602,12 +710,12 @@ export default function App() {
             )}
           </section>
 
-          <section className="launcher-section">
-            <h2>어떻게 동작하나</h2>
+          <section className="launcher-panel">
+            <h2 className="launcher-panel-title">BUILD FLOW</h2>
             <ol className="how-list">
               <li>
                 <strong>1. 샘플 ZIP 확인</strong>
-                <span>`샘플 파일 다운받기 (ZIP)` 버튼으로 기본 파일 구조를 먼저 확인합니다.</span>
+                <span>`샘플 파일 다운받기 (ZIP)`으로 기본 파일 구조를 확인합니다.</span>
               </li>
               <li>
                 <strong>2. YAML 작성</strong>
@@ -628,8 +736,8 @@ export default function App() {
             </ol>
           </section>
 
-          <section className="launcher-section">
-            <h2>핵심 기능</h2>
+          <section className="launcher-panel">
+            <h2 className="launcher-panel-title">ENGINE FEATURES</h2>
             <div className="feature-grid">
               <span>타이핑 효과</span>
               <span>챕터 프리로드</span>
@@ -640,23 +748,33 @@ export default function App() {
             </div>
           </section>
 
-          <section className="launcher-section">
-            <h2>FAQ</h2>
-            <div className="faq-item">
-              <strong>코딩이 꼭 필요한가요?</strong>
-              <p>복잡한 코드 없이 YAML 중심으로 시나리오를 구성해 빠르게 제작할 수 있습니다.</p>
-            </div>
-            <div className="faq-item">
-              <strong>게임은 어디서 실행하나요?</strong>
-              <p>`게임 리스트`에서 원하는 게임을 선택하거나, ZIP을 업로드해 즉시 실행할 수 있습니다.</p>
-            </div>
-            <div className="faq-item">
-              <strong>개발 전에 참고할 파일이 있나요?</strong>
-              <p>`샘플 파일 다운받기 (ZIP)` 버튼으로 기본 예시 파일(`public/sample.zip`)을 받을 수 있습니다.</p>
-            </div>
-            <div className="faq-item">
-              <strong>내 게임을 홈페이지에 올리려면?</strong>
-              <p>`게임 공유하기 (PR)` 버튼으로 PR을 생성해 공유 요청을 등록하면 됩니다.</p>
+          <section className="launcher-panel">
+            <h2 className="launcher-panel-title">FAQ</h2>
+            <div className="faq-list">
+              <div className="faq-item">
+                <strong>코딩이 꼭 필요한가요?</strong>
+                <p>복잡한 코드 없이 YAML 중심으로 시나리오를 구성해 빠르게 제작할 수 있습니다.</p>
+              </div>
+              <div className="faq-item">
+                <strong>게임은 어디서 실행하나요?</strong>
+                <p>`게임 리스트`에서 원하는 게임을 선택하거나, ZIP을 업로드해 즉시 실행할 수 있습니다.</p>
+              </div>
+              <div className="faq-item">
+                <strong>개발 전에 참고할 파일이 있나요?</strong>
+                <p>`샘플 파일 다운받기 (ZIP)` 버튼으로 기본 예시 파일(`public/sample.zip`)을 받을 수 있습니다.</p>
+              </div>
+              <div className="faq-item">
+                <strong>내 게임을 홈페이지에 올리려면?</strong>
+                <p>`게임 공유하기 (PR)` 버튼으로 PR을 생성해 공유 요청을 등록하면 됩니다.</p>
+              </div>
+              <div className="faq-item">
+                <strong>로딩이 느릴 때는 어떻게 최적화하나요?</strong>
+                <p>
+                  `assets/ch01`, `assets/ch02`처럼 폴더를 나눠 챕터별 필수 에셋만 로드하세요. 스토리는 챕터당
+                  `2만~3만자` 기준으로 `1.yaml`, `2.yaml`처럼 분할하고, 긴 장면은 `goto`로 분리하면 초기 로딩 부담을 줄일
+                  수 있습니다.
+                </p>
+              </div>
             </div>
           </section>
 
@@ -746,7 +864,11 @@ export default function App() {
             onPointerCancel={onVideoPointerUp}
             onPointerLeave={onVideoPointerUp}
           >
-            <span>길게 눌러 건너뛰기</span>
+            <div className="video-skip-guide-head">
+              <span className="video-skip-guide-title">HOLD TO SKIP</span>
+              <b>{Math.floor(videoCutscene.skipProgress * 100)}%</b>
+            </div>
+            <p className="video-skip-guide-desc">길게 눌러 건너뛰기</p>
             <div className="video-skip-progress">
               <i style={{ width: `${Math.floor(videoCutscene.skipProgress * 100)}%` }} />
             </div>
@@ -796,19 +918,24 @@ export default function App() {
         {choiceGate.active && (
           <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
             <div className="choice-gate-options">
-              {choiceGate.options.map((option, index) => (
-                <button
-                  key={`${choiceGate.key}-${option.text}-${index}`}
-                  type="button"
-                  className="choice-gate-option"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    submitChoiceOption(index);
-                  }}
-                >
-                  {option.text}
-                </button>
-              ))}
+              {choiceGate.options.map((option, index) => {
+                const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
+                const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
+                return (
+                  <button
+                    key={`${choiceGate.key}-${option.text}-${index}`}
+                    type="button"
+                    className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      submitChoiceOption(index);
+                    }}
+                  >
+                    <span>{option.text}</span>
+                    {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -842,64 +969,82 @@ export default function App() {
 
       {isFinished && (
         <div className="ending-overlay">
+          <div className="ending-overlay-decoration" aria-hidden="true" />
           <div className="ending-credits-screen" aria-label="엔딩 크레딧">
-            <div className="ending-credits-roll" ref={endingCreditsRollRef}>
-              <div
-                className="ending-credits-content"
-                ref={endingCreditsContentRef}
-                style={{ transform: `translateY(${creditsOffset}px)` }}
-              >
-                <h2>{endingTitle}</h2>
-                <p className="ending-credits-message">{endingMessage}</p>
-                {resolvedEndingId && <p className="ending-credits-line">ENDING ID: {resolvedEndingId}</p>}
+            <div
+              className="ending-credits-roll"
+              ref={endingCreditsRollRef}
+              tabIndex={0}
+              onWheel={pauseEndingAutoScroll}
+              onPointerDown={pauseEndingAutoScroll}
+              onTouchStart={pauseEndingAutoScroll}
+              onKeyDown={pauseEndingAutoScroll}
+            >
+              <div className="ending-credits-inner" style={{ visibility: endingCreditsReady ? 'visible' : 'hidden' }}>
+                <div className="ending-credits-spacer ending-credits-spacer-top" style={{ height: `${endingTopSpacerPx}px` }} />
+                <div className="ending-credits-content">
+                  <h2>{endingTitle}</h2>
+                  <p className="ending-credits-message">{endingMessage}</p>
+                  {resolvedEndingId && <p className="ending-credits-line">ENDING ID: {resolvedEndingId}</p>}
+                  <section className="ending-credits-section ending-progress-card">
+                    <h3>ENDING PROGRESS</h3>
+                    <p className="ending-progress-value">
+                      {seenEndingCount}/{totalEndingCount} ({endingCompletionPercent}%) ·{' '}
+                      {endingCollectionDone ? '게임 완료' : '진행 중'}
+                    </p>
+                    <div className="ending-progress-bar" role="presentation">
+                      <i style={{ width: `${endingCompletionPercent}%` }} />
+                    </div>
+                    {seenEndingTitles.length > 0 && (
+                      <p className="ending-credits-line">획득 엔딩: {seenEndingTitles.join(' · ')}</p>
+                    )}
+                  </section>
 
-                <section className="ending-credits-section">
-                  <h3>CREATED BY</h3>
-                  {hasAuthorCredit ? (
-                    <>
-                      {authorCredit.name && <p className="ending-credits-line ending-credits-name">{authorCredit.name}</p>}
-                      {authorCredit.contacts.map((contact, index) => (
-                        <p className="ending-credits-line" key={`${contact.value}-${index}`}>
-                          {contact.label ? `${contact.label}: ` : ''}
-                          {contact.href ? (
-                            <a href={contact.href} target="_blank" rel="noreferrer">
-                              {contact.value}
-                            </a>
-                          ) : (
-                            contact.value
-                          )}
-                        </p>
-                      ))}
-                    </>
-                  ) : (
-                    <p className="ending-credits-line">제작자 정보 없음</p>
-                  )}
-                </section>
+                  <section className="ending-credits-section">
+                    <h3>CREATED BY</h3>
+                    {hasAuthorCredit ? (
+                      <>
+                        {authorCredit.name && <p className="ending-credits-line ending-credits-name">{authorCredit.name}</p>}
+                        {authorCredit.contacts.map((contact, index) => (
+                          <p className="ending-credits-line" key={`${contact.value}-${index}`}>
+                            {contact.label ? `${contact.label}: ` : ''}
+                            {contact.href ? (
+                              <a href={contact.href} target="_blank" rel="noreferrer">
+                                {contact.value}
+                              </a>
+                            ) : (
+                              contact.value
+                            )}
+                          </p>
+                        ))}
+                      </>
+                    ) : (
+                      <p className="ending-credits-line">제작자 정보 없음</p>
+                    )}
+                  </section>
 
-                <section className="ending-credits-section">
-                  <h3>POWERED BY</h3>
-                  <p className="ending-credits-line ending-credits-name">YAVN (야븐)</p>
-                  <p className="ending-credits-line">Type your story. Play your novel.</p>
-                  <p className="ending-credits-line">
-                    <a href="https://yavn.vercel.app" target="_blank" rel="noreferrer">
-                      https://yavn.vercel.app
-                    </a>
-                  </p>
-                  <p className="ending-credits-line">
-                    <a href="https://github.com/uiwwsw/visual-novel" target="_blank" rel="noreferrer">
-                      https://github.com/uiwwsw/visual-novel
-                    </a>
-                  </p>
-                </section>
+                  <section className="ending-credits-section">
+                    <h3>POWERED BY</h3>
+                    <p className="ending-credits-line ending-credits-name">YAVN (야븐)</p>
+                    <p className="ending-credits-line">Type your story. Play your novel.</p>
+                    <p className="ending-credits-line">
+                      <a href="https://yavn.vercel.app" target="_blank" rel="noreferrer">
+                        https://yavn.vercel.app
+                      </a>
+                    </p>
+                    <p className="ending-credits-line">
+                      <a href="https://github.com/uiwwsw/visual-novel" target="_blank" rel="noreferrer">
+                        https://github.com/uiwwsw/visual-novel
+                      </a>
+                    </p>
+                  </section>
+                </div>
+                <div className="ending-credits-spacer ending-credits-spacer-bottom" />
               </div>
             </div>
-            <div
-              className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`}
-              ref={endingBottomBarRef}
-              aria-hidden={!showEndingRestart}
-            >
-              <button type="button" className="ending-restart" onClick={onRestart}>
-                게임 다시 시작하기
+            <div className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`} aria-hidden={!showEndingRestart}>
+              <button type="button" className="ending-restart" onClick={onHardReset}>
+                완전 초기화 후 처음부터 시작
               </button>
             </div>
           </div>

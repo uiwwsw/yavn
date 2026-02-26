@@ -151,6 +151,33 @@ scenes:
 - `branch`
 - `ending`
 
+## `choice` 1회 유예(옵션별 지정)
+
+`choice`에서 잘못 누른 선택지를 1회 유예하는 동작을 옵션별로 지정할 수 있습니다.
+
+- `choice.forgiveOnceDefault`: 해당 choice의 옵션 기본값
+- `choice.forgiveMessage`: 기본 유예 안내 문구
+- `choice.options[].forgiveOnce`: 개별 옵션 override
+- `choice.options[].forgiveMessage`: 개별 옵션 유예 안내 문구
+
+```yaml
+- choice:
+    key: suspect_pick
+    prompt: "용의자를 고르자."
+    forgiveOnceDefault: true
+    forgiveMessage: "이번 한 번은 넘어갈게. 다시 골라."
+    options:
+      - text: "아직 더 조사한다"
+        forgiveOnce: false
+        goto: route_select
+      - text: "지금 결론으로 간다"
+        goto: bad_branch
+```
+
+동작:
+- 유예가 활성화된 옵션은 첫 클릭에서 `goto/set/add`를 실행하지 않고 문구만 표시합니다.
+- 같은 옵션을 다시 선택하면 원래 분기(`goto/set/add`)가 실행됩니다.
+
 ## `script` 실행 의미
 
 - `script`는 챕터의 기본 scene 진행 순서입니다.
@@ -167,17 +194,33 @@ scenes:
 - 경로 점프 후 같은 폴더의 번호 챕터를 순차 진행
 - `../`를 포함한 챕터 `goto`는 허용하지 않습니다.
 
+## Conan 샘플 분기 구조
+
+- `0.yaml`은 콜드 오픈 챕터로, 사건의 이상 징후를 먼저 보여준 뒤 `1.yaml`로 넘어갑니다.
+- `1.yaml`은 도착/관계/사건 발생, `2.yaml`은 초동 정리와 현장 재구성 파트입니다.
+- `routes/hub/1.yaml`은 조사 라운지이며, `신이치/레이코/켄지/하루오` 대면 루트를 자유 선택할 수 있습니다.
+- 각 인물 루트(`routes/<suspect>/1.yaml`)는 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다.
+- 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
+- 결말은 `conclusion/1.yaml`로 합류하며, 최종 지목과 재지목 1회 흐름을 유지합니다.
+
 ## 샘플
 
 - `public/game-list/conan/config.yaml`
 - `public/game-list/conan/base.yaml`
 - `public/game-list/conan/routes/base.yaml`
+- `public/game-list/conan/0.yaml`
 - `public/game-list/conan/1.yaml`
+- `public/game-list/conan/2.yaml`
+- `public/game-list/conan/routes/hub/1.yaml`
 - `public/game-list/conan/routes/shinichi/1.yaml`
 - `public/game-list/conan/routes/reiko/1.yaml`
+- `public/game-list/conan/routes/kenji/1.yaml`
+- `public/game-list/conan/routes/haruo/1.yaml`
 - `public/game-list/conan/conclusion/1.yaml`
+- `sample.yaml`
 
 ## 개발 메모
 
 - 런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성됩니다.
 - 표시명은 `config.yaml.title`을 우선 사용합니다.
+- 엔딩 화면 하단에는 `완전 초기화 후 처음부터 시작` 버튼 1개만 표시되며, 클릭 시 `vn-*` 로컬/세션 저장 데이터를 지운 뒤 새로고침합니다.

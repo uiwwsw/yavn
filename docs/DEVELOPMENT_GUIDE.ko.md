@@ -153,6 +153,21 @@ scenes:
 - 점프 대상부터 같은 폴더의 번호 파일을 순차 진행
 - `../`를 포함한 챕터 `goto`는 지원하지 않음
 
+## 8-0) 에피소드형 탐문 라운지 패턴 (Conan 샘플)
+
+- `0.yaml`에서 콜드 오픈으로 사건 갈고리를 먼저 제시하고 `1.yaml`로 연결합니다.
+- `1.yaml`은 사건 도입/발생, `2.yaml`은 초동 정리와 재구성으로 역할을 분리합니다.
+- `2.yaml` 종료 후 `goto: /routes/hub/1.yaml`로 이동해 자유 탐문 라운드에 진입합니다.
+- 라운지 챕터 권장 흐름:
+- `all_done_check` -> 방문 완료 여부 분기
+- `route_select` -> 인물 루트 선택 또는 조기 정리 회의 선택
+- `early_exit_confirm`/`early_exit_penalty_branch` -> 조기 이동 패널티 적용
+- 인물 루트는 `routes/<suspect>/1.yaml`로 분리하고, 완료 후 라운지로 복귀합니다.
+- 인물 루트 공통 패턴:
+- `entry_guard -> intro -> first_probe -> retry_notice -> second_probe -> outro`
+- 재도전은 상태 bool 없이 scene 분리(1차 시도/재시도)로 1회 제한 UX를 구성할 수 있습니다.
+- 플레이어 노출 문구는 `탐문`, `대면`, `단서 정리실/조사 라운지` 톤을 유지합니다.
+
 ## 8-1) `script`/`goto` 실행 모델
 
 - `script`는 챕터의 기본 scene 진행 순서입니다.
@@ -171,6 +186,16 @@ scenes:
 - 파싱 결과 캐시(`config/base/chapter`)
 - 최종 챕터 병합 결과 캐시
 - 동일 챕터 재진입 시 재fetch/재parse 대신 캐시를 재사용합니다.
+
+## 8-3) 엔딩 완전 초기화 버튼 동작
+
+- 엔딩 화면 하단 버튼은 `완전 초기화 후 처음부터 시작` 1개만 노출합니다.
+- 클릭 시 `localStorage`/`sessionStorage`의 `vn-` prefix 키를 모두 제거합니다.
+- 현재 기준 삭제 대상 예시:
+- `vn-engine-autosave`
+- `vn-ending-progress:<gameId>`
+- 저장 데이터 제거 후 `window.location.reload()`를 호출해 페이지를 다시 로드합니다.
+- 따라서 이전 챕터/분기 복원 없이 첫 챕터부터 시작합니다.
 
 ## 9) 액션 목록
 
@@ -192,6 +217,20 @@ scenes:
 - `branch`
 - `ending`
 
+### 9-1) `choice` 옵션별 1회 유예
+
+`choice` 액션은 잘못 누른 선택지를 "한 번만 봐주기" 동작으로 처리할 수 있습니다.
+
+- `choice.forgiveOnceDefault` (optional): 해당 choice의 옵션 기본 유예값
+- `choice.forgiveMessage` (optional): 기본 유예 문구
+- `choice.options[].forgiveOnce` (optional): 개별 옵션 유예값(기본값 override)
+- `choice.options[].forgiveMessage` (optional): 개별 옵션 유예 문구
+
+실행 규칙:
+- 유예가 활성화된 옵션은 첫 클릭에서 `goto/set/add`를 실행하지 않습니다.
+- 같은 옵션을 다시 클릭하면 원래 분기가 실행됩니다.
+- 유예 문구 우선순위: `options[].forgiveMessage` -> `choice.forgiveMessage` -> 엔진 기본 문구
+
 ## 10) 검증 규칙
 
 런타임 파서가 아래를 검증합니다.
@@ -211,15 +250,21 @@ YAML 파싱 에러는 line/column 정보와 함께 표시됩니다.
 public/game-list/conan/
   config.yaml
   base.yaml
+  0.yaml
   1.yaml
+  2.yaml
   routes/
     base.yaml
+    hub/
+      1.yaml
     shinichi/
       1.yaml
-      2.yaml
     reiko/
       1.yaml
-      2.yaml
+    kenji/
+      1.yaml
+    haruo/
+      1.yaml
   conclusion/
     1.yaml
   assets/
@@ -243,11 +288,17 @@ public/game-list/conan/
 - `README.md`
 - `docs/YAML_STORY_TO_DSL_PROMPT.ko.md`
 - 샘플 YAML: `public/game-list/conan/*.yaml`
+- DSL 축약 샘플: `sample.yaml`
 
 ## 14) 문서 변경 로그
 
+- 2026-02-26: 엔딩 화면 버튼을 1개(`완전 초기화 후 처음부터 시작`)로 통합하고, `vn-*` 저장 키 삭제 후 새로고침으로 첫 챕터부터 시작하도록 동작을 명시.
+- 2026-02-26: `choice`에 `forgiveOnceDefault`/`forgiveMessage` 및 `options[].forgiveOnce`/`options[].forgiveMessage`를 추가해 옵션별 1회 유예를 지원.
 - 2026-02-26: YAML V3 도입. `config.yaml` + 계층 `base.yaml` + 챕터 병합 구조로 전면 개편.
 - 2026-02-26: 레거시 `meta/settings` 챕터 포맷 제거, `config.yaml` 필수화.
 - 2026-02-26: 경로 canonicalization(`/`, `./`, `../`, bare) 규칙과 자식 우선 병합 규칙 문서화.
 - 2026-02-26: Conan 샘플을 V3 구조(`config/base/routes-base/chapter`)로 마이그레이션.
 - 2026-02-26: `script` 기본 진행/scene·chapter `goto` 전이 규칙과 resolver 캐시 동작을 명시.
+- 2026-02-26: Conan 샘플을 `0 -> 1 -> 2 -> routes/hub -> conclusion` 4막 에피소드형 구조로 재편.
+- 2026-02-26: 상태 모델을 `investigation_count`/`visited_*`/`deduction_score` 중심으로 교체하고 엔딩 판정식을 갱신.
+- 2026-02-26: 라운지 조기 이동 패널티를 `deduction_score`/`final_confidence` 기반으로 조정하고, 인물 루트를 1회 재시도 scene 패턴으로 통일.

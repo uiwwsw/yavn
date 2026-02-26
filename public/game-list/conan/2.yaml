@@ -1,17 +1,15 @@
 script:
-  - scene: probe_intro
-  - scene: clue_kettle_lid
-  - scene: timeline_input_gate
-  - scene: witness_order_gate
-  - scene: room_simulation
-  - scene: pressure_split
-  - scene: precision_probe
-  - scene: shaky_probe
-  - scene: route_branch
-  - scene: kenji_detour
+  - scene: first_scan
+  - scene: residue_focus
+  - scene: timeline_gate
+  - scene: reconstruction_choice
+  - scene: deduction_branch
+  - scene: stable_frame
+  - scene: shaky_frame
+  - scene: lounge_handoff
 
 scenes:
-  probe_intro:
+  first_scan:
     actions:
       - bg: tea_room
       - music: mystery
@@ -27,43 +25,50 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: "수사는 두 갈래야. 시간축, 그리고 차를 따르는 손의 습관."
-      - say:
-          char: 란.worried
-          with:
-            - 코난.serious
-          text: "다 같은 차였는데 왜 주인님 잔에서만 독이 나온 거지...?"
+          text: "현장을 건드리지 않고 본다. 잔 표면과 시간 기록을 먼저 고정하자."
 
-  clue_kettle_lid:
+  residue_focus:
     actions:
-      - bg: tea_room
       - effect: zoom
       - sticker:
-          id: lid_focus
-          image: police_tape
+          id: rim_focus
+          image: clue_cup
           x: 50
-          y: 34
+          y: 40
           width: 62
           anchorX: center
           anchorY: center
           enter:
             effect: blurIn
             duration: 380
-      - say:
-          char: 코난.think
-          text: "뚜껑 안쪽의 미세한 가루... 잔이 아니라, 주전자 자체가 장치였어."
-      - set:
-          kettle_trick_known: true
-      - add:
-          truth_point: 1
+      - choice:
+          key: residue_focus_choice
+          prompt: "잔 표면에서 먼저 확인할 항목은?"
+          options:
+            - text: "가장자리 미세 결정 반응을 확인한다"
+              set:
+                clue_rim_reagent: true
+              add:
+                deduction_score: 2
+                final_confidence: 1
+              goto: timeline_gate
+            - text: "찻상 바닥의 흠집부터 본다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_gate
+            - text: "향만 확인하고 넘어간다"
+              add:
+                mistake_count: 1
+              goto: timeline_gate
+
+  timeline_gate:
+    actions:
       - clearSticker:
-          id: lid_focus
+          id: rim_focus
           leave:
             effect: fadeOut
             duration: 220
-
-  timeline_input_gate:
-    actions:
       - music: tension
       - char:
           id: 코난
@@ -74,170 +79,95 @@ scenes:
           correct: "21:30"
           saveAs: timeline_answer
           errors:
-            - "벽시계 분침 위치를 다시 떠올려봐."
-            - "힌트: 9시 30분."
+            - "벽시계의 긴 바늘 위치를 다시 떠올려봐."
+            - "힌트: 9시 30분이었어."
             - "정답은 21:30."
           routes:
             - equals: "21:30"
-              set:
-                locked_room_confirmed: true
               add:
-                truth_point: 2
+                deduction_score: 2
                 trust: 1
-              goto: witness_order_gate
+              goto: reconstruction_choice
             - equals: "21:20"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: witness_order_gate
+              goto: reconstruction_choice
             - equals: "22:00"
               add:
                 mistake_count: 1
-              goto: witness_order_gate
+              goto: reconstruction_choice
 
-  witness_order_gate:
+  reconstruction_choice:
     actions:
-      - bg: ryokan_hall
+      - bg: case_board
       - char:
-          id: 신이치
-          position: right
-          emotion: cold
-      - char:
-          id: 레이코
-          position: left
-          emotion: nervous
+          id: 코난
+          position: center
+          emotion: serious
       - choice:
-          key: witness_order
-          prompt: "누구의 증언부터 고정할까?"
+          key: reconstruction_choice
+          prompt: "뚜껑을 두 번 누른 동작은 무엇을 의미할까?"
           options:
-            - text: "레이코의 금속 냄새 증언을 먼저 잡는다"
-              set:
-                metal_smell_flag: true
-                witness_priority: "reiko"
+            - text: "독 투입 그 자체를 가리킨다"
               add:
-                truth_point: 1
-                trust: 1
-            - text: "신이치의 잔 배치 기억부터 검증한다"
+                mistake_count: 1
+              goto: deduction_branch
+            - text: "시선을 분산시키기 위한 미끼 동작이다"
               set:
-                suspect: "신이치"
-                witness_priority: "shinichi"
+                clue_double_press_decoy: true
               add:
-                truth_point: 1
-            - text: "켄지의 분노 동기부터 파고든다"
-              set:
-                suspect: "켄지"
-                witness_priority: "kenji"
+                deduction_score: 2
+                final_confidence: 1
+              goto: deduction_branch
+            - text: "습관이라서 의미가 없다"
               add:
                 mistake_count: 1
                 trust: -1
+              goto: deduction_branch
 
-  room_simulation:
-    actions:
-      - bg: tea_room
-      - effect: tilt
-      - say:
-          char: 코난
-          text: "이 각도에서 따르면 뚜껑 안쪽 성분이 한 번에 떨어진다."
-      - wait: 360
-      - choice:
-          key: room_reconstruction
-          prompt: "현장 재현 결론을 어떻게 기록할까?"
-          options:
-            - text: "피해자 잔 순서가 사전에 노출됐다고 기록한다"
-              set:
-                room_reconstruction_ok: true
-              add:
-                truth_point: 1
-            - text: "밀실이니까 우연이라고 적는다"
-              set:
-                room_reconstruction_ok: false
-              add:
-                mistake_count: 1
-
-  pressure_split:
+  deduction_branch:
     actions:
       - branch:
           cases:
             - when:
                 all:
-                  - var: truth_point
+                  - var: deduction_score
                     op: gte
                     value: 4
                   - var: trust
                     op: gte
-                    value: 1
-                  - var: room_reconstruction_ok
+                    value: 0
+                  - var: clue_double_press_decoy
                     op: eq
                     value: true
-              goto: precision_probe
-          default: shaky_probe
+              goto: stable_frame
+          default: shaky_frame
 
-  precision_probe:
+  stable_frame:
     actions:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "좋아. 이 페이스면 범인이 방어할 틈이 없어."
+          text: "좋아, 프레임이 잡혔어. 이제 사람별 대면으로 빈칸을 메운다."
       - add:
           final_confidence: 1
-      - goto: route_branch
+      - goto: lounge_handoff
 
-  shaky_probe:
+  shaky_frame:
     actions:
       - effect: pulse
       - say:
           char: 코난.think
-          text: "아직 연결이 약해. 한 번만 더 실수하면 흐름이 꺾여."
+          text: "연결은 보이지만 고리가 느슨해. 대면에서 단서를 더 모아야 해."
       - add:
           mistake_count: 1
-      - goto: route_branch
+      - goto: lounge_handoff
 
-  route_branch:
+  lounge_handoff:
     actions:
-      - branch:
-          cases:
-            - when:
-                var: suspect
-                op: eq
-                value: "신이치"
-              goto: ./routes/shinichi/1.yaml
-            - when:
-                var: suspect
-                op: eq
-                value: "켄지"
-              goto: kenji_detour
-          default: ./routes/reiko/1.yaml
-
-  kenji_detour:
-    actions:
-      - bg: tea_room
-      - char:
-          id: 켄지
-          position: left
-          emotion: angry
-      - char:
-          id: 코난
-          position: center
-          emotion: think
+      - bg: case_board
       - say:
-          char: 켄지.angry
-          with:
-            - 코난.think
-          text: "난 화는 났어도 차 순서 같은 건 몰라. 그런 거 할 머리도 없어."
-      - choice:
-          key: kenji_detour_choice
-          prompt: "켄지 분기에서 다음 판단은?"
-          options:
-            - text: "켄지를 배제하고 신이치 동선으로 전환한다"
-              set:
-                suspect: "신이치"
-              add:
-                truth_point: 1
-                trust: 1
-              goto: ./routes/shinichi/1.yaml
-            - text: "켄지 의심을 유지한 채 간접 검증으로 우회한다"
-              set:
-                suspect: "레이코"
-              add:
-                mistake_count: 1
-              goto: ./routes/reiko/1.yaml
+          char: 코난
+          text: "조사 라운지로 간다. 네 사람을 순서대로 만나고 결론을 닫자."
+      - goto: /routes/hub/1.yaml

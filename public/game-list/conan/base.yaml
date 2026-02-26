@@ -1,9 +1,13 @@
 assets:
   backgrounds:
     mountain_rain: /assets/bg/mountain_rain.png
+    rain_corridor: /assets/bg/rain_corridor.png
     ryokan_hall: /assets/bg/ryokan_hall.png
     tea_room: /assets/bg/tea_room.png
+    case_board: /assets/bg/case_board.png
     police_tape: /assets/bg/police_tape.svg
+    clue_cup: /assets/bg/clue_cup.svg
+    clue_lid: /assets/bg/clue_lid.svg
   characters:
     코난:
       base: /assets/char/conan/base.png
@@ -44,19 +48,24 @@ assets:
     thunder: /assets/sfx/thunder.wav
     scream: /assets/sfx/scream.wav
     door: /assets/sfx/door.wav
+    cup_clink: /assets/sfx/cup_clink.wav
+    notebook_flip: /assets/sfx/notebook_flip.wav
 state:
+  investigation_count: 0
+  visited_shinichi: false
+  visited_reiko: false
+  visited_kenji: false
+  visited_haruo: false
+  deduction_score: 0
+  final_confidence: 0
   trust: 0
-  truth_point: 0
   mistake_count: 0
   comeback_chance: 1
-  route_origin: ""
-  suspect: ""
-  culprit_answer: ""
+  early_exit_taken: false
+  clue_rim_reagent: false
+  clue_order_note: false
+  clue_double_press_decoy: false
+  clue_haruo_wipe: false
+  reiko_motive_open: false
   timeline_answer: ""
-  clue_word: ""
-  locked_room_confirmed: false
-  kettle_trick_known: false
-  metal_smell_flag: false
-  final_confidence: 0
-  witness_priority: ""
-  room_reconstruction_ok: false
+  culprit_answer: ""
