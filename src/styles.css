@@ -522,11 +522,12 @@ textarea,
   --char-scale: 1;
   --char-mobile-scale: 1;
   position: absolute;
-  bottom: 18vh;
-  max-height: 68vh;
+  bottom: 0;
+  height: 100%;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
   will-change: transform, opacity;
   transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
+  transform-origin: center bottom;
   transition: transform 180ms ease-out;
   backface-visibility: hidden;
   contain: paint;
@@ -534,9 +535,16 @@ textarea,
   z-index: 3;
 }
 
+.char-image {
+  width: auto;
+  max-width: min(40vw, 560px);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
 .char-live2d {
   width: min(36vw, 460px);
-  height: 68vh;
+  height: 100%;
   max-height: none;
 }
 
@@ -1478,8 +1486,6 @@ textarea,
   }
 
   .char {
-    max-height: 58vh;
-    bottom: 22vh;
     --char-scale: var(--char-mobile-scale);
   }
 

@@ -4,6 +4,7 @@ import {
   handleAdvance,
   loadGameFromUrl,
   loadGameFromZip,
+  restartFromBeginning,
   resetVideoSkipProgress,
   revealVideoSkipGuide,
   skipVideoCutscene,
@@ -28,7 +29,6 @@ type GameListManifest = {
 };
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
-const VN_STORAGE_PREFIX = 'vn-';
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -67,38 +67,6 @@ function parseEndingProgress(raw: string | null): string[] {
     return Array.from(new Set(parsed.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0)));
   } catch {
     return [];
-  }
-}
-
-function clearVNLocalData(): void {
-  try {
-    const localKeys: string[] = [];
-    for (let idx = 0; idx < localStorage.length; idx += 1) {
-      const key = localStorage.key(idx);
-      if (key?.startsWith(VN_STORAGE_PREFIX)) {
-        localKeys.push(key);
-      }
-    }
-    for (const key of localKeys) {
-      localStorage.removeItem(key);
-    }
-  } catch {
-    // Ignore storage failures and continue with reload.
-  }
-
-  try {
-    const sessionKeys: string[] = [];
-    for (let idx = 0; idx < sessionStorage.length; idx += 1) {
-      const key = sessionStorage.key(idx);
-      if (key?.startsWith(VN_STORAGE_PREFIX)) {
-        sessionKeys.push(key);
-      }
-    }
-    for (const key of sessionKeys) {
-      sessionStorage.removeItem(key);
-    }
-  } catch {
-    // Ignore storage failures and continue with reload.
   }
 }
 
@@ -142,7 +110,15 @@ function useAdvanceByKey() {
       const target = event.target as HTMLElement | null;
       if (target) {
         const tag = target.tagName.toLowerCase();
-        if (target.isContentEditable || tag === 'input' || tag === 'textarea') {
+        if (
+          target.isContentEditable ||
+          tag === 'input' ||
+          tag === 'textarea' ||
+          tag === 'button' ||
+          tag === 'select' ||
+          tag === 'a' ||
+          target.closest('button, a, input, textarea, select, [role="button"], [role="link"]')
+        ) {
           return;
         }
       }
@@ -188,6 +164,7 @@ export default function App() {
   const holdingRef = useRef(false);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
+  const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const appRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
@@ -242,6 +219,27 @@ export default function App() {
     setBootMode('launcher');
   }, []);
 
+  useEffect(() => {
+    const preventGestureZoom = (event: Event) => {
+      event.preventDefault();
+    };
+    const preventPinchZoom = (event: TouchEvent) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    };
+    document.addEventListener('gesturestart', preventGestureZoom, { passive: false });
+    document.addEventListener('gesturechange', preventGestureZoom, { passive: false });
+    document.addEventListener('gestureend', preventGestureZoom, { passive: false });
+    document.addEventListener('touchmove', preventPinchZoom, { passive: false });
+    return () => {
+      document.removeEventListener('gesturestart', preventGestureZoom);
+      document.removeEventListener('gesturechange', preventGestureZoom);
+      document.removeEventListener('gestureend', preventGestureZoom);
+      document.removeEventListener('touchmove', preventPinchZoom);
+    };
+  }, []);
+
   useAdvanceByKey();
 
   useEffect(() => {
@@ -276,6 +274,7 @@ export default function App() {
   const seenEndingCount = seenEndingIdsInCurrentGame.length;
   const endingCompletionPercent = totalEndingCount > 0 ? Math.round((seenEndingCount / totalEndingCount) * 100) : 0;
   const endingCollectionDone = totalEndingCount > 0 && seenEndingCount >= totalEndingCount;
+  const inputSubmitLabel = inputAnswer.trim().length > 0 ? '확인' : '모르겠다';
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
@@ -450,6 +449,35 @@ export default function App() {
   }, [inputGate.active]);
 
   useEffect(() => {
+    if (!inputGate.active) {
+      return;
+    }
+    const maxAttempt = inputGate.errors.length;
+    if (maxAttempt <= 0) {
+      return;
+    }
+    if (inputGate.attemptCount < maxAttempt) {
+      return;
+    }
+    const answer = inputGate.correct.trim();
+    if (answer.length === 0) {
+      return;
+    }
+    setInputAnswer((prev) => (prev === answer ? prev : answer));
+  }, [inputGate.active, inputGate.attemptCount, inputGate.errors.length, inputGate.correct]);
+
+  useEffect(() => {
+    if (!choiceGate.active || choiceGate.options.length === 0) {
+      choiceOptionButtonRefs.current = [];
+      return;
+    }
+    const rafId = window.requestAnimationFrame(() => {
+      choiceOptionButtonRefs.current[0]?.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(rafId);
+  }, [choiceGate.active, choiceGate.key, choiceGate.options.length]);
+
+  useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       if (!videoCutscene.active || !videoCutscene.youtubeId) {
         return;
@@ -565,7 +593,7 @@ export default function App() {
       zIndex,
       '--char-mobile-scale': order === 1 ? 1 : 0.7,
     } as CSSProperties;
-    const className = `char ${position}`;
+    const className = `char char-image ${position}`;
     if (slot.kind === 'live2d') {
       return (
         <Live2DCharacter
@@ -649,10 +677,9 @@ export default function App() {
     setUploading(false);
   };
 
-  const onHardReset = (event: MouseEvent<HTMLButtonElement>) => {
+  const onRestartFromBeginning = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    clearVNLocalData();
-    window.location.reload();
+    void restartFromBeginning();
   };
 
   if (bootMode === 'launcher') {
@@ -800,7 +827,7 @@ export default function App() {
       <div className="overlay" />
       {background && <img className="bg" src={background} alt="background" />}
 
-      <div className="char-layer">
+      <div className="char-layer" style={{ bottom: `${stickerSafeInset}px` }}>
         {renderCharacter(characters.left, 'left')}
         {renderCharacter(characters.center, 'center')}
         {renderCharacter(characters.right, 'right')}
@@ -911,7 +938,7 @@ export default function App() {
               onClick={(event) => event.stopPropagation()}
             />
             <button type="submit" className="input-gate-submit" onClick={(event) => event.stopPropagation()}>
-              확인
+              {inputSubmitLabel}
             </button>
           </form>
         )}
@@ -926,6 +953,16 @@ export default function App() {
                     key={`${choiceGate.key}-${option.text}-${index}`}
                     type="button"
                     className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}`}
+                    ref={(el) => {
+                      choiceOptionButtonRefs.current[index] = el;
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        submitChoiceOption(index);
+                      }
+                    }}
                     onClick={(event) => {
                       event.stopPropagation();
                       submitChoiceOption(index);
@@ -1043,8 +1080,8 @@ export default function App() {
               </div>
             </div>
             <div className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`} aria-hidden={!showEndingRestart}>
-              <button type="button" className="ending-restart" onClick={onHardReset}>
-                완전 초기화 후 처음부터 시작
+              <button type="button" className="ending-restart" onClick={onRestartFromBeginning}>
+                처음부터 다시하기
               </button>
             </div>
           </div>

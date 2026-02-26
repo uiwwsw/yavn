@@ -187,15 +187,30 @@ scenes:
 - 최종 챕터 병합 결과 캐시
 - 동일 챕터 재진입 시 재fetch/재parse 대신 캐시를 재사용합니다.
 
-## 8-3) 엔딩 완전 초기화 버튼 동작
+## 8-3) 엔딩 `처음부터 다시하기` 버튼 동작
 
-- 엔딩 화면 하단 버튼은 `완전 초기화 후 처음부터 시작` 1개만 노출합니다.
-- 클릭 시 `localStorage`/`sessionStorage`의 `vn-` prefix 키를 모두 제거합니다.
-- 현재 기준 삭제 대상 예시:
-- `vn-engine-autosave`
-- `vn-ending-progress:<gameId>`
-- 저장 데이터 제거 후 `window.location.reload()`를 호출해 페이지를 다시 로드합니다.
-- 따라서 이전 챕터/분기 복원 없이 첫 챕터부터 시작합니다.
+- 엔딩 화면 하단 버튼은 `처음부터 다시하기` 1개만 노출합니다.
+- 클릭 시 엔진의 `restartFromBeginning()`을 호출해 페이지 새로고침 없이 첫 챕터부터 재시작합니다.
+- 재시작 시 `vn-engine-autosave`는 제거됩니다.
+- `vn-ending-progress:<gameId>`는 유지되므로 획득한 엔딩 기록은 지워지지 않습니다.
+
+## 8-4) 모바일 확대(Zoom) 방지 동작
+
+- `index.html` viewport는 `maximum-scale=1.0`, `user-scalable=no`를 사용합니다.
+- 런타임은 iOS 제스처 이벤트(`gesturestart/change/end`)와 멀티터치 `touchmove`를 차단해 확대를 방지합니다.
+
+## 8-5) 캐릭터 레이어/정렬 동작
+
+- 캐릭터 레이어(`.char-layer`)의 하단 경계는 다이얼로그 박스 상단 위치와 동일하게 맞춥니다.
+- 캐릭터는 레이어 하단(`bottom: 0`) 기준으로 배치되어, 대화창 위에 떠 보이지 않도록 고정됩니다.
+- 이미지 캐릭터(`.char-image`)는 `object-position: center bottom`으로 하단 정렬됩니다.
+
+## 8-6) 선택/입력 게이트 키보드 동작
+
+- `choice` 게이트가 열리면 첫 번째 옵션 버튼에 자동 포커스됩니다.
+- 포커스된 옵션은 `Enter`/`Space` 키로 즉시 선택할 수 있습니다.
+- `input` 게이트는 입력값이 비어 있을 때 제출 버튼 라벨을 `모르겠다`로 표시하고, 값이 있으면 `확인`으로 표시합니다.
+- `input` 게이트는 마지막 오답 단계(`attemptCount >= errors.length`)에 도달하면 입력창에 `correct` 값을 자동으로 채웁니다.
 
 ## 9) 액션 목록
 
@@ -292,7 +307,11 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
-- 2026-02-26: 엔딩 화면 버튼을 1개(`완전 초기화 후 처음부터 시작`)로 통합하고, `vn-*` 저장 키 삭제 후 새로고침으로 첫 챕터부터 시작하도록 동작을 명시.
+- 2026-02-26: `input` 게이트 마지막 오답 단계에서 입력창에 정답(`correct`)을 자동 주입하도록 동작을 추가.
+- 2026-02-26: `choice` 게이트 첫 옵션 자동 포커스 및 Enter/Space 선택을 추가하고, `input` 게이트 빈 입력 상태 버튼 라벨을 `모르겠다`로 변경.
+- 2026-02-26: 캐릭터 레이어 하단 경계를 다이얼로그 박스 상단에 맞추고, 이미지 캐릭터를 하단 정렬(`object-position: center bottom`)로 조정.
+- 2026-02-26: 엔딩 버튼을 `처음부터 다시하기`로 변경하고, 엔딩 수집 키(`vn-ending-progress`)는 유지한 채 첫 챕터 재시작하도록 동작을 갱신.
+- 2026-02-26: 모바일 확대 방지를 위해 viewport 확대 제한과 멀티터치/제스처 차단 동작을 문서화.
 - 2026-02-26: `choice`에 `forgiveOnceDefault`/`forgiveMessage` 및 `options[].forgiveOnce`/`options[].forgiveMessage`를 추가해 옵션별 1회 유예를 지원.
 - 2026-02-26: YAML V3 도입. `config.yaml` + 계층 `base.yaml` + 챕터 병합 구조로 전면 개편.
 - 2026-02-26: 레거시 `meta/settings` 챕터 포맷 제거, `config.yaml` 필수화.
