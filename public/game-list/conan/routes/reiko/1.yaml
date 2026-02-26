@@ -1,0 +1,151 @@
+meta:
+  title: "명탐정 코난 외전: 다실의 비밀"
+  author: "uiwwsw"
+  version: "4.0"
+
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
+assets:
+  backgrounds:
+    ryokan_hall: ../../assets/bg/ryokan_hall.png
+    tea_room: ../../assets/bg/tea_room.png
+
+  characters:
+    코난:
+      base: ../../assets/char/conan/base.png
+      emotions:
+        think: ../../assets/char/conan/think.png
+        serious: ../../assets/char/conan/serious.png
+
+    신이치:
+      base: ../../assets/char/shinichi/base.png
+      emotions:
+        cold: ../../assets/char/shinichi/cold.png
+
+    레이코:
+      base: ../../assets/char/reiko/base.png
+      emotions:
+        nervous: ../../assets/char/reiko/nervous.png
+
+    하루오:
+      base: ../../assets/char/haruo/base.png
+      emotions:
+        scared: ../../assets/char/haruo/scared.png
+
+  music:
+    mystery: ../../assets/music/mystery.wav
+    tension: ../../assets/music/tension.wav
+
+  sfx:
+    thunder: ../../assets/sfx/thunder.wav
+
+state:
+  defaults:
+    trust: 0
+    truth_point: 0
+    mistake_count: 0
+    comeback_chance: 1
+    route_origin: ""
+    suspect: ""
+    culprit_answer: ""
+
+script:
+  - scene: route_start
+  - scene: bias_gate
+  - scene: timeline_gate
+  - scene: timeline_fail
+  - scene: route_outro
+
+scenes:
+  route_start:
+    actions:
+      - bg: ryokan_hall
+      - music: mystery
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          text: "레이코 루트 1 - 오판의 시작"
+      - say:
+          char: 코난
+          text: "초기 지목은 빗나갔지만, 아직 되돌릴 수 있어."
+      - goto: bias_gate
+
+  bias_gate:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - choice:
+          key: reiko_route1_bias
+          prompt: "다음 조사 방향을 고르자."
+          options:
+            - text: "레이코를 계속 몰아붙인다"
+              set:
+                suspect: "레이코"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_gate
+            - text: "신이치의 우산 이동 동선을 먼저 확인한다"
+              set:
+                suspect: "신이치"
+              add:
+                truth_point: 1
+                trust: 1
+              goto: timeline_gate
+
+  timeline_gate:
+    actions:
+      - music: tension
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - input:
+          prompt: "문 파손 직후, 소매가 비정상적으로 마른 쪽은 누구였지?"
+          correct: "신이치"
+          errors:
+            - "외투 상태를 다시 비교해봐."
+            - "힌트: 빗속 동선과 소매 건조 상태가 충돌해."
+            - "정답은 신이치."
+          routes:
+            - equals: "신이치"
+              set:
+                suspect: "신이치"
+              add:
+                truth_point: 1
+                trust: 1
+              goto: route_outro
+            - equals: "레이코"
+              set:
+                suspect: "레이코"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_fail
+
+  timeline_fail:
+    actions:
+      - sound: thunder
+      - effect: pulse
+      - say:
+          char: 코난
+          text: "그 답으로는 젖은 외투와 시간축이 연결되지 않아. 다시 보자."
+      - goto: timeline_gate
+
+  route_outro:
+    actions:
+      - say:
+          text: "초기 오판을 교정할 단서는 확보했다. 다음 단계로 간다."
+      - goto: ./routes/reiko/2.yaml

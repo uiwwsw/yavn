@@ -10,7 +10,7 @@ meta:
       - label: "LinkedIn"
         value: "linkedin.com/in/uiwwsw"
         href: "https://linkedin.com/in/uiwwsw"
-  version: "3.0"
+  version: "4.0"
 
 settings:
   textSpeed: 38
@@ -20,9 +20,7 @@ settings:
 assets:
   backgrounds:
     mountain_rain: assets/bg/mountain_rain.png
-    ryokan_hall: assets/bg/ryokan_hall.png
     tea_room: assets/bg/tea_room.png
-    police_tape: assets/bg/police_tape.svg
 
   characters:
     코난:
@@ -34,216 +32,97 @@ assets:
     란:
       base: assets/char/ran/base.png
       emotions:
-        surprised: assets/char/ran/surprised.png
         worried: assets/char/ran/worried.png
 
     코고로:
       base: assets/char/kogoro/base.png
       emotions:
-        proud: assets/char/kogoro/proud.png
         angry: assets/char/kogoro/angry.png
-
-    켄지:
-      base: assets/char/kenji/base.png
-      emotions:
-        angry: assets/char/kenji/angry.png
-
-    레이코:
-      base: assets/char/reiko/base.png
-      emotions:
-        nervous: assets/char/reiko/nervous.png
 
     신이치:
       base: assets/char/shinichi/base.png
       emotions:
         cold: assets/char/shinichi/cold.png
 
-    하루오:
-      base: assets/char/haruo/base.png
+    레이코:
+      base: assets/char/reiko/base.png
       emotions:
-        scared: assets/char/haruo/scared.png
+        nervous: assets/char/reiko/nervous.png
 
   music:
     rain: assets/music/rain.wav
-    tension: assets/music/tension.wav
     mystery: assets/music/mystery.wav
 
   sfx:
     thunder: assets/sfx/thunder.wav
-    scream: assets/sfx/scream.wav
-    door: assets/sfx/door.wav
 
 state:
   defaults:
     trust: 0
-    found_key: false
+    truth_point: 0
+    mistake_count: 0
+    comeback_chance: 1
+    route_origin: ""
     suspect: ""
     culprit_answer: ""
-    alliance: ""
-    timeline_answer: ""
-    clue_word: ""
 
 script:
   - scene: cold_open
-  - scene: contract_conflict
-  - scene: reiko_line
-  - scene: shinichi_line
-  - scene: locked_room_scream
-  - scene: first_lockdown
+  - scene: suspect_gate
 
 scenes:
   cold_open:
     actions:
-      - video:
-          src: assets/video/intro.mp4
-          holdToSkipMs: 1000
       - bg: mountain_rain
       - music: rain
+      - char:
+          id: 코난
+          position: center
+          emotion: think
       - say:
-          text: "제1장 - 고요한 다실의 초대장"
+          text: "제1장 - 갈림길의 지목"
       - say:
-          text: "산맥을 휘감는 비구름이 료칸 지붕을 두드렸다."
-      - wait: 400
+          text: "폭우 속 료칸, 첫 지목 하나가 수사의 방향을 갈랐다."
       - sound: thunder
       - effect: darken
       - say:
-          text: "이 밤, 이곳에 모인 사람들은 모두 같은 계약서의 당사자였다."
-      - goto: contract_conflict
+          char: 코난
+          text: "처음 판단이 틀려도 아직 끝난 건 아니야. 다만 실수는 누적된다."
+      - goto: suspect_gate
 
-  contract_conflict:
+  suspect_gate:
     actions:
       - bg: tea_room
       - music: mystery
-      - char:
-          id: 켄지
-          position: left
-          emotion: angry
       - char:
           id: 신이치
           position: right
           emotion: cold
       - char:
           id: 레이코
-          position: center
+          position: left
           emotion: nervous
-      - say:
-          char: 켄지.angry
-          text: "<speed=24>지금 당장 지분 이전 계약을 파기해. 아니면 네 비밀 장부를 공개하겠어.</speed>"
-      - say:
-          char: 신이치.cold
-          text: "협상은 가능하지만, 협박은 거래가 아니지."
-      - say:
-          char: 레이코.nervous
-          text: "두 분 다, 오늘은 투자자 보고 전날이에요."
+      - char:
+          id: 코고로
+          position: center
+          emotion: angry
       - choice:
-          key: chapter1_alliance
-          prompt: "초기 진술에서 누구 쪽 말을 더 신뢰할까?"
+          key: route_entry
+          prompt: "초기 진술, 누구를 먼저 범인으로 지목할까?"
           options:
-            - text: "레이코를 믿는다"
+            - text: "신이치를 지목한다"
               set:
-                alliance: "레이코"
+                route_origin: "shinichi"
                 suspect: "신이치"
               add:
                 trust: 1
-              goto: reiko_line
-            - text: "신이치를 믿는다"
+                truth_point: 1
+              goto: ./routes/shinichi/1.yaml
+            - text: "레이코를 지목한다"
               set:
-                alliance: "신이치"
+                route_origin: "reiko"
                 suspect: "레이코"
               add:
                 trust: -1
-              goto: shinichi_line
-
-  reiko_line:
-    actions:
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - say:
-          char: 코난.think
-          with:
-            - 레이코.nervous
-          text: "레이코 씨가 숨기는 건 있어도, 거짓말을 주도하는 쪽은 아닌 것 같아."
-      - say:
-          char: 코난
-          text: "초기 가설은 신이치 씨 중심으로 잡아보자."
-      - goto: locked_room_scream
-
-  shinichi_line:
-    actions:
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - say:
-          char: 코난.serious
-          with:
-            - 신이치.cold
-          text: "신이치 씨 진술은 차분하지만, 너무 계산되어 있어."
-      - say:
-          char: 코난
-          text: "그래도 레이코 씨 쪽 정황도 열어두고 보자."
-      - goto: locked_room_scream
-
-  locked_room_scream:
-    actions:
-      - bg: tea_room
-      - music: tension
-      - wait: 700
-      - say:
-          text: "복도의 시계가 9시 30분을 가리킬 즈음."
-      - sound: thunder
-      - effect: flash
-      - wait: 300
-      - sound: scream
-      - effect: blur
-      - say:
-          text: "<speed=16>꺄아아아악!!</speed>"
-      - say:
-          char: 란
-          text: "아저씨! 안에서 비명이 났어요!"
-      - char:
-          id: 코고로
-          position: right
-          emotion: angry
-      - say:
-          char: 코고로.angry
-          text: "모두 물러서! 문에서 손 떼!"
-      - sound: door
-      - effect: shake
-      - say:
-          text: "문이 부서지고, 싸늘한 피 냄새가 다실에 퍼졌다."
-      - goto: first_lockdown
-
-  first_lockdown:
-    actions:
-      - bg: tea_room
-      - sticker:
-          id: tape
-          image: police_tape
-          x: 0
-          y: 30
-          width: 120
-          anchorX: left
-          anchorY: top
-          zIndex: 1
-          enter:
-            effect: wipeLeft
-            duration: 360
-            easing: ease-out
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - char:
-          id: 란
-          position: left
-          emotion: worried
-      - char:
-          id: 코고로
-          position: right
-          emotion: angry
-      - say:
-          text: "현장은 봉쇄되었고, 폭우 속 첫 조사가 시작되었다."
-      - goto: ./2.yaml
+                mistake_count: 1
+              goto: ./routes/reiko/1.yaml

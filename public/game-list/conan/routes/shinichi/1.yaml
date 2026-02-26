@@ -1,0 +1,152 @@
+meta:
+  title: "명탐정 코난 외전: 다실의 비밀"
+  author: "uiwwsw"
+  version: "4.0"
+
+settings:
+  textSpeed: 38
+  autoSave: true
+  clickToInstant: true
+
+assets:
+  backgrounds:
+    ryokan_hall: ../../assets/bg/ryokan_hall.png
+    tea_room: ../../assets/bg/tea_room.png
+
+  characters:
+    코난:
+      base: ../../assets/char/conan/base.png
+      emotions:
+        think: ../../assets/char/conan/think.png
+        serious: ../../assets/char/conan/serious.png
+
+    신이치:
+      base: ../../assets/char/shinichi/base.png
+      emotions:
+        cold: ../../assets/char/shinichi/cold.png
+
+    레이코:
+      base: ../../assets/char/reiko/base.png
+      emotions:
+        nervous: ../../assets/char/reiko/nervous.png
+
+    하루오:
+      base: ../../assets/char/haruo/base.png
+      emotions:
+        scared: ../../assets/char/haruo/scared.png
+
+  music:
+    mystery: ../../assets/music/mystery.wav
+    tension: ../../assets/music/tension.wav
+
+  sfx:
+    thunder: ../../assets/sfx/thunder.wav
+
+state:
+  defaults:
+    trust: 0
+    truth_point: 0
+    mistake_count: 0
+    comeback_chance: 1
+    route_origin: ""
+    suspect: ""
+    culprit_answer: ""
+
+script:
+  - scene: route_start
+  - scene: clue_priority_gate
+  - scene: timeline_gate
+  - scene: timeline_fail
+  - scene: route_outro
+
+scenes:
+  route_start:
+    actions:
+      - bg: ryokan_hall
+      - music: mystery
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - say:
+          text: "신이치 루트 1 - 첫 압박"
+      - say:
+          char: 코난.serious
+          text: "정면 돌파를 택했어. 하지만 중간 선택 하나만 틀려도 흐름은 무너진다."
+      - goto: clue_priority_gate
+
+  clue_priority_gate:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - choice:
+          key: shinichi_route1_clue
+          prompt: "먼저 검증할 단서를 고르자."
+          options:
+            - text: "문틈 줄 마찰흔부터 확인한다"
+              set:
+                suspect: "신이치"
+              add:
+                truth_point: 1
+                trust: 1
+              goto: timeline_gate
+            - text: "레이코의 표정만 근거로 몰아붙인다"
+              set:
+                suspect: "레이코"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_gate
+
+  timeline_gate:
+    actions:
+      - music: tension
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - input:
+          prompt: "비명이 들린 시각을 24시간 형식으로 입력해줘."
+          correct: "21:30"
+          errors:
+            - "시계 바늘 위치를 다시 떠올려봐."
+            - "힌트: 9시 30분이었어."
+            - "정답은 21:30."
+          routes:
+            - equals: "21:30"
+              add:
+                truth_point: 1
+                trust: 1
+              goto: route_outro
+            - equals: "21:20"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_fail
+            - equals: "22:00"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: timeline_fail
+
+  timeline_fail:
+    actions:
+      - sound: thunder
+      - effect: tilt
+      - say:
+          char: 코난
+          text: "그 시각이면 문 파손 타이밍과 안 맞아. 다시 계산하자."
+      - goto: timeline_gate
+
+  route_outro:
+    actions:
+      - say:
+          text: "첫 번째 시간축은 맞췄다. 이제 진술 붕괴를 확정해야 한다."
+      - goto: ./routes/shinichi/2.yaml
