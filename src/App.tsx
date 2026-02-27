@@ -169,6 +169,15 @@ function mergeUniqueTextList(...values: string[][]): string[] {
   return merged;
 }
 
+function isMobilePointerEnvironment(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+    return false;
+  }
+  const hasCoarsePointer = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
+  const mobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return hasCoarsePointer || mobileUserAgent;
+}
+
 function normalizeGameListSeoEntry(value: unknown, fallbackTitle?: string): GameListSeoEntry | undefined {
   if (!isObjectRecord(value)) {
     return fallbackTitle
@@ -623,6 +632,7 @@ export default function App() {
   const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
   const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
+  const skipInputAutoFocus = useMemo(() => isMobilePointerEnvironment(), []);
 
   const stopStartGateMusic = useCallback(() => {
     const audio = startGateAudioRef.current;
@@ -1151,11 +1161,14 @@ export default function App() {
       setInputAnswer('');
       return;
     }
+    if (skipInputAutoFocus) {
+      return;
+    }
     const rafId = window.requestAnimationFrame(() => {
       inputFieldRef.current?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(rafId);
-  }, [inputGate.active]);
+  }, [inputGate.active, skipInputAutoFocus]);
 
   useEffect(() => {
     if (!inputGate.active) {
@@ -1943,7 +1956,7 @@ export default function App() {
               className="input-gate-field"
               type="text"
               value={inputAnswer}
-              autoFocus
+              autoFocus={!skipInputAutoFocus}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}

@@ -276,6 +276,7 @@ scenes:
 - 포커스된 옵션은 `Enter`/`Space` 키로 즉시 선택할 수 있습니다.
 - `input` 게이트는 입력값이 비어 있을 때 제출 버튼 라벨을 `모르겠다`로 표시하고, 값이 있으면 `확인`으로 표시합니다.
 - `input` 게이트는 마지막 오답 단계(`attemptCount >= errors.length`)에 도달하면 입력창에 `correct` 값을 자동으로 채웁니다.
+- 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 생략해 가상 키보드가 즉시 열리지 않도록 합니다.
 
 ## 8-7) Live2D 런타임 로딩 동작
 
@@ -457,6 +458,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 생략해 가상 키보드가 즉시 열리지 않도록 동작을 조정했습니다.
 - 2026-02-27: `config.yaml.startScreen.music`(시작 화면 전용 BGM)과 `config.yaml.endingScreen.image`(엔딩 오버레이 배경)를 추가했습니다. ZIP 시작 화면 프리뷰에서도 로컬 음악 경로를 blob으로 변환해 재생하도록 동작을 확장했습니다.
 - 2026-02-27: `prebuild`에서 `public/sitemap.xml`을 manifest(`games[].path`) 기준으로 자동 생성하도록 확장했습니다. 동시에 Start Gate(게임 본 로딩 전) 단계에서도 `config.yaml.seo`를 즉시 적용해 `/game-list/:gameId` 진입 직후 메타가 반영되도록 동작을 갱신했습니다.
 - 2026-02-27: 다이얼로그 `숨기기` 버튼을 본문 내부에서 박스 외부 우측 상단 컨트롤 레이어로 이동해, 일반 대사 텍스트와 버튼이 겹치지 않도록 UI 레이아웃을 조정했습니다.
