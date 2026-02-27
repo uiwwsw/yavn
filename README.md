@@ -25,8 +25,51 @@ pnpm dev
 - 기본 주소: [http://localhost:5173](http://localhost:5173)
 
 라우팅:
-- `/`: 런처(샘플 ZIP 다운로드, ZIP 업로드 실행, PR 공유)
+- `/`: Engine Console 런처(실행 콘솔 + 검색/태그 워크스페이스 + 인스펙터)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 게임 즉시 실행
+
+## 런처 메타데이터 (Manifest V2)
+
+런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성됩니다.
+
+`public/game-list/index.json` 구조:
+
+```json
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-02-27T02:15:30.805Z",
+  "games": [
+    {
+      "id": "conan",
+      "name": "명탐정 코난 외전: 다실의 비밀",
+      "path": "/game-list/conan/",
+      "author": "uiwwsw",
+      "version": "7.0",
+      "summary": "런처 카드 요약",
+      "thumbnail": "/game-list/conan/assets/bg/case_board.png",
+      "tags": ["detective", "sample"],
+      "chapterCount": 9
+    }
+  ]
+}
+```
+
+- 하위 호환: 런처는 V1(`id/name/path`) manifest도 읽을 수 있습니다.
+- `name`은 `config.yaml.title` 우선, 없으면 레거시 챕터 `meta.title`, 그다음 폴더명 기반 titleize를 사용합니다.
+- `chapterCount`는 하위 폴더를 포함한 챕터 YAML 수(`config/base/launcher 제외`)를 기록합니다.
+
+게임별 선택 메타(`public/game-list/<gameId>/launcher.yaml`, 선택):
+
+```yaml
+summary: "게임 카드/인스펙터에 표시할 설명"
+thumbnail: "assets/bg/cover.png"
+tags:
+  - detective
+  - live2d
+```
+
+- 이 파일은 런처 전용이며 엔진 DSL(`config/base/chapter`) 파서와 분리됩니다.
+- `thumbnail`은 상대 경로일 때 `/game-list/<gameId>/...`로 정규화됩니다.
 
 ## YAML V3 구조 (필수)
 
@@ -230,6 +273,7 @@ scenes:
 
 - `public/game-list/conan/config.yaml`
 - `public/game-list/conan/base.yaml`
+- `public/game-list/conan/launcher.yaml`
 - `public/game-list/conan/routes/base.yaml`
 - `public/game-list/conan/0.yaml`
 - `public/game-list/conan/1.yaml`
@@ -242,13 +286,16 @@ scenes:
 - `public/game-list/conan/conclusion/1.yaml`
 - `public/game-list/live2dtest/config.yaml`
 - `public/game-list/live2dtest/base.yaml`
+- `public/game-list/live2dtest/launcher.yaml`
 - `public/game-list/live2dtest/1.yaml`
 - `sample.yaml`
 
 ## 개발 메모
 
-- 런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성됩니다.
-- 표시명은 `config.yaml.title`을 우선 사용합니다.
+- 런처는 `EXECUTION CONSOLE(좌) / WORKSPACE CATALOG(중앙) / ASSET INSPECTOR(우)` 3패널 구조를 사용합니다.
+- 게임 목록 manifest는 `schemaVersion: 2`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` 메타를 포함합니다.
+- 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
+- 게임별 `launcher.yaml`은 선택사항이며, 없으면 런처가 기본 요약/메타로 안전하게 렌더링합니다.
 - 엔딩 화면 하단에는 `처음부터 다시하기` 버튼 1개만 표시됩니다.
 - `처음부터 다시하기` 클릭 시 저장된 엔딩 수집(`vn-ending-progress:<gameId>`)은 유지하고, 현재 플레이 상태만 첫 챕터 기준으로 재시작합니다.
 - 엔딩 크레딧 롤 영역은 초기 자동 스크롤 구간에서 입력을 잠그고(`pointer-events: none`), 자동 스크롤이 멈춘 뒤에만 수동 스크롤을 허용합니다.

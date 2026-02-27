@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   completeVideoCutscene,
   handleAdvance,
@@ -23,13 +23,23 @@ type GameListManifestEntry = {
   id: string;
   name: string;
   path: string;
+  author?: string;
+  version?: string;
+  summary?: string;
+  thumbnail?: string;
+  tags: string[];
+  chapterCount?: number;
 };
 
 type GameListManifest = {
+  schemaVersion?: number;
+  generatedAt?: string;
   games: GameListManifestEntry[];
 };
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
+const ALL_TAG_FILTER = '__all';
+const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -42,6 +52,106 @@ type CreditContactLine = {
   value: string;
   href?: string;
 };
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function normalizeText(value: unknown): string | undefined {
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+function normalizeTags(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  const tags: string[] = [];
+  for (const rawTag of value) {
+    const normalized = normalizeText(rawTag);
+    if (!normalized || tags.includes(normalized)) {
+      continue;
+    }
+    tags.push(normalized);
+  }
+  return tags;
+}
+
+function parseGameIdFromPath(pathValue: string): string | undefined {
+  const match = pathValue.match(/^\/game-list\/([^/]+)\/?$/);
+  if (!match) {
+    return undefined;
+  }
+  return decodeURIComponent(match[1]);
+}
+
+function normalizeChapterCount(value: unknown): number | undefined {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return undefined;
+  }
+  const normalized = Math.max(0, Math.floor(value));
+  return normalized;
+}
+
+function normalizeGameListEntry(value: unknown, index: number): GameListManifestEntry | undefined {
+  if (!isObjectRecord(value)) {
+    return undefined;
+  }
+  const rawPath = normalizeText(value.path);
+  const rawId = normalizeText(value.id);
+  const id = rawId ?? (rawPath ? parseGameIdFromPath(rawPath) : undefined) ?? `game-${index + 1}`;
+  const path = rawPath ?? `/game-list/${encodeURIComponent(id)}/`;
+  const name = normalizeText(value.name) ?? id;
+  return {
+    id,
+    name,
+    path,
+    author: normalizeText(value.author),
+    version: normalizeText(value.version),
+    summary: normalizeText(value.summary),
+    thumbnail: normalizeText(value.thumbnail),
+    tags: normalizeTags(value.tags),
+    chapterCount: normalizeChapterCount(value.chapterCount),
+  };
+}
+
+function parseGameListManifest(raw: unknown): GameListManifest {
+  if (!isObjectRecord(raw)) {
+    return { games: [] };
+  }
+  const games = Array.isArray(raw.games)
+    ? raw.games
+        .map((entry, index) => normalizeGameListEntry(entry, index))
+        .filter((entry): entry is GameListManifestEntry => Boolean(entry))
+    : [];
+  return {
+    schemaVersion: typeof raw.schemaVersion === 'number' && Number.isFinite(raw.schemaVersion) ? raw.schemaVersion : undefined,
+    generatedAt: normalizeText(raw.generatedAt),
+    games,
+  };
+}
+
+function formatManifestTimestamp(raw: string | null): string {
+  if (!raw) {
+    return 'N/A';
+  }
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) {
+    return raw;
+  }
+  return parsed.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+}
 
 function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined {
   const normalizedTitle = gameTitle?.trim();
@@ -158,6 +268,11 @@ export default function App() {
   const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
   const [gameListError, setGameListError] = useState<string | null>(null);
+  const [manifestSchemaVersion, setManifestSchemaVersion] = useState<number | null>(null);
+  const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
+  const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTag, setActiveTag] = useState(ALL_TAG_FILTER);
   const [uploading, setUploading] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const holdTimerRef = useRef<number | undefined>(undefined);
@@ -172,6 +287,7 @@ export default function App() {
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
+  const gameListRequestIdRef = useRef(0);
   const [endingCreditsReady, setEndingCreditsReady] = useState(false);
   const [endingCreditsScrollUnlocked, setEndingCreditsScrollUnlocked] = useState(false);
   const [endingTopSpacerPx, setEndingTopSpacerPx] = useState(0);
@@ -183,31 +299,47 @@ export default function App() {
   const shareByPrUrl = 'https://github.com/uiwwsw/visual-novel/compare';
   const isDialogHidden = videoCutscene.active || chapterLoading || !game;
 
-  useEffect(() => {
-    let disposed = false;
-    const loadGameList = async () => {
-      try {
-        const response = await fetch('/game-list/index.json', { cache: 'no-store' });
-        if (!response.ok) {
-          throw new Error(`게임 목록을 불러오지 못했습니다. (HTTP ${response.status})`);
-        }
-        const parsed = (await response.json()) as GameListManifest;
-        if (!disposed) {
-          setGameList(Array.isArray(parsed.games) ? parsed.games : []);
-          setGameListError(null);
-        }
-      } catch (error) {
-        if (!disposed) {
-          setGameList([]);
-          setGameListError(error instanceof Error ? error.message : '게임 목록을 불러오지 못했습니다.');
-        }
+  const loadGameListManifest = useCallback(async () => {
+    const requestId = gameListRequestIdRef.current + 1;
+    gameListRequestIdRef.current = requestId;
+    try {
+      const response = await fetch('/game-list/index.json', { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`게임 목록을 불러오지 못했습니다. (HTTP ${response.status})`);
       }
-    };
-    void loadGameList();
-    return () => {
-      disposed = true;
-    };
-  }, [bootMode]);
+      const rawManifest = (await response.json()) as unknown;
+      const parsed = parseGameListManifest(rawManifest);
+      if (requestId !== gameListRequestIdRef.current) {
+        return;
+      }
+      setGameList(parsed.games);
+      setManifestSchemaVersion(parsed.schemaVersion ?? null);
+      setManifestGeneratedAt(parsed.generatedAt ?? null);
+      setGameListError(null);
+      setSelectedGameId((prev) => {
+        if (prev && parsed.games.some((entry) => entry.id === prev)) {
+          return prev;
+        }
+        return parsed.games[0]?.id ?? null;
+      });
+    } catch (error) {
+      if (requestId !== gameListRequestIdRef.current) {
+        return;
+      }
+      setGameList([]);
+      setManifestSchemaVersion(null);
+      setManifestGeneratedAt(null);
+      setSelectedGameId(null);
+      setGameListError(error instanceof Error ? error.message : '게임 목록을 불러오지 못했습니다.');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (bootMode !== 'launcher') {
+      return;
+    }
+    void loadGameListManifest();
+  }, [bootMode, loadGameListManifest]);
 
   useEffect(() => {
     const pathname = window.location.pathname;
@@ -265,6 +397,67 @@ export default function App() {
       document.removeEventListener('selectstart', preventDefault);
     };
   }, []);
+
+  const allLauncherTags = useMemo(() => {
+    const tags = new Set<string>();
+    for (const entry of gameList) {
+      for (const tag of entry.tags) {
+        tags.add(tag);
+      }
+    }
+    return Array.from(tags).sort((a, b) => a.localeCompare(b, 'ko'));
+  }, [gameList]);
+
+  useEffect(() => {
+    if (activeTag === ALL_TAG_FILTER) {
+      return;
+    }
+    if (!allLauncherTags.includes(activeTag)) {
+      setActiveTag(ALL_TAG_FILTER);
+    }
+  }, [activeTag, allLauncherTags]);
+
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+  const filteredGames = useMemo(() => {
+    return gameList.filter((entry) => {
+      const matchesTag = activeTag === ALL_TAG_FILTER || entry.tags.includes(activeTag);
+      if (!matchesTag) {
+        return false;
+      }
+      if (!normalizedSearchTerm) {
+        return true;
+      }
+      return [
+        entry.id,
+        entry.name,
+        entry.path,
+        entry.author ?? '',
+        entry.summary ?? '',
+        entry.tags.join(' '),
+      ]
+        .join(' ')
+        .toLowerCase()
+        .includes(normalizedSearchTerm);
+    });
+  }, [activeTag, gameList, normalizedSearchTerm]);
+
+  useEffect(() => {
+    if (filteredGames.length === 0) {
+      return;
+    }
+    if (!selectedGameId || !filteredGames.some((entry) => entry.id === selectedGameId)) {
+      setSelectedGameId(filteredGames[0].id);
+    }
+  }, [filteredGames, selectedGameId]);
+
+  const selectedGame =
+    gameList.find((entry) => entry.id === selectedGameId) ??
+    filteredGames[0] ??
+    gameList[0] ??
+    null;
+  const isSelectedGameVisible = Boolean(selectedGame && filteredGames.some((entry) => entry.id === selectedGame.id));
+  const manifestTimestampLabel = formatManifestTimestamp(manifestGeneratedAt);
+  const gameListStatus = gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
 
   const effectClass = effect ? `effect-${effect}` : '';
   const authorCredit = normalizeAuthorCredit(game?.meta.author);
@@ -762,127 +955,249 @@ export default function App() {
   };
 
   if (bootMode === 'launcher') {
+    const selectedGameTagList = selectedGame?.tags ?? [];
+    const selectedGameChapters =
+      typeof selectedGame?.chapterCount === 'number' ? `${selectedGame.chapterCount} chapter(s)` : 'chapter count 미수집';
+    const selectedGameSummary = selectedGame?.summary ?? DEFAULT_LAUNCHER_SUMMARY;
+
     return (
       <div className="launcher">
         <div className="launcher-noise" aria-hidden="true" />
-        <div className="launcher-card">
-          <section className="launcher-hero">
-            <p className="launcher-eyebrow">YAVN (야븐) // RETRO NARRATIVE ENGINE</p>
-            <h1>비주얼노블을 위한 텍스트 중심 게임 엔진</h1>
-            <p className="launcher-lead">
-              YAML 기반으로 시나리오와 연출을 빠르게 구성하고, ZIP 업로드로 즉시 플레이합니다.
-              <br />
-              샘플로 시작하고 PR로 공유하는 제작 플로우를 기본으로 제공합니다.
-            </p>
-          </section>
-
-          <section className="launcher-panel launcher-actions-panel">
-            <h2 className="launcher-panel-title">START PANEL</h2>
-            <div className="launcher-actions">
-              <a className="sample-download-link launcher-action launcher-action-secondary" href={sampleZipUrl} download>
-                샘플 파일 다운받기 (ZIP)
-              </a>
-              <label className="zip-upload launcher-action launcher-action-primary">
-                게임 실행해보기 (ZIP 올려서)
-                <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
-              </label>
-              <a
-                className="share-pr-link launcher-action launcher-action-ghost"
-                href={shareByPrUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                게임 공유하기 (PR)
-              </a>
+        <div className="launcher-scanline" aria-hidden="true" />
+        <div className="launcher-console">
+          <header className="launcher-topbar">
+            <div className="launcher-topbar-title">
+              <p className="launcher-topbar-eyebrow">YAVN // RETRO CRT ENGINE CONSOLE</p>
+              <h1>텍스트 기반 비주얼노블 제작 워크스테이션</h1>
             </div>
-            <p className="launcher-cta-note">샘플 구조를 확인한 뒤, 포크/브랜치에서 PR로 공유를 요청해 주세요.</p>
-          </section>
+            <dl className="launcher-topbar-stats">
+              <div>
+                <dt>DSL</dt>
+                <dd>YAML V3</dd>
+              </div>
+              <div>
+                <dt>MANIFEST</dt>
+                <dd>v{manifestSchemaVersion ?? 1}</dd>
+              </div>
+              <div>
+                <dt>GAMES</dt>
+                <dd>{gameList.length}</dd>
+              </div>
+              <div>
+                <dt>SYNC</dt>
+                <dd>{manifestTimestampLabel}</dd>
+              </div>
+              <div>
+                <dt>STATUS</dt>
+                <dd className={`launcher-status launcher-status-${gameListStatus.toLowerCase()}`}>{gameListStatus}</dd>
+              </div>
+            </dl>
+          </header>
 
-          <section className="launcher-panel">
-            <h2 className="launcher-panel-title">GAME LIST</h2>
-            {gameListError && <p className="game-list-error">{gameListError}</p>}
-            {!gameListError && gameList.length === 0 && (
-              <p className="game-list-empty">`public/game-list/` 아래에 게임 폴더를 추가하면 여기에 표시됩니다.</p>
-            )}
-            {!gameListError && gameList.length > 0 && (
-              <div className="game-list-grid">
-                {gameList.map((entry) => (
-                  <a key={entry.id} className="game-entry-link" href={entry.path}>
-                    <strong>{entry.name}</strong>
-                    <span>{entry.path}</span>
-                  </a>
+          <div className="launcher-layout">
+            <section className="launcher-panel launcher-panel-actions">
+              <h2 className="launcher-panel-title">EXECUTION CONSOLE</h2>
+              <div className="launcher-command-group">
+                <label className="launcher-command launcher-command-primary launcher-command-upload">
+                  {uploading ? 'ZIP 패키지 로딩 중...' : 'ZIP 즉시 실행'}
+                  <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
+                </label>
+                <a className="launcher-command launcher-command-secondary" href={sampleZipUrl} download>
+                  샘플 ZIP 다운로드
+                </a>
+                <a className="launcher-command launcher-command-ghost" href={shareByPrUrl} target="_blank" rel="noreferrer">
+                  GitHub PR 공유
+                </a>
+              </div>
+
+              <p className="launcher-cta-note">
+                실행 우선 전략: ZIP으로 런타임을 먼저 확인한 뒤, 샘플 구조를 기반으로 YAML/에셋을 조립해 PR로 공유합니다.
+              </p>
+
+              <h3 className="launcher-subtitle">BUILD PIPELINE</h3>
+              <ol className="launcher-flow-list">
+                <li>
+                  <strong>1. BOOT SAMPLE</strong>
+                  <span>샘플 ZIP으로 폴더 구조와 DSL 패턴을 확인합니다.</span>
+                </li>
+                <li>
+                  <strong>2. AUTHOR YAML</strong>
+                  <span>`config.yaml` + 챕터 YAML로 분기와 연출을 정의합니다.</span>
+                </li>
+                <li>
+                  <strong>3. PACK ASSETS</strong>
+                  <span>`assets/...` 체계를 유지한 상태로 ZIP 패키징합니다.</span>
+                </li>
+                <li>
+                  <strong>4. RUN RUNTIME</strong>
+                  <span>업로드 즉시 플레이해 텍스트/연출/로딩을 검증합니다.</span>
+                </li>
+                <li>
+                  <strong>5. SHARE PR</strong>
+                  <span>검증 완료 결과물을 PR로 제출해 목록에 반영합니다.</span>
+                </li>
+              </ol>
+            </section>
+
+            <section className="launcher-panel launcher-panel-workspace">
+              <div className="launcher-workspace-header">
+                <h2 className="launcher-panel-title">WORKSPACE CATALOG</h2>
+                <span className="launcher-workspace-count">
+                  FILTERED {filteredGames.length} / TOTAL {gameList.length}
+                </span>
+              </div>
+
+              <div className="launcher-search-box">
+                <label htmlFor="launcher-search-input">검색</label>
+                <input
+                  id="launcher-search-input"
+                  type="search"
+                  placeholder="게임명, 태그, 작성자, 요약 검색"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                />
+              </div>
+
+              <div className="launcher-tag-filter" role="group" aria-label="게임 태그 필터">
+                <button
+                  type="button"
+                  className={`launcher-tag-button ${activeTag === ALL_TAG_FILTER ? 'is-active' : ''}`}
+                  onClick={() => setActiveTag(ALL_TAG_FILTER)}
+                >
+                  ALL
+                </button>
+                {allLauncherTags.map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    className={`launcher-tag-button ${activeTag === tag ? 'is-active' : ''}`}
+                    onClick={() => setActiveTag(tag)}
+                  >
+                    {tag}
+                  </button>
                 ))}
               </div>
-            )}
-          </section>
 
-          <section className="launcher-panel">
-            <h2 className="launcher-panel-title">BUILD FLOW</h2>
-            <ol className="how-list">
-              <li>
-                <strong>1. 샘플 ZIP 확인</strong>
-                <span>`샘플 파일 다운받기 (ZIP)`으로 기본 파일 구조를 확인합니다.</span>
-              </li>
-              <li>
-                <strong>2. YAML 작성</strong>
-                <span>대사/연출을 `1.yaml` 같은 파일로 작성합니다.</span>
-              </li>
-              <li>
-                <strong>3. 에셋 ZIP 압축</strong>
-                <span>이미지/사운드를 `assets/...` 구조로 묶어 ZIP을 만듭니다.</span>
-              </li>
-              <li>
-                <strong>4. 업로드 즉시 실행</strong>
-                <span>`게임 실행해보기 (ZIP 올려서)` 버튼으로 바로 플레이합니다.</span>
-              </li>
-              <li>
-                <strong>5. 공유는 PR</strong>
-                <span>`게임 공유하기 (PR)` 버튼으로 GitHub PR 생성 페이지로 이동합니다.</span>
-              </li>
-            </ol>
-          </section>
+              {gameListError && (
+                <div className="launcher-diagnostic" role="alert">
+                  <strong>MANIFEST LOAD FAILURE</strong>
+                  <p>{gameListError}</p>
+                  <button type="button" onClick={() => void loadGameListManifest()}>
+                    다시 시도
+                  </button>
+                </div>
+              )}
 
-          <section className="launcher-panel">
-            <h2 className="launcher-panel-title">ENGINE FEATURES</h2>
-            <div className="feature-grid">
-              <span>타이핑 효과</span>
-              <span>챕터 프리로드</span>
-              <span>goto/effect</span>
-              <span>에러 라인 표시</span>
-              <span>ZIP 즉시 실행</span>
-              <span>YAML DSL</span>
-            </div>
-          </section>
+              {!gameListError && filteredGames.length === 0 && (
+                <div className="launcher-diagnostic">
+                  <strong>NO MATCHED GAME</strong>
+                  <p>검색어/태그 조건을 만족하는 게임이 없습니다. 필터를 초기화하거나 `launcher.yaml` 메타를 점검해 주세요.</p>
+                </div>
+              )}
 
-          <section className="launcher-panel">
-            <h2 className="launcher-panel-title">FAQ</h2>
-            <div className="faq-list">
-              <div className="faq-item">
-                <strong>코딩이 꼭 필요한가요?</strong>
-                <p>복잡한 코드 없이 YAML 중심으로 시나리오를 구성해 빠르게 제작할 수 있습니다.</p>
+              {!gameListError && filteredGames.length > 0 && (
+                <div className="workspace-grid">
+                  {filteredGames.map((entry) => {
+                    const isSelected = selectedGame?.id === entry.id;
+                    return (
+                      <button
+                        key={entry.id}
+                        type="button"
+                        className={`workspace-game-card ${isSelected ? 'is-selected' : ''}`}
+                        onClick={() => setSelectedGameId(entry.id)}
+                      >
+                        <span className="workspace-game-header">
+                          <strong>{entry.name}</strong>
+                          {entry.version ? <em>v{entry.version}</em> : <em>v-</em>}
+                        </span>
+                        <span className="workspace-game-meta">
+                          {entry.author ? `Author ${entry.author}` : 'Author 미등록'} /{' '}
+                          {typeof entry.chapterCount === 'number' ? `${entry.chapterCount} chapters` : 'chapter 미수집'}
+                        </span>
+                        <span className="workspace-game-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</span>
+                        <span className="workspace-game-tags">
+                          {(entry.tags.length > 0 ? entry.tags : ['untagged']).map((tag) => (
+                            <b key={`${entry.id}-${tag}`}>{tag}</b>
+                          ))}
+                        </span>
+                        <span className="workspace-game-path">{entry.path}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+
+            <section className="launcher-panel launcher-panel-inspector">
+              <h2 className="launcher-panel-title">ASSET INSPECTOR</h2>
+
+              {selectedGame ? (
+                <>
+                  <div className="inspector-preview">
+                    {selectedGame.thumbnail ? (
+                      <img src={selectedGame.thumbnail} alt={`${selectedGame.name} thumbnail`} loading="lazy" decoding="async" />
+                    ) : (
+                      <div className="inspector-preview-fallback">NO THUMBNAIL</div>
+                    )}
+                  </div>
+
+                  <dl className="inspector-meta">
+                    <div>
+                      <dt>GAME</dt>
+                      <dd>{selectedGame.name}</dd>
+                    </div>
+                    <div>
+                      <dt>ID</dt>
+                      <dd>{selectedGame.id}</dd>
+                    </div>
+                    <div>
+                      <dt>AUTHOR</dt>
+                      <dd>{selectedGame.author ?? '미등록'}</dd>
+                    </div>
+                    <div>
+                      <dt>VERSION</dt>
+                      <dd>{selectedGame.version ?? '미등록'}</dd>
+                    </div>
+                    <div>
+                      <dt>CHAPTERS</dt>
+                      <dd>{selectedGameChapters}</dd>
+                    </div>
+                    <div>
+                      <dt>VISIBLE</dt>
+                      <dd>{isSelectedGameVisible ? 'LISTED' : 'FILTERED OUT'}</dd>
+                    </div>
+                  </dl>
+
+                  <p className="inspector-summary">{selectedGameSummary}</p>
+
+                  <div className="inspector-tag-row">
+                    {(selectedGameTagList.length > 0 ? selectedGameTagList : ['untagged']).map((tag) => (
+                      <span key={`inspect-${selectedGame.id}-${tag}`}>{tag}</span>
+                    ))}
+                  </div>
+
+                  <a className="launcher-command launcher-command-primary" href={selectedGame.path}>
+                    선택 게임 즉시 실행
+                  </a>
+                </>
+              ) : (
+                <div className="launcher-diagnostic">
+                  <strong>INSPECTOR IDLE</strong>
+                  <p>게임 항목을 선택하면 상세 메타와 실행 액션이 표시됩니다.</p>
+                </div>
+              )}
+
+              <div className="inspector-feature-block">
+                <h3>ENGINE CAPABILITIES</h3>
+                <ul>
+                  <li>YAML V3 계층 병합(`config/base/chapter`)</li>
+                  <li>분기 DSL(`choice/branch/input/ending`) 런타임 검증</li>
+                  <li>챕터 프리로드 + Live2D/오디오/비디오 연출 동기화</li>
+                  <li>ZIP 업로드 즉시 실행 + PR 기반 공유 워크플로우</li>
+                </ul>
               </div>
-              <div className="faq-item">
-                <strong>게임은 어디서 실행하나요?</strong>
-                <p>`게임 리스트`에서 원하는 게임을 선택하거나, ZIP을 업로드해 즉시 실행할 수 있습니다.</p>
-              </div>
-              <div className="faq-item">
-                <strong>개발 전에 참고할 파일이 있나요?</strong>
-                <p>`샘플 파일 다운받기 (ZIP)` 버튼으로 기본 예시 파일(`public/sample.zip`)을 받을 수 있습니다.</p>
-              </div>
-              <div className="faq-item">
-                <strong>내 게임을 홈페이지에 올리려면?</strong>
-                <p>`게임 공유하기 (PR)` 버튼으로 PR을 생성해 공유 요청을 등록하면 됩니다.</p>
-              </div>
-              <div className="faq-item">
-                <strong>로딩이 느릴 때는 어떻게 최적화하나요?</strong>
-                <p>
-                  `assets/ch01`, `assets/ch02`처럼 폴더를 나눠 챕터별 필수 에셋만 로드하세요. 스토리는 챕터당
-                  `2만~3만자` 기준으로 `1.yaml`, `2.yaml`처럼 분할하고, 긴 장면은 `goto`로 분리하면 초기 로딩 부담을 줄일
-                  수 있습니다.
-                </p>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
           {error && <div className="launcher-error">{error.message}</div>}
         </div>

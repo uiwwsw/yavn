@@ -1,0 +1,6 @@
+summary: "Live2D 캐릭터 입력/시선 추적과 컷신 전환을 빠르게 점검하는 경량 테스트 시나리오."
+thumbnail: "assets/char/ren_pro_ko/runtime/ren.4096/texture_00.png"
+tags:
+  - live2d
+  - interaction
+  - smoke-test

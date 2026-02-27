@@ -1,15 +1,37 @@
 {
-  "generatedAt": "2026-02-26T10:11:09.559Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-02-27T02:18:41.777Z",
   "games": [
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 다실의 비밀",
-      "path": "/game-list/conan/"
+      "path": "/game-list/conan/",
+      "author": "uiwwsw",
+      "version": "7.0",
+      "summary": "폭우 속 료칸 사건을 추적하는 4막 추리형 데모. 라운지 탐문 루프와 엔딩 분기 검증에 최적화됨.",
+      "thumbnail": "/game-list/conan/assets/bg/case_board.png",
+      "tags": [
+        "detective",
+        "branch-heavy",
+        "sample",
+        "voice-sfx"
+      ],
+      "chapterCount": 9
     },
     {
       "id": "live2dtest",
       "name": "Live2D 테스트: 렌 수다",
-      "path": "/game-list/live2dtest/"
+      "path": "/game-list/live2dtest/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "Live2D 캐릭터 입력/시선 추적과 컷신 전환을 빠르게 점검하는 경량 테스트 시나리오.",
+      "thumbnail": "/game-list/live2dtest/assets/char/ren_pro_ko/runtime/ren.4096/texture_00.png",
+      "tags": [
+        "live2d",
+        "interaction",
+        "smoke-test"
+      ],
+      "chapterCount": 1
     }
   ]
 }

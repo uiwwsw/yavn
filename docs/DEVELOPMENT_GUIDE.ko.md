@@ -9,8 +9,23 @@ pnpm install
 pnpm dev
 ```
 
-- `/`: 런처
+- `/`: Engine Console 런처 (실행 콘솔/워크스페이스/인스펙터)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 실행
+
+## 1-1) 런처 게임 목록 메타 (Manifest V2)
+
+- `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`를 실행해 `public/game-list/index.json`을 생성합니다.
+- 최신 스키마는 `schemaVersion: 2`입니다.
+- `games[]` 필드:
+  - 기본: `id`, `name`, `path`
+  - 확장: `author`, `version`, `summary`, `thumbnail`, `tags`, `chapterCount`
+- `chapterCount`는 게임 폴더 하위 전체 YAML 중 `config/base/launcher`를 제외한 챕터 파일 수를 기록합니다.
+- 런처는 V1(`id/name/path`) manifest도 파싱하도록 하위 호환을 유지합니다.
+
+선택 메타 파일:
+- `public/game-list/<gameId>/launcher.yaml` (선택)
+- 허용 키: `summary`, `thumbnail`, `tags`
+- 이 파일은 런처 전용이며 엔진 DSL 스키마(`config/base/chapter`)와 분리됩니다.
 
 ## 2) YAML V3 핵심 구조
 
@@ -350,6 +365,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 메인 런처를 Engine Console 3패널(실행 콘솔/워크스페이스/인스펙터) 구조로 재설계하고, 게임 목록 manifest를 `schemaVersion: 2`(`author/version/summary/thumbnail/tags/chapterCount`)로 확장. `launcher.yaml`(선택) 기반 런처 메타 병합 규칙과 V1 manifest fallback 동작을 문서화.
 - 2026-02-26: 다이얼로그 박스 숨김/복귀 연출을 `opacity` 토글에서 하단 슬라이드 아웃/슬라이드 인(`transform`) 방식으로 변경.
 - 2026-02-26: 챕터 로딩(`chapterLoading`) 또는 게임 데이터 미로딩 상태에서 다이얼로그 박스를 숨기도록 UI 동작을 조정.
 - 2026-02-26: Live2D 포인터 입력을 캔버스 실좌표(`getBoundingClientRect`) 기준으로 보정하고, 캔버스 내부 시작 드래그만 추적하도록 조정해 `center` 슬롯에서 크게 나타나던 시선 오프셋 문제를 수정. 동시에 캔버스 리사이즈에 `devicePixelRatio`를 반영해 고해상도 좌표 불일치를 완화.
