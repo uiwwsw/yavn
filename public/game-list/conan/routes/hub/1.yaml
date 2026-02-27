@@ -21,7 +21,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "단서 정리실로 돌아왔어. 아직 안 만난 사람부터 바로 들어가자."
+          text: "(단서를 정리할 시간은 짧다... 아직 안 만난 사람부터 바로 들어간다.)"
       - goto: all_done_check
 
   all_done_check:
@@ -45,14 +45,14 @@ scenes:
           trust: 1
       - say:
           char: 코난.serious
-          text: "좋아, 네 명 다 확인했어. 이제 모아 놓고 한 번에 끝낸다."
+          text: "좋아, 네 명 전원 확인 완료. 이제 집합 추리로 한 번에 끝낸다."
       - goto: move_to_conclusion
 
   route_select:
     actions:
       - say:
           char: 코난.think
-          text: "다음 타깃을 고르자. 누구부터 흔들어 볼까?"
+          text: "다음 대면 대상을 고르자. 누가 먼저 균열을 보일까?"
       - choice:
           key: route_select
           prompt: "다음으로 누구를 먼저 상대할까?"
@@ -72,7 +72,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "여기서 바로 결론으로 가면 반박에 약해질 수 있어. 그래도 갈까?"
+          text: "지금 바로 결론으로 가면 반박에 취약해진다. 그래도 밀어붙일까?"
       - choice:
           key: early_exit_confirm
           prompt: "지금 바로 정리 회의로 넘어갈까?"
@@ -106,7 +106,7 @@ scenes:
           final_confidence: -1
       - say:
           char: 코난.think
-          text: "한 명을 비워 둔 채 간다. 설득력은 한 칸 깎여."
+          text: "한 명을 비워 둔 채 진행한다. 설득력은 한 단계 떨어진다."
       - goto: move_to_conclusion
 
   early_exit_penalty_2:
@@ -116,7 +116,7 @@ scenes:
           final_confidence: -2
       - say:
           char: 코난.think
-          text: "절반만 보고 가면, 결론은 흔들릴 수밖에 없어."
+          text: "절반만 확인하고 가면 결론은 흔들릴 수밖에 없어."
       - goto: move_to_conclusion
 
   early_exit_penalty_1:
@@ -128,12 +128,12 @@ scenes:
           mistake_count: 1
       - say:
           char: 코난.think
-          text: "이건 너무 성급했어. 지금 상태론 반박 한 번이면 무너진다."
+          text: "(너무 성급했다... 지금 상태론 반박 한 번이면 전부 무너진다.)"
       - goto: move_to_conclusion
 
   move_to_conclusion:
     actions:
       - say:
           char: 코난
-          text: "좋아, 집합 추리로 이동한다."
+          text: "좋아, 전원 집합. 이제 진실을 한 줄로 꿰맨다."
       - goto: /conclusion/1.yaml

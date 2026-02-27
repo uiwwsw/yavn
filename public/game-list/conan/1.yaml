@@ -26,18 +26,18 @@ scenes:
           with:
             - 코난
             - 코고로.proud
-          text: "차 향 진짜 좋다. 다 같이 모여서 이런 자리 가진 거 오랜만이야."
+          text: "차 향이 정말 좋다... 다 같이 이렇게 모인 건 진짜 오랜만이네."
       - say:
           char: 코고로.proud
           with:
             - 란
-          text: "오늘은 내가 특별 초청 손님이니까 말이야! 하하!"
+          text: "오늘은 이 모리 코고로님이 특별 초청 손님이다! 하하!"
       - say:
           char: 코난.think
           with:
             - 란
             - 코고로.proud
-          text: "(겉으론 평화롭다. 문제는 이 평화가 얼마나 갈지야.)"
+          text: "(겉보기엔 평온해... 하지만 이런 평화는 보통 오래가지 않아.)"
 
   guest_introductions:
     actions:
@@ -56,19 +56,19 @@ scenes:
           with:
             - 켄지
             - 신이치
-          text: "오늘 모임은 공동 블렌드 공개랑 계약 최종 확인을 같이 하는 자리예요."
+          text: "오늘 모임은 공동 블렌드 공개와 계약 최종 확인을 함께 진행하는 자리예요."
       - say:
           char: 켄지
           with:
             - 레이코
             - 신이치
-          text: "판매 일정만 맞추면 바로 출시야. 첫 잔은 다 같이 마시자고."
+          text: "판매 일정만 맞으면 바로 출시야. 첫 잔은 순서대로 같이 가자고."
       - say:
           char: 신이치.cold
           with:
             - 레이코
             - 켄지
-          text: "좋습니다. 문서 확인 후 시음 순서대로 진행하죠."
+          text: "좋습니다. 문서 대조가 끝나는 즉시, 정한 순서대로 시음을 진행하죠."
       - char:
           id: 하루오
           position: right
@@ -76,7 +76,7 @@ scenes:
           char: 하루오
           with:
             - 코난
-          text: "...주전자 온도도 맞춰뒀습니다. 바로 올릴 수 있어요."
+          text: "...주전자 온도는 맞춰뒀습니다. 지시만 주시면 바로 올리겠습니다."
 
   contract_fracture:
     actions:
@@ -95,26 +95,24 @@ scenes:
           emotion: angry
       - sound: notebook_flip
       - say:
-          text: "그때, 계약서 마지막 장의 문구 하나가 분위기를 끊었다."
-      - say:
           char: 켄지.angry
           with:
             - 레이코.nervous
             - 신이치.cold
-          text: "계약서 누가 건드렸어? 소유권 조항이 왜 바뀌어 있냐고!"
+          text: "계약서 누가 건드렸지? 소유권 조항이 왜 이렇게 바뀌어 있어!"
       - say:
           char: 레이코.nervous
           with:
             - 켄지.angry
-          text: "저도 방금 처음 봤어요... 노트 날짜까지 전부 틀어져 있어요."
+          text: "저도 지금 처음 봤어요... 연구 노트 날짜하고 전부 어긋나 있어요."
       - say:
           char: 신이치.cold
           with:
             - 레이코.nervous
-          text: "고성은 그쯤 하시죠. 차부터 식기 전에 마십시다."
+          text: "고성은 그만하시죠. 감정보다 기록이 먼저입니다."
       - say:
           char: 코난.think
-          text: "(다툼은 크게 보였고, 누군가는 그 틈을 기다렸다.)"
+          text: "(다툼은 모두의 시선을 잡아끌었고... 누군가는 그 틈을 기다리고 있었어.)"
 
   last_service:
     actions:
@@ -128,17 +126,17 @@ scenes:
           position: right
           emotion: scared
       - say:
-          text: "분위기를 누그러뜨리려 다실 주인은 마지막 잔을 직접 준비했다."
-      - say:
           text: "주전자 뚜껑을 한 번... 그리고 또 한 번 눌렀다."
+      - say:
+          text: "챙-! 그 동작은 지나치게 또렷했다."
       - say:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "...그 직후였어. 누가 손수건으로 피해자 찻잔 가장자리를 훑고 빠졌어."
+          text: "...바로 그 직후였어. 누가 손수건으로 피해자 찻잔 가장자리를 훑고 빠졌어."
       - say:
           char: 코난.think
-          text: "(뚜껑 두 번, 잔 가장자리... 하나는 진짜고 하나는 미끼다.)"
+          text: "(뚜껑 두 번, 잔 가장자리... 둘 다 단서처럼 보이지만 하나는 분명 미끼야.)"
       - wait: 360
 
   incident_trigger:
@@ -155,14 +153,14 @@ scenes:
           char: 란.surprised
           with:
             - 코난.serious
-          text: "꺄악! 안쪽에서 사람 쓰러지는 소리 났어!"
+          text: "꺄악! 안쪽에서 누가 쓰러졌어!"
       - sound: thunder
       - say:
           char: 코고로.angry
           with:
             - 란.surprised
             - 코난.serious
-          text: "전원 멈춰! 찻상, 문고리, 아무것도 건드리지 마!"
+          text: "전원 정지! 찻상, 문고리, 잔... 아무것도 건드리지 마!"
 
   lockdown_aftershock:
     actions:
@@ -183,12 +181,12 @@ scenes:
           char: 코난.serious
           with:
             - 코고로.angry
-          text: "문은 안에서 잠겼고 창도 막혀 있어. 겉으로 보면 완벽한 밀실이야."
+          text: "문은 안에서 잠겼고 창도 봉쇄돼 있어. 겉보기엔 완벽한 밀실이야."
       - say:
           char: 코고로.angry
           with:
             - 코난.serious
-          text: "좋아, 다들 들었지? 지금부터는 내 지시대로 움직여!"
+          text: "좋아, 다들 들었지? 지금부터는 내 지시에 따라 움직인다!"
       - add:
           deduction_score: 1
       - clearSticker:
@@ -199,12 +197,12 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.think
-          text: "(하지만 답은 문에 없고, 찻잔 위에 남아 있어.)"
+          text: "(하지만 정답은 문이 아니야... 찻잔 위에 남은 흔적이 말해 준다.)"
 
   chapter_handoff:
     actions:
       - effect: pulse
       - say:
           char: 코난
-          text: "좋아, 초동 정리 들어간다. 시간부터 다시 맞춰 보자."
+          text: "좋아, 초동 정리 시작이다. 시간선부터 다시 맞춰 보자."
       - goto: ./2.yaml

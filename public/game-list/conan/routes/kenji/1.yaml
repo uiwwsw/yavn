@@ -40,7 +40,7 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.think
-          text: "동선은 다 말했어. 같은 질문이면 더 꼬인다고."
+          text: "동선은 이미 다 말했다고. 같은 질문이면 진술만 꼬여."
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -67,10 +67,10 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "소리 질렀던 건 인정해! 근데 찻상 근처엔 안 갔어!"
+          text: "목소리 높인 건 인정해! 하지만 찻상 근처엔 가지도 않았어!"
       - say:
           char: 코난.serious
-          text: "좋아, 화는 빼고 동선만 남긴다."
+          text: "좋아, 감정은 빼고 이동 기록만 남긴다."
 
   first_probe:
     actions:
@@ -78,7 +78,7 @@ scenes:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "사건 직전 네 발이 어디 있었는지, 그거 하나만 답해."
+          text: "사건 직전, 네 발이 어디에 있었는지 그 한 줄만 답해."
       - choice:
           key: kenji_first_probe
           prompt: "사건 직전 켄지 동선에서 핵심은?"
@@ -103,7 +103,7 @@ scenes:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "좋아, 그건 기록으로 받쳐진다. 이 주장, 채택하고 다음으로 갈까?"
+          text: "좋아, 그 진술은 기록으로 받쳐진다. 채택하고 다음으로 갈까?"
       - choice:
           key: kenji_first_commit
           prompt: "1차 동선을 확정할까?"
@@ -119,12 +119,12 @@ scenes:
           char: 코난.think
           with:
             - 켄지.angry
-          text: "그건 성격 추측이지 동선이 아니야. 법정에선 못 버텨."
+          text: "그건 성격 추측일 뿐 동선이 아니야. 그 논리로는 못 버텨."
       - say:
           char: 켄지.angry
           with:
             - 코난.think
-          text: "그래, 동선으로 따져. 그건 인정한다."
+          text: "좋아, 동선으로만 따져. 그건 인정하지."
       - choice:
           key: kenji_first_rebuttal
           prompt: "이 판단을 어떻게 할까?"
@@ -141,7 +141,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "좋아, 다시. 성격 말고 이동 기록만 본다."
+          text: "(좋아, 다시 간다. 성격이 아니라 이동 기록만 본다.)"
       - say:
           char: 켄지.angry
           with:
@@ -176,10 +176,12 @@ scenes:
   second_claim_correct:
     actions:
       - say:
+          text: "챙-! 흐릿하던 동선이 한 번에 맞물린다."
+      - say:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "좋아, 이건 물증이 붙는다. 이걸 최종 결론으로 둘까?"
+          text: "좋아, 이 해석엔 물증이 붙는다. 최종 결론으로 둘까?"
       - choice:
           key: kenji_second_commit
           prompt: "최종 채택할까?"
@@ -197,7 +199,7 @@ scenes:
           char: 코난.think
           with:
             - 켄지.angry
-          text: "그 선택은 감정 쪽이다. 이대로면 결론이 깨진다."
+          text: "그 선택은 감정선이다. 이대로 밀면 결론이 깨진다."
       - choice:
           key: kenji_second_rebuttal
           prompt: "지금 선택은?"
@@ -213,7 +215,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 켄지 쪽 정리됐다. 분노와 실행은 별개야."
+          text: "좋아, 켄지 라인 정리 완료. 분노와 실행은 별개라는 게 확정됐어."
       - say:
           char: 켄지.angry
           with:
@@ -225,7 +227,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "켄지 쪽이 아직 거칠어. 이대로 닫으면 결론이 깨진다."
+          text: "(켄지 라인은 아직 거칠어... 이대로 닫으면 결론이 흔들린다.)"
       - add:
           final_confidence: -1
       - goto: outro

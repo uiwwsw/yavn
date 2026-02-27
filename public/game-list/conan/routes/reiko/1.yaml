@@ -41,7 +41,7 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.think
-          text: "같은 질문이면 더 긴장돼요... 다른 단서부터 확인해 주세요."
+          text: "같은 질문을 반복하면 더 긴장돼요... 다른 단서부터 확인해 주세요."
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -64,10 +64,10 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.think
-          text: "88도 근처에서 향이 확 바뀌어요. 오늘은 그 타이밍이 조금 어긋났어요."
+          text: "88도 근처에서 향이 확 바뀌어요. 그런데 오늘은 그 타이밍이 이상하게 어긋났어요."
       - say:
           char: 코난.think
-          text: "좋아, 감각 얘기는 됐어. 이제 증명 가능한 것만 남긴다."
+          text: "좋아, 감각은 참고만 한다. 지금부터는 증명 가능한 사실만 남긴다."
 
   first_probe:
     actions:
@@ -75,7 +75,7 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "질문 하나. 네 말 중에 지금 바로 증명할 수 있는 걸 골라."
+          text: "질문은 하나야. 네 말 중 지금 바로 증명 가능한 걸 골라."
       - choice:
           key: reiko_first_probe
           prompt: "레이코 말부터 뭘 먼저 확인할까?"
@@ -102,12 +102,12 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "좋아, 그건 수치로 박을 수 있어. 이걸 주력 증거로 밀어붙일까?"
+          text: "좋아, 그건 수치로 고정할 수 있다. 이걸 주력 증거로 밀어붙일까?"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "...네, 기록표랑 같이 보면 반박하기 어려울 거예요."
+          text: "...네, 기록표와 같이 보면 반박하기 어려울 거예요."
       - choice:
           key: reiko_first_commit
           prompt: "1차 주장을 확정할까?"
@@ -123,7 +123,7 @@ scenes:
           char: 코난.think
           with:
             - 레이코.nervous
-          text: "지금 고른 건 분위기야. 법정에 올리면 바로 깨져."
+          text: "지금 고른 건 분위기일 뿐이야. 논리전으로 가면 바로 깨져."
       - say:
           char: 레이코.nervous
           with:
@@ -145,7 +145,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "좋아, 재심문 간다. 감정 말고 측정값만 붙잡아."
+          text: "(좋아, 재심문이다. 감정은 빼고 측정값만 붙잡아.)"
       - say:
           char: 레이코.nervous
           with:
@@ -178,6 +178,8 @@ scenes:
   second_claim_correct:
     actions:
       - say:
+          text: "챙-! 온도 기록과 반응 시간이 정확히 포개진다."
+      - say:
           char: 코난.serious
           with:
             - 레이코.nervous
@@ -199,7 +201,7 @@ scenes:
           char: 코난.think
           with:
             - 레이코.nervous
-          text: "아직도 감정선이야. 이대로면 동기는 못 연다."
+          text: "아직도 감정선이야. 이대로는 동기 라인이 열리지 않아."
       - choice:
           key: reiko_second_rebuttal
           prompt: "지금 선택은?"
@@ -227,7 +229,7 @@ scenes:
       - sound: notebook_flip
       - say:
           char: 코난.serious
-          text: "계약서 수정 시각이 연구노트 원본이랑 딱 맞물린다. 동기가 열렸어."
+          text: "계약서 수정 시각이 연구노트 원본과 정확히 맞물린다. 동기가 열렸어."
       - say:
           char: 레이코.nervous
           with:
@@ -245,7 +247,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "레이코 쪽은 아직 덜 풀렸어. 결론에선 보조 근거로만 쓴다."
+          text: "(레이코 라인은 아직 덜 풀렸어. 결론에선 보조 근거로만 쓴다.)"
       - add:
           mistake_count: 1
       - goto: outro

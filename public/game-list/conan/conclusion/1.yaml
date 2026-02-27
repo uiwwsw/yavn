@@ -29,11 +29,11 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
-          text: "좋아, 전부 모였다. 흩어진 단서를 한 줄로 세운다."
+          text: "좋아, 전부 모였다. 흩어진 단서를 한 줄의 진실로 세운다."
       - wait: 340
       - say:
           char: 코난.think
-          text: "(뚜껑 두 번은 눈속임. 핵심은 잔 가장자리 반응과 문서 시간.)"
+          text: "(뚜껑 두 번은 눈속임... 핵심은 잔 가장자리 반응과 문서 수정 시간이다.)"
       - goto: sleeping_kogoro
 
   sleeping_kogoro:
@@ -50,12 +50,14 @@ scenes:
       - effect: flash
       - sound: door
       - say:
-          text: "회의실 공기가 멎었다. 모두가 코고로 아저씨를 바라봤다."
-      - say:
           char: 코난.think
           with:
             - 코고로.angry
-          text: "(아저씨, 잠깐만 목소리 빌릴게.)"
+          text: "(아저씨, 잠깐만 실례할게... 범인을 멈추려면 지금이야.)"
+      - say:
+          text: "퓻-! 아주 짧은 소리와 함께 침이 날아가고, 코고로가 천천히 의자에 기대어 눈을 감는다."
+      - say:
+          text: "챙-! 코난의 머릿속에서 마지막 조각이 정확히 맞물린다."
       - add:
           final_confidence: 1
       - goto: reasoning_tone_branch
@@ -80,15 +82,15 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "독은 찻물에 바로 들어가지 않았어. 시작점은 찻잔 가장자리 반응이었다."
+          text: "이건 단순한 사고가 아니야. 독은 찻물에 바로 들어간 게 아니라, 찻잔 가장자리에서 먼저 반응했다."
       - say:
           char: 코난.serious
-          text: "뚜껑을 두 번 누른 건 우리 시선을 빼앗기 위한 연막이었지."
+          text: "주전자 뚜껑을 두 번 누른 동작은 우리 시선을 빼앗기 위한 연막이었다."
       - say:
           char: 신이치.cold
           with:
             - 코난.serious
-          text: "즉, 누군가가 순서를 의도적으로 보여 줬다는 뜻이군요."
+          text: "즉, 누군가가 잔 순서를 의도적으로 '보여 준' 셈이군요."
       - goto: coverage_branch
 
   cautious_reasoning:
@@ -96,12 +98,12 @@ scenes:
       - effect: darken
       - say:
           char: 코난.think
-          text: "핵심은 같다. 잔 가장자리 반응과 뚜껑 두 번, 둘을 같이 봐야 해."
+          text: "핵심은 같다. 잔 가장자리 반응과 뚜껑 두 번, 두 단서를 한 묶음으로 봐야 해."
       - say:
           char: 란.worried
           with:
             - 코난.think
-          text: "그럼 범인은 반응 시점이랑 잔 순서를 둘 다 아는 사람이네..."
+          text: "그럼 범인은 반응 시점과 잔 순서를 둘 다 아는 사람이네..."
       - goto: coverage_branch
 
   coverage_branch:
@@ -126,7 +128,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "아직 못 건드린 대면이 있어. 마지막 선택은 더 조심해야 해."
+          text: "(아직 못 건드린 대면이 있어... 마지막 선택은 더 조심해야 한다.)"
       - branch:
           cases:
             - when:
@@ -161,7 +163,7 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
-          text: "이제 지목한다. 다들 잘 들어."
+          text: "이제 지목한다. 범인은 이 안에 있어. 다들 잘 들어."
       - choice:
           key: final_accuse
           prompt: "모든 단서를 맞춰 봤을 때, 범인은 누구지?"
@@ -200,12 +202,12 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "좋아, 레이코로 못 박는다. 이 지목, 지금 확정할까?"
+          text: "좋아, 레이코로 못 박는다. 이 지목을 지금 확정할까?"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "...정말 저라고 생각해요?"
+          text: "...정말, 제가 범인이라고 생각해요?"
       - choice:
           key: final_accuse_confirm_reiko
           prompt: "레이코 지목을 확정할까?"
@@ -221,7 +223,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "좋아, 그 이름으로 가겠다는 거지. 근거 버틸 자신 있나?"
+          text: "좋아, 그 이름으로 가겠다는 거지. 끝까지 버틸 근거가 있나?"
       - say:
           char: 신이치.cold
           with:
@@ -242,7 +244,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "(아직 끝난 거 아냐. 한 번, 딱 한 번 바로잡을 기회가 있어.)"
+          text: "(아직 끝난 게 아냐... 한 번, 단 한 번 바로잡을 기회가 있다.)"
       - branch:
           cases:
             - when:
@@ -265,7 +267,7 @@ scenes:
           comeback_chance: 0
       - say:
           char: 코난.serious
-          text: "마지막 재지목이다. 이번엔 빗나가면 끝이야."
+          text: "마지막 재지목이다. 이번에 빗나가면 끝이야."
       - choice:
           key: final_comeback
           prompt: "재지목 기회(1회). 최종 범인은?"
@@ -355,19 +357,19 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "잔 가장자리 반응, 잔 순서 메모, 닦는 동작, 계약서 수정 시각... 전부 레이코를 가리켰어."
+          text: "잔 가장자리 반응, 잔 순서 메모, 닦는 동작, 계약서 수정 시각... 모든 단서가 레이코를 가리켰어."
       - music: confession
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "...연구를 빼앗긴다고 믿는 순간, 선을 넘어버렸어요."
+          text: "...연구를 빼앗긴다고 믿는 순간, 저는 선을 넘어버렸어요."
       - music: solvethecase
       - say:
           char: 란.worried
           with:
             - 코난.serious
-          text: "작은 습관 하나가... 결국 진실을 열었네."
+          text: "사소해 보였던 습관 하나가... 결국 진실을 열었네."
       - ending: true_end
 
   normal_epilogue:
@@ -377,12 +379,12 @@ scenes:
       - effect: blur
       - say:
           char: 코난.think
-          text: "범인은 맞췄지만, 빈칸이 남았어. 진실이 완전히 잠기진 않았다."
+          text: "(범인은 맞췄지만 빈칸이 남았어... 진실이 완전히 잠기진 않았다.)"
       - say:
           char: 코고로.angry
           with:
             - 코난.think
-          text: "크흠! 그래도 결론까지 끌고 온 건 충분히 잘한 거지!"
+          text: "크흠! 그래도 여기까지 끌고 온 건 충분히 잘한 거다!"
       - ending: normal_end
 
   bad_epilogue:
@@ -393,7 +395,5 @@ scenes:
       - effect: shake
       - say:
           char: 코난.think
-          text: "단서 연결이 끊겼어... 지금 상태론 누구도 끝까지 납득 못 해."
-      - say:
-          text: "비가 그친 뒤에도, 다실의 진실은 안개처럼 남았다."
+          text: "(단서 연결이 끊겼어... 지금 상태론 누구도 끝까지 납득 못 해.)"
       - ending: bad_end

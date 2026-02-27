@@ -40,7 +40,7 @@ scenes:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "더 말하면 기억이 엉킬 것 같아... 다른 사람부터."
+          text: "더 말하면 기억이 엉킬 것 같아요... 다른 사람부터 확인해 주세요."
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -67,12 +67,12 @@ scenes:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "...봤어. 누가 피해자 잔 가장자리를 닦고 바로 빠졌어."
+          text: "...봤어요. 누군가 피해자 잔 가장자리를 닦고 바로 빠졌어요."
       - say:
           char: 코난.think
           with:
             - 란.worried
-          text: "좋아, 그 장면 하나면 시간선이 살아난다."
+          text: "(좋아, 그 한 장면이면 시간선이 살아난다.)"
 
   first_probe:
     actions:
@@ -80,7 +80,7 @@ scenes:
           char: 코난.serious
           with:
             - 하루오.scared
-          text: "하루오 씨, 한 가지만 확실히 하자. 닦은 위치가 어디였지?"
+          text: "하루오 씨, 한 가지만 확실히 하죠. 닦은 위치가 정확히 어디였죠?"
       - choice:
           key: haruo_first_probe
           prompt: "하루오 진술에서 먼저 붙잡을 건?"
@@ -108,7 +108,7 @@ scenes:
           char: 코난.serious
           with:
             - 하루오.scared
-          text: "좋아, 지금 건 물증과 붙는다. 이걸 채택할까?"
+          text: "좋아, 그 진술은 물증과 연결된다. 이걸 채택할까?"
       - say:
           char: 하루오.scared
           with:
@@ -150,7 +150,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "좋아, 다시. 문장 하나씩 잠근다."
+          text: "(좋아, 다시 간다. 문장 하나씩 논리로 잠근다.)"
       - goto: second_probe
 
   second_probe:
@@ -179,10 +179,12 @@ scenes:
   second_claim_correct:
     actions:
       - say:
+          text: "챙-! 목격 진술과 찻잔 반응이 같은 시점을 가리킨다."
+      - say:
           char: 코난.serious
           with:
             - 하루오.scared
-          text: "좋아, 닦는 동작이 맞다. 최종 단서로 확정할까?"
+          text: "좋아, '닦는 동작'이 맞다. 최종 단서로 확정할까?"
       - choice:
           key: haruo_second_commit
           prompt: "최종 채택할까?"
@@ -200,7 +202,7 @@ scenes:
           char: 코난.think
           with:
             - 하루오.scared
-          text: "그 선택은 증언을 버린 거야. 결론 전에 발이 묶인다."
+          text: "그 선택은 핵심 증언을 버린 거야. 결론 전에 발이 묶인다."
       - choice:
           key: haruo_second_rebuttal
           prompt: "지금 선택은?"
@@ -216,7 +218,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 닦는 동작이 잠겼다. 찻잔 가설이 이제 맞물린다."
+          text: "좋아, 닦는 동작이 확정됐다. 찻잔 가설이 완전히 맞물린다."
       - add:
           final_confidence: 1
       - goto: outro
@@ -225,7 +227,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "하루오 쪽이 아직 약해. 결론 전에 보강이 필요해."
+          text: "(하루오 라인은 아직 약해... 결론 전에 반드시 보강해야 해.)"
       - add:
           final_confidence: -1
       - goto: outro

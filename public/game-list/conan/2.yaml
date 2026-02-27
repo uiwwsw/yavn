@@ -29,7 +29,7 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: "손대지 말고 눈으로만 본다. 잔 표면이랑 시간 기록부터 확인하자."
+          text: "아무도 손대지 마. 먼저 잔 표면과 시간 기록부터 눈으로 고정한다."
 
   residue_focus:
     actions:
@@ -47,7 +47,7 @@ scenes:
             duration: 380
       - say:
           char: 코난.think
-          text: "첫 단추다. 어디부터 잡을지 네가 골라."
+          text: "(첫 단추를 잘못 끼우면 끝까지 틀어진다... 어디부터 잡을지 정해.)"
       - choice:
           key: residue_focus_choice
           prompt: "잔에서 먼저 봐야 할 건 뭐지?"
@@ -73,7 +73,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 그 선택 맞다. 가장자리 반응부터 잡는 게 정석이야. 이 판단 확정할까?"
+          text: "좋아, 정답이야. 가장자리 반응부터 잡는 게 정석이다. 이 판단을 확정할까?"
       - choice:
           key: residue_commit_choice
           prompt: "1차 판단을 확정할까?"
@@ -89,7 +89,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "지금 건 우선순위가 틀렸어. 하지만 흐름은 계속 간다. 이 판단, 틀렸다고 보고 정리할래?"
+          text: "우선순위가 틀렸어. 하지만 아직 늦지 않았다. 이 판단, 오답으로 정리할래?"
       - choice:
           key: residue_rebuttal_choice
           prompt: "방금 선택을 어떻게 처리할까?"
@@ -115,7 +115,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "좋아, 다음은 시간이다. 비명 시각을 정확히 찍어 봐."
+          text: "다음은 시간선이다. 비명이 터진 시각을 정확히 찍어 봐."
       - input:
           prompt: "비명이 들린 시각을 24시간 형식으로 입력해줘."
           correct: "21:30"
@@ -149,7 +149,7 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
-          text: "좋아, 재현으로 간다. 뚜껑 두 번의 의미를 정리해."
+          text: "좋아, 재현으로 간다. '뚜껑 두 번'의 의미를 논리로 잠가."
       - choice:
           key: reconstruction_choice
           prompt: "주전자 뚜껑을 두 번 누른 건 무슨 뜻일까?"
@@ -175,7 +175,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 미끼 해석이 맞다. 이걸로 사건 흐름을 못 박을까?"
+          text: "좋아, 눈속임 해석이 맞다. 이걸로 사건 흐름을 못 박을까?"
       - choice:
           key: reconstruction_commit_choice
           prompt: "재현 해석을 최종 채택할까?"
@@ -191,7 +191,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "그 해석으론 동선이 안 붙어. 그래도 지금은 넘어가고 대면에서 보강해야 해."
+          text: "그 해석으론 동선이 이어지지 않아. 대면 조사에서 반드시 보강해야 한다."
       - choice:
           key: reconstruction_rebuttal_choice
           prompt: "방금 해석을 어떻게 처리할까?"
@@ -225,8 +225,10 @@ scenes:
     actions:
       - effect: zoom
       - say:
+          text: "챙-! 흩어진 단서들이 하나의 선으로 이어졌다."
+      - say:
           char: 코난.serious
-          text: "좋아, 흐름이 잡혔어. 이제 사람 하나씩 붙잡고 빈칸만 메우면 된다."
+          text: "좋아, 흐름이 잡혔어. 이제 용의자 하나씩 대면해서 빈칸만 메우면 돼."
       - add:
           final_confidence: 1
       - goto: lounge_handoff
@@ -236,7 +238,7 @@ scenes:
       - effect: pulse
       - say:
           char: 코난.think
-          text: "실마리는 잡혔는데 아직 헐거워. 대면에서 더 끌어내야 해."
+          text: "(실마리는 잡혔지만 아직 느슨해... 대면에서 더 끌어내야 한다.)"
       - add:
           mistake_count: 1
       - goto: lounge_handoff
@@ -246,5 +248,5 @@ scenes:
       - bg: case_board
       - say:
           char: 코난
-          text: "조사 라운지로 간다. 네 사람, 순서대로 확인하자."
+          text: "조사 라운지로 이동한다. 범인은 이 안에 있어, 한 명씩 확인하자."
       - goto: /routes/hub/1.yaml

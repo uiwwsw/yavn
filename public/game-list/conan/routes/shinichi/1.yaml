@@ -40,7 +40,7 @@ scenes:
           char: 신이치.cold
           with:
             - 코난.think
-          text: "같은 질문은 시간 낭비입니다. 다른 사람부터 확인하시죠."
+          text: "같은 질문은 시간 낭비입니다. 다른 대상부터 확인하시죠."
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -66,7 +66,7 @@ scenes:
           text: "기억은 감정보다 숫자가 정확합니다."
       - say:
           char: 코난.serious
-          text: "좋아. 그 숫자, 지금 바로 검증하지."
+          text: "좋아. 그 숫자, 지금 이 자리에서 검증한다."
       - say:
           char: 신이치.cold
           text: "피해자 잔은 2번이었습니다."
@@ -105,10 +105,12 @@ scenes:
   first_hit_review:
     actions:
       - say:
+          text: "챙-! 숫자 단서 하나가 용의 범위를 좁힌다."
+      - say:
           char: 코난.serious
           with:
             - 신이치.cold
-          text: "좋아, 2번으로 찍었다. 이 진술, 지금 못 박을까?"
+          text: "좋아, 2번으로 고정한다. 이 진술을 지금 못 박을까?"
       - say:
           char: 신이치.cold
           with:
@@ -129,7 +131,7 @@ scenes:
           char: 코난.think
           with:
             - 신이치.cold
-          text: "방금 답, 숫자 흐름이 안 맞아. 이대로 밀 거야?"
+          text: "방금 답은 숫자 흐름이 안 맞아. 이대로 밀어붙일 거야?"
       - say:
           char: 신이치.cold
           with:
@@ -150,7 +152,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "좋아, 다시 간다. 감으로 찍지 말고 숫자만 봐."
+          text: "(좋아, 다시 간다. 감으로 찍지 말고 숫자만 봐.)"
       - say:
           char: 신이치.cold
           with:
@@ -197,7 +199,7 @@ scenes:
           char: 코난.serious
           with:
             - 신이치.cold
-          text: "좋아, 다시 2번. 이걸 최종 확정한다. 맞지?"
+          text: "좋아, 다시 2번이다. 이걸 최종 확정한다. 맞지?"
       - choice:
           key: shinichi_second_commit
           prompt: "최종 확정할까?"
@@ -215,7 +217,7 @@ scenes:
           char: 코난.think
           with:
             - 신이치.cold
-          text: "또 빗나갔어. 이 숫자는 더 못 버틴다."
+          text: "또 빗나갔어. 이 숫자 해석은 더 못 버텨."
       - choice:
           key: shinichi_second_rebuttal
           prompt: "지금 선택은?"
@@ -231,7 +233,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 잔 순서 잠겼다. 이 순서를 아는 사람만 범위에 남아."
+          text: "좋아, 잔 순서가 잠겼다. 이 순서를 아는 사람만 범위에 남는다."
       - say:
           char: 신이치.cold
           with:
@@ -243,7 +245,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "잔 순서가 아직 흐려. 이 상태론 누가 반박해도 막기 어려워."
+          text: "(잔 순서가 아직 흐려... 이 상태론 반박 하나도 막기 어렵다.)"
       - add:
           final_confidence: -1
       - goto: outro
