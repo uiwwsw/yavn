@@ -23,7 +23,6 @@ export type StickerEnterEffect =
 
 export type StickerEnterOptions = {
   effect?: StickerEnterEffect;
-  duration?: number;
   easing?: string;
   delay?: number;
 };
@@ -31,7 +30,6 @@ export type StickerLeaveEffect = 'none' | 'fadeOut' | 'wipeLeft' | 'wipeRight';
 
 export type StickerLeaveOptions = {
   effect?: StickerLeaveEffect;
-  duration?: number;
   easing?: string;
   delay?: number;
 };
@@ -69,6 +67,7 @@ export type SayAction = {
     char?: string;
     with?: string[];
     text: string;
+    wait?: number;
   };
 };
 
@@ -115,7 +114,6 @@ export type InventoryItem = {
   name: string;
   description?: string;
   image?: string;
-  owned: boolean;
 };
 
 export type InputRoute = {

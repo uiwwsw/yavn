@@ -139,10 +139,10 @@ scenes:
           cases:
             - when:
                 all:
-                  - var: item_tea_residue_report_owned
+                  - var: tea_residue_report
                     op: eq
                     value: true
-                  - var: item_reiko_statement_note_owned
+                  - var: reiko_statement_note
                     op: eq
                     value: true
               goto: move_to_conclusion_ready

@@ -71,16 +71,12 @@ state:
   reiko_motive_open: false
   timeline_answer: ""
   culprit_answer: ""
-  item_tea_residue_report_owned: false
-  item_reiko_statement_note_owned: false
 inventory:
   tea_residue_report:
     name: "찻잔 반응 시료 카드"
     description: "다실 2번 잔 가장자리에서 채취한 반응 시료 기록 카드."
     image: /assets/items/tea_residue_report.svg
-    owned: false
   reiko_statement_note:
     name: "레이코 진술 메모"
     description: "레이코 심문에서 확보한 온도·시각 진술 정리본."
     image: /assets/items/reiko_statement_note.svg
-    owned: false

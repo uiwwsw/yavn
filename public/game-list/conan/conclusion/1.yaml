@@ -361,9 +361,6 @@ scenes:
           text: '<speed=36>2번 잔 반응, 닦임 자국, "2R" 위조, 계약서 수정 시각.</speed> <speed=64>모든 선이 레이코에게 닿는다.</speed>'
       - use: tea_residue_report
       - use: reiko_statement_note
-      - set:
-          item_tea_residue_report_owned: false
-          item_reiko_statement_note_owned: false
       - say:
           char: 코난.serious
           text: "<speed=34>시료 카드와 진술 메모를 증거 보드에 펼친다.</speed> <speed=62>이제 빠져나갈 빈틈은 없어.</speed>"

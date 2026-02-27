@@ -69,7 +69,6 @@ YAML 액션에서 `- effect: <name>` 형태로 넣으면 됩니다.
     image: police_tape
     enter:
       effect: wipeCenterX
-      duration: 420
       easing: ease-out
       delay: 0
 ```
@@ -96,7 +95,6 @@ YAML 액션에서 `- effect: <name>` 형태로 넣으면 됩니다.
     id: clue
     leave:
       effect: wipeRight
-      duration: 280
 ```
 
 지원 이름:
@@ -104,3 +102,7 @@ YAML 액션에서 `- effect: <name>` 형태로 넣으면 됩니다.
 - `fadeOut`
 - `wipeLeft`
 - `wipeRight`
+
+참고:
+- `sticker.enter.duration`, `clearSticker.leave.duration` 사용자 지정은 지원하지 않습니다.
+- 스티커 이펙트 시간은 엔진 기본값(enter `280ms`, leave `220ms`)을 사용합니다.

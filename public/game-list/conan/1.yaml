@@ -127,7 +127,6 @@ scenes:
           zIndex: 5
           enter:
             effect: wipeCenterX
-            duration: 420
       - char:
           id: 코고로
           position: right
@@ -153,7 +152,6 @@ scenes:
           anchorY: center
           enter:
             effect: blurIn
-            duration: 360
       - say:
           char: 코난.serious
           text: '<speed=34>컵받침에 젖은 손가락으로</speed> <speed=72>"2R"</speed> <speed=34>이 남아 있어.</speed>'
@@ -164,12 +162,10 @@ scenes:
           id: dying_hint
           leave:
             effect: fadeOut
-            duration: 220
       - clearSticker:
           id: tape_lock
           leave:
             effect: wipeRight
-            duration: 260
       - add:
           deduction_score: 1
 

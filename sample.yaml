@@ -19,6 +19,8 @@
 
 script:
   - scene: all_done_check
+  - scene: all_done_item_get
+  - scene: all_done_after_item
   - scene: route_select
   - scene: early_exit_confirm
   - scene: penalty_branch
@@ -32,10 +34,20 @@ inventory:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
     image: assets/bg/case_board.png
-    owned: false
 
 scenes:
   all_done_check:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: clue_note
+                op: eq
+                value: true
+              goto: all_done_after_item
+          default: all_done_item_get
+
+  all_done_item_get:
     actions:
       - get: clue_note
       - sticker:
@@ -45,6 +57,10 @@ scenes:
           y: 30
           inputLockMs: 500
       - clearSticker: clue_note_popup
+      - goto: all_done_after_item
+
+  all_done_after_item:
+    actions:
       - branch:
           cases:
             - when:
@@ -75,6 +91,7 @@ scenes:
     actions:
       - say:
           text: "<speed=26>지금 결론으로 가면 빈틈이 생겨.</speed> <speed=54>그래도 바로 이동할까?</speed>"
+          wait: 900
       - choice:
           key: sample_early_exit
           prompt: "지금 정리 회의로 넘어갈까?"

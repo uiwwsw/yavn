@@ -726,6 +726,13 @@ function clampStickerInputLockMs(value: number | undefined): number {
   return Math.max(0, Math.min(60000, Math.floor(value)));
 }
 
+function clampSayWaitMs(value: number | undefined): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return 0;
+  }
+  return Math.max(0, Math.min(60000, Math.floor(value)));
+}
+
 function normalizeStickerEnter(
   enter: StickerEnterEffect | StickerEnterOptions | undefined,
 ): Pick<StickerSlot, 'enterEffect' | 'enterDuration' | 'enterEasing' | 'enterDelay'> {
@@ -750,7 +757,7 @@ function normalizeStickerEnter(
   const easing = typeof enter.easing === 'string' && enter.easing.trim().length > 0 ? enter.easing.trim() : DEFAULT_STICKER_ENTER_EASING;
   return {
     enterEffect: enter.effect ?? DEFAULT_STICKER_ENTER_EFFECT,
-    enterDuration: clampStickerTiming(enter.duration, DEFAULT_STICKER_ENTER_DURATION),
+    enterDuration: DEFAULT_STICKER_ENTER_DURATION,
     enterEasing: easing,
     enterDelay: clampStickerTiming(enter.delay, DEFAULT_STICKER_ENTER_DELAY),
   };
@@ -780,7 +787,7 @@ function normalizeStickerLeave(
   const easing = typeof leave.easing === 'string' && leave.easing.trim().length > 0 ? leave.easing.trim() : DEFAULT_STICKER_LEAVE_EASING;
   return {
     leaveEffect: leave.effect ?? DEFAULT_STICKER_LEAVE_EFFECT,
-    leaveDuration: clampStickerTiming(leave.duration, DEFAULT_STICKER_LEAVE_DURATION),
+    leaveDuration: DEFAULT_STICKER_LEAVE_DURATION,
     leaveEasing: easing,
     leaveDelay: clampStickerTiming(leave.delay, DEFAULT_STICKER_LEAVE_DELAY),
   };
@@ -1449,10 +1456,13 @@ function applyInventoryUse(itemId?: string): void {
 }
 
 function compareConditionLeaf(
-  left: RouteVarValue,
+  left: RouteVarValue | undefined,
   op: 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'in',
   right: RouteVarValue | RouteVarValue[],
 ): boolean {
+  if (left === undefined) {
+    return false;
+  }
   switch (op) {
     case 'eq':
       return !Array.isArray(right) && left === right;
@@ -1473,24 +1483,46 @@ function compareConditionLeaf(
   }
 }
 
-function evaluateCondition(condition: ConditionNode, vars: Record<string, RouteVarValue>): boolean {
+function resolveConditionValue(
+  key: string,
+  vars: Record<string, RouteVarValue>,
+  inventory: InventoryOwnedMap,
+): RouteVarValue | undefined {
+  if (Object.prototype.hasOwnProperty.call(vars, key)) {
+    return vars[key];
+  }
+  if (Object.prototype.hasOwnProperty.call(inventory, key)) {
+    return inventory[key];
+  }
+  return undefined;
+}
+
+function evaluateCondition(
+  condition: ConditionNode,
+  vars: Record<string, RouteVarValue>,
+  inventory: InventoryOwnedMap,
+): boolean {
   if ('all' in condition) {
-    return condition.all.every((entry) => evaluateCondition(entry, vars));
+    return condition.all.every((entry) => evaluateCondition(entry, vars, inventory));
   }
   if ('any' in condition) {
-    return condition.any.some((entry) => evaluateCondition(entry, vars));
+    return condition.any.some((entry) => evaluateCondition(entry, vars, inventory));
   }
   if ('not' in condition) {
-    return !evaluateCondition(condition.not, vars);
+    return !evaluateCondition(condition.not, vars, inventory);
   }
-  const left = vars[condition.var];
+  const left = resolveConditionValue(condition.var, vars, inventory);
   return compareConditionLeaf(left, condition.op, condition.value);
 }
 
-function resolveAutoEndingId(game: GameData, vars: Record<string, RouteVarValue>): string | undefined {
+function resolveAutoEndingId(
+  game: GameData,
+  vars: Record<string, RouteVarValue>,
+  inventory: InventoryOwnedMap,
+): string | undefined {
   const endingRules = game.endingRules ?? [];
   for (const rule of endingRules) {
-    if (!evaluateCondition(rule.when, vars)) {
+    if (!evaluateCondition(rule.when, vars, inventory)) {
       continue;
     }
     if (game.endings?.[rule.ending]) {
@@ -1537,8 +1569,8 @@ function mergeInventoryWithDefaults(
 ): InventoryOwnedMap {
   const defaultOwned: InventoryOwnedMap = {};
   if (defaults) {
-    for (const [key, value] of Object.entries(defaults)) {
-      defaultOwned[key] = value.owned;
+    for (const key of Object.keys(defaults)) {
+      defaultOwned[key] = false;
     }
   }
   return {
@@ -1983,7 +2015,9 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       continue;
     }
     if ('branch' in action) {
-      const matched = action.branch.cases.find((branchCase) => evaluateCondition(branchCase.when, restoreVars));
+      const matched = action.branch.cases.find((branchCase) =>
+        evaluateCondition(branchCase.when, restoreVars, restoreInventory),
+      );
       if (matched) {
         const chapterTarget = normalizeGotoChapterTarget(matched.goto);
         if (chapterTarget) {
@@ -2279,7 +2313,7 @@ function runToNextPause(loopGuard = 0) {
       return;
     }
 
-    finishStory(resolveAutoEndingId(game, state.routeVars));
+    finishStory(resolveAutoEndingId(game, state.routeVars, state.inventory));
     return;
   }
 
@@ -2433,7 +2467,9 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('branch' in action) {
-    const matchedCase = action.branch.cases.find((branchCase) => evaluateCondition(branchCase.when, state.routeVars));
+    const matchedCase = action.branch.cases.find((branchCase) =>
+      evaluateCondition(branchCase.when, state.routeVars, state.inventory),
+    );
     if (matchedCase) {
       const chapterTarget = normalizeGotoChapterTarget(matchedCase.goto);
       if (chapterTarget) {
@@ -2510,6 +2546,7 @@ function runToNextPause(loopGuard = 0) {
   if ('say' in action) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = game.settings.textSpeed;
+    const sayWaitMs = clampSayWaitMs(action.say.wait);
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
@@ -2524,6 +2561,13 @@ function runToNextPause(loopGuard = 0) {
       visibleText: '',
       typing: true,
     });
+    if (sayWaitMs > 0) {
+      useVNStore.getState().setBusy(true);
+      waitTimer = window.setTimeout(() => {
+        waitTimer = undefined;
+        useVNStore.getState().setBusy(false);
+      }, sayWaitMs);
+    }
     typeDialog(parsed.text, textSpeed, parsed.segments, () => undefined);
     return;
   }

@@ -64,7 +64,6 @@ scenes:
           anchorY: center
           enter:
             effect: blurIn
-            duration: 360
       - say:
           char: 코난.serious
           with:
@@ -202,7 +201,6 @@ scenes:
           id: haruo_lid
           leave:
             effect: fadeOut
-            duration: 220
       - say:
           char: 코난.serious
           text: "<speed=50>좋아, 하루오 씨 라인 잠금 완료.</speed> <speed=34>위조 흔적이 확정됐다.</speed>"
@@ -216,7 +214,6 @@ scenes:
           id: haruo_lid
           leave:
             effect: fadeOut
-            duration: 220
       - say:
           char: 코난.think
           text: "<speed=24>(현장 해석이 아직 약해...)</speed> <speed=58>결론에서 반드시 보강해야 해.</speed>"

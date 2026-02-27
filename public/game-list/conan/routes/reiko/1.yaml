@@ -2,6 +2,8 @@ script:
   - scene: entry_guard
   - scene: revisit_notice
   - scene: intro
+  - scene: intro_item_get
+  - scene: intro_item_already_owned
   - scene: first_probe
   - scene: first_claim_correct
   - scene: first_claim_wrong
@@ -68,9 +70,18 @@ scenes:
       - say:
           char: 코난.serious
           text: "<speed=52>좋아.</speed> <speed=34>감정은 빼고 수치만 남긴다.</speed>"
+      - branch:
+          cases:
+            - when:
+                var: reiko_statement_note
+                op: eq
+                value: true
+              goto: intro_item_already_owned
+          default: intro_item_get
+
+  intro_item_get:
+    actions:
       - get: reiko_statement_note
-      - set:
-          item_reiko_statement_note_owned: true
       - sticker:
           id: item_popup_reiko_statement_note
           image: item_reiko_statement_note
@@ -79,7 +90,6 @@ scenes:
           width: 22
           enter:
             effect: popIn
-            duration: 280
           inputLockMs: 500
       - say:
           char: 코난.think
@@ -88,7 +98,14 @@ scenes:
           id: item_popup_reiko_statement_note
           leave:
             effect: fadeOut
-            duration: 1800
+      - goto: first_probe
+
+  intro_item_already_owned:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=30>레이코 진술 메모는 이미 확보했다.</speed> <speed=56>중복 진술 대신 다음 판단으로 간다.</speed>"
+      - goto: first_probe
 
   first_probe:
     actions:

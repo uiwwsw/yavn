@@ -153,10 +153,11 @@ function validateCondition(
   fieldLabel: string,
   condition: ConditionNode,
   defaults: Record<string, RouteVarValue>,
+  inventoryDefaults: NonNullable<GameData['inventory']>['defaults'],
 ): VNError | undefined {
   if ('all' in condition) {
     for (let idx = 0; idx < condition.all.length; idx += 1) {
-      const error = validateCondition(sceneId, `${fieldLabel}.all[${idx}]`, condition.all[idx], defaults);
+      const error = validateCondition(sceneId, `${fieldLabel}.all[${idx}]`, condition.all[idx], defaults, inventoryDefaults);
       if (error) {
         return error;
       }
@@ -166,7 +167,7 @@ function validateCondition(
 
   if ('any' in condition) {
     for (let idx = 0; idx < condition.any.length; idx += 1) {
-      const error = validateCondition(sceneId, `${fieldLabel}.any[${idx}]`, condition.any[idx], defaults);
+      const error = validateCondition(sceneId, `${fieldLabel}.any[${idx}]`, condition.any[idx], defaults, inventoryDefaults);
       if (error) {
         return error;
       }
@@ -175,17 +176,18 @@ function validateCondition(
   }
 
   if ('not' in condition) {
-    return validateCondition(sceneId, `${fieldLabel}.not`, condition.not, defaults);
+    return validateCondition(sceneId, `${fieldLabel}.not`, condition.not, defaults, inventoryDefaults);
   }
 
-  if (!hasOwn(defaults, condition.var)) {
+  const hasStateVar = hasOwn(defaults, condition.var);
+  const hasInventoryItem = hasOwn(inventoryDefaults as Record<string, unknown>, condition.var);
+  if (!hasStateVar && !hasInventoryItem) {
     return {
-      message: `scene '${sceneId}' uses unknown state variable '${condition.var}' in ${fieldLabel}`,
+      message: `scene '${sceneId}' uses unknown state variable or inventory item '${condition.var}' in ${fieldLabel}`,
     };
   }
 
-  const defaultValue = defaults[condition.var];
-  const expectedType = typeof defaultValue;
+  const expectedType = hasStateVar ? typeof defaults[condition.var] : 'boolean';
   const value = condition.value;
 
   if (condition.op === 'in') {
@@ -479,7 +481,6 @@ function canonicalizeLayerInventory(
       name: value.name,
       description: value.description,
       image: normalizedImage,
-      owned: value.owned,
     };
   }
 
@@ -860,6 +861,16 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
 
     const defaults = data.state?.defaults ?? {};
     const inventoryDefaults = data.inventory?.defaults ?? {};
+    for (const key of Object.keys(inventoryDefaults)) {
+      if (!hasOwn(defaults, key)) {
+        continue;
+      }
+      return {
+        error: {
+          message: `inventory item '${key}' conflicts with state variable '${key}' (rename one of them to use when.var unambiguously)`,
+        },
+      };
+    }
 
     const scriptSceneIds = new Set(data.script.map((entry) => entry.scene));
     for (const sceneId of scriptSceneIds) {
@@ -906,7 +917,7 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
-        const error = validateCondition('global', `endingRules[${index}].when`, rule.when, defaults);
+        const error = validateCondition('global', `endingRules[${index}].when`, rule.when, defaults, inventoryDefaults);
         if (error) {
           return { error };
         }
@@ -1055,6 +1066,7 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
               `actions[${actionIndex}].branch.cases[${caseIndex}].when`,
               branchCase.when,
               defaults,
+              inventoryDefaults,
             );
             if (error) {
               return { error };

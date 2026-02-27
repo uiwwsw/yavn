@@ -154,7 +154,6 @@ inventory:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
     image: assets/bg/case_board.png
-    owned: false
 ```
 
 ## 5) 챕터 YAML
@@ -290,6 +289,7 @@ scenes:
 - `input` 게이트는 마지막 오답 단계(`attemptCount >= errors.length`)에 도달하면 입력창에 `correct` 값을 자동으로 채웁니다.
 - 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 생략해 가상 키보드가 즉시 열리지 않도록 합니다.
 - `sticker.inputLockMs`가 설정된 스티커 액션이 실행되는 동안에는 `input` 제출/`choice` 선택이 잠기며, 지정 시간이 끝난 뒤 다음 액션으로 자동 진행됩니다.
+- `say.wait`가 설정된 대사는 시작 시점부터 지정 시간 동안 진행/스킵 입력(클릭/`Enter`/`Space`)이 잠깁니다.
 
 ## 8-7) Live2D 런타임 로딩 동작
 
@@ -369,7 +369,7 @@ scenes:
 - 인게임 HUD 우측에는 `설정` 텍스트 버튼 대신 가방 기호(원형 아이콘) 버튼을 표시합니다.
 - 버튼 클릭 시 탭 없는 단일 인벤토리 모달이 열립니다.
 - 모달 본문은 4열 고정 슬롯 그리드이며, 획득 아이템 수에 따라 row가 유동적으로 증가합니다.
-- 인벤토리 목록에는 `획득한 아이템(owned=true)`만 노출하며, 미획득/사용 완료(`owned=false`) 아이템 카드는 표시하지 않습니다.
+- 인벤토리 목록에는 `획득한 아이템(true)`만 노출하며, 미획득/사용 완료(`false`) 아이템 카드는 표시하지 않습니다.
 - 슬롯 그리드 영역만 스크롤하며, 하단 상세 패널/설정 영역은 고정해 항상 보이도록 구성합니다.
 - 슬롯을 누르면 하단 상세 패널에 소지 여부(`내 가방에 있음/없음`), 설명(`description`), 이미지(`image`)를 표시합니다.
 - 슬롯 우측 상단 배지는 `획득` 상태에서만 노출하고, 미획득/사용 완료 상태에서는 배지를 표시하지 않습니다.
@@ -418,6 +418,10 @@ scenes:
 - 잠금 시간 동안 `input` 제출과 `choice` 선택 버튼이 비활성화됩니다.
 - 잠금 시간이 끝나면 현재 액션이 완료되고 다음 액션으로 자동 진행됩니다.
 
+추가 규칙:
+- `sticker.enter.duration`, `clearSticker.leave.duration` 사용자 지정은 제거되었습니다.
+- 스티커 이펙트 시간은 엔진 기본값(enter `280ms`, leave `220ms`) 고정이며 `effect/easing/delay`만 지정합니다.
+
 ### 9-2) `choice` 옵션별 1회 유예
 
 `choice` 액션은 잘못 누른 선택지를 "한 번만 봐주기" 동작으로 처리할 수 있습니다.
@@ -461,7 +465,22 @@ scenes:
 - 태그 밖 텍스트는 `config.yaml.textSpeed` 기본 속도를 사용합니다.
 - 태그는 렌더 텍스트에서 제거되고 내용만 출력됩니다.
 
-### 9-5) `inventory` + `get/use` 아이템 상태
+### 9-5) `say.wait` 대사 진행 잠금
+
+`say` 액션에 `wait`(ms)를 지정하면, 해당 대사가 시작된 시점부터 지정 시간 동안 진행/스킵 입력을 잠글 수 있습니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "멈춰. 지금은 섣불리 움직이면 안 돼."
+    wait: 900
+```
+
+실행 규칙:
+- 잠금 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
+- 잠금이 끝나면 기존 `say`와 동일하게 다음 입력을 받을 수 있습니다.
+
+### 9-6) `inventory` + `get/use` 아이템 상태
 
 아이템 상태는 `state`와 분리된 `inventory`로 선언합니다.
 
@@ -471,21 +490,39 @@ inventory:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
     image: assets/bg/case_board.png
-    owned: false
 
 scenes:
   intro:
     actions:
+      - branch:
+          cases:
+            - when:
+                var: clue_note
+                op: eq
+                value: true
+              goto: already_has_note
+          default: get_note
+  get_note:
+    actions:
       - get: clue_note
       - say:
           text: "현장 메모를 챙겼다."
+      - goto: next_scene
+  already_has_note:
+    actions:
+      - say:
+          text: "현장 메모는 이미 확보했다."
+      - goto: next_scene
+  next_scene:
+    actions:
       - use: clue_note
 ```
 
 실행 규칙:
 - `get: <itemId>`는 해당 아이템을 가방에 추가(`true`)합니다.
 - `use: <itemId>`는 해당 아이템을 사용 처리(`false`)합니다.
-- `inventory.<itemId>.owned`는 기본 소지 여부이며 챕터 시작 시 기본값으로 반영됩니다.
+- `when.var`는 `state` 변수뿐 아니라 `inventory` 아이템 키도 직접 참조할 수 있습니다.
+- 인벤토리 기본 소지값은 항상 `false`(미획득)이며 `get/use`로만 변경됩니다.
 
 ## 10) 검증 규칙
 
@@ -494,7 +531,8 @@ scenes:
 - `script`에 등장한 scene이 `scenes`에 존재하는지
 - `goto` 대상(scene)이 존재하는지
 - `bg/sticker/music/sound/char`가 `assets`에 선언되어 있는지
-- `set/add/branch/input.saveAs/endingRules` 변수들이 `state`에 선언되어 있는지
+- `set/add/input.saveAs` 변수가 `state`에 선언되어 있는지
+- `branch/endingRules`의 `when.var`가 `state` 변수 또는 `inventory` 아이템 키인지
 - `get/use` 아이템이 `inventory`에 선언되어 있는지
 - `defaultEnding`, `ending`, `endingRules[].ending`의 참조 정합성
 - 권장 검증: `goto` 대상(scene)을 `script`에도 포함했는지
@@ -549,10 +587,12 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 스티커 연출 옵션에서 `enter.duration`/`leave.duration` 사용자 지정을 제거하고, 이펙트 시간은 엔진 기본값(enter `280ms`, leave `220ms`)으로 고정했습니다. 동시에 `say.wait`(ms)를 추가해 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠글 수 있도록 런타임·스키마·문서를 갱신했습니다.
+- 2026-02-27: `inventory` 아이템 정의에서 `owned` 필드를 제거하고, 인벤토리 기본 소지값을 `false`(미획득)로 단순화했습니다. `when.var`에서 `state` 변수와 함께 아이템 키를 직접 참조할 수 있도록 조건 검증/실행 로직을 확장했으며, Conan 샘플의 아이템 분기 우회 상태(`item_*_owned`)를 아이템 키 분기로 마이그레이션했습니다.
 - 2026-02-27: 캐릭터 화자 강조를 데스크톱/모바일 공통 규칙으로 통일했습니다. 모바일 전용 화자 확대를 제거하고, 현재 화자는 소폭 전면(scale) + 비화자는 `speakerOrder` 기반 단계적 opacity로 depth를 표현하도록 UI 동작을 갱신했습니다.
 - 2026-02-27: `sticker.inputLockMs`(ms)를 추가해 스티커 표시 직후 지정 시간 동안 `input` 제출/`choice` 선택을 잠그고, 잠금 종료 후 다음 액션으로 자동 진행하도록 런타임·문서를 확장했습니다. Conan 샘플 아이템 획득 연출에도 적용했습니다.
 - 2026-02-27: 인벤토리 그리드의 고정 최소 슬롯(빈 칸 채움) 동작을 제거하고, 4열 고정 상태에서 획득 아이템 개수에 맞춰 row가 자동으로 늘어나는 동적 레이아웃으로 변경했습니다.
-- 2026-02-27: 인벤토리 목록 노출 기준을 조정해 `owned=true`(획득 상태) 아이템만 슬롯에 표시하도록 변경했습니다. 미획득/사용 완료(`owned=false`) 아이템 카드는 숨김 처리됩니다.
+- 2026-02-27: 인벤토리 목록 노출 기준을 조정해 `true`(획득 상태) 아이템만 슬롯에 표시하도록 변경했습니다. 미획득/사용 완료(`false`) 아이템 카드는 숨김 처리됩니다.
 - 2026-02-27: 인벤토리 모달 `초기화면 가기` 실행 시 Start Gate만 띄우던 동작을 보완해, 기존 인게임 BGM을 먼저 정지한 뒤 시작 화면 BGM으로 전환되도록 수정했습니다.
 - 2026-02-27: 인벤토리 모달 레이아웃을 조정해 스크롤을 슬롯 그리드에만 적용하고, 하단 상세 패널/설정 영역을 고정 표시하도록 개선했습니다. 슬롯 우측 상단 표시는 `획득` 배지(소지 중일 때만)로 단순화하고 미획득/사용 완료 상태의 X 표시를 제거했습니다.
 - 2026-02-27: 인벤토리 모달 하단에 `초기화면 가기` 버튼을 추가했습니다. URL 게임에서 버튼 클릭 시 Start Gate 세션 플래그(`vn-start-gate-session:<gameId>`)를 초기화하고, 같은 탭에서 시작 화면을 다시 띄우도록 동작을 확장했습니다. ZIP 실행 게임에서는 버튼을 비활성화합니다.

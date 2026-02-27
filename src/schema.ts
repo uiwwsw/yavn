@@ -65,7 +65,6 @@ const stickerEnterSchema = z.union([
   stickerEnterEffectSchema,
   z.object({
     effect: stickerEnterEffectSchema.optional(),
-    duration: z.number().int().nonnegative().max(5000).optional(),
     easing: z.string().min(1).max(64).optional(),
     delay: z.number().int().nonnegative().max(5000).optional(),
   }),
@@ -74,7 +73,6 @@ const stickerLeaveSchema = z.union([
   stickerLeaveEffectSchema,
   z.object({
     effect: stickerLeaveEffectSchema.optional(),
-    duration: z.number().int().nonnegative().max(5000).optional(),
     easing: z.string().min(1).max(64).optional(),
     delay: z.number().int().nonnegative().max(5000).optional(),
   }),
@@ -171,6 +169,7 @@ export const actionSchema = z.union([
       char: z.string().optional(),
       with: z.array(z.string().min(1)).optional(),
       text: z.string(),
+      wait: z.number().int().nonnegative().max(60000).optional(),
     }),
   }),
 ]);
@@ -284,7 +283,6 @@ const inventoryItemSchema = z
     name: z.string().min(1),
     description: z.string().min(1).optional(),
     image: z.string().min(1).optional(),
-    owned: z.boolean().optional(),
   })
   .strict()
   .transform((value) => {
@@ -296,7 +294,6 @@ const inventoryItemSchema = z
       name: value.name.trim(),
       description: normalizeOptionalText(value.description),
       image: normalizeOptionalText(value.image),
-      owned: value.owned ?? false,
     };
   });
 

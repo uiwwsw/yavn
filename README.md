@@ -164,7 +164,6 @@ inventory:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
     image: assets/bg/case_board.png
-    owned: false
 ```
 
 ### 3) 챕터 YAML (`1.yaml`, `routes/a/1.yaml` 등)
@@ -285,6 +284,10 @@ scenes:
 - `inputLockMs` 동안 `input` 제출과 `choice` 선택이 비활성화됩니다.
 - 잠금 시간이 끝나면 다음 액션으로 자동 진행됩니다.
 
+참고:
+- `sticker.enter.duration`, `clearSticker.leave.duration` 사용자 지정은 제거되었습니다.
+- 스티커 이펙트 시간은 엔진 기본값(enter `280ms`, leave `220ms`)을 사용하며, `effect/easing/delay`만 지정할 수 있습니다.
+
 ## `inventory` + `get/use` 아이템 흐름
 
 `state`와 분리된 아이템 가방 상태를 `inventory`로 선언하고, 액션으로 획득/사용할 수 있습니다.
@@ -295,21 +298,39 @@ inventory:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
     image: assets/bg/case_board.png
-    owned: false
 
 scenes:
   intro:
     actions:
+      - branch:
+          cases:
+            - when:
+                var: clue_note
+                op: eq
+                value: true
+              goto: already_has_note
+          default: get_note
+  get_note:
+    actions:
       - get: clue_note
       - say:
           text: "현장 메모를 챙겼다."
+      - goto: next_scene
+  already_has_note:
+    actions:
+      - say:
+          text: "현장 메모는 이미 확보했다."
+      - goto: next_scene
+  next_scene:
+    actions:
       - use: clue_note
 ```
 
 동작:
 - `get: <itemId>`: 해당 아이템을 가방에 추가(`true`)
 - `use: <itemId>`: 해당 아이템을 사용 처리(`false`)
-- `inventory.<itemId>.owned`는 기본 소지값으로, 챕터 시작 시 기본값으로 반영됩니다.
+- `when.var`는 `state` 변수뿐 아니라 `inventory` 아이템 키도 직접 참조할 수 있습니다.
+- 인벤토리 기본 소지값은 항상 `false`(미획득)이며, `get/use`로만 변경됩니다.
 
 ## `say` 인라인 속도 태그 (`<speed=...>`)
 
@@ -325,6 +346,21 @@ scenes:
 - `<speed=숫자>...</speed>` 구간만 해당 속도로 타이핑됩니다.
 - 같은 `say`에 여러 구간이 있으면 순서대로 각기 다른 속도가 적용됩니다.
 - 태그 밖 텍스트는 `config.yaml.textSpeed` 기본값을 사용합니다.
+
+## `say.wait` (대사 스킵 잠금)
+
+`say` 액션에 `wait`(ms)를 지정하면, 해당 대사가 시작된 시점부터 지정 시간 동안 진행/스킵 입력이 잠깁니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "멈춰. 지금은 섣불리 움직이면 안 돼."
+    wait: 900
+```
+
+동작:
+- `wait` 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
+- 잠금이 끝나면 기존 `say` 동작처럼 다음 입력을 받을 수 있습니다.
 
 ## `choice` 1회 유예(옵션별 지정)
 
@@ -452,7 +488,7 @@ scenes:
 - 레거시 autosave 키(`vn-engine-autosave`)는 URL 게임 로드시 fallback으로 읽고, 실제 이어하기 성공 시 게임별 키로 마이그레이션합니다.
 - 인게임 HUD 우측에는 텍스트 대신 가방 기호 버튼(원형 아이콘)을 배치해 인벤토리 모달을 엽니다.
 - 인벤토리 모달은 탭 없이 단일 화면으로 동작하며, 4열 고정 그리드에서 획득 아이템 수에 따라 row가 유동적으로 증가합니다.
-- 인벤토리 목록에는 `획득한 아이템(owned=true)`만 노출하며, 미획득/사용 완료(`owned=false`) 아이템은 카드 자체를 숨깁니다.
+- 인벤토리 목록에는 `획득한 아이템(true)`만 노출하며, 미획득/사용 완료(`false`) 아이템은 카드 자체를 숨깁니다.
 - 인벤토리 스크롤은 슬롯 그리드 영역에만 적용하고, 하단 상세 패널/설정 버튼 영역은 고정해 항상 보이도록 구성합니다.
 - 슬롯을 누르면 하단 상세 패널에서 소지 여부/설명/이미지를 확인할 수 있습니다.
 - 슬롯 우측 상단 배지는 `획득` 상태에서만 표시하며, 미획득/사용 완료 상태에는 배지를 숨깁니다.
@@ -477,7 +513,9 @@ scenes:
 - 입력 게이트(`input`)에서 마지막 오답 메시지(정답 안내 단계)에 도달하면 입력창에 정답 값이 자동으로 채워집니다.
 - 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 건너뛰어 가상 키보드가 즉시 열리지 않도록 합니다.
 - `sticker.inputLockMs`를 설정하면 스티커 표시 직후 지정 시간(ms) 동안 `input/choice` 제출을 잠그고, 잠금 종료 후 다음 액션으로 진행합니다.
+- 스티커 `enter/leave` 이펙트의 `duration` 사용자 지정은 제거되어, 엔진 기본 시간(enter `280ms`, leave `220ms`)으로 고정됩니다.
 - `say.text`의 다중 `<speed=...>...</speed>` 구간을 순차 해석해, 한 문장 안에서도 구간별 타이핑 속도를 다르게 적용합니다.
+- `say.wait`(ms)를 지정하면 해당 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠급니다.
 - Live2D 캐릭터 로딩은 `easy-cl2d` + 번들 자산(`src/assets/third-party/live2d/live2dcubismcore.min.js`) 조합으로 동작합니다.
 - 현재 Live2D 실행은 Cubism 5 모델(`moc3 v6`, `model3.json`)을 포함해 Cubism Core 호환 범위를 기준으로 렌더링합니다.
 - 코어 스크립트는 Vite 번들 URL(`?url`)로 로드해 정적 공개 경로 의존 없이 캐시 버스팅을 적용합니다.

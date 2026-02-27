@@ -4,6 +4,9 @@ script:
   - scene: residue_claim_correct
   - scene: residue_claim_wrong
   - scene: timeline_gate
+  - scene: timeline_item_get
+  - scene: timeline_item_already_owned
+  - scene: timeline_input_gate
   - scene: reconstruction_choice
   - scene: reconstruction_claim_correct
   - scene: reconstruction_claim_wrong
@@ -45,7 +48,6 @@ scenes:
           anchorY: center
           enter:
             effect: blurIn
-            duration: 380
       - say:
           char: 코난.think
           text: "<speed=24>(첫 단서를 틀리면 끝까지 흔들린다.)</speed> <speed=58>뭘 먼저 잡지?</speed>"
@@ -108,10 +110,18 @@ scenes:
           id: rim_focus
           leave:
             effect: fadeOut
-            duration: 220
+      - branch:
+          cases:
+            - when:
+                var: tea_residue_report
+                op: eq
+                value: true
+              goto: timeline_item_already_owned
+          default: timeline_item_get
+
+  timeline_item_get:
+    actions:
       - get: tea_residue_report
-      - set:
-          item_tea_residue_report_owned: true
       - sticker:
           id: item_popup_tea_residue_report
           image: item_tea_residue_report
@@ -120,7 +130,6 @@ scenes:
           width: 22
           enter:
             effect: popIn
-            duration: 280
           inputLockMs: 500
       - char:
           id: 코난
@@ -133,7 +142,20 @@ scenes:
           id: item_popup_tea_residue_report
           leave:
             effect: fadeOut
-            duration: 1800
+      - goto: timeline_input_gate
+
+  timeline_item_already_owned:
+    actions:
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 코난.think
+          text: "<speed=30>찻잔 반응 시료 카드는 이미 확보했다.</speed> <speed=56>중복 단서는 필요 없다.</speed>"
+
+  timeline_input_gate:
+    actions:
       - say:
           char: 코난.think
           text: "<speed=30>다음은 시간선.</speed> <speed=24>비명이 터진 정확한 시각을 입력해.</speed>"
