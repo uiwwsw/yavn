@@ -91,6 +91,7 @@ scenes:
           enter:
             effect: popIn
           inputLockMs: 500
+      - wait: 3000
       - say:
           char: 코난.think
           text: "<speed=34>레이코 진술 메모를 획득했다.</speed> <speed=56>이제 흔들리는 문장만 추려내자.</speed>"

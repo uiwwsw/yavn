@@ -1085,9 +1085,11 @@ export default function App() {
   const inventoryVisibleEntries = useMemo(() => {
     const filtered = inventoryCatalogEntries
       .filter((entry) => (inventoryView === 'bag' ? entry.owned : true))
-      .filter((entry) => (inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true))
+      .filter((entry) =>
+        inventoryView === 'bag' && inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true,
+      )
       .filter((entry) => {
-        if (!normalizedInventorySearchTerm) {
+        if (inventoryView !== 'bag' || !normalizedInventorySearchTerm) {
           return true;
         }
         return entry.name.toLowerCase().includes(normalizedInventorySearchTerm);
@@ -2232,6 +2234,7 @@ export default function App() {
                     value={inventorySearchTerm}
                     onChange={(event) => setInventorySearchTerm(event.target.value)}
                     placeholder="아이템 이름 검색"
+                    disabled={inventoryView === 'catalog'}
                   />
                 </label>
                 <label className="inventory-select-field">
@@ -2239,6 +2242,7 @@ export default function App() {
                   <select
                     value={inventoryCategoryFilter}
                     onChange={(event) => setInventoryCategoryFilter(event.target.value)}
+                    disabled={inventoryView === 'catalog'}
                   >
                     <option value={INVENTORY_CATEGORY_ALL}>전체</option>
                     {inventoryCategoryOptions.map((category) => (

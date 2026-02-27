@@ -131,6 +131,7 @@ scenes:
           enter:
             effect: popIn
           inputLockMs: 500
+      - wait: 3000
       - char:
           id: 코난
           position: center

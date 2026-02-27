@@ -58,6 +58,7 @@ scenes:
           width: 22
           y: 30
           inputLockMs: 500
+      - wait: 3000
       - clearSticker: clue_note_popup
       - goto: all_done_after_item
 
