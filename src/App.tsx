@@ -935,13 +935,13 @@ export default function App() {
     if (!appEl || !dialogEl) {
       return;
     }
-    if (isDialogHidden) {
+    if (dialogUiHidden) {
       setStickerSafeInset((prev) => (prev === 0 ? prev : 0));
       return;
     }
     const nextInset = Math.max(0, Math.ceil(appEl.clientHeight - dialogEl.offsetTop));
     setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
-  }, [isDialogHidden]);
+  }, [dialogUiHidden]);
 
   useLayoutEffect(() => {
     updateStickerSafeInset();

@@ -1612,13 +1612,13 @@ textarea,
   background: var(--ui-dialog-bg);
   box-shadow: var(--ui-dialog-shadow);
   backdrop-filter: blur(4px);
-  transform: translateY(0);
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  opacity: 1;
+  transition: opacity 220ms ease;
+  will-change: opacity;
 }
 
 .dialog-box.hidden {
-  transform: translateY(calc(100% + 28px));
+  opacity: 0;
   pointer-events: none;
 }
 

@@ -190,9 +190,10 @@ scenes:
 - 점프 대상부터 같은 폴더의 번호 파일을 순차 진행
 - `../`를 포함한 챕터 `goto`는 지원하지 않음
 - 로딩 오버레이는 첫 화면에서 노출되는 Live2D 캐릭터가 실제 `ready/error`를 보고할 때까지 유지되며, 이후에만 `loaded`로 전환됩니다.
-- 챕터 로딩 중(`chapterLoading=true`)과 `setGame` 완료 전 상태에서는 다이얼로그 박스(`.dialog-box`)를 하단으로 슬라이드 아웃하고, 해제 시 아래에서 슬라이드 인합니다.
+- 챕터 로딩 중(`chapterLoading=true`)과 `setGame` 완료 전 상태에서는 다이얼로그 박스(`.dialog-box`)를 `opacity: 0`으로 숨기고, 해제 시 페이드 인합니다.
 - 인게임 다이얼로그 우측 상단 `숨기기` 버튼으로 수동 숨김을 토글할 수 있으며, 숨김 상태에서는 우측 하단 `대화창 열기` 버튼만 노출됩니다.
 - 수동 숨김 상태에서는 클릭/`Enter`/`Space` 진행 입력을 차단해 의도치 않은 스크립트 진행을 방지합니다.
+- 시스템 숨김 상태(챕터 로딩/게임 미로딩/컷신)에서는 캐릭터/스티커 레이어 하단 안전 여백(`stickerSafeInset`) 기준을 유지해, 최초 다이얼로그 표시 시 레이어 높이 점프를 방지합니다.
 - 수동 숨김/복원 상태 변화는 캐릭터/스티커 레이어 하단 안전 여백(`stickerSafeInset`) 계산에도 즉시 반영됩니다.
 
 ## 8-0) 에피소드형 탐문 라운지 패턴 (Conan 샘플)
@@ -321,7 +322,7 @@ scenes:
 ## 8-12) 다이얼로그 수동 숨김/복원 동작
 
 - 다이얼로그 박스 우측 상단에 `숨기기` 버튼을 표시합니다.
-- 버튼 클릭 시 `dialogUiHidden=true`로 전환하고 다이얼로그 박스를 하단으로 내립니다.
+- 버튼 클릭 시 `dialogUiHidden=true`로 전환하고 다이얼로그 박스를 페이드 아웃합니다.
 - 수동 숨김 상태에서는 우측 하단에 작은 `대화창 열기` 버튼을 표시합니다.
 - `대화창 열기` 클릭 전까지는 전역 진행 입력(화면 클릭, `Enter`, `Space`)이 엔진 `handleAdvance()`로 전달되지 않습니다.
 
@@ -433,6 +434,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 다이얼로그 박스 숨김/복귀 전환을 하단 슬라이드(`transform`)에서 페이드(`opacity`)로 조정하고, 시스템 숨김 구간(챕터 로딩/게임 미로딩/컷신)에도 `stickerSafeInset` 기준을 유지해 최초 표시 시 캐릭터 레이어 높이 점프를 방지했습니다.
 - 2026-02-27: `public` 최소화 정책을 도입해 허용 경로를 `favicon.svg/robots.txt/sitemap.xml/game-list/**`로 제한하고, `scripts/check-public-allowlist.mjs` 검증을 `predev`/`prebuild`에 연결했습니다.
 - 2026-02-27: 폰트(`SUITE-Variable.woff2`)와 Live2D Core(`live2dcubismcore.min.js`)를 `public`에서 `src/assets` 번들 자산으로 이동해 정적 공개 경로 의존을 제거했습니다.
 - 2026-02-27: 외부 런타임 자산 경로를 명확히 하기 위해 Live2D 코어 디렉터리를 `public/vendor/live2d`에서 `public/third-party/live2d`로 이동하고, 로더/문서 참조 경로를 함께 정리.
