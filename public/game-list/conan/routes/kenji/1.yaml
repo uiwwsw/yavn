@@ -3,8 +3,12 @@ script:
   - scene: revisit_notice
   - scene: intro
   - scene: first_probe
+  - scene: first_claim_correct
+  - scene: first_claim_wrong
   - scene: retry_notice
   - scene: second_probe
+  - scene: second_claim_correct
+  - scene: second_claim_wrong
   - scene: success_line
   - scene: fail_line
   - scene: outro
@@ -36,13 +40,13 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.think
-          text: "동선은 이미 다 얘기했어. 같은 질문이면 다시 꼬이기만 해."
+          text: "동선은 다 말했어. 같은 질문이면 더 꼬인다고."
       - goto: /routes/hub/1.yaml
 
   intro:
     actions:
       - bg: tea_room
-      - music: tension
+      - music: reasoning
       - set:
           visited_kenji: true
       - add:
@@ -63,59 +67,145 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "소리 질렀던 건 인정해. 근데 찻상 근처엔 못 갔어!"
+          text: "소리 질렀던 건 인정해! 근데 찻상 근처엔 안 갔어!"
       - say:
           char: 코난.serious
-          text: "좋아. 감정과 실행 가능성을 분리해서 재현해 보자."
+          text: "좋아, 화는 빼고 동선만 남긴다."
 
   first_probe:
     actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 켄지.angry
+          text: "사건 직전 네 발이 어디 있었는지, 그거 하나만 답해."
       - choice:
           key: kenji_first_probe
-          prompt: "사건 직전 켄지의 동선에서 핵심은?"
+          prompt: "사건 직전 켄지 동선에서 핵심은?"
           options:
-            - text: "복도 전화 통화로 다실 출입선에서 벗어나 있었다"
+            - text: "복도에서 통화 중이라 다실 출입선에서 떨어져 있었다"
               add:
                 deduction_score: 1
-              goto: second_probe
-            - text: "말다툼이 있었으니 바로 실행했을 것이다"
+              goto: first_claim_correct
+            - text: "말다툼했으니 바로 실행했을 거다"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: retry_notice
-            - text: "목소리가 컸으니 누구보다 침착했을 것이다"
+              goto: first_claim_wrong
+            - text: "목소리가 컸으니 오히려 침착했을 거다"
               add:
                 mistake_count: 1
+              goto: first_claim_wrong
+
+  first_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 켄지.angry
+          text: "좋아, 그건 기록으로 받쳐진다. 이 주장, 채택하고 다음으로 갈까?"
+      - choice:
+          key: kenji_first_commit
+          prompt: "1차 동선을 확정할까?"
+          options:
+            - text: "확정한다"
+              goto: second_probe
+            - text: "아직 불안하다. 다시 묻는다"
+              goto: retry_notice
+
+  first_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          with:
+            - 켄지.angry
+          text: "그건 성격 추측이지 동선이 아니야. 법정에선 못 버텨."
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.think
+          text: "그래, 동선으로 따져. 그건 인정한다."
+      - choice:
+          key: kenji_first_rebuttal
+          prompt: "이 판단을 어떻게 할까?"
+          options:
+            - text: "틀렸다. 다시 질문"
+              goto: retry_notice
+            - text: "아냐, 이걸로도 밀어본다"
+              add:
+                mistake_count: 1
+                trust: -1
               goto: retry_notice
 
   retry_notice:
     actions:
       - say:
           char: 코난.think
-          text: "한 번만 더. 추측이 아니라 동선 기록으로 고르자."
+          text: "좋아, 다시. 성격 말고 이동 기록만 본다."
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.think
+          text: "그건 자신 있어. 기록대로 말했어."
       - goto: second_probe
 
   second_probe:
     actions:
       - choice:
           key: kenji_second_probe
-          prompt: "재현에서 확인된 사실은?"
+          prompt: "재현으로 확인된 사실은?"
           options:
-            - text: "뚜껑 두 번 누름은 시선 분산용 미끼였다"
+            - text: "뚜껑 두 번 누름은 시선을 돌리는 미끼였다"
               set:
                 clue_double_press_decoy: true
               add:
                 deduction_score: 2
                 final_confidence: 1
                 trust: 1
+              goto: second_claim_correct
+            - text: "분노가 크면 물증 없어도 확정 가능하다"
+              add:
+                mistake_count: 1
+              goto: second_claim_wrong
+            - text: "통화 기록보다 직감이 정확하다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: second_claim_wrong
+
+  second_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 켄지.angry
+          text: "좋아, 이건 물증이 붙는다. 이걸 최종 결론으로 둘까?"
+      - choice:
+          key: kenji_second_commit
+          prompt: "최종 채택할까?"
+          options:
+            - text: "채택한다"
               goto: success_line
-            - text: "분노가 강했으니 물증 없이도 확정 가능하다"
+            - text: "보류한다"
               add:
-                mistake_count: 1
+                final_confidence: -1
               goto: fail_line
-            - text: "통화 기록보다 직감이 더 정확하다"
+
+  second_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          with:
+            - 켄지.angry
+          text: "그 선택은 감정 쪽이다. 이대로면 결론이 깨진다."
+      - choice:
+          key: kenji_second_rebuttal
+          prompt: "지금 선택은?"
+          options:
+            - text: "틀렸다 인정하고 접는다"
+              goto: fail_line
+            - text: "끝까지 민다"
               add:
-                mistake_count: 1
                 trust: -1
               goto: fail_line
 
@@ -123,14 +213,19 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 켄지 축은 정리됐다. 분노와 실행은 다른 문제였어."
+          text: "좋아, 켄지 쪽 정리됐다. 분노와 실행은 별개야."
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "이제야 말이 통하네."
       - goto: outro
 
   fail_line:
     actions:
       - say:
           char: 코난.think
-          text: "켄지 축은 아직 거칠어. 결론에서 섣불리 닫으면 위험해."
+          text: "켄지 쪽이 아직 거칠어. 이대로 닫으면 결론이 깨진다."
       - add:
           final_confidence: -1
       - goto: outro
@@ -139,5 +234,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "켄지 대면 종료. 조사 라운지로 복귀한다."
+          text: "켄지 대면 끝. 라운지로 복귀한다."
       - goto: /routes/hub/1.yaml

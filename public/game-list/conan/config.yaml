@@ -27,19 +27,22 @@ ui:
   template: cinematic-noir
 startScreen:
   enabled: true
-  image: "assets/bg/case_board.png"
+  image: "assets/bg/open.png"
+  music: "assets/music/intro.mp3"
   startButtonText: "시작하기"
   buttonPosition: "auto"
+endingScreen:
+  image: "assets/bg/closed.png"
 endings:
   true_end:
     title: "TRUE END"
-    message: "다섯 단서를 완전히 맞물려 다실 사건의 진실을 끝까지 증명했다."
+    message: "다섯 단서를 빈틈없이 맞물려 다실 사건의 진실을 완전히 입증했다."
   normal_end:
     title: "NORMAL END"
-    message: "범인은 특정했지만 연결 고리 일부가 비어 있어 여운을 남겼다."
+    message: "범인은 밝혔지만 몇몇 연결고리가 비어 있어 찜찜한 끝을 남겼다."
   bad_end:
     title: "BAD END"
-    message: "단서 사슬이 끊겨 사건의 결말이 흐릿하게 닫혔다."
+    message: "단서가 엇갈려 사건의 결말이 흐릿하게 닫혔다."
 endingRules:
   - when:
       all:

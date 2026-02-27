@@ -1,8 +1,12 @@
 script:
   - scene: first_scan
   - scene: residue_focus
+  - scene: residue_claim_correct
+  - scene: residue_claim_wrong
   - scene: timeline_gate
   - scene: reconstruction_choice
+  - scene: reconstruction_claim_correct
+  - scene: reconstruction_claim_wrong
   - scene: deduction_branch
   - scene: stable_frame
   - scene: shaky_frame
@@ -12,7 +16,7 @@ scenes:
   first_scan:
     actions:
       - bg: tea_room
-      - music: mystery
+      - music: reasoning
       - char:
           id: 코난
           position: center
@@ -25,7 +29,7 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: "현장을 건드리지 않고 본다. 잔 표면과 시간 기록을 먼저 고정하자."
+          text: "손대지 말고 눈으로만 본다. 잔 표면이랑 시간 기록부터 확인하자."
 
   residue_focus:
     actions:
@@ -41,25 +45,60 @@ scenes:
           enter:
             effect: blurIn
             duration: 380
+      - say:
+          char: 코난.think
+          text: "첫 단추다. 어디부터 잡을지 네가 골라."
       - choice:
           key: residue_focus_choice
-          prompt: "잔 표면에서 먼저 확인할 항목은?"
+          prompt: "잔에서 먼저 봐야 할 건 뭐지?"
           options:
-            - text: "가장자리 미세 결정 반응을 확인한다"
+            - text: "가장자리 반응부터 확인한다"
               set:
                 clue_rim_reagent: true
               add:
                 deduction_score: 2
                 final_confidence: 1
-              goto: timeline_gate
-            - text: "찻상 바닥의 흠집부터 본다"
+              goto: residue_claim_correct
+            - text: "찻상 바닥 흠집부터 확인한다"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: timeline_gate
-            - text: "향만 확인하고 넘어간다"
+              goto: residue_claim_wrong
+            - text: "향만 맡고 넘어간다"
               add:
                 mistake_count: 1
+              goto: residue_claim_wrong
+
+  residue_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "좋아, 그 선택 맞다. 가장자리 반응부터 잡는 게 정석이야. 이 판단 확정할까?"
+      - choice:
+          key: residue_commit_choice
+          prompt: "1차 판단을 확정할까?"
+          options:
+            - text: "확정하고 다음으로 간다"
+              goto: timeline_gate
+            - text: "아직 불안하다. 보류하고 넘어간다"
+              add:
+                final_confidence: -1
+              goto: timeline_gate
+
+  residue_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "지금 건 우선순위가 틀렸어. 하지만 흐름은 계속 간다. 이 판단, 틀렸다고 보고 정리할래?"
+      - choice:
+          key: residue_rebuttal_choice
+          prompt: "방금 선택을 어떻게 처리할까?"
+          options:
+            - text: "틀렸다. 다음 질문으로 넘어간다"
+              goto: timeline_gate
+            - text: "아냐, 이걸로도 밀어본다"
+              add:
+                trust: -1
               goto: timeline_gate
 
   timeline_gate:
@@ -69,18 +108,21 @@ scenes:
           leave:
             effect: fadeOut
             duration: 220
-      - music: tension
+      - music: reasoning
       - char:
           id: 코난
           position: center
           emotion: think
+      - say:
+          char: 코난.think
+          text: "좋아, 다음은 시간이다. 비명 시각을 정확히 찍어 봐."
       - input:
-          prompt: "비명이 들린 시각(24시간 형식)을 입력해줘."
+          prompt: "비명이 들린 시각을 24시간 형식으로 입력해줘."
           correct: "21:30"
           saveAs: timeline_answer
           errors:
-            - "벽시계의 긴 바늘 위치를 다시 떠올려봐."
-            - "힌트: 9시 30분이었어."
+            - "시계를 떠올려. 긴 바늘이 어디를 가리켰지?"
+            - "힌트: 밤 9시 30분."
             - "정답은 21:30."
           routes:
             - equals: "21:30"
@@ -105,24 +147,59 @@ scenes:
           id: 코난
           position: center
           emotion: serious
+      - say:
+          char: 코난.serious
+          text: "좋아, 재현으로 간다. 뚜껑 두 번의 의미를 정리해."
       - choice:
           key: reconstruction_choice
-          prompt: "뚜껑을 두 번 누른 동작은 무엇을 의미할까?"
+          prompt: "주전자 뚜껑을 두 번 누른 건 무슨 뜻일까?"
           options:
-            - text: "독 투입 그 자체를 가리킨다"
+            - text: "그 동작 자체가 독 투입이었다"
               add:
                 mistake_count: 1
-              goto: deduction_branch
-            - text: "시선을 분산시키기 위한 미끼 동작이다"
+              goto: reconstruction_claim_wrong
+            - text: "시선을 돌리려는 눈속임이었다"
               set:
                 clue_double_press_decoy: true
               add:
                 deduction_score: 2
                 final_confidence: 1
-              goto: deduction_branch
-            - text: "습관이라서 의미가 없다"
+              goto: reconstruction_claim_correct
+            - text: "원래 습관이라 의미가 없다"
               add:
                 mistake_count: 1
+                trust: -1
+              goto: reconstruction_claim_wrong
+
+  reconstruction_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "좋아, 미끼 해석이 맞다. 이걸로 사건 흐름을 못 박을까?"
+      - choice:
+          key: reconstruction_commit_choice
+          prompt: "재현 해석을 최종 채택할까?"
+          options:
+            - text: "채택한다"
+              goto: deduction_branch
+            - text: "보류한다"
+              add:
+                final_confidence: -1
+              goto: deduction_branch
+
+  reconstruction_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "그 해석으론 동선이 안 붙어. 그래도 지금은 넘어가고 대면에서 보강해야 해."
+      - choice:
+          key: reconstruction_rebuttal_choice
+          prompt: "방금 해석을 어떻게 처리할까?"
+          options:
+            - text: "틀렸다 인정하고 진행한다"
+              goto: deduction_branch
+            - text: "끝까지 이 해석으로 민다"
+              add:
                 trust: -1
               goto: deduction_branch
 
@@ -149,7 +226,7 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "좋아, 프레임이 잡혔어. 이제 사람별 대면으로 빈칸을 메운다."
+          text: "좋아, 흐름이 잡혔어. 이제 사람 하나씩 붙잡고 빈칸만 메우면 된다."
       - add:
           final_confidence: 1
       - goto: lounge_handoff
@@ -159,7 +236,7 @@ scenes:
       - effect: pulse
       - say:
           char: 코난.think
-          text: "연결은 보이지만 고리가 느슨해. 대면에서 단서를 더 모아야 해."
+          text: "실마리는 잡혔는데 아직 헐거워. 대면에서 더 끌어내야 해."
       - add:
           mistake_count: 1
       - goto: lounge_handoff
@@ -169,5 +246,5 @@ scenes:
       - bg: case_board
       - say:
           char: 코난
-          text: "조사 라운지로 간다. 네 사람을 순서대로 만나고 결론을 닫자."
+          text: "조사 라운지로 간다. 네 사람, 순서대로 확인하자."
       - goto: /routes/hub/1.yaml

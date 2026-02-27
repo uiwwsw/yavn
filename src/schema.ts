@@ -238,16 +238,36 @@ const startScreenSchema = z
   .object({
     enabled: z.boolean().optional(),
     image: z.string().min(1).optional(),
+    music: z.string().min(1).optional(),
     startButtonText: z.string().min(1).optional(),
     buttonPosition: startButtonPositionSchema.optional(),
   })
   .strict()
-  .transform((value) => ({
-    enabled: value.enabled ?? true,
-    image: value.image,
-    startButtonText: value.startButtonText?.trim() || '시작하기',
-    buttonPosition: value.buttonPosition ?? 'auto',
-  }));
+  .transform((value) => {
+    const normalizeOptionalText = (raw?: string): string | undefined => {
+      const trimmed = raw?.trim();
+      return trimmed ? trimmed : undefined;
+    };
+    return {
+      enabled: value.enabled ?? true,
+      image: normalizeOptionalText(value.image),
+      music: normalizeOptionalText(value.music),
+      startButtonText: value.startButtonText?.trim() || '시작하기',
+      buttonPosition: value.buttonPosition ?? 'auto',
+    };
+  });
+
+const endingScreenSchema = z
+  .object({
+    image: z.string().min(1).optional(),
+  })
+  .strict()
+  .transform((value) => {
+    const trimmed = value.image?.trim();
+    return {
+      image: trimmed ? trimmed : undefined,
+    };
+  });
 
 const characterAssetsSchema = z.record(
   z.object({
@@ -290,6 +310,7 @@ export const configSchema = z
     endingRules: z.array(endingRuleSchema).optional(),
     defaultEnding: z.string().min(1).optional(),
     startScreen: startScreenSchema.optional(),
+    endingScreen: endingScreenSchema.optional(),
     ui: uiConfigSchema.optional(),
   })
   .strict();
@@ -332,6 +353,7 @@ export const gameSchema = z.object({
   endingRules: z.array(endingRuleSchema).optional(),
   defaultEnding: z.string().min(1).optional(),
   startScreen: startScreenSchema.optional(),
+  endingScreen: endingScreenSchema.optional(),
   ui: uiConfigSchema.optional(),
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(

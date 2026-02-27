@@ -62,6 +62,7 @@ YAML V3는 파일 역할을 분리합니다.
 - `clickToInstant`
 - `ui`
 - `startScreen`
+- `endingScreen`
 - `endings`
 - `endingRules`
 - `defaultEnding`
@@ -88,8 +89,11 @@ ui:
 startScreen:
   enabled: true
   image: assets/bg/title.png
+  music: assets/music/intro.mp3
   startButtonText: 시작하기
   buttonPosition: auto
+endingScreen:
+  image: assets/bg/ending.png
 endings:
   true_end:
     title: "TRUE END"
@@ -110,6 +114,8 @@ defaultEnding: bad_end
 - `ui`를 생략하면 기본 템플릿 `cinematic-noir`가 적용됩니다.
 - `startScreen` 객체를 선언하면 기본 활성화(`enabled: true`)됩니다.
 - `startButtonText` 기본값은 `시작하기`, `buttonPosition` 기본값은 `auto`입니다.
+- `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생하고, 시작/이어하기 시점에 정지합니다.
+- `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이 배경을 교체합니다.
 - `seo`는 런처 및 `/game-list/:gameId` 페이지의 `description/keywords/og/twitter/json-ld` 생성에 사용됩니다.
 - `seo.image`는 상대 경로(`assets/...`)와 절대 URL(`https://...`)을 모두 허용하며, 상대 경로는 게임 루트 기준으로 정규화됩니다.
 
@@ -121,7 +127,7 @@ defaultEnding: bad_end
 
 금지:
 - `script`, `scenes`
-- `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
+- `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endingScreen`, `endings` 계열
 - `meta`, `settings`
 
 예시:
@@ -155,7 +161,7 @@ state:
 - `state`
 
 금지:
-- `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
+- `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endingScreen`, `endings` 계열
 - `meta`, `settings`
 
 예시:
@@ -306,6 +312,7 @@ scenes:
 - 버튼 기본값:
   - 시작 버튼 텍스트 `startButtonText`: `시작하기`
   - 버튼 위치 `buttonPosition`: `auto`
+- `startScreen.music`을 지정하면 시작 화면에서만 루프 재생됩니다.
 - URL 게임(`/game-list/:gameId`)의 자동저장 키는 `vn-engine-autosave:game:<gameId>`를 사용합니다.
 - 레거시 키(`vn-engine-autosave`)는 URL 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
@@ -313,6 +320,7 @@ scenes:
 - 런처 인스펙터 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
+- `config.yaml.endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 커스텀할 수 있습니다.
 
 ## 8-10) UI 템플릿 동작
 
@@ -449,6 +457,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: `config.yaml.startScreen.music`(시작 화면 전용 BGM)과 `config.yaml.endingScreen.image`(엔딩 오버레이 배경)를 추가했습니다. ZIP 시작 화면 프리뷰에서도 로컬 음악 경로를 blob으로 변환해 재생하도록 동작을 확장했습니다.
 - 2026-02-27: `prebuild`에서 `public/sitemap.xml`을 manifest(`games[].path`) 기준으로 자동 생성하도록 확장했습니다. 동시에 Start Gate(게임 본 로딩 전) 단계에서도 `config.yaml.seo`를 즉시 적용해 `/game-list/:gameId` 진입 직후 메타가 반영되도록 동작을 갱신했습니다.
 - 2026-02-27: 다이얼로그 `숨기기` 버튼을 본문 내부에서 박스 외부 우측 상단 컨트롤 레이어로 이동해, 일반 대사 텍스트와 버튼이 겹치지 않도록 UI 레이아웃을 조정했습니다.
 - 2026-02-27: `config.yaml.seo`(`description/keywords/image/imageAlt`)를 추가하고, manifest를 `schemaVersion: 3`으로 확장해 `games[].seo` + 루트 `seo(gameTitles/gameCount/keywords/description)`를 생성하도록 `prebuild`를 갱신했습니다. 런처 및 `/game-list/:gameId` 페이지에서 이 메타를 읽어 `description/keywords/og/twitter/json-ld`를 동적으로 반영하도록 동작을 문서화했습니다.

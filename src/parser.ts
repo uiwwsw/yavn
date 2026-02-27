@@ -15,6 +15,7 @@ type ConfigYamlData = {
   endingRules?: GameData['endingRules'];
   defaultEnding?: GameData['defaultEnding'];
   startScreen?: GameData['startScreen'];
+  endingScreen?: GameData['endingScreen'];
   ui?: GameData['ui'];
 };
 
@@ -72,6 +73,7 @@ const CONFIG_ONLY_KEYS = [
   'endingRules',
   'defaultEnding',
   'startScreen',
+  'endingScreen',
   'ui',
 ] as const;
 
@@ -494,29 +496,50 @@ export function parseConfigYaml(raw: string, sourcePath: string): { data?: Parse
   try {
     const parsed = configSchema.parse(parsedRoot.value) as ConfigYamlData;
     const sourceDir = getSourceDir(normalizedSourcePath);
-    const startScreen = parsed.startScreen
-      ? (() => {
-          if (!parsed.startScreen.image) {
-            return parsed.startScreen;
-          }
-          const normalizedImage = canonicalizeDeclaredPath(parsed.startScreen.image, sourceDir);
-          if (!normalizedImage) {
-            return undefined;
-          }
-          return {
-            ...parsed.startScreen,
-            image: normalizedImage,
-          };
-        })()
+    const normalizedStartScreenImage = parsed.startScreen?.image
+      ? canonicalizeDeclaredPath(parsed.startScreen.image, sourceDir)
       : undefined;
-
-    if (parsed.startScreen?.image && !startScreen) {
+    if (parsed.startScreen?.image && !normalizedStartScreenImage) {
       return {
         error: {
           message: `${normalizedSourcePath}: startScreen.image has invalid path '${parsed.startScreen.image}'`,
         },
       };
     }
+    const normalizedStartScreenMusic = parsed.startScreen?.music
+      ? canonicalizeDeclaredPath(parsed.startScreen.music, sourceDir)
+      : undefined;
+    if (parsed.startScreen?.music && !normalizedStartScreenMusic) {
+      return {
+        error: {
+          message: `${normalizedSourcePath}: startScreen.music has invalid path '${parsed.startScreen.music}'`,
+        },
+      };
+    }
+    const startScreen = parsed.startScreen
+      ? {
+          ...parsed.startScreen,
+          image: normalizedStartScreenImage,
+          music: normalizedStartScreenMusic,
+        }
+      : undefined;
+
+    const normalizedEndingScreenImage = parsed.endingScreen?.image
+      ? canonicalizeDeclaredPath(parsed.endingScreen.image, sourceDir)
+      : undefined;
+    if (parsed.endingScreen?.image && !normalizedEndingScreenImage) {
+      return {
+        error: {
+          message: `${normalizedSourcePath}: endingScreen.image has invalid path '${parsed.endingScreen.image}'`,
+        },
+      };
+    }
+    const endingScreen = parsed.endingScreen
+      ? {
+          ...parsed.endingScreen,
+          image: normalizedEndingScreenImage,
+        }
+      : undefined;
 
     const seo = parsed.seo
       ? (() => {
@@ -549,6 +572,7 @@ export function parseConfigYaml(raw: string, sourcePath: string): { data?: Parse
         data: {
           ...parsed,
           startScreen,
+          endingScreen,
           seo,
         },
       },
@@ -765,6 +789,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
     ...(input.config.data.endingRules ? { endingRules: input.config.data.endingRules } : {}),
     ...(input.config.data.defaultEnding ? { defaultEnding: input.config.data.defaultEnding } : {}),
     ...(input.config.data.startScreen ? { startScreen: input.config.data.startScreen } : {}),
+    ...(input.config.data.endingScreen ? { endingScreen: input.config.data.endingScreen } : {}),
     ...(input.config.data.ui ? { ui: input.config.data.ui } : {}),
   };
 

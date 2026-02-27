@@ -2316,14 +2316,14 @@ function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
   };
 }
 
-function resolveZipImageEntry(
+function resolveZipAssetEntry(
   zipFiles: JSZip.JSZipObject[],
-  imagePath: string,
+  assetPath: string,
 ): JSZip.JSZipObject | undefined {
-  const normalizedImage = normalizeAssetKey(imagePath).toLowerCase();
+  const normalizedAssetPath = normalizeAssetKey(assetPath).toLowerCase();
   for (const entry of zipFiles) {
     const normalizedEntry = normalizeAssetKey(entry.name).toLowerCase();
-    if (normalizedEntry === normalizedImage || normalizedEntry.endsWith(`/${normalizedImage}`)) {
+    if (normalizedEntry === normalizedAssetPath || normalizedEntry.endsWith(`/${normalizedAssetPath}`)) {
       return entry;
     }
   }
@@ -2360,7 +2360,33 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
   const configRaw = await configEntry.async('text');
   const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
   const startScreen = parsedConfig.startScreen;
-  if (!startScreen?.image || /^(blob:|data:|https?:)/i.test(startScreen.image)) {
+  if (!startScreen) {
+    return {
+      gameTitle: parsedConfig.gameTitle,
+      startScreen: undefined,
+      seo: parsedConfig.seo,
+      uiTemplate: parsedConfig.uiTemplate,
+      hasLoadableSave: false,
+    };
+  }
+  const isResolvableLocalAsset = (path?: string): path is string =>
+    typeof path === 'string' && path.length > 0 && !/^(blob:|data:|https?:)/i.test(path);
+  const materializeLocalAssetUrl = async (path?: string): Promise<string | undefined> => {
+    if (!isResolvableLocalAsset(path)) {
+      return path;
+    }
+    const entry = resolveZipAssetEntry(files, path);
+    if (!entry) {
+      return path;
+    }
+    const bytes = await entry.async('arraybuffer');
+    const mimeType = detectMimeType(entry.name);
+    const blob = mimeType ? new Blob([bytes], { type: mimeType }) : new Blob([bytes]);
+    return URL.createObjectURL(blob);
+  };
+  const resolvedImage = await materializeLocalAssetUrl(startScreen.image);
+  const resolvedMusic = await materializeLocalAssetUrl(startScreen.music);
+  if (resolvedImage === startScreen.image && resolvedMusic === startScreen.music) {
     return {
       gameTitle: parsedConfig.gameTitle,
       startScreen,
@@ -2369,27 +2395,12 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
       hasLoadableSave: false,
     };
   }
-
-  const imageEntry = resolveZipImageEntry(files, startScreen.image);
-  if (!imageEntry) {
-    return {
-      gameTitle: parsedConfig.gameTitle,
-      startScreen,
-      seo: parsedConfig.seo,
-      uiTemplate: parsedConfig.uiTemplate,
-      hasLoadableSave: false,
-    };
-  }
-
-  const bytes = await imageEntry.async('arraybuffer');
-  const mimeType = detectMimeType(imageEntry.name);
-  const blob = mimeType ? new Blob([bytes], { type: mimeType }) : new Blob([bytes]);
-  const imageUrl = URL.createObjectURL(blob);
   return {
     gameTitle: parsedConfig.gameTitle,
     startScreen: {
       ...startScreen,
-      image: imageUrl,
+      image: resolvedImage,
+      music: resolvedMusic,
     },
     seo: parsedConfig.seo,
     uiTemplate: parsedConfig.uiTemplate,

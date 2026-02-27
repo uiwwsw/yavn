@@ -41,9 +41,9 @@ assets:
       emotions:
         scared: /assets/char/haruo/scared.png
   music:
-    rain: /assets/music/rain.wav
-    mystery: /assets/music/mystery.wav
-    tension: /assets/music/tension.wav
+    reasoning: /assets/music/reasoning.mp3
+    confession: /assets/music/confession.mp3
+    solvethecase: /assets/music/solvethecase.mp3
   sfx:
     thunder: /assets/sfx/thunder.wav
     scream: /assets/sfx/scream.wav

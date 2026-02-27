@@ -3,8 +3,12 @@ script:
   - scene: revisit_notice
   - scene: intro
   - scene: first_probe
+  - scene: first_claim_correct
+  - scene: first_claim_wrong
   - scene: retry_notice
   - scene: second_probe
+  - scene: second_claim_correct
+  - scene: second_claim_wrong
   - scene: success_line
   - scene: fail_line
   - scene: outro
@@ -36,13 +40,13 @@ scenes:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "더 짜내면 기억이 흐려질 것 같아... 다음 사람부터 봐줘."
+          text: "더 말하면 기억이 엉킬 것 같아... 다른 사람부터."
       - goto: /routes/hub/1.yaml
 
   intro:
     actions:
       - bg: ryokan_hall
-      - music: mystery
+      - music: reasoning
       - set:
           visited_haruo: true
       - add:
@@ -63,41 +67,90 @@ scenes:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "...난 봤어. 누군가 피해자 잔 가장자리를 닦고 바로 물러났어."
+          text: "...봤어. 누가 피해자 잔 가장자리를 닦고 바로 빠졌어."
       - say:
           char: 코난.think
           with:
             - 란.worried
-          text: "좋아, 그 침묵 기록이 이번 사건의 시간축을 완성할 거야."
+          text: "좋아, 그 장면 하나면 시간선이 살아난다."
 
   first_probe:
     actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 하루오.scared
+          text: "하루오 씨, 한 가지만 확실히 하자. 닦은 위치가 어디였지?"
       - choice:
           key: haruo_first_probe
-          prompt: "하루오의 관찰에서 가장 먼저 고정할 사실은?"
+          prompt: "하루오 진술에서 먼저 붙잡을 건?"
           options:
-            - text: "닦는 동작이 비명 직전 찻잔 가장자리에서 있었다"
+            - text: "비명 직전, 찻잔 가장자리를 닦는 동작이 있었다"
               set:
                 clue_haruo_wipe: true
               add:
                 deduction_score: 2
                 trust: 1
-              goto: success_line
-            - text: "말수가 적으니 기록 전체를 보류한다"
+              goto: first_claim_correct
+            - text: "말수가 적으니 진술을 보류한다"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: retry_notice
-            - text: "뚜껑 동작만 중요하니 닦는 장면은 무시한다"
+              goto: first_claim_wrong
+            - text: "뚜껑만 중요하니 닦는 장면은 버린다"
               add:
                 mistake_count: 1
+              goto: first_claim_wrong
+
+  first_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 하루오.scared
+          text: "좋아, 지금 건 물증과 붙는다. 이걸 채택할까?"
+      - say:
+          char: 하루오.scared
+          with:
+            - 코난.serious
+          text: "...응. 그 장면은 분명했어."
+      - choice:
+          key: haruo_first_commit
+          prompt: "1차 채택할까?"
+          options:
+            - text: "채택한다"
+              goto: success_line
+            - text: "한 번 더 확인한다"
+              goto: second_probe
+
+  first_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          with:
+            - 하루오.scared
+          text: "아니야. 침묵은 공백이 아니라 기록이야. 버리면 안 돼."
+      - say:
+          char: 하루오.scared
+          with:
+            - 코난.think
+          text: "...응, 내가 본 건 분명해."
+      - choice:
+          key: haruo_first_rebuttal
+          prompt: "이 판단을 어떻게 할까?"
+          options:
+            - text: "틀렸다. 다시 확인한다"
+              goto: retry_notice
+            - text: "아냐, 이걸로 밀어본다"
+              add:
+                trust: -1
               goto: retry_notice
 
   retry_notice:
     actions:
       - say:
           char: 코난.think
-          text: "한 번만 더. 침묵은 공백이 아니라 고정된 기록이야."
+          text: "좋아, 다시. 문장 하나씩 잠근다."
       - goto: second_probe
 
   second_probe:
@@ -106,20 +159,56 @@ scenes:
           key: haruo_second_probe
           prompt: "재선택: 어떤 문장을 채택할까?"
           options:
-            - text: "닦는 동작이 비명 직전 찻잔 가장자리에서 있었다"
+            - text: "비명 직전, 찻잔 가장자리를 닦는 동작이 있었다"
               set:
                 clue_haruo_wipe: true
                 clue_rim_reagent: true
               add:
                 deduction_score: 1
-              goto: success_line
+              goto: second_claim_correct
             - text: "시선이 흔들렸으니 장면 전체를 폐기한다"
               add:
                 mistake_count: 1
-              goto: fail_line
-            - text: "표정이 불안했으니 다른 사람 공모로 본다"
+              goto: second_claim_wrong
+            - text: "표정이 불안했으니 공모로 본다"
               add:
                 mistake_count: 1
+                trust: -1
+              goto: second_claim_wrong
+
+  second_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 하루오.scared
+          text: "좋아, 닦는 동작이 맞다. 최종 단서로 확정할까?"
+      - choice:
+          key: haruo_second_commit
+          prompt: "최종 채택할까?"
+          options:
+            - text: "채택한다"
+              goto: success_line
+            - text: "보류한다"
+              add:
+                final_confidence: -1
+              goto: fail_line
+
+  second_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          with:
+            - 하루오.scared
+          text: "그 선택은 증언을 버린 거야. 결론 전에 발이 묶인다."
+      - choice:
+          key: haruo_second_rebuttal
+          prompt: "지금 선택은?"
+          options:
+            - text: "접고 돌아간다"
+              goto: fail_line
+            - text: "끝까지 밀어붙인다"
+              add:
                 trust: -1
               goto: fail_line
 
@@ -127,7 +216,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 닦는 동작이 잠겼다. 찻잔 가장자리 시약 가설이 완성된다."
+          text: "좋아, 닦는 동작이 잠겼다. 찻잔 가설이 이제 맞물린다."
       - add:
           final_confidence: 1
       - goto: outro
@@ -136,7 +225,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "하루오 축은 아직 약해. 결론에서 추가 보강이 필요해."
+          text: "하루오 쪽이 아직 약해. 결론 전에 보강이 필요해."
       - add:
           final_confidence: -1
       - goto: outro
@@ -145,5 +234,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "하루오 대면 종료. 조사 라운지로 복귀한다."
+          text: "하루오 대면 끝. 라운지로 복귀한다."
       - goto: /routes/hub/1.yaml

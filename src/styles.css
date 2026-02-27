@@ -1965,10 +1965,20 @@ textarea,
   background: var(--ui-ending-overlay);
 }
 
+.ending-overlay-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
 .ending-overlay-decoration {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
   opacity: 0.35;
   background: var(--ui-ending-decoration);
 }
@@ -1976,7 +1986,7 @@ textarea,
 .ending-credits-screen {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-rows: 1fr auto;
 }

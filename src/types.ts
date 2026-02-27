@@ -232,8 +232,13 @@ export type StartButtonPosition = 'auto' | 'bottom-center' | 'bottom-left' | 'bo
 export type StartScreenConfig = {
   enabled: boolean;
   image?: string;
+  music?: string;
   startButtonText: string;
   buttonPosition: StartButtonPosition;
+};
+
+export type EndingScreenConfig = {
+  image?: string;
 };
 
 export type UiConfig = {
@@ -271,6 +276,7 @@ export type GameData = {
   endingRules?: EndingRule[];
   defaultEnding?: string;
   startScreen?: StartScreenConfig;
+  endingScreen?: EndingScreenConfig;
   ui?: UiConfig;
   script: Array<{ scene: string }>;
   scenes: Record<string, Scene>;

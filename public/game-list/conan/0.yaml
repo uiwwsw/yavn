@@ -1,17 +1,138 @@
 script:
+  - scene: trip_open
+  - scene: ryokan_welcome
+  - scene: tea_invite
+  - scene: tasting_room_prelude
+  - scene: weather_shift
   - scene: rain_hook
   - scene: object_flash
   - scene: blackout_title
   - scene: handoff
 
 scenes:
-  rain_hook:
+  trip_open:
+    actions:
+      - bg: ryokan_hall
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코난
+          position: center
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - sound: door
+      - say:
+          char: 란
+          with:
+            - 코난
+            - 코고로.proud
+          text: "와, 공기 좋다. 진짜 여행 온 느낌이야."
+      - say:
+          char: 코고로.proud
+          with:
+            - 란
+          text: "하하! 오늘은 사건이 아니라 초대 손님이다! 마음 편히 즐기라고!"
+      - say:
+          char: 코난.think
+          with:
+            - 란
+            - 코고로.proud
+          text: "(오랜만에 평화로운 일정... 이대로 끝나면 좋겠는데.)"
+
+  ryokan_welcome:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 켄지
+          position: left
+      - char:
+          id: 신이치
+          position: center
+      - char:
+          id: 레이코
+          position: right
+      - say:
+          char: 레이코
+          with:
+            - 켄지
+            - 신이치
+          text: "와줘서 고마워요. 오늘은 공동 블렌드 완성 기념 시음회예요."
+      - say:
+          char: 켄지
+          with:
+            - 레이코
+            - 신이치
+          text: "계약 마무리 겸 공개 자리야. 분위기 좋게 가자고."
+      - say:
+          char: 신이치
+          with:
+            - 켄지
+            - 레이코
+          text: "서류 확인만 끝나면 바로 차를 올리죠."
+
+  tea_invite:
+    actions:
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 레이코
+          position: right
+      - say:
+          char: 란
+          with:
+            - 코난.think
+            - 레이코
+          text: "그래서 다들 여기 모인 거구나. 그냥 회의가 아니라 축하 자리였네."
+      - say:
+          char: 레이코
+          with:
+            - 란
+            - 코난.think
+          text: "네. 료칸 주인님이 직접 다실 코스를 준비했어요. 첫 잔은 축하차로요."
+      - say:
+          char: 코난.think
+          with:
+            - 란
+            - 레이코
+          text: "좋네. 차 한 잔이면 분위기 풀리겠어."
+
+  tasting_room_prelude:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 하루오
+          position: right
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - sound: cup_clink
+      - say:
+          char: 하루오
+          with:
+            - 코고로.proud
+          text: "...잔 준비됐습니다. 천천히 향부터 보시면 돼요."
+      - say:
+          char: 코고로.proud
+          with:
+            - 하루오
+          text: "좋아! 오늘은 추리 쉬는 날이다! 다들 편하게 마셔!"
+      - say:
+          text: "짧은 웃음소리와 찻잔 부딪히는 소리가 다실을 채웠다."
+      - wait: 260
+
+  weather_shift:
     actions:
       - bg: rain_corridor
-      - music: rain
-      - video:
-          src: assets/video/intro.mp4
-          holdToSkipMs: 900
+      - music: reasoning
       - effect: blur
       - sound: thunder
       - char:
@@ -19,11 +140,21 @@ scenes:
           position: center
           emotion: think
       - say:
-          text: "폭우가 복도를 때리던 밤, 다실 안쪽에서 누군가 의도적으로 동선을 꼬고 있었다."
+          char: 코난.think
+          text: "해가 지자 비가 갑자기 굵어졌어... 분위기가 조금씩 가라앉는다."
+
+  rain_hook:
+    actions:
+      - bg: rain_corridor
+      - say:
+          text: "폭우가 복도를 후려치던 밤, 다실 안 공기부터 이미 비정상적으로 가라앉아 있었다."
       - say:
           char: 코난.think
-          text: "(비명은 아직 없는데 공기가 너무 급해... 누군가 준비를 끝냈어.)"
-      - wait: 420
+          text: "(아까까지 웃고 있었는데... 누가 흐름을 바꿨지?)"
+      - say:
+          char: 코난.serious
+          text: "(좋아. 지금부터 보이는 건 전부 기억해 둔다.)"
+      - wait: 320
 
   object_flash:
     actions:
@@ -42,21 +173,24 @@ scenes:
             duration: 380
       - sound: cup_clink
       - say:
-          text: "피해자 찻잔 가장자리를 스치는 하얀 손수건. 그리고 주전자 뚜껑이 두 번 눌렸다."
+          text: "흰 손수건이 피해자 찻잔 입구를 스치고, 주전자 뚜껑은 이상하게 두 번 눌렸다."
+      - say:
+          char: 코난.think
+          text: "(손수건, 뚜껑 두 번... 둘 중 하나는 누군가 의도적으로 보여 준 장면이다.)"
       - clearSticker:
           id: lid_cut
           leave:
             effect: fadeOut
             duration: 220
-      - wait: 320
+      - wait: 280
 
   blackout_title:
     actions:
       - effect: darken
       - sound: scream
       - say:
-          text: "곧이어, 복도를 가르던 비명이 료칸 전체를 얼어붙게 만들었다."
-      - wait: 260
+          text: "직후, 복도를 가르며 터진 비명 한 번에 료칸 전체가 얼어붙었다."
+      - wait: 220
       - say:
           text: "명탐정 코난 외전: 다실의 비밀"
 

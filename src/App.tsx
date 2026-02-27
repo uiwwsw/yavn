@@ -66,6 +66,7 @@ type StartGateState =
     gameTitle: string;
     seo?: GameSeoMeta;
     imageUrl?: string;
+    musicUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
     showLoadButton: boolean;
@@ -77,7 +78,9 @@ type StartGateState =
     gameTitle: string;
     seo?: GameSeoMeta;
     imageUrl?: string;
+    musicUrl?: string;
     previewBlobUrl?: string;
+    previewMusicBlobUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
     showLoadButton: false;
@@ -305,14 +308,49 @@ function markStartGateSession(sessionKey: string): void {
   }
 }
 
-function resolveStartGateImageUrl(image: string | undefined, baseUrl: string): string | undefined {
-  if (!image) {
+function normalizeAssetLookupKey(path: string): string {
+  return path.replace(/\\/g, '/').replace(/^(\.\/|\/)+/, '');
+}
+
+function resolveRuntimeAssetUrl(
+  assetPath: string | undefined,
+  baseUrl: string | undefined,
+  assetOverrides: Record<string, string>,
+): string | undefined {
+  if (!assetPath) {
+    return undefined;
+  }
+  if (/^(blob:|data:|https?:|[a-z][a-z0-9+.-]*:)/i.test(assetPath)) {
+    return assetPath;
+  }
+  const normalized = normalizeAssetLookupKey(assetPath);
+  const normalizedLower = normalized.toLowerCase();
+  const override =
+    assetOverrides[assetPath] ??
+    assetOverrides[normalized] ??
+    assetOverrides[`./${normalized}`] ??
+    assetOverrides[`/${normalized}`] ??
+    assetOverrides[normalizedLower] ??
+    assetOverrides[`./${normalizedLower}`] ??
+    assetOverrides[`/${normalizedLower}`];
+  if (override) {
+    return override;
+  }
+  try {
+    return new URL(assetPath, baseUrl ?? window.location.origin).toString();
+  } catch {
+    return assetPath;
+  }
+}
+
+function resolveStartGateAssetUrl(assetPath: string | undefined, baseUrl: string): string | undefined {
+  if (!assetPath) {
     return undefined;
   }
   try {
-    return new URL(image, baseUrl).toString();
+    return new URL(assetPath, baseUrl).toString();
   } catch {
-    return image;
+    return assetPath;
   }
 }
 
@@ -522,6 +560,8 @@ function useAdvanceByKey(advanceLocked: boolean) {
 
 export default function App() {
   const {
+    baseUrl,
+    assetOverrides,
     background,
     stickers,
     characters,
@@ -576,12 +616,31 @@ export default function App() {
   const [showEndingRestart, setShowEndingRestart] = useState(false);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
+  const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
   const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
   const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
   const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
+
+  const stopStartGateMusic = useCallback(() => {
+    const audio = startGateAudioRef.current;
+    if (!audio) {
+      return;
+    }
+    audio.pause();
+    audio.src = '';
+    startGateAudioRef.current = null;
+  }, []);
+
+  const tryPlayStartGateMusic = useCallback(() => {
+    const audio = startGateAudioRef.current;
+    if (!audio || !audio.paused) {
+      return;
+    }
+    void audio.play().catch(() => undefined);
+  }, []);
 
   const loadGameListManifest = useCallback(async () => {
     const requestId = gameListRequestIdRef.current + 1;
@@ -653,7 +712,8 @@ export default function App() {
                 uiTemplate: preview.uiTemplate,
                 gameTitle: preview.gameTitle,
                 seo: preview.seo,
-                imageUrl: resolveStartGateImageUrl(preview.startScreen.image, baseUrl),
+                imageUrl: resolveStartGateAssetUrl(preview.startScreen.image, baseUrl),
+                musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
                 showLoadButton: preview.hasLoadableSave,
@@ -683,8 +743,30 @@ export default function App() {
       if (startGate?.kind === 'zip' && startGate.previewBlobUrl?.startsWith('blob:')) {
         URL.revokeObjectURL(startGate.previewBlobUrl);
       }
+      if (startGate?.kind === 'zip' && startGate.previewMusicBlobUrl?.startsWith('blob:')) {
+        URL.revokeObjectURL(startGate.previewMusicBlobUrl);
+      }
     };
   }, [startGate]);
+
+  useEffect(() => {
+    stopStartGateMusic();
+    if (!startGate?.musicUrl) {
+      return;
+    }
+    const audio = new Audio(startGate.musicUrl);
+    audio.loop = true;
+    audio.volume = 0.56;
+    startGateAudioRef.current = audio;
+    void audio.play().catch(() => undefined);
+    return () => {
+      audio.pause();
+      audio.src = '';
+      if (startGateAudioRef.current === audio) {
+        startGateAudioRef.current = null;
+      }
+    };
+  }, [startGate, stopStartGateMusic]);
 
   useEffect(() => {
     const preventGestureZoom = (event: Event) => {
@@ -894,6 +976,7 @@ export default function App() {
   const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
   const endingTitle = resolvedEnding?.title ?? 'THE END';
   const endingMessage = resolvedEnding?.message ?? '게임이 종료되었습니다.';
+  const endingBackgroundUrl = resolveRuntimeAssetUrl(game?.endingScreen?.image, baseUrl, assetOverrides);
   const totalEndingCount = Object.keys(game?.endings ?? {}).length;
   const seenEndingIdsInCurrentGame = seenEndingIds.filter((endingId) => Boolean(game?.endings?.[endingId]));
   const seenEndingCount = seenEndingIdsInCurrentGame.length;
@@ -1371,6 +1454,7 @@ export default function App() {
       }
       const gate = startGate;
       setStartGateLaunching(true);
+      stopStartGateMusic();
       setStartGate(null);
       try {
         if (gate.kind === 'url') {
@@ -1383,7 +1467,7 @@ export default function App() {
         setStartGateLaunching(false);
       }
     },
-    [startGate, startGateLaunching],
+    [startGate, startGateLaunching, stopStartGateMusic],
   );
 
   const onUploadZip = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -1408,6 +1492,7 @@ export default function App() {
 
       if (preview?.startScreen?.enabled) {
         const imageUrl = preview.startScreen.image;
+        const musicUrl = preview.startScreen.music;
         setStartGate({
           kind: 'zip',
           file,
@@ -1415,7 +1500,9 @@ export default function App() {
           gameTitle: preview.gameTitle,
           seo: preview.seo,
           imageUrl,
+          musicUrl,
           previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
+          previewMusicBlobUrl: musicUrl?.startsWith('blob:') ? musicUrl : undefined,
           startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
           buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
           showLoadButton: false,
@@ -1437,7 +1524,7 @@ export default function App() {
   if (startGate) {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
     return (
-      <div className="start-gate" data-ui-template={startGate.uiTemplate}>
+      <div className="start-gate" data-ui-template={startGate.uiTemplate} onPointerDown={() => tryPlayStartGateMusic()}>
         {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-content">
@@ -1946,6 +2033,7 @@ export default function App() {
 
       {isFinished && (
         <div className="ending-overlay">
+          {endingBackgroundUrl && <img className="ending-overlay-bg-image" src={endingBackgroundUrl} alt="" aria-hidden="true" />}
           <div className="ending-overlay-decoration" aria-hidden="true" />
           <div className="ending-credits-screen" aria-label="엔딩 크레딧">
             <div

@@ -122,8 +122,11 @@ ui:
 startScreen:
   enabled: true
   image: assets/bg/title.png
+  music: assets/music/intro.mp3
   startButtonText: 시작하기
   buttonPosition: auto
+endingScreen:
+  image: assets/bg/ending.png
 endings:
   true_end:
     title: "TRUE END"
@@ -184,7 +187,8 @@ scenes:
   - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
-  - `startScreen` (`enabled`, `image`, `startButtonText`, `buttonPosition`)
+  - `startScreen` (`enabled`, `image`, `music`, `startButtonText`, `buttonPosition`)
+  - `endingScreen` (`image`)
   - `endings`, `endingRules`, `defaultEnding`
 - `seo` 하위 필드:
   - `description` (string)
@@ -214,6 +218,8 @@ scenes:
 - `endings/endingRules/defaultEnding`은 `config.yaml`만 사용
 - `ui.template`은 `config.yaml`만 사용하며, 미지정 시 `cinematic-noir`가 기본값으로 적용됩니다.
 - `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
+- `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
+- `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
 
 ## UI 템플릿 (`config.yaml.ui.template`)
 
@@ -327,6 +333,7 @@ scenes:
 - `config.yaml`에 `startScreen`이 없으면 기존처럼 즉시 실행합니다. (기본 OFF)
 - `startScreen`이 있고 `enabled: true`면 시작 화면을 표시합니다.
 - 시작 버튼은 항상 표시되며, 텍스트 기본값은 `시작하기`입니다.
+- `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생합니다.
 - URL 게임(`/game-list/:gameId`)은 게임별 저장 키(`vn-engine-autosave:game:<gameId>`)가 있을 때만 `이어하기` 버튼을 표시합니다.
 - 레거시 저장 키(`vn-engine-autosave`)가 남아 있으면 URL 게임 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - 같은 탭 세션에서 시작/로드를 한 번 누르면(`sessionStorage` 플래그) 새로고침 시 시작 화면을 다시 띄우지 않습니다.
@@ -375,6 +382,7 @@ scenes:
 - `startScreen`이 설정된 게임은 시작 게이트를 표시하며, URL 게임은 게임별 autosave 키(`vn-engine-autosave:game:<gameId>`)를 기준으로 `이어하기` 버튼을 노출합니다.
 - 레거시 autosave 키(`vn-engine-autosave`)는 URL 게임 로드시 fallback으로 읽고, 실제 이어하기 성공 시 게임별 키로 마이그레이션합니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
+- 엔딩 배경 이미지는 `config.yaml.endingScreen.image`로 지정할 수 있으며, 템플릿 색상/디코레이션 레이어 위에 적용됩니다.
 - 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. (`uploading=true` 동안에는 `ZIP Loading...`)
 - 엔딩 화면 하단에는 `처음부터 다시하기` 버튼 1개만 표시됩니다.
 - `처음부터 다시하기` 클릭 시 저장된 엔딩 수집(`vn-ending-progress:<gameId>`)은 유지하고, 현재 플레이 상태만 첫 챕터 기준으로 재시작합니다.

@@ -3,8 +3,12 @@ script:
   - scene: revisit_notice
   - scene: intro
   - scene: first_probe
+  - scene: first_claim_correct
+  - scene: first_claim_wrong
   - scene: retry_notice
   - scene: second_probe
+  - scene: second_claim_correct
+  - scene: second_claim_wrong
   - scene: motive_branch
   - scene: motive_open_line
   - scene: motive_half_line
@@ -37,13 +41,13 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.think
-          text: "같은 질문이면 더 떨릴 것 같아요... 다른 단서를 먼저 보시죠."
+          text: "같은 질문이면 더 긴장돼요... 다른 단서부터 확인해 주세요."
       - goto: /routes/hub/1.yaml
 
   intro:
     actions:
       - bg: tea_room
-      - music: mystery
+      - music: reasoning
       - set:
           visited_reiko: true
       - add:
@@ -60,60 +64,151 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.think
-          text: "88도에서 향이 바뀌는 순간이 있어요. 오늘도 그 순간이 짧게 어긋났어요."
+          text: "88도 근처에서 향이 확 바뀌어요. 오늘은 그 타이밍이 조금 어긋났어요."
       - say:
           char: 코난.think
-          text: "감각과 수치를 함께 맞춰보자. 흔들림을 줄일 수 있어."
+          text: "좋아, 감각 얘기는 됐어. 이제 증명 가능한 것만 남긴다."
 
   first_probe:
     actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 레이코.nervous
+          text: "질문 하나. 네 말 중에 지금 바로 증명할 수 있는 걸 골라."
       - choice:
           key: reiko_first_probe
-          prompt: "레이코 발언에서 먼저 검증할 축은?"
+          prompt: "레이코 말부터 뭘 먼저 확인할까?"
           options:
-            - text: "88도 기록과 잔 가장자리 반응 시간을 대조한다"
+            - text: "88도 기록과 잔 가장자리 반응 시간을 맞춰 본다"
               set:
                 clue_rim_reagent: true
               add:
                 deduction_score: 2
-              goto: motive_branch
-            - text: "떨리는 말투를 바로 범행 신호로 본다"
+              goto: first_claim_correct
+            - text: "떨리는 목소리부터 범행 신호로 본다"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: retry_notice
-            - text: "켄지와의 말다툼만 근거로 묶는다"
+              goto: first_claim_wrong
+            - text: "켄지와 다툰 사실만으로 묶는다"
               add:
                 mistake_count: 1
+              goto: first_claim_wrong
+
+  first_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 레이코.nervous
+          text: "좋아, 그건 수치로 박을 수 있어. 이걸 주력 증거로 밀어붙일까?"
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "...네, 기록표랑 같이 보면 반박하기 어려울 거예요."
+      - choice:
+          key: reiko_first_commit
+          prompt: "1차 주장을 확정할까?"
+          options:
+            - text: "응, 이걸로 간다"
+              goto: motive_branch
+            - text: "아직 불안하다. 한 번 더 묻는다"
+              goto: retry_notice
+
+  first_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          with:
+            - 레이코.nervous
+          text: "지금 고른 건 분위기야. 법정에 올리면 바로 깨져."
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.think
+          text: "맞아요... 그쪽은 느낌일 뿐이에요."
+      - choice:
+          key: reiko_first_rebuttal
+          prompt: "이 판단을 어떻게 할까?"
+          options:
+            - text: "틀렸다. 다시 질문한다"
+              goto: retry_notice
+            - text: "아냐, 이걸로도 밀어본다"
+              add:
+                mistake_count: 1
+                trust: -1
               goto: retry_notice
 
   retry_notice:
     actions:
       - say:
           char: 코난.think
-          text: "한 번만 더. 감정이 아니라 측정 가능한 값으로 고르자."
+          text: "좋아, 재심문 간다. 감정 말고 측정값만 붙잡아."
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.think
+          text: "...네, 수치로 답할게요."
       - goto: second_probe
 
   second_probe:
     actions:
       - choice:
           key: reiko_second_probe
-          prompt: "재선택: 어떤 항목이 실증 가능한가?"
+          prompt: "재선택: 지금 증명할 수 있는 건?"
           options:
-            - text: "88도 기록과 잔 가장자리 반응 시간을 대조한다"
+            - text: "88도 기록과 잔 가장자리 반응 시간을 맞춰 본다"
               set:
                 clue_rim_reagent: true
               add:
                 deduction_score: 1
-              goto: motive_branch
-            - text: "말투 흔들림만으로 결론낸다"
+              goto: second_claim_correct
+            - text: "말투 흔들림만으로 결론 낸다"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: motive_half_line
-            - text: "분위기만 근거로 확정한다"
+              goto: second_claim_wrong
+            - text: "분위기만 보고 확정한다"
               add:
                 mistake_count: 1
+              goto: second_claim_wrong
+
+  second_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          with:
+            - 레이코.nervous
+          text: "좋아, 이번 선택은 맞다. 최종 채택할까?"
+      - choice:
+          key: reiko_second_commit
+          prompt: "최종으로 이 주장을 채택할까?"
+          options:
+            - text: "채택한다"
+              goto: motive_branch
+            - text: "보류한다"
+              add:
+                final_confidence: -1
+              goto: motive_half_line
+
+  second_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          with:
+            - 레이코.nervous
+          text: "아직도 감정선이야. 이대로면 동기는 못 연다."
+      - choice:
+          key: reiko_second_rebuttal
+          prompt: "지금 선택은?"
+          options:
+            - text: "접고 돌아간다"
+              goto: motive_half_line
+            - text: "끝까지 우긴다"
+              add:
+                trust: -1
               goto: motive_half_line
 
   motive_branch:
@@ -132,7 +227,12 @@ scenes:
       - sound: notebook_flip
       - say:
           char: 코난.serious
-          text: "계약서 수정 시간과 연구노트 원본이 맞물렸다. 동기가 드러났어."
+          text: "계약서 수정 시각이 연구노트 원본이랑 딱 맞물린다. 동기가 열렸어."
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "...그 기록까지 이어서 보신 거군요."
       - set:
           reiko_motive_open: true
       - add:
@@ -145,7 +245,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "레이코 축은 아직 반쯤만 열렸어. 결론에서 보조 근거로만 써야 해."
+          text: "레이코 쪽은 아직 덜 풀렸어. 결론에선 보조 근거로만 쓴다."
       - add:
           mistake_count: 1
       - goto: outro
@@ -154,5 +254,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "레이코 대면 종료. 조사 라운지로 복귀한다."
+          text: "레이코 대면 끝. 라운지로 복귀한다."
       - goto: /routes/hub/1.yaml
