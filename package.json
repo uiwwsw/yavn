@@ -8,9 +8,10 @@
     "node": "20.x"
   },
   "scripts": {
-    "predev": "node scripts/generate-game-list-manifest.mjs",
+    "check:public": "node scripts/check-public-allowlist.mjs",
+    "predev": "node scripts/generate-game-list-manifest.mjs && pnpm run check:public",
     "dev": "vite",
-    "prebuild": "node scripts/generate-game-list-manifest.mjs",
+    "prebuild": "node scripts/generate-game-list-manifest.mjs && pnpm run check:public",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
