@@ -27,9 +27,10 @@ scenes:
           emotion: worried
       - say:
           char: 코난.serious
-          with:
-            - 란.worried
-          text: "아무도 손대지 마. 먼저 잔 표면과 시간 기록부터 눈으로 고정한다."
+          text: "<speed=40>좋아, 정리한다.</speed> <speed=30>피해자는 하루오 씨.</speed> <speed=62>살인 방식은 컵 주변 반응이다.</speed>"
+      - say:
+          char: 란.worried
+          text: '<speed=34>다잉 메시지 "2R"도 있었지...</speed> <speed=26>그것도 진짜일까?</speed>'
 
   residue_focus:
     actions:
@@ -47,24 +48,24 @@ scenes:
             duration: 380
       - say:
           char: 코난.think
-          text: "(첫 단추를 잘못 끼우면 끝까지 틀어진다... 어디부터 잡을지 정해.)"
+          text: "<speed=24>(첫 단서를 틀리면 끝까지 흔들린다.)</speed> <speed=58>뭘 먼저 잡지?</speed>"
       - choice:
           key: residue_focus_choice
-          prompt: "잔에서 먼저 봐야 할 건 뭐지?"
+          prompt: "현장에서 가장 먼저 고정해야 할 포인트는?"
           options:
-            - text: "가장자리 반응부터 확인한다"
+            - text: "찻잔 가장자리 반응을 우선 확인한다"
               set:
                 clue_rim_reagent: true
               add:
                 deduction_score: 2
                 final_confidence: 1
               goto: residue_claim_correct
-            - text: "찻상 바닥 흠집부터 확인한다"
+            - text: "다잉 메시지 글씨체만 먼저 분석한다"
               add:
                 mistake_count: 1
                 trust: -1
               goto: residue_claim_wrong
-            - text: "향만 맡고 넘어간다"
+            - text: "주전자 뚜껑만 보고 결론을 낸다"
               add:
                 mistake_count: 1
               goto: residue_claim_wrong
@@ -73,14 +74,14 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 정답이야. 가장자리 반응부터 잡는 게 정석이다. 이 판단을 확정할까?"
+          text: "<speed=52>정답.</speed> <speed=34>반응 순서부터 고정해야 메시지 위조 여부도 판별할 수 있어.</speed>"
       - choice:
           key: residue_commit_choice
           prompt: "1차 판단을 확정할까?"
           options:
-            - text: "확정하고 다음으로 간다"
+            - text: "확정하고 진행"
               goto: timeline_gate
-            - text: "아직 불안하다. 보류하고 넘어간다"
+            - text: "조금 더 보류"
               add:
                 final_confidence: -1
               goto: timeline_gate
@@ -89,14 +90,14 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "우선순위가 틀렸어. 하지만 아직 늦지 않았다. 이 판단, 오답으로 정리할래?"
+          text: "<speed=28>우선순위가 틀렸어.</speed> <speed=62>글씨보다 먼저, 독 반응 시점을 잡아야 해.</speed>"
       - choice:
           key: residue_rebuttal_choice
           prompt: "방금 선택을 어떻게 처리할까?"
           options:
-            - text: "틀렸다. 다음 질문으로 넘어간다"
+            - text: "틀렸다 인정하고 진행"
               goto: timeline_gate
-            - text: "아냐, 이걸로도 밀어본다"
+            - text: "아직 이 해석을 민다"
               add:
                 trust: -1
               goto: timeline_gate
@@ -108,20 +109,40 @@ scenes:
           leave:
             effect: fadeOut
             duration: 220
-      - music: reasoning
+      - get: tea_residue_report
+      - set:
+          item_tea_residue_report_owned: true
+      - sticker:
+          id: item_popup_tea_residue_report
+          image: item_tea_residue_report
+          x: 50
+          y: 30
+          width: 22
+          enter:
+            effect: popIn
+            duration: 280
+          inputLockMs: 500
       - char:
           id: 코난
           position: center
           emotion: think
       - say:
           char: 코난.think
-          text: "다음은 시간선이다. 비명이 터진 시각을 정확히 찍어 봐."
+          text: "<speed=34>찻잔 반응 시료 카드를 획득했다.</speed> <speed=58>이제 시간선을 잠근다.</speed>"
+      - clearSticker:
+          id: item_popup_tea_residue_report
+          leave:
+            effect: fadeOut
+            duration: 1800
+      - say:
+          char: 코난.think
+          text: "<speed=30>다음은 시간선.</speed> <speed=24>비명이 터진 정확한 시각을 입력해.</speed>"
       - input:
-          prompt: "비명이 들린 시각을 24시간 형식으로 입력해줘."
+          prompt: "비명이 들린 시각은? (24시간 형식)"
           correct: "21:30"
           saveAs: timeline_answer
           errors:
-            - "시계를 떠올려. 긴 바늘이 어디를 가리켰지?"
+            - "시계 바늘을 떠올려. 긴 바늘은 6을 가리켰어."
             - "힌트: 밤 9시 30분."
             - "정답은 21:30."
           routes:
@@ -149,23 +170,23 @@ scenes:
           emotion: serious
       - say:
           char: 코난.serious
-          text: "좋아, 재현으로 간다. '뚜껑 두 번'의 의미를 논리로 잠가."
+          text: '<speed=34>재구성으로 간다.</speed> <speed=66>"뚜껑 두 번"은 무슨 의미였지?</speed>'
       - choice:
           key: reconstruction_choice
-          prompt: "주전자 뚜껑을 두 번 누른 건 무슨 뜻일까?"
+          prompt: "주전자 뚜껑을 두 번 누른 동작의 의미는?"
           options:
             - text: "그 동작 자체가 독 투입이었다"
               add:
                 mistake_count: 1
               goto: reconstruction_claim_wrong
-            - text: "시선을 돌리려는 눈속임이었다"
+            - text: "시선을 다잉 메시지 쪽으로 돌리려는 연막이었다"
               set:
                 clue_double_press_decoy: true
               add:
                 deduction_score: 2
                 final_confidence: 1
               goto: reconstruction_claim_correct
-            - text: "원래 습관이라 의미가 없다"
+            - text: "의미 없는 습관 동작이었다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -175,14 +196,14 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 눈속임 해석이 맞다. 이걸로 사건 흐름을 못 박을까?"
+          text: '<speed=56>좋아, 연막 해석이 맞다.</speed> <speed=34>이제 "2R"의 진짜 주인을 찾을 수 있어.</speed>'
       - choice:
           key: reconstruction_commit_choice
-          prompt: "재현 해석을 최종 채택할까?"
+          prompt: "이 해석을 최종 채택할까?"
           options:
-            - text: "채택한다"
+            - text: "채택"
               goto: deduction_branch
-            - text: "보류한다"
+            - text: "보류"
               add:
                 final_confidence: -1
               goto: deduction_branch
@@ -191,14 +212,14 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "그 해석으론 동선이 이어지지 않아. 대면 조사에서 반드시 보강해야 한다."
+          text: "<speed=28>그 해석으론 동선이 끊긴다.</speed> <speed=62>용의자 대면에서 반박당해.</speed>"
       - choice:
           key: reconstruction_rebuttal_choice
           prompt: "방금 해석을 어떻게 처리할까?"
           options:
-            - text: "틀렸다 인정하고 진행한다"
+            - text: "틀렸다 인정하고 진행"
               goto: deduction_branch
-            - text: "끝까지 이 해석으로 민다"
+            - text: "끝까지 이 해석으로 간다"
               add:
                 trust: -1
               goto: deduction_branch
@@ -225,20 +246,20 @@ scenes:
     actions:
       - effect: zoom
       - say:
-          text: "챙-! 흩어진 단서들이 하나의 선으로 이어졌다."
+          text: "<speed=70>챙-!</speed> <speed=42>흩어진 조각이 하나의 선으로 잠겼다.</speed>"
       - say:
           char: 코난.serious
-          text: "좋아, 흐름이 잡혔어. 이제 용의자 하나씩 대면해서 빈칸만 메우면 돼."
+          text: "<speed=50>좋아.</speed> <speed=34>이제 네 명 라인을 하나씩 대면하면 범인은 도망 못 간다.</speed>"
       - add:
           final_confidence: 1
       - goto: lounge_handoff
 
   shaky_frame:
     actions:
-      - effect: pulse
+      - effect: tilt
       - say:
           char: 코난.think
-          text: "(실마리는 잡혔지만 아직 느슨해... 대면에서 더 끌어내야 한다.)"
+          text: "<speed=24>(실마리는 잡혔지만 느슨해...)</speed> <speed=58>대면에서 빈칸을 메워야 해.</speed>"
       - add:
           mistake_count: 1
       - goto: lounge_handoff
@@ -248,5 +269,5 @@ scenes:
       - bg: case_board
       - say:
           char: 코난
-          text: "조사 라운지로 이동한다. 범인은 이 안에 있어, 한 명씩 확인하자."
+          text: "<speed=48>조사 라운지로 이동한다.</speed> <speed=34>다음은 사람을 읽을 차례야.</speed>"
       - goto: /routes/hub/1.yaml

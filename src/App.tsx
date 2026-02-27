@@ -1,6 +1,7 @@
 import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   completeVideoCutscene,
+  getBgmEnabled,
   handleAdvance,
   loadUrlStartScreenPreview,
   loadGameFromUrl,
@@ -9,7 +10,9 @@ import {
   restartFromBeginning,
   resetVideoSkipProgress,
   revealVideoSkipGuide,
+  setBgmEnabled,
   skipVideoCutscene,
+  stopActiveBgm,
   submitInputAnswer,
   submitChoiceOption,
   unlockAudioFromGesture,
@@ -589,6 +592,7 @@ export default function App() {
     videoCutscene,
     inputGate,
     choiceGate,
+    inventory,
     resolvedEndingId,
     uiTemplate,
     setDialogUiHidden,
@@ -606,6 +610,10 @@ export default function App() {
   const [startGate, setStartGate] = useState<StartGateState | null>(null);
   const [startGateLaunching, setStartGateLaunching] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
+  const [bgmEnabled, setBgmEnabledState] = useState(() => getBgmEnabled());
+  const [returningToStartGate, setReturningToStartGate] = useState(false);
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
@@ -633,6 +641,8 @@ export default function App() {
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
   const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
   const skipInputAutoFocus = useMemo(() => isMobilePointerEnvironment(), []);
+  const startScreenReturnGameId = useMemo(() => parseGameIdFromPath(window.location.pathname), []);
+  const canReturnToStartScreen = Boolean(startScreenReturnGameId);
 
   const stopStartGateMusic = useCallback(() => {
     const audio = startGateAudioRef.current;
@@ -645,12 +655,15 @@ export default function App() {
   }, []);
 
   const tryPlayStartGateMusic = useCallback(() => {
+    if (!bgmEnabled) {
+      return;
+    }
     const audio = startGateAudioRef.current;
     if (!audio || !audio.paused) {
       return;
     }
     void audio.play().catch(() => undefined);
-  }, []);
+  }, [bgmEnabled]);
 
   const loadGameListManifest = useCallback(async () => {
     const requestId = gameListRequestIdRef.current + 1;
@@ -761,7 +774,7 @@ export default function App() {
 
   useEffect(() => {
     stopStartGateMusic();
-    if (!startGate?.musicUrl) {
+    if (!startGate?.musicUrl || !bgmEnabled) {
       return;
     }
     const audio = new Audio(startGate.musicUrl);
@@ -776,7 +789,7 @@ export default function App() {
         startGateAudioRef.current = null;
       }
     };
-  }, [startGate, stopStartGateMusic]);
+  }, [bgmEnabled, startGate, stopStartGateMusic]);
 
   useEffect(() => {
     const preventGestureZoom = (event: Event) => {
@@ -799,7 +812,7 @@ export default function App() {
     };
   }, []);
 
-  useAdvanceByKey(dialogUiHidden);
+  useAdvanceByKey(dialogUiHidden || settingsOpen);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -821,6 +834,16 @@ export default function App() {
       document.removeEventListener('selectstart', preventDefault);
     };
   }, []);
+
+  useEffect(() => {
+    setBgmEnabledState(getBgmEnabled());
+  }, [bootMode, game?.meta.title, startGate?.kind, startGate?.gameTitle]);
+
+  useEffect(() => {
+    if (!game) {
+      setSettingsOpen(false);
+    }
+  }, [game]);
 
   const allLauncherTags = useMemo(() => {
     const tags = new Set<string>();
@@ -996,6 +1019,20 @@ export default function App() {
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
+  const inventoryEntries = useMemo(() => {
+    const defaults = game?.inventory?.defaults ?? {};
+    return Object.entries(defaults)
+      .map(([id, item]) => ({
+        id,
+        name: item.name,
+        description: item.description,
+        imageUrl: resolveRuntimeAssetUrl(item.image, baseUrl, assetOverrides),
+        owned: Boolean(inventory[id]),
+      }))
+      .filter((entry) => entry.owned)
+      .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+  }, [assetOverrides, baseUrl, game?.inventory?.defaults, inventory]);
+  const selectedInventoryEntry = inventoryEntries.find((entry) => entry.id === selectedInventoryItemId) ?? null;
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
     [
@@ -1025,6 +1062,33 @@ export default function App() {
   orderedCharacters.forEach((entry, idx) => {
     orderByPosition.set(entry.position, idx + 1);
   });
+
+  useEffect(() => {
+    if (inventoryEntries.length === 0) {
+      if (selectedInventoryItemId !== null) {
+        setSelectedInventoryItemId(null);
+      }
+      return;
+    }
+    if (selectedInventoryItemId && inventoryEntries.some((entry) => entry.id === selectedInventoryItemId)) {
+      return;
+    }
+    setSelectedInventoryItemId(inventoryEntries[0].id);
+  }, [inventoryEntries, selectedInventoryItemId]);
+
+  const onToggleBgmDisabled = useCallback(
+    (disabled: boolean) => {
+      const nextEnabled = !disabled;
+      setBgmEnabled(nextEnabled);
+      setBgmEnabledState(nextEnabled);
+      if (nextEnabled) {
+        tryPlayStartGateMusic();
+      } else {
+        stopStartGateMusic();
+      }
+    },
+    [stopStartGateMusic, tryPlayStartGateMusic],
+  );
 
   useEffect(() => {
     return () => {
@@ -1381,17 +1445,25 @@ export default function App() {
     };
   }, [bootMode, choiceGate.active, dialog.visibleText, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
+  const hasFocusedSpeaker = Boolean(dialog.speakerId && visibleCharacterSet.has(dialog.speakerId));
+
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
     if (!slot || !visibleCharacterSet.has(slot.id)) {
       return null;
     }
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
+    const isSpeaker = hasFocusedSpeaker && dialog.speakerId === slot.id;
+    const depthStep = Math.max(0, order - 1);
+    const depthOpacity = hasFocusedSpeaker ? (isSpeaker ? 1 : Math.max(0.56, 1 - depthStep * 0.22)) : 1;
+    const depthScale = hasFocusedSpeaker ? (isSpeaker ? 1.02 : Math.max(0.98, 1 - depthStep * 0.01)) : 1;
+    const depthClass = !hasFocusedSpeaker ? 'is-neutral' : isSpeaker ? 'is-speaker' : 'is-listener';
     const charStyle = {
       zIndex,
-      '--char-mobile-scale': order === 1 ? 1 : 0.7,
+      '--char-scale': depthScale,
+      '--char-opacity': depthOpacity,
     } as CSSProperties;
-    const className = `char char-image ${position}`;
+    const className = `char char-image ${position} ${depthClass}`;
     if (slot.kind === 'live2d') {
       return (
         <Live2DCharacter
@@ -1399,6 +1471,7 @@ export default function App() {
           slot={slot}
           position={position}
           trackingKey={buildLive2DLoadKey(position, slot)}
+          className={depthClass}
           style={charStyle}
         />
       );
@@ -1533,6 +1606,50 @@ export default function App() {
     event.stopPropagation();
     void restartFromBeginning();
   };
+
+  const onReturnToStartScreen = useCallback(
+    async (event: MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      if (!startScreenReturnGameId || returningToStartGate) {
+        return;
+      }
+      const sessionKey = resolveStartGateSessionKey(startScreenReturnGameId);
+      const gameUrl = `/game-list/${startScreenReturnGameId}/`;
+      try {
+        sessionStorage.removeItem(sessionKey);
+      } catch {
+        // Ignore sessionStorage failures and continue.
+      }
+      setReturningToStartGate(true);
+      setSettingsOpen(false);
+      stopActiveBgm();
+      stopStartGateMusic();
+      try {
+        const preview = await loadUrlStartScreenPreview(gameUrl);
+        if (preview.startScreen?.enabled) {
+          const baseUrl = new URL(gameUrl, window.location.origin).toString();
+          setStartGate({
+            kind: 'url',
+            gameUrl,
+            sessionKey,
+            uiTemplate: preview.uiTemplate,
+            gameTitle: preview.gameTitle,
+            seo: preview.seo,
+            imageUrl: resolveStartGateAssetUrl(preview.startScreen.image, baseUrl),
+            musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
+            startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
+            buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+            showLoadButton: preview.hasLoadableSave,
+          });
+          return;
+        }
+        await loadGameFromUrl(gameUrl);
+      } finally {
+        setReturningToStartGate(false);
+      }
+    },
+    [returningToStartGate, startScreenReturnGameId, stopStartGateMusic],
+  );
 
   if (startGate) {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
@@ -1834,6 +1951,9 @@ export default function App() {
         if (dialogUiHidden) {
           return;
         }
+        if (settingsOpen) {
+          return;
+        }
         unlockAudioFromGesture();
         handleAdvance();
       }}
@@ -1920,8 +2040,128 @@ export default function App() {
         <div className="meta">
           {game?.meta.title ?? 'Loading...'}
         </div>
-        <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
+        <div className="hud-right">
+          <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
+          <button
+            type="button"
+            className="hud-inventory-button"
+            aria-label="인벤토리 열기"
+            title="인벤토리"
+            onClick={(event) => {
+              event.stopPropagation();
+              setSettingsOpen(true);
+            }}
+          >
+            <span className="hud-inventory-icon" aria-hidden="true" />
+          </button>
+        </div>
       </div>
+
+      {settingsOpen && (
+        <div
+          className="settings-modal-backdrop"
+          onClick={(event) => {
+            event.stopPropagation();
+            setSettingsOpen(false);
+          }}
+        >
+          <section
+            className="settings-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="인벤토리 창"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="settings-modal-header">
+              <h2>가방</h2>
+              <button
+                type="button"
+                className="settings-close-button"
+                onClick={() => setSettingsOpen(false)}
+              >
+                닫기
+              </button>
+            </header>
+            <div className="settings-modal-body settings-inventory-body">
+              <div className="inventory-grid-scroll">
+                {inventoryEntries.length === 0 ? (
+                  <p className="settings-empty-note inventory-grid-empty">획득한 아이템이 없습니다.</p>
+                ) : (
+                  <div className="inventory-grid" role="list" aria-label="인벤토리 그리드">
+                    {inventoryEntries.map((entry) => (
+                      <button
+                        key={entry.id}
+                        type="button"
+                        role="listitem"
+                        className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''}`}
+                        onClick={() => setSelectedInventoryItemId(entry.id)}
+                        aria-label={`${entry.name} 획득됨`}
+                      >
+                        {entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
+                        {entry.imageUrl ? (
+                          <img src={entry.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                        ) : (
+                          <span className="inventory-slot-fallback" aria-hidden="true">
+                            ITEM
+                          </span>
+                        )}
+                        <span className="inventory-slot-name">{entry.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="inventory-detail">
+                {inventoryEntries.length === 0 ? (
+                  <p className="settings-empty-note">획득한 아이템이 없습니다.</p>
+                ) : selectedInventoryEntry ? (
+                  <>
+                    <h3>{selectedInventoryEntry.name}</h3>
+                    <p className="inventory-detail-owned is-owned">내 가방에 있음</p>
+                    <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
+                    {selectedInventoryEntry.imageUrl && (
+                      <img
+                        src={selectedInventoryEntry.imageUrl}
+                        alt={`${selectedInventoryEntry.name} 아이템 이미지`}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                  </>
+                ) : (
+                  <p className="settings-empty-note">확인할 아이템을 선택해 주세요.</p>
+                )}
+              </div>
+
+              <div className="settings-bottom-row">
+                <label className="settings-toggle-row">
+                  <span>배경음악 끄기</span>
+                  <input
+                    type="checkbox"
+                    checked={!bgmEnabled}
+                    onChange={(event) => onToggleBgmDisabled(event.target.checked)}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="settings-action-button"
+                  onClick={(event) => void onReturnToStartScreen(event)}
+                  disabled={!canReturnToStartScreen || returningToStartGate}
+                >
+                  {returningToStartGate ? '초기화면 여는 중...' : '초기화면 가기'}
+                </button>
+                <p className="settings-note">이 설정은 현재 게임 기준으로 저장됩니다.</p>
+                <p className="settings-note">
+                  {canReturnToStartScreen
+                    ? '초기화면 가기는 Start Gate 세션 플래그를 초기화한 뒤 다시 시작 화면을 표시합니다.'
+                    : 'ZIP 실행 게임은 초기화면 재진입을 지원하지 않습니다.'}
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
 
       <div ref={dialogBoxRef} className={`dialog-box ${isDialogHidden ? 'hidden' : ''}`}>
         {!isDialogHiddenBySystem && !dialogUiHidden && (
@@ -1946,6 +2186,9 @@ export default function App() {
             onSubmit={(event) => {
               event.preventDefault();
               event.stopPropagation();
+              if (busy) {
+                return;
+              }
               submitInputAnswer(inputAnswer);
               setInputAnswer('');
             }}
@@ -1961,10 +2204,16 @@ export default function App() {
               autoCorrect="off"
               spellCheck={false}
               placeholder="정답 입력"
+              disabled={busy}
               onChange={(event) => setInputAnswer(event.target.value)}
               onClick={(event) => event.stopPropagation()}
             />
-            <button type="submit" className="input-gate-submit" onClick={(event) => event.stopPropagation()}>
+            <button
+              type="submit"
+              className="input-gate-submit"
+              disabled={busy}
+              onClick={(event) => event.stopPropagation()}
+            >
               {inputSubmitLabel}
             </button>
           </form>
@@ -1984,6 +2233,9 @@ export default function App() {
                       choiceOptionButtonRefs.current[index] = el;
                     }}
                     onKeyDown={(event) => {
+                      if (busy) {
+                        return;
+                      }
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         event.stopPropagation();
@@ -1992,8 +2244,12 @@ export default function App() {
                     }}
                     onClick={(event) => {
                       event.stopPropagation();
+                      if (busy) {
+                        return;
+                      }
                       submitChoiceOption(index);
                     }}
+                    disabled={busy}
                   >
                     <span>{option.text}</span>
                     {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}

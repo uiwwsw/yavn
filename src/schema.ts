@@ -96,6 +96,7 @@ export const actionSchema = z.union([
       opacity: z.number().min(0).max(1).optional(),
       zIndex: z.number().int().optional(),
       enter: stickerEnterSchema.optional(),
+      inputLockMs: z.number().int().nonnegative().max(60000).optional(),
     }),
   }),
   z.object({
@@ -128,6 +129,8 @@ export const actionSchema = z.union([
   }),
   z.object({ set: stateSetMapSchema }),
   z.object({ add: stateAddMapSchema }),
+  z.object({ get: z.string().min(1) }),
+  z.object({ use: z.string().min(1) }),
   z.object({
     choice: z.object({
       key: z.string().min(1).optional(),
@@ -276,6 +279,27 @@ const characterAssetsSchema = z.record(
   }),
 );
 
+const inventoryItemSchema = z
+  .object({
+    name: z.string().min(1),
+    description: z.string().min(1).optional(),
+    image: z.string().min(1).optional(),
+    owned: z.boolean().optional(),
+  })
+  .strict()
+  .transform((value) => {
+    const normalizeOptionalText = (raw?: string): string | undefined => {
+      const trimmed = raw?.trim();
+      return trimmed ? trimmed : undefined;
+    };
+    return {
+      name: value.name.trim(),
+      description: normalizeOptionalText(value.description),
+      image: normalizeOptionalText(value.image),
+      owned: value.owned ?? false,
+    };
+  });
+
 const fullAssetsSchema = z.object({
   backgrounds: z.record(z.string()),
   characters: characterAssetsSchema,
@@ -293,8 +317,12 @@ export const layerAssetsSchema = z
   .strict();
 
 export const layerStateSchema = z.record(routeVarValueSchema);
+export const layerInventorySchema = z.record(inventoryItemSchema);
 export const runtimeStateSchema = z.object({
   defaults: z.record(routeVarValueSchema),
+});
+export const runtimeInventorySchema = z.object({
+  defaults: z.record(inventoryItemSchema),
 });
 
 export const configSchema = z
@@ -319,6 +347,7 @@ export const baseLayerSchema = z
   .object({
     assets: layerAssetsSchema.optional(),
     state: layerStateSchema.optional(),
+    inventory: layerInventorySchema.optional(),
   })
   .strict();
 
@@ -326,6 +355,7 @@ export const chapterSchema = z
   .object({
     assets: layerAssetsSchema.optional(),
     state: layerStateSchema.optional(),
+    inventory: layerInventorySchema.optional(),
     script: z.array(z.object({ scene: z.string() })).min(1),
     scenes: z.record(
       z.object({
@@ -349,6 +379,7 @@ export const gameSchema = z.object({
   }),
   assets: fullAssetsSchema,
   state: runtimeStateSchema.optional(),
+  inventory: runtimeInventorySchema.optional(),
   endings: z.record(endingDefinitionSchema).optional(),
   endingRules: z.array(endingRuleSchema).optional(),
   defaultEnding: z.string().min(1).optional(),

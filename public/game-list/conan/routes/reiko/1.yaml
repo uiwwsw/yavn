@@ -41,7 +41,7 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.think
-          text: "같은 질문을 반복하면 더 긴장돼요... 다른 단서부터 확인해 주세요."
+          text: "<speed=30>같은 질문은...</speed> <speed=24>더 떨리게만 해요.</speed>"
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -59,15 +59,36 @@ scenes:
       - char:
           id: 코난
           position: center
-          emotion: think
+          emotion: serious
       - say:
           char: 레이코.nervous
           with:
-            - 코난.think
-          text: "88도 근처에서 향이 확 바뀌어요. 그런데 오늘은 그 타이밍이 이상하게 어긋났어요."
+            - 코난.serious
+          text: "<speed=30>88도 근처에서 향 반응이 바뀌어야 해요.</speed> <speed=24>근데 오늘은 타이밍이 틀어졌어요.</speed>"
+      - say:
+          char: 코난.serious
+          text: "<speed=52>좋아.</speed> <speed=34>감정은 빼고 수치만 남긴다.</speed>"
+      - get: reiko_statement_note
+      - set:
+          item_reiko_statement_note_owned: true
+      - sticker:
+          id: item_popup_reiko_statement_note
+          image: item_reiko_statement_note
+          x: 50
+          y: 30
+          width: 22
+          enter:
+            effect: popIn
+            duration: 280
+          inputLockMs: 500
       - say:
           char: 코난.think
-          text: "좋아, 감각은 참고만 한다. 지금부터는 증명 가능한 사실만 남긴다."
+          text: "<speed=34>레이코 진술 메모를 획득했다.</speed> <speed=56>이제 흔들리는 문장만 추려내자.</speed>"
+      - clearSticker:
+          id: item_popup_reiko_statement_note
+          leave:
+            effect: fadeOut
+            duration: 1800
 
   first_probe:
     actions:
@@ -75,18 +96,18 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "질문은 하나야. 네 말 중 지금 바로 증명 가능한 걸 골라."
+          text: "<speed=36>지금 증명 가능한 문장 하나만 고르자.</speed>"
       - choice:
           key: reiko_first_probe
-          prompt: "레이코 말부터 뭘 먼저 확인할까?"
+          prompt: "레이코 진술에서 먼저 고정할 것은?"
           options:
-            - text: "88도 기록과 잔 가장자리 반응 시간을 맞춰 본다"
+            - text: "88도 기록과 잔 가장자리 반응 시간을 맞춘다"
               set:
                 clue_rim_reagent: true
               add:
                 deduction_score: 2
               goto: first_claim_correct
-            - text: "떨리는 목소리부터 범행 신호로 본다"
+            - text: "떨리는 말투를 범행 신호로 본다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -102,19 +123,14 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "좋아, 그건 수치로 고정할 수 있다. 이걸 주력 증거로 밀어붙일까?"
-      - say:
-          char: 레이코.nervous
-          with:
-            - 코난.serious
-          text: "...네, 기록표와 같이 보면 반박하기 어려울 거예요."
+          text: "<speed=56>좋아, 그건 물증화 가능하다.</speed> <speed=34>주력 증거로 쓸까?</speed>"
       - choice:
           key: reiko_first_commit
           prompt: "1차 주장을 확정할까?"
           options:
-            - text: "응, 이걸로 간다"
+            - text: "확정"
               goto: motive_branch
-            - text: "아직 불안하다. 한 번 더 묻는다"
+            - text: "한 번 더 확인"
               goto: retry_notice
 
   first_claim_wrong:
@@ -123,19 +139,14 @@ scenes:
           char: 코난.think
           with:
             - 레이코.nervous
-          text: "지금 고른 건 분위기일 뿐이야. 논리전으로 가면 바로 깨져."
-      - say:
-          char: 레이코.nervous
-          with:
-            - 코난.think
-          text: "맞아요... 그쪽은 느낌일 뿐이에요."
+          text: "<speed=28>지금 고른 건 분위기야.</speed> <speed=60>논리전에선 바로 무너진다.</speed>"
       - choice:
           key: reiko_first_rebuttal
-          prompt: "이 판단을 어떻게 할까?"
+          prompt: "이 판단을 어떻게 처리할까?"
           options:
-            - text: "틀렸다. 다시 질문한다"
+            - text: "틀렸다. 다시 질문"
               goto: retry_notice
-            - text: "아냐, 이걸로도 밀어본다"
+            - text: "아직 이 해석으로 민다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -145,21 +156,16 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "(좋아, 재심문이다. 감정은 빼고 측정값만 붙잡아.)"
-      - say:
-          char: 레이코.nervous
-          with:
-            - 코난.think
-          text: "...네, 수치로 답할게요."
+          text: "<speed=28>(재심문이다.)</speed> <speed=60>감정선 버리고 측정값만 본다.</speed>"
       - goto: second_probe
 
   second_probe:
     actions:
       - choice:
           key: reiko_second_probe
-          prompt: "재선택: 지금 증명할 수 있는 건?"
+          prompt: "재선택: 지금 바로 입증 가능한 것은?"
           options:
-            - text: "88도 기록과 잔 가장자리 반응 시간을 맞춰 본다"
+            - text: "88도 기록과 잔 가장자리 반응 시간을 맞춘다"
               set:
                 clue_rim_reagent: true
               add:
@@ -178,19 +184,17 @@ scenes:
   second_claim_correct:
     actions:
       - say:
-          text: "챙-! 온도 기록과 반응 시간이 정확히 포개진다."
+          text: "<speed=70>챙-!</speed> <speed=38>온도 기록과 반응 시간이 겹친다.</speed>"
       - say:
           char: 코난.serious
-          with:
-            - 레이코.nervous
-          text: "좋아, 이번 선택은 맞다. 최종 채택할까?"
+          text: "<speed=56>좋아, 수치가 맞아떨어졌다.</speed> <speed=34>최종 채택?</speed>"
       - choice:
           key: reiko_second_commit
-          prompt: "최종으로 이 주장을 채택할까?"
+          prompt: "최종 채택할까?"
           options:
-            - text: "채택한다"
+            - text: "채택"
               goto: motive_branch
-            - text: "보류한다"
+            - text: "보류"
               add:
                 final_confidence: -1
               goto: motive_half_line
@@ -201,7 +205,7 @@ scenes:
           char: 코난.think
           with:
             - 레이코.nervous
-          text: "아직도 감정선이야. 이대로는 동기 라인이 열리지 않아."
+          text: "<speed=28>아직 감정선이야.</speed> <speed=60>이대로는 동기 라인이 안 열린다.</speed>"
       - choice:
           key: reiko_second_rebuttal
           prompt: "지금 선택은?"
@@ -227,14 +231,15 @@ scenes:
   motive_open_line:
     actions:
       - sound: notebook_flip
+      - effect: zoom
       - say:
           char: 코난.serious
-          text: "계약서 수정 시각이 연구노트 원본과 정확히 맞물린다. 동기가 열렸어."
+          text: "<speed=40>계약서 수정 시각, 연구노트 원본 시각, 그리고 2번 컵 반응.</speed> <speed=64>셋이 정확히 맞물린다.</speed>"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "...그 기록까지 이어서 보신 거군요."
+          text: "<speed=26>...거기까지 연결하셨군요.</speed>"
       - set:
           reiko_motive_open: true
       - add:
@@ -247,7 +252,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "(레이코 라인은 아직 덜 풀렸어. 결론에선 보조 근거로만 쓴다.)"
+          text: "<speed=24>(레이코 라인은 반쯤 열렸다.)</speed> <speed=58>결론에선 보조 증거로만 쓴다.</speed>"
       - add:
           mistake_count: 1
       - goto: outro
@@ -256,5 +261,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "레이코 대면 끝. 라운지로 복귀한다."
+          text: "<speed=50>레이코 라인 종료.</speed> <speed=34>라운지로 복귀한다.</speed>"
       - goto: /routes/hub/1.yaml

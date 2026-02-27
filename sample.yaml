@@ -27,9 +27,24 @@ script:
   - scene: penalty_1
   - scene: move_to_conclusion
 
+inventory:
+  clue_note:
+    name: "현장 메모"
+    description: "탐문 중 확인한 단서를 정리한 메모다."
+    image: assets/bg/case_board.png
+    owned: false
+
 scenes:
   all_done_check:
     actions:
+      - get: clue_note
+      - sticker:
+          id: clue_note_popup
+          image: case_board
+          width: 22
+          y: 30
+          inputLockMs: 500
+      - clearSticker: clue_note_popup
       - branch:
           cases:
             - when:
@@ -58,6 +73,8 @@ scenes:
 
   early_exit_confirm:
     actions:
+      - say:
+          text: "<speed=26>지금 결론으로 가면 빈틈이 생겨.</speed> <speed=54>그래도 바로 이동할까?</speed>"
       - choice:
           key: sample_early_exit
           prompt: "지금 정리 회의로 넘어갈까?"
@@ -113,4 +130,5 @@ scenes:
 
   move_to_conclusion:
     actions:
+      - use: clue_note
       - goto: /conclusion/1.yaml

@@ -159,6 +159,12 @@ assets:
 state:
   score: 0
   suspect: ""
+inventory:
+  clue_note:
+    name: "현장 메모"
+    description: "탐문 중 확인한 단서를 정리한 메모다."
+    image: assets/bg/case_board.png
+    owned: false
 ```
 
 ### 3) 챕터 YAML (`1.yaml`, `routes/a/1.yaml` 등)
@@ -195,10 +201,10 @@ scenes:
   - `keywords` (string[])
   - `image` (string, 상대 경로/절대 URL)
   - `imageAlt` (string)
-- `base.yaml` 허용 필드: `assets`, `state`
+- `base.yaml` 허용 필드: `assets`, `state`, `inventory`
 - 챕터 YAML 허용 필드:
   - 필수: `script`, `scenes`
-  - 선택: `assets`, `state`
+  - 선택: `assets`, `state`, `inventory`
 - `meta/settings` 레거시 포맷은 지원하지 않습니다.
 
 ## 병합 규칙
@@ -213,7 +219,9 @@ scenes:
 - 자식 우선
 - `assets`는 카테고리 키 단위 병합
 - `state`는 키 단위 병합, 동일 키 타입 충돌 시 에러
+- `inventory`는 아이템 키 단위 병합(자식 레이어가 같은 키를 덮어씀)
 - 작성 DSL은 `state` 평면 맵을 사용하며, 런타임 내부에서는 `state.defaults`로 정규화됩니다.
+- 작성 DSL은 `inventory` 평면 맵을 사용하며, 런타임 내부에서는 `inventory.defaults`로 정규화됩니다.
 - `script/scenes`는 챕터 YAML만 사용
 - `endings/endingRules/defaultEnding`은 `config.yaml`만 사용
 - `ui.template`은 `config.yaml`만 사용하며, 미지정 시 `cinematic-noir`가 기본값으로 적용됩니다.
@@ -254,9 +262,69 @@ scenes:
 - `input`
 - `set`
 - `add`
+- `get`
+- `use`
 - `choice`
 - `branch`
 - `ending`
+
+## `sticker.inputLockMs` (입력 잠금)
+
+`sticker` 액션에 `inputLockMs`를 주면, 스티커를 띄운 뒤 지정한 시간(ms) 동안 입력/선택 제출이 잠깁니다.
+
+```yaml
+- sticker:
+    id: item_popup
+    image: item_tea_residue_report
+    width: 22
+    y: 30
+    inputLockMs: 500
+```
+
+동작:
+- `inputLockMs` 동안 `input` 제출과 `choice` 선택이 비활성화됩니다.
+- 잠금 시간이 끝나면 다음 액션으로 자동 진행됩니다.
+
+## `inventory` + `get/use` 아이템 흐름
+
+`state`와 분리된 아이템 가방 상태를 `inventory`로 선언하고, 액션으로 획득/사용할 수 있습니다.
+
+```yaml
+inventory:
+  clue_note:
+    name: "현장 메모"
+    description: "탐문 중 확인한 단서를 정리한 메모다."
+    image: assets/bg/case_board.png
+    owned: false
+
+scenes:
+  intro:
+    actions:
+      - get: clue_note
+      - say:
+          text: "현장 메모를 챙겼다."
+      - use: clue_note
+```
+
+동작:
+- `get: <itemId>`: 해당 아이템을 가방에 추가(`true`)
+- `use: <itemId>`: 해당 아이템을 사용 처리(`false`)
+- `inventory.<itemId>.owned`는 기본 소지값으로, 챕터 시작 시 기본값으로 반영됩니다.
+
+## `say` 인라인 속도 태그 (`<speed=...>`)
+
+`say.text` 안에서 여러 속도 구간을 섞어 한 문장 내부 템포를 조절할 수 있습니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "<speed=26>어이...</speed> <speed=54>그건 함정이야.</speed> <speed=90>지금 당장 멈춰!</speed>"
+```
+
+동작:
+- `<speed=숫자>...</speed>` 구간만 해당 속도로 타이핑됩니다.
+- 같은 `say`에 여러 구간이 있으면 순서대로 각기 다른 속도가 적용됩니다.
+- 태그 밖 텍스트는 `config.yaml.textSpeed` 기본값을 사용합니다.
 
 ## `choice` 1회 유예(옵션별 지정)
 
@@ -327,6 +395,7 @@ scenes:
 - 수동 숨김 상태에서는 화면 클릭/`Enter`/`Space`로 스크립트를 진행하지 않으며, 우측 하단 `대화창 열기` 버튼으로 복원해야 진행이 재개됩니다.
 - 시스템 숨김 상태(챕터 로딩/게임 미로딩/컷신)에서는 캐릭터·스티커 레이어 하단 안전 여백(`stickerSafeInset`) 기준을 유지해, 최초 대사 표시 시 레이어 크기가 출렁이지 않게 합니다.
 - 다이얼로그 수동 숨김/복원 토글 시 캐릭터·스티커 레이어의 하단 안전 여백(`stickerSafeInset`)도 함께 갱신되어, 연출 오브젝트 배치가 다이얼 상태와 동기화됩니다.
+- 화자 강조는 데스크톱/모바일 공통 규칙으로 동작합니다. 현재 화자는 약하게 전면(소폭 scale + 높은 opacity), 비화자는 순서 기반으로 단계적 opacity를 적용하며 모바일 전용 화자 확대는 사용하지 않습니다.
 
 ## 시작 화면 (Start Gate)
 
@@ -337,17 +406,17 @@ scenes:
 - URL 게임(`/game-list/:gameId`)은 게임별 저장 키(`vn-engine-autosave:game:<gameId>`)가 있을 때만 `이어하기` 버튼을 표시합니다.
 - 레거시 저장 키(`vn-engine-autosave`)가 남아 있으면 URL 게임 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - 같은 탭 세션에서 시작/로드를 한 번 누르면(`sessionStorage` 플래그) 새로고침 시 시작 화면을 다시 띄우지 않습니다.
+- 인벤토리 모달 하단 `초기화면 가기` 버튼은 해당 `sessionStorage` 플래그를 초기화하고, 현재 인게임 BGM을 즉시 정지한 뒤 Start Gate(시작 화면)를 같은 탭에서 다시 엽니다.
 - ZIP 실행은 시작 화면을 지원하지만 `이어하기` 버튼은 노출하지 않습니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)의 시각 스타일은 `config.yaml.ui.template` 전역 설정을 그대로 따릅니다.
 
 ## Conan 샘플 분기 구조
 
-- `0.yaml`은 콜드 오픈 챕터로, 사건의 이상 징후를 먼저 보여준 뒤 `1.yaml`로 넘어갑니다.
-- `1.yaml`은 도착/관계/사건 발생, `2.yaml`은 초동 정리와 현장 재구성 파트입니다.
-- `routes/hub/1.yaml`은 조사 라운지이며, `신이치/레이코/켄지/하루오` 대면 루트를 자유 선택할 수 있습니다.
-- 각 인물 루트(`routes/<suspect>/1.yaml`)는 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다.
+- `0.yaml`은 평온한 콜드 오픈, `1.yaml`은 4인 갈등과 사건 발생(하루오 사망 + 다잉 메시지), `2.yaml`은 초동 정리/재구성 파트입니다.
+- `routes/hub/1.yaml`은 조사 라운지이며, `신이치/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
+- 각 라인(`routes/<line>/1.yaml`)은 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다.
 - 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
-- 결말은 `conclusion/1.yaml`로 합류하며, 최종 지목과 재지목 1회 흐름을 유지합니다.
+- 결말은 `conclusion/1.yaml`로 합류하며, 잠자는 코고로 추리 쇼 + 최종 지목/재지목 1회 흐름을 유지합니다.
 
 ## 샘플
 
@@ -381,6 +450,14 @@ scenes:
 - Start Gate(시작 화면) 상태에서도 `config.yaml.seo`를 즉시 반영해, 게임 본 로딩 전에도 `/game-list/<gameId>/` SEO 메타가 적용됩니다.
 - `startScreen`이 설정된 게임은 시작 게이트를 표시하며, URL 게임은 게임별 autosave 키(`vn-engine-autosave:game:<gameId>`)를 기준으로 `이어하기` 버튼을 노출합니다.
 - 레거시 autosave 키(`vn-engine-autosave`)는 URL 게임 로드시 fallback으로 읽고, 실제 이어하기 성공 시 게임별 키로 마이그레이션합니다.
+- 인게임 HUD 우측에는 텍스트 대신 가방 기호 버튼(원형 아이콘)을 배치해 인벤토리 모달을 엽니다.
+- 인벤토리 모달은 탭 없이 단일 화면으로 동작하며, 4열 고정 그리드에서 획득 아이템 수에 따라 row가 유동적으로 증가합니다.
+- 인벤토리 목록에는 `획득한 아이템(owned=true)`만 노출하며, 미획득/사용 완료(`owned=false`) 아이템은 카드 자체를 숨깁니다.
+- 인벤토리 스크롤은 슬롯 그리드 영역에만 적용하고, 하단 상세 패널/설정 버튼 영역은 고정해 항상 보이도록 구성합니다.
+- 슬롯을 누르면 하단 상세 패널에서 소지 여부/설명/이미지를 확인할 수 있습니다.
+- 슬롯 우측 상단 배지는 `획득` 상태에서만 표시하며, 미획득/사용 완료 상태에는 배지를 숨깁니다.
+- 모달 하단 체크 설정의 `배경음악 끄기`는 게임별 키(`vn-engine-settings:<autosave-key>`)로 저장되며, 해제 시 즉시 현재 BGM 재생이 중단됩니다.
+- URL 게임에서는 모달 하단 `초기화면 가기` 버튼으로 Start Gate를 다시 열 수 있으며, ZIP 실행 게임에서는 버튼이 비활성화됩니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
 - 엔딩 배경 이미지는 `config.yaml.endingScreen.image`로 지정할 수 있으며, 템플릿 색상/디코레이션 레이어 위에 적용됩니다.
 - 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. (`uploading=true` 동안에는 `ZIP Loading...`)
@@ -389,6 +466,7 @@ scenes:
 - 엔딩 크레딧 롤 영역은 초기 자동 스크롤 구간에서 입력을 잠그고(`pointer-events: none`), 자동 스크롤이 멈춘 뒤에만 수동 스크롤을 허용합니다.
 - 모바일 브라우저에서는 핀치/제스처 확대를 막도록 viewport와 터치 제스처를 제한합니다.
 - 캐릭터 레이어는 다이얼로그 박스 상단 경계까지만 사용하며, 캐릭터 이미지는 레이어 하단 기준으로 정렬됩니다.
+- 화자 시각 강조는 플랫폼별 분기 없이 동일하게 적용되며, `speakerOrder` 기준으로 비화자 depth(opacity)가 점진적으로 낮아집니다.
 - 챕터 로딩 중에는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 로딩 해제 시 페이드 인으로 표시해 로딩 오버레이와 대사 UI 전환을 안정화합니다.
 - 다이얼로그 박스 우측 상단(박스 외부 컨트롤 레이어)에는 `숨기기` 버튼이 표시되며, 수동으로 접으면 우측 하단에 작은 `대화창 열기` 버튼이 표시됩니다.
 - 다이얼로그를 수동으로 숨긴 상태에서는 클릭/`Enter`/`Space` 진행 입력을 잠가 실수로 대사가 넘어가지 않게 합니다.
@@ -398,6 +476,8 @@ scenes:
 - 입력 게이트(`input`)는 값이 비어 있으면 제출 버튼 라벨을 `모르겠다`로 표시합니다. (입력 후에는 `확인`)
 - 입력 게이트(`input`)에서 마지막 오답 메시지(정답 안내 단계)에 도달하면 입력창에 정답 값이 자동으로 채워집니다.
 - 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 건너뛰어 가상 키보드가 즉시 열리지 않도록 합니다.
+- `sticker.inputLockMs`를 설정하면 스티커 표시 직후 지정 시간(ms) 동안 `input/choice` 제출을 잠그고, 잠금 종료 후 다음 액션으로 진행합니다.
+- `say.text`의 다중 `<speed=...>...</speed>` 구간을 순차 해석해, 한 문장 안에서도 구간별 타이핑 속도를 다르게 적용합니다.
 - Live2D 캐릭터 로딩은 `easy-cl2d` + 번들 자산(`src/assets/third-party/live2d/live2dcubismcore.min.js`) 조합으로 동작합니다.
 - 현재 Live2D 실행은 Cubism 5 모델(`moc3 v6`, `model3.json`)을 포함해 Cubism Core 호환 범위를 기준으로 렌더링합니다.
 - 코어 스크립트는 Vite 번들 URL(`?url`)로 로드해 정적 공개 경로 의존 없이 캐시 버스팅을 적용합니다.

@@ -55,6 +55,7 @@ declare global {
 const LEGACY_AUTOSAVE_KEY = 'vn-engine-autosave';
 const GAME_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:game:';
 const PATH_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:path:';
+const GAME_SETTINGS_STORAGE_PREFIX = 'vn-engine-settings:';
 const MAX_CHAPTERS = 101;
 const MIN_CHAPTER_LOADING_MS = 600;
 const CHAPTER_LOADED_HOLD_MS = 200;
@@ -80,6 +81,15 @@ const DEFAULT_STICKER_LEAVE_DURATION = 220;
 const DEFAULT_STICKER_LEAVE_EASING = 'ease';
 const DEFAULT_STICKER_LEAVE_DELAY = 0;
 const DEFAULT_CHOICE_FORGIVE_MESSAGE = '한 번은 넘어갈게. 다시 선택해 주세요.';
+const DEFAULT_RUNTIME_GAME_SETTINGS = {
+  bgmEnabled: true,
+} as const;
+
+type RuntimeGameSettings = {
+  bgmEnabled: boolean;
+};
+
+type InventoryOwnedMap = Record<string, boolean>;
 
 type SaveProgress = {
   chapterIndex: number;
@@ -87,6 +97,7 @@ type SaveProgress = {
   sceneId: string;
   actionIndex: number;
   routeVars: Record<string, RouteVarValue>;
+  inventory: InventoryOwnedMap;
   routeHistory: RouteHistoryEntry[];
   resolvedEndingId?: string;
 };
@@ -115,6 +126,12 @@ type PreparedChapter = {
 
 type RuntimeMode = 'url' | 'zip' | undefined;
 
+type InlineSpeedSegment = {
+  start: number;
+  end: number;
+  speed: number;
+};
+
 let waitTimer: number | undefined;
 let typeTimer: number | undefined;
 let effectTimer: number | undefined;
@@ -142,6 +159,7 @@ let parsedBaseCache = new Map<string, Promise<ParsedBaseYaml | undefined>>();
 let parsedChapterCache = new Map<string, Promise<ParsedChapterYaml>>();
 let resolvedChapterGameCache = new Map<string, Promise<GameData>>();
 let currentAutosaveKey = LEGACY_AUTOSAVE_KEY;
+let runtimeGameSettings: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -173,8 +191,69 @@ function resolveAutosaveKeyForUrl(baseUrl: string): string {
   }
 }
 
+function resolveGameSettingsStorageKey(key: string = currentAutosaveKey): string {
+  return `${GAME_SETTINGS_STORAGE_PREFIX}${encodeURIComponent(key)}`;
+}
+
+function normalizeRuntimeGameSettings(raw: unknown): RuntimeGameSettings {
+  const defaults: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    return defaults;
+  }
+  const parsed = raw as Partial<RuntimeGameSettings>;
+  return {
+    bgmEnabled: typeof parsed.bgmEnabled === 'boolean' ? parsed.bgmEnabled : defaults.bgmEnabled,
+  };
+}
+
+function loadRuntimeGameSettingsFromStorage(key: string = currentAutosaveKey): void {
+  try {
+    const raw = localStorage.getItem(resolveGameSettingsStorageKey(key));
+    if (!raw) {
+      runtimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
+      return;
+    }
+    runtimeGameSettings = normalizeRuntimeGameSettings(JSON.parse(raw));
+  } catch {
+    runtimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
+  }
+}
+
+function persistRuntimeGameSettings(key: string = currentAutosaveKey): void {
+  try {
+    localStorage.setItem(resolveGameSettingsStorageKey(key), JSON.stringify(runtimeGameSettings));
+  } catch {
+    // Ignore storage failures and continue with in-memory settings.
+  }
+}
+
 function setAutosaveScopeKey(key: string): void {
   currentAutosaveKey = key;
+  loadRuntimeGameSettingsFromStorage(key);
+}
+
+export function getBgmEnabled(): boolean {
+  return runtimeGameSettings.bgmEnabled;
+}
+
+export function setBgmEnabled(enabled: boolean): void {
+  runtimeGameSettings = {
+    ...runtimeGameSettings,
+    bgmEnabled: enabled,
+  };
+  persistRuntimeGameSettings();
+  if (!enabled) {
+    stopAudioBgm();
+    stopYouTubeBgm();
+    bgmCurrentKind = undefined;
+    bgmCurrentKey = undefined;
+    bgmNeedsUnlock = false;
+    return;
+  }
+  const currentMusic = useVNStore.getState().currentMusic;
+  if (currentMusic) {
+    playMusic(currentMusic);
+  }
 }
 
 async function ensureChapterGame(chapter: PreparedChapter): Promise<GameData> {
@@ -205,7 +284,7 @@ function clearTimers() {
     waitTimer = undefined;
   }
   if (typeTimer) {
-    window.clearInterval(typeTimer);
+    window.clearTimeout(typeTimer);
     typeTimer = undefined;
   }
   if (effectTimer) {
@@ -640,6 +719,13 @@ function clampStickerTiming(value: number | undefined, fallback: number): number
   return Math.max(0, Math.min(5000, Math.floor(value)));
 }
 
+function clampStickerInputLockMs(value: number | undefined): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return 0;
+  }
+  return Math.max(0, Math.min(60000, Math.floor(value)));
+}
+
 function normalizeStickerEnter(
   enter: StickerEnterEffect | StickerEnterOptions | undefined,
 ): Pick<StickerSlot, 'enterEffect' | 'enterDuration' | 'enterEasing' | 'enterDelay'> {
@@ -715,6 +801,7 @@ function buildStickerSlot(
     opacity?: number;
     zIndex?: number;
     enter?: StickerEnterEffect | StickerEnterOptions;
+    inputLockMs?: number;
   },
 ): StickerSlot {
   const enter = normalizeStickerEnter(placement.enter);
@@ -876,15 +963,43 @@ function rewriteLive2DModelJson(raw: string, resolveRef: (relativePath: string) 
   return changed ? JSON.stringify(parsed) : undefined;
 }
 
-function parseInlineSpeed(text: string): { speed?: number; text: string } {
-  const match = text.match(/<speed=(\d+)>([\s\S]*?)<\/speed>/i);
-  if (!match) {
-    return { text };
+function parseInlineSpeed(text: string): { text: string; segments: InlineSpeedSegment[] } {
+  const pattern = /<speed=(\d+)>([\s\S]*?)<\/speed>/gi;
+  const matches = Array.from(text.matchAll(pattern));
+  if (matches.length === 0) {
+    return { text, segments: [] };
   }
-  return {
-    speed: Number(match[1]),
-    text: text.replace(/<speed=\d+>([\s\S]*?)<\/speed>/gi, '$1'),
-  };
+
+  let cursor = 0;
+  let normalizedText = '';
+  const segments: InlineSpeedSegment[] = [];
+  for (const match of matches) {
+    const raw = match[0];
+    const index = match.index ?? cursor;
+    if (index > cursor) {
+      normalizedText += text.slice(cursor, index);
+    }
+
+    const spanText = match[2] ?? '';
+    const spanSpeed = Number(match[1]);
+    const start = normalizedText.length;
+    normalizedText += spanText;
+    const end = normalizedText.length;
+    if (end > start && Number.isFinite(spanSpeed) && spanSpeed > 0) {
+      segments.push({
+        start,
+        end,
+        speed: Math.max(1, spanSpeed),
+      });
+    }
+    cursor = index + raw.length;
+  }
+
+  if (cursor < text.length) {
+    normalizedText += text.slice(cursor);
+  }
+
+  return { text: normalizedText, segments };
 }
 
 function parseCharacterRef(raw?: string): { id?: string; emotion?: string } {
@@ -996,6 +1111,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       actionIndex?: number;
       chapterPath?: unknown;
       routeVars?: unknown;
+      inventory?: unknown;
       routeHistory?: unknown;
       resolvedEndingId?: unknown;
     };
@@ -1007,6 +1123,14 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       for (const [key, value] of Object.entries(parsed.routeVars as Record<string, unknown>)) {
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           routeVars[key] = value;
+        }
+      }
+    }
+    const inventory: InventoryOwnedMap = {};
+    if (parsed.inventory && typeof parsed.inventory === 'object' && !Array.isArray(parsed.inventory)) {
+      for (const [key, value] of Object.entries(parsed.inventory as Record<string, unknown>)) {
+        if (typeof value === 'boolean') {
+          inventory[key] = value;
         }
       }
     }
@@ -1034,6 +1158,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       sceneId: parsed.sceneId,
       actionIndex: parsed.actionIndex,
       routeVars,
+      inventory,
       routeHistory,
       resolvedEndingId: typeof parsed.resolvedEndingId === 'string' ? parsed.resolvedEndingId : undefined,
     };
@@ -1058,6 +1183,7 @@ function saveProgress(sceneId: string, actionIndex: number) {
     sceneId,
     actionIndex,
     routeVars: state.routeVars,
+    inventory: state.inventory,
     routeHistory: state.routeHistory,
     resolvedEndingId: state.resolvedEndingId,
   };
@@ -1100,6 +1226,15 @@ function migrateLegacyProgressIfNeeded(source: SaveProgressSource, save: SavePro
 
 function playMusic(url?: string) {
   if (!url) {
+    stopAudioBgm();
+    stopYouTubeBgm();
+    bgmCurrentKind = undefined;
+    bgmCurrentKey = undefined;
+    bgmNeedsUnlock = false;
+    return;
+  }
+
+  if (!runtimeGameSettings.bgmEnabled) {
     stopAudioBgm();
     stopYouTubeBgm();
     bgmCurrentKind = undefined;
@@ -1154,6 +1289,9 @@ function playSound(url: string) {
 }
 
 export function unlockAudioFromGesture() {
+  if (!runtimeGameSettings.bgmEnabled) {
+    return;
+  }
   if (!bgmCurrentKind) {
     return;
   }
@@ -1174,6 +1312,11 @@ export function unlockAudioFromGesture() {
   });
 }
 
+export function stopActiveBgm(): void {
+  useVNStore.getState().setMusic(undefined);
+  playMusic(undefined);
+}
+
 function incrementCursor() {
   const state = useVNStore.getState();
   useVNStore.getState().setCursor(state.currentSceneId, state.actionIndex + 1);
@@ -1189,27 +1332,43 @@ function setCursor(sceneId: string, actionIndex: number) {
   }
 }
 
-function typeDialog(text: string, speed: number, onDone: () => void) {
+function typeDialog(text: string, speed: number, speedSegments: InlineSpeedSegment[], onDone: () => void) {
   if (text.length === 0) {
     useVNStore.getState().setDialog({ typing: false, visibleText: '' });
     onDone();
     return;
   }
-  const cps = Math.max(1, speed);
+  const defaultSpeed = Math.max(1, speed);
   let idx = 0;
+  let segmentCursor = 0;
   useVNStore.getState().setDialog({ typing: true, visibleText: '' });
-  typeTimer = window.setInterval(() => {
+  const scheduleNextChar = (cps: number) => {
+    typeTimer = window.setTimeout(stepTyping, Math.max(16, Math.floor(1000 / Math.max(1, cps))));
+  };
+  const resolveCurrentSpeed = (nextIdx: number): number => {
+    while (segmentCursor < speedSegments.length && nextIdx > speedSegments[segmentCursor].end) {
+      segmentCursor += 1;
+    }
+    if (segmentCursor < speedSegments.length) {
+      const segment = speedSegments[segmentCursor];
+      if (nextIdx > segment.start && nextIdx <= segment.end) {
+        return segment.speed;
+      }
+    }
+    return defaultSpeed;
+  };
+  const stepTyping = () => {
+    typeTimer = undefined;
     idx += 1;
     useVNStore.getState().setDialog({ visibleText: text.slice(0, idx) });
     if (idx >= text.length) {
-      if (typeTimer) {
-        window.clearInterval(typeTimer);
-        typeTimer = undefined;
-      }
       useVNStore.getState().setDialog({ typing: false, visibleText: text });
       onDone();
+      return;
     }
-  }, Math.max(16, Math.floor(1000 / cps)));
+    scheduleNextChar(resolveCurrentSpeed(idx + 1));
+  };
+  scheduleNextChar(resolveCurrentSpeed(1));
 }
 
 function normalizeInputAnswer(value: string): string {
@@ -1247,6 +1406,20 @@ function applyAddToVars(target: Record<string, RouteVarValue>, addMap?: StateAdd
   }
 }
 
+function applyInventoryGetToVars(target: InventoryOwnedMap, itemId?: string): void {
+  if (!itemId) {
+    return;
+  }
+  target[itemId] = true;
+}
+
+function applyInventoryUseToVars(target: InventoryOwnedMap, itemId?: string): void {
+  if (!itemId) {
+    return;
+  }
+  target[itemId] = false;
+}
+
 function applyStateSet(setMap?: StateSetMap): void {
   if (!setMap) {
     return;
@@ -1259,6 +1432,20 @@ function applyStateAdd(addMap?: StateAddMap): void {
     return;
   }
   useVNStore.getState().addRouteVars(addMap);
+}
+
+function applyInventoryGet(itemId?: string): void {
+  if (!itemId) {
+    return;
+  }
+  useVNStore.getState().setInventoryItem(itemId, true);
+}
+
+function applyInventoryUse(itemId?: string): void {
+  if (!itemId) {
+    return;
+  }
+  useVNStore.getState().setInventoryItem(itemId, false);
 }
 
 function compareConditionLeaf(
@@ -1343,6 +1530,24 @@ function mergeRouteVarsWithDefaults(
   };
 }
 
+function mergeInventoryWithDefaults(
+  defaults: NonNullable<GameData['inventory']>['defaults'] | undefined,
+  current: InventoryOwnedMap,
+  override?: InventoryOwnedMap,
+): InventoryOwnedMap {
+  const defaultOwned: InventoryOwnedMap = {};
+  if (defaults) {
+    for (const [key, value] of Object.entries(defaults)) {
+      defaultOwned[key] = value.owned;
+    }
+  }
+  return {
+    ...defaultOwned,
+    ...current,
+    ...(override ?? {}),
+  };
+}
+
 function collectAssetPaths(game: GameData): string[] {
   const paths = new Set<string>();
   Object.values(game.assets.backgrounds).forEach((path) => paths.add(path));
@@ -1352,6 +1557,11 @@ function collectAssetPaths(game: GameData): string[] {
   }
   Object.values(game.assets.music).forEach((path) => paths.add(path));
   Object.values(game.assets.sfx).forEach((path) => paths.add(path));
+  for (const item of Object.values(game.inventory?.defaults ?? {})) {
+    if (item.image) {
+      paths.add(item.image);
+    }
+  }
   for (const scene of Object.values(game.scenes)) {
     for (const action of scene.actions) {
       if ('video' in action && !extractYouTubeVideoId(action.video.src)) {
@@ -1668,6 +1878,7 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   const setVisibleCharacters = useVNStore.getState().setVisibleCharacters;
   const promoteSpeaker = useVNStore.getState().promoteSpeaker;
   const restoreVars = mergeRouteVarsWithDefaults(game.state?.defaults, {});
+  const restoreInventory = mergeInventoryWithDefaults(game.inventory?.defaults, {});
   const historyByCursor = new Map<string, RouteHistoryEntry>();
   for (const entry of resume.routeHistory) {
     const key = `${entry.sceneId}:${entry.actionIndex}`;
@@ -1737,6 +1948,16 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
     }
     if ('add' in action) {
       applyAddToVars(restoreVars, action.add);
+      actionIndex += 1;
+      continue;
+    }
+    if ('get' in action) {
+      applyInventoryGetToVars(restoreInventory, action.get);
+      actionIndex += 1;
+      continue;
+    }
+    if ('use' in action) {
+      applyInventoryUseToVars(restoreInventory, action.use);
       actionIndex += 1;
       continue;
     }
@@ -1858,7 +2079,9 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
 
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
     const defaults = game.state?.defaults;
+    const inventoryDefaults = game.inventory?.defaults;
     const currentRouteVars = useVNStore.getState().routeVars;
+    const currentInventory = useVNStore.getState().inventory;
 
     const currentPathKey = chapter.pathKey;
     const canResumeHere =
@@ -1869,6 +2092,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
 
     if (resume && canResumeHere) {
       useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars, resume.routeVars));
+      useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, currentInventory, resume.inventory));
       useVNStore.getState().clearRouteHistory();
       for (const entry of resume.routeHistory) {
         useVNStore.getState().pushRouteHistory(entry);
@@ -1878,6 +2102,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       useVNStore.getState().setCursor(resume.sceneId, resume.actionIndex);
     } else {
       useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars));
+      useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, currentInventory));
     }
 
     const nextChapter = preparedChapters[chapterIndex + 1];
@@ -2070,6 +2295,16 @@ function runToNextPause(loopGuard = 0) {
     const path = game.assets.backgrounds[action.sticker.image];
     cancelStickerClearTimer(action.sticker.id);
     useVNStore.getState().setSticker(buildStickerSlot(state.baseUrl, action.sticker.id, path, action.sticker));
+    const inputLockMs = clampStickerInputLockMs(action.sticker.inputLockMs);
+    if (inputLockMs > 0) {
+      useVNStore.getState().setBusy(true);
+      waitTimer = window.setTimeout(() => {
+        useVNStore.getState().setBusy(false);
+        incrementCursor();
+        runToNextPause(loopGuard + 1);
+      }, inputLockMs);
+      return;
+    }
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -2150,6 +2385,20 @@ function runToNextPause(loopGuard = 0) {
 
   if ('add' in action) {
     applyStateAdd(action.add);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('get' in action) {
+    applyInventoryGet(action.get);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('use' in action) {
+    applyInventoryUse(action.use);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -2260,7 +2509,7 @@ function runToNextPause(loopGuard = 0) {
 
   if ('say' in action) {
     const parsed = parseInlineSpeed(action.say.text);
-    const textSpeed = parsed.speed ?? game.settings.textSpeed;
+    const textSpeed = game.settings.textSpeed;
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
@@ -2275,7 +2524,7 @@ function runToNextPause(loopGuard = 0) {
       visibleText: '',
       typing: true,
     });
-    typeDialog(parsed.text, textSpeed, () => undefined);
+    typeDialog(parsed.text, textSpeed, parsed.segments, () => undefined);
     return;
   }
 }
@@ -2728,6 +2977,11 @@ function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByK
   for (const [key, value] of Object.entries(cloned.assets.sfx)) {
     cloned.assets.sfx[key] = replace(value);
   }
+  for (const item of Object.values(cloned.inventory?.defaults ?? {})) {
+    if (item.image) {
+      item.image = replace(item.image);
+    }
+  }
   for (const scene of Object.values(cloned.scenes)) {
     for (const action of scene.actions) {
       if ('video' in action) {
@@ -2966,7 +3220,7 @@ export function handleAdvance() {
     }
     if (state.dialog.typing && state.game.settings.clickToInstant) {
       if (typeTimer) {
-        window.clearInterval(typeTimer);
+        window.clearTimeout(typeTimer);
         typeTimer = undefined;
       }
       useVNStore.getState().setDialog({ typing: false, visibleText: state.dialog.fullText });
@@ -2997,6 +3251,7 @@ export async function restartFromBeginning() {
   useVNStore.getState().setDialogUiHidden(false);
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   useVNStore.getState().setRouteVars({});
+  useVNStore.getState().setInventory({});
   useVNStore.getState().clearRouteHistory();
   useVNStore.getState().setResolvedEndingId(undefined);
   await startChapter(0);
@@ -3036,7 +3291,7 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
 
 export function submitChoiceOption(optionIndex: number) {
   const state = useVNStore.getState();
-  if (!state.game || !state.waitingInput || !state.choiceGate.active) {
+  if (!state.game || state.busy || !state.waitingInput || !state.choiceGate.active) {
     return;
   }
 
@@ -3090,7 +3345,7 @@ export function submitChoiceOption(optionIndex: number) {
 
 export function submitInputAnswer(rawAnswer: string) {
   const state = useVNStore.getState();
-  if (!state.game || !state.waitingInput || !state.inputGate.active) {
+  if (!state.game || state.busy || !state.waitingInput || !state.inputGate.active) {
     return;
   }
 

@@ -26,9 +26,12 @@ type LayerAssets = {
   sfx?: GameData['assets']['sfx'];
 };
 
+type LayerInventory = NonNullable<NonNullable<GameData['inventory']>['defaults']>;
+
 type LayerYamlData = {
   assets?: LayerAssets;
   state?: Record<string, RouteVarValue>;
+  inventory?: LayerInventory;
 };
 
 type ChapterYamlData = LayerYamlData & {
@@ -449,6 +452,40 @@ function canonicalizeLayerAssets(
   return { data: result };
 }
 
+function canonicalizeLayerInventory(
+  inventory: LayerInventory | undefined,
+  sourceDir: string,
+  sourcePath: string,
+): { data?: LayerInventory; error?: VNError } {
+  if (!inventory) {
+    return { data: undefined };
+  }
+
+  const result: LayerInventory = {};
+  for (const [key, value] of Object.entries(inventory)) {
+    let normalizedImage = value.image;
+    if (value.image) {
+      normalizedImage = canonicalizeDeclaredPath(value.image, sourceDir);
+      if (!normalizedImage) {
+        return {
+          error: {
+            message: `${sourcePath}: inventory.${key}.image has invalid path '${value.image}'`,
+          },
+        };
+      }
+    }
+
+    result[key] = {
+      name: value.name,
+      description: value.description,
+      image: normalizedImage,
+      owned: value.owned,
+    };
+  }
+
+  return { data: Object.keys(result).length > 0 ? result : undefined };
+}
+
 function canonicalizeSceneVideoPaths(
   scenes: GameData['scenes'],
   sourceDir: string,
@@ -598,7 +635,7 @@ export function parseBaseYaml(raw: string, sourcePath: string): { data?: ParsedB
   if (hasOwn(parsedRoot.value, 'script') || hasOwn(parsedRoot.value, 'scenes')) {
     return {
       error: {
-        message: `${normalizedSourcePath}: base.yaml cannot declare script/scenes (only assets and state are allowed).`,
+        message: `${normalizedSourcePath}: base.yaml cannot declare script/scenes (only assets, state, and inventory are allowed).`,
       },
     };
   }
@@ -628,6 +665,10 @@ export function parseBaseYaml(raw: string, sourcePath: string): { data?: ParsedB
     if (assetsResult.error) {
       return { error: assetsResult.error };
     }
+    const inventoryResult = canonicalizeLayerInventory(parsed.inventory, sourceDir, normalizedSourcePath);
+    if (inventoryResult.error) {
+      return { error: inventoryResult.error };
+    }
     return {
       data: {
         sourcePath: normalizedSourcePath,
@@ -635,6 +676,7 @@ export function parseBaseYaml(raw: string, sourcePath: string): { data?: ParsedB
         data: {
           assets: assetsResult.data,
           state: parsed.state,
+          inventory: inventoryResult.data,
         },
       },
     };
@@ -681,6 +723,10 @@ export function parseChapterYaml(raw: string, sourcePath: string): { data?: Pars
     if (assetsResult.error) {
       return { error: assetsResult.error };
     }
+    const inventoryResult = canonicalizeLayerInventory(parsed.inventory, sourceDir, normalizedSourcePath);
+    if (inventoryResult.error) {
+      return { error: inventoryResult.error };
+    }
     const scenesResult = canonicalizeSceneVideoPaths(parsed.scenes, sourceDir, normalizedSourcePath);
     if (scenesResult.error) {
       return { error: scenesResult.error };
@@ -692,6 +738,7 @@ export function parseChapterYaml(raw: string, sourcePath: string): { data?: Pars
         data: {
           assets: assetsResult.data,
           state: parsed.state,
+          inventory: inventoryResult.data,
           script: parsed.script,
           scenes: scenesResult.data ?? parsed.scenes,
         },
@@ -713,6 +760,13 @@ function mergeLayerAssets(target: GameData['assets'], source?: LayerAssets) {
   Object.assign(target.characters, source.characters ?? {});
   Object.assign(target.music, source.music ?? {});
   Object.assign(target.sfx, source.sfx ?? {});
+}
+
+function mergeLayerInventory(target: LayerInventory, source?: LayerInventory) {
+  if (!source) {
+    return;
+  }
+  Object.assign(target, source);
 }
 
 function mergeLayerState(
@@ -748,10 +802,12 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
     sfx: {},
   };
   const mergedDefaults: Record<string, RouteVarValue> = {};
+  const mergedInventory: LayerInventory = {};
   const defaultSourceByKey = new Map<string, string>();
 
   for (const layer of input.bases) {
     mergeLayerAssets(mergedAssets, layer.data.assets);
+    mergeLayerInventory(mergedInventory, layer.data.inventory);
     const stateError = mergeLayerState(mergedDefaults, layer.data.state, layer.sourcePath, defaultSourceByKey);
     if (stateError) {
       return { error: stateError };
@@ -759,6 +815,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
   }
 
   mergeLayerAssets(mergedAssets, input.chapter.data.assets);
+  mergeLayerInventory(mergedInventory, input.chapter.data.inventory);
   const chapterStateError = mergeLayerState(
     mergedDefaults,
     input.chapter.data.state,
@@ -785,6 +842,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
     script: input.chapter.data.script,
     scenes: input.chapter.data.scenes,
     ...(Object.keys(mergedDefaults).length > 0 ? { state: { defaults: mergedDefaults } } : {}),
+    ...(Object.keys(mergedInventory).length > 0 ? { inventory: { defaults: mergedInventory } } : {}),
     ...(input.config.data.endings ? { endings: input.config.data.endings } : {}),
     ...(input.config.data.endingRules ? { endingRules: input.config.data.endingRules } : {}),
     ...(input.config.data.defaultEnding ? { defaultEnding: input.config.data.defaultEnding } : {}),
@@ -801,6 +859,7 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
     gameSchema.parse(data);
 
     const defaults = data.state?.defaults ?? {};
+    const inventoryDefaults = data.inventory?.defaults ?? {};
 
     const scriptSceneIds = new Set(data.script.map((entry) => entry.scene));
     for (const sceneId of scriptSceneIds) {
@@ -924,6 +983,22 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
           if (error) {
             return { error };
           }
+        }
+
+        if ('get' in action && !inventoryDefaults[action.get]) {
+          return {
+            error: {
+              message: `scene '${sceneId}' gets unknown inventory item '${action.get}'`,
+            },
+          };
+        }
+
+        if ('use' in action && !inventoryDefaults[action.use]) {
+          return {
+            error: {
+              message: `scene '${sceneId}' uses unknown inventory item '${action.use}'`,
+            },
+          };
         }
 
         if ('choice' in action) {

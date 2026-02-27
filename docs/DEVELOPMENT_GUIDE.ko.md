@@ -45,7 +45,7 @@ pnpm dev
 YAML V3는 파일 역할을 분리합니다.
 
 1. `config.yaml` (루트, 필수): 전역 유니크 값
-2. `base.yaml` (폴더별, 선택): 공통 `assets`, `state`
+2. `base.yaml` (폴더별, 선택): 공통 `assets`, `state`, `inventory`
 3. 챕터 YAML (`0.yaml`, `1.yaml`, `routes/*/1.yaml` 등): `script`, `scenes`
 
 레거시 `meta/settings` 포맷은 지원하지 않습니다.
@@ -124,6 +124,7 @@ defaultEnding: bad_end
 허용 키:
 - `assets`
 - `state`
+- `inventory`
 
 금지:
 - `script`, `scenes`
@@ -148,6 +149,12 @@ assets:
 state:
   trust: 0
   suspect: ""
+inventory:
+  clue_note:
+    name: "현장 메모"
+    description: "탐문 중 확인한 단서를 정리한 메모다."
+    image: assets/bg/case_board.png
+    owned: false
 ```
 
 ## 5) 챕터 YAML
@@ -159,6 +166,7 @@ state:
 선택 키:
 - `assets`
 - `state`
+- `inventory`
 
 금지:
 - `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endingScreen`, `endings` 계열
@@ -190,8 +198,10 @@ scenes:
 - 자식 우선
 - `assets`는 `backgrounds/characters/music/sfx` 키 단위 병합
 - `state`는 키 단위 병합
+- `inventory`는 아이템 키 단위 병합(자식 레이어가 같은 키를 덮어씀)
 - 동일 state 키 타입 충돌 시 에러
 - 작성 DSL은 `state` 평면 맵을 사용하고, 런타임 내부 표현은 `state.defaults`로 정규화됩니다.
+- 작성 DSL은 `inventory` 평면 맵을 사용하고, 런타임 내부 표현은 `inventory.defaults`로 정규화됩니다.
 - `script/scenes`는 챕터 YAML만 사용
 
 ## 7) 경로 규칙
@@ -218,15 +228,15 @@ scenes:
 
 ## 8-0) 에피소드형 탐문 라운지 패턴 (Conan 샘플)
 
-- `0.yaml`에서 콜드 오픈으로 사건 갈고리를 먼저 제시하고 `1.yaml`로 연결합니다.
-- `1.yaml`은 사건 도입/발생, `2.yaml`은 초동 정리와 재구성으로 역할을 분리합니다.
-- `2.yaml` 종료 후 `goto: /routes/hub/1.yaml`로 이동해 자유 탐문 라운드에 진입합니다.
+- `0.yaml`에서 평온한 콜드 오픈을 제시하고 `1.yaml`로 연결합니다.
+- `1.yaml`은 4인 갈등 -> 사건 발생(하루오 사망 + 다잉 메시지)까지 담당하고, `2.yaml`은 초동 정리와 재구성으로 역할을 분리합니다.
+- `2.yaml` 종료 후 `goto: /routes/hub/1.yaml`로 이동해 자유 조사 라운드에 진입합니다.
 - 라운지 챕터 권장 흐름:
 - `all_done_check` -> 방문 완료 여부 분기
 - `route_select` -> 인물 루트 선택 또는 조기 정리 회의 선택
 - `early_exit_confirm`/`early_exit_penalty_branch` -> 조기 이동 패널티 적용
-- 인물 루트는 `routes/<suspect>/1.yaml`로 분리하고, 완료 후 라운지로 복귀합니다.
-- 인물 루트 공통 패턴:
+- 조사 라인은 `routes/<line>/1.yaml`로 분리하고, 완료 후 라운지로 복귀합니다.
+- 라인 공통 패턴:
 - `entry_guard -> intro -> first_probe -> retry_notice -> second_probe -> outro`
 - 재도전은 상태 bool 없이 scene 분리(1차 시도/재시도)로 1회 제한 UX를 구성할 수 있습니다.
 - 플레이어 노출 문구는 `탐문`, `대면`, `단서 정리실/조사 라운지` 톤을 유지합니다.
@@ -268,6 +278,8 @@ scenes:
 - 캐릭터 레이어(`.char-layer`)의 하단 경계는 다이얼로그 박스 상단 위치와 동일하게 맞춥니다.
 - 캐릭터는 레이어 하단(`bottom: 0`) 기준으로 배치되어, 대화창 위에 떠 보이지 않도록 고정됩니다.
 - 이미지 캐릭터(`.char-image`)는 `object-position: center bottom`으로 하단 정렬됩니다.
+- 화자 강조는 데스크톱/모바일 공통 규칙으로 동작합니다. 현재 화자는 소폭 scale + 높은 opacity로 표시하고, 비화자는 `speakerOrder` 순위에 따라 opacity를 단계적으로 낮춰 depth를 표현합니다.
+- 모바일 전용 화자 확대(`order===1`일 때만 scale 1, 나머지 0.7) 규칙은 제거되었습니다.
 - 다이얼로그가 수동 숨김 상태면 레이어 하단 inset을 `0`으로 강제해 캐릭터/스티커가 하단 전체 영역을 사용하고, 복원 시 inset 계산을 즉시 재개합니다.
 
 ## 8-6) 선택/입력 게이트 키보드 동작
@@ -277,6 +289,7 @@ scenes:
 - `input` 게이트는 입력값이 비어 있을 때 제출 버튼 라벨을 `모르겠다`로 표시하고, 값이 있으면 `확인`으로 표시합니다.
 - `input` 게이트는 마지막 오답 단계(`attemptCount >= errors.length`)에 도달하면 입력창에 `correct` 값을 자동으로 채웁니다.
 - 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 생략해 가상 키보드가 즉시 열리지 않도록 합니다.
+- `sticker.inputLockMs`가 설정된 스티커 액션이 실행되는 동안에는 `input` 제출/`choice` 선택이 잠기며, 지정 시간이 끝난 뒤 다음 액션으로 자동 진행됩니다.
 
 ## 8-7) Live2D 런타임 로딩 동작
 
@@ -318,6 +331,7 @@ scenes:
 - 레거시 키(`vn-engine-autosave`)는 URL 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
 - 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
+- 인벤토리 모달의 `초기화면 가기` 버튼은 URL 게임에서만 활성화되며, 해당 `sessionStorage` 플래그를 지우고 현재 인게임 BGM을 즉시 정지한 뒤 Start Gate를 다시 표시합니다.
 - 런처 인스펙터 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
@@ -350,6 +364,21 @@ scenes:
 - 수동 숨김 상태에서는 우측 하단에 작은 `대화창 열기` 버튼을 표시합니다.
 - `대화창 열기` 클릭 전까지는 전역 진행 입력(화면 클릭, `Enter`, `Space`)이 엔진 `handleAdvance()`로 전달되지 않습니다.
 
+## 8-13) 인벤토리 모달 동작
+
+- 인게임 HUD 우측에는 `설정` 텍스트 버튼 대신 가방 기호(원형 아이콘) 버튼을 표시합니다.
+- 버튼 클릭 시 탭 없는 단일 인벤토리 모달이 열립니다.
+- 모달 본문은 4열 고정 슬롯 그리드이며, 획득 아이템 수에 따라 row가 유동적으로 증가합니다.
+- 인벤토리 목록에는 `획득한 아이템(owned=true)`만 노출하며, 미획득/사용 완료(`owned=false`) 아이템 카드는 표시하지 않습니다.
+- 슬롯 그리드 영역만 스크롤하며, 하단 상세 패널/설정 영역은 고정해 항상 보이도록 구성합니다.
+- 슬롯을 누르면 하단 상세 패널에 소지 여부(`내 가방에 있음/없음`), 설명(`description`), 이미지(`image`)를 표시합니다.
+- 슬롯 우측 상단 배지는 `획득` 상태에서만 노출하고, 미획득/사용 완료 상태에서는 배지를 표시하지 않습니다.
+- 모달 하단에는 체크 설정 영역을 고정 배치하며 `배경음악 끄기` 토글을 제공합니다.
+- URL 게임에서는 모달 하단 `초기화면 가기` 버튼을 통해 Start Gate를 재진입할 수 있습니다. ZIP 실행 게임에서는 버튼을 비활성화합니다.
+- 토글 값은 게임별 키(`vn-engine-settings:<autosave-key>`)로 localStorage에 저장됩니다.
+- 끄기 상태에서는 현재 BGM을 즉시 정지하고, 켜면 현재 트랙 재생을 재시도합니다.
+- 모바일/작은 화면에서도 그리드만 스크롤되고 하단 상세/설정은 고정 표시됩니다.
+
 ## 9) 액션 목록
 
 - `bg`
@@ -366,11 +395,30 @@ scenes:
 - `input`
 - `set`
 - `add`
+- `get`
+- `use`
 - `choice`
 - `branch`
 - `ending`
 
-### 9-1) `choice` 옵션별 1회 유예
+### 9-1) `sticker.inputLockMs` 입력 잠금
+
+`sticker` 액션에 `inputLockMs`(ms)를 지정하면, 해당 스티커를 표시한 직후 지정 시간 동안 입력 제출을 잠글 수 있습니다.
+
+```yaml
+- sticker:
+    id: item_popup
+    image: item_tea_residue_report
+    width: 22
+    y: 30
+    inputLockMs: 500
+```
+
+실행 규칙:
+- 잠금 시간 동안 `input` 제출과 `choice` 선택 버튼이 비활성화됩니다.
+- 잠금 시간이 끝나면 현재 액션이 완료되고 다음 액션으로 자동 진행됩니다.
+
+### 9-2) `choice` 옵션별 1회 유예
 
 `choice` 액션은 잘못 누른 선택지를 "한 번만 봐주기" 동작으로 처리할 수 있습니다.
 
@@ -384,7 +432,7 @@ scenes:
 - 같은 옵션을 다시 클릭하면 원래 분기가 실행됩니다.
 - 유예 문구 우선순위: `options[].forgiveMessage` -> `choice.forgiveMessage` -> 엔진 기본 문구
 
-### 9-2) `choice`/`input`에서 캐릭터 노출
+### 9-3) `choice`/`input`에서 캐릭터 노출
 
 `say` 액션 없이도 `choice`/`input` 단계에서 캐릭터를 직접 노출할 수 있습니다.
 
@@ -397,6 +445,48 @@ scenes:
 - `char`가 있으면 해당 단계에서 캐릭터 노출/표정 동기화를 즉시 적용합니다.
 - `char`를 생략하면 직전 노출 상태를 유지합니다. (기존 스크립트와 호환)
 
+### 9-4) `say` 다중 인라인 속도 태그
+
+`say.text`에서 `<speed=숫자>...</speed>`를 여러 번 사용하면, 한 문장 내 구간별 타이핑 속도를 다르게 줄 수 있습니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "<speed=26>어이...</speed> <speed=54>그건 함정이야.</speed> <speed=90>지금 당장 멈춰!</speed>"
+```
+
+실행 규칙:
+- 태그 구간은 지정 속도로 타이핑됩니다.
+- 같은 문장에 여러 태그가 있으면 앞에서부터 순서대로 적용됩니다.
+- 태그 밖 텍스트는 `config.yaml.textSpeed` 기본 속도를 사용합니다.
+- 태그는 렌더 텍스트에서 제거되고 내용만 출력됩니다.
+
+### 9-5) `inventory` + `get/use` 아이템 상태
+
+아이템 상태는 `state`와 분리된 `inventory`로 선언합니다.
+
+```yaml
+inventory:
+  clue_note:
+    name: "현장 메모"
+    description: "탐문 중 확인한 단서를 정리한 메모다."
+    image: assets/bg/case_board.png
+    owned: false
+
+scenes:
+  intro:
+    actions:
+      - get: clue_note
+      - say:
+          text: "현장 메모를 챙겼다."
+      - use: clue_note
+```
+
+실행 규칙:
+- `get: <itemId>`는 해당 아이템을 가방에 추가(`true`)합니다.
+- `use: <itemId>`는 해당 아이템을 사용 처리(`false`)합니다.
+- `inventory.<itemId>.owned`는 기본 소지 여부이며 챕터 시작 시 기본값으로 반영됩니다.
+
 ## 10) 검증 규칙
 
 런타임 파서가 아래를 검증합니다.
@@ -405,6 +495,7 @@ scenes:
 - `goto` 대상(scene)이 존재하는지
 - `bg/sticker/music/sound/char`가 `assets`에 선언되어 있는지
 - `set/add/branch/input.saveAs/endingRules` 변수들이 `state`에 선언되어 있는지
+- `get/use` 아이템이 `inventory`에 선언되어 있는지
 - `defaultEnding`, `ending`, `endingRules[].ending`의 참조 정합성
 - 권장 검증: `goto` 대상(scene)을 `script`에도 포함했는지
 
@@ -458,6 +549,15 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 캐릭터 화자 강조를 데스크톱/모바일 공통 규칙으로 통일했습니다. 모바일 전용 화자 확대를 제거하고, 현재 화자는 소폭 전면(scale) + 비화자는 `speakerOrder` 기반 단계적 opacity로 depth를 표현하도록 UI 동작을 갱신했습니다.
+- 2026-02-27: `sticker.inputLockMs`(ms)를 추가해 스티커 표시 직후 지정 시간 동안 `input` 제출/`choice` 선택을 잠그고, 잠금 종료 후 다음 액션으로 자동 진행하도록 런타임·문서를 확장했습니다. Conan 샘플 아이템 획득 연출에도 적용했습니다.
+- 2026-02-27: 인벤토리 그리드의 고정 최소 슬롯(빈 칸 채움) 동작을 제거하고, 4열 고정 상태에서 획득 아이템 개수에 맞춰 row가 자동으로 늘어나는 동적 레이아웃으로 변경했습니다.
+- 2026-02-27: 인벤토리 목록 노출 기준을 조정해 `owned=true`(획득 상태) 아이템만 슬롯에 표시하도록 변경했습니다. 미획득/사용 완료(`owned=false`) 아이템 카드는 숨김 처리됩니다.
+- 2026-02-27: 인벤토리 모달 `초기화면 가기` 실행 시 Start Gate만 띄우던 동작을 보완해, 기존 인게임 BGM을 먼저 정지한 뒤 시작 화면 BGM으로 전환되도록 수정했습니다.
+- 2026-02-27: 인벤토리 모달 레이아웃을 조정해 스크롤을 슬롯 그리드에만 적용하고, 하단 상세 패널/설정 영역을 고정 표시하도록 개선했습니다. 슬롯 우측 상단 표시는 `획득` 배지(소지 중일 때만)로 단순화하고 미획득/사용 완료 상태의 X 표시를 제거했습니다.
+- 2026-02-27: 인벤토리 모달 하단에 `초기화면 가기` 버튼을 추가했습니다. URL 게임에서 버튼 클릭 시 Start Gate 세션 플래그(`vn-start-gate-session:<gameId>`)를 초기화하고, 같은 탭에서 시작 화면을 다시 띄우도록 동작을 확장했습니다. ZIP 실행 게임에서는 버튼을 비활성화합니다.
+- 2026-02-27: `inventory` 레이어(`base/chapter`)와 액션 `get/use`를 추가해 아이템 소지 상태를 `state`와 분리했습니다. 인게임 HUD의 가방 기호 버튼으로 여는 단일 인벤토리 모달(4x4 슬롯 그리드 + 하단 체크 설정)에서 아이템 소지 여부/상세(설명·이미지)를 조회할 수 있고, `배경음악 끄기` 토글을 게임별 설정(`vn-engine-settings:<autosave-key>`)으로 저장하도록 동작을 확장했습니다.
+- 2026-02-27: `say.text`에서 다중 `<speed=...>...</speed>` 구간을 순차 해석해 문장 내부 구간별 타이핑 속도를 다르게 적용하도록 런타임/문서를 갱신했습니다.
 - 2026-02-27: 모바일 환경(터치/coarse pointer)에서는 `input` 게이트 진입 시 입력창 자동 포커스를 생략해 가상 키보드가 즉시 열리지 않도록 동작을 조정했습니다.
 - 2026-02-27: `config.yaml.startScreen.music`(시작 화면 전용 BGM)과 `config.yaml.endingScreen.image`(엔딩 오버레이 배경)를 추가했습니다. ZIP 시작 화면 프리뷰에서도 로컬 음악 경로를 blob으로 변환해 재생하도록 동작을 확장했습니다.
 - 2026-02-27: `prebuild`에서 `public/sitemap.xml`을 manifest(`games[].path`) 기준으로 자동 생성하도록 확장했습니다. 동시에 Start Gate(게임 본 로딩 전) 단계에서도 `config.yaml.seo`를 즉시 적용해 `/game-list/:gameId` 진입 직후 메타가 반영되도록 동작을 갱신했습니다.

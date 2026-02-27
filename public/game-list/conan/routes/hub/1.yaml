@@ -8,7 +8,9 @@ script:
   - scene: early_exit_penalty_3
   - scene: early_exit_penalty_2
   - scene: early_exit_penalty_1
-  - scene: move_to_conclusion
+  - scene: move_to_conclusion_gate
+  - scene: move_to_conclusion_ready
+  - scene: move_to_conclusion_blocked
 
 scenes:
   lounge_intro:
@@ -21,7 +23,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "(단서를 정리할 시간은 짧다... 아직 안 만난 사람부터 바로 들어간다.)"
+          text: "<speed=30>(시간은 짧다.)</speed> <speed=60>남은 건 사람과 거짓말을 분리하는 일.</speed>"
       - goto: all_done_check
 
   all_done_check:
@@ -45,25 +47,25 @@ scenes:
           trust: 1
       - say:
           char: 코난.serious
-          text: "좋아, 네 명 전원 확인 완료. 이제 집합 추리로 한 번에 끝낸다."
-      - goto: move_to_conclusion
+          text: "<speed=56>좋아, 네 라인 전부 확인 완료.</speed> <speed=34>이제 집합 추리로 끝낸다.</speed>"
+      - goto: move_to_conclusion_gate
 
   route_select:
     actions:
       - say:
           char: 코난.think
-          text: "다음 대면 대상을 고르자. 누가 먼저 균열을 보일까?"
+          text: "<speed=34>다음 타깃을 고르자.</speed> <speed=58>누구부터 균열이 날까?</speed>"
       - choice:
           key: route_select
-          prompt: "다음으로 누구를 먼저 상대할까?"
+          prompt: "다음으로 어디를 조사할까?"
           options:
-            - text: "신이치랑 얘기한다"
+            - text: "신이치를 대면한다"
               goto: /routes/shinichi/1.yaml
-            - text: "레이코를 먼저 본다"
+            - text: "레이코를 압박한다"
               goto: /routes/reiko/1.yaml
-            - text: "켄지를 다시 붙잡는다"
+            - text: "켄지 동선을 검증한다"
               goto: /routes/kenji/1.yaml
-            - text: "하루오에게 확인한다"
+            - text: "하루오의 유품/다잉메시지를 조사한다"
               goto: /routes/haruo/1.yaml
             - text: "지금 정리 회의로 간다"
               goto: early_exit_confirm
@@ -72,7 +74,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "지금 바로 결론으로 가면 반박에 취약해진다. 그래도 밀어붙일까?"
+          text: "<speed=30>지금 결론으로 가면 반박에 취약해진다.</speed> <speed=62>그래도 밀어붙일까?</speed>"
       - choice:
           key: early_exit_confirm
           prompt: "지금 바로 정리 회의로 넘어갈까?"
@@ -106,8 +108,8 @@ scenes:
           final_confidence: -1
       - say:
           char: 코난.think
-          text: "한 명을 비워 둔 채 진행한다. 설득력은 한 단계 떨어진다."
-      - goto: move_to_conclusion
+          text: "<speed=30>한 라인을 비우고 간다.</speed> <speed=54>설득력은 한 단계 낮아진다.</speed>"
+      - goto: move_to_conclusion_gate
 
   early_exit_penalty_2:
     actions:
@@ -116,8 +118,8 @@ scenes:
           final_confidence: -2
       - say:
           char: 코난.think
-          text: "절반만 확인하고 가면 결론은 흔들릴 수밖에 없어."
-      - goto: move_to_conclusion
+          text: "<speed=28>절반만 확인한 결론은 약해.</speed> <speed=60>반격 한 번에 무너질 수 있어.</speed>"
+      - goto: move_to_conclusion_gate
 
   early_exit_penalty_1:
     actions:
@@ -128,12 +130,34 @@ scenes:
           mistake_count: 1
       - say:
           char: 코난.think
-          text: "(너무 성급했다... 지금 상태론 반박 한 번이면 전부 무너진다.)"
-      - goto: move_to_conclusion
+          text: "<speed=24>(너무 빨랐어...)</speed> <speed=58>지금 상태론 진실보다 추측이 많다.</speed>"
+      - goto: move_to_conclusion_gate
 
-  move_to_conclusion:
+  move_to_conclusion_gate:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: item_tea_residue_report_owned
+                    op: eq
+                    value: true
+                  - var: item_reiko_statement_note_owned
+                    op: eq
+                    value: true
+              goto: move_to_conclusion_ready
+          default: move_to_conclusion_blocked
+
+  move_to_conclusion_ready:
     actions:
       - say:
           char: 코난
-          text: "좋아, 전원 집합. 이제 진실을 한 줄로 꿰맨다."
+          text: "<speed=50>전원 집합.</speed> <speed=34>이제 마지막 줄을 완성한다.</speed>"
       - goto: /conclusion/1.yaml
+
+  move_to_conclusion_blocked:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=28>아직 못 간다.</speed> <speed=34>가방에 '찻잔 반응 시료 카드'와 '레이코 진술 메모'가 모두 있어야 집합 추리를 열 수 있어.</speed>"
+      - goto: route_select

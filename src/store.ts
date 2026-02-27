@@ -50,6 +50,7 @@ type VNState = {
   routeVars: Record<string, RouteVarValue>;
   routeHistory: RouteHistoryEntry[];
   resolvedEndingId?: string;
+  inventory: Record<string, boolean>;
   busy: boolean;
   waitingInput: boolean;
   isFinished: boolean;
@@ -79,6 +80,9 @@ type VNState = {
   setRouteVars: (routeVars: Record<string, RouteVarValue>) => void;
   patchRouteVars: (routeVars: Record<string, RouteVarValue>) => void;
   addRouteVars: (routeVars: Record<string, number>) => void;
+  setInventory: (inventory: Record<string, boolean>) => void;
+  patchInventory: (inventory: Record<string, boolean>) => void;
+  setInventoryItem: (itemId: string, owned: boolean) => void;
   pushRouteHistory: (entry: RouteHistoryEntry) => void;
   clearRouteHistory: () => void;
   setResolvedEndingId: (endingId?: string) => void;
@@ -146,6 +150,7 @@ export const useVNStore = create<VNState>((set) => ({
   inputGate: initialInputGate,
   choiceGate: initialChoiceGate,
   routeVars: {},
+  inventory: {},
   routeHistory: [],
   resolvedEndingId: undefined,
   busy: false,
@@ -176,6 +181,7 @@ export const useVNStore = create<VNState>((set) => ({
       inputGate: initialInputGate,
       choiceGate: initialChoiceGate,
       routeVars: state.routeVars,
+      inventory: state.inventory,
       routeHistory: state.routeHistory,
       resolvedEndingId: state.resolvedEndingId,
       effect: undefined,
@@ -253,6 +259,21 @@ export const useVNStore = create<VNState>((set) => ({
       }
       return { routeVars: next };
     }),
+  setInventory: (inventory) => set({ inventory }),
+  patchInventory: (inventory) =>
+    set((state) => ({
+      inventory: {
+        ...state.inventory,
+        ...inventory,
+      },
+    })),
+  setInventoryItem: (itemId, owned) =>
+    set((state) => ({
+      inventory: {
+        ...state.inventory,
+        [itemId]: owned,
+      },
+    })),
   pushRouteHistory: (entry) => set((state) => ({ routeHistory: [...state.routeHistory, entry] })),
   clearRouteHistory: () => set({ routeHistory: [] }),
   setResolvedEndingId: (resolvedEndingId) => set({ resolvedEndingId }),
@@ -273,6 +294,7 @@ export const useVNStore = create<VNState>((set) => ({
       inputGate: initialInputGate,
       choiceGate: initialChoiceGate,
       routeVars: {},
+      inventory: {},
       routeHistory: [],
       resolvedEndingId: undefined,
       effect: undefined,

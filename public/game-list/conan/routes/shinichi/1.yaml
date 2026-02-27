@@ -40,7 +40,7 @@ scenes:
           char: 신이치.cold
           with:
             - 코난.think
-          text: "같은 질문은 시간 낭비입니다. 다른 대상부터 확인하시죠."
+          text: "<speed=34>같은 질문은 의미 없습니다.</speed> <speed=58>다른 라인을 보시죠.</speed>"
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -63,21 +63,18 @@ scenes:
           char: 신이치.cold
           with:
             - 코난.serious
-          text: "기억은 감정보다 숫자가 정확합니다."
+          text: "<speed=34>저는 순서표를 작성했을 뿐입니다.</speed> <speed=28>피해자 컵 번호는 2번.</speed>"
       - say:
           char: 코난.serious
-          text: "좋아. 그 숫자, 지금 이 자리에서 검증한다."
-      - say:
-          char: 신이치.cold
-          text: "피해자 잔은 2번이었습니다."
+          text: "<speed=54>좋아.</speed> <speed=34>숫자는 거짓말을 덜 한다.</speed>"
 
   first_input:
     actions:
       - input:
-          prompt: "신이치가 말한 피해자 잔 번호는? (1~4)"
+          prompt: "신이치 기록 기준, 피해자 컵 번호는? (1~4)"
           correct: "2"
           errors:
-            - "1~4 중 하나야. 신이치는 분명 숫자로 말했다."
+            - "1~4 중 하나야. 신이치는 분명 숫자를 말했다."
             - "힌트: 두 번째 잔."
             - "정답은 2."
           routes:
@@ -105,24 +102,19 @@ scenes:
   first_hit_review:
     actions:
       - say:
-          text: "챙-! 숫자 단서 하나가 용의 범위를 좁힌다."
+          text: "<speed=72>챙-!</speed> <speed=38>숫자 단서가 용의 범위를 줄인다.</speed>"
       - say:
           char: 코난.serious
           with:
             - 신이치.cold
-          text: "좋아, 2번으로 고정한다. 이 진술을 지금 못 박을까?"
-      - say:
-          char: 신이치.cold
-          with:
-            - 코난.serious
-          text: "숫자와 일치합니다. 다만 확정은 당신이 하시죠."
+          text: "<speed=48>2번으로 고정한다.</speed> <speed=34>이 진술, 확정할까?</speed>"
       - choice:
           key: shinichi_first_commit
-          prompt: "1차 판단. 2번 진술을 확정할까?"
+          prompt: "1차 판단을 확정할까?"
           options:
-            - text: "그래, 2번으로 잠근다"
+            - text: "확정한다"
               goto: success_line
-            - text: "잠깐, 한 번 더 확인한다"
+            - text: "한 번 더 확인한다"
               goto: retry_notice
 
   first_miss_review:
@@ -131,19 +123,19 @@ scenes:
           char: 코난.think
           with:
             - 신이치.cold
-          text: "방금 답은 숫자 흐름이 안 맞아. 이대로 밀어붙일 거야?"
+          text: "<speed=28>숫자 흐름이 안 맞아.</speed> <speed=60>이 답으로 밀면 시간만 잃는다.</speed>"
       - say:
           char: 신이치.cold
           with:
             - 코난.think
-          text: "틀린 숫자를 고집하면 시간만 잃습니다."
+          text: "<speed=30>오답입니다.</speed> <speed=54>재확인하시죠.</speed>"
       - choice:
           key: shinichi_first_rebuttal
           prompt: "이 오답을 어떻게 처리할까?"
           options:
             - text: "틀렸다. 다시 묻는다"
               goto: retry_notice
-            - text: "아직 맞다고 본다. 다시 검증한다"
+            - text: "아직 맞다고 본다"
               add:
                 trust: -1
               goto: retry_notice
@@ -152,22 +144,17 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "(좋아, 다시 간다. 감으로 찍지 말고 숫자만 봐.)"
-      - say:
-          char: 신이치.cold
-          with:
-            - 코난.think
-          text: "두 번째 질문이 마지막입니다."
+          text: "<speed=26>(좋아, 다시.)</speed> <speed=58>감 말고 숫자로 간다.</speed>"
       - goto: second_input
 
   second_input:
     actions:
       - input:
-          prompt: "재확인: 피해자 잔 번호는? (1~4)"
+          prompt: "재확인: 피해자 컵 번호는? (1~4)"
           correct: "2"
           errors:
             - "마지막 확인이야. 숫자 하나만 떠올려."
-            - "힌트는 그대로 2."
+            - "힌트는 2."
             - "정답은 2."
           routes:
             - equals: "2"
@@ -199,14 +186,14 @@ scenes:
           char: 코난.serious
           with:
             - 신이치.cold
-          text: "좋아, 다시 2번이다. 이걸 최종 확정한다. 맞지?"
+          text: "<speed=56>좋아, 또 2번.</speed> <speed=34>최종 단서로 잠근다.</speed>"
       - choice:
           key: shinichi_second_commit
           prompt: "최종 확정할까?"
           options:
-            - text: "확정한다"
+            - text: "확정"
               goto: success_line
-            - text: "아직 흔들린다. 보류한다"
+            - text: "보류"
               add:
                 final_confidence: -1
               goto: fail_line
@@ -217,14 +204,14 @@ scenes:
           char: 코난.think
           with:
             - 신이치.cold
-          text: "또 빗나갔어. 이 숫자 해석은 더 못 버텨."
+          text: "<speed=28>또 빗나갔어.</speed> <speed=60>숫자 라인은 더 못 버틴다.</speed>"
       - choice:
           key: shinichi_second_rebuttal
           prompt: "지금 선택은?"
           options:
-            - text: "여기서 접고 돌아간다"
+            - text: "여기서 접는다"
               goto: fail_line
-            - text: "그래도 우긴다"
+            - text: "끝까지 우긴다"
               add:
                 trust: -1
               goto: fail_line
@@ -233,19 +220,14 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "좋아, 잔 순서가 잠겼다. 이 순서를 아는 사람만 범위에 남는다."
-      - say:
-          char: 신이치.cold
-          with:
-            - 코난.serious
-          text: "이제 숫자 밖의 거짓말만 걷어내면 됩니다."
+          text: "<speed=50>좋아, 잔 순서가 잠겼다.</speed> <speed=34>범위가 확 줄었어.</speed>"
       - goto: outro
 
   fail_line:
     actions:
       - say:
           char: 코난.think
-          text: "(잔 순서가 아직 흐려... 이 상태론 반박 하나도 막기 어렵다.)"
+          text: "<speed=24>(잔 순서가 흐리다...)</speed> <speed=58>결론에서 반격을 맞을 수 있어.</speed>"
       - add:
           final_confidence: -1
       - goto: outro
@@ -254,5 +236,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "신이치 대면 끝. 라운지로 돌아가자."
+          text: "<speed=50>신이치 라인 종료.</speed> <speed=34>라운지로 복귀한다.</speed>"
       - goto: /routes/hub/1.yaml

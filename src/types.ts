@@ -47,6 +47,7 @@ export type StickerPlacement = {
   opacity?: number;
   zIndex?: number;
   enter?: StickerEnterEffect | StickerEnterOptions;
+  inputLockMs?: number;
 };
 
 export type StickerAction = {
@@ -110,6 +111,13 @@ export type ConditionNode =
 export type StateSetMap = Record<string, RouteVarValue>;
 export type StateAddMap = Record<string, number>;
 
+export type InventoryItem = {
+  name: string;
+  description?: string;
+  image?: string;
+  owned: boolean;
+};
+
 export type InputRoute = {
   equals: string;
   set?: StateSetMap;
@@ -135,6 +143,14 @@ export type SetAction = {
 
 export type AddAction = {
   add: StateAddMap;
+};
+
+export type GetAction = {
+  get: string;
+};
+
+export type UseAction = {
+  use: string;
 };
 
 export type ChoiceOption = {
@@ -186,6 +202,8 @@ export type Action =
   | InputAction
   | SetAction
   | AddAction
+  | GetAction
+  | UseAction
   | ChoiceAction
   | BranchAction
   | EndingAction
@@ -271,6 +289,9 @@ export type GameData = {
   };
   state?: {
     defaults: Record<string, RouteVarValue>;
+  };
+  inventory?: {
+    defaults: Record<string, InventoryItem>;
   };
   endings?: Record<string, EndingDefinition>;
   endingRules?: EndingRule[];

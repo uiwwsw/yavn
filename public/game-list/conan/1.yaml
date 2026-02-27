@@ -1,143 +1,92 @@
 script:
-  - scene: arrival_at_ryokan
-  - scene: guest_introductions
-  - scene: contract_fracture
-  - scene: last_service
+  - scene: meeting_start
+  - scene: four_way_tension
+  - scene: service_order
   - scene: incident_trigger
-  - scene: lockdown_aftershock
+  - scene: death_confirm
+  - scene: contradiction_hook
   - scene: chapter_handoff
 
 scenes:
-  arrival_at_ryokan:
+  meeting_start:
     actions:
       - bg: tea_room
-      - char:
-          id: 란
-          position: left
-      - char:
-          id: 코난
-          position: center
-      - char:
-          id: 코고로
-          position: right
-          emotion: proud
-      - say:
-          char: 란
-          with:
-            - 코난
-            - 코고로.proud
-          text: "차 향이 정말 좋다... 다 같이 이렇게 모인 건 진짜 오랜만이네."
-      - say:
-          char: 코고로.proud
-          with:
-            - 란
-          text: "오늘은 이 모리 코고로님이 특별 초청 손님이다! 하하!"
-      - say:
-          char: 코난.think
-          with:
-            - 란
-            - 코고로.proud
-          text: "(겉보기엔 평온해... 하지만 이런 평화는 보통 오래가지 않아.)"
-
-  guest_introductions:
-    actions:
-      - bg: tea_room
+      - music: reasoning
       - char:
           id: 켄지
           position: left
+          emotion: angry
       - char:
           id: 신이치
           position: center
-      - char:
-          id: 레이코
-          position: right
-      - say:
-          char: 레이코
-          with:
-            - 켄지
-            - 신이치
-          text: "오늘 모임은 공동 블렌드 공개와 계약 최종 확인을 함께 진행하는 자리예요."
-      - say:
-          char: 켄지
-          with:
-            - 레이코
-            - 신이치
-          text: "판매 일정만 맞으면 바로 출시야. 첫 잔은 순서대로 같이 가자고."
-      - say:
-          char: 신이치.cold
-          with:
-            - 레이코
-            - 켄지
-          text: "좋습니다. 문서 대조가 끝나는 즉시, 정한 순서대로 시음을 진행하죠."
-      - char:
-          id: 하루오
-          position: right
-      - say:
-          char: 하루오
-          with:
-            - 코난
-          text: "...주전자 온도는 맞춰뒀습니다. 지시만 주시면 바로 올리겠습니다."
-
-  contract_fracture:
-    actions:
-      - music: reasoning
-      - char:
-          id: 신이치
-          position: right
           emotion: cold
       - char:
           id: 레이코
-          position: left
+          position: right
           emotion: nervous
-      - char:
-          id: 켄지
-          position: center
-          emotion: angry
-      - sound: notebook_flip
-      - say:
-          char: 켄지.angry
-          with:
-            - 레이코.nervous
-            - 신이치.cold
-          text: "계약서 누가 건드렸지? 소유권 조항이 왜 이렇게 바뀌어 있어!"
       - say:
           char: 레이코.nervous
-          with:
-            - 켄지.angry
-          text: "저도 지금 처음 봤어요... 연구 노트 날짜하고 전부 어긋나 있어요."
+          text: "<speed=42>오늘은 마지막 시제품 확인과 계약 확정 자리예요.</speed> <speed=30>실수 없이 끝내고 싶어요.</speed>"
+      - say:
+          char: 켄지.angry
+          text: "<speed=56>실수는 이미 나왔어.</speed> <speed=34>누가 계약 조항을 몰래 바꿨지?</speed>"
       - say:
           char: 신이치.cold
-          with:
-            - 레이코.nervous
-          text: "고성은 그만하시죠. 감정보다 기록이 먼저입니다."
-      - say:
-          char: 코난.think
-          text: "(다툼은 모두의 시선을 잡아끌었고... 누군가는 그 틈을 기다리고 있었어.)"
+          text: "<speed=34>감정 대신 순서.</speed> <speed=28>먼저 시음, 다음 서명, 마지막 대조.</speed>"
 
-  last_service:
+  four_way_tension:
     actions:
-      - bg: tea_room
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
       - char:
           id: 코난
           position: center
           emotion: think
       - char:
-          id: 하루오
-          position: right
-          emotion: scared
-      - say:
-          text: "주전자 뚜껑을 한 번... 그리고 또 한 번 눌렀다."
-      - say:
-          text: "챙-! 그 동작은 지나치게 또렷했다."
+          id: 란
+          position: left
+          emotion: worried
       - say:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "...바로 그 직후였어. 누가 손수건으로 피해자 찻잔 가장자리를 훑고 빠졌어."
+          text: "<speed=32>...4잔 준비했습니다.</speed> <speed=26>번호표는 1, 2, 3, 4 순서입니다.</speed>"
+      - say:
+          char: 란.worried
+          text: "<speed=40>분위기가 너무 날카로워...</speed> <speed=28>축하 자리 맞지?</speed>"
       - say:
           char: 코난.think
-          text: "(뚜껑 두 번, 잔 가장자리... 둘 다 단서처럼 보이지만 하나는 분명 미끼야.)"
-      - wait: 360
+          text: "<speed=26>(네 사람의 시선이 서로를 찌른다.)</speed> <speed=58>누군가는 이미 결심했어.</speed>"
+
+  service_order:
+    actions:
+      - sound: notebook_flip
+      - char:
+          id: 신이치
+          position: center
+          emotion: cold
+      - char:
+          id: 하루오
+          position: right
+          emotion: scared
+      - say:
+          char: 신이치.cold
+          with:
+            - 하루오.scared
+          text: "<speed=34>피해자 후보 컵은 2번.</speed> <speed=30>기록표에 적습니다.</speed>"
+      - sound: cup_clink
+      - say:
+          char: 하루오.scared
+          with:
+            - 신이치.cold
+          text: "<speed=30>...2번 잔, 중앙에 놓겠습니다.</speed> <speed=44>뚜껑은 열지 마세요.</speed>"
+      - say:
+          text: "<speed=24>주전자 뚜껑이</speed> <speed=58>한 번,</speed> <speed=86>그리고 다시 한 번</speed> <speed=34>눌렸다.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=24>(두 번?</speed> <speed=62>보여 주기식 동작이야.)</speed>"
 
   incident_trigger:
     actions:
@@ -145,26 +94,28 @@ scenes:
       - sound: scream
       - effect: flash
       - effect: darken
+      - effect: shake
+      - sound: thunder
       - char:
           id: 란
           position: left
           emotion: surprised
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
       - say:
           char: 란.surprised
           with:
             - 코난.serious
-          text: "꺄악! 안쪽에서 누가 쓰러졌어!"
-      - sound: thunder
+          text: "<speed=84>꺄악!</speed> <speed=44>하루오 씨가 쓰러졌어!</speed>"
       - say:
-          char: 코고로.angry
-          with:
-            - 란.surprised
-            - 코난.serious
-          text: "전원 정지! 찻상, 문고리, 잔... 아무것도 건드리지 마!"
+          char: 코난.serious
+          text: "<speed=80>모두 멈춰!</speed> <speed=34>컵과 탁자에서 떨어져!</speed>"
 
-  lockdown_aftershock:
+  death_confirm:
     actions:
-      - bg: ryokan_hall
+      - bg: tea_room
       - sticker:
           id: tape_lock
           image: police_tape
@@ -177,32 +128,66 @@ scenes:
           enter:
             effect: wipeCenterX
             duration: 420
+      - char:
+          id: 코고로
+          position: right
+          emotion: angry
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
       - say:
-          char: 코난.serious
-          with:
-            - 코고로.angry
-          text: "문은 안에서 잠겼고 창도 봉쇄돼 있어. 겉보기엔 완벽한 밀실이야."
+          text: "<speed=34>피해자는</speed> <speed=72>하루오 씨.</speed> <speed=34>현장에서 사망이 확인됐다.</speed>"
       - say:
           char: 코고로.angry
           with:
             - 코난.serious
-          text: "좋아, 다들 들었지? 지금부터는 내 지시에 따라 움직인다!"
-      - add:
-          deduction_score: 1
+          text: "<speed=40>피해자 하루오, 맥박 없음...</speed> <speed=72>사망 확인이다.</speed> <speed=34>이제부터 전원 현장 이탈 금지!</speed>"
+      - sticker:
+          id: dying_hint
+          image: clue_lid
+          x: 51
+          y: 44
+          width: 58
+          anchorX: center
+          anchorY: center
+          enter:
+            effect: blurIn
+            duration: 360
+      - say:
+          char: 코난.serious
+          text: '<speed=34>컵받침에 젖은 손가락으로</speed> <speed=72>"2R"</speed> <speed=34>이 남아 있어.</speed>'
+      - say:
+          char: 코난.think
+          text: "<speed=24>(다잉 메시지다...)</speed> <speed=30>하지만 너무 깔끔해.</speed> <speed=62>누군가 손을 댔다.</speed>"
+      - clearSticker:
+          id: dying_hint
+          leave:
+            effect: fadeOut
+            duration: 220
       - clearSticker:
           id: tape_lock
           leave:
             effect: wipeRight
             duration: 260
+      - add:
+          deduction_score: 1
+
+  contradiction_hook:
+    actions:
+      - bg: case_board
       - effect: zoom
       - say:
+          char: 코난.serious
+          text: "<speed=42>모순은 두 개.</speed> <speed=30>뚜껑 두 번과 젖은 가장자리.</speed> <speed=62>하나는 연막이고 하나는 살인 수단이다.</speed>"
+      - say:
           char: 코난.think
-          text: "(하지만 정답은 문이 아니야... 찻잔 위에 남은 흔적이 말해 준다.)"
+          text: '<speed=24>(그리고 "2R"...)</speed> <speed=62>진짜 유언인지, 가짜 각본인지 지금부터 가른다.</speed>'
 
   chapter_handoff:
     actions:
       - effect: pulse
       - say:
           char: 코난
-          text: "좋아, 초동 정리 시작이다. 시간선부터 다시 맞춰 보자."
+          text: "<speed=52>초동 정리 시작.</speed> <speed=34>시간선부터 고정한다.</speed>"
       - goto: ./2.yaml

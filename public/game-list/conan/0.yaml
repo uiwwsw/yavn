@@ -1,16 +1,12 @@
 script:
-  - scene: trip_open
-  - scene: ryokan_welcome
-  - scene: tea_invite
-  - scene: tasting_room_prelude
-  - scene: weather_shift
-  - scene: rain_hook
-  - scene: object_flash
-  - scene: blackout_title
+  - scene: calm_arrival
+  - scene: tea_joke
+  - scene: host_preview
+  - scene: tension_seed
   - scene: handoff
 
 scenes:
-  trip_open:
+  calm_arrival:
     actions:
       - bg: ryokan_hall
       - char:
@@ -26,108 +22,62 @@ scenes:
       - sound: door
       - say:
           char: 란
-          with:
-            - 코난
-            - 코고로.proud
-          text: "와... 공기 진짜 좋다. 오랜만에 사건 생각 안 하고 쉬는 날 같아."
+          text: "<speed=54>와아, 공기 진짜 좋다.</speed> <speed=34>오늘은 정말 쉬는 여행 같아.</speed>"
       - say:
           char: 코고로.proud
-          with:
-            - 란
-          text: "하하! 오늘은 의뢰도 추리도 없다! 명탐정 모리 코고로는 귀빈 모드라고!"
+          text: "<speed=72>좋아!</speed> <speed=48>오늘만큼은 의뢰도 추리도 없다!</speed> <speed=82>명탐정 모리 코고로의 휴가다!</speed>"
       - say:
           char: 코난.think
-          with:
-            - 란
-            - 코고로.proud
-          text: "(이런 날일수록 이상하리만큼 조용해... 보통은 폭풍 전의 정적이지.)"
+          text: "<speed=30>(휴가라...)</speed> <speed=24>이상할 정도로 평온할 땐,</speed> <speed=60>항상 사건이 숨어 있었지.</speed>"
 
-  ryokan_welcome:
+  tea_joke:
     actions:
       - bg: tea_room
+      - sound: cup_clink
+      - say:
+          char: 코고로.proud
+          text: "<speed=64>이 향 좀 봐라!</speed> <speed=42>명탐정 코끝이 벌써 행복하다고 외치고 있다!</speed>"
+      - say:
+          char: 란
+          text: "<speed=52>아빠,</speed> <speed=36>오늘은 냄새만 맡고 조용히 계셔.</speed> <speed=68>제발!</speed>"
+      - say:
+          char: 코난
+          text: "<speed=48>그래도 차는 진짜 좋네.</speed> <speed=32>한 모금에 긴장이 풀릴 정도야.</speed>"
+
+  host_preview:
+    actions:
       - char:
           id: 켄지
           position: left
+          emotion: angry
+      - char:
+          id: 레이코
+          position: right
+          emotion: nervous
       - char:
           id: 신이치
           position: center
-      - char:
-          id: 레이코
-          position: right
+          emotion: cold
       - say:
-          char: 레이코
+          char: 레이코.nervous
           with:
-            - 켄지
-            - 신이치
-          text: "와주셔서 감사합니다. 오늘은 공동 블렌드 완성 기념 시음회이자 최종 확인 자리예요."
+            - 켄지.angry
+            - 신이치.cold
+          text: "<speed=42>환영합니다.</speed> <speed=30>잠시 뒤 공동 블렌드 시음회를 시작할게요.</speed>"
       - say:
-          char: 켄지
+          char: 켄지.angry
           with:
-            - 레이코
-            - 신이치
-          text: "계약 정리만 끝나면 바로 공개다. 오늘은 잡음 없이 가자고."
+            - 레이코.nervous
+            - 신이치.cold
+          text: "<speed=58>순서만 지키면 된다.</speed> <speed=34>오늘 안에 계약서까지 끝낸다.</speed>"
       - say:
-          char: 신이치
+          char: 신이치.cold
           with:
-            - 켄지
-            - 레이코
-          text: "문서 대조 후 바로 시음으로 넘어가죠. 순서는 이미 정해뒀습니다."
+            - 켄지.angry
+            - 레이코.nervous
+          text: "<speed=36>기록표는 제가 들고 있습니다.</speed> <speed=28>숫자대로 진행하죠.</speed>"
 
-  tea_invite:
-    actions:
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - char:
-          id: 란
-          position: left
-      - char:
-          id: 레이코
-          position: right
-      - say:
-          char: 란
-          with:
-            - 코난.think
-            - 레이코
-          text: "아하, 그래서 다들 모인 거구나. 단순한 회의가 아니라 기념 시음회였네."
-      - say:
-          char: 레이코
-          with:
-            - 란
-            - 코난.think
-          text: "네. 료칸 주인님이 직접 코스를 준비하셨어요. 첫 잔은 축하용으로 맞춰뒀고요."
-      - say:
-          char: 코난.think
-          with:
-            - 란
-            - 레이코
-          text: "(축하 자리, 정해진 순서, 정교한 준비... 누군가 판을 만들기 딱 좋은 조건이야.)"
-
-  tasting_room_prelude:
-    actions:
-      - bg: tea_room
-      - char:
-          id: 하루오
-          position: right
-      - char:
-          id: 코고로
-          position: left
-          emotion: proud
-      - sound: cup_clink
-      - say:
-          char: 하루오
-          with:
-            - 코고로.proud
-          text: "...잔 준비됐습니다. 향부터 천천히 보시면 됩니다."
-      - say:
-          char: 코고로.proud
-          with:
-            - 하루오
-          text: "좋아! 오늘은 휴식이다, 휴식! 다들 긴장 풀고 한 잔씩 하자고!"
-      - wait: 260
-
-  weather_shift:
+  tension_seed:
     actions:
       - bg: rain_corridor
       - music: reasoning
@@ -139,55 +89,14 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "(해가 지자 폭우가 복도를 때렸어... 공기 자체가 무겁게 가라앉고 있어.)"
-
-  rain_hook:
-    actions:
-      - bg: rain_corridor
-      - say:
-          char: 코난.think
-          text: "(방금 전까지 웃고 있었어... 누가, 언제, 이 흐름을 비틀었지?)"
+          text: "<speed=28>(비가 빨리 온다...)</speed> <speed=24>밖은 막혔고,</speed> <speed=70>안은 사람으로 가득 찼다.</speed>"
       - say:
           char: 코난.serious
-          text: "(좋아. 지금부터 보이는 모든 장면, 한 프레임도 놓치지 않는다.)"
-      - wait: 320
-
-  object_flash:
-    actions:
-      - bg: tea_room
-      - effect: zoom
-      - sticker:
-          id: lid_cut
-          image: clue_cup
-          x: 50
-          y: 36
-          width: 62
-          anchorX: center
-          anchorY: center
-          enter:
-            effect: blurIn
-            duration: 380
-      - sound: cup_clink
-      - say:
-          text: "챙-! 단서가 머릿속에서 맞물리는 소리가 났다."
-      - say:
-          char: 코난.think
-          text: "(손수건, 뚜껑 두 번... 둘 중 하나는 반드시 누군가가 의도적으로 보여 준 미끼야.)"
-      - clearSticker:
-          id: lid_cut
-          leave:
-            effect: fadeOut
-            duration: 220
-      - wait: 280
-
-  blackout_title:
-    actions:
-      - effect: darken
-      - sound: scream
-      - wait: 220
-      - say:
-          text: "명탐정 코난 외전: 다실의 비밀"
+          text: "<speed=30>(좋아.)</speed> <speed=62>지금부터는 웃음소리 하나도 흘려듣지 않는다.</speed>"
 
   handoff:
     actions:
+      - effect: pulse
+      - say:
+          text: "<speed=60>폭우 속 시음회,</speed> <speed=34>그리고 곧 터질 비명.</speed>"
       - goto: /1.yaml
