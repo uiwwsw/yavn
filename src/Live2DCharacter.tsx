@@ -4,7 +4,7 @@ import { createModelView, startup, Ticker } from 'easy-cl2d';
 import { markLive2DLoadError, markLive2DLoadReady } from './live2dLoadTracker';
 import type { CharacterSlot, Position } from './types';
 
-const CUBISM_CORE_SCRIPT_URL = '/vendor/live2d/live2dcubismcore.min.js?v=5-r.5-beta.3.1';
+const CUBISM_CORE_SCRIPT_URL = '/third-party/live2d/live2dcubismcore.min.js?v=5-r.5-beta.3.1';
 
 type Live2DCoreRuntime = {
   Live2DCubismCore?: unknown;

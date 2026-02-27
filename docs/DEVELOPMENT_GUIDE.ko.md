@@ -253,7 +253,7 @@ scenes:
 
 - 캐릭터 자산 경로가 `*.json`(`model3.json` 포함)이면 Live2D 렌더러를 사용합니다.
 - 런타임은 `easy-cl2d`와 공식 `live2dcubismcore.min.js`를 사용합니다.
-- Cubism Core는 `public/vendor/live2d/live2dcubismcore.min.js`에서 로드합니다.
+- Cubism Core는 `public/third-party/live2d/live2dcubismcore.min.js`에서 로드합니다.
 - 코어 스크립트 로드 URL은 `live2dcubismcore.min.js?v=5-r.5-beta.3.1`로 고정해 브라우저 캐시로 인한 구버전 코어 잔존을 방지합니다.
 - Cubism Core v53에서 `drawables.renderOrders`가 비어 있고 `model.getRenderOrders()`만 존재하는 경우를 런타임 호환 패치로 보정합니다.
 - Live2D 중앙 배치에서 CSS `transform` 기반 오프셋을 제거해 포인터 좌표(클릭/드래그 시 시선 반응) 불일치를 완화합니다.
@@ -425,6 +425,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 외부 런타임 자산 경로를 명확히 하기 위해 Live2D 코어 디렉터리를 `public/vendor/live2d`에서 `public/third-party/live2d`로 이동하고, 로더/문서 참조 경로를 함께 정리.
 - 2026-02-27: 다이얼로그 수동 숨김/복원 시 캐릭터·스티커 레이어 하단 안전 여백(`stickerSafeInset`) 계산을 즉시 동기화하도록 보정하고, 레이어 `bottom` 전환 애니메이션을 추가.
 - 2026-02-27: 인게임 다이얼로그에 수동 `숨기기/대화창 열기` 버튼을 추가하고, 수동 숨김 상태에서는 클릭/`Enter`/`Space` 진행 입력을 차단하도록 동작을 갱신.
 - 2026-02-27: `config.yaml.ui.template`(`cinematic-noir` | `neon-grid` | `paper-stage`) 전역 템플릿 옵션을 추가하고, 챕터 로딩/다이얼로그/HOLD TO SKIP/선택·입력 게이트/엔딩 크레딧을 CSS 토큰 기반 3종 테마로 재구성했습니다. 템플릿 미지정 시 기본값 `cinematic-noir`를 사용하도록 동작을 문서화했습니다.
