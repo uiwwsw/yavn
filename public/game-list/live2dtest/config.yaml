@@ -5,3 +5,5 @@ version: "1.0.0"
 textSpeed: 40
 autoSave: true
 clickToInstant: true
+ui:
+  template: neon-grid

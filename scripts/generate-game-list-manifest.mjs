@@ -150,12 +150,16 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
     }
   }
 
+  const startScreen = isRecord(config?.startScreen) ? config.startScreen : undefined;
+  const startScreenImage = normalizeText(startScreen?.image);
+  const launcherThumbnail = normalizeText(launcher?.thumbnail);
+
   return {
     name: displayName ?? toTitle(gameId),
     author: resolveAuthorName(config?.author),
     version: normalizeText(config?.version),
     summary: normalizeText(launcher?.summary),
-    thumbnail: toGameAssetPath(gameId, normalizeText(launcher?.thumbnail)),
+    thumbnail: toGameAssetPath(gameId, launcherThumbnail ?? startScreenImage),
     tags: normalizeTagList(launcher?.tags),
     chapterCount: chapterYamlPaths.length,
   };

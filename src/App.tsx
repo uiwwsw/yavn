@@ -2,8 +2,10 @@ import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMe
 import {
   completeVideoCutscene,
   handleAdvance,
+  loadUrlStartScreenPreview,
   loadGameFromUrl,
   loadGameFromZip,
+  loadZipStartScreenPreview,
   restartFromBeginning,
   resetVideoSkipProgress,
   revealVideoSkipGuide,
@@ -16,7 +18,7 @@ import {
 import { Live2DCharacter } from './Live2DCharacter';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
-import type { AuthorMetaObject, CharacterSlot, Position } from './types';
+import type { AuthorMetaObject, CharacterSlot, Position, StartButtonPosition } from './types';
 import type { CSSProperties, SyntheticEvent } from 'react';
 
 type GameListManifestEntry = {
@@ -37,9 +39,32 @@ type GameListManifest = {
   games: GameListManifestEntry[];
 };
 
+type StartGateState =
+  | {
+      kind: 'url';
+      gameUrl: string;
+      sessionKey: string;
+      imageUrl?: string;
+      startButtonText: string;
+      buttonPosition: StartButtonPosition;
+      showLoadButton: boolean;
+    }
+  | {
+      kind: 'zip';
+      file: File;
+      imageUrl?: string;
+      previewBlobUrl?: string;
+      startButtonText: string;
+      buttonPosition: StartButtonPosition;
+      showLoadButton: false;
+    };
+
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
+const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
 const ALL_TAG_FILTER = '__all';
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
+const DEFAULT_START_BUTTON_TEXT = '시작하기';
+const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -86,6 +111,37 @@ function parseGameIdFromPath(pathValue: string): string | undefined {
     return undefined;
   }
   return decodeURIComponent(match[1]);
+}
+
+function resolveStartGateSessionKey(gameId: string): string {
+  return `${START_GATE_SESSION_PREFIX}${gameId}`;
+}
+
+function hasStartGateSessionFlag(sessionKey: string): boolean {
+  try {
+    return sessionStorage.getItem(sessionKey) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function markStartGateSession(sessionKey: string): void {
+  try {
+    sessionStorage.setItem(sessionKey, '1');
+  } catch {
+    // Ignore sessionStorage failures and continue.
+  }
+}
+
+function resolveStartGateImageUrl(image: string | undefined, baseUrl: string): string | undefined {
+  if (!image) {
+    return undefined;
+  }
+  try {
+    return new URL(image, baseUrl).toString();
+  } catch {
+    return image;
+  }
 }
 
 function normalizeChapterCount(value: unknown): number | undefined {
@@ -264,6 +320,7 @@ export default function App() {
     inputGate,
     choiceGate,
     resolvedEndingId,
+    uiTemplate,
   } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
@@ -274,6 +331,8 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTag, setActiveTag] = useState(ALL_TAG_FILTER);
   const [uploading, setUploading] = useState(false);
+  const [startGate, setStartGate] = useState<StartGateState | null>(null);
+  const [startGateLaunching, setStartGateLaunching] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
@@ -342,17 +401,60 @@ export default function App() {
   }, [bootMode, loadGameListManifest]);
 
   useEffect(() => {
-    const pathname = window.location.pathname;
-    const gameListMatch = pathname.match(/^\/game-list\/([^/]+)\/?$/);
-    if (gameListMatch) {
-      const gameId = decodeURIComponent(gameListMatch[1]);
-      setBootMode('gameList');
-      void loadGameFromUrl(`/game-list/${gameId}/`);
-      return;
-    }
+    let cancelled = false;
 
-    setBootMode('launcher');
+    const initializeBoot = async () => {
+      const pathname = window.location.pathname;
+      const gameListMatch = pathname.match(/^\/game-list\/([^/]+)\/?$/);
+      if (gameListMatch) {
+        const gameId = decodeURIComponent(gameListMatch[1]);
+        const gameUrl = `/game-list/${gameId}/`;
+        const sessionKey = resolveStartGateSessionKey(gameId);
+        setBootMode('gameList');
+        if (!hasStartGateSessionFlag(sessionKey)) {
+          try {
+            const preview = await loadUrlStartScreenPreview(gameUrl);
+            if (cancelled) {
+              return;
+            }
+            if (preview.startScreen?.enabled) {
+              const baseUrl = new URL(gameUrl, window.location.origin).toString();
+              setStartGate({
+                kind: 'url',
+                gameUrl,
+                sessionKey,
+                imageUrl: resolveStartGateImageUrl(preview.startScreen.image, baseUrl),
+                startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
+                buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+                showLoadButton: preview.hasLoadableSave,
+              });
+              return;
+            }
+          } catch {
+            // Ignore preview failures and continue with direct runtime loading.
+          }
+        }
+        void loadGameFromUrl(gameUrl);
+        return;
+      }
+
+      setBootMode('launcher');
+    };
+
+    void initializeBoot();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (startGate?.kind === 'zip' && startGate.previewBlobUrl?.startsWith('blob:')) {
+        URL.revokeObjectURL(startGate.previewBlobUrl);
+      }
+    };
+  }, [startGate]);
 
   useEffect(() => {
     const preventGestureZoom = (event: Event) => {
@@ -933,6 +1035,28 @@ export default function App() {
     );
   };
 
+  const onStartGateLaunch = useCallback(
+    async (resumeFromSave: boolean) => {
+      if (!startGate || startGateLaunching) {
+        return;
+      }
+      const gate = startGate;
+      setStartGateLaunching(true);
+      setStartGate(null);
+      try {
+        if (gate.kind === 'url') {
+          markStartGateSession(gate.sessionKey);
+          await loadGameFromUrl(gate.gameUrl, { resumeFromSave });
+          return;
+        }
+        await loadGameFromZip(gate.file, { resumeFromSave: false });
+      } finally {
+        setStartGateLaunching(false);
+      }
+    },
+    [startGate, startGateLaunching],
+  );
+
   const onUploadZip = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = '';
@@ -945,14 +1069,74 @@ export default function App() {
     }
     setUploading(true);
     setBootMode('uploaded');
-    await loadGameFromZip(file);
-    setUploading(false);
+    try {
+      let preview: Awaited<ReturnType<typeof loadZipStartScreenPreview>> | undefined;
+      try {
+        preview = await loadZipStartScreenPreview(file);
+      } catch {
+        preview = undefined;
+      }
+
+      if (preview?.startScreen?.enabled) {
+        const imageUrl = preview.startScreen.image;
+        setStartGate({
+          kind: 'zip',
+          file,
+          imageUrl,
+          previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
+          startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
+          buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+          showLoadButton: false,
+        });
+        return;
+      }
+
+      await loadGameFromZip(file);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const onRestartFromBeginning = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     void restartFromBeginning();
   };
+
+  if (startGate) {
+    const startGateBackgroundStyle = startGate.imageUrl ? ({ '--start-gate-bg-url': `url("${startGate.imageUrl}")` } as CSSProperties) : undefined;
+    const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
+    return (
+      <div className="start-gate" style={startGateBackgroundStyle}>
+        <div className="start-gate-overlay" aria-hidden="true" />
+        <div className="start-gate-content">
+          <div className="start-gate-title-block">
+            <p className="start-gate-eyebrow">YAVN</p>
+            <h1>{game?.meta.title ?? 'Visual Novel'}</h1>
+          </div>
+          <div className={actionClass}>
+            <button
+              type="button"
+              className="start-gate-button start-gate-button-start"
+              onClick={() => void onStartGateLaunch(false)}
+              disabled={startGateLaunching}
+            >
+              {startGate.startButtonText || DEFAULT_START_BUTTON_TEXT}
+            </button>
+            {startGate.showLoadButton && (
+              <button
+                type="button"
+                className="start-gate-button start-gate-button-load"
+                onClick={() => void onStartGateLaunch(true)}
+                disabled={startGateLaunching}
+              >
+                {DEFAULT_LOAD_BUTTON_TEXT}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (bootMode === 'launcher') {
     const selectedGameTagList = selectedGame?.tags ?? [];
@@ -1209,6 +1393,7 @@ export default function App() {
     <div
       ref={appRef}
       className={`app ${effectClass}`}
+      data-ui-template={uiTemplate}
       onClick={() => {
         if (videoCutscene.active) {
           revealVideoSkipGuide();
@@ -1300,7 +1485,7 @@ export default function App() {
         <div className="meta">
           {game?.meta.title ?? 'Loading...'}
         </div>
-        <div className="hint">{uploading ? 'ZIP Loading...' : 'Click / Enter / Space'}</div>
+        <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
       </div>
 
       <div ref={dialogBoxRef} className={`dialog-box ${isDialogHidden ? 'hidden' : ''}`}>

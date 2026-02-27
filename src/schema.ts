@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { UI_TEMPLATE_IDS } from './uiTemplates';
 
 export const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]);
 export const stateSetMapSchema = z.record(routeVarValueSchema);
@@ -195,6 +196,29 @@ export const endingRuleSchema = z.object({
   ending: z.string().min(1),
 });
 
+const startButtonPositionSchema = z.enum(['auto', 'bottom-center', 'bottom-left', 'bottom-right', 'center']);
+const uiTemplateSchema = z.enum(UI_TEMPLATE_IDS);
+const uiConfigSchema = z
+  .object({
+    template: uiTemplateSchema,
+  })
+  .strict();
+
+const startScreenSchema = z
+  .object({
+    enabled: z.boolean().optional(),
+    image: z.string().min(1).optional(),
+    startButtonText: z.string().min(1).optional(),
+    buttonPosition: startButtonPositionSchema.optional(),
+  })
+  .strict()
+  .transform((value) => ({
+    enabled: value.enabled ?? true,
+    image: value.image,
+    startButtonText: value.startButtonText?.trim() || '시작하기',
+    buttonPosition: value.buttonPosition ?? 'auto',
+  }));
+
 const characterAssetsSchema = z.record(
   z.object({
     base: z.string(),
@@ -234,6 +258,8 @@ export const configSchema = z
     endings: z.record(endingDefinitionSchema).optional(),
     endingRules: z.array(endingRuleSchema).optional(),
     defaultEnding: z.string().min(1).optional(),
+    startScreen: startScreenSchema.optional(),
+    ui: uiConfigSchema.optional(),
   })
   .strict();
 
@@ -273,6 +299,8 @@ export const gameSchema = z.object({
   endings: z.record(endingDefinitionSchema).optional(),
   endingRules: z.array(endingRuleSchema).optional(),
   defaultEnding: z.string().min(1).optional(),
+  startScreen: startScreenSchema.optional(),
+  ui: uiConfigSchema.optional(),
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(
     z.object({

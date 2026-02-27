@@ -26,6 +26,7 @@ pnpm dev
 - `public/game-list/<gameId>/launcher.yaml` (선택)
 - 허용 키: `summary`, `thumbnail`, `tags`
 - 이 파일은 런처 전용이며 엔진 DSL 스키마(`config/base/chapter`)와 분리됩니다.
+- `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면 manifest 생성 시 해당 이미지를 기본 썸네일로 사용합니다.
 
 ## 2) YAML V3 핵심 구조
 
@@ -46,6 +47,8 @@ YAML V3는 파일 역할을 분리합니다.
 - `textSpeed`
 - `autoSave`
 - `clickToInstant`
+- `ui`
+- `startScreen`
 - `endings`
 - `endingRules`
 - `defaultEnding`
@@ -60,6 +63,13 @@ version: "4.1"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
+ui:
+  template: cinematic-noir # cinematic-noir | neon-grid | paper-stage
+startScreen:
+  enabled: true
+  image: assets/bg/title.png
+  startButtonText: 시작하기
+  buttonPosition: auto
 endings:
   true_end:
     title: "TRUE END"
@@ -76,6 +86,10 @@ defaultEnding: bad_end
 
 노트:
 - `endings/endingRules/defaultEnding`은 `config.yaml`에만 선언합니다.
+- `ui.template` 허용값은 `cinematic-noir`, `neon-grid`, `paper-stage`입니다.
+- `ui`를 생략하면 기본 템플릿 `cinematic-noir`가 적용됩니다.
+- `startScreen` 객체를 선언하면 기본 활성화(`enabled: true`)됩니다.
+- `startButtonText` 기본값은 `시작하기`, `buttonPosition` 기본값은 `auto`입니다.
 
 ## 4) `base.yaml`
 
@@ -85,7 +99,7 @@ defaultEnding: bad_end
 
 금지:
 - `script`, `scenes`
-- `title`, `textSpeed`, `endings` 계열
+- `title`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
 - `meta`, `settings`
 
 예시:
@@ -119,7 +133,8 @@ state:
 - `state`
 
 금지:
-- `title`, `textSpeed`, `endings` 계열
+- `title`, `textSpeed`, `startScreen`, `endings` 계열
+- `title`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
 - `meta`, `settings`
 
 예시:
@@ -257,6 +272,38 @@ scenes:
 - YouTube 컷신은 Player API 명령(`playVideo`)으로 복귀 재생을 재요청합니다.
 - `HOLD TO SKIP` 진행바는 포인터 해제 후 재누름 시 0%부터 즉시 갱신되어 퍼센트 텍스트와 시각 상태가 어긋나지 않습니다.
 
+## 8-9) 시작 화면(Start Gate) + 저장 키 동작
+
+- `config.yaml.startScreen`이 없으면 시작 화면은 비활성화됩니다. (기존 즉시 실행과 동일)
+- `startScreen` 객체를 선언하고 `enabled: true`면 시작 화면을 노출합니다.
+- 버튼 기본값:
+  - 시작 버튼 텍스트 `startButtonText`: `시작하기`
+  - 버튼 위치 `buttonPosition`: `auto`
+- URL 게임(`/game-list/:gameId`)의 자동저장 키는 `vn-engine-autosave:game:<gameId>`를 사용합니다.
+- 레거시 키(`vn-engine-autosave`)는 URL 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
+- 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
+- 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
+- 런처 인스펙터 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
+
+## 8-10) 인게임 UI 템플릿 동작
+
+- `config.yaml.ui.template`으로 게임 플레이 화면의 전역 UI 템플릿을 선택합니다.
+- 허용값: `cinematic-noir`, `neon-grid`, `paper-stage`
+- 적용 범위:
+  - 챕터 로딩 오버레이(`chapter-loading`)
+  - 다이얼로그 박스(`dialog-box`)
+  - 비디오 `HOLD TO SKIP` 가이드
+  - 선택/입력 게이트(`choice`/`input`)
+  - 엔딩 크레딧/진행 카드/재시작 버튼
+- `ui` 미선언 시 기본값은 `cinematic-noir`입니다.
+- 템플릿 값은 활성 챕터 게임 해석 직후 스토어에 반영되어, `setGame` 이전 프리로드 로딩 구간에도 동일한 스타일이 유지됩니다.
+
+## 8-11) 게임 HUD 안내 문구 동작
+
+- 인게임 HUD는 좌측에 현재 게임 제목(`game.meta.title`)을 표시합니다.
+- 우측 안내 문구 기본값은 `YAVN ENGINE`입니다.
+- ZIP 업로드 로딩 중(`uploading=true`)에는 우측 안내 문구를 `ZIP Loading...`으로 표시합니다.
+
 ## 9) 액션 목록
 
 - `bg`
@@ -365,6 +412,9 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: `config.yaml.ui.template`(`cinematic-noir` | `neon-grid` | `paper-stage`) 전역 템플릿 옵션을 추가하고, 챕터 로딩/다이얼로그/HOLD TO SKIP/선택·입력 게이트/엔딩 크레딧을 CSS 토큰 기반 3종 테마로 재구성했습니다. 템플릿 미지정 시 기본값 `cinematic-noir`를 사용하도록 동작을 문서화했습니다.
+- 2026-02-27: 인게임 HUD 우측 안내 문구를 `Click / Enter / Space`에서 `YAVN ENGINE`으로 변경하고, ZIP 업로드 로딩 중에는 `ZIP Loading...`을 유지하도록 동작을 조정했습니다.
+- 2026-02-27: `config.yaml.startScreen`(enabled/image/startButtonText/buttonPosition) 기반 시작 게이트를 추가하고, URL 게임 autosave 키를 `vn-engine-autosave:game:<gameId>`로 스코프화했습니다. 레거시 키 fallback + resume 성공 시 마이그레이션, ZIP 시작 화면(로드 버튼 비노출), 인스펙터 썸네일 fallback(`launcher.thumbnail` -> `startScreen.image`) 규칙을 문서화했습니다.
 - 2026-02-27: 메인 런처를 Engine Console 3패널(실행 콘솔/워크스페이스/인스펙터) 구조로 재설계하고, 게임 목록 manifest를 `schemaVersion: 2`(`author/version/summary/thumbnail/tags/chapterCount`)로 확장. `launcher.yaml`(선택) 기반 런처 메타 병합 규칙과 V1 manifest fallback 동작을 문서화.
 - 2026-02-26: 다이얼로그 박스 숨김/복귀 연출을 `opacity` 토글에서 하단 슬라이드 아웃/슬라이드 인(`transform`) 방식으로 변경.
 - 2026-02-26: 챕터 로딩(`chapterLoading`) 또는 게임 데이터 미로딩 상태에서 다이얼로그 박스를 숨기도록 UI 동작을 조정.

@@ -70,6 +70,7 @@ tags:
 
 - 이 파일은 런처 전용이며 엔진 DSL(`config/base/chapter`) 파서와 분리됩니다.
 - `thumbnail`은 상대 경로일 때 `/game-list/<gameId>/...`로 정규화됩니다.
+- `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 인스펙터 기본 썸네일로 사용합니다.
 
 ## YAML V3 구조 (필수)
 
@@ -85,6 +86,13 @@ version: "1.0"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
+ui:
+  template: cinematic-noir # cinematic-noir | neon-grid | paper-stage
+startScreen:
+  enabled: true
+  image: assets/bg/title.png
+  startButtonText: 시작하기
+  buttonPosition: auto
 endings:
   true_end:
     title: "TRUE END"
@@ -144,6 +152,8 @@ scenes:
 - `config.yaml` 전용 필드:
   - `title`, `author`, `version`
   - `textSpeed`, `autoSave`, `clickToInstant`
+  - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
+  - `startScreen` (`enabled`, `image`, `startButtonText`, `buttonPosition`)
   - `endings`, `endingRules`, `defaultEnding`
 - `base.yaml` 허용 필드: `assets`, `state`
 - 챕터 YAML 허용 필드:
@@ -166,6 +176,17 @@ scenes:
 - 작성 DSL은 `state` 평면 맵을 사용하며, 런타임 내부에서는 `state.defaults`로 정규화됩니다.
 - `script/scenes`는 챕터 YAML만 사용
 - `endings/endingRules/defaultEnding`은 `config.yaml`만 사용
+- `ui.template`은 `config.yaml`만 사용하며, 미지정 시 `cinematic-noir`가 기본값으로 적용됩니다.
+- `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
+
+## UI 템플릿 (`config.yaml.ui.template`)
+
+- 게임 플레이 UI(챕터 로딩, 다이얼로그, HOLD TO SKIP, `choice/input`, 엔딩 크레딧)는 전역 템플릿 1개로 스타일링됩니다.
+- 허용 값:
+  - `cinematic-noir`: 저채도 다크 + 골드 포인트
+  - `neon-grid`: 네온 HUD 톤 + 고대비 포커스
+  - `paper-stage`: 따뜻한 페이퍼/잉크 톤
+- `ui`를 생략하면 기본 템플릿 `cinematic-noir`를 사용합니다.
 
 ## 경로 규칙
 
@@ -260,6 +281,16 @@ scenes:
 - 챕터 로딩 오버레이는 첫 화면에 노출되는 Live2D 캐릭터가 실제로 `ready/error` 상태를 보고할 때까지 유지됩니다.
 - 챕터 로딩 중(`chapterLoading=true`)과 게임 데이터 미로딩 상태에서는 다이얼로그 박스를 하단 슬라이드 아웃으로 숨기고, 해제 시 아래에서 올라오도록 처리합니다.
 
+## 시작 화면 (Start Gate)
+
+- `config.yaml`에 `startScreen`이 없으면 기존처럼 즉시 실행합니다. (기본 OFF)
+- `startScreen`이 있고 `enabled: true`면 시작 화면을 표시합니다.
+- 시작 버튼은 항상 표시되며, 텍스트 기본값은 `시작하기`입니다.
+- URL 게임(`/game-list/:gameId`)은 게임별 저장 키(`vn-engine-autosave:game:<gameId>`)가 있을 때만 `이어하기` 버튼을 표시합니다.
+- 레거시 저장 키(`vn-engine-autosave`)가 남아 있으면 URL 게임 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
+- 같은 탭 세션에서 시작/로드를 한 번 누르면(`sessionStorage` 플래그) 새로고침 시 시작 화면을 다시 띄우지 않습니다.
+- ZIP 실행은 시작 화면을 지원하지만 `이어하기` 버튼은 노출하지 않습니다.
+
 ## Conan 샘플 분기 구조
 
 - `0.yaml`은 콜드 오픈 챕터로, 사건의 이상 징후를 먼저 보여준 뒤 `1.yaml`로 넘어갑니다.
@@ -294,8 +325,13 @@ scenes:
 
 - 런처는 `EXECUTION CONSOLE(좌) / WORKSPACE CATALOG(중앙) / ASSET INSPECTOR(우)` 3패널 구조를 사용합니다.
 - 게임 목록 manifest는 `schemaVersion: 2`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` 메타를 포함합니다.
+- 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
 - 게임별 `launcher.yaml`은 선택사항이며, 없으면 런처가 기본 요약/메타로 안전하게 렌더링합니다.
+- `startScreen`이 설정된 게임은 시작 게이트를 표시하며, URL 게임은 게임별 autosave 키(`vn-engine-autosave:game:<gameId>`)를 기준으로 `이어하기` 버튼을 노출합니다.
+- 레거시 autosave 키(`vn-engine-autosave`)는 URL 게임 로드시 fallback으로 읽고, 실제 이어하기 성공 시 게임별 키로 마이그레이션합니다.
+- `config.yaml.ui.template`으로 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
+- 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. (`uploading=true` 동안에는 `ZIP Loading...`)
 - 엔딩 화면 하단에는 `처음부터 다시하기` 버튼 1개만 표시됩니다.
 - `처음부터 다시하기` 클릭 시 저장된 엔딩 수집(`vn-ending-progress:<gameId>`)은 유지하고, 현재 플레이 상태만 첫 챕터 기준으로 재시작합니다.
 - 엔딩 크레딧 롤 영역은 초기 자동 스크롤 구간에서 입력을 잠그고(`pointer-events: none`), 자동 스크롤이 멈춘 뒤에만 수동 스크롤을 허용합니다.

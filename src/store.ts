@@ -8,9 +8,11 @@ import type {
   RouteHistoryEntry,
   RouteVarValue,
   StickerSlot,
+  UiTemplateId,
   VNError,
   VideoCutsceneState,
 } from './types';
+import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 
 type DialogState = {
   speaker?: string;
@@ -30,6 +32,7 @@ type VNState = {
   chapterLoading: boolean;
   chapterLoadingProgress: number;
   chapterLoadingMessage?: string;
+  uiTemplate: UiTemplateId;
   currentSceneId: string;
   actionIndex: number;
   background?: string;
@@ -52,6 +55,7 @@ type VNState = {
   setError: (error?: VNError) => void;
   setChapterMeta: (index: number, total: number) => void;
   setChapterLoading: (loading: boolean, progress?: number, message?: string) => void;
+  setUiTemplate: (template: UiTemplateId) => void;
   setGame: (game: GameData, baseUrl: string, assetOverrides?: Record<string, string>) => void;
   setCursor: (sceneId: string, actionIndex: number) => void;
   setBackground: (url: string) => void;
@@ -127,6 +131,7 @@ export const useVNStore = create<VNState>((set) => ({
   chapterLoading: false,
   chapterLoadingProgress: 0,
   chapterLoadingMessage: undefined,
+  uiTemplate: DEFAULT_UI_TEMPLATE,
   currentSceneId: '',
   actionIndex: 0,
   stickers: {},
@@ -147,6 +152,7 @@ export const useVNStore = create<VNState>((set) => ({
   setChapterMeta: (chapterIndex, chapterTotal) => set({ chapterIndex, chapterTotal }),
   setChapterLoading: (chapterLoading, chapterLoadingProgress = 0, chapterLoadingMessage) =>
     set({ chapterLoading, chapterLoadingProgress, chapterLoadingMessage }),
+  setUiTemplate: (uiTemplate) => set({ uiTemplate }),
   setGame: (game, baseUrl, assetOverrides = {}) =>
     set((state) => ({
       game,
@@ -270,5 +276,6 @@ export const useVNStore = create<VNState>((set) => ({
       chapterLoading: false,
       chapterLoadingProgress: 0,
       chapterLoadingMessage: undefined,
+      uiTemplate: DEFAULT_UI_TEMPLATE,
     }),
 }));

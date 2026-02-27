@@ -13,6 +13,13 @@ version: "7.0"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
+ui:
+  template: cinematic-noir
+startScreen:
+  enabled: true
+  image: "assets/bg/case_board.png"
+  startButtonText: "시작하기"
+  buttonPosition: "auto"
 endings:
   true_end:
     title: "TRUE END"

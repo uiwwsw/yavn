@@ -1,5 +1,14 @@
 # YAML V3 chapter snippet example:
 # branch + choice + goto + early-exit penalty pattern (investigation lounge)
+#
+# config.yaml start screen snippet:
+# startScreen:
+#   enabled: true
+#   image: assets/bg/title.png
+#   startButtonText: 시작하기
+#   buttonPosition: auto
+# ui:
+#   template: cinematic-noir # cinematic-noir | neon-grid | paper-stage
 
 script:
   - scene: all_done_check

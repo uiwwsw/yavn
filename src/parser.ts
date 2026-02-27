@@ -13,6 +13,8 @@ type ConfigYamlData = {
   endings?: GameData['endings'];
   endingRules?: GameData['endingRules'];
   defaultEnding?: GameData['defaultEnding'];
+  startScreen?: GameData['startScreen'];
+  ui?: GameData['ui'];
 };
 
 type LayerAssets = {
@@ -67,6 +69,8 @@ const CONFIG_ONLY_KEYS = [
   'endings',
   'endingRules',
   'defaultEnding',
+  'startScreen',
+  'ui',
 ] as const;
 
 function parseSpeakerRef(raw: string): { id?: string; emotion?: string; invalid: boolean } {
@@ -487,11 +491,39 @@ export function parseConfigYaml(raw: string, sourcePath: string): { data?: Parse
 
   try {
     const parsed = configSchema.parse(parsedRoot.value) as ConfigYamlData;
+    const sourceDir = getSourceDir(normalizedSourcePath);
+    const startScreen = parsed.startScreen
+      ? (() => {
+          if (!parsed.startScreen.image) {
+            return parsed.startScreen;
+          }
+          const normalizedImage = canonicalizeDeclaredPath(parsed.startScreen.image, sourceDir);
+          if (!normalizedImage) {
+            return undefined;
+          }
+          return {
+            ...parsed.startScreen,
+            image: normalizedImage,
+          };
+        })()
+      : undefined;
+
+    if (parsed.startScreen?.image && !startScreen) {
+      return {
+        error: {
+          message: `${normalizedSourcePath}: startScreen.image has invalid path '${parsed.startScreen.image}'`,
+        },
+      };
+    }
+
     return {
       data: {
         sourcePath: normalizedSourcePath,
-        sourceDir: getSourceDir(normalizedSourcePath),
-        data: parsed,
+        sourceDir,
+        data: {
+          ...parsed,
+          startScreen,
+        },
       },
     };
   } catch (err) {
@@ -704,6 +736,8 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
     ...(input.config.data.endings ? { endings: input.config.data.endings } : {}),
     ...(input.config.data.endingRules ? { endingRules: input.config.data.endingRules } : {}),
     ...(input.config.data.defaultEnding ? { defaultEnding: input.config.data.defaultEnding } : {}),
+    ...(input.config.data.startScreen ? { startScreen: input.config.data.startScreen } : {}),
+    ...(input.config.data.ui ? { ui: input.config.data.ui } : {}),
   };
 
   return validateGameData(merged);

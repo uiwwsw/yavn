@@ -10,6 +10,7 @@ import {
   type ParsedChapterYaml,
   type ParsedConfigYaml,
 } from './parser';
+import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 import type {
   CharacterSlot,
   ConditionNode,
@@ -50,7 +51,9 @@ declare global {
   }
 }
 
-const AUTOSAVE_KEY = 'vn-engine-autosave';
+const LEGACY_AUTOSAVE_KEY = 'vn-engine-autosave';
+const GAME_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:game:';
+const PATH_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:path:';
 const MAX_CHAPTERS = 101;
 const MIN_CHAPTER_LOADING_MS = 600;
 const CHAPTER_LOADED_HOLD_MS = 200;
@@ -85,6 +88,15 @@ type SaveProgress = {
   routeVars: Record<string, RouteVarValue>;
   routeHistory: RouteHistoryEntry[];
   resolvedEndingId?: string;
+};
+
+export type LoadGameOptions = {
+  resumeFromSave?: boolean;
+};
+
+export type StartScreenPreview = {
+  startScreen?: GameData['startScreen'];
+  hasLoadableSave: boolean;
 };
 
 type PreparedChapter = {
@@ -125,6 +137,7 @@ let parsedConfigPromise: Promise<ParsedConfigYaml> | undefined;
 let parsedBaseCache = new Map<string, Promise<ParsedBaseYaml | undefined>>();
 let parsedChapterCache = new Map<string, Promise<ParsedChapterYaml>>();
 let resolvedChapterGameCache = new Map<string, Promise<GameData>>();
+let currentAutosaveKey = LEGACY_AUTOSAVE_KEY;
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -135,6 +148,29 @@ async function waitMs(ms: number): Promise<void> {
     return;
   }
   await new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+}
+
+function resolveBaseUrlFromInputUrl(url: string): string {
+  const absolute = new URL(url, window.location.origin);
+  return /\.ya?ml$/i.test(url) ? new URL('.', absolute).toString() : absolute.toString();
+}
+
+function resolveAutosaveKeyForUrl(baseUrl: string): string {
+  try {
+    const parsed = new URL(baseUrl, window.location.origin);
+    const gameListMatch = parsed.pathname.match(/^\/game-list\/([^/]+)\/?$/);
+    if (gameListMatch) {
+      return `${GAME_AUTOSAVE_KEY_PREFIX}${decodeURIComponent(gameListMatch[1])}`;
+    }
+    const normalizedPath = parsed.pathname.replace(/\/+$/, '') || '/';
+    return `${PATH_AUTOSAVE_KEY_PREFIX}${encodeURIComponent(normalizedPath)}`;
+  } catch {
+    return LEGACY_AUTOSAVE_KEY;
+  }
+}
+
+function setAutosaveScopeKey(key: string): void {
+  currentAutosaveKey = key;
 }
 
 async function ensureChapterGame(chapter: PreparedChapter): Promise<GameData> {
@@ -343,6 +379,7 @@ function resetSession() {
   clearTimers();
   clearObjectUrls();
   resetLive2DLoadTracker();
+  setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
   preparedChapters = [];
   activeChapterIndex = 0;
   runtimeMode = undefined;
@@ -934,22 +971,18 @@ function syncCharacterEmotions(
   }
 }
 
-function saveProgress(sceneId: string, actionIndex: number) {
-  const state = useVNStore.getState();
-  const payload: SaveProgress = {
-    chapterIndex: activeChapterIndex,
-    chapterPath: getCurrentChapterPathKey(),
-    sceneId,
-    actionIndex,
-    routeVars: state.routeVars,
-    routeHistory: state.routeHistory,
-    resolvedEndingId: state.resolvedEndingId,
-  };
-  localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(payload));
+type SaveProgressSource = 'none' | 'scoped' | 'legacy';
+
+type SaveProgressLoadResult = {
+  save?: SaveProgress;
+  source: SaveProgressSource;
+};
+
+function saveProgressToKey(key: string, payload: SaveProgress): void {
+  localStorage.setItem(key, JSON.stringify(payload));
 }
 
-function loadProgress(): SaveProgress | undefined {
-  const raw = localStorage.getItem(AUTOSAVE_KEY);
+function parseSaveProgress(raw: string | null): SaveProgress | undefined {
   if (!raw) {
     return undefined;
   }
@@ -1002,6 +1035,62 @@ function loadProgress(): SaveProgress | undefined {
     };
   } catch {
     return undefined;
+  }
+}
+
+function loadProgressByKey(key: string): SaveProgress | undefined {
+  return parseSaveProgress(localStorage.getItem(key));
+}
+
+function hasLoadableProgressByKey(key: string): boolean {
+  return Boolean(loadProgressByKey(key));
+}
+
+function saveProgress(sceneId: string, actionIndex: number) {
+  const state = useVNStore.getState();
+  const payload: SaveProgress = {
+    chapterIndex: activeChapterIndex,
+    chapterPath: getCurrentChapterPathKey(),
+    sceneId,
+    actionIndex,
+    routeVars: state.routeVars,
+    routeHistory: state.routeHistory,
+    resolvedEndingId: state.resolvedEndingId,
+  };
+  saveProgressToKey(currentAutosaveKey, payload);
+}
+
+function loadProgress(): SaveProgressLoadResult {
+  const scoped = loadProgressByKey(currentAutosaveKey);
+  if (scoped) {
+    return {
+      save: scoped,
+      source: 'scoped',
+    };
+  }
+
+  if (runtimeMode === 'url' && currentAutosaveKey !== LEGACY_AUTOSAVE_KEY) {
+    const legacy = loadProgressByKey(LEGACY_AUTOSAVE_KEY);
+    if (legacy) {
+      return {
+        save: legacy,
+        source: 'legacy',
+      };
+    }
+  }
+
+  return { source: 'none' };
+}
+
+function migrateLegacyProgressIfNeeded(source: SaveProgressSource, save: SaveProgress | undefined, resumed: boolean): void {
+  if (!resumed || source !== 'legacy' || !save || currentAutosaveKey === LEGACY_AUTOSAVE_KEY) {
+    return;
+  }
+  try {
+    saveProgressToKey(currentAutosaveKey, save);
+    localStorage.removeItem(LEGACY_AUTOSAVE_KEY);
+  } catch {
+    // Ignore storage failures and keep runtime progression.
   }
 }
 
@@ -1742,11 +1831,11 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   playMusic(musicUrl);
 }
 
-async function startChapter(chapterIndex: number, resume?: SaveProgress) {
+async function startChapter(chapterIndex: number, resume?: SaveProgress): Promise<boolean> {
   const chapter = preparedChapters[chapterIndex];
   if (!chapter) {
     useVNStore.getState().setError({ message: `Chapter not found: ${chapterIndex}` });
-    return;
+    return false;
   }
 
   try {
@@ -1757,6 +1846,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
     const loadStartedAt = performance.now();
     useVNStore.getState().setChapterLoading(true, 0, `${chapterLabel} loading...`);
     const game = await ensureChapterGame(chapter);
+    useVNStore.getState().setUiTemplate(game.ui?.template ?? DEFAULT_UI_TEMPLATE);
     await preloadChapterAssets(chapter, game, chapterLabel);
     const elapsed = performance.now() - loadStartedAt;
     await waitMs(MIN_CHAPTER_LOADING_MS - elapsed);
@@ -1793,35 +1883,36 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress) {
 
     runToNextPause();
     if (activeChapterIndex !== chapterIndex) {
-      return;
+      return Boolean(resume && canResumeHere);
     }
 
     await waitNextFrame();
     await waitForVisibleLive2DReady(chapterLabel);
     if (activeChapterIndex !== chapterIndex) {
-      return;
+      return Boolean(resume && canResumeHere);
     }
 
     useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loaded`);
     await waitNextFrame();
     await waitMs(CHAPTER_LOADED_HOLD_MS);
     useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
+    return Boolean(resume && canResumeHere);
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);
     useVNStore.getState().setError({ message: error instanceof Error ? error.message : 'Failed to start chapter' });
+    return false;
   }
 }
 
-async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0, resume?: SaveProgress) {
+async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0, resume?: SaveProgress): Promise<boolean> {
   preparedChapters = chapters;
   useVNStore.getState().setChapterMeta(Math.min(startIndex + 1, chapters.length), chapters.length);
 
   if (resume && startIndex >= 0 && startIndex < chapters.length) {
-    await startChapter(startIndex, resume);
-    return;
+    return startChapter(startIndex, resume);
   }
 
-  await startChapter(Math.max(0, Math.min(startIndex, chapters.length - 1)));
+  return startChapter(Math.max(0, Math.min(startIndex, chapters.length - 1)));
 }
 
 async function resolveUrlChapterPath(dir: string, number: number, preferredExt: 'yaml' | 'yml' = 'yaml'): Promise<string | undefined> {
@@ -2203,6 +2294,81 @@ async function fetchYamlIfExists(url: string): Promise<string | undefined> {
   return text;
 }
 
+function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): GameData['startScreen'] | undefined {
+  const parsed = parseConfigYaml(rawConfig, sourcePath);
+  if (!parsed.data) {
+    throw new Error(parsed.error?.message ?? `Failed to parse ${sourcePath}`);
+  }
+  return parsed.data.data.startScreen;
+}
+
+function resolveZipImageEntry(
+  zipFiles: JSZip.JSZipObject[],
+  imagePath: string,
+): JSZip.JSZipObject | undefined {
+  const normalizedImage = normalizeAssetKey(imagePath).toLowerCase();
+  for (const entry of zipFiles) {
+    const normalizedEntry = normalizeAssetKey(entry.name).toLowerCase();
+    if (normalizedEntry === normalizedImage || normalizedEntry.endsWith(`/${normalizedImage}`)) {
+      return entry;
+    }
+  }
+  return undefined;
+}
+
+export async function loadUrlStartScreenPreview(url: string): Promise<StartScreenPreview> {
+  const baseUrl = resolveBaseUrlFromInputUrl(url);
+  const configUrl = new URL('config.yaml', baseUrl).toString();
+  const configRaw = await fetchYamlIfExists(configUrl);
+  if (configRaw === undefined) {
+    throw new Error('config.yaml not found at game root.');
+  }
+  const startScreen = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const autosaveKey = resolveAutosaveKeyForUrl(baseUrl);
+  const hasLoadableSave = hasLoadableProgressByKey(autosaveKey) || hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY);
+  return {
+    startScreen,
+    hasLoadableSave,
+  };
+}
+
+export async function loadZipStartScreenPreview(file: File): Promise<StartScreenPreview> {
+  const zip = await JSZip.loadAsync(file);
+  const files = Object.values(zip.files).filter((entry) => !entry.dir);
+  const configEntry = files.find((entry) => normalizeChapterPathKey(entry.name) === normalizeChapterPathKey('config.yaml'));
+  if (!configEntry) {
+    throw new Error('config.yaml not found at game root.');
+  }
+  const configRaw = await configEntry.async('text');
+  const startScreen = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  if (!startScreen?.image || /^(blob:|data:|https?:)/i.test(startScreen.image)) {
+    return {
+      startScreen,
+      hasLoadableSave: false,
+    };
+  }
+
+  const imageEntry = resolveZipImageEntry(files, startScreen.image);
+  if (!imageEntry) {
+    return {
+      startScreen,
+      hasLoadableSave: false,
+    };
+  }
+
+  const bytes = await imageEntry.async('arraybuffer');
+  const mimeType = detectMimeType(imageEntry.name);
+  const blob = mimeType ? new Blob([bytes], { type: mimeType }) : new Blob([bytes]);
+  const imageUrl = URL.createObjectURL(blob);
+  return {
+    startScreen: {
+      ...startScreen,
+      image: imageUrl,
+    },
+    hasLoadableSave: false,
+  };
+}
+
 async function hasYamlFileAtUrl(url: string): Promise<boolean> {
   try {
     const head = await fetch(url, { method: 'HEAD' });
@@ -2551,14 +2717,16 @@ function createZipChapter(pathKey: string, yamlEntry: JSZip.JSZipObject): Prepar
   };
 }
 
-export async function loadGameFromUrl(url: string) {
+export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}) {
   resetSession();
 
   try {
     const absolute = new URL(url, window.location.origin);
-    const baseUrl = url.endsWith('.yaml') || url.endsWith('.yml') ? new URL('.', absolute).toString() : absolute.toString();
+    const baseUrl = resolveBaseUrlFromInputUrl(url);
+    const resumeFromSave = options.resumeFromSave !== false;
     runtimeMode = 'url';
     urlGameRootBase = baseUrl;
+    setAutosaveScopeKey(resolveAutosaveKeyForUrl(baseUrl));
 
     const hasConfig = await hasYamlByPathKey('config.yaml');
     if (!hasConfig) {
@@ -2619,17 +2787,20 @@ export async function loadGameFromUrl(url: string) {
       }
     }
 
-    const save = loadProgress();
+    const loadedProgress = resumeFromSave ? loadProgress() : { source: 'none' as const, save: undefined };
+    const save = loadedProgress.save;
     if (save?.chapterPath) {
       const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
       if (resumeSequence) {
-        await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
+        const resumed = await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
+        migrateLegacyProgressIfNeeded(loadedProgress.source, save, resumed);
         return;
       }
     }
 
     if (save && !save.chapterPath && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
-      await startPreparedChapters(chapters, save.chapterIndex, save);
+      const resumed = await startPreparedChapters(chapters, save.chapterIndex, save);
+      migrateLegacyProgressIfNeeded(loadedProgress.source, save, resumed);
       return;
     }
 
@@ -2642,11 +2813,13 @@ export async function loadGameFromUrl(url: string) {
   }
 }
 
-export async function loadGameFromZip(file: File) {
+export async function loadGameFromZip(file: File, options: LoadGameOptions = {}) {
   resetSession();
 
   try {
+    const resumeFromSave = options.resumeFromSave !== false;
     runtimeMode = 'zip';
+    setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
     const zip = await JSZip.loadAsync(file);
     const files = Object.values(zip.files).filter((entry) => !entry.dir);
     const yamlFiles = files.filter((entry) => /\.ya?ml$/i.test(entry.name));
@@ -2710,7 +2883,8 @@ export async function loadGameFromZip(file: File) {
       chapters.push(createZipChapter(pathKey, yamlEntry));
     }
 
-    const save = loadProgress();
+    const loadedProgress = resumeFromSave ? loadProgress() : { source: 'none' as const, save: undefined };
+    const save = loadedProgress.save;
     if (save?.chapterPath) {
       const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
       if (resumeSequence) {
@@ -2774,7 +2948,7 @@ export async function restartFromBeginning() {
   if (preparedChapters.length === 0) {
     return;
   }
-  localStorage.removeItem(AUTOSAVE_KEY);
+  localStorage.removeItem(currentAutosaveKey);
   clearTimers();
   useVNStore.getState().clearVideoCutscene();
   useVNStore.getState().setFinished(false);

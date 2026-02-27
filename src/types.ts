@@ -1,3 +1,7 @@
+import type { UiTemplateId } from './uiTemplates';
+
+export type { UiTemplateId } from './uiTemplates';
+
 export type Position = 'left' | 'center' | 'right';
 export type StickerAnchorX = 'left' | 'center' | 'right';
 export type StickerAnchorY = 'top' | 'center' | 'bottom';
@@ -216,6 +220,19 @@ export type EndingRule = {
   ending: string;
 };
 
+export type StartButtonPosition = 'auto' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center';
+
+export type StartScreenConfig = {
+  enabled: boolean;
+  image?: string;
+  startButtonText: string;
+  buttonPosition: StartButtonPosition;
+};
+
+export type UiConfig = {
+  template: UiTemplateId;
+};
+
 export type GameData = {
   meta: {
     title: string;
@@ -245,6 +262,8 @@ export type GameData = {
   endings?: Record<string, EndingDefinition>;
   endingRules?: EndingRule[];
   defaultEnding?: string;
+  startScreen?: StartScreenConfig;
+  ui?: UiConfig;
   script: Array<{ scene: string }>;
   scenes: Record<string, Scene>;
 };
