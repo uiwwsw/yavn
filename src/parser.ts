@@ -481,6 +481,8 @@ function canonicalizeLayerInventory(
       name: value.name,
       description: value.description,
       image: normalizedImage,
+      category: value.category,
+      order: value.order,
     };
   }
 

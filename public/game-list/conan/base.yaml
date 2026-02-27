@@ -76,7 +76,11 @@ inventory:
     name: "찻잔 반응 시료 카드"
     description: "다실 2번 잔 가장자리에서 채취한 반응 시료 기록 카드."
     image: /assets/items/tea_residue_report.svg
+    category: "감식"
+    order: 10
   reiko_statement_note:
     name: "레이코 진술 메모"
     description: "레이코 심문에서 확보한 온도·시각 진술 정리본."
     image: /assets/items/reiko_statement_note.svg
+    category: "진술"
+    order: 20

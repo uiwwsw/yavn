@@ -34,6 +34,8 @@ inventory:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
     image: assets/bg/case_board.png
+    category: "수사자료"
+    order: 10
 
 scenes:
   all_done_check:

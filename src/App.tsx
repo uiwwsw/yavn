@@ -2,6 +2,7 @@ import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMe
 import {
   completeVideoCutscene,
   getBgmEnabled,
+  getInventoryUiSettings,
   handleAdvance,
   loadUrlStartScreenPreview,
   loadGameFromUrl,
@@ -11,6 +12,7 @@ import {
   resetVideoSkipProgress,
   revealVideoSkipGuide,
   setBgmEnabled,
+  setInventoryUiSettings,
   skipVideoCutscene,
   stopActiveBgm,
   submitInputAnswer,
@@ -22,6 +24,7 @@ import { Live2DCharacter } from './Live2DCharacter';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import type { AuthorMetaObject, CharacterSlot, GameSeoMeta, Position, StartButtonPosition, UiTemplateId } from './types';
+import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties, SyntheticEvent } from 'react';
 
 type GameListSeoEntry = {
@@ -119,6 +122,8 @@ const DEFAULT_SEO_IMAGE = 'https://yavn.vercel.app/favicon.svg';
 const DEFAULT_SEO_IMAGE_ALT = 'YAVN (야븐) 로고';
 const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
+const INVENTORY_DEFAULT_CATEGORY = '기타';
+const INVENTORY_CATEGORY_ALL = '';
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -130,6 +135,16 @@ type CreditContactLine = {
   label?: string;
   value: string;
   href?: string;
+};
+
+type InventoryCatalogEntry = {
+  id: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+  owned: boolean;
+  category: string;
+  order: number;
 };
 
 function isObjectRecord(value: unknown): value is Record<string, unknown> {
@@ -612,11 +627,16 @@ export default function App() {
   const [inputAnswer, setInputAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
+  const [inventoryView, setInventoryView] = useState<InventoryViewPreference>(() => getInventoryUiSettings().view);
+  const [inventorySort, setInventorySort] = useState<InventorySortPreference>(() => getInventoryUiSettings().sort);
+  const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>(() => getInventoryUiSettings().category);
+  const [inventorySearchTerm, setInventorySearchTerm] = useState('');
   const [bgmEnabled, setBgmEnabledState] = useState(() => getBgmEnabled());
   const [returningToStartGate, setReturningToStartGate] = useState(false);
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
+  const inventoryButtonRef = useRef<HTMLButtonElement | null>(null);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
   const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
@@ -643,6 +663,18 @@ export default function App() {
   const skipInputAutoFocus = useMemo(() => isMobilePointerEnvironment(), []);
   const startScreenReturnGameId = useMemo(() => parseGameIdFromPath(window.location.pathname), []);
   const canReturnToStartScreen = Boolean(startScreenReturnGameId);
+  const closeSettingsModal = useCallback(
+    (restoreFocus: boolean = true) => {
+      setSettingsOpen(false);
+      if (!restoreFocus) {
+        return;
+      }
+      window.requestAnimationFrame(() => {
+        inventoryButtonRef.current?.focus({ preventScroll: true });
+      });
+    },
+    [],
+  );
 
   const stopStartGateMusic = useCallback(() => {
     const audio = startGateAudioRef.current;
@@ -837,6 +869,11 @@ export default function App() {
 
   useEffect(() => {
     setBgmEnabledState(getBgmEnabled());
+    const inventoryUiSettings = getInventoryUiSettings();
+    setInventoryView(inventoryUiSettings.view);
+    setInventorySort(inventoryUiSettings.sort);
+    setInventoryCategoryFilter(inventoryUiSettings.category);
+    setInventorySearchTerm('');
   }, [bootMode, game?.meta.title, startGate?.kind, startGate?.gameTitle]);
 
   useEffect(() => {
@@ -1019,7 +1056,7 @@ export default function App() {
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
-  const inventoryEntries = useMemo(() => {
+  const inventoryCatalogEntries = useMemo<InventoryCatalogEntry[]>(() => {
     const defaults = game?.inventory?.defaults ?? {};
     return Object.entries(defaults)
       .map(([id, item]) => ({
@@ -1028,11 +1065,56 @@ export default function App() {
         description: item.description,
         imageUrl: resolveRuntimeAssetUrl(item.image, baseUrl, assetOverrides),
         owned: Boolean(inventory[id]),
-      }))
-      .filter((entry) => entry.owned)
-      .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+        category: item.category ?? INVENTORY_DEFAULT_CATEGORY,
+        order: typeof item.order === 'number' ? item.order : 9999,
+      }));
   }, [assetOverrides, baseUrl, game?.inventory?.defaults, inventory]);
-  const selectedInventoryEntry = inventoryEntries.find((entry) => entry.id === selectedInventoryItemId) ?? null;
+  const ownedInventoryCount = useMemo(
+    () => inventoryCatalogEntries.reduce((acc, entry) => acc + (entry.owned ? 1 : 0), 0),
+    [inventoryCatalogEntries],
+  );
+  const totalInventoryCount = inventoryCatalogEntries.length;
+  const inventoryCategoryOptions = useMemo(() => {
+    const categories = new Set<string>();
+    for (const entry of inventoryCatalogEntries) {
+      categories.add(entry.category);
+    }
+    return Array.from(categories).sort((a, b) => a.localeCompare(b, 'ko'));
+  }, [inventoryCatalogEntries]);
+  const normalizedInventorySearchTerm = inventorySearchTerm.trim().toLowerCase();
+  const inventoryVisibleEntries = useMemo(() => {
+    const filtered = inventoryCatalogEntries
+      .filter((entry) => (inventoryView === 'bag' ? entry.owned : true))
+      .filter((entry) => (inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true))
+      .filter((entry) => {
+        if (!normalizedInventorySearchTerm) {
+          return true;
+        }
+        return entry.name.toLowerCase().includes(normalizedInventorySearchTerm);
+      });
+    return filtered.sort((a, b) => {
+      if (inventorySort === 'order' && a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return a.name.localeCompare(b.name, 'ko');
+    });
+  }, [
+    inventoryCatalogEntries,
+    inventoryView,
+    inventoryCategoryFilter,
+    normalizedInventorySearchTerm,
+    inventorySort,
+  ]);
+  const selectedInventoryEntry = inventoryVisibleEntries.find((entry) => entry.id === selectedInventoryItemId) ?? null;
+  const inventoryGridEmptyMessage = useMemo(() => {
+    if (inventoryCatalogEntries.length === 0) {
+      return '등록된 아이템이 없습니다.';
+    }
+    if (inventoryVisibleEntries.length === 0) {
+      return inventoryView === 'bag' ? '획득한 아이템이 없습니다.' : '조건에 맞는 아이템이 없습니다.';
+    }
+    return '';
+  }, [inventoryCatalogEntries.length, inventoryView, inventoryVisibleEntries.length]);
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const orderedCharacters = (
     [
@@ -1064,17 +1146,50 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (inventoryEntries.length === 0) {
+    if (inventoryVisibleEntries.length === 0) {
       if (selectedInventoryItemId !== null) {
         setSelectedInventoryItemId(null);
       }
       return;
     }
-    if (selectedInventoryItemId && inventoryEntries.some((entry) => entry.id === selectedInventoryItemId)) {
+    if (selectedInventoryItemId && inventoryVisibleEntries.some((entry) => entry.id === selectedInventoryItemId)) {
       return;
     }
-    setSelectedInventoryItemId(inventoryEntries[0].id);
-  }, [inventoryEntries, selectedInventoryItemId]);
+    setSelectedInventoryItemId(inventoryVisibleEntries[0].id);
+  }, [inventoryVisibleEntries, selectedInventoryItemId]);
+
+  useEffect(() => {
+    if (!inventoryCategoryFilter) {
+      return;
+    }
+    if (!inventoryCategoryOptions.includes(inventoryCategoryFilter)) {
+      setInventoryCategoryFilter(INVENTORY_CATEGORY_ALL);
+    }
+  }, [inventoryCategoryFilter, inventoryCategoryOptions]);
+
+  useEffect(() => {
+    setInventoryUiSettings({
+      view: inventoryView,
+      sort: inventorySort,
+      category: inventoryCategoryFilter,
+    });
+  }, [inventoryCategoryFilter, inventorySort, inventoryView]);
+
+  useEffect(() => {
+    if (!settingsOpen) {
+      return;
+    }
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      closeSettingsModal();
+    };
+    window.addEventListener('keydown', onEscape);
+    return () => window.removeEventListener('keydown', onEscape);
+  }, [closeSettingsModal, settingsOpen]);
 
   const onToggleBgmDisabled = useCallback(
     (disabled: boolean) => {
@@ -1621,7 +1736,7 @@ export default function App() {
         // Ignore sessionStorage failures and continue.
       }
       setReturningToStartGate(true);
-      setSettingsOpen(false);
+      closeSettingsModal(false);
       stopActiveBgm();
       stopStartGateMusic();
       try {
@@ -1648,7 +1763,7 @@ export default function App() {
         setReturningToStartGate(false);
       }
     },
-    [returningToStartGate, startScreenReturnGameId, stopStartGateMusic],
+    [closeSettingsModal, returningToStartGate, startScreenReturnGameId, stopStartGateMusic],
   );
 
   if (startGate) {
@@ -2043,9 +2158,10 @@ export default function App() {
         <div className="hud-right">
           <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
           <button
+            ref={inventoryButtonRef}
             type="button"
             className="hud-inventory-button"
-            aria-label="인벤토리 열기"
+            aria-label={`인벤토리 열기 (${ownedInventoryCount}/${totalInventoryCount})`}
             title="인벤토리"
             onClick={(event) => {
               event.stopPropagation();
@@ -2053,6 +2169,11 @@ export default function App() {
             }}
           >
             <span className="hud-inventory-icon" aria-hidden="true" />
+            {totalInventoryCount > 0 && (
+              <span className="hud-inventory-progress" aria-hidden="true">
+                {ownedInventoryCount}/{totalInventoryCount}
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -2062,7 +2183,7 @@ export default function App() {
           className="settings-modal-backdrop"
           onClick={(event) => {
             event.stopPropagation();
-            setSettingsOpen(false);
+            closeSettingsModal();
           }}
         >
           <section
@@ -2073,39 +2194,94 @@ export default function App() {
             onClick={(event) => event.stopPropagation()}
           >
             <header className="settings-modal-header">
-              <h2>가방</h2>
+              <h2>인벤토리</h2>
               <button
                 type="button"
                 className="settings-close-button"
-                onClick={() => setSettingsOpen(false)}
+                onClick={() => closeSettingsModal()}
               >
                 닫기
               </button>
             </header>
             <div className="settings-modal-body settings-inventory-body">
+              <div className="inventory-view-tabs" role="tablist" aria-label="인벤토리 보기">
+                <button
+                  type="button"
+                  role="tab"
+                  className={`inventory-view-tab ${inventoryView === 'bag' ? 'is-active' : ''}`}
+                  aria-selected={inventoryView === 'bag'}
+                  onClick={() => setInventoryView('bag')}
+                >
+                  가방 ({ownedInventoryCount})
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  className={`inventory-view-tab ${inventoryView === 'catalog' ? 'is-active' : ''}`}
+                  aria-selected={inventoryView === 'catalog'}
+                  onClick={() => setInventoryView('catalog')}
+                >
+                  도감 ({totalInventoryCount})
+                </button>
+              </div>
+              <div className="inventory-tools">
+                <label className="inventory-search-field">
+                  <span className="inventory-tool-label">검색</span>
+                  <input
+                    type="search"
+                    value={inventorySearchTerm}
+                    onChange={(event) => setInventorySearchTerm(event.target.value)}
+                    placeholder="아이템 이름 검색"
+                  />
+                </label>
+                <label className="inventory-select-field">
+                  <span className="inventory-tool-label">카테고리</span>
+                  <select
+                    value={inventoryCategoryFilter}
+                    onChange={(event) => setInventoryCategoryFilter(event.target.value)}
+                  >
+                    <option value={INVENTORY_CATEGORY_ALL}>전체</option>
+                    {inventoryCategoryOptions.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="inventory-select-field">
+                  <span className="inventory-tool-label">정렬</span>
+                  <select
+                    value={inventorySort}
+                    onChange={(event) => setInventorySort(event.target.value as InventorySortPreference)}
+                  >
+                    <option value="order">획득 순서</option>
+                    <option value="name">이름순</option>
+                  </select>
+                </label>
+              </div>
               <div className="inventory-grid-scroll">
-                {inventoryEntries.length === 0 ? (
-                  <p className="settings-empty-note inventory-grid-empty">획득한 아이템이 없습니다.</p>
+                {inventoryVisibleEntries.length === 0 ? (
+                  <p className="settings-empty-note inventory-grid-empty">{inventoryGridEmptyMessage}</p>
                 ) : (
                   <div className="inventory-grid" role="list" aria-label="인벤토리 그리드">
-                    {inventoryEntries.map((entry) => (
+                    {inventoryVisibleEntries.map((entry) => (
                       <button
                         key={entry.id}
                         type="button"
                         role="listitem"
-                        className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''}`}
+                        className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}`}
                         onClick={() => setSelectedInventoryItemId(entry.id)}
-                        aria-label={`${entry.name} 획득됨`}
+                        aria-label={`${entry.owned ? entry.name : '미확인 아이템'} ${entry.owned ? '획득됨' : '미획득'}`}
                       >
                         {entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
-                        {entry.imageUrl ? (
+                        {entry.owned && entry.imageUrl ? (
                           <img src={entry.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                         ) : (
                           <span className="inventory-slot-fallback" aria-hidden="true">
-                            ITEM
+                            {entry.owned ? 'ITEM' : 'LOCKED'}
                           </span>
                         )}
-                        <span className="inventory-slot-name">{entry.name}</span>
+                        <span className="inventory-slot-name">{entry.owned ? entry.name : '미확인 아이템'}</span>
                       </button>
                     ))}
                   </div>
@@ -2113,22 +2289,30 @@ export default function App() {
               </div>
 
               <div className="inventory-detail">
-                {inventoryEntries.length === 0 ? (
-                  <p className="settings-empty-note">획득한 아이템이 없습니다.</p>
+                {inventoryVisibleEntries.length === 0 ? (
+                  <p className="settings-empty-note">{inventoryGridEmptyMessage}</p>
                 ) : selectedInventoryEntry ? (
-                  <>
-                    <h3>{selectedInventoryEntry.name}</h3>
-                    <p className="inventory-detail-owned is-owned">내 가방에 있음</p>
-                    <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
-                    {selectedInventoryEntry.imageUrl && (
-                      <img
-                        src={selectedInventoryEntry.imageUrl}
-                        alt={`${selectedInventoryEntry.name} 아이템 이미지`}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    )}
-                  </>
+                  selectedInventoryEntry.owned ? (
+                    <>
+                      <h3>{selectedInventoryEntry.name}</h3>
+                      <p className="inventory-detail-owned is-owned">내 가방에 있음</p>
+                      <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
+                      {selectedInventoryEntry.imageUrl && (
+                        <img
+                          src={selectedInventoryEntry.imageUrl}
+                          alt={`${selectedInventoryEntry.name} 아이템 이미지`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <h3>미확인 아이템</h3>
+                      <p className="inventory-detail-owned is-missing">아직 획득하지 못함</p>
+                      <p>아직 획득하지 못한 아이템입니다.</p>
+                    </>
+                  )
                 ) : (
                   <p className="settings-empty-note">확인할 아이템을 선택해 주세요.</p>
                 )}

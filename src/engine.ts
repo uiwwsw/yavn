@@ -81,12 +81,29 @@ const DEFAULT_STICKER_LEAVE_DURATION = 220;
 const DEFAULT_STICKER_LEAVE_EASING = 'ease';
 const DEFAULT_STICKER_LEAVE_DELAY = 0;
 const DEFAULT_CHOICE_FORGIVE_MESSAGE = '한 번은 넘어갈게. 다시 선택해 주세요.';
-const DEFAULT_RUNTIME_GAME_SETTINGS = {
+const INVENTORY_VIEW_VALUES = ['bag', 'catalog'] as const;
+const INVENTORY_SORT_VALUES = ['order', 'name'] as const;
+
+export type InventoryViewPreference = (typeof INVENTORY_VIEW_VALUES)[number];
+export type InventorySortPreference = (typeof INVENTORY_SORT_VALUES)[number];
+export type InventoryUiSettings = {
+  view: InventoryViewPreference;
+  sort: InventorySortPreference;
+  category: string;
+};
+
+const DEFAULT_RUNTIME_GAME_SETTINGS: RuntimeGameSettings = {
   bgmEnabled: true,
-} as const;
+  inventoryView: 'bag',
+  inventorySort: 'order',
+  inventoryCategory: '',
+};
 
 type RuntimeGameSettings = {
   bgmEnabled: boolean;
+  inventoryView: InventoryViewPreference;
+  inventorySort: InventorySortPreference;
+  inventoryCategory: string;
 };
 
 type InventoryOwnedMap = Record<string, boolean>;
@@ -195,6 +212,27 @@ function resolveGameSettingsStorageKey(key: string = currentAutosaveKey): string
   return `${GAME_SETTINGS_STORAGE_PREFIX}${encodeURIComponent(key)}`;
 }
 
+function normalizeInventoryView(raw: unknown, fallback: InventoryViewPreference): InventoryViewPreference {
+  if (raw === 'bag' || raw === 'catalog') {
+    return raw;
+  }
+  return fallback;
+}
+
+function normalizeInventorySort(raw: unknown, fallback: InventorySortPreference): InventorySortPreference {
+  if (raw === 'order' || raw === 'name') {
+    return raw;
+  }
+  return fallback;
+}
+
+function normalizeInventoryCategory(raw: unknown, fallback: string): string {
+  if (typeof raw !== 'string') {
+    return fallback;
+  }
+  return raw.trim();
+}
+
 function normalizeRuntimeGameSettings(raw: unknown): RuntimeGameSettings {
   const defaults: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
@@ -203,6 +241,9 @@ function normalizeRuntimeGameSettings(raw: unknown): RuntimeGameSettings {
   const parsed = raw as Partial<RuntimeGameSettings>;
   return {
     bgmEnabled: typeof parsed.bgmEnabled === 'boolean' ? parsed.bgmEnabled : defaults.bgmEnabled,
+    inventoryView: normalizeInventoryView(parsed.inventoryView, defaults.inventoryView),
+    inventorySort: normalizeInventorySort(parsed.inventorySort, defaults.inventorySort),
+    inventoryCategory: normalizeInventoryCategory(parsed.inventoryCategory, defaults.inventoryCategory),
   };
 }
 
@@ -213,7 +254,11 @@ function loadRuntimeGameSettingsFromStorage(key: string = currentAutosaveKey): v
       runtimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
       return;
     }
-    runtimeGameSettings = normalizeRuntimeGameSettings(JSON.parse(raw));
+    const parsedRaw = JSON.parse(raw);
+    runtimeGameSettings = normalizeRuntimeGameSettings(parsedRaw);
+    if (JSON.stringify(parsedRaw) !== JSON.stringify(runtimeGameSettings)) {
+      persistRuntimeGameSettings(key);
+    }
   } catch {
     runtimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
   }
@@ -234,6 +279,30 @@ function setAutosaveScopeKey(key: string): void {
 
 export function getBgmEnabled(): boolean {
   return runtimeGameSettings.bgmEnabled;
+}
+
+export function getInventoryUiSettings(): InventoryUiSettings {
+  return {
+    view: runtimeGameSettings.inventoryView,
+    sort: runtimeGameSettings.inventorySort,
+    category: runtimeGameSettings.inventoryCategory,
+  };
+}
+
+export function setInventoryUiSettings(patch: Partial<InventoryUiSettings>): void {
+  runtimeGameSettings = {
+    ...runtimeGameSettings,
+    ...(patch.view
+      ? { inventoryView: normalizeInventoryView(patch.view, runtimeGameSettings.inventoryView) }
+      : {}),
+    ...(patch.sort
+      ? { inventorySort: normalizeInventorySort(patch.sort, runtimeGameSettings.inventorySort) }
+      : {}),
+    ...('category' in patch
+      ? { inventoryCategory: normalizeInventoryCategory(patch.category, runtimeGameSettings.inventoryCategory) }
+      : {}),
+  };
+  persistRuntimeGameSettings();
 }
 
 export function setBgmEnabled(enabled: boolean): void {

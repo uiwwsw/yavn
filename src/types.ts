@@ -114,6 +114,8 @@ export type InventoryItem = {
   name: string;
   description?: string;
   image?: string;
+  category?: string;
+  order?: number;
 };
 
 export type InputRoute = {

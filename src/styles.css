@@ -1617,8 +1617,8 @@ textarea,
 
 .hud-inventory-button {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border: 1px solid var(--ui-dialog-border);
   border-radius: 999px;
   background: var(--ui-choice-bg);
@@ -1658,6 +1658,24 @@ textarea,
   border: 1.8px solid currentColor;
   border-bottom: 0;
   border-radius: 6px 6px 0 0;
+}
+
+.hud-inventory-progress {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  padding: 1px 5px;
+  border-radius: 999px;
+  border: 1px solid var(--ui-choice-border);
+  background: rgba(0, 0, 0, 0.74);
+  color: #efffff;
+  font-size: 9px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 .settings-modal-backdrop {
@@ -1724,10 +1742,82 @@ textarea,
 
 .settings-inventory-body {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
   gap: 12px;
   align-content: stretch;
   min-height: 0;
+}
+
+.inventory-view-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inventory-view-tab {
+  border: 1px solid var(--ui-choice-border);
+  border-radius: 10px;
+  background: var(--ui-choice-bg);
+  color: var(--ui-choice-color);
+  padding: 8px 10px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--ui-body-font);
+}
+
+.inventory-view-tab:hover {
+  border-color: var(--ui-choice-hover-border);
+  background: var(--ui-choice-hover-bg);
+}
+
+.inventory-view-tab.is-active {
+  border-color: var(--ui-choice-hover-border);
+  box-shadow: 0 0 0 1px var(--ui-choice-hover-border) inset;
+}
+
+.inventory-view-tab:focus-visible {
+  outline: 2px solid var(--ui-focus-ring);
+  outline-offset: 1px;
+}
+
+.inventory-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.inventory-search-field,
+.inventory-select-field {
+  display: grid;
+  gap: 5px;
+}
+
+.inventory-tool-label {
+  font-size: 0.75rem;
+  color: var(--ui-status-color);
+}
+
+.inventory-search-field input,
+.inventory-select-field select {
+  min-width: 0;
+  border: 1px solid var(--ui-choice-border);
+  border-radius: 10px;
+  background: var(--ui-choice-bg);
+  color: var(--ui-text-color);
+  font-family: var(--ui-body-font);
+  font-size: 0.86rem;
+  padding: 8px 10px;
+}
+
+.inventory-search-field input::placeholder {
+  color: rgba(228, 236, 244, 0.72);
+}
+
+.inventory-search-field input:focus-visible,
+.inventory-select-field select:focus-visible {
+  outline: 2px solid var(--ui-focus-ring);
+  outline-offset: 1px;
 }
 
 .inventory-grid-scroll {
@@ -1741,7 +1831,7 @@ textarea,
 
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
   align-content: start;
 }
@@ -1776,6 +1866,15 @@ textarea,
 .inventory-slot.is-selected {
   border-color: var(--ui-choice-hover-border);
   box-shadow: 0 0 0 1px var(--ui-choice-hover-border) inset;
+}
+
+.inventory-slot.is-locked {
+  border-style: dashed;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.inventory-slot.is-locked .inventory-slot-name {
+  color: var(--ui-status-color);
 }
 
 .inventory-slot:focus-visible {
@@ -2807,6 +2906,20 @@ textarea,
   100% { transform: rotate(0deg); }
 }
 
+@media (max-width: 1024px) {
+  .inventory-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .inventory-tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .inventory-search-field {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 768px) {
   .launcher {
     padding: 12px 10px 18px;
@@ -2932,8 +3045,8 @@ textarea,
   }
 
   .hud-inventory-button {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
   }
 
   .hud-inventory-icon {
@@ -2944,6 +3057,12 @@ textarea,
   .hud-inventory-icon::before {
     top: -5px;
     height: 5px;
+  }
+
+  .hud-inventory-progress {
+    bottom: -11px;
+    font-size: 8px;
+    padding: 1px 4px;
   }
 
   .settings-modal-backdrop {
@@ -2965,7 +3084,25 @@ textarea,
     padding: 8px;
   }
 
+  .inventory-view-tabs {
+    gap: 6px;
+  }
+
+  .inventory-view-tab {
+    font-size: 0.8rem;
+    padding: 8px 6px;
+  }
+
+  .inventory-tools {
+    grid-template-columns: 1fr;
+  }
+
+  .inventory-search-field {
+    grid-column: auto;
+  }
+
   .inventory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
 

@@ -283,6 +283,8 @@ const inventoryItemSchema = z
     name: z.string().min(1),
     description: z.string().min(1).optional(),
     image: z.string().min(1).optional(),
+    category: z.string().min(1).optional(),
+    order: z.number().int().nonnegative().optional(),
   })
   .strict()
   .transform((value) => {
@@ -294,6 +296,8 @@ const inventoryItemSchema = z
       name: value.name.trim(),
       description: normalizeOptionalText(value.description),
       image: normalizeOptionalText(value.image),
+      category: normalizeOptionalText(value.category),
+      order: value.order,
     };
   });
 
