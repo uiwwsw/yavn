@@ -4,8 +4,6 @@ script:
   - scene: residue_claim_correct
   - scene: residue_claim_wrong
   - scene: timeline_gate
-  - scene: timeline_item_get
-  - scene: timeline_item_already_owned
   - scene: timeline_input_gate
   - scene: reconstruction_choice
   - scene: reconstruction_claim_correct
@@ -110,50 +108,7 @@ scenes:
           id: rim_focus
           leave:
             effect: fadeOut
-      - branch:
-          cases:
-            - when:
-                var: tea_residue_report
-                op: eq
-                value: true
-              goto: timeline_item_already_owned
-          default: timeline_item_get
-
-  timeline_item_get:
-    actions:
-      - get: tea_residue_report
-      - sticker:
-          id: item_popup_tea_residue_report
-          image: item_tea_residue_report
-          x: 50
-          y: 30
-          width: 22
-          enter:
-            effect: popIn
-          inputLockMs: 500
-      - wait: 3000
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - say:
-          char: 코난.think
-          text: "<speed=34>찻잔 반응 시료 카드를 획득했다.</speed> <speed=58>이제 시간선을 잠근다.</speed>"
-      - clearSticker:
-          id: item_popup_tea_residue_report
-          leave:
-            effect: fadeOut
       - goto: timeline_input_gate
-
-  timeline_item_already_owned:
-    actions:
-      - char:
-          id: 코난
-          position: center
-          emotion: think
-      - say:
-          char: 코난.think
-          text: "<speed=30>찻잔 반응 시료 카드는 이미 확보했다.</speed> <speed=56>중복 단서는 필요 없다.</speed>"
 
   timeline_input_gate:
     actions:
