@@ -27,6 +27,7 @@ import type {
   StickerLeaveOptions,
   StickerLength,
   StickerSlot,
+  UiTemplateId,
 } from './types';
 
 type YouTubePlayer = {
@@ -95,7 +96,9 @@ export type LoadGameOptions = {
 };
 
 export type StartScreenPreview = {
+  gameTitle: string;
   startScreen?: GameData['startScreen'];
+  uiTemplate: UiTemplateId;
   hasLoadableSave: boolean;
 };
 
@@ -2294,12 +2297,20 @@ async function fetchYamlIfExists(url: string): Promise<string | undefined> {
   return text;
 }
 
-function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): GameData['startScreen'] | undefined {
+function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
+  gameTitle: string;
+  startScreen?: GameData['startScreen'];
+  uiTemplate: UiTemplateId;
+} {
   const parsed = parseConfigYaml(rawConfig, sourcePath);
   if (!parsed.data) {
     throw new Error(parsed.error?.message ?? `Failed to parse ${sourcePath}`);
   }
-  return parsed.data.data.startScreen;
+  return {
+    gameTitle: parsed.data.data.title,
+    startScreen: parsed.data.data.startScreen,
+    uiTemplate: parsed.data.data.ui?.template ?? DEFAULT_UI_TEMPLATE,
+  };
 }
 
 function resolveZipImageEntry(
@@ -2323,11 +2334,14 @@ export async function loadUrlStartScreenPreview(url: string): Promise<StartScree
   if (configRaw === undefined) {
     throw new Error('config.yaml not found at game root.');
   }
-  const startScreen = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const startScreen = parsedConfig.startScreen;
   const autosaveKey = resolveAutosaveKeyForUrl(baseUrl);
   const hasLoadableSave = hasLoadableProgressByKey(autosaveKey) || hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY);
   return {
+    gameTitle: parsedConfig.gameTitle,
     startScreen,
+    uiTemplate: parsedConfig.uiTemplate,
     hasLoadableSave,
   };
 }
@@ -2340,10 +2354,13 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
     throw new Error('config.yaml not found at game root.');
   }
   const configRaw = await configEntry.async('text');
-  const startScreen = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const startScreen = parsedConfig.startScreen;
   if (!startScreen?.image || /^(blob:|data:|https?:)/i.test(startScreen.image)) {
     return {
+      gameTitle: parsedConfig.gameTitle,
       startScreen,
+      uiTemplate: parsedConfig.uiTemplate,
       hasLoadableSave: false,
     };
   }
@@ -2351,7 +2368,9 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
   const imageEntry = resolveZipImageEntry(files, startScreen.image);
   if (!imageEntry) {
     return {
+      gameTitle: parsedConfig.gameTitle,
       startScreen,
+      uiTemplate: parsedConfig.uiTemplate,
       hasLoadableSave: false,
     };
   }
@@ -2361,10 +2380,12 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
   const blob = mimeType ? new Blob([bytes], { type: mimeType }) : new Blob([bytes]);
   const imageUrl = URL.createObjectURL(blob);
   return {
+    gameTitle: parsedConfig.gameTitle,
     startScreen: {
       ...startScreen,
       image: imageUrl,
     },
+    uiTemplate: parsedConfig.uiTemplate,
     hasLoadableSave: false,
   };
 }
@@ -2910,7 +2931,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
 
 export function handleAdvance() {
   const state = useVNStore.getState();
-  if (!state.game || state.isFinished || state.chapterLoading) {
+  if (!state.game || state.isFinished || state.chapterLoading || state.dialogUiHidden) {
     return;
   }
   if (state.videoCutscene.active) {
@@ -2955,6 +2976,7 @@ export async function restartFromBeginning() {
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().clearInputGate();
   useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setDialogUiHidden(false);
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   useVNStore.getState().setRouteVars({});
   useVNStore.getState().clearRouteHistory();

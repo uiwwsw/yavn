@@ -737,33 +737,132 @@ textarea,
 }
 
 .start-gate {
-  --start-gate-bg-url: none;
+  --start-gate-bg:
+    radial-gradient(circle at 12% 9%, rgba(92, 150, 255, 0.19), transparent 52%),
+    radial-gradient(circle at 88% 8%, rgba(214, 148, 79, 0.2), transparent 47%),
+    linear-gradient(150deg, #0d121b, #16131a 52%, #130f14);
+  --start-gate-overlay:
+    radial-gradient(circle at 50% 19%, rgba(244, 230, 205, 0.08), transparent 42%),
+    linear-gradient(to bottom, rgba(8, 10, 14, 0.4), rgba(6, 5, 8, 0.72));
+  --start-gate-eyebrow-color: rgba(241, 225, 196, 0.8);
+  --start-gate-eyebrow-letter-spacing: 0.35em;
+  --start-gate-title-color: #fef3dc;
+  --start-gate-title-shadow: 0 16px 30px rgba(0, 0, 0, 0.6);
+  --start-gate-button-border: rgba(244, 213, 156, 0.74);
+  --start-gate-button-bg: linear-gradient(180deg, rgba(247, 225, 183, 0.95), rgba(213, 163, 92, 0.92));
+  --start-gate-button-color: #251509;
+  --start-gate-button-shadow:
+    0 13px 28px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 240, 204, 0.48) inset;
+  --start-gate-button-hover-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.46),
+    0 0 0 1px rgba(255, 241, 211, 0.66) inset;
+  --start-gate-button-focus-ring: #ffd288;
+  --start-gate-button-hover-filter: brightness(1.06);
+  --start-gate-load-button-bg: linear-gradient(180deg, rgba(88, 73, 56, 0.94), rgba(55, 44, 34, 0.9));
+  --start-gate-load-button-color: #f9eed8;
+  --start-gate-load-button-border: rgba(215, 187, 142, 0.52);
+  --start-gate-button-radius: 999px;
   position: relative;
   width: 100%;
   min-height: 100%;
   overflow: hidden;
-  background:
-    linear-gradient(160deg, rgba(4, 9, 22, 0.88), rgba(6, 12, 24, 0.78)),
-    var(--start-gate-bg-url),
-    radial-gradient(circle at 10% 8%, rgba(90, 178, 255, 0.2), transparent 50%),
-    radial-gradient(circle at 90% 6%, rgba(255, 164, 90, 0.17), transparent 46%),
-    linear-gradient(150deg, #0a1225, #17172a 50%, #130f1d);
-  background-size: cover, cover, cover, cover, cover;
-  background-position: center, center, center, center, center;
+  background: var(--start-gate-bg);
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+}
+
+.start-gate[data-ui-template='neon-grid'] {
+  --start-gate-bg:
+    radial-gradient(circle at 14% 11%, rgba(59, 208, 255, 0.3), transparent 56%),
+    radial-gradient(circle at 84% 9%, rgba(248, 109, 255, 0.26), transparent 48%),
+    linear-gradient(142deg, #060d1a, #09142c 56%, #140827);
+  --start-gate-overlay:
+    linear-gradient(180deg, rgba(5, 12, 27, 0.38), rgba(2, 8, 23, 0.68)),
+    repeating-linear-gradient(
+      0deg,
+      rgba(122, 230, 255, 0.11),
+      rgba(122, 230, 255, 0.11) 1px,
+      transparent 1px,
+      transparent 28px
+    );
+  --start-gate-eyebrow-color: rgba(124, 244, 255, 0.95);
+  --start-gate-title-color: #d8fbff;
+  --start-gate-title-shadow:
+    0 0 28px rgba(92, 241, 255, 0.5),
+    0 12px 26px rgba(1, 7, 18, 0.84);
+  --start-gate-button-border: rgba(122, 236, 255, 0.94);
+  --start-gate-button-bg: linear-gradient(180deg, rgba(6, 34, 54, 0.95), rgba(4, 21, 40, 0.92));
+  --start-gate-button-color: #94f6ff;
+  --start-gate-button-shadow:
+    0 0 0 1px rgba(26, 95, 129, 0.86) inset,
+    0 14px 30px rgba(0, 0, 0, 0.48),
+    0 0 18px rgba(55, 220, 255, 0.44);
+  --start-gate-button-hover-shadow:
+    0 0 0 1px rgba(126, 242, 255, 0.78) inset,
+    0 16px 34px rgba(0, 0, 0, 0.58),
+    0 0 24px rgba(63, 228, 255, 0.58);
+  --start-gate-button-focus-ring: #6ef1ff;
+  --start-gate-button-hover-filter: brightness(1.15);
+  --start-gate-load-button-bg: linear-gradient(180deg, rgba(53, 26, 73, 0.95), rgba(33, 13, 53, 0.92));
+  --start-gate-load-button-color: #ffd7ff;
+  --start-gate-load-button-border: rgba(236, 147, 255, 0.78);
+}
+
+.start-gate[data-ui-template='paper-stage'] {
+  --start-gate-bg:
+    radial-gradient(circle at 11% 12%, rgba(255, 244, 219, 0.44), transparent 54%),
+    radial-gradient(circle at 86% 8%, rgba(224, 198, 149, 0.35), transparent 50%),
+    linear-gradient(150deg, #f0e4cb, #e2d3b7 52%, #d8c8ab);
+  --start-gate-overlay:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.18), rgba(120, 88, 53, 0.16)),
+    repeating-linear-gradient(
+      -12deg,
+      rgba(143, 110, 69, 0.09),
+      rgba(143, 110, 69, 0.09) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  --start-gate-eyebrow-color: rgba(89, 65, 43, 0.82);
+  --start-gate-title-color: #2f2115;
+  --start-gate-title-shadow: 0 10px 22px rgba(53, 35, 18, 0.22);
+  --start-gate-button-border: rgba(95, 72, 46, 0.58);
+  --start-gate-button-bg: linear-gradient(180deg, rgba(255, 248, 235, 0.95), rgba(236, 219, 186, 0.92));
+  --start-gate-button-color: #2e2013;
+  --start-gate-button-shadow:
+    0 11px 22px rgba(56, 34, 15, 0.2),
+    0 0 0 1px rgba(255, 250, 238, 0.74) inset;
+  --start-gate-button-hover-shadow:
+    0 13px 26px rgba(56, 34, 15, 0.28),
+    0 0 0 1px rgba(255, 252, 242, 0.8) inset;
+  --start-gate-button-focus-ring: #8e633d;
+  --start-gate-button-hover-filter: brightness(1.03);
+  --start-gate-load-button-bg: linear-gradient(180deg, rgba(193, 166, 122, 0.92), rgba(161, 128, 87, 0.9));
+  --start-gate-load-button-color: #201204;
+  --start-gate-load-button-border: rgba(112, 81, 48, 0.58);
+  --start-gate-button-radius: 16px;
+}
+
+.start-gate-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
 
 .start-gate-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.08), transparent 40%),
-    linear-gradient(to bottom, rgba(8, 16, 31, 0.45), rgba(8, 10, 19, 0.83));
+  background: var(--start-gate-overlay);
 }
 
 .start-gate-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   height: 100%;
   min-height: 100vh;
@@ -780,16 +879,16 @@ textarea,
 
 .start-gate-eyebrow {
   margin: 0;
-  color: rgba(219, 235, 255, 0.8);
-  letter-spacing: 0.35em;
+  color: var(--start-gate-eyebrow-color);
+  letter-spacing: var(--start-gate-eyebrow-letter-spacing);
   font-size: 0.7rem;
   font-weight: 700;
 }
 
 .start-gate-title-block h1 {
   margin: 8px 0 0;
-  color: #f5f9ff;
-  text-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+  color: var(--start-gate-title-color);
+  text-shadow: var(--start-gate-title-shadow);
   font-size: clamp(1.5rem, 3.9vw, 2.6rem);
   line-height: 1.22;
 }
@@ -826,26 +925,27 @@ textarea,
 .start-gate-button {
   min-width: min(300px, 78vw);
   min-height: 52px;
-  border-radius: 999px;
-  border: 1px solid rgba(201, 231, 255, 0.7);
-  background: linear-gradient(180deg, rgba(245, 252, 255, 0.95), rgba(212, 236, 255, 0.88));
-  color: #06233f;
+  border-radius: var(--start-gate-button-radius);
+  border: 1px solid var(--start-gate-button-border);
+  background: var(--start-gate-button-bg);
+  color: var(--start-gate-button-color);
   font-size: clamp(0.93rem, 2.4vw, 1.06rem);
   font-weight: 780;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
-  box-shadow:
-    0 12px 26px rgba(0, 0, 0, 0.34),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  box-shadow: var(--start-gate-button-shadow);
 }
 
 .start-gate-button:hover {
   transform: translateY(-1px);
-  filter: brightness(1.04);
-  box-shadow:
-    0 15px 30px rgba(0, 0, 0, 0.38),
-    0 0 0 1px rgba(255, 255, 255, 0.72) inset;
+  filter: var(--start-gate-button-hover-filter);
+  box-shadow: var(--start-gate-button-hover-shadow);
+}
+
+.start-gate-button:focus-visible {
+  outline: 2px solid var(--start-gate-button-focus-ring);
+  outline-offset: 2px;
 }
 
 .start-gate-button:disabled {
@@ -854,9 +954,9 @@ textarea,
 }
 
 .start-gate-button-load {
-  background: linear-gradient(180deg, rgba(87, 103, 130, 0.95), rgba(56, 72, 98, 0.9));
-  color: #f0f5ff;
-  border-color: rgba(190, 210, 240, 0.54);
+  background: var(--start-gate-load-button-bg);
+  color: var(--start-gate-load-button-color);
+  border-color: var(--start-gate-load-button-border);
 }
 
 .app {
@@ -1308,6 +1408,7 @@ textarea,
   pointer-events: none;
   isolation: isolate;
   contain: layout paint;
+  transition: bottom 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sticker-layer {
@@ -1316,6 +1417,7 @@ textarea,
   z-index: 4;
   pointer-events: none;
   overflow: hidden;
+  transition: bottom 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sticker {
@@ -1518,6 +1620,50 @@ textarea,
 .dialog-box.hidden {
   transform: translateY(calc(100% + 28px));
   pointer-events: none;
+}
+
+.dialog-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  z-index: 1;
+}
+
+.dialog-toggle-button,
+.dialog-restore-button {
+  border: 1px solid var(--ui-dialog-border);
+  border-radius: 999px;
+  background: var(--ui-choice-bg);
+  color: var(--ui-choice-color);
+  font-size: 12px;
+  font-weight: 720;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  padding: 6px 11px;
+  cursor: pointer;
+  font-family: var(--ui-body-font);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(4px);
+}
+
+.dialog-toggle-button:hover,
+.dialog-restore-button:hover {
+  border-color: var(--ui-choice-hover-border);
+  background: var(--ui-choice-hover-bg);
+}
+
+.dialog-toggle-button:focus-visible,
+.dialog-restore-button:focus-visible {
+  outline: 2px solid var(--ui-focus-ring);
+  outline-offset: 2px;
+}
+
+.dialog-restore-button {
+  position: absolute;
+  z-index: 6;
+  right: 20px;
+  bottom: 20px;
 }
 
 .video-cutscene-overlay {
@@ -2406,6 +2552,13 @@ textarea,
     right: 10px;
     bottom: 10px;
   }
+
+  .dialog-restore-button {
+    right: 10px;
+    bottom: 10px;
+    font-size: 11px;
+    padding: 5px 10px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2430,7 +2583,9 @@ textarea,
   .video-skip-guide,
   .ending-bottom-bar,
   .ending-restart,
-  .dialog-box {
+  .dialog-box,
+  .char-layer,
+  .sticker-layer {
     transition: none !important;
   }
 }

@@ -18,7 +18,7 @@ import {
 import { Live2DCharacter } from './Live2DCharacter';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
-import type { AuthorMetaObject, CharacterSlot, Position, StartButtonPosition } from './types';
+import type { AuthorMetaObject, CharacterSlot, Position, StartButtonPosition, UiTemplateId } from './types';
 import type { CSSProperties, SyntheticEvent } from 'react';
 
 type GameListManifestEntry = {
@@ -41,23 +41,27 @@ type GameListManifest = {
 
 type StartGateState =
   | {
-      kind: 'url';
-      gameUrl: string;
-      sessionKey: string;
-      imageUrl?: string;
-      startButtonText: string;
-      buttonPosition: StartButtonPosition;
-      showLoadButton: boolean;
-    }
+    kind: 'url';
+    gameUrl: string;
+    sessionKey: string;
+    uiTemplate: UiTemplateId;
+    gameTitle: string;
+    imageUrl?: string;
+    startButtonText: string;
+    buttonPosition: StartButtonPosition;
+    showLoadButton: boolean;
+  }
   | {
-      kind: 'zip';
-      file: File;
-      imageUrl?: string;
-      previewBlobUrl?: string;
-      startButtonText: string;
-      buttonPosition: StartButtonPosition;
-      showLoadButton: false;
-    };
+    kind: 'zip';
+    file: File;
+    uiTemplate: UiTemplateId;
+    gameTitle: string;
+    imageUrl?: string;
+    previewBlobUrl?: string;
+    startButtonText: string;
+    buttonPosition: StartButtonPosition;
+    showLoadButton: false;
+  };
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
@@ -180,8 +184,8 @@ function parseGameListManifest(raw: unknown): GameListManifest {
   }
   const games = Array.isArray(raw.games)
     ? raw.games
-        .map((entry, index) => normalizeGameListEntry(entry, index))
-        .filter((entry): entry is GameListManifestEntry => Boolean(entry))
+      .map((entry, index) => normalizeGameListEntry(entry, index))
+      .filter((entry): entry is GameListManifestEntry => Boolean(entry))
     : [];
   return {
     schemaVersion: typeof raw.schemaVersion === 'number' && Number.isFinite(raw.schemaVersion) ? raw.schemaVersion : undefined,
@@ -271,7 +275,7 @@ function normalizeAuthorCredit(author: string | AuthorMetaObject | undefined): {
   return { name, contacts };
 }
 
-function useAdvanceByKey() {
+function useAdvanceByKey(advanceLocked: boolean) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -291,13 +295,16 @@ function useAdvanceByKey() {
       }
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
+        if (advanceLocked) {
+          return;
+        }
         unlockAudioFromGesture();
         handleAdvance();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [advanceLocked]);
 }
 
 export default function App() {
@@ -308,6 +315,7 @@ export default function App() {
     speakerOrder,
     visibleCharacterIds,
     dialog,
+    dialogUiHidden,
     effect,
     error,
     busy,
@@ -321,6 +329,7 @@ export default function App() {
     choiceGate,
     resolvedEndingId,
     uiTemplate,
+    setDialogUiHidden,
   } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
@@ -354,9 +363,11 @@ export default function App() {
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
-  const sampleZipUrl = '/sample.zip';
-  const shareByPrUrl = 'https://github.com/uiwwsw/visual-novel/compare';
-  const isDialogHidden = videoCutscene.active || chapterLoading || !game;
+  // const sampleZipUrl = '/sample.zip';
+  const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
+  const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || !game;
+  const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
+  const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
 
   const loadGameListManifest = useCallback(async () => {
     const requestId = gameListRequestIdRef.current + 1;
@@ -423,6 +434,8 @@ export default function App() {
                 kind: 'url',
                 gameUrl,
                 sessionKey,
+                uiTemplate: preview.uiTemplate,
+                gameTitle: preview.gameTitle,
                 imageUrl: resolveStartGateImageUrl(preview.startScreen.image, baseUrl),
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
@@ -477,7 +490,7 @@ export default function App() {
     };
   }, []);
 
-  useAdvanceByKey();
+  useAdvanceByKey(dialogUiHidden);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -922,11 +935,13 @@ export default function App() {
     if (!appEl || !dialogEl) {
       return;
     }
-    const appRect = appEl.getBoundingClientRect();
-    const dialogRect = dialogEl.getBoundingClientRect();
-    const nextInset = Math.max(0, Math.ceil(appRect.bottom - dialogRect.top));
+    if (isDialogHidden) {
+      setStickerSafeInset((prev) => (prev === 0 ? prev : 0));
+      return;
+    }
+    const nextInset = Math.max(0, Math.ceil(appEl.clientHeight - dialogEl.offsetTop));
     setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
-  }, []);
+  }, [isDialogHidden]);
 
   useLayoutEffect(() => {
     updateStickerSafeInset();
@@ -954,7 +969,7 @@ export default function App() {
       observer.disconnect();
       window.removeEventListener('resize', updateStickerSafeInset);
     };
-  }, [bootMode, choiceGate.active, dialog.visibleText, inputGate.active, updateStickerSafeInset, videoCutscene.active]);
+  }, [bootMode, choiceGate.active, dialog.visibleText, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
     if (!slot || !visibleCharacterSet.has(slot.id)) {
@@ -1082,6 +1097,8 @@ export default function App() {
         setStartGate({
           kind: 'zip',
           file,
+          uiTemplate: preview.uiTemplate,
+          gameTitle: preview.gameTitle,
           imageUrl,
           previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
           startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
@@ -1103,15 +1120,15 @@ export default function App() {
   };
 
   if (startGate) {
-    const startGateBackgroundStyle = startGate.imageUrl ? ({ '--start-gate-bg-url': `url("${startGate.imageUrl}")` } as CSSProperties) : undefined;
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
     return (
-      <div className="start-gate" style={startGateBackgroundStyle}>
+      <div className="start-gate" data-ui-template={startGate.uiTemplate}>
+        {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-content">
           <div className="start-gate-title-block">
             <p className="start-gate-eyebrow">YAVN</p>
-            <h1>{game?.meta.title ?? 'Visual Novel'}</h1>
+            <h1>{startGate.gameTitle}</h1>
           </div>
           <div className={actionClass}>
             <button
@@ -1186,9 +1203,9 @@ export default function App() {
                   {uploading ? 'ZIP 패키지 로딩 중...' : 'ZIP 즉시 실행'}
                   <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
                 </label>
-                <a className="launcher-command launcher-command-secondary" href={sampleZipUrl} download>
+                {/* <a className="launcher-command launcher-command-secondary" href={sampleZipUrl} download>
                   샘플 ZIP 다운로드
-                </a>
+                </a> */}
                 <a className="launcher-command launcher-command-ghost" href={shareByPrUrl} target="_blank" rel="noreferrer">
                   GitHub PR 공유
                 </a>
@@ -1399,6 +1416,9 @@ export default function App() {
           revealVideoSkipGuide();
           return;
         }
+        if (dialogUiHidden) {
+          return;
+        }
         unlockAudioFromGesture();
         handleAdvance();
       }}
@@ -1489,6 +1509,20 @@ export default function App() {
       </div>
 
       <div ref={dialogBoxRef} className={`dialog-box ${isDialogHidden ? 'hidden' : ''}`}>
+        {!isDialogHiddenBySystem && !dialogUiHidden && (
+          <div className="dialog-controls">
+            <button
+              type="button"
+              className="dialog-toggle-button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setDialogUiHidden(true);
+              }}
+            >
+              숨기기
+            </button>
+          </div>
+        )}
         {dialog.speaker && <div className="speaker">{dialog.speaker}</div>}
         <div className="text">{dialog.visibleText}</div>
         {inputGate.active && (
@@ -1558,6 +1592,19 @@ export default function App() {
           {busy ? '...' : isFinished ? 'End' : inputGate.active ? '입력 대기' : choiceGate.active ? '선택 대기' : 'Next'}
         </div>
       </div>
+
+      {showDialogRestoreButton && (
+        <button
+          type="button"
+          className="dialog-restore-button"
+          onClick={(event) => {
+            event.stopPropagation();
+            setDialogUiHidden(false);
+          }}
+        >
+          대화창 열기
+        </button>
+      )}
 
       {error && (
         <div className="error-overlay">

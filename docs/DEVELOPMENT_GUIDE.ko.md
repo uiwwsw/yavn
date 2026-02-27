@@ -184,6 +184,9 @@ scenes:
 - `../`를 포함한 챕터 `goto`는 지원하지 않음
 - 로딩 오버레이는 첫 화면에서 노출되는 Live2D 캐릭터가 실제 `ready/error`를 보고할 때까지 유지되며, 이후에만 `loaded`로 전환됩니다.
 - 챕터 로딩 중(`chapterLoading=true`)과 `setGame` 완료 전 상태에서는 다이얼로그 박스(`.dialog-box`)를 하단으로 슬라이드 아웃하고, 해제 시 아래에서 슬라이드 인합니다.
+- 인게임 다이얼로그 우측 상단 `숨기기` 버튼으로 수동 숨김을 토글할 수 있으며, 숨김 상태에서는 우측 하단 `대화창 열기` 버튼만 노출됩니다.
+- 수동 숨김 상태에서는 클릭/`Enter`/`Space` 진행 입력을 차단해 의도치 않은 스크립트 진행을 방지합니다.
+- 수동 숨김/복원 상태 변화는 캐릭터/스티커 레이어 하단 안전 여백(`stickerSafeInset`) 계산에도 즉시 반영됩니다.
 
 ## 8-0) 에피소드형 탐문 라운지 패턴 (Conan 샘플)
 
@@ -237,6 +240,7 @@ scenes:
 - 캐릭터 레이어(`.char-layer`)의 하단 경계는 다이얼로그 박스 상단 위치와 동일하게 맞춥니다.
 - 캐릭터는 레이어 하단(`bottom: 0`) 기준으로 배치되어, 대화창 위에 떠 보이지 않도록 고정됩니다.
 - 이미지 캐릭터(`.char-image`)는 `object-position: center bottom`으로 하단 정렬됩니다.
+- 다이얼로그가 수동 숨김 상태면 레이어 하단 inset을 `0`으로 강제해 캐릭터/스티커가 하단 전체 영역을 사용하고, 복원 시 inset 계산을 즉시 재개합니다.
 
 ## 8-6) 선택/입력 게이트 키보드 동작
 
@@ -284,12 +288,14 @@ scenes:
 - 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
 - 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
 - 런처 인스펙터 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
+- 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 
-## 8-10) 인게임 UI 템플릿 동작
+## 8-10) UI 템플릿 동작
 
-- `config.yaml.ui.template`으로 게임 플레이 화면의 전역 UI 템플릿을 선택합니다.
+- `config.yaml.ui.template`으로 시작 화면(Start Gate) + 게임 플레이 화면의 전역 UI 템플릿을 선택합니다.
 - 허용값: `cinematic-noir`, `neon-grid`, `paper-stage`
 - 적용 범위:
+  - 시작 화면 타이틀/버튼(`start-gate`)
   - 챕터 로딩 오버레이(`chapter-loading`)
   - 다이얼로그 박스(`dialog-box`)
   - 비디오 `HOLD TO SKIP` 가이드
@@ -303,6 +309,13 @@ scenes:
 - 인게임 HUD는 좌측에 현재 게임 제목(`game.meta.title`)을 표시합니다.
 - 우측 안내 문구 기본값은 `YAVN ENGINE`입니다.
 - ZIP 업로드 로딩 중(`uploading=true`)에는 우측 안내 문구를 `ZIP Loading...`으로 표시합니다.
+
+## 8-12) 다이얼로그 수동 숨김/복원 동작
+
+- 다이얼로그 박스 우측 상단에 `숨기기` 버튼을 표시합니다.
+- 버튼 클릭 시 `dialogUiHidden=true`로 전환하고 다이얼로그 박스를 하단으로 내립니다.
+- 수동 숨김 상태에서는 우측 하단에 작은 `대화창 열기` 버튼을 표시합니다.
+- `대화창 열기` 클릭 전까지는 전역 진행 입력(화면 클릭, `Enter`, `Space`)이 엔진 `handleAdvance()`로 전달되지 않습니다.
 
 ## 9) 액션 목록
 
@@ -412,7 +425,11 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: 다이얼로그 수동 숨김/복원 시 캐릭터·스티커 레이어 하단 안전 여백(`stickerSafeInset`) 계산을 즉시 동기화하도록 보정하고, 레이어 `bottom` 전환 애니메이션을 추가.
+- 2026-02-27: 인게임 다이얼로그에 수동 `숨기기/대화창 열기` 버튼을 추가하고, 수동 숨김 상태에서는 클릭/`Enter`/`Space` 진행 입력을 차단하도록 동작을 갱신.
 - 2026-02-27: `config.yaml.ui.template`(`cinematic-noir` | `neon-grid` | `paper-stage`) 전역 템플릿 옵션을 추가하고, 챕터 로딩/다이얼로그/HOLD TO SKIP/선택·입력 게이트/엔딩 크레딧을 CSS 토큰 기반 3종 테마로 재구성했습니다. 템플릿 미지정 시 기본값 `cinematic-noir`를 사용하도록 동작을 문서화했습니다.
+- 2026-02-27: 시작 화면(Start Gate)의 타이틀/시작·이어하기 버튼에도 `ui.template`를 적용해 `cinematic-noir`/`neon-grid`/`paper-stage` 3종 템플릿으로 동일하게 전환되도록 확장했습니다.
+- 2026-02-27: 시작 화면 섹션(8-9)과 UI 템플릿 섹션(8-10)의 책임 범위를 정리해, 시작/이어하기 버튼이 전역 템플릿에 포함되는 점을 명시했습니다.
 - 2026-02-27: 인게임 HUD 우측 안내 문구를 `Click / Enter / Space`에서 `YAVN ENGINE`으로 변경하고, ZIP 업로드 로딩 중에는 `ZIP Loading...`을 유지하도록 동작을 조정했습니다.
 - 2026-02-27: `config.yaml.startScreen`(enabled/image/startButtonText/buttonPosition) 기반 시작 게이트를 추가하고, URL 게임 autosave 키를 `vn-engine-autosave:game:<gameId>`로 스코프화했습니다. 레거시 키 fallback + resume 성공 시 마이그레이션, ZIP 시작 화면(로드 버튼 비노출), 인스펙터 썸네일 fallback(`launcher.thumbnail` -> `startScreen.image`) 규칙을 문서화했습니다.
 - 2026-02-27: 메인 런처를 Engine Console 3패널(실행 콘솔/워크스페이스/인스펙터) 구조로 재설계하고, 게임 목록 manifest를 `schemaVersion: 2`(`author/version/summary/thumbnail/tags/chapterCount`)로 확장. `launcher.yaml`(선택) 기반 런처 메타 병합 규칙과 V1 manifest fallback 동작을 문서화.
