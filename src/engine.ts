@@ -98,6 +98,7 @@ export type LoadGameOptions = {
 export type StartScreenPreview = {
   gameTitle: string;
   startScreen?: GameData['startScreen'];
+  seo?: GameData['meta']['seo'];
   uiTemplate: UiTemplateId;
   hasLoadableSave: boolean;
 };
@@ -2300,6 +2301,7 @@ async function fetchYamlIfExists(url: string): Promise<string | undefined> {
 function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
   gameTitle: string;
   startScreen?: GameData['startScreen'];
+  seo?: GameData['meta']['seo'];
   uiTemplate: UiTemplateId;
 } {
   const parsed = parseConfigYaml(rawConfig, sourcePath);
@@ -2309,6 +2311,7 @@ function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
   return {
     gameTitle: parsed.data.data.title,
     startScreen: parsed.data.data.startScreen,
+    seo: parsed.data.data.seo,
     uiTemplate: parsed.data.data.ui?.template ?? DEFAULT_UI_TEMPLATE,
   };
 }
@@ -2341,6 +2344,7 @@ export async function loadUrlStartScreenPreview(url: string): Promise<StartScree
   return {
     gameTitle: parsedConfig.gameTitle,
     startScreen,
+    seo: parsedConfig.seo,
     uiTemplate: parsedConfig.uiTemplate,
     hasLoadableSave,
   };
@@ -2360,6 +2364,7 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
     return {
       gameTitle: parsedConfig.gameTitle,
       startScreen,
+      seo: parsedConfig.seo,
       uiTemplate: parsedConfig.uiTemplate,
       hasLoadableSave: false,
     };
@@ -2370,6 +2375,7 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
     return {
       gameTitle: parsedConfig.gameTitle,
       startScreen,
+      seo: parsedConfig.seo,
       uiTemplate: parsedConfig.uiTemplate,
       hasLoadableSave: false,
     };
@@ -2385,6 +2391,7 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
       ...startScreen,
       image: imageUrl,
     },
+    seo: parsedConfig.seo,
     uiTemplate: parsedConfig.uiTemplate,
     hasLoadableSave: false,
   };

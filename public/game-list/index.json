@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "generatedAt": "2026-02-27T03:12:30.072Z",
+  "schemaVersion": 3,
+  "generatedAt": "2026-02-27T04:08:38.488Z",
   "games": [
     {
       "id": "conan",
@@ -16,7 +16,24 @@
         "sample",
         "voice-sfx"
       ],
-      "chapterCount": 9
+      "chapterCount": 9,
+      "seo": {
+        "title": "명탐정 코난 외전: 다실의 비밀",
+        "description": "아가사 크리스티 스타일의 밀실 추리 비주얼노벨. 탐문 라운지 분기와 단서 조합으로 엔딩이 달라집니다.",
+        "keywords": [
+          "명탐정 코난",
+          "추리 게임",
+          "비주얼노벨",
+          "미스터리",
+          "분기 시나리오",
+          "detective",
+          "branch-heavy",
+          "sample",
+          "voice-sfx"
+        ],
+        "image": "/game-list/conan/assets/bg/case_board.png",
+        "imageAlt": "다실 사건 단서 보드"
+      }
     },
     {
       "id": "live2dtest",
@@ -31,7 +48,42 @@
         "interaction",
         "smoke-test"
       ],
-      "chapterCount": 1
+      "chapterCount": 1,
+      "seo": {
+        "title": "Live2D 테스트: 렌 수다",
+        "description": "Live2D 캐릭터 입력/시선 추적과 컷신 전환을 빠르게 점검하는 경량 테스트 시나리오.",
+        "keywords": [
+          "live2d",
+          "interaction",
+          "smoke-test"
+        ],
+        "image": "/game-list/live2dtest/assets/char/ren_pro_ko/runtime/ren.4096/texture_00.png"
+      }
     }
-  ]
+  ],
+  "seo": {
+    "title": "야븐엔진 (YAVN) 게임 목록",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 다실의 비밀, Live2D 테스트: 렌 수다.",
+    "keywords": [
+      "명탐정 코난 외전: 다실의 비밀",
+      "Live2D 테스트: 렌 수다",
+      "detective",
+      "branch-heavy",
+      "sample",
+      "voice-sfx",
+      "live2d",
+      "interaction",
+      "smoke-test",
+      "명탐정 코난",
+      "추리 게임",
+      "비주얼노벨",
+      "미스터리",
+      "분기 시나리오"
+    ],
+    "gameTitles": [
+      "명탐정 코난 외전: 다실의 비밀",
+      "Live2D 테스트: 렌 수다"
+    ],
+    "gameCount": 2
+  }
 }

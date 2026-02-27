@@ -7,6 +7,7 @@ type ConfigYamlData = {
   title: string;
   author?: GameData['meta']['author'];
   version?: string;
+  seo?: GameData['meta']['seo'];
   textSpeed: number;
   autoSave: boolean;
   clickToInstant: boolean;
@@ -63,6 +64,7 @@ const CONFIG_ONLY_KEYS = [
   'title',
   'author',
   'version',
+  'seo',
   'textSpeed',
   'autoSave',
   'clickToInstant',
@@ -516,6 +518,30 @@ export function parseConfigYaml(raw: string, sourcePath: string): { data?: Parse
       };
     }
 
+    const seo = parsed.seo
+      ? (() => {
+          if (!parsed.seo?.image) {
+            return parsed.seo;
+          }
+          const normalizedImage = canonicalizeDeclaredPath(parsed.seo.image, sourceDir);
+          if (!normalizedImage) {
+            return undefined;
+          }
+          return {
+            ...parsed.seo,
+            image: normalizedImage,
+          };
+        })()
+      : undefined;
+
+    if (parsed.seo?.image && !seo) {
+      return {
+        error: {
+          message: `${normalizedSourcePath}: seo.image has invalid path '${parsed.seo.image}'`,
+        },
+      };
+    }
+
     return {
       data: {
         sourcePath: normalizedSourcePath,
@@ -523,6 +549,7 @@ export function parseConfigYaml(raw: string, sourcePath: string): { data?: Parse
         data: {
           ...parsed,
           startScreen,
+          seo,
         },
       },
     };
@@ -723,6 +750,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
       title: input.config.data.title,
       author: input.config.data.author,
       version: input.config.data.version,
+      ...(input.config.data.seo ? { seo: input.config.data.seo } : {}),
     },
     settings: {
       textSpeed: input.config.data.textSpeed,

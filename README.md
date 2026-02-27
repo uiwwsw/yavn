@@ -4,7 +4,7 @@
 
 Type your story. Play your novel.
 
-[![Node](https://img.shields.io/badge/node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Node](https://img.shields.io/badge/node-22.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Vite](https://img.shields.io/badge/vite-6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/react-18-61DAFB?logo=react&logoColor=111)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -21,22 +21,22 @@ pnpm install
 pnpm dev
 ```
 
-- Node: `20.x`
+- Node: `22.x`
 - 기본 주소: [http://localhost:5173](http://localhost:5173)
 
 라우팅:
 - `/`: Engine Console 런처(실행 콘솔 + 검색/태그 워크스페이스 + 인스펙터)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 게임 즉시 실행
 
-## 런처 메타데이터 (Manifest V2)
+## 런처 메타데이터 (Manifest V3)
 
-런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성되며, 이어서 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록 검사를 수행합니다.
+런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성되며, 같은 단계에서 `public/sitemap.xml`도 게임 목록 기준으로 자동 재생성됩니다. 이후 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록 검사를 수행합니다.
 
 `public/game-list/index.json` 구조:
 
 ```json
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "generatedAt": "2026-02-27T02:15:30.805Z",
   "games": [
     {
@@ -48,15 +48,32 @@ pnpm dev
       "summary": "런처 카드 요약",
       "thumbnail": "/game-list/conan/assets/bg/case_board.png",
       "tags": ["detective", "sample"],
-      "chapterCount": 9
+      "chapterCount": 9,
+      "seo": {
+        "title": "명탐정 코난 외전: 다실의 비밀",
+        "description": "아가사 크리스티 스타일의 밀실 추리 비주얼노벨",
+        "keywords": ["명탐정 코난", "추리 게임", "비주얼노벨"],
+        "image": "/game-list/conan/assets/bg/case_board.png",
+        "imageAlt": "다실 사건 단서 보드"
+      }
     }
-  ]
+  ],
+  "seo": {
+    "title": "야븐엔진 (YAVN) 게임 목록",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임 목록",
+    "keywords": ["명탐정 코난 외전: 다실의 비밀", "detective", "sample"],
+    "gameTitles": ["명탐정 코난 외전: 다실의 비밀"],
+    "gameCount": 1
+  }
 }
 ```
 
 - 하위 호환: 런처는 V1(`id/name/path`) manifest도 읽을 수 있습니다.
 - `name`은 `config.yaml.title` 우선, 없으면 레거시 챕터 `meta.title`, 그다음 폴더명 기반 titleize를 사용합니다.
 - `chapterCount`는 하위 폴더를 포함한 챕터 YAML 수(`config/base/launcher 제외`)를 기록합니다.
+- `games[].seo`는 `config.yaml.seo`(+ `launcher.yaml.summary/tags` fallback)에서 생성되며, 런처/게임 페이지 메타 태그와 JSON-LD에 사용됩니다.
+- 루트 `seo`는 게임 제목 목록을 집계해 런처(루트 `/`) SEO 설명/키워드에 반영됩니다.
+- `sitemap.xml`의 `/game-list/<gameId>/` URL 목록도 같은 prebuild 단계에서 `games[].path` 기반으로 자동 생성됩니다.
 
 게임별 선택 메타(`public/game-list/<gameId>/launcher.yaml`, 선택):
 
@@ -90,6 +107,13 @@ author:
   contacts:
     - "Email: writer@example.com"
 version: "1.0"
+seo:
+  description: "검색/공유용 게임 설명"
+  keywords:
+    - 추리
+    - 비주얼노벨
+  image: assets/bg/cover.png
+  imageAlt: "대표 이미지 설명"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
@@ -157,11 +181,16 @@ scenes:
 
 - `config.yaml`은 게임 루트에 **필수**입니다.
 - `config.yaml` 전용 필드:
-  - `title`, `author`, `version`
+  - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
   - `startScreen` (`enabled`, `image`, `startButtonText`, `buttonPosition`)
   - `endings`, `endingRules`, `defaultEnding`
+- `seo` 하위 필드:
+  - `description` (string)
+  - `keywords` (string[])
+  - `image` (string, 상대 경로/절대 URL)
+  - `imageAlt` (string)
 - `base.yaml` 허용 필드: `assets`, `state`
 - 챕터 YAML 허용 필드:
   - 필수: `script`, `scenes`
@@ -337,10 +366,12 @@ scenes:
 ## 개발 메모
 
 - 런처는 `EXECUTION CONSOLE(좌) / WORKSPACE CATALOG(중앙) / ASSET INSPECTOR(우)` 3패널 구조를 사용합니다.
-- 게임 목록 manifest는 `schemaVersion: 2`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` 메타를 포함합니다.
+- 게임 목록 manifest는 `schemaVersion: 3`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
 - 게임별 `launcher.yaml`은 선택사항이며, 없으면 런처가 기본 요약/메타로 안전하게 렌더링합니다.
+- 런처/게임 페이지 SEO는 `config.yaml.seo`와 manifest 집계 `seo.gameTitles`를 사용해 `description/keywords/og/twitter/json-ld`를 동적으로 갱신합니다.
+- Start Gate(시작 화면) 상태에서도 `config.yaml.seo`를 즉시 반영해, 게임 본 로딩 전에도 `/game-list/<gameId>/` SEO 메타가 적용됩니다.
 - `startScreen`이 설정된 게임은 시작 게이트를 표시하며, URL 게임은 게임별 autosave 키(`vn-engine-autosave:game:<gameId>`)를 기준으로 `이어하기` 버튼을 노출합니다.
 - 레거시 autosave 키(`vn-engine-autosave`)는 URL 게임 로드시 fallback으로 읽고, 실제 이어하기 성공 시 게임별 키로 마이그레이션합니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.

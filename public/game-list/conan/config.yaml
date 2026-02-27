@@ -10,6 +10,16 @@ author:
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
 version: "7.0"
+seo:
+  description: "아가사 크리스티 스타일의 밀실 추리 비주얼노벨. 탐문 라운지 분기와 단서 조합으로 엔딩이 달라집니다."
+  keywords:
+    - "명탐정 코난"
+    - "추리 게임"
+    - "비주얼노벨"
+    - "미스터리"
+    - "분기 시나리오"
+  image: "assets/bg/case_board.png"
+  imageAlt: "다실 사건 단서 보드"
 textSpeed: 38
 autoSave: true
 clickToInstant: true

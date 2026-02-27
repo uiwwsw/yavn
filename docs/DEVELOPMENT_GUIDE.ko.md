@@ -9,18 +9,23 @@ pnpm install
 pnpm dev
 ```
 
+- 권장 런타임: Node.js `22.x` (pnpm `10.x`)
 - `/`: Engine Console 런처 (실행 콘솔/워크스페이스/인스펙터)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 실행
 
-## 1-1) 런처 게임 목록 메타 (Manifest V2)
+## 1-1) 런처 게임 목록 메타 (Manifest V3)
 
-- `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`를 실행해 `public/game-list/index.json`을 생성하고, 이어서 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록을 검증합니다.
-- 최신 스키마는 `schemaVersion: 2`입니다.
+- `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`를 실행해 `public/game-list/index.json` + `public/sitemap.xml`을 생성하고, 이어서 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록을 검증합니다.
+- 최신 스키마는 `schemaVersion: 3`입니다.
 - `games[]` 필드:
   - 기본: `id`, `name`, `path`
-  - 확장: `author`, `version`, `summary`, `thumbnail`, `tags`, `chapterCount`
+  - 확장: `author`, `version`, `summary`, `thumbnail`, `tags`, `chapterCount`, `seo`
+- `seo` 루트 필드:
+  - `title`, `description`, `keywords`, `gameTitles`, `gameCount`
 - `chapterCount`는 게임 폴더 하위 전체 YAML 중 `config/base/launcher`를 제외한 챕터 파일 수를 기록합니다.
 - 런처는 V1(`id/name/path`) manifest도 파싱하도록 하위 호환을 유지합니다.
+- `games[].seo`는 `config.yaml.seo`를 우선 사용하고, 누락 값은 `launcher.yaml.summary/tags` 및 썸네일 fallback으로 보완됩니다.
+- sitemap의 `/game-list/<gameId>/` 항목은 manifest `games[].path`를 기준으로 자동 생성됩니다.
 
 선택 메타 파일:
 - `public/game-list/<gameId>/launcher.yaml` (선택)
@@ -51,6 +56,7 @@ YAML V3는 파일 역할을 분리합니다.
 - `title`
 - `author` (`string` 또는 `{ name?, contacts? }`)
 - `version`
+- `seo`
 - `textSpeed`
 - `autoSave`
 - `clickToInstant`
@@ -67,6 +73,13 @@ title: "명탐정 코난 외전: 다실의 비밀"
 author:
   name: "uiwwsw"
 version: "4.1"
+seo:
+  description: "검색/공유용 게임 설명"
+  keywords:
+    - 추리
+    - 비주얼노벨
+  image: assets/bg/title.png
+  imageAlt: "대표 이미지 설명"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
@@ -97,6 +110,8 @@ defaultEnding: bad_end
 - `ui`를 생략하면 기본 템플릿 `cinematic-noir`가 적용됩니다.
 - `startScreen` 객체를 선언하면 기본 활성화(`enabled: true`)됩니다.
 - `startButtonText` 기본값은 `시작하기`, `buttonPosition` 기본값은 `auto`입니다.
+- `seo`는 런처 및 `/game-list/:gameId` 페이지의 `description/keywords/og/twitter/json-ld` 생성에 사용됩니다.
+- `seo.image`는 상대 경로(`assets/...`)와 절대 URL(`https://...`)을 모두 허용하며, 상대 경로는 게임 루트 기준으로 정규화됩니다.
 
 ## 4) `base.yaml`
 
@@ -106,7 +121,7 @@ defaultEnding: bad_end
 
 금지:
 - `script`, `scenes`
-- `title`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
+- `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
 - `meta`, `settings`
 
 예시:
@@ -140,8 +155,7 @@ state:
 - `state`
 
 금지:
-- `title`, `textSpeed`, `startScreen`, `endings` 계열
-- `title`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
+- `title`, `seo`, `textSpeed`, `ui`, `startScreen`, `endings` 계열
 - `meta`, `settings`
 
 예시:
@@ -298,6 +312,7 @@ scenes:
 - 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
 - 런처 인스펙터 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
+- 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
 
 ## 8-10) UI 템플릿 동작
 
@@ -434,6 +449,8 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-27: `prebuild`에서 `public/sitemap.xml`을 manifest(`games[].path`) 기준으로 자동 생성하도록 확장했습니다. 동시에 Start Gate(게임 본 로딩 전) 단계에서도 `config.yaml.seo`를 즉시 적용해 `/game-list/:gameId` 진입 직후 메타가 반영되도록 동작을 갱신했습니다.
+- 2026-02-27: `config.yaml.seo`(`description/keywords/image/imageAlt`)를 추가하고, manifest를 `schemaVersion: 3`으로 확장해 `games[].seo` + 루트 `seo(gameTitles/gameCount/keywords/description)`를 생성하도록 `prebuild`를 갱신했습니다. 런처 및 `/game-list/:gameId` 페이지에서 이 메타를 읽어 `description/keywords/og/twitter/json-ld`를 동적으로 반영하도록 동작을 문서화했습니다.
 - 2026-02-27: 다이얼로그 박스 숨김/복귀 전환을 하단 슬라이드(`transform`)에서 페이드(`opacity`)로 조정하고, 시스템 숨김 구간(챕터 로딩/게임 미로딩/컷신)에도 `stickerSafeInset` 기준을 유지해 최초 표시 시 캐릭터 레이어 높이 점프를 방지했습니다.
 - 2026-02-27: `public` 최소화 정책을 도입해 허용 경로를 `favicon.svg/robots.txt/sitemap.xml/game-list/**`로 제한하고, `scripts/check-public-allowlist.mjs` 검증을 `predev`/`prebuild`에 연결했습니다.
 - 2026-02-27: 폰트(`SUITE-Variable.woff2`)와 Live2D Core(`live2dcubismcore.min.js`)를 `public`에서 `src/assets` 번들 자산으로 이동해 정적 공개 경로 의존을 제거했습니다.

@@ -18,8 +18,24 @@ import {
 import { Live2DCharacter } from './Live2DCharacter';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
-import type { AuthorMetaObject, CharacterSlot, Position, StartButtonPosition, UiTemplateId } from './types';
+import type { AuthorMetaObject, CharacterSlot, GameSeoMeta, Position, StartButtonPosition, UiTemplateId } from './types';
 import type { CSSProperties, SyntheticEvent } from 'react';
+
+type GameListSeoEntry = {
+  title?: string;
+  description?: string;
+  keywords: string[];
+  image?: string;
+  imageAlt?: string;
+};
+
+type GameListManifestSeo = {
+  title?: string;
+  description?: string;
+  keywords: string[];
+  gameTitles: string[];
+  gameCount?: number;
+};
 
 type GameListManifestEntry = {
   id: string;
@@ -31,12 +47,14 @@ type GameListManifestEntry = {
   thumbnail?: string;
   tags: string[];
   chapterCount?: number;
+  seo?: GameListSeoEntry;
 };
 
 type GameListManifest = {
   schemaVersion?: number;
   generatedAt?: string;
   games: GameListManifestEntry[];
+  seo?: GameListManifestSeo;
 };
 
 type StartGateState =
@@ -46,6 +64,7 @@ type StartGateState =
     sessionKey: string;
     uiTemplate: UiTemplateId;
     gameTitle: string;
+    seo?: GameSeoMeta;
     imageUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
@@ -56,6 +75,7 @@ type StartGateState =
     file: File;
     uiTemplate: UiTemplateId;
     gameTitle: string;
+    seo?: GameSeoMeta;
     imageUrl?: string;
     previewBlobUrl?: string;
     startButtonText: string;
@@ -69,6 +89,30 @@ const ALL_TAG_FILTER = '__all';
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
+const DEFAULT_SEO_TITLE = '야븐엔진 (YAVN) | Type your story. Play your novel.';
+const DEFAULT_SEO_DESCRIPTION =
+  '야븐엔진(YAVN)은 비주얼노벨 게임과 대사게임을 웹에서 빠르게 제작하는 엔진입니다. YAML + ZIP 업로드, YouTube 영상/음악 에셋, 중간 이벤트 씬 전환, Live2D 캐릭터 연출까지 지원합니다.';
+const DEFAULT_SEO_KEYWORDS = [
+  '야븐엔진',
+  '야븐 엔진',
+  '야븐',
+  'YAVN',
+  '비주얼노벨 게임',
+  '대사게임',
+  'YAML 게임엔진',
+  'typing novel engine',
+  'visual novel engine',
+  'dialogue game',
+  'YouTube 게임 에셋',
+  '유튜브 영상 씬',
+  '유튜브 배경음악',
+  'Live2D 엔진',
+  'Live2D 비주얼노벨',
+];
+const DEFAULT_SEO_IMAGE = 'https://yavn.vercel.app/favicon.svg';
+const DEFAULT_SEO_IMAGE_ALT = 'YAVN (야븐) 로고';
+const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
+const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -107,6 +151,130 @@ function normalizeTags(value: unknown): string[] {
     tags.push(normalized);
   }
   return tags;
+}
+
+function mergeUniqueTextList(...values: string[][]): string[] {
+  const merged: string[] = [];
+  for (const value of values) {
+    for (const entry of value) {
+      if (!entry || merged.includes(entry)) {
+        continue;
+      }
+      merged.push(entry);
+    }
+  }
+  return merged;
+}
+
+function normalizeGameListSeoEntry(value: unknown, fallbackTitle?: string): GameListSeoEntry | undefined {
+  if (!isObjectRecord(value)) {
+    return fallbackTitle
+      ? {
+          title: fallbackTitle,
+          keywords: [],
+        }
+      : undefined;
+  }
+
+  const keywords = normalizeTags(value.keywords);
+  return {
+    title: normalizeText(value.title) ?? fallbackTitle,
+    description: normalizeText(value.description),
+    keywords,
+    image: normalizeText(value.image),
+    imageAlt: normalizeText(value.imageAlt),
+  };
+}
+
+function normalizeGameListManifestSeo(value: unknown): GameListManifestSeo | undefined {
+  if (!isObjectRecord(value)) {
+    return undefined;
+  }
+
+  return {
+    title: normalizeText(value.title),
+    description: normalizeText(value.description),
+    keywords: normalizeTags(value.keywords),
+    gameTitles: normalizeTags(value.gameTitles),
+    gameCount: normalizeChapterCount(value.gameCount),
+  };
+}
+
+function setMetaTagByName(name: string, content: string): void {
+  const element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+  if (element) {
+    element.setAttribute('content', content);
+  }
+}
+
+function setMetaTagByProperty(property: string, content: string): void {
+  const element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
+  if (element) {
+    element.setAttribute('content', content);
+  }
+}
+
+function setCanonicalUrl(url: string): void {
+  const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (canonical) {
+    canonical.setAttribute('href', url);
+  }
+}
+
+function setDynamicJsonLd(value?: Record<string, unknown>): void {
+  const existing = document.getElementById(DYNAMIC_JSON_LD_SCRIPT_ID);
+  if (!value) {
+    existing?.remove();
+    return;
+  }
+
+  const script =
+    existing instanceof HTMLScriptElement
+      ? existing
+      : (() => {
+          const created = document.createElement('script');
+          created.type = 'application/ld+json';
+          created.id = DYNAMIC_JSON_LD_SCRIPT_ID;
+          document.head.appendChild(created);
+          return created;
+        })();
+
+  script.text = JSON.stringify(value);
+}
+
+function resolveAbsoluteSeoUrl(rawPath: string | undefined, baseUrl: string = window.location.origin): string | undefined {
+  if (!rawPath) {
+    return undefined;
+  }
+  try {
+    return new URL(rawPath, baseUrl).toString();
+  } catch {
+    return undefined;
+  }
+}
+
+function applySeoMetadata(input: {
+  title: string;
+  description: string;
+  keywords: string[];
+  canonicalUrl: string;
+  imageUrl: string;
+  imageAlt: string;
+  jsonLd?: Record<string, unknown>;
+}): void {
+  document.title = input.title;
+  setMetaTagByName('description', input.description);
+  setMetaTagByName('keywords', input.keywords.join(', '));
+  setMetaTagByProperty('og:title', input.title);
+  setMetaTagByProperty('og:description', input.description);
+  setMetaTagByProperty('og:url', input.canonicalUrl);
+  setMetaTagByProperty('og:image', input.imageUrl);
+  setMetaTagByProperty('og:image:alt', input.imageAlt);
+  setMetaTagByName('twitter:title', input.title);
+  setMetaTagByName('twitter:description', input.description);
+  setMetaTagByName('twitter:image', input.imageUrl);
+  setCanonicalUrl(input.canonicalUrl);
+  setDynamicJsonLd(input.jsonLd);
 }
 
 function parseGameIdFromPath(pathValue: string): string | undefined {
@@ -165,6 +333,7 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
   const id = rawId ?? (rawPath ? parseGameIdFromPath(rawPath) : undefined) ?? `game-${index + 1}`;
   const path = rawPath ?? `/game-list/${encodeURIComponent(id)}/`;
   const name = normalizeText(value.name) ?? id;
+  const seo = normalizeGameListSeoEntry(value.seo, name);
   return {
     id,
     name,
@@ -175,6 +344,7 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
     thumbnail: normalizeText(value.thumbnail),
     tags: normalizeTags(value.tags),
     chapterCount: normalizeChapterCount(value.chapterCount),
+    seo,
   };
 }
 
@@ -191,6 +361,7 @@ function parseGameListManifest(raw: unknown): GameListManifest {
     schemaVersion: typeof raw.schemaVersion === 'number' && Number.isFinite(raw.schemaVersion) ? raw.schemaVersion : undefined,
     generatedAt: normalizeText(raw.generatedAt),
     games,
+    seo: normalizeGameListManifestSeo(raw.seo),
   };
 }
 
@@ -211,6 +382,48 @@ function formatManifestTimestamp(raw: string | null): string {
     second: '2-digit',
     hour12: false,
   });
+}
+
+function buildLauncherJsonLd(games: GameListManifestEntry[]): Record<string, unknown> | undefined {
+  if (games.length === 0) {
+    return undefined;
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '야븐엔진 (YAVN) 게임 목록',
+    numberOfItems: games.length,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    itemListElement: games.slice(0, 100).map((entry, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: entry.name,
+      url: resolveAbsoluteSeoUrl(entry.path),
+      ...(entry.seo?.description ? { description: entry.seo.description } : {}),
+    })),
+  };
+}
+
+function buildGameJsonLd(
+  title: string,
+  description: string,
+  canonicalUrl: string,
+  imageUrl: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoGame',
+    name: title,
+    description,
+    url: canonicalUrl,
+    image: imageUrl,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: '야븐엔진 (YAVN)',
+      url: DEFAULT_CANONICAL_URL,
+    },
+  };
 }
 
 function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined {
@@ -336,6 +549,7 @@ export default function App() {
   const [gameListError, setGameListError] = useState<string | null>(null);
   const [manifestSchemaVersion, setManifestSchemaVersion] = useState<number | null>(null);
   const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
+  const [manifestSeo, setManifestSeo] = useState<GameListManifestSeo | null>(null);
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTag, setActiveTag] = useState(ALL_TAG_FILTER);
@@ -385,6 +599,7 @@ export default function App() {
       setGameList(parsed.games);
       setManifestSchemaVersion(parsed.schemaVersion ?? null);
       setManifestGeneratedAt(parsed.generatedAt ?? null);
+      setManifestSeo(parsed.seo ?? null);
       setGameListError(null);
       setSelectedGameId((prev) => {
         if (prev && parsed.games.some((entry) => entry.id === prev)) {
@@ -399,6 +614,7 @@ export default function App() {
       setGameList([]);
       setManifestSchemaVersion(null);
       setManifestGeneratedAt(null);
+      setManifestSeo(null);
       setSelectedGameId(null);
       setGameListError(error instanceof Error ? error.message : '게임 목록을 불러오지 못했습니다.');
     }
@@ -436,6 +652,7 @@ export default function App() {
                 sessionKey,
                 uiTemplate: preview.uiTemplate,
                 gameTitle: preview.gameTitle,
+                seo: preview.seo,
                 imageUrl: resolveStartGateImageUrl(preview.startScreen.image, baseUrl),
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
@@ -573,6 +790,103 @@ export default function App() {
   const isSelectedGameVisible = Boolean(selectedGame && filteredGames.some((entry) => entry.id === selectedGame.id));
   const manifestTimestampLabel = formatManifestTimestamp(manifestGeneratedAt);
   const gameListStatus = gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
+
+  useEffect(() => {
+    const launcherTitles =
+      manifestSeo?.gameTitles && manifestSeo.gameTitles.length > 0 ? manifestSeo.gameTitles : gameList.map((entry) => entry.name);
+    const launcherKeywords = mergeUniqueTextList(DEFAULT_SEO_KEYWORDS, manifestSeo?.keywords ?? [], launcherTitles);
+    const launcherDescription =
+      manifestSeo?.description ??
+      (launcherTitles.length > 0
+        ? `야븐엔진(YAVN)에서 플레이 가능한 게임: ${launcherTitles.slice(0, 8).join(', ')}${launcherTitles.length > 8 ? ` 외 ${launcherTitles.length - 8}개` : ''}.`
+        : DEFAULT_SEO_DESCRIPTION);
+
+    if (bootMode === 'launcher') {
+      const launcherImage =
+        resolveAbsoluteSeoUrl(selectedGame?.seo?.image ?? selectedGame?.thumbnail) ?? DEFAULT_SEO_IMAGE;
+      const launcherImageAlt =
+        selectedGame?.seo?.imageAlt ?? (selectedGame ? `${selectedGame.name} 대표 이미지` : DEFAULT_SEO_IMAGE_ALT);
+      applySeoMetadata({
+        title: manifestSeo?.title ?? DEFAULT_SEO_TITLE,
+        description: launcherDescription,
+        keywords: launcherKeywords,
+        canonicalUrl: DEFAULT_CANONICAL_URL,
+        imageUrl: launcherImage,
+        imageAlt: launcherImageAlt,
+        jsonLd: buildLauncherJsonLd(gameList),
+      });
+      return;
+    }
+
+    if (startGate) {
+      const startGateTitle = startGate.gameTitle;
+      const startGateDescription = startGate.seo?.description ?? `${startGateTitle}을(를) 시작할 준비가 되었습니다.`;
+      const startGateCanonicalUrl =
+        startGate.kind === 'url'
+          ? new URL(startGate.gameUrl, window.location.origin).toString()
+          : window.location.href;
+      const startGateImageUrl =
+        resolveAbsoluteSeoUrl(startGate.seo?.image, startGateCanonicalUrl) ??
+        startGate.imageUrl ??
+        DEFAULT_SEO_IMAGE;
+      const startGateImageAlt = startGate.seo?.imageAlt ?? `${startGateTitle} 대표 이미지`;
+      const startGateKeywords = mergeUniqueTextList(
+        DEFAULT_SEO_KEYWORDS,
+        [startGateTitle],
+        startGate.seo?.keywords ?? [],
+      );
+      applySeoMetadata({
+        title: `${startGateTitle} | 야븐엔진 (YAVN)`,
+        description: startGateDescription,
+        keywords: startGateKeywords,
+        canonicalUrl: startGateCanonicalUrl,
+        imageUrl: startGateImageUrl,
+        imageAlt: startGateImageAlt,
+        jsonLd: buildGameJsonLd(startGateTitle, startGateDescription, startGateCanonicalUrl, startGateImageUrl),
+      });
+      return;
+    }
+
+    if (game) {
+      const gameSeo: GameSeoMeta | undefined = game.meta.seo;
+      const gameTitle = game.meta.title;
+      const gameDescription = gameSeo?.description ?? `${gameTitle}을(를) 야븐엔진(YAVN)에서 플레이하세요.`;
+      const gameCanonicalUrl = window.location.href;
+      const gameImageUrl = resolveAbsoluteSeoUrl(gameSeo?.image, gameCanonicalUrl) ?? DEFAULT_SEO_IMAGE;
+      const gameImageAlt = gameSeo?.imageAlt ?? `${gameTitle} 대표 이미지`;
+      const gameKeywords = mergeUniqueTextList(DEFAULT_SEO_KEYWORDS, [gameTitle], gameSeo?.keywords ?? []);
+      applySeoMetadata({
+        title: `${gameTitle} | 야븐엔진 (YAVN)`,
+        description: gameDescription,
+        keywords: gameKeywords,
+        canonicalUrl: gameCanonicalUrl,
+        imageUrl: gameImageUrl,
+        imageAlt: gameImageAlt,
+        jsonLd: buildGameJsonLd(gameTitle, gameDescription, gameCanonicalUrl, gameImageUrl),
+      });
+      return;
+    }
+
+    applySeoMetadata({
+      title: DEFAULT_SEO_TITLE,
+      description: DEFAULT_SEO_DESCRIPTION,
+      keywords: DEFAULT_SEO_KEYWORDS,
+      canonicalUrl: DEFAULT_CANONICAL_URL,
+      imageUrl: DEFAULT_SEO_IMAGE,
+      imageAlt: DEFAULT_SEO_IMAGE_ALT,
+      jsonLd: undefined,
+    });
+  }, [
+    bootMode,
+    game,
+    gameList,
+    manifestSeo,
+    startGate,
+    selectedGame?.id,
+    selectedGame?.thumbnail,
+    selectedGame?.seo?.image,
+    selectedGame?.seo?.imageAlt,
+  ]);
 
   const effectClass = effect ? `effect-${effect}` : '';
   const authorCredit = normalizeAuthorCredit(game?.meta.author);
@@ -1099,6 +1413,7 @@ export default function App() {
           file,
           uiTemplate: preview.uiTemplate,
           gameTitle: preview.gameTitle,
+          seo: preview.seo,
           imageUrl,
           previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
           startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,

@@ -204,6 +204,36 @@ const uiConfigSchema = z
   })
   .strict();
 
+const seoConfigSchema = z
+  .object({
+    description: z.string().min(1).optional(),
+    keywords: z.array(z.string().min(1)).optional(),
+    image: z.string().min(1).optional(),
+    imageAlt: z.string().min(1).optional(),
+  })
+  .strict()
+  .transform((value) => {
+    const normalizeOptionalText = (raw?: string): string | undefined => {
+      const trimmed = raw?.trim();
+      return trimmed ? trimmed : undefined;
+    };
+    const normalizedKeywords = value.keywords
+      ? Array.from(
+          new Set(
+            value.keywords
+              .map((entry) => entry.trim())
+              .filter((entry) => entry.length > 0),
+          ),
+        )
+      : undefined;
+    return {
+      description: normalizeOptionalText(value.description),
+      keywords: normalizedKeywords && normalizedKeywords.length > 0 ? normalizedKeywords : undefined,
+      image: normalizeOptionalText(value.image),
+      imageAlt: normalizeOptionalText(value.imageAlt),
+    };
+  });
+
 const startScreenSchema = z
   .object({
     enabled: z.boolean().optional(),
@@ -252,6 +282,7 @@ export const configSchema = z
     title: z.string().min(1),
     author: z.union([z.string(), authorObjectSchema]).optional(),
     version: z.string().optional(),
+    seo: seoConfigSchema.optional(),
     textSpeed: z.number().positive(),
     autoSave: z.boolean(),
     clickToInstant: z.boolean(),
@@ -288,6 +319,7 @@ export const gameSchema = z.object({
     title: z.string(),
     author: z.union([z.string(), authorObjectSchema]).optional(),
     version: z.string().optional(),
+    seo: seoConfigSchema.optional(),
   }),
   settings: z.object({
     textSpeed: z.number().positive(),

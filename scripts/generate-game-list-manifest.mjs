@@ -3,10 +3,34 @@ import path from 'node:path';
 import { load as parseYaml } from 'js-yaml';
 
 const workspaceRoot = process.cwd();
+const publicDir = path.join(workspaceRoot, 'public');
 const gameListDir = path.join(workspaceRoot, 'public', 'game-list');
 const outputPath = path.join(gameListDir, 'index.json');
+const sitemapPath = path.join(publicDir, 'sitemap.xml');
 
-const MANIFEST_SCHEMA_VERSION = 2;
+const MANIFEST_SCHEMA_VERSION = 3;
+const MAX_LAUNCHER_SEO_TITLE_PREVIEW = 8;
+const DEFAULT_LAUNCHER_SEO_DESCRIPTION =
+  '야븐엔진(YAVN)에서 플레이 가능한 비주얼노벨 게임 목록입니다.';
+const DEFAULT_SITE_ORIGIN = 'https://yavn.vercel.app';
+
+function normalizeSiteOrigin(value) {
+  const normalized = normalizeText(value) ?? DEFAULT_SITE_ORIGIN;
+  return normalized.replace(/\/+$/, '');
+}
+
+function escapeXml(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
+function toAbsoluteSiteUrl(origin, pathValue) {
+  return `${origin}${pathValue.startsWith('/') ? pathValue : `/${pathValue}`}`;
+}
 
 const toTitle = (slug) =>
   slug
@@ -38,6 +62,23 @@ const normalizeTagList = (value) => {
     tags.push(normalized);
   }
   return tags;
+};
+
+const mergeUniqueTextList = (...values) => {
+  const merged = [];
+  for (const value of values) {
+    if (!Array.isArray(value)) {
+      continue;
+    }
+    for (const raw of value) {
+      const normalized = normalizeText(raw);
+      if (!normalized || merged.includes(normalized)) {
+        continue;
+      }
+      merged.push(normalized);
+    }
+  }
+  return merged;
 };
 
 const isExternalPath = (value) => /^(blob:|data:|https?:|[a-z][a-z0-9+.-]*:)/i.test(value);
@@ -151,18 +192,71 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
   }
 
   const startScreen = isRecord(config?.startScreen) ? config.startScreen : undefined;
+  const seo = isRecord(config?.seo) ? config.seo : undefined;
   const startScreenImage = normalizeText(startScreen?.image);
   const launcherThumbnail = normalizeText(launcher?.thumbnail);
+  const seoImage = toGameAssetPath(gameId, normalizeText(seo?.image) ?? launcherThumbnail ?? startScreenImage);
+  const seoKeywords = mergeUniqueTextList(normalizeTagList(seo?.keywords), normalizeTagList(launcher?.tags));
+  const resolvedName = displayName ?? toTitle(gameId);
 
   return {
-    name: displayName ?? toTitle(gameId),
+    name: resolvedName,
     author: resolveAuthorName(config?.author),
     version: normalizeText(config?.version),
     summary: normalizeText(launcher?.summary),
     thumbnail: toGameAssetPath(gameId, launcherThumbnail ?? startScreenImage),
     tags: normalizeTagList(launcher?.tags),
     chapterCount: chapterYamlPaths.length,
+    seo: {
+      title: resolvedName,
+      description: normalizeText(seo?.description) ?? normalizeText(launcher?.summary),
+      keywords: seoKeywords,
+      image: seoImage,
+      imageAlt: normalizeText(seo?.imageAlt),
+    },
   };
+}
+
+function buildLauncherSeoSummary(games) {
+  const gameTitles = mergeUniqueTextList(games.map((game) => game.name));
+  const preview = gameTitles.slice(0, MAX_LAUNCHER_SEO_TITLE_PREVIEW);
+  const overflowCount = Math.max(0, gameTitles.length - preview.length);
+  const description =
+    preview.length > 0
+      ? `야븐엔진(YAVN)에서 플레이 가능한 게임: ${preview.join(', ')}${overflowCount > 0 ? ` 외 ${overflowCount}개` : ''}.`
+      : DEFAULT_LAUNCHER_SEO_DESCRIPTION;
+
+  return {
+    title: '야븐엔진 (YAVN) 게임 목록',
+    description,
+    keywords: mergeUniqueTextList(
+      gameTitles,
+      games.flatMap((game) => game.tags),
+      games.flatMap((game) => game.seo?.keywords ?? []),
+    ),
+    gameTitles,
+    gameCount: gameTitles.length,
+  };
+}
+
+function buildSitemapXml(games, siteOrigin) {
+  const rootUrl = toAbsoluteSiteUrl(siteOrigin, '/');
+  const gameUrls = mergeUniqueTextList(games.map((game) => game.path)).map((gamePath) =>
+    toAbsoluteSiteUrl(siteOrigin, gamePath),
+  );
+  const entries = [
+    { loc: rootUrl, changefreq: 'weekly', priority: '1.0' },
+    ...gameUrls.map((loc) => ({ loc, changefreq: 'weekly', priority: '0.8' })),
+  ];
+
+  const body = entries
+    .map(
+      (entry) =>
+        `  <url>\n    <loc>${escapeXml(entry.loc)}</loc>\n    <changefreq>${entry.changefreq}</changefreq>\n    <priority>${entry.priority}</priority>\n  </url>`,
+    )
+    .join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
 async function collectGameFolders() {
@@ -189,6 +283,7 @@ async function collectGameFolders() {
       thumbnail: metadata.thumbnail,
       tags: metadata.tags,
       chapterCount: metadata.chapterCount,
+      seo: metadata.seo,
     });
   }
 
@@ -201,7 +296,12 @@ const manifest = {
   schemaVersion: MANIFEST_SCHEMA_VERSION,
   generatedAt: new Date().toISOString(),
   games,
+  seo: buildLauncherSeoSummary(games),
 };
+const siteOrigin = normalizeSiteOrigin(process.env.SITE_ORIGIN ?? process.env.SITEMAP_ORIGIN);
+const sitemapXml = buildSitemapXml(games, siteOrigin);
 
 await writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+await writeFile(sitemapPath, sitemapXml, 'utf8');
 console.log(`Generated ${outputPath} with ${games.length} game(s).`);
+console.log(`Generated ${sitemapPath} with ${games.length + 1} url(s).`);

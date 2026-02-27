@@ -2,6 +2,13 @@
 # branch + choice + goto + early-exit penalty pattern (investigation lounge)
 #
 # config.yaml start screen snippet:
+# seo:
+#   description: "검색/공유용 게임 설명"
+#   keywords:
+#     - 추리
+#     - 비주얼노벨
+#   image: assets/bg/cover.png
+#   imageAlt: "대표 이미지 설명"
 # startScreen:
 #   enabled: true
 #   image: assets/bg/title.png

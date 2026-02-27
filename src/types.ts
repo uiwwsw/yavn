@@ -220,6 +220,13 @@ export type EndingRule = {
   ending: string;
 };
 
+export type GameSeoMeta = {
+  description?: string;
+  keywords?: string[];
+  image?: string;
+  imageAlt?: string;
+};
+
 export type StartButtonPosition = 'auto' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center';
 
 export type StartScreenConfig = {
@@ -238,6 +245,7 @@ export type GameData = {
     title: string;
     author?: string | AuthorMetaObject;
     version?: string;
+    seo?: GameSeoMeta;
   };
   settings: {
     textSpeed: number;
