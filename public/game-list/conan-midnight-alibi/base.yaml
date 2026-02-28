@@ -1,0 +1,138 @@
+assets:
+  backgrounds:
+    mountain_rain: /assets/bg/mountain_rain.png
+    rain_corridor: /assets/bg/rain_corridor.png
+    ryokan_hall: /assets/bg/ryokan_hall.png
+    tea_room: /assets/bg/tea_room.png
+    case_board: /assets/bg/case_board.png
+    police_tape: /assets/bg/police_tape.svg
+    clue_cup: /assets/bg/clue_cup.svg
+    clue_lid: /assets/bg/clue_lid.svg
+    item_tea_residue_report: /assets/items/tea_residue_report.svg
+    item_reiko_statement_note: /assets/items/reiko_statement_note.svg
+  characters:
+    코난:
+      base: /assets/char/conan/base.png
+      emotions:
+        think: /assets/char/conan/think.png
+        serious: /assets/char/conan/serious.png
+    란:
+      base: /assets/char/ran/base.png
+      emotions:
+        worried: /assets/char/ran/worried.png
+        surprised: /assets/char/ran/surprised.png
+    코고로:
+      base: /assets/char/kogoro/base.png
+      emotions:
+        proud: /assets/char/kogoro/proud.png
+        angry: /assets/char/kogoro/angry.png
+    켄지:
+      base: /assets/char/kenji/base.png
+      emotions:
+        angry: /assets/char/kenji/angry.png
+    신이치:
+      base: /assets/char/shinichi/base.png
+      emotions:
+        cold: /assets/char/shinichi/cold.png
+    레이코:
+      base: /assets/char/reiko/base.png
+      emotions:
+        nervous: /assets/char/reiko/nervous.png
+    하루오:
+      base: /assets/char/haruo/base.png
+      emotions:
+        scared: /assets/char/haruo/scared.png
+  music:
+    intro: /assets/music/intro.mp3
+    rain: /assets/music/rain.wav
+    tension: /assets/music/tension.wav
+    reasoning: /assets/music/reasoning.mp3
+    confession: /assets/music/confession.mp3
+    solvethecase: /assets/music/solvethecase.mp3
+  sfx:
+    thunder: /assets/sfx/thunder.wav
+    scream: /assets/sfx/scream.wav
+    door: /assets/sfx/door.wav
+    cup_clink: /assets/sfx/cup_clink.wav
+    notebook_flip: /assets/sfx/notebook_flip.wav
+state:
+  exploration_count: 0
+  visited_reiko: false
+  visited_kenji: false
+  visited_shinichi: false
+  visited_crime: false
+  visited_kitchen: false
+  visited_corridor: false
+  deduction_score: 0
+  final_confidence: 0
+  trust: 0
+  mistake_count: 0
+  comeback_chance: 1
+  early_exit_taken: false
+  clue_fake_2r: false
+  clue_umbrella_decoy: false
+  clue_mechanical_trick: false
+  clue_time_contradiction: false
+  clue_motive_contract: false
+  clue_reiko_temp: false
+  clue_kenji_alibi: false
+  clue_shinichi_keylog: false
+  culprit_answer: ""
+  trick_answer: ""
+  timeline_answer: ""
+  motive_answer: ""
+inventory:
+  residue_report:
+    name: "찻잔 반응 시료 카드"
+    description: "2번 찻잔 가장자리에서 검출된 반응 물질 기록 카드."
+    image: /assets/items/tea_residue_report.svg
+    category: "감식"
+    order: 10
+  reiko_temp_log:
+    name: "레이코 온도 로그"
+    description: "레이코가 작성한 88도/증기 타이머 기록지 사본."
+    image: /assets/items/reiko_statement_note.svg
+    category: "진술"
+    order: 20
+  kenji_call_record:
+    name: "켄지 통화 기록"
+    description: "사건 직전 켄지의 통화 시각이 남은 휴대기록."
+    image: /assets/bg/case_board.png
+    category: "통신"
+    order: 30
+  shinichi_keylog:
+    name: "신이치 키로그"
+    description: "전자키 출입 시각이 찍힌 보안 로그 사본."
+    image: /assets/bg/clue_lid.svg
+    category: "출입"
+    order: 40
+  corridor_clock_photo:
+    name: "복도 시계 사진"
+    description: "복도 괘종시계와 그림자 실루엣이 찍힌 현장 사진."
+    image: /assets/bg/rain_corridor.png
+    category: "현장"
+    order: 50
+  kitchen_timer_note:
+    name: "주방 타이머 메모"
+    description: "증기 타이머 재설정 시각이 적힌 주방 작업 메모."
+    image: /assets/bg/clue_cup.svg
+    category: "주방"
+    order: 60
+  valve_sketch:
+    name: "주전자 밸브 스케치"
+    description: "뚜껑 밸브 내부 구조와 틈새 용적을 그린 도해."
+    image: /assets/bg/clue_lid.svg
+    category: "기계"
+    order: 70
+  umbrella_fiber_note:
+    name: "빨간 섬유 감식 노트"
+    description: "창가에서 채취한 빨간 섬유 샘플 1차 감식 결과."
+    image: /assets/bg/police_tape.svg
+    category: "감식"
+    order: 80
+  ice_bucket_note:
+    name: "얼음통 사용 기록"
+    description: "구형 얼음 1개가 누락된 주방 얼음통 확인서."
+    image: /assets/bg/clue_cup.svg
+    category: "주방"
+    order: 90

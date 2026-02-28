@@ -263,8 +263,9 @@ scenes:
 
 - 엔딩 화면 하단 버튼은 `처음부터 다시하기` 1개만 노출합니다.
 - 엔딩 크레딧 롤 영역은 초기 자동 스크롤 구간에서 입력을 잠그며(`pointer-events: none`), 자동 스크롤이 멈춘 뒤에만 수동 스크롤을 허용합니다.
-- 클릭 시 엔진의 `restartFromBeginning()`을 호출해 페이지 새로고침 없이 첫 챕터부터 재시작합니다.
-- 재시작 시 `vn-engine-autosave`는 제거됩니다.
+- URL 게임에서는 인벤토리 모달의 `초기화면 가기`와 동일한 흐름으로 Start Gate 세션 플래그를 초기화하고, 인게임 BGM 정지 후 Start Gate(시작 화면)로 복귀합니다.
+- ZIP 실행 게임(또는 게임 ID를 판별할 수 없는 경로)에서는 `restartFromBeginning()`으로 첫 챕터 재시작을 수행합니다.
+- `restartFromBeginning()` 경로에서는 `vn-engine-autosave`가 제거됩니다.
 - `vn-ending-progress:<gameId>`는 유지되므로 획득한 엔딩 기록은 지워지지 않습니다.
 
 ## 8-4) 모바일 확대(Zoom) 방지 동작
@@ -594,6 +595,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-02-28: 엔딩 화면 `처음부터 다시하기` 버튼을 URL 게임 기준으로 인벤토리 모달 `초기화면 가기`와 동일한 Start Gate 재진입 흐름으로 통일했습니다. 버튼 실행 시 Start Gate 세션 플래그를 초기화하고 인게임 BGM을 정지한 뒤 시작 화면으로 복귀하며, ZIP 실행 게임은 기존처럼 `restartFromBeginning()`으로 첫 챕터 재시작하도록 폴백 동작을 유지했습니다.
 - 2026-02-27: 인벤토리 UX/UI V2를 적용했습니다. 모달을 `가방(획득)`/`도감(전체)` 2탭 구조로 확장하고 검색/카테고리/정렬(`order` 우선)을 추가했으며, HUD 가방 버튼 진행 배지(`획득수/전체수`)와 `Esc` 닫기 + 포커스 복귀 접근성을 반영했습니다. 동시에 `inventory` 아이템 메타에 선택 필드 `category`/`order`를 도입하고, 게임별 설정 저장(`vn-engine-settings:<autosave-key>`)에 `inventoryView`/`inventorySort`/`inventoryCategory`를 확장해 구버전(`bgmEnabled`만 저장) 데이터도 자동 정규화되도록 마이그레이션했습니다.
 - 2026-02-27: 스티커 연출 옵션에서 `enter.duration`/`leave.duration` 사용자 지정을 제거하고, 이펙트 시간은 엔진 기본값(enter `280ms`, leave `220ms`)으로 고정했습니다. 동시에 `say.wait`(ms)를 추가해 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠글 수 있도록 런타임·스키마·문서를 갱신했습니다.
 - 2026-02-27: `inventory` 아이템 정의에서 `owned` 필드를 제거하고, 인벤토리 기본 소지값을 `false`(미획득)로 단순화했습니다. `when.var`에서 `state` 변수와 함께 아이템 키를 직접 참조할 수 있도록 조건 검증/실행 로직을 확장했으며, Conan 샘플의 아이템 분기 우회 상태(`item_*_owned`)를 아이템 키 분기로 마이그레이션했습니다.

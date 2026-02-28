@@ -1,0 +1,182 @@
+script:
+  - scene: lounge_intro
+  - scene: completion_check
+  - scene: all_done_bonus
+  - scene: route_menu
+  - scene: early_exit_confirm
+  - scene: early_exit_penalty_branch
+  - scene: early_exit_penalty_high
+  - scene: early_exit_penalty_mid
+  - scene: early_exit_penalty_low
+  - scene: move_to_conclusion_gate
+  - scene: move_ready
+  - scene: move_blocked
+
+scenes:
+  lounge_intro:
+    actions:
+      - bg: ryokan_hall
+      - music: reasoning
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 코난.think
+          text: "<speed=30>(자유 탐문 시간이다.)</speed> <speed=58>인물 심문과 현장 재조사를 마음대로 오가자.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=30>가방 버튼으로 증거를 다시 확인할 수 있어.</speed>"
+      - goto: completion_check
+
+  completion_check:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: exploration_count
+                op: gte
+                value: 6
+              goto: all_done_bonus
+          default: route_menu
+
+  all_done_bonus:
+    actions:
+      - set:
+          early_exit_taken: false
+      - add:
+          deduction_score: 1
+          final_confidence: 1
+          trust: 1
+      - say:
+          char: 코난.serious
+          text: "<speed=56>좋아, 핵심 라인을 전부 훑었다.</speed> <speed=34>이제 결론 전개가 가능해.</speed>"
+      - goto: move_to_conclusion_gate
+
+  route_menu:
+    actions:
+      - choice:
+          key: hub_route_menu
+          prompt: "다음 행동을 고르자."
+          options:
+            - text: "레이코를 다시 심문한다"
+              goto: /routes/reiko/1.yaml
+            - text: "켄지의 동선을 검증한다"
+              goto: /routes/kenji/1.yaml
+            - text: "신이치의 기록을 대조한다"
+              goto: /routes/shinichi/1.yaml
+            - text: "밀실 현장을 재조사한다"
+              goto: /routes/crime/1.yaml
+            - text: "주방 보일러/타이머를 확인한다"
+              goto: /routes/kitchen/1.yaml
+            - text: "복도 시계와 그림자를 확인한다"
+              goto: /routes/corridor/1.yaml
+            - text: "증거보드 정리 회의로 이동한다"
+              goto: early_exit_confirm
+
+  early_exit_confirm:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=30>지금 결론으로 가면 빈틈이 생길 수 있어.</speed> <speed=60>그래도 진행할까?</speed>"
+      - choice:
+          key: hub_early_exit
+          prompt: "지금 바로 결론 파트로 이동할까?"
+          options:
+            - text: "아직 더 조사한다"
+              goto: route_menu
+            - text: "지금 이동한다"
+              set:
+                early_exit_taken: true
+              goto: early_exit_penalty_branch
+
+  early_exit_penalty_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: exploration_count
+                op: gte
+                value: 5
+              goto: early_exit_penalty_high
+            - when:
+                var: exploration_count
+                op: gte
+                value: 3
+              goto: early_exit_penalty_mid
+          default: early_exit_penalty_low
+
+  early_exit_penalty_high:
+    actions:
+      - add:
+          final_confidence: -1
+      - say:
+          char: 코난.think
+          text: "<speed=30>한두 줄이 비었지만, 전개는 가능해.</speed>"
+      - goto: move_to_conclusion_gate
+
+  early_exit_penalty_mid:
+    actions:
+      - add:
+          deduction_score: -1
+          final_confidence: -2
+      - say:
+          char: 코난.think
+          text: "<speed=26>절반만 검증한 결론은 반박에 약하다.</speed>"
+      - goto: move_to_conclusion_gate
+
+  early_exit_penalty_low:
+    actions:
+      - add:
+          deduction_score: -2
+          final_confidence: -3
+          trust: -1
+          mistake_count: 1
+      - say:
+          char: 코난.think
+          text: "<speed=24>(너무 빠르다...)</speed> <speed=56>이 상태로는 진실보다 추측이 많아.</speed>"
+      - goto: move_to_conclusion_gate
+
+  move_to_conclusion_gate:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: residue_report
+                    op: eq
+                    value: true
+                  - var: reiko_temp_log
+                    op: eq
+                    value: true
+                  - var: kenji_call_record
+                    op: eq
+                    value: true
+                  - var: shinichi_keylog
+                    op: eq
+                    value: true
+                  - var: corridor_clock_photo
+                    op: eq
+                    value: true
+                  - var: kitchen_timer_note
+                    op: eq
+                    value: true
+                  - var: valve_sketch
+                    op: eq
+                    value: true
+              goto: move_ready
+          default: move_blocked
+
+  move_ready:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "<speed=50>필수 증거 확보 완료.</speed> <speed=34>잠자는 코고로 추리 쇼를 시작한다.</speed>"
+      - goto: /conclusion/1.yaml
+
+  move_blocked:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=28>아직 못 간다.</speed> <speed=34>필수 증거가 부족해. 가방에서 빈칸을 확인하고 더 조사하자.</speed>"
+      - goto: route_menu

@@ -1,0 +1,8 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" fill="#121a22"/>
+  <rect x="130" y="110" width="940" height="500" rx="32" fill="#f2e7d2" stroke="#5a4a37" stroke-width="8"/>
+  <text x="600" y="230" text-anchor="middle" font-size="56" font-weight="700" fill="#3a2d1f">단서 카드 #1</text>
+  <text x="600" y="335" text-anchor="middle" font-size="52" font-weight="700" fill="#2f3e4f">찻잔 손잡이 방향</text>
+  <text x="600" y="430" text-anchor="middle" font-size="40" fill="#2f3e4f">피해자 잔만 따르는 순서가 달랐다</text>
+  <text x="600" y="510" text-anchor="middle" font-size="34" fill="#6a5a47">왼쪽 손잡이 습관을 누가 알고 있었나?</text>
+</svg>

@@ -1,0 +1,213 @@
+script:
+  - scene: entry_guard
+  - scene: first_intro
+  - scene: revisit_intro
+  - scene: item_gate
+  - scene: item_get
+  - scene: keylog_input
+  - scene: keylog_correct
+  - scene: keylog_wrong
+  - scene: mark_probe
+  - scene: mark_correct
+  - scene: mark_wrong
+  - scene: revisit_question
+  - scene: outro
+
+scenes:
+  entry_guard:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: visited_shinichi
+                op: eq
+                value: true
+              goto: revisit_intro
+          default: first_intro
+
+  first_intro:
+    actions:
+      - bg: tea_room
+      - music: reasoning
+      - set:
+          visited_shinichi: true
+      - add:
+          exploration_count: 1
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - say:
+          char: 신이치.cold
+          with:
+            - 코난.serious
+          text: "<speed=32>저는 보안 키로그를 관리합니다.</speed> <speed=26>시간은 거짓말을 안 하죠.</speed>"
+      - say:
+          char: 코난.serious
+          text: "<speed=34>좋아, 네 기록으로 밀실 출입선을 고정한다.</speed>"
+      - goto: item_gate
+
+  revisit_intro:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 신이치
+          position: right
+          emotion: cold
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 신이치.cold
+          with:
+            - 코난.think
+          text: "<speed=32>재대조 요청이군요.</speed> <speed=26>기록표를 다시 펼치겠습니다.</speed>"
+      - goto: revisit_question
+
+  item_gate:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: shinichi_keylog
+                op: eq
+                value: true
+              goto: keylog_input
+          default: item_get
+
+  item_get:
+    actions:
+      - get: shinichi_keylog
+      - sticker:
+          id: item_popup_shinichi_keylog
+          image: clue_lid
+          x: 50
+          y: 30
+          width: 24
+          enter:
+            effect: popIn
+          inputLockMs: 500
+      - wait: 2400
+      - say:
+          char: 코난.think
+          text: "<speed=34>신이치 키로그를 확보했다.</speed> <speed=56>21:26 출입 기록이 찍혀 있다.</speed>"
+      - clearSticker:
+          id: item_popup_shinichi_keylog
+          leave:
+            effect: fadeOut
+      - goto: keylog_input
+
+  keylog_input:
+    actions:
+      - input:
+          prompt: "키로그에서 문제의 출입 시각은? (24시간 형식)"
+          correct: "21:26"
+          saveAs: timeline_answer
+          errors:
+            - "정각도, 반도 아니다. 20분대 중반이다."
+            - "힌트: 21시 26분."
+            - "정답은 21:26."
+          routes:
+            - equals: "21:26"
+              set:
+                clue_shinichi_keylog: true
+              add:
+                deduction_score: 2
+                trust: 1
+              goto: keylog_correct
+            - equals: "21:20"
+              add:
+                mistake_count: 1
+              goto: keylog_wrong
+            - equals: "21:30"
+              add:
+                mistake_count: 1
+              goto: keylog_wrong
+            - equals: "21:24"
+              add:
+                mistake_count: 1
+              goto: keylog_wrong
+
+  keylog_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "<speed=52>좋아.</speed> <speed=34>신이치 동선은 21:26 기준으로 분리된다.</speed>"
+      - goto: mark_probe
+
+  keylog_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=24>(시간이 틀리면 연쇄로 무너진다.)</speed> <speed=58>다음 단서로 보정하자.</speed>"
+      - goto: mark_probe
+
+  mark_probe:
+    actions:
+      - choice:
+          key: shinichi_mark_probe
+          prompt: '다잉 메시지 "2R" 해석 중 더 타당한 것은?'
+          options:
+            - text: "컵 뚜껑 안쪽 R2 각인을 뒤집어 본 위장 흔적이다"
+              set:
+                clue_fake_2r: true
+              add:
+                deduction_score: 2
+                final_confidence: 1
+              goto: mark_correct
+            - text: "레이코의 이니셜이므로 그대로 범인 확정"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: mark_wrong
+            - text: "피해자가 쓴 무의미한 낙서다"
+              add:
+                mistake_count: 1
+              goto: mark_wrong
+
+  mark_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "<speed=50>맞아.</speed> <speed=34>이게 두 번째 레드헤링이다.</speed>"
+      - goto: outro
+
+  mark_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=24>(2R에 끌리면 범인이 원하는 길로 간다.)</speed>"
+      - goto: outro
+
+  revisit_question:
+    actions:
+      - choice:
+          key: shinichi_revisit_probe
+          prompt: "신이치 기록에서 무엇을 재확인할까?"
+          options:
+            - text: "21:26 키로그를 다시 고정한다"
+              set:
+                clue_shinichi_keylog: true
+              add:
+                deduction_score: 1
+              goto: outro
+            - text: '"2R"이 R2 위장인지 다시 확인한다'
+              set:
+                clue_fake_2r: true
+              add:
+                final_confidence: 1
+              goto: outro
+            - text: "이번엔 여기까지"
+              goto: outro
+
+  outro:
+    actions:
+      - say:
+          char: 코난
+          text: "<speed=50>신이치 라인 종료.</speed> <speed=34>탐문 라운지로 복귀한다.</speed>"
+      - goto: /routes/hub/1.yaml

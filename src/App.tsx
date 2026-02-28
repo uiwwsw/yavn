@@ -1719,11 +1719,6 @@ export default function App() {
     }
   };
 
-  const onRestartFromBeginning = (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    void restartFromBeginning();
-  };
-
   const onReturnToStartScreen = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
@@ -1766,6 +1761,18 @@ export default function App() {
       }
     },
     [closeSettingsModal, returningToStartGate, startScreenReturnGameId, stopStartGateMusic],
+  );
+
+  const onRestartFromBeginning = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      if (canReturnToStartScreen) {
+        void onReturnToStartScreen(event);
+        return;
+      }
+      void restartFromBeginning();
+    },
+    [canReturnToStartScreen, onReturnToStartScreen],
   );
 
   if (startGate) {
@@ -2565,8 +2572,8 @@ export default function App() {
               </div>
             </div>
             <div className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`} aria-hidden={!showEndingRestart}>
-              <button type="button" className="ending-restart" onClick={onRestartFromBeginning}>
-                처음부터 다시하기
+              <button type="button" className="ending-restart" onClick={onRestartFromBeginning} disabled={returningToStartGate}>
+                {returningToStartGate ? '초기화면 여는 중...' : '처음부터 다시하기'}
               </button>
             </div>
           </div>

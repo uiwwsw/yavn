@@ -1,0 +1,118 @@
+script:
+  - scene: first_scan
+  - scene: residue_item_gate
+  - scene: residue_item_get
+  - scene: residue_item_already
+  - scene: initial_fix_choice
+  - scene: initial_fix_correct
+  - scene: initial_fix_wrong
+  - scene: lounge_handoff
+
+scenes:
+  first_scan:
+    actions:
+      - bg: tea_room
+      - music: reasoning
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - say:
+          char: 코난.serious
+          text: "<speed=42>피해자는 밀실 안에서 단독 사망.</speed> <speed=34>핵심은 2번 잔 가장자리 반응과 시간차다.</speed>"
+      - say:
+          char: 란.worried
+          text: "<speed=32>비명은 다들 21시 30분쯤 들었다고 했어.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=28>좋아.</speed> <speed=60>먼저 반응 시료부터 확보한다.</speed>"
+
+  residue_item_gate:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: residue_report
+                op: eq
+                value: true
+              goto: residue_item_already
+          default: residue_item_get
+
+  residue_item_get:
+    actions:
+      - get: residue_report
+      - sticker:
+          id: item_popup_residue_report
+          image: item_tea_residue_report
+          x: 50
+          y: 30
+          width: 22
+          enter:
+            effect: popIn
+          inputLockMs: 500
+      - wait: 2800
+      - say:
+          char: 코난.think
+          text: "<speed=34>찻잔 반응 시료 카드를 확보했다.</speed> <speed=56>이게 트릭의 출발점이다.</speed>"
+      - clearSticker:
+          id: item_popup_residue_report
+          leave:
+            effect: fadeOut
+      - goto: initial_fix_choice
+
+  residue_item_already:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=30>시료 카드는 이미 확보됐다.</speed> <speed=56>바로 판단 고정으로 간다.</speed>"
+      - goto: initial_fix_choice
+
+  initial_fix_choice:
+    actions:
+      - choice:
+          key: initial_fix_choice
+          prompt: "초동에서 가장 먼저 고정할 축은?"
+          options:
+            - text: "반응 물질이 나타난 위치와 순서"
+              add:
+                deduction_score: 2
+                trust: 1
+              goto: initial_fix_correct
+            - text: "2R 문자의 필체 감정"
+              add:
+                mistake_count: 1
+                final_confidence: -1
+              goto: initial_fix_wrong
+            - text: "누가 가장 화를 냈는지"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: initial_fix_wrong
+
+  initial_fix_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "<speed=52>정답.</speed> <speed=34>물증 순서를 잠가야 알리바이 거짓말도 잡힌다.</speed>"
+      - add:
+          final_confidence: 1
+      - goto: lounge_handoff
+
+  initial_fix_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=28>아직 감정과 인상에 끌렸어.</speed> <speed=58>탐문에서 증거를 더 모은다.</speed>"
+      - goto: lounge_handoff
+
+  lounge_handoff:
+    actions:
+      - bg: case_board
+      - say:
+          char: 코난
+          text: "<speed=50>자유 탐문 시작.</speed> <speed=34>사람과 장소를 오가며 증거를 모아.</speed>"
+      - goto: /routes/hub/1.yaml
