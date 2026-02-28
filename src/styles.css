@@ -1511,29 +1511,19 @@ textarea,
 .char {
   --char-offset-x: 0%;
   --char-scale: 1;
-  --char-opacity: 1;
   --char-brightness: 1;
   position: absolute;
   bottom: 0;
   height: 100%;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)) brightness(var(--char-brightness));
-  opacity: var(--char-opacity);
-  will-change: transform, opacity;
+  will-change: transform, filter;
   transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
   transform-origin: center bottom;
-  transition: transform 180ms ease-out, opacity 200ms ease-out, filter 200ms ease-out;
+  transition: transform 180ms ease-out, filter 200ms ease-out;
   backface-visibility: hidden;
   contain: paint;
   animation: riseInSide 0.35s ease;
   z-index: 3;
-}
-
-.char.is-speaker {
-  --char-brightness: 1;
-}
-
-.char.is-listener {
-  --char-brightness: 0.9;
 }
 
 .char-image {
@@ -1690,6 +1680,7 @@ textarea,
 }
 
 .settings-modal {
+  position: relative;
   width: min(920px, calc(100% - 24px));
   max-height: min(90dvh, 820px);
   display: grid;
@@ -1785,6 +1776,11 @@ textarea,
   display: grid;
   grid-template-columns: minmax(0, 2fr) repeat(2, minmax(140px, 1fr));
   gap: 8px;
+}
+
+.inventory-tools.is-bag-view {
+  grid-template-columns: minmax(140px, 220px);
+  justify-content: end;
 }
 
 .inventory-search-field,
@@ -1929,22 +1925,87 @@ textarea,
   text-align: center;
 }
 
-.inventory-detail {
+.inventory-detail-actions {
   border: 1px solid var(--ui-choice-border);
   border-radius: 10px;
-  padding: 11px;
+  padding: 10px 11px;
   background: rgba(0, 0, 0, 0.14);
-  display: grid;
-  gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   min-width: 0;
-  max-height: min(220px, 32dvh);
-  overflow: auto;
 }
 
-.inventory-detail h3 {
+.inventory-selected-label {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  color: var(--ui-text-color);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.inventory-detail-open-button {
+  border: 1px solid var(--ui-choice-border);
+  border-radius: 10px;
+  background: var(--ui-choice-bg);
+  color: var(--ui-choice-color);
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 7px 10px;
+  cursor: pointer;
+  font-family: var(--ui-body-font);
+  white-space: nowrap;
+}
+
+.inventory-detail-open-button:hover {
+  border-color: var(--ui-choice-hover-border);
+  background: var(--ui-choice-hover-bg);
+}
+
+.inventory-detail-open-button:focus-visible {
+  outline: 2px solid var(--ui-focus-ring);
+  outline-offset: 1px;
+}
+
+.inventory-detail-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.44);
+  backdrop-filter: blur(2px);
+}
+
+.inventory-detail-modal {
+  width: min(520px, 100%);
+  max-height: min(74dvh, 520px);
+  border: 1px solid var(--ui-dialog-border);
+  border-radius: 12px;
+  background: var(--ui-dialog-bg);
+  box-shadow: var(--ui-dialog-shadow);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.inventory-detail-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--ui-dialog-border);
+}
+
+.inventory-detail-modal-header h3 {
   margin: 0;
   color: var(--ui-speaker-color);
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-family: var(--ui-heading-font);
   overflow-wrap: anywhere;
 }
@@ -1955,15 +2016,22 @@ textarea,
   font-weight: 680;
 }
 
-.inventory-detail p {
+.inventory-detail-modal-body {
+  padding: 11px 14px 14px;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+}
+
+.inventory-detail-modal-body p {
   margin: 0;
   line-height: 1.5;
   color: var(--ui-text-color);
 }
 
-.inventory-detail img {
+.inventory-detail-modal-body img {
   width: 100%;
-  max-height: 140px;
+  max-height: 180px;
   object-fit: contain;
   border-radius: 8px;
   border: 1px solid var(--ui-choice-border);
@@ -2042,21 +2110,33 @@ textarea,
 }
 
 .dialog-box {
+  --dialog-max-height: 38dvh;
   position: absolute;
   z-index: 6;
   left: 20px;
   right: 20px;
   bottom: 20px;
-  min-height: 162px;
+  min-height: min(162px, var(--dialog-max-height));
+  max-height: var(--dialog-max-height);
   padding: 16px 18px;
   border-radius: 14px;
   border: 1px solid var(--ui-dialog-border);
   background: var(--ui-dialog-bg);
   box-shadow: var(--ui-dialog-shadow);
   backdrop-filter: blur(4px);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 10px;
   opacity: 1;
   transition: opacity 220ms ease;
   will-change: opacity;
+}
+
+.dialog-content-scroll {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .dialog-box.hidden {
@@ -2845,7 +2925,7 @@ textarea,
     transform: translate3d(var(--char-offset-x), 10px, 0) scale(var(--char-scale));
   }
   to {
-    opacity: var(--char-opacity);
+    opacity: 1;
     transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
   }
 }
@@ -2856,7 +2936,7 @@ textarea,
     transform: translate3d(-50%, 10px, 0) scale(var(--char-scale));
   }
   to {
-    opacity: var(--char-opacity);
+    opacity: 1;
     transform: translate3d(-50%, 0, 0) scale(var(--char-scale));
   }
 }
@@ -2913,6 +2993,10 @@ textarea,
 
   .inventory-tools {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .inventory-tools.is-bag-view {
+    grid-template-columns: minmax(140px, 220px);
   }
 
   .inventory-search-field {
@@ -3017,6 +3101,7 @@ textarea,
   }
 
   .dialog-box {
+    --dialog-max-height: 46dvh;
     left: 10px;
     right: 10px;
     bottom: 10px;
@@ -3097,6 +3182,10 @@ textarea,
     grid-template-columns: 1fr;
   }
 
+  .inventory-tools.is-bag-view {
+    grid-template-columns: 1fr;
+  }
+
   .inventory-search-field {
     grid-column: auto;
   }
@@ -3114,11 +3203,13 @@ textarea,
     font-size: 0.66rem;
   }
 
-  .inventory-detail {
-    max-height: min(190px, 30dvh);
+  .inventory-detail-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
 
-  .inventory-detail img {
+  .inventory-detail-modal-body img {
     max-height: 96px;
   }
 }

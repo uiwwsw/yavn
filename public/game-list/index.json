@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-27T12:20:25.150Z",
+  "generatedAt": "2026-02-28T10:22:39.247Z",
   "games": [
     {
       "id": "conan",
@@ -36,6 +36,39 @@
       }
     },
     {
+      "id": "conan-midnight-alibi",
+      "name": "명탐정 코난 외전: 밀실 시계의 알리바이",
+      "path": "/game-list/conan-midnight-alibi/",
+      "author": "uiwwsw",
+      "version": "1.0",
+      "summary": "폭우 속 밀실 중독 사건. 자유 탐문으로 단서를 모아 시간 알리바이를 붕괴시키는 코난풍 에피소드.",
+      "thumbnail": "/game-list/conan-midnight-alibi/assets/bg/case_board.png",
+      "tags": [
+        "detective",
+        "conan",
+        "mystery",
+        "branching"
+      ],
+      "chapterCount": 11,
+      "seo": {
+        "title": "명탐정 코난 외전: 밀실 시계의 알리바이",
+        "description": "폭우에 고립된 료칸에서 벌어진 밀실 중독 사건. 시계 알리바이와 기계 트릭을 꿰맞춰 진범을 밝히는 코난풍 추리 비주얼노벨.",
+        "keywords": [
+          "명탐정 코난",
+          "추리 게임",
+          "밀실 트릭",
+          "알리바이 붕괴",
+          "비주얼노벨",
+          "detective",
+          "conan",
+          "mystery",
+          "branching"
+        ],
+        "image": "/game-list/conan-midnight-alibi/assets/bg/case_board.png",
+        "imageAlt": "밀실 사건 증거 보드"
+      }
+    },
+    {
       "id": "live2dtest",
       "name": "Live2D 테스트: 렌 수다",
       "path": "/game-list/live2dtest/",
@@ -63,14 +96,18 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 다실의 비밀, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 다실의 비밀, 명탐정 코난 외전: 밀실 시계의 알리바이, Live2D 테스트: 렌 수다.",
     "keywords": [
       "명탐정 코난 외전: 다실의 비밀",
+      "명탐정 코난 외전: 밀실 시계의 알리바이",
       "Live2D 테스트: 렌 수다",
       "detective",
       "branch-heavy",
       "sample",
       "voice-sfx",
+      "conan",
+      "mystery",
+      "branching",
       "live2d",
       "interaction",
       "smoke-test",
@@ -78,12 +115,15 @@
       "추리 게임",
       "비주얼노벨",
       "미스터리",
-      "분기 시나리오"
+      "분기 시나리오",
+      "밀실 트릭",
+      "알리바이 붕괴"
     ],
     "gameTitles": [
       "명탐정 코난 외전: 다실의 비밀",
+      "명탐정 코난 외전: 밀실 시계의 알리바이",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 2
+    "gameCount": 3
   }
 }

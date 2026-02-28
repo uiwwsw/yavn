@@ -627,6 +627,7 @@ export default function App() {
   const [inputAnswer, setInputAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
+  const [inventoryDetailOpen, setInventoryDetailOpen] = useState(false);
   const [inventoryView, setInventoryView] = useState<InventoryViewPreference>(() => getInventoryUiSettings().view);
   const [inventorySort, setInventorySort] = useState<InventorySortPreference>(() => getInventoryUiSettings().sort);
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>(() => getInventoryUiSettings().category);
@@ -666,6 +667,7 @@ export default function App() {
   const closeSettingsModal = useCallback(
     (restoreFocus: boolean = true) => {
       setSettingsOpen(false);
+      setInventoryDetailOpen(false);
       if (!restoreFocus) {
         return;
       }
@@ -1086,10 +1088,10 @@ export default function App() {
     const filtered = inventoryCatalogEntries
       .filter((entry) => (inventoryView === 'bag' ? entry.owned : true))
       .filter((entry) =>
-        inventoryView === 'bag' && inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true,
+        inventoryView === 'catalog' && inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true,
       )
       .filter((entry) => {
-        if (inventoryView !== 'bag' || !normalizedInventorySearchTerm) {
+        if (inventoryView !== 'catalog' || !normalizedInventorySearchTerm) {
           return true;
         }
         return entry.name.toLowerCase().includes(normalizedInventorySearchTerm);
@@ -1152,13 +1154,26 @@ export default function App() {
       if (selectedInventoryItemId !== null) {
         setSelectedInventoryItemId(null);
       }
+      if (inventoryDetailOpen) {
+        setInventoryDetailOpen(false);
+      }
       return;
     }
     if (selectedInventoryItemId && inventoryVisibleEntries.some((entry) => entry.id === selectedInventoryItemId)) {
       return;
     }
     setSelectedInventoryItemId(inventoryVisibleEntries[0].id);
-  }, [inventoryVisibleEntries, selectedInventoryItemId]);
+  }, [inventoryDetailOpen, inventoryVisibleEntries, selectedInventoryItemId]);
+
+  useEffect(() => {
+    if (settingsOpen) {
+      return;
+    }
+    if (!inventoryDetailOpen) {
+      return;
+    }
+    setInventoryDetailOpen(false);
+  }, [inventoryDetailOpen, settingsOpen]);
 
   useEffect(() => {
     if (!inventoryCategoryFilter) {
@@ -1187,11 +1202,15 @@ export default function App() {
       }
       event.preventDefault();
       event.stopPropagation();
+      if (inventoryDetailOpen) {
+        setInventoryDetailOpen(false);
+        return;
+      }
       closeSettingsModal();
     };
     window.addEventListener('keydown', onEscape);
     return () => window.removeEventListener('keydown', onEscape);
-  }, [closeSettingsModal, settingsOpen]);
+  }, [closeSettingsModal, inventoryDetailOpen, settingsOpen]);
 
   const onToggleBgmDisabled = useCallback(
     (disabled: boolean) => {
@@ -1572,13 +1591,13 @@ export default function App() {
     const zIndex = Math.max(1, 1000 - order);
     const isSpeaker = hasFocusedSpeaker && dialog.speakerId === slot.id;
     const depthStep = Math.max(0, order - 1);
-    const depthOpacity = hasFocusedSpeaker ? (isSpeaker ? 1 : Math.max(0.56, 1 - depthStep * 0.22)) : 1;
+    const depthBrightness = hasFocusedSpeaker ? (isSpeaker ? 1 : Math.max(0.64, 1 - depthStep * 0.15)) : 1;
     const depthScale = hasFocusedSpeaker ? (isSpeaker ? 1.02 : Math.max(0.98, 1 - depthStep * 0.01)) : 1;
     const depthClass = !hasFocusedSpeaker ? 'is-neutral' : isSpeaker ? 'is-speaker' : 'is-listener';
     const charStyle = {
       zIndex,
       '--char-scale': depthScale,
-      '--char-opacity': depthOpacity,
+      '--char-brightness': depthBrightness,
     } as CSSProperties;
     const className = `char char-image ${position} ${depthClass}`;
     if (slot.kind === 'live2d') {
@@ -2174,6 +2193,7 @@ export default function App() {
             title="인벤토리"
             onClick={(event) => {
               event.stopPropagation();
+              setInventoryDetailOpen(false);
               setSettingsOpen(true);
             }}
           >
@@ -2219,7 +2239,10 @@ export default function App() {
                   role="tab"
                   className={`inventory-view-tab ${inventoryView === 'bag' ? 'is-active' : ''}`}
                   aria-selected={inventoryView === 'bag'}
-                  onClick={() => setInventoryView('bag')}
+                  onClick={() => {
+                    setInventoryDetailOpen(false);
+                    setInventoryView('bag');
+                  }}
                 >
                   가방 ({ownedInventoryCount})
                 </button>
@@ -2228,37 +2251,42 @@ export default function App() {
                   role="tab"
                   className={`inventory-view-tab ${inventoryView === 'catalog' ? 'is-active' : ''}`}
                   aria-selected={inventoryView === 'catalog'}
-                  onClick={() => setInventoryView('catalog')}
+                  onClick={() => {
+                    setInventoryDetailOpen(false);
+                    setInventoryView('catalog');
+                  }}
                 >
                   도감 ({totalInventoryCount})
                 </button>
               </div>
-              <div className="inventory-tools">
-                <label className="inventory-search-field">
-                  <span className="inventory-tool-label">검색</span>
-                  <input
-                    type="search"
-                    value={inventorySearchTerm}
-                    onChange={(event) => setInventorySearchTerm(event.target.value)}
-                    placeholder="아이템 이름 검색"
-                    disabled={inventoryView === 'catalog'}
-                  />
-                </label>
-                <label className="inventory-select-field">
-                  <span className="inventory-tool-label">카테고리</span>
-                  <select
-                    value={inventoryCategoryFilter}
-                    onChange={(event) => setInventoryCategoryFilter(event.target.value)}
-                    disabled={inventoryView === 'catalog'}
-                  >
-                    <option value={INVENTORY_CATEGORY_ALL}>전체</option>
-                    {inventoryCategoryOptions.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+              <div className={`inventory-tools ${inventoryView === 'bag' ? 'is-bag-view' : ''}`}>
+                {inventoryView === 'catalog' && (
+                  <>
+                    <label className="inventory-search-field">
+                      <span className="inventory-tool-label">검색</span>
+                      <input
+                        type="search"
+                        value={inventorySearchTerm}
+                        onChange={(event) => setInventorySearchTerm(event.target.value)}
+                        placeholder="아이템 이름 검색"
+                      />
+                    </label>
+                    <label className="inventory-select-field">
+                      <span className="inventory-tool-label">카테고리</span>
+                      <select
+                        value={inventoryCategoryFilter}
+                        onChange={(event) => setInventoryCategoryFilter(event.target.value)}
+                      >
+                        <option value={INVENTORY_CATEGORY_ALL}>전체</option>
+                        {inventoryCategoryOptions.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </>
+                )}
                 <label className="inventory-select-field">
                   <span className="inventory-tool-label">정렬</span>
                   <select
@@ -2281,7 +2309,10 @@ export default function App() {
                         type="button"
                         role="listitem"
                         className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}`}
-                        onClick={() => setSelectedInventoryItemId(entry.id)}
+                        onClick={() => {
+                          setInventoryDetailOpen(false);
+                          setSelectedInventoryItemId(entry.id);
+                        }}
                         aria-label={`${entry.owned ? entry.name : '미확인 아이템'} ${entry.owned ? '획득됨' : '미획득'}`}
                       >
                         {entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
@@ -2299,31 +2330,22 @@ export default function App() {
                 )}
               </div>
 
-              <div className="inventory-detail">
+              <div className="inventory-detail-actions">
                 {inventoryVisibleEntries.length === 0 ? (
                   <p className="settings-empty-note">{inventoryGridEmptyMessage}</p>
                 ) : selectedInventoryEntry ? (
-                  selectedInventoryEntry.owned ? (
                     <>
-                      <h3>{selectedInventoryEntry.name}</h3>
-                      <p className="inventory-detail-owned is-owned">내 가방에 있음</p>
-                      <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
-                      {selectedInventoryEntry.imageUrl && (
-                        <img
-                          src={selectedInventoryEntry.imageUrl}
-                          alt={`${selectedInventoryEntry.name} 아이템 이미지`}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      )}
+                      <p className="inventory-selected-label">
+                        선택한 아이템: {selectedInventoryEntry.owned ? selectedInventoryEntry.name : '미확인 아이템'}
+                      </p>
+                      <button
+                        type="button"
+                        className="inventory-detail-open-button"
+                        onClick={() => setInventoryDetailOpen(true)}
+                      >
+                        상세보기
+                      </button>
                     </>
-                  ) : (
-                    <>
-                      <h3>미확인 아이템</h3>
-                      <p className="inventory-detail-owned is-missing">아직 획득하지 못함</p>
-                      <p>아직 획득하지 못한 아이템입니다.</p>
-                    </>
-                  )
                 ) : (
                   <p className="settings-empty-note">확인할 아이템을 선택해 주세요.</p>
                 )}
@@ -2354,6 +2376,51 @@ export default function App() {
                 </p>
               </div>
             </div>
+            {inventoryDetailOpen && selectedInventoryEntry && (
+              <div
+                className="inventory-detail-modal-backdrop"
+                onClick={() => setInventoryDetailOpen(false)}
+              >
+                <section
+                  className="inventory-detail-modal"
+                  role="dialog"
+                  aria-label="아이템 상세 정보"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <header className="inventory-detail-modal-header">
+                    <h3>{selectedInventoryEntry.owned ? selectedInventoryEntry.name : '미확인 아이템'}</h3>
+                    <button
+                      type="button"
+                      className="settings-close-button"
+                      onClick={() => setInventoryDetailOpen(false)}
+                    >
+                      닫기
+                    </button>
+                  </header>
+                  <div className="inventory-detail-modal-body">
+                    {selectedInventoryEntry.owned ? (
+                      <>
+                        <p className="inventory-detail-owned is-owned">내 가방에 있음</p>
+                        <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
+                        {selectedInventoryEntry.imageUrl && (
+                          <img
+                            src={selectedInventoryEntry.imageUrl}
+                            alt={`${selectedInventoryEntry.name} 아이템 이미지`}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <p className="inventory-detail-owned is-missing">아직 획득하지 못함</p>
+                        <p>아직 획득하지 못한 아이템입니다.</p>
+                      </>
+                    )}
+                  </div>
+                </section>
+              </div>
+            )}
           </section>
         </div>
       )}
@@ -2373,87 +2440,89 @@ export default function App() {
             </button>
           </div>
         )}
-        {dialog.speaker && <div className="speaker">{dialog.speaker}</div>}
-        <div className="text">{dialog.visibleText}</div>
-        {inputGate.active && (
-          <form
-            className="input-gate-form"
-            onSubmit={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              if (busy) {
-                return;
-              }
-              submitInputAnswer(inputAnswer);
-              setInputAnswer('');
-            }}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <input
-              ref={inputFieldRef}
-              className="input-gate-field"
-              type="text"
-              value={inputAnswer}
-              autoFocus={!skipInputAutoFocus}
-              autoComplete="off"
-              autoCorrect="off"
-              spellCheck={false}
-              placeholder="정답 입력"
-              disabled={busy}
-              onChange={(event) => setInputAnswer(event.target.value)}
-              onClick={(event) => event.stopPropagation()}
-            />
-            <button
-              type="submit"
-              className="input-gate-submit"
-              disabled={busy}
+        <div className="dialog-content-scroll">
+          {dialog.speaker && <div className="speaker">{dialog.speaker}</div>}
+          <div className="text">{dialog.visibleText}</div>
+          {inputGate.active && (
+            <form
+              className="input-gate-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                if (busy) {
+                  return;
+                }
+                submitInputAnswer(inputAnswer);
+                setInputAnswer('');
+              }}
               onClick={(event) => event.stopPropagation()}
             >
-              {inputSubmitLabel}
-            </button>
-          </form>
-        )}
-        {choiceGate.active && (
-          <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
-            <div className="choice-gate-options">
-              {choiceGate.options.map((option, index) => {
-                const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
-                const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
-                return (
-                  <button
-                    key={`${choiceGate.key}-${option.text}-${index}`}
-                    type="button"
-                    className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}`}
-                    ref={(el) => {
-                      choiceOptionButtonRefs.current[index] = el;
-                    }}
-                    onKeyDown={(event) => {
-                      if (busy) {
-                        return;
-                      }
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
+              <input
+                ref={inputFieldRef}
+                className="input-gate-field"
+                type="text"
+                value={inputAnswer}
+                autoFocus={!skipInputAutoFocus}
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+                placeholder="정답 입력"
+                disabled={busy}
+                onChange={(event) => setInputAnswer(event.target.value)}
+                onClick={(event) => event.stopPropagation()}
+              />
+              <button
+                type="submit"
+                className="input-gate-submit"
+                disabled={busy}
+                onClick={(event) => event.stopPropagation()}
+              >
+                {inputSubmitLabel}
+              </button>
+            </form>
+          )}
+          {choiceGate.active && (
+            <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
+              <div className="choice-gate-options">
+                {choiceGate.options.map((option, index) => {
+                  const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
+                  const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
+                  return (
+                    <button
+                      key={`${choiceGate.key}-${option.text}-${index}`}
+                      type="button"
+                      className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}`}
+                      ref={(el) => {
+                        choiceOptionButtonRefs.current[index] = el;
+                      }}
+                      onKeyDown={(event) => {
+                        if (busy) {
+                          return;
+                        }
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          submitChoiceOption(index);
+                        }
+                      }}
+                      onClick={(event) => {
                         event.stopPropagation();
+                        if (busy) {
+                          return;
+                        }
                         submitChoiceOption(index);
-                      }
-                    }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (busy) {
-                        return;
-                      }
-                      submitChoiceOption(index);
-                    }}
-                    disabled={busy}
-                  >
-                    <span>{option.text}</span>
-                    {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
-                  </button>
-                );
-              })}
+                      }}
+                      disabled={busy}
+                    >
+                      <span>{option.text}</span>
+                      {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         <div className="status">
           {busy ? '...' : isFinished ? 'End' : inputGate.active ? '입력 대기' : choiceGate.active ? '선택 대기' : 'Next'}
         </div>

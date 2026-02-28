@@ -11,6 +11,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://yavn.vercel.app/game-list/conan-midnight-alibi/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yavn.vercel.app/game-list/live2dtest/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
