@@ -456,6 +456,7 @@ scenes:
 - `config.yaml`에 `startScreen`이 없으면 기존처럼 즉시 실행합니다. (기본 OFF)
 - `startScreen`이 있고 `enabled: true`면 시작 화면을 표시합니다.
 - `startScreen.showTitle`은 기본 `true`이며, `false`이면 이미지 위 게임명 오버레이만 숨깁니다.
+- `showTitle: false`인 타이틀 아트는 모바일 세로 화면에서 어두운 `cover` 배경과 별도의 전경 이미지로 렌더링해, 이미지 안에 포함된 제목이 좌우로 잘리지 않게 합니다. 데스크톱과 모바일 가로 화면은 기존 `cover` 구성을 유지합니다.
 - 시작 버튼은 항상 표시되며, 텍스트 기본값은 `시작하기`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생합니다.
 - URL 게임(`/game-list/:gameId`)은 게임별 저장 키(`vn-engine-autosave:game:<gameId>`)가 있을 때만 `이어하기` 버튼을 표시합니다.
