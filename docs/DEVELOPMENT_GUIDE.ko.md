@@ -90,6 +90,7 @@ startScreen:
   enabled: true
   image: assets/bg/title.png
   music: assets/music/intro.mp3
+  showTitle: true
   startButtonText: 시작하기
   buttonPosition: auto
 endingScreen:
@@ -113,6 +114,7 @@ defaultEnding: bad_end
 - `ui.template` 허용값은 `cinematic-noir`, `neon-grid`, `paper-stage`입니다.
 - `ui`를 생략하면 기본 템플릿 `cinematic-noir`가 적용됩니다.
 - `startScreen` 객체를 선언하면 기본 활성화(`enabled: true`)됩니다.
+- `startScreen.showTitle`은 기본 `true`입니다. 타이틀 이미지에 게임명이 이미 포함된 경우 `false`로 설정하면 시각적 제목 오버레이만 숨기며 SEO 메타 제목은 유지합니다.
 - `startButtonText` 기본값은 `시작하기`, `buttonPosition` 기본값은 `auto`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생하고, 시작/이어하기 시점에 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이 배경을 교체합니다.
@@ -597,6 +599,10 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-28: 자동저장 선택 기록에 `chapterPath`를 추가해 서로 다른 챕터에서 동일한 `sceneId/actionIndex`를 사용할 때 복원 결과가 충돌하던 문제를 수정했습니다. 레거시 저장 데이터는 챕터 경로가 없는 항목을 호환 항목으로 읽습니다.
+- 2026-07-28: HUD `CASE LOG`를 추가해 대사/선택/입력을 최대 300개까지 자동저장하고, 케이스 파일 안에서 기록과 인벤토리를 전환할 수 있도록 플레이 UX를 확장했습니다.
+- 2026-07-28: `config.yaml.startScreen.showTitle`을 추가했습니다. 기본값은 `true`이며, 타이틀 아트에 제목이 포함된 게임은 `false`로 중복 오버레이를 숨길 수 있습니다.
+- 2026-07-28: Live2D 렌더러를 동적 import로 분리하고, Vitest 회귀 테스트와 GitHub Actions 테스트/빌드 검증을 추가했습니다.
 - 2026-02-28: 다이얼로그 박스 최대 높이를 게임 화면 노출 관점에서 제한했습니다(데스크톱 `38dvh`, 모바일 `46dvh`). 긴 대사/입력/선택지로 높이가 과도하게 커지던 동작을 내부 스크롤 영역으로 전환해, 하단 상태줄은 고정 유지하면서도 연출 영역 가림을 줄이도록 UI를 조정했습니다.
 - 2026-02-28: 인벤토리 UI 동작을 조정해 검색/카테고리 필터를 `도감` 탭 전용으로 제한하고, 기존 하단 고정 상세 패널을 `상세보기` 버튼 기반 팝업으로 변경했습니다. 팝업에서도 미획득 아이템의 설명/이미지는 계속 숨김 처리해 스포일러 최소화 규칙을 유지합니다.
 - 2026-02-28: 화자 강조 depth 표현을 `opacity` 기반에서 `brightness` 기반으로 조정했습니다. 비화자 캐릭터는 `speakerOrder` 순위에 따라 이미지 밝기만 점진적으로 낮추고, 캐릭터 레이어 자체 `opacity`는 1로 유지해 그림 영역만 어둡게 보이도록 UI 동작을 갱신했습니다.

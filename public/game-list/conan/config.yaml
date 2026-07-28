@@ -9,7 +9,7 @@ author:
     - label: "LinkedIn"
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
-version: "8.0"
+version: "9.0"
 seo:
   description: "폭우에 고립된 료칸에서 벌어진 다실 살인 사건. 다잉 메시지와 잠자는 코고로 추리 쇼로 진실을 완성하는 코난풍 비주얼노벨."
   keywords:
@@ -29,6 +29,7 @@ startScreen:
   enabled: true
   image: "assets/bg/open.png"
   music: "assets/music/intro.mp3"
+  showTitle: false
   startButtonText: "시작하기"
   buttonPosition: "auto"
 endingScreen:

@@ -1,4 +1,15 @@
-import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  lazy,
+  MouseEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   completeVideoCutscene,
   getBgmEnabled,
@@ -20,12 +31,15 @@ import {
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
-import { Live2DCharacter } from './Live2DCharacter';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import type { AuthorMetaObject, CharacterSlot, GameSeoMeta, Position, StartButtonPosition, UiTemplateId } from './types';
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties, SyntheticEvent } from 'react';
+
+const Live2DCharacter = lazy(() =>
+  import('./Live2DCharacter').then((module) => ({ default: module.Live2DCharacter })),
+);
 
 type GameListSeoEntry = {
   title?: string;
@@ -75,6 +89,7 @@ type StartGateState =
     musicUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
+    showTitle: boolean;
     showLoadButton: boolean;
   }
   | {
@@ -89,6 +104,7 @@ type StartGateState =
     previewMusicBlobUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
+    showTitle: boolean;
     showLoadButton: false;
   };
 
@@ -608,6 +624,9 @@ export default function App() {
     inputGate,
     choiceGate,
     inventory,
+    storyLog,
+    chapterIndex,
+    chapterTotal,
     resolvedEndingId,
     uiTemplate,
     setDialogUiHidden,
@@ -626,6 +645,7 @@ export default function App() {
   const [startGateLaunching, setStartGateLaunching] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [caseFileTab, setCaseFileTab] = useState<'log' | 'inventory'>('log');
   const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
   const [inventoryDetailOpen, setInventoryDetailOpen] = useState(false);
   const [inventoryView, setInventoryView] = useState<InventoryViewPreference>(() => getInventoryUiSettings().view);
@@ -637,7 +657,7 @@ export default function App() {
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
-  const inventoryButtonRef = useRef<HTMLButtonElement | null>(null);
+  const settingsTriggerRef = useRef<HTMLButtonElement | null>(null);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
   const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
@@ -657,6 +677,8 @@ export default function App() {
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
+  const repositoryUrl = 'https://github.com/uiwwsw/yavn';
+  const developmentGuideUrl = `${repositoryUrl}/blob/main/docs/DEVELOPMENT_GUIDE.ko.md`;
   const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
   const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
@@ -672,7 +694,7 @@ export default function App() {
         return;
       }
       window.requestAnimationFrame(() => {
-        inventoryButtonRef.current?.focus({ preventScroll: true });
+        settingsTriggerRef.current?.focus({ preventScroll: true });
       });
     },
     [],
@@ -773,6 +795,7 @@ export default function App() {
                 musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+                showTitle: preview.startScreen.showTitle ?? true,
                 showLoadButton: preview.hasLoadableSave,
               });
               return;
@@ -1602,14 +1625,15 @@ export default function App() {
     const className = `char char-image ${position} ${depthClass}`;
     if (slot.kind === 'live2d') {
       return (
-        <Live2DCharacter
-          key={`${position}-${slot.id}-${slot.source}`}
-          slot={slot}
-          position={position}
-          trackingKey={buildLive2DLoadKey(position, slot)}
-          className={depthClass}
-          style={charStyle}
-        />
+        <Suspense fallback={null} key={`${position}-${slot.id}-${slot.source}`}>
+          <Live2DCharacter
+            slot={slot}
+            position={position}
+            trackingKey={buildLive2DLoadKey(position, slot)}
+            className={depthClass}
+            style={charStyle}
+          />
+        </Suspense>
       );
     }
     return (
@@ -1727,6 +1751,7 @@ export default function App() {
           previewMusicBlobUrl: musicUrl?.startsWith('blob:') ? musicUrl : undefined,
           startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
           buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+          showTitle: preview.startScreen.showTitle ?? true,
           showLoadButton: false,
         });
         return;
@@ -1770,6 +1795,7 @@ export default function App() {
             musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
             startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
             buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+            showTitle: preview.startScreen.showTitle ?? true,
             showLoadButton: preview.hasLoadableSave,
           });
           return;
@@ -1801,10 +1827,12 @@ export default function App() {
         {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-content">
-          <div className="start-gate-title-block">
-            <p className="start-gate-eyebrow">YAVN</p>
-            <h1>{startGate.gameTitle}</h1>
-          </div>
+          {startGate.showTitle && (
+            <div className="start-gate-title-block">
+              <p className="start-gate-eyebrow">YAVN</p>
+              <h1>{startGate.gameTitle}</h1>
+            </div>
+          )}
           <div className={actionClass}>
             <button
               type="button"
@@ -2052,9 +2080,22 @@ export default function App() {
                     ))}
                   </div>
 
-                  <a className="launcher-command launcher-command-primary" href={selectedGame.path}>
-                    선택 게임 즉시 실행
-                  </a>
+                  <div className="inspector-actions">
+                    <a className="launcher-command launcher-command-primary" href={selectedGame.path}>
+                      선택 게임 즉시 실행
+                    </a>
+                    <a className="launcher-command launcher-command-ghost" href={repositoryUrl} target="_blank" rel="noreferrer">
+                      소스 코드
+                    </a>
+                    <a
+                      className="launcher-command launcher-command-ghost"
+                      href={developmentGuideUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      개발 가이드
+                    </a>
+                  </div>
                 </>
               ) : (
                 <div className="launcher-diagnostic">
@@ -2068,8 +2109,10 @@ export default function App() {
                 <ul>
                   <li>YAML V3 계층 병합(`config/base/chapter`)</li>
                   <li>분기 DSL(`choice/branch/input/ending`) 런타임 검증</li>
-                  <li>챕터 프리로드 + Live2D/오디오/비디오 연출 동기화</li>
-                  <li>ZIP 업로드 즉시 실행 + PR 기반 공유 워크플로우</li>
+                  <li>챕터별 자동저장 + 대화/선택 CASE LOG</li>
+                  <li>지연 로딩 Live2D + 오디오/비디오 연출 동기화</li>
+                  <li>Vitest 회귀 테스트 + GitHub Actions 검증</li>
+                  <li>ZIP 즉시 실행 + PR 기반 공유 워크플로우</li>
                 </ul>
               </div>
             </section>
@@ -2180,20 +2223,46 @@ export default function App() {
       )}
 
       <div className="hud">
-        <div className="meta">
-          {game?.meta.title ?? 'Loading...'}
+        <div className="hud-meta-group">
+          <div className="meta">{game?.meta.title ?? 'Loading...'}</div>
+          {chapterTotal > 0 && (
+            <div className="hud-chapter-progress">
+              CHAPTER {chapterIndex}/{chapterTotal}
+            </div>
+          )}
         </div>
         <div className="hud-right">
           <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
           <button
-            ref={inventoryButtonRef}
             type="button"
-            className="hud-inventory-button"
+            className="hud-action-button hud-log-button"
+            aria-label={`케이스 로그 열기 (${storyLog.length})`}
+            title="케이스 로그"
+            onClick={(event) => {
+              event.stopPropagation();
+              settingsTriggerRef.current = event.currentTarget;
+              setInventoryDetailOpen(false);
+              setCaseFileTab('log');
+              setSettingsOpen(true);
+            }}
+          >
+            <span className="hud-log-icon" aria-hidden="true" />
+            {storyLog.length > 0 && (
+              <span className="hud-action-count" aria-hidden="true">
+                {storyLog.length}
+              </span>
+            )}
+          </button>
+          <button
+            type="button"
+            className="hud-action-button hud-inventory-button"
             aria-label={`인벤토리 열기 (${ownedInventoryCount}/${totalInventoryCount})`}
             title="인벤토리"
             onClick={(event) => {
               event.stopPropagation();
+              settingsTriggerRef.current = event.currentTarget;
               setInventoryDetailOpen(false);
+              setCaseFileTab('inventory');
               setSettingsOpen(true);
             }}
           >
@@ -2219,11 +2288,11 @@ export default function App() {
             className="settings-modal"
             role="dialog"
             aria-modal="true"
-            aria-label="인벤토리 창"
+            aria-label="케이스 파일"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="settings-modal-header">
-              <h2>인벤토리</h2>
+              <h2>CASE FILE</h2>
               <button
                 type="button"
                 className="settings-close-button"
@@ -2232,6 +2301,62 @@ export default function App() {
                 닫기
               </button>
             </header>
+            <div className="case-file-tabs" role="tablist" aria-label="케이스 파일 보기">
+              <button
+                type="button"
+                role="tab"
+                className={`case-file-tab ${caseFileTab === 'log' ? 'is-active' : ''}`}
+                aria-selected={caseFileTab === 'log'}
+                onClick={() => {
+                  setInventoryDetailOpen(false);
+                  setCaseFileTab('log');
+                }}
+              >
+                기록 {storyLog.length}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className={`case-file-tab ${caseFileTab === 'inventory' ? 'is-active' : ''}`}
+                aria-selected={caseFileTab === 'inventory'}
+                onClick={() => setCaseFileTab('inventory')}
+              >
+                단서 {ownedInventoryCount}/{totalInventoryCount}
+              </button>
+            </div>
+            {caseFileTab === 'log' ? (
+              <div className="settings-modal-body story-log-body">
+                <div className="story-log-summary">
+                  <span>최근 기록</span>
+                  <b>{storyLog.length}/300</b>
+                </div>
+                {storyLog.length === 0 ? (
+                  <p className="story-log-empty">대화를 시작하면 사건 기록이 여기에 쌓입니다.</p>
+                ) : (
+                  <ol className="story-log-list" aria-label="스토리 기록">
+                    {[...storyLog].reverse().map((entry, index) => (
+                      <li
+                        key={`${entry.kind}-${entry.chapterPath ?? 'legacy'}-${entry.sceneId}-${entry.actionIndex}-${storyLog.length - index}`}
+                        className={`story-log-entry story-log-entry-${entry.kind}`}
+                      >
+                        {entry.kind === 'dialogue' ? (
+                          <>
+                            <span className="story-log-kind">{entry.speaker ?? 'Narration'}</span>
+                            <p>{entry.text}</p>
+                          </>
+                        ) : (
+                          <>
+                            <span className="story-log-kind">{entry.kind === 'choice' ? 'CHOICE' : 'INPUT'}</span>
+                            <p>{entry.prompt}</p>
+                            <strong>{entry.value}</strong>
+                          </>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            ) : (
             <div className="settings-modal-body settings-inventory-body">
               <div className="inventory-view-tabs" role="tablist" aria-label="인벤토리 보기">
                 <button
@@ -2376,7 +2501,8 @@ export default function App() {
                 </p>
               </div>
             </div>
-            {inventoryDetailOpen && selectedInventoryEntry && (
+            )}
+            {caseFileTab === 'inventory' && inventoryDetailOpen && selectedInventoryEntry && (
               <div
                 className="inventory-detail-modal-backdrop"
                 onClick={() => setInventoryDetailOpen(false)}
