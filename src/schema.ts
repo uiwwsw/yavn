@@ -241,6 +241,7 @@ const startScreenSchema = z
     enabled: z.boolean().optional(),
     image: z.string().min(1).optional(),
     music: z.string().min(1).optional(),
+    showTitle: z.boolean().optional(),
     startButtonText: z.string().min(1).optional(),
     buttonPosition: startButtonPositionSchema.optional(),
   })
@@ -254,6 +255,7 @@ const startScreenSchema = z
       enabled: value.enabled ?? true,
       image: normalizeOptionalText(value.image),
       music: normalizeOptionalText(value.music),
+      showTitle: value.showTitle ?? true,
       startButtonText: value.startButtonText?.trim() || '시작하기',
       buttonPosition: value.buttonPosition ?? 'auto',
     };

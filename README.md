@@ -18,11 +18,23 @@ Type your story. Play your novel.
 
 ```bash
 pnpm install
+pnpm test
 pnpm dev
 ```
 
 - Node: `22.x`
 - 기본 주소: [http://localhost:5173](http://localhost:5173)
+
+## 품질과 구조
+
+- `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 검증
+- `src/engine.ts`: 챕터 전환, 자동저장, 연출 실행, 입력 게이트
+- `src/store.ts`: 렌더링 상태와 플레이 기록
+- `src/history.ts`: 챕터별 선택 복원과 최대 300개 스토리 로그
+- `pnpm test`: 파서 기본값, 저장 호환, 챕터 기록 격리 회귀 테스트
+- GitHub Actions: Node 22 + pnpm 10에서 테스트와 프로덕션 빌드 자동 검증
+- Live2D 렌더러는 실제 Live2D 캐릭터가 등장할 때 동적 로딩되어 기본 런처/2D 게임의 초기 번들에서 분리됩니다.
+- 상세 진단과 다음 우선순위: [`docs/IMPROVEMENT_ROADMAP.ko.md`](docs/IMPROVEMENT_ROADMAP.ko.md)
 
 라우팅:
 - `/`: Engine Console 런처(실행 콘솔 + 검색/태그 워크스페이스 + 인스펙터)
@@ -123,6 +135,7 @@ startScreen:
   enabled: true
   image: assets/bg/title.png
   music: assets/music/intro.mp3
+  showTitle: true
   startButtonText: 시작하기
   buttonPosition: auto
 endingScreen:
@@ -194,7 +207,7 @@ scenes:
   - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
-  - `startScreen` (`enabled`, `image`, `music`, `startButtonText`, `buttonPosition`)
+  - `startScreen` (`enabled`, `image`, `music`, `showTitle`, `startButtonText`, `buttonPosition`)
   - `endingScreen` (`image`)
   - `endings`, `endingRules`, `defaultEnding`
 - `seo` 하위 필드:
@@ -226,7 +239,8 @@ scenes:
 - `script/scenes`는 챕터 YAML만 사용
 - `endings/endingRules/defaultEnding`은 `config.yaml`만 사용
 - `ui.template`은 `config.yaml`만 사용하며, 미지정 시 `cinematic-noir`가 기본값으로 적용됩니다.
-- `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
+- `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `showTitle=true`, `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
+- 타이틀 이미지 자체에 게임명이 포함되어 있으면 `showTitle: false`로 엔진 제목 오버레이를 숨길 수 있습니다. SEO 제목과 접근 가능한 문서 제목은 그대로 유지됩니다.
 - `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
 
@@ -441,6 +455,7 @@ scenes:
 
 - `config.yaml`에 `startScreen`이 없으면 기존처럼 즉시 실행합니다. (기본 OFF)
 - `startScreen`이 있고 `enabled: true`면 시작 화면을 표시합니다.
+- `startScreen.showTitle`은 기본 `true`이며, `false`이면 이미지 위 게임명 오버레이만 숨깁니다.
 - 시작 버튼은 항상 표시되며, 텍스트 기본값은 `시작하기`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생합니다.
 - URL 게임(`/game-list/:gameId`)은 게임별 저장 키(`vn-engine-autosave:game:<gameId>`)가 있을 때만 `이어하기` 버튼을 표시합니다.
@@ -500,6 +515,7 @@ scenes:
 - 슬롯 우측 상단 배지는 `획득` 상태에서만 표시하며, 미획득/사용 완료 상태에는 배지를 숨깁니다.
 - 모달 하단 체크 설정의 `배경음악 끄기`는 게임별 키(`vn-engine-settings:<autosave-key>`)로 저장되며, 해제 시 즉시 현재 BGM 재생이 중단됩니다.
 - 인벤토리의 `보기 탭/정렬/카테고리` 마지막 선택도 같은 게임별 설정 키에 저장되어 다음 실행 시 복원됩니다.
+- HUD의 `CASE LOG`는 대사, 확정한 선택, 정답 입력을 최대 300개까지 자동저장합니다. 선택 복원 키에 챕터 경로를 함께 기록해 서로 다른 챕터의 동일한 scene/action 좌표가 충돌하지 않습니다.
 - URL 게임에서는 모달 하단 `초기화면 가기` 버튼으로 Start Gate를 다시 열 수 있으며, ZIP 실행 게임에서는 버튼이 비활성화됩니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
 - 엔딩 배경 이미지는 `config.yaml.endingScreen.image`로 지정할 수 있으며, 템플릿 색상/디코레이션 레이어 위에 적용됩니다.

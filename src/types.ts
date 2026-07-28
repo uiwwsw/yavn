@@ -251,6 +251,7 @@ export type StartScreenConfig = {
   enabled: boolean;
   image?: string;
   music?: string;
+  showTitle: boolean;
   startButtonText: string;
   buttonPosition: StartButtonPosition;
 };
@@ -367,9 +368,28 @@ export type RouteHistoryEntry = {
   kind: 'choice' | 'input';
   key: string;
   value: string;
+  chapterPath?: string;
   sceneId: string;
   actionIndex: number;
 };
+
+export type StoryLogEntry =
+  | {
+      kind: 'dialogue';
+      speaker?: string;
+      text: string;
+      chapterPath?: string;
+      sceneId: string;
+      actionIndex: number;
+    }
+  | {
+      kind: 'choice' | 'input';
+      prompt: string;
+      value: string;
+      chapterPath?: string;
+      sceneId: string;
+      actionIndex: number;
+    };
 
 export type VNError = {
   message: string;

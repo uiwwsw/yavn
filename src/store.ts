@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { appendStoryLogEntry } from './history';
 import type {
   CharacterSlot,
   ChoiceGateState,
@@ -7,6 +8,7 @@ import type {
   Position,
   RouteHistoryEntry,
   RouteVarValue,
+  StoryLogEntry,
   StickerSlot,
   UiTemplateId,
   VNError,
@@ -49,6 +51,7 @@ type VNState = {
   choiceGate: ChoiceGateState;
   routeVars: Record<string, RouteVarValue>;
   routeHistory: RouteHistoryEntry[];
+  storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
   inventory: Record<string, boolean>;
   busy: boolean;
@@ -85,6 +88,8 @@ type VNState = {
   setInventoryItem: (itemId: string, owned: boolean) => void;
   pushRouteHistory: (entry: RouteHistoryEntry) => void;
   clearRouteHistory: () => void;
+  pushStoryLog: (entry: StoryLogEntry) => void;
+  clearStoryLog: () => void;
   setResolvedEndingId: (endingId?: string) => void;
   setBusy: (busy: boolean) => void;
   setWaitingInput: (waiting: boolean) => void;
@@ -152,6 +157,7 @@ export const useVNStore = create<VNState>((set) => ({
   routeVars: {},
   inventory: {},
   routeHistory: [],
+  storyLog: [],
   resolvedEndingId: undefined,
   busy: false,
   waitingInput: false,
@@ -183,6 +189,7 @@ export const useVNStore = create<VNState>((set) => ({
       routeVars: state.routeVars,
       inventory: state.inventory,
       routeHistory: state.routeHistory,
+      storyLog: state.storyLog,
       resolvedEndingId: state.resolvedEndingId,
       effect: undefined,
       busy: false,
@@ -276,6 +283,11 @@ export const useVNStore = create<VNState>((set) => ({
     })),
   pushRouteHistory: (entry) => set((state) => ({ routeHistory: [...state.routeHistory, entry] })),
   clearRouteHistory: () => set({ routeHistory: [] }),
+  pushStoryLog: (entry) =>
+    set((state) => ({
+      storyLog: appendStoryLogEntry(state.storyLog, entry),
+    })),
+  clearStoryLog: () => set({ storyLog: [] }),
   setResolvedEndingId: (resolvedEndingId) => set({ resolvedEndingId }),
   setBusy: (busy) => set({ busy }),
   setWaitingInput: (waitingInput) => set({ waitingInput }),
@@ -296,6 +308,7 @@ export const useVNStore = create<VNState>((set) => ({
       routeVars: {},
       inventory: {},
       routeHistory: [],
+      storyLog: [],
       resolvedEndingId: undefined,
       effect: undefined,
       busy: false,

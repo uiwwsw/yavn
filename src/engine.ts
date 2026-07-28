@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import {
@@ -19,6 +20,7 @@ import type {
   Position,
   RouteHistoryEntry,
   RouteVarValue,
+  StoryLogEntry,
   StateAddMap,
   StateSetMap,
   StickerEnterEffect,
@@ -116,6 +118,7 @@ type SaveProgress = {
   routeVars: Record<string, RouteVarValue>;
   inventory: InventoryOwnedMap;
   routeHistory: RouteHistoryEntry[];
+  storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
 };
 
@@ -1189,6 +1192,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       routeVars?: unknown;
       inventory?: unknown;
       routeHistory?: unknown;
+      storyLog?: unknown;
       resolvedEndingId?: unknown;
     };
     if (typeof parsed.sceneId !== 'string' || typeof parsed.actionIndex !== 'number') {
@@ -1220,10 +1224,39 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
             (value.kind === 'choice' || value.kind === 'input') &&
             typeof value.key === 'string' &&
             typeof value.value === 'string' &&
+            (value.chapterPath === undefined || typeof value.chapterPath === 'string') &&
             typeof value.sceneId === 'string' &&
             typeof value.actionIndex === 'number'
           );
         }) as RouteHistoryEntry[])
+      : [];
+    const storyLog = Array.isArray(parsed.storyLog)
+      ? parsed.storyLog
+          .filter((entry): entry is StoryLogEntry => {
+            if (!entry || typeof entry !== 'object') {
+              return false;
+            }
+            const value = entry as Partial<StoryLogEntry>;
+            const hasCursor =
+              (value.chapterPath === undefined || typeof value.chapterPath === 'string') &&
+              typeof value.sceneId === 'string' &&
+              typeof value.actionIndex === 'number';
+            if (!hasCursor) {
+              return false;
+            }
+            if (value.kind === 'dialogue') {
+              return (
+                typeof value.text === 'string' &&
+                (value.speaker === undefined || typeof value.speaker === 'string')
+              );
+            }
+            return (
+              (value.kind === 'choice' || value.kind === 'input') &&
+              typeof value.prompt === 'string' &&
+              typeof value.value === 'string'
+            );
+          })
+          .slice(-MAX_STORY_LOG_ENTRIES)
       : [];
     return {
       chapterIndex: typeof parsed.chapterIndex === 'number' ? parsed.chapterIndex : 0,
@@ -1236,6 +1269,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       routeVars,
       inventory,
       routeHistory,
+      storyLog,
       resolvedEndingId: typeof parsed.resolvedEndingId === 'string' ? parsed.resolvedEndingId : undefined,
     };
   } catch {
@@ -1261,6 +1295,7 @@ function saveProgress(sceneId: string, actionIndex: number) {
     routeVars: state.routeVars,
     inventory: state.inventory,
     routeHistory: state.routeHistory,
+    storyLog: state.storyLog,
     resolvedEndingId: state.resolvedEndingId,
   };
   saveProgressToKey(currentAutosaveKey, payload);
@@ -1981,7 +2016,7 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   const restoreVars = mergeRouteVarsWithDefaults(game.state?.defaults, {});
   const restoreInventory = mergeInventoryWithDefaults(game.inventory?.defaults, {});
   const historyByCursor = new Map<string, RouteHistoryEntry>();
-  for (const entry of resume.routeHistory) {
+  for (const entry of selectRouteHistoryForChapter(resume.routeHistory, chapter.pathKey)) {
     const key = `${entry.sceneId}:${entry.actionIndex}`;
     historyByCursor.set(key, entry);
   }
@@ -2199,6 +2234,10 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       useVNStore.getState().clearRouteHistory();
       for (const entry of resume.routeHistory) {
         useVNStore.getState().pushRouteHistory(entry);
+      }
+      useVNStore.getState().clearStoryLog();
+      for (const entry of resume.storyLog) {
+        useVNStore.getState().pushStoryLog(entry);
       }
       useVNStore.getState().setResolvedEndingId(resume.resolvedEndingId);
       restorePresentationToCursor(chapter, game, resume);
@@ -2623,6 +2662,14 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
     useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().pushStoryLog({
+      kind: 'dialogue',
+      speaker: presentation.speakerName,
+      text: parsed.text,
+      chapterPath: getCurrentChapterPathKey(),
+      sceneId: state.currentSceneId,
+      actionIndex: state.actionIndex,
+    });
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
@@ -3211,6 +3258,7 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
     }
 
     useVNStore.getState().clearRouteHistory();
+    useVNStore.getState().clearStoryLog();
     useVNStore.getState().setResolvedEndingId(undefined);
     await startPreparedChapters(chapters, 0);
   } catch (error) {
@@ -3304,6 +3352,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
     }
 
     useVNStore.getState().clearRouteHistory();
+    useVNStore.getState().clearStoryLog();
     useVNStore.getState().setResolvedEndingId(undefined);
     await startPreparedChapters(chapters, 0);
   } catch (error) {
@@ -3366,6 +3415,7 @@ export async function restartFromBeginning() {
   useVNStore.getState().setRouteVars({});
   useVNStore.getState().setInventory({});
   useVNStore.getState().clearRouteHistory();
+  useVNStore.getState().clearStoryLog();
   useVNStore.getState().setResolvedEndingId(undefined);
   await startChapter(0);
 }
@@ -3380,6 +3430,15 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
     kind: 'input',
     key: historyKey,
     value: answer,
+    chapterPath: getCurrentChapterPathKey(),
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
+  });
+  useVNStore.getState().pushStoryLog({
+    kind: 'input',
+    prompt: state.inputGate.prompt,
+    value: answer,
+    chapterPath: getCurrentChapterPathKey(),
     sceneId: state.currentSceneId,
     actionIndex: state.actionIndex,
   });
@@ -3434,6 +3493,15 @@ export function submitChoiceOption(optionIndex: number) {
     kind: 'choice',
     key: state.choiceGate.key,
     value: selected.text,
+    chapterPath: getCurrentChapterPathKey(),
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
+  });
+  useVNStore.getState().pushStoryLog({
+    kind: 'choice',
+    prompt: state.choiceGate.prompt,
+    value: selected.text,
+    chapterPath: getCurrentChapterPathKey(),
     sceneId: state.currentSceneId,
     actionIndex: state.actionIndex,
   });
