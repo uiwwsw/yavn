@@ -1811,13 +1811,18 @@ textarea,
 }
 
 .settings-close-button {
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--ui-choice-border);
   border-radius: 999px;
   background: var(--ui-choice-bg);
   color: var(--ui-choice-color);
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 11px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
   cursor: pointer;
   font-family: var(--ui-body-font);
 }
@@ -2618,20 +2623,45 @@ textarea,
 .chapter-loading {
   position: absolute;
   z-index: 11;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(460px, calc(100% - 40px));
-  border-radius: 12px;
-  border: 1px solid var(--ui-loading-border);
-  background: var(--ui-loading-bg);
-  padding: 14px;
-  box-shadow: var(--ui-loading-shadow);
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: clamp(28px, 8vw, 96px);
+  padding-bottom: clamp(46px, 13dvh, 124px);
+  background: rgba(3, 5, 10, 0.72);
+  backdrop-filter: blur(9px);
+}
+
+.chapter-loading-kicker,
+.chapter-loading-row,
+.chapter-loading-bar {
+  width: min(520px, 100%);
+}
+
+.chapter-loading-kicker {
+  margin-bottom: 9px;
+  color: var(--ui-loading-percent);
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.chapter-loading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
 }
 
 .chapter-loading-title {
-  font-size: 14px;
-  margin-bottom: 8px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
   color: var(--ui-loading-title);
   font-family: var(--ui-heading-font);
 }
@@ -2648,12 +2678,13 @@ textarea,
   display: block;
   height: 100%;
   background: var(--ui-loading-fill);
+  transition: width 140ms ease-out;
 }
 
 .chapter-loading-percent {
-  margin-top: 6px;
-  text-align: right;
+  flex: 0 0 auto;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
   color: var(--ui-loading-percent);
 }
 
@@ -3234,7 +3265,7 @@ textarea,
   .start-gate-actions-bottom-right {
     left: 50%;
     right: auto;
-    bottom: 7%;
+    bottom: max(7%, calc(env(safe-area-inset-bottom) + 18px));
     transform: translateX(-50%);
   }
 
@@ -3274,18 +3305,27 @@ textarea,
 
   .text {
     font-size: 17px;
-    min-height: 72px;
+    min-height: 68px;
+    line-height: 1.5;
   }
 
   .dialog-box {
-    --dialog-max-height: 46dvh;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
+    --dialog-max-height: 48dvh;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: min(170px, var(--dialog-max-height));
+    padding: 14px 14px max(12px, env(safe-area-inset-bottom));
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 8px 8px 0 0;
+    backdrop-filter: blur(8px);
   }
 
   .dialog-controls {
-    transform: translateY(calc(-100% - 8px));
+    right: 10px;
+    transform: translateY(calc(-100% - 9px));
   }
 
   .dialog-restore-button {
@@ -3296,48 +3336,69 @@ textarea,
   }
 
   .hud {
-    top: 10px;
-    left: 10px;
-    right: 10px;
+    top: max(10px, env(safe-area-inset-top));
+    left: 12px;
+    right: 12px;
+    align-items: flex-start;
     font-size: 12px;
   }
 
   .hud-right {
-    gap: 8px;
+    gap: 7px;
   }
 
   .hud-meta-group {
-    max-width: min(56vw, 320px);
+    max-width: calc(100% - 102px);
+    padding-top: 4px;
+  }
+
+  .hud-right .hint {
+    display: none;
   }
 
   .hud-action-button {
-    width: 34px;
-    height: 34px;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.36);
   }
 
   .hud-inventory-icon {
-    width: 12px;
-    height: 10px;
+    width: 14px;
+    height: 12px;
   }
 
   .hud-inventory-icon::before {
-    top: -5px;
-    height: 5px;
+    top: -6px;
+    height: 6px;
   }
 
+  .hud-action-count,
   .hud-inventory-progress {
-    bottom: -11px;
-    font-size: 8px;
-    padding: 1px 4px;
+    top: -4px;
+    right: -4px;
+    bottom: auto;
+    left: auto;
+    min-width: 18px;
+    padding: 2px 5px;
+    transform: none;
+    font-size: 9px;
   }
 
   .settings-modal-backdrop {
-    padding: 10px;
+    place-items: end center;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.52);
   }
 
   .settings-modal {
     width: 100%;
-    max-height: calc(100dvh - 20px);
+    min-height: min(64dvh, 620px);
+    max-height: min(88dvh, 760px);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 8px 8px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .settings-modal-header,
@@ -3349,6 +3410,15 @@ textarea,
   .case-file-tabs {
     padding-left: 12px;
     padding-right: 12px;
+  }
+
+  .case-file-tab {
+    min-height: 44px;
+  }
+
+  .settings-close-button {
+    width: 40px;
+    height: 40px;
   }
 
   .story-log-entry {
@@ -3385,7 +3455,7 @@ textarea,
   }
 
   .inventory-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -3405,6 +3475,67 @@ textarea,
 
   .inventory-detail-modal-body img {
     max-height: 96px;
+  }
+
+  .char-image {
+    max-width: min(66vw, 410px);
+  }
+
+  .char-image.left {
+    left: -10%;
+  }
+
+  .char-image.right {
+    right: -10%;
+  }
+
+  .char-live2d {
+    width: min(62vw, 410px);
+  }
+
+  .char-live2d.center {
+    left: calc(50% - min(62vw, 410px) / 2);
+  }
+
+  .choice-gate-option,
+  .input-gate-field,
+  .input-gate-submit {
+    min-height: 48px;
+  }
+
+  .choice-gate-option {
+    font-size: 15px;
+    padding: 11px 12px;
+  }
+
+  .chapter-loading {
+    align-items: stretch;
+    padding: 24px 18px max(42px, calc(env(safe-area-inset-bottom) + 28px));
+  }
+
+  .chapter-loading-kicker,
+  .chapter-loading-row,
+  .chapter-loading-bar {
+    width: 100%;
+  }
+
+  .chapter-loading-title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .inventory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .choice-gate-option {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hud-meta-group {
+    max-width: calc(100% - 98px);
   }
 }
 

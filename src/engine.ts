@@ -11,6 +11,7 @@ import {
   type ParsedChapterYaml,
   type ParsedConfigYaml,
 } from './parser';
+import { collectChapterAssetPaths } from './preload';
 import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 import type {
   CharacterSlot,
@@ -59,8 +60,9 @@ const GAME_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:game:';
 const PATH_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:path:';
 const GAME_SETTINGS_STORAGE_PREFIX = 'vn-engine-settings:';
 const MAX_CHAPTERS = 101;
-const MIN_CHAPTER_LOADING_MS = 600;
-const CHAPTER_LOADED_HOLD_MS = 200;
+const INITIAL_CHAPTER_MIN_LOADING_MS = 240;
+const NEXT_CHAPTER_MIN_LOADING_MS = 100;
+const CHAPTER_LOADED_HOLD_MS = 80;
 const LIVE2D_READY_TIMEOUT_MS = 12000;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
 const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
@@ -164,6 +166,7 @@ let youtubePlayer: YouTubePlayer | undefined;
 let preparedChapters: PreparedChapter[] = [];
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
+let preloadedAssetUrls = new Set<string>();
 let stickerRenderKeySeed = 0;
 const clearStickerTimers = new Map<string, number>();
 let runtimeMode: RuntimeMode;
@@ -537,6 +540,7 @@ function resetSession() {
   setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
   preparedChapters = [];
   activeChapterIndex = 0;
+  preloadedAssetUrls = new Set<string>();
   runtimeMode = undefined;
   urlGameRootBase = '';
   zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
@@ -1684,30 +1688,6 @@ function mergeInventoryWithDefaults(
   };
 }
 
-function collectAssetPaths(game: GameData): string[] {
-  const paths = new Set<string>();
-  Object.values(game.assets.backgrounds).forEach((path) => paths.add(path));
-  for (const character of Object.values(game.assets.characters)) {
-    paths.add(character.base);
-    Object.values(character.emotions ?? {}).forEach((path) => paths.add(path));
-  }
-  Object.values(game.assets.music).forEach((path) => paths.add(path));
-  Object.values(game.assets.sfx).forEach((path) => paths.add(path));
-  for (const item of Object.values(game.inventory?.defaults ?? {})) {
-    if (item.image) {
-      paths.add(item.image);
-    }
-  }
-  for (const scene of Object.values(game.scenes)) {
-    for (const action of scene.actions) {
-      if ('video' in action && !extractYouTubeVideoId(action.video.src)) {
-        paths.add(action.video.src);
-      }
-    }
-  }
-  return [...paths];
-}
-
 function normalizeAssetKey(path: string): string {
   const normalized = path.replace(/\\/g, '/').replace(/^(\.\/|\/)+/, '');
   try {
@@ -1795,11 +1775,12 @@ function setAssetOverride(overrides: Record<string, string>, path: string, url: 
 }
 
 function isImageAsset(path: string): boolean {
-  return /\.(png|jpe?g|webp|gif|svg)$/i.test(path);
+  return /\.(avif|png|jpe?g|webp|gif|svg)$/i.test(path);
 }
 
 function detectMimeType(path: string): string | undefined {
   const lower = path.toLowerCase();
+  if (lower.endsWith('.avif')) return 'image/avif';
   if (lower.endsWith('.svg')) return 'image/svg+xml';
   if (lower.endsWith('.png')) return 'image/png';
   if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
@@ -1893,10 +1874,17 @@ async function warmImageDecodeUrl(url: string) {
   });
 }
 
-async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, chapterLabel: string) {
-  const initialPaths = collectAssetPaths(game);
+async function preloadChapterAssets(
+  chapter: PreparedChapter,
+  game: GameData,
+  chapterLabel: string,
+  reportProgress = true,
+) {
+  const initialPaths = collectChapterAssetPaths(game);
   if (initialPaths.length === 0) {
-    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loading...`);
+    if (reportProgress) {
+      useVNStore.getState().setChapterLoading(true, 0.96, 'Preparing scene...');
+    }
     return;
   }
 
@@ -1934,6 +1922,11 @@ async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, ch
       resolvedUrl = normalizeAbsoluteAssetUrl(existing);
     } else {
       resolvedUrl = normalizeAbsoluteAssetUrl(resolveAssetWithOverrides(chapter.baseUrl, path, chapter.assetOverrides));
+    }
+
+    const preloadedKey = makePreloadQueueKey(resolvedUrl);
+    if (preloadedAssetUrls.has(preloadedKey)) {
+      return;
     }
 
     let fetchedJson: string | undefined;
@@ -1978,20 +1971,49 @@ async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, ch
         enqueue(resolvedReference);
       }
     }
+    preloadedAssetUrls.add(preloadedKey);
   };
 
   for (const path of initialPaths) {
     enqueue(path);
   }
 
-  while (processed < queue.length) {
-    const path = queue[processed];
-    await preloadSingle(path);
-    processed += 1;
-    const stepProgress = queue.length > 0 ? processed / queue.length : 1;
-    progress = Math.max(progress, stepProgress);
-    useVNStore.getState().setChapterLoading(true, Math.min(progress, 0.98), `${chapterLabel} loading...`);
-  }
+  const connection = (
+    navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean };
+    }
+  ).connection;
+  const constrainedNetwork = connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? '');
+  const concurrency = Math.min(queue.length, constrainedNetwork ? 2 : navigator.hardwareConcurrency <= 4 ? 3 : 4);
+  let cursor = 0;
+
+  const worker = async () => {
+    while (cursor < queue.length) {
+      const path = queue[cursor];
+      cursor += 1;
+      await preloadSingle(path);
+      processed += 1;
+      const stepProgress = queue.length > 0 ? processed / queue.length : 1;
+      progress = Math.max(progress, stepProgress);
+      const visibleProgress = Math.min(0.96, 0.08 + progress * 0.88);
+      if (reportProgress) {
+        useVNStore
+          .getState()
+          .setChapterLoading(true, visibleProgress, `${chapterLabel} assets ${processed}/${queue.length}`);
+      }
+    }
+  };
+
+  await Promise.all(Array.from({ length: concurrency }, () => worker()));
+}
+
+function canWarmNextChapterAssets(): boolean {
+  const connection = (
+    navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean };
+    }
+  ).connection;
+  return !connection?.saveData && !/(^|-)2g$/.test(connection?.effectiveType ?? '');
 }
 
 function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, resume: SaveProgress) {
@@ -2205,15 +2227,16 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     activeChapterIndex = chapterIndex;
     resetLive2DLoadTracker();
     useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
-    const chapterLabel = 'Chapter';
+    const chapterLabel = `Chapter ${chapterIndex + 1}`;
     const loadStartedAt = performance.now();
-    useVNStore.getState().setChapterLoading(true, 0, `${chapterLabel} loading...`);
+    useVNStore.getState().setChapterLoading(true, 0.04, `${chapterLabel} data`);
     const game = await ensureChapterGame(chapter);
     useVNStore.getState().setUiTemplate(game.ui?.template ?? DEFAULT_UI_TEMPLATE);
     await preloadChapterAssets(chapter, game, chapterLabel);
     const elapsed = performance.now() - loadStartedAt;
-    await waitMs(MIN_CHAPTER_LOADING_MS - elapsed);
-    useVNStore.getState().setChapterLoading(true, 0.99, `${chapterLabel} preparing scene...`);
+    const minimumLoadingMs = chapterIndex === 0 ? INITIAL_CHAPTER_MIN_LOADING_MS : NEXT_CHAPTER_MIN_LOADING_MS;
+    await waitMs(minimumLoadingMs - elapsed);
+    useVNStore.getState().setChapterLoading(true, 0.98, 'Preparing scene...');
 
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
     const defaults = game.state?.defaults;
@@ -2263,10 +2286,17 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       return Boolean(resume && canResumeHere);
     }
 
-    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loaded`);
+    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} ready`);
     await waitNextFrame();
     await waitMs(CHAPTER_LOADED_HOLD_MS);
-    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
+    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} ready`);
+    if (nextChapter && canWarmNextChapterAssets()) {
+      window.setTimeout(() => {
+        void ensureChapterGame(nextChapter)
+          .then((nextGame) => preloadChapterAssets(nextChapter, nextGame, 'Next chapter', false))
+          .catch(() => undefined);
+      }, 300);
+    }
     return Boolean(resume && canResumeHere);
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);

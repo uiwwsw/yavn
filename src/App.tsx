@@ -2225,7 +2225,7 @@ export default function App() {
       <div className="hud">
         <div className="hud-meta-group">
           <div className="meta">{game?.meta.title ?? 'Loading...'}</div>
-          {chapterTotal > 0 && (
+          {chapterTotal > 1 && (
             <div className="hud-chapter-progress">
               CHAPTER {chapterIndex}/{chapterTotal}
             </div>
@@ -2296,9 +2296,11 @@ export default function App() {
               <button
                 type="button"
                 className="settings-close-button"
+                aria-label="케이스 파일 닫기"
+                title="닫기"
                 onClick={() => closeSettingsModal()}
               >
-                닫기
+                <span aria-hidden="true">&times;</span>
               </button>
             </header>
             <div className="case-file-tabs" role="tablist" aria-label="케이스 파일 보기">
@@ -2681,12 +2683,24 @@ export default function App() {
       )}
 
       {chapterLoading && (
-        <div className="chapter-loading">
-          <div className="chapter-loading-title">{chapterLoadingMessage ?? 'Chapter loading...'}</div>
-          <div className="chapter-loading-bar">
+        <div className="chapter-loading" role="status" aria-live="polite">
+          <div className="chapter-loading-kicker">
+            {chapterTotal > 1 ? `YAVN / CHAPTER ${chapterIndex} OF ${chapterTotal}` : 'YAVN / LOADING SCENE'}
+          </div>
+          <div className="chapter-loading-row">
+            <div className="chapter-loading-title">{chapterLoadingMessage ?? 'Loading chapter'}</div>
+            <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
+          </div>
+          <div
+            className="chapter-loading-bar"
+            role="progressbar"
+            aria-label="챕터 로딩"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.floor(chapterLoadingProgress * 100)}
+          >
             <span style={{ width: `${Math.floor(chapterLoadingProgress * 100)}%` }} />
           </div>
-          <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
         </div>
       )}
 

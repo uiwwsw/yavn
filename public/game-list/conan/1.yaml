@@ -186,4 +186,3 @@ scenes:
       - say:
           char: 코난
           text: "<speed=52>초동 정리 시작.</speed> <speed=34>시간선부터 고정한다.</speed>"
-      - goto: ./2.yaml
