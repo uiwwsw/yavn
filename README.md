@@ -469,7 +469,7 @@ scenes:
 ## Conan 샘플 분기 구조
 
 - `0.yaml`은 평온한 콜드 오픈, `1.yaml`은 4인 갈등과 사건 발생(하루오 사망 + 다잉 메시지), `2.yaml`은 초동 정리/재구성 파트입니다.
-- `routes/hub/1.yaml`은 조사 라운지이며, `신이치/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
+- `routes/hub/1.yaml`은 조사 라운지이며, `세이지/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
 - 각 라인(`routes/<line>/1.yaml`)은 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다.
 - 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
 - 결말은 `conclusion/1.yaml`로 합류하며, 잠자는 코고로 추리 쇼 + 최종 지목/재지목 1회 흐름을 유지합니다.
@@ -484,7 +484,7 @@ scenes:
 - `public/game-list/conan/1.yaml`
 - `public/game-list/conan/2.yaml`
 - `public/game-list/conan/routes/hub/1.yaml`
-- `public/game-list/conan/routes/shinichi/1.yaml`
+- `public/game-list/conan/routes/seiji/1.yaml`
 - `public/game-list/conan/routes/reiko/1.yaml`
 - `public/game-list/conan/routes/kenji/1.yaml`
 - `public/game-list/conan/routes/haruo/1.yaml`

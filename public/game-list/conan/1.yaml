@@ -17,7 +17,7 @@ scenes:
           position: left
           emotion: angry
       - char:
-          id: 신이치
+          id: 세이지
           position: center
           emotion: cold
       - char:
@@ -26,13 +26,13 @@ scenes:
           emotion: nervous
       - say:
           char: 레이코.nervous
-          text: "<speed=42>오늘은 마지막 시제품 확인과 계약 확정 자리예요.</speed> <speed=30>실수 없이 끝내고 싶어요.</speed>"
+          text: "<speed=36>아버지가 남긴 배합으로 만든 마지막 시제품이에요.</speed> <speed=28>오늘 맛을 확인하고 계약서에 서명할 예정이었어요.</speed>"
       - say:
           char: 켄지.angry
-          text: "<speed=56>실수는 이미 나왔어.</speed> <speed=34>누가 계약 조항을 몰래 바꿨지?</speed>"
+          text: "<speed=52>서명?</speed> <speed=30>개발자 표기를 멋대로 되돌려 놓고 아무 일도 없었던 것처럼?</speed>"
       - say:
-          char: 신이치.cold
-          text: "<speed=34>감정 대신 순서.</speed> <speed=28>먼저 시음, 다음 서명, 마지막 대조.</speed>"
+          char: 세이지.cold
+          text: "<speed=34>두 분 다 그만하시죠.</speed> <speed=26>원본은 제게 있으니, 시음 뒤에 누가 고쳤는지 확인할 수 있습니다.</speed>"
 
   four_way_tension:
     actions:
@@ -52,19 +52,19 @@ scenes:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "<speed=32>...4잔 준비했습니다.</speed> <speed=26>번호표는 1, 2, 3, 4 순서입니다.</speed>"
+          text: "<speed=30>잔은 자리표대로 놓겠습니다.</speed> <speed=24>켄지 씨가 1번, 저는 2번, 레이코 씨 3번, 세이지 씨가 4번입니다.</speed>"
       - say:
           char: 란.worried
-          text: "<speed=40>분위기가 너무 날카로워...</speed> <speed=28>축하 자리 맞지?</speed>"
+          text: "<speed=34>하루오 씨, 손이 떨리는데 괜찮으세요?</speed>"
       - say:
           char: 코난.think
-          text: "<speed=26>(네 사람의 시선이 서로를 찌른다.)</speed> <speed=58>누군가는 이미 결심했어.</speed>"
+          text: "<speed=24>(잔을 놓는 손보다 레이코를 보는 눈이 더 불안해.)</speed> <speed=52>둘 사이에 뭔가 있어.</speed>"
 
   service_order:
     actions:
       - sound: notebook_flip
       - char:
-          id: 신이치
+          id: 세이지
           position: center
           emotion: cold
       - char:
@@ -72,21 +72,21 @@ scenes:
           position: right
           emotion: scared
       - say:
-          char: 신이치.cold
+          char: 세이지.cold
           with:
             - 하루오.scared
-          text: "<speed=34>피해자 후보 컵은 2번.</speed> <speed=30>기록표에 적습니다.</speed>"
+          text: "<speed=32>배정표 확인했습니다.</speed> <speed=26>하루오 씨 잔은 2번입니다.</speed>"
       - sound: cup_clink
       - say:
           char: 하루오.scared
           with:
-            - 신이치.cold
-          text: "<speed=30>...2번 잔, 중앙에 놓겠습니다.</speed> <speed=44>뚜껑은 열지 마세요.</speed>"
+            - 세이지.cold
+          text: "<speed=28>네, 2번은 제 잔입니다.</speed> <speed=24>향이 가라앉을 때까지 주전자 뚜껑은 건드리지 마세요.</speed>"
       - say:
-          text: "<speed=24>주전자 뚜껑이</speed> <speed=58>한 번,</speed> <speed=86>그리고 다시 한 번</speed> <speed=34>눌렸다.</speed>"
+          text: "<speed=24>말이 끝나기도 전에 레이코가 주전자 뚜껑을 한 번,</speed> <speed=62>그리고 다시 한 번 눌렀다.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=24>(두 번?</speed> <speed=62>보여 주기식 동작이야.)</speed>"
+          text: "<speed=22>(왜 굳이 두 번?)</speed> <speed=54>방 안의 시선이 전부 뚜껑으로 모였어.</speed>"
 
   incident_trigger:
     actions:
@@ -104,14 +104,26 @@ scenes:
           id: 코난
           position: center
           emotion: serious
+      - char:
+          id: 레이코
+          position: right
+          emotion: nervous
       - say:
           char: 란.surprised
           with:
             - 코난.serious
-          text: "<speed=84>꺄악!</speed> <speed=44>하루오 씨가 쓰러졌어!</speed>"
+            - 레이코.nervous
+          text: "<speed=76>꺄악!</speed> <speed=38>하루오 씨!</speed>"
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "<speed=24>손수건을...</speed> <speed=46>입가를 닦아야 해요!</speed>"
+      - say:
+          text: "<speed=22>레이코가 몸을 숙이는 순간, 손수건 끝이 컵받침을 스쳤다.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=80>모두 멈춰!</speed> <speed=34>컵과 탁자에서 떨어져!</speed>"
+          text: "<speed=70>그 손수건 내려놔요!</speed> <speed=30>아무도 잔과 컵받침에 손대지 마!</speed>"
 
   death_confirm:
     actions:
@@ -136,12 +148,12 @@ scenes:
           position: center
           emotion: serious
       - say:
-          text: "<speed=34>피해자는</speed> <speed=72>하루오 씨.</speed> <speed=34>현장에서 사망이 확인됐다.</speed>"
+          text: "<speed=30>코고로가 하루오의 목에 손을 댔다.</speed> <speed=24>잠시 뒤, 굳은 얼굴로 고개를 저었다.</speed>"
       - say:
           char: 코고로.angry
           with:
             - 코난.serious
-          text: "<speed=40>피해자 하루오, 맥박 없음...</speed> <speed=72>사망 확인이다.</speed> <speed=34>이제부터 전원 현장 이탈 금지!</speed>"
+          text: "<speed=34>란, 경찰에 연락해.</speed> <speed=28>산길이 막혔어도 구조대부터 불러!</speed> <speed=48>그리고 전원, 이 방에서 나가지 마!</speed>"
       - sticker:
           id: dying_hint
           image: clue_lid
@@ -154,10 +166,10 @@ scenes:
             effect: blurIn
       - say:
           char: 코난.serious
-          text: '<speed=34>컵받침에 젖은 손가락으로</speed> <speed=72>"2R"</speed> <speed=34>이 남아 있어.</speed>'
+          text: '<speed=30>하루오 씨 손끝이 컵받침 위에서 멈춰 있어.</speed> <speed=24>번진 자국은...</speed> <speed=62>"2R"?</speed>'
       - say:
           char: 코난.think
-          text: "<speed=24>(다잉 메시지다...)</speed> <speed=30>하지만 너무 깔끔해.</speed> <speed=62>누군가 손을 댔다.</speed>"
+          text: "<speed=22>(R의 끝획만 물기가 끌린 방향이 달라.)</speed> <speed=54>쓰고 난 뒤 누군가 문질렀어.</speed>"
       - clearSticker:
           id: dying_hint
           leave:
@@ -175,14 +187,14 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "<speed=42>모순은 두 개.</speed> <speed=30>뚜껑 두 번과 젖은 가장자리.</speed> <speed=62>하나는 연막이고 하나는 살인 수단이다.</speed>"
+          text: "<speed=38>독이 주전자에 있었다면 모두가 위험했어.</speed> <speed=28>그런데 쓰러진 건 2번 잔의 하루오 씨뿐이야.</speed>"
       - say:
           char: 코난.think
-          text: '<speed=24>(그리고 "2R"...)</speed> <speed=62>진짜 유언인지, 가짜 각본인지 지금부터 가른다.</speed>'
+          text: "<speed=22>(뚜껑은 모두의 눈을 끌기 위한 동작.)</speed> <speed=52>진짜 손길은 그 틈에 2번 잔에 닿았어.</speed>"
 
   chapter_handoff:
     actions:
       - effect: pulse
       - say:
           char: 코난
-          text: "<speed=52>초동 정리 시작.</speed> <speed=34>시간선부터 고정한다.</speed>"
+          text: "<speed=42>모두의 기억이 바뀌기 전에, 먼저 시간을 맞춰 봐야 해.</speed>"
