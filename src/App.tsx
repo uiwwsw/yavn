@@ -1825,6 +1825,9 @@ export default function App() {
     return (
       <div className="start-gate" data-ui-template={startGate.uiTemplate} onPointerDown={() => tryPlayStartGateMusic()}>
         {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
+        {startGate.imageUrl && !startGate.showTitle && (
+          <img className="start-gate-title-art" src={startGate.imageUrl} alt="" aria-hidden="true" />
+        )}
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-content">
           {startGate.showTitle && (
