@@ -1,10 +1,10 @@
 assets:
   backgrounds:
-    mountain_rain: /assets/bg/mountain_rain.png
-    rain_corridor: /assets/bg/rain_corridor.png
-    ryokan_hall: /assets/bg/ryokan_hall.png
-    tea_room: /assets/bg/tea_room.png
-    case_board: /assets/bg/case_board.png
+    mountain_rain: /assets/bg/mountain_rain.avif
+    rain_corridor: /assets/bg/rain_corridor.avif
+    ryokan_hall: /assets/bg/ryokan_hall.avif
+    tea_room: /assets/bg/tea_room.avif
+    case_board: /assets/bg/case_board.avif
     police_tape: /assets/bg/police_tape.svg
     clue_cup: /assets/bg/clue_cup.svg
     clue_lid: /assets/bg/clue_lid.svg
@@ -12,36 +12,36 @@ assets:
     item_reiko_statement_note: /assets/items/reiko_statement_note.svg
   characters:
     코난:
-      base: /assets/char/conan/base.png
+      base: /assets/char/conan/base.webp
       emotions:
-        think: /assets/char/conan/think.png
-        serious: /assets/char/conan/serious.png
+        think: /assets/char/conan/think.webp
+        serious: /assets/char/conan/serious.webp
     란:
-      base: /assets/char/ran/base.png
+      base: /assets/char/ran/base.webp
       emotions:
-        surprised: /assets/char/ran/surprised.png
-        worried: /assets/char/ran/worried.png
+        surprised: /assets/char/ran/surprised.webp
+        worried: /assets/char/ran/worried.webp
     코고로:
-      base: /assets/char/kogoro/base.png
+      base: /assets/char/kogoro/base.webp
       emotions:
-        proud: /assets/char/kogoro/proud.png
-        angry: /assets/char/kogoro/angry.png
+        proud: /assets/char/kogoro/proud.webp
+        angry: /assets/char/kogoro/angry.webp
     켄지:
-      base: /assets/char/kenji/base.png
+      base: /assets/char/kenji/base.webp
       emotions:
-        angry: /assets/char/kenji/angry.png
+        angry: /assets/char/kenji/angry.webp
     신이치:
-      base: /assets/char/shinichi/base.png
+      base: /assets/char/shinichi/base.webp
       emotions:
-        cold: /assets/char/shinichi/cold.png
+        cold: /assets/char/shinichi/cold.webp
     레이코:
-      base: /assets/char/reiko/base.png
+      base: /assets/char/reiko/base.webp
       emotions:
-        nervous: /assets/char/reiko/nervous.png
+        nervous: /assets/char/reiko/nervous.webp
     하루오:
-      base: /assets/char/haruo/base.png
+      base: /assets/char/haruo/base.webp
       emotions:
-        scared: /assets/char/haruo/scared.png
+        scared: /assets/char/haruo/scared.webp
   music:
     reasoning: /assets/music/reasoning.mp3
     confession: /assets/music/confession.mp3

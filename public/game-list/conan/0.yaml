@@ -99,4 +99,3 @@ scenes:
       - effect: pulse
       - say:
           text: "<speed=60>폭우 속 시음회,</speed> <speed=34>그리고 곧 터질 비명.</speed>"
-      - goto: /1.yaml

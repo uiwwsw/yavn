@@ -18,7 +18,7 @@ seo:
     - "비주얼노벨"
     - "미스터리"
     - "분기 시나리오"
-  image: "assets/bg/case_board.png"
+  image: "assets/bg/case_board.avif"
   imageAlt: "다실 사건 단서 보드"
 textSpeed: 38
 autoSave: true
@@ -27,13 +27,13 @@ ui:
   template: cinematic-noir
 startScreen:
   enabled: true
-  image: "assets/bg/open.png"
+  image: "assets/bg/open.avif"
   music: "assets/music/intro.mp3"
   showTitle: false
   startButtonText: "시작하기"
   buttonPosition: "auto"
 endingScreen:
-  image: "assets/bg/closed.png"
+  image: "assets/bg/closed.avif"
 endings:
   true_end:
     title: "TRUE END"

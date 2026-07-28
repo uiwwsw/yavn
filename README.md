@@ -58,14 +58,14 @@ pnpm dev
       "author": "uiwwsw",
       "version": "7.0",
       "summary": "런처 카드 요약",
-      "thumbnail": "/game-list/conan/assets/bg/case_board.png",
+      "thumbnail": "/game-list/conan/assets/bg/case_board.avif",
       "tags": ["detective", "sample"],
       "chapterCount": 9,
       "seo": {
         "title": "명탐정 코난 외전: 다실의 비밀",
         "description": "아가사 크리스티 스타일의 밀실 추리 비주얼노벨",
         "keywords": ["명탐정 코난", "추리 게임", "비주얼노벨"],
-        "image": "/game-list/conan/assets/bg/case_board.png",
+        "image": "/game-list/conan/assets/bg/case_board.avif",
         "imageAlt": "다실 사건 단서 보드"
       }
     }
@@ -162,9 +162,9 @@ assets:
     hall: assets/bg/hall.png
   characters:
     conan:
-      base: assets/char/conan/base.png
+      base: assets/char/conan/base.webp
       emotions:
-        serious: assets/char/conan/serious.png
+        serious: assets/char/conan/serious.webp
   music:
     mystery: assets/music/mystery.wav
   sfx:
@@ -176,7 +176,7 @@ inventory:
   clue_note:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
-    image: assets/bg/case_board.png
+    image: assets/bg/case_board.avif
     category: "수사자료"
     order: 10
 ```
@@ -313,7 +313,7 @@ inventory:
   clue_note:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
-    image: assets/bg/case_board.png
+    image: assets/bg/case_board.avif
 
 scenes:
   intro:
@@ -509,7 +509,7 @@ scenes:
 - 인벤토리 모달은 `가방(획득)`/`도감(전체)` 2탭으로 동작하며, 정렬(`order` 우선/이름순)을 제공합니다.
 - 검색(이름)과 카테고리 필터는 `도감` 탭에서만 노출/적용됩니다.
 - `도감` 탭의 미획득 아이템은 잠금 카드(`미확인 아이템`)로 표시하고, 상세보기 팝업에서도 설명/이미지를 숨겨 스포일러를 최소화합니다.
-- 인벤토리 그리드는 반응형 고정 열 수를 사용합니다: 데스크톱 5열, 태블릿 4열, 모바일 2열.
+- 인벤토리 그리드는 반응형 고정 열 수를 사용합니다: 데스크톱 5열, 태블릿 4열, 모바일 3열(360px 이하 2열).
 - 인벤토리 스크롤은 슬롯 그리드 영역에만 적용하고, 하단 선택/설정 영역은 고정해 항상 보이도록 구성합니다.
 - 슬롯을 눌러 선택한 뒤 `상세보기` 버튼을 누르면 팝업에서 소지 여부/설명/이미지를 확인할 수 있습니다.
 - 슬롯 우측 상단 배지는 `획득` 상태에서만 표시하며, 미획득/사용 완료 상태에는 배지를 숨깁니다.
@@ -519,7 +519,7 @@ scenes:
 - URL 게임에서는 모달 하단 `초기화면 가기` 버튼으로 Start Gate를 다시 열 수 있으며, ZIP 실행 게임에서는 버튼이 비활성화됩니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
 - 엔딩 배경 이미지는 `config.yaml.endingScreen.image`로 지정할 수 있으며, 템플릿 색상/디코레이션 레이어 위에 적용됩니다.
-- 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. (`uploading=true` 동안에는 `ZIP Loading...`)
+- 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. 모바일에서는 안내 문구를 숨기고 44px 로그/가방 터치 영역을 우선합니다. (`uploading=true` 동안에는 `ZIP Loading...`)
 - 엔딩 화면 하단에는 `처음부터 다시하기` 버튼 1개만 표시됩니다.
 - URL 게임에서 `처음부터 다시하기`를 누르면 인벤토리 모달의 `초기화면 가기`와 동일하게 Start Gate 세션 플래그를 초기화하고 Start Gate(시작 화면)로 복귀합니다.
 - ZIP 실행 게임에서는 Start Gate 재진입을 지원하지 않으므로 `처음부터 다시하기`가 기존처럼 첫 챕터 재시작(`restartFromBeginning`)으로 동작합니다.
@@ -528,8 +528,10 @@ scenes:
 - 모바일 브라우저에서는 핀치/제스처 확대를 막도록 viewport와 터치 제스처를 제한합니다.
 - 캐릭터 레이어는 다이얼로그 박스 상단 경계까지만 사용하며, 캐릭터 이미지는 레이어 하단 기준으로 정렬됩니다.
 - 화자 시각 강조는 플랫폼별 분기 없이 동일하게 적용되며, `speakerOrder` 기준으로 비화자 depth(brightness)가 점진적으로 낮아집니다. 캐릭터 레이어 `opacity`는 고정(1)으로 유지됩니다.
-- 챕터 로딩 중에는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 로딩 해제 시 페이드 인으로 표시해 로딩 오버레이와 대사 UI 전환을 안정화합니다.
-- 다이얼로그 박스 최대 높이는 게임 화면 가림을 줄이기 위해 `데스크톱 38%`(38dvh), `모바일 46%`(46dvh)로 제한하고, 초과 내용(긴 대사/입력/선택지)은 내부 스크롤로 처리합니다.
+- 챕터 로딩은 현재 챕터가 실제로 참조하는 시각 에셋만 첫 장면 순서대로 제한 병렬 프리로드하고, 이미 디코드한 URL은 세션 캐시에서 재사용합니다. 오디오/비디오는 브라우저 스트리밍을 유지하고, 데이터 절약/2G에서는 동시성을 낮추며 다음 챕터 백그라운드 예열을 생략합니다.
+- 챕터 로딩 중에는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 실제 단계/진행률을 표시한 뒤 로딩 해제 시 페이드 인으로 전환합니다.
+- 다이얼로그 박스 최대 높이는 게임 화면 가림을 줄이기 위해 `데스크톱 38%`(38dvh), `모바일 48%`(48dvh)로 제한하고, 초과 내용(긴 대사/입력/선택지)은 내부 스크롤로 처리합니다.
+- Conan 샘플의 배경은 AVIF, 투명 캐릭터는 WebP를 사용해 대표 이미지 묶음을 31.98MiB에서 2.14MiB로 축소했습니다.
 - 다이얼로그 박스 우측 상단(박스 외부 컨트롤 레이어)에는 `숨기기` 버튼이 표시되며, 수동으로 접으면 우측 하단에 작은 `대화창 열기` 버튼이 표시됩니다.
 - 다이얼로그를 수동으로 숨긴 상태에서는 클릭/`Enter`/`Space` 진행 입력을 잠가 실수로 대사가 넘어가지 않게 합니다.
 - 시스템 숨김(챕터 로딩/게임 미로딩/컷신) 중에는 캐릭터/스티커 레이어 하단 inset 기준을 유지해, 첫 다이얼로그 표시 때 레이어 높이 점프를 방지합니다.
