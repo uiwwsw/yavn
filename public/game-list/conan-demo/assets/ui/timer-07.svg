@@ -1,0 +1,5 @@
+<svg width="560" height="150" viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+  <rect x="5" y="5" width="550" height="140" fill="#160307" fill-opacity=".92" stroke="#ff1838" stroke-width="8"/>
+  <path d="M22 26h92M22 26v48M538 124h-92M538 124V76" stroke="#ffffff" stroke-width="5"/>
+  <text x="280" y="108" fill="#ff2443" stroke="#ffffff" stroke-width="2" paint-order="stroke" font-size="98" font-family="monospace" font-weight="900" text-anchor="middle">00:07</text>
+</svg>

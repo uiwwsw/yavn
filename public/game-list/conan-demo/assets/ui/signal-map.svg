@@ -1,0 +1,17 @@
+<svg width="900" height="520" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+  <rect x="8" y="8" width="884" height="504" fill="#07101b" fill-opacity=".9" stroke="#50dbff" stroke-width="4"/>
+  <g fill="none" stroke="#397892" stroke-width="2" opacity=".65">
+    <path d="M36 100h828M36 180h828M36 260h828M36 340h828M36 420h828"/>
+    <path d="M120 36v448M280 36v448M440 36v448M600 36v448M760 36v448"/>
+  </g>
+  <path d="M92 368C228 368 228 166 378 166S550 368 806 368" fill="none" stroke="#e9f8ff" stroke-width="10"/>
+  <path d="M92 368C228 368 228 166 378 166" fill="none" stroke="#42d9ff" stroke-width="18" opacity=".35"/>
+  <circle cx="92" cy="368" r="25" fill="#05111a" stroke="#42d9ff" stroke-width="8"/>
+  <circle cx="378" cy="166" r="25" fill="#05111a" stroke="#42d9ff" stroke-width="8"/>
+  <circle cx="806" cy="368" r="34" fill="#2b0610" stroke="#ff2849" stroke-width="10"/>
+  <path d="M760 322l92 92M852 322l-92 92" stroke="#ff2849" stroke-width="12"/>
+  <text x="62" y="430" fill="#8fe9ff" font-size="24" font-family="monospace" font-weight="700">CONTROL</text>
+  <text x="336" y="126" fill="#8fe9ff" font-size="24" font-family="monospace" font-weight="700">TUNNEL</text>
+  <text x="752" y="448" fill="#ff4963" font-size="24" font-family="monospace" font-weight="800">TRAIN</text>
+  <text x="44" y="72" fill="#ffffff" font-size="26" font-family="monospace" font-weight="800">SIGNAL 03 / ROUTE LOCK</text>
+</svg>

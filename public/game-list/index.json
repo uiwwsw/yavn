@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-07-28T23:17:05.162Z",
+  "generatedAt": "2026-07-28T23:38:50.273Z",
   "games": [
     {
       "id": "conan",
@@ -36,6 +36,38 @@
       }
     },
     {
+      "id": "conan-demo",
+      "name": "명탐정 코난 DEMO: 60초의 경고",
+      "path": "/game-list/conan-demo/",
+      "author": "uiwwsw",
+      "version": "1.0",
+      "summary": "자동 대사, 제한 시간 선택, 공용 자산, 신규 카메라 효과를 약 60초에 압축한 스펙터클 코난 트레일러 데모.",
+      "thumbnail": "/game-list/conan-demo/assets/bg/rail-warning.avif",
+      "tags": [
+        "60-second",
+        "cinematic",
+        "engine-showcase",
+        "timed-choice"
+      ],
+      "chapterCount": 1,
+      "seo": {
+        "title": "명탐정 코난 DEMO: 60초의 경고",
+        "description": "폭우 속 산악 철도에서 60초 안에 정지 열차와 폭발 신호의 모순을 풀어내는 자동 진행형 코난 엔진 쇼케이스.",
+        "keywords": [
+          "명탐정 코난",
+          "게임 예고편",
+          "비주얼노벨 엔진",
+          "60초 데모",
+          "60-second",
+          "cinematic",
+          "engine-showcase",
+          "timed-choice"
+        ],
+        "image": "/game-list/conan-demo/assets/bg/rail-warning.avif",
+        "imageAlt": "폭우 속 적색 경보가 켜진 산악 철도 터널"
+      }
+    },
+    {
       "id": "live2dtest",
       "name": "Live2D 테스트: 렌 수다",
       "path": "/game-list/live2dtest/",
@@ -63,14 +95,19 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 다실의 비밀, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 다실의 비밀, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
     "keywords": [
       "명탐정 코난 외전: 다실의 비밀",
+      "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다",
       "detective",
       "branch-heavy",
       "sample",
       "voice-sfx",
+      "60-second",
+      "cinematic",
+      "engine-showcase",
+      "timed-choice",
       "live2d",
       "interaction",
       "smoke-test",
@@ -78,12 +115,16 @@
       "추리 게임",
       "비주얼노벨",
       "미스터리",
-      "분기 시나리오"
+      "분기 시나리오",
+      "게임 예고편",
+      "비주얼노벨 엔진",
+      "60초 데모"
     ],
     "gameTitles": [
       "명탐정 코난 외전: 다실의 비밀",
+      "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 2
+    "gameCount": 3
   }
 }

@@ -257,6 +257,7 @@ scenes:
 ## 경로 규칙
 
 - `/...`: 게임 루트 기준
+- `root:/...`: 같은 배포의 `public` 루트 기준. 여러 게임이 공유하는 에셋에 사용
 - `./...`, `../...`: 선언 YAML 파일 위치 기준
 - `assets/...` 같은 bare 경로: 선언 YAML 파일 위치 기준
 - 내부적으로 asset/video 경로는 게임 루트 기준 canonical key로 정규화됩니다.
@@ -282,6 +283,19 @@ scenes:
 - `choice`
 - `branch`
 - `ending`
+
+## 화면 이펙트
+
+`effect` 액션은 이름에 대응하는 짧은 전체 화면 연출을 실행하고 바로 다음 액션으로 진행합니다.
+
+```yaml
+- effect: impact
+```
+
+- 기본: `shake`, `flash`, `zoom`, `blur`, `darken`, `pulse`, `tilt`
+- 트레일러 연출: `impact`, `glitch`, `speedlines`, `alarm`, `focus`
+- 알 수 없는 이름은 상태 클래스만 약 `350ms` 적용되므로 게임별 CSS 확장도 가능합니다.
+- `prefers-reduced-motion` 환경에서는 비필수 움직임을 제거합니다.
 
 ## `sticker.inputLockMs` (입력 잠금)
 
@@ -380,6 +394,22 @@ scenes:
 - `wait` 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
 - 잠금이 끝나면 기존 `say` 동작처럼 다음 입력을 받을 수 있습니다.
 
+## `say.autoAdvance` (대사 자동 진행)
+
+`say` 액션에 `autoAdvance`(ms)를 지정하면 입력이 없어도 해당 시간이 지난 뒤 다음 액션으로 진행합니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "남은 시간 7초."
+    autoAdvance: 2000
+```
+
+동작:
+- 타이핑 중이어도 설정 시간이 끝나면 문장을 완료하고 다음 액션을 실행합니다.
+- `wait`와 함께 쓰면 둘 중 더 긴 시간이 지난 뒤 진행합니다.
+- 플레이어가 먼저 수동 진행하면 예약된 자동 진행은 취소됩니다.
+
 ## `choice` 1회 유예(옵션별 지정)
 
 `choice`에서 잘못 누른 선택지를 1회 유예하는 동작을 옵션별로 지정할 수 있습니다.
@@ -406,6 +436,27 @@ scenes:
 동작:
 - 유예가 활성화된 옵션은 첫 클릭에서 `goto/set/add`를 실행하지 않고 문구만 표시합니다.
 - 같은 옵션을 다시 선택하면 원래 분기(`goto/set/add`)가 실행됩니다.
+
+## `choice` 제한시간
+
+`choice.timeoutMs`로 선택 가능 시간을 지정하고, 만료 시 실행할 옵션을 `timeoutOptionIndex`로 고를 수 있습니다.
+
+```yaml
+- choice:
+    prompt: "어느 신호를 끊을까?"
+    timeoutMs: 7000
+    timeoutOptionIndex: 0
+    options:
+      - text: "가짜 정지 신호"
+        goto: control_room
+      - text: "기관실 주 전원"
+        goto: wrong_turn
+```
+
+동작:
+- 제한시간 UI는 초 단위 값과 남은 시간을 나타내는 진행 바로 표시됩니다.
+- `timeoutOptionIndex` 기본값은 첫 옵션(`0`)이며, 범위를 벗어나면 마지막 옵션으로 보정합니다.
+- 시간 만료 선택은 흐름 정지를 피하기 위해 `forgiveOnce` 유예를 건너뛰고 즉시 실행합니다.
 
 ## `choice`/`input`에서 캐릭터 노출
 
@@ -474,8 +525,17 @@ scenes:
 - 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
 - 결말은 `conclusion/1.yaml`로 합류하며, 잠자는 코고로 추리 쇼 + 최종 지목/재지목 1회 흐름을 유지합니다.
 
+## Conan 60초 엔진 쇼케이스
+
+- `/game-list/conan-demo/`는 입력 없이 완주 가능한 약 `60.15초` 트레일러형 독립 게임입니다.
+- 자동 대사, 7초 제한 선택, 공유 에셋, 스티커 HUD와 신규 전체 화면 이펙트를 한 챕터에 압축했습니다.
+- 모바일 세로 화면에서 타이틀, 선택 게이트, 엔딩까지 넘침 없이 재생되도록 구성했습니다.
+
 ## 샘플
 
+- `public/game-list/conan-demo/config.yaml`
+- `public/game-list/conan-demo/base.yaml`
+- `public/game-list/conan-demo/0.yaml`
 - `public/game-list/conan/config.yaml`
 - `public/game-list/conan/base.yaml`
 - `public/game-list/conan/launcher.yaml`
@@ -545,6 +605,8 @@ scenes:
 - 스티커 `enter/leave` 이펙트의 `duration` 사용자 지정은 제거되어, 엔진 기본 시간(enter `280ms`, leave `220ms`)으로 고정됩니다.
 - `say.text`의 다중 `<speed=...>...</speed>` 구간을 순차 해석해, 한 문장 안에서도 구간별 타이핑 속도를 다르게 적용합니다.
 - `say.wait`(ms)를 지정하면 해당 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠급니다.
+- `say.autoAdvance`(ms)를 지정하면 트레일러/키오스크형 대사를 입력 없이 자동 진행합니다.
+- `choice.timeoutMs`와 `timeoutOptionIndex`로 제한시간 선택 및 만료 분기를 구성할 수 있습니다.
 - Live2D 캐릭터 로딩은 `easy-cl2d` + 번들 자산(`src/assets/third-party/live2d/live2dcubismcore.min.js`) 조합으로 동작합니다.
 - 현재 Live2D 실행은 Cubism 5 모델(`moc3 v6`, `model3.json`)을 포함해 Cubism Core 호환 범위를 기준으로 렌더링합니다.
 - 코어 스크립트는 Vite 번들 URL(`?url`)로 로드해 정적 공개 경로 의존 없이 캐시 버스팅을 적용합니다.

@@ -2547,6 +2547,44 @@ textarea,
   margin-top: 10px;
 }
 
+.choice-gate-timeout {
+  margin-bottom: 9px;
+}
+
+.choice-gate-timeout-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 18px;
+  margin-bottom: 5px;
+  color: var(--ui-status-color);
+  font-family: var(--ui-heading-font);
+  font-size: 10px;
+  font-weight: 760;
+}
+
+.choice-gate-timeout-meta strong {
+  color: var(--ui-accent);
+  font-size: 12px;
+}
+
+.choice-gate-timeout-track {
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  background: var(--ui-loading-track);
+}
+
+.choice-gate-timeout-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--ui-loading-fill);
+  transform-origin: left center;
+  animation: choiceTimeoutDrain var(--choice-timeout-ms) linear forwards;
+}
+
 .choice-gate-options {
   display: grid;
   gap: 8px;
@@ -2958,6 +2996,58 @@ textarea,
   animation: tiltPulse 0.32s ease;
 }
 
+.effect-impact {
+  animation: impactFrame 0.46s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.effect-impact::after,
+.effect-glitch::after,
+.effect-speedlines::after,
+.effect-alarm::after,
+.effect-focus::after {
+  content: '';
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+  pointer-events: none;
+}
+
+.effect-impact::after {
+  background: radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.9) 0 4%, rgba(255, 70, 50, 0.38) 16%, transparent 48%);
+  animation: impactBurst 0.46s ease-out;
+}
+
+.effect-glitch .bg,
+.effect-glitch .char-layer,
+.effect-glitch .sticker-layer {
+  animation: glitchJitter 0.52s steps(2, end);
+}
+
+.effect-glitch::after {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 5px, rgba(255, 255, 255, 0.09) 6px, transparent 7px),
+    linear-gradient(90deg, rgba(0, 235, 255, 0.14), transparent 38%, rgba(255, 35, 75, 0.16));
+  mix-blend-mode: screen;
+  animation: glitchOverlay 0.52s steps(3, end);
+}
+
+.effect-speedlines::after {
+  background: repeating-conic-gradient(from 0deg at 50% 45%, rgba(255, 255, 255, 0.52) 0 0.35deg, transparent 0.5deg 5deg);
+  mask-image: radial-gradient(circle at 50% 45%, transparent 0 23%, #000 72%);
+  animation: speedLines 0.68s ease-out;
+}
+
+.effect-alarm::after {
+  background: rgba(238, 18, 42, 0.3);
+  box-shadow: inset 0 0 0 7px rgba(255, 50, 66, 0.48);
+  animation: alarmPulse 0.76s steps(2, end);
+}
+
+.effect-focus::after {
+  background: radial-gradient(circle at 50% 42%, transparent 0 18%, rgba(2, 5, 10, 0.82) 54%, rgba(0, 0, 0, 0.94) 100%);
+  animation: focusSnap 0.62s ease-out;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -3196,6 +3286,58 @@ textarea,
   30% { transform: rotate(-0.7deg); }
   65% { transform: rotate(0.6deg); }
   100% { transform: rotate(0deg); }
+}
+
+@keyframes choiceTimeoutDrain {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@keyframes impactFrame {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  20% { transform: translate3d(-7px, 3px, 0) scale(1.025); }
+  42% { transform: translate3d(6px, -2px, 0) scale(1.018); }
+  68% { transform: translate3d(-3px, 1px, 0) scale(1.01); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes impactBurst {
+  0% { opacity: 0; transform: scale(0.72); }
+  22% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.24); }
+}
+
+@keyframes glitchJitter {
+  0%, 100% { transform: translate3d(0, 0, 0); filter: none; }
+  20% { transform: translate3d(-5px, 1px, 0); filter: hue-rotate(35deg) contrast(1.2); }
+  42% { transform: translate3d(6px, -1px, 0); filter: hue-rotate(-28deg) saturate(1.35); }
+  64% { transform: translate3d(-3px, 0, 0); filter: contrast(1.25); }
+  82% { transform: translate3d(3px, 1px, 0); filter: hue-rotate(16deg); }
+}
+
+@keyframes glitchOverlay {
+  0%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  18% { opacity: 0.9; clip-path: inset(10% 0 62% 0); }
+  44% { opacity: 0.55; clip-path: inset(58% 0 18% 0); }
+  72% { opacity: 0.75; clip-path: inset(34% 0 40% 0); }
+}
+
+@keyframes speedLines {
+  0% { opacity: 0; transform: scale(0.82) rotate(-1deg); }
+  34% { opacity: 0.62; }
+  100% { opacity: 0; transform: scale(1.2) rotate(1deg); }
+}
+
+@keyframes alarmPulse {
+  0%, 100% { opacity: 0; }
+  18%, 52% { opacity: 0.88; }
+  34%, 76% { opacity: 0.12; }
+}
+
+@keyframes focusSnap {
+  0% { opacity: 0; transform: scale(1.3); }
+  32% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1); }
 }
 
 @media (max-width: 1024px) {
@@ -3529,12 +3671,12 @@ textarea,
 }
 
 @media (max-width: 768px) and (orientation: portrait) {
-  .start-gate-bg-image {
+  .start-gate[data-show-title='false'] .start-gate-bg-image {
     filter: brightness(0.22) saturate(0.62);
     transform: scale(1.03);
   }
 
-  .start-gate-title-art {
+  .start-gate[data-show-title='false'] .start-gate-title-art {
     position: absolute;
     z-index: 3;
     top: clamp(82px, 15dvh, 132px);
@@ -3547,7 +3689,7 @@ textarea,
     pointer-events: none;
   }
 
-  .start-gate-overlay {
+  .start-gate[data-show-title='false'] .start-gate-overlay {
     background:
       linear-gradient(to bottom, rgba(7, 8, 11, 0.08) 12%, rgba(7, 7, 10, 0.2) 58%, rgba(4, 4, 6, 0.76) 86%),
       var(--start-gate-overlay);
@@ -3583,10 +3725,23 @@ textarea,
   .effect-zoom,
   .effect-pulse,
   .effect-tilt,
+  .effect-impact,
+  .effect-glitch .bg,
+  .effect-glitch .char-layer,
+  .effect-glitch .sticker-layer,
   .effect-blur .bg,
   .effect-blur .char-layer,
   .effect-blur .dialog-box {
     animation: none !important;
+  }
+
+  .effect-impact::after,
+  .effect-glitch::after,
+  .effect-speedlines::after,
+  .effect-alarm::after,
+  .effect-focus::after {
+    animation: none !important;
+    opacity: 0 !important;
   }
 
   .launcher-command,

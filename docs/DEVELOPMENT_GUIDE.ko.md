@@ -208,6 +208,7 @@ scenes:
 ## 7) 경로 규칙
 
 - `/...`: 게임 루트 기준
+- `root:/...`: 같은 배포의 `public` 루트 기준. 게임 간 공유 에셋에 사용
 - `./...`, `../...`: 선언한 YAML 파일 위치 기준
 - `assets/...` 같은 bare 경로: 선언한 YAML 파일 위치 기준
 
@@ -417,6 +418,12 @@ scenes:
 - `branch`
 - `ending`
 
+전체 화면 `effect` 프리셋:
+- 기본: `shake`, `flash`, `zoom`, `blur`, `darken`, `pulse`, `tilt`
+- 트레일러: `impact`, `glitch`, `speedlines`, `alarm`, `focus`
+- 미등록 이름은 약 `350ms` 동안 CSS 상태 클래스로 적용되어 게임별 스타일 확장이 가능합니다.
+- `prefers-reduced-motion` 환경에서는 비필수 모션을 비활성화합니다.
+
 ### 9-1) `sticker.inputLockMs` 입력 잠금
 
 `sticker` 액션에 `inputLockMs`(ms)를 지정하면, 해당 스티커를 표시한 직후 지정 시간 동안 입력 제출을 잠글 수 있습니다.
@@ -496,7 +503,43 @@ scenes:
 - 잠금 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
 - 잠금이 끝나면 기존 `say`와 동일하게 다음 입력을 받을 수 있습니다.
 
-### 9-6) `inventory` + `get/use` 아이템 상태
+### 9-6) `say.autoAdvance` 대사 자동 진행
+
+`say` 액션에 `autoAdvance`(ms)를 지정하면 입력이 없어도 시간이 지난 뒤 다음 액션으로 진행합니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "남은 시간 7초."
+    autoAdvance: 2000
+```
+
+실행 규칙:
+- 자동 진행 시 타이핑/입력 대기 상태를 정리하고 다음 액션을 실행합니다.
+- `wait`와 함께 선언하면 둘 중 더 긴 시간을 사용합니다.
+- 수동 진행이 먼저 발생하면 예약 타이머를 취소합니다.
+
+### 9-7) `choice` 제한시간
+
+```yaml
+- choice:
+    prompt: "어느 신호를 끊을까?"
+    timeoutMs: 7000
+    timeoutOptionIndex: 0
+    options:
+      - text: "가짜 정지 신호"
+        goto: control_room
+      - text: "기관실 주 전원"
+        goto: wrong_turn
+```
+
+실행 규칙:
+- `timeoutMs`는 `1000..60000` 범위이며, UI에 초 값과 진행 바로 표시합니다.
+- 시간이 끝나면 `timeoutOptionIndex`의 옵션을 선택합니다. 생략 시 첫 옵션, 초과 시 마지막 옵션으로 보정합니다.
+- 만료 선택은 자동 흐름이 멈추지 않도록 `forgiveOnce`를 건너뜁니다.
+- 플레이어가 먼저 선택하면 예약 타이머를 취소합니다.
+
+### 9-8) `inventory` + `get/use` 아이템 상태
 
 아이템 상태는 `state`와 분리된 `inventory`로 선언합니다.
 
@@ -607,6 +650,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-29: 자동 진행형 쇼케이스를 위해 `say.autoAdvance`, `choice.timeoutMs`/`timeoutOptionIndex`, `root:/` 공유 에셋 경로와 `impact/glitch/speedlines/alarm/focus` 화면 이펙트를 추가했습니다. 이를 사용하는 독립 게임 `public/game-list/conan-demo`를 약 60초 분량의 모바일 대응 트레일러로 추가했습니다.
 - 2026-07-29: Conan 샘플의 설명조·판정조 대사를 전면 재작성했습니다. 용의자별 말투를 분리하고, `2번 잔 -> 21:29의 빈 시간 -> 손수건 섬유 -> 2R -> 연구 노트`가 잠자는 코고로의 폭로로 이어지도록 사건 인과를 보강했습니다. 코난과 혼동되던 용의자 `신이치`는 `세이지`로 변경했습니다.
 - 2026-07-29: `showTitle: false`인 Start Gate 이미지를 모바일 세로 화면에서 배경과 전경으로 분리해, `cover` 크롭으로 이미지 안의 게임 제목이 잘리던 문제를 수정했습니다. 소형 세로 화면과 모바일 가로 화면에서 제목/버튼 배치 및 페이지 오버플로를 검증했습니다.
 - 2026-07-28: 챕터 프리로드를 전체 선언 직렬 처리에서 현재 챕터 참조 에셋의 제한 병렬 처리로 전환하고 세션 디코드 캐시, 저속 네트워크 동시성 축소, 선형 다음 챕터 백그라운드 예열을 추가했습니다. 로딩 최소 지연도 첫 챕터 240ms/이후 100ms/완료 80ms로 단축했습니다.

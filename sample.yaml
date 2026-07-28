@@ -17,6 +17,11 @@
 #   buttonPosition: auto
 # ui:
 #   template: cinematic-noir # cinematic-noir | neon-grid | paper-stage
+#
+# 여러 게임이 공유하는 public 에셋:
+# assets:
+#   sfx:
+#     alarm: root:/game-list/conan/assets/sfx/thunder.wav
 
 script:
   - scene: all_done_check
@@ -79,9 +84,11 @@ scenes:
       - choice:
           key: sample_route_select
           prompt: "다음으로 대면할 인물을 고르자."
+          timeoutMs: 7000
+          timeoutOptionIndex: 0
           options:
-            - text: "신이치"
-              goto: /routes/shinichi/1.yaml
+            - text: "세이지"
+              goto: /routes/seiji/1.yaml
             - text: "레이코"
               goto: /routes/reiko/1.yaml
             - text: "켄지"
@@ -96,6 +103,7 @@ scenes:
       - say:
           text: "<speed=26>지금 결론으로 가면 빈틈이 생겨.</speed> <speed=54>그래도 바로 이동할까?</speed>"
           wait: 900
+          autoAdvance: 2400
       - choice:
           key: sample_early_exit
           prompt: "지금 정리 회의로 넘어갈까?"
