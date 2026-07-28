@@ -30,7 +30,7 @@ assets:
       base: /assets/char/kenji/base.webp
       emotions:
         angry: /assets/char/kenji/angry.webp
-    신이치:
+    세이지:
       base: /assets/char/shinichi/base.webp
       emotions:
         cold: /assets/char/shinichi/cold.webp
@@ -54,7 +54,7 @@ assets:
     notebook_flip: /assets/sfx/notebook_flip.wav
 state:
   investigation_count: 0
-  visited_shinichi: false
+  visited_seiji: false
   visited_reiko: false
   visited_kenji: false
   visited_haruo: false
@@ -73,14 +73,14 @@ state:
   culprit_answer: ""
 inventory:
   tea_residue_report:
-    name: "찻잔 반응 시료 카드"
-    description: "다실 2번 잔 가장자리에서 채취한 반응 시료 기록 카드."
+    name: "2번 잔 감식 카드"
+    description: "잔 안쪽은 음성, 바깥 가장자리만 양성으로 나온 하루오의 2번 잔 감식 기록."
     image: /assets/items/tea_residue_report.svg
     category: "감식"
     order: 10
   reiko_statement_note:
     name: "레이코 진술 메모"
-    description: "레이코 심문에서 확보한 온도·시각 진술 정리본."
+    description: "88도 온도계가 21:29에 멈춘 사실과 레이코의 진술을 시각순으로 적은 메모."
     image: /assets/items/reiko_statement_note.svg
     category: "진술"
     order: 20

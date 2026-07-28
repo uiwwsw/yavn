@@ -40,7 +40,7 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.think
-          text: "<speed=32>동선은 다 말했다고.</speed> <speed=26>중복 질문이면 진술만 꼬여.</speed>"
+          text: "<speed=30>통화 기록까지 보여 줬잖아.</speed> <speed=24>더 물을 거면 경찰이 온 뒤에 해.</speed>"
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -67,12 +67,12 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=54>큰소리 친 건 인정한다!</speed> <speed=30>하지만 난 2번 잔 근처에도 안 갔어!</speed>"
+          text: "<speed=44>하루오와 말다툼한 건 인정해.</speed> <speed=26>그 자가 원본 노트를 넘기는 조건으로 돈을 더 요구했으니까!</speed>"
       - say:
-          char: 코난.serious
+          char: 코고로.angry
           with:
             - 켄지.angry
-          text: "<speed=40>좋아.</speed> <speed=30>분노는 빼고, 발자국과 통화기록으로만 말하자.</speed>"
+          text: "<speed=34>돈 얘기는 경찰 앞에서도 다시 해.</speed> <speed=26>우선 비명 전후에 어디 있었는지부터.</speed>"
 
   first_probe:
     actions:
@@ -80,21 +80,21 @@ scenes:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "<speed=34>사건 직전 네 위치를 한 줄로 말해.</speed>"
+          text: "<speed=30>비명 직전, 켄지 씨는 다실에 없었죠?</speed>"
       - choice:
           key: kenji_first_probe
-          prompt: "켄지 동선에서 핵심은?"
+          prompt: "켄지의 동선을 확인할 기록은?"
           options:
-            - text: "복도 통화 중이라 다실 출입선에서 떨어져 있었다"
+            - text: "21:24~21:31 복도 통화 기록을 확인한다"
               add:
                 deduction_score: 1
               goto: first_claim_correct
-            - text: "화가 났으니 즉시 범행했을 것이다"
+            - text: "화가 났으니 범행했다고 본다"
               add:
                 mistake_count: 1
                 trust: -1
               goto: first_claim_wrong
-            - text: "목소리가 컸으니 오히려 침착했을 것이다"
+            - text: "큰소리를 냈으니 오히려 결백하다고 본다"
               add:
                 mistake_count: 1
               goto: first_claim_wrong
@@ -105,14 +105,14 @@ scenes:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "<speed=54>좋아, 그 동선은 기록과 일치한다.</speed> <speed=34>확정할까?</speed>"
+          text: "<speed=30>통화는 9시 24분에 시작해서 31분에 끝났어요.</speed> <speed=24>비명이 난 시각도 통화 중이었고요.</speed>"
       - choice:
           key: kenji_first_commit
-          prompt: "1차 동선을 확정할까?"
+          prompt: "이 통화 기록을 어떻게 볼까?"
           options:
-            - text: "확정"
+            - text: "복도에 있었다는 진술을 인정한다"
               goto: second_probe
-            - text: "다시 묻는다"
+            - text: "통화 중 움직였는지 더 묻는다"
               goto: retry_notice
 
   first_claim_wrong:
@@ -121,14 +121,14 @@ scenes:
           char: 코난.think
           with:
             - 켄지.angry
-          text: "<speed=28>그건 성격 추측이야.</speed> <speed=58>동선 증거가 아니다.</speed>"
+          text: "<speed=24>화를 냈다는 사실은 동기가 될 수 있어도, 그가 잔에 손댄 순간을 만들진 못해.</speed>"
       - choice:
           key: kenji_first_rebuttal
-          prompt: "이 판단을 어떻게 할까?"
+          prompt: "켄지의 동선을 다시 확인할까?"
           options:
-            - text: "틀렸다. 재질문"
+            - text: "통화 시작과 종료 시각을 확인한다"
               goto: retry_notice
-            - text: "아직 이 논리로 민다"
+            - text: "말다툼만 계속 추궁한다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -138,16 +138,21 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=28>(좋아, 다시.)</speed> <speed=58>감정 아닌 이동 기록으로 좁힌다.</speed>"
+          text: "<speed=22>(켄지의 성격이 아니라, 휴대전화에 남은 7분을 봐야 해.)</speed>"
       - goto: second_probe
 
   second_probe:
     actions:
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "<speed=30>통화를 끝내고 문으로 돌아왔을 때 봤어.</speed> <speed=24>레이코가 하루오의 만류를 무시하고 뚜껑을 두 번 누르더군.</speed>"
       - choice:
           key: kenji_second_probe
-          prompt: "재구성으로 확인된 사실은?"
+          prompt: "켄지가 본 행동에서 중요한 점은?"
           options:
-            - text: "뚜껑 두 번은 시선을 돌리는 연막이었다"
+            - text: "모두의 시선이 뚜껑으로 향한 순간이었다"
               set:
                 clue_double_press_decoy: true
               add:
@@ -155,11 +160,11 @@ scenes:
                 final_confidence: 1
                 trust: 1
               goto: second_claim_correct
-            - text: "분노가 크면 물증 없이도 확정 가능하다"
+            - text: "켄지가 화가 났으니 진술은 모두 거짓이다"
               add:
                 mistake_count: 1
               goto: second_claim_wrong
-            - text: "통화 기록보다 직감이 정확하다"
+            - text: "통화 기록보다 첫인상을 믿는다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -168,17 +173,17 @@ scenes:
   second_claim_correct:
     actions:
       - say:
-          text: "<speed=70>챙-!</speed> <speed=40>연막과 진짜 동선이 분리된다.</speed>"
+          text: "<speed=28>켄지는 다실 밖에서 그 동작을 봤다.</speed> <speed=24>안에 있던 사람들은 모두 주전자만 보고 있었다.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=56>좋아, 켄지 라인은 범행 실행에서 빠진다.</speed> <speed=34>채택.</speed>"
+          text: "<speed=30>켄지 씨가 범행 순간 잔에 손댈 수는 없었어요.</speed> <speed=24>대신 문에서 본 장면은 중요한 증언이 돼요.</speed>"
       - choice:
           key: kenji_second_commit
-          prompt: "최종 채택할까?"
+          prompt: "켄지의 목격을 증언으로 남길까?"
           options:
-            - text: "채택"
+            - text: "통화 기록과 함께 남긴다"
               goto: success_line
-            - text: "보류"
+            - text: "참고만 하고 보류한다"
               add:
                 final_confidence: -1
               goto: fail_line
@@ -189,14 +194,14 @@ scenes:
           char: 코난.think
           with:
             - 켄지.angry
-          text: "<speed=28>그 선택은 감정선이야.</speed> <speed=58>결론에서 바로 깨진다.</speed>"
+          text: "<speed=24>그건 켄지가 싫다는 이유일 뿐이야.</speed> <speed=48>기록과 목격 장면은 따로 봐야 해.</speed>"
       - choice:
           key: kenji_second_rebuttal
-          prompt: "지금 선택은?"
+          prompt: "켄지 조사를 마칠까?"
           options:
-            - text: "틀렸다 인정"
+            - text: "기록만 챙기고 돌아간다"
               goto: fail_line
-            - text: "끝까지 민다"
+            - text: "켄지를 계속 범인으로 의심한다"
               add:
                 trust: -1
               goto: fail_line
@@ -205,14 +210,14 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=50>좋아, 켄지 라인 정리 완료.</speed> <speed=34>분노와 실행은 분리됐다.</speed>"
+          text: "<speed=30>켄지 씨에겐 화낼 이유가 있었지만, 그 1분에 잔을 만질 기회는 없었어.</speed>"
       - goto: outro
 
   fail_line:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=24>(켄지 라인은 아직 거칠다...)</speed> <speed=58>보강 없인 위험해.</speed>"
+          text: "<speed=22>(통화 기록과 그의 목격을 완전히 이어 놓진 못했어.)</speed> <speed=48>다른 진술이 필요해.</speed>"
       - add:
           final_confidence: -1
       - goto: outro
@@ -221,5 +226,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "<speed=50>켄지 라인 종료.</speed> <speed=34>라운지로 복귀한다.</speed>"
+          text: "<speed=30>경찰이 오면 통화 기록을 그대로 보여 주세요.</speed> <speed=24>지우면 오히려 더 의심받을 테니까요.</speed>"
       - goto: /routes/hub/1.yaml
