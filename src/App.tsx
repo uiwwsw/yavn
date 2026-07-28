@@ -363,6 +363,9 @@ function resolveRuntimeAssetUrl(
   if (!assetPath) {
     return undefined;
   }
+  if (/^root:\//i.test(assetPath)) {
+    return new URL(assetPath.slice('root:'.length), window.location.origin).toString();
+  }
   if (/^(blob:|data:|https?:|[a-z][a-z0-9+.-]*:)/i.test(assetPath)) {
     return assetPath;
   }
@@ -389,6 +392,9 @@ function resolveRuntimeAssetUrl(
 function resolveStartGateAssetUrl(assetPath: string | undefined, baseUrl: string): string | undefined {
   if (!assetPath) {
     return undefined;
+  }
+  if (/^root:\//i.test(assetPath)) {
+    return new URL(assetPath.slice('root:'.length), window.location.origin).toString();
   }
   try {
     return new URL(assetPath, baseUrl).toString();
@@ -1823,7 +1829,12 @@ export default function App() {
   if (startGate) {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
     return (
-      <div className="start-gate" data-ui-template={startGate.uiTemplate} onPointerDown={() => tryPlayStartGateMusic()}>
+      <div
+        className="start-gate"
+        data-show-title={String(startGate.showTitle)}
+        data-ui-template={startGate.uiTemplate}
+        onPointerDown={() => tryPlayStartGateMusic()}
+      >
         {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
         {startGate.imageUrl && !startGate.showTitle && (
           <img className="start-gate-title-art" src={startGate.imageUrl} alt="" aria-hidden="true" />
@@ -2614,6 +2625,22 @@ export default function App() {
           )}
           {choiceGate.active && (
             <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
+              {choiceGate.timeoutMs && (
+                <div
+                  className="choice-gate-timeout"
+                  role="timer"
+                  aria-label={`선택 제한 시간 ${Math.ceil(choiceGate.timeoutMs / 1000)}초`}
+                  style={{ '--choice-timeout-ms': `${choiceGate.timeoutMs}ms` } as CSSProperties}
+                >
+                  <div className="choice-gate-timeout-meta">
+                    <span>DECISION WINDOW</span>
+                    <strong>{Math.ceil(choiceGate.timeoutMs / 1000)}s</strong>
+                  </div>
+                  <div className="choice-gate-timeout-track" aria-hidden="true">
+                    <span />
+                  </div>
+                </div>
+              )}
               <div className="choice-gate-options">
                 {choiceGate.options.map((option, index) => {
                   const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;

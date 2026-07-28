@@ -137,6 +137,8 @@ export const actionSchema = z.union([
       with: z.array(z.string().min(1)).optional(),
       forgiveOnceDefault: z.boolean().optional(),
       forgiveMessage: z.string().min(1).optional(),
+      timeoutMs: z.number().int().min(1000).max(60000).optional(),
+      timeoutOptionIndex: z.number().int().nonnegative().optional(),
       options: z.array(choiceOptionSchema).min(1),
     }),
   }),
@@ -170,6 +172,7 @@ export const actionSchema = z.union([
       with: z.array(z.string().min(1)).optional(),
       text: z.string(),
       wait: z.number().int().nonnegative().max(60000).optional(),
+      autoAdvance: z.number().int().positive().max(60000).optional(),
     }),
   }),
 ]);

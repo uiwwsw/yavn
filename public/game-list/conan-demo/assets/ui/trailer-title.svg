@@ -1,0 +1,19 @@
+<svg width="1000" height="320" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"/>
+      <feOffset dy="8" result="offset"/>
+      <feColorMatrix in="offset" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .8 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path d="M76 46h848" stroke="#f32745" stroke-width="4"/>
+  <path d="M76 274h848" stroke="#f32745" stroke-width="4"/>
+  <path d="M76 46v56M924 218v56" stroke="#f32745" stroke-width="12"/>
+  <text x="500" y="104" fill="#f4f8ff" font-size="34" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" letter-spacing="12">MIDNIGHT EXPRESS</text>
+  <text x="500" y="210" fill="#ffffff" stroke="#080d16" stroke-width="8" paint-order="stroke" font-size="92" font-family="Arial, sans-serif" font-weight="900" text-anchor="middle" filter="url(#shadow)">60초의 경고</text>
+  <text x="500" y="260" fill="#ff3653" font-size="25" font-family="Arial, sans-serif" font-weight="800" text-anchor="middle" letter-spacing="8">CASE TRAILER 00:60</text>
+</svg>

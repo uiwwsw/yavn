@@ -68,6 +68,7 @@ export type SayAction = {
     with?: string[];
     text: string;
     wait?: number;
+    autoAdvance?: number;
   };
 };
 
@@ -170,6 +171,8 @@ export type ChoiceAction = {
     with?: string[];
     forgiveOnceDefault?: boolean;
     forgiveMessage?: string;
+    timeoutMs?: number;
+    timeoutOptionIndex?: number;
     options: ChoiceOption[];
   };
 };
@@ -361,6 +364,8 @@ export type ChoiceGateState = {
   forgiveOnceDefault: boolean;
   forgiveMessage?: string;
   forgivenOptionIndexes: number[];
+  timeoutMs?: number;
+  timeoutOptionIndex?: number;
   options: ChoiceOption[];
 };
 

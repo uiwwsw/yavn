@@ -1,0 +1,301 @@
+# 입력이 없을 때 wait/autoAdvance/choice timeout 합계: 60,150ms
+script:
+  - scene: cold_open
+  - scene: threat
+  - scene: suspects
+  - scene: deduction
+  - scene: decision
+  - scene: wrong_turn
+  - scene: control_room
+  - scene: final_run
+  - scene: tag
+
+scenes:
+  cold_open:
+    actions:
+      - bg: rail_warning
+      - music: tension
+      - sticker:
+          id: trailer_title
+          image: trailer_title
+          x: 50
+          y: 35
+          width: 78
+          anchorX: center
+          anchorY: center
+          zIndex: 4
+          enter:
+            effect: wipeCenterX
+      - effect: alarm
+      - sound: thunder
+      - wait: 900
+      - clearSticker:
+          id: trailer_title
+          leave:
+            effect: wipeRight
+      - sticker:
+          id: countdown
+          image: timer_60
+          x: 50
+          y: 15
+          width: 38
+          anchorX: center
+          anchorY: center
+          zIndex: 6
+          enter:
+            effect: popIn
+      - say:
+          text: "<speed=34>오후 11시 59분.</speed> <speed=56>산악 터널의 모든 신호가 동시에 붉게 변했다.</speed>"
+          autoAdvance: 2600
+      - char:
+          id: 란
+          position: left
+          emotion: surprised
+      - effect: impact
+      - say:
+          char: 란.surprised
+          text: "<speed=62>코난!</speed> <speed=38>터널 안에 승객이 탄 열차가 멈춰 있어!</speed>"
+          autoAdvance: 3000
+      - char:
+          id: 코고로
+          position: right
+          emotion: angry
+      - say:
+          char: 코고로.angry
+          with:
+            - 란.surprised
+          text: "<speed=44>기관실과 연락이 안 된다!</speed> <speed=34>폭발물 처리반은 최소 10분이야!</speed>"
+          autoAdvance: 2600
+
+  threat:
+    actions:
+      - bg: case_board
+      - effect: glitch
+      - sticker:
+          id: signal_map
+          image: signal_map
+          x: 50
+          y: 38
+          width: 66
+          anchorX: center
+          anchorY: center
+          zIndex: 4
+          enter:
+            effect: blurIn
+      - say:
+          text: '<speed=30>"60초 안에 세 개의 거짓말을 찾아라."</speed> <speed=58>"틀리면 열차와 터널이 함께 사라진다."</speed>'
+          autoAdvance: 3400
+      - clearSticker:
+          id: signal_map
+          leave:
+            effect: fadeOut
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - effect: focus
+      - say:
+          char: 코난.serious
+          text: "<speed=34>폭탄을 터뜨리려는 게 아니야.</speed> <speed=58>범인은 우리가 특정 신호를 끊게 만들려는 거야.</speed>"
+          autoAdvance: 2800
+
+  suspects:
+    actions:
+      - bg: rain_corridor
+      - char:
+          id: 켄지
+          position: left
+          emotion: angry
+      - effect: alarm
+      - say:
+          char: 켄지.angry
+          text: "<speed=42>난 터널 도면을 본 적 없어!</speed> <speed=64>신호실에도 들어간 적 없다고!</speed>"
+          autoAdvance: 2200
+      - bg: tea_room
+      - char:
+          id: 세이지
+          position: center
+          emotion: cold
+      - effect: glitch
+      - say:
+          char: 세이지.cold
+          text: "<speed=34>정지 명령은 59분 정각.</speed> <speed=54>제 기록에는 한 치의 오차도 없습니다.</speed>"
+          autoAdvance: 2200
+      - bg: ryokan_hall
+      - char:
+          id: 레이코
+          position: right
+          emotion: nervous
+      - effect: focus
+      - say:
+          char: 레이코.nervous
+          text: "<speed=28>빨간 레버는 건드리지 않았어요.</speed> <speed=60>전 파란 패널 앞에만 있었어요.</speed>"
+          autoAdvance: 2200
+      - say:
+          char: 코난.think
+          text: "<speed=28>(도면을 모른다.</speed> <speed=38>기록은 정확하다.</speed> <speed=54>빨간 레버는 건드리지 않았다.)</speed> <speed=66>셋 다 거짓말이야.</speed>"
+          autoAdvance: 2400
+
+  deduction:
+    actions:
+      - bg: case_board
+      - music: reasoning
+      - sticker:
+          id: signal_map
+          image: signal_map
+          x: 50
+          y: 35
+          width: 68
+          anchorX: center
+          anchorY: center
+          zIndex: 3
+          enter:
+            effect: wipeCenterY
+      - effect: focus
+      - say:
+          char: 코난.serious
+          text: "<speed=32>열차는 폭탄 때문에 멈춘 게 아니야.</speed> <speed=54>누군가 정지 신호를 먼저 보내 승객을 터널 안에 가뒀어.</speed>"
+          autoAdvance: 2800
+      - sound: notebook_flip
+      - say:
+          char: 코난.serious
+          text: "<speed=34>그리고 신호 지도에는 빨간 패널이 없어.</speed> <speed=62>레이코 씨는 범인이 보낸 가짜 화면을 봤어.</speed>"
+          autoAdvance: 2300
+
+  decision:
+    actions:
+      - clearSticker:
+          id: signal_map
+          leave:
+            effect: fadeOut
+      - bg: rail_warning
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - effect: alarm
+      - choice:
+          key: demo_signal_cut
+          prompt: "열차를 살리려면 어느 신호를 끊어야 하지?"
+          char: 코난.serious
+          timeoutMs: 7000
+          timeoutOptionIndex: 0
+          options:
+            - text: "터널 제어반의 가짜 정지 신호"
+              set:
+                signal_cut: true
+              goto: control_room
+            - text: "열차 기관실의 주 전원"
+              set:
+                wrong_panel: true
+              goto: wrong_turn
+
+  wrong_turn:
+    actions:
+      - effect: glitch
+      - say:
+          char: 코난.think
+          text: "<speed=58>아니야!</speed> <speed=30>기관실 전원을 끊으면 비상 제동도 풀 수 없어!</speed>"
+          autoAdvance: 1600
+      - goto: control_room
+
+  control_room:
+    actions:
+      - effect: impact
+      - say:
+          char: 코난.serious
+          text: "<speed=60>찾았다!</speed> <speed=34>폭발 신호는 터널 제어반에서 되풀이되고 있어!</speed>"
+          autoAdvance: 2500
+      - clearSticker:
+          id: countdown
+          leave:
+            effect: fadeOut
+      - sticker:
+          id: countdown
+          image: timer_07
+          x: 50
+          y: 15
+          width: 38
+          anchorX: center
+          anchorY: center
+          zIndex: 6
+          enter:
+            effect: popIn
+      - music: solve
+      - effect: speedlines
+      - wait: 700
+
+  final_run:
+    actions:
+      - say:
+          text: "<speed=74>남은 시간 7초.</speed> <speed=34>제어반 뒤에서 점화음이 울렸다.</speed>"
+          autoAdvance: 2000
+      - sound: thunder
+      - effect: impact
+      - wait: 600
+      - say:
+          char: 코고로.angry
+          text: "<speed=78>전부 엎드려!</speed>"
+          autoAdvance: 1800
+      - effect: speedlines
+      - wait: 700
+      - say:
+          char: 란.worried
+          text: "<speed=56>코난, 철로가 움직여!</speed> <speed=76>열차가 미끄러지고 있어!</speed>"
+          autoAdvance: 2000
+      - effect: glitch
+      - wait: 600
+      - say:
+          char: 코난.serious
+          text: "<speed=34>폭탄은 열차가 아니라 분기기에 연결돼 있어.</speed> <speed=68>빨간 레버를 당기면 선로가 잠겨!</speed>"
+          autoAdvance: 2600
+      - sound: door
+      - effect: impact
+      - wait: 700
+      - effect: flash
+      - wait: 350
+      - clearSticker:
+          id: countdown
+          leave:
+            effect: fadeOut
+      - bg: mountain_rain
+      - say:
+          text: "<speed=34>폭발 0.3초 전.</speed> <speed=62>열차는 터널 출구를 불과 2미터 남기고 멈췄다.</speed>"
+          autoAdvance: 2500
+
+  tag:
+    actions:
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - say:
+          char: 란.worried
+          text: "<speed=48>멈췄어...</speed> <speed=30>정말 끝난 거지?</speed>"
+          autoAdvance: 1800
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - effect: focus
+      - say:
+          char: 코난.serious
+          text: "<speed=28>아니.</speed> <speed=62>열차를 멈춘 사람과 경고를 보낸 사람은 달라.</speed> <speed=76>이제부터가 사건의 시작이야.</speed>"
+          autoAdvance: 2700
+      - sticker:
+          id: trailer_title
+          image: trailer_title
+          x: 50
+          y: 36
+          width: 78
+          anchorX: center
+          anchorY: center
+          zIndex: 5
+          enter:
+            effect: wipeCenterX
+      - effect: pulse
+      - wait: 1000
+      - say:
+          text: "<speed=46>명탐정 코난 DEMO.</speed> <speed=72>60초의 경고.</speed>"
+          autoAdvance: 1200
+      - ending: demo_clear

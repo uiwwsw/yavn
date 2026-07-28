@@ -75,6 +75,11 @@ const EFFECT_DURATIONS: Record<string, number> = {
   darken: 500,
   pulse: 500,
   tilt: 320,
+  impact: 460,
+  glitch: 520,
+  speedlines: 680,
+  alarm: 760,
+  focus: 620,
 };
 const DEFAULT_STICKER_ENTER_EFFECT: StickerEnterEffect = 'fadeIn';
 const DEFAULT_STICKER_ENTER_DURATION = 280;
@@ -157,6 +162,8 @@ type InlineSpeedSegment = {
 let waitTimer: number | undefined;
 let typeTimer: number | undefined;
 let effectTimer: number | undefined;
+let autoAdvanceTimer: number | undefined;
+let choiceTimer: number | undefined;
 let bgmAudio: HTMLAudioElement | undefined;
 let bgmNeedsUnlock = false;
 let bgmCurrentKind: 'audio' | 'youtube' | undefined;
@@ -365,6 +372,14 @@ function clearTimers() {
   if (effectTimer) {
     window.clearTimeout(effectTimer);
     effectTimer = undefined;
+  }
+  if (autoAdvanceTimer) {
+    window.clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = undefined;
+  }
+  if (choiceTimer) {
+    window.clearTimeout(choiceTimer);
+    choiceTimer = undefined;
   }
   for (const timer of clearStickerTimers.values()) {
     window.clearTimeout(timer);
@@ -576,6 +591,9 @@ function resolveAssetWithOverrides(baseUrl: string, path: string, overrides: Rec
   }
   if (/^(blob:|data:|https?:)/i.test(path)) {
     return path;
+  }
+  if (/^root:\//i.test(path)) {
+    return new URL(path.slice('root:'.length), window.location.origin).toString();
   }
   try {
     return new URL(path, baseUrl).toString();
@@ -2529,9 +2547,15 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('effect' in action) {
+    if (effectTimer) {
+      window.clearTimeout(effectTimer);
+    }
     useVNStore.getState().setEffect(action.effect);
     const duration = EFFECT_DURATIONS[action.effect] ?? 350;
-    effectTimer = window.setTimeout(() => useVNStore.getState().setEffect(undefined), duration);
+    effectTimer = window.setTimeout(() => {
+      effectTimer = undefined;
+      useVNStore.getState().setEffect(undefined);
+    }, duration);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -2577,6 +2601,10 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('choice' in action) {
+    if (choiceTimer) {
+      window.clearTimeout(choiceTimer);
+      choiceTimer = undefined;
+    }
     const presentation = resolveSayPresentation(action.choice.char, action.choice.with);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearInputGate();
@@ -2587,6 +2615,8 @@ function runToNextPause(loopGuard = 0) {
       forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,
       forgiveMessage: action.choice.forgiveMessage,
       forgivenOptionIndexes: [],
+      timeoutMs: action.choice.timeoutMs,
+      timeoutOptionIndex: action.choice.timeoutOptionIndex,
       options: action.choice.options,
     });
     if (presentation.speakerId) {
@@ -2601,6 +2631,16 @@ function runToNextPause(loopGuard = 0) {
       visibleText: action.choice.prompt,
       typing: false,
     });
+    if (action.choice.timeoutMs) {
+      const timeoutOptionIndex = Math.min(
+        action.choice.options.length - 1,
+        action.choice.timeoutOptionIndex ?? 0,
+      );
+      choiceTimer = window.setTimeout(() => {
+        choiceTimer = undefined;
+        submitChoiceOption(timeoutOptionIndex, true);
+      }, action.choice.timeoutMs);
+    }
     return;
   }
 
@@ -2685,6 +2725,11 @@ function runToNextPause(loopGuard = 0) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = game.settings.textSpeed;
     const sayWaitMs = clampSayWaitMs(action.say.wait);
+    const autoAdvanceMs = clampSayWaitMs(action.say.autoAdvance);
+    if (autoAdvanceTimer) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = undefined;
+    }
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
@@ -2713,6 +2758,39 @@ function runToNextPause(loopGuard = 0) {
         waitTimer = undefined;
         useVNStore.getState().setBusy(false);
       }, sayWaitMs);
+    }
+    if (autoAdvanceMs > 0) {
+      const expectedSceneId = state.currentSceneId;
+      const expectedActionIndex = state.actionIndex;
+      autoAdvanceTimer = window.setTimeout(() => {
+        autoAdvanceTimer = undefined;
+        const current = useVNStore.getState();
+        if (
+          current.isFinished ||
+          !current.waitingInput ||
+          current.inputGate.active ||
+          current.choiceGate.active ||
+          current.currentSceneId !== expectedSceneId ||
+          current.actionIndex !== expectedActionIndex
+        ) {
+          return;
+        }
+        if (typeTimer) {
+          window.clearTimeout(typeTimer);
+          typeTimer = undefined;
+        }
+        if (waitTimer) {
+          window.clearTimeout(waitTimer);
+          waitTimer = undefined;
+        }
+        useVNStore.getState().setBusy(false);
+        useVNStore.getState().setWaitingInput(false);
+        useVNStore
+          .getState()
+          .setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+        incrementCursor();
+        runToNextPause();
+      }, Math.max(autoAdvanceMs, sayWaitMs));
     }
     typeDialog(parsed.text, textSpeed, parsed.segments, () => undefined);
     return;
@@ -3419,6 +3497,10 @@ export function handleAdvance() {
       return;
     }
     useVNStore.getState().setWaitingInput(false);
+    if (autoAdvanceTimer) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = undefined;
+    }
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
     incrementCursor();
@@ -3491,7 +3573,7 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
   runToNextPause();
 }
 
-export function submitChoiceOption(optionIndex: number) {
+export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false) {
   const state = useVNStore.getState();
   if (!state.game || state.busy || !state.waitingInput || !state.choiceGate.active) {
     return;
@@ -3504,7 +3586,7 @@ export function submitChoiceOption(optionIndex: number) {
 
   const effectiveForgiveOnce = selected.forgiveOnce ?? state.choiceGate.forgiveOnceDefault;
   const alreadyForgiven = state.choiceGate.forgivenOptionIndexes.includes(optionIndex);
-  if (effectiveForgiveOnce && !alreadyForgiven) {
+  if (!skipForgiveOnce && effectiveForgiveOnce && !alreadyForgiven) {
     useVNStore.getState().setChoiceGate({
       forgivenOptionIndexes: [...state.choiceGate.forgivenOptionIndexes, optionIndex],
     });
@@ -3517,6 +3599,11 @@ export function submitChoiceOption(optionIndex: number) {
       typing: false,
     });
     return;
+  }
+
+  if (choiceTimer) {
+    window.clearTimeout(choiceTimer);
+    choiceTimer = undefined;
   }
 
   useVNStore.getState().pushRouteHistory({
