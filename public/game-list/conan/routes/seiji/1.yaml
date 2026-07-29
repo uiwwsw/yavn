@@ -1,5 +1,6 @@
 script:
   - scene: entry_guard
+  - scene: evidence_followup
   - scene: revisit_notice
   - scene: intro
   - scene: first_input
@@ -19,15 +20,58 @@ scenes:
       - branch:
           cases:
             - when:
+                all:
+                  - var: visited_seiji
+                    op: eq
+                    value: true
+                  - var: clue_order_note
+                    op: eq
+                    value: false
+                  - var: recovered_order_note
+                    op: eq
+                    value: false
+              goto: evidence_followup
+            - when:
                 var: visited_seiji
                 op: eq
                 value: true
               goto: revisit_notice
           default: intro
 
+  evidence_followup:
+    actions:
+      - bg: records_lounge
+      - set:
+          recovered_order_note: true
+          clue_order_note: true
+      - add:
+          deduction_score: 1
+          final_confidence: 1
+      - char:
+          id: 세이지
+          position: right
+          emotion: cold
+      - char:
+          id: 코난
+          position: left
+          emotion: serious
+      - sound: notebook_flip
+      - effect: focus
+      - say:
+          char: 코난.serious
+          with:
+            - 세이지.cold
+          text: "<speed=30>원본 아래 장에도 같은 위치에 2가 눌려 있어요.</speed> <speed=24>사건 뒤에 고친 숫자가 아니라는 뜻이죠.</speed>"
+      - say:
+          char: 세이지.cold
+          with:
+            - 코난.serious
+          text: "<speed=28>이제야 기록을 기록답게 보시는군요.</speed> <speed=22>그 장도 함께 가져가세요.</speed>"
+      - goto: outro
+
   revisit_notice:
     actions:
-      - bg: tea_room
+      - bg: records_lounge
       - char:
           id: 세이지
           position: right
@@ -45,8 +89,9 @@ scenes:
 
   intro:
     actions:
-      - bg: tea_room
+      - bg: records_lounge
       - music: reasoning
+      - sound: notebook_flip
       - set:
           visited_seiji: true
       - add:

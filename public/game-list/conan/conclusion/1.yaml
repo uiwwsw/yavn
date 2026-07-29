@@ -25,8 +25,9 @@ scenes:
       - music: reasoning
       - char:
           id: 코난
-          position: center
+          position: left
           emotion: serious
+      - effect: focus
       - say:
           char: 코난.think
           text: "<speed=24>(2번 잔, 멈춘 온도계, 손수건 섬유, 그리고 지워지다 만 R.)</speed>"

@@ -1,5 +1,6 @@
 script:
   - scene: entry_guard
+  - scene: evidence_followup
   - scene: revisit_notice
   - scene: intro
   - scene: crime_scene_item_gate
@@ -22,18 +23,70 @@ scenes:
       - branch:
           cases:
             - when:
+                all:
+                  - var: visited_haruo
+                    op: eq
+                    value: true
+                  - var: clue_haruo_wipe
+                    op: eq
+                    value: false
+                  - var: tea_residue_report
+                    op: eq
+                    value: true
+                  - var: recovered_haruo_clue
+                    op: eq
+                    value: false
+              goto: evidence_followup
+            - when:
                 var: visited_haruo
                 op: eq
                 value: true
               goto: revisit_notice
           default: intro
 
+  evidence_followup:
+    actions:
+      - bg: tea_room
+      - set:
+          recovered_haruo_clue: true
+          clue_haruo_wipe: true
+          clue_rim_reagent: true
+      - add:
+          deduction_score: 1
+          final_confidence: 1
+      - char:
+          id: 코난
+          position: right
+          emotion: serious
+      - sticker:
+          id: haruo_followup_lid
+          image: clue_lid
+          x: 56
+          y: 42
+          width: 52
+          anchorX: center
+          anchorY: center
+          enter:
+            effect: blurIn
+      - effect: focus
+      - say:
+          char: 코난.serious
+          text: "<speed=30>감식 카드를 겹치면 선이 이어져.</speed> <speed=24>잔 가장자리와 R의 끝을 닦은 건 같은 손수건이야.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=22>(2R은 조작된 메시지가 아니야.)</speed> <speed=48>범인이 R만 지우다 멈춘 거야.</speed>"
+      - clearSticker:
+          id: haruo_followup_lid
+          leave:
+            effect: fadeOut
+      - goto: outro
+
   revisit_notice:
     actions:
       - bg: tea_room
       - char:
           id: 코난
-          position: center
+          position: left
           emotion: think
       - say:
           char: 코난.think
@@ -51,7 +104,7 @@ scenes:
           investigation_count: 1
       - char:
           id: 코난
-          position: center
+          position: right
           emotion: serious
       - char:
           id: 란

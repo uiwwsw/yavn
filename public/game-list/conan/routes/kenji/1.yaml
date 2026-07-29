@@ -27,7 +27,7 @@ scenes:
 
   revisit_notice:
     actions:
-      - bg: tea_room
+      - bg: rain_corridor
       - char:
           id: 켄지
           position: left
@@ -45,8 +45,10 @@ scenes:
 
   intro:
     actions:
-      - bg: tea_room
+      - bg: rain_corridor
       - music: reasoning
+      - sound: thunder
+      - effect: focus
       - set:
           visited_kenji: true
       - add:
