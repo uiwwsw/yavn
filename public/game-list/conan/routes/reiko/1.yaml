@@ -68,12 +68,12 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "<speed=30>2번 잔 가장자리와 R 끝에서 같은 손수건 섬유가 나왔어요.</speed> <speed=24>이제 온도계가 멈춘 1분을 다시 설명해 주세요.</speed>"
+          text: "<speed=28>2번 잔 가장자리와 지워진 R에서 같은 섬유가 나왔어요.</speed> <speed=22>그 손수건을 쥔 채, 9시 29분에 뭘 했어요?</speed>"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=22>그걸... 어디서 확인했죠?</speed> <speed=18>하루오 씨가 노트까지 보여 준 건가요?</speed>"
+          text: "<speed=20>그건...</speed> <speed=16>하루오 씨가 연구 노트와 같이 숨긴 건가요?</speed>"
       - goto: motive_open_line
 
   revisit_notice:
@@ -91,13 +91,13 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.think
-          text: "<speed=26>말씀드릴 건 다 말씀드렸어요.</speed> <speed=22>계속 이러시면 제 기억까지 틀릴 것 같아요.</speed>"
+          text: "<speed=24>온도 기록은 드렸습니다.</speed> <speed=18>같은 질문을 반복하면... 없는 기억까지 만들게 돼요.</speed>"
       - goto: /routes/hub/1.yaml
 
   intro:
     actions:
       - bg: manager_office
-      - music: reasoning
+      - music: tension
       - effect: focus
       - set:
           visited_reiko: true
@@ -115,10 +115,10 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=28>이 차는 88도를 넘기면 향이 죽습니다.</speed> <speed=22>시음 책임자인 저는 비명이 날 때까지 온도계만 보고 있었어요.</speed>"
+          text: "<speed=26>88도.</speed> <speed=20>아버지는 그 온도를 한 번도 넘기지 않았어요.</speed> <speed=18>저도 비명이 날 때까지 온도계에서 눈을 떼지 않았습니다.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=22>(온도계만 봤다면서 2번 잔의 물기까지 먼저 닦으려 했어.)</speed> <speed=48>시각부터 적어 두자.</speed>"
+          text: "<speed=20>(눈을 떼지 않았다면서, 쓰러지자마자 2번 잔의 물기부터 봤어.</speed> <speed=44>말한 순서를 그대로 적자.)</speed>"
       - branch:
           cases:
             - when:
@@ -142,7 +142,7 @@ scenes:
           inputLockMs: 500
       - wait: 3000
       - say:
-          text: "<speed=28>레이코의 진술을 온도와 시각 순서로 메모했다.</speed> <speed=24>몇몇 문장이 서로 맞지 않았다.</speed>"
+          text: "<speed=26>코난은 레이코가 말한 동작을 한 줄씩 적었다.</speed> <speed=20>9시 29분 다음 줄만 비어 있었다.</speed>"
       - clearSticker:
           id: item_popup_reiko_statement_note
           leave:
@@ -153,25 +153,25 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=24>(진술 시각은 이미 적어 뒀어.)</speed> <speed=46>이번엔 기록과 맞춰 보면 돼.</speed>"
+          text: "<speed=20>(말한 순서는 이미 적어 뒀어.</speed> <speed=42>이번엔 멈춘 온도계 옆에 놓아 보자.)</speed>"
       - goto: approach_probe
 
   approach_probe:
     actions:
       - choice:
           key: reiko_approach
-          prompt: "체면을 지키려는 레이코에게 어떻게 질문할까?"
+          prompt: "레이코가 끝까지 말하게 하려면?"
           options:
-            - text: "관리인으로서 온도 기록 절차를 순서대로 설명해 달라고 한다"
+            - text: "시음 책임자의 절차를 처음부터 듣는다"
               set:
                 rapport_reiko: true
               add:
                 rapport_score: 1
                 trust: 1
               goto: approach_procedure
-            - text: "하루오와 무슨 사이였는지부터 묻는다"
+            - text: "하루오와의 개인적인 관계부터 묻는다"
               goto: approach_personal
-            - text: "손수건을 댄 사람이 당신이라고 단정한다"
+            - text: "손수건을 쓴 범인이라고 단정한다"
               add:
                 trust: -1
               goto: approach_accusation
@@ -182,10 +182,10 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=26>주전자를 올리고, 88도를 확인한 뒤, 시음 순서를 알립니다.</speed> <speed=20>그날도... 같은 순서였어요.</speed>"
+          text: "<speed=24>온도계를 소독하고, 주전자를 올리고, 88도에서 불을 끕니다.</speed> <speed=18>그다음 잔 번호를 확인하고...</speed> <speed=16>그날도 같았어요.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=22>(절차를 말할 때만 목소리가 안정돼.)</speed> <speed=46>빠진 동작이 나오면 바로 알 수 있어.</speed>"
+          text: "<speed=20>(절차를 외울 때만 숨이 고르게 돌아와.</speed> <speed=42>그래서 빠진 한 동작이 더 크게 들려.)</speed>"
       - goto: first_probe
 
   approach_personal:
@@ -194,7 +194,7 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=24>직원이었고, 오래 아는 사이였습니다.</speed> <speed=20>지금 묻는 건 온도계 기록 아닌가요?</speed>"
+          text: "<speed=22>직원이었고, 아버지 때부터 이곳을 지킨 사람이에요.</speed> <speed=18>그 이상을 지금 설명해야 하나요?</speed>"
       - goto: first_probe
 
   approach_accusation:
@@ -203,7 +203,7 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=22>아이의 추측에 답할 생각은 없어요.</speed> <speed=18>기록을 보실 거라면 보여 드리죠.</speed>"
+          text: "<speed=20>그 말은 질문이 아니라 결론이네요.</speed> <speed=16>아이의 결론엔 답하지 않겠습니다.</speed>"
       - goto: first_probe
 
   first_probe:
@@ -212,18 +212,18 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "<speed=30>온도계 기록은 남아 있죠.</speed> <speed=24>말보다 그쪽이 정확할 거예요.</speed>"
+          text: "<speed=28>온도계는 자동으로 시각을 남기죠?</speed> <speed=22>사람 기억보다 그 숫자가 먼저일 것 같아요.</speed>"
       - choice:
           key: reiko_first_probe
-          prompt: "레이코의 말에서 기록으로 확인할 수 있는 것은?"
+          prompt: "멈춘 온도계와 맞춰 볼 것은?"
           options:
-            - text: "88도 도달 시각과 잔의 반응 시각을 맞춘다"
+            - text: "88도 도달 시각과 비명 시각을 겹친다"
               set:
                 clue_rim_reagent: true
               add:
                 deduction_score: 2
               goto: first_claim_correct
-            - text: "목소리가 떨렸다는 사실을 추궁한다"
+            - text: "목소리가 떨린 순간을 추궁한다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -239,19 +239,19 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "<speed=28>온도계 기록은 9시 29분에 멈췄어요.</speed> <speed=22>그런데 비명은 9시 30분에 났죠.</speed>"
+          text: "<speed=26>온도계는 9시 29분, 88도에서 멈췄어요.</speed> <speed=20>비명은 9시 30분.</speed> <speed=38>그 사이 한 줄이 비었어요.</speed>"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=24>1분 정도는...</speed> <speed=20>시계를 잘못 봤을 수도 있잖아요.</speed>"
+          text: "<speed=20>고작 1분이에요.</speed> <speed=16>천둥 때문에 초침을 잘못 봤을 수도 있잖아요.</speed>"
       - choice:
           key: reiko_first_commit
-          prompt: "비어 있는 1분을 더 확인할까?"
+          prompt: "그 1분과 겹치는 흔적은?"
           options:
-            - text: "잔의 반응 시각과 대조한다"
+            - text: "2번 잔 가장자리의 반응과 겹친다"
               goto: motive_branch
-            - text: "레이코에게 다시 묻는다"
+            - text: "같은 질문을 다시 반복한다"
               goto: retry_notice
 
   first_claim_wrong:
@@ -260,10 +260,10 @@ scenes:
           char: 코난.think
           with:
             - 레이코.nervous
-          text: "<speed=24>사람은 긴장하면 누구나 떨 수 있어.</speed> <speed=48>그것만으로는 비어 있는 1분을 설명할 수 없어.</speed>"
+          text: "<speed=22>(사람은 누구나 떨 수 있어.</speed> <speed=44>목소리는 9시 29분에 무슨 일이 있었는지 남기지 못해.)</speed>"
       - choice:
           key: reiko_first_rebuttal
-          prompt: "무엇을 다시 확인할까?"
+          prompt: "말 대신 무엇을 볼까?"
           options:
             - text: "온도계와 감식 기록을 비교한다"
               goto: retry_notice
@@ -277,16 +277,16 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=22>(레이코의 표정이 아니라, 멈춘 온도계가 거짓말을 가려 줄 거야.)</speed>"
+          text: "<speed=20>(표정은 숨길 수 있어도, 88도에서 멈춘 숫자는 움직일 수 없어.)</speed>"
       - goto: second_probe
 
   second_probe:
     actions:
       - choice:
           key: reiko_second_probe
-          prompt: "기록으로 바로 대조할 수 있는 것은?"
+          prompt: "9시 29분과 바로 겹치는 것은?"
           options:
-            - text: "88도 기록과 2번 잔 반응 시각을 맞춘다"
+            - text: "온도 기록과 2번 잔의 반응을 맞춘다"
               set:
                 clue_rim_reagent: true
               add:
@@ -305,15 +305,15 @@ scenes:
   second_claim_correct:
     actions:
       - say:
-          text: "<speed=28>온도계가 멈춘 9시 29분.</speed> <speed=22>2번 잔 가장자리에 물질이 옮겨진 시각도 그 무렵이다.</speed>"
+          text: "<speed=26>온도계가 멈춘 9시 29분.</speed> <speed=20>바로 그때 2번 잔의 가장자리만 닦였어.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=30>레이코 씨가 온도계에서 눈을 뗀 1분과 정확히 겹쳐요.</speed>"
+          text: "<speed=28>레이코 씨가 말에서 빼 버린 1분과 정확히 겹쳐요.</speed>"
       - choice:
           key: reiko_second_commit
-          prompt: "이 1분을 사건과 연결할까?"
+          prompt: "이 빈칸을 어떻게 남길까?"
           options:
-            - text: "진술의 모순으로 남긴다"
+            - text: "진술에서 빠진 동작으로 표시한다"
               goto: motive_branch
             - text: "우연일 가능성을 남긴다"
               add:
@@ -326,10 +326,10 @@ scenes:
           char: 코난.think
           with:
             - 레이코.nervous
-          text: "<speed=24>표정만 좇다 보니 기록의 빈칸을 놓쳤어.</speed> <speed=48>지금은 더 밀어붙이기 어렵다.</speed>"
+          text: "<speed=22>(표정만 보다가 숫자를 놓쳤어.</speed> <speed=44>지금 더 밀면 레이코 씨는 절차 뒤로 숨을 거야.)</speed>"
       - choice:
           key: reiko_second_rebuttal
-          prompt: "레이코의 진술 조사를 마칠까?"
+          prompt: "진술 메모를 덮을까?"
           options:
             - text: "메모만 챙기고 돌아간다"
               goto: motive_half_line
@@ -355,17 +355,17 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "<speed=32>수정 계약서에는 블렌드 권리를 켄지 씨 회사로 넘긴다는 조항이 있었어요.</speed> <speed=24>원본 연구 노트는 하루오 씨가 보관하고 있었고요.</speed>"
+          text: "<speed=30>수정 계약서엔 배합 이름을 켄지 씨 회사로 넘기는 조항이 있어요.</speed> <speed=22>그런데 원본 연구 노트는 하루오 씨가 숨겼죠.</speed>"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=22>그 노트 얘기를...</speed> <speed=44>누구한테 들었죠?</speed>"
+          text: "<speed=20>그 노트는...</speed> <speed=42>누가 숨겼다고 했죠?</speed>"
       - say:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "<speed=28>방금 전까지는 노트가 있는지도 모른다고 했잖아요.</speed>"
+          text: "<speed=26>난 '숨겼다'고 말하지 않았어요.</speed> <speed=20>레이코 씨가 먼저 알고 있었네요.</speed>"
       - set:
           reiko_motive_open: true
       - add:
@@ -378,7 +378,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=22>(레이코가 감춘 1분은 찾았지만, 연구 노트와 이어지는 말은 끌어내지 못했어.)</speed>"
+          text: "<speed=20>(감춘 1분은 찾았지만, 연구 노트까지 입을 열게 하진 못했어.)</speed>"
       - add:
           mistake_count: 1
       - goto: outro
@@ -400,15 +400,15 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=22>그 메모...</speed> <speed=18>제가 한 말은 고치지 말아 주세요. 틀린 시각도 그대로요.</speed>"
+          text: "<speed=20>그 메모...</speed> <speed=16>제가 틀리게 말한 시각도 지우지 말아 주세요.</speed>"
       - say:
           char: 코난
-          text: "<speed=30>그러려고 적은 거예요.</speed> <speed=24>나중에 기억이 바뀌지 않도록.</speed>"
+          text: "<speed=28>안 지워요.</speed> <speed=22>나중에 누구 기억이 달라져도, 지금 말은 그대로 남게요.</speed>"
       - goto: /routes/hub/1.yaml
 
   outro_closed:
     actions:
       - say:
           char: 코난
-          text: "<speed=30>말해 줘서 고마워요.</speed> <speed=24>진술 메모는 경찰에게 그대로 보여 줄게요.</speed>"
+          text: "<speed=28>말해 줘서 고마워요.</speed> <speed=22>메모는 손대지 않고 경찰에게 보여 줄게요.</speed>"
       - goto: /routes/hub/1.yaml
