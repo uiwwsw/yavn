@@ -165,6 +165,9 @@ let effectTimer: number | undefined;
 let autoAdvanceTimer: number | undefined;
 let choiceTimer: number | undefined;
 let bgmAudio: HTMLAudioElement | undefined;
+const bgmFadeTimers = new Map<HTMLAudioElement, number>();
+const BGM_VOLUME = 0.6;
+const BGM_CROSSFADE_MS = 420;
 let bgmNeedsUnlock = false;
 let bgmCurrentKind: 'audio' | 'youtube' | undefined;
 let bgmCurrentKey: string | undefined;
@@ -480,12 +483,52 @@ async function loadYouTubeApi(): Promise<YouTubeGlobal> {
   return youtubeApiPromise;
 }
 
-function stopAudioBgm() {
-  if (!bgmAudio) {
+function clearAudioFade(audio: HTMLAudioElement) {
+  const timer = bgmFadeTimers.get(audio);
+  if (timer === undefined) {
     return;
   }
-  bgmAudio.pause();
+  window.clearInterval(timer);
+  bgmFadeTimers.delete(audio);
+}
+
+function fadeAudioVolume(
+  audio: HTMLAudioElement,
+  targetVolume: number,
+  durationMs: number,
+  onComplete?: () => void,
+) {
+  clearAudioFade(audio);
+  const initialVolume = audio.volume;
+  if (initialVolume === targetVolume) {
+    onComplete?.();
+    return;
+  }
+  const startedAt = performance.now();
+  const tick = () => {
+    const progress = Math.min(1, (performance.now() - startedAt) / durationMs);
+    audio.volume = initialVolume + (targetVolume - initialVolume) * progress;
+    if (progress < 1) {
+      return;
+    }
+    clearAudioFade(audio);
+    onComplete?.();
+  };
+  tick();
+  bgmFadeTimers.set(audio, window.setInterval(tick, 32));
+}
+
+function stopAudioBgm() {
+  const activeAudio = bgmAudio;
   bgmAudio = undefined;
+  if (activeAudio) {
+    clearAudioFade(activeAudio);
+    activeAudio.pause();
+  }
+  [...bgmFadeTimers.keys()].forEach((audio) => {
+    clearAudioFade(audio);
+    audio.pause();
+  });
 }
 
 function stopYouTubeBgm() {
@@ -1364,22 +1407,33 @@ function playMusic(url?: string) {
   stopYouTubeBgm();
   if (bgmCurrentKind === 'audio' && bgmCurrentKey === url && bgmAudio) {
     if (bgmNeedsUnlock || bgmAudio.paused) {
-      void bgmAudio.play().then(() => {
+      const audio = bgmAudio;
+      void audio.play().then(() => {
         bgmNeedsUnlock = false;
+        fadeAudioVolume(audio, BGM_VOLUME, BGM_CROSSFADE_MS);
       }).catch(() => {
         bgmNeedsUnlock = true;
       });
     }
     return;
   }
-  stopAudioBgm();
-  bgmAudio = new Audio(url);
-  bgmAudio.loop = true;
-  bgmAudio.volume = 0.6;
+  const previousAudio = bgmAudio;
+  const nextAudio = new Audio(url);
+  bgmAudio = nextAudio;
+  nextAudio.loop = true;
+  nextAudio.volume = 0;
+  if (previousAudio) {
+    fadeAudioVolume(previousAudio, 0, BGM_CROSSFADE_MS, () => previousAudio.pause());
+  }
   bgmCurrentKind = 'audio';
   bgmCurrentKey = url;
-  void bgmAudio.play().then(() => {
+  void nextAudio.play().then(() => {
+    if (bgmAudio !== nextAudio) {
+      nextAudio.pause();
+      return;
+    }
     bgmNeedsUnlock = false;
+    fadeAudioVolume(nextAudio, BGM_VOLUME, BGM_CROSSFADE_MS);
   }).catch(() => {
     bgmNeedsUnlock = true;
   });
@@ -1408,8 +1462,10 @@ export function unlockAudioFromGesture() {
   if (!bgmNeedsUnlock && !bgmAudio.paused) {
     return;
   }
-  void bgmAudio.play().then(() => {
+  const audio = bgmAudio;
+  void audio.play().then(() => {
     bgmNeedsUnlock = false;
+    fadeAudioVolume(audio, BGM_VOLUME, BGM_CROSSFADE_MS);
   }).catch(() => {
     bgmNeedsUnlock = true;
   });
