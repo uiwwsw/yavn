@@ -18,14 +18,26 @@ Type your story. Play your novel.
 
 ```bash
 pnpm install
+pnpm test
 pnpm dev
 ```
 
 - Node: `22.x`
 - 기본 주소: [http://localhost:5173](http://localhost:5173)
 
+## 품질과 구조
+
+- `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 검증
+- `src/engine.ts`: 챕터 전환, 자동저장, 연출 실행, 입력 게이트
+- `src/store.ts`: 렌더링 상태와 플레이 기록
+- `src/history.ts`: 챕터별 선택 복원과 최대 300개 스토리 로그
+- `pnpm test`: 파서 기본값, 저장 호환, 챕터 기록 격리 회귀 테스트
+- GitHub Actions: Node 22 + pnpm 10에서 테스트와 프로덕션 빌드 자동 검증
+- Live2D 렌더러는 실제 Live2D 캐릭터가 등장할 때 동적 로딩되어 기본 런처/2D 게임의 초기 번들에서 분리됩니다.
+- 상세 진단과 다음 우선순위: [`docs/IMPROVEMENT_ROADMAP.ko.md`](docs/IMPROVEMENT_ROADMAP.ko.md)
+
 라우팅:
-- `/`: Engine Console 런처(실행 콘솔 + 검색/태그 워크스페이스 + 인스펙터)
+- `/`: YAVN 플레이그라운드(대표 게임 쇼케이스 + 검색/태그 게임 라이브러리 + ZIP 실행)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 게임 즉시 실행
 
 ## 런처 메타데이터 (Manifest V3)
@@ -46,14 +58,14 @@ pnpm dev
       "author": "uiwwsw",
       "version": "7.0",
       "summary": "런처 카드 요약",
-      "thumbnail": "/game-list/conan/assets/bg/case_board.png",
+      "thumbnail": "/game-list/conan/assets/bg/case_board.avif",
       "tags": ["detective", "sample"],
       "chapterCount": 9,
       "seo": {
         "title": "명탐정 코난 외전: 다실의 비밀",
         "description": "아가사 크리스티 스타일의 밀실 추리 비주얼노벨",
         "keywords": ["명탐정 코난", "추리 게임", "비주얼노벨"],
-        "image": "/game-list/conan/assets/bg/case_board.png",
+        "image": "/game-list/conan/assets/bg/case_board.avif",
         "imageAlt": "다실 사건 단서 보드"
       }
     }
@@ -78,7 +90,7 @@ pnpm dev
 게임별 선택 메타(`public/game-list/<gameId>/launcher.yaml`, 선택):
 
 ```yaml
-summary: "게임 카드/인스펙터에 표시할 설명"
+summary: "게임 카드와 대표 쇼케이스에 표시할 설명"
 thumbnail: "assets/bg/cover.png"
 tags:
   - detective
@@ -87,7 +99,7 @@ tags:
 
 - 이 파일은 런처 전용이며 엔진 DSL(`config/base/chapter`) 파서와 분리됩니다.
 - `thumbnail`은 상대 경로일 때 `/game-list/<gameId>/...`로 정규화됩니다.
-- `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 인스펙터 기본 썸네일로 사용합니다.
+- `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 쇼케이스/게임 카드 기본 썸네일로 사용합니다.
 
 ## Public 최소화 정책
 
@@ -123,6 +135,7 @@ startScreen:
   enabled: true
   image: assets/bg/title.png
   music: assets/music/intro.mp3
+  showTitle: true
   startButtonText: 시작하기
   buttonPosition: auto
 endingScreen:
@@ -149,9 +162,9 @@ assets:
     hall: assets/bg/hall.png
   characters:
     conan:
-      base: assets/char/conan/base.png
+      base: assets/char/conan/base.webp
       emotions:
-        serious: assets/char/conan/serious.png
+        serious: assets/char/conan/serious.webp
   music:
     mystery: assets/music/mystery.wav
   sfx:
@@ -163,7 +176,7 @@ inventory:
   clue_note:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
-    image: assets/bg/case_board.png
+    image: assets/bg/case_board.avif
     category: "수사자료"
     order: 10
 ```
@@ -194,7 +207,7 @@ scenes:
   - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
-  - `startScreen` (`enabled`, `image`, `music`, `startButtonText`, `buttonPosition`)
+  - `startScreen` (`enabled`, `image`, `music`, `showTitle`, `startButtonText`, `buttonPosition`)
   - `endingScreen` (`image`)
   - `endings`, `endingRules`, `defaultEnding`
 - `seo` 하위 필드:
@@ -226,7 +239,8 @@ scenes:
 - `script/scenes`는 챕터 YAML만 사용
 - `endings/endingRules/defaultEnding`은 `config.yaml`만 사용
 - `ui.template`은 `config.yaml`만 사용하며, 미지정 시 `cinematic-noir`가 기본값으로 적용됩니다.
-- `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
+- `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `showTitle=true`, `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
+- 타이틀 이미지 자체에 게임명이 포함되어 있으면 `showTitle: false`로 엔진 제목 오버레이를 숨길 수 있습니다. SEO 제목과 접근 가능한 문서 제목은 그대로 유지됩니다.
 - `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
 
@@ -243,6 +257,7 @@ scenes:
 ## 경로 규칙
 
 - `/...`: 게임 루트 기준
+- `root:/...`: 같은 배포의 `public` 루트 기준. 여러 게임이 공유하는 에셋에 사용
 - `./...`, `../...`: 선언 YAML 파일 위치 기준
 - `assets/...` 같은 bare 경로: 선언 YAML 파일 위치 기준
 - 내부적으로 asset/video 경로는 게임 루트 기준 canonical key로 정규화됩니다.
@@ -268,6 +283,19 @@ scenes:
 - `choice`
 - `branch`
 - `ending`
+
+## 화면 이펙트
+
+`effect` 액션은 이름에 대응하는 짧은 전체 화면 연출을 실행하고 바로 다음 액션으로 진행합니다.
+
+```yaml
+- effect: impact
+```
+
+- 기본: `shake`, `flash`, `zoom`, `blur`, `darken`, `pulse`, `tilt`
+- 트레일러 연출: `impact`, `glitch`, `speedlines`, `alarm`, `focus`
+- 알 수 없는 이름은 상태 클래스만 약 `350ms` 적용되므로 게임별 CSS 확장도 가능합니다.
+- `prefers-reduced-motion` 환경에서는 비필수 움직임을 제거합니다.
 
 ## `sticker.inputLockMs` (입력 잠금)
 
@@ -299,7 +327,7 @@ inventory:
   clue_note:
     name: "현장 메모"
     description: "탐문 중 확인한 단서를 정리한 메모다."
-    image: assets/bg/case_board.png
+    image: assets/bg/case_board.avif
 
 scenes:
   intro:
@@ -366,6 +394,22 @@ scenes:
 - `wait` 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
 - 잠금이 끝나면 기존 `say` 동작처럼 다음 입력을 받을 수 있습니다.
 
+## `say.autoAdvance` (대사 자동 진행)
+
+`say` 액션에 `autoAdvance`(ms)를 지정하면 입력이 없어도 해당 시간이 지난 뒤 다음 액션으로 진행합니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "남은 시간 7초."
+    autoAdvance: 2000
+```
+
+동작:
+- 타이핑 중이어도 설정 시간이 끝나면 문장을 완료하고 다음 액션을 실행합니다.
+- `wait`와 함께 쓰면 둘 중 더 긴 시간이 지난 뒤 진행합니다.
+- 플레이어가 먼저 수동 진행하면 예약된 자동 진행은 취소됩니다.
+
 ## `choice` 1회 유예(옵션별 지정)
 
 `choice`에서 잘못 누른 선택지를 1회 유예하는 동작을 옵션별로 지정할 수 있습니다.
@@ -392,6 +436,27 @@ scenes:
 동작:
 - 유예가 활성화된 옵션은 첫 클릭에서 `goto/set/add`를 실행하지 않고 문구만 표시합니다.
 - 같은 옵션을 다시 선택하면 원래 분기(`goto/set/add`)가 실행됩니다.
+
+## `choice` 제한시간
+
+`choice.timeoutMs`로 선택 가능 시간을 지정하고, 만료 시 실행할 옵션을 `timeoutOptionIndex`로 고를 수 있습니다.
+
+```yaml
+- choice:
+    prompt: "어느 신호를 끊을까?"
+    timeoutMs: 7000
+    timeoutOptionIndex: 0
+    options:
+      - text: "가짜 정지 신호"
+        goto: control_room
+      - text: "기관실 주 전원"
+        goto: wrong_turn
+```
+
+동작:
+- 제한시간 UI는 초 단위 값과 남은 시간을 나타내는 진행 바로 표시됩니다.
+- `timeoutOptionIndex` 기본값은 첫 옵션(`0`)이며, 범위를 벗어나면 마지막 옵션으로 보정합니다.
+- 시간 만료 선택은 흐름 정지를 피하기 위해 `forgiveOnce` 유예를 건너뛰고 즉시 실행합니다.
 
 ## `choice`/`input`에서 캐릭터 노출
 
@@ -441,6 +506,8 @@ scenes:
 
 - `config.yaml`에 `startScreen`이 없으면 기존처럼 즉시 실행합니다. (기본 OFF)
 - `startScreen`이 있고 `enabled: true`면 시작 화면을 표시합니다.
+- `startScreen.showTitle`은 기본 `true`이며, `false`이면 이미지 위 게임명 오버레이만 숨깁니다.
+- `showTitle: false`인 타이틀 아트는 모바일 세로 화면에서 어두운 `cover` 배경과 별도의 전경 이미지로 렌더링해, 이미지 안에 포함된 제목이 좌우로 잘리지 않게 합니다. 데스크톱과 모바일 가로 화면은 기존 `cover` 구성을 유지합니다.
 - 시작 버튼은 항상 표시되며, 텍스트 기본값은 `시작하기`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생합니다.
 - URL 게임(`/game-list/:gameId`)은 게임별 저장 키(`vn-engine-autosave:game:<gameId>`)가 있을 때만 `이어하기` 버튼을 표시합니다.
@@ -453,13 +520,22 @@ scenes:
 ## Conan 샘플 분기 구조
 
 - `0.yaml`은 평온한 콜드 오픈, `1.yaml`은 4인 갈등과 사건 발생(하루오 사망 + 다잉 메시지), `2.yaml`은 초동 정리/재구성 파트입니다.
-- `routes/hub/1.yaml`은 조사 라운지이며, `신이치/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
+- `routes/hub/1.yaml`은 조사 라운지이며, `세이지/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
 - 각 라인(`routes/<line>/1.yaml`)은 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다.
 - 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
 - 결말은 `conclusion/1.yaml`로 합류하며, 잠자는 코고로 추리 쇼 + 최종 지목/재지목 1회 흐름을 유지합니다.
 
+## Conan 60초 엔진 쇼케이스
+
+- `/game-list/conan-demo/`는 입력 없이 완주 가능한 약 `60.15초` 트레일러형 독립 게임입니다.
+- 자동 대사, 7초 제한 선택, 공유 에셋, 스티커 HUD와 신규 전체 화면 이펙트를 한 챕터에 압축했습니다.
+- 모바일 세로 화면에서 타이틀, 선택 게이트, 엔딩까지 넘침 없이 재생되도록 구성했습니다.
+
 ## 샘플
 
+- `public/game-list/conan-demo/config.yaml`
+- `public/game-list/conan-demo/base.yaml`
+- `public/game-list/conan-demo/0.yaml`
 - `public/game-list/conan/config.yaml`
 - `public/game-list/conan/base.yaml`
 - `public/game-list/conan/launcher.yaml`
@@ -468,7 +544,7 @@ scenes:
 - `public/game-list/conan/1.yaml`
 - `public/game-list/conan/2.yaml`
 - `public/game-list/conan/routes/hub/1.yaml`
-- `public/game-list/conan/routes/shinichi/1.yaml`
+- `public/game-list/conan/routes/seiji/1.yaml`
 - `public/game-list/conan/routes/reiko/1.yaml`
 - `public/game-list/conan/routes/kenji/1.yaml`
 - `public/game-list/conan/routes/haruo/1.yaml`
@@ -481,7 +557,8 @@ scenes:
 
 ## 개발 메모
 
-- 런처는 `EXECUTION CONSOLE(좌) / WORKSPACE CATALOG(중앙) / ASSET INSPECTOR(우)` 3패널 구조를 사용합니다.
+- 런처는 선택 게임의 실제 썸네일과 실행 액션을 먼저 보여주는 쇼케이스, 검색·태그 필터가 있는 플레이어블 빌드 라이브러리, ZIP 실행 툴바로 구성됩니다.
+- 첫 진입에서는 `engine-showcase` 태그 게임을 대표작으로 선택하고, 없으면 manifest 첫 게임을 사용합니다.
 - 게임 목록 manifest는 `schemaVersion: 3`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
@@ -494,16 +571,17 @@ scenes:
 - 인벤토리 모달은 `가방(획득)`/`도감(전체)` 2탭으로 동작하며, 정렬(`order` 우선/이름순)을 제공합니다.
 - 검색(이름)과 카테고리 필터는 `도감` 탭에서만 노출/적용됩니다.
 - `도감` 탭의 미획득 아이템은 잠금 카드(`미확인 아이템`)로 표시하고, 상세보기 팝업에서도 설명/이미지를 숨겨 스포일러를 최소화합니다.
-- 인벤토리 그리드는 반응형 고정 열 수를 사용합니다: 데스크톱 5열, 태블릿 4열, 모바일 2열.
+- 인벤토리 그리드는 반응형 고정 열 수를 사용합니다: 데스크톱 5열, 태블릿 4열, 모바일 3열(360px 이하 2열).
 - 인벤토리 스크롤은 슬롯 그리드 영역에만 적용하고, 하단 선택/설정 영역은 고정해 항상 보이도록 구성합니다.
 - 슬롯을 눌러 선택한 뒤 `상세보기` 버튼을 누르면 팝업에서 소지 여부/설명/이미지를 확인할 수 있습니다.
 - 슬롯 우측 상단 배지는 `획득` 상태에서만 표시하며, 미획득/사용 완료 상태에는 배지를 숨깁니다.
 - 모달 하단 체크 설정의 `배경음악 끄기`는 게임별 키(`vn-engine-settings:<autosave-key>`)로 저장되며, 해제 시 즉시 현재 BGM 재생이 중단됩니다.
 - 인벤토리의 `보기 탭/정렬/카테고리` 마지막 선택도 같은 게임별 설정 키에 저장되어 다음 실행 시 복원됩니다.
+- HUD의 `CASE LOG`는 대사, 확정한 선택, 정답 입력을 최대 300개까지 자동저장합니다. 선택 복원 키에 챕터 경로를 함께 기록해 서로 다른 챕터의 동일한 scene/action 좌표가 충돌하지 않습니다.
 - URL 게임에서는 모달 하단 `초기화면 가기` 버튼으로 Start Gate를 다시 열 수 있으며, ZIP 실행 게임에서는 버튼이 비활성화됩니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
 - 엔딩 배경 이미지는 `config.yaml.endingScreen.image`로 지정할 수 있으며, 템플릿 색상/디코레이션 레이어 위에 적용됩니다.
-- 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. (`uploading=true` 동안에는 `ZIP Loading...`)
+- 게임 플레이 HUD는 좌측 게임 제목 + 우측 안내 문구 구조를 유지하며, 기본 안내 문구는 `YAVN ENGINE`입니다. 모바일에서는 안내 문구를 숨기고 44px 로그/가방 터치 영역을 우선합니다. (`uploading=true` 동안에는 `ZIP Loading...`)
 - 엔딩 화면 하단에는 `처음부터 다시하기` 버튼 1개만 표시됩니다.
 - URL 게임에서 `처음부터 다시하기`를 누르면 인벤토리 모달의 `초기화면 가기`와 동일하게 Start Gate 세션 플래그를 초기화하고 Start Gate(시작 화면)로 복귀합니다.
 - ZIP 실행 게임에서는 Start Gate 재진입을 지원하지 않으므로 `처음부터 다시하기`가 기존처럼 첫 챕터 재시작(`restartFromBeginning`)으로 동작합니다.
@@ -512,8 +590,10 @@ scenes:
 - 모바일 브라우저에서는 핀치/제스처 확대를 막도록 viewport와 터치 제스처를 제한합니다.
 - 캐릭터 레이어는 다이얼로그 박스 상단 경계까지만 사용하며, 캐릭터 이미지는 레이어 하단 기준으로 정렬됩니다.
 - 화자 시각 강조는 플랫폼별 분기 없이 동일하게 적용되며, `speakerOrder` 기준으로 비화자 depth(brightness)가 점진적으로 낮아집니다. 캐릭터 레이어 `opacity`는 고정(1)으로 유지됩니다.
-- 챕터 로딩 중에는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 로딩 해제 시 페이드 인으로 표시해 로딩 오버레이와 대사 UI 전환을 안정화합니다.
-- 다이얼로그 박스 최대 높이는 게임 화면 가림을 줄이기 위해 `데스크톱 38%`(38dvh), `모바일 46%`(46dvh)로 제한하고, 초과 내용(긴 대사/입력/선택지)은 내부 스크롤로 처리합니다.
+- 챕터 로딩은 현재 챕터가 실제로 참조하는 시각 에셋만 첫 장면 순서대로 제한 병렬 프리로드하고, 이미 디코드한 URL은 세션 캐시에서 재사용합니다. 오디오/비디오는 브라우저 스트리밍을 유지하고, 데이터 절약/2G에서는 동시성을 낮추며 다음 챕터 백그라운드 예열을 생략합니다.
+- 챕터 로딩 중에는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 실제 단계/진행률을 표시한 뒤 로딩 해제 시 페이드 인으로 전환합니다.
+- 다이얼로그 박스 최대 높이는 게임 화면 가림을 줄이기 위해 `데스크톱 38%`(38dvh), `모바일 48%`(48dvh)로 제한하고, 초과 내용(긴 대사/입력/선택지)은 내부 스크롤로 처리합니다.
+- Conan 샘플의 배경은 AVIF, 투명 캐릭터는 WebP를 사용해 대표 이미지 묶음을 31.98MiB에서 2.14MiB로 축소했습니다.
 - 다이얼로그 박스 우측 상단(박스 외부 컨트롤 레이어)에는 `숨기기` 버튼이 표시되며, 수동으로 접으면 우측 하단에 작은 `대화창 열기` 버튼이 표시됩니다.
 - 다이얼로그를 수동으로 숨긴 상태에서는 클릭/`Enter`/`Space` 진행 입력을 잠가 실수로 대사가 넘어가지 않게 합니다.
 - 시스템 숨김(챕터 로딩/게임 미로딩/컷신) 중에는 캐릭터/스티커 레이어 하단 inset 기준을 유지해, 첫 다이얼로그 표시 때 레이어 높이 점프를 방지합니다.
@@ -526,6 +606,8 @@ scenes:
 - 스티커 `enter/leave` 이펙트의 `duration` 사용자 지정은 제거되어, 엔진 기본 시간(enter `280ms`, leave `220ms`)으로 고정됩니다.
 - `say.text`의 다중 `<speed=...>...</speed>` 구간을 순차 해석해, 한 문장 안에서도 구간별 타이핑 속도를 다르게 적용합니다.
 - `say.wait`(ms)를 지정하면 해당 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠급니다.
+- `say.autoAdvance`(ms)를 지정하면 트레일러/키오스크형 대사를 입력 없이 자동 진행합니다.
+- `choice.timeoutMs`와 `timeoutOptionIndex`로 제한시간 선택 및 만료 분기를 구성할 수 있습니다.
 - Live2D 캐릭터 로딩은 `easy-cl2d` + 번들 자산(`src/assets/third-party/live2d/live2dcubismcore.min.js`) 조합으로 동작합니다.
 - 현재 Live2D 실행은 Cubism 5 모델(`moc3 v6`, `model3.json`)을 포함해 Cubism Core 호환 범위를 기준으로 렌더링합니다.
 - 코어 스크립트는 Vite 번들 URL(`?url`)로 로드해 정적 공개 경로 의존 없이 캐시 버스팅을 적용합니다.

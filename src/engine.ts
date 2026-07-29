@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import {
@@ -10,6 +11,7 @@ import {
   type ParsedChapterYaml,
   type ParsedConfigYaml,
 } from './parser';
+import { collectChapterAssetPaths } from './preload';
 import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 import type {
   CharacterSlot,
@@ -19,6 +21,7 @@ import type {
   Position,
   RouteHistoryEntry,
   RouteVarValue,
+  StoryLogEntry,
   StateAddMap,
   StateSetMap,
   StickerEnterEffect,
@@ -57,8 +60,9 @@ const GAME_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:game:';
 const PATH_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:path:';
 const GAME_SETTINGS_STORAGE_PREFIX = 'vn-engine-settings:';
 const MAX_CHAPTERS = 101;
-const MIN_CHAPTER_LOADING_MS = 600;
-const CHAPTER_LOADED_HOLD_MS = 200;
+const INITIAL_CHAPTER_MIN_LOADING_MS = 240;
+const NEXT_CHAPTER_MIN_LOADING_MS = 100;
+const CHAPTER_LOADED_HOLD_MS = 80;
 const LIVE2D_READY_TIMEOUT_MS = 12000;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
 const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
@@ -71,6 +75,11 @@ const EFFECT_DURATIONS: Record<string, number> = {
   darken: 500,
   pulse: 500,
   tilt: 320,
+  impact: 460,
+  glitch: 520,
+  speedlines: 680,
+  alarm: 760,
+  focus: 620,
 };
 const DEFAULT_STICKER_ENTER_EFFECT: StickerEnterEffect = 'fadeIn';
 const DEFAULT_STICKER_ENTER_DURATION = 280;
@@ -116,6 +125,7 @@ type SaveProgress = {
   routeVars: Record<string, RouteVarValue>;
   inventory: InventoryOwnedMap;
   routeHistory: RouteHistoryEntry[];
+  storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
 };
 
@@ -152,6 +162,8 @@ type InlineSpeedSegment = {
 let waitTimer: number | undefined;
 let typeTimer: number | undefined;
 let effectTimer: number | undefined;
+let autoAdvanceTimer: number | undefined;
+let choiceTimer: number | undefined;
 let bgmAudio: HTMLAudioElement | undefined;
 let bgmNeedsUnlock = false;
 let bgmCurrentKind: 'audio' | 'youtube' | undefined;
@@ -161,6 +173,7 @@ let youtubePlayer: YouTubePlayer | undefined;
 let preparedChapters: PreparedChapter[] = [];
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
+let preloadedAssetUrls = new Set<string>();
 let stickerRenderKeySeed = 0;
 const clearStickerTimers = new Map<string, number>();
 let runtimeMode: RuntimeMode;
@@ -360,6 +373,14 @@ function clearTimers() {
     window.clearTimeout(effectTimer);
     effectTimer = undefined;
   }
+  if (autoAdvanceTimer) {
+    window.clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = undefined;
+  }
+  if (choiceTimer) {
+    window.clearTimeout(choiceTimer);
+    choiceTimer = undefined;
+  }
   for (const timer of clearStickerTimers.values()) {
     window.clearTimeout(timer);
   }
@@ -534,6 +555,7 @@ function resetSession() {
   setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
   preparedChapters = [];
   activeChapterIndex = 0;
+  preloadedAssetUrls = new Set<string>();
   runtimeMode = undefined;
   urlGameRootBase = '';
   zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
@@ -569,6 +591,9 @@ function resolveAssetWithOverrides(baseUrl: string, path: string, overrides: Rec
   }
   if (/^(blob:|data:|https?:)/i.test(path)) {
     return path;
+  }
+  if (/^root:\//i.test(path)) {
+    return new URL(path.slice('root:'.length), window.location.origin).toString();
   }
   try {
     return new URL(path, baseUrl).toString();
@@ -1189,6 +1214,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       routeVars?: unknown;
       inventory?: unknown;
       routeHistory?: unknown;
+      storyLog?: unknown;
       resolvedEndingId?: unknown;
     };
     if (typeof parsed.sceneId !== 'string' || typeof parsed.actionIndex !== 'number') {
@@ -1220,10 +1246,39 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
             (value.kind === 'choice' || value.kind === 'input') &&
             typeof value.key === 'string' &&
             typeof value.value === 'string' &&
+            (value.chapterPath === undefined || typeof value.chapterPath === 'string') &&
             typeof value.sceneId === 'string' &&
             typeof value.actionIndex === 'number'
           );
         }) as RouteHistoryEntry[])
+      : [];
+    const storyLog = Array.isArray(parsed.storyLog)
+      ? parsed.storyLog
+          .filter((entry): entry is StoryLogEntry => {
+            if (!entry || typeof entry !== 'object') {
+              return false;
+            }
+            const value = entry as Partial<StoryLogEntry>;
+            const hasCursor =
+              (value.chapterPath === undefined || typeof value.chapterPath === 'string') &&
+              typeof value.sceneId === 'string' &&
+              typeof value.actionIndex === 'number';
+            if (!hasCursor) {
+              return false;
+            }
+            if (value.kind === 'dialogue') {
+              return (
+                typeof value.text === 'string' &&
+                (value.speaker === undefined || typeof value.speaker === 'string')
+              );
+            }
+            return (
+              (value.kind === 'choice' || value.kind === 'input') &&
+              typeof value.prompt === 'string' &&
+              typeof value.value === 'string'
+            );
+          })
+          .slice(-MAX_STORY_LOG_ENTRIES)
       : [];
     return {
       chapterIndex: typeof parsed.chapterIndex === 'number' ? parsed.chapterIndex : 0,
@@ -1236,6 +1291,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       routeVars,
       inventory,
       routeHistory,
+      storyLog,
       resolvedEndingId: typeof parsed.resolvedEndingId === 'string' ? parsed.resolvedEndingId : undefined,
     };
   } catch {
@@ -1261,6 +1317,7 @@ function saveProgress(sceneId: string, actionIndex: number) {
     routeVars: state.routeVars,
     inventory: state.inventory,
     routeHistory: state.routeHistory,
+    storyLog: state.storyLog,
     resolvedEndingId: state.resolvedEndingId,
   };
   saveProgressToKey(currentAutosaveKey, payload);
@@ -1649,30 +1706,6 @@ function mergeInventoryWithDefaults(
   };
 }
 
-function collectAssetPaths(game: GameData): string[] {
-  const paths = new Set<string>();
-  Object.values(game.assets.backgrounds).forEach((path) => paths.add(path));
-  for (const character of Object.values(game.assets.characters)) {
-    paths.add(character.base);
-    Object.values(character.emotions ?? {}).forEach((path) => paths.add(path));
-  }
-  Object.values(game.assets.music).forEach((path) => paths.add(path));
-  Object.values(game.assets.sfx).forEach((path) => paths.add(path));
-  for (const item of Object.values(game.inventory?.defaults ?? {})) {
-    if (item.image) {
-      paths.add(item.image);
-    }
-  }
-  for (const scene of Object.values(game.scenes)) {
-    for (const action of scene.actions) {
-      if ('video' in action && !extractYouTubeVideoId(action.video.src)) {
-        paths.add(action.video.src);
-      }
-    }
-  }
-  return [...paths];
-}
-
 function normalizeAssetKey(path: string): string {
   const normalized = path.replace(/\\/g, '/').replace(/^(\.\/|\/)+/, '');
   try {
@@ -1760,11 +1793,12 @@ function setAssetOverride(overrides: Record<string, string>, path: string, url: 
 }
 
 function isImageAsset(path: string): boolean {
-  return /\.(png|jpe?g|webp|gif|svg)$/i.test(path);
+  return /\.(avif|png|jpe?g|webp|gif|svg)$/i.test(path);
 }
 
 function detectMimeType(path: string): string | undefined {
   const lower = path.toLowerCase();
+  if (lower.endsWith('.avif')) return 'image/avif';
   if (lower.endsWith('.svg')) return 'image/svg+xml';
   if (lower.endsWith('.png')) return 'image/png';
   if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
@@ -1858,10 +1892,17 @@ async function warmImageDecodeUrl(url: string) {
   });
 }
 
-async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, chapterLabel: string) {
-  const initialPaths = collectAssetPaths(game);
+async function preloadChapterAssets(
+  chapter: PreparedChapter,
+  game: GameData,
+  chapterLabel: string,
+  reportProgress = true,
+) {
+  const initialPaths = collectChapterAssetPaths(game);
   if (initialPaths.length === 0) {
-    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loading...`);
+    if (reportProgress) {
+      useVNStore.getState().setChapterLoading(true, 0.96, 'Preparing scene...');
+    }
     return;
   }
 
@@ -1899,6 +1940,11 @@ async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, ch
       resolvedUrl = normalizeAbsoluteAssetUrl(existing);
     } else {
       resolvedUrl = normalizeAbsoluteAssetUrl(resolveAssetWithOverrides(chapter.baseUrl, path, chapter.assetOverrides));
+    }
+
+    const preloadedKey = makePreloadQueueKey(resolvedUrl);
+    if (preloadedAssetUrls.has(preloadedKey)) {
+      return;
     }
 
     let fetchedJson: string | undefined;
@@ -1943,20 +1989,49 @@ async function preloadChapterAssets(chapter: PreparedChapter, game: GameData, ch
         enqueue(resolvedReference);
       }
     }
+    preloadedAssetUrls.add(preloadedKey);
   };
 
   for (const path of initialPaths) {
     enqueue(path);
   }
 
-  while (processed < queue.length) {
-    const path = queue[processed];
-    await preloadSingle(path);
-    processed += 1;
-    const stepProgress = queue.length > 0 ? processed / queue.length : 1;
-    progress = Math.max(progress, stepProgress);
-    useVNStore.getState().setChapterLoading(true, Math.min(progress, 0.98), `${chapterLabel} loading...`);
-  }
+  const connection = (
+    navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean };
+    }
+  ).connection;
+  const constrainedNetwork = connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? '');
+  const concurrency = Math.min(queue.length, constrainedNetwork ? 2 : navigator.hardwareConcurrency <= 4 ? 3 : 4);
+  let cursor = 0;
+
+  const worker = async () => {
+    while (cursor < queue.length) {
+      const path = queue[cursor];
+      cursor += 1;
+      await preloadSingle(path);
+      processed += 1;
+      const stepProgress = queue.length > 0 ? processed / queue.length : 1;
+      progress = Math.max(progress, stepProgress);
+      const visibleProgress = Math.min(0.96, 0.08 + progress * 0.88);
+      if (reportProgress) {
+        useVNStore
+          .getState()
+          .setChapterLoading(true, visibleProgress, `${chapterLabel} assets ${processed}/${queue.length}`);
+      }
+    }
+  };
+
+  await Promise.all(Array.from({ length: concurrency }, () => worker()));
+}
+
+function canWarmNextChapterAssets(): boolean {
+  const connection = (
+    navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean };
+    }
+  ).connection;
+  return !connection?.saveData && !/(^|-)2g$/.test(connection?.effectiveType ?? '');
 }
 
 function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, resume: SaveProgress) {
@@ -1981,7 +2056,7 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
   const restoreVars = mergeRouteVarsWithDefaults(game.state?.defaults, {});
   const restoreInventory = mergeInventoryWithDefaults(game.inventory?.defaults, {});
   const historyByCursor = new Map<string, RouteHistoryEntry>();
-  for (const entry of resume.routeHistory) {
+  for (const entry of selectRouteHistoryForChapter(resume.routeHistory, chapter.pathKey)) {
     const key = `${entry.sceneId}:${entry.actionIndex}`;
     historyByCursor.set(key, entry);
   }
@@ -2170,15 +2245,16 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     activeChapterIndex = chapterIndex;
     resetLive2DLoadTracker();
     useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
-    const chapterLabel = 'Chapter';
+    const chapterLabel = `Chapter ${chapterIndex + 1}`;
     const loadStartedAt = performance.now();
-    useVNStore.getState().setChapterLoading(true, 0, `${chapterLabel} loading...`);
+    useVNStore.getState().setChapterLoading(true, 0.04, `${chapterLabel} data`);
     const game = await ensureChapterGame(chapter);
     useVNStore.getState().setUiTemplate(game.ui?.template ?? DEFAULT_UI_TEMPLATE);
     await preloadChapterAssets(chapter, game, chapterLabel);
     const elapsed = performance.now() - loadStartedAt;
-    await waitMs(MIN_CHAPTER_LOADING_MS - elapsed);
-    useVNStore.getState().setChapterLoading(true, 0.99, `${chapterLabel} preparing scene...`);
+    const minimumLoadingMs = chapterIndex === 0 ? INITIAL_CHAPTER_MIN_LOADING_MS : NEXT_CHAPTER_MIN_LOADING_MS;
+    await waitMs(minimumLoadingMs - elapsed);
+    useVNStore.getState().setChapterLoading(true, 0.98, 'Preparing scene...');
 
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
     const defaults = game.state?.defaults;
@@ -2199,6 +2275,10 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       useVNStore.getState().clearRouteHistory();
       for (const entry of resume.routeHistory) {
         useVNStore.getState().pushRouteHistory(entry);
+      }
+      useVNStore.getState().clearStoryLog();
+      for (const entry of resume.storyLog) {
+        useVNStore.getState().pushStoryLog(entry);
       }
       useVNStore.getState().setResolvedEndingId(resume.resolvedEndingId);
       restorePresentationToCursor(chapter, game, resume);
@@ -2224,10 +2304,17 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       return Boolean(resume && canResumeHere);
     }
 
-    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} loaded`);
+    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} ready`);
     await waitNextFrame();
     await waitMs(CHAPTER_LOADED_HOLD_MS);
-    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} loaded`);
+    useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} ready`);
+    if (nextChapter && canWarmNextChapterAssets()) {
+      window.setTimeout(() => {
+        void ensureChapterGame(nextChapter)
+          .then((nextGame) => preloadChapterAssets(nextChapter, nextGame, 'Next chapter', false))
+          .catch(() => undefined);
+      }, 300);
+    }
     return Boolean(resume && canResumeHere);
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);
@@ -2460,9 +2547,15 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('effect' in action) {
+    if (effectTimer) {
+      window.clearTimeout(effectTimer);
+    }
     useVNStore.getState().setEffect(action.effect);
     const duration = EFFECT_DURATIONS[action.effect] ?? 350;
-    effectTimer = window.setTimeout(() => useVNStore.getState().setEffect(undefined), duration);
+    effectTimer = window.setTimeout(() => {
+      effectTimer = undefined;
+      useVNStore.getState().setEffect(undefined);
+    }, duration);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -2508,6 +2601,10 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('choice' in action) {
+    if (choiceTimer) {
+      window.clearTimeout(choiceTimer);
+      choiceTimer = undefined;
+    }
     const presentation = resolveSayPresentation(action.choice.char, action.choice.with);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearInputGate();
@@ -2518,6 +2615,8 @@ function runToNextPause(loopGuard = 0) {
       forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,
       forgiveMessage: action.choice.forgiveMessage,
       forgivenOptionIndexes: [],
+      timeoutMs: action.choice.timeoutMs,
+      timeoutOptionIndex: action.choice.timeoutOptionIndex,
       options: action.choice.options,
     });
     if (presentation.speakerId) {
@@ -2532,6 +2631,16 @@ function runToNextPause(loopGuard = 0) {
       visibleText: action.choice.prompt,
       typing: false,
     });
+    if (action.choice.timeoutMs) {
+      const timeoutOptionIndex = Math.min(
+        action.choice.options.length - 1,
+        action.choice.timeoutOptionIndex ?? 0,
+      );
+      choiceTimer = window.setTimeout(() => {
+        choiceTimer = undefined;
+        submitChoiceOption(timeoutOptionIndex, true);
+      }, action.choice.timeoutMs);
+    }
     return;
   }
 
@@ -2616,6 +2725,11 @@ function runToNextPause(loopGuard = 0) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = game.settings.textSpeed;
     const sayWaitMs = clampSayWaitMs(action.say.wait);
+    const autoAdvanceMs = clampSayWaitMs(action.say.autoAdvance);
+    if (autoAdvanceTimer) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = undefined;
+    }
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
@@ -2623,6 +2737,14 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
     useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().pushStoryLog({
+      kind: 'dialogue',
+      speaker: presentation.speakerName,
+      text: parsed.text,
+      chapterPath: getCurrentChapterPathKey(),
+      sceneId: state.currentSceneId,
+      actionIndex: state.actionIndex,
+    });
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
@@ -2636,6 +2758,39 @@ function runToNextPause(loopGuard = 0) {
         waitTimer = undefined;
         useVNStore.getState().setBusy(false);
       }, sayWaitMs);
+    }
+    if (autoAdvanceMs > 0) {
+      const expectedSceneId = state.currentSceneId;
+      const expectedActionIndex = state.actionIndex;
+      autoAdvanceTimer = window.setTimeout(() => {
+        autoAdvanceTimer = undefined;
+        const current = useVNStore.getState();
+        if (
+          current.isFinished ||
+          !current.waitingInput ||
+          current.inputGate.active ||
+          current.choiceGate.active ||
+          current.currentSceneId !== expectedSceneId ||
+          current.actionIndex !== expectedActionIndex
+        ) {
+          return;
+        }
+        if (typeTimer) {
+          window.clearTimeout(typeTimer);
+          typeTimer = undefined;
+        }
+        if (waitTimer) {
+          window.clearTimeout(waitTimer);
+          waitTimer = undefined;
+        }
+        useVNStore.getState().setBusy(false);
+        useVNStore.getState().setWaitingInput(false);
+        useVNStore
+          .getState()
+          .setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+        incrementCursor();
+        runToNextPause();
+      }, Math.max(autoAdvanceMs, sayWaitMs));
     }
     typeDialog(parsed.text, textSpeed, parsed.segments, () => undefined);
     return;
@@ -3211,6 +3366,7 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
     }
 
     useVNStore.getState().clearRouteHistory();
+    useVNStore.getState().clearStoryLog();
     useVNStore.getState().setResolvedEndingId(undefined);
     await startPreparedChapters(chapters, 0);
   } catch (error) {
@@ -3304,6 +3460,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
     }
 
     useVNStore.getState().clearRouteHistory();
+    useVNStore.getState().clearStoryLog();
     useVNStore.getState().setResolvedEndingId(undefined);
     await startPreparedChapters(chapters, 0);
   } catch (error) {
@@ -3340,6 +3497,10 @@ export function handleAdvance() {
       return;
     }
     useVNStore.getState().setWaitingInput(false);
+    if (autoAdvanceTimer) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = undefined;
+    }
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
     incrementCursor();
@@ -3366,6 +3527,7 @@ export async function restartFromBeginning() {
   useVNStore.getState().setRouteVars({});
   useVNStore.getState().setInventory({});
   useVNStore.getState().clearRouteHistory();
+  useVNStore.getState().clearStoryLog();
   useVNStore.getState().setResolvedEndingId(undefined);
   await startChapter(0);
 }
@@ -3380,6 +3542,15 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
     kind: 'input',
     key: historyKey,
     value: answer,
+    chapterPath: getCurrentChapterPathKey(),
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
+  });
+  useVNStore.getState().pushStoryLog({
+    kind: 'input',
+    prompt: state.inputGate.prompt,
+    value: answer,
+    chapterPath: getCurrentChapterPathKey(),
     sceneId: state.currentSceneId,
     actionIndex: state.actionIndex,
   });
@@ -3402,7 +3573,7 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
   runToNextPause();
 }
 
-export function submitChoiceOption(optionIndex: number) {
+export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false) {
   const state = useVNStore.getState();
   if (!state.game || state.busy || !state.waitingInput || !state.choiceGate.active) {
     return;
@@ -3415,7 +3586,7 @@ export function submitChoiceOption(optionIndex: number) {
 
   const effectiveForgiveOnce = selected.forgiveOnce ?? state.choiceGate.forgiveOnceDefault;
   const alreadyForgiven = state.choiceGate.forgivenOptionIndexes.includes(optionIndex);
-  if (effectiveForgiveOnce && !alreadyForgiven) {
+  if (!skipForgiveOnce && effectiveForgiveOnce && !alreadyForgiven) {
     useVNStore.getState().setChoiceGate({
       forgivenOptionIndexes: [...state.choiceGate.forgivenOptionIndexes, optionIndex],
     });
@@ -3430,10 +3601,24 @@ export function submitChoiceOption(optionIndex: number) {
     return;
   }
 
+  if (choiceTimer) {
+    window.clearTimeout(choiceTimer);
+    choiceTimer = undefined;
+  }
+
   useVNStore.getState().pushRouteHistory({
     kind: 'choice',
     key: state.choiceGate.key,
     value: selected.text,
+    chapterPath: getCurrentChapterPathKey(),
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
+  });
+  useVNStore.getState().pushStoryLog({
+    kind: 'choice',
+    prompt: state.choiceGate.prompt,
+    value: selected.text,
+    chapterPath: getCurrentChapterPathKey(),
     sceneId: state.currentSceneId,
     actionIndex: state.actionIndex,
   });

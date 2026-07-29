@@ -9,16 +9,16 @@ author:
     - label: "LinkedIn"
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
-version: "8.0"
+version: "9.1"
 seo:
-  description: "폭우에 고립된 료칸에서 벌어진 다실 살인 사건. 다잉 메시지와 잠자는 코고로 추리 쇼로 진실을 완성하는 코난풍 비주얼노벨."
+  description: "폭우에 고립된 료칸의 다실 살인 사건. 지워지다 만 2R과 사라진 1분을 추적하는 코난풍 분기 미스터리."
   keywords:
     - "명탐정 코난"
     - "추리 게임"
     - "비주얼노벨"
     - "미스터리"
     - "분기 시나리오"
-  image: "assets/bg/case_board.png"
+  image: "assets/bg/case_board.avif"
   imageAlt: "다실 사건 단서 보드"
 textSpeed: 38
 autoSave: true
@@ -27,22 +27,23 @@ ui:
   template: cinematic-noir
 startScreen:
   enabled: true
-  image: "assets/bg/open.png"
+  image: "assets/bg/open.avif"
   music: "assets/music/intro.mp3"
+  showTitle: false
   startButtonText: "시작하기"
   buttonPosition: "auto"
 endingScreen:
-  image: "assets/bg/closed.png"
+  image: "assets/bg/closed.avif"
 endings:
   true_end:
     title: "TRUE END"
-    message: "다섯 단서를 빈틈없이 맞물려 다실 사건의 진실을 완전히 입증했다."
+    message: "지워지다 만 2R과 사라진 1분을 연결해 다실 사건의 수법과 동기를 모두 밝혔다."
   normal_end:
     title: "NORMAL END"
-    message: "범인은 밝혔지만 몇몇 연결고리가 비어 있어 찜찜한 끝을 남겼다."
+    message: "2번 잔에 손댄 범인은 밝혔지만 계약서와 연구 노트의 진실은 경찰 조사로 남았다."
   bad_end:
     title: "BAD END"
-    message: "단서가 엇갈려 사건의 결말이 흐릿하게 닫혔다."
+    message: "결정적인 1분을 증명하지 못한 채 범인은 침묵 속에 숨었다."
 endingRules:
   - when:
       all:

@@ -22,13 +22,13 @@ scenes:
       - sound: door
       - say:
           char: 란
-          text: "<speed=54>와아, 공기 진짜 좋다.</speed> <speed=34>오늘은 정말 쉬는 여행 같아.</speed>"
+          text: "<speed=50>비 냄새 좋다.</speed> <speed=34>이런 곳이라면 아빠도 얌전히 쉴 수 있겠지?</speed>"
       - say:
           char: 코고로.proud
-          text: "<speed=72>좋아!</speed> <speed=48>오늘만큼은 의뢰도 추리도 없다!</speed> <speed=82>명탐정 모리 코고로의 휴가다!</speed>"
+          text: "<speed=66>물론이지!</speed> <speed=40>오늘 일정은 온천, 저녁, 그리고 이 료칸의 명물 차.</speed> <speed=58>사건은 절대 사절이다!</speed>"
       - say:
           char: 코난.think
-          text: "<speed=30>(휴가라...)</speed> <speed=24>이상할 정도로 평온할 땐,</speed> <speed=60>항상 사건이 숨어 있었지.</speed>"
+          text: "<speed=28>(아저씨가 저 말을 하면 꼭 불길하단 말이지...)</speed>"
 
   tea_joke:
     actions:
@@ -36,13 +36,13 @@ scenes:
       - sound: cup_clink
       - say:
           char: 코고로.proud
-          text: "<speed=64>이 향 좀 봐라!</speed> <speed=42>명탐정 코끝이 벌써 행복하다고 외치고 있다!</speed>"
+          text: "<speed=58>오, 이 향!</speed> <speed=38>마시기도 전에 머리가 맑아지는군.</speed>"
       - say:
           char: 란
-          text: "<speed=52>아빠,</speed> <speed=36>오늘은 냄새만 맡고 조용히 계셔.</speed> <speed=68>제발!</speed>"
+          text: "<speed=46>아빠, 아직 시음 전이야.</speed> <speed=34>혼자 먼저 마시면 또 민망해진다?</speed>"
       - say:
           char: 코난
-          text: "<speed=48>그래도 차는 진짜 좋네.</speed> <speed=32>한 모금에 긴장이 풀릴 정도야.</speed>"
+          text: "<speed=34>잔은 네 개인데 자리표까지 있네.</speed> <speed=28>그냥 시음회치고는 꽤 엄격하다.</speed>"
 
   host_preview:
     actions:
@@ -55,27 +55,27 @@ scenes:
           position: right
           emotion: nervous
       - char:
-          id: 신이치
+          id: 세이지
           position: center
           emotion: cold
       - say:
           char: 레이코.nervous
           with:
             - 켄지.angry
-            - 신이치.cold
-          text: "<speed=42>환영합니다.</speed> <speed=30>잠시 뒤 공동 블렌드 시음회를 시작할게요.</speed>"
+            - 세이지.cold
+          text: "<speed=38>폭우 때문에 귀한 손님들 발이 묶였네요.</speed> <speed=30>그래도 시음은 예정대로 진행할게요.</speed>"
       - say:
           char: 켄지.angry
           with:
             - 레이코.nervous
-            - 신이치.cold
-          text: "<speed=58>순서만 지키면 된다.</speed> <speed=34>오늘 안에 계약서까지 끝낸다.</speed>"
+            - 세이지.cold
+          text: "<speed=52>예정대로?</speed> <speed=32>계약서에서 개발자 권리 조항이 바뀐 것부터 설명해.</speed>"
       - say:
-          char: 신이치.cold
+          char: 세이지.cold
           with:
             - 켄지.angry
             - 레이코.nervous
-          text: "<speed=36>기록표는 제가 들고 있습니다.</speed> <speed=28>숫자대로 진행하죠.</speed>"
+          text: "<speed=34>원본은 제가 보관하고 있습니다.</speed> <speed=28>시음이 끝나면 수정본과 한 줄씩 대조하죠.</speed>"
 
   tension_seed:
     actions:
@@ -89,14 +89,13 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=28>(비가 빨리 온다...)</speed> <speed=24>밖은 막혔고,</speed> <speed=70>안은 사람으로 가득 찼다.</speed>"
+          text: "<speed=26>(창문이 울릴 만큼 비가 세졌어.)</speed> <speed=22>산길은 벌써 통제됐고...</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=30>(좋아.)</speed> <speed=62>지금부터는 웃음소리 하나도 흘려듣지 않는다.</speed>"
+          text: "<speed=24>(바뀐 계약서, 굳어 버린 레이코의 손, 그리고 네 개의 잔.)</speed> <speed=54>아무래도 휴가로 끝나진 않겠네.</speed>"
 
   handoff:
     actions:
       - effect: pulse
       - say:
-          text: "<speed=60>폭우 속 시음회,</speed> <speed=34>그리고 곧 터질 비명.</speed>"
-      - goto: /1.yaml
+          text: "<speed=34>그때는 아무도 몰랐다.</speed> <speed=26>저 네 개의 찻잔 중 하나가 곧 사건 현장이 되리라는 걸.</speed>"

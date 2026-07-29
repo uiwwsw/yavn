@@ -1,4 +1,15 @@
-import { ChangeEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  lazy,
+  MouseEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   completeVideoCutscene,
   getBgmEnabled,
@@ -20,12 +31,15 @@ import {
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
-import { Live2DCharacter } from './Live2DCharacter';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import type { AuthorMetaObject, CharacterSlot, GameSeoMeta, Position, StartButtonPosition, UiTemplateId } from './types';
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties, SyntheticEvent } from 'react';
+
+const Live2DCharacter = lazy(() =>
+  import('./Live2DCharacter').then((module) => ({ default: module.Live2DCharacter })),
+);
 
 type GameListSeoEntry = {
   title?: string;
@@ -75,6 +89,7 @@ type StartGateState =
     musicUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
+    showTitle: boolean;
     showLoadButton: boolean;
   }
   | {
@@ -89,6 +104,7 @@ type StartGateState =
     previewMusicBlobUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
+    showTitle: boolean;
     showLoadButton: false;
   };
 
@@ -347,6 +363,9 @@ function resolveRuntimeAssetUrl(
   if (!assetPath) {
     return undefined;
   }
+  if (/^root:\//i.test(assetPath)) {
+    return new URL(assetPath.slice('root:'.length), window.location.origin).toString();
+  }
   if (/^(blob:|data:|https?:|[a-z][a-z0-9+.-]*:)/i.test(assetPath)) {
     return assetPath;
   }
@@ -373,6 +392,9 @@ function resolveRuntimeAssetUrl(
 function resolveStartGateAssetUrl(assetPath: string | undefined, baseUrl: string): string | undefined {
   if (!assetPath) {
     return undefined;
+  }
+  if (/^root:\//i.test(assetPath)) {
+    return new URL(assetPath.slice('root:'.length), window.location.origin).toString();
   }
   try {
     return new URL(assetPath, baseUrl).toString();
@@ -608,6 +630,9 @@ export default function App() {
     inputGate,
     choiceGate,
     inventory,
+    storyLog,
+    chapterIndex,
+    chapterTotal,
     resolvedEndingId,
     uiTemplate,
     setDialogUiHidden,
@@ -626,6 +651,7 @@ export default function App() {
   const [startGateLaunching, setStartGateLaunching] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [caseFileTab, setCaseFileTab] = useState<'log' | 'inventory'>('log');
   const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
   const [inventoryDetailOpen, setInventoryDetailOpen] = useState(false);
   const [inventoryView, setInventoryView] = useState<InventoryViewPreference>(() => getInventoryUiSettings().view);
@@ -637,7 +663,7 @@ export default function App() {
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
-  const inventoryButtonRef = useRef<HTMLButtonElement | null>(null);
+  const settingsTriggerRef = useRef<HTMLButtonElement | null>(null);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
   const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
@@ -657,6 +683,8 @@ export default function App() {
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
+  const repositoryUrl = 'https://github.com/uiwwsw/yavn';
+  const developmentGuideUrl = `${repositoryUrl}/blob/main/docs/DEVELOPMENT_GUIDE.ko.md`;
   const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
   const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
@@ -672,7 +700,7 @@ export default function App() {
         return;
       }
       window.requestAnimationFrame(() => {
-        inventoryButtonRef.current?.focus({ preventScroll: true });
+        settingsTriggerRef.current?.focus({ preventScroll: true });
       });
     },
     [],
@@ -721,7 +749,7 @@ export default function App() {
         if (prev && parsed.games.some((entry) => entry.id === prev)) {
           return prev;
         }
-        return parsed.games[0]?.id ?? null;
+        return parsed.games.find((entry) => entry.tags.includes('engine-showcase'))?.id ?? parsed.games[0]?.id ?? null;
       });
     } catch (error) {
       if (requestId !== gameListRequestIdRef.current) {
@@ -773,6 +801,7 @@ export default function App() {
                 musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+                showTitle: preview.startScreen.showTitle ?? true,
                 showLoadButton: preview.hasLoadableSave,
               });
               return;
@@ -941,7 +970,6 @@ export default function App() {
     filteredGames[0] ??
     gameList[0] ??
     null;
-  const isSelectedGameVisible = Boolean(selectedGame && filteredGames.some((entry) => entry.id === selectedGame.id));
   const manifestTimestampLabel = formatManifestTimestamp(manifestGeneratedAt);
   const gameListStatus = gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
 
@@ -1602,14 +1630,15 @@ export default function App() {
     const className = `char char-image ${position} ${depthClass}`;
     if (slot.kind === 'live2d') {
       return (
-        <Live2DCharacter
-          key={`${position}-${slot.id}-${slot.source}`}
-          slot={slot}
-          position={position}
-          trackingKey={buildLive2DLoadKey(position, slot)}
-          className={depthClass}
-          style={charStyle}
-        />
+        <Suspense fallback={null} key={`${position}-${slot.id}-${slot.source}`}>
+          <Live2DCharacter
+            slot={slot}
+            position={position}
+            trackingKey={buildLive2DLoadKey(position, slot)}
+            className={depthClass}
+            style={charStyle}
+          />
+        </Suspense>
       );
     }
     return (
@@ -1727,6 +1756,7 @@ export default function App() {
           previewMusicBlobUrl: musicUrl?.startsWith('blob:') ? musicUrl : undefined,
           startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
           buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+          showTitle: preview.startScreen.showTitle ?? true,
           showLoadButton: false,
         });
         return;
@@ -1770,6 +1800,7 @@ export default function App() {
             musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
             startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
             buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+            showTitle: preview.startScreen.showTitle ?? true,
             showLoadButton: preview.hasLoadableSave,
           });
           return;
@@ -1797,14 +1828,24 @@ export default function App() {
   if (startGate) {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
     return (
-      <div className="start-gate" data-ui-template={startGate.uiTemplate} onPointerDown={() => tryPlayStartGateMusic()}>
+      <div
+        className="start-gate"
+        data-show-title={String(startGate.showTitle)}
+        data-ui-template={startGate.uiTemplate}
+        onPointerDown={() => tryPlayStartGateMusic()}
+      >
         {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
+        {startGate.imageUrl && !startGate.showTitle && (
+          <img className="start-gate-title-art" src={startGate.imageUrl} alt="" aria-hidden="true" />
+        )}
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-content">
-          <div className="start-gate-title-block">
-            <p className="start-gate-eyebrow">YAVN</p>
-            <h1>{startGate.gameTitle}</h1>
-          </div>
+          {startGate.showTitle && (
+            <div className="start-gate-title-block">
+              <p className="start-gate-eyebrow">YAVN</p>
+              <h1>{startGate.gameTitle}</h1>
+            </div>
+          )}
           <div className={actionClass}>
             <button
               type="button"
@@ -1833,102 +1874,122 @@ export default function App() {
   if (bootMode === 'launcher') {
     const selectedGameTagList = selectedGame?.tags ?? [];
     const selectedGameChapters =
-      typeof selectedGame?.chapterCount === 'number' ? `${selectedGame.chapterCount} chapter(s)` : 'chapter count 미수집';
+      typeof selectedGame?.chapterCount === 'number'
+        ? `${selectedGame.chapterCount} CHAPTER${selectedGame.chapterCount === 1 ? '' : 'S'}`
+        : 'CHAPTERS -';
     const selectedGameSummary = selectedGame?.summary ?? DEFAULT_LAUNCHER_SUMMARY;
+    const selectedGamePosition = selectedGame ? gameList.findIndex((entry) => entry.id === selectedGame.id) + 1 : 0;
 
     return (
       <div className="launcher">
-        <div className="launcher-noise" aria-hidden="true" />
-        <div className="launcher-scanline" aria-hidden="true" />
-        <div className="launcher-console">
-          <header className="launcher-topbar">
-            <div className="launcher-topbar-title">
-              <p className="launcher-topbar-eyebrow">YAVN // RETRO CRT ENGINE CONSOLE</p>
-              <h1>텍스트 기반 비주얼노블 제작 워크스테이션</h1>
-            </div>
-            <dl className="launcher-topbar-stats">
-              <div>
-                <dt>DSL</dt>
-                <dd>YAML V3</dd>
-              </div>
-              <div>
-                <dt>MANIFEST</dt>
-                <dd>v{manifestSchemaVersion ?? 1}</dd>
-              </div>
-              <div>
-                <dt>GAMES</dt>
-                <dd>{gameList.length}</dd>
-              </div>
-              <div>
-                <dt>SYNC</dt>
-                <dd>{manifestTimestampLabel}</dd>
-              </div>
-              <div>
-                <dt>STATUS</dt>
-                <dd className={`launcher-status launcher-status-${gameListStatus.toLowerCase()}`}>{gameListStatus}</dd>
-              </div>
-            </dl>
-          </header>
+        <header className="launcher-topbar">
+          <a className="launcher-brand" href="/" aria-label="YAVN 홈">
+            <h1>YAVN</h1>
+            <span>YAML VISUAL NOVEL ENGINE</span>
+          </a>
 
-          <div className="launcher-layout">
-            <section className="launcher-panel launcher-panel-actions">
-              <h2 className="launcher-panel-title">EXECUTION CONSOLE</h2>
-              <div className="launcher-command-group">
-                <label className="launcher-command launcher-command-primary launcher-command-upload">
-                  {uploading ? 'ZIP 패키지 로딩 중...' : 'ZIP 즉시 실행'}
-                  <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
-                </label>
-                {/* <a className="launcher-command launcher-command-secondary" href={sampleZipUrl} download>
-                  샘플 ZIP 다운로드
-                </a> */}
-                <a className="launcher-command launcher-command-ghost" href={shareByPrUrl} target="_blank" rel="noreferrer">
-                  GitHub PR 공유
-                </a>
-              </div>
+          <div className="launcher-runtime" aria-label="엔진 상태">
+            <span className={`launcher-status launcher-status-${gameListStatus.toLowerCase()}`}>{gameListStatus}</span>
+            <span>{gameList.length} PLAYABLE</span>
+            <span>DSL V{manifestSchemaVersion ?? 3}</span>
+          </div>
 
-              <p className="launcher-cta-note">
-                실행 우선 전략: ZIP으로 런타임을 먼저 확인한 뒤, 샘플 구조를 기반으로 YAML/에셋을 조립해 PR로 공유합니다.
-              </p>
+          <nav className="launcher-nav" aria-label="엔진 링크">
+            <a href={repositoryUrl} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href={developmentGuideUrl} target="_blank" rel="noreferrer">
+              Guide
+            </a>
+            <label className="launcher-upload">
+              {uploading ? 'ZIP 로딩 중' : 'ZIP 실행'}
+              <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
+            </label>
+          </nav>
+        </header>
 
-              <h3 className="launcher-subtitle">BUILD PIPELINE</h3>
-              <ol className="launcher-flow-list">
-                <li>
-                  <strong>1. BOOT SAMPLE</strong>
-                  <span>샘플 ZIP으로 폴더 구조와 DSL 패턴을 확인합니다.</span>
-                </li>
-                <li>
-                  <strong>2. AUTHOR YAML</strong>
-                  <span>`config.yaml` + 챕터 YAML로 분기와 연출을 정의합니다.</span>
-                </li>
-                <li>
-                  <strong>3. PACK ASSETS</strong>
-                  <span>`assets/...` 체계를 유지한 상태로 ZIP 패키징합니다.</span>
-                </li>
-                <li>
-                  <strong>4. RUN RUNTIME</strong>
-                  <span>업로드 즉시 플레이해 텍스트/연출/로딩을 검증합니다.</span>
-                </li>
-                <li>
-                  <strong>5. SHARE PR</strong>
-                  <span>검증 완료 결과물을 PR로 제출해 목록에 반영합니다.</span>
-                </li>
-              </ol>
-            </section>
-
-            <section className="launcher-panel launcher-panel-workspace">
-              <div className="launcher-workspace-header">
-                <h2 className="launcher-panel-title">WORKSPACE CATALOG</h2>
-                <span className="launcher-workspace-count">
-                  FILTERED {filteredGames.length} / TOTAL {gameList.length}
+        <main className="launcher-console">
+          {selectedGame ? (
+            <section className="launcher-feature" aria-labelledby="launcher-feature-title">
+              <div className="launcher-feature-media">
+                {selectedGame.thumbnail ? (
+                  <img
+                    src={selectedGame.thumbnail}
+                    alt={selectedGame.seo?.imageAlt ?? `${selectedGame.name} 대표 이미지`}
+                  />
+                ) : (
+                  <div className="launcher-feature-fallback">YAVN</div>
+                )}
+                <span className="launcher-feature-index">
+                  {String(Math.max(1, selectedGamePosition)).padStart(2, '0')} /{' '}
+                  {String(Math.max(1, gameList.length)).padStart(2, '0')}
                 </span>
               </div>
 
+              <div className="launcher-feature-copy">
+                <p className="launcher-feature-kicker">
+                  {selectedGameTagList.includes('engine-showcase') ? 'ENGINE SHOWCASE' : 'PLAYABLE BUILD'}
+                  <span>v{selectedGame.version ?? '-'}</span>
+                </p>
+                <h2 id="launcher-feature-title">{selectedGame.name}</h2>
+                <p className="launcher-feature-summary">{selectedGameSummary}</p>
+
+                <div className="inspector-tag-row">
+                  {(selectedGameTagList.length > 0 ? selectedGameTagList : ['untagged']).map((tag) => (
+                    <span key={`inspect-${selectedGame.id}-${tag}`}>{tag}</span>
+                  ))}
+                </div>
+
+                <dl className="launcher-feature-meta">
+                  <div>
+                    <dt>CREATOR</dt>
+                    <dd>{selectedGame.author ?? 'UNKNOWN'}</dd>
+                  </div>
+                  <div>
+                    <dt>BUILD</dt>
+                    <dd>{selectedGame.id}</dd>
+                  </div>
+                  <div>
+                    <dt>LENGTH</dt>
+                    <dd>{selectedGameChapters}</dd>
+                  </div>
+                </dl>
+
+                <div className="inspector-actions">
+                  <a className="launcher-command launcher-command-primary" href={selectedGame.path}>
+                    플레이
+                  </a>
+                  <a className="launcher-command launcher-command-ghost" href={repositoryUrl} target="_blank" rel="noreferrer">
+                    소스 보기
+                  </a>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <div className="launcher-diagnostic">
+              <strong>PLAYGROUND EMPTY</strong>
+              <p>실행 가능한 게임을 불러오지 못했습니다.</p>
+            </div>
+          )}
+
+          <section className="launcher-library" aria-labelledby="launcher-library-title">
+            <div className="launcher-library-heading">
+              <div>
+                <p>YAVN PLAYGROUND</p>
+                <h2 id="launcher-library-title">Playable builds</h2>
+              </div>
+              <span>
+                {filteredGames.length} / {gameList.length}
+              </span>
+            </div>
+
+            <div className="launcher-library-controls">
               <div className="launcher-search-box">
-                <label htmlFor="launcher-search-input">검색</label>
+                <label htmlFor="launcher-search-input">게임 검색</label>
                 <input
                   id="launcher-search-input"
                   type="search"
-                  placeholder="게임명, 태그, 작성자, 요약 검색"
+                  placeholder="게임명, 태그, 작성자 검색"
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
                 />
@@ -1953,130 +2014,95 @@ export default function App() {
                   </button>
                 ))}
               </div>
+            </div>
 
-              {gameListError && (
-                <div className="launcher-diagnostic" role="alert">
-                  <strong>MANIFEST LOAD FAILURE</strong>
-                  <p>{gameListError}</p>
-                  <button type="button" onClick={() => void loadGameListManifest()}>
-                    다시 시도
-                  </button>
-                </div>
-              )}
-
-              {!gameListError && filteredGames.length === 0 && (
-                <div className="launcher-diagnostic">
-                  <strong>NO MATCHED GAME</strong>
-                  <p>검색어/태그 조건을 만족하는 게임이 없습니다. 필터를 초기화하거나 `launcher.yaml` 메타를 점검해 주세요.</p>
-                </div>
-              )}
-
-              {!gameListError && filteredGames.length > 0 && (
-                <div className="workspace-grid">
-                  {filteredGames.map((entry) => {
-                    const isSelected = selectedGame?.id === entry.id;
-                    return (
-                      <button
-                        key={entry.id}
-                        type="button"
-                        className={`workspace-game-card ${isSelected ? 'is-selected' : ''}`}
-                        onClick={() => setSelectedGameId(entry.id)}
-                      >
-                        <span className="workspace-game-header">
-                          <strong>{entry.name}</strong>
-                          {entry.version ? <em>v{entry.version}</em> : <em>v-</em>}
-                        </span>
-                        <span className="workspace-game-meta">
-                          {entry.author ? `Author ${entry.author}` : 'Author 미등록'} /{' '}
-                          {typeof entry.chapterCount === 'number' ? `${entry.chapterCount} chapters` : 'chapter 미수집'}
-                        </span>
-                        <span className="workspace-game-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</span>
-                        <span className="workspace-game-tags">
-                          {(entry.tags.length > 0 ? entry.tags : ['untagged']).map((tag) => (
-                            <b key={`${entry.id}-${tag}`}>{tag}</b>
-                          ))}
-                        </span>
-                        <span className="workspace-game-path">{entry.path}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-
-            <section className="launcher-panel launcher-panel-inspector">
-              <h2 className="launcher-panel-title">ASSET INSPECTOR</h2>
-
-              {selectedGame ? (
-                <>
-                  <div className="inspector-preview">
-                    {selectedGame.thumbnail ? (
-                      <img src={selectedGame.thumbnail} alt={`${selectedGame.name} thumbnail`} loading="lazy" decoding="async" />
-                    ) : (
-                      <div className="inspector-preview-fallback">NO THUMBNAIL</div>
-                    )}
-                  </div>
-
-                  <dl className="inspector-meta">
-                    <div>
-                      <dt>GAME</dt>
-                      <dd>{selectedGame.name}</dd>
-                    </div>
-                    <div>
-                      <dt>ID</dt>
-                      <dd>{selectedGame.id}</dd>
-                    </div>
-                    <div>
-                      <dt>AUTHOR</dt>
-                      <dd>{selectedGame.author ?? '미등록'}</dd>
-                    </div>
-                    <div>
-                      <dt>VERSION</dt>
-                      <dd>{selectedGame.version ?? '미등록'}</dd>
-                    </div>
-                    <div>
-                      <dt>CHAPTERS</dt>
-                      <dd>{selectedGameChapters}</dd>
-                    </div>
-                    <div>
-                      <dt>VISIBLE</dt>
-                      <dd>{isSelectedGameVisible ? 'LISTED' : 'FILTERED OUT'}</dd>
-                    </div>
-                  </dl>
-
-                  <p className="inspector-summary">{selectedGameSummary}</p>
-
-                  <div className="inspector-tag-row">
-                    {(selectedGameTagList.length > 0 ? selectedGameTagList : ['untagged']).map((tag) => (
-                      <span key={`inspect-${selectedGame.id}-${tag}`}>{tag}</span>
-                    ))}
-                  </div>
-
-                  <a className="launcher-command launcher-command-primary" href={selectedGame.path}>
-                    선택 게임 즉시 실행
-                  </a>
-                </>
-              ) : (
-                <div className="launcher-diagnostic">
-                  <strong>INSPECTOR IDLE</strong>
-                  <p>게임 항목을 선택하면 상세 메타와 실행 액션이 표시됩니다.</p>
-                </div>
-              )}
-
-              <div className="inspector-feature-block">
-                <h3>ENGINE CAPABILITIES</h3>
-                <ul>
-                  <li>YAML V3 계층 병합(`config/base/chapter`)</li>
-                  <li>분기 DSL(`choice/branch/input/ending`) 런타임 검증</li>
-                  <li>챕터 프리로드 + Live2D/오디오/비디오 연출 동기화</li>
-                  <li>ZIP 업로드 즉시 실행 + PR 기반 공유 워크플로우</li>
-                </ul>
+            {gameListError && (
+              <div className="launcher-diagnostic" role="alert">
+                <strong>MANIFEST LOAD FAILURE</strong>
+                <p>{gameListError}</p>
+                <button type="button" onClick={() => void loadGameListManifest()}>
+                  다시 시도
+                </button>
               </div>
-            </section>
-          </div>
+            )}
 
-          {error && <div className="launcher-error">{error.message}</div>}
-        </div>
+            {!gameListError && filteredGames.length === 0 && (
+              <div className="launcher-diagnostic">
+                <strong>NO MATCHED GAME</strong>
+                <p>검색 조건과 일치하는 게임이 없습니다.</p>
+              </div>
+            )}
+
+            {!gameListError && filteredGames.length > 0 && (
+              <div className="workspace-grid">
+                {filteredGames.map((entry) => {
+                  const isSelected = selectedGame?.id === entry.id;
+                  const buildNumber = Math.max(1, gameList.findIndex((gameEntry) => gameEntry.id === entry.id) + 1);
+                  const chapterLabel =
+                    typeof entry.chapterCount === 'number'
+                      ? `${entry.chapterCount} CHAPTER${entry.chapterCount === 1 ? '' : 'S'}`
+                      : 'CHAPTERS -';
+                  return (
+                    <article
+                      key={entry.id}
+                      className={`workspace-game-card ${isSelected ? 'is-selected' : ''}`}
+                    >
+                      <button
+                        type="button"
+                        className="workspace-game-select"
+                        onClick={() => setSelectedGameId(entry.id)}
+                        aria-pressed={isSelected}
+                      >
+                        <span className="workspace-game-cover">
+                          {entry.thumbnail ? (
+                            <img src={entry.thumbnail} alt="" loading="lazy" decoding="async" />
+                          ) : (
+                            <span className="workspace-game-cover-fallback">YAVN</span>
+                          )}
+                          <span>BUILD {String(buildNumber).padStart(2, '0')}</span>
+                        </span>
+                        <span className="workspace-game-body">
+                          <span className="workspace-game-header">
+                            <strong>{entry.name}</strong>
+                            {entry.version ? <em>v{entry.version}</em> : <em>v-</em>}
+                          </span>
+                          <span className="workspace-game-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</span>
+                          <span className="workspace-game-meta">
+                            {entry.author ?? 'UNKNOWN'} · {chapterLabel}
+                          </span>
+                        </span>
+                      </button>
+                      <a
+                        className="workspace-game-launch"
+                        href={entry.path}
+                        aria-label={`${entry.name} 바로 실행`}
+                        title="바로 실행"
+                      >
+                        ↗
+                      </a>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        </main>
+
+        <footer className="launcher-footer">
+          <p>
+            <strong>YAVN</strong>
+            <span>Type your story. Play your novel.</span>
+          </p>
+          <div>
+            <span>MANIFEST V{manifestSchemaVersion ?? 3}</span>
+            <span>SYNC {manifestTimestampLabel}</span>
+            <a href={shareByPrUrl} target="_blank" rel="noreferrer">
+              PR 보내기
+            </a>
+          </div>
+        </footer>
+
+        {error && <div className="launcher-error">{error.message}</div>}
       </div>
     );
   }
@@ -2180,20 +2206,46 @@ export default function App() {
       )}
 
       <div className="hud">
-        <div className="meta">
-          {game?.meta.title ?? 'Loading...'}
+        <div className="hud-meta-group">
+          <div className="meta">{game?.meta.title ?? 'Loading...'}</div>
+          {chapterTotal > 1 && (
+            <div className="hud-chapter-progress">
+              CHAPTER {chapterIndex}/{chapterTotal}
+            </div>
+          )}
         </div>
         <div className="hud-right">
           <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
           <button
-            ref={inventoryButtonRef}
             type="button"
-            className="hud-inventory-button"
+            className="hud-action-button hud-log-button"
+            aria-label={`케이스 로그 열기 (${storyLog.length})`}
+            title="케이스 로그"
+            onClick={(event) => {
+              event.stopPropagation();
+              settingsTriggerRef.current = event.currentTarget;
+              setInventoryDetailOpen(false);
+              setCaseFileTab('log');
+              setSettingsOpen(true);
+            }}
+          >
+            <span className="hud-log-icon" aria-hidden="true" />
+            {storyLog.length > 0 && (
+              <span className="hud-action-count" aria-hidden="true">
+                {storyLog.length}
+              </span>
+            )}
+          </button>
+          <button
+            type="button"
+            className="hud-action-button hud-inventory-button"
             aria-label={`인벤토리 열기 (${ownedInventoryCount}/${totalInventoryCount})`}
             title="인벤토리"
             onClick={(event) => {
               event.stopPropagation();
+              settingsTriggerRef.current = event.currentTarget;
               setInventoryDetailOpen(false);
+              setCaseFileTab('inventory');
               setSettingsOpen(true);
             }}
           >
@@ -2219,19 +2271,77 @@ export default function App() {
             className="settings-modal"
             role="dialog"
             aria-modal="true"
-            aria-label="인벤토리 창"
+            aria-label="케이스 파일"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="settings-modal-header">
-              <h2>인벤토리</h2>
+              <h2>CASE FILE</h2>
               <button
                 type="button"
                 className="settings-close-button"
+                aria-label="케이스 파일 닫기"
+                title="닫기"
                 onClick={() => closeSettingsModal()}
               >
-                닫기
+                <span aria-hidden="true">&times;</span>
               </button>
             </header>
+            <div className="case-file-tabs" role="tablist" aria-label="케이스 파일 보기">
+              <button
+                type="button"
+                role="tab"
+                className={`case-file-tab ${caseFileTab === 'log' ? 'is-active' : ''}`}
+                aria-selected={caseFileTab === 'log'}
+                onClick={() => {
+                  setInventoryDetailOpen(false);
+                  setCaseFileTab('log');
+                }}
+              >
+                기록 {storyLog.length}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className={`case-file-tab ${caseFileTab === 'inventory' ? 'is-active' : ''}`}
+                aria-selected={caseFileTab === 'inventory'}
+                onClick={() => setCaseFileTab('inventory')}
+              >
+                단서 {ownedInventoryCount}/{totalInventoryCount}
+              </button>
+            </div>
+            {caseFileTab === 'log' ? (
+              <div className="settings-modal-body story-log-body">
+                <div className="story-log-summary">
+                  <span>최근 기록</span>
+                  <b>{storyLog.length}/300</b>
+                </div>
+                {storyLog.length === 0 ? (
+                  <p className="story-log-empty">대화를 시작하면 사건 기록이 여기에 쌓입니다.</p>
+                ) : (
+                  <ol className="story-log-list" aria-label="스토리 기록">
+                    {[...storyLog].reverse().map((entry, index) => (
+                      <li
+                        key={`${entry.kind}-${entry.chapterPath ?? 'legacy'}-${entry.sceneId}-${entry.actionIndex}-${storyLog.length - index}`}
+                        className={`story-log-entry story-log-entry-${entry.kind}`}
+                      >
+                        {entry.kind === 'dialogue' ? (
+                          <>
+                            <span className="story-log-kind">{entry.speaker ?? 'Narration'}</span>
+                            <p>{entry.text}</p>
+                          </>
+                        ) : (
+                          <>
+                            <span className="story-log-kind">{entry.kind === 'choice' ? 'CHOICE' : 'INPUT'}</span>
+                            <p>{entry.prompt}</p>
+                            <strong>{entry.value}</strong>
+                          </>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            ) : (
             <div className="settings-modal-body settings-inventory-body">
               <div className="inventory-view-tabs" role="tablist" aria-label="인벤토리 보기">
                 <button
@@ -2376,7 +2486,8 @@ export default function App() {
                 </p>
               </div>
             </div>
-            {inventoryDetailOpen && selectedInventoryEntry && (
+            )}
+            {caseFileTab === 'inventory' && inventoryDetailOpen && selectedInventoryEntry && (
               <div
                 className="inventory-detail-modal-backdrop"
                 onClick={() => setInventoryDetailOpen(false)}
@@ -2483,6 +2594,22 @@ export default function App() {
           )}
           {choiceGate.active && (
             <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
+              {choiceGate.timeoutMs && (
+                <div
+                  className="choice-gate-timeout"
+                  role="timer"
+                  aria-label={`선택 제한 시간 ${Math.ceil(choiceGate.timeoutMs / 1000)}초`}
+                  style={{ '--choice-timeout-ms': `${choiceGate.timeoutMs}ms` } as CSSProperties}
+                >
+                  <div className="choice-gate-timeout-meta">
+                    <span>DECISION WINDOW</span>
+                    <strong>{Math.ceil(choiceGate.timeoutMs / 1000)}s</strong>
+                  </div>
+                  <div className="choice-gate-timeout-track" aria-hidden="true">
+                    <span />
+                  </div>
+                </div>
+              )}
               <div className="choice-gate-options">
                 {choiceGate.options.map((option, index) => {
                   const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
@@ -2555,12 +2682,24 @@ export default function App() {
       )}
 
       {chapterLoading && (
-        <div className="chapter-loading">
-          <div className="chapter-loading-title">{chapterLoadingMessage ?? 'Chapter loading...'}</div>
-          <div className="chapter-loading-bar">
+        <div className="chapter-loading" role="status" aria-live="polite">
+          <div className="chapter-loading-kicker">
+            {chapterTotal > 1 ? `YAVN / CHAPTER ${chapterIndex} OF ${chapterTotal}` : 'YAVN / LOADING SCENE'}
+          </div>
+          <div className="chapter-loading-row">
+            <div className="chapter-loading-title">{chapterLoadingMessage ?? 'Loading chapter'}</div>
+            <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
+          </div>
+          <div
+            className="chapter-loading-bar"
+            role="progressbar"
+            aria-label="챕터 로딩"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.floor(chapterLoadingProgress * 100)}
+          >
             <span style={{ width: `${Math.floor(chapterLoadingProgress * 100)}%` }} />
           </div>
-          <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
         </div>
       )}
 

@@ -1,0 +1,52 @@
+assets:
+  backgrounds:
+    rail_warning: /assets/bg/rail-warning.avif
+    rain_corridor: root:/game-list/conan/assets/bg/rain_corridor.avif
+    ryokan_hall: root:/game-list/conan/assets/bg/ryokan_hall.avif
+    tea_room: root:/game-list/conan/assets/bg/tea_room.avif
+    case_board: root:/game-list/conan/assets/bg/case_board.avif
+    mountain_rain: root:/game-list/conan/assets/bg/mountain_rain.avif
+    trailer_title: /assets/ui/trailer-title.svg
+    timer_60: /assets/ui/timer-60.svg
+    timer_07: /assets/ui/timer-07.svg
+    signal_map: /assets/ui/signal-map.svg
+  characters:
+    코난:
+      base: root:/game-list/conan/assets/char/conan/base.webp
+      emotions:
+        think: root:/game-list/conan/assets/char/conan/think.webp
+        serious: root:/game-list/conan/assets/char/conan/serious.webp
+    란:
+      base: root:/game-list/conan/assets/char/ran/base.webp
+      emotions:
+        surprised: root:/game-list/conan/assets/char/ran/surprised.webp
+        worried: root:/game-list/conan/assets/char/ran/worried.webp
+    코고로:
+      base: root:/game-list/conan/assets/char/kogoro/base.webp
+      emotions:
+        angry: root:/game-list/conan/assets/char/kogoro/angry.webp
+    켄지:
+      base: root:/game-list/conan/assets/char/kenji/base.webp
+      emotions:
+        angry: root:/game-list/conan/assets/char/kenji/angry.webp
+    세이지:
+      base: root:/game-list/conan/assets/char/shinichi/base.webp
+      emotions:
+        cold: root:/game-list/conan/assets/char/shinichi/cold.webp
+    레이코:
+      base: root:/game-list/conan/assets/char/reiko/base.webp
+      emotions:
+        nervous: root:/game-list/conan/assets/char/reiko/nervous.webp
+  music:
+    tension: root:/game-list/conan/assets/music/tension.wav
+    reasoning: root:/game-list/conan/assets/music/reasoning.mp3
+    solve: root:/game-list/conan/assets/music/solvethecase.mp3
+  sfx:
+    thunder: root:/game-list/conan/assets/sfx/thunder.wav
+    scream: root:/game-list/conan/assets/sfx/scream.wav
+    door: root:/game-list/conan/assets/sfx/door.wav
+    cup_clink: root:/game-list/conan/assets/sfx/cup_clink.wav
+    notebook_flip: root:/game-list/conan/assets/sfx/notebook_flip.wav
+state:
+  signal_cut: false
+  wrong_panel: false
