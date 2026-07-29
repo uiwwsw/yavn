@@ -472,7 +472,37 @@ scenes:
 - `char`가 있으면 해당 단계에서 캐릭터 노출/표정 동기화를 즉시 적용합니다.
 - `char`를 생략하면 직전 노출 상태를 유지합니다. (기존 스크립트와 호환)
 
-### 9-4) `say` 다중 인라인 속도 태그
+### 9-4) `say.delivery` 감정형 타이핑
+
+`say.delivery`는 대사의 전달 감정을 타이핑 리듬과 입력 글자 반응에 연결합니다.
+
+```yaml
+- say:
+    char: 레이코.nervous
+    delivery: whisper
+    text: "그걸... 어디서 확인했죠?"
+```
+
+허용값:
+- `neutral`: 기본 리듬
+- `calm`: 안정적이고 여유 있는 리듬
+- `nervous`: 불규칙한 속도와 긴 말줄임표 호흡
+- `angry`: 빠르고 짧은 호흡과 강한 입력 반응
+- `whisper`: 느리고 옅은 입력 반응
+- `shout`: 가장 빠른 리듬과 강한 잔광
+- `sad`: 느린 속도와 긴 문장 여운
+- `deduction`: 흔들림 없이 단호한 추리 리듬
+
+실행 규칙:
+- 우선순위는 `say.delivery` 명시값 -> `say.char`의 표정 -> 현재 표시 중인 화자의 표정 -> `neutral`입니다.
+- 기본 자동 연결은 `serious/think -> deduction`, `angry -> angry`, `nervous/worried/scared -> nervous`, `surprised -> shout`, `proud/calm -> calm`입니다.
+- 쉼표, 마침표, 물음표, 느낌표, 말줄임표, 줄바꿈 뒤에 감정별 정지가 자동 추가됩니다.
+- `<speed=...>` 구간과 함께 사용하면 해당 CPS에 감정별 속도 배율과 호흡을 추가 적용합니다.
+- 타이핑은 `Intl.Segmenter` 기반 grapheme 단위로 진행해 이모지와 결합 문자를 중간에서 자르지 않습니다.
+- 클릭 즉시 완성(`clickToInstant`)과 `say.autoAdvance` 동작은 기존과 동일합니다.
+- `prefers-reduced-motion`에서는 마지막 입력 글자 애니메이션을 제거하고 타이핑 시간 규칙만 유지합니다.
+
+### 9-5) `say` 다중 인라인 속도 태그
 
 `say.text`에서 `<speed=숫자>...</speed>`를 여러 번 사용하면, 한 문장 내 구간별 타이핑 속도를 다르게 줄 수 있습니다.
 
@@ -488,7 +518,7 @@ scenes:
 - 태그 밖 텍스트는 `config.yaml.textSpeed` 기본 속도를 사용합니다.
 - 태그는 렌더 텍스트에서 제거되고 내용만 출력됩니다.
 
-### 9-5) `say.wait` 대사 진행 잠금
+### 9-6) `say.wait` 대사 진행 잠금
 
 `say` 액션에 `wait`(ms)를 지정하면, 해당 대사가 시작된 시점부터 지정 시간 동안 진행/스킵 입력을 잠글 수 있습니다.
 
@@ -503,7 +533,7 @@ scenes:
 - 잠금 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
 - 잠금이 끝나면 기존 `say`와 동일하게 다음 입력을 받을 수 있습니다.
 
-### 9-6) `say.autoAdvance` 대사 자동 진행
+### 9-7) `say.autoAdvance` 대사 자동 진행
 
 `say` 액션에 `autoAdvance`(ms)를 지정하면 입력이 없어도 시간이 지난 뒤 다음 액션으로 진행합니다.
 
@@ -519,7 +549,7 @@ scenes:
 - `wait`와 함께 선언하면 둘 중 더 긴 시간을 사용합니다.
 - 수동 진행이 먼저 발생하면 예약 타이머를 취소합니다.
 
-### 9-7) `choice` 제한시간
+### 9-8) `choice` 제한시간
 
 ```yaml
 - choice:
@@ -539,7 +569,7 @@ scenes:
 - 만료 선택은 자동 흐름이 멈추지 않도록 `forgiveOnce`를 건너뜁니다.
 - 플레이어가 먼저 선택하면 예약 타이머를 취소합니다.
 
-### 9-8) `inventory` + `get/use` 아이템 상태
+### 9-9) `inventory` + `get/use` 아이템 상태
 
 아이템 상태는 `state`와 분리된 `inventory`로 선언합니다.
 
@@ -650,6 +680,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-29: `say.delivery` 감정형 타이핑 DSL을 추가했습니다. 8종 전달 톤, 캐릭터 표정 기반 자동 추론, 문장부호별 호흡, grapheme 단위 출력, 마지막 입력 글자 반응과 모션 감소 대응을 엔진에 연결하고 Conan 대사와 `sample.yaml` 예시를 갱신했습니다.
 - 2026-07-29: 메인 런처를 과밀한 3패널 Engine Console에서 실제 게임 이미지 중심의 YAVN 플레이그라운드로 재설계했습니다. 대표 게임 쇼케이스, 썸네일 라이브러리, 검색/태그, 카드별 바로 실행, ZIP 실행 툴바를 데스크톱·모바일 공통 흐름으로 구성하고 `engine-showcase` 태그 게임을 첫 대표작으로 선택합니다.
 - 2026-07-29: 자동 진행형 쇼케이스를 위해 `say.autoAdvance`, `choice.timeoutMs`/`timeoutOptionIndex`, `root:/` 공유 에셋 경로와 `impact/glitch/speedlines/alarm/focus` 화면 이펙트를 추가했습니다. 이를 사용하는 독립 게임 `public/game-list/conan-demo`를 약 60초 분량의 모바일 대응 트레일러로 추가했습니다.
 - 2026-07-29: Conan 샘플의 설명조·판정조 대사를 전면 재작성했습니다. 용의자별 말투를 분리하고, `2번 잔 -> 21:29의 빈 시간 -> 손수건 섬유 -> 2R -> 연구 노트`가 잠자는 코고로의 폭로로 이어지도록 사건 인과를 보강했습니다. 코난과 혼동되던 용의자 `신이치`는 `세이지`로 변경했습니다.

@@ -6,6 +6,15 @@ export type Position = 'left' | 'center' | 'right';
 export type StickerAnchorX = 'left' | 'center' | 'right';
 export type StickerAnchorY = 'top' | 'center' | 'bottom';
 export type StickerLength = number | string;
+export type DialogueDelivery =
+  | 'neutral'
+  | 'calm'
+  | 'nervous'
+  | 'angry'
+  | 'whisper'
+  | 'shout'
+  | 'sad'
+  | 'deduction';
 export type StickerEnterEffect =
   | 'none'
   | 'fadeIn'
@@ -67,6 +76,7 @@ export type SayAction = {
     char?: string;
     with?: string[];
     text: string;
+    delivery?: DialogueDelivery;
     wait?: number;
     autoAdvance?: number;
   };

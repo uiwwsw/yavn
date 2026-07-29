@@ -13,6 +13,12 @@ import {
 } from './parser';
 import { collectChapterAssetPaths } from './preload';
 import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
+import {
+  buildTypingPlan,
+  parseInlineSpeed,
+  resolveDialogueDelivery,
+  type InlineSpeedSegment,
+} from './typing';
 import type {
   CharacterSlot,
   ConditionNode,
@@ -152,12 +158,6 @@ type PreparedChapter = {
 };
 
 type RuntimeMode = 'url' | 'zip' | undefined;
-
-type InlineSpeedSegment = {
-  start: number;
-  end: number;
-  speed: number;
-};
 
 let waitTimer: number | undefined;
 let typeTimer: number | undefined;
@@ -1064,45 +1064,6 @@ function rewriteLive2DModelJson(raw: string, resolveRef: (relativePath: string) 
   return changed ? JSON.stringify(parsed) : undefined;
 }
 
-function parseInlineSpeed(text: string): { text: string; segments: InlineSpeedSegment[] } {
-  const pattern = /<speed=(\d+)>([\s\S]*?)<\/speed>/gi;
-  const matches = Array.from(text.matchAll(pattern));
-  if (matches.length === 0) {
-    return { text, segments: [] };
-  }
-
-  let cursor = 0;
-  let normalizedText = '';
-  const segments: InlineSpeedSegment[] = [];
-  for (const match of matches) {
-    const raw = match[0];
-    const index = match.index ?? cursor;
-    if (index > cursor) {
-      normalizedText += text.slice(cursor, index);
-    }
-
-    const spanText = match[2] ?? '';
-    const spanSpeed = Number(match[1]);
-    const start = normalizedText.length;
-    normalizedText += spanText;
-    const end = normalizedText.length;
-    if (end > start && Number.isFinite(spanSpeed) && spanSpeed > 0) {
-      segments.push({
-        start,
-        end,
-        speed: Math.max(1, spanSpeed),
-      });
-    }
-    cursor = index + raw.length;
-  }
-
-  if (cursor < text.length) {
-    normalizedText += text.slice(cursor);
-  }
-
-  return { text: normalizedText, segments };
-}
-
 function parseCharacterRef(raw?: string): { id?: string; emotion?: string } {
   if (!raw) {
     return {};
@@ -1121,6 +1082,7 @@ function parseCharacterRef(raw?: string): { id?: string; emotion?: string } {
 function resolveSayPresentation(char?: string, withChars?: string[]): {
   speakerId?: string;
   speakerName?: string;
+  speakerEmotion?: string;
   visibleCharacterIds: string[];
   emotionRefs: Array<{ id: string; emotion?: string }>;
 } {
@@ -1129,6 +1091,7 @@ function resolveSayPresentation(char?: string, withChars?: string[]): {
     return {
       speakerId: undefined,
       speakerName: undefined,
+      speakerEmotion: undefined,
       visibleCharacterIds: [],
       emotionRefs: [],
     };
@@ -1150,6 +1113,7 @@ function resolveSayPresentation(char?: string, withChars?: string[]): {
   return {
     speakerId: speaker.id,
     speakerName: speaker.id,
+    speakerEmotion: speaker.emotion,
     visibleCharacterIds,
     emotionRefs: [{ id: speaker.id, emotion: speaker.emotion }, ...withRefs],
   };
@@ -1189,6 +1153,12 @@ function syncCharacterEmotions(
     const assetPath = charDef.emotions?.[emotion] ?? charDef.base;
     useVNStore.getState().setCharacter(position, buildCharacterSlot(baseUrl, slot.id, assetPath, emotion));
   }
+}
+
+function getVisibleCharacterEmotion(characterId?: string): string | undefined {
+  if (!characterId) return undefined;
+  return Object.values(useVNStore.getState().characters).find((slot) => slot?.id === characterId)
+    ?.emotion;
 }
 
 type SaveProgressSource = 'none' | 'scoped' | 'legacy';
@@ -1465,43 +1435,62 @@ function setCursor(sceneId: string, actionIndex: number) {
   }
 }
 
-function typeDialog(text: string, speed: number, speedSegments: InlineSpeedSegment[], onDone: () => void) {
-  if (text.length === 0) {
-    useVNStore.getState().setDialog({ typing: false, visibleText: '' });
+function typeDialog(
+  text: string,
+  speed: number,
+  speedSegments: InlineSpeedSegment[],
+  delivery: ReturnType<typeof resolveDialogueDelivery>,
+  onDone: () => void,
+) {
+  const plan = buildTypingPlan({
+    text,
+    baseSpeed: speed,
+    delivery,
+    speedSegments,
+  });
+  if (plan.length === 0) {
+    useVNStore.getState().setDialog({
+      typing: false,
+      visibleText: '',
+      typingIntensity: 0,
+    });
     onDone();
     return;
   }
-  const defaultSpeed = Math.max(1, speed);
-  let idx = 0;
-  let segmentCursor = 0;
-  useVNStore.getState().setDialog({ typing: true, visibleText: '' });
-  const scheduleNextChar = (cps: number) => {
-    typeTimer = window.setTimeout(stepTyping, Math.max(16, Math.floor(1000 / Math.max(1, cps))));
-  };
-  const resolveCurrentSpeed = (nextIdx: number): number => {
-    while (segmentCursor < speedSegments.length && nextIdx > speedSegments[segmentCursor].end) {
-      segmentCursor += 1;
-    }
-    if (segmentCursor < speedSegments.length) {
-      const segment = speedSegments[segmentCursor];
-      if (nextIdx > segment.start && nextIdx <= segment.end) {
-        return segment.speed;
-      }
-    }
-    return defaultSpeed;
-  };
+
+  let stepIndex = 0;
+  useVNStore.getState().setDialog({
+    typing: true,
+    visibleText: '',
+    delivery,
+    typingIntensity: 0,
+    typingPulse: 0,
+  });
   const stepTyping = () => {
     typeTimer = undefined;
-    idx += 1;
-    useVNStore.getState().setDialog({ visibleText: text.slice(0, idx) });
-    if (idx >= text.length) {
-      useVNStore.getState().setDialog({ typing: false, visibleText: text });
+    const step = plan[stepIndex];
+    if (!step) return;
+
+    const currentPulse = useVNStore.getState().dialog.typingPulse;
+    useVNStore.getState().setDialog({
+      visibleText: step.visibleText,
+      typingIntensity: step.intensity,
+      typingPulse: currentPulse + 1,
+    });
+    stepIndex += 1;
+    if (stepIndex >= plan.length) {
+      useVNStore.getState().setDialog({
+        typing: false,
+        visibleText: text,
+        typingIntensity: 0,
+      });
       onDone();
       return;
     }
-    scheduleNextChar(resolveCurrentSpeed(idx + 1));
+
+    typeTimer = window.setTimeout(stepTyping, plan[stepIndex].delayMs);
   };
-  scheduleNextChar(resolveCurrentSpeed(1));
+  typeTimer = window.setTimeout(stepTyping, plan[0].delayMs);
 }
 
 function normalizeInputAnswer(value: string): string {
@@ -2630,6 +2619,9 @@ function runToNextPause(loopGuard = 0) {
       fullText: action.choice.prompt,
       visibleText: action.choice.prompt,
       typing: false,
+      delivery: 'neutral',
+      typingIntensity: 0,
+      typingPulse: 0,
     });
     if (action.choice.timeoutMs) {
       const timeoutOptionIndex = Math.min(
@@ -2717,6 +2709,9 @@ function runToNextPause(loopGuard = 0) {
       fullText: action.input.prompt,
       visibleText: action.input.prompt,
       typing: false,
+      delivery: 'neutral',
+      typingIntensity: 0,
+      typingPulse: 0,
     });
     return;
   }
@@ -2731,6 +2726,9 @@ function runToNextPause(loopGuard = 0) {
       autoAdvanceTimer = undefined;
     }
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
+    const speakerEmotion =
+      presentation.speakerEmotion ?? getVisibleCharacterEmotion(presentation.speakerId);
+    const delivery = resolveDialogueDelivery(action.say.delivery, speakerEmotion);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
     useVNStore.getState().promoteSpeaker(presentation.speakerId);
@@ -2751,6 +2749,9 @@ function runToNextPause(loopGuard = 0) {
       fullText: parsed.text,
       visibleText: '',
       typing: true,
+      delivery,
+      typingIntensity: 0,
+      typingPulse: 0,
     });
     if (sayWaitMs > 0) {
       useVNStore.getState().setBusy(true);
@@ -2792,7 +2793,7 @@ function runToNextPause(loopGuard = 0) {
         runToNextPause();
       }, Math.max(autoAdvanceMs, sayWaitMs));
     }
-    typeDialog(parsed.text, textSpeed, parsed.segments, () => undefined);
+    typeDialog(parsed.text, textSpeed, parsed.segments, delivery, () => undefined);
     return;
   }
 }
@@ -3493,7 +3494,11 @@ export function handleAdvance() {
         window.clearTimeout(typeTimer);
         typeTimer = undefined;
       }
-      useVNStore.getState().setDialog({ typing: false, visibleText: state.dialog.fullText });
+      useVNStore.getState().setDialog({
+        typing: false,
+        visibleText: state.dialog.fullText,
+        typingIntensity: 0,
+      });
       return;
     }
     useVNStore.getState().setWaitingInput(false);

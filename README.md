@@ -29,6 +29,7 @@ pnpm dev
 
 - `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 검증
 - `src/engine.ts`: 챕터 전환, 자동저장, 연출 실행, 입력 게이트
+- `src/typing.ts`: 감정별 타이핑 리듬, 문장부호 호흡, 유니코드 글자 분할
 - `src/store.ts`: 렌더링 상태와 플레이 기록
 - `src/history.ts`: 챕터별 선택 복원과 최대 300개 스토리 로그
 - `pnpm test`: 파서 기본값, 저장 호환, 챕터 기록 격리 회귀 테스트
@@ -364,6 +365,29 @@ scenes:
 - `inventory.<item>.category`(선택): 인벤토리 카테고리 필터 기준값입니다. 미지정 시 UI에서 `기타`로 처리합니다.
 - `inventory.<item>.order`(선택): 정렬 기준 우선순위(낮을수록 먼저)입니다. 미지정 시 `9999`로 처리합니다.
 
+## `say.delivery` 감정형 타이핑
+
+`say.delivery`는 대사의 타이핑 리듬과 마지막 입력 글자의 시각 반응을 지정합니다.
+
+```yaml
+- say:
+    char: 레이코.nervous
+    delivery: whisper
+    text: "그걸... 어디서 확인했죠?"
+```
+
+허용값:
+- `neutral`, `calm`, `nervous`, `angry`
+- `whisper`, `shout`, `sad`, `deduction`
+
+동작:
+- `delivery`를 생략하면 `say.char`의 표정 또는 현재 화면에 표시된 화자의 표정에서 자동 추론합니다.
+- 자동 연결 예: `serious/think -> deduction`, `angry -> angry`, `nervous/worried/scared -> nervous`, `surprised -> shout`.
+- 명시한 `delivery`가 자동 추론보다 우선합니다. 인물 없는 내레이션에도 사용할 수 있습니다.
+- 감정별 기본 속도, 속도 흔들림, 쉼표·마침표·말줄임표 뒤의 정지가 함께 적용됩니다.
+- `<speed=...>`와 함께 사용하면 인라인 속도를 기준으로 감정 프로필을 추가 적용합니다.
+- `prefers-reduced-motion` 환경에서는 글자 애니메이션을 제거하되 타이핑 호흡은 유지합니다.
+
 ## `say` 인라인 속도 태그 (`<speed=...>`)
 
 `say.text` 안에서 여러 속도 구간을 섞어 한 문장 내부 템포를 조절할 수 있습니다.
@@ -605,6 +629,7 @@ scenes:
 - `sticker.inputLockMs`를 설정하면 스티커 표시 직후 지정 시간(ms) 동안 `input/choice` 제출을 잠그고, 잠금 종료 후 다음 액션으로 진행합니다.
 - 스티커 `enter/leave` 이펙트의 `duration` 사용자 지정은 제거되어, 엔진 기본 시간(enter `280ms`, leave `220ms`)으로 고정됩니다.
 - `say.text`의 다중 `<speed=...>...</speed>` 구간을 순차 해석해, 한 문장 안에서도 구간별 타이핑 속도를 다르게 적용합니다.
+- `say.delivery`는 8종 감정 프로필과 표정 기반 자동 추론으로 대사 속도·문장부호 호흡·입력 글자 반응을 조절합니다.
 - `say.wait`(ms)를 지정하면 해당 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠급니다.
 - `say.autoAdvance`(ms)를 지정하면 트레일러/키오스크형 대사를 입력 없이 자동 진행합니다.
 - `choice.timeoutMs`와 `timeoutOptionIndex`로 제한시간 선택 및 만료 분기를 구성할 수 있습니다.

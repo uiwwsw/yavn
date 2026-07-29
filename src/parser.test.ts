@@ -32,6 +32,47 @@ describe('parseConfigYaml startScreen', () => {
 });
 
 describe('cinematic DSL timing', () => {
+  it('accepts emotional dialogue delivery', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: confrontation
+scenes:
+  confrontation:
+    actions:
+      - say:
+          char: Reiko.nervous
+          delivery: whisper
+          text: "I did not touch it..."
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    expect(parsed.data?.data.scenes.confrontation.actions[0]).toMatchObject({
+      say: { delivery: 'whisper' },
+    });
+  });
+
+  it('rejects unknown dialogue delivery values', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: confrontation
+scenes:
+  confrontation:
+    actions:
+      - say:
+          delivery: dramatic
+          text: "No."
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeDefined();
+    expect(parsed.data).toBeUndefined();
+  });
+
   it('accepts auto-advancing dialogue and a timed choice fallback', () => {
     const parsed = parseChapterYaml(
       `

@@ -144,8 +144,9 @@ scenes:
       - bg: case_board
       - char:
           id: 코난
-          position: center
+          position: left
           emotion: serious
+      - effect: focus
       - say:
           char: 코난.serious
           text: "<speed=30>레이코가 뚜껑을 두 번 누른 순간, 방 안의 모두가 같은 곳을 봤어.</speed>"
@@ -245,7 +246,12 @@ scenes:
   lounge_handoff:
     actions:
       - bg: case_board
+      - char:
+          id: 코난
+          position: left
+          emotion: think
+      - effect: focus
       - say:
-          char: 코난
+          char: 코난.think
           text: "<speed=38>같은 30초를 네 사람은 어떻게 기억하고 있을까.</speed>"
       - goto: /routes/hub/1.yaml

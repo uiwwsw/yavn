@@ -3,6 +3,7 @@ import { appendStoryLogEntry } from './history';
 import type {
   CharacterSlot,
   ChoiceGateState,
+  DialogueDelivery,
   GameData,
   InputGateState,
   Position,
@@ -22,6 +23,9 @@ type DialogState = {
   fullText: string;
   visibleText: string;
   typing: boolean;
+  delivery: DialogueDelivery;
+  typingIntensity: number;
+  typingPulse: number;
 };
 
 type VNState = {
@@ -103,6 +107,9 @@ const initialDialog: DialogState = {
   fullText: '',
   visibleText: '',
   typing: false,
+  delivery: 'neutral',
+  typingIntensity: 0,
+  typingPulse: 0,
 };
 
 const initialVideoCutscene: VideoCutsceneState = {

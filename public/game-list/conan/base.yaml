@@ -1,10 +1,12 @@
 assets:
   backgrounds:
-    mountain_rain: /assets/bg/mountain_rain.avif
-    rain_corridor: /assets/bg/rain_corridor.avif
-    ryokan_hall: /assets/bg/ryokan_hall.avif
-    tea_room: /assets/bg/tea_room.avif
-    case_board: /assets/bg/case_board.avif
+    mountain_rain: /assets/bg/mountain_rain-v2.avif
+    rain_corridor: /assets/bg/rain_corridor-v2.avif
+    ryokan_hall: /assets/bg/ryokan_hall-v2.avif
+    tea_room: /assets/bg/tea_room-v2.avif
+    case_board: /assets/bg/case_board-v2.avif
+    manager_office: /assets/bg/manager_office-v2.avif
+    records_lounge: /assets/bg/records_lounge-v2.avif
     police_tape: /assets/bg/police_tape.svg
     clue_cup: /assets/bg/clue_cup.svg
     clue_lid: /assets/bg/clue_lid.svg
@@ -58,9 +60,14 @@ state:
   visited_reiko: false
   visited_kenji: false
   visited_haruo: false
+  rapport_seiji: false
+  rapport_reiko: false
+  rapport_kenji: false
+  rapport_haruo: false
   deduction_score: 0
   final_confidence: 0
   trust: 0
+  rapport_score: 0
   mistake_count: 0
   comeback_chance: 1
   early_exit_taken: false
@@ -69,6 +76,9 @@ state:
   clue_double_press_decoy: false
   clue_haruo_wipe: false
   reiko_motive_open: false
+  recovered_haruo_clue: false
+  recovered_order_note: false
+  recovered_reiko_motive: false
   timeline_answer: ""
   culprit_answer: ""
 inventory:

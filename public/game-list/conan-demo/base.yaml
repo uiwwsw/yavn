@@ -1,11 +1,11 @@
 assets:
   backgrounds:
     rail_warning: /assets/bg/rail-warning.avif
-    rain_corridor: root:/game-list/conan/assets/bg/rain_corridor.avif
-    ryokan_hall: root:/game-list/conan/assets/bg/ryokan_hall.avif
-    tea_room: root:/game-list/conan/assets/bg/tea_room.avif
-    case_board: root:/game-list/conan/assets/bg/case_board.avif
-    mountain_rain: root:/game-list/conan/assets/bg/mountain_rain.avif
+    rain_corridor: root:/game-list/conan/assets/bg/rain_corridor-v2.avif
+    ryokan_hall: root:/game-list/conan/assets/bg/ryokan_hall-v2.avif
+    tea_room: root:/game-list/conan/assets/bg/tea_room-v2.avif
+    case_board: root:/game-list/conan/assets/bg/case_board-v2.avif
+    mountain_rain: root:/game-list/conan/assets/bg/mountain_rain-v2.avif
     trailer_title: /assets/ui/trailer-title.svg
     timer_60: /assets/ui/timer-60.svg
     timer_07: /assets/ui/timer-07.svg
