@@ -3097,6 +3097,10 @@ textarea,
   color: var(--launcher-coral);
 }
 
+.launcher-status-loading {
+  color: var(--launcher-yellow);
+}
+
 .launcher-status-empty {
   color: var(--launcher-yellow);
 }
@@ -3661,6 +3665,43 @@ textarea,
 
 .launcher-diagnostic p {
   color: #6d3934;
+}
+
+.launcher-diagnostic-loading {
+  border-color: #b9b6aa;
+  color: var(--launcher-ink);
+  background: #f1f0e9;
+}
+
+.launcher-diagnostic-loading strong,
+.launcher-diagnostic-loading p {
+  color: var(--launcher-ink);
+}
+
+.launcher-loading-track {
+  width: min(340px, 100%);
+  height: 3px;
+  display: block;
+  overflow: hidden;
+  margin-top: 14px;
+  background: #d4d1c6;
+}
+
+.launcher-loading-track i {
+  width: 42%;
+  height: 100%;
+  display: block;
+  background: var(--launcher-coral);
+  animation: launcherManifestLoading 900ms ease-in-out infinite alternate;
+}
+
+@keyframes launcherManifestLoading {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(158%);
+  }
 }
 
 .launcher-footer {
