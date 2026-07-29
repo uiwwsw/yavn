@@ -2,6 +2,10 @@ script:
   - scene: entry_guard
   - scene: revisit_notice
   - scene: intro
+  - scene: approach_probe
+  - scene: approach_deal
+  - scene: approach_tone
+  - scene: approach_accusation
   - scene: first_probe
   - scene: first_claim_correct
   - scene: first_claim_wrong
@@ -12,6 +16,8 @@ script:
   - scene: success_line
   - scene: fail_line
   - scene: outro
+  - scene: outro_open
+  - scene: outro_closed
 
 scenes:
   entry_guard:
@@ -75,6 +81,57 @@ scenes:
           with:
             - 켄지.angry
           text: "<speed=34>돈 얘기는 경찰 앞에서도 다시 해.</speed> <speed=26>우선 비명 전후에 어디 있었는지부터.</speed>"
+
+  approach_probe:
+    actions:
+      - choice:
+          key: kenji_approach
+          prompt: "거래에 익숙한 켄지에게 어떤 순서로 물을까?"
+          options:
+            - text: "통화 알리바이를 확인하면 계약 진술도 빠짐없이 기록하겠다고 한다"
+              set:
+                rapport_kenji: true
+              add:
+                rapport_score: 1
+                trust: 1
+              goto: approach_deal
+            - text: "목소리부터 낮추라고 한다"
+              goto: approach_tone
+            - text: "돈 때문에 하루오를 죽였다고 단정한다"
+              add:
+                trust: -1
+              goto: approach_accusation
+
+  approach_deal:
+    actions:
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "<speed=34>좋아, 순서대로 하지.</speed> <speed=24>통화 기록을 확인하고, 그다음 계약서 얘기를 전부 적어.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=22>(흥분해도 조건과 순서는 놓치지 않아.)</speed> <speed=46>기록부터 맞추면 허세가 빠지겠어.</speed>"
+      - goto: first_probe
+
+  approach_tone:
+    actions:
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "<speed=46>사람이 죽었는데 목소리 크기가 중요해?</speed> <speed=24>확인할 게 있으면 바로 물어.</speed>"
+      - goto: first_probe
+
+  approach_accusation:
+    actions:
+      - say:
+          char: 켄지.angry
+          delivery: shout
+          with:
+            - 코난.serious
+          text: "<speed=50>돈 얘기를 했다고 살인범이야?</speed> <speed=24>증거도 없이 거래와 살인을 한 줄에 쓰지 마!</speed>"
+      - goto: first_probe
 
   first_probe:
     actions:
@@ -225,6 +282,29 @@ scenes:
       - goto: outro
 
   outro:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: rapport_kenji
+                op: eq
+                value: true
+              goto: outro_open
+          default: outro_closed
+
+  outro_open:
+    actions:
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "<speed=30>통화 기록은 가져가.</speed> <speed=24>대신 내 말도 잘라 쓰지 마. 난 하루오와 거래하려 했지, 죽이려 한 게 아니야.</speed>"
+      - say:
+          char: 코난
+          text: "<speed=30>기록과 말이 맞으면 자를 이유도 없어요.</speed>"
+      - goto: /routes/hub/1.yaml
+
+  outro_closed:
     actions:
       - say:
           char: 코난

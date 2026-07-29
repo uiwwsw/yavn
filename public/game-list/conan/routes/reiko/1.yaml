@@ -5,6 +5,10 @@ script:
   - scene: intro
   - scene: intro_item_get
   - scene: intro_item_already_owned
+  - scene: approach_probe
+  - scene: approach_procedure
+  - scene: approach_personal
+  - scene: approach_accusation
   - scene: first_probe
   - scene: first_claim_correct
   - scene: first_claim_wrong
@@ -16,6 +20,8 @@ script:
   - scene: motive_open_line
   - scene: motive_half_line
   - scene: outro
+  - scene: outro_open
+  - scene: outro_closed
 
 scenes:
   entry_guard:
@@ -109,7 +115,7 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=28>이 차는 88도를 넘으면 향이 죽어요.</speed> <speed=22>그래서 저는 비명이 날 때까지 온도계만 보고 있었어요.</speed>"
+          text: "<speed=28>이 차는 88도를 넘기면 향이 죽습니다.</speed> <speed=22>시음 책임자인 저는 비명이 날 때까지 온도계만 보고 있었어요.</speed>"
       - say:
           char: 코난.think
           text: "<speed=22>(온도계만 봤다면서 2번 잔의 물기까지 먼저 닦으려 했어.)</speed> <speed=48>시각부터 적어 두자.</speed>"
@@ -141,13 +147,63 @@ scenes:
           id: item_popup_reiko_statement_note
           leave:
             effect: fadeOut
-      - goto: first_probe
+      - goto: approach_probe
 
   intro_item_already_owned:
     actions:
       - say:
           char: 코난.think
           text: "<speed=24>(진술 시각은 이미 적어 뒀어.)</speed> <speed=46>이번엔 기록과 맞춰 보면 돼.</speed>"
+      - goto: approach_probe
+
+  approach_probe:
+    actions:
+      - choice:
+          key: reiko_approach
+          prompt: "체면을 지키려는 레이코에게 어떻게 질문할까?"
+          options:
+            - text: "관리인으로서 온도 기록 절차를 순서대로 설명해 달라고 한다"
+              set:
+                rapport_reiko: true
+              add:
+                rapport_score: 1
+                trust: 1
+              goto: approach_procedure
+            - text: "하루오와 무슨 사이였는지부터 묻는다"
+              goto: approach_personal
+            - text: "손수건을 댄 사람이 당신이라고 단정한다"
+              add:
+                trust: -1
+              goto: approach_accusation
+
+  approach_procedure:
+    actions:
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "<speed=26>주전자를 올리고, 88도를 확인한 뒤, 시음 순서를 알립니다.</speed> <speed=20>그날도... 같은 순서였어요.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=22>(절차를 말할 때만 목소리가 안정돼.)</speed> <speed=46>빠진 동작이 나오면 바로 알 수 있어.</speed>"
+      - goto: first_probe
+
+  approach_personal:
+    actions:
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "<speed=24>직원이었고, 오래 아는 사이였습니다.</speed> <speed=20>지금 묻는 건 온도계 기록 아닌가요?</speed>"
+      - goto: first_probe
+
+  approach_accusation:
+    actions:
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "<speed=22>아이의 추측에 답할 생각은 없어요.</speed> <speed=18>기록을 보실 거라면 보여 드리죠.</speed>"
       - goto: first_probe
 
   first_probe:
@@ -328,6 +384,29 @@ scenes:
       - goto: outro
 
   outro:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: rapport_reiko
+                op: eq
+                value: true
+              goto: outro_open
+          default: outro_closed
+
+  outro_open:
+    actions:
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "<speed=22>그 메모...</speed> <speed=18>제가 한 말은 고치지 말아 주세요. 틀린 시각도 그대로요.</speed>"
+      - say:
+          char: 코난
+          text: "<speed=30>그러려고 적은 거예요.</speed> <speed=24>나중에 기억이 바뀌지 않도록.</speed>"
+      - goto: /routes/hub/1.yaml
+
+  outro_closed:
     actions:
       - say:
           char: 코난

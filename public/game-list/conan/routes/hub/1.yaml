@@ -2,6 +2,9 @@ script:
   - scene: lounge_intro
   - scene: all_done_check
   - scene: all_done_bonus
+  - scene: rapport_bonus_check
+  - scene: rapport_bonus
+  - scene: rapport_bonus_missed
   - scene: route_select
   - scene: early_exit_confirm
   - scene: early_exit_penalty_branch
@@ -48,6 +51,46 @@ scenes:
       - say:
           char: 코난.serious
           text: "<speed=30>이제 됐어.</speed> <speed=24>네 사람의 말이 모두 같은 30초를 가리키고 있어.</speed>"
+      - goto: rapport_bonus_check
+
+  rapport_bonus_check:
+    actions:
+      - branch:
+          cases:
+            - when:
+                var: rapport_score
+                op: gte
+                value: 3
+              goto: rapport_bonus
+          default: rapport_bonus_missed
+
+  rapport_bonus:
+    actions:
+      - add:
+          final_confidence: 1
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 란.worried
+          with:
+            - 코난.think
+          text: "<speed=28>같은 질문도 사람마다 다르게 해야 했네.</speed> <speed=22>기록을 보여 주니까, 다들 숨기던 말이 조금씩 나왔어.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=22>(사람마다 지키려는 게 달라.)</speed> <speed=46>거짓말은 바로 그걸 건드릴 때 흔들려.</speed>"
+      - goto: move_to_conclusion_gate
+
+  rapport_bonus_missed:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=22>(단서는 모였지만 사람들의 반응까지 다 읽진 못했어.)</speed> <speed=46>결론은 물증으로 흔들리지 않게 세워야 해.</speed>"
       - goto: move_to_conclusion_gate
 
   route_select:

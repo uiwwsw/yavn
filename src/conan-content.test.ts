@@ -52,6 +52,14 @@ const setValues = (actions: UnknownRecord[]): UnknownRecord =>
     {},
   );
 
+const choiceOptions = (actions: UnknownRecord[]): UnknownRecord[] => {
+  const choiceAction = actions.find((action) =>
+    Object.prototype.hasOwnProperty.call(action, 'choice'),
+  );
+  const options = asRecord(choiceAction?.choice).options;
+  return Array.isArray(options) ? options.map(asRecord) : [];
+};
+
 const resolveGameAsset = (assetPath: string): string =>
   `${gameRoot}${assetPath.replace(/^\//, '')}`;
 
@@ -153,6 +161,35 @@ describe('Conan content regression', () => {
     expect(setValues(sceneActions(seiji, 'evidence_followup'))).toMatchObject({
       clue_order_note: true,
       recovered_order_note: true,
+    });
+  });
+
+  it('rewards character-specific interrogation approaches', () => {
+    const baseState = asRecord(readYaml('base.yaml').state);
+    const approaches = [
+      ['routes/seiji/1.yaml', 'rapport_seiji'],
+      ['routes/reiko/1.yaml', 'rapport_reiko'],
+      ['routes/kenji/1.yaml', 'rapport_kenji'],
+      ['routes/haruo/1.yaml', 'rapport_haruo'],
+    ] as const;
+
+    expect(baseState.rapport_score).toBe(0);
+
+    approaches.forEach(([path, flag]) => {
+      expect(baseState[flag], flag).toBe(false);
+      const options = choiceOptions(sceneActions(readYaml(path), 'approach_probe'));
+      const alignedOption = options.find((option) => asRecord(option.set)[flag] === true);
+
+      expect(alignedOption, `${path}:${flag}`).toBeDefined();
+      expect(asRecord(alignedOption?.add).rapport_score).toBe(1);
+      expect(asRecord(alignedOption?.add).trust).toBe(1);
+    });
+
+    const hubBonus = sceneActions(readYaml('routes/hub/1.yaml'), 'rapport_bonus');
+    expect(hubBonus).toContainEqual({
+      add: {
+        final_confidence: 1,
+      },
     });
   });
 });
