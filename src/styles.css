@@ -1789,6 +1789,54 @@ textarea,
   font-family: var(--ui-body-font);
 }
 
+.text.delivery-whisper {
+  opacity: 0.78;
+}
+
+.text.delivery-sad {
+  opacity: 0.9;
+}
+
+.text.delivery-deduction {
+  text-shadow: 0 0 12px rgba(116, 211, 255, 0.12);
+}
+
+.speaker.delivery-angry,
+.speaker.delivery-shout {
+  text-shadow: 0 0 12px rgba(255, 126, 92, 0.32);
+}
+
+.typing-glyph {
+  position: relative;
+  display: inline;
+  animation: dialogueGlyphIn 90ms ease-out both;
+  will-change: opacity, filter, text-shadow;
+}
+
+.text.is-typing.delivery-nervous .typing-glyph {
+  animation: dialogueNervousGlyph 120ms steps(2, end) both;
+}
+
+.text.is-typing.delivery-angry .typing-glyph {
+  animation: dialogueAngryGlyph 95ms ease-out both;
+}
+
+.text.is-typing.delivery-whisper .typing-glyph {
+  animation: dialogueWhisperGlyph 180ms ease-out both;
+}
+
+.text.is-typing.delivery-shout .typing-glyph {
+  animation: dialogueShoutGlyph 120ms ease-out both;
+}
+
+.text.is-typing.delivery-sad .typing-glyph {
+  animation: dialogueSadGlyph 190ms ease-out both;
+}
+
+.text.is-typing.delivery-deduction .typing-glyph {
+  animation: dialogueDeductionGlyph 115ms ease-out both;
+}
+
 .status {
   text-align: right;
   font-size: 13px;
@@ -2583,6 +2631,97 @@ textarea,
   to { transform: scaleX(0); }
 }
 
+@keyframes dialogueGlyphIn {
+  from {
+    opacity: calc(0.72 + var(--typing-intensity) * 0.12);
+    filter: brightness(calc(1 + var(--typing-intensity) * 0.18));
+  }
+  to {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+@keyframes dialogueNervousGlyph {
+  0% {
+    left: calc(var(--typing-intensity) * -0.7px);
+    top: calc(var(--typing-intensity) * 0.6px);
+    opacity: 0.68;
+  }
+  50% {
+    left: calc(var(--typing-intensity) * 0.7px);
+    top: calc(var(--typing-intensity) * -0.5px);
+  }
+  100% {
+    left: 0;
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes dialogueAngryGlyph {
+  from {
+    color: #fff4e7;
+    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 9px) rgba(255, 105, 78, 0.72);
+    filter: brightness(calc(1.08 + var(--typing-intensity) * 0.22));
+  }
+  to {
+    color: inherit;
+    text-shadow: none;
+    filter: brightness(1);
+  }
+}
+
+@keyframes dialogueWhisperGlyph {
+  from {
+    opacity: 0.28;
+    filter: blur(calc(var(--typing-intensity) * 0.5px));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes dialogueShoutGlyph {
+  from {
+    color: #ffffff;
+    text-shadow:
+      0 0 calc(6px + var(--typing-intensity) * 10px) rgba(255, 205, 122, 0.88),
+      0 0 calc(12px + var(--typing-intensity) * 14px) rgba(255, 103, 76, 0.48);
+    filter: brightness(calc(1.12 + var(--typing-intensity) * 0.28));
+  }
+  to {
+    color: inherit;
+    text-shadow: none;
+    filter: brightness(1);
+  }
+}
+
+@keyframes dialogueSadGlyph {
+  from {
+    top: calc(var(--typing-intensity) * -0.8px);
+    opacity: 0.34;
+    text-shadow: 0 0 9px rgba(128, 173, 215, 0.28);
+  }
+  to {
+    top: 0;
+    opacity: 1;
+    text-shadow: none;
+  }
+}
+
+@keyframes dialogueDeductionGlyph {
+  from {
+    color: #d8f6ff;
+    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 7px) rgba(91, 214, 255, 0.58);
+  }
+  to {
+    color: inherit;
+    text-shadow: none;
+  }
+}
+
 @keyframes impactFrame {
   0% { transform: translate3d(0, 0, 0) scale(1); }
   20% { transform: translate3d(-7px, 3px, 0) scale(1.025); }
@@ -2979,7 +3118,8 @@ textarea,
   .effect-glitch .sticker-layer,
   .effect-blur .bg,
   .effect-blur .char-layer,
-  .effect-blur .dialog-box {
+  .effect-blur .dialog-box,
+  .typing-glyph {
     animation: none !important;
   }
 

@@ -9,17 +9,18 @@ author:
     - label: "LinkedIn"
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
-version: "9.1"
+version: "9.4"
 seo:
-  description: "폭우에 고립된 료칸의 다실 살인 사건. 지워지다 만 2R과 사라진 1분을 추적하는 코난풍 분기 미스터리."
+  description: "폭우에 고립된 료칸에서 네 인물의 성격에 맞춰 심문하고, 지워지다 만 2R과 사라진 1분을 추적하는 코난풍 분기 미스터리."
   keywords:
     - "명탐정 코난"
     - "추리 게임"
     - "비주얼노벨"
     - "미스터리"
     - "분기 시나리오"
-  image: "assets/bg/case_board.avif"
-  imageAlt: "다실 사건 단서 보드"
+    - "캐릭터 심문"
+  image: "assets/bg/title_storm-v2.avif"
+  imageAlt: "폭우로 고립된 산악 료칸의 밤"
 textSpeed: 38
 autoSave: true
 clickToInstant: true
@@ -27,13 +28,13 @@ ui:
   template: cinematic-noir
 startScreen:
   enabled: true
-  image: "assets/bg/open.avif"
+  image: "assets/bg/title_storm-v2.avif"
   music: "assets/music/intro.mp3"
-  showTitle: false
+  showTitle: true
   startButtonText: "시작하기"
-  buttonPosition: "auto"
+  buttonPosition: "bottom-center"
 endingScreen:
-  image: "assets/bg/closed.avif"
+  image: "assets/bg/mountain_rain-v2.avif"
 endings:
   true_end:
     title: "TRUE END"
