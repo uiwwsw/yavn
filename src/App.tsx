@@ -31,6 +31,7 @@ import {
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
+import { resolveCharacterStageLayout } from './characterLayout';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
@@ -1154,7 +1155,7 @@ export default function App() {
     return '';
   }, [inventoryCatalogEntries.length, inventoryView, inventoryVisibleEntries.length]);
   const visibleCharacterSet = new Set(visibleCharacterIds);
-  const orderedCharacters = (
+  const visibleCharactersByPosition = (
     [
       { position: 'left' as const, slot: characters.left },
       { position: 'center' as const, slot: characters.center },
@@ -1167,17 +1168,20 @@ export default function App() {
         return false;
       }
       return visibleCharacterSet.has(slot.id);
-    })
-    .sort((a, b) => {
-      const aRank = speakerOrder.indexOf(a.slot.id);
-      const bRank = speakerOrder.indexOf(b.slot.id);
-      const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
-      const bPriority = bRank >= 0 ? bRank : Number.MAX_SAFE_INTEGER;
-      if (aPriority !== bPriority) {
-        return aPriority - bPriority;
-      }
-      return POSITION_TIEBREAKER[a.position] - POSITION_TIEBREAKER[b.position];
     });
+  const characterStageLayout = resolveCharacterStageLayout(
+    visibleCharactersByPosition.map((entry) => entry.position),
+  );
+  const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
+    const aRank = speakerOrder.indexOf(a.slot.id);
+    const bRank = speakerOrder.indexOf(b.slot.id);
+    const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
+    const bPriority = bRank >= 0 ? bRank : Number.MAX_SAFE_INTEGER;
+    if (aPriority !== bPriority) {
+      return aPriority - bPriority;
+    }
+    return POSITION_TIEBREAKER[a.position] - POSITION_TIEBREAKER[b.position];
+  });
   const orderByPosition = new Map<Position, number>();
   orderedCharacters.forEach((entry, idx) => {
     orderByPosition.set(entry.position, idx + 1);
@@ -1628,12 +1632,14 @@ export default function App() {
     const depthBrightness = hasFocusedSpeaker ? (isSpeaker ? 1 : Math.max(0.64, 1 - depthStep * 0.15)) : 1;
     const depthScale = hasFocusedSpeaker ? (isSpeaker ? 1.02 : Math.max(0.98, 1 - depthStep * 0.01)) : 1;
     const depthClass = !hasFocusedSpeaker ? 'is-neutral' : isSpeaker ? 'is-speaker' : 'is-listener';
+    const duoSide = characterStageLayout.duoSideByPosition[position];
+    const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const charStyle = {
       zIndex,
       '--char-scale': depthScale,
       '--char-brightness': depthBrightness,
     } as CSSProperties;
-    const className = `char char-image ${position} ${depthClass}`;
+    const className = ['char', 'char-image', position, depthClass, duoClass].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
       return (
         <Suspense fallback={null} key={`${position}-${slot.id}-${slot.source}`}>
@@ -1641,7 +1647,7 @@ export default function App() {
             slot={slot}
             position={position}
             trackingKey={buildLive2DLoadKey(position, slot)}
-            className={depthClass}
+            className={[depthClass, duoClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
         </Suspense>
@@ -2171,7 +2177,11 @@ export default function App() {
       <div className="overlay" />
       {background && <img className="bg" src={background} alt="background" />}
 
-      <div className="char-layer" style={{ bottom: `${stickerSafeInset}px` }}>
+      <div
+        className={`char-layer${characterStageLayout.mode === 'duo' ? ' char-layout-duo' : ''}`}
+        data-character-layout={characterStageLayout.mode}
+        style={{ bottom: `${stickerSafeInset}px` }}
+      >
         {renderCharacter(characters.left, 'left')}
         {renderCharacter(characters.center, 'center')}
         {renderCharacter(characters.right, 'right')}

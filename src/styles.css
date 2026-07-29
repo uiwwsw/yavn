@@ -842,7 +842,8 @@ textarea,
 }
 
 .char-live2d {
-  width: min(36vw, 460px);
+  --char-live2d-width: min(36vw, 460px);
+  width: var(--char-live2d-width);
   height: 100%;
   max-height: none;
   transform: none;
@@ -851,7 +852,7 @@ textarea,
 }
 
 .char-live2d.center {
-  left: calc(50% - min(36vw, 460px) / 2);
+  left: calc(50% - var(--char-live2d-width) / 2);
 }
 
 .char-live2d-mount {
@@ -893,6 +894,37 @@ textarea,
 
 .right {
   right: 8%;
+}
+
+.char-layer.char-layout-duo .char-image {
+  max-width: min(44vw, 560px);
+}
+
+.char-layer.char-layout-duo .char-duo-left {
+  right: auto;
+  left: 25%;
+  --char-offset-x: -50%;
+}
+
+.char-layer.char-layout-duo .char-duo-right {
+  right: auto;
+  left: 75%;
+  --char-offset-x: -50%;
+}
+
+.char-layer.char-layout-duo .char-live2d {
+  --char-live2d-width: min(44vw, 460px);
+  --char-offset-x: 0%;
+}
+
+.char-layer.char-layout-duo .char-live2d.char-duo-left {
+  right: auto;
+  left: calc(25% - var(--char-live2d-width) / 2);
+}
+
+.char-layer.char-layout-duo .char-live2d.char-duo-right {
+  right: auto;
+  left: calc(75% - var(--char-live2d-width) / 2);
 }
 
 .hud {
@@ -3023,11 +3055,19 @@ textarea,
   }
 
   .char-live2d {
-    width: min(62vw, 410px);
+    --char-live2d-width: min(62vw, 410px);
   }
 
   .char-live2d.center {
-    left: calc(50% - min(62vw, 410px) / 2);
+    left: calc(50% - var(--char-live2d-width) / 2);
+  }
+
+  .char-layer.char-layout-duo .char-image {
+    max-width: min(52vw, 410px);
+  }
+
+  .char-layer.char-layout-duo .char-live2d {
+    --char-live2d-width: min(50vw, 410px);
   }
 
   .choice-gate-option,

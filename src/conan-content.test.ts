@@ -192,4 +192,16 @@ describe('Conan content regression', () => {
       },
     });
   });
+
+  it('opens the episode with an explicit two-character exchange', () => {
+    const introActions = sceneActions(readYaml('0.yaml'), 'calm_arrival');
+    const dialogue = introActions
+      .map((action) => asRecord(action.say))
+      .filter((say) => typeof say.char === 'string');
+    const ranLine = dialogue.find((say) => say.char === '란');
+    const kogoroLine = dialogue.find((say) => say.char === '코고로.proud');
+
+    expect(ranLine?.with).toEqual(['코고로.proud']);
+    expect(kogoroLine?.with).toEqual(['란']);
+  });
 });
