@@ -9,6 +9,7 @@ scenes:
   calm_arrival:
     actions:
       - bg: ryokan_hall
+      - music: rain
       - char:
           id: 란
           position: left
@@ -24,16 +25,16 @@ scenes:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=50>비 냄새 좋다.</speed> <speed=34>이런 곳이라면 아빠도 얌전히 쉴 수 있겠지?</speed>"
+          text: "<speed=38>와, 다다미 냄새.</speed> <speed=30>아빠, 오늘만큼은 사건 찾는다고 돌아다니면 안 돼.</speed> <speed=46>온천부터야.</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
           with:
             - 란
-          text: "<speed=66>물론이지!</speed> <speed=40>오늘 일정은 온천, 저녁, 그리고 이 료칸의 명물 차.</speed> <speed=58>사건은 절대 사절이다!</speed>"
+          text: "<speed=62>으하하하!</speed> <speed=36>명탐정에게도 휴식은 필요한 법.</speed> <speed=48>오늘 의뢰인은 온천과 저녁상뿐이다!</speed>"
       - say:
           char: 코난.think
-          text: "<speed=28>(아저씨가 저 말을 하면 꼭 불길하단 말이지...)</speed>"
+          text: "<speed=24>(저렇게 큰 소리로 선언할 때마다 꼭 무슨 일이 생겼는데...)</speed>"
 
   tea_joke:
     actions:
@@ -43,15 +44,15 @@ scenes:
           char: 코고로.proud
           with:
             - 란
-          text: "<speed=58>오, 이 향!</speed> <speed=38>마시기도 전에 머리가 맑아지는군.</speed>"
+          text: "<speed=54>호오, 이 깊은 향!</speed> <speed=34>한 모금이면 명추리가 절로 나오겠군.</speed>"
       - say:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=46>아빠, 아직 시음 전이야.</speed> <speed=34>혼자 먼저 마시면 또 민망해진다?</speed>"
+          text: "<speed=42>아빠, 그건 빈 잔이야.</speed> <speed=30>향은 저쪽 주전자에서 나는 거고.</speed>"
       - say:
           char: 코난
-          text: "<speed=34>잔은 네 개인데 자리표까지 있네.</speed> <speed=28>그냥 시음회치고는 꽤 엄격하다.</speed>"
+          text: "<speed=40>어라?</speed> <speed=28>차는 한 주전자인데 잔마다 번호가 있어.</speed> <speed=24>누가 어느 잔을 쓰는지도 정해 놨네.</speed>"
 
   host_preview:
     actions:
@@ -72,24 +73,24 @@ scenes:
           with:
             - 켄지.angry
             - 세이지.cold
-          text: "<speed=38>폭우 때문에 귀한 손님들 발이 묶였네요.</speed> <speed=30>그래도 시음은 예정대로 진행할게요.</speed>"
+          text: "<speed=32>산길이 잠겼습니다.</speed> <speed=24>오늘 밤은 모두 이곳에 머무셔야 해요.</speed> <speed=38>시음은... 예정대로 진행하겠습니다.</speed>"
       - say:
           char: 켄지.angry
           with:
             - 레이코.nervous
             - 세이지.cold
-          text: "<speed=52>예정대로?</speed> <speed=32>계약서에서 개발자 권리 조항이 바뀐 것부터 설명해.</speed>"
+          text: "<speed=48>손님 대접은 됐어.</speed> <speed=30>내가 받은 계약서엔 없던 문장이 왜 오늘 사본엔 들어가 있지?</speed> <speed=44>그것부터 설명해.</speed>"
       - say:
           char: 세이지.cold
           with:
             - 켄지.angry
             - 레이코.nervous
-          text: "<speed=34>원본은 제가 보관하고 있습니다.</speed> <speed=28>시음이 끝나면 수정본과 한 줄씩 대조하죠.</speed>"
+          text: "<speed=30>수정 시각은 오늘 오후 7시 42분.</speed> <speed=24>원본은 제 봉투 안에 있습니다.</speed> <speed=34>누가 고쳤는지는 한 줄씩 맞춰 보면 됩니다.</speed>"
 
   tension_seed:
     actions:
       - bg: rain_corridor
-      - music: reasoning
+      - music: mystery
       - effect: blur
       - sound: thunder
       - char:
@@ -98,13 +99,13 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=26>(창문이 울릴 만큼 비가 세졌어.)</speed> <speed=22>산길은 벌써 통제됐고...</speed>"
+          text: "<speed=24>(산길은 끊겼고, 전화도 자꾸 끊겨.</speed> <speed=20>여기 있는 사람은 아무도 내려갈 수 없어.)</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=24>(바뀐 계약서, 굳어 버린 레이코의 손, 그리고 네 개의 잔.)</speed> <speed=54>아무래도 휴가로 끝나진 않겠네.</speed>"
+          text: "<speed=22>(계약서 얘기가 나오자 레이코 씨는 오른손을 감췄어.</speed> <speed=20>그리고 하루오 씨는 네 잔 중 2번만 몇 번이나 확인했고.)</speed>"
 
   handoff:
     actions:
       - effect: pulse
       - say:
-          text: "<speed=34>그때는 아무도 몰랐다.</speed> <speed=26>저 네 개의 찻잔 중 하나가 곧 사건 현장이 되리라는 걸.</speed>"
+          text: "<speed=28>오후 9시 18분.</speed> <speed=22>폭우 소리에 갇힌 다실에서, 마지막 시음이 시작됐다.</speed>"

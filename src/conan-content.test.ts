@@ -40,6 +40,22 @@ const collectBackgroundKeys = (value: unknown, keys = new Set<string>()): Set<st
   return keys;
 };
 
+const collectStringValues = (
+  value: unknown,
+  property: string,
+  values = new Set<string>(),
+): Set<string> => {
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectStringValues(item, property, values));
+    return values;
+  }
+
+  const record = asRecord(value);
+  if (typeof record[property] === 'string') values.add(String(record[property]));
+  Object.values(record).forEach((item) => collectStringValues(item, property, values));
+  return values;
+};
+
 const sceneActions = (document: UnknownRecord, scene: string): UnknownRecord[] => {
   const scenes = asRecord(document.scenes);
   const actions = asRecord(scenes[scene]).actions;
@@ -203,5 +219,67 @@ describe('Conan content regression', () => {
 
     expect(ranLine?.with).toEqual(['코고로.proud']);
     expect(kogoroLine?.with).toEqual(['란']);
+  });
+
+  it('ships the v10 episode identity and all seven music cues', () => {
+    const config = readYaml('config.yaml');
+    const base = readYaml('base.yaml');
+    const music = asRecord(asRecord(base.assets).music);
+    const referencedMusic = new Set<string>();
+
+    chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
+
+    expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
+    expect(config.version).toBe('10.0');
+    expect(Object.keys(music).sort()).toEqual([
+      'confession',
+      'intro',
+      'mystery',
+      'rain',
+      'reasoning',
+      'solvethecase',
+      'tension',
+    ]);
+    expect([...referencedMusic].sort()).toEqual(
+      expect.arrayContaining([
+        'confession',
+        'mystery',
+        'rain',
+        'reasoning',
+        'solvethecase',
+        'tension',
+      ]),
+    );
+
+    Object.values(music).forEach((assetPath) => {
+      expect(typeof assetPath).toBe('string');
+      expect(existsSync(resolveGameAsset(String(assetPath))), String(assetPath)).toBe(true);
+    });
+  });
+
+  it('ends the full reveal with confession and an in-character morning coda', () => {
+    const conclusion = readYaml('conclusion/1.yaml');
+    const revealActions = sceneActions(conclusion, 'true_epilogue');
+    const codaActions = sceneActions(conclusion, 'true_coda');
+    const revealText = [...collectStringValues(revealActions, 'text')].join(' ');
+    const codaText = [...collectStringValues(codaActions, 'text')].join(' ');
+
+    expect(revealActions).toContainEqual({ music: 'confession' });
+    expect(revealActions).toContainEqual({ goto: 'true_coda' });
+    expect(revealText).toContain('이름 하나라도 빼면 거래는 없다');
+    expect(codaActions).toContainEqual({ music: 'rain' });
+    expect(codaActions).toContainEqual({ ending: 'true_end' });
+    expect(codaText).toContain('또 자기가 한 추리만 기억 안 나지');
+    expect(codaText).toContain('이제 그 이름은 지워지지 않아');
+  });
+
+  it('keeps system verdict language out of playable dialogue and choices', () => {
+    const narrativeText = chapterFiles
+      .flatMap((path) => [...collectStringValues(readYaml(path), 'text')])
+      .join(' ');
+
+    ['정답을 채택', '조사 라인', '보너스를 획득', '사건의 기준으로 삼을까'].forEach(
+      (phrase) => expect(narrativeText).not.toContain(phrase),
+    );
   });
 });
