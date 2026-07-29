@@ -10,7 +10,7 @@ pnpm dev
 ```
 
 - 권장 런타임: Node.js `22.x` (pnpm `10.x`)
-- `/`: Engine Console 런처 (실행 콘솔/워크스페이스/인스펙터)
+- `/`: YAVN 플레이그라운드 (대표 게임 쇼케이스/게임 라이브러리/ZIP 실행)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 실행
 
 ## 1-1) 런처 게임 목록 메타 (Manifest V3)
@@ -343,7 +343,7 @@ scenes:
 - 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
 - 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
 - 인벤토리 모달의 `초기화면 가기` 버튼은 URL 게임에서만 활성화되며, 해당 `sessionStorage` 플래그를 지우고 현재 인게임 BGM을 즉시 정지한 뒤 Start Gate를 다시 표시합니다.
-- 런처 인스펙터 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
+- 런처 쇼케이스/게임 카드 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
 - `config.yaml.endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 커스텀할 수 있습니다.
@@ -650,6 +650,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-29: 메인 런처를 과밀한 3패널 Engine Console에서 실제 게임 이미지 중심의 YAVN 플레이그라운드로 재설계했습니다. 대표 게임 쇼케이스, 썸네일 라이브러리, 검색/태그, 카드별 바로 실행, ZIP 실행 툴바를 데스크톱·모바일 공통 흐름으로 구성하고 `engine-showcase` 태그 게임을 첫 대표작으로 선택합니다.
 - 2026-07-29: 자동 진행형 쇼케이스를 위해 `say.autoAdvance`, `choice.timeoutMs`/`timeoutOptionIndex`, `root:/` 공유 에셋 경로와 `impact/glitch/speedlines/alarm/focus` 화면 이펙트를 추가했습니다. 이를 사용하는 독립 게임 `public/game-list/conan-demo`를 약 60초 분량의 모바일 대응 트레일러로 추가했습니다.
 - 2026-07-29: Conan 샘플의 설명조·판정조 대사를 전면 재작성했습니다. 용의자별 말투를 분리하고, `2번 잔 -> 21:29의 빈 시간 -> 손수건 섬유 -> 2R -> 연구 노트`가 잠자는 코고로의 폭로로 이어지도록 사건 인과를 보강했습니다. 코난과 혼동되던 용의자 `신이치`는 `세이지`로 변경했습니다.
 - 2026-07-29: `showTitle: false`인 Start Gate 이미지를 모바일 세로 화면에서 배경과 전경으로 분리해, `cover` 크롭으로 이미지 안의 게임 제목이 잘리던 문제를 수정했습니다. 소형 세로 화면과 모바일 가로 화면에서 제목/버튼 배치 및 페이지 오버플로를 검증했습니다.

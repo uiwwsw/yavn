@@ -37,7 +37,7 @@ pnpm dev
 - 상세 진단과 다음 우선순위: [`docs/IMPROVEMENT_ROADMAP.ko.md`](docs/IMPROVEMENT_ROADMAP.ko.md)
 
 라우팅:
-- `/`: Engine Console 런처(실행 콘솔 + 검색/태그 워크스페이스 + 인스펙터)
+- `/`: YAVN 플레이그라운드(대표 게임 쇼케이스 + 검색/태그 게임 라이브러리 + ZIP 실행)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 게임 즉시 실행
 
 ## 런처 메타데이터 (Manifest V3)
@@ -90,7 +90,7 @@ pnpm dev
 게임별 선택 메타(`public/game-list/<gameId>/launcher.yaml`, 선택):
 
 ```yaml
-summary: "게임 카드/인스펙터에 표시할 설명"
+summary: "게임 카드와 대표 쇼케이스에 표시할 설명"
 thumbnail: "assets/bg/cover.png"
 tags:
   - detective
@@ -99,7 +99,7 @@ tags:
 
 - 이 파일은 런처 전용이며 엔진 DSL(`config/base/chapter`) 파서와 분리됩니다.
 - `thumbnail`은 상대 경로일 때 `/game-list/<gameId>/...`로 정규화됩니다.
-- `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 인스펙터 기본 썸네일로 사용합니다.
+- `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 쇼케이스/게임 카드 기본 썸네일로 사용합니다.
 
 ## Public 최소화 정책
 
@@ -557,7 +557,8 @@ scenes:
 
 ## 개발 메모
 
-- 런처는 `EXECUTION CONSOLE(좌) / WORKSPACE CATALOG(중앙) / ASSET INSPECTOR(우)` 3패널 구조를 사용합니다.
+- 런처는 선택 게임의 실제 썸네일과 실행 액션을 먼저 보여주는 쇼케이스, 검색·태그 필터가 있는 플레이어블 빌드 라이브러리, ZIP 실행 툴바로 구성됩니다.
+- 첫 진입에서는 `engine-showcase` 태그 게임을 대표작으로 선택하고, 없으면 manifest 첫 게임을 사용합니다.
 - 게임 목록 manifest는 `schemaVersion: 3`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
