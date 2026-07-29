@@ -1,0 +1,6 @@
+<svg width="560" height="150" viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+  <rect x="5" y="5" width="550" height="140" fill="#070b12" fill-opacity=".88" stroke="#ff324d" stroke-width="6"/>
+  <path d="M24 28h62M24 28v34M536 122h-62M536 122V88" stroke="#ff324d" stroke-width="5"/>
+  <text x="280" y="105" fill="#ffffff" stroke="#22040a" stroke-width="4" paint-order="stroke" font-size="92" font-family="monospace" font-weight="900" text-anchor="middle">00:60</text>
+  <text x="32" y="132" fill="#ff5770" font-size="15" font-family="monospace" font-weight="700">SIGNAL OVERRIDE</text>
+</svg>

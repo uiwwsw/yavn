@@ -37,7 +37,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=30>하루오 씨 현장은 이미 봉인 완료.</speed> <speed=58>다른 라인을 먼저 보자.</speed>"
+          text: "<speed=24>(컵받침과 손수건 섬유는 이미 확인했어.)</speed> <speed=46>다른 사람의 말과 맞춰 보자.</speed>"
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -71,12 +71,12 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: '<speed=34>하루오 씨가 남긴 "2R".</speed> <speed=30>그리고 컵 가장자리의 닦인 원형 자국.</speed>'
+          text: '<speed=30>"2"는 손가락이 한 번에 움직였는데, R의 꼬리만 옆으로 번졌어.</speed> <speed=24>쓴 사람과 문지른 사람의 방향이 달라.</speed>'
       - say:
           char: 란.worried
           with:
             - 코난.serious
-          text: "<speed=30>유언일까...</speed> <speed=26>아니면 누가 덧칠한 걸까...</speed>"
+          text: "<speed=28>그럼 하루오 씨가 남긴 말을...</speed> <speed=22>누군가 지우려 했다는 거야?</speed>"
 
   crime_scene_item_gate:
     actions:
@@ -107,8 +107,7 @@ scenes:
           position: center
           emotion: think
       - say:
-          char: 코난.think
-          text: "<speed=34>하루오 씨 현장에서 찻잔 반응 시료 카드를 확보했다.</speed> <speed=58>이제 현장 반응 순서를 고정한다.</speed>"
+          text: "<speed=28>면봉 감식 결과가 나왔다.</speed> <speed=22>잔 안쪽은 음성, 입이 닿는 바깥 가장자리만 양성이었다.</speed>"
       - clearSticker:
           id: item_popup_tea_residue_report
           leave:
@@ -123,31 +122,31 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=30>찻잔 반응 시료 카드는 이미 확보했다.</speed> <speed=56>현장 판단만 이어간다.</speed>"
+          text: "<speed=22>(2번 잔 감식 결과는 이미 확인했어.)</speed> <speed=46>이제 2R 주변 흔적을 보자.</speed>"
       - goto: first_probe
 
   first_probe:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=36>첫 질문이다.</speed> <speed=30>가장 먼저 신뢰할 수 있는 물증은 뭐지?</speed>"
+          text: "<speed=28>글자의 뜻보다 먼저, 누가 이 컵받침에 손댔는지 알아내야 해.</speed>"
       - choice:
           key: haruo_first_probe
-          prompt: "하루오 현장에서 1순위로 고정할 단서는?"
+          prompt: "2R 주변에서 다른 손길을 보여 주는 것은?"
           options:
-            - text: "다잉 메시지 주변의 닦인 자국(손수건 섬유 흔적)"
+            - text: "R 끝에 남은 닦임 방향과 손수건 섬유"
               set:
                 clue_haruo_wipe: true
               add:
                 deduction_score: 2
                 trust: 1
               goto: first_claim_correct
-            - text: "글씨체 인상만으로 작성자를 단정"
+            - text: "글씨 모양만 보고 작성자를 단정한다"
               add:
                 mistake_count: 1
                 trust: -1
               goto: first_claim_wrong
-            - text: "비명 크기로 범인을 특정"
+            - text: "비명 소리가 컸던 사람을 의심한다"
               add:
                 mistake_count: 1
               goto: first_claim_wrong
@@ -156,28 +155,28 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=56>좋아, 맞아.</speed> <speed=34>닦인 자국은 위조 개입을 증명하는 핵심이다.</speed>"
+          text: "<speed=30>컵받침의 물기는 바깥으로 번졌는데 R의 꼬리만 안쪽으로 끌렸어.</speed> <speed=24>다른 손이 닿은 흔적이야.</speed>"
       - choice:
           key: haruo_first_commit
-          prompt: "이 단서를 채택할까?"
+          prompt: "2R을 어떻게 해석할까?"
           options:
-            - text: "채택"
+            - text: "하루오가 쓴 뒤 누군가 지우려 했다"
               goto: success_line
-            - text: "한 번 더 확인"
+            - text: "잔의 흔적과 한 번 더 비교한다"
               goto: second_probe
 
   first_claim_wrong:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=28>인상 비평으론 못 버텨.</speed> <speed=58>물리 흔적부터 잠가야 해.</speed>"
+          text: "<speed=24>글씨 모양은 얼마든지 흉내 낼 수 있어.</speed> <speed=48>하지만 물기가 끌린 방향은 꾸밀 수 없어.</speed>"
       - choice:
           key: haruo_first_rebuttal
-          prompt: "이 판단을 어떻게 처리할까?"
+          prompt: "흔적을 다시 볼까?"
           options:
-            - text: "틀렸다. 다시 확인"
+            - text: "닦임 방향과 섬유를 확인한다"
               goto: retry_notice
-            - text: "아직 이 해석을 민다"
+            - text: "글씨 모양을 계속 믿는다"
               add:
                 trust: -1
               goto: retry_notice
@@ -186,27 +185,27 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=26>(다시 간다.)</speed> <speed=58>감상이 아니라 자국과 반응이다.</speed>"
+          text: "<speed=22>(R이 번진 순간과 잔 가장자리가 닦인 순간은 같았을까?)</speed>"
       - goto: second_probe
 
   second_probe:
     actions:
       - choice:
           key: haruo_second_probe
-          prompt: "재선택: 최종 채택할 문장은?"
+          prompt: "컵받침과 2번 잔에 함께 남은 흔적은?"
           options:
-            - text: "다잉 메시지 주변 닦임 + 컵 가장자리 반응은 같은 시점이다"
+            - text: "같은 손수건이 R 끝과 잔 가장자리에 닿았다"
               set:
                 clue_haruo_wipe: true
                 clue_rim_reagent: true
               add:
                 deduction_score: 1
               goto: second_claim_correct
-            - text: "메시지 하나만으로 단독 범행을 확정한다"
+            - text: "2R만으로 바로 범인을 정한다"
               add:
                 mistake_count: 1
               goto: second_claim_wrong
-            - text: "현장 오염이니 전부 폐기한다"
+            - text: "오염됐으니 모든 흔적을 버린다"
               add:
                 mistake_count: 1
                 trust: -1
@@ -215,17 +214,17 @@ scenes:
   second_claim_correct:
     actions:
       - say:
-          text: "<speed=70>챙-!</speed> <speed=38>다잉 메시지와 닦임 자국이 같은 타이밍으로 포개진다.</speed>"
+          text: "<speed=28>R 끝과 잔 가장자리에서 같은 섬유가 나왔다.</speed> <speed=22>한 장의 손수건이 두 곳에 닿았다.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=56>좋아.</speed> <speed=34>하루오 씨 현장 단서는 최종 증거군으로 승격한다.</speed>"
+          text: '<speed=30>"2R"은 가짜가 아니야.</speed> <speed=24>하루오 씨가 남겼고, 범인이 R만 지우려 했어.</speed>'
       - choice:
           key: haruo_second_commit
-          prompt: "최종 채택할까?"
+          prompt: "이 흔적을 어떻게 남길까?"
           options:
-            - text: "채택"
+            - text: "손수건과 2R을 함께 증거로 남긴다"
               goto: success_line
-            - text: "보류"
+            - text: "오염 가능성을 남긴다"
               add:
                 final_confidence: -1
               goto: fail_line
@@ -234,14 +233,14 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=28>그 선택은 양극단이야.</speed> <speed=58>증거 해석이 끊겨 버린다.</speed>"
+          text: "<speed=24>메시지만 믿어도, 전부 버려도 범인이 남긴 손길을 놓쳐.</speed>"
       - choice:
           key: haruo_second_rebuttal
-          prompt: "지금 선택은?"
+          prompt: "현장 조사를 마칠까?"
           options:
-            - text: "접고 돌아간다"
+            - text: "감식 결과만 챙기고 돌아간다"
               goto: fail_line
-            - text: "끝까지 밀어붙인다"
+            - text: "2R만으로 범인을 정한다"
               add:
                 trust: -1
               goto: fail_line
@@ -254,7 +253,7 @@ scenes:
             effect: fadeOut
       - say:
           char: 코난.serious
-          text: "<speed=50>좋아, 하루오 씨 라인 잠금 완료.</speed> <speed=34>위조 흔적이 확정됐다.</speed>"
+          text: "<speed=30>하루오 씨는 마지막 힘으로 잔 번호와 이름의 첫 글자를 남겼어.</speed> <speed=24>범인은 그중 R을 지우려 했고.</speed>"
       - add:
           final_confidence: 1
       - goto: outro
@@ -267,7 +266,7 @@ scenes:
             effect: fadeOut
       - say:
           char: 코난.think
-          text: "<speed=24>(현장 해석이 아직 약해...)</speed> <speed=58>결론에서 반드시 보강해야 해.</speed>"
+          text: "<speed=22>(2R에 다른 손이 닿은 건 분명해.)</speed> <speed=46>하지만 누구 손인지는 다른 증거가 필요해.</speed>"
       - add:
           final_confidence: -1
       - goto: outro
@@ -276,5 +275,5 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "<speed=50>하루오 라인 종료.</speed> <speed=34>라운지로 복귀한다.</speed>"
+          text: "<speed=30>란 누나, 이 컵받침은 그대로 두자.</speed> <speed=24>하루오 씨가 남긴 마지막 말이니까.</speed>"
       - goto: /routes/hub/1.yaml

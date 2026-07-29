@@ -28,12 +28,12 @@ scenes:
           position: center
           emotion: serious
       - say:
-          char: 코난.serious
-          text: "<speed=48>좋아, 전원 집합.</speed> <speed=34>하루오 씨를 죽인 트릭을 지금 끝낸다.</speed>"
+          char: 코난.think
+          text: "<speed=24>(2번 잔, 멈춘 온도계, 손수건 섬유, 그리고 지워지다 만 R.)</speed>"
       - wait: 300
       - say:
           char: 코난.think
-          text: '<speed=26>(뚜껑 두 번은 연막.)</speed> <speed=30>핵심은 컵 가장자리 반응, 닦인 자국, 그리고 "2R".</speed>'
+          text: "<speed=22>(이제 범인이 숨긴 1분을 되돌려 놓기만 하면 돼.)</speed> <speed=48>아저씨, 잠깐만 빌릴게.</speed>"
       - goto: sleeping_kogoro
 
   sleeping_kogoro:
@@ -47,18 +47,23 @@ scenes:
           id: 코난
           position: center
           emotion: think
+      - say:
+          char: 코고로.proud
+          with:
+            - 코난.think
+          text: "<speed=44>자, 다들 주목!</speed> <speed=28>이 모리 코고로가 사건의 진상을...</speed>"
       - effect: flash
-      - sound: door
       - say:
           char: 코난.think
           with:
-            - 코고로.angry
-          text: "<speed=24>(아저씨, 잠깐 빌릴게.)</speed> <speed=64>진실은 지금 말해야 한다.</speed>"
+            - 코고로.proud
+          text: "<speed=22>(미안, 아저씨.)</speed>"
       - say:
-          text: "<speed=64>퓻-!</speed> <speed=32>작은 소리와 함께 코고로가 천천히 눈을 감는다.</speed>"
+          text: "<speed=54>퓻-!</speed> <speed=26>작은 소리 뒤에 코고로의 어깨가 툭 내려앉았다.</speed>"
       - effect: pulse
       - say:
-          text: "<speed=70>챙-!</speed> <speed=40>잠자는 코고로의 무대가 열린다.</speed>"
+          char: 코고로.proud
+          text: "<speed=30>...그 전에, 여러분이 잘못 보고 있던 것부터 바로잡겠습니다.</speed>"
       - add:
           final_confidence: 1
       - goto: reasoning_tone_branch
@@ -82,29 +87,29 @@ scenes:
     actions:
       - effect: zoom
       - say:
-          char: 코난.serious
-          text: "<speed=44>이건 사고가 아니다.</speed> <speed=34>독은 찻물보다 먼저, 2번 잔 가장자리에서 반응했다.</speed>"
+          char: 코고로.proud
+          text: "<speed=34>독은 주전자 안에 없었습니다.</speed> <speed=26>그랬다면 같은 차를 마신 네 사람이 모두 쓰러졌어야 하죠.</speed>"
       - say:
-          char: 코난.serious
-          text: "<speed=34>주전자 뚜껑 두 번은 시선을 빼앗는 연막.</speed> <speed=62>진짜 작업은 그 직후 닦인 자국에서 일어났다.</speed>"
+          char: 코고로.proud
+          text: "<speed=28>반응이 나온 곳은 2번 잔의 바깥 가장자리뿐.</speed> <speed=24>범인은 손수건으로 물기를 닦는 척하며 그곳에 물질을 옮겼습니다.</speed>"
       - say:
-          char: 신이치.cold
+          char: 세이지.cold
           with:
-            - 코난.serious
-          text: '<speed=34>즉, "2R"은 단독 유언이 아니라 유도된 프레임일 가능성이 높군요.</speed>'
+            - 코고로.proud
+          text: "<speed=26>그래서 주전자와 나머지 잔에서는 아무 반응도 나오지 않았군요.</speed>"
       - goto: coverage_branch
 
   cautious_reasoning:
     actions:
       - effect: darken
       - say:
-          char: 코난.think
-          text: "<speed=30>핵심은 같다.</speed> <speed=26>가장자리 반응과 닦임 자국을 함께 봐야 한다.</speed>"
+          char: 코고로.proud
+          text: "<speed=30>한 가지는 분명합니다.</speed> <speed=24>하루오 씨가 마신 2번 잔의 가장자리만 누군가 손댔다는 것.</speed>"
       - say:
           char: 란.worried
           with:
-            - 코난.think
-          text: "<speed=30>그럼 메시지를 남긴 사람과, 메시지를 손본 사람이 다를 수도 있네...</speed>"
+            - 코고로.proud
+          text: "<speed=28>그리고 그 손수건이...</speed> <speed=22>하루오 씨가 남긴 글자에도 닿았던 거구나.</speed>"
       - goto: coverage_branch
 
   coverage_branch:
@@ -121,15 +126,15 @@ scenes:
   full_coverage_line:
     actions:
       - say:
-          char: 코난.serious
-          text: "<speed=54>네 라인 전부 검증 완료.</speed> <speed=34>이제 반박 여지는 없다.</speed>"
+          char: 코고로.proud
+          text: "<speed=30>잔 배정표와 통화 기록, 온도계, 감식 결과.</speed> <speed=24>네 기록이 모두 같은 1분을 가리킵니다.</speed>"
       - goto: final_accuse_gate
 
   partial_coverage_line:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=24>(아직 빈칸이 있다...)</speed> <speed=58>지목은 더 신중해야 한다.</speed>"
+          text: "<speed=22>(아직 확인하지 못한 진술이 있어.)</speed> <speed=46>수법부터 흔들리지 않게 말해야 해.</speed>"
       - branch:
           cases:
             - when:
@@ -143,7 +148,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=28>중간에 끊고 온 대가가 남아 있어.</speed> <speed=58>그래도 가진 증거로 끝까지 간다.</speed>"
+          text: "<speed=22>(빈칸은 남았지만, 2번 잔에 닿은 손은 하나뿐이야.)</speed>"
       - goto: final_accuse_gate
 
   final_accuse_gate:
@@ -151,7 +156,7 @@ scenes:
       - bg: tea_room
       - music: reasoning
       - char:
-          id: 신이치
+          id: 세이지
           position: right
           emotion: cold
       - char:
@@ -159,15 +164,15 @@ scenes:
           position: left
           emotion: nervous
       - char:
-          id: 코난
+          id: 코고로
           position: center
-          emotion: serious
+          emotion: proud
       - say:
-          char: 코난.serious
-          text: "<speed=64>이제 지목한다.</speed> <speed=34>하루오 씨를 죽음으로 몰아넣은 건 누구지?</speed>"
+          char: 코고로.proud
+          text: "<speed=34>9시 29분, 모두의 시선이 주전자에 쏠린 순간.</speed> <speed=24>2번 잔에 손수건을 댄 사람은 단 한 명입니다.</speed>"
       - choice:
           key: final_accuse
-          prompt: "모든 단서를 종합했을 때 범인은?"
+          prompt: "하루오의 2번 잔에 손댄 사람은?"
           options:
             - text: "레이코"
               set:
@@ -175,9 +180,9 @@ scenes:
               add:
                 final_confidence: 1
               goto: accuse_confirm_reiko
-            - text: "신이치"
+            - text: "세이지"
               set:
-                culprit_answer: "신이치"
+                culprit_answer: "세이지"
               add:
                 mistake_count: 1
                 trust: -1
@@ -189,7 +194,7 @@ scenes:
                 mistake_count: 1
                 trust: -1
               goto: accuse_confirm_other
-            - text: "하루오"
+            - text: "하루오의 자작극이었다"
               set:
                 culprit_answer: "하루오"
               add:
@@ -200,22 +205,22 @@ scenes:
   accuse_confirm_reiko:
     actions:
       - say:
-          char: 코난.serious
+          char: 코고로.proud
           with:
             - 레이코.nervous
-          text: "<speed=56>레이코, 너다.</speed> <speed=34>이 지목을 확정한다.</speed>"
+          text: "<speed=34>레이코 씨.</speed> <speed=24>온도계에서 눈을 뗀 그 1분 동안, 당신은 2번 잔을 닦았습니다.</speed>"
       - say:
           char: 레이코.nervous
           with:
-            - 코난.serious
-          text: "<speed=24>...정말, 끝까지 그렇게 믿어요?</speed>"
+            - 코고로.proud
+          text: "<speed=22>제가 물기를 닦은 게 살인의 증거라도 되나요?</speed>"
       - choice:
           key: final_accuse_confirm_reiko
-          prompt: "레이코 지목을 확정할까?"
+          prompt: "레이코의 반박에 무엇을 내놓을까?"
           options:
-            - text: "확정한다"
+            - text: "시료 카드와 진술 메모를 나란히 펼친다"
               goto: verdict_branch
-            - text: "다시 생각한다"
+            - text: "아직 연결이 부족하다"
               add:
                 final_confidence: -1
               goto: final_accuse_gate
@@ -224,28 +229,28 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=30>그 이름으로 끝까지 갈 거야?</speed> <speed=58>지금 틀리면 사건은 닫히지 않는다.</speed>"
+          text: "<speed=22>(그 사람이라면 9시 29분에 2번 잔에 닿을 수 있었을까?)</speed>"
       - say:
-          char: 신이치.cold
+          char: 란.worried
           with:
             - 코난.think
-          text: "<speed=30>오지목 확정 시 되돌리기 어렵습니다.</speed>"
+          text: "<speed=26>잠깐...</speed> <speed=22>그럼 손수건 섬유와 비어 있는 1분은 어떻게 설명하지?</speed>"
       - choice:
           key: final_accuse_confirm_other
-          prompt: "이 지목을 어떻게 할까?"
+          prompt: "이 지목으로 수법까지 설명할 수 있을까?"
           options:
-            - text: "틀렸다. 다시 지목"
+            - text: "모순을 인정하고 다시 생각한다"
               add:
                 final_confidence: -1
               goto: final_accuse_gate
-            - text: "이 지목으로 밀어붙인다"
+            - text: "이 사람이 범인이라고 주장한다"
               goto: wrong_answer_check
 
   wrong_answer_check:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=24>(아직 끝난 게 아냐...)</speed> <speed=58>한 번만 바로잡을 기회가 있다.</speed>"
+          text: "<speed=22>(아니야. 이 추리로는 2번 잔의 흔적이 설명되지 않아.)</speed>"
       - branch:
           cases:
             - when:
@@ -268,10 +273,10 @@ scenes:
           comeback_chance: 0
       - say:
           char: 코난.serious
-          text: "<speed=56>마지막 재지목이다.</speed> <speed=34>이번에 틀리면 끝이야.</speed>"
+          text: "<speed=28>(처음부터 다시.)</speed> <speed=22>잔 번호 2, 지워지다 만 R, 9시 29분의 빈칸.</speed>"
       - choice:
           key: final_comeback
-          prompt: "재지목 1회: 최종 범인은?"
+          prompt: "세 단서가 함께 가리키는 사람은?"
           options:
             - text: "레이코"
               set:
@@ -281,9 +286,9 @@ scenes:
                 trust: 1
                 final_confidence: 1
               goto: verdict_branch
-            - text: "신이치"
+            - text: "세이지"
               set:
-                culprit_answer: "신이치"
+                culprit_answer: "세이지"
               add:
                 mistake_count: 1
               goto: bad_epilogue
@@ -293,7 +298,7 @@ scenes:
               add:
                 mistake_count: 1
               goto: bad_epilogue
-            - text: "하루오"
+            - text: "하루오의 자작극"
               set:
                 culprit_answer: "하루오"
               add:
@@ -357,30 +362,43 @@ scenes:
       - music: solvethecase
       - effect: zoom
       - say:
-          char: 코난.serious
-          text: '<speed=36>2번 잔 반응, 닦임 자국, "2R" 위조, 계약서 수정 시각.</speed> <speed=64>모든 선이 레이코에게 닿는다.</speed>'
+          char: 코고로.proud
+          text: "<speed=30>세이지 씨의 배정표로 당신은 하루오 씨가 2번 잔을 쓴다는 걸 알고 있었습니다.</speed> <speed=24>그리고 9시 29분, 뚜껑을 두 번 눌러 모두의 눈을 돌렸죠.</speed>"
       - use: tea_residue_report
       - use: reiko_statement_note
       - say:
-          char: 코난.serious
-          text: "<speed=34>시료 카드와 진술 메모를 증거 보드에 펼친다.</speed> <speed=62>이제 빠져나갈 빈틈은 없어.</speed>"
+          char: 코고로.proud
+          text: "<speed=28>그 틈에 손수건으로 2번 잔을 닦는 척하며 물질을 옮겼습니다.</speed> <speed=22>하루오 씨가 쓰러진 뒤에는 같은 손수건으로 R을 지우려 했고요.</speed>"
+      - say:
+          char: 세이지.cold
+          with:
+            - 코고로.proud
+          text: "<speed=26>R 끝과 잔 가장자리에서 나온 섬유가 같은 이유...</speed> <speed=22>그거였군요.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 레이코.nervous
+          text: "<speed=30>하루오 씨가 남긴 2R은 '2번 잔, 레이코'.</speed> <speed=24>당신이 지우려 한 마지막 고발입니다.</speed>"
       - music: confession
       - say:
           char: 레이코.nervous
           with:
-            - 코난.serious
-          text: "<speed=24>...하루오 씨는 제 계획을 눈치챘어요.</speed> <speed=20>연구를 빼앗긴다는 공포에,</speed> <speed=58>저는 사람을 지웠어요.</speed>"
+            - 코고로.proud
+          text: "<speed=22>아버지가 평생 만든 배합이었어요.</speed> <speed=18>그런데 하루오 씨는 원본 노트를 켄지 씨 회사에 넘기고 돈을 받겠다고 했어요.</speed>"
       - say:
           char: 레이코.nervous
           with:
-            - 코난.serious
-          text: "<speed=22>아버지의 마지막 노트를 지키고 싶었는데...</speed> <speed=54>결국 제가 가장 더럽혔네요.</speed>"
+            - 코고로.proud
+          text: "<speed=20>빼앗기기 전에 막아야 한다는 생각뿐이었어요.</speed> <speed=18>겁만 주려 했다는 말도 못 하겠네요...</speed> <speed=42>2번 잔을 알고 준비했으니까.</speed>"
       - music: solvethecase
       - say:
           char: 란.worried
           with:
-            - 코난.serious
-          text: "<speed=30>지키고 싶다는 마음이...</speed> <speed=26>어떻게 이렇게 비극이 될 수 있어...</speed>"
+            - 코고로.proud
+          text: "<speed=28>아버지의 이름을 지키려다가...</speed> <speed=22>아버지가 남긴 차까지 살인에 이용한 거네요.</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=22>(비는 곧 그치겠지.)</speed> <speed=18>하지만 한 잔의 차에 남은 죄까지 씻어 주진 못해.</speed>"
       - ending: true_end
 
   normal_epilogue:
@@ -389,13 +407,10 @@ scenes:
       - music: reasoning
       - effect: blur
       - say:
-          char: 코난.think
-          text: "<speed=24>(범인은 맞췄지만 빈틈이 남았다.)</speed> <speed=58>진실을 완전히 잠그진 못했어.</speed>"
+          char: 코고로.proud
+          text: "<speed=30>2번 잔에 손댄 수법과 범인은 밝혀졌습니다.</speed> <speed=24>남은 동기와 계약서 문제는 경찰 감식이 채워 줄 겁니다.</speed>"
       - say:
-          char: 코고로.angry
-          with:
-            - 코난.think
-          text: "<speed=44>크흠!</speed> <speed=30>그래도 여기까지 온 건 대단한 성과다!</speed>"
+          text: "<speed=26>산길이 열린 뒤 레이코는 경찰과 함께 료칸을 떠났다.</speed> <speed=22>몇 가지 의문은 빗소리 속에 남았다.</speed>"
       - ending: normal_end
 
   bad_epilogue:
@@ -406,5 +421,7 @@ scenes:
       - effect: shake
       - say:
           char: 코난.think
-          text: "<speed=24>(단서 연결이 끊겼다...)</speed> <speed=58>이 상태론 누구도 납득시키지 못해.</speed>"
+          text: "<speed=22>(서로의 진술만 흔들었을 뿐, 2번 잔에 닿은 손을 증명하지 못했어.)</speed>"
+      - say:
+          text: "<speed=26>경찰이 도착할 때까지 범인은 끝내 입을 열지 않았다.</speed>"
       - ending: bad_end

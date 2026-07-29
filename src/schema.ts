@@ -137,6 +137,8 @@ export const actionSchema = z.union([
       with: z.array(z.string().min(1)).optional(),
       forgiveOnceDefault: z.boolean().optional(),
       forgiveMessage: z.string().min(1).optional(),
+      timeoutMs: z.number().int().min(1000).max(60000).optional(),
+      timeoutOptionIndex: z.number().int().nonnegative().optional(),
       options: z.array(choiceOptionSchema).min(1),
     }),
   }),
@@ -170,6 +172,7 @@ export const actionSchema = z.union([
       with: z.array(z.string().min(1)).optional(),
       text: z.string(),
       wait: z.number().int().nonnegative().max(60000).optional(),
+      autoAdvance: z.number().int().positive().max(60000).optional(),
     }),
   }),
 ]);
@@ -241,6 +244,7 @@ const startScreenSchema = z
     enabled: z.boolean().optional(),
     image: z.string().min(1).optional(),
     music: z.string().min(1).optional(),
+    showTitle: z.boolean().optional(),
     startButtonText: z.string().min(1).optional(),
     buttonPosition: startButtonPositionSchema.optional(),
   })
@@ -254,6 +258,7 @@ const startScreenSchema = z
       enabled: value.enabled ?? true,
       image: normalizeOptionalText(value.image),
       music: normalizeOptionalText(value.music),
+      showTitle: value.showTitle ?? true,
       startButtonText: value.startButtonText?.trim() || '시작하기',
       buttonPosition: value.buttonPosition ?? 'auto',
     };
