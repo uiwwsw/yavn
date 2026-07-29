@@ -33,6 +33,7 @@ import {
 } from './engine';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
+import { splitLastGrapheme } from './typing';
 import type { AuthorMetaObject, CharacterSlot, GameSeoMeta, Position, StartButtonPosition, UiTemplateId } from './types';
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties, SyntheticEvent } from 'react';
@@ -2135,6 +2136,18 @@ export default function App() {
     );
   }
 
+  const visibleDialogue = splitLastGrapheme(dialog.visibleText);
+  const dialogueTextClassName = [
+    'text',
+    `delivery-${dialog.delivery}`,
+    dialog.typing ? 'is-typing' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  const dialogueTypingStyle = {
+    '--typing-intensity': dialog.typingIntensity,
+  } as CSSProperties;
+
   return (
     <div
       ref={appRef}
@@ -2564,7 +2577,10 @@ export default function App() {
         </div>
       )}
 
-      <div ref={dialogBoxRef} className={`dialog-box ${isDialogHidden ? 'hidden' : ''}`}>
+      <div
+        ref={dialogBoxRef}
+        className={`dialog-box delivery-${dialog.delivery} ${isDialogHidden ? 'hidden' : ''}`}
+      >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
             <button
@@ -2580,8 +2596,21 @@ export default function App() {
           </div>
         )}
         <div className="dialog-content-scroll">
-          {dialog.speaker && <div className="speaker">{dialog.speaker}</div>}
-          <div className="text">{dialog.visibleText}</div>
+          {dialog.speaker && (
+            <div className={`speaker delivery-${dialog.delivery}`}>{dialog.speaker}</div>
+          )}
+          <div className={dialogueTextClassName} style={dialogueTypingStyle}>
+            {dialog.typing ? (
+              <>
+                {visibleDialogue.head}
+                <span key={dialog.typingPulse} className="typing-glyph">
+                  {visibleDialogue.tail}
+                </span>
+              </>
+            ) : (
+              dialog.visibleText
+            )}
+          </div>
           {inputGate.active && (
             <form
               className="input-gate-form"

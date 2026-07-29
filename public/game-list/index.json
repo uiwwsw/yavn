@@ -1,13 +1,13 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-07-29T04:17:33.174Z",
+  "generatedAt": "2026-07-29T05:53:47.690Z",
   "games": [
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 다실의 비밀",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "9.2",
+      "version": "9.3",
       "summary": "서로 다른 여덟 공간을 오가며 지워지다 만 2R과 사라진 1분을 추적하는 분기형 료칸 미스터리.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [

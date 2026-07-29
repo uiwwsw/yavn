@@ -50,6 +50,7 @@ scenes:
           emotion: think
       - say:
           char: 코고로.proud
+          delivery: shout
           with:
             - 코난.think
           text: "<speed=44>자, 다들 주목!</speed> <speed=28>이 모리 코고로가 사건의 진상을...</speed>"
@@ -383,11 +384,13 @@ scenes:
       - music: confession
       - say:
           char: 레이코.nervous
+          delivery: sad
           with:
             - 코고로.proud
           text: "<speed=22>아버지가 평생 만든 배합이었어요.</speed> <speed=18>그런데 하루오 씨는 원본 노트를 켄지 씨 회사에 넘기고 돈을 받겠다고 했어요.</speed>"
       - say:
           char: 레이코.nervous
+          delivery: sad
           with:
             - 코고로.proud
           text: "<speed=20>빼앗기기 전에 막아야 한다는 생각뿐이었어요.</speed> <speed=18>겁만 주려 했다는 말도 못 하겠네요...</speed> <speed=42>2번 잔을 알고 준비했으니까.</speed>"
