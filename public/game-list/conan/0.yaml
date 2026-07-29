@@ -25,6 +25,7 @@ scenes:
           text: "<speed=50>비 냄새 좋다.</speed> <speed=34>이런 곳이라면 아빠도 얌전히 쉴 수 있겠지?</speed>"
       - say:
           char: 코고로.proud
+          delivery: shout
           text: "<speed=66>물론이지!</speed> <speed=40>오늘 일정은 온천, 저녁, 그리고 이 료칸의 명물 차.</speed> <speed=58>사건은 절대 사절이다!</speed>"
       - say:
           char: 코난.think

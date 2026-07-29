@@ -101,6 +101,7 @@ scenes:
   early_exit_confirm:
     actions:
       - say:
+          delivery: nervous
           text: "<speed=26>지금 결론으로 가면 빈틈이 생겨.</speed> <speed=54>그래도 바로 이동할까?</speed>"
           wait: 900
           autoAdvance: 2400

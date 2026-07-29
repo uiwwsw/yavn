@@ -171,6 +171,9 @@ export const actionSchema = z.union([
       char: z.string().optional(),
       with: z.array(z.string().min(1)).optional(),
       text: z.string(),
+      delivery: z
+        .enum(['neutral', 'calm', 'nervous', 'angry', 'whisper', 'shout', 'sad', 'deduction'])
+        .optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
     }),
