@@ -639,6 +639,7 @@ export default function App() {
   } = useVNStore();
   const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
+  const [gameListLoading, setGameListLoading] = useState(false);
   const [gameListError, setGameListError] = useState<string | null>(null);
   const [manifestSchemaVersion, setManifestSchemaVersion] = useState<number | null>(null);
   const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
@@ -730,6 +731,8 @@ export default function App() {
   const loadGameListManifest = useCallback(async () => {
     const requestId = gameListRequestIdRef.current + 1;
     gameListRequestIdRef.current = requestId;
+    setGameListLoading(true);
+    setGameListError(null);
     try {
       const response = await fetch('/game-list/index.json', { cache: 'no-store' });
       if (!response.ok) {
@@ -745,6 +748,7 @@ export default function App() {
       setManifestGeneratedAt(parsed.generatedAt ?? null);
       setManifestSeo(parsed.seo ?? null);
       setGameListError(null);
+      setGameListLoading(false);
       setSelectedGameId((prev) => {
         if (prev && parsed.games.some((entry) => entry.id === prev)) {
           return prev;
@@ -761,6 +765,7 @@ export default function App() {
       setManifestSeo(null);
       setSelectedGameId(null);
       setGameListError(error instanceof Error ? error.message : '게임 목록을 불러오지 못했습니다.');
+      setGameListLoading(false);
     }
   }, []);
 
@@ -971,7 +976,7 @@ export default function App() {
     gameList[0] ??
     null;
   const manifestTimestampLabel = formatManifestTimestamp(manifestGeneratedAt);
-  const gameListStatus = gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
+  const gameListStatus = gameListLoading ? 'LOADING' : gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
 
   useEffect(() => {
     const launcherTitles =
@@ -1966,9 +1971,22 @@ export default function App() {
               </div>
             </section>
           ) : (
-            <div className="launcher-diagnostic">
-              <strong>PLAYGROUND EMPTY</strong>
-              <p>실행 가능한 게임을 불러오지 못했습니다.</p>
+            <div
+              className={`launcher-diagnostic ${gameListLoading ? 'launcher-diagnostic-loading' : ''}`}
+              role={gameListLoading ? 'status' : undefined}
+              aria-live={gameListLoading ? 'polite' : undefined}
+            >
+              <strong>{gameListLoading ? 'SYNCING PLAYGROUND' : 'PLAYGROUND EMPTY'}</strong>
+              <p>
+                {gameListLoading
+                  ? '게임 매니페스트와 대표 이미지를 불러오는 중입니다.'
+                  : '실행 가능한 게임을 불러오지 못했습니다.'}
+              </p>
+              {gameListLoading && (
+                <span className="launcher-loading-track" aria-hidden="true">
+                  <i />
+                </span>
+              )}
             </div>
           )}
 
@@ -2016,7 +2034,17 @@ export default function App() {
               </div>
             </div>
 
-            {gameListError && (
+            {gameListLoading && (
+              <div className="launcher-diagnostic launcher-diagnostic-loading" role="status" aria-live="polite">
+                <strong>SYNCING MANIFEST</strong>
+                <p>플레이 가능한 빌드를 확인하고 있습니다.</p>
+                <span className="launcher-loading-track" aria-hidden="true">
+                  <i />
+                </span>
+              </div>
+            )}
+
+            {!gameListLoading && gameListError && (
               <div className="launcher-diagnostic" role="alert">
                 <strong>MANIFEST LOAD FAILURE</strong>
                 <p>{gameListError}</p>
@@ -2026,14 +2054,14 @@ export default function App() {
               </div>
             )}
 
-            {!gameListError && filteredGames.length === 0 && (
+            {!gameListLoading && !gameListError && filteredGames.length === 0 && (
               <div className="launcher-diagnostic">
                 <strong>NO MATCHED GAME</strong>
                 <p>검색 조건과 일치하는 게임이 없습니다.</p>
               </div>
             )}
 
-            {!gameListError && filteredGames.length > 0 && (
+            {!gameListLoading && !gameListError && filteredGames.length > 0 && (
               <div className="workspace-grid">
                 {filteredGames.map((entry) => {
                   const isSelected = selectedGame?.id === entry.id;
