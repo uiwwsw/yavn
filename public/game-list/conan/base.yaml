@@ -60,9 +60,14 @@ state:
   visited_reiko: false
   visited_kenji: false
   visited_haruo: false
+  rapport_seiji: false
+  rapport_reiko: false
+  rapport_kenji: false
+  rapport_haruo: false
   deduction_score: 0
   final_confidence: 0
   trust: 0
+  rapport_score: 0
   mistake_count: 0
   comeback_chance: 1
   early_exit_taken: false
