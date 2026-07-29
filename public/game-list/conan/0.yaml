@@ -22,10 +22,14 @@ scenes:
       - sound: door
       - say:
           char: 란
+          with:
+            - 코고로.proud
           text: "<speed=50>비 냄새 좋다.</speed> <speed=34>이런 곳이라면 아빠도 얌전히 쉴 수 있겠지?</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
+          with:
+            - 란
           text: "<speed=66>물론이지!</speed> <speed=40>오늘 일정은 온천, 저녁, 그리고 이 료칸의 명물 차.</speed> <speed=58>사건은 절대 사절이다!</speed>"
       - say:
           char: 코난.think
@@ -37,9 +41,13 @@ scenes:
       - sound: cup_clink
       - say:
           char: 코고로.proud
+          with:
+            - 란
           text: "<speed=58>오, 이 향!</speed> <speed=38>마시기도 전에 머리가 맑아지는군.</speed>"
       - say:
           char: 란
+          with:
+            - 코고로.proud
           text: "<speed=46>아빠, 아직 시음 전이야.</speed> <speed=34>혼자 먼저 마시면 또 민망해진다?</speed>"
       - say:
           char: 코난
