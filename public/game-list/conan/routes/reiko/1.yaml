@@ -1,5 +1,6 @@
 script:
   - scene: entry_guard
+  - scene: evidence_followup
   - scene: revisit_notice
   - scene: intro
   - scene: intro_item_get
@@ -22,15 +23,56 @@ scenes:
       - branch:
           cases:
             - when:
+                all:
+                  - var: visited_reiko
+                    op: eq
+                    value: true
+                  - var: reiko_motive_open
+                    op: eq
+                    value: false
+                  - var: clue_rim_reagent
+                    op: eq
+                    value: true
+                  - var: recovered_reiko_motive
+                    op: eq
+                    value: false
+              goto: evidence_followup
+            - when:
                 var: visited_reiko
                 op: eq
                 value: true
               goto: revisit_notice
           default: intro
 
+  evidence_followup:
+    actions:
+      - bg: manager_office
+      - set:
+          recovered_reiko_motive: true
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 코난
+          position: right
+          emotion: serious
+      - effect: focus
+      - say:
+          char: 코난.serious
+          with:
+            - 레이코.nervous
+          text: "<speed=30>2번 잔 가장자리와 R 끝에서 같은 손수건 섬유가 나왔어요.</speed> <speed=24>이제 온도계가 멈춘 1분을 다시 설명해 주세요.</speed>"
+      - say:
+          char: 레이코.nervous
+          with:
+            - 코난.serious
+          text: "<speed=22>그걸... 어디서 확인했죠?</speed> <speed=18>하루오 씨가 노트까지 보여 준 건가요?</speed>"
+      - goto: motive_open_line
+
   revisit_notice:
     actions:
-      - bg: ryokan_hall
+      - bg: manager_office
       - char:
           id: 레이코
           position: left
@@ -48,8 +90,9 @@ scenes:
 
   intro:
     actions:
-      - bg: tea_room
+      - bg: manager_office
       - music: reasoning
+      - effect: focus
       - set:
           visited_reiko: true
       - add:
