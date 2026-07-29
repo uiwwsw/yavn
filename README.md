@@ -28,7 +28,7 @@ pnpm dev
 ## 품질과 구조
 
 - `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 검증
-- `src/engine.ts`: 챕터 전환, 자동저장, 연출 실행, 입력 게이트
+- `src/engine.ts`: 챕터 전환, 자동저장, 연출 실행, 입력 게이트, 오디오 BGM 크로스페이드
 - `src/typing.ts`: 감정별 타이핑 리듬, 문장부호 호흡, 유니코드 글자 분할
 - `src/store.ts`: 렌더링 상태와 플레이 기록
 - `src/history.ts`: 챕터별 선택 복원과 최대 300개 스토리 로그
@@ -54,17 +54,17 @@ pnpm dev
   "games": [
     {
       "id": "conan",
-      "name": "명탐정 코난 외전: 다실의 비밀",
+      "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "7.0",
-      "summary": "런처 카드 요약",
+      "version": "10.0",
+      "summary": "2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 추리 에피소드",
       "thumbnail": "/game-list/conan/assets/bg/case_board.avif",
       "tags": ["detective", "sample"],
       "chapterCount": 9,
       "seo": {
-        "title": "명탐정 코난 외전: 다실의 비밀",
-        "description": "아가사 크리스티 스타일의 밀실 추리 비주얼노벨",
+        "title": "명탐정 코난 외전: 폭우의 2번 찻잔",
+        "description": "폭우에 고립된 료칸에서 벌어지는 분기형 추리 비주얼노벨",
         "keywords": ["명탐정 코난", "추리 게임", "비주얼노벨"],
         "image": "/game-list/conan/assets/bg/case_board.avif",
         "imageAlt": "다실 사건 단서 보드"
@@ -74,8 +74,8 @@ pnpm dev
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
     "description": "야븐엔진(YAVN)에서 플레이 가능한 게임 목록",
-    "keywords": ["명탐정 코난 외전: 다실의 비밀", "detective", "sample"],
-    "gameTitles": ["명탐정 코난 외전: 다실의 비밀"],
+    "keywords": ["명탐정 코난 외전: 폭우의 2번 찻잔", "detective", "sample"],
+    "gameTitles": ["명탐정 코난 외전: 폭우의 2번 찻잔"],
     "gameCount": 1
   }
 }
@@ -243,6 +243,7 @@ scenes:
 - `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `showTitle=true`, `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
 - 타이틀 이미지 자체에 게임명이 포함되어 있으면 `showTitle: false`로 엔진 제목 오버레이를 숨길 수 있습니다. SEO 제목과 접근 가능한 문서 제목은 그대로 유지됩니다.
 - `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
+- 서로 다른 로컬 오디오 `music` 액션은 약 420ms 동안 크로스페이드됩니다. 같은 곡을 다시 지정하면 재시작하지 않으며, BGM 끄기와 초기화면 이동은 즉시 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
 
 ## UI 템플릿 (`config.yaml.ui.template`)
