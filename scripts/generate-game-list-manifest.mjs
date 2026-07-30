@@ -8,7 +8,7 @@ const gameListDir = path.join(workspaceRoot, 'public', 'game-list');
 const outputPath = path.join(gameListDir, 'index.json');
 const sitemapPath = path.join(publicDir, 'sitemap.xml');
 
-const MANIFEST_SCHEMA_VERSION = 3;
+const MANIFEST_SCHEMA_VERSION = 4;
 const MAX_LAUNCHER_SEO_TITLE_PREVIEW = 8;
 const DEFAULT_LAUNCHER_SEO_DESCRIPTION =
   '야븐엔진(YAVN)에서 플레이 가능한 비주얼노벨 게임 목록입니다.';
@@ -62,6 +62,43 @@ const normalizeTagList = (value) => {
     tags.push(normalized);
   }
   return tags;
+};
+
+const normalizeNumber = (value, min, max) => {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return undefined;
+  }
+  return Math.min(max, Math.max(min, value));
+};
+
+const normalizeHexColor = (value) => {
+  const normalized = normalizeText(value);
+  return normalized && /^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(normalized)
+    ? normalized
+    : undefined;
+};
+
+const normalizeLauncherShowcase = (value) => {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+  const rawImage = isRecord(value.image) ? value.image : undefined;
+  const image = rawImage
+    ? {
+        positionX: normalizeNumber(rawImage.positionX, 0, 100),
+        positionY: normalizeNumber(rawImage.positionY, 0, 100),
+        scale: normalizeNumber(rawImage.scale, 0.5, 2),
+        offsetX: normalizeNumber(rawImage.offsetX, -50, 50),
+        offsetY: normalizeNumber(rawImage.offsetY, -50, 50),
+      }
+    : undefined;
+  const normalizedImage = image && Object.values(image).some((entry) => entry !== undefined) ? image : undefined;
+  const showcase = {
+    label: normalizeText(value.label)?.slice(0, 48),
+    backgroundColor: normalizeHexColor(value.backgroundColor),
+    image: normalizedImage,
+  };
+  return Object.values(showcase).some((entry) => entry !== undefined) ? showcase : undefined;
 };
 
 const mergeUniqueTextList = (...values) => {
@@ -206,6 +243,7 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
     summary: normalizeText(launcher?.summary),
     thumbnail: toGameAssetPath(gameId, launcherThumbnail ?? startScreenImage),
     tags: normalizeTagList(launcher?.tags),
+    showcase: normalizeLauncherShowcase(launcher?.showcase),
     chapterCount: chapterYamlPaths.length,
     seo: {
       title: resolvedName,
@@ -282,6 +320,7 @@ async function collectGameFolders() {
       summary: metadata.summary,
       thumbnail: metadata.thumbnail,
       tags: metadata.tags,
+      showcase: metadata.showcase,
       chapterCount: metadata.chapterCount,
       seo: metadata.seo,
     });

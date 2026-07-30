@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 3,
-  "generatedAt": "2026-07-30T07:13:00.609Z",
+  "schemaVersion": 4,
+  "generatedAt": "2026-07-30T14:29:20.044Z",
   "games": [
     {
       "id": "conan",
@@ -52,6 +52,9 @@
         "engine-showcase",
         "timed-choice"
       ],
+      "showcase": {
+        "label": "ENGINE SHOWCASE"
+      },
       "chapterCount": 1,
       "seo": {
         "title": "명탐정 코난 DEMO: 60초의 경고",
@@ -83,6 +86,16 @@
         "interaction",
         "smoke-test"
       ],
+      "showcase": {
+        "label": "LIVE2D DEMO",
+        "backgroundColor": "#171b24",
+        "image": {
+          "positionX": 38,
+          "positionY": 35,
+          "scale": 1.08,
+          "offsetX": 18
+        }
+      },
       "chapterCount": 1,
       "seo": {
         "title": "Live2D 테스트: 렌 수다",
