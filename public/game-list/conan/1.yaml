@@ -1,203 +1,338 @@
 script:
-  - scene: meeting_start
-  - scene: four_way_tension
-  - scene: service_order
-  - scene: incident_trigger
-  - scene: death_confirm
-  - scene: contradiction_hook
-  - scene: chapter_handoff
+  - scene: tea_invitation
+  - scene: temperature_lesson
+  - scene: record_keeper
+  - scene: guest_arrival
+  - scene: blind_tasting
+  - scene: shared_table
+  - scene: storm_news
+  - scene: closing_preparation
 
 scenes:
-  meeting_start:
+  tea_invitation:
+    actions:
+      - bg: ryokan_hall
+      - music: rain
+      - sound: door
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 란
+          position: right
+      - say:
+          char: 레이코.nervous
+          with:
+            - 란
+          text: "<speed=27>쉬시는 중에 죄송합니다.</speed> <speed=23>다실에서 새 차를 시험하고 있는데, 괜찮으시면 함께 맛봐 주시겠어요?</speed>"
+      - say:
+          char: 란
+          with:
+            - 레이코.nervous
+          text: "<speed=29>저희가 가도 돼요?</speed> <speed=24>저녁도 정말 맛있었어요.</speed>"
+      - char:
+          id: 코고로
+          position: center
+          emotion: proud
+      - say:
+          char: 코고로.proud
+          text: "<speed=36>전문가의 평가가 필요하다면 사양하지 않겠습니다.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=28>아빠, 아까 빈 잔에서 향이 난다고 했잖아.</speed>"
+      - say:
+          char: 레이코.nervous
+          text: "<speed=26>그럼 더 좋습니다.</speed> <speed=23>선입견 없는 손님이 가장 솔직하거든요.</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=25>그건 칭찬... 맞겠지?</speed>"
+
+  temperature_lesson:
     actions:
       - bg: tea_room
-      - music: tension
+      - music: intro
+      - sound: cup_clink
+      - char:
+          id: 하루오
+          position: left
+      - char:
+          id: 코난
+          position: right
+      - say:
+          char: 하루오
+          with:
+            - 코난
+          text: "<speed=26>컵 가까이 와도 괜찮아.</speed> <speed=23>다만 손잡이만 잡아야 한다. 아직 아주 뜨겁거든.</speed>"
+      - say:
+          char: 코난
+          with:
+            - 하루오
+          text: "<speed=29>온도계가 88이 되면 마시는 거예요?</speed>"
+      - say:
+          char: 하루오
+          with:
+            - 코난
+          text: "<speed=27>정확하네.</speed> <speed=23>그보다 뜨거우면 향이 먼저 달아나고, 식으면 떫은맛이 고개를 내밀지.</speed>"
+      - say:
+          char: 코난
+          text: "<speed=27>향도 숨바꼭질을 하네요.</speed>"
+      - say:
+          char: 하루오
+          with:
+            - 코난
+          text: "<speed=26>그래서 기다려 주는 거야.</speed> <speed=22>차도 사람도 서두르면 원래 맛을 놓치니까.</speed>"
+      - say:
+          char: 코난
+          text: "<speed=28>그럼 제가 88이 되는 순간을 알려 드릴게요.</speed>"
+
+  record_keeper:
+    actions:
+      - sound: notebook_flip
+      - char:
+          id: 세이지
+          position: left
+          emotion: cold
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - say:
+          char: 세이지.cold
+          with:
+            - 코고로.proud
+          text: "<speed=25>첫 향을 맡은 시각, 오후 8시 34분.</speed> <speed=23>감상은 짧게 말씀해 주십시오.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 세이지.cold
+          text: "<speed=31>깊고, 우아하며, 범상치 않은...</speed>"
+      - say:
+          char: 세이지.cold
+          text: "<speed=26>세 단어를 쓰셨습니다.</speed> <speed=22>하나만 남겨 주시죠.</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=34>명품!</speed>"
+      - say:
+          char: 세이지.cold
+          text: "<speed=24>'명품이라고 주장함.'</speed> <speed=22>그대로 기록하겠습니다.</speed>"
+      - char:
+          id: 란
+          position: center
+      - say:
+          char: 란
+          with:
+            - 세이지.cold
+          text: "<speed=28>세이지 씨, 웃으신 거 맞죠?</speed>"
+      - say:
+          char: 세이지.cold
+          text: "<speed=24>기록할 필요가 없는 일입니다.</speed>"
+
+  guest_arrival:
+    actions:
+      - sound: door
+      - char:
+          id: 켄지
+          position: left
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - say:
+          char: 켄지
+          with:
+            - 코고로.proud
+          text: "<speed=32>이야, 손님이 먼저 맛보고 계셨군.</speed> <speed=25>하세가와 켄지입니다. 이 차가 세상에 나가도록 돈을 대는 사람이고요.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 켄지
+          text: "<speed=31>모리 코고로입니다.</speed> <speed=25>좋은 물건을 알아보는 눈이라면 저도 뒤지지 않죠.</speed>"
+      - say:
+          char: 켄지
+          with:
+            - 코고로.proud
+          text: "<speed=30>그럼 내기 하나 합시다.</speed> <speed=24>재료 셋 중 둘을 맞히면 내일 아침 특식을 제가 내죠.</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=38>좋습니다!</speed> <speed=27>대신 제가 맞히면 사인도 한 장 받아 가시죠.</speed>"
+      - say:
+          char: 켄지
+          text: "<speed=28>누가 누구에게 하는 사인인지는 결과를 보고 정합시다.</speed>"
+      - say:
+          char: 코난
+          text: "<speed=25>둘 다 벌써 이긴 얼굴인데.</speed>"
+
+  blind_tasting:
+    actions:
+      - bg: tea_room
+      - char:
+          id: 레이코
+          position: left
+      - char:
+          id: 하루오
+          position: right
+      - say:
+          char: 레이코
+          with:
+            - 하루오
+          text: "<speed=26>첫 번째는 향만 맡아 주세요.</speed> <speed=22>아버지가 산벚꽃이 피던 계절에 만든 배합이에요.</speed>"
+      - say:
+          char: 하루오
+          with:
+            - 레이코
+          text: "<speed=25>정답을 먼저 말하면 안 되지.</speed> <speed=22>오늘은 손님들의 코를 믿어 보자고.</speed>"
+      - char:
+          id: 란
+          position: center
+      - say:
+          char: 란
+          text: "<speed=27>달콤한데 나무 향도 나요.</speed> <speed=23>비 온 뒤 운동장 같은 냄새도 조금.</speed>"
+      - say:
+          char: 레이코
+          with:
+            - 란
+          text: "<speed=27>그 표현, 아버지가 좋아하셨을 거예요.</speed>"
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - char:
+          id: 켄지
+          position: right
+      - say:
+          char: 코고로.proud
+          with:
+            - 켄지
+          text: "<speed=32>나는 알겠군.</speed> <speed=25>벚꽃, 산초, 그리고 최고급 녹차!</speed>"
+      - say:
+          char: 켄지
+          with:
+            - 코고로.proud
+          text: "<speed=30>셋 중 하나도 없소.</speed> <speed=24>그래도 자신감만큼은 만점이군.</speed>"
+      - say:
+          char: 코고로.proud
+          delivery: shout
+          text: "<speed=40>문제에 함정이 너무 많잖소!</speed>"
+
+  shared_table:
+    actions:
+      - char:
+          id: 하루오
+          position: left
+      - char:
+          id: 켄지
+          position: right
+      - say:
+          text: "<speed=24>잠시 뒤 정답이 공개되자 다실에는 웃음이 터졌다.</speed> <speed=22>코고로가 맞힌 것은 뜨거운 물뿐이었다.</speed>"
+      - say:
+          char: 켄지
+          with:
+            - 하루오
+          text: "<speed=28>하루오 씨, 이 정도 반응이면 팔립니다.</speed> <speed=23>이번엔 정말 당신 고집이 맞았어요.</speed>"
+      - say:
+          char: 하루오
+          with:
+            - 켄지
+          text: "<speed=25>내 고집이 아니라 우리 넷이 만든 맛입니다.</speed> <speed=22>레이코 씨 아버님 때부터 이어진 거니까요.</speed>"
+      - char:
+          id: 레이코
+          position: center
+      - say:
+          char: 레이코
+          text: "<speed=25>다 같이 이름을 정했으면 해요.</speed> <speed=22>오늘 마지막 잔을 마신 뒤에.</speed>"
+      - say:
+          char: 켄지
+          text: "<speed=27>이름이라.</speed> <speed=22>그건 제일 비싼 문제가 되겠군.</speed>"
+      - say:
+          char: 하루오
+          text: "<speed=25>그래도 맛보다 먼저 정하면 안 됩니다.</speed>"
+
+  storm_news:
+    actions:
+      - bg: rain_corridor
+      - music: rain
+      - sound: thunder
+      - char:
+          id: 레이코
+          position: left
+          emotion: nervous
+      - char:
+          id: 란
+          position: right
+          emotion: worried
+      - say:
+          char: 레이코.nervous
+          with:
+            - 란.worried
+          text: "<speed=25>방금 면사무소에서 연락이 왔습니다.</speed> <speed=22>산길 한 곳이 잠겨서, 오늘 밤 차량 통행은 어렵다고 해요.</speed>"
+      - say:
+          char: 란.worried
+          with:
+            - 레이코.nervous
+          text: "<speed=27>직원분들은 괜찮아요?</speed> <speed=22>아래 마을에서 올라오실 분은 없고요?</speed>"
+      - say:
+          char: 레이코.nervous
+          text: "<speed=25>야간 직원까지 모두 안에 있습니다.</speed> <speed=22>전화가 불안정한 것 말고는 걱정하지 않으셔도 됩니다.</speed>"
+      - char:
+          id: 코고로
+          position: center
+          emotion: proud
+      - say:
+          char: 코고로.proud
+          text: "<speed=31>내일 길이 열릴 때까지 푹 쉬면 되겠군.</speed> <speed=25>특식 내기는 유효한 거요, 하세가와 씨!</speed>"
+      - say:
+          char: 켄지
+          text: "<speed=28>물론이죠.</speed> <speed=23>두 분이 먼저 재료 하나라도 맞히신다면.</speed>"
+
+  closing_preparation:
+    actions:
+      - bg: tea_room
+      - music: mystery
+      - sound: notebook_flip
+      - char:
+          id: 세이지
+          position: left
+          emotion: cold
+      - char:
+          id: 하루오
+          position: right
+      - say:
+          char: 세이지.cold
+          with:
+            - 하루오
+          text: "<speed=24>마지막 시음 기록지를 가져왔습니다.</speed> <speed=21>다만 오후 7시 42분에 출력된 사본과 원본의 이름 표기가 다릅니다.</speed>"
+      - say:
+          char: 하루오
+          with:
+            - 세이지.cold
+          text: "<speed=25>수정한 적 없습니다.</speed> <speed=22>원본을 열기 전까지 이 사본은 따로 두죠.</speed>"
       - char:
           id: 켄지
           position: left
           emotion: angry
       - char:
-          id: 세이지
-          position: center
-          emotion: cold
-      - char:
           id: 레이코
           position: right
           emotion: nervous
       - say:
-          char: 레이코.nervous
-          text: "<speed=30>아버지가 마지막으로 남긴 배합입니다.</speed> <speed=22>오늘 맛을 확정하면, 이 이름으로 세상에 내놓을 생각이었어요.</speed>"
-      - say:
           char: 켄지.angry
-          text: "<speed=48>이 이름?</speed> <speed=28>투자금은 내가 대고, 권리는 당신 집안이 전부 갖겠다고?</speed>"
+          with:
+            - 레이코.nervous
+          text: "<speed=31>내가 받은 계약서엔 없던 문장이 왜 들어가 있지?</speed> <speed=24>이름을 정하기 전에 그건 분명히 해야 합니다.</speed>"
       - say:
-          char: 세이지.cold
-          text: "<speed=30>목소리를 높여도 원본은 바뀌지 않습니다.</speed> <speed=22>서명 뒤에 제 봉인을 열죠.</speed> <speed=34>그때 필체와 수정 시각을 확인하면 됩니다.</speed>"
-
-  four_way_tension:
-    actions:
-      - char:
-          id: 하루오
-          position: right
-          emotion: scared
+          char: 레이코.nervous
+          with:
+            - 켄지.angry
+          text: "<speed=24>시음이 끝나면 네 분 앞에서 원본을 열겠습니다.</speed> <speed=21>누가 고쳤는지도 그때 확인하죠.</speed>"
       - char:
           id: 코난
           position: center
           emotion: think
-      - char:
-          id: 란
-          position: left
-          emotion: worried
-      - say:
-          char: 하루오.scared
-          with:
-            - 코난.think
-          text: "<speed=26>잔은 표대로 두겠습니다.</speed> <speed=22>켄지 씨 1번, 제가 2번, 레이코 씨 3번, 세이지 씨 4번.</speed> <speed=18>오늘은... 바꾸면 안 됩니다.</speed>"
-      - say:
-          char: 란.worried
-          text: "<speed=32>하루오 씨, 손 데이셨어요?</speed> <speed=24>아까부터 왼손을 계속 감추시던데.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=22>(뜨거워서 떠는 게 아니야.</speed> <speed=18>2번 잔을 놓을 때마다 레이코 씨 눈치를 보고 있어.)</speed>"
-
-  service_order:
-    actions:
-      - sound: notebook_flip
-      - char:
-          id: 세이지
-          position: center
-          emotion: cold
-      - char:
-          id: 하루오
-          position: right
-          emotion: scared
+          text: "<speed=21>(아까 웃던 얼굴들이 한꺼번에 굳었어.)</speed>"
       - say:
-          char: 세이지.cold
-          with:
-            - 하루오.scared
-          text: "<speed=28>9시 18분 작성.</speed> <speed=22>하루오 씨가 직접 고른 번호는 2번, 맞습니다.</speed>"
-      - sound: cup_clink
-      - say:
-          char: 하루오.scared
-          with:
-            - 세이지.cold
-          text: "<speed=24>예, 2번은 제 잔입니다.</speed> <speed=20>레이코 씨, 88도가 될 때까진 뚜껑에 손대지 마세요.</speed> <speed=18>그분의 방식이니까.</speed>"
-      - say:
-          text: "<speed=22>레이코는 대답 대신 주전자 뚜껑을 눌렀다.</speed> <speed=58>한 번.</speed> <speed=62>그리고 또 한 번.</speed>"
-      - say:
-          char: 코난.think
-          text: "<speed=20>(향을 잡으려는 동작이 아니야.</speed> <speed=18>소리를 내서 모두가 보게 만든 거야.)</speed>"
-
-  incident_trigger:
-    actions:
-      - wait: 220
-      - music: tension
-      - sound: scream
-      - effect: flash
-      - effect: darken
-      - effect: shake
-      - sound: thunder
-      - char:
-          id: 란
-          position: left
-          emotion: surprised
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - char:
-          id: 레이코
-          position: right
-          emotion: nervous
-      - say:
-          char: 란.surprised
-          with:
-            - 코난.serious
-            - 레이코.nervous
-          text: "<speed=76>꺄악!</speed> <speed=40>하루오 씨, 정신 차리세요!</speed>"
-      - say:
-          char: 레이코.nervous
-          with:
-            - 코난.serious
-          text: "<speed=22>차가 흘렀어요.</speed> <speed=18>제가 닦을게요, 손수건을...</speed>"
-      - say:
-          text: "<speed=20>레이코가 내민 손수건은 입가가 아니라, 먼저 2번 잔의 가장자리로 향했다.</speed>"
-      - say:
-          char: 코난.serious
-          text: "<speed=68>안 돼!</speed> <speed=28>그 잔, 만지면 안 돼요!</speed>"
-
-  death_confirm:
-    actions:
-      - bg: tea_room
-      - music: mystery
-      - sticker:
-          id: tape_lock
-          image: police_tape
-          x: 50
-          y: 52
-          width: 92
-          anchorX: center
-          anchorY: center
-          zIndex: 5
-          enter:
-            effect: wipeCenterX
-      - char:
-          id: 코고로
-          position: right
-          emotion: angry
-      - char:
-          id: 코난
-          position: center
-          emotion: serious
-      - say:
-          text: "<speed=26>코고로가 하루오의 기도를 열고 맥을 짚었다.</speed> <speed=20>장난기 어린 얼굴이 순식간에 굳었다.</speed>"
-      - say:
-          char: 코고로.angry
-          with:
-            - 코난.serious
-          text: "<speed=32>란, 119부터.</speed> <speed=26>연결이 안 되면 료칸 무전기를 찾아!</speed> <speed=42>나머지는 벽에서 떨어져. 아무것도 만지지 마!</speed>"
-      - sticker:
-          id: dying_hint
-          image: clue_lid
-          x: 51
-          y: 44
-          width: 58
-          anchorX: center
-          anchorY: center
-          enter:
-            effect: blurIn
-      - say:
-          char: 코난.serious
-          text: '<speed=26>(하루오 씨 손끝이 젖은 컵받침에 닿아 있어.</speed> <speed=20>한 번에 그은 2, 그리고...)</speed> <speed=62>"R"?</speed>'
-      - say:
-          char: 코난.think
-          text: "<speed=18>(R의 꼬리만 번진 방향이 반대야.</speed> <speed=46>이건 손이 떨려서 번진 게 아니야.)</speed>"
-      - clearSticker:
-          id: dying_hint
-          leave:
-            effect: fadeOut
-      - clearSticker:
-          id: tape_lock
-          leave:
-            effect: wipeRight
-      - add:
-          deduction_score: 1
-
-  contradiction_hook:
-    actions:
-      - bg: case_board
-      - music: reasoning
-      - effect: zoom
-      - say:
-          char: 코난.serious
-          text: "<speed=32>(같은 주전자에서 따른 차.</speed> <speed=24>그런데 쓰러진 건 2번 잔의 하루오 씨뿐.)</speed>"
-      - say:
-          char: 코난.think
-          text: "<speed=20>(두 번 울린 뚜껑은 눈을 끌었고, 손수건은 잔과 글자에 닿았어.</speed> <speed=48>범인은 그 1분 안에 두 가지를 숨겼다.)</speed>"
-
-  chapter_handoff:
-    actions:
-      - effect: pulse
-      - say:
-          char: 코난
-          text: "<speed=38>(먼저 9시 29분을 되돌린다.</speed> <speed=26>누가 어디를 보고, 어느 손을 움직였는지.)</speed>"
+          text: "<speed=24>오후 9시 18분.</speed> <speed=21>빗소리가 짙어진 다실에서 마지막 시음이 시작됐다.</speed>"

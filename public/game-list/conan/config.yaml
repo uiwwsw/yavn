@@ -9,9 +9,9 @@ author:
     - label: "LinkedIn"
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
-version: "10.0"
+version: "10.1"
 seo:
-  description: "폭우에 고립된 료칸. 코난과 란, 코고로가 지워지다 만 2R과 사라진 1분을 추적하는 캐릭터 중심 분기 미스터리."
+  description: "평온한 가족 여행이 폭우 속 밀실 사건으로 뒤집힌다. 코난과 란, 코고로가 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 분기 미스터리."
   keywords:
     - "명탐정 코난"
     - "추리 게임"
@@ -21,7 +21,7 @@ seo:
     - "캐릭터 심문"
   image: "assets/bg/title_storm-v2.avif"
   imageAlt: "폭우로 고립된 산악 료칸의 밤"
-textSpeed: 38
+textSpeed: 32
 autoSave: true
 clickToInstant: true
 ui:

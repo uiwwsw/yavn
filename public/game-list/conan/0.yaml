@@ -1,111 +1,282 @@
 script:
-  - scene: calm_arrival
-  - scene: tea_joke
-  - scene: host_preview
-  - scene: tension_seed
-  - scene: handoff
+  - scene: holiday_arrival
+  - scene: room_lottery
+  - scene: bath_return
+  - scene: table_tennis
+  - scene: dinner_time
+  - scene: rain_window
+  - scene: quiet_night
 
 scenes:
-  calm_arrival:
+  holiday_arrival:
+    actions:
+      - bg: mountain_rain
+      - music: rain
+      - sound: door
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - say:
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=30>아빠, 우산 좀 안쪽으로 들어.</speed> <speed=26>어깨가 다 젖었잖아.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 란
+          text: "<speed=38>이 정도 비쯤이야!</speed> <speed=28>산속 온천은 비가 와야 운치가 사는 법이지.</speed>"
+      - char:
+          id: 코난
+          position: center
+      - say:
+          char: 코난
+          with:
+            - 란
+          text: "<speed=30>란 누나, 저기 봐.</speed> <speed=26>구름 아래로 강물이 생긴 것 같아.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코난
+          text: "<speed=28>정말이네.</speed> <speed=25>사진 찍어 두자. 비가 그치면 같은 자리에서 한 장 더.</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=34>사진은 나중이다.</speed> <speed=28>오늘 의뢰인은 온천, 저녁상, 그리고 낮잠!</speed>"
+
+  room_lottery:
+    actions:
+      - bg: ryokan_hall
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - char:
+          id: 란
+          position: right
+      - say:
+          text: "<speed=26>방에는 유카타 세 벌과 작은 과자 바구니가 가지런히 놓여 있었다.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 란
+          text: "<speed=36>창가 자리는 내가 맡지.</speed> <speed=28>명탐정은 경치를 보며 작전을 짜야 하니까.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=30>낮잠 작전?</speed> <speed=25>좋아. 대신 코난 과자까지 집으면 창가 자리 압수야.</speed>"
+      - char:
+          id: 코난
+          position: center
+      - say:
+          char: 코난
+          with:
+            - 코고로.proud
+          text: "<speed=30>아저씨 손에 벌써 두 개 있는데?</speed>"
+      - say:
+          char: 코고로.proud
+          delivery: shout
+          text: "<speed=42>이건 방 배정 수수료다!</speed>"
+
+  bath_return:
+    actions:
+      - bg: rain_corridor
+      - sound: door
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - char:
+          id: 코난
+          position: right
+      - say:
+          text: "<speed=25>노천탕에서 돌아온 코고로는 수건을 목에 걸고 복도를 성큼성큼 걸었다.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 코난
+          text: "<speed=34>봤지, 꼬마야?</speed> <speed=27>저 계곡을 내려다보며 온천에 앉아 있으면 세상 고민이 다 작아 보이는 거야.</speed>"
+      - say:
+          char: 코난
+          with:
+            - 코고로.proud
+          text: "<speed=28>아저씨 고민은 저녁에 생길 것 같은데.</speed> <speed=24>목욕 전에 체중계 올라간 거 봤어.</speed>"
+      - say:
+          char: 코고로.proud
+          delivery: shout
+          text: "<speed=40>그 기계가 습기를 먹은 거다!</speed>"
+      - char:
+          id: 란
+          position: center
+      - say:
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=30>그럼 저녁 튀김은 내가 도와줄게.</speed> <speed=24>아빠 몫까지.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 란
+          text: "<speed=38>란, 가족끼리 그렇게 차가우면 안 된다!</speed>"
+
+  table_tennis:
+    actions:
+      - bg: ryokan_hall
+      - music: intro
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
+      - say:
+          text: "<speed=25>저녁 전까지 남은 시간, 세 사람은 휴게실의 낡은 탁구대를 차지했다.</speed>"
+      - say:
+          char: 코고로.proud
+          with:
+            - 란
+          text: "<speed=36>열한 점 단판 승부다.</speed> <speed=28>아빠라고 봐주지 마라!</speed>"
+      - say:
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=30>그 말, 녹음했어.</speed> <speed=24>나중에 핑계 대면 들려줄 거야.</speed>"
+      - char:
+          id: 코난
+          position: center
+      - say:
+          char: 코난
+          with:
+            - 란
+          text: "<speed=28>란 누나, 이번엔 왼쪽.</speed>"
+      - say:
+          char: 코고로.proud
+          delivery: shout
+          text: "<speed=42>코치 금지!</speed> <speed=32>꼬마는 심판이나 봐!</speed>"
+      - say:
+          text: "<speed=24>공은 코고로의 라켓 모서리를 맞고 천장으로 높이 솟았다.</speed>"
+      - say:
+          char: 란
+          text: "<speed=36>열한 대 이.</speed> <speed=25>한 판 더 할래?</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=27>온천에서 힘을 너무 빼지만 않았어도...</speed>"
+
+  dinner_time:
     actions:
       - bg: ryokan_hall
       - music: rain
+      - sound: cup_clink
       - char:
           id: 란
           position: left
       - char:
           id: 코난
-          position: center
+          position: right
+      - say:
+          text: "<speed=25>저녁상이 들어오자 탁구 점수는 금세 잊혔다.</speed> <speed=23>창밖의 빗소리가 뜨거운 냄비 소리에 섞였다.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코난
+          text: "<speed=28>코난, 이 버섯 먹어 봐.</speed> <speed=24>여기서 직접 키운 거래.</speed>"
+      - say:
+          char: 코난
+          with:
+            - 란
+          text: "<speed=30>맛있어!</speed> <speed=24>비 냄새가 조금 나는 것 같아.</speed>"
       - char:
           id: 코고로
-          position: right
+          position: center
           emotion: proud
-      - sound: door
+      - say:
+          char: 코고로.proud
+          text: "<speed=34>산나물 튀김도 훌륭하군.</speed> <speed=27>이 정도면 탁구 패배쯤은 너그럽게 잊어 주지.</speed>"
       - say:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=38>와, 다다미 냄새.</speed> <speed=30>아빠, 오늘만큼은 사건 찾는다고 돌아다니면 안 돼.</speed> <speed=46>온천부터야.</speed>"
+          text: "<speed=29>아빠가 진 걸 아빠가 왜 잊어 줘?</speed>"
+      - say:
+          char: 코난
+          with:
+            - 란
+          text: "<speed=28>내일 비 그치면 세 명이서 산책하자.</speed> <speed=24>아까 본 강도 가까이서 보고 싶어.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코난
+          text: "<speed=28>응.</speed> <speed=24>아침 일찍 일어나는 사람이 둘을 깨우는 거야.</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
-          with:
-            - 란
-          text: "<speed=62>으하하하!</speed> <speed=36>명탐정에게도 휴식은 필요한 법.</speed> <speed=48>오늘 의뢰인은 온천과 저녁상뿐이다!</speed>"
-      - say:
-          char: 코난.think
-          text: "<speed=24>(저렇게 큰 소리로 선언할 때마다 꼭 무슨 일이 생겼는데...)</speed>"
+          text: "<speed=38>그건 사실상 나만 빼고 가겠다는 말이잖아!</speed>"
 
-  tea_joke:
+  rain_window:
     actions:
-      - bg: tea_room
-      - sound: cup_clink
+      - bg: rain_corridor
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코난
+          position: right
       - say:
-          char: 코고로.proud
+          text: "<speed=24>식사를 마친 뒤, 란과 코난은 유리창을 타고 흐르는 빗물을 한동안 바라보았다.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코난
+          text: "<speed=26>신이치도 이런 데 오면 좋았을 텐데.</speed> <speed=23>연락은 또 안 되고.</speed>"
+      - say:
+          char: 코난
           with:
             - 란
-          text: "<speed=54>호오, 이 깊은 향!</speed> <speed=34>한 모금이면 명추리가 절로 나오겠군.</speed>"
+          text: "<speed=27>분명 아쉬워할 거야.</speed> <speed=23>란 누나가 찍은 사진도 다 보고 싶어 할걸.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코난
+          text: "<speed=26>그래?</speed> <speed=23>그럼 탁구 점수 사진부터 보내야겠다.</speed>"
+      - say:
+          char: 코난
+          text: "<speed=30>그건 아저씨가 말릴 것 같은데.</speed>"
+
+  quiet_night:
+    actions:
+      - bg: ryokan_hall
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - char:
+          id: 란
+          position: right
+      - say:
+          text: "<speed=24>방으로 돌아오자 코고로는 이불 세 채를 반듯하게 펴 놓고 먼저 가운데에 누웠다.</speed>"
       - say:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=42>아빠, 그건 빈 잔이야.</speed> <speed=30>향은 저쪽 주전자에서 나는 거고.</speed>"
+          text: "<speed=30>아빠, 가운데는 코난 자리야.</speed>"
       - say:
-          char: 코난
-          text: "<speed=40>어라?</speed> <speed=28>차는 한 주전자인데 잔마다 번호가 있어.</speed> <speed=24>누가 어느 잔을 쓰는지도 정해 놨네.</speed>"
-
-  host_preview:
-    actions:
-      - char:
-          id: 켄지
-          position: left
-          emotion: angry
-      - char:
-          id: 레이코
-          position: right
-          emotion: nervous
-      - char:
-          id: 세이지
-          position: center
-          emotion: cold
-      - say:
-          char: 레이코.nervous
+          char: 코고로.proud
           with:
-            - 켄지.angry
-            - 세이지.cold
-          text: "<speed=32>산길이 잠겼습니다.</speed> <speed=24>오늘 밤은 모두 이곳에 머무셔야 해요.</speed> <speed=38>시음은... 예정대로 진행하겠습니다.</speed>"
-      - say:
-          char: 켄지.angry
-          with:
-            - 레이코.nervous
-            - 세이지.cold
-          text: "<speed=48>손님 대접은 됐어.</speed> <speed=30>내가 받은 계약서엔 없던 문장이 왜 오늘 사본엔 들어가 있지?</speed> <speed=44>그것부터 설명해.</speed>"
-      - say:
-          char: 세이지.cold
-          with:
-            - 켄지.angry
-            - 레이코.nervous
-          text: "<speed=30>수정 시각은 오늘 오후 7시 42분.</speed> <speed=24>원본은 제 봉투 안에 있습니다.</speed> <speed=34>누가 고쳤는지는 한 줄씩 맞춰 보면 됩니다.</speed>"
-
-  tension_seed:
-    actions:
-      - bg: rain_corridor
-      - music: mystery
-      - effect: blur
-      - sound: thunder
+            - 란
+          text: "<speed=28>나는 오늘 가장 많이 움직인 사람이다.</speed> <speed=24>회복에 최적화된 위치가 필요해.</speed>"
       - char:
           id: 코난
           position: center
-          emotion: think
       - say:
-          char: 코난.think
-          text: "<speed=24>(산길은 끊겼고, 전화도 자꾸 끊겨.</speed> <speed=20>여기 있는 사람은 아무도 내려갈 수 없어.)</speed>"
+          char: 코난
+          text: "<speed=28>그럼 가위바위보로 정해.</speed>"
       - say:
-          char: 코난.serious
-          text: "<speed=22>(계약서 얘기가 나오자 레이코 씨는 오른손을 감췄어.</speed> <speed=20>그리고 하루오 씨는 네 잔 중 2번만 몇 번이나 확인했고.)</speed>"
-
-  handoff:
-    actions:
-      - effect: pulse
+          text: "<speed=25>세 사람의 웃음소리가 빗소리 사이로 길게 번졌다.</speed>"
       - say:
-          text: "<speed=28>오후 9시 18분.</speed> <speed=22>폭우 소리에 갇힌 다실에서, 마지막 시음이 시작됐다.</speed>"
+          char: 코난
+          text: "<speed=25>여행 오길 잘했어.</speed>"
