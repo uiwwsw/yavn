@@ -260,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.1 episode identity and all seven music cues', () => {
+  it('ships the v10.1.1 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.1');
+    expect(config.version).toBe('10.1.1');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
