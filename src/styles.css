@@ -825,9 +825,10 @@ textarea,
   height: 100%;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)) brightness(var(--char-brightness));
   will-change: transform, filter;
-  transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
+  /* Slot offsets snap so newly revealed characters never drift in sideways. */
+  transform: translate3d(var(--char-offset-x), 0, 0);
   transform-origin: center bottom;
-  transition: transform 180ms ease-out, filter 200ms ease-out;
+  transition: filter 200ms ease-out;
   backface-visibility: hidden;
   contain: paint;
   animation: riseInSide 0.35s ease;
@@ -839,6 +840,8 @@ textarea,
   max-width: none;
   object-fit: contain;
   object-position: center bottom;
+  scale: var(--char-scale);
+  transition: scale 180ms ease-out, filter 200ms ease-out;
 }
 
 .char-live2d {
@@ -2594,22 +2597,22 @@ textarea,
 @keyframes riseInSide {
   from {
     opacity: 0;
-    transform: translate3d(var(--char-offset-x), 10px, 0) scale(var(--char-scale));
+    transform: translate3d(var(--char-offset-x), 10px, 0);
   }
   to {
     opacity: 1;
-    transform: translate3d(var(--char-offset-x), 0, 0) scale(var(--char-scale));
+    transform: translate3d(var(--char-offset-x), 0, 0);
   }
 }
 
 @keyframes riseInCenter {
   from {
     opacity: 0;
-    transform: translate3d(-50%, 10px, 0) scale(var(--char-scale));
+    transform: translate3d(-50%, 10px, 0);
   }
   to {
     opacity: 1;
-    transform: translate3d(-50%, 0, 0) scale(var(--char-scale));
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
