@@ -835,8 +835,8 @@ textarea,
 }
 
 .char-image {
-  width: auto;
-  max-width: min(40vw, 560px);
+  width: min(40vw, 560px);
+  max-width: none;
   object-fit: contain;
   object-position: center bottom;
 }
@@ -897,7 +897,7 @@ textarea,
 }
 
 .char-layer.char-layout-duo .char-image {
-  max-width: min(44vw, 560px);
+  width: min(44vw, 560px);
 }
 
 .char-layer.char-layout-duo .char-duo-left {
@@ -3043,7 +3043,7 @@ textarea,
   }
 
   .char-image {
-    max-width: min(66vw, 410px);
+    width: min(66vw, 410px);
   }
 
   .char-image.left {
@@ -3063,7 +3063,7 @@ textarea,
   }
 
   .char-layer.char-layout-duo .char-image {
-    max-width: min(52vw, 410px);
+    width: min(52vw, 410px);
   }
 
   .char-layer.char-layout-duo .char-live2d {

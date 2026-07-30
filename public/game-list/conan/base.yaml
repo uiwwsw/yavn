@@ -16,11 +16,13 @@ assets:
     코난:
       base: /assets/char/conan/base.webp
       emotions:
+        smile: /assets/char/conan/smile.webp
         think: /assets/char/conan/think.webp
         serious: /assets/char/conan/serious.webp
     란:
       base: /assets/char/ran/base.webp
       emotions:
+        determined: /assets/char/ran/determined.webp
         surprised: /assets/char/ran/surprised.webp
         worried: /assets/char/ran/worried.webp
     코고로:
@@ -28,21 +30,26 @@ assets:
       emotions:
         proud: /assets/char/kogoro/proud.webp
         angry: /assets/char/kogoro/angry.webp
+        shocked: /assets/char/kogoro/shocked.webp
     켄지:
       base: /assets/char/kenji/base.webp
       emotions:
+        smile: /assets/char/kenji/smile.webp
         angry: /assets/char/kenji/angry.webp
     세이지:
       base: /assets/char/shinichi/base.webp
       emotions:
+        amused: /assets/char/shinichi/amused.webp
         cold: /assets/char/shinichi/cold.webp
     레이코:
       base: /assets/char/reiko/base.webp
       emotions:
+        smile: /assets/char/reiko/smile.webp
         nervous: /assets/char/reiko/nervous.webp
     하루오:
       base: /assets/char/haruo/base.webp
       emotions:
+        smile: /assets/char/haruo/smile.webp
         scared: /assets/char/haruo/scared.webp
   music:
     intro: /assets/music/intro.mp3

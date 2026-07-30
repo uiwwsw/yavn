@@ -17,19 +17,19 @@ scenes:
       - char:
           id: 레이코
           position: left
-          emotion: nervous
+          emotion: smile
       - char:
           id: 란
           position: right
       - say:
-          char: 레이코.nervous
+          char: 레이코.smile
           with:
             - 란
           text: "<speed=27>쉬시는 중에 죄송합니다.</speed> <speed=23>다실에서 새 차를 시험하고 있는데, 괜찮으시면 함께 맛봐 주시겠어요?</speed>"
       - say:
           char: 란
           with:
-            - 레이코.nervous
+            - 레이코.smile
           text: "<speed=29>저희가 가도 돼요?</speed> <speed=24>저녁도 정말 맛있었어요.</speed>"
       - char:
           id: 코고로
@@ -44,7 +44,7 @@ scenes:
             - 코고로.proud
           text: "<speed=28>아빠, 아까 빈 잔에서 향이 난다고 했잖아.</speed>"
       - say:
-          char: 레이코.nervous
+          char: 레이코.smile
           text: "<speed=26>그럼 더 좋습니다.</speed> <speed=23>선입견 없는 손님이 가장 솔직하거든요.</speed>"
       - say:
           char: 코고로.proud
@@ -58,34 +58,36 @@ scenes:
       - char:
           id: 하루오
           position: left
+          emotion: smile
       - char:
           id: 코난
           position: right
+          emotion: smile
       - say:
-          char: 하루오
+          char: 하루오.smile
           with:
-            - 코난
+            - 코난.smile
           text: "<speed=26>컵 가까이 와도 괜찮아.</speed> <speed=23>다만 손잡이만 잡아야 한다. 아직 아주 뜨겁거든.</speed>"
       - say:
-          char: 코난
+          char: 코난.smile
           with:
-            - 하루오
+            - 하루오.smile
           text: "<speed=29>온도계가 88이 되면 마시는 거예요?</speed>"
       - say:
-          char: 하루오
+          char: 하루오.smile
           with:
-            - 코난
+            - 코난.smile
           text: "<speed=27>정확하네.</speed> <speed=23>그보다 뜨거우면 향이 먼저 달아나고, 식으면 떫은맛이 고개를 내밀지.</speed>"
       - say:
-          char: 코난
+          char: 코난.smile
           text: "<speed=27>향도 숨바꼭질을 하네요.</speed>"
       - say:
-          char: 하루오
+          char: 하루오.smile
           with:
-            - 코난
+            - 코난.smile
           text: "<speed=26>그래서 기다려 주는 거야.</speed> <speed=22>차도 사람도 서두르면 원래 맛을 놓치니까.</speed>"
       - say:
-          char: 코난
+          char: 코난.smile
           text: "<speed=28>그럼 제가 88이 되는 순간을 알려 드릴게요.</speed>"
 
   record_keeper:
@@ -115,8 +117,12 @@ scenes:
       - say:
           char: 코고로.proud
           text: "<speed=34>명품!</speed>"
+      - char:
+          id: 세이지
+          position: left
+          emotion: amused
       - say:
-          char: 세이지.cold
+          char: 세이지.amused
           text: "<speed=24>'명품이라고 주장함.'</speed> <speed=22>그대로 기록하겠습니다.</speed>"
       - char:
           id: 란
@@ -124,10 +130,10 @@ scenes:
       - say:
           char: 란
           with:
-            - 세이지.cold
+            - 세이지.amused
           text: "<speed=28>세이지 씨, 웃으신 거 맞죠?</speed>"
       - say:
-          char: 세이지.cold
+          char: 세이지.amused
           text: "<speed=24>기록할 필요가 없는 일입니다.</speed>"
 
   guest_arrival:
@@ -136,22 +142,23 @@ scenes:
       - char:
           id: 켄지
           position: left
+          emotion: smile
       - char:
           id: 코고로
           position: right
           emotion: proud
       - say:
-          char: 켄지
+          char: 켄지.smile
           with:
             - 코고로.proud
           text: "<speed=32>이야, 손님이 먼저 맛보고 계셨군.</speed> <speed=25>하세가와 켄지입니다. 이 차가 세상에 나가도록 돈을 대는 사람이고요.</speed>"
       - say:
           char: 코고로.proud
           with:
-            - 켄지
+            - 켄지.smile
           text: "<speed=31>모리 코고로입니다.</speed> <speed=25>좋은 물건을 알아보는 눈이라면 저도 뒤지지 않죠.</speed>"
       - say:
-          char: 켄지
+          char: 켄지.smile
           with:
             - 코고로.proud
           text: "<speed=30>그럼 내기 하나 합시다.</speed> <speed=24>재료 셋 중 둘을 맞히면 내일 아침 특식을 제가 내죠.</speed>"
@@ -159,7 +166,7 @@ scenes:
           char: 코고로.proud
           text: "<speed=38>좋습니다!</speed> <speed=27>대신 제가 맞히면 사인도 한 장 받아 가시죠.</speed>"
       - say:
-          char: 켄지
+          char: 켄지.smile
           text: "<speed=28>누가 누구에게 하는 사인인지는 결과를 보고 정합시다.</speed>"
       - say:
           char: 코난
@@ -171,18 +178,20 @@ scenes:
       - char:
           id: 레이코
           position: left
+          emotion: smile
       - char:
           id: 하루오
           position: right
+          emotion: smile
       - say:
-          char: 레이코
+          char: 레이코.smile
           with:
-            - 하루오
+            - 하루오.smile
           text: "<speed=26>첫 번째는 향만 맡아 주세요.</speed> <speed=22>아버지가 산벚꽃이 피던 계절에 만든 배합이에요.</speed>"
       - say:
-          char: 하루오
+          char: 하루오.smile
           with:
-            - 레이코
+            - 레이코.smile
           text: "<speed=25>정답을 먼저 말하면 안 되지.</speed> <speed=22>오늘은 손님들의 코를 믿어 보자고.</speed>"
       - char:
           id: 란
@@ -191,7 +200,7 @@ scenes:
           char: 란
           text: "<speed=27>달콤한데 나무 향도 나요.</speed> <speed=23>비 온 뒤 운동장 같은 냄새도 조금.</speed>"
       - say:
-          char: 레이코
+          char: 레이코.smile
           with:
             - 란
           text: "<speed=27>그 표현, 아버지가 좋아하셨을 거예요.</speed>"
@@ -202,13 +211,14 @@ scenes:
       - char:
           id: 켄지
           position: right
+          emotion: smile
       - say:
           char: 코고로.proud
           with:
-            - 켄지
+            - 켄지.smile
           text: "<speed=32>나는 알겠군.</speed> <speed=25>벚꽃, 산초, 그리고 최고급 녹차!</speed>"
       - say:
-          char: 켄지
+          char: 켄지.smile
           with:
             - 코고로.proud
           text: "<speed=30>셋 중 하나도 없소.</speed> <speed=24>그래도 자신감만큼은 만점이군.</speed>"
@@ -222,32 +232,35 @@ scenes:
       - char:
           id: 하루오
           position: left
+          emotion: smile
       - char:
           id: 켄지
           position: right
+          emotion: smile
       - say:
           text: "<speed=24>잠시 뒤 정답이 공개되자 다실에는 웃음이 터졌다.</speed> <speed=22>코고로가 맞힌 것은 뜨거운 물뿐이었다.</speed>"
       - say:
-          char: 켄지
+          char: 켄지.smile
           with:
-            - 하루오
+            - 하루오.smile
           text: "<speed=28>하루오 씨, 이 정도 반응이면 팔립니다.</speed> <speed=23>이번엔 정말 당신 고집이 맞았어요.</speed>"
       - say:
-          char: 하루오
+          char: 하루오.smile
           with:
-            - 켄지
+            - 켄지.smile
           text: "<speed=25>내 고집이 아니라 우리 넷이 만든 맛입니다.</speed> <speed=22>레이코 씨 아버님 때부터 이어진 거니까요.</speed>"
       - char:
           id: 레이코
           position: center
+          emotion: smile
       - say:
-          char: 레이코
+          char: 레이코.smile
           text: "<speed=25>다 같이 이름을 정했으면 해요.</speed> <speed=22>오늘 마지막 잔을 마신 뒤에.</speed>"
       - say:
-          char: 켄지
+          char: 켄지.smile
           text: "<speed=27>이름이라.</speed> <speed=22>그건 제일 비싼 문제가 되겠군.</speed>"
       - say:
-          char: 하루오
+          char: 하루오.smile
           text: "<speed=25>그래도 맛보다 먼저 정하면 안 됩니다.</speed>"
 
   storm_news:

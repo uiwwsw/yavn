@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { resolveCharacterStageLayout } from './characterLayout';
+import { buildImageCharacterRenderKey, resolveCharacterStageLayout } from './characterLayout';
 
 describe('character stage layout', () => {
   it('places exactly two visible characters in stable left and right halves', () => {
@@ -34,5 +34,10 @@ describe('character stage layout', () => {
     expect(resolveCharacterStageLayout([]).mode).toBe('default');
     expect(resolveCharacterStageLayout(['center']).mode).toBe('default');
     expect(resolveCharacterStageLayout(['left', 'center', 'right']).mode).toBe('default');
+  });
+
+  it('keeps an image character mounted while only its emotion source changes', () => {
+    expect(buildImageCharacterRenderKey('left', '란')).toBe('left-란');
+    expect(buildImageCharacterRenderKey('left', '란')).not.toContain('.webp');
   });
 });

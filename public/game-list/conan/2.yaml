@@ -144,18 +144,33 @@ scenes:
       - char:
           id: 코고로
           position: right
-          emotion: angry
+          emotion: shocked
       - char:
           id: 코난
           position: center
           emotion: serious
+      - char:
+          id: 란
+          position: left
+          emotion: determined
       - say:
           text: "<speed=23>코고로가 하루오의 기도를 열고 맥을 짚었다.</speed> <speed=18>장난기 어린 얼굴이 순식간에 굳었다.</speed>"
+      - clearSticker:
+          id: tape_lock
+          leave:
+            effect: wipeRight
+      - wait: 240
       - say:
-          char: 코고로.angry
+          char: 코고로.shocked
           with:
             - 코난.serious
+            - 란.determined
           text: "<speed=28>란, 119부터.</speed> <speed=23>연결이 안 되면 료칸 무전기를 찾아!</speed> <speed=37>나머지는 벽에서 떨어져. 아무것도 만지지 마!</speed>"
+      - say:
+          char: 란.determined
+          with:
+            - 코고로.shocked
+          text: "<speed=30>응.</speed> <speed=23>무전기부터 확인할게!</speed>"
       - sticker:
           id: dying_hint
           image: clue_lid
@@ -167,19 +182,15 @@ scenes:
           enter:
             effect: blurIn
       - say:
-          char: 코난.serious
           text: '<speed=23>(손끝은 컵받침.</speed> <speed=18>2 다음에...)</speed> <speed=46>"R"?</speed>'
-      - say:
-          char: 코난.think
-          text: "<speed=17>(R의 번짐만 반대야.</speed> <speed=30>누가 건드렸어.)</speed>"
       - clearSticker:
           id: dying_hint
           leave:
             effect: fadeOut
-      - clearSticker:
-          id: tape_lock
-          leave:
-            effect: wipeRight
+      - wait: 240
+      - say:
+          char: 코난.think
+          text: "<speed=17>(R의 번짐만 반대야.</speed> <speed=30>누가 건드렸어.)</speed>"
       - add:
           deduction_score: 1
 

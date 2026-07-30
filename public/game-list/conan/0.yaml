@@ -93,6 +93,7 @@ scenes:
       - char:
           id: 코난
           position: right
+          emotion: smile
       - say:
           text: "<speed=25>노천탕에서 돌아온 코고로는 수건을 목에 걸고 복도를 성큼성큼 걸었다.</speed>"
       - say:
@@ -186,7 +187,7 @@ scenes:
             - 코난
           text: "<speed=28>코난, 이 버섯 먹어 봐.</speed> <speed=24>여기서 직접 키운 거래.</speed>"
       - say:
-          char: 코난
+          char: 코난.smile
           with:
             - 란
           text: "<speed=30>맛있어!</speed> <speed=24>비 냄새가 조금 나는 것 같아.</speed>"
@@ -203,7 +204,7 @@ scenes:
             - 코고로.proud
           text: "<speed=29>아빠가 진 걸 아빠가 왜 잊어 줘?</speed>"
       - say:
-          char: 코난
+          char: 코난.smile
           with:
             - 란
           text: "<speed=28>내일 비 그치면 세 명이서 산책하자.</speed> <speed=24>아까 본 강도 가까이서 보고 싶어.</speed>"
@@ -272,11 +273,12 @@ scenes:
       - char:
           id: 코난
           position: center
+          emotion: smile
       - say:
-          char: 코난
+          char: 코난.smile
           text: "<speed=28>그럼 가위바위보로 정해.</speed>"
       - say:
           text: "<speed=25>세 사람의 웃음소리가 빗소리 사이로 길게 번졌다.</speed>"
       - say:
-          char: 코난
+          char: 코난.smile
           text: "<speed=25>여행 오길 잘했어.</speed>"
