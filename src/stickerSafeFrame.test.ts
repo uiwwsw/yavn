@@ -25,7 +25,7 @@ describe('sticker and mobile dialogue safe areas', () => {
     );
   });
 
-  it('keeps the mobile dialogue outside viewport and device edges', () => {
+  it('keeps the mobile dialogue inside the play frame and device safe areas', () => {
     expect(styles).toContain(
       'left: max(10px, env(safe-area-inset-left, 0px));',
     );
