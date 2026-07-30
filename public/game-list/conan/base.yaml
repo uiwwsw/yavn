@@ -82,6 +82,8 @@ state:
   mistake_count: 0
   comeback_chance: 1
   early_exit_taken: false
+  remembered_tea_order: false
+  tea_name_vote: ""
   clue_rim_reagent: false
   clue_order_note: false
   clue_double_press_decoy: false

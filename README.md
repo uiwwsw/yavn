@@ -68,7 +68,7 @@ pnpm dev
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "10.2.0",
+      "version": "10.3.0",
       "summary": "가족 여행과 차 체험 뒤 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 추리 에피소드",
       "thumbnail": "/game-list/conan/assets/bg/case_board.avif",
       "tags": ["detective", "sample"],
@@ -156,7 +156,7 @@ seo:
     - 비주얼노벨
   image: assets/bg/cover.png
   imageAlt: "대표 이미지 설명"
-textSpeed: 38
+textSpeed: 38 # 초당 글자 수(CPS), 숫자가 클수록 빠름
 autoSave: true
 clickToInstant: true
 ui:
@@ -323,10 +323,32 @@ scenes:
 - effect: impact
 ```
 
-- 기본: `shake`, `flash`, `zoom`, `blur`, `darken`, `pulse`, `tilt`
-- 트레일러 연출: `impact`, `glitch`, `speedlines`, `alarm`, `focus`
+| 이름 | 지속시간 | 화면 반응 | 권장 용도 |
+| --- | ---: | --- | --- |
+| `shake` | 280ms | 화면 흔들림 | 충돌, 비명, 강한 반박 |
+| `flash` | 350ms | 흰색 섬광 | 번개, 컷 전환, 순간 충격 |
+| `zoom` | 420ms | 짧은 확대 | 단서 발견, 시선 집중 |
+| `blur` | 420ms | 배경·인물·대사 흐림 | 혼란, 기억 전환 |
+| `darken` | 500ms | 검은 오버레이 | 불안, 장면의 온도 전환 |
+| `pulse` | 500ms | 밝기 맥동 | 결심, 장면 마침표 |
+| `tilt` | 320ms | 화면 기울기 | 오답, 불안정한 판단 |
+| `impact` | 460ms | 확대 충격 + 중심 버스트 | 트레일러 타격점 |
+| `glitch` | 520ms | RGB/스캔라인 흔들림 | 신호 오류, 디지털 교란 |
+| `speedlines` | 680ms | 중심 방사형 속도선 | 추격, 급가속 |
+| `alarm` | 760ms | 적색 경보 맥동 | 제한시간, 위험 경고 |
+| `focus` | 620ms | 중심을 남기는 비네트 | 추리 대상, 단서 조준 |
+
 - 알 수 없는 이름은 상태 클래스만 약 `350ms` 적용되므로 게임별 CSS 확장도 가능합니다.
+- `effect`는 대기 액션이 아니며 연속 선언하면 뒤 이펙트가 앞 이펙트를 교체합니다. 순서대로 보여 주려면 사이에 짧은 `wait`를 둡니다.
 - `prefers-reduced-motion` 환경에서는 비필수 움직임을 제거합니다.
+
+```yaml
+- effect: flash
+- wait: 140
+- effect: darken
+- wait: 180
+- effect: shake
+```
 
 ## `sticker.inputLockMs` (입력 잠금)
 
@@ -395,6 +417,15 @@ scenes:
 - `inventory.<item>.category`(선택): 인벤토리 카테고리 필터 기준값입니다. 미지정 시 UI에서 `기타`로 처리합니다.
 - `inventory.<item>.order`(선택): 정렬 기준 우선순위(낮을수록 먼저)입니다. 미지정 시 `9999`로 처리합니다.
 
+## 대사 속도 체계
+
+- `config.yaml.textSpeed`와 `<speed=...>` 값의 단위는 초당 출력 글자 수(CPS)입니다. `32`는 감정·문장부호 보정 전 기준으로 한글 음절 약 32개를 1초에 출력한다는 뜻입니다.
+- 숫자가 클수록 빠르고 작을수록 느립니다. 일반 대사는 `22~38`, 짧은 외침은 `40~60`, 망설임은 `16~22` 정도를 출발점으로 권장합니다.
+- 엔진은 UTF-16 코드 단위가 아니라 grapheme 단위로 출력하므로 한글 음절, 결합 문자, 이모지가 중간에서 쪼개지지 않습니다.
+- 실제 글자 지연은 대략 `1000 / (CPS × delivery 배율 × 감정 흔들림)`이며 16~900ms로 제한됩니다. 공백은 일반 글자의 62% 시간만 사용합니다.
+- 쉼표·마침표·말줄임표·줄바꿈 뒤에는 `delivery`별 추가 호흡이 붙습니다. 따라서 같은 CPS라도 감정 프로필과 문장부호에 따라 실제 완성 시간은 달라집니다.
+- `<speed>` 구간은 전역 `textSpeed`를 덮어쓰지만 `delivery` 배율·호흡은 그대로 적용됩니다.
+
 ## `say.delivery` 감정형 타이핑
 
 `say.delivery`는 대사의 타이핑 리듬과 마지막 입력 글자의 시각 반응을 지정합니다.
@@ -406,9 +437,16 @@ scenes:
     text: "그걸... 어디서 확인했죠?"
 ```
 
-허용값:
-- `neutral`, `calm`, `nervous`, `angry`
-- `whisper`, `shout`, `sad`, `deduction`
+| 값 | 속도 배율 | 쉼표 | 문장 끝 | 말줄임표 | 성격 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `neutral` | 1.00× | 80ms | 150ms | 280ms | 기본 호흡 |
+| `calm` | 0.90× | 110ms | 190ms | 330ms | 여유 있고 정돈됨 |
+| `nervous` | 1.02× | 115ms | 210ms | 480ms | 글자 간격이 크게 흔들림 |
+| `angry` | 1.20× | 55ms | 105ms | 210ms | 빠르고 강함 |
+| `whisper` | 0.76× | 125ms | 220ms | 420ms | 낮고 조심스러움 |
+| `shout` | 1.34× | 40ms | 80ms | 170ms | 가장 빠르고 강한 반응 |
+| `sad` | 0.70× | 145ms | 260ms | 560ms | 가장 느리고 긴 여운 |
+| `deduction` | 0.94× | 105ms | 205ms | 360ms | 흔들림 없는 추리 호흡 |
 
 동작:
 - `delivery`를 생략하면 `say.char`의 표정 또는 현재 화면에 표시된 화자의 표정에서 자동 추론합니다.
@@ -579,7 +617,8 @@ scenes:
 
 ## Conan 샘플 분기 구조
 
-- `0.yaml`은 평온한 콜드 오픈, `1.yaml`은 4인 갈등과 사건 발생(하루오 사망 + 다잉 메시지), `2.yaml`은 초동 정리/재구성 파트입니다.
+- `0.yaml`은 가족 여행과 탁구 선택, `1.yaml`은 88도 시음 순서와 차 이름 선택, `2.yaml`은 4인 갈등과 사건 발생, `3.yaml`은 초동 정리/재구성 파트입니다.
+- 가장 짧은 선택 경로도 사건 전 약 7분을 유지하며, 시음 순서와 차 이름을 기억한 선택은 사건 직전 관찰·추리 수치로 회수됩니다.
 - `routes/hub/1.yaml`은 조사 라운지이며, `세이지/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
 - 각 라인(`routes/<line>/1.yaml`)은 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다.
 - 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
