@@ -3,6 +3,7 @@ script:
   - scene: room_lottery
   - scene: bath_return
   - scene: table_tennis
+  - scene: table_tennis_finish
   - scene: dinner_time
   - scene: rain_window
   - scene: quiet_night
@@ -159,8 +160,57 @@ scenes:
           char: 코고로.proud
           delivery: shout
           text: "<speed=42>코치 금지!</speed> <speed=32>꼬마는 심판이나 봐!</speed>"
+      - choice:
+          key: holiday_table_tennis
+          prompt: "마지막 한 점. 코난은?"
+          options:
+            - text: "란에게 백핸드 쪽을 알려 준다"
+              goto: table_tennis_coach
+            - text: "이번만큼은 조용히 선을 본다"
+              goto: table_tennis_referee
+            - text: "코고로에게 힘내라고 외친다"
+              goto: table_tennis_cheer
+
+  table_tennis_coach:
+    actions:
       - say:
-          text: "<speed=24>공은 코고로의 라켓 모서리를 맞고 천장으로 높이 솟았다.</speed>"
+          char: 코난.smile
+          with:
+            - 란
+          text: "<speed=31>란 누나, 이번에도 백핸드!</speed>"
+      - say:
+          char: 코고로.proud
+          delivery: shout
+          text: "<speed=40>말하면서 치는 건 반칙이다!</speed>"
+      - goto: table_tennis_finish
+
+  table_tennis_referee:
+    actions:
+      - say:
+          char: 코난.smile
+          with:
+            - 코고로.proud
+          text: "<speed=28>알았어. 이번엔 선만 볼게.</speed>"
+      - say:
+          text: "<speed=25>열두 번이나 이어진 공이 탁구대 모서리에 살짝 닿고 바닥으로 떨어졌다.</speed>"
+      - goto: table_tennis_finish
+
+  table_tennis_cheer:
+    actions:
+      - say:
+          char: 코난.smile
+          with:
+            - 코고로.proud
+          text: "<speed=32>아저씨, 이번엔 진짜 한 점!</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=38>좋아, 꼬마! 잘 보고 있어라!</speed>"
+      - goto: table_tennis_finish
+
+  table_tennis_finish:
+    actions:
+      - say:
+          text: "<speed=24>코고로가 힘껏 휘두른 공은 라켓 모서리를 맞고 천장으로 높이 솟았다.</speed>"
       - say:
           char: 란
           text: "<speed=36>열한 대 이.</speed> <speed=25>한 판 더 할래?</speed>"
@@ -269,7 +319,7 @@ scenes:
           char: 코고로.proud
           with:
             - 란
-          text: "<speed=28>나는 오늘 가장 많이 움직인 사람이다.</speed> <speed=24>회복에 최적화된 위치가 필요해.</speed>"
+          text: "<speed=28>나는 오늘 가장 많이 움직인 사람이다.</speed> <speed=24>허리 펴려면 가운데가 딱이야.</speed>"
       - char:
           id: 코난
           position: center

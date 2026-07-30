@@ -33,6 +33,27 @@ scenes:
       - say:
           char: 세이지.cold
           text: "<speed=26>목소리를 높여도 원본은 바뀌지 않습니다.</speed> <speed=19>서명 뒤에 제 봉인을 열죠.</speed> <speed=30>그때 필체와 수정 시각을 확인하면 됩니다.</speed>"
+      - branch:
+          cases:
+            - when:
+                var: tea_name_vote
+                op: eq
+                value: "people"
+              goto: meeting_name_memory
+          default: four_way_tension
+
+  meeting_name_memory:
+    actions:
+      - char:
+          id: 코난
+          position: center
+          emotion: think
+      - say:
+          char: 코난.think
+          text: "<speed=18>(어젯밤엔 이름 하나도 빼지 않겠다고 했어.</speed> <speed=30>계약서엔 누가 빠졌지?)</speed>"
+      - add:
+          final_confidence: 1
+      - goto: four_way_tension
 
   four_way_tension:
     actions:
@@ -84,9 +105,27 @@ scenes:
           text: "<speed=21>예, 2번은 제 잔입니다.</speed> <speed=18>레이코 씨, 88도가 될 때까진 뚜껑에 손대지 마세요.</speed> <speed=16>그분의 방식이니까.</speed>"
       - say:
           text: "<speed=19>레이코는 대답 대신 주전자 뚜껑을 눌렀다.</speed> <speed=51>한 번.</speed> <speed=55>그리고 또 한 번.</speed>"
+      - branch:
+          cases:
+            - when:
+                var: remembered_tea_order
+                op: eq
+                value: true
+              goto: service_order_memory
+          default: incident_trigger
+
+  service_order_memory:
+    actions:
+      - char:
+          id: 코난
+          position: center
+          emotion: think
       - say:
           char: 코난.think
-          text: "<speed=18>(뚜껑 소리로 시선을 모았어.</speed> <speed=17>왜?)</speed>"
+          text: "<speed=18>(하루오 씨는 뚜껑을 그대로 두랬어.</speed> <speed=30>레이코 씨는 왜 두 번이나...)</speed>"
+      - add:
+          deduction_score: 1
+      - goto: incident_trigger
 
   incident_trigger:
     actions:
@@ -94,7 +133,9 @@ scenes:
       - music: tension
       - sound: scream
       - effect: flash
+      - wait: 140
       - effect: darken
+      - wait: 180
       - effect: shake
       - sound: thunder
       - char:

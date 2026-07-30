@@ -100,7 +100,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코고로.proud
-          text: "<speed=21>그렇다면 주전자와 나머지 세 잔이 깨끗한 것도 모순이 아니군요.</speed>"
+          text: "<speed=21>감식표와 맞습니다.</speed> <speed=18>주전자가 깨끗한 이유도 기록해 두죠.</speed>"
       - goto: coverage_branch
 
   cautious_reasoning:
@@ -225,7 +225,7 @@ scenes:
           options:
             - text: "잔의 시료 카드와 9시 29분 메모를 겹친다"
               goto: verdict_branch
-            - text: "아직 연결이 부족하다"
+            - text: "잔과 손수건의 섬유를 한 번 더 확인한다"
               add:
                 final_confidence: -1
               goto: final_accuse_gate
@@ -244,7 +244,7 @@ scenes:
           key: final_accuse_confirm_other
           prompt: "그 지목으로 손수건의 두 동작이 이어질까?"
           options:
-            - text: "모순을 인정하고 다시 생각한다"
+            - text: "잔과 섬유를 다시 확인한다"
               add:
                 final_confidence: -1
               goto: final_accuse_gate
@@ -378,7 +378,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코고로.proud
-          text: "<speed=21>두 곳의 섬유가 같고, 온도계가 9시 29분에서 멈춘 이유도 하나로 맞습니다.</speed>"
+          text: "<speed=21>두 곳의 섬유는 같은 손수건.</speed> <speed=18>온도계는 그 손이 움직인 9시 29분에 멈췄습니다.</speed>"
       - say:
           char: 코고로.proud
           with:
