@@ -1,0 +1,258 @@
+script:
+  - scene: first_scan
+  - scene: residue_focus
+  - scene: residue_claim_correct
+  - scene: residue_claim_wrong
+  - scene: timeline_gate
+  - scene: timeline_input_gate
+  - scene: reconstruction_choice
+  - scene: reconstruction_claim_correct
+  - scene: reconstruction_claim_wrong
+  - scene: deduction_branch
+  - scene: stable_frame
+  - scene: shaky_frame
+  - scene: lounge_handoff
+
+scenes:
+  first_scan:
+    actions:
+      - bg: tea_room
+      - music: reasoning
+      - char:
+          id: 코난
+          position: center
+          emotion: serious
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - say:
+          char: 코난.serious
+          text: "<speed=28>란 누나, 다들 같은 차를 마셨는데 하루오 씨만 쓰러졌어.</speed> <speed=21>주전자보다 2번 잔을 먼저 봐야 해.</speed>"
+      - say:
+          char: 란.worried
+          text: '<speed=25>쓰러질 때도 잔을 놓지 않았어.</speed> <speed=19>그 "2R"을 꼭 남기려 했던 것 같아.</speed>'
+
+  residue_focus:
+    actions:
+      - effect: zoom
+      - sticker:
+          id: rim_focus
+          image: clue_cup
+          x: 50
+          y: 40
+          width: 62
+          anchorX: center
+          anchorY: center
+          enter:
+            effect: blurIn
+      - say:
+          char: 코난.think
+          text: "<speed=18>(R은 건드린 흔적이야.</speed> <speed=30>먼저 잔을 보자.)</speed>"
+      - choice:
+          key: residue_focus_choice
+          prompt: "가장 먼저 확인할 흔적은?"
+          options:
+            - text: "2번 잔의 안쪽과 가장자리를 비교한다"
+              set:
+                clue_rim_reagent: true
+              add:
+                deduction_score: 2
+                final_confidence: 1
+              goto: residue_claim_correct
+            - text: "\"2R\"의 글씨 모양부터 해석한다"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: residue_claim_wrong
+            - text: "주전자 뚜껑에 독이 있었다고 본다"
+              add:
+                mistake_count: 1
+              goto: residue_claim_wrong
+
+  residue_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "<speed=23>역시.</speed> <speed=19>잔 안쪽은 아무 반응이 없어.</speed> <speed=37>입이 닿는 바깥쪽만 변했어.</speed>"
+      - choice:
+          key: residue_commit_choice
+          prompt: "시약 반응이 뜻하는 것은?"
+          options:
+            - text: "마시기 직전 가장자리에 묻었다"
+              goto: timeline_gate
+            - text: "주전자 오염 가능성도 남긴다"
+              add:
+                final_confidence: -1
+              goto: timeline_gate
+
+  residue_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=19>(지워진 글자에 끌리면 안 돼.)</speed>"
+      - choice:
+          key: residue_rebuttal_choice
+          prompt: "어느 쪽을 다시 볼까?"
+          options:
+            - text: "잔의 반응부터 다시 확인한다"
+              goto: timeline_gate
+            - text: "메시지 해석을 우선한다"
+              add:
+                trust: -1
+              goto: timeline_gate
+
+  timeline_gate:
+    actions:
+      - clearSticker:
+          id: rim_focus
+          leave:
+            effect: fadeOut
+      - goto: timeline_input_gate
+
+  timeline_input_gate:
+    actions:
+      - say:
+          char: 코난
+          text: "<speed=25>란 누나, 비명 전에 천둥이 쳤을 때 복도 시계를 봤지?</speed> <speed=19>긴 바늘이 어디 있었는지 기억나?</speed>"
+      - input:
+          prompt: "비명이 난 시각은? (24시간 형식)"
+          correct: "21:30"
+          saveAs: timeline_answer
+          errors:
+            - "시계 바늘을 떠올려. 긴 바늘은 6을 가리켰어."
+            - "힌트: 밤 9시 30분."
+            - "복도 시계가 가리킨 시각은 21:30이었다."
+          routes:
+            - equals: "21:30"
+              add:
+                deduction_score: 2
+                trust: 1
+              goto: reconstruction_choice
+            - equals: "21:20"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: reconstruction_choice
+            - equals: "22:00"
+              add:
+                mistake_count: 1
+              goto: reconstruction_choice
+
+  reconstruction_choice:
+    actions:
+      - bg: case_board
+      - music: mystery
+      - char:
+          id: 코난
+          position: left
+          emotion: serious
+      - effect: focus
+      - say:
+          char: 코난.serious
+          text: "<speed=25>첫 번째 소리에 하루오 씨가 말렸고, 두 번째 소리에 모두가 주전자를 봤어.</speed> <speed=19>그 짧은 순간, 보이지 않게 된 곳은 하나야.</speed>"
+      - choice:
+          key: reconstruction_choice
+          prompt: "두 번 누른 동작의 목적은?"
+          options:
+            - text: "주전자 안에 독을 넣을 기회"
+              add:
+                mistake_count: 1
+              goto: reconstruction_claim_wrong
+            - text: "2번 잔을 아무도 보지 않는 짧은 틈"
+              set:
+                clue_double_press_decoy: true
+              add:
+                deduction_score: 2
+                final_confidence: 1
+              goto: reconstruction_claim_correct
+            - text: "향을 고르게 퍼뜨리려는 평범한 습관"
+              add:
+                mistake_count: 1
+                trust: -1
+              goto: reconstruction_claim_wrong
+
+  reconstruction_claim_correct:
+    actions:
+      - say:
+          char: 코난.serious
+          text: "<speed=25>그래.</speed> <speed=19>뚜껑은 수단이 아니라 시선 유도였어.</speed> <speed=37>진짜 손은 2번 잔으로 갔어.</speed>"
+      - choice:
+          key: reconstruction_commit_choice
+          prompt: "9시 29분에 가려진 장면은?"
+          options:
+            - text: "주전자를 보는 사이 2번 잔에 손이 닿았다"
+              goto: deduction_branch
+            - text: "아직 다른 가능성을 남긴다"
+              add:
+                final_confidence: -1
+              goto: deduction_branch
+
+  reconstruction_claim_wrong:
+    actions:
+      - say:
+          char: 코난.think
+          text: "<speed=19>(주전자는 깨끗해.</speed> <speed=30>다시 2번 잔.)</speed>"
+      - choice:
+          key: reconstruction_rebuttal_choice
+          prompt: "어디로 시선을 돌릴까?"
+          options:
+            - text: "2번 잔으로 시선을 돌린다"
+              goto: deduction_branch
+            - text: "주전자 가설을 유지한다"
+              add:
+                trust: -1
+              goto: deduction_branch
+
+  deduction_branch:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: deduction_score
+                    op: gte
+                    value: 4
+                  - var: trust
+                    op: gte
+                    value: 0
+                  - var: clue_double_press_decoy
+                    op: eq
+                    value: true
+              goto: stable_frame
+          default: shaky_frame
+
+  stable_frame:
+    actions:
+      - effect: zoom
+      - say:
+          text: "<speed=23>2번 잔, 9시 29분, 두 번 울린 뚜껑.</speed> <speed=40>이제 같은 장면 안에 들어왔어.</speed>"
+      - say:
+          char: 코난.serious
+          text: "<speed=28>남은 건 그 틈을 미리 알고 움직인 사람.</speed> <speed=21>말보다 먼저 손이 움직인 사람을 찾으면 돼.</speed>"
+      - add:
+          final_confidence: 1
+      - goto: lounge_handoff
+
+  shaky_frame:
+    actions:
+      - effect: tilt
+      - say:
+          char: 코난.think
+          text: "<speed=18>(순서가 어긋났어.</speed> <speed=30>30초씩 다시.)</speed>"
+      - add:
+          mistake_count: 1
+      - goto: lounge_handoff
+
+  lounge_handoff:
+    actions:
+      - bg: case_board
+      - char:
+          id: 코난
+          position: left
+          emotion: think
+      - effect: focus
+      - say:
+          char: 코난.think
+          text: "<speed=24>(네 사람의 30초.</speed> <speed=20>하나씩 듣자.)</speed>"
+      - goto: /routes/hub/1.yaml
