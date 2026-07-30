@@ -260,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.1.1 episode identity and all seven music cues', () => {
+  it('ships the v10.2 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.1.1');
+    expect(config.version).toBe('10.2.0');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -294,6 +294,57 @@ describe('Conan content regression', () => {
       expect(typeof assetPath).toBe('string');
       expect(existsSync(resolveGameAsset(String(assetPath))), String(assetPath)).toBe(true);
     });
+  });
+
+  it('maps the added emotional beats to existing transparent character assets', () => {
+    const base = readYaml('base.yaml');
+    const characters = asRecord(asRecord(base.assets).characters);
+    const expectedEmotions = [
+      ['코난', 'smile'],
+      ['란', 'determined'],
+      ['코고로', 'shocked'],
+      ['켄지', 'smile'],
+      ['세이지', 'amused'],
+      ['레이코', 'smile'],
+      ['하루오', 'smile'],
+    ] as const;
+
+    expectedEmotions.forEach(([characterId, emotion]) => {
+      const assetPath = asRecord(asRecord(characters[characterId]).emotions)[emotion];
+      expect(typeof assetPath, `${characterId}.${emotion}`).toBe('string');
+      expect(existsSync(resolveGameAsset(String(assetPath))), String(assetPath)).toBe(true);
+    });
+  });
+
+  it('never stacks the police tape, clue card, and character portrait together', () => {
+    const actions = sceneActions(readYaml('2.yaml'), 'death_confirm');
+    const stickerId = (action: UnknownRecord): unknown => asRecord(action.sticker).id;
+    const clearedStickerId = (action: UnknownRecord): unknown =>
+      asRecord(action.clearSticker).id;
+    const tapeClearIndex = actions.findIndex(
+      (action) => clearedStickerId(action) === 'tape_lock',
+    );
+    const clueShowIndex = actions.findIndex((action) => stickerId(action) === 'dying_hint');
+    const clueClearIndex = actions.findIndex(
+      (action) => clearedStickerId(action) === 'dying_hint',
+    );
+    const firstCharacterDialogueIndex = actions.findIndex(
+      (action) => typeof asRecord(action.say).char === 'string',
+    );
+    const clueDialogue = asRecord(actions[clueShowIndex + 1]?.say);
+    const conanReturnIndex = actions.findIndex(
+      (action, index) =>
+        index > clueClearIndex && asRecord(action.say).char === '코난.think',
+    );
+
+    expect(tapeClearIndex).toBeGreaterThan(-1);
+    expect(tapeClearIndex).toBeLessThan(firstCharacterDialogueIndex);
+    expect(tapeClearIndex).toBeLessThan(clueShowIndex);
+    expect(actions[tapeClearIndex + 1]?.wait).toBeGreaterThanOrEqual(220);
+    expect(clueDialogue.char).toBeUndefined();
+    expect(clueClearIndex).toBeGreaterThan(clueShowIndex);
+    expect(actions[clueClearIndex + 1]?.wait).toBeGreaterThanOrEqual(220);
+    expect(conanReturnIndex).toBeGreaterThan(clueClearIndex);
   });
 
   it('ends the full reveal with confession and an in-character morning coda', () => {

@@ -7,6 +7,10 @@ export type CharacterStageLayout = {
 
 const POSITION_ORDER: readonly Position[] = ['left', 'center', 'right'];
 
+export function buildImageCharacterRenderKey(position: Position, characterId: string): string {
+  return `${position}-${characterId}`;
+}
+
 export function resolveCharacterStageLayout(visiblePositions: readonly Position[]): CharacterStageLayout {
   const visibleSet = new Set(visiblePositions);
   const orderedPositions = POSITION_ORDER.filter((position) => visibleSet.has(position));
