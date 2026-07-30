@@ -4,3 +4,11 @@ tags:
   - live2d
   - interaction
   - smoke-test
+showcase:
+  label: "LIVE2D DEMO"
+  backgroundColor: "#171b24"
+  image:
+    positionX: 38
+    positionY: 35
+    scale: 1.08
+    offsetX: 18

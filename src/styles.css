@@ -3450,7 +3450,7 @@ textarea,
   max-height: 100%;
   overflow: hidden;
   overflow: clip;
-  background: #202329;
+  background: var(--launcher-showcase-background, #202329);
 }
 
 .launcher-feature-media::after {
@@ -3471,16 +3471,15 @@ textarea,
   max-height: 100%;
   display: block;
   object-fit: cover;
-  object-position: center;
-}
-
-.launcher-feature-media.is-live2d {
-  background: #171b24;
-}
-
-.launcher-feature-media.is-live2d img {
-  object-position: 38% 35%;
-  transform: scale(1.08) translateX(18%);
+  object-position:
+    var(--launcher-showcase-position-x, 50%)
+    var(--launcher-showcase-position-y, 50%);
+  transform:
+    translate(
+      var(--launcher-showcase-offset-x, 0%),
+      var(--launcher-showcase-offset-y, 0%)
+    )
+    scale(var(--launcher-showcase-scale, 1));
   transform-origin: center;
 }
 
