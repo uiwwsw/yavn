@@ -41,7 +41,18 @@ pnpm dev
 - `/`: YAVN 플레이그라운드(대표 게임 쇼케이스 + 검색/태그 게임 라이브러리 + ZIP 실행)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 게임 즉시 실행
 
-## 런처 메타데이터 (Manifest V3)
+## 데이터 처리 구조
+
+게임 실행 코드는 특정 작품이나 캐릭터를 알지 않습니다.
+
+1. URL 게임의 `config.yaml`, `base.yaml`, 챕터 YAML 또는 업로드한 ZIP의 YAML을 `src/parser.ts`가 읽습니다.
+2. YAML은 JavaScript 객체로 변환된 뒤 Zod 스키마와 참조 검증을 통과합니다.
+3. `src/engine.ts`가 검증된 공통 액션을 실행하고 `src/store.ts` 상태를 갱신합니다.
+4. `src/App.tsx`는 게임 ID가 아니라 배경, 캐릭터, 대사, 선택지, 스티커 같은 공통 상태만 렌더링합니다.
+
+루트 게임 목록만 빌드 시 생성된 JSON manifest를 사용합니다. 런타임 소스에 번들 샘플 ID나 샘플 전용 태그 분기가 들어오면 `src/gameIndependence.test.ts`가 실패합니다.
+
+## 런처 메타데이터 (Manifest V4)
 
 런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성되며, 같은 단계에서 `public/sitemap.xml`도 게임 목록 기준으로 자동 재생성됩니다. 이후 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록 검사를 수행합니다.
 
@@ -49,7 +60,7 @@ pnpm dev
 
 ```json
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "generatedAt": "2026-02-27T02:15:30.805Z",
   "games": [
     {
@@ -61,6 +72,14 @@ pnpm dev
       "summary": "가족 여행과 차 체험 뒤 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 추리 에피소드",
       "thumbnail": "/game-list/conan/assets/bg/case_board.avif",
       "tags": ["detective", "sample"],
+      "showcase": {
+        "label": "FEATURED DEMO",
+        "image": {
+          "positionX": 50,
+          "positionY": 42,
+          "scale": 1.05
+        }
+      },
       "chapterCount": 10,
       "seo": {
         "title": "명탐정 코난 외전: 폭우의 2번 찻잔",
@@ -96,11 +115,21 @@ thumbnail: "assets/bg/cover.png"
 tags:
   - detective
   - live2d
+showcase:
+  label: "FEATURED DEMO"
+  backgroundColor: "#171b24"
+  image:
+    positionX: 50
+    positionY: 42
+    scale: 1.05
+    offsetX: 0
+    offsetY: 0
 ```
 
 - 이 파일은 런처 전용이며 엔진 DSL(`config/base/chapter`) 파서와 분리됩니다.
 - `thumbnail`은 상대 경로일 때 `/game-list/<gameId>/...`로 정규화됩니다.
 - `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 쇼케이스/게임 카드 기본 썸네일로 사용합니다.
+- `showcase`는 게임 ID나 태그에 의존하지 않고 캐러셀 문구와 썸네일 구도를 선언합니다. 위치는 `0..100`, 배율은 `0.5..2`, 오프셋은 `-50..50` 범위로 정규화됩니다.
 
 ## Public 최소화 정책
 
@@ -591,8 +620,9 @@ scenes:
 - 런처 첫 화면은 모든 플레이 가능한 데모를 실제 썸네일과 함께 보여주는 전체 폭 캐러셀입니다. 최초 진입은 데모를 무작위로 선택하고, 스와이프·마우스 드래그·좌우 화살표·키보드 방향키·페이지 인디케이터로 순환합니다.
 - 현재 캐러셀 데모는 `#demo=<gameId>` 해시에 기록되어 새로고침하거나 링크를 공유해도 같은 슬라이드를 엽니다. 아래 검색·태그 게임 목록은 상단 선택을 바꾸지 않으며 카드 전체를 누르면 해당 게임으로 바로 이동합니다.
 - 각 캐러셀 슬라이드는 독립된 페인트 경계 안에서 이미지와 콘텐츠를 자르며, 긴 제목·설명·태그는 화면 폭을 밀어내지 않습니다. 좁은 화면의 태그는 슬라이드 안에서만 가로 스크롤됩니다.
-- 게임 목록 manifest는 `schemaVersion: 3`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` + `seo` 메타를 포함합니다.
+- 게임 목록 manifest는 `schemaVersion: 4`를 사용하며 `author/version/summary/thumbnail/tags/showcase/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
+- 캐러셀 라벨·배경색·썸네일 초점/배율/오프셋은 `launcher.yaml.showcase` 데이터만 사용하며 게임 ID나 `tags`를 조건으로 특별 처리하지 않습니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
 - 게임별 `launcher.yaml`은 선택사항이며, 없으면 런처가 기본 요약/메타로 안전하게 렌더링합니다.
 - 런처/게임 페이지 SEO는 `config.yaml.seo`와 manifest 집계 `seo.gameTitles`를 사용해 `description/keywords/og/twitter/json-ld`를 동적으로 갱신합니다.

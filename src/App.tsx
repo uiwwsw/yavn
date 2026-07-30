@@ -42,6 +42,11 @@ import {
   pickRandomCarouselIndex,
   wrapCarouselIndex,
 } from './launcherCarousel';
+import {
+  buildLauncherShowcaseStyle,
+  normalizeLauncherShowcase,
+  type LauncherShowcase,
+} from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
 import { useVNStore } from './store';
@@ -87,6 +92,7 @@ type GameListManifestEntry = {
   summary?: string;
   thumbnail?: string;
   tags: string[];
+  showcase?: LauncherShowcase;
   chapterCount?: number;
   seo?: GameListSeoEntry;
 };
@@ -451,6 +457,7 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
     summary: normalizeText(value.summary),
     thumbnail: normalizeText(value.thumbnail),
     tags: normalizeTags(value.tags),
+    showcase: normalizeLauncherShowcase(value.showcase),
     chapterCount: normalizeChapterCount(value.chapterCount),
     seo,
   };
@@ -2165,7 +2172,7 @@ export default function App() {
           <div className="launcher-runtime" aria-label="엔진 상태">
             <span className={`launcher-status launcher-status-${gameListStatus.toLowerCase()}`}>{gameListStatus}</span>
             <span>{gameList.length} PLAYABLE</span>
-            <span>DSL V{manifestSchemaVersion ?? 3}</span>
+            <span>DSL V{manifestSchemaVersion ?? 4}</span>
           </div>
 
           <nav className="launcher-nav" aria-label="엔진 링크">
@@ -2206,6 +2213,7 @@ export default function App() {
                     typeof entry.chapterCount === 'number'
                       ? `${entry.chapterCount} CHAPTER${entry.chapterCount === 1 ? '' : 'S'}`
                       : 'CHAPTERS -';
+                  const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
                   return (
                     <article
                       key={`showcase-${entry.id}`}
@@ -2214,7 +2222,7 @@ export default function App() {
                       aria-roledescription="slide"
                       aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
                     >
-                      <div className={`launcher-feature-media ${entry.tags.includes('live2d') ? 'is-live2d' : ''}`}>
+                      <div className="launcher-feature-media" style={showcaseStyle}>
                         {entry.thumbnail ? (
                           <img
                             src={entry.thumbnail}
@@ -2229,7 +2237,7 @@ export default function App() {
 
                       <div className="launcher-feature-copy">
                         <p className="launcher-feature-kicker">
-                          {entry.tags.includes('engine-showcase') ? 'ENGINE SHOWCASE' : 'PLAYABLE DEMO'}
+                          {entry.showcase?.label ?? 'PLAYABLE DEMO'}
                           <span>v{entry.version ?? '-'}</span>
                         </p>
                         <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
@@ -2467,7 +2475,7 @@ export default function App() {
             <span>Type your story. Play your novel.</span>
           </p>
           <div>
-            <span>MANIFEST V{manifestSchemaVersion ?? 3}</span>
+            <span>MANIFEST V{manifestSchemaVersion ?? 4}</span>
             <span>SYNC {manifestTimestampLabel}</span>
             <a href={shareByPrUrl} target="_blank" rel="noreferrer">
               PR 보내기
