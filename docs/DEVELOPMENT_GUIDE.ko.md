@@ -459,9 +459,10 @@ scenes:
 - `ending`
 
 전체 화면 `effect` 프리셋:
-- 기본: `shake`, `flash`, `zoom`, `blur`, `darken`, `pulse`, `tilt`
-- 트레일러: `impact`, `glitch`, `speedlines`, `alarm`, `focus`
+- 기본: `shake(280ms)`, `flash(350ms)`, `zoom(420ms)`, `blur(420ms)`, `darken(500ms)`, `pulse(500ms)`, `tilt(320ms)`
+- 트레일러: `impact(460ms)`, `glitch(520ms)`, `speedlines(680ms)`, `alarm(760ms)`, `focus(620ms)`
 - 미등록 이름은 약 `350ms` 동안 CSS 상태 클래스로 적용되어 게임별 스타일 확장이 가능합니다.
+- `effect`는 즉시 다음 액션으로 진행합니다. 연속 선언은 뒤 이펙트가 앞 이펙트를 교체하므로 순차 재생은 사이에 `wait`를 둡니다.
 - `prefers-reduced-motion` 환경에서는 비필수 모션을 비활성화합니다.
 
 ### 9-1) `sticker.inputLockMs` 입력 잠금
@@ -534,6 +535,10 @@ scenes:
 - `deduction`: 흔들림 없이 단호한 추리 리듬
 
 실행 규칙:
+- `config.yaml.textSpeed`와 `<speed=...>`는 초당 grapheme 수(CPS)이며 숫자가 클수록 빠릅니다.
+- 실제 지연은 대략 `1000 / (CPS × delivery 배율 × 감정 흔들림)`이고 글자당 16~900ms로 제한되며, 공백은 일반 글자의 62% 시간을 사용합니다.
+- 속도 배율은 `neutral 1.00`, `calm 0.90`, `nervous 1.02`, `angry 1.20`, `whisper 0.76`, `shout 1.34`, `sad 0.70`, `deduction 0.94`입니다.
+- 말줄임표 추가 호흡은 같은 순서로 `280/330/480/210/420/170/560/360ms`이며 쉼표와 문장 끝에도 프로필별 호흡이 붙습니다.
 - 우선순위는 `say.delivery` 명시값 -> `say.char`의 표정 -> 현재 표시 중인 화자의 표정 -> `neutral`입니다.
 - 기본 자동 연결은 `serious/think -> deduction`, `angry -> angry`, `nervous/worried/scared -> nervous`, `surprised -> shout`, `proud/calm -> calm`입니다.
 - 쉼표, 마침표, 물음표, 느낌표, 말줄임표, 줄바꿈 뒤에 감정별 정지가 자동 추가됩니다.
@@ -720,6 +725,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-31: README와 개발 가이드에 `textSpeed`/`<speed>`의 CPS 단위, 8종 `say.delivery` 속도 배율·문장부호 호흡, 12개 화면 이펙트의 지속시간·용도·연속 실행 규칙을 실제 런타임 수치 기준으로 보강했습니다. Conan v10.3은 사건 전 최단 경로를 7분 이상으로 늘리고 탁구/시음 순서/차 이름 선택과 사건 내 회수 분기를 추가했으며, 설명조 독백과 부자연스러운 문구를 회귀 검사합니다.
 - 2026-07-30: 런처가 `live2d`/`engine-showcase` 태그를 보고 이미지 구도와 라벨을 특별 처리하던 분기를 제거했습니다. Manifest V4의 범용 `showcase` 메타로 라벨·배경색·이미지 초점/배율/오프셋을 선언하며, 번들 샘플 ID와 전용 태그가 런타임에 다시 들어오면 독립성 테스트가 실패합니다.
 - 2026-07-30: 스티커·증거물의 좌표계를 HUD·다이얼로그·기기 safe-area를 제외한 공통 안전 프레임으로 변경했습니다. 실제 렌더 경계 기반의 균일 축소·최소 이동 보정을 추가해 짧은 가로 화면과 과대 에셋도 자르지 않으며, 모바일 다이얼로그에는 좌우·하단 최소 10px 외곽 여백을 추가했습니다.
 - 2026-07-30: 엔진 홈 캐러셀에서 320px 폭의 긴 태그 행이 슬라이드 너비를 밀어내고 음수 배경 레이어가 스와이프 중 이웃 에셋을 노출할 수 있던 문제를 수정했습니다. 슬라이드별 레이아웃·페인트 격리, 미디어 클리핑, 텍스트·카드 최대 폭 보호를 추가했습니다.

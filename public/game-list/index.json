@@ -1,14 +1,14 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-07-30T14:29:20.044Z",
+  "generatedAt": "2026-07-30T21:56:01.006Z",
   "games": [
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "10.2.0",
-      "summary": "6분 넘게 이어지는 가족 여행과 차 체험 뒤, 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 캐릭터 중심 추리 에피소드.",
+      "version": "10.3.0",
+      "summary": "플레이어가 함께 즐기는 가족 여행과 차 체험 뒤, 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [
         "detective",

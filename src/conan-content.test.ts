@@ -260,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.2 episode identity and all seven music cues', () => {
+  it('ships the v10.3 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.2.0');
+    expect(config.version).toBe('10.3.0');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -373,7 +373,65 @@ describe('Conan content regression', () => {
     );
   });
 
-  it('holds the incident until after a six-minute warm opening', () => {
+  it('keeps the warm opening interactive and pays attention back during the incident', () => {
+    const baseState = asRecord(readYaml('base.yaml').state);
+    const chapter0 = readYaml('0.yaml');
+    const chapter1 = readYaml('1.yaml');
+    const chapter2 = readYaml('2.yaml');
+    const holidayOptions = choiceOptions(sceneActions(chapter0, 'table_tennis'));
+    const helperOptions = choiceOptions(sceneActions(chapter1, 'tea_helper_choice'));
+    const namingOptions = choiceOptions(sceneActions(chapter1, 'tea_name_choice'));
+    const rememberedOption = helperOptions.find(
+      (option) => asRecord(option.set).remembered_tea_order === true,
+    );
+    const peopleOption = namingOptions.find(
+      (option) => asRecord(option.set).tea_name_vote === 'people',
+    );
+    const serviceOrderBranch = sceneActions(chapter2, 'service_order').find((action) =>
+      Object.prototype.hasOwnProperty.call(action, 'branch'),
+    );
+    const serviceOrderCases = asRecord(serviceOrderBranch?.branch).cases;
+
+    expect(baseState.remembered_tea_order).toBe(false);
+    expect(baseState.tea_name_vote).toBe('');
+    expect(holidayOptions).toHaveLength(3);
+    expect(helperOptions).toHaveLength(3);
+    expect(namingOptions).toHaveLength(3);
+    expect(asRecord(rememberedOption?.add).trust).toBe(1);
+    expect(asRecord(peopleOption?.add).trust).toBe(1);
+    expect(serviceOrderCases).toContainEqual({
+      when: {
+        var: 'remembered_tea_order',
+        op: 'eq',
+        value: true,
+      },
+      goto: 'service_order_memory',
+    });
+    expect(sceneActions(chapter2, 'service_order_memory')).toContainEqual({
+      add: {
+        deduction_score: 1,
+      },
+    });
+  });
+
+  it('keeps canned AI-like phrasing out of playable dialogue and choices', () => {
+    const playableText = chapterFiles
+      .flatMap((path) => [...collectStringValues(readYaml(path), 'text')])
+      .map(stripDialogueMarkup)
+      .join(' ');
+
+    expect(playableText).not.toMatch(/열대(?:일|야)(?:이)?네/);
+    [
+      '회복에 최적화된 위치',
+      '이제 같은 장면 안에 들어왔어',
+      '30초씩 다시',
+      '네 사람의 30초',
+      '빈 1분이 보인다',
+      '잔과 시각으로 버틴다',
+    ].forEach((phrase) => expect(playableText).not.toContain(phrase));
+  });
+
+  it('holds the incident until after a seven-minute interactive warm opening', () => {
     const config = readYaml('config.yaml');
     const chapter0 = readYaml('0.yaml');
     const chapter1 = readYaml('1.yaml');
@@ -385,16 +443,36 @@ describe('Conan content regression', () => {
       .flatMap((entry) =>
         typeof entry.scene === 'string' ? sceneActions(chapter2, entry.scene) : [],
       );
-    const preIncidentActions = [
+    const commonPreIncidentActions = [
       ...orderedSceneActions(chapter0),
       ...orderedSceneActions(chapter1),
       ...preIncidentScenes,
     ];
+    const tableTennisBranches = [
+      'table_tennis_coach',
+      'table_tennis_referee',
+      'table_tennis_cheer',
+    ];
+    const teaHelperBranches = ['tea_helper_correct', 'tea_helper_lid', 'tea_helper_kogoro'];
+    const teaNameBranches = ['tea_name_rain', 'tea_name_people', 'tea_name_detective'];
+    const routeDurations = tableTennisBranches.flatMap((tableTennisScene) =>
+      teaHelperBranches.flatMap((teaHelperScene) =>
+        teaNameBranches.map((teaNameScene) =>
+          estimateDialogueSeconds(
+            [
+              ...commonPreIncidentActions,
+              ...sceneActions(chapter0, tableTennisScene),
+              ...sceneActions(chapter1, teaHelperScene),
+              ...sceneActions(chapter1, teaNameScene),
+            ],
+            Number(config.textSpeed),
+          ),
+        ),
+      ),
+    );
 
     expect(incidentIndex).toBeGreaterThan(0);
-    expect(estimateDialogueSeconds(preIncidentActions, Number(config.textSpeed))).toBeGreaterThan(
-      360,
-    );
+    expect(Math.min(...routeDurations)).toBeGreaterThan(420);
   });
 
   it('keeps the first chapter load scoped to the core trio', () => {
