@@ -396,8 +396,8 @@ textarea,
   --ui-body-font: 'SUITE Variable', 'Noto Sans KR', sans-serif;
   --stage-safe-inline-start: max(clamp(12px, 2.4vw, 32px), env(safe-area-inset-left, 0px));
   --stage-safe-inline-end: max(clamp(12px, 2.4vw, 32px), env(safe-area-inset-right, 0px));
-  --stage-safe-block-start: max(clamp(12px, 2dvh, 24px), env(safe-area-inset-top, 0px));
-  --stage-safe-block-end: clamp(10px, 1.5dvh, 18px);
+  --stage-safe-block-start: max(clamp(12px, 2cqh, 24px), env(safe-area-inset-top, 0px));
+  --stage-safe-block-end: clamp(10px, 1.5cqh, 18px);
   position: relative;
   width: 100%;
   height: 100%;
@@ -711,6 +711,20 @@ textarea,
   height: 100%;
   object-fit: cover;
   animation: fadeIn 0.5s ease;
+}
+
+.stage-content-frame {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: min(100%, calc(100vw * 16 / 9));
+  min-height: 0;
+  overflow: hidden;
+  transform: translateY(-50%);
+  container-type: size;
+  isolation: isolate;
 }
 
 .char-layer {
@@ -1101,7 +1115,7 @@ textarea,
 .settings-modal {
   position: relative;
   width: min(920px, calc(100% - 24px));
-  max-height: min(90dvh, 820px);
+  max-height: min(90cqh, 820px);
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
   border: 1px solid var(--ui-dialog-border);
@@ -1517,7 +1531,7 @@ textarea,
 
 .inventory-detail-modal {
   width: min(520px, 100%);
-  max-height: min(74dvh, 520px);
+  max-height: min(74cqh, 520px);
   border: 1px solid var(--ui-dialog-border);
   border-radius: 12px;
   background: var(--ui-dialog-bg);
@@ -1644,7 +1658,7 @@ textarea,
 }
 
 .dialog-box {
-  --dialog-max-height: 38dvh;
+  --dialog-max-height: 38cqh;
   position: absolute;
   z-index: 6;
   left: 20px;
@@ -1744,8 +1758,8 @@ textarea,
 }
 
 .video-cutscene-frame-youtube {
-  width: min(100vw, calc(100dvh * 16 / 9));
-  height: min(100dvh, calc(100vw * 9 / 16));
+  width: min(100cqw, calc(100cqh * 16 / 9));
+  height: min(100cqh, calc(100cqw * 9 / 16));
   max-width: 100%;
   max-height: 100%;
 }
@@ -2901,7 +2915,7 @@ textarea,
   }
 
   .dialog-box {
-    --dialog-max-height: 48dvh;
+    --dialog-max-height: 48cqh;
     left: max(10px, env(safe-area-inset-left, 0px));
     right: max(10px, env(safe-area-inset-right, 0px));
     bottom: max(10px, env(safe-area-inset-bottom, 0px));
@@ -2980,8 +2994,8 @@ textarea,
 
   .settings-modal {
     width: 100%;
-    min-height: min(64dvh, 620px);
-    max-height: min(88dvh, 760px);
+    min-height: min(64cqh, 620px);
+    max-height: min(88cqh, 760px);
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
