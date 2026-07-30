@@ -31,7 +31,7 @@ import {
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
-import { resolveCharacterStageLayout } from './characterLayout';
+import { buildImageCharacterRenderKey, resolveCharacterStageLayout } from './characterLayout';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
@@ -1655,7 +1655,7 @@ export default function App() {
     }
     return (
       <img
-        key={`${position}-${slot.id}-${slot.source}`}
+        key={buildImageCharacterRenderKey(position, slot.id)}
         className={className}
         src={slot.source}
         alt={slot.id}
