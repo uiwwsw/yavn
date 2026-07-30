@@ -225,7 +225,19 @@ export const useVNStore = create<VNState>((set) => ({
     }),
   clearAllStickers: () => set({ stickers: {} }),
   setCharacter: (position, slot) =>
-    set((state) => ({ characters: { ...state.characters, [position]: slot } })),
+    set((state) => {
+      const characters = { ...state.characters };
+      const positions: Position[] = ['left', 'center', 'right'];
+
+      for (const existingPosition of positions) {
+        if (existingPosition !== position && characters[existingPosition]?.id === slot.id) {
+          delete characters[existingPosition];
+        }
+      }
+
+      characters[position] = slot;
+      return { characters };
+    }),
   promoteSpeaker: (speakerId) =>
     set((state) => {
       if (!speakerId) {
