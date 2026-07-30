@@ -225,11 +225,24 @@ scenes:
   stable_frame:
     actions:
       - effect: zoom
+      - char:
+          id: 란
+          position: left
+          emotion: worried
+      - char:
+          id: 코난
+          position: right
+          emotion: serious
       - say:
-          text: "<speed=23>2번 잔, 9시 29분, 두 번 울린 뚜껑.</speed> <speed=40>이제 같은 장면 안에 들어왔어.</speed>"
+          char: 란.worried
+          with:
+            - 코난.serious
+          text: "<speed=24>두 번째 소리가 나자 나도 주전자를 봤어.</speed> <speed=19>그때 2번 잔은 아무도 안 보고 있었고.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=28>남은 건 그 틈을 미리 알고 움직인 사람.</speed> <speed=21>말보다 먼저 손이 움직인 사람을 찾으면 돼.</speed>"
+          with:
+            - 란.worried
+          text: "<speed=28>응.</speed> <speed=21>그 틈을 만들고 바로 손을 뻗은 사람이 있어.</speed>"
       - add:
           final_confidence: 1
       - goto: lounge_handoff
@@ -239,7 +252,7 @@ scenes:
       - effect: tilt
       - say:
           char: 코난.think
-          text: "<speed=18>(순서가 어긋났어.</speed> <speed=30>30초씩 다시.)</speed>"
+          text: "<speed=18>(아니야.</speed> <speed=30>비명부터 거꾸로 세어 보자.)</speed>"
       - add:
           mistake_count: 1
       - goto: lounge_handoff
@@ -254,5 +267,5 @@ scenes:
       - effect: focus
       - say:
           char: 코난.think
-          text: "<speed=24>(네 사람의 30초.</speed> <speed=20>하나씩 듣자.)</speed>"
+          text: "<speed=24>(문밖부터.</speed> <speed=20>안과 밖에서 본 장면을 맞춰 보자.)</speed>"
       - goto: /routes/hub/1.yaml
