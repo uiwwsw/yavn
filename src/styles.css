@@ -3361,16 +3361,22 @@ textarea,
 .launcher-showcase {
   position: relative;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  overflow: clip;
+  contain: paint;
   color: #fff;
   background: var(--launcher-dark);
 }
 
 .launcher-carousel {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
+  contain: paint;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -3403,10 +3409,14 @@ textarea,
   isolation: isolate;
   flex: 0 0 100%;
   width: 100%;
+  min-width: 100%;
+  max-width: 100%;
   min-height: clamp(540px, calc(100svh - 168px), 720px);
   display: flex;
   align-items: flex-end;
   overflow: hidden;
+  overflow: clip;
+  contain: layout paint;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   background: #17191d;
@@ -3414,9 +3424,12 @@ textarea,
 
 .launcher-feature-media {
   position: absolute;
-  z-index: -2;
+  z-index: 0;
   inset: 0;
+  max-width: 100%;
+  max-height: 100%;
   overflow: hidden;
+  overflow: clip;
   background: #202329;
 }
 
@@ -3433,6 +3446,9 @@ textarea,
 .launcher-feature-media img {
   width: 100%;
   height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 100%;
   display: block;
   object-fit: cover;
   object-position: center;
@@ -3460,8 +3476,9 @@ textarea,
 
 .launcher-feature-copy {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   width: min(1440px, 100%);
+  max-width: 100%;
   min-height: inherit;
   margin: 0 auto;
   min-width: 0;
@@ -3469,8 +3486,14 @@ textarea,
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
+  overflow: hidden;
   padding: 64px max(88px, calc((100vw - 1440px) / 2 + 88px)) 54px;
   color: #f7f5ee;
+}
+
+.launcher-feature-copy > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .launcher-feature-kicker {
@@ -3483,6 +3506,7 @@ textarea,
   font-size: 12px;
   font-weight: 830;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .launcher-feature-kicker span {
@@ -3491,7 +3515,7 @@ textarea,
 }
 
 .launcher-feature-copy h2 {
-  max-width: 820px;
+  width: min(820px, 100%);
   margin: 14px 0 0;
   color: #fffdf7;
   font-size: 54px;
@@ -3499,22 +3523,38 @@ textarea,
   line-height: 1.06;
   letter-spacing: 0;
   word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .launcher-feature-summary {
-  max-width: 700px;
+  width: min(700px, 100%);
   margin: 16px 0 0;
   color: #d7d7d2;
   font-size: 16px;
   line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 .launcher-feature .inspector-tag-row {
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   margin-top: 16px;
+  display: flex;
+  flex-wrap: nowrap;
   gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.launcher-feature .inspector-tag-row::-webkit-scrollbar {
+  display: none;
 }
 
 .launcher-feature .inspector-tag-row span {
+  flex: 0 0 auto;
   border: 1px solid #47494c;
   border-radius: 2px;
   color: #d7d6cf;
@@ -3559,6 +3599,8 @@ textarea,
 
 .launcher-feature .inspector-actions {
   width: min(420px, 100%);
+  min-width: 0;
+  max-width: 100%;
   margin-top: 20px;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
@@ -3694,11 +3736,17 @@ textarea,
 
 .launcher-library {
   width: min(1440px, 100%);
+  min-width: 0;
+  max-width: 100%;
   margin: 48px auto 0;
+  overflow: hidden;
+  overflow: clip;
   padding: 0 28px;
 }
 
 .launcher-library-heading {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -3730,6 +3778,8 @@ textarea,
 }
 
 .launcher-library-controls {
+  min-width: 0;
+  max-width: 100%;
   display: grid;
   grid-template-columns: minmax(260px, 350px) minmax(0, 1fr);
   align-items: end;
@@ -3776,6 +3826,8 @@ textarea,
 }
 
 .launcher-tag-filter {
+  min-width: 0;
+  max-width: 100%;
   margin: 0;
   display: flex;
   justify-content: flex-end;
@@ -3835,6 +3887,8 @@ textarea,
 .workspace-game-select {
   position: relative;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   height: 100%;
   display: block;
   border: 0;
@@ -3849,6 +3903,8 @@ textarea,
 .workspace-game-cover {
   position: relative;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   display: block;
   overflow: hidden;
@@ -3858,6 +3914,9 @@ textarea,
 .workspace-game-cover img {
   width: 100%;
   height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 100%;
   display: block;
   object-fit: cover;
   transition: transform 240ms ease;
@@ -3893,6 +3952,8 @@ textarea,
 }
 
 .workspace-game-body {
+  min-width: 0;
+  max-width: 100%;
   min-height: 168px;
   display: flex;
   flex-direction: column;
@@ -3900,6 +3961,8 @@ textarea,
 }
 
 .workspace-game-header {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -3907,11 +3970,13 @@ textarea,
 }
 
 .workspace-game-header strong {
+  min-width: 0;
   color: var(--launcher-ink);
   font-size: 19px;
   font-weight: 820;
   line-height: 1.32;
   word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .workspace-game-header em {
@@ -3922,12 +3987,15 @@ textarea,
 }
 
 .workspace-game-summary {
+  min-width: 0;
+  max-width: 100%;
   margin-top: 12px;
   display: -webkit-box;
   overflow: hidden;
   color: #555651;
   font-size: 13px;
   line-height: 1.55;
+  overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
@@ -4037,6 +4105,8 @@ textarea,
 
 .launcher-footer p,
 .launcher-footer div {
+  min-width: 0;
+  max-width: 100%;
   margin: 0;
   display: flex;
   align-items: center;
@@ -4213,19 +4283,11 @@ textarea,
 
   .launcher-feature .inspector-tag-row {
     margin-top: 16px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
     padding-bottom: 4px;
-    scrollbar-width: none;
   }
 
   .launcher-feature .inspector-tag-row span {
-    flex: 0 0 auto;
     white-space: nowrap;
-  }
-
-  .launcher-feature .inspector-tag-row::-webkit-scrollbar {
-    display: none;
   }
 
   .launcher-feature-meta {
