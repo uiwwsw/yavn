@@ -586,8 +586,8 @@ scenes:
 
 ## 개발 메모
 
-- 런처는 선택 게임의 실제 썸네일과 실행 액션을 먼저 보여주는 쇼케이스, 검색·태그 필터가 있는 플레이어블 빌드 라이브러리, ZIP 실행 툴바로 구성됩니다.
-- 첫 진입에서는 `engine-showcase` 태그 게임을 대표작으로 선택하고, 없으면 manifest 첫 게임을 사용합니다.
+- 런처 첫 화면은 모든 플레이 가능한 데모를 실제 썸네일과 함께 보여주는 전체 폭 캐러셀입니다. 최초 진입은 데모를 무작위로 선택하고, 스와이프·마우스 드래그·좌우 화살표·키보드 방향키·페이지 인디케이터로 순환합니다.
+- 현재 캐러셀 데모는 `#demo=<gameId>` 해시에 기록되어 새로고침하거나 링크를 공유해도 같은 슬라이드를 엽니다. 아래 검색·태그 게임 목록은 상단 선택을 바꾸지 않으며 카드 전체를 누르면 해당 게임으로 바로 이동합니다.
 - 게임 목록 manifest는 `schemaVersion: 3`를 사용하며 `author/version/summary/thumbnail/tags/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
