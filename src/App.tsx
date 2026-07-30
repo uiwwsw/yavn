@@ -789,7 +789,7 @@ export default function App() {
   const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const appRef = useRef<HTMLDivElement | null>(null);
+  const stageContentFrameRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
   const previousCharacterStageLayoutRef = useRef<CharacterStageLayout | undefined>(undefined);
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
@@ -1886,16 +1886,16 @@ export default function App() {
   }, [videoCutscene.active]);
 
   const updateStickerSafeInset = useCallback(() => {
-    const appEl = appRef.current;
+    const stageFrameEl = stageContentFrameRef.current;
     const dialogEl = dialogBoxRef.current;
-    if (!appEl || !dialogEl) {
+    if (!stageFrameEl || !dialogEl) {
       return;
     }
     if (dialogUiHidden) {
       setStickerSafeInset((prev) => (prev === 0 ? prev : 0));
       return;
     }
-    const nextInset = Math.max(0, Math.ceil(appEl.clientHeight - dialogEl.offsetTop));
+    const nextInset = Math.max(0, Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop));
     setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
   }, [dialogUiHidden]);
 
@@ -1905,10 +1905,10 @@ export default function App() {
     const raf2 = window.requestAnimationFrame(() => {
       window.requestAnimationFrame(updateStickerSafeInset);
     });
-    const appEl = appRef.current;
+    const stageFrameEl = stageContentFrameRef.current;
     const dialogEl = dialogBoxRef.current;
     window.addEventListener('resize', updateStickerSafeInset);
-    if (!appEl || !dialogEl || typeof ResizeObserver === 'undefined') {
+    if (!stageFrameEl || !dialogEl || typeof ResizeObserver === 'undefined') {
       return () => {
         window.cancelAnimationFrame(raf1);
         window.cancelAnimationFrame(raf2);
@@ -1917,7 +1917,7 @@ export default function App() {
     }
 
     const observer = new ResizeObserver(updateStickerSafeInset);
-    observer.observe(appEl);
+    observer.observe(stageFrameEl);
     observer.observe(dialogEl);
     return () => {
       window.cancelAnimationFrame(raf1);
@@ -2502,7 +2502,6 @@ export default function App() {
 
   return (
     <div
-      ref={appRef}
       className={`app ${effectClass}`}
       data-ui-template={uiTemplate}
       onClick={() => {
@@ -2523,6 +2522,7 @@ export default function App() {
       <div className="overlay" />
       {background && <img className="bg" src={background} alt="background" />}
 
+      <div ref={stageContentFrameRef} className="stage-content-frame">
       <div
         className={`char-layer${characterStageLayout.mode === 'duo' ? ' char-layout-duo' : ''}`}
         data-character-layout={characterStageLayout.mode}
@@ -3082,6 +3082,7 @@ export default function App() {
           대화창 열기
         </button>
       )}
+      </div>
 
       {error && (
         <div className="error-overlay">
