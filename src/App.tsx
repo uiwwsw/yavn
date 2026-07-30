@@ -43,9 +43,18 @@ import {
   wrapCarouselIndex,
 } from './launcherCarousel';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
+import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
-import type { AuthorMetaObject, CharacterSlot, GameSeoMeta, Position, StartButtonPosition, UiTemplateId } from './types';
+import type {
+  AuthorMetaObject,
+  CharacterSlot,
+  GameSeoMeta,
+  Position,
+  StartButtonPosition,
+  StickerSlot,
+  UiTemplateId,
+} from './types';
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties, SyntheticEvent } from 'react';
 
@@ -617,6 +626,98 @@ function useAdvanceByKey(advanceLocked: boolean) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [advanceLocked]);
+}
+
+function StickerView({ sticker }: { sticker: StickerSlot }) {
+  const stickerRef = useRef<HTMLDivElement | null>(null);
+  const [safeFit, setSafeFit] = useState<StickerFit | null>(null);
+  const [measurementVersion, setMeasurementVersion] = useState(0);
+  const requestSafeFitMeasurement = useCallback(() => {
+    setSafeFit(null);
+    setMeasurementVersion((version) => version + 1);
+  }, []);
+  const translateX =
+    sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
+  const translateY =
+    sticker.anchorY === 'top' ? '0%' : sticker.anchorY === 'bottom' ? '-100%' : '-50%';
+  const placementTransform = `translate(${translateX}, ${translateY}) rotate(${sticker.rotate}deg)`;
+  const fittedTransform = safeFit
+    ? `translate(${safeFit.translateX}px, ${safeFit.translateY}px) ${placementTransform} scale(${safeFit.scale})`
+    : placementTransform;
+
+  useLayoutEffect(() => {
+    if (safeFit) {
+      return;
+    }
+    const stickerElement = stickerRef.current;
+    const frameElement = stickerElement?.closest<HTMLElement>('.sticker-safe-frame');
+    if (!stickerElement || !frameElement) {
+      return;
+    }
+    const frameRect = frameElement.getBoundingClientRect();
+    const stickerRect = stickerElement.getBoundingClientRect();
+    setSafeFit(fitStickerWithinFrame(frameRect, stickerRect));
+  }, [
+    safeFit,
+    sticker.anchorX,
+    sticker.anchorY,
+    sticker.height,
+    sticker.rotate,
+    sticker.source,
+    sticker.width,
+    sticker.x,
+    sticker.y,
+    measurementVersion,
+  ]);
+
+  useEffect(() => {
+    const stickerElement = stickerRef.current;
+    const frameElement = stickerElement?.closest<HTMLElement>('.sticker-safe-frame');
+    if (!frameElement || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const observer = new ResizeObserver(() => {
+      requestSafeFitMeasurement();
+    });
+    observer.observe(frameElement);
+    return () => observer.disconnect();
+  }, [requestSafeFitMeasurement]);
+
+  return (
+    <div
+      ref={stickerRef}
+      className="sticker"
+      style={{
+        left: sticker.x,
+        top: sticker.y,
+        width: sticker.width,
+        height: sticker.height,
+        opacity: sticker.opacity,
+        zIndex: sticker.zIndex,
+        transform: fittedTransform,
+        transformOrigin: 'center center',
+        '--sticker-enter-duration': `${sticker.enterDuration}ms`,
+        '--sticker-enter-easing': sticker.enterEasing,
+        '--sticker-enter-delay': `${sticker.enterDelay}ms`,
+        '--sticker-leave-duration': `${sticker.leaveDuration}ms`,
+        '--sticker-leave-easing': sticker.leaveEasing,
+        '--sticker-leave-delay': `${sticker.leaveDelay}ms`,
+      } as CSSProperties}
+    >
+      <img
+        className={`sticker-visual ${sticker.leaving ? `sticker-leave-${sticker.leaveEffect}` : `sticker-enter-${sticker.enterEffect}`}`}
+        src={sticker.source}
+        alt={sticker.id}
+        loading="eager"
+        decoding="async"
+        onLoad={requestSafeFitMeasurement}
+        style={{
+          width: sticker.width ? '100%' : undefined,
+          height: sticker.height ? '100%' : undefined,
+        }}
+      />
+    </div>
+  );
 }
 
 export default function App() {
@@ -1871,42 +1972,11 @@ export default function App() {
     if (!sticker) {
       return null;
     }
-    const translateX =
-      sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
-    const translateY =
-      sticker.anchorY === 'top' ? '0%' : sticker.anchorY === 'bottom' ? '-100%' : '-50%';
     return (
-      <div
+      <StickerView
         key={`${sticker.id}-${sticker.source}-${sticker.renderKey}`}
-        className="sticker"
-        style={{
-          left: sticker.x,
-          top: sticker.y,
-          width: sticker.width,
-          height: sticker.height,
-          opacity: sticker.opacity,
-          zIndex: sticker.zIndex,
-          transform: `translate(${translateX}, ${translateY}) rotate(${sticker.rotate}deg)`,
-          '--sticker-enter-duration': `${sticker.enterDuration}ms`,
-          '--sticker-enter-easing': sticker.enterEasing,
-          '--sticker-enter-delay': `${sticker.enterDelay}ms`,
-          '--sticker-leave-duration': `${sticker.leaveDuration}ms`,
-          '--sticker-leave-easing': sticker.leaveEasing,
-          '--sticker-leave-delay': `${sticker.leaveDelay}ms`,
-        } as CSSProperties}
-      >
-        <img
-          className={`sticker-visual ${sticker.leaving ? `sticker-leave-${sticker.leaveEffect}` : `sticker-enter-${sticker.enterEffect}`}`}
-          src={sticker.source}
-          alt={sticker.id}
-          loading="eager"
-          decoding="async"
-          style={{
-            width: sticker.width ? '100%' : undefined,
-            height: sticker.height ? '100%' : undefined,
-          }}
-        />
-      </div>
+        sticker={sticker}
+      />
     );
   };
 
@@ -2455,7 +2525,9 @@ export default function App() {
         {renderCharacter(characters.right, 'right')}
       </div>
       <div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>
-        {Object.keys(stickers).map(renderSticker)}
+        <div className="sticker-safe-frame">
+          {Object.keys(stickers).map(renderSticker)}
+        </div>
       </div>
 
       {videoCutscene.active && (
