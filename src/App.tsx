@@ -32,6 +32,7 @@ import {
   updateVideoSkipProgress,
 } from './engine';
 import { buildImageCharacterRenderKey, resolveCharacterStageLayout } from './characterLayout';
+import type { CharacterStageLayout } from './characterLayout';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
@@ -673,6 +674,7 @@ export default function App() {
   const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const appRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
+  const previousCharacterStageLayoutRef = useRef<CharacterStageLayout | undefined>(undefined);
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
@@ -1170,8 +1172,15 @@ export default function App() {
       return visibleCharacterSet.has(slot.id);
     });
   const characterStageLayout = resolveCharacterStageLayout(
-    visibleCharactersByPosition.map((entry) => entry.position),
+    visibleCharactersByPosition.map((entry) => ({
+      id: entry.slot.id,
+      position: entry.position,
+    })),
+    previousCharacterStageLayoutRef.current,
   );
+  useLayoutEffect(() => {
+    previousCharacterStageLayoutRef.current = characterStageLayout;
+  }, [characterStageLayout]);
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
     const aRank = speakerOrder.indexOf(a.slot.id);
     const bRank = speakerOrder.indexOf(b.slot.id);
