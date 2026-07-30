@@ -13,13 +13,13 @@ pnpm dev
 - `/`: YAVN 플레이그라운드 (대표 게임 쇼케이스/게임 라이브러리/ZIP 실행)
 - `/game-list/:gameId`: `public/game-list/<gameId>/` 실행
 
-## 1-1) 런처 게임 목록 메타 (Manifest V3)
+## 1-1) 런처 게임 목록 메타 (Manifest V4)
 
 - `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`를 실행해 `public/game-list/index.json` + `public/sitemap.xml`을 생성하고, 이어서 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록을 검증합니다.
-- 최신 스키마는 `schemaVersion: 3`입니다.
+- 최신 스키마는 `schemaVersion: 4`입니다.
 - `games[]` 필드:
   - 기본: `id`, `name`, `path`
-  - 확장: `author`, `version`, `summary`, `thumbnail`, `tags`, `chapterCount`, `seo`
+  - 확장: `author`, `version`, `summary`, `thumbnail`, `tags`, `showcase`, `chapterCount`, `seo`
 - `seo` 루트 필드:
   - `title`, `description`, `keywords`, `gameTitles`, `gameCount`
 - `chapterCount`는 게임 폴더 하위 전체 YAML 중 `config/base/launcher`를 제외한 챕터 파일 수를 기록합니다.
@@ -29,11 +29,37 @@ pnpm dev
 
 선택 메타 파일:
 - `public/game-list/<gameId>/launcher.yaml` (선택)
-- 허용 키: `summary`, `thumbnail`, `tags`
+- 허용 키: `summary`, `thumbnail`, `tags`, `showcase`
 - 이 파일은 런처 전용이며 엔진 DSL 스키마(`config/base/chapter`)와 분리됩니다.
 - `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면 manifest 생성 시 해당 이미지를 기본 썸네일로 사용합니다.
+- `showcase.label`은 캐러셀 상단 라벨, `backgroundColor`는 3/4/6/8자리 hex 배경색입니다.
+- `showcase.image`는 `positionX/positionY(0..100)`, `scale(0.5..2)`, `offsetX/offsetY(-50..50)`를 지원하며 범위를 벗어난 숫자는 manifest 생성과 런타임 파싱에서 안전하게 보정됩니다.
 
-## 1-2) Public 허용 목록 정책
+예시:
+
+```yaml
+summary: "런처에 표시할 게임 설명"
+thumbnail: "assets/ui/launcher-preview.jpg"
+tags:
+  - interaction
+showcase:
+  label: "INTERACTION DEMO"
+  backgroundColor: "#171b24"
+  image:
+    positionX: 38
+    positionY: 35
+    scale: 1.08
+    offsetX: 18
+```
+
+## 1-2) 게임 독립성 원칙
+
+- URL 실행은 YAML을 `js-yaml`로 객체화한 뒤 `src/parser.ts`의 Zod 스키마/참조 검증, `src/engine.ts`의 공통 액션 실행, `src/store.ts`의 상태 갱신 순서로 처리합니다.
+- ZIP 실행도 파일 공급 방식만 다르고 같은 파서와 엔진을 사용합니다.
+- `src/App.tsx`는 게임 ID, 제목, 캐릭터명을 조건으로 렌더링하지 않습니다. 런처 구도도 `launcher.yaml -> index.json`의 `showcase` 데이터만 읽습니다.
+- `src/gameIndependence.test.ts`는 번들 샘플 ID와 과거 샘플 전용 태그/CSS 분기가 런타임에 다시 들어오는 것을 차단합니다.
+
+## 1-3) Public 허용 목록 정책
 
 - URL 게임 실행 호환을 위해 `public/game-list/**` 전체는 공개 경로로 유지합니다.
 - `public` 루트 허용 파일은 `favicon.svg`, `robots.txt`, `sitemap.xml`입니다.
@@ -355,6 +381,7 @@ scenes:
 - 인벤토리 모달의 `초기화면 가기` 버튼은 URL 게임에서만 활성화되며, 해당 `sessionStorage` 플래그를 지우고 현재 인게임 BGM을 즉시 정지한 뒤 Start Gate를 다시 표시합니다.
 - 런처 쇼케이스/게임 카드 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
 - 루트 런처는 manifest의 모든 게임을 전체 폭 데모 캐러셀로 렌더링합니다. 유효한 `#demo=<gameId>` 해시가 있으면 해당 게임을 열고, 해시가 없으면 최초 대표 데모를 무작위로 선택합니다.
+- 캐러셀의 라벨, 배경색, 썸네일 위치/배율/오프셋은 `launcher.yaml.showcase`에서 생성된 manifest 데이터로만 결정되며 게임 ID와 태그는 표현 분기에 사용하지 않습니다.
 - 스와이프·마우스 드래그·좌우 화살표·키보드 방향키·인디케이터 선택은 같은 캐러셀 상태와 URL 해시를 갱신합니다. 검색·태그 필터는 아래 직접 실행 목록에만 적용되며 상단 캐러셀 선택에는 영향을 주지 않습니다.
 - 각 캐러셀 슬라이드는 `layout/paint` 경계를 별도로 갖고 이미지·텍스트를 슬라이드 내부에서 클리핑합니다. 제목·요약·태그·게임 카드의 긴 문자열은 컨테이너 폭 안에서 줄바꿈되며, 좁은 화면의 태그 행만 내부 가로 스크롤을 허용합니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
@@ -693,6 +720,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-30: 런처가 `live2d`/`engine-showcase` 태그를 보고 이미지 구도와 라벨을 특별 처리하던 분기를 제거했습니다. Manifest V4의 범용 `showcase` 메타로 라벨·배경색·이미지 초점/배율/오프셋을 선언하며, 번들 샘플 ID와 전용 태그가 런타임에 다시 들어오면 독립성 테스트가 실패합니다.
 - 2026-07-30: 스티커·증거물의 좌표계를 HUD·다이얼로그·기기 safe-area를 제외한 공통 안전 프레임으로 변경했습니다. 실제 렌더 경계 기반의 균일 축소·최소 이동 보정을 추가해 짧은 가로 화면과 과대 에셋도 자르지 않으며, 모바일 다이얼로그에는 좌우·하단 최소 10px 외곽 여백을 추가했습니다.
 - 2026-07-30: 엔진 홈 캐러셀에서 320px 폭의 긴 태그 행이 슬라이드 너비를 밀어내고 음수 배경 레이어가 스와이프 중 이웃 에셋을 노출할 수 있던 문제를 수정했습니다. 슬라이드별 레이아웃·페인트 격리, 미디어 클리핑, 텍스트·카드 최대 폭 보호를 추가했습니다.
 - 2026-07-30: 새 이미지 캐릭터가 노출되거나 2인 구도로 전환될 때 수평 오프셋과 화자 확대가 하나의 `transform` 전환에 묶여 옆으로 슬라이드하던 문제를 수정했습니다. 수평 슬롯은 즉시 확정하고, 제자리 상승·페이드와 화자 `scale`만 독립적으로 애니메이션합니다.
@@ -703,7 +731,7 @@ public/game-list/conan/
 - 2026-07-30: 로컬 오디오 `music` 액션의 트랙 변경에 420ms 크로스페이드를 추가했습니다. 같은 곡은 재시작하지 않고, 음소거·초기화면 이동·명시적 정지는 즉시 반영되는 동작을 문서화했습니다. Conan 샘플은 v10 `폭우의 2번 찻잔`로 개편해 보유 BGM 7종을 도입/폭우/전조/사건/추리/압박/자백 큐로 분리했습니다.
 - 2026-07-30: 실제 노출 캐릭터가 정확히 두 명일 때 화면을 좌우 1/2 구도로 자동 전환하도록 캐릭터 레이아웃을 개선했습니다. 원래 슬롯 순서로 좌우를 고정해 화자 변경 시 자리 교환을 막고, 이미지/Live2D 및 모바일 폭을 각각 보정했으며 Conan 도입 대화에 적용했습니다.
 - 2026-07-29: `say.delivery` 감정형 타이핑 DSL을 추가했습니다. 8종 전달 톤, 캐릭터 표정 기반 자동 추론, 문장부호별 호흡, grapheme 단위 출력, 마지막 입력 글자 반응과 모션 감소 대응을 엔진에 연결하고 Conan 대사와 `sample.yaml` 예시를 갱신했습니다.
-- 2026-07-29: 메인 런처를 과밀한 3패널 Engine Console에서 실제 게임 이미지 중심의 YAVN 플레이그라운드로 재설계했습니다. 대표 게임 쇼케이스, 썸네일 라이브러리, 검색/태그, 카드별 바로 실행, ZIP 실행 툴바를 데스크톱·모바일 공통 흐름으로 구성하고 `engine-showcase` 태그 게임을 첫 대표작으로 선택합니다.
+- 2026-07-29: 메인 런처를 과밀한 3패널 Engine Console에서 실제 게임 이미지 중심의 YAVN 플레이그라운드로 재설계했습니다. 대표 게임 쇼케이스, 썸네일 라이브러리, 검색/태그, 카드별 바로 실행, ZIP 실행 툴바를 데스크톱·모바일 공통 흐름으로 구성했습니다.
 - 2026-07-29: 자동 진행형 쇼케이스를 위해 `say.autoAdvance`, `choice.timeoutMs`/`timeoutOptionIndex`, `root:/` 공유 에셋 경로와 `impact/glitch/speedlines/alarm/focus` 화면 이펙트를 추가했습니다. 이를 사용하는 독립 게임 `public/game-list/conan-demo`를 약 60초 분량의 모바일 대응 트레일러로 추가했습니다.
 - 2026-07-29: Conan 샘플의 설명조·판정조 대사를 전면 재작성했습니다. 용의자별 말투를 분리하고, `2번 잔 -> 21:29의 빈 시간 -> 손수건 섬유 -> 2R -> 연구 노트`가 잠자는 코고로의 폭로로 이어지도록 사건 인과를 보강했습니다. 코난과 혼동되던 용의자 `신이치`는 `세이지`로 변경했습니다.
 - 2026-07-29: `showTitle: false`인 Start Gate 이미지를 모바일 세로 화면에서 배경과 전경으로 분리해, `cover` 크롭으로 이미지 안의 게임 제목이 잘리던 문제를 수정했습니다. 소형 세로 화면과 모바일 가로 화면에서 제목/버튼 배치 및 페이지 오버플로를 검증했습니다.
