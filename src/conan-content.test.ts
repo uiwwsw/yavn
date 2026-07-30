@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { load } from 'js-yaml';
 import { describe, expect, it } from 'vitest';
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml } from './parser';
+import { buildTypingPlan, parseInlineSpeed, resolveDialogueDelivery } from './typing';
+import type { DialogueDelivery } from './types';
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -12,6 +14,7 @@ const chapterFiles = [
   '0.yaml',
   '1.yaml',
   '2.yaml',
+  '3.yaml',
   'conclusion/1.yaml',
   'routes/haruo/1.yaml',
   'routes/hub/1.yaml',
@@ -61,6 +64,42 @@ const sceneActions = (document: UnknownRecord, scene: string): UnknownRecord[] =
   const actions = asRecord(scenes[scene]).actions;
   return Array.isArray(actions) ? actions.map(asRecord) : [];
 };
+
+const orderedSceneActions = (document: UnknownRecord): UnknownRecord[] => {
+  const script = document.script;
+  if (!Array.isArray(script)) return [];
+
+  return script.flatMap((entry) => {
+    const scene = asRecord(entry).scene;
+    return typeof scene === 'string' ? sceneActions(document, scene) : [];
+  });
+};
+
+const stripDialogueMarkup = (text: unknown): string =>
+  String(text ?? '').replace(/<[^>]+>/g, '');
+
+const estimateDialogueSeconds = (actions: UnknownRecord[], defaultSpeed: number): number =>
+  actions.reduce((seconds, action) => {
+    const say = asRecord(action.say);
+    if (typeof say.text !== 'string') return seconds;
+
+    const parsed = parseInlineSpeed(say.text);
+    const speakerEmotion =
+      typeof say.char === 'string' ? say.char.split('.', 2)[1] : undefined;
+    const delivery = resolveDialogueDelivery(
+      typeof say.delivery === 'string' ? (say.delivery as DialogueDelivery) : undefined,
+      speakerEmotion,
+    );
+    const typingSeconds =
+      buildTypingPlan({
+        text: parsed.text,
+        baseSpeed: defaultSpeed,
+        delivery,
+        speedSegments: parsed.segments,
+      }).reduce((duration, step) => duration + step.delayMs, 0) / 1000;
+
+    return seconds + typingSeconds + 2.2;
+  }, 0);
 
 const setValues = (actions: UnknownRecord[]): UnknownRecord =>
   actions.reduce<UnknownRecord>(
@@ -210,7 +249,7 @@ describe('Conan content regression', () => {
   });
 
   it('opens the episode with an explicit two-character exchange', () => {
-    const introActions = sceneActions(readYaml('0.yaml'), 'calm_arrival');
+    const introActions = sceneActions(readYaml('0.yaml'), 'holiday_arrival');
     const dialogue = introActions
       .map((action) => asRecord(action.say))
       .filter((say) => typeof say.char === 'string');
@@ -221,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10 episode identity and all seven music cues', () => {
+  it('ships the v10.1 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -230,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.0');
+    expect(config.version).toBe('10.1');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -270,7 +309,7 @@ describe('Conan content regression', () => {
     expect(codaActions).toContainEqual({ music: 'rain' });
     expect(codaActions).toContainEqual({ ending: 'true_end' });
     expect(codaText).toContain('또 자기가 한 추리만 기억 안 나지');
-    expect(codaText).toContain('이제 그 이름은 지워지지 않아');
+    expect(codaText).toContain('함께 만든 사람들의 이름');
   });
 
   it('keeps system verdict language out of playable dialogue and choices', () => {
@@ -280,6 +319,64 @@ describe('Conan content regression', () => {
 
     ['정답을 채택', '조사 라인', '보너스를 획득', '사건의 기준으로 삼을까'].forEach(
       (phrase) => expect(narrativeText).not.toContain(phrase),
+    );
+  });
+
+  it('holds the incident until after a six-minute warm opening', () => {
+    const config = readYaml('config.yaml');
+    const chapter0 = readYaml('0.yaml');
+    const chapter1 = readYaml('1.yaml');
+    const chapter2 = readYaml('2.yaml');
+    const chapter2Script = Array.isArray(chapter2.script) ? chapter2.script.map(asRecord) : [];
+    const incidentIndex = chapter2Script.findIndex((entry) => entry.scene === 'incident_trigger');
+    const preIncidentScenes = chapter2Script
+      .slice(0, incidentIndex)
+      .flatMap((entry) =>
+        typeof entry.scene === 'string' ? sceneActions(chapter2, entry.scene) : [],
+      );
+    const preIncidentActions = [
+      ...orderedSceneActions(chapter0),
+      ...orderedSceneActions(chapter1),
+      ...preIncidentScenes,
+    ];
+
+    expect(incidentIndex).toBeGreaterThan(0);
+    expect(estimateDialogueSeconds(preIncidentActions, Number(config.textSpeed))).toBeGreaterThan(
+      360,
+    );
+  });
+
+  it('keeps the first chapter load scoped to the core trio', () => {
+    const firstChapter = readYaml('0.yaml');
+    const characterIds = collectStringValues(firstChapter, 'id');
+
+    expect([...characterIds].sort()).toEqual(['란', '코고로', '코난']);
+    expect(collectBackgroundKeys(firstChapter)).toEqual(
+      new Set(['mountain_rain', 'rain_corridor', 'ryokan_hall']),
+    );
+  });
+
+  it('keeps Conan inner thoughts brief and observation-led', () => {
+    const monologues = chapterFiles.flatMap((path) =>
+      orderedSceneActions(readYaml(path))
+        .map((action) => asRecord(action.say))
+        .filter(
+          (say) =>
+            typeof say.char === 'string' &&
+            say.char.startsWith('코난') &&
+            stripDialogueMarkup(say.text).trim().startsWith('('),
+        )
+        .map((say) => stripDialogueMarkup(say.text)),
+    );
+
+    expect(monologues.length).toBeGreaterThan(20);
+    monologues.forEach((text) => {
+      expect([...text].length, text).toBeLessThanOrEqual(48);
+    });
+
+    const combined = monologues.join(' ');
+    ['사람마다', '결론은', '설명할 수 있어', '확인하면 돼'].forEach((phrase) =>
+      expect(combined).not.toContain(phrase),
     );
   });
 });
