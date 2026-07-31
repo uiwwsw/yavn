@@ -19,7 +19,7 @@ seo:
     - "미스터리"
     - "분기 시나리오"
     - "캐릭터 심문"
-  image: "assets/bg/title_storm-v2.avif"
+  image: "assets/bg/title_storm-social.jpg"
   imageAlt: "폭우로 고립된 산악 료칸의 밤"
 textSpeed: 32
 autoSave: true

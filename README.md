@@ -104,6 +104,8 @@ pnpm dev
 - `name`은 `config.yaml.title` 우선, 없으면 레거시 챕터 `meta.title`, 그다음 폴더명 기반 titleize를 사용합니다.
 - `chapterCount`는 하위 폴더를 포함한 챕터 YAML 수(`config/base/launcher 제외`)를 기록합니다.
 - `games[].seo`는 `config.yaml.seo`(+ `launcher.yaml.summary/tags` fallback)에서 생성되며, 런처/게임 페이지 메타 태그와 JSON-LD에 사용됩니다.
+- `pnpm build`는 manifest의 모든 게임에 대해 `dist/game-list/<gameId>/index.html`을 생성합니다. 따라서 `/game-list/<gameId>/`를 직접 연 검색 봇·공유 봇도 JavaScript 실행 전부터 게임 제목, 설명, canonical, Open Graph, Twitter Card, `VideoGame` JSON-LD를 받습니다.
+- 공유 대표 이미지는 크롤러 호환성을 위해 16:9 JPEG 또는 PNG를 권장합니다. 게임 화면용 AVIF/WebP와 `seo.image`를 분리해도 됩니다.
 - 루트 `seo`는 게임 제목 목록을 집계해 런처(루트 `/`) SEO 설명/키워드에 반영됩니다.
 - `sitemap.xml`의 `/game-list/<gameId>/` URL 목록도 같은 prebuild 단계에서 `games[].path` 기반으로 자동 생성됩니다.
 
