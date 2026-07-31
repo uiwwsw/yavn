@@ -50,7 +50,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=18>(어젯밤엔 이름 하나도 빼지 않겠다고 했어.</speed> <speed=30>계약서엔 누가 빠졌지?)</speed>"
+          text: "<speed=18>(어젯밤 하루오 씨는 누구 이름도 빼지 않겠다고 했어.</speed> <speed=27>그런데 계약서엔 한 사람 이름이 없어.)</speed>"
       - add:
           final_confidence: 1
       - goto: four_way_tension
@@ -242,14 +242,17 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "<speed=25>(한 주전자, 한 사람.</speed> <speed=20>독은 잔 쪽이야.)</speed>"
+          text: "<speed=18>(같은 주전자에서 따른 차인데 하루오 씨만 쓰러졌어.</speed> <speed=27>독은 잔에 있었어.)</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(뚜껑 두 번, 손수건.</speed> <speed=30>비어 있는 건 딱 1분.)</speed>"
+          text: "<speed=18>(뚜껑 소리로 모두의 시선을 돌렸어.)</speed>"
+      - say:
+          char: 코난.think
+          text: "<speed=18>(쓰러진 뒤엔 R을 지웠고.</speed> <speed=27>비어 있는 건 9시 29분의 1분.)</speed>"
 
   chapter_handoff:
     actions:
       - effect: pulse
       - say:
           char: 코난
-          text: "<speed=25>(9시 29분부터 되짚자.)</speed>"
+          text: "<speed=23>(란 누나가 본 시계부터 확인하자.)</speed>"
