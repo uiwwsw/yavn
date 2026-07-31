@@ -26,6 +26,9 @@ pnpm dev
 - 런처는 V1(`id/name/path`) manifest도 파싱하도록 하위 호환을 유지합니다.
 - `games[].seo`는 `config.yaml.seo`를 우선 사용하고, 누락 값은 `launcher.yaml.summary/tags` 및 썸네일 fallback으로 보완됩니다.
 - sitemap의 `/game-list/<gameId>/` 항목은 manifest `games[].path`를 기준으로 자동 생성됩니다.
+- `pnpm build`의 마지막 단계는 `scripts/generate-game-seo-pages.mjs`를 실행해 각 manifest 게임의 `dist/game-list/<gameId>/index.html`을 생성합니다.
+- Vercel은 `/game-list/:gameId/` 요청을 해당 정적 HTML로 연결합니다. 검색/공유 크롤러는 클라이언트 JavaScript를 실행하지 않아도 게임별 `title`, `description`, canonical, Open Graph, Twitter Card, `VideoGame` JSON-LD를 받습니다.
+- `seo.image`는 화면 에셋과 분리할 수 있으며, 소셜 미리보기 호환성을 위해 16:9 JPEG 또는 PNG를 권장합니다.
 
 선택 메타 파일:
 - `public/game-list/<gameId>/launcher.yaml` (선택)
@@ -389,6 +392,7 @@ scenes:
 - 각 캐러셀 슬라이드는 `layout/paint` 경계를 별도로 갖고 이미지·텍스트를 슬라이드 내부에서 클리핑합니다. 제목·요약·태그·게임 카드의 긴 문자열은 컨테이너 폭 안에서 줄바꿈되며, 좁은 화면의 태그 행만 내부 가로 스크롤을 허용합니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
+- 배포 빌드에서는 같은 `config.yaml.seo`가 게임별 정적 HTML에도 반영됩니다. 런타임 갱신은 SPA 내부 상태 전환을 담당하고, 최초 HTTP 응답의 메타는 빌드 산출물이 담당합니다.
 - `config.yaml.endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 커스텀할 수 있습니다.
 
 ## 8-10) UI 템플릿 동작
@@ -730,6 +734,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-07-31: `/game-list/:gameId/` 직접 요청이 공통 YAVN HTML을 반환하던 문제를 수정했습니다. Manifest 기반으로 게임별 정적 HTML을 빌드해 게임 제목·설명·canonical·Open Graph·Twitter Card·`VideoGame` JSON-LD를 최초 응답에 포함하며, Vercel 라우팅과 Twitter 이미지 대체 텍스트도 함께 보강했습니다.
 - 2026-07-31: 선택지가 열린 뒤에도 일반 대사용 최소 높이 84px가 남아 720px 화면에서 마지막 옵션이 하단 상태줄 아래로 가려지던 문제를 수정했습니다. `has-choice-gate` 상태에서는 대사 높이 예약을 해제하고 긴 선택지 묶음만 기존 내부 스크롤로 처리하며 정적 회귀 테스트를 추가했습니다.
 - 2026-07-31: Conan v10.4의 가족 여행을 객실·기념품·탁구 삼세판·저녁·취침 장면으로 확장하고 사건 전 최단 경로 8분 이상을 81개 선택 조합으로 검사합니다. 기념품 선택은 취침 전과 TRUE END에서 회수되며, 객실/기념품 코너/탁구 휴게실/식사실 전용 AVIF 4종과 장면별 `intro`/`rain` 음악 큐를 추가했습니다. `열한 점 단판` 같은 규칙 설명투와 긴 코난 독백은 캐릭터 농담과 48자 이하 관찰로 교체했습니다.
 - 2026-07-31: `9:16`보다 긴 뷰포트에서 캐릭터와 다이얼로그가 화면 맨 아래로 처지던 문제를 수정했습니다. 배경은 전체 화면 `cover`를 유지하고 캐릭터·스티커·HUD·대사·컷신·CASE FILE을 최대 `9:16` 중앙 플레이 프레임에 배치하며, 다이얼로그 높이와 안전 inset도 프레임 기준으로 계산합니다.

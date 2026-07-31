@@ -346,6 +346,7 @@ function applySeoMetadata(input: {
   setMetaTagByName('twitter:title', input.title);
   setMetaTagByName('twitter:description', input.description);
   setMetaTagByName('twitter:image', input.imageUrl);
+  setMetaTagByName('twitter:image:alt', input.imageAlt);
   setCanonicalUrl(input.canonicalUrl);
   setDynamicJsonLd(input.jsonLd);
 }
@@ -525,6 +526,7 @@ function buildGameJsonLd(
   description: string,
   canonicalUrl: string,
   imageUrl: string,
+  authorName?: string,
 ): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -533,10 +535,25 @@ function buildGameJsonLd(
     description,
     url: canonicalUrl,
     image: imageUrl,
+    inLanguage: 'ko-KR',
+    isAccessibleForFree: true,
+    playMode: 'SinglePlayer',
+    ...(authorName
+      ? {
+          author: {
+            '@type': 'Person',
+            name: authorName,
+          },
+        }
+      : {}),
     isPartOf: {
       '@type': 'WebSite',
       name: '야븐엔진 (YAVN)',
       url: DEFAULT_CANONICAL_URL,
+    },
+    potentialAction: {
+      '@type': 'PlayAction',
+      target: canonicalUrl,
     },
   };
 }
@@ -1326,7 +1343,7 @@ export default function App() {
         startGate.seo?.keywords ?? [],
       );
       applySeoMetadata({
-        title: `${startGateTitle} | 야븐엔진 (YAVN)`,
+        title: startGateTitle,
         description: startGateDescription,
         keywords: startGateKeywords,
         canonicalUrl: startGateCanonicalUrl,
@@ -1345,14 +1362,15 @@ export default function App() {
       const gameImageUrl = resolveAbsoluteSeoUrl(gameSeo?.image, gameCanonicalUrl) ?? DEFAULT_SEO_IMAGE;
       const gameImageAlt = gameSeo?.imageAlt ?? `${gameTitle} 대표 이미지`;
       const gameKeywords = mergeUniqueTextList(DEFAULT_SEO_KEYWORDS, [gameTitle], gameSeo?.keywords ?? []);
+      const gameAuthorName = normalizeAuthorCredit(game.meta.author).name;
       applySeoMetadata({
-        title: `${gameTitle} | 야븐엔진 (YAVN)`,
+        title: gameTitle,
         description: gameDescription,
         keywords: gameKeywords,
         canonicalUrl: gameCanonicalUrl,
         imageUrl: gameImageUrl,
         imageAlt: gameImageAlt,
-        jsonLd: buildGameJsonLd(gameTitle, gameDescription, gameCanonicalUrl, gameImageUrl),
+        jsonLd: buildGameJsonLd(gameTitle, gameDescription, gameCanonicalUrl, gameImageUrl, gameAuthorName),
       });
       return;
     }
