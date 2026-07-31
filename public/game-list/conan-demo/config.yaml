@@ -14,7 +14,7 @@ seo:
     - "게임 예고편"
     - "비주얼노벨 엔진"
     - "60초 데모"
-  image: "assets/bg/rail-warning.avif"
+  image: "assets/bg/rail-warning-social.jpg"
   imageAlt: "폭우 속 적색 경보가 켜진 산악 철도 터널"
 textSpeed: 56
 autoSave: false

@@ -12,7 +12,7 @@
     "predev": "node scripts/generate-game-list-manifest.mjs && pnpm run check:public",
     "dev": "vite",
     "prebuild": "node scripts/generate-game-list-manifest.mjs && pnpm run check:public",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/generate-game-seo-pages.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
