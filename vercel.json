@@ -6,6 +6,14 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/game-list/:gameId([^/.]+)",
+      "destination": "/game-list/:gameId/index.html"
+    },
+    {
+      "source": "/game-list/:gameId([^/.]+)/",
+      "destination": "/game-list/:gameId/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
