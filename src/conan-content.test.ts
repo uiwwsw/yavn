@@ -260,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.3 episode identity and all seven music cues', () => {
+  it('ships the v10.4 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.3.0');
+    expect(config.version).toBe('10.4.0');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -351,16 +351,18 @@ describe('Conan content regression', () => {
     const conclusion = readYaml('conclusion/1.yaml');
     const revealActions = sceneActions(conclusion, 'true_epilogue');
     const codaActions = sceneActions(conclusion, 'true_coda');
+    const codaFinishActions = sceneActions(conclusion, 'true_coda_finish');
     const revealText = [...collectStringValues(revealActions, 'text')].join(' ');
     const codaText = [...collectStringValues(codaActions, 'text')].join(' ');
+    const codaFinishText = [...collectStringValues(codaFinishActions, 'text')].join(' ');
 
     expect(revealActions).toContainEqual({ music: 'confession' });
     expect(revealActions).toContainEqual({ goto: 'true_coda' });
     expect(revealText).toContain('이름 하나라도 빼면 거래는 없다');
     expect(codaActions).toContainEqual({ music: 'rain' });
-    expect(codaActions).toContainEqual({ ending: 'true_end' });
+    expect(codaFinishActions).toContainEqual({ ending: 'true_end' });
     expect(codaText).toContain('또 자기가 한 추리만 기억 안 나지');
-    expect(codaText).toContain('함께 만든 사람들의 이름');
+    expect(codaFinishText).toContain('아무 일도 없으면 좋겠다');
   });
 
   it('keeps system verdict language out of playable dialogue and choices', () => {
@@ -378,6 +380,8 @@ describe('Conan content regression', () => {
     const chapter0 = readYaml('0.yaml');
     const chapter1 = readYaml('1.yaml');
     const chapter2 = readYaml('2.yaml');
+    const conclusion = readYaml('conclusion/1.yaml');
+    const souvenirOptions = choiceOptions(sceneActions(chapter0, 'souvenir_corner'));
     const holidayOptions = choiceOptions(sceneActions(chapter0, 'table_tennis'));
     const helperOptions = choiceOptions(sceneActions(chapter1, 'tea_helper_choice'));
     const namingOptions = choiceOptions(sceneActions(chapter1, 'tea_name_choice'));
@@ -394,6 +398,8 @@ describe('Conan content regression', () => {
 
     expect(baseState.remembered_tea_order).toBe(false);
     expect(baseState.tea_name_vote).toBe('');
+    expect(baseState.souvenir_choice).toBe('');
+    expect(souvenirOptions).toHaveLength(3);
     expect(holidayOptions).toHaveLength(3);
     expect(helperOptions).toHaveLength(3);
     expect(namingOptions).toHaveLength(3);
@@ -412,6 +418,15 @@ describe('Conan content regression', () => {
         deduction_score: 1,
       },
     });
+    expect(sceneActions(conclusion, 'true_coda')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          branch: expect.objectContaining({
+            default: 'true_coda_postcard',
+          }),
+        }),
+      ]),
+    );
   });
 
   it('keeps canned AI-like phrasing out of playable dialogue and choices', () => {
@@ -431,7 +446,7 @@ describe('Conan content regression', () => {
     ].forEach((phrase) => expect(playableText).not.toContain(phrase));
   });
 
-  it('holds the incident until after a seven-minute interactive warm opening', () => {
+  it('holds the incident until after an eight-minute interactive warm opening', () => {
     const config = readYaml('config.yaml');
     const chapter0 = readYaml('0.yaml');
     const chapter1 = readYaml('1.yaml');
@@ -453,26 +468,37 @@ describe('Conan content regression', () => {
       'table_tennis_referee',
       'table_tennis_cheer',
     ];
+    const souvenirBranches = [
+      ['souvenir_paddle', 'quiet_night_paddle'],
+      ['souvenir_tea', 'quiet_night_tea'],
+      ['souvenir_postcard', 'quiet_night_postcard'],
+    ];
     const teaHelperBranches = ['tea_helper_correct', 'tea_helper_lid', 'tea_helper_kogoro'];
     const teaNameBranches = ['tea_name_rain', 'tea_name_people', 'tea_name_detective'];
-    const routeDurations = tableTennisBranches.flatMap((tableTennisScene) =>
-      teaHelperBranches.flatMap((teaHelperScene) =>
-        teaNameBranches.map((teaNameScene) =>
-          estimateDialogueSeconds(
-            [
-              ...commonPreIncidentActions,
-              ...sceneActions(chapter0, tableTennisScene),
-              ...sceneActions(chapter1, teaHelperScene),
-              ...sceneActions(chapter1, teaNameScene),
-            ],
-            Number(config.textSpeed),
+    const routeDurations = souvenirBranches.flatMap(
+      ([souvenirScene, souvenirCallbackScene]) =>
+        tableTennisBranches.flatMap((tableTennisScene) =>
+          teaHelperBranches.flatMap((teaHelperScene) =>
+            teaNameBranches.map((teaNameScene) =>
+              estimateDialogueSeconds(
+                [
+                  ...commonPreIncidentActions,
+                  ...sceneActions(chapter0, souvenirScene),
+                  ...sceneActions(chapter0, souvenirCallbackScene),
+                  ...sceneActions(chapter0, tableTennisScene),
+                  ...sceneActions(chapter1, teaHelperScene),
+                  ...sceneActions(chapter1, teaNameScene),
+                ],
+                Number(config.textSpeed),
+              ),
+            ),
           ),
         ),
-      ),
     );
 
+    expect(routeDurations).toHaveLength(81);
     expect(incidentIndex).toBeGreaterThan(0);
-    expect(Math.min(...routeDurations)).toBeGreaterThan(420);
+    expect(Math.min(...routeDurations)).toBeGreaterThan(480);
   });
 
   it('keeps the first chapter load scoped to the core trio', () => {
@@ -481,7 +507,14 @@ describe('Conan content regression', () => {
 
     expect([...characterIds].sort()).toEqual(['란', '코고로', '코난']);
     expect(collectBackgroundKeys(firstChapter)).toEqual(
-      new Set(['mountain_rain', 'rain_corridor', 'ryokan_hall']),
+      new Set([
+        'dining_room',
+        'guest_room',
+        'mountain_rain',
+        'rain_corridor',
+        'recreation_room',
+        'souvenir_corner',
+      ]),
     );
   });
 
