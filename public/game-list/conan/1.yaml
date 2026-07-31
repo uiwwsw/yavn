@@ -71,28 +71,28 @@ scenes:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=26>컵 가까이 와도 괜찮아.</speed> <speed=23>다만 손잡이만 잡아야 한다. 아직 아주 뜨겁거든.</speed>"
+          text: "<speed=25>가까이 와도 괜찮아.</speed> <speed=22>하지만 손잡이만 잡으렴. 아직 아주 뜨겁거든.</speed>"
       - say:
           char: 코난.smile
           with:
             - 하루오.smile
-          text: "<speed=29>온도계가 88이 되면 마시는 거예요?</speed>"
+          text: "<speed=27>88도가 되면 불을 끄는 거예요?</speed>"
       - say:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=27>정확하네.</speed> <speed=23>그보다 뜨거우면 향이 먼저 달아나고, 식으면 떫은맛이 고개를 내밀지.</speed>"
+          text: "<speed=25>그래.</speed> <speed=21>그보다 뜨거우면 향이 날아가고, 너무 식으면 떫은맛이 세져.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=27>향도 숨바꼭질을 하네요.</speed>"
+          text: "<speed=27>그럼 제가 숫자를 보고 알려 드릴게요.</speed>"
       - say:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=26>그래서 기다려 주는 거야.</speed> <speed=22>차도 사람도 서두르면 원래 맛을 놓치니까.</speed>"
+          text: "<speed=25>부탁하마.</speed> <speed=21>차는 기다리는 시간도 맛의 일부거든.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=28>그럼 제가 88이 되는 순간을 알려 드릴게요.</speed>"
+          text: "<speed=27>네. 88도 되면 바로 말할게요.</speed>"
 
   tea_helper_choice:
     actions:
@@ -131,10 +131,10 @@ scenes:
           char: 코난.smile
           with:
             - 하루오.smile
-          text: "<speed=28>손잡이만 잡고, 88이 될 때까지 기다려요.</speed> <speed=23>뚜껑은 그대로 두고.</speed>"
+          text: "<speed=27>손잡이만 잡고, 88도가 될 때 불을 꺼요.</speed> <speed=22>뚜껑은 그대로 두고요.</speed>"
       - say:
           char: 하루오.smile
-          text: "<speed=26>잘 들었네.</speed> <speed=22>오늘 마지막 잔도 그 순서로 낼 거야.</speed>"
+          text: "<speed=25>잘 들었네.</speed> <speed=21>오늘 마지막 잔도 똑같이 낼 거야.</speed>"
       - goto: tea_helper_finish
 
   tea_helper_lid:
@@ -192,7 +192,7 @@ scenes:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=25>온도, 손잡이, 잔 번호.</speed> <speed=22>그 셋만 지키면 차는 서두르지 않아.</speed>"
+          text: "<speed=25>좋아. 뜨겁다고 서두르지만 않으면 돼.</speed> <speed=21>잔 번호는 내가 다시 확인할 테고.</speed>"
 
   record_keeper:
     actions:
@@ -313,7 +313,7 @@ scenes:
           position: left
           emotion: proud
       - char:
-          id: 코난
+          id: 켄지
           position: right
           emotion: smile
       - say:
@@ -459,7 +459,7 @@ scenes:
           position: left
           emotion: proud
       - char:
-          id: 켄지
+          id: 코난
           position: right
           emotion: smile
       - say:

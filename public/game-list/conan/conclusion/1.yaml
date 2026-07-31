@@ -16,6 +16,7 @@ script:
   - scene: verdict_branch
   - scene: true_epilogue
   - scene: true_coda
+  - scene: true_coda_finish
   - scene: normal_epilogue
   - scene: bad_epilogue
 
@@ -31,16 +32,16 @@ scenes:
       - effect: focus
       - say:
           char: 코난.think
-          text: "<speed=19>(2번 잔, 9시 29분, 같은 섬유.</speed> <speed=17>그리고 R.)</speed>"
+          text: "<speed=18>(잔 가장자리와 R에 같은 섬유가 남았고, 온도계는 9시 29분에 멈췄어.)</speed>"
       - wait: 300
       - say:
           char: 코난.think
-          text: "<speed=18>(하루오 씨가 남긴 순서대로.</speed> <speed=30>아저씨, 빌릴게.)</speed>"
+          text: "<speed=18>(하루오 씨가 남긴 순서대로 되짚으면 돼.</speed> <speed=27>아저씨, 잠깐 빌릴게.)</speed>"
       - goto: sleeping_kogoro
 
   sleeping_kogoro:
     actions:
-      - bg: ryokan_hall
+      - bg: tea_room
       - char:
           id: 코고로
           position: left
@@ -60,7 +61,7 @@ scenes:
           char: 코난.think
           with:
             - 코고로.proud
-          text: "<speed=18>(그 10분, 내가 쓸게.)</speed>"
+          text: "<speed=18>(그 10분이면 충분해.)</speed>"
       - say:
           text: "<speed=48>퓻.</speed> <speed=21>코고로의 말이 끊기고, 몸이 벽기둥에 기대어 천천히 내려앉았다.</speed>"
       - effect: pulse
@@ -100,7 +101,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코고로.proud
-          text: "<speed=21>감식표와 맞습니다.</speed> <speed=18>주전자가 깨끗한 이유도 기록해 두죠.</speed>"
+          text: "<speed=21>감식 결과와 일치합니다.</speed> <speed=18>주전자는 네 잔 모두 아무 반응이 없었고요.</speed>"
       - goto: coverage_branch
 
   cautious_reasoning:
@@ -461,9 +462,129 @@ scenes:
           with:
             - 란
           text: "<speed=40>무, 무슨 소리냐!</speed> <speed=25>진짜 명추리는 머리가 아니라 몸이 기억하는 법이야!</speed>"
+      - branch:
+          cases:
+            - when:
+                var: souvenir_choice
+                op: eq
+                value: "paddle"
+              goto: true_coda_paddle
+            - when:
+                var: souvenir_choice
+                op: eq
+                value: "tea"
+              goto: true_coda_tea
+          default: true_coda_postcard
+
+  true_coda_paddle:
+    actions:
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코고로
+          position: right
+          emotion: proud
       - say:
-          char: 코난.think
-          text: "<speed=18>(지키려 한 건 배합만이 아니었어.</speed> <speed=17>함께 만든 사람들의 이름.</speed>)"
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=25>아빠 가방에 라켓 열쇠고리 달아 놨어.</speed> <speed=21>오늘 진 사람이 갖기로 했잖아.</speed>"
+      - say:
+          char: 코고로.proud
+          delivery: shout
+          text: "<speed=36>그건 내일 결승 우승 상품이라니까!</speed>"
+      - char:
+          id: 코난
+          position: center
+          emotion: smile
+      - say:
+          char: 코난.smile
+          text: "<speed=27>삼세판은 어젯밤에 끝났어요.</speed>"
+      - goto: true_coda_finish
+
+  true_coda_tea:
+    actions:
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코난
+          position: right
+          emotion: smile
+      - say:
+          char: 란
+          with:
+            - 코난.smile
+          text: "<speed=24>향주머니는 챙겼어.</speed> <speed=21>아침 차는 못 마셨지만, 이 향은 오래 남겠지.</speed>"
+      - say:
+          char: 코난.smile
+          with:
+            - 란
+          text: "<speed=26>다음에 다시 와서 마시면 돼.</speed> <speed=22>그땐 신이치 형도 같이.</speed>"
+      - say:
+          char: 란
+          text: "<speed=25>그래. 다음엔 도망 못 가게 미리 잡아 둬야겠다.</speed>"
+      - goto: true_coda_finish
+
+  true_coda_postcard:
+    actions:
+      - char:
+          id: 란
+          position: left
+      - char:
+          id: 코난
+          position: right
+          emotion: smile
+      - say:
+          char: 란
+          with:
+            - 코난.smile
+          text: "<speed=24>엽서랑 같은 자리에서 사진 찍기로 했는데, 오늘은 어렵겠네.</speed>"
+      - say:
+          char: 코난.smile
+          with:
+            - 란
+          text: "<speed=26>다음에 다시 오면 돼.</speed> <speed=22>그땐 아저씨도 눈 안 감게 찍자.</speed>"
+      - say:
+          char: 란
+          text: "<speed=26>좋아. 셋 다 웃는 걸로.</speed>"
+      - goto: true_coda_finish
+
+  true_coda_finish:
+    actions:
+      - char:
+          id: 코고로
+          position: left
+          emotion: proud
+      - char:
+          id: 란
+          position: right
+      - say:
+          char: 코고로.proud
+          with:
+            - 란
+          text: "<speed=29>다음 여행은 비 안 오는 곳으로 가자.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코고로.proud
+          text: "<speed=27>탁구대 있는 곳으로?</speed>"
+      - say:
+          char: 코고로.proud
+          text: "<speed=32>그 얘기는 이제 그만해!</speed>"
+      - char:
+          id: 코난
+          position: center
+          emotion: smile
+      - say:
+          char: 코난.smile
+          text: "<speed=25>다음 여행은 정말 아무 일도 없으면 좋겠다.</speed>"
+      - say:
+          char: 란
+          with:
+            - 코난.smile
+          text: "<speed=25>코난이 그렇게 말하니까 왠지 불안한데.</speed>"
       - ending: true_end
 
   normal_epilogue:

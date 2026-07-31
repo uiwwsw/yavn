@@ -2937,7 +2937,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box delivery-${dialog.delivery} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box delivery-${dialog.delivery}${choiceGate.active ? ' has-choice-gate' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">

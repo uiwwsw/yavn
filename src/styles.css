@@ -1957,6 +1957,14 @@ textarea,
   margin-top: 10px;
 }
 
+.dialog-box.has-choice-gate .text {
+  min-height: 0;
+}
+
+.dialog-box.has-choice-gate .choice-gate-options {
+  padding-bottom: 2px;
+}
+
 .choice-gate-timeout {
   margin-bottom: 9px;
 }
