@@ -3,6 +3,10 @@ assets:
     mountain_rain: /assets/bg/mountain_rain-v2.avif
     rain_corridor: /assets/bg/rain_corridor-v2.avif
     ryokan_hall: /assets/bg/ryokan_hall-v2.avif
+    guest_room: /assets/bg/guest_room-v2.avif
+    recreation_room: /assets/bg/recreation_room-v2.avif
+    dining_room: /assets/bg/dining_room-v2.avif
+    souvenir_corner: /assets/bg/souvenir_corner-v2.avif
     tea_room: /assets/bg/tea_room-v2.avif
     case_board: /assets/bg/case_board-v2.avif
     manager_office: /assets/bg/manager_office-v2.avif
@@ -84,6 +88,7 @@ state:
   early_exit_taken: false
   remembered_tea_order: false
   tea_name_vote: ""
+  souvenir_choice: ""
   clue_rim_reagent: false
   clue_order_note: false
   clue_double_press_decoy: false

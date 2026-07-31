@@ -26,7 +26,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=19>(두 시간.</speed> <speed=17>진술이 섞이기 전에 따로 듣자.)</speed>"
+          text: "<speed=19>(구조대가 오기까지 두 시간.</speed> <speed=17>기억이 섞이기 전에 한 사람씩 만나자.)</speed>"
       - goto: all_done_check
 
   all_done_check:
@@ -217,5 +217,5 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=19>(잔의 반응, 멈춘 온도계.</speed> <speed=30>둘 다 필요해.)</speed>"
+          text: "<speed=18>(잔에 남은 흔적만으론 시간이 안 맞아.</speed> <speed=27>레이코 씨의 온도 기록을 더 확인해야 해.)</speed>"
       - goto: route_select
