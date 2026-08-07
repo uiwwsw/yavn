@@ -2520,7 +2520,7 @@ export default function App() {
 
   return (
     <div
-      className={`app ${effectClass}`}
+      className="app"
       data-ui-template={uiTemplate}
       onClick={() => {
         if (videoCutscene.active) {
@@ -2537,6 +2537,7 @@ export default function App() {
         handleAdvance();
       }}
     >
+      <div className={`effect-viewport ${effectClass}`}>
       <div className="overlay" />
       {background && <img className="bg" src={background} alt="background" />}
 
@@ -3221,6 +3222,7 @@ export default function App() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
