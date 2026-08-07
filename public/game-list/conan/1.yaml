@@ -274,7 +274,7 @@ scenes:
           text: "<speed=28>누가 누구에게 하는 사인인지는 결과를 보고 정합시다.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>둘 다 벌써 이긴 얼굴인데.</speed>"
+          text: "<speed=25>둘 다 벌써 이긴 얼굴인데요.</speed>"
 
   blind_tasting:
     actions:

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-07-31T05:55:06.767Z",
+  "generatedAt": "2026-08-07T04:42:05.360Z",
   "games": [
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "10.4.0",
+      "version": "10.5.0",
       "summary": "기념품 고르기와 탁구 삼세판, 가족 저녁을 충분히 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [

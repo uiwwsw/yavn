@@ -77,7 +77,7 @@ scenes:
       - effect: focus
       - say:
           char: 코난.serious
-          text: "<speed=25>두 감식 카드를 겹쳐 봐.</speed> <speed=19>2번 잔의 가장자리와 R의 꼬리에서 나온 섬유가 이어져.</speed>"
+          text: "<speed=25>두 감식 카드를 겹쳐 봐요.</speed> <speed=19>2번 잔의 가장자리와 R의 꼬리에서 나온 섬유가 이어져요.</speed>"
       - say:
           char: 코난.think
           text: "<speed=18>(새로 쓴 게 아니야.</speed> <speed=30>R을 지우다 멈췄어.)</speed>"
@@ -130,7 +130,7 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: '<speed=25>"2"는 한 번에 그었어.</speed> <speed=19>그런데 R의 꼬리만 반대쪽으로 끌렸어.</speed> <speed=33>두 번째 손이 닿은 거야.</speed>'
+          text: '<speed=25>"2"는 한 번에 그었어요.</speed> <speed=19>그런데 R의 꼬리만 반대쪽으로 끌렸어요.</speed> <speed=33>두 번째 손이 닿은 거예요.</speed>'
       - say:
           char: 란.worried
           with:
@@ -238,7 +238,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=23>R이 누구인지는 나중이야.</speed> <speed=18>먼저 그 꼬리를 끌어당긴 손을 찾아야 해.</speed>"
+          text: "<speed=23>R이 누구인지는 나중이에요.</speed> <speed=18>먼저 그 꼬리를 끌어당긴 손을 찾아야 해요.</speed>"
       - choice:
           key: haruo_first_probe
           prompt: "하루오 뒤에 닿은 두 번째 손의 흔적은?"
@@ -264,7 +264,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=25>물기는 바깥으로 퍼졌는데 R의 꼬리만 안으로 끌렸어.</speed> <speed=19>하루오 씨가 쓴 뒤, 반대편 손이 닿았어.</speed>"
+          text: "<speed=25>물기는 바깥으로 퍼졌는데 R의 꼬리만 안으로 끌렸어요.</speed> <speed=19>하루오 씨가 쓴 뒤, 반대편 손이 닿았어요.</speed>"
       - choice:
           key: haruo_first_commit
           prompt: "지워지다 만 2R의 순서는?"
@@ -326,7 +326,7 @@ scenes:
           text: "<speed=23>R의 꼬리와 잔 가장자리에서 같은 섬유가 나왔어.</speed> <speed=18>한 장의 손수건이 범행 전후에 두 곳을 닦았어.</speed>"
       - say:
           char: 코난.serious
-          text: '<speed=25>"2R"은 하루오 씨가 남긴 순서가 맞아.</speed> <speed=19>범인은 그중 자기 이름으로 이어지는 R만 없애려 했어.</speed>'
+          text: '<speed=25>"2R"은 하루오 씨가 남긴 순서가 맞아요.</speed> <speed=19>범인은 그중 자기 이름으로 이어지는 R만 없애려 했어요.</speed>'
       - choice:
           key: haruo_second_commit
           prompt: "두 흔적을 어떻게 보존할까?"
@@ -362,7 +362,7 @@ scenes:
             effect: fadeOut
       - say:
           char: 코난.serious
-          text: "<speed=25>하루오 씨는 잔 번호를 먼저, 이름의 첫 글자를 다음에 남겼어.</speed> <speed=19>범인은 자기에게 닿는 두 번째 글자만 지우려 했고.</speed>"
+          text: "<speed=25>하루오 씨는 잔 번호를 먼저, 이름의 첫 글자를 다음에 남겼어요.</speed> <speed=19>범인은 자기에게 닿는 두 번째 글자만 지우려 했고요.</speed>"
       - add:
           final_confidence: 1
       - goto: outro
@@ -400,12 +400,12 @@ scenes:
           text: "<speed=23>이걸 그냥 다잉 메시지라고 부르지 말자.</speed> <speed=18>하루오 씨가 마지막까지 지키려 한 말이잖아.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>응.</speed> <speed=19>지워진 한 획까지 전부 돌려놓을게.</speed>"
+          text: "<speed=25>네.</speed> <speed=19>지워진 한 획까지 전부 돌려놓을게요.</speed>"
       - goto: /routes/hub/1.yaml
 
   outro_closed:
     actions:
       - say:
           char: 코난
-          text: "<speed=25>란 누나, 컵받침은 이 각도 그대로 봉인하자.</speed> <speed=19>R이 끌린 방향도 하루오 씨가 남긴 말이니까.</speed>"
+          text: "<speed=25>란 누나, 컵받침은 이 각도 그대로 봉인해요.</speed> <speed=19>R이 끌린 방향도 하루오 씨가 남긴 말이니까요.</speed>"
       - goto: /routes/hub/1.yaml
