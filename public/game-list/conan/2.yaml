@@ -165,7 +165,7 @@ scenes:
           text: "<speed=18>레이코가 내민 손수건은 입가가 아니라, 먼저 2번 잔의 가장자리로 향했다.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=60>안 돼!</speed> <speed=25>그 잔, 만지면 안 돼요!</speed>"
+          text: "<speed=60>안 돼요!</speed> <speed=25>그 잔, 만지면 안 돼요!</speed>"
 
   death_confirm:
     actions:

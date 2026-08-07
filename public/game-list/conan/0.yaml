@@ -42,7 +42,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=28>란 누나, 저기 봐.</speed> <speed=24>구름 아래로 강물이 생긴 것 같아.</speed>"
+          text: "<speed=28>란 누나, 저기 봐요.</speed> <speed=24>구름 아래로 강물이 생긴 것 같아요.</speed>"
       - say:
           char: 란
           with:
@@ -91,7 +91,7 @@ scenes:
           char: 코난.smile
           with:
             - 코고로.proud
-          text: "<speed=28>아저씨 손에 벌써 두 개 있는데?</speed>"
+          text: "<speed=28>아저씨 손에 벌써 두 개 있는데요?</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
@@ -103,7 +103,7 @@ scenes:
           text: "<speed=23>코고로는 잠깐 고민하더니 더 작은 과자를 골라 바구니에 돌려놓았다.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=27>그쪽이 더 작은데.</speed>"
+          text: "<speed=27>그쪽이 더 작은데요.</speed>"
       - say:
           char: 코고로.proud
           text: "<speed=31>세금 뗀 거다, 세금!</speed>"
@@ -131,7 +131,7 @@ scenes:
           char: 코난.smile
           with:
             - 코고로.proud
-          text: "<speed=27>아저씨 고민은 저녁에 다시 커질 것 같은데.</speed> <speed=23>목욕 전에 체중계 올라간 거 봤어.</speed>"
+          text: "<speed=27>아저씨 고민은 저녁에 다시 커질 것 같아요.</speed> <speed=23>목욕 전에 체중계 올라간 거 봤어요.</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
@@ -181,7 +181,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=27>탁구 라켓 열쇠고리도 있어.</speed> <speed=23>진짜 라켓보다 훨씬 작다.</speed>"
+          text: "<speed=27>탁구 라켓 열쇠고리도 있어요.</speed> <speed=23>진짜 라켓보다 훨씬 작아요.</speed>"
       - say:
           char: 코고로.proud
           text: "<speed=33>좋아. 오늘 탁구 우승자에게 하나 사 주지.</speed>"
@@ -223,7 +223,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=28>그럼 이걸로 할래.</speed> <speed=23>오늘 진 사람 가방에 달아 주자.</speed>"
+          text: "<speed=28>그럼 이걸로 할래요.</speed> <speed=23>오늘 진 사람 가방에 달아 줘요.</speed>"
       - say:
           char: 란
           with:
@@ -248,7 +248,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=27>이 향주머니, 방에 두면 비 냄새가 덜 나겠다.</speed>"
+          text: "<speed=27>이 향주머니, 방에 두면 비 냄새가 덜 나겠어요.</speed>"
       - say:
           char: 란
           with:
@@ -256,7 +256,7 @@ scenes:
           text: "<speed=27>좋다.</speed> <speed=22>신이치 것까지 하나 살까?</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=28>하나는 꼭 남겨 둬.</speed> <speed=23>직접 주는 게 좋을 테니까.</speed>"
+          text: "<speed=28>하나는 꼭 남겨 둬요.</speed> <speed=23>직접 주는 게 좋을 테니까요.</speed>"
       - goto: souvenir_finish
 
   souvenir_postcard:
@@ -272,7 +272,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=27>아까 본 산길이랑 똑같아.</speed> <speed=23>이걸로 할래.</speed>"
+          text: "<speed=27>아까 본 산길이랑 똑같아요.</speed> <speed=23>이걸로 할래요.</speed>"
       - say:
           char: 란
           with:
@@ -280,7 +280,7 @@ scenes:
           text: "<speed=27>내일 비가 그치면 실제 풍경이랑 나란히 찍자.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=27>엽서보다 사진이 더 예쁘게 나오면 좋겠다.</speed>"
+          text: "<speed=27>엽서보다 사진이 더 예쁘게 나오면 좋겠어요.</speed>"
       - goto: souvenir_finish
 
   souvenir_finish:
@@ -383,7 +383,7 @@ scenes:
           char: 코난.smile
           with:
             - 코고로.angry
-          text: "<speed=27>알았어. 이번엔 선만 볼게.</speed>"
+          text: "<speed=27>알았어요. 이번엔 선만 볼게요.</speed>"
       - say:
           text: "<speed=24>열두 번이나 이어진 공이 탁구대 모서리를 스치고 바닥으로 떨어졌다.</speed>"
       - say:
@@ -473,7 +473,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=28>맛있어!</speed> <speed=23>씹을수록 향이 진해져.</speed>"
+          text: "<speed=28>맛있어요!</speed> <speed=23>씹을수록 향이 진해져요.</speed>"
       - char:
           id: 코고로
           position: center
@@ -490,7 +490,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=27>내일 비 그치면 세 명이서 산책하자.</speed> <speed=23>아까 본 강도 가까이서 보고 싶어.</speed>"
+          text: "<speed=27>내일 비 그치면 세 명이서 산책해요.</speed> <speed=23>아까 본 강도 가까이서 보고 싶어요.</speed>"
       - say:
           char: 란
           with:
@@ -527,7 +527,7 @@ scenes:
           char: 코난
           with:
             - 란
-          text: "<speed=26>분명 아쉬워할 거야.</speed> <speed=22>란 누나가 찍은 사진도 다 보고 싶어 할걸.</speed>"
+          text: "<speed=26>분명 아쉬워할 거예요.</speed> <speed=22>란 누나가 찍은 사진도 다 보고 싶어 할걸요.</speed>"
       - say:
           char: 란
           with:
@@ -535,13 +535,13 @@ scenes:
           text: "<speed=26>그래?</speed> <speed=22>그럼 탁구 점수 사진부터 보내야겠다.</speed>"
       - say:
           char: 코난
-          text: "<speed=28>그건 아저씨가 말릴 것 같은데.</speed>"
+          text: "<speed=28>그건 아저씨가 말릴 것 같은데요.</speed>"
       - say:
           char: 란
           text: "<speed=25>신이치는 꼭 중요한 순간에만 없단 말이야.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>그래도 약속은 기억하고 있을 거야.</speed>"
+          text: "<speed=25>그래도 약속은 기억하고 있을 거예요.</speed>"
       - say:
           char: 란
           with:
@@ -549,7 +549,7 @@ scenes:
           text: "<speed=25>무슨 약속?</speed>"
       - say:
           char: 코난
-          text: "<speed=25>다음엔 같이 오겠다는 약속.</speed>"
+          text: "<speed=25>다음엔 같이 오겠다는 약속이요.</speed>"
       - say:
           char: 란
           text: "<speed=24>...그랬으면 좋겠다.</speed>"
@@ -645,7 +645,7 @@ scenes:
           text: "<speed=23>란은 산길 엽서 뒷면에 날짜와 세 사람의 이름을 천천히 적었다.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=27>내일 사진 찍을 자리도 남겨 둬.</speed>"
+          text: "<speed=27>내일 사진 찍을 자리도 남겨 둬요.</speed>"
       - say:
           char: 란
           text: "<speed=26>당연하지.</speed> <speed=22>이번엔 아빠도 눈 안 감은 걸로 찍을 거야.</speed>"
@@ -689,4 +689,4 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=27>응. 셋이서.</speed>"
+          text: "<speed=27>네. 셋이서요.</speed>"

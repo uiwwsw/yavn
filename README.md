@@ -68,7 +68,7 @@ pnpm dev
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "10.4.0",
+      "version": "10.5.0",
       "summary": "기념품과 탁구 삼세판을 즐긴 뒤 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 추리 에피소드",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": ["detective", "sample"],
@@ -342,6 +342,7 @@ scenes:
 
 - 알 수 없는 이름은 상태 클래스만 약 `350ms` 적용되므로 게임별 CSS 확장도 가능합니다.
 - `effect`는 대기 액션이 아니며 연속 선언하면 뒤 이펙트가 앞 이펙트를 교체합니다. 순서대로 보여 주려면 사이에 짧은 `wait`를 둡니다.
+- 전체 화면 변형은 문서 루트가 아니라 `.app` 내부의 클리핑된 `.effect-viewport`에만 적용됩니다. `shake/zoom/tilt/impact`가 뷰포트 밖의 스크롤 영역을 만들지 않으며, CASE FILE·긴 선택지·대사창의 내부 스크롤은 영향을 받지 않습니다.
 - `prefers-reduced-motion` 환경에서는 비필수 움직임을 제거합니다.
 
 ```yaml
