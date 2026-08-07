@@ -521,7 +521,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=26>다음에 다시 와서 마시면 돼.</speed> <speed=22>그땐 신이치 형도 같이.</speed>"
+          text: "<speed=26>다음에 다시 와서 마시면 돼요.</speed> <speed=22>그땐 신이치 형도 같이요.</speed>"
       - say:
           char: 란
           text: "<speed=25>그래. 다음엔 도망 못 가게 미리 잡아 둬야겠다.</speed>"
@@ -545,7 +545,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=26>다음에 다시 오면 돼.</speed> <speed=22>그땐 아저씨도 눈 안 감게 찍자.</speed>"
+          text: "<speed=26>다음에 다시 오면 돼요.</speed> <speed=22>그땐 아저씨도 눈 안 감게 찍어요.</speed>"
       - say:
           char: 란
           text: "<speed=26>좋아. 셋 다 웃는 걸로.</speed>"
@@ -579,7 +579,7 @@ scenes:
           emotion: smile
       - say:
           char: 코난.smile
-          text: "<speed=25>다음 여행은 정말 아무 일도 없으면 좋겠다.</speed>"
+          text: "<speed=25>다음 여행은 정말 아무 일도 없으면 좋겠어요.</speed>"
       - say:
           char: 란
           with:

@@ -209,7 +209,7 @@ scenes:
           char: 코난.serious
           with:
             - 세이지.cold
-          text: "<speed=26>2번은 하루오 씨가 직접 고른 잔.</speed> <speed=19>종이 두 장이 그 말을 뒷받침해.</speed>"
+          text: "<speed=26>2번은 하루오 씨가 직접 고른 잔.</speed> <speed=19>종이 두 장이 그 말을 뒷받침해요.</speed>"
       - choice:
           key: shinichi_first_commit
           prompt: "이 기록을 어떻게 보존할까?"
@@ -288,7 +288,7 @@ scenes:
           char: 코난.serious
           with:
             - 세이지.cold
-          text: "<speed=25>2번.</speed> <speed=19>잉크도 압흔도 사건 전부터 같은 숫자였어.</speed>"
+          text: "<speed=25>2번.</speed> <speed=19>잉크도 압흔도 사건 전부터 같은 숫자였어요.</speed>"
       - choice:
           key: shinichi_second_commit
           prompt: "경찰에게 어떤 상태로 넘길까?"
@@ -322,7 +322,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: '<speed=25>"2"는 사람을 가리킨 게 아니라 하루오 씨의 잔 번호.</speed> <speed=19>이제 지워지다 만 R만 남았어.</speed>'
+          text: '<speed=25>"2"는 사람을 가리킨 게 아니라 하루오 씨의 잔 번호.</speed> <speed=19>이제 지워지다 만 R만 남았어요.</speed>'
       - goto: outro
 
   fail_line:
