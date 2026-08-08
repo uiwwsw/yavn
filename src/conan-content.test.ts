@@ -260,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.5 episode identity and all seven music cues', () => {
+  it('ships the v10.5.1 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.5.0');
+    expect(config.version).toBe('10.5.1');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -361,7 +361,7 @@ describe('Conan content regression', () => {
     expect(revealText).toContain('이름 하나라도 빼면 거래는 없다');
     expect(codaActions).toContainEqual({ music: 'rain' });
     expect(codaFinishActions).toContainEqual({ ending: 'true_end' });
-    expect(codaText).toContain('또 자기가 한 추리만 기억 안 나지');
+    expect(codaText).toContain('또 본인이 한 추리만 기억 안 나시죠');
     expect(codaFinishText).toContain('아무 일도 없으면 좋겠어요');
   });
 
@@ -542,84 +542,38 @@ describe('Conan content regression', () => {
     );
   });
 
-  it('keeps Conan polite to Ran and adults outside inner monologue', () => {
+  it('keeps relationship-specific speech levels for Conan, Ran, and Kogoro', () => {
     const spokenLines = chapterFiles.flatMap((path) =>
       orderedSceneActions(readYaml(path))
         .map((action) => asRecord(action.say))
         .filter(
           (say) =>
             typeof say.char === 'string' &&
-            say.char.startsWith('코난') &&
             !stripDialogueMarkup(say.text).trim().startsWith('('),
         )
-        .map((say) => stripDialogueMarkup(say.text)),
+        .map((say) => ({
+          char: String(say.char).split('.')[0],
+          text: stripDialogueMarkup(say.text),
+        })),
     );
-    const combined = spokenLines.join(' ');
-    const informalFragments = [
-      '저기 봐.',
-      '것 같아.',
-      '벌써 두 개 있는데?',
-      '더 작은데.',
-      '거 봤어.',
-      '훨씬 작다.',
-      '이걸로 할래.',
-      '달아 주자.',
-      '덜 나겠다.',
-      '남겨 둬.',
-      '좋을 테니까.',
-      '똑같아.',
-      '좋겠다.',
-      '알았어.',
-      '볼게.',
-      '맛있어!',
-      '진해져.',
-      '산책하자.',
-      '보고 싶어.',
-      '아쉬워할 거야.',
-      '싶어 할걸.',
-      '말릴 것 같은데.',
-      '기억하고 있을 거야.',
-      '같이 오겠다는 약속.',
-      '안 돼!',
-      '쓰러졌어.',
-      '봐야 해.',
-      '아무 반응이 없어.',
-      '변했어.',
-      '봤지?',
-      '기억나?',
-      '곳은 하나야.',
-      '시선 유도였어.',
-      '잔으로 갔어.',
-      '응.',
-      '사람이 있어.',
-      '겹쳐 봐.',
-      '섬유가 이어져.',
-      '한 번에 그었어.',
-      '반대쪽으로 끌렸어.',
-      '손이 닿은 거야.',
-      '누구인지는 나중이야.',
-      '손을 찾아야 해.',
-      '반대편 손이 닿았어.',
-      '순서가 맞아.',
-      '없애려 했어.',
-      '다음에 남겼어.',
-      '지우려 했고.',
-      '돌려놓을게.',
-      '그대로 봉인하자.',
-      '남긴 말이니까.',
-      '일을 빼 버렸어.',
-      '다실로 불러 줘.',
-      '읽을 수 있어.',
-      '말을 뒷받침해.',
-      '같은 숫자였어.',
-      'R만 남았어.',
-      '마시면 돼.',
-      '신이치 형도 같이.',
-      '다시 오면 돼.',
-      '눈 안 감게 찍자.',
-    ];
+    const conanText = spokenLines
+      .filter((line) => line.char === '코난')
+      .map((line) => line.text)
+      .join(' ');
+    const ranText = spokenLines
+      .filter((line) => line.char === '란')
+      .map((line) => line.text)
+      .join(' ');
 
-    expect(spokenLines.length).toBeGreaterThan(50);
-    informalFragments.forEach((fragment) => expect(combined).not.toContain(fragment));
+    expect(conanText).toContain('란 누나, 저기 봐.');
+    expect(conanText).toContain('란 누나, 모두를 다실로 불러 줘.');
+    expect(conanText).toContain('응. 셋이서.');
+    expect(conanText).not.toContain('란 누나, 저기 봐요.');
+    expect(conanText).toContain('아저씨 손에 벌써 두 개 있는데요?');
+    expect(conanText).toContain('아저씨 고민은 저녁에 다시 커질 것 같아요.');
+    expect(ranText).toContain('아빠, 우산 좀 안쪽으로 들어오세요.');
+    expect(ranText).toContain('셋 다 의뢰비는 아빠가 내는 거 아시죠?');
+    expect(ranText).toContain('아빠가 다 해결하셨잖아요.');
+    expect(ranText).not.toContain('아빠, 우산 좀 안쪽으로 들어.');
   });
 });

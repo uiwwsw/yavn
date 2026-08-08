@@ -46,7 +46,7 @@ scenes:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=28>아빠, 아까 빈 잔에서 향이 난다고 했잖아.</speed>"
+          text: "<speed=28>아빠, 아까 빈 잔에서 향이 난다고 했잖아요.</speed>"
       - say:
           char: 레이코.smile
           text: "<speed=26>그럼 더 좋습니다.</speed> <speed=23>선입견 없는 손님이 가장 솔직하거든요.</speed>"
@@ -422,7 +422,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=28>비가 그친 뒤의 산길.</speed> <speed=23>아까 란 누나가 찍은 사진처럼요.</speed>"
+          text: "<speed=28>비가 그친 뒤의 산길.</speed> <speed=23>아까 란 누나가 찍은 사진처럼.</speed>"
       - say:
           char: 란
           with:
