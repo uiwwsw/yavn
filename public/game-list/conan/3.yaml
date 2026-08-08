@@ -28,7 +28,7 @@ scenes:
           emotion: worried
       - say:
           char: 코난.serious
-          text: "<speed=28>란 누나, 다들 같은 차를 마셨는데 하루오 씨만 쓰러졌어요.</speed> <speed=21>주전자보다 2번 잔을 먼저 봐야 해요.</speed>"
+          text: "<speed=28>란 누나, 다들 같은 차를 마셨는데 하루오 씨만 쓰러졌어.</speed> <speed=21>주전자보다 2번 잔을 먼저 봐야 해.</speed>"
       - say:
           char: 란.worried
           text: '<speed=25>쓰러질 때도 잔을 놓지 않았어.</speed> <speed=19>그 "2R"을 꼭 남기려 했던 것 같아.</speed>'
@@ -74,7 +74,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=23>역시.</speed> <speed=19>잔 안쪽은 아무 반응이 없어요.</speed> <speed=37>입이 닿는 바깥쪽만 변했어요.</speed>"
+          text: "<speed=23>역시.</speed> <speed=19>잔 안쪽은 아무 반응이 없어.</speed> <speed=37>입이 닿는 바깥쪽만 변했어.</speed>"
       - choice:
           key: residue_commit_choice
           prompt: "시약 반응이 뜻하는 것은?"
@@ -114,7 +114,7 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "<speed=25>란 누나, 비명 전에 천둥이 쳤을 때 복도 시계를 봤죠?</speed> <speed=19>긴 바늘이 어디 있었는지 기억나요?</speed>"
+          text: "<speed=25>란 누나, 비명 전에 천둥이 쳤을 때 복도 시계 봤지?</speed> <speed=19>긴 바늘이 어디 있었는지 기억나?</speed>"
       - input:
           prompt: "비명이 난 시각은? (24시간 형식)"
           correct: "21:30"
@@ -150,7 +150,7 @@ scenes:
       - effect: focus
       - say:
           char: 코난.serious
-          text: "<speed=25>첫 번째 소리에 하루오 씨가 말렸고, 두 번째 소리에 모두가 주전자를 봤어요.</speed> <speed=19>그 짧은 순간, 보이지 않게 된 곳은 하나예요.</speed>"
+          text: "<speed=25>첫 번째 소리에 하루오 씨가 말렸고, 두 번째 소리에 모두가 주전자를 봤어.</speed> <speed=19>그 짧은 순간, 보이지 않게 된 곳은 하나야.</speed>"
       - choice:
           key: reconstruction_choice
           prompt: "두 번 누른 동작의 목적은?"
@@ -176,7 +176,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=25>네.</speed> <speed=19>뚜껑은 수단이 아니라 시선 유도였어요.</speed> <speed=37>진짜 손은 2번 잔으로 갔어요.</speed>"
+          text: "<speed=25>응.</speed> <speed=19>뚜껑은 수단이 아니라 시선 유도였어.</speed> <speed=37>진짜 손은 2번 잔으로 갔어.</speed>"
       - choice:
           key: reconstruction_commit_choice
           prompt: "9시 29분에 가려진 장면은?"
@@ -242,7 +242,7 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: "<speed=28>네.</speed> <speed=21>그 틈을 만들고 바로 손을 뻗은 사람이 있어요.</speed>"
+          text: "<speed=28>응.</speed> <speed=21>그 틈을 만들고 바로 손을 뻗은 사람이 있어.</speed>"
       - add:
           final_confidence: 1
       - goto: lounge_handoff

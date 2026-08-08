@@ -65,7 +65,7 @@ scenes:
           char: 코난.serious
           with:
             - 란.worried
-          text: "<speed=26>누군가는 본 걸 말했고, 누군가는 자기가 한 일을 빼 버렸어요.</speed>"
+          text: "<speed=26>누군가는 본 걸 말했고, 누군가는 자기가 한 일을 빼 버렸어.</speed>"
       - goto: rapport_bonus_check
 
   rapport_bonus_check:
@@ -210,7 +210,7 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "<speed=28>란 누나, 모두를 다실로 불러 줘요.</speed> <speed=21>하루오 씨가 지키려던 2번 잔, 이제 읽을 수 있어요.</speed>"
+          text: "<speed=28>란 누나, 모두를 다실로 불러 줘.</speed> <speed=21>하루오 씨가 지키려던 2번 잔, 이제 읽을 수 있어.</speed>"
       - goto: /conclusion/1.yaml
 
   move_to_conclusion_blocked:
