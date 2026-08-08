@@ -211,7 +211,7 @@ scenes:
           char: 란.determined
           with:
             - 코고로.shocked
-          text: "<speed=30>응.</speed> <speed=23>무전기부터 확인할게!</speed>"
+          text: "<speed=30>네.</speed> <speed=23>무전기부터 확인할게요!</speed>"
       - sticker:
           id: dying_hint
           image: clue_lid

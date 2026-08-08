@@ -115,7 +115,7 @@ scenes:
           char: 란.worried
           with:
             - 코고로.proud
-          text: "<speed=23>그 손수건이 쓰러진 뒤엔 컵받침으로 갔어.</speed> <speed=18>하루오 씨가 남긴 R을 지우려고.</speed>"
+          text: "<speed=23>그 손수건이 쓰러진 뒤엔 컵받침으로 갔어요.</speed> <speed=18>하루오 씨가 남긴 R을 지우려고요.</speed>"
       - goto: coverage_branch
 
   coverage_branch:
@@ -455,7 +455,7 @@ scenes:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=26>아빠가 다 해결했잖아.</speed> <speed=21>또 자기가 한 추리만 기억 안 나지?</speed>"
+          text: "<speed=26>아빠가 다 해결하셨잖아요.</speed> <speed=21>또 본인이 한 추리만 기억 안 나시죠?</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
@@ -489,7 +489,7 @@ scenes:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=25>아빠 가방에 라켓 열쇠고리 달아 놨어.</speed> <speed=21>오늘 진 사람이 갖기로 했잖아.</speed>"
+          text: "<speed=25>아빠 가방에 라켓 열쇠고리 달아 놨어요.</speed> <speed=21>오늘 진 사람이 갖기로 했잖아요.</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
@@ -521,7 +521,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=26>다음에 다시 와서 마시면 돼요.</speed> <speed=22>그땐 신이치 형도 같이요.</speed>"
+          text: "<speed=26>다음에 다시 와서 마시면 돼.</speed> <speed=22>그땐 신이치 형도 같이.</speed>"
       - say:
           char: 란
           text: "<speed=25>그래. 다음엔 도망 못 가게 미리 잡아 둬야겠다.</speed>"
@@ -545,7 +545,7 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=26>다음에 다시 오면 돼요.</speed> <speed=22>그땐 아저씨도 눈 안 감게 찍어요.</speed>"
+          text: "<speed=26>다음에 다시 오면 돼.</speed> <speed=22>그땐 아저씨도 눈 안 감게 찍자.</speed>"
       - say:
           char: 란
           text: "<speed=26>좋아. 셋 다 웃는 걸로.</speed>"
@@ -569,7 +569,7 @@ scenes:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=27>탁구대 있는 곳으로?</speed>"
+          text: "<speed=27>탁구대 있는 곳으로요?</speed>"
       - say:
           char: 코고로.proud
           text: "<speed=32>그 얘기는 이제 그만해!</speed>"
