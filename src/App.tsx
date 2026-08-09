@@ -3387,7 +3387,7 @@ export default function App() {
       {gameOver && !chapterLoading && (
         <div className="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
           <div className="game-over-panel">
-            <p className="game-over-kicker">RUN TERMINATED</p>
+            <p className="game-over-kicker">GAME OVER</p>
             <h2 id="game-over-title">{gameOver.title ?? 'GAME OVER'}</h2>
             <p className="game-over-message">
               {gameOver.message ?? '선택의 결과로 더는 이야기를 이어갈 수 없습니다.'}

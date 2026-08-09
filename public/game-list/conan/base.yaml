@@ -84,7 +84,6 @@ state:
   trust: 0
   rapport_score: 0
   mistake_count: 0
-  comeback_chance: 1
   early_exit_taken: false
   remembered_tea_order: false
   tea_name_vote: ""

@@ -68,7 +68,7 @@ pnpm dev
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "10.6.0",
+      "version": "10.7.0",
       "summary": "기념품과 탁구 삼세판을 즐긴 뒤 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 추리 에피소드",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": ["detective", "sample"],

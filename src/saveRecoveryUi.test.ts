@@ -11,6 +11,7 @@ const styles = readSource('./styles.css');
 
 describe('save and game over recovery UI', () => {
   it('exposes three persistent save slots and all game over recovery paths', () => {
+    expect(appSource).toContain('<p className="game-over-kicker">GAME OVER</p>');
     expect(appSource).toContain("(['auto', 'manual', 'chapter'] as const)");
     expect(appSource).toContain("onClick={() => void onLoadSave('latest')}");
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');
