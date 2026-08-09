@@ -316,7 +316,9 @@ scenes:
             - text: "처음 기억을 고집한다"
               add:
                 trust: -1
-              goto: fail_line
+              gameOver:
+                title: "기록 훼손"
+                message: "압흔보다 기억을 고집해 배정표가 증거 목록에서 빠졌다. 마지막 저장에서 원본과 아래 장을 다시 대조하자."
 
   success_line:
     actions:

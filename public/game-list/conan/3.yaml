@@ -100,7 +100,9 @@ scenes:
             - text: "메시지 해석을 우선한다"
               add:
                 trust: -1
-              goto: timeline_gate
+              gameOver:
+                title: "감식 실패"
+                message: "잔의 반응을 외면한 채 글자에 매달려 핵심 시료를 놓쳤다. 마지막 저장에서 2번 잔의 안쪽과 가장자리를 다시 비교하자."
 
   timeline_gate:
     actions:
@@ -202,7 +204,9 @@ scenes:
             - text: "주전자 가설을 유지한다"
               add:
                 trust: -1
-              goto: deduction_branch
+              gameOver:
+                title: "재구성 실패"
+                message: "반응이 없는 주전자만 의심하는 사이 9시 29분의 빈틈이 닫혔다. 챕터 시작점에서 모두의 시선을 다시 재구성하자."
 
   deduction_branch:
     actions:

@@ -59,6 +59,20 @@ const collectStringValues = (
   return values;
 };
 
+const collectGameOvers = (value: unknown, gameOvers: UnknownRecord[] = []): UnknownRecord[] => {
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectGameOvers(item, gameOvers));
+    return gameOvers;
+  }
+
+  const record = asRecord(value);
+  if (Object.prototype.hasOwnProperty.call(record, 'gameOver')) {
+    gameOvers.push(asRecord(record.gameOver));
+  }
+  Object.values(record).forEach((item) => collectGameOvers(item, gameOvers));
+  return gameOvers;
+};
+
 const sceneActions = (document: UnknownRecord, scene: string): UnknownRecord[] => {
   const scenes = asRecord(document.scenes);
   const actions = asRecord(scenes[scene]).actions;
@@ -260,7 +274,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.6 episode identity and all seven music cues', () => {
+  it('ships the v10.7 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +283,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.6.0');
+    expect(config.version).toBe('10.7.0');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -577,15 +591,31 @@ describe('Conan content regression', () => {
     expect(ranText).not.toContain('아빠, 우산 좀 안쪽으로 들어.');
   });
 
-  it('uses game over only after the player confirms a wrong final accusation', () => {
+  it('uses game over for repeated investigation errors and immediate wrong final accusations', () => {
     const conclusion = readYaml('conclusion/1.yaml');
-    const initialAccusation = choiceOptions(sceneActions(conclusion, 'final_accuse_gate'));
-    const wrongConfirmation = choiceOptions(sceneActions(conclusion, 'accuse_confirm_other'));
-    const comeback = choiceOptions(sceneActions(conclusion, 'comeback_gate'));
+    const finalAccusation = choiceOptions(sceneActions(conclusion, 'final_accuse_gate'));
 
-    expect(initialAccusation.filter((option) => option.gameOver)).toHaveLength(0);
-    expect(asRecord(wrongConfirmation[1].gameOver).title).toBe('추리 실패');
-    expect(comeback.slice(1).every((option) => asRecord(option.gameOver).title === '추리 실패')).toBe(true);
-    expect(asRecord(comeback[0].gameOver)).toEqual({});
+    expect(asRecord(finalAccusation[0].gameOver)).toEqual({});
+    expect(finalAccusation.slice(1).every((option) => asRecord(option.gameOver).title === '추리 실패')).toBe(true);
+    expect(asRecord(conclusion.scenes)).not.toHaveProperty('accuse_confirm_other');
+    expect(asRecord(conclusion.scenes)).not.toHaveProperty('comeback_gate');
+
+    const repeatedErrorScenes = [
+      ['3.yaml', 'residue_claim_wrong', '감식 실패'],
+      ['3.yaml', 'reconstruction_claim_wrong', '재구성 실패'],
+      ['routes/kenji/1.yaml', 'second_claim_wrong', '수사 실패'],
+      ['routes/haruo/1.yaml', 'second_claim_wrong', '증거 불충분'],
+      ['routes/seiji/1.yaml', 'second_miss_review', '기록 훼손'],
+      ['routes/reiko/1.yaml', 'second_claim_wrong', '진술 중단'],
+    ] as const;
+
+    repeatedErrorScenes.forEach(([path, scene, title]) => {
+      const options = choiceOptions(sceneActions(readYaml(path), scene));
+      expect(asRecord(options[0].gameOver), `${path}:${scene} safe recovery`).toEqual({});
+      expect(asRecord(options[1].gameOver).title, `${path}:${scene} repeated error`).toBe(title);
+    });
+
+    const allGameOvers = chapterFiles.flatMap((path) => collectGameOvers(readYaml(path)));
+    expect(allGameOvers).toHaveLength(9);
   });
 });

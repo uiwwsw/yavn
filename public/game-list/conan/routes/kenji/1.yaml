@@ -263,7 +263,9 @@ scenes:
             - text: "켄지를 계속 범인으로 의심한다"
               add:
                 trust: -1
-              goto: fail_line
+              gameOver:
+                title: "수사 실패"
+                message: "통화 기록보다 선입견을 고집하는 사이 진범이 증거를 정리했다. 마지막 저장에서 기록을 다시 확인하자."
 
   success_line:
     actions:
