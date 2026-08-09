@@ -336,7 +336,9 @@ scenes:
             - text: "말투를 근거로 계속 추궁한다"
               add:
                 trust: -1
-              goto: motive_half_line
+              gameOver:
+                title: "진술 중단"
+                message: "기록 없이 몰아붙이자 레이코가 진술을 거부했다. 마지막 저장에서 9시 29분의 숫자부터 다시 잇자."
 
   motive_branch:
     actions:

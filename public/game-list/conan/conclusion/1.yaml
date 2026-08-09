@@ -10,9 +10,6 @@ script:
   - scene: early_exit_line
   - scene: final_accuse_gate
   - scene: accuse_confirm_reiko
-  - scene: accuse_confirm_other
-  - scene: wrong_answer_check
-  - scene: comeback_gate
   - scene: verdict_branch
   - scene: true_epilogue
   - scene: true_coda
@@ -192,21 +189,27 @@ scenes:
               add:
                 mistake_count: 1
                 trust: -1
-              goto: accuse_confirm_other
+              gameOver:
+                title: "추리 실패"
+                message: "배정표의 2와 손수건의 R을 잘못 이었다. 마지막 저장에서 9시 29분의 손을 다시 찾자."
             - text: "켄지"
               set:
                 culprit_answer: "켄지"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: accuse_confirm_other
+              gameOver:
+                title: "추리 실패"
+                message: "통화 기록이 증명한 7분을 놓치고 엉뚱한 사람을 지목했다. 마지막 저장에서 알리바이를 다시 맞추자."
             - text: "하루오의 자작극이었다"
               set:
                 culprit_answer: "하루오"
               add:
                 mistake_count: 1
                 trust: -1
-              goto: accuse_confirm_other
+              gameOver:
+                title: "추리 실패"
+                message: "피해자가 남긴 순서와 범인이 지운 흔적을 뒤섞었다. 챕터 시작점에서 2와 R의 순서를 다시 보자."
 
   accuse_confirm_reiko:
     actions:
@@ -230,94 +233,6 @@ scenes:
               add:
                 final_confidence: -1
               goto: final_accuse_gate
-
-  accuse_confirm_other:
-    actions:
-      - say:
-          char: 코난.think
-          text: "<speed=18>(그 손이 9시 29분에 잔까지 갔나?)</speed>"
-      - say:
-          char: 란.worried
-          with:
-            - 코난.think
-          text: "<speed=21>잠깐, 코난.</speed> <speed=18>그 사람이라면 2번 잔과 R에 남은 같은 섬유는 어떻게 설명해?</speed>"
-      - choice:
-          key: final_accuse_confirm_other
-          prompt: "그 지목으로 손수건의 두 동작이 이어질까?"
-          options:
-            - text: "잔과 섬유를 다시 확인한다"
-              add:
-                final_confidence: -1
-              goto: final_accuse_gate
-            - text: "이 사람이 범인이라고 주장한다"
-              gameOver:
-                title: "추리 실패"
-                message: "근거가 이어지지 않은 지목으로 진범에게 반격할 틈을 주고 말았다. 저장한 시점에서 단서를 다시 연결하자."
-
-  wrong_answer_check:
-    actions:
-      - say:
-          char: 코난.think
-          text: "<speed=18>(아니야.</speed> <speed=30>이름부터 골랐어.)</speed>"
-      - branch:
-          cases:
-            - when:
-                all:
-                  - var: comeback_chance
-                    op: gte
-                    value: 1
-                  - var: deduction_score
-                    op: gte
-                    value: 5
-                  - var: mistake_count
-                    op: lte
-                    value: 4
-              goto: comeback_gate
-          default: bad_epilogue
-
-  comeback_gate:
-    actions:
-      - set:
-          comeback_chance: 0
-      - say:
-          char: 코난.serious
-          text: "<speed=23>(쓴 순서대로.)</speed> <speed=18>2, R, 그리고 9시 29분.</speed>"
-      - choice:
-          key: final_comeback
-          prompt: "세 흔적을 한 손으로 이을 사람은?"
-          options:
-            - text: "레이코"
-              set:
-                culprit_answer: "레이코"
-              add:
-                deduction_score: 1
-                trust: 1
-                final_confidence: 1
-              goto: verdict_branch
-            - text: "세이지"
-              set:
-                culprit_answer: "세이지"
-              add:
-                mistake_count: 1
-              gameOver:
-                title: "추리 실패"
-                message: "마지막 기회에도 기록과 손수건의 주인을 잇지 못했다. 저장한 시점에서 다시 추리하자."
-            - text: "켄지"
-              set:
-                culprit_answer: "켄지"
-              add:
-                mistake_count: 1
-              gameOver:
-                title: "추리 실패"
-                message: "마지막 기회에도 기록과 손수건의 주인을 잇지 못했다. 저장한 시점에서 다시 추리하자."
-            - text: "하루오의 자작극"
-              set:
-                culprit_answer: "하루오"
-              add:
-                mistake_count: 1
-              gameOver:
-                title: "추리 실패"
-                message: "마지막 기회에도 기록과 손수건의 주인을 잇지 못했다. 저장한 시점에서 다시 추리하자."
 
   verdict_branch:
     actions:
