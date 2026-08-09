@@ -250,7 +250,9 @@ scenes:
                 final_confidence: -1
               goto: final_accuse_gate
             - text: "이 사람이 범인이라고 주장한다"
-              goto: wrong_answer_check
+              gameOver:
+                title: "추리 실패"
+                message: "근거가 이어지지 않은 지목으로 진범에게 반격할 틈을 주고 말았다. 저장한 시점에서 단서를 다시 연결하자."
 
   wrong_answer_check:
     actions:
@@ -297,19 +299,25 @@ scenes:
                 culprit_answer: "세이지"
               add:
                 mistake_count: 1
-              goto: bad_epilogue
+              gameOver:
+                title: "추리 실패"
+                message: "마지막 기회에도 기록과 손수건의 주인을 잇지 못했다. 저장한 시점에서 다시 추리하자."
             - text: "켄지"
               set:
                 culprit_answer: "켄지"
               add:
                 mistake_count: 1
-              goto: bad_epilogue
+              gameOver:
+                title: "추리 실패"
+                message: "마지막 기회에도 기록과 손수건의 주인을 잇지 못했다. 저장한 시점에서 다시 추리하자."
             - text: "하루오의 자작극"
               set:
                 culprit_answer: "하루오"
               add:
                 mistake_count: 1
-              goto: bad_epilogue
+              gameOver:
+                title: "추리 실패"
+                message: "마지막 기회에도 기록과 손수건의 주인을 잇지 못했다. 저장한 시점에서 다시 추리하자."
 
   verdict_branch:
     actions:

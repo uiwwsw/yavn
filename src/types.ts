@@ -169,6 +169,7 @@ export type ChoiceOption = {
   set?: StateSetMap;
   add?: StateAddMap;
   goto?: string;
+  gameOver?: GameOverDefinition;
   forgiveOnce?: boolean;
   forgiveMessage?: string;
 };
@@ -203,6 +204,15 @@ export type EndingAction = {
   ending: string;
 };
 
+export type GameOverDefinition = {
+  title?: string;
+  message?: string;
+};
+
+export type GameOverAction = {
+  gameOver: GameOverDefinition;
+};
+
 export type Action =
   | { bg: string }
   | StickerAction
@@ -220,6 +230,7 @@ export type Action =
   | ChoiceAction
   | BranchAction
   | EndingAction
+  | GameOverAction
   | { wait: number }
   | { effect: string }
   | { goto: string };

@@ -23,6 +23,7 @@ import type {
   CharacterSlot,
   ConditionNode,
   GameData,
+  GameOverDefinition,
   InputRoute,
   Position,
   RouteHistoryEntry,
@@ -64,7 +65,10 @@ declare global {
 const LEGACY_AUTOSAVE_KEY = 'vn-engine-autosave';
 const GAME_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:game:';
 const PATH_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:path:';
+const ZIP_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:zip:';
 const GAME_SETTINGS_STORAGE_PREFIX = 'vn-engine-settings:';
+const MANUAL_SAVE_SUFFIX = ':manual';
+const CHAPTER_SAVE_SUFFIX = ':chapter';
 const MAX_CHAPTERS = 101;
 const INITIAL_CHAPTER_MIN_LOADING_MS = 240;
 const NEXT_CHAPTER_MIN_LOADING_MS = 100;
@@ -109,6 +113,7 @@ export type InventoryUiSettings = {
 
 const DEFAULT_RUNTIME_GAME_SETTINGS: RuntimeGameSettings = {
   bgmEnabled: true,
+  autoSaveEnabled: undefined,
   inventoryView: 'bag',
   inventorySort: 'order',
   inventoryCategory: '',
@@ -116,6 +121,7 @@ const DEFAULT_RUNTIME_GAME_SETTINGS: RuntimeGameSettings = {
 
 type RuntimeGameSettings = {
   bgmEnabled: boolean;
+  autoSaveEnabled?: boolean;
   inventoryView: InventoryViewPreference;
   inventorySort: InventorySortPreference;
   inventoryCategory: string;
@@ -124,6 +130,9 @@ type RuntimeGameSettings = {
 type InventoryOwnedMap = Record<string, boolean>;
 
 type SaveProgress = {
+  savedAt?: string;
+  gameTitle?: string;
+  gameVersion?: string;
   chapterIndex: number;
   chapterPath?: string;
   sceneId: string;
@@ -133,6 +142,22 @@ type SaveProgress = {
   routeHistory: RouteHistoryEntry[];
   storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
+};
+
+export type SaveSlotKind = 'auto' | 'manual' | 'chapter';
+
+export type SaveSlotSummary = {
+  slot: SaveSlotKind;
+  exists: boolean;
+  savedAt?: string;
+  chapterIndex?: number;
+  chapterPath?: string;
+  sceneId?: string;
+};
+
+export type SaveBackup = {
+  filename: string;
+  content: string;
 };
 
 export type LoadGameOptions = {
@@ -224,6 +249,10 @@ function resolveAutosaveKeyForUrl(baseUrl: string): string {
   }
 }
 
+function resolveAutosaveKeyForZip(file: File): string {
+  return `${ZIP_AUTOSAVE_KEY_PREFIX}${encodeURIComponent(`${file.name}:${file.size}`)}`;
+}
+
 function resolveGameSettingsStorageKey(key: string = currentAutosaveKey): string {
   return `${GAME_SETTINGS_STORAGE_PREFIX}${encodeURIComponent(key)}`;
 }
@@ -257,6 +286,8 @@ function normalizeRuntimeGameSettings(raw: unknown): RuntimeGameSettings {
   const parsed = raw as Partial<RuntimeGameSettings>;
   return {
     bgmEnabled: typeof parsed.bgmEnabled === 'boolean' ? parsed.bgmEnabled : defaults.bgmEnabled,
+    autoSaveEnabled:
+      typeof parsed.autoSaveEnabled === 'boolean' ? parsed.autoSaveEnabled : defaults.autoSaveEnabled,
     inventoryView: normalizeInventoryView(parsed.inventoryView, defaults.inventoryView),
     inventorySort: normalizeInventorySort(parsed.inventorySort, defaults.inventorySort),
     inventoryCategory: normalizeInventoryCategory(parsed.inventoryCategory, defaults.inventoryCategory),
@@ -295,6 +326,22 @@ function setAutosaveScopeKey(key: string): void {
 
 export function getBgmEnabled(): boolean {
   return runtimeGameSettings.bgmEnabled;
+}
+
+export function getAutoSaveEnabled(): boolean {
+  return runtimeGameSettings.autoSaveEnabled ?? useVNStore.getState().game?.settings.autoSave ?? true;
+}
+
+export function setAutoSaveEnabled(enabled: boolean): void {
+  runtimeGameSettings = {
+    ...runtimeGameSettings,
+    autoSaveEnabled: enabled,
+  };
+  persistRuntimeGameSettings();
+  const state = useVNStore.getState();
+  if (enabled && state.game && !state.gameOver && !state.chapterLoading) {
+    saveProgress(state.currentSceneId, state.actionIndex);
+  }
 }
 
 export function getInventoryUiSettings(): InventoryUiSettings {
@@ -1204,15 +1251,30 @@ function getVisibleCharacterEmotion(characterId?: string): string | undefined {
     ?.emotion;
 }
 
-type SaveProgressSource = 'none' | 'scoped' | 'legacy';
+type SaveProgressSource = 'none' | 'scoped' | 'manual' | 'chapter' | 'legacy';
 
 type SaveProgressLoadResult = {
   save?: SaveProgress;
   source: SaveProgressSource;
 };
 
-function saveProgressToKey(key: string, payload: SaveProgress): void {
-  localStorage.setItem(key, JSON.stringify(payload));
+function resolveSaveSlotKey(slot: SaveSlotKind): string {
+  if (slot === 'manual') {
+    return `${currentAutosaveKey}${MANUAL_SAVE_SUFFIX}`;
+  }
+  if (slot === 'chapter') {
+    return `${currentAutosaveKey}${CHAPTER_SAVE_SUFFIX}`;
+  }
+  return currentAutosaveKey;
+}
+
+function saveProgressToKey(key: string, payload: SaveProgress): boolean {
+  try {
+    localStorage.setItem(key, JSON.stringify(payload));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function parseSaveProgress(raw: string | null): SaveProgress | undefined {
@@ -1221,6 +1283,9 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
   }
   try {
     const parsed = JSON.parse(raw) as Partial<SaveProgress> & {
+      savedAt?: unknown;
+      gameTitle?: unknown;
+      gameVersion?: unknown;
       sceneId?: string;
       actionIndex?: number;
       chapterPath?: unknown;
@@ -1294,6 +1359,9 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
           .slice(-MAX_STORY_LOG_ENTRIES)
       : [];
     return {
+      savedAt: typeof parsed.savedAt === 'string' ? parsed.savedAt : undefined,
+      gameTitle: typeof parsed.gameTitle === 'string' ? parsed.gameTitle : undefined,
+      gameVersion: typeof parsed.gameVersion === 'string' ? parsed.gameVersion : undefined,
       chapterIndex: typeof parsed.chapterIndex === 'number' ? parsed.chapterIndex : 0,
       chapterPath:
         typeof parsed.chapterPath === 'string'
@@ -1320,9 +1388,12 @@ function hasLoadableProgressByKey(key: string): boolean {
   return Boolean(loadProgressByKey(key));
 }
 
-function saveProgress(sceneId: string, actionIndex: number) {
+function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress {
   const state = useVNStore.getState();
-  const payload: SaveProgress = {
+  return {
+    savedAt: new Date().toISOString(),
+    gameTitle: state.game?.meta.title,
+    gameVersion: state.game?.meta.version,
     chapterIndex: activeChapterIndex,
     chapterPath: getCurrentChapterPathKey(),
     sceneId,
@@ -1333,19 +1404,148 @@ function saveProgress(sceneId: string, actionIndex: number) {
     storyLog: state.storyLog,
     resolvedEndingId: state.resolvedEndingId,
   };
-  saveProgressToKey(currentAutosaveKey, payload);
+}
+
+function saveProgress(sceneId: string, actionIndex: number, slot: SaveSlotKind = 'auto'): SaveProgress {
+  const payload = createSaveProgress(sceneId, actionIndex);
+  saveProgressToKey(resolveSaveSlotKey(slot), payload);
+  return payload;
+}
+
+export function getSaveSlotSummaries(): SaveSlotSummary[] {
+  return (['auto', 'manual', 'chapter'] as const).map((slot) => {
+    const save = loadProgressByKey(resolveSaveSlotKey(slot));
+    return save
+      ? {
+          slot,
+          exists: true,
+          savedAt: save.savedAt,
+          chapterIndex: save.chapterIndex,
+          chapterPath: save.chapterPath,
+          sceneId: save.sceneId,
+        }
+      : { slot, exists: false };
+  });
+}
+
+export function saveCurrentProgress(): SaveSlotSummary {
+  const state = useVNStore.getState();
+  if (!state.game || state.chapterLoading || state.gameOver) {
+    return { slot: 'manual', exists: false };
+  }
+  const save = saveProgress(state.currentSceneId, state.actionIndex, 'manual');
+  const persisted = loadProgressByKey(resolveSaveSlotKey('manual'));
+  if (!persisted) {
+    return { slot: 'manual', exists: false };
+  }
+  return {
+    slot: 'manual',
+    exists: true,
+    savedAt: save.savedAt,
+    chapterIndex: save.chapterIndex,
+    chapterPath: save.chapterPath,
+    sceneId: save.sceneId,
+  };
+}
+
+function validateSaveForCurrentGame(save: SaveProgress): boolean {
+  const game = useVNStore.getState().game;
+  if (!game) {
+    return false;
+  }
+  return !save.gameTitle || save.gameTitle === game.meta.title;
+}
+
+function getLatestSaveProgress(): SaveProgress | undefined {
+  const savedAtTime = (save: SaveProgress): number => {
+    const parsed = Date.parse(save.savedAt ?? '');
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+  const candidates = (['manual', 'auto'] as const)
+    .map((slot) => loadProgressByKey(resolveSaveSlotKey(slot)))
+    .filter((save): save is SaveProgress => Boolean(save) && validateSaveForCurrentGame(save as SaveProgress));
+  return candidates.sort((a, b) => savedAtTime(b) - savedAtTime(a))[0];
+}
+
+export function exportSaveBackup(): SaveBackup | undefined {
+  const state = useVNStore.getState();
+  if (!state.game || state.chapterLoading || state.gameOver) {
+    return undefined;
+  }
+  const progress = saveProgress(state.currentSceneId, state.actionIndex, 'manual');
+  const safeTitle = state.game.meta.title.replace(/[^0-9A-Za-z가-힣_-]+/g, '-').replace(/^-+|-+$/g, '') || 'yavn-save';
+  return {
+    filename: `${safeTitle}-${new Date().toISOString().slice(0, 10)}.yavn-save.json`,
+    content: JSON.stringify(
+      {
+        schemaVersion: 1,
+        engine: 'YAVN',
+        exportedAt: new Date().toISOString(),
+        progress,
+      },
+      null,
+      2,
+    ),
+  };
+}
+
+export function importSaveBackup(raw: string): SaveSlotSummary {
+  let envelope: unknown;
+  try {
+    envelope = JSON.parse(raw);
+  } catch {
+    throw new Error('저장 파일이 올바른 JSON 형식이 아닙니다.');
+  }
+  if (!envelope || typeof envelope !== 'object' || Array.isArray(envelope)) {
+    throw new Error('YAVN 저장 파일 형식을 확인해 주세요.');
+  }
+  const record = envelope as { engine?: unknown; progress?: unknown };
+  if (record.engine !== 'YAVN') {
+    throw new Error('YAVN 저장 파일이 아닙니다.');
+  }
+  const save = parseSaveProgress(JSON.stringify(record.progress));
+  if (!save || !validateSaveForCurrentGame(save)) {
+    throw new Error('현재 게임과 일치하는 저장 데이터가 아닙니다.');
+  }
+  const imported = {
+    ...save,
+    savedAt: new Date().toISOString(),
+  };
+  if (!saveProgressToKey(resolveSaveSlotKey('manual'), imported)) {
+    throw new Error('브라우저 저장 공간에 기록하지 못했습니다. 저장 공간 설정을 확인해 주세요.');
+  }
+  return {
+    slot: 'manual',
+    exists: true,
+    savedAt: imported.savedAt,
+    chapterIndex: imported.chapterIndex,
+    chapterPath: imported.chapterPath,
+    sceneId: imported.sceneId,
+  };
 }
 
 function loadProgress(): SaveProgressLoadResult {
   const scoped = loadProgressByKey(currentAutosaveKey);
-  if (scoped) {
+  const manual = loadProgressByKey(resolveSaveSlotKey('manual'));
+  if (scoped || manual) {
+    const scopedTime = scoped?.savedAt ? Date.parse(scoped.savedAt) : 0;
+    const manualTime = manual?.savedAt ? Date.parse(manual.savedAt) : 0;
+    const useManual = Boolean(manual) && (!scoped || manualTime > scopedTime);
     return {
-      save: scoped,
-      source: 'scoped',
+      save: useManual ? manual : scoped,
+      source: useManual ? 'manual' : 'scoped',
     };
   }
 
-  if (runtimeMode === 'url' && currentAutosaveKey !== LEGACY_AUTOSAVE_KEY) {
+  const chapter = loadProgressByKey(resolveSaveSlotKey('chapter'));
+  if (chapter) {
+    return {
+      save: chapter,
+      source: 'chapter',
+    };
+  }
+
+  if (currentAutosaveKey !== LEGACY_AUTOSAVE_KEY) {
     const legacy = loadProgressByKey(LEGACY_AUTOSAVE_KEY);
     if (legacy) {
       return {
@@ -1479,14 +1679,14 @@ export function stopActiveBgm(): void {
 function incrementCursor() {
   const state = useVNStore.getState();
   useVNStore.getState().setCursor(state.currentSceneId, state.actionIndex + 1);
-  if (state.game?.settings.autoSave) {
+  if (getAutoSaveEnabled()) {
     saveProgress(state.currentSceneId, state.actionIndex + 1);
   }
 }
 
 function setCursor(sceneId: string, actionIndex: number) {
   useVNStore.getState().setCursor(sceneId, actionIndex);
-  if (useVNStore.getState().game?.settings.autoSave) {
+  if (getAutoSaveEnabled()) {
     saveProgress(sceneId, actionIndex);
   }
 }
@@ -1709,6 +1909,7 @@ function resolveAutoEndingId(
 }
 
 function finishStory(endingId?: string): void {
+  useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setResolvedEndingId(endingId);
   useVNStore.getState().setFinished(true);
   useVNStore.getState().setWaitingInput(false);
@@ -1716,9 +1917,29 @@ function finishStory(endingId?: string): void {
   useVNStore.getState().clearChoiceGate();
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   const state = useVNStore.getState();
-  if (state.game?.settings.autoSave) {
+  if (getAutoSaveEnabled()) {
     saveProgress(state.currentSceneId, state.actionIndex);
   }
+}
+
+function triggerGameOver(gameOver: GameOverDefinition): void {
+  clearTimers();
+  playMusic(undefined);
+  useVNStore.getState().setGameOver({
+    title: gameOver.title?.trim() || 'GAME OVER',
+    message: gameOver.message?.trim() || '선택의 결과로 더는 이야기를 이어갈 수 없습니다.',
+  });
+  useVNStore.getState().setFinished(false);
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setDialog({
+    speaker: undefined,
+    speakerId: undefined,
+    fullText: '',
+    visibleText: '',
+    typing: false,
+  });
 }
 
 function mergeRouteVarsWithDefaults(
@@ -2331,6 +2552,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     } else {
       useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars));
       useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, currentInventory));
+      saveProgress(game.script[0].scene, 0, 'chapter');
     }
 
     const nextChapter = preparedChapters[chapterIndex + 1];
@@ -2377,6 +2599,58 @@ async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0
   }
 
   return startChapter(Math.max(0, Math.min(startIndex, chapters.length - 1)));
+}
+
+async function restoreSaveProgress(save: SaveProgress): Promise<boolean> {
+  if (!validateSaveForCurrentGame(save)) {
+    return false;
+  }
+
+  const normalizedPath = save.chapterPath ? normalizeChapterPathKey(save.chapterPath) : undefined;
+  const preparedIndex = normalizedPath
+    ? preparedChapters.findIndex((chapter) => chapter.pathKey === normalizedPath)
+    : save.chapterIndex;
+  if (preparedIndex >= 0 && preparedIndex < preparedChapters.length) {
+    prepareForSaveRestore();
+    return startChapter(preparedIndex, save);
+  }
+  if (normalizedPath) {
+    const resolved = await resolveSequenceFromChapterPath(normalizedPath);
+    if (resolved) {
+      prepareForSaveRestore();
+      return startPreparedChapters(resolved.chapters, resolved.startIndex, save);
+    }
+  }
+  return false;
+}
+
+function prepareForSaveRestore(): void {
+  clearTimers();
+  useVNStore.getState().setGameOver(undefined);
+  useVNStore.getState().setFinished(false);
+  useVNStore.getState().setWaitingInput(false);
+  useVNStore.getState().clearInputGate();
+  useVNStore.getState().clearChoiceGate();
+  useVNStore.getState().setDialogUiHidden(false);
+  useVNStore.getState().setDialog({
+    speaker: undefined,
+    speakerId: undefined,
+    fullText: '',
+    visibleText: '',
+    typing: false,
+  });
+}
+
+export async function loadSaveSlot(slot: SaveSlotKind | 'latest'): Promise<boolean> {
+  const save = slot === 'latest' ? getLatestSaveProgress() : loadProgressByKey(resolveSaveSlotKey(slot));
+  if (!save) {
+    return false;
+  }
+  return restoreSaveProgress(save);
+}
+
+export async function restartCurrentChapter(): Promise<boolean> {
+  return loadSaveSlot('chapter');
 }
 
 async function resolveUrlChapterPath(dir: string, number: number, preferredExt: 'yaml' | 'yml' = 'yaml'): Promise<string | undefined> {
@@ -2726,6 +3000,11 @@ function runToNextPause(loopGuard = 0) {
     return;
   }
 
+  if ('gameOver' in action) {
+    triggerGameOver(action.gameOver);
+    return;
+  }
+
   if ('wait' in action) {
     useVNStore.getState().setBusy(true);
     waitTimer = window.setTimeout(() => {
@@ -2914,7 +3193,11 @@ export async function loadUrlStartScreenPreview(url: string): Promise<StartScree
   const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
   const startScreen = parsedConfig.startScreen;
   const autosaveKey = resolveAutosaveKeyForUrl(baseUrl);
-  const hasLoadableSave = hasLoadableProgressByKey(autosaveKey) || hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY);
+  const hasLoadableSave =
+    hasLoadableProgressByKey(autosaveKey) ||
+    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}`) ||
+    hasLoadableProgressByKey(`${autosaveKey}${CHAPTER_SAVE_SUFFIX}`) ||
+    hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY);
   return {
     gameTitle: parsedConfig.gameTitle,
     startScreen,
@@ -3438,7 +3721,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
   try {
     const resumeFromSave = options.resumeFromSave !== false;
     runtimeMode = 'zip';
-    setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
+    setAutosaveScopeKey(resolveAutosaveKeyForZip(file));
     const zip = await JSZip.loadAsync(file);
     const files = Object.values(zip.files).filter((entry) => !entry.dir);
     const yamlFiles = files.filter((entry) => /\.ya?ml$/i.test(entry.name));
@@ -3530,7 +3813,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
 
 export function handleAdvance() {
   const state = useVNStore.getState();
-  if (!state.game || state.isFinished || state.chapterLoading || state.dialogUiHidden) {
+  if (!state.game || state.isFinished || state.gameOver || state.chapterLoading || state.dialogUiHidden) {
     return;
   }
   if (state.videoCutscene.active) {
@@ -3577,8 +3860,10 @@ export async function restartFromBeginning() {
     return;
   }
   localStorage.removeItem(currentAutosaveKey);
+  localStorage.removeItem(resolveSaveSlotKey('chapter'));
   clearTimers();
   useVNStore.getState().clearVideoCutscene();
+  useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setFinished(false);
   useVNStore.getState().setWaitingInput(false);
   useVNStore.getState().clearInputGate();
@@ -3689,6 +3974,10 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   useVNStore.getState().clearInputGate();
   useVNStore.getState().clearChoiceGate();
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  if (selected.gameOver) {
+    triggerGameOver(selected.gameOver);
+    return;
+  }
   if (selected.goto) {
     const chapterTarget = normalizeGotoChapterTarget(selected.goto);
     if (chapterTarget) {

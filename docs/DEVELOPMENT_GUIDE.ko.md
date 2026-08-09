@@ -304,7 +304,7 @@ scenes:
 - 엔딩 크레딧 롤 영역은 초기 자동 스크롤 구간에서 입력을 잠그며(`pointer-events: none`), 자동 스크롤이 멈춘 뒤에만 수동 스크롤을 허용합니다.
 - URL 게임에서는 인벤토리 모달의 `초기화면 가기`와 동일한 흐름으로 Start Gate 세션 플래그를 초기화하고, 인게임 BGM 정지 후 Start Gate(시작 화면)로 복귀합니다.
 - ZIP 실행 게임(또는 게임 ID를 판별할 수 없는 경로)에서는 `restartFromBeginning()`으로 첫 챕터 재시작을 수행합니다.
-- `restartFromBeginning()` 경로에서는 `vn-engine-autosave`가 제거됩니다.
+- `restartFromBeginning()` 경로에서는 현재 게임의 자동저장을 지우고 첫 챕터 시작점을 새로 기록합니다. 사용자가 직접 만든 수동 저장은 유지합니다.
 - `vn-ending-progress:<gameId>`는 유지되므로 획득한 엔딩 기록은 지워지지 않습니다.
 
 ## 8-4) 모바일 확대(Zoom) 방지 동작
@@ -380,7 +380,12 @@ scenes:
 - `startScreen.music`을 지정하면 시작 화면에서만 루프 재생됩니다.
 - 챕터의 `music` 액션으로 로컬 오디오 트랙이 바뀌면 이전 곡과 새 곡이 약 420ms 동안 크로스페이드됩니다. 같은 에셋 키를 연속 지정하면 재생 위치를 유지합니다.
 - 배경음악 끄기, 초기화면 이동, 명시적 BGM 정지는 크로스페이드 대기 없이 즉시 반영됩니다. YouTube BGM 전환은 기존 Player API 동작을 유지합니다.
-- URL 게임(`/game-list/:gameId`)의 자동저장 키는 `vn-engine-autosave:game:<gameId>`를 사용합니다.
+- URL 게임(`/game-list/:gameId`)의 자동저장 키는 `vn-engine-autosave:game:<gameId>`를 사용합니다. 수동 저장과 챕터 시작점은 같은 키에 각각 `:manual`, `:chapter` 접미사를 붙입니다.
+- ZIP 게임은 파일명과 크기를 조합한 `vn-engine-autosave:zip:<fingerprint>` 키를 사용해 서로 다른 ZIP의 저장 충돌을 막습니다. 같은 ZIP을 다시 올리면 해당 저장을 복원할 수 있습니다.
+- `config.yaml.autoSave`는 첫 실행 기본값입니다. 플레이어가 저장 탭에서 변경한 값은 게임별 설정에 보관되며 이후에는 플레이어 값이 우선합니다.
+- 자동저장은 진행 커서가 바뀔 때 갱신합니다. 수동 저장은 HUD 저장 버튼에서 실행하며, 챕터 시작점은 자동저장 설정과 관계없이 챕터 진입 시 항상 기록합니다.
+- 저장 탭은 자동/수동/챕터 슬롯별 불러오기와 JSON 백업 내보내기/가져오기를 제공합니다. 백업은 진행 상태만 포함하며 현재 게임 제목이 다른 파일은 거부합니다.
+- 브라우저 보안상 엔진이 임의의 특정 폴더에 자동 기록하지 않습니다. 기본 저장은 `localStorage`, 장치 이동은 사용자가 다운로드 위치를 선택하는 백업 파일을 사용합니다.
 - 레거시 키(`vn-engine-autosave`)는 URL 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
 - 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
@@ -406,6 +411,7 @@ scenes:
   - 비디오 `HOLD TO SKIP` 가이드
   - 선택/입력 게이트(`choice`/`input`)
   - 엔딩 크레딧/진행 카드/재시작 버튼
+  - 게임오버 복구 화면
 - `ui` 미선언 시 기본값은 `cinematic-noir`입니다.
 - 템플릿 값은 활성 챕터 게임 해석 직후 스토어에 반영되어, `setGame` 이전 프리로드 로딩 구간에도 동일한 스타일이 유지됩니다.
 
@@ -465,6 +471,7 @@ scenes:
 - `choice`
 - `branch`
 - `ending`
+- `gameOver`
 
 전체 화면 `effect` 프리셋:
 - 기본: `shake(280ms)`, `flash(350ms)`, `zoom(420ms)`, `blur(420ms)`, `darken(500ms)`, `pulse(500ms)`, `tilt(320ms)`
@@ -623,7 +630,28 @@ scenes:
 - 만료 선택은 자동 흐름이 멈추지 않도록 `forgiveOnce`를 건너뜁니다.
 - 플레이어가 먼저 선택하면 예약 타이머를 취소합니다.
 
-### 9-9) `inventory` + `get/use` 아이템 상태
+### 9-9) `gameOver` 실패 상태와 복구
+
+`gameOver`는 `ending`과 별도 상태이며 엔딩 수집률과 크레딧을 발생시키지 않습니다. 독립 액션과 `choice.options[]`에서 사용할 수 있습니다.
+
+```yaml
+- choice:
+    prompt: "어느 전선을 자를까?"
+    options:
+      - text: "파란 전선"
+        goto: escaped
+      - text: "붉은 전선"
+        gameOver:
+          title: "GAME OVER"
+          message: "경보가 울렸다. 저장한 시점에서 다시 시도하자."
+```
+
+- `gameOver.title`, `gameOver.message`는 선택이며 생략하면 엔진 기본 문구를 사용합니다.
+- 한 선택지에 `goto`와 `gameOver`를 동시에 선언할 수 없습니다.
+- 선택지의 `set/add`는 게임오버 전에 반영되지만 게임오버 시점에는 자동저장을 덮어쓰지 않습니다.
+- 복구 화면은 전체 슬롯을 여는 `불러오기`, 자동/수동 중 최신인 `최근 저장으로`, 자동으로 남긴 `챕터 처음으로`를 제공합니다.
+
+### 9-10) `inventory` + `get/use` 아이템 상태
 
 아이템 상태는 `state`와 분리된 `inventory`로 선언합니다.
 
@@ -735,6 +763,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-10: 게임별 저장을 자동/수동/챕터 시작점의 3개 슬롯으로 확장하고 플레이어 자동저장 토글, 저장 백업 JSON 내보내기/가져오기를 추가했습니다. URL뿐 아니라 ZIP 실행도 파일별 저장 키로 분리했습니다. `gameOver` 액션과 선택지 옵션을 DSL에 추가했으며, 엔딩과 분리된 복구 화면에서 전체 불러오기·최근 저장·챕터 시작 복귀를 지원합니다. Conan v10.6의 최종 오답 확정 구간에 이 흐름을 적용했습니다.
 - 2026-08-08: Conan v10.5.1의 관계별 말투를 바로잡았습니다. 코난과 란은 서로 반말하고, 란은 아빠에게 해요체 존댓말을 쓰며, 코난은 코고로를 `아저씨`라고 부르면서 사건 관계자와 동일하게 또렷한 존댓말을 사용합니다. 이 세 관계를 콘텐츠 회귀 검사로 고정했습니다.
 - 2026-08-07: 전체 화면 이펙트의 transform 대상을 `.app`에서 내부 `.effect-viewport`로 분리하고 paint/overflow containment를 적용했습니다. 화면 흔들림·확대·기울기·충격 연출이 문서 스크롤 크기를 키우지 않으며 CASE FILE·선택지·대사창 내부 스크롤은 유지됩니다.
 - 2026-07-31: `/game-list/:gameId/` 직접 요청이 공통 YAVN HTML을 반환하던 문제를 수정했습니다. Manifest 기반으로 게임별 정적 HTML을 빌드해 게임 제목·설명·canonical·Open Graph·Twitter Card·`VideoGame` JSON-LD를 최초 응답에 포함하며, Vercel 라우팅과 Twitter 이미지 대체 텍스트도 함께 보강했습니다.
