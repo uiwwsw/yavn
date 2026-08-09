@@ -260,7 +260,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.5.1 episode identity and all seven music cues', () => {
+  it('ships the v10.6 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -269,7 +269,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.5.1');
+    expect(config.version).toBe('10.6.0');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -575,5 +575,17 @@ describe('Conan content regression', () => {
     expect(ranText).toContain('셋 다 의뢰비는 아빠가 내는 거 아시죠?');
     expect(ranText).toContain('아빠가 다 해결하셨잖아요.');
     expect(ranText).not.toContain('아빠, 우산 좀 안쪽으로 들어.');
+  });
+
+  it('uses game over only after the player confirms a wrong final accusation', () => {
+    const conclusion = readYaml('conclusion/1.yaml');
+    const initialAccusation = choiceOptions(sceneActions(conclusion, 'final_accuse_gate'));
+    const wrongConfirmation = choiceOptions(sceneActions(conclusion, 'accuse_confirm_other'));
+    const comeback = choiceOptions(sceneActions(conclusion, 'comeback_gate'));
+
+    expect(initialAccusation.filter((option) => option.gameOver)).toHaveLength(0);
+    expect(asRecord(wrongConfirmation[1].gameOver).title).toBe('추리 실패');
+    expect(comeback.slice(1).every((option) => asRecord(option.gameOver).title === '추리 실패')).toBe(true);
+    expect(asRecord(comeback[0].gameOver)).toEqual({});
   });
 });
