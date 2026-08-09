@@ -5,6 +5,7 @@ import type {
   ChoiceGateState,
   DialogueDelivery,
   GameData,
+  GameOverDefinition,
   InputGateState,
   Position,
   RouteHistoryEntry,
@@ -57,6 +58,7 @@ type VNState = {
   routeHistory: RouteHistoryEntry[];
   storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
+  gameOver?: GameOverDefinition;
   inventory: Record<string, boolean>;
   busy: boolean;
   waitingInput: boolean;
@@ -95,6 +97,7 @@ type VNState = {
   pushStoryLog: (entry: StoryLogEntry) => void;
   clearStoryLog: () => void;
   setResolvedEndingId: (endingId?: string) => void;
+  setGameOver: (gameOver?: GameOverDefinition) => void;
   setBusy: (busy: boolean) => void;
   setWaitingInput: (waiting: boolean) => void;
   setFinished: (finished: boolean) => void;
@@ -168,6 +171,7 @@ export const useVNStore = create<VNState>((set) => ({
   routeHistory: [],
   storyLog: [],
   resolvedEndingId: undefined,
+  gameOver: undefined,
   busy: false,
   waitingInput: false,
   isFinished: false,
@@ -200,6 +204,7 @@ export const useVNStore = create<VNState>((set) => ({
       routeHistory: state.routeHistory,
       storyLog: state.storyLog,
       resolvedEndingId: state.resolvedEndingId,
+      gameOver: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,
@@ -310,6 +315,7 @@ export const useVNStore = create<VNState>((set) => ({
     })),
   clearStoryLog: () => set({ storyLog: [] }),
   setResolvedEndingId: (resolvedEndingId) => set({ resolvedEndingId }),
+  setGameOver: (gameOver) => set({ gameOver }),
   setBusy: (busy) => set({ busy }),
   setWaitingInput: (waitingInput) => set({ waitingInput }),
   setFinished: (isFinished) => set({ isFinished }),
@@ -331,6 +337,7 @@ export const useVNStore = create<VNState>((set) => ({
       routeHistory: [],
       storyLog: [],
       resolvedEndingId: undefined,
+      gameOver: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,

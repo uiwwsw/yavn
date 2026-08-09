@@ -117,3 +117,67 @@ assets:
     );
   });
 });
+
+describe('game over DSL', () => {
+  it('accepts standalone and choice-triggered game over actions', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: final_choice
+scenes:
+  final_choice:
+    actions:
+      - choice:
+          prompt: "Which wire?"
+          options:
+            - text: "Blue"
+              gameOver:
+                title: "Signal lost"
+                message: "The route collapsed."
+            - text: "Red"
+              goto: failed_scene
+  failed_scene:
+    actions:
+      - gameOver:
+          message: "Try from a save."
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    const choiceAction = parsed.data?.data.scenes.final_choice.actions[0];
+    expect('choice' in (choiceAction ?? {})).toBe(true);
+    if (choiceAction && 'choice' in choiceAction) {
+      expect(choiceAction.choice.options[0].gameOver).toEqual({
+        title: 'Signal lost',
+        message: 'The route collapsed.',
+      });
+    }
+    expect(parsed.data?.data.scenes.failed_scene.actions[0]).toEqual({
+      gameOver: { message: 'Try from a save.' },
+    });
+  });
+
+  it('rejects a choice option that declares both goto and gameOver', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: invalid
+scenes:
+  invalid:
+    actions:
+      - choice:
+          prompt: "Choose"
+          options:
+            - text: "Broken"
+              goto: invalid
+              gameOver:
+                title: "No"
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.data).toBeUndefined();
+    expect(parsed.error?.message).toContain('choice option cannot declare both goto and gameOver');
+  });
+});

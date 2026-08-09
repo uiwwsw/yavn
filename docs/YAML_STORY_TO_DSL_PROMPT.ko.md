@@ -73,6 +73,7 @@
 - choice
 - branch
 - ending
+- gameOver
 
 [권장 설계]
 - 공통 에셋/상태는 base.yaml로 최대한 올린다
@@ -80,6 +81,8 @@
 - 챕터 YAML은 script/scenes 중심으로 유지한다
 - script에는 메인 진행 축을 순서대로 배치하고, 분기 전용 scene도 필요한 경우 명시한다
 - 결말은 config.yaml의 endings/endingRules/defaultEnding으로 통합 관리한다
+- 실패 후 저장 복구가 필요한 선택지만 `gameOver: { title?, message? }`를 사용한다. `gameOver`는 엔딩으로 선언하지 않는다
+- 같은 choice option에 goto와 gameOver를 동시에 쓰지 않는다
 
 [대사 품질 규칙]
 - 대사는 설명문보다 대화문을 우선한다. (짧은 구어체, 장면 체감 중심)

@@ -35,14 +35,26 @@ const inputActionSchema = z.object({
   routes: z.array(inputRouteSchema).optional(),
 });
 
-const choiceOptionSchema = z.object({
-  text: z.string().min(1),
-  set: stateSetMapSchema.optional(),
-  add: stateAddMapSchema.optional(),
-  goto: z.string().min(1).optional(),
-  forgiveOnce: z.boolean().optional(),
-  forgiveMessage: z.string().min(1).optional(),
-});
+const gameOverSchema = z
+  .object({
+    title: z.string().min(1).optional(),
+    message: z.string().min(1).optional(),
+  })
+  .strict();
+
+const choiceOptionSchema = z
+  .object({
+    text: z.string().min(1),
+    set: stateSetMapSchema.optional(),
+    add: stateAddMapSchema.optional(),
+    goto: z.string().min(1).optional(),
+    gameOver: gameOverSchema.optional(),
+    forgiveOnce: z.boolean().optional(),
+    forgiveMessage: z.string().min(1).optional(),
+  })
+  .refine((option) => !(option.goto && option.gameOver), {
+    message: 'choice option cannot declare both goto and gameOver',
+  });
 
 const stickerLengthSchema = z.union([z.number(), z.string().min(1)]);
 const stickerEnterEffectSchema = z.enum([
@@ -156,6 +168,7 @@ export const actionSchema = z.union([
     }),
   }),
   z.object({ ending: z.string().min(1) }),
+  z.object({ gameOver: gameOverSchema }),
   z.object({ wait: z.number().nonnegative() }),
   z.object({ effect: z.string() }),
   z.object({ goto: z.string() }),

@@ -24,6 +24,7 @@
 #     alarm: root:/game-list/conan/assets/sfx/thunder.wav
 
 script:
+  - scene: safety_choice
   - scene: all_done_check
   - scene: all_done_item_get
   - scene: all_done_after_item
@@ -44,6 +45,19 @@ inventory:
     order: 10
 
 scenes:
+  safety_choice:
+    actions:
+      - choice:
+          key: sample_safety_choice
+          prompt: "붉은 경보등이 켜졌다. 어느 스위치를 누를까?"
+          options:
+            - text: "전원을 차단한다"
+              goto: all_done_check
+            - text: "경보를 무시하고 문을 연다"
+              gameOver:
+                title: "GAME OVER"
+                message: "잠금 장치가 작동했다. 저장한 시점이나 현재 챕터의 시작점에서 다시 시도하자."
+
   all_done_check:
     actions:
       - branch:

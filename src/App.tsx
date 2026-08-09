@@ -15,25 +15,34 @@ import {
 } from 'react';
 import {
   completeVideoCutscene,
+  exportSaveBackup,
+  getAutoSaveEnabled,
   getBgmEnabled,
   getInventoryUiSettings,
+  getSaveSlotSummaries,
   handleAdvance,
+  importSaveBackup,
+  loadSaveSlot,
   loadUrlStartScreenPreview,
   loadGameFromUrl,
   loadGameFromZip,
   loadZipStartScreenPreview,
   restartFromBeginning,
+  restartCurrentChapter,
   resetVideoSkipProgress,
   revealVideoSkipGuide,
   setBgmEnabled,
+  setAutoSaveEnabled,
   setInventoryUiSettings,
   skipVideoCutscene,
   stopActiveBgm,
   submitInputAnswer,
   submitChoiceOption,
+  saveCurrentProgress,
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
+import type { SaveSlotKind, SaveSlotSummary } from './engine';
 import { buildImageCharacterRenderKey, resolveCharacterStageLayout } from './characterLayout';
 import type { CharacterStageLayout } from './characterLayout';
 import {
@@ -167,6 +176,11 @@ const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
 const INVENTORY_DEFAULT_CATEGORY = '기타';
 const INVENTORY_CATEGORY_ALL = '';
+const SAVE_SLOT_LABELS: Record<SaveSlotKind, string> = {
+  auto: '자동 저장',
+  manual: '수동 저장',
+  chapter: '챕터 시작',
+};
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -192,6 +206,22 @@ type InventoryCatalogEntry = {
 
 function isObjectRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function formatSaveTimestamp(value?: string): string {
+  if (!value) {
+    return '이전 버전 저장';
+  }
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) {
+    return '저장 시각 미상';
+  }
+  return new Intl.DateTimeFormat('ko-KR', {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
 }
 
 function normalizeText(value: unknown): string | undefined {
@@ -771,6 +801,7 @@ export default function App() {
     chapterIndex,
     chapterTotal,
     resolvedEndingId,
+    gameOver,
     uiTemplate,
     setDialogUiHidden,
   } = useVNStore();
@@ -789,7 +820,7 @@ export default function App() {
   const [startGateLaunching, setStartGateLaunching] = useState(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [caseFileTab, setCaseFileTab] = useState<'log' | 'inventory'>('log');
+  const [caseFileTab, setCaseFileTab] = useState<'log' | 'inventory' | 'system'>('log');
   const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
   const [inventoryDetailOpen, setInventoryDetailOpen] = useState(false);
   const [inventoryView, setInventoryView] = useState<InventoryViewPreference>(() => getInventoryUiSettings().view);
@@ -797,11 +828,18 @@ export default function App() {
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>(() => getInventoryUiSettings().category);
   const [inventorySearchTerm, setInventorySearchTerm] = useState('');
   const [bgmEnabled, setBgmEnabledState] = useState(() => getBgmEnabled());
+  const [autoSaveEnabled, setAutoSaveEnabledState] = useState(() => getAutoSaveEnabled());
+  const [saveSlots, setSaveSlots] = useState<SaveSlotSummary[]>(() => getSaveSlotSummaries());
+  const [saveNotice, setSaveNotice] = useState('');
+  const [saveBusy, setSaveBusy] = useState(false);
+  const [gameOverLoadOpen, setGameOverLoadOpen] = useState(false);
   const [returningToStartGate, setReturningToStartGate] = useState(false);
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
   const settingsTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const saveImportRef = useRef<HTMLInputElement | null>(null);
+  const gameOverImportRef = useRef<HTMLInputElement | null>(null);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
   const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
@@ -834,7 +872,7 @@ export default function App() {
   const repositoryUrl = 'https://github.com/uiwwsw/yavn';
   const developmentGuideUrl = `${repositoryUrl}/blob/main/docs/DEVELOPMENT_GUIDE.ko.md`;
   const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
-  const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || !game;
+  const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || Boolean(gameOver) || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
   const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
   const skipInputAutoFocus = useMemo(() => isMobilePointerEnvironment(), []);
@@ -1034,7 +1072,7 @@ export default function App() {
     };
   }, []);
 
-  useAdvanceByKey(dialogUiHidden || settingsOpen);
+  useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver));
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -1059,12 +1097,21 @@ export default function App() {
 
   useEffect(() => {
     setBgmEnabledState(getBgmEnabled());
+    setAutoSaveEnabledState(getAutoSaveEnabled());
+    setSaveSlots(getSaveSlotSummaries());
+    setSaveNotice('');
     const inventoryUiSettings = getInventoryUiSettings();
     setInventoryView(inventoryUiSettings.view);
     setInventorySort(inventoryUiSettings.sort);
     setInventoryCategoryFilter(inventoryUiSettings.category);
     setInventorySearchTerm('');
   }, [bootMode, game?.meta.title, startGate?.kind, startGate?.gameTitle]);
+
+  useEffect(() => {
+    setGameOverLoadOpen(false);
+    setSaveNotice('');
+    setSaveSlots(getSaveSlotSummaries());
+  }, [gameOver, chapterIndex]);
 
   useEffect(() => {
     if (!game) {
@@ -1409,6 +1456,13 @@ export default function App() {
   const endingCompletionPercent = totalEndingCount > 0 ? Math.round((seenEndingCount / totalEndingCount) * 100) : 0;
   const endingCollectionDone = totalEndingCount > 0 && seenEndingCount >= totalEndingCount;
   const inputSubmitLabel = inputAnswer.trim().length > 0 ? '확인' : '모르겠다';
+  const saveSlotByKind = useMemo(
+    () => new Map(saveSlots.map((slot) => [slot.slot, slot])),
+    [saveSlots],
+  );
+  const hasRecentSave = Boolean(
+    saveSlotByKind.get('auto')?.exists || saveSlotByKind.get('manual')?.exists,
+  );
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
@@ -1588,6 +1642,104 @@ export default function App() {
       }
     },
     [stopStartGateMusic, tryPlayStartGateMusic],
+  );
+
+  const refreshSaveSlots = useCallback(() => {
+    setSaveSlots(getSaveSlotSummaries());
+  }, []);
+
+  const onToggleAutoSave = useCallback((enabled: boolean) => {
+    setAutoSaveEnabled(enabled);
+    setAutoSaveEnabledState(enabled);
+    setSaveNotice(enabled ? '자동 저장을 켰습니다.' : '자동 저장을 껐습니다. 챕터 시작점은 계속 보호됩니다.');
+    setSaveSlots(getSaveSlotSummaries());
+  }, []);
+
+  const onManualSave = useCallback(() => {
+    const result = saveCurrentProgress();
+    setSaveNotice(result.exists ? '현재 진행을 수동 저장했습니다.' : '현재 장면에서는 저장할 수 없습니다.');
+    refreshSaveSlots();
+  }, [refreshSaveSlots]);
+
+  const onLoadSave = useCallback(
+    async (slot: SaveSlotKind | 'latest') => {
+      setSaveBusy(true);
+      setSaveNotice('저장 데이터를 불러오는 중입니다.');
+      try {
+        const loaded = await loadSaveSlot(slot);
+        if (!loaded) {
+          setSaveNotice('불러올 수 있는 저장 데이터가 없습니다.');
+          return;
+        }
+        setSaveNotice('저장한 장면으로 돌아왔습니다.');
+        closeSettingsModal(false);
+      } catch (error) {
+        setSaveNotice(error instanceof Error ? error.message : '저장 데이터를 불러오지 못했습니다.');
+      } finally {
+        setSaveBusy(false);
+        refreshSaveSlots();
+      }
+    },
+    [closeSettingsModal, refreshSaveSlots],
+  );
+
+  const onRestartChapter = useCallback(async () => {
+    setSaveBusy(true);
+    setSaveNotice('챕터 시작점으로 돌아가는 중입니다.');
+    try {
+      const loaded = await restartCurrentChapter();
+      if (!loaded) {
+        setSaveNotice('이 챕터의 시작 저장점을 찾지 못했습니다.');
+        return;
+      }
+      closeSettingsModal(false);
+    } catch (error) {
+      setSaveNotice(error instanceof Error ? error.message : '챕터 시작점으로 돌아가지 못했습니다.');
+    } finally {
+      setSaveBusy(false);
+      refreshSaveSlots();
+    }
+  }, [closeSettingsModal, refreshSaveSlots]);
+
+  const onExportSave = useCallback(() => {
+    const backup = exportSaveBackup();
+    if (!backup) {
+      setSaveNotice('내보낼 진행 데이터가 없습니다.');
+      return;
+    }
+    const blobUrl = URL.createObjectURL(new Blob([backup.content], { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = backup.filename;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(blobUrl), 0);
+    setSaveNotice('저장 백업 파일을 내보냈습니다.');
+    refreshSaveSlots();
+  }, [refreshSaveSlots]);
+
+  const onImportSave = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      event.target.value = '';
+      if (!file) {
+        return;
+      }
+      setSaveBusy(true);
+      try {
+        importSaveBackup(await file.text());
+        refreshSaveSlots();
+        const loaded = await loadSaveSlot('manual');
+        setSaveNotice(loaded ? '백업 저장을 불러왔습니다.' : '백업을 저장했지만 현재 장면을 열지 못했습니다.');
+        if (loaded) {
+          closeSettingsModal(false);
+        }
+      } catch (error) {
+        setSaveNotice(error instanceof Error ? error.message : '저장 파일을 불러오지 못했습니다.');
+      } finally {
+        setSaveBusy(false);
+      }
+    },
+    [closeSettingsModal, refreshSaveSlots],
   );
 
   useEffect(() => {
@@ -2674,6 +2826,23 @@ export default function App() {
               </span>
             )}
           </button>
+          <button
+            type="button"
+            className="hud-action-button hud-save-button"
+            aria-label="저장 및 불러오기 열기"
+            title="저장 및 불러오기"
+            onClick={(event) => {
+              event.stopPropagation();
+              settingsTriggerRef.current = event.currentTarget;
+              setInventoryDetailOpen(false);
+              setSaveNotice('');
+              refreshSaveSlots();
+              setCaseFileTab('system');
+              setSettingsOpen(true);
+            }}
+          >
+            <span className="hud-save-icon" aria-hidden="true" />
+          </button>
         </div>
       </div>
 
@@ -2726,6 +2895,20 @@ export default function App() {
               >
                 단서 {ownedInventoryCount}/{totalInventoryCount}
               </button>
+              <button
+                type="button"
+                role="tab"
+                className={`case-file-tab ${caseFileTab === 'system' ? 'is-active' : ''}`}
+                aria-selected={caseFileTab === 'system'}
+                onClick={() => {
+                  setInventoryDetailOpen(false);
+                  setSaveNotice('');
+                  refreshSaveSlots();
+                  setCaseFileTab('system');
+                }}
+              >
+                저장
+              </button>
             </div>
             {caseFileTab === 'log' ? (
               <div className="settings-modal-body story-log-body">
@@ -2759,7 +2942,7 @@ export default function App() {
                   </ol>
                 )}
               </div>
-            ) : (
+            ) : caseFileTab === 'inventory' ? (
             <div className="settings-modal-body settings-inventory-body">
               <div className="inventory-view-tabs" role="tablist" aria-label="인벤토리 보기">
                 <button
@@ -2904,6 +3087,69 @@ export default function App() {
                 </p>
               </div>
             </div>
+            ) : (
+              <div className="settings-modal-body save-system-body">
+                <label className="save-autosave-row">
+                  <span>
+                    <b>자동 저장</b>
+                    <small>{autoSaveEnabled ? 'ON' : 'OFF'}</small>
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={autoSaveEnabled}
+                    onChange={(event) => onToggleAutoSave(event.target.checked)}
+                    disabled={saveBusy}
+                  />
+                </label>
+
+                <div className="save-slot-list" aria-label="저장 슬롯">
+                  {(['auto', 'manual', 'chapter'] as const).map((slotKind) => {
+                    const slot = saveSlotByKind.get(slotKind);
+                    return (
+                      <article className="save-slot-row" key={slotKind}>
+                        <div>
+                          <b>{SAVE_SLOT_LABELS[slotKind]}</b>
+                          <span>
+                            {slot?.exists
+                              ? `${formatSaveTimestamp(slot.savedAt)} · CH.${(slot.chapterIndex ?? 0) + 1}`
+                              : '저장 없음'}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => void onLoadSave(slotKind)}
+                          disabled={!slot?.exists || saveBusy}
+                        >
+                          불러오기
+                        </button>
+                      </article>
+                    );
+                  })}
+                </div>
+
+                <div className="save-system-actions">
+                  <button type="button" onClick={onManualSave} disabled={saveBusy || Boolean(gameOver)}>
+                    현재 진행 저장
+                  </button>
+                  <button type="button" onClick={onExportSave} disabled={saveBusy || Boolean(gameOver)}>
+                    백업 내보내기
+                  </button>
+                  <button type="button" onClick={() => saveImportRef.current?.click()} disabled={saveBusy}>
+                    백업 가져오기
+                  </button>
+                  <input
+                    ref={saveImportRef}
+                    type="file"
+                    accept=".json,.yavn-save.json,application/json"
+                    onChange={(event) => void onImportSave(event)}
+                    hidden
+                  />
+                </div>
+                <p className="save-system-note">진행은 이 브라우저에 저장되며 백업 파일로 다른 기기에 옮길 수 있습니다.</p>
+                <p className="save-system-status" role="status" aria-live="polite">
+                  {saveNotice || '챕터 시작점은 자동 저장 설정과 관계없이 유지됩니다.'}
+                </p>
+              </div>
             )}
             {caseFileTab === 'inventory' && inventoryDetailOpen && selectedInventoryEntry && (
               <div
@@ -3134,6 +3380,82 @@ export default function App() {
             aria-valuenow={Math.floor(chapterLoadingProgress * 100)}
           >
             <span style={{ width: `${Math.floor(chapterLoadingProgress * 100)}%` }} />
+          </div>
+        </div>
+      )}
+
+      {gameOver && !chapterLoading && (
+        <div className="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
+          <div className="game-over-panel">
+            <p className="game-over-kicker">RUN TERMINATED</p>
+            <h2 id="game-over-title">{gameOver.title ?? 'GAME OVER'}</h2>
+            <p className="game-over-message">
+              {gameOver.message ?? '선택의 결과로 더는 이야기를 이어갈 수 없습니다.'}
+            </p>
+            <div className="game-over-primary-actions">
+              <button
+                type="button"
+                onClick={() => {
+                  refreshSaveSlots();
+                  setGameOverLoadOpen((open) => !open);
+                }}
+                disabled={saveBusy}
+              >
+                불러오기
+              </button>
+              <button
+                type="button"
+                onClick={() => void onLoadSave('latest')}
+                disabled={!hasRecentSave || saveBusy}
+              >
+                최근 저장으로
+              </button>
+              <button
+                type="button"
+                onClick={() => void onRestartChapter()}
+                disabled={!saveSlotByKind.get('chapter')?.exists || saveBusy}
+              >
+                챕터 처음으로
+              </button>
+            </div>
+
+            {gameOverLoadOpen && (
+              <div className="game-over-load-panel">
+                {(['auto', 'manual', 'chapter'] as const).map((slotKind) => {
+                  const slot = saveSlotByKind.get(slotKind);
+                  return (
+                    <button
+                      type="button"
+                      key={slotKind}
+                      onClick={() => void onLoadSave(slotKind)}
+                      disabled={!slot?.exists || saveBusy}
+                    >
+                      <span>{SAVE_SLOT_LABELS[slotKind]}</span>
+                      <small>{slot?.exists ? formatSaveTimestamp(slot.savedAt) : '저장 없음'}</small>
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="game-over-import-button"
+                  onClick={() => gameOverImportRef.current?.click()}
+                  disabled={saveBusy}
+                >
+                  <span>백업 파일</span>
+                  <small>가져오기</small>
+                </button>
+                <input
+                  ref={gameOverImportRef}
+                  type="file"
+                  accept=".json,.yavn-save.json,application/json"
+                  onChange={(event) => void onImportSave(event)}
+                  hidden
+                />
+              </div>
+            )}
+            <p className="game-over-status" role="status" aria-live="polite">
+              {saveBusy ? '복구 중...' : saveNotice}
+            </p>
           </div>
         </div>
       )}
