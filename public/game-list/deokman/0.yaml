@@ -1,0 +1,259 @@
+script:
+  - scene: prologue_open
+  - scene: prologue_survive
+
+scenes:
+  prologue_open:
+    actions:
+      - bg: shadow_corridor
+      - effect: darken
+      - char:
+          id: 덕만
+          position: center
+      - say:
+          text: "서기 631년, 신라 왕경. 왕실 연회를 하루 앞둔 밤이었다."
+      - say:
+          text: "이 이야기는 실제 역사 인물과 시대를 바탕으로 암살·계승 음모와 인물 관계를 창작한 역사 픽션이다."
+      - say:
+          char: 덕만
+          text: "등불이 꺼진 회랑 끝에서, 두 사람의 목소리가 벽을 타고 흘러왔다."
+      - say:
+          char: 국산
+          text: "내일 왕의 잔은 비어 있을 것입니다."
+      - say:
+          char: 아진
+          text: "그렇다면 공주의 자리는?"
+      - say:
+          char: 국산
+          text: "원래부터 없었습니다."
+      - say:
+          char: 덕만
+          text: "당신은 훗날 신라 최초의 여왕이 된다. 단, 오늘 밤을 살아남는다면."
+      - goto: caught_choice
+
+  caught_choice:
+    actions:
+      - choice:
+          key: p_caught
+          char: 덕만
+          with:
+            - 아진
+          prompt: "발밑의 마른 대나무가 부러졌다. 그림자가 이쪽으로 온다."
+          options:
+            - text: "길을 잃은 척 등불을 들고 먼저 모습을 드러낸다"
+              add:
+                insight: 1
+              goto: caught_lost
+            - text: "숨어 들은 말을 그대로 읊으며 정체를 묻는다"
+              goto: go_01_too_clever
+            - text: "난간을 넘어 어두운 지붕으로 몸을 던진다"
+              goto: go_02_broken_moon
+            - text: "천명이 가르쳐 준 왕실 비상 신호를 휘파람으로 분다"
+              add:
+                power: 1
+                suspicion: 1
+              goto: caught_signal
+
+  caught_lost:
+    actions:
+      - say:
+          char: 덕만
+          text: "연못을 찾다가 길을 잃었어요. 그런데 두 분은 등불도 없이 무엇을 찾으십니까?"
+      - say:
+          char: 아진
+          text: "공주께서는 길을 잃고도 질문부터 하시는군요."
+      - say:
+          char: 덕만
+          text: "대답을 듣지 못하면 같은 길을 또 잃을까 봐서요."
+      - goto: warn_choice
+
+  caught_signal:
+    actions:
+      - effect: focus
+      - say:
+          char: 아진
+          text: "호위가 오기까지 일곱 숨. 공주께서는 두 숨을 아끼셨습니다."
+      - say:
+          char: 덕만
+          text: "남은 다섯 숨이면 얼굴 하나는 기억할 수 있지."
+      - say:
+          text: "검은 복면은 사라졌지만, 덕만은 오른손에 감긴 붉은 매듭을 보았다."
+      - goto: warn_choice
+
+  warn_choice:
+    actions:
+      - bg: princess_chamber
+      - char:
+          id: 덕만
+          position: left
+      - say:
+          char: 덕만
+          text: "암살 계획을 누구에게 먼저 알리느냐가, 암살 계획보다 위험하다."
+      - choice:
+          key: p_warn
+          prompt: "새벽이 오기 전, 누구에게 비밀을 맡길까?"
+          char: 덕만
+          options:
+            - text: "진평왕에게 곧장 달려가 들은 말을 모두 고한다"
+              goto: go_03_open_door
+            - text: "언니 천명에게만 붉은 매듭과 대화를 전한다"
+              add:
+                cheonmyeong_trust: 1
+              goto: warn_cheonmyeong
+            - text: "유신에게 연회장 출입 명단만 조용히 확인시킨다"
+              add:
+                yushin_trust: 1
+                insight: 1
+              goto: warn_yushin
+            - text: "상대등 국산을 불러 충성을 증명하라고 압박한다"
+              goto: go_04_guest_of_traitor
+
+  warn_cheonmyeong:
+    actions:
+      - char:
+          id: 천명
+          position: right
+      - say:
+          char: 천명
+          with:
+            - 덕만
+          text: "아버지를 구하겠다고 네가 먼저 죽으면, 나는 누구를 미워해야 하니?"
+      - say:
+          char: 덕만
+          with:
+            - 천명
+          text: "살아 돌아와서 같이 정하자."
+      - add:
+          legitimacy: 1
+      - goto: banquet_choice
+
+  warn_yushin:
+    actions:
+      - char:
+          id: 유신
+          position: right
+      - say:
+          char: 유신
+          with:
+            - 덕만
+          text: "명단에는 죽은 사람 하나와 태어나지 않은 사람 하나가 적혀 있습니다. 누가 보라고 만든 명단입니다."
+      - say:
+          char: 덕만
+          with:
+            - 유신
+          text: "그럼 보라는 것 말고, 숨긴 빈자리를 찾으세요."
+      - goto: banquet_choice
+
+  banquet_choice:
+    actions:
+      - bg: banquet_hall
+      - effect: pulse
+      - char:
+          id: 진평왕
+          position: right
+      - char:
+          id: 덕만
+          position: left
+      - say:
+          char: 진평왕
+          with:
+            - 덕만
+          text: "덕만아, 오늘은 왜 네 잔보다 내 잔을 더 오래 보는 것이냐?"
+      - say:
+          char: 덕만
+          with:
+            - 진평왕
+          text: "아버지의 잔이 비면 신라가 먼저 취할까 두려워서입니다."
+      - choice:
+          key: p_cup
+          prompt: "왕이 잔을 든다. 독이 어디에 있는지는 아직 모른다."
+          char: 덕만
+          with:
+            - 진평왕
+          options:
+            - text: "효심을 증명하겠다며 왕의 술을 대신 마신다"
+              goto: go_05_filial_cup
+            - text: "실수인 척 상을 걷어차 모든 잔을 깨뜨린다"
+              add:
+                power: 1
+                suspicion: 2
+              goto: cup_smash
+            - text: "국산의 잔과 왕의 잔을 바꾸고 그의 표정을 본다"
+              add:
+                insight: 2
+                nobles_support: -1
+              goto: cup_swap
+            - text: "증거가 없으니 아무것도 하지 않고 왕이 마시게 둔다"
+              goto: go_06_closed_mouth
+
+  cup_smash:
+    actions:
+      - effect: shake
+      - say:
+          char: 국산
+          text: "공주께서 왕의 연회를 모욕하셨습니다."
+      - say:
+          char: 덕만
+          text: "모욕은 닦으면 그만입니다. 독은 마시면 끝이지요."
+      - goto: prologue_survive
+
+  cup_swap:
+    actions:
+      - say:
+          char: 국산
+          with:
+            - 덕만
+          text: "제 잔을 왕께 올리는 영광을 주시는 겁니까?"
+      - say:
+          char: 덕만
+          with:
+            - 국산
+          text: "아니요. 왕의 잔을 그대가 마실 영광을 드리는 겁니다."
+      - say:
+          text: "국산이 웃는 동안, 잔을 나르던 악공 하나가 혀를 깨물고 쓰러졌다."
+      - goto: prologue_survive
+
+  prologue_survive:
+    actions:
+      - effect: focus
+      - say:
+          text: "왕은 살았다. 그러나 죽은 악공의 품에서는 덕만의 노리개와 검은 가루가 발견되었다."
+      - say:
+          char: 덕만
+          text: "왕을 죽이지 못하자, 나를 왕의 암살범으로 만들었다."
+      - get: black_powder
+      - set:
+          clue_black_powder: true
+      - say:
+          text: "프롤로그 완료 — 덕만은 아버지를 얻는 대신 안전을 잃었다."
+
+  go_01_too_clever:
+    actions:
+      - gameOver:
+          title: "운명 01 — 너무 영리한 공주"
+          message: "덕만은 들은 문장을 한 글자도 틀리지 않았다. 다음 날 그 정확함이 공모의 증거가 되었다. 정답을 너무 빨리 말한 공주는 해 뜨기 전 처형되었다."
+  go_02_broken_moon:
+    actions:
+      - gameOver:
+          title: "운명 02 — 부러진 달"
+          message: "기와는 비에 젖어 있었다. 덕만은 지붕 아래의 어둠으로 사라졌고, 궁은 실족이라 기록했다. 난간에는 붉은 매듭 한 올이 남았다."
+  go_03_open_door:
+    actions:
+      - gameOver:
+          title: "운명 03 — 열린 문"
+          message: "왕의 침전으로 가는 문은 너무 쉽게 열렸다. 기다리던 칼은 덕만의 입을 먼저 막았다. 그날 밤 왕은 암살 계획을 끝내 듣지 못했다."
+  go_04_guest_of_traitor:
+    actions:
+      - gameOver:
+          title: "운명 04 — 반역자의 손님"
+          message: "국산은 무릎 꿇고 충성을 맹세했다. 덕만이 돌아선 뒤 그 맹세는 체포 명령이 되었다. 공주는 스스로 적의 방에 들어간 첫 번째 왕족으로 남았다."
+  go_05_filial_cup:
+    actions:
+      - gameOver:
+          title: "운명 05 — 효녀 덕만"
+          message: "덕만은 왕 대신 잔을 비웠다. 왕실은 효심을 칭송했으나, 그녀의 손톱 밑 검은 가루는 기록에서 지워졌다. 삼 년 뒤 왕위는 이름 없는 소년에게 돌아갔다."
+  go_06_closed_mouth:
+    actions:
+      - gameOver:
+          title: "운명 06 — 입을 다문 공주"
+          message: "왕은 잔을 비우고 쓰러졌다. 덕만은 아무것도 하지 않았다는 이유로 살아남지 못했다. 침묵은 결백이 아니라 가장 값싼 공모가 되었다."

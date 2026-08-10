@@ -1,0 +1,220 @@
+script:
+  - scene: chapter3_open
+  - scene: chapter3_end
+
+scenes:
+  chapter3_open:
+    actions:
+      - bg: locked_room
+      - effect: darken
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 소원
+          position: right
+      - say:
+          text: "제3장 — 한 사람만 거짓말한다"
+      - say:
+          char: 소원
+          text: "문은 안에서 잠겼고, 어젯밤 이 방에 들어온 사람은 공주님뿐이라고 모두 말합니다."
+      - say:
+          char: 덕만
+          text: "모두가 같은 말을 하면 사실이 되는 게 아니라, 같은 사람에게 배웠다는 뜻이야."
+      - goto: body_choice
+
+  body_choice:
+    actions:
+      - choice:
+          key: c3_body
+          prompt: "날이 밝기 전, 시체를 어떻게 처리할까?"
+          char: 덕만
+          with:
+            - 소원
+          options:
+            - text: "종을 울려 모두를 부르고 현장을 공개한다"
+              add:
+                legitimacy: 1
+                suspicion: 1
+              goto: body_public
+            - text: "침상 아래 숨긴 뒤 혼자 범인을 찾는다"
+              goto: go_17_second_murder
+            - text: "시체를 국산의 방으로 옮겨 함정을 되돌린다"
+              goto: go_18_borrowed_corpse
+            - text: "소원만 불러 문과 창의 흔적을 함께 기록한다"
+              add:
+                sowon_trust: 2
+                insight: 1
+              goto: body_record
+
+  body_public:
+    actions:
+      - say:
+          char: 덕만
+          text: "숨길 생각이었다면 종을 울리지 않았겠지요. 이제부터 나가는 사람이 범인입니다."
+      - say:
+          text: "사람들의 시선이 시체에서 문으로 옮겨갔다. 국산의 하인 하나가 그제야 뒷걸음쳤다."
+      - goto: testimony_choice
+
+  body_record:
+    actions:
+      - say:
+          char: 소원
+          text: "창틀 먼지는 안쪽이 아니라 바깥쪽에서 닦였어요. 누군가 밖에서 잠긴 방을 만들었어요."
+      - say:
+          char: 덕만
+          text: "사람은 거짓말해도 먼지는 누구 편도 들지 않는구나."
+      - goto: testimony_choice
+
+  testimony_choice:
+    actions:
+      - bg: council_hall
+      - say:
+          text: "소원은 창을 보았고, 비담은 자물쇠를 보았고, 유신은 발자국을 보았다. 국산만 시체의 상처를 보았다고 말했다."
+      - choice:
+          key: c3_testimony
+          prompt: "누구의 증언을 축으로 수사를 이어갈까?"
+          char: 덕만
+          options:
+            - text: "소원의 먼지 기록을 믿고 창밖 동선을 찾는다"
+              add:
+                sowon_trust: 1
+                insight: 1
+              goto: testimony_sowon
+            - text: "비담의 자물쇠 복제 흔적을 따라간다"
+              add:
+                bidam_trust: 1
+                insight: 1
+              goto: testimony_bidam
+            - text: "유신의 발자국 비교로 호위 교대 시간을 좁힌다"
+              add:
+                yushin_trust: 1
+                power: 1
+              goto: testimony_yushin
+            - text: "상처를 자세히 안다는 국산의 말을 그대로 믿는다"
+              goto: go_19_last_witness
+
+  testimony_sowon:
+    actions:
+      - say:
+          char: 소원
+          text: "창밖 발판에는 작은 발자국이 있어요. 범인은 직접 들어오지 않고 사람을 시켰어요."
+      - goto: culprit_choice
+
+  testimony_bidam:
+    actions:
+      - say:
+          char: 비담
+          text: "자물쇠는 두 개였습니다. 하나는 문에, 하나는 사람들이 믿는 이야기 속에."
+      - say:
+          char: 덕만
+          text: "두 번째 것을 먼저 열어야 첫 번째 열쇠가 보이겠군."
+      - goto: culprit_choice
+
+  testimony_yushin:
+    actions:
+      - say:
+          char: 유신
+          text: "발자국 주인은 절뚝거리지 않습니다. 절뚝이는 척한 사람이 한 명 있었습니다."
+      - say:
+          char: 덕만
+          text: "아진. 얼굴을 가리고도 걸음은 바꾸지 못했군."
+      - goto: culprit_choice
+
+  culprit_choice:
+    actions:
+      - char:
+          id: 아진
+          position: right
+      - say:
+          char: 아진
+          with:
+            - 덕만
+          text: "정답을 아셨다면 저를 부른 이유도 아시겠지요. 증거가 없습니다."
+      - choice:
+          key: c3_culprit
+          prompt: "진범을 잡을 것인가, 이용할 것인가?"
+          char: 덕만
+          with:
+            - 아진
+          options:
+            - text: "증거 없이 아진을 진범으로 지목해 즉시 체포한다"
+              goto: go_20_correct_accusation
+            - text: "살려 주는 대신 계승동맹의 문서를 가져오라 거래한다"
+              add:
+                power: 1
+                suspicion: 2
+              goto: culprit_deal
+            - text: "국산에게 시체가 살아났다는 거짓 전갈을 보낸다"
+              add:
+                insight: 2
+                nobles_support: -1
+              goto: culprit_bait
+            - text: "가장 가까이 있던 소원을 공범으로 몰아 자백시킨다"
+              goto: go_21_friendless_truth
+
+  culprit_deal:
+    actions:
+      - say:
+          char: 아진
+          text: "명령 때문에 공주를 죽여야 하는 사람과 거래하시겠습니까?"
+      - say:
+          char: 덕만
+          text: "명령이 없으면 죽이지 않을 사람이라는 뜻이니까."
+      - add:
+          bidam_trust: 1
+      - goto: chapter3_end
+
+  culprit_bait:
+    actions:
+      - effect: focus
+      - say:
+          text: "국산의 하인은 죽은 귀족의 입을 다시 막으려 방으로 돌아왔다. 그의 품에서 찢긴 서약서가 나왔다."
+      - say:
+          char: 덕만
+          text: "죽은 사람을 두 번 죽이러 온 자가, 첫 번째 살인을 증명했군."
+      - goto: chapter3_end
+
+  chapter3_end:
+    actions:
+      - get: oath_fragment
+      - set:
+          clue_oath_fragment: true
+      - add:
+          legitimacy: 1
+      - say:
+          text: "서약서에는 왕실 남자를 후계로 세운다는 계승동맹의 약속이 남아 있었다."
+      - say:
+          char: 국산
+          text: "공주님의 명예가 회복되었으니, 국경 구호 임무라는 영예도 받아 주시지요."
+      - say:
+          char: 덕만
+          text: "명목은 왕명, 실제는 추방. 그래도 궁 밖에는 그대가 바꾸지 못한 증인이 있겠지요."
+      - say:
+          text: "제3장 완료 — 덕만은 계승동맹의 증거를 얻는 대신, 왕경을 잃었다."
+
+  go_17_second_murder:
+    actions:
+      - gameOver:
+          title: "운명 17 — 두 번째 살인"
+          message: "숨긴 시체는 덕만의 침상 아래에서 발견되었다. 첫 번째 살인은 남의 것이었지만, 진실을 숨긴 두 번째 살인은 덕만의 것이 되었다."
+  go_18_borrowed_corpse:
+    actions:
+      - gameOver:
+          title: "운명 18 — 빌린 시체"
+          message: "시체를 옮기는 덕만의 모습은 열두 명이 보았다. 국산은 자신의 방에서 발견된 시체보다 공주의 손에 묻은 피를 증거로 삼았다. 함정은 주인만 바꾸어 닫혔다."
+  go_19_last_witness:
+    actions:
+      - gameOver:
+          title: "운명 19 — 마지막 증언"
+          message: "국산은 상처를 보았다고 했지만 시체는 엎드려 있었다. 덕만이 그 모순을 깨달았을 때, 증언을 믿고 물린 호위는 이미 그녀의 목에 칼을 대고 있었다."
+  go_20_correct_accusation:
+    actions:
+      - gameOver:
+          title: "운명 20 — 증거 없는 정답"
+          message: "아진은 진범이었다. 그러나 체포 명령이 떨어지기 전 독을 삼켰고, 남은 것은 공주가 고문으로 무고한 이를 죽였다는 소문뿐이었다. 정답은 다시 죄가 되었다."
+  go_21_friendless_truth:
+    actions:
+      - gameOver:
+          title: "운명 21 — 친구 없는 진실"
+          message: "소원은 고문 끝에 원하는 자백을 했다. 덕만은 살인 혐의를 벗었지만, 마지막까지 곁을 지키던 사람을 잃었다. 훗날 반란의 밤, 그녀를 깨워 줄 사람은 없었다."

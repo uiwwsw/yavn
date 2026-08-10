@@ -1,7 +1,54 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-08-09T23:57:42.695Z",
+  "generatedAt": "2026-08-10T05:05:44.462Z",
   "games": [
+    {
+      "id": "deokman",
+      "name": "덕만: 왕관에는 주인이 없다",
+      "path": "/game-list/deokman/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "당신은 훗날 신라 최초의 여왕이 된다. 단, 오늘 밤을 살아남는다면. 8개 챕터에서 단서를 읽고, 사람을 얻고, 잘못 고른 운명의 후일담까지 수집하는 궁중 정치 생존극.",
+      "thumbnail": "/game-list/deokman/assets/bg/title-palace.avif",
+      "tags": [
+        "historical-fiction",
+        "political-thriller",
+        "branch-heavy",
+        "survival",
+        "multiple-endings"
+      ],
+      "showcase": {
+        "label": "24 CHOICES · 35 FATES",
+        "backgroundColor": "#241623",
+        "image": {
+          "positionX": 66,
+          "positionY": 42,
+          "scale": 1.04,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "chapterCount": 8,
+      "seo": {
+        "title": "덕만: 왕관에는 주인이 없다",
+        "description": "죽을 운명을 고쳐 쓰며 신라 최초의 여왕이 되어야 하는 장편 궁중 정치 생존 비주얼노벨. 24개의 운명 선택과 35개의 실패 결말, 10개의 수집형 엔딩을 담았다.",
+        "keywords": [
+          "선덕여왕",
+          "덕만",
+          "신라",
+          "역사 비주얼노벨",
+          "정치 생존 게임",
+          "분기형 게임",
+          "historical-fiction",
+          "political-thriller",
+          "branch-heavy",
+          "survival",
+          "multiple-endings"
+        ],
+        "image": "/game-list/deokman/assets/bg/title-palace-social.jpg",
+        "imageAlt": "달빛 아래 신라 궁궐에 선 덕만공주"
+      }
+    },
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
@@ -111,13 +158,18 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 덕만: 왕관에는 주인이 없다, 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
     "keywords": [
+      "덕만: 왕관에는 주인이 없다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다",
-      "detective",
+      "historical-fiction",
+      "political-thriller",
       "branch-heavy",
+      "survival",
+      "multiple-endings",
+      "detective",
       "sample",
       "voice-sfx",
       "character-driven",
@@ -128,6 +180,12 @@
       "live2d",
       "interaction",
       "smoke-test",
+      "선덕여왕",
+      "덕만",
+      "신라",
+      "역사 비주얼노벨",
+      "정치 생존 게임",
+      "분기형 게임",
       "명탐정 코난",
       "추리 게임",
       "비주얼노벨",
@@ -139,10 +197,11 @@
       "60초 데모"
     ],
     "gameTitles": [
+      "덕만: 왕관에는 주인이 없다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 3
+    "gameCount": 4
   }
 }

@@ -1,0 +1,75 @@
+assets:
+  backgrounds:
+    title_palace: assets/bg/title-palace.avif
+    moon_court: assets/bg/title-palace.avif
+    shadow_corridor: assets/bg/title-palace.avif
+    council_hall: assets/bg/council-hall.avif
+    banquet_hall: assets/bg/council-hall.avif
+    princess_chamber: assets/bg/council-hall.avif
+    locked_room: assets/bg/council-hall.avif
+    throne_hall: assets/bg/council-hall.avif
+    frontier: assets/bg/frontier.avif
+    village: assets/bg/frontier.avif
+    fortress: assets/bg/frontier.avif
+  characters:
+    덕만:
+      base: assets/char/deokman.svg
+    진평왕:
+      base: assets/char/jinpyeong.svg
+    천명:
+      base: assets/char/cheonmyeong.svg
+    유신:
+      base: assets/char/yushin.svg
+    소원:
+      base: assets/char/sowon.svg
+    비담:
+      base: assets/char/bidam.svg
+    국산:
+      base: assets/char/guksan.svg
+    아진:
+      base: assets/char/ajin.svg
+    진운:
+      base: assets/char/jinun.svg
+    월명:
+      base: assets/char/wolmyeong.svg
+  music: {}
+  sfx: {}
+state:
+  legitimacy: 0
+  power: 0
+  insight: 0
+  suspicion: 0
+  people_support: 0
+  army_support: 0
+  nobles_support: 0
+  sowon_trust: 0
+  cheonmyeong_trust: 0
+  yushin_trust: 0
+  bidam_trust: 0
+  rival_trust: 0
+  cheonmyeong_alive: true
+  saved_rival: false
+  clue_black_powder: false
+  clue_marriage_pact: false
+  clue_oath_fragment: false
+  has_royal_seal: false
+  final_strategy: ""
+inventory:
+  black_powder:
+    name: "검은 독가루"
+    description: "왕의 잔이 아니라 덕만의 손에 묻도록 설계된 독의 잔여물. 누명을 위한 독이었다."
+    image: assets/items/black-powder.svg
+    category: "증거"
+    order: 10
+  marriage_pact:
+    name: "혼인 합의서"
+    description: "서로 다른 귀족 가문이 같은 혼담에 서로 다른 대가를 약속받았음을 보여 주는 문서."
+    image: assets/items/marriage-pact.svg
+    category: "증거"
+    order: 20
+  oath_fragment:
+    name: "계승동맹 서약서 조각"
+    description: "남성 왕족을 앞세워 왕위를 통제하려는 비밀 동맹의 인장과 서명이 남아 있다."
+    image: assets/items/oath-fragment.svg
+    category: "증거"
+    order: 30
