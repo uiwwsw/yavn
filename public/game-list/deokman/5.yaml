@@ -421,21 +421,176 @@ scenes:
 
   go_27_dead_prince:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: center
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "후계자 토론이 시작되자 덕만은 준비해 둔 독살 의혹을 모든 화백 앞에서 꺼냈습니다."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          text: "진운공이 오늘 마신 차에서 독 냄새가 났습니다. 스스로 쓰러진 뒤 저를 범인으로 만들 생각이었습니까?"
+      - say:
+          char: 진운.angry
+          framing: bust
+          text: "저는 그 차에 손도 대지 않았습니다. 공주께서 증거를 내놓지 못하면 지금 말은 거짓 고발입니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "두 분 중 한 분은 거짓말을 하고 있겠군요. 진운공, 오늘은 물러나 계시는 편이 좋겠습니다."
+      - effect: darken
+      - say:
+          text: "진운은 회의장을 나선 뒤 자신의 결백을 밝힐 증인을 만나러 갔습니다. 좁은 회랑에서 복면을 쓴 궁수 셋이 기다리고 있었습니다."
+      - effect: impact
+      - say:
+          char: 진운.nervous
+          framing: closeup
+          with: []
+          text: "덕만공주에게 전해 주십시오. 저는 독을 준비하지 않았다고……"
+      - say:
+          text: "진운은 덕만의 이름을 남기고 죽었습니다. 칠숙은 그 마지막 말을 덕만이 보낸 자객을 알아봤다는 뜻으로 해석해 화백에 보고했습니다."
+          wait: 750
       - gameOver:
-          title: "운명 27 — 죽은 왕자"
-          message: "진운은 결백을 주장하다 회의장을 나선 뒤 살해되었다. 사람들은 덕만의 거짓 폭로가 그를 죽였다고 믿었다. 죽은 경쟁자는 살아 있는 공주보다 완벽한 후계자가 되었다."
+          title: "운명 27 — 진운의 마지막 말"
+          message: "진운은 암살됐고 덕만은 배후로 지목됐습니다. 화백은 죽은 진운을 정당한 후계자로 추존했습니다."
   go_28_sons_crown:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
+      - say:
+          text: "회의가 끝난 뒤 덕만은 진운에게 어머니가 갇힌 장소를 안다고 밝혔습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "진운공의 어머니가 칠숙 별채에 갇혀 있습니다. 그 사실을 화백 앞에서 밝히면 칠숙의 표가 무너집니다."
+      - say:
+          char: 진운.nervous
+          framing: bust
+          text: "공개하는 순간 어머니가 죽습니다. 공주께서는 그 목숨까지 증거로 쓰시겠다는 겁니까?"
+      - say:
+          char: 덕만
+          framing: bust
+          text: "모두가 알면 오히려 함부로 죽이지 못합니다. 그대가 물러나면 제가 구하겠습니다."
+      - effect: focus
+      - say:
+          text: "진운은 화백 앞에서 왕위 요구를 철회했습니다. 그러나 덕만이 병사를 보냈을 때 별채의 동쪽방은 이미 비어 있었습니다."
+      - say:
+          char: 진운.angry
+          framing: closeup
+          with: []
+          text: "어머니가 어디로 옮겨졌는지도 모르는군요. 그런데 저한테는 구하겠다고 말했습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "시간을 벌려고 했습니다. 찾을 수 있을 줄 알았어요."
+      - effect: darken
+      - say:
+          text: "최종 화백회의에서 진운은 덕만이 인질의 목숨으로 자신의 사퇴를 샀다고 증언했습니다. 그 말을 들은 가문들이 차례로 표를 거두었습니다."
+          wait: 700
       - gameOver:
-          title: "운명 28 — 어머니의 값"
-          message: "진운은 어머니를 살리기 위해 물러났다. 그러나 인질을 이용한 덕만을 왕으로 인정하지 않았다. 그의 마지막 증언 하나가 화백회의의 모든 표를 돌렸다."
+          title: "운명 28 — 옮겨진 인질"
+          message: "진운은 물러났지만 덕만을 지지하지 않았습니다. 덕만은 화백 표결에서 패했습니다."
   go_29_second_queen:
     actions:
+      - bg: throne_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
+      - say:
+          text: "덕만은 내전을 막을 마지막 방법이라며 진운에게 둘만의 혼인 협상을 제안했습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "두 가문이 싸우지 않으려면 혼인이 가장 빠릅니다. 그대가 왕이 되고 제가 국정을 함께 맡겠습니다."
+      - say:
+          char: 진운
+          framing: bust
+          text: "혼인 뒤 공주께서 왕과 같은 권한을 가진다는 문장을 화백이 받아들이겠습니까?"
+      - say:
+          char: 덕만
+          framing: bust
+          text: "받아들이게 만들겠습니다. 지금은 전쟁부터 막아야 합니다."
+      - effect: crown
+      - say:
+          text: "혼인은 내전을 막았습니다. 즉위문에는 진운의 이름이 왕으로 적혔고, 덕만의 이름에는 왕비라는 두 글자가 붙었습니다."
+      - say:
+          char: 진운.nervous
+          framing: closeup
+          with: []
+          text: "공주와 나눈 권한을 발표하려 했습니다. 화백이 왕비의 정사 참여는 전례가 없다고 막았습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "그 문장을 빼면 혼인하지 않겠다고 했어야 했습니다. 이제는 제가 말해도 왕의 아내가 왕에게 청하는 일이 되겠군요."
+      - effect: darken
+      - say:
+          text: "덕만은 오래 살았고 여러 정책을 제안했습니다. 공식 기록에는 모든 결정이 진운의 이름으로 남았습니다."
+          wait: 700
       - gameOver:
-          title: "운명 29 — 두 번째 왕비"
-          message: "혼인은 내전을 막았고 덕만의 목숨도 지켰다. 왕좌에는 진운이 앉았고 덕만은 그 옆에 앉았다. 사람들은 그녀를 현명한 왕비라 불렀다."
+          title: "운명 29 — 기록되지 않은 왕비"
+          message: "덕만은 왕비가 되어 내전을 막았지만 왕위에 오르지 못했습니다. 국정 기록에서도 그녀의 이름은 빠졌습니다."
   go_30_martyr_prince:
     actions:
+      - bg: shadow_corridor
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
+      - say:
+          text: "진운의 마차가 비탈에서 멈췄지만 덕만은 숲의 움직임을 모른 척했습니다. 경쟁자가 사라지면 화백의 선택도 단순해질 거라고 생각했습니다."
+      - say:
+          char: 진운.nervous
+          framing: bust
+          text: "공주, 숲에 사람이 있습니다. 호위를 보내 주십시오. 이건 결투가 아니라 매복입니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "그대 호위가 처리할 일입니다. 제가 움직이면 두 편의 군사가 서로를 칩니다."
+      - effect: alarm
+      - say:
+          text: "첫 화살이 마부를 쓰러뜨리고 두 번째 화살이 진운의 옆구리를 꿰뚫었습니다. 그제야 덕만의 호위가 달려갔지만 숲의 궁수들은 이미 사라졌습니다."
+      - say:
+          char: 진운.nervous
+          framing: closeup
+          with: []
+          text: "덕만…… 공주…… 알고도……"
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "말하지 마세요. 의원을 부를게요. 지금은 숨부터 쉬어요."
+      - effect: darken
+      - say:
+          text: "진운은 덕만의 이름을 부른 채 죽었습니다. 계승동맹은 마지막 말을 들은 호위들을 모아 덕만이 암살을 지시했다고 고발했습니다."
+          wait: 750
       - gameOver:
-          title: "운명 30 — 피 묻은 왕관"
-          message: "진운은 죽으며 덕만의 이름을 불렀다. 계승동맹은 그 한마디를 살인의 증거로 만들었다. 덕만이 얻은 빈자리는 피가 마르기도 전에 닫혔다."
+          title: "운명 30 — 늦은 구조"
+          message: "진운은 매복으로 죽었고 덕만은 구조를 늦춘 책임을 피하지 못했습니다. 왕위 대신 살인 재판이 기다렸습니다."

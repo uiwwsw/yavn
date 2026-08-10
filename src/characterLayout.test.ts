@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildImageCharacterRenderKey, resolveCharacterStageLayout } from './characterLayout';
+import {
+  buildImageCharacterRenderKey,
+  resolveCharacterStageLayout,
+  resolveDialogueVisibleCharacterIds,
+} from './characterLayout';
 
 describe('character stage layout', () => {
   it('places exactly two visible characters in stable left and right halves', () => {
@@ -112,5 +116,32 @@ describe('character stage layout', () => {
   it('keeps an image character mounted while only its emotion source changes', () => {
     expect(buildImageCharacterRenderKey('left', '란')).toBe('left-란');
     expect(buildImageCharacterRenderKey('left', '란')).not.toContain('.webp');
+  });
+
+  it('keeps the staged ensemble visible until the script explicitly narrows the shot', () => {
+    expect(resolveDialogueVisibleCharacterIds(
+      ['덕만', '아진', '칠숙'],
+      '덕만',
+      undefined,
+    )).toEqual(['덕만', '아진', '칠숙']);
+
+    expect(resolveDialogueVisibleCharacterIds(
+      ['덕만', '아진', '칠숙'],
+      '덕만',
+      ['아진'],
+    )).toEqual(['덕만', '아진']);
+
+    expect(resolveDialogueVisibleCharacterIds(
+      ['덕만', '아진', '칠숙'],
+      '덕만',
+      [],
+    )).toEqual(['덕만']);
+  });
+
+  it('lets narration establish the full cast or deliberately clear the stage', () => {
+    expect(resolveDialogueVisibleCharacterIds(['덕만', '진평왕'], undefined, undefined))
+      .toEqual(['덕만', '진평왕']);
+    expect(resolveDialogueVisibleCharacterIds(['덕만', '진평왕'], undefined, []))
+      .toEqual([]);
   });
 });

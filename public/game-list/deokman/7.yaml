@@ -625,11 +625,106 @@ scenes:
 
   go_34_empty_council:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "화백회의를 앞둔 새벽, 덕만은 계승동맹에 이름을 올린 귀족들의 처분부터 결정했습니다."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          text: "반란에 이름을 올린 귀족들을 지금 처형하겠습니다. 오늘 표결에 칼을 들고 들어오는 사람은 없어야 합니다."
+      - say:
+          char: 칠숙
+          framing: bust
+          text: "그 명단에는 아직 죄가 확정되지 않은 가문도 있습니다. 그들까지 죽이면 남은 가족이 모두 군사를 들 겁니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "살려 두면 회의 안에서 제 목을 요구합니다. 먼저 끝내겠습니다."
+      - effect: darken
+      - say:
+          text: "해가 뜨기 전 열세 명이 처형됐습니다. 화백회의에는 덕만을 반대할 사람이 오지 않았고, 남은 의원들은 만장일치로 표를 던졌습니다."
+      - effect: crown
+      - say:
+          text: "즉위 북이 한 번 울렸을 때 동문과 서문에서 동시에 봉화가 올랐습니다. 처형된 가문의 사병들이 왕경으로 들어오고 있었습니다."
+      - char:
+          id: 유신
+          position: right
+          framing: full
+      - say:
+          char: 유신.angry
+          framing: bust
+          text: "다섯 가문이 연합했습니다. 우리 병력으로 한 문은 막아도 두 문은 못 막습니다. 백성도 처형 명단을 보고 문을 열어 줬습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "반대할 사람을 없애면 끝날 줄 알았습니다. 내가 회의장 밖의 사람들까지 적으로 만들었군요."
+      - effect: alarm
+      - say:
+          text: "두 번째 북이 울리기 전에 반란군이 왕좌전 앞에 도착했습니다. 덕만의 호위는 퇴로를 만들지 못했습니다."
+          wait: 750
       - gameOver:
-          title: "운명 34 — 빈 회의의 승자"
-          message: "반대할 귀족이 사라진 회의에서 덕만은 만장일치로 승리했다. 그러나 밖에 남은 가문들이 동시에 군사를 일으켰다. 아무도 없는 방의 승자는 나라를 얻지 못했다."
+          title: "운명 34 — 두 개의 봉화"
+          message: "덕만은 만장일치로 즉위했지만 같은 날 반란군에게 살해됐습니다. 처형으로 얻은 표는 왕경을 지키지 못했습니다."
   go_35_fathers_lie:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "덕만이 내놓은 유언장에는 진평왕이 덕만을 후계자로 삼는다는 문장과 왕의 서명이 또렷하게 남아 있었습니다. 회의장이 술렁였습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "아버지께서 마지막으로 남긴 뜻입니다. 더는 계승을 미룰 이유가 없습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "필체도 인장도 완벽합니다. 그래서 한 가지만 확인하겠습니다. 이 서명을 언제 받으셨습니까?"
+      - say:
+          char: 덕만
+          framing: bust
+          text: "돌아가시기 전날 밤입니다."
+      - effect: focus
+      - say:
+          char: 칠숙
+          framing: closeup
+          with: []
+          text: "그날 전하의 오른팔은 약독 때문에 움직이지 않았습니다. 의원과 나인 일곱 명이 압니다. 그런데 이 서명은 오른손 글씨입니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "아버지가 저를 믿으셨다는 사실은 진짜입니다. 문서만 없었을 뿐입니다."
+      - say:
+          char: 칠숙
+          framing: bust
+          text: "지금 재판할 것은 전하의 마음이 아니라 공주께서 왕명을 위조했는지입니다."
+      - effect: alarm
+      - say:
+          text: "유언장을 쓰던 서리가 붙잡혀 들어왔습니다. 그는 가족을 살려 달라며 덕만의 명령으로 문서를 만들었다고 자백했습니다."
+      - say:
+          char: 덕만.sad
+          framing: bust
+          text: "내가 아버지의 말을 믿지 못해서 종이 한 장을 만들었습니다. 그 종이가 이제 아버지가 한 말까지 거짓으로 만드는군요."
+      - effect: darken
+      - say:
+          text: "호위들은 덕만의 관식을 벗기고 두 손을 묶었습니다. 화백은 왕위 표결을 중단하고 왕명 위조 재판을 열었습니다."
+          wait: 750
       - gameOver:
-          title: "운명 35 — 아버지의 거짓말"
-          message: "유언장은 완벽했지만 진평왕은 마지막 순간 오른손을 쓰지 못했다. 칠숙은 서명 한 획으로 거짓을 증명했다. 덕만은 왕의 딸이 아니라 왕명을 위조한 죄인으로 끌려갔다."
+          title: "운명 35 — 오른손 서명"
+          message: "덕만은 위조 유언장 때문에 왕위와 신뢰를 모두 잃었습니다. 진평왕이 실제로 남긴 마지막 말도 증거로 받아들여지지 않았습니다."

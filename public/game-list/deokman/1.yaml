@@ -359,26 +359,205 @@ scenes:
 
   go_07_guard_revolt:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 유신
+          position: right
+          framing: full
+      - say:
+          text: "덕만은 호위부 병사 스물여덟 명을 한 줄로 세우고, 어젯밤 자리를 비운 사람은 모두 무기를 내려놓으라고 명했습니다."
+      - say:
+          char: 유신
+          framing: bust
+          text: "교대 시간이 달랐던 사람까지 전부 세우셨습니다. 이대로 심문하면 오늘 밤 공주님 처소를 지킬 병사가 없습니다."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          text: "그 안에 암살범이 있을지 모르는데 다시 칼을 맡길 수는 없습니다."
+      - say:
+          char: 유신.sad
+          framing: closeup
+          with: []
+          text: "그럼 결백한 병사들도 공주께서 이미 자신을 범인으로 정했다고 생각할 겁니다."
+      - effect: darken
+      - say:
+          text: "그날 밤 덕만의 처소에는 보초가 한 명도 오지 않았습니다. 창문이 열리는 소리를 들은 덕만이 칼을 찾았을 때, 무기함도 비어 있었습니다."
+      - effect: impact
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "유신…… 문밖에 있습니까?"
+          wait: 700
       - gameOver:
-          title: "운명 07 — 충성의 칼"
-          message: "덕만은 호위부를 한꺼번에 의심했다. 그날 밤 그녀를 지킬 병사는 아무도 보초에 서지 않았다. 충성을 시험한 공주는 충성이 사라진 자리에서 죽었다."
+          title: "운명 07 — 빈 보초"
+          message: "대답은 없었습니다. 덕만은 비어 있는 처소에서 습격을 받고 죽었습니다."
   go_08_waiting_room:
     actions:
+      - bg: princess_chamber
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 소원
+          position: right
+          framing: full
+      - say:
+          text: "첫날에는 문밖에 증언하겠다는 나인이 둘 있었습니다. 둘째 날 아침에는 한 명만 남았고, 저녁에는 아무도 오지 않았습니다."
+      - say:
+          char: 소원.nervous
+          framing: bust
+          text: "공주님, 부엌에서 행주를 봤다는 아이가 사라졌어요. 지금 나가서 찾아야 해요."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "나가면 기다렸다는 듯 잡을 거야. 아버지가 시간을 주셨으니 증거가 올 때까지 버티자."
+      - effect: darken
+      - say:
+          text: "사흘째 새벽, 문밖에서 왕명이 읽혔습니다. 심문을 위해 방을 열라는 명령이었습니다."
+      - say:
+          char: 소원.nervous
+          framing: closeup
+          with: []
+          text: "제가 봤다고 말할게요. 사실은 몰라도, 공주님이 범인이 아닌 건 알아요."
+      - say:
+          char: 덕만.sad
+          framing: bust
+          text: "거짓말까지 시키려고 기다린 건 아니야. 너는 나가."
+      - effect: alarm
+      - say:
+          text: "문이 부서졌을 때 방 안에는 덕만 혼자였습니다. 사라진 증인도, 검은 가루의 출처도 찾지 못한 채 재판이 시작됐습니다."
+          wait: 700
       - gameOver:
-          title: "운명 08 — 기다리는 사람"
-          message: "증거는 나타나지 않았고 문밖의 증인만 하나씩 사라졌다. 사흘째 아침 문이 열렸을 때, 덕만은 결백을 말할 사람도 들을 사람도 없었다."
+          title: "운명 08 — 사라진 증인"
+          message: "덕만은 결백을 증명하지 못했습니다. 암살 미수 공범으로 폐위된 뒤 북쪽 별궁에 평생 갇혔습니다."
   go_09_false_heir:
     actions:
+      - bg: throne_hall
+      - char:
+          id: 진평왕
+          position: center
+          framing: full
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "덕만이 후계자로 지명됐다는 소문은 예상보다 빨리 퍼졌습니다. 다음 날 화백들은 왕의 친필 명령을 보여 달라며 왕좌전으로 몰려왔습니다."
+      - say:
+          char: 진평왕.sad
+          framing: bust
+          text: "덕만아. 내가 너를 후계자로 삼았다는 말을 네가 퍼뜨렸느냐?"
+      - say:
+          char: 덕만
+          framing: bust
+          text: "암살범이 먼저 움직이게 하려고 꾸민 소문입니다. 왕명을 훔칠 생각은 없었습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "하지만 이미 세 고을에서 공주를 새 주군이라 부르고 있습니다. 생각이 없었다는 말로 거둘 수 있는 소문이 아닙니다."
+      - effect: focus
+      - say:
+          char: 진평왕.sad
+          framing: closeup
+          with: []
+          text: "네 결백을 밝히려다 왕의 말을 네가 대신 만들었구나. 지금은 내가 너를 감쌀 수 없다."
+      - effect: darken
+      - say:
+          text: "진평왕은 직접 덕만의 체포를 명했습니다. 칠숙은 가장 먼저 고개를 숙이고 왕명을 받았습니다."
+          wait: 750
       - gameOver:
-          title: "운명 09 — 가짜 왕명"
-          message: "후계자 지명 소문은 왕의 권위를 훔친 죄가 되었다. 암살범보다 먼저 잡힌 것은 소문을 만든 공주였다. 칠숙은 재판에서 가장 슬픈 얼굴로 유죄를 청했다."
+          title: "운명 09 — 후계자 사칭"
+          message: "덕만은 왕명을 사칭한 죄로 폐위되었습니다. 암살 사건 수사는 그날 중단됐습니다."
   go_10_right_without_proof:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "사흘째 화백회의에서 덕만은 모은 단서를 탁자 위에 올리고 칠숙을 정면으로 지목했습니다."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          text: "독을 들인 하인도, 바뀐 명단도 칠숙공에게 닿습니다. 이분이 아버지를 죽이려 했습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "하인은 어디 있습니까? 명단을 쓴 사람은 누구입니까? 공주께서 가진 것은 의심뿐입니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "사흘만 더 주시면 연결된 증거를 찾겠습니다. 지금은 먼저 이 사람을 가둬야 합니다."
+      - effect: alarm
+      - say:
+          text: "화백들은 칠숙이 아니라 덕만의 호위를 먼저 무장 해제했습니다. 회의장 밖에서는 붙잡았던 하인이 이미 숨졌다는 전갈이 들어왔습니다."
+      - say:
+          char: 칠숙
+          framing: closeup
+          with: []
+          text: "이제 공주께서 지목한 증인은 한 명도 남지 않았습니다. 그래도 같은 말씀을 하시겠습니까?"
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "……합니다. 제가 틀린 건 증거를 찾기 전에 입을 연 것입니다."
+      - effect: darken
+      - say:
+          text: "덕만의 추리는 맞았지만 재판에서 입증할 방법은 사라졌습니다. 무고와 왕족 선동죄가 암살 혐의에 더해졌습니다."
+          wait: 750
       - gameOver:
-          title: "운명 10 — 정답을 맞힌 죄인"
-          message: "칠숙이 배후라는 추리는 옳았다. 하지만 옳은 말과 증명된 말은 궁에서 서로 다른 목숨값을 가졌다. 덕만은 정답을 남기고 처형되었다."
+          title: "운명 10 — 증거 없는 고발"
+          message: "덕만은 칠숙의 이름을 남기고 처형되었습니다. 칠숙은 그 이름이 적힌 재판 기록까지 없앴습니다."
   go_11_innocent_exile:
     actions:
+      - bg: princess_chamber
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 소원
+          position: right
+          framing: full
+      - say:
+          text: "덕만은 독 묻은 행주와 바뀐 명단, 하인의 장부를 화로에 넣었습니다. 불길이 마지막 글자를 삼키자 방문을 두드리는 소리가 멎었습니다."
+      - say:
+          char: 소원.angry
+          framing: bust
+          text: "이걸 태우면 오늘은 살 수 있어요. 그런데 내일 누가 공주님이 안 했다고 말해 줘요?"
+      - say:
+          char: 덕만.sad
+          framing: bust
+          text: "아무도 다치지 않게 끝내려면 이 방법뿐이야. 증거가 없으면 저쪽도 나를 죽이지 못해."
+      - say:
+          char: 소원
+          framing: closeup
+          with: []
+          text: "죽이지 않아도 없앨 수 있잖아요."
+      - effect: darken
+      - say:
+          text: "다음 날 화백은 덕만을 처형하지 않았습니다. 대신 결백도 확인할 수 없다며 왕족 지위와 왕경 거주권을 빼앗았습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "소원아, 따라오지 마. 네가 본 것까지 없는 일로 만들고 싶지는 않아."
+          wait: 700
       - gameOver:
-          title: "운명 11 — 죄 없는 죄인"
-          message: "증거가 사라지자 죄도 사라진 듯 보였다. 그러나 결백을 증명할 것도 함께 사라졌다. 덕만은 살아서 궁을 나갔고, 다시는 왕위 가까이 돌아오지 못했다."
+          title: "운명 11 — 불탄 결백"
+          message: "덕만은 살아서 왕경을 떠났습니다. 다시는 재판받지 않았지만 왕위 계승권도 되찾지 못했습니다."

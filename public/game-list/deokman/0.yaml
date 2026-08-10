@@ -81,7 +81,7 @@ scenes:
     actions:
       - say:
           char: 덕만
-          framing: closeup
+          framing: bust
           delivery: nervous
           text: "연못으로 가려다가 길을 잘못 들었습니다. 그런데 두 분은 등불도 없이 여기서 뭘 하십니까?"
       - say:
@@ -356,17 +356,18 @@ scenes:
           text: "이 노리개가 네 것임을 부정할 수 있겠느냐?"
       - say:
           char: 덕만
-          framing: closeup
+          framing: bust
           delivery: whisper
           text: "제 것입니다. 누군가 제 방에서 훔쳤습니다. 독으로 아버지를 죽이고, 이 물건으로 제가 범인이라고 만들 생각이었습니다."
           wait: 800
       - say:
           char: 진평왕.sad
-          framing: closeup
+          framing: bust
           text: "그 말을 믿고 싶구나. 하지만 내일 아침에는 나 말고도 모두를 설득해야 한다."
       - say:
           char: 덕만.sad
           framing: closeup
+          with: []
           text: "알고 있습니다. 사흘만 주십시오. 제 이름에 묻은 독부터 닦아 내겠습니다."
       - get: black_powder
       - set:
@@ -376,31 +377,235 @@ scenes:
 
   go_01_too_clever:
     actions:
+      - char:
+          id: 아진
+          position: left
+          framing: full
+      - char:
+          id: 덕만
+          position: center
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - effect: focus
+      - say:
+          text: "덕만은 숨지 않고 두 사람 앞에 나섰습니다. 회랑 끝에서 호위가 달려오는 발소리가 들렸습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "내일 진시, 두 번째 잔. 왕이 쓰러지면 저부터 죽일 생각이군요."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "회랑이 비었는데도 한 글자도 놓치지 않으셨습니다. 우연히 길을 잃은 분의 기억치고는 너무 정확하군요."
+      - say:
+          char: 덕만.angry
+          framing: closeup
+          with: []
+          text: "제가 들은 걸 두려워하는군요."
+      - say:
+          char: 아진
+          framing: bust
+          text: "아닙니다. 내일 공주께서 공모 사실을 미리 알고 있었다고 증언할 사람이 생긴 겁니다."
+      - effect: darken
+      - say:
+          text: "호위가 달려왔지만 칠숙은 먼저 무릎을 꿇었습니다. 그는 덕만이 암살 시각과 방법을 직접 말했다고 고했습니다. 다음 날 재판에서는 정확한 기억이 결백이 아니라 공모의 증거가 되었습니다."
+          wait: 700
       - gameOver:
-          title: "운명 01 — 너무 영리한 공주"
-          message: "덕만은 들은 문장을 한 글자도 틀리지 않았다. 다음 날 그 정확함이 공모의 증거가 되었다. 정답을 너무 빨리 말한 공주는 해 뜨기 전 처형되었다."
+          title: "운명 01 — 들어 버린 문장"
+          message: "덕만은 암살 계획을 막기도 전에 공모자로 체포되었습니다. 그녀를 처형한 뒤, 연회는 예정대로 열렸습니다."
   go_02_broken_moon:
     actions:
+      - char:
+          id: 아진
+          position: left
+          framing: full
+      - char:
+          id: 덕만
+          position: center
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - effect: shake
+      - say:
+          text: "덕만이 난간을 짚고 지붕에 오르자 젖은 기와가 발밑에서 밀렸습니다."
+      - say:
+          char: 덕만.sad
+          framing: bust
+          text: "잠깐…… 손을 잡아 줘!"
+      - say:
+          char: 아진
+          framing: bust
+          text: "세 걸음만 더 가시면 아래 회랑으로 내려갈 수 있습니다. 그대로 오십시오."
+      - say:
+          text: "아진이 내민 손목에는 붉은 매듭이 감겨 있었습니다. 덕만이 손을 거두는 순간, 마지막 기와가 깨졌습니다."
+      - effect: darken
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          with: []
+          text: "난간이 많이 미끄러웠다고 기록하십시오."
+          wait: 650
       - gameOver:
-          title: "운명 02 — 부러진 달"
-          message: "기와는 비에 젖어 있었다. 덕만은 지붕 아래의 어둠으로 사라졌고, 궁은 실족이라 기록했다. 난간에는 붉은 매듭 한 올이 남았다."
+          title: "운명 02 — 젖은 기와"
+          message: "덕만은 지붕 아래 회랑으로 떨어졌습니다. 궁은 사고사라 발표했고, 난간의 붉은 실은 아침 전에 치워졌습니다."
   go_03_open_door:
     actions:
+      - bg: shadow_corridor
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 아진
+          position: right
+          framing: full
+      - say:
+          text: "왕의 침전으로 가는 서쪽 문에는 보초가 없었습니다. 덕만이 손을 대자 빗장이 안쪽에서 먼저 풀렸습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "누가 안에 있느냐. 아버지께 급히 드릴 말이 있다."
+      - say:
+          char: 아진
+          framing: bust
+          text: "그 말을 듣지 못하게 하라는 명령을 받았습니다."
+      - effect: impact
+      - say:
+          char: 덕만.angry
+          framing: closeup
+          with: []
+          text: "아버지! 잔을 드시면 안 됩니다!"
+      - effect: darken
+      - say:
+          text: "덕만의 외침은 닫힌 침전 문을 넘지 못했습니다. 칼이 먼저 목소리를 끊었고, 안에서는 연회 준비를 알리는 북이 울렸습니다."
+          wait: 700
       - gameOver:
-          title: "운명 03 — 열린 문"
-          message: "왕의 침전으로 가는 문은 너무 쉽게 열렸다. 기다리던 칼은 덕만의 입을 먼저 막았다. 그날 밤 왕은 암살 계획을 끝내 듣지 못했다."
+          title: "운명 03 — 침전 앞의 칼"
+          message: "덕만은 침전 문 앞에서 살해되었습니다. 진평왕은 딸이 왜 찾아왔는지 끝내 듣지 못했습니다."
   go_04_guest_of_traitor:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "칠숙은 덕만을 자신의 방으로 들이고 시종들을 모두 물렸습니다. 문밖에서 빗장이 걸리는 소리가 났습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "내일 두 번째 잔에 무슨 일이 생기는지 알고 계십니까?"
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "알고 있습니다. 공주께서 제게 그 계획을 제안하러 오셨다는 사실도 이제 알게 됐습니다."
+      - say:
+          char: 덕만.angry
+          framing: closeup
+          with: []
+          text: "함정을 판 건 그대입니다."
+      - effect: alarm
+      - say:
+          char: 칠숙
+          framing: bust
+          text: "문밖의 호위에게는 어느 쪽 말이 더 그럴듯할까요?"
+      - say:
+          text: "문이 열리자 칠숙은 먼저 바닥에 엎드렸습니다. 호위들은 칠숙의 방에서 그를 협박하던 덕만을 현장에서 체포했습니다."
+          wait: 700
       - gameOver:
-          title: "운명 04 — 반역자의 손님"
-          message: "칠숙은 무릎 꿇고 충성을 맹세했다. 덕만이 돌아선 뒤 그 맹세는 체포 명령이 되었다. 공주는 스스로 적의 방에 들어간 첫 번째 왕족으로 남았다."
+          title: "운명 04 — 칠숙의 방"
+          message: "덕만은 칠숙을 떠보려다 암살을 제안한 사람으로 몰렸습니다. 재판이 열리기 전부터 증언은 준비돼 있었습니다."
   go_05_filial_cup:
     actions:
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
+      - char:
+          id: 진평왕
+          position: right
+          framing: full
+      - effect: focus
+      - say:
+          text: "덕만은 진평왕의 손에서 잔을 빼앗아 한 번에 비웠습니다. 연회장이 조용해졌다가 곧 효심을 칭송하는 목소리로 가득 찼습니다."
+      - say:
+          char: 진평왕
+          framing: bust
+          text: "덕만아, 왜 그랬느냐. 그 잔에 무엇이 있었느냐?"
+      - say:
+          char: 덕만.sad
+          framing: bust
+          text: "아버지께서 드시면 안 되는 것이었습니다. 저는 괜찮……"
+      - effect: blur
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "손끝이…… 움직이지 않습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "공주께서 독을 알고도 직접 마셨다면, 누가 넣었는지부터 밝혀야겠습니다."
+      - effect: darken
+      - say:
+          text: "덕만은 아버지의 무릎에 기대어 숨을 거두었습니다. 칠숙은 그녀의 손톱 밑에서 검은 가루를 찾아냈고, 죽은 공주가 독을 준비했다는 기록을 남겼습니다."
+          wait: 800
       - gameOver:
-          title: "운명 05 — 효녀 덕만"
-          message: "덕만은 왕 대신 잔을 비웠다. 왕실은 효심을 칭송했으나, 그녀의 손톱 밑 검은 가루는 기록에서 지워졌다. 삼 년 뒤 왕위는 이름 없는 소년에게 돌아갔다."
+          title: "운명 05 — 두 번째 잔"
+          message: "덕만은 진평왕 대신 독을 마시고 죽었습니다. 누가 잔을 바꿨는지는 조사되지 않았습니다."
   go_06_closed_mouth:
     actions:
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
+      - char:
+          id: 진평왕
+          position: right
+          framing: full
+      - say:
+          text: "덕만이 망설이는 사이 진평왕은 두 번째 잔을 입에 댔습니다. 칠숙은 잔이 비워지는 것을 끝까지 바라보았습니다."
+      - say:
+          char: 덕만.sad
+          framing: bust
+          text: "아버지, 잠깐만요. 그 잔은……"
+      - say:
+          char: 진평왕
+          framing: bust
+          text: "왜 그러느냐?"
+      - effect: impact
+      - say:
+          text: "진평왕의 손에서 잔이 떨어졌습니다. 왕이 숨을 쉬지 못하자 호위들이 덕만과 칠숙 사이를 막아섰습니다."
+      - say:
+          char: 칠숙
+          framing: bust
+          text: "공주께서는 무언가 아시는 얼굴입니다. 왜 전하께서 드실 때까지 말씀하지 않으셨습니까?"
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "확실하지 않았습니다. 한 번만 더 확인하려고……"
+      - effect: darken
+      - say:
+          text: "덕만의 설명은 끝나지 못했습니다. 왕의 잔에 독이 든 것을 알고도 지켜봤다는 증언이 먼저 퍼졌고, 새벽이 오기 전에 체포 명령이 내려졌습니다."
+          wait: 700
       - gameOver:
-          title: "운명 06 — 입을 다문 공주"
-          message: "왕은 잔을 비우고 쓰러졌다. 덕만은 아무것도 하지 않았다는 이유로 살아남지 못했다. 침묵은 결백이 아니라 가장 값싼 공모가 되었다."
+          title: "운명 06 — 늦은 경고"
+          message: "진평왕은 연회장에서 죽었습니다. 덕만은 독을 알고도 막지 않았다는 혐의로 함께 처형되었습니다."

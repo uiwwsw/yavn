@@ -13,6 +13,22 @@ export type CharacterStageLayout = {
 
 const POSITION_ORDER: readonly Position[] = ['left', 'center', 'right'];
 
+export function resolveDialogueVisibleCharacterIds(
+  stagedCharacterIds: readonly string[],
+  speakerId: string | undefined,
+  explicitCompanionIds: readonly string[] | undefined,
+): string[] {
+  const requestedIds = explicitCompanionIds === undefined
+    ? stagedCharacterIds
+    : [speakerId, ...explicitCompanionIds];
+
+  return Array.from(
+    new Set(
+      requestedIds.filter((id): id is string => typeof id === 'string' && id.trim().length > 0),
+    ),
+  );
+}
+
 export function buildImageCharacterRenderKey(position: Position, characterId: string): string {
   return `${position}-${characterId}`;
 }
