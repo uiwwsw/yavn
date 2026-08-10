@@ -20,6 +20,12 @@ describe('choice dialog containment', () => {
       /\.dialog-box\.has-choice-gate \.text\s*\{[\s\S]*?min-height: 0;/,
     );
     expect(styles).toMatch(
+      /\.dialog-box\.has-choice-gate\s*\{[\s\S]*?--dialog-max-height: 46cqh;/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\)[\s\S]*?\.dialog-box\.has-choice-gate\s*\{[\s\S]*?--dialog-max-height: 48cqh;/,
+    );
+    expect(styles).toMatch(
       /\.dialog-box\.has-choice-gate \.choice-gate-options\s*\{[\s\S]*?padding-bottom: 2px;/,
     );
   });

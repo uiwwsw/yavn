@@ -9,40 +9,45 @@ scenes:
       - char:
           id: 진평왕
           position: right
+          framing: full
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           text: "제1장 — 범인은 내 이름을 알고 있다"
       - say:
           char: 진평왕
+          framing: full
           with:
             - 덕만
           text: "사흘이다. 네 이름에서 독 냄새를 씻어 내라. 나흘째에는 왕도, 아버지도 네 앞에 설 수 없다."
       - say:
           char: 덕만
-          text: "범인은 제가 어디부터 뒤질지 압니다. 그렇다면 그들이 안심하고 비워 둔 곳부터 가야겠군요."
+          framing: bust
+          text: "범인은 제 동선까지 압니다. 그들이 안심하고 비워 둔 곳부터 보겠습니다."
       - goto: investigate_choice
 
   investigate_choice:
     actions:
       - choice:
           key: c1_investigate
-          prompt: "가장 먼저 어디를 조사할까?"
+          prompt: "첫 단서를 어디서 찾을까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "독보다 잔을 만진 손이 많은 왕실 부엌"
+            - text: "부엌을 뒤진다"
               add:
                 insight: 1
               goto: investigate_kitchen
-            - text: "출입 명단이 바뀐 기록고"
+            - text: "기록고를 뒤진다"
               add:
                 insight: 1
                 suspicion: 1
               goto: investigate_archive
-            - text: "병력을 움직일 수 있는 호위부부터 공개 심문한다"
+            - text: "호위부를 심문한다"
               goto: go_07_guard_revolt
-            - text: "문을 잠그고 내 방에서 증거가 나타나길 기다린다"
+            - text: "방에서 기다린다"
               goto: go_08_waiting_room
 
   investigate_kitchen:
@@ -51,17 +56,20 @@ scenes:
       - char:
           id: 소원
           position: right
+          framing: full
       - say:
           char: 소원
+          framing: full
           with:
             - 덕만
-          text: "술독도, 국자도, 잔도 멀쩡했어요. 이상한 건 행주뿐이에요. 검은 가루를 묻혀 공주님 손이 닿을 자리만 닦았어요."
+          text: "술독도, 국자도, 잔도 깨끗해요. 이상한 건 행주뿐이에요. 공주님 손이 닿는 곳만 검은 가루로 닦았어요."
       - say:
           char: 덕만
+          framing: closeup
           with:
             - 소원
           delivery: whisper
-          text: "마시라고 둔 독이 아니었어. 내 손에 묻혀…… 내 이름을 죽이려던 거야."
+          text: "마시는 독이 아니야. 내 손에 묻혀, 내 이름을 죽이려던 거야."
       - add:
           sowon_trust: 1
       - goto: rumor_choice
@@ -71,16 +79,19 @@ scenes:
       - char:
           id: 비담
           position: right
+          framing: full
       - say:
           char: 비담
+          framing: bust
           with:
             - 덕만
-          text: "범인은 새 먹을 갈고, 죽은 관리의 붓을 빌렸습니다. 거짓말은 오늘 것인데 필체만 삼 년 전이군요."
+          text: "먹은 새것, 붓은 죽은 관리의 것. 오늘 만든 거짓말에 삼 년 전 필체를 입혔군요."
       - say:
           char: 덕만
+          framing: bust
           with:
             - 비담
-          text: "틀린 흔적을 일부러 남겼군. 내가 그대처럼 웃는 사람을 찾아가게 하려고."
+          text: "일부러 틀렸군. 나를 그대에게 보내려고."
       - add:
           bidam_trust: 1
       - goto: rumor_choice
@@ -89,28 +100,30 @@ scenes:
     actions:
       - say:
           char: 비담
+          framing: bust
           text: "저쪽이 공주님을 구경하고 있습니다. 손님을 오래 세워 둘 수는 없지요. 어떤 거짓말을 안주로 내시겠습니까?"
       - choice:
           key: c1_rumor
-          prompt: "범인을 끌어내기 위해 어떤 소문을 흘릴까?"
+          prompt: "어떤 소문으로 덫을 놓을까?"
           char: 덕만
+          framing: closeup
           with:
             - 비담
           options:
-            - text: "검은 가루가 백제 상인의 물건으로 밝혀졌다고 한다"
+            - text: "백제 상인 탓이라 한다"
               add:
                 insight: 1
               goto: rumor_baekje
-            - text: "왕이 이미 회복해 범인의 이름을 말했다고 한다"
+            - text: "왕이 범인을 봤다 한다"
               add:
                 power: 1
               goto: rumor_king
-            - text: "덕만에게 살아 있는 목격자가 있다고 한다"
+            - text: "목격자가 살아 있다 한다"
               add:
                 suspicion: 1
                 sowon_trust: -1
               goto: rumor_witness
-            - text: "왕이 덕만을 후계자로 지명했다는 소문을 낸다"
+            - text: "후계 지명을 꾸민다"
               goto: go_09_false_heir
 
   rumor_baekje:
@@ -119,6 +132,7 @@ scenes:
           text: "백제 상인 소문이 반나절 만에 궁을 돌았다. 그날 밤 국산의 하인이 국경 상단 장부를 품고 담을 넘었다."
       - say:
           char: 덕만
+          framing: bust
           text: "믿은 사람은 입을 열었고, 두려워한 사람은 발을 움직였군. 발자국을 따라가자."
       - goto: evidence_choice
 
@@ -134,10 +148,12 @@ scenes:
     actions:
       - say:
           char: 소원.angry
-          text: "살아 있는 목격자라니까 다들 저부터 봤어요. 제 이름을 미끼로 쓰실 거면, 적어도 저한테 먼저 읽어 주세요."
+          framing: bust
+          text: "살아 있는 목격자라니까 모두 절 봤어요. 제 이름을 미끼로 쓸 거면, 먼저 말해 줬어야죠."
       - say:
           char: 덕만.sad
-          text: "미안해. 네가 무서워하는 얼굴까지 보면서도 그 말을 냈어. 오늘 안에 끝낼게. 그리고 다시는 네 이름을 먼저 내놓지 않을게."
+          framing: bust
+          text: "맞아. 네가 겁먹는 걸 보면서도 네 이름을 썼어. 미안해. 오늘 안에 끝낼게."
       - goto: evidence_choice
 
   evidence_choice:
@@ -147,31 +163,34 @@ scenes:
           text: "사흘째 새벽. 바뀐 명단, 독 묻은 행주, 담 아래 붙잡힌 하인이 같은 탁자 위에 놓였다."
       - choice:
           key: c1_evidence
-          prompt: "얻은 증거를 어떻게 사용할까?"
+          prompt: "증거를 어떻게 쓸까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "왕에게만 증거를 보이고 공개 재판은 미룬다"
+            - text: "왕에게만 보인다"
               add:
                 legitimacy: 2
               goto: evidence_king
-            - text: "하인을 풀어 주는 대신 배후에게 거짓 보고를 시킨다"
+            - text: "하인을 거짓 전령으로 쓴다"
               add:
                 insight: 2
                 power: 1
                 suspicion: 1
               goto: evidence_reverse
-            - text: "화백회의에서 국산을 암살 배후로 즉시 지목한다"
+            - text: "국산을 공개 지목한다"
               goto: go_10_right_without_proof
-            - text: "누명을 끝내기 위해 증거를 모두 태운다"
+            - text: "모두 태운다"
               goto: go_11_innocent_exile
 
   evidence_king:
     actions:
       - say:
           char: 진평왕
+          framing: bust
           text: "네가 죄 없다는 것은 알겠다. 그런데 덕만아, 죄 없는 사람이 다음 칼도 피할 수 있겠느냐?"
       - say:
           char: 덕만
+          framing: bust
           text: "아니요. 그래서 결백만 청하지 않겠습니다. 칼을 든 손이 돌아갈 곳까지 보겠습니다."
       - goto: chapter1_end
 
@@ -179,9 +198,11 @@ scenes:
     actions:
       - say:
           char: 비담
+          framing: bust
           text: "하인을 풀어 주셨으니, 이제 적이 보내는 편지를 매일 받아 보시겠군요. 답장은 제가 태워 드릴까요?"
       - say:
           char: 덕만
+          framing: bust
           text: "아니. 계속 배달하게 두세요. 잡힌 손은 입을 다물지만, 의심받지 않는 손은 길을 보여 주니까."
       - goto: chapter1_end
 
@@ -192,8 +213,9 @@ scenes:
           text: "덕만은 누명을 벗었다. 배후는 놓쳤지만, 하인의 품에서 다음 계획을 발견했다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: angry
-          text: "‘덕만공주 혼인에 관한 합의서.’ 죽이지 못한 여자는 살려 두는 게 아니라…… 남의 아내로 보관하겠다는 건가."
+          text: "죽이지 못한 여자는 남의 아내로 보관하겠다…… 내 목숨에 값을 매겼군."
           wait: 800
       - get: marriage_pact
       - set:

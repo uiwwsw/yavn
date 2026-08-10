@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { resolveCharacterFraming } from './characterFraming';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { useVNStore } from './store';
@@ -853,14 +854,23 @@ async function waitForVisibleLive2DReady(chapterLabel: string): Promise<void> {
   }
 }
 
-function buildCharacterSlot(baseUrl: string, id: string, basePath: string, emotion?: string): CharacterSlot {
+function buildCharacterSlot(
+  baseUrl: string,
+  id: string,
+  basePath: string,
+  character: GameData['assets']['characters'][string],
+  emotion?: string,
+  framing?: string,
+): CharacterSlot {
   const source = resolveAsset(baseUrl, basePath);
+  const resolvedFraming = resolveCharacterFraming(character, framing);
   if (isJsonAsset(basePath) || isJsonAsset(source)) {
     return {
       id,
       kind: 'live2d',
       source,
       emotion,
+      framing: resolvedFraming,
     };
   }
   return {
@@ -868,6 +878,7 @@ function buildCharacterSlot(baseUrl: string, id: string, basePath: string, emoti
     kind: 'image',
     source,
     emotion,
+    framing: resolvedFraming,
   };
 }
 
@@ -1245,7 +1256,34 @@ function syncCharacterEmotions(
       continue;
     }
     const assetPath = charDef.emotions?.[emotion] ?? charDef.base;
-    useVNStore.getState().setCharacter(position, buildCharacterSlot(baseUrl, slot.id, assetPath, emotion));
+    useVNStore
+      .getState()
+      .setCharacter(
+        position,
+        buildCharacterSlot(baseUrl, slot.id, assetPath, charDef, emotion, slot.framing.name),
+      );
+  }
+}
+
+function syncCharacterFraming(game: GameData, characterId: string | undefined, framing: string | undefined) {
+  if (!characterId || !framing) {
+    return;
+  }
+  const charDef = game.assets.characters[characterId];
+  if (!charDef) {
+    return;
+  }
+
+  const positions: Position[] = ['left', 'center', 'right'];
+  for (const position of positions) {
+    const slot = useVNStore.getState().characters[position];
+    if (!slot || slot.id !== characterId) {
+      continue;
+    }
+    useVNStore.getState().setCharacter(position, {
+      ...slot,
+      framing: resolveCharacterFraming(charDef, framing),
+    });
   }
 }
 
@@ -2383,7 +2421,17 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
     if ('char' in action) {
       const charDef = game.assets.characters[action.char.id];
       const assetPath = action.char.emotion ? charDef.emotions?.[action.char.emotion] ?? charDef.base : charDef.base;
-      setChar(action.char.position, buildCharacterSlot(chapter.baseUrl, action.char.id, assetPath, action.char.emotion));
+      setChar(
+        action.char.position,
+        buildCharacterSlot(
+          chapter.baseUrl,
+          action.char.id,
+          assetPath,
+          charDef,
+          action.char.emotion,
+          action.char.framing,
+        ),
+      );
       actionIndex += 1;
       continue;
     }
@@ -2498,6 +2546,7 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       promoteSpeaker(presentation.speakerId);
       setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, chapter.baseUrl, presentation.emotionRefs);
+      syncCharacterFraming(game, presentation.speakerId, action.say.framing);
       actionIndex += 1;
       continue;
     }
@@ -2870,7 +2919,17 @@ function runToNextPause(loopGuard = 0) {
       : charDef.base;
     useVNStore
       .getState()
-      .setCharacter(action.char.position, buildCharacterSlot(state.baseUrl, action.char.id, assetPath, action.char.emotion));
+      .setCharacter(
+        action.char.position,
+        buildCharacterSlot(
+          state.baseUrl,
+          action.char.id,
+          assetPath,
+          charDef,
+          action.char.emotion,
+          action.char.framing,
+        ),
+      );
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -2953,6 +3012,7 @@ function runToNextPause(loopGuard = 0) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
       useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
+      syncCharacterFraming(game, presentation.speakerId, action.choice.framing);
     }
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
@@ -3048,6 +3108,7 @@ function runToNextPause(loopGuard = 0) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
       useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
+      syncCharacterFraming(game, presentation.speakerId, action.input.framing);
     }
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
@@ -3087,6 +3148,7 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().promoteSpeaker(presentation.speakerId);
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
+    syncCharacterFraming(game, presentation.speakerId, action.say.framing);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',

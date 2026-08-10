@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseBaseYaml, parseChapterYaml, parseConfigYaml } from './parser';
+import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 
 const configYaml = (startScreen: string) => `
 title: Test Game
@@ -48,6 +48,119 @@ assets:
     expect(parsed.data?.data.assets?.characters?.Deokman).toMatchObject({
       defaultDelivery: 'deduction',
     });
+  });
+
+  it('accepts calibrated full, bust, and close-up framings from one character image', () => {
+    const base = parseBaseYaml(
+      `
+assets:
+  characters:
+    Deokman:
+      base: assets/deokman.webp
+      defaultFraming: full
+      framings:
+        full:
+          scale: 1
+        bust:
+          scale: 1.55
+          x: 2
+          y: -3
+        closeup:
+          scale: 2.05
+          y: -6
+`,
+      'base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: confrontation
+scenes:
+  confrontation:
+    actions:
+      - char:
+          id: Deokman
+          position: center
+          framing: full
+      - say:
+          char: Deokman
+          framing: closeup
+          text: "Look at me."
+`,
+      '0.yaml',
+    );
+
+    expect(base.error).toBeUndefined();
+    expect(base.data?.data.assets?.characters?.Deokman).toMatchObject({
+      defaultFraming: 'full',
+      framings: {
+        full: { scale: 1 },
+        bust: { scale: 1.55, x: 2, y: -3 },
+        closeup: { scale: 2.05, y: -6 },
+      },
+    });
+    expect(chapter.error).toBeUndefined();
+    expect(chapter.data?.data.scenes.confrontation.actions).toMatchObject([
+      { char: { framing: 'full' } },
+      { say: { framing: 'closeup' } },
+    ]);
+  });
+
+  it('rejects a default framing that is not declared on the character', () => {
+    const parsed = parseBaseYaml(
+      `
+assets:
+  characters:
+    Deokman:
+      base: assets/deokman.webp
+      defaultFraming: bust
+      framings:
+        full:
+          scale: 1
+`,
+      'base.yaml',
+    );
+
+    expect(parsed.data).toBeUndefined();
+    expect(parsed.error?.message).toContain("references missing framing 'bust'");
+  });
+
+  it('rejects an action framing that the referenced character does not declare', () => {
+    const config = parseConfigYaml(configYaml('  image: assets/title.png'), 'config.yaml');
+    const base = parseBaseYaml(
+      `
+assets:
+  characters:
+    Deokman:
+      base: assets/deokman.webp
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+`,
+      'base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: confrontation
+scenes:
+  confrontation:
+    actions:
+      - say:
+          char: Deokman
+          framing: closeup
+          text: "Look at me."
+`,
+      '0.yaml',
+    );
+
+    expect(config.data).toBeDefined();
+    expect(base.data).toBeDefined();
+    expect(chapter.data).toBeDefined();
+    if (!config.data || !base.data || !chapter.data) return;
+    const resolved = resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data });
+    expect(resolved.data).toBeUndefined();
+    expect(resolved.error?.message).toContain("uses missing framing 'closeup'");
   });
 
   it('accepts emotional dialogue delivery', () => {

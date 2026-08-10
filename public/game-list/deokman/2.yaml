@@ -9,43 +9,48 @@ scenes:
       - char:
           id: 국산
           position: right
+          framing: full
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           text: "제2장 — 혼인은 가장 아름다운 유배다"
       - say:
           char: 국산
+          framing: full
           with:
             - 덕만
           text: "세 가문이 공주님의 손을 청했습니다. 어느 집을 고르셔도 왕실은 든든한 담장을 얻을 것입니다."
       - say:
           char: 덕만
+          framing: bust
           with:
             - 국산
-          text: "담장이 셋이면 안에 가두려는 것이 무엇인지부터 묻게 되는군요. 그들이 원하는 건 제 손입니까, 빈 왕좌입니까?"
+          text: "담장이 셋이면 감옥이지요. 세 가문이 원하는 건 제 손입니까, 빈 왕좌입니까?"
       - goto: suitor_choice
 
   suitor_choice:
     actions:
       - choice:
           key: c2_suitor
-          prompt: "세 혼담 가운데 누구에게 먼저 접근할까?"
+          prompt: "누구부터 만날까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "왕족 진운에게 먼저 만나 서로의 조건을 묻는다"
+            - text: "진운에게 조건을 묻는다"
               add:
                 rival_trust: 1
                 legitimacy: 1
               goto: suitor_jinun
-            - text: "혼담의 서신을 전한 비담에게 누가 값을 매겼는지 묻는다"
+            - text: "비담에게 값을 묻는다"
               add:
                 bidam_trust: 1
                 insight: 1
               goto: suitor_bidam
-            - text: "유신에게 혼인을 피하려면 자신과 도망치자고 제안한다"
+            - text: "유신과 달아난다"
               goto: go_12_warm_choice
-            - text: "세 가문의 사자를 한자리에서 공개적으로 모욕한다"
+            - text: "세 사자를 모욕한다"
               goto: go_13_three_knives
 
   suitor_jinun:
@@ -53,16 +58,19 @@ scenes:
       - char:
           id: 진운
           position: right
+          framing: full
       - say:
           char: 진운
+          framing: full
           with:
             - 덕만
-          text: "저와 혼인하시면 공주께서는 살아남습니다. 제가 왕위에 오르고, 공주께서는 왕이 되실 필요가 없어집니다. 그들이 원하는 계산입니다."
+          text: "저와 혼인하면 공주께서는 삽니다. 대신 저는 왕이 되고, 공주께서는 왕이 될 필요가 없어지지요."
       - say:
           char: 덕만
+          framing: bust
           with:
             - 진운
-          text: "살려 주는 대신 필요 없는 사람이 되라…… 그 조건을 제 입으로 말하는 그대도 자유롭지는 않군요."
+          text: "살려 줄 테니 필요 없는 사람이 되라. 그 말을 대신하는 그대도 자유롭지는 않군요."
       - goto: reputation_choice
 
   suitor_bidam:
@@ -70,18 +78,22 @@ scenes:
       - char:
           id: 비담
           position: right
+          framing: full
       - say:
           char: 비담
+          framing: bust
           with:
             - 덕만
           text: "첫 집은 군권, 둘째는 세금, 셋째는 공주님의 침묵을 받기로 했습니다. 신부 한 분을 세 번 파는 솜씨가 제법입니다."
       - say:
           char: 덕만
+          framing: bust
           with:
             - 비담
           text: "내 침묵에는 얼마를 매겼지? 적어도 군권보다는 비쌌으면 좋겠는데."
       - say:
           char: 비담
+          framing: bust
           text: "유감스럽게도 덤이었습니다. 이 궁은 여자 입을 물건으로 세지도 않으니까요."
       - goto: reputation_choice
 
@@ -91,31 +103,34 @@ scenes:
       - char:
           id: 천명
           position: right
+          framing: full
       - say:
           char: 천명.nervous
+          framing: bust
           with:
             - 덕만
-          text: "네가 열한 살 때 혼례 비녀가 무겁다고 울었지. 내가 빼 줬고. 이번 비녀는 내가 몰래 빼 줄 수가 없어. 덕만아, 어디까지 다칠 셈이니?"
+          text: "열한 살 때 혼례 비녀가 무겁다고 울었지. 그땐 내가 빼 줬어. 이번엔 어디까지 다칠 셈이니?"
       - choice:
           key: c2_reputation
-          prompt: "혼담을 흔들기 위해 무엇을 포기할까?"
+          prompt: "혼담을 깨려면 무엇을 버릴까?"
           char: 덕만
+          framing: closeup
           with:
             - 천명
           options:
-            - text: "별의 흉조가 끝날 때까지 혼인을 미루겠다고 선언한다"
+            - text: "별의 흉조를 빌린다"
               add:
                 legitimacy: 1
                 suspicion: 1
               goto: reputation_stars
-            - text: "후사를 볼 수 없는 병이 있다고 거짓 진단을 만든다"
+            - text: "병을 꾸민다"
               goto: go_14_barren_lie
-            - text: "비담과 가까운 척해 세 가문의 경쟁심을 서로 돌린다"
+            - text: "비담과 소문을 낸다"
               add:
                 bidam_trust: 1
                 nobles_support: -1
               goto: reputation_scandal
-            - text: "세 후보의 약점을 연회에서 조롱해 스스로 물러나게 한다"
+            - text: "후보들을 조롱한다"
               goto: go_15_laughing_bride
 
   reputation_stars:
@@ -123,11 +138,14 @@ scenes:
       - char:
           id: 월명
           position: right
+          framing: full
       - say:
           char: 월명
+          framing: bust
           text: "별은 입이 없습니다. 권세 있는 사람이 그 침묵에 자기 말을 얹지요. 흉조가 필요하시다면, 사흘 안에 만들어 드리겠습니다."
       - say:
           char: 덕만
+          framing: bust
           text: "별을 믿지는 않지만, 별을 두려워하는 사람은 믿습니다. 사흘이면 충분해요."
       - add:
           insight: 1
@@ -137,9 +155,11 @@ scenes:
     actions:
       - say:
           char: 비담
+          framing: bust
           text: "제 평판을 빌리시다니 안목이 나쁘십니다. 돌려주지 않으셔도 됩니다. 원래 주인이 버린 물건이라."
       - say:
           char: 덕만
+          framing: bust
           text: "버린 물건치고는 값을 자주 묻는군요. 이번에는 내가 제대로 써 보지요."
       - goto: throne_choice
 
@@ -149,50 +169,57 @@ scenes:
       - char:
           id: 진평왕
           position: right
+          framing: full
       - say:
           char: 진평왕
+          framing: bust
           text: "아비는 네가 싫다고 하면 그만두고 싶다. 왕은 그 한마디로 나라를 흔들 수 없다. 덕만아, 어느 쪽의 답을 듣겠느냐?"
           wait: 750
       - choice:
           key: c2_throne
-          prompt: "왕과 귀족들 앞에서 마지막 답을 고른다."
+          prompt: "모두가 답을 기다린다. 무엇을 말할까?"
           char: 덕만
+          framing: closeup
           with:
             - 진평왕
           options:
-            - text: "세 가문이 모두 동의할 단 한 사람을 택하겠다고 한다"
+            - text: "한 사람만 고르겠다"
               add:
                 insight: 1
               goto: throne_impossible
-            - text: "국경의 전쟁이 끝날 때까지 삼 년만 미뤄 달라 한다"
+            - text: "전쟁 뒤로 미룬다"
               add:
                 army_support: 1
               goto: throne_delay
-            - text: "서로 다른 대가가 적힌 혼인 합의서를 공개한다"
+            - text: "합의서를 펼친다"
               add:
                 legitimacy: 2
                 nobles_support: -1
               goto: throne_reveal
-            - text: "나는 누구의 아내도 되지 않겠다고 왕명을 공개 거부한다"
+            - text: "왕명을 거부한다"
               goto: go_16_unmarried_crime
 
   throne_impossible:
     actions:
       - say:
           char: 국산
+          framing: bust
           text: "세 가문이 한 분께 합의할 때까지 기다리시겠다는 말씀이십니까? 참으로 공평한 조건입니다."
       - say:
           char: 덕만
-          text: "아니요. 세 가문이 신라보다 먼저 하나가 되는 날을 보겠다는 뜻입니다. 그날이 오면 직접 축하드리지요."
+          framing: bust
+          text: "세 가문이 신라보다 먼저 하나가 되는 날을 보겠다는 뜻입니다. 그날은 제가 직접 축하드리지요."
       - goto: chapter2_end
 
   throne_delay:
     actions:
       - say:
           char: 유신
+          framing: bust
           text: "삼 년을 버셨습니다. 대신 국경에서 삼 년을 갚으셔야 합니다. 전쟁은 구실로 쓴 사람을 기억합니다."
       - say:
           char: 덕만
+          framing: bust
           text: "알아요. 방패 뒤에 숨으려고 든 것이 아니니까. 국경으로 갈 준비를 하세요."
       - goto: chapter2_end
 
@@ -201,6 +228,7 @@ scenes:
       - effect: impact
       - say:
           char: 덕만
+          framing: closeup
           delivery: angry
           text: "여기에는 제 이름이 세 번 적혀 있습니다. 군권의 값으로, 세금의 값으로, 침묵의 값으로. 어느 분의 신부부터 되어 드릴까요?"
           wait: 900
@@ -218,6 +246,7 @@ scenes:
           text: "그날 밤, 합의서를 건넨 귀족이 덕만의 침상 앞에 엎드려 있었다. 피는 아직 따뜻했고, 문빗장은 안쪽에 걸려 있었다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: nervous
           text: "혼례방은 피했는데…… 누군가 내 방을 신방보다 완벽하게 꾸몄군. 신랑 대신 시체를 눕혀서."
       - say:

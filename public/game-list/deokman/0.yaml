@@ -10,6 +10,7 @@ scenes:
       - char:
           id: 덕만
           position: center
+          framing: full
       - say:
           delivery: calm
           text: "서기 631년, 신라 왕경. 연회를 하루 앞둔 궁에는 잠든 방보다 깨어 있는 등불이 많았다."
@@ -17,18 +18,22 @@ scenes:
           text: "이 이야기는 실제 역사 인물과 시대를 바탕으로 암살·계승 음모와 인물 관계를 창작한 역사 픽션이다."
       - say:
           char: 덕만
+          framing: full
           delivery: whisper
-          text: "회랑 끝 등불이 하나씩 꺼졌다. 마지막 어둠 너머에서, 낮게 누른 목소리가 들렸다."
+          text: "회랑의 등불이 하나씩 죽는다. 마지막 불빛이 꺼지기 전, 누군가 목소리를 눌렀다."
       - say:
           char: 국산
+          framing: bust
           text: "<speed=20>내일 아침, 전하의 잔은 깨끗이 비워질 것입니다.</speed>"
           wait: 700
       - say:
           char: 아진
+          framing: bust
           delivery: neutral
-          text: "왕의 숨이 멎은 뒤, 공주에게 남는 거리는?"
+          text: "왕의 숨이 멎으면, 공주께 남은 거리는 열두 걸음입니다."
       - say:
           char: 국산
+          framing: bust
           text: "공주께 허락된 자리는 처음부터 없었습니다."
       - say:
           delivery: whisper
@@ -40,19 +45,20 @@ scenes:
       - choice:
           key: p_caught
           char: 덕만
+          framing: closeup
           with:
             - 아진
-          prompt: "발밑에서 마른 대나무가 부러졌다. 말이 끊기고, 발소리 하나가 곧장 덕만을 향했다."
+          prompt: "대나무가 부러졌다. 발소리가 덕만에게 달려온다."
           options:
-            - text: "길을 잃은 척 등불을 들고 먼저 모습을 드러낸다"
+            - text: "길 잃은 척 나선다"
               add:
                 insight: 1
               goto: caught_lost
-            - text: "숨어 들은 말을 그대로 읊으며 정체를 묻는다"
+            - text: "들은 말을 되묻는다"
               goto: go_01_too_clever
-            - text: "난간을 넘어 어두운 지붕으로 몸을 던진다"
+            - text: "지붕으로 뛴다"
               goto: go_02_broken_moon
-            - text: "천명이 가르쳐 준 왕실 비상 신호를 휘파람으로 분다"
+            - text: "비상 휘파람을 분다"
               add:
                 power: 1
                 suspicion: 1
@@ -62,14 +68,17 @@ scenes:
     actions:
       - say:
           char: 덕만
+          framing: closeup
           delivery: nervous
           text: "연못으로 가던 길이었는데…… 두 분도 길을 잃으셨습니까? 등불 하나 없이."
       - say:
           char: 아진
+          framing: bust
           delivery: neutral
           text: "길을 잃은 사람치고는 숨이 고르십니다."
       - say:
           char: 덕만
+          framing: bust
           text: "대답을 못 들으면, 같은 분들을 다시 만날까 두려워서요."
       - goto: warn_choice
 
@@ -78,10 +87,12 @@ scenes:
       - effect: focus
       - say:
           char: 아진
+          framing: bust
           delivery: neutral
           text: "호위가 닿기까지 일곱 숨. 신호에 둘을 쓰셨습니다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: angry
           text: "다섯이면 충분해. 그대가 칼을 뽑는 손까지 기억하기에는."
       - say:
@@ -94,27 +105,30 @@ scenes:
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           char: 덕만
+          framing: closeup
           delivery: whisper
-          text: "왕을 죽이겠다는 말은 들었다. 이제 내가 고를 것은 진실이 아니라…… 누구에게 진실을 맡길지다."
+          text: "왕을 죽인다는 말을 들었다. 이제 문제는 하나다. 누구를 믿을 것인가."
       - choice:
           key: p_warn
-          prompt: "새벽이 오기 전, 누구에게 비밀을 맡길까?"
+          prompt: "동트기 전, 누구를 믿을까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "진평왕에게 곧장 달려가 들은 말을 모두 고한다"
+            - text: "아버지께 고한다"
               goto: go_03_open_door
-            - text: "언니 천명에게만 붉은 매듭과 대화를 전한다"
+            - text: "천명에게 알린다"
               add:
                 cheonmyeong_trust: 1
               goto: warn_cheonmyeong
-            - text: "유신에게 연회장 출입 명단만 조용히 확인시킨다"
+            - text: "유신에게 명단을 맡긴다"
               add:
                 yushin_trust: 1
                 insight: 1
               goto: warn_yushin
-            - text: "상대등 국산을 불러 충성을 증명하라고 압박한다"
+            - text: "국산을 떠본다"
               goto: go_04_guest_of_traitor
 
   warn_cheonmyeong:
@@ -122,18 +136,21 @@ scenes:
       - char:
           id: 천명
           position: right
+          framing: full
       - say:
           char: 천명.sad
+          framing: closeup
           with:
             - 덕만
           delivery: sad
-          text: "네가 열병을 앓던 밤에도 나는 네 손부터 잡았어. 아버지를 살리겠다고 그 손을 먼저 놓지는 마."
+          text: "열병이 났던 밤, 네 손을 너무 세게 잡아 자국까지 냈지. 이번에도 먼저 놓지 마."
       - say:
           char: 덕만
+          framing: closeup
           with:
             - 천명
           delivery: whisper
-          text: "안 놓을게. 해가 뜬 뒤에도 언니 손에 내 손이 있게 할게."
+          text: "이번엔 내가 잡을게. 해가 뜬 뒤에도 놓지 않을게."
       - add:
           legitimacy: 1
       - goto: banquet_choice
@@ -143,13 +160,16 @@ scenes:
       - char:
           id: 유신
           position: right
+          framing: full
       - say:
           char: 유신
+          framing: bust
           with:
             - 덕만
-          text: "출입자는 열셋입니다. 하나는 석 달 전에 죽었고, 하나는 아직 태어나지 않았습니다. 명단이 아니라 미끼입니다."
+          text: "열셋입니다. 하나는 석 달 전 죽었고, 하나는 아직 태어나지 않았습니다. 명단이 아니라 덫입니다."
       - say:
           char: 덕만
+          framing: bust
           with:
             - 유신
           text: "미끼는 내가 물죠. 유신은 그들이 지운 열네 번째 이름을 찾으세요."
@@ -162,40 +182,45 @@ scenes:
       - char:
           id: 진평왕
           position: right
+          framing: full
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           char: 진평왕
+          framing: full
           with:
             - 덕만
-          text: "덕만아. 왕 앞에서 잔을 보지 않고, 잔을 든 손을 보는 까닭이 무엇이냐?"
+          text: "잔은 보지 않고 손을 보는구나. 무엇이 보이느냐?"
           wait: 600
       - say:
           char: 덕만
+          framing: bust
           with:
             - 진평왕
-          text: "그 손이 멈추면, 술보다 먼저 취할 자들이 보여서입니다."
+          text: "술보다 먼저 취한 얼굴들이 보입니다."
       - choice:
           key: p_cup
-          prompt: "왕이 잔을 든다. 독이 어디에 있는지는 아직 모른다."
+          prompt: "왕이 잔을 든다. 지금 막을까?"
           char: 덕만
+          framing: closeup
           with:
             - 진평왕
           options:
-            - text: "효심을 증명하겠다며 왕의 술을 대신 마신다"
+            - text: "대신 마신다"
               goto: go_05_filial_cup
-            - text: "실수인 척 상을 걷어차 모든 잔을 깨뜨린다"
+            - text: "상을 엎는다"
               add:
                 power: 1
                 suspicion: 2
               goto: cup_smash
-            - text: "국산의 잔과 왕의 잔을 바꾸고 그의 표정을 본다"
+            - text: "국산과 잔을 바꾼다"
               add:
                 insight: 2
                 nobles_support: -1
               goto: cup_swap
-            - text: "증거가 없으니 아무것도 하지 않고 왕이 마시게 둔다"
+            - text: "지켜본다"
               goto: go_06_closed_mouth
 
   cup_smash:
@@ -203,9 +228,11 @@ scenes:
       - effect: shake
       - say:
           char: 국산
+          framing: bust
           text: "공주께서 전하의 연회를 엎으셨군요. 왕실은 오늘의 무례를 오래 기억할 것입니다."
       - say:
           char: 덕만
+          framing: bust
           text: "상을 다시 차리면 무례는 끝납니다. 전하를 다시 모실 수는 없지요."
       - goto: prologue_survive
 
@@ -213,11 +240,13 @@ scenes:
     actions:
       - say:
           char: 국산
+          framing: bust
           with:
             - 덕만
           text: "신하의 잔을 전하께 올리시다니. 과분한 영광입니다."
       - say:
           char: 덕만
+          framing: bust
           with:
             - 국산
           delivery: deduction
@@ -237,6 +266,7 @@ scenes:
           text: "왕은 살았다. 죽은 악공의 품에서는 덕만의 노리개가 나왔다. 그 손톱 밑에는 검은 가루가 박혀 있었다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: whisper
           text: "독은 아버지의 잔을 노렸지만…… 함정은 내 이름 아래 놓였어."
           wait: 800

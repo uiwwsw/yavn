@@ -171,6 +171,11 @@ assets:
   characters:
     conan:
       base: assets/char/conan/base.webp
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.5, y: -2 }
+        closeup: { scale: 1.9, y: -4 }
       emotions:
         serious: assets/char/conan/serious.webp
   music:
@@ -326,6 +331,8 @@ scenes:
 - 2인 자동 분할은 이미지와 Live2D 모두 지원합니다. 처음부터 1인이거나 새 인물로 교체된 장면 및 3인 장면은 작성자가 지정한 기존 슬롯 배치를 유지하며 별도 DSL 필드는 없습니다.
 - 같은 캐릭터 ID를 새 `position`에 배치하면 엔진은 해당 ID가 있던 이전 슬롯을 먼저 제거합니다. 장면 전환에서 `center -> left`처럼 위치를 바꿔도 동일 인물이 두 슬롯에 남지 않습니다.
 - 같은 `position`의 이미지 캐릭터가 감정 소스만 바꾸면 렌더 키를 유지합니다. 따라서 표정 교체 때 최초 등장 애니메이션이 재실행되지 않으며, 이미지 박스는 고정 반응형 폭을 사용해 원본 종횡비 차이로 좌우 기준점이 흔들리지 않습니다.
+- 같은 캐릭터의 `framing`만 바꾸면 이미지/Live2D 슬롯과 원본 소스를 재사용한 채 등록된 `scale/x/y`를 적용합니다. 감정 이미지 교체와 저장 복원에서도 현재 구도 이름을 유지합니다.
+- 구도 배율은 화자 depth 배율과 곱해지며, 구도 `x/y`는 슬롯 오프셋과 합성됩니다. 수평 슬롯은 전환하지 않고 구도 배율만 260ms 시네마틱 이징으로 전환합니다.
 - 캐릭터가 처음 노출될 때의 기본 `riseInSide`/`riseInCenter`는 현재 배치 위치에서 `10px` 위로 올라오는 페이드입니다. 화면 밖 왼쪽에서 진입하는 동작은 기본 규칙이 아닙니다.
 - 새 인물 노출이나 1인/2인 구도 전환으로 수평 슬롯 오프셋이 바뀌어도 `transform` 전환은 적용하지 않습니다. 수평 좌표는 최종 위치로 즉시 확정하고, 화자 depth 확대만 독립 `scale` 속성으로 전환해 옆에서 밀려오는 것처럼 보이지 않게 합니다. 단, 2인에서 한 명만 퇴장한 경우 남은 동일 인물은 이전 2인 좌표와 너비를 그대로 유지해 재배치 점프를 만들지 않습니다.
 - 모바일 전용 화자 확대(`order===1`일 때만 scale 1, 나머지 0.7) 규칙은 제거되었습니다.
@@ -334,6 +341,7 @@ scenes:
 ## 8-6) 선택/입력 게이트 키보드 동작
 
 - `choice` 게이트가 열리면 첫 번째 옵션 버튼에 자동 포커스됩니다.
+- `choice` 게이트는 일반 대사의 높이 예약을 해제하고 최대 높이를 플레이 프레임의 데스크톱 `46cqh`, 모바일 `48cqh`까지 확장합니다. 720px 데스크톱과 일반 세로 모바일에서도 짧은 4개 보기를 상태줄에 가리지 않고 한 화면에 표시하며, 그보다 긴 선택 묶음은 본문 영역에서 스크롤합니다.
 - 포커스된 옵션은 `Enter`/`Space` 키로 즉시 선택할 수 있습니다.
 - `input` 게이트는 입력값이 비어 있을 때 제출 버튼 라벨을 `모르겠다`로 표시하고, 값이 있으면 `확인`으로 표시합니다.
 - `input` 게이트는 마지막 오답 단계(`attemptCount >= errors.length`)에 도달하면 입력창에 `correct` 값을 자동으로 채웁니다.
@@ -522,12 +530,60 @@ scenes:
 
 - `choice.char` (optional): 주 캐릭터 참조 (`캐릭터ID` 또는 `캐릭터ID.표정`)
 - `choice.with` (optional): 함께 노출할 보조 캐릭터 참조 배열
+- `choice.framing` (optional): 주 캐릭터의 등록된 구도 프리셋 이름
 - `input.char` (optional): 주 캐릭터 참조 (`캐릭터ID` 또는 `캐릭터ID.표정`)
 - `input.with` (optional): 함께 노출할 보조 캐릭터 참조 배열
+- `input.framing` (optional): 주 캐릭터의 등록된 구도 프리셋 이름
 
 실행 규칙:
 - `char`가 있으면 해당 단계에서 캐릭터 노출/표정 동기화를 즉시 적용합니다.
+- `framing`이 있으면 `char`의 현재 구도도 함께 변경합니다. `framing`만 단독 선언할 수는 없습니다.
 - `char`를 생략하면 직전 노출 상태를 유지합니다. (기존 스크립트와 호환)
+
+### 9-3-1) 한 원본 이미지의 캐릭터 구도 프리셋
+
+캐릭터마다 원본의 여백과 인물 비율이 다르므로, `assets.characters.<id>.framings`에 전신·상체·클로즈업 보정값을 따로 저장합니다.
+
+```yaml
+assets:
+  characters:
+    deokman:
+      base: assets/char/deokman.webp
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 2 }
+        closeup: { scale: 2.5, x: 1, y: 1 }
+
+scenes:
+  audience:
+    actions:
+      - char: { id: deokman, position: center, framing: full }
+      - say:
+          char: deokman
+          framing: bust
+          text: "전하께 드릴 말씀이 있습니다."
+      - choice:
+          char: deokman
+          framing: closeup
+          prompt: "왕이 잔을 든다. 지금 막을까?"
+          options:
+            - { text: "대신 마신다", goto: drink }
+            - { text: "상을 엎는다", goto: stop }
+```
+
+필드와 범위:
+- `defaultFraming` (optional): `char.framing` 생략 시 사용할 프리셋 이름
+- `framings.<name>.scale` (required): `0.5..3` 배율
+- `framings.<name>.x/y` (optional): `-100..100` 범위의 이미지 기준 퍼센트 이동값, 기본 `0`
+- `char.framing`: 무대 배치 시 적용하는 지속 구도
+- `say.framing`, `choice.framing`, `input.framing`: 해당 액션의 주 캐릭터 구도
+
+실행 규칙:
+- 구도 이름은 해당 캐릭터의 `framings`에 존재해야 합니다. `defaultFraming`도 같은 검증을 받습니다.
+- `say/choice/input.framing`은 반드시 같은 액션의 `char`와 함께 선언합니다. `캐릭터ID.표정` 참조도 기본 캐릭터 ID로 검증합니다.
+- 액션에서 `framing`을 생략하면 화면의 직전 구도를 유지합니다. 새 `char` 배치에서 생략하면 `defaultFraming`, 그것도 없으면 하위 호환 기본값 `full`/`scale: 1`을 사용합니다.
+- 감정 표정으로 소스가 교체되어도 같은 구도 프리셋 이름을 보존합니다.
 
 ### 9-4) `say.delivery` 감정형 타이핑
 
@@ -708,6 +764,7 @@ scenes:
 - `script`에 등장한 scene이 `scenes`에 존재하는지
 - `goto` 대상(scene)이 존재하는지
 - `bg/sticker/music/sound/char`가 `assets`에 선언되어 있는지
+- `defaultFraming`과 `char/say/choice/input.framing`이 해당 캐릭터의 `framings`에 선언되어 있는지, 화자 없이 구도만 선언하지 않았는지
 - `set/add/input.saveAs` 변수가 `state`에 선언되어 있는지
 - `branch/endingRules`의 `when.var`가 `state` 변수 또는 `inventory` 아이템 키인지
 - `get/use` 아이템이 `inventory`에 선언되어 있는지
@@ -770,6 +827,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-10: 캐릭터별 `defaultFraming`과 재사용 가능한 `framings.<name>.scale/x/y`, 액션별 `char/say/choice/input.framing`을 추가했습니다. 한 장의 원본 이미지로 전신·상체·클로즈업을 전환하며 감정 교체·저장 복원에서도 구도를 유지합니다. 덕만 v1.3.0은 10명 전원과 147개 화자 대사·24개 선택 장면에 구도를 지정하고, 24개 선택지를 30자 이하 위기 프롬프트와 16자 이하 즉시 행동으로 압축했으며 8개 챕터 대사를 인물별 연기 호흡에 맞게 다시 다듬었습니다. 선택 게이트 최대 높이도 데스크톱 `46cqh`·모바일 `48cqh`로 조정해 짧은 4개 보기가 상태줄에 가리지 않게 했습니다.
 - 2026-08-10: 덕만 v1.2.1의 시작 타이틀·런처 썸네일·본편 배경·엔딩 아트를 AVIF에서 WebP로 교체했습니다. AVIF 파일의 크기는 읽지만 픽셀을 표시하지 못하는 일부 브라우저 엔진에서도 모든 장면 이미지를 정상 렌더링하며, DSL 문법 변경은 없습니다.
 - 2026-08-10: 캐릭터 자산에 `defaultDelivery`를 추가해 평상시 말하기 리듬을 선언할 수 있게 했습니다. 명시 `say.delivery`와 표정 추론이 우선하며 캐릭터 기본값은 그 다음 fallback으로 동작합니다. 역사 서사용 `moonveil/embers/crown` 화면 이펙트와 모션 감소 처리를 추가하고, 덕만 v1.1에 배경 7종·투명 WebP 인물 10종·인물별 대사 템포를 적용했습니다.
 - 2026-08-10: 덕만 v1.2의 8개 챕터 대사를 인물별 욕망·어휘·문장 리듬 기준으로 전수 재작성했습니다. 전역 속도를 27 CPS로 조정하고 왕의 임종·자매의 위기·즉위 장면에 감정 스프라이트 5종, `say.delivery`, `<speed>`, `say.wait`를 함께 사용해 반응과 침묵이 남는 드라마 호흡을 적용했습니다. DSL 문법 변경은 없습니다.

@@ -412,10 +412,29 @@ function canonicalizeLayerAssets(
       }
       emotions[emoKey] = normalized;
     }
+    const framings = Object.fromEntries(
+      Object.entries(charDef.framings ?? {}).map(([framingKey, framing]) => [
+        framingKey,
+        {
+          scale: framing.scale,
+          ...(framing.x !== undefined ? { x: framing.x } : {}),
+          ...(framing.y !== undefined ? { y: framing.y } : {}),
+        },
+      ]),
+    );
+    if (charDef.defaultFraming && !framings[charDef.defaultFraming]) {
+      return {
+        error: {
+          message: `${sourcePath}: assets.characters.${charKey}.defaultFraming references missing framing '${charDef.defaultFraming}'`,
+        },
+      };
+    }
     result.characters[charKey] = {
       base,
       ...(Object.keys(emotions).length > 0 ? { emotions } : {}),
       ...(charDef.defaultDelivery ? { defaultDelivery: charDef.defaultDelivery } : {}),
+      ...(charDef.defaultFraming ? { defaultFraming: charDef.defaultFraming } : {}),
+      ...(Object.keys(framings).length > 0 ? { framings } : {}),
     };
   }
 
@@ -903,6 +922,30 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       return undefined;
     };
 
+    const validateCharacterFramingRef = (
+      sceneId: string,
+      fieldLabel: string,
+      characterRef: string | undefined,
+      framing: string | undefined,
+    ): VNError | undefined => {
+      if (!framing) {
+        return undefined;
+      }
+      if (!characterRef) {
+        return {
+          message: `scene '${sceneId}' declares ${fieldLabel} '${framing}' without a character`,
+        };
+      }
+      const speaker = parseSpeakerRef(characterRef);
+      const charDef = speaker.id ? data.assets.characters[speaker.id] : undefined;
+      if (!charDef?.framings?.[framing]) {
+        return {
+          message: `scene '${sceneId}' uses missing framing '${framing}' for character '${speaker.id ?? characterRef}' in ${fieldLabel}`,
+        };
+      }
+      return undefined;
+    };
+
     if (data.defaultEnding && !data.endings?.[data.defaultEnding]) {
       return {
         error: {
@@ -963,12 +1006,31 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
-        if ('char' in action && !data.assets.characters[action.char.id]) {
-          return {
-            error: {
-              message: `scene '${sceneId}' uses missing character '${action.char.id}'`,
-            },
-          };
+        if ('char' in action) {
+          const charDef = data.assets.characters[action.char.id];
+          if (!charDef) {
+            return {
+              error: {
+                message: `scene '${sceneId}' uses missing character '${action.char.id}'`,
+              },
+            };
+          }
+          if (action.char.emotion && !charDef.emotions?.[action.char.emotion]) {
+            return {
+              error: {
+                message: `scene '${sceneId}' uses missing emotion '${action.char.emotion}' for character '${action.char.id}'`,
+              },
+            };
+          }
+          const framingError = validateCharacterFramingRef(
+            sceneId,
+            'char.framing',
+            action.char.id,
+            action.char.framing,
+          );
+          if (framingError) {
+            return { error: framingError };
+          }
         }
         if ('say' in action && action.say.char) {
           const error = validateCharacterRef(sceneId, 'say.char', action.say.char);
@@ -982,6 +1044,69 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             if (error) {
               return { error };
             }
+          }
+        }
+        if ('say' in action) {
+          const framingError = validateCharacterFramingRef(
+            sceneId,
+            'say.framing',
+            action.say.char,
+            action.say.framing,
+          );
+          if (framingError) {
+            return { error: framingError };
+          }
+        }
+
+        if ('choice' in action && action.choice.char) {
+          const error = validateCharacterRef(sceneId, 'choice.char', action.choice.char);
+          if (error) {
+            return { error };
+          }
+        }
+        if ('choice' in action && Array.isArray(action.choice.with)) {
+          for (const [index, withChar] of action.choice.with.entries()) {
+            const error = validateCharacterRef(sceneId, `choice.with[${index}]`, withChar);
+            if (error) {
+              return { error };
+            }
+          }
+        }
+        if ('choice' in action) {
+          const framingError = validateCharacterFramingRef(
+            sceneId,
+            'choice.framing',
+            action.choice.char,
+            action.choice.framing,
+          );
+          if (framingError) {
+            return { error: framingError };
+          }
+        }
+
+        if ('input' in action && action.input.char) {
+          const error = validateCharacterRef(sceneId, 'input.char', action.input.char);
+          if (error) {
+            return { error };
+          }
+        }
+        if ('input' in action && Array.isArray(action.input.with)) {
+          for (const [index, withChar] of action.input.with.entries()) {
+            const error = validateCharacterRef(sceneId, `input.with[${index}]`, withChar);
+            if (error) {
+              return { error };
+            }
+          }
+        }
+        if ('input' in action) {
+          const framingError = validateCharacterFramingRef(
+            sceneId,
+            'input.framing',
+            action.input.char,
+            action.input.framing,
+          );
+          if (framingError) {
+            return { error: framingError };
           }
         }
 

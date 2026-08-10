@@ -10,44 +10,49 @@ scenes:
       - char:
           id: 천명
           position: right
+          framing: full
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           text: "제6장 — 왕이 잠든 밤"
       - say:
           char: 천명.nervous
+          framing: closeup
           with:
             - 덕만
           delivery: nervous
-          text: "네 얼굴이 그려진 체포령이 모든 문에 붙었어. 군사들은 왕명이라는데, 아버지는 손가락 하나 움직이지 못하셔. 누군가 아버지의 침묵으로 명령하고 있어."
+          text: "네 얼굴이 모든 문에 붙었어. 군사들은 왕명이라는데, 아버지는 손가락 하나 못 움직이셔. 누군가 아버지의 침묵으로 명령하고 있어."
       - say:
           char: 덕만
+          framing: closeup
           with:
             - 천명
           delivery: nervous
-          text: "인장이 찍힌 거짓말은 해가 뜨면 법이 돼. 그 전에 아버지의 숨과 인장을 둘 다 찾아야 해. 하나만 찾으면 다른 하나가 우리를 죽일 거야."
+          text: "인장이 찍힌 거짓말은 해가 뜨면 법이 돼. 그 전에 아버지의 숨과 인장을 찾자. 하나만 놓쳐도 우리를 죽일 거야."
       - goto: entry_choice
 
   entry_choice:
     actions:
       - choice:
           key: c6_entry
-          prompt: "봉쇄된 궁으로 어떻게 들어갈까?"
+          prompt: "궁문이 봉쇄됐다. 어떻게 들어갈까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "월명이 아는 약재 수로를 따라 침전 아래로 들어간다"
+            - text: "약재 수로로 간다"
               add:
                 insight: 1
               goto: entry_waterway
-            - text: "천명의 가마에 숨어 왕실 여인들의 행렬로 통과한다"
+            - text: "천명의 가마에 숨는다"
               add:
                 sowon_trust: 1
                 legitimacy: 1
               goto: entry_procession
-            - text: "유신의 병사로 정문을 깨고 왕의 이름을 외친다"
+            - text: "정문을 부순다"
               goto: go_31_gate_breaker
-            - text: "체포되는 척 들어가 비담이 지키는 감옥에서 빠져나온다"
+            - text: "체포된 척 들어간다"
               add:
                 bidam_trust: 1
                 suspicion: 1
@@ -58,11 +63,14 @@ scenes:
       - char:
           id: 월명
           position: right
+          framing: full
       - say:
           char: 월명
+          framing: full
           text: "물길은 약초 냄새를 기억합니다. 전하를 살린 약도, 죽이려 든 약도 여기로 왔습니다. 발을 낮추십시오. 세 번째 갈림길에 보초가 둘입니다."
       - say:
           char: 덕만
+          framing: bust
           text: "같은 길로 약과 독이 들었군요. 길을 막지 말고 끝까지 갑시다. 죄는 도착한 방에 있을 테니."
       - goto: rescue_choice
 
@@ -70,10 +78,12 @@ scenes:
     actions:
       - say:
           char: 천명
+          framing: closeup
           delivery: nervous
           text: "일곱 살 때도 내 치마 밑에 숨어 꿀과자를 훔쳤지. 그때는 네 발이 밖으로 다 보였어. 지금도 보여, 떨리는 것까지."
       - say:
           char: 덕만
+          framing: closeup
           delivery: whisper
           text: "이번에도 언니가 가려 줘. 나가면 그때처럼 실컷 혼내. 그러려면 우리 둘 다 살아야 해."
       - goto: rescue_choice
@@ -83,11 +93,14 @@ scenes:
       - char:
           id: 비담
           position: right
+          framing: full
       - say:
           char: 비담
+          framing: bust
           text: "보통은 감옥에서 나가려고 저를 찾습니다. 공주님은 들어오려고 찾아오셨군요. 제 쓸모도 드디어 문 안쪽으로 승진했습니다."
       - say:
           char: 덕만
+          framing: bust
           text: "그대가 밖에서 문을 잠그면 체포고, 안에서 열어 주면 공모지. 어느 죄가 그대 취향입니까?"
       - goto: rescue_choice
 
@@ -99,34 +112,37 @@ scenes:
           text: "침전에서는 왕의 숨이 끊어질 듯 가늘어졌다. 종루에는 천명과 동료들이 포위되었다. 기록고 지붕 위로는 불길이 번졌다. 먼저 달려갈 곳은 하나뿐이었다."
       - choice:
           key: c6_rescue
-          prompt: "가장 먼저 무엇을 구할까?"
+          prompt: "세 곳이 무너진다. 먼저 어디로?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "월명과 함께 왕의 독부터 해독한다"
+            - text: "왕에게 간다"
               add:
                 legitimacy: 2
               goto: rescue_king
-            - text: "유신을 보내 천명과 동료들을 포위에서 빼낸다"
+            - text: "천명을 구한다"
               add:
                 yushin_trust: 1
                 power: 1
               goto: rescue_allies
-            - text: "불타는 기록고에서 계승동맹 원본과 인장 대장을 꺼낸다"
+            - text: "기록고로 간다"
               add:
                 insight: 2
                 suspicion: 1
               goto: rescue_evidence
-            - text: "도망치는 아진을 쫓아 배후의 이름을 직접 듣는다"
+            - text: "아진을 쫓는다"
               goto: go_32_name_in_dark
 
   rescue_king:
     actions:
       - say:
           char: 월명
+          framing: closeup
           delivery: sad
           text: "독은 멎었습니다. 하지만 이미 식은 피는 돌아오지 않습니다. 전하께 남은 숨은…… 긴 문장 하나를 끝내기에도 모자랍니다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: sad
           text: "그 한 문장을 제 이름에 쓰게 하지는 않겠습니다. 마지막 말만큼은 아버지 자신의 것이어야 해요."
       - goto: seal_found
@@ -135,9 +151,11 @@ scenes:
     actions:
       - say:
           char: 천명.sad
+          framing: bust
           text: "네가 우리에게 군사를 보낸 동안 아버지 숨이 더 약해졌어. 덕만아…… 나를 살리고 아버지를 잃으면, 나를 볼 때마다 후회하지 않겠니?"
       - say:
           char: 덕만.sad
+          framing: bust
           text: "후회할 거야. 언니를 잃었어도 후회했을 거고. 나는 지금 누구를 사랑하는지 고른 게 아니라, 누구를 먼저 살릴 수 있는지 골랐어."
       - add:
           army_support: 1
@@ -150,6 +168,7 @@ scenes:
           text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람의 이름이 남아 있었다. 상대등 국산. 반환 칸은 비어 있었다."
       - say:
           char: 덕만
+          framing: bust
           text: "명령은 거짓인데 인영은 진짜였어. 아버지의 침묵과 도장을 함께 훔친 거야."
       - say:
           delivery: sad
@@ -157,6 +176,7 @@ scenes:
           wait: 1000
       - say:
           char: 덕만.sad
+          framing: bust
           text: "내가 고른 건 종이였어…… 언니가 아니었어. 그런데도 이 종이를 놓으면, 언니를 두 번 버리는 거야."
       - set:
           cheonmyeong_alive: false
@@ -174,36 +194,39 @@ scenes:
     actions:
       - choice:
           key: c6_seal
-          prompt: "왕의 인장을 사용할까?"
+          prompt: "인장이 손안에 있다. 쓸까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "국산 체포와 궁문 개방 명령에 인장을 찍는다"
+            - text: "체포령에 찍는다"
               add:
                 power: 2
                 suspicion: 2
               goto: seal_command
-            - text: "인장을 봉해 화백회의 앞에서만 열겠다고 선언한다"
+            - text: "화백 앞까지 봉한다"
               add:
                 legitimacy: 2
                 nobles_support: 1
               goto: seal_seal
-            - text: "인장을 깨뜨려 누구도 가짜 왕명을 만들지 못하게 한다"
+            - text: "깨뜨린다"
               add:
                 legitimacy: 1
                 power: -1
               set:
                 has_royal_seal: false
               goto: seal_break
-            - text: "인장을 들고 빈 왕좌에 먼저 앉아 즉위를 선포한다"
+            - text: "즉위를 선포한다"
               goto: go_33_one_day_queen
 
   seal_command:
     actions:
       - say:
           char: 비담
-          text: "도둑맞은 인장으로 만든 가짜 왕명을, 주운 인장으로 만든 진짜 명령이 막았군요. 둘의 차이는 승자의 이름뿐입니까?"
+          framing: bust
+          text: "훔친 인장의 왕명을, 주운 인장의 명령이 막았군요. 둘의 차이는 승자의 이름뿐입니까?"
       - say:
           char: 덕만
+          framing: bust
           text: "아니. 내일 내가 이 명령을 숨기지 않고, 죽은 사람의 이름까지 읽을 수 있는가. 그게 차이야."
       - goto: kings_last_words
 
@@ -211,9 +234,11 @@ scenes:
     actions:
       - say:
           char: 국산
+          framing: bust
           text: "인장을 손에 넣고도 봉하신다니 참으로 고결하십니다. 다만 쓰지 못하는 힘으로 나라를 다스릴 수 있을지 염려되는군요."
       - say:
           char: 덕만
+          framing: bust
           text: "쓰지 않은 것이지, 쓰지 못한 것이 아닙니다. 그 차이를 그대 손이 먼저 알고 있군요. 소매가 떨립니다."
       - goto: kings_last_words
 
@@ -233,11 +258,14 @@ scenes:
       - char:
           id: 진평왕
           position: right
+          framing: full
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           char: 덕만
+          framing: closeup
           with:
             - 진평왕
           delivery: sad
@@ -245,17 +273,20 @@ scenes:
           wait: 900
       - say:
           char: 진평왕
+          framing: closeup
           with:
             - 덕만
           delivery: sad
           text: "<speed=18>내가 된다고 하면 되겠느냐.</speed> <speed=18>내가 안 된다고 하면…… 멈출 것이냐.</speed>"
       - say:
           char: 덕만.sad
+          framing: bust
           with:
             - 진평왕
           text: "아니요. 어느 대답도 저를 멈추지는 못합니다. 다만 딸로서…… 아버지의 대답을 듣고 싶었습니다."
       - say:
           char: 진평왕.sad
+          framing: closeup
           with:
             - 덕만
           delivery: sad
@@ -266,6 +297,7 @@ scenes:
           text: "진평왕은 끝내 후계자의 이름을 남기지 않았다. 마지막 숨이 빠져나간 뒤에도 덕만의 손바닥에는 왕명도, 유언도 없었다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: whisper
           text: "마지막까지 내 이름을 써 주지 않으셨다. 버린 것이 아니라…… 내 손으로 쓰게 하신 거야."
           wait: 900

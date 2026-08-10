@@ -40,6 +40,7 @@ const inputActionSchema = z.object({
   prompt: z.string().min(1),
   char: z.string().min(1).optional(),
   with: z.array(z.string().min(1)).optional(),
+  framing: z.string().min(1).optional(),
   correct: z.string().min(1),
   errors: z.array(z.string().min(1)).min(1).optional(),
   saveAs: z.string().min(1).optional(),
@@ -142,6 +143,7 @@ export const actionSchema = z.union([
       prompt: input.prompt,
       char: input.char,
       with: input.with,
+      framing: input.framing,
       correct: input.correct,
       errors: input.errors && input.errors.length > 0 ? input.errors : ['정답이 아닙니다.'],
       saveAs: input.saveAs,
@@ -158,6 +160,7 @@ export const actionSchema = z.union([
       prompt: z.string().min(1),
       char: z.string().min(1).optional(),
       with: z.array(z.string().min(1)).optional(),
+      framing: z.string().min(1).optional(),
       forgiveOnceDefault: z.boolean().optional(),
       forgiveMessage: z.string().min(1).optional(),
       timeoutMs: z.number().int().min(1000).max(60000).optional(),
@@ -188,12 +191,14 @@ export const actionSchema = z.union([
       id: z.string(),
       position: z.enum(['left', 'center', 'right']),
       emotion: z.string().optional(),
+      framing: z.string().min(1).optional(),
     }),
   }),
   z.object({
     say: z.object({
       char: z.string().optional(),
       with: z.array(z.string().min(1)).optional(),
+      framing: z.string().min(1).optional(),
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
@@ -301,11 +306,21 @@ const endingScreenSchema = z
     };
   });
 
+const characterFramingPresetSchema = z
+  .object({
+    scale: z.number().min(0.5).max(3),
+    x: z.number().min(-100).max(100).optional(),
+    y: z.number().min(-100).max(100).optional(),
+  })
+  .strict();
+
 const characterAssetsSchema = z.record(
   z.object({
     base: z.string(),
     emotions: z.record(z.string()).optional(),
     defaultDelivery: dialogueDeliverySchema.optional(),
+    defaultFraming: z.string().min(1).optional(),
+    framings: z.record(characterFramingPresetSchema).optional(),
   }),
 );
 

@@ -71,12 +71,12 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('1.2.1');
+    expect(config.version).toBe('1.3.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('나를 빼고도 오늘 밤 신라를 지킬 수 있는가');
     expect(allContent).toContain('아비가 세운 딸은 아비와 함께 무너진다');
-    expect(allContent).toContain('네가 열병을 앓던 밤에도 나는 네 손부터 잡았어');
+    expect(allContent).toContain('열병이 났던 밤, 네 손을 너무 세게 잡아 자국까지 냈지');
     expect(allContent).toContain('우리 쪽 사망은 여든하나입니다');
     expect(allContent).toContain('이상한 건 행주뿐이에요');
     expect(allContent).toContain('어떤 거짓말을 안주로 내시겠습니까');
@@ -84,6 +84,47 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('강가까지 서른두 걸음');
     expect(allContent).toContain('창은 하나, 호위는 여섯');
     expect(allContent).toContain('마른 우물도 사흘은 하늘을 비춥니다');
+  });
+
+  it('directs every character beat with reusable full, bust, and close-up framings', () => {
+    const base = readYaml('base.yaml');
+    const characters = Object.values(asRecord(asRecord(base.assets).characters)).map(asRecord);
+    const documents = chapters.map(readYaml);
+    const characterPlacements = documents
+      .flatMap((document) => collectKey(document, 'char'))
+      .map(asRecord)
+      .filter((placement) => typeof placement.id === 'string' && typeof placement.position === 'string');
+    const speakerLines = documents
+      .flatMap((document) => collectKey(document, 'say'))
+      .map(asRecord)
+      .filter((say) => typeof say.char === 'string');
+    const choices = documents.flatMap((document) => collectKey(document, 'choice')).map(asRecord);
+
+    characters.forEach((character) => {
+      const framings = asRecord(character.framings);
+      expect(character.defaultFraming).toBe('full');
+      expect(Object.keys(framings)).toEqual(expect.arrayContaining(['full', 'bust', 'closeup']));
+      expect(asRecord(framings.full).scale).toBe(1);
+      expect(Number(asRecord(framings.bust).scale)).toBeGreaterThan(1);
+      expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
+    });
+
+    expect(characterPlacements).toHaveLength(37);
+    characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
+    expect(speakerLines).toHaveLength(147);
+    speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
+    expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
+    choices.forEach((choice) => expect(choice.framing).toBe('closeup'));
+  });
+
+  it('keeps every crisis choice compact enough to scan without breaking the drama', () => {
+    const choices = chapters.flatMap((path) => collectKey(readYaml(path), 'choice')).map(asRecord);
+
+    choices.forEach((choice) => {
+      expect(Array.from(String(choice.prompt)).length).toBeLessThanOrEqual(30);
+      const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
+      options.forEach((option) => expect(Array.from(String(option.text)).length).toBeLessThanOrEqual(16));
+    });
   });
 
   it('keeps the numbered chapters in one automatic 1/8 to 8/8 sequence', () => {
@@ -166,7 +207,7 @@ describe('Deokman complete-game content', () => {
     const choices = collectKey(prologue, 'choice').map(asRecord);
     const warningChoice = choices.find((choice) => choice.key === 'p_warn');
     const options = Array.isArray(warningChoice?.options) ? warningChoice.options.map(asRecord) : [];
-    const sisterOption = options.find((option) => String(option.text).includes('언니 천명'));
+    const sisterOption = options.find((option) => String(option.text).includes('천명'));
     expect(asRecord(sisterOption?.add)).toEqual({ cheonmyeong_trust: 1 });
   });
 

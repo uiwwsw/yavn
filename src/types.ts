@@ -15,6 +15,27 @@ export type DialogueDelivery =
   | 'shout'
   | 'sad'
   | 'deduction';
+
+export type CharacterFramingPreset = {
+  scale: number;
+  x?: number;
+  y?: number;
+};
+
+export type CharacterAssetDefinition = {
+  base: string;
+  emotions?: Record<string, string>;
+  defaultDelivery?: DialogueDelivery;
+  defaultFraming?: string;
+  framings?: Record<string, CharacterFramingPreset>;
+};
+
+export type CharacterFramingState = {
+  name: string;
+  scale: number;
+  x: number;
+  y: number;
+};
 export type StickerEnterEffect =
   | 'none'
   | 'fadeIn'
@@ -75,6 +96,7 @@ export type SayAction = {
   say: {
     char?: string;
     with?: string[];
+    framing?: string;
     text: string;
     delivery?: DialogueDelivery;
     wait?: number;
@@ -87,6 +109,7 @@ export type CharAction = {
     id: string;
     position: Position;
     emotion?: string;
+    framing?: string;
   };
 };
 
@@ -141,6 +164,7 @@ export type InputAction = {
     prompt: string;
     char?: string;
     with?: string[];
+    framing?: string;
     correct: string;
     errors: string[];
     saveAs?: string;
@@ -180,6 +204,7 @@ export type ChoiceAction = {
     prompt: string;
     char?: string;
     with?: string[];
+    framing?: string;
     forgiveOnceDefault?: boolean;
     forgiveMessage?: string;
     timeoutMs?: number;
@@ -302,14 +327,7 @@ export type GameData = {
   };
   assets: {
     backgrounds: Record<string, string>;
-    characters: Record<
-      string,
-      {
-        base: string;
-        emotions?: Record<string, string>;
-        defaultDelivery?: DialogueDelivery;
-      }
-    >;
+    characters: Record<string, CharacterAssetDefinition>;
     music: Record<string, string>;
     sfx: Record<string, string>;
   };
@@ -334,6 +352,7 @@ export type CharacterSlot = {
   kind: 'image' | 'live2d';
   source: string;
   emotion?: string;
+  framing: CharacterFramingState;
 };
 
 export type StickerSlot = {
