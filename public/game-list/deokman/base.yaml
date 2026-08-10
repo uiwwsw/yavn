@@ -69,8 +69,8 @@ assets:
         full: { scale: 1 }
         bust: { scale: 1.79, y: -1 }
         closeup: { scale: 2.3 }
-    국산:
-      base: assets/char/guksan-v2.webp
+    칠숙:
+      base: assets/char/chilsuk-v2.webp
       defaultDelivery: calm
       defaultFraming: full
       framings:

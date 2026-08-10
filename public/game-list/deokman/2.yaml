@@ -7,7 +7,7 @@ scenes:
     actions:
       - bg: council_hall
       - char:
-          id: 국산
+          id: 칠숙
           position: right
           framing: full
       - char:
@@ -17,7 +17,7 @@ scenes:
       - say:
           text: "제2장 — 혼인은 가장 아름다운 유배다"
       - say:
-          char: 국산
+          char: 칠숙
           framing: full
           with:
             - 덕만
@@ -26,7 +26,7 @@ scenes:
           char: 덕만
           framing: bust
           with:
-            - 국산
+            - 칠숙
           text: "담장이 셋이면 감옥이지요. 세 가문이 원하는 건 제 손입니까, 빈 왕좌입니까?"
       - goto: suitor_choice
 
@@ -202,7 +202,7 @@ scenes:
   throne_impossible:
     actions:
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "세 가문이 한 분께 합의할 때까지 기다리시겠다는 말씀이십니까? 참으로 공평한 조건입니다."
       - say:
