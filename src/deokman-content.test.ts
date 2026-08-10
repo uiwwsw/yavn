@@ -65,6 +65,27 @@ describe('Deokman complete-game content', () => {
     expect(collectKey(readYaml('7.yaml'), 'ending')).toHaveLength(10);
   });
 
+  it('locks the authored character voices and dramatic reading rhythm', () => {
+    const config = readYaml('config.yaml');
+    const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+    const documents = chapters.map(readYaml);
+    const waits = documents.flatMap((document) => collectKey(document, 'wait'));
+
+    expect(config.version).toBe('1.2.0');
+    expect(config.textSpeed).toBe(27);
+    expect(waits.length).toBeGreaterThanOrEqual(10);
+    expect(allContent).toContain('나를 빼고도 오늘 밤 신라를 지킬 수 있는가');
+    expect(allContent).toContain('아비가 세운 딸은 아비와 함께 무너진다');
+    expect(allContent).toContain('네가 열병을 앓던 밤에도 나는 네 손부터 잡았어');
+    expect(allContent).toContain('우리 쪽 사망은 여든하나입니다');
+    expect(allContent).toContain('이상한 건 행주뿐이에요');
+    expect(allContent).toContain('어떤 거짓말을 안주로 내시겠습니까');
+    expect(allContent).toContain('참으로 고결하십니다');
+    expect(allContent).toContain('강가까지 서른두 걸음');
+    expect(allContent).toContain('창은 하나, 호위는 여섯');
+    expect(allContent).toContain('마른 우물도 사흘은 하늘을 비춥니다');
+  });
+
   it('keeps the numbered chapters in one automatic 1/8 to 8/8 sequence', () => {
     chapters.slice(0, -1).forEach((path) => {
       const document = readYaml(path);
@@ -78,7 +99,10 @@ describe('Deokman complete-game content', () => {
     const assets = asRecord(base.assets);
     const paths = [
       ...Object.values(asRecord(assets.backgrounds)),
-      ...Object.values(asRecord(assets.characters)).map((entry) => asRecord(entry).base),
+      ...Object.values(asRecord(assets.characters)).flatMap((entry) => {
+        const character = asRecord(entry);
+        return [character.base, ...Object.values(asRecord(character.emotions))];
+      }),
       ...Object.values(asRecord(base.inventory)).map((entry) => asRecord(entry).image),
     ];
     paths.forEach((path) => {
@@ -137,7 +161,10 @@ describe('Deokman complete-game content', () => {
     const characters = Object.values(asRecord(assets.characters)).map(asRecord);
     const activeImages = new Set([
       ...backgrounds,
-      ...characters.map((character) => String(character.base)),
+      ...characters.flatMap((character) => [
+        String(character.base),
+        ...Object.values(asRecord(character.emotions)).map(String),
+      ]),
       String(asRecord(config.seo).image),
     ]);
     const totalBytes = [...activeImages].reduce(
@@ -153,7 +180,14 @@ describe('Deokman complete-game content', () => {
         /^(neutral|calm|nervous|angry|whisper|shout|sad|deduction)$/,
       );
     });
-    expect(totalBytes).toBeLessThan(2_500_000);
+    expect(asRecord(characters.find((character) => String(character.base).includes('deokman'))?.emotions).sad)
+      .toBe('assets/char/deokman-sad-v3.webp');
+    expect(asRecord(characters.find((character) => String(character.base).includes('cheonmyeong'))?.emotions))
+      .toEqual({
+        nervous: 'assets/char/cheonmyeong-nervous-v3.webp',
+        sad: 'assets/char/cheonmyeong-sad-v3.webp',
+      });
+    expect(totalBytes).toBeLessThan(3_000_000);
     expect(existsSync(`${gameRoot}assets/bg/title-palace.png`)).toBe(false);
     expect(existsSync(`${gameRoot}assets/bg/council-hall.png`)).toBe(false);
     expect(existsSync(`${gameRoot}assets/bg/frontier.png`)).toBe(false);

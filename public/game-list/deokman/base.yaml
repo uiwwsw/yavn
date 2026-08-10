@@ -15,18 +15,27 @@ assets:
     덕만:
       base: assets/char/deokman-v2.webp
       defaultDelivery: deduction
+      emotions:
+        sad: assets/char/deokman-sad-v3.webp
     진평왕:
       base: assets/char/jinpyeong-v2.webp
       defaultDelivery: calm
+      emotions:
+        sad: assets/char/jinpyeong-sad-v3.webp
     천명:
       base: assets/char/cheonmyeong-v2.webp
       defaultDelivery: calm
+      emotions:
+        nervous: assets/char/cheonmyeong-nervous-v3.webp
+        sad: assets/char/cheonmyeong-sad-v3.webp
     유신:
       base: assets/char/yushin-v2.webp
       defaultDelivery: deduction
     소원:
       base: assets/char/sowon-v2.webp
       defaultDelivery: neutral
+      emotions:
+        angry: assets/char/sowon-angry-v3.webp
     비담:
       base: assets/char/bidam-v2.webp
       defaultDelivery: whisper
