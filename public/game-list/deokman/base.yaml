@@ -1,19 +1,19 @@
 assets:
   backgrounds:
-    title_palace: assets/bg/title-palace.webp
-    moon_court: assets/bg/moon-court-v2.webp
-    shadow_corridor: assets/bg/shadow-corridor-v2.webp
-    council_hall: assets/bg/council-hall.webp
-    banquet_hall: assets/bg/banquet-hall-v2.webp
-    princess_chamber: assets/bg/princess-chamber-v2.webp
-    locked_room: assets/bg/locked-room-v2.webp
-    throne_hall: assets/bg/throne-hall-v2.webp
-    frontier: assets/bg/frontier.webp
-    village: assets/bg/village-v2.webp
-    fortress: assets/bg/frontier.webp
+    title_palace: assets/bg/title-palace-silla-v3.webp
+    moon_court: assets/bg/moon-court-silla-v3.webp
+    shadow_corridor: assets/bg/shadow-corridor-silla-v3.webp
+    council_hall: assets/bg/council-hall-silla-v3.webp
+    banquet_hall: assets/bg/banquet-hall-silla-v3.webp
+    princess_chamber: assets/bg/princess-chamber-silla-v3.webp
+    locked_room: assets/bg/locked-room-silla-v3.webp
+    throne_hall: assets/bg/throne-hall-silla-v3.webp
+    frontier: assets/bg/frontier-silla-v3.webp
+    village: assets/bg/village-silla-v3.webp
+    fortress: assets/bg/frontier-silla-v3.webp
   characters:
     덕만:
-      base: assets/char/deokman-v2.webp
+      base: assets/char/deokman-silla-v4.webp
       defaultDelivery: deduction
       defaultFraming: full
       framings:
@@ -21,9 +21,10 @@ assets:
         bust: { scale: 2 }
         closeup: { scale: 2.5, y: 1 }
       emotions:
-        sad: assets/char/deokman-sad-v3.webp
+        sad: assets/char/deokman-sad-silla-v4.webp
+        angry: assets/char/deokman-angry-silla-v4.webp
     진평왕:
-      base: assets/char/jinpyeong-v2.webp
+      base: assets/char/jinpyeong-silla-v4.webp
       defaultDelivery: calm
       defaultFraming: full
       framings:
@@ -31,9 +32,10 @@ assets:
         bust: { scale: 1.85, y: -1 }
         closeup: { scale: 2.35 }
       emotions:
-        sad: assets/char/jinpyeong-sad-v3.webp
+        sad: assets/char/jinpyeong-sad-silla-v4.webp
+        weak: assets/char/jinpyeong-weak-silla-v4.webp
     천명:
-      base: assets/char/cheonmyeong-v2.webp
+      base: assets/char/cheonmyeong-silla-v4.webp
       defaultDelivery: calm
       defaultFraming: full
       framings:
@@ -41,18 +43,21 @@ assets:
         bust: { scale: 1.86 }
         closeup: { scale: 2.34, y: 1 }
       emotions:
-        nervous: assets/char/cheonmyeong-nervous-v3.webp
-        sad: assets/char/cheonmyeong-sad-v3.webp
+        nervous: assets/char/cheonmyeong-nervous-silla-v4.webp
+        sad: assets/char/cheonmyeong-sad-silla-v4.webp
     유신:
-      base: assets/char/yushin-v2.webp
+      base: assets/char/yushin-silla-v4.webp
       defaultDelivery: deduction
       defaultFraming: full
       framings:
         full: { scale: 1 }
         bust: { scale: 1.79, y: -1 }
         closeup: { scale: 2.25 }
+      emotions:
+        sad: assets/char/yushin-sad-silla-v4.webp
+        angry: assets/char/yushin-angry-silla-v4.webp
     소원:
-      base: assets/char/sowon-v2.webp
+      base: assets/char/sowon-silla-v4.webp
       defaultDelivery: neutral
       defaultFraming: full
       framings:
@@ -60,47 +65,63 @@ assets:
         bust: { scale: 1.85 }
         closeup: { scale: 2.35, y: 1 }
       emotions:
-        angry: assets/char/sowon-angry-v3.webp
+        angry: assets/char/sowon-angry-silla-v4.webp
+        nervous: assets/char/sowon-nervous-silla-v4.webp
     비담:
-      base: assets/char/bidam-v2.webp
+      base: assets/char/bidam-silla-v4.webp
       defaultDelivery: whisper
       defaultFraming: full
       framings:
         full: { scale: 1 }
         bust: { scale: 1.79, y: -1 }
         closeup: { scale: 2.3 }
+      emotions:
+        smirk: assets/char/bidam-smirk-silla-v4.webp
+        sad: assets/char/bidam-sad-silla-v4.webp
     칠숙:
-      base: assets/char/chilsuk-v2.webp
+      base: assets/char/chilsuk-silla-v4.webp
       defaultDelivery: calm
       defaultFraming: full
       framings:
         full: { scale: 1 }
         bust: { scale: 1.8 }
         closeup: { scale: 2.25, y: 1 }
+      emotions:
+        smile: assets/char/chilsuk-smile-silla-v4.webp
+        angry: assets/char/chilsuk-angry-silla-v4.webp
     아진:
-      base: assets/char/ajin-v2.webp
+      base: assets/char/ajin-silla-v4.webp
       defaultDelivery: deduction
       defaultFraming: full
       framings:
         full: { scale: 1 }
         bust: { scale: 1.85, y: -1 }
         closeup: { scale: 2.35 }
+      emotions:
+        nervous: assets/char/ajin-nervous-silla-v4.webp
+        angry: assets/char/ajin-angry-silla-v4.webp
     진운:
-      base: assets/char/jinun-v2.webp
+      base: assets/char/jinun-silla-v4.webp
       defaultDelivery: calm
       defaultFraming: full
       framings:
         full: { scale: 1 }
         bust: { scale: 1.8, y: -1 }
         closeup: { scale: 2.25 }
+      emotions:
+        nervous: assets/char/jinun-nervous-silla-v4.webp
+        angry: assets/char/jinun-angry-silla-v4.webp
     월명:
-      base: assets/char/wolmyeong-v2.webp
+      base: assets/char/wolmyeong-silla-v4.webp
       defaultDelivery: calm
       defaultFraming: full
       framings:
         full: { scale: 1 }
         bust: { scale: 1.85 }
         closeup: { scale: 2.35, y: 1 }
+      emotions:
+        sad: assets/char/wolmyeong-sad-silla-v4.webp
+        warning: assets/char/wolmyeong-warning-silla-v4.webp
   music: {}
   sfx: {}
 state:

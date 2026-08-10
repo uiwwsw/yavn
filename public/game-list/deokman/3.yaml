@@ -18,14 +18,14 @@ scenes:
       - say:
           text: "제3장 — 한 사람만 거짓말한다"
       - say:
-          char: 소원
+          char: 소원.nervous
           framing: full
           delivery: nervous
-          text: "빗장은 안쪽, 창틀엔 손자국도 없어요. 밖의 사람들은 똑같이 말해요. 꼭 외워 온 것처럼."
+          text: "빗장은 안에서 걸렸고, 창틀 먼지엔 손가락 한 줄 없어요. 그런데 문밖 사람들은 숨 쉬는 자리까지 똑같이 말해요. 본 게 아니라 외운 것처럼."
       - say:
           char: 덕만
           framing: bust
-          text: "말끝까지 같다면 본 게 아니라 배운 거야. 그 문장을 처음 가르친 사람부터 찾자."
+          text: "말끝과 숨까지 같다면 목격한 게 아니라 배운 거야. 마지막으로 외운 사람 말고, 처음 그 문장을 만든 사람부터 찾자."
       - goto: body_choice
 
   body_choice:
@@ -33,7 +33,7 @@ scenes:
       - choice:
           key: c3_body
           prompt: "시체가 식기 전, 무엇을 할까?"
-          char: 덕만
+          char: 덕만.angry
           framing: closeup
           with:
             - 소원
@@ -59,7 +59,7 @@ scenes:
           char: 덕만
           framing: closeup
           delivery: shout
-          text: "모두 들어오세요. 시체도, 피도 숨기지 않겠습니다. 대신 지금 나가는 자를 잡으세요."
+          text: "문을 여세요. 시체도 피도 먼저 보여 드리지요. 대신 지금 문밖으로 나가는 사람은, 이 방보다 숨길 것이 많은 자입니다."
       - say:
           text: "시선이 시체에서 문으로 돌아갔다. 맨 뒤에 선 칠숙의 하인이 뒤꿈치를 반 치 물렸다."
       - goto: testimony_choice
@@ -69,11 +69,11 @@ scenes:
       - say:
           char: 소원
           framing: bust
-          text: "안쪽 먼지는 그대로인데 바깥만 손바닥 넓이로 닦였어요. 창을 연 사람이 방 안에 없었다는 뜻이에요."
+          text: "안쪽 먼지는 그대로인데 바깥만 손바닥 하나만큼 닦였어요. 창을 연 손은 방 안으로 들어오지도 않았어요."
       - say:
           char: 덕만
           framing: bust
-          text: "좋아. 사람들 입은 잠시 닫아 두고, 네가 본 먼지부터 기록하자."
+          text: "좋아. 사람 입은 서로 베끼지만 먼지는 그러지 않아. 네가 본 순서대로, 닦인 자리부터 적자."
       - goto: testimony_choice
 
   testimony_choice:
@@ -110,31 +110,39 @@ scenes:
       - say:
           char: 소원
           framing: bust
-          text: "발판에 짚신 반쪽이 남았어요. 작은 사람이 밧줄에 매달려 창을 열었어요. 시킨 자는 방에도 오지 않았고요."
+          text: "발판에 짚신 앞코만 찍혔어요. 몸집 작은 사람이 밧줄에 매달려 창을 밀었어요. 시킨 자는 신발에 흙 한 점 묻히지 않았고요."
       - goto: culprit_choice
 
   testimony_bidam:
     actions:
+      - char:
+          id: 비담
+          position: right
+          framing: full
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "잠긴 것은 둘입니다. 하나는 이 문, 하나는 ‘안에서 잠겼다’는 사람들 머릿속. 두 번째 자물쇠가 훨씬 비싸군요."
+          text: "잠긴 것은 둘입니다. 이 문 하나, ‘안에서 잠겼다’는 사람들 생각 하나. 쇠도 안 든 두 번째 자물쇠가 훨씬 비쌌겠군요."
       - say:
           char: 덕만
           framing: bust
-          text: "그럼 문은 두고 이야기를 열죠. 열쇠를 본 사람이 아니라, 잠겼다고 먼저 말한 사람부터."
+          text: "문은 그대로 두고 이야기를 열죠. 열쇠를 본 자가 아니라, 아무도 묻기 전에 잠겼다고 말한 자부터."
       - goto: culprit_choice
 
   testimony_yushin:
     actions:
+      - char:
+          id: 유신
+          position: right
+          framing: full
       - say:
           char: 유신
           framing: bust
-          text: "발자국 간격은 두 자 반으로 일정합니다. 다친 사람의 걸음이 아닙니다. 어젯밤부터 절뚝인 자는 한 명뿐입니다."
+          text: "발자국은 여덟, 간격은 모두 두 자 반입니다. 상처 입은 자는 이렇게 걷지 못합니다. 어젯밤부터 일부러 절뚝인 사람은 한 명뿐입니다."
       - say:
           char: 덕만
           framing: bust
-          text: "아진. 얼굴은 가렸지만 걸음의 길이까지 줄이지는 못했군."
+          text: "아진. 얼굴은 가렸어도 여덟 걸음은 숨기지 못했군. 그대는 위기에서도 보폭을 바꾸지 않지."
       - goto: culprit_choice
 
   culprit_choice:
@@ -144,12 +152,12 @@ scenes:
           position: right
           framing: full
       - say:
-          char: 아진
+          char: 아진.nervous
           framing: bust
           with:
             - 덕만
           delivery: neutral
-          text: "문에서 여기까지 열한 걸음입니다. 공주께서 저를 부른 순간 도망칠 거리는 사라졌습니다. 그래도 증거는 없습니다."
+          text: "문까지 열한 걸음. 공주께서 제 이름을 부른 순간, 달아날 거리는 사라졌습니다. 하지만 체포하기에는 한 걸음이 모자랍니다. 증거입니다."
       - choice:
           key: c3_culprit
           prompt: "아진이 눈앞에 있다. 어떻게 할까?"
@@ -176,14 +184,14 @@ scenes:
   culprit_deal:
     actions:
       - say:
-          char: 아진
+          char: 아진.angry
           framing: bust
           delivery: neutral
-          text: "명령이 떨어지면 저는 공주를 죽입니다. 그런 칼과 거래하시겠습니까?"
+          text: "다음 명령이 오면 저는 공주를 죽입니다. 칼날이 어디를 향할지 아시면서도 손잡이를 잡으시겠습니까?"
       - say:
           char: 덕만
           framing: bust
-          text: "그대는 나를 미워해서 죽이는 사람이 아니야. 그렇다면 명령이 오는 길만 끊으면 돼."
+          text: "그대가 나를 죽이는 까닭은 미움이 아니라 명령이야. 그렇다면 그대를 꺾을 필요는 없어. 명령이 오는 길을 꺾으면 되지."
       - add:
           bidam_trust: 1
       - goto: chapter3_end
@@ -197,7 +205,7 @@ scenes:
       - say:
           char: 덕만
           framing: bust
-          text: "죽은 입을 두 번 막으러 왔군. 이번에는 산 입으로 누구의 명령인지 말하게 하세요."
+          text: "죽은 입이 한 번 더 열릴까 두려워 돌아왔군. 이번에는 산 입으로, 누가 그 두려움을 시켰는지 말하게 하세요."
       - goto: chapter3_end
 
   chapter3_end:
@@ -209,14 +217,18 @@ scenes:
           legitimacy: 1
       - say:
           text: "서약서에는 왕실 남자를 후계로 세운다는 계승동맹의 약속이 남아 있었다."
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
       - say:
-          char: 칠숙
+          char: 칠숙.smile
           framing: bust
-          text: "결백이 밝혀져 다행입니다. 이제 그 명망으로 국경의 굶주린 백성을 위무해 주시지요."
+          text: "결백을 되찾으셨으니 온 왕경이 기뻐할 것입니다. 그 명망을 국경의 굶주린 백성과도 나누시지요. 아주 오래도록."
       - say:
           char: 덕만
           framing: bust
-          text: "말은 위무이고 길은 추방이군요. 가겠습니다. 궁 안의 증언은 그대가 바꿔도, 굶주린 사람의 기억까지는 못 바꿀 테니."
+          text: "입으로는 위무라 하고, 길로는 추방을 명하시는군요. 가겠습니다. 궁의 증언은 고쳐 써도, 굶주린 사람이 받은 한 끼까지 지우지는 못할 테니."
       - say:
           text: "제3장 완료 — 덕만은 계승동맹의 증거를 얻는 대신, 왕경을 잃었다."
 
