@@ -375,26 +375,217 @@ scenes:
 
   go_17_second_murder:
     actions:
+      - bg: locked_room
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 소원
+          position: right
+          framing: full
+      - say:
+          text: "덕만과 소원은 시체를 침상 밑으로 밀어 넣고 바닥의 피를 닦았습니다. 문밖에서는 방을 수색하겠다는 호위의 목소리가 들렸습니다."
+      - say:
+          char: 소원.nervous
+          framing: bust
+          text: "피 냄새가 안 없어져요. 침상 휘장에도 묻었어요. 이제라도 문 열고 말해요."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "지금 발견되면 설명할 틈도 없어. 먼저 이 사람이 왜 여기 왔는지 알아내야 해."
+      - effect: alarm
+      - say:
+          text: "호위들은 왕명을 내세워 문을 부쉈습니다. 침상 아래에서는 시체뿐 아니라 피를 닦은 천과 덕만의 손자국이 함께 나왔습니다."
+      - say:
+          char: 소원.nervous
+          framing: closeup
+          with: []
+          text: "공주님이 죽인 게 아니라고 제가 말할게요."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "네가 본 건 우리가 시체를 숨긴 일이야. 이제 그 말도 나를 구하지 못해."
+      - effect: darken
+      - say:
+          text: "살인 시각은 덕만이 시체를 발견하기 전이었지만, 진실을 숨긴 행동 때문에 모든 해명이 거짓으로 취급됐습니다."
+          wait: 700
       - gameOver:
-          title: "운명 17 — 두 번째 살인"
-          message: "숨긴 시체는 덕만의 침상 아래에서 발견되었다. 첫 번째 살인은 남의 것이었지만, 진실을 숨긴 두 번째 살인은 덕만의 것이 되었다."
+          title: "운명 17 — 침상 아래의 시체"
+          message: "덕만은 살인과 증거 은폐 혐의로 체포되었습니다. 실제 범인은 수사 대상에서 빠졌습니다."
   go_18_borrowed_corpse:
     actions:
+      - bg: shadow_corridor
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 소원
+          position: center
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "덕만과 소원이 시체를 천에 싸서 칠숙의 방으로 옮기는 동안, 야간 교대를 마친 시종들이 회랑으로 쏟아져 나왔습니다."
+      - say:
+          char: 소원.nervous
+          framing: bust
+          text: "사람들이 봤어요. 내려놓고 사실대로 말해요. 더 가면 정말 우리가 한 일이 돼요."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "여기까지 왔어. 칠숙 방에서 발견되면 적어도 그 사람을 조사할 수 있어."
+      - effect: focus
+      - say:
+          text: "칠숙은 열린 방문 앞에서 두 사람을 기다리고 있었습니다. 호위 열둘도 이미 그 뒤에 서 있었습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "제 방에 선물을 가져오셨군요. 공주 손에 묻은 피부터 기록하게 하겠습니다."
+      - say:
+          char: 덕만.angry
+          framing: closeup
+          with: []
+          text: "처음부터 우리가 여기로 오길 기다렸습니까?"
+      - effect: alarm
+      - say:
+          text: "칠숙은 대답하지 않고 호위에게 체포를 명했습니다. 시체를 옮기는 모습을 본 열두 사람이 차례로 증언했습니다."
+          wait: 700
       - gameOver:
-          title: "운명 18 — 빌린 시체"
-          message: "시체를 옮기는 덕만의 모습은 열두 명이 보았다. 칠숙은 자신의 방에서 발견된 시체보다 공주의 손에 묻은 피를 증거로 삼았다. 함정은 주인만 바꾸어 닫혔다."
+          title: "운명 18 — 회랑의 목격자"
+          message: "덕만은 시체 유기 현장에서 체포되었습니다. 칠숙의 방은 수색조차 받지 않았습니다."
   go_19_last_witness:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
+      - say:
+          text: "화백 앞에 선 칠숙은 시체를 처음 발견했을 때 본 것을 차분하게 증언했습니다."
+      - say:
+          char: 칠숙
+          framing: bust
+          text: "제가 방에 들어갔을 때 시체의 등에는 칼자국이 있었습니다. 공주는 그 옆에 서 계셨습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "저도 그 상처를 봤습니다. 칠숙공의 증언과 일치합니다."
+      - effect: focus
+      - say:
+          text: "호위들이 칠숙의 증언을 기록하는 동안 소원이 시체를 바로 눕혔습니다. 칼자국은 가슴에 있었고 등에는 상처가 없었습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "잠깐. 시체는 엎드려 있었어. 나는 가슴의 상처를 나중에 봤는데…… 칠숙은 어떻게 먼저 알았지?"
+      - effect: alarm
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "공주께서 방금 제 증언이 맞다고 인정하셨습니다. 이제 말을 바꾸시는 겁니까?"
+      - say:
+          text: "모순을 설명하기 전에 호위의 칼이 덕만의 목에 닿았습니다. 칠숙의 첫 증언은 이미 열두 명의 서명을 받은 뒤였습니다."
+          wait: 700
       - gameOver:
-          title: "운명 19 — 마지막 증언"
-          message: "칠숙은 상처를 보았다고 했지만 시체는 엎드려 있었다. 덕만이 그 모순을 깨달았을 때, 증언을 믿고 물린 호위는 이미 그녀의 목에 칼을 대고 있었다."
+          title: "운명 19 — 뒤집힌 시체"
+          message: "덕만은 거짓 증언에 동의한 사람으로 기록됐습니다. 뒤늦게 찾은 모순은 재판에서 받아들여지지 않았습니다."
   go_20_correct_accusation:
     actions:
+      - bg: locked_room
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 아진
+          position: right
+          framing: full
+      - say:
+          text: "복제 열쇠와 젖은 발자국을 확인한 덕만은 아진을 방으로 불러 호위 앞에 세웠습니다."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          text: "아진을 당장 체포해. 새 열쇠와 발자국이 모두 이 사람에게 닿아."
+      - say:
+          char: 아진
+          framing: bust
+          text: "증언은 있습니까? 제가 열쇠를 만들거나 이 방에 들어오는 모습을 본 사람 말입니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "잡아 두면 찾을 수 있어. 그 전에 또 사람을 죽이게 둘 수는 없어."
+      - effect: impact
+      - say:
+          text: "호위가 아진의 팔을 잡는 순간, 아진은 소매 안의 작은 약병을 깨물었습니다. 입가에서 검은 피가 흘렀습니다."
+      - say:
+          char: 아진.nervous
+          framing: closeup
+          with: []
+          text: "이제 공주께서 원한 대답은 제 입에서 나오지 않습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "뱉어. 누구 명령인지 말하고 죽어."
+      - effect: darken
+      - say:
+          text: "아진은 이름을 말하지 못하고 죽었습니다. 칠숙은 고문을 피하려 자결한 무고한 호위라는 소문을 먼저 퍼뜨렸습니다."
+          wait: 700
       - gameOver:
-          title: "운명 20 — 증거 없는 정답"
-          message: "아진은 진범이었다. 그러나 체포 명령이 떨어지기 전 독을 삼켰고, 남은 것은 공주가 고문으로 무고한 이를 죽였다는 소문뿐이었다. 정답은 다시 죄가 되었다."
+          title: "운명 20 — 죽어 버린 진범"
+          message: "진범은 죽었고 배후를 밝힐 증거는 남지 않았습니다. 덕만은 무고한 사람을 죽음으로 몰았다는 비난을 받았습니다."
   go_21_friendless_truth:
     actions:
+      - bg: council_hall
+      - char:
+          id: 소원
+          position: right
+          framing: full
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - say:
+          text: "덕만은 재판을 앞두고 자신의 방 열쇠를 맡아 온 소원을 증인석에 세웠습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "내 방 열쇠를 맡은 사람은 소원입니다. 심문하면 제가 모르는 출입을 밝혀낼 수 있습니다."
+      - say:
+          char: 소원.angry
+          framing: bust
+          text: "제가 아니라는 걸 알면서도 그렇게 말하는 거예요? 공주님이 살려면 제 이름 하나쯤 버려도 돼요?"
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "며칠만 버텨 줘. 진범을 찾으면 내가 직접 꺼내 줄게."
+      - say:
+          char: 소원
+          framing: closeup
+          with: []
+          text: "꺼내 준 뒤에는요? 제가 다시 공주님을 믿어야 해요?"
+      - effect: darken
+      - say:
+          text: "심문은 며칠이 아니라 스무 날 이어졌습니다. 소원은 매질을 멈추기 위해 시키는 대로 자백했고, 덕만은 살인 혐의에서 벗어났습니다."
+      - say:
+          text: "몇 해 뒤 반란군이 궁문을 열던 밤, 덕만의 침전 앞에는 그녀를 깨울 사람이 없었습니다."
+      - effect: alarm
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "소원아…… 그날 내가 네 말을 들었어야 했어."
+          wait: 700
       - gameOver:
-          title: "운명 21 — 친구 없는 진실"
-          message: "소원은 고문 끝에 원하는 자백을 했다. 덕만은 살인 혐의를 벗었지만, 마지막까지 곁을 지키던 사람을 잃었다. 훗날 반란의 밤, 그녀를 깨워 줄 사람은 없었다."
+          title: "운명 21 — 소원의 자백"
+          message: "덕만은 누명을 벗었지만 소원을 잃었습니다. 반란의 밤, 침전에서 빠져나오지 못했습니다."
