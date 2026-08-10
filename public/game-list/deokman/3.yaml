@@ -45,7 +45,7 @@ scenes:
               goto: body_public
             - text: "침상 밑에 숨긴다"
               goto: go_17_second_murder
-            - text: "국산 방으로 옮긴다"
+            - text: "칠숙 방으로 옮긴다"
               goto: go_18_borrowed_corpse
             - text: "소원과 흔적을 적는다"
               add:
@@ -61,7 +61,7 @@ scenes:
           delivery: shout
           text: "모두 들어오세요. 시체도, 피도 숨기지 않겠습니다. 대신 지금 나가는 자를 잡으세요."
       - say:
-          text: "시선이 시체에서 문으로 돌아갔다. 맨 뒤에 선 국산의 하인이 뒤꿈치를 반 치 물렸다."
+          text: "시선이 시체에서 문으로 돌아갔다. 맨 뒤에 선 칠숙의 하인이 뒤꿈치를 반 치 물렸다."
       - goto: testimony_choice
 
   body_record:
@@ -80,7 +80,7 @@ scenes:
     actions:
       - bg: council_hall
       - say:
-          text: "소원은 창밖 먼지를, 비담은 복제된 열쇠를, 유신은 젖은 발자국을 내놓았다. 국산만 엎드린 시체 아래의 상처를 보았다고 말했다."
+          text: "소원은 창밖 먼지를, 비담은 복제된 열쇠를, 유신은 젖은 발자국을 내놓았다. 칠숙만 엎드린 시체 아래의 상처를 보았다고 말했다."
       - choice:
           key: c3_testimony
           prompt: "누구의 단서를 믿을까?"
@@ -102,7 +102,7 @@ scenes:
                 yushin_trust: 1
                 power: 1
               goto: testimony_yushin
-            - text: "국산의 상처"
+            - text: "칠숙의 상처"
               goto: go_19_last_witness
 
   testimony_sowon:
@@ -193,7 +193,7 @@ scenes:
       - effect: focus
       - say:
           delivery: nervous
-          text: "‘죽은 자가 깨어났다’는 전갈이 닿은 지 반 시진. 국산의 하인이 시체의 입을 다시 막으러 돌아왔다. 품에서는 찢긴 서약서가 떨어졌다."
+          text: "‘죽은 자가 깨어났다’는 전갈이 닿은 지 반 시진. 칠숙의 하인이 시체의 입을 다시 막으러 돌아왔다. 품에서는 찢긴 서약서가 떨어졌다."
       - say:
           char: 덕만
           framing: bust
@@ -210,7 +210,7 @@ scenes:
       - say:
           text: "서약서에는 왕실 남자를 후계로 세운다는 계승동맹의 약속이 남아 있었다."
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "결백이 밝혀져 다행입니다. 이제 그 명망으로 국경의 굶주린 백성을 위무해 주시지요."
       - say:
@@ -229,12 +229,12 @@ scenes:
     actions:
       - gameOver:
           title: "운명 18 — 빌린 시체"
-          message: "시체를 옮기는 덕만의 모습은 열두 명이 보았다. 국산은 자신의 방에서 발견된 시체보다 공주의 손에 묻은 피를 증거로 삼았다. 함정은 주인만 바꾸어 닫혔다."
+          message: "시체를 옮기는 덕만의 모습은 열두 명이 보았다. 칠숙은 자신의 방에서 발견된 시체보다 공주의 손에 묻은 피를 증거로 삼았다. 함정은 주인만 바꾸어 닫혔다."
   go_19_last_witness:
     actions:
       - gameOver:
           title: "운명 19 — 마지막 증언"
-          message: "국산은 상처를 보았다고 했지만 시체는 엎드려 있었다. 덕만이 그 모순을 깨달았을 때, 증언을 믿고 물린 호위는 이미 그녀의 목에 칼을 대고 있었다."
+          message: "칠숙은 상처를 보았다고 했지만 시체는 엎드려 있었다. 덕만이 그 모순을 깨달았을 때, 증언을 믿고 물린 호위는 이미 그녀의 목에 칼을 대고 있었다."
   go_20_correct_accusation:
     actions:
       - gameOver:

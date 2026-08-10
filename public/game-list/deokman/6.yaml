@@ -165,7 +165,7 @@ scenes:
     actions:
       - effect: embers
       - say:
-          text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람의 이름이 남아 있었다. 상대등 국산. 반환 칸은 비어 있었다."
+          text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람의 이름이 남아 있었다. 이찬 칠숙. 반환 칸은 비어 있었다."
       - say:
           char: 덕만
           framing: bust
@@ -233,7 +233,7 @@ scenes:
   seal_seal:
     actions:
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "인장을 손에 넣고도 봉하신다니 참으로 고결하십니다. 다만 쓰지 못하는 힘으로 나라를 다스릴 수 있을지 염려되는군요."
       - say:
@@ -310,7 +310,7 @@ scenes:
     actions:
       - gameOver:
           title: "운명 31 — 궁을 친 공주"
-          message: "정문은 열렸지만 왕의 궁을 공격한 사실은 남았다. 국산은 반란을 막은 충신이 되었고 덕만은 군사를 이끌고 궁을 친 역적이 되었다."
+          message: "정문은 열렸지만 왕의 궁을 공격한 사실은 남았다. 칠숙은 반란을 막은 충신이 되었고 덕만은 군사를 이끌고 궁을 친 역적이 되었다."
   go_32_name_in_dark:
     actions:
       - gameOver:

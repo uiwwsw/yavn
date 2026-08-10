@@ -77,7 +77,7 @@ scenes:
           char: 진운
           framing: closeup
           delivery: whisper
-          text: "제 어머니는 국산의 별채 동쪽방에 있습니다. 창은 하나, 호위는 여섯. 회의에서 제 표가 늘 때마다 어머니 문밖의 칼도 하나씩 늘어납니다."
+          text: "제 어머니는 칠숙의 별채 동쪽방에 있습니다. 창은 하나, 호위는 여섯. 회의에서 제 표가 늘 때마다 어머니 문밖의 칼도 하나씩 늘어납니다."
       - say:
           char: 덕만
           framing: bust
@@ -88,7 +88,7 @@ scenes:
     actions:
       - say:
           delivery: deduction
-          text: "진운이 첫 문장을 말할 때 국산의 입술도 같은 박자로 움직였다. 두 번째 문장 중간, 진운은 원고에 없는 단어 하나를 골라 천천히 발음했다."
+          text: "진운이 첫 문장을 말할 때 칠숙의 입술도 같은 박자로 움직였다. 두 번째 문장 중간, 진운은 원고에 없는 단어 하나를 골라 천천히 발음했다."
       - say:
           char: 덕만
           framing: closeup
@@ -147,7 +147,7 @@ scenes:
   leverage_ledger:
     actions:
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "궁핍한 왕족의 빚을 대신 갚아 드린 일이 반역이라니, 선의가 죄가 되는 세상이군요."
       - say:
@@ -218,7 +218,7 @@ scenes:
   rescue_public:
     actions:
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "일어나지도 않은 암살을 막으셨다니, 공주님의 공은 증명할 길이 없어 더욱 크겠습니다."
       - say:

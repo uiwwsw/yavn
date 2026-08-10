@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('1.3.0');
+    expect(config.version).toBe('1.3.1');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('나를 빼고도 오늘 밤 신라를 지킬 수 있는가');
@@ -84,6 +84,19 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('강가까지 서른두 걸음');
     expect(allContent).toContain('창은 하나, 호위는 여섯');
     expect(allContent).toContain('마른 우물도 사흘은 하늘을 비춥니다');
+  });
+
+  it('uses the historically attested Chilsuk instead of a fictional chief noble', () => {
+    const base = readYaml('base.yaml');
+    const characters = asRecord(asRecord(base.assets).characters);
+    const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+
+    expect(characters.칠숙).toBeDefined();
+    expect(characters.국산).toBeUndefined();
+    expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-v2.webp');
+    expect(allContent).toContain('칠숙');
+    expect(allContent).not.toContain('국산');
+    expect(allContent).toContain('이찬 칠숙');
   });
 
   it('directs every character beat with reusable full, bust, and close-up framings', () => {

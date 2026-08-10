@@ -22,7 +22,7 @@ scenes:
           delivery: whisper
           text: "회랑의 등불이 하나씩 죽는다. 마지막 불빛이 꺼지기 전, 누군가 목소리를 눌렀다."
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "<speed=20>내일 아침, 전하의 잔은 깨끗이 비워질 것입니다.</speed>"
           wait: 700
@@ -32,7 +32,7 @@ scenes:
           delivery: neutral
           text: "왕의 숨이 멎으면, 공주께 남은 거리는 열두 걸음입니다."
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "공주께 허락된 자리는 처음부터 없었습니다."
       - say:
@@ -128,7 +128,7 @@ scenes:
                 yushin_trust: 1
                 insight: 1
               goto: warn_yushin
-            - text: "국산을 떠본다"
+            - text: "칠숙을 떠본다"
               goto: go_04_guest_of_traitor
 
   warn_cheonmyeong:
@@ -215,7 +215,7 @@ scenes:
                 power: 1
                 suspicion: 2
               goto: cup_smash
-            - text: "국산과 잔을 바꾼다"
+            - text: "칠숙과 잔을 바꾼다"
               add:
                 insight: 2
                 nobles_support: -1
@@ -227,7 +227,7 @@ scenes:
     actions:
       - effect: shake
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "공주께서 전하의 연회를 엎으셨군요. 왕실은 오늘의 무례를 오래 기억할 것입니다."
       - say:
@@ -239,7 +239,7 @@ scenes:
   cup_swap:
     actions:
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           with:
             - 덕만
@@ -248,14 +248,14 @@ scenes:
           char: 덕만
           framing: bust
           with:
-            - 국산
+            - 칠숙
           delivery: deduction
           text: "반대입니다. 전하의 잔을 그대가 먼저 비울 영광을 드리지요."
           wait: 650
       - effect: impact
       - say:
           delivery: nervous
-          text: "국산의 미소가 채 사라지기 전, 잔을 나르던 악공이 혀를 깨물고 쓰러졌다."
+          text: "칠숙의 미소가 채 사라지기 전, 잔을 나르던 악공이 혀를 깨물고 쓰러졌다."
       - goto: prologue_survive
 
   prologue_survive:
@@ -295,7 +295,7 @@ scenes:
     actions:
       - gameOver:
           title: "운명 04 — 반역자의 손님"
-          message: "국산은 무릎 꿇고 충성을 맹세했다. 덕만이 돌아선 뒤 그 맹세는 체포 명령이 되었다. 공주는 스스로 적의 방에 들어간 첫 번째 왕족으로 남았다."
+          message: "칠숙은 무릎 꿇고 충성을 맹세했다. 덕만이 돌아선 뒤 그 맹세는 체포 명령이 되었다. 공주는 스스로 적의 방에 들어간 첫 번째 왕족으로 남았다."
   go_05_filial_cup:
     actions:
       - gameOver:
