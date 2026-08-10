@@ -16,16 +16,17 @@ scenes:
       - say:
           text: "제6장 — 왕이 잠든 밤"
       - say:
-          char: 천명
+          char: 천명.nervous
           with:
             - 덕만
           delivery: nervous
-          text: "왕명이라며 너를 체포하라는 군사가 궁문을 막았어. 하지만 아버지는 말씀을 하실 수 없어."
+          text: "네 얼굴이 그려진 체포령이 모든 문에 붙었어. 군사들은 왕명이라는데, 아버지는 손가락 하나 움직이지 못하셔. 누군가 아버지의 침묵으로 명령하고 있어."
       - say:
           char: 덕만
           with:
             - 천명
-          text: "가짜 왕명은 사람들이 믿는 동안 진짜가 돼. 해 뜨기 전에 왕과 인장을 찾아야 해."
+          delivery: nervous
+          text: "인장이 찍힌 거짓말은 해가 뜨면 법이 돼. 그 전에 아버지의 숨과 인장을 둘 다 찾아야 해. 하나만 찾으면 다른 하나가 우리를 죽일 거야."
       - goto: entry_choice
 
   entry_choice:
@@ -59,20 +60,22 @@ scenes:
           position: right
       - say:
           char: 월명
-          text: "왕을 살리는 약도 이 길로 들였고, 죽이는 약도 이 길로 들였을 겁니다."
+          text: "물길은 약초 냄새를 기억합니다. 전하를 살린 약도, 죽이려 든 약도 여기로 왔습니다. 발을 낮추십시오. 세 번째 갈림길에 보초가 둘입니다."
       - say:
           char: 덕만
-          text: "길에는 죄가 없지요. 어디로 이어 놓았는지가 죄일 뿐."
+          text: "같은 길로 약과 독이 들었군요. 길을 막지 말고 끝까지 갑시다. 죄는 도착한 방에 있을 테니."
       - goto: rescue_choice
 
   entry_procession:
     actions:
       - say:
           char: 천명
-          text: "어릴 때는 내 치마 뒤에 숨어 과자를 훔치더니, 이제는 왕위를 훔치러 숨는구나."
+          delivery: nervous
+          text: "일곱 살 때도 내 치마 밑에 숨어 꿀과자를 훔쳤지. 그때는 네 발이 밖으로 다 보였어. 지금도 보여, 떨리는 것까지."
       - say:
           char: 덕만
-          text: "이번에도 들키면 언니가 혼내 줘. 살아서 나갈 테니까."
+          delivery: whisper
+          text: "이번에도 언니가 가려 줘. 나가면 그때처럼 실컷 혼내. 그러려면 우리 둘 다 살아야 해."
       - goto: rescue_choice
 
   entry_prison:
@@ -82,17 +85,18 @@ scenes:
           position: right
       - say:
           char: 비담
-          text: "공주께서는 잡히는 방식도 남다르십니다. 열쇠를 안쪽에서 받으러 오셨군요."
+          text: "보통은 감옥에서 나가려고 저를 찾습니다. 공주님은 들어오려고 찾아오셨군요. 제 쓸모도 드디어 문 안쪽으로 승진했습니다."
       - say:
           char: 덕만
-          text: "그대가 문밖에 서 있으면 체포고, 안에 서 있으면 초대지."
+          text: "그대가 밖에서 문을 잠그면 체포고, 안에서 열어 주면 공모지. 어느 죄가 그대 취향입니까?"
       - goto: rescue_choice
 
   rescue_choice:
     actions:
       - bg: princess_chamber
       - say:
-          text: "왕의 숨은 가늘었고, 천명은 포위되었으며, 서약서 원본은 불타기 시작했다. 셋을 모두 먼저 구할 수는 없었다."
+          delivery: nervous
+          text: "침전에서는 왕의 숨이 끊어질 듯 가늘어졌다. 종루에는 천명과 동료들이 포위되었다. 기록고 지붕 위로는 불길이 번졌다. 먼저 달려갈 곳은 하나뿐이었다."
       - choice:
           key: c6_rescue
           prompt: "가장 먼저 무엇을 구할까?"
@@ -119,20 +123,22 @@ scenes:
     actions:
       - say:
           char: 월명
-          text: "숨은 돌아왔지만 오래 버티지 못합니다. 왕께 남은 말은 몇 마디뿐입니다."
+          delivery: sad
+          text: "독은 멎었습니다. 하지만 이미 식은 피는 돌아오지 않습니다. 전하께 남은 숨은…… 긴 문장 하나를 끝내기에도 모자랍니다."
       - say:
           char: 덕만
-          text: "그 몇 마디로 내 왕위를 만들어 달라고 하지는 않겠습니다."
+          delivery: sad
+          text: "그 한 문장을 제 이름에 쓰게 하지는 않겠습니다. 마지막 말만큼은 아버지 자신의 것이어야 해요."
       - goto: seal_found
 
   rescue_allies:
     actions:
       - say:
-          char: 천명
-          text: "아버지보다 우리를 먼저 구했어. 후회하지 않겠니?"
+          char: 천명.sad
+          text: "네가 우리에게 군사를 보낸 동안 아버지 숨이 더 약해졌어. 덕만아…… 나를 살리고 아버지를 잃으면, 나를 볼 때마다 후회하지 않겠니?"
       - say:
-          char: 덕만
-          text: "왕 한 사람을 살리고 나라를 잃을 수는 없어. 아버지도 왕이라면 알 거야."
+          char: 덕만.sad
+          text: "후회할 거야. 언니를 잃었어도 후회했을 거고. 나는 지금 누구를 사랑하는지 고른 게 아니라, 누구를 먼저 살릴 수 있는지 골랐어."
       - add:
           army_support: 1
       - goto: seal_found
@@ -141,10 +147,17 @@ scenes:
     actions:
       - effect: embers
       - say:
-          text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람이 국산이라 적혀 있었다."
+          text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람의 이름이 남아 있었다. 상대등 국산. 반환 칸은 비어 있었다."
       - say:
           char: 덕만
-          text: "왕명은 가짜지만 인영은 진짜였군. 진짜를 훔쳐 거짓을 찍었어."
+          text: "명령은 거짓인데 인영은 진짜였어. 아버지의 침묵과 도장을 함께 훔친 거야."
+      - say:
+          delivery: sad
+          text: "덕만이 대장을 안고 기록고를 나왔을 때 종루의 봉화가 꺼졌다. 들것 가장자리로 천명이 쓰던 붉은 옷자락이 흘러내렸다."
+          wait: 1000
+      - say:
+          char: 덕만.sad
+          text: "내가 고른 건 종이였어…… 언니가 아니었어. 그런데도 이 종이를 놓으면, 언니를 두 번 버리는 거야."
       - set:
           cheonmyeong_alive: false
       - goto: seal_found
@@ -152,7 +165,7 @@ scenes:
   seal_found:
     actions:
       - say:
-          text: "침전 바닥의 빈 약함 아래에서 왕의 인장이 발견되었다. 이제 덕만의 손에는 명령을 진짜로 만들 힘이 있었다."
+          text: "침전 바닥의 빈 약함 아래에서 왕의 인장이 나왔다. 손바닥보다 작은 금덩이가, 수천 명을 움직일 수 있는 무게로 덕만의 손에 놓였다."
       - set:
           has_royal_seal: true
       - goto: seal_choice
@@ -188,27 +201,29 @@ scenes:
     actions:
       - say:
           char: 비담
-          text: "가짜 왕명을 진짜 명령으로 막으셨습니다. 차이는 누가 이겼는가뿐입니까?"
+          text: "도둑맞은 인장으로 만든 가짜 왕명을, 주운 인장으로 만든 진짜 명령이 막았군요. 둘의 차이는 승자의 이름뿐입니까?"
       - say:
           char: 덕만
-          text: "아니. 내일 모두 앞에서 내가 이 명령을 내렸다고 말할 수 있는가가 차이야."
+          text: "아니. 내일 내가 이 명령을 숨기지 않고, 죽은 사람의 이름까지 읽을 수 있는가. 그게 차이야."
       - goto: kings_last_words
 
   seal_seal:
     actions:
       - say:
           char: 국산
-          text: "권력을 손에 들고도 쓰지 못하는 분이 왕이 되시겠습니까?"
+          text: "인장을 손에 넣고도 봉하신다니 참으로 고결하십니다. 다만 쓰지 못하는 힘으로 나라를 다스릴 수 있을지 염려되는군요."
       - say:
           char: 덕만
-          text: "쓰지 않은 힘이 사라진 힘은 아닙니다. 그대가 떨고 있으니 더 분명하지요."
+          text: "쓰지 않은 것이지, 쓰지 못한 것이 아닙니다. 그 차이를 그대 손이 먼저 알고 있군요. 소매가 떨립니다."
       - goto: kings_last_words
 
   seal_break:
     actions:
       - effect: flash
+      - wait: 180
+      - effect: impact
       - say:
-          text: "금빛 인장이 돌바닥에서 둘로 갈라졌다. 군사들은 누구의 명령도 진짜라 부를 수 없게 되었다."
+          text: "금빛 인장이 돌바닥에서 둘로 갈라졌다. 군사들의 창끝이 처음으로 멈췄다. 이제 누구도 훔친 도장 하나로 왕을 만들 수 없었다."
       - goto: kings_last_words
 
   kings_last_words:
@@ -226,18 +241,34 @@ scenes:
           with:
             - 진평왕
           delivery: sad
-          text: "<speed=20>저를 왕으로 세워주십시오.</speed>"
+          text: "<speed=18>아버지.</speed> <speed=22>이번 한 번만 왕이 아니라 아버지로 답해 주세요.</speed> <speed=18>제가…… 왕이 될 수 있습니까?</speed>"
+          wait: 900
       - say:
           char: 진평왕
           with:
             - 덕만
-          text: "<speed=19>내가 세워준 왕이라면,</speed> <speed=25>내가 죽은 뒤에도 왕이겠느냐?</speed>"
+          delivery: sad
+          text: "<speed=18>내가 된다고 하면 되겠느냐.</speed> <speed=18>내가 안 된다고 하면…… 멈출 것이냐.</speed>"
       - say:
-          text: "진평왕은 후계자의 이름을 남기지 않았다. 덕만에게는 왕명도 유언도 없었다."
+          char: 덕만.sad
+          with:
+            - 진평왕
+          text: "아니요. 어느 대답도 저를 멈추지는 못합니다. 다만 딸로서…… 아버지의 대답을 듣고 싶었습니다."
+      - say:
+          char: 진평왕.sad
+          with:
+            - 덕만
+          delivery: sad
+          text: "그러면 이미 답을 얻었구나. 아비가 세운 딸은 아비와 함께 무너진다. 네가 세운 왕만이…… 내일에도 남는다."
+          wait: 1200
+      - say:
+          delivery: sad
+          text: "진평왕은 끝내 후계자의 이름을 남기지 않았다. 마지막 숨이 빠져나간 뒤에도 덕만의 손바닥에는 왕명도, 유언도 없었다."
       - say:
           char: 덕만
-          delivery: calm
-          text: "아버지는 마지막까지 나를 보호하지 않으셨다. 왕이 될 기회를 주셨다."
+          delivery: whisper
+          text: "마지막까지 내 이름을 써 주지 않으셨다. 버린 것이 아니라…… 내 손으로 쓰게 하신 거야."
+          wait: 900
       - add:
           legitimacy: 1
       - say:
