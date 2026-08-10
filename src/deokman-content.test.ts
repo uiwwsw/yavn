@@ -71,19 +71,22 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.0.0');
+    expect(config.version).toBe('2.1.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
-    expect(allContent).toContain('나를 지운 뒤에도, 오늘 밤 신라를 지킬 수 있습니까');
-    expect(allContent).toContain('아비가 세운 딸은 아비와 함께 무너진다');
-    expect(allContent).toContain('열병이 났던 밤, 네 손을 너무 세게 잡아 손톱 자국을 냈지');
+    expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
+    expect(allContent).toContain('내 딸은 왕이 될 수 있다. 그리고 왕이 되지 않아도 내 딸이다');
+    expect(allContent).toContain('이번에는 같이 들어가고 같이 나오는 거야');
     expect(allContent).toContain('우리 전사자는 여든하나입니다');
-    expect(allContent).toContain('다른 건 이 행주뿐이에요');
-    expect(allContent).toContain('어떤 거짓말을 안주로 내시겠습니까');
-    expect(allContent).toContain('참으로 고결하십니다');
-    expect(allContent).toContain('강가까지 서른두 걸음');
-    expect(allContent).toContain('창 하나, 문 하나, 호위 여섯');
-    expect(allContent).toContain('마른 우물도 사흘은 하늘을 비춥니다');
+    expect(allContent).toContain('미안하다는 말보다 먼저 저를 숨겨 주세요');
+    expect(allContent).toContain('그렇게 말하면 더 가고 싶어지는 성격이라서요');
+    expect(allContent).toContain('나라의 법을 오늘 하루의 위기 때문에 바꿀 수는 없습니다');
+    expect(allContent).toContain('공주를 믿는 게 아니라, 다른 길이 없어서 갑니다');
+    expect(allContent).toContain('오늘은 제 말이 바뀌어도 제 입으로 바꾸겠습니다');
+    expect(allContent).toContain('마음이 아니라 계획을 묻는 겁니다');
+    expect(allContent).toContain('이 이야기는 실제 역사 인물과 시대를 바탕으로');
+    expect(allContent).not.toContain('참으로 고결하십니다');
+    expect(allContent).not.toContain('대체 무엇을 왕관이라 부르십니까');
   });
 
   it('uses the historically attested Chilsuk instead of a fictional chief noble', () => {
@@ -122,9 +125,9 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(49);
+    expect(characterPlacements).toHaveLength(88);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
-    expect(speakerLines).toHaveLength(147);
+    expect(speakerLines).toHaveLength(371);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
     choices.forEach((choice) => expect(choice.framing).toBe('closeup'));
@@ -142,6 +145,102 @@ describe('Deokman complete-game content', () => {
         .filter((id): id is string => typeof id === 'string')
         .map((id) => id.split('.')[0]);
       expect(speakerIds.every((id) => placedIds.has(id))).toBe(true);
+    });
+  });
+
+  it('builds each chapter from reciprocal conversations instead of isolated monologues', () => {
+    chapters.forEach((path) => {
+      const scenes = Object.values(asRecord(readYaml(path).scenes)).map(asRecord);
+      const reciprocalScenes = scenes.filter((scene) => {
+        const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+        const speakers = actions
+          .map((action) => asRecord(action.say).char)
+          .filter((id): id is string => typeof id === 'string')
+          .map((id) => id.split('.')[0]);
+        return speakers.length >= 3 && new Set(speakers).size >= 2;
+      });
+
+      expect(reciprocalScenes.length, path).toBeGreaterThanOrEqual(8);
+    });
+  });
+
+  it('keeps every speaking character visibly staged on every reachable branch', () => {
+    chapters.forEach((path) => {
+      const document = readYaml(path);
+      const scenes = asRecord(document.scenes);
+      const script = Array.isArray(document.script) ? document.script.map(asRecord) : [];
+      const openingScene = String(script[0]?.scene ?? '');
+      const visited = new Set<string>();
+      const failures: string[] = [];
+
+      const visit = (sceneId: string, initialSlots: Record<string, string>, trail: string[]) => {
+        const signature = `${sceneId}|${JSON.stringify(Object.entries(initialSlots).sort())}`;
+        if (!sceneId || visited.has(signature)) return;
+        visited.add(signature);
+
+        const scene = asRecord(scenes[sceneId]);
+        const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+        const slots = { ...initialSlots };
+        const verifyVisible = (source: UnknownRecord, actionIndex: number) => {
+          const ids = [source.char, ...(Array.isArray(source.with) ? source.with : [])]
+            .filter((id): id is string => typeof id === 'string')
+            .map((id) => id.split('.')[0]);
+          ids.forEach((id) => {
+            if (!Object.values(slots).includes(id)) {
+              failures.push(`${sceneId}[${actionIndex}] ${id} is absent after ${trail.join(' > ')}`);
+            }
+          });
+        };
+
+        for (const [actionIndex, action] of actions.entries()) {
+          const placement = asRecord(action.char);
+          if (typeof placement.id === 'string' && typeof placement.position === 'string') {
+            Object.entries(slots).forEach(([position, id]) => {
+              if (id === placement.id) delete slots[position];
+            });
+            slots[placement.position] = placement.id;
+          }
+
+          const say = asRecord(action.say);
+          if (Object.keys(say).length > 0) verifyVisible(say, actionIndex);
+          const choice = asRecord(action.choice);
+          if (Object.keys(choice).length > 0) verifyVisible(choice, actionIndex);
+
+          const nextTrail = [...trail, sceneId];
+          const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
+          if (options.length > 0) {
+            options.forEach((option) => {
+              if (typeof option.goto === 'string' && !option.goto.startsWith('/')) {
+                visit(option.goto, { ...slots }, nextTrail);
+              }
+            });
+            return;
+          }
+
+          const branch = asRecord(action.branch);
+          const cases = Array.isArray(branch.cases) ? branch.cases.map(asRecord) : [];
+          if (cases.length > 0) {
+            cases.forEach((branchCase) => {
+              if (typeof branchCase.goto === 'string' && !branchCase.goto.startsWith('/')) {
+                visit(branchCase.goto, { ...slots }, nextTrail);
+              }
+            });
+            if (typeof branch.default === 'string' && !branch.default.startsWith('/')) {
+              visit(branch.default, { ...slots }, nextTrail);
+            }
+            return;
+          }
+
+          if (typeof action.goto === 'string' && !action.goto.startsWith('/')) {
+            visit(action.goto, { ...slots }, nextTrail);
+            return;
+          }
+          if (Object.keys(asRecord(action.gameOver)).length > 0 || typeof action.ending === 'string') return;
+        }
+      };
+
+      visit(openingScene, {}, []);
+      expect(failures, path).toEqual([]);
     });
   });
 

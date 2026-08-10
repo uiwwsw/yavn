@@ -21,13 +21,25 @@ scenes:
           framing: full
           with:
             - 덕만
-          text: "세 가문이 공주의 손을 청했습니다. 어느 집을 고르셔도 왕실에는 든든한 담장이 생기겠지요. 문이 어느 쪽에 나는지만 다를 뿐."
+          text: "세 가문에서 혼담을 보내 왔습니다. 전하께서는 공주께서 직접 한 사람을 만나 보라 하셨습니다."
       - say:
           char: 덕만
           framing: bust
           with:
             - 칠숙
-          text: "담장마다 문이 없다면 감옥이지요. 세 가문이 탐내는 것이 제 손인지, 제 뒤의 빈 왕좌인지부터 묻겠습니다."
+          text: "어제까지 저를 암살범이라 부르던 집들입니다. 오늘은 모두 사위가 되고 싶다는군요."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          with:
+            - 덕만
+          text: "혼인은 원래 어제의 원수를 내일의 가족으로 만드는 일이지요. 누굴 만나시겠습니까?"
+      - say:
+          char: 덕만
+          framing: closeup
+          with:
+            - 칠숙
+          text: "가족이 되려는 사람보다, 제가 왕위에서 멀어지길 바라는 사람부터 만나겠습니다. 아마 같은 사람이겠지만요."
       - goto: suitor_choice
 
   suitor_choice:
@@ -64,13 +76,25 @@ scenes:
           framing: full
           with:
             - 덕만
-          text: "저와 혼인하면 공주께서는 살아남습니다. 저는 왕이 되고, 공주께서는 왕이 될 까닭만 버리시면 됩니다."
+          text: "칠숙공이 시킨 말부터 하겠습니다. 저와 혼인하면 공주께서는 안전합니다. 저는 왕이 되고, 공주께서는 왕이 되지 않으셔도 됩니다."
       - say:
           char: 덕만
           framing: bust
           with:
             - 진운
-          text: "살려 줄 테니 스스로 필요 없는 사람이 되라. 남의 문장을 전하는 그대도, 그 문장만큼 갇혀 있군요."
+          text: "말하면서도 믿지 않는 얼굴이군요. 그대 생각은 다릅니까?"
+      - say:
+          char: 진운.nervous
+          framing: bust
+          with:
+            - 덕만
+          text: "제 생각을 말하면 어머니가 다칩니다. 지금은 그 말밖에 드릴 수 없습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진운
+          text: "알겠습니다. 방금 한 말 중 처음부터 끝까지 그대가 고른 문장은 마지막 문장이었군요. 그건 기억해 두겠습니다."
       - goto: reputation_choice
 
   suitor_bidam:
@@ -84,17 +108,27 @@ scenes:
           framing: bust
           with:
             - 덕만
-          text: "첫 집에는 군권, 둘째에는 세금, 셋째에는 공주의 침묵을 팔았습니다. 신부 한 분으로 장부 세 권을 채웠으니 혼례보다 장사가 먼저겠군요."
+          text: "첫째 집에는 군권, 둘째 집에는 세금, 셋째 집에는 공주님의 발언권을 약속했습니다. 같은 신부를 세 번 팔았군요."
       - say:
           char: 덕만
           framing: bust
           with:
             - 비담
-          text: "내 침묵 값은 얼마였지? 군권보다 싸다면 조금 서운할 것 같은데."
+          text: "내가 입을 다무는 값은 얼마였지?"
       - say:
           char: 비담.smirk
           framing: bust
-          text: "유감스럽게도 덤입니다. 이 궁에서는 여자의 입을 재산으로 세지도 않으니까요. 닫힌 뒤에야 값을 알겠지요."
+          text: "값도 없습니다. 혼인하면 당연히 따라오는 조건이라 생각한 모양입니다."
+      - say:
+          char: 덕만.angry
+          framing: closeup
+          with:
+            - 비담
+          text: "그 장부, 누가 썼는지 확인해 줘. 혼담을 깨는 것보다 세 집이 서로를 못 믿게 만드는 게 빠르겠어."
+      - say:
+          char: 비담.smirk
+          framing: bust
+          text: "이제야 제가 잘하는 일을 시키시는군요."
       - goto: reputation_choice
 
   reputation_choice:
@@ -109,7 +143,25 @@ scenes:
           framing: bust
           with:
             - 덕만
-          text: "열한 살 때 혼례 비녀가 무겁다고 울었지. 그때는 내가 빼 줬어. 이번 것은 네 목을 누르는데, 또 혼자 견딜 셈이니?"
+          text: "열한 살 때 혼례 비녀가 무겁다고 울었지. 그때는 내가 빼 줬어. 이번에도 내가 아버지께 싫다고 말해 줄까?"
+      - say:
+          char: 덕만.sad
+          framing: bust
+          with:
+            - 천명
+          text: "언니가 말하면, 사람들은 내가 언니 뒤에 숨었다고 할 거야."
+      - say:
+          char: 천명.sad
+          framing: bust
+          with:
+            - 덕만
+          text: "숨으면 어때. 잠깐 숨었다가 다시 나오면 되지. 꼭 매번 혼자 맞아야 강한 건 아니잖아."
+      - say:
+          char: 덕만
+          framing: closeup
+          with:
+            - 천명
+          text: "이번에는 내가 말할게. 대신 끝나고 나면 비녀 좀 빼 줘. 오늘도 무겁다."
       - choice:
           key: c2_reputation
           prompt: "혼담을 깨려면 무엇을 버릴까?"
@@ -142,25 +194,45 @@ scenes:
       - say:
           char: 월명.warning
           framing: bust
-          text: "별에는 입이 없습니다. 권세 있는 자가 그 침묵 위에 제 말을 올릴 뿐이지요. 흉조가 필요하다면 사흘이면 됩니다. 넷째 날엔 만든 자의 이름도 따라붙습니다."
+          text: "별을 보고 혼인을 미루자는 말씀이시군요. 만들 수는 있습니다. 다만 나중에 거짓이라는 것이 밝혀지면 제 목도 함께 내놓아야 합니다."
       - say:
           char: 덕만
           framing: bust
-          text: "별의 뜻은 믿지 않습니다. 별을 핑계 삼을 사람의 욕심은 믿지요. 사흘 안에 그 욕심을 서로 물게 하겠습니다."
+          text: "선생의 목을 걸어 달라는 뜻은 아닙니다. 세 가문이 각자 다른 해석을 내놓게 할 수 있습니까?"
+      - say:
+          char: 월명.warning
+          framing: bust
+          text: "그건 별보다 쉽습니다. 사람은 자기가 원하는 징조만 골라 보니까요. 사흘이면 됩니다."
+      - say:
+          char: 덕만
+          framing: bust
+          text: "사흘 뒤에는 제가 직접 거짓이라고 밝히겠습니다. 책임은 제 이름으로 남겨 주세요."
       - add:
           insight: 1
       - goto: throne_choice
 
   reputation_scandal:
     actions:
+      - char:
+          id: 비담
+          position: right
+          framing: full
       - say:
           char: 비담.smirk
           framing: bust
-          text: "제 평판을 빌리시다니, 물건 보는 눈이 나쁘십니다. 돌려주지 않으셔도 됩니다. 원래 주인도 오래전에 버렸으니까."
+          text: "저와 밤을 보냈다는 소문이라니, 취향이 나쁘다는 비난은 피하기 어렵겠습니다."
       - say:
           char: 덕만
           framing: bust
-          text: "버린 물건치고는 값이 궁금한 얼굴이군요. 이번에는 내가 값보다 쓸모를 먼저 보여 드리죠."
+          text: "그대 평판이 상할까 걱정되면 지금 그만두죠."
+      - say:
+          char: 비담.smirk
+          framing: closeup
+          text: "이미 바닥인데 더 내려갈 곳이 있겠습니까. 다만 공주님 평판은 돌아오기 어렵습니다. 정말 괜찮으시겠습니까?"
+      - say:
+          char: 덕만
+          framing: bust
+          text: "괜찮지는 않아. 그래도 남의 아내가 되는 것보다는 내가 고른 소문을 견디는 편이 낫겠어."
       - goto: throne_choice
 
   throne_choice:
@@ -173,8 +245,20 @@ scenes:
       - say:
           char: 진평왕.sad
           framing: bust
-          text: "아비는 네가 싫다 하면 이 혼담을 거두고 싶다. 왕은 딸의 한마디로 세 가문을 적으로 돌릴 수 없다. 덕만아, 지금 누구의 대답을 듣고 있느냐?"
+          text: "네가 싫다고 하면 아비로서는 당장 거두고 싶다. 하지만 왕으로서는 세 가문에 답을 해야 한다. 네가 내 자리에 있다면 어떻게 하겠느냐?"
           wait: 750
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진평왕
+          text: "딸에게 답을 떠넘기는 건 공평하지 않습니다."
+      - say:
+          char: 진평왕.sad
+          framing: bust
+          with:
+            - 덕만
+          text: "공평하지 않다. 그래도 왕이 되려면 불공평한 질문에도 답해야 한다. 모두가 기다리고 있다."
       - choice:
           key: c2_throne
           prompt: "모두가 답을 기다린다. 무엇을 말할까?"
@@ -201,14 +285,26 @@ scenes:
 
   throne_impossible:
     actions:
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
       - say:
           char: 칠숙.smile
           framing: bust
-          text: "세 가문이 한 사람에게 합의할 때까지 기다리시겠다니, 누구도 거절하지 않고 모두를 모욕하는 공평한 답이군요."
+          text: "세 가문이 같은 사람에게 합의하면 혼인하겠다…… 그런 날이 오리라 생각하십니까?"
       - say:
           char: 덕만
           framing: bust
-          text: "세 가문이 제 몫보다 신라를 먼저 고르는 날까지 기다리겠다는 뜻입니다. 그날이 오면 제가 혼례상을 직접 차리지요."
+          text: "오지 않을 거라고 생각합니다. 그러니 누구도 제가 혼담을 거절했다고 말할 수 없겠지요."
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          text: "말 한마디로 세 집을 돌려보내셨군요. 다음에는 말로 끝나지 않을 겁니다."
+      - say:
+          char: 덕만
+          framing: closeup
+          text: "알고 있습니다. 그래서 다음 수를 준비하고 있습니다."
       - goto: chapter2_end
 
   throne_delay:
@@ -220,41 +316,80 @@ scenes:
       - say:
           char: 유신
           framing: bust
-          text: "삼 년을 버셨습니다. 대가는 국경 삼 년입니다. 전쟁은 구실로 부른 사람보다, 늦게 도착한 사람을 오래 기억합니다."
+          text: "전쟁이 끝날 때까지 혼인을 미루라는 답은 받아들여졌습니다. 대신 공주께서 직접 국경으로 가셔야 합니다."
       - say:
           char: 덕만
           framing: bust
-          text: "압니다. 전쟁을 방패로 들었으니, 그 뒤에 숨지는 않겠습니다. 떠날 군량과 죽을 이름까지 함께 준비하세요."
+          text: "처음부터 그 조건을 붙일 생각이었군요."
+      - say:
+          char: 유신
+          framing: bust
+          text: "예. 공주를 궁에서 떼어 놓으려는 자들도 찬성했습니다."
+      - say:
+          char: 덕만
+          framing: closeup
+          text: "좋아요. 그들이 보내고 싶어 하는 곳에서, 돌아올 이유를 만들겠습니다. 출발 준비를 하세요."
       - goto: chapter2_end
 
   throne_reveal:
     actions:
       - effect: impact
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
       - say:
           char: 덕만.angry
           framing: closeup
           delivery: angry
-          text: "이 장부에는 제 이름이 세 번 팔렸습니다. 군권의 값, 세금의 값, 침묵의 덤으로. 세 신랑 중 누가 먼저 남의 물건을 샀다고 자백하시겠습니까?"
+          text: "이 장부에는 제 혼인 조건이 세 가지로 적혀 있습니다. 한 집에는 군권, 한 집에는 세금, 한 집에는 제가 정사에 입을 열지 않는다는 약속입니다. 세 분 중 누가 받은 약속이 진짜입니까?"
           wait: 900
       - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "출처를 알 수 없는 문서입니다. 공주께서 혼담을 피하려 꾸민 것일 수도 있지요."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          text: "그렇다면 세 가문이 각자 받은 원본을 내놓으면 됩니다. 지금 여기서 대조하지요."
+      - say:
           delivery: whisper
-          text: "아무도 축하하지 않았다. 비단 소매 스치는 소리만 길게 이어졌고, 세 가문은 처음으로 서로의 얼굴을 보았다."
+          text: "아무도 문서를 내놓지 못했습니다. 대신 세 가문은 서로를 바라보기 시작했습니다."
       - goto: chapter2_end
 
   chapter2_end:
     actions:
       - bg: locked_room
       - effect: focus
+      - char:
+          id: 소원
+          position: right
+          framing: full
       - say:
           delivery: whisper
-          text: "그날 밤, 합의서를 건넨 귀족이 덕만의 침상 앞에 엎드려 있었다. 피는 아직 따뜻했고, 문빗장은 안쪽에 걸려 있었다."
+          text: "그날 밤, 덕만이 방으로 돌아왔을 때 문은 안에서 잠겨 있었습니다. 소원이 옆방 창을 넘어 들어가 빗장을 열었습니다."
+      - say:
+          char: 소원.nervous
+          framing: closeup
+          delivery: nervous
+          text: "공주님, 들어오지 마세요. 사람 하나가 침상 앞에 쓰러져 있어요. 아까 그 합의서를 가져온 귀족이에요."
       - say:
           char: 덕만
           framing: closeup
           delivery: nervous
-          text: "혼례방은 피했는데…… 누군가 내 침상을 신방보다 치밀하게 꾸몄군. 신랑 자리에는 시체를 눕히고."
+          text: "살아 있어?"
       - say:
-          text: "제2장 완료 — 덕만은 혼인의 자유를 얻는 대신, 세 가문의 원한을 샀다."
+          char: 소원.nervous
+          framing: closeup
+          delivery: sad
+          text: "아니요. 피는 따뜻한데 숨을 안 쉬어요. 그리고…… 손에 공주님 옷고름을 쥐고 있어요."
+      - say:
+          char: 덕만
+          framing: closeup
+          delivery: nervous
+          text: "아무것도 만지지 마. 문밖에 누가 있는지부터 봐. 이번에는 내가 아니라 이 방 전체가 함정이야."
+      - say:
+          text: "덕만은 혼담을 막았지만, 그날 밤부터 살인 사건의 가장 유력한 용의자가 되었습니다."
 
   go_12_warm_choice:
     actions:
