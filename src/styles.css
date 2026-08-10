@@ -3858,7 +3858,7 @@ textarea,
   width: 100%;
   min-width: 100%;
   max-width: 100%;
-  min-height: clamp(540px, calc(100svh - 168px), 720px);
+  min-height: clamp(520px, calc(100svh - 220px), 660px);
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -3908,6 +3908,11 @@ textarea,
     )
     scale(var(--launcher-showcase-scale, 1));
   transform-origin: center;
+  transition: transform 700ms cubic-bezier(0.2, 0.75, 0.25, 1), filter 300ms ease;
+}
+
+.launcher-feature:not(.is-selected) .launcher-feature-media img {
+  filter: brightness(0.78);
 }
 
 .launcher-feature-fallback {
@@ -4092,10 +4097,23 @@ textarea,
   background: rgba(17, 18, 20, 0.3);
 }
 
+.launcher-carousel-controls {
+  position: relative;
+  z-index: 6;
+  width: 100%;
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 18px;
+  border-top: 1px solid #303236;
+  color: #fff;
+  background: #15171a;
+  padding: 11px max(28px, calc((100vw - 1384px) / 2));
+}
+
 .launcher-carousel-arrow {
-  position: absolute;
-  z-index: 5;
-  top: 50%;
+  position: static;
   width: 48px;
   height: 48px;
   display: grid;
@@ -4103,12 +4121,10 @@ textarea,
   border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 50%;
   color: #fff;
-  background: rgba(10, 11, 13, 0.58);
+  background: #202226;
   padding: 0;
-  transform: translateY(-50%);
-  backdrop-filter: blur(8px);
   cursor: pointer;
-  transition: border-color 150ms ease, background 150ms ease;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
 }
 
 .launcher-carousel-arrow:hover {
@@ -4133,35 +4149,61 @@ textarea,
 }
 
 .launcher-carousel-arrow-prev {
-  left: 24px;
+  justify-self: start;
 }
 
 .launcher-carousel-arrow-next {
-  right: 24px;
+  justify-self: end;
 }
 
 .launcher-carousel-pagination {
-  position: absolute;
-  z-index: 5;
-  right: max(88px, calc((100vw - 1440px) / 2 + 88px));
-  bottom: 54px;
+  position: static;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 24px;
 }
 
 .launcher-carousel-pagination > span {
-  min-width: 56px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 11px;
-  font-weight: 820;
   text-align: right;
 }
 
+.launcher-carousel-pagination b {
+  max-width: min(42vw, 520px);
+  overflow: hidden;
+  color: #f7f5ee;
+  font-size: 13px;
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.launcher-carousel-pagination small {
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 11px;
+  font-weight: 820;
+}
+
 .launcher-carousel-dots {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: center;
   gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.launcher-carousel-dots::-webkit-scrollbar {
+  display: none;
 }
 
 .launcher-carousel-dots button {
@@ -4602,19 +4644,6 @@ textarea,
     font-size: 46px;
   }
 
-  .launcher-carousel-arrow-prev {
-    left: 16px;
-  }
-
-  .launcher-carousel-arrow-next {
-    right: 16px;
-  }
-
-  .launcher-carousel-pagination {
-    right: 72px;
-    bottom: 48px;
-  }
-
   .launcher-library-controls {
     grid-template-columns: 300px minmax(0, 1fr);
   }
@@ -4672,7 +4701,7 @@ textarea,
   }
 
   .launcher-feature {
-    min-height: clamp(500px, calc(100svh - 180px), 620px);
+    min-height: clamp(500px, calc(100svh - 224px), 610px);
   }
 
   .launcher-feature-fallback {
@@ -4681,7 +4710,7 @@ textarea,
 
   .launcher-feature-copy {
     justify-content: flex-end;
-    padding: 76px 18px 76px;
+    padding: 56px 18px 48px;
   }
 
   .launcher-feature-copy h2 {
@@ -4698,25 +4727,28 @@ textarea,
     line-height: 1.55;
   }
 
+  .launcher-carousel-controls {
+    min-height: 66px;
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 12px;
+    padding: 10px 16px;
+  }
+
   .launcher-carousel-arrow {
-    top: 18px;
     width: 42px;
     height: 42px;
-    transform: none;
-  }
-
-  .launcher-carousel-arrow-prev {
-    left: 16px;
-  }
-
-  .launcher-carousel-arrow-next {
-    right: auto;
-    left: 66px;
   }
 
   .launcher-carousel-pagination {
-    right: 18px;
-    bottom: 25px;
+    justify-content: center;
+  }
+
+  .launcher-carousel-pagination > span {
+    margin-left: auto;
+  }
+
+  .launcher-carousel-pagination b {
+    display: none;
   }
 
   .launcher-carousel-dots button {
@@ -4809,7 +4841,7 @@ textarea,
 
 @media (max-width: 380px) {
   .launcher-feature-copy {
-    padding: 72px 16px 72px;
+    padding: 52px 16px 44px;
   }
 
   .launcher-feature-copy h2 {
