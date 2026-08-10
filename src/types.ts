@@ -307,6 +307,7 @@ export type GameData = {
       {
         base: string;
         emotions?: Record<string, string>;
+        defaultDelivery?: DialogueDelivery;
       }
     >;
     music: Record<string, string>;

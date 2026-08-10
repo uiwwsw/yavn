@@ -90,6 +90,9 @@ const EFFECT_DURATIONS: Record<string, number> = {
   speedlines: 680,
   alarm: 760,
   focus: 620,
+  moonveil: 900,
+  embers: 1100,
+  crown: 1200,
 };
 const DEFAULT_STICKER_ENTER_EFFECT: StickerEnterEffect = 'fadeIn';
 const DEFAULT_STICKER_ENTER_DURATION = 280;
@@ -3071,7 +3074,14 @@ function runToNextPause(loopGuard = 0) {
     const presentation = resolveSayPresentation(action.say.char, action.say.with);
     const speakerEmotion =
       presentation.speakerEmotion ?? getVisibleCharacterEmotion(presentation.speakerId);
-    const delivery = resolveDialogueDelivery(action.say.delivery, speakerEmotion);
+    const characterDefaultDelivery = presentation.speakerId
+      ? game.assets.characters[presentation.speakerId]?.defaultDelivery
+      : undefined;
+    const delivery = resolveDialogueDelivery(
+      action.say.delivery,
+      speakerEmotion,
+      characterDefaultDelivery,
+    );
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
     useVNStore.getState().promoteSpeaker(presentation.speakerId);

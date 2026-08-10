@@ -6,7 +6,7 @@ scenes:
   chapter3_open:
     actions:
       - bg: locked_room
-      - effect: darken
+      - effect: focus
       - char:
           id: 덕만
           position: left

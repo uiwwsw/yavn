@@ -20,6 +20,10 @@
 #
 # 여러 게임이 공유하는 public 에셋:
 # assets:
+#   characters:
+#     detective:
+#       base: assets/char/detective.webp
+#       defaultDelivery: deduction # 평상시 리듬, say.delivery/표정이 우선
 #   sfx:
 #     alarm: root:/game-list/conan/assets/sfx/thunder.wav
 

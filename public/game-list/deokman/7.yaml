@@ -191,7 +191,7 @@ scenes:
 
   crown_choice:
     actions:
-      - effect: pulse
+      - effect: crown
       - say:
           char: 국산
           text: "그래서 무엇으로 왕이 되시겠습니까? 법입니까, 백성입니까, 칼입니까, 아니면 남자 후계자의 양보입니까?"
@@ -340,6 +340,7 @@ scenes:
   ending_true:
     actions:
       - bg: title_palace
+      - effect: crown
       - say:
           text: "살려 준 사람은 증언했고, 지킨 군사는 성문을 닫았으며, 숨기지 않은 증거는 하나의 음모를 완성했다. 진운은 자신의 이름으로 덕만을 지지했다."
       - say:
@@ -350,12 +351,15 @@ scenes:
           text: "그대들이 나를 죽이지 못한 모든 날이. 그리고 내가 살려 낸 모든 사람이."
       - say:
           text: "즉위의 북이 울렸다."
+      - effect: crown
       - say:
           char: 소원
+          delivery: shout
           text: "여왕 폐하께서 입장하십니다."
       - say:
           char: 덕만
-          text: "여왕이 아니다. 신라의 왕이다."
+          delivery: deduction
+          text: "<speed=18>여왕이 아니다.</speed> <speed=42>신라의 왕이다.</speed>"
       - ending: true_end
 
   ending_tyrant:
