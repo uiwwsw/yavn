@@ -176,11 +176,6 @@ const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
 const INVENTORY_DEFAULT_CATEGORY = '기타';
 const INVENTORY_CATEGORY_ALL = '';
-const SAVE_SLOT_LABELS: Record<SaveSlotKind, string> = {
-  auto: '자동 저장',
-  manual: '수동 저장',
-  chapter: '챕터 시작',
-};
 
 const POSITION_TIEBREAKER: Record<Position, number> = {
   center: 0,
@@ -222,6 +217,13 @@ function formatSaveTimestamp(value?: string): string {
     hour: '2-digit',
     minute: '2-digit',
   }).format(date);
+}
+
+function formatSaveSlotMeta(slot?: SaveSlotSummary): string {
+  if (!slot?.exists) {
+    return '저장 없음';
+  }
+  return `${formatSaveTimestamp(slot.savedAt)} · CH.${(slot.chapterIndex ?? 0) + 1}`;
 }
 
 function normalizeText(value: unknown): string | undefined {
@@ -832,7 +834,6 @@ export default function App() {
   const [saveSlots, setSaveSlots] = useState<SaveSlotSummary[]>(() => getSaveSlotSummaries());
   const [saveNotice, setSaveNotice] = useState('');
   const [saveBusy, setSaveBusy] = useState(false);
-  const [gameOverLoadOpen, setGameOverLoadOpen] = useState(false);
   const [returningToStartGate, setReturningToStartGate] = useState(false);
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
@@ -1108,7 +1109,6 @@ export default function App() {
   }, [bootMode, game?.meta.title, startGate?.kind, startGate?.gameTitle]);
 
   useEffect(() => {
-    setGameOverLoadOpen(false);
     setSaveNotice('');
     setSaveSlots(getSaveSlotSummaries());
   }, [gameOver, chapterIndex]);
@@ -1460,9 +1460,9 @@ export default function App() {
     () => new Map(saveSlots.map((slot) => [slot.slot, slot])),
     [saveSlots],
   );
-  const hasRecentSave = Boolean(
-    saveSlotByKind.get('auto')?.exists || saveSlotByKind.get('manual')?.exists,
-  );
+  const autoRecoverySlot = saveSlotByKind.get('auto');
+  const manualSaveSlot = saveSlotByKind.get('manual');
+  const chapterSaveSlot = saveSlotByKind.get('chapter');
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
@@ -1495,11 +1495,9 @@ export default function App() {
   const inventoryVisibleEntries = useMemo(() => {
     const filtered = inventoryCatalogEntries
       .filter((entry) => (inventoryView === 'bag' ? entry.owned : true))
-      .filter((entry) =>
-        inventoryView === 'catalog' && inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true,
-      )
+      .filter((entry) => (inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true))
       .filter((entry) => {
-        if (inventoryView !== 'catalog' || !normalizedInventorySearchTerm) {
+        if (!normalizedInventorySearchTerm) {
           return true;
         }
         return entry.name.toLowerCase().includes(normalizedInventorySearchTerm);
@@ -1568,20 +1566,15 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (inventoryVisibleEntries.length === 0) {
-      if (selectedInventoryItemId !== null) {
-        setSelectedInventoryItemId(null);
-      }
-      if (inventoryDetailOpen) {
-        setInventoryDetailOpen(false);
-      }
+    if (!selectedInventoryItemId) {
       return;
     }
-    if (selectedInventoryItemId && inventoryVisibleEntries.some((entry) => entry.id === selectedInventoryItemId)) {
+    if (inventoryVisibleEntries.some((entry) => entry.id === selectedInventoryItemId)) {
       return;
     }
-    setSelectedInventoryItemId(inventoryVisibleEntries[0].id);
-  }, [inventoryDetailOpen, inventoryVisibleEntries, selectedInventoryItemId]);
+    setSelectedInventoryItemId(null);
+    setInventoryDetailOpen(false);
+  }, [inventoryVisibleEntries, selectedInventoryItemId]);
 
   useEffect(() => {
     if (settingsOpen) {
@@ -2829,8 +2822,8 @@ export default function App() {
           <button
             type="button"
             className="hud-action-button hud-save-button"
-            aria-label="저장 및 불러오기 열기"
-            title="저장 및 불러오기"
+            aria-label="시스템 열기"
+            title="저장 및 설정"
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -2907,7 +2900,7 @@ export default function App() {
                   setCaseFileTab('system');
                 }}
               >
-                저장
+                시스템
               </button>
             </div>
             {caseFileTab === 'log' ? (
@@ -2970,34 +2963,37 @@ export default function App() {
                   도감 ({totalInventoryCount})
                 </button>
               </div>
-              <div className={`inventory-tools ${inventoryView === 'bag' ? 'is-bag-view' : ''}`}>
-                {inventoryView === 'catalog' && (
-                  <>
-                    <label className="inventory-search-field">
-                      <span className="inventory-tool-label">검색</span>
-                      <input
-                        type="search"
-                        value={inventorySearchTerm}
-                        onChange={(event) => setInventorySearchTerm(event.target.value)}
-                        placeholder="아이템 이름 검색"
-                      />
-                    </label>
-                    <label className="inventory-select-field">
-                      <span className="inventory-tool-label">카테고리</span>
-                      <select
-                        value={inventoryCategoryFilter}
-                        onChange={(event) => setInventoryCategoryFilter(event.target.value)}
-                      >
-                        <option value={INVENTORY_CATEGORY_ALL}>전체</option>
-                        {inventoryCategoryOptions.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  </>
-                )}
+              <div className="inventory-overview" aria-label={`단서 수집 ${ownedInventoryCount}/${totalInventoryCount}`}>
+                <div>
+                  <span>단서 수집</span>
+                  <b>{ownedInventoryCount}/{totalInventoryCount}</b>
+                </div>
+                <progress value={ownedInventoryCount} max={Math.max(totalInventoryCount, 1)} />
+              </div>
+              <div className="inventory-tools">
+                <label className="inventory-search-field">
+                  <span className="inventory-tool-label">검색</span>
+                  <input
+                    type="search"
+                    value={inventorySearchTerm}
+                    onChange={(event) => setInventorySearchTerm(event.target.value)}
+                    placeholder="아이템 이름"
+                  />
+                </label>
+                <label className="inventory-select-field">
+                  <span className="inventory-tool-label">카테고리</span>
+                  <select
+                    value={inventoryCategoryFilter}
+                    onChange={(event) => setInventoryCategoryFilter(event.target.value)}
+                  >
+                    <option value={INVENTORY_CATEGORY_ALL}>전체</option>
+                    {inventoryCategoryOptions.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label className="inventory-select-field">
                   <span className="inventory-tool-label">정렬</span>
                   <select
@@ -3021,9 +3017,10 @@ export default function App() {
                         role="listitem"
                         className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}`}
                         onClick={() => {
-                          setInventoryDetailOpen(false);
                           setSelectedInventoryItemId(entry.id);
+                          setInventoryDetailOpen(true);
                         }}
+                        aria-haspopup="dialog"
                         aria-label={`${entry.owned ? entry.name : '미확인 아이템'} ${entry.owned ? '획득됨' : '미획득'}`}
                       >
                         {entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
@@ -3040,103 +3037,79 @@ export default function App() {
                   </div>
                 )}
               </div>
-
-              <div className="inventory-detail-actions">
-                {inventoryVisibleEntries.length === 0 ? (
-                  <p className="settings-empty-note">{inventoryGridEmptyMessage}</p>
-                ) : selectedInventoryEntry ? (
-                    <>
-                      <p className="inventory-selected-label">
-                        선택한 아이템: {selectedInventoryEntry.owned ? selectedInventoryEntry.name : '미확인 아이템'}
-                      </p>
-                      <button
-                        type="button"
-                        className="inventory-detail-open-button"
-                        onClick={() => setInventoryDetailOpen(true)}
-                      >
-                        상세보기
-                      </button>
-                    </>
-                ) : (
-                  <p className="settings-empty-note">확인할 아이템을 선택해 주세요.</p>
-                )}
-              </div>
-
-              <div className="settings-bottom-row">
-                <label className="settings-toggle-row">
-                  <span>배경음악 끄기</span>
-                  <input
-                    type="checkbox"
-                    checked={!bgmEnabled}
-                    onChange={(event) => onToggleBgmDisabled(event.target.checked)}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className="settings-action-button"
-                  onClick={(event) => void onReturnToStartScreen(event)}
-                  disabled={!canReturnToStartScreen || returningToStartGate}
-                >
-                  {returningToStartGate ? '초기화면 여는 중...' : '초기화면 가기'}
-                </button>
-                <p className="settings-note">이 설정은 현재 게임 기준으로 저장됩니다.</p>
-                <p className="settings-note">
-                  {canReturnToStartScreen
-                    ? '초기화면 가기는 Start Gate 세션 플래그를 초기화한 뒤 다시 시작 화면을 표시합니다.'
-                    : 'ZIP 실행 게임은 초기화면 재진입을 지원하지 않습니다.'}
-                </p>
-              </div>
             </div>
             ) : (
               <div className="settings-modal-body save-system-body">
+                <div className="save-auto-status">
+                  <span>
+                    <b>진행 보호</b>
+                    <small>{autoSaveEnabled ? '작동 중' : '일시 중지'}</small>
+                  </span>
+                  <strong>{formatSaveSlotMeta(autoRecoverySlot)}</strong>
+                </div>
                 <label className="save-autosave-row">
                   <span>
                     <b>자동 저장</b>
-                    <small>{autoSaveEnabled ? 'ON' : 'OFF'}</small>
+                    <small>선택 직전 복구점</small>
                   </span>
-                  <input
-                    type="checkbox"
-                    checked={autoSaveEnabled}
-                    onChange={(event) => onToggleAutoSave(event.target.checked)}
-                    disabled={saveBusy}
-                  />
+                  <span className="settings-switch">
+                    <input
+                      type="checkbox"
+                      checked={autoSaveEnabled}
+                      onChange={(event) => onToggleAutoSave(event.target.checked)}
+                      disabled={saveBusy}
+                    />
+                    <span aria-hidden="true" />
+                  </span>
                 </label>
 
-                <div className="save-slot-list" aria-label="저장 슬롯">
-                  {(['auto', 'manual', 'chapter'] as const).map((slotKind) => {
-                    const slot = saveSlotByKind.get(slotKind);
-                    return (
-                      <article className="save-slot-row" key={slotKind}>
-                        <div>
-                          <b>{SAVE_SLOT_LABELS[slotKind]}</b>
-                          <span>
-                            {slot?.exists
-                              ? `${formatSaveTimestamp(slot.savedAt)} · CH.${(slot.chapterIndex ?? 0) + 1}`
-                              : '저장 없음'}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => void onLoadSave(slotKind)}
-                          disabled={!slot?.exists || saveBusy}
-                        >
-                          불러오기
-                        </button>
-                      </article>
-                    );
-                  })}
-                </div>
+                <section className="save-system-section">
+                  <header>
+                    <h3>수동 저장</h3>
+                    <span>{formatSaveSlotMeta(manualSaveSlot)}</span>
+                  </header>
+                  <div className="save-system-actions save-system-actions-pair">
+                    <button type="button" onClick={onManualSave} disabled={saveBusy || Boolean(gameOver)}>
+                      현재 진행 저장
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void onLoadSave('manual')}
+                      disabled={!manualSaveSlot?.exists || saveBusy}
+                    >
+                      수동 저장 불러오기
+                    </button>
+                  </div>
+                </section>
 
-                <div className="save-system-actions">
-                  <button type="button" onClick={onManualSave} disabled={saveBusy || Boolean(gameOver)}>
-                    현재 진행 저장
+                <section className="save-system-section">
+                  <header>
+                    <h3>챕터 시작점</h3>
+                    <span>{formatSaveSlotMeta(chapterSaveSlot)}</span>
+                  </header>
+                  <button
+                    type="button"
+                    className="save-system-wide-action"
+                    onClick={() => void onRestartChapter()}
+                    disabled={!chapterSaveSlot?.exists || saveBusy}
+                  >
+                    챕터 처음으로 돌아가기
                   </button>
-                  <button type="button" onClick={onExportSave} disabled={saveBusy || Boolean(gameOver)}>
-                    백업 내보내기
-                  </button>
-                  <button type="button" onClick={() => saveImportRef.current?.click()} disabled={saveBusy}>
-                    백업 가져오기
-                  </button>
+                </section>
+
+                <section className="save-system-section">
+                  <header>
+                    <h3>백업 파일</h3>
+                    <span>기기 이동</span>
+                  </header>
+                  <div className="save-system-actions save-system-actions-pair">
+                    <button type="button" onClick={onExportSave} disabled={saveBusy || Boolean(gameOver)}>
+                      내보내기
+                    </button>
+                    <button type="button" onClick={() => saveImportRef.current?.click()} disabled={saveBusy}>
+                      불러오기
+                    </button>
+                  </div>
                   <input
                     ref={saveImportRef}
                     type="file"
@@ -3144,10 +3117,32 @@ export default function App() {
                     onChange={(event) => void onImportSave(event)}
                     hidden
                   />
-                </div>
-                <p className="save-system-note">진행은 이 브라우저에 저장되며 백업 파일로 다른 기기에 옮길 수 있습니다.</p>
+                </section>
+
+                <section className="save-system-section save-preferences-section">
+                  <label className="settings-toggle-row">
+                    <span>배경음악</span>
+                    <span className="settings-switch">
+                      <input
+                        type="checkbox"
+                        checked={bgmEnabled}
+                        onChange={(event) => onToggleBgmDisabled(!event.target.checked)}
+                      />
+                      <span aria-hidden="true" />
+                    </span>
+                  </label>
+                  <button
+                    type="button"
+                    className="settings-action-button"
+                    onClick={(event) => void onReturnToStartScreen(event)}
+                    disabled={!canReturnToStartScreen || returningToStartGate}
+                  >
+                    {returningToStartGate ? '초기화면 여는 중...' : '초기화면 가기'}
+                  </button>
+                </section>
+
                 <p className="save-system-status" role="status" aria-live="polite">
-                  {saveNotice || '챕터 시작점은 자동 저장 설정과 관계없이 유지됩니다.'}
+                  {saveNotice || '저장 데이터는 이 브라우저에 보관됩니다.'}
                 </p>
               </div>
             )}
@@ -3167,15 +3162,17 @@ export default function App() {
                     <button
                       type="button"
                       className="settings-close-button"
+                      aria-label="아이템 상세 닫기"
+                      title="닫기"
                       onClick={() => setInventoryDetailOpen(false)}
                     >
-                      닫기
+                      <span aria-hidden="true">&times;</span>
                     </button>
                   </header>
                   <div className="inventory-detail-modal-body">
                     {selectedInventoryEntry.owned ? (
                       <>
-                        <p className="inventory-detail-owned is-owned">내 가방에 있음</p>
+                        <p className="inventory-detail-owned is-owned">{selectedInventoryEntry.category} · 획득</p>
                         <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
                         {selectedInventoryEntry.imageUrl && (
                           <img
@@ -3395,64 +3392,45 @@ export default function App() {
             <div className="game-over-primary-actions">
               <button
                 type="button"
-                onClick={() => {
-                  refreshSaveSlots();
-                  setGameOverLoadOpen((open) => !open);
-                }}
-                disabled={saveBusy}
+                onClick={() => void onLoadSave('auto')}
+                disabled={!autoRecoverySlot?.exists || saveBusy}
               >
-                불러오기
+                <span>{autoSaveEnabled ? '직전 선택으로' : '자동 복구점으로'}</span>
+                <small>{formatSaveSlotMeta(autoRecoverySlot)}</small>
               </button>
               <button
                 type="button"
-                onClick={() => void onLoadSave('latest')}
-                disabled={!hasRecentSave || saveBusy}
+                onClick={() => void onLoadSave('manual')}
+                disabled={!manualSaveSlot?.exists || saveBusy}
               >
-                최근 저장으로
+                <span>수동 저장으로</span>
+                <small>{formatSaveSlotMeta(manualSaveSlot)}</small>
               </button>
               <button
                 type="button"
                 onClick={() => void onRestartChapter()}
-                disabled={!saveSlotByKind.get('chapter')?.exists || saveBusy}
+                disabled={!chapterSaveSlot?.exists || saveBusy}
               >
-                챕터 처음으로
+                <span>챕터 처음으로</span>
+                <small>{formatSaveSlotMeta(chapterSaveSlot)}</small>
               </button>
             </div>
 
-            {gameOverLoadOpen && (
-              <div className="game-over-load-panel">
-                {(['auto', 'manual', 'chapter'] as const).map((slotKind) => {
-                  const slot = saveSlotByKind.get(slotKind);
-                  return (
-                    <button
-                      type="button"
-                      key={slotKind}
-                      onClick={() => void onLoadSave(slotKind)}
-                      disabled={!slot?.exists || saveBusy}
-                    >
-                      <span>{SAVE_SLOT_LABELS[slotKind]}</span>
-                      <small>{slot?.exists ? formatSaveTimestamp(slot.savedAt) : '저장 없음'}</small>
-                    </button>
-                  );
-                })}
-                <button
-                  type="button"
-                  className="game-over-import-button"
-                  onClick={() => gameOverImportRef.current?.click()}
-                  disabled={saveBusy}
-                >
-                  <span>백업 파일</span>
-                  <small>가져오기</small>
-                </button>
-                <input
-                  ref={gameOverImportRef}
-                  type="file"
-                  accept=".json,.yavn-save.json,application/json"
-                  onChange={(event) => void onImportSave(event)}
-                  hidden
-                />
-              </div>
-            )}
+            <button
+              type="button"
+              className="game-over-import-button"
+              onClick={() => gameOverImportRef.current?.click()}
+              disabled={saveBusy}
+            >
+              백업 파일 불러오기
+            </button>
+            <input
+              ref={gameOverImportRef}
+              type="file"
+              accept=".json,.yavn-save.json,application/json"
+              onChange={(event) => void onImportSave(event)}
+              hidden
+            />
             <p className="game-over-status" role="status" aria-live="polite">
               {saveBusy ? '복구 중...' : saveNotice}
             </p>
