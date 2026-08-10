@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.1.0');
+    expect(config.version).toBe('2.2.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
@@ -125,9 +125,9 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(88);
+    expect(characterPlacements).toHaveLength(169);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
-    expect(speakerLines).toHaveLength(371);
+    expect(speakerLines).toHaveLength(522);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
     choices.forEach((choice) => expect(choice.framing).toBe('closeup'));
@@ -145,6 +145,52 @@ describe('Deokman complete-game content', () => {
         .filter((id): id is string => typeof id === 'string')
         .map((id) => id.split('.')[0]);
       expect(speakerIds.every((id) => placedIds.has(id))).toBe(true);
+    });
+  });
+
+  it('dramatizes every failed choice before showing its game-over result', () => {
+    const failureScenes = chapters.flatMap((path) => {
+      const scenes = asRecord(readYaml(path).scenes);
+      return Object.entries(scenes)
+        .map(([sceneId, value]) => ({ path, sceneId, scene: asRecord(value) }))
+        .filter(({ scene }) => {
+          const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+          return actions.some((action) => Object.keys(asRecord(action.gameOver)).length > 0);
+        });
+    });
+
+    expect(failureScenes).toHaveLength(35);
+    failureScenes.forEach(({ path, sceneId, scene }) => {
+      const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+      const gameOverIndex = actions.findIndex(
+        (action) => Object.keys(asRecord(action.gameOver)).length > 0,
+      );
+      const leadIn = actions.slice(0, gameOverIndex);
+      const says = leadIn.map((action) => asRecord(action.say)).filter((say) => Object.keys(say).length > 0);
+      const firstSayIndex = leadIn.findIndex((action) => Object.keys(asRecord(action.say)).length > 0);
+      const establishingPlacements = leadIn
+        .slice(0, firstSayIndex)
+        .map((action) => asRecord(action.char))
+        .filter((placement) => typeof placement.id === 'string');
+      const soloCloseups = says.filter(
+        (say) => say.framing === 'closeup' && Array.isArray(say.with) && say.with.length === 0,
+      );
+
+      expect(gameOverIndex, `${path}:${sceneId}`).toBe(actions.length - 1);
+      expect(says.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(5);
+      expect(
+        says.filter((say) => typeof say.char === 'string').length,
+        `${path}:${sceneId}`,
+      ).toBeGreaterThanOrEqual(3);
+      expect(asRecord(leadIn[firstSayIndex]?.say).char, `${path}:${sceneId}`).toBeUndefined();
+      expect(establishingPlacements.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(2);
+      establishingPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
+      expect(leadIn.some((action) => typeof action.effect === 'string'), `${path}:${sceneId}`).toBe(true);
+      expect(
+        says.some((say) => typeof say.wait === 'number'),
+        `${path}:${sceneId}`,
+      ).toBe(true);
+      expect(soloCloseups.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(1);
     });
   });
 

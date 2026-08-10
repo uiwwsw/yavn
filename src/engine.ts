@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import { resolveCharacterFraming } from './characterFraming';
+import { resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { useVNStore } from './store';
@@ -1184,7 +1185,18 @@ function parseCharacterRef(raw?: string): { id?: string; emotion?: string } {
   return { id, emotion };
 }
 
-function resolveSayPresentation(char?: string, withChars?: string[]): {
+function getStagedCharacterIds(): string[] {
+  const characters = useVNStore.getState().characters;
+  return (['left', 'center', 'right'] as const)
+    .map((position) => characters[position]?.id)
+    .filter((id): id is string => Boolean(id));
+}
+
+function resolveSayPresentation(
+  char?: string,
+  withChars?: string[],
+  stagedCharacterIds: readonly string[] = [],
+): {
   speakerId?: string;
   speakerName?: string;
   speakerEmotion?: string;
@@ -1192,35 +1204,25 @@ function resolveSayPresentation(char?: string, withChars?: string[]): {
   emotionRefs: Array<{ id: string; emotion?: string }>;
 } {
   const speaker = parseCharacterRef(char);
-  if (!speaker.id) {
-    return {
-      speakerId: undefined,
-      speakerName: undefined,
-      speakerEmotion: undefined,
-      visibleCharacterIds: [],
-      emotionRefs: [],
-    };
-  }
-
   const withRefs = (withChars ?? [])
     .map((raw) => parseCharacterRef(raw))
     .filter((ref): ref is { id: string; emotion?: string } => Boolean(ref.id));
-  const visibleCharacterIds = [speaker.id];
-  const visibleSet = new Set(visibleCharacterIds);
-  for (const ref of withRefs) {
-    if (visibleSet.has(ref.id)) {
-      continue;
-    }
-    visibleSet.add(ref.id);
-    visibleCharacterIds.push(ref.id);
-  }
+  const visibleCharacterIds = resolveDialogueVisibleCharacterIds(
+    stagedCharacterIds,
+    speaker.id,
+    withChars === undefined ? undefined : withRefs.map((ref) => ref.id),
+  );
+  const emotionRefs = [
+    ...(speaker.id ? [{ id: speaker.id, emotion: speaker.emotion }] : []),
+    ...withRefs,
+  ];
 
   return {
     speakerId: speaker.id,
     speakerName: speaker.id,
     speakerEmotion: speaker.emotion,
     visibleCharacterIds,
-    emotionRefs: [{ id: speaker.id, emotion: speaker.emotion }, ...withRefs],
+    emotionRefs,
   };
 }
 
@@ -2542,7 +2544,11 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       continue;
     }
     if ('say' in action) {
-      const presentation = resolveSayPresentation(action.say.char, action.say.with);
+      const presentation = resolveSayPresentation(
+        action.say.char,
+        action.say.with,
+        getStagedCharacterIds(),
+      );
       promoteSpeaker(presentation.speakerId);
       setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, chapter.baseUrl, presentation.emotionRefs);
@@ -2994,7 +3000,11 @@ function runToNextPause(loopGuard = 0) {
       window.clearTimeout(choiceTimer);
       choiceTimer = undefined;
     }
-    const presentation = resolveSayPresentation(action.choice.char, action.choice.with);
+    const presentation = resolveSayPresentation(
+      action.choice.char,
+      action.choice.with,
+      getStagedCharacterIds(),
+    );
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setChoiceGate({
@@ -3092,7 +3102,11 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('input' in action) {
-    const presentation = resolveSayPresentation(action.input.char, action.input.with);
+    const presentation = resolveSayPresentation(
+      action.input.char,
+      action.input.with,
+      getStagedCharacterIds(),
+    );
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearChoiceGate();
     useVNStore.getState().setInputGate({
@@ -3132,7 +3146,11 @@ function runToNextPause(loopGuard = 0) {
       window.clearTimeout(autoAdvanceTimer);
       autoAdvanceTimer = undefined;
     }
-    const presentation = resolveSayPresentation(action.say.char, action.say.with);
+    const presentation = resolveSayPresentation(
+      action.say.char,
+      action.say.with,
+      getStagedCharacterIds(),
+    );
     const speakerEmotion =
       presentation.speakerEmotion ?? getVisibleCharacterEmotion(presentation.speakerId);
     const characterDefaultDelivery = presentation.speakerId

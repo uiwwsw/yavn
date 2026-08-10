@@ -1,13 +1,13 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-08-10T16:30:03.798Z",
+  "generatedAt": "2026-08-10T23:54:08.878Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "summary": "훗날 신라 최초의 여왕이 될 덕만. 허락받은 딸이 아니라 스스로 이름을 쓰는 왕이 되기까지, 인물마다 다른 욕망과 상처가 충돌하는 8장 궁중 정치 생존극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [
