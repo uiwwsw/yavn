@@ -21,13 +21,13 @@ scenes:
           framing: full
           with:
             - 덕만
-          text: "제 줄을 쥔 자가 있습니다. 그렇다고 생각까지 맡겼다고 보면, 공주께서 먼저 집니다."
+          text: "제 목에 맨 줄을 쥔 자가 있습니다. 하지만 생각까지 그 손에 있다고 믿는 순간, 공주께서 먼저 그 줄을 잡히십니다."
       - say:
           char: 덕만
           framing: bust
           with:
             - 진운
-          text: "줄을 먼저 보여 주는 경쟁자라. 오래 볼수록 위험하겠군요."
+          text: "줄을 감추지 않는 꼭두각시라…… 누가 당기는지 보게 만드는군요. 오래 볼수록 더 위험한 경쟁자입니다."
       - goto: contest_choice
 
   contest_choice:
@@ -60,13 +60,13 @@ scenes:
   contest_policy:
     actions:
       - say:
-          char: 진운
+          char: 진운.angry
           framing: bust
-          text: "공주께서는 이번 겨울의 천칠백을 살렸습니다. 저는 절반을 남겨 다음 겨울의 이천을 준비했을 겁니다. 어느 죽음이 더 무겁습니까?"
+          text: "공주께서는 이번 겨울의 천칠백을 살렸습니다. 저라면 곡식 절반을 남겨 다음 겨울의 이천을 준비했을 겁니다. 문밖의 죽음과 아직 오지 않은 죽음, 어느 쪽을 장부에서 지우시겠습니까?"
       - say:
           char: 덕만
           framing: bust
-          text: "내년의 이천은 장부에 있고, 오늘의 천칠백은 문밖에 있습니다. 먼날에 도착할 사람부터 살리겠습니다."
+          text: "내년의 이천은 장부 안에 있고, 오늘의 천칠백은 문밖에 서 있습니다. 나는 먼저 도착한 사람의 이름부터 살리겠습니다."
       - add:
           nobles_support: 1
       - goto: leverage_choice
@@ -74,14 +74,14 @@ scenes:
   contest_private:
     actions:
       - say:
-          char: 진운
+          char: 진운.nervous
           framing: closeup
           delivery: whisper
-          text: "제 어머니는 칠숙의 별채 동쪽방에 있습니다. 창은 하나, 호위는 여섯. 회의에서 제 표가 늘 때마다 어머니 문밖의 칼도 하나씩 늘어납니다."
+          text: "제 어머니는 칠숙의 별채 동쪽방에 있습니다. 창 하나, 문 하나, 호위 여섯. 화백에서 제 표가 하나 늘 때마다 문밖의 칼도 하나 늘어납니다."
       - say:
           char: 덕만
           framing: bust
-          text: "숨기지 않는 것이 그대의 방패라고 들었습니다. 좋습니다. 나는 그 자물쇠를 열 길을 말하고, 그대는 내 등에 겨눈 칼을 말하세요."
+          text: "약점을 먼저 말해 공격할 자리를 없애는군요. 좋습니다. 나는 그 문을 열 길을 말하고, 그대는 내 등 뒤에서 움직이는 칼을 말하세요."
       - goto: leverage_choice
 
   contest_listen:
@@ -93,21 +93,25 @@ scenes:
           char: 덕만
           framing: closeup
           delivery: whisper
-          text: "틀린 것이 아니라 일부러 틀렸어. 줄에 매달린 사람이 줄을 당겨 내 쪽을 보게 했군."
+          text: "틀린 말이 아니야. 빌린 문장 사이에 자기 말을 하나 끼웠어. 줄에 묶인 사람이 줄을 당겨 내 쪽을 보게 했군."
       - add:
           rival_trust: 1
       - goto: leverage_choice
 
   leverage_choice:
     actions:
+      - char:
+          id: 비담
+          position: right
+          framing: full
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "진운공의 약점은 셋. 별채의 어머니, 대신 갚아 준 빚, 자기 왕관이 피에 젖는 건 싫다는 양심."
+          text: "진운공의 약점은 셋. 별채에 갇힌 어머니, 남이 대신 갚은 빚, 그리고 자기 왕관에 남의 피가 묻는 꼴은 못 본다는 양심."
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "보통은 싼 것부터 씁니다. 어느 쪽을 사실 겁니까?"
+          text: "저라면 가장 싼 양심부터 쓰겠습니다. 공주님은 어느 약점을 사실 겁니까?"
       - choice:
           key: c5_leverage
           prompt: "진운의 약점을 손에 쥐었다. 쓸까?"
@@ -134,26 +138,30 @@ scenes:
   leverage_deal:
     actions:
       - say:
-          char: 진운
+          char: 진운.nervous
           framing: closeup
           delivery: nervous
-          text: "어머니를 빼내고도 제게 물러나라는 서약을 받지 않으셨습니다. 왜 제 약점을 쓰지 않으십니까?"
+          text: "어머니를 빼내고도 제게 물러나라는 서약을 받지 않으셨습니다. 칼을 쥐고도 베지 않는 까닭이 무엇입니까?"
       - say:
           char: 덕만
           framing: bust
-          text: "약점을 밟아 얻은 동맹은 다음 약점을 만날 때 배신합니다. 나는 그대의 목숨이 아니라, 그대가 스스로 고른 문장을 원해요."
+          text: "약점을 밟아 세운 동맹은 더 큰 약점을 만나면 주인을 바꿉니다. 나는 그대의 목숨값이 아니라, 그대가 처음부터 끝까지 스스로 고른 문장을 원해요."
       - goto: rescue_choice
 
   leverage_ledger:
     actions:
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
       - say:
-          char: 칠숙
+          char: 칠숙.smile
           framing: bust
-          text: "궁핍한 왕족의 빚을 대신 갚아 드린 일이 반역이라니, 선의가 죄가 되는 세상이군요."
+          text: "궁핍한 왕족의 빚을 대신 갚아 드린 일이 반역이라니, 선의를 베풀기 두려운 세상이 되겠군요."
       - say:
           char: 덕만
           framing: bust
-          text: "은전만 돌려받았다면 선의였겠지요. 회의에서 그대 문장을 그대로 읽은 횟수가 이자로 적혀 있습니다."
+          text: "은전만 돌려받았다면 선의였겠지요. 이 장부에는 화백에서 그대 문장을 읽은 횟수가 이자로 붙어 있습니다."
       - goto: rescue_choice
 
   rescue_choice:
@@ -196,35 +204,39 @@ scenes:
     actions:
       - effect: shake
       - say:
-          char: 진운
+          char: 진운.angry
           framing: closeup
           delivery: angry
-          text: "왜 직접 탔습니까! 두 후계자가 한 마차에서 죽으면 계승동맹이 나라까지 상복으로 덮습니다. 공주께서는 계산도 못 하십니까?"
+          text: "왜 직접 타셨습니까! 두 후계자가 한 마차에서 죽으면 계승동맹은 상복 한 벌로 나라까지 덮습니다. 그 계산도 하지 않으셨습니까?"
       - say:
           char: 덕만
           framing: closeup
           delivery: nervous
-          text: "계산했어요. 그래서 무서워도 탔습니다. 그들이 가장 두려워하는 건 우리 둘의 죽음이 아니라…… 함께 살아 돌아오는 모습이니까."
+          text: "계산했습니다. 그래서 무서운 채로 탔어요. 그들이 감당 못 하는 건 우리 둘의 장례가 아니라…… 같은 마차에서 살아 내리는 모습이니까."
       - goto: chapter5_end
 
   rescue_yushin:
     actions:
+      - char:
+          id: 유신
+          position: right
+          framing: full
       - say:
-          char: 유신
+          char: 유신.angry
           framing: bust
-          text: "진운공은 무사합니다. 궁수 열둘 중 셋을 생포했습니다. 한 명이 같은 붉은 매듭을 왕의 침전 약방에서 보았다고 진술했습니다."
+          text: "진운공은 무사합니다. 궁수 열둘 중 사망 넷, 도주 다섯, 생포 셋. 생포자 하나가 같은 붉은 매듭을 왕의 침전 약방에서 보았다고 진술했습니다."
       - goto: chapter5_end
 
   rescue_public:
     actions:
       - say:
-          char: 칠숙
+          char: 칠숙.smile
           framing: bust
-          text: "일어나지도 않은 암살을 막으셨다니, 공주님의 공은 증명할 길이 없어 더욱 크겠습니다."
+          text: "일어나지 않은 암살을 막으셨다니, 증명할 길이 없는 공이라 더욱 크겠습니다. 축하드려야 할지요?"
       - say:
           char: 덕만
           framing: bust
-          text: "그렇군요. 그럼 오늘 밤 진운이 무사하면 아무 일도 없었던 것이고, 죽으면 그대가 방금 거짓말한 것이 됩니다. 어느 쪽이 편하십니까?"
+          text: "그럼 오늘 밤 진운이 살면 아무 일도 없었던 것이고, 죽으면 방금 그대 말이 거짓이 됩니다. 칠숙공은 어느 내일이 더 편하십니까?"
       - goto: chapter5_end
 
   chapter5_end:
@@ -234,11 +246,15 @@ scenes:
       - say:
           text: "덕만과 진운이 처음으로 같은 문서에 각자의 이름을 쓰려던 순간, 궁의 종이 장례 때처럼 거꾸로 울렸다. 한 번. 그리고 또 한 번."
           wait: 900
+      - char:
+          id: 천명
+          position: right
+          framing: full
       - say:
           char: 천명.nervous
           framing: closeup
           delivery: nervous
-          text: "덕만아, 아버지가 쓰러지셨어. 숨은 붙어 있는데 말씀을 못 하셔. 인장은 사라졌고…… 네 이름으로 체포령이 내려졌어."
+          text: "덕만아, 아버지가 쓰러지셨어. 숨은 붙어 있는데 네 이름도 못 부르셔. 인장은 사라졌고…… 그 인장으로 네 체포령이 먼저 궁을 돌고 있어."
       - say:
           text: "제5장 완료 — 덕만은 경쟁자를 동맹으로 얻는 대신, 아버지를 잃을 시간을 맞았다."
 

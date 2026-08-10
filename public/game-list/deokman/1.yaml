@@ -21,11 +21,11 @@ scenes:
           framing: full
           with:
             - 덕만
-          text: "사흘이다. 네 이름에서 독 냄새를 씻어 내라. 나흘째에는 왕도, 아버지도 네 앞에 설 수 없다."
+          text: "사흘을 주마. 넷째 날 해가 뜨면 나는 왕으로도, 네 아비로도 네 편에 설 수 없다."
       - say:
           char: 덕만
           framing: bust
-          text: "범인은 제 동선까지 압니다. 그들이 안심하고 비워 둔 곳부터 보겠습니다."
+          text: "범인은 제 걸음보다 한발 먼저 움직였습니다. 그렇다면 제가 오지 않으리라 믿은 곳부터 보겠습니다."
       - goto: investigate_choice
 
   investigate_choice:
@@ -58,18 +58,18 @@ scenes:
           position: right
           framing: full
       - say:
-          char: 소원
+          char: 소원.nervous
           framing: full
           with:
             - 덕만
-          text: "술독도, 국자도, 잔도 깨끗해요. 이상한 건 행주뿐이에요. 공주님 손이 닿는 곳만 검은 가루로 닦았어요."
+          text: "술독도 국자도 잔도 냄새가 같아요. 다른 건 이 행주뿐이에요. 공주님 손이 닿는 자리만, 먹물 아닌 검은 가루로 닦았어요."
       - say:
           char: 덕만
           framing: closeup
           with:
             - 소원
           delivery: whisper
-          text: "마시는 독이 아니야. 내 손에 묻혀, 내 이름을 죽이려던 거야."
+          text: "마시게 할 독이 아니야. 내 손에 묻혀, 내가 잔을 건넨 사람으로 만들 독이지."
       - add:
           sowon_trust: 1
       - goto: rumor_choice
@@ -81,17 +81,17 @@ scenes:
           position: right
           framing: full
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
           with:
             - 덕만
-          text: "먹은 새것, 붓은 죽은 관리의 것. 오늘 만든 거짓말에 삼 년 전 필체를 입혔군요."
+          text: "먹은 오늘 갈았고, 붓은 삼 년 전 죽은 관리의 것입니다. 갓난 거짓말에 죽은 사람 손을 빌려 줬군요."
       - say:
           char: 덕만
           framing: bust
           with:
             - 비담
-          text: "일부러 틀렸군. 나를 그대에게 보내려고."
+          text: "감추려 했다면 더 잘 썼겠지. 틀린 글씨를 남겨 나를 그대에게 보냈군."
       - add:
           bidam_trust: 1
       - goto: rumor_choice
@@ -99,9 +99,9 @@ scenes:
   rumor_choice:
     actions:
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "저쪽이 공주님을 구경하고 있습니다. 손님을 오래 세워 둘 수는 없지요. 어떤 거짓말을 안주로 내시겠습니까?"
+          text: "저쪽 귀들이 벌써 잔을 들었습니다. 빈 잔으로 돌려보내면 서운해할 텐데, 어떤 거짓말을 안주로 내시겠습니까?"
       - choice:
           key: c1_rumor
           prompt: "어떤 소문으로 덫을 놓을까?"
@@ -133,7 +133,7 @@ scenes:
       - say:
           char: 덕만
           framing: bust
-          text: "믿은 사람은 입을 열었고, 두려워한 사람은 발을 움직였군. 발자국을 따라가자."
+          text: "믿은 자는 입만 움직였고, 두려운 자는 짐을 쌌어. 말은 버리고 발자국을 따라가자."
       - goto: evidence_choice
 
   rumor_king:
@@ -149,11 +149,11 @@ scenes:
       - say:
           char: 소원.angry
           framing: bust
-          text: "살아 있는 목격자라니까 모두 절 봤어요. 제 이름을 미끼로 쓸 거면, 먼저 말해 줬어야죠."
+          text: "목격자가 살아 있다고 하니 다들 제 얼굴부터 봤어요. 제 이름표를 낚싯바늘에 꿰실 거면, 적어도 제가 삼키기 전에는 말해 주셨어야죠."
       - say:
           char: 덕만.sad
           framing: bust
-          text: "맞아. 네가 겁먹는 걸 보면서도 네 이름을 썼어. 미안해. 오늘 안에 끝낼게."
+          text: "맞아. 네가 떠는 걸 보고도 네 이름을 썼어. 변명하지 않을게. 해 지기 전 네 이름부터 덫에서 빼내겠다."
       - goto: evidence_choice
 
   evidence_choice:
@@ -185,25 +185,25 @@ scenes:
   evidence_king:
     actions:
       - say:
-          char: 진평왕
+          char: 진평왕.sad
           framing: bust
-          text: "네가 죄 없다는 것은 알겠다. 그런데 덕만아, 죄 없는 사람이 다음 칼도 피할 수 있겠느냐?"
+          text: "네 결백은 내가 안다. 하지만 덕만아, 다음 칼도 아비가 안다는 말로 멈추겠느냐?"
       - say:
           char: 덕만
           framing: bust
-          text: "아니요. 그래서 결백만 청하지 않겠습니다. 칼을 든 손이 돌아갈 곳까지 보겠습니다."
+          text: "아니요. 그러니 죄 없다는 말로 끝내지 않겠습니다. 칼을 든 손이 명령을 돌려놓는 곳까지 가겠습니다."
       - goto: chapter1_end
 
   evidence_reverse:
     actions:
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "하인을 풀어 주셨으니, 이제 적이 보내는 편지를 매일 받아 보시겠군요. 답장은 제가 태워 드릴까요?"
+          text: "붙잡은 하인을 풀어 주셨으니, 이제 적이 매일 편지를 보내겠군요. 답장은 제가 잘 태웁니다. 읽기도 전에요."
       - say:
           char: 덕만
           framing: bust
-          text: "아니. 계속 배달하게 두세요. 잡힌 손은 입을 다물지만, 의심받지 않는 손은 길을 보여 주니까."
+          text: "태우지 마세요. 잡힌 손은 시킨 이름을 숨기지만, 풀려난 손은 스스로 그 이름의 문을 두드립니다."
       - goto: chapter1_end
 
   chapter1_end:
@@ -212,10 +212,10 @@ scenes:
       - say:
           text: "덕만은 누명을 벗었다. 배후는 놓쳤지만, 하인의 품에서 다음 계획을 발견했다."
       - say:
-          char: 덕만
+          char: 덕만.angry
           framing: closeup
           delivery: angry
-          text: "죽이지 못한 여자는 남의 아내로 보관하겠다…… 내 목숨에 값을 매겼군."
+          text: "죽이지 못한 여자는 혼인으로 봉해 두겠다…… 내 목숨이 아니라, 내 입에 값을 매겼군."
           wait: 800
       - get: marriage_pact
       - set:

@@ -23,14 +23,14 @@ scenes:
           with:
             - 덕만
           delivery: nervous
-          text: "네 얼굴이 모든 문에 붙었어. 군사들은 왕명이라는데, 아버지는 손가락 하나 못 움직이셔. 누군가 아버지의 침묵으로 명령하고 있어."
+          text: "네 얼굴이 모든 궁문에 붙었어. 군사들은 왕명이라는데, 아버지는 네 이름도 못 쓰셔. 누군가 아버지의 침묵에 자기 명령을 찍고 있어."
       - say:
           char: 덕만
           framing: closeup
           with:
             - 천명
           delivery: nervous
-          text: "인장이 찍힌 거짓말은 해가 뜨면 법이 돼. 그 전에 아버지의 숨과 인장을 찾자. 하나만 놓쳐도 우리를 죽일 거야."
+          text: "인장이 찍힌 거짓말은 해가 뜨면 법이 돼. 그 전에 아버지의 숨과 인장을 모두 찾자. 하나만 놓치면, 남은 하나가 우리를 죽일 거야."
       - goto: entry_choice
 
   entry_choice:
@@ -65,13 +65,13 @@ scenes:
           position: right
           framing: full
       - say:
-          char: 월명
+          char: 월명.warning
           framing: full
-          text: "물길은 약초 냄새를 기억합니다. 전하를 살린 약도, 죽이려 든 약도 여기로 왔습니다. 발을 낮추십시오. 세 번째 갈림길에 보초가 둘입니다."
+          text: "물길은 흘려보낸 약초 냄새를 오래 기억합니다. 전하를 살린 약도, 죽이려 든 약도 여기로 왔습니다. 몸을 낮추십시오. 세 번째 갈림길, 보초 둘입니다."
       - say:
           char: 덕만
           framing: bust
-          text: "같은 길로 약과 독이 들었군요. 길을 막지 말고 끝까지 갑시다. 죄는 도착한 방에 있을 테니."
+          text: "같은 물길로 약과 독을 보냈군요. 막지 말고 거슬러 갑시다. 죄는 물이 아니라, 물을 받은 방에 있을 테니."
       - goto: rescue_choice
 
   entry_procession:
@@ -80,12 +80,12 @@ scenes:
           char: 천명
           framing: closeup
           delivery: nervous
-          text: "일곱 살 때도 내 치마 밑에 숨어 꿀과자를 훔쳤지. 그때는 네 발이 밖으로 다 보였어. 지금도 보여, 떨리는 것까지."
+          text: "일곱 살 때 내 치마 뒤에 숨어 꿀과자를 훔쳤지. 네 발이 다 보였는데도 모르는 척했어. 지금도 보여, 발끝이 떠는 것까지."
       - say:
           char: 덕만
           framing: closeup
           delivery: whisper
-          text: "이번에도 언니가 가려 줘. 나가면 그때처럼 실컷 혼내. 그러려면 우리 둘 다 살아야 해."
+          text: "이번에도 모르는 척 가려 줘. 밖에 나가면 그때 못 한 꾸중까지 다 들어 줄게. 그러니 언니도 같이 나와."
       - goto: rescue_choice
 
   entry_prison:
@@ -95,13 +95,13 @@ scenes:
           position: right
           framing: full
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "보통은 감옥에서 나가려고 저를 찾습니다. 공주님은 들어오려고 찾아오셨군요. 제 쓸모도 드디어 문 안쪽으로 승진했습니다."
+          text: "보통은 감옥에서 나오려고 저를 찾습니다. 들어가게 해 달라는 분은 처음이군요. 제 쓸모가 마침내 문 안쪽까지 승진했습니다."
       - say:
           char: 덕만
           framing: bust
-          text: "그대가 밖에서 문을 잠그면 체포고, 안에서 열어 주면 공모지. 어느 죄가 그대 취향입니까?"
+          text: "그대가 밖에서 잠그면 체포, 안에서 열면 공모. 어느 죄가 그대에게 더 잘 어울립니까?"
       - goto: rescue_choice
 
   rescue_choice:
@@ -136,15 +136,15 @@ scenes:
   rescue_king:
     actions:
       - say:
-          char: 월명
+          char: 월명.sad
           framing: closeup
           delivery: sad
-          text: "독은 멎었습니다. 하지만 이미 식은 피는 돌아오지 않습니다. 전하께 남은 숨은…… 긴 문장 하나를 끝내기에도 모자랍니다."
+          text: "독은 막았습니다. 하지만 한 번 식은 피는 약초로 돌아오지 않습니다. 전하께 남은 숨은…… 긴 문장 하나를 끝내기에도 모자랍니다."
       - say:
-          char: 덕만
+          char: 덕만.sad
           framing: closeup
           delivery: sad
-          text: "그 한 문장을 제 이름에 쓰게 하지는 않겠습니다. 마지막 말만큼은 아버지 자신의 것이어야 해요."
+          text: "그 한 문장을 제 이름에 쓰게 하지는 않겠습니다. 마지막 숨만큼은 왕명도 후계도 아닌, 아버지 자신의 것이어야 해요."
       - goto: seal_found
 
   rescue_allies:
@@ -152,11 +152,11 @@ scenes:
       - say:
           char: 천명.sad
           framing: bust
-          text: "네가 우리에게 군사를 보낸 동안 아버지 숨이 더 약해졌어. 덕만아…… 나를 살리고 아버지를 잃으면, 나를 볼 때마다 후회하지 않겠니?"
+          text: "네가 우리에게 군사를 보낸 동안 아버지 숨이 더 가늘어졌어. 덕만아…… 나를 살리고 아버지를 잃으면, 내 얼굴이 평생 그 선택처럼 보이지 않겠니?"
       - say:
           char: 덕만.sad
           framing: bust
-          text: "후회할 거야. 언니를 잃었어도 후회했을 거고. 나는 지금 누구를 사랑하는지 고른 게 아니라, 누구를 먼저 살릴 수 있는지 골랐어."
+          text: "후회할 거야. 언니를 잃었어도 같은 만큼 후회했을 거고. 사랑의 크기를 고른 게 아니야. 지금 내 손이 먼저 닿을 수 있는 사람을 고른 거야."
       - add:
           army_support: 1
       - goto: seal_found
@@ -167,9 +167,9 @@ scenes:
       - say:
           text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람의 이름이 남아 있었다. 이찬 칠숙. 반환 칸은 비어 있었다."
       - say:
-          char: 덕만
+          char: 덕만.angry
           framing: bust
-          text: "명령은 거짓인데 인영은 진짜였어. 아버지의 침묵과 도장을 함께 훔친 거야."
+          text: "명령은 거짓인데 인영은 진짜야. 아버지에게서 도장만 훔친 게 아니야. 대답할 수 없는 침묵까지 왕명으로 썼어."
       - say:
           delivery: sad
           text: "덕만이 대장을 안고 기록고를 나왔을 때 종루의 봉화가 꺼졌다. 들것 가장자리로 천명이 쓰던 붉은 옷자락이 흘러내렸다."
@@ -177,7 +177,7 @@ scenes:
       - say:
           char: 덕만.sad
           framing: bust
-          text: "내가 고른 건 종이였어…… 언니가 아니었어. 그런데도 이 종이를 놓으면, 언니를 두 번 버리는 거야."
+          text: "내가 먼저 안은 건 이 종이였어…… 언니가 아니라. 그래도 지금 놓으면, 언니를 버리고 가져온 진실까지 버리게 돼."
       - set:
           cheonmyeong_alive: false
       - goto: seal_found
@@ -221,25 +221,29 @@ scenes:
   seal_command:
     actions:
       - say:
-          char: 비담
+          char: 비담.smirk
           framing: bust
-          text: "훔친 인장의 왕명을, 주운 인장의 명령이 막았군요. 둘의 차이는 승자의 이름뿐입니까?"
+          text: "훔친 인장의 왕명을 주운 인장의 명령이 막았군요. 두 도장 사이의 정의는, 끝에 살아남은 사람 이름입니까?"
       - say:
           char: 덕만
           framing: bust
-          text: "아니. 내일 내가 이 명령을 숨기지 않고, 죽은 사람의 이름까지 읽을 수 있는가. 그게 차이야."
+          text: "아니. 내일 내가 이 명령을 숨기지 않고, 이 명령 때문에 죽은 이름까지 사람들 앞에서 읽을 수 있는가. 그게 차이야."
       - goto: kings_last_words
 
   seal_seal:
     actions:
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
       - say:
-          char: 칠숙
+          char: 칠숙.smile
           framing: bust
-          text: "인장을 손에 넣고도 봉하신다니 참으로 고결하십니다. 다만 쓰지 못하는 힘으로 나라를 다스릴 수 있을지 염려되는군요."
+          text: "인장을 손에 넣고도 봉하시다니 참으로 고결하십니다. 다만 꺼내지 못하는 칼로 나라를 지킬 수 있을지 염려되는군요."
       - say:
-          char: 덕만
+          char: 덕만.angry
           framing: bust
-          text: "쓰지 않은 것이지, 쓰지 못한 것이 아닙니다. 그 차이를 그대 손이 먼저 알고 있군요. 소매가 떨립니다."
+          text: "쓰지 않은 것이지, 쓰지 못한 것이 아닙니다. 그 차이는 그대 손이 먼저 아는군요. 웃는 얼굴 아래서 소매가 떨립니다."
       - goto: kings_last_words
 
   seal_break:
@@ -264,33 +268,33 @@ scenes:
           position: left
           framing: full
       - say:
-          char: 덕만
+          char: 덕만.sad
           framing: closeup
           with:
             - 진평왕
           delivery: sad
-          text: "<speed=18>아버지.</speed> <speed=22>이번 한 번만 왕이 아니라 아버지로 답해 주세요.</speed> <speed=18>제가…… 왕이 될 수 있습니까?</speed>"
+          text: "<speed=18>아버지.</speed> <speed=22>이번 한 번만 왕이 아니라, 제 아버지로 대답해 주세요.</speed> <speed=18>제가…… 왕이 되어도 됩니까?</speed>"
           wait: 900
       - say:
-          char: 진평왕
+          char: 진평왕.weak
           framing: closeup
           with:
             - 덕만
           delivery: sad
-          text: "<speed=18>내가 된다고 하면 되겠느냐.</speed> <speed=18>내가 안 된다고 하면…… 멈출 것이냐.</speed>"
+          text: "<speed=18>내가 된다고 해야 네가 되느냐.</speed> <speed=18>안 된다고 하면…… 여기서 멈출 것이냐.</speed>"
       - say:
           char: 덕만.sad
           framing: bust
           with:
             - 진평왕
-          text: "아니요. 어느 대답도 저를 멈추지는 못합니다. 다만 딸로서…… 아버지의 대답을 듣고 싶었습니다."
+          text: "아니요. 어느 대답도 저를 멈추지는 못합니다. 다만 왕이 되기 전에 한 번만…… 딸로서 아버지의 마음을 듣고 싶었습니다."
       - say:
-          char: 진평왕.sad
+          char: 진평왕.weak
           framing: closeup
           with:
             - 덕만
           delivery: sad
-          text: "그러면 이미 답을 얻었구나. 아비가 세운 딸은 아비와 함께 무너진다. 네가 세운 왕만이…… 내일에도 남는다."
+          text: "그렇다면 대답은 이미 네 안에 있구나. 아비가 세운 딸은 아비와 함께 무너진다. 네 손으로 세운 왕만이…… 아비 없는 내일을 견딘다."
           wait: 1200
       - say:
           delivery: sad
@@ -299,7 +303,7 @@ scenes:
           char: 덕만
           framing: closeup
           delivery: whisper
-          text: "마지막까지 내 이름을 써 주지 않으셨다. 버린 것이 아니라…… 내 손으로 쓰게 하신 거야."
+          text: "마지막까지 내 이름을 써 주지 않으셨어. 지운 것이 아니라…… 이제 누구의 허락도 빌리지 말고 내 손으로 쓰라 하신 거야."
           wait: 900
       - add:
           legitimacy: 1

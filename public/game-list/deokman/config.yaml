@@ -1,7 +1,7 @@
 title: "덕만: 왕관에는 주인이 없다"
 author:
   name: "uiwwsw"
-version: "1.3.1"
+version: "2.0.0"
 seo:
   description: "죽을 운명을 고쳐 쓰며 신라 최초의 여왕이 되어야 하는 장편 궁중 정치 생존 비주얼노벨. 24개의 운명 선택과 35개의 실패 결말, 10개의 수집형 엔딩을 담았다."
   keywords:
@@ -11,8 +11,8 @@ seo:
     - "역사 비주얼노벨"
     - "정치 생존 게임"
     - "분기형 게임"
-  image: "assets/bg/title-palace-social.jpg"
-  imageAlt: "달빛 아래 신라 궁궐에 선 덕만공주"
+  image: "assets/bg/title-palace-silla-social-v3.jpg"
+  imageAlt: "비 내린 달밤의 7세기 신라 월성 왕궁"
 textSpeed: 27
 autoSave: true
 clickToInstant: true
@@ -20,12 +20,12 @@ ui:
   template: paper-stage
 startScreen:
   enabled: true
-  image: "assets/bg/title-palace.webp"
+  image: "assets/bg/title-palace-silla-v3.webp"
   showTitle: true
   startButtonText: "운명을 시작한다"
   buttonPosition: bottom-left
 endingScreen:
-  image: "assets/bg/title-palace.webp"
+  image: "assets/bg/title-palace-silla-v3.webp"
 endings:
   true_end:
     title: "TRUE END — 신라의 왕, 덕만"
