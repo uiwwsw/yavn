@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('1.2.0');
+    expect(config.version).toBe('1.2.1');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('나를 빼고도 오늘 밤 신라를 지킬 수 있는가');
@@ -107,6 +107,23 @@ describe('Deokman complete-game content', () => {
     ];
     paths.forEach((path) => {
       expect(typeof path).toBe('string');
+      expect(existsSync(`${gameRoot}${String(path)}`), String(path)).toBe(true);
+    });
+  });
+
+  it('uses broadly compatible WebP for every rendered background and title image', () => {
+    const base = readYaml('base.yaml');
+    const config = readYaml('config.yaml');
+    const launcher = readYaml('launcher.yaml');
+    const backgrounds = Object.values(asRecord(asRecord(base.assets).backgrounds));
+    const titleImages = [
+      asRecord(config.startScreen).image,
+      asRecord(config.endingScreen).image,
+      launcher.thumbnail,
+    ];
+
+    [...backgrounds, ...titleImages].forEach((path) => {
+      expect(String(path)).toMatch(/\.webp$/);
       expect(existsSync(`${gameRoot}${String(path)}`), String(path)).toBe(true);
     });
   });

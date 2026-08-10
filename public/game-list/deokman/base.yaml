@@ -1,16 +1,16 @@
 assets:
   backgrounds:
-    title_palace: assets/bg/title-palace.avif
-    moon_court: assets/bg/moon-court-v2.avif
-    shadow_corridor: assets/bg/shadow-corridor-v2.avif
-    council_hall: assets/bg/council-hall.avif
-    banquet_hall: assets/bg/banquet-hall-v2.avif
-    princess_chamber: assets/bg/princess-chamber-v2.avif
-    locked_room: assets/bg/locked-room-v2.avif
-    throne_hall: assets/bg/throne-hall-v2.avif
-    frontier: assets/bg/frontier.avif
-    village: assets/bg/village-v2.avif
-    fortress: assets/bg/frontier.avif
+    title_palace: assets/bg/title-palace.webp
+    moon_court: assets/bg/moon-court-v2.webp
+    shadow_corridor: assets/bg/shadow-corridor-v2.webp
+    council_hall: assets/bg/council-hall.webp
+    banquet_hall: assets/bg/banquet-hall-v2.webp
+    princess_chamber: assets/bg/princess-chamber-v2.webp
+    locked_room: assets/bg/locked-room-v2.webp
+    throne_hall: assets/bg/throne-hall-v2.webp
+    frontier: assets/bg/frontier.webp
+    village: assets/bg/village-v2.webp
+    fortress: assets/bg/frontier.webp
   characters:
     덕만:
       base: assets/char/deokman-v2.webp
