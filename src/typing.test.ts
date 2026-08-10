@@ -11,6 +11,8 @@ describe('dialogue delivery', () => {
     expect(resolveDialogueDelivery(undefined, 'nervous')).toBe('nervous');
     expect(resolveDialogueDelivery(undefined, 'serious')).toBe('deduction');
     expect(resolveDialogueDelivery('whisper', 'angry')).toBe('whisper');
+    expect(resolveDialogueDelivery(undefined, undefined, 'calm')).toBe('calm');
+    expect(resolveDialogueDelivery(undefined, 'angry', 'calm')).toBe('angry');
     expect(resolveDialogueDelivery(undefined, 'unknown')).toBe('neutral');
   });
 

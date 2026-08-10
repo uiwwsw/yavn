@@ -208,7 +208,9 @@ scenes:
   chapter2_end:
     actions:
       - bg: locked_room
+      - effect: focus
       - say:
+          delivery: whisper
           text: "그날 밤, 합의서를 덕만에게 넘긴 귀족이 덕만의 방에서 시체로 발견되었다. 문은 안에서 잠겨 있었다."
       - say:
           char: 덕만

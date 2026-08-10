@@ -2785,7 +2785,10 @@ textarea,
 .effect-glitch::after,
 .effect-speedlines::after,
 .effect-alarm::after,
-.effect-focus::after {
+.effect-focus::after,
+.effect-moonveil::after,
+.effect-embers::after,
+.effect-crown::after {
   content: '';
   position: absolute;
   z-index: 9;
@@ -2827,6 +2830,35 @@ textarea,
 .effect-focus::after {
   background: radial-gradient(circle at 50% 42%, transparent 0 18%, rgba(2, 5, 10, 0.82) 54%, rgba(0, 0, 0, 0.94) 100%);
   animation: focusSnap 0.62s ease-out;
+}
+
+.effect-moonveil::after {
+  background:
+    radial-gradient(circle at 50% 32%, rgba(196, 220, 255, 0.26) 0 10%, transparent 38%),
+    radial-gradient(circle at 50% 44%, transparent 0 28%, rgba(10, 25, 54, 0.42) 68%, rgba(1, 5, 15, 0.82) 100%);
+  mix-blend-mode: screen;
+  animation: moonveilBloom 0.9s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.effect-embers::after {
+  inset: -12%;
+  background-image:
+    radial-gradient(circle, rgba(255, 222, 150, 0.9) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(236, 125, 51, 0.76) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle, rgba(255, 191, 105, 0.62) 0 1px, transparent 2px);
+  background-position: 18% 76%, 52% 84%, 82% 70%;
+  background-size: 83px 101px, 127px 149px, 157px 113px;
+  mix-blend-mode: screen;
+  animation: embersRise 1.1s ease-out;
+}
+
+.effect-crown::after {
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255, 245, 190, 0.74) 0 3%, rgba(241, 191, 86, 0.34) 14%, transparent 42%),
+    repeating-conic-gradient(from -3deg at 50% 34%, rgba(255, 221, 132, 0.22) 0 1.6deg, transparent 2deg 12deg),
+    radial-gradient(circle at 50% 34%, transparent 0 30%, rgba(65, 32, 8, 0.28) 72%, rgba(10, 5, 2, 0.66) 100%);
+  mix-blend-mode: screen;
+  animation: crownResolve 1.2s cubic-bezier(0.16, 0.8, 0.28, 1);
 }
 
 @keyframes fadeIn {
@@ -3210,6 +3242,24 @@ textarea,
   0% { opacity: 0; transform: scale(1.3); }
   32% { opacity: 1; }
   100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes moonveilBloom {
+  0% { opacity: 0; transform: scale(1.08); }
+  32% { opacity: 0.95; }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes embersRise {
+  0% { opacity: 0; transform: translateY(9%) scale(0.98); filter: blur(1px); }
+  28% { opacity: 0.82; }
+  100% { opacity: 0; transform: translateY(-7%) scale(1.03); filter: blur(0); }
+}
+
+@keyframes crownResolve {
+  0% { opacity: 0; transform: scale(0.78); filter: blur(7px); }
+  34% { opacity: 0.96; filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.14); }
 }
 
 @media (max-width: 1024px) {
@@ -3617,7 +3667,10 @@ textarea,
   .effect-glitch::after,
   .effect-speedlines::after,
   .effect-alarm::after,
-  .effect-focus::after {
+  .effect-focus::after,
+  .effect-moonveil::after,
+  .effect-embers::after,
+  .effect-crown::after {
     animation: none !important;
     opacity: 0 !important;
   }

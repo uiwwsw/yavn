@@ -199,10 +199,14 @@ export function parseInlineSpeed(text: string): { text: string; segments: Inline
 export function resolveDialogueDelivery(
   explicitDelivery?: DialogueDelivery,
   speakerEmotion?: string,
+  characterDefault?: DialogueDelivery,
 ): DialogueDelivery {
   if (explicitDelivery) return explicitDelivery;
-  if (!speakerEmotion) return DEFAULT_DELIVERY;
-  return EMOTION_DELIVERY_MAP[speakerEmotion.trim().toLowerCase()] ?? DEFAULT_DELIVERY;
+  if (speakerEmotion) {
+    const emotionDelivery = EMOTION_DELIVERY_MAP[speakerEmotion.trim().toLowerCase()];
+    if (emotionDelivery) return emotionDelivery;
+  }
+  return characterDefault ?? DEFAULT_DELIVERY;
 }
 
 export function buildTypingPlan(options: {
