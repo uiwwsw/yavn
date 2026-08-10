@@ -218,6 +218,7 @@ let parsedChapterCache = new Map<string, Promise<ParsedChapterYaml>>();
 let resolvedChapterGameCache = new Map<string, Promise<GameData>>();
 let currentAutosaveKey = LEGACY_AUTOSAVE_KEY;
 let runtimeGameSettings: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
+let pendingChoiceRecovery: SaveProgress | undefined;
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -1909,6 +1910,7 @@ function resolveAutoEndingId(
 }
 
 function finishStory(endingId?: string): void {
+  pendingChoiceRecovery = undefined;
   useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setResolvedEndingId(endingId);
   useVNStore.getState().setFinished(true);
@@ -1925,6 +1927,10 @@ function finishStory(endingId?: string): void {
 function triggerGameOver(gameOver: GameOverDefinition): void {
   clearTimers();
   playMusic(undefined);
+  if (getAutoSaveEnabled() && pendingChoiceRecovery) {
+    saveProgressToKey(resolveSaveSlotKey('auto'), pendingChoiceRecovery);
+  }
+  pendingChoiceRecovery = undefined;
   useVNStore.getState().setGameOver({
     title: gameOver.title?.trim() || 'GAME OVER',
     message: gameOver.message?.trim() || '선택의 결과로 더는 이야기를 이어갈 수 없습니다.',
@@ -2508,6 +2514,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
   }
 
   try {
+    pendingChoiceRecovery = undefined;
     activeChapterIndex = chapterIndex;
     resetLive2DLoadTracker();
     useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
@@ -2626,6 +2633,7 @@ async function restoreSaveProgress(save: SaveProgress): Promise<boolean> {
 
 function prepareForSaveRestore(): void {
   clearTimers();
+  pendingChoiceRecovery = undefined;
   useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setFinished(false);
   useVNStore.getState().setWaitingInput(false);
@@ -3968,6 +3976,9 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
     sceneId: state.currentSceneId,
     actionIndex: state.actionIndex,
   });
+  pendingChoiceRecovery = selected.gameOver
+    ? undefined
+    : createSaveProgress(state.currentSceneId, state.actionIndex);
   applyStateSet(selected.set);
   applyStateAdd(selected.add);
   useVNStore.getState().setWaitingInput(false);

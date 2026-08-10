@@ -1,0 +1,419 @@
+script:
+  - scene: final_open
+
+scenes:
+  final_open:
+    actions:
+      - bg: throne_hall
+      - effect: focus
+      - char:
+          id: 덕만
+          position: center
+      - say:
+          text: "최종장 — 왕관에는 주인이 없다"
+      - say:
+          text: "진평왕이 죽고 화백회의가 열렸다. 계승동맹의 강경파는 성문 밖에서 군사를 움직였다."
+      - say:
+          char: 덕만
+          text: "나를 왕으로 세워 달라고 부탁하지 않겠다. 나를 거부했을 때 신라가 치를 값을 보여 주겠다."
+      - goto: opening_move_choice
+
+  opening_move_choice:
+    actions:
+      - choice:
+          key: final_opening
+          prompt: "회의가 열리기 전 첫 수를 어디에 둘까?"
+          char: 덕만
+          options:
+            - text: "진운과 함께 회의장에 들어가 두 후계자가 살아 있음을 보인다"
+              add:
+                legitimacy: 1
+                rival_trust: 1
+              goto: opening_joint
+            - text: "유신에게 성문과 봉화를 맡겨 쿠데타 병력을 고립시킨다"
+              add:
+                army_support: 1
+                power: 1
+              goto: opening_gates
+            - text: "계승동맹이 가둔 증인과 하인 가족을 먼저 풀어 준다"
+              add:
+                people_support: 1
+                sowon_trust: 1
+              goto: opening_witnesses
+            - text: "국산 편 귀족들을 회의 전에 모두 처형한다"
+              goto: go_34_empty_council
+
+  opening_joint:
+    actions:
+      - char:
+          id: 진운
+          position: right
+      - say:
+          char: 진운
+          text: "제가 공주를 지지하면 제 표는 사라집니다."
+      - say:
+          char: 덕만
+          text: "그대의 표가 아니라, 스스로 고른 첫 문장을 들려주세요."
+      - goto: proof_choice
+
+  opening_gates:
+    actions:
+      - char:
+          id: 유신
+          position: right
+      - say:
+          char: 유신
+          text: "성문은 닫았고 봉화는 우리 편입니다. 이제 회의가 칼보다 먼저 끝나야 합니다."
+      - goto: proof_choice
+
+  opening_witnesses:
+    actions:
+      - char:
+          id: 소원
+          position: right
+      - say:
+          char: 소원
+          text: "공주님이 살린 사람들이 문밖에 서 있어요. 이번에는 누구도 사라지지 않게 서로의 손을 잡고요."
+      - goto: proof_choice
+
+  proof_choice:
+    actions:
+      - bg: council_hall
+      - char:
+          id: 국산
+          position: right
+      - say:
+          char: 국산
+          text: "여인이 왕이 된 전례가 없습니다. 공주께서 가진 것은 의심과 소문뿐입니다."
+      - choice:
+          key: final_proof
+          prompt: "덕만이 왕이 되어야 할 이유를 무엇으로 증명할까?"
+          char: 덕만
+          with:
+            - 국산
+          options:
+            - text: "살려 준 사람들을 차례로 불러 선택의 결과를 증언시킨다"
+              add:
+                legitimacy: 2
+                people_support: 1
+              goto: proof_people
+            - text: "독가루, 혼인 합의서, 계승동맹 서약서를 한 줄로 잇는다"
+              add:
+                insight: 2
+                legitimacy: 1
+              goto: proof_evidence
+            - text: "국경의 병사와 유신이 덕만의 명령을 따름을 보인다"
+              add:
+                army_support: 1
+                power: 2
+              goto: proof_army
+            - text: "진평왕이 남겼다는 가짜 유언장을 만들어 낭독한다"
+              goto: go_35_fathers_lie
+
+  proof_people:
+    actions:
+      - say:
+          char: 덕만
+          text: "전례가 없다는 말은 아무도 해내지 못했다는 뜻이지, 해서는 안 된다는 뜻이 아닙니다. 이들은 내가 해낸 일의 증거입니다."
+      - goto: crown_assessment
+
+  proof_evidence:
+    actions:
+      - say:
+          char: 덕만
+          text: "처음에는 독으로, 다음에는 혼인으로, 끝에는 가짜 왕명으로 왕을 훔치려 했습니다. 이 문서들은 모두 같은 손을 가리킵니다."
+      - goto: crown_assessment
+
+  proof_army:
+    actions:
+      - say:
+          char: 유신
+          text: "군사는 왕관을 보고 따르지 않았습니다. 굶주린 날 우리와 같은 것을 먹은 사람의 명령을 따랐습니다."
+      - goto: crown_assessment
+
+  crown_assessment:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: legitimacy
+                    op: gte
+                    value: 7
+                  - var: insight
+                    op: gte
+                    value: 6
+                  - var: people_support
+                    op: gte
+                    value: 2
+                  - var: army_support
+                    op: gte
+                    value: 2
+                  - var: rival_trust
+                    op: gte
+                    value: 2
+              goto: crown_balanced
+            - when:
+                var: power
+                op: gte
+                value: 6
+              goto: crown_force
+            - when:
+                var: people_support
+                op: gte
+                value: 5
+              goto: crown_people_ready
+          default: crown_fragile
+
+  crown_balanced:
+    actions:
+      - say:
+          text: "회의장 안의 명분, 성문을 지킬 군사, 궁 밖의 증인, 진운의 자발적인 지지까지 서로 다른 힘이 한곳을 향했다. 덕만은 이제 어떤 방식으로 왕좌를 요구할지 고를 수 있었다."
+      - goto: crown_choice
+
+  crown_force:
+    actions:
+      - say:
+          text: "덕만의 군사는 충분했지만, 칼이 사라진 뒤에도 남을 이유는 아직 약했다. 지금 강제로 얻은 왕좌는 계속 힘으로 지켜야 할 것이다."
+      - goto: crown_choice
+
+  crown_people_ready:
+    actions:
+      - say:
+          text: "궁 밖의 목소리는 덕만을 이미 왕으로 불렀다. 그러나 백성의 지지만으로 화백과 반란군을 동시에 굴복시킬 수 있을지는 알 수 없었다."
+      - goto: crown_choice
+
+  crown_fragile:
+    actions:
+      - say:
+          text: "살아남으며 모은 힘은 분명했지만 서로 이어지지 않았다. 마지막 선택은 부족한 하나를 채우는 대신 다른 무언가를 포기하게 할 것이다."
+      - goto: crown_choice
+
+  crown_choice:
+    actions:
+      - effect: pulse
+      - say:
+          char: 국산
+          text: "그래서 무엇으로 왕이 되시겠습니까? 법입니까, 백성입니까, 칼입니까, 아니면 남자 후계자의 양보입니까?"
+      - choice:
+          key: final_crown
+          prompt: "마지막으로 왕좌를 요구하는 방식을 고른다."
+          char: 덕만
+          options:
+            - text: "화백의 법과 공개 표결로 왕좌를 차지한다"
+              set:
+                final_strategy: "law"
+              add:
+                legitimacy: 1
+              goto: verdict
+            - text: "궁 밖 백성의 지지로 회의를 압박한다"
+              set:
+                final_strategy: "people"
+              add:
+                people_support: 1
+              goto: verdict
+            - text: "반란군을 제압한 군권으로 즉위를 강제한다"
+              set:
+                final_strategy: "army"
+              add:
+                power: 2
+                suspicion: 2
+              goto: verdict
+            - text: "진운과 공동 선언을 하고 그가 스스로 물러나게 한다"
+              set:
+                final_strategy: "alliance"
+              add:
+                rival_trust: 1
+              goto: verdict
+
+  verdict:
+    actions:
+      - branch:
+          cases:
+            - when:
+                all:
+                  - var: legitimacy
+                    op: gte
+                    value: 8
+                  - var: power
+                    op: gte
+                    value: 4
+                  - var: insight
+                    op: gte
+                    value: 6
+                  - var: people_support
+                    op: gte
+                    value: 3
+                  - var: army_support
+                    op: gte
+                    value: 3
+                  - var: rival_trust
+                    op: gte
+                    value: 2
+                  - var: clue_black_powder
+                    op: eq
+                    value: true
+                  - var: clue_marriage_pact
+                    op: eq
+                    value: true
+                  - var: clue_oath_fragment
+                    op: eq
+                    value: true
+              goto: ending_true
+            - when:
+                all:
+                  - var: final_strategy
+                    op: eq
+                    value: "army"
+                  - var: suspicion
+                    op: gte
+                    value: 6
+              goto: ending_tyrant
+            - when:
+                all:
+                  - var: final_strategy
+                    op: eq
+                    value: "law"
+                  - var: nobles_support
+                    op: gte
+                    value: 2
+              goto: ending_permitted
+            - when:
+                all:
+                  - var: final_strategy
+                    op: eq
+                    value: "alliance"
+                  - var: rival_trust
+                    op: gte
+                    value: 4
+                  - var: legitimacy
+                    op: lt
+                    value: 7
+              goto: ending_queen_consort
+            - when:
+                all:
+                  - var: final_strategy
+                    op: eq
+                    value: "alliance"
+                  - var: rival_trust
+                    op: gte
+                    value: 3
+              goto: ending_abdicated
+            - when:
+                all:
+                  - var: final_strategy
+                    op: eq
+                    value: "people"
+                  - var: people_support
+                    op: gte
+                    value: 5
+              goto: ending_people
+            - when:
+                all:
+                  - var: cheonmyeong_alive
+                    op: eq
+                    value: false
+                  - var: sowon_trust
+                    op: lte
+                    value: 1
+              goto: ending_lonely
+            - when:
+                all:
+                  - var: final_strategy
+                    op: eq
+                    value: "law"
+                  - var: power
+                    op: lt
+                    value: 4
+              goto: ending_one_step
+            - when:
+                all:
+                  - var: bidam_trust
+                    op: gte
+                    value: 4
+                  - var: power
+                    op: lt
+                    value: 4
+              goto: ending_vanished
+          default: ending_broken
+
+  ending_true:
+    actions:
+      - bg: title_palace
+      - say:
+          text: "살려 준 사람은 증언했고, 지킨 군사는 성문을 닫았으며, 숨기지 않은 증거는 하나의 음모를 완성했다. 진운은 자신의 이름으로 덕만을 지지했다."
+      - say:
+          char: 국산
+          text: "누가 그대를 왕으로 임명했습니까?"
+      - say:
+          char: 덕만
+          text: "그대들이 나를 죽이지 못한 모든 날이. 그리고 내가 살려 낸 모든 사람이."
+      - say:
+          text: "즉위의 북이 울렸다."
+      - say:
+          char: 소원
+          text: "여왕 폐하께서 입장하십니다."
+      - say:
+          char: 덕만
+          text: "여왕이 아니다. 신라의 왕이다."
+      - ending: true_end
+
+  ending_tyrant:
+    actions:
+      - say:
+          text: "군사는 회의장을 포위했고 반대자는 그날 밤 모두 사라졌다. 덕만은 가장 빠르게 왕이 되었다."
+      - ending: first_tyrant
+  ending_permitted:
+    actions:
+      - say:
+          text: "화백은 덕만을 왕으로 허락했다. 허락의 대가로 국산의 사람들은 모든 명령 곁에 자기 도장을 남겼다."
+      - ending: permitted_queen
+  ending_queen_consort:
+    actions:
+      - say:
+          text: "진운은 물러나지 않았다. 두 사람의 공동 선언은 혼인 선언으로 바뀌었고, 신라는 왕 하나와 현명한 왕비를 얻었다."
+      - ending: queen_consort
+  ending_abdicated:
+    actions:
+      - say:
+          text: "진운이 물러나면 그의 군사가 움직이고, 덕만이 밀어붙이면 왕경이 갈라질 상황이었다. 덕만은 먼저 왕관을 내려놓았다."
+      - ending: abdicated_crown
+  ending_people:
+    actions:
+      - say:
+          text: "화백은 끝내 덕만을 거부했다. 그러나 궁 밖의 백성과 국경의 마을들은 그녀의 명령을 기다렸다. 덕만은 왕경을 떠나 왕보다 먼저 통치하기 시작했다."
+      - ending: peoples_princess
+  ending_lonely:
+    actions:
+      - say:
+          text: "덕만은 왕좌에 올랐다. 다만 승리를 함께 보자던 사람들의 자리는 비어 있었다."
+      - ending: lonely_throne
+  ending_one_step:
+    actions:
+      - say:
+          text: "표결은 덕만을 택했다. 그러나 성문과 군사를 얻지 못한 즉위식에 국산의 마지막 궁수가 숨어들었다."
+      - ending: one_step_queen
+  ending_vanished:
+    actions:
+      - say:
+          char: 비담
+          text: "왕관 없이도 살아남는 길은 있습니다. 다만 역사에는 남지 않겠지요."
+      - say:
+          text: "덕만은 비담과 왕경을 떠났다. 그 뒤의 삶은 누구도 기록하지 않았다."
+      - ending: vanished_princess
+  ending_broken:
+    actions:
+      - say:
+          text: "덕만도 진운도 물러나지 않았고 어느 쪽도 신라 전체를 설득하지 못했다. 왕관은 둘로 갈라져 각자의 군기 위에 걸렸다."
+      - ending: broken_alliance
+
+  go_34_empty_council:
+    actions:
+      - gameOver:
+          title: "운명 34 — 빈 회의의 승자"
+          message: "반대할 귀족이 사라진 회의에서 덕만은 만장일치로 승리했다. 그러나 밖에 남은 가문들이 동시에 군사를 일으켰다. 아무도 없는 방의 승자는 나라를 얻지 못했다."
+  go_35_fathers_lie:
+    actions:
+      - gameOver:
+          title: "운명 35 — 아버지의 거짓말"
+          message: "유언장은 완벽했지만 진평왕은 마지막 순간 오른손을 쓰지 못했다. 국산은 서명 한 획으로 거짓을 증명했다. 덕만은 왕의 딸이 아니라 왕명을 위조한 죄인으로 끌려갔다."

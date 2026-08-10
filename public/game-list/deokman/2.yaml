@@ -1,0 +1,243 @@
+script:
+  - scene: chapter2_open
+  - scene: chapter2_end
+
+scenes:
+  chapter2_open:
+    actions:
+      - bg: council_hall
+      - char:
+          id: 국산
+          position: right
+      - char:
+          id: 덕만
+          position: left
+      - say:
+          text: "제2장 — 혼인은 가장 아름다운 유배다"
+      - say:
+          char: 국산
+          with:
+            - 덕만
+          text: "세 가문이 공주님의 손을 청했습니다. 모두 신라에서 가장 좋은 집안이지요."
+      - say:
+          char: 덕만
+          with:
+            - 국산
+          text: "세 집이 한 사람을 원한다면 사랑이 아니라 빈 왕좌를 본 것이겠지요."
+      - goto: suitor_choice
+
+  suitor_choice:
+    actions:
+      - choice:
+          key: c2_suitor
+          prompt: "세 혼담 가운데 누구에게 먼저 접근할까?"
+          char: 덕만
+          options:
+            - text: "왕족 진운에게 먼저 만나 서로의 조건을 묻는다"
+              add:
+                rival_trust: 1
+                legitimacy: 1
+              goto: suitor_jinun
+            - text: "혼담의 서신을 전한 비담에게 누가 값을 매겼는지 묻는다"
+              add:
+                bidam_trust: 1
+                insight: 1
+              goto: suitor_bidam
+            - text: "유신에게 혼인을 피하려면 자신과 도망치자고 제안한다"
+              goto: go_12_warm_choice
+            - text: "세 가문의 사자를 한자리에서 공개적으로 모욕한다"
+              goto: go_13_three_knives
+
+  suitor_jinun:
+    actions:
+      - char:
+          id: 진운
+          position: right
+      - say:
+          char: 진운
+          with:
+            - 덕만
+          text: "저와 혼인하면 공주께서는 안전합니다. 왕이 될 필요가 없어지니까요."
+      - say:
+          char: 덕만
+          with:
+            - 진운
+          text: "안전과 필요 없음이 같은 말이라면, 그대도 지금 인질이군요."
+      - goto: reputation_choice
+
+  suitor_bidam:
+    actions:
+      - char:
+          id: 비담
+          position: right
+      - say:
+          char: 비담
+          with:
+            - 덕만
+          text: "한 가문은 군권을, 하나는 세금을, 마지막은 공주님의 침묵을 값으로 받았습니다."
+      - say:
+          char: 덕만
+          with:
+            - 비담
+          text: "내 침묵이 가장 비쌌기를 바라야 하나?"
+      - say:
+          char: 비담
+          text: "아닙니다. 가장 쉽게 팔린 것이었습니다."
+      - goto: reputation_choice
+
+  reputation_choice:
+    actions:
+      - bg: princess_chamber
+      - char:
+          id: 천명
+          position: right
+      - say:
+          char: 천명
+          with:
+            - 덕만
+          text: "혼담을 깨려면 네 평판도 다치게 돼. 어디까지 잃을 셈이니?"
+      - choice:
+          key: c2_reputation
+          prompt: "혼담을 흔들기 위해 무엇을 포기할까?"
+          char: 덕만
+          with:
+            - 천명
+          options:
+            - text: "별의 흉조가 끝날 때까지 혼인을 미루겠다고 선언한다"
+              add:
+                legitimacy: 1
+                suspicion: 1
+              goto: reputation_stars
+            - text: "후사를 볼 수 없는 병이 있다고 거짓 진단을 만든다"
+              goto: go_14_barren_lie
+            - text: "비담과 가까운 척해 세 가문의 경쟁심을 서로 돌린다"
+              add:
+                bidam_trust: 1
+                nobles_support: -1
+              goto: reputation_scandal
+            - text: "세 후보의 약점을 연회에서 조롱해 스스로 물러나게 한다"
+              goto: go_15_laughing_bride
+
+  reputation_stars:
+    actions:
+      - char:
+          id: 월명
+          position: right
+      - say:
+          char: 월명
+          text: "별은 말을 하지 않습니다. 사람들이 별의 침묵에 제 욕심을 읽을 뿐이지요."
+      - say:
+          char: 덕만
+          text: "오늘만큼은 그 욕심이 내 시간을 벌어 주겠군요."
+      - add:
+          insight: 1
+      - goto: throne_choice
+
+  reputation_scandal:
+    actions:
+      - say:
+          char: 비담
+          text: "제 평판은 빌려 드려도 돌려받을 생각이 없습니다. 원래 쓸 만한 것이 아니어서요."
+      - say:
+          char: 덕만
+          text: "그 자신감만큼은 아주 비싸 보이는군."
+      - goto: throne_choice
+
+  throne_choice:
+    actions:
+      - bg: throne_hall
+      - char:
+          id: 진평왕
+          position: right
+      - say:
+          char: 진평왕
+          text: "혼인은 왕실을 지키는 일이다. 받아들이겠느냐?"
+      - choice:
+          key: c2_throne
+          prompt: "왕과 귀족들 앞에서 마지막 답을 고른다."
+          char: 덕만
+          with:
+            - 진평왕
+          options:
+            - text: "세 가문이 모두 동의할 단 한 사람을 택하겠다고 한다"
+              add:
+                insight: 1
+              goto: throne_impossible
+            - text: "국경의 전쟁이 끝날 때까지 삼 년만 미뤄 달라 한다"
+              add:
+                army_support: 1
+              goto: throne_delay
+            - text: "서로 다른 대가가 적힌 혼인 합의서를 공개한다"
+              add:
+                legitimacy: 2
+                nobles_support: -1
+              goto: throne_reveal
+            - text: "나는 누구의 아내도 되지 않겠다고 왕명을 공개 거부한다"
+              goto: go_16_unmarried_crime
+
+  throne_impossible:
+    actions:
+      - say:
+          char: 국산
+          text: "세 가문이 합의할 때까지 혼인을 미루시겠다는 뜻입니까?"
+      - say:
+          char: 덕만
+          text: "아니요. 신라가 하나가 되는 날 혼인하겠다는 뜻입니다."
+      - goto: chapter2_end
+
+  throne_delay:
+    actions:
+      - say:
+          char: 유신
+          text: "전쟁을 혼인 방패로 쓰셨으니, 이제 전쟁을 외면하실 수 없습니다."
+      - say:
+          char: 덕만
+          text: "방패를 들었다면 앞에 서야겠지요."
+      - goto: chapter2_end
+
+  throne_reveal:
+    actions:
+      - effect: impact
+      - say:
+          char: 덕만
+          text: "저 하나를 세 번 팔고, 신라까지 세 조각으로 나누려 했습니다. 어느 혼담부터 축하할까요?"
+      - say:
+          text: "웃음 대신 서로를 의심하는 침묵이 홀을 채웠다."
+      - goto: chapter2_end
+
+  chapter2_end:
+    actions:
+      - bg: locked_room
+      - say:
+          text: "그날 밤, 합의서를 덕만에게 넘긴 귀족이 덕만의 방에서 시체로 발견되었다. 문은 안에서 잠겨 있었다."
+      - say:
+          char: 덕만
+          text: "혼인은 피했지만, 신방 대신 살인 현장이 내 방에 차려졌군."
+      - say:
+          text: "제2장 완료 — 덕만은 혼인의 자유를 얻는 대신, 세 가문의 원한을 샀다."
+
+  go_12_warm_choice:
+    actions:
+      - gameOver:
+          title: "운명 12 — 왕관보다 따뜻한 것"
+          message: "덕만과 유신은 새벽 성문을 나섰다. 두 사람은 오래 살아 서로의 이름을 불렀을지도 모른다. 신라의 역사에서 덕만이라는 이름은 그날 이후 사라졌다."
+  go_13_three_knives:
+    actions:
+      - gameOver:
+          title: "운명 13 — 세 개의 칼"
+          message: "세 가문은 처음으로 완벽히 합의했다. 덕만을 왕위에서 지워야 한다는 데에. 공주의 마차는 세 영지의 경계가 만나는 곳에서 발견되었다."
+  go_14_barren_lie:
+    actions:
+      - gameOver:
+          title: "운명 14 — 아이를 낳지 못한 거짓말"
+          message: "거짓 진단은 혼담보다 먼저 왕위 계승권을 빼앗았다. 덕만은 건강하다는 것을 증명할수록 거짓말쟁이가 되었다. 그녀는 살아남았지만 후계자 명단에서 영원히 지워졌다."
+  go_15_laughing_bride:
+    actions:
+      - gameOver:
+          title: "운명 15 — 웃는 신부"
+          message: "연회장은 웃음으로 가득 찼다. 다음 날 세 후보 중 누구도 청혼을 거두지 않았고, 모욕당한 가문들은 신부가 혼례날 웃지 못하게 만들었다."
+  go_16_unmarried_crime:
+    actions:
+      - gameOver:
+          title: "운명 16 — 혼인하지 않은 죄"
+          message: "거부는 용감했지만 왕명을 거스른 죄가 되었다. 덕만은 탑에 유폐되어 창밖의 즉위 북소리를 들었다. 그 북은 다른 사람을 위해 울렸다."

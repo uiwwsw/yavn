@@ -126,4 +126,46 @@ describe('save system', () => {
     expect(JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}')).toMatchObject(savedBeforeFailure);
     expect(exportSaveBackup()).toBeUndefined();
   });
+
+  it('restores the originating choice when a goto branch reaches a standalone game over', () => {
+    const branchGame: GameData = {
+      ...game,
+      state: { defaults: { failed: false } },
+      scenes: {
+        choice: {
+          actions: [
+            {
+              choice: {
+                key: 'danger',
+                prompt: 'Choose',
+                options: [{ text: 'Wrong turn', set: { failed: true }, goto: 'failure' }],
+              },
+            },
+          ],
+        },
+        failure: { actions: [{ gameOver: { title: 'Branch failed' } }] },
+      },
+      script: [{ scene: 'choice' }],
+    };
+    useVNStore.getState().setGame(branchGame, '/');
+    useVNStore.getState().setRouteVars({ failed: false });
+    useVNStore.getState().setCursor('choice', 0);
+    useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().setChoiceGate({
+      active: true,
+      key: 'danger',
+      prompt: 'Choose',
+      options: [{ text: 'Wrong turn', set: { failed: true }, goto: 'failure' }],
+    });
+
+    submitChoiceOption(0);
+
+    const recovery = JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}') as {
+      sceneId?: string;
+      actionIndex?: number;
+      routeVars?: Record<string, unknown>;
+    };
+    expect(useVNStore.getState().gameOver?.title).toBe('Branch failed');
+    expect(recovery).toMatchObject({ sceneId: 'choice', actionIndex: 0, routeVars: { failed: false } });
+  });
 });

@@ -1,0 +1,60 @@
+title: "덕만: 왕관에는 주인이 없다"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "죽을 운명을 고쳐 쓰며 신라 최초의 여왕이 되어야 하는 장편 궁중 정치 생존 비주얼노벨. 24개의 운명 선택과 35개의 실패 결말, 10개의 수집형 엔딩을 담았다."
+  keywords:
+    - "선덕여왕"
+    - "덕만"
+    - "신라"
+    - "역사 비주얼노벨"
+    - "정치 생존 게임"
+    - "분기형 게임"
+  image: "assets/bg/title-palace-social.jpg"
+  imageAlt: "달빛 아래 신라 궁궐에 선 덕만공주"
+textSpeed: 31
+autoSave: true
+clickToInstant: true
+ui:
+  template: paper-stage
+startScreen:
+  enabled: true
+  image: "assets/bg/title-palace.avif"
+  showTitle: true
+  startButtonText: "운명을 시작한다"
+  buttonPosition: bottom-left
+endingScreen:
+  image: "assets/bg/title-palace.avif"
+endings:
+  true_end:
+    title: "TRUE END — 신라의 왕, 덕만"
+    message: "누구의 허락도 유언도 빌리지 않았다. 살아남으며 만든 명분과 사람과 증거가 덕만을 왕으로 세웠다."
+  permitted_queen:
+    title: "END 01 — 허락받은 여왕"
+    message: "귀족들은 덕만을 왕으로 불렀다. 대신 그녀가 내릴 수 있는 명령의 목록도 함께 정해 주었다."
+  first_tyrant:
+    title: "END 02 — 신라의 첫 번째 폭군"
+    message: "반대자는 사라졌고 왕좌는 조용했다. 너무 조용해서, 덕만은 아무도 자신을 왕이라 부르지 않는다는 사실을 늦게 깨달았다."
+  lonely_throne:
+    title: "END 03 — 혼자 앉은 왕"
+    message: "왕관은 얻었지만 마지막까지 이름을 불러 주던 사람은 돌아오지 않았다."
+  one_step_queen:
+    title: "END 04 — 왕이었던 한 걸음"
+    message: "즉위의 북이 세 번 울리기 전 화살이 날아왔다. 역사는 그녀를 왕이라 쓰지 않았지만, 그날 신라는 이미 왕을 보았다."
+  abdicated_crown:
+    title: "END 05 — 왕관을 버린 왕"
+    message: "덕만은 내전을 멈추기 위해 물러났다. 백성은 왕이 되지 않은 사람의 이름을 왕보다 오래 기억했다."
+  queen_consort:
+    title: "END 06 — 왕비 덕만"
+    message: "궁은 안락했고 목숨은 길었다. 다만 모든 기록에서 덕만의 이름 앞에는 누군가의 아내라는 말이 먼저 붙었다."
+  peoples_princess:
+    title: "END 07 — 궁 밖의 왕"
+    message: "덕만은 왕경을 떠났지만 국경의 사람들은 그녀를 이미 왕으로 대했다. 왕관 없는 통치는 그렇게 시작되었다."
+  vanished_princess:
+    title: "END 08 — 역사에서 사라진 공주"
+    message: "덕만은 사랑하는 사람과 바다를 건넜다. 행복했을지도 모른다. 신라의 기록에는 빈 줄만 남았다."
+  broken_alliance:
+    title: "END 09 — 둘로 갈라진 왕관"
+    message: "덕만과 경쟁자는 서로를 이기지 못했다. 두 개의 정통성이 한 나라를 둘로 찢었다."
+defaultEnding: broken_alliance

@@ -1,0 +1,228 @@
+script:
+  - scene: chapter5_open
+  - scene: chapter5_end
+
+scenes:
+  chapter5_open:
+    actions:
+      - bg: council_hall
+      - char:
+          id: 진운
+          position: right
+      - char:
+          id: 덕만
+          position: left
+      - say:
+          text: "제5장 — 신라에는 이미 왕자가 있다"
+      - say:
+          char: 진운
+          with:
+            - 덕만
+          text: "저를 미워하셔도 됩니다. 다만 제가 어리석은 꼭두각시라고 생각하면 공주께서 먼저 집니다."
+      - say:
+          char: 덕만
+          with:
+            - 진운
+          text: "미워하기 어려운 경쟁자가 가장 위험하지요. 그 사실을 아는 그대는 더 위험하고."
+      - goto: contest_choice
+
+  contest_choice:
+    actions:
+      - choice:
+          key: c5_contest
+          prompt: "화백 앞에서 진운과 어떤 방식으로 경쟁할까?"
+          char: 덕만
+          with:
+            - 진운
+          options:
+            - text: "국경의 곡식 문제를 놓고 서로의 정책을 공개 검증한다"
+              add:
+                legitimacy: 1
+                people_support: 1
+              goto: contest_policy
+            - text: "회의 전에 진운을 만나 각자의 지지 가문을 공개한다"
+              add:
+                rival_trust: 1
+                insight: 1
+              goto: contest_private
+            - text: "첫 발언권을 양보하고 그가 누구의 말을 반복하는지 듣는다"
+              add:
+                insight: 2
+              goto: contest_listen
+            - text: "진운이 왕을 독살하려 했다고 증거 없이 폭로한다"
+              goto: go_27_dead_prince
+
+  contest_policy:
+    actions:
+      - say:
+          char: 진운
+          text: "공주께서는 백성을 위해 창고를 열었습니다. 저는 다음 겨울을 위해 절반을 남겼을 겁니다."
+      - say:
+          char: 덕만
+          text: "다음 겨울에 먹을 사람을 이번 겨울에 살리는 것이 먼저입니다."
+      - add:
+          nobles_support: 1
+      - goto: leverage_choice
+
+  contest_private:
+    actions:
+      - say:
+          char: 진운
+          text: "제 어머니가 국산의 별채에 있습니다. 지지가 아니라 인질의 수만큼 제 표가 늘어납니다."
+      - say:
+          char: 덕만
+          text: "왕관을 쓴 인질이 되기 싫다면, 먼저 서로의 자물쇠를 열어야겠군요."
+      - goto: leverage_choice
+
+  contest_listen:
+    actions:
+      - say:
+          text: "진운의 첫 문장과 국산의 입술이 동시에 움직였다. 두 번째 문장에서 진운은 일부러 다른 말을 했다."
+      - say:
+          char: 덕만
+          text: "꼭두각시가 줄을 잡은 사람에게 신호를 보내고 있군."
+      - add:
+          rival_trust: 1
+      - goto: leverage_choice
+
+  leverage_choice:
+    actions:
+      - say:
+          char: 비담
+          text: "진운의 약점을 알았습니다. 어머니, 숨겨진 빚, 그리고 공주님을 해칠 수 없다는 마음. 어느 것을 쓰시겠습니까?"
+      - choice:
+          key: c5_leverage
+          prompt: "경쟁자의 약점을 어떻게 다룰까?"
+          char: 덕만
+          with:
+            - 비담
+          options:
+            - text: "인질로 잡힌 진운의 어머니를 공개해 그를 굴복시킨다"
+              goto: go_28_sons_crown
+            - text: "어머니를 빼내 주는 대신 계승동맹 명단을 받는다"
+              add:
+                rival_trust: 2
+                power: 1
+              goto: leverage_deal
+            - text: "두 사람의 혼인으로 왕위 다툼을 끝내자고 강요한다"
+              goto: go_29_second_queen
+            - text: "국산이 진운의 빚을 대신 갚은 장부만 공개한다"
+              add:
+                legitimacy: 1
+                nobles_support: -1
+              goto: leverage_ledger
+
+  leverage_deal:
+    actions:
+      - say:
+          char: 진운
+          text: "왜 저를 살려 두십니까?"
+      - say:
+          char: 덕만
+          text: "그대가 죽으면 그들은 순교자를 얻고, 나는 피 묻은 왕관을 얻으니까. 둘 다 주기 싫습니다."
+      - goto: rescue_choice
+
+  leverage_ledger:
+    actions:
+      - say:
+          char: 국산
+          text: "빚을 갚아 준 것이 반역의 증거입니까?"
+      - say:
+          char: 덕만
+          text: "아니요. 왕이 될 사람의 목소리까지 이자로 받은 것이 증거입니다."
+      - goto: rescue_choice
+
+  rescue_choice:
+    actions:
+      - bg: shadow_corridor
+      - say:
+          text: "회의가 끝난 밤, 진운의 마차 바퀴가 잘려 있었다. 좁은 비탈 아래에는 계승동맹의 궁수들이 기다렸다."
+      - choice:
+          key: c5_rescue
+          prompt: "경쟁자의 암살을 막을까?"
+          char: 덕만
+          options:
+            - text: "덕만이 직접 마차에 올라 진운과 함께 미끼가 된다"
+              add:
+                rival_trust: 2
+                power: 1
+              set:
+                saved_rival: true
+              goto: rescue_personal
+            - text: "유신에게 궁수의 퇴로를 끊고 진운부터 빼내라 한다"
+              add:
+                yushin_trust: 1
+                army_support: 1
+              set:
+                saved_rival: true
+              goto: rescue_yushin
+            - text: "경쟁자가 사라지면 유리하니 모른 척한다"
+              goto: go_30_martyr_prince
+            - text: "암살 계획을 회의장에 공개해 국산이 먼저 취소하게 한다"
+              add:
+                legitimacy: 1
+                suspicion: 1
+              set:
+                saved_rival: true
+              goto: rescue_public
+
+  rescue_personal:
+    actions:
+      - effect: shake
+      - say:
+          char: 진운
+          text: "둘 다 죽으면 계승동맹만 웃습니다. 공주께서는 계산도 못 하십니까?"
+      - say:
+          char: 덕만
+          text: "계산했어요. 두 왕위 후보가 함께 살아 돌아가는 것이 그들이 가장 싫어할 답입니다."
+      - goto: chapter5_end
+
+  rescue_yushin:
+    actions:
+      - say:
+          char: 유신
+          text: "진운공은 살았습니다. 궁수 하나가 왕의 침전에 같은 표식이 있다고 말했습니다."
+      - goto: chapter5_end
+
+  rescue_public:
+    actions:
+      - say:
+          char: 국산
+          text: "있지도 않은 암살을 막아 영웅이 되시려는군요."
+      - say:
+          char: 덕만
+          text: "그럼 오늘 밤 진운이 무사하면 그대의 결백도 함께 증명되겠지요."
+      - goto: chapter5_end
+
+  chapter5_end:
+    actions:
+      - add:
+          legitimacy: 1
+      - say:
+          text: "덕만은 진운 또한 계승동맹에 붙잡힌 인질임을 알아냈다. 두 사람이 손을 잡으려는 순간 궁의 종이 거꾸로 울렸다."
+      - say:
+          char: 천명
+          text: "아버지가 쓰러지셨어. 왕의 인장이 사라졌고, 궁문이 닫혔어."
+      - say:
+          text: "제5장 완료 — 덕만은 경쟁자를 동맹으로 얻는 대신, 아버지를 잃을 시간을 맞았다."
+
+  go_27_dead_prince:
+    actions:
+      - gameOver:
+          title: "운명 27 — 죽은 왕자"
+          message: "진운은 결백을 주장하다 회의장을 나선 뒤 살해되었다. 사람들은 덕만의 거짓 폭로가 그를 죽였다고 믿었다. 죽은 경쟁자는 살아 있는 공주보다 완벽한 후계자가 되었다."
+  go_28_sons_crown:
+    actions:
+      - gameOver:
+          title: "운명 28 — 어머니의 값"
+          message: "진운은 어머니를 살리기 위해 물러났다. 그러나 인질을 이용한 덕만을 왕으로 인정하지 않았다. 그의 마지막 증언 하나가 화백회의의 모든 표를 돌렸다."
+  go_29_second_queen:
+    actions:
+      - gameOver:
+          title: "운명 29 — 두 번째 왕비"
+          message: "혼인은 내전을 막았고 덕만의 목숨도 지켰다. 왕좌에는 진운이 앉았고 덕만은 그 옆에 앉았다. 사람들은 그녀를 현명한 왕비라 불렀다."
+  go_30_martyr_prince:
+    actions:
+      - gameOver:
+          title: "운명 30 — 피 묻은 왕관"
+          message: "진운은 죽으며 덕만의 이름을 불렀다. 계승동맹은 그 한마디를 살인의 증거로 만들었다. 덕만이 얻은 빈자리는 피가 마르기도 전에 닫혔다."

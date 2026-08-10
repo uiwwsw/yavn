@@ -344,6 +344,8 @@ scenes:
 
 게임오버 화면은 자동 복구점을 쓰는 `직전 선택으로`, `수동 저장으로`, `챕터 처음으로`, 백업 파일 불러오기를 제공합니다. 같은 옵션에 `goto`와 `gameOver`를 동시에 선언할 수 없습니다.
 
+선택지가 `goto`로 별도 후일담 scene에 들어간 뒤 독립 `gameOver` 액션에 도달해도, 자동 복구점은 실패 scene이 아니라 그 분기를 시작한 선택지를 유지합니다.
+
 ## 화면 이펙트
 
 `effect` 액션은 이름에 대응하는 짧은 전체 화면 연출을 실행하고 바로 다음 액션으로 진행합니다.
@@ -646,6 +648,15 @@ scenes:
 - ZIP 실행은 시작 화면을 지원하지만 `이어하기` 버튼은 노출하지 않습니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)의 시각 스타일은 `config.yaml.ui.template` 전역 설정을 그대로 따릅니다.
 
+## 덕만 장편 정치 생존 샘플
+
+- `/game-list/deokman/`은 프롤로그부터 최종장까지 8개 챕터로 완결되는 역사 기반 픽션 비주얼노벨입니다.
+- 각 장은 4지선다 핵심 선택 3개를 제공하며, 전체 24개 선택·35개 고유 `gameOver` 후일담·10개 수집형 엔딩을 구현합니다.
+- `legitimacy/power/insight/suspicion`과 백성·군사·인물별 신뢰가 마지막 화백회의에서 다시 사용됩니다. 진엔딩은 한 수치 최대화가 아니라 세 증거와 서로 다른 집단의 지지를 함께 요구합니다.
+- 최종 선택 직전에는 누적 상태를 균형·군사력·민심·불안정 서술로 되돌려 줘, 플레이어가 지금까지 만든 왕권의 형태를 이해할 수 있습니다.
+- `gameOver`의 `직전 선택으로` 복구를 이야기 장치로 사용해, 실패 결말의 단서를 읽고 선택을 다시 고르는 흐름을 보여 줍니다.
+- 캐릭터·챕터·역사/창작 경계는 [`docs/DEOKMAN_GAME_BIBLE.ko.md`](docs/DEOKMAN_GAME_BIBLE.ko.md), 주요 경로 검수는 [`docs/DEOKMAN_PLAYCHECKLIST.ko.md`](docs/DEOKMAN_PLAYCHECKLIST.ko.md)에 고정했습니다.
+
 ## Conan 샘플 분기 구조
 
 - `0.yaml`은 가족 여행과 탁구 선택, `1.yaml`은 88도 시음 순서와 차 이름 선택, `2.yaml`은 4인 갈등과 사건 발생, `3.yaml`은 초동 정리/재구성 파트입니다.
@@ -663,6 +674,10 @@ scenes:
 
 ## 샘플
 
+- `public/game-list/deokman/config.yaml`
+- `public/game-list/deokman/base.yaml`
+- `public/game-list/deokman/launcher.yaml`
+- `public/game-list/deokman/0.yaml` ~ `7.yaml`
 - `public/game-list/conan-demo/config.yaml`
 - `public/game-list/conan-demo/base.yaml`
 - `public/game-list/conan-demo/0.yaml`
@@ -687,9 +702,10 @@ scenes:
 
 ## 개발 메모
 
-- 런처 첫 화면은 모든 플레이 가능한 데모를 실제 썸네일과 함께 보여주는 전체 폭 캐러셀입니다. 최초 진입은 데모를 무작위로 선택하고, 스와이프·마우스 드래그·좌우 화살표·키보드 방향키·페이지 인디케이터로 순환합니다.
+- 런처 첫 화면은 모든 플레이 가능한 데모를 실제 썸네일과 함께 보여주는 전체 폭 캐러셀입니다. 새 방문은 매니페스트 첫 게임에서 시작하고, 스와이프·마우스 드래그·좌우 화살표·키보드 `←`/`→`/`Home`/`End`·페이지 인디케이터로 순환합니다.
 - 현재 캐러셀 데모는 `#demo=<gameId>` 해시에 기록되어 새로고침하거나 링크를 공유해도 같은 슬라이드를 엽니다. 아래 검색·태그 게임 목록은 상단 선택을 바꾸지 않으며 카드 전체를 누르면 해당 게임으로 바로 이동합니다.
 - 각 캐러셀 슬라이드는 독립된 페인트 경계 안에서 이미지와 콘텐츠를 자르며, 긴 제목·설명·태그는 화면 폭을 밀어내지 않습니다. 좁은 화면의 태그는 슬라이드 안에서만 가로 스크롤됩니다.
+- 이전/다음·도트·현재 번호는 슬라이드와 분리된 탐색 레일에 배치되어 긴 제목이나 모바일 본문을 가리지 않습니다.
 - 게임 목록 manifest는 `schemaVersion: 4`를 사용하며 `author/version/summary/thumbnail/tags/showcase/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 캐러셀 라벨·배경색·썸네일 초점/배율/오프셋은 `launcher.yaml.showcase` 데이터만 사용하며 게임 ID나 `tags`를 조건으로 특별 처리하지 않습니다.
