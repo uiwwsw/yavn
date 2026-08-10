@@ -28,4 +28,16 @@ describe('launcher responsive containment', () => {
       /\.launcher-feature-copy > \*\s*\{[\s\S]*?min-width: 0;[\s\S]*?max-width: 100%;/,
     );
   });
+
+  it('keeps navigation in a dedicated rail instead of painting over slide copy', () => {
+    expect(styles).toMatch(
+      /\.launcher-carousel-controls\s*\{[\s\S]*?display: grid;[\s\S]*?grid-template-columns: 48px minmax\(0, 1fr\) 48px;[\s\S]*?border-top:/,
+    );
+    expect(styles).toMatch(
+      /\.launcher-carousel-arrow\s*\{[\s\S]*?position: static;/,
+    );
+    expect(styles).toMatch(
+      /\.launcher-carousel-pagination\s*\{[\s\S]*?position: static;/,
+    );
+  });
 });

@@ -48,7 +48,7 @@ import type { CharacterStageLayout } from './characterLayout';
 import {
   buildLauncherDemoHash,
   parseLauncherDemoHash,
-  pickRandomCarouselIndex,
+  resolveInitialCarouselGameId,
   wrapCarouselIndex,
 } from './launcherCarousel';
 import {
@@ -936,17 +936,13 @@ export default function App() {
       setGameListError(null);
       setGameListLoading(false);
       launcherCarouselPositionedRef.current = false;
-      setSelectedGameId((prev) => {
-        if (prev && parsed.games.some((entry) => entry.id === prev)) {
-          return prev;
-        }
-        const hashGameId = parseLauncherDemoHash(window.location.hash);
-        if (hashGameId && parsed.games.some((entry) => entry.id === hashGameId)) {
-          return hashGameId;
-        }
-        const randomIndex = pickRandomCarouselIndex(parsed.games.length);
-        return randomIndex >= 0 ? parsed.games[randomIndex]?.id ?? null : null;
-      });
+      setSelectedGameId((prev) =>
+        resolveInitialCarouselGameId(
+          parsed.games.map((entry) => entry.id),
+          prev,
+          window.location.hash,
+        ),
+      );
     } catch (error) {
       if (requestId !== gameListRequestIdRef.current) {
         return;
@@ -1238,8 +1234,14 @@ export default function App() {
     } else if (event.key === 'ArrowRight') {
       event.preventDefault();
       moveLauncherCarousel(1);
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      scrollLauncherCarouselToIndex(0);
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      scrollLauncherCarouselToIndex(gameList.length - 1);
     }
-  }, [moveLauncherCarousel]);
+  }, [gameList.length, moveLauncherCarousel, scrollLauncherCarouselToIndex]);
 
   const onLauncherCarouselPointerDown = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== 'mouse' || event.button !== 0) {
@@ -2384,6 +2386,7 @@ export default function App() {
                       role="group"
                       aria-roledescription="slide"
                       aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
+                      aria-hidden={!isSelected}
                     >
                       <div className="launcher-feature-media" style={showcaseStyle}>
                         {entry.thumbnail ? (
@@ -2451,46 +2454,52 @@ export default function App() {
                 })}
               </div>
 
-              <button
-                type="button"
-                className="launcher-carousel-arrow launcher-carousel-arrow-prev"
-                aria-label="이전 데모"
-                onClick={() => moveLauncherCarousel(-1)}
-                disabled={gameList.length < 2}
-              >
-                <span aria-hidden="true">←</span>
-              </button>
-              <button
-                type="button"
-                className="launcher-carousel-arrow launcher-carousel-arrow-next"
-                aria-label="다음 데모"
-                onClick={() => moveLauncherCarousel(1)}
-                disabled={gameList.length < 2}
-              >
-                <span aria-hidden="true">→</span>
-              </button>
+              <div className="launcher-carousel-controls">
+                <button
+                  type="button"
+                  className="launcher-carousel-arrow launcher-carousel-arrow-prev"
+                  aria-label="이전 데모"
+                  onClick={() => moveLauncherCarousel(-1)}
+                  disabled={gameList.length < 2}
+                >
+                  <span aria-hidden="true">←</span>
+                </button>
 
-              <div className="launcher-carousel-pagination">
-                <div className="launcher-carousel-dots" role="group" aria-label="데모 선택">
-                  {gameList.map((entry, index) => {
-                    const isSelected = selectedGame?.id === entry.id;
-                    return (
-                      <button
-                        key={`carousel-dot-${entry.id}`}
-                        type="button"
-                        aria-label={`${entry.name} 보기`}
-                        aria-current={isSelected ? 'true' : undefined}
-                        className={isSelected ? 'is-active' : ''}
-                        onClick={() => scrollLauncherCarouselToIndex(index)}
-                      />
-                    );
-                  })}
+                <div className="launcher-carousel-pagination">
+                  <div className="launcher-carousel-dots" role="group" aria-label="데모 선택">
+                    {gameList.map((entry, index) => {
+                      const isSelected = selectedGame?.id === entry.id;
+                      return (
+                        <button
+                          key={`carousel-dot-${entry.id}`}
+                          type="button"
+                          aria-label={`${entry.name} 보기`}
+                          aria-current={isSelected ? 'true' : undefined}
+                          className={isSelected ? 'is-active' : ''}
+                          onClick={() => scrollLauncherCarouselToIndex(index)}
+                        />
+                      );
+                    })}
+                  </div>
+                  <span aria-live="polite" aria-atomic="true">
+                    <b>{selectedGame?.name}</b>
+                    <small>
+                      {String(Math.max(1, selectedGameIndex + 1)).padStart(2, '0')}
+                      {' / '}
+                      {String(Math.max(1, gameList.length)).padStart(2, '0')}
+                    </small>
+                  </span>
                 </div>
-                <span>
-                  {String(Math.max(1, selectedGameIndex + 1)).padStart(2, '0')}
-                  {' / '}
-                  {String(Math.max(1, gameList.length)).padStart(2, '0')}
-                </span>
+
+                <button
+                  type="button"
+                  className="launcher-carousel-arrow launcher-carousel-arrow-next"
+                  aria-label="다음 데모"
+                  onClick={() => moveLauncherCarousel(1)}
+                  disabled={gameList.length < 2}
+                >
+                  <span aria-hidden="true">→</span>
+                </button>
               </div>
             </section>
           ) : (

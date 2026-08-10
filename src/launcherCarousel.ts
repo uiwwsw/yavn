@@ -1,14 +1,3 @@
-export function pickRandomCarouselIndex(itemCount: number, randomValue: number = Math.random()): number {
-  if (!Number.isFinite(itemCount) || itemCount <= 0) {
-    return -1;
-  }
-
-  const normalizedValue = Number.isFinite(randomValue)
-    ? Math.min(Math.max(randomValue, 0), 0.999999999)
-    : 0;
-  return Math.floor(normalizedValue * Math.floor(itemCount));
-}
-
 export function wrapCarouselIndex(index: number, itemCount: number): number {
   if (!Number.isFinite(itemCount) || itemCount <= 0) {
     return -1;
@@ -27,4 +16,21 @@ export function parseLauncherDemoHash(hash: string): string | null {
   const params = new URLSearchParams(normalizedHash);
   const gameId = params.get('demo')?.trim();
   return gameId || null;
+}
+
+export function resolveInitialCarouselGameId(
+  gameIds: string[],
+  currentGameId: string | null,
+  hash: string,
+): string | null {
+  if (currentGameId && gameIds.includes(currentGameId)) {
+    return currentGameId;
+  }
+
+  const hashGameId = parseLauncherDemoHash(hash);
+  if (hashGameId && gameIds.includes(hashGameId)) {
+    return hashGameId;
+  }
+
+  return gameIds[0] ?? null;
 }
