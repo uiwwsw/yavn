@@ -21,28 +21,33 @@ scenes:
           framing: full
       - say:
           delivery: calm
-          text: "서기 631년, 신라 왕경. 연회 전야. 잠든 방은 많았고, 꺼지지 않은 등불에는 저마다 주인이 있었다."
+          text: "서기 631년, 신라 왕경. 진평왕의 연회를 하루 앞둔 밤이었습니다. 비가 내렸고, 덕만공주는 잠이 오지 않아 회랑을 걷고 있었습니다."
       - say:
-          text: "이 이야기는 실제 역사 인물과 시대를 바탕으로 암살·계승 음모와 인물 관계를 창작한 역사 픽션이다."
+          text: "이 이야기는 실제 역사 인물과 시대를 바탕으로, 암살 사건과 계승 음모를 새롭게 구성한 역사 픽션입니다."
       - say:
           char: 덕만
           framing: full
           delivery: whisper
-          text: "등불이 서쪽부터 꺼진다. 바람이 아니라 사람 손이다. 마지막 불빛 너머에서 목소리가 숨을 죽였다."
+          text: "잠깐. 등불이 서쪽부터 꺼지고 있어. 바람 때문이라면 한꺼번에 꺼져야 하는데."
       - say:
           char: 칠숙.smile
           framing: bust
-          text: "<speed=20>내일 진시, 전하의 잔은 바닥을 보게 될 것입니다.</speed>"
+          text: "<speed=20>내일 진시, 전하께서 두 번째 잔을 드시면 일을 시작하십시오.</speed>"
           wait: 700
       - say:
           char: 아진
           framing: bust
           delivery: neutral
-          text: "왕의 숨이 멎고 열두 걸음. 그 안에 공주도 따라야 합니다."
+          text: "왕이 쓰러지면 호위가 공주에게 닿기까지 열두 걸음입니다. 그 전에 끝내겠습니다."
       - say:
           char: 칠숙.smile
           framing: bust
-          text: "왕이 없는 조정에 공주를 위한 자리는 없으니까요."
+          text: "실수하지 마십시오. 왕만 죽고 공주가 살면, 오늘보다 더 성가신 내일이 옵니다."
+      - say:
+          char: 아진.nervous
+          framing: bust
+          delivery: neutral
+          text: "……알겠습니다."
       - say:
           delivery: whisper
           text: "<speed=20>훗날 덕만은 신라 최초의 여왕이 된다.</speed> <speed=32>오늘 밤을 살아남는다면.</speed>"
@@ -78,16 +83,20 @@ scenes:
           char: 덕만
           framing: closeup
           delivery: nervous
-          text: "연못으로 가던 길을 놓쳤습니다. 두 분도 그러신가요? 등불도 없이, 같은 곳에서."
+          text: "연못으로 가려다가 길을 잘못 들었습니다. 그런데 두 분은 등불도 없이 여기서 뭘 하십니까?"
       - say:
           char: 아진
           framing: bust
           delivery: neutral
-          text: "길을 잃은 분은 돌아갈 곳부터 봅니다. 공주는 제 손부터 보고 계시는군요."
+          text: "길을 잃으신 분치고는 제 손을 오래 보시는군요."
       - say:
           char: 덕만
           framing: bust
-          text: "길은 내일도 묻지요. 칼을 쥔 손은 오늘 외워 둬야 하고."
+          text: "허리에 칼을 찬 사람을 밤중에 만나면 누구라도 보게 되지요. 제가 이상합니까?"
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          text: "아닙니다. 공주께서는 늘 눈이 밝으셨지요. 오늘 본 것은 아침까지 기억하지 않으시면 좋겠습니다."
       - goto: warn_choice
 
   caught_signal:
@@ -97,14 +106,19 @@ scenes:
           char: 아진
           framing: bust
           delivery: neutral
-          text: "호위까지 일곱 숨. 두 숨을 휘파람에 쓰셨습니다."
+          text: "호위가 오기까지 일곱 번 숨을 쉽니다. 벌써 두 번 쓰셨습니다."
       - say:
           char: 덕만.angry
           framing: closeup
           delivery: angry
-          text: "다섯이면 충분해. 그대가 칼을 뽑고, 후회하는 얼굴까지 기억하기에는."
+          text: "다섯 번이면 충분해. 칼을 뽑아 봐. 호위가 왔을 때 누구 얼굴부터 말해야 하는지 확인하게."
       - say:
-          text: "검은 복면은 사라졌지만, 덕만은 오른손에 감긴 붉은 매듭을 보았다."
+          char: 아진.nervous
+          framing: bust
+          delivery: neutral
+          text: "오늘은 물러나겠습니다. 다음에도 다섯 번이 남을 거라고 생각하지 마십시오."
+      - say:
+          text: "검은 복면은 사라졌지만, 덕만은 오른손에 감긴 붉은 매듭을 보았습니다."
       - goto: warn_choice
 
   warn_choice:
@@ -118,7 +132,7 @@ scenes:
           char: 덕만
           framing: closeup
           delivery: whisper
-          text: "왕을 죽일 목소리는 들었다. 이제 내 입이 누구를 먼저 살릴지 정해야 한다."
+          text: "아버지를 죽이겠다는 말을 들었어. 그런데 지금 바로 침전으로 가면, 그들이 나부터 기다리고 있을 거야. 누구에게 먼저 말하지?"
       - choice:
           key: p_warn
           prompt: "동트기 전, 누구를 믿을까?"
@@ -151,14 +165,27 @@ scenes:
           with:
             - 덕만
           delivery: sad
-          text: "열병이 났던 밤, 네 손을 너무 세게 잡아 손톱 자국을 냈지. 덕만아, 오늘도 아프다고 먼저 놓지는 마."
+          text: "왜 이제 말해? 그 회랑을 혼자 지나왔다는 거야? 다친 데부터 보여 줘."
       - say:
           char: 덕만
           framing: closeup
           with:
             - 천명
           delivery: whisper
-          text: "이번에는 내가 잡을게. 언니 손에 자국이 남아도, 해 뜰 때까지."
+          text: "다치진 않았어. 언니, 아버지 곁에 있어 줘. 내가 독이 든 잔을 찾을게."
+      - say:
+          char: 천명.sad
+          framing: bust
+          with:
+            - 덕만
+          text: "열병이 났던 밤에도 넌 괜찮다고 했어. 그러고 내 손에 손톱 자국을 냈지. 이번에는 무서우면 무섭다고 말해. 그래야 내가 같이 무서워해 주지."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 천명
+          delivery: whisper
+          text: "……무서워. 그러니까 아침까지 아버지 손을 놓지 마."
       - add:
           legitimacy: 1
       - goto: banquet_choice
@@ -174,13 +201,25 @@ scenes:
           framing: bust
           with:
             - 덕만
-          text: "열셋입니다. 하나는 석 달 전 죽었고, 하나는 아직 태어나지도 않았습니다. 사람을 적은 명단이 아니라, 공주를 기다린 덫입니다."
+          text: "명단에는 열셋이 적혀 있습니다. 그런데 한 명은 석 달 전에 죽었고, 한 명은 아직 태어나지도 않았습니다."
       - say:
           char: 덕만
           framing: bust
           with:
             - 유신
-          text: "그럼 덫은 내가 밟죠. 유신은 명단을 만든 뒤 자기 이름부터 지운 열네 번째 사람을 찾으세요."
+          text: "명단을 믿고 움직이면 우리가 엉뚱한 문부터 두드리겠군요."
+      - say:
+          char: 유신
+          framing: bust
+          with:
+            - 덕만
+          text: "예. 누군가 공주께서 의심할 사람까지 골라 주었습니다."
+      - say:
+          char: 덕만
+          framing: closeup
+          with:
+            - 유신
+          text: "그럼 적힌 열셋은 놔두고, 이 명단을 쓴 열네 번째 사람을 찾으세요. 연회가 시작되기 전까지."
       - goto: banquet_choice
 
   banquet_choice:
@@ -200,14 +239,33 @@ scenes:
           framing: full
           with:
             - 덕만
-          text: "잔은 보지 않고 잔 든 손을 보는구나. 누가 먼저 떨더냐?"
+          text: "아까부터 잔은 한 번도 보지 않는구나. 무엇을 보고 있느냐?"
           wait: 600
       - say:
           char: 덕만
           framing: bust
           with:
             - 진평왕
-          text: "술을 따르는 이는 떨지 않습니다. 마실 까닭이 없는 자들이 먼저 취했을 뿐입니다."
+          text: "잔을 나르는 손과, 제가 아버지 곁에 설 때마다 저를 보는 얼굴을 보고 있습니다."
+      - say:
+          char: 진평왕
+          framing: bust
+          with:
+            - 덕만
+          text: "내가 들어야 할 말이 있느냐?"
+      - say:
+          char: 덕만
+          framing: closeup
+          with:
+            - 진평왕
+          delivery: nervous
+          text: "있습니다. 하지만 지금 말씀드리면 잔을 바꿀 사람이 먼저 도망칩니다. 아버지, 이번 한 번만 제 눈을 믿어 주세요."
+      - say:
+          char: 진평왕
+          framing: bust
+          with:
+            - 덕만
+          text: "좋다. 대신 늦지는 마라."
       - choice:
           key: p_cup
           prompt: "왕이 잔을 든다. 지금 막을까?"
@@ -234,36 +292,56 @@ scenes:
   cup_smash:
     actions:
       - effect: shake
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
       - say:
           char: 칠숙.smile
           framing: bust
-          text: "공주께서 전하의 상을 엎으셨군요. 목숨은 짧아도 왕실의 기억은 길지요."
+          text: "공주께서 전하의 상을 엎으셨군요. 연회에 모인 이들이 오래 기억하겠습니다."
       - say:
           char: 덕만.angry
           framing: bust
-          text: "상은 다시 차리면 됩니다. 아버지는 다시 모실 수 없고요. 어느 쪽이 더 오래 남을지 보시지요."
+          text: "상은 다시 차리면 됩니다. 아버지는 다시 모실 수 없습니다."
+      - say:
+          char: 진평왕
+          framing: bust
+          text: "그만. 잔을 치우고, 술을 따른 자를 잡아라. 덕만은 나와 함께 간다."
       - goto: prologue_survive
 
   cup_swap:
     actions:
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
       - say:
           char: 칠숙.smile
           framing: bust
           with:
             - 덕만
-          text: "전하의 잔을 신하에게 내리시다니. 오래 살면 이런 영광도 보는군요."
+          text: "전하의 잔을 제게 주시는 겁니까? 제가 무슨 영광을 드렸는지 모르겠습니다."
       - say:
           char: 덕만
           framing: bust
           with:
             - 칠숙
           delivery: deduction
-          text: "순서가 바뀌었습니다. 그대가 오래 준비한 잔이니, 첫 모금도 그대 것이어야지요."
+          text: "그 잔을 보는 순간부터 손가락을 접으셨습니다. 무엇을 기다리는지 궁금해서요. 먼저 드십시오."
           wait: 650
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          text: "공주께서 농이 지나치십니다."
+      - say:
+          char: 덕만
+          framing: closeup
+          text: "농이면 웃고 드시면 됩니다. 왜 못 드십니까?"
       - effect: impact
       - say:
           delivery: nervous
-          text: "칠숙의 미소가 채 사라지기 전, 잔을 나르던 악공이 혀를 깨물고 쓰러졌다."
+          text: "칠숙의 미소가 채 사라지기 전, 잔을 나르던 악공이 혀를 깨물고 쓰러졌습니다."
       - goto: prologue_survive
 
   prologue_survive:
@@ -271,18 +349,30 @@ scenes:
       - effect: focus
       - say:
           delivery: sad
-          text: "왕은 살았다. 대신 악공 하나가 죽었다. 그의 품에서는 덕만의 노리개가, 손톱 밑에서는 잔에 없던 검은 가루가 나왔다."
+          text: "왕은 살아남았습니다. 그러나 잔을 나르던 악공은 숨이 끊어졌습니다. 그의 품에서는 덕만의 노리개가 나왔고, 손톱 밑에는 검은 가루가 남아 있었습니다."
+      - say:
+          char: 진평왕.sad
+          framing: bust
+          text: "이 노리개가 네 것임을 부정할 수 있겠느냐?"
       - say:
           char: 덕만
           framing: closeup
           delivery: whisper
-          text: "아버지를 죽일 독과 나를 죽일 증거를 한 손이 만들었어. 잔을 놓쳤으니, 이제 내 이름을 마시게 하겠지."
+          text: "제 것입니다. 누군가 제 방에서 훔쳤습니다. 독으로 아버지를 죽이고, 이 물건으로 제가 범인이라고 만들 생각이었습니다."
           wait: 800
+      - say:
+          char: 진평왕.sad
+          framing: closeup
+          text: "그 말을 믿고 싶구나. 하지만 내일 아침에는 나 말고도 모두를 설득해야 한다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          text: "알고 있습니다. 사흘만 주십시오. 제 이름에 묻은 독부터 닦아 내겠습니다."
       - get: black_powder
       - set:
           clue_black_powder: true
       - say:
-          text: "프롤로그 완료 — 덕만은 아버지를 얻는 대신 안전을 잃었다."
+          text: "덕만은 아버지의 목숨을 구했지만, 다음 날부터 암살 용의자로 불리게 되었습니다."
 
   go_01_too_clever:
     actions:
