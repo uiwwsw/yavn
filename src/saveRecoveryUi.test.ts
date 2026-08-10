@@ -10,13 +10,26 @@ const engineSource = readSource('./engine.ts');
 const styles = readSource('./styles.css');
 
 describe('save and game over recovery UI', () => {
-  it('exposes three persistent save slots and all game over recovery paths', () => {
+  it('separates background autosave recovery from explicit save actions', () => {
     expect(appSource).toContain('<p className="game-over-kicker">GAME OVER</p>');
-    expect(appSource).toContain("(['auto', 'manual', 'chapter'] as const)");
-    expect(appSource).toContain("onClick={() => void onLoadSave('latest')}");
+    expect(appSource).toContain("onClick={() => void onLoadSave('auto')}");
+    expect(appSource).toContain("onClick={() => void onLoadSave('manual')}");
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');
     expect(appSource).toContain('onChange={(event) => onToggleAutoSave(event.target.checked)}');
     expect(appSource).toContain('onChange={(event) => void onImportSave(event)}');
+    expect(appSource).toContain('<small>선택 직전 복구점</small>');
+    expect(appSource).not.toContain("onClick={() => void onLoadSave('latest')}");
+    expect(appSource).not.toContain("(['auto', 'manual', 'chapter'] as const)");
+  });
+
+  it('opens inventory details directly and keeps discovery controls consistent', () => {
+    expect(appSource).toMatch(
+      /setSelectedInventoryItemId\(entry\.id\);[\s\S]*?setInventoryDetailOpen\(true\);/,
+    );
+    expect(appSource).toContain('<div className="inventory-overview"');
+    expect(appSource).toContain('<div className="inventory-tools">');
+    expect(appSource).not.toContain('inventory-detail-actions');
+    expect(styles).toMatch(/@media \(max-width: 400px\)[\s\S]*?\.inventory-grid\s*\{[\s\S]*?repeat\(2,/);
   });
 
   it('keeps save and game over content inside scrollable responsive bounds', () => {
