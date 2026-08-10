@@ -15,42 +15,92 @@ assets:
     덕만:
       base: assets/char/deokman-v2.webp
       defaultDelivery: deduction
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 2 }
+        closeup: { scale: 2.5, y: 1 }
       emotions:
         sad: assets/char/deokman-sad-v3.webp
     진평왕:
       base: assets/char/jinpyeong-v2.webp
       defaultDelivery: calm
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.85, y: -1 }
+        closeup: { scale: 2.35 }
       emotions:
         sad: assets/char/jinpyeong-sad-v3.webp
     천명:
       base: assets/char/cheonmyeong-v2.webp
       defaultDelivery: calm
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.86 }
+        closeup: { scale: 2.34, y: 1 }
       emotions:
         nervous: assets/char/cheonmyeong-nervous-v3.webp
         sad: assets/char/cheonmyeong-sad-v3.webp
     유신:
       base: assets/char/yushin-v2.webp
       defaultDelivery: deduction
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.79, y: -1 }
+        closeup: { scale: 2.25 }
     소원:
       base: assets/char/sowon-v2.webp
       defaultDelivery: neutral
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.85 }
+        closeup: { scale: 2.35, y: 1 }
       emotions:
         angry: assets/char/sowon-angry-v3.webp
     비담:
       base: assets/char/bidam-v2.webp
       defaultDelivery: whisper
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.79, y: -1 }
+        closeup: { scale: 2.3 }
     국산:
       base: assets/char/guksan-v2.webp
       defaultDelivery: calm
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.8 }
+        closeup: { scale: 2.25, y: 1 }
     아진:
       base: assets/char/ajin-v2.webp
       defaultDelivery: deduction
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.85, y: -1 }
+        closeup: { scale: 2.35 }
     진운:
       base: assets/char/jinun-v2.webp
       defaultDelivery: calm
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.8, y: -1 }
+        closeup: { scale: 2.25 }
     월명:
       base: assets/char/wolmyeong-v2.webp
       defaultDelivery: calm
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.85 }
+        closeup: { scale: 2.35, y: 1 }
   music: {}
   sfx: {}
 state:

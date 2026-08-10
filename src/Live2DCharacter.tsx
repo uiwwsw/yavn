@@ -736,7 +736,11 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
   }, [slot.emotion]);
 
   return (
-    <div className={`char char-live2d ${position}${className ? ` ${className}` : ''}`} style={style}>
+    <div
+      className={`char char-live2d ${position}${className ? ` ${className}` : ''}`}
+      data-character-framing={slot.framing.name}
+      style={style}
+    >
       <div ref={mountRef} className="char-live2d-mount" />
       {error && <div className="char-live2d-error">{error}</div>}
     </div>
