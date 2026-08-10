@@ -6,7 +6,7 @@ scenes:
   prologue_open:
     actions:
       - bg: shadow_corridor
-      - effect: darken
+      - effect: moonveil
       - char:
           id: 덕만
           position: center
@@ -19,7 +19,7 @@ scenes:
           text: "등불이 꺼진 회랑 끝에서, 두 사람의 목소리가 벽을 타고 흘러왔다."
       - say:
           char: 국산
-          text: "내일 왕의 잔은 비어 있을 것입니다."
+          text: "<speed=21>내일 왕의 잔은 비어 있을 것입니다.</speed>"
       - say:
           char: 아진
           text: "그렇다면 공주의 자리는?"
@@ -27,8 +27,8 @@ scenes:
           char: 국산
           text: "원래부터 없었습니다."
       - say:
-          char: 덕만
-          text: "당신은 훗날 신라 최초의 여왕이 된다. 단, 오늘 밤을 살아남는다면."
+          delivery: whisper
+          text: "<speed=20>훗날 덕만은 신라 최초의 여왕이 된다.</speed> <speed=32>오늘 밤을 살아남는다면.</speed>"
       - goto: caught_choice
 
   caught_choice:
@@ -117,6 +117,7 @@ scenes:
           char: 천명
           with:
             - 덕만
+          delivery: sad
           text: "아버지를 구하겠다고 네가 먼저 죽으면, 나는 누구를 미워해야 하니?"
       - say:
           char: 덕만
@@ -147,7 +148,7 @@ scenes:
   banquet_choice:
     actions:
       - bg: banquet_hall
-      - effect: pulse
+      - effect: embers
       - char:
           id: 진평왕
           position: right

@@ -19,6 +19,7 @@ scenes:
           char: 천명
           with:
             - 덕만
+          delivery: nervous
           text: "왕명이라며 너를 체포하라는 군사가 궁문을 막았어. 하지만 아버지는 말씀을 하실 수 없어."
       - say:
           char: 덕만
@@ -138,7 +139,7 @@ scenes:
 
   rescue_evidence:
     actions:
-      - effect: impact
+      - effect: embers
       - say:
           text: "불길 속에서 꺼낸 대장에는 왕의 인장을 마지막으로 빌린 사람이 국산이라 적혀 있었다."
       - say:
@@ -213,6 +214,7 @@ scenes:
   kings_last_words:
     actions:
       - bg: throne_hall
+      - effect: moonveil
       - char:
           id: 진평왕
           position: right
@@ -223,16 +225,18 @@ scenes:
           char: 덕만
           with:
             - 진평왕
-          text: "저를 왕으로 세워주십시오."
+          delivery: sad
+          text: "<speed=20>저를 왕으로 세워주십시오.</speed>"
       - say:
           char: 진평왕
           with:
             - 덕만
-          text: "내가 세워준 왕이라면, 내가 죽은 뒤에도 왕이겠느냐?"
+          text: "<speed=19>내가 세워준 왕이라면,</speed> <speed=25>내가 죽은 뒤에도 왕이겠느냐?</speed>"
       - say:
           text: "진평왕은 후계자의 이름을 남기지 않았다. 덕만에게는 왕명도 유언도 없었다."
       - say:
           char: 덕만
+          delivery: calm
           text: "아버지는 마지막까지 나를 보호하지 않으셨다. 왕이 될 기회를 주셨다."
       - add:
           legitimacy: 1

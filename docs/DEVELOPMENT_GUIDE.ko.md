@@ -475,6 +475,7 @@ scenes:
 전체 화면 `effect` 프리셋:
 - 기본: `shake(280ms)`, `flash(350ms)`, `zoom(420ms)`, `blur(420ms)`, `darken(500ms)`, `pulse(500ms)`, `tilt(320ms)`
 - 트레일러: `impact(460ms)`, `glitch(520ms)`, `speedlines(680ms)`, `alarm(760ms)`, `focus(620ms)`
+- 역사/서사: `moonveil(900ms)`, `embers(1100ms)`, `crown(1200ms)`
 - 미등록 이름은 약 `350ms` 동안 CSS 상태 클래스로 적용되어 게임별 스타일 확장이 가능합니다.
 - `effect`는 즉시 다음 액션으로 진행합니다. 연속 선언은 뒤 이펙트가 앞 이펙트를 교체하므로 순차 재생은 사이에 `wait`를 둡니다.
 - 화면 변형 클래스는 문서 크기를 가진 `.app`이 아니라 그 안의 절대 배치 `.effect-viewport`에 적용됩니다. 바깥 `.app`은 paint/overflow 경계로 동작하므로 `shake/zoom/tilt/impact` 중에도 문서 스크롤 영역이 늘어나지 않습니다. 모달, 선택지, 대사 로그처럼 명시적으로 `overflow: auto`인 내부 영역은 계속 스크롤할 수 있습니다.
@@ -554,7 +555,8 @@ scenes:
 - 실제 지연은 대략 `1000 / (CPS × delivery 배율 × 감정 흔들림)`이고 글자당 16~900ms로 제한되며, 공백은 일반 글자의 62% 시간을 사용합니다.
 - 속도 배율은 `neutral 1.00`, `calm 0.90`, `nervous 1.02`, `angry 1.20`, `whisper 0.76`, `shout 1.34`, `sad 0.70`, `deduction 0.94`입니다.
 - 말줄임표 추가 호흡은 같은 순서로 `280/330/480/210/420/170/560/360ms`이며 쉼표와 문장 끝에도 프로필별 호흡이 붙습니다.
-- 우선순위는 `say.delivery` 명시값 -> `say.char`의 표정 -> 현재 표시 중인 화자의 표정 -> `neutral`입니다.
+- 캐릭터 선언의 `defaultDelivery`는 해당 인물의 평상시 리듬입니다. 예: `assets.characters.덕만.defaultDelivery: deduction`.
+- 우선순위는 `say.delivery` 명시값 -> `say.char`의 표정 -> 현재 표시 중인 화자의 표정 -> 캐릭터 `defaultDelivery` -> `neutral`입니다.
 - 기본 자동 연결은 `serious/think -> deduction`, `angry -> angry`, `nervous/worried/scared -> nervous`, `surprised -> shout`, `proud/calm -> calm`입니다.
 - 쉼표, 마침표, 물음표, 느낌표, 말줄임표, 줄바꿈 뒤에 감정별 정지가 자동 추가됩니다.
 - `<speed=...>` 구간과 함께 사용하면 해당 CPS에 감정별 속도 배율과 호흡을 추가 적용합니다.
@@ -768,6 +770,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-10: 캐릭터 자산에 `defaultDelivery`를 추가해 평상시 말하기 리듬을 선언할 수 있게 했습니다. 명시 `say.delivery`와 표정 추론이 우선하며 캐릭터 기본값은 그 다음 fallback으로 동작합니다. 역사 서사용 `moonveil/embers/crown` 화면 이펙트와 모션 감소 처리를 추가하고, 덕만 v1.1에 배경 7종·투명 WebP 인물 10종·인물별 대사 템포를 적용했습니다.
 - 2026-08-10: 메인 런처 캐러셀의 임의 첫 선택을 제거하고 직접 링크/첫 게임 우선 규칙으로 일관화했습니다. 탐색 버튼·도트·현재 번호를 독립 레일로 분리해 데스크톱과 모바일에서 긴 콘텐츠와 겹치지 않게 하고 `Home`/`End` 키 탐색 및 선택 슬라이드 접근성 상태를 추가했습니다.
 - 2026-08-10: 덕만 샘플의 역사 혼동을 줄이기 위해 후계자 이름을 역사상 실존했던 `사륜`에서 명시적 창작 인물 `진운`으로 변경하고 첫 장면에 역사 픽션 안내를 추가했습니다. 천명 선택이 소원 신뢰를 올리던 상태 연결을 바로잡았으며, 최종 선택 전에 누적 기반을 네 가지 서술로 피드백합니다. 배경 3종은 AVIF, 공유 이미지는 JPEG로 분리해 원본 PNG 대비 전송 크기를 크게 줄였습니다.
 - 2026-08-10: 선택지가 `goto`로 별도 실패 후일담 scene에 진입한 뒤 독립 `gameOver`에 도달하면 자동 저장이 실패 scene으로 덮이던 문제를 수정했습니다. 이제 분기 시작 시점의 상태를 별도 복구점으로 보존해 `직전 선택으로`가 실제 선택 게이트로 돌아갑니다.

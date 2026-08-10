@@ -415,6 +415,7 @@ function canonicalizeLayerAssets(
     result.characters[charKey] = {
       base,
       ...(Object.keys(emotions).length > 0 ? { emotions } : {}),
+      ...(charDef.defaultDelivery ? { defaultDelivery: charDef.defaultDelivery } : {}),
     };
   }
 

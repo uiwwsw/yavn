@@ -5,6 +5,17 @@ export const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]
 export const stateSetMapSchema = z.record(routeVarValueSchema);
 export const stateAddMapSchema = z.record(z.number());
 
+export const dialogueDeliverySchema = z.enum([
+  'neutral',
+  'calm',
+  'nervous',
+  'angry',
+  'whisper',
+  'shout',
+  'sad',
+  'deduction',
+]);
+
 export const conditionSchema: z.ZodType = z.lazy(() =>
   z.union([
     z.object({
@@ -184,9 +195,7 @@ export const actionSchema = z.union([
       char: z.string().optional(),
       with: z.array(z.string().min(1)).optional(),
       text: z.string(),
-      delivery: z
-        .enum(['neutral', 'calm', 'nervous', 'angry', 'whisper', 'shout', 'sad', 'deduction'])
-        .optional(),
+      delivery: dialogueDeliverySchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
     }),
@@ -296,6 +305,7 @@ const characterAssetsSchema = z.record(
   z.object({
     base: z.string(),
     emotions: z.record(z.string()).optional(),
+    defaultDelivery: dialogueDeliverySchema.optional(),
   }),
 );
 

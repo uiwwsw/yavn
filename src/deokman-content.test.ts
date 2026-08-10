@@ -59,7 +59,9 @@ describe('Deokman complete-game content', () => {
     const config = readYaml('config.yaml');
     expect(Object.keys(asRecord(config.endings))).toHaveLength(10);
     const finalChapter = readFileSync(`${gameRoot}7.yaml`, 'utf8');
-    expect(finalChapter).toContain('여왕이 아니다. 신라의 왕이다.');
+    expect(finalChapter).toContain(
+      '<speed=18>여왕이 아니다.</speed> <speed=42>신라의 왕이다.</speed>',
+    );
     expect(collectKey(readYaml('7.yaml'), 'ending')).toHaveLength(10);
   });
 
@@ -127,15 +129,31 @@ describe('Deokman complete-game content', () => {
     expect(asRecord(sisterOption?.add)).toEqual({ cheonmyeong_trust: 1 });
   });
 
-  it('keeps optimized scene art below one megabyte in total', () => {
-    const optimizedImages = [
-      'assets/bg/title-palace.avif',
-      'assets/bg/council-hall.avif',
-      'assets/bg/frontier.avif',
-      'assets/bg/title-palace-social.jpg',
-    ];
-    const totalBytes = optimizedImages.reduce((total, path) => total + statSync(`${gameRoot}${path}`).size, 0);
-    expect(totalBytes).toBeLessThan(1_000_000);
+  it('keeps the expanded active art set distinctive, typed, and below 2.5 megabytes', () => {
+    const base = readYaml('base.yaml');
+    const config = readYaml('config.yaml');
+    const assets = asRecord(base.assets);
+    const backgrounds = Object.values(asRecord(assets.backgrounds)).map(String);
+    const characters = Object.values(asRecord(assets.characters)).map(asRecord);
+    const activeImages = new Set([
+      ...backgrounds,
+      ...characters.map((character) => String(character.base)),
+      String(asRecord(config.seo).image),
+    ]);
+    const totalBytes = [...activeImages].reduce(
+      (total, path) => total + statSync(`${gameRoot}${path}`).size,
+      0,
+    );
+
+    expect(new Set(backgrounds).size).toBeGreaterThanOrEqual(10);
+    expect(characters).toHaveLength(10);
+    characters.forEach((character) => {
+      expect(String(character.base)).toMatch(/-v2\.webp$/);
+      expect(String(character.defaultDelivery)).toMatch(
+        /^(neutral|calm|nervous|angry|whisper|shout|sad|deduction)$/,
+      );
+    });
+    expect(totalBytes).toBeLessThan(2_500_000);
     expect(existsSync(`${gameRoot}assets/bg/title-palace.png`)).toBe(false);
     expect(existsSync(`${gameRoot}assets/bg/council-hall.png`)).toBe(false);
     expect(existsSync(`${gameRoot}assets/bg/frontier.png`)).toBe(false);

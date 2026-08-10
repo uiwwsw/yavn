@@ -32,6 +32,24 @@ describe('parseConfigYaml startScreen', () => {
 });
 
 describe('cinematic DSL timing', () => {
+  it('accepts a character-level default dialogue delivery', () => {
+    const parsed = parseBaseYaml(
+      `
+assets:
+  characters:
+    Deokman:
+      base: assets/deokman.webp
+      defaultDelivery: deduction
+`,
+      'base.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    expect(parsed.data?.data.assets?.characters?.Deokman).toMatchObject({
+      defaultDelivery: 'deduction',
+    });
+  });
+
   it('accepts emotional dialogue delivery', () => {
     const parsed = parseChapterYaml(
       `

@@ -1,37 +1,47 @@
 assets:
   backgrounds:
     title_palace: assets/bg/title-palace.avif
-    moon_court: assets/bg/title-palace.avif
-    shadow_corridor: assets/bg/title-palace.avif
+    moon_court: assets/bg/moon-court-v2.avif
+    shadow_corridor: assets/bg/shadow-corridor-v2.avif
     council_hall: assets/bg/council-hall.avif
-    banquet_hall: assets/bg/council-hall.avif
-    princess_chamber: assets/bg/council-hall.avif
-    locked_room: assets/bg/council-hall.avif
-    throne_hall: assets/bg/council-hall.avif
+    banquet_hall: assets/bg/banquet-hall-v2.avif
+    princess_chamber: assets/bg/princess-chamber-v2.avif
+    locked_room: assets/bg/locked-room-v2.avif
+    throne_hall: assets/bg/throne-hall-v2.avif
     frontier: assets/bg/frontier.avif
-    village: assets/bg/frontier.avif
+    village: assets/bg/village-v2.avif
     fortress: assets/bg/frontier.avif
   characters:
     덕만:
-      base: assets/char/deokman.svg
+      base: assets/char/deokman-v2.webp
+      defaultDelivery: deduction
     진평왕:
-      base: assets/char/jinpyeong.svg
+      base: assets/char/jinpyeong-v2.webp
+      defaultDelivery: calm
     천명:
-      base: assets/char/cheonmyeong.svg
+      base: assets/char/cheonmyeong-v2.webp
+      defaultDelivery: calm
     유신:
-      base: assets/char/yushin.svg
+      base: assets/char/yushin-v2.webp
+      defaultDelivery: deduction
     소원:
-      base: assets/char/sowon.svg
+      base: assets/char/sowon-v2.webp
+      defaultDelivery: neutral
     비담:
-      base: assets/char/bidam.svg
+      base: assets/char/bidam-v2.webp
+      defaultDelivery: whisper
     국산:
-      base: assets/char/guksan.svg
+      base: assets/char/guksan-v2.webp
+      defaultDelivery: calm
     아진:
-      base: assets/char/ajin.svg
+      base: assets/char/ajin-v2.webp
+      defaultDelivery: deduction
     진운:
-      base: assets/char/jinun.svg
+      base: assets/char/jinun-v2.webp
+      defaultDelivery: calm
     월명:
-      base: assets/char/wolmyeong.svg
+      base: assets/char/wolmyeong-v2.webp
+      defaultDelivery: calm
   music: {}
   sfx: {}
 state:

@@ -171,6 +171,7 @@ scenes:
       - effect: shake
       - say:
           char: 진운
+          delivery: angry
           text: "둘 다 죽으면 계승동맹만 웃습니다. 공주께서는 계산도 못 하십니까?"
       - say:
           char: 덕만
@@ -202,6 +203,7 @@ scenes:
           text: "덕만은 진운 또한 계승동맹에 붙잡힌 인질임을 알아냈다. 두 사람이 손을 잡으려는 순간 궁의 종이 거꾸로 울렸다."
       - say:
           char: 천명
+          delivery: nervous
           text: "아버지가 쓰러지셨어. 왕의 인장이 사라졌고, 궁문이 닫혔어."
       - say:
           text: "제5장 완료 — 덕만은 경쟁자를 동맹으로 얻는 대신, 아버지를 잃을 시간을 맞았다."
