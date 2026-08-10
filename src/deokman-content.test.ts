@@ -71,18 +71,18 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('1.3.1');
+    expect(config.version).toBe('2.0.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
-    expect(allContent).toContain('나를 빼고도 오늘 밤 신라를 지킬 수 있는가');
+    expect(allContent).toContain('나를 지운 뒤에도, 오늘 밤 신라를 지킬 수 있습니까');
     expect(allContent).toContain('아비가 세운 딸은 아비와 함께 무너진다');
-    expect(allContent).toContain('열병이 났던 밤, 네 손을 너무 세게 잡아 자국까지 냈지');
-    expect(allContent).toContain('우리 쪽 사망은 여든하나입니다');
-    expect(allContent).toContain('이상한 건 행주뿐이에요');
+    expect(allContent).toContain('열병이 났던 밤, 네 손을 너무 세게 잡아 손톱 자국을 냈지');
+    expect(allContent).toContain('우리 전사자는 여든하나입니다');
+    expect(allContent).toContain('다른 건 이 행주뿐이에요');
     expect(allContent).toContain('어떤 거짓말을 안주로 내시겠습니까');
     expect(allContent).toContain('참으로 고결하십니다');
     expect(allContent).toContain('강가까지 서른두 걸음');
-    expect(allContent).toContain('창은 하나, 호위는 여섯');
+    expect(allContent).toContain('창 하나, 문 하나, 호위 여섯');
     expect(allContent).toContain('마른 우물도 사흘은 하늘을 비춥니다');
   });
 
@@ -93,7 +93,7 @@ describe('Deokman complete-game content', () => {
 
     expect(characters.칠숙).toBeDefined();
     expect(characters.국산).toBeUndefined();
-    expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-v2.webp');
+    expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-silla-v4.webp');
     expect(allContent).toContain('칠숙');
     expect(allContent).not.toContain('국산');
     expect(allContent).toContain('이찬 칠숙');
@@ -122,12 +122,51 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(37);
+    expect(characterPlacements).toHaveLength(49);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
     expect(speakerLines).toHaveLength(147);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
     choices.forEach((choice) => expect(choice.framing).toBe('closeup'));
+
+    documents.forEach((document) => {
+      const placedIds = new Set(
+        collectKey(document, 'char')
+          .map(asRecord)
+          .map((placement) => placement.id)
+          .filter((id): id is string => typeof id === 'string'),
+      );
+      const speakerIds = collectKey(document, 'say')
+        .map(asRecord)
+        .map((say) => say.char)
+        .filter((id): id is string => typeof id === 'string')
+        .map((id) => id.split('.')[0]);
+      expect(speakerIds.every((id) => placedIds.has(id))).toBe(true);
+    });
+  });
+
+  it('gives all ten characters a base portrait plus two authored expression performances', () => {
+    const base = readYaml('base.yaml');
+    const characters = asRecord(asRecord(base.assets).characters);
+    const documents = chapters.map(readYaml);
+    const spokenCharacters = new Set(
+      documents
+        .flatMap((document) => collectKey(document, 'say'))
+        .map(asRecord)
+        .filter((say) => typeof say.char === 'string')
+        .map((say) => String(say.char)),
+    );
+
+    expect(Object.keys(characters)).toHaveLength(10);
+    Object.entries(characters).forEach(([name, value]) => {
+      const character = asRecord(value);
+      const emotions = asRecord(character.emotions);
+      expect(String(character.base), name).toMatch(/-silla-v4\.webp$/);
+      expect(Object.keys(emotions), name).toHaveLength(2);
+      Object.keys(emotions).forEach((emotion) => {
+        expect(spokenCharacters.has(`${name}.${emotion}`), `${name}.${emotion}`).toBe(true);
+      });
+    });
   });
 
   it('keeps every crisis choice compact enough to scan without breaking the drama', () => {
@@ -224,7 +263,7 @@ describe('Deokman complete-game content', () => {
     expect(asRecord(sisterOption?.add)).toEqual({ cheonmyeong_trust: 1 });
   });
 
-  it('keeps the expanded active art set distinctive, typed, and below 2.5 megabytes', () => {
+  it('keeps the expanded Silla art set distinctive, typed, and below six megabytes', () => {
     const base = readYaml('base.yaml');
     const config = readYaml('config.yaml');
     const assets = asRecord(base.assets);
@@ -246,19 +285,25 @@ describe('Deokman complete-game content', () => {
     expect(new Set(backgrounds).size).toBeGreaterThanOrEqual(10);
     expect(characters).toHaveLength(10);
     characters.forEach((character) => {
-      expect(String(character.base)).toMatch(/-v2\.webp$/);
+      expect(String(character.base)).toMatch(/-silla-v4\.webp$/);
       expect(String(character.defaultDelivery)).toMatch(
         /^(neutral|calm|nervous|angry|whisper|shout|sad|deduction)$/,
       );
     });
-    expect(asRecord(characters.find((character) => String(character.base).includes('deokman'))?.emotions).sad)
-      .toBe('assets/char/deokman-sad-v3.webp');
+    expect(asRecord(characters.find((character) => String(character.base).includes('deokman'))?.emotions))
+      .toEqual({
+        sad: 'assets/char/deokman-sad-silla-v4.webp',
+        angry: 'assets/char/deokman-angry-silla-v4.webp',
+      });
     expect(asRecord(characters.find((character) => String(character.base).includes('cheonmyeong'))?.emotions))
       .toEqual({
-        nervous: 'assets/char/cheonmyeong-nervous-v3.webp',
-        sad: 'assets/char/cheonmyeong-sad-v3.webp',
+        nervous: 'assets/char/cheonmyeong-nervous-silla-v4.webp',
+        sad: 'assets/char/cheonmyeong-sad-silla-v4.webp',
       });
-    expect(totalBytes).toBeLessThan(3_000_000);
+    expect(new Set(characters.flatMap((character) => [character.base, ...Object.values(asRecord(character.emotions))])).size)
+      .toBe(30);
+    expect(backgrounds.every((path) => path.includes('-silla-v3.webp'))).toBe(true);
+    expect(totalBytes).toBeLessThan(6_000_000);
     expect(existsSync(`${gameRoot}assets/bg/title-palace.png`)).toBe(false);
     expect(existsSync(`${gameRoot}assets/bg/council-hall.png`)).toBe(false);
     expect(existsSync(`${gameRoot}assets/bg/frontier.png`)).toBe(false);
