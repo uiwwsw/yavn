@@ -9,48 +9,53 @@ scenes:
       - char:
           id: 유신
           position: right
+          framing: full
       - char:
           id: 덕만
           position: left
+          framing: full
       - say:
           text: "제4장 — 궁 밖에서 왕을 만나다"
       - say:
           text: "창고에는 곡식 삼백 섬, 성 위에는 군사 오백. 성문 밖 배급 줄에는 천칠백 명이 서 있었다."
       - say:
           char: 유신
+          framing: full
           with:
             - 덕만
-          text: "군사에게 온전히 주면 성은 엿새를 버팁니다. 백성과 나누면 사흘입니다. 어느 쪽이든 죽는 사람의 수는 제가 보고하겠습니다. 명령하십시오."
+          text: "군사만 먹이면 엿새, 백성과 나누면 사흘입니다. 죽을 사람의 수까지 제가 보고하겠습니다. 명령하십시오."
       - say:
           char: 덕만
+          framing: closeup
           with:
             - 유신
           delivery: nervous
-          text: "궁에서는 명령이 먹 한 줄이었는데…… 여기서는 그 줄 아래 죽을 사람의 얼굴이 보이는군요."
+          text: "궁에서는 명령이 먹 한 줄이었는데…… 여기서는 그 아래 얼굴이 보이네요."
       - goto: grain_choice
 
   grain_choice:
     actions:
       - choice:
           key: c4_grain
-          prompt: "남은 곡식을 어디에 먼저 배분할까?"
+          prompt: "곡식은 사흘치. 누구에게 줄까?"
           char: 덕만
+          framing: closeup
           with:
             - 유신
           options:
-            - text: "사흘치만 백성에게 풀고 그 안에 보급로를 연다"
+            - text: "백성에게 푼다"
               add:
                 people_support: 2
                 legitimacy: 1
               goto: grain_people
-            - text: "군량을 우선 지급하되 병사 가족도 같은 줄에 세운다"
+            - text: "병사와 가족에게 준다"
               add:
                 army_support: 2
                 power: 1
               goto: grain_army
-            - text: "모두에게 똑같이 나눠 주면 공평하다고 선언한다"
+            - text: "모두 똑같이 나눈다"
               goto: go_22_fair_hunger
-            - text: "귀족 창고를 지키기 위해 배급을 전면 중단한다"
+            - text: "배급을 끊는다"
               goto: go_23_full_princess
 
   grain_people:
@@ -58,11 +63,14 @@ scenes:
       - char:
           id: 월명
           position: right
+          framing: full
       - say:
           char: 월명
+          framing: bust
           text: "마른 우물도 사흘은 하늘을 비춥니다. 넷째 날에는 돌바닥만 남지요. 사흘 안에 길을 못 열면, 백성은 공주를 원망할 겁니다."
       - say:
           char: 덕만
+          framing: bust
           text: "원망할 입도 먼저 살아 있어야 하니까요. 사흘을 사겠습니다. 넷째 날의 책임은 제 이름으로 남기고."
       - goto: defense_choice
 
@@ -70,10 +78,12 @@ scenes:
     actions:
       - say:
           char: 유신
+          framing: bust
           text: "장수 셋이 반대했습니다. 군량을 가족과 나누면 병사의 몫을 빼앗는 일이라고 합니다."
       - say:
           char: 덕만
-          text: "집에서 아이가 굶는데 성벽만 배부르면 무엇을 지키는 겁니까? 같은 줄에 세우세요. 병사도 누구의 가족입니다."
+          framing: bust
+          text: "집에서 아이가 굶는데 성벽만 배부르면 무엇을 지키는 겁니까? 같은 줄에 세우세요. 병사도 누군가의 가족입니다."
       - goto: defense_choice
 
   defense_choice:
@@ -84,22 +94,23 @@ scenes:
           text: "해 질 무렵 적 기병이 둘로 갈라졌다. 한쪽은 주민이 남은 마을로, 다른 쪽은 마지막 보급로를 지키는 요새로 향했다. 덕만의 군사는 한곳에만 먼저 닿을 수 있었다."
       - choice:
           key: c4_defense
-          prompt: "어디를 먼저 지킬까?"
+          prompt: "적이 둘로 갈라졌다. 어디로 갈까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "마을 사람을 빼낸 뒤 빈집과 수레로 길을 막는다"
+            - text: "마을을 구한다"
               add:
                 people_support: 2
                 insight: 1
               goto: defense_village
-            - text: "요새를 지키고 봉화로 마을의 피난 시간을 번다"
+            - text: "요새를 지킨다"
               add:
                 army_support: 2
                 yushin_trust: 1
               goto: defense_fortress
-            - text: "병력을 반으로 나눠 마을과 요새를 모두 지킨다"
+            - text: "병력을 반으로 가른다"
               goto: go_24_kind_failure
-            - text: "왕경의 추가 명령이 올 때까지 전군을 후퇴시킨다"
+            - text: "전군 후퇴한다"
               goto: go_25_silla_abandoned
 
   defense_village:
@@ -107,11 +118,13 @@ scenes:
       - effect: impact
       - say:
           char: 유신
+          framing: bust
           text: "주민 천이백삼십 명이 산길로 빠졌습니다. 요새는 잃었고 사상자는 마흔일곱. 남은 군사는 다시 싸울 수 있습니다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: sad
-          text: "마흔일곱 이름도 적어 주세요. ‘사람을 살렸다’는 말 뒤에 숨겨 버리면, 내 명령이 너무 가벼워지니까."
+          text: "마흔일곱 이름도 적으세요. ‘사람을 살렸다’는 말 뒤에 숨기면, 내 명령이 너무 가벼워집니다."
       - goto: enemy_choice
 
   defense_fortress:
@@ -120,6 +133,7 @@ scenes:
           text: "봉화 세 개가 산등성이를 건넜다. 요새는 버텼고 주민들은 산으로 피했지만, 빈 마을의 지붕은 새벽까지 탔다."
       - say:
           char: 덕만
+          framing: closeup
           delivery: sad
           text: "저 불빛을 승리의 봉화라고 기록하겠지. 하지만 집을 두고 온 사람에게는…… 자기 삶이 타는 빛일 거야."
       - goto: enemy_choice
@@ -129,41 +143,46 @@ scenes:
       - char:
           id: 아진
           position: right
+          framing: full
       - say:
           char: 아진
+          framing: bust
           delivery: neutral
-          text: "적장이 해 질 무렵 강가에서 만나자고 했습니다. 호위 없이. 약속한 휴전은 사흘, 매복하기 좋은 거리는 백스무 걸음입니다."
+          text: "적장이 해 질 무렵 강가에서 보자 합니다. 호위 없이. 휴전은 사흘, 매복 거리는 백스무 걸음입니다."
       - choice:
           key: c4_enemy
-          prompt: "적의 제안에 어떻게 답할까?"
+          prompt: "적이 강가에서 기다린다. 답은?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "아진을 통역으로 데리고 강가에서 포로와 곡식을 교환한다"
+            - text: "포로와 곡식을 바꾼다"
               add:
                 insight: 1
                 people_support: 1
               goto: enemy_negotiate
-            - text: "유신의 매복 계획으로 적 보급대를 끊고 휴전을 강제한다"
+            - text: "보급대를 친다"
               add:
                 army_support: 1
                 power: 2
               goto: enemy_fight
-            - text: "항복 문서를 보내되 빈 수레 행렬로 병력을 과장한다"
+            - text: "빈 수레로 속인다"
               add:
                 insight: 2
                 suspicion: 1
               goto: enemy_bluff
-            - text: "백성을 위해 어떤 조건이든 받겠다며 홀로 나간다"
+            - text: "혼자 항복한다"
               goto: go_26_hostage_princess
 
   enemy_negotiate:
     actions:
       - say:
           char: 아진
+          framing: bust
           delivery: neutral
           text: "공주를 죽이라는 제 명령은 아직 살아 있습니다. 강가까지 서른두 걸음. 그동안 제게 등을 보이지 마십시오."
       - say:
           char: 덕만
+          framing: bust
           text: "그 경고는 명령에 없었겠지. 방금 그대는 처음으로 시킨 사람보다 죽일 사람을 먼저 보았어."
       - goto: chapter4_end
 
@@ -171,11 +190,13 @@ scenes:
     actions:
       - say:
           char: 유신
+          framing: closeup
           delivery: sad
           text: "보급대는 끊었습니다. 적은 물러났고, 우리 쪽 사망은 여든하나입니다. 저는 이것을 승리라고 보고하지 않겠습니다."
       - say:
           char: 덕만
-          text: "좋아요. 승리라고 쓰지 마세요. 여든하나를 쓰고, 그 덕에 내일을 고르게 된 사람들의 이름도 함께 쓰세요."
+          framing: bust
+          text: "승리라고 쓰지 마세요. 여든하나를 쓰고, 그 덕에 내일을 얻은 사람들도 함께 쓰세요."
       - goto: chapter4_end
 
   enemy_bluff:
@@ -184,6 +205,7 @@ scenes:
           text: "쇠붙이를 매단 빈 수레 스무 대가 안개 속 돌길을 돌고 또 돌았다. 적은 천 명의 증원군이 온 줄 알고 사흘을 물러났다."
       - say:
           char: 덕만
+          framing: bust
           text: "왕경의 소문은 사람을 죽였는데, 여기서는 빈 수레 소리가 사람을 살렸군. 거짓말도 어디에 쓰느냐가 주인을 정하나 봐."
       - goto: chapter4_end
 
@@ -195,7 +217,8 @@ scenes:
           text: "성 하나가 무너지고 마을 하나가 탔다. 그래도 배급 줄은 다시 움직였고, 군사와 백성은 왕경의 공주가 아니라 눈앞에서 대가를 함께 센 사람의 명령을 기다렸다."
       - say:
           char: 유신
-          text: "왕경 전갈입니다. 화백이 남자 왕족 한 명을 후계자로 불러들였습니다. 이름은 진운. 공주께서 비운 자리에 이미 앉았습니다."
+          framing: bust
+          text: "화백이 남자 후계자를 불렀습니다. 진운. 공주께서 비운 자리에 벌써 앉았습니다."
       - say:
           text: "제4장 완료 — 덕만은 따르는 사람을 얻는 대신, 비어 있던 후계자의 자리를 잃었다."
 

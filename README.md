@@ -28,7 +28,7 @@ pnpm dev
 ## 품질과 구조
 
 - `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 검증
-- `src/engine.ts`: 챕터 전환, 저장 슬롯/백업, 게임오버 복구, 연출 실행, 입력 게이트, 오디오 BGM 크로스페이드
+- `src/engine.ts`: 챕터 전환, 저장 슬롯/백업, 게임오버 복구, 전신·상체·클로즈업 캐릭터 구도, 연출 실행, 입력 게이트, 오디오 BGM 크로스페이드
 - `src/typing.ts`: 감정별 타이핑 리듬, 문장부호 호흡, 유니코드 글자 분할
 - `src/store.ts`: 렌더링 상태와 플레이 기록
 - `src/history.ts`: 챕터별 선택 복원과 최대 300개 스토리 로그
@@ -195,6 +195,11 @@ assets:
   characters:
     conan:
       base: assets/char/conan/base.webp
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 1.5, y: -2 }
+        closeup: { scale: 1.9, y: -4 }
       emotions:
         serious: assets/char/conan/serious.webp
   music:
@@ -228,7 +233,13 @@ scenes:
   intro:
     actions:
       - bg: hall
+      - char:
+          id: conan
+          position: center
+          framing: full
       - say:
+          char: conan
+          framing: bust
           text: "시작"
 ```
 
@@ -452,6 +463,44 @@ scenes:
 - `inventory.<item>.category`(선택): 인벤토리 카테고리 필터 기준값입니다. 미지정 시 UI에서 `기타`로 처리합니다.
 - `inventory.<item>.order`(선택): 정렬 기준 우선순위(낮을수록 먼저)입니다. 미지정 시 `9999`로 처리합니다.
 
+## 캐릭터 구도 프리셋
+
+한 장의 전신 원본을 캐릭터별로 보정해 전신·상체·클로즈업 구도로 재사용할 수 있습니다.
+
+```yaml
+assets:
+  characters:
+    deokman:
+      base: assets/char/deokman.webp
+      defaultFraming: full
+      framings:
+        full: { scale: 1 }
+        bust: { scale: 2 }
+        closeup: { scale: 2.5, x: 1, y: 1 }
+
+scenes:
+  audience:
+    actions:
+      - char: { id: deokman, position: center, framing: full }
+      - say:
+          char: deokman
+          framing: bust
+          text: "전하께 드릴 말씀이 있습니다."
+      - choice:
+          char: deokman
+          framing: closeup
+          prompt: "왕이 잔을 든다. 지금 막을까?"
+          options:
+            - { text: "대신 마신다", goto: drink }
+            - { text: "상을 엎는다", goto: stop }
+```
+
+- `framings.<name>.scale`은 필수이며 `0.5..3`, `x/y`는 선택이며 `-100..100` 범위의 이미지 기준 퍼센트 이동값입니다.
+- `defaultFraming`은 `char.framing`을 생략했을 때 사용합니다. 구도 선언이 없는 기존 게임은 `full`/`scale: 1`로 동일하게 동작합니다.
+- `char.framing`은 무대에 올릴 때의 지속 구도이고, `say.framing`, `choice.framing`, `input.framing`은 해당 화자의 현재 구도를 바꿉니다. 다음 액션에서 생략하면 직전 구도를 유지합니다.
+- 구도 이름은 해당 캐릭터의 `framings`에 반드시 선언해야 하며, 화자가 없는 `say/choice/input`에는 `framing`만 단독으로 지정할 수 없습니다.
+- 구도 전환은 위치를 옆으로 밀지 않고 260ms 동안 확대/축소되어 장면 안에서 자연스러운 카메라 컷처럼 보입니다.
+
 ## 대사 속도 체계
 
 - `config.yaml.textSpeed`와 `<speed=...>` 값의 단위는 초당 출력 글자 수(CPS)입니다. `32`는 감정·문장부호 보정 전 기준으로 한글 음절 약 32개를 1초에 출력한다는 뜻입니다.
@@ -591,7 +640,9 @@ scenes:
 `say` 없이도 `choice`/`input` 단계에서 캐릭터를 직접 노출할 수 있습니다.
 
 - `choice.char`, `choice.with`
+- `choice.framing`
 - `input.char`, `input.with`
+- `input.framing`
 
 ```yaml
 - choice:
@@ -605,6 +656,7 @@ scenes:
 동작:
 - `char`를 지정하면 해당 캐릭터를 기준으로 노출/표정이 동기화됩니다.
 - `with`는 함께 노출할 보조 캐릭터 목록입니다.
+- `framing`은 `char`로 지정한 주 캐릭터의 등록된 구도 프리셋을 적용합니다.
 - `char`를 생략하면 기존처럼 직전 노출 상태를 유지합니다.
 
 ## `script` 실행 의미
@@ -635,6 +687,7 @@ scenes:
 - `say.char`와 `say.with`로 정확히 두 명이 노출되면 엔진이 자동으로 화면을 좌우 1/2 구도로 전환합니다. 좌우는 원래 캐릭터 슬롯 순서를 유지하므로 화자가 바뀌어도 인물이 자리를 교환하지 않습니다. 2인 중 한 명만 퇴장하면 남은 인물은 기존 절반 위치와 너비를 유지하고, 처음부터 1인이거나 새 인물로 교체된 장면 및 3인 장면은 기존 배치를 사용합니다.
 - 같은 캐릭터 ID를 다른 `position`에 다시 배치하면 이전 슬롯을 자동으로 비우고 새 위치로 이동합니다. 장면 사이에 남은 슬롯 때문에 한 인물이 두 번 렌더링되지 않습니다.
 - 같은 위치의 같은 이미지 캐릭터가 감정만 바꾸면 DOM을 다시 만들지 않습니다. 새 표정은 현재 자리에서 교체되며 최초 등장 애니메이션을 반복하지 않고, 감정 이미지 원본 비율이 달라도 고정 무대 폭을 유지합니다.
+- 같은 캐릭터의 `framing`만 바꾸면 원본 이미지와 DOM을 재사용한 채 등록된 `scale/x/y`로 전신·상체·클로즈업을 전환합니다. 표정 교체와 저장 복원에서도 현재 구도 이름을 유지합니다.
 - 새 이미지 캐릭터의 수평 슬롯은 노출 시 즉시 확정됩니다. 2인 구도 전환의 좌우 오프셋은 슬라이드하지 않으며, 캐릭터는 최종 위치에서 짧은 상승·페이드로만 등장하고 화자 강조 확대는 별도로 부드럽게 전환됩니다. 2인에서 1인으로 줄어들 때는 생존 인물의 절반 구도를 유지해 위치·너비가 순간적으로 바뀌지 않습니다.
 
 ## 시작 화면 (Start Gate)
@@ -657,6 +710,9 @@ scenes:
 - `/game-list/deokman/`은 프롤로그부터 최종장까지 8개 챕터로 완결되는 역사 기반 픽션 비주얼노벨입니다.
 - 각 장은 4지선다 핵심 선택 3개를 제공하며, 전체 24개 선택·35개 고유 `gameOver` 후일담·10개 수집형 엔딩을 구현합니다.
 - 장면 배경 10종과 투명 인물 10종은 브라우저 호환성이 넓은 WebP로 제공합니다. 덕만의 절제된 슬픔·천명의 불안/슬픔·진평왕의 임종·소원의 분노를 위한 감정 스프라이트 5종을 별도로 전환합니다.
+- v1.3.0은 인물 10명의 같은 투명 원본에 캐릭터별 `full/bust/closeup` 보정을 등록하고, 147개 화자 대사와 24개 선택 장면 전체에 구도를 지시했습니다. 첫 등장·공간 제시는 전신, 정보 교환은 상체, 위기·감정·결단은 클로즈업으로 전환합니다.
+- v1.3.0 대본은 8개 챕터의 문장을 다시 연기 가능한 길이로 압축하고 인물별 서브텍스트를 선명하게 다듬었습니다. 24개 선택지는 위기를 먼저 제시하고 즉시 행동만 고르도록 정리했으며, 보기 문구는 최대 16자, 프롬프트는 최대 30자로 고정합니다.
+- 선택 게이트는 짧은 4개 보기가 720px 데스크톱과 일반 세로 모바일에서도 하단 상태줄과 겹치지 않도록 데스크톱 `46cqh`·모바일 `48cqh`까지 확장하고, 더 긴 콘텐츠만 내부 스크롤로 처리합니다.
 - v1.2.1은 AVIF 픽셀을 표시하지 못하는 일부 브라우저 엔진에서도 시작 타이틀, 런처 썸네일, 본편 배경과 엔딩 아트를 정상 렌더링합니다.
 - v1.2 대본은 8개 챕터의 대사와 내레이션을 전수 재작성했습니다. 인물별 어휘·문장 길이·서브텍스트를 분리하고, 전역 27 CPS에 `defaultDelivery`·감정 표정·`say.wait`·구간 속도를 조합해 질문, 망설임, 반응 뒤의 침묵이 실제 읽기 리듬으로 남습니다.
 - `moonveil/embers/crown` 이펙트는 야간 암투·불타는 기록·즉위 장면에 각각 사용하며 모션 감소 설정에서는 정지 오버레이도 남기지 않습니다.

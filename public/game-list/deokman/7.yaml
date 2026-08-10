@@ -9,12 +9,14 @@ scenes:
       - char:
           id: 덕만
           position: center
+          framing: full
       - say:
           text: "최종장 — 왕관에는 주인이 없다"
       - say:
           text: "진평왕의 상여가 궁문을 나서기도 전에 화백회의가 열렸다. 성문 밖에서는 계승동맹의 군사들이 갑옷 위로 상복을 걸쳤다."
       - say:
           char: 덕만
+          framing: full
           text: "나를 왕으로 세워 달라고 청하지 않겠다. 대신 묻겠다. 나를 빼고도 오늘 밤 신라를 지킬 수 있는가."
           wait: 800
       - goto: opening_move_choice
@@ -23,25 +25,26 @@ scenes:
     actions:
       - choice:
           key: final_opening
-          prompt: "회의가 열리기 전 첫 수를 어디에 둘까?"
+          prompt: "회의 전, 첫 수는?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "진운과 함께 회의장에 들어가 두 후계자가 살아 있음을 보인다"
+            - text: "진운과 함께 들어간다"
               add:
                 legitimacy: 1
                 rival_trust: 1
               goto: opening_joint
-            - text: "유신에게 성문과 봉화를 맡겨 쿠데타 병력을 고립시킨다"
+            - text: "성문을 잠근다"
               add:
                 army_support: 1
                 power: 1
               goto: opening_gates
-            - text: "계승동맹이 가둔 증인과 하인 가족을 먼저 풀어 준다"
+            - text: "증인을 풀어 준다"
               add:
                 people_support: 1
                 sowon_trust: 1
               goto: opening_witnesses
-            - text: "국산 편 귀족들을 회의 전에 모두 처형한다"
+            - text: "귀족을 처형한다"
               goto: go_34_empty_council
 
   opening_joint:
@@ -49,11 +52,14 @@ scenes:
       - char:
           id: 진운
           position: right
+          framing: full
       - say:
           char: 진운
+          framing: bust
           text: "제가 공주를 지지하는 순간, 저를 따르던 가문의 표는 절반이 사라집니다. 그래도 제 입으로 말해야 합니까?"
       - say:
           char: 덕만
+          framing: bust
           text: "표는 다시 셀 수 있습니다. 오늘은 그대가 누구의 원고도 없이 고른 첫 문장을 들려주세요."
       - goto: proof_choice
 
@@ -62,8 +68,10 @@ scenes:
       - char:
           id: 유신
           position: right
+          framing: full
       - say:
           char: 유신
+          framing: bust
           text: "동문과 북문을 닫았습니다. 봉화대 셋은 우리 편, 반란군은 성 밖 사백입니다. 회의가 한 시진 안에 끝나지 않으면 다음 보고는 칼로 드리겠습니다."
       - goto: proof_choice
 
@@ -72,9 +80,11 @@ scenes:
       - char:
           id: 소원
           position: right
+          framing: full
       - say:
           char: 소원
-          text: "행주에서 독을 찾은 부엌 나인도, 국경에서 곡식을 받은 아이 엄마도 와 있어요. 이름표를 옷에 꿰매고 서로 손을 잡았어요. 이번에는 한 명이 끌려가면 모두 알게요."
+          framing: bust
+          text: "독 묻은 행주를 찾은 나인도, 국경에서 곡식을 받은 어머니도 왔어요. 이름표를 꿰매고 손을 잡았어요. 한 명이 끌려가면 모두 알게요."
       - goto: proof_choice
 
   proof_choice:
@@ -83,41 +93,46 @@ scenes:
       - char:
           id: 국산
           position: right
+          framing: full
       - say:
           char: 국산
-          text: "공주님의 용기와 효심을 의심하는 이는 없습니다. 다만 신라 천년의 법 어디에도 여인을 왕이라 쓴 줄은 없지요. 의심과 소문을 전례보다 높이 놓으시겠습니까?"
+          framing: bust
+          text: "용기와 효심은 의심하지 않습니다. 하지만 신라의 법 어디에도 여인을 왕이라 쓴 줄은 없지요. 무엇으로 전례를 넘으시겠습니까?"
       - choice:
           key: final_proof
-          prompt: "덕만이 왕이 되어야 할 이유를 무엇으로 증명할까?"
+          prompt: "무엇으로 왕임을 증명할까?"
           char: 덕만
+          framing: closeup
           with:
             - 국산
           options:
-            - text: "살려 준 사람들을 차례로 불러 선택의 결과를 증언시킨다"
+            - text: "사람을 세운다"
               add:
                 legitimacy: 2
                 people_support: 1
               goto: proof_people
-            - text: "독가루, 혼인 합의서, 계승동맹 서약서를 한 줄로 잇는다"
+            - text: "세 증거를 잇는다"
               add:
                 insight: 2
                 legitimacy: 1
               goto: proof_evidence
-            - text: "국경의 병사와 유신이 덕만의 명령을 따름을 보인다"
+            - text: "군사를 보인다"
               add:
                 army_support: 1
                 power: 2
               goto: proof_army
-            - text: "진평왕이 남겼다는 가짜 유언장을 만들어 낭독한다"
+            - text: "유언을 꾸민다"
               goto: go_35_fathers_lie
 
   proof_people:
     actions:
       - say:
           char: 덕만
+          framing: bust
           text: "전례가 없다는 말로 오늘 굶는 사람을 먹일 수 있습니까?"
       - say:
           char: 덕만
+          framing: bust
           text: "여기 선 사람들은 내가 여자여서 살아난 것이 아닙니다. 필요한 결정을 제때 내렸기 때문에 살아났습니다. 왕에게 그보다 먼저 물을 것이 있습니까?"
           wait: 700
       - goto: crown_assessment
@@ -126,9 +141,11 @@ scenes:
     actions:
       - say:
           char: 덕만
+          framing: bust
           text: "잔에는 독을 묻히고, 제 이름에는 혼인을 묶고, 아버지의 침묵에는 가짜 왕명을 찍었습니다."
       - say:
           char: 덕만
+          framing: bust
           text: "세 사건이 아니라 한 번의 긴 반역입니다. 여기, 같은 인장과 같은 이름이 있습니다."
           wait: 700
       - goto: crown_assessment
@@ -137,9 +154,11 @@ scenes:
     actions:
       - say:
           char: 유신
+          framing: bust
           text: "국경의 군사는 공주의 관을 보고 따르지 않았습니다. 사흘치 곡식을 함께 나누고, 전사자 마흔일곱 이름을 직접 읽은 지휘관의 명령을 따랐습니다."
       - say:
           char: 유신
+          framing: bust
           text: "그날 명령을 받은 장수로서, 제 목을 걸고 증언합니다."
           wait: 650
       - goto: crown_assessment
@@ -207,32 +226,34 @@ scenes:
       - effect: crown
       - say:
           char: 국산
-          text: "마지막으로 가르침을 청하겠습니다. 공주께서는 무엇을 왕관이라 부르십니까? 화백의 허락입니까, 문밖의 함성입니까, 군사의 칼입니까, 아니면 남자 후계자의 양보입니까?"
+          framing: bust
+          text: "무엇을 왕관이라 부르십니까? 화백의 허락, 백성의 함성, 군사의 칼, 진운공의 양보. 어느 것입니까?"
       - choice:
           key: final_crown
-          prompt: "마지막으로 왕좌를 요구하는 방식을 고른다."
+          prompt: "왕좌를 어떻게 요구할까?"
           char: 덕만
+          framing: closeup
           options:
-            - text: "화백의 법과 공개 표결로 왕좌를 차지한다"
+            - text: "화백의 표를 받는다"
               set:
                 final_strategy: "law"
               add:
                 legitimacy: 1
               goto: verdict
-            - text: "궁 밖 백성의 지지로 회의를 압박한다"
+            - text: "백성의 함성으로 민다"
               set:
                 final_strategy: "people"
               add:
                 people_support: 1
               goto: verdict
-            - text: "반란군을 제압한 군권으로 즉위를 강제한다"
+            - text: "군권으로 밀어붙인다"
               set:
                 final_strategy: "army"
               add:
                 power: 2
                 suspicion: 2
               goto: verdict
-            - text: "진운과 공동 선언을 하고 그가 스스로 물러나게 한다"
+            - text: "진운과 함께 선다"
               set:
                 final_strategy: "alliance"
               add:
@@ -358,9 +379,11 @@ scenes:
           text: "살려 둔 사람들은 자기 이름으로 증언했다. 함께 굶은 군사는 성문을 지켰다. 감추지 않은 세 증거는 하나의 반역을 완성했고, 진운은 빌린 원고 없이 덕만의 이름을 말했다."
       - say:
           char: 국산
+          framing: bust
           text: "전하의 유언도, 남자 후계자의 양보도 없습니다. 대체 누구의 명으로 왕좌를 요구하십니까?"
       - say:
           char: 덕만
+          framing: bust
           text: "아무의 명도 아닙니다. 그대들이 내 이름을 지우지 못한 모든 날, 그리고 내가 이름을 지켜 낸 모든 사람이 나를 여기 세웠습니다."
           wait: 1000
       - say:
@@ -369,10 +392,12 @@ scenes:
       - effect: crown
       - say:
           char: 소원
+          framing: closeup
           delivery: shout
           text: "신라의 새 여왕, 덕만 폐하께서 입장하십니다!"
       - say:
           char: 덕만
+          framing: bust
           delivery: deduction
           text: "<speed=18>여왕이 아니다.</speed> <speed=42>신라의 왕이다.</speed>"
           wait: 1200
@@ -418,6 +443,7 @@ scenes:
     actions:
       - say:
           char: 비담
+          framing: closeup
           delivery: whisper
           text: "동쪽 바다는 아직 누구의 신하도 아닙니다. 저와 가시면 살아남을 수 있습니다. 다만…… 기록하는 사람은 데려가지 못하겠군요."
       - say:

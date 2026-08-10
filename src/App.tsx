@@ -2109,8 +2109,10 @@ export default function App() {
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const charStyle = {
       zIndex,
-      '--char-scale': depthScale,
+      '--char-scale': depthScale * slot.framing.scale,
       '--char-brightness': depthBrightness,
+      '--char-framing-x': `${slot.framing.x}%`,
+      '--char-framing-y': `${slot.framing.y}%`,
     } as CSSProperties;
     const className = ['char', 'char-image', position, depthClass, duoClass].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
@@ -2132,6 +2134,7 @@ export default function App() {
         className={className}
         src={slot.source}
         alt={slot.id}
+        data-character-framing={slot.framing.name}
         loading="eager"
         decoding="async"
         style={charStyle}

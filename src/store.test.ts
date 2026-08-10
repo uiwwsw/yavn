@@ -6,6 +6,7 @@ const imageCharacter = (id: string): CharacterSlot => ({
   id,
   kind: 'image',
   source: `/characters/${id}.webp`,
+  framing: { name: 'full', scale: 1, x: 0, y: 0 },
 });
 
 describe('character slots', () => {
