@@ -129,7 +129,7 @@ scenes:
   rumor_baekje:
     actions:
       - say:
-          text: "백제 상인 소문이 반나절 만에 궁을 돌았다. 그날 밤 국산의 하인이 국경 상단 장부를 품고 담을 넘었다."
+          text: "백제 상인 소문이 반나절 만에 궁을 돌았다. 그날 밤 칠숙의 하인이 국경 상단 장부를 품고 담을 넘었다."
       - say:
           char: 덕만
           framing: bust
@@ -177,7 +177,7 @@ scenes:
                 power: 1
                 suspicion: 1
               goto: evidence_reverse
-            - text: "국산을 공개 지목한다"
+            - text: "칠숙을 공개 지목한다"
               goto: go_10_right_without_proof
             - text: "모두 태운다"
               goto: go_11_innocent_exile
@@ -237,12 +237,12 @@ scenes:
     actions:
       - gameOver:
           title: "운명 09 — 가짜 왕명"
-          message: "후계자 지명 소문은 왕의 권위를 훔친 죄가 되었다. 암살범보다 먼저 잡힌 것은 소문을 만든 공주였다. 국산은 재판에서 가장 슬픈 얼굴로 유죄를 청했다."
+          message: "후계자 지명 소문은 왕의 권위를 훔친 죄가 되었다. 암살범보다 먼저 잡힌 것은 소문을 만든 공주였다. 칠숙은 재판에서 가장 슬픈 얼굴로 유죄를 청했다."
   go_10_right_without_proof:
     actions:
       - gameOver:
           title: "운명 10 — 정답을 맞힌 죄인"
-          message: "국산이 배후라는 추리는 옳았다. 하지만 옳은 말과 증명된 말은 궁에서 서로 다른 목숨값을 가졌다. 덕만은 정답을 남기고 처형되었다."
+          message: "칠숙이 배후라는 추리는 옳았다. 하지만 옳은 말과 증명된 말은 궁에서 서로 다른 목숨값을 가졌다. 덕만은 정답을 남기고 처형되었다."
   go_11_innocent_exile:
     actions:
       - gameOver:

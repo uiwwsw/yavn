@@ -91,11 +91,11 @@ scenes:
     actions:
       - bg: council_hall
       - char:
-          id: 국산
+          id: 칠숙
           position: right
           framing: full
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "용기와 효심은 의심하지 않습니다. 하지만 신라의 법 어디에도 여인을 왕이라 쓴 줄은 없지요. 무엇으로 전례를 넘으시겠습니까?"
       - choice:
@@ -104,7 +104,7 @@ scenes:
           char: 덕만
           framing: closeup
           with:
-            - 국산
+            - 칠숙
           options:
             - text: "사람을 세운다"
               add:
@@ -225,7 +225,7 @@ scenes:
     actions:
       - effect: crown
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "무엇을 왕관이라 부르십니까? 화백의 허락, 백성의 함성, 군사의 칼, 진운공의 양보. 어느 것입니까?"
       - choice:
@@ -378,7 +378,7 @@ scenes:
       - say:
           text: "살려 둔 사람들은 자기 이름으로 증언했다. 함께 굶은 군사는 성문을 지켰다. 감추지 않은 세 증거는 하나의 반역을 완성했고, 진운은 빌린 원고 없이 덕만의 이름을 말했다."
       - say:
-          char: 국산
+          char: 칠숙
           framing: bust
           text: "전하의 유언도, 남자 후계자의 양보도 없습니다. 대체 누구의 명으로 왕좌를 요구하십니까?"
       - say:
@@ -437,7 +437,7 @@ scenes:
   ending_one_step:
     actions:
       - say:
-          text: "표결은 덕만을 택했다. 그러나 성문을 지킬 군사는 오지 않았다. 즉위의 두 번째 북이 울릴 때, 국산의 마지막 궁수가 시위를 놓았다. 세 번째 북은 끝내 울리지 못했다."
+          text: "표결은 덕만을 택했다. 그러나 성문을 지킬 군사는 오지 않았다. 즉위의 두 번째 북이 울릴 때, 칠숙의 마지막 궁수가 시위를 놓았다. 세 번째 북은 끝내 울리지 못했다."
       - ending: one_step_queen
   ending_vanished:
     actions:
@@ -464,4 +464,4 @@ scenes:
     actions:
       - gameOver:
           title: "운명 35 — 아버지의 거짓말"
-          message: "유언장은 완벽했지만 진평왕은 마지막 순간 오른손을 쓰지 못했다. 국산은 서명 한 획으로 거짓을 증명했다. 덕만은 왕의 딸이 아니라 왕명을 위조한 죄인으로 끌려갔다."
+          message: "유언장은 완벽했지만 진평왕은 마지막 순간 오른손을 쓰지 못했다. 칠숙은 서명 한 획으로 거짓을 증명했다. 덕만은 왕의 딸이 아니라 왕명을 위조한 죄인으로 끌려갔다."
