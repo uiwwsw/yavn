@@ -980,6 +980,35 @@ textarea,
   isolation: isolate;
   contain: layout paint;
   transition: bottom 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  overflow: clip;
+}
+
+.char-camera-world {
+  --stage-camera-scale: 1;
+  --stage-camera-origin-x: 50%;
+  --stage-camera-origin-y: 50%;
+  --stage-camera-render-origin-y: var(--stage-camera-origin-y);
+  --stage-camera-pan-x: 0%;
+  --stage-camera-pan-y: 0%;
+  --stage-camera-duration: 0ms;
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--stage-camera-origin-x) var(--stage-camera-render-origin-y);
+  transform:
+    translate3d(var(--stage-camera-pan-x), var(--stage-camera-pan-y), 0)
+    scale(var(--stage-camera-scale));
+  transition:
+    transform var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1),
+    transform-origin var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  contain: layout paint;
+}
+
+@media (min-width: 769px) {
+  .char-layer:not([data-camera-shot='wide']) .char-camera-world {
+    --stage-camera-render-origin-y: 0%;
+  }
 }
 
 .sticker-layer {
@@ -1106,15 +1135,20 @@ textarea,
   --char-brightness: 1;
   --char-framing-x: 0%;
   --char-framing-y: 0%;
+  --char-calibration-x: 0%;
+  --char-calibration-y: 0%;
   position: absolute;
   right: auto;
   bottom: 0;
   left: var(--char-anchor-x);
   height: 100%;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)) brightness(var(--char-brightness));
+  opacity: 1;
   will-change: left, translate, scale, filter;
   /* Position/framing glide independently; facing flips snap without tweening through a squeezed pose. */
-  translate: calc(var(--char-offset-x) + var(--char-framing-x)) var(--char-framing-y);
+  translate:
+    calc(var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))
+    calc(var(--char-framing-y) + var(--char-calibration-y));
   transform: scaleX(var(--char-facing-scale-x));
   transform-origin: center top;
   scale: var(--char-scale);
@@ -1123,11 +1157,20 @@ textarea,
     translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
     width 320ms cubic-bezier(0.22, 1, 0.36, 1),
     scale 260ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 200ms ease-out;
+    filter 200ms ease-out,
+    opacity 180ms ease-out;
   backface-visibility: hidden;
   contain: paint;
   animation: characterEnter 0.35s ease;
   z-index: 3;
+}
+
+.char-layer[data-camera-shot='close'] .char.is-listener {
+  opacity: 0;
+}
+
+.char-layer[data-camera-shot='reaction'] .char.is-listener {
+  opacity: 0.22;
 }
 
 .char-image {
@@ -1255,6 +1298,14 @@ textarea,
 
 .char-layer.char-layout-trio .char.is-speaker.right {
   --char-anchor-x: 79%;
+}
+
+.char-layer.char-layout-trio[data-camera-shot='medium'] .left {
+  --char-anchor-x: 22%;
+}
+
+.char-layer.char-layout-trio[data-camera-shot='medium'] .right {
+  --char-anchor-x: 78%;
 }
 
 .hud {
@@ -4818,6 +4869,14 @@ textarea,
     --char-anchor-x: 78%;
   }
 
+  .char-layer.char-layout-trio[data-camera-shot='medium'] .left {
+    --char-anchor-x: 20%;
+  }
+
+  .char-layer.char-layout-trio[data-camera-shot='medium'] .right {
+    --char-anchor-x: 80%;
+  }
+
   .choice-gate-option,
   .input-gate-field,
   .input-gate-submit {
@@ -5071,6 +5130,7 @@ textarea,
   .ending-restart,
   .dialog-box,
   .char,
+  .char-camera-world,
   .char-layer,
   .sticker-layer {
     transition: none !important;

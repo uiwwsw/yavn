@@ -150,7 +150,7 @@ describe('character stage layout', () => {
   it('keeps the current speaker foremost and quiets listeners more strongly in a trio', () => {
     expect(resolveCharacterFocusPresentation(3, 1, true, true)).toEqual({
       brightness: 1,
-      scaleMultiplier: 1.035,
+      scaleMultiplier: 1,
       depthClass: 'is-speaker',
     });
     expect(resolveCharacterFocusPresentation(3, 2, false, true).brightness).toBe(0.76);

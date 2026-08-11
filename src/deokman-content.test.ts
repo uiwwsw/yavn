@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('3.1.0');
+    expect(config.version).toBe('3.2.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 제가 왕이 되는 의식은 그 뒤에 하겠습니다');
@@ -168,7 +168,7 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('이찬 칠숙');
   });
 
-  it('directs every character beat with reusable full, bust, and close-up framings', () => {
+  it('directs every character beat with shared camera shots instead of per-character zoom', () => {
     const base = readYaml('base.yaml');
     const characters = Object.values(asRecord(asRecord(base.assets).characters)).map(asRecord);
     const documents = chapters.map(readYaml);
@@ -181,25 +181,36 @@ describe('Deokman complete-game content', () => {
       .map(asRecord)
       .filter((say) => typeof say.char === 'string');
     const choices = documents.flatMap((document) => collectKey(document, 'choice')).map(asRecord);
+    const sceneActionLists = documents.flatMap((document) =>
+      Object.values(asRecord(document.scenes)).map((scene) => {
+        const actions = asRecord(scene).actions;
+        return Array.isArray(actions) ? actions.map(asRecord) : [];
+      }),
+    );
 
     characters.forEach((character) => {
-      const framings = asRecord(character.framings);
-      expect(character.defaultFraming).toBe('full');
-      expect(Object.keys(framings)).toEqual(expect.arrayContaining(['full', 'bust', 'closeup']));
-      expect(asRecord(framings.full).scale).toBe(1);
-      expect(Number(asRecord(framings.bust).scale)).toBeGreaterThan(1);
-      expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
+      const calibration = asRecord(character.calibration);
+      expect(Number(calibration.scale)).toBeGreaterThanOrEqual(0.5);
+      expect(Number(calibration.scale)).toBeLessThanOrEqual(2);
+      expect(character.defaultFraming).toBeUndefined();
+      expect(character.framings).toBeUndefined();
     });
 
     expect(characterPlacements).toHaveLength(221);
-    characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
+    characterPlacements.forEach((placement) => expect(placement.framing).toBeUndefined());
     expect(speakerLines).toHaveLength(679);
-    speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
-    expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
+    speakerLines.forEach((say) => expect(['wide', 'medium', 'close']).toContain(say.camera));
+    expect(new Set(speakerLines.map((say) => say.camera))).toEqual(new Set(['wide', 'medium', 'close']));
     choices.forEach((choice) => {
-      expect(choice.framing).toBe('closeup');
+      expect(choice.camera).toBe('close');
       expect(Array.isArray(choice.with)).toBe(true);
     });
+    const backgroundCuts = sceneActionLists.flatMap((actions) =>
+      actions.flatMap((action, index) => (typeof action.bg === 'string' ? [{ actions, index }] : [])),
+    );
+    expect(backgroundCuts).toHaveLength(66);
+    backgroundCuts.forEach(({ actions, index }) => expect(actions[index + 1]?.camera).toBe('wide'));
+    expect(chapters.every((path) => !readFileSync(`${gameRoot}${path}`, 'utf8').includes('framing:'))).toBe(true);
 
     documents.forEach((document) => {
       const placedIds = new Set(
@@ -241,7 +252,7 @@ describe('Deokman complete-game content', () => {
         .map((action) => asRecord(action.char))
         .filter((placement) => typeof placement.id === 'string');
       const decisiveCloseups = says.filter(
-        (say) => say.framing === 'closeup' && Array.isArray(say.with),
+        (say) => say.camera === 'close' && Array.isArray(say.with),
       );
 
       expect(gameOverIndex, `${path}:${sceneId}`).toBe(actions.length - 1);
@@ -252,7 +263,7 @@ describe('Deokman complete-game content', () => {
       ).toBeGreaterThanOrEqual(3);
       expect(asRecord(leadIn[firstSayIndex]?.say).char, `${path}:${sceneId}`).toBeUndefined();
       expect(characterPlacements.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(2);
-      characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
+      characterPlacements.forEach((placement) => expect(placement.framing).toBeUndefined());
       expect(leadIn.some((action) => typeof action.effect === 'string'), `${path}:${sceneId}`).toBe(true);
       expect(
         says.some((say) => typeof say.wait === 'number'),

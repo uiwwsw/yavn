@@ -6,15 +6,14 @@ scenes:
   chapter6_open:
     actions:
       - bg: shadow_corridor
+      - camera: wide
       - effect: alarm
       - char:
           id: 천명
           position: right
-          framing: full
       - char:
           id: 덕만
           position: left
-          framing: full
       - say:
           text: "제6장 — 왕이 잠든 밤"
       - say:
@@ -24,43 +23,43 @@ scenes:
           text: "같은 밤 · 밤이 깊은 때. 궁문 밖 복도로 빠져나온 천명은 기둥마다 붙은 ‘덕만을 잡으라’는 글을 뜯어 품에 감췄습니다. 마지막 한 장을 떼는 순간, 밖에서 기다리던 덕만이 어둠 속에서 손목을 붙잡았습니다."
       - say:
           char: 천명.nervous
-          framing: closeup
+          camera: close
           with:
             - 덕만
           delivery: nervous
           text: "네 얼굴이 모든 궁문에 붙었어. 이것 봐. 아버지 도장 왼쪽 모서리의 흠집까지 똑같아. 그런데 아버지는 이 명령을 내릴 만큼 오래 눈을 뜬 적이 없어."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 천명
           text: "내가 일곱 살 때 그 도장을 들다가 떨어뜨린 자리야. 가짜가 아니야. 누군가 아버지 손에서 진짜 도장을 훔쳤어."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 천명
           delivery: nervous
           text: "언니, 손 떨고 있어. 다친 데는 없어?"
       - say:
           char: 천명.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "없어. 무서워서 그래. 아버지 방에는 못 들어가고, 군사들은 네가 왕을 해쳤다고 외치고 있어."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 천명
           text: "좋아. 무서운 건 나중에 같이 하자. 지금은 도장을 찾고 아버지께 가야 해. 언니가 본 것부터 말해 줘."
       - say:
           char: 천명.nervous
-          framing: bust
+          camera: medium
           text: "약방 나인이 새벽에 빈 약 상자를 들고 나왔어. 그 뒤에 아버지 방 보초가 바뀌었고."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "약방부터 보자. 해가 뜨기 전에 체포령이 거짓이라는 걸 밝혀야 해."
       - say:
           with:
@@ -69,13 +68,13 @@ scenes:
           text: "천명은 젖은 약초 끈, 가마의 봉황 장식, 성밖에서 날아온 붉은 신호천, 비담이 보낸 빈 수갑을 바닥에 차례로 놓았습니다."
       - say:
           char: 천명.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "약초 끈을 따라가면 월명이 수로에서 기다려. 내 가마는 아직 궁문을 지나고, 붉은 천을 올리면 유신이 정문을 칠 거야. 빈 수갑은 비담이 널 죄수로 꾸며 들이겠다는 뜻이고."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 천명
           text: "전부 누군가 목숨을 걸고 열어 둔 길이네. 이번에는 가장 쉬운 길이 아니라, 위험을 누구와 나눌지 골라야겠어."
@@ -87,7 +86,7 @@ scenes:
           key: c6_entry
           prompt: "궁문이 봉쇄됐다. 어떻게 들어갈까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 천명
           options:
@@ -113,26 +112,25 @@ scenes:
       - char:
           id: 월명
           position: right
-          framing: full
       - say:
           char: 월명.warning
-          framing: full
+          camera: wide
           text: "이 수로는 약방 뒤로 이어집니다. 물에서 독한 감초 냄새가 납니다. 전하께 올린 약을 여기서 버린 모양입니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "누가 약을 바꿨는지 알 수 있습니까?"
       - say:
           char: 월명.warning
-          framing: bust
+          camera: medium
           text: "냄새만으로는 모릅니다. 약방에 남은 그릇을 보면 알 수 있습니다. 세 번째 갈림길에 보초가 둘 있습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "싸우지 말고 지나가죠. 지금 소리가 나면 아버지 곁의 사람부터 도망칠 겁니다."
       - say:
           char: 월명
-          framing: bust
+          camera: medium
           text: "그럼 물이 가슴까지 차는 길로 가야 합니다. 숨을 짧게 쉬십시오."
       - goto: rescue_choice
 
@@ -146,24 +144,24 @@ scenes:
           text: "가마 휘장이 바닥까지 내려왔습니다. 덕만은 가마 밑 가로대에 몸을 붙였고, 천명은 무릎 위에 두 손을 포개 떨림을 감췄습니다."
       - say:
           char: 천명
-          framing: closeup
+          camera: close
           with: []
           delivery: nervous
           text: "내 가마 밑에 숨으면 궁문은 지날 수 있어. 그런데 네 발이 다 보여. 일곱 살 때 꿀과자 훔치던 때랑 똑같아."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           with: []
           delivery: whisper
           text: "그때도 언니가 치마로 가려 줬잖아. 조금만 더 내려 줘."
       - say:
           char: 천명.nervous
-          framing: bust
+          camera: medium
           with: []
           text: "이러다 둘 다 잡히면 어떡해?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with: []
           delivery: whisper
           text: "잡히면 내가 억지로 탔다고 해. 언니는 아버지 곁으로 가려던 거고."
@@ -175,12 +173,12 @@ scenes:
           text: "궁문 앞에서 가마가 멈췄습니다. 창끝 하나가 휘장 아래를 들추자, 천명이 발을 내밀어 덕만의 신발 끝을 치맛자락 안으로 밀었습니다."
       - say:
           char: 천명.nervous
-          framing: closeup
+          camera: close
           with: []
           text: "또 혼자 책임지겠다는 말 하지 마. 이번에는 같이 들어가고 같이 나오는 거야."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with: []
           delivery: whisper
           text: "알았어. 같이 나올게. 약속해."
@@ -196,32 +194,32 @@ scenes:
       - char:
           id: 비담
           position: right
-          framing: full
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "감옥에 들어가게 해 달라는 부탁은 처음입니다. 나오는 길도 제가 준비해야 합니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "당연하지. 체포된 척 들어가서 안에서 문을 열 거야."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "실패하면 저는 공주를 탈옥시킨 역적이 됩니다. 성공하면요?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "성공하면 아무도 그대가 도왔다는 걸 모르게 해 줄게."
       - say:
           char: 비담.sad
-          framing: closeup
+          camera: close
           text: "그 보상은 조금 서운하군요. 그래도 하겠습니다. 이번에는 살아서 빚을 갚으십시오."
       - goto: rescue_choice
 
   rescue_choice:
     actions:
       - bg: princess_chamber
+      - camera: wide
       - effect: alarm
       - say:
           delivery: nervous
@@ -229,26 +227,25 @@ scenes:
       - char:
           id: 유신
           position: right
-          framing: full
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 유신
           text: "약종은 아버지 숨이 위험하다는 뜻이고, 거꾸로 건 천은 언니가 포위됐다는 뜻입니다. 저 재는 기록 창고에서 날아왔군요. 세 곳에 모두 사람을 보낼 수는 없습니까?"
       - say:
           char: 유신.angry
-          framing: bust
+          camera: medium
           text: "병력이 부족합니다. 셋으로 나눌 수만 있다면 제가 먼저 나누자고 했을 겁니다. 제가 종루로 가면 공주께서는 왕이나 기록 창고 중 하나를 직접 택하셔야 합니다."
       - say:
           char: 유신.angry
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "그리고 약방 뒤에서 아진이 빈 약 상자를 들고 달아났다는 보고가 있습니다. 쫓으면 뒤에서 명령한 사람의 이름을 들을지 모르지만, 왕과 천명공주와 기록은 모두 포기해야 합니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with:
             - 유신
           text: "아버지에게 가면 언니의 붉은 천을 못 본 척해야 하고, 언니에게 가면 아버지 마지막 숨을 놓칠 수 있어요. 기록을 택하면 둘보다 증거를 먼저 살리는 사람이 되고, 아진을 쫓으면 산 사람 셋을 이름 하나와 바꾸게 됩니다."
@@ -256,7 +253,7 @@ scenes:
           key: c6_rescue
           prompt: "세 곳이 무너진다. 먼저 어디로?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 유신
           options:
@@ -282,28 +279,27 @@ scenes:
       - char:
           id: 월명
           position: right
-          framing: full
       - say:
           char: 월명.sad
-          framing: closeup
+          camera: close
           delivery: sad
           text: "독은 더 퍼지지 않게 막았습니다. 하지만 전하의 맥이 너무 약합니다. 말씀을 하셔도 오래 이어 가지는 못할 겁니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           delivery: sad
           text: "잠깐이라도 의식이 돌아오게 할 수 있습니까?"
       - say:
           char: 월명.sad
-          framing: bust
+          camera: medium
           text: "할 수는 있습니다. 대신 더 빨리 지치실 겁니다. 꼭 들어야 할 말이 있습니까?"
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           text: "다음 왕 이야기는 묻지 않겠습니다. 딸로서 마지막 인사를 하고 싶습니다."
       - say:
           char: 월명
-          framing: bust
+          camera: medium
           text: "그럼 손을 잡고 이름을 부르십시오. 약보다 익숙한 목소리가 먼저 닿을 수도 있습니다."
       - goto: seal_found
 
@@ -312,26 +308,25 @@ scenes:
       - char:
           id: 천명
           position: right
-          framing: full
       - say:
           char: 천명.sad
-          framing: bust
+          camera: medium
           text: "왜 여기로 왔어? 아버지께 갔어야지. 내가 살아도 아버지가 돌아가시면 어떡해."
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           text: "언니를 두고 갈 수 없었어."
       - say:
           char: 천명.sad
-          framing: closeup
+          camera: close
           text: "그럼 나 때문에 아버지를 못 봤다는 생각이 들 때마다 나를 미워하게 될 거야."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           text: "미워할지도 몰라. 반대로 골랐으면 나 자신을 더 미워했을 거야. 지금은 살아 있어 줘. 나중에 같이 후회하자."
       - say:
           char: 천명.sad
-          framing: bust
+          camera: medium
           text: "……알았어. 같이 가자. 아직 늦지 않았을 수도 있어."
       - add:
           army_support: 1
@@ -343,16 +338,15 @@ scenes:
       - char:
           id: 비담
           position: right
-          framing: full
       - say:
           text: "덕만은 불길 속에서 왕의 도장 기록부를 꺼냈습니다. 도장을 마지막으로 빌린 사람은 칠숙이었고, 돌려줬다는 칸은 비어 있었습니다."
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           text: "우리를 잡으라는 글에 진짜 도장 자국이 찍힌 이유가 이거야. 칠숙이 아버지 도장을 돌려주지 않았어."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "이 장부만 있으면 체포령이 거짓이라는 건 밝힐 수 있습니다. 이제 나가야 합니다. 지붕이 무너집니다."
       - say:
           delivery: sad
@@ -360,15 +354,15 @@ scenes:
           wait: 1000
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           text: "내가 기록 창고로 간 동안 언니가…… 혼자 있었어."
       - say:
           char: 비담.sad
-          framing: bust
+          camera: medium
           text: "공주님이 가지 않았어도 결과가 달랐다고는 아무도 말할 수 없습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           text: "그 말로 괜찮아지지는 않아. 그래도 이 장부를 버리면 언니를 두고 간 이유까지 없어져. 들고 가자. 끝까지 밝힐 거야."
       - set:
           cheonmyeong_alive: false
@@ -379,7 +373,6 @@ scenes:
       - char:
           id: 비담
           position: right
-          framing: full
       - say:
           with:
             - 비담
@@ -387,25 +380,25 @@ scenes:
           text: "밥 한 끼 먹을 시간도 지나지 않아, 비담이 왕의 방 바닥에 놓인 빈 약 상자를 발끝으로 뒤집었습니다. 금빛 도장이 굴러 나왔고, 바닥에는 ‘덕만을 잡으라’는 글을 찍은 검은 잉크가 아직 마르지 않았습니다. 비담은 소매로 도장을 감싸 쥐었습니다."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "찾던 도장입니다. 이걸로 ‘덕만을 잡으라’는 명령을 취소하면 궁문이 열릴 겁니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "훔친 도장으로 찍은 명령을, 되찾은 도장으로 다시 막으라는 거군. 사람들은 어느 쪽을 진짜 왕의 명령이라고 믿을까?"
       - say:
           char: 비담
-          framing: bust
+          camera: medium
           text: "오늘 밤 살아남으려면 먼저 하나를 골라야 합니다. 옳았는지는 내일 설명하시고요."
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           with:
             - 비담
           text: "어릴 때 한 번 들어 보고 너무 무거워 떨어뜨렸어. 아버지는 웃으면서 ‘그래서 왕의 명령은 함부로 드는 게 아니다’라고 하셨지. 지금 내가 찍으면 칠숙과 같은 도둑이 될 수도 있어."
       - say:
           char: 비담
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "봉해 두면 귀족 회의까지 가져갈 증거가 되고, 깨면 누구도 훔쳐 쓰지 못합니다. 하지만 지금 찍지 않으면 공주님을 구할 명령도 없습니다. 어느 쪽이든 내일은 오늘의 값을 묻게 될 겁니다."
@@ -419,7 +412,7 @@ scenes:
           key: c6_seal
           prompt: "왕의 도장이 손안에 있다. 쓸까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 비담
           options:
@@ -447,19 +440,19 @@ scenes:
     actions:
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "체포령은 취소됐습니다. 대신 사람들은 두 명령 중 어느 것이 진짜였는지 묻고 있습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "둘 다 같은 도장으로 찍혔으니 겉만 보고는 알 수 없겠지. 내일 귀족들 앞에서 내가 찍었다고 밝힐게."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "왕의 명령을 함부로 만들었다고 공격할 겁니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "그래도 숨기지는 않을 거야. 내가 살기 위해 내린 명령이었다고, 그 때문에 다친 사람까지 같이 말하겠어."
       - goto: kings_last_words
 
@@ -468,22 +461,21 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "도장을 손에 넣고도 봉하셨군요. 자신을 잡으라는 명령을 취소할 가장 쉬운 길을 스스로 막으셨습니다."
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           text: "그 명령이 거짓이라는 기록부와 증인이 있습니다. 도장을 또 쓰면 어떤 명령이 진짜인지 더 흐려집니다."
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "그 증인을 귀족 회의까지 데려갈 수 있을까요? 궁문 밖에는 제 군사가 있습니다."
       - say:
           char: 덕만.angry
-          framing: closeup
+          camera: close
           text: "말하는 동안에도 자꾸 제 손의 도장만 보시는군요. 빼앗고 싶은 마음이 얼굴에 다 보입니다. 좋습니다. 도장 없이 사람을 데리고 나가 보겠습니다."
       - goto: kings_last_words
 
@@ -496,32 +488,31 @@ scenes:
           text: "덕만은 도장을 돌바닥에 내려놓고 칼자루로 내리쳤습니다. 금빛 도장이 둘로 갈라지자, 덕만을 잡으라는 글을 들고 있던 군사들도 서로의 얼굴을 보았습니다."
       - say:
           char: 비담
-          framing: bust
+          camera: medium
           text: "정말 깨뜨리실 줄은 몰랐습니다. 이제 공주께서 명령해도 그들이 듣지 않을 수 있습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "알아. 그래도 훔친 도장 하나 때문에 모두가 서로를 죽이게 둘 수는 없어. 이제 말과 증거로 설득해야 해."
       - goto: kings_last_words
 
   kings_last_words:
     actions:
       - bg: throne_hall
+      - camera: wide
       - effect: moonveil
       - char:
           id: 진평왕
           position: right
-          framing: full
       - char:
           id: 덕만
           position: left
-          framing: full
       - say:
           delivery: sad
           text: "새벽을 알리는 북이 울리기 직전. 왕의 방에는 진평왕과 덕만만 남았습니다. 왕의 숨은 짧았고, 덕만은 침상 곁에 무릎을 꿇었습니다."
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           with:
             - 진평왕
           delivery: sad
@@ -529,59 +520,59 @@ scenes:
           wait: 900
       - say:
           char: 진평왕.weak
-          framing: bust
+          camera: medium
           with:
             - 덕만
           delivery: sad
           text: "<speed=18>덕만아.</speed> <speed=18>늦지 않았구나.</speed>"
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           with:
             - 진평왕
           text: "죄송해요. 더 일찍 왔어야 했는데, 도장을 찾느라…… 언니도 위험했고…… 저는 계속 다른 곳을 골라야 했어요."
       - say:
           char: 진평왕.weak
-          framing: bust
+          camera: medium
           with:
             - 덕만
           delivery: sad
           text: "안다. 네 잘못이 아니다. 내가 너무 많은 일을 네가 고르게 두었구나."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with:
             - 진평왕
           text: "아버지, 저한테 왕이 되라고 한 번만 말해 주시면 안 돼요? 유언으로 남기지 않아도 돼요. 저만 듣게."
       - say:
           char: 진평왕.weak
-          framing: bust
+          camera: medium
           with:
             - 덕만
           delivery: sad
           text: "<speed=19>너는 왕이 될 수 있다. 오래전부터 그렇게 생각했다.</speed> <speed=21>그런데 내가 그 말을 유언으로 남기면, 대신들은 네가 아비 덕에 왕이 됐다고 할 것이다.</speed>"
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           with:
             - 진평왕
           text: "알아요. 그래도 지금은 딸로 듣고 싶었어요."
       - say:
           char: 진평왕.weak
-          framing: closeup
+          camera: close
           with:
             - 덕만
           delivery: sad
           text: "<speed=18>그래. 내 딸은 왕이 될 수 있다.</speed> <speed=18>그리고 왕이 되지 않아도 내 딸이다.</speed> <speed=17>네가 태어난 날부터 내게는 네가 가장 귀했다.</speed> <speed=18>미안하다. 그 말을 너무 늦게 했구나.</speed>"
       - say:
           char: 덕만.sad
-          framing: bust
+          camera: medium
           with:
             - 진평왕
           text: "늦어도 들었어요. 아버지, 조금만 더 계세요."
       - say:
           char: 진평왕.weak
-          framing: closeup
+          camera: close
           with:
             - 덕만
           delivery: sad
@@ -592,7 +583,7 @@ scenes:
           text: "진평왕은 덕만의 손을 잡은 채 숨을 거두었습니다. 공식 유언도, 다음 왕의 이름도 남기지 않았습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           delivery: sad
           text: "아버지…… 들었어요. 살아서, 제 이름으로 해 볼게요."
@@ -608,14 +599,13 @@ scenes:
   go_31_gate_breaker:
     actions:
       - bg: shadow_corridor
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 유신
           position: right
-          framing: full
       - say:
           with:
             - 덕만
@@ -623,11 +613,11 @@ scenes:
           text: "궁 정문이 끝내 열리지 않자 덕만의 병사들은 충차를 문 앞까지 끌고 왔습니다. 문 위 궁수들과 문밖 병사들은 같은 신라 깃발을 달고 서로에게 활을 겨눴습니다."
       - say:
           char: 유신.angry
-          framing: bust
+          camera: medium
           text: "충차를 대면 문은 열 수 있습니다. 하지만 안쪽을 지키는 병사도 신라군입니다. 먼저 다치게 되는 건 저 사람들입니다."
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           text: "아버지가 죽어 가고 있어요. 정문을 부수고 길을 여세요. 책임은 제가 집니다."
       - effect: impact
       - say:
@@ -635,7 +625,7 @@ scenes:
           text: "세 번째 충격에 화면을 가득 채운 문짝이 안쪽으로 넘어갔습니다. 먼지가 시야를 가린 사이, 안과 밖에서 동시에 활시위가 울렸습니다."
       - say:
           char: 유신.sad
-          framing: bust
+          camera: medium
           text: "문은 열렸습니다. 우리 군사 열일곱, 궁군 아홉이 죽었습니다. 이제 어느 쪽도 칼을 거두지 않습니다."
       - effect: darken
       - say:
@@ -645,16 +635,15 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "전하를 뵙겠다는 말로 궁을 친 사람을 신라에서는 역적이라 부릅니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with:
             - 칠숙
           text: "아버지께서 살아 계셨다면 왜 문을 닫았는지부터 물으셨을 겁니다."
@@ -665,14 +654,13 @@ scenes:
   go_32_name_in_dark:
     actions:
       - bg: locked_room
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 아진
           position: right
-          framing: full
       - say:
           with:
             - 덕만
@@ -680,19 +668,19 @@ scenes:
           text: "약방 뒤 창고에서 두 사람은 세 걸음을 사이에 두고 멈췄습니다. 출구는 덕만의 등 뒤에 있었고, 벽에 몰린 아진은 빈 왼손만 등불 쪽으로 내밀었습니다."
       - say:
           char: 아진.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "칼은 버렸습니다. 공주께서 찾는 이름을 말하겠습니다. 가까이 오십시오. 밖에서는 들으면 안 됩니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 아진
           text: "거기서 말해. 한 걸음이라도 움직이면 호위를 부르겠다."
       - say:
           char: 아진
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "그 이름을 가진 사람이 왕의 방 안에 있습니다. 지금 크게 말하면 왕부터 죽습니다."
@@ -704,7 +692,7 @@ scenes:
           text: "덕만은 호위를 부르려던 손을 멈췄습니다. 한 걸음. 둘 사이에 남은 거리는 칼 한 자루보다 짧았습니다. 아진이 입술만 움직이자 이름의 첫 음절도 들리지 않았습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 아진
           text: "다시 말해. 누구라고?"
@@ -716,7 +704,7 @@ scenes:
           text: "아진의 오른손이 소매에서 나왔습니다. 손바닥에 감춘 짧은 칼은 그 한 걸음을 되돌릴 틈도 주지 않았습니다. 문밖 호위가 빗장을 부수는 동안 아진도 독을 삼켰습니다."
       - say:
           char: 아진.nervous
-          framing: closeup
+          camera: close
           with: []
           text: "이름보다 거리를 먼저 보셨어야 합니다."
           wait: 700
@@ -726,27 +714,26 @@ scenes:
   go_33_one_day_queen:
     actions:
       - bg: throne_hall
+      - camera: wide
       - char:
           id: 덕만
           position: center
-          framing: full
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           text: "덕만은 왕의 도장으로 자신을 잡으라는 명령을 취소한 뒤, 해가 뜨기 전에 스스로 왕위에 올랐다고 선포했습니다. 빈 왕좌 앞에서 호위 몇 명이 먼저 무릎을 꿇었습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "왕이 숨을 거둔 지금 신라에는 명령할 사람이 필요합니다. 귀족들에게는 왕위에 오른 뒤 설명하겠습니다."
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "전하께서 다음 왕을 남기셨습니까? 아니면 공주께서 찾은 도장이 곧 유언입니까?"
       - say:
           char: 덕만.angry
-          framing: closeup
+          camera: close
           with: []
           text: "반란을 막고 나면 절차를 따지겠습니다. 지금은 제가 왕입니다."
       - effect: crown
@@ -754,7 +741,7 @@ scenes:
           text: "왕위에 올랐음을 알리는 첫 북은 울렸지만 두 번째 북을 칠 연주자는 오지 않았습니다. 정오가 되자 진운을 지지하는 군사들이 왕좌를 둘러쌌습니다."
       - say:
           char: 칠숙
-          framing: closeup
+          camera: close
           with: []
           text: "도장은 왕의 것이지만, 이 방 밖에서 공주의 말을 왕의 명령으로 듣는 사람은 없습니다. 내려오십시오."
       - effect: darken

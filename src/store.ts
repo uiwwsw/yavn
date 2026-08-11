@@ -12,10 +12,12 @@ import type {
   RouteVarValue,
   StoryLogEntry,
   StickerSlot,
+  StageCameraState,
   UiTemplateId,
   VNError,
   VideoCutsceneState,
 } from './types';
+import { DEFAULT_STAGE_CAMERA } from './stageCamera';
 import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 
 type DialogState = {
@@ -47,6 +49,7 @@ type VNState = {
   characters: Partial<Record<Position, CharacterSlot>>;
   speakerOrder: string[];
   visibleCharacterIds: string[];
+  camera: StageCameraState;
   currentMusic?: string;
   dialog: DialogState;
   dialogUiHidden: boolean;
@@ -76,6 +79,7 @@ type VNState = {
   setCharacter: (position: Position, slot: CharacterSlot) => void;
   promoteSpeaker: (speakerId?: string) => void;
   setVisibleCharacters: (ids: string[]) => void;
+  setCamera: (camera: StageCameraState) => void;
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
   setDialogUiHidden: (hidden: boolean) => void;
@@ -161,6 +165,7 @@ export const useVNStore = create<VNState>((set) => ({
   characters: {},
   speakerOrder: [],
   visibleCharacterIds: [],
+  camera: DEFAULT_STAGE_CAMERA,
   dialog: initialDialog,
   dialogUiHidden: false,
   videoCutscene: initialVideoCutscene,
@@ -193,6 +198,7 @@ export const useVNStore = create<VNState>((set) => ({
       characters: {},
       speakerOrder: [],
       visibleCharacterIds: [],
+      camera: DEFAULT_STAGE_CAMERA,
       currentMusic: undefined,
       dialog: initialDialog,
       dialogUiHidden: false,
@@ -262,6 +268,7 @@ export const useVNStore = create<VNState>((set) => ({
     );
     set({ visibleCharacterIds: unique });
   },
+  setCamera: (camera) => set({ camera }),
   setMusic: (url) => set({ currentMusic: url }),
   setDialog: (dialog) => set((state) => ({ dialog: { ...state.dialog, ...dialog } })),
   setDialogUiHidden: (dialogUiHidden) => set({ dialogUiHidden }),
@@ -326,6 +333,7 @@ export const useVNStore = create<VNState>((set) => ({
       characters: {},
       speakerOrder: [],
       visibleCharacterIds: [],
+      camera: DEFAULT_STAGE_CAMERA,
       currentMusic: undefined,
       dialog: initialDialog,
       dialogUiHidden: false,

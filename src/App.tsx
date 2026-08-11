@@ -64,6 +64,7 @@ import {
 } from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
+import { resolveStageCameraPresentation } from './stageCamera';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
 import type {
@@ -802,6 +803,7 @@ export default function App() {
     characters,
     speakerOrder,
     visibleCharacterIds,
+    camera,
     dialog,
     dialogUiHidden,
     effect,
@@ -1574,10 +1576,42 @@ export default function App() {
     previousCharacterStageLayoutRef.current,
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
+  const speakerPosition = visibleCharactersByPosition.find(
+    (entry) => entry.slot.id === dialog.speakerId,
+  )?.position;
+  const requestedCameraTargetId = camera.target === 'group' ? undefined : camera.target;
+  const visibleCameraTargetId = requestedCameraTargetId && visibleCharacterSet.has(requestedCameraTargetId)
+    ? requestedCameraTargetId
+    : undefined;
+  const effectiveCameraTargetId = visibleCameraTargetId
+    ?? ((camera.shot === 'close' || camera.shot === 'reaction') ? dialog.speakerId : undefined);
+  const cameraTargetPosition = visibleCharactersByPosition.find(
+    (entry) => entry.slot.id === effectiveCameraTargetId,
+  )?.position;
+  const cameraPresentation = resolveStageCameraPresentation(
+    camera,
+    visibleCharacterCount,
+    cameraTargetPosition,
+    characterStageLayout,
+    speakerPosition,
+  );
+  const focusCharacterId = (camera.shot === 'close' || camera.shot === 'reaction') && effectiveCameraTargetId
+    ? effectiveCameraTargetId
+    : dialog.speakerId;
+  const cameraStyle = {
+    '--stage-camera-scale': cameraPresentation.scale,
+    '--stage-camera-origin-x': `${cameraPresentation.originX}%`,
+    '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
+    '--stage-camera-pan-x': `${cameraPresentation.panX}%`,
+    '--stage-camera-pan-y': `${cameraPresentation.panY}%`,
+    '--stage-camera-duration': `${cameraPresentation.duration}ms`,
+  } as CSSProperties;
   useLayoutEffect(() => {
     previousCharacterStageLayoutRef.current = characterStageLayout;
   }, [characterStageLayout]);
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
+    if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
+    if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
     const aRank = speakerOrder.indexOf(a.slot.id);
     const bRank = speakerOrder.indexOf(b.slot.id);
     const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
@@ -2117,7 +2151,7 @@ export default function App() {
     };
   }, [bootMode, choiceGate.active, dialog.visibleText, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
-  const hasFocusedSpeaker = Boolean(dialog.speakerId && visibleCharacterSet.has(dialog.speakerId));
+  const hasFocusedSpeaker = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
 
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
     if (!slot || !visibleCharacterSet.has(slot.id)) {
@@ -2125,7 +2159,7 @@ export default function App() {
     }
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
-    const isSpeaker = hasFocusedSpeaker && dialog.speakerId === slot.id;
+    const isSpeaker = hasFocusedSpeaker && focusCharacterId === slot.id;
     const focusPresentation = resolveCharacterFocusPresentation(
       visibleCharacterCount,
       order,
@@ -2138,11 +2172,13 @@ export default function App() {
     const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
     const charStyle = {
       zIndex,
-      '--char-scale': focusPresentation.scaleMultiplier * framingScale,
+      '--char-scale': focusPresentation.scaleMultiplier * framingScale * slot.calibration.scale,
       '--char-facing-scale-x': facingScale,
       '--char-brightness': focusPresentation.brightness,
       '--char-framing-x': `${slot.framing.x}%`,
       '--char-framing-y': `${slot.framing.y}%`,
+      '--char-calibration-x': `${slot.calibration.x}%`,
+      '--char-calibration-y': `${slot.calibration.y}%`,
     } as CSSProperties;
     const className = ['char', 'char-image', position, focusPresentation.depthClass, duoClass].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
@@ -2768,11 +2804,19 @@ export default function App() {
         className={`char-layer${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
         data-character-layout={characterStageLayout.mode}
         data-character-count={visibleCharacterCount}
+        data-camera-shot={camera.shot}
         style={{ bottom: `${stickerSafeInset}px` }}
       >
-        {renderCharacter(characters.left, 'left')}
-        {renderCharacter(characters.center, 'center')}
-        {renderCharacter(characters.right, 'right')}
+        <div
+          className="char-camera-world"
+          data-camera-target={camera.target}
+          data-camera-transition={cameraPresentation.transition}
+          style={cameraStyle}
+        >
+          {renderCharacter(characters.left, 'left')}
+          {renderCharacter(characters.center, 'center')}
+          {renderCharacter(characters.right, 'right')}
+        </div>
       </div>
       <div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>
         <div className="sticker-safe-frame">

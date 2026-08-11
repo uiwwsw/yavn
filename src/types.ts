@@ -23,6 +23,29 @@ export type CharacterFramingPreset = {
   y?: number;
 };
 
+export type CharacterCalibration = {
+  scale?: number;
+  x?: number;
+  y?: number;
+};
+
+export type CameraShot = 'wide' | 'medium' | 'close' | 'reaction';
+export type CameraTransition = 'cut' | 'push' | 'pan';
+
+export type CameraDirective = {
+  shot: CameraShot;
+  target?: 'group' | 'speaker' | string;
+  transition?: CameraTransition;
+  duration?: number;
+};
+
+export type StageCameraState = {
+  shot: CameraShot;
+  target: 'group' | string;
+  transition: CameraTransition;
+  duration: number;
+};
+
 export type CharacterAssetDefinition = {
   base: string;
   emotions?: Record<string, string>;
@@ -30,6 +53,7 @@ export type CharacterAssetDefinition = {
   defaultDelivery?: DialogueDelivery;
   defaultFraming?: string;
   framings?: Record<string, CharacterFramingPreset>;
+  calibration?: CharacterCalibration;
 };
 
 export type CharacterFramingState = {
@@ -99,6 +123,7 @@ export type SayAction = {
     char?: string;
     with?: string[];
     framing?: string;
+    camera?: CameraDirective;
     text: string;
     delivery?: DialogueDelivery;
     wait?: number;
@@ -167,6 +192,7 @@ export type InputAction = {
     char?: string;
     with?: string[];
     framing?: string;
+    camera?: CameraDirective;
     correct: string;
     errors: string[];
     saveAs?: string;
@@ -207,6 +233,7 @@ export type ChoiceAction = {
     char?: string;
     with?: string[];
     framing?: string;
+    camera?: CameraDirective;
     forgiveOnceDefault?: boolean;
     forgiveMessage?: string;
     timeoutMs?: number;
@@ -240,12 +267,17 @@ export type GameOverAction = {
   gameOver: GameOverDefinition;
 };
 
+export type CameraAction = {
+  camera: CameraDirective;
+};
+
 export type Action =
   | { bg: string }
   | StickerAction
   | { clearSticker: ClearStickerTarget }
   | { music: string }
   | { sound: string }
+  | CameraAction
   | CharAction
   | SayAction
   | VideoAction
@@ -357,6 +389,7 @@ export type CharacterSlot = {
   emotion?: string;
   facing?: CharacterFacing;
   framing: CharacterFramingState;
+  calibration: Required<CharacterCalibration>;
 };
 
 export type StickerSlot = {

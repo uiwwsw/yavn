@@ -16,6 +16,20 @@ export const dialogueDeliverySchema = z.enum([
   'deduction',
 ]);
 
+export const cameraShotSchema = z.enum(['wide', 'medium', 'close', 'reaction']);
+export const cameraTransitionSchema = z.enum(['cut', 'push', 'pan']);
+export const cameraDirectiveSchema = z.union([
+  cameraShotSchema.transform((shot) => ({ shot })),
+  z
+    .object({
+      shot: cameraShotSchema,
+      target: z.string().min(1).optional(),
+      transition: cameraTransitionSchema.optional(),
+      duration: z.number().int().nonnegative().max(3000).optional(),
+    })
+    .strict(),
+]);
+
 export const conditionSchema: z.ZodType = z.lazy(() =>
   z.union([
     z.object({
@@ -41,6 +55,7 @@ const inputActionSchema = z.object({
   char: z.string().min(1).optional(),
   with: z.array(z.string().min(1)).optional(),
   framing: z.string().min(1).optional(),
+  camera: cameraDirectiveSchema.optional(),
   correct: z.string().min(1),
   errors: z.array(z.string().min(1)).min(1).optional(),
   saveAs: z.string().min(1).optional(),
@@ -132,6 +147,7 @@ export const actionSchema = z.union([
   }),
   z.object({ music: z.string() }),
   z.object({ sound: z.string() }),
+  z.object({ camera: cameraDirectiveSchema }),
   z.object({
     video: z.object({
       src: z.string().min(1),
@@ -144,6 +160,7 @@ export const actionSchema = z.union([
       char: input.char,
       with: input.with,
       framing: input.framing,
+      camera: input.camera,
       correct: input.correct,
       errors: input.errors && input.errors.length > 0 ? input.errors : ['정답이 아닙니다.'],
       saveAs: input.saveAs,
@@ -161,6 +178,7 @@ export const actionSchema = z.union([
       char: z.string().min(1).optional(),
       with: z.array(z.string().min(1)).optional(),
       framing: z.string().min(1).optional(),
+      camera: cameraDirectiveSchema.optional(),
       forgiveOnceDefault: z.boolean().optional(),
       forgiveMessage: z.string().min(1).optional(),
       timeoutMs: z.number().int().min(1000).max(60000).optional(),
@@ -199,6 +217,7 @@ export const actionSchema = z.union([
       char: z.string().optional(),
       with: z.array(z.string().min(1)).optional(),
       framing: z.string().min(1).optional(),
+      camera: cameraDirectiveSchema.optional(),
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
@@ -316,6 +335,14 @@ const characterFramingPresetSchema = z
   })
   .strict();
 
+const characterCalibrationSchema = z
+  .object({
+    scale: z.number().min(0.5).max(2).optional(),
+    x: z.number().min(-30).max(30).optional(),
+    y: z.number().min(-30).max(30).optional(),
+  })
+  .strict();
+
 const characterAssetsSchema = z.record(
   z.object({
     base: z.string(),
@@ -324,6 +351,7 @@ const characterAssetsSchema = z.record(
     defaultDelivery: dialogueDeliverySchema.optional(),
     defaultFraming: z.string().min(1).optional(),
     framings: z.record(characterFramingPresetSchema).optional(),
+    calibration: characterCalibrationSchema.optional(),
   }),
 );
 
