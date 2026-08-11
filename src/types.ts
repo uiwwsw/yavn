@@ -303,6 +303,7 @@ export type StartScreenConfig = {
   image?: string;
   music?: string;
   showTitle: boolean;
+  titleColor?: string;
   startButtonText: string;
   buttonPosition: StartButtonPosition;
 };

@@ -22,6 +22,7 @@ startScreen:
   enabled: true
   image: "assets/bg/title-palace-silla-v3.webp"
   showTitle: true
+  titleColor: "#ffe0a3"
   startButtonText: "운명을 시작한다"
   buttonPosition: bottom-left
 endingScreen:

@@ -10,6 +10,7 @@ describe('start gate presentation', () => {
     expect(app).toContain('start-gate-atmosphere');
     expect(app).toContain("startGateLaunching ? ' is-launching' : ''");
     expect(app).toContain('aria-busy={startGateLaunching}');
+    expect(app).toContain("'--start-gate-title-color': startGate.titleColor");
     expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?border: 1px solid var\(--start-gate-frame-color\)/);
     expect(styles).toMatch(/\.start-gate\.is-launching \.start-gate-content\s*\{[\s\S]*?opacity: 0/);
   });

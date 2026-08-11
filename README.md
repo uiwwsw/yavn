@@ -168,6 +168,7 @@ startScreen:
   image: assets/bg/title.png
   music: assets/music/intro.mp3
   showTitle: true
+  titleColor: "#ffe0a3"
   startButtonText: 시작하기
   buttonPosition: auto
 endingScreen:
@@ -250,7 +251,7 @@ scenes:
   - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
-  - `startScreen` (`enabled`, `image`, `music`, `showTitle`, `startButtonText`, `buttonPosition`)
+  - `startScreen` (`enabled`, `image`, `music`, `showTitle`, `titleColor`, `startButtonText`, `buttonPosition`)
   - `endingScreen` (`image`)
   - `endings`, `endingRules`, `defaultEnding`
 - `seo` 하위 필드:
@@ -284,6 +285,7 @@ scenes:
 - `ui.template`은 `config.yaml`만 사용하며, 미지정 시 `cinematic-noir`가 기본값으로 적용됩니다.
 - `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `showTitle=true`, `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
 - 타이틀 이미지 자체에 게임명이 포함되어 있으면 `showTitle: false`로 엔진 제목 오버레이를 숨길 수 있습니다. SEO 제목과 접근 가능한 문서 제목은 그대로 유지됩니다.
+- `startScreen.titleColor`에는 `#ffe0a3`, `rgb(...)`, `oklch(...)` 같은 CSS 색상을 지정할 수 있습니다. 미지정 시 선택한 `ui.template`의 기본 제목색을 사용합니다.
 - `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
 - 서로 다른 로컬 오디오 `music` 액션은 약 420ms 동안 크로스페이드됩니다. 같은 곡을 다시 지정하면 재시작하지 않으며, BGM 끄기와 초기화면 이동은 즉시 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
@@ -699,6 +701,7 @@ scenes:
 - `config.yaml`에 `startScreen`이 없으면 기존처럼 즉시 실행합니다. (기본 OFF)
 - `startScreen`이 있고 `enabled: true`면 시작 화면을 표시합니다.
 - `startScreen.showTitle`은 기본 `true`이며, `false`이면 이미지 위 게임명 오버레이만 숨깁니다.
+- `startScreen.titleColor`를 지정하면 시작 화면 게임 제목에 테마 기본색보다 우선 적용합니다.
 - `showTitle: false`인 타이틀 아트는 모바일 세로 화면에서 어두운 `cover` 배경과 별도의 전경 이미지로 렌더링해, 이미지 안에 포함된 제목이 좌우로 잘리지 않게 합니다. 데스크톱과 모바일 가로 화면은 기존 `cover` 구성을 유지합니다.
 - 시작 버튼은 항상 표시되며, 텍스트 기본값은 `시작하기`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생합니다.

@@ -601,6 +601,11 @@ describe('Deokman complete-game content', () => {
     });
   });
 
+  it('uses a high-visibility gold title over the night palace artwork', () => {
+    const config = readYaml('config.yaml');
+    expect(asRecord(config.startScreen).titleColor).toBe('#ffe0a3');
+  });
+
   it('keeps every authored scene reachable from its chapter opening', () => {
     chapters.forEach((path) => {
       const document = readYaml(path);

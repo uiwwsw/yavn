@@ -120,6 +120,7 @@ startScreen:
   image: assets/bg/title.png
   music: assets/music/intro.mp3
   showTitle: true
+  titleColor: "#ffe0a3"
   startButtonText: 시작하기
   buttonPosition: auto
 endingScreen:
@@ -144,6 +145,7 @@ defaultEnding: bad_end
 - `ui`를 생략하면 기본 템플릿 `cinematic-noir`가 적용됩니다.
 - `startScreen` 객체를 선언하면 기본 활성화(`enabled: true`)됩니다.
 - `startScreen.showTitle`은 기본 `true`입니다. 타이틀 이미지에 게임명이 이미 포함된 경우 `false`로 설정하면 시각적 제목 오버레이만 숨기며 SEO 메타 제목은 유지합니다.
+- `startScreen.titleColor`는 시작 화면 게임 제목의 CSS 색상입니다. `#ffe0a3`, `rgb(...)`, `oklch(...)` 등을 사용할 수 있고, 생략하면 `ui.template`의 제목색을 유지합니다.
 - `startButtonText` 기본값은 `시작하기`, `buttonPosition` 기본값은 `auto`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생하고, 시작/이어하기 시점에 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이 배경을 교체합니다.
@@ -383,6 +385,7 @@ scenes:
 
 - `config.yaml.startScreen`이 없으면 시작 화면은 비활성화됩니다. (기존 즉시 실행과 동일)
 - `startScreen` 객체를 선언하고 `enabled: true`면 시작 화면을 노출합니다.
+- `startScreen.titleColor`가 있으면 Start Gate 제목의 `--start-gate-title-color` 토큰을 게임별 값으로 덮어씁니다. URL·ZIP 프리뷰와 초기화면 복귀에 동일하게 적용됩니다.
 - `showTitle: false`인 내장 타이틀 이미지는 모바일 세로 화면에서 어두운 `cover` 배경 위에 별도 전경 이미지로 표시합니다. 이때 원본 비율을 유지해 이미지 안의 제목이 좌우로 잘리지 않으며, 데스크톱과 모바일 가로 화면은 기존 `cover` 구성을 유지합니다.
 - 버튼 기본값:
   - 시작 버튼 텍스트 `startButtonText`: `시작하기`
@@ -839,6 +842,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-11: `config.yaml.startScreen.titleColor`를 추가해 게임별 시작 화면 제목색이 전역 `ui.template` 기본색보다 우선하도록 확장했습니다. 덕만 야간 타이틀에는 밝은 금색을 적용하고 `paper-stage` 제목 그림자를 보강했으며 URL·ZIP 프리뷰와 초기화면 복귀 경로를 모두 지원합니다.
 - 2026-08-11: Start Gate에 느린 배경 카메라 인, 비네트·테마 프레임·미세 질감, 타이틀/CTA 순차 등장과 실행 전환 상태를 추가했습니다. 3종 `ui.template` 색상 토큰을 유지하고 모바일 safe-area 및 `prefers-reduced-motion` 접근성 처리를 함께 보강했으며 DSL 문법 변경은 없습니다.
 - 2026-08-11: 캐릭터 원본의 고유 시선을 `assets.characters.<id>.facing(left|right|front)`으로 선언하고, 좌우 슬롯과 2인 자동 분할의 실제 화면 절반을 기준으로 대화 상대를 향하게 자동 반전하는 기능을 추가했습니다. 단독 중앙 컷과 `front`/미지정 원화는 기존 방향을 유지합니다. 덕만 v3.0.0은 인물 10명의 기본·감정 30종을 서로 다른 얼굴형·체형·자세·소품과 풍부한 표정 연기로 교체하고, 추상적인 장 끝 요약과 한 문장짜리 비정규 엔딩을 행동·상호 대화 중심으로 개편했습니다.
 - 2026-08-11: 덕만 v2.6.0에서 날짜 변경·장거리 이동·수사 생략을 무화자 `say` 나레이션으로 잇고, 같은 공간의 연속 위기는 비·종·피·횃불·인주 변화로 시간 경과를 보여 주도록 8개 장의 시간축을 재구성했습니다. 2장의 별점 준비 기한과 당일 혼담 답변, 4장의 밤샘 전투와 적장 회담 사이 모순도 바로잡았습니다. 32개 시간 앵커와 금지된 시간 모순 회귀 검증을 추가했으며 DSL 문법 변경은 없습니다.

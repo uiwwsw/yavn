@@ -130,6 +130,7 @@ type StartGateState =
     startButtonText: string;
     buttonPosition: StartButtonPosition;
     showTitle: boolean;
+    titleColor?: string;
     showLoadButton: boolean;
   }
   | {
@@ -145,6 +146,7 @@ type StartGateState =
     startButtonText: string;
     buttonPosition: StartButtonPosition;
     showTitle: boolean;
+    titleColor?: string;
     showLoadButton: false;
   };
 
@@ -1009,6 +1011,7 @@ export default function App() {
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
                 showTitle: preview.startScreen.showTitle ?? true,
+                titleColor: preview.startScreen.titleColor,
                 showLoadButton: preview.hasLoadableSave,
               });
               return;
@@ -2237,6 +2240,7 @@ export default function App() {
           startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
           buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
           showTitle: preview.startScreen.showTitle ?? true,
+          titleColor: preview.startScreen.titleColor,
           showLoadButton: false,
         });
         return;
@@ -2281,6 +2285,7 @@ export default function App() {
             startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
             buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
             showTitle: preview.startScreen.showTitle ?? true,
+            titleColor: preview.startScreen.titleColor,
             showLoadButton: preview.hasLoadableSave,
           });
           return;
@@ -2307,9 +2312,13 @@ export default function App() {
 
   if (startGate) {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
+    const startGateStyle = startGate.titleColor
+      ? ({ '--start-gate-title-color': startGate.titleColor } as CSSProperties)
+      : undefined;
     return (
       <div
         className={`start-gate${startGateLaunching ? ' is-launching' : ''}`}
+        style={startGateStyle}
         data-show-title={String(startGate.showTitle)}
         data-ui-template={startGate.uiTemplate}
         aria-busy={startGateLaunching}
