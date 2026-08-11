@@ -2496,6 +2496,14 @@ textarea,
   padding: 18px 20px 20px;
 }
 
+.settings-inventory-body {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.settings-inventory-body.has-tools {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
 .story-log-summary {
   min-height: 34px;
   border-bottom: 1px solid var(--archive-line);
@@ -4516,8 +4524,9 @@ textarea,
 
   .settings-modal {
     width: 100%;
-    min-height: min(64cqh, 620px);
-    max-height: min(88cqh, 760px);
+    height: min(90cqh, 760px);
+    min-height: 0;
+    max-height: min(90cqh, 760px);
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
@@ -4529,6 +4538,29 @@ textarea,
   .settings-modal-body {
     padding-left: 12px;
     padding-right: 12px;
+  }
+
+  .settings-modal-header {
+    min-height: 64px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+  }
+
+  .settings-modal-heading {
+    gap: 2px;
+  }
+
+  .settings-modal-heading p {
+    font-size: 0.52rem;
+  }
+
+  .settings-modal-header .settings-modal-heading h2 {
+    font-size: 1.06rem;
+  }
+
+  .settings-modal-body {
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 
   .case-file-tabs {
@@ -4557,19 +4589,22 @@ textarea,
   }
 
   .save-protection-hero {
-    grid-template-columns: 42px minmax(0, 1fr);
-    gap: 11px;
-    padding: 12px;
+    min-height: 70px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: 10px 11px;
   }
 
   .save-protection-mark {
-    width: 40px;
-    height: 40px;
+    display: none;
   }
 
   .save-autosave-row {
-    grid-column: 1 / -1;
-    width: 100%;
+    grid-column: auto;
+    min-width: 132px;
+    min-height: 48px;
+    width: auto;
+    padding: 7px 9px;
   }
 
   .save-system-grid {
@@ -4578,14 +4613,16 @@ textarea,
 
   .save-system-section {
     min-height: 0;
+    gap: 10px;
+    padding: 15px 12px 12px;
   }
 
   .save-preferences-section {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .save-system-actions {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .save-system-actions button {
@@ -4609,13 +4646,18 @@ textarea,
     font-size: 0.84rem;
   }
 
+  .settings-inventory-body,
+  .settings-inventory-body.has-tools {
+    gap: 9px;
+  }
+
   .inventory-grid-scroll {
-    padding: 8px;
+    padding: 2px 3px 4px 0;
   }
 
   .inventory-collection-header {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 6px;
   }
 
   .inventory-view-tabs {
@@ -4623,16 +4665,38 @@ textarea,
   }
 
   .inventory-view-tab {
+    min-height: 44px;
     font-size: 0.8rem;
     padding: 8px 6px;
   }
 
+  .inventory-overview {
+    gap: 7px;
+    padding: 8px 11px;
+  }
+
+  .inventory-overview b {
+    font-size: 1rem;
+  }
+
+  .inventory-overview progress {
+    height: 4px;
+  }
+
   .inventory-tools {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    padding-bottom: 9px;
   }
 
   .inventory-search-field {
     grid-column: 1 / -1;
+  }
+
+  .inventory-search-field input,
+  .inventory-select-field select {
+    min-height: 38px;
+    padding: 7px 9px;
   }
 
   .inventory-grid {
@@ -4668,8 +4732,13 @@ textarea,
   }
 
   .inventory-detail-modal-body.has-image {
-    grid-template-columns: minmax(106px, 0.72fr) minmax(0, 1.28fr);
+    grid-template-columns: 1fr;
     gap: 12px;
+  }
+
+  .inventory-detail-modal-body.has-image img {
+    width: min(180px, 62vw);
+    justify-self: center;
   }
 
   .char-image {
@@ -4747,6 +4816,60 @@ textarea,
 
   .game-over-primary-actions button {
     min-height: 48px;
+  }
+}
+
+@media (max-width: 420px) {
+  .case-file-tab {
+    gap: 6px;
+    padding: 0 8px;
+  }
+
+  .case-file-tab:last-child .case-file-tab-count {
+    display: none;
+  }
+
+  .case-file-tab-label {
+    font-size: 0.68rem;
+  }
+
+  .save-autosave-row {
+    min-width: 122px;
+  }
+
+  .save-autosave-row small {
+    display: none;
+  }
+
+  .save-auto-status b {
+    font-size: 0.86rem;
+  }
+
+  .save-system-actions button,
+  .save-system-wide-action {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 768px) and (max-height: 520px) {
+  .settings-modal {
+    height: 100cqh;
+    max-height: 100cqh;
+  }
+
+  .settings-modal-header {
+    min-height: 54px;
+    padding-top: 7px;
+    padding-bottom: 6px;
+  }
+
+  .case-file-tab {
+    min-height: 44px;
+  }
+
+  .settings-modal-body {
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 }
 
