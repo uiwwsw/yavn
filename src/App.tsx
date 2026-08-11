@@ -46,6 +46,8 @@ import type { SaveSlotKind, SaveSlotSummary } from './engine';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFacingScale,
+  resolveCharacterFocusPresentation,
+  resolveCharacterFramingScale,
   resolveCharacterStageLayout,
 } from './characterLayout';
 import type { CharacterStageLayout } from './characterLayout';
@@ -1571,6 +1573,7 @@ export default function App() {
     })),
     previousCharacterStageLayoutRef.current,
   );
+  const visibleCharacterCount = visibleCharactersByPosition.length;
   useLayoutEffect(() => {
     previousCharacterStageLayoutRef.current = characterStageLayout;
   }, [characterStageLayout]);
@@ -2123,30 +2126,33 @@ export default function App() {
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isSpeaker = hasFocusedSpeaker && dialog.speakerId === slot.id;
-    const depthStep = Math.max(0, order - 1);
-    const depthBrightness = hasFocusedSpeaker ? (isSpeaker ? 1 : Math.max(0.64, 1 - depthStep * 0.15)) : 1;
-    const depthScale = hasFocusedSpeaker ? (isSpeaker ? 1.02 : Math.max(0.98, 1 - depthStep * 0.01)) : 1;
-    const depthClass = !hasFocusedSpeaker ? 'is-neutral' : isSpeaker ? 'is-speaker' : 'is-listener';
+    const focusPresentation = resolveCharacterFocusPresentation(
+      visibleCharacterCount,
+      order,
+      isSpeaker,
+      hasFocusedSpeaker,
+    );
+    const framingScale = resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount);
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
     const charStyle = {
       zIndex,
-      '--char-scale': depthScale * slot.framing.scale,
+      '--char-scale': focusPresentation.scaleMultiplier * framingScale,
       '--char-facing-scale-x': facingScale,
-      '--char-brightness': depthBrightness,
+      '--char-brightness': focusPresentation.brightness,
       '--char-framing-x': `${slot.framing.x}%`,
       '--char-framing-y': `${slot.framing.y}%`,
     } as CSSProperties;
-    const className = ['char', 'char-image', position, depthClass, duoClass].filter(Boolean).join(' ');
+    const className = ['char', 'char-image', position, focusPresentation.depthClass, duoClass].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
       return (
-        <Suspense fallback={null} key={`${position}-${slot.id}-${slot.source}`}>
+        <Suspense fallback={null} key={`character-${slot.id}`}>
           <Live2DCharacter
             slot={slot}
             position={position}
-            trackingKey={buildLive2DLoadKey(position, slot)}
-            className={[depthClass, duoClass].filter(Boolean).join(' ')}
+            trackingKey={buildLive2DLoadKey(slot)}
+            className={[focusPresentation.depthClass, duoClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
         </Suspense>
@@ -2155,10 +2161,12 @@ export default function App() {
     return (
       <img
         {...HIGH_PRIORITY_IMAGE_PROPS}
-        key={buildImageCharacterRenderKey(position, slot.id)}
+        key={buildImageCharacterRenderKey(slot.id)}
         className={className}
         src={slot.source}
         alt={slot.id}
+        data-character-id={slot.id}
+        data-stage-position={position}
         data-character-framing={slot.framing.name}
         loading="eager"
         decoding="sync"
@@ -2757,8 +2765,9 @@ export default function App() {
         className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}
       >
       <div
-        className={`char-layer${characterStageLayout.mode === 'duo' ? ' char-layout-duo' : ''}`}
+        className={`char-layer${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
         data-character-layout={characterStageLayout.mode}
+        data-character-count={visibleCharacterCount}
         style={{ bottom: `${stickerSafeInset}px` }}
       >
         {renderCharacter(characters.left, 'left')}
