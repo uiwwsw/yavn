@@ -27,6 +27,12 @@ describe('launcher responsive containment', () => {
     expect(styles).toMatch(
       /\.launcher-feature-copy > \*\s*\{[\s\S]*?min-width: 0;[\s\S]*?max-width: 100%;/,
     );
+    expect(styles).toMatch(
+      /\.launcher-feature \.inspector-tag-row\s*\{[\s\S]*?scrollbar-width: thin;[\s\S]*?scrollbar-color:/,
+    );
+    expect(styles).toMatch(
+      /\.launcher-tag-filter::-webkit-scrollbar-thumb\s*\{[\s\S]*?background: var\(--launcher-coral\);/,
+    );
   });
 
   it('keeps navigation in a dedicated rail instead of painting over slide copy', () => {

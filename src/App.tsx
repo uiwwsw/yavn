@@ -1496,9 +1496,12 @@ export default function App() {
     return Array.from(categories).sort((a, b) => a.localeCompare(b, 'ko'));
   }, [inventoryCatalogEntries]);
   const normalizedInventorySearchTerm = inventorySearchTerm.trim().toLowerCase();
+  const inventoryViewEntries = useMemo(
+    () => inventoryCatalogEntries.filter((entry) => (inventoryView === 'bag' ? entry.owned : true)),
+    [inventoryCatalogEntries, inventoryView],
+  );
   const inventoryVisibleEntries = useMemo(() => {
-    const filtered = inventoryCatalogEntries
-      .filter((entry) => (inventoryView === 'bag' ? entry.owned : true))
+    const filtered = inventoryViewEntries
       .filter((entry) => (inventoryCategoryFilter ? entry.category === inventoryCategoryFilter : true))
       .filter((entry) => {
         if (!normalizedInventorySearchTerm) {
@@ -1513,22 +1516,25 @@ export default function App() {
       return a.name.localeCompare(b.name, 'ko');
     });
   }, [
-    inventoryCatalogEntries,
-    inventoryView,
+    inventoryViewEntries,
     inventoryCategoryFilter,
     normalizedInventorySearchTerm,
     inventorySort,
   ]);
   const selectedInventoryEntry = inventoryVisibleEntries.find((entry) => entry.id === selectedInventoryItemId) ?? null;
+  const inventoryFiltersActive = normalizedInventorySearchTerm.length > 0 || inventoryCategoryFilter.length > 0;
   const inventoryGridEmptyMessage = useMemo(() => {
     if (inventoryCatalogEntries.length === 0) {
-      return '등록된 아이템이 없습니다.';
+      return '이 게임에는 등록된 단서가 없습니다.';
+    }
+    if (inventoryViewEntries.length === 0) {
+      return '아직 획득한 단서가 없습니다.';
     }
     if (inventoryVisibleEntries.length === 0) {
-      return inventoryView === 'bag' ? '획득한 아이템이 없습니다.' : '조건에 맞는 아이템이 없습니다.';
+      return '검색 조건에 맞는 단서가 없습니다.';
     }
     return '';
-  }, [inventoryCatalogEntries.length, inventoryView, inventoryVisibleEntries.length]);
+  }, [inventoryCatalogEntries.length, inventoryViewEntries.length, inventoryVisibleEntries.length]);
   const visibleCharacterSet = new Set(visibleCharacterIds);
   const visibleCharactersByPosition = (
     [
@@ -2794,7 +2800,7 @@ export default function App() {
 
       <div className="hud">
         <div className="hud-meta-group">
-          <div className="meta">{game?.meta.title ?? 'Loading...'}</div>
+          <div className="meta">{game?.meta.title ?? '게임 불러오는 중'}</div>
           {chapterTotal > 1 && (
             <div className="hud-chapter-progress">
               CHAPTER {chapterIndex}/{chapterTotal}
@@ -2802,7 +2808,7 @@ export default function App() {
           )}
         </div>
         <div className="hud-right">
-          <div className="hint">{uploading ? 'ZIP Loading...' : 'YAVN ENGINE'}</div>
+          {uploading && <div className="hint">ZIP 불러오는 중</div>}
           <button
             type="button"
             className="hud-action-button hud-log-button"
@@ -2879,7 +2885,7 @@ export default function App() {
             onClick={(event) => event.stopPropagation()}
           >
             <header className="settings-modal-header">
-              <h2>CASE FILE</h2>
+              <h2>케이스 파일</h2>
               <button
                 type="button"
                 className="settings-close-button"
@@ -2960,7 +2966,9 @@ export default function App() {
                 )}
               </div>
             ) : caseFileTab === 'inventory' ? (
-            <div className="settings-modal-body settings-inventory-body">
+            <div
+              className={`settings-modal-body settings-inventory-body ${inventoryViewEntries.length > 0 ? 'has-tools' : ''}`}
+            >
               <div className="inventory-view-tabs" role="tablist" aria-label="인벤토리 보기">
                 <button
                   type="button"
@@ -2994,44 +3002,71 @@ export default function App() {
                 </div>
                 <progress value={ownedInventoryCount} max={Math.max(totalInventoryCount, 1)} />
               </div>
-              <div className="inventory-tools">
-                <label className="inventory-search-field">
-                  <span className="inventory-tool-label">검색</span>
-                  <input
-                    type="search"
-                    value={inventorySearchTerm}
-                    onChange={(event) => setInventorySearchTerm(event.target.value)}
-                    placeholder="아이템 이름"
-                  />
-                </label>
-                <label className="inventory-select-field">
-                  <span className="inventory-tool-label">카테고리</span>
-                  <select
-                    value={inventoryCategoryFilter}
-                    onChange={(event) => setInventoryCategoryFilter(event.target.value)}
-                  >
-                    <option value={INVENTORY_CATEGORY_ALL}>전체</option>
-                    {inventoryCategoryOptions.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="inventory-select-field">
-                  <span className="inventory-tool-label">정렬</span>
-                  <select
-                    value={inventorySort}
-                    onChange={(event) => setInventorySort(event.target.value as InventorySortPreference)}
-                  >
-                    <option value="order">획득 순서</option>
-                    <option value="name">이름순</option>
-                  </select>
-                </label>
-              </div>
+              {inventoryViewEntries.length > 0 && (
+                <div className="inventory-tools">
+                  <label className="inventory-search-field">
+                    <span className="inventory-tool-label">검색</span>
+                    <input
+                      type="search"
+                      value={inventorySearchTerm}
+                      onChange={(event) => setInventorySearchTerm(event.target.value)}
+                      placeholder="단서 이름 검색"
+                    />
+                  </label>
+                  <label className="inventory-select-field">
+                    <span className="inventory-tool-label">카테고리</span>
+                    <select
+                      value={inventoryCategoryFilter}
+                      onChange={(event) => setInventoryCategoryFilter(event.target.value)}
+                    >
+                      <option value={INVENTORY_CATEGORY_ALL}>전체</option>
+                      {inventoryCategoryOptions.map((category) => (
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="inventory-select-field">
+                    <span className="inventory-tool-label">정렬</span>
+                    <select
+                      value={inventorySort}
+                      onChange={(event) => setInventorySort(event.target.value as InventorySortPreference)}
+                    >
+                      <option value="order">획득 순서</option>
+                      <option value="name">이름순</option>
+                    </select>
+                  </label>
+                </div>
+              )}
               <div className="inventory-grid-scroll">
                 {inventoryVisibleEntries.length === 0 ? (
-                  <p className="settings-empty-note inventory-grid-empty">{inventoryGridEmptyMessage}</p>
+                  <div className="inventory-grid-empty">
+                    <span className="inventory-empty-icon" aria-hidden="true" />
+                    <strong>{inventoryGridEmptyMessage}</strong>
+                    <p>
+                      {inventoryViewEntries.length === 0 && inventoryCatalogEntries.length > 0
+                        ? '플레이 중 발견한 단서는 가방에 자동으로 보관됩니다.'
+                        : inventoryFiltersActive
+                          ? '검색어나 카테고리를 바꾸고 다시 확인해 보세요.'
+                          : '게임에서 단서를 발견하면 이곳에 표시됩니다.'}
+                    </p>
+                    {inventoryViewEntries.length === 0 && inventoryCatalogEntries.length > 0 ? (
+                      <button type="button" onClick={() => setInventoryView('catalog')}>
+                        도감 살펴보기
+                      </button>
+                    ) : inventoryFiltersActive ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInventorySearchTerm('');
+                          setInventoryCategoryFilter(INVENTORY_CATEGORY_ALL);
+                        }}
+                      >
+                        검색 조건 초기화
+                      </button>
+                    ) : null}
+                  </div>
                 ) : (
                   <div className="inventory-grid" role="list" aria-label="인벤토리 그리드">
                     {inventoryVisibleEntries.map((entry) => (
@@ -3041,21 +3076,29 @@ export default function App() {
                         role="listitem"
                         className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}`}
                         onClick={() => {
+                          if (!entry.owned) {
+                            return;
+                          }
                           setSelectedInventoryItemId(entry.id);
                           setInventoryDetailOpen(true);
                         }}
-                        aria-haspopup="dialog"
-                        aria-label={`${entry.owned ? entry.name : '미확인 아이템'} ${entry.owned ? '획득됨' : '미획득'}`}
+                        disabled={!entry.owned}
+                        aria-haspopup={entry.owned ? 'dialog' : undefined}
+                        aria-label={`${entry.owned ? entry.name : '미발견 단서'} ${entry.owned ? '획득됨' : '미획득'}`}
                       >
-                        {entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
+                        {inventoryView === 'catalog' && entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
                         {entry.owned && entry.imageUrl ? (
                           <img src={entry.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                         ) : (
-                          <span className="inventory-slot-fallback" aria-hidden="true">
-                            {entry.owned ? 'ITEM' : 'LOCKED'}
+                          <span
+                            className={`inventory-slot-fallback ${entry.owned ? 'is-placeholder' : 'is-locked-placeholder'}`}
+                            aria-hidden="true"
+                          >
+                            <span className="inventory-slot-fallback-icon" />
+                            {entry.owned && <span>이미지 없음</span>}
                           </span>
                         )}
-                        <span className="inventory-slot-name">{entry.owned ? entry.name : '미확인 아이템'}</span>
+                        <span className="inventory-slot-name">{entry.owned ? entry.name : '미발견 단서'}</span>
                       </button>
                     ))}
                   </div>
@@ -3193,11 +3236,11 @@ export default function App() {
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </header>
-                  <div className="inventory-detail-modal-body">
+                  <div
+                    className={`inventory-detail-modal-body ${selectedInventoryEntry.imageUrl ? 'has-image' : ''}`}
+                  >
                     {selectedInventoryEntry.owned ? (
                       <>
-                        <p className="inventory-detail-owned is-owned">{selectedInventoryEntry.category} · 획득</p>
-                        <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
                         {selectedInventoryEntry.imageUrl && (
                           <img
                             src={selectedInventoryEntry.imageUrl}
@@ -3206,6 +3249,10 @@ export default function App() {
                             decoding="async"
                           />
                         )}
+                        <div className="inventory-detail-copy">
+                          <p className="inventory-detail-owned is-owned">{selectedInventoryEntry.category} · 획득</p>
+                          <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
+                        </div>
                       </>
                     ) : (
                       <>
@@ -3303,7 +3350,7 @@ export default function App() {
                   style={{ '--choice-timeout-ms': `${choiceGate.timeoutMs}ms` } as CSSProperties}
                 >
                   <div className="choice-gate-timeout-meta">
-                    <span>DECISION WINDOW</span>
+                    <span>선택 제한</span>
                     <strong>{Math.ceil(choiceGate.timeoutMs / 1000)}s</strong>
                   </div>
                   <div className="choice-gate-timeout-track" aria-hidden="true">
@@ -3352,7 +3399,7 @@ export default function App() {
           )}
         </div>
         <div className="status">
-          {busy ? '...' : isFinished ? 'End' : inputGate.active ? '입력 대기' : choiceGate.active ? '선택 대기' : 'Next'}
+          {busy ? '...' : isFinished ? '완료' : inputGate.active ? '입력 대기' : choiceGate.active ? '선택 대기' : '다음'}
         </div>
       </div>
 
