@@ -1,11 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildImageCharacterRenderKey,
+  resolveCharacterFacingScale,
   resolveCharacterStageLayout,
   resolveDialogueVisibleCharacterIds,
 } from './characterLayout';
 
 describe('character stage layout', () => {
+  it('turns directional art inward while leaving front-facing and solo center art unchanged', () => {
+    expect(resolveCharacterFacingScale('left', 'right')).toBe(1);
+    expect(resolveCharacterFacingScale('left', 'left')).toBe(-1);
+    expect(resolveCharacterFacingScale('right', 'left')).toBe(1);
+    expect(resolveCharacterFacingScale('right', 'right')).toBe(-1);
+    expect(resolveCharacterFacingScale('front', 'left')).toBe(1);
+    expect(resolveCharacterFacingScale('left', 'center')).toBe(1);
+    expect(resolveCharacterFacingScale('left', 'center', 'left')).toBe(-1);
+    expect(resolveCharacterFacingScale(undefined, 'right')).toBe(1);
+  });
+
   it('places exactly two visible characters in stable left and right halves', () => {
     expect(resolveCharacterStageLayout([
       { id: '란', position: 'left' },
