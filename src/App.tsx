@@ -58,6 +58,7 @@ import {
   resolveInitialCarouselGameId,
   wrapCarouselIndex,
 } from './launcherCarousel';
+import { parseGameIdFromPath, resolveInitialBootPresentation, type BootMode } from './bootPresentation';
 import {
   buildLauncherShowcaseStyle,
   normalizeLauncherShowcase,
@@ -400,14 +401,6 @@ function applySeoMetadata(input: {
   setMetaTagByName('twitter:image:alt', input.imageAlt);
   setCanonicalUrl(input.canonicalUrl);
   setDynamicJsonLd(input.jsonLd);
-}
-
-function parseGameIdFromPath(pathValue: string): string | undefined {
-  const match = pathValue.match(/^\/game-list\/([^/]+)\/?$/);
-  if (!match) {
-    return undefined;
-  }
-  return decodeURIComponent(match[1]);
 }
 
 function resolveStartGateSessionKey(gameId: string): string {
@@ -827,7 +820,12 @@ export default function App() {
     uiTemplate,
     setDialogUiHidden,
   } = useVNStore();
-  const [bootMode, setBootMode] = useState<'launcher' | 'gameList' | 'uploaded'>('launcher');
+  const [bootMode, setBootMode] = useState<BootMode>(
+    () => resolveInitialBootPresentation(window.location.pathname).bootMode,
+  );
+  const [gameBootPending, setGameBootPending] = useState(
+    () => resolveInitialBootPresentation(window.location.pathname).gameBootPending,
+  );
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
   const [gameListLoading, setGameListLoading] = useState(false);
   const [gameListError, setGameListError] = useState<string | null>(null);
@@ -1025,11 +1023,18 @@ export default function App() {
             // Ignore preview failures and continue with direct runtime loading.
           }
         }
-        void loadGameFromUrl(gameUrl);
+        try {
+          await loadGameFromUrl(gameUrl);
+        } finally {
+          if (!cancelled) {
+            setGameBootPending(false);
+          }
+        }
         return;
       }
 
       setBootMode('launcher');
+      setGameBootPending(false);
     };
 
     void initializeBoot();
@@ -2242,6 +2247,7 @@ export default function App() {
       setStartGateLaunching(true);
       stopStartGateMusic();
       await waitForStartGateLaunchTransition();
+      setGameBootPending(true);
       setStartGate(null);
       try {
         if (gate.kind === 'url') {
@@ -2251,6 +2257,7 @@ export default function App() {
         }
         await loadGameFromZip(gate.file, { resumeFromSave: false });
       } finally {
+        setGameBootPending(false);
         setStartGateLaunching(false);
       }
     },
@@ -2422,6 +2429,14 @@ export default function App() {
             {startGate.musicUrl && <p className="start-gate-hint">화면을 눌러 음악과 함께 시작하세요</p>}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (gameBootPending) {
+    return (
+      <div className="game-route-boot" role="status" aria-live="polite" aria-label="게임 화면 준비 중">
+        <span className="game-route-boot-mark" aria-hidden="true">YAVN</span>
       </div>
     );
   }

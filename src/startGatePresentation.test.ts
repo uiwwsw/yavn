@@ -15,6 +15,20 @@ describe('start gate presentation', () => {
     expect(styles).toMatch(/\.start-gate\.is-launching \.start-gate-content\s*\{[\s\S]*?opacity: 0/);
   });
 
+  it('keeps delayed entrance elements at their first keyframe before animation starts', () => {
+    expect(styles).toMatch(
+      /\.start-gate-actions\s*\{[\s\S]*?opacity: 0;[\s\S]*?animation: start-gate-actions-in [^;]+ both;/,
+    );
+    expect(styles).toMatch(/\.start-gate-title-block\s*\{[\s\S]*?animation: start-gate-title-in [^;]+ both;/);
+    expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?animation: start-gate-frame-in [^;]+ both;/);
+  });
+
+  it('renders a non-interactive surface while a direct game route resolves', () => {
+    expect(app).toContain('if (gameBootPending)');
+    expect(app).toContain('className="game-route-boot"');
+    expect(app).toContain('setGameBootPending(true);');
+  });
+
   it('keeps the start gate visible when reduced motion is requested', () => {
     expect(styles).toMatch(
       /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.start-gate-title-block,[\s\S]*?\.start-gate-actions\s*\{[\s\S]*?opacity: 1/,
