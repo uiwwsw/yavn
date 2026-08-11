@@ -317,9 +317,7 @@ textarea,
   display: grid;
   gap: 10px;
   justify-items: stretch;
-  opacity: 0;
-  animation: start-gate-actions-in 700ms 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: opacity, transform;
+  opacity: 1;
 }
 
 .start-gate-actions-auto,
@@ -460,30 +458,6 @@ textarea,
 @keyframes start-gate-title-in {
   from { opacity: 0; transform: translate(-50%, 18px); filter: blur(6px); }
   to { opacity: 1; transform: translate(-50%, 0); filter: blur(0); }
-}
-
-@keyframes start-gate-actions-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.start-gate-actions-auto,
-.start-gate-actions-bottom-center {
-  animation-name: start-gate-actions-center-in;
-}
-
-@keyframes start-gate-actions-center-in {
-  from { opacity: 0; transform: translate(-50%, 14px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-.start-gate-actions-center {
-  animation-name: start-gate-actions-middle-in;
-}
-
-@keyframes start-gate-actions-middle-in {
-  from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 @keyframes start-gate-frame-in {
@@ -4450,7 +4424,6 @@ textarea,
     right: auto;
     bottom: max(7%, calc(env(safe-area-inset-bottom) + 18px));
     transform: translateX(-50%);
-    animation-name: start-gate-actions-center-in;
   }
 
   .start-gate-actions-center {
