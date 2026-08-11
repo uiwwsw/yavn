@@ -595,6 +595,8 @@ scenes:
   ending_lonely:
     actions:
       - say:
+          with:
+            - 덕만
           delivery: sad
           text: "덕만은 왕좌에 올랐다. 첫 조회에서 무심코 오른편을 보았지만 언니의 붉은 옷도, 문밖에서 이름을 불러 줄 친구도 없었다. 넓어진 궁은 대답하지 않았다."
       - ending: lonely_throne

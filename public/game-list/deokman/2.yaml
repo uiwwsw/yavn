@@ -362,20 +362,33 @@ scenes:
       - bg: locked_room
       - effect: focus
       - char:
+          id: 덕만
+          position: left
+          framing: full
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "그날 밤, 덕만의 방문은 안에서 잠겨 있었습니다. 인기척을 묻자 대답 대신 창호지 너머로 무언가 끌리는 소리가 났습니다."
+      - char:
           id: 소원
           position: right
           framing: full
       - say:
+          with:
+            - 소원
           delivery: whisper
-          text: "그날 밤, 덕만이 방으로 돌아왔을 때 문은 안에서 잠겨 있었습니다. 소원이 옆방 창을 넘어 들어가 빗장을 열었습니다."
+          text: "소원이 옆방 창을 넘어 안으로 들어갔습니다. 빗장을 잡은 손이 멈췄고, 문은 손가락 두 마디만큼만 열렸습니다."
       - say:
           char: 소원.nervous
           framing: bust
+          with: []
           delivery: nervous
           text: "공주님, 들어오지 마세요. 사람 하나가 침상 앞에 쓰러져 있어요. 아까 그 합의서를 가져온 귀족이에요."
       - say:
           char: 덕만
           framing: bust
+          with: []
           delivery: nervous
           text: "살아 있어?"
       - say:
@@ -387,10 +400,13 @@ scenes:
       - say:
           char: 덕만
           framing: bust
+          with: []
           delivery: nervous
           text: "아무것도 만지지 마. 문밖에 누가 있는지부터 봐. 이번에는 내가 아니라 이 방 전체가 함정이야."
       - say:
-          text: "덕만은 혼담을 막았지만, 그날 밤부터 살인 사건의 가장 유력한 용의자가 되었습니다."
+          with:
+            - 덕만
+          text: "덕만은 문턱을 넘지 않은 채 방 안을 보았습니다. 따뜻한 피, 자신의 옷고름, 안에서 잠긴 문. 혼담을 막은 바로 그날 밤, 누군가가 다음 싸움의 자리를 먼저 꾸며 놓았습니다."
 
   go_12_warm_choice:
     actions:
@@ -594,7 +610,9 @@ scenes:
           text: "전하, 왕명을 따를 때까지 공주를 별궁에 모시는 것이 좋겠습니다."
       - effect: darken
       - say:
-          text: "덕만은 호위에게 둘러싸여 왕좌전을 나갔습니다. 몇 달 뒤 별궁 창밖에서 즉위의 북소리를 들었지만, 새 왕의 이름을 알려 주는 사람은 없었습니다."
+          with:
+            - 덕만
+          text: "호위의 몸이 진평왕과 덕만 사이를 채웠습니다. 몇 달 뒤 별궁에 홀로 갇힌 덕만은 창밖의 즉위 북을 들었지만, 새 왕의 이름을 알려 주는 사람은 없었습니다."
           wait: 750
       - gameOver:
           title: "운명 16 — 왕명을 거부한 딸"

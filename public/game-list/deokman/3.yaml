@@ -425,26 +425,39 @@ scenes:
           id: 소원
           position: center
           framing: full
+      - say:
+          with:
+            - 덕만
+            - 소원
+          text: "덕만과 소원이 시체를 천에 싸서 회랑을 옮겼습니다. 발을 맞추지 못할 때마다 천 아래의 뒤꿈치가 바닥을 긁었고, 멀리서 야간 교대 종이 울렸습니다."
+      - say:
+          char: 소원.nervous
+          framing: bust
+          with:
+            - 덕만
+          text: "사람들이 봤어요. 내려놓고 사실대로 말해요. 더 가면 정말 우리가 한 일이 돼요."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 소원
+          text: "여기까지 왔어. 칠숙 방에서 발견되면 적어도 그 사람을 조사할 수 있어."
+      - effect: focus
+      - say:
+          with:
+            - 덕만
+            - 소원
+          text: "모퉁이를 돌자 칠숙의 방문만 활짝 열려 있었습니다. 그 문턱 너머에서 칼집 열둘이 동시에 부딪히는 소리가 났습니다."
       - char:
           id: 칠숙
           position: right
           framing: full
       - say:
-          text: "덕만과 소원이 시체를 천에 싸서 칠숙의 방으로 옮기는 동안, 야간 교대를 마친 시종들이 회랑으로 쏟아져 나왔습니다."
-      - say:
-          char: 소원.nervous
-          framing: bust
-          text: "사람들이 봤어요. 내려놓고 사실대로 말해요. 더 가면 정말 우리가 한 일이 돼요."
-      - say:
-          char: 덕만
-          framing: bust
-          text: "여기까지 왔어. 칠숙 방에서 발견되면 적어도 그 사람을 조사할 수 있어."
-      - effect: focus
-      - say:
-          text: "칠숙은 열린 방문 앞에서 두 사람을 기다리고 있었습니다. 호위 열둘도 이미 그 뒤에 서 있었습니다."
-      - say:
           char: 칠숙.smile
           framing: bust
+          with:
+            - 덕만
+            - 소원
           text: "제 방에 선물을 가져오셨군요. 공주 손에 묻은 피부터 기록하게 하겠습니다."
       - say:
           char: 덕만.angry
@@ -578,7 +591,9 @@ scenes:
       - say:
           text: "심문은 며칠이 아니라 스무 날 이어졌습니다. 소원은 매질을 멈추기 위해 시키는 대로 자백했고, 덕만은 살인 혐의에서 벗어났습니다."
       - say:
-          text: "몇 해 뒤 반란군이 궁문을 열던 밤, 덕만의 침전 앞에는 그녀를 깨울 사람이 없었습니다."
+          with:
+            - 덕만
+          text: "몇 해 뒤 반란군이 궁문을 열던 밤, 덕만의 침전 밖에서는 급한 발소리가 한 번 멈췄다가 그대로 멀어졌습니다. 문을 두드려 깨울 사람은 없었습니다."
       - effect: alarm
       - say:
           char: 덕만.sad
