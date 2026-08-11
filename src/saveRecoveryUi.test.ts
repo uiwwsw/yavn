@@ -33,6 +33,8 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain('disabled={!entry.owned}');
     expect(appSource).toContain("entry.owned ? entry.name : '미발견 단서'");
     expect(appSource).not.toContain('inventory-detail-actions');
+    expect(appSource).toContain('className="inventory-collection-header"');
+    expect(appSource).toContain('className="inventory-slot-index"');
     expect(styles).toMatch(/@media \(max-width: 340px\)[\s\S]*?\.inventory-grid\s*\{[\s\S]*?repeat\(2,/);
     expect(styles).toMatch(
       /\.inventory-search-field input::placeholder\s*\{[\s\S]*?color: var\(--ui-input-placeholder\);/,
@@ -56,7 +58,10 @@ describe('save and game over recovery UI', () => {
       /\.dialog-content-scroll,[\s\S]*?\.ending-credits-roll\s*\{[\s\S]*?scrollbar-width: thin;[\s\S]*?scrollbar-color:/,
     );
     expect(appSource).not.toContain("'YAVN ENGINE'");
-    expect(appSource).toContain('<h2>케이스 파일</h2>');
+    expect(appSource).toContain('<h2>기록 보관소</h2>');
+    expect(appSource).toContain('save-protection-hero');
+    expect(appSource).toContain('className="save-system-grid"');
+    expect(styles).toMatch(/\.save-system-grid\s*\{[\s\S]*?grid-template-columns: repeat\(3,/);
     expect(appSource).toContain("choiceGate.active ? '선택 대기' : '다음'");
   });
 
