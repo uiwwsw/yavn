@@ -2,6 +2,7 @@ import JSZip from 'jszip';
 import { resolveCharacterFraming } from './characterFraming';
 import { resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
+import { waitForImageReady, waitForVisibleStaticImages } from './imageReady';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { useVNStore } from './store';
 import {
@@ -76,6 +77,7 @@ const INITIAL_CHAPTER_MIN_LOADING_MS = 240;
 const NEXT_CHAPTER_MIN_LOADING_MS = 100;
 const CHAPTER_LOADED_HOLD_MS = 80;
 const LIVE2D_READY_TIMEOUT_MS = 12000;
+const STATIC_IMAGE_READY_TIMEOUT_MS = 12000;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
 const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
 const DEFAULT_VIDEO_HOLD_TO_SKIP_MS = 800;
@@ -852,6 +854,17 @@ async function waitForVisibleLive2DReady(chapterLabel: string): Promise<void> {
   const waited = await waitForLive2DLoad(keys, LIVE2D_READY_TIMEOUT_MS);
   if (waited.timedOut) {
     console.warn(`[YAVN] Live2D ready wait timed out: ${waited.resolved}/${waited.total}`);
+  }
+}
+
+async function waitForVisibleStaticImagesReady(chapterLabel: string): Promise<void> {
+  useVNStore.getState().setChapterLoading(true, 0.99, `${chapterLabel} preparing images...`);
+  const waited = await waitForVisibleStaticImages(document, STATIC_IMAGE_READY_TIMEOUT_MS);
+  if (waited.timedOut || waited.error > 0) {
+    console.warn(
+      `[YAVN] Static image ready wait incomplete: ${waited.ready}/${waited.total}` +
+        (waited.timedOut ? ' (timed out)' : ''),
+    );
   }
 }
 
@@ -2195,16 +2208,15 @@ export function completeVideoCutscene() {
 }
 
 async function warmImageDecodeUrl(url: string) {
-  await new Promise<void>((resolve, reject) => {
-    const img = new Image();
-    img.decoding = 'async';
-    img.onload = () => resolve();
-    img.onerror = () => reject(new Error('Failed to decode preloaded image'));
-    img.src = url;
-    if (typeof img.decode === 'function') {
-      void img.decode().then(resolve).catch(reject);
-    }
-  });
+  const img = new Image();
+  img.decoding = 'sync';
+  img.loading = 'eager';
+  img.fetchPriority = 'high';
+  img.src = url;
+  const status = await waitForImageReady(img, STATIC_IMAGE_READY_TIMEOUT_MS);
+  if (status !== 'ready') {
+    throw new Error(`Failed to decode preloaded image (${status})`);
+  }
 }
 
 async function preloadChapterAssets(
@@ -2631,7 +2643,10 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     }
 
     await waitNextFrame();
-    await waitForVisibleLive2DReady(chapterLabel);
+    await Promise.all([
+      waitForVisibleStaticImagesReady(chapterLabel),
+      waitForVisibleLive2DReady(chapterLabel),
+    ]);
     if (activeChapterIndex !== chapterIndex) {
       return Boolean(resume && canResumeHere);
     }
