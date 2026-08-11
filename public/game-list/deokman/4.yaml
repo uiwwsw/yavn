@@ -5,9 +5,9 @@ script:
 scenes:
   chapter4_open:
     actions:
-      - bg: frontier
+      - bg: council_hall
       - char:
-          id: 유신
+          id: 칠숙
           position: right
           framing: full
       - char:
@@ -17,9 +17,55 @@ scenes:
       - say:
           text: "제4장 — 궁 밖에서 왕을 만나다"
       - say:
-          text: "살인 누명에서 벗어난 대가로 덕만은 왕경에서 가장 먼 국경에 파견됐습니다. 칠숙은 이를 포상이라 불렀지만, 왕의 딸을 화백과 군사에게서 떼어 놓기 위한 추방이었습니다. 유신은 호위대가 아니라 국경군 지휘관으로 덕만과 함께 왔습니다."
+          char: 칠숙.smile
+          framing: full
+          with:
+            - 덕만
+          text: "살인 누명을 벗으신 상으로 국경 위무의 전권을 드립니다. 여기 지휘관 패를 받으시고, 왕경 출입패는 놓고 가시지요. 두 패를 함께 가질 수는 없습니다."
       - say:
-          text: "국경 창고에는 곡식 삼백 섬이 남아 있었습니다. 성 안에는 군사 오백 명, 성문 밖에는 전쟁을 피해 온 백성 천칠백 명이 배급을 기다리고 있었습니다."
+          char: 덕만
+          framing: bust
+          with:
+            - 칠숙
+          text: "상을 받는 자리에서 집 열쇠부터 내놓으라는군요. 언제 돌아오라는 왕명도 있습니까?"
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          with:
+            - 덕만
+          text: "국경의 백성이 공주를 놓아줄 때 돌아오십시오. 굶는 사람은 은혜를 오래 기억하지 못하니, 생각보다 빠를 수도 있습니다."
+      - bg: frontier
+      - effect: darken
+      - char:
+          id: 유신
+          position: right
+          framing: full
+      - say:
+          with:
+            - 덕만
+            - 유신
+          text: "국경 성문이 열리자 빈 나무그릇 하나가 덕만의 신발 앞까지 굴러왔습니다. 그릇을 주우려던 아이는 두 걸음을 못 가 주저앉았고, 월명이 자기 허리의 식량주머니를 풀어 아이 어머니에게 건넸습니다."
+      - char:
+          id: 월명
+          position: center
+          framing: full
+      - say:
+          char: 월명.warning
+          framing: bust
+          with:
+            - 덕만
+          text: "이 아이는 오늘 두 번째로 쓰러졌습니다. 제 몫을 먹여도 내일이면 다시 빈 그릇을 들 겁니다. 성밖에 이런 아이가 육백열둘입니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 월명
+          text: "내 수레의 곡식부터 내리세요. 한 끼를 해결한 뒤에, 사흘 뒤까지 살릴 방법을 묻겠습니다."
+      - say:
+          with:
+            - 덕만
+            - 유신
+          text: "유신이 창고 봉인을 떼지 않고 덕만 앞에 열쇠를 내려놓았습니다."
       - say:
           char: 유신
           framing: full
@@ -39,16 +85,30 @@ scenes:
           with:
             - 덕만
           text: "아이 육백열둘, 걷지 못하는 사람 백아홉입니다. 원하시면 마을별 이름도 읽겠습니다."
-      - char:
-          id: 월명
-          position: center
-          framing: full
       - say:
           char: 월명.warning
           framing: bust
           with:
             - 덕만
-          text: "저는 이곳에서 약을 짓는 월명입니다. 성밖 사람들의 상처를 봤고, 성안 병사들의 빈 그릇도 봤습니다. 어느 쪽부터 먹여도 다른 쪽은 공주가 자신을 버렸다고 생각할 겁니다."
+          text: "왕경에서 혼담의 별을 함께 보던 월명입니다. 공주께서 국경으로 떠난다는 날 의원패를 반납하고 먼저 왔습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 월명
+          text: "궁의 의원 자리를 버리고요? 나 때문에 여기까지 왔습니까?"
+      - say:
+          char: 월명.warning
+          framing: closeup
+          with:
+            - 덕만
+          text: "왕경에는 저 말고도 의원이 많습니다. 여기에는 빈 그릇을 보고도 사람의 맥부터 짚을 이가 없었습니다. 공주를 따른 게 아니라, 공주가 보게 될 사람들을 따라왔습니다."
+      - say:
+          char: 월명.warning
+          framing: bust
+          with:
+            - 덕만
+          text: "저는 성밖 사람의 상처와 성안 병사의 빈 그릇을 모두 봅니다. 어느 쪽부터 먹여도 다른 쪽은 공주가 자신을 버렸다고 생각할 겁니다."
       - say:
           char: 덕만
           framing: bust
@@ -166,6 +226,20 @@ scenes:
           char: 유신
           framing: bust
           text: "반 시진도 없습니다. 선택하셔야 합니다."
+      - char:
+          id: 월명
+          position: center
+          framing: full
+      - say:
+          char: 월명.warning
+          framing: bust
+          with:
+            - 덕만
+          text: "마을의 푸른 연기는 제가 세운 병자 표식입니다. 수레에 실어도 느려서 반 시진 안에 비울 수 없습니다. 저들을 구하려면 군사가 직접 업고 나와야 합니다."
+      - say:
+          with:
+            - 유신
+          text: "유신은 지도 위 마을에 빈 그릇을, 요새에는 내일 보급대가 지나갈 열쇠를 올려놓았습니다. 두 물건 사이로 칼집을 세워 병력을 나눌 수 없다는 선을 그었습니다."
       - say:
           char: 유신.sad
           framing: bust
@@ -183,6 +257,8 @@ scenes:
           prompt: "적이 둘로 갈라졌다. 어디로 갈까?"
           char: 덕만
           framing: closeup
+          with:
+            - 유신
           options:
             - text: "마을을 구한다"
               add:
@@ -242,14 +318,21 @@ scenes:
 
   enemy_choice:
     actions:
+      - effect: alarm
       - say:
           with:
             - 덕만
-          text: "전투가 끝난 저녁, 흰 천을 든 여자가 신라 진영으로 걸어왔습니다. 왕의 잔과 잠긴 방 사건에 얽혔다가 사라진 아진이었습니다. 이번에는 적군의 통행패를 목에 걸고 있었습니다."
+          text: "전투가 끝난 저녁, 화살 한 대가 덕만 앞 모래에 꽂혔습니다. 화살에는 아이의 짚신 한 짝과 적군 통행패가 함께 묶여 있었습니다. 잠시 뒤 아진이 흰 천을 들고 활이 날아온 반대편에서 걸어 나왔습니다."
       - char:
           id: 아진
           position: right
           framing: full
+      - say:
+          char: 아진.nervous
+          framing: bust
+          with:
+            - 덕만
+          text: "남은 한 짝입니다. 제 가족이 아직 살아 있다는 뜻이자, 이번 명령도 거부하지 말라는 뜻입니다."
       - say:
           char: 덕만.angry
           framing: bust
@@ -292,6 +375,7 @@ scenes:
           prompt: "적이 강가에서 기다린다. 어떻게 맞설까?"
           char: 덕만
           framing: closeup
+          with: []
           options:
             - text: "포로와 곡식을 바꾼다"
               add:

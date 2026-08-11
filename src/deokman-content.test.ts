@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.4.0');
+    expect(config.version).toBe('2.5.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
@@ -125,12 +125,15 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(173);
+    expect(characterPlacements).toHaveLength(206);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
-    expect(speakerLines).toHaveLength(565);
+    expect(speakerLines).toHaveLength(637);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
-    choices.forEach((choice) => expect(choice.framing).toBe('closeup'));
+    choices.forEach((choice) => {
+      expect(choice.framing).toBe('closeup');
+      expect(Array.isArray(choice.with)).toBe(true);
+    });
 
     documents.forEach((document) => {
       const placedIds = new Set(
@@ -211,9 +214,9 @@ describe('Deokman complete-game content', () => {
     expect(asRecord(sceneActions('0.yaml', 'caught_choice')[0].choice).with).toEqual([]);
 
     const lockedRoom = sceneActions('2.yaml', 'chapter2_end');
-    expect(say(lockedRoom, '들어오지 마세요').with).toEqual([]);
-    expect(say(lockedRoom, '살아 있어?').with).toEqual([]);
-    expect(say(lockedRoom, '문턱을 넘지 않은 채').with).toEqual(['덕만']);
+    expect(say(lockedRoom, '문 아래로 검붉은 피').with).toEqual(['덕만']);
+    expect(say(lockedRoom, '제가 나올 때 직접 잠갔어요').with).toEqual(['덕만']);
+    expect(say(lockedRoom, '대답 대신 문을 한 번').with).toEqual(['덕만', '소원']);
 
     const borrowedCorpse = sceneActions('3.yaml', 'go_18_borrowed_corpse');
     const chilsukRevealIndex = borrowedCorpse.findIndex(
@@ -265,29 +268,29 @@ describe('Deokman complete-game content', () => {
   it('introduces relationships, motives, and costs before all 24 choices', () => {
     const contexts = [
       ['0.yaml', 'prologue_open', 'p_caught', '뜻을 가진 딸이 칼을 가진 아들보다 위험할 때가 있습니다'],
-      ['0.yaml', 'warn_choice', 'p_warn', '언니 천명은 내 말을 의심하지 않겠지만 칼이 없어'],
-      ['0.yaml', 'banquet_choice', 'p_cup', '연회 반대편에는 왕의 잔을 준비한 대신들을 대표해 칠숙이'],
-      ['1.yaml', 'chapter1_open', 'c1_investigate', '덕만에게 남은 사람은 많지 않았습니다'],
-      ['1.yaml', 'rumor_choice', 'c1_rumor', '그는 덕만의 신하도, 칠숙의 사람도 아니었습니다'],
-      ['1.yaml', 'evidence_choice', 'c1_evidence', '아버지께만 보이면 내 누명은 벗지만 배후는 숨을 거야'],
-      ['2.yaml', 'chapter2_open', 'c2_suitor', '왕실 방계의 진운공은 혼인의 당사자이고'],
-      ['2.yaml', 'reputation_choice', 'c2_reputation', '별을 핑계로 대면 월명이 거짓말쟁이가 되고'],
-      ['2.yaml', 'throne_choice', 'c2_throne', '한 집만 택하면 나머지 두 집이 계승동맹으로 뭉치고'],
-      ['3.yaml', 'chapter3_open', 'c3_body', '죽은 사람은 혼인 합의서를 덕만에게 넘긴 귀족이었습니다'],
+      ['0.yaml', 'warn_choice', 'p_warn', '탁자 위에 네 가지를 놓았습니다'],
+      ['0.yaml', 'banquet_choice', 'p_cup', '전하의 두 번째 잔은 제가 올리겠습니다'],
+      ['1.yaml', 'chapter1_open', 'c1_investigate', '부엌, 기록고, 호위부 가운데'],
+      ['1.yaml', 'rumor_choice', 'c1_rumor', '아까 같은 거짓말을 두 나인에게'],
+      ['1.yaml', 'evidence_choice', 'c1_evidence', '하인은 제가 지킬 수 있습니다'],
+      ['2.yaml', 'chapter2_open', 'c2_suitor', '궁을 버리는 길에는 공주의 장수로'],
+      ['2.yaml', 'reputation_choice', 'c2_reputation', '비녀 끝이 별점표와 약봉지'],
+      ['2.yaml', 'throne_choice', 'c2_throne', '세 가문의 인장을 왕좌 앞에'],
+      ['3.yaml', 'chapter3_open', 'c3_body', '비담에게 합의서 원본을 넘긴 왕실 서리야'],
       ['3.yaml', 'testimony_choice', 'c3_testimony', '높은 분도 낮은 사람도 먼지한테는 거짓말을 시킬 수 없으니까요'],
       ['3.yaml', 'culprit_choice', 'c3_culprit', '아버지 잔에도, 내 방의 시체에도 네 붉은 매듭이 남았어'],
-      ['4.yaml', 'chapter4_open', 'c4_grain', '저는 이곳에서 약을 짓는 월명입니다'],
+      ['4.yaml', 'chapter4_open', 'c4_grain', '왕경에서 혼담의 별을 함께 보던 월명입니다'],
       ['4.yaml', 'defense_choice', 'c4_defense', '마을에는 오늘 곡식을 나눠 준 가족들이 있고'],
-      ['4.yaml', 'enemy_choice', 'c4_enemy', '이번에는 적군의 통행패를 목에 걸고 있었습니다'],
-      ['5.yaml', 'chapter5_open', 'c5_contest', '진평왕과 먼 친족인 왕실 남자였고'],
+      ['4.yaml', 'enemy_choice', 'c4_enemy', '남은 한 짝입니다'],
+      ['5.yaml', 'chapter5_open', 'c5_contest', '왕자가 아닙니다'],
       ['5.yaml', 'leverage_choice', 'c5_leverage', '그대는 내 신하가 아니라서 곁에 둔 사람이야'],
       ['5.yaml', 'rescue_choice', 'c5_rescue', '저를 살려도 왕위는 양보하지 않습니다'],
-      ['6.yaml', 'chapter6_open', 'c6_entry', '월명 선생은 약재 수로에서 기다리고'],
+      ['6.yaml', 'chapter6_open', 'c6_entry', '약초 끈을 따라가면 월명이 수로에서'],
       ['6.yaml', 'rescue_choice', 'c6_rescue', '아진이 빈 약함을 들고 달아났다는 보고가 있습니다'],
-      ['6.yaml', 'seal_found', 'c6_seal', '나라의 도장이기 전에 아버지가 평생 쥐고 있던 물건이야'],
+      ['6.yaml', 'seal_found', 'c6_seal', '어릴 때 한 번 들어 보고 너무 무거워'],
       ['7.yaml', 'final_open', 'final_opening', '진운공과 함께 들어가면 그의 가문을 갈라놓을 수 있습니다'],
       ['7.yaml', 'proof_choice', 'final_proof', '공주와 가까운 나인, 목숨을 빚진 살인자'],
-      ['7.yaml', 'crown_choice', 'final_crown', '화백의 표를 택하면 귀족들이 붙인 조건을 받아들여야 했고'],
+      ['7.yaml', 'crown_choice', 'final_crown', '화백의 표를 받으시면 오늘 안에 즉위할 수 있습니다'],
     ] as const;
 
     expect(contexts).toHaveLength(24);
@@ -314,6 +317,46 @@ describe('Deokman complete-game content', () => {
         expect(gotoIndex, `${path}:${sceneId} -> ${choiceSceneId}`).toBeGreaterThan(anchorIndex);
       }
     });
+  });
+
+  it('shows each chapter premise through an enacted visual-novel episode instead of a setting summary', () => {
+    const episodeAnchors = [
+      ['0.yaml', 'prologue_open', '왕의 수라를 빼앗아 먹는 사람이 너 말고 또 있느냐'],
+      ['1.yaml', 'chapter1_open', '덕만의 연꽃 노리개가 굴러 나와 왕좌 아래에서 멈췄습니다'],
+      ['2.yaml', 'chapter2_open', '혼인 뒤 공주의 정사 발언은 지아비가 대신한다'],
+      ['3.yaml', 'chapter3_open', '두 번째 어깨로 밀자 안쪽 빗장이 부러졌고'],
+      ['4.yaml', 'chapter4_open', '왕경 출입패는 놓고 가시지요'],
+      ['5.yaml', 'chapter5_open', '왕자가 아닙니다'],
+      ['6.yaml', 'chapter6_open', '체포령을 뜯어 품에 감췄습니다'],
+      ['7.yaml', 'final_open', '진평왕의 상여가 동문 아래에서 멈췄습니다'],
+    ] as const;
+    const forbiddenSummaries = [
+      '진평왕에게는 아들이 없었습니다',
+      '덕만에게 남은 사람은 많지 않았습니다',
+      '덕만은 사흘 동안 세 혼담의 당사자들을 차례로 만났습니다',
+      '죽은 사람은 혼인 합의서를 덕만에게 넘긴 귀족이었습니다',
+      '살인 누명에서 벗어난 대가로 덕만은',
+      '진운은 왕의 아들이 아니었습니다',
+      '덕만과 진운이 함께 암살 조사를 요구한 바로 그날',
+      '칠숙은 아들이 없는 왕의 뒤에는 남자가 와야 한다며',
+    ];
+
+    episodeAnchors.forEach(([path, sceneId, anchor]) => {
+      const scene = asRecord(asRecord(readYaml(path).scenes)[sceneId]);
+      const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+      const lines = actions.map((action) => asRecord(action.say)).filter((say) => Object.keys(say).length > 0);
+      const speakers = lines
+        .map((say) => say.char)
+        .filter((speaker): speaker is string => typeof speaker === 'string')
+        .map((speaker) => speaker.split('.')[0]);
+
+      expect(lines.some((say) => String(say.text).includes(anchor)), `${path}:${sceneId}`).toBe(true);
+      expect(speakers.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(4);
+      expect(new Set(speakers).size, `${path}:${sceneId}`).toBeGreaterThanOrEqual(2);
+    });
+
+    const fullText = chapters.map((path) => JSON.stringify(readYaml(path))).join('\n');
+    forbiddenSummaries.forEach((summary) => expect(fullText).not.toContain(summary));
   });
 
   it('keeps every speaking character visibly staged on every reachable branch', () => {

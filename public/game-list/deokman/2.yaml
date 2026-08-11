@@ -17,7 +17,10 @@ scenes:
       - say:
           text: "제2장 — 혼인은 가장 아름다운 유배다"
       - say:
-          text: "덕만의 누명이 벗겨지자 계승동맹은 칼 대신 혼담을 내밀었습니다. 공주가 귀족 가문에 시집가면 목숨은 살지만, 그 뒤의 정사와 왕위 주장은 남편의 이름으로만 말할 수 있었습니다."
+          with:
+            - 덕만
+            - 칠숙
+          text: "칠숙은 색이 다른 혼서 세 장을 덕만 앞에 펼쳤습니다. 신랑의 이름은 달랐지만 마지막 줄은 같았습니다. ‘혼인 뒤 공주의 정사 발언은 지아비가 대신한다.’"
       - say:
           char: 칠숙.smile
           framing: full
@@ -36,6 +39,64 @@ scenes:
           with:
             - 덕만
           text: "혼인은 원래 어제의 원수를 내일의 가족으로 만드는 일이지요. 누굴 만나시겠습니까?"
+      - char:
+          id: 진운
+          position: center
+          framing: full
+      - say:
+          char: 진운.nervous
+          framing: bust
+          with:
+            - 덕만
+          text: "먼저 인사드리겠습니다. 저는 왕실 방계 진운입니다. 공주께서 저와 혼인하시면…… 공주께서는 더는 정사에……"
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진운
+          text: "끝까지 읽으세요. 그대 입으로 들으면 그 문장이 누구 생각인지 알 것 같으니까."
+      - say:
+          char: 진운.nervous
+          framing: closeup
+          with:
+            - 덕만
+          text: "제 생각은 저 종이 안에 없습니다. 지금은 그렇게만 알아주십시오."
+      - char:
+          id: 비담
+          position: center
+          framing: full
+      - say:
+          char: 비담.smirk
+          framing: bust
+          with:
+            - 덕만
+          text: "세 가문 서고를 돌고 왔습니다. 첫째 집은 군권, 둘째 집은 세금, 셋째 집은 공주님의 침묵을 받기로 했더군요. 신부 한 분 값이 집마다 다릅니다."
+      - char:
+          id: 유신
+          position: center
+          framing: full
+      - say:
+          char: 유신
+          framing: bust
+          with:
+            - 덕만
+          text: "동문에 말 두 필을 매어 두었습니다. 달아나시라는 명령은 못 드립니다. 다만 궁이 공주님의 선택을 모두 막았을 때도 길 하나는 남겨 두고 싶었습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 유신
+          text: "두 필이군요. 한 필만 준비했으면 충성이라 생각했을 텐데, 다른 한 필에는 누가 탑니까?"
+      - say:
+          char: 유신
+          framing: closeup
+          with:
+            - 덕만
+          text: "궁을 버리는 길에는 공주의 장수로 따라갈 수 없습니다. 그래도 덕만이라는 사람 곁에 남으라 하시면, 제 이름으로 가겠습니다."
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
       - say:
           char: 덕만
           framing: closeup
@@ -43,17 +104,11 @@ scenes:
             - 칠숙
           text: "가족이 되려는 사람보다, 제가 왕위에서 멀어지길 바라는 사람부터 만나겠습니다. 아마 같은 사람이겠지만요."
       - say:
-          char: 칠숙.smile
-          framing: bust
-          with:
-            - 덕만
-          text: "왕실 방계의 진운공은 혼인의 당사자이고, 비담은 세 가문의 계약서를 훔쳐본 자입니다. 유신공은 동문에 말 두 필을 준비했다지요. 누구를 만나든 공주께서 무엇을 지킬지는 분명해지겠군요."
-      - say:
           char: 덕만
           framing: bust
           with:
             - 칠숙
-          text: "진운에게는 왜 제 남편이 되려는지 묻고, 비담에게는 혼담의 진짜 값을 묻겠습니다. 유신에게 가면 이 궁을 버릴 각오부터 물어야겠지요."
+          text: "한 사람은 남이 쓴 청혼을 읽고, 한 사람은 계약의 값을 훔쳐 왔고, 한 사람은 말부터 준비했군요. 좋아요. 제가 먼저 물을 사람은 직접 고르겠습니다."
       - goto: suitor_choice
 
   suitor_choice:
@@ -63,6 +118,8 @@ scenes:
           prompt: "누구부터 만날까?"
           char: 덕만
           framing: closeup
+          with:
+            - 칠숙
           options:
             - text: "진운에게 조건을 묻는다"
               add:
@@ -148,10 +205,70 @@ scenes:
   reputation_choice:
     actions:
       - bg: princess_chamber
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
       - say:
+          char: 진운.nervous
+          framing: bust
           with:
             - 덕만
-          text: "덕만은 사흘 동안 세 혼담의 당사자들을 차례로 만났습니다. 그중 진운은 진평왕의 먼 친족이자, 계승동맹이 남자 후계자로 세우려는 왕실 사람이었습니다. 그는 어머니가 칠숙의 손에 있어 혼담을 거부하지 못한다고 털어놓았습니다."
+          text: "아까 읽지 못한 마지막 줄입니다. 제가 혼담을 거절하면 칠숙의 별채에 있는 어머니가 다칩니다. 제 입으로 청한 혼인이 아니라고 말하러 왔습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진운
+          text: "그 말을 하면 내가 그대 어머니를 약점으로 쓸 수도 있습니다."
+      - say:
+          char: 진운.nervous
+          framing: closeup
+          with:
+            - 덕만
+          text: "압니다. 그래도 제 침묵 때문에 공주께서 저를 원수로만 기억하는 것보다는 낫습니다."
+      - char:
+          id: 비담
+          position: right
+          framing: full
+      - say:
+          char: 비담.smirk
+          framing: bust
+          with:
+            - 덕만
+          text: "별점표, 의원의 빈 약봉지, 저와 공주님 이름을 나란히 쓴 투서까지 준비했습니다. 혼담 하나를 깨려면 누군가의 신용 하나는 부러져야 하니까요."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 비담
+          text: "그대 이름도 부러질 수 있는데 웃음이 나와?"
+      - say:
+          char: 비담.smirk
+          framing: closeup
+          with:
+            - 덕만
+          text: "제 이름은 원래 금이 가 있습니다. 공주님 이름은 아직 멀쩡해서, 손대기가 조금 아깝군요."
+      - char:
+          id: 월명
+          position: right
+          framing: full
+      - say:
+          char: 월명.warning
+          framing: bust
+          with:
+            - 덕만
+          text: "왕실에서 별을 읽고 약을 짓는 월명입니다. 비담공이 제 별점표와 약봉지를 같은 탁자에 올려 두셨더군요. 별을 거짓말에 쓰든 몸을 거짓말에 쓰든, 나중에는 공주께서 직접 값을 치르셔야 합니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 월명
+          text: "그래서 선생을 불렀습니다. 거짓말을 잘하는 사람이 아니라, 거짓말 뒤에 남을 상처를 말해 줄 사람이 필요했어요."
       - char:
           id: 천명
           position: right
@@ -181,11 +298,16 @@ scenes:
             - 천명
           text: "이번에는 내가 말할게. 대신 끝나고 나면 비녀 좀 빼 줘. 오늘도 무겁다."
       - say:
+          with:
+            - 덕만
+            - 천명
+          text: "천명은 덕만의 머리에서 혼례 비녀를 빼 탁자에 내려놓았습니다. 비녀 끝이 별점표와 약봉지, 비담의 투서 위를 차례로 가리켰습니다."
+      - say:
           char: 천명.sad
           framing: bust
           with:
             - 덕만
-          text: "별을 핑계로 대면 월명이 거짓말쟁이가 되고, 병을 꾸미면 네가 왕이 될 몸이 아니라고 할 거야. 비담과 소문을 내면 네 이름이 다치고, 후보들을 모욕하면 세 집이 한꺼번에 원수가 돼."
+          text: "별을 고르면 월명이, 병을 고르면 네 몸이, 소문을 고르면 너와 비담의 이름이 다쳐. 저 사람들을 웃음거리로 만들면 세 집이 한꺼번에 칼을 갈 거고. 어느 상처가 가장 덜 오래갈까?"
       - say:
           char: 덕만.sad
           framing: closeup
@@ -268,8 +390,20 @@ scenes:
   throne_choice:
     actions:
       - bg: throne_hall
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
       - say:
-          text: "사흘 뒤 왕좌전에는 혼담을 보낸 세 가문과 화백들이 모였습니다. 한 집만 택하면 나머지 두 집이 계승동맹으로 뭉치고, 모두 거절하면 왕명을 가볍게 여긴 공주라는 공격을 받을 자리였습니다."
+          with:
+            - 칠숙
+          text: "칠숙은 세 가문의 인장을 왕좌 앞에 나란히 놓았습니다. 하나를 들면 나머지 둘이 서로에게 붙을 것이고, 아무것도 들지 않으면 왕의 혼담을 모욕했다는 상소가 이미 준비돼 있었습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          with:
+            - 덕만
+          text: "세 집 모두 해가 지기 전 답을 원합니다. 침묵도 거절로 받아들이겠다고 했습니다. 공주께서는 어느 인장을 전하께 올리시겠습니까?"
       - char:
           id: 진평왕
           position: right
@@ -413,44 +547,31 @@ scenes:
           with:
             - 덕만
           delivery: whisper
-          text: "그날 밤, 덕만의 방문은 안에서 잠겨 있었습니다. 인기척을 묻자 대답 대신 창호지 너머로 무언가 끌리는 소리가 났습니다."
+          text: "그날 밤, 덕만의 방문은 안에서 잠겨 있었습니다. 방 안에 아무도 없어야 했지만 창호지 너머로 무언가 끌리는 소리가 났고, 문 아래로 검붉은 피 한 줄이 번졌습니다."
       - char:
           id: 소원
           position: right
           framing: full
       - say:
+          char: 소원.nervous
+          framing: bust
+          with:
+            - 덕만
+          delivery: nervous
+          text: "제가 나올 때 직접 잠갔어요. 열쇠도 여기 있어요. 그런데 안에서 빗장이 걸리는 소리가 났어요."
+      - say:
+          char: 덕만
+          framing: bust
           with:
             - 소원
-          delivery: whisper
-          text: "소원이 옆방 창을 넘어 안으로 들어갔습니다. 빗장을 잡은 손이 멈췄고, 문은 손가락 두 마디만큼만 열렸습니다."
-      - say:
-          char: 소원.nervous
-          framing: bust
-          with: []
           delivery: nervous
-          text: "공주님, 들어오지 마세요. 사람 하나가 침상 앞에 쓰러져 있어요. 아까 그 합의서를 가져온 귀족이에요."
-      - say:
-          char: 덕만
-          framing: bust
-          with: []
-          delivery: nervous
-          text: "살아 있어?"
-      - say:
-          char: 소원.nervous
-          framing: closeup
-          with: []
-          delivery: sad
-          text: "아니요. 피는 따뜻한데 숨을 안 쉬어요. 그리고…… 손에 공주님 옷고름을 쥐고 있어요."
-      - say:
-          char: 덕만
-          framing: bust
-          with: []
-          delivery: nervous
-          text: "아무것도 만지지 마. 문밖에 누가 있는지부터 봐. 이번에는 내가 아니라 이 방 전체가 함정이야."
+          text: "문 앞에서 물러서. 한 번 더 불러 보고, 대답이 없으면 내가 부술게."
       - say:
           with:
             - 덕만
-          text: "덕만은 문턱을 넘지 않은 채 방 안을 보았습니다. 따뜻한 피, 자신의 옷고름, 안에서 잠긴 문. 혼담을 막은 바로 그날 밤, 누군가가 다음 싸움의 자리를 먼저 꾸며 놓았습니다."
+            - 소원
+          delivery: whisper
+          text: "대답 대신 문을 한 번 두드리는 소리가 났습니다. 이어 사람의 무게가 문짝에 기대어 천천히 미끄러졌습니다. 피가 덕만의 신발 끝에 닿는 순간, 방 안은 다시 조용해졌습니다."
 
   go_12_warm_choice:
     actions:
