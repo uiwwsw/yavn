@@ -277,6 +277,13 @@ function isMobilePointerEnvironment(): boolean {
   return hasCoarsePointer || mobileUserAgent;
 }
 
+function waitForStartGateLaunchTransition(): Promise<void> {
+  if (typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => window.setTimeout(resolve, 260));
+}
+
 function normalizeGameListSeoEntry(value: unknown, fallbackTitle?: string): GameListSeoEntry | undefined {
   if (!isObjectRecord(value)) {
     return fallbackTitle
@@ -2178,6 +2185,7 @@ export default function App() {
       const gate = startGate;
       setStartGateLaunching(true);
       stopStartGateMusic();
+      await waitForStartGateLaunchTransition();
       setStartGate(null);
       try {
         if (gate.kind === 'url') {
@@ -2301,9 +2309,10 @@ export default function App() {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
     return (
       <div
-        className="start-gate"
+        className={`start-gate${startGateLaunching ? ' is-launching' : ''}`}
         data-show-title={String(startGate.showTitle)}
         data-ui-template={startGate.uiTemplate}
+        aria-busy={startGateLaunching}
         onPointerDown={() => tryPlayStartGateMusic()}
       >
         {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
@@ -2311,11 +2320,18 @@ export default function App() {
           <img className="start-gate-title-art" src={startGate.imageUrl} alt="" aria-hidden="true" />
         )}
         <div className="start-gate-overlay" aria-hidden="true" />
+        <div className="start-gate-atmosphere" aria-hidden="true">
+          <span className="start-gate-vignette" />
+          <span className="start-gate-frame" />
+          <span className="start-gate-grain" />
+        </div>
         <div className="start-gate-content">
           {startGate.showTitle && (
             <div className="start-gate-title-block">
-              <p className="start-gate-eyebrow">YAVN</p>
+              <div className="start-gate-title-ornament" aria-hidden="true"><span /></div>
+              <p className="start-gate-eyebrow">YAVN · INTERACTIVE STORY</p>
               <h1>{startGate.gameTitle}</h1>
+              <p className="start-gate-prologue">당신의 선택으로 이야기가 시작됩니다</p>
             </div>
           )}
           <div className={actionClass}>
@@ -2325,7 +2341,10 @@ export default function App() {
               onClick={() => void onStartGateLaunch(false)}
               disabled={startGateLaunching}
             >
-              {startGate.startButtonText || DEFAULT_START_BUTTON_TEXT}
+              <span className="start-gate-button-label">
+                {startGateLaunching ? '이야기를 여는 중' : (startGate.startButtonText || DEFAULT_START_BUTTON_TEXT)}
+              </span>
+              <span className="start-gate-button-mark" aria-hidden="true">→</span>
             </button>
             {startGate.showLoadButton && (
               <button
@@ -2334,9 +2353,11 @@ export default function App() {
                 onClick={() => void onStartGateLaunch(true)}
                 disabled={startGateLaunching}
               >
-                {DEFAULT_LOAD_BUTTON_TEXT}
+                <span className="start-gate-button-label">{DEFAULT_LOAD_BUTTON_TEXT}</span>
+                <span className="start-gate-button-mark" aria-hidden="true">↗</span>
               </button>
             )}
+            {startGate.musicUrl && <p className="start-gate-hint">화면을 눌러 음악과 함께 시작하세요</p>}
           </div>
         </div>
       </div>
