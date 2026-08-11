@@ -11,13 +11,16 @@ const styles = readSource('./styles.css');
 describe('responsive stage content frame', () => {
   it('centers gameplay content in a maximum 9:16 frame while the background stays full bleed', () => {
     expect(appSource).toContain(
-      '<div ref={stageContentFrameRef} className="stage-content-frame">',
+      "className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}",
     );
     expect(styles).toMatch(
       /\.bg\s*\{[\s\S]*?inset: 0;[\s\S]*?width: 100%;[\s\S]*?height: 100%;[\s\S]*?object-fit: cover;/,
     );
     expect(styles).toMatch(
       /\.stage-content-frame\s*\{[\s\S]*?top: 50%;[\s\S]*?width: 100%;[\s\S]*?height: min\(100%, calc\(100vw \* 16 \/ 9\)\);[\s\S]*?transform: translateY\(-50%\);[\s\S]*?container-type: size;/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\.has-settings-modal\s*\{[\s\S]*?height: 100%;/,
     );
   });
 

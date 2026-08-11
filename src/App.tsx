@@ -2752,7 +2752,10 @@ export default function App() {
         />
       )}
 
-      <div ref={stageContentFrameRef} className="stage-content-frame">
+      <div
+        ref={stageContentFrameRef}
+        className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}
+      >
       <div
         className={`char-layer${characterStageLayout.mode === 'duo' ? ' char-layout-duo' : ''}`}
         data-character-layout={characterStageLayout.mode}
