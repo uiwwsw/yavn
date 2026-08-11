@@ -68,6 +68,16 @@ describe('save and game over recovery UI', () => {
     expect(styles).toMatch(
       /@media \(max-width: 768px\)[\s\S]*?\.save-system-grid\s*\{[\s\S]*?grid-template-columns: 1fr;/,
     );
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.settings-modal\s*\{[\s\S]*?height: 100cqh;[\s\S]*?\.save-system-body\s*\{[\s\S]*?grid-template-rows: auto minmax\(0, 1fr\) auto auto;[\s\S]*?overflow: hidden;/,
+    );
+    expect(appSource).toContain("className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}");
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\.has-settings-modal\s*\{[\s\S]*?height: 100%;/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.save-system-grid\s*\{[\s\S]*?overflow-y: auto;[\s\S]*?overscroll-behavior: contain;/,
+    );
     expect(appSource).toContain("choiceGate.active ? '선택 대기' : '다음'");
   });
 

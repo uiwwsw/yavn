@@ -1750,6 +1750,7 @@ textarea,
 .inventory-grid-scroll,
 .inventory-detail-modal-body,
 .save-system-body,
+.save-system-grid,
 .error-overlay,
 .game-over-panel,
 .ending-credits-roll {
@@ -1764,6 +1765,7 @@ textarea,
 .inventory-grid-scroll::-webkit-scrollbar,
 .inventory-detail-modal-body::-webkit-scrollbar,
 .save-system-body::-webkit-scrollbar,
+.save-system-grid::-webkit-scrollbar,
 .error-overlay::-webkit-scrollbar,
 .game-over-panel::-webkit-scrollbar,
 .ending-credits-roll::-webkit-scrollbar {
@@ -1776,6 +1778,7 @@ textarea,
 .inventory-grid-scroll::-webkit-scrollbar-track,
 .inventory-detail-modal-body::-webkit-scrollbar-track,
 .save-system-body::-webkit-scrollbar-track,
+.save-system-grid::-webkit-scrollbar-track,
 .error-overlay::-webkit-scrollbar-track,
 .game-over-panel::-webkit-scrollbar-track,
 .ending-credits-roll::-webkit-scrollbar-track {
@@ -1788,6 +1791,7 @@ textarea,
 .inventory-grid-scroll::-webkit-scrollbar-thumb,
 .inventory-detail-modal-body::-webkit-scrollbar-thumb,
 .save-system-body::-webkit-scrollbar-thumb,
+.save-system-grid::-webkit-scrollbar-thumb,
 .error-overlay::-webkit-scrollbar-thumb,
 .game-over-panel::-webkit-scrollbar-thumb,
 .ending-credits-roll::-webkit-scrollbar-thumb {
@@ -4880,6 +4884,35 @@ textarea,
 }
 
 @media (max-width: 768px) and (orientation: portrait) {
+  .stage-content-frame.has-settings-modal {
+    height: 100%;
+  }
+
+  .settings-modal {
+    height: 100cqh;
+    max-height: 100cqh;
+    border-radius: 0;
+  }
+
+  .save-system-body {
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    overflow: hidden;
+  }
+
+  .save-system-grid {
+    min-height: 0;
+    align-content: start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 3px;
+  }
+
+  .save-preferences-section,
+  .save-system-status {
+    position: relative;
+    z-index: 1;
+  }
+
   .start-gate[data-show-title='false'] .start-gate-bg-image {
     filter: brightness(0.22) saturate(0.62);
     transform: scale(1.03);
