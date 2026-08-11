@@ -16,7 +16,7 @@ assets:
       base: assets/char/deokman-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      calibration: { scale: 1 }
+      calibration: { scale: 1, spacing: 0.98 }
       emotions:
         sad: assets/char/deokman-sad-silla-v5.webp
         angry: assets/char/deokman-angry-silla-v5.webp
@@ -24,7 +24,7 @@ assets:
       base: assets/char/jinpyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1 }
+      calibration: { scale: 1, spacing: 0.95 }
       emotions:
         sad: assets/char/jinpyeong-sad-silla-v5.webp
         weak: assets/char/jinpyeong-weak-silla-v5.webp
@@ -32,7 +32,7 @@ assets:
       base: assets/char/cheonmyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1 }
+      calibration: { scale: 1, spacing: 1.05 }
       emotions:
         nervous: assets/char/cheonmyeong-nervous-silla-v5.webp
         sad: assets/char/cheonmyeong-sad-silla-v5.webp
@@ -40,7 +40,7 @@ assets:
       base: assets/char/yushin-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      calibration: { scale: 1.08, y: -2 }
+      calibration: { scale: 1.08, y: -2, spacing: 1.08 }
       emotions:
         sad: assets/char/yushin-sad-silla-v5.webp
         angry: assets/char/yushin-angry-silla-v5.webp
@@ -48,7 +48,7 @@ assets:
       base: assets/char/sowon-silla-v5.webp
       facing: left
       defaultDelivery: neutral
-      calibration: { scale: 1.09, y: -2 }
+      calibration: { scale: 1.09, y: -2, spacing: 1 }
       emotions:
         angry: assets/char/sowon-angry-silla-v5.webp
         nervous: assets/char/sowon-nervous-silla-v5.webp
@@ -56,7 +56,7 @@ assets:
       base: assets/char/bidam-silla-v5.webp
       facing: left
       defaultDelivery: whisper
-      calibration: { scale: 1.07, y: -2 }
+      calibration: { scale: 1.07, y: -2, spacing: 0.94 }
       emotions:
         smirk: assets/char/bidam-smirk-silla-v5.webp
         sad: assets/char/bidam-sad-silla-v5.webp
@@ -64,7 +64,7 @@ assets:
       base: assets/char/chilsuk-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1 }
+      calibration: { scale: 1, spacing: 0.92 }
       emotions:
         smile: assets/char/chilsuk-smile-silla-v5.webp
         angry: assets/char/chilsuk-angry-silla-v5.webp
@@ -72,7 +72,7 @@ assets:
       base: assets/char/ajin-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      calibration: { scale: 1.08, y: -2 }
+      calibration: { scale: 1.08, y: -2, spacing: 0.98 }
       emotions:
         nervous: assets/char/ajin-nervous-silla-v5.webp
         angry: assets/char/ajin-angry-silla-v5.webp
@@ -80,7 +80,7 @@ assets:
       base: assets/char/jinun-silla-v5.webp
       facing: right
       defaultDelivery: calm
-      calibration: { scale: 0.99 }
+      calibration: { scale: 0.99, spacing: 0.92 }
       emotions:
         nervous: assets/char/jinun-nervous-silla-v5.webp
         angry: assets/char/jinun-angry-silla-v5.webp
@@ -88,7 +88,7 @@ assets:
       base: assets/char/wolmyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1 }
+      calibration: { scale: 1, spacing: 1.16 }
       emotions:
         sad: assets/char/wolmyeong-sad-silla-v5.webp
         warning: assets/char/wolmyeong-warning-silla-v5.webp
