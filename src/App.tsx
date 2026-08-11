@@ -172,6 +172,8 @@ const DEFAULT_SEO_KEYWORDS = [
 ];
 const DEFAULT_SEO_IMAGE = 'https://yavn.vercel.app/favicon.svg';
 const DEFAULT_SEO_IMAGE_ALT = 'YAVN (야븐) 로고';
+// React 18 forwards the standards-based lowercase attribute without warning.
+const HIGH_PRIORITY_IMAGE_PROPS = { fetchpriority: 'high' } as const;
 const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
 const INVENTORY_DEFAULT_CATEGORY = '기타';
@@ -2130,13 +2132,14 @@ export default function App() {
     }
     return (
       <img
+        {...HIGH_PRIORITY_IMAGE_PROPS}
         key={buildImageCharacterRenderKey(position, slot.id)}
         className={className}
         src={slot.source}
         alt={slot.id}
         data-character-framing={slot.framing.name}
         loading="eager"
-        decoding="async"
+        decoding="sync"
         style={charStyle}
       />
     );
@@ -2696,7 +2699,16 @@ export default function App() {
     >
       <div className={`effect-viewport ${effectClass}`}>
       <div className="overlay" />
-      {background && <img className="bg" src={background} alt="background" />}
+      {background && (
+        <img
+          {...HIGH_PRIORITY_IMAGE_PROPS}
+          className="bg"
+          src={background}
+          alt="background"
+          loading="eager"
+          decoding="sync"
+        />
+      )}
 
       <div ref={stageContentFrameRef} className="stage-content-frame">
       <div
