@@ -4901,6 +4901,7 @@ textarea,
 
   .save-system-grid {
     min-height: 0;
+    grid-auto-rows: max-content;
     align-content: start;
     overflow-y: auto;
     overscroll-behavior: contain;
