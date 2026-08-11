@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFacingScale,
+  resolveCharacterFocusPresentation,
+  resolveCharacterFramingScale,
   resolveCharacterStageLayout,
   resolveDialogueVisibleCharacterIds,
 } from './characterLayout';
@@ -113,7 +115,7 @@ describe('character stage layout', () => {
     ], emptyLayout).mode).toBe('default');
   });
 
-  it('keeps the authored layout for zero, one, or three visible characters', () => {
+  it('uses a dedicated trio layout while preserving authored solo slots', () => {
     expect(resolveCharacterStageLayout([]).mode).toBe('default');
     expect(resolveCharacterStageLayout([
       { id: '코난', position: 'center' },
@@ -122,12 +124,42 @@ describe('character stage layout', () => {
       { id: '란', position: 'left' },
       { id: '코난', position: 'center' },
       { id: '코고로', position: 'right' },
-    ]).mode).toBe('default');
+    ])).toMatchObject({
+      mode: 'trio',
+      characterIdByPosition: {
+        left: '란',
+        center: '코난',
+        right: '코고로',
+      },
+    });
   });
 
-  it('keeps an image character mounted while only its emotion source changes', () => {
-    expect(buildImageCharacterRenderKey('left', '란')).toBe('left-란');
-    expect(buildImageCharacterRenderKey('left', '란')).not.toContain('.webp');
+  it('keeps an image character mounted across emotion and position changes', () => {
+    expect(buildImageCharacterRenderKey('란')).toBe('character-란');
+    expect(buildImageCharacterRenderKey('란')).not.toContain('left');
+    expect(buildImageCharacterRenderKey('란')).not.toContain('.webp');
+  });
+
+  it('reduces framing zoom as the cast grows without shrinking full-body shots', () => {
+    expect(resolveCharacterFramingScale(1, 3)).toBe(1);
+    expect(resolveCharacterFramingScale(2, 1)).toBe(2);
+    expect(resolveCharacterFramingScale(2, 2)).toBeCloseTo(1.82);
+    expect(resolveCharacterFramingScale(2, 3)).toBeCloseTo(1.62);
+  });
+
+  it('keeps the current speaker foremost and quiets listeners more strongly in a trio', () => {
+    expect(resolveCharacterFocusPresentation(3, 1, true, true)).toEqual({
+      brightness: 1,
+      scaleMultiplier: 1.035,
+      depthClass: 'is-speaker',
+    });
+    expect(resolveCharacterFocusPresentation(3, 2, false, true).brightness).toBe(0.76);
+    expect(resolveCharacterFocusPresentation(3, 3, false, true).brightness).toBe(0.64);
+    expect(resolveCharacterFocusPresentation(3, 2, false, false)).toEqual({
+      brightness: 1,
+      scaleMultiplier: 1,
+      depthClass: 'is-neutral',
+    });
   });
 
   it('keeps the staged ensemble visible until the script explicitly narrows the shot', () => {
