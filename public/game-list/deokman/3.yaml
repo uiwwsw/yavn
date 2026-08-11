@@ -18,6 +18,12 @@ scenes:
       - say:
           text: "제3장 — 한 사람만 거짓말한다"
       - say:
+          with:
+            - 덕만
+            - 소원
+          delivery: calm
+          text: "같은 밤 · 초경이 조금 지난 시각. 문 아래 핏자국은 아직 넓어지고 있었고, 야간 교대 종은 두 번 더 울리기 전이었습니다."
+      - say:
           char: 소원.nervous
           framing: bust
           with:
@@ -163,7 +169,8 @@ scenes:
       - say:
           with:
             - 덕만
-          text: "해가 뜨기 전, 덕만은 빈 탁자 하나만 놓고 세 사람을 차례로 불렀습니다. 먼저 소원이 창틀 먼지를 종이에 눌러 찍은 자국을 펼쳤습니다."
+          delivery: calm
+          text: "같은 밤 · 새벽 직전. 덕만은 빈 탁자 하나만 놓고 세 사람을 차례로 불렀습니다. 먼저 소원이 창틀 먼지를 종이에 눌러 찍은 자국을 펼쳤습니다."
       - char:
           id: 소원
           position: right
@@ -315,6 +322,11 @@ scenes:
 
   culprit_choice:
     actions:
+      - say:
+          with:
+            - 덕만
+          delivery: calm
+          text: "동틀 무렵. 밤새 불려 다닌 증인들의 그림자가 짧아질 때, 덕만이 부르기도 전에 아진이 문밖에 섰습니다."
       - char:
           id: 아진
           position: right
@@ -452,7 +464,8 @@ scenes:
       - add:
           legitimacy: 1
       - say:
-          text: "찢긴 서약서에는 왕실 남자를 후계자로 세우고, 덕만을 혼인이나 추방으로 왕경에서 떼어 놓겠다는 약속이 남아 있었습니다."
+          delivery: calm
+          text: "그날 아침 열린 화백회의에서 찢긴 서약서가 맞춰졌습니다. 왕실 남자를 후계자로 세우고, 덕만을 혼인이나 추방으로 왕경에서 떼어 놓겠다는 약속이 남아 있었습니다."
       - char:
           id: 칠숙
           position: right

@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.5.0');
+    expect(config.version).toBe('2.6.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
@@ -328,7 +328,7 @@ describe('Deokman complete-game content', () => {
       ['4.yaml', 'chapter4_open', '왕경 출입패는 놓고 가시지요'],
       ['5.yaml', 'chapter5_open', '왕자가 아닙니다'],
       ['6.yaml', 'chapter6_open', '체포령을 뜯어 품에 감췄습니다'],
-      ['7.yaml', 'final_open', '진평왕의 상여가 동문 아래에서 멈췄습니다'],
+      ['7.yaml', 'final_open', '왕의 상여가 동문 아래에서 멈췄습니다'],
     ] as const;
     const forbiddenSummaries = [
       '진평왕에게는 아들이 없었습니다',
@@ -357,6 +357,37 @@ describe('Deokman complete-game content', () => {
 
     const fullText = chapters.map((path) => JSON.stringify(readYaml(path))).join('\n');
     forbiddenSummaries.forEach((summary) => expect(fullText).not.toContain(summary));
+  });
+
+  it('anchors elapsed time with restrained narrator bridges and no impossible deadlines', () => {
+    const timelineAnchors = {
+      '0.yaml': ['연회 전날 · 밤 수라 뒤', '같은 밤 · 삼경', '연회 당일 · 진시'],
+      '1.yaml': ['연회 다음 날 · 아침', '첫째 날 · 해 질 무렵', '사흘째 · 새벽', '사흘째 · 밤'],
+      '2.yaml': ['누명을 벗은 이튿날 · 아침', '같은 날 · 정오', '같은 날 · 해 질 무렵', '혼담을 거부한 날 · 초경'],
+      '3.yaml': ['같은 밤 · 초경이 조금 지난 시각', '같은 밤 · 새벽 직전', '동틀 무렵', '그날 아침 열린 화백회의'],
+      '4.yaml': ['왕경을 떠난 지 열이틀째 · 해 질 무렵', '도착 이튿날 · 해 질 무렵', '전투가 끝난 이튿날 · 낮', '며칠 뒤'],
+      '5.yaml': ['왕경으로 돌아온 지 사흘째 · 화백회의 날', '회의가 한 시진 휴정된 사이', '같은 날 · 초경', '같은 밤 · 초경 끝'],
+      '6.yaml': ['같은 밤 · 이경', '이경이 다 가기 전', '한 식경도 지나지 않아', '새벽을 알리는 북이 울리기 직전', '동이 틀 무렵'],
+      '7.yaml': ['진평왕이 숨을 거둔 이튿날 · 해 질 무렵', '해가 지고 첫 횃불이 켜졌습니다', '회의가 시작된 지 한 시진', '자정이 가까워질 무렵'],
+    } as const;
+
+    expect(Object.values(timelineAnchors).flat()).toHaveLength(32);
+    Object.entries(timelineAnchors).forEach(([path, anchors]) => {
+      const narratorLines = collectKey(readYaml(path), 'say')
+        .map(asRecord)
+        .filter((say) => typeof say.text === 'string' && say.char === undefined);
+      anchors.forEach((anchor) => {
+        const line = narratorLines.find((say) => String(say.text).includes(anchor));
+        expect(line, `${path}: ${anchor}`).toBeDefined();
+        expect(typeof line?.delivery, `${path}: ${anchor} narrator delivery`).toBe('string');
+      });
+    });
+
+    const fullText = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+    expect(fullText).not.toContain('사흘이면 됩니다');
+    expect(fullText).not.toContain('전투가 끝난 저녁');
+    expect(fullText).toContain('한 시진이면 됩니다');
+    expect(fullText).toContain('전투가 끝난 이튿날 · 낮');
   });
 
   it('keeps every speaking character visibly staged on every reachable branch', () => {
