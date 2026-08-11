@@ -39,6 +39,7 @@ assets:
   characters:
     Deokman:
       base: assets/deokman.webp
+      facing: left
       defaultDelivery: deduction
 `,
       'base.yaml',
@@ -46,6 +47,7 @@ assets:
 
     expect(parsed.error).toBeUndefined();
     expect(parsed.data?.data.assets?.characters?.Deokman).toMatchObject({
+      facing: 'left',
       defaultDelivery: 'deduction',
     });
   });

@@ -716,44 +716,231 @@ scenes:
 
   ending_tyrant:
     actions:
+      - bg: throne_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 유신
+          position: right
+          framing: full
       - say:
-          text: "군사가 회의장을 포위하자 표결은 한 번에 끝났다. 반대한 사람은 그날 밤 이름째 사라졌다. 덕만은 가장 빨리 왕이 되었고, 다음 날부터 모든 문을 더 많은 칼로 지켜야 했다."
+          with:
+            - 덕만
+            - 유신
+          text: "군사가 회의장을 포위하자 표결은 한 번에 끝났습니다. 반대한 의원들의 이름표가 밤사이 좌석에서 사라졌고, 빈자리마다 무장한 호위가 섰습니다."
+      - say:
+          char: 유신.sad
+          framing: bust
+          with:
+            - 덕만
+          text: "왕좌전 문을 지키는 병사를 어제보다 두 배로 늘렸습니다. 그런데 전하, 이제 저 문은 누구에게서 전하를 지키는 겁니까?"
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          text: "……모두를 적으로 만들었으니, 모두에게서 지켜야겠지."
+      - effect: darken
+      - say:
+          with:
+            - 덕만
+          delivery: calm
+          text: "덕만은 가장 빨리 왕이 되었습니다. 다음 날부터 궁의 모든 문은 안에서도 잠겼습니다."
       - ending: first_tyrant
   ending_permitted:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 칠숙
+          position: right
+          framing: full
       - say:
-          text: "화백은 덕만을 왕이라 부르는 대신 왕명마다 대신들의 도장을 요구했다. 옥좌는 높았지만, 덕만의 손이 닿는 곳마다 이미 다른 손이 놓여 있었다."
+          char: 칠숙.smile
+          framing: bust
+          with:
+            - 덕만
+          text: "즉위를 축하드립니다. 첫 왕명만 이곳에 써 주십시오. 아래에는 화백의 도장을 받을 칸을 열두 개 마련했습니다."
+      - say:
+          char: 덕만.angry
+          framing: closeup
+          with:
+            - 칠숙
+          text: "내 이름으로 시작한 문장이 왜 그대들 도장 없이는 끝나지 않지?"
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          with:
+            - 덕만
+          text: "전하를 왕이라 부르기로 한 값입니다. 허락받은 왕관에는 허락한 손이 남는 법이지요."
+      - say:
+          with:
+            - 덕만
+          delivery: calm
+          text: "옥좌는 높았지만, 덕만이 손을 뻗는 곳마다 이미 다른 손의 도장이 놓여 있었습니다."
       - ending: permitted_queen
   ending_queen_consort:
     actions:
+      - bg: throne_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
       - say:
-          text: "진운은 끝내 물러나지 못했다. 두 사람의 공동 선언은 혼인 서약으로 고쳐졌다. 신라는 왕 하나와 현명한 왕비를 얻었고, 덕만이 직접 쓴 문장은 진운의 이름 아래 보관되었다."
+          with:
+            - 덕만
+            - 진운
+          text: "화백은 두 사람의 공동 선언 위에 새 제목을 붙였습니다. ‘진운왕과 덕만왕비의 혼인 서약.’ 덕만이 먼저 쓴 이름은 붉은 종이 한 장 아래로 가려졌습니다."
+      - say:
+          char: 진운.nervous
+          framing: bust
+          with:
+            - 덕만
+          text: "이렇게 끝내려고 그 혼서를 거부한 게 아니었습니다. 지금이라도 제 이름 아래 두지 않겠다고 말하겠습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with:
+            - 진운
+          text: "말하면 성문 밖 군사가 다시 움직이겠지요. 오늘은 서명하세요. 대신 내가 잃은 문장을 잊지는 마세요."
+      - say:
+          delivery: calm
+          text: "신라는 왕 하나와 현명한 왕비를 얻었습니다. 덕만이 직접 쓴 문장은 진운의 이름 아래 보관되었습니다."
       - ending: queen_consort
   ending_abdicated:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
       - say:
-          text: "진운이 물러나면 그의 군사가 움직이고, 덕만이 나아가면 왕경이 갈라질 판이었다. 덕만은 왕관을 내려놓아 내전을 멈췄다. 그날 나라를 다스린 결정은 왕이 되지 않겠다는 결정이었다."
+          char: 진운.nervous
+          framing: bust
+          with:
+            - 덕만
+          text: "제가 물러나면 제 이름으로 모인 군사가 움직입니다. 공주께서 나아가면 화백의 절반이 성문을 엽니다. 둘 중 한 사람은 져야 합니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진운
+          text: "아니요. 둘 다 오늘 왕이 되지 않으면 됩니다. 그 답을 패배라고 부를 사람은 살아서 부르게 두죠."
+      - say:
+          with:
+            - 덕만
+            - 진운
+          delivery: calm
+          text: "덕만이 관식을 탁자에 놓자 진운도 왕좌 앞에서 한 걸음 물러났습니다. 동문의 군사들은 서로 겨누던 창끝을 먼저 내렸습니다."
+      - say:
+          char: 진운
+          framing: closeup
+          with:
+            - 덕만
+          text: "오늘 신라를 다스린 사람은 왕이 되지 않기로 한 공주였습니다. 그 사실은 제 입으로 남기겠습니다."
       - ending: abdicated_crown
   ending_people:
     actions:
+      - bg: village
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 소원
+          position: right
+          framing: full
       - say:
-          text: "화백은 끝내 문을 열지 않았다. 덕만은 문밖의 사람들과 함께 왕경을 떠났다. 국경의 마을들은 인장 없는 명령을 따랐고, 그녀는 왕관보다 먼저 통치를 얻었다."
+          with:
+            - 덕만
+            - 소원
+          delivery: calm
+          text: "화백은 끝내 문을 열지 않았습니다. 소원은 사람들의 이름천을 왕좌전 문고리에 묶은 뒤, 남은 끝자락을 덕만에게 건넸습니다."
+      - say:
+          char: 소원
+          framing: bust
+          with:
+            - 덕만
+          text: "안에서 이름을 안 읽으면 밖으로 가져가요. 국경 사람들은 빈 그릇도 그냥 두지 않았잖아요."
+      - say:
+          char: 덕만
+          framing: closeup
+          with:
+            - 소원
+          text: "좋아. 문 안의 왕관은 두고, 문밖에서 해야 할 일부터 하자."
+      - say:
+          with:
+            - 덕만
+            - 소원
+          delivery: calm
+          text: "국경의 마을들은 인장 없는 명령을 따랐습니다. 덕만은 왕관보다 먼저 통치를 얻었습니다."
       - ending: peoples_princess
   ending_lonely:
     actions:
+      - bg: throne_hall
+      - char:
+          id: 덕만
+          position: center
+          framing: full
       - say:
           with:
             - 덕만
           delivery: sad
-          text: "덕만은 왕좌에 올랐다. 첫 조회에서 무심코 오른편을 보았지만 언니의 붉은 옷도, 문밖에서 이름을 불러 줄 친구도 없었다. 넓어진 궁은 대답하지 않았다."
+          text: "덕만은 왕좌에 올랐습니다. 첫 조회에서 무심코 오른편을 보았지만 언니의 산호색 옷도, 문밖에서 이름을 불러 줄 친구도 없었습니다."
+      - say:
+          char: 덕만.sad
+          framing: closeup
+          with: []
+          delivery: whisper
+          text: "언니, 누룽지 하나 남겼어. 이번에는 먼저 먹어도 된다고 말해 줘."
+          wait: 900
+      - say:
+          with: []
+          delivery: sad
+          text: "식은 접시 옆에는 대답 대신 새 왕에게 올리는 상소만 높이 쌓였습니다."
       - ending: lonely_throne
   ending_one_step:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: center
+          framing: full
       - say:
-          text: "표결은 덕만을 택했다. 그러나 성문을 지킬 군사는 오지 않았다. 즉위의 두 번째 북이 울릴 때, 칠숙의 마지막 궁수가 시위를 놓았다. 세 번째 북은 끝내 울리지 못했다."
+          with:
+            - 덕만
+          text: "표결은 덕만을 택했습니다. 그러나 성문을 지킬 군사는 오지 않았고, 열린 문틈으로 화살 한 대가 왕좌전 기둥에 박혔습니다."
+      - say:
+          char: 덕만
+          framing: closeup
+          with: []
+          delivery: nervous
+          text: "문부터 닫아. 유신에게 세 번째 북까지 버텨 달라고 전해."
+      - effect: impact
+      - say:
+          with: []
+          delivery: sad
+          text: "두 번째 북이 울릴 때 칠숙의 마지막 궁수가 다시 시위를 놓았습니다. 세 번째 북은 끝내 울리지 못했습니다."
       - ending: one_step_queen
   ending_vanished:
     actions:
+      - bg: moon_court
+      - char:
+          id: 덕만
+          position: left
+          framing: full
       - char:
           id: 비담
           position: right
@@ -764,12 +951,51 @@ scenes:
           delivery: whisper
           text: "동쪽 바다는 아직 누구에게도 신하의 예를 올리지 않았습니다. 저와 가시면 살아남을 수 있습니다. 다만…… 우리 이름을 적어 줄 사람은 데려가지 못하겠군요."
       - say:
-          text: "덕만은 비담과 동쪽 바다를 건넜다. 행복했는지, 후회했는지, 서로의 이름을 얼마나 오래 불렀는지는 누구도 기록하지 않았다."
+          char: 덕만.sad
+          framing: closeup
+          with:
+            - 비담
+          delivery: whisper
+          text: "아버지는 먼저 살라고 했어. 왕이 되지 못한 삶도 내 이름으로 고를 수 있다면…… 이번에는 그 말을 듣고 싶어."
+      - say:
+          char: 비담.sad
+          framing: bust
+          with:
+            - 덕만
+          text: "그럼 기록 대신 제가 기억하겠습니다. 평생 잘하는 척은 못 해도, 잊지 않는 일은 해 보죠."
+      - say:
+          delivery: calm
+          text: "덕만은 비담과 동쪽 바다를 건넜습니다. 행복했는지, 후회했는지, 서로의 이름을 얼마나 오래 불렀는지는 누구도 기록하지 않았습니다."
       - ending: vanished_princess
   ending_broken:
     actions:
+      - bg: council_hall
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - char:
+          id: 진운
+          position: right
+          framing: full
       - say:
-          text: "덕만도 진운도 물러나지 않았고, 어느 쪽도 나라 전체를 설득하지 못했다. 같은 모양의 왕관이 두 군기 위에 걸렸다. 신라 사람들은 누구의 백성인지 정하기 위해 서로에게 칼을 들었다."
+          char: 진운.angry
+          framing: bust
+          with:
+            - 덕만
+          text: "공주께서 물러서지 않으면 제 군사는 저를 버린 왕자라 부를 겁니다. 제가 물러서면 어머니부터 죽습니다."
+      - say:
+          char: 덕만.angry
+          framing: bust
+          with:
+            - 진운
+          text: "내가 물러서면 여자는 위기 때만 정사를 맡을 수 있다는 말이 법이 됩니다. 그대 사정으로 내 이름까지 지울 수는 없습니다."
+      - say:
+          with:
+            - 덕만
+            - 진운
+          delivery: calm
+          text: "두 사람 사이의 왕좌는 끝내 비어 있었습니다. 같은 모양의 왕관이 두 군기 위에 걸렸고, 신라 사람들은 누구의 백성인지 정하기 위해 서로에게 칼을 들었습니다."
       - ending: broken_alliance
 
   go_34_empty_council:

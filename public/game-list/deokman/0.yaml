@@ -540,7 +540,8 @@ scenes:
       - set:
           clue_black_powder: true
       - say:
-          text: "덕만은 아버지의 목숨을 구했지만, 다음 날부터 암살 용의자로 불리게 되었습니다."
+          delivery: calm
+          text: "동이 트자 왕좌전 문에 새 목패가 걸렸습니다. 밤새 빗물에 번진 ‘암살 용의’ 네 글자 아래, 덕만의 이름만 또렷했습니다."
 
   go_01_too_clever:
     actions:

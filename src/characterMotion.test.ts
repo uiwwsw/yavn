@@ -12,7 +12,8 @@ describe('image character motion', () => {
     expect(styles).toContain('calc(var(--char-offset-x) + var(--char-framing-x))');
     expect(styles).toContain('var(--char-framing-y)');
     expect(styles).toContain('transform-origin: center top;');
-    expect(styles).toContain('scale: var(--char-scale);');
+    expect(styles).toContain('--char-facing-scale-x: 1;');
+    expect(styles).toContain('scale: calc(var(--char-scale) * var(--char-facing-scale-x)) var(--char-scale);');
     expect(styles).toContain('left: calc(50% - var(--char-image-width) / 2);');
     expect(styles).toContain('transform: translate3d(var(--char-framing-x), var(--char-framing-y), 0);');
     expect(styles).toContain('transition: scale 260ms cubic-bezier(0.22, 1, 0.36, 1), filter 200ms ease-out;');

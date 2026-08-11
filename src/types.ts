@@ -3,6 +3,7 @@ import type { UiTemplateId } from './uiTemplates';
 export type { UiTemplateId } from './uiTemplates';
 
 export type Position = 'left' | 'center' | 'right';
+export type CharacterFacing = 'left' | 'right' | 'front';
 export type StickerAnchorX = 'left' | 'center' | 'right';
 export type StickerAnchorY = 'top' | 'center' | 'bottom';
 export type StickerLength = number | string;
@@ -25,6 +26,7 @@ export type CharacterFramingPreset = {
 export type CharacterAssetDefinition = {
   base: string;
   emotions?: Record<string, string>;
+  facing?: CharacterFacing;
   defaultDelivery?: DialogueDelivery;
   defaultFraming?: string;
   framings?: Record<string, CharacterFramingPreset>;
@@ -352,6 +354,7 @@ export type CharacterSlot = {
   kind: 'image' | 'live2d';
   source: string;
   emotion?: string;
+  facing?: CharacterFacing;
   framing: CharacterFramingState;
 };
 

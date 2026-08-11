@@ -1,4 +1,4 @@
-import type { Position } from './types';
+import type { CharacterFacing, Position } from './types';
 
 export type VisibleCharacterStageEntry = {
   id: string;
@@ -31,6 +31,23 @@ export function resolveDialogueVisibleCharacterIds(
 
 export function buildImageCharacterRenderKey(position: Position, characterId: string): string {
   return `${position}-${characterId}`;
+}
+
+export function resolveCharacterFacingScale(
+  nativeFacing: CharacterFacing | undefined,
+  position: Position,
+  duoSide?: 'left' | 'right',
+): 1 | -1 {
+  if (!nativeFacing || nativeFacing === 'front') {
+    return 1;
+  }
+
+  const stageSide = duoSide ?? (position === 'center' ? undefined : position);
+  if (!stageSide) {
+    return 1;
+  }
+  const desiredFacing = stageSide === 'left' ? 'right' : 'left';
+  return nativeFacing === desiredFacing ? 1 : -1;
 }
 
 export function resolveCharacterStageLayout(
