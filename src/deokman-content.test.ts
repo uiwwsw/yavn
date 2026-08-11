@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('3.2.0');
+    expect(config.version).toBe('3.2.1');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 제가 왕이 되는 의식은 그 뒤에 하겠습니다');
@@ -192,6 +192,8 @@ describe('Deokman complete-game content', () => {
       const calibration = asRecord(character.calibration);
       expect(Number(calibration.scale)).toBeGreaterThanOrEqual(0.5);
       expect(Number(calibration.scale)).toBeLessThanOrEqual(2);
+      expect(Number(calibration.spacing)).toBeGreaterThanOrEqual(0.75);
+      expect(Number(calibration.spacing)).toBeLessThanOrEqual(1.25);
       expect(character.defaultFraming).toBeUndefined();
       expect(character.framings).toBeUndefined();
     });

@@ -340,6 +340,7 @@ const characterCalibrationSchema = z
     scale: z.number().min(0.5).max(2).optional(),
     x: z.number().min(-30).max(30).optional(),
     y: z.number().min(-30).max(30).optional(),
+    spacing: z.number().min(0.75).max(1.25).optional(),
   })
   .strict();
 

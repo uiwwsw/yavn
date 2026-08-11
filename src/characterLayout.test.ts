@@ -4,6 +4,8 @@ import {
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
   resolveCharacterFramingScale,
+  resolveMobileCameraPan,
+  resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
   resolveDialogueVisibleCharacterIds,
 } from './characterLayout';
@@ -132,6 +134,60 @@ describe('character stage layout', () => {
         right: '코고로',
       },
     });
+  });
+
+  it('caps desktop ensemble gaps and lets asset calibration tune the footprint', () => {
+    const trio = resolveCharacterStageLayout([
+      { id: '아진', position: 'left' },
+      { id: '덕만', position: 'center' },
+      { id: '월명', position: 'right' },
+    ]);
+
+    expect(resolveCharacterStagePlacement('left', trio, 0.9)).toEqual({
+      anchorX: 'calc(50cqw - min(16.2cqw, 234px))',
+      offsetX: '-50%',
+      panToCenterX: 'min(16.2cqw, 234px)',
+    });
+    expect(resolveCharacterStagePlacement('right', trio, 1.15)).toEqual({
+      anchorX: 'calc(50cqw + min(20.7cqw, 299px))',
+      offsetX: '-50%',
+      panToCenterX: 'calc(0px - min(20.7cqw, 299px))',
+    });
+  });
+
+  it('uses a separate capped gap for a desktop duo while preserving authored solo edges', () => {
+    const duo = resolveCharacterStageLayout([
+      { id: '덕만', position: 'center' },
+      { id: '진평왕', position: 'right' },
+    ]);
+    expect(resolveCharacterStagePlacement('center', duo)).toEqual({
+      anchorX: 'calc(50cqw - min(22cqw, 260px))',
+      offsetX: '-50%',
+      panToCenterX: 'min(22cqw, 260px)',
+    });
+    expect(resolveCharacterStagePlacement('left', resolveCharacterStageLayout([
+      { id: '덕만', position: 'left' },
+    ]))).toEqual({
+      anchorX: '8cqw',
+      offsetX: '0%',
+      panToCenterX: '42cqw',
+    });
+  });
+
+  it('centers camera targets against the unchanged mobile duo and trio partitions', () => {
+    const duo = resolveCharacterStageLayout([
+      { id: '덕만', position: 'center' },
+      { id: '진평왕', position: 'right' },
+    ]);
+    const trio = resolveCharacterStageLayout([
+      { id: '덕만', position: 'left' },
+      { id: '천명', position: 'center' },
+      { id: '진평왕', position: 'right' },
+    ]);
+    expect(resolveMobileCameraPan('center', duo)).toBe('25cqw');
+    expect(resolveMobileCameraPan('right', duo)).toBe('-25cqw');
+    expect(resolveMobileCameraPan('left', trio)).toBe('35cqw');
+    expect(resolveMobileCameraPan('right', trio)).toBe('-35cqw');
   });
 
   it('keeps an image character mounted across emotion and position changes', () => {

@@ -127,7 +127,7 @@ assets:
   characters:
     Deokman:
       base: assets/deokman.webp
-      calibration: { scale: 1.08, x: 1, y: -3 }
+      calibration: { scale: 1.08, x: 1, y: -3, spacing: 0.92 }
 `,
       'base.yaml',
     );
@@ -156,6 +156,7 @@ scenes:
       scale: 1.08,
       x: 1,
       y: -3,
+      spacing: 0.92,
     });
     expect(chapter.data?.data.scenes.confrontation.actions).toMatchObject([
       { camera: { shot: 'wide' } },
