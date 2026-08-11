@@ -28,8 +28,15 @@ describe('save and game over recovery UI', () => {
     );
     expect(appSource).toContain('<div className="inventory-overview"');
     expect(appSource).toContain('<div className="inventory-tools">');
+    expect(appSource).toContain('도감 살펴보기');
+    expect(appSource).toContain('검색 조건 초기화');
+    expect(appSource).toContain('disabled={!entry.owned}');
+    expect(appSource).toContain("entry.owned ? entry.name : '미발견 단서'");
     expect(appSource).not.toContain('inventory-detail-actions');
-    expect(styles).toMatch(/@media \(max-width: 400px\)[\s\S]*?\.inventory-grid\s*\{[\s\S]*?repeat\(2,/);
+    expect(styles).toMatch(/@media \(max-width: 340px\)[\s\S]*?\.inventory-grid\s*\{[\s\S]*?repeat\(2,/);
+    expect(styles).toMatch(
+      /\.inventory-search-field input::placeholder\s*\{[\s\S]*?color: var\(--ui-input-placeholder\);/,
+    );
   });
 
   it('keeps save and game over content inside scrollable responsive bounds', () => {
@@ -45,6 +52,12 @@ describe('save and game over recovery UI', () => {
     expect(styles).toMatch(
       /@media \(max-width: 768px\)[\s\S]*?\.game-over-primary-actions\s*\{[\s\S]*?grid-template-columns: 1fr;/,
     );
+    expect(styles).toMatch(
+      /\.dialog-content-scroll,[\s\S]*?\.ending-credits-roll\s*\{[\s\S]*?scrollbar-width: thin;[\s\S]*?scrollbar-color:/,
+    );
+    expect(appSource).not.toContain("'YAVN ENGINE'");
+    expect(appSource).toContain('<h2>케이스 파일</h2>');
+    expect(appSource).toContain("choiceGate.active ? '선택 대기' : '다음'");
   });
 
   it('isolates ZIP saves and retains the chapter checkpoint as a resume fallback', () => {
