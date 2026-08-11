@@ -50,7 +50,7 @@ describe('image character motion', () => {
     expect(appSource).toContain('data-character-count={visibleCharacterCount}');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': stagePlacement.anchorX");
-    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-width: min\(52vw, 410px\);/);
+    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-width: min\(52cqw, 410px\);/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 15cqw;/);
     expect(styles).not.toContain("char-layout-trio[data-camera-shot='medium']");
