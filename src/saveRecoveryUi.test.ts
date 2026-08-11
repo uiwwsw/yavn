@@ -39,6 +39,9 @@ describe('save and game over recovery UI', () => {
     expect(styles).toMatch(
       /\.inventory-search-field input::placeholder\s*\{[\s\S]*?color: var\(--ui-input-placeholder\);/,
     );
+    expect(styles).toMatch(
+      /\.settings-inventory-body\.has-tools\s*\{[\s\S]*?grid-template-rows: auto auto minmax\(0, 1fr\);/,
+    );
   });
 
   it('keeps save and game over content inside scrollable responsive bounds', () => {
@@ -62,6 +65,9 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain('save-protection-hero');
     expect(appSource).toContain('className="save-system-grid"');
     expect(styles).toMatch(/\.save-system-grid\s*\{[\s\S]*?grid-template-columns: repeat\(3,/);
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\)[\s\S]*?\.save-system-grid\s*\{[\s\S]*?grid-template-columns: 1fr;/,
+    );
     expect(appSource).toContain("choiceGate.active ? '선택 대기' : '다음'");
   });
 
