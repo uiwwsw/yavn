@@ -161,9 +161,9 @@ const ALL_TAG_FILTER = '__all';
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
-const START_GATE_ACTION_DELAY_MS = 240;
-const START_GATE_ACTION_STAGGER_MS = 90;
-const START_GATE_ACTION_DURATION_MS = 420;
+const START_GATE_ACTION_DELAY_MS = 280;
+const START_GATE_ACTION_STAGGER_MS = 110;
+const START_GATE_ACTION_DURATION_MS = 680;
 const START_GATE_ACTION_FAILSAFE_BUFFER_MS = 180;
 const DEFAULT_SEO_TITLE = '야븐엔진 (YAVN) | Type your story. Play your novel.';
 const DEFAULT_SEO_DESCRIPTION =
@@ -1077,14 +1077,22 @@ export default function App() {
       return;
     }
 
+    const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+    const offscreenDistances = targets.map((target) => {
+      const { top, height } = target.getBoundingClientRect();
+      return Math.max(72, Math.ceil(viewportHeight - top + height + 24));
+    });
     const animations: Animation[] = [];
     try {
       targets.forEach((target, index) => {
         animations.push(
           target.animate(
             [
-              { opacity: 0, transform: 'translateY(10px) scale(0.985)', filter: 'blur(2px)' },
-              { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' },
+              {
+                opacity: 0,
+                transform: `translate3d(0, ${offscreenDistances[index]}px, 0)`,
+              },
+              { opacity: 1, transform: 'translate3d(0, 0, 0)' },
             ],
             {
               delay: START_GATE_ACTION_DELAY_MS + index * START_GATE_ACTION_STAGGER_MS,

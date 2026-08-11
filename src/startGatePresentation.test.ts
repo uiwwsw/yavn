@@ -28,6 +28,10 @@ describe('start gate presentation', () => {
     expect(app).toContain('const startGateActionsRef = useRef<HTMLDivElement | null>(null)');
     expect(app).toContain("container.querySelectorAll<HTMLElement>('.start-gate-button, .start-gate-hint')");
     expect(app).toContain("fill: 'backwards'");
+    expect(app).toContain('target.getBoundingClientRect()');
+    expect(app).toContain('viewportHeight - top + height + 24');
+    expect(app).toContain('transform: `translate3d(0, ${offscreenDistances[index]}px, 0)`');
+    expect(app).toContain("transform: 'translate3d(0, 0, 0)'");
     expect(app).toContain('START_GATE_ACTION_FAILSAFE_BUFFER_MS');
     expect(app).toContain('animations.forEach((animation) => animation.cancel())');
     expect(app).toContain('<div ref={startGateActionsRef} className={actionClass}>');

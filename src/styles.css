@@ -514,6 +514,15 @@ textarea,
   --ui-speaker-color: #ffdba1;
   --ui-text-color: #fff6e6;
   --ui-status-color: rgba(255, 241, 212, 0.74);
+  --ui-deduction-text-shadow: 0 0 12px rgba(239, 186, 98, 0.16);
+  --ui-typing-angry-color: #fff4e7;
+  --ui-typing-angry-shadow-color: rgba(255, 105, 78, 0.72);
+  --ui-typing-shout-color: #fffdf5;
+  --ui-typing-shout-primary-shadow-color: rgba(255, 205, 122, 0.88);
+  --ui-typing-shout-secondary-shadow-color: rgba(255, 103, 76, 0.48);
+  --ui-typing-sad-shadow-color: rgba(205, 166, 117, 0.3);
+  --ui-typing-deduction-color: #ffe7b3;
+  --ui-typing-deduction-shadow-color: rgba(240, 180, 81, 0.6);
   --ui-focus-ring: #ffcf7d;
   --ui-input-border: rgba(250, 232, 192, 0.42);
   --ui-input-bg: rgba(30, 22, 17, 0.72);
@@ -683,6 +692,15 @@ textarea,
   --ui-speaker-color: #6ff7ff;
   --ui-text-color: #eaf9ff;
   --ui-status-color: rgba(189, 236, 255, 0.8);
+  --ui-deduction-text-shadow: 0 0 12px rgba(116, 211, 255, 0.12);
+  --ui-typing-angry-color: #fff1f7;
+  --ui-typing-angry-shadow-color: rgba(255, 82, 145, 0.76);
+  --ui-typing-shout-color: #effcff;
+  --ui-typing-shout-primary-shadow-color: rgba(113, 245, 255, 0.86);
+  --ui-typing-shout-secondary-shadow-color: rgba(203, 91, 255, 0.5);
+  --ui-typing-sad-shadow-color: rgba(128, 173, 215, 0.28);
+  --ui-typing-deduction-color: #d8f6ff;
+  --ui-typing-deduction-shadow-color: rgba(91, 214, 255, 0.58);
   --ui-focus-ring: #53f2ff;
   --ui-input-border: rgba(110, 237, 255, 0.56);
   --ui-input-bg: rgba(8, 24, 47, 0.72);
@@ -825,6 +843,15 @@ textarea,
   --ui-speaker-color: #6a4016;
   --ui-text-color: #2f1f12;
   --ui-status-color: rgba(84, 55, 28, 0.78);
+  --ui-deduction-text-shadow: none;
+  --ui-typing-angry-color: #8a2f1d;
+  --ui-typing-angry-shadow-color: rgba(139, 45, 28, 0.32);
+  --ui-typing-shout-color: #6d2c16;
+  --ui-typing-shout-primary-shadow-color: rgba(166, 109, 44, 0.42);
+  --ui-typing-shout-secondary-shadow-color: rgba(142, 54, 31, 0.26);
+  --ui-typing-sad-shadow-color: rgba(94, 65, 39, 0.2);
+  --ui-typing-deduction-color: #704518;
+  --ui-typing-deduction-shadow-color: rgba(154, 102, 40, 0.32);
   --ui-focus-ring: #8f5d2d;
   --ui-input-border: rgba(128, 90, 44, 0.56);
   --ui-input-bg: rgba(252, 244, 228, 0.84);
@@ -3241,7 +3268,7 @@ textarea,
 }
 
 .text.delivery-deduction {
-  text-shadow: 0 0 12px rgba(116, 211, 255, 0.12);
+  text-shadow: var(--ui-deduction-text-shadow);
 }
 
 .speaker.delivery-angry,
@@ -4262,8 +4289,8 @@ textarea,
 
 @keyframes dialogueAngryGlyph {
   from {
-    color: #fff4e7;
-    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 9px) rgba(255, 105, 78, 0.72);
+    color: var(--ui-typing-angry-color);
+    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 9px) var(--ui-typing-angry-shadow-color);
     filter: brightness(calc(1.08 + var(--typing-intensity) * 0.22));
   }
   to {
@@ -4286,10 +4313,10 @@ textarea,
 
 @keyframes dialogueShoutGlyph {
   from {
-    color: #ffffff;
+    color: var(--ui-typing-shout-color);
     text-shadow:
-      0 0 calc(6px + var(--typing-intensity) * 10px) rgba(255, 205, 122, 0.88),
-      0 0 calc(12px + var(--typing-intensity) * 14px) rgba(255, 103, 76, 0.48);
+      0 0 calc(6px + var(--typing-intensity) * 10px) var(--ui-typing-shout-primary-shadow-color),
+      0 0 calc(12px + var(--typing-intensity) * 14px) var(--ui-typing-shout-secondary-shadow-color);
     filter: brightness(calc(1.12 + var(--typing-intensity) * 0.28));
   }
   to {
@@ -4303,7 +4330,7 @@ textarea,
   from {
     top: calc(var(--typing-intensity) * -0.8px);
     opacity: 0.34;
-    text-shadow: 0 0 9px rgba(128, 173, 215, 0.28);
+    text-shadow: 0 0 9px var(--ui-typing-sad-shadow-color);
   }
   to {
     top: 0;
@@ -4314,8 +4341,8 @@ textarea,
 
 @keyframes dialogueDeductionGlyph {
   from {
-    color: #d8f6ff;
-    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 7px) rgba(91, 214, 255, 0.58);
+    color: var(--ui-typing-deduction-color);
+    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 7px) var(--ui-typing-deduction-shadow-color);
   }
   to {
     color: inherit;
