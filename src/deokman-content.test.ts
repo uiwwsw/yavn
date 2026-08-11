@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.3.0');
+    expect(config.version).toBe('2.4.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
@@ -125,9 +125,9 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(170);
+    expect(characterPlacements).toHaveLength(173);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
-    expect(speakerLines).toHaveLength(522);
+    expect(speakerLines).toHaveLength(565);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
     choices.forEach((choice) => expect(choice.framing).toBe('closeup'));
@@ -259,6 +259,60 @@ describe('Deokman complete-game content', () => {
       });
 
       expect(reciprocalScenes.length, path).toBeGreaterThanOrEqual(8);
+    });
+  });
+
+  it('introduces relationships, motives, and costs before all 24 choices', () => {
+    const contexts = [
+      ['0.yaml', 'prologue_open', 'p_caught', '뜻을 가진 딸이 칼을 가진 아들보다 위험할 때가 있습니다'],
+      ['0.yaml', 'warn_choice', 'p_warn', '언니 천명은 내 말을 의심하지 않겠지만 칼이 없어'],
+      ['0.yaml', 'banquet_choice', 'p_cup', '연회 반대편에는 왕의 잔을 준비한 대신들을 대표해 칠숙이'],
+      ['1.yaml', 'chapter1_open', 'c1_investigate', '덕만에게 남은 사람은 많지 않았습니다'],
+      ['1.yaml', 'rumor_choice', 'c1_rumor', '그는 덕만의 신하도, 칠숙의 사람도 아니었습니다'],
+      ['1.yaml', 'evidence_choice', 'c1_evidence', '아버지께만 보이면 내 누명은 벗지만 배후는 숨을 거야'],
+      ['2.yaml', 'chapter2_open', 'c2_suitor', '왕실 방계의 진운공은 혼인의 당사자이고'],
+      ['2.yaml', 'reputation_choice', 'c2_reputation', '별을 핑계로 대면 월명이 거짓말쟁이가 되고'],
+      ['2.yaml', 'throne_choice', 'c2_throne', '한 집만 택하면 나머지 두 집이 계승동맹으로 뭉치고'],
+      ['3.yaml', 'chapter3_open', 'c3_body', '죽은 사람은 혼인 합의서를 덕만에게 넘긴 귀족이었습니다'],
+      ['3.yaml', 'testimony_choice', 'c3_testimony', '높은 분도 낮은 사람도 먼지한테는 거짓말을 시킬 수 없으니까요'],
+      ['3.yaml', 'culprit_choice', 'c3_culprit', '아버지 잔에도, 내 방의 시체에도 네 붉은 매듭이 남았어'],
+      ['4.yaml', 'chapter4_open', 'c4_grain', '저는 이곳에서 약을 짓는 월명입니다'],
+      ['4.yaml', 'defense_choice', 'c4_defense', '마을에는 오늘 곡식을 나눠 준 가족들이 있고'],
+      ['4.yaml', 'enemy_choice', 'c4_enemy', '이번에는 적군의 통행패를 목에 걸고 있었습니다'],
+      ['5.yaml', 'chapter5_open', 'c5_contest', '진평왕과 먼 친족인 왕실 남자였고'],
+      ['5.yaml', 'leverage_choice', 'c5_leverage', '그대는 내 신하가 아니라서 곁에 둔 사람이야'],
+      ['5.yaml', 'rescue_choice', 'c5_rescue', '저를 살려도 왕위는 양보하지 않습니다'],
+      ['6.yaml', 'chapter6_open', 'c6_entry', '월명 선생은 약재 수로에서 기다리고'],
+      ['6.yaml', 'rescue_choice', 'c6_rescue', '아진이 빈 약함을 들고 달아났다는 보고가 있습니다'],
+      ['6.yaml', 'seal_found', 'c6_seal', '나라의 도장이기 전에 아버지가 평생 쥐고 있던 물건이야'],
+      ['7.yaml', 'final_open', 'final_opening', '진운공과 함께 들어가면 그의 가문을 갈라놓을 수 있습니다'],
+      ['7.yaml', 'proof_choice', 'final_proof', '공주와 가까운 나인, 목숨을 빚진 살인자'],
+      ['7.yaml', 'crown_choice', 'final_crown', '화백의 표를 택하면 귀족들이 붙인 조건을 받아들여야 했고'],
+    ] as const;
+
+    expect(contexts).toHaveLength(24);
+    expect(new Set(contexts.map(([, , key]) => key)).size).toBe(24);
+    contexts.forEach(([path, sceneId, choiceKey, anchor]) => {
+      const scenes = asRecord(readYaml(path).scenes);
+      const scene = asRecord(scenes[sceneId]);
+      const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+      const anchorIndex = actions.findIndex((action) => String(asRecord(action.say).text).includes(anchor));
+      const choiceIndex = actions.findIndex((action) => asRecord(action.choice).key === choiceKey);
+      const choiceSceneId = Object.entries(scenes).find(([, value]) => {
+        const candidateActions = asRecord(value).actions;
+        return Array.isArray(candidateActions) && candidateActions.some(
+          (action) => asRecord(asRecord(action).choice).key === choiceKey,
+        );
+      })?.[0];
+
+      expect(anchorIndex, `${path}:${sceneId} relationship context`).toBeGreaterThanOrEqual(0);
+      expect(choiceSceneId, `${path}:${choiceKey}`).toBeDefined();
+      if (choiceIndex >= 0) {
+        expect(choiceIndex, `${path}:${sceneId} ${choiceKey}`).toBeGreaterThan(anchorIndex);
+      } else {
+        const gotoIndex = actions.findIndex((action) => action.goto === choiceSceneId);
+        expect(gotoIndex, `${path}:${sceneId} -> ${choiceSceneId}`).toBeGreaterThan(anchorIndex);
+      }
     });
   });
 

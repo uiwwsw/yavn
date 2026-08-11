@@ -14,6 +14,15 @@ scenes:
       - say:
           with:
             - 덕만
+          text: "진평왕에게는 아들이 없었습니다. 맏딸 천명은 이미 혼인했고, 둘째 딸 덕만은 아버지 곁에서 정사를 배우기 시작했습니다. 그때부터 몇몇 귀족은 덕만을 공주가 아니라, 자신들이 정할 왕위를 빼앗을 사람으로 보았습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with: []
+          text: "아버지는 내가 회의에 앉는다고 나라가 무너지지는 않는다고 하셨지. 그런데 왜 다들 내가 왕관이라도 훔친 얼굴로 보는 걸까."
+      - say:
+          with:
+            - 덕만
           delivery: calm
           text: "비가 처마를 때렸습니다. 덕만이 서쪽 회랑에 들어서자 세 번째 등불이 꺼졌습니다. 앞의 두 등불과 똑같은 간격이었습니다."
       - say:
@@ -26,7 +35,7 @@ scenes:
           with:
             - 덕만
           delivery: whisper
-          text: "덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다. 빗소리 아래로 낯익은 남자의 목소리와, 짧게 대답하는 여자의 목소리가 겹쳐 들렸습니다."
+          text: "덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다. 남자의 목소리는 이찬 칠숙의 것이었습니다. 왕 앞에서는 가장 충직한 대신이지만, 화백회의에서는 여인이 왕이 되는 순간 신라의 질서가 끝난다고 주장해 온 사람이었습니다."
           wait: 550
       - char:
           id: 칠숙
@@ -50,6 +59,12 @@ scenes:
             - 칠숙
           delivery: neutral
           text: "왕이 쓰러지면 호위가 공주에게 닿기까지 열두 걸음입니다. 그 전에 끝내겠습니다."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          with:
+            - 아진
+          text: "천명공주는 이미 남편의 가문이 있습니다. 덕만공주는 아직 누구의 이름 아래에도 들어가지 않았지요. 뜻을 가진 딸이 칼을 가진 아들보다 위험할 때가 있습니다."
       - say:
           char: 칠숙.smile
           framing: bust
@@ -166,6 +181,21 @@ scenes:
           position: left
           framing: full
       - say:
+          with:
+            - 덕만
+          text: "덕만에게 진평왕은 아버지이자 신라의 왕이었습니다. 아버지는 딸의 말을 믿을 수 있지만, 왕은 증거 없이 연회를 멈출 수 없었습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with: []
+          text: "언니 천명은 내 말을 의심하지 않겠지만 칼이 없어. 유신은 내 호위를 맡은 장수라 칼은 있지만, 왕명 없이 움직이면 반역으로 몰릴 거야."
+      - say:
+          char: 덕만
+          framing: closeup
+          with: []
+          delivery: whisper
+          text: "칠숙에게 아무것도 못 들은 척 다가가면 시간을 벌 수도 있어. 들켰다는 걸 알아차리면 그 방에서 나오지 못하겠지."
+      - say:
           char: 덕만
           framing: closeup
           delivery: whisper
@@ -271,6 +301,14 @@ scenes:
           id: 덕만
           position: left
           framing: full
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
+      - say:
+          with:
+            - 칠숙
+          text: "연회 반대편에는 왕의 잔을 준비한 대신들을 대표해 칠숙이 앉아 있었습니다. 그는 덕만과 눈이 마주칠 때마다 웃었고, 술병이 바뀔 때마다 소매 안에서 손가락을 하나씩 접었습니다."
       - say:
           char: 진평왕
           framing: full
