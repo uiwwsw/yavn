@@ -5,6 +5,81 @@ script:
 scenes:
   prologue_open:
     actions:
+      - bg: throne_hall
+      - effect: focus
+      - char:
+          id: 진평왕
+          position: right
+          framing: full
+      - char:
+          id: 덕만
+          position: left
+          framing: full
+      - say:
+          with:
+            - 진평왕
+            - 덕만
+          text: "밤 수라가 물러간 뒤에도 진평왕은 꿀 묻힌 누룽지 한 조각을 접시 가장자리에 남겨 두었습니다. 덕만이 어릴 때부터 마지막에 찾던 것이었습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진평왕
+          text: "또 남기셨어요? 의원은 단것부터 줄이라고 했지, 아버지 몫을 전부 딸에게 주라고 하진 않았습니다."
+      - say:
+          char: 진평왕
+          framing: bust
+          with:
+            - 덕만
+          text: "왕의 수라를 빼앗아 먹는 사람이 너 말고 또 있느냐. 벌로 이 청원이나 읽어라. 남쪽 둑을 어디부터 고칠지 답이 없구나."
+      - char:
+          id: 천명
+          position: center
+          framing: full
+      - say:
+          char: 천명
+          framing: bust
+          with:
+            - 진평왕
+            - 덕만
+          text: "아버지는 덕만에게 벌을 내릴 때마다 붓을 주시네요. 저는 어릴 때 무릎부터 꿇었는데."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진평왕
+            - 천명
+          text: "언니가 누룽지를 먼저 훔쳐 먹었으니까요. 둑은 아래부터 막아야 해요. 위를 먼저 고치면 첫비에 아랫마을이 잠깁니다."
+      - say:
+          char: 진평왕
+          framing: bust
+          with:
+            - 덕만
+          text: "그럼 네 글씨로 써라. 내일 연회에서도 내 곁에 앉아 대신들이 무엇을 빼놓는지 보거라."
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          with:
+            - 진평왕
+            - 덕만
+          text: "전하께 왕자가 없는 지금, 화백은 공주가 정사 문서에 붓을 대는 일을 후계의 뜻으로 읽을 겁니다. 눈이 밝은 따님을 두신 기쁨과는 다른 문제입니다."
+      - say:
+          char: 진평왕
+          framing: closeup
+          with:
+            - 덕만
+            - 칠숙
+          text: "가볍게 보라고 하게. 내 딸이 백성 사는 둑을 보겠다는데, 무거워야 할 이유가 무엇인가."
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          with:
+            - 덕만
+          text: "……뜻을 가진 따님을 두셨으니, 전하께서 오래 곁을 지켜 주셔야겠습니다."
       - bg: shadow_corridor
       - effect: moonveil
       - char:
@@ -14,12 +89,7 @@ scenes:
       - say:
           with:
             - 덕만
-          text: "진평왕에게는 아들이 없었습니다. 맏딸 천명은 이미 혼인했고, 둘째 딸 덕만은 아버지 곁에서 정사를 배우기 시작했습니다. 그때부터 몇몇 귀족은 덕만을 공주가 아니라, 자신들이 정할 왕위를 빼앗을 사람으로 보았습니다."
-      - say:
-          char: 덕만
-          framing: bust
-          with: []
-          text: "아버지는 내가 회의에 앉는다고 나라가 무너지지는 않는다고 하셨지. 그런데 왜 다들 내가 왕관이라도 훔친 얼굴로 보는 걸까."
+          text: "그날 밤, 덕만은 자신이 고쳐 쓴 청원을 아버지 침전에 돌려놓으려 서쪽 회랑을 건넜습니다. 종이 끝에는 진평왕이 덧붙인 짧은 글씨가 남아 있었습니다. ‘내 딸의 답대로 하라.’"
       - say:
           with:
             - 덕만
@@ -35,7 +105,7 @@ scenes:
           with:
             - 덕만
           delivery: whisper
-          text: "덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다. 남자의 목소리는 이찬 칠숙의 것이었습니다. 왕 앞에서는 가장 충직한 대신이지만, 화백회의에서는 여인이 왕이 되는 순간 신라의 질서가 끝난다고 주장해 온 사람이었습니다."
+          text: "덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다. 조금 전 아버지 앞에서 웃던 칠숙의 목소리가, 불 꺼진 회랑 너머에서 들렸습니다."
           wait: 550
       - char:
           id: 칠숙
@@ -183,18 +253,18 @@ scenes:
       - say:
           with:
             - 덕만
-          text: "덕만에게 진평왕은 아버지이자 신라의 왕이었습니다. 아버지는 딸의 말을 믿을 수 있지만, 왕은 증거 없이 연회를 멈출 수 없었습니다."
+          text: "덕만은 문빗장을 걸고 탁자 위에 네 가지를 놓았습니다. 아버지가 돌려준 청원, 천명이 두고 간 비녀, 유신을 부르는 호각, 내일 연회에 칠숙이 보낸 자리표였습니다."
       - say:
           char: 덕만
           framing: bust
           with: []
-          text: "언니 천명은 내 말을 의심하지 않겠지만 칼이 없어. 유신은 내 호위를 맡은 장수라 칼은 있지만, 왕명 없이 움직이면 반역으로 몰릴 거야."
+          text: "아버지는 내 말을 믿을 거야. 하지만 왕이 연회를 멈추면 칠숙은 증거부터 없애겠지. 언니에게 가면 내 상처부터 찾을 테고, 유신에게 가면 왕명 없이 칼을 뽑았다는 죄까지 질 거야."
       - say:
           char: 덕만
           framing: closeup
           with: []
           delivery: whisper
-          text: "칠숙에게 아무것도 못 들은 척 다가가면 시간을 벌 수도 있어. 들켰다는 걸 알아차리면 그 방에서 나오지 못하겠지."
+          text: "칠숙의 자리표를 집어 들고 웃으면, 그 사람 얼굴을 바로 볼 수는 있어. 내가 웃지 못하는 순간 그 방 문도 닫히겠지만."
       - say:
           char: 덕만
           framing: closeup
@@ -205,6 +275,7 @@ scenes:
           prompt: "동트기 전, 누구를 믿을까?"
           char: 덕만
           framing: closeup
+          with: []
           options:
             - text: "아버지께 고한다"
               goto: go_03_open_door
@@ -306,9 +377,24 @@ scenes:
           position: center
           framing: full
       - say:
+          char: 칠숙.smile
+          framing: full
+          with:
+            - 진평왕
+            - 덕만
+          text: "전하의 두 번째 잔은 제가 올리겠습니다. 어젯밤 길을 잃으신 공주께서도 오늘은 자리를 잘 찾으셨군요."
+      - say:
+          char: 덕만
+          framing: bust
           with:
             - 칠숙
-          text: "연회 반대편에는 왕의 잔을 준비한 대신들을 대표해 칠숙이 앉아 있었습니다. 그는 덕만과 눈이 마주칠 때마다 웃었고, 술병이 바뀔 때마다 소매 안에서 손가락을 하나씩 접었습니다."
+          text: "덕분에 길을 외웠습니다. 술병이 바뀔 때마다 손가락을 접는 버릇까지 보일 만큼요."
+      - say:
+          char: 칠숙.smile
+          framing: closeup
+          with:
+            - 덕만
+          text: "공주께서 몇까지 세셨는지 궁금하군요. 저는 이제 둘입니다."
       - say:
           char: 진평왕
           framing: full

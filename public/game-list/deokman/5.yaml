@@ -16,15 +16,46 @@ scenes:
           framing: full
       - say:
           text: "제5장 — 신라에는 이미 왕자가 있다"
+      - char:
+          id: 칠숙
+          position: center
+          framing: full
       - say:
+          char: 칠숙.smile
+          framing: full
           with:
             - 덕만
             - 진운
-          text: "진운은 왕의 아들이 아니었습니다. 진평왕과 먼 친족인 왕실 남자였고, 칠숙은 아들이 없는 왕의 뒤를 이을 사람이라며 그를 ‘왕자’로 만들었습니다. 덕만이 국경에 있는 동안 화백의 절반과 군사 사백 명이 그의 이름 아래 모였습니다."
+          text: "진운 왕자께서 먼저 입장하십니다. 왕실의 남은 기둥이시니, 화백께서는 모두 예를 갖추십시오."
+      - say:
+          char: 진운
+          framing: bust
+          with:
+            - 칠숙
+          text: "왕자가 아닙니다. 전하의 아들도 아니고 후계자로 지명받은 적도 없습니다. 진운공이라 부르십시오."
+      - say:
+          char: 칠숙.smile
+          framing: bust
+          with:
+            - 진운
+          text: "호칭은 사람들이 정합니다. 이미 화백의 절반과 군사 사백 명이 왕자라 부르는데, 혼자 고치기에는 늦으셨지요."
+      - effect: focus
       - say:
           with:
             - 진운
-          text: "그러나 진운의 어머니는 칠숙의 별채에 갇혀 있었습니다. 진운이 왕이 되면 풀어 주고, 덕만에게 양보하면 해치겠다는 약속이 그의 왕관 안쪽에 매달려 있었습니다."
+          text: "칠숙의 하인이 작은 상자를 놓고 물러났습니다. 안에는 여인의 낡은 비녀와 오늘 날짜가 적힌 종이가 들어 있었습니다. 진운은 비녀를 쥔 손을 탁자 아래로 숨겼습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with:
+            - 진운
+          text: "혼담 때 말한 어머니 물건입니까? 오늘 이기라는 뜻으로 보냈겠군요."
+      - say:
+          char: 진운.nervous
+          framing: closeup
+          with:
+            - 덕만
+          text: "예. 제가 왕이 되면 돌려보내고, 물러서면 다음에는 비녀 대신 손가락을 보내겠답니다."
       - say:
           char: 진운
           framing: full
@@ -178,6 +209,10 @@ scenes:
           position: right
           framing: full
       - say:
+          with:
+            - 비담
+          text: "비담은 탁자에 세 가지를 늘어놓았습니다. 진운 어머니가 갇힌 별채 지도, 칠숙이 대신 갚은 빚 장부, 진운이 원고를 버리고 한 연설의 필사본이었습니다."
+      - say:
           char: 비담.smirk
           framing: bust
           text: "진운공에게는 쓸 만한 약점이 셋 있습니다. 별채에 갇힌 어머니, 칠숙이 대신 갚아 준 빚, 그리고 사람을 밟고 왕이 될 만큼 모질지는 못하다는 점."
@@ -322,6 +357,8 @@ scenes:
           prompt: "진운의 마차에 화살이 향한다. 막을까?"
           char: 덕만
           framing: closeup
+          with:
+            - 진운
           options:
             - text: "함께 미끼가 된다"
               add:
