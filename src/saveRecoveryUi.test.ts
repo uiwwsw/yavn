@@ -76,7 +76,7 @@ describe('save and game over recovery UI', () => {
       /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\.has-settings-modal\s*\{[\s\S]*?height: 100%;/,
     );
     expect(styles).toMatch(
-      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.save-system-grid\s*\{[\s\S]*?overflow-y: auto;[\s\S]*?overscroll-behavior: contain;/,
+      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.save-system-grid\s*\{[\s\S]*?grid-auto-rows: max-content;[\s\S]*?overflow-y: auto;[\s\S]*?overscroll-behavior: contain;/,
     );
     expect(appSource).toContain("choiceGate.active ? '선택 대기' : '다음'");
   });
