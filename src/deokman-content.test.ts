@@ -60,7 +60,7 @@ describe('Deokman complete-game content', () => {
     expect(Object.keys(asRecord(config.endings))).toHaveLength(10);
     const finalChapter = readFileSync(`${gameRoot}7.yaml`, 'utf8');
     expect(finalChapter).toContain(
-      '<speed=18>여왕이 아니다.</speed> <speed=42>신라의 왕이다.</speed>',
+      '<speed=17>여왕이 아니다.</speed> <speed=18>신라의 왕이다.</speed>',
     );
     expect(collectKey(readYaml('7.yaml'), 'ending')).toHaveLength(10);
   });
@@ -71,22 +71,88 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('3.0.0');
+    expect(config.version).toBe('3.1.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
-    expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
-    expect(allContent).toContain('내 딸은 왕이 될 수 있다. 그리고 왕이 되지 않아도 내 딸이다');
+    expect(allContent).toContain('아버지 상여부터 보내 주세요. 제가 왕이 되는 의식은 그 뒤에 하겠습니다');
+    expect(allContent).toContain('내 딸은 왕이 될 수 있다.</speed> <speed=18>그리고 왕이 되지 않아도 내 딸이다');
     expect(allContent).toContain('이번에는 같이 들어가고 같이 나오는 거야');
     expect(allContent).toContain('우리 전사자는 여든하나입니다');
     expect(allContent).toContain('미안하다는 말보다 먼저 저를 숨겨 주세요');
     expect(allContent).toContain('그렇게 말하면 더 가고 싶어지는 성격이라서요');
-    expect(allContent).toContain('나라의 법을 오늘 하루의 위기 때문에 바꿀 수는 없습니다');
+    expect(allContent).toContain('저는 여인이 왕좌에 앉는 모습을 보고 싶지 않습니다');
     expect(allContent).toContain('공주를 믿는 게 아니라, 다른 길이 없어서 갑니다');
     expect(allContent).toContain('오늘은 제 말이 바뀌어도 제 입으로 바꾸겠습니다');
     expect(allContent).toContain('마음이 아니라 계획을 묻는 겁니다');
     expect(allContent).toContain('덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다');
     expect(allContent).not.toContain('참으로 고결하십니다');
     expect(allContent).not.toContain('대체 무엇을 왕관이라 부르십니까');
+  });
+
+  it('keeps every inner life readable while balancing easy words, daily chatter, and weighted lines', () => {
+    const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+    const hardPhrases = [
+      '국경 위무의 전권',
+      '정사 발언',
+      '지아비',
+      '왕경',
+      '인영',
+      '유폐',
+      '추존',
+      '계승권',
+      '한 됫박',
+      '한 시진',
+      '반 시진',
+      '한 식경',
+      '초경',
+      '이경',
+      '삼경',
+      '진시',
+      '처소',
+      '호위부를',
+      '각개 격파',
+      '폐위',
+      '인주',
+      '관식',
+      '즉위',
+      '서약',
+      '배후',
+    ];
+    hardPhrases.forEach((phrase) => expect(allContent).not.toContain(phrase));
+    expect(allContent).toContain('귀족 회의인 화백');
+
+    const visibleEmotionAnchors = [
+      '네가 태어난 날부터 내게는 네가 가장 귀했다',
+      '나는 네 동생도 살리고, 너도 살리고 싶어',
+      '이번에는 같이 들어가고 같이 나오는 거야',
+      '어느 쪽도 버리고 싶지 않습니다',
+      '‘원’ 자가 조금 뚱뚱합니다',
+      '장부를 쥔 손에 힘이 풀렸습니다',
+      '수도 출입패를 풀자 칠숙의 입꼬리가 먼저 올라갔습니다',
+      '오른쪽 신발 끈이 풀렸습니다',
+      '진운은 비녀를 쥔 손을 탁자 아래로 숨겼습니다',
+      '저는 굶는 아이를 보고 그냥 돌아서는 법을 모릅니다',
+    ];
+    visibleEmotionAnchors.forEach((anchor) => expect(allContent).toContain(anchor));
+
+    const dailyBreathers = [
+      '꿀 많이 묻은 쪽은 제 거예요',
+      '오른쪽 소매는 자꾸 길어',
+      '‘말 안 듣는 장수’로 하죠',
+      '코는 만지지 마세요',
+      '먼지는 한 끼로 세지 않습니다',
+      '넘어져 죽는 건 제 명령이 아닙니다',
+      '저도 생강은 골라 냅니다',
+      '내 이름도 옆에 똑같이 뚱뚱하게 써 줘',
+    ];
+    dailyBreathers.forEach((anchor) => {
+      const line = allContent.split('\n').find((candidate) => candidate.includes(anchor));
+      expect(line, anchor).toBeDefined();
+      expect(line).not.toContain('<speed=');
+    });
+
+    const weightedSegments = allContent.match(/<speed=(?:1[7-9]|2[0-2])>/g) ?? [];
+    expect(weightedSegments.length).toBeGreaterThanOrEqual(20);
   });
 
   it('uses the historically attested Chilsuk instead of a fictional chief noble', () => {
@@ -127,7 +193,7 @@ describe('Deokman complete-game content', () => {
 
     expect(characterPlacements).toHaveLength(221);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
-    expect(speakerLines).toHaveLength(655);
+    expect(speakerLines).toHaveLength(679);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
     choices.forEach((choice) => {
@@ -208,7 +274,7 @@ describe('Deokman complete-game content', () => {
     };
 
     const prologue = sceneActions('0.yaml', 'prologue_open');
-    expect(say(prologue, '내일 진시').with).toEqual(['아진']);
+    expect(say(prologue, '내일 해가 막 오른 아침').with).toEqual(['아진']);
     expect(say(prologue, '왕이 쓰러지면').with).toEqual(['칠숙']);
     expect(say(prologue, '마른 대나무').with).toEqual(['덕만']);
     expect(asRecord(sceneActions('0.yaml', 'caught_choice')[0].choice).with).toEqual([]);
@@ -267,30 +333,30 @@ describe('Deokman complete-game content', () => {
 
   it('introduces relationships, motives, and costs before all 24 choices', () => {
     const contexts = [
-      ['0.yaml', 'prologue_open', 'p_caught', '뜻을 가진 딸이 칼을 가진 아들보다 위험할 때가 있습니다'],
+      ['0.yaml', 'prologue_open', 'p_caught', '저는 여자가 왕이 되는 꼴을 보고 싶지 않습니다'],
       ['0.yaml', 'warn_choice', 'p_warn', '탁자 위에 네 가지를 놓았습니다'],
       ['0.yaml', 'banquet_choice', 'p_cup', '전하의 두 번째 잔은 제가 올리겠습니다'],
-      ['1.yaml', 'chapter1_open', 'c1_investigate', '부엌, 기록고, 호위부 가운데'],
+      ['1.yaml', 'chapter1_open', 'c1_investigate', '부엌, 기록 창고, 호위 막사 가운데'],
       ['1.yaml', 'rumor_choice', 'c1_rumor', '아까 같은 거짓말을 두 나인에게'],
       ['1.yaml', 'evidence_choice', 'c1_evidence', '하인은 제가 지킬 수 있습니다'],
       ['2.yaml', 'chapter2_open', 'c2_suitor', '궁을 버리는 길에는 공주의 장수로'],
-      ['2.yaml', 'reputation_choice', 'c2_reputation', '비녀 끝이 별점표와 약봉지'],
-      ['2.yaml', 'throne_choice', 'c2_throne', '세 가문의 인장을 왕좌 앞에'],
-      ['3.yaml', 'chapter3_open', 'c3_body', '비담에게 합의서 원본을 넘긴 왕실 서리야'],
+      ['2.yaml', 'reputation_choice', 'c2_reputation', '비녀 끝이 별을 읽은 표와 약봉지'],
+      ['2.yaml', 'throne_choice', 'c2_throne', '세 가문의 도장을 왕좌 앞에'],
+      ['3.yaml', 'chapter3_open', 'c3_body', '비담에게 합의서 원본을 넘긴 왕실 문서 담당자야'],
       ['3.yaml', 'testimony_choice', 'c3_testimony', '높은 분도 낮은 사람도 먼지한테는 거짓말을 시킬 수 없으니까요'],
       ['3.yaml', 'culprit_choice', 'c3_culprit', '아버지 잔에도, 내 방의 시체에도 네 붉은 매듭이 남았어'],
-      ['4.yaml', 'chapter4_open', 'c4_grain', '왕경에서 혼담의 별을 함께 보던 월명입니다'],
-      ['4.yaml', 'defense_choice', 'c4_defense', '마을에는 오늘 곡식을 나눠 준 가족들이 있고'],
+      ['4.yaml', 'chapter4_open', 'c4_grain', '수도에서 혼담의 별을 함께 보던 월명입니다'],
+      ['4.yaml', 'defense_choice', 'c4_defense', '마을에는 오늘 제 손으로 곡식을 건넨 가족들이 있습니다'],
       ['4.yaml', 'enemy_choice', 'c4_enemy', '남은 한 짝입니다'],
       ['5.yaml', 'chapter5_open', 'c5_contest', '왕자가 아닙니다'],
       ['5.yaml', 'leverage_choice', 'c5_leverage', '그대는 내 신하가 아니라서 곁에 둔 사람이야'],
       ['5.yaml', 'rescue_choice', 'c5_rescue', '저를 살려도 왕위는 양보하지 않습니다'],
       ['6.yaml', 'chapter6_open', 'c6_entry', '약초 끈을 따라가면 월명이 수로에서'],
-      ['6.yaml', 'rescue_choice', 'c6_rescue', '아진이 빈 약함을 들고 달아났다는 보고가 있습니다'],
+      ['6.yaml', 'rescue_choice', 'c6_rescue', '아진이 빈 약 상자를 들고 달아났다는 보고가 있습니다'],
       ['6.yaml', 'seal_found', 'c6_seal', '어릴 때 한 번 들어 보고 너무 무거워'],
       ['7.yaml', 'final_open', 'final_opening', '진운공과 함께 들어가면 그의 가문을 갈라놓을 수 있습니다'],
       ['7.yaml', 'proof_choice', 'final_proof', '공주와 가까운 나인, 목숨을 빚진 살인자'],
-      ['7.yaml', 'crown_choice', 'final_crown', '화백의 표를 받으시면 오늘 안에 즉위할 수 있습니다'],
+      ['7.yaml', 'crown_choice', 'final_crown', '귀족의 표를 받으시면 오늘 안에 왕이 될 수 있습니다'],
     ] as const;
 
     expect(contexts).toHaveLength(24);
@@ -321,13 +387,13 @@ describe('Deokman complete-game content', () => {
 
   it('shows each chapter premise through an enacted visual-novel episode instead of a setting summary', () => {
     const episodeAnchors = [
-      ['0.yaml', 'prologue_open', '왕의 수라를 빼앗아 먹는 사람이 너 말고 또 있느냐'],
+      ['0.yaml', 'prologue_open', '네가 좋아하니 남겨 둔 것이다'],
       ['1.yaml', 'chapter1_open', '덕만의 연꽃 노리개가 굴러 나와 왕좌 아래에서 멈췄습니다'],
-      ['2.yaml', 'chapter2_open', '혼인 뒤 공주의 정사 발언은 지아비가 대신한다'],
+      ['2.yaml', 'chapter2_open', '혼인하면 공주는 나라일에 입을 열 수 없고 남편이 대신 말한다'],
       ['3.yaml', 'chapter3_open', '두 번째 어깨로 밀자 안쪽 빗장이 부러졌고'],
-      ['4.yaml', 'chapter4_open', '왕경 출입패는 놓고 가시지요'],
+      ['4.yaml', 'chapter4_open', '수도 출입패는 놓고 가시지요'],
       ['5.yaml', 'chapter5_open', '왕자가 아닙니다'],
-      ['6.yaml', 'chapter6_open', '체포령을 뜯어 품에 감췄습니다'],
+      ['6.yaml', 'chapter6_open', '‘덕만을 잡으라’는 글을 뜯어 품에 감췄습니다'],
       ['7.yaml', 'final_open', '왕의 상여가 동문 아래에서 멈췄습니다'],
     ] as const;
     const forbiddenSummaries = [
@@ -361,14 +427,14 @@ describe('Deokman complete-game content', () => {
 
   it('anchors elapsed time with restrained narrator bridges and no impossible deadlines', () => {
     const timelineAnchors = {
-      '0.yaml': ['연회 전날 · 밤 수라 뒤', '같은 밤 · 삼경', '연회 당일 · 진시'],
+      '0.yaml': ['연회 전날 · 저녁 식사 뒤', '같은 밤 · 모두 잠든 한밤중', '연회 당일 · 해가 막 오른 아침'],
       '1.yaml': ['연회 다음 날 · 아침', '첫째 날 · 해 질 무렵', '사흘째 · 새벽', '사흘째 · 밤'],
-      '2.yaml': ['누명을 벗은 이튿날 · 아침', '같은 날 · 정오', '같은 날 · 해 질 무렵', '혼담을 거부한 날 · 초경'],
-      '3.yaml': ['같은 밤 · 초경이 조금 지난 시각', '같은 밤 · 새벽 직전', '동틀 무렵', '그날 아침 열린 화백회의'],
-      '4.yaml': ['왕경을 떠난 지 열이틀째 · 해 질 무렵', '도착 이튿날 · 해 질 무렵', '전투가 끝난 이튿날 · 낮', '며칠 뒤'],
-      '5.yaml': ['왕경으로 돌아온 지 사흘째 · 화백회의 날', '회의가 한 시진 휴정된 사이', '같은 날 · 초경', '같은 밤 · 초경 끝'],
-      '6.yaml': ['같은 밤 · 이경', '이경이 다 가기 전', '한 식경도 지나지 않아', '새벽을 알리는 북이 울리기 직전', '동이 틀 무렵'],
-      '7.yaml': ['진평왕이 숨을 거둔 이튿날 · 해 질 무렵', '해가 지고 첫 횃불이 켜졌습니다', '회의가 시작된 지 한 시진', '자정이 가까워질 무렵'],
+      '2.yaml': ['누명을 벗은 다음 날 아침', '같은 날 · 정오', '같은 날 · 해 질 무렵', '혼인을 거부한 날 · 해가 진 뒤'],
+      '3.yaml': ['같은 밤 · 해가 진 지 얼마 안 된 때', '같은 밤 · 새벽 직전', '동틀 무렵', '그날 아침 열린 귀족 회의'],
+      '4.yaml': ['수도를 떠난 지 열이틀째 · 해 질 무렵', '도착 이튿날 · 해 질 무렵', '전투가 끝난 이튿날 · 낮', '며칠 뒤'],
+      '5.yaml': ['수도로 돌아온 지 사흘째 · 귀족 회의 날', '회의가 두 시간쯤 멈춘 사이', '같은 날 · 해가 진 뒤', '같은 밤 · 해가 진 뒤 한참 지난 때'],
+      '6.yaml': ['같은 밤 · 밤이 깊은 때', '깊은 밤이 끝나기 전', '밥 한 끼 먹을 시간도 지나지 않아', '새벽을 알리는 북이 울리기 직전', '동이 틀 무렵'],
+      '7.yaml': ['진평왕이 숨을 거둔 이튿날 · 해 질 무렵', '해가 지고 첫 횃불이 켜졌습니다', '회의가 시작된 지 두 시간', '자정이 가까워질 무렵'],
     } as const;
 
     expect(Object.values(timelineAnchors).flat()).toHaveLength(32);
@@ -386,7 +452,7 @@ describe('Deokman complete-game content', () => {
     const fullText = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
     expect(fullText).not.toContain('사흘이면 됩니다');
     expect(fullText).not.toContain('전투가 끝난 저녁');
-    expect(fullText).toContain('한 시진이면 됩니다');
+    expect(fullText).toContain('두 시간 안에 표결을 끝내겠습니다');
     expect(fullText).toContain('전투가 끝난 이튿날 · 낮');
   });
 
@@ -543,10 +609,10 @@ describe('Deokman complete-game content', () => {
     abstractTransitions.forEach((sentence) => expect(allContent).not.toContain(sentence));
     expect(readFileSync(`${gameRoot}0.yaml`, 'utf8')).toContain('‘암살 용의’ 네 글자');
     expect(readFileSync(`${gameRoot}1.yaml`, 'utf8')).toContain('덕만의 이름 위를 붉은 혼인끈으로 묶고');
-    expect(readFileSync(`${gameRoot}3.yaml`, 'utf8')).toContain('국경 지휘관 패를 걸었습니다');
+    expect(readFileSync(`${gameRoot}3.yaml`, 'utf8')).toContain('국경 지휘관 패를 준비해 두고 있었습니다');
     expect(readFileSync(`${gameRoot}4.yaml`, 'utf8')).toContain('빈 그릇과 보급창 열쇠');
     expect(readFileSync(`${gameRoot}5.yaml`, 'utf8')).toContain('함께 쓴 암살 조사 요구서');
-    expect(readFileSync(`${gameRoot}6.yaml`, 'utf8')).toContain('첫날의 청원이 접혀 있었습니다');
+    expect(readFileSync(`${gameRoot}6.yaml`, 'utf8')).toContain('첫날의 부탁 글이 접혀 있었습니다');
   });
 
   it('keeps every crisis choice compact enough to scan without breaking the drama', () => {
