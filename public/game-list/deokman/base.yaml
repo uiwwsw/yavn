@@ -168,8 +168,8 @@ inventory:
     category: "증거"
     order: 20
   oath_fragment:
-    name: "계승동맹 서약서 조각"
-    description: "남성 왕족을 앞세워 왕위를 통제하려는 비밀 동맹의 인장과 서명이 남아 있다."
+    name: "남자 왕 약속문 조각"
+    description: "남성 왕족을 앞세워 왕위를 다루려는 비밀 모임의 도장과 이름이 남아 있다."
     image: assets/items/oath-fragment.svg
     category: "증거"
     order: 30
