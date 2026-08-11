@@ -657,6 +657,8 @@ textarea,
   overflow: hidden;
   overflow: clip;
   contain: paint;
+  container-name: stage-viewport;
+  container-type: size;
 }
 
 .app[data-ui-template='neon-grid'] {
@@ -989,12 +991,13 @@ textarea,
   position: absolute;
   z-index: 3;
   top: 50%;
-  left: 0;
-  width: 100%;
-  height: min(100%, calc(100vw * 16 / 9));
+  left: 50%;
+  width: min(100cqw, calc(100cqh * 16 / 9));
+  height: min(100cqh, calc(100cqw * 3 / 4));
   min-height: 0;
   overflow: hidden;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
+  container-name: stage-content;
   container-type: size;
   isolation: isolate;
 }
@@ -1212,7 +1215,7 @@ textarea,
 }
 
 .char-image {
-  --char-image-width: min(40vw, 560px);
+  --char-image-width: min(40cqw, 560px);
   width: var(--char-image-width);
   max-width: none;
   object-fit: contain;
@@ -1220,7 +1223,7 @@ textarea,
 }
 
 .char-live2d {
-  --char-live2d-width: min(36vw, 460px);
+  --char-live2d-width: min(36cqw, 460px);
   width: var(--char-live2d-width);
   height: 100%;
   max-height: none;
@@ -1280,19 +1283,19 @@ textarea,
 }
 
 .char-layer.char-layout-duo .char-image {
-  --char-image-width: min(44vw, 560px);
+  --char-image-width: min(44cqw, 560px);
 }
 
 .char-layer.char-layout-duo .char-live2d {
-  --char-live2d-width: min(44vw, 460px);
+  --char-live2d-width: min(44cqw, 460px);
 }
 
 .char-layer.char-layout-trio .char-image {
-  --char-image-width: min(36vw, 520px);
+  --char-image-width: min(36cqw, 520px);
 }
 
 .char-layer.char-layout-trio .char-live2d {
-  --char-live2d-width: min(34vw, 430px);
+  --char-live2d-width: min(34cqw, 430px);
 }
 
 
@@ -4796,7 +4799,7 @@ textarea,
   }
 
   .char-image {
-    --char-image-width: min(66vw, 410px);
+    --char-image-width: min(66cqw, 410px);
   }
 
   .char-image.left {
@@ -4810,7 +4813,7 @@ textarea,
   }
 
   .char-live2d {
-    --char-live2d-width: min(62vw, 410px);
+    --char-live2d-width: min(62cqw, 410px);
   }
 
   .char-live2d.center {
@@ -4819,11 +4822,11 @@ textarea,
   }
 
   .char-layer.char-layout-duo .char-image {
-    --char-image-width: min(52vw, 410px);
+    --char-image-width: min(52cqw, 410px);
   }
 
   .char-layer.char-layout-duo .char-live2d {
-    --char-live2d-width: min(50vw, 410px);
+    --char-live2d-width: min(50cqw, 410px);
   }
 
   .char-layer.char-layout-duo .char-duo-left {
@@ -4837,11 +4840,11 @@ textarea,
   }
 
   .char-layer.char-layout-trio .char-image {
-    --char-image-width: min(52vw, 410px);
+    --char-image-width: min(52cqw, 410px);
   }
 
   .char-layer.char-layout-trio .char-live2d {
-    --char-live2d-width: min(48vw, 390px);
+    --char-live2d-width: min(48cqw, 390px);
   }
 
   .char-layer.char-layout-trio .left {
@@ -5026,6 +5029,13 @@ textarea,
 
   .start-gate-content {
     z-index: 4;
+  }
+}
+
+@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+  .stage-content-frame {
+    width: 100cqw;
+    height: min(100cqh, calc(100cqw * 16 / 9));
   }
 }
 

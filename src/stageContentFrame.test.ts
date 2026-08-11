@@ -9,7 +9,7 @@ const appSource = readSource('./App.tsx');
 const styles = readSource('./styles.css');
 
 describe('responsive stage content frame', () => {
-  it('centers gameplay content in a maximum 9:16 frame while the background stays full bleed', () => {
+  it('centers desktop gameplay between 4:3 and 16:9 while the background stays full bleed', () => {
     expect(appSource).toContain(
       "className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}",
     );
@@ -17,11 +17,23 @@ describe('responsive stage content frame', () => {
       /\.bg\s*\{[\s\S]*?inset: 0;[\s\S]*?width: 100%;[\s\S]*?height: 100%;[\s\S]*?object-fit: cover;/,
     );
     expect(styles).toMatch(
-      /\.stage-content-frame\s*\{[\s\S]*?top: 50%;[\s\S]*?width: 100%;[\s\S]*?height: min\(100%, calc\(100vw \* 16 \/ 9\)\);[\s\S]*?transform: translateY\(-50%\);[\s\S]*?container-type: size;/,
+      /\.effect-viewport\s*\{[\s\S]*?container-name: stage-viewport;[\s\S]*?container-type: size;/,
+    );
+    expect(styles).toMatch(
+      /\.stage-content-frame\s*\{[\s\S]*?top: 50%;[\s\S]*?left: 50%;[\s\S]*?width: min\(100cqw, calc\(100cqh \* 16 \/ 9\)\);[\s\S]*?height: min\(100cqh, calc\(100cqw \* 3 \/ 4\)\);[\s\S]*?transform: translate\(-50%, -50%\);[\s\S]*?container-name: stage-content;[\s\S]*?container-type: size;/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\) and \(hover: none\) and \(pointer: coarse\)[\s\S]*?\.stage-content-frame\s*\{[\s\S]*?width: 100cqw;[\s\S]*?height: min\(100cqh, calc\(100cqw \* 16 \/ 9\)\);/,
     );
     expect(styles).toMatch(
       /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\.has-settings-modal\s*\{[\s\S]*?height: 100%;/,
     );
+  });
+
+  it('sizes static and Live2D characters from the play frame instead of the viewport', () => {
+    expect(styles).toContain('--char-image-width: min(40cqw, 560px);');
+    expect(styles).toContain('--char-live2d-width: min(36cqw, 460px);');
+    expect(styles).not.toContain('--char-image-width: min(40vw, 560px);');
   });
 
   it('measures dialogue avoidance inside the centered frame', () => {
