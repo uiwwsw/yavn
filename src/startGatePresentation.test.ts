@@ -15,10 +15,11 @@ describe('start gate presentation', () => {
     expect(styles).toMatch(/\.start-gate\.is-launching \.start-gate-content\s*\{[\s\S]*?opacity: 0/);
   });
 
-  it('keeps delayed entrance elements at their first keyframe before animation starts', () => {
-    expect(styles).toMatch(
-      /\.start-gate-actions\s*\{[\s\S]*?opacity: 0;[\s\S]*?animation: start-gate-actions-in [^;]+ both;/,
-    );
+  it('keeps actions visible without gating them behind an entrance animation', () => {
+    expect(styles).toMatch(/\.start-gate-actions\s*\{[^}]*opacity: 1;[^}]*\}/);
+    expect(styles).not.toContain('@keyframes start-gate-actions-in');
+    expect(styles).not.toContain('animation-name: start-gate-actions-center-in');
+    expect(styles).not.toMatch(/\.start-gate-actions\s*\{[^}]*animation:/);
     expect(styles).toMatch(/\.start-gate-title-block\s*\{[\s\S]*?animation: start-gate-title-in [^;]+ both;/);
     expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?animation: start-gate-frame-in [^;]+ both;/);
   });
