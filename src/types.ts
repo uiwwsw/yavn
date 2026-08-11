@@ -27,6 +27,7 @@ export type CharacterCalibration = {
   scale?: number;
   x?: number;
   y?: number;
+  spacing?: number;
 };
 
 export type CameraShot = 'wide' | 'medium' | 'close' | 'reaction';

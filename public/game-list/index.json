@@ -1,13 +1,13 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-08-11T07:37:09.312Z",
+  "generatedAt": "2026-08-11T08:01:21.369Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "3.2.0",
+      "version": "3.2.1",
       "summary": "쉬운 말과 선명한 속마음, 누룽지·농담·안부의 생활 호흡 사이로 덕만이 스스로 왕이 되는 8장 신라 궁중 정치극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [

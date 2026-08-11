@@ -48,6 +48,7 @@ import {
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
   resolveCharacterFramingScale,
+  resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
 } from './characterLayout';
 import type { CharacterStageLayout } from './characterLayout';
@@ -1576,9 +1577,6 @@ export default function App() {
     previousCharacterStageLayoutRef.current,
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
-  const speakerPosition = visibleCharactersByPosition.find(
-    (entry) => entry.slot.id === dialog.speakerId,
-  )?.position;
   const requestedCameraTargetId = camera.target === 'group' ? undefined : camera.target;
   const visibleCameraTargetId = requestedCameraTargetId && visibleCharacterSet.has(requestedCameraTargetId)
     ? requestedCameraTargetId
@@ -1588,22 +1586,25 @@ export default function App() {
   const cameraTargetPosition = visibleCharactersByPosition.find(
     (entry) => entry.slot.id === effectiveCameraTargetId,
   )?.position;
+  const cameraTargetSpacing = visibleCharactersByPosition.find(
+    (entry) => entry.slot.id === effectiveCameraTargetId,
+  )?.slot.calibration.spacing ?? 1;
   const cameraPresentation = resolveStageCameraPresentation(
     camera,
     visibleCharacterCount,
     cameraTargetPosition,
     characterStageLayout,
-    speakerPosition,
+    cameraTargetSpacing,
   );
   const focusCharacterId = (camera.shot === 'close' || camera.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialog.speakerId;
   const cameraStyle = {
     '--stage-camera-scale': cameraPresentation.scale,
-    '--stage-camera-origin-x': `${cameraPresentation.originX}%`,
     '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
-    '--stage-camera-pan-x': `${cameraPresentation.panX}%`,
-    '--stage-camera-pan-y': `${cameraPresentation.panY}%`,
+    '--stage-camera-pan-x': cameraPresentation.panX,
+    '--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX,
+    '--stage-camera-pan-y': cameraPresentation.panY,
     '--stage-camera-duration': `${cameraPresentation.duration}ms`,
   } as CSSProperties;
   useLayoutEffect(() => {
@@ -2170,11 +2171,18 @@ export default function App() {
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
+    const stagePlacement = resolveCharacterStagePlacement(
+      position,
+      characterStageLayout,
+      slot.calibration.spacing,
+    );
     const charStyle = {
       zIndex,
       '--char-scale': focusPresentation.scaleMultiplier * framingScale * slot.calibration.scale,
       '--char-facing-scale-x': facingScale,
-      '--char-brightness': focusPresentation.brightness,
+      '--char-focus-opacity': focusPresentation.brightness,
+      '--char-desktop-anchor-x': stagePlacement.anchorX,
+      '--char-offset-x': stagePlacement.offsetX,
       '--char-framing-x': `${slot.framing.x}%`,
       '--char-framing-y': `${slot.framing.y}%`,
       '--char-calibration-x': `${slot.calibration.x}%`,
@@ -2205,7 +2213,7 @@ export default function App() {
         data-stage-position={position}
         data-character-framing={slot.framing.name}
         loading="eager"
-        decoding="sync"
+        decoding="async"
         style={charStyle}
       />
     );
@@ -2792,7 +2800,7 @@ export default function App() {
           src={background}
           alt="background"
           loading="eager"
-          decoding="sync"
+          decoding="async"
         />
       )}
 
@@ -2813,9 +2821,11 @@ export default function App() {
           data-camera-transition={cameraPresentation.transition}
           style={cameraStyle}
         >
-          {renderCharacter(characters.left, 'left')}
-          {renderCharacter(characters.center, 'center')}
-          {renderCharacter(characters.right, 'right')}
+          <div className="char-camera-pan">
+            {renderCharacter(characters.left, 'left')}
+            {renderCharacter(characters.center, 'center')}
+            {renderCharacter(characters.right, 'right')}
+          </div>
         </div>
       </div>
       <div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>

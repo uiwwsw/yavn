@@ -50,24 +50,34 @@ describe('stage camera', () => {
       undefined,
       trioLayout,
     );
-    expect(medium).toMatchObject({ scale: 1.38, originX: 50, panX: 0, originY: 23 });
+    expect(medium).toMatchObject({
+      scale: 1.38,
+      panX: '0px',
+      mobilePanX: '0px',
+      originY: 23,
+    });
 
     const close = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'close', target: '칠숙' }),
       3,
       'right',
       trioLayout,
-      'right',
+      1.1,
     );
-    expect(close).toMatchObject({ scale: 2.15, originX: 79, panX: -29 });
+    expect(close).toMatchObject({
+      scale: 2.15,
+      panX: 'calc(0px - min(19.8cqw, 286px))',
+      mobilePanX: '-35cqw',
+    });
   });
 
   it('keeps asset calibration separate from camera shot scale', () => {
-    expect(resolveCharacterCalibration(undefined)).toEqual({ scale: 1, x: 0, y: 0 });
-    expect(resolveCharacterCalibration({ scale: 1.08, y: -3 })).toEqual({
+    expect(resolveCharacterCalibration(undefined)).toEqual({ scale: 1, x: 0, y: 0, spacing: 1 });
+    expect(resolveCharacterCalibration({ scale: 1.08, y: -3, spacing: 0.92 })).toEqual({
       scale: 1.08,
       x: 0,
       y: -3,
+      spacing: 0.92,
     });
   });
 });
