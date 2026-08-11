@@ -7,6 +7,7 @@ import type {
   StageCameraState,
 } from './types';
 import type { CharacterStageLayout } from './characterLayout';
+import { resolveCharacterStagePlacement, resolveMobileCameraPan } from './characterLayout';
 
 export const DEFAULT_STAGE_CAMERA: StageCameraState = {
   shot: 'wide',
@@ -33,10 +34,10 @@ const REACTION_SCALE_BY_CAST = [1.9, 1.9, 1.72, 1.55] as const;
 
 export type StageCameraPresentation = {
   scale: number;
-  originX: number;
   originY: number;
-  panX: number;
-  panY: number;
+  panX: string;
+  mobilePanX: string;
+  panY: string;
   duration: number;
   transition: CameraTransition;
 };
@@ -48,6 +49,7 @@ export function resolveCharacterCalibration(
     scale: calibration?.scale ?? 1,
     x: calibration?.x ?? 0,
     y: calibration?.y ?? 0,
+    spacing: calibration?.spacing ?? 1,
   };
 }
 
@@ -87,47 +89,27 @@ function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): numb
   return 1;
 }
 
-export function resolveCharacterStageAnchor(
-  position: Position | undefined,
-  layout: CharacterStageLayout,
-  speakerPosition?: Position,
-): number {
-  if (!position) {
-    return 50;
-  }
-  if (layout.mode === 'duo') {
-    const side = layout.duoSideByPosition[position];
-    if (side === 'left') return 25;
-    if (side === 'right') return 75;
-  }
-  if (layout.mode === 'trio') {
-    if (position === 'left') return speakerPosition === position ? 21 : 16;
-    if (position === 'right') return speakerPosition === position ? 79 : 84;
-    return 50;
-  }
-  if (position === 'left') return 8;
-  if (position === 'right') return 92;
-  return 50;
-}
-
 export function resolveStageCameraPresentation(
   camera: StageCameraState,
   visibleCharacterCount: number,
   targetPosition: Position | undefined,
   layout: CharacterStageLayout,
-  speakerPosition?: Position,
+  targetSpacing = 1,
 ): StageCameraPresentation {
   const hasCharacterTarget = camera.target !== 'group' && targetPosition !== undefined;
-  const originX = hasCharacterTarget
-    ? resolveCharacterStageAnchor(targetPosition, layout, speakerPosition)
-    : 50;
+  const panX = hasCharacterTarget
+    ? resolveCharacterStagePlacement(targetPosition, layout, targetSpacing).panToCenterX
+    : '0px';
+  const mobilePanX = hasCharacterTarget
+    ? resolveMobileCameraPan(targetPosition, layout)
+    : '0px';
 
   return {
     scale: resolveShotScale(camera.shot, visibleCharacterCount),
-    originX,
     originY: camera.shot === 'wide' ? 50 : 23,
-    panX: hasCharacterTarget ? 50 - originX : 0,
-    panY: 0,
+    panX,
+    mobilePanX,
+    panY: '0px',
     duration: camera.duration,
     transition: camera.transition,
   };

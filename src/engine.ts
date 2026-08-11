@@ -2224,7 +2224,7 @@ export function completeVideoCutscene() {
 
 async function warmImageDecodeUrl(url: string) {
   const img = new Image();
-  img.decoding = 'sync';
+  img.decoding = 'async';
   img.loading = 'eager';
   img.fetchPriority = 'high';
   img.src = url;
