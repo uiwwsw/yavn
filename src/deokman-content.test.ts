@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.2.0');
+    expect(config.version).toBe('2.3.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
@@ -84,7 +84,7 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('공주를 믿는 게 아니라, 다른 길이 없어서 갑니다');
     expect(allContent).toContain('오늘은 제 말이 바뀌어도 제 입으로 바꾸겠습니다');
     expect(allContent).toContain('마음이 아니라 계획을 묻는 겁니다');
-    expect(allContent).toContain('이 이야기는 실제 역사 인물과 시대를 바탕으로');
+    expect(allContent).toContain('덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다');
     expect(allContent).not.toContain('참으로 고결하십니다');
     expect(allContent).not.toContain('대체 무엇을 왕관이라 부르십니까');
   });
@@ -125,7 +125,7 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(169);
+    expect(characterPlacements).toHaveLength(170);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
     expect(speakerLines).toHaveLength(522);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
@@ -168,12 +168,11 @@ describe('Deokman complete-game content', () => {
       const leadIn = actions.slice(0, gameOverIndex);
       const says = leadIn.map((action) => asRecord(action.say)).filter((say) => Object.keys(say).length > 0);
       const firstSayIndex = leadIn.findIndex((action) => Object.keys(asRecord(action.say)).length > 0);
-      const establishingPlacements = leadIn
-        .slice(0, firstSayIndex)
+      const characterPlacements = leadIn
         .map((action) => asRecord(action.char))
         .filter((placement) => typeof placement.id === 'string');
-      const soloCloseups = says.filter(
-        (say) => say.framing === 'closeup' && Array.isArray(say.with) && say.with.length === 0,
+      const decisiveCloseups = says.filter(
+        (say) => say.framing === 'closeup' && Array.isArray(say.with),
       );
 
       expect(gameOverIndex, `${path}:${sceneId}`).toBe(actions.length - 1);
@@ -183,15 +182,68 @@ describe('Deokman complete-game content', () => {
         `${path}:${sceneId}`,
       ).toBeGreaterThanOrEqual(3);
       expect(asRecord(leadIn[firstSayIndex]?.say).char, `${path}:${sceneId}`).toBeUndefined();
-      expect(establishingPlacements.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(2);
-      establishingPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
+      expect(characterPlacements.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(2);
+      characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
       expect(leadIn.some((action) => typeof action.effect === 'string'), `${path}:${sceneId}`).toBe(true);
       expect(
         says.some((say) => typeof say.wait === 'number'),
         `${path}:${sceneId}`,
       ).toBe(true);
-      expect(soloCloseups.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(1);
+      expect(decisiveCloseups.length, `${path}:${sceneId}`).toBeGreaterThanOrEqual(1);
     });
+  });
+
+  it('separates hidden, offscreen, distant, and confronted characters into intentional shots', () => {
+    const sceneActions = (path: typeof chapters[number], sceneId: string) => {
+      const scenes = asRecord(readYaml(path).scenes);
+      const scene = asRecord(scenes[sceneId]);
+      return Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+    };
+    const say = (actions: UnknownRecord[], text: string) => {
+      const action = actions.find((candidate) => String(asRecord(candidate.say).text).includes(text));
+      return asRecord(action?.say);
+    };
+
+    const prologue = sceneActions('0.yaml', 'prologue_open');
+    expect(say(prologue, '내일 진시').with).toEqual(['아진']);
+    expect(say(prologue, '왕이 쓰러지면').with).toEqual(['칠숙']);
+    expect(say(prologue, '마른 대나무').with).toEqual(['덕만']);
+    expect(asRecord(sceneActions('0.yaml', 'caught_choice')[0].choice).with).toEqual([]);
+
+    const lockedRoom = sceneActions('2.yaml', 'chapter2_end');
+    expect(say(lockedRoom, '들어오지 마세요').with).toEqual([]);
+    expect(say(lockedRoom, '살아 있어?').with).toEqual([]);
+    expect(say(lockedRoom, '문턱을 넘지 않은 채').with).toEqual(['덕만']);
+
+    const borrowedCorpse = sceneActions('3.yaml', 'go_18_borrowed_corpse');
+    const chilsukRevealIndex = borrowedCorpse.findIndex(
+      (action) => asRecord(action.char).id === '칠숙',
+    );
+    const warningIndex = borrowedCorpse.findIndex(
+      (action) => String(asRecord(action.say).text).includes('멀리서 야간 교대 종'),
+    );
+    expect(chilsukRevealIndex).toBeGreaterThan(warningIndex);
+
+    const distantAmbush = sceneActions('5.yaml', 'go_30_martyr_prince');
+    expect(say(distantAmbush, '행렬은 비탈 위에').with).toEqual(['덕만']);
+    expect(say(distantAmbush, '숲에 사람이 있습니다').with).toEqual([]);
+    expect(say(distantAmbush, '그대 호위가 처리할 일').with).toEqual([]);
+    expect(say(distantAmbush, '덕만…… 공주').with).toEqual(['덕만']);
+
+    const hiddenCarriage = sceneActions('6.yaml', 'entry_procession');
+    const hiddenDialogue = hiddenCarriage
+      .map((action) => asRecord(action.say))
+      .filter((line) => typeof line.char === 'string');
+    hiddenDialogue.forEach((line) => expect(line.with).toEqual([]));
+    expect(say(hiddenCarriage, '서로의 얼굴을 보았습니다').with).toEqual(['덕만', '천명']);
+
+    const gateConfrontation = sceneActions('6.yaml', 'go_31_gate_breaker');
+    expect(say(gateConfrontation, '곡소리가 시작되고').with).toEqual(['덕만']);
+    expect(say(gateConfrontation, '역적이라 부릅니다').with).toEqual(['덕만']);
+
+    const warehouseDistance = sceneActions('6.yaml', 'go_32_name_in_dark');
+    expect(say(warehouseDistance, '세 걸음을 사이에').with).toEqual(['덕만', '아진']);
+    expect(say(warehouseDistance, '칼 한 자루보다 짧았습니다').with).toEqual(['덕만', '아진']);
   });
 
   it('builds each chapter from reciprocal conversations instead of isolated monologues', () => {

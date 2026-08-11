@@ -67,7 +67,7 @@ scenes:
               goto: entry_waterway
             - text: "천명의 가마에 숨는다"
               add:
-                sowon_trust: 1
+                cheonmyeong_trust: 1
                 legitimacy: 1
               goto: entry_procession
             - text: "정문을 부순다"
@@ -108,32 +108,57 @@ scenes:
 
   entry_procession:
     actions:
+      - effect: darken
+      - say:
+          with:
+            - 천명
+          delivery: whisper
+          text: "가마 휘장이 바닥까지 내려왔습니다. 덕만은 가마 밑 가로대에 몸을 붙였고, 천명은 무릎 위에 두 손을 포개 떨림을 감췄습니다."
       - say:
           char: 천명
           framing: closeup
+          with: []
           delivery: nervous
           text: "내 가마 밑에 숨으면 궁문은 지날 수 있어. 그런데 네 발이 다 보여. 일곱 살 때 꿀과자 훔치던 때랑 똑같아."
       - say:
           char: 덕만
           framing: closeup
+          with: []
           delivery: whisper
           text: "그때도 언니가 치마로 가려 줬잖아. 조금만 더 내려 줘."
       - say:
           char: 천명.nervous
           framing: bust
+          with: []
           text: "이러다 둘 다 잡히면 어떡해?"
       - say:
           char: 덕만
           framing: bust
+          with: []
+          delivery: whisper
           text: "잡히면 내가 억지로 탔다고 해. 언니는 아버지 곁으로 가려던 거고."
+      - effect: focus
+      - say:
+          with:
+            - 천명
+          delivery: whisper
+          text: "궁문 앞에서 가마가 멈췄습니다. 창끝 하나가 휘장 아래를 들추자, 천명이 발을 내밀어 덕만의 신발 끝을 치맛자락 안으로 밀었습니다."
       - say:
           char: 천명.nervous
           framing: closeup
+          with: []
           text: "또 혼자 책임지겠다는 말 하지 마. 이번에는 같이 들어가고 같이 나오는 거야."
       - say:
           char: 덕만
           framing: bust
+          with: []
+          delivery: whisper
           text: "알았어. 같이 나올게. 약속해."
+      - say:
+          with:
+            - 덕만
+            - 천명
+          text: "창끝이 거두어지고 궁문이 열렸습니다. 가마가 약방 담장 안에 완전히 멈춘 뒤에야 덕만이 바닥으로 내려왔습니다. 그때 처음으로 두 자매가 서로의 얼굴을 보았습니다."
       - goto: rescue_choice
 
   entry_prison:
@@ -525,7 +550,10 @@ scenes:
           position: right
           framing: full
       - say:
-          text: "궁 정문이 끝내 열리지 않자 덕만의 병사들은 충차를 문 앞까지 끌고 왔습니다."
+          with:
+            - 덕만
+            - 유신
+          text: "궁 정문이 끝내 열리지 않자 덕만의 병사들은 충차를 문 앞까지 끌고 왔습니다. 문 위 궁수들과 문밖 병사들은 같은 신라 깃발을 달고 서로에게 활을 겨눴습니다."
       - say:
           char: 유신.angry
           framing: bust
@@ -536,14 +564,17 @@ scenes:
           text: "아버지가 죽어 가고 있어요. 정문을 부수고 길을 여세요. 책임은 제가 집니다."
       - effect: impact
       - say:
-          text: "세 번째 충격에 궁문이 무너졌습니다. 문 안쪽 병사 둘이 깔렸고, 놀란 궁수들이 덕만의 군사에게 화살을 쏘았습니다."
+          with: []
+          text: "세 번째 충격에 화면을 가득 채운 문짝이 안쪽으로 넘어갔습니다. 먼지가 시야를 가린 사이, 안과 밖에서 동시에 활시위가 울렸습니다."
       - say:
           char: 유신.sad
           framing: bust
           text: "문은 열렸습니다. 우리 군사 열일곱, 궁군 아홉이 죽었습니다. 이제 어느 쪽도 칼을 거두지 않습니다."
       - effect: darken
       - say:
-          text: "덕만은 침전에 도착했지만 진평왕은 이미 숨을 거둔 뒤였습니다. 칠숙은 피 묻은 궁문 앞에서 왕궁을 공격한 공주를 체포하라고 명했습니다."
+          with:
+            - 덕만
+          text: "덕만이 침전에 닿았을 때 안에서는 곡소리가 시작되고 있었습니다. 돌아본 궁문 너머에는 유신이 보이지 않았고, 피 묻은 돌계단 위로 칠숙이 내려왔습니다."
       - char:
           id: 칠숙
           position: right
@@ -551,12 +582,14 @@ scenes:
       - say:
           char: 칠숙
           framing: closeup
-          with: []
+          with:
+            - 덕만
           text: "전하를 뵙겠다는 말로 궁을 친 사람을 신라에서는 역적이라 부릅니다."
       - say:
           char: 덕만.sad
           framing: closeup
-          with: []
+          with:
+            - 칠숙
           text: "아버지께서 살아 계셨다면 왜 문을 닫았는지부터 물으셨을 겁니다."
           wait: 700
       - gameOver:
@@ -574,30 +607,46 @@ scenes:
           position: right
           framing: full
       - say:
-          text: "덕만은 달아나는 아진을 약방 뒤의 어두운 창고까지 쫓았습니다. 아진은 벽에 몰린 채 왼손을 들어 보였습니다."
+          with:
+            - 덕만
+            - 아진
+          text: "약방 뒤 창고에서 두 사람은 세 걸음을 사이에 두고 멈췄습니다. 출구는 덕만의 등 뒤에 있었고, 벽에 몰린 아진은 빈 왼손만 등불 쪽으로 내밀었습니다."
       - say:
           char: 아진.nervous
           framing: bust
+          with:
+            - 덕만
           text: "칼은 버렸습니다. 공주께서 찾는 이름을 말하겠습니다. 가까이 오십시오. 밖에서는 들으면 안 됩니다."
       - say:
           char: 덕만
           framing: bust
+          with:
+            - 아진
           text: "거기서 말해. 한 걸음이라도 움직이면 호위를 부르겠다."
       - say:
           char: 아진
           framing: bust
+          with:
+            - 덕만
           text: "그 이름이 전하의 침전 안에 있습니다. 지금 크게 말하면 왕부터 죽습니다."
       - effect: focus
       - say:
-          text: "덕만은 호위를 부르려던 손을 멈추고 한 걸음 다가갔습니다. 아진이 입술만 움직이자 이름의 첫 음절도 들리지 않았습니다."
+          with:
+            - 덕만
+            - 아진
+          text: "덕만은 호위를 부르려던 손을 멈췄습니다. 한 걸음. 둘 사이에 남은 거리는 칼 한 자루보다 짧았습니다. 아진이 입술만 움직이자 이름의 첫 음절도 들리지 않았습니다."
       - say:
           char: 덕만
           framing: closeup
-          with: []
+          with:
+            - 아진
           text: "다시 말해. 누구라고?"
       - effect: impact
       - say:
-          text: "아진의 오른손이 소매에서 나왔습니다. 손바닥에 숨긴 짧은 칼이 덕만의 가슴을 찔렀고, 문밖의 호위가 들어오기 전에 아진도 독을 삼켰습니다."
+          with:
+            - 덕만
+            - 아진
+          text: "아진의 오른손이 소매에서 나왔습니다. 손바닥에 감춘 짧은 칼은 그 한 걸음을 되돌릴 틈도 주지 않았습니다. 문밖 호위가 빗장을 부수는 동안 아진도 독을 삼켰습니다."
       - say:
           char: 아진.nervous
           framing: closeup

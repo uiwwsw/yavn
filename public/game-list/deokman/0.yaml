@@ -11,6 +11,23 @@ scenes:
           id: 덕만
           position: center
           framing: full
+      - say:
+          with:
+            - 덕만
+          delivery: calm
+          text: "비가 처마를 때렸습니다. 덕만이 서쪽 회랑에 들어서자 세 번째 등불이 꺼졌습니다. 앞의 두 등불과 똑같은 간격이었습니다."
+      - say:
+          char: 덕만
+          framing: closeup
+          with: []
+          delivery: whisper
+          text: "……바람이 아니야. 누가 내가 오는 쪽부터 불을 죽이고 있어."
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다. 빗소리 아래로 낯익은 남자의 목소리와, 짧게 대답하는 여자의 목소리가 겹쳐 들렸습니다."
+          wait: 550
       - char:
           id: 칠숙
           position: right
@@ -20,37 +37,38 @@ scenes:
           position: left
           framing: full
       - say:
-          delivery: calm
-          text: "서기 631년, 신라 왕경. 진평왕의 연회를 하루 앞둔 밤이었습니다. 비가 내렸고, 덕만공주는 잠이 오지 않아 회랑을 걷고 있었습니다."
-      - say:
-          text: "이 이야기는 실제 역사 인물과 시대를 바탕으로, 암살 사건과 계승 음모를 새롭게 구성한 역사 픽션입니다."
-      - say:
-          char: 덕만
-          framing: full
-          delivery: whisper
-          text: "잠깐. 등불이 서쪽부터 꺼지고 있어. 바람 때문이라면 한꺼번에 꺼져야 하는데."
-      - say:
           char: 칠숙.smile
           framing: bust
+          with:
+            - 아진
           text: "<speed=20>내일 진시, 전하께서 두 번째 잔을 드시면 일을 시작하십시오.</speed>"
           wait: 700
       - say:
           char: 아진
           framing: bust
+          with:
+            - 칠숙
           delivery: neutral
           text: "왕이 쓰러지면 호위가 공주에게 닿기까지 열두 걸음입니다. 그 전에 끝내겠습니다."
       - say:
           char: 칠숙.smile
           framing: bust
+          with:
+            - 아진
           text: "실수하지 마십시오. 왕만 죽고 공주가 살면, 오늘보다 더 성가신 내일이 옵니다."
       - say:
           char: 아진.nervous
           framing: bust
+          with:
+            - 칠숙
           delivery: neutral
           text: "……알겠습니다."
       - say:
+          with:
+            - 덕만
           delivery: whisper
-          text: "<speed=20>훗날 덕만은 신라 최초의 여왕이 된다.</speed> <speed=32>오늘 밤을 살아남는다면.</speed>"
+          text: "덕만은 소매로 입을 막았습니다. 열두 걸음. 그 거리를 머릿속으로 재는 순간, 발뒤꿈치 아래의 마른 대나무가 부러졌습니다."
+          wait: 650
       - goto: caught_choice
 
   caught_choice:
@@ -59,8 +77,7 @@ scenes:
           key: p_caught
           char: 덕만
           framing: closeup
-          with:
-            - 아진
+          with: []
           prompt: "대나무가 부러졌다. 발소리가 덕만에게 달려온다."
           options:
             - text: "길 잃은 척 나선다"
@@ -80,13 +97,24 @@ scenes:
   caught_lost:
     actions:
       - say:
+          with:
+            - 덕만
+            - 아진
+            - 칠숙
+          text: "덕만은 달아나는 대신 기둥 밖으로 걸어 나왔습니다. 아진의 손은 칼자루에, 칠숙의 손은 소매 안에 들어가 있었습니다."
+      - say:
           char: 덕만
           framing: bust
+          with:
+            - 아진
+            - 칠숙
           delivery: nervous
           text: "연못으로 가려다가 길을 잘못 들었습니다. 그런데 두 분은 등불도 없이 여기서 뭘 하십니까?"
       - say:
           char: 아진
           framing: bust
+          with:
+            - 덕만
           delivery: neutral
           text: "길을 잃으신 분치고는 제 손을 오래 보시는군요."
       - say:
@@ -105,19 +133,28 @@ scenes:
       - say:
           char: 아진
           framing: bust
+          with:
+            - 덕만
           delivery: neutral
           text: "호위가 오기까지 일곱 번 숨을 쉽니다. 벌써 두 번 쓰셨습니다."
       - say:
           char: 덕만.angry
           framing: closeup
+          with:
+            - 아진
           delivery: angry
           text: "다섯 번이면 충분해. 칼을 뽑아 봐. 호위가 왔을 때 누구 얼굴부터 말해야 하는지 확인하게."
       - say:
           char: 아진.nervous
           framing: bust
+          with:
+            - 덕만
           delivery: neutral
           text: "오늘은 물러나겠습니다. 다음에도 다섯 번이 남을 거라고 생각하지 마십시오."
       - say:
+          with:
+            - 덕만
+            - 아진
           text: "검은 복면은 사라졌지만, 덕만은 오른손에 감긴 붉은 매듭을 보았습니다."
       - goto: warn_choice
 
@@ -419,31 +456,39 @@ scenes:
   go_02_broken_moon:
     actions:
       - char:
-          id: 아진
-          position: left
-          framing: full
-      - char:
           id: 덕만
           position: center
           framing: full
+      - effect: shake
+      - say:
+          with:
+            - 덕만
+          text: "덕만이 난간을 짚고 지붕에 오르자 젖은 기와가 발밑에서 밀렸습니다. 아래 회랑의 발소리는 보이지 않았지만 점점 가까워졌습니다."
+      - say:
+          char: 덕만.sad
+          framing: bust
+          with: []
+          text: "잠깐…… 손을 잡아 줘!"
+      - char:
+          id: 아진
+          position: right
+          framing: full
+      - say:
+          char: 아진
+          framing: bust
+          with:
+            - 덕만
+          text: "세 걸음만 더 가시면 아래 회랑으로 내려갈 수 있습니다. 그대로 오십시오."
+      - say:
+          with:
+            - 덕만
+            - 아진
+          text: "처마 아래에서 아진의 손이 올라왔습니다. 손목의 붉은 매듭을 본 덕만이 손을 거두는 순간, 마지막 기와가 깨졌습니다."
+      - effect: darken
       - char:
           id: 칠숙
           position: right
           framing: full
-      - effect: shake
-      - say:
-          text: "덕만이 난간을 짚고 지붕에 오르자 젖은 기와가 발밑에서 밀렸습니다."
-      - say:
-          char: 덕만.sad
-          framing: bust
-          text: "잠깐…… 손을 잡아 줘!"
-      - say:
-          char: 아진
-          framing: bust
-          text: "세 걸음만 더 가시면 아래 회랑으로 내려갈 수 있습니다. 그대로 오십시오."
-      - say:
-          text: "아진이 내민 손목에는 붉은 매듭이 감겨 있었습니다. 덕만이 손을 거두는 순간, 마지막 기와가 깨졌습니다."
-      - effect: darken
       - say:
           char: 칠숙.smile
           framing: closeup
@@ -460,25 +505,31 @@ scenes:
           id: 덕만
           position: left
           framing: full
+      - say:
+          with:
+            - 덕만
+          text: "왕의 침전으로 가는 서쪽 문에는 보초가 없었습니다. 문틈에는 불빛도 없었고, 덕만이 손을 대기 전에 빗장이 안쪽에서 먼저 움직였습니다."
+      - say:
+          char: 덕만
+          framing: bust
+          with: []
+          text: "누가 안에 있느냐. 아버지께 급히 드릴 말이 있다."
       - char:
           id: 아진
           position: right
           framing: full
       - say:
-          text: "왕의 침전으로 가는 서쪽 문에는 보초가 없었습니다. 덕만이 손을 대자 빗장이 안쪽에서 먼저 풀렸습니다."
-      - say:
-          char: 덕만
-          framing: bust
-          text: "누가 안에 있느냐. 아버지께 급히 드릴 말이 있다."
-      - say:
           char: 아진
           framing: bust
+          with:
+            - 덕만
           text: "그 말을 듣지 못하게 하라는 명령을 받았습니다."
       - effect: impact
       - say:
           char: 덕만.angry
           framing: closeup
-          with: []
+          with:
+            - 아진
           text: "아버지! 잔을 드시면 안 됩니다!"
       - effect: darken
       - say:
