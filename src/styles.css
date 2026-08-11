@@ -135,7 +135,9 @@ textarea,
     );
   --start-gate-eyebrow-color: rgba(89, 65, 43, 0.82);
   --start-gate-title-color: #2f2115;
-  --start-gate-title-shadow: 0 10px 22px rgba(53, 35, 18, 0.22);
+  --start-gate-title-shadow:
+    0 2px 2px rgba(31, 19, 10, 0.72),
+    0 12px 28px rgba(35, 22, 12, 0.42);
   --start-gate-button-border: rgba(95, 72, 46, 0.58);
   --start-gate-button-bg: linear-gradient(180deg, rgba(255, 248, 235, 0.95), rgba(236, 219, 186, 0.92));
   --start-gate-button-color: #2e2013;

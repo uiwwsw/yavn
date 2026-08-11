@@ -13,6 +13,7 @@
 #   enabled: true
 #   image: assets/bg/title.png
 #   showTitle: true # 타이틀 이미지에 제목이 포함되어 있으면 false
+#   titleColor: "#ffe0a3" # 배경 위 게임 제목의 CSS 색상
 #   startButtonText: 시작하기
 #   buttonPosition: auto
 # ui:

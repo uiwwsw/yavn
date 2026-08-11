@@ -275,6 +275,7 @@ const startScreenSchema = z
     image: z.string().min(1).optional(),
     music: z.string().min(1).optional(),
     showTitle: z.boolean().optional(),
+    titleColor: z.string().min(1).max(80).optional(),
     startButtonText: z.string().min(1).optional(),
     buttonPosition: startButtonPositionSchema.optional(),
   })
@@ -289,6 +290,7 @@ const startScreenSchema = z
       image: normalizeOptionalText(value.image),
       music: normalizeOptionalText(value.music),
       showTitle: value.showTitle ?? true,
+      titleColor: normalizeOptionalText(value.titleColor),
       startButtonText: value.startButtonText?.trim() || '시작하기',
       buttonPosition: value.buttonPosition ?? 'auto',
     };

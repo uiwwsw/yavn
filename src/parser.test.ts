@@ -29,6 +29,17 @@ describe('parseConfigYaml startScreen', () => {
     expect(parsed.error).toBeUndefined();
     expect(parsed.data?.data.startScreen?.showTitle).toBe(false);
   });
+
+  it('normalizes a game-specific start title color', () => {
+    const parsed = parseConfigYaml(
+      configYaml(`  image: assets/title.png
+  titleColor: "  #ffe0a3  "`),
+      'config.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    expect(parsed.data?.data.startScreen?.titleColor).toBe('#ffe0a3');
+  });
 });
 
 describe('cinematic DSL timing', () => {
