@@ -24,6 +24,15 @@ describe('start gate presentation', () => {
     expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?animation: start-gate-frame-in [^;]+ both;/);
   });
 
+  it('plays the button entrance before paint with a visible fallback and fail-safe cancellation', () => {
+    expect(app).toContain('const startGateActionsRef = useRef<HTMLDivElement | null>(null)');
+    expect(app).toContain("container.querySelectorAll<HTMLElement>('.start-gate-button, .start-gate-hint')");
+    expect(app).toContain("fill: 'backwards'");
+    expect(app).toContain('START_GATE_ACTION_FAILSAFE_BUFFER_MS');
+    expect(app).toContain('animations.forEach((animation) => animation.cancel())');
+    expect(app).toContain('<div ref={startGateActionsRef} className={actionClass}>');
+  });
+
   it('renders a non-interactive surface while a direct game route resolves', () => {
     expect(app).toContain('if (gameBootPending)');
     expect(app).toContain('className="game-route-boot"');
