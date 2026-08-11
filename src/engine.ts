@@ -840,7 +840,7 @@ function collectVisibleLive2DLoadKeys(): string[] {
     if (!visible.has(slot.id)) {
       continue;
     }
-    keys.push(buildLive2DLoadKey(position, slot));
+    keys.push(buildLive2DLoadKey(slot));
   }
   return keys;
 }
