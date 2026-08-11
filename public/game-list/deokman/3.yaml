@@ -6,15 +6,14 @@ scenes:
   chapter3_open:
     actions:
       - bg: locked_room
+      - camera: wide
       - effect: focus
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 소원
           position: right
-          framing: full
       - say:
           text: "제3장 — 한 사람만 거짓말한다"
       - say:
@@ -25,14 +24,14 @@ scenes:
           text: "같은 밤 · 해가 진 지 얼마 안 된 때. 문 아래 핏자국은 아직 넓어지고 있었고, 야간 교대 종은 두 번 더 울리기 전이었습니다."
       - say:
           char: 소원.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
             - 소원
           text: "피가 아직 따뜻해요. 하지만 빗장은 안에서 걸렸고, 안쪽에서는 숨소리도 안 들려요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 소원
           text: "뒤로 물러서. 내가 문을 부술게."
@@ -44,46 +43,46 @@ scenes:
           text: "두 번째 어깨로 밀자 안쪽 빗장이 부러졌고 죽은 남자가 문밖으로 쓰러졌습니다. 손에는 덕만의 옷고름이 감겨 있었고, 손가락에는 혼인 합의서 원본과 같은 먹물이 묻어 있었습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with:
             - 소원
           text: "비담에게 합의서 원본을 넘긴 왕실 문서 담당자야. 오늘 만나면 이름부터 묻겠다고 했는데…… 누군가 그보다 먼저 내 옷고름을 쥐여 줬어."
       - say:
           char: 소원.nervous
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "이 옷고름은 어제 제가 새로 달았어요. 시신이 이걸 쥐고 있으면 사람들은 공주님과 다퉜다고 믿을 거예요."
       - say:
           char: 소원.nervous
-          framing: full
+          camera: wide
           delivery: nervous
           text: "빗장은 안에서 걸려 있었고 창틀 먼지는 그대로예요. 그런데 문밖 사람들은 똑같은 말만 해요. ‘비명은 못 들었다, 아무도 드나들지 않았다.’"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "누가 먼저 그렇게 말했대?"
       - say:
           char: 소원.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "다들 자기가 먼저 말했다고 해요. 그래서 더 이상해요."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 소원
           text: "그럼 사람들 말은 잠깐 잊자. 이 방에서 실제로 움직인 것부터 보자. 시체가 식기 전에."
       - say:
           char: 소원.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "문밖에는 벌써 칠숙의 사람들이 와 있어요. 문을 열면 흔적이 밟히고, 닫아 두면 공주님이 시체를 숨겼다고 할 거예요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 소원
           text: "시체를 옮기면 누군가에게 죄를 넘기는 사람이 되고, 너와 둘이 기록하면 네가 내 거짓말을 돕는 사람으로 몰리겠지. 이번 함정은 나 혼자만 잡으려는 게 아니야."
@@ -95,7 +94,7 @@ scenes:
           key: c3_body
           prompt: "시체가 식기 전, 무엇을 할까?"
           char: 덕만.angry
-          framing: closeup
+          camera: close
           with:
             - 소원
           options:
@@ -118,7 +117,7 @@ scenes:
     actions:
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           delivery: shout
           text: "문을 여세요. 들어와서 직접 보십시오. 제가 숨겼다는 말은 그 다음에 들을 테니, 지금 나가는 사람부터 잡으세요."
       - say:
@@ -127,14 +126,13 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "겁이 많은 아이라 그렇습니다. 시체를 보고 물러난 것까지 죄가 되지는 않겠지요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "아직 시체를 보지 않았습니다. 그런데 왜 물러났을까요? 그 아이는 따로 남겨 두세요."
       - goto: testimony_choice
 
@@ -142,29 +140,29 @@ scenes:
     actions:
       - say:
           char: 소원
-          framing: bust
+          camera: medium
           text: "안쪽 먼지는 그대로인데, 창밖 발판만 손바닥만큼 닦였어요. 누가 밖에서 창을 밀었나 봐요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "그럼 범인은 방 안에 들어오지 않았을 수도 있어. 네가 발견한 순서대로 적어 줘. 나중에 누가 말을 바꿔도 흔적은 안 바뀌게."
       - say:
           char: 소원
-          framing: bust
+          camera: medium
           text: "글씨가 느려도 괜찮죠? 하나도 빼먹고 싶지 않아요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "천천히 써. 오늘은 빠른 대답보다 틀리지 않은 기록이 필요해."
       - say:
           char: 소원
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "공주님 손에도 먹물이 묻었어요. 코는 만지지 마세요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 소원
           text: "그 말을 조금만 일찍 하지 그랬어."
@@ -173,11 +171,11 @@ scenes:
   testimony_choice:
     actions:
       - bg: council_hall
+      - camera: wide
       - effect: focus
       - char:
           id: 덕만
           position: left
-          framing: full
       - say:
           with:
             - 덕만
@@ -186,58 +184,55 @@ scenes:
       - char:
           id: 소원
           position: right
-          framing: full
       - say:
           char: 소원
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "저는 공주님 편이라서 먼지를 고른 게 아니에요. 높은 분도 낮은 사람도 먼지한테는 거짓말을 시킬 수 없으니까요. 누가 밟았는지만 그대로 남아요."
       - char:
           id: 비담
           position: right
-          framing: full
       - say:
           with:
             - 비담
           text: "소원이 물러나자 비담은 열쇠 세 개를 같은 줄에 놓았습니다. 마지막 열쇠에만 아직 굳지 않은 밀랍이 묻어 손가락에 달라붙었습니다."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "열쇠는 세 벌입니다. 하나는 공주님 것, 하나는 죽은 자의 품, 나머지 하나는 어젯밤 급히 만든 흔적이 남았습니다."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "저를 믿을 필요는 없습니다. 대신 열쇠를 만든 장인은 값을 받은 날짜를 거짓말하지 못합니다. 제가 공주님께 파는 건 믿음이 아니라 확인할 순서니까요."
       - char:
           id: 유신
           position: right
-          framing: full
       - say:
           with:
             - 유신
           text: "마지막으로 유신은 젖은 짚신 한 켤레와 여덟 칸으로 묶은 노끈을 내려놓았습니다."
       - say:
           char: 유신
-          framing: bust
+          camera: medium
           text: "창 아래 발자국은 여덟 개입니다. 비에 젖었지만 보폭은 일정합니다. 다친 사람의 걸음은 아닙니다."
       - say:
           char: 유신
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "제 단서대로면 의심되는 사람을 바로 잡아들일 수 있습니다. 솔직히 지금이라도 달려가 잡고 싶습니다. 하지만 틀리면 죄 없는 사람에게 칼을 대게 됩니다. 그래서 숫자만 말씀드리겠습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "단서 셋이 서로 다른 사람을 가리키는 것처럼 보여. 하나부터 끝까지 따라가 보자."
       - choice:
           key: c3_testimony
           prompt: "누구의 단서를 믿을까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with: []
           options:
             - text: "소원의 먼지"
@@ -263,24 +258,23 @@ scenes:
       - char:
           id: 소원
           position: right
-          framing: full
       - say:
           char: 소원
-          framing: bust
+          camera: medium
           text: "발판에 짚신 앞코만 찍혔어요. 밧줄에 몸을 기대고 창을 민 것 같아요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 소원
           text: "직접 들어오지 않고 어떻게 사람을 죽였지?"
       - say:
           char: 소원
-          framing: closeup
+          camera: close
           text: "창으로 뭘 건넸을 수도 있어요. 바닥에 약 냄새 나는 실이 떨어져 있었어요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "실로 문빗장을 당겼군. 살인은 방 안에서, 잠금은 방 밖에서 끝낸 거야."
       - goto: culprit_choice
 
@@ -289,22 +283,21 @@ scenes:
       - char:
           id: 비담
           position: right
-          framing: full
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "새 열쇠에는 밀랍이 묻어 있습니다. 공주님 열쇠 모양을 본떠 만든 겁니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "누가 열쇠를 가져갔는지 알아낼 수 있어?"
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "공주님 열쇠를 맡았던 나인 셋은 서로를 의심하고 있습니다. 범인은 그중에 없을 겁니다. 너무 잘 보이는 의심은 대개 누가 갖다 놓은 거라서요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "그럼 열쇠를 만든 장인부터 찾아. 누가 밀랍을 가져왔는지 물어보자."
       - goto: culprit_choice
 
@@ -313,22 +306,21 @@ scenes:
       - char:
           id: 유신
           position: right
-          framing: full
       - say:
           char: 유신
-          framing: bust
+          camera: medium
           text: "발자국은 여덟 개, 간격은 모두 두 자 반입니다. 그런데 우리가 의심한 사람 하나는 어젯밤부터 다리를 절었습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "다친 척했다는 뜻이군요. 누굽니까?"
       - say:
           char: 유신
-          framing: closeup
+          camera: close
           text: "아진입니다. 공주께 들킨 뒤부터 왼쪽 다리를 절었습니다. 하지만 발자국은 양쪽 깊이가 같습니다."
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           text: "그 사람은 얼굴을 숨겨도 걷는 속도는 못 숨겨. 데려오세요. 다만 아직 체포하지는 마세요."
       - goto: culprit_choice
 
@@ -342,37 +334,36 @@ scenes:
       - char:
           id: 아진
           position: right
-          framing: full
       - say:
           with:
             - 아진
           text: "아진은 끌려오지 않고 제 발로 문을 열었습니다. 오른손의 붉은 매듭을 풀어 탁자 위에 놓자, 잠긴 방 창밖에서 나온 실밥과 끊어진 자리가 맞아떨어졌습니다."
       - say:
           char: 아진.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           delivery: neutral
           text: "문까지 열한 걸음입니다. 공주께서 제 이름을 부르는 순간부터 세었습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 아진
           text: "달아날 생각이었나?"
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           with:
             - 아진
           text: "아버지 잔에도, 내 방의 시체에도 네 붉은 매듭이 남았어. 너는 칠숙의 칼이야. 그런데 칼을 쥔 손이 누구인지는 아직 증명하지 못했지."
       - say:
           char: 아진.nervous
-          framing: bust
+          camera: medium
           text: "증거가 없으면 달아날 필요도 없습니다. 공주께서는 제가 했다는 것만 아십니다. 왜 했는지는 모르십니다."
       - say:
           char: 아진.nervous
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "명령한 사람의 이름을 말하면 저보다 먼저 죽는 사람들이 있습니다. 제가 충성해서 입을 다무는 건 아닙니다."
@@ -382,19 +373,19 @@ scenes:
           text: "아진은 품에서 아이의 작은 짚신 한 짝을 꺼냈습니다. 뒤축에는 칠숙의 별채를 뜻하는 검은 먹점이 찍혀 있었습니다."
       - say:
           char: 아진.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "제 동생이 신던 겁니다. 제가 명령을 거부할 때마다 저쪽에서 한 짝씩 보내옵니다. 이제 남은 건 한 짝뿐입니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "<speed=22>그래서 아직 널 묶지 않았어.</speed> <speed=19>나는 네 동생도 살리고, 너도 살리고 싶어.</speed> <speed=22>누구 명령을 받았는지 말할 기회를 주는 거야.</speed>"
       - choice:
           key: c3_culprit
           prompt: "아진이 눈앞에 있다. 어떻게 할까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 아진
           options:
@@ -417,28 +408,28 @@ scenes:
     actions:
       - say:
           char: 아진.angry
-          framing: bust
+          camera: medium
           delivery: neutral
           text: "문서를 가져오면 제 가족이 죽습니다. 다음 명령이 오면 저는 공주를 죽여야 합니다. 그래도 저를 보내시겠습니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "가족이 어디 있지?"
       - say:
           char: 아진.angry
-          framing: closeup
+          camera: close
           text: "그것까지 말하면 오늘 밤을 못 넘깁니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "그럼 지금은 말하지 마. 문서만 가져와. 그동안 내가 네 가족부터 찾을게. 너희를 살릴 방법이 있는데도 한 사람만 고르지는 않겠어."
       - say:
           char: 아진.nervous
-          framing: bust
+          camera: medium
           text: "공주를 믿는 게 아니라, 다른 길이 없어서 갑니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "처음에는 그 정도면 돼. 돌아오면 그 다음을 정하자."
       - add:
           bidam_trust: 1
@@ -452,19 +443,18 @@ scenes:
           text: "덕만은 죽은 귀족이 잠깐 눈을 떴다는 거짓 전갈을 보냈습니다. 한 시간쯤 뒤, 칠숙의 하인이 방으로 돌아와 시체의 입을 확인하다 붙잡혔습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "죽은 사람이 무슨 말을 했다고 들었지?"
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "겁먹은 하인이 제멋대로 움직인 모양입니다. 제 사람이라고 모두 제 명령만 듣는 것은 아닙니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "그 말은 하인 앞에서도 해 주세요. 품에서 나온 약속문과 함께 물어보겠습니다."
       - goto: chapter3_end
 
@@ -481,26 +471,25 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "살인 누명은 벗으셨군요. 축하드립니다. 이제 전하께서 맡기신 국경으로 떠나셔야겠습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "살인범을 잡은 날 바로 수도를 떠나라니, 준비가 빠르시군요."
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "국경의 백성이 굶고 있습니다. 공주께서는 사람을 그냥 두지 못하시니, 거절하지 못하실 겁니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "가겠습니다. 대신 제가 그곳에서 누구를 만나고 무엇을 듣는지는 이곳에서 정하지 못할 겁니다."
       - say:
           char: 칠숙.smile
-          framing: closeup
+          camera: close
           text: "궁 밖에서는 공주라는 이름도 가볍습니다. 돌아오지 못하셔도 저를 원망하지는 마십시오."
       - say:
           with:
@@ -512,35 +501,34 @@ scenes:
   go_17_second_murder:
     actions:
       - bg: locked_room
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 소원
           position: right
-          framing: full
       - say:
           text: "덕만과 소원은 시체를 침상 밑으로 밀어 넣고 바닥의 피를 닦았습니다. 문밖에서는 방을 수색하겠다는 호위의 목소리가 들렸습니다."
       - say:
           char: 소원.nervous
-          framing: bust
+          camera: medium
           text: "피 냄새가 안 없어져요. 침상 휘장에도 묻었어요. 이제라도 문 열고 말해요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "지금 발견되면 설명할 틈도 없어. 먼저 이 사람이 왜 여기 왔는지 알아내야 해."
       - effect: alarm
       - say:
           text: "호위들은 왕의 명령이라며 문을 부쉈습니다. 침상 아래에서는 시체뿐 아니라 피를 닦은 천과 덕만의 손자국이 함께 나왔습니다."
       - say:
           char: 소원.nervous
-          framing: closeup
+          camera: close
           with: []
           text: "공주님이 죽인 게 아니라고 제가 말할게요."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "네가 본 건 우리가 시체를 숨긴 일이야. 이제 그 말도 나를 구하지 못해."
       - effect: darken
@@ -553,14 +541,13 @@ scenes:
   go_18_borrowed_corpse:
     actions:
       - bg: shadow_corridor
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 소원
           position: center
-          framing: full
       - say:
           with:
             - 덕만
@@ -568,13 +555,13 @@ scenes:
           text: "덕만과 소원이 시체를 천에 싸서 회랑을 옮겼습니다. 발을 맞추지 못할 때마다 천 아래의 뒤꿈치가 바닥을 긁었고, 멀리서 야간 교대 종이 울렸습니다."
       - say:
           char: 소원.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "사람들이 봤어요. 내려놓고 사실대로 말해요. 더 가면 정말 우리가 한 일이 돼요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 소원
           text: "여기까지 왔어. 칠숙 방에서 발견되면 적어도 그 사람을 조사할 수 있어."
@@ -587,17 +574,16 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           with:
             - 덕만
             - 소원
           text: "제 방에 선물을 가져오셨군요. 공주 손에 묻은 피부터 기록하게 하겠습니다."
       - say:
           char: 덕만.angry
-          framing: closeup
+          camera: close
           with: []
           text: "처음부터 우리가 여기로 오길 기다렸습니까?"
       - effect: alarm
@@ -610,36 +596,35 @@ scenes:
   go_19_last_witness:
     actions:
       - bg: council_hall
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           text: "귀족들 앞에 선 칠숙은 시체를 처음 발견했을 때 본 것을 차분하게 말했습니다."
       - say:
           char: 칠숙
-          framing: bust
+          camera: medium
           text: "제가 방에 들어갔을 때 시체의 등에는 칼자국이 있었습니다. 공주는 그 옆에 서 계셨습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "저도 그 상처를 봤습니다. 칠숙공의 증언과 일치합니다."
       - effect: focus
       - say:
           text: "호위들이 칠숙의 증언을 기록하는 동안 소원이 시체를 바로 눕혔습니다. 칼자국은 가슴에 있었고 등에는 상처가 없었습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "잠깐. 시체는 엎드려 있었어. 나는 가슴의 상처를 나중에 봤는데…… 칠숙은 어떻게 먼저 알았지?"
       - effect: alarm
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "공주께서 방금 제 증언이 맞다고 인정하셨습니다. 이제 말을 바꾸시는 겁니까?"
       - say:
           text: "모순을 설명하기 전에 호위의 칼이 덕만의 목에 닿았습니다. 칠숙의 첫 증언은 이미 열두 명의 서명을 받은 뒤였습니다."
@@ -650,39 +635,38 @@ scenes:
   go_20_correct_accusation:
     actions:
       - bg: locked_room
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 아진
           position: right
-          framing: full
       - say:
           text: "복제 열쇠와 젖은 발자국을 확인한 덕만은 아진을 방으로 불러 호위 앞에 세웠습니다."
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           text: "아진을 당장 체포해. 새 열쇠와 발자국이 모두 이 사람에게 닿아."
       - say:
           char: 아진
-          framing: bust
+          camera: medium
           text: "증언은 있습니까? 제가 열쇠를 만들거나 이 방에 들어오는 모습을 본 사람 말입니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "잡아 두면 찾을 수 있어. 그 전에 또 사람을 죽이게 둘 수는 없어."
       - effect: impact
       - say:
           text: "호위가 아진의 팔을 잡는 순간, 아진은 소매 안의 작은 약병을 깨물었습니다. 입가에서 검은 피가 흘렀습니다."
       - say:
           char: 아진.nervous
-          framing: closeup
+          camera: close
           with: []
           text: "이제 공주께서 원한 대답은 제 입에서 나오지 않습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "뱉어. 누구 명령인지 말하고 죽어."
       - effect: darken
@@ -695,32 +679,31 @@ scenes:
   go_21_friendless_truth:
     actions:
       - bg: council_hall
+      - camera: wide
       - char:
           id: 소원
           position: right
-          framing: full
       - char:
           id: 덕만
           position: left
-          framing: full
       - say:
           text: "덕만은 재판을 앞두고 자신의 방 열쇠를 맡아 온 소원을 증인석에 세웠습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "내 방 열쇠를 맡은 사람은 소원입니다. 심문하면 제가 모르는 출입을 밝혀낼 수 있습니다."
       - say:
           char: 소원.angry
-          framing: bust
+          camera: medium
           text: "제가 아니라는 걸 알면서도 그렇게 말하는 거예요? 공주님이 살려면 제 이름 하나쯤 버려도 돼요?"
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "며칠만 버텨 줘. 진범을 찾으면 내가 직접 꺼내 줄게."
       - say:
           char: 소원
-          framing: closeup
+          camera: close
           with: []
           text: "꺼내 준 뒤에는요? 제가 다시 공주님을 믿어야 해요?"
       - effect: darken
@@ -733,7 +716,7 @@ scenes:
       - effect: alarm
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "소원아…… 그날 내가 네 말을 들었어야 했어."
           wait: 700

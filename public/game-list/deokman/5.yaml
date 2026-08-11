@@ -6,14 +6,13 @@ scenes:
   chapter5_open:
     actions:
       - bg: council_hall
+      - camera: wide
       - char:
           id: 진운
           position: right
-          framing: full
       - char:
           id: 덕만
           position: left
-          framing: full
       - say:
           text: "제5장 — 신라에는 이미 왕자가 있다"
       - say:
@@ -25,23 +24,22 @@ scenes:
       - char:
           id: 칠숙
           position: center
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: full
+          camera: wide
           with:
             - 덕만
             - 진운
           text: "진운 왕자께서 먼저 들어오십니다. 왕실의 남은 기둥이시니, 모두 예를 갖추십시오."
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           with:
             - 칠숙
           text: "왕자가 아닙니다. 전하의 아들도 아니고 다음 왕으로 정해진 적도 없습니다. 진운공이라 부르십시오."
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "호칭은 사람들이 정합니다. 이미 귀족 절반과 군사 사백 명이 왕자라 부릅니다. 이 의자도 진운공 쪽으로 돌려 놓았으니, 혼자 고치기에는 늦으셨지요."
@@ -52,71 +50,71 @@ scenes:
           text: "칠숙의 하인이 작은 상자를 놓고 물러났습니다. 안에는 여인의 낡은 비녀와 오늘 날짜가 적힌 종이가 들어 있었습니다. 진운은 비녀를 쥔 손을 탁자 아래로 숨겼습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "혼담 때 말한 어머니 물건입니까? 오늘 이기라는 뜻으로 보냈겠군요."
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "<speed=22>예. 제가 왕이 되면 돌려보내고, 물러서면……</speed> <speed=18>다음에는 비녀 대신 손가락을 보내겠답니다.</speed>"
       - say:
           char: 진운
-          framing: full
+          camera: wide
           with:
             - 덕만
           text: "다시 뵙는군요. 이번에는 혼담이 아니라 왕위를 두고 만났습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "이번에도 칠숙이 써 준 말을 읽으실 겁니까?"
       - say:
           char: 진운.nervous
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "오늘 원고는 제가 썼습니다. 다만 제가 이기는 순간 어머니가 풀려난다는 약속을 받았습니다. 공주께 숨기고 공정한 척하고 싶지는 않습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "공정한 경쟁은 아니군요. 그래도 적어도 누구를 위해 싸우는지는 알겠습니다."
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           text: "공주께서는 누구를 위해 싸우십니까? 본인 말고 다른 이름으로 답하실 수 있습니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "국경에서 제 명령 때문에 살고 죽은 사람들을 위해 싸웁니다. 하지만 그 대답으로 그대 어머니를 인질로 잡은 현실까지 없던 일이 되지는 않겠지요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "그런데 차는 왜 한 모금도 안 드십니까?"
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "계피를 싫어합니다. 왕이 되겠다는 사람이 입맛부터 가린다고 할까 봐 말하지 않았습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 진운
           text: "그 정도는 마음대로 하세요. 저도 생강은 골라 냅니다."
       - say:
           char: 진운
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "그래서 귀족들 앞에서 겨뤄야 합니다. 저를 적으로 꺾을지, 인질로 볼지, 말할 기회부터 줄지 공주께서 먼저 정하십시오."
@@ -128,7 +126,7 @@ scenes:
           key: c5_contest
           prompt: "귀족들 앞, 진운을 어떻게 상대할까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 진운
           options:
@@ -153,23 +151,23 @@ scenes:
     actions:
       - say:
           char: 진운.angry
-          framing: bust
+          camera: medium
           text: "공주께서는 이번 겨울의 천칠백 명을 살렸습니다. 하지만 비축 곡식이 줄어 내년에는 이천 명이 굶을 수 있습니다. 그때도 같은 선택을 하시겠습니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "아니요. 내년에는 봄부터 창고를 채우겠습니다. 하지만 그 준비를 위해 지금 눈앞의 아이를 굶기지는 않겠습니다."
       - say:
           char: 진운.angry
-          framing: bust
+          camera: medium
           text: "좋은 마음만으로 곡식이 생기지는 않습니다. 어느 세금을 올리실 겁니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "전쟁 중에도 면세받은 세 가문의 창고부터 조사하겠습니다. 부족하면 왕실 창고를 열죠. 제 답이 틀렸다면 그대 답도 듣겠습니다."
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           text: "……왕실 창고까지 말씀하실 줄은 몰랐습니다. 그 부분은 동의합니다."
       - add:
           nobles_support: 1
@@ -179,20 +177,20 @@ scenes:
     actions:
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           delivery: whisper
           text: "제 어머니는 칠숙의 별채 동쪽방에 갇혀 있습니다. 창 하나, 문 하나, 호위는 여섯입니다. 제가 회의에서 주저할 때마다 한 명씩 방 안으로 들어갑니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "왜 그걸 저한테 말합니까? 제가 이용할 수도 있습니다."
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           text: "알고 있습니다. 그래도 공주께서는 사람을 살려 놓고 빚을 요구하는 쪽을 택할 것 같았습니다. 칠숙은 먼저 빚부터 씁니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "확신하지 마세요. 나도 왕위가 급합니다. 다만 그 전에 어머니가 있는 방의 지도를 그려 주세요."
       - goto: leverage_choice
 
@@ -203,24 +201,23 @@ scenes:
           text: "진운이 연설을 시작하자 칠숙의 입술이 같은 박자로 움직였습니다. 진운이 한 단어를 틀리자 칠숙의 손가락이 탁자를 두 번 두드렸습니다. 두 번째 문장 중간, 진운은 원고를 내려놓았습니다."
       - say:
           char: 진운.nervous
-          framing: bust
+          camera: medium
           text: "여기부터는 원고에 없습니다. 저는 왕이 되고 싶습니다. 하지만 제 어머니 목숨을 값으로 치른 왕좌라면, 앉은 뒤에도 제 것이 아닐 겁니다."
       - char:
           id: 칠숙
           position: center
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "진운공, 정해진 시간을 넘기셨습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           delivery: whisper
           text: "아니요. 이제야 진운공의 말을 들었습니다. 끝까지 하게 두시죠."
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           text: "감사합니다. 다음에는 공주께서 제 말을 막으셔도 됩니다. 오늘 한 번이면 충분합니다."
       - add:
           rival_trust: 1
@@ -231,7 +228,6 @@ scenes:
       - char:
           id: 비담
           position: right
-          framing: full
       - say:
           with:
             - 비담
@@ -239,25 +235,25 @@ scenes:
           text: "회의가 두 시간쯤 멈춘 사이, 비담은 탁자에 세 가지를 늘어놓았습니다. 진운 어머니가 갇힌 별채 지도, 칠숙이 대신 갚은 빚 장부, 진운이 원고를 버리고 한 연설을 베낀 종이였습니다."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "진운공에게는 쓸 만한 약점이 셋 있습니다. 별채에 갇힌 어머니, 칠숙이 대신 갚아 준 빚, 그리고 사람을 밟고 왕이 될 만큼 모질지는 못하다는 점."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "어느 것부터 쓰시겠습니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 비담
           text: "사람 약점을 물건 고르듯 말하지 마."
       - say:
           char: 비담.smirk
-          framing: bust
+          camera: medium
           text: "왕이 되려는 분들이 늘 그렇게 하기에 미리 연습해 봤습니다. 싫으시면 안 쓰셔도 됩니다. 하지만 칠숙은 이미 전부 쓰고 있습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with:
             - 비담
           text: "그대는 내 신하가 아니라서 곁에 둔 사람이야. 내가 칠숙과 같은 얼굴을 할 때는 충성하는 척하지 말고 지금처럼 비웃어 줘."
@@ -268,7 +264,7 @@ scenes:
           text: "비담은 계속 웃고 있었지만, ‘곁에 둔 사람’이라는 말을 듣자 장부를 쥔 손에 힘이 풀렸습니다."
       - say:
           char: 비담.sad
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "그런 부탁은 값을 받기 어렵군요. 그래도 진운공의 어머니를 사람으로 볼지 약점으로 볼지는, 지금 공주님 얼굴을 보고 정하겠습니다."
@@ -276,7 +272,7 @@ scenes:
           key: c5_leverage
           prompt: "진운의 약점을 손에 쥐었다. 쓸까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 비담
           options:
@@ -300,27 +296,26 @@ scenes:
       - char:
           id: 진운
           position: right
-          framing: full
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           delivery: nervous
           text: "어머니를 빼내고도 제게 물러나겠다는 약속을 받지 않으셨습니다. 왜입니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "<speed=20>어머니를 구한 값으로 왕위를 달라고 하면, 칠숙과 다를 게 없으니까요.</speed>"
       - say:
           char: 진운.nervous
-          framing: bust
+          camera: medium
           text: "그럼 저는 여전히 경쟁자입니다. 내일 공주를 이길 수도 있습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "그래야 그대가 나중에 하는 선택도 믿을 수 있습니다. 빚 때문에 물러나는 사람은 필요 없어요."
       - say:
           char: 진운
-          framing: closeup
+          camera: close
           text: "처음으로 누군가 제게 직접 고르라고 하는군요. 익숙하지 않지만 해 보겠습니다."
       - goto: rescue_choice
 
@@ -329,56 +324,55 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "궁핍한 왕족의 빚을 대신 갚아 드린 일이 반역입니까? 이제 선의도 장부에 적지 말아야겠군요."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "돈만 돌려받았다면 선의였겠지요. 그런데 이 장부에는 진운공이 회의에서 그대 뜻대로 표를 준 날마다 빚이 줄어 있습니다."
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "우연히 뜻이 같았을 수도 있습니다."
       - char:
           id: 진운
           position: center
-          framing: full
       - say:
           char: 진운.angry
-          framing: bust
+          camera: medium
           text: "아닙니다. 제 표를 돈으로 샀습니다. 제가 직접 말하겠습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "이제 제 말만 반박해서 끝날 일이 아닙니다, 칠숙공."
       - goto: rescue_choice
 
   rescue_choice:
     actions:
       - bg: shadow_corridor
+      - camera: wide
       - say:
           delivery: nervous
           text: "같은 날 · 해가 진 뒤. 회의를 마친 진운의 마차가 좁은 비탈에 들어서자 앞바퀴 축이 부러졌습니다. 숲에서는 여러 개의 활시위가 동시에 당겨지는 소리가 났습니다."
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           text: "저를 죽이면 칠숙은 공주가 꾸민 일이라 할 겁니다. 가까이 오지 마십시오."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "그 말을 들으니 더 막아야겠군요. 시간 없습니다."
       - say:
           char: 진운.angry
-          framing: bust
+          camera: medium
           with:
             - 덕만
           text: "저를 살려도 왕위는 양보하지 않습니다. 오늘 경쟁자를 구한 일이 내일 공주를 겨누는 군사로 돌아올 수도 있습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 진운
           text: "압니다. 못 본 척하면 그대는 칠숙이 쓰는 순교자가 되고, 암살을 외치면 궁수들이 먼저 쏠 겁니다. 살아서 다시 다툴 방법부터 고르죠."
@@ -386,7 +380,7 @@ scenes:
           key: c5_rescue
           prompt: "진운의 마차에 화살이 향한다. 막을까?"
           char: 덕만
-          framing: closeup
+          camera: close
           with:
             - 진운
           options:
@@ -420,24 +414,23 @@ scenes:
       - char:
           id: 진운
           position: right
-          framing: full
       - say:
           char: 진운.angry
-          framing: closeup
+          camera: close
           delivery: angry
           text: "왜 제 마차에 직접 타셨습니까? 두 사람이 같이 죽었으면 왕이 될 사람이 한 번에 사라질 뻔했습니다!"
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           delivery: nervous
           text: "알아요. 그래서 죽지 않으려고 방패도 끌고 왔습니다. 혼자 두면 저를 의심하면서 죽을 것 같아서요."
       - say:
           char: 진운.angry
-          framing: bust
+          camera: medium
           text: "사람을 구해 놓고 그렇게 태연하게 말하지 마십시오. 저는 아직 손이 떨립니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           delivery: nervous
           text: "나도 떨려요. 그러니까 화는 살아서 수도에 돌아간 뒤에 내세요. 지금은 이 방패 좀 같이 잡아 줘요."
       - goto: chapter5_end
@@ -447,22 +440,21 @@ scenes:
       - char:
           id: 유신
           position: right
-          framing: full
       - say:
           char: 유신.angry
-          framing: bust
+          camera: medium
           text: "진운공은 무사합니다. 궁수 열둘 중 넷은 죽었고, 다섯은 달아났으며, 셋을 생포했습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "생포자에게서 나온 건요?"
       - say:
           char: 유신.angry
-          framing: bust
+          camera: medium
           text: "붉은 매듭입니다. 그중 한 명은 같은 매듭을 왕의 방 곁 약방에서 보았다고 말했습니다."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "아버지 곁까지 들어갔다는 뜻이군요. 진운을 안전한 곳으로 옮기고 바로 궁으로 갑시다."
       - goto: chapter5_end
 
@@ -471,30 +463,28 @@ scenes:
       - char:
           id: 칠숙
           position: right
-          framing: full
       - char:
           id: 진운
           position: center
-          framing: full
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "암살이 있을 거라고 공개하셨으니 이제 아무 일도 일어나지 않겠군요. 일어나지 않은 사건을 공으로 삼으실 겁니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "진운공이 살면 그걸로 됐습니다. 공은 필요 없습니다."
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           text: "저는 필요합니다. 누가 제 마차 바퀴를 손댔는지 직접 조사해 달라고 귀족들 앞에서 요구하겠습니다."
       - say:
           char: 칠숙.smile
-          framing: closeup
+          camera: close
           text: "진운공께서 많이 달라지셨군요."
       - say:
           char: 진운
-          framing: closeup
+          camera: close
           text: "아니요. 이제 제 말을 제가 하고 있을 뿐입니다."
       - goto: chapter5_end
 
@@ -509,25 +499,24 @@ scenes:
       - char:
           id: 천명
           position: right
-          framing: full
       - say:
           char: 천명.nervous
-          framing: closeup
+          camera: close
           delivery: nervous
           text: "덕만아, 아버지가 쓰러지셨어. 눈을 뜨지 못하셔. 그런데 왕의 도장이 사라졌고, 그 도장으로 널 잡으라는 명령이 내려졌어."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with:
             - 천명
           text: "언니는 어디야? 지금 안전해?"
       - say:
           char: 천명.nervous
-          framing: bust
+          camera: medium
           text: "아직 궁 안이야. 아버지 곁으로 가려다가 막혔어. 군사들이 오기 전에 들어와."
       - say:
           char: 덕만
-          framing: closeup
+          camera: close
           text: "문을 잠그고 기다려. 내가 갈게. 이번에는 혼자 움직이지 마."
       - say:
           with:
@@ -539,33 +528,32 @@ scenes:
   go_27_dead_prince:
     actions:
       - bg: council_hall
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 진운
           position: center
-          framing: full
       - char:
           id: 칠숙
           position: right
-          framing: full
       - say:
           text: "다음 왕을 고르는 토론이 시작되자 덕만은 준비해 둔 독살 의혹을 모든 귀족 앞에서 꺼냈습니다."
       - say:
           char: 덕만.angry
-          framing: bust
+          camera: medium
           text: "진운공이 오늘 마신 차에서 독 냄새가 났습니다. 스스로 쓰러진 뒤 저를 범인으로 만들 생각이었습니까?"
       - say:
           char: 진운.angry
-          framing: bust
+          camera: medium
           text: "저는 그 차에 손도 대지 않았습니다. 공주께서 증거를 내놓지 못하면 지금 말은 거짓 고발입니다."
       - say:
           char: 칠숙.smile
-          framing: bust
+          camera: medium
           text: "두 분 중 한 분은 거짓말을 하고 있겠군요. 진운공, 오늘은 물러나 계시는 편이 좋겠습니다."
       - bg: shadow_corridor
+      - camera: wide
       - effect: darken
       - say:
           with:
@@ -575,7 +563,7 @@ scenes:
       - effect: impact
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           with: []
           text: "덕만공주에게 전해 주십시오. 저는 독을 준비하지 않았다고……"
       - say:
@@ -589,39 +577,38 @@ scenes:
   go_28_sons_crown:
     actions:
       - bg: council_hall
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 진운
           position: right
-          framing: full
       - say:
           text: "회의가 끝난 뒤 덕만은 진운에게 어머니가 갇힌 장소를 안다고 밝혔습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "진운공의 어머니가 칠숙 별채에 갇혀 있습니다. 그 사실을 귀족들 앞에서 밝히면 칠숙의 표가 무너집니다."
       - say:
           char: 진운.nervous
-          framing: bust
+          camera: medium
           text: "공개하는 순간 어머니가 죽습니다. 공주께서는 그 목숨까지 증거로 쓰시겠다는 겁니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "모두가 알면 오히려 함부로 죽이지 못합니다. 그대가 물러나면 제가 구하겠습니다."
       - effect: focus
       - say:
           text: "진운은 귀족들 앞에서 왕이 되겠다는 뜻을 거두었습니다. 그러나 덕만이 병사를 보냈을 때 별채의 동쪽방은 이미 비어 있었습니다."
       - say:
           char: 진운.angry
-          framing: closeup
+          camera: close
           with: []
           text: "어머니가 어디로 옮겨졌는지도 모르는군요. 그런데 저한테는 구하겠다고 말했습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "시간을 벌려고 했습니다. 찾을 수 있을 줄 알았어요."
       - effect: darken
@@ -634,39 +621,38 @@ scenes:
   go_29_second_queen:
     actions:
       - bg: throne_hall
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 진운
           position: right
-          framing: full
       - say:
           text: "덕만은 내전을 막을 마지막 방법이라며 진운에게 둘만의 혼인 협상을 제안했습니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "두 가문이 싸우지 않으려면 혼인이 가장 빠릅니다. 그대가 왕이 되고 제가 나라일을 함께 맡겠습니다."
       - say:
           char: 진운
-          framing: bust
+          camera: medium
           text: "혼인 뒤 공주께서 왕과 같은 권한을 가진다는 문장을 귀족들이 받아들이겠습니까?"
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           text: "받아들이게 만들겠습니다. 지금은 전쟁부터 막아야 합니다."
       - effect: crown
       - say:
           text: "혼인은 나라 안의 싸움을 막았습니다. 새 왕을 알리는 글에는 진운의 이름이 왕으로 적혔고, 덕만의 이름에는 왕비라는 두 글자가 붙었습니다."
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           with: []
           text: "공주와 권한을 나누겠다고 발표하려 했습니다. 귀족들이 왕비는 나라일에 나선 적이 없다며 막았습니다."
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with: []
           text: "그 문장을 빼면 혼인하지 않겠다고 했어야 했습니다. 이제는 제가 말해도 왕의 아내가 왕에게 청하는 일이 되겠군요."
       - effect: darken
@@ -679,26 +665,25 @@ scenes:
   go_30_martyr_prince:
     actions:
       - bg: shadow_corridor
+      - camera: wide
       - char:
           id: 덕만
           position: left
-          framing: full
       - char:
           id: 진운
           position: right
-          framing: full
       - say:
           with:
             - 덕만
           text: "덕만의 행렬은 비탈 위에, 진운의 멈춘 마차는 굽이 아래에 있었습니다. 덕만은 나뭇가지 사이에서 움직이는 검은 소매를 보고도 호위에게 손을 들지 않았습니다."
       - say:
           char: 진운.nervous
-          framing: bust
+          camera: medium
           with: []
           text: "공주, 숲에 사람이 있습니다. 호위를 보내 주십시오. 이건 결투가 아니라 매복입니다."
       - say:
           char: 덕만
-          framing: bust
+          camera: medium
           with: []
           text: "그대 호위가 처리할 일입니다. 제가 움직이면 두 편의 군사가 서로를 칩니다."
       - effect: alarm
@@ -708,13 +693,13 @@ scenes:
           text: "활시위가 먼저 울리고 화살은 나중에 보였습니다. 첫 화살이 마부를, 두 번째가 진운의 옆구리를 꿰뚫었습니다. 그제야 비탈 위에서 덕만의 호위가 달려 내려왔습니다."
       - say:
           char: 진운.nervous
-          framing: closeup
+          camera: close
           with:
             - 덕만
           text: "덕만…… 공주…… 알고도……"
       - say:
           char: 덕만.sad
-          framing: closeup
+          camera: close
           with:
             - 진운
           text: "말하지 마세요. 의원을 부를게요. 지금은 숨부터 쉬어요."

@@ -60,7 +60,7 @@ export function resolveCharacterFocusPresentation(
   if (isSpeaker) {
     return {
       brightness: 1,
-      scaleMultiplier: visibleCharacterCount >= 3 ? 1.035 : visibleCharacterCount === 2 ? 1.02 : 1,
+      scaleMultiplier: 1,
       depthClass: 'is-speaker',
     };
   }
