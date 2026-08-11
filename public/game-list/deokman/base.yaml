@@ -16,11 +16,7 @@ assets:
       base: assets/char/deokman-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 2 }
-        closeup: { scale: 2.5, y: 1 }
+      calibration: { scale: 1 }
       emotions:
         sad: assets/char/deokman-sad-silla-v5.webp
         angry: assets/char/deokman-angry-silla-v5.webp
@@ -28,11 +24,7 @@ assets:
       base: assets/char/jinpyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.85, y: -1 }
-        closeup: { scale: 2.35 }
+      calibration: { scale: 1 }
       emotions:
         sad: assets/char/jinpyeong-sad-silla-v5.webp
         weak: assets/char/jinpyeong-weak-silla-v5.webp
@@ -40,11 +32,7 @@ assets:
       base: assets/char/cheonmyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.86 }
-        closeup: { scale: 2.34, y: 1 }
+      calibration: { scale: 1 }
       emotions:
         nervous: assets/char/cheonmyeong-nervous-silla-v5.webp
         sad: assets/char/cheonmyeong-sad-silla-v5.webp
@@ -52,11 +40,7 @@ assets:
       base: assets/char/yushin-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.79, y: -1 }
-        closeup: { scale: 2.25 }
+      calibration: { scale: 1.08, y: -2 }
       emotions:
         sad: assets/char/yushin-sad-silla-v5.webp
         angry: assets/char/yushin-angry-silla-v5.webp
@@ -64,11 +48,7 @@ assets:
       base: assets/char/sowon-silla-v5.webp
       facing: left
       defaultDelivery: neutral
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.85 }
-        closeup: { scale: 2.35, y: 1 }
+      calibration: { scale: 1.09, y: -2 }
       emotions:
         angry: assets/char/sowon-angry-silla-v5.webp
         nervous: assets/char/sowon-nervous-silla-v5.webp
@@ -76,11 +56,7 @@ assets:
       base: assets/char/bidam-silla-v5.webp
       facing: left
       defaultDelivery: whisper
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.79, y: -1 }
-        closeup: { scale: 2.3 }
+      calibration: { scale: 1.07, y: -2 }
       emotions:
         smirk: assets/char/bidam-smirk-silla-v5.webp
         sad: assets/char/bidam-sad-silla-v5.webp
@@ -88,11 +64,7 @@ assets:
       base: assets/char/chilsuk-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.8 }
-        closeup: { scale: 2.25, y: 1 }
+      calibration: { scale: 1 }
       emotions:
         smile: assets/char/chilsuk-smile-silla-v5.webp
         angry: assets/char/chilsuk-angry-silla-v5.webp
@@ -100,11 +72,7 @@ assets:
       base: assets/char/ajin-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.85, y: -1 }
-        closeup: { scale: 2.35 }
+      calibration: { scale: 1.08, y: -2 }
       emotions:
         nervous: assets/char/ajin-nervous-silla-v5.webp
         angry: assets/char/ajin-angry-silla-v5.webp
@@ -112,11 +80,7 @@ assets:
       base: assets/char/jinun-silla-v5.webp
       facing: right
       defaultDelivery: calm
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.8, y: -1 }
-        closeup: { scale: 2.25 }
+      calibration: { scale: 0.99 }
       emotions:
         nervous: assets/char/jinun-nervous-silla-v5.webp
         angry: assets/char/jinun-angry-silla-v5.webp
@@ -124,11 +88,7 @@ assets:
       base: assets/char/wolmyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.85 }
-        closeup: { scale: 2.35, y: 1 }
+      calibration: { scale: 1 }
       emotions:
         sad: assets/char/wolmyeong-sad-silla-v5.webp
         warning: assets/char/wolmyeong-warning-silla-v5.webp

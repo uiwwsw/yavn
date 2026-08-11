@@ -4,6 +4,7 @@ import { resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { waitForImageReady, waitForVisibleStaticImages } from './imageReady';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
+import { resolveCharacterCalibration, resolveStageCameraState } from './stageCamera';
 import { useVNStore } from './store';
 import {
   parseBaseYaml,
@@ -23,6 +24,7 @@ import {
   type InlineSpeedSegment,
 } from './typing';
 import type {
+  CameraDirective,
   CharacterSlot,
   ConditionNode,
   GameData,
@@ -878,6 +880,7 @@ function buildCharacterSlot(
 ): CharacterSlot {
   const source = resolveAsset(baseUrl, basePath);
   const resolvedFraming = resolveCharacterFraming(character, framing);
+  const calibration = resolveCharacterCalibration(character.calibration);
   if (isJsonAsset(basePath) || isJsonAsset(source)) {
     return {
       id,
@@ -886,6 +889,7 @@ function buildCharacterSlot(
       emotion,
       facing: character.facing,
       framing: resolvedFraming,
+      calibration,
     };
   }
   return {
@@ -895,6 +899,7 @@ function buildCharacterSlot(
     emotion,
     facing: character.facing,
     framing: resolvedFraming,
+    calibration,
   };
 }
 
@@ -1302,6 +1307,14 @@ function syncCharacterFraming(game: GameData, characterId: string | undefined, f
       framing: resolveCharacterFraming(charDef, framing),
     });
   }
+}
+
+function applyCameraDirective(camera: CameraDirective | undefined, speakerId?: string) {
+  if (!camera) {
+    return;
+  }
+  const fallbackSpeakerId = speakerId ?? useVNStore.getState().dialog.speakerId;
+  useVNStore.getState().setCamera(resolveStageCameraState(camera, fallbackSpeakerId));
 }
 
 function getVisibleCharacterEmotion(characterId?: string): string | undefined {
@@ -2417,6 +2430,11 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       actionIndex += 1;
       continue;
     }
+    if ('camera' in action) {
+      applyCameraDirective(action.camera);
+      actionIndex += 1;
+      continue;
+    }
     if ('sticker' in action) {
       const path = game.assets.backgrounds[action.sticker.image];
       cancelStickerClearTimer(action.sticker.id);
@@ -2477,6 +2495,12 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       continue;
     }
     if ('choice' in action) {
+      const presentation = resolveSayPresentation(
+        action.choice.char,
+        action.choice.with,
+        getStagedCharacterIds(),
+      );
+      applyCameraDirective(action.choice.camera, presentation.speakerId);
       const history = historyByCursor.get(`${sceneId}:${actionIndex}`);
       if (history?.kind === 'choice') {
         const selected = action.choice.options.find((option) => option.text === history.value);
@@ -2523,6 +2547,12 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       continue;
     }
     if ('input' in action) {
+      const presentation = resolveSayPresentation(
+        action.input.char,
+        action.input.with,
+        getStagedCharacterIds(),
+      );
+      applyCameraDirective(action.input.camera, presentation.speakerId);
       const history = historyByCursor.get(`${sceneId}:${actionIndex}`);
       if (history?.kind === 'input') {
         if (action.input.saveAs) {
@@ -2567,6 +2597,7 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, chapter.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.say.framing);
+      applyCameraDirective(action.say.camera, presentation.speakerId);
       actionIndex += 1;
       continue;
     }
@@ -2935,6 +2966,13 @@ function runToNextPause(loopGuard = 0) {
     return;
   }
 
+  if ('camera' in action) {
+    applyCameraDirective(action.camera);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
   if ('char' in action) {
     const charDef = game.assets.characters[action.char.id];
     const assetPath = action.char.emotion
@@ -3041,6 +3079,7 @@ function runToNextPause(loopGuard = 0) {
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.choice.framing);
     }
+    applyCameraDirective(action.choice.camera, presentation.speakerId);
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
@@ -3141,6 +3180,7 @@ function runToNextPause(loopGuard = 0) {
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.input.framing);
     }
+    applyCameraDirective(action.input.camera, presentation.speakerId);
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
@@ -3184,6 +3224,7 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
     syncCharacterFraming(game, presentation.speakerId, action.say.framing);
+    applyCameraDirective(action.say.camera, presentation.speakerId);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',

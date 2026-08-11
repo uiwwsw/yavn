@@ -119,6 +119,85 @@ scenes:
     ]);
   });
 
+  it('accepts character calibration and shared stage-camera shots', () => {
+    const config = parseConfigYaml(configYaml('  image: assets/title.png'), 'config.yaml');
+    const base = parseBaseYaml(
+      `
+assets:
+  characters:
+    Deokman:
+      base: assets/deokman.webp
+      calibration: { scale: 1.08, x: 1, y: -3 }
+`,
+      'base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: confrontation
+scenes:
+  confrontation:
+    actions:
+      - camera: wide
+      - say:
+          char: Deokman
+          camera: medium
+          text: "Stay where you are."
+      - camera:
+          shot: reaction
+          target: Deokman
+          transition: pan
+          duration: 460
+`,
+      '0.yaml',
+    );
+
+    expect(base.data?.data.assets?.characters?.Deokman?.calibration).toEqual({
+      scale: 1.08,
+      x: 1,
+      y: -3,
+    });
+    expect(chapter.data?.data.scenes.confrontation.actions).toMatchObject([
+      { camera: { shot: 'wide' } },
+      { say: { camera: { shot: 'medium' } } },
+      { camera: { shot: 'reaction', target: 'Deokman', transition: 'pan', duration: 460 } },
+    ]);
+    expect(config.data).toBeDefined();
+    expect(base.data).toBeDefined();
+    expect(chapter.data).toBeDefined();
+    if (!config.data || !base.data || !chapter.data) return;
+    expect(resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data }).error)
+      .toBeUndefined();
+  });
+
+  it('rejects an unknown explicit camera target', () => {
+    const config = parseConfigYaml(configYaml('  image: assets/title.png'), 'config.yaml');
+    const base = parseBaseYaml(
+      `
+assets:
+  characters:
+    Deokman:
+      base: assets/deokman.webp
+`,
+      'base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: confrontation
+scenes:
+  confrontation:
+    actions:
+      - camera: { shot: close, target: Missing }
+`,
+      '0.yaml',
+    );
+
+    if (!config.data || !base.data || !chapter.data) return;
+    const resolved = resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data });
+    expect(resolved.error?.message).toContain("missing camera target 'Missing'");
+  });
+
   it('rejects a default framing that is not declared on the character', () => {
     const parsed = parseBaseYaml(
       `

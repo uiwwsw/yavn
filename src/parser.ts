@@ -1,7 +1,7 @@
 import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
 import { baseLayerSchema, chapterSchema, configSchema, gameSchema } from './schema';
-import type { ConditionNode, GameData, RouteVarValue, VNError } from './types';
+import type { CameraDirective, ConditionNode, GameData, RouteVarValue, VNError } from './types';
 
 type ConfigYamlData = {
   title: string;
@@ -436,6 +436,7 @@ function canonicalizeLayerAssets(
       ...(charDef.defaultDelivery ? { defaultDelivery: charDef.defaultDelivery } : {}),
       ...(charDef.defaultFraming ? { defaultFraming: charDef.defaultFraming } : {}),
       ...(Object.keys(framings).length > 0 ? { framings } : {}),
+      ...(charDef.calibration ? { calibration: { ...charDef.calibration } } : {}),
     };
   }
 
@@ -947,6 +948,22 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       return undefined;
     };
 
+    const validateCameraDirective = (
+      sceneId: string,
+      fieldLabel: string,
+      camera: CameraDirective | undefined,
+    ): VNError | undefined => {
+      if (!camera?.target || camera.target === 'group' || camera.target === 'speaker') {
+        return undefined;
+      }
+      if (!data.assets.characters[camera.target]) {
+        return {
+          message: `scene '${sceneId}' uses missing camera target '${camera.target}' in ${fieldLabel}`,
+        };
+      }
+      return undefined;
+    };
+
     if (data.defaultEnding && !data.endings?.[data.defaultEnding]) {
       return {
         error: {
@@ -1007,6 +1024,12 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
+        if ('camera' in action) {
+          const error = validateCameraDirective(sceneId, 'camera.target', action.camera);
+          if (error) {
+            return { error };
+          }
+        }
         if ('char' in action) {
           const charDef = data.assets.characters[action.char.id];
           if (!charDef) {
@@ -1057,6 +1080,10 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
           if (framingError) {
             return { error: framingError };
           }
+          const cameraError = validateCameraDirective(sceneId, 'say.camera.target', action.say.camera);
+          if (cameraError) {
+            return { error: cameraError };
+          }
         }
 
         if ('choice' in action && action.choice.char) {
@@ -1083,6 +1110,10 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
           if (framingError) {
             return { error: framingError };
           }
+          const cameraError = validateCameraDirective(sceneId, 'choice.camera.target', action.choice.camera);
+          if (cameraError) {
+            return { error: cameraError };
+          }
         }
 
         if ('input' in action && action.input.char) {
@@ -1108,6 +1139,10 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
           );
           if (framingError) {
             return { error: framingError };
+          }
+          const cameraError = validateCameraDirective(sceneId, 'input.camera.target', action.input.camera);
+          if (cameraError) {
+            return { error: cameraError };
           }
         }
 
