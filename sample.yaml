@@ -23,6 +23,7 @@
 #   characters:
 #     detective:
 #       base: assets/char/detective.webp
+#       facing: left # 원본 시선. 좌우 배치에서는 상대를 향하도록 자동 반전
 #       defaultDelivery: deduction # 평상시 리듬, say.delivery/표정이 우선
 #       defaultFraming: full
 #       framings: # 같은 원본을 캐릭터별 전신/상체/클로즈업으로 보정

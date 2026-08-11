@@ -884,6 +884,7 @@ function buildCharacterSlot(
       kind: 'live2d',
       source,
       emotion,
+      facing: character.facing,
       framing: resolvedFraming,
     };
   }
@@ -892,6 +893,7 @@ function buildCharacterSlot(
     kind: 'image',
     source,
     emotion,
+    facing: character.facing,
     framing: resolvedFraming,
   };
 }

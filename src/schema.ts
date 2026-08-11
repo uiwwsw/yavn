@@ -318,6 +318,7 @@ const characterAssetsSchema = z.record(
   z.object({
     base: z.string(),
     emotions: z.record(z.string()).optional(),
+    facing: z.enum(['left', 'right', 'front']).optional(),
     defaultDelivery: dialogueDeliverySchema.optional(),
     defaultFraming: z.string().min(1).optional(),
     framings: z.record(characterFramingPresetSchema).optional(),

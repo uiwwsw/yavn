@@ -43,7 +43,11 @@ import {
   updateVideoSkipProgress,
 } from './engine';
 import type { SaveSlotKind, SaveSlotSummary } from './engine';
-import { buildImageCharacterRenderKey, resolveCharacterStageLayout } from './characterLayout';
+import {
+  buildImageCharacterRenderKey,
+  resolveCharacterFacingScale,
+  resolveCharacterStageLayout,
+} from './characterLayout';
 import type { CharacterStageLayout } from './characterLayout';
 import {
   buildLauncherDemoHash,
@@ -2115,9 +2119,11 @@ export default function App() {
     const depthClass = !hasFocusedSpeaker ? 'is-neutral' : isSpeaker ? 'is-speaker' : 'is-listener';
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
+    const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
     const charStyle = {
       zIndex,
       '--char-scale': depthScale * slot.framing.scale,
+      '--char-facing-scale-x': facingScale,
       '--char-brightness': depthBrightness,
       '--char-framing-x': `${slot.framing.x}%`,
       '--char-framing-y': `${slot.framing.y}%`,

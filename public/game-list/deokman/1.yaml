@@ -532,7 +532,8 @@ scenes:
       - set:
           clue_marriage_pact: true
       - say:
-          text: "덕만은 결백을 되찾았습니다. 그러나 바로 다음 날, 세 가문의 청혼서가 동시에 왕에게 올라왔습니다."
+          delivery: calm
+          text: "다음 날 새벽, 왕좌전에서 ‘암살 용의’ 목패가 내려갔습니다. 비어 있던 못 세 개에는 서로 다른 가문의 혼서가 나란히 걸렸고, 세 문서 모두 덕만의 이름 위를 붉은 혼인끈으로 묶고 있었습니다."
 
   go_07_guard_revolt:
     actions:
