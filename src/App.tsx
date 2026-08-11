@@ -1605,6 +1605,7 @@ export default function App() {
     '--stage-camera-pan-x': cameraPresentation.panX,
     '--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX,
     '--stage-camera-pan-y': cameraPresentation.panY,
+    '--stage-camera-pan-y-mobile': cameraPresentation.mobilePanY,
     '--stage-camera-duration': `${cameraPresentation.duration}ms`,
   } as CSSProperties;
   useLayoutEffect(() => {

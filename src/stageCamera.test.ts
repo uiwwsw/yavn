@@ -71,6 +71,29 @@ describe('stage camera', () => {
     });
   });
 
+  it('keeps mobile solo shots anchored to the top so the actor head stays visible', () => {
+    const soloLayout: CharacterStageLayout = {
+      mode: 'default',
+      duoSideByPosition: {},
+      characterIdByPosition: { center: '덕만' },
+    };
+    const close = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close' }, '덕만'),
+      1,
+      'center',
+      soloLayout,
+    );
+    const medium = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'medium' }),
+      1,
+      undefined,
+      soloLayout,
+    );
+
+    expect(close).toMatchObject({ scale: 2.15, originY: 0, panY: '0px', mobilePanY: '4cqh' });
+    expect(medium).toMatchObject({ scale: 1.72, originY: 0, panY: '0px', mobilePanY: '4cqh' });
+  });
+
   it('keeps asset calibration separate from camera shot scale', () => {
     expect(resolveCharacterCalibration(undefined)).toEqual({ scale: 1, x: 0, y: 0, spacing: 1 });
     expect(resolveCharacterCalibration({ scale: 1.08, y: -3, spacing: 0.92 })).toEqual({

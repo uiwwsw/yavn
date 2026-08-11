@@ -38,6 +38,7 @@ export type StageCameraPresentation = {
   panX: string;
   mobilePanX: string;
   panY: string;
+  mobilePanY: string;
   duration: number;
   transition: CameraTransition;
 };
@@ -103,13 +104,15 @@ export function resolveStageCameraPresentation(
   const mobilePanX = hasCharacterTarget
     ? resolveMobileCameraPan(targetPosition, layout)
     : '0px';
+  const mobileSoloHeadroom = camera.shot !== 'wide' && visibleCharacterCount <= 1;
 
   return {
     scale: resolveShotScale(camera.shot, visibleCharacterCount),
-    originY: camera.shot === 'wide' ? 50 : 23,
+    originY: camera.shot === 'wide' ? 50 : visibleCharacterCount <= 1 ? 0 : 23,
     panX,
     mobilePanX,
     panY: '0px',
+    mobilePanY: mobileSoloHeadroom ? '4cqh' : '0px',
     duration: camera.duration,
     transition: camera.transition,
   };
