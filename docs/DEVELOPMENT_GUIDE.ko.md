@@ -411,7 +411,7 @@ scenes:
 - 각 캐러셀 슬라이드는 `layout/paint` 경계를 별도로 갖고 이미지·텍스트를 슬라이드 내부에서 클리핑합니다. 제목·요약·태그·게임 카드의 긴 문자열은 컨테이너 폭 안에서 줄바꿈되며, 좁은 화면의 태그 행만 내부 가로 스크롤을 허용합니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 - 시작 화면은 배경 카메라 인, 비네트·테마 프레임, 타이틀/액션 순차 등장 연출을 기본 적용합니다. 실행 버튼을 누르면 `aria-busy`와 진행 중 라벨을 함께 노출해 중복 입력을 막고, `prefers-reduced-motion`에서는 모든 장식 모션을 정지합니다.
-- `/game-list/:gameId` 직접 진입과 Start Gate 실행 직후에는 게임 설정·본편 로딩이 끝날 때까지 비대화형 부트 화면을 유지합니다. 초기 런처·빈 HUD 렌더를 차단합니다. 시작·이어하기 버튼은 `useLayoutEffect`에서 개별 Web Animation으로 페이드·상승하지만 CSS fallback은 `opacity: 1`이며, 미지원·예외·정지 시 fail-safe가 애니메이션을 취소해 기본 가시 상태로 복구합니다.
+- `/game-list/:gameId` 직접 진입과 Start Gate 실행 직후에는 게임 설정·본편 로딩이 끝날 때까지 비대화형 부트 화면을 유지합니다. 초기 런처·빈 HUD 렌더를 차단합니다. 시작·이어하기 버튼은 `useLayoutEffect`에서 최종 `getBoundingClientRect()`와 뷰포트 높이를 측정한 뒤 화면 아래 바깥에서 Y축으로 미끄러져 올라오며 opacity가 차오릅니다. CSS fallback은 `opacity: 1`이고, 미지원·예외·정지 시 fail-safe가 애니메이션을 취소해 기본 가시 상태로 복구합니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
 - 배포 빌드에서는 같은 `config.yaml.seo`가 게임별 정적 HTML에도 반영됩니다. 런타임 갱신은 SPA 내부 상태 전환을 담당하고, 최초 HTTP 응답의 메타는 빌드 산출물이 담당합니다.
 - `config.yaml.endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 커스텀할 수 있습니다.
@@ -696,6 +696,7 @@ scenes:
 - 우선순위는 `say.delivery` 명시값 -> `say.char`의 표정 -> 현재 표시 중인 화자의 표정 -> 캐릭터 `defaultDelivery` -> `neutral`입니다.
 - 기본 자동 연결은 `serious/think -> deduction`, `angry -> angry`, `nervous/worried/scared -> nervous`, `surprised -> shout`, `proud/calm -> calm`입니다.
 - 쉼표, 마침표, 물음표, 느낌표, 말줄임표, 줄바꿈 뒤에 감정별 정지가 자동 추가됩니다.
+- `angry/shout/sad/deduction`의 마지막 입력 글자 색과 잔광은 활성 UI 템플릿 변수를 사용합니다. `paper-stage`는 붉은 인주·먹색·금갈색, 기본 시네마틱은 따뜻한 호박색·불꽃색, `neon-grid`는 청록·자홍 계열이며 밝은 종이 대화창에는 추리 대사 전체의 발광을 깔지 않습니다.
 - `<speed=...>` 구간과 함께 사용하면 해당 CPS에 감정별 속도 배율과 호흡을 추가 적용합니다.
 - 타이핑은 `Intl.Segmenter` 기반 grapheme 단위로 진행해 이모지와 결합 문자를 중간에서 자르지 않습니다.
 - 클릭 즉시 완성(`clickToInstant`)과 `say.autoAdvance` 동작은 기존과 동일합니다.
@@ -909,6 +910,8 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-11: Start Gate CTA를 10px 이동에서 실제 화면 아래 바깥 출발로 바꾸고, 최종 위치·뷰포트 높이로 버튼별 이동 거리를 계산해 Y축 이동과 opacity만으로 부드럽게 올라오도록 정리했습니다. CSS 가시 fallback과 Web Animation fail-safe는 유지하며 DSL 문법 변경은 없습니다.
+- 2026-08-11: `angry/shout/sad/deduction` 타이핑 효과의 고정 색을 UI 템플릿별 변수로 분리했습니다. `paper-stage`는 상시 청색 그림자를 제거하고 붉은 인주·먹색·금갈색 잉크 반응을 사용하며, 기본 시네마틱과 `neon-grid`는 각자의 호박색·불꽃색 및 청록·자홍 분위기를 유지합니다. DSL 문법 변경은 없습니다.
 - 2026-08-11: 직접 게임 URL의 첫 렌더와 Start Gate 실행 직후를 비대화형 부트 화면으로 보호했습니다. CSS에서 버튼을 숨기던 620ms 지연 및 모바일 잔여 animation-name은 제거하고, 첫 페인트 전 실행되는 개별 Web Animation으로 CTA 페이드·상승 연출을 복원했습니다. CSS는 항상 보이는 fallback을 유지하고 미지원·오류·정지 시 fail-safe 취소로 복구하므로 iOS에서도 버튼이 사라진 채 남지 않습니다. DSL 문법 변경은 없습니다.
 - 2026-08-11: 모바일 1인 `medium/close/reaction`을 상단 `0%` 확대 원점과 `4cqh` 안전 헤드룸으로 분리했습니다. 세로를 가득 채우는 전신 에셋도 머리와 장신구를 화면 안에 유지하며, 모바일 2·3인 `23%` 원점과 PC `0%` 원점은 그대로 유지합니다. 덕만 v3.2.2에 적용했습니다.
 - 2026-08-11: `calibration.spacing`과 PC 앙상블 최대 간격을 추가했습니다. 카메라 확대/대상 이동을 고정 원점의 두 합성 레이어로 분리하고, 캐릭터 이동의 `left/width/filter` 전환과 표정 이미지 동기 디코딩을 제거해 전환 프레임 드롭을 줄였습니다. 모바일 2·3분할은 유지합니다. 덕만 v3.2.1은 10명 에셋별 spacing을 적용합니다.
