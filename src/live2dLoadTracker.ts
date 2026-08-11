@@ -1,4 +1,4 @@
-import type { CharacterSlot, Position } from './types';
+import type { CharacterSlot } from './types';
 
 type Live2DLoadStatus = 'ready' | 'error';
 
@@ -26,8 +26,8 @@ export function resetLive2DLoadTracker(): void {
   notifyListeners();
 }
 
-export function buildLive2DLoadKey(position: Position, slot: Pick<CharacterSlot, 'id' | 'source'>): string {
-  return `${position}::${slot.id}::${slot.source}`;
+export function buildLive2DLoadKey(slot: Pick<CharacterSlot, 'id' | 'source'>): string {
+  return `${slot.id}::${slot.source}`;
 }
 
 export function markLive2DLoadReady(key: string): void {

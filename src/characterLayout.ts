@@ -6,9 +6,15 @@ export type VisibleCharacterStageEntry = {
 };
 
 export type CharacterStageLayout = {
-  mode: 'default' | 'duo';
+  mode: 'default' | 'duo' | 'trio';
   duoSideByPosition: Partial<Record<Position, 'left' | 'right'>>;
   characterIdByPosition: Partial<Record<Position, string>>;
+};
+
+export type CharacterFocusPresentation = {
+  brightness: number;
+  scaleMultiplier: number;
+  depthClass: 'is-neutral' | 'is-speaker' | 'is-listener';
 };
 
 const POSITION_ORDER: readonly Position[] = ['left', 'center', 'right'];
@@ -29,8 +35,40 @@ export function resolveDialogueVisibleCharacterIds(
   );
 }
 
-export function buildImageCharacterRenderKey(position: Position, characterId: string): string {
-  return `${position}-${characterId}`;
+export function buildImageCharacterRenderKey(characterId: string): string {
+  return `character-${characterId}`;
+}
+
+export function resolveCharacterFramingScale(
+  framingScale: number,
+  visibleCharacterCount: number,
+): number {
+  const crowdFactor = visibleCharacterCount >= 3 ? 0.62 : visibleCharacterCount === 2 ? 0.82 : 1;
+  return 1 + (framingScale - 1) * crowdFactor;
+}
+
+export function resolveCharacterFocusPresentation(
+  visibleCharacterCount: number,
+  order: number,
+  isSpeaker: boolean,
+  hasFocusedSpeaker: boolean,
+): CharacterFocusPresentation {
+  if (!hasFocusedSpeaker) {
+    return { brightness: 1, scaleMultiplier: 1, depthClass: 'is-neutral' };
+  }
+
+  if (isSpeaker) {
+    return {
+      brightness: 1,
+      scaleMultiplier: visibleCharacterCount >= 3 ? 1.035 : visibleCharacterCount === 2 ? 1.02 : 1,
+      depthClass: 'is-speaker',
+    };
+  }
+
+  const brightness = visibleCharacterCount >= 3
+    ? (order <= 2 ? 0.76 : 0.64)
+    : 0.78;
+  return { brightness, scaleMultiplier: 1, depthClass: 'is-listener' };
 }
 
 export function resolveCharacterFacingScale(
@@ -74,6 +112,16 @@ export function resolveCharacterStageLayout(
         [leftCharacter.position]: leftCharacter.id,
         [rightCharacter.position]: rightCharacter.id,
       },
+    };
+  }
+
+  if (orderedCharacters.length >= 3) {
+    return {
+      mode: 'trio',
+      duoSideByPosition: {},
+      characterIdByPosition: Object.fromEntries(
+        orderedCharacters.map((character) => [character.position, character.id]),
+      ),
     };
   }
 
