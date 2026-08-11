@@ -174,11 +174,7 @@ assets:
     conan:
       base: assets/char/conan/base.webp
       facing: left
-      defaultFraming: full
-      framings:
-        full: { scale: 1 }
-        bust: { scale: 1.5, y: -2 }
-        closeup: { scale: 1.9, y: -4 }
+      calibration: { scale: 1.04, y: -1 }
       emotions:
         serious: assets/char/conan/serious.webp
   music:
@@ -325,22 +321,24 @@ scenes:
 - 배경(`.bg`)과 시스템 로딩/엔딩 오버레이는 전체 뷰포트를 유지합니다.
 - 실제 플레이 UI는 `.stage-content-frame` 안에서 렌더링합니다. 프레임 높이는 `min(100%, 100vw × 16 / 9)`이고 세로 중앙 정렬되므로, `9:16`보다 긴 화면에서만 위아래 여백이 생기며 일반 모바일·가로 화면의 기존 구도는 바뀌지 않습니다.
 - 프레임에는 캐릭터·스티커·HUD·다이얼로그·선택/입력·컷신·CASE FILE이 함께 들어가므로 서로 다른 좌표계를 사용해 벌어지지 않습니다.
-- 캐릭터 레이어(`.char-layer`)의 하단 경계는 중앙 프레임 안의 다이얼로그 박스 상단 위치와 동일하게 맞춥니다.
+- 캐릭터 레이어(`.char-layer`)의 하단 경계는 중앙 프레임 안의 다이얼로그 박스 상단 위치와 동일하게 맞추고, 그 경계에서 내용을 잘라 하체가 반투명 대화창 뒤에 우연히 가려진 것처럼 보이지 않게 합니다.
 - 캐릭터는 레이어 하단(`bottom: 0`) 기준으로 배치되어, 대화창 위에 떠 보이지 않도록 고정됩니다.
 - 이미지 캐릭터(`.char-image`)는 `object-position: center bottom`으로 하단 정렬됩니다.
-- 화자 강조는 데스크톱/모바일 공통 규칙으로 동작합니다. 현재 화자는 가장 앞의 z축·원래 밝기와 소폭의 전면 배율을 사용하고, 비화자는 `speakerOrder` 순위에 따라 밝기를 낮춥니다. 3인 장면의 두 청자는 `0.76/0.64` 단계로 분리하며 캐릭터 레이어 `opacity`는 고정(1)으로 유지됩니다.
+- 화자 강조는 데스크톱/모바일 공통 규칙으로 동작합니다. 현재 화자는 가장 앞의 z축·원래 밝기를 사용하고 비화자는 `speakerOrder` 순위에 따라 밝기를 낮추지만, 같은 쇼트 안의 개별 캐릭터 크기는 바꾸지 않습니다. `close`에서는 비대상 인물을 페이드해 잘린 손·하체가 화면 가장자리에 남지 않으며, `reaction`은 듣는 카메라 대상을 전면에 둡니다.
 - 실제 노출 캐릭터가 정확히 두 명이면 `.char-layout-duo`가 자동 적용되어 두 인물을 화면 25%/75% 지점에 배치합니다. 좌우는 `left -> center -> right` 슬롯 순서를 따르며 화자 변경으로 뒤집히지 않습니다.
 - 2인 중 한 명이 퇴장하면 같은 ID와 슬롯에 남은 인물은 이전 25%/75% 위치와 2인용 너비를 유지합니다. 새 인물로 교체되거나 동일 인물이 다른 슬롯으로 이동하면 이 기억을 상속하지 않습니다.
-- 3인은 `.char-layout-trio`를 사용해 데스크톱 16%/50%/84%, 모바일 15%/50%/85%에 배치합니다. 가장자리 화자는 각각 21%/79%, 모바일 22%/78%로 조금 안쪽에 들어오며 z축과 밝기까지 함께 강조됩니다. 2인/3인 자동 구도는 이미지와 Live2D에 공통 적용되고 별도 DSL 필드는 없습니다.
-- 2·3인 장면은 원본 `framing.scale`의 확대분만 각각 82%·62%로 완화합니다. 전신 배율 `1`은 그대로 유지하므로 인물이 떠 보이지 않고, 상체·클로즈업만 군중 수에 맞춰 과도한 겹침을 줄입니다.
+- 3인은 `.char-layout-trio`를 사용해 wide 기준 데스크톱 16%/50%/84%, 모바일 15%/50%/85%에 배치합니다. `medium` 그룹 확대에서는 얼굴 잘림을 막기 위해 PC 22%/50%/78%, 모바일 20%/50%/80%로 가장자리를 함께 안쪽으로 재구성합니다.
+- 모든 캐릭터는 `.char-camera-world` 안에 유지됩니다. `medium`은 보이는 전원을 함께 확대하고, `close/reaction`은 같은 무대를 확대하면서 대상 인물 쪽으로 이동합니다. 캐릭터 개별 확대는 카메라 강조에 사용하지 않습니다.
+- 데스크톱 확대는 캐릭터 원본이 화면 높이를 이미 채우므로 카메라 세로 원점을 상단 `0%`에 두고, 폭 제약으로 인물이 아래에 배치되는 모바일은 `23%` 눈높이 원점을 사용합니다. 따라서 같은 쇼트에서도 얼굴이 화면 위로 잘리지 않습니다.
+- `assets.characters.<id>.calibration(scale/x/y)`은 쇼트와 독립적으로 원본 캔버스의 인물 크기·여백만 정규화합니다. 표정 에셋은 같은 보정값을 공유하므로 감정 교체 때 눈높이가 뛰지 않습니다.
 - 같은 캐릭터 ID를 새 `position`에 배치하면 엔진은 해당 ID가 있던 이전 슬롯을 먼저 제거하고, 캐릭터 ID 기반 렌더 키와 위치 독립 Live2D 로드 키로 기존 인스턴스를 유지합니다. 장면 전환에서 `center -> left`처럼 위치를 바꿔도 동일 인물이 두 슬롯에 남거나 다시 등장하는 애니메이션을 반복하지 않습니다.
 - 같은 `position`의 이미지 캐릭터가 감정 소스만 바꾸면 렌더 키를 유지합니다. 따라서 표정 교체 때 최초 등장 애니메이션이 재실행되지 않으며, 이미지 박스는 고정 반응형 폭을 사용해 원본 종횡비 차이로 좌우 기준점이 흔들리지 않습니다.
 - 같은 캐릭터의 `framing`만 바꾸면 이미지/Live2D 슬롯과 원본 소스를 재사용한 채 등록된 `scale/x/y`를 적용합니다. 감정 이미지 교체와 저장 복원에서도 현재 구도 이름을 유지합니다.
 - 캐릭터 원본에 `facing: left|right|front`를 선언하면 좌우 슬롯과 2인 자동 분할의 실제 화면 절반을 기준으로 서로를 바라보게 수평 반전합니다. 단독 중앙 컷은 원본 시선을 유지하고, `front` 또는 미지정 원본은 반전하지 않습니다.
-- 구도 배율은 화자 depth 배율과 곱해지며, 구도 `x/y`는 슬롯 오프셋과 합성됩니다. 동일 인물의 슬롯 앵커(`left`)는 360ms, 프레이밍 오프셋(`translate`)과 반응형 너비는 320ms, 구도 배율(`scale`)은 260ms 시네마틱 이징으로 전환합니다.
+- 동일 인물의 슬롯 앵커(`left`)는 360ms, 원본 보정/레거시 프레이밍 오프셋(`translate`)과 반응형 너비는 320ms로 전환합니다. 카메라는 `push` 기본 520ms, `pan` 기본 380ms이며 `cut`은 즉시 바뀝니다.
 - 캐릭터가 처음 노출될 때만 공통 `characterEnter`가 현재 배치 위치에서 `10px` 올라오는 페이드를 실행합니다. 같은 ID의 위치·표정·구도 변경은 같은 렌더 키를 사용하므로 등장 애니메이션을 다시 실행하지 않습니다.
 - 시선 반전은 독립 `transform: scaleX(...)`에 두고 `transition` 목록에서 제외합니다. 따라서 위치는 부드럽게 이동해도 좌우 플립은 중간에 폭이 0이 되는 왜곡 없이 즉시 바뀝니다. `prefers-reduced-motion` 환경에서는 캐릭터 애니메이션과 이동 전환을 모두 끕니다.
-- 모바일 전용 화자 확대(`order===1`일 때만 scale 1, 나머지 0.7) 규칙은 제거되었습니다.
+- 화자만 확대하던 모바일/다인 depth 배율은 제거되었습니다. 화자와 청자는 밝기·z축으로 분리하고 크기 변화는 무대 카메라만 담당합니다.
 - 다이얼로그가 수동 숨김 상태면 레이어 하단 inset을 `0`으로 강제해 캐릭터/스티커가 중앙 플레이 프레임 전체를 사용하고, 복원 시 프레임 기준 inset 계산을 즉시 재개합니다.
 
 ## 8-6) 선택/입력 게이트 키보드 동작
@@ -542,9 +540,11 @@ scenes:
 
 - `choice.char` (optional): 주 캐릭터 참조 (`캐릭터ID` 또는 `캐릭터ID.표정`)
 - `choice.with` (optional): 함께 노출할 보조 캐릭터 참조 배열
+- `choice.camera` (optional): 해당 선택 장면의 무대 카메라 쇼트/대상
 - `choice.framing` (optional): 주 캐릭터의 등록된 구도 프리셋 이름
 - `input.char` (optional): 주 캐릭터 참조 (`캐릭터ID` 또는 `캐릭터ID.표정`)
 - `input.with` (optional): 함께 노출할 보조 캐릭터 참조 배열
+- `input.camera` (optional): 해당 입력 장면의 무대 카메라 쇼트/대상
 - `input.framing` (optional): 주 캐릭터의 등록된 구도 프리셋 이름
 
 실행 규칙:
@@ -553,12 +553,71 @@ scenes:
 - `with`를 명시하면 화자와 목록에 적은 인물로 화면을 좁힙니다. `with: []`는 화자 단독 컷이고, 화자가 없으면 빈 무대입니다.
 - `char` 배치는 해당 scene에서 사용할 수 있는 배우를 올리는 동작이지, 모든 대사에서 물리적으로 같은 장소에 있다는 선언이 아닙니다. 숨기·엿듣기·문 안팎·원거리 장면은 `with`를 생략하지 말고 각 숏에 실제로 보이는 인물만 명시합니다.
 - 권장 공간 연출은 `숨은 인물 단독 → 대화 상대 2인 → 숨은 인물 반응 → 발각 뒤 전원`, `문밖 인물 단독 ↔ 문 안 인물 단독`, `원거리 양쪽 단독 → 접근 뒤 2인` 순서입니다. 내레이션도 `with`를 사용할 수 있으므로 보이지 않는 목소리와 빈 환경 컷을 분리할 수 있습니다.
+- `camera`가 있으면 캐릭터 노출을 바꾸지 않고 무대 전체의 쇼트와 대상만 변경합니다.
 - `framing`이 있으면 `char`의 현재 구도도 함께 변경합니다. `framing`만 단독 선언할 수는 없습니다.
 - `char`를 생략하면 대사 화자만 없고 현재 무대 앙상블은 유지합니다.
 
-### 9-3-1) 한 원본 이미지의 캐릭터 구도 프리셋
+### 9-3-1) 장면 단위 무대 카메라
 
-캐릭터마다 원본의 여백과 인물 비율이 다르므로, `assets.characters.<id>.framings`에 전신·상체·클로즈업 보정값을 따로 저장합니다.
+새 작품은 캐릭터마다 `bust/closeup` 배율을 주지 않고 `camera`로 보이는 인물 전체를 촬영합니다. `camera`는 독립 액션과 `say/choice/input` 내부에 모두 선언할 수 있습니다.
+
+```yaml
+assets:
+  characters:
+    deokman:
+      base: assets/char/deokman.webp
+      facing: left
+      calibration: { scale: 1.06, x: 0, y: -2 }
+    king:
+      base: assets/char/king.webp
+      facing: right
+      calibration: { scale: 1 }
+
+scenes:
+  audience:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - char: { id: deokman, position: left }
+      - char: { id: king, position: right }
+      - say:
+          char: deokman
+          with: [king]
+          camera: medium
+          text: "전하께 드릴 말씀이 있습니다."
+      - camera:
+          shot: reaction
+          target: king
+          transition: pan
+          duration: 460
+      - say:
+          char: king
+          with: [deokman]
+          camera: close
+          text: "계속 말해 보아라."
+```
+
+필드와 범위:
+- 문자열 축약: `camera: wide | medium | close | reaction`
+- 객체형 `shot` (required): `wide | medium | close | reaction`
+- 객체형 `target` (optional): `group | speaker | 캐릭터ID`. 명시 ID는 등록 캐릭터 참조 검증을 받음
+- 객체형 `transition` (optional): `cut | push | pan`
+- 객체형 `duration` (optional): `0..3000ms`. `cut`은 항상 0ms
+- `assets.characters.<id>.calibration.scale` (optional): `0.5..2`, 기본 `1`
+- `assets.characters.<id>.calibration.x/y` (optional): `-30..30`, 기본 `0`
+
+기본 동작:
+- `wide`: `target: group`, `transition: cut`, `duration: 0`
+- `medium`: `target: group`, `transition: push`, `duration: 520`
+- `close`: 현재 액션 화자, `transition: push`, `duration: 520`
+- `reaction`: 현재 액션 화자 또는 명시 대상, `transition: pan`, `duration: 380`
+- 카메라 상태는 다음 지시까지 유지되며 저장 복원 시 현재 커서까지 액션을 재생해 동일 상태로 돌아옵니다.
+- `medium`은 인물 수에 따라 안전 배율을 사용하되 모든 인물에 동일한 월드 변환을 적용합니다. `close/reaction`은 개별 인물을 키우는 대신 월드의 원점과 이동량을 대상 슬롯에 맞춥니다.
+- `prefers-reduced-motion`에서는 카메라와 캐릭터 위치 전환을 즉시 적용합니다.
+
+### 9-3-2) 레거시 캐릭터 구도 프리셋
+
+기존 게임 호환을 위해 `assets.characters.<id>.framings`와 액션별 `framing`도 계속 지원합니다. 새 작품의 쇼트 연출에는 위 장면 카메라를 권장합니다.
 
 ```yaml
 assets:
@@ -783,6 +842,7 @@ scenes:
 - `script`에 등장한 scene이 `scenes`에 존재하는지
 - `goto` 대상(scene)이 존재하는지
 - `bg/sticker/music/sound/char`가 `assets`에 선언되어 있는지
+- 명시 `camera.target` 캐릭터가 `assets.characters`에 존재하는지와 카메라/보정값 범위가 유효한지
 - `defaultFraming`과 `char/say/choice/input.framing`이 해당 캐릭터의 `framings`에 선언되어 있는지, 화자 없이 구도만 선언하지 않았는지
 - `set/add/input.saveAs` 변수가 `state`에 선언되어 있는지
 - `branch/endingRules`의 `when.var`가 `state` 변수 또는 `inventory` 아이템 키인지
@@ -846,6 +906,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-11: 장면 단위 `camera` DSL(`wide/medium/close/reaction`, `target`, `cut/push/pan`, `duration`)과 캐릭터 원본 정렬용 `calibration(scale/x/y)`을 추가했습니다. 보이는 인물 전체를 하나의 `.char-camera-world`에서 확대·이동하고 PC/모바일 눈높이 원점과 3인 medium 앵커를 분리합니다. 덕만 v3.2.0은 10명 원본 보정, 679개 화자 대사·24개 선택의 카메라 쇼트, 66개 배경 전환 wide 설정으로 전환했으며 기존 `framing`은 하위 호환으로 유지합니다.
 - 2026-08-11: PC·모바일 캐릭터 조합을 1인/2인/3인으로 분리했습니다. 3인 전용 앵커·군중 프레이밍 보정·화자 안쪽 이동·청자 2단계 밝기를 추가하고, 동일 ID의 위치 변경은 DOM/Live2D를 유지한 채 부드럽게 이동하도록 개선했습니다. 좌우 플립은 왜곡을 피하려 즉시 전환하며 DSL 문법 변경은 없습니다.
 - 2026-08-11: 높이가 짧은 세로 모바일에서 시스템 저장 카드의 그리드 행이 남은 공간에 압축되어 내부 버튼이 잘리던 문제를 수정했습니다. 카드 행은 내용 높이를 유지하고 카드 목록만 스크롤되며, DSL 문법 변경은 없습니다.
 - 2026-08-11: 세로 모바일에서 기록 보관소가 열리면 `9:16` 플레이 프레임 제한을 일시 해제해 전체 게임 뷰포트로 확장하고, 시스템 탭의 저장 카드만 스크롤하도록 분리했습니다. 배경음악·초기화면 설정과 상태 문구는 하단 고정 행으로 유지해 긴 저장 목록에서도 가려지지 않습니다. DSL 문법 변경은 없습니다.
