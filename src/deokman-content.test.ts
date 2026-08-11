@@ -71,7 +71,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('2.6.0');
+    expect(config.version).toBe('3.0.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 즉위식은 그 뒤에 하겠습니다');
@@ -96,7 +96,7 @@ describe('Deokman complete-game content', () => {
 
     expect(characters.칠숙).toBeDefined();
     expect(characters.국산).toBeUndefined();
-    expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-silla-v4.webp');
+    expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-silla-v5.webp');
     expect(allContent).toContain('칠숙');
     expect(allContent).not.toContain('국산');
     expect(allContent).toContain('이찬 칠숙');
@@ -125,9 +125,9 @@ describe('Deokman complete-game content', () => {
       expect(Number(asRecord(framings.closeup).scale)).toBeGreaterThan(Number(asRecord(framings.bust).scale));
     });
 
-    expect(characterPlacements).toHaveLength(206);
+    expect(characterPlacements).toHaveLength(221);
     characterPlacements.forEach((placement) => expect(placement.framing).toBe('full'));
-    expect(speakerLines).toHaveLength(637);
+    expect(speakerLines).toHaveLength(655);
     speakerLines.forEach((say) => expect(['full', 'bust', 'closeup']).toContain(say.framing));
     expect(new Set(speakerLines.map((say) => say.framing))).toEqual(new Set(['full', 'bust', 'closeup']));
     choices.forEach((choice) => {
@@ -483,15 +483,70 @@ describe('Deokman complete-game content', () => {
     );
 
     expect(Object.keys(characters)).toHaveLength(10);
+    const nativeFacings = new Set<string>();
     Object.entries(characters).forEach(([name, value]) => {
       const character = asRecord(value);
       const emotions = asRecord(character.emotions);
-      expect(String(character.base), name).toMatch(/-silla-v4\.webp$/);
+      expect(String(character.base), name).toMatch(/-silla-v5\.webp$/);
+      expect(['left', 'right', 'front'], name).toContain(character.facing);
+      nativeFacings.add(String(character.facing));
       expect(Object.keys(emotions), name).toHaveLength(2);
       Object.keys(emotions).forEach((emotion) => {
         expect(spokenCharacters.has(`${name}.${emotion}`), `${name}.${emotion}`).toBe(true);
       });
     });
+    expect(nativeFacings).toEqual(new Set(['left', 'right']));
+  });
+
+  it('acts out every alternate ending as a character scene before naming the ending', () => {
+    const finalScenes = asRecord(readYaml('7.yaml').scenes);
+    const alternateEndingIds = [
+      'ending_tyrant',
+      'ending_permitted',
+      'ending_queen_consort',
+      'ending_abdicated',
+      'ending_people',
+      'ending_lonely',
+      'ending_one_step',
+      'ending_vanished',
+      'ending_broken',
+    ];
+
+    alternateEndingIds.forEach((sceneId) => {
+      const actions = Array.isArray(asRecord(finalScenes[sceneId]).actions)
+        ? (asRecord(finalScenes[sceneId]).actions as unknown[]).map(asRecord)
+        : [];
+      const endingIndex = actions.findIndex((action) => typeof action.ending === 'string');
+      const leadIn = actions.slice(0, endingIndex);
+      const says = leadIn.map((action) => asRecord(action.say)).filter((say) => Object.keys(say).length > 0);
+
+      expect(endingIndex, sceneId).toBe(actions.length - 1);
+      expect(says.length, sceneId).toBeGreaterThanOrEqual(3);
+      expect(
+        says.some((say) => typeof say.char === 'string'),
+        sceneId,
+      ).toBe(true);
+    });
+  });
+
+  it('closes chapters with visible objects and actions instead of abstract result summaries', () => {
+    const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+    const abstractTransitions = [
+      '덕만은 아버지의 목숨을 구했지만',
+      '결백을 되찾았지만',
+      '살인 누명을 벗고',
+      '국경에서 사람들을 얻었지만',
+      '덕만과 진운은 처음으로',
+      '이제 자신이 모은',
+    ];
+
+    abstractTransitions.forEach((sentence) => expect(allContent).not.toContain(sentence));
+    expect(readFileSync(`${gameRoot}0.yaml`, 'utf8')).toContain('‘암살 용의’ 네 글자');
+    expect(readFileSync(`${gameRoot}1.yaml`, 'utf8')).toContain('덕만의 이름 위를 붉은 혼인끈으로 묶고');
+    expect(readFileSync(`${gameRoot}3.yaml`, 'utf8')).toContain('국경 지휘관 패를 걸었습니다');
+    expect(readFileSync(`${gameRoot}4.yaml`, 'utf8')).toContain('빈 그릇과 보급창 열쇠');
+    expect(readFileSync(`${gameRoot}5.yaml`, 'utf8')).toContain('함께 쓴 암살 조사 요구서');
+    expect(readFileSync(`${gameRoot}6.yaml`, 'utf8')).toContain('첫날의 청원이 접혀 있었습니다');
   });
 
   it('keeps every crisis choice compact enough to scan without breaking the drama', () => {
@@ -610,20 +665,21 @@ describe('Deokman complete-game content', () => {
     expect(new Set(backgrounds).size).toBeGreaterThanOrEqual(10);
     expect(characters).toHaveLength(10);
     characters.forEach((character) => {
-      expect(String(character.base)).toMatch(/-silla-v4\.webp$/);
+      expect(String(character.base)).toMatch(/-silla-v5\.webp$/);
+      expect(String(character.facing)).toMatch(/^(left|right|front)$/);
       expect(String(character.defaultDelivery)).toMatch(
         /^(neutral|calm|nervous|angry|whisper|shout|sad|deduction)$/,
       );
     });
     expect(asRecord(characters.find((character) => String(character.base).includes('deokman'))?.emotions))
       .toEqual({
-        sad: 'assets/char/deokman-sad-silla-v4.webp',
-        angry: 'assets/char/deokman-angry-silla-v4.webp',
+        sad: 'assets/char/deokman-sad-silla-v5.webp',
+        angry: 'assets/char/deokman-angry-silla-v5.webp',
       });
     expect(asRecord(characters.find((character) => String(character.base).includes('cheonmyeong'))?.emotions))
       .toEqual({
-        nervous: 'assets/char/cheonmyeong-nervous-silla-v4.webp',
-        sad: 'assets/char/cheonmyeong-sad-silla-v4.webp',
+        nervous: 'assets/char/cheonmyeong-nervous-silla-v5.webp',
+        sad: 'assets/char/cheonmyeong-sad-silla-v5.webp',
       });
     expect(new Set(characters.flatMap((character) => [character.base, ...Object.values(asRecord(character.emotions))])).size)
       .toBe(30);
