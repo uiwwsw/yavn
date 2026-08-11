@@ -411,7 +411,7 @@ scenes:
 - 각 캐러셀 슬라이드는 `layout/paint` 경계를 별도로 갖고 이미지·텍스트를 슬라이드 내부에서 클리핑합니다. 제목·요약·태그·게임 카드의 긴 문자열은 컨테이너 폭 안에서 줄바꿈되며, 좁은 화면의 태그 행만 내부 가로 스크롤을 허용합니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
 - 시작 화면은 배경 카메라 인, 비네트·테마 프레임, 타이틀/액션 순차 등장 연출을 기본 적용합니다. 실행 버튼을 누르면 `aria-busy`와 진행 중 라벨을 함께 노출해 중복 입력을 막고, `prefers-reduced-motion`에서는 모든 장식 모션을 정지합니다.
-- `/game-list/:gameId` 직접 진입과 Start Gate 실행 직후에는 게임 설정·본편 로딩이 끝날 때까지 비대화형 부트 화면을 유지합니다. 초기 런처·빈 HUD 렌더를 차단하고, 시작 버튼은 타이틀·프레임 입장 애니메이션과 분리해 Start Gate가 렌더되는 첫 순간부터 `opacity: 1`을 유지합니다.
+- `/game-list/:gameId` 직접 진입과 Start Gate 실행 직후에는 게임 설정·본편 로딩이 끝날 때까지 비대화형 부트 화면을 유지합니다. 초기 런처·빈 HUD 렌더를 차단합니다. 시작·이어하기 버튼은 `useLayoutEffect`에서 개별 Web Animation으로 페이드·상승하지만 CSS fallback은 `opacity: 1`이며, 미지원·예외·정지 시 fail-safe가 애니메이션을 취소해 기본 가시 상태로 복구합니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
 - 배포 빌드에서는 같은 `config.yaml.seo`가 게임별 정적 HTML에도 반영됩니다. 런타임 갱신은 SPA 내부 상태 전환을 담당하고, 최초 HTTP 응답의 메타는 빌드 산출물이 담당합니다.
 - `config.yaml.endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 커스텀할 수 있습니다.
@@ -909,7 +909,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
-- 2026-08-11: 직접 게임 URL의 첫 렌더와 Start Gate 실행 직후를 비대화형 부트 화면으로 보호했습니다. 버튼의 620ms 지연 애니메이션과 모바일 잔여 animation-name을 제거해 Start Gate 첫 렌더부터 CTA를 항상 표시하고, iOS에서 버튼이 `opacity: 0`에 남는 회귀를 차단했습니다. DSL 문법 변경은 없습니다.
+- 2026-08-11: 직접 게임 URL의 첫 렌더와 Start Gate 실행 직후를 비대화형 부트 화면으로 보호했습니다. CSS에서 버튼을 숨기던 620ms 지연 및 모바일 잔여 animation-name은 제거하고, 첫 페인트 전 실행되는 개별 Web Animation으로 CTA 페이드·상승 연출을 복원했습니다. CSS는 항상 보이는 fallback을 유지하고 미지원·오류·정지 시 fail-safe 취소로 복구하므로 iOS에서도 버튼이 사라진 채 남지 않습니다. DSL 문법 변경은 없습니다.
 - 2026-08-11: 모바일 1인 `medium/close/reaction`을 상단 `0%` 확대 원점과 `4cqh` 안전 헤드룸으로 분리했습니다. 세로를 가득 채우는 전신 에셋도 머리와 장신구를 화면 안에 유지하며, 모바일 2·3인 `23%` 원점과 PC `0%` 원점은 그대로 유지합니다. 덕만 v3.2.2에 적용했습니다.
 - 2026-08-11: `calibration.spacing`과 PC 앙상블 최대 간격을 추가했습니다. 카메라 확대/대상 이동을 고정 원점의 두 합성 레이어로 분리하고, 캐릭터 이동의 `left/width/filter` 전환과 표정 이미지 동기 디코딩을 제거해 전환 프레임 드롭을 줄였습니다. 모바일 2·3분할은 유지합니다. 덕만 v3.2.1은 10명 에셋별 spacing을 적용합니다.
 - 2026-08-11: 장면 단위 `camera` DSL(`wide/medium/close/reaction`, `target`, `cut/push/pan`, `duration`)과 캐릭터 원본 정렬용 `calibration(scale/x/y)`을 추가했습니다. 보이는 인물 전체를 하나의 `.char-camera-world`에서 확대·이동하고 PC/모바일 눈높이 원점과 3인 medium 앵커를 분리합니다. 덕만 v3.2.0은 10명 원본 보정, 679개 화자 대사·24개 선택의 카메라 쇼트, 66개 배경 전환 wide 설정으로 전환했으며 기존 `framing`은 하위 호환으로 유지합니다.

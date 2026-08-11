@@ -161,6 +161,10 @@ const ALL_TAG_FILTER = '__all';
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
+const START_GATE_ACTION_DELAY_MS = 240;
+const START_GATE_ACTION_STAGGER_MS = 90;
+const START_GATE_ACTION_DURATION_MS = 420;
+const START_GATE_ACTION_FAILSAFE_BUFFER_MS = 180;
 const DEFAULT_SEO_TITLE = '야븐엔진 (YAVN) | Type your story. Play your novel.';
 const DEFAULT_SEO_DESCRIPTION =
   '야븐엔진(YAVN)은 비주얼노벨 게임과 대사게임을 웹에서 빠르게 제작하는 엔진입니다. YAML + ZIP 업로드, YouTube 영상/음악 에셋, 중간 이벤트 씬 전환, Live2D 캐릭터 연출까지 지원합니다.';
@@ -886,6 +890,7 @@ export default function App() {
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
+  const startGateActionsRef = useRef<HTMLDivElement | null>(null);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
   const repositoryUrl = 'https://github.com/uiwwsw/yavn';
@@ -1052,6 +1057,61 @@ export default function App() {
       if (startGate?.kind === 'zip' && startGate.previewMusicBlobUrl?.startsWith('blob:')) {
         URL.revokeObjectURL(startGate.previewMusicBlobUrl);
       }
+    };
+  }, [startGate]);
+
+  useLayoutEffect(() => {
+    const container = startGateActionsRef.current;
+    if (
+      !startGate ||
+      !container ||
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+
+    const targets = Array.from(
+      container.querySelectorAll<HTMLElement>('.start-gate-button, .start-gate-hint'),
+    );
+    if (targets.length === 0 || targets.some((target) => typeof target.animate !== 'function')) {
+      return;
+    }
+
+    const animations: Animation[] = [];
+    try {
+      targets.forEach((target, index) => {
+        animations.push(
+          target.animate(
+            [
+              { opacity: 0, transform: 'translateY(10px) scale(0.985)', filter: 'blur(2px)' },
+              { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' },
+            ],
+            {
+              delay: START_GATE_ACTION_DELAY_MS + index * START_GATE_ACTION_STAGGER_MS,
+              duration: START_GATE_ACTION_DURATION_MS,
+              easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+              fill: 'backwards',
+            },
+          ),
+        );
+      });
+    } catch {
+      animations.forEach((animation) => animation.cancel());
+      return;
+    }
+
+    const failSafeDelay =
+      START_GATE_ACTION_DELAY_MS +
+      Math.max(0, targets.length - 1) * START_GATE_ACTION_STAGGER_MS +
+      START_GATE_ACTION_DURATION_MS +
+      START_GATE_ACTION_FAILSAFE_BUFFER_MS;
+    const failSafeTimer = window.setTimeout(() => {
+      animations.forEach((animation) => animation.cancel());
+    }, failSafeDelay);
+
+    return () => {
+      window.clearTimeout(failSafeTimer);
+      animations.forEach((animation) => animation.cancel());
     };
   }, [startGate]);
 
@@ -2403,7 +2463,7 @@ export default function App() {
               <p className="start-gate-prologue">당신의 선택으로 이야기가 시작됩니다</p>
             </div>
           )}
-          <div className={actionClass}>
+          <div ref={startGateActionsRef} className={actionClass}>
             <button
               type="button"
               className="start-gate-button start-gate-button-start"
