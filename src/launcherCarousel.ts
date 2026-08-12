@@ -81,19 +81,14 @@ export function resolveInitialCarouselGameId(
   currentGameId: string | null,
   search: string,
   hash: string,
-  storedGameId: string | null = null,
 ): string | null {
-  if (currentGameId && gameIds.includes(currentGameId)) {
-    return currentGameId;
-  }
-
   const requestedGameId = parseLauncherDemoQuery(search) ?? parseLauncherDemoHash(hash);
   if (requestedGameId && gameIds.includes(requestedGameId)) {
     return requestedGameId;
   }
 
-  if (storedGameId && gameIds.includes(storedGameId)) {
-    return storedGameId;
+  if (currentGameId && gameIds.includes(currentGameId)) {
+    return currentGameId;
   }
 
   return gameIds[0] ?? null;
