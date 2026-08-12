@@ -78,7 +78,7 @@ describe('stage camera', () => {
       zoomOriginY: 50,
     });
     expect(close.zoomScale).toBeCloseTo(2.02 / 1.58);
-    expect(close.mobileZoomScale).toBeCloseTo(2.02 / 1.58);
+    expect(close.mobileZoomScale).toBeCloseTo(1.84 / 1.58);
   });
 
   it('uses one portrait and crop ratio for solo, duo, and trio on mobile and desktop', () => {
@@ -110,7 +110,7 @@ describe('stage camera', () => {
       zoomOriginY: 50,
     });
     expect(close.zoomScale).toBeCloseTo(2.02 / 1.58);
-    expect(close.mobileZoomScale).toBeCloseTo(2.02 / 1.58);
+    expect(close.mobileZoomScale).toBeCloseTo(1.84 / 1.58);
     expect(medium).toMatchObject({
       compositionScale: 1.58,
       mobileCompositionScale: 1.58,
@@ -152,6 +152,7 @@ describe('stage camera', () => {
       mobileZoomOriginX: '25cqw',
     });
     expect(duoClose.zoomScale).toBeCloseTo(2.02 / 1.58);
+    expect(duoClose.mobileZoomScale).toBeCloseTo(1.84 / 1.58);
 
     expect(medium.compositionScale).toBe(duoMedium.compositionScale);
     expect(medium.compositionScale).toBe(
@@ -212,7 +213,29 @@ describe('stage camera', () => {
       expect(wide.zoomScale * wide.compositionScale).toBeCloseTo(1);
       expect(close.zoomScale * close.compositionScale).toBeCloseTo(2.02);
       expect(reaction.zoomScale * reaction.compositionScale).toBeCloseTo(1.83);
+      expect(wide.mobileZoomScale * wide.mobileCompositionScale).toBeCloseTo(1);
+      expect(medium.mobileZoomScale * medium.mobileCompositionScale).toBeCloseTo(1.58);
+      expect(close.mobileZoomScale * close.mobileCompositionScale).toBeCloseTo(1.84);
+      expect(reaction.mobileZoomScale * reaction.mobileCompositionScale).toBeCloseTo(1.72);
     }
+  });
+
+  it('softens mobile close cuts without changing the desktop camera profile', () => {
+    const close = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close', target: '덕만' }),
+      1,
+      'center',
+      {
+        mode: 'default',
+        duoSideByPosition: {},
+        characterIdByPosition: { center: '덕만' },
+      },
+    );
+
+    expect(close.zoomScale * close.compositionScale).toBeCloseTo(2.02);
+    expect(close.mobileZoomScale * close.mobileCompositionScale).toBeCloseTo(1.84);
+    expect(close.mobileZoomScale).toBeLessThan(close.zoomScale);
+    expect(1.84 / 1.58).toBeLessThan(1.2);
   });
 
   it('falls back to a medium group composition when a close or reaction shot has no target', () => {

@@ -39,6 +39,15 @@ const SHOT_SCALE: Record<CameraShot, number> = {
   close: 2.02,
   reaction: 1.83,
 };
+// Portrait screens have less room around a fixed character anchor. Keep the
+// authored shot hierarchy while softening repeated medium/close cuts so the
+// subject does not appear to pulse in size on mobile.
+const MOBILE_SHOT_SCALE: Record<CameraShot, number> = {
+  wide: 1,
+  medium: COMPOSITION_SCALE,
+  close: 1.84,
+  reaction: 1.72,
+};
 const COMPOSITION_ORIGIN_Y = 80;
 
 export type StageCameraPresentation = {
@@ -64,6 +73,11 @@ function resolveCompositionScale(visibleCharacterCount: number): number {
 function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): number {
   if (visibleCharacterCount <= 0) return 1;
   return SHOT_SCALE[shot];
+}
+
+function resolveMobileShotScale(shot: CameraShot, visibleCharacterCount: number): number {
+  if (visibleCharacterCount <= 0) return 1;
+  return MOBILE_SHOT_SCALE[shot];
 }
 
 function resolveCompositionOriginY(): number {
@@ -136,6 +150,7 @@ export function resolveStageCameraPresentation(
     : camera.shot;
   const compositionScale = resolveCompositionScale(visibleCharacterCount);
   const shotScale = resolveShotScale(presentationShot, visibleCharacterCount);
+  const mobileShotScale = resolveMobileShotScale(presentationShot, visibleCharacterCount);
   const compositionOriginY = resolveCompositionOriginY();
   const zoomOriginX = hasCharacterTarget && targetPosition
     ? resolveCharacterStagePlacement(targetPosition, layout, compositionSpacing).anchorX
@@ -152,7 +167,7 @@ export function resolveStageCameraPresentation(
     compositionOriginY,
     mobileCompositionOriginY: compositionOriginY,
     zoomScale: shotScale / compositionScale,
-    mobileZoomScale: shotScale / compositionScale,
+    mobileZoomScale: mobileShotScale / compositionScale,
     zoomOriginX,
     mobileZoomOriginX,
     zoomOriginY,
