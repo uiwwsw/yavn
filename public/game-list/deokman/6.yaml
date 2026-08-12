@@ -6,7 +6,7 @@ scenes:
   chapter6_open:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -137,7 +137,7 @@ scenes:
   entry_waterway:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -190,7 +190,7 @@ scenes:
   entry_procession:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 천명
           position: right
@@ -241,7 +241,7 @@ scenes:
   entry_prison:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -289,7 +289,7 @@ scenes:
   rescue_choice:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - effect: alarm
       - char:
           id: 덕만
@@ -353,7 +353,7 @@ scenes:
   rescue_king:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -401,7 +401,7 @@ scenes:
   rescue_allies:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -449,7 +449,7 @@ scenes:
   rescue_evidence:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -501,7 +501,7 @@ scenes:
   seal_found:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -679,7 +679,7 @@ scenes:
   kings_last_words:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right
@@ -781,7 +781,7 @@ scenes:
           text: "이제 아버지 뒤에 숨지 않을게요."
       - add: { legitimacy: 1 }
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -867,7 +867,7 @@ scenes:
   jinun_votes_freely:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진운
           position: right
@@ -904,7 +904,7 @@ scenes:
   jinun_votes_against_chilsuk:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진운
           position: right
@@ -946,7 +946,7 @@ scenes:
   coronation_finish:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -981,7 +981,7 @@ scenes:
           position: right
       - say:
           char: 소원
-          camera: wide
+          camera: medium
           with: [덕만]
           text: "길을 여세요! 새 왕께서 나가십니다!"
       - say:
@@ -1014,7 +1014,7 @@ scenes:
   go_31_gate_breaker:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1062,7 +1062,7 @@ scenes:
   go_32_name_in_dark:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1112,7 +1112,7 @@ scenes:
   go_33_one_day_queen:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left

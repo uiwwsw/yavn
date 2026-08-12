@@ -7,7 +7,7 @@ import type {
   StageCameraState,
 } from './types';
 import type { CharacterStageLayout } from './characterLayout';
-import { resolveCharacterStagePlacement, resolveMobileCameraPan } from './characterLayout';
+import { resolveCharacterStagePlacement, resolveMobileCharacterStageAnchor } from './characterLayout';
 
 export const DEFAULT_STAGE_CAMERA: StageCameraState = {
   shot: 'wide',
@@ -29,45 +29,47 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
   pan: 380,
 };
 
-const MEDIUM_SCALE_BY_CAST = [1.72, 1.72, 1.58, 1.38] as const;
-const REACTION_SCALE_BY_CAST = [1.9, 1.9, 1.72, 1.55] as const;
+const COMPOSITION_SCALE_BY_CAST = [1, 1.4, 1.58, 1.38] as const;
+const CLOSE_SCALE_BY_CAST = [1, 1.67, 2.02, 1.92] as const;
+const REACTION_SCALE_BY_CAST = [1, 1.52, 1.83, 1.69] as const;
 
 export type StageCameraPresentation = {
   shot: CameraShot;
-  scale: number;
-  mobileScale: number;
-  originY: number;
-  mobileOriginY: number;
-  panX: string;
-  mobilePanX: string;
-  panY: string;
-  mobilePanY: string;
+  compositionScale: number;
+  mobileCompositionScale: number;
+  compositionOriginY: number;
+  mobileCompositionOriginY: number;
+  zoomScale: number;
+  mobileZoomScale: number;
+  zoomOriginX: string;
+  mobileZoomOriginX: string;
+  zoomOriginY: number;
+  mobileZoomOriginY: number;
   duration: number;
   transition: CameraTransition;
 };
 
-function resolveMobileShotScale(shot: CameraShot, visibleCharacterCount: number): number {
+function resolveCompositionScale(visibleCharacterCount: number): number {
+  if (visibleCharacterCount <= 0) return 1;
   const castIndex = Math.max(1, Math.min(3, visibleCharacterCount));
-  if (shot === 'medium') {
-    return [1, 1.4, 1.58, 1.38][castIndex];
-  }
+  return COMPOSITION_SCALE_BY_CAST[castIndex];
+}
+
+function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): number {
+  if (visibleCharacterCount <= 0) return 1;
+  const castIndex = Math.max(1, Math.min(3, visibleCharacterCount));
+  if (shot === 'medium') return COMPOSITION_SCALE_BY_CAST[castIndex];
   if (shot === 'close') {
-    return [1, 1.67, 2.02, 1.92][castIndex];
+    return CLOSE_SCALE_BY_CAST[castIndex];
   }
   if (shot === 'reaction') {
-    return [1, 1.52, 1.83, 1.69][castIndex];
+    return REACTION_SCALE_BY_CAST[castIndex];
   }
   return 1;
 }
 
-function resolveMobileShotOriginY(shot: CameraShot, visibleCharacterCount: number): number {
-  if (shot === 'wide') {
-    return 50;
-  }
-  if (visibleCharacterCount <= 1) {
-    return shot === 'close' ? 60 : 55;
-  }
-  return 80;
+function resolveCompositionOriginY(visibleCharacterCount: number): number {
+  return visibleCharacterCount <= 1 ? 55 : 80;
 }
 
 export function resolveCharacterCalibration(
@@ -123,51 +125,40 @@ export function resolveStageCameraState(
   };
 }
 
-function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): number {
-  const castIndex = Math.max(1, Math.min(3, visibleCharacterCount));
-  if (shot === 'medium') {
-    return MEDIUM_SCALE_BY_CAST[castIndex];
-  }
-  if (shot === 'close') {
-    return 2.15;
-  }
-  if (shot === 'reaction') {
-    return REACTION_SCALE_BY_CAST[castIndex];
-  }
-  return 1;
-}
-
 export function resolveStageCameraPresentation(
   camera: StageCameraState,
   visibleCharacterCount: number,
   targetPosition: Position | undefined,
   layout: CharacterStageLayout,
   targetSpacing = 1,
-  soloPosition?: Position,
 ): StageCameraPresentation {
   const hasCharacterTarget = camera.target !== 'group' && targetPosition !== undefined;
   const presentationShot = (camera.shot === 'close' || camera.shot === 'reaction') && !hasCharacterTarget
     ? 'medium'
     : camera.shot;
-  const compositionTargetPosition = targetPosition
-    ?? (presentationShot !== 'wide' && visibleCharacterCount === 1 ? soloPosition : undefined);
-  const panX = compositionTargetPosition
-    ? resolveCharacterStagePlacement(compositionTargetPosition, layout, targetSpacing).panToCenterX
-    : '0px';
-  const mobilePanX = compositionTargetPosition
-    ? resolveMobileCameraPan(compositionTargetPosition, layout)
-    : '0px';
+  const compositionScale = resolveCompositionScale(visibleCharacterCount);
+  const shotScale = resolveShotScale(presentationShot, visibleCharacterCount);
+  const compositionOriginY = resolveCompositionOriginY(visibleCharacterCount);
+  const zoomOriginX = hasCharacterTarget && targetPosition
+    ? resolveCharacterStagePlacement(targetPosition, layout, targetSpacing).anchorX
+    : '50cqw';
+  const mobileZoomOriginX = hasCharacterTarget && targetPosition
+    ? resolveMobileCharacterStageAnchor(targetPosition, layout)
+    : '50cqw';
+  const zoomOriginY = presentationShot === 'wide' ? compositionOriginY : 50;
 
   return {
     shot: presentationShot,
-    scale: resolveShotScale(presentationShot, visibleCharacterCount),
-    mobileScale: resolveMobileShotScale(presentationShot, visibleCharacterCount),
-    originY: presentationShot === 'wide' ? 50 : visibleCharacterCount <= 1 ? 0 : 23,
-    mobileOriginY: resolveMobileShotOriginY(presentationShot, visibleCharacterCount),
-    panX,
-    mobilePanX,
-    panY: '0px',
-    mobilePanY: '0px',
+    compositionScale,
+    mobileCompositionScale: compositionScale,
+    compositionOriginY,
+    mobileCompositionOriginY: compositionOriginY,
+    zoomScale: shotScale / compositionScale,
+    mobileZoomScale: shotScale / compositionScale,
+    zoomOriginX,
+    mobileZoomOriginX,
+    zoomOriginY,
+    mobileZoomOriginY: zoomOriginY,
     duration: camera.duration,
     transition: camera.transition,
   };

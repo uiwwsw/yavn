@@ -63,19 +63,21 @@ describe('image character motion', () => {
     );
   });
 
-  it('moves every visible character through one shared camera world', () => {
+  it('keeps one fixed composition and applies camera zoom without a position pan', () => {
+    expect(appSource).toContain('className="char-composition-world"');
     expect(appSource).toContain('className="char-camera-world"');
-    expect(appSource).toContain('className="char-camera-pan"');
+    expect(appSource).not.toContain('className="char-camera-pan"');
     expect(appSource).toContain('data-camera-shot={cameraPresentation.shot}');
     expect(appSource).toContain('data-camera-requested-shot={camera.shot}');
-    expect(styles).toContain('scale(var(--stage-camera-render-scale))');
-    expect(styles).toContain('--stage-camera-render-scale: var(--stage-camera-scale-mobile)');
-    expect(styles).toContain('transform-origin: 50% var(--stage-camera-render-origin-y);');
-    expect(styles).toContain('translate3d(var(--stage-camera-render-pan-x), var(--stage-camera-render-pan-y), 0)');
-    expect(styles).toMatch(/@media \(min-width: 769px\)[\s\S]*?\.char-layer:not\(\[data-camera-shot='wide'\]\) \.char-camera-world/);
+    expect(styles).toContain('scale(var(--stage-composition-render-scale))');
+    expect(styles).toContain('scale(var(--stage-camera-render-zoom))');
+    expect(styles).toContain('--stage-composition-render-scale: var(--stage-composition-scale-mobile)');
+    expect(styles).toContain('transform-origin: var(--stage-camera-render-origin-x) var(--stage-camera-render-origin-y);');
+    expect(styles).not.toContain('--stage-camera-render-pan-x');
+    expect(styles).not.toContain('translate3d(var(--stage-camera-render-pan-x)');
     expect(styles).toContain('transform var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1)');
     expect(styles).not.toContain('transform-origin var(--stage-camera-duration)');
-    expect(styles).toMatch(/\.char-camera-world,[\s\S]*?\.char-camera-pan,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
+    expect(styles).toMatch(/\.char-composition-world,[\s\S]*?\.char-camera-world,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
   });
 
   it('warms the Live2D renderer alongside chapter asset preloading', () => {
@@ -89,9 +91,9 @@ describe('image character motion', () => {
     expect(appSource).toContain('data-character-count={visibleCharacterCount}');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': stagePlacement.anchorX");
-    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-width: min\(52cqw, 52cqh\);/);
+    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-height: 67cqh;/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
-    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 15cqw;/);
+    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).not.toContain("char-layout-trio[data-camera-shot='medium']");
     expect(styles).not.toContain('.char-layout-trio .char.is-speaker.left');
     expect(styles).not.toContain('--char-anchor-x: -10cqw');

@@ -4,7 +4,7 @@ import {
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
   resolveCharacterFramingScale,
-  resolveMobileCameraPan,
+  resolveMobileCharacterStageAnchor,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
   resolveDialogueVisibleCharacterIds,
@@ -71,22 +71,25 @@ describe('character stage layout', () => {
     });
   });
 
-  it('keeps a surviving character in the same duo half without resizing', () => {
+  it('recenters a surviving character instead of leaving a solo actor on a duo edge', () => {
     const duoLayout = resolveCharacterStageLayout([
       { id: '코난', position: 'center' },
       { id: '코고로', position: 'right' },
     ]);
 
-    expect(resolveCharacterStageLayout([
+    const soloLayout = resolveCharacterStageLayout([
       { id: '코고로', position: 'right' },
-    ], duoLayout)).toEqual({
-      mode: 'duo',
-      duoSideByPosition: {
-        right: 'right',
-      },
+    ], duoLayout);
+    expect(soloLayout).toEqual({
+      mode: 'default',
+      duoSideByPosition: {},
       characterIdByPosition: {
         right: '코고로',
       },
+    });
+    expect(resolveCharacterStagePlacement('right', soloLayout)).toEqual({
+      anchorX: '50cqw',
+      offsetX: '-50%',
     });
   });
 
@@ -117,11 +120,14 @@ describe('character stage layout', () => {
     ], emptyLayout).mode).toBe('default');
   });
 
-  it('uses a dedicated trio layout while preserving authored solo slots', () => {
+  it('uses a dedicated trio layout and records the visible solo actor', () => {
     expect(resolveCharacterStageLayout([]).mode).toBe('default');
     expect(resolveCharacterStageLayout([
       { id: '코난', position: 'center' },
-    ]).mode).toBe('default');
+    ])).toMatchObject({
+      mode: 'default',
+      characterIdByPosition: { center: '코난' },
+    });
     expect(resolveCharacterStageLayout([
       { id: '란', position: 'left' },
       { id: '코난', position: 'center' },
@@ -144,44 +150,39 @@ describe('character stage layout', () => {
     ]);
 
     expect(resolveCharacterStagePlacement('left', trio, 0.9)).toEqual({
-      anchorX: 'calc(50cqw - min(16.2cqw, 234px))',
+      anchorX: 'calc(50cqw - min(22.5cqw, 288px))',
       offsetX: '-50%',
-      panToCenterX: 'min(16.2cqw, 234px)',
     });
     expect(resolveCharacterStagePlacement('right', trio, 1.15)).toEqual({
-      anchorX: 'calc(50cqw + min(20.7cqw, 299px))',
+      anchorX: 'calc(50cqw + min(28.75cqw, 368px))',
       offsetX: '-50%',
-      panToCenterX: 'calc(0px - min(20.7cqw, 299px))',
     });
   });
 
-  it('uses a separate capped gap for a desktop duo and center-based solo anchors', () => {
+  it('uses a wider capped gap for a desktop duo and centers every solo slot', () => {
     const duo = resolveCharacterStageLayout([
       { id: '덕만', position: 'center' },
       { id: '진평왕', position: 'right' },
     ]);
     expect(resolveCharacterStagePlacement('center', duo)).toEqual({
-      anchorX: 'calc(50cqw - min(22cqw, 260px))',
+      anchorX: 'calc(50cqw - min(25cqw, 320px))',
       offsetX: '-50%',
-      panToCenterX: 'min(22cqw, 260px)',
     });
     expect(resolveCharacterStagePlacement('left', resolveCharacterStageLayout([
       { id: '덕만', position: 'left' },
     ]))).toEqual({
-      anchorX: '25cqw',
+      anchorX: '50cqw',
       offsetX: '-50%',
-      panToCenterX: '25cqw',
     });
     expect(resolveCharacterStagePlacement('right', resolveCharacterStageLayout([
       { id: '진평왕', position: 'right' },
     ]))).toEqual({
-      anchorX: '75cqw',
+      anchorX: '50cqw',
       offsetX: '-50%',
-      panToCenterX: '-25cqw',
     });
   });
 
-  it('centers camera targets against the unchanged mobile duo and trio partitions', () => {
+  it('returns fixed mobile composition anchors without camera panning', () => {
     const duo = resolveCharacterStageLayout([
       { id: '덕만', position: 'center' },
       { id: '진평왕', position: 'right' },
@@ -191,13 +192,13 @@ describe('character stage layout', () => {
       { id: '천명', position: 'center' },
       { id: '진평왕', position: 'right' },
     ]);
-    expect(resolveMobileCameraPan('center', duo)).toBe('25cqw');
-    expect(resolveMobileCameraPan('right', duo)).toBe('-25cqw');
-    expect(resolveMobileCameraPan('left', trio)).toBe('35cqw');
-    expect(resolveMobileCameraPan('right', trio)).toBe('-35cqw');
-    expect(resolveMobileCameraPan('left', resolveCharacterStageLayout([
+    expect(resolveMobileCharacterStageAnchor('center', duo)).toBe('25cqw');
+    expect(resolveMobileCharacterStageAnchor('right', duo)).toBe('75cqw');
+    expect(resolveMobileCharacterStageAnchor('left', trio)).toBe('25cqw');
+    expect(resolveMobileCharacterStageAnchor('right', trio)).toBe('75cqw');
+    expect(resolveMobileCharacterStageAnchor('left', resolveCharacterStageLayout([
       { id: '덕만', position: 'left' },
-    ]))).toBe('25cqw');
+    ]))).toBe('50cqw');
   });
 
   it('keeps an image character mounted across emotion and position changes', () => {

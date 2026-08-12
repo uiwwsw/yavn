@@ -6,7 +6,7 @@ scenes:
   chapter2_open:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -208,7 +208,7 @@ scenes:
   suitor_jinun:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -253,7 +253,7 @@ scenes:
   suitor_bidam:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -293,7 +293,7 @@ scenes:
   reputation_choice:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -393,7 +393,7 @@ scenes:
   reputation_stars:
     actions:
       - bg: moon_court
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -436,7 +436,7 @@ scenes:
   reputation_scandal:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -479,7 +479,7 @@ scenes:
   throne_choice:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right
@@ -650,7 +650,7 @@ scenes:
   chapter2_end:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -691,7 +691,7 @@ scenes:
   go_12_warm_choice:
     actions:
       - bg: moon_court
-      - camera: wide
+      - camera: medium
       - char:
           id: 유신
           position: right
@@ -733,7 +733,7 @@ scenes:
   go_13_three_knives:
     actions:
       - bg: banquet_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -775,7 +775,7 @@ scenes:
   go_14_barren_lie:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -814,7 +814,7 @@ scenes:
   go_15_laughing_bride:
     actions:
       - bg: banquet_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -853,7 +853,7 @@ scenes:
   go_16_unmarried_crime:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right

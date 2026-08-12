@@ -58,7 +58,6 @@ import {
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
 } from './characterLayout';
-import type { CharacterStageLayout } from './characterLayout';
 import {
   buildLauncherDemoSharePath,
   clearLauncherDemoSharePath,
@@ -1021,7 +1020,6 @@ export default function App() {
   const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const stageContentFrameRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
-  const previousCharacterStageLayoutRef = useRef<CharacterStageLayout | undefined>(undefined);
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
@@ -1781,7 +1779,6 @@ export default function App() {
       id: entry.slot.id,
       position: entry.position,
     })),
-    previousCharacterStageLayoutRef.current,
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
   const effectiveCameraTargetId = resolveStageCameraFocusTargetId(
@@ -1796,34 +1793,29 @@ export default function App() {
   const cameraTargetSpacing = visibleCharactersByPosition.find(
     (entry) => entry.slot.id === effectiveCameraTargetId,
   )?.slot.calibration.spacing ?? 1;
-  const soloCharacterPosition = visibleCharacterCount === 1
-    ? visibleCharactersByPosition[0]?.position
-    : undefined;
   const cameraPresentation = resolveStageCameraPresentation(
     camera,
     visibleCharacterCount,
     cameraTargetPosition,
     characterStageLayout,
     cameraTargetSpacing,
-    soloCharacterPosition,
   );
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialog.speakerId;
   const cameraStyle = {
-    '--stage-camera-scale': cameraPresentation.scale,
-    '--stage-camera-scale-mobile': cameraPresentation.mobileScale,
-    '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
-    '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`,
-    '--stage-camera-pan-x': cameraPresentation.panX,
-    '--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX,
-    '--stage-camera-pan-y': cameraPresentation.panY,
-    '--stage-camera-pan-y-mobile': cameraPresentation.mobilePanY,
+    '--stage-composition-scale': cameraPresentation.compositionScale,
+    '--stage-composition-scale-mobile': cameraPresentation.mobileCompositionScale,
+    '--stage-composition-origin-y': `${cameraPresentation.compositionOriginY}%`,
+    '--stage-composition-origin-y-mobile': `${cameraPresentation.mobileCompositionOriginY}%`,
+    '--stage-camera-zoom': cameraPresentation.zoomScale,
+    '--stage-camera-zoom-mobile': cameraPresentation.mobileZoomScale,
+    '--stage-camera-origin-x': cameraPresentation.zoomOriginX,
+    '--stage-camera-origin-x-mobile': cameraPresentation.mobileZoomOriginX,
+    '--stage-camera-origin-y': `${cameraPresentation.zoomOriginY}%`,
+    '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileZoomOriginY}%`,
     '--stage-camera-duration': `${cameraPresentation.duration}ms`,
   } as CSSProperties;
-  useLayoutEffect(() => {
-    previousCharacterStageLayoutRef.current = characterStageLayout;
-  }, [characterStageLayout]);
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
     if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
     if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
@@ -2404,7 +2396,11 @@ export default function App() {
     const framingScale = resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount);
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
-    const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
+    const facingScale = resolveCharacterFacingScale(
+      slot.facing,
+      visibleCharacterCount === 1 ? 'center' : position,
+      duoSide,
+    );
     const stagePlacement = resolveCharacterStagePlacement(
       position,
       characterStageLayout,
@@ -3214,13 +3210,12 @@ export default function App() {
         data-camera-shot={cameraPresentation.shot}
         data-camera-requested-shot={camera.shot}
       >
-        <div
-          className="char-camera-world"
-          data-camera-target={camera.target}
-          data-camera-transition={cameraPresentation.transition}
-          style={cameraStyle}
-        >
-          <div className="char-camera-pan">
+        <div className="char-composition-world" style={cameraStyle}>
+          <div
+            className="char-camera-world"
+            data-camera-target={camera.target}
+            data-camera-transition={cameraPresentation.transition}
+          >
             {renderCharacter(characters.left, 'left')}
             {renderCharacter(characters.center, 'center')}
             {renderCharacter(characters.right, 'right')}
