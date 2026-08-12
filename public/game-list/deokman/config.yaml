@@ -1,9 +1,9 @@
 title: "덕만: 왕관에는 주인이 없다"
 author:
   name: "uiwwsw"
-version: "5.2.4"
+version: "5.3.0"
 seo:
-  description: "아버지를 살린 밤 암살범으로 몰린 덕만공주가 왕이 되기 전의 음모부터 16년 통치와 비담의 반란까지 살아 내는 8장 신라 궁중 대하만화극."
+  description: "아버지를 살리고도 암살범으로 몰린 덕만이 왕위에 오르기까지의 음모와 16년 뒤 비담의 반란을 그린 8장 역사 비주얼노벨."
   keywords:
     - "선덕여왕"
     - "덕만"
@@ -23,7 +23,7 @@ startScreen:
   image: "assets/bg/title-palace-silla-v3.webp"
   showTitle: true
   titleColor: "#ffe0a3"
-  startButtonText: "첫 장을 연다"
+  startButtonText: "이야기 시작"
   buttonPosition: bottom-left
 endingScreen:
   image: "assets/bg/title-palace-silla-v3.webp"
