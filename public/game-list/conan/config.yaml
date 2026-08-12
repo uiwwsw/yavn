@@ -10,6 +10,11 @@ author:
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
 version: "10.7.0"
+legalNotices:
+  - id: "detective-conan-noncommercial-fan-demo"
+    title: "비공식·비상업적 팬 데모"
+    copyright: "명탐정 코난 관련 명칭·캐릭터와 원작 요소의 권리는 각 권리자에게 있습니다."
+    text: "이 작품은 YAVN 엔진 기능 검증을 위해 제작된 비공식·비상업적 팬 데모입니다. 데모 자체는 판매·유료 기능·광고·후원 유도 등으로 수익화하지 않으며, 원작자·출판사·제작사·배급사 등 권리자와 제휴하거나 승인받은 공식 작품이 아닙니다. ‘비상업적’ 표시는 이용 허락을 대신하지 않습니다. 권리자의 요청이 있으면 공개를 중단하고 관련 자산을 제거합니다."
 seo:
   description: "평온한 가족 여행이 폭우 속 밀실 사건으로 뒤집힌다. 코난과 란, 코고로가 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 분기 미스터리."
   keywords:

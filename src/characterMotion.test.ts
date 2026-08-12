@@ -10,6 +10,14 @@ const appSource = readFileSync(
   fileURLToPath(new URL('./App.tsx', import.meta.url)),
   'utf8',
 );
+const engineSource = readFileSync(
+  fileURLToPath(new URL('./engine.ts', import.meta.url)),
+  'utf8',
+);
+const live2dSource = readFileSync(
+  fileURLToPath(new URL('./Live2DCharacter.tsx', import.meta.url)),
+  'utf8',
+);
 
 describe('image character motion', () => {
   it('glides a mounted character between slots while facing flips snap instantly', () => {
@@ -44,6 +52,13 @@ describe('image character motion', () => {
     expect(styles).toContain('transform var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1)');
     expect(styles).not.toContain('transform-origin var(--stage-camera-duration)');
     expect(styles).toMatch(/\.char-camera-world,[\s\S]*?\.char-camera-pan,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
+  });
+
+  it('warms the Live2D renderer alongside chapter asset preloading', () => {
+    expect(live2dSource).toContain('export async function prepareLive2DRuntime()');
+    expect(engineSource).toContain("import('./Live2DCharacter')");
+    expect(engineSource).toContain('? warmLive2DRuntime()');
+    expect(engineSource).toContain('const LIVE2D_READY_TIMEOUT_MS = 20000;');
   });
 
   it('uses separate duo and trio compositions on desktop and mobile', () => {

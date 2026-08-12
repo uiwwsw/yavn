@@ -8,7 +8,7 @@ const gameListDir = path.join(workspaceRoot, 'public', 'game-list');
 const outputPath = path.join(gameListDir, 'index.json');
 const sitemapPath = path.join(publicDir, 'sitemap.xml');
 
-const MANIFEST_SCHEMA_VERSION = 4;
+const MANIFEST_SCHEMA_VERSION = 5;
 const MAX_LAUNCHER_SEO_TITLE_PREVIEW = 8;
 const DEFAULT_LAUNCHER_SEO_DESCRIPTION =
   '야븐엔진(YAVN)에서 플레이 가능한 비주얼노벨 게임 목록입니다.';
@@ -99,6 +99,58 @@ const normalizeLauncherShowcase = (value) => {
     image: normalizedImage,
   };
   return Object.values(showcase).some((entry) => entry !== undefined) ? showcase : undefined;
+};
+
+const normalizeLegalNotices = (value) => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const notices = [];
+  const ids = new Set();
+  for (const rawNotice of value) {
+    if (!isRecord(rawNotice) || notices.length >= 12) {
+      continue;
+    }
+    const id = normalizeText(rawNotice.id)?.slice(0, 64);
+    const title = normalizeText(rawNotice.title)?.slice(0, 120);
+    const text = normalizeText(rawNotice.text)?.slice(0, 2000);
+    if (!id || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(id) || !title || !text || ids.has(id)) {
+      continue;
+    }
+
+    const links = [];
+    if (Array.isArray(rawNotice.links)) {
+      for (const rawLink of rawNotice.links) {
+        if (!isRecord(rawLink) || links.length >= 8) {
+          continue;
+        }
+        const label = normalizeText(rawLink.label)?.slice(0, 80);
+        const href = normalizeText(rawLink.href)?.slice(0, 2048);
+        if (!label || !href || !/^https?:\/\//i.test(href)) {
+          continue;
+        }
+        try {
+          new URL(href);
+        } catch {
+          continue;
+        }
+        links.push({ label, href });
+      }
+    }
+
+    ids.add(id);
+    notices.push({
+      id,
+      title,
+      text,
+      ...(normalizeText(rawNotice.copyright)
+        ? { copyright: normalizeText(rawNotice.copyright).slice(0, 240) }
+        : {}),
+      ...(links.length > 0 ? { links } : {}),
+    });
+  }
+  return notices;
 };
 
 const mergeUniqueTextList = (...values) => {
@@ -244,6 +296,7 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
     thumbnail: toGameAssetPath(gameId, launcherThumbnail ?? startScreenImage),
     tags: normalizeTagList(launcher?.tags),
     showcase: normalizeLauncherShowcase(launcher?.showcase),
+    legalNotices: normalizeLegalNotices(config?.legalNotices),
     chapterCount: chapterYamlPaths.length,
     seo: {
       title: resolvedName,
@@ -321,6 +374,7 @@ async function collectGameFolders() {
       thumbnail: metadata.thumbnail,
       tags: metadata.tags,
       showcase: metadata.showcase,
+      legalNotices: metadata.legalNotices,
       chapterCount: metadata.chapterCount,
       seo: metadata.seo,
     });

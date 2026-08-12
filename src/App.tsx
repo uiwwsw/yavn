@@ -13,15 +13,22 @@ import {
   useRef,
   useState,
 } from 'react';
+import thirdPartyNoticesUrl from '../THIRD_PARTY_NOTICES.md?url';
+import suiteLicenseUrl from '../assets/licenses/fonts/LICENSE?url';
+import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live2d.md?url';
+import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url';
+import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
 import {
   completeVideoCutscene,
   exportSaveBackup,
   getAutoSaveEnabled,
   getBgmEnabled,
+  getChoiceRecoverySummary,
   getInventoryUiSettings,
   getSaveSlotSummaries,
   handleAdvance,
   importSaveBackup,
+  loadChoiceRecovery,
   loadSaveSlot,
   loadUrlStartScreenPreview,
   loadGameFromUrl,
@@ -58,7 +65,12 @@ import {
   resolveInitialCarouselGameId,
   wrapCarouselIndex,
 } from './launcherCarousel';
-import { parseGameIdFromPath, resolveInitialBootPresentation, type BootMode } from './bootPresentation';
+import {
+  parseGameIdFromPath,
+  resolveInitialBootPresentation,
+  shouldShowGameRouteBoot,
+  type BootMode,
+} from './bootPresentation';
 import {
   buildLauncherShowcaseStyle,
   normalizeLauncherShowcase,
@@ -73,6 +85,7 @@ import type {
   AuthorMetaObject,
   CharacterSlot,
   GameSeoMeta,
+  LegalNotice,
   Position,
   StartButtonPosition,
   StickerSlot,
@@ -111,6 +124,7 @@ type GameListManifestEntry = {
   thumbnail?: string;
   tags: string[];
   showcase?: LauncherShowcase;
+  legalNotices: LegalNotice[];
   chapterCount?: number;
   seo?: GameListSeoEntry;
 };
@@ -137,6 +151,7 @@ type StartGateState =
     showTitle: boolean;
     titleColor?: string;
     showLoadButton: boolean;
+    legalNotices: LegalNotice[];
   }
   | {
     kind: 'zip';
@@ -153,6 +168,7 @@ type StartGateState =
     showTitle: boolean;
     titleColor?: string;
     showLoadButton: false;
+    legalNotices: LegalNotice[];
   };
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
@@ -236,7 +252,9 @@ function formatSaveTimestamp(value?: string): string {
   }).format(date);
 }
 
-function formatSaveSlotMeta(slot?: SaveSlotSummary): string {
+function formatSaveSlotMeta(
+  slot?: Pick<SaveSlotSummary, 'exists' | 'savedAt' | 'chapterIndex'>,
+): string {
   if (!slot?.exists) {
     return '저장 없음';
   }
@@ -264,6 +282,58 @@ function normalizeTags(value: unknown): string[] {
     tags.push(normalized);
   }
   return tags;
+}
+
+function normalizeLegalNotices(value: unknown): LegalNotice[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const notices: LegalNotice[] = [];
+  const ids = new Set<string>();
+  for (const rawNotice of value) {
+    if (!isObjectRecord(rawNotice) || notices.length >= 12) {
+      continue;
+    }
+    const id = normalizeText(rawNotice.id)?.slice(0, 64);
+    const title = normalizeText(rawNotice.title)?.slice(0, 120);
+    const noticeText = normalizeText(rawNotice.text)?.slice(0, 2000);
+    if (!id || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(id) || !title || !noticeText || ids.has(id)) {
+      continue;
+    }
+
+    const links: NonNullable<LegalNotice['links']> = [];
+    if (Array.isArray(rawNotice.links)) {
+      for (const rawLink of rawNotice.links) {
+        if (!isObjectRecord(rawLink) || links.length >= 8) {
+          continue;
+        }
+        const label = normalizeText(rawLink.label)?.slice(0, 80);
+        const href = normalizeText(rawLink.href)?.slice(0, 2048);
+        if (!label || !href || !/^https?:\/\//i.test(href)) {
+          continue;
+        }
+        try {
+          new URL(href);
+        } catch {
+          continue;
+        }
+        links.push({ label, href });
+      }
+    }
+
+    ids.add(id);
+    notices.push({
+      id,
+      title,
+      text: noticeText,
+      ...(normalizeText(rawNotice.copyright)
+        ? { copyright: normalizeText(rawNotice.copyright)?.slice(0, 240) }
+        : {}),
+      ...(links.length > 0 ? { links } : {}),
+    });
+  }
+  return notices;
 }
 
 function mergeUniqueTextList(...values: string[][]): string[] {
@@ -507,6 +577,7 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
     thumbnail: normalizeText(value.thumbnail),
     tags: normalizeTags(value.tags),
     showcase: normalizeLauncherShowcase(value.showcase),
+    legalNotices: normalizeLegalNotices(value.legalNotices),
     chapterCount: normalizeChapterCount(value.chapterCount),
     seo,
   };
@@ -666,6 +737,47 @@ function normalizeAuthorCredit(author: string | AuthorMetaObject | undefined): {
     contacts.push({ label: label || undefined, value, href: href || undefined });
   }
   return { name, contacts };
+}
+
+function LegalNoticeList({
+  notices,
+  className = '',
+  linkTabIndex,
+}: {
+  notices: LegalNotice[];
+  className?: string;
+  linkTabIndex?: number;
+}) {
+  if (notices.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className={['legal-notice-list', className].filter(Boolean).join(' ')} aria-label="법적 고지">
+      {notices.map((notice) => (
+        <section className="legal-notice" key={notice.id}>
+          <h4>{notice.title}</h4>
+          <p>{notice.text}</p>
+          {notice.copyright && <small>{notice.copyright}</small>}
+          {notice.links && notice.links.length > 0 && (
+            <nav aria-label={`${notice.title} 관련 링크`}>
+              {notice.links.map((link, index) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  tabIndex={linkTabIndex}
+                  key={`${notice.id}-${link.href}-${index}`}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          )}
+        </section>
+      ))}
+    </div>
+  );
 }
 
 function useAdvanceByKey(advanceLocked: boolean) {
@@ -1021,6 +1133,7 @@ export default function App() {
                 showTitle: preview.startScreen.showTitle ?? true,
                 titleColor: preview.startScreen.titleColor,
                 showLoadButton: preview.hasLoadableSave,
+                legalNotices: preview.legalNotices,
               });
               return;
             }
@@ -1542,6 +1655,7 @@ export default function App() {
   const effectClass = effect ? `effect-${effect}` : '';
   const authorCredit = normalizeAuthorCredit(game?.meta.author);
   const hasAuthorCredit = Boolean(authorCredit.name) || authorCredit.contacts.length > 0;
+  const gameLegalNotices = game?.meta.legalNotices ?? [];
   const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
   const endingTitle = resolvedEnding?.title ?? 'THE END';
   const endingMessage = resolvedEnding?.message ?? '게임이 종료되었습니다.';
@@ -1559,6 +1673,7 @@ export default function App() {
   const autoRecoverySlot = saveSlotByKind.get('auto');
   const manualSaveSlot = saveSlotByKind.get('manual');
   const chapterSaveSlot = saveSlotByKind.get('chapter');
+  const choiceRecoveryPoint = getChoiceRecoverySummary();
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
@@ -1811,6 +1926,25 @@ export default function App() {
     },
     [closeSettingsModal, refreshSaveSlots],
   );
+
+  const onLoadLastChoice = useCallback(async () => {
+    setSaveBusy(true);
+    setSaveNotice('마지막 선택으로 돌아가는 중입니다.');
+    try {
+      const loaded = await loadChoiceRecovery();
+      if (!loaded) {
+        setSaveNotice('되돌아갈 선택 복구점을 찾지 못했습니다.');
+        return;
+      }
+      setSaveNotice('마지막 선택으로 돌아왔습니다.');
+      closeSettingsModal(false);
+    } catch (error) {
+      setSaveNotice(error instanceof Error ? error.message : '마지막 선택으로 돌아가지 못했습니다.');
+    } finally {
+      setSaveBusy(false);
+      refreshSaveSlots();
+    }
+  }, [closeSettingsModal, refreshSaveSlots]);
 
   const onRestartChapter = useCallback(async () => {
     setSaveBusy(true);
@@ -2370,6 +2504,7 @@ export default function App() {
           showTitle: preview.startScreen.showTitle ?? true,
           titleColor: preview.startScreen.titleColor,
           showLoadButton: false,
+          legalNotices: preview.legalNotices,
         });
         return;
       }
@@ -2415,6 +2550,7 @@ export default function App() {
             showTitle: preview.startScreen.showTitle ?? true,
             titleColor: preview.startScreen.titleColor,
             showLoadButton: preview.hasLoadableSave,
+            legalNotices: preview.legalNotices,
           });
           return;
         }
@@ -2445,7 +2581,7 @@ export default function App() {
       : undefined;
     return (
       <div
-        className={`start-gate${startGateLaunching ? ' is-launching' : ''}`}
+        className={`start-gate${startGateLaunching ? ' is-launching' : ''}${startGate.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
         style={startGateStyle}
         data-show-title={String(startGate.showTitle)}
         data-ui-template={startGate.uiTemplate}
@@ -2497,11 +2633,12 @@ export default function App() {
             {startGate.musicUrl && <p className="start-gate-hint">화면을 눌러 음악과 함께 시작하세요</p>}
           </div>
         </div>
+        <LegalNoticeList notices={startGate.legalNotices} className="start-gate-legal-notices" />
       </div>
     );
   }
 
-  if (gameBootPending) {
+  if (shouldShowGameRouteBoot(gameBootPending, Boolean(game))) {
     return (
       <div className="game-route-boot" role="status" aria-live="polite" aria-label="게임 화면 준비 중">
         <span className="game-route-boot-mark" aria-hidden="true">YAVN</span>
@@ -2521,7 +2658,7 @@ export default function App() {
           <div className="launcher-runtime" aria-label="엔진 상태">
             <span className={`launcher-status launcher-status-${gameListStatus.toLowerCase()}`}>{gameListStatus}</span>
             <span>{gameList.length} PLAYABLE</span>
-            <span>DSL V{manifestSchemaVersion ?? 4}</span>
+            <span>DSL V{manifestSchemaVersion ?? 5}</span>
           </div>
 
           <nav className="launcher-nav" aria-label="엔진 링크">
@@ -2566,7 +2703,7 @@ export default function App() {
                   return (
                     <article
                       key={`showcase-${entry.id}`}
-                      className={`launcher-feature ${isSelected ? 'is-selected' : ''}`}
+                      className={`launcher-feature ${isSelected ? 'is-selected' : ''}${entry.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
                       role="group"
                       aria-roledescription="slide"
                       aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
@@ -2592,6 +2729,11 @@ export default function App() {
                         </p>
                         <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
                         <p className="launcher-feature-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</p>
+                        <LegalNoticeList
+                          notices={entry.legalNotices}
+                          className="launcher-feature-legal-notices"
+                          linkTabIndex={isSelected ? undefined : -1}
+                        />
 
                         <div className="inspector-tag-row">
                           {entryTags.map((tag) => (
@@ -2809,6 +2951,9 @@ export default function App() {
                             {entry.version ? <em>v{entry.version}</em> : <em>v-</em>}
                           </span>
                           <span className="workspace-game-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</span>
+                          {entry.legalNotices.length > 0 && (
+                            <span className="workspace-game-legal-badge">{entry.legalNotices[0].title}</span>
+                          )}
                           <span className="workspace-game-meta">
                             {entry.author ?? 'UNKNOWN'} · {chapterLabel}
                           </span>
@@ -2831,8 +2976,14 @@ export default function App() {
             <span>Type your story. Play your novel.</span>
           </p>
           <div>
-            <span>MANIFEST V{manifestSchemaVersion ?? 4}</span>
+            <span>MANIFEST V{manifestSchemaVersion ?? 5}</span>
             <span>SYNC {manifestTimestampLabel}</span>
+            <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">
+              제3자 고지
+            </a>
+            <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">
+              SUITE 라이선스
+            </a>
             <a href={shareByPrUrl} target="_blank" rel="noreferrer">
               PR 보내기
             </a>
@@ -3398,6 +3549,29 @@ export default function App() {
                       hidden
                     />
                   </section>
+
+                  <section className="save-system-section legal-notices-section">
+                    <span className="save-section-index" aria-hidden="true">04</span>
+                    <header>
+                      <div>
+                        <small>RIGHTS &amp; ATTRIBUTION</small>
+                        <h3>법적 고지</h3>
+                      </div>
+                      <span>{gameLegalNotices.length > 0 ? `${gameLegalNotices.length}건` : '게임별 고지 없음'}</span>
+                    </header>
+                    {gameLegalNotices.length > 0 ? (
+                      <LegalNoticeList notices={gameLegalNotices} className="settings-legal-notices" />
+                    ) : (
+                      <p className="legal-notice-empty">이 게임이 선언한 별도 법적 고지는 없습니다.</p>
+                    )}
+                    <nav className="legal-notice-global-links" aria-label="YAVN 라이선스 문서">
+                      <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">YAVN 제3자 고지</a>
+                      <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">SUITE 글꼴 라이선스</a>
+                      <a href={easyCl2dNoticeUrl} target="_blank" rel="noreferrer">easy-cl2d NOTICE</a>
+                      <a href={easyCl2dLicenseUrl} target="_blank" rel="noreferrer">Live2D Framework 조건</a>
+                      <a href={live2dRedistributableFilesUrl} target="_blank" rel="noreferrer">Live2D 재배포 파일</a>
+                    </nav>
+                  </section>
                 </div>
 
                 <section className="save-system-section save-preferences-section">
@@ -3677,11 +3851,11 @@ export default function App() {
             <div className="game-over-primary-actions">
               <button
                 type="button"
-                onClick={() => void onLoadSave('auto')}
-                disabled={!autoRecoverySlot?.exists || saveBusy}
+                onClick={() => void (choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto'))}
+                disabled={(!choiceRecoveryPoint.exists && !autoRecoverySlot?.exists) || saveBusy}
               >
-                <span>{autoSaveEnabled ? '직전 선택으로' : '자동 복구점으로'}</span>
-                <small>{formatSaveSlotMeta(autoRecoverySlot)}</small>
+                <span>{choiceRecoveryPoint.exists ? '직전 선택으로' : '자동 복구점으로'}</span>
+                <small>{formatSaveSlotMeta(choiceRecoveryPoint.exists ? choiceRecoveryPoint : autoRecoverySlot)}</small>
               </button>
               <button
                 type="button"
@@ -3743,19 +3917,21 @@ export default function App() {
                   <h2>{endingTitle}</h2>
                   <p className="ending-credits-message">{endingMessage}</p>
                   {resolvedEndingId && <p className="ending-credits-line">ENDING ID: {resolvedEndingId}</p>}
-                  <section className="ending-credits-section ending-progress-card">
-                    <h3>ENDING PROGRESS</h3>
-                    <p className="ending-progress-value">
-                      {seenEndingCount}/{totalEndingCount} ({endingCompletionPercent}%) ·{' '}
-                      {endingCollectionDone ? '게임 완료' : '진행 중'}
-                    </p>
-                    <div className="ending-progress-bar" role="presentation">
-                      <i style={{ width: `${endingCompletionPercent}%` }} />
-                    </div>
-                    {seenEndingTitles.length > 0 && (
-                      <p className="ending-credits-line">획득 엔딩: {seenEndingTitles.join(' · ')}</p>
-                    )}
-                  </section>
+                  {totalEndingCount > 0 && (
+                    <section className="ending-credits-section ending-progress-card">
+                      <h3>ENDING PROGRESS</h3>
+                      <p className="ending-progress-value">
+                        {seenEndingCount}/{totalEndingCount} ({endingCompletionPercent}%) ·{' '}
+                        {endingCollectionDone ? '게임 완료' : '진행 중'}
+                      </p>
+                      <div className="ending-progress-bar" role="presentation">
+                        <i style={{ width: `${endingCompletionPercent}%` }} />
+                      </div>
+                      {seenEndingTitles.length > 0 && (
+                        <p className="ending-credits-line">획득 엔딩: {seenEndingTitles.join(' · ')}</p>
+                      )}
+                    </section>
+                  )}
 
                   <section className="ending-credits-section">
                     <h3>CREATED BY</h3>
@@ -3780,6 +3956,13 @@ export default function App() {
                     )}
                   </section>
 
+                  {gameLegalNotices.length > 0 && (
+                    <section className="ending-credits-section ending-legal-notices">
+                      <h3>LEGAL NOTICES</h3>
+                      <LegalNoticeList notices={gameLegalNotices} />
+                    </section>
+                  )}
+
                   <section className="ending-credits-section">
                     <h3>POWERED BY</h3>
                     <p className="ending-credits-line ending-credits-name">YAVN (야븐)</p>
@@ -3790,8 +3973,13 @@ export default function App() {
                       </a>
                     </p>
                     <p className="ending-credits-line">
-                      <a href="https://github.com/uiwwsw/visual-novel" target="_blank" rel="noreferrer">
-                        https://github.com/uiwwsw/visual-novel
+                      <a href={repositoryUrl} target="_blank" rel="noreferrer">
+                        {repositoryUrl}
+                      </a>
+                    </p>
+                    <p className="ending-credits-line">
+                      <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">
+                        제3자 소프트웨어·자산 고지
                       </a>
                     </p>
                   </section>
@@ -3800,7 +3988,27 @@ export default function App() {
               </div>
             </div>
             <div className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`} aria-hidden={!showEndingRestart}>
-              <button type="button" className="ending-restart" onClick={onRestartFromBeginning} disabled={returningToStartGate}>
+              {totalEndingCount > 1 && choiceRecoveryPoint.exists && (
+                <button
+                  type="button"
+                  className="ending-restart ending-retry-choice"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    void onLoadLastChoice();
+                  }}
+                  disabled={saveBusy}
+                  tabIndex={showEndingRestart ? undefined : -1}
+                >
+                  {saveBusy ? '선택 불러오는 중...' : '마지막 선택으로'}
+                </button>
+              )}
+              <button
+                type="button"
+                className="ending-restart"
+                onClick={onRestartFromBeginning}
+                disabled={returningToStartGate || saveBusy}
+                tabIndex={showEndingRestart ? undefined : -1}
+              >
                 {returningToStartGate ? '초기화면 여는 중...' : '처음부터 다시하기'}
               </button>
             </div>
