@@ -21,6 +21,12 @@ scenes:
           with: [덕만, 칠숙]
           text: "신랑은 셋. 조건은 하나였습니다."
       - say:
+          with: [덕만, 칠숙]
+          text: "암살 누명으로 덕만을 꺾지 못한 귀족들이 이번에는 혼인으로 정치에서 밀어내려 한 것입니다."
+      - say:
+          with: [덕만]
+          text: "혼인을 받아들이면 목숨은 안전해집니다. 대신 덕만의 말과 왕이 될 가능성은 남편의 것이 됩니다."
+      - say:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
@@ -43,6 +49,12 @@ scenes:
       - char:
           id: 진운
           position: right
+      - say:
+          with: [덕만, 진운]
+          text: "진운은 왕의 먼 친척이자, 세 가문이 남자 후계자로 밀어 올리는 젊은 왕족이었습니다."
+      - say:
+          with: [진운]
+          text: "그러나 고개를 든 얼굴에는 신랑의 기대보다, 남의 뜻을 전하는 사람의 미안함이 먼저 보였습니다."
       - say:
           char: 진운.nervous
           camera: medium
@@ -104,6 +116,76 @@ scenes:
           camera: close
           with: [유신]
           text: "도망칠지는 제가 정하죠."
+      - say:
+          with: [덕만]
+          text: "진운은 혼인 뒤에 숨은 협박을 알고 있었습니다. 비담은 그 협박의 값을 좇고, 유신은 궁을 빠져나갈 길을 열어 두었습니다."
+      - say:
+          with: [덕만]
+          text: "누구의 말부터 듣느냐에 따라 덕만은 귀족의 속내, 거래의 장부, 혹은 살아남을 길부터 보게 됩니다."
+      - branch:
+          cases:
+            - when:
+                var: sowon_trust
+                op: gte
+                value: 2
+              goto: remembered_sowon_knot
+            - when:
+                var: bidam_trust
+                op: gte
+                value: 2
+              goto: remembered_bidam_copy
+          default: suitor_choice
+
+  remembered_sowon_knot:
+    actions:
+      - char:
+          id: 소원
+          position: right
+      - say:
+          with: [덕만, 소원]
+          text: "소원은 세 혼담에 달린 붉은 끈을 나란히 놓았습니다. 덕만의 가짜 노리개와 같은 방식으로 매듭 하나가 비어 있었습니다."
+      - say:
+          char: 소원
+          camera: medium
+          with: [덕만]
+          text: "이것도 같은 손이 묶었어요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원]
+          text: "누명과 혼담이 한 계획이군."
+      - say:
+          char: 소원
+          camera: close
+          with: [덕만]
+          text: "이번엔 먼저 알아봤죠?"
+      - add: { insight: 1 }
+      - goto: suitor_choice
+
+  remembered_bidam_copy:
+    actions:
+      - char:
+          id: 비담
+          position: right
+      - say:
+          with: [덕만, 비담]
+          text: "비담은 거래 장부의 사본이 아니라 원본 한 장을 내밀었습니다. 덕만이 기록 창고에서 그를 믿고 등을 보인 일을 기억한 것입니다."
+      - say:
+          char: 비담.smirk
+          camera: medium
+          with: [덕만]
+          text: "이번엔 진짜를 드립니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "대신 뭘 원합니까?"
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "나중에도 먼저 물어보시죠."
+      - add: { insight: 1 }
       - goto: suitor_choice
 
   suitor_choice:
@@ -136,6 +218,9 @@ scenes:
       - char:
           id: 진운
           position: right
+      - say:
+          with: [덕만, 진운]
+          text: "덕만은 사람을 물리고 진운과 단둘이 마주 앉았습니다. 청혼을 낸 사람의 뜻부터 확인하려 했습니다."
       - say:
           char: 덕만
           camera: medium
@@ -178,6 +263,9 @@ scenes:
       - char:
           id: 비담
           position: right
+      - say:
+          with: [덕만, 비담]
+          text: "비담은 혼인 합의서를 숨겨 둔 방으로 덕만을 이끌었습니다. 종이마다 약속받은 대가가 달랐습니다."
       - say:
           char: 덕만
           camera: medium
@@ -257,6 +345,9 @@ scenes:
           id: 월명
           position: right
       - say:
+          with: [덕만, 월명]
+          text: "월명은 별의 움직임과 왕실 약방을 함께 살피는 사람이었습니다. 귀족들은 그의 해석을 하늘의 뜻처럼 들었습니다."
+      - say:
           char: 월명.warning
           camera: medium
           with: [덕만]
@@ -279,6 +370,12 @@ scenes:
           camera: close
           with: [덕만]
           text: "누가 덜 다칠지 고르는 날이군요."
+      - say:
+          with: [덕만]
+          text: "별을 빌리면 월명이 위험해지고, 소문을 택하면 덕만과 비담의 이름이 함께 더러워집니다."
+      - say:
+          with: [덕만]
+          text: "거짓 병이나 조롱은 빠르지만, 한 번 퍼진 말은 덕만이 진실을 밝혀도 되돌아오지 않을 수 있었습니다."
       - choice:
           key: c2_reputation
           prompt: "혼담을 어떻게 흔들까?"
@@ -307,6 +404,9 @@ scenes:
       - char:
           id: 월명
           position: right
+      - say:
+          with: [덕만, 월명]
+          text: "달이 뜬 뒤, 덕만은 월명을 뜰로 불렀습니다. 별의 풀이로 혼례 날짜를 서로 어긋나게 만들 생각이었습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -344,6 +444,9 @@ scenes:
       - char:
           id: 비담
           position: right
+      - say:
+          with: [덕만, 비담]
+          text: "밤이 깊자 비담은 사람들이 가장 믿기 쉬운 거짓말을 골랐습니다. 덕만과 자신이 함께 있었다는 소문이었습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -416,8 +519,14 @@ scenes:
       - say:
           char: 칠숙.smile
           camera: medium
-          with: [진평왕, 덕만]
+          with: [덕만]
           text: "해가 졌습니다. 답하시지요."
+      - say:
+          with: [덕만]
+          text: "합의를 요구하면 혼담은 늦어지지만 귀족들이 다시 뭉칠 수 있습니다. 전쟁을 핑계로 삼으면 덕만이 국경으로 밀려납니다."
+      - say:
+          with: [덕만, 칠숙]
+          text: "밀약을 공개하면 세 가문을 갈라놓을 수 있지만, 칠숙에게 덕만이 가진 증거를 모두 보여 주게 됩니다."
       - choice:
           key: c2_throne
           prompt: "세 혼담에 무엇이라 답할까?"
@@ -771,7 +880,7 @@ scenes:
       - say:
           char: 칠숙.smile
           camera: medium
-          with: [진평왕, 덕만]
+          with: [진평왕]
           text: "거부한 공주를 별궁에 가두십시오."
       - say:
           text: "호위가 아버지와 딸 사이를 막았습니다."

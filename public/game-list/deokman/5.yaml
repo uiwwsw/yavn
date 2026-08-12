@@ -18,6 +18,12 @@ scenes:
       - say:
           delivery: calm
           text: "수도로 돌아온 지 사흘째."
+      - say:
+          with: [덕만]
+          text: "덕만은 국경의 보급로를 열고 병사와 백성의 지지를 얻어 돌아왔습니다. 이제 예전처럼 조용히 내쫓을 수 있는 공주가 아니었습니다."
+      - say:
+          with: [진운]
+          text: "그 사이 칠숙은 진운을 다음 왕 후보로 세웠습니다. 왕의 피가 먼 남자라도 왕의 딸보다 낫다는 계산이었습니다."
       - char:
           id: 칠숙
           position: center
@@ -104,6 +110,12 @@ scenes:
           camera: close
           with: [덕만]
           text: "……그건 기록하지 않겠습니다."
+      - say:
+          with: [덕만, 진운]
+          text: "진운은 덕만을 밀어내야 어머니를 살릴 수 있었고, 덕만은 진운을 꺾어야 왕좌에 가까워질 수 있었습니다."
+      - say:
+          with: [덕만]
+          text: "그러나 눈앞의 진운은 칠숙의 꼭두각시만은 아니었습니다. 그를 적으로 만들지, 경쟁자로 인정할지부터 정해야 했습니다."
       - goto: contest_choice
 
   contest_choice:
@@ -136,6 +148,9 @@ scenes:
       - char:
           id: 진운
           position: right
+      - say:
+          with: [덕만, 진운]
+          text: "두 사람은 귀족들 앞에서 국경의 겨울을 두고 맞섰습니다. 누가 더 많은 사람을 살릴 계획인지로 왕의 자격을 증명하려 했습니다."
       - say:
           char: 진운.angry
           camera: medium
@@ -178,6 +193,9 @@ scenes:
       - char:
           id: 진운
           position: right
+      - say:
+          with: [덕만, 진운]
+          text: "덕만은 회의를 멈추고 진운과 기록 창고로 자리를 옮겼습니다. 왕좌 이야기를 하기 전에 인질이 된 어머니 이야기부터 듣기로 했습니다."
       - say:
           char: 진운.nervous
           camera: medium
@@ -311,6 +329,12 @@ scenes:
           camera: medium
           with: [덕만]
           text: "점점 영리해지십니다."
+      - say:
+          with: [덕만]
+          text: "인질을 공개하면 칠숙의 협박은 드러나지만 진운의 어머니가 먼저 죽습니다. 어머니를 구하면 진운의 신뢰는 얻지만 경쟁자는 그대로 남습니다."
+      - say:
+          with: [덕만, 비담]
+          text: "빚 장부는 귀족들의 표를 흔들 수 있었고, 혼인은 싸움을 끝낼 수 있었습니다. 어느 길도 사람을 수단으로 쓰지 않고는 끝나지 않았습니다."
       - choice:
           key: c5_leverage
           prompt: "진운의 약점을 어떻게 다룰까?"
@@ -339,6 +363,9 @@ scenes:
       - char:
           id: 진운
           position: right
+      - say:
+          with: [덕만, 진운]
+          text: "덕만의 사람들이 별채의 호위를 빼내고 진운의 어머니를 안전한 곳으로 옮겼습니다. 진운은 그 사실을 확인한 뒤에야 덕만을 만났습니다."
       - say:
           char: 진운.nervous
           camera: medium
@@ -381,6 +408,9 @@ scenes:
       - char:
           id: 칠숙
           position: right
+      - say:
+          with: [덕만, 칠숙]
+          text: "덕만은 빚 장부를 귀족 회의 한가운데 펼쳤습니다. 진운을 지지한 표와 줄어든 빚이 같은 줄에 적혀 있었습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -452,6 +482,12 @@ scenes:
           camera: close
           with: [진운]
           text: "<speed=19>양보는 살아서 거절하세요.</speed>"
+      - say:
+          with: [덕만, 진운]
+          text: "진운 곁에 직접 서면 두 사람이 함께 표적이 됩니다. 유신에게 맡기면 덕만은 안전하지만, 진운에게는 다시 남의 손에 맡겨졌다는 기억이 남습니다."
+      - say:
+          with: [덕만]
+          text: "매복을 공개하면 칠숙의 계획을 막을 수 있으나 명령한 사람을 잡지 못합니다. 외면하면 경쟁자는 사라지지만 덕만은 그 죽음 위에서 왕좌를 얻게 됩니다."
       - choice:
           key: c5_rescue
           prompt: "진운을 어떻게 살릴까?"
@@ -518,6 +554,9 @@ scenes:
           id: 유신
           position: right
       - say:
+          with: [덕만, 유신]
+          text: "덕만의 신호를 받은 유신은 진운의 마차를 먼저 빼냈습니다. 숲을 포위한 뒤에야 덕만에게 돌아왔습니다."
+      - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
@@ -559,6 +598,9 @@ scenes:
       - char:
           id: 칠숙
           position: right
+      - say:
+          with: [덕만, 칠숙]
+          text: "덕만은 매복 계획을 회의에 먼저 밝혔습니다. 궁수들은 움직이지 못했고, 칠숙은 아무 일도 없었다는 얼굴로 자리에 앉았습니다."
       - say:
           char: 칠숙.smile
           camera: medium
