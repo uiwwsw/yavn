@@ -99,7 +99,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.2.0');
+    expect(config.version).toBe('5.2.1');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -377,6 +377,26 @@ describe('Deokman complete-game content', () => {
     expect(actions.slice(Math.max(0, declarationIndex - 2), declarationIndex)
       .some((action) => asRecord(action.char).id === '덕만')).toBe(false);
     expect(camera).toMatchObject({ shot: 'close', target: 'speaker', transition: 'cut' });
+  });
+
+  it('turns the wet official arrival into an acted interruption without restaging the king', () => {
+    const scenes = asRecord(readYaml('0.yaml').scenes);
+    const actions = Array.isArray(asRecord(scenes.prologue_open).actions)
+      ? (asRecord(scenes.prologue_open).actions as unknown[]).map(asRecord)
+      : [];
+    const textAt = (index: number) => String(asRecord(actions[index]?.say).text);
+    const doorIndex = actions.findIndex((action) =>
+      String(asRecord(action.say).text).includes('문이 벌컥 열렸습니다'),
+    );
+    const kingPlacements = actions.filter((action) => asRecord(action.char).id === '진평왕');
+
+    expect(doorIndex).toBeGreaterThanOrEqual(0);
+    expect(textAt(doorIndex + 1)).toContain('무슨 일인가?');
+    expect(textAt(doorIndex + 2)).toContain('젖은 청원서');
+    expect(asRecord(actions[doorIndex]?.say).camera).toBe('wide');
+    expect(asRecord(actions[doorIndex]?.say).with).toEqual(['진평왕', '덕만', '칠숙']);
+    expect(asRecord(actions[doorIndex + 1]?.say).with).toEqual(['덕만', '칠숙']);
+    expect(kingPlacements).toHaveLength(1);
   });
 
   it('dramatizes every failed choice before showing its game-over result', () => {
