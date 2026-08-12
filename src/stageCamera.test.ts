@@ -44,7 +44,7 @@ describe('stage camera', () => {
     });
   });
 
-  it('zooms the shared world and centers a targeted trio character', () => {
+  it('builds a fixed medium composition and zooms around a target without panning it', () => {
     const medium = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'medium' }),
       3,
@@ -53,12 +53,14 @@ describe('stage camera', () => {
     );
     expect(medium).toMatchObject({
       shot: 'medium',
-      scale: 1.38,
-      mobileScale: 1.38,
-      panX: '0px',
-      mobilePanX: '0px',
-      originY: 23,
-      mobileOriginY: 80,
+      compositionScale: 1.38,
+      mobileCompositionScale: 1.38,
+      zoomScale: 1,
+      mobileZoomScale: 1,
+      zoomOriginX: '50cqw',
+      mobileZoomOriginX: '50cqw',
+      compositionOriginY: 80,
+      mobileCompositionOriginY: 80,
     });
 
     const close = resolveStageCameraPresentation(
@@ -70,13 +72,16 @@ describe('stage camera', () => {
     );
     expect(close).toMatchObject({
       shot: 'close',
-      scale: 2.15,
-      panX: 'calc(0px - min(19.8cqw, 286px))',
-      mobilePanX: '-35cqw',
+      compositionScale: 1.38,
+      zoomOriginX: 'calc(50cqw + min(27.5cqw, 352px))',
+      mobileZoomOriginX: '75cqw',
+      zoomOriginY: 50,
     });
+    expect(close.zoomScale).toBeCloseTo(1.92 / 1.38);
+    expect(close.mobileZoomScale).toBeCloseTo(1.92 / 1.38);
   });
 
-  it('zooms portrait-mobile shots from a cast-aware lower anchor so actors rise above dialogue', () => {
+  it('uses the same portrait composition proportions on mobile and desktop', () => {
     const soloLayout: CharacterStageLayout = {
       mode: 'default',
       duoSideByPosition: {},
@@ -96,20 +101,23 @@ describe('stage camera', () => {
     );
 
     expect(close).toMatchObject({
-      scale: 2.15,
-      mobileScale: 1.67,
-      originY: 0,
-      mobileOriginY: 60,
-      panY: '0px',
-      mobilePanY: '0px',
+      compositionScale: 1.4,
+      mobileCompositionScale: 1.4,
+      compositionOriginY: 55,
+      mobileCompositionOriginY: 55,
+      zoomOriginX: '50cqw',
+      mobileZoomOriginX: '50cqw',
+      zoomOriginY: 50,
     });
+    expect(close.zoomScale).toBeCloseTo(1.67 / 1.4);
+    expect(close.mobileZoomScale).toBeCloseTo(1.67 / 1.4);
     expect(medium).toMatchObject({
-      scale: 1.72,
-      mobileScale: 1.4,
-      originY: 0,
-      mobileOriginY: 55,
-      panY: '0px',
-      mobilePanY: '0px',
+      compositionScale: 1.4,
+      mobileCompositionScale: 1.4,
+      zoomScale: 1,
+      mobileZoomScale: 1,
+      compositionOriginY: 55,
+      mobileCompositionOriginY: 55,
     });
 
     const duoLayout: CharacterStageLayout = {
@@ -124,10 +132,12 @@ describe('stage camera', () => {
       duoLayout,
     );
     expect(duoMedium).toMatchObject({
-      scale: 1.58,
-      mobileScale: 1.58,
-      mobileOriginY: 80,
-      mobilePanY: '0px',
+      compositionScale: 1.58,
+      mobileCompositionScale: 1.58,
+      zoomScale: 1,
+      mobileZoomScale: 1,
+      compositionOriginY: 80,
+      mobileCompositionOriginY: 80,
     });
 
     const duoClose = resolveStageCameraPresentation(
@@ -136,7 +146,12 @@ describe('stage camera', () => {
       'center',
       duoLayout,
     );
-    expect(duoClose).toMatchObject({ scale: 2.15, mobileScale: 2.02, mobileOriginY: 80 });
+    expect(duoClose).toMatchObject({
+      compositionScale: 1.58,
+      zoomOriginX: 'calc(50cqw - min(25cqw, 320px))',
+      mobileZoomOriginX: '25cqw',
+    });
+    expect(duoClose.zoomScale).toBeCloseTo(2.02 / 1.58);
   });
 
   it('falls back to a medium group composition when a close or reaction shot has no target', () => {
@@ -159,19 +174,21 @@ describe('stage camera', () => {
 
     expect(untargetedClose).toMatchObject({
       shot: 'medium',
-      scale: 1.38,
-      mobileScale: 1.38,
-      mobileOriginY: 80,
+      compositionScale: 1.38,
+      zoomScale: 1,
+      mobileZoomScale: 1,
+      mobileCompositionOriginY: 80,
     });
     expect(untargetedReaction).toMatchObject({
       shot: 'medium',
-      scale: 1.72,
-      mobileScale: 1.4,
-      mobileOriginY: 55,
+      compositionScale: 1.4,
+      zoomScale: 1,
+      mobileZoomScale: 1,
+      mobileCompositionOriginY: 55,
     });
   });
 
-  it('centers a sole actor for medium shots without changing the authored wide position', () => {
+  it('keeps a sole actor centered while wide only changes zoom level', () => {
     const soloLayout: CharacterStageLayout = {
       mode: 'default',
       duoSideByPosition: {},
@@ -183,7 +200,6 @@ describe('stage camera', () => {
       undefined,
       soloLayout,
       1,
-      'left',
     );
     const wide = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'wide' }),
@@ -191,11 +207,15 @@ describe('stage camera', () => {
       undefined,
       soloLayout,
       1,
-      'left',
     );
 
-    expect(medium).toMatchObject({ panX: '25cqw', mobilePanX: '25cqw' });
-    expect(wide).toMatchObject({ panX: '0px', mobilePanX: '0px' });
+    expect(medium).toMatchObject({
+      zoomScale: 1,
+      zoomOriginX: '50cqw',
+      mobileZoomOriginX: '50cqw',
+    });
+    expect(wide.zoomScale).toBeCloseTo(1 / 1.4);
+    expect(wide.mobileZoomScale).toBeCloseTo(1 / 1.4);
   });
 
   it('does not carry a previous speaker focus into an untargeted narration line', () => {

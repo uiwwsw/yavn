@@ -6,7 +6,7 @@ scenes:
   chapter3_open:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -36,7 +36,7 @@ scenes:
       - say:
           text: "덕만이 문을 밀어 부수자, 기대어 있던 남자가 복도로 쓰러졌습니다."
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -122,7 +122,7 @@ scenes:
 
   body_public:
     actions:
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -197,7 +197,7 @@ scenes:
   testimony_choice:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -370,7 +370,7 @@ scenes:
   culprit_choice:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -497,7 +497,7 @@ scenes:
   culprit_bait:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -528,7 +528,7 @@ scenes:
   chapter3_end:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -586,7 +586,7 @@ scenes:
   go_17_second_murder:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -628,7 +628,7 @@ scenes:
   go_18_borrowed_corpse:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -673,7 +673,7 @@ scenes:
   go_19_last_witness:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -712,7 +712,7 @@ scenes:
   go_20_correct_accusation:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -755,7 +755,7 @@ scenes:
   go_21_friendless_truth:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -787,7 +787,7 @@ scenes:
       - say:
           text: "소원은 매를 멈추려고 거짓 자백을 했습니다."
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: center

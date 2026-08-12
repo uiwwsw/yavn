@@ -109,7 +109,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.3.1');
+    expect(config.version).toBe('5.4.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -342,13 +342,13 @@ describe('Deokman complete-game content', () => {
     expect(characterPlacements.length).toBeGreaterThanOrEqual(329);
     characterPlacements.forEach((placement) => expect(placement.framing).toBeUndefined());
     expect(speakerLines.length).toBeGreaterThanOrEqual(821);
-    speakerLines.forEach((say) => expect(['wide', 'medium', 'close']).toContain(cameraShot(say.camera)));
-    expect(new Set(speakerLines.map((say) => cameraShot(say.camera)))).toEqual(new Set(['wide', 'medium', 'close']));
+    speakerLines.forEach((say) => expect(['medium', 'close']).toContain(cameraShot(say.camera)));
+    expect(new Set(speakerLines.map((say) => cameraShot(say.camera)))).toEqual(new Set(['medium', 'close']));
     speakerLines.forEach((say) => {
       const companions = Array.isArray(say.with) ? say.with : [];
       const shot = cameraShot(say.camera);
-      if (companions.length >= 2) expect(shot).toBe('wide');
-      if (shot === 'medium' || shot === 'close') expect(companions.length).toBeLessThanOrEqual(1);
+      if (companions.length >= 2) expect(shot).toBe('medium');
+      if (shot === 'close') expect(companions.length).toBeLessThanOrEqual(1);
     });
     choices.forEach((choice) => {
       expect(choice.camera).toBe('close');
@@ -358,7 +358,7 @@ describe('Deokman complete-game content', () => {
       actions.flatMap((action, index) => (typeof action.bg === 'string' ? [{ actions, index }] : [])),
     );
     expect(backgroundCuts.length).toBeGreaterThanOrEqual(124);
-    backgroundCuts.forEach(({ actions, index }) => expect(actions[index + 1]?.camera).toBe('wide'));
+    backgroundCuts.forEach(({ actions, index }) => expect(actions[index + 1]?.camera).toBe('medium'));
     expect(chapters.every((path) => !readFileSync(`${gameRoot}${path}`, 'utf8').includes('framing:'))).toBe(true);
 
     documents.forEach((document) => {
@@ -413,7 +413,7 @@ describe('Deokman complete-game content', () => {
     expect(doorIndex).toBeGreaterThanOrEqual(0);
     expect(textAt(doorIndex + 1)).toContain('무슨 일인가?');
     expect(textAt(doorIndex + 2)).toContain('젖은 청원서');
-    expect(asRecord(actions[doorIndex]?.say).camera).toBe('wide');
+    expect(asRecord(actions[doorIndex]?.say).camera).toBe('medium');
     expect(asRecord(actions[doorIndex]?.say).with).toEqual(['진평왕', '덕만', '칠숙']);
     expect(asRecord(actions[doorIndex + 1]?.say).with).toEqual(['덕만', '칠숙']);
     expect(kingPlacements).toHaveLength(1);

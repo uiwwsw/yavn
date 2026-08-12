@@ -5,7 +5,7 @@ scenes:
   final_open:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - effect: focus
       - char:
           id: 덕만
@@ -121,7 +121,7 @@ scenes:
   opening_seal_legacy:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -152,7 +152,7 @@ scenes:
   opening_broken_seal_legacy:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -210,7 +210,7 @@ scenes:
   opening_joint:
     actions:
       - bg: village
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -257,7 +257,7 @@ scenes:
   opening_gates:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -298,7 +298,7 @@ scenes:
   opening_witnesses:
     actions:
       - bg: village
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -345,7 +345,7 @@ scenes:
   early_reign_bridge:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -413,7 +413,7 @@ scenes:
   proof_choice:
     actions:
       - bg: fortress
-      - camera: wide
+      - camera: medium
       - effect: alarm
       - char:
           id: 덕만
@@ -534,7 +534,7 @@ scenes:
   proof_people:
     actions:
       - bg: village
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -581,7 +581,7 @@ scenes:
   proof_evidence:
     actions:
       - bg: fortress
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -628,7 +628,7 @@ scenes:
   proof_army:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -675,7 +675,7 @@ scenes:
   pagoda_bridge:
     actions:
       - bg: title_palace
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -757,7 +757,7 @@ scenes:
   crown_assessment:
     actions:
       - bg: title_palace
-      - camera: wide
+      - camera: medium
       - effect: crown
       - say:
           delivery: calm
@@ -832,7 +832,7 @@ scenes:
   crown_choice:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - effect: alarm
       - char:
           id: 덕만
@@ -864,7 +864,7 @@ scenes:
             - 덕만
           text: "여왕은 나라를 못 다스린다 합니다."
       - bg: fortress
-      - camera: wide
+      - camera: medium
       - char:
           id: 비담
           position: center
@@ -895,7 +895,7 @@ scenes:
   bidam_warning_remembered:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -931,7 +931,7 @@ scenes:
   bidam_silence_remembered:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -981,7 +981,7 @@ scenes:
   crown_choice_sister_trusted:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1019,7 +1019,7 @@ scenes:
   crown_choice_sister:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1049,7 +1049,7 @@ scenes:
   crown_choice_memory:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1088,7 +1088,7 @@ scenes:
   crown_choice_report:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1292,7 +1292,7 @@ scenes:
   ending_true:
     actions:
       - bg: fortress
-      - camera: wide
+      - camera: medium
       - effect: embers
       - char:
           id: 유신
@@ -1346,7 +1346,7 @@ scenes:
   ending_true_sister:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1388,7 +1388,7 @@ scenes:
   ending_true_memory:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1435,7 +1435,7 @@ scenes:
   ending_true_final:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1484,7 +1484,7 @@ scenes:
   ending_tyrant:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - effect: darken
       - char:
           id: 덕만
@@ -1519,7 +1519,7 @@ scenes:
   ending_permitted:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1553,7 +1553,7 @@ scenes:
   ending_queen_consort:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1587,7 +1587,7 @@ scenes:
   ending_abdicated:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1621,7 +1621,7 @@ scenes:
   ending_people:
     actions:
       - bg: village
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1661,7 +1661,7 @@ scenes:
   ending_lonely:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - effect: darken
       - char:
           id: 덕만
@@ -1691,7 +1691,7 @@ scenes:
   ending_one_step:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - effect: impact
       - char:
           id: 덕만
@@ -1717,7 +1717,7 @@ scenes:
   ending_vanished:
     actions:
       - bg: moon_court
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1755,7 +1755,7 @@ scenes:
   ending_broken:
     actions:
       - bg: fortress
-      - camera: wide
+      - camera: medium
       - effect: alarm
       - char:
           id: 덕만
@@ -1790,7 +1790,7 @@ scenes:
   go_34_empty_council:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1836,7 +1836,7 @@ scenes:
   go_35_fathers_lie:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left

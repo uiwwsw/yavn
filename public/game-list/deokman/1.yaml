@@ -6,7 +6,7 @@ scenes:
   chapter1_open:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right
@@ -35,7 +35,7 @@ scenes:
           position: center
       - say:
           char: 칠숙.smile
-          camera: wide
+          camera: medium
           with: [진평왕, 덕만]
           text: "죽은 악사의 품에서 나왔습니다."
       - say:
@@ -89,7 +89,7 @@ scenes:
           delivery: calm
           text: "<speed=19>왕은 증거를 기다려야 한다.</speed>"
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -267,7 +267,7 @@ scenes:
   investigate_kitchen:
     actions:
       - bg: banquet_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -313,7 +313,7 @@ scenes:
   investigate_archive:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -366,7 +366,7 @@ scenes:
   rumor_choice:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -435,7 +435,7 @@ scenes:
   rumor_baekje:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -461,7 +461,7 @@ scenes:
   rumor_king:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right
@@ -495,7 +495,7 @@ scenes:
   rumor_witness:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -532,7 +532,7 @@ scenes:
   evidence_choice:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -601,7 +601,7 @@ scenes:
   evidence_king:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right
@@ -641,7 +641,7 @@ scenes:
   evidence_reverse:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -681,7 +681,7 @@ scenes:
   chapter1_end:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -729,7 +729,7 @@ scenes:
   go_07_guard_revolt:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -757,7 +757,7 @@ scenes:
           with: [덕만]
           text: "결백한 자까지 등을 돌릴 겁니다."
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: center
@@ -779,7 +779,7 @@ scenes:
   go_08_waiting_room:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -822,7 +822,7 @@ scenes:
   go_09_false_heir:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진평왕
           position: right
@@ -848,7 +848,7 @@ scenes:
           position: center
       - say:
           char: 칠숙.smile
-          camera: wide
+          camera: medium
           with: [진평왕, 덕만]
           text: "벌써 공주를 왕이라 부릅니다."
       - say:
@@ -864,7 +864,7 @@ scenes:
   go_10_right_without_proof:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -906,7 +906,7 @@ scenes:
   go_11_innocent_exile:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
