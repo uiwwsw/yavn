@@ -33,6 +33,7 @@ const MEDIUM_SCALE_BY_CAST = [1.72, 1.72, 1.58, 1.38] as const;
 const REACTION_SCALE_BY_CAST = [1.9, 1.9, 1.72, 1.55] as const;
 
 export type StageCameraPresentation = {
+  shot: CameraShot;
   scale: number;
   mobileScale: number;
   originY: number;
@@ -142,19 +143,23 @@ export function resolveStageCameraPresentation(
   targetPosition: Position | undefined,
   layout: CharacterStageLayout,
   targetSpacing = 1,
+  soloPosition?: Position,
 ): StageCameraPresentation {
   const hasCharacterTarget = camera.target !== 'group' && targetPosition !== undefined;
-  const panX = hasCharacterTarget
-    ? resolveCharacterStagePlacement(targetPosition, layout, targetSpacing).panToCenterX
-    : '0px';
-  const mobilePanX = hasCharacterTarget
-    ? resolveMobileCameraPan(targetPosition, layout)
-    : '0px';
   const presentationShot = (camera.shot === 'close' || camera.shot === 'reaction') && !hasCharacterTarget
     ? 'medium'
     : camera.shot;
+  const compositionTargetPosition = targetPosition
+    ?? (presentationShot !== 'wide' && visibleCharacterCount === 1 ? soloPosition : undefined);
+  const panX = compositionTargetPosition
+    ? resolveCharacterStagePlacement(compositionTargetPosition, layout, targetSpacing).panToCenterX
+    : '0px';
+  const mobilePanX = compositionTargetPosition
+    ? resolveMobileCameraPan(compositionTargetPosition, layout)
+    : '0px';
 
   return {
+    shot: presentationShot,
     scale: resolveShotScale(presentationShot, visibleCharacterCount),
     mobileScale: resolveMobileShotScale(presentationShot, visibleCharacterCount),
     originY: presentationShot === 'wide' ? 50 : visibleCharacterCount <= 1 ? 0 : 23,

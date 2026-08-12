@@ -64,10 +64,10 @@ export function resolveCharacterStagePlacement(
   }
 
   if (position === 'left') {
-    return { anchorX: '8cqw', offsetX: '0%', panToCenterX: '42cqw' };
+    return { anchorX: '25cqw', offsetX: '-50%', panToCenterX: '25cqw' };
   }
   if (position === 'right') {
-    return { anchorX: '92cqw', offsetX: '-100%', panToCenterX: '-42cqw' };
+    return { anchorX: '75cqw', offsetX: '-50%', panToCenterX: '-25cqw' };
   }
   return { anchorX: '50cqw', offsetX: '-50%', panToCenterX: '0px' };
 }
@@ -85,8 +85,8 @@ export function resolveMobileCameraPan(
     if (position === 'left') return '35cqw';
     if (position === 'right') return '-35cqw';
   }
-  if (position === 'left') return '42cqw';
-  if (position === 'right') return '-42cqw';
+  if (position === 'left') return '25cqw';
+  if (position === 'right') return '-25cqw';
   return '0px';
 }
 

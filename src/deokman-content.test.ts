@@ -15,6 +15,16 @@ const cameraShot = (value: unknown): string => {
   if (typeof value === 'string') return value;
   return String(asRecord(value).shot ?? '');
 };
+const readExtendedWebpCanvas = (path: string): { width: number; height: number; hasAlpha: boolean } => {
+  const source = readFileSync(path);
+  expect(source.toString('ascii', 0, 4), path).toBe('RIFF');
+  expect(source.toString('ascii', 8, 16), path).toBe('WEBPVP8X');
+  return {
+    width: source.readUIntLE(24, 3) + 1,
+    height: source.readUIntLE(27, 3) + 1,
+    hasAlpha: (source[20] & 0x10) !== 0,
+  };
+};
 
 const collectKey = (value: unknown, key: string, result: unknown[] = []): unknown[] => {
   if (Array.isArray(value)) {
@@ -99,7 +109,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.3.0');
+    expect(config.version).toBe('5.3.1');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -777,6 +787,14 @@ describe('Deokman complete-game content', () => {
       Object.keys(emotions).forEach((emotion) => {
         expect(spokenCharacters.has(`${name}.${emotion}`), `${name}.${emotion}`).toBe(true);
       });
+      const portraitCanvases = [character.base, ...Object.values(emotions)].map((path) =>
+        readExtendedWebpCanvas(`${gameRoot}${String(path)}`),
+      );
+      expect(portraitCanvases.every(({ hasAlpha }) => hasAlpha), name).toBe(true);
+      const widths = portraitCanvases.map(({ width }) => width);
+      const heights = portraitCanvases.map(({ height }) => height);
+      expect(Math.max(...widths) - Math.min(...widths), name).toBeLessThanOrEqual(2);
+      expect(Math.max(...heights) - Math.min(...heights), name).toBeLessThanOrEqual(2);
     });
     expect(nativeFacings).toEqual(new Set(['left', 'right']));
   });

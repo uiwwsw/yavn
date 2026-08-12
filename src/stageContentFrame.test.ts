@@ -41,9 +41,11 @@ describe('responsive stage content frame', () => {
   });
 
   it('sizes static and Live2D characters from the play frame instead of the viewport', () => {
-    expect(styles).toContain('--char-image-width: min(40cqw, 560px);');
-    expect(styles).toContain('--char-live2d-width: min(36cqw, 460px);');
+    expect(styles).toContain('--char-image-width: min(40cqw, 52cqh);');
+    expect(styles).toContain('--char-live2d-width: min(36cqw, 52cqh);');
+    expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?height: auto;[\s\S]*?max-height: 100cqh;/);
     expect(styles).not.toContain('--char-image-width: min(40vw, 560px);');
+    expect(styles).not.toMatch(/--char-image-width: min\([^;]+, [0-9]+px\)/);
   });
 
   it('measures sticker avoidance inside the centered frame without moving the character stage', () => {

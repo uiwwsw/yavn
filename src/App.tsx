@@ -1796,14 +1796,18 @@ export default function App() {
   const cameraTargetSpacing = visibleCharactersByPosition.find(
     (entry) => entry.slot.id === effectiveCameraTargetId,
   )?.slot.calibration.spacing ?? 1;
+  const soloCharacterPosition = visibleCharacterCount === 1
+    ? visibleCharactersByPosition[0]?.position
+    : undefined;
   const cameraPresentation = resolveStageCameraPresentation(
     camera,
     visibleCharacterCount,
     cameraTargetPosition,
     characterStageLayout,
     cameraTargetSpacing,
+    soloCharacterPosition,
   );
-  const focusCharacterId = (camera.shot === 'close' || camera.shot === 'reaction') && effectiveCameraTargetId
+  const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialog.speakerId;
   const cameraStyle = {
@@ -3207,7 +3211,8 @@ export default function App() {
         className={`char-layer${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
         data-character-layout={characterStageLayout.mode}
         data-character-count={visibleCharacterCount}
-        data-camera-shot={camera.shot}
+        data-camera-shot={cameraPresentation.shot}
+        data-camera-requested-shot={camera.shot}
       >
         <div
           className="char-camera-world"
