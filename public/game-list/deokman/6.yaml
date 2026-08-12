@@ -17,7 +17,7 @@ scenes:
           text: "제6장 — 아버지 없는 아침"
       - say:
           delivery: calm
-          text: "같은 밤, 631년 겨울 · 진평왕 53년의 마지막 밤."
+          text: "같은 밤, 631년 겨울. 진평왕 53년의 마지막 밤이었습니다."
       - say:
           with: [덕만, 천명]
           delivery: calm
@@ -27,7 +27,7 @@ scenes:
           text: "진운을 노린 매복이 실패한 지 몇 시간 뒤였습니다."
       - say:
           with: [덕만]
-          text: "칠숙은 훔친 왕의 도장으로 덕만을 역적이라 적었습니다."
+          text: "체포령에는 덕만이 왕을 해치려 한 역적이라 적혀 있었습니다."
       - say:
           with: [덕만, 천명]
           text: "진평왕은 약방에서 나온 독에 쓰러졌습니다."
@@ -149,7 +149,7 @@ scenes:
           text: "월명은 약방 뒤 수로 입구에서 기다리고 있었습니다."
       - say:
           with: [덕만, 월명]
-          text: "왕에게 쓰였어야 할 약 냄새가 검은 물을 따라 흘렀습니다."
+          text: "수로의 검은 물에서는 왕이 먹는 약 냄새가 났습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -184,7 +184,7 @@ scenes:
           char: 덕만
           camera: close
           with: [월명]
-          text: "숨은 짧게 쉬겠습니다."
+          text: "숨이 차도 참겠습니다."
       - goto: rescue_choice
 
   entry_procession:
@@ -198,7 +198,7 @@ scenes:
           id: 덕만
           position: left
       - say:
-          text: "덕만은 천명의 가마 밑 가로대에 붙었습니다."
+          text: "덕만은 천명의 가마 밑 가로대에 몸을 붙였습니다."
       - say:
           char: 천명
           camera: medium
@@ -222,7 +222,7 @@ scenes:
       - say:
           text: "창끝이 휘장을 들췄습니다."
       - say:
-          text: "천명이 발로 덕만 신발을 치마 밑에 숨겼습니다."
+          text: "천명이 발로 덕만의 신발을 치마 밑에 숨겼습니다."
       - say:
           char: 천명.nervous
           camera: close
@@ -235,7 +235,7 @@ scenes:
           char: 덕만
           camera: close
           with: [천명]
-          text: "언니 손 잡고 나올게요."
+          text: "언니 손을 잡고 나올게요."
       - goto: rescue_choice
 
   entry_prison:
@@ -298,7 +298,7 @@ scenes:
           id: 유신
           position: right
       - say:
-          text: "궁 안에 들자 왕의 약종이 세 번 울렸습니다."
+          text: "궁 안에 들자 왕의 위급을 알리는 약방 종이 세 번 울렸습니다."
       - say:
           text: "종루엔 천명의 붉은 천이 거꾸로 걸렸습니다."
       - say:
@@ -317,7 +317,7 @@ scenes:
           char: 덕만.sad
           camera: medium
           with: [유신]
-          text: "아버지, 언니, 기록."
+          text: "아버지와 언니, 기록 창고까지……."
       - say:
           char: 유신.sad
           camera: close
@@ -327,10 +327,10 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "아뇨. 놓치는 것도 제 명령입니다."
+          text: "아뇨. 제가 고르겠습니다."
       - say:
           with: [덕만, 유신]
-          text: "약종과 붉은 천, 불붙은 종이 가운데 어느 것도 다음 신호를 보장하지 않았습니다."
+          text: "약방 종은 멎고 붉은 천은 불길에 가려졌습니다. 어느 곳도 더 기다릴 수 없었습니다."
       - choice:
           key: c6_rescue
           prompt: "먼저 누구에게 갈까?"
@@ -365,7 +365,7 @@ scenes:
           text: "덕만은 다른 두 길을 뒤로하고 왕의 방으로 달렸습니다."
       - say:
           with: [덕만, 월명]
-          text: "월명은 문을 막은 병사를 피해 진평왕의 맥을 붙들고 있었습니다."
+          text: "월명은 문을 막은 병사를 피해 진평왕의 손목을 짚고 있었습니다."
       - say:
           char: 월명.sad
           camera: medium
@@ -484,7 +484,7 @@ scenes:
           char: 비담.sad
           camera: close
           with: [덕만]
-          text: "결과가 달랐을지는 모릅니다."
+          text: "공주님이 오셨어도 천명 공주님을 살렸을지는 모릅니다."
       - say:
           char: 덕만.sad
           camera: medium
@@ -551,7 +551,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [비담]
-          text: "쓰는 순간 저도 훔친 힘을 빌리죠."
+          text: "그 도장을 쓰면 저도 칠숙처럼 가짜 왕명을 만드는 겁니다."
       - set: { has_royal_seal: true }
       - goto: seal_choice
 
@@ -638,7 +638,7 @@ scenes:
           char: 덕만.angry
           camera: close
           with: [칠숙]
-          text: "사람과 증거로 나가죠."
+          text: "도장 없이도 따를 사람이 있고, 내놓을 증거가 있습니다."
       - goto: kings_last_words
 
   seal_break:
@@ -667,12 +667,12 @@ scenes:
           char: 비담
           camera: close
           with: [덕만]
-          text: "이제 명령이 안 들을 수도 있습니다."
+          text: "이제 군사들이 어느 명령을 따라야 할지 모를 겁니다."
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "그럼 말로 설득하죠."
+          text: "그럼 제가 직접 나가 말하겠습니다."
       - set: { has_royal_seal: false }
       - goto: kings_last_words
 
@@ -688,7 +688,7 @@ scenes:
           position: left
       - say:
           delivery: calm
-          text: "날이 바뀌기 직전. 왕의 방엔 부녀만 남았습니다."
+          text: "날이 바뀌기 직전, 왕의 방에는 아버지와 딸만 남았습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -713,22 +713,22 @@ scenes:
           char: 덕만.sad
           camera: medium
           with: [진평왕]
-          text: "계속 다른 사람부터 골랐어요."
+          text: "아버지께 오는 길에도 다른 사람부터 구했어요."
       - say:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "그게 네 답이었지."
+          text: "그래서 네가 여기까지 온 게다."
       - say:
           char: 덕만.sad
           camera: close
           with: [진평왕]
-          text: "무슨 답이요?"
+          text: "제가 사람을 구할 때마다 왕을 보셨어요?"
       - say:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "굶는 사람 앞에서 창고를 여는 답."
+          text: "굶는 아이를 보고 창고를 열던 날부터 그랬다."
       - say:
           char: 진평왕.weak
           camera: close
@@ -790,10 +790,10 @@ scenes:
           position: right
       - say:
           delivery: calm
-          text: "632년 정월 · 아침. 왕의 죽음이 귀족 회의인 화백에 전해졌습니다."
+          text: "632년 정월 아침, 높은 귀족들이 나라의 앞날을 정하는 화백회의가 열렸습니다."
       - say:
           with: [덕만, 칠숙]
-          text: "화백은 높은 귀족들이 나라의 큰일을 함께 정하는 자리였습니다."
+          text: "그들의 뜻이 모이지 않으면 누구도 왕좌에 오를 수 없었습니다."
       - say:
           with: [덕만, 칠숙]
           text: "덕만에게는 귀족들의 표가 필요했습니다."
@@ -814,22 +814,22 @@ scenes:
           text: "제 이름으로 왔습니다."
       - say:
           with: [덕만, 칠숙]
-          text: "덕만은 검은 독가루와 혼인 합의서, 남자 왕 약속문을 화백 앞에 차례로 놓았습니다."
+          text: "덕만은 독가루와 혼인 합의서, 남자 왕족을 세우려 한 밀약서를 차례로 내놓았습니다."
       - say:
           char: 덕만
           camera: medium
           with: [칠숙]
-          text: "첫째, 제 손에 독을 묻힌 가루."
+          text: "첫째, 제 손에 묻혀 범인으로 만들려 한 독가루."
       - say:
           char: 덕만
           camera: medium
           with: [칠숙]
-          text: "둘째, 혼인으로 입을 막은 합의서."
+          text: "둘째, 혼인으로 제 입을 막으려 한 합의서."
       - say:
           char: 덕만
           camera: medium
           with: [칠숙]
-          text: "셋째, 남자 왕을 세운다는 약속문."
+          text: "셋째, 남자 왕족을 세우기로 한 밀약서."
       - say:
           char: 칠숙.smile
           camera: close
@@ -839,12 +839,12 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "세 봉인의 흠집이 모두 같습니다."
+          text: "세 문서에 찍힌 도장의 흠집이 모두 같습니다."
       - say:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "이찬의 관인과도 같고요."
+          text: "칠숙공의 도장과도 같습니다."
       - say:
           char: 칠숙.angry
           camera: close
@@ -898,7 +898,7 @@ scenes:
           char: 진운
           camera: close
           with: [덕만]
-          text: "제 표는 덕만공주께 드립니다."
+          text: "제 표는 덕만 공주께 드립니다."
       - goto: coronation_finish
 
   jinun_votes_against_chilsuk:
@@ -930,12 +930,12 @@ scenes:
           char: 진운
           camera: close
           with: [덕만]
-          text: "하지만 팔린 왕관은 쓰지 않겠습니다."
+          text: "하지만 협박과 빚으로 얻은 왕좌에는 앉지 않겠습니다."
       - say:
           char: 진운
           camera: close
           with: [덕만]
-          text: "제 표는 덕만공주께 드립니다."
+          text: "제 표는 덕만 공주께 드립니다."
       - say:
           char: 진운
           camera: close
@@ -965,7 +965,7 @@ scenes:
           text: "없앨 생각 없습니다. 겁내진 않겠습니다."
       - say:
           with: [덕만, 칠숙]
-          text: "칠숙은 이찬의 관모와 칼을 빼앗긴 채 화백 밖으로 끌려갔습니다."
+          text: "칠숙은 이찬의 관모와 칼을 빼앗긴 채 회의장 밖으로 끌려갔습니다."
       - char:
           id: 유신
           position: right
@@ -999,7 +999,7 @@ scenes:
           text: "<speed=18>신라의 왕이다.</speed>"
       - say:
           delivery: calm
-          text: "632년 정월. 덕만은 선덕왕이 되었습니다."
+          text: "632년 정월, 덕만은 선덕왕이 되었습니다."
       - say:
           char: 덕만
           camera: close
@@ -1045,7 +1045,7 @@ scenes:
           char: 유신.sad
           camera: medium
           with: [덕만]
-          text: "우리 열일곱, 궁군 아홉이 죽었습니다."
+          text: "우리 군사 열일곱, 궁군 아홉이 죽었습니다."
       - char:
           id: 칠숙
           position: right
@@ -1135,7 +1135,7 @@ scenes:
           with: [덕만]
           text: "아니면 도장이 유언입니까?"
       - say:
-          text: "첫 북은 울렸지만 둘째 북은 울리지 않았습니다."
+          text: "새 왕을 알리는 첫 북만 울리고, 둘째 북은 끝내 이어지지 않았습니다."
       - say:
           text: "정오, 진운을 따르는 군사가 왕좌를 에워쌌습니다."
       - say:
@@ -1146,4 +1146,4 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 33 — 울리지 않은 북"
-          message: "덕만의 첫 왕위는 반나절 만에 끝났습니다."
+          message: "덕만은 왕위에 오른 지 반나절 만에 쫓겨났습니다."

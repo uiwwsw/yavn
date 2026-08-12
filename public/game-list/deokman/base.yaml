@@ -116,19 +116,19 @@ state:
 inventory:
   black_powder:
     name: "검은 독가루"
-    description: "왕의 잔이 아니라 덕만의 손에 묻도록 설계된 독의 잔여물. 누명을 위한 독이었다."
+    description: "왕의 잔에 넣기 전, 덕만의 손에 묻혀 범인으로 만들려 했던 독가루."
     image: assets/items/black-powder.svg
     category: "증거"
     order: 10
   marriage_pact:
     name: "혼인 합의서"
-    description: "서로 다른 귀족 가문이 같은 혼담에 서로 다른 대가를 약속받았음을 보여 주는 문서."
+    description: "같은 혼인을 두고 세 귀족 가문에 서로 다른 대가를 약속한 사실이 적힌 문서."
     image: assets/items/marriage-pact.svg
     category: "증거"
     order: 20
   oath_fragment:
-    name: "남자 왕 약속문 조각"
-    description: "남성 왕족을 앞세워 왕위를 다루려는 비밀 모임의 도장과 이름이 남아 있다."
+    name: "남자 왕족 추대 밀약"
+    description: "남자 왕족을 왕위에 세우기로 뜻을 모은 귀족들의 도장과 이름이 남은 문서 조각."
     image: assets/items/oath-fragment.svg
     category: "증거"
     order: 30

@@ -13,19 +13,19 @@ scenes:
           text: "서장 — 왕관에는 주인이 없다"
       - say:
           delivery: calm
-          text: "이 작품은 역사에 남은 인물과 사건 위에 상상을 더한 이야기입니다."
+          text: "이 이야기는 역사에 기록된 인물과 사건을 바탕으로 상상해 쓴 작품입니다."
       - say:
           delivery: calm
           text: "서기 631년 늦봄, 진평왕 53년."
       - say:
           delivery: calm
-          text: "왕실 제사와 연회를 하루 앞둔 오후. 비가 신라의 수도 월성을 적셨습니다."
+          text: "왕실 제사와 연회를 하루 앞둔 오후, 신라의 수도 월성에는 비가 내렸습니다."
       - say:
           delivery: calm
-          text: "진평왕에게는 두 딸뿐이었습니다."
+          text: "진평왕에게는 딸 둘만 있고, 아들은 없었습니다."
       - say:
           delivery: calm
-          text: "신라의 왕좌에는 아직 여자 이름이 오른 적이 없었습니다."
+          text: "그때까지 신라의 왕좌에 여자 이름이 오른 적은 없었습니다."
       - bg: throne_hall
       - camera: wide
       - effect: focus
@@ -44,18 +44,18 @@ scenes:
             - 덕만
             - 칠숙
           delivery: calm
-          text: "왕좌전의 낮은 탁자에는 왕실 제사 순서와 굶주린 세 마을의 글이 함께 놓여 있었습니다."
+          text: "탁자에는 이튿날 제사에 쓸 축문과 주인 없는 방석 하나가 놓여 있었습니다."
       - say:
           with:
             - 칠숙
             - 덕만
-          text: "칠숙은 굶주린 사람들의 글보다 먼저, 비어 있는 왕자의 자리를 가리켰습니다."
+          text: "칠숙은 왕자에게 비워 둔 방석을 가리켰습니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with:
             - 진평왕
-          text: "전하. 왕자께서 설 자리가 비었습니다."
+          text: "전하. 왕자께서 앉으실 자리가 비어 있습니다."
       - say:
           char: 진평왕
           camera: medium
@@ -131,7 +131,7 @@ scenes:
             - 진평왕
             - 덕만
             - 칠숙
-          text: "관리가 내민 젖은 청원서에는 세 마을의 이름이 적혀 있었습니다."
+          text: "관리가 젖은 청원서를 펼쳤습니다. 세 마을에서 곡식을 보내 달라는 글이었습니다."
       - say:
           char: 진평왕
           camera: medium
@@ -149,7 +149,7 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "내일은 왕실 제사입니다."
+          text: "내일 제사에 쓸 곡식도 모자랍니다."
       - say:
           char: 덕만
           camera: close
@@ -210,7 +210,7 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "또 아버지 답까지 먼저 해 버렸네."
+          text: "또 망설이지 않고 답해 버렸네."
       - say:
           char: 덕만
           camera: medium
@@ -259,7 +259,7 @@ scenes:
           with:
             - 덕만
           delivery: calm
-          text: "덕만은 세 마을의 글을 품고 왕의 방으로 향했습니다."
+          text: "덕만은 청원서를 품에 넣고 아버지에게 다시 보여 드리러 갔습니다."
       - say:
           with:
             - 덕만
@@ -301,13 +301,13 @@ scenes:
           with:
             - 칠숙
           delivery: neutral
-          text: "공주는 왕의 열두 걸음 뒤에 섭니다."
+          text: "공주는 왕보다 열두 걸음 뒤에 섭니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with:
             - 아진
-          text: "아버지에게 닿기 전에 막으십시오."
+          text: "왕께 닿기 전에 막으십시오."
       - say:
           char: 아진.nervous
           camera: medium
@@ -327,7 +327,7 @@ scenes:
           with:
             - 덕만
           delivery: whisper
-          text: "덕만은 숨을 죽였습니다."
+          text: "덕만은 놀란 숨을 삼켰습니다."
           wait: 450
       - say:
           with:
@@ -355,7 +355,7 @@ scenes:
           char: 덕만
           camera: close
           with: []
-          prompt: "대나무가 꺾였다. 발소리가 온다."
+          prompt: "들켰다. 발소리가 다가온다."
           options:
             - text: "길 잃은 척 나선다"
               add:
@@ -417,7 +417,7 @@ scenes:
           with:
             - 덕만
           delivery: neutral
-          text: "호위가 오려면 일곱 번 숨을 쉽니다."
+          text: "호위가 오기까지 일곱 번은 숨 쉬겠군요."
       - say:
           char: 덕만.angry
           camera: close
@@ -469,7 +469,7 @@ scenes:
           char: 덕만
           camera: close
           delivery: whisper
-          text: "혼자 막으면 모두 죽어."
+          text: "혼자 막으려다가는 모두 죽어."
       - say:
           char: 덕만
           camera: close
@@ -573,13 +573,13 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "하나는 죽은 자, 하나는 갓난아이입니다."
+          text: "죽은 사람과 갓난아이 이름도 하나씩 있습니다."
       - say:
           char: 덕만
           camera: medium
           with:
             - 유신
-          text: "우릴 엉뚱한 곳으로 보낼 미끼군요."
+          text: "거짓 명단이군요. 엉뚱한 사람을 쫓게 하려는 겁니다."
       - say:
           char: 유신
           camera: medium
@@ -607,7 +607,7 @@ scenes:
       - effect: embers
       - say:
           delivery: calm
-          text: "이튿날 아침. 왕실 연회가 시작됐습니다."
+          text: "이튿날 아침, 독이 든 잔을 올리기로 한 연회가 시작됐습니다."
           wait: 450
       - char:
           id: 진평왕
@@ -642,7 +642,7 @@ scenes:
           camera: close
           with:
             - 칠숙
-          text: "술병이 바뀔 때마다 세시던데."
+          text: "술병이 바뀔 때마다 손가락을 접으시던데요."
       - say:
           char: 칠숙.smile
           camera: close
@@ -791,12 +791,12 @@ scenes:
       - effect: focus
       - say:
           delivery: sad
-          text: "왕은 살았습니다. 잔을 나른 자는 죽었습니다."
+          text: "진평왕은 살았지만, 잔을 나른 악사는 그 자리에서 죽었습니다."
       - say:
           with:
             - 진평왕
             - 덕만
-          text: "죽은 자의 품에서 덕만의 노리개가 나왔습니다."
+          text: "숨진 악사의 품에서 덕만의 노리개가 나왔습니다."
       - say:
           char: 진평왕.sad
           camera: medium
@@ -833,13 +833,13 @@ scenes:
           camera: close
           with:
             - 진평왕
-          text: "제 이름의 독부터 닦겠습니다."
+          text: "제 누명을 벗기고, 진짜 범인을 찾겠습니다."
       - get: black_powder
       - set:
           clue_black_powder: true
       - say:
           delivery: calm
-          text: "연회가 끝날 무렵, 왕좌전 문에 목패가 걸렸습니다."
+          text: "연회가 끝날 무렵, 왕좌전 문에 덕만을 고발하는 목패가 걸렸습니다."
       - say:
           with:
             - 덕만
@@ -900,11 +900,11 @@ scenes:
       - say:
           text: "그는 덕만이 암살을 제안했다고 고했습니다."
       - say:
-          text: "정확한 기억이 한패라는 증거가 됐습니다."
+          text: "덕만이 들은 일을 자세히 말할수록, 칠숙은 둘이 한패였다는 증거라 우겼습니다."
           wait: 700
       - gameOver:
           title: "운명 01 — 들어 버린 문장"
-          message: "덕만은 암살 계획을 막기도 전에 한패로 몰렸습니다. 그녀가 죽은 뒤, 연회는 예정대로 열렸습니다."
+          message: "덕만은 암살을 막기도 전에 한패로 몰렸습니다. 덕만이 죽은 뒤에도 연회는 예정대로 열렸습니다."
   go_02_broken_moon:
     actions:
       - char:
@@ -1051,7 +1051,7 @@ scenes:
           wait: 700
       - gameOver:
           title: "운명 04 — 칠숙의 방"
-          message: "덕만은 칠숙의 속마음을 확인하려다 오히려 암살을 제안한 사람으로 몰렸습니다. 재판이 열리기도 전에 거짓 증언이 준비돼 있었습니다."
+          message: "덕만은 칠숙에게 따지러 갔다가 오히려 암살을 제안했다는 누명을 썼습니다. 재판 전부터 증언은 짜여 있었습니다."
   go_05_filial_cup:
     actions:
       - char:
@@ -1067,7 +1067,7 @@ scenes:
       - say:
           text: "덕만은 아버지의 잔을 빼앗아 비웠습니다."
       - say:
-          text: "연회장은 곧 효심을 칭송하는 소리로 찼습니다."
+          text: "연회장은 효심이 깊다며 덕만을 칭송하는 소리로 가득 찼습니다."
       - say:
           char: 진평왕
           camera: medium
@@ -1136,7 +1136,7 @@ scenes:
           char: 칠숙
           camera: medium
           with: [덕만]
-          text: "공주께선 알고 계신 얼굴입니다."
+          text: "공주께선 독을 알고 계셨던 모양입니다."
       - say:
           char: 칠숙
           camera: close
