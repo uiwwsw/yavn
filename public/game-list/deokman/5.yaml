@@ -25,7 +25,7 @@ scenes:
       - say:
           with: [덕만]
           wait: 700
-          text: "덕만이 수도로 돌아갈 준비를 하던 3일 동안, 국경 사람들은 빈 그릇마다 각자의 이름을 적었다."
+          text: "수도로 떠나기 전 3일 동안, 국경 사람들은 빈 그릇마다 자기 이름을 적었다."
       - say:
           with: [덕만]
           text: "귀족들은 돌아온 덕만보다 그를 따라온 빈 그릇들을 더 오래 바라봤다."
@@ -57,7 +57,7 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [진운]
-          text: "대신 절반은 이미 왕자라 부르고 있습니다."
+          text: "귀족들 중 절반은 이미 왕자라 부르고 있습니다."
       - say:
           wait: 750
           text: "칠숙의 하인이 낡은 비녀 하나를 진운 앞에 내려놓았다."
@@ -334,7 +334,7 @@ scenes:
           char: 덕만.angry
           camera: medium
           with: [비담]
-          text: "그 사람을 물건처럼 늘어놓지 마요."
+          text: "그 사람을 물건처럼 늘어놓지 마세요."
       - say:
           char: 비담.smirk
           camera: medium
@@ -344,7 +344,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "제가 칠숙과 같아지면 꼭 비웃어 줘요."
+          text: "제가 칠숙과 같아지면 꼭 비웃어 주세요."
       - say:
           char: 비담.sad
           camera: close
@@ -354,7 +354,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "그럼 이번만은 대가 없이 해 줘요."
+          text: "그럼 이번만은 대가 없이 해 주세요."
       - say:
           char: 비담.smirk
           camera: medium
@@ -370,7 +370,8 @@ scenes:
           camera: close
           with: [비담]
           wait: 850
-          text: "사람 하나를 없애고 왕이 되진 않겠습니다."
+          unskippable: true
+          text: "<speed=19>사람 하나를 없애고 왕이 되진 않겠습니다.</speed>"
       - say:
           char: 비담.sad
           camera: close
@@ -494,7 +495,7 @@ scenes:
     actions:
       - bg: frontier
       - camera: medium
-      - effect: alarm
+      - effect: pulse
       - char:
           id: 덕만
           position: left
@@ -591,7 +592,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [진운]
-          text: "그래서 방패도 들고 왔습니다."
+          text: "그래서 방패도 가져왔습니다."
       - say:
           char: 진운.nervous
           camera: close
@@ -602,7 +603,7 @@ scenes:
           camera: close
           with: [진운]
           wait: 850
-          text: "저도 떨려요. 그러니 이걸 같이 잡아요."
+          text: "저도 떨려요. 방패부터 같이 잡아요."
       - goto: chapter5_end
 
   rescue_yushin:
@@ -713,7 +714,7 @@ scenes:
       - say:
           delivery: calm
           wait: 800
-          text: "그날 밤, 왕이 위독하다는 종이 쉬지 않고 세 번 울렸다."
+          text: "그날 밤, 왕이 위독하다는 종이 다급하게 세 번 울렸다."
       - say:
           char: 천명.nervous
           camera: medium

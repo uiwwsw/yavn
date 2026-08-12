@@ -63,7 +63,7 @@ scenes:
           with:
             - 칠숙
           wait: 550
-          text: "내게는 아들이 없다."
+          text: "내게 아들은 없다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -163,7 +163,7 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "네가 왕이라면 어떻게 하겠어?"
+          text: "네가 왕이라면 어떻게 하겠느냐?"
       - say:
           char: 덕만
           camera: close
@@ -181,7 +181,7 @@ scenes:
           camera: close
           with:
             - 칠숙
-          text: "내 명령이다. 지금 창고를 열어라."
+          text: "내 명령이다. 해가 지기 전에 창고를 열어라."
       - say:
           char: 덕만
           camera: close
@@ -194,7 +194,7 @@ scenes:
           camera: close
           with:
             - 덕만
-          text: "이제 백성들도 공주님을 다음 왕으로 보겠군요."
+          text: "오늘 창고를 연 분이 누구인지 모두 기억하겠군요."
       - bg: moon_court
       - camera: medium
       - char:
@@ -220,7 +220,7 @@ scenes:
           camera: medium
           with:
             - 천명
-          text: "망설이면 덜 굶어?"
+          text: "망설인다고 덜 굶어?"
       - say:
           char: 천명.sad
           camera: close
@@ -307,7 +307,7 @@ scenes:
           camera: medium
           with:
             - 아진
-          text: "내일, 전하께서 두 번째 술잔을 드시면 쓰러집니다."
+          text: "내일, 전하께서 두 번째 잔을 드시면 쓰러지실 겁니다."
           wait: 700
       - say:
           char: 아진
@@ -321,7 +321,7 @@ scenes:
           camera: medium
           with:
             - 아진
-          text: "왕께 닿기 전에 붙잡으십시오."
+          text: "공주가 전하께 닿기 전에 붙잡으십시오."
       - say:
           char: 아진.nervous
           camera: medium
@@ -403,7 +403,7 @@ scenes:
             - 아진
             - 칠숙
           delivery: nervous
-          text: "밤길이 낯설어 헤맸습니다."
+          text: "밤길이 낯설어 길을 잘못 들었습니다."
       - say:
           char: 아진
           camera: medium
@@ -582,7 +582,7 @@ scenes:
             - 천명
           delivery: whisper
           wait: 900
-          text: "……무서워. 아버지 손, 놓지 마."
+          text: "……무서워. 아버지 손을 놓지 마."
       - add:
           legitimacy: 1
       - goto: banquet_choice
@@ -690,27 +690,27 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "덕만아. 나한테 숨기는 게 있니?"
+          text: "덕만아. 내게 숨기는 것이 있느냐?"
           wait: 600
       - say:
           char: 덕만
           camera: medium
           with:
             - 진평왕
-          text: "조금만 더 모른 척해 주세요."
+          text: "조금만 더 모른 척해 주십시오."
       - say:
           char: 진평왕
           camera: medium
           with:
             - 덕만
-          text: "지금은 네 말을 믿으면 되는 거냐?"
+          text: "지금은 묻지 말고 널 믿어 달라는 뜻이냐?"
       - say:
           char: 덕만
           camera: close
           with:
             - 진평왕
           delivery: nervous
-          text: "이번 한 번만 제 눈을 믿어 주세요."
+          text: "예. 이번 한 번만 제 눈을 믿어 주십시오."
       - say:
           char: 진평왕
           camera: medium
@@ -730,6 +730,7 @@ scenes:
           with: [진평왕]
           delivery: whisper
           text: "지금이야. 더 늦으면 못 막아."
+      - effect: { name: pulse, wait: true }
       - choice:
           key: p_cup
           prompt: "두 번째 잔이 왕의 입술에 닿는다."
@@ -776,7 +777,7 @@ scenes:
       - say:
           char: 진평왕
           camera: medium
-          text: "잔을 치워라. 술을 따른 사람은 당장 잡아라."
+          text: "잔을 치워라. 술을 따른 사람도 당장 잡아라."
       - goto: prologue_survive
 
   cup_swap:
@@ -1072,7 +1073,7 @@ scenes:
           camera: close
           with: []
           text: "함정을 판 건 당신입니다."
-      - effect: alarm
+      - effect: pulse
       - say:
           char: 칠숙
           camera: medium
@@ -1105,7 +1106,7 @@ scenes:
       - say:
           char: 진평왕
           camera: medium
-          text: "덕만아. 왜 그랬어? 그 잔에 뭐가 있었어?"
+          text: "덕만아. 왜 그랬느냐? 그 잔에 무엇이 있었느냐?"
       - say:
           char: 덕만.sad
           camera: medium
@@ -1161,7 +1162,7 @@ scenes:
       - say:
           char: 진평왕
           camera: medium
-          text: "왜 그러니?"
+          text: "왜 그러느냐?"
       - effect: impact
       - say:
           text: "왕의 손에서 빈 잔이 떨어졌다."

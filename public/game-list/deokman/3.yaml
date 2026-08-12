@@ -34,7 +34,7 @@ scenes:
       - say:
           wait: 750
           text: "대답 대신 문 안에서 무거운 것이 쓰러지는 소리가 났다."
-      - effect: impact
+      - effect: { name: impact, wait: true }
       - say:
           text: "덕만이 문을 밀어젖히자, 기대어 있던 남자가 복도로 넘어졌다."
       - bg: princess_chamber
@@ -79,7 +79,7 @@ scenes:
           char: 덕만.sad
           camera: medium
           with: [소원]
-          text: "소원아, 넌 지금 빠져."
+          text: "소원아, 넌 지금이라도 빠져."
       - say:
           char: 소원.angry
           camera: close
@@ -247,7 +247,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "좋아요. 가장 수상한 흔적 하나부터 확인합시다."
+          text: "세 흔적이 서로 다른 곳을 가리키네요."
       - say:
           char: 유신
           camera: medium
@@ -257,7 +257,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "그러니까 가장 확실한 흔적 하나부터 따라갑시다."
+          text: "그럼 거짓말하기 어려운 흔적부터 보죠."
       - choice:
           key: c3_testimony
           prompt: "날이 밝기 전에 가장 수상한 흔적 하나를 확인한다."
@@ -339,7 +339,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "범인은 세 사람이 서로 의심하고 싸우길 바랐군요."
+          text: "서로를 의심하게 만들려 했군요."
       - say:
           char: 비담.smirk
           camera: close
@@ -507,7 +507,7 @@ scenes:
           char: 덕만
           camera: close
           with: [아진]
-          text: "처음부터 저를 믿으라고는 안 합니다."
+          text: "지금 저를 믿으라는 말은 아닙니다."
       - say:
           char: 아진.nervous
           camera: close
