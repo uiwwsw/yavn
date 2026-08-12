@@ -1777,14 +1777,13 @@ export default function App() {
   const visibleCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
     visibleCharacterSet.has(entry.slot.id));
   const characterStageLayout = resolveCharacterStageLayout(
-    stagedCharactersByPosition.map((entry) => ({
+    visibleCharactersByPosition.map((entry) => ({
       id: entry.slot.id,
       position: entry.position,
     })),
     previousCharacterStageLayoutRef.current,
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
-  const stagedCharacterCount = stagedCharactersByPosition.length;
   const requestedCameraTargetId = camera.target === 'group' ? undefined : camera.target;
   const visibleCameraTargetId = requestedCameraTargetId && visibleCharacterSet.has(requestedCameraTargetId)
     ? requestedCameraTargetId
@@ -2396,7 +2395,7 @@ export default function App() {
       isSpeaker,
       hasFocusedSpeaker,
     );
-    const framingScale = resolveCharacterFramingScale(slot.framing.scale, stagedCharacterCount);
+    const framingScale = resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount);
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
