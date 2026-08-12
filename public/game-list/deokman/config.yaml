@@ -1,9 +1,9 @@
 title: "덕만: 왕관에는 주인이 없다"
 author:
   name: "uiwwsw"
-version: "3.2.2"
+version: "4.0.0"
 seo:
-  description: "죽을 운명을 고쳐 쓰며 신라 최초의 여왕이 되어야 하는 장편 궁중 정치 생존 비주얼노벨. 24개의 운명 선택과 35개의 실패 결말, 10개의 수집형 엔딩을 담았다."
+  description: "아버지를 살린 밤 암살범으로 몰린 덕만공주가 사랑과 권력, 오랜 질서의 칼날을 지나 누구도 허락하지 않은 왕이 되어 가는 8장 신라 궁중 정치극."
   keywords:
     - "선덕여왕"
     - "덕만"
@@ -23,7 +23,7 @@ startScreen:
   image: "assets/bg/title-palace-silla-v3.webp"
   showTitle: true
   titleColor: "#ffe0a3"
-  startButtonText: "운명을 시작한다"
+  startButtonText: "첫 장을 연다"
   buttonPosition: bottom-left
 endingScreen:
   image: "assets/bg/title-palace-silla-v3.webp"

@@ -55,6 +55,28 @@ describe('Deokman complete-game content', () => {
     expect(titles.at(-1)).toContain('운명 35');
   });
 
+  it('markets the central dramatic incident before props or branching mechanics', () => {
+    const launcher = readYaml('launcher.yaml');
+    const config = readYaml('config.yaml');
+    const summary = String(launcher.summary);
+    const showcase = asRecord(launcher.showcase);
+    const seo = asRecord(config.seo);
+
+    expect(summary).toContain('아버지를 살린 밤');
+    expect(summary).toContain('누구도 허락하지 않은 왕좌');
+    expect(summary).not.toMatch(/누룽지|선택|엔딩|\d+개/);
+    expect(showcase.label).toBe('8 CHAPTERS · ONE CROWN');
+    expect(launcher.tags).toEqual([
+      'historical-fiction',
+      'silla',
+      'character-drama',
+      'court-intrigue',
+      'political-thriller',
+    ]);
+    expect(String(seo.description)).toContain('암살범으로 몰린 덕만공주');
+    expect(String(seo.description)).not.toMatch(/선택|엔딩|\d+개/);
+  });
+
   it('defines ten collectible endings including the locked true ending line', () => {
     const config = readYaml('config.yaml');
     expect(Object.keys(asRecord(config.endings))).toHaveLength(10);
@@ -71,7 +93,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('3.2.2');
+    expect(config.version).toBe('4.0.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('아버지 상여부터 보내 주세요. 제가 왕이 되는 의식은 그 뒤에 하겠습니다');
@@ -80,11 +102,17 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('우리 전사자는 여든하나입니다');
     expect(allContent).toContain('미안하다는 말보다 먼저 저를 숨겨 주세요');
     expect(allContent).toContain('그렇게 말하면 더 가고 싶어지는 성격이라서요');
-    expect(allContent).toContain('저는 여인이 왕좌에 앉는 모습을 보고 싶지 않습니다');
+    expect(allContent).toContain('저는 천 년의 순서가 무너지는 날이라 부릅니다');
     expect(allContent).toContain('공주를 믿는 게 아니라, 다른 길이 없어서 갑니다');
     expect(allContent).toContain('오늘은 제 말이 바뀌어도 제 입으로 바꾸겠습니다');
     expect(allContent).toContain('마음이 아니라 계획을 묻는 겁니다');
+    expect(allContent).toContain('높은 분들은 증거만 보면 꼭 천부터 망치더라고요');
+    expect(allContent).toContain('잡으면 한 사람이고, 따라가면 한 무리입니다');
+    expect(allContent).toContain('그걸 어떻게 아느냐고는 묻지 마십시오. 저도 그러니까');
+    expect(allContent).toContain('네가 왜 왕이어야 하는지는 그날 네가 먼저 말했단다');
     expect(allContent).toContain('덕만은 가장 굵은 기둥 뒤로 몸을 붙였습니다');
+    expect(allContent).not.toContain('저는 여자가 왕이 되는 꼴을 보고 싶지 않습니다');
+    expect(allContent).not.toContain('공주만 조용히 사라지면 저는 원하는 남자 왕을 세울 수 있습니다');
     expect(allContent).not.toContain('참으로 고결하십니다');
     expect(allContent).not.toContain('대체 무엇을 왕관이라 부르십니까');
   });
@@ -125,7 +153,7 @@ describe('Deokman complete-game content', () => {
       '네가 태어난 날부터 내게는 네가 가장 귀했다',
       '나는 네 동생도 살리고, 너도 살리고 싶어',
       '이번에는 같이 들어가고 같이 나오는 거야',
-      '어느 쪽도 버리고 싶지 않습니다',
+      '그 원망까지 장군에게 주면 저는 지도 위에서 손가락만 움직인 사람이 됩니다',
       '‘원’ 자가 조금 뚱뚱합니다',
       '장부를 쥔 손에 힘이 풀렸습니다',
       '수도 출입패를 풀자 칠숙의 입꼬리가 먼저 올라갔습니다',
@@ -200,7 +228,7 @@ describe('Deokman complete-game content', () => {
 
     expect(characterPlacements).toHaveLength(221);
     characterPlacements.forEach((placement) => expect(placement.framing).toBeUndefined());
-    expect(speakerLines).toHaveLength(679);
+    expect(speakerLines).toHaveLength(695);
     speakerLines.forEach((say) => expect(['wide', 'medium', 'close']).toContain(say.camera));
     expect(new Set(speakerLines.map((say) => say.camera))).toEqual(new Set(['wide', 'medium', 'close']));
     choices.forEach((choice) => {
@@ -288,7 +316,7 @@ describe('Deokman complete-game content', () => {
 
     const prologue = sceneActions('0.yaml', 'prologue_open');
     expect(say(prologue, '내일 해가 막 오른 아침').with).toEqual(['아진']);
-    expect(say(prologue, '왕이 쓰러지면').with).toEqual(['칠숙']);
+    expect(say(prologue, '왕이 쓰러진 뒤').with).toEqual(['칠숙']);
     expect(say(prologue, '마른 대나무').with).toEqual(['덕만']);
     expect(asRecord(sceneActions('0.yaml', 'caught_choice')[0].choice).with).toEqual([]);
 
@@ -346,10 +374,10 @@ describe('Deokman complete-game content', () => {
 
   it('introduces relationships, motives, and costs before all 24 choices', () => {
     const contexts = [
-      ['0.yaml', 'prologue_open', 'p_caught', '저는 여자가 왕이 되는 꼴을 보고 싶지 않습니다'],
-      ['0.yaml', 'warn_choice', 'p_warn', '탁자 위에 네 가지를 놓았습니다'],
+      ['0.yaml', 'prologue_open', 'p_caught', '질문받는 자리가 쌓이면'],
+      ['0.yaml', 'warn_choice', 'p_warn', '떨리는 손에서 네 물건이 차례로'],
       ['0.yaml', 'banquet_choice', 'p_cup', '전하의 두 번째 잔은 제가 올리겠습니다'],
-      ['1.yaml', 'chapter1_open', 'c1_investigate', '부엌, 기록 창고, 호위 막사 가운데'],
+      ['1.yaml', 'chapter1_open', 'c1_investigate', '흔적 하나를 지웠습니다'],
       ['1.yaml', 'rumor_choice', 'c1_rumor', '아까 같은 거짓말을 두 나인에게'],
       ['1.yaml', 'evidence_choice', 'c1_evidence', '하인은 제가 지킬 수 있습니다'],
       ['2.yaml', 'chapter2_open', 'c2_suitor', '궁을 버리는 길에는 공주의 장수로'],
@@ -364,11 +392,11 @@ describe('Deokman complete-game content', () => {
       ['5.yaml', 'chapter5_open', 'c5_contest', '왕자가 아닙니다'],
       ['5.yaml', 'leverage_choice', 'c5_leverage', '그대는 내 신하가 아니라서 곁에 둔 사람이야'],
       ['5.yaml', 'rescue_choice', 'c5_rescue', '저를 살려도 왕위는 양보하지 않습니다'],
-      ['6.yaml', 'chapter6_open', 'c6_entry', '약초 끈을 따라가면 월명이 수로에서'],
+      ['6.yaml', 'chapter6_open', 'c6_entry', '전부 다른 사람 물건이야'],
       ['6.yaml', 'rescue_choice', 'c6_rescue', '아진이 빈 약 상자를 들고 달아났다는 보고가 있습니다'],
       ['6.yaml', 'seal_found', 'c6_seal', '어릴 때 한 번 들어 보고 너무 무거워'],
-      ['7.yaml', 'final_open', 'final_opening', '진운공과 함께 들어가면 그의 가문을 갈라놓을 수 있습니다'],
-      ['7.yaml', 'proof_choice', 'final_proof', '공주와 가까운 나인, 목숨을 빚진 살인자'],
+      ['7.yaml', 'final_open', 'final_opening', '어느 문부터 열까요'],
+      ['7.yaml', 'proof_choice', 'final_proof', '공주의 사람을 세워 공주가 옳다고'],
       ['7.yaml', 'crown_choice', 'final_crown', '귀족의 표를 받으시면 오늘 안에 왕이 될 수 있습니다'],
     ] as const;
 
@@ -400,7 +428,7 @@ describe('Deokman complete-game content', () => {
 
   it('shows each chapter premise through an enacted visual-novel episode instead of a setting summary', () => {
     const episodeAnchors = [
-      ['0.yaml', 'prologue_open', '네가 좋아하니 남겨 둔 것이다'],
+      ['0.yaml', 'prologue_open', '내가 답을 정해 놓고 묻는 얼굴이냐'],
       ['1.yaml', 'chapter1_open', '덕만의 연꽃 노리개가 굴러 나와 왕좌 아래에서 멈췄습니다'],
       ['2.yaml', 'chapter2_open', '혼인하면 공주는 나라일에 입을 열 수 없고 남편이 대신 말한다'],
       ['3.yaml', 'chapter3_open', '두 번째 어깨로 밀자 안쪽 빗장이 부러졌고'],
