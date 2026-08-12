@@ -60,8 +60,11 @@ import {
 } from './characterLayout';
 import type { CharacterStageLayout } from './characterLayout';
 import {
-  buildLauncherDemoHash,
+  buildLauncherDemoSharePath,
+  clearLauncherDemoSharePath,
+  normalizeLauncherDemoLocationPath,
   parseLauncherDemoHash,
+  parseLauncherDemoQuery,
   resolveInitialCarouselGameId,
   wrapCarouselIndex,
 } from './launcherCarousel';
@@ -173,7 +176,9 @@ type StartGateState =
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
+const LAUNCHER_SELECTION_SESSION_KEY = 'yavn-launcher-selected-game';
 const ALL_TAG_FILTER = '__all';
+const DEFAULT_VISIBLE_LAUNCHER_TAGS = 8;
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
@@ -495,6 +500,48 @@ function markStartGateSession(sessionKey: string): void {
   } catch {
     // Ignore sessionStorage failures and continue.
   }
+}
+
+function getStoredLauncherGameId(): string | null {
+  try {
+    return sessionStorage.getItem(LAUNCHER_SELECTION_SESSION_KEY)?.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+function storeLauncherGameId(gameId: string): void {
+  try {
+    sessionStorage.setItem(LAUNCHER_SELECTION_SESSION_KEY, gameId);
+  } catch {
+    // Keep the current in-memory selection when storage is unavailable.
+  }
+}
+
+async function copyTextToClipboard(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // Fall back to the temporary textarea path below.
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.readOnly = true;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  textarea.remove();
+  return copied;
+}
+
+function buildGameSourceUrl(repositoryUrl: string, gameId: string): string {
+  return `${repositoryUrl}/tree/main/public/game-list/${encodeURIComponent(gameId)}`;
 }
 
 function normalizeAssetLookupKey(path: string): string {
@@ -951,6 +998,8 @@ export default function App() {
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTag, setActiveTag] = useState(ALL_TAG_FILTER);
+  const [showAllLauncherTags, setShowAllLauncherTags] = useState(false);
+  const [launcherShareNotice, setLauncherShareNotice] = useState('');
   const [uploading, setUploading] = useState(false);
   const [startGate, setStartGate] = useState<StartGateState | null>(null);
   const [startGateLaunching, setStartGateLaunching] = useState(false);
@@ -987,8 +1036,11 @@ export default function App() {
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
   const gameListRequestIdRef = useRef(0);
   const launcherCarouselRef = useRef<HTMLDivElement | null>(null);
+  const launcherTagFilterRef = useRef<HTMLDivElement | null>(null);
   const launcherCarouselFrameRef = useRef<number | null>(null);
   const launcherCarouselPositionedRef = useRef(false);
+  const launcherShareNoticeTimerRef = useRef<number | null>(null);
+  const launcherShareGameIdRef = useRef<string | null>(null);
   const launcherCarouselDragRef = useRef<{
     pointerId: number;
     startX: number;
@@ -1071,11 +1123,22 @@ export default function App() {
       setGameListError(null);
       setGameListLoading(false);
       launcherCarouselPositionedRef.current = false;
+      const normalizedLocationPath = normalizeLauncherDemoLocationPath(
+        window.location.pathname,
+        window.location.search,
+        window.location.hash,
+        parsed.games.map((entry) => entry.id),
+      );
+      if (normalizedLocationPath) {
+        window.history.replaceState(window.history.state, '', normalizedLocationPath);
+      }
       setSelectedGameId((prev) =>
         resolveInitialCarouselGameId(
           parsed.games.map((entry) => entry.id),
           prev,
+          window.location.search,
           window.location.hash,
+          getStoredLauncherGameId(),
         ),
       );
     } catch (error) {
@@ -1281,11 +1344,18 @@ export default function App() {
   useEffect(() => {
     const preventDefault = (event: Event) => {
       const target = event.target as HTMLElement | null;
-      if (target) {
-        const tag = target.tagName.toLowerCase();
-        if (target.isContentEditable || tag === 'input' || tag === 'textarea') {
-          return;
-        }
+      if (!target?.closest('.app')) {
+        return;
+      }
+      const tag = target.tagName.toLowerCase();
+      if (
+        target.isContentEditable ||
+        tag === 'input' ||
+        tag === 'textarea' ||
+        tag === 'select' ||
+        Boolean(target.closest('a, button'))
+      ) {
+        return;
       }
       event.preventDefault();
     };
@@ -1323,13 +1393,15 @@ export default function App() {
   }, [game]);
 
   const allLauncherTags = useMemo(() => {
-    const tags = new Set<string>();
+    const tagCounts = new Map<string, number>();
     for (const entry of gameList) {
       for (const tag of entry.tags) {
-        tags.add(tag);
+        tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
       }
     }
-    return Array.from(tags).sort((a, b) => a.localeCompare(b, 'ko'));
+    return Array.from(tagCounts)
+      .sort(([tagA, countA], [tagB, countB]) => countB - countA || tagA.localeCompare(tagB, 'ko'))
+      .map(([tag]) => tag);
   }, [gameList]);
 
   useEffect(() => {
@@ -1340,6 +1412,19 @@ export default function App() {
       setActiveTag(ALL_TAG_FILTER);
     }
   }, [activeTag, allLauncherTags]);
+
+  const visibleLauncherTags = useMemo(() => {
+    if (showAllLauncherTags || allLauncherTags.length <= DEFAULT_VISIBLE_LAUNCHER_TAGS) {
+      return allLauncherTags;
+    }
+    const visible = allLauncherTags.slice(0, DEFAULT_VISIBLE_LAUNCHER_TAGS);
+    if (activeTag !== ALL_TAG_FILTER && !visible.includes(activeTag)) {
+      visible[visible.length - 1] = activeTag;
+    }
+    return visible;
+  }, [activeTag, allLauncherTags, showAllLauncherTags]);
+
+  const hiddenLauncherTagCount = Math.max(0, allLauncherTags.length - visibleLauncherTags.length);
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
   const filteredGames = useMemo(() => {
@@ -1375,6 +1460,53 @@ export default function App() {
   const manifestTimestampLabel = formatManifestTimestamp(manifestGeneratedAt);
   const gameListStatus = gameListLoading ? 'LOADING' : gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
 
+  useEffect(() => {
+    const nextGameId = selectedGame?.id ?? null;
+    if (launcherShareGameIdRef.current && launcherShareGameIdRef.current !== nextGameId) {
+      setLauncherShareNotice('');
+      if (launcherShareNoticeTimerRef.current !== null) {
+        window.clearTimeout(launcherShareNoticeTimerRef.current);
+        launcherShareNoticeTimerRef.current = null;
+      }
+    }
+    launcherShareGameIdRef.current = nextGameId;
+    if (nextGameId) {
+      storeLauncherGameId(nextGameId);
+    }
+  }, [selectedGame?.id]);
+
+  const clearLauncherDeepLinkFromAddress = useCallback(() => {
+    const hasQuerySelection = Boolean(parseLauncherDemoQuery(window.location.search));
+    const hasLegacyHashSelection = Boolean(parseLauncherDemoHash(window.location.hash));
+    if (!hasQuerySelection && !hasLegacyHashSelection) {
+      return;
+    }
+    const nextPath = clearLauncherDemoSharePath(window.location.pathname, window.location.search);
+    const preservedHash = hasLegacyHashSelection ? '' : window.location.hash;
+    window.history.replaceState(window.history.state, '', `${nextPath}${preservedHash}`);
+  }, []);
+
+  const copySelectedGameLink = useCallback(async () => {
+    if (!selectedGame) {
+      return;
+    }
+    const sharePath = buildLauncherDemoSharePath(
+      window.location.pathname,
+      window.location.search,
+      selectedGame.id,
+    );
+    const shareUrl = new URL(sharePath, window.location.origin).toString();
+    const copied = await copyTextToClipboard(shareUrl);
+    setLauncherShareNotice(copied ? '링크를 복사했습니다.' : '링크 복사에 실패했습니다.');
+    if (launcherShareNoticeTimerRef.current !== null) {
+      window.clearTimeout(launcherShareNoticeTimerRef.current);
+    }
+    launcherShareNoticeTimerRef.current = window.setTimeout(() => {
+      launcherShareNoticeTimerRef.current = null;
+      setLauncherShareNotice('');
+    }, 2400);
+  }, [selectedGame]);
+
   const scrollLauncherCarouselToIndex = useCallback((requestedIndex: number, behavior: ScrollBehavior = 'smooth') => {
     const nextIndex = wrapCarouselIndex(requestedIndex, gameList.length);
     const nextGame = nextIndex >= 0 ? gameList[nextIndex] : undefined;
@@ -1382,6 +1514,7 @@ export default function App() {
       return;
     }
 
+    clearLauncherDeepLinkFromAddress();
     setSelectedGameId(nextGame.id);
     const carousel = launcherCarouselRef.current;
     const slide = carousel?.children.item(nextIndex);
@@ -1391,7 +1524,7 @@ export default function App() {
         behavior,
       });
     }
-  }, [gameList]);
+  }, [clearLauncherDeepLinkFromAddress, gameList]);
 
   const moveLauncherCarousel = useCallback((direction: -1 | 1) => {
     const currentIndex = selectedGameIndex >= 0 ? selectedGameIndex : 0;
@@ -1451,11 +1584,13 @@ export default function App() {
   }, [gameList.length, moveLauncherCarousel, scrollLauncherCarouselToIndex]);
 
   const onLauncherCarouselPointerDown = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'mouse' || event.button !== 0) {
-      return;
-    }
     const target = event.target;
     if (target instanceof HTMLElement && target.closest('a, button, input, label')) {
+      return;
+    }
+
+    clearLauncherDeepLinkFromAddress();
+    if (event.pointerType !== 'mouse' || event.button !== 0) {
       return;
     }
 
@@ -1466,7 +1601,7 @@ export default function App() {
     };
     event.currentTarget.setPointerCapture(event.pointerId);
     setLauncherCarouselDragging(true);
-  }, []);
+  }, [clearLauncherDeepLinkFromAddress]);
 
   const onLauncherCarouselPointerMove = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
     const dragState = launcherCarouselDragRef.current;
@@ -1514,42 +1649,12 @@ export default function App() {
   }, [bootMode, gameList.length, selectedGameIndex]);
 
   useEffect(() => {
-    if (bootMode !== 'launcher' || !selectedGame) {
-      return;
-    }
-
-    const nextHash = buildLauncherDemoHash(selectedGame.id);
-    if (window.location.hash !== nextHash) {
-      window.history.replaceState(
-        window.history.state,
-        '',
-        `${window.location.pathname}${window.location.search}${nextHash}`,
-      );
-    }
-  }, [bootMode, selectedGame]);
-
-  useEffect(() => {
-    if (bootMode !== 'launcher') {
-      return;
-    }
-
-    const onHashChange = () => {
-      const hashGameId = parseLauncherDemoHash(window.location.hash);
-      const hashGameIndex = hashGameId
-        ? gameList.findIndex((entry) => entry.id === hashGameId)
-        : -1;
-      if (hashGameIndex >= 0) {
-        scrollLauncherCarouselToIndex(hashGameIndex, 'auto');
-      }
-    };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
-  }, [bootMode, gameList, scrollLauncherCarouselToIndex]);
-
-  useEffect(() => {
     return () => {
       if (launcherCarouselFrameRef.current !== null) {
         window.cancelAnimationFrame(launcherCarouselFrameRef.current);
+      }
+      if (launcherShareNoticeTimerRef.current !== null) {
+        window.clearTimeout(launcherShareNoticeTimerRef.current);
       }
     };
   }, []);
@@ -2649,6 +2754,9 @@ export default function App() {
   if (bootMode === 'launcher') {
     return (
       <div className="launcher">
+        <a className="launcher-skip-link" href="#launcher-library-title">
+          게임 목록으로 건너뛰기
+        </a>
         <header className="launcher-topbar">
           <a className="launcher-brand" href="/" aria-label="YAVN 홈">
             <h1>YAVN</h1>
@@ -2662,15 +2770,20 @@ export default function App() {
           </div>
 
           <nav className="launcher-nav" aria-label="엔진 링크">
-            <a href={repositoryUrl} target="_blank" rel="noreferrer">
+            <a className="launcher-nav-github" href={repositoryUrl} target="_blank" rel="noreferrer">
               GitHub
             </a>
-            <a href={developmentGuideUrl} target="_blank" rel="noreferrer">
+            <a className="launcher-nav-guide" href={developmentGuideUrl} target="_blank" rel="noreferrer">
               Guide
             </a>
             <label className="launcher-upload">
-              {uploading ? 'ZIP 로딩 중' : 'ZIP 실행'}
-              <input type="file" accept=".zip,application/zip" onChange={onUploadZip} />
+              <span>{uploading ? 'ZIP 로딩 중' : 'ZIP 실행'}</span>
+              <input
+                type="file"
+                accept=".zip,application/zip"
+                aria-label="YAVN 게임 ZIP 실행"
+                onChange={onUploadZip}
+              />
             </label>
           </nav>
         </header>
@@ -2686,6 +2799,7 @@ export default function App() {
                 aria-label="YAVN 데모 캐러셀"
                 tabIndex={0}
                 onScroll={onLauncherCarouselScroll}
+                onWheel={clearLauncherDeepLinkFromAddress}
                 onKeyDown={onLauncherCarouselKeyDown}
                 onPointerDown={onLauncherCarouselPointerDown}
                 onPointerMove={onLauncherCarouselPointerMove}
@@ -2729,11 +2843,12 @@ export default function App() {
                         </p>
                         <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
                         <p className="launcher-feature-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</p>
-                        <LegalNoticeList
-                          notices={entry.legalNotices}
-                          className="launcher-feature-legal-notices"
-                          linkTabIndex={isSelected ? undefined : -1}
-                        />
+                        {isSelected && (
+                          <LegalNoticeList
+                            notices={entry.legalNotices}
+                            className="launcher-feature-legal-notices"
+                          />
+                        )}
 
                         <div className="inspector-tag-row">
                           {entryTags.map((tag) => (
@@ -2765,15 +2880,28 @@ export default function App() {
                             지금 플레이
                           </a>
                           <a
-                            className="launcher-command launcher-command-ghost"
-                            href={repositoryUrl}
+                            className="launcher-command launcher-command-source"
+                            href={buildGameSourceUrl(repositoryUrl, entry.id)}
                             target="_blank"
                             rel="noreferrer"
                             tabIndex={isSelected ? undefined : -1}
                           >
-                            GitHub
+                            GitHub 폴더
                           </a>
+                          <button
+                            type="button"
+                            className="launcher-command launcher-command-ghost"
+                            tabIndex={isSelected ? undefined : -1}
+                            onClick={() => void copySelectedGameLink()}
+                          >
+                            {launcherShareNotice ? '링크 복사됨' : '선택 링크 복사'}
+                          </button>
                         </div>
+                        {isSelected && (
+                          <p className="launcher-share-status" role="status" aria-live="polite">
+                            {launcherShareNotice}
+                          </p>
+                        )}
                       </div>
                     </article>
                   );
@@ -2801,6 +2929,7 @@ export default function App() {
                           type="button"
                           aria-label={`${entry.name} 보기`}
                           aria-current={isSelected ? 'true' : undefined}
+                          aria-pressed={isSelected}
                           className={isSelected ? 'is-active' : ''}
                           onClick={() => scrollLauncherCarouselToIndex(index)}
                         />
@@ -2831,24 +2960,65 @@ export default function App() {
           ) : (
             <div
               className={`launcher-diagnostic ${gameListLoading ? 'launcher-diagnostic-loading' : ''}`}
-              role={gameListLoading ? 'status' : undefined}
-              aria-live={gameListLoading ? 'polite' : undefined}
+              role={gameListError ? 'alert' : 'status'}
+              aria-live={gameListError ? 'assertive' : 'polite'}
             >
-              <strong>{gameListLoading ? 'SYNCING PLAYGROUND' : 'PLAYGROUND EMPTY'}</strong>
+              <strong>
+                {gameListLoading ? 'SYNCING PLAYGROUND' : gameListError ? 'MANIFEST LOAD FAILURE' : 'PLAYGROUND EMPTY'}
+              </strong>
               <p>
                 {gameListLoading
                   ? '게임 매니페스트와 대표 이미지를 불러오는 중입니다.'
-                  : '실행 가능한 게임을 불러오지 못했습니다.'}
+                  : gameListError ?? '등록된 게임이 아직 없습니다.'}
               </p>
               {gameListLoading && (
                 <span className="launcher-loading-track" aria-hidden="true">
                   <i />
                 </span>
               )}
+              {!gameListLoading && gameListError && (
+                <button type="button" onClick={() => void loadGameListManifest()}>
+                  다시 불러오기
+                </button>
+              )}
             </div>
           )}
 
-          <section className="launcher-library" aria-labelledby="launcher-library-title">
+          {gameList.length > 0 && (
+            <>
+              <section className="launcher-engine-overview" aria-labelledby="launcher-engine-overview-title">
+                <div className="launcher-engine-overview-copy">
+                  <p>BUILD WITH YAVN</p>
+                  <h2 id="launcher-engine-overview-title">코드보다 이야기에 집중하세요.</h2>
+                  <p>
+                    장면·대사·분기·저장·엔딩을 YAML로 작성하고, ZIP 하나로 브라우저에서 바로 테스트하세요.
+                  </p>
+                  <div className="launcher-engine-overview-actions">
+                    <a href={developmentGuideUrl} target="_blank" rel="noreferrer">
+                      제작 가이드 시작
+                    </a>
+                    <a href={`${repositoryUrl}/blob/main/sample.yaml`} target="_blank" rel="noreferrer">
+                      샘플 YAML 보기
+                    </a>
+                  </div>
+                </div>
+                <dl className="launcher-engine-capabilities">
+                  <div>
+                    <dt>01</dt>
+                    <dd><strong>YAML DSL</strong><span>코드 수정 없이 장면과 분기 작성</span></dd>
+                  </div>
+                  <div>
+                    <dt>02</dt>
+                    <dd><strong>GAME FLOW</strong><span>저장·복구·다중 엔딩·게임오버 기본 제공</span></dd>
+                  </div>
+                  <div>
+                    <dt>03</dt>
+                    <dd><strong>WEB RUNTIME</strong><span>ZIP·이미지·영상·Live2D를 즉시 실행</span></dd>
+                  </div>
+                </dl>
+              </section>
+
+          <section id="launcher-library" className="launcher-library" aria-labelledby="launcher-library-title">
             <div className="launcher-library-heading">
               <div>
                 <p>PLAYABLE LIBRARY</p>
@@ -2862,65 +3032,90 @@ export default function App() {
             <div className="launcher-library-controls">
               <div className="launcher-search-box">
                 <label htmlFor="launcher-search-input">게임 검색</label>
-                <input
-                  id="launcher-search-input"
-                  type="search"
-                  placeholder="게임명, 태그, 작성자 검색"
-                  value={searchTerm}
-                  onChange={(event) => setSearchTerm(event.target.value)}
-                />
+                <div className="launcher-search-field">
+                  <input
+                    id="launcher-search-input"
+                    type="search"
+                    placeholder="게임명, 태그, 작성자 검색"
+                    value={searchTerm}
+                    aria-controls="launcher-game-grid"
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Escape' && searchTerm) {
+                        event.preventDefault();
+                        setSearchTerm('');
+                      }
+                    }}
+                  />
+                  {searchTerm && (
+                    <button type="button" aria-label="게임 검색어 지우기" onClick={() => setSearchTerm('')}>
+                      ×
+                    </button>
+                  )}
+                </div>
               </div>
 
-              <div className="launcher-tag-filter" role="group" aria-label="게임 태그 필터">
+              <div
+                ref={launcherTagFilterRef}
+                className="launcher-tag-filter"
+                role="group"
+                aria-label="게임 태그 필터"
+              >
                 <button
                   type="button"
                   className={`launcher-tag-button ${activeTag === ALL_TAG_FILTER ? 'is-active' : ''}`}
+                  aria-pressed={activeTag === ALL_TAG_FILTER}
                   onClick={() => setActiveTag(ALL_TAG_FILTER)}
                 >
                   ALL
                 </button>
-                {allLauncherTags.map((tag) => (
+                {visibleLauncherTags.map((tag) => (
                   <button
                     key={tag}
                     type="button"
                     className={`launcher-tag-button ${activeTag === tag ? 'is-active' : ''}`}
+                    aria-pressed={activeTag === tag}
                     onClick={() => setActiveTag(tag)}
                   >
                     {tag}
                   </button>
                 ))}
+                {allLauncherTags.length > DEFAULT_VISIBLE_LAUNCHER_TAGS && (
+                  <button
+                    type="button"
+                    className="launcher-tag-button launcher-tag-toggle"
+                    aria-expanded={showAllLauncherTags}
+                    onClick={() => {
+                      setShowAllLauncherTags((current) => !current);
+                      window.requestAnimationFrame(() => {
+                        launcherTagFilterRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+                      });
+                    }}
+                  >
+                    {showAllLauncherTags ? '태그 접기' : `더보기 +${hiddenLauncherTagCount}`}
+                  </button>
+                )}
               </div>
             </div>
 
-            {gameListLoading && (
-              <div className="launcher-diagnostic launcher-diagnostic-loading" role="status" aria-live="polite">
-                <strong>SYNCING MANIFEST</strong>
-                <p>플레이 가능한 빌드를 확인하고 있습니다.</p>
-                <span className="launcher-loading-track" aria-hidden="true">
-                  <i />
-                </span>
-              </div>
-            )}
-
-            {!gameListLoading && gameListError && (
-              <div className="launcher-diagnostic" role="alert">
-                <strong>MANIFEST LOAD FAILURE</strong>
-                <p>{gameListError}</p>
-                <button type="button" onClick={() => void loadGameListManifest()}>
-                  다시 시도
+            {filteredGames.length === 0 && (
+              <div className="launcher-diagnostic">
+                <strong>NO MATCHED GAME</strong>
+                <p>검색 조건과 일치하는 게임이 없습니다.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setActiveTag(ALL_TAG_FILTER);
+                  }}
+                >
+                  검색 조건 초기화
                 </button>
               </div>
             )}
 
-            {!gameListLoading && !gameListError && filteredGames.length === 0 && (
-              <div className="launcher-diagnostic">
-                <strong>NO MATCHED GAME</strong>
-                <p>검색 조건과 일치하는 게임이 없습니다.</p>
-              </div>
-            )}
-
-            {!gameListLoading && !gameListError && filteredGames.length > 0 && (
-              <div className="workspace-grid">
+            {filteredGames.length > 0 && (
+              <div id="launcher-game-grid" className="workspace-grid" aria-live="polite">
                 {filteredGames.map((entry) => {
                   const buildNumber = Math.max(1, gameList.findIndex((gameEntry) => gameEntry.id === entry.id) + 1);
                   const chapterLabel =
@@ -2968,6 +3163,8 @@ export default function App() {
               </div>
             )}
           </section>
+            </>
+          )}
         </main>
 
         <footer className="launcher-footer">
