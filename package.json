@@ -9,9 +9,9 @@
   },
   "scripts": {
     "check:public": "node scripts/check-public-allowlist.mjs",
-    "predev": "node scripts/generate-game-list-manifest.mjs && pnpm run check:public",
+    "predev": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/generate-game-list-manifest.mjs && pnpm run check:public",
+    "prebuild": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
     "build": "tsc -b && vite build && node scripts/generate-game-seo-pages.mjs",
     "preview": "vite preview",
     "test": "vitest run",
@@ -35,5 +35,10 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

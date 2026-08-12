@@ -91,6 +91,11 @@ export type StickerLeaveOptions = {
   delay?: number;
 };
 
+export type ScreenEffectOptions = {
+  name: string;
+  wait?: boolean;
+};
+
 export type StickerPlacement = {
   x?: StickerLength;
   y?: StickerLength;
@@ -292,7 +297,7 @@ export type Action =
   | EndingAction
   | GameOverAction
   | { wait: number }
-  | { effect: string }
+  | { effect: string | ScreenEffectOptions }
   | { goto: string };
 
 export type Scene = {
@@ -329,6 +334,19 @@ export type GameSeoMeta = {
   imageAlt?: string;
 };
 
+export type LegalNoticeLink = {
+  label: string;
+  href: string;
+};
+
+export type LegalNotice = {
+  id: string;
+  title: string;
+  text: string;
+  copyright?: string;
+  links?: LegalNoticeLink[];
+};
+
 export type StartButtonPosition = 'auto' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center';
 
 export type StartScreenConfig = {
@@ -355,6 +373,7 @@ export type GameData = {
     author?: string | AuthorMetaObject;
     version?: string;
     seo?: GameSeoMeta;
+    legalNotices?: LegalNotice[];
   };
   settings: {
     textSpeed: number;

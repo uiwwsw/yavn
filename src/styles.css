@@ -450,6 +450,107 @@ textarea,
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
 }
 
+.legal-notice-list {
+  display: grid;
+  gap: 8px;
+}
+
+.legal-notice {
+  min-width: 0;
+  border-left: 2px solid currentColor;
+  padding-left: 10px;
+}
+
+.legal-notice h4,
+.legal-notice p,
+.legal-notice small {
+  margin: 0;
+}
+
+.legal-notice h4 {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.legal-notice p {
+  margin-top: 4px;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.legal-notice small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  opacity: 0.8;
+}
+
+.legal-notice nav,
+.legal-notice-global-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 6px;
+}
+
+.legal-notice a,
+.legal-notice-global-links a {
+  color: inherit;
+  font-size: 0.67rem;
+  font-weight: 720;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.start-gate-legal-notices {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(920px, calc(100% - 28px));
+  max-height: 126px;
+  overflow-y: auto;
+  border: 1px solid color-mix(in srgb, var(--start-gate-accent) 46%, transparent);
+  border-radius: 8px;
+  color: rgba(255, 247, 231, 0.92);
+  background: rgba(8, 9, 12, 0.8);
+  padding: 9px 11px;
+  box-shadow: 0 9px 28px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
+  scrollbar-width: thin;
+}
+
+.start-gate-legal-notices .legal-notice h4 {
+  color: var(--start-gate-accent);
+  font-size: 0.7rem;
+}
+
+.start-gate-legal-notices .legal-notice p {
+  font-size: 0.63rem;
+  line-height: 1.45;
+}
+
+.start-gate-legal-notices .legal-notice small,
+.start-gate-legal-notices .legal-notice a {
+  font-size: 0.59rem;
+}
+
+.start-gate.has-legal-notices .start-gate-actions-auto,
+.start-gate.has-legal-notices .start-gate-actions-bottom-center,
+.start-gate.has-legal-notices .start-gate-actions-bottom-left,
+.start-gate.has-legal-notices .start-gate-actions-bottom-right {
+  bottom: max(154px, 23%);
+}
+
+.start-gate.is-launching .start-gate-legal-notices {
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
 @keyframes start-gate-camera {
   from { transform: scale(1.08); filter: brightness(0.72) saturate(0.82); }
   to { transform: scale(1.025); filter: brightness(1) saturate(1); }
@@ -3034,6 +3135,43 @@ textarea,
   display: none;
 }
 
+.legal-notices-section {
+  grid-column: 1 / -1;
+  min-height: 0;
+  align-content: start;
+  overflow: visible;
+}
+
+.settings-legal-notices {
+  color: var(--ui-text-color);
+}
+
+.settings-legal-notices .legal-notice {
+  border-color: var(--ui-speaker-color);
+  background: color-mix(in srgb, var(--ui-speaker-color) 5%, transparent);
+  padding: 10px 11px;
+}
+
+.settings-legal-notices .legal-notice h4 {
+  color: var(--ui-speaker-color);
+}
+
+.settings-legal-notices .legal-notice p,
+.legal-notice-empty {
+  color: var(--ui-status-color);
+}
+
+.legal-notice-empty {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.legal-notice-global-links {
+  margin-top: 2px;
+  color: var(--ui-speaker-color);
+}
+
 .settings-toggle-row,
 .settings-action-button {
   min-height: 50px;
@@ -3832,6 +3970,21 @@ textarea,
   text-underline-offset: 3px;
 }
 
+.ending-legal-notices .legal-notice-list {
+  text-align: left;
+}
+
+.ending-legal-notices .legal-notice {
+  border-color: var(--ui-ending-heading);
+  color: var(--ui-ending-line);
+  padding: 10px 12px;
+}
+
+.ending-legal-notices .legal-notice h4,
+.ending-legal-notices .legal-notice a {
+  color: var(--ui-ending-link);
+}
+
 .ending-bottom-bar {
   display: flex;
   justify-content: center;
@@ -3863,6 +4016,12 @@ textarea,
   cursor: pointer;
   transition: transform 150ms ease, filter 150ms ease, border-color 150ms ease;
   font-family: var(--ui-heading-font);
+}
+
+.ending-retry-choice {
+  background: transparent;
+  color: var(--ui-ending-content);
+  box-shadow: none;
 }
 
 .ending-restart:hover {
@@ -4456,6 +4615,19 @@ textarea,
     transform: translateX(-50%);
   }
 
+  .start-gate.has-legal-notices .start-gate-actions-auto,
+  .start-gate.has-legal-notices .start-gate-actions-bottom-center,
+  .start-gate.has-legal-notices .start-gate-actions-bottom-left,
+  .start-gate.has-legal-notices .start-gate-actions-bottom-right {
+    bottom: max(166px, calc(env(safe-area-inset-bottom) + 162px));
+  }
+
+  .start-gate-legal-notices {
+    width: calc(100% - 20px);
+    max-height: 144px;
+    padding: 7px 9px;
+  }
+
   .start-gate-actions-center {
     top: 57%;
   }
@@ -4945,6 +5117,17 @@ textarea,
 }
 
 @media (max-width: 768px) and (max-height: 520px) {
+  .start-gate-legal-notices {
+    max-height: 88px;
+  }
+
+  .start-gate.has-legal-notices .start-gate-actions-auto,
+  .start-gate.has-legal-notices .start-gate-actions-bottom-center,
+  .start-gate.has-legal-notices .start-gate-actions-bottom-left,
+  .start-gate.has-legal-notices .start-gate-actions-bottom-right {
+    bottom: 108px;
+  }
+
   .settings-modal {
     height: 100cqh;
     max-height: 100cqh;
@@ -5385,6 +5568,10 @@ textarea,
   background: #17191d;
 }
 
+.launcher-feature.has-legal-notices {
+  min-height: clamp(650px, calc(100svh - 130px), 790px);
+}
+
 .launcher-feature-media {
   position: absolute;
   z-index: 0;
@@ -5500,6 +5687,38 @@ textarea,
   font-size: 16px;
   line-height: 1.65;
   overflow-wrap: anywhere;
+}
+
+.launcher-feature-legal-notices {
+  width: min(700px, 100%);
+  max-height: 104px;
+  margin-top: 12px;
+  overflow-y: auto;
+  color: #f0b4aa;
+  scrollbar-width: thin;
+}
+
+.launcher-feature-legal-notices .legal-notice {
+  border-color: var(--launcher-coral);
+  background: rgba(7, 8, 10, 0.62);
+  padding: 7px 9px;
+}
+
+.launcher-feature-legal-notices .legal-notice h4 {
+  color: var(--launcher-coral);
+  font-size: 0.68rem;
+}
+
+.launcher-feature-legal-notices .legal-notice p {
+  color: #eeeae1;
+  font-size: 0.62rem;
+  line-height: 1.45;
+}
+
+.launcher-feature-legal-notices .legal-notice small,
+.launcher-feature-legal-notices .legal-notice a {
+  color: var(--launcher-mint);
+  font-size: 0.59rem;
 }
 
 .launcher-feature .inspector-tag-row {
@@ -6025,6 +6244,19 @@ textarea,
   letter-spacing: 0;
 }
 
+.workspace-game-legal-badge {
+  align-self: flex-start;
+  margin-top: 10px;
+  border: 1px solid #c96e62;
+  border-radius: 2px;
+  color: #7c2f28;
+  background: #fff1ed;
+  padding: 3px 6px;
+  font-size: 9px;
+  font-weight: 820;
+  line-height: 1.35;
+}
+
 .workspace-game-launch {
   position: absolute;
   right: 14px;
@@ -6126,6 +6358,7 @@ textarea,
   margin: 0;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
 }
 
@@ -6232,6 +6465,10 @@ textarea,
     min-height: clamp(500px, calc(100svh - 224px), 610px);
   }
 
+  .launcher-feature.has-legal-notices {
+    min-height: 720px;
+  }
+
   .launcher-feature-fallback {
     font-size: 54px;
   }
@@ -6253,6 +6490,10 @@ textarea,
     margin-top: 13px;
     font-size: 14px;
     line-height: 1.55;
+  }
+
+  .launcher-feature-legal-notices {
+    max-height: 118px;
   }
 
   .launcher-carousel-controls {
@@ -6364,7 +6605,7 @@ textarea,
 
   .launcher-footer div {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .launcher-footer p span,

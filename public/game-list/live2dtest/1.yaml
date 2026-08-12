@@ -14,4 +14,3 @@ scenes:
           char: 렌.Idle
           options:
             - text: "테스트 끝"
-              goto: ren_live2d_drag_test

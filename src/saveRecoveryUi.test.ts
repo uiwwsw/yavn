@@ -12,7 +12,7 @@ const styles = readSource('./styles.css');
 describe('save and game over recovery UI', () => {
   it('separates background autosave recovery from explicit save actions', () => {
     expect(appSource).toContain('<p className="game-over-kicker">GAME OVER</p>');
-    expect(appSource).toContain("onClick={() => void onLoadSave('auto')}");
+    expect(appSource).toContain("choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto')");
     expect(appSource).toContain("onClick={() => void onLoadSave('manual')}");
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');
     expect(appSource).toContain('onChange={(event) => onToggleAutoSave(event.target.checked)}');
@@ -20,6 +20,10 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain('<small>선택 직전 복구점</small>');
     expect(appSource).not.toContain("onClick={() => void onLoadSave('latest')}");
     expect(appSource).not.toContain("(['auto', 'manual', 'chapter'] as const)");
+    expect(engineSource).toContain("const CHOICE_RECOVERY_SUFFIX = ':choice-recovery'");
+    expect(engineSource).toContain('setChoiceRecoveryPoint(createSaveProgress');
+    expect(appSource).toContain("'마지막 선택으로'");
+    expect(appSource).toContain('{totalEndingCount > 0 && (');
   });
 
   it('opens inventory details directly and keeps discovery controls consistent', () => {
@@ -85,5 +89,8 @@ describe('save and game over recovery UI', () => {
     expect(engineSource).toContain('vn-engine-autosave:zip:');
     expect(engineSource).toContain("source: 'chapter'");
     expect(engineSource).toContain("saveProgress(game.script[0].scene, 0, 'chapter')");
+    expect(engineSource).toContain("import type JSZip from 'jszip'");
+    expect(engineSource).toContain("await import('jszip')");
+    expect(engineSource).not.toContain("import JSZip from 'jszip'");
   });
 });

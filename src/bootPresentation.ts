@@ -20,3 +20,7 @@ export function resolveInitialBootPresentation(pathValue: string): InitialBootPr
     gameBootPending: opensGameDirectly,
   };
 }
+
+export function shouldShowGameRouteBoot(gameBootPending: boolean, hasGame: boolean): boolean {
+  return gameBootPending && !hasGame;
+}

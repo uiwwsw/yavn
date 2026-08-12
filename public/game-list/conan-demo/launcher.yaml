@@ -1,9 +1,10 @@
-summary: "자동 대사, 제한 시간 선택, 공용 자산, 신규 카메라 효과를 약 60초에 압축한 스펙터클 코난 트레일러 데모."
+summary: "비공식·비상업적 팬 데모. 자동 대사, 제한 시간 선택, 공용 자산, 신규 카메라 효과를 약 60초에 압축한 엔진 쇼케이스."
 thumbnail: "assets/bg/rail-warning.avif"
 tags:
   - 60-second
   - cinematic
   - engine-showcase
   - timed-choice
+  - noncommercial-fan-demo
 showcase:
   label: "ENGINE SHOWCASE"

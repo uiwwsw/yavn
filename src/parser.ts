@@ -1,13 +1,14 @@
 import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
 import { baseLayerSchema, chapterSchema, configSchema, gameSchema } from './schema';
-import type { CameraDirective, ConditionNode, GameData, RouteVarValue, VNError } from './types';
+import type { Action, CameraDirective, ConditionNode, GameData, RouteVarValue, VNError } from './types';
 
 type ConfigYamlData = {
   title: string;
   author?: GameData['meta']['author'];
   version?: string;
   seo?: GameData['meta']['seo'];
+  legalNotices?: GameData['meta']['legalNotices'];
   textSpeed: number;
   autoSave: boolean;
   clickToInstant: boolean;
@@ -69,6 +70,7 @@ const CONFIG_ONLY_KEYS = [
   'author',
   'version',
   'seo',
+  'legalNotices',
   'textSpeed',
   'autoSave',
   'clickToInstant',
@@ -267,6 +269,24 @@ function validateAddMap(
     }
   }
   return undefined;
+}
+
+function actionAlwaysTransfersControl(action: Action): boolean {
+  if ('goto' in action || 'ending' in action || 'gameOver' in action) {
+    return true;
+  }
+  if ('branch' in action) {
+    return Boolean(action.branch.default);
+  }
+  if ('choice' in action) {
+    return action.choice.options.every((option) => Boolean(option.goto || option.gameOver));
+  }
+  if ('input' in action) {
+    const correct = action.input.correct.trim();
+    const correctRoute = action.input.routes.find((route) => route.equals.trim() === correct);
+    return Boolean(correctRoute?.goto) && action.input.routes.every((route) => Boolean(route.goto));
+  }
+  return false;
 }
 
 function normalizePath(rawPath: string): string {
@@ -857,6 +877,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
       author: input.config.data.author,
       version: input.config.data.version,
       ...(input.config.data.seo ? { seo: input.config.data.seo } : {}),
+      ...(input.config.data.legalNotices ? { legalNotices: input.config.data.legalNotices } : {}),
     },
     settings: {
       textSpeed: input.config.data.textSpeed,
@@ -896,10 +917,49 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       };
     }
 
-    const scriptSceneIds = new Set(data.script.map((entry) => entry.scene));
+    const scriptSceneOrder = data.script.map((entry) => entry.scene);
+    const scriptSceneIds = new Set(scriptSceneOrder);
+    if (scriptSceneIds.size !== scriptSceneOrder.length) {
+      const seen = new Set<string>();
+      const duplicate = scriptSceneOrder.find((sceneId) => {
+        if (seen.has(sceneId)) {
+          return true;
+        }
+        seen.add(sceneId);
+        return false;
+      });
+      return {
+        error: {
+          message: `script contains duplicate scene '${duplicate ?? 'unknown'}' (scene order must be unique)`,
+        },
+      };
+    }
     for (const sceneId of scriptSceneIds) {
       if (!data.scenes[sceneId]) {
         return { error: { message: `script references missing scene: ${sceneId}` } };
+      }
+    }
+
+    for (const [sceneId, scene] of Object.entries(data.scenes)) {
+      for (let actionIndex = 0; actionIndex < scene.actions.length - 1; actionIndex += 1) {
+        if (actionAlwaysTransfersControl(scene.actions[actionIndex])) {
+          return {
+            error: {
+              message: `scene '${sceneId}' has unreachable actions after actions[${actionIndex}]`,
+            },
+          };
+        }
+      }
+      if (scriptSceneIds.has(sceneId)) {
+        continue;
+      }
+      const lastAction = scene.actions.at(-1);
+      if (!lastAction || !actionAlwaysTransfersControl(lastAction)) {
+        return {
+          error: {
+            message: `scene '${sceneId}' is outside script and can fall through without goto, ending, or gameOver`,
+          },
+        };
       }
     }
 
@@ -1177,7 +1237,17 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
         }
 
         if ('choice' in action) {
+          const optionTexts = new Set<string>();
           for (const [optionIndex, option] of action.choice.options.entries()) {
+            const normalizedText = option.text.trim();
+            if (optionTexts.has(normalizedText)) {
+              return {
+                error: {
+                  message: `scene '${sceneId}' has duplicate choice option text '${normalizedText}' in actions[${actionIndex}]`,
+                },
+              };
+            }
+            optionTexts.add(normalizedText);
             if (option.goto) {
               const gotoError = validateGotoReference(
                 sceneId,
@@ -1261,7 +1331,17 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
               };
             }
           }
+          const routeAnswers = new Set<string>();
           for (const [routeIndex, route] of action.input.routes.entries()) {
+            const normalizedAnswer = route.equals.trim();
+            if (routeAnswers.has(normalizedAnswer)) {
+              return {
+                error: {
+                  message: `scene '${sceneId}' has duplicate input route answer '${normalizedAnswer}' in actions[${actionIndex}]`,
+                },
+              };
+            }
+            routeAnswers.add(normalizedAnswer);
             if (route.goto) {
               const gotoError = validateGotoReference(
                 sceneId,

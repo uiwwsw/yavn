@@ -27,14 +27,17 @@ pnpm dev
 
 ## 품질과 구조
 
-- `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 검증
-- `src/engine.ts`: 챕터 전환, 저장 슬롯/백업, 게임오버 복구, 장면 단위 무대 카메라, 캐릭터 원본 정렬, 좌우 대화 시선 자동 보정, 연출 실행, 입력 게이트, 오디오 BGM 크로스페이드
+- `src/parser.ts`: YAML V3 파싱, 계층 병합, 상태/에셋/분기 참조 및 scene 종료 안전성 검증
+- `src/engine.ts`: 챕터 전환, 저장 슬롯/백업, 새로고침에도 유지되는 선택 복구점, 게임오버·다중 엔딩 재탐색, 장면 단위 무대 카메라, 캐릭터 원본 정렬, 연출 실행, 입력 게이트, 오디오 BGM 크로스페이드
 - `src/typing.ts`: 감정별 타이핑 리듬, 문장부호 호흡, 유니코드 글자 분할
 - `src/store.ts`: 렌더링 상태와 플레이 기록
 - `src/history.ts`: 챕터별 선택 복원과 최대 300개 스토리 로그
 - `pnpm test`: 파서 기본값, 저장 호환, 챕터 기록 격리 회귀 테스트
 - GitHub Actions: Node 22 + pnpm 10에서 테스트와 프로덕션 빌드 자동 검증
+- Vercel: `package.json`의 Node 22·pnpm 10.20 고정을 따르도록 설치와 빌드를 `corepack pnpm`으로 실행
 - Live2D 렌더러는 실제 Live2D 캐릭터가 등장할 때 동적 로딩되어 기본 런처/2D 게임의 초기 번들에서 분리됩니다.
+- 게임별 `legalNotices`를 선언하면 작품이나 캐릭터 ID 분기 없이 런처·시작 화면·시스템 설정·엔딩 크레딧에 권리/출처 고지를 공통 노출합니다.
+- `JSZip`도 ZIP 프리뷰/실행을 선택할 때만 동적 로딩합니다. 일반 URL 게임과 런처의 메인 번들은 Node 22 프로덕션 기준 `401.51 kB`(`119.25 kB` gzip)이며 ZIP 전용 `97.54 kB` 청크와 분리됩니다.
 - 상세 진단과 다음 우선순위: [`docs/IMPROVEMENT_ROADMAP.ko.md`](docs/IMPROVEMENT_ROADMAP.ko.md)
 
 라우팅:
@@ -52,7 +55,7 @@ pnpm dev
 
 루트 게임 목록만 빌드 시 생성된 JSON manifest를 사용합니다. 런타임 소스에 번들 샘플 ID나 샘플 전용 태그 분기가 들어오면 `src/gameIndependence.test.ts`가 실패합니다.
 
-## 런처 메타데이터 (Manifest V4)
+## 런처 메타데이터 (Manifest V5)
 
 런처 게임 목록은 `predev`/`prebuild`에서 `scripts/generate-game-list-manifest.mjs`로 생성되며, 같은 단계에서 `public/sitemap.xml`도 게임 목록 기준으로 자동 재생성됩니다. 이후 `scripts/check-public-allowlist.mjs`로 `public` 허용 목록 검사를 수행합니다.
 
@@ -60,7 +63,7 @@ pnpm dev
 
 ```json
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "generatedAt": "2026-02-27T02:15:30.805Z",
   "games": [
     {
@@ -80,6 +83,14 @@ pnpm dev
           "scale": 1.05
         }
       },
+      "legalNotices": [
+        {
+          "id": "detective-conan-noncommercial-fan-demo",
+          "title": "비공식·비상업적 팬 데모",
+          "text": "이 작품은 엔진 기능 검증용 비공식·비상업적 팬 데모이며 공식 작품이 아닙니다.",
+          "copyright": "관련 명칭·캐릭터와 원작 요소의 권리는 각 권리자에게 있습니다."
+        }
+      ],
       "chapterCount": 10,
       "seo": {
         "title": "명탐정 코난 외전: 폭우의 2번 찻잔",
@@ -104,6 +115,7 @@ pnpm dev
 - `name`은 `config.yaml.title` 우선, 없으면 레거시 챕터 `meta.title`, 그다음 폴더명 기반 titleize를 사용합니다.
 - `chapterCount`는 하위 폴더를 포함한 챕터 YAML 수(`config/base/launcher 제외`)를 기록합니다.
 - `games[].seo`는 `config.yaml.seo`(+ `launcher.yaml.summary/tags` fallback)에서 생성되며, 런처/게임 페이지 메타 태그와 JSON-LD에 사용됩니다.
+- `games[].legalNotices`는 `config.yaml.legalNotices`에서 생성되며, 런처가 게임별 권리 고지를 선택한 작품에만 데이터 기반으로 표시합니다.
 - `pnpm build`는 manifest의 모든 게임에 대해 `dist/game-list/<gameId>/index.html`을 생성합니다. 따라서 `/game-list/<gameId>/`를 직접 연 검색 봇·공유 봇도 JavaScript 실행 전부터 게임 제목, 설명, canonical, Open Graph, Twitter Card, `VideoGame` JSON-LD를 받습니다.
 - 공유 대표 이미지는 크롤러 호환성을 위해 16:9 JPEG 또는 PNG를 권장합니다. 게임 화면용 AVIF/WebP와 `seo.image`를 분리해도 됩니다.
 - 루트 `seo`는 게임 제목 목록을 집계해 런처(루트 `/`) SEO 설명/키워드에 반영됩니다.
@@ -132,6 +144,27 @@ showcase:
 - `thumbnail`은 상대 경로일 때 `/game-list/<gameId>/...`로 정규화됩니다.
 - `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면, manifest 생성 시 해당 이미지를 쇼케이스/게임 카드 기본 썸네일로 사용합니다.
 - `showcase`는 게임 ID나 태그에 의존하지 않고 캐러셀 문구와 썸네일 구도를 선언합니다. 위치는 `0..100`, 배율은 `0.5..2`, 오프셋은 `-50..50` 범위로 정규화됩니다.
+
+## 게임별 법적 고지
+
+`config.yaml`의 선택 필드 `legalNotices`는 제3자 소프트웨어, 캐릭터, 샘플 모델, 글꼴 등 게임별 출처와 이용 조건을 플레이어에게 공개합니다. 엔진은 게임 ID나 태그를 검사하지 않고 같은 렌더러를 사용하므로 URL 게임과 ZIP 게임 모두 동일하게 동작합니다.
+
+```yaml
+legalNotices:
+  - id: third-party-character
+    title: "제3자 캐릭터 고지"
+    copyright: "© Example Rights Holder"
+    text: "이 게임에서 사용하는 제3자 캐릭터의 출처와 이용 조건을 설명합니다."
+    links:
+      - label: "공식 이용 조건"
+        href: "https://example.com/license"
+```
+
+- `id`, `title`, `text`는 필수이고 `copyright`, `links`는 선택입니다. `id`는 게임 안에서 고유해야 합니다.
+- 링크는 안전한 `http` 또는 `https` URL만 허용합니다. 게임당 고지는 최대 12개, 고지당 링크는 최대 8개입니다.
+- 고지는 런처 대표 슬라이드와 카드 배지, 시작 게이트, 게임 시스템 탭, 엔딩 크레딧에 표시됩니다.
+- 고지 문구는 이용 허락을 새로 만들지 않습니다. 실제 라이선스/권리 조건을 확인하고 필요한 계약·허락을 별도로 받아야 합니다.
+- 저장소 전체 고지는 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), Live2D 관련 원문 사본은 `assets/licenses/live2d/`, SUITE OFL 전문은 `assets/licenses/fonts/LICENSE`에 있습니다.
 
 ## Public 최소화 정책
 
@@ -331,9 +364,10 @@ scenes:
 
 - 진행 데이터는 URL 게임 ID 또는 ZIP 파일명/크기로 분리한 `localStorage`에 저장합니다. `autoSave`는 첫 실행 기본값이며 플레이어가 시스템 탭에서 언제든 켜고 끌 수 있습니다.
 - 자동 저장은 선택 직전 위치를 계속 덮어쓰는 내부 복구점입니다. 일반 저장 화면에서는 상태와 시각만 표시하고 별도 불러오기 슬롯으로 노출하지 않습니다.
+- 선택을 확정할 때는 일반 자동저장과 별도로 `:choice-recovery` 복구점을 먼저 기록합니다. 자동저장이 켜져 있으면 실패 후일담 도중 새로고침해도 원래 선택으로 돌아갈 수 있고, 꺼져 있어도 현재 실행 세션에서는 직전 선택 복구가 유지됩니다.
 - 사용자가 직접 관리하는 작업은 수동 저장/불러오기, 챕터 처음으로 돌아가기, JSON 백업 내보내기/불러오기로 분리합니다. 챕터 시작점은 자동 저장을 꺼도 항상 갱신됩니다.
 - 백업 파일에는 진행 상태만 포함되며 게임 YAML과 에셋은 포함되지 않습니다. 브라우저 다운로드 위치는 브라우저/운영체제 설정을 따릅니다.
-- 기존 `vn-engine-autosave` 및 게임별 autosave 데이터는 그대로 읽습니다. 새 메타가 없는 저장도 하위 호환으로 복원합니다.
+- 기존 `vn-engine-autosave` 및 게임별 autosave 데이터는 그대로 읽습니다. 새 메타가 없는 저장도 하위 호환으로 복원하되, 현재 챕터에 선언된 상태의 타입이 달라진 값은 최신 기본값으로 안전하게 정규화합니다. 다른 챕터에서 다시 쓸 상태/아이템은 현재 챕터에 잠시 선언되지 않아도 보존합니다.
 
 ## `gameOver` 액션
 
@@ -351,13 +385,13 @@ scenes:
           message: "경보가 울렸다. 저장한 시점에서 다시 시도하자."
 ```
 
-게임오버 화면은 자동 복구점을 쓰는 `직전 선택으로`, `수동 저장으로`, `챕터 처음으로`, 백업 파일 불러오기를 제공합니다. 같은 옵션에 `goto`와 `gameOver`를 동시에 선언할 수 없습니다.
+게임오버 화면은 별도 선택 복구점을 우선 쓰는 `직전 선택으로`, `수동 저장으로`, `챕터 처음으로`, 백업 파일 불러오기를 제공합니다. 같은 옵션에 `goto`와 `gameOver`를 동시에 선언할 수 없습니다.
 
-선택지가 `goto`로 별도 후일담 scene에 들어간 뒤 독립 `gameOver` 액션에 도달해도, 자동 복구점은 실패 scene이 아니라 그 분기를 시작한 선택지를 유지합니다.
+선택지가 `goto`로 별도 후일담 scene에 들어간 뒤 독립 `gameOver` 액션에 도달해도, 선택 복구점은 실패 scene이 아니라 그 분기를 시작한 선택지를 유지합니다. 이 복구점은 일반 자동저장과 분리되어 긴 실패 장면 중 페이지를 새로고침해도 덮어쓰이지 않습니다.
 
 ## 화면 이펙트
 
-`effect` 액션은 이름에 대응하는 짧은 전체 화면 연출을 실행하고 바로 다음 액션으로 진행합니다.
+문자열 `effect` 액션은 기존과 같이 이름에 대응하는 짧은 전체 화면 연출을 실행하고 바로 다음 액션으로 진행합니다.
 
 ```yaml
 - effect: impact
@@ -381,8 +415,9 @@ scenes:
 | `embers` | 1100ms | 위로 흩어지는 불씨 | 화재, 연회 등불, 무너지는 기록 |
 | `crown` | 1200ms | 금빛 방사광과 비네트 | 즉위, 맹세, 최종 결단 |
 
-- 알 수 없는 이름은 상태 클래스만 약 `350ms` 적용되므로 게임별 CSS 확장도 가능합니다.
+- 알 수 없는 CSS-safe 이름(`영문자로 시작, 영문/숫자/_/-`)은 상태 클래스만 약 `350ms` 적용되므로 게임별 CSS 확장도 가능합니다.
 - `effect`는 대기 액션이 아니며 연속 선언하면 뒤 이펙트가 앞 이펙트를 교체합니다. 순서대로 보여 주려면 사이에 짧은 `wait`를 둡니다.
+- 연출 자체가 끝나기 전에 다음 대사나 선택을 열고 싶지 않다면 옵션형 `effect`의 `wait: true`를 사용합니다. 이때 해당 프리셋의 실제 지속시간 동안 진행 입력을 잠그고, 같은 효과를 연속 선언해도 각 재생 사이에 한 렌더 프레임을 보장합니다.
 - 전체 화면 변형은 문서 루트가 아니라 `.app` 내부의 클리핑된 `.effect-viewport`에만 적용됩니다. `shake/zoom/tilt/impact`가 뷰포트 밖의 스크롤 영역을 만들지 않으며, CASE FILE·긴 선택지·대사창의 내부 스크롤은 영향을 받지 않습니다.
 - `prefers-reduced-motion` 환경에서는 비필수 움직임을 제거합니다.
 
@@ -392,6 +427,14 @@ scenes:
 - effect: darken
 - wait: 180
 - effect: shake
+```
+
+```yaml
+- effect:
+    name: impact
+    wait: true
+- say:
+    text: "충격이 가라앉은 뒤에만 이 대사가 열린다."
 ```
 
 ## `sticker.inputLockMs` (입력 잠금)
@@ -641,7 +684,7 @@ scenes:
 
 동작:
 - 제한시간 UI는 초 단위 값과 남은 시간을 나타내는 진행 바로 표시됩니다.
-- `timeoutOptionIndex` 기본값은 첫 옵션(`0`)이며, 범위를 벗어나면 마지막 옵션으로 보정합니다.
+- `timeoutOptionIndex` 기본값은 첫 옵션(`0`)이며, 선언한 옵션 범위를 벗어나면 파싱 단계에서 오류로 중단합니다.
 - 시간 만료 선택은 흐름 정지를 피하기 위해 `forgiveOnce` 유예를 건너뛰고 즉시 실행합니다.
 
 ## `choice`/`input`에서 캐릭터 노출
@@ -677,10 +720,11 @@ scenes:
 ## `script` 실행 의미
 
 - `script`는 챕터의 기본 scene 진행 순서입니다.
+- 같은 scene을 `script`에 두 번 선언할 수 없습니다. 런타임이 `indexOf` 기반 다음 순서를 잘못 계산하는 구성을 파서가 차단합니다.
 - 엔진은 `script[0]`에서 시작하고, 현재 scene의 action을 모두 소비하면 `script`의 다음 scene으로 이동합니다.
 - `goto: scene_id`는 scene 점프입니다. 점프한 scene이 끝나면 그 scene의 `script` 위치 다음 scene으로 이어집니다.
 - `goto: ./...` 또는 `goto: /...`는 챕터 점프입니다.
-- 권장: `goto` 대상 scene도 `script`에 포함해 두세요. (`script`에 없는 scene 종료 시 다음 계산 기준이 모호해집니다.)
+- `script` 밖의 분기 전용 scene은 마지막 action이 모든 경로에서 `goto`, `ending`, `gameOver` 중 하나로 끝나야 합니다. 그렇지 않으면 첫 scene으로 되감길 수 있으므로 파서가 실행 전에 거부합니다.
 
 ## 챕터 로딩 규칙
 
@@ -689,7 +733,7 @@ scenes:
 - `goto: ./routes/a/1.yaml`처럼 경로 점프 가능
 - 경로 점프 후 같은 폴더의 번호 챕터를 순차 진행
 - `../`를 포함한 챕터 `goto`는 허용하지 않습니다.
-- 챕터 로딩 오버레이는 첫 화면에 노출되는 Live2D 캐릭터가 실제로 `ready/error` 상태를 보고할 때까지 유지됩니다.
+- 챕터 로딩 오버레이는 첫 화면에 노출되는 Live2D 캐릭터가 실제로 `ready/error` 상태를 보고할 때까지 유지됩니다. Live2D 챕터에서는 모델 의존성과 함께 렌더러·Cubism Core를 선제적으로 준비하고, 시작 전환 화면이 실제 캐릭터 마운트를 막지 않도록 해 첫 실행 경합을 줄입니다.
 - 챕터 로딩 중(`chapterLoading=true`)과 게임 데이터 미로딩 상태에서는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 해제 시 페이드 인으로 표시합니다.
 - 인게임 다이얼로그 박스 우측 상단(박스 외부 컨트롤 레이어) `숨기기` 버튼을 누르면 다이얼로그를 수동으로 접을 수 있습니다. 버튼은 본문 텍스트 영역과 겹치지 않도록 고정됩니다.
 - 수동 숨김 상태에서는 화면 클릭/`Enter`/`Space`로 스크립트를 진행하지 않으며, 우측 하단 `대화창 열기` 버튼으로 복원해야 진행이 재개됩니다.
@@ -800,7 +844,7 @@ scenes:
 - 현재 캐러셀 데모는 `#demo=<gameId>` 해시에 기록되어 새로고침하거나 링크를 공유해도 같은 슬라이드를 엽니다. 아래 검색·태그 게임 목록은 상단 선택을 바꾸지 않으며 카드 전체를 누르면 해당 게임으로 바로 이동합니다.
 - 각 캐러셀 슬라이드는 독립된 페인트 경계 안에서 이미지와 콘텐츠를 자르며, 긴 제목·설명·태그는 화면 폭을 밀어내지 않습니다. 좁은 화면의 태그는 슬라이드 안에서만 가로 스크롤됩니다.
 - 이전/다음·도트·현재 번호는 슬라이드와 분리된 탐색 레일에 배치되어 긴 제목이나 모바일 본문을 가리지 않습니다.
-- 게임 목록 manifest는 `schemaVersion: 4`를 사용하며 `author/version/summary/thumbnail/tags/showcase/chapterCount` + `seo` 메타를 포함합니다.
+- 게임 목록 manifest는 `schemaVersion: 5`를 사용하며 `author/version/summary/thumbnail/tags/showcase/legalNotices/chapterCount` + `seo` 메타를 포함합니다.
 - 런처 썸네일은 `launcher.yaml.thumbnail` 우선이며, 누락 시 `config.yaml.startScreen.image`를 기본값으로 사용합니다.
 - 캐러셀 라벨·배경색·썸네일 초점/배율/오프셋은 `launcher.yaml.showcase` 데이터만 사용하며 게임 ID나 `tags`를 조건으로 특별 처리하지 않습니다.
 - 런처는 V1(`id/name/path`) manifest도 fallback으로 지원합니다.
@@ -822,13 +866,14 @@ scenes:
 - 시스템 탭의 자동저장 토글도 같은 게임별 설정 키에 저장됩니다. 자동저장은 게임오버의 직전 선택 복구와 시작 화면 이어하기에 사용하고, 일반 화면에서는 직접 불러오기 버튼을 표시하지 않습니다.
 - 저장·설정 화면은 데스크톱에서 역할 카드 3열, 모바일에서 1열로 전환하며, 주요 `현재 진행 저장` 작업만 테마 강조색을 사용해 불러오기·복귀·기기 이동 작업과 시각적으로 구분합니다.
 - 모바일 세로 화면에서 케이스 파일을 열면 `9:16` 플레이 프레임 제한을 일시 해제해 안전영역 안의 전체 뷰포트 높이를 사용하고 헤더와 탭을 고정합니다. 시스템 탭은 각 저장 카드가 버튼까지 온전히 보이는 내용 높이를 유지한 채 카드 목록만 스크롤하며, 배경음악·초기화면 설정과 상태 문구를 하단에 항상 표시합니다. 인벤토리 목록은 상단 수집/필터 영역을 제외한 남은 높이를 채웁니다.
-- `gameOver`는 엔딩/크레딧/엔딩 수집률을 발생시키지 않으며 자동, 수동, 챕터 저장 또는 가져온 백업에서 복구합니다.
+- `gameOver`는 엔딩/크레딧/엔딩 수집률을 발생시키지 않으며 별도 선택 복구점, 수동·챕터 저장 또는 가져온 백업에서 복구합니다.
 - HUD의 `CASE LOG`는 대사, 확정한 선택, 정답 입력을 최대 300개까지 자동저장합니다. 선택 복원 키에 챕터 경로를 함께 기록해 서로 다른 챕터의 동일한 scene/action 좌표가 충돌하지 않습니다.
 - URL 게임에서는 시스템 탭의 `초기화면 가기` 버튼으로 Start Gate를 다시 열 수 있으며, ZIP 실행 게임에서는 버튼이 비활성화됩니다.
 - `config.yaml.ui.template`으로 시작 게이트(타이틀/버튼) + 챕터 로딩/다이얼로그/스킵 UI/입력·선택 게이트/엔딩 크레딧의 전역 템플릿(`cinematic-noir`, `neon-grid`, `paper-stage`)을 선택할 수 있습니다.
 - 엔딩 배경 이미지는 `config.yaml.endingScreen.image`로 지정할 수 있으며, 템플릿 색상/디코레이션 레이어 위에 적용됩니다.
 - 게임 플레이 HUD는 좌측 게임 제목 + 우측 로그/가방/저장 버튼만 표시합니다. 기능 없는 상시 엔진 문구는 제거하고, ZIP 처리 중에만 `ZIP 불러오는 중` 상태를 표시합니다. 긴 대사·기록·인벤토리·시스템·엔딩과 런처 태그 목록의 스크롤 영역에는 테마에 맞는 스크롤 표시를 제공합니다.
-- 엔딩 화면 하단에는 `처음부터 다시하기` 버튼 1개만 표시됩니다.
+- 수집형 엔딩이 2개 이상이고 선택 복구점이 있으면 엔딩 화면 하단에 `마지막 선택으로`를 함께 표시해 크레딧 뒤 곧바로 다른 결말을 탐색할 수 있습니다. 엔딩을 선언하지 않은 레거시 게임은 의미 없는 `0/0` 수집 카드를 숨깁니다.
+- `처음부터 다시하기`는 모든 엔딩 화면에 계속 표시됩니다.
 - URL 게임에서 `처음부터 다시하기`를 누르면 인벤토리 모달의 `초기화면 가기`와 동일하게 Start Gate 세션 플래그를 초기화하고 Start Gate(시작 화면)로 복귀합니다.
 - ZIP 실행 게임에서는 Start Gate 재진입을 지원하지 않으므로 `처음부터 다시하기`가 기존처럼 첫 챕터 재시작(`restartFromBeginning`)으로 동작합니다.
 - 위 재시작 흐름에서도 저장된 엔딩 수집(`vn-ending-progress:<gameId>`)은 유지됩니다.
@@ -867,7 +912,9 @@ scenes:
 - Live2D 로더는 URL 게임에서 모델 디렉터리 기준 상대 참조를 우선 사용하고, ZIP(blob) 로딩에서는 blob 참조를 상대 키로 재작성해 텍스처/모션 경로를 안정화합니다.
 - 챕터 프리로드는 `model3.json` 내부 참조(`Moc/Physics/Pose/UserData/DisplayInfo/Textures/Expressions/Motions`)까지 확장해 Live2D 본 로딩 지연을 줄입니다.
 - Live2D 로딩 전에 `moc3`/첫 텍스처를 선검사하고, 장시간 로딩 정체 시 상태 코드(`state`)와 텍스처 카운트 진단 메시지를 표시합니다.
-- `src/assets/third-party/live2d/*` 및 `public/game-list/live2dtest/assets/char/ren_pro_ko/*`는 Live2D 별도 라이선스 적용 자산이며, 배포/상업 이용 전 각 라이선스 조건을 확인해야 합니다.
-- 라이선스/배포 참고 문구는 `assets/licenses/live2d/RedistributableFiles.txt`, `assets/licenses/fonts/LICENSE`에 보관합니다.
+- `src/assets/third-party/live2d/*` 및 `public/game-list/live2dtest/assets/char/ren_pro_ko/*`는 Live2D 별도 라이선스 적용 자산입니다. 렌 포스터 샘플의 공식 필수 고지를 `config.yaml.legalNotices`에 넣어 런처·시작·설정·엔딩에 노출합니다.
+- YAVN은 ZIP으로 임의 Live2D 모델을 받을 수 있으므로 배포 형태에 따라 Live2D의 “확장 가능한 애플리케이션” 심사·계약 대상일 수 있습니다. 공개 전에 공식 SDK 라이선스 조건을 확인해야 합니다.
+- `public/game-list/conan`과 `conan-demo`는 비공식·비상업적 팬 데모임을 같은 공통 고지 설정으로 표시합니다. 다만 비상업 표시는 권리자 허락을 대신하지 않으므로, 공개 배포를 계속하려면 권리를 확인하고 허락을 받거나 오리지널 자산으로 교체해야 합니다.
+- 전체 라이선스/배포 고지는 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), Live2D 원문/재배포 참고 파일은 `assets/licenses/live2d/`, SUITE OFL 전문은 `assets/licenses/fonts/LICENSE`에 보관합니다.
 - 비디오 컷신 재생 중 탭 전환/브라우저 포커스 이탈 후 복귀하면 자동으로 재생 복구를 시도합니다. (`visibilitychange`, `focus`, `pageshow`)
 - `HOLD TO SKIP` 게이지는 누름 해제 후 재시작 시 0%부터 즉시 동기화되어 숫자 표시와 동일하게 진행됩니다.

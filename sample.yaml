@@ -9,6 +9,14 @@
 #     - 비주얼노벨
 #   image: assets/bg/cover.png
 #   imageAlt: "대표 이미지 설명"
+# legalNotices: # 게임별 권리·출처 고지. 런처/시작 화면/설정/엔딩에 공통 노출
+#   - id: third-party-character
+#     title: "제3자 캐릭터 고지"
+#     copyright: "© Example Rights Holder"
+#     text: "이 게임에서 사용하는 제3자 캐릭터의 출처와 이용 조건을 설명합니다."
+#     links:
+#       - label: "공식 이용 조건"
+#         href: "https://example.com/license"
 # startScreen:
 #   enabled: true
 #   image: assets/bg/title.png
@@ -91,6 +99,9 @@ scenes:
           width: 22
           y: 30
           inputLockMs: 500
+      - effect:
+          name: focus
+          wait: true # 연출이 끝난 뒤 다음 액션으로 진행
       - wait: 3000
       - clearSticker: clue_note_popup
       - goto: all_done_after_item
