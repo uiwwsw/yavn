@@ -46,6 +46,36 @@ const game: GameData = {
   },
 };
 
+const unskippableGame: GameData = {
+  meta: { title: 'Unskippable Dialogue Test' },
+  settings: { textSpeed: 10, autoSave: true, clickToInstant: true },
+  assets: { backgrounds: {}, characters: {}, music: {}, sfx: {} },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [
+        { say: { text: 'Read every word.', unskippable: true } },
+        { say: { text: 'The next line.' } },
+      ],
+    },
+  },
+};
+
+const autoAdvancingUnskippableGame: GameData = {
+  meta: { title: 'Auto-advancing Unskippable Dialogue Test' },
+  settings: { textSpeed: 1, autoSave: true, clickToInstant: true },
+  assets: { backgrounds: {}, characters: {}, music: {}, sfx: {} },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [
+        { say: { text: 'Do not cut this sentence short.', unskippable: true, autoAdvance: 1 } },
+        { say: { text: 'The automatic next line.' } },
+      ],
+    },
+  },
+};
+
 describe('engine runtime safety', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -104,6 +134,74 @@ describe('engine runtime safety', () => {
       waitingInput: true,
     });
     expect(useVNStore.getState().dialog.fullText).toBe('The effect has finished.');
+  });
+
+  it('ignores advance input until an unskippable line finishes typing', () => {
+    useVNStore.getState().setGame(unskippableGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+
+    handleAdvance();
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 0,
+      waitingInput: true,
+      dialog: {
+        fullText: 'Read every word.',
+        visibleText: '',
+        typing: true,
+        unskippable: true,
+      },
+    });
+
+    handleAdvance();
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 0,
+      waitingInput: true,
+      dialog: { typing: true, unskippable: true },
+    });
+
+    vi.runAllTimers();
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 0,
+      waitingInput: true,
+      dialog: {
+        visibleText: 'Read every word.',
+        typing: false,
+        unskippable: false,
+      },
+    });
+
+    handleAdvance();
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1,
+      waitingInput: true,
+      dialog: { fullText: 'The next line.' },
+    });
+  });
+
+  it('waits for unskippable typing before an earlier auto-advance can run', () => {
+    useVNStore.getState().setGame(autoAdvancingUnskippableGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+
+    handleAdvance();
+    vi.advanceTimersByTime(1);
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 0,
+      waitingInput: true,
+      dialog: { typing: true, unskippable: true },
+    });
+
+    vi.runAllTimers();
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1,
+      waitingInput: true,
+      dialog: { fullText: 'The automatic next line.' },
+    });
   });
 
   it('repairs declared type changes without dropping route state carried across chapters', () => {
