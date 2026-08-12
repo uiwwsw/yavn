@@ -19,12 +19,23 @@ scenes:
           with: [진평왕, 덕만]
           delivery: calm
           text: "연회 다음 날, 귀족들이 다시 모였습니다."
+      - say:
+          with: [진평왕, 덕만]
+          delivery: calm
+          text: "덕만은 아버지를 살렸지만, 잔을 나른 악사는 죽었습니다."
+      - say:
+          with: [덕만]
+          delivery: calm
+          text: "그리고 죽은 사람의 품에서는 덕만이 잃어버린 노리개가 나왔습니다."
+      - say:
+          with: [덕만]
+          text: "암살을 막은 공주가 하룻밤 사이 암살을 꾸민 사람으로 바뀐 것입니다."
       - char:
           id: 칠숙
           position: center
       - say:
           char: 칠숙.smile
-          camera: medium
+          camera: wide
           with: [진평왕, 덕만]
           text: "죽은 악사의 품에서 나왔습니다."
       - say:
@@ -86,6 +97,9 @@ scenes:
           id: 소원
           position: right
       - say:
+          with: [덕만, 소원]
+          text: "소원은 덕만의 옷과 방을 맡는 시녀였습니다. 주인보다 오래 덕만의 버릇을 본 친구이기도 했습니다."
+      - say:
           char: 소원
           camera: medium
           with: [덕만]
@@ -127,6 +141,9 @@ scenes:
           id: 비담
           position: right
       - say:
+          with: [덕만, 비담]
+          text: "비담은 왕족이면서도 어느 편의 이름에도 들지 않았습니다. 잠긴 문과 감춘 소문을 찾아다니는 사람이었습니다."
+      - say:
           char: 비담.smirk
           camera: medium
           with: [덕만]
@@ -146,6 +163,84 @@ scenes:
           camera: close
           with: [비담]
           text: "좋아요. 먼저 가짜를 찾죠."
+      - say:
+          with: [덕만]
+          text: "남은 시간은 사흘. 부엌에는 독의 흔적이, 기록 창고에는 누가 남긴 글씨가 있었습니다."
+      - say:
+          with: [덕만]
+          text: "누구와 첫발을 떼느냐는 단서뿐 아니라, 끝까지 믿을 사람을 고르는 일이었습니다."
+      - branch:
+          cases:
+            - when:
+                var: cheonmyeong_trust
+                op: gte
+                value: 1
+              goto: remembered_sister_warning
+            - when:
+                var: yushin_trust
+                op: gte
+                value: 1
+              goto: remembered_guard_warning
+          default: investigate_choice
+
+  remembered_sister_warning:
+    actions:
+      - char:
+          id: 천명
+          position: right
+      - say:
+          with: [덕만, 천명]
+          text: "전날 암살 계획을 들은 천명은 연회가 끝난 뒤에도 악사들의 방을 지켜보고 있었습니다."
+      - say:
+          char: 천명.nervous
+          camera: medium
+          with: [덕만]
+          text: "노리개를 줍는 나인을 봤어."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [천명]
+          text: "얼굴은 기억나요?"
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "아니. 대신 왼손을 썼어."
+      - say:
+          char: 덕만
+          camera: close
+          with: [천명]
+          text: "언니에게 말하길 잘했네요."
+      - goto: investigate_choice
+
+  remembered_guard_warning:
+    actions:
+      - char:
+          id: 유신
+          position: right
+      - say:
+          with: [덕만, 유신]
+          text: "전날 명단을 맡은 유신은 밤새 호위의 이동을 다시 적어 두었습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "빈 자리는 셋이 아닙니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [유신]
+          text: "호위복 하나가 더 있었군요."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "안에서 갈아입은 자가 있습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "명단을 맡기길 잘했어요."
       - goto: investigate_choice
 
   investigate_choice:
@@ -178,6 +273,9 @@ scenes:
       - char:
           id: 소원
           position: right
+      - say:
+          with: [덕만, 소원]
+          text: "연회가 끝난 부엌에는 술 냄새와 젖은 재만 남아 있었습니다. 소원은 악사가 쓰러진 자리부터 되짚었습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -218,6 +316,9 @@ scenes:
       - char:
           id: 비담
           position: right
+      - say:
+          with: [덕만, 비담]
+          text: "비담은 덕만을 불 꺼진 기록 창고로 데려갔습니다. 죽은 악사의 출입을 적은 장부가 그곳에 있었습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -288,6 +389,12 @@ scenes:
           camera: close
           with: [비담]
           text: "고치러 뛰는 사람이 범인이니까."
+      - say:
+          with: [덕만, 비담]
+          text: "소문은 증거가 아니었습니다. 하지만 범인에게는 아직 덕만이 무엇을 찾았는지 알 수 없는 밤이었습니다."
+      - say:
+          with: [덕만]
+          text: "틀린 소문을 하나 던지면, 그것을 막으러 움직이는 사람이 다음 단서가 됩니다. 대신 엉뚱한 사람도 다칠 수 있었습니다."
       - choice:
           key: c1_rumor
           prompt: "어떤 소문을 흘릴까?"
@@ -442,6 +549,12 @@ scenes:
           camera: close
           with: [덕만]
           text: "공주님 이름을 말해도 죽습니다."
+      - say:
+          with: [덕만, 칠숙]
+          text: "하인은 살아 있는 증거였지만, 입을 여는 순간 죽을 사람이기도 했습니다."
+      - say:
+          with: [덕만]
+          text: "왕에게 숨기면 안전하지만 명령한 사람을 놓칩니다. 풀어 주면 그 사람에게 닿을 수 있지만 다시 잡는다는 보장은 없었습니다."
       - choice:
           key: c1_evidence
           prompt: "붙잡힌 하인을 어떻게 쓸까?"
@@ -470,6 +583,9 @@ scenes:
       - char:
           id: 덕만
           position: left
+      - say:
+          with: [진평왕, 덕만]
+          text: "덕만은 붙잡힌 하인과 검은 가루를 아버지 앞에만 내놓았습니다. 결백을 먼저 되찾는 길이었습니다."
       - say:
           char: 진평왕.sad
           camera: close
@@ -507,6 +623,9 @@ scenes:
       - char:
           id: 비담
           position: right
+      - say:
+          with: [덕만, 비담]
+          text: "풀려난 하인이 궁 담을 넘자, 덕만과 비담은 등불을 끄고 그 뒤를 따랐습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -704,7 +823,7 @@ scenes:
           position: center
       - say:
           char: 칠숙.smile
-          camera: medium
+          camera: wide
           with: [진평왕, 덕만]
           text: "벌써 공주를 왕이라 부릅니다."
       - say:

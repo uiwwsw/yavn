@@ -108,7 +108,6 @@ state:
   bidam_trust: 0
   rival_trust: 0
   cheonmyeong_alive: true
-  saved_rival: false
   clue_black_powder: false
   clue_marriage_pact: false
   clue_oath_fragment: false

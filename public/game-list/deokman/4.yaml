@@ -16,6 +16,12 @@ scenes:
       - say:
           text: "제4장 — 빈 그릇의 성"
       - say:
+          with: [덕만, 칠숙]
+          text: "덕만은 잠긴 방의 살인 누명까지 벗었지만, 귀족들이 남자 왕족을 세우려 했다는 약속문을 손에 넣었습니다."
+      - say:
+          with: [칠숙]
+          text: "칠숙은 그 증거를 빼앗는 대신 덕만을 수도에서 떼어 놓기로 했습니다. 이미 국경 지휘패까지 준비해 둔 뒤였습니다."
+      - say:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
@@ -112,6 +118,60 @@ scenes:
           camera: medium
           with: [덕만]
           text: "절대로요."
+      - say:
+          with: [덕만]
+          text: "병사만 먹이면 성은 엿새를 버티지만 성밖 사람들이 먼저 죽습니다. 모두에게 똑같이 나누면 필요한 양이 다른 사람부터 쓰러집니다."
+      - say:
+          with: [덕만]
+          text: "덕만에게 남은 곡식은 사흘치뿐이었습니다. 누구를 먼저 살리느냐가 곧 누구의 원망을 먼저 받느냐는 뜻이었습니다."
+      - branch:
+          cases:
+            - when:
+                var: yushin_trust
+                op: gte
+                value: 2
+              goto: frontier_yushin_reserve
+          default: grain_choice
+
+  frontier_yushin_reserve:
+    actions:
+      - bg: fortress
+      - camera: wide
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 유신
+          position: right
+      - say:
+          with: [덕만, 유신]
+          text: "유신은 성벽 아래에서 군량 자루 열둘을 끌어냈습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [유신]
+          text: "보고에는 없던 곡식이군요."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "공주께서 제 경고를 믿어 주셨습니다."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "저도 공주의 귀환을 믿었습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "열둘로 하루를 더 사겠네요."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "누구의 하루인지는 정하셔야 합니다."
+      - add: { army_support: 1 }
       - goto: grain_choice
 
   grain_choice:
@@ -144,6 +204,9 @@ scenes:
       - char:
           id: 월명
           position: right
+      - say:
+          with: [덕만, 월명]
+          text: "덕만은 쓰러진 아이와 성밖 피란민부터 배급 줄에 세웠습니다. 군사 몫은 보급로가 열릴 때까지 줄였습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -186,6 +249,9 @@ scenes:
       - char:
           id: 유신
           position: right
+      - say:
+          with: [덕만, 유신]
+          text: "덕만은 싸울 병사와 그 가족을 먼저 먹이기로 했습니다. 가족이 굶는 군사는 성벽을 지킬 수 없다고 보았습니다."
       - say:
           char: 유신
           camera: medium
@@ -283,6 +349,12 @@ scenes:
           camera: close
           with: [유신]
           text: "그것도 제 몫입니다."
+      - say:
+          with: [덕만]
+          text: "마을을 지키면 사람을 살릴 수 있지만 마지막 요새와 보급로를 잃습니다. 요새를 지키면 내일의 곡식은 오지만 오늘 밤 마을이 탑니다."
+      - say:
+          with: [덕만, 유신]
+          text: "병력을 나누면 둘 다 지킬 가능성은 생깁니다. 그러나 굶은 병사로 두 전장을 버틸 여유는 없었습니다."
       - choice:
           key: c4_defense
           prompt: "어디를 먼저 지킬까?"
@@ -444,6 +516,12 @@ scenes:
           camera: close
           with: [덕만]
           text: "넘어져 죽는 건 제 명령이 아닙니다."
+      - say:
+          with: [덕만, 아진]
+          text: "적장은 아진의 가족을 미끼로 덕만을 강가에 끌어내려 했습니다. 협상은 사람을 돌려받을 기회이자 매복으로 들어가는 길이었습니다."
+      - say:
+          with: [덕만]
+          text: "싸우면 주도권은 얻지만 또 이름을 적어야 합니다. 속이면 피를 줄일 수 있지만 실패할 때 물러날 길이 없었습니다."
       - choice:
           key: c4_enemy
           prompt: "적의 틈을 어떻게 만들까?"
@@ -472,6 +550,9 @@ scenes:
       - char:
           id: 아진
           position: right
+      - say:
+          with: [덕만, 아진]
+          text: "해가 기울자 덕만과 아진은 포로 명단과 곡식 수레를 들고 강가로 향했습니다. 멀리 갈대밭에서 활시위가 따라 움직였습니다."
       - say:
           char: 아진.nervous
           camera: medium

@@ -24,6 +24,24 @@ scenes:
           text: "역사의 인물과 사건을 바탕으로 새로 쓴 이야기입니다."
       - say:
           with:
+            - 덕만
+          delivery: calm
+          text: "훗날 선덕여왕이라 불릴 덕만은, 이때 아직 왕의 둘째 딸이었습니다."
+      - say:
+          with:
+            - 진평왕
+            - 덕만
+          delivery: calm
+          text: "아들이 없는 진평왕 뒤를 누가 이을지, 왕실과 귀족은 오래 맞서고 있었습니다."
+      - say:
+          with:
+            - 진평왕
+            - 덕만
+            - 칠숙
+          delivery: calm
+          text: "그날 왕좌전에서 다툰 것도 결국 하나였습니다. 여자가 신라의 왕이 될 수 있는가."
+      - say:
+          with:
             - 진평왕
             - 덕만
           delivery: calm
@@ -33,13 +51,17 @@ scenes:
             - 진평왕
             - 덕만
             - 칠숙
-          text: "귀족들의 앞자리를 맡은 이찬 칠숙이 입을 열었습니다."
+          text: "이찬 칠숙은 신라에서 둘째로 높은 관등에 오른 귀족이었습니다."
+      - say:
+          with:
+            - 덕만
+            - 칠숙
+          text: "그는 귀족들의 뜻을 대표했고, 왕의 딸에게 왕좌를 내줄 생각이 없었습니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with:
             - 진평왕
-            - 덕만
           text: "전하. 왕자께서 설 자리가 비었습니다."
       - say:
           char: 진평왕
@@ -52,7 +74,6 @@ scenes:
           camera: medium
           with:
             - 진평왕
-            - 덕만
           text: "그러니 비워 두셔야 합니다."
       - say:
           char: 덕만
@@ -64,10 +85,14 @@ scenes:
           id: 천명
           position: center
       - say:
+          with:
+            - 덕만
+            - 천명
+          text: "천명은 덕만의 언니였습니다. 동생을 아꼈지만, 왕좌를 말할 때는 먼저 위험을 셌습니다."
+      - say:
           char: 천명
           camera: medium
           with:
-            - 진평왕
             - 덕만
           text: "덕만아. 오늘은 참아."
       - say:
@@ -78,7 +103,7 @@ scenes:
           text: "언니는 참을 수 있어?"
       - say:
           char: 진평왕
-          camera: medium
+          camera: wide
           with:
             - 덕만
             - 천명
@@ -91,7 +116,6 @@ scenes:
           camera: medium
           with:
             - 진평왕
-            - 덕만
           text: "공주가 왕의 자리에 익숙해지겠군요."
       - say:
           char: 진평왕
@@ -151,13 +175,11 @@ scenes:
           camera: medium
           with:
             - 진평왕
-            - 덕만
           text: "왕실 곡식을 공주 말 한마디로 풉니까?"
       - say:
           char: 진평왕
           camera: close
           with:
-            - 덕만
             - 칠숙
           text: "아니다. 왕이 허락한다."
       - say:
@@ -211,7 +233,12 @@ scenes:
             - 덕만
             - 천명
             - 유신
-          text: "문밖에는 덕만의 호위를 맡은 유신이 서 있었습니다."
+          text: "문밖에는 덕만의 호위를 맡은 젊은 장수 김유신이 서 있었습니다."
+      - say:
+          with:
+            - 덕만
+            - 유신
+          text: "유신은 덕만의 답을 대신 고르지 않았습니다. 다만 그 답이 살아남을 길을 먼저 찾았습니다."
       - say:
           char: 유신
           camera: medium
@@ -270,6 +297,12 @@ scenes:
           id: 아진
           position: left
       - say:
+          with:
+            - 칠숙
+            - 아진
+          delivery: whisper
+          text: "칠숙과 마주 선 사람은 그의 명령을 따르는 무사 아진이었습니다."
+      - say:
           char: 칠숙.smile
           camera: medium
           with:
@@ -313,6 +346,16 @@ scenes:
           delivery: whisper
           text: "발밑에서 마른 대나무가 부러졌습니다."
           wait: 650
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "지금 들키면 아버지에게 경고할 기회가 사라집니다. 모른 척하면 내일 왕이 죽습니다."
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "덕만은 도망칠 길보다, 들은 말을 살려 가져갈 방법을 먼저 골라야 했습니다."
       - goto: caught_choice
 
   caught_choice:
@@ -348,7 +391,7 @@ scenes:
           text: "덕만은 기둥 밖으로 걸어 나왔습니다."
       - say:
           char: 덕만
-          camera: medium
+          camera: wide
           with:
             - 아진
             - 칠숙
@@ -442,6 +485,16 @@ scenes:
           camera: close
           delivery: whisper
           text: "한 사람은 믿어야 해."
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "아버지는 왕이라 증거를 기다릴 겁니다. 천명은 언니라 함께 떨 것이고, 유신은 장수라 바로 움직일 겁니다."
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "누구에게 말하느냐에 따라 내일 왕의 곁에 서는 사람도, 위험을 뒤집어쓰는 사람도 달라집니다."
       - choice:
           key: p_warn
           prompt: "동트기 전, 누구를 믿을까?"
@@ -642,6 +695,16 @@ scenes:
           with:
             - 덕만
           text: "<speed=20>믿는다. 위험하면 내 손을 잡아라.</speed>"
+      - say:
+          with:
+            - 덕만
+            - 진평왕
+          text: "두 번째 잔이 왕의 입술로 향했습니다. 여기서 움직이면 덕만은 아버지를 살릴 수도, 암살범이 될 수도 있었습니다."
+      - say:
+          with:
+            - 덕만
+          delivery: whisper
+          text: "칠숙은 보고 있었습니다. 덕만이 무엇을 아는지 확인하려는 얼굴이었습니다."
       - choice:
           key: p_cup
           prompt: "왕이 두 번째 잔을 든다."
@@ -805,7 +868,7 @@ scenes:
           text: "덕만은 숨지 않고 두 사람 앞에 나섰습니다."
       - say:
           char: 덕만
-          camera: medium
+          camera: wide
           with: [칠숙, 아진]
           text: "두 번째 잔으로 왕을 죽이겠군요."
       - say:
