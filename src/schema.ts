@@ -117,7 +117,14 @@ const stickerLeaveSchema = z.union([
   }),
 ]);
 
-export const actionSchema = z.union([
+const screenEffectNameSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(64)
+  .regex(/^[A-Za-z][A-Za-z0-9_-]*$/, 'effect name must be a CSS-safe identifier');
+
+const actionBodySchema = z.union([
   z.object({ bg: z.string() }),
   z.object({
     sticker: z.object({
@@ -172,19 +179,32 @@ export const actionSchema = z.union([
   z.object({ get: z.string().min(1) }),
   z.object({ use: z.string().min(1) }),
   z.object({
-    choice: z.object({
-      key: z.string().min(1).optional(),
-      prompt: z.string().min(1),
-      char: z.string().min(1).optional(),
-      with: z.array(z.string().min(1)).optional(),
-      framing: z.string().min(1).optional(),
-      camera: cameraDirectiveSchema.optional(),
-      forgiveOnceDefault: z.boolean().optional(),
-      forgiveMessage: z.string().min(1).optional(),
-      timeoutMs: z.number().int().min(1000).max(60000).optional(),
-      timeoutOptionIndex: z.number().int().nonnegative().optional(),
-      options: z.array(choiceOptionSchema).min(1),
-    }),
+    choice: z
+      .object({
+        key: z.string().min(1).optional(),
+        prompt: z.string().min(1),
+        char: z.string().min(1).optional(),
+        with: z.array(z.string().min(1)).optional(),
+        framing: z.string().min(1).optional(),
+        camera: cameraDirectiveSchema.optional(),
+        forgiveOnceDefault: z.boolean().optional(),
+        forgiveMessage: z.string().min(1).optional(),
+        timeoutMs: z.number().int().min(1000).max(60000).optional(),
+        timeoutOptionIndex: z.number().int().nonnegative().optional(),
+        options: z.array(choiceOptionSchema).min(1),
+      })
+      .superRefine((choice, ctx) => {
+        if (
+          choice.timeoutOptionIndex !== undefined &&
+          choice.timeoutOptionIndex >= choice.options.length
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['timeoutOptionIndex'],
+            message: `timeoutOptionIndex must be between 0 and ${choice.options.length - 1}`,
+          });
+        }
+      }),
   }),
   z.object({
     branch: z.object({
@@ -202,7 +222,17 @@ export const actionSchema = z.union([
   z.object({ ending: z.string().min(1) }),
   z.object({ gameOver: gameOverSchema }),
   z.object({ wait: z.number().nonnegative() }),
-  z.object({ effect: z.string() }),
+  z.object({
+    effect: z.union([
+      screenEffectNameSchema,
+      z
+        .object({
+          name: screenEffectNameSchema,
+          wait: z.boolean().optional(),
+        })
+        .strict(),
+    ]),
+  }),
   z.object({ goto: z.string() }),
   z.object({
     char: z.object({
@@ -225,6 +255,19 @@ export const actionSchema = z.union([
     }),
   }),
 ]);
+
+export const actionSchema = z
+  .record(z.unknown())
+  .superRefine((action, ctx) => {
+    const keys = Object.keys(action);
+    if (keys.length !== 1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `each action must declare exactly one action key (received: ${keys.join(', ') || 'none'})`,
+      });
+    }
+  })
+  .pipe(actionBodySchema);
 
 export const authorContactSchema = z.union([
   z.string(),
@@ -286,6 +329,45 @@ const seoConfigSchema = z
       image: normalizeOptionalText(value.image),
       imageAlt: normalizeOptionalText(value.imageAlt),
     };
+  });
+
+const legalNoticeLinkSchema = z
+  .object({
+    label: z.string().trim().min(1).max(80),
+    href: z
+      .string()
+      .trim()
+      .url()
+      .max(2048)
+      .refine((value) => /^https?:\/\//i.test(value), 'legal notice links must use http or https'),
+  })
+  .strict();
+
+const legalNoticeSchema = z
+  .object({
+    id: z.string().trim().min(1).max(64).regex(/^[A-Za-z0-9][A-Za-z0-9._-]*$/),
+    title: z.string().trim().min(1).max(120),
+    text: z.string().trim().min(1).max(2000),
+    copyright: z.string().trim().min(1).max(240).optional(),
+    links: z.array(legalNoticeLinkSchema).max(8).optional(),
+  })
+  .strict();
+
+const legalNoticesSchema = z
+  .array(legalNoticeSchema)
+  .max(12)
+  .superRefine((notices, ctx) => {
+    const ids = new Set<string>();
+    for (const [index, notice] of notices.entries()) {
+      if (ids.has(notice.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [index, 'id'],
+          message: `duplicate legal notice id '${notice.id}'`,
+        });
+      }
+      ids.add(notice.id);
+    }
   });
 
 const startScreenSchema = z
@@ -410,6 +492,7 @@ export const configSchema = z
     author: z.union([z.string(), authorObjectSchema]).optional(),
     version: z.string().optional(),
     seo: seoConfigSchema.optional(),
+    legalNotices: legalNoticesSchema.optional(),
     textSpeed: z.number().positive(),
     autoSave: z.boolean(),
     clickToInstant: z.boolean(),
@@ -450,6 +533,7 @@ export const gameSchema = z.object({
     author: z.union([z.string(), authorObjectSchema]).optional(),
     version: z.string().optional(),
     seo: seoConfigSchema.optional(),
+    legalNotices: legalNoticesSchema.optional(),
   }),
   settings: z.object({
     textSpeed: z.number().positive(),

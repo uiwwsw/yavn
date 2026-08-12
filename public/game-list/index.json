@@ -1,24 +1,24 @@
 {
-  "schemaVersion": 4,
-  "generatedAt": "2026-08-11T09:07:03.171Z",
+  "schemaVersion": 5,
+  "generatedAt": "2026-08-12T01:36:47.349Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "3.2.2",
-      "summary": "쉬운 말과 선명한 속마음, 누룽지·농담·안부의 생활 호흡 사이로 덕만이 스스로 왕이 되는 8장 신라 궁중 정치극.",
+      "version": "4.0.0",
+      "summary": "아버지를 살린 밤, 암살자의 품에서 덕만의 이름이 나왔다. 사랑하는 사람들을 잃지 않고 누구도 허락하지 않은 왕좌까지 가야 하는 공주의 8장 궁중 정치극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [
         "historical-fiction",
-        "political-thriller",
-        "branch-heavy",
-        "survival",
-        "multiple-endings"
+        "silla",
+        "character-drama",
+        "court-intrigue",
+        "political-thriller"
       ],
       "showcase": {
-        "label": "24 CHOICES · 35 FATES",
+        "label": "8 CHAPTERS · ONE CROWN",
         "backgroundColor": "#241623",
         "image": {
           "positionX": 66,
@@ -28,10 +28,11 @@
           "offsetY": 0
         }
       },
+      "legalNotices": [],
       "chapterCount": 8,
       "seo": {
         "title": "덕만: 왕관에는 주인이 없다",
-        "description": "죽을 운명을 고쳐 쓰며 신라 최초의 여왕이 되어야 하는 장편 궁중 정치 생존 비주얼노벨. 24개의 운명 선택과 35개의 실패 결말, 10개의 수집형 엔딩을 담았다.",
+        "description": "아버지를 살린 밤 암살범으로 몰린 덕만공주가 사랑과 권력, 오랜 질서의 칼날을 지나 누구도 허락하지 않은 왕이 되어 가는 8장 신라 궁중 정치극.",
         "keywords": [
           "선덕여왕",
           "덕만",
@@ -40,10 +41,10 @@
           "정치 생존 게임",
           "분기형 게임",
           "historical-fiction",
-          "political-thriller",
-          "branch-heavy",
-          "survival",
-          "multiple-endings"
+          "silla",
+          "character-drama",
+          "court-intrigue",
+          "political-thriller"
         ],
         "image": "/game-list/deokman/assets/bg/title-palace-silla-social-v3.jpg",
         "imageAlt": "비 내린 달밤의 7세기 신라 월성 왕궁"
@@ -55,14 +56,23 @@
       "path": "/game-list/conan/",
       "author": "uiwwsw",
       "version": "10.7.0",
-      "summary": "기념품 고르기와 탁구 삼세판, 가족 저녁을 충분히 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
+      "summary": "비공식·비상업적 팬 데모. 기념품 고르기와 탁구 삼세판, 가족 저녁을 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [
         "detective",
         "branch-heavy",
         "sample",
         "voice-sfx",
-        "character-driven"
+        "character-driven",
+        "noncommercial-fan-demo"
+      ],
+      "legalNotices": [
+        {
+          "id": "detective-conan-noncommercial-fan-demo",
+          "title": "비공식·비상업적 팬 데모",
+          "text": "이 작품은 YAVN 엔진 기능 검증을 위해 제작된 비공식·비상업적 팬 데모입니다. 데모 자체는 판매·유료 기능·광고·후원 유도 등으로 수익화하지 않으며, 원작자·출판사·제작사·배급사 등 권리자와 제휴하거나 승인받은 공식 작품이 아닙니다. ‘비상업적’ 표시는 이용 허락을 대신하지 않습니다. 권리자의 요청이 있으면 공개를 중단하고 관련 자산을 제거합니다.",
+          "copyright": "명탐정 코난 관련 명칭·캐릭터와 원작 요소의 권리는 각 권리자에게 있습니다."
+        }
       ],
       "chapterCount": 10,
       "seo": {
@@ -79,7 +89,8 @@
           "branch-heavy",
           "sample",
           "voice-sfx",
-          "character-driven"
+          "character-driven",
+          "noncommercial-fan-demo"
         ],
         "image": "/game-list/conan/assets/bg/title_storm-social.jpg",
         "imageAlt": "폭우로 고립된 산악 료칸의 밤"
@@ -91,17 +102,26 @@
       "path": "/game-list/conan-demo/",
       "author": "uiwwsw",
       "version": "1.0",
-      "summary": "자동 대사, 제한 시간 선택, 공용 자산, 신규 카메라 효과를 약 60초에 압축한 스펙터클 코난 트레일러 데모.",
+      "summary": "비공식·비상업적 팬 데모. 자동 대사, 제한 시간 선택, 공용 자산, 신규 카메라 효과를 약 60초에 압축한 엔진 쇼케이스.",
       "thumbnail": "/game-list/conan-demo/assets/bg/rail-warning.avif",
       "tags": [
         "60-second",
         "cinematic",
         "engine-showcase",
-        "timed-choice"
+        "timed-choice",
+        "noncommercial-fan-demo"
       ],
       "showcase": {
         "label": "ENGINE SHOWCASE"
       },
+      "legalNotices": [
+        {
+          "id": "detective-conan-noncommercial-fan-demo",
+          "title": "비공식·비상업적 팬 데모",
+          "text": "이 작품은 YAVN 엔진 기능 검증을 위해 제작된 비공식·비상업적 팬 데모입니다. 데모 자체는 판매·유료 기능·광고·후원 유도 등으로 수익화하지 않으며, 원작자·출판사·제작사·배급사 등 권리자와 제휴하거나 승인받은 공식 작품이 아닙니다. ‘비상업적’ 표시는 이용 허락을 대신하지 않습니다. 권리자의 요청이 있으면 공개를 중단하고 관련 자산을 제거합니다.",
+          "copyright": "명탐정 코난 관련 명칭·캐릭터와 원작 요소의 권리는 각 권리자에게 있습니다."
+        }
+      ],
       "chapterCount": 1,
       "seo": {
         "title": "명탐정 코난 DEMO: 60초의 경고",
@@ -114,7 +134,8 @@
           "60-second",
           "cinematic",
           "engine-showcase",
-          "timed-choice"
+          "timed-choice",
+          "noncommercial-fan-demo"
         ],
         "image": "/game-list/conan-demo/assets/bg/rail-warning-social.jpg",
         "imageAlt": "폭우 속 적색 경보가 켜진 산악 철도 터널"
@@ -143,6 +164,24 @@
           "offsetX": 18
         }
       },
+      "legalNotices": [
+        {
+          "id": "live2d-ren-poster",
+          "title": "Live2D 샘플 데이터 — 렌 포스터",
+          "text": "본 작품의 캐릭터에는 주식회사 Live2D가 정하는 약관에 따라 주식회사 Live2D의 저작물인 샘플 데이터가 이용되었습니다. 본 작품은 제작자의 완전한 자기 재량으로 제작되었습니다.",
+          "copyright": "© Live2D Inc.",
+          "links": [
+            {
+              "label": "샘플 데이터 이용 조건",
+              "href": "https://www.live2d.com/eula/live2d-sample-model-terms_ko.html"
+            },
+            {
+              "label": "Live2D 공식 샘플 데이터",
+              "href": "https://www.live2d.com/ko/learn/sample/"
+            }
+          ]
+        }
+      ],
       "chapterCount": 1,
       "seo": {
         "title": "Live2D 테스트: 렌 수다",
@@ -165,14 +204,16 @@
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다",
       "historical-fiction",
+      "silla",
+      "character-drama",
+      "court-intrigue",
       "political-thriller",
-      "branch-heavy",
-      "survival",
-      "multiple-endings",
       "detective",
+      "branch-heavy",
       "sample",
       "voice-sfx",
       "character-driven",
+      "noncommercial-fan-demo",
       "60-second",
       "cinematic",
       "engine-showcase",

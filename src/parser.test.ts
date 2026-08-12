@@ -42,6 +42,93 @@ describe('parseConfigYaml startScreen', () => {
   });
 });
 
+describe('parseConfigYaml legal notices', () => {
+  it('preserves reusable legal notices in resolved game metadata', () => {
+    const config = parseConfigYaml(
+      `
+title: Licensed Sample
+textSpeed: 38
+autoSave: true
+clickToInstant: true
+legalNotices:
+  - id: sample-character
+    title: Sample character
+    copyright: © Example Inc.
+    text: This game uses a third-party sample character.
+    links:
+      - label: Official terms
+        href: https://example.com/license
+`,
+      'config.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: intro
+scenes:
+  intro:
+    actions:
+      - say: { text: "Hello." }
+`,
+      '0.yaml',
+    );
+
+    expect(config.error).toBeUndefined();
+    expect(chapter.error).toBeUndefined();
+    if (!config.data || !chapter.data) return;
+    const resolved = resolveChapterGame({ config: config.data, bases: [], chapter: chapter.data });
+    expect(resolved.error).toBeUndefined();
+    expect(resolved.data?.meta.legalNotices).toEqual([
+      {
+        id: 'sample-character',
+        title: 'Sample character',
+        copyright: '© Example Inc.',
+        text: 'This game uses a third-party sample character.',
+        links: [{ label: 'Official terms', href: 'https://example.com/license' }],
+      },
+    ]);
+  });
+
+  it('rejects duplicate notice ids', () => {
+    const parsed = parseConfigYaml(
+      `
+title: Invalid notices
+textSpeed: 38
+autoSave: true
+clickToInstant: true
+legalNotices:
+  - { id: duplicate, title: First, text: First notice }
+  - { id: duplicate, title: Second, text: Second notice }
+`,
+      'config.yaml',
+    );
+
+    expect(parsed.data).toBeUndefined();
+    expect(parsed.error?.message).toContain("duplicate legal notice id 'duplicate'");
+  });
+
+  it('rejects non-http notice links', () => {
+    const parsed = parseConfigYaml(
+      `
+title: Unsafe link
+textSpeed: 38
+autoSave: true
+clickToInstant: true
+legalNotices:
+  - id: unsafe
+    title: Unsafe link
+    text: This link must not execute script.
+    links:
+      - { label: Unsafe, href: "javascript:alert(1)" }
+`,
+      'config.yaml',
+    );
+
+    expect(parsed.data).toBeUndefined();
+    expect(parsed.error?.message).toContain('legal notice links must use http or https');
+  });
+});
+
 describe('cinematic DSL timing', () => {
   it('accepts a character-level default dialogue delivery', () => {
     const parsed = parseBaseYaml(
@@ -403,5 +490,115 @@ scenes:
 
     expect(parsed.data).toBeUndefined();
     expect(parsed.error?.message).toContain('choice option cannot declare both goto and gameOver');
+  });
+});
+
+describe('runtime safety validation', () => {
+  it('keeps legacy effects and accepts an effect that waits for completion', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: intro
+scenes:
+  intro:
+    actions:
+      - effect: flash
+      - effect:
+          name: impact
+          wait: true
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    expect(parsed.data?.data.scenes.intro.actions).toEqual([
+      { effect: 'flash' },
+      { effect: { name: 'impact', wait: true } },
+    ]);
+  });
+
+  it('rejects ambiguous action rows and out-of-range timed choices', () => {
+    const ambiguous = parseChapterYaml(
+      `
+script:
+  - scene: intro
+scenes:
+  intro:
+    actions:
+      - effect: flash
+        wait: 100
+`,
+      '0.yaml',
+    );
+    const invalidTimeout = parseChapterYaml(
+      `
+script:
+  - scene: intro
+scenes:
+  intro:
+    actions:
+      - choice:
+          prompt: Choose
+          timeoutMs: 3000
+          timeoutOptionIndex: 2
+          options:
+            - text: One
+            - text: Two
+`,
+      '0.yaml',
+    );
+
+    expect(ambiguous.error?.message).toContain('exactly one action key');
+    expect(invalidTimeout.error?.message).toContain('timeoutOptionIndex must be between 0 and 1');
+  });
+
+  it('rejects duplicate script order and branch scenes that can fall back to the opening', () => {
+    const config = parseConfigYaml(
+      `
+title: Safety Test
+textSpeed: 30
+autoSave: true
+clickToInstant: true
+`,
+      'config.yaml',
+    );
+    const duplicateScript = parseChapterYaml(
+      `
+script:
+  - scene: intro
+  - scene: intro
+scenes:
+  intro:
+    actions:
+      - say: { text: Hello }
+`,
+      '0.yaml',
+    );
+    const fallingBranch = parseChapterYaml(
+      `
+script:
+  - scene: intro
+scenes:
+  intro:
+    actions:
+      - goto: branch_scene
+  branch_scene:
+    actions:
+      - say: { text: This scene forgot its exit. }
+`,
+      '0.yaml',
+    );
+
+    expect(config.data).toBeDefined();
+    expect(duplicateScript.data).toBeDefined();
+    expect(fallingBranch.data).toBeDefined();
+    if (!config.data || !duplicateScript.data || !fallingBranch.data) return;
+
+    expect(
+      resolveChapterGame({ config: config.data, bases: [], chapter: duplicateScript.data }).error?.message,
+    ).toContain("duplicate scene 'intro'");
+    expect(
+      resolveChapterGame({ config: config.data, bases: [], chapter: fallingBranch.data }).error?.message,
+    ).toContain("scene 'branch_scene' is outside script and can fall through");
   });
 });

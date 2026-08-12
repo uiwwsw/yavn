@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   exportSaveBackup,
   getAutoSaveEnabled,
+  getChoiceRecoverySummary,
   getSaveSlotSummaries,
   importSaveBackup,
   saveCurrentProgress,
@@ -84,6 +85,38 @@ describe('save system', () => {
     expect(getSaveSlotSummaries().find((slot) => slot.slot === 'auto')?.exists).toBe(true);
   });
 
+  it('keeps disabled-autosave choice recovery in memory without leaving a stale persistent point', () => {
+    localStorage.setItem(
+      'vn-engine-autosave:choice-recovery',
+      JSON.stringify({
+        gameTitle: 'Save Test',
+        chapterIndex: 0,
+        sceneId: 'intro',
+        actionIndex: 9,
+      }),
+    );
+    setAutoSaveEnabled(false);
+
+    expect(localStorage.getItem('vn-engine-autosave:choice-recovery')).toBeNull();
+
+    useVNStore.getState().setCursor('intro', 3);
+    useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().setChoiceGate({
+      active: true,
+      key: 'session-only',
+      prompt: 'Choose',
+      options: [{ text: 'Continue' }],
+    });
+    submitChoiceOption(0);
+
+    expect(getChoiceRecoverySummary()).toMatchObject({
+      exists: true,
+      sceneId: 'intro',
+      actionIndex: 3,
+    });
+    expect(localStorage.getItem('vn-engine-autosave:choice-recovery')).toBeNull();
+  });
+
   it('rejects a backup from a different game', () => {
     const foreign = JSON.stringify({
       engine: 'YAVN',
@@ -124,6 +157,19 @@ describe('save system', () => {
     expect(useVNStore.getState().isFinished).toBe(false);
     expect(useVNStore.getState().routeVars.failed).toBe(true);
     expect(JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}')).toMatchObject(savedBeforeFailure);
+    expect(getChoiceRecoverySummary()).toMatchObject({
+      exists: true,
+      sceneId: 'intro',
+      actionIndex: 7,
+      chapterIndex: 0,
+    });
+    expect(JSON.parse(localStorage.getItem('vn-engine-autosave:choice-recovery') ?? '{}')).toMatchObject({
+      sceneId: 'intro',
+      actionIndex: 7,
+      routeVars: {},
+      routeHistory: [],
+      storyLog: [],
+    });
     expect(exportSaveBackup()).toBeUndefined();
   });
 

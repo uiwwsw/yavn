@@ -2,8 +2,23 @@ title: "Live2D 테스트: 렌 수다"
 author:
   name: "uiwwsw"
 version: "1.0.0"
+legalNotices:
+  - id: "live2d-ren-poster"
+    title: "Live2D 샘플 데이터 — 렌 포스터"
+    copyright: "© Live2D Inc."
+    text: "본 작품의 캐릭터에는 주식회사 Live2D가 정하는 약관에 따라 주식회사 Live2D의 저작물인 샘플 데이터가 이용되었습니다. 본 작품은 제작자의 완전한 자기 재량으로 제작되었습니다."
+    links:
+      - label: "샘플 데이터 이용 조건"
+        href: "https://www.live2d.com/eula/live2d-sample-model-terms_ko.html"
+      - label: "Live2D 공식 샘플 데이터"
+        href: "https://www.live2d.com/ko/learn/sample/"
 textSpeed: 40
 autoSave: true
 clickToInstant: true
 ui:
   template: neon-grid
+startScreen:
+  enabled: true
+  showTitle: true
+  startButtonText: "Live2D 테스트 시작"
+  buttonPosition: center

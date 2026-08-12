@@ -3,6 +3,9 @@ import type { CSSProperties } from 'react';
 import { createModelView, startup, Ticker } from 'easy-cl2d';
 import { markLive2DLoadError, markLive2DLoadReady } from './live2dLoadTracker';
 import type { CharacterSlot, Position } from './types';
+// Live2D Cubism Core © Live2D Inc. is proprietary software. easy-cl2d also
+// contains modified Cubism Framework code under Live2D's Open Software terms.
+// Keep THIRD_PARTY_NOTICES.md and assets/licenses/live2d with every distribution.
 import live2dCubismCoreScriptUrl from './assets/third-party/live2d/live2dcubismcore.min.js?url';
 
 const CUBISM_CORE_SCRIPT_URL = live2dCubismCoreScriptUrl;
@@ -228,6 +231,10 @@ async function ensureRuntime(): Promise<void> {
     });
     runtimeStarted = true;
   }
+}
+
+export async function prepareLive2DRuntime(): Promise<void> {
+  await ensureRuntime();
 }
 
 function splitModelSource(modelSource: string): Live2DModelSourceInfo {

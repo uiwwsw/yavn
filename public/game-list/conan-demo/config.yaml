@@ -7,6 +7,11 @@ author:
       value: "yavn.vercel.app"
       href: "https://yavn.vercel.app"
 version: "1.0"
+legalNotices:
+  - id: "detective-conan-noncommercial-fan-demo"
+    title: "비공식·비상업적 팬 데모"
+    copyright: "명탐정 코난 관련 명칭·캐릭터와 원작 요소의 권리는 각 권리자에게 있습니다."
+    text: "이 작품은 YAVN 엔진 기능 검증을 위해 제작된 비공식·비상업적 팬 데모입니다. 데모 자체는 판매·유료 기능·광고·후원 유도 등으로 수익화하지 않으며, 원작자·출판사·제작사·배급사 등 권리자와 제휴하거나 승인받은 공식 작품이 아닙니다. ‘비상업적’ 표시는 이용 허락을 대신하지 않습니다. 권리자의 요청이 있으면 공개를 중단하고 관련 자산을 제거합니다."
 seo:
   description: "폭우 속 산악 철도에서 60초 안에 정지 열차와 폭발 신호의 모순을 풀어내는 자동 진행형 코난 엔진 쇼케이스."
   keywords:

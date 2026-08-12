@@ -37,8 +37,8 @@ describe('start gate presentation', () => {
     expect(app).toContain('<div ref={startGateActionsRef} className={actionClass}>');
   });
 
-  it('renders a non-interactive surface while a direct game route resolves', () => {
-    expect(app).toContain('if (gameBootPending)');
+  it('renders a non-interactive surface only until direct-route game data can mount', () => {
+    expect(app).toContain('if (shouldShowGameRouteBoot(gameBootPending, Boolean(game)))');
     expect(app).toContain('className="game-route-boot"');
     expect(app).toContain('setGameBootPending(true);');
   });
