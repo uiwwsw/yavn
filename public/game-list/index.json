@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-12T12:55:43.368Z",
+  "generatedAt": "2026-08-12T13:37:38.293Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "5.3.0",
+      "version": "5.3.1",
       "summary": "아버지를 살리고도 암살범으로 몰린 덕만. 왕위를 노리는 귀족들과 맞서 신라 최초의 여왕이 되고, 16년 뒤 비담의 반란을 마주하는 8장 역사 비주얼노벨.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [
