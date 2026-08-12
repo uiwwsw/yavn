@@ -55,6 +55,7 @@ describe('stage camera', () => {
       panX: '0px',
       mobilePanX: '0px',
       originY: 23,
+      mobileOriginY: 92,
     });
 
     const close = resolveStageCameraPresentation(
@@ -71,7 +72,7 @@ describe('stage camera', () => {
     });
   });
 
-  it('keeps mobile solo shots anchored to the top so the actor head stays visible', () => {
+  it('zooms portrait-mobile shots from a cast-aware lower anchor so actors rise above dialogue', () => {
     const soloLayout: CharacterStageLayout = {
       mode: 'default',
       duoSideByPosition: {},
@@ -90,8 +91,33 @@ describe('stage camera', () => {
       soloLayout,
     );
 
-    expect(close).toMatchObject({ scale: 2.15, originY: 0, panY: '0px', mobilePanY: '4cqh' });
-    expect(medium).toMatchObject({ scale: 1.72, originY: 0, panY: '0px', mobilePanY: '4cqh' });
+    expect(close).toMatchObject({
+      scale: 2.15,
+      originY: 0,
+      mobileOriginY: 55,
+      panY: '0px',
+      mobilePanY: '0px',
+    });
+    expect(medium).toMatchObject({
+      scale: 1.72,
+      originY: 0,
+      mobileOriginY: 55,
+      panY: '0px',
+      mobilePanY: '0px',
+    });
+
+    const duoLayout: CharacterStageLayout = {
+      mode: 'duo',
+      duoSideByPosition: { center: 'left', right: 'right' },
+      characterIdByPosition: { center: '칠숙', right: '진평왕' },
+    };
+    const duoMedium = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'medium' }),
+      2,
+      undefined,
+      duoLayout,
+    );
+    expect(duoMedium).toMatchObject({ scale: 1.58, mobileOriginY: 80, mobilePanY: '0px' });
   });
 
   it('keeps asset calibration separate from camera shot scale', () => {
