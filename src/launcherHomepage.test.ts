@@ -17,7 +17,8 @@ describe('launcher homepage experience', () => {
     expect(app).not.toContain('LAUNCHER_SELECTION_SESSION_KEY');
     expect(app).not.toContain('storeLauncherGameId(');
     expect(app).toContain('useEmblaCarousel(LAUNCHER_CAROUSEL_OPTIONS)');
-    expect(app).toContain("launcherCarouselApi.on('select', commitSelectedSnap)");
+    expect(app).toContain("launcherCarouselApi.on('settle', commitSettledSnap)");
+    expect(app).not.toContain("launcherCarouselApi.on('select'");
     expect(packageJson.dependencies?.['embla-carousel-react']).toBe('8.6.0');
     expect(app).not.toContain('onLauncherCarouselScroll');
     expect(app).not.toContain('onScroll={');
@@ -26,6 +27,13 @@ describe('launcher homepage experience', () => {
     expect(app).toContain('loading="eager"');
     expect(app).toContain('linkTabIndex={isSelected ? undefined : -1}');
     expect(styles).toMatch(/\.launcher-carousel-track\s*\{[^}]*will-change: transform;/);
+    expect(styles).toContain('height: calc(100svh - var(--launcher-topbar-height));');
+    expect(styles).toContain('grid-template-rows: minmax(0, 1fr) var(--launcher-carousel-controls-height);');
+    expect(styles).toContain('scrollbar-gutter: stable;');
+    expect(styles).not.toMatch(/\.launcher-carousel-dots button\.is-active\s*\{[^}]*width:/);
+    expect(app).toContain("aria-live={isSelected ? 'polite' : 'off'}");
+    expect(app).toContain('event.currentTarget.focus({ preventScroll: true });');
+    expect(app).toContain('onPointerDown={preserveLauncherControlFocus}');
     expect(styles).not.toContain('@keyframes launcherManifestLoading');
     expect(styles).not.toContain('@keyframes launcherConsoleIn');
     expect(app).toContain('선택 링크 복사');
