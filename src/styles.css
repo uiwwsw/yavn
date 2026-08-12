@@ -1121,6 +1121,8 @@ textarea,
 
 .char-camera-world {
   --stage-camera-scale: 1;
+  --stage-camera-scale-mobile: var(--stage-camera-scale);
+  --stage-camera-render-scale: var(--stage-camera-scale);
   --stage-camera-origin-y: 50%;
   --stage-camera-origin-y-mobile: var(--stage-camera-origin-y);
   --stage-camera-render-origin-y: var(--stage-camera-origin-y);
@@ -1134,7 +1136,7 @@ textarea,
   position: absolute;
   inset: 0;
   transform-origin: 50% var(--stage-camera-render-origin-y);
-  transform: translateZ(0) scale(var(--stage-camera-scale));
+  transform: translateZ(0) scale(var(--stage-camera-render-scale));
   transition: transform var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
   contain: layout paint;
@@ -1157,6 +1159,7 @@ textarea,
 
 @media (max-width: 768px) {
   .char-camera-world {
+    --stage-camera-render-scale: var(--stage-camera-scale-mobile);
     --stage-camera-render-origin-y: var(--stage-camera-origin-y-mobile);
   }
 

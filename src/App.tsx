@@ -81,7 +81,7 @@ import {
 } from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
-import { resolveStageCameraPresentation } from './stageCamera';
+import { resolveStageCameraFocusTargetId, resolveStageCameraPresentation } from './stageCamera';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
 import type {
@@ -1784,12 +1784,12 @@ export default function App() {
     previousCharacterStageLayoutRef.current,
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
-  const requestedCameraTargetId = camera.target === 'group' ? undefined : camera.target;
-  const visibleCameraTargetId = requestedCameraTargetId && visibleCharacterSet.has(requestedCameraTargetId)
-    ? requestedCameraTargetId
-    : undefined;
-  const effectiveCameraTargetId = visibleCameraTargetId
-    ?? ((camera.shot === 'close' || camera.shot === 'reaction') ? dialog.speakerId : undefined);
+  const effectiveCameraTargetId = resolveStageCameraFocusTargetId(
+    camera,
+    visibleCharacterIds,
+    dialog.speakerId,
+    dialog.cameraTargetId,
+  );
   const cameraTargetPosition = visibleCharactersByPosition.find(
     (entry) => entry.slot.id === effectiveCameraTargetId,
   )?.position;
@@ -1808,6 +1808,7 @@ export default function App() {
     : dialog.speakerId;
   const cameraStyle = {
     '--stage-camera-scale': cameraPresentation.scale,
+    '--stage-camera-scale-mobile': cameraPresentation.mobileScale,
     '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
     '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`,
     '--stage-camera-pan-x': cameraPresentation.panX,

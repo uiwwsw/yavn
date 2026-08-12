@@ -23,6 +23,7 @@ import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 type DialogState = {
   speaker?: string;
   speakerId?: string;
+  cameraTargetId?: string;
   fullText: string;
   visibleText: string;
   typing: boolean;
@@ -111,6 +112,7 @@ type VNState = {
 const initialDialog: DialogState = {
   speaker: undefined,
   speakerId: undefined,
+  cameraTargetId: undefined,
   fullText: '',
   visibleText: '',
   typing: false,

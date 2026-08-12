@@ -277,8 +277,8 @@ scenes:
           delivery: whisper
           text: "……누가 오고 있어."
       - say:
-          with:
-            - 덕만
+          camera: wide
+          with: []
           delivery: whisper
           text: "덕만은 기둥 뒤로 숨었습니다."
           wait: 550
@@ -321,6 +321,9 @@ scenes:
             - 아진
           text: "<speed=19>살아 있으면 왕이 됩니다.</speed>"
       - say:
+          camera:
+            shot: reaction
+            target: 덕만
           with:
             - 덕만
           delivery: whisper

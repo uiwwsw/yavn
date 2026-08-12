@@ -1353,6 +1353,16 @@ function applyCameraDirective(camera: CameraDirective | undefined, speakerId?: s
   useVNStore.getState().setCamera(resolveStageCameraState(camera, fallbackSpeakerId));
 }
 
+function resolveDialogCameraTargetId(
+  camera: CameraDirective | undefined,
+  speakerId?: string,
+): string | undefined {
+  if (!camera?.target || camera.target === 'group') {
+    return undefined;
+  }
+  return camera.target === 'speaker' ? speakerId : camera.target;
+}
+
 function getVisibleCharacterEmotion(characterId?: string): string | undefined {
   if (!characterId) return undefined;
   return Object.values(useVNStore.getState().characters).find((slot) => slot?.id === characterId)
@@ -3234,6 +3244,10 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
+      cameraTargetId: resolveDialogCameraTargetId(
+        action.choice.camera,
+        presentation.speakerId,
+      ),
       fullText: action.choice.prompt,
       visibleText: action.choice.prompt,
       typing: false,
@@ -3335,6 +3349,10 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
+      cameraTargetId: resolveDialogCameraTargetId(
+        action.input.camera,
+        presentation.speakerId,
+      ),
       fullText: action.input.prompt,
       visibleText: action.input.prompt,
       typing: false,
@@ -3388,6 +3406,10 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
       speakerId: presentation.speakerId,
+      cameraTargetId: resolveDialogCameraTargetId(
+        action.say.camera,
+        presentation.speakerId,
+      ),
       fullText: parsed.text,
       visibleText: '',
       typing: true,
