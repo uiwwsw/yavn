@@ -71,13 +71,19 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "약초 끈을 따라가면 월명이 수로에서 기다려. 내 가마는 아직 궁문을 지나고, 붉은 천을 올리면 유신이 정문을 칠 거야. 빈 수갑은 비담이 널 죄수로 꾸며 들이겠다는 뜻이고."
+          text: "이상하지? 네가 궁으로 돌아갈 길인데 전부 다른 사람 물건이야. 월명의 약초, 내 가마, 유신의 신호천, 비담의 수갑."
       - say:
           char: 덕만
           camera: medium
           with:
             - 천명
-          text: "전부 누군가 목숨을 걸고 열어 둔 길이네. 이번에는 가장 쉬운 길이 아니라, 위험을 누구와 나눌지 골라야겠어."
+          text: "내 길이라고 생각했는데, 다들 자기 목숨으로 한 칸씩 놓아 줬네."
+      - say:
+          char: 천명.sad
+          camera: close
+          with:
+            - 덕만
+          text: "그러니까 또 혼자 갚으려 하지 마. 하나 고르면 그 사람 손을 잡고 들어가. 이번에는 같이 들어가고 같이 나오는 거야."
       - goto: entry_choice
 
   entry_choice:
@@ -248,7 +254,19 @@ scenes:
           camera: close
           with:
             - 유신
-          text: "아버지에게 가면 언니의 붉은 천을 못 본 척해야 하고, 언니에게 가면 아버지 마지막 숨을 놓칠 수 있어요. 기록을 택하면 둘보다 증거를 먼저 살리는 사람이 되고, 아진을 쫓으면 산 사람 셋을 이름 하나와 바꾸게 됩니다."
+          text: "아버지, 언니, 불타는 기록, 달아나는 아진. 모두 제가 자기 이름부터 불러 주길 기다리고 있어요."
+      - say:
+          char: 유신.angry
+          camera: close
+          with:
+            - 덕만
+          text: "제가 정하겠습니다. 공주께서 미워할 사람도 제가 되겠습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 유신
+          text: "그것까지 대신 지면 저는 왕이 아니라 장군 뒤에 숨은 사람입니다. 하나를 놓치면, 제 명령으로 놓친 겁니다."
       - choice:
           key: c6_rescue
           prompt: "세 곳이 무너진다. 먼저 어디로?"
@@ -538,6 +556,26 @@ scenes:
             - 덕만
           delivery: sad
           text: "안다. 네 잘못이 아니다. 내가 너무 많은 일을 네가 고르게 두었구나."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with:
+            - 덕만
+          delivery: sad
+          text: "처음 네게 물었던 남쪽 둑 말이다. 너는 왜 아래부터 고친다고 했지?"
+      - say:
+          char: 덕만.sad
+          camera: medium
+          with:
+            - 진평왕
+          text: "물이 가장 먼저 닿는 사람들이 아래에 있으니까요. 아무도 이름을 쓰지 않은 사람들이 먼저 잠기니까."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with:
+            - 덕만
+          delivery: sad
+          text: "그 얼굴을 먼저 보는 눈은 누구도 물려줄 수 없다. <speed=19>내가 너를 왕으로 만들지 못해도, 네가 왜 왕이어야 하는지는 그날 네가 먼저 말했단다.</speed>"
       - say:
           char: 덕만.sad
           camera: close

@@ -79,13 +79,31 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "문밖에는 벌써 칠숙의 사람들이 와 있어요. 문을 열면 흔적이 밟히고, 닫아 두면 공주님이 시체를 숨겼다고 할 거예요."
+          text: "이번에도 제 이름이 같이 묻겠네요. 공주님 방에서, 공주님 옷고름을 쥔 시체를, 저와 공주님만 봤으니까요."
       - say:
           char: 덕만
           camera: medium
           with:
             - 소원
-          text: "시체를 옮기면 누군가에게 죄를 넘기는 사람이 되고, 너와 둘이 기록하면 네가 내 거짓말을 돕는 사람으로 몰리겠지. 이번 함정은 나 혼자만 잡으려는 게 아니야."
+          text: "그래서 너한테 나가도 된다고 말하려 했어."
+      - say:
+          char: 소원.angry
+          camera: close
+          with:
+            - 덕만
+          text: "말해 보세요. 나가서 칠숙 사람들에게 공주님이 시체와 단둘이 있었다고 아주 크게 외칠 테니까."
+      - say:
+          char: 덕만
+          camera: medium
+          with:
+            - 소원
+          text: "지금 나를 협박하는 거야?"
+      - say:
+          char: 소원.angry
+          camera: medium
+          with:
+            - 덕만
+          text: "잔소리예요. 둘이 본 건 둘이 끝까지 봐야죠. 그러니까 저 떼어 놓을 생각 말고, 뭘 볼지 정하세요."
       - goto: body_choice
 
   body_choice:
