@@ -6,7 +6,7 @@ scenes:
   prologue_open:
     actions:
       - bg: title_palace
-      - camera: wide
+      - camera: medium
       - effect: moonveil
       - say:
           delivery: calm
@@ -27,7 +27,7 @@ scenes:
           delivery: calm
           text: "그때까지 신라의 왕좌에 여자 이름이 오른 적은 없었습니다."
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - effect: focus
       - char:
           id: 진평왕
@@ -91,7 +91,7 @@ scenes:
           text: "언니는 참을 수 있어?"
       - say:
           char: 진평왕
-          camera: wide
+          camera: medium
           with:
             - 덕만
             - 천명
@@ -112,7 +112,7 @@ scenes:
             - 칠숙
           text: "백성도 익숙해지겠지."
       - say:
-          camera: wide
+          camera: medium
           with:
             - 진평왕
             - 덕만
@@ -120,13 +120,13 @@ scenes:
           text: "문이 벌컥 열렸습니다. 비에 젖은 관리가 바닥에 엎드렸습니다."
       - say:
           char: 진평왕
-          camera: wide
+          camera: medium
           with:
             - 덕만
             - 칠숙
           text: "무슨 일인가?"
       - say:
-          camera: wide
+          camera: medium
           with:
             - 진평왕
             - 덕만
@@ -193,7 +193,7 @@ scenes:
             - 덕만
           text: "이제 모두 공주를 왕처럼 보겠군요."
       - bg: moon_court
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -245,7 +245,7 @@ scenes:
             - 덕만
           text: "칠숙공입니다. 왕의 곁을 비우지 마십시오."
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - effect: moonveil
       - char:
           id: 덕만
@@ -381,7 +381,7 @@ scenes:
           text: "덕만은 기둥 밖으로 걸어 나왔습니다."
       - say:
           char: 덕만
-          camera: wide
+          camera: medium
           with:
             - 아진
             - 칠숙
@@ -442,7 +442,7 @@ scenes:
   warn_choice:
     actions:
       - bg: princess_chamber
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -603,7 +603,7 @@ scenes:
   banquet_choice:
     actions:
       - bg: banquet_hall
-      - camera: wide
+      - camera: medium
       - effect: embers
       - say:
           delivery: calm
@@ -620,7 +620,7 @@ scenes:
           position: center
       - say:
           char: 칠숙.smile
-          camera: wide
+          camera: medium
           with:
             - 진평왕
             - 덕만
@@ -657,7 +657,7 @@ scenes:
           text: "둘."
       - say:
           char: 진평왕
-          camera: wide
+          camera: medium
           with:
             - 덕만
           text: "덕만아. 내게 할 말이 있느냐?"
@@ -861,7 +861,7 @@ scenes:
           text: "덕만은 숨지 않고 두 사람 앞에 나섰습니다."
       - say:
           char: 덕만
-          camera: wide
+          camera: medium
           with: [칠숙, 아진]
           text: "두 번째 잔으로 왕을 죽이겠군요."
       - say:
@@ -964,7 +964,7 @@ scenes:
   go_03_open_door:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -1008,7 +1008,7 @@ scenes:
   go_04_guest_of_traitor:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left

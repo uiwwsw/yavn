@@ -20,7 +20,6 @@ export type CharacterFocusPresentation = {
 export type CharacterStagePlacement = {
   anchorX: string;
   offsetX: '0%' | '-50%' | '-100%';
-  panToCenterX: string;
 };
 
 const POSITION_ORDER: readonly Position[] = ['left', 'center', 'right'];
@@ -31,8 +30,8 @@ function formatLayoutNumber(value: number): string {
 
 function resolveEnsembleGap(mode: 'duo' | 'trio', spacing: number): string {
   const safeSpacing = Math.max(0.75, Math.min(1.25, spacing));
-  const fluidCqw = (mode === 'duo' ? 22 : 18) * safeSpacing;
-  const maximumPx = (mode === 'duo' ? 260 : 260) * safeSpacing;
+  const fluidCqw = 25 * safeSpacing;
+  const maximumPx = 320 * safeSpacing;
   return `min(${formatLayoutNumber(fluidCqw)}cqw, ${formatLayoutNumber(maximumPx)}px)`;
 }
 
@@ -45,6 +44,11 @@ export function resolveCharacterStagePlacement(
   layout: CharacterStageLayout,
   spacing = 1,
 ): CharacterStagePlacement {
+  const isSolo = Object.keys(layout.characterIdByPosition).length === 1;
+  if (isSolo) {
+    return { anchorX: '50cqw', offsetX: '-50%' };
+  }
+
   const duoSide = layout.mode === 'duo' ? layout.duoSideByPosition[position] : undefined;
   const ensembleSide = duoSide ?? (layout.mode === 'trio' && position !== 'center' ? position : undefined);
 
@@ -54,40 +58,41 @@ export function resolveCharacterStagePlacement(
       ? {
           anchorX: `calc(50cqw - ${gap})`,
           offsetX: '-50%',
-          panToCenterX: gap,
         }
       : {
           anchorX: `calc(50cqw + ${gap})`,
           offsetX: '-50%',
-          panToCenterX: `calc(0px - ${gap})`,
         };
   }
 
   if (position === 'left') {
-    return { anchorX: '25cqw', offsetX: '-50%', panToCenterX: '25cqw' };
+    return { anchorX: '25cqw', offsetX: '-50%' };
   }
   if (position === 'right') {
-    return { anchorX: '75cqw', offsetX: '-50%', panToCenterX: '-25cqw' };
+    return { anchorX: '75cqw', offsetX: '-50%' };
   }
-  return { anchorX: '50cqw', offsetX: '-50%', panToCenterX: '0px' };
+  return { anchorX: '50cqw', offsetX: '-50%' };
 }
 
-export function resolveMobileCameraPan(
+export function resolveMobileCharacterStageAnchor(
   position: Position,
   layout: CharacterStageLayout,
 ): string {
+  if (Object.keys(layout.characterIdByPosition).length === 1) {
+    return '50cqw';
+  }
   if (layout.mode === 'duo') {
     const side = layout.duoSideByPosition[position];
     if (side === 'left') return '25cqw';
-    if (side === 'right') return '-25cqw';
+    if (side === 'right') return '75cqw';
   }
   if (layout.mode === 'trio') {
-    if (position === 'left') return '35cqw';
-    if (position === 'right') return '-35cqw';
+    if (position === 'left') return '25cqw';
+    if (position === 'right') return '75cqw';
   }
   if (position === 'left') return '25cqw';
-  if (position === 'right') return '-25cqw';
-  return '0px';
+  if (position === 'right') return '75cqw';
+  return '50cqw';
 }
 
 export function resolveDialogueVisibleCharacterIds(
@@ -161,7 +166,7 @@ export function resolveCharacterFacingScale(
 
 export function resolveCharacterStageLayout(
   visibleCharacters: readonly VisibleCharacterStageEntry[],
-  previousLayout?: CharacterStageLayout,
+  _previousLayout?: CharacterStageLayout,
 ): CharacterStageLayout {
   const visibleByPosition = new Map(
     visibleCharacters.map((character) => [character.position, character] as const),
@@ -196,27 +201,11 @@ export function resolveCharacterStageLayout(
     };
   }
 
-  if (orderedCharacters.length === 1 && previousLayout?.mode === 'duo') {
-    const [survivor] = orderedCharacters;
-    const previousSide = previousLayout.duoSideByPosition[survivor.position];
-    const isSameCharacter = previousLayout.characterIdByPosition[survivor.position] === survivor.id;
-
-    if (previousSide && isSameCharacter) {
-      return {
-        mode: 'duo',
-        duoSideByPosition: {
-          [survivor.position]: previousSide,
-        },
-        characterIdByPosition: {
-          [survivor.position]: survivor.id,
-        },
-      };
-    }
-  }
-
   return {
     mode: 'default',
     duoSideByPosition: {},
-    characterIdByPosition: {},
+    characterIdByPosition: Object.fromEntries(
+      orderedCharacters.map((character) => [character.position, character.id]),
+    ),
   };
 }

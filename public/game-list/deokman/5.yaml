@@ -6,7 +6,7 @@ scenes:
   chapter5_open:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -39,7 +39,7 @@ scenes:
           position: center
       - say:
           char: 칠숙.smile
-          camera: wide
+          camera: medium
           with: [덕만, 진운]
           text: "진운 왕자께 예를 갖추십시오."
       - say:
@@ -205,7 +205,7 @@ scenes:
   contest_private:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -253,7 +253,7 @@ scenes:
   contest_listen:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 진운
           position: left
@@ -302,7 +302,7 @@ scenes:
   leverage_choice:
     actions:
       - bg: locked_room
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -387,7 +387,7 @@ scenes:
   leverage_deal:
     actions:
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -435,7 +435,7 @@ scenes:
   leverage_ledger:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -481,7 +481,7 @@ scenes:
   rescue_choice:
     actions:
       - bg: frontier
-      - camera: wide
+      - camera: medium
       - effect: alarm
       - char:
           id: 덕만
@@ -592,7 +592,7 @@ scenes:
   rescue_yushin:
     actions:
       - bg: frontier
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -640,7 +640,7 @@ scenes:
   rescue_public:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -686,7 +686,7 @@ scenes:
   chapter5_end:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - add: { legitimacy: 1 }
       - char:
           id: 덕만
@@ -734,7 +734,7 @@ scenes:
   go_27_dead_prince:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -760,7 +760,7 @@ scenes:
           with: [덕만]
           text: "한 분은 거짓말을 하는군요."
       - bg: shadow_corridor
-      - camera: wide
+      - camera: medium
       - char:
           id: 진운
           position: center
@@ -782,7 +782,7 @@ scenes:
   go_28_sons_crown:
     actions:
       - bg: council_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -824,7 +824,7 @@ scenes:
   go_29_second_queen:
     actions:
       - bg: throne_hall
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left
@@ -863,7 +863,7 @@ scenes:
   go_30_martyr_prince:
     actions:
       - bg: frontier
-      - camera: wide
+      - camera: medium
       - char:
           id: 덕만
           position: left

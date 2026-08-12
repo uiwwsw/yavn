@@ -30,21 +30,24 @@ describe('responsive stage content frame', () => {
     );
   });
 
-  it('uses a lower cast-aware camera anchor for portrait mobile character zooms', () => {
+  it('separates the fixed cast composition from target-local camera zooms', () => {
     expect(appSource).toContain(
-      "'--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`",
+      "'--stage-composition-origin-y-mobile': `${cameraPresentation.mobileCompositionOriginY}%`",
     );
-    expect(appSource).toContain("'--stage-camera-scale-mobile': cameraPresentation.mobileScale");
+    expect(appSource).toContain("'--stage-composition-scale-mobile': cameraPresentation.mobileCompositionScale");
+    expect(appSource).toContain("'--stage-camera-zoom-mobile': cameraPresentation.mobileZoomScale");
+    expect(appSource).toContain("'--stage-camera-origin-x-mobile': cameraPresentation.mobileZoomOriginX");
     expect(styles).toMatch(
-      /@media \(max-width: 768px\)[\s\S]*?\.char-camera-world\s*\{[\s\S]*?--stage-camera-render-scale: var\(--stage-camera-scale-mobile\);[\s\S]*?--stage-camera-render-origin-y: var\(--stage-camera-origin-y-mobile\);/,
+      /@media \(max-width: 768px\)[\s\S]*?\.char-composition-world\s*\{[\s\S]*?--stage-composition-render-scale: var\(--stage-composition-scale-mobile\);[\s\S]*?--stage-camera-render-zoom: var\(--stage-camera-zoom-mobile\);/,
     );
   });
 
-  it('sizes static and Live2D characters from the play frame instead of the viewport', () => {
-    expect(styles).toContain('--char-image-width: min(40cqw, 52cqh);');
+  it('normalizes static actor height across mobile and desktop play frames', () => {
+    expect(styles).toContain('--char-image-height: 66cqh;');
+    expect(styles).toMatch(/\.char-layer\.char-layout-duo \.char-image\s*\{[\s\S]*?--char-image-height: 58cqh;/);
     expect(styles).toContain('--char-live2d-width: min(36cqw, 52cqh);');
-    expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?height: auto;[\s\S]*?max-height: 100cqh;/);
-    expect(styles).not.toContain('--char-image-width: min(40vw, 560px);');
+    expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?width: auto;[\s\S]*?height: var\(--char-image-height\);[\s\S]*?max-height: none;/);
+    expect(styles).not.toContain('--char-image-height: 66vh;');
     expect(styles).not.toMatch(/--char-image-width: min\([^;]+, [0-9]+px\)/);
   });
 
