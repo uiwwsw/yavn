@@ -73,7 +73,7 @@ describe('stage camera', () => {
     expect(close).toMatchObject({
       shot: 'close',
       compositionScale: 1.38,
-      zoomOriginX: 'calc(50cqw + min(27.5cqw, 352px))',
+      zoomOriginX: 'calc(50cqw + min(27.5cqw, 286px))',
       mobileZoomOriginX: '75cqw',
       zoomOriginY: 50,
     });
@@ -148,7 +148,7 @@ describe('stage camera', () => {
     );
     expect(duoClose).toMatchObject({
       compositionScale: 1.58,
-      zoomOriginX: 'calc(50cqw - min(25cqw, 320px))',
+      zoomOriginX: 'calc(50cqw - min(25cqw, 260px))',
       mobileZoomOriginX: '25cqw',
     });
     expect(duoClose.zoomScale).toBeCloseTo(2.02 / 1.58);

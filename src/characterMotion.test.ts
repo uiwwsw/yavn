@@ -89,6 +89,8 @@ describe('image character motion', () => {
 
   it('uses separate duo and trio compositions on desktop and mobile', () => {
     expect(appSource).toContain('data-character-count={visibleCharacterCount}');
+    expect(appSource).toContain('const characterStageSpacing = resolveCharacterStageSpacing(');
+    expect(appSource).toContain('visibleCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': stagePlacement.anchorX");
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-height: 67cqh;/);
