@@ -176,7 +176,6 @@ type StartGateState =
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
-const LAUNCHER_SELECTION_SESSION_KEY = 'yavn-launcher-selected-game';
 const ALL_TAG_FILTER = '__all';
 const DEFAULT_VISIBLE_LAUNCHER_TAGS = 8;
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
@@ -499,22 +498,6 @@ function markStartGateSession(sessionKey: string): void {
     sessionStorage.setItem(sessionKey, '1');
   } catch {
     // Ignore sessionStorage failures and continue.
-  }
-}
-
-function getStoredLauncherGameId(): string | null {
-  try {
-    return sessionStorage.getItem(LAUNCHER_SELECTION_SESSION_KEY)?.trim() || null;
-  } catch {
-    return null;
-  }
-}
-
-function storeLauncherGameId(gameId: string): void {
-  try {
-    sessionStorage.setItem(LAUNCHER_SELECTION_SESSION_KEY, gameId);
-  } catch {
-    // Keep the current in-memory selection when storage is unavailable.
   }
 }
 
@@ -1138,7 +1121,6 @@ export default function App() {
           prev,
           window.location.search,
           window.location.hash,
-          getStoredLauncherGameId(),
         ),
       );
     } catch (error) {
@@ -1470,9 +1452,6 @@ export default function App() {
       }
     }
     launcherShareGameIdRef.current = nextGameId;
-    if (nextGameId) {
-      storeLauncherGameId(nextGameId);
-    }
   }, [selectedGame?.id]);
 
   const clearLauncherDeepLinkFromAddress = useCallback(() => {
@@ -1642,7 +1621,9 @@ export default function App() {
       if (!carousel || !(slide instanceof HTMLElement)) {
         return;
       }
-      carousel.scrollTo({ left: slide.offsetLeft, behavior: 'auto' });
+      carousel.classList.add('is-positioning');
+      carousel.scrollLeft = slide.offsetLeft;
+      carousel.classList.remove('is-positioning');
       launcherCarouselPositionedRef.current = true;
     });
     return () => window.cancelAnimationFrame(frame);

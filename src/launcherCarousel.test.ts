@@ -45,13 +45,14 @@ describe('launcher carousel', () => {
     expect(normalizeLauncherDemoLocationPath('/', '', '#library', gameIds)).toBeNull();
   });
 
-  it('resolves current, explicit, stored, and fallback selections in that order', () => {
+  it('resolves explicit, current, and first-game selections without restoring a prior visit', () => {
     const gameIds = ['deokman', 'conan', 'live2dtest'];
-    expect(resolveInitialCarouselGameId(gameIds, 'conan', '?demo=deokman', '', 'deokman')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=conan', '#demo=deokman', 'deokman')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '', '#demo=conan', 'deokman')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '', '', 'conan')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=missing', '', 'missing')).toBe('deokman');
+    expect(resolveInitialCarouselGameId(gameIds, 'conan', '?demo=deokman', '')).toBe('deokman');
+    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=conan', '#demo=deokman')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, null, '', '#demo=conan')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, 'conan', '', '')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, null, '', '')).toBe('deokman');
+    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=missing', '')).toBe('deokman');
     expect(resolveInitialCarouselGameId([], null, '', '')).toBeNull();
   });
 });

@@ -11,7 +11,10 @@ describe('launcher homepage experience', () => {
     expect(app).not.toContain("window.addEventListener('hashchange'");
     expect(app).toContain('buildLauncherDemoSharePath(');
     expect(app).toContain('clearLauncherDeepLinkFromAddress();');
-    expect(app).toContain('storeLauncherGameId(nextGameId)');
+    expect(app).not.toContain('LAUNCHER_SELECTION_SESSION_KEY');
+    expect(app).not.toContain('storeLauncherGameId(');
+    expect(app).toContain("carousel.classList.add('is-positioning')");
+    expect(styles).toMatch(/\.launcher-carousel\.is-positioning\s*\{[^}]*scroll-behavior: auto;/);
     expect(app).toContain('선택 링크 복사');
     expect(app).toContain('buildGameSourceUrl(repositoryUrl, entry.id)');
     expect(app).toContain('/tree/main/public/game-list/${encodeURIComponent(gameId)}');
