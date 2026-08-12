@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-12T11:41:34.956Z",
+  "generatedAt": "2026-08-12T12:16:39.136Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "5.2.3",
+      "version": "5.2.4",
       "summary": "아버지를 살린 밤, 죽은 자의 품에서 덕만의 이름이 나왔다. 누구도 허락하지 않은 왕좌에 올라 16년을 버틴 끝에, 가장 믿었던 비담의 반란과 마주하는 8장 궁중 대하만화극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [
