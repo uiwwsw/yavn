@@ -117,7 +117,19 @@ scenes:
           camera: close
           with:
             - 덕만
-          text: "그래서 귀족들 앞에서 겨뤄야 합니다. 저를 적으로 꺾을지, 인질로 볼지, 말할 기회부터 줄지 공주께서 먼저 정하십시오."
+          text: "회의에서는 공주께 먼저 말할 기회를 드리겠습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with:
+            - 진운
+          text: "친절입니까?"
+      - say:
+          char: 진운
+          camera: close
+          with:
+            - 덕만
+          text: "아니요. 공주께서 저를 적이라 부르는지, 인질이라 부르는지 먼저 듣고 저도 공주를 뭐라 부를지 정하려는 겁니다."
       - goto: contest_choice
 
   contest_choice:
@@ -236,11 +248,11 @@ scenes:
       - say:
           char: 비담.smirk
           camera: medium
-          text: "진운공에게는 쓸 만한 약점이 셋 있습니다. 별채에 갇힌 어머니, 칠숙이 대신 갚아 준 빚, 그리고 사람을 밟고 왕이 될 만큼 모질지는 못하다는 점."
+          text: "종이에 적힌 약점은 둘입니다. 별채에 갇힌 어머니, 칠숙이 대신 갚아 준 빚. 셋째는 적을 수가 없더군요. 진운공은 자기를 미워하는 사람보다 불쌍히 보는 사람을 더 견디지 못합니다."
       - say:
           char: 비담.smirk
           camera: medium
-          text: "어느 것부터 쓰시겠습니까?"
+          text: "그걸 어떻게 아느냐고는 묻지 마십시오. 저도 그러니까."
       - say:
           char: 덕만
           camera: medium
@@ -375,7 +387,7 @@ scenes:
           camera: close
           with:
             - 진운
-          text: "압니다. 못 본 척하면 그대는 칠숙이 쓰는 순교자가 되고, 암살을 외치면 궁수들이 먼저 쏠 겁니다. 살아서 다시 다툴 방법부터 고르죠."
+          text: "양보는 살아서 거절하세요. 여기서 죽으면 그대의 결백도, 내 결백도 칠숙이 원하는 문장으로 남습니다."
       - choice:
           key: c5_rescue
           prompt: "진운의 마차에 화살이 향한다. 막을까?"
