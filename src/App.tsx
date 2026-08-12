@@ -1767,28 +1767,24 @@ export default function App() {
     return '';
   }, [inventoryCatalogEntries.length, inventoryViewEntries.length, inventoryVisibleEntries.length]);
   const visibleCharacterSet = new Set(visibleCharacterIds);
-  const visibleCharactersByPosition = (
+  const stagedCharactersByPosition = (
     [
       { position: 'left' as const, slot: characters.left },
       { position: 'center' as const, slot: characters.center },
       { position: 'right' as const, slot: characters.right },
     ] as const
-  )
-    .filter((entry): entry is { position: Position; slot: CharacterSlot } => {
-      const slot = entry.slot;
-      if (!slot) {
-        return false;
-      }
-      return visibleCharacterSet.has(slot.id);
-    });
+  ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot));
+  const visibleCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
+    visibleCharacterSet.has(entry.slot.id));
   const characterStageLayout = resolveCharacterStageLayout(
-    visibleCharactersByPosition.map((entry) => ({
+    stagedCharactersByPosition.map((entry) => ({
       id: entry.slot.id,
       position: entry.position,
     })),
     previousCharacterStageLayoutRef.current,
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
+  const stagedCharacterCount = stagedCharactersByPosition.length;
   const requestedCameraTargetId = camera.target === 'group' ? undefined : camera.target;
   const visibleCameraTargetId = requestedCameraTargetId && visibleCharacterSet.has(requestedCameraTargetId)
     ? requestedCameraTargetId
@@ -2387,9 +2383,10 @@ export default function App() {
   const hasFocusedSpeaker = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
 
   const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
-    if (!slot || !visibleCharacterSet.has(slot.id)) {
+    if (!slot) {
       return null;
     }
+    const isCameraVisible = visibleCharacterSet.has(slot.id);
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isSpeaker = hasFocusedSpeaker && focusCharacterId === slot.id;
@@ -2399,7 +2396,7 @@ export default function App() {
       isSpeaker,
       hasFocusedSpeaker,
     );
-    const framingScale = resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount);
+    const framingScale = resolveCharacterFramingScale(slot.framing.scale, stagedCharacterCount);
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const facingScale = resolveCharacterFacingScale(slot.facing, position, duoSide);
@@ -2420,7 +2417,15 @@ export default function App() {
       '--char-calibration-x': `${slot.calibration.x}%`,
       '--char-calibration-y': `${slot.calibration.y}%`,
     } as CSSProperties;
-    const className = ['char', 'char-image', position, focusPresentation.depthClass, duoClass].filter(Boolean).join(' ');
+    const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';
+    const className = [
+      'char',
+      'char-image',
+      position,
+      focusPresentation.depthClass,
+      duoClass,
+      visibilityClass,
+    ].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
       return (
         <Suspense fallback={null} key={`character-${slot.id}`}>
@@ -2428,7 +2433,7 @@ export default function App() {
             slot={slot}
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
-            className={[focusPresentation.depthClass, duoClass].filter(Boolean).join(' ')}
+            className={[focusPresentation.depthClass, duoClass, visibilityClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
         </Suspense>
@@ -2444,6 +2449,7 @@ export default function App() {
         data-character-id={slot.id}
         data-stage-position={position}
         data-character-framing={slot.framing.name}
+        aria-hidden={!isCameraVisible}
         loading="eager"
         decoding="async"
         style={charStyle}

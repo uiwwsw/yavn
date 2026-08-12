@@ -112,16 +112,26 @@ scenes:
             - 칠숙
           text: "백성도 익숙해지겠지."
       - say:
+          camera: wide
           with:
             - 진평왕
             - 덕만
             - 칠숙
-          text: "그때 젖은 옷의 관리가 왕좌전으로 뛰어들었습니다."
+          text: "문이 벌컥 열렸습니다. 비에 젖은 관리가 바닥에 엎드렸습니다."
       - say:
+          char: 진평왕
+          camera: wide
+          with:
+            - 덕만
+            - 칠숙
+          text: "무슨 일인가?"
+      - say:
+          camera: wide
           with:
             - 진평왕
             - 덕만
-          text: "그가 내민 글에는 굶주린 세 마을의 이름이 적혀 있었습니다."
+            - 칠숙
+          text: "관리가 내민 젖은 청원서에는 세 마을의 이름이 적혀 있었습니다."
       - say:
           char: 진평왕
           camera: medium

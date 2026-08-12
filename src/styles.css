@@ -1315,6 +1315,12 @@ textarea,
   opacity: 0;
 }
 
+.char.is-camera-hidden {
+  visibility: hidden;
+  animation: none;
+  transition: none;
+}
+
 .char-layer[data-camera-shot='reaction'] .char.is-listener {
   opacity: 0.22;
 }

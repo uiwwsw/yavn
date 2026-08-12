@@ -41,6 +41,17 @@ describe('image character motion', () => {
     expect(appSource).toContain('decoding="async"');
   });
 
+  it('keeps staged characters mounted while camera membership changes', () => {
+    expect(appSource).toContain('const stagedCharactersByPosition = (');
+    expect(appSource).toContain('const visibleCharactersByPosition = stagedCharactersByPosition.filter');
+    expect(appSource).toContain('stagedCharactersByPosition.map((entry) => ({');
+    expect(appSource).toContain("const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';");
+    expect(appSource).not.toContain('if (!slot || !visibleCharacterSet.has(slot.id))');
+    expect(styles).toMatch(
+      /\.char\.is-camera-hidden\s*\{[\s\S]*?visibility: hidden;[\s\S]*?animation: none;[\s\S]*?transition: none;/,
+    );
+  });
+
   it('moves every visible character through one shared camera world', () => {
     expect(appSource).toContain('className="char-camera-world"');
     expect(appSource).toContain('className="char-camera-pan"');
