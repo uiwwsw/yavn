@@ -52,6 +52,7 @@ describe('stage camera', () => {
       trioLayout,
     );
     expect(medium).toMatchObject({
+      shot: 'medium',
       scale: 1.38,
       mobileScale: 1.38,
       panX: '0px',
@@ -68,6 +69,7 @@ describe('stage camera', () => {
       1.1,
     );
     expect(close).toMatchObject({
+      shot: 'close',
       scale: 2.15,
       panX: 'calc(0px - min(19.8cqw, 286px))',
       mobilePanX: '-35cqw',
@@ -156,15 +158,44 @@ describe('stage camera', () => {
     );
 
     expect(untargetedClose).toMatchObject({
+      shot: 'medium',
       scale: 1.38,
       mobileScale: 1.38,
       mobileOriginY: 80,
     });
     expect(untargetedReaction).toMatchObject({
+      shot: 'medium',
       scale: 1.72,
       mobileScale: 1.4,
       mobileOriginY: 55,
     });
+  });
+
+  it('centers a sole actor for medium shots without changing the authored wide position', () => {
+    const soloLayout: CharacterStageLayout = {
+      mode: 'default',
+      duoSideByPosition: {},
+      characterIdByPosition: { left: '덕만' },
+    };
+    const medium = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'medium' }),
+      1,
+      undefined,
+      soloLayout,
+      1,
+      'left',
+    );
+    const wide = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'wide' }),
+      1,
+      undefined,
+      soloLayout,
+      1,
+      'left',
+    );
+
+    expect(medium).toMatchObject({ panX: '25cqw', mobilePanX: '25cqw' });
+    expect(wide).toMatchObject({ panX: '0px', mobilePanX: '0px' });
   });
 
   it('does not carry a previous speaker focus into an untargeted narration line', () => {

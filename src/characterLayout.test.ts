@@ -155,7 +155,7 @@ describe('character stage layout', () => {
     });
   });
 
-  it('uses a separate capped gap for a desktop duo while preserving authored solo edges', () => {
+  it('uses a separate capped gap for a desktop duo and center-based solo anchors', () => {
     const duo = resolveCharacterStageLayout([
       { id: '덕만', position: 'center' },
       { id: '진평왕', position: 'right' },
@@ -168,9 +168,16 @@ describe('character stage layout', () => {
     expect(resolveCharacterStagePlacement('left', resolveCharacterStageLayout([
       { id: '덕만', position: 'left' },
     ]))).toEqual({
-      anchorX: '8cqw',
-      offsetX: '0%',
-      panToCenterX: '42cqw',
+      anchorX: '25cqw',
+      offsetX: '-50%',
+      panToCenterX: '25cqw',
+    });
+    expect(resolveCharacterStagePlacement('right', resolveCharacterStageLayout([
+      { id: '진평왕', position: 'right' },
+    ]))).toEqual({
+      anchorX: '75cqw',
+      offsetX: '-50%',
+      panToCenterX: '-25cqw',
     });
   });
 
@@ -188,6 +195,9 @@ describe('character stage layout', () => {
     expect(resolveMobileCameraPan('right', duo)).toBe('-25cqw');
     expect(resolveMobileCameraPan('left', trio)).toBe('35cqw');
     expect(resolveMobileCameraPan('right', trio)).toBe('-35cqw');
+    expect(resolveMobileCameraPan('left', resolveCharacterStageLayout([
+      { id: '덕만', position: 'left' },
+    ]))).toBe('25cqw');
   });
 
   it('keeps an image character mounted across emotion and position changes', () => {

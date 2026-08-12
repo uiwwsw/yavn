@@ -24,7 +24,7 @@ describe('image character motion', () => {
     const charRule = styles.match(/\.char\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
     expect(styles).toContain('calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))');
     expect(styles).toContain('var(--char-framing-y)');
-    expect(styles).toContain('transform-origin: center top;');
+    expect(styles).toContain('transform-origin: center bottom;');
     expect(styles).toContain('--char-facing-scale-x: 1;');
     expect(styles).toContain('transform: scaleX(var(--char-facing-scale-x));');
     expect(styles).toContain('scale: var(--char-scale);');
@@ -66,7 +66,8 @@ describe('image character motion', () => {
   it('moves every visible character through one shared camera world', () => {
     expect(appSource).toContain('className="char-camera-world"');
     expect(appSource).toContain('className="char-camera-pan"');
-    expect(appSource).toContain('data-camera-shot={camera.shot}');
+    expect(appSource).toContain('data-camera-shot={cameraPresentation.shot}');
+    expect(appSource).toContain('data-camera-requested-shot={camera.shot}');
     expect(styles).toContain('scale(var(--stage-camera-render-scale))');
     expect(styles).toContain('--stage-camera-render-scale: var(--stage-camera-scale-mobile)');
     expect(styles).toContain('transform-origin: 50% var(--stage-camera-render-origin-y);');
@@ -88,10 +89,12 @@ describe('image character motion', () => {
     expect(appSource).toContain('data-character-count={visibleCharacterCount}');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': stagePlacement.anchorX");
-    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-width: min\(52cqw, 410px\);/);
+    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-width: min\(52cqw, 52cqh\);/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 15cqw;/);
     expect(styles).not.toContain("char-layout-trio[data-camera-shot='medium']");
     expect(styles).not.toContain('.char-layout-trio .char.is-speaker.left');
+    expect(styles).not.toContain('--char-anchor-x: -10cqw');
+    expect(styles).not.toContain('--char-anchor-x: 110cqw');
   });
 });
