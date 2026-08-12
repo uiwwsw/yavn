@@ -5516,18 +5516,6 @@ textarea,
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  animation: launcherConsoleIn 360ms ease-out;
-}
-
-@keyframes launcherConsoleIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .launcher-showcase {
@@ -5545,35 +5533,16 @@ textarea,
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   contain: paint;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-  touch-action: pan-x pan-y;
   cursor: grab;
 }
 
-.launcher-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.launcher-carousel.is-dragging {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-  cursor: grabbing;
-}
-
-.launcher-carousel.is-positioning {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-
-.launcher-carousel.is-dragging * {
-  pointer-events: none;
+.launcher-carousel-track {
+  display: flex;
+  backface-visibility: hidden;
+  touch-action: pan-y pinch-zoom;
+  will-change: transform;
 }
 
 .launcher-carousel:focus-visible {
@@ -5594,8 +5563,6 @@ textarea,
   overflow: hidden;
   overflow: clip;
   contain: layout paint;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   background: #17191d;
 }
 
@@ -5642,11 +5609,6 @@ textarea,
     )
     scale(var(--launcher-showcase-scale, 1));
   transform-origin: center;
-  transition: transform 700ms cubic-bezier(0.2, 0.75, 0.25, 1), filter 300ms ease;
-}
-
-.launcher-feature:not(.is-selected) .launcher-feature-media img {
-  filter: brightness(0.78);
 }
 
 .launcher-feature-fallback {
@@ -6518,6 +6480,9 @@ textarea,
 }
 
 .launcher-diagnostic-loading {
+  min-height: clamp(520px, calc(100svh - 220px), 660px);
+  display: grid;
+  align-content: center;
   border-color: #b9b6aa;
   color: var(--launcher-ink);
   background: #f1f0e9;
@@ -6526,32 +6491,6 @@ textarea,
 .launcher-diagnostic-loading strong,
 .launcher-diagnostic-loading p {
   color: var(--launcher-ink);
-}
-
-.launcher-loading-track {
-  width: min(340px, 100%);
-  height: 3px;
-  display: block;
-  overflow: hidden;
-  margin-top: 14px;
-  background: #d4d1c6;
-}
-
-.launcher-loading-track i {
-  width: 42%;
-  height: 100%;
-  display: block;
-  background: var(--launcher-coral);
-  animation: launcherManifestLoading 900ms ease-in-out infinite alternate;
-}
-
-@keyframes launcherManifestLoading {
-  from {
-    transform: translateX(-20%);
-  }
-  to {
-    transform: translateX(158%);
-  }
 }
 
 .launcher-footer {
@@ -6957,10 +6896,6 @@ textarea,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .launcher-carousel {
-    scroll-behavior: auto;
-  }
-
   .launcher-console,
   .launcher-carousel-arrow,
   .launcher-carousel-dots button,

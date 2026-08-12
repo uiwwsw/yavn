@@ -3,9 +3,7 @@ import {
   KeyboardEvent as ReactKeyboardEvent,
   lazy,
   MouseEvent,
-  PointerEvent as ReactPointerEvent,
   Suspense,
-  UIEvent as ReactUIEvent,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -13,6 +11,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 import thirdPartyNoticesUrl from '../THIRD_PARTY_NOTICES.md?url';
 import suiteLicenseUrl from '../assets/licenses/fonts/LICENSE?url';
 import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live2d.md?url';
@@ -178,6 +177,14 @@ const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
 const ALL_TAG_FILTER = '__all';
 const DEFAULT_VISIBLE_LAUNCHER_TAGS = 8;
+const LAUNCHER_CAROUSEL_OPTIONS = {
+  align: 'start',
+  containScroll: false,
+  dragFree: false,
+  duration: 20,
+  loop: true,
+  skipSnaps: false,
+} as const;
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
@@ -1018,18 +1025,11 @@ export default function App() {
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
   const gameListRequestIdRef = useRef(0);
-  const launcherCarouselRef = useRef<HTMLDivElement | null>(null);
+  const [launcherCarouselRef, launcherCarouselApi] = useEmblaCarousel(LAUNCHER_CAROUSEL_OPTIONS);
   const launcherTagFilterRef = useRef<HTMLDivElement | null>(null);
-  const launcherCarouselFrameRef = useRef<number | null>(null);
   const launcherCarouselPositionedRef = useRef(false);
   const launcherShareNoticeTimerRef = useRef<number | null>(null);
   const launcherShareGameIdRef = useRef<string | null>(null);
-  const launcherCarouselDragRef = useRef<{
-    pointerId: number;
-    startX: number;
-    startScrollLeft: number;
-  } | null>(null);
-  const [launcherCarouselDragging, setLauncherCarouselDragging] = useState(false);
   const [endingCreditsReady, setEndingCreditsReady] = useState(false);
   const [endingCreditsScrollUnlocked, setEndingCreditsScrollUnlocked] = useState(false);
   const [endingTopSpacerPx, setEndingTopSpacerPx] = useState(0);
@@ -1486,62 +1486,27 @@ export default function App() {
     }, 2400);
   }, [selectedGame]);
 
-  const scrollLauncherCarouselToIndex = useCallback((requestedIndex: number, behavior: ScrollBehavior = 'smooth') => {
+  const moveLauncherCarouselToIndex = useCallback((requestedIndex: number, jump = false) => {
     const nextIndex = wrapCarouselIndex(requestedIndex, gameList.length);
-    const nextGame = nextIndex >= 0 ? gameList[nextIndex] : undefined;
-    if (!nextGame) {
+    if (nextIndex < 0 || !launcherCarouselApi) {
       return;
     }
 
     clearLauncherDeepLinkFromAddress();
-    setSelectedGameId(nextGame.id);
-    const carousel = launcherCarouselRef.current;
-    const slide = carousel?.children.item(nextIndex);
-    if (carousel && slide instanceof HTMLElement) {
-      carousel.scrollTo({
-        left: slide.offsetLeft,
-        behavior,
-      });
-    }
-  }, [clearLauncherDeepLinkFromAddress, gameList]);
+    launcherCarouselApi.scrollTo(nextIndex, jump);
+  }, [clearLauncherDeepLinkFromAddress, gameList.length, launcherCarouselApi]);
 
   const moveLauncherCarousel = useCallback((direction: -1 | 1) => {
-    const currentIndex = selectedGameIndex >= 0 ? selectedGameIndex : 0;
-    scrollLauncherCarouselToIndex(currentIndex + direction);
-  }, [scrollLauncherCarouselToIndex, selectedGameIndex]);
-
-  const onLauncherCarouselScroll = useCallback((event: ReactUIEvent<HTMLDivElement>) => {
-    const carousel = event.currentTarget;
-    if (launcherCarouselFrameRef.current !== null) {
-      window.cancelAnimationFrame(launcherCarouselFrameRef.current);
+    if (!launcherCarouselApi) {
+      return;
     }
-
-    launcherCarouselFrameRef.current = window.requestAnimationFrame(() => {
-      launcherCarouselFrameRef.current = null;
-      const slides = Array.from(carousel.children);
-      if (slides.length === 0) {
-        return;
-      }
-
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-      slides.forEach((slide, index) => {
-        if (!(slide instanceof HTMLElement)) {
-          return;
-        }
-        const distance = Math.abs(slide.offsetLeft - carousel.scrollLeft);
-        if (distance < closestDistance) {
-          closestIndex = index;
-          closestDistance = distance;
-        }
-      });
-
-      const nextGameId = gameList[closestIndex]?.id;
-      if (nextGameId) {
-        setSelectedGameId((currentGameId) => currentGameId === nextGameId ? currentGameId : nextGameId);
-      }
-    });
-  }, [gameList]);
+    clearLauncherDeepLinkFromAddress();
+    if (direction < 0) {
+      launcherCarouselApi.scrollPrev();
+    } else {
+      launcherCarouselApi.scrollNext();
+    }
+  }, [clearLauncherDeepLinkFromAddress, launcherCarouselApi]);
 
   const onLauncherCarouselKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) {
@@ -1555,56 +1520,29 @@ export default function App() {
       moveLauncherCarousel(1);
     } else if (event.key === 'Home') {
       event.preventDefault();
-      scrollLauncherCarouselToIndex(0);
+      moveLauncherCarouselToIndex(0);
     } else if (event.key === 'End') {
       event.preventDefault();
-      scrollLauncherCarouselToIndex(gameList.length - 1);
+      moveLauncherCarouselToIndex(gameList.length - 1);
     }
-  }, [gameList.length, moveLauncherCarousel, scrollLauncherCarouselToIndex]);
+  }, [gameList.length, moveLauncherCarousel, moveLauncherCarouselToIndex]);
 
-  const onLauncherCarouselPointerDown = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
-    const target = event.target;
-    if (target instanceof HTMLElement && target.closest('a, button, input, label')) {
+  useEffect(() => {
+    if (!launcherCarouselApi) {
       return;
     }
-
-    clearLauncherDeepLinkFromAddress();
-    if (event.pointerType !== 'mouse' || event.button !== 0) {
-      return;
-    }
-
-    launcherCarouselDragRef.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startScrollLeft: event.currentTarget.scrollLeft,
+    const commitSelectedSnap = () => {
+      const selectedIndex = wrapCarouselIndex(launcherCarouselApi.selectedScrollSnap(), gameList.length);
+      const nextGameId = selectedIndex >= 0 ? gameList[selectedIndex]?.id : undefined;
+      if (nextGameId) {
+        setSelectedGameId((currentGameId) => currentGameId === nextGameId ? currentGameId : nextGameId);
+      }
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setLauncherCarouselDragging(true);
-  }, [clearLauncherDeepLinkFromAddress]);
-
-  const onLauncherCarouselPointerMove = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
-    const dragState = launcherCarouselDragRef.current;
-    if (!dragState || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-    event.currentTarget.scrollLeft = dragState.startScrollLeft - (event.clientX - dragState.startX);
-  }, []);
-
-  const finishLauncherCarouselPointerDrag = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
-    const dragState = launcherCarouselDragRef.current;
-    if (!dragState || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-
-    launcherCarouselDragRef.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-    setLauncherCarouselDragging(false);
-
-    const closestIndex = Math.round(event.currentTarget.scrollLeft / Math.max(1, event.currentTarget.clientWidth));
-    scrollLauncherCarouselToIndex(closestIndex);
-  }, [scrollLauncherCarouselToIndex]);
+    launcherCarouselApi.on('select', commitSelectedSnap);
+    return () => {
+      launcherCarouselApi.off('select', commitSelectedSnap);
+    };
+  }, [gameList, launcherCarouselApi]);
 
   useLayoutEffect(() => {
     if (
@@ -1616,24 +1554,17 @@ export default function App() {
     }
 
     const frame = window.requestAnimationFrame(() => {
-      const carousel = launcherCarouselRef.current;
-      const slide = carousel?.children.item(selectedGameIndex);
-      if (!carousel || !(slide instanceof HTMLElement)) {
+      if (!launcherCarouselApi) {
         return;
       }
-      carousel.classList.add('is-positioning');
-      carousel.scrollLeft = slide.offsetLeft;
-      carousel.classList.remove('is-positioning');
+      launcherCarouselApi.scrollTo(selectedGameIndex, true);
       launcherCarouselPositionedRef.current = true;
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [bootMode, gameList.length, selectedGameIndex]);
+  }, [bootMode, gameList.length, launcherCarouselApi, selectedGameIndex]);
 
   useEffect(() => {
     return () => {
-      if (launcherCarouselFrameRef.current !== null) {
-        window.cancelAnimationFrame(launcherCarouselFrameRef.current);
-      }
       if (launcherShareNoticeTimerRef.current !== null) {
         window.clearTimeout(launcherShareNoticeTimerRef.current);
       }
@@ -2774,42 +2705,43 @@ export default function App() {
             <section className="launcher-showcase" aria-label="플레이 가능한 데모">
               <div
                 ref={launcherCarouselRef}
-                className={`launcher-carousel ${launcherCarouselDragging ? 'is-dragging' : ''}`}
+                className="launcher-carousel"
                 role="region"
                 aria-roledescription="carousel"
                 aria-label="YAVN 데모 캐러셀"
                 tabIndex={0}
-                onScroll={onLauncherCarouselScroll}
-                onWheel={clearLauncherDeepLinkFromAddress}
                 onKeyDown={onLauncherCarouselKeyDown}
-                onPointerDown={onLauncherCarouselPointerDown}
-                onPointerMove={onLauncherCarouselPointerMove}
-                onPointerUp={finishLauncherCarouselPointerDrag}
-                onPointerCancel={finishLauncherCarouselPointerDrag}
+                onPointerDown={(event) => {
+                  const target = event.target;
+                  if (!(target instanceof HTMLElement) || !target.closest('a, button, input, label')) {
+                    clearLauncherDeepLinkFromAddress();
+                  }
+                }}
               >
-                {gameList.map((entry, index) => {
-                  const isSelected = selectedGame?.id === entry.id;
-                  const entryTags = entry.tags.length > 0 ? entry.tags : ['untagged'];
-                  const chapterLabel =
-                    typeof entry.chapterCount === 'number'
-                      ? `${entry.chapterCount} CHAPTER${entry.chapterCount === 1 ? '' : 'S'}`
-                      : 'CHAPTERS -';
-                  const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
-                  return (
-                    <article
-                      key={`showcase-${entry.id}`}
-                      className={`launcher-feature ${isSelected ? 'is-selected' : ''}${entry.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
-                      role="group"
-                      aria-roledescription="slide"
-                      aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
-                      aria-hidden={!isSelected}
-                    >
+                <div className="launcher-carousel-track">
+                  {gameList.map((entry, index) => {
+                    const isSelected = selectedGame?.id === entry.id;
+                    const entryTags = entry.tags.length > 0 ? entry.tags : ['untagged'];
+                    const chapterLabel =
+                      typeof entry.chapterCount === 'number'
+                        ? `${entry.chapterCount} CHAPTER${entry.chapterCount === 1 ? '' : 'S'}`
+                        : 'CHAPTERS -';
+                    const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
+                    return (
+                      <article
+                        key={`showcase-${entry.id}`}
+                        className={`launcher-feature ${isSelected ? 'is-selected' : ''}${entry.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
+                        role="group"
+                        aria-roledescription="slide"
+                        aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
+                        aria-hidden={!isSelected}
+                      >
                       <div className="launcher-feature-media" style={showcaseStyle}>
                         {entry.thumbnail ? (
                           <img
                             src={entry.thumbnail}
                             alt={entry.seo?.imageAlt ?? `${entry.name} 대표 이미지`}
-                            loading={isSelected ? 'eager' : 'lazy'}
+                            loading="eager"
                             decoding="async"
                           />
                         ) : (
@@ -2824,10 +2756,11 @@ export default function App() {
                         </p>
                         <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
                         <p className="launcher-feature-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</p>
-                        {isSelected && (
+                        {entry.legalNotices.length > 0 && (
                           <LegalNoticeList
                             notices={entry.legalNotices}
                             className="launcher-feature-legal-notices"
+                            linkTabIndex={isSelected ? undefined : -1}
                           />
                         )}
 
@@ -2884,9 +2817,10 @@ export default function App() {
                           </p>
                         )}
                       </div>
-                    </article>
-                  );
-                })}
+                      </article>
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="launcher-carousel-controls">
@@ -2912,7 +2846,7 @@ export default function App() {
                           aria-current={isSelected ? 'true' : undefined}
                           aria-pressed={isSelected}
                           className={isSelected ? 'is-active' : ''}
-                          onClick={() => scrollLauncherCarouselToIndex(index)}
+                          onClick={() => moveLauncherCarouselToIndex(index)}
                         />
                       );
                     })}
@@ -2952,11 +2886,6 @@ export default function App() {
                   ? '게임 매니페스트와 대표 이미지를 불러오는 중입니다.'
                   : gameListError ?? '등록된 게임이 아직 없습니다.'}
               </p>
-              {gameListLoading && (
-                <span className="launcher-loading-track" aria-hidden="true">
-                  <i />
-                </span>
-              )}
               {!gameListLoading && gameListError && (
                 <button type="button" onClick={() => void loadGameListManifest()}>
                   다시 불러오기
