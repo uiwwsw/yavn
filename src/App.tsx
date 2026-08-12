@@ -54,7 +54,6 @@ import {
   buildImageCharacterRenderKey,
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
-  resolveCharacterFramingScale,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
   resolveCharacterStageSpacing,
@@ -2394,7 +2393,7 @@ export default function App() {
       isSpeaker,
       hasFocusedSpeaker,
     );
-    const framingScale = resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount);
+    const framingScale = slot.framing.scale;
     const duoSide = characterStageLayout.duoSideByPosition[position];
     const duoClass = duoSide ? `char-duo-${duoSide}` : '';
     const facingScale = resolveCharacterFacingScale(

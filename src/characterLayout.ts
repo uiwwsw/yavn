@@ -121,14 +121,6 @@ export function buildImageCharacterRenderKey(characterId: string): string {
   return `character-${characterId}`;
 }
 
-export function resolveCharacterFramingScale(
-  framingScale: number,
-  visibleCharacterCount: number,
-): number {
-  const crowdFactor = visibleCharacterCount >= 3 ? 0.62 : visibleCharacterCount === 2 ? 0.82 : 1;
-  return 1 + (framingScale - 1) * crowdFactor;
-}
-
 export function resolveCharacterFocusPresentation(
   visibleCharacterCount: number,
   order: number,
