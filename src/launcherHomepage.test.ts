@@ -4,6 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 const app = readFileSync(fileURLToPath(new URL('./App.tsx', import.meta.url)), 'utf8');
 const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
+const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8')) as {
+  dependencies?: Record<string, string>;
+};
 
 describe('launcher homepage experience', () => {
   it('keeps ordinary carousel browsing out of the address bar', () => {
@@ -13,8 +16,18 @@ describe('launcher homepage experience', () => {
     expect(app).toContain('clearLauncherDeepLinkFromAddress();');
     expect(app).not.toContain('LAUNCHER_SELECTION_SESSION_KEY');
     expect(app).not.toContain('storeLauncherGameId(');
-    expect(app).toContain("carousel.classList.add('is-positioning')");
-    expect(styles).toMatch(/\.launcher-carousel\.is-positioning\s*\{[^}]*scroll-behavior: auto;/);
+    expect(app).toContain('useEmblaCarousel(LAUNCHER_CAROUSEL_OPTIONS)');
+    expect(app).toContain("launcherCarouselApi.on('select', commitSelectedSnap)");
+    expect(packageJson.dependencies?.['embla-carousel-react']).toBe('8.6.0');
+    expect(app).not.toContain('onLauncherCarouselScroll');
+    expect(app).not.toContain('onScroll={');
+    expect(app).not.toContain('launcherCarouselDragRef');
+    expect(app).not.toContain('launcher-loading-track');
+    expect(app).toContain('loading="eager"');
+    expect(app).toContain('linkTabIndex={isSelected ? undefined : -1}');
+    expect(styles).toMatch(/\.launcher-carousel-track\s*\{[^}]*will-change: transform;/);
+    expect(styles).not.toContain('@keyframes launcherManifestLoading');
+    expect(styles).not.toContain('@keyframes launcherConsoleIn');
     expect(app).toContain('선택 링크 복사');
     expect(app).toContain('buildGameSourceUrl(repositoryUrl, entry.id)');
     expect(app).toContain('/tree/main/public/game-list/${encodeURIComponent(gameId)}');
