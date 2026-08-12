@@ -44,11 +44,22 @@ describe('image character motion', () => {
   it('keeps staged characters mounted while camera membership changes', () => {
     expect(appSource).toContain('const stagedCharactersByPosition = (');
     expect(appSource).toContain('const visibleCharactersByPosition = stagedCharactersByPosition.filter');
-    expect(appSource).toContain('stagedCharactersByPosition.map((entry) => ({');
+    expect(appSource).toContain('visibleCharactersByPosition.map((entry) => ({');
+    expect(appSource).not.toContain('const stagedCharacterCount = stagedCharactersByPosition.length');
+    expect(appSource).toContain('resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount)');
     expect(appSource).toContain("const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';");
     expect(appSource).not.toContain('if (!slot || !visibleCharacterSet.has(slot.id))');
     expect(styles).toMatch(
       /\.char\.is-camera-hidden\s*\{[\s\S]*?visibility: hidden;[\s\S]*?animation: none;[\s\S]*?transition: none;/,
+    );
+  });
+
+  it('composes mobile slots from the visible cast instead of hidden staged actors', () => {
+    expect(appSource).toMatch(
+      /const characterStageLayout = resolveCharacterStageLayout\(\s*visibleCharactersByPosition\.map/,
+    );
+    expect(appSource).not.toMatch(
+      /const characterStageLayout = resolveCharacterStageLayout\(\s*stagedCharactersByPosition\.map/,
     );
   });
 
