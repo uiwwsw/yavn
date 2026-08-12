@@ -1330,7 +1330,8 @@ textarea,
 }
 
 .char-image {
-  --char-image-height: 66cqh;
+  /* One source-art ratio for solo, duo, and trio; cast count only changes X anchors. */
+  --char-image-height: 58cqh;
   width: auto;
   height: var(--char-image-height);
   max-width: none;
@@ -1399,16 +1400,8 @@ textarea,
   --char-offset-x: -50%;
 }
 
-.char-layer.char-layout-duo .char-image {
-  --char-image-height: 58cqh;
-}
-
 .char-layer.char-layout-duo .char-live2d {
   --char-live2d-width: min(44cqw, 52cqh);
-}
-
-.char-layer.char-layout-trio .char-image {
-  --char-image-height: 67cqh;
 }
 
 .char-layer.char-layout-trio .char-live2d {
@@ -4986,10 +4979,6 @@ textarea,
     justify-self: center;
   }
 
-  .char-image {
-    --char-image-height: 66cqh;
-  }
-
   .char-live2d {
     --char-live2d-width: min(62cqw, 52cqh);
   }
@@ -4997,10 +4986,6 @@ textarea,
   .char-live2d.center {
     --char-anchor-x: 50cqw;
     left: 0;
-  }
-
-  .char-layer.char-layout-duo .char-image {
-    --char-image-height: 58cqh;
   }
 
   .char-layer.char-layout-duo .char-live2d {
@@ -5015,10 +5000,6 @@ textarea,
   .char-layer.char-layout-duo .char-duo-right {
     --char-anchor-x: 75cqw;
     --char-offset-x: -50%;
-  }
-
-  .char-layer.char-layout-trio .char-image {
-    --char-image-height: 67cqh;
   }
 
   .char-layer.char-layout-trio .char-live2d {

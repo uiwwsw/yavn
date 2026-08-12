@@ -46,7 +46,8 @@ describe('image character motion', () => {
     expect(appSource).toContain('const visibleCharactersByPosition = stagedCharactersByPosition.filter');
     expect(appSource).toContain('visibleCharactersByPosition.map((entry) => ({');
     expect(appSource).not.toContain('const stagedCharacterCount = stagedCharactersByPosition.length');
-    expect(appSource).toContain('resolveCharacterFramingScale(slot.framing.scale, visibleCharacterCount)');
+    expect(appSource).toContain('const framingScale = slot.framing.scale;');
+    expect(appSource).not.toContain('resolveCharacterFramingScale');
     expect(appSource).toContain("const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';");
     expect(appSource).not.toContain('if (!slot || !visibleCharacterSet.has(slot.id))');
     expect(styles).toMatch(
@@ -87,13 +88,14 @@ describe('image character motion', () => {
     expect(engineSource).toContain('const LIVE2D_READY_TIMEOUT_MS = 20000;');
   });
 
-  it('uses separate duo and trio compositions on desktop and mobile', () => {
+  it('uses one image ratio with separate duo and trio horizontal anchors', () => {
     expect(appSource).toContain('data-character-count={visibleCharacterCount}');
     expect(appSource).toContain('const characterStageSpacing = resolveCharacterStageSpacing(');
     expect(appSource).toContain('visibleCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': stagePlacement.anchorX");
-    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.char-image\s*\{[\s\S]*?--char-image-height: 67cqh;/);
+    expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?--char-image-height: 58cqh;/);
+    expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).not.toContain("char-layout-trio[data-camera-shot='medium']");

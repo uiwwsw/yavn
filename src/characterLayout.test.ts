@@ -3,7 +3,6 @@ import {
   buildImageCharacterRenderKey,
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
-  resolveCharacterFramingScale,
   resolveMobileCharacterStageAnchor,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
@@ -213,13 +212,6 @@ describe('character stage layout', () => {
     expect(buildImageCharacterRenderKey('란')).toBe('character-란');
     expect(buildImageCharacterRenderKey('란')).not.toContain('left');
     expect(buildImageCharacterRenderKey('란')).not.toContain('.webp');
-  });
-
-  it('reduces framing zoom as the cast grows without shrinking full-body shots', () => {
-    expect(resolveCharacterFramingScale(1, 3)).toBe(1);
-    expect(resolveCharacterFramingScale(2, 1)).toBe(2);
-    expect(resolveCharacterFramingScale(2, 2)).toBeCloseTo(1.82);
-    expect(resolveCharacterFramingScale(2, 3)).toBeCloseTo(1.62);
   });
 
   it('keeps the current speaker foremost and quiets listeners more strongly in a trio', () => {

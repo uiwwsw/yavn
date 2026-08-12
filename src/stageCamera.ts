@@ -29,9 +29,17 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
   pan: 380,
 };
 
-const COMPOSITION_SCALE_BY_CAST = [1, 1.4, 1.58, 1.38] as const;
-const CLOSE_SCALE_BY_CAST = [1, 1.67, 2.02, 1.92] as const;
-const REACTION_SCALE_BY_CAST = [1, 1.52, 1.83, 1.69] as const;
+// Character count changes horizontal staging only. Keeping one physical camera
+// profile prevents a solo, duo, and trio from cropping the same source art at
+// different heights when the visible cast changes.
+const COMPOSITION_SCALE = 1.58;
+const SHOT_SCALE: Record<CameraShot, number> = {
+  wide: 1,
+  medium: COMPOSITION_SCALE,
+  close: 2.02,
+  reaction: 1.83,
+};
+const COMPOSITION_ORIGIN_Y = 80;
 
 export type StageCameraPresentation = {
   shot: CameraShot;
@@ -50,26 +58,16 @@ export type StageCameraPresentation = {
 };
 
 function resolveCompositionScale(visibleCharacterCount: number): number {
-  if (visibleCharacterCount <= 0) return 1;
-  const castIndex = Math.max(1, Math.min(3, visibleCharacterCount));
-  return COMPOSITION_SCALE_BY_CAST[castIndex];
+  return visibleCharacterCount > 0 ? COMPOSITION_SCALE : 1;
 }
 
 function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): number {
   if (visibleCharacterCount <= 0) return 1;
-  const castIndex = Math.max(1, Math.min(3, visibleCharacterCount));
-  if (shot === 'medium') return COMPOSITION_SCALE_BY_CAST[castIndex];
-  if (shot === 'close') {
-    return CLOSE_SCALE_BY_CAST[castIndex];
-  }
-  if (shot === 'reaction') {
-    return REACTION_SCALE_BY_CAST[castIndex];
-  }
-  return 1;
+  return SHOT_SCALE[shot];
 }
 
-function resolveCompositionOriginY(visibleCharacterCount: number): number {
-  return visibleCharacterCount <= 1 ? 55 : 80;
+function resolveCompositionOriginY(): number {
+  return COMPOSITION_ORIGIN_Y;
 }
 
 export function resolveCharacterCalibration(
@@ -138,7 +136,7 @@ export function resolveStageCameraPresentation(
     : camera.shot;
   const compositionScale = resolveCompositionScale(visibleCharacterCount);
   const shotScale = resolveShotScale(presentationShot, visibleCharacterCount);
-  const compositionOriginY = resolveCompositionOriginY(visibleCharacterCount);
+  const compositionOriginY = resolveCompositionOriginY();
   const zoomOriginX = hasCharacterTarget && targetPosition
     ? resolveCharacterStagePlacement(targetPosition, layout, compositionSpacing).anchorX
     : '50cqw';
