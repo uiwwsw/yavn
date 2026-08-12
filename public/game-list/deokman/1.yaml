@@ -29,7 +29,7 @@ scenes:
           text: "그리고 죽은 사람의 품에서는 덕만이 잃어버린 노리개가 나왔습니다."
       - say:
           with: [덕만]
-          text: "아침이 되자, 사람들은 덕만을 암살범이라 불렀습니다."
+          text: "하룻밤 사이, 사람들은 왕을 살린 덕만을 암살범이라 불렀습니다."
       - char:
           id: 칠숙
           position: center
@@ -50,12 +50,12 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "닮았지만, 제 것은 아닙니다."
+          text: "제 것과 닮았지만, 매듭이 다릅니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
-          text: "죽은 자는 다르게 말할 수 없겠군요."
+          text: "죽은 자에게 물을 수도 없겠군요."
       - say:
           char: 덕만
           camera: medium
@@ -141,7 +141,7 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "빈 호위복도 하나 있었지요."
+          text: "사라진 호위복도 한 벌 있었지요."
       - say:
           char: 덕만
           camera: medium
@@ -156,7 +156,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "좋아요. 먼저 가짜를 찾죠."
+          text: "좋습니다. 누가 거짓말했는지부터 찾죠."
       - say:
           with: [덕만]
           text: "남은 시간은 사흘뿐이었습니다."
@@ -164,7 +164,7 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "부엌과 기록 창고, 어디부터 엉망일까요?"
+          text: "부엌과 기록 창고, 어디부터 뒤져 볼까요?"
       - say:
           char: 덕만
           camera: close
@@ -191,12 +191,12 @@ scenes:
           position: right
       - say:
           with: [덕만, 천명]
-          text: "전날 암살 계획을 들은 천명은 연회가 끝난 뒤에도 악사들의 방을 지켜보고 있었습니다."
+          text: "천명은 연회가 끝난 뒤에도 악사들이 머물던 방을 지켜봤습니다."
       - say:
           char: 천명.nervous
           camera: medium
           with: [덕만]
-          text: "노리개를 줍는 나인을 봤어."
+          text: "노리개를 줍는 궁녀를 봤어."
       - say:
           char: 덕만
           camera: medium
@@ -221,7 +221,7 @@ scenes:
           position: right
       - say:
           with: [덕만, 유신]
-          text: "전날 명단을 맡은 유신은 밤새 호위의 이동을 다시 적어 두었습니다."
+          text: "유신은 밤새 연회장에 드나든 호위의 이름과 시간을 다시 맞춰 봤습니다."
       - say:
           char: 유신
           camera: medium
@@ -297,7 +297,7 @@ scenes:
           char: 소원.nervous
           camera: close
           with: [덕만]
-          text: "그럼 어디에요?"
+          text: "그럼 어디에 쓰려고 했어요?"
       - say:
           char: 덕만
           camera: close
@@ -307,7 +307,7 @@ scenes:
           char: 소원
           camera: medium
           with: [덕만]
-          text: "이건 제가 숨길게요."
+          text: "이건 제가 챙길게요. 또 없어지면 안 되니까."
       - goto: rumor_choice
 
   investigate_archive:
@@ -330,7 +330,7 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "붓 주인은 삼 년 전에 죽었습니다."
+          text: "이 글씨의 주인은 삼 년 전에 죽었습니다."
       - say:
           char: 덕만
           camera: medium
@@ -375,7 +375,7 @@ scenes:
           position: right
       - say:
           delivery: calm
-          text: "첫째 날 · 해 질 무렵."
+          text: "첫째 날 해 질 무렵."
       - say:
           with: [덕만, 비담]
           delivery: calm
@@ -384,22 +384,22 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "가만있으면 저쪽이 이야기를 만듭니다."
+          text: "우리가 잠자코 있으면 저들이 먼저 거짓말을 퍼뜨릴 겁니다."
       - say:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "그럼 우리가 먼저 만들죠."
+          text: "그럼 우리가 먼저 미끼를 던지죠."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "틀린 이야기를요?"
+          text: "거짓말을 퍼뜨리자고요?"
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "고치러 뛰는 사람이 범인이니까."
+          text: "그 말을 바로잡으려 달려드는 자가 범인일 테니까요."
       - say:
           with: [덕만, 비담]
           text: "소문은 증거가 아니었습니다."
@@ -407,7 +407,7 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "잘못 짚으면 죄 없는 사람도 뜁니다."
+          text: "잘못 짚으면 죄 없는 사람까지 달아날 겁니다."
       - say:
           char: 덕만
           camera: close
@@ -450,12 +450,12 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "거짓말이 사람 하나를 뛰게 했군요."
+          text: "미끼를 문 사람이 하나 나왔군요."
       - say:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "품의 장부부터 보죠."
+          text: "저 하인 품에 든 장부부터 보죠."
       - goto: evidence_choice
 
   rumor_king:
@@ -541,7 +541,7 @@ scenes:
           position: right
       - say:
           delivery: calm
-          text: "사흘째 · 새벽. 달아난 하인이 붙잡혔습니다."
+          text: "사흘째 새벽, 달아난 하인이 붙잡혔습니다."
       - say:
           text: "손톱 밑에는 같은 검은 가루가 있었습니다."
       - say:
@@ -569,7 +569,7 @@ scenes:
           text: "공주님 이름을 말해도 죽습니다."
       - say:
           with: [덕만, 칠숙]
-          text: "하인은 살아 있는 증거였지만, 입을 여는 순간 죽을 사람이기도 했습니다."
+          text: "하인이 증언하면 칠숙을 잡을 수 있었습니다. 하지만 이름을 말하는 순간 하인도 죽을 터였습니다."
       - say:
           char: 덕만
           camera: close
@@ -582,7 +582,7 @@ scenes:
           text: "살리면 달아날 수도 있지요."
       - choice:
           key: c1_evidence
-          prompt: "붙잡힌 하인을 어떻게 쓸까?"
+          prompt: "하인을 살리려면 어떻게 해야 할까?"
           char: 덕만
           camera: close
           with: [칠숙]
@@ -690,7 +690,7 @@ scenes:
           position: right
       - say:
           delivery: calm
-          text: "사흘째 · 밤. 덕만의 누명은 벗겨졌습니다."
+          text: "사흘째 밤, 덕만의 누명은 벗겨졌습니다."
       - say:
           with: [덕만, 비담]
           text: "비담이 혼인 문서 세 장을 펼쳤습니다."
@@ -703,7 +703,7 @@ scenes:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "가문마다 다른 값을 받았습니다."
+          text: "문서마다 세 가문에 약속한 대가가 다릅니다."
       - say:
           char: 덕만.angry
           camera: close
@@ -722,9 +722,9 @@ scenes:
       - get: marriage_pact
       - set: { clue_marriage_pact: true }
       - say:
-          text: "그날 밤, 세 문서가 왕좌 앞에 걸렸습니다."
+          text: "그날 밤, 세 혼서가 왕 앞에 나란히 펼쳐졌습니다."
       - say:
-          text: "붉은 혼인끈이 덕만의 이름을 묶고 있었습니다."
+          text: "문서마다 덕만의 이름이 붉은 실로 매여 있었습니다."
 
   go_07_guard_revolt:
     actions:
@@ -745,7 +745,7 @@ scenes:
           char: 유신.sad
           camera: medium
           with: [덕만]
-          text: "그러면 공주님 문이 빕니다."
+          text: "그러면 공주님을 지킬 병력이 없습니다."
       - say:
           char: 덕만.angry
           camera: close
@@ -832,12 +832,12 @@ scenes:
       - say:
           text: "‘덕만이 다음 왕이다.’"
       - say:
-          text: "거짓 소문이 하루 만에 수도를 덮었습니다."
+          text: "거짓 소문은 하루 만에 저잣거리까지 퍼졌습니다."
       - say:
           char: 진평왕.sad
           camera: medium
           with: [덕만]
-          text: "내 말을 네가 만들었느냐?"
+          text: "내가 하지도 않은 말을 네가 퍼뜨렸느냐?"
       - say:
           char: 덕만
           camera: medium
@@ -897,10 +897,10 @@ scenes:
           char: 덕만.sad
           camera: close
           with: []
-          text: "맞는 답을 너무 일찍 말했어."
+          text: "놈의 이름을 알면서도 잡지 못했어."
       - effect: darken
       - gameOver:
-          title: "운명 10 — 증거 없는 정답"
+          title: "운명 10 — 증거 없는 고발"
           message: "덕만은 칠숙을 모함한 죄로 처형되었습니다."
 
   go_11_innocent_exile:
@@ -940,4 +940,4 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 11 — 불탄 결백"
-          message: "덕만은 살아남았지만 왕이 될 자격을 잃었습니다."
+          message: "덕만은 수도에서 쫓겨났고, 후계자 명단에서도 이름이 지워졌습니다."
