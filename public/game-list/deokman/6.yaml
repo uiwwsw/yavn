@@ -184,7 +184,7 @@ scenes:
           char: 월명
           camera: close
           with: [덕만]
-          text: "그러면 찬물이 가슴까지 찹니다."
+          text: "사람을 피하려면 찬물 속으로 더 들어가야 합니다."
       - say:
           char: 덕만
           camera: close
@@ -298,7 +298,7 @@ scenes:
     actions:
       - bg: shadow_corridor
       - camera: medium
-      - effect: alarm
+      - effect: pulse
       - char:
           id: 덕만
           position: left
@@ -325,7 +325,7 @@ scenes:
           char: 덕만.sad
           camera: medium
           with: [유신]
-          text: "아버지, 언니, 그리고 불타는 기록까지……"
+          text: "어느 쪽을 봐도 제가 늦었습니다."
       - say:
           char: 유신.sad
           camera: close
@@ -335,7 +335,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "아니요. 이건 제가 고르겠습니다."
+          text: "아니요. 늦어도 제가 고르겠습니다."
       - say:
           with: [덕만, 유신]
           wait: 850
@@ -506,7 +506,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "그래도 이 기록만은 불 속에 두지 마요."
+          text: "그래도 이 기록만은 불 속에 두지 마세요."
       - set: { cheonmyeong_alive: false }
       - goto: seal_found
 
@@ -522,6 +522,7 @@ scenes:
           position: right
       - say:
           text: "비담이 왕의 방 구석에 버려진 약 상자를 뒤집었다."
+      - effect: { name: focus, wait: true }
       - say:
           wait: 750
           text: "왕의 금빛 도장이 덕만의 발치로 굴러왔다."
@@ -796,10 +797,11 @@ scenes:
           delivery: sad
           wait: 1200
           unskippable: true
-          text: "덕만아…… 왕보다 먼저 살아라."
+          text: "<speed=17>덕만아…… 왕보다 먼저 살아라.</speed>"
       - say:
           wait: 1400
           text: "진평왕의 손이 덕만의 손안에서 천천히 풀렸다."
+      - effect: { name: darken, wait: true }
       - say:
           wait: 900
           text: "진평왕은 다음 왕을 정하지 않은 채 숨을 거뒀다."
@@ -1029,6 +1031,7 @@ scenes:
           camera: medium
           with: [덕만]
           text: "길을 여세요! 신라의 새 왕이 나가십니다!"
+      - effect: { name: crown, wait: true }
       - say:
           char: 덕만
           camera:
@@ -1054,12 +1057,12 @@ scenes:
           char: 덕만
           camera: close
           with: []
-          text: "제 첫 명령을 들으십시오."
+          text: "첫 명령이다."
       - say:
           char: 덕만
           camera: close
           with: []
-          text: "식량이 끊긴 지역부터 왕실 창고를 여세요."
+          text: "식량이 끊긴 곳부터 왕실 창고를 열어라."
 
   go_31_gate_breaker:
     actions:

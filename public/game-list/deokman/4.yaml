@@ -29,7 +29,7 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
-          text: "누명을 벗으셨으니 상으로 이걸 드리죠."
+          text: "누명을 벗으셨으니 상을 드리겠습니다."
       - say:
           char: 칠숙.smile
           camera: close
@@ -39,7 +39,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [칠숙]
-          text: "상을 준다면서 수도 밖으로 쫓아내시는군요."
+          text: "상이라면서 수도 밖으로 쫓아내시는군요."
       - say:
           char: 칠숙.smile
           camera: close
@@ -62,6 +62,7 @@ scenes:
       - say:
           with: [덕만]
           text: "성에 들어서자 빈 솥을 긁는 소리만 들렸다."
+      - effect: impact
       - say:
           wait: 750
           text: "빈 그릇을 든 아이가 덕만의 말 앞에서 그대로 쓰러졌다."
@@ -313,7 +314,7 @@ scenes:
     actions:
       - bg: fortress
       - camera: medium
-      - effect: alarm
+      - effect: pulse
       - char:
           id: 덕만
           position: left
@@ -364,7 +365,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [유신]
-          text: "살리지 못할 사람 수도 빼지 말고 말해 주세요."
+          text: "못 구할 사람까지 모두 말해 주세요."
       - say:
           char: 유신.sad
           camera: close
@@ -698,7 +699,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "수레꾼 대신 제가 오늘 밤 보초를 서죠."
+          text: "오늘 밤 보초는 저도 함께 서겠습니다."
       - goto: chapter4_end
 
   chapter4_end:
@@ -782,7 +783,7 @@ scenes:
           camera: close
           with: [덕만]
           text: "같은 양을 줘도 아이와 병사가 버티는 시간은 다릅니다."
-      - effect: alarm
+      - effect: pulse
       - say:
           wait: 750
           text: "5일째 밤, 굶주린 병사가 활을 놓치자 적군이 성벽을 넘었다."

@@ -31,19 +31,19 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "전하, 궁문 밖이 사람들로 가득 찼어요."
+          text: "전하, 궁문 밖이 사람들로 가득 찼습니다."
       - say:
           char: 덕만
           camera: medium
           with:
             - 소원
-          text: "또 어느 지역에서 곡식이 끊겼어?"
+          text: "어느 지역으로 갈 곡식이 끊겼느냐?"
       - say:
           char: 소원.nervous
           camera: close
           with:
             - 덕만
-          text: "세 지역으로 가는 곡식 수레가 3일째 안 왔답니다."
+          text: "세 지역으로 갈 곡식 수레가 3일째 안 왔습니다."
       - char:
           id: 진운
           position: right
@@ -85,7 +85,7 @@ scenes:
           camera: close
           with:
             - 유신
-          text: "왕이 되어 처음 나가는 길이군요."
+          text: "왕이 된 뒤 처음 나서는 길이군."
       - say:
           char: 유신
           camera: medium
@@ -97,7 +97,7 @@ scenes:
           camera: medium
           with:
             - 유신
-          text: "왕이 되고 처음 내린 명령이 체포일 수도 있겠군요."
+          text: "첫 명령이 체포가 될 수도 있겠군."
       - say:
           char: 유신
           camera: close
@@ -109,7 +109,7 @@ scenes:
           camera: close
           with:
             - 유신
-          text: "알아요. 늦어진 만큼 제가 직접 사과하겠습니다."
+          text: "알겠다. 늦어진 만큼 내가 직접 사과하겠다."
       - branch:
           cases:
             - when:
@@ -249,7 +249,8 @@ scenes:
           with:
             - 진운
           wait: 800
-          text: "아니요. 내일도 제 옆에서 틀렸다고 말해 주세요."
+          unskippable: true
+          text: "<speed=19>아니요. 내일도 제 옆에서 틀렸다고 말해 주세요.</speed>"
       - say:
           char: 진운
           camera: medium
@@ -422,7 +423,7 @@ scenes:
     actions:
       - bg: fortress
       - camera: medium
-      - effect: alarm
+      - effect: pulse
       - char:
           id: 덕만
           position: left
@@ -854,7 +855,7 @@ scenes:
     actions:
       - bg: throne_hall
       - camera: medium
-      - effect: alarm
+      - effect: moonveil
       - char:
           id: 덕만
           position: left
@@ -867,6 +868,7 @@ scenes:
             - 유신
           wait: 900
           text: "한밤중, 월성 위의 별 하나가 길게 불타며 떨어졌다."
+      - effect: pulse
       - say:
           char: 유신.angry
           camera: medium
@@ -1127,7 +1129,7 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "전하, 반란군의 첫 횃불이 성문에 닿았어요."
+          text: "전하, 반란군의 첫 횃불이 성문에 닿았습니다."
       - char:
           id: 진운
           position: right
@@ -1484,7 +1486,7 @@ scenes:
           camera: medium
           with:
             - 유신
-          text: "승만이 다음 왕이 되게 하세요."
+          text: "승만을 다음 왕으로 세워 주세요."
       - say:
           char: 유신.sad
           camera: close
@@ -1499,6 +1501,7 @@ scenes:
           unskippable: true
           text: "<speed=18>승만과…… 성문 밖 사람들을 부탁합니다.</speed>"
           wait: 900
+      - effect: darken
       - say:
           with:
             - 덕만
@@ -1612,7 +1615,7 @@ scenes:
           camera: close
           with:
             - 진운
-          text: "지금 싸움을 끝내는 가장 빠른 방법이야."
+          text: "지금 싸움을 끝내는 가장 빠른 방법입니다."
       - say:
           char: 진운
           camera: close
@@ -1646,7 +1649,13 @@ scenes:
           camera: medium
           with:
             - 진운
-          text: "칼을 내려놓고 다친 사람부터 살립시다. 왕은 내일 정해요."
+          text: "칼부터 내려놓고 다친 사람을 살립시다."
+      - say:
+          char: 덕만
+          camera: close
+          with:
+            - 진운
+          text: "왕은 내일 정합시다."
       - say:
           char: 진운
           camera: close
@@ -1800,7 +1809,7 @@ scenes:
     actions:
       - bg: fortress
       - camera: medium
-      - effect: alarm
+      - effect: pulse
       - char:
           id: 덕만
           position: left
@@ -1871,7 +1880,7 @@ scenes:
           with: []
           wait: 900
           text: "내가 반란을 막으려다 반란군을 만들었군."
-      - effect: alarm
+      - effect: pulse
       - say:
           text: "해가 뜨기 전, 13개 집안의 군사들이 왕의 회의장을 에워쌌다."
           wait: 750
@@ -1918,7 +1927,7 @@ scenes:
           with: []
           wait: 900
           text: "내 말이 그 사람들을 적 앞으로 돌려보냈어."
-      - effect: alarm
+      - effect: pulse
       - say:
           text: "적군은 돌아가던 피란민을 앞세운 채 성문에 모습을 드러냈다."
           wait: 750

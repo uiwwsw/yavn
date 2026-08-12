@@ -67,7 +67,7 @@ scenes:
           char: 진평왕
           camera: medium
           with: [덕만]
-          text: "3일이다. 그보다 더는 막아 줄 수 없다."
+          text: "3일을 주겠다. 그 이상은 막아 줄 수 없다."
       - say:
           char: 진평왕.sad
           camera: close
@@ -77,7 +77,7 @@ scenes:
           char: 덕만
           camera: close
           with: [진평왕]
-          text: "그래도 아버지는 절 믿으세요?"
+          text: "아버지는 그래도 절 믿으세요?"
       - say:
           char: 진평왕.sad
           camera: close
@@ -175,7 +175,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "좋아요. 흔적이 사라지기 전에 움직이죠."
+          text: "흔적이 지워지기 전에 움직이죠."
       - branch:
           cases:
             - when:
@@ -407,7 +407,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "소문을 바로잡으러 오는 사람이 진실을 아는 겁니다."
+          text: "소문이 틀렸다고 나서는 사람이 진실을 아는 겁니다."
       - say:
           with: [덕만, 비담]
           wait: 600
@@ -483,7 +483,7 @@ scenes:
           char: 진평왕
           camera: medium
           with: [덕만]
-          text: "내가 보지도 못한 범인을 봤다는군."
+          text: "내가 못 본 범인을 봤다는 소문이 났구나."
       - say:
           char: 덕만
           camera: medium
@@ -584,7 +584,7 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "사실을 들으려면 그때까지는 살려야 해."
+          text: "입을 열 때까지는 살려 둬야 합니다."
       - say:
           char: 칠숙.smile
           camera: close
@@ -636,6 +636,7 @@ scenes:
           camera: medium
           with: [진평왕]
           wait: 850
+          unskippable: true
           text: "<speed=20>제가 멈추면, 다음 사람이 죽습니다.</speed>"
       - say:
           char: 진평왕.sad
@@ -681,7 +682,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "가기 싫으면 지금 돌아가도 됩니다."
+          text: "가기 싫으시면 지금 돌아가셔도 됩니다."
       - say:
           char: 비담.smirk
           camera: close
@@ -852,7 +853,7 @@ scenes:
           char: 진평왕.sad
           camera: medium
           with: [덕만]
-          text: "내가 하지도 않은 말을 네가 퍼뜨렸어?"
+          text: "내가 하지 않은 말을 네가 퍼뜨렸느냐?"
       - say:
           char: 덕만
           camera: medium
