@@ -117,7 +117,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "좋아요. 문서 말고, 각자 정말 원하는 걸 들어보죠."
+          text: "그럼 문서에 적힌 말 말고, 진짜 뜻을 듣죠."
       - branch:
           cases:
             - when:
@@ -152,7 +152,7 @@ scenes:
           char: 덕만
           camera: close
           with: [소원]
-          text: "제게 누명을 씌운 사람이 혼인까지 정했군요."
+          text: "나한테 누명을 씌운 사람이 혼인까지 정했네."
       - say:
           char: 소원
           camera: close
@@ -370,7 +370,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "혼담 하나를 깨도 누군가는 다칩니다."
+          text: "혼담을 깨는 순간 누군가는 다칩니다."
       - say:
           char: 비담.smirk
           camera: close
@@ -434,12 +434,12 @@ scenes:
           char: 덕만
           camera: close
           with: [월명]
-          text: "내일 들키면 제가 시켰다고 말하겠습니다."
+          text: "들키면 망설이지 말고 제 이름부터 대세요."
       - say:
           char: 덕만
           camera: close
           with: [월명]
-          text: "그전에 들키면 제 이름부터 대세요."
+          text: "제가 시켰다고 직접 말하겠습니다."
       - goto: throne_choice
 
   reputation_scandal:
@@ -472,7 +472,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "비담의 이름은 아깝습니까?"
+          text: "비담 이름도 아깝습니까?"
       - say:
           char: 비담.smirk
           camera: medium
@@ -482,7 +482,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [비담]
-          text: "제가 고른 소문입니다. 제 이름도 제가 감당해요."
+          text: "제가 고른 소문이니, 제 이름도 제가 감당하겠습니다."
       - goto: throne_choice
 
   throne_choice:
@@ -590,7 +590,7 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
-          text: "다음에는 말로 끝내지 않을 겁니다."
+          text: "다음에는 말로만 묻지 않겠습니다."
       - goto: chapter2_end
 
   throne_delay:
@@ -620,7 +620,7 @@ scenes:
           char: 칠숙.smile
           camera: close
           with: [덕만]
-          text: "국경에서 살아 돌아오시면 다시 뵙죠."
+          text: "국경에서 살아 돌아오시면 다시 뵙지요."
       - goto: chapter2_end
 
   throne_reveal:
@@ -672,7 +672,7 @@ scenes:
       - say:
           delivery: calm
           wait: 750
-          text: "그날 밤, 두 시간이 지나 궁이 조용해질 무렵이었다."
+          text: "그날 밤, 궁이 조용해진 지 두 시간쯤 지났을 때였다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -683,6 +683,7 @@ scenes:
           camera: close
           with: [덕만]
           text: "그런데 안쪽 빗장이 걸려 있어요."
+      - effect: pulse
       - say:
           with: [덕만, 소원]
           wait: 850
