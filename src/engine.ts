@@ -3367,6 +3367,7 @@ function runToNextPause(loopGuard = 0) {
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = game.settings.textSpeed;
     const sayWaitMs = clampSayWaitMs(action.say.wait);
+    const unskippable = action.say.unskippable === true;
     const autoAdvanceMs = clampSayWaitMs(action.say.autoAdvance);
     if (autoAdvanceTimer) {
       window.clearTimeout(autoAdvanceTimer);
@@ -3413,6 +3414,7 @@ function runToNextPause(loopGuard = 0) {
       fullText: parsed.text,
       visibleText: '',
       typing: true,
+      unskippable,
       delivery,
       typingIntensity: 0,
       typingPulse: 0,
@@ -3427,8 +3429,8 @@ function runToNextPause(loopGuard = 0) {
     if (autoAdvanceMs > 0) {
       const expectedSceneId = state.currentSceneId;
       const expectedActionIndex = state.actionIndex;
-      autoAdvanceTimer = window.setTimeout(() => {
-        autoAdvanceTimer = undefined;
+      let autoAdvanceWaitingForTyping = false;
+      const finishAutoAdvance = () => {
         const current = useVNStore.getState();
         if (
           current.isFinished ||
@@ -3455,7 +3457,21 @@ function runToNextPause(loopGuard = 0) {
           .setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
         incrementCursor();
         runToNextPause();
+      };
+      autoAdvanceTimer = window.setTimeout(() => {
+        autoAdvanceTimer = undefined;
+        if (unskippable && useVNStore.getState().dialog.typing) {
+          autoAdvanceWaitingForTyping = true;
+          return;
+        }
+        finishAutoAdvance();
       }, Math.max(autoAdvanceMs, sayWaitMs));
+      typeDialog(parsed.text, textSpeed, parsed.segments, delivery, () => {
+        if (autoAdvanceWaitingForTyping) {
+          finishAutoAdvance();
+        }
+      });
+      return;
     }
     typeDialog(parsed.text, textSpeed, parsed.segments, delivery, () => undefined);
     return;
@@ -4171,6 +4187,9 @@ export function handleAdvance() {
 
   if (state.waitingInput) {
     if (state.inputGate.active || state.choiceGate.active) {
+      return;
+    }
+    if (state.dialog.typing && state.dialog.unskippable) {
       return;
     }
     if (state.dialog.typing && state.game.settings.clickToInstant) {

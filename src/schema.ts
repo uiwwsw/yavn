@@ -251,6 +251,7 @@ const actionBodySchema = z.union([
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
+      unskippable: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
     }),
   }),
