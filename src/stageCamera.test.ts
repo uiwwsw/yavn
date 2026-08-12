@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_STAGE_CAMERA,
   resolveCharacterCalibration,
+  resolveStageCameraFocusTargetId,
   resolveStageCameraPresentation,
   resolveStageCameraState,
 } from './stageCamera';
@@ -52,10 +53,11 @@ describe('stage camera', () => {
     );
     expect(medium).toMatchObject({
       scale: 1.38,
+      mobileScale: 1.38,
       panX: '0px',
       mobilePanX: '0px',
       originY: 23,
-      mobileOriginY: 92,
+      mobileOriginY: 80,
     });
 
     const close = resolveStageCameraPresentation(
@@ -93,13 +95,15 @@ describe('stage camera', () => {
 
     expect(close).toMatchObject({
       scale: 2.15,
+      mobileScale: 1.67,
       originY: 0,
-      mobileOriginY: 55,
+      mobileOriginY: 60,
       panY: '0px',
       mobilePanY: '0px',
     });
     expect(medium).toMatchObject({
       scale: 1.72,
+      mobileScale: 1.4,
       originY: 0,
       mobileOriginY: 55,
       panY: '0px',
@@ -117,7 +121,59 @@ describe('stage camera', () => {
       undefined,
       duoLayout,
     );
-    expect(duoMedium).toMatchObject({ scale: 1.58, mobileOriginY: 80, mobilePanY: '0px' });
+    expect(duoMedium).toMatchObject({
+      scale: 1.58,
+      mobileScale: 1.58,
+      mobileOriginY: 80,
+      mobilePanY: '0px',
+    });
+
+    const duoClose = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close', target: '칠숙' }),
+      2,
+      'center',
+      duoLayout,
+    );
+    expect(duoClose).toMatchObject({ scale: 2.15, mobileScale: 2.02, mobileOriginY: 80 });
+  });
+
+  it('falls back to a medium group composition when a close or reaction shot has no target', () => {
+    const untargetedClose = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close', target: 'group' }),
+      3,
+      undefined,
+      trioLayout,
+    );
+    const untargetedReaction = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'reaction', target: 'group' }),
+      1,
+      undefined,
+      {
+        mode: 'default',
+        duoSideByPosition: {},
+        characterIdByPosition: { center: '덕만' },
+      },
+    );
+
+    expect(untargetedClose).toMatchObject({
+      scale: 1.38,
+      mobileScale: 1.38,
+      mobileOriginY: 80,
+    });
+    expect(untargetedReaction).toMatchObject({
+      scale: 1.72,
+      mobileScale: 1.4,
+      mobileOriginY: 55,
+    });
+  });
+
+  it('does not carry a previous speaker focus into an untargeted narration line', () => {
+    const closeOnDeokman = resolveStageCameraState({ shot: 'close' }, '덕만');
+
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], undefined)).toBeUndefined();
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], '덕만')).toBe('덕만');
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], undefined, '덕만')).toBe('덕만');
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만', '칠숙'], '칠숙')).toBeUndefined();
   });
 
   it('keeps asset calibration separate from camera shot scale', () => {

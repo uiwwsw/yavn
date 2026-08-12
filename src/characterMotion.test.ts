@@ -67,7 +67,8 @@ describe('image character motion', () => {
     expect(appSource).toContain('className="char-camera-world"');
     expect(appSource).toContain('className="char-camera-pan"');
     expect(appSource).toContain('data-camera-shot={camera.shot}');
-    expect(styles).toContain('scale(var(--stage-camera-scale))');
+    expect(styles).toContain('scale(var(--stage-camera-render-scale))');
+    expect(styles).toContain('--stage-camera-render-scale: var(--stage-camera-scale-mobile)');
     expect(styles).toContain('transform-origin: 50% var(--stage-camera-render-origin-y);');
     expect(styles).toContain('translate3d(var(--stage-camera-render-pan-x), var(--stage-camera-render-pan-y), 0)');
     expect(styles).toMatch(/@media \(min-width: 769px\)[\s\S]*?\.char-layer:not\(\[data-camera-shot='wide'\]\) \.char-camera-world/);

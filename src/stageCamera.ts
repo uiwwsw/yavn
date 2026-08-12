@@ -34,6 +34,7 @@ const REACTION_SCALE_BY_CAST = [1.9, 1.9, 1.72, 1.55] as const;
 
 export type StageCameraPresentation = {
   scale: number;
+  mobileScale: number;
   originY: number;
   mobileOriginY: number;
   panX: string;
@@ -44,17 +45,28 @@ export type StageCameraPresentation = {
   transition: CameraTransition;
 };
 
+function resolveMobileShotScale(shot: CameraShot, visibleCharacterCount: number): number {
+  const castIndex = Math.max(1, Math.min(3, visibleCharacterCount));
+  if (shot === 'medium') {
+    return [1, 1.4, 1.58, 1.38][castIndex];
+  }
+  if (shot === 'close') {
+    return [1, 1.67, 2.02, 1.92][castIndex];
+  }
+  if (shot === 'reaction') {
+    return [1, 1.52, 1.83, 1.69][castIndex];
+  }
+  return 1;
+}
+
 function resolveMobileShotOriginY(shot: CameraShot, visibleCharacterCount: number): number {
   if (shot === 'wide') {
     return 50;
   }
   if (visibleCharacterCount <= 1) {
-    return 55;
+    return shot === 'close' ? 60 : 55;
   }
-  if (visibleCharacterCount === 2) {
-    return 80;
-  }
-  return 92;
+  return 80;
 }
 
 export function resolveCharacterCalibration(
@@ -66,6 +78,26 @@ export function resolveCharacterCalibration(
     y: calibration?.y ?? 0,
     spacing: calibration?.spacing ?? 1,
   };
+}
+
+export function resolveStageCameraFocusTargetId(
+  camera: StageCameraState,
+  visibleCharacterIds: readonly string[],
+  speakerId?: string,
+  directedTargetId?: string,
+): string | undefined {
+  const requestedTargetId = camera.target === 'group' ? undefined : camera.target;
+  const currentDialogTargetId = directedTargetId
+    ?? ((camera.shot === 'close' || camera.shot === 'reaction') ? speakerId : undefined);
+
+  if (
+    !currentDialogTargetId
+    || requestedTargetId !== currentDialogTargetId
+    || !visibleCharacterIds.includes(currentDialogTargetId)
+  ) {
+    return undefined;
+  }
+  return currentDialogTargetId;
 }
 
 export function resolveStageCameraState(
@@ -118,11 +150,15 @@ export function resolveStageCameraPresentation(
   const mobilePanX = hasCharacterTarget
     ? resolveMobileCameraPan(targetPosition, layout)
     : '0px';
+  const presentationShot = (camera.shot === 'close' || camera.shot === 'reaction') && !hasCharacterTarget
+    ? 'medium'
+    : camera.shot;
 
   return {
-    scale: resolveShotScale(camera.shot, visibleCharacterCount),
-    originY: camera.shot === 'wide' ? 50 : visibleCharacterCount <= 1 ? 0 : 23,
-    mobileOriginY: resolveMobileShotOriginY(camera.shot, visibleCharacterCount),
+    scale: resolveShotScale(presentationShot, visibleCharacterCount),
+    mobileScale: resolveMobileShotScale(presentationShot, visibleCharacterCount),
+    originY: presentationShot === 'wide' ? 50 : visibleCharacterCount <= 1 ? 0 : 23,
+    mobileOriginY: resolveMobileShotOriginY(presentationShot, visibleCharacterCount),
     panX,
     mobilePanX,
     panY: '0px',

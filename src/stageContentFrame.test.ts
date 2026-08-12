@@ -34,8 +34,9 @@ describe('responsive stage content frame', () => {
     expect(appSource).toContain(
       "'--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`",
     );
+    expect(appSource).toContain("'--stage-camera-scale-mobile': cameraPresentation.mobileScale");
     expect(styles).toMatch(
-      /@media \(max-width: 768px\)[\s\S]*?\.char-camera-world\s*\{[\s\S]*?--stage-camera-render-origin-y: var\(--stage-camera-origin-y-mobile\);/,
+      /@media \(max-width: 768px\)[\s\S]*?\.char-camera-world\s*\{[\s\S]*?--stage-camera-render-scale: var\(--stage-camera-scale-mobile\);[\s\S]*?--stage-camera-render-origin-y: var\(--stage-camera-origin-y-mobile\);/,
     );
   });
 

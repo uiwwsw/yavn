@@ -99,7 +99,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.2.3');
+    expect(config.version).toBe('5.2.4');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -455,6 +455,9 @@ describe('Deokman complete-game content', () => {
     const prologue = sceneActions('0.yaml', 'prologue_open');
     expect(say(prologue, '내일, 왕은 두 번째 잔').with).toEqual(['아진']);
     expect(say(prologue, '공주는 왕의 열두 걸음').with).toEqual(['칠숙']);
+    expect(say(prologue, '덕만은 기둥 뒤로 숨었습니다')).toMatchObject({ camera: 'wide', with: [] });
+    expect(cameraShot(say(prologue, '덕만은 숨을 죽였습니다').camera)).toBe('reaction');
+    expect(asRecord(say(prologue, '덕만은 숨을 죽였습니다').camera).target).toBe('덕만');
     expect(say(prologue, '덕만은 숨을 죽였습니다').with).toEqual(['덕만']);
     expect(asRecord(sceneActions('0.yaml', 'caught_choice')[0].choice).with).toEqual([]);
 
