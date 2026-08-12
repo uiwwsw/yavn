@@ -7,6 +7,7 @@ import {
   resolveMobileCharacterStageAnchor,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
+  resolveCharacterStageSpacing,
   resolveDialogueVisibleCharacterIds,
 } from './characterLayout';
 
@@ -150,13 +151,20 @@ describe('character stage layout', () => {
     ]);
 
     expect(resolveCharacterStagePlacement('left', trio, 0.9)).toEqual({
-      anchorX: 'calc(50cqw - min(22.5cqw, 288px))',
+      anchorX: 'calc(50cqw - min(22.5cqw, 234px))',
       offsetX: '-50%',
     });
     expect(resolveCharacterStagePlacement('right', trio, 1.15)).toEqual({
-      anchorX: 'calc(50cqw + min(28.75cqw, 368px))',
+      anchorX: 'calc(50cqw + min(28.75cqw, 299px))',
       offsetX: '-50%',
     });
+  });
+
+  it('uses one clamped average gap so mixed asset spacing cannot tilt an ensemble', () => {
+    expect(resolveCharacterStageSpacing([])).toBe(1);
+    expect(resolveCharacterStageSpacing([0.92])).toBe(1);
+    expect(resolveCharacterStageSpacing([0.92, 0.98])).toBeCloseTo(0.95);
+    expect(resolveCharacterStageSpacing([0.5, 1.5, 1])).toBe(1);
   });
 
   it('uses a wider capped gap for a desktop duo and centers every solo slot', () => {
@@ -165,7 +173,7 @@ describe('character stage layout', () => {
       { id: '진평왕', position: 'right' },
     ]);
     expect(resolveCharacterStagePlacement('center', duo)).toEqual({
-      anchorX: 'calc(50cqw - min(25cqw, 320px))',
+      anchorX: 'calc(50cqw - min(25cqw, 260px))',
       offsetX: '-50%',
     });
     expect(resolveCharacterStagePlacement('left', resolveCharacterStageLayout([

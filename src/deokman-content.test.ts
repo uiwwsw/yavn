@@ -109,7 +109,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.4.0');
+    expect(config.version).toBe('5.4.1');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -331,8 +331,8 @@ describe('Deokman complete-game content', () => {
 
     characters.forEach((character) => {
       const calibration = asRecord(character.calibration);
-      expect(Number(calibration.scale)).toBeGreaterThanOrEqual(0.5);
-      expect(Number(calibration.scale)).toBeLessThanOrEqual(2);
+      expect(Number(calibration.scale)).toBe(1);
+      expect(Number(calibration.y)).toBe(0);
       expect(Number(calibration.spacing)).toBeGreaterThanOrEqual(0.75);
       expect(Number(calibration.spacing)).toBeLessThanOrEqual(1.25);
       expect(character.defaultFraming).toBeUndefined();
