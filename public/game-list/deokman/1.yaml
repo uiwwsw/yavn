@@ -29,7 +29,7 @@ scenes:
           text: "그리고 죽은 사람의 품에서는 덕만이 잃어버린 노리개가 나왔습니다."
       - say:
           with: [덕만]
-          text: "암살을 막은 공주가 하룻밤 사이 암살을 꾸민 사람으로 바뀐 것입니다."
+          text: "아침이 되자, 사람들은 덕만을 암살범이라 불렀습니다."
       - char:
           id: 칠숙
           position: center
@@ -97,9 +97,6 @@ scenes:
           id: 소원
           position: right
       - say:
-          with: [덕만, 소원]
-          text: "[시녀] 소원. 덕만의 옷과 방을 맡았고, 주인보다 오래 덕만의 버릇을 본 친구였습니다."
-      - say:
           char: 소원
           camera: medium
           with: [덕만]
@@ -140,9 +137,6 @@ scenes:
       - char:
           id: 비담
           position: right
-      - say:
-          with: [덕만, 비담]
-          text: "[왕족] 비담. 어느 편에도 이름을 올리지 않은 채, 잠긴 문과 감춘 소문을 좇는 사람이었습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -616,7 +610,7 @@ scenes:
           position: left
       - say:
           with: [진평왕, 덕만]
-          text: "덕만은 붙잡힌 하인과 검은 가루를 아버지 앞에만 내놓았습니다. 결백을 먼저 되찾는 길이었습니다."
+          text: "덕만은 붙잡힌 하인과 검은 가루를 아버지 앞에 내놓았습니다. 진평왕은 곧 문을 걸어 잠갔습니다."
       - say:
           char: 진평왕.sad
           camera: close

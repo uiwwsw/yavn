@@ -1115,7 +1115,6 @@ textarea,
   pointer-events: none;
   isolation: isolate;
   contain: layout paint;
-  transition: bottom 240ms cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
   overflow: clip;
 }

@@ -11,6 +11,10 @@ const chapters = ['0.yaml', '1.yaml', '2.yaml', '3.yaml', '4.yaml', '5.yaml', '6
 const asRecord = (value: unknown): UnknownRecord =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? (value as UnknownRecord) : {};
 const readYaml = (path: string): UnknownRecord => load(readFileSync(`${gameRoot}${path}`, 'utf8')) as UnknownRecord;
+const cameraShot = (value: unknown): string => {
+  if (typeof value === 'string') return value;
+  return String(asRecord(value).shot ?? '');
+};
 
 const collectKey = (value: unknown, key: string, result: unknown[] = []): unknown[] => {
   if (Array.isArray(value)) {
@@ -84,8 +88,8 @@ describe('Deokman complete-game content', () => {
     const finalChapter = readFileSync(`${gameRoot}7.yaml`, 'utf8');
     expect(coronationChapter).toContain('<speed=17>여왕이 아니다.</speed>');
     expect(coronationChapter).toContain('<speed=18>신라의 왕이다.</speed>');
-    expect(finalChapter).toContain('왕관에는 주인이 없었습니다');
-    expect(finalChapter).toContain('다음 아침을 지킬 사람만 있었습니다');
+    expect(finalChapter).toContain('유신은 성문을 열고 죽은 군사들을 거두었습니다');
+    expect(finalChapter).toContain('왕좌 곁에는 세 마을의 낡은 청원이 남아 있었습니다');
     expect(collectKey(readYaml('7.yaml'), 'ending')).toHaveLength(10);
   });
 
@@ -95,7 +99,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.1.0');
+    expect(config.version).toBe('5.2.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -109,7 +113,7 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('칼보다 비단이 보기 좋지요');
     expect(allContent).toContain('양보는 살아서 거절하세요');
     expect(allContent).toContain('또 신라가 먼저군요');
-    expect(allContent).toContain('이번에는 제가 먼저 골랐습니다');
+    expect(allContent).toContain('이번엔 제가 먼저 등을 돌렸습니다');
     expect(allContent).not.toContain('저는 여자가 왕이 되는 꼴을 보고 싶지 않습니다');
     expect(allContent).not.toContain('공주만 조용히 사라지면 저는 원하는 남자 왕을 세울 수 있습니다');
     expect(allContent).not.toContain('참으로 고결하십니다');
@@ -212,7 +216,7 @@ describe('Deokman complete-game content', () => {
       .map((entry) => String(entry.text).replace(/<[^>]+>/g, ''));
 
     expect(narratorLines.filter((line) => Array.from(line).length <= 20).length).toBeGreaterThanOrEqual(50);
-    expect(narratorLines.filter((line) => Array.from(line).length >= 40).length).toBeGreaterThanOrEqual(20);
+    expect(narratorLines.filter((line) => Array.from(line).length >= 40).length).toBeGreaterThanOrEqual(15);
     narratorLines.forEach((line) => {
       expect(Array.from(line).length, line).toBeLessThanOrEqual(60);
       expect((line.match(/[.!?]/g) ?? []).length, line).toBeLessThanOrEqual(2);
@@ -221,7 +225,7 @@ describe('Deokman complete-game content', () => {
 
     expect(narratorLines).toContain('등불 하나가 꺼졌습니다.');
     expect(narratorLines).toContain('그다음 불도 꺼졌습니다.');
-    expect(narratorLines).toContain('남자만 왕이던 신라에서, 그 사실은 나라의 다음 주인을 둘러싼 싸움이 되었습니다.');
+    expect(narratorLines).toContain('신라의 왕좌에는 아직 여자 이름이 오른 적이 없었습니다.');
   });
 
   it('uses the historically attested Chilsuk instead of a fictional chief noble', () => {
@@ -234,31 +238,31 @@ describe('Deokman complete-game content', () => {
     expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-silla-v5.webp');
     expect(allContent).toContain('칠숙');
     expect(allContent).not.toContain('국산');
-    expect(allContent).toContain('[이찬] 칠숙');
+    expect(allContent).toContain('칠숙은 굶주린 사람들의 글보다 먼저');
+    expect(allContent).not.toContain('[이찬] 칠숙');
   });
 
-  it('introduces every principal character, title, and relationship before the plot depends on them', () => {
+  it('lets relationships emerge through action and explains titles only when the scene needs them', () => {
     const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
-    const introductions = [
-      '이 게임은 대화를 읽고 덕만의 행동을 고르는 역사 비주얼노벨입니다',
-      '당신은 훗날 선덕여왕이 되는 덕만의 선택을 맡습니다',
-      '[왕] 진평왕. 신라의 왕이자 두 공주의 아버지',
-      '[공주] 덕만. 아직 누구도 다음 왕이라 부르지 않는 왕의 둘째 딸',
-      '[이찬] 칠숙. 높은 귀족들의 앞자리에 서서 덕만의 이름을 지우려는 사람',
-      '[공주] 천명. 덕만의 언니',
-      '[호위장] 김유신. 덕만의 곁에서 위험을 숫자로 재는 젊은 장수',
-      '[무사] 아진. 칠숙의 명령을 받아 움직이는 칼',
-      '[시녀] 소원. 덕만의 옷과 방을 맡았고',
-      '[왕족] 비담. 어느 편에도 이름을 올리지 않은 채',
-      '[왕족] 진운. 세 가문이 다음 왕으로 밀어 올리는 젊은 남자',
-      '[왕실 치료자] 월명. 약을 짓고 별의 움직임을 해석하는 사람',
+    const relationshipBeats = [
+      '둘 다 내 딸이다',
+      '언니는 참을 수 있어',
+      '칠숙공입니다. 왕의 곁을 비우지 마십시오',
+      '죽입니까?',
+      '내 옷은 눈 감고도 묶지',
+      '잠긴 문을 별로 안 좋아해서요',
+      '왕의 먼 친척, 진운입니다',
+      '별 그림과 빈 약봉지를 가져왔습니다',
       '화백은 높은 귀족들이 나라의 큰일을 함께 정하는 자리',
-      '공주 덕만은 이제 선덕왕이라 불렸습니다',
-      '[상대등] 비담. 그날 그는 귀족 회의를 이끄는 자리',
+      '632년 정월. 덕만은 선덕왕이 되었습니다',
+      '그날 비담은 귀족 회의를 이끄는 상대등이 되었습니다',
     ];
 
-    introductions.forEach((introduction) => expect(allContent).toContain(introduction));
-    expect(allContent).toContain('남자만 왕이던 신라에서');
+    relationshipBeats.forEach((beat) => expect(allContent).toContain(beat));
+    expect(allContent).not.toMatch(/\[(?:왕|공주|이찬|호위장|무사|시녀|왕족|왕실 치료자|상대등)\]/);
+    expect(allContent).not.toContain('이 게임은 대화를');
+    expect(allContent).not.toContain('당신은 훗날');
+    expect(allContent).not.toContain('오늘의 선택은');
   });
 
   it('turns every persistent relationship and clue into a later visible consequence', () => {
@@ -273,7 +277,7 @@ describe('Deokman complete-game content', () => {
       '거래 장부의 사본이 아니라 원본',
       '저도 공주의 귀환을 믿었습니다',
       '세 봉인의 흠집이 모두 같습니다',
-      '이번 선택은 누구도 시키지 않았습니다',
+      '이번 표는 제 뜻입니다',
       '아직 공주를 믿는 건 아닙니다',
       '깨진 도장 두 조각',
       '비담님이 보낸 마지막 암호',
@@ -318,12 +322,13 @@ describe('Deokman complete-game content', () => {
     expect(characterPlacements.length).toBeGreaterThanOrEqual(329);
     characterPlacements.forEach((placement) => expect(placement.framing).toBeUndefined());
     expect(speakerLines.length).toBeGreaterThanOrEqual(821);
-    speakerLines.forEach((say) => expect(['wide', 'medium', 'close']).toContain(say.camera));
-    expect(new Set(speakerLines.map((say) => say.camera))).toEqual(new Set(['wide', 'medium', 'close']));
+    speakerLines.forEach((say) => expect(['wide', 'medium', 'close']).toContain(cameraShot(say.camera)));
+    expect(new Set(speakerLines.map((say) => cameraShot(say.camera)))).toEqual(new Set(['wide', 'medium', 'close']));
     speakerLines.forEach((say) => {
       const companions = Array.isArray(say.with) ? say.with : [];
-      if (companions.length >= 2) expect(say.camera).toBe('wide');
-      if (say.camera === 'medium' || say.camera === 'close') expect(companions.length).toBeLessThanOrEqual(1);
+      const shot = cameraShot(say.camera);
+      if (companions.length >= 2) expect(shot).toBe('wide');
+      if (shot === 'medium' || shot === 'close') expect(companions.length).toBeLessThanOrEqual(1);
     });
     choices.forEach((choice) => {
       expect(choice.camera).toBe('close');
@@ -350,6 +355,28 @@ describe('Deokman complete-game content', () => {
         .map((id) => id.split('.')[0]);
       expect(speakerIds.every((id) => placedIds.has(id))).toBe(true);
     });
+  });
+
+  it('holds Deokman in place during the coronation declaration', () => {
+    const scenes = asRecord(readYaml('6.yaml').scenes);
+    const actions = Array.isArray(asRecord(scenes.coronation_finish).actions)
+      ? (asRecord(scenes.coronation_finish).actions as unknown[]).map(asRecord)
+      : [];
+    const declarationIndex = actions.findIndex((action) =>
+      String(asRecord(action.say).text).includes('여왕이 아니다'),
+    );
+    const latestPlacement = actions
+      .slice(0, declarationIndex)
+      .map((action) => asRecord(action.char))
+      .filter((placement) => placement.id === '덕만')
+      .at(-1);
+    const declaration = asRecord(actions[declarationIndex]?.say);
+    const camera = asRecord(declaration.camera);
+
+    expect(latestPlacement?.position).toBe('left');
+    expect(actions.slice(Math.max(0, declarationIndex - 2), declarationIndex)
+      .some((action) => asRecord(action.char).id === '덕만')).toBe(false);
+    expect(camera).toMatchObject({ shot: 'close', target: 'speaker', transition: 'cut' });
   });
 
   it('dramatizes every failed choice before showing its game-over result', () => {
@@ -408,7 +435,7 @@ describe('Deokman complete-game content', () => {
     const prologue = sceneActions('0.yaml', 'prologue_open');
     expect(say(prologue, '내일, 왕은 두 번째 잔').with).toEqual(['아진']);
     expect(say(prologue, '공주는 왕의 열두 걸음').with).toEqual(['칠숙']);
-    expect(say(prologue, '덕만의 숨이 멎었습니다').with).toEqual(['덕만']);
+    expect(say(prologue, '덕만은 숨을 죽였습니다').with).toEqual(['덕만']);
     expect(asRecord(sceneActions('0.yaml', 'caught_choice')[0].choice).with).toEqual([]);
 
     const lockedRoom = sceneActions('2.yaml', 'chapter2_end');
@@ -487,7 +514,7 @@ describe('Deokman complete-game content', () => {
       ['6.yaml', 'seal_found', 'c6_seal', '오늘은 먼저 살아남고요'],
       ['7.yaml', 'final_open', 'final_opening', '왕이 된 뒤 첫걸음'],
       ['7.yaml', 'proof_choice', 'final_proof', '왕의 손은 하나뿐'],
-      ['7.yaml', 'crown_choice_report', 'final_crown', '다음 왕도 정해야'],
+      ['7.yaml', 'crown_choice_report', 'final_crown', '승만공주께 보낼 문서도 필요'],
     ] as const;
 
     expect(contexts).toHaveLength(24);

@@ -90,7 +90,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [천명]
-          text: "다들 목숨으로 길을 놓았네요."
+          text: "다들 목숨 걸고 절 들여보냈군요."
       - say:
           char: 천명.sad
           camera: close
@@ -778,7 +778,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: []
-          text: "제 이름으로 살아 볼게요."
+          text: "이제 아버지 뒤에 숨지 않을게요."
       - add: { legitimacy: 1 }
       - bg: throne_hall
       - camera: wide
@@ -796,7 +796,7 @@ scenes:
           text: "화백은 높은 귀족들이 나라의 큰일을 함께 정하는 자리였습니다."
       - say:
           with: [덕만, 칠숙]
-          text: "그들의 표가 없으면 덕만에게 왕관은 오지 않았습니다."
+          text: "덕만에게는 귀족들의 표가 필요했습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -893,7 +893,7 @@ scenes:
           char: 진운
           camera: close
           with: [덕만]
-          text: "이번 선택은 누구도 시키지 않았습니다."
+          text: "이번 표는 제 뜻입니다."
       - say:
           char: 진운
           camera: close
@@ -962,7 +962,7 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "필요합니다. 두려워만 않겠습니다."
+          text: "없앨 생각 없습니다. 겁내진 않겠습니다."
       - say:
           with: [덕만, 칠숙]
           text: "칠숙은 이찬의 관모와 칼을 빼앗긴 채 화백 밖으로 끌려갔습니다."
@@ -984,12 +984,12 @@ scenes:
           camera: wide
           with: [덕만]
           text: "길을 여세요! 새 왕께서 나가십니다!"
-      - char:
-          id: 덕만
-          position: center
       - say:
           char: 덕만
-          camera: close
+          camera:
+            shot: close
+            target: speaker
+            transition: cut
           with: []
           text: "<speed=17>여왕이 아니다.</speed>"
       - say:
@@ -1002,7 +1002,7 @@ scenes:
           text: "632년 정월. 덕만은 선덕왕이 되었습니다."
       - say:
           char: 덕만
-          camera: medium
+          camera: close
           with: []
           text: "첫 명령을 내리겠습니다."
       - say:

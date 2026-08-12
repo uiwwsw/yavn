@@ -2382,7 +2382,7 @@ export default function App() {
       observer.disconnect();
       window.removeEventListener('resize', updateStickerSafeInset);
     };
-  }, [bootMode, choiceGate.active, dialog.visibleText, inputGate.active, isDialogHidden, updateStickerSafeInset]);
+  }, [bootMode, choiceGate.active, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
   const hasFocusedSpeaker = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
 
@@ -3201,7 +3201,6 @@ export default function App() {
         data-character-layout={characterStageLayout.mode}
         data-character-count={visibleCharacterCount}
         data-camera-shot={camera.shot}
-        style={{ bottom: `${stickerSafeInset}px` }}
       >
         <div
           className="char-camera-world"
