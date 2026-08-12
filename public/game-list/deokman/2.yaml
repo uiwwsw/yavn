@@ -22,15 +22,6 @@ scenes:
           with: [덕만]
           text: "덕만의 누명은 벗겨졌지만, 이번에는 청혼서 세 장이 그 앞에 놓였습니다."
       - say:
-          with: [덕만, 칠숙]
-          text: "신랑은 셋. 조건은 하나였습니다."
-      - say:
-          with: [덕만, 칠숙]
-          text: "암살 누명으로 덕만을 꺾지 못한 귀족들이 이번에는 혼인으로 정치에서 밀어내려 한 것입니다."
-      - say:
-          with: [덕만, 칠숙]
-          text: "세 청혼서에는 남편이 덕만을 대신해 말한다는 조항이 적혀 있었습니다."
-      - say:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
@@ -53,9 +44,6 @@ scenes:
       - char:
           id: 진운
           position: right
-      - say:
-          with: [덕만, 진운]
-          text: "[왕족] 진운. 세 가문이 다음 왕으로 밀어 올리는 젊은 남자였습니다."
       - say:
           with: [진운]
           text: "진운은 준비된 청혼서를 펴면서도 덕만의 눈을 보지 못했습니다."
@@ -178,7 +166,7 @@ scenes:
           text: "비담은 거래 장부의 사본이 아니라 원본을 내밀었습니다."
       - say:
           with: [덕만, 비담]
-          text: "기록 창고에서 덕만이 등을 보인 일을 기억한 답이었습니다."
+          text: "비담은 사본을 품에 도로 넣었습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -354,11 +342,8 @@ scenes:
           id: 월명
           position: right
       - say:
-          with: [덕만, 월명]
-          text: "[왕실 치료자] 월명. 약을 짓고 별의 움직임을 해석하는 사람이었습니다."
-      - say:
           with: [월명]
-          text: "귀족들은 월명의 해석을 하늘의 뜻처럼 들었습니다."
+          text: "월명이 별을 읽으면 귀족들은 입을 다물었습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -589,7 +574,7 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "안 오겠죠. 그래서 고른 답입니다."
+          text: "안 오겠죠. 그러니 혼인도 없어요."
       - say:
           char: 칠숙.smile
           camera: medium

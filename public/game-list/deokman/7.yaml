@@ -21,11 +21,7 @@ scenes:
           with:
             - 덕만
           delivery: calm
-          text: "공주 덕만은 이제 선덕왕이라 불렸습니다. 신라에서 처음으로 왕이 된 여자였습니다."
-      - say:
-          with:
-            - 덕만
-          text: "왕관을 쓰는 데는 성공했지만, 사람들이 여자의 명령을 왕명으로 받아들일지는 아직 증명되지 않았습니다."
+          text: "궁문 밖에서는 새 왕의 이름보다 곡식을 달라는 외침이 더 컸습니다."
       - char:
           id: 소원
           position: left
@@ -106,13 +102,13 @@ scenes:
           camera: close
           with:
             - 덕만
-          text: "무엇을 먼저 하든, 다른 쪽은 기다립니다."
+          text: "군사를 돌리면 창고를 여는 일이 늦습니다."
       - say:
           char: 덕만
           camera: close
           with:
             - 유신
-          text: "그 기다림까지 제 명령이겠죠."
+          text: "늦어지는 쪽도 제가 책임져요."
       - branch:
           cases:
             - when:
@@ -711,51 +707,51 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "백성은 돌보다 곡식을 원합니다."
+          text: "성 밖 아이들은 탑 그림자도 못 먹습니다."
       - say:
           char: 덕만
           camera: medium
           with:
             - 비담
-          text: "탑이 전쟁을 막진 못해요."
+          text: "알아요. 탑이 배를 채우진 않죠."
       - say:
           char: 덕만.sad
           camera: close
           with:
             - 비담
-          text: "무너진 마음을 붙들 뿐이지."
+          text: "그래도 겁먹은 채 살게 둘 순 없어."
       - say:
           char: 비담.sad
           camera: close
           with:
             - 덕만
-          text: "전하는 늘 둘 다 필요하다 하십니다."
+          text: "곡식도 주고 용기도 주시겠다?"
       - say:
           char: 비담.sad
           camera: close
           with:
             - 덕만
-          text: "하나를 버리는 건 늘 제 몫이고요."
+          text: "그 사이 빈손은 늘 접니다."
       - say:
           char: 덕만.sad
           camera: close
           with:
             - 비담
-          text: "비담. 난 그대를 버린 적 없어요."
+          text: "비담. 원하는 게 뭐예요?"
       - say:
           char: 비담
           camera: medium
           with:
             - 덕만
-          text: "왕은 사람보다 나라를 먼저 고릅니다."
+          text: "그 질문을 십 년 전에 하셨어야죠."
       - say:
           char: 비담
           camera: close
           with:
             - 덕만
-          text: "이제 그 선택은 제가 하겠습니다."
+          text: "이제 제 답은 제가 정하겠습니다."
       - say:
-          text: "[상대등] 비담. 그날 그는 귀족 회의를 이끄는 자리에 올랐습니다."
+          text: "그날 비담은 귀족 회의를 이끄는 상대등이 되었습니다."
       - goto: crown_assessment
 
   crown_assessment:
@@ -765,19 +761,16 @@ scenes:
       - effect: crown
       - say:
           delivery: calm
-          text: "사람들은 탑보다 먼저 전쟁 소식을 올려다봤습니다."
-      - say:
-          delivery: calm
           text: "그로부터 두 해 뒤, 647년 정월."
       - say:
           delivery: calm
-          text: "열여섯 해 동안 왕이었던 선덕왕은 오래 앓고 있었습니다."
+          text: "오래 앓던 선덕왕은 침상에서 반란의 북소리를 들었습니다."
       - say:
           delivery: calm
           text: "비담은 ‘여왕이 나라를 어지럽혔다’며 명활성에 군사를 모았습니다."
       - say:
           delivery: calm
-          text: "왕을 만드는 데 함께했던 사람이, 왕의 마지막 적으로 돌아왔습니다."
+          text: "왕궁과 명활성 사이의 문이 모두 닫혔습니다."
       - branch:
           cases:
             - when:
@@ -883,13 +876,13 @@ scenes:
           camera: close
           with: []
           delivery: whisper
-          text: "전하께선 늘 나라를 먼저 고르셨지요."
+          text: "전하께선 저를 찾을 때가 늘 늦었지요."
       - say:
           char: 비담.sad
           camera: close
           with: []
           delivery: whisper
-          text: "<speed=18>이번에는 제가 먼저 골랐습니다.</speed>"
+          text: "<speed=18>이번엔 제가 먼저 등을 돌렸습니다.</speed>"
       - branch:
           cases:
             - when:
@@ -1116,24 +1109,24 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "다음 왕도 정해야 합니다."
+          text: "승만공주께 보낼 문서도 필요합니다."
       - say:
           char: 덕만
           camera: close
           with: []
-          text: "왕의 마지막 선택이군."
+          text: "죽기 전에 할 일이 많군."
       - say:
           char: 진운
           camera: medium
           with:
             - 덕만
-          text: "성문과 다음 왕, 둘 다 아침을 못 기다립니다."
+          text: "전하. 하나씩 하십시오."
       - say:
           char: 덕만.sad
           camera: close
           with:
             - 진운
-          text: "이번에는 내가 못 보는 아침을 고르는군."
+          text: "그래. 마지막도 서두르진 말자."
       - choice:
           key: final_crown
           prompt: "무엇을 남길까?"
@@ -1466,7 +1459,7 @@ scenes:
           camera: close
           with:
             - 유신
-          text: "<speed=18>내가 못 보는 아침을 부탁합니다.</speed>"
+          text: "<speed=18>승만과 성문을 부탁합니다.</speed>"
           wait: 900
       - say:
           with:
@@ -1480,11 +1473,11 @@ scenes:
       - say:
           with: []
           delivery: calm
-          text: "왕관에는 주인이 없었습니다."
+          text: "유신은 성문을 열고 죽은 군사들을 거두었습니다."
       - say:
           with: []
           delivery: calm
-          text: "다음 아침을 지킬 사람만 있었습니다."
+          text: "왕좌 곁에는 세 마을의 낡은 청원이 남아 있었습니다."
           wait: 1200
       - ending: true_end
 
@@ -1554,7 +1547,7 @@ scenes:
             - 덕만
           text: "이 글을 만든 사람들이겠지요."
       - say:
-          text: "신라는 왕을 얻고, 왕은 선택할 권리를 잃었습니다."
+          text: "그 뒤 덕만의 명령은 귀족들의 허락을 받아야 움직였습니다."
       - ending: permitted_queen
 
   ending_queen_consort:
@@ -1574,7 +1567,7 @@ scenes:
           camera: medium
           with:
             - 덕만
-          text: "이 선택이 전하의 뜻입니까?"
+          text: "정말 저를 세우시겠습니까?"
       - say:
           char: 덕만.sad
           camera: close
@@ -1622,7 +1615,7 @@ scenes:
             - 덕만
           text: "그 하루는 제가 기록하겠습니다."
       - say:
-          text: "왕관은 비었지만 성문의 칼은 내려갔습니다."
+          text: "하루 동안 왕좌는 비었고, 성문 앞 군사들은 칼을 거뒀습니다."
       - ending: abdicated_crown
 
   ending_people:
