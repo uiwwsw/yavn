@@ -95,7 +95,7 @@ describe('Deokman complete-game content', () => {
     const documents = chapters.map(readYaml);
     const waits = documents.flatMap((document) => collectKey(document, 'wait'));
 
-    expect(config.version).toBe('5.0.0');
+    expect(config.version).toBe('5.1.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(10);
     expect(allContent).toContain('내 딸은 왕이 될 수 있다');
@@ -205,6 +205,25 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('내일도 같이 틀려 주세요');
   });
 
+  it('gives narrator boxes one readable breath while varying short beats and fuller context', () => {
+    const narratorLines = chapters.flatMap((path) => collectKey(readYaml(path), 'say'))
+      .map(asRecord)
+      .filter((entry) => typeof entry.text === 'string' && entry.char === undefined)
+      .map((entry) => String(entry.text).replace(/<[^>]+>/g, ''));
+
+    expect(narratorLines.filter((line) => Array.from(line).length <= 20).length).toBeGreaterThanOrEqual(50);
+    expect(narratorLines.filter((line) => Array.from(line).length >= 40).length).toBeGreaterThanOrEqual(20);
+    narratorLines.forEach((line) => {
+      expect(Array.from(line).length, line).toBeLessThanOrEqual(60);
+      expect((line.match(/[.!?]/g) ?? []).length, line).toBeLessThanOrEqual(2);
+      expect(line, line).not.toMatch(/하면.+하면|고르면.+고르면/);
+    });
+
+    expect(narratorLines).toContain('등불 하나가 꺼졌습니다.');
+    expect(narratorLines).toContain('그다음 불도 꺼졌습니다.');
+    expect(narratorLines).toContain('남자만 왕이던 신라에서, 그 사실은 나라의 다음 주인을 둘러싼 싸움이 되었습니다.');
+  });
+
   it('uses the historically attested Chilsuk instead of a fictional chief noble', () => {
     const base = readYaml('base.yaml');
     const characters = asRecord(asRecord(base.assets).characters);
@@ -215,27 +234,31 @@ describe('Deokman complete-game content', () => {
     expect(asRecord(characters.칠숙).base).toBe('assets/char/chilsuk-silla-v5.webp');
     expect(allContent).toContain('칠숙');
     expect(allContent).not.toContain('국산');
-    expect(allContent).toContain('이찬 칠숙');
+    expect(allContent).toContain('[이찬] 칠숙');
   });
 
   it('introduces every principal character, title, and relationship before the plot depends on them', () => {
     const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
     const introductions = [
-      '훗날 선덕여왕이라 불릴 덕만',
-      '이찬 칠숙은 신라에서 둘째로 높은 관등',
-      '천명은 덕만의 언니',
-      '젊은 장수 김유신',
-      '명령을 따르는 무사 아진',
-      '소원은 덕만의 옷과 방을 맡는 시녀',
-      '비담은 왕족이면서도 어느 편의 이름에도 들지 않았습니다',
-      '진운은 왕의 먼 친척',
-      '월명은 별의 움직임과 왕실 약방',
+      '이 게임은 대화를 읽고 덕만의 행동을 고르는 역사 비주얼노벨입니다',
+      '당신은 훗날 선덕여왕이 되는 덕만의 선택을 맡습니다',
+      '[왕] 진평왕. 신라의 왕이자 두 공주의 아버지',
+      '[공주] 덕만. 아직 누구도 다음 왕이라 부르지 않는 왕의 둘째 딸',
+      '[이찬] 칠숙. 높은 귀족들의 앞자리에 서서 덕만의 이름을 지우려는 사람',
+      '[공주] 천명. 덕만의 언니',
+      '[호위장] 김유신. 덕만의 곁에서 위험을 숫자로 재는 젊은 장수',
+      '[무사] 아진. 칠숙의 명령을 받아 움직이는 칼',
+      '[시녀] 소원. 덕만의 옷과 방을 맡았고',
+      '[왕족] 비담. 어느 편에도 이름을 올리지 않은 채',
+      '[왕족] 진운. 세 가문이 다음 왕으로 밀어 올리는 젊은 남자',
+      '[왕실 치료자] 월명. 약을 짓고 별의 움직임을 해석하는 사람',
       '화백은 높은 귀족들이 나라의 큰일을 함께 정하는 자리',
       '공주 덕만은 이제 선덕왕이라 불렸습니다',
+      '[상대등] 비담. 그날 그는 귀족 회의를 이끄는 자리',
     ];
 
     introductions.forEach((introduction) => expect(allContent).toContain(introduction));
-    expect(allContent).toContain('왕의 딸에게 왕좌를 내줄 생각이 없었습니다');
+    expect(allContent).toContain('남자만 왕이던 신라에서');
   });
 
   it('turns every persistent relationship and clue into a later visible consequence', () => {
@@ -247,7 +270,7 @@ describe('Deokman complete-game content', () => {
       '언니에게 말하길 잘했네요',
       '명단을 맡기길 잘했어요',
       '이것도 같은 손이 묶었어요',
-      '사본이 아니라 원본 한 장',
+      '거래 장부의 사본이 아니라 원본',
       '저도 공주의 귀환을 믿었습니다',
       '세 봉인의 흠집이 모두 같습니다',
       '이번 선택은 누구도 시키지 않았습니다',
@@ -523,11 +546,10 @@ describe('Deokman complete-game content', () => {
       ['3.yaml', 'chapter3_open', '덕만이 문을 부수자 남자가 쓰러졌습니다'],
       ['4.yaml', 'chapter4_open', '빈 그릇을 든 아이가 성문 앞에 쓰러졌습니다'],
       ['5.yaml', 'chapter5_open', '왕자가 아닙니다'],
-      ['6.yaml', 'chapter6_open', '모든 궁문에 체포령이 붙었습니다'],
+      ['6.yaml', 'chapter6_open', '모든 궁문에 덕만의 체포령이 붙었습니다'],
       ['7.yaml', 'final_open', '곡식이 끊겼답니다'],
     ] as const;
     const forbiddenSummaries = [
-      '진평왕에게는 아들이 없었습니다',
       '덕만에게 남은 사람은 많지 않았습니다',
       '덕만은 사흘 동안 세 혼담의 당사자들을 차례로 만났습니다',
       '죽은 사람은 혼인 합의서를 덕만에게 넘긴 귀족이었습니다',
@@ -557,31 +579,37 @@ describe('Deokman complete-game content', () => {
 
   it('anchors elapsed time with restrained narrator bridges and no impossible deadlines', () => {
     const timelineAnchors = {
-      '0.yaml': ['진평왕 53년, 봄', '그날 밤', '다음 날 아침'],
-      '1.yaml': ['연회 다음 날', '첫날 저녁', '사흘째 새벽', '사흘째 밤'],
-      '2.yaml': ['누명을 벗은 다음 날', '그날 낮', '해 질 무렵', '혼담을 물리친 그날 밤'],
-      '3.yaml': ['같은 밤', '새벽 직전', '동틀 무렵', '아침'],
-      '4.yaml': ['열이틀 뒤', '이튿날 저녁', '다음 날', '며칠 뒤'],
-      '5.yaml': ['돌아온 지 사흘째', '회의가 멈춘 사이', '해 진 뒤', '그날 밤'],
-      '6.yaml': ['같은 밤', '궁 안에 들자', '새벽 직전', '아침'],
-      '7.yaml': ['632년', '이듬해 봄', '10년 뒤, 642년', '645년', '647년 정월'],
+      '0.yaml': ['서기 631년 늦봄', '631년 늦봄, 같은 날 밤', '이튿날 아침'],
+      '1.yaml': ['연회 다음 날 아침', '첫째 날 · 해 질 무렵', '사흘째 · 새벽', '사흘째 · 밤'],
+      '2.yaml': ['석 달 뒤, 631년 늦여름', '그날 · 한낮', '그날 · 해 질 무렵', '같은 날 · 밤이 깊은 뒤'],
+      '3.yaml': ['631년 늦여름, 같은 날 밤', '이튿날 · 새벽 직전', '동틀 무렵', '이튿날 아침'],
+      '4.yaml': ['두 달 뒤, 631년 가을', '수도를 떠난 지 열이틀째', '도착 이튿날 · 해 질 무렵', '전투 다음 날 · 한낮', '나흘 뒤'],
+      '5.yaml': ['두 달 뒤, 631년 겨울', '수도로 돌아온 지 사흘째', '그날 · 해가 진 뒤', '그날 밤'],
+      '6.yaml': ['같은 밤, 631년 겨울', '날이 바뀌기 직전', '632년 정월 · 아침', '632년 정월. 덕만은 선덕왕'],
+      '7.yaml': ['632년 정월 · 왕이 된 지 사흘째', '633년 봄 · 왕이 된 지 한 해', '아홉 번의 봄과 겨울', '642년 가을 · 왕이 된 지 11년째', '그로부터 세 해 뒤, 645년', '그로부터 두 해 뒤, 647년 정월'],
     } as const;
 
-    expect(Object.values(timelineAnchors).flat()).toHaveLength(32);
+    expect(Object.values(timelineAnchors).flat()).toHaveLength(34);
     Object.entries(timelineAnchors).forEach(([path, anchors]) => {
+      const rawText = readFileSync(`${gameRoot}${path}`, 'utf8');
       const narratorLines = collectKey(readYaml(path), 'say')
         .map(asRecord)
         .filter((say) => typeof say.text === 'string' && say.char === undefined);
+      let previousIndex = -1;
       anchors.forEach((anchor) => {
         const line = narratorLines.find((say) => String(say.text).includes(anchor));
         expect(line, `${path}: ${anchor}`).toBeDefined();
+        const currentIndex = rawText.indexOf(anchor);
+        expect(currentIndex, `${path}: ${anchor}`).toBeGreaterThan(previousIndex);
+        previousIndex = currentIndex;
       });
     });
 
     const fullText = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
     expect(fullText).not.toContain('사흘이면 됩니다');
     expect(fullText).not.toContain('전투가 끝난 저녁');
-    expect(fullText).toContain('10년 뒤, 642년');
+    expect(fullText).not.toContain('10년 뒤, 642년');
+    expect(fullText).toContain('아홉 번의 봄과 겨울이 지나갔습니다');
     expect(fullText).toContain('647년 정월');
   });
 

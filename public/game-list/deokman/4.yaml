@@ -16,11 +16,14 @@ scenes:
       - say:
           text: "제4장 — 빈 그릇의 성"
       - say:
+          delivery: calm
+          text: "두 달 뒤, 631년 가을."
+      - say:
           with: [덕만, 칠숙]
-          text: "덕만은 잠긴 방의 살인 누명까지 벗었지만, 귀족들이 남자 왕족을 세우려 했다는 약속문을 손에 넣었습니다."
+          text: "덕만은 남자 왕족을 세우려 한 약속문을 내놓았지만, 이름이 적힌 귀족들은 모두 입을 닫았습니다."
       - say:
           with: [칠숙]
-          text: "칠숙은 그 증거를 빼앗는 대신 덕만을 수도에서 떼어 놓기로 했습니다. 이미 국경 지휘패까지 준비해 둔 뒤였습니다."
+          text: "칠숙은 벌을 받는 대신, 덕만을 수도에서 떼어 낼 지휘패를 들고 왔습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -48,7 +51,11 @@ scenes:
           position: center
       - say:
           delivery: calm
-          text: "열이틀 뒤, 덕만은 국경 성에 닿았습니다."
+          text: "수도를 떠난 지 열이틀째."
+      - say:
+          with: [덕만]
+          delivery: calm
+          text: "가을비가 그친 저녁, 덕만은 북쪽 국경 성에 닿았습니다."
       - say:
           with: [덕만]
           text: "환영 북 대신 빈 솥 긁는 소리가 났습니다."
@@ -119,11 +126,15 @@ scenes:
           with: [덕만]
           text: "절대로요."
       - say:
+          char: 월명.warning
+          camera: medium
           with: [덕만]
-          text: "병사만 먹이면 성은 엿새를 버티지만 성밖 사람들이 먼저 죽습니다. 모두에게 똑같이 나누면 필요한 양이 다른 사람부터 쓰러집니다."
+          text: "사흘 뒤에는 빈 솥만 남습니다."
       - say:
-          with: [덕만]
-          text: "덕만에게 남은 곡식은 사흘치뿐이었습니다. 누구를 먼저 살리느냐가 곧 누구의 원망을 먼저 받느냐는 뜻이었습니다."
+          char: 덕만
+          camera: close
+          with: [월명]
+          text: "오늘 밤을 누가 넘길지부터 정하죠."
       - branch:
           cases:
             - when:
@@ -206,7 +217,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 월명]
-          text: "덕만은 쓰러진 아이와 성밖 피란민부터 배급 줄에 세웠습니다. 군사 몫은 보급로가 열릴 때까지 줄였습니다."
+          text: "덕만은 쓰러진 아이와 성밖 피란민부터 배급 줄에 세웠습니다."
+      - say:
+          with: [덕만, 월명]
+          text: "군사의 몫은 보급로가 열릴 때까지 줄였습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -251,7 +265,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 유신]
-          text: "덕만은 싸울 병사와 그 가족을 먼저 먹이기로 했습니다. 가족이 굶는 군사는 성벽을 지킬 수 없다고 보았습니다."
+          text: "덕만은 싸울 병사와 그 가족을 먼저 배급 줄에 세웠습니다."
+      - say:
+          with: [덕만, 유신]
+          text: "가족이 굶는 군사는 성벽을 오래 지킬 수 없었습니다."
       - say:
           char: 유신
           camera: medium
@@ -297,7 +314,7 @@ scenes:
           position: right
       - say:
           delivery: calm
-          text: "이튿날 저녁. 적 기병이 둘로 갈라졌습니다."
+          text: "도착 이튿날 · 해 질 무렵. 적 기병이 둘로 갈라졌습니다."
       - say:
           char: 유신.angry
           camera: medium
@@ -350,11 +367,15 @@ scenes:
           with: [유신]
           text: "그것도 제 몫입니다."
       - say:
-          with: [덕만]
-          text: "마을을 지키면 사람을 살릴 수 있지만 마지막 요새와 보급로를 잃습니다. 요새를 지키면 내일의 곡식은 오지만 오늘 밤 마을이 탑니다."
+          char: 덕만.sad
+          camera: close
+          with: [유신]
+          text: "둘 다 제 백성인데."
       - say:
-          with: [덕만, 유신]
-          text: "병력을 나누면 둘 다 지킬 가능성은 생깁니다. 그러나 굶은 병사로 두 전장을 버틸 여유는 없었습니다."
+          char: 유신.sad
+          camera: close
+          with: [덕만]
+          text: "그래도 하나를 먼저 골라야 합니다."
       - choice:
           key: c4_defense
           prompt: "어디를 먼저 지킬까?"
@@ -468,7 +489,7 @@ scenes:
           position: right
       - say:
           delivery: calm
-          text: "다음 날, 화살 한 대가 덕만 앞에 꽂혔습니다."
+          text: "전투 다음 날 · 한낮. 화살 한 대가 덕만 앞에 꽂혔습니다."
       - say:
           text: "화살엔 아이의 짚신 한 짝이 묶여 있었습니다."
       - say:
@@ -517,11 +538,15 @@ scenes:
           with: [덕만]
           text: "넘어져 죽는 건 제 명령이 아닙니다."
       - say:
-          with: [덕만, 아진]
-          text: "적장은 아진의 가족을 미끼로 덕만을 강가에 끌어내려 했습니다. 협상은 사람을 돌려받을 기회이자 매복으로 들어가는 길이었습니다."
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "동생을 되찾고 싶습니까?"
       - say:
+          char: 아진.nervous
+          camera: close
           with: [덕만]
-          text: "싸우면 주도권은 얻지만 또 이름을 적어야 합니다. 속이면 피를 줄일 수 있지만 실패할 때 물러날 길이 없었습니다."
+          text: "원합니다. 그래서 공주를 보내기 싫습니다."
       - choice:
           key: c4_enemy
           prompt: "적의 틈을 어떻게 만들까?"
@@ -552,7 +577,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 아진]
-          text: "해가 기울자 덕만과 아진은 포로 명단과 곡식 수레를 들고 강가로 향했습니다. 멀리 갈대밭에서 활시위가 따라 움직였습니다."
+          text: "해가 기울자 두 사람은 포로 명단과 곡식 수레를 들고 강가로 향했습니다."
+      - say:
+          with: [덕만, 아진]
+          text: "멀리 갈대밭에서 활시위가 두 사람을 따라 움직였습니다."
       - say:
           char: 아진.nervous
           camera: medium
@@ -671,7 +699,7 @@ scenes:
       - add: { legitimacy: 2 }
       - say:
           delivery: calm
-          text: "며칠 뒤, 보급로와 배급 줄이 다시 열렸습니다."
+          text: "나흘 뒤. 보급로와 배급 줄이 다시 열렸습니다."
       - say:
           text: "사람들은 덕만을 ‘우리 지휘관’이라 불렀습니다."
       - say:
