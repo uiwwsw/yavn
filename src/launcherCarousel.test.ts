@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  buildLauncherDemoHash,
+  buildLauncherDemoSharePath,
+  clearLauncherDemoSharePath,
+  normalizeLauncherDemoLocationPath,
   parseLauncherDemoHash,
+  parseLauncherDemoQuery,
   resolveInitialCarouselGameId,
   wrapCarouselIndex,
 } from './launcherCarousel';
@@ -14,17 +17,41 @@ describe('launcher carousel', () => {
     expect(wrapCarouselIndex(2, 0)).toBe(-1);
   });
 
-  it('round-trips the selected demo through the launcher hash', () => {
-    expect(buildLauncherDemoHash('conan demo')).toBe('#demo=conan%20demo');
+  it('builds clean, shareable query links without mutating the URL hash', () => {
+    expect(buildLauncherDemoSharePath('/', '', 'conan demo')).toBe('/?demo=conan+demo');
+    expect(buildLauncherDemoSharePath('/', '?lang=ko&demo=old', 'deokman')).toBe('/?lang=ko&demo=deokman');
+    expect(clearLauncherDemoSharePath('/', '?lang=ko&demo=deokman')).toBe('/?lang=ko');
+    expect(clearLauncherDemoSharePath('/', '?demo=deokman')).toBe('/');
+    expect(parseLauncherDemoQuery('?demo=conan%20demo')).toBe('conan demo');
+    expect(parseLauncherDemoQuery('?other=value')).toBeNull();
+  });
+
+  it('keeps parsing legacy demo hashes for one-time migration', () => {
     expect(parseLauncherDemoHash('#demo=conan%20demo')).toBe('conan demo');
     expect(parseLauncherDemoHash('#other=value')).toBeNull();
   });
 
-  it('uses the current selection, direct link, then first game in that order', () => {
+  it('normalizes invalid queries and migrates only valid legacy selections', () => {
+    const gameIds = ['deokman', 'conan'];
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=missing&lang=ko', '#library', gameIds))
+      .toBe('/?lang=ko#library');
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=missing&lang=ko', '#demo=conan', gameIds))
+      .toBe('/?lang=ko&demo=conan');
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=deokman', '#demo=conan', gameIds))
+      .toBe('/?demo=deokman');
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=', '', gameIds)).toBe('/');
+    expect(normalizeLauncherDemoLocationPath('/', '', '#demo=missing', gameIds)).toBe('/');
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=conan', '', gameIds)).toBeNull();
+    expect(normalizeLauncherDemoLocationPath('/', '', '#library', gameIds)).toBeNull();
+  });
+
+  it('resolves current, explicit, stored, and fallback selections in that order', () => {
     const gameIds = ['deokman', 'conan', 'live2dtest'];
-    expect(resolveInitialCarouselGameId(gameIds, 'conan', '#demo=deokman')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '#demo=conan')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '#demo=missing')).toBe('deokman');
-    expect(resolveInitialCarouselGameId([], null, '')).toBeNull();
+    expect(resolveInitialCarouselGameId(gameIds, 'conan', '?demo=deokman', '', 'deokman')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=conan', '#demo=deokman', 'deokman')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, null, '', '#demo=conan', 'deokman')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, null, '', '', 'conan')).toBe('conan');
+    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=missing', '', 'missing')).toBe('deokman');
+    expect(resolveInitialCarouselGameId([], null, '', '')).toBeNull();
   });
 });
