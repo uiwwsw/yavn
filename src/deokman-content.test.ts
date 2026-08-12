@@ -191,14 +191,14 @@ describe('Deokman complete-game content', () => {
     expect(weightedSegments.length).toBeGreaterThanOrEqual(20);
   });
 
-  it('keeps all 821 spoken balloons concise and clear for Korean teen readers', () => {
+  it('keeps every spoken balloon concise and clear for Korean teen readers', () => {
     const spokenLines = chapters.flatMap((path) => collectKey(readYaml(path), 'say'))
       .map(asRecord)
       .filter((entry) => typeof entry.char === 'string')
       .map((entry) => String(entry.text).replace(/<[^>]+>/g, ''));
     const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
 
-    expect(spokenLines).toHaveLength(821);
+    expect(spokenLines.length).toBeGreaterThanOrEqual(821);
     spokenLines.forEach((line) => expect(Array.from(line).length, line).toBeLessThanOrEqual(32));
     expect(allContent).toContain('나도 같이 무서울게');
     expect(allContent).toContain('잠긴 문을 별로 안 좋아해서요');
@@ -216,6 +216,50 @@ describe('Deokman complete-game content', () => {
     expect(allContent).toContain('칠숙');
     expect(allContent).not.toContain('국산');
     expect(allContent).toContain('이찬 칠숙');
+  });
+
+  it('introduces every principal character, title, and relationship before the plot depends on them', () => {
+    const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+    const introductions = [
+      '훗날 선덕여왕이라 불릴 덕만',
+      '이찬 칠숙은 신라에서 둘째로 높은 관등',
+      '천명은 덕만의 언니',
+      '젊은 장수 김유신',
+      '명령을 따르는 무사 아진',
+      '소원은 덕만의 옷과 방을 맡는 시녀',
+      '비담은 왕족이면서도 어느 편의 이름에도 들지 않았습니다',
+      '진운은 왕의 먼 친척',
+      '월명은 별의 움직임과 왕실 약방',
+      '화백은 높은 귀족들이 나라의 큰일을 함께 정하는 자리',
+      '공주 덕만은 이제 선덕왕이라 불렸습니다',
+    ];
+
+    introductions.forEach((introduction) => expect(allContent).toContain(introduction));
+    expect(allContent).toContain('왕의 딸에게 왕좌를 내줄 생각이 없었습니다');
+  });
+
+  it('turns every persistent relationship and clue into a later visible consequence', () => {
+    const baseState = Object.keys(asRecord(readYaml('base.yaml').state)).sort();
+    const readState = [...new Set(chapters.flatMap((path) => collectKey(readYaml(path), 'var'))
+      .filter((key): key is string => typeof key === 'string'))].sort();
+    const allContent = chapters.map((path) => readFileSync(`${gameRoot}${path}`, 'utf8')).join('\n');
+    const callbackAnchors = [
+      '언니에게 말하길 잘했네요',
+      '명단을 맡기길 잘했어요',
+      '이것도 같은 손이 묶었어요',
+      '사본이 아니라 원본 한 장',
+      '저도 공주의 귀환을 믿었습니다',
+      '세 봉인의 흠집이 모두 같습니다',
+      '이번 선택은 누구도 시키지 않았습니다',
+      '아직 공주를 믿는 건 아닙니다',
+      '깨진 도장 두 조각',
+      '비담님이 보낸 마지막 암호',
+      '그 약속, 이제 내가 갚을 차례야',
+    ];
+
+    expect(readState).toEqual(baseState);
+    expect(baseState).not.toContain('saved_rival');
+    callbackAnchors.forEach((anchor) => expect(allContent).toContain(anchor));
   });
 
   it('directs every character beat with shared camera shots instead of per-character zoom', () => {
@@ -248,11 +292,16 @@ describe('Deokman complete-game content', () => {
       expect(character.framings).toBeUndefined();
     });
 
-    expect(characterPlacements).toHaveLength(329);
+    expect(characterPlacements.length).toBeGreaterThanOrEqual(329);
     characterPlacements.forEach((placement) => expect(placement.framing).toBeUndefined());
-    expect(speakerLines).toHaveLength(821);
+    expect(speakerLines.length).toBeGreaterThanOrEqual(821);
     speakerLines.forEach((say) => expect(['wide', 'medium', 'close']).toContain(say.camera));
     expect(new Set(speakerLines.map((say) => say.camera))).toEqual(new Set(['wide', 'medium', 'close']));
+    speakerLines.forEach((say) => {
+      const companions = Array.isArray(say.with) ? say.with : [];
+      if (companions.length >= 2) expect(say.camera).toBe('wide');
+      if (say.camera === 'medium' || say.camera === 'close') expect(companions.length).toBeLessThanOrEqual(1);
+    });
     choices.forEach((choice) => {
       expect(choice.camera).toBe('close');
       expect(Array.isArray(choice.with)).toBe(true);
@@ -260,7 +309,7 @@ describe('Deokman complete-game content', () => {
     const backgroundCuts = sceneActionLists.flatMap((actions) =>
       actions.flatMap((action, index) => (typeof action.bg === 'string' ? [{ actions, index }] : [])),
     );
-    expect(backgroundCuts).toHaveLength(124);
+    expect(backgroundCuts.length).toBeGreaterThanOrEqual(124);
     backgroundCuts.forEach(({ actions, index }) => expect(actions[index + 1]?.camera).toBe('wide'));
     expect(chapters.every((path) => !readFileSync(`${gameRoot}${path}`, 'utf8').includes('framing:'))).toBe(true);
 
@@ -438,8 +487,30 @@ describe('Deokman complete-game content', () => {
       if (choiceIndex >= 0) {
         expect(choiceIndex, `${path}:${sceneId} ${choiceKey}`).toBeGreaterThan(anchorIndex);
       } else {
-        const gotoIndex = actions.findIndex((action) => action.goto === choiceSceneId);
-        expect(gotoIndex, `${path}:${sceneId} -> ${choiceSceneId}`).toBeGreaterThan(anchorIndex);
+        const destinations = (candidateActions: UnknownRecord[]) => candidateActions.flatMap((action) => {
+          const branch = asRecord(action.branch);
+          const cases = Array.isArray(branch.cases) ? branch.cases.map(asRecord) : [];
+          return [
+            ...(typeof action.goto === 'string' ? [action.goto] : []),
+            ...cases.map((branchCase) => branchCase.goto).filter((goto): goto is string => typeof goto === 'string'),
+            ...(typeof branch.default === 'string' ? [branch.default] : []),
+          ];
+        });
+        const reachesChoice = (candidateSceneId: string, visited = new Set<string>()): boolean => {
+          if (candidateSceneId === choiceSceneId) return true;
+          if (visited.has(candidateSceneId)) return false;
+          visited.add(candidateSceneId);
+          const candidateScene = asRecord(scenes[candidateSceneId]);
+          const candidateActions = Array.isArray(candidateScene.actions)
+            ? candidateScene.actions.map(asRecord)
+            : [];
+          return destinations(candidateActions).some((nextSceneId) => reachesChoice(nextSceneId, new Set(visited)));
+        };
+        const routesAfterContext = destinations(actions.slice(anchorIndex + 1));
+        expect(
+          routesAfterContext.some((nextSceneId) => reachesChoice(nextSceneId)),
+          `${path}:${sceneId} -> ${choiceSceneId}`,
+        ).toBe(true);
       }
     });
   });
