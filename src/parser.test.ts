@@ -394,6 +394,7 @@ scenes:
     actions:
       - say:
           text: "Run."
+          unskippable: true
           autoAdvance: 2400
       - choice:
           prompt: "Cut the signal?"
@@ -408,8 +409,27 @@ scenes:
 
     expect(parsed.error).toBeUndefined();
     const actions = parsed.data?.data.scenes.trailer.actions ?? [];
-    expect(actions[0]).toMatchObject({ say: { autoAdvance: 2400 } });
+    expect(actions[0]).toMatchObject({ say: { unskippable: true, autoAdvance: 2400 } });
     expect(actions[1]).toMatchObject({ choice: { timeoutMs: 7000, timeoutOptionIndex: 1 } });
+  });
+
+  it('rejects non-boolean unskippable dialogue settings', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: trailer
+scenes:
+  trailer:
+    actions:
+      - say:
+          text: "Read this to the end."
+          unskippable: "yes"
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeDefined();
+    expect(parsed.data).toBeUndefined();
   });
 
   it('preserves root assets for reuse across public games', () => {

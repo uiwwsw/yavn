@@ -626,6 +626,23 @@ scenes:
 - `wait` 시간 동안 클릭/`Enter`/`Space` 진행 입력이 무시됩니다.
 - 잠금이 끝나면 기존 `say` 동작처럼 다음 입력을 받을 수 있습니다.
 
+## `say.unskippable` (타이핑 완료 전 진행 금지)
+
+끝까지 읽혀야 하는 문장은 `unskippable: true`로 선언할 수 있습니다.
+
+```yaml
+- say:
+    char: 코난.serious
+    text: "이 말만은 끝까지 들어 줘."
+    unskippable: true
+```
+
+동작:
+- 글자가 타이핑되는 동안 클릭/`Enter`/`Space` 입력으로 즉시 완성하거나 다음 액션으로 진행할 수 없습니다.
+- 타이핑이 끝나면 잠금이 자동 해제되고, 평소처럼 다음 입력으로 진행할 수 있습니다.
+- `wait`를 함께 쓰면 타이핑 완료와 지정 시간 경과 조건을 모두 만족해야 합니다.
+- `autoAdvance` 시간이 먼저 끝나도 문장을 자르지 않고, 타이핑 완료 직후 자동 진행합니다.
+
 ## `say.autoAdvance` (대사 자동 진행)
 
 `say` 액션에 `autoAdvance`(ms)를 지정하면 입력이 없어도 해당 시간이 지난 뒤 다음 액션으로 진행합니다.
@@ -927,6 +944,7 @@ scenes:
 - `say.text`의 다중 `<speed=...>...</speed>` 구간을 순차 해석해, 한 문장 안에서도 구간별 타이핑 속도를 다르게 적용합니다.
 - `say.delivery`는 8종 감정 프로필과 표정/캐릭터 `defaultDelivery` 기반 자동 추론으로 대사 속도·문장부호 호흡·입력 글자 반응을 조절합니다.
 - `say.wait`(ms)를 지정하면 해당 대사 시작 시점부터 지정 시간 동안 진행/스킵 입력을 잠급니다.
+- `say.unskippable: true`를 지정하면 해당 문장의 타이핑이 끝날 때까지 즉시 완성/진행 입력을 잠급니다.
 - `say.autoAdvance`(ms)를 지정하면 트레일러/키오스크형 대사를 입력 없이 자동 진행합니다.
 - `choice.timeoutMs`와 `timeoutOptionIndex`로 제한시간 선택 및 만료 분기를 구성할 수 있습니다.
 - Live2D 캐릭터 로딩은 `easy-cl2d` + 번들 자산(`src/assets/third-party/live2d/live2dcubismcore.min.js`) 조합으로 동작합니다.

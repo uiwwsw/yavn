@@ -133,6 +133,7 @@ export type SayAction = {
     text: string;
     delivery?: DialogueDelivery;
     wait?: number;
+    unskippable?: boolean;
     autoAdvance?: number;
   };
 };

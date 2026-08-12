@@ -27,6 +27,7 @@ type DialogState = {
   fullText: string;
   visibleText: string;
   typing: boolean;
+  unskippable: boolean;
   delivery: DialogueDelivery;
   typingIntensity: number;
   typingPulse: number;
@@ -116,6 +117,7 @@ const initialDialog: DialogState = {
   fullText: '',
   visibleText: '',
   typing: false,
+  unskippable: false,
   delivery: 'neutral',
   typingIntensity: 0,
   typingPulse: 0,
@@ -272,7 +274,14 @@ export const useVNStore = create<VNState>((set) => ({
   },
   setCamera: (camera) => set({ camera }),
   setMusic: (url) => set({ currentMusic: url }),
-  setDialog: (dialog) => set((state) => ({ dialog: { ...state.dialog, ...dialog } })),
+  setDialog: (dialog) => set((state) => ({
+    dialog: {
+      ...state.dialog,
+      ...dialog,
+      // The lock exists only while glyphs are still being revealed.
+      ...(dialog.typing === false ? { unskippable: false } : {}),
+    },
+  })),
   setDialogUiHidden: (dialogUiHidden) => set({ dialogUiHidden }),
   setEffect: (effect) => set({ effect }),
   setVideoCutscene: (video) => set((state) => ({ videoCutscene: { ...state.videoCutscene, ...video } })),
