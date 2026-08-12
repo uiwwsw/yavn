@@ -31,8 +31,14 @@ function formatLayoutNumber(value: number): string {
 function resolveEnsembleGap(mode: 'duo' | 'trio', spacing: number): string {
   const safeSpacing = Math.max(0.75, Math.min(1.25, spacing));
   const fluidCqw = 25 * safeSpacing;
-  const maximumPx = 320 * safeSpacing;
+  const maximumPx = 260 * safeSpacing;
   return `min(${formatLayoutNumber(fluidCqw)}cqw, ${formatLayoutNumber(maximumPx)}px)`;
+}
+
+export function resolveCharacterStageSpacing(spacings: readonly number[]): number {
+  if (spacings.length <= 1) return 1;
+  const safeSpacings = spacings.map((spacing) => Math.max(0.75, Math.min(1.25, spacing)));
+  return safeSpacings.reduce((total, spacing) => total + spacing, 0) / safeSpacings.length;
 }
 
 /**

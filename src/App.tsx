@@ -57,6 +57,7 @@ import {
   resolveCharacterFramingScale,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
+  resolveCharacterStageSpacing,
 } from './characterLayout';
 import {
   buildLauncherDemoSharePath,
@@ -1790,15 +1791,15 @@ export default function App() {
   const cameraTargetPosition = visibleCharactersByPosition.find(
     (entry) => entry.slot.id === effectiveCameraTargetId,
   )?.position;
-  const cameraTargetSpacing = visibleCharactersByPosition.find(
-    (entry) => entry.slot.id === effectiveCameraTargetId,
-  )?.slot.calibration.spacing ?? 1;
+  const characterStageSpacing = resolveCharacterStageSpacing(
+    visibleCharactersByPosition.map((entry) => entry.slot.calibration.spacing),
+  );
   const cameraPresentation = resolveStageCameraPresentation(
     camera,
     visibleCharacterCount,
     cameraTargetPosition,
     characterStageLayout,
-    cameraTargetSpacing,
+    characterStageSpacing,
   );
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
@@ -2404,7 +2405,7 @@ export default function App() {
     const stagePlacement = resolveCharacterStagePlacement(
       position,
       characterStageLayout,
-      slot.calibration.spacing,
+      characterStageSpacing,
     );
     const charStyle = {
       zIndex,

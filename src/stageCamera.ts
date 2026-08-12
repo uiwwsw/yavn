@@ -130,7 +130,7 @@ export function resolveStageCameraPresentation(
   visibleCharacterCount: number,
   targetPosition: Position | undefined,
   layout: CharacterStageLayout,
-  targetSpacing = 1,
+  compositionSpacing = 1,
 ): StageCameraPresentation {
   const hasCharacterTarget = camera.target !== 'group' && targetPosition !== undefined;
   const presentationShot = (camera.shot === 'close' || camera.shot === 'reaction') && !hasCharacterTarget
@@ -140,7 +140,7 @@ export function resolveStageCameraPresentation(
   const shotScale = resolveShotScale(presentationShot, visibleCharacterCount);
   const compositionOriginY = resolveCompositionOriginY(visibleCharacterCount);
   const zoomOriginX = hasCharacterTarget && targetPosition
-    ? resolveCharacterStagePlacement(targetPosition, layout, targetSpacing).anchorX
+    ? resolveCharacterStagePlacement(targetPosition, layout, compositionSpacing).anchorX
     : '50cqw';
   const mobileZoomOriginX = hasCharacterTarget && targetPosition
     ? resolveMobileCharacterStageAnchor(targetPosition, layout)
