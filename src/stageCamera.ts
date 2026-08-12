@@ -35,6 +35,7 @@ const REACTION_SCALE_BY_CAST = [1.9, 1.9, 1.72, 1.55] as const;
 export type StageCameraPresentation = {
   scale: number;
   originY: number;
+  mobileOriginY: number;
   panX: string;
   mobilePanX: string;
   panY: string;
@@ -42,6 +43,19 @@ export type StageCameraPresentation = {
   duration: number;
   transition: CameraTransition;
 };
+
+function resolveMobileShotOriginY(shot: CameraShot, visibleCharacterCount: number): number {
+  if (shot === 'wide') {
+    return 50;
+  }
+  if (visibleCharacterCount <= 1) {
+    return 55;
+  }
+  if (visibleCharacterCount === 2) {
+    return 80;
+  }
+  return 92;
+}
 
 export function resolveCharacterCalibration(
   calibration: CharacterCalibration | undefined,
@@ -104,15 +118,15 @@ export function resolveStageCameraPresentation(
   const mobilePanX = hasCharacterTarget
     ? resolveMobileCameraPan(targetPosition, layout)
     : '0px';
-  const mobileSoloHeadroom = camera.shot !== 'wide' && visibleCharacterCount <= 1;
 
   return {
     scale: resolveShotScale(camera.shot, visibleCharacterCount),
     originY: camera.shot === 'wide' ? 50 : visibleCharacterCount <= 1 ? 0 : 23,
+    mobileOriginY: resolveMobileShotOriginY(camera.shot, visibleCharacterCount),
     panX,
     mobilePanX,
     panY: '0px',
-    mobilePanY: mobileSoloHeadroom ? '4cqh' : '0px',
+    mobilePanY: '0px',
     duration: camera.duration,
     transition: camera.transition,
   };
