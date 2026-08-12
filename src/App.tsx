@@ -3,6 +3,7 @@ import {
   KeyboardEvent as ReactKeyboardEvent,
   lazy,
   MouseEvent,
+  PointerEvent as ReactPointerEvent,
   Suspense,
   useCallback,
   useEffect,
@@ -1030,6 +1031,7 @@ export default function App() {
   const launcherCarouselPositionedRef = useRef(false);
   const launcherShareNoticeTimerRef = useRef<number | null>(null);
   const launcherShareGameIdRef = useRef<string | null>(null);
+  const uploadedGameFileRef = useRef<File | null>(null);
   const [endingCreditsReady, setEndingCreditsReady] = useState(false);
   const [endingCreditsScrollUnlocked, setEndingCreditsScrollUnlocked] = useState(false);
   const [endingTopSpacerPx, setEndingTopSpacerPx] = useState(0);
@@ -1048,7 +1050,7 @@ export default function App() {
   const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
   const skipInputAutoFocus = useMemo(() => isMobilePointerEnvironment(), []);
   const startScreenReturnGameId = useMemo(() => parseGameIdFromPath(window.location.pathname), []);
-  const canReturnToStartScreen = Boolean(startScreenReturnGameId);
+  const canReturnToStartScreen = Boolean(startScreenReturnGameId || uploadedGameFileRef.current);
   const closeSettingsModal = useCallback(
     (restoreFocus: boolean = true) => {
       setSettingsOpen(false);
@@ -1508,6 +1510,11 @@ export default function App() {
     }
   }, [clearLauncherDeepLinkFromAddress, launcherCarouselApi]);
 
+  const preserveLauncherControlFocus = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.currentTarget.focus({ preventScroll: true });
+  }, []);
+
   const onLauncherCarouselKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) {
       return;
@@ -1531,16 +1538,16 @@ export default function App() {
     if (!launcherCarouselApi) {
       return;
     }
-    const commitSelectedSnap = () => {
+    const commitSettledSnap = () => {
       const selectedIndex = wrapCarouselIndex(launcherCarouselApi.selectedScrollSnap(), gameList.length);
       const nextGameId = selectedIndex >= 0 ? gameList[selectedIndex]?.id : undefined;
       if (nextGameId) {
         setSelectedGameId((currentGameId) => currentGameId === nextGameId ? currentGameId : nextGameId);
       }
     };
-    launcherCarouselApi.on('select', commitSelectedSnap);
+    launcherCarouselApi.on('settle', commitSettledSnap);
     return () => {
-      launcherCarouselApi.off('select', commitSelectedSnap);
+      launcherCarouselApi.off('settle', commitSettledSnap);
     };
   }, [gameList, launcherCarouselApi]);
 
@@ -2493,6 +2500,7 @@ export default function App() {
       useVNStore.getState().setError({ message: 'ZIP 파일만 업로드할 수 있습니다.' });
       return;
     }
+    uploadedGameFileRef.current = file;
     setUploading(true);
     setBootMode('uploaded');
     try {
@@ -2535,43 +2543,74 @@ export default function App() {
   const onReturnToStartScreen = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
-      if (!startScreenReturnGameId || returningToStartGate) {
+      const uploadedGameFile = uploadedGameFileRef.current;
+      if ((!startScreenReturnGameId && !uploadedGameFile) || returningToStartGate) {
         return;
-      }
-      const sessionKey = resolveStartGateSessionKey(startScreenReturnGameId);
-      const gameUrl = `/game-list/${startScreenReturnGameId}/`;
-      try {
-        sessionStorage.removeItem(sessionKey);
-      } catch {
-        // Ignore sessionStorage failures and continue.
       }
       setReturningToStartGate(true);
       closeSettingsModal(false);
       stopActiveBgm();
       stopStartGateMusic();
       try {
-        const preview = await loadUrlStartScreenPreview(gameUrl);
-        if (preview.startScreen?.enabled) {
-          const baseUrl = new URL(gameUrl, window.location.origin).toString();
-          setStartGate({
-            kind: 'url',
-            gameUrl,
-            sessionKey,
-            uiTemplate: preview.uiTemplate,
-            gameTitle: preview.gameTitle,
-            seo: preview.seo,
-            imageUrl: resolveStartGateAssetUrl(preview.startScreen.image, baseUrl),
-            musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
-            startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
-            buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
-            showTitle: preview.startScreen.showTitle ?? true,
-            titleColor: preview.startScreen.titleColor,
-            showLoadButton: preview.hasLoadableSave,
-            legalNotices: preview.legalNotices,
-          });
+        if (startScreenReturnGameId) {
+          const sessionKey = resolveStartGateSessionKey(startScreenReturnGameId);
+          const gameUrl = `/game-list/${startScreenReturnGameId}/`;
+          try {
+            sessionStorage.removeItem(sessionKey);
+          } catch {
+            // Ignore sessionStorage failures and continue.
+          }
+          const preview = await loadUrlStartScreenPreview(gameUrl);
+          if (preview.startScreen?.enabled) {
+            const baseUrl = new URL(gameUrl, window.location.origin).toString();
+            setStartGate({
+              kind: 'url',
+              gameUrl,
+              sessionKey,
+              uiTemplate: preview.uiTemplate,
+              gameTitle: preview.gameTitle,
+              seo: preview.seo,
+              imageUrl: resolveStartGateAssetUrl(preview.startScreen.image, baseUrl),
+              musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
+              startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
+              buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+              showTitle: preview.startScreen.showTitle ?? true,
+              titleColor: preview.startScreen.titleColor,
+              showLoadButton: preview.hasLoadableSave,
+              legalNotices: preview.legalNotices,
+            });
+            return;
+          }
+          await loadGameFromUrl(gameUrl);
           return;
         }
-        await loadGameFromUrl(gameUrl);
+
+        if (uploadedGameFile) {
+          const preview = await loadZipStartScreenPreview(uploadedGameFile);
+          if (preview.startScreen?.enabled) {
+            const imageUrl = preview.startScreen.image;
+            const musicUrl = preview.startScreen.music;
+            setStartGate({
+              kind: 'zip',
+              file: uploadedGameFile,
+              uiTemplate: preview.uiTemplate,
+              gameTitle: preview.gameTitle,
+              seo: preview.seo,
+              imageUrl,
+              musicUrl,
+              previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
+              previewMusicBlobUrl: musicUrl?.startsWith('blob:') ? musicUrl : undefined,
+              startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
+              buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
+              showTitle: preview.startScreen.showTitle ?? true,
+              titleColor: preview.startScreen.titleColor,
+              showLoadButton: false,
+              legalNotices: preview.legalNotices,
+            });
+            return;
+          }
+          await loadGameFromZip(uploadedGameFile);
+        }
       } finally {
         setReturningToStartGate(false);
       }
@@ -2632,7 +2671,7 @@ export default function App() {
               disabled={startGateLaunching}
             >
               <span className="start-gate-button-label">
-                {startGateLaunching ? '이야기를 여는 중' : (startGate.startButtonText || DEFAULT_START_BUTTON_TEXT)}
+                {startGate.startButtonText || DEFAULT_START_BUTTON_TEXT}
               </span>
               <span className="start-gate-button-mark" aria-hidden="true">→</span>
             </button>
@@ -2750,6 +2789,7 @@ export default function App() {
                       </div>
 
                       <div className="launcher-feature-copy">
+                        <div className="launcher-feature-content">
                         <p className="launcher-feature-kicker">
                           {entry.showcase?.label ?? 'PLAYABLE DEMO'}
                           <span>v{entry.version ?? '-'}</span>
@@ -2811,11 +2851,14 @@ export default function App() {
                             {launcherShareNotice ? '링크 복사됨' : '선택 링크 복사'}
                           </button>
                         </div>
-                        {isSelected && (
-                          <p className="launcher-share-status" role="status" aria-live="polite">
-                            {launcherShareNotice}
-                          </p>
-                        )}
+                        <p
+                          className="launcher-share-status"
+                          role={isSelected ? 'status' : undefined}
+                          aria-live={isSelected ? 'polite' : 'off'}
+                        >
+                          {isSelected ? launcherShareNotice : ''}
+                        </p>
+                        </div>
                       </div>
                       </article>
                     );
@@ -2828,6 +2871,7 @@ export default function App() {
                   type="button"
                   className="launcher-carousel-arrow launcher-carousel-arrow-prev"
                   aria-label="이전 데모"
+                  onPointerDown={preserveLauncherControlFocus}
                   onClick={() => moveLauncherCarousel(-1)}
                   disabled={gameList.length < 2}
                 >
@@ -2846,6 +2890,7 @@ export default function App() {
                           aria-current={isSelected ? 'true' : undefined}
                           aria-pressed={isSelected}
                           className={isSelected ? 'is-active' : ''}
+                          onPointerDown={preserveLauncherControlFocus}
                           onClick={() => moveLauncherCarouselToIndex(index)}
                         />
                       );
@@ -2865,6 +2910,7 @@ export default function App() {
                   type="button"
                   className="launcher-carousel-arrow launcher-carousel-arrow-next"
                   aria-label="다음 데모"
+                  onPointerDown={preserveLauncherControlFocus}
                   onClick={() => moveLauncherCarousel(1)}
                   disabled={gameList.length < 2}
                 >
@@ -3699,7 +3745,7 @@ export default function App() {
                     onClick={(event) => void onReturnToStartScreen(event)}
                     disabled={!canReturnToStartScreen || returningToStartGate}
                   >
-                    {returningToStartGate ? '초기화면 여는 중...' : '초기화면 가기'}
+                    {returningToStartGate ? '시작 화면 여는 중...' : '게임 시작 화면으로 가기'}
                   </button>
                 </section>
 

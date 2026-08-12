@@ -13,6 +13,15 @@ describe('start gate presentation', () => {
     expect(app).toContain("'--start-gate-title-color': startGate.titleColor");
     expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?border: 1px solid var\(--start-gate-frame-color\)/);
     expect(styles).toMatch(/\.start-gate\.is-launching \.start-gate-content\s*\{[\s\S]*?opacity: 0/);
+    expect(app).not.toContain("startGateLaunching ? '이야기를 여는 중'");
+    expect(styles).toMatch(/\.start-gate\.is-launching \.start-gate-button-load,[\s\S]*?visibility: hidden/);
+  });
+
+  it('keeps the game start-screen return action available for URL and ZIP games', () => {
+    expect(app).toContain('const uploadedGameFileRef = useRef<File | null>(null)');
+    expect(app).toContain('Boolean(startScreenReturnGameId || uploadedGameFileRef.current)');
+    expect(app).toContain("'게임 시작 화면으로 가기'");
+    expect(app).toContain('const preview = await loadZipStartScreenPreview(uploadedGameFile)');
   });
 
   it('keeps actions visible without gating them behind an entrance animation', () => {
