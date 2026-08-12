@@ -36,12 +36,18 @@ describe('responsive stage content frame', () => {
     expect(styles).not.toContain('--char-image-width: min(40vw, 560px);');
   });
 
-  it('measures dialogue avoidance inside the centered frame', () => {
+  it('measures sticker avoidance inside the centered frame without moving the character stage', () => {
+    const characterLayerRules = styles.match(/\.char-layer\s*\{([^}]*)\}/)?.[1] ?? '';
+
     expect(appSource).toContain('const stageContentFrameRef = useRef<HTMLDivElement | null>(null);');
     expect(appSource).toContain(
       'Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop)',
     );
     expect(appSource).toContain('observer.observe(stageFrameEl);');
+    expect(appSource).not.toContain('choiceGate.active, dialog.visibleText, inputGate.active');
+    expect(appSource).not.toMatch(/className=\{`char-layer[\s\S]{0,400}style=\{\{ bottom:/);
+    expect(appSource).toContain('<div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>');
+    expect(characterLayerRules).not.toContain('transition: bottom');
     expect(styles).toContain('--dialog-max-height: 38cqh;');
     expect(styles).toContain('--dialog-max-height: 48cqh;');
   });

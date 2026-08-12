@@ -33,7 +33,7 @@ scenes:
           text: "그사이 칠숙은 진운을 다음 왕 후보로 세웠습니다."
       - say:
           with: [진운]
-          text: "왕의 피가 먼 남자라도 왕의 딸보다 낫다는 계산이었습니다."
+          text: "귀족들은 왕의 딸보다 먼 남자 친척을 택했습니다."
       - char:
           id: 칠숙
           position: center
@@ -419,7 +419,7 @@ scenes:
           char: 덕만
           camera: close
           with: [진운]
-          text: "그래야 그대 선택을 믿을 수 있죠."
+          text: "그래야 그대 말을 믿을 수 있죠."
       - say:
           char: 진운
           camera: close
@@ -528,12 +528,12 @@ scenes:
           char: 덕만
           camera: close
           with: [진운]
-          text: "죽은 경쟁자보다 살아 있는 선택이 필요해요."
+          text: "살아 있어야 내게 반대도 하죠."
       - say:
           char: 진운
           camera: close
           with: [덕만]
-          text: "그 선택도 남에게 맡기지 마십시오."
+          text: "그 말, 끝까지 지키십시오."
       - choice:
           key: c5_rescue
           prompt: "진운을 어떻게 살릴까?"

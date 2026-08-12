@@ -16,28 +16,16 @@ scenes:
           text: "이 작품은 역사에 남은 인물과 사건 위에 상상을 더한 이야기입니다."
       - say:
           delivery: calm
-          text: "이 게임은 대화를 읽고 덕만의 행동을 고르는 역사 비주얼노벨입니다."
-      - say:
-          delivery: calm
-          text: "당신은 훗날 선덕여왕이 되는 덕만의 선택을 맡습니다."
-      - say:
-          delivery: calm
-          text: "이 이야기는 631년 늦봄에 시작해 647년 마지막 밤까지 이어집니다."
-      - say:
-          delivery: calm
-          text: "오늘의 선택은 사람들의 기억 속에 남아, 훗날 다시 돌아옵니다."
-      - say:
-          delivery: calm
           text: "서기 631년 늦봄, 진평왕 53년."
       - say:
           delivery: calm
           text: "왕실 제사와 연회를 하루 앞둔 오후. 비가 신라의 수도 월성을 적셨습니다."
       - say:
           delivery: calm
-          text: "진평왕에게는 아들이 없었습니다."
+          text: "진평왕에게는 두 딸뿐이었습니다."
       - say:
           delivery: calm
-          text: "남자만 왕이던 신라에서, 그 사실은 나라의 다음 주인을 둘러싼 싸움이 되었습니다."
+          text: "신라의 왕좌에는 아직 여자 이름이 오른 적이 없었습니다."
       - bg: throne_hall
       - camera: wide
       - effect: focus
@@ -50,21 +38,6 @@ scenes:
       - char:
           id: 칠숙
           position: center
-      - say:
-          with:
-            - 진평왕
-          delivery: calm
-          text: "[왕] 진평왕. 신라의 왕이자 두 공주의 아버지였습니다."
-      - say:
-          with:
-            - 덕만
-          delivery: calm
-          text: "[공주] 덕만. 아직 누구도 다음 왕이라 부르지 않는 왕의 둘째 딸이었습니다."
-      - say:
-          with:
-            - 칠숙
-          delivery: calm
-          text: "[이찬] 칠숙. 높은 귀족들의 앞자리에 서서 덕만의 이름을 지우려는 사람이었습니다."
       - say:
           with:
             - 진평왕
@@ -104,11 +77,6 @@ scenes:
       - char:
           id: 천명
           position: center
-      - say:
-          with:
-            - 덕만
-            - 천명
-          text: "[공주] 천명. 덕만의 언니이며, 동생보다 먼저 위험을 알아보는 사람이었습니다."
       - say:
           char: 천명
           camera: medium
@@ -249,17 +217,6 @@ scenes:
           id: 유신
           position: center
       - say:
-          with:
-            - 덕만
-            - 천명
-            - 유신
-          text: "[호위장] 김유신. 덕만의 곁에서 위험을 숫자로 재는 젊은 장수였습니다."
-      - say:
-          with:
-            - 덕만
-            - 유신
-          text: "유신은 덕만의 답을 대신 고르지 않았습니다. 다만 그 답이 살아남을 길을 먼저 찾았습니다."
-      - say:
           char: 유신
           camera: medium
           with:
@@ -322,12 +279,6 @@ scenes:
           id: 아진
           position: left
       - say:
-          with:
-            - 칠숙
-            - 아진
-          delivery: whisper
-          text: "[무사] 아진. 칠숙의 명령을 받아 움직이는 칼이었습니다."
-      - say:
           char: 칠숙.smile
           camera: medium
           with:
@@ -363,7 +314,7 @@ scenes:
           with:
             - 덕만
           delivery: whisper
-          text: "덕만의 숨이 멎었습니다."
+          text: "덕만은 숨을 죽였습니다."
           wait: 450
       - say:
           with:
@@ -1111,7 +1062,7 @@ scenes:
       - say:
           char: 덕만.sad
           camera: medium
-          text: "아버지께서 드시면 안 되는 것이었습니다. 저는 괜찮……"
+          text: "아버지 몫이었습니다. 제가 마신 게 다행이에요……"
       - effect: blur
       - say:
           char: 덕만.sad
