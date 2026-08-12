@@ -1809,6 +1809,7 @@ export default function App() {
   const cameraStyle = {
     '--stage-camera-scale': cameraPresentation.scale,
     '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
+    '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`,
     '--stage-camera-pan-x': cameraPresentation.panX,
     '--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX,
     '--stage-camera-pan-y': cameraPresentation.panY,

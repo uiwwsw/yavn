@@ -1122,6 +1122,7 @@ textarea,
 .char-camera-world {
   --stage-camera-scale: 1;
   --stage-camera-origin-y: 50%;
+  --stage-camera-origin-y-mobile: var(--stage-camera-origin-y);
   --stage-camera-render-origin-y: var(--stage-camera-origin-y);
   --stage-camera-pan-x: 0%;
   --stage-camera-pan-x-mobile: var(--stage-camera-pan-x);
@@ -1155,6 +1156,10 @@ textarea,
 }
 
 @media (max-width: 768px) {
+  .char-camera-world {
+    --stage-camera-render-origin-y: var(--stage-camera-origin-y-mobile);
+  }
+
   .char-camera-pan {
     --stage-camera-render-pan-x: var(--stage-camera-pan-x-mobile);
     --stage-camera-render-pan-y: var(--stage-camera-pan-y-mobile);
@@ -5225,7 +5230,7 @@ textarea,
   }
 }
 
-@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+@media (max-width: 768px) and (orientation: portrait) {
   .stage-content-frame {
     width: 100cqw;
     height: min(100cqh, calc(100cqw * 16 / 9));
