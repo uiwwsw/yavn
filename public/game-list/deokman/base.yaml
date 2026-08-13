@@ -116,19 +116,19 @@ state:
 inventory:
   black_powder:
     name: "검은 독가루"
-    description: "왕의 술잔에 든 독을 덕만 탓으로 돌리려고, 그의 손에 묻히려 했던 검은 가루."
+    description: "왕의 술잔에 든 독을 덕만 탓으로 돌리려고 그의 손에 묻히려 했던 검은 가루입니다."
     image: assets/items/black-powder.svg
     category: "증거"
     order: 10
   marriage_pact:
     name: "혼인 합의서"
-    description: "덕만의 혼인을 두고 세 귀족 가문에 서로 다른 대가를 약속한 문서."
+    description: "덕만의 혼인을 두고 세 귀족 가문에 서로 다른 대가를 약속한 문서입니다."
     image: assets/items/marriage-pact.svg
     category: "증거"
     order: 20
   oath_fragment:
     name: "남자 왕족을 왕으로 세우는 비밀 문서"
-    description: "남자 왕족만 왕으로 세우겠다고 약속한 귀족들의 이름과 도장이 남은 문서 조각."
+    description: "남자 왕족만 왕으로 세우겠다고 약속한 귀족들의 이름과 도장이 남은 문서 조각입니다."
     image: assets/items/oath-fragment.svg
     category: "증거"
     order: 30

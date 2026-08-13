@@ -22,7 +22,52 @@ scenes:
       - say:
           with: [덕만]
           wait: 650
-          text: "그 석 달 동안 세 집안이 덕만에게 청혼서를 보냈다."
+          text: "그 석 달 동안 세 집안이 덕만에게 청혼서를 보냈습니다."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [덕만]
+          text: "전하께서 석 달 동안 세 번 미루셨습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [칠숙]
+          text: "그래서 세 집이 무엇을 했습니까?"
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [덕만]
+          text: "곡식 수레와 호위를 하나씩 거뒀습니다."
+      - say:
+          char: 덕만.angry
+          camera: close
+          with: [칠숙]
+          text: "제 혼인 답을 듣자고 궁을 멈춘 겁니까?"
+      - char:
+          id: 진평왕
+          position: right
+      - say:
+          with: [진평왕, 덕만]
+          wait: 650
+          text: "진평왕은 약을 두 번 마신 뒤에야 회의장에 들어왔습니다."
+      - say:
+          char: 진평왕.sad
+          camera: medium
+          with: [덕만]
+          text: "내가 더 미루면 궁문부터 비게 된다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "그래서 오늘은 제가 막아야 합니까?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "아니다. 오늘은 네가 말할 시간을 사는 것이다."
+      - char:
+          id: 칠숙
+          position: right
       - say:
           char: 칠숙.smile
           camera: medium
@@ -49,7 +94,7 @@ scenes:
       - say:
           with: [진운]
           wait: 650
-          text: "진운은 청혼서를 펼쳤지만 끝내 고개를 들지 못했다."
+          text: "진운은 청혼서를 펼쳤지만 끝내 고개를 들지 못했습니다."
       - say:
           char: 진운.nervous
           camera: medium
@@ -71,6 +116,32 @@ scenes:
           with: [덕만]
           wait: 750
           text: "제가 원해서 하는 청혼이 아니니까요."
+      - char:
+          id: 칠숙
+          position: right
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [덕만]
+          text: "진운공은 왕실의 남자입니다."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [덕만]
+          text: "혼인 뒤에는 공주님 대신 회의에 앉지요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [칠숙]
+          text: "그다음에는 왕좌에도 앉히시겠군요."
+      - char:
+          id: 진운
+          position: right
+      - say:
+          char: 진운.nervous
+          camera: close
+          with: [덕만]
+          text: "그 문장도 제가 쓴 것이 아닙니다."
       - char:
           id: 비담
           position: right
@@ -139,10 +210,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 소원]
-          text: "소원은 세 청혼서의 붉은 끈을 하나씩 풀어 나란히 놓았다."
+          text: "소원은 세 청혼서의 붉은 끈을 하나씩 풀어 나란히 놓았습니다."
       - say:
           with: [덕만, 소원]
-          text: "세 끈 모두 가짜 노리개처럼 매듭 하나가 빠져 있었다."
+          text: "세 끈 모두 가짜 노리개처럼 매듭 하나가 빠져 있었습니다."
       - say:
           char: 소원
           camera: medium
@@ -168,10 +239,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 비담]
-          text: "비담은 품에서 거래 장부 원본을 꺼내 내밀었다."
+          text: "비담은 품에서 거래 장부 원본을 꺼내 내밀었습니다."
       - say:
           with: [덕만, 비담]
-          text: "대신 사본은 다시 자기 품에 챙겼다."
+          text: "대신 사본은 다시 자기 품에 챙겼습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -194,7 +265,7 @@ scenes:
     actions:
       - choice:
           key: c2_suitor
-          prompt: "먼저 각자가 정말 원하는 걸 확인해야 한다."
+          prompt: "먼저 각자가 정말 원하는 걸 확인해야 합니다."
           char: 덕만
           camera: close
           with: []
@@ -223,7 +294,7 @@ scenes:
       - say:
           with: [덕만, 진운]
           wait: 600
-          text: "사람들이 나가자 방에는 펴지지 않은 청혼서만 남았다."
+          text: "사람들이 나가자 방에는 펴지지 않은 청혼서만 남았습니다."
       - say:
           char: 덕만
           camera: medium
@@ -269,7 +340,7 @@ scenes:
           position: right
       - say:
           with: [덕만, 비담]
-          text: "비담이 숨겨 둔 합의서에는 세 집에 약속한 대가가 각각 적혀 있었다."
+          text: "비담이 숨겨 둔 합의서에는 세 집에 약속한 대가가 각각 적혀 있었습니다."
       - say:
           char: 덕만
           camera: medium
@@ -310,7 +381,7 @@ scenes:
       - say:
           delivery: calm
           wait: 650
-          text: "그날 한낮, 궁녀들이 덕만의 머리에 무거운 혼례 비녀를 꽂았다."
+          text: "그날 한낮, 궁녀들이 덕만의 머리에 무거운 혼례 비녀를 꽂았습니다."
       - say:
           char: 천명.nervous
           camera: medium
@@ -347,12 +418,46 @@ scenes:
           camera: medium
           with: [덕만]
           text: "그건 내가 어릴 때부터 잘했지."
+      - say:
+          with: [덕만, 천명]
+          text: "문서 담당 관리가 지나가며 접은 쪽지 하나를 떨어뜨렸습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [천명]
+          text: "혼인 문서 원본을 찾았대."
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "오늘 밤 너를 만나겠대?"
+      - say:
+          char: 덕만
+          camera: medium
+          with: [천명]
+          text: "작은 서재 창틀에 숨겨 두겠대."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "직접 만나지 마. 소원에게 문을 잠그라 해."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "이제 언니가 나보다 더 조심하네."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          wait: 650
+          text: "무섭다고 가만히 있지는 않을 거야."
       - char:
           id: 월명
           position: right
       - say:
           with: [월명]
-          text: "별자리를 보는 월명이 말하면 귀족들은 잠시 조용해졌다."
+          text: "별자리를 보는 월명이 말하면 귀족들은 잠시 조용해졌습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -383,7 +488,7 @@ scenes:
           text: "그럼 가장 덜 위험한 방법을 골라야죠."
       - choice:
           key: c2_reputation
-          prompt: "오늘 안에 혼담을 끝낼 방법을 골라야 한다."
+          prompt: "오늘 안에 혼담을 끝낼 방법을 골라야 합니다."
           char: 덕만
           camera: close
           with: [비담]
@@ -411,10 +516,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 월명]
-          text: "달이 뜬 뒤, 덕만은 비녀를 뺀 채 월명과 마주 섰다."
+          text: "달이 뜬 뒤, 덕만은 비녀를 뺀 채 월명과 마주 섰습니다."
       - say:
           with: [덕만, 월명]
-          text: "덕만은 별자리를 핑계로 세 집에 서로 다른 혼례 날짜를 알려 주려 했다."
+          text: "덕만은 별자리를 핑계로 세 집에 서로 다른 혼례 날짜를 알려 주려 했습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -454,10 +559,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 비담]
-          text: "밤이 깊자 비담은 웃는 얼굴로 가장 독한 소문을 꺼냈다."
+          text: "밤이 깊자 비담은 웃는 얼굴로 가장 독한 소문을 꺼냈습니다."
       - say:
           with: [덕만, 비담]
-          text: "비담은 자신과 덕만이 밤을 함께 보냈다는 말을 퍼뜨리자 했다."
+          text: "비담은 자신과 덕만이 밤을 함께 보냈다는 말을 퍼뜨리자 했습니다."
       - say:
           char: 비담.smirk
           camera: medium
@@ -497,7 +602,37 @@ scenes:
           position: left
       - say:
           delivery: calm
-          text: "해 질 무렵, 세 집의 도장이 왕 앞에 놓였다."
+          text: "해 질 무렵, 세 집의 도장이 왕 앞에 놓였습니다."
+      - say:
+          char: 진평왕.sad
+          camera: medium
+          with: [덕만]
+          text: "내가 찢은 문서가 석 달 동안 세 번 돌아왔다."
+      - say:
+          char: 덕만.sad
+          camera: medium
+          with: [진평왕]
+          text: "아버지 도장도 없는데 왜 못 끝냅니까?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "저들은 이미 내 약속이라 퍼뜨렸다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "내가 취소하면 세 집 군사가 궁문을 닫는다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "혼인 때문에 군사를 움직인다고요?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "혼인은 핑계다. 내 뒤를 시험하는 것이다."
       - say:
           char: 진평왕.sad
           camera: medium
@@ -513,7 +648,12 @@ scenes:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "하지만 그러면 네가 직접 대답할 기회를 빼앗게 된다."
+          text: "내가 막으면 약한 왕의 변명으로 끝난다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "네가 거절해야 저들이 네 앞에 서게 된다."
       - say:
           char: 덕만.sad
           camera: close
@@ -546,7 +686,7 @@ scenes:
           text: "그래도 제 대답은 제가 하겠습니다."
       - choice:
           key: c2_throne
-          prompt: "세 집이 덕만의 대답을 기다린다."
+          prompt: "세 집이 덕만의 대답을 기다립니다."
           char: 덕만
           camera: close
           with: [진평왕]
@@ -633,7 +773,7 @@ scenes:
           position: left
       - say:
           with: [덕만, 칠숙]
-          text: "덕만이 세 집의 비밀 합의서를 왕 앞에 펼쳤다."
+          text: "덕만이 세 집의 비밀 합의서를 왕 앞에 펼쳤습니다."
       - say:
           char: 덕만.angry
           camera: medium
@@ -656,7 +796,7 @@ scenes:
           text: "그럼 세 집에 원본을 가져오라고 하십시오."
       - say:
           wait: 650
-          text: "세 집의 대표들은 대답 대신 서로의 얼굴부터 살폈다."
+          text: "세 집의 대표들은 대답 대신 서로의 얼굴부터 살폈습니다."
       - goto: chapter2_end
 
   chapter2_end:
@@ -672,7 +812,16 @@ scenes:
       - say:
           delivery: calm
           wait: 750
-          text: "그날 밤, 궁이 조용해진 지 두 시간쯤 지났을 때였다."
+          text: "그날 밤, 궁이 조용해진 지 두 시간쯤 지났을 때였습니다."
+      - say:
+          with: [덕만, 소원]
+          wait: 650
+          text: "작은 서재 창틀에서는 약속한 문서 대신 핏방울이 떨어졌습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "문서 담당 관리가 오기로 한 곳이야."
       - say:
           char: 소원.nervous
           camera: medium
@@ -687,7 +836,7 @@ scenes:
       - say:
           with: [덕만, 소원]
           wait: 850
-          text: "말이 끝나자 문 아래로 검붉은 피가 번졌다."
+          text: "말이 끝나자 문 아래로 검붉은 피가 번졌습니다."
       - say:
           char: 덕만
           camera: medium
@@ -695,7 +844,7 @@ scenes:
           text: "뒤로 가. 내가 열어 볼게."
       - say:
           with: [덕만, 소원]
-          text: "문을 밀자 안쪽의 무언가가 무겁게 걸렸다."
+          text: "문을 밀자 안쪽의 무언가가 무겁게 걸렸습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -730,7 +879,7 @@ scenes:
           wait: 900
           text: "오늘은…… 왕좌보다 살고 싶어요."
       - say:
-          text: "두 사람은 서로 옷을 바꿔 입고 신분을 숨긴 채 동문을 나섰다."
+          text: "두 사람은 서로 옷을 바꿔 입고 신분을 숨긴 채 동문을 나섰습니다."
       - say:
           char: 유신.sad
           camera: close
@@ -750,7 +899,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 12 — 신라를 떠난 두 사람"
-          message: "덕만과 유신은 살아남았다. 대신 두 사람의 이름은 신라에서 지워졌다."
+          message: "덕만과 유신은 살아남았습니다. 대신 두 사람의 이름은 신라에서 지워졌습니다."
 
   go_13_three_knives:
     actions:
@@ -773,7 +922,7 @@ scenes:
           with: [칠숙]
           text: "저를 데려가고 싶다면 더 좋은 조건을 가져오라 하세요."
       - say:
-          text: "덕만만 웃었고 연회장은 조용했다."
+          text: "덕만만 웃었고 연회장은 조용했습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -792,7 +941,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 13 — 세 집안의 습격"
-          message: "덕만의 마차는 세 집안의 땅을 지날 때마다 습격받았다."
+          message: "덕만의 마차는 세 집안의 땅을 지날 때마다 습격받았습니다."
 
   go_14_barren_lie:
     actions:
@@ -805,9 +954,9 @@ scenes:
           id: 월명
           position: right
       - say:
-          text: "‘덕만공주는 아이를 가질 수 없다.’"
+          text: "‘덕만공주는 아이를 가질 수 없습니다.’"
       - say:
-          text: "거짓 진단서 한 장에 세 집은 모두 혼담을 거뒀다."
+          text: "거짓 진단서 한 장에 세 집은 모두 혼담을 거뒀습니다."
       - say:
           char: 덕만
           camera: medium
@@ -831,7 +980,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 14 — 거짓 진단서"
-          message: "세 귀족 집안은 혼담과 함께 덕만의 이름도 다음 왕 명단에서 지웠다."
+          message: "세 귀족 집안은 혼담과 함께 덕만의 이름도 다음 왕 명단에서 지웠습니다."
 
   go_15_laughing_bride:
     actions:
@@ -844,7 +993,7 @@ scenes:
           id: 천명
           position: right
       - say:
-          text: "덕만은 예물 셋을 차례로 들며 일부러 웃음거리로 만들었다."
+          text: "덕만은 예물 셋을 차례로 들며 일부러 웃음거리로 만들었습니다."
       - say:
           char: 천명.nervous
           camera: medium
@@ -856,7 +1005,7 @@ scenes:
           with: [천명]
           text: "자존심이 상하면 물러가겠지."
       - say:
-          text: "다음 날 아침, 세 집은 하나의 혼례 날짜를 정해 왔다."
+          text: "다음 날 아침, 세 집은 하나의 혼례 날짜를 정해 왔습니다."
       - say:
           char: 천명.sad
           camera: close
@@ -870,7 +1019,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 15 — 모욕이 만든 혼인"
-          message: "덕만은 혼인을 받아들였다. 공식 기록에는 남편 이름만 남았다."
+          message: "덕만은 혼인을 받아들였습니다. 공식 기록에는 남편 이름만 남았습니다."
 
   go_16_unmarried_crime:
     actions:
@@ -896,7 +1045,7 @@ scenes:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "하지만 이미 왕의 이름으로 약속했다."
+          text: "하지만 저들은 이미 내 약속이라 퍼뜨렸다."
       - say:
           char: 덕만.sad
           camera: close
@@ -912,8 +1061,8 @@ scenes:
           text: "왕의 명령을 거부했으니 궁 밖 별채에 가두겠습니다."
       - say:
           wait: 750
-          text: "호위들이 움직여 아버지와 딸 사이를 갈랐다."
+          text: "호위들이 움직여 아버지와 딸 사이를 갈랐습니다."
       - effect: darken
       - gameOver:
           title: "운명 16 — 닫힌 별채"
-          message: "덕만은 혼인을 거부하고 궁 밖 별채에 갇혔다. 다음 왕 후보에서도 제외됐다."
+          message: "덕만은 혼인을 거부하고 궁 밖 별채에 갇혔습니다. 다음 왕 후보에서도 제외됐습니다."
