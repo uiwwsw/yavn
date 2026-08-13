@@ -17,12 +17,12 @@ scenes:
             - 덕만
           delivery: calm
           wait: 750
-          text: "632년 1월, 왕이 된 지 3일째 되는 아침에 덕만의 첫 회의가 열렸다."
+          text: "632년 1월, 왕이 된 지 3일째 되는 아침에 덕만의 첫 회의가 열렸습니다."
       - say:
           with:
             - 덕만
           delivery: calm
-          text: "궁문 밖에서는 새 왕의 이름보다 곡식을 달라는 외침이 더 크게 들렸다."
+          text: "궁문 밖에서는 새 왕의 이름보다 곡식을 달라는 외침이 더 크게 들렸습니다."
       - char:
           id: 소원
           position: left
@@ -132,7 +132,7 @@ scenes:
       - say:
           with: [덕만, 진운]
           wait: 650
-          text: "3일 전 되찾은 왕의 도장이 아직 피 묻은 천 위에 놓여 있었다."
+          text: "3일 전 되찾은 왕의 도장이 아직 피 묻은 천 위에 놓여 있었습니다."
       - say:
           char: 진운
           camera: medium
@@ -163,7 +163,7 @@ scenes:
           position: right
       - say:
           with: [덕만, 소원]
-          text: "덕만은 깨진 도장 두 조각을 왕좌 곁에 그대로 내려놓았다."
+          text: "덕만은 깨진 도장 두 조각을 왕좌 곁에 그대로 내려놓았습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -186,7 +186,7 @@ scenes:
     actions:
       - choice:
           key: final_opening
-          prompt: "왕의 첫 명령을 모두가 기다린다."
+          prompt: "왕의 첫 명령을 모두가 기다립니다."
           char: 덕만
           camera: close
           with: []
@@ -224,7 +224,7 @@ scenes:
             - 덕만
             - 진운
           wait: 700
-          text: "덕만은 아버지와 함께 열었던 창고의 빗장을 이번에는 직접 풀었다."
+          text: "덕만은 아버지와 함께 열었던 창고의 빗장을 이번에는 직접 풀었습니다."
       - say:
           char: 진운
           camera: medium
@@ -273,7 +273,7 @@ scenes:
           with:
             - 덕만
             - 유신
-          text: "덕만은 흉년이 든 지역의 세금을 다음 가을까지 미뤘다."
+          text: "덕만은 흉년이 든 지역의 세금을 다음 가을까지 미뤘습니다."
       - say:
           char: 유신
           camera: medium
@@ -314,7 +314,7 @@ scenes:
           with:
             - 덕만
             - 소원
-          text: "덕만은 무거운 왕의 옷을 입은 채 궁문 밖으로 걸어 나갔다."
+          text: "덕만은 무거운 왕의 옷을 입은 채 궁문 밖으로 걸어 나갔습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -360,18 +360,59 @@ scenes:
       - say:
           delivery: calm
           wait: 900
-          text: "일 년이 지나 633년 봄이 왔다."
+          text: "일 년이 지나 633년 봄이 왔습니다."
       - say:
           with:
             - 덕만
             - 비담
           delivery: calm
-          text: "그동안 비어 있던 창고가 다시 채워지고, 그 앞에는 새 곡식 자루가 쌓였다."
+          text: "그동안 비어 있던 창고가 다시 채워지고, 그 앞에는 새 곡식 자루가 쌓였습니다."
       - say:
           with:
             - 덕만
           delivery: calm
-          text: "왕의 회의장에는 세금을 미룬 지역에서 보낸 첫 수확 소식과 감사 글이 펼쳐졌다."
+          text: "왕의 회의장에는 세금을 미룬 지역에서 보낸 첫 수확 소식과 감사 글이 펼쳐졌습니다."
+      - say:
+          with:
+            - 덕만
+            - 비담
+          text: "비담은 열이틀 동안 일곱 집을 돌고 찢어진 소매로 돌아왔습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with:
+            - 비담
+          text: "손은 왜 다쳤습니까?"
+      - say:
+          char: 비담.smirk
+          camera: medium
+          with:
+            - 덕만
+          text: "세 집은 문을 열고 두 집은 물을 뿌렸습니다."
+      - say:
+          char: 비담
+          camera: close
+          with:
+            - 덕만
+          text: "나머지 두 집은 제 손에 도장을 찍었고요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 비담
+          text: "제가 미룬 세금 때문에 비담이 욕을 들었군요."
+      - say:
+          char: 비담.sad
+          camera: close
+          with:
+            - 덕만
+          text: "칭찬은 전하께, 화는 제게 왔습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 비담
+          text: "고맙습니다. 오늘은 먼저 쉬세요."
       - say:
           char: 비담.smirk
           camera: medium
@@ -396,7 +437,22 @@ scenes:
           with:
             - 비담
           wait: 800
-          text: "신라에 비담이 꼭 필요하다는 뜻이에요."
+          text: "신라에 비담이 꼭 필요하다는 뜻입니다."
+      - char:
+          id: 유신
+          position: center
+      - say:
+          char: 유신.angry
+          camera: medium
+          with:
+            - 덕만
+          text: "전하, 서쪽 성 두 곳이 곡식을 거부했습니다."
+      - say:
+          char: 덕만.sad
+          camera: medium
+          with:
+            - 비담
+          text: "비담, 쉬라고 한 말을 바로 거두게 됐네요."
       - say:
           char: 비담.sad
           camera: close
@@ -409,14 +465,20 @@ scenes:
           camera: medium
           with:
             - 비담
-          text: "비담이 아니면 부탁할 수 없는 일이에요."
+          text: "비담이 아니면 부탁할 수 없는 일입니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 비담
+          text: "돌아오시면 이번에는 차부터 마시지요."
       - say:
           char: 비담.smirk
           camera: close
           with:
             - 덕만
           wait: 750
-          text: "그 말은 오늘 하루만 믿어 보죠."
+          text: "그 약속은 돌아와서 확인하지요."
       - goto: proof_choice
 
   proof_choice:
@@ -436,30 +498,35 @@ scenes:
             - 유신
           delivery: calm
           wait: 1100
-          text: "그 뒤로 아홉 해가 흘렀다."
+          text: "그 뒤로 아홉 해가 흘렀습니다."
       - say:
           with:
             - 덕만
           delivery: calm
           wait: 900
-          text: "그동안 덕만의 머리에는 흰머리가 늘었고, 유신의 지도에는 지켜야 할 성이 늘었다."
+          text: "그동안 덕만의 머리에는 흰머리가 늘었고, 유신의 지도에는 지켜야 할 성이 늘었습니다."
+      - say:
+          with:
+            - 덕만
+            - 유신
+          text: "왕의 탁자에는 유신의 닳은 지도와 진운의 장부, 비담의 붉은 매듭이 쌓였습니다."
       - say:
           with:
             - 덕만
             - 유신
           delivery: calm
           wait: 850
-          text: "642년 가을, 왕이 된 지 11년째에 대야성이 무너졌다."
+          text: "642년 가을, 왕이 된 지 11년째에 대야성이 무너졌습니다."
       - say:
           with:
             - 덕만
             - 유신
-          text: "대야성이 무너지면서 서쪽의 성들과 피란길이 한꺼번에 끊겼다."
+          text: "대야성이 무너지면서 서쪽의 성들과 피란길이 한꺼번에 끊겼습니다."
       - say:
           with:
             - 덕만
             - 유신
-          text: "피란민을 살려 달라는 글과 성을 지켜 달라는 긴급 보고가 같은 탁자에 놓였다."
+          text: "피란민을 살려 달라는 글과 성을 지켜 달라는 긴급 보고가 같은 탁자에 놓였습니다."
       - say:
           char: 유신.angry
           camera: medium
@@ -506,6 +573,18 @@ scenes:
             - 덕만
           text: "피란민도 병사도 해가 지기 전 명령을 기다립니다."
       - say:
+          char: 비담.sad
+          camera: medium
+          with:
+            - 덕만
+          text: "저는 귀족들 창고를 다시 열어 보겠습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with:
+            - 덕만
+          text: "하지만 오늘 보낼 군사는 전하께서 정하셔야 합니다."
+      - say:
           char: 덕만
           camera: close
           with:
@@ -519,7 +598,7 @@ scenes:
           text: "예. 그리고 이번에도 전하께서 책임지셔야 합니다."
       - choice:
           key: final_proof
-          prompt: "대야성의 마지막 신호 불빛이 꺼져 간다."
+          prompt: "대야성의 마지막 신호 불빛이 꺼져 갑니다."
           char: 덕만
           camera: close
           with:
@@ -557,7 +636,7 @@ scenes:
           with:
             - 덕만
             - 소원
-          text: "성문을 열자 지친 피란민들이 한꺼번에 안으로 들어왔다."
+          text: "성문을 열자 지친 피란민들이 한꺼번에 안으로 들어왔습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -588,7 +667,7 @@ scenes:
           with:
             - 덕만
           text: "그 말은 제가 직접 적어 둘게요."
-      - goto: pagoda_bridge
+      - goto: war_aftershock
 
   proof_evidence:
     actions:
@@ -604,7 +683,7 @@ scenes:
           with:
             - 덕만
             - 유신
-          text: "덕만은 오래 쥐고 있던 왕의 도장을 유신의 손에 건넸다."
+          text: "덕만은 오래 쥐고 있던 왕의 도장을 유신의 손에 건넸습니다."
       - say:
           char: 유신
           camera: medium
@@ -637,7 +716,7 @@ scenes:
             - 덕만
           wait: 900
           text: "그러면 명령 때문이 아니라, 약속을 지키러 돌아오겠습니다."
-      - goto: pagoda_bridge
+      - goto: war_aftershock
 
   proof_army:
     actions:
@@ -653,7 +732,7 @@ scenes:
           with:
             - 덕만
             - 비담
-          text: "덕만은 남은 성마다 끝까지 버틸 병력을 다시 나눴다."
+          text: "덕만은 남은 성마다 끝까지 버틸 병력을 다시 나눴습니다."
       - say:
           char: 비담
           camera: medium
@@ -684,6 +763,86 @@ scenes:
           with:
             - 덕만
           text: "그렇게 바로 인정하시니 더 화내기도 어렵군요."
+      - goto: war_aftershock
+
+  war_aftershock:
+    actions:
+      - bg: council_hall
+      - camera: medium
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 비담
+          position: right
+      - say:
+          delivery: calm
+          wait: 850
+          text: "642년 겨울, 첫눈이 내린 날 비담이 귀족 회의에서 돌아왔습니다."
+      - say:
+          with: [덕만, 비담]
+          text: "입술은 터져 있었고, 품에는 왕을 끌어내리자는 글이 세 장 들어 있었습니다."
+      - say:
+          char: 덕만.sad
+          camera: medium
+          with: [비담]
+          text: "누가 다치게 했습니까?"
+      - say:
+          char: 비담.smirk
+          camera: medium
+          with: [덕만]
+          text: "대야성을 잃은 화를 쉬운 사람에게 냈겠지요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "제 결정이었다고 그대로 말하십시오."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "그러면 저 글이 여섯 장으로 늘어납니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "그래서 우리 모두의 결정이었다고 거짓말했습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "제 이름을 지키느라 비담 이름을 썼군요."
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만]
+          text: "유신에게는 군사를, 진운에게는 장부를 맡기십니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "제게는 늘 사람들의 미움을 맡기시고요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "믿어서 맡긴다는 말로 너무 오래 넘겼습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          wait: 850
+          text: "예. 전하와 제 이야기는 늘 일이 끝난 뒤였지요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "이번에는 끝나기 전에 다시 이야기합시다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "그 약속도 적어 두겠습니다."
       - goto: pagoda_bridge
 
   pagoda_bridge:
@@ -699,24 +858,24 @@ scenes:
       - say:
           delivery: calm
           wait: 1000
-          text: "3년 뒤인 645년, 황룡사의 9층 목탑이 마침내 모습을 드러냈다."
+          text: "3년 뒤인 645년, 황룡사의 9층 목탑이 마침내 모습을 드러냈습니다."
       - say:
           with:
             - 덕만
             - 비담
           delivery: calm
-          text: "대야성을 잃은 뒤 3년 동안, 무너진 방어선과 군대를 다시 정비했다."
+          text: "대야성을 잃은 뒤 3년 동안, 무너진 방어선과 군대를 다시 정비했습니다."
       - say:
           with:
             - 덕만
           delivery: calm
-          text: "절과 빈 관청에는 아직 돌아갈 집이 없는 사람들이 살고 있었다."
+          text: "절과 빈 관청에는 아직 돌아갈 집이 없는 사람들이 살고 있었습니다."
       - say:
           with:
             - 덕만
             - 비담
           delivery: calm
-          text: "사람들은 탑 아래에서도 언제든 떠날 보따리를 베고 잠들었다."
+          text: "사람들은 탑 아래에서도 언제든 떠날 보따리를 베고 잠들었습니다."
       - say:
           char: 비담
           camera: medium
@@ -728,49 +887,232 @@ scenes:
           camera: medium
           with:
             - 비담
-          text: "알아요. 탑만 세운다고 아이들이 배부르진 않지요."
+          text: "압니다. 탑만 세운다고 배부르진 않지요."
       - say:
           char: 덕만.sad
           camera: close
           with:
             - 비담
-          text: "그래도 매일 나라가 끝날까 겁먹게 둘 순 없어요."
+          text: "그래도 나라가 끝날까 겁먹게 둘 순 없습니다."
       - say:
           char: 비담.sad
           camera: close
           with:
             - 덕만
-          text: "곡식과 함께 나라가 버틸 거라는 믿음도 주시겠다고요?"
+          text: "곡식과 함께 버틸 믿음도 주시겠다는 겁니까?"
       - say:
           char: 비담.sad
-          camera: close
+          camera: medium
           with:
             - 덕만
-          wait: 900
-          text: "그런데 제게는 늘 아무것도 주지 않으시는군요."
+          text: "귀족들은 탑보다 다음 왕의 이름을 묻습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만
           camera: close
           with:
             - 비담
-          wait: 850
-          text: "비담. 대체 내게 뭘 원했어요?"
+          text: "승만공주가 3년째 피란민 일을 맡고 있습니다."
       - say:
           char: 비담
           camera: medium
           with:
             - 덕만
-          wait: 1000
-          text: "그 질문은 10년 전에 하셨어야지요."
+          text: "그렇다면 지금 다음 왕으로 밝히십시오."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 비담
+          text: "지금 밝히면 승만부터 표적이 됩니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with:
+            - 덕만
+          wait: 750
+          text: "전하의 아버지도 같은 이유로 미루셨습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 비담
+          text: "압니다. 그래서 같은 잘못을 하고 싶지 않습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with:
+            - 비담
+          text: "지지할 사람을 먼저 모은 뒤 밝히겠습니다."
       - say:
           char: 비담
           camera: close
           with:
             - 덕만
-          wait: 1000
-          text: "이제는 전하가 아니라 제가 원하는 걸 고르겠습니다."
+          text: "그 일을 맡기려고 저를 부르셨군요."
       - say:
-          text: "그날, 비담은 귀족 회의를 이끄는 최고 관직인 상대등에 올랐다."
+          char: 덕만
+          camera: close
+          with:
+            - 비담
+          text: "귀족 회의를 이끄는 자리를 맡아 주세요."
+      - say:
+          char: 비담.sad
+          camera: close
+          with:
+            - 덕만
+          text: "자리를 주시는 겁니까, 일을 주시는 겁니까?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 비담
+          text: "둘 다입니다. 그리고 늦었지만 믿습니다."
+      - say:
+          char: 비담
+          camera: close
+          with:
+            - 덕만
+          wait: 850
+          text: "그럼 제가 가져올 답도 믿어 주십시오."
+      - say:
+          text: "그날 비담은 귀족 회의를 이끄는 가장 높은 자리인 상대등에 올랐습니다."
+      - goto: last_break
+
+  last_break:
+    actions:
+      - bg: council_hall
+      - camera: medium
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 비담
+          position: right
+      - say:
+          delivery: calm
+          wait: 950
+          text: "이듬해인 646년 가을, 선덕왕은 회의 중에도 자주 숨을 골랐습니다."
+      - say:
+          with: [덕만, 비담]
+          text: "비담은 여덟 집의 도장이 찍힌 다음 왕 합의서를 가져왔습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [비담]
+          text: "승만공주를 받아들이겠답니까?"
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만]
+          text: "조건이 있습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "장수는 귀족들이 고르고 창고는 함께 엽니다."
+      - say:
+          char: 덕만.angry
+          camera: close
+          with: [비담]
+          text: "그건 다음 왕이 아니라 인질입니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "거절하면 전하 뒤에 또 빈 왕좌가 남습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "저도 그 빈자리가 얼마나 무서운지 압니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "그래서 승만의 이름을 이미 문서에 남겼습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "아무도 모르는 문서는 사람을 지키지 못합니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "전하께서 아버지를 원망한 밤을 잊으셨습니까?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          wait: 850
+          text: "잊지 않았습니다. 그래서 조건 없이 남기려는 겁니다."
+      - say:
+          char: 비담.sad
+          camera: medium
+          with: [덕만]
+          text: "제가 받아 온 여덟 집은 또 제가 달래야겠군요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "조건을 바꾸도록 설득해 주십시오."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "전하는 제가 미움받는 일만 믿으십니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "비담을 믿어도 이 조건은 받을 수 없습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "그 말은 적어도 솔직하군요."
+      - say:
+          with: [덕만, 비담]
+          wait: 900
+          text: "비담은 오래 차고 다니던 붉은 매듭을 왕의 탁자에 내려놓았습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "다시 올 겁니까?"
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "이번에는 전하께서 기다려 보십시오."
+      - bg: fortress
+      - camera: medium
+      - char:
+          id: 비담
+          position: center
+      - say:
+          delivery: calm
+          wait: 1000
+          text: "석 달 뒤, 비담 앞에 여덟 집의 군사와 반란 깃발이 모였습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          text: "전하의 잘못은 여자라서가 아닙니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          text: "하지만 성문을 여는 말은 그것뿐이군요."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          wait: 950
+          text: "거짓인 줄 알고도 쓰겠습니다."
+      - say:
+          with: [비담]
+          text: "깃발에는 ‘여자는 나라를 다스릴 수 없다’라고 적혀 있었습니다."
       - goto: crown_assessment
 
   crown_assessment:
@@ -781,18 +1123,18 @@ scenes:
       - say:
           delivery: calm
           wait: 1100
-          text: "그로부터 2년이 더 지난 647년 1월."
+          text: "황룡사 탑을 세운 지 2년째인 647년 1월이었습니다."
       - say:
           delivery: calm
           wait: 900
-          text: "오래 앓던 선덕왕은 누운 자리에서 익숙한 북소리가 반란을 알리는 소리로 바뀌는 걸 들었다."
+          text: "오래 앓던 선덕왕은 누운 자리에서 북소리가 반란 신호로 바뀌는 걸 들었습니다."
       - say:
           delivery: calm
-          text: "비담은 ‘여왕은 나라를 다스릴 수 없다’며 명활성에 군사를 모았다."
+          text: "비담은 다음 왕 합의를 강제로 바꾸겠다며 명활성에 군사를 모았습니다."
       - say:
           delivery: calm
           wait: 1000
-          text: "왕궁과 명활성 사이의 문이 닫혔다. 비담이 보내던 소식도 끊겼다."
+          text: "왕궁과 명활성 사이의 문이 닫혔고, 비담이 보내던 소식도 끊겼습니다."
       - branch:
           cases:
             - when:
@@ -830,25 +1172,25 @@ scenes:
   crown_balanced:
     actions:
       - say:
-          text: "백성과 군사와 귀족이 보낸 소식이 밤새 왕의 방으로 들어왔다."
+          text: "백성과 군사와 귀족이 보낸 소식이 밤새 왕의 방으로 들어왔습니다."
       - goto: crown_choice
 
   crown_force:
     actions:
       - say:
-          text: "군사들은 왕의 명령을 따랐지만 오랜 전쟁으로 수가 크게 줄어 있었다."
+          text: "군사들은 왕의 명령을 따랐지만 오랜 전쟁으로 수가 크게 줄어 있었습니다."
       - goto: crown_choice
 
   crown_people_ready:
     actions:
       - say:
-          text: "성 밖에는 병든 왕의 이름을 부르는 사람들이 모였다."
+          text: "성 밖에는 병든 왕의 이름을 부르는 사람들이 모였습니다."
       - goto: crown_choice
 
   crown_fragile:
     actions:
       - say:
-          text: "왕을 돕겠다는 사람은 많았다. 하지만 서로를 반란군으로 의심해 함께 움직이지 못했다."
+          text: "왕을 돕겠다는 사람은 많았습니다. 하지만 서로를 반란군으로 의심해 함께 움직이지 못했습니다."
       - goto: crown_choice
 
   crown_choice:
@@ -867,7 +1209,7 @@ scenes:
             - 덕만
             - 유신
           wait: 900
-          text: "한밤중, 월성 위의 별 하나가 길게 불타며 떨어졌다."
+          text: "한밤중, 월성 위의 별 하나가 길게 불타며 떨어졌습니다."
       - effect: pulse
       - say:
           char: 유신.angry
@@ -887,6 +1229,30 @@ scenes:
           with:
             - 덕만
           text: "여자가 왕이라 나라가 어지럽다 합니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with:
+            - 유신
+          text: "비담이 정말 그 말을 믿습니까?"
+      - say:
+          char: 유신
+          camera: medium
+          with:
+            - 덕만
+          text: "다음 왕 조건을 거절한 뒤 군사를 모았습니다."
+      - say:
+          char: 유신.sad
+          camera: close
+          with:
+            - 덕만
+          text: "믿어서가 아니라 사람을 모으려고 쓴 말입니다."
+      - say:
+          char: 덕만.angry
+          camera: close
+          with:
+            - 유신
+          text: "거짓인 줄 알면서 나라를 갈랐군요."
       - bg: fortress
       - camera: medium
       - char:
@@ -894,7 +1260,19 @@ scenes:
           position: center
       - say:
           with: [비담]
-          text: "같은 시각, 명활성의 비담도 왕궁 위로 떨어지는 별을 보았다."
+          text: "같은 시각, 명활성의 비담도 왕궁 위로 떨어지는 별을 보았습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          delivery: whisper
+          text: "합의로 못 연 문을 군사로 열겠다고 정했습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          delivery: whisper
+          text: "그 결정은 누구도 대신 시키지 않았습니다."
       - say:
           char: 비담.sad
           camera: close
@@ -931,12 +1309,12 @@ scenes:
           position: right
       - say:
           with: [덕만, 소원]
-          text: "반란을 알리는 첫 북소리가 나기 전, 소원이 붉은 매듭을 들고 뛰어왔다."
+          text: "반란을 알리는 첫 북소리가 나기 전, 소원이 붉은 매듭을 들고 뛰어왔습니다."
       - say:
           char: 소원.nervous
           camera: medium
           with: [덕만]
-          text: "비담님이 보낸 마지막 신호예요."
+          text: "비담님이 보낸 마지막 신호입니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -946,7 +1324,7 @@ scenes:
           char: 소원
           camera: close
           with: [덕만]
-          text: "전하만이라도 도망칠 시간을 준 거예요."
+          text: "전하만이라도 도망칠 시간을 준 겁니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -968,7 +1346,7 @@ scenes:
           position: right
       - say:
           with: [덕만, 유신]
-          text: "비담이 늘 보내던 붉은 매듭은 그 밤 끝내 오지 않았다."
+          text: "비담이 늘 보내던 붉은 매듭은 그 밤 끝내 오지 않았습니다."
       - say:
           char: 유신.angry
           camera: medium
@@ -978,7 +1356,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [유신]
-          text: "그가 몇 번이나 마음을 말했는데 제가 못 들은 척했어요."
+          text: "그가 몇 번이나 말했는데 제가 듣지 않았습니다."
       - say:
           char: 유신
           camera: close
@@ -1020,7 +1398,7 @@ scenes:
           char: 천명.sad
           camera: medium
           with: [덕만]
-          text: "처음부터 넌 나한테 무섭다고 말했잖아."
+          text: "처음부터 나는 네게 무섭다고 말했잖아."
       - say:
           char: 덕만.sad
           camera: close
@@ -1089,7 +1467,7 @@ scenes:
           with:
             - 덕만
             - 소원
-          text: "왕좌 곁에는 천명이 남긴 붉은 비녀가 놓여 있었다."
+          text: "왕좌 곁에는 천명이 남긴 붉은 비녀가 놓여 있었습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -1159,7 +1537,7 @@ scenes:
           text: "그래. 마지막 명령까지 쫓기듯 내리진 말자."
       - choice:
           key: final_crown
-          prompt: "두 번째 공격 전에 마지막 명령을 정해야 한다."
+          prompt: "두 번째 공격 전에 마지막 명령을 정해야 합니다."
           char: 덕만
           camera: close
           with: []
@@ -1334,7 +1712,7 @@ scenes:
           with:
             - 유신
             - 비담
-          text: "떨어진 별을 본 왕의 군사들이 방패를 쥔 채 술렁였다."
+          text: "떨어진 별을 본 왕의 군사들이 방패를 쥔 채 술렁였습니다."
       - say:
           char: 비담.sad
           camera: medium
@@ -1353,7 +1731,7 @@ scenes:
             - 유신
             - 비담
           wait: 900
-          text: "그 순간 유신의 군사들이 불붙인 연을 밤하늘 높이 띄웠다."
+          text: "그 순간 유신의 군사들이 불붙인 연을 밤하늘 높이 띄웠습니다."
       - say:
           char: 유신.angry
           camera: close
@@ -1365,7 +1743,7 @@ scenes:
           camera: close
           with: []
           wait: 1000
-          text: "마지막까지도 저보다 나라를 먼저 보시는군요."
+          text: "마지막까지도 제 상처보다 나라를 먼저 보시는군요."
       - branch:
           cases:
             - when:
@@ -1374,6 +1752,93 @@ scenes:
                 value: true
               goto: ending_true_sister
           default: ending_true_memory
+
+  ending_true_judgment:
+    actions:
+      - bg: locked_room
+      - camera: medium
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 비담
+          position: right
+      - say:
+          with: [덕만, 비담]
+          wait: 850
+          text: "칼을 빼앗긴 비담이 왕 앞에 마지막으로 섰습니다."
+      - say:
+          char: 비담.sad
+          camera: medium
+          with: [덕만]
+          text: "왜 저를 살려 두셨습니까?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "상처가 죄를 없애지는 않습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "죄가 사람까지 지우게 두지도 않겠습니다."
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만]
+          text: "언제부터 둘을 나눠 보셨습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "잠긴 방에서 아진을 만난 날 배웠습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "그럼 제게는 무슨 죄를 물으십니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "거짓말로 군사를 일으킨 죄입니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "속아서 따라온 사람의 죄와는 따로 묻겠습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "저를 믿은 적은 있었습니까?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "믿었습니다. 그리고 그 믿음을 일처럼 썼습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "듣지 않은 일은 사과하겠습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "사과로 죽은 사람이 돌아오진 않습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          wait: 850
+          text: "압니다. 비담의 상처도 죄를 없애진 않습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "이제야 제 말을 끝까지 들으셨군요."
+      - goto: ending_true_final
 
   ending_true_sister:
     actions:
@@ -1422,7 +1887,7 @@ scenes:
           with:
             - 덕만
           text: "알겠어. 네 마지막 명령, 내가 전할게."
-      - goto: ending_true_final
+      - goto: ending_true_judgment
 
   ending_true_memory:
     actions:
@@ -1469,7 +1934,7 @@ scenes:
           with:
             - 덕만
           text: "예. 하신 말씀 그대로 적을게요."
-      - goto: ending_true_final
+      - goto: ending_true_judgment
 
   ending_true_final:
     actions:
@@ -1507,19 +1972,19 @@ scenes:
             - 덕만
           delivery: sad
           wait: 1400
-          text: "647년 1월, 날이 밝기 전 선덕왕의 숨이 멎었다."
+          text: "647년 1월, 날이 밝기 전 선덕왕의 숨이 멎었습니다."
       - say:
           with: []
           delivery: calm
-          text: "다음 날, 승만은 진덕왕으로 왕좌에 앉았다."
+          text: "다음 날, 승만은 진덕왕으로 왕좌에 앉았습니다."
       - say:
           with: []
           delivery: calm
-          text: "유신은 닫혔던 성문을 열고 밤새 죽은 군사들을 거두었다."
+          text: "유신은 닫혔던 성문을 열고 밤새 죽은 군사들을 거두었습니다."
       - say:
           with: []
           delivery: calm
-          text: "빈 왕좌 곁에는 16년 전 덕만이 처음 읽었던 세 마을의 낡은 청원서가 남아 있었다."
+          text: "빈 왕좌 곁에는 16년 전 덕만이 처음 읽었던 세 마을의 낡은 청원서가 남아 있었습니다."
           wait: 1200
       - ending: true_end
 
@@ -1535,7 +2000,7 @@ scenes:
           id: 유신
           position: right
       - say:
-          text: "덕만은 반란에 가담한 집안들을 명단에서 통째로 지웠다."
+          text: "덕만은 반란에 가담한 집안들을 명단에서 통째로 지웠습니다."
       - say:
           char: 유신.sad
           camera: medium
@@ -1555,7 +2020,7 @@ scenes:
             - 덕만
           text: "그러면 다음 반란에는 신라 모두가 적이 됩니다."
       - say:
-          text: "반란은 끝났지만, 그 뒤로 왕 앞에서 반대하는 사람도 사라졌다."
+          text: "반란은 끝났지만, 그 뒤로 왕 앞에서 반대하는 사람도 사라졌습니다."
       - ending: first_tyrant
 
   ending_permitted:
@@ -1569,7 +2034,7 @@ scenes:
           id: 진운
           position: right
       - say:
-          text: "귀족들은 다음 왕을 자신들이 정한다는 문서를 덕만 앞에 내밀었다."
+          text: "귀족들은 다음 왕을 자신들이 정한다는 문서를 덕만 앞에 내밀었습니다."
       - say:
           char: 진운
           camera: medium
@@ -1589,7 +2054,7 @@ scenes:
             - 덕만
           text: "아마 이 글에 도장을 찍은 사람들이겠지요."
       - say:
-          text: "반란은 끝났다. 그날부터 왕은 명령을 내릴 때마다 귀족 13명의 허락을 받아야 했다."
+          text: "반란은 끝났습니다. 그날부터 왕은 명령을 내릴 때마다 귀족 13명의 허락을 받아야 했습니다."
       - ending: permitted_queen
 
   ending_queen_consort:
@@ -1603,7 +2068,7 @@ scenes:
           id: 진운
           position: right
       - say:
-          text: "덕만은 반란을 멈추기 위해 진운을 다음 왕으로 세웠다."
+          text: "덕만은 반란을 멈추기 위해 진운을 다음 왕으로 세웠습니다."
       - say:
           char: 진운.nervous
           camera: medium
@@ -1623,7 +2088,7 @@ scenes:
             - 덕만
           text: "그러면 저는 평생 전하께 빚진 왕이 됩니다."
       - say:
-          text: "반란은 끝나고 진운이 왕이 됐다. 덕만이 왕으로 보낸 16년은 기록에서 지워지고 왕비로만 남았다."
+          text: "반란은 끝나고 진운이 왕이 됐습니다. 덕만이 왕으로 보낸 16년은 기록에서 지워지고 왕비로만 남았습니다."
       - ending: queen_consort
 
   ending_abdicated:
@@ -1637,7 +2102,7 @@ scenes:
           id: 진운
           position: right
       - say:
-          text: "덕만과 진운은 군사들이 보는 앞에서 함께 왕좌를 내려왔다."
+          text: "덕만과 진운은 군사들이 보는 앞에서 함께 왕좌를 내려왔습니다."
       - say:
           char: 진운
           camera: medium
@@ -1663,7 +2128,7 @@ scenes:
             - 덕만
           text: "왕이 없던 그 하루는 제가 책임지고 기록하겠습니다."
       - say:
-          text: "성문 양쪽의 군사들이 칼을 내려놓고 부상자부터 함께 옮겼다."
+          text: "성문 양쪽의 군사들이 칼을 내려놓고 부상자부터 함께 옮겼습니다."
       - ending: abdicated_crown
 
   ending_people:
@@ -1677,7 +2142,7 @@ scenes:
           id: 소원
           position: right
       - say:
-          text: "덕만은 귀족 회의를 박차고 나와 병든 몸으로 성문 위에 섰다."
+          text: "덕만은 귀족 회의를 박차고 나와 병든 몸으로 성문 위에 섰습니다."
       - say:
           char: 소원
           camera: medium
@@ -1705,7 +2170,7 @@ scenes:
           wait: 1000
           text: "아니. 왕이 아니라 신라가 살아 있다고."
       - say:
-          text: "성 밖 사람들이 그 말을 따라 외쳤고, 함성은 월성 안까지 들렸다."
+          text: "성 밖 사람들이 그 말을 따라 외쳤고, 함성은 월성 안까지 들렸습니다."
       - ending: peoples_princess
 
   ending_lonely:
@@ -1719,7 +2184,7 @@ scenes:
       - say:
           with:
             - 덕만
-          text: "덕만은 아무도 남지 않은 왕의 회의장에서 마지막 명령을 적었다."
+          text: "덕만은 아무도 남지 않은 왕의 회의장에서 마지막 명령을 적었습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -1728,7 +2193,7 @@ scenes:
       - say:
           with:
             - 덕만
-          text: "문밖에서는 아무도 대답하지 않았다."
+          text: "문밖에서는 아무도 대답하지 않았습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -1736,7 +2201,7 @@ scenes:
           wait: 1000
           text: "왕이 되면 혼자여도 괜찮을 줄 알았어."
       - say:
-          text: "날이 밝기 전, 반란군이 왕의 회의장 앞까지 들어왔다."
+          text: "날이 밝기 전, 반란군이 왕의 회의장 앞까지 들어왔습니다."
       - ending: lonely_throne
 
   ending_one_step:
@@ -1748,21 +2213,21 @@ scenes:
           id: 덕만
           position: center
       - say:
-          text: "귀족들은 승만을 다음 왕으로 인정하는 문서에 도장을 찍었다."
+          text: "귀족들은 승만을 다음 왕으로 인정하는 문서에 도장을 찍었습니다."
       - say:
           char: 덕만
           camera: medium
           with: []
           text: "좋습니다. 이제 성문으로 군사를 보내세요."
       - say:
-          text: "그러나 문밖에는 그 명령을 받을 군사가 한 명도 없었다."
+          text: "그러나 문밖에는 그 명령을 받을 군사가 한 명도 없었습니다."
       - say:
           char: 덕만.sad
           camera: close
           with: []
           text: "다음 왕은 정했는데, 오늘을 지킬 사람이 없구나."
       - say:
-          text: "두 번째 공격 신호가 끝나기도 전에 반란군이 회의장 문을 부쉈다."
+          text: "두 번째 공격 신호가 끝나기도 전에 반란군이 회의장 문을 부쉈습니다."
       - ending: one_step_queen
 
   ending_vanished:
@@ -1802,7 +2267,7 @@ scenes:
             - 비담
           text: "알아. 그래도 내 앞에서는 칼을 내려놔."
       - say:
-          text: "두 사람은 군사들을 물리고 명활성 안으로 들어갔다. 누구도 다시 나오지 않았다."
+          text: "두 사람은 군사들을 물리고 명활성 안으로 들어갔습니다. 누구도 다시 나오지 않았습니다."
       - ending: vanished_princess
 
   ending_broken:
@@ -1818,7 +2283,7 @@ scenes:
           position: right
       - say:
           wait: 900
-          text: "월성과 명활성의 북이 서로의 소리를 덮으려 더 크게 울렸다."
+          text: "월성과 명활성의 북이 서로의 소리를 덮으려 더 크게 울렸습니다."
       - say:
           char: 비담.sad
           camera: medium
@@ -1838,7 +2303,7 @@ scenes:
             - 덕만
           text: "그래도 살아남은 쪽이 왕이 될 겁니다."
       - say:
-          text: "10일이 지나도록 두 성의 북은 한 번도 함께 멎지 않았다."
+          text: "10일이 지나도록 두 성의 북은 한 번도 함께 멎지 않았습니다."
       - ending: broken_alliance
 
   go_34_empty_council:
@@ -1852,7 +2317,7 @@ scenes:
           id: 진운
           position: right
       - say:
-          text: "덕만은 새 왕을 반대한 귀족 13명을 당장 체포하라고 명령했다."
+          text: "덕만은 새 왕을 반대한 귀족 13명을 당장 체포하라고 명령했습니다."
       - say:
           char: 진운.nervous
           camera: medium
@@ -1867,7 +2332,7 @@ scenes:
           text: "내가 먼저 잡지 않으면 저들이 먼저 공격할 겁니다."
       - effect: darken
       - say:
-          text: "그날 밤, 왕의 군사가 13개 집안의 문을 동시에 부쉈다."
+          text: "그날 밤, 왕의 군사가 13개 집안의 문을 동시에 부쉈습니다."
       - say:
           char: 진운
           camera: medium
@@ -1882,11 +2347,11 @@ scenes:
           text: "내가 반란을 막으려다 반란군을 만들었군."
       - effect: pulse
       - say:
-          text: "해가 뜨기 전, 13개 집안의 군사들이 왕의 회의장을 에워쌌다."
+          text: "해가 뜨기 전, 13개 집안의 군사들이 왕의 회의장을 에워쌌습니다."
           wait: 750
       - gameOver:
           title: "운명 34 — 먼저 체포해 만든 반란"
-          message: "덕만이 먼저 부순 13개 집안의 문에서 군사들이 나와 왕궁을 포위했다."
+          message: "덕만이 먼저 부순 13개 집안의 문에서 군사들이 나와 왕궁을 포위했습니다."
 
   go_35_fathers_lie:
     actions:
@@ -1899,7 +2364,7 @@ scenes:
           id: 비담
           position: right
       - say:
-          text: "덕만은 대야성을 되찾았다는 거짓 소식을 피란민들에게 퍼뜨렸다."
+          text: "덕만은 대야성을 되찾았다는 거짓 소식을 피란민들에게 퍼뜨렸습니다."
       - say:
           char: 비담
           camera: medium
@@ -1914,7 +2379,7 @@ scenes:
           text: "3일만 벌면 군대를 다시 정비할 수 있어."
       - effect: focus
       - say:
-          text: "그러나 그날 저녁, 전투에서 패한 병사들이 피투성이로 성문에 도착했다."
+          text: "그러나 그날 저녁, 전투에서 패한 병사들이 피투성이로 성문에 도착했습니다."
       - say:
           char: 비담.sad
           camera: close
@@ -1929,8 +2394,8 @@ scenes:
           text: "내 말이 그 사람들을 적 앞으로 돌려보냈어."
       - effect: pulse
       - say:
-          text: "적군은 돌아가던 피란민을 앞세운 채 성문에 모습을 드러냈다."
+          text: "적군은 돌아가던 피란민을 앞세운 채 성문에 모습을 드러냈습니다."
           wait: 750
       - gameOver:
           title: "운명 35 — 거짓 승리 소식"
-          message: "이겼다는 거짓말을 믿고 돌아간 사람들은 닫힌 성문과 적군 사이에 갇혔다."
+          message: "이겼다는 거짓말을 믿고 돌아간 사람들은 닫힌 성문과 적군 사이에 갇혔습니다."
