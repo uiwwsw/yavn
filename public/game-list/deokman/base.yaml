@@ -106,8 +106,8 @@ state:
   cheonmyeong_trust: 0
   yushin_trust: 0
   bidam_trust: 0
+  ajin_trust: 0
   rival_trust: 0
-  cheonmyeong_alive: true
   clue_black_powder: false
   clue_marriage_pact: false
   clue_oath_fragment: false
@@ -116,19 +116,19 @@ state:
 inventory:
   black_powder:
     name: "검은 독가루"
-    description: "왕의 술잔에 든 독을 덕만 탓으로 돌리려고 그의 손에 묻히려 했던 검은 가루입니다."
+    description: "왕의 약숟가락에 발라 두고 덕만의 인장이 찍힌 포장지로 옮겨 누명을 씌우려 한 검은 독가루입니다."
     image: assets/items/black-powder.svg
     category: "증거"
     order: 10
   marriage_pact:
     name: "혼인 합의서"
-    description: "덕만의 혼인을 두고 세 귀족 가문에 서로 다른 대가를 약속한 문서입니다."
+    description: "덕만과 진운을 혼인시킨 뒤 군사 지휘권과 창고 열쇠를 귀족 연합이 나눠 갖기로 한 합의서입니다."
     image: assets/items/marriage-pact.svg
     category: "증거"
     order: 20
   oath_fragment:
-    name: "남자 왕족을 왕으로 세우는 비밀 문서"
-    description: "남자 왕족만 왕으로 세우겠다고 약속한 귀족들의 이름과 도장이 남은 문서 조각입니다."
+    name: "계승 맹약의 조각"
+    description: "남자 왕족을 앞세우고 장수와 창고지기를 서명한 귀족들이 정하기로 한 맹약의 남은 조각입니다."
     image: assets/items/oath-fragment.svg
     category: "증거"
     order: 30
