@@ -95,7 +95,7 @@ describe('Deokman cinematic reimagining', () => {
     expect(summary).toContain('비담의 반란');
     expect(seoDescription).toContain('같은 권력의 거래');
     expect(asRecord(launcher.showcase).label).toBe('8 CHAPTERS · ONE CROWN');
-    expect(config.version).toBe('6.0.0');
+    expect(config.version).toBe('6.0.1');
   });
 
   it('makes one conspiracy drive every reversal from missing grain to the final rebellion', () => {
@@ -190,6 +190,7 @@ describe('Deokman cinematic reimagining', () => {
       '국경을 상이라 부르지 마라',
       '내가 아직 왕이다. 내 앞에서 다음 왕의 이름을 거래하지 마라',
       '그 값이 네게 누명과 칼로 돌아왔다. 내 실패다',
+      '왕은 모두를 살릴 수 없다. 대신 누구를 두고 왔는지는 잊어선 안 된다',
       '내 뒤를 이을 사람은 너다. 그러나 내 이름 뒤에 숨지는 마라',
     ].forEach((anchor) => expect(allContent).toContain(anchor));
   });
@@ -206,6 +207,8 @@ describe('Deokman cinematic reimagining', () => {
     lines.forEach((line) => expect(line, line).not.toMatch(deferentialEnding));
     expect(finalContent).toContain('지연의 책임은 내가 진다');
     expect(finalContent).toContain('반대는 죄가 아니다');
+    expect(finalContent).toContain('그날 비담의 찻잔은 끝내 비어 있었습니다');
+    expect(finalContent).toContain('이번에도 일이 끝난 뒤겠군요');
     expect(finalContent).toContain('듣겠다. 받아들일지는 왕이 정한다');
     expect(finalContent).toContain('마지막 결정을 내리고 그 결과를 감당할 책임');
     expect(finalContent).toContain('그러나 내 잘못이 네 반란을 지우지는 않는다');

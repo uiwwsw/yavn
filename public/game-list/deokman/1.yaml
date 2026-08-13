@@ -130,6 +130,16 @@ scenes:
           with: [덕만]
           text: "나무 수레 밑에 종이가 붙어 있어요. 누가 찾으러 올까 봐 숨겼나 봐요."
       - say:
+          char: 소원.nervous
+          camera: close
+          with: [덕만]
+          text: "이 사람 이름은 도림이에요. 다들 죽은 관리라고만 부르지만, 동생은 형 이름부터 적어 달랬어요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "도림. 이제부터 기록에도 그렇게 남겨."
+      - say:
           char: 덕만
           camera: close
           with: [소원]
@@ -143,7 +153,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [소원]
-          text: "그러니 이 사람을 범인의 짐꾼으로만 기록하면 안 돼. 끝에라도 우리에게 알리려 했어."
+          text: "그러니 도림을 범인의 짐꾼으로만 기록하면 안 돼. 끝에라도 우리에게 알리려 했어."
       - goto: first_day_join
 
   lead_wrapping:
