@@ -479,6 +479,64 @@ scenes:
             - 덕만
           wait: 750
           text: "그 약속은 돌아와서 확인하지요."
+      - say:
+          delivery: calm
+          with: [덕만]
+          wait: 900
+          text: "비담이 돌아온 날, 왕의 탁자에는 국경 보고가 먼저 올라왔습니다."
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만]
+          text: "차는 다음에 마셔야겠군요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "보고만 끝내고 부르겠다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "신라는 늘 보고가 길지요."
+      - say:
+          delivery: calm
+          text: "3년 뒤, 비담은 깨진 찻잔 하나를 왕의 탁자에 올렸습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [비담]
+          text: "누가 던졌느냐?"
+      - say:
+          char: 비담.smirk
+          camera: medium
+          with: [덕만]
+          text: "세금을 더 내라는 집에서요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "다친 곳은 없느냐?"
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "그 질문을 들으니 조금 낫습니다."
+      - say:
+          delivery: calm
+          text: "다시 4년 뒤, 비담은 왕의 방 앞에서 밤을 새웠습니다."
+      - say:
+          with: [비담]
+          text: "문 안에서는 유신과 전쟁 지도가 아침까지 왕을 붙들었습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          text: "이번에도 일이 끝난 뒤겠군요."
+      - say:
+          with: [비담]
+          wait: 850
+          text: "비담은 준비한 말을 하지 않고 붉은 매듭만 두고 떠났습니다."
       - goto: proof_choice
 
   proof_choice:
@@ -807,6 +865,31 @@ scenes:
           camera: close
           with: [덕만]
           text: "그래서 우리 모두의 결정이었다고 거짓말했습니다."
+      - say:
+          char: 덕만.angry
+          camera: close
+          with: [비담]
+          text: "왜 내 결정을 네 이름 뒤에 숨겼느냐?"
+      - say:
+          char: 비담.sad
+          camera: medium
+          with: [덕만]
+          text: "전하 이름으로는 문이 하나도 안 열렸습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "제 이름을 욕하게 하니 세 집이 열렸고요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "그 문을 열라고 명한 사람은 나다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "하지만 문 앞에 선 사람은 늘 저였습니다."
       - say:
           char: 덕만.sad
           camera: close

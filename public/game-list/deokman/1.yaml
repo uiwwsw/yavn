@@ -216,6 +216,54 @@ scenes:
           camera: medium
           with: [덕만]
           text: "사라진 호위복도 한 벌 있고요."
+      - char:
+          id: 소원
+          position: right
+      - say:
+          with: [덕만, 소원]
+          wait: 650
+          text: "소원은 죽은 악사의 이름이 적힌 작은 나무패를 내놓았습니다."
+      - say:
+          char: 소원.nervous
+          camera: medium
+          with: [덕만]
+          text: "악사 이름은 도림입니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "나는 지금까지 이름도 묻지 않았구나."
+      - say:
+          char: 소원
+          camera: medium
+          with: [덕만]
+          text: "모두 악사라고만 불렀으니까요."
+      - char:
+          id: 유신
+          position: right
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "도림의 가족은 남문 밖에 있습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "먼저 보호하십시오. 범인보다 빨리요."
+      - char:
+          id: 비담
+          position: right
+      - say:
+          char: 비담.smirk
+          camera: medium
+          with: [덕만]
+          text: "누명을 벗기도 전에 남의 가족부터 찾습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "도림이 죽어야 완성되는 누명이었으니까요."
       - say:
           char: 덕만
           camera: medium

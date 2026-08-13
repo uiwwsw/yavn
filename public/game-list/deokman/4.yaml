@@ -291,6 +291,42 @@ scenes:
           text: "사람들은 공주님이 보고만 가실 줄 압니다."
       - say:
           char: 덕만
+          camera: medium
+          with: [월명]
+          text: "이전 지휘관은 어디 있습니까?"
+      - say:
+          char: 월명
+          camera: medium
+          with: [덕만]
+          text: "수도에 보고하러 간 뒤 돌아오지 않았습니다."
+      - char:
+          id: 유신
+          position: right
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "남은 장수들은 창고 열쇠가 없다고 합니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "열쇠는 제가 가져왔습니다."
+      - char:
+          id: 월명
+          position: right
+      - say:
+          char: 월명.warning
+          camera: medium
+          with: [덕만]
+          text: "곡식이 없으면 열쇠도 쇳조각입니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [월명]
+          text: "그래도 오늘은 닫힌 문부터 열겠습니다."
+      - say:
+          char: 덕만
           camera: close
           with: [월명]
           text: "저 아이가 일어나기 전에는 못 갑니다."

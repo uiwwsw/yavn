@@ -362,6 +362,56 @@ scenes:
             - 칠숙
           wait: 650
           text: "그 책임은 왕의 이름으로 남긴다."
+      - say:
+          with: [진평왕, 덕만]
+          wait: 650
+          text: "칠숙이 물러난 뒤에도 빈 방석은 그대로 남았습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [진평왕]
+          text: "왜 저 방석을 치우지 않으셨습니까?"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "치우면 여섯 집이 새 방석을 들고 올 것이다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "그러면 여섯 번 치우시면 됩니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "그 뒤에는 군사를 데리고 올 것이다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "이미 창고마다 군사가 있지 않습니까?"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          wait: 700
+          text: "그래. 내가 너무 오래 내버려 두었다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "오늘 연 창고부터 다시 왕의 것으로 만든다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "그 일도 기록에 남기십시오."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "명한 자도, 막은 자도 모두 남긴다."
       - bg: moon_court
       - camera: medium
       - char:

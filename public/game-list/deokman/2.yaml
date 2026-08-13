@@ -99,6 +99,36 @@ scenes:
           with: [덕만]
           text: "거절 뒤의 책임은 왕이 진다."
       - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "책임진다는 말로는 수레가 돌아오지 않습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 칠숙]
+          text: "곡식 수레를 거둔 세 집의 세금을 멈춘다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "거둔 호위는 왕군에서 이름을 뺀다."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [진평왕]
+          text: "혼인 하나 때문에 나라를 가르시겠습니까?"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "왕명을 막은 자들이 이미 갈랐다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "이제 네 뜻을 말하라. 듣게 만들겠다."
+      - say:
           char: 칠숙.smile
           camera: medium
           with: [덕만]

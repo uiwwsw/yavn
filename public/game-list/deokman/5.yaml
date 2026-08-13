@@ -196,6 +196,33 @@ scenes:
           id: 덕만
           position: left
       - say:
+          char: 덕만
+          camera: medium
+          with: [진평왕]
+          text: "전하께서 없는 자리를 먼저 정하지 마십시오."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "죽음을 미룬다고 나라가 기다리진 않는다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "나라보다 제가 기다리겠습니다."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with: [덕만]
+          text: "그러면 왕이 아니라 아버지로 돌아오마."
+      - say:
+          with: [진평왕, 덕만, 진운]
+          wait: 700
+          text: "진평왕은 대답을 기다리지 않고 몸을 돌렸습니다."
+      - char:
+          id: 덕만
+          position: left
+      - say:
           with: [진평왕, 덕만]
           text: "진평왕은 약그릇을 밀어 둔 채 지팡이를 짚고 회의장을 나갔습니다."
       - char:

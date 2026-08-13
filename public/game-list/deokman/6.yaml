@@ -846,6 +846,31 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [진평왕]
+          text: "저는 살아남을 때마다 누군가를 두고 왔습니다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "왕은 모두를 살릴 수 없다."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with: [덕만]
+          text: "대신 누구를 두고 왔는지 잊어선 안 된다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "아버지도 잊지 않으셨습니까?"
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "잊지 않았다. 그래서 더 늦게 사과한다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
           text: "저는 시험보다 아버지가 필요했습니다."
       - say:
           char: 진평왕.weak

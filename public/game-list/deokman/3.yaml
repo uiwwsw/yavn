@@ -111,6 +111,31 @@ scenes:
           wait: 750
           text: "둘이 봤잖아요. 그러니 끝까지 같이 있어요."
       - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "끝까지라면 네 이름도 이 일에 남아."
+      - say:
+          char: 소원.angry
+          camera: close
+          with: [덕만]
+          text: "그래서 남겠다는 거예요."
+      - say:
+          char: 소원
+          camera: medium
+          with: [덕만]
+          text: "죽은 사람 이름도 모른 척하지 말고요."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [소원]
+          text: "이름부터 적자. 본 것만 적고."
+      - say:
+          char: 소원
+          camera: close
+          with: [덕만]
+          text: "틀리면 둘이 같이 고치면 돼요."
+      - say:
           char: 소원.nervous
           camera: medium
           with: [덕만]

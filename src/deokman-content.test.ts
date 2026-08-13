@@ -135,7 +135,7 @@ describe('Deokman complete-game content', () => {
       '성문을 열어라. 다친 자부터 살려라.',
     ];
 
-    expect(config.version).toBe('5.8.0');
+    expect(config.version).toBe('6.0.0');
     expect(config.textSpeed).toBe(27);
     expect(waits.length).toBeGreaterThanOrEqual(160);
     expect(unskippableSays).toHaveLength(15);
