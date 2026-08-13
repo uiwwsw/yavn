@@ -25,68 +25,131 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
-          text: "전하께서 출발을 두 달이나 막으셨습니다."
+          text: "전하께서 출발을 두 달이나 늦추셨습니다."
       - say:
           char: 덕만
           camera: medium
           with: [칠숙]
-          text: "그동안 국경 곡식도 막으셨습니까?"
+          text: "빈손으로 보내려 한 건 누구입니까?"
       - say:
           char: 칠숙.smile
           camera: close
           with: [덕만]
           text: "귀족들 수레가 움직이지 않았을 뿐입니다."
+      - char:
+          id: 진평왕
+          position: center
       - say:
+          with: [진평왕, 덕만, 칠숙]
+          wait: 650
+          text: "진평왕은 의자에서 일어나지 못한 채 수레 목록을 펼쳤습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 칠숙]
+          text: "출발을 늦춘 것은 나다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 칠숙]
+          text: "빈손으로 국경에 보낼 수는 없었다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [칠숙]
+          text: "움직이지 않은 집의 이름을 읽어라."
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [진평왕]
+          text: "전하, 모두 조정의 큰 기둥들입니다."
+      - say:
+          char: 진평왕
+          camera: close
           with: [칠숙]
           wait: 650
-          text: "칠숙은 처벌을 받기는커녕 웃으며 국경 지휘권이 적힌 나무패를 내밀었습니다."
+          text: "왕명을 막은 기둥은 썩은 기둥이다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 칠숙]
+          text: "그 이름을 조정 기록에 남겨라."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "그 기록이 국경 사람을 먹이지는 못합니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "그래서 왕실 창고를 먼저 열었다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "세 마을과 북쪽 성으로 이미 보냈다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "남은 것은 네 일행의 길양식뿐이다."
       - say:
           char: 칠숙.smile
           camera: medium
-          with: [덕만]
-          text: "누명을 벗으셨으니 상을 드리겠습니다."
+          with: [덕만, 진평왕]
+          text: "누명을 벗은 공주께 좋은 상이군요."
       - say:
           char: 칠숙.smile
           camera: close
           with: [덕만]
           text: "북쪽 국경의 지휘권입니다."
       - say:
+          char: 진평왕
+          camera: medium
+          with: [칠숙]
+          text: "국경을 상이라 부르지 마라."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "나라의 성을 지키는 일이다."
+      - say:
           char: 덕만
           camera: medium
           with: [칠숙]
-          text: "상이라면서 수도 밖으로 쫓아내시는군요."
-      - char:
-          id: 진평왕
-          position: right
+          text: "쫓아내려던 제 손에 성의 열쇠가 들어왔군요."
       - say:
-          with: [진평왕, 덕만]
-          wait: 650
-          text: "진평왕은 의자에서 일어나지 못한 채 나무패를 바라봤습니다."
-      - say:
-          char: 진평왕.sad
+          char: 진평왕
           camera: medium
           with: [덕만]
-          text: "왕실 창고는 이미 비었다."
+          text: "군사와 창고의 명령은 모두 네 것이다."
       - say:
-          char: 진평왕.sad
+          char: 진평왕
           camera: close
           with: [덕만]
-          text: "내가 더 막으면 국경 사람이 먼저 죽는다."
+          text: "보고서보다 빈 그릇을 먼저 보아라."
       - say:
-          char: 덕만.sad
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "유신의 보고를 듣되 결정은 네가 내려라."
+      - say:
+          char: 덕만
           camera: close
           with: [진평왕]
-          text: "가겠습니다. 대신 반드시 돌아오겠습니다."
+          text: "성을 지키고 사람들과 돌아오겠습니다."
       - say:
-          char: 진평왕.sad
+          char: 진평왕
           camera: close
           with: [덕만]
-          text: "나무패보다 네 옆 사람을 믿어라."
+          wait: 750
+          text: "살아 돌아와 내게 보고하라."
       - bg: princess_chamber
       - camera: medium
       - char:
           id: 덕만
-          position: left
+          position: center
       - char:
           id: 천명
           position: right
@@ -122,6 +185,9 @@ scenes:
       - bg: council_hall
       - camera: medium
       - char:
+          id: 덕만
+          position: left
+      - char:
           id: 칠숙
           position: right
       - say:
@@ -130,9 +196,65 @@ scenes:
           with: [덕만]
           text: "국경에서 살아남으시면 다시 뵙지요."
       - say:
+          char: 덕만
+          camera: close
+          with: [칠숙]
+          text: "돌아와서 누가 막았는지부터 밝히겠습니다."
+      - say:
           with: [덕만, 칠숙]
           wait: 650
           text: "덕만에게는 성에 나눌 몫 없이 12일 길에 쓸 곡식만 주어졌습니다."
+      - bg: frontier
+      - camera: medium
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 유신
+          position: right
+      - say:
+          delivery: calm
+          text: "길을 나선 지 일곱째 날, 가을비에 뒤 수레의 차축이 부러졌습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "짐을 줄이지 않으면 고개를 못 넘습니다."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "곡식과 약은 어느 쪽도 버릴 수 없습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [유신]
+          text: "비단 장막과 놋그릇부터 내리세요."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "공주의 위엄을 보일 물건들입니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "굶는 성에서 빈 놋그릇은 위엄이 아닙니다."
+      - say:
+          with: [덕만, 유신]
+          wait: 700
+          text: "덕만은 의장용 장막과 그릇을 비우고 곡식과 약을 한 수레에 다시 실었습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "이제 공주 행렬처럼 보이지 않을 겁니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          wait: 700
+          text: "성에 도착한 뒤 무엇을 했는지로 보이면 됩니다."
       - bg: fortress
       - camera: medium
       - char:
@@ -442,7 +564,7 @@ scenes:
           char: 덕만.angry
           camera: close
           with: [유신]
-          text: "처음부터 이 선택을 시키려고 보냈군요."
+          text: "칠숙이 이 명령까지 미리 심어 두었군요."
       - say:
           char: 유신.angry
           camera: medium
@@ -483,7 +605,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [유신]
-          text: "못 구할 사람까지 모두 말해 주세요."
+          text: "구하지 못할 사람의 수까지 말해 주세요."
       - say:
           char: 유신.sad
           camera: close
@@ -499,7 +621,7 @@ scenes:
           camera: close
           with: [유신]
           wait: 800
-          text: "둘 다 살리고 싶은데."
+          text: "둘 다 살린다는 말로 시간을 버릴 순 없겠군요."
       - say:
           char: 유신.sad
           camera: close

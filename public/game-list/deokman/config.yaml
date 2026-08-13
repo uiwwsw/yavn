@@ -1,7 +1,7 @@
 title: "덕만: 왕관에는 주인이 없다"
 author:
   name: "uiwwsw"
-version: "5.7.0"
+version: "5.8.0"
 seo:
   description: "아버지를 살리고도 암살범으로 몰린 덕만이 왕위에 오르기까지의 음모와 16년 뒤 비담의 반란을 그린 8장 역사 비주얼노벨."
   keywords:
@@ -30,7 +30,7 @@ endingScreen:
 endings:
   true_end:
     title: "TRUE END — 왕이 보지 못한 아침"
-    message: "647년 1월, 덕만은 승만을 다음 왕으로 정했습니다. 유신은 성문을 열어 죽은 군사들을 거뒀습니다."
+    message: "647년 1월, 덕만은 공표했던 승만을 다음 왕으로 세우라 명했습니다. 유신은 성문을 열어 죽은 군사들을 거뒀습니다."
   permitted_queen:
     title: "END 01 — 귀족의 허락을 받는 왕"
     message: "반란은 끝났습니다. 대신 다음 왕을 고르는 권리는 귀족들이 갖게 됐습니다."

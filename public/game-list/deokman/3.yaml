@@ -662,7 +662,46 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "누명이 풀리자마자 저를 국경으로 보내시는 겁니까?"
+          text: "이제는 국경에서 저를 없애시려는 겁니까?"
+      - char:
+          id: 진평왕
+          position: center
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "국경을 말한 것은 너다, 칠숙."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 칠숙]
+          text: "좋다. 덕만에게 북쪽 성의 지휘를 맡긴다."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [진평왕]
+          text: "군사 지휘만 맡기시는 것이지요?"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "군사와 창고를 함께 맡긴다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "네 집의 곡식도 함께 내어라."
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [진평왕]
+          text: "죄를 벗은 상이 지나치게 큽니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          wait: 750
+          text: "상이 아니다. 나라의 일이다."
       - bg: throne_hall
       - camera: medium
       - char:
@@ -676,48 +715,54 @@ scenes:
           char: 덕만.sad
           camera: medium
           with: [진평왕]
-          text: "이번에도 증거가 모자랍니까?"
+          text: "칠숙을 잡으실 수는 없습니까?"
       - say:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "첫 장이 없으니 칠숙을 바로 잡을 수 없다."
+          text: "첫 장이 없으니 아직 죄를 판결할 수 없다."
       - say:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "그를 따르는 군사는 내 군사보다 많다."
+          text: "대신 그자의 호위를 바꾸고 길을 살필 것이다."
       - say:
           char: 덕만.sad
           camera: close
           with: [진평왕]
-          text: "그래서 국경으로 보내게 두십니까?"
+          text: "국경으로 보내는 일은 그대로입니까?"
       - say:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "막으면 오늘 밤 궁에서 피가 난다."
+          text: "칠숙은 네가 성 밖에서 죽을 거라 믿는다."
       - say:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "저들은 네게 군사를 주고도 죽을 거라 믿는다."
+          text: "나는 그 길에 군사와 창고를 붙였다."
       - say:
           char: 진평왕.sad
           camera: close
           with: [덕만]
-          text: "그 군사와 살아 돌아와라."
+          text: "그래도 위험한 명령인 것은 달라지지 않는다."
       - say:
           char: 덕만.sad
           camera: close
           with: [진평왕]
-          text: "절 살리려 보내십니까, 왕으로 만들려고요?"
+          text: "칠숙의 덫을 지휘권으로 뒤집으신 겁니까?"
       - say:
           char: 진평왕.sad
           camera: close
           with: [덕만]
           wait: 900
-          text: "둘 다다. 그래서 미안하다."
+          text: "살아 돌아오라는 것은 아버지의 부탁이다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          wait: 850
+          text: "사람들을 살려 돌아오라는 것은 왕의 명령이다."
       - bg: council_hall
       - camera: medium
       - char:
@@ -744,8 +789,12 @@ scenes:
           with: [칠숙]
           text: "다만 돌아오는 날은 제가 정하겠습니다."
       - say:
+          with: [덕만, 칠숙]
+          text: "칠숙이 준비한 나무패에는 군사 지휘만 적혀 있었습니다."
+      - say:
+          with: [덕만, 칠숙]
           wait: 850
-          text: "칠숙은 이미 국경 지휘권이 적힌 나무패를 꺼내 들고 있었습니다."
+          text: "그 아래에 왕의 붉은 먹으로 ‘창고의 열쇠’가 덧붙었습니다."
 
   go_17_second_murder:
     actions:
