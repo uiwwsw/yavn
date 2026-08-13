@@ -589,6 +589,77 @@ scenes:
       - say:
           delivery: calm
           text: "진평왕은 왕으로 내린 마지막 명령과 딸에게 남긴 마지막 말을 마친 뒤 숨을 거두었습니다."
+      - goto: sisters_mourning
+
+  sisters_mourning:
+    actions:
+      - bg: princess_chamber
+      - camera: medium
+      - effect: focus
+      - char: { id: 덕만, position: left }
+      - char: { id: 천명, position: right }
+      - say:
+          delivery: calm
+          text: "문이 조심스레 열렸습니다. 머리 장식도 다 매지 못한 천명이 방 안으로 들어왔습니다."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "나, 늦었어?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "마지막 말씀은 들었어요. 언니에게 남길 말씀은…… 못 물었어요."
+      - say:
+          char: 천명.sad
+          camera: medium
+          with: [덕만]
+          text: "또 혼자 다 들으려고 했지."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "미안해요."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "아버지가 마지막에 네 이름을 불렀지."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "그래도 내가 딸이 아닌 건 아니야."
+      - say:
+          with: [덕만, 천명]
+          wait: 700
+          text: "천명은 덕만의 손을 펴고 그 안에 자기 손을 포갰습니다."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "네가 기억하는 아버지와 내가 기억하는 아버지를 합치자."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "그러면 빠진 말이 조금은 줄 거야."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "그러면 아버지가 너무 좋은 사람으로 남을 텐데요."
+      - say:
+          char: 천명.sad
+          camera: medium
+          with: [덕만]
+          text: "조금은 그래도 돼. 오늘만."
+      - effect: moonveil
+      - say:
+          with: [덕만, 천명]
+          wait: 900
+          text: "두 자매는 동이 틀 때까지 왕의 손이 아닌 서로의 손을 잡고 있었습니다."
       - goto: succession_council
 
   succession_council:
