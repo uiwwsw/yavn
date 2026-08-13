@@ -51,12 +51,12 @@ scenes:
           char: 덕만.angry
           camera: close
           with: [칠숙]
-          text: "아버지가 살아 계신데 다음 왕부터 정합니까?"
+          text: "전하께서 살아 계신데 왕명을 대신합니까?"
       - say:
           char: 칠숙.smile
           camera: close
           with: [덕만]
-          text: "빈 왕좌를 본 뒤 정하면 이미 늦습니다."
+          text: "장례 뒤에 정하면 군사들이 먼저 움직입니다."
       - say:
           char: 덕만
           camera: medium
@@ -92,6 +92,115 @@ scenes:
           camera: medium
           with: [진운]
           text: "귀족들 중 절반은 이미 왕자라 부르고 있습니다."
+      - char:
+          id: 진평왕
+          position: center
+      - char:
+          id: 칠숙
+          position: left
+      - effect: focus
+      - say:
+          with: [진평왕, 칠숙, 진운]
+          wait: 750
+          text: "문밖에서 지팡이 소리가 세 번 울리고, 진평왕이 회의장에 들어왔습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [칠숙, 진운]
+          text: "왕자라 부른 자는 앞으로 나오라."
+      - say:
+          with: [진평왕, 칠숙, 진운]
+          wait: 650
+          text: "고개를 숙인 귀족들 사이에서 누구도 앞으로 나오지 않았습니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "내가 세우지 않은 왕자를 함부로 만들지 마라."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [진평왕]
+          text: "전하, 왕실의 앞날을 위한 준비입니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          wait: 900
+          unskippable: true
+          text: "<speed=18>내가 아직 왕이다.</speed>"
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [칠숙]
+          text: "내가 쓰러진 횟수로 왕명을 대신하지 마라."
+      - char:
+          id: 덕만
+          position: left
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 진운]
+          text: "둘의 말을 내 앞에서 듣겠다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [진운]
+          text: "진운, 왕이 되어 무엇을 하겠느냐?"
+      - say:
+          char: 진운.nervous
+          camera: medium
+          with: [진평왕]
+          text: "귀족의 화합을 이루고 왕실을……"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [진운]
+          text: "그 종이를 내려놓고 네 말로 답하라."
+      - say:
+          char: 진운.nervous
+          camera: close
+          with: [진평왕]
+          wait: 650
+          text: "제 뜻이 무엇인지부터 찾겠습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "덕만, 너는 무엇을 하겠느냐?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "국경에서 가져온 빈 그릇을 채우겠습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만, 진운]
+          text: "좋다. 둘의 답을 그대로 기록하라."
+      - char:
+          id: 칠숙
+          position: left
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "남자라는 이유만으로 왕관을 주진 않는다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [진운]
+          wait: 750
+          text: "내가 없는 자리에서도 네 말로 답하라."
+      - char:
+          id: 덕만
+          position: left
+      - say:
+          with: [진평왕, 덕만]
+          text: "진평왕은 약그릇을 밀어 둔 채 지팡이를 짚고 회의장을 나갔습니다."
+      - char:
+          id: 칠숙
+          position: center
       - say:
           wait: 750
           text: "칠숙의 하인이 낡은 비녀 하나를 진운 앞에 내려놓았습니다."
@@ -572,7 +681,7 @@ scenes:
           char: 덕만
           camera: close
           with: [진운]
-          text: "그러니 이제 진운공을 살려 둘 이유가 없겠지요."
+          text: "칠숙은 이제 진운공을 살려 두지 않겠지요."
       - say:
           char: 진운.nervous
           camera: close
@@ -609,7 +718,6 @@ scenes:
           camera: close
           with: [진운]
           wait: 850
-          unskippable: true
           text: "<speed=19>일단 살아남으세요. 왕좌는 그다음에 다투죠.</speed>"
       - say:
           char: 진운.nervous

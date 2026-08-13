@@ -779,7 +779,7 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [진평왕]
-          text: "그때마다 딸이 아니라 왕을 보셨습니까?"
+          text: "그때마다 제게서 왕만 보셨습니까?"
       - say:
           char: 진평왕.weak
           camera: close
@@ -789,23 +789,28 @@ scenes:
           char: 진평왕.weak
           camera: close
           with: [덕만]
+          text: "왕이 될 사람을 보느라 내 딸을 자주 놓쳤다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
           text: "그 마음은 내가 가르친 것이 아니다."
       - say:
           char: 덕만.sad
           camera: close
           with: [진평왕]
-          text: "왜 저를 다음 왕으로 정하지 않으셨습니까?"
+          text: "왜 끝내 후계자의 이름을 밝히지 않으셨습니까?"
       - say:
           char: 진평왕.weak
           camera: close
           with: [덕만]
           wait: 750
-          text: "내 명령은 내 숨이 멎는 날 끝날 것이었다."
+          text: "내 도장만으로는 너를 지킬 수 없었다."
       - say:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "귀족들은 저마다 군사와 창고를 가졌다."
+          text: "귀족들은 저마다 군사와 창고를 쥐었다."
       - say:
           char: 진평왕.weak
           camera: close
@@ -815,7 +820,7 @@ scenes:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "사람 없는 너를 지명하면 장례 다음 날 죽었을 것이다."
+          text: "네 이름만 남기면 장례 다음 날 널 죽였을 것이다."
       - say:
           char: 덕만.sad
           camera: close
@@ -825,7 +830,12 @@ scenes:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "시험이라 부르며 내 책임을 네게 넘겼다."
+          text: "널 지킨다는 핑계로 혼자 싸우게 했다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "시험이라 불렀다. 실은 내 일을 떠넘겼다."
       - say:
           char: 진평왕.weak
           camera: close
@@ -842,7 +852,7 @@ scenes:
           camera: close
           with: [덕만]
           wait: 850
-          text: "안다. 그래서 더 미안하다."
+          text: "안다. 왕으로도 아버지로도 늦었다."
       - say:
           char: 덕만.sad
           camera: close
@@ -929,7 +939,7 @@ scenes:
           char: 유신
           camera: close
           with: [덕만]
-          text: "왕의 도장이 아니라 공주님 명령을 따르겠답니다."
+          text: "왕의 도장이 아니라 공주님의 명령을 따르겠답니다."
       - char:
           id: 소원
           position: right
@@ -1019,7 +1029,7 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "귀족 몇 집이 나눠 갖는 것보다는 낫습니다."
+          text: "왕은 나라를 갖는 자가 아니라 책임지는 자입니다."
       - say:
           char: 칠숙.angry
           camera: close
@@ -1151,7 +1161,7 @@ scenes:
           char: 덕만
           camera: close
           with: [칠숙]
-          text: "없앨 생각은 없습니다. 다만 겁내지도 않겠습니다."
+          text: "귀족은 필요합니다. 그러나 왕을 대신하진 못합니다."
       - char:
           id: 진운
           position: right
