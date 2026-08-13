@@ -1,14 +1,14 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-13T06:30:29.148Z",
+  "generatedAt": "2026-08-13T06:43:18.602Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "6.0.0",
-      "summary": "아버지를 살리고도 암살범으로 몰린 덕만. 곡식과 군사를 쥔 귀족 연합에 맞서 신라 최초의 여왕이 되고, 16년 뒤 가장 오래된 동료의 반란을 마주합니다.",
+      "version": "6.0.1",
+      "summary": "굶주린 마을의 곡식을 훔친 귀족 연합이 왕을 독살하고 덕만에게 누명을 씌운다. 덕만은 빼앗긴 곡식길을 되찾아 신라의 왕이 되고, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결한다.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [
         "historical-fiction",
@@ -32,7 +32,7 @@
       "chapterCount": 8,
       "seo": {
         "title": "덕만: 왕관에는 주인이 없다",
-        "description": "아버지를 살리고도 암살범으로 몰린 덕만이 곡식과 군사를 장악한 귀족 연합에 맞서 신라 최초의 여왕이 되고, 16년 뒤 가장 오래된 동료의 반란을 마주하는 시대극 비주얼노벨.",
+        "description": "굶주린 마을의 곡식을 훔친 귀족 연합과 맞서 누명을 벗고 왕이 된 덕만이, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결하는 8장 시대극 비주얼노벨.",
         "keywords": [
           "선덕여왕",
           "덕만",

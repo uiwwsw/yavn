@@ -6,1191 +6,661 @@ scenes:
   chapter1_open:
     actions:
       - bg: council_hall
-      - camera: medium
-      - char:
-          id: 진평왕
-          position: right
-      - char:
-          id: 덕만
-          position: left
+      - camera: wide
+      - char: { id: 진평왕, position: right }
+      - char: { id: 덕만, position: left }
+      - char: { id: 칠숙, position: center }
       - say:
-          text: "제1장 — 훔친 이름"
-      - say:
-          with: [진평왕, 덕만]
-          delivery: calm
-          text: "631년 늦봄, 연회 다음 날 아침."
-      - say:
-          with: [진평왕, 덕만]
-          delivery: calm
-          text: "왕은 살았고 악사는 죽었습니다."
-      - say:
-          with: [덕만]
-          delivery: calm
-          text: "죽은 악사의 품에서는 덕만이 잃어버린 노리개가 나왔습니다."
-      - say:
-          with: [덕만]
           wait: 800
-          text: "연회가 끝난 지 하룻밤 만에, 왕을 살린 딸은 왕을 죽이려 한 사람으로 몰렸습니다."
-      - char:
-          id: 칠숙
-          position: center
+          text: "제1장 — 왕의 사흘"
       - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [진평왕, 덕만]
-          text: "죽은 악사의 품에서 나온 물건입니다."
-      - say:
-          with: [칠숙, 덕만]
-          wait: 650
-          text: "노리개가 덕만 발치까지 굴렀습니다."
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [덕만]
-          text: "공주님 것이 맞습니까?"
-      - say:
-          char: 덕만
-          camera: close
-          with: [칠숙]
-          text: "제 것이라면 매듭이 하나 더 있어야 합니다."
-      - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [덕만]
-          text: "죽은 악사는 이 물건이 어디서 났는지 말할 수 없겠군요."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [칠숙]
-          text: "그래서 죽은 사람을 이용해 저를 범인으로 만드시는 겁니까?"
+          delivery: calm
+          text: "연회 다음 날 아침, 닫힌 궁문 안에서 첫 조사가 열렸습니다."
       - say:
           with: [진평왕, 덕만, 칠숙]
-          wait: 650
-          text: "진평왕이 입을 가린 흰 천에 옅은 피가 번졌습니다."
+          text: "진평왕은 밤새 독을 마시지 않았지만, 독가루가 묻은 약숟가락을 만진 손이 붓고 열이 올랐습니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with: [진평왕]
-          text: "전하, 귀족 여섯 집이 답을 기다립니다."
+          text: "독살을 의심받는 사람에게 조사를 맡기시면 누가 그 결과를 믿겠습니까?"
       - say:
-          char: 진평왕
+          char: 진평왕.weak
           camera: close
           with: [칠숙]
-          text: "내가 아직 왕이다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "물을 것이 있으면 내 앞에서 물어라."
+          text: "덕만에게 판결을 맡긴 적은 없다. 사실을 가져오라 했다."
       - say:
           char: 칠숙.smile
+          camera: close
+          with: [진평왕]
+          text: "도망치지 못하게 가두셔야 합니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "궁문을 닫았다. 도망칠 수 없는 자를 다시 가두라는 말은 증거를 찾지 말라는 뜻과 같다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "덕만, 유신의 호위와 비담의 문서 열람을 허락한다. 사흘째 해가 지면 내 앞에 서라."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "명령을 받들겠습니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "내가 듣고 싶은 답을 찾지 마라. 있었던 일을 찾아라."
+      - char: { id: 월명, position: center }
+      - say:
+          char: 월명.warning
           camera: medium
           with: [진평왕, 덕만]
-          text: "오늘 안에 공주님을 가두라 합니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "그 명을 원한다면 증거부터 내놓아라."
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [진평왕]
-          text: "죽은 악사의 품에서 물건이 나왔습니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "노리개 하나로 왕을 해친 죄를 묻겠느냐?"
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [진평왕]
-          text: "그럼 3일 뒤 다시 묻겠습니다."
-      - say:
-          char: 진평왕
-          camera: medium
-          with: [덕만]
-          text: "사흘이다. 그동안 공주는 내 명으로 보호한다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "공주 방에 군사를 들이면 반역으로 적어라."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "네 물건을 훔친 자를 찾아라."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "증거를 가져와라. 판결은 내가 한다."
+          text: "검은 가루는 약에 타서 마시는 독이 아닙니다. 젖은 손이나 숟가락에 붙여 입으로 옮기는 독입니다."
       - say:
           char: 덕만
           camera: close
-          with: [진평왕]
-          text: "아버지는 그래도 절 믿으세요?"
+          with: [월명]
+          text: "그래서 약그릇이 아니라 숟가락에만 묻어 있었군요."
       - say:
-          char: 진평왕.sad
+          char: 월명
           camera: close
           with: [덕만]
-          delivery: sad
-          wait: 850
-          unskippable: true
-          text: "<speed=20>아버지는 한 번도 의심하지 않았다.</speed>"
-      - say:
-          char: 진평왕.sad
+          text: "예. 수레 끈의 가루도 같습니다. 곡식을 훔친 길과 독이 들어온 길이 겹칩니다."
+      - choice:
+          key: c1_first_lead
+          prompt: "첫날 해가 기울기 전에 어디부터 보겠습니까?"
+          char: 덕만
           camera: close
-          with: [덕만]
-          delivery: calm
-          unskippable: true
-          text: "<speed=19>다만 왕은 증거 없이 널 감쌀 수 없다.</speed>"
-      - bg: princess_chamber
+          with: [월명]
+          options:
+            - text: "서쪽 궁문 기록을 본다"
+              add: { insight: 1, yushin_trust: 1 }
+              goto: lead_gate
+            - text: "죽은 관리의 집을 찾는다"
+              add: { people_support: 1, sowon_trust: 1 }
+              goto: lead_home
+            - text: "약 포장지를 대조한다"
+              add: { insight: 2 }
+              goto: lead_wrapping
+            - text: "칠숙의 집부터 뒤진다"
+              goto: go_06_empty_search
+
+  lead_gate:
+    actions:
+      - bg: shadow_corridor
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 소원
-          position: right
+      - char: { id: 덕만, position: left }
+      - char: { id: 유신, position: right }
       - say:
-          char: 소원
-          camera: medium
-          with: [덕만]
-          text: "가짜예요. 매듭 하나가 빠졌어요."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [소원]
-          text: "내 매듭은 눈 감고도 알지?"
-      - say:
-          char: 소원
-          camera: close
-          with: [덕만]
-          text: "공주님이 가만히만 계시면요."
-      - say:
-          char: 덕만
-          camera: close
-          with: [소원]
-          text: "그건 평생 안 되겠네."
-      - char:
-          id: 유신
-          position: right
+          with: [덕만, 유신]
+          text: "유신은 서쪽 궁문의 나무패를 날짜 순서대로 마루에 놓았습니다."
       - say:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "어젯밤 호위 세 명이 자리를 비웠습니다."
+          text: "장부에는 수레 다섯 대가 나갔다고 적혔지만, 문지기가 받은 나무패는 세 개뿐입니다."
       - say:
           char: 덕만
-          camera: medium
+          camera: close
           with: [유신]
-          text: "장부에는 뭐라 적혔습니까?"
+          text: "나머지 두 대는 궁을 떠나지 않았습니다. 빈 수레만 돌려 길에서 사라진 것처럼 꾸몄군요."
       - say:
-          char: 유신
+          char: 유신.angry
           camera: close
           with: [덕만]
-          text: "셋 다 제자리를 지켰다고 돼 있습니다."
-      - say:
-          char: 유신
-          camera: close
-          with: [덕만]
-          text: "공주님 문밖 호위 열 명도 바뀌었습니다."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [유신]
-          text: "아버지 쪽 사람은 몇 명 남았습니까?"
-      - say:
-          char: 유신.sad
-          camera: close
-          with: [덕만]
-          text: "둘입니다. 나머지는 칠숙공 쪽입니다."
-      - char:
-          id: 비담
-          position: right
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "사라진 호위복도 한 벌 있고요."
-      - char:
-          id: 소원
-          position: right
+          text: "두 나무패를 적었다는 문지기는 어젯밤 근무가 끝난 뒤 사라졌습니다."
+      - goto: first_day_join
+
+  lead_home:
+    actions:
+      - bg: village
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 소원, position: right }
       - say:
           with: [덕만, 소원]
-          wait: 650
-          text: "소원은 죽은 악사의 이름이 적힌 작은 나무패를 내놓았습니다."
+          text: "죽은 관리의 방에는 다 먹지 못한 저녁상과 어린 동생이 만든 나무 수레가 남아 있었습니다."
       - say:
-          char: 소원.nervous
+          char: 소원
           camera: medium
           with: [덕만]
-          text: "악사 이름은 도림입니다."
+          text: "나무 수레 밑에 종이가 붙어 있어요. 누가 찾으러 올까 봐 숨겼나 봐요."
+      - say:
+          char: 소원.nervous
+          camera: close
+          with: [덕만]
+          text: "이 사람 이름은 도림이에요. 다들 죽은 관리라고만 부르지만, 동생은 형 이름부터 적어 달랬어요."
       - say:
           char: 덕만.sad
           camera: close
           with: [소원]
-          text: "나는 지금까지 이름도 묻지 않았구나."
-      - say:
-          char: 소원
-          camera: medium
-          with: [덕만]
-          text: "모두 악사라고만 불렀으니까요."
-      - char:
-          id: 유신
-          position: right
-      - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
-          text: "도림의 가족은 남문 밖에 있습니다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [유신]
-          text: "먼저 보호하십시오. 범인보다 빨리요."
-      - char:
-          id: 비담
-          position: right
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "누명을 벗기도 전에 남의 가족부터 찾습니까?"
-      - say:
-          char: 덕만
-          camera: close
-          with: [비담]
-          text: "도림이 죽어야 완성되는 누명이었으니까요."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [비담]
-          text: "문으로 들어오면 안 됩니까?"
-      - say:
-          char: 비담.smirk
-          camera: close
-          with: [덕만]
-          text: "잠긴 문을 별로 안 좋아해서요."
-      - say:
-          char: 덕만
-          camera: close
-          with: [비담]
-          text: "좋아요. 거짓말한 사람부터 찾죠."
-      - say:
-          with: [덕만]
-          wait: 700
-          text: "덕만에게 주어진 3일은 빠르게 줄어들었습니다."
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "부엌과 기록 창고. 어느 문부터 열까요?"
-      - say:
-          char: 덕만
-          camera: close
-          with: [비담]
-          text: "흔적이 지워지기 전에 움직이죠."
-      - branch:
-          cases:
-            - when:
-                var: cheonmyeong_trust
-                op: gte
-                value: 1
-              goto: remembered_sister_warning
-            - when:
-                var: yushin_trust
-                op: gte
-                value: 1
-              goto: remembered_guard_warning
-          default: investigate_choice
-
-  remembered_sister_warning:
-    actions:
-      - char:
-          id: 천명
-          position: right
-      - say:
-          with: [덕만, 천명]
-          text: "천명은 연회가 끝난 뒤에도 악사들의 방을 지켜봤습니다."
-      - say:
-          char: 천명.nervous
-          camera: medium
-          with: [덕만]
-          text: "네 노리개를 줍는 궁녀를 봤어."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [천명]
-          text: "얼굴, 기억나?"
-      - say:
-          char: 천명
-          camera: close
-          with: [덕만]
-          text: "아니. 그런데 왼손으로 주웠어."
-      - say:
-          char: 덕만
-          camera: close
-          with: [천명]
-          text: "언니한테 먼저 말하길 잘했어."
-      - goto: investigate_choice
-
-  remembered_guard_warning:
-    actions:
-      - char:
-          id: 유신
-          position: right
-      - say:
-          with: [덕만, 유신]
-          text: "유신은 밤새 호위의 이름과 출입 시각을 다시 맞췄습니다."
-      - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
-          text: "자리를 비운 호위가 셋만은 아니었습니다."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [유신]
-          text: "누군가 안에서 호위복을 갈아입었군요."
-      - say:
-          char: 유신
-          camera: close
-          with: [덕만]
-          text: "예. 궁을 나갈 때만 호위복을 입은 사람이 있습니다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [유신]
-          text: "유신에게 맡기길 잘했네요."
-      - goto: investigate_choice
-
-  investigate_choice:
-    actions:
-      - choice:
-          key: c1_investigate
-          prompt: "3일 안에 첫 흔적을 찾아야 합니다."
-          char: 덕만
-          camera: close
-          with: []
-          options:
-            - text: "부엌을 본다"
-              add: { insight: 1, sowon_trust: 1 }
-              goto: investigate_kitchen
-            - text: "기록 창고를 본다"
-              add: { insight: 1, bidam_trust: 1 }
-              goto: investigate_archive
-            - text: "호위를 몰아세운다"
-              goto: go_07_guard_revolt
-            - text: "방에서 기다린다"
-              goto: go_08_waiting_room
-
-  investigate_kitchen:
-    actions:
-      - bg: banquet_hall
-      - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 소원
-          position: right
-      - say:
-          with: [덕만, 소원]
-          text: "부엌에는 젖은 재만 남았습니다."
-      - say:
-          with: [덕만, 소원]
-          text: "소원은 무릎을 꿇고 바닥을 훑었습니다."
-      - say:
-          char: 소원.nervous
-          camera: medium
-          with: [덕만]
-          text: "이 행주만 냄새가 매워요."
-      - say:
-          with: [덕만, 소원]
-          text: "검은 가루가 손끝에 묻었습니다."
+          text: "도림. 이제부터 기록에도 그렇게 남겨."
       - say:
           char: 덕만
           camera: close
           with: [소원]
-          text: "술에 타려던 가루가 아니야."
+          text: "‘곡식은 서문을 나가지 않았다. 돈은 서쪽 별채로 갔다.’"
       - say:
-          char: 소원.nervous
+          char: 소원.angry
           camera: close
           with: [덕만]
-          text: "그럼 어디에 쓰려고 한 거예요?"
+          text: "이걸 말하려고 궁에 왔다가 죽은 거군요."
       - say:
-          char: 덕만
+          char: 덕만.sad
           camera: close
           with: [소원]
-          text: "내 손에 묻혀서 나를 범인으로 만들려고."
-      - say:
-          char: 소원
-          camera: medium
-          with: [덕만]
-          text: "이건 제가 품을게요. 또 빼앗기면 안 돼요."
-      - goto: rumor_choice
+          text: "그러니 도림을 범인의 짐꾼으로만 기록하면 안 돼. 끝에라도 우리에게 알리려 했어."
+      - goto: first_day_join
 
-  investigate_archive:
+  lead_wrapping:
     actions:
       - bg: locked_room
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 비담
-          position: right
+      - char: { id: 덕만, position: left }
+      - char: { id: 월명, position: right }
       - say:
-          with: [덕만, 비담]
-          text: "비담은 덕만을 등불 꺼진 기록 창고로 데려갔습니다."
+          with: [덕만, 월명]
+          text: "월명은 왕의 약 포장지와 죽은 관리에게서 나온 포장지를 물 위에 띄웠습니다."
       - say:
-          with: [덕만, 비담]
-          text: "먼지 쌓인 장부에는 죽은 악사의 출입 기록이 남아 있었습니다."
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "이 글씨를 쓴 사람은 3년 전에 죽었습니다."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [비담]
-          text: "죽은 사람 이름으로 장부까지 꾸몄군요."
-      - say:
-          char: 비담.smirk
+          char: 월명.warning
           camera: close
           with: [덕만]
-          text: "그런데 흉내가 너무 서툽니다."
+          text: "왕의 약지는 물을 먹어도 결이 남습니다. 이 종이는 물에 닿자 풀처럼 녹습니다."
       - say:
           char: 덕만
           camera: close
-          with: [비담]
-          text: "일부러 들키게 썼어. 나를 이리로 부른 거야."
+          with: [월명]
+          text: "제 인장을 찍은 뒤 급히 말린 가짜 포장지군요."
       - say:
-          char: 비담.smirk
-          camera: close
+          char: 월명
+          camera: medium
           with: [덕만]
-          text: "그 답은 제법 마음에 드네요."
+          text: "인장 둘레의 붉은 먹도 왕실 약방에서 쓰는 빛이 아닙니다."
       - say:
           char: 덕만
           camera: close
-          with: [비담]
-          text: "아직 제 편도 아니면서요?"
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "그래야 더 오래 곁에 있지요."
-      - goto: rumor_choice
+          with: [월명]
+          text: "가짜를 만든 곳과 곡식값이 간 곳을 함께 찾겠습니다."
+      - goto: first_day_join
 
-  rumor_choice:
+  first_day_join:
     actions:
-      - bg: princess_chamber
+      - bg: locked_room
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 비담
-          position: right
+      - char: { id: 덕만, position: left }
+      - char: { id: 비담, position: right }
       - say:
           delivery: calm
-          wait: 600
-          text: "수사 첫날, 해가 서쪽 담장에 걸릴 무렵."
-      - say:
-          with: [덕만, 비담]
-          delivery: calm
-          wait: 650
-          text: "궁문이 닫혔습니다. 범인도 덕만과 함께 갇혔습니다."
+          text: "수사 첫날, 해가 서쪽 담장에 걸릴 무렵이었습니다."
       - say:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "우리가 조용하면 저들이 먼저 이야기를 만들 겁니다."
+          text: "사라진 곡식값은 서쪽 별채의 빚을 갚는 데 쓰였습니다. 이름은 진운, 먼 왕족입니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "진운이 돈을 받았습니까?"
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "아닙니다. 진운의 어머니가 진 빚을 누군가 대신 갚았습니다. 본인은 장부를 본 적도 없겠지요."
       - say:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "그럼 우리가 먼저 거짓 소문을 내죠."
+          text: "사람 하나의 빚에 두 마을 몫 곡식을 썼다면, 그 사람의 이름으로 더 큰 것을 사려는 겁니다."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "공주님께서 직접 거짓말을 하시겠다고요?"
+          text: "내일 아침 기록 창고를 옮긴다는 명령도 나왔습니다. 범인이 남은 종이를 치우려는 모양입니다."
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "소문이 틀렸다고 나서는 사람이 진실을 아는 겁니다."
-      - say:
-          with: [덕만, 비담]
-          wait: 600
-          text: "거짓 소문은 궁 안에서 진실보다 빨리 퍼졌습니다."
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "소문을 잘못 내면 죄 없는 사람도 겁에 질려 도망칩니다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [비담]
-          text: "뒤를 밟되 바로 붙잡지는 말죠."
+          text: "잡으러 들어가면 종이를 태울 겁니다. 스스로 들고 나오게 해야 합니다."
+      - goto: trace_choice
+
+  trace_choice:
+    actions:
+      - bg: council_hall
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 비담, position: right }
       - choice:
-          key: c1_rumor
-          prompt: "어떤 소문을 내야 범인이 움직이겠습니까?"
+          key: c1_trace
+          prompt: "숨긴 장부를 어떻게 밖으로 나오게 하겠습니까?"
           char: 덕만
           camera: close
           with: [비담]
           options:
-            - text: "백제에서 온 독이라고 퍼뜨린다"
-              add: { insight: 1 }
-              goto: rumor_baekje
-            - text: "왕이 범인을 봤다고 퍼뜨린다"
-              add: { legitimacy: 1 }
-              goto: rumor_king
-            - text: "목격자가 있다고 퍼뜨린다"
-              add: { sowon_trust: 1 }
-              goto: rumor_witness
-            - text: "덕만이 다음 왕이라 한다"
-              goto: go_09_false_heir
+            - text: "장부를 찾았다고 알린다"
+              add: { insight: 1, bidam_trust: 1 }
+              goto: trace_false_notice
+            - text: "빚을 받은 사람을 따라간다"
+              add: { nobles_support: 1, insight: 1 }
+              goto: trace_debt
+            - text: "기록 창고를 봉쇄한다"
+              goto: go_07_burned_archive
+            - text: "관리의 가족을 압박한다"
+              goto: go_08_closed_mouth
 
-  rumor_baekje:
+  trace_false_notice:
     actions:
       - bg: shadow_corridor
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 비담
-          position: right
+      - char: { id: 덕만, position: left }
+      - char: { id: 비담, position: right }
       - say:
-          text: "‘백제에서 온 독’이라는 말이 궁을 한 바퀴 돌았습니다."
-      - say:
-          text: "밤이 되자 하인 하나가 장부를 품고 담을 넘었습니다."
+          with: [덕만, 비담]
+          text: "덕만은 사라진 곡식 장부를 찾았다는 글을 일부러 회의장 문에 붙였습니다."
       - say:
           char: 비담.smirk
-          camera: medium
+          camera: close
           with: [덕만]
-          text: "벌써 한 명이 도망치네요."
+          text: "글을 붙인 지 얼마 되지 않아, 기록방의 등불이 세 번이나 옮겨졌습니다."
       - say:
           char: 덕만
-          camera: medium
+          camera: close
           with: [비담]
-          text: "잡기 전에 품속 장부부터 확인해요."
-      - goto: evidence_choice
+          text: "가짜가 들킬까 두려운 사람이 진짜를 먼저 숨기러 갑니다. 뒤를 놓치지 마세요."
+      - goto: warehouse_confrontation
 
-  rumor_king:
+  trace_debt:
     actions:
-      - bg: throne_hall
+      - bg: shadow_corridor
       - camera: medium
-      - char:
-          id: 진평왕
-          position: right
-      - char:
-          id: 덕만
-          position: left
+      - char: { id: 덕만, position: left }
+      - char: { id: 유신, position: right }
       - say:
-          text: "‘왕이 범인의 얼굴을 봤다’는 소문이 퍼졌습니다."
-      - say:
-          char: 진평왕
-          camera: medium
-          with: [덕만]
-          text: "내가 못 본 얼굴을 봤다는 소문이 돌더구나."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [진평왕]
-          text: "병문안을 오지 않은 사람이 놀란 겁니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [덕만]
-          text: "오늘 내 방을 피한 자는 셋이다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [진평왕]
-          text: "그 셋이 오늘 밤 어디로 가는지 봐 주십시오."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [덕만]
-          text: "내 호위에게 맡기겠다."
-      - goto: evidence_choice
-
-  rumor_witness:
-    actions:
-      - bg: princess_chamber
-      - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 소원
-          position: right
-      - say:
-          char: 소원.angry
-          camera: close
-          with: [덕만]
-          text: "목격자라니요. 이제 다들 절 봐요."
-      - say:
-          char: 덕만.sad
-          camera: close
-          with: [소원]
-          text: "미안해. 네 이름부터 지켰어야 했어."
-      - say:
-          char: 소원.angry
-          camera: medium
-          with: [덕만]
-          text: "사과는 살아남고 들을게요."
-      - say:
-          char: 소원
-          camera: close
-          with: [덕만]
-          text: "일단 절 아무도 모르는 방에 숨겨 주세요."
-      - say:
-          char: 덕만
-          camera: close
-          with: [소원]
-          text: "그래. 이번에는 네 말부터 들을게."
-      - goto: evidence_choice
-
-  evidence_choice:
-    actions:
-      - bg: council_hall
-      - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 유신
-          position: right
-      - say:
-          delivery: calm
-          wait: 650
-          text: "3일째 새벽, 달아난 하인이 궁문 앞에서 붙잡혔습니다."
-      - say:
-          text: "그의 손톱 밑에도 같은 검은 가루가 끼어 있었습니다."
+          with: [덕만, 유신]
+          text: "유신은 진운의 빚을 갚아 준 상인이 빈 상자를 싣고 서쪽 별채로 가는 것을 따라갔습니다."
       - say:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "살려 두면 사실대로 말하게 할 수 있습니다."
-      - char:
-          id: 칠숙
-          position: right
-      - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [덕만]
-          text: "귀족들 앞에서도 사실대로 말할까요?"
+          text: "상자는 비어 있었지만 바닥에 붉은 먹과 종이 풀이 남았습니다."
       - say:
           char: 덕만
           camera: close
-          with: [칠숙]
-          text: "칠숙공 이름을 대는 순간 죽겠지요."
+          with: [유신]
+          text: "인장과 포장지를 만든 방입니다. 오늘 밤 진짜 문서도 그곳으로 옮길 겁니다."
       - say:
-          char: 칠숙.smile
+          char: 유신
           camera: close
           with: [덕만]
-          text: "공주님 이름을 대도 결과는 같습니다."
+          text: "문 앞에서 기다리겠습니다. 나오는 사람을 산 채로 데려오겠습니다."
+      - goto: warehouse_confrontation
+
+  warehouse_confrontation:
+    actions:
+      - bg: locked_room
+      - camera: medium
+      - effect: focus
+      - char: { id: 덕만, position: left }
+      - char: { id: 아진, position: right }
       - say:
-          with: [덕만, 칠숙]
-          text: "하인은 칠숙의 이름을 꺼내려다 문밖의 인기척에 입을 다물었습니다."
+          delivery: calm
+          text: "둘째 날 밤, 아진이 종이 꾸러미를 품고 서쪽 별채에서 나왔습니다."
       - say:
-          with: [덕만, 칠숙]
-          wait: 700
-          text: "문틈으로 아이의 나무팽이와 붉은 매듭이 밀려 들어왔습니다."
+          char: 아진.angry
+          camera: close
+          with: [덕만]
+          text: "길을 비키십시오. 이 문서가 늦으면 제 동생이 죽습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [아진]
+          text: "문서를 넘기면 다음에는 아진에게 사람을 죽이라 할 겁니다."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "이미 죽은 사람이 있습니다. 제 손에 피가 없다고 제가 깨끗한 건 아닙니다."
       - say:
           char: 덕만.sad
           camera: close
-          with: [칠숙]
-          text: "저 사람 가족까지 잡고 있습니까?"
+          with: [아진]
+          text: "그렇다면 살아서 누구의 명령이었는지 말하세요. 동생도 찾겠습니다."
       - say:
-          char: 칠숙.smile
+          char: 아진.nervous
           camera: close
           with: [덕만]
-          text: "제게 묻지 말고 저 하인에게 물으시지요."
+          text: "공주님이 사흘 뒤에도 살아 있으면 그 말을 믿겠습니다."
+      - say:
+          with: [덕만, 아진]
+          wait: 700
+          text: "아진은 빈 칼집을 던져 등불을 끈 뒤 달아났습니다. 바닥에는 나무로 만든 인장 틀과 문서 한 장이 남았습니다."
       - say:
           char: 덕만
           camera: close
-          with: [칠숙]
-          text: "입을 열 때까지는 살려 둬야 합니다."
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [덕만]
-          text: "살려 두면 다시 달아날 수도 있지요."
-      - choice:
-          key: c1_evidence
-          prompt: "하인이 입을 열려 하자 문밖에서 인기척이 납니다."
-          char: 덕만
-          camera: close
-          with: [칠숙]
-          options:
-            - text: "왕에게만 보인다"
-              add: { legitimacy: 1 }
-              goto: evidence_king
-            - text: "풀어 주고 뒤를 밟는다"
-              add: { insight: 1, bidam_trust: 1 }
-              goto: evidence_reverse
-            - text: "칠숙을 지목한다"
-              goto: go_10_right_without_proof
-            - text: "증거를 태운다"
-              goto: go_11_innocent_exile
+          with: []
+          text: "도망친 사람만 쫓지 마세요. 떨어뜨린 문서부터 봉하십시오."
+      - goto: hearing_choice
 
-  evidence_king:
+  hearing_choice:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - char: { id: 진평왕, position: right }
+      - char: { id: 덕만, position: left }
+      - char: { id: 칠숙, position: center }
+      - say:
+          delivery: calm
+          text: "3일째 밤, 약속한 시각에 공개 심리가 열렸습니다."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with: [덕만, 칠숙]
+          text: "사흘이 지났다. 덕만, 사실과 짐작을 나누어 말하라."
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [덕만]
+          text: "도망친 아진의 말도 증거라 하시겠습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "말이 아니라 남은 물건과 기록을 말씀드리겠습니다."
+      - choice:
+          key: c1_hearing
+          prompt: "왕 앞에 어떤 순서로 증거를 놓겠습니까?"
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          options:
+            - text: "가루·인장·장부를 잇는다"
+              add: { legitimacy: 2, insight: 1 }
+              goto: hearing_chain
+            - text: "증인 둘을 함께 세운다"
+              add: { legitimacy: 1, yushin_trust: 1 }
+              goto: hearing_witnesses
+            - text: "아진의 말을 사실로 단정한다"
+              goto: go_09_absent_witness
+            - text: "딸로서 믿어 달라 한다"
+              goto: go_10_kings_favor
+
+  hearing_chain:
     actions:
       - bg: throne_hall
       - camera: medium
-      - char:
-          id: 진평왕
-          position: right
-      - char:
-          id: 덕만
-          position: left
-      - say:
-          with: [진평왕, 덕만]
-          text: "덕만이 하인과 검은 가루를 내놓자, 진평왕은 직접 문을 잠갔습니다."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "이 증거면 네 누명을 벗길 수 있다."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "하인은 내 병사로 보호하겠다."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "너는 여기서 멈추어라. 아버지의 명이다."
+      - char: { id: 진평왕, position: right }
+      - char: { id: 덕만, position: left }
+      - char: { id: 칠숙, position: center }
       - say:
           char: 덕만
           camera: medium
-          with: [진평왕]
-          wait: 850
-          unskippable: true
-          text: "<speed=20>제가 멈추면, 다음 사람이 죽습니다.</speed>"
+          with: [진평왕, 칠숙]
+          text: "수레 끈과 약숟가락의 가루가 같고, 가짜 포장지는 이 나무 인장으로 찍었습니다."
       - say:
-          char: 진평왕.sad
+          char: 덕만
           camera: medium
-          with: [덕만]
-          text: "다음이 네 차례일까 두렵다."
+          with: [진평왕, 칠숙]
+          text: "그 재료를 산 돈은 사라진 곡식값에서 나왔습니다. 제 방과 제 사람을 거친 기록은 하나도 없습니다."
       - say:
-          char: 진평왕.sad
+          char: 진평왕
           camera: close
           with: [덕만]
-          text: "하지만 두려움으로 네 길을 막진 않겠다."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "이 하인의 증언만으로 칠숙을 잡진 않는다."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "명령서를 가져와라. 그때 내가 끝낸다."
+          text: "증거가 어디서 나와 누구의 손을 거쳤는지도 기록했느냐?"
       - say:
           char: 덕만
           camera: close
           with: [진평왕]
-          text: "그래도 누가 시켰는지는 알아야 합니다."
-      - goto: chapter1_end
+          text: "예. 봉한 사람과 지킨 사람을 모두 세웠습니다."
+      - goto: verdict_cleared
 
-  evidence_reverse:
+  hearing_witnesses:
     actions:
-      - bg: shadow_corridor
+      - bg: throne_hall
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 비담
-          position: right
+      - char: { id: 진평왕, position: right }
+      - char: { id: 월명, position: center }
+      - char: { id: 유신, position: left }
       - say:
-          with: [덕만, 비담]
-          text: "풀려난 하인이 담을 넘었습니다. 덕만과 비담도 불을 끄고 뒤를 밟았습니다."
-      - say:
-          char: 비담.smirk
+          char: 월명.warning
           camera: medium
-          with: [덕만]
-          text: "애써 잡은 사람을 다시 풀어 주셨군요."
+          with: [진평왕]
+          text: "독은 가짜 포장지와 같은 종이 풀에 섞였습니다. 공주의 방에 있던 약지와는 다릅니다."
       - say:
-          char: 덕만
+          char: 유신
           camera: medium
-          with: [비담]
-          text: "누구에게 도망가는지 보면 누가 시켰는지 알 수 있으니까요."
-      - say:
-          char: 비담.smirk
-          camera: close
-          with: [덕만]
-          text: "그리고 어둠에 익숙한 사람도 필요하고요."
+          with: [진평왕]
+          text: "수레 두 대는 서문을 나가지 않았습니다. 궁문 나무패와 수레의 바퀴가 함께 증명합니다."
+      - char: { id: 덕만, position: left }
       - say:
           char: 덕만
           camera: close
-          with: [비담]
-          text: "가기 싫으시면 지금 돌아가셔도 됩니다."
+          with: [진평왕]
+          text: "두 증언이 만나는 곳에서 제 인장을 본뜬 틀이 나왔습니다."
+      - goto: verdict_cleared
+
+  verdict_cleared:
+    actions:
+      - bg: throne_hall
+      - camera: medium
+      - char: { id: 진평왕, position: right }
+      - char: { id: 덕만, position: left }
+      - char: { id: 칠숙, position: center }
       - say:
-          char: 비담.smirk
+          char: 진평왕
           camera: close
           with: [덕만]
-          text: "그 말은 늘 반대로 들립니다."
+          wait: 900
+          unskippable: true
+          text: "<speed=18>덕만이 독을 들였다는 혐의는 거둔다. 이 판결은 증거로 내린다.</speed>"
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [진평왕]
+          text: "그러면 진짜 범인은 누구입니까?"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "아직 이름을 정하지 않았다. 혐의가 짙다고 형을 먼저 내리지는 않는다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [칠숙]
+          text: "칠숙, 수도를 떠나지 마라. 네 집 장부도 내일 해 뜨기 전에 가져와라."
+      - char: { id: 비담, position: center }
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만, 진평왕]
+          text: "아진이 떨어뜨린 문서의 뒷면에 다른 글이 있습니다."
+      - say:
+          with: [덕만, 진평왕, 비담]
+          wait: 750
+          text: "문서에는 덕만과 진운을 혼인시키고, 두 사람의 이름으로 군사와 창고를 나누는 조건이 적혀 있었습니다."
+      - get: marriage_pact
+      - set: { clue_marriage_pact: true }
+      - add: { legitimacy: 1 }
+      - say:
+          char: 덕만.angry
+          camera: close
+          with: [비담]
+          text: "곡식을 훔친 돈으로 진운의 빚을 갚고, 제 이름으로 그를 왕으로 만들려 했군요."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "혼인은 왕실을 묶는 끈이지, 내 딸의 입을 막는 재갈이 아니다."
       - goto: chapter1_end
 
   chapter1_end:
     actions:
+      - bg: princess_chamber
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 천명, position: right }
+      - say:
+          delivery: calm
+          text: "심리가 끝난 뒤에도 궁문은 열리지 않았습니다. 독살 혐의만 사라졌을 뿐, 사라진 곡식과 명령한 사람은 남아 있었습니다."
+      - say:
+          char: 천명.sad
+          camera: medium
+          with: [덕만]
+          text: "누명은 벗었는데 얼굴이 더 어두워졌어."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "죽은 사람의 마지막 기록이 제 혼인 조건으로 이어졌어. 다음에는 산 사람의 말을 들어야 해."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "진운을 만나려는 거구나."
+      - say:
+          char: 덕만
+          camera: close
+          with: [천명]
+          text: "응. 남들이 빌린 이름 말고, 그 사람이 자기 입으로 하는 말을 들을 거야."
+
+  go_06_empty_search:
+    actions:
       - bg: locked_room
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 비담
-          position: right
+      - char: { id: 덕만, position: left }
+      - char: { id: 유신, position: right }
       - say:
-          delivery: calm
-          wait: 800
-          text: "3일째 밤, 덕만은 마침내 누명을 벗었습니다."
+          with: [덕만, 유신]
+          text: "덕만은 왕의 허락을 기다리지 않고 칠숙의 집을 뒤졌습니다."
       - say:
-          char: 비담
-          camera: medium
-          with: [덕만]
-          text: "하인은 공주님이 시키지 않았다고만 썼습니다."
-      - say:
-          char: 덕만.sad
-          camera: close
-          with: [비담]
-          text: "제 이름은 찾았지만 범인은 그대로군요."
-      - say:
-          char: 비담.sad
+          char: 유신.angry
           camera: close
           with: [덕만]
-          text: "가족이 잡힌 사람에게 이름까지 바라긴 어렵지요."
-      - say:
-          with: [덕만, 비담]
-          wait: 700
-          text: "비담은 안도의 말 대신 혼인 문서 세 장을 펼쳤습니다."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [비담]
-          text: "신부는 하나인데 신랑 이름은 셋이군요."
-      - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "세 집 모두 다른 대가를 약속받았습니다."
-      - say:
-          char: 덕만.angry
-          camera: close
-          with: [비담]
-          text: "죽이지 못했으니 시집을 보내겠다?"
-      - say:
-          char: 비담.smirk
-          camera: close
-          with: [덕만]
-          text: "공주님을 넘기는 대가가 꽤 크군요."
-      - say:
-          char: 덕만.angry
-          camera: close
-          with: [비담]
-          text: "좋아요. 누가 이런 거래를 했는지 보죠."
-      - get: marriage_pact
-      - set: { clue_marriage_pact: true }
-      - bg: throne_hall
-      - camera: medium
-      - char:
-          id: 진평왕
-          position: right
-      - char:
-          id: 칠숙
-          position: center
-      - say:
-          with: [진평왕, 덕만, 칠숙]
-          text: "그날 밤, 세 장의 혼인 문서가 왕 앞에 나란히 놓였습니다."
-      - say:
-          with: [진평왕, 덕만, 칠숙]
-          wait: 850
-          text: "세 문서 모두 덕만을 마음대로 혼인시키려는 내용이었습니다."
-      - say:
-          char: 진평왕
-          camera: medium
-          with: [덕만, 칠숙]
-          text: "어느 문서에도 내 도장은 없다."
-      - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [진평왕]
-          text: "대신 귀족 여섯 집의 도장이 있습니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "공주의 혼인은 귀족의 표로 정하지 않는다."
-      - say:
-          with: [진평왕, 덕만, 칠숙]
-          text: "진평왕이 첫 문서를 찢자 칠숙이 같은 사본을 다시 올렸습니다."
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [진평왕]
-          text: "사본은 세 집에도 이미 보냈습니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "내일 세 집의 사신을 모두 들이라."
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [진평왕]
-          text: "거절하면 세 집의 군사가 움직일 겁니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [칠숙]
-          text: "군사로 청한 혼인은 협박으로 기록한다."
-      - say:
-          char: 덕만.angry
-          camera: close
-          with: [칠숙]
-          text: "죄를 못 찾자 남편부터 찾으셨군요."
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [덕만]
-          text: "혼인하시면 더는 의심받지 않으실 겁니다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [칠숙]
-          wait: 750
-          text: "그럼 세 집이 서로 싸우게 만들겠습니다."
-
-  go_07_guard_revolt:
-    actions:
-      - bg: council_hall
-      - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 유신
-          position: right
-      - say:
-          char: 덕만.angry
-          camera: medium
-          with: [유신]
-          text: "모든 호위에게 칼을 내려놓으라고 하세요."
-      - say:
-          char: 유신.sad
-          camera: medium
-          with: [덕만]
-          text: "그러면 오늘 밤 공주님을 지킬 사람이 없습니다."
-      - say:
-          char: 덕만.angry
-          camera: close
-          with: [유신]
-          text: "그 호위들 중에 범인이 있습니다."
-      - say:
-          char: 유신.sad
-          camera: close
-          with: [덕만]
-          text: "죄 없는 사람들도 그 모욕을 잊지 않을 겁니다."
-      - bg: princess_chamber
-      - camera: medium
-      - char:
-          id: 덕만
-          position: center
-      - say:
-          with: [덕만]
-          text: "그날 밤, 덕만의 문 앞은 텅 비어 있었습니다."
-      - say:
-          char: 덕만.sad
-          camera: close
-          with: []
-          text: "유신…… 누구라도 밖에 있습니까?"
-      - effect: darken
-      - say:
-          text: "대답 대신 창살 뜯기는 소리가 났습니다."
-      - gameOver:
-          title: "운명 07 — 호위 없는 밤"
-          message: "덕만은 보초 하나 없는 방에서 습격을 받았습니다."
-
-  go_08_waiting_room:
-    actions:
-      - bg: princess_chamber
-      - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 소원
-          position: right
-      - say:
-          delivery: calm
-          text: "첫날 저녁까지는 증인이 둘 남아 있었습니다."
-      - say:
-          wait: 750
-          text: "둘째 날 밤, 둘 다 흔적 없이 사라졌습니다."
-      - say:
-          char: 소원.nervous
-          camera: medium
-          with: [덕만]
-          text: "그 행주를 본 아이까지 사라졌어요."
-      - say:
-          char: 덕만
-          camera: medium
-          with: [소원]
-          text: "문을 나서면 저들이 기다릴 거야."
-      - say:
-          char: 소원.angry
-          camera: close
-          with: [덕만]
-          text: "여기 숨으면 증거부터 없어져요."
+          text: "방은 비었고 바닥에 기름 냄새만 남았습니다. 함정입니다."
       - effect: impact
       - say:
-          text: "3일째 새벽, 버티던 정문이 안으로 쓰러졌습니다."
+          text: "문밖에서 불길이 솟았고, 덕만의 병사들이 증거를 태운 범인으로 붙잡혔습니다."
       - say:
           char: 덕만.sad
           camera: close
-          with: []
-          text: "소원아, 넌 뒷문으로 가. 어서."
-      - effect: darken
+          with: [유신]
+          text: "증거를 찾으러 왔다가 없앨 구실을 줬군요."
       - gameOver:
-          title: "운명 08 — 사라진 증인"
-          message: "덕만은 누명을 벗지 못한 채 궁 밖 별채에 갇혔습니다."
+          title: "운명 06 — 비어 있던 집"
+          message: "허가 없는 수색은 방화의 증거로 바뀌었고, 덕만은 사흘째 심리 전에 조사권을 잃었습니다."
 
-  go_09_false_heir:
+  go_07_burned_archive:
     actions:
-      - bg: throne_hall
-      - camera: medium
-      - char:
-          id: 진평왕
-          position: right
-      - char:
-          id: 덕만
-          position: left
+      - bg: locked_room
+      - camera: wide
+      - effect: embers
+      - char: { id: 덕만, position: left }
+      - char: { id: 비담, position: right }
       - say:
-          text: "‘진평왕은 덕만을 다음 왕으로 정했습니다.’"
+          with: [덕만, 비담]
+          text: "덕만이 기록 창고를 봉쇄하자 안에 숨어 있던 사람이 등잔을 서류 더미에 던졌습니다."
       - say:
-          text: "가짜로 만든 왕의 명령은 하루 만에 수도 곳곳으로 퍼졌습니다."
-      - say:
-          char: 진평왕.sad
+          char: 비담.sad
           camera: medium
           with: [덕만]
-          text: "내가 하지 않은 말을 네가 퍼뜨렸느냐?"
+          text: "문을 열면 범인은 달아나고, 닫아 두면 장부가 모두 탑니다."
       - say:
-          char: 덕만
-          camera: medium
-          with: [진평왕]
-          text: "숨어 있는 범인을 끌어내려 했습니다."
-      - char:
-          id: 칠숙
-          position: center
-      - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [진평왕, 덕만]
-          text: "수도 거리에서는 벌써 공주님을 왕이라 부른답니다."
-      - say:
-          char: 진평왕.sad
+          char: 덕만.angry
           camera: close
-          with: [덕만]
-          text: "이번에는 아버지인 나도 널 감쌀 수 없구나."
-      - effect: darken
+          with: [비담]
+          text: "사람부터 꺼내세요!"
+      - effect: { name: darken, wait: true }
+      - say:
+          text: "문을 열었을 때 범인과 원본 장부는 사라졌고, 연기에 쓰러진 관리들만 남았습니다."
       - gameOver:
-          title: "운명 09 — 가짜 왕의 명령"
-          message: "덕만은 왕의 명령을 꾸민 죄로 공주라는 지위마저 잃었습니다."
+          title: "운명 07 — 봉한 문 안의 불"
+          message: "범인을 가두려 봉한 문이 기록관들의 탈출까지 막았습니다. 원본과 증인은 함께 사라졌습니다."
 
-  go_10_right_without_proof:
+  go_08_closed_mouth:
     actions:
-      - bg: council_hall
+      - bg: village
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 칠숙
-          position: right
+      - char: { id: 덕만, position: left }
+      - char: { id: 소원, position: right }
       - say:
           char: 덕만.angry
           camera: medium
-          with: [칠숙]
-          text: "칠숙공이 전하를 죽이려 했습니다."
+          with: [소원]
+          text: "숨긴 기록을 내놓지 않으면 가족도 조사하겠다고 전하세요."
       - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [덕만]
-          text: "그 명령을 들은 사람은 살아 있습니까?"
-      - say:
-          char: 덕만
-          camera: close
-          with: [칠숙]
-          text: "3일만 더 주시면 데려오겠습니다."
-      - say:
-          char: 칠숙.smile
+          char: 소원.angry
           camera: close
           with: [덕만]
-          text: "그 3일 동안 증인은 죽겠군요."
+          text: "그 가족은 이미 한 사람을 잃었어요. 겁을 주면 우리에게 입을 열까요?"
       - say:
-          wait: 700
-          text: "말이 끝나기도 전에 하인의 죽음이 전해졌습니다."
+          with: [덕만, 소원]
+          text: "위협을 들은 늙은 아버지는 아들이 남긴 종이를 아궁이에 넣고 문을 걸어 잠갔습니다."
       - say:
           char: 덕만.sad
           camera: close
-          with: []
-          text: "범인이 누군지 알면서도 사람 하나 못 살렸어."
-      - effect: darken
+          with: [소원]
+          text: "범인이 아니라 저를 두려워하게 만들었구나."
       - gameOver:
-          title: "운명 10 — 증거 없는 고발"
-          message: "덕만은 증거 없이 칠숙을 모함한 사람으로 몰려 처형됐습니다."
+          title: "운명 08 — 닫힌 유족의 문"
+          message: "위협받은 유족은 마지막 기록을 태웠습니다. 덕만은 자신을 믿어 줄 증인까지 잃었습니다."
 
-  go_11_innocent_exile:
+  go_09_absent_witness:
     actions:
-      - bg: princess_chamber
+      - bg: throne_hall
       - camera: medium
-      - char:
-          id: 덕만
-          position: left
-      - char:
-          id: 소원
-          position: right
+      - char: { id: 진평왕, position: right }
+      - char: { id: 덕만, position: left }
+      - char: { id: 칠숙, position: center }
       - say:
-          text: "덕만은 장부와 검은 행주를 화로에 밀어 넣었습니다."
-      - say:
-          char: 소원.angry
+          char: 덕만.angry
           camera: medium
-          with: [덕만]
-          text: "다 태우면 누가 공주님 편을 들어요?"
+          with: [진평왕, 칠숙]
+          text: "아진은 동생을 잡은 사람이 칠숙공이라고 말했습니다."
       - say:
-          char: 덕만.sad
-          camera: medium
-          with: [소원]
-          text: "이걸 없애면 더는 아무도 쫓기지 않아."
-      - say:
-          char: 소원.angry
+          char: 칠숙.smile
           camera: close
           with: [덕만]
-          wait: 800
-          text: "그럼 공주님은 누가 지켜요?"
+          text: "그 말을 했다는 사람은 어디 있습니까?"
       - say:
-          text: "다음 날, 덕만은 이름도 짐도 챙기지 못한 채 수도를 떠났습니다."
-      - say:
-          char: 덕만.sad
+          char: 진평왕
           camera: close
-          with: [소원]
-          text: "따라오지 마. 너까지 잃고 싶진 않아."
-      - effect: darken
+          with: [덕만]
+          text: "없는 증인의 말을 네 확신으로 채우지 마라."
+      - say:
+          with: [진평왕, 덕만, 칠숙]
+          text: "그날 밤 아진은 칠숙의 병사들에게 붙잡혔고, 다시는 심리장에 나타나지 못했습니다."
       - gameOver:
-          title: "운명 11 — 증거를 태운 대가"
-          message: "증거를 태운 덕만은 누명을 벗지 못한 채 수도에서 쫓겨났습니다."
+          title: "운명 09 — 오지 못한 증인"
+          message: "덕만이 증언을 먼저 공개하자 아진은 심리장에 서기 전에 사라졌고, 남은 증거도 거짓말로 몰렸습니다."
+
+  go_10_kings_favor:
+    actions:
+      - bg: throne_hall
+      - camera: medium
+      - char: { id: 진평왕, position: right }
+      - char: { id: 덕만, position: left }
+      - char: { id: 칠숙, position: center }
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "아버지, 제가 그런 일을 하지 않았다는 것만 믿어 주세요."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "내가 믿는다고 판결이 되지는 않는다."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [진평왕]
+          text: "전하께서 딸을 위해 법을 굽히셨다고 모두가 보았습니다."
+      - effect: darken
+      - say:
+          text: "회의장을 나간 귀족들은 진운을 보호한다는 명분으로 사병을 모았습니다. 그날 밤 궁문이 안팎에서 닫혔습니다."
+      - gameOver:
+          title: "운명 10 — 아버지의 믿음"
+          message: "증거 대신 아버지의 믿음을 구한 순간 판결은 편애가 되었고, 귀족들은 그것을 반란의 명분으로 삼았습니다."
