@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-13T06:11:21.147Z",
+  "generatedAt": "2026-08-13T06:43:18.602Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "6.0.0",
+      "version": "6.0.1",
       "summary": "굶주린 마을의 곡식을 훔친 귀족 연합이 왕을 독살하고 덕만에게 누명을 씌운다. 덕만은 빼앗긴 곡식길을 되찾아 신라의 왕이 되고, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결한다.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [

@@ -505,6 +505,26 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [진평왕]
+          text: "저는 살아남을 때마다 누군가를 두고 왔습니다."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with: [덕만]
+          text: "왕은 모두를 살릴 수 없다. 대신 누구를 두고 왔는지는 잊어선 안 된다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "아버지도 잊지 않으셨습니까?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "잊지 않았다. 그래서 이렇게 늦게 사과한다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
           text: "제가 살아남았다고 전하의 잘못이 사라지지는 않습니다. 그래도 지금은 아버지 손을 잡겠습니다."
       - say:
           char: 진평왕.sad
