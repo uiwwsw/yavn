@@ -343,6 +343,66 @@ scenes:
           camera: close
           with: []
           text: "도망친 사람만 쫓지 마세요. 떨어뜨린 문서부터 봉하십시오."
+      - goto: after_warehouse
+
+  after_warehouse:
+    actions:
+      - bg: locked_room
+      - camera: medium
+      - char: { id: 덕만, position: center }
+      - char: { id: 유신, position: left }
+      - char: { id: 비담, position: right }
+      - say:
+          delivery: calm
+          text: "등불을 다시 켜자 유신과 비담이 복도 양쪽에서 거의 동시에 들어왔습니다."
+      - say:
+          char: 유신.angry
+          camera: medium
+          with: [덕만, 비담]
+          text: "발자국이 아직 젖어 있습니다. 제가 쫓겠습니다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [유신]
+          text: "어두운 길에서 칼 든 사람을 쫓는 일은 맡기죠."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [유신]
+          text: "저는 밝은 데서 이 종이를 보겠습니다."
+      - say:
+          char: 유신
+          camera: close
+          with: [비담]
+          text: "말이 많군."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [유신]
+          text: "장부가 말을 안 해서 제가 대신합니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [유신, 비담]
+          text: "유신은 아진의 길과 동생을 찾으세요."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [유신, 비담]
+          text: "비담은 먹과 인장을 확인하고요."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "누가 먼저 돌아오는지도 보시겠습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신, 비담]
+          text: "아니요. 누구도 빠뜨리지 않고 돌아오는지만 보겠습니다."
+      - say:
+          with: [덕만, 유신, 비담]
+          text: "유신은 말없이 고개를 숙였고, 비담은 웃음을 거두고 문서를 소매에 넣었습니다."
       - goto: hearing_choice
 
   hearing_choice:

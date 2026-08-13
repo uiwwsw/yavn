@@ -143,7 +143,7 @@ scenes:
           camera: close
           with: [진운]
           text: "불쌍히 여기지 않겠습니다. 대신 다음 선택은 진운공의 말로 들을 겁니다."
-      - goto: original_notice
+      - goto: sisters_after_proposal
 
   jinun_read:
     actions:
@@ -186,6 +186,78 @@ scenes:
           with: [덕만, 진운, 칠숙]
           wait: 750
           text: "회의장에 있던 서기관들의 붓이 한꺼번에 멈췄습니다."
+      - goto: sisters_after_proposal
+
+  sisters_after_proposal:
+    actions:
+      - bg: princess_chamber
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 천명, position: right }
+      - say:
+          delivery: calm
+          text: "그날 저녁, 천명은 덕만의 소매에 시험 삼아 달아 둔 혼인 예복의 붉은 끈을 풀어 탁자에 놓았습니다."
+      - say:
+          char: 천명
+          camera: medium
+          with: [덕만]
+          text: "예쁘기는 하네. 네가 고른 게 아니라서 문제지."
+      - say:
+          char: 덕만
+          camera: close
+          with: [천명]
+          text: "언니는 진운공이 싫어요?"
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "아니. 네가 싫다고도 못 하는 혼인이 싫어."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "싫다고 말하면 여섯 집이 등을 돌릴 거예요."
+      - say:
+          char: 천명
+          camera: medium
+          with: [덕만]
+          text: "돌리라고 해. 얼굴이 보여야 누가 우리 편이 아닌지 알지."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "혼인은 둘이 같은 말을 해야 시작되는 거야."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "한 사람만 남의 원고를 읽으면 그건 시험이지."
+      - say:
+          char: 덕만
+          camera: close
+          with: [천명]
+          text: "그럼 제 말을 먼저 정해야겠네요."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "쓰지 말고 말해 봐."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "길어지면 또 나라 이야기만 할 테니까."
+      - say:
+          char: 덕만
+          camera: close
+          with: [천명]
+          wait: 650
+          text: "저는…… 제가 정한 삶을 살고 싶어요."
+      - say:
+          char: 천명
+          camera: medium
+          with: [덕만]
+          text: "됐어. 그 한 줄이면 네 말이야."
       - goto: original_notice
 
   original_notice:
