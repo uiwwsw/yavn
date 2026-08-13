@@ -20,11 +20,26 @@ scenes:
           text: "두 달 뒤, 631년 가을."
       - say:
           with: [덕만, 칠숙]
-          text: "덕만이 비밀 문서를 공개한 뒤 두 달이 지났지만, 거기에 이름을 올린 귀족들은 입을 다물었다."
+          text: "덕만이 비밀 문서를 공개한 뒤 두 달이 지났지만, 거기에 이름을 올린 귀족들은 입을 다물었습니다."
+      - say:
+          char: 칠숙.smile
+          camera: medium
+          with: [덕만]
+          text: "전하께서 출발을 두 달이나 막으셨습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [칠숙]
+          text: "그동안 국경 곡식도 막으셨습니까?"
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [덕만]
+          text: "귀족들 수레가 움직이지 않았을 뿐입니다."
       - say:
           with: [칠숙]
           wait: 650
-          text: "칠숙은 처벌을 받기는커녕 웃으며 국경 지휘권이 적힌 나무패를 내밀었다."
+          text: "칠숙은 처벌을 받기는커녕 웃으며 국경 지휘권이 적힌 나무패를 내밀었습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -40,11 +55,84 @@ scenes:
           camera: medium
           with: [칠숙]
           text: "상이라면서 수도 밖으로 쫓아내시는군요."
+      - char:
+          id: 진평왕
+          position: right
+      - say:
+          with: [진평왕, 덕만]
+          wait: 650
+          text: "진평왕은 의자에서 일어나지 못한 채 나무패를 바라봤습니다."
+      - say:
+          char: 진평왕.sad
+          camera: medium
+          with: [덕만]
+          text: "왕실 창고는 이미 비었다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "내가 더 막으면 국경 사람이 먼저 죽는다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "가겠습니다. 대신 반드시 돌아오겠습니다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "나무패보다 네 옆 사람을 믿어라."
+      - bg: princess_chamber
+      - camera: medium
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 천명
+          position: right
+      - say:
+          with: [덕만, 천명]
+          text: "천명은 왕의 약과 덕만의 약을 서로 다른 주머니에 나눠 담았습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [천명]
+          text: "아버지 약을 왜 내 짐에 넣어?"
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "돌아오는 길에 모자라면 안 되잖아."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "언니, 아직도 무서워?"
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "응. 그래도 가방은 쌀 수 있어."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          wait: 750
+          text: "그러니까 살아서 다시 풀어 줘."
+      - bg: council_hall
+      - camera: medium
+      - char:
+          id: 칠숙
+          position: right
       - say:
           char: 칠숙.smile
           camera: close
           with: [덕만]
           text: "국경에서 살아남으시면 다시 뵙지요."
+      - say:
+          with: [덕만, 칠숙]
+          wait: 650
+          text: "덕만에게는 성에 나눌 몫 없이 12일 길에 쓸 곡식만 주어졌습니다."
       - bg: fortress
       - camera: medium
       - char:
@@ -58,14 +146,14 @@ scenes:
           with: [덕만]
           delivery: calm
           wait: 800
-          text: "12일 동안 가을비를 맞은 끝에 북쪽 성이 보였다."
+          text: "12일 동안 가을비를 맞은 끝에 북쪽 성이 보였습니다."
       - say:
           with: [덕만]
-          text: "성에 들어서자 빈 솥을 긁는 소리만 들렸다."
+          text: "성에 들어서자 빈 솥을 긁는 소리만 들렸습니다."
       - effect: impact
       - say:
           wait: 750
-          text: "빈 그릇을 든 아이가 덕만의 말 앞에서 그대로 쓰러졌다."
+          text: "빈 그릇을 든 아이가 덕만의 말 앞에서 그대로 쓰러졌습니다."
       - char:
           id: 월명
           position: right
@@ -74,6 +162,16 @@ scenes:
           camera: medium
           with: [덕만]
           text: "오늘만 벌써 두 번째입니다."
+      - say:
+          char: 월명.warning
+          camera: medium
+          with: [덕만]
+          text: "사람들은 공주님이 보고만 가실 줄 압니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [월명]
+          text: "저 아이가 일어나기 전에는 못 갑니다."
       - say:
           char: 덕만
           camera: medium
@@ -163,7 +261,7 @@ scenes:
           position: right
       - say:
           with: [덕만, 유신]
-          text: "유신은 무너진 성벽 밑에서 비상 식량 12자루를 끌어냈다."
+          text: "유신은 무너진 성벽 밑에서 비상 식량 12자루를 끌어냈습니다."
       - say:
           char: 덕만
           camera: medium
@@ -198,7 +296,7 @@ scenes:
     actions:
       - choice:
           key: c4_grain
-          prompt: "3일치 곡식 앞에 빈 그릇이 늘어선다."
+          prompt: "3일치 곡식 앞에 빈 그릇이 늘어섭니다."
           char: 덕만
           camera: close
           with: []
@@ -226,10 +324,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 월명]
-          text: "덕만은 쓰러진 아이와 성 밖 피란민을 먼저 줄에 세웠다."
+          text: "덕만은 쓰러진 아이와 성 밖 피란민을 먼저 줄에 세웠습니다."
       - say:
           with: [덕만, 월명]
-          text: "보급로가 열릴 때까지 군사의 그릇은 절반만 채웠다."
+          text: "보급로가 열릴 때까지 군사의 그릇은 절반만 채웠습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -274,10 +372,10 @@ scenes:
           position: right
       - say:
           with: [덕만, 유신]
-          text: "덕만은 싸울 병사와 성 안의 가족을 먼저 줄에 세웠다."
+          text: "덕만은 싸울 병사와 성 안의 가족을 먼저 줄에 세웠습니다."
       - say:
           with: [덕만, 유신]
-          text: "병사들은 자기 몫의 죽을 절반 남겨 가족에게 들고 갔다."
+          text: "병사들은 자기 몫의 죽을 절반 남겨 가족에게 들고 갔습니다."
       - say:
           char: 유신
           camera: medium
@@ -324,7 +422,27 @@ scenes:
       - say:
           delivery: calm
           wait: 650
-          text: "도착한 다음 날 해 질 무렵, 적 기병이 성 아래서 둘로 갈라졌다."
+          text: "도착한 다음 날 해 질 무렵, 적 기병이 성 아래서 둘로 갈라졌습니다."
+      - say:
+          char: 유신.angry
+          camera: medium
+          with: [덕만]
+          text: "수도에서 온 명령은 성 밖으로 나가지 말라 합니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [유신]
+          text: "그러면 마을은 버리라는 말이군요."
+      - say:
+          char: 유신.sad
+          camera: close
+          with: [덕만]
+          text: "적도 그 명령을 아는 듯 움직입니다."
+      - say:
+          char: 덕만.angry
+          camera: close
+          with: [유신]
+          text: "처음부터 이 선택을 시키려고 보냈군요."
       - say:
           char: 유신.angry
           camera: medium
@@ -389,7 +507,7 @@ scenes:
           text: "하지만 지금은 한쪽을 먼저 정하셔야 합니다."
       - choice:
           key: c4_defense
-          prompt: "적의 두 깃발이 서로 다른 길로 멀어진다."
+          prompt: "적의 두 깃발이 서로 다른 길로 멀어집니다."
           char: 덕만
           camera: close
           with: [유신]
@@ -461,7 +579,7 @@ scenes:
           id: 유신
           position: right
       - say:
-          text: "요새에는 신라 깃발이 남았고, 마을은 밤새 타올랐다."
+          text: "요새에는 신라 깃발이 남았고, 마을은 밤새 타올랐습니다."
       - say:
           char: 덕만.sad
           camera: medium
@@ -500,11 +618,29 @@ scenes:
           id: 아진
           position: right
       - say:
+          with: [덕만, 아진]
+          text: "새벽에 적진을 살피러 나간 아진은 팔에 상처를 입고 돌아왔습니다."
+      - say:
+          char: 아진.nervous
+          camera: medium
+          with: [덕만]
+          text: "동생을 실은 수레가 적진으로 들어갔습니다."
+      - say:
+          char: 덕만.angry
+          camera: close
+          with: [아진]
+          text: "누가 아이를 넘겼습니까?"
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "수레꾼 손목에 같은 붉은 매듭이 있었습니다."
+      - say:
           delivery: calm
-          text: "전투 다음 날 한낮, 화살 한 발이 덕만의 발 앞에 꽂혔다."
+          text: "전투 다음 날 한낮, 화살 한 발이 덕만의 발 앞에 꽂혔습니다."
       - say:
           wait: 750
-          text: "화살에는 낯익은 아이 짚신 한 짝이 묶여 있었다."
+          text: "화살에는 낯익은 아이 짚신 한 짝이 묶여 있었습니다."
       - say:
           char: 아진.nervous
           camera: medium
@@ -563,7 +699,7 @@ scenes:
           text: "예. 그래서 공주님도 보내고 싶지 않습니다."
       - choice:
           key: c4_enemy
-          prompt: "해가 지기 전에 어떻게 대응할지 정해야 한다."
+          prompt: "해가 지기 전에 어떻게 대응하시겠습니까?"
           char: 덕만
           camera: close
           with: [아진]
@@ -591,11 +727,11 @@ scenes:
           position: right
       - say:
           with: [덕만, 아진]
-          text: "해가 기울자 덕만과 아진은 포로 명단을 들고 강가로 걸었다."
+          text: "해가 기울자 덕만과 아진은 포로 명단을 들고 강가로 걸었습니다."
       - say:
           with: [덕만, 아진]
           wait: 650
-          text: "두 사람이 움직일 때마다 갈대밭의 활도 함께 방향을 바꿨다."
+          text: "두 사람이 움직일 때마다 갈대밭의 활도 함께 방향을 바꿨습니다."
       - say:
           char: 아진.nervous
           camera: medium
@@ -677,9 +813,9 @@ scenes:
           id: 유신
           position: right
       - say:
-          text: "빈 수레 20대가 새벽 안개 속을 몇 번이고 오갔다."
+          text: "빈 수레 20대가 새벽 안개 속을 몇 번이고 오갔습니다."
       - say:
-          text: "적군은 빈 수레를 지원군 행렬로 착각하고 강 건너로 물러났다."
+          text: "적군은 빈 수레를 지원군 행렬로 착각하고 강 건너로 물러났습니다."
       - say:
           char: 덕만
           camera: medium
@@ -716,10 +852,36 @@ scenes:
       - say:
           delivery: calm
           wait: 750
-          text: "4일 뒤, 막혔던 보급로와 배급 줄이 함께 열렸다."
+          text: "4일 뒤, 막혔던 보급로와 배급 줄이 함께 열렸습니다."
+      - say:
+          with: [덕만, 유신]
+          text: "덕만은 그 4일 동안 성벽 아래에서 자고 자기 그릇도 배급 줄에 놓았습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "병사들이 공주님은 언제 떠나느냐고 묻습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "다음 곡식 수레가 들어오는 걸 본 뒤 갑니다."
       - say:
           wait: 850
-          text: "이제 사람들은 덕만을 공주가 아니라 ‘우리 지휘관’이라 불렀다."
+          text: "이제 사람들은 덕만을 공주가 아니라 ‘우리 지휘관’이라 불렀습니다."
+      - say:
+          with: [덕만, 유신]
+          text: "유신은 천명이 보낸 편지를 덕만에게 건넸습니다."
+      - say:
+          char: 유신.sad
+          camera: medium
+          with: [덕만]
+          text: "전하께서 회의 도중 다시 쓰러지셨습니다."
+      - say:
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "그날 칠숙공이 진운공을 불렀습니다."
       - say:
           char: 유신.angry
           camera: medium
@@ -746,7 +908,7 @@ scenes:
           with: [유신]
           text: "수도로 돌아가겠습니다."
       - say:
-          text: "덕만은 아이의 빈 그릇과 창고 열쇠를 자기 수레 앞자리에 실었다."
+          text: "덕만은 아이의 빈 그릇과 창고 열쇠를 자기 수레 앞자리에 실었습니다."
 
   go_22_fair_hunger:
     actions:
@@ -759,7 +921,7 @@ scenes:
           id: 유신
           position: right
       - say:
-          text: "덕만은 나이와 신분을 가리지 않고 똑같이 한 그릇씩 나눴다."
+          text: "덕만은 나이와 신분을 가리지 않고 똑같이 한 그릇씩 나눴습니다."
       - say:
           char: 유신.sad
           camera: medium
@@ -786,11 +948,11 @@ scenes:
       - effect: pulse
       - say:
           wait: 750
-          text: "5일째 밤, 굶주린 병사가 활을 놓치자 적군이 성벽을 넘었다."
+          text: "5일째 밤, 굶주린 병사가 활을 놓치자 적군이 성벽을 넘었습니다."
       - effect: darken
       - gameOver:
           title: "운명 22 — 공평한 한 그릇"
-          message: "덕만은 모두에게 똑같이 나눴지만 병사도 아이도 버티지 못했다."
+          message: "덕만은 모두에게 똑같이 나눴지만 병사도 아이도 버티지 못했습니다."
 
   go_23_full_princess:
     actions:
@@ -803,7 +965,7 @@ scenes:
           id: 월명
           position: right
       - say:
-          text: "배급을 멈추자 사람들은 빈 그릇을 창고 문 앞에 내려놓았다."
+          text: "배급을 멈추자 사람들은 빈 그릇을 창고 문 앞에 내려놓았습니다."
       - say:
           char: 월명.warning
           camera: medium
@@ -815,7 +977,7 @@ scenes:
           with: [월명]
           text: "수도의 답이 올 때까지 이틀만 기다려요."
       - say:
-          text: "이틀 뒤, 비어 있던 첫 그릇이 덕만의 마차를 향해 날아왔다."
+          text: "이틀 뒤, 비어 있던 첫 그릇이 덕만의 마차를 향해 날아왔습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -830,7 +992,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 23 — 닫힌 창고"
-          message: "배급을 막자 성 안 사람들이 돌을 던졌고, 덕만은 그 자리에서 쓰러졌다."
+          message: "배급을 막자 성 안 사람들이 돌을 던졌고, 덕만은 그 자리에서 쓰러졌습니다."
 
   go_24_kind_failure:
     actions:
@@ -858,7 +1020,7 @@ scenes:
           with: [유신]
           text: "한쪽을 고르면 다른 쪽을 버리는 겁니다."
       - say:
-          text: "해가 지기 전, 두 길에서 보낸 병사들이 거의 함께 도착했다."
+          text: "해가 지기 전, 두 길에서 보낸 병사들이 거의 함께 도착했습니다."
       - say:
           char: 유신.sad
           camera: close
@@ -872,7 +1034,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 24 — 둘로 나뉜 군사"
-          message: "병력을 반으로 나누자 어느 쪽도 지키지 못하고 차례로 무너졌다."
+          message: "병력을 반으로 나누자 어느 쪽도 지키지 못하고 차례로 무너졌습니다."
 
   go_25_silla_abandoned:
     actions:
@@ -885,7 +1047,7 @@ scenes:
           id: 유신
           position: right
       - say:
-          text: "후퇴한 군사와 피란민 수레가 좁은 산길에서 뒤엉켰다."
+          text: "후퇴한 군사와 피란민 수레가 좁은 산길에서 뒤엉켰습니다."
       - say:
           char: 유신.angry
           camera: medium
@@ -897,7 +1059,7 @@ scenes:
           with: [유신]
           text: "앞쪽 말에는 아이들을 태우세요."
       - say:
-          text: "적 기병이 가장 느린 뒤쪽 수레부터 덮쳤다."
+          text: "적 기병이 가장 느린 뒤쪽 수레부터 덮쳤습니다."
       - say:
           char: 유신.sad
           camera: close
@@ -911,7 +1073,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 25 — 산길의 포로"
-          message: "덕만은 산길에서 포로가 됐다. 수도는 구하러 갈 군사를 보내지 않고 덕만을 다음 왕 후보에서 뺐다."
+          message: "덕만은 산길에서 포로가 됐습니다. 수도는 구하러 갈 군사를 보내지 않고 덕만을 다음 왕 후보에서 뺐습니다."
 
   go_26_hostage_princess:
     actions:
@@ -924,7 +1086,7 @@ scenes:
           id: 아진
           position: right
       - say:
-          text: "덕만은 홀로 칼을 내려놓고 물이 찬 강가로 걸었다."
+          text: "덕만은 홀로 칼을 내려놓고 물이 찬 강가로 걸었습니다."
       - say:
           char: 아진
           camera: medium
@@ -937,7 +1099,7 @@ scenes:
           text: "뒤에 남은 사람들에게 3일을 벌어 줄 수 있다면 갑니다."
       - say:
           wait: 900
-          text: "강 한가운데서 돌아보자 신라의 횃불이 하나씩 꺼졌다."
+          text: "강 한가운데서 돌아보자 신라의 횃불이 하나씩 꺼졌습니다."
       - say:
           char: 아진
           camera: close
@@ -951,4 +1113,4 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 26 — 강 건너의 거래"
-          message: "덕만은 뒤늦게 돌아왔지만 궁 밖 별채에 갇혔다. 포로가 된 뒤 왕이 될 기회도 잃었다."
+          message: "덕만은 뒤늦게 돌아왔지만 궁 밖 별채에 갇혔습니다. 포로가 된 뒤 왕이 될 기회도 잃었습니다."

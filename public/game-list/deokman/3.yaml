@@ -16,11 +16,11 @@ scenes:
       - say:
           text: "제3장 — 잠긴 방의 시체"
       - say:
-          text: "631년 늦여름, 같은 날 밤. 덕만의 방문 아래로 피가 흘렀다."
+          text: "631년 늦여름, 같은 날 밤. 작은 서재 문 아래로 피가 흘렀습니다."
       - say:
           with: [덕만, 소원]
           wait: 700
-          text: "혼례 비녀를 치운 지 두 시간도 지나지 않은 때였다."
+          text: "혼례 비녀를 치운 지 두 시간도 지나지 않은 때였습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -33,10 +33,10 @@ scenes:
           text: "안에 누구야! 대답해!"
       - say:
           wait: 750
-          text: "대답 대신 문 안에서 무거운 것이 쓰러지는 소리가 났다."
+          text: "대답 대신 문 안에서 무거운 것이 쓰러지는 소리가 났습니다."
       - effect: { name: impact, wait: true }
       - say:
-          text: "덕만이 문을 밀어젖히자, 기대어 있던 남자가 복도로 넘어졌다."
+          text: "덕만이 문을 밀어젖히자, 기대어 있던 남자가 복도로 넘어졌습니다."
       - bg: princess_chamber
       - camera: medium
       - char:
@@ -49,7 +49,10 @@ scenes:
           char: 덕만.sad
           camera: close
           with: []
-          text: "혼인 문서를 빼내 준 관리야."
+          text: "오늘 원본을 가져오기로 한 관리야."
+      - say:
+          with: [덕만, 소원]
+          text: "관리의 빈 품에는 뜯긴 장부 실밥만 남아 있었습니다."
       - say:
           char: 소원.nervous
           camera: close
@@ -69,7 +72,17 @@ scenes:
           char: 덕만
           camera: close
           with: [소원]
-          text: "그럼 범인은 방에 들어오지도 않았어."
+          text: "그럼 범인은 문으로 들어오지 않았어."
+      - say:
+          char: 소원.nervous
+          camera: medium
+          with: [덕만]
+          text: "창문은 열려 있어요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원]
+          text: "문서도 창문으로 빼앗겼겠네."
       - say:
           char: 소원.nervous
           camera: close
@@ -113,7 +126,7 @@ scenes:
     actions:
       - choice:
           key: c3_body
-          prompt: "문밖의 발소리가 점점 늘어난다."
+          prompt: "문밖의 발소리가 점점 늘어납니다."
           char: 덕만
           camera: close
           with: [소원]
@@ -144,7 +157,7 @@ scenes:
           with: [칠숙]
           text: "문을 열겠습니다. 모두 움직이지 말고 여기서 보십시오."
       - say:
-          text: "사람들이 몰려들자 한 하인만 시신을 보기도 전에 뒤로 물러섰다."
+          text: "사람들이 몰려들자 한 하인만 시신을 보기도 전에 뒤로 물러섰습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -216,7 +229,7 @@ scenes:
       - say:
           delivery: calm
           wait: 650
-          text: "날이 밝기 직전, 세 사람이 찾은 흔적이 작은 탁자를 가득 채웠다."
+          text: "날이 밝기 직전, 세 사람이 찾은 흔적이 작은 탁자를 가득 채웠습니다."
       - say:
           char: 소원
           camera: medium
@@ -260,7 +273,7 @@ scenes:
           text: "그럼 거짓말하기 어려운 흔적부터 보죠."
       - choice:
           key: c3_testimony
-          prompt: "날이 밝기 전에 가장 수상한 흔적 하나를 확인한다."
+          prompt: "날이 밝기 전에 가장 수상한 흔적 하나를 확인합니다."
           char: 덕만
           camera: close
           with: [유신]
@@ -390,10 +403,24 @@ scenes:
       - say:
           delivery: calm
           wait: 700
-          text: "날이 밝을 무렵, 아진은 붙잡히기 전에 제 발로 찾아왔다."
+          text: "날이 밝을 무렵, 아진은 붙잡히기 전에 제 발로 찾아왔습니다."
       - say:
           with: [덕만, 아진]
-          text: "그는 붉은 손목 매듭을 풀어 탁자 위에 놓았다."
+          text: "그는 붉은 손목 매듭을 풀어 탁자 위에 놓았습니다."
+      - say:
+          with: [덕만, 아진]
+          wait: 650
+          text: "매듭 안쪽에는 ‘일을 마치면 약을 마셔라’라고 적혀 있었습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [아진]
+          text: "관리 다음에는 당신을 없앨 셈이었군요."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "제가 죽으면 동생도 살려 둘 이유가 없습니다."
       - say:
           char: 덕만.angry
           camera: medium
@@ -423,7 +450,7 @@ scenes:
       - say:
           with: [덕만, 아진]
           wait: 750
-          text: "아진은 품에서 아이 짚신 한 짝을 꺼냈다."
+          text: "아진은 품에서 아이 짚신 한 짝을 꺼냈습니다."
       - say:
           char: 아진.nervous
           camera: close
@@ -444,7 +471,7 @@ scenes:
           with:
             - 아진
           wait: 650
-          text: "아진의 손이 아이 짚신 위에서 멈췄다."
+          text: "아진의 손이 아이 짚신 위에서 멈췄습니다."
       - say:
           char: 덕만
           camera: close
@@ -464,7 +491,7 @@ scenes:
           text: "풀어 두면 제가 공주를 다시 찌를 수도 있습니다."
       - choice:
           key: c3_culprit
-          prompt: "아진은 묶이지 않은 두 손을 내밀었다."
+          prompt: "아진은 묶이지 않은 두 손을 내밀었습니다."
           char: 덕만
           camera: close
           with: [아진]
@@ -514,6 +541,19 @@ scenes:
           with: [덕만]
           wait: 850
           text: "……제가 돌아온 뒤 저를 어떻게 할지 정하십시오."
+      - say:
+          with: [덕만, 아진]
+          text: "해가 뜨기 전 아진이 돌아왔지만, 가족이 갇혔던 집은 비어 있었습니다."
+      - say:
+          char: 아진.nervous
+          camera: medium
+          with: [덕만]
+          text: "어젯밤 북쪽으로 옮겼습니다."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "수레표에 북쪽 성의 표시가 남았습니다."
       - goto: chapter3_end
 
   culprit_bait:
@@ -527,9 +567,9 @@ scenes:
           id: 칠숙
           position: right
       - say:
-          text: "‘죽었던 관리가 방금 눈을 떴다.’"
+          text: "‘죽었던 관리가 방금 눈을 떴습니다.’"
       - say:
-          text: "소문이 퍼지자 하인 하나가 몰래 시신의 입을 벌려 봤다."
+          text: "소문이 퍼지자 하인 하나가 몰래 시신의 입을 벌려 봤습니다."
       - say:
           char: 덕만
           camera: medium
@@ -545,10 +585,42 @@ scenes:
           camera: close
           with: [칠숙]
           text: "좋습니다. 그 하인 앞에서도 같은 말을 하세요."
+      - say:
+          with: [덕만, 칠숙]
+          text: "붙잡힌 하인의 품에서 북쪽 성으로 보낸 아이의 수레표가 나왔습니다."
       - goto: chapter3_end
 
   chapter3_end:
     actions:
+      - bg: shadow_corridor
+      - camera: medium
+      - char:
+          id: 덕만
+          position: left
+      - char:
+          id: 아진
+          position: right
+      - say:
+          char: 아진.nervous
+          camera: medium
+          with: [덕만]
+          text: "동생은 북쪽 성으로 끌려갔습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "저도 그 성으로 보내려는 모양입니다."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "같은 함정에 두 사람을 넣으려는 겁니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          wait: 700
+          text: "그럼 둘 다 데리고 나오죠."
       - bg: council_hall
       - camera: medium
       - char:
@@ -562,12 +634,20 @@ scenes:
       - add: { legitimacy: 1 }
       - say:
           wait: 650
-          text: "아침이 밝자 찢긴 비밀 문서가 귀족들 앞에 펼쳐졌다."
+          text: "아침이 밝자 찢긴 비밀 문서가 귀족들 앞에 펼쳐졌습니다."
       - say:
           char: 덕만
           camera: medium
           with: [칠숙]
           text: "남자 왕족을 다음 왕으로 세운다는 약속입니다."
+      - say:
+          with: [덕만, 칠숙]
+          text: "명령한 사람의 이름이 적힌 첫 장은 뜯겨 나가 있었습니다."
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [덕만]
+          text: "제 이름은 어디에도 없군요."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -583,6 +663,66 @@ scenes:
           camera: close
           with: [칠숙]
           text: "누명이 풀리자마자 저를 국경으로 보내시는 겁니까?"
+      - bg: throne_hall
+      - camera: medium
+      - char:
+          id: 진평왕
+          position: right
+      - say:
+          with: [진평왕, 덕만]
+          wait: 700
+          text: "회의가 끝난 뒤 진평왕은 덕만만 왕의 방에 남겼습니다."
+      - say:
+          char: 덕만.sad
+          camera: medium
+          with: [진평왕]
+          text: "이번에도 증거가 모자랍니까?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "첫 장이 없으니 칠숙을 바로 잡을 수 없다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "그를 따르는 군사는 내 군사보다 많다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "그래서 국경으로 보내게 두십니까?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "막으면 오늘 밤 궁에서 피가 난다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "저들은 네게 군사를 주고도 죽을 거라 믿는다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "그 군사와 살아 돌아와라."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "절 살리려 보내십니까, 왕으로 만들려고요?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          wait: 900
+          text: "둘 다다. 그래서 미안하다."
+      - bg: council_hall
+      - camera: medium
+      - char:
+          id: 칠숙
+          position: right
       - say:
           char: 칠숙.smile
           camera: medium
@@ -605,7 +745,7 @@ scenes:
           text: "다만 돌아오는 날은 제가 정하겠습니다."
       - say:
           wait: 850
-          text: "칠숙은 이미 국경 지휘권이 적힌 나무패를 꺼내 들고 있었다."
+          text: "칠숙은 이미 국경 지휘권이 적힌 나무패를 꺼내 들고 있었습니다."
 
   go_17_second_murder:
     actions:
@@ -618,7 +758,7 @@ scenes:
           id: 소원
           position: right
       - say:
-          text: "두 사람은 피를 닦을 새도 없이 시신을 침대 밑으로 밀었다."
+          text: "두 사람은 피를 닦을 새도 없이 시신을 침대 밑으로 밀었습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -631,9 +771,9 @@ scenes:
           text: "먼저 이 사람이 왜 왔는지 알아야 해."
       - effect: impact
       - say:
-          text: "그때 호위들이 문을 부수고 들이닥쳤다."
+          text: "그때 호위들이 문을 부수고 들이닥쳤습니다."
       - say:
-          text: "침대 아래에는 시신과 피 묻은 천이 함께 있었다."
+          text: "침대 아래에는 시신과 피 묻은 천이 함께 있었습니다."
       - say:
           char: 소원.nervous
           camera: close
@@ -647,7 +787,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 17 — 침대 아래"
-          message: "덕만과 소원은 시신을 숨긴 자리에서 함께 붙잡혔다."
+          message: "덕만과 소원은 시신을 숨긴 자리에서 함께 붙잡혔습니다."
 
   go_18_borrowed_corpse:
     actions:
@@ -660,7 +800,7 @@ scenes:
           id: 소원
           position: right
       - say:
-          text: "두 사람은 시신을 천에 싸고 어두운 회랑으로 나섰다."
+          text: "두 사람은 시신을 천에 싸고 어두운 회랑으로 나섰습니다."
       - say:
           char: 소원.nervous
           camera: medium
@@ -692,7 +832,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 18 — 회랑의 목격자"
-          message: "덕만은 시신을 옮기던 회랑에서 12명에게 둘러싸였다."
+          message: "덕만은 시신을 옮기던 회랑에서 12명에게 둘러싸였습니다."
 
   go_19_last_witness:
     actions:
@@ -715,10 +855,10 @@ scenes:
           with: [칠숙]
           text: "예. 저도 그 상처를 봤습니다."
       - say:
-          text: "소원이 굳은 얼굴로 시신을 바로 눕혔다."
+          text: "소원이 굳은 얼굴로 시신을 바로 눕혔습니다."
       - say:
           wait: 750
-          text: "칼자국은 등에 없었다. 상처는 가슴에만 있었다."
+          text: "칼자국은 등에 없었습니다. 상처는 가슴에만 있었습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -732,7 +872,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 19 — 뒤집힌 시신"
-          message: "덕만은 보지도 못한 상처를 봤다고 말한 사람으로 기록됐다."
+          message: "덕만은 보지도 못한 상처를 봤다고 말한 사람으로 기록됐습니다."
 
   go_20_correct_accusation:
     actions:
@@ -761,7 +901,7 @@ scenes:
           text: "잡아 둔 뒤 증거를 찾겠습니다."
       - effect: impact
       - say:
-          text: "아진은 기다렸다는 듯 소매 속 약병을 깨물었다."
+          text: "아진은 기다렸다는 듯 소매 속 약병을 깨물었습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -775,7 +915,7 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 20 — 죽어 버린 증인"
-          message: "아진은 누가 시켰는지 말하지 못한 채 죽었다. 명령한 사람은 다시 숨어 버렸다."
+          message: "아진은 누가 시켰는지 말하지 못한 채 죽었습니다. 명령한 사람은 다시 숨어 버렸습니다."
 
   go_21_friendless_truth:
     actions:
@@ -809,9 +949,9 @@ scenes:
           text: "나온 뒤에도 제가 공주님을 믿어야 해요?"
       - say:
           wait: 900
-          text: "약속한 며칠이 지나고도 심문은 끝나지 않았다. 20일이 흘렀다."
+          text: "약속한 며칠이 지나고도 심문은 끝나지 않았습니다. 20일이 흘렀습니다."
       - say:
-          text: "20일째, 소원은 고문을 멈추려고 거짓 자백을 했다."
+          text: "20일째, 소원은 고문을 멈추려고 거짓 자백을 했습니다."
       - bg: princess_chamber
       - camera: medium
       - char:
@@ -826,4 +966,4 @@ scenes:
       - effect: darken
       - gameOver:
           title: "운명 21 — 소원의 자백"
-          message: "덕만은 누명을 벗었지만 소원은 고문 끝에 죽었다."
+          message: "덕만은 누명을 벗었지만 소원은 고문 끝에 죽었습니다."
