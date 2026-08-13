@@ -118,7 +118,7 @@ scenes:
           camera: close
           with: [덕만]
           text: "곡식과 증거를 함께 가져오겠습니다."
-      - goto: night_corridor
+      - goto: late_family_meal
 
   relief_audit:
     actions:
@@ -144,6 +144,65 @@ scenes:
           camera: close
           with: [덕만]
           text: "길보다 돈을 먼저 따라가라는 말씀이군요. 그 길은 대개 사람의 방까지 이어집니다."
+      - goto: late_family_meal
+
+  late_family_meal:
+    actions:
+      - bg: princess_chamber
+      - camera: medium
+      - char: { id: 진평왕, position: center }
+      - char: { id: 덕만, position: left }
+      - char: { id: 천명, position: right }
+      - say:
+          delivery: calm
+          text: "그날 밤, 마지막 곡식 수레가 궁문을 나간 뒤에야 세 사람의 늦은 저녁상이 놓였습니다."
+      - say:
+          char: 천명
+          camera: medium
+          with: [진평왕, 덕만]
+          text: "아버지, 국을 세 번 데웠어요. 한 번 더 데우면 죽이 됩니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [천명]
+          text: "수레는 모두 떠났느냐?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "예. 첫 수레가 서쪽 궁문을 지났습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "이제 숟가락을 드셔도 됩니다."
+      - say:
+          char: 천명
+          camera: medium
+          with: [진평왕, 덕만]
+          text: "왕에게 밥을 먹으라는 딸이 둘이나 있으니, 신라는 참 든든하겠네요."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [천명, 덕만]
+          text: "내가 왕좌에서 내려오면 둘부터 벌해야겠구나."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "그날까지는 국이 식기 전에 드세요."
+      - say:
+          with: [진평왕, 덕만, 천명]
+          text: "진평왕이 마침내 숟가락을 들자 천명이 덕만에게 눈을 찡긋했습니다. 잠깐이나마 세 사람은 왕과 공주가 아니라 한 식구처럼 웃었습니다."
+      - say:
+          with: [진평왕, 덕만, 천명]
+          wait: 650
+          text: "웃음 끝에 진평왕이 길게 기침했습니다. 천명은 약방에서 내일 제사 전에 올릴 새 약재가 왔다며 먼저 확인하겠다고 말했습니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [천명]
+          text: "그래. 네 눈을 거친 뒤 가져오너라."
       - goto: night_corridor
 
   night_corridor:

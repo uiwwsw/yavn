@@ -137,11 +137,20 @@ scenes:
           char: 덕만.sad
           camera: close
           with: [월명]
-          text: "누가 문서를 가져갔습니까?"
+          text: "이름부터 듣겠습니다. 기록에 남겨야 합니다."
+      - say:
+          with: [덕만, 월명]
+          wait: 650
+          text: "기록관의 입술이 겨우 움직였습니다. 덕만은 들릴 듯 말 듯 한 이름, ‘무진’을 문서 조각 위에 적었습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [월명]
+          text: "무진, 이제 누가 문서를 가져갔는지 알려 주세요."
       - say:
           with: [덕만, 월명]
           wait: 800
-          text: "기록관은 말 대신 떨리는 손으로 북쪽을 가리킨 뒤, 가슴의 문서 조각을 덕만에게 밀었습니다."
+          text: "무진은 말 대신 떨리는 손으로 북쪽을 가리킨 뒤, 가슴의 문서 조각을 덕만에게 밀었습니다."
       - say:
           char: 덕만.sad
           camera: close
@@ -149,7 +158,7 @@ scenes:
           text: "북쪽 운송 거점입니까? 원본 곡식 장부도 그곳에 있습니까?"
       - say:
           with: [덕만, 월명]
-          text: "기록관은 한 번 눈을 감았다 떴습니다. 그리고 아진을 가리킨 뒤 고개를 가로저었습니다."
+          text: "무진은 한 번 눈을 감았다 떴습니다. 그리고 아진을 가리킨 뒤 고개를 가로저었습니다."
       - char: { id: 아진, position: right }
       - say:
           char: 아진.nervous
@@ -165,7 +174,7 @@ scenes:
       - say:
           with: [덕만, 아진]
           wait: 900
-          text: "기록관은 덕만이 문서 조각을 봉하는 모습을 확인한 뒤 숨을 거두었습니다."
+          text: "무진은 덕만이 자기 이름과 증언을 함께 봉하는 모습을 확인한 뒤 숨을 거두었습니다."
       - goto: ajin_confession
 
   ajin_confession:

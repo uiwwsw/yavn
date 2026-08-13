@@ -95,7 +95,33 @@ describe('Deokman cinematic reimagining', () => {
     expect(summary).toContain('비담의 반란');
     expect(seoDescription).toContain('같은 권력의 거래');
     expect(asRecord(launcher.showcase).label).toBe('8 CHAPTERS · ONE CROWN');
-    expect(config.version).toBe('6.0.1');
+    expect(config.version).toBe('6.1.0');
+  });
+
+  it('lets relationships breathe and stages the consequences after major decisions', () => {
+    const relationshipAnchors = {
+      '0.yaml': ['국을 세 번 데웠어요', '잠깐이나마 세 사람은 왕과 공주가 아니라 한 식구처럼 웃었습니다'],
+      '1.yaml': ['등불을 다시 켜자 유신과 비담이 복도 양쪽에서 거의 동시에 들어왔습니다', '장부가 말을 안 해서 제가 대신합니다'],
+      '2.yaml': ['혼인 예복의 붉은 끈', '네가 싫다고도 못 하는 혼인이 싫어', '제가 정한 삶을 살고 싶어요'],
+      '3.yaml': ['‘무진’을 문서 조각 위에 적었습니다', '자기 이름과 증언을 함께 봉하는 모습'],
+      '4.yaml': ['덕만은 아진의 앞을 막지 않도록 한 걸음 비켜섰습니다', '아진의 손에서 칼집이 떨어졌습니다'],
+      '5.yaml': ['두 사람의 저녁상은 차갑게 식어 있었습니다', '경쟁자에게는 이 정도가 알맞습니다'],
+      '6.yaml': ['나, 늦었어?', '네가 기억하는 아버지와 내가 기억하는 아버지를 합치자'],
+      '7.yaml': ['즉위 뒤 첫 공개 재판', '무진의 이름부터 적겠습니다', '빈 둘째 줄을 승만의 대답을 위해 남겼습니다'],
+    } as const;
+
+    Object.entries(relationshipAnchors).forEach(([path, anchors]) => {
+      const text = rawChapter(path);
+      anchors.forEach((anchor) => expect(text, `${path}: ${anchor}`).toContain(anchor));
+    });
+
+    const final = rawChapter('7.yaml');
+    ['final_law', 'final_people', 'final_army', 'final_alliance']
+      .forEach((sceneId) => expect(final).toContain(`goto: ${sceneId}`));
+    expect(final.indexOf('final_law:')).toBeLessThan(final.indexOf('verdict:'));
+    expect(final.indexOf('final_people:')).toBeLessThan(final.indexOf('verdict:'));
+    expect(final.indexOf('final_army:')).toBeLessThan(final.indexOf('verdict:'));
+    expect(final.indexOf('final_alliance:')).toBeLessThan(final.indexOf('verdict:'));
   });
 
   it('makes one conspiracy drive every reversal from missing grain to the final rebellion', () => {

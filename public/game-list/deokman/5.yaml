@@ -269,6 +269,50 @@ scenes:
           camera: close
           with: [진운]
           text: "허락받을 말이라면 네 말이 아니다."
+      - goto: rival_supper
+
+  rival_supper:
+    actions:
+      - bg: moon_court
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 진운, position: right }
+      - say:
+          delivery: calm
+          text: "회의가 길어진 탓에 두 사람의 저녁상은 차갑게 식어 있었습니다."
+      - say:
+          char: 진운
+          camera: medium
+          with: [덕만]
+          text: "왕 후보 둘이 나란히 식은 죽을 먹는 모습은 표를 줄이겠군요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "굶은 마을 이야기를 하고 따뜻한 상부터 바꾸면 더 줄겠죠."
+      - say:
+          char: 진운
+          camera: close
+          with: [덕만]
+          text: "공주님은 늘 옳은 말로 사람 입맛을 없앱니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "진운공은 늘 싫은 말로 제 생각을 멈추게 하고요."
+      - say:
+          char: 진운.nervous
+          camera: close
+          with: [덕만]
+          text: "칭찬입니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "경쟁자에게는 이 정도가 알맞습니다."
+      - say:
+          with: [덕만, 진운]
+          text: "진운은 짧게 웃다가 멈췄습니다. 소매 속에 감춘 비녀 끝이 손가락에 걸렸습니다."
       - goto: mother_revealed
 
   mother_revealed:
@@ -279,7 +323,7 @@ scenes:
       - char: { id: 진운, position: right }
       - say:
           delivery: calm
-          text: "회의가 끝난 뒤, 진운은 낡은 비녀 하나를 덕만 앞에 놓았습니다."
+          text: "진운은 웃음을 거두고 낡은 비녀 하나를 덕만 앞에 놓았습니다."
       - say:
           char: 진운.nervous
           camera: medium

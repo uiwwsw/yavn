@@ -123,6 +123,33 @@ const initialDialog: DialogState = {
   typingPulse: 0,
 };
 
+function haveSameOrderedIds(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((id, index) => id === right[index]);
+}
+
+function haveSameCamera(left: StageCameraState, right: StageCameraState): boolean {
+  return left.shot === right.shot
+    && left.target === right.target
+    && left.transition === right.transition
+    && left.duration === right.duration;
+}
+
+function haveSameCharacterSlot(left: CharacterSlot | undefined, right: CharacterSlot): boolean {
+  return left?.id === right.id
+    && left.kind === right.kind
+    && left.source === right.source
+    && left.emotion === right.emotion
+    && left.facing === right.facing
+    && left.framing.name === right.framing.name
+    && left.framing.scale === right.framing.scale
+    && left.framing.x === right.framing.x
+    && left.framing.y === right.framing.y
+    && left.calibration.scale === right.calibration.scale
+    && left.calibration.x === right.calibration.x
+    && left.calibration.y === right.calibration.y
+    && left.calibration.spacing === right.calibration.spacing;
+}
+
 const initialVideoCutscene: VideoCutsceneState = {
   active: false,
   src: undefined,
@@ -241,8 +268,16 @@ export const useVNStore = create<VNState>((set) => ({
   clearAllStickers: () => set({ stickers: {} }),
   setCharacter: (position, slot) =>
     set((state) => {
-      const characters = { ...state.characters };
       const positions: Position[] = ['left', 'center', 'right'];
+      const duplicatePosition = positions.find(
+        (existingPosition) => existingPosition !== position
+          && state.characters[existingPosition]?.id === slot.id,
+      );
+      if (!duplicatePosition && haveSameCharacterSlot(state.characters[position], slot)) {
+        return state;
+      }
+
+      const characters = { ...state.characters };
 
       for (const existingPosition of positions) {
         if (existingPosition !== position && characters[existingPosition]?.id === slot.id) {
@@ -255,7 +290,7 @@ export const useVNStore = create<VNState>((set) => ({
     }),
   promoteSpeaker: (speakerId) =>
     set((state) => {
-      if (!speakerId) {
+      if (!speakerId || state.speakerOrder[0] === speakerId) {
         return state;
       }
       const next = state.speakerOrder.filter((id) => id !== speakerId);
@@ -270,9 +305,13 @@ export const useVNStore = create<VNState>((set) => ({
           .filter((id) => id.length > 0),
       ),
     );
-    set({ visibleCharacterIds: unique });
+    set((state) => haveSameOrderedIds(state.visibleCharacterIds, unique)
+      ? state
+      : { visibleCharacterIds: unique });
   },
-  setCamera: (camera) => set({ camera }),
+  setCamera: (camera) => set((state) => haveSameCamera(state.camera, camera)
+    ? state
+    : { camera }),
   setMusic: (url) => set({ currentMusic: url }),
   setDialog: (dialog) => set((state) => ({
     dialog: {

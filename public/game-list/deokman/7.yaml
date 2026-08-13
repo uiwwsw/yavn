@@ -158,7 +158,7 @@ scenes:
           camera: close
           with: [덕만]
           text: "그러면 오늘은 수레가 떠나는지 끝까지 확인하겠습니다."
-      - goto: early_reign
+      - goto: first_judgment
 
   opening_tax:
     actions:
@@ -184,7 +184,7 @@ scenes:
           camera: close
           with: [덕만]
           text: "불평도 함께 올라올 겁니다. 그대로 전하겠습니다."
-      - goto: early_reign
+      - goto: first_judgment
 
   opening_escort:
     actions:
@@ -210,6 +210,83 @@ scenes:
           camera: close
           with: [덕만]
           text: "왕도 끝까지 봤다고 적어 둘게요."
+      - goto: first_judgment
+
+  first_judgment:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - effect: focus
+      - char: { id: 덕만, position: center }
+      - char: { id: 칠숙, position: left }
+      - char: { id: 아진, position: right }
+      - say:
+          delivery: calm
+          text: "곡식 수레가 떠난 그날 오후, 덕만은 즉위 뒤 첫 공개 재판을 열었습니다."
+      - say:
+          with: [덕만, 칠숙, 아진]
+          text: "왕좌 아래에는 칠숙의 거짓 명령서와 아진이 나른 열쇠가 서로 다른 상자에 놓였습니다."
+      - say:
+          char: 칠숙.angry
+          camera: medium
+          with: [덕만, 아진]
+          text: "패한 사람을 벌주는 자리에 증언한 사람까지 세웠군요."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "저도 문을 열고 인장을 날랐습니다. 제 죄를 빼지 마십시오."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [칠숙, 아진]
+          text: "빼지 않는다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [칠숙, 아진]
+          text: "명령한 죄와 따른 죄가 같다고도 하지 않는다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [칠숙]
+          text: "칠숙공의 사병 지휘권과 창고 열쇠를 거둔다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [칠숙]
+          text: "살인과 거짓 왕명은 화백회의 앞에서 다시 묻겠다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "아진은 왕실 감시 아래 피해자 명부를 복원한다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "한 해 뒤, 남은 형을 공개 심리에서 정한다."
+      - say:
+          char: 아진
+          camera: close
+          with: [덕만]
+          text: "도망치지 않겠습니다. 무진의 이름부터 적겠습니다."
+      - say:
+          char: 칠숙.angry
+          camera: close
+          with: [덕만]
+          text: "새 왕도 결국 자기편을 살리는군."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [칠숙, 아진]
+          text: "아진은 내 편이 아니다. 오늘 사실을 말한 사람이다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [칠숙, 아진]
+          wait: 700
+          text: "칠숙공의 사실도 기록하겠다. 죄를 지우지는 않는다."
       - goto: early_reign
 
   early_reign:
@@ -808,19 +885,219 @@ scenes:
             - text: "승만의 계승을 공표한다"
               set: { final_strategy: "law" }
               add: { legitimacy: 1 }
-              goto: verdict
+              goto: final_law
             - text: "성문 위에서 백성에게 말한다"
               set: { final_strategy: "people" }
               add: { people_support: 1 }
-              goto: verdict
+              goto: final_people
             - text: "유신에게 진압을 맡긴다"
               set: { final_strategy: "army" }
               add: { power: 2, suspicion: 2 }
-              goto: verdict
+              goto: final_army
             - text: "비담에게 마지막 답을 보낸다"
               set: { final_strategy: "alliance" }
               add: { bidam_trust: 1 }
-              goto: verdict
+              goto: final_alliance
+
+  final_law:
+    actions:
+      - bg: throne_hall
+      - camera: medium
+      - effect: focus
+      - char: { id: 덕만, position: left }
+      - char: { id: 진운, position: right }
+      - say:
+          with: [덕만, 진운]
+          text: "덕만은 승만의 이름을 적은 계승 문서와 성문 방어 명령을 나란히 펼쳤습니다."
+      - say:
+          char: 진운
+          camera: medium
+          with: [덕만]
+          text: "반란 중에 다음 왕을 정하면 전하가 물러난다는 소문이 돌 겁니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "내가 죽은 뒤 몰래 정하면 더 큰 피가 난다. 살아 있을 때 반대받겠다."
+      - say:
+          char: 진운
+          camera: close
+          with: [덕만]
+          text: "그럼 제가 첫 번째로 묻겠습니다. 승만공주가 싫다고 하면 어쩌시겠습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "다시 정한다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "왕위도 당사자 없는 혼인처럼 만들지 않겠다."
+      - say:
+          with: [덕만, 진운]
+          text: "진운은 문서의 첫 증인란에 이름을 썼고, 덕만은 빈 둘째 줄을 승만의 대답을 위해 남겼습니다."
+      - goto: verdict
+
+  final_people:
+    actions:
+      - bg: fortress
+      - camera: medium
+      - effect: moonveil
+      - char: { id: 덕만, position: center }
+      - char: { id: 소원, position: left }
+      - char: { id: 월명, position: right }
+      - say:
+          with: [덕만, 소원, 월명]
+          text: "덕만이 성문 위 계단을 바라보자 월명이 길을 막고 섰습니다."
+      - say:
+          char: 월명.warning
+          camera: close
+          with: [덕만]
+          text: "계단은 안 됩니다. 숨이 끊기면 말씀도 끊깁니다."
+      - say:
+          char: 소원.nervous
+          camera: medium
+          with: [덕만, 월명]
+          text: "제가 아래에서 한 문장씩 받아 외칠게요."
+      - say:
+          char: 소원.nervous
+          camera: medium
+          with: [덕만, 월명]
+          text: "전하가 쓰러지면 문장보다 전하부터 잡고요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "그건 허락한다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "내가 멈추면 사람들도 숨을 고르게 해."
+      - effect: pulse
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원, 월명]
+          text: "성 안의 곡식은 숨기지 않겠다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원, 월명]
+          text: "성 안과 밖, 어느 편의 가족도 굶게 두지 않겠다."
+      - say:
+          with: [덕만, 소원, 월명]
+          text: "소원이 왕의 말을 한 문장씩 성벽 아래로 전했습니다. 웅성거림은 대답을 들으려는 침묵으로 바뀌었습니다."
+      - goto: verdict
+
+  final_army:
+    actions:
+      - bg: council_hall
+      - camera: medium
+      - effect: focus
+      - char: { id: 덕만, position: left }
+      - char: { id: 유신, position: right }
+      - say:
+          with: [덕만, 유신]
+          text: "덕만은 명활성으로 가는 길 위에 항복 통로와 치료소의 위치를 먼저 표시했습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "두 번째 공격 전에 끝내겠습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "비담을 죽이라는 명령도 주십시오."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [유신]
+          text: "반역은 재판에서 판단한다. 전투가 판단을 대신하게 하지 마라."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "무기를 버린 사람은 베지 마라."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "치료소 표식 앞에서는 양쪽 군사 모두 길을 열어라."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "전하를 배신한 사람까지 살려 오라는 명령입니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "살려 와야 누구의 말을 믿고 칼을 들었는지 물을 수 있다."
+      - say:
+          with: [덕만, 유신]
+          text: "유신은 공격 명령보다 긴 항복 규칙을 두 번 읽고 갑옷 안에 넣었습니다."
+      - goto: verdict
+
+  final_alliance:
+    actions:
+      - bg: throne_hall
+      - camera: medium
+      - effect: focus
+      - char: { id: 덕만, position: left }
+      - char: { id: 소원, position: right }
+      - say:
+          with: [덕만, 소원]
+          text: "덕만은 비담에게 보낼 종이에서 ‘용서한다’는 말을 쓰다 지웠습니다."
+      - say:
+          char: 소원.nervous
+          camera: close
+          with: [덕만]
+          text: "무슨 말을 남길까요?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "성문을 열고 혼자 내려오라고 써."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "죄는 없애지 않지만, 그의 말은 내가 직접 듣겠다고."
+      - say:
+          char: 소원
+          camera: close
+          with: [덕만]
+          text: "그가 오지 않으면요?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "그때는 왕으로 막는다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "이 편지는 친구였던 내가 보내는 마지막 길이다."
+      - bg: fortress
+      - camera: wide
+      - effect: moonveil
+      - char: { id: 비담, position: center }
+      - say:
+          with: [비담]
+          text: "잠시 뒤, 명활성의 빈 망루에서 비담은 홀로 편지를 펼쳤습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: []
+          wait: 800
+          text: "끝까지 죄와 나를 따로 보시는군요. 그래서 제가 졌습니다."
+      - say:
+          with: [비담]
+          text: "비담은 편지를 접어 품에 넣었습니다. 성문 아래에서는 두 번째 공격을 알리는 북이 울렸습니다."
+      - goto: verdict
 
   verdict:
     actions:

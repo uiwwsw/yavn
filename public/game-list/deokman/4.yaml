@@ -170,6 +170,10 @@ scenes:
       - say:
           with: [덕만, 아진]
           text: "초소 안에는 끊긴 붉은 매듭과 수레가 지나간 날짜를 벽에 새긴 젊은이가 숨어 있었습니다."
+      - effect: focus
+      - say:
+          with: [덕만, 아진]
+          text: "덕만은 아진의 앞을 막지 않도록 한 걸음 비켜섰습니다. 젊은이가 벽에서 몸을 떼자 아진의 손에서 칼집이 떨어졌습니다."
       - say:
           char: 아진.nervous
           camera: close
