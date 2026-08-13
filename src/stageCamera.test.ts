@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
+  CHARACTER_EXIT_FADE_DURATION_MS,
   DEFAULT_STAGE_CAMERA,
   resolveCharacterCalibration,
   resolveStageCameraFocusTargetId,
   resolveStageCameraPresentation,
   resolveStageCameraState,
+  resolveStageCameraTransitionTiming,
 } from './stageCamera';
 import type { CharacterStageLayout } from './characterLayout';
 
@@ -236,6 +238,40 @@ describe('stage camera', () => {
     expect(close.mobileZoomScale * close.mobileCompositionScale).toBeCloseTo(1.84);
     expect(close.mobileZoomScale).toBeLessThan(close.zoomScale);
     expect(1.84 / 1.58).toBeLessThan(1.2);
+  });
+
+  it('finishes a multi-actor close exit before using the remaining camera time', () => {
+    const close = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close', target: '덕만' }),
+      2,
+      'center',
+      {
+        mode: 'duo',
+        duoSideByPosition: { center: 'left', right: 'right' },
+        characterIdByPosition: { center: '덕만', right: '칠숙' },
+      },
+    );
+
+    expect(resolveStageCameraTransitionTiming(close, 2)).toEqual({
+      cameraDelay: CHARACTER_EXIT_FADE_DURATION_MS,
+      cameraDuration: 520 - CHARACTER_EXIT_FADE_DURATION_MS,
+      characterExitDuration: CHARACTER_EXIT_FADE_DURATION_MS,
+    });
+    expect(resolveStageCameraTransitionTiming(close, 1)).toEqual({
+      cameraDelay: 0,
+      cameraDuration: 520,
+      characterExitDuration: 0,
+    });
+    expect(resolveStageCameraTransitionTiming({ ...close, duration: 200 }, 2)).toEqual({
+      cameraDelay: 100,
+      cameraDuration: 100,
+      characterExitDuration: 100,
+    });
+    expect(resolveStageCameraTransitionTiming({ ...close, transition: 'cut', duration: 0 }, 2)).toEqual({
+      cameraDelay: 0,
+      cameraDuration: 0,
+      characterExitDuration: 0,
+    });
   });
 
   it('falls back to a medium group composition when a close or reaction shot has no target', () => {

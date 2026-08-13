@@ -80,7 +80,11 @@ import {
 } from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
-import { resolveStageCameraFocusTargetId, resolveStageCameraPresentation } from './stageCamera';
+import {
+  resolveStageCameraFocusTargetId,
+  resolveStageCameraPresentation,
+  resolveStageCameraTransitionTiming,
+} from './stageCamera';
 import { useVNStore } from './store';
 import { splitLastGrapheme } from './typing';
 import type {
@@ -1800,6 +1804,10 @@ export default function App() {
     characterStageLayout,
     characterStageSpacing,
   );
+  const cameraTransitionTiming = resolveStageCameraTransitionTiming(
+    cameraPresentation,
+    visibleCharacterCount,
+  );
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialog.speakerId;
@@ -1815,6 +1823,9 @@ export default function App() {
     '--stage-camera-origin-y': `${cameraPresentation.zoomOriginY}%`,
     '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileZoomOriginY}%`,
     '--stage-camera-duration': `${cameraPresentation.duration}ms`,
+    '--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`,
+    '--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`,
+    '--character-exit-duration': `${cameraTransitionTiming.characterExitDuration}ms`,
   } as CSSProperties;
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
     if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;

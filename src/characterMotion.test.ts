@@ -51,7 +51,7 @@ describe('image character motion', () => {
     expect(appSource).toContain("const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';");
     expect(appSource).not.toContain('if (!slot || !visibleCharacterSet.has(slot.id))');
     expect(styles).toMatch(
-      /\.char\.is-camera-hidden\s*\{[\s\S]*?visibility: hidden;[\s\S]*?animation: none;[\s\S]*?transition: none;/,
+      /\.char\.is-camera-hidden\s*\{[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;[\s\S]*?animation: none;[\s\S]*?transition: none;/,
     );
   });
 
@@ -76,9 +76,21 @@ describe('image character motion', () => {
     expect(styles).toContain('transform-origin: var(--stage-camera-render-origin-x) var(--stage-camera-render-origin-y);');
     expect(styles).not.toContain('--stage-camera-render-pan-x');
     expect(styles).not.toContain('translate3d(var(--stage-camera-render-pan-x)');
-    expect(styles).toContain('transform var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1)');
+    expect(styles).toContain('transform var(--stage-camera-motion-duration) cubic-bezier(0.22, 1, 0.36, 1)');
+    expect(styles).toContain('var(--stage-camera-motion-delay)');
     expect(styles).not.toContain('transform-origin var(--stage-camera-duration)');
     expect(styles).toMatch(/\.char-composition-world,[\s\S]*?\.char-camera-world,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
+  });
+
+  it('hides a close listener after its fade and before the camera zoom begins', () => {
+    expect(appSource).toContain('resolveStageCameraTransitionTiming(');
+    expect(appSource).toContain("'--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`");
+    expect(appSource).toContain("'--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`");
+    expect(styles).toContain('opacity var(--character-opacity-duration) ease-out');
+    expect(styles).toContain('visibility 0s linear var(--character-visibility-delay)');
+    expect(styles).toMatch(
+      /\.char-layer\[data-camera-shot='close'\] \.char\.is-listener\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
+    );
   });
 
   it('warms the Live2D renderer alongside chapter asset preloading', () => {

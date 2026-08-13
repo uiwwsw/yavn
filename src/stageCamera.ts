@@ -29,6 +29,8 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
   pan: 380,
 };
 
+export const CHARACTER_EXIT_FADE_DURATION_MS = 160;
+
 // Character count changes horizontal staging only. Keeping one physical camera
 // profile prevents a solo, duo, and trio from cropping the same source art at
 // different heights when the visible cast changes.
@@ -65,6 +67,31 @@ export type StageCameraPresentation = {
   duration: number;
   transition: CameraTransition;
 };
+
+export type StageCameraTransitionTiming = {
+  cameraDelay: number;
+  cameraDuration: number;
+  characterExitDuration: number;
+};
+
+export function resolveStageCameraTransitionTiming(
+  presentation: Pick<StageCameraPresentation, 'shot' | 'duration' | 'transition'>,
+  visibleCharacterCount: number,
+): StageCameraTransitionTiming {
+  const hasListenerExit = presentation.shot === 'close'
+    && visibleCharacterCount > 1
+    && presentation.transition !== 'cut'
+    && presentation.duration > 0;
+  const characterExitDuration = hasListenerExit
+    ? Math.min(CHARACTER_EXIT_FADE_DURATION_MS, Math.floor(presentation.duration / 2))
+    : 0;
+
+  return {
+    cameraDelay: characterExitDuration,
+    cameraDuration: Math.max(0, presentation.duration - characterExitDuration),
+    characterExitDuration,
+  };
+}
 
 function resolveCompositionScale(visibleCharacterCount: number): number {
   return visibleCharacterCount > 0 ? COMPOSITION_SCALE : 1;
