@@ -258,6 +258,64 @@ scenes:
           camera: medium
           with: [덕만]
           text: "됐어. 그 한 줄이면 네 말이야."
+      - goto: own_words_return
+
+  own_words_return:
+    actions:
+      - bg: moon_court
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 진운, position: right }
+      - say:
+          delivery: calm
+          text: "다음 날 아침, 진운은 호위도 원고를 준 서기관도 없이 월성 뜰로 돌아왔습니다."
+      - say:
+          with: [덕만, 진운]
+          text: "그가 내민 종이에는 혼인을 청하는 첫 문장이 검게 지워져 있었고, 그 아래는 비어 있었습니다."
+      - say:
+          char: 진운
+          camera: medium
+          with: [덕만]
+          text: "혼인은 청하지 않겠습니다. 저와 공주님 어느 쪽도 고르지 않은 일이기 때문입니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "왕좌에 대한 뜻도 함께 지운 겁니까?"
+      - say:
+          char: 진운.nervous
+          camera: close
+          with: [덕만]
+          text: "아닙니다. 혼인을 거부하는 일과 왕이 되고 싶은 마음을 한 문장에 묶지 않겠습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [진운]
+          text: "좋습니다. 저도 진운공의 뜻을 혼인 뒤에 숨기지 않겠습니다. 공개 회의에서 따로 듣겠습니다."
+      - say:
+          char: 진운.nervous
+          camera: close
+          with: [덕만]
+          text: "제가 공주님 반대편에 서도 어머니를 찾겠다는 말은 지켜 주십니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "진운공의 표와 어머니의 목숨을 바꾸지 않겠습니다. 저들이 했던 거래를 우리가 되풀이하면 안 됩니다."
+      - say:
+          char: 진운
+          camera: medium
+          with: [덕만]
+          text: "그러면 회의장에서는 제 편에 서 달라고 하지 마십시오. 제가 틀리면 제 이름으로 틀리겠습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "제 맞은편에 서십시오. 그래야 저들이 우리 사이에 숨겨 둔 조건도 모두 보일 겁니다."
+      - say:
+          with: [덕만, 진운]
+          wait: 650
+          text: "진운은 지워진 원고를 다시 접지 않았습니다. 두 사람은 빈 줄이 드러난 종이를 들고 서로 다른 문으로 회의장을 향했습니다."
       - goto: original_notice
 
   original_notice:

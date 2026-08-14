@@ -660,6 +660,86 @@ scenes:
           with: [덕만, 천명]
           wait: 900
           text: "두 자매는 동이 틀 때까지 왕의 손이 아닌 서로의 손을 잡고 있었습니다."
+      - goto: dawn_before_council
+
+  dawn_before_council:
+    actions:
+      - bg: council_hall
+      - camera: medium
+      - effect: focus
+      - char: { id: 덕만, position: center }
+      - char: { id: 비담, position: left }
+      - char: { id: 진운, position: right }
+      - say:
+          delivery: calm
+          text: "동이 트기 전, 세 사람은 비어 있는 회의장 앞방에 증거 상자를 펼쳤습니다. 왕의 빈자리는 흰 천으로 가려져 있었습니다."
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만, 진운]
+          text: "회의에 들어올 집은 열둘입니다. 넷은 전하의 유언장을 보면 바로 공주님께 표를 주겠다고 합니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "유언장은 가져가지 않습니다. 아버지의 마지막 말로 살아 있는 사람의 판단을 닫지 않겠습니다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "가벼운 종이 한 장을 두고 가장 무거운 상자를 고르시는군요. 공주님다운 불편한 길입니다."
+      - say:
+          char: 진운
+          camera: medium
+          with: [덕만]
+          text: "그 넷이 돌아서면 공주님은 질 수도 있습니다. 그때도 군사를 들이지 않겠습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "유신의 병사는 궁문과 기록 창고만 지킵니다. 회의의 표를 칼로 바꾸지는 않겠습니다."
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만]
+          text: "칠숙의 병사 서른한 명은 무기를 놓았고 일곱은 사라졌습니다. 문밖이 조용하다고 끝난 일은 아닙니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "사라진 일곱의 가족부터 확인하세요. 붙잡으려고 집을 부수면 칠숙이 새 군사를 얻습니다."
+      - say:
+          with: [덕만, 비담, 진운]
+          text: "덕만은 검은 가루, 혼인 합의서, 계승 맹약 조각을 원본 곡식 장부 위에 올렸습니다. 맨 앞에는 북쪽 전사자 명단을 놓았습니다."
+      - say:
+          char: 진운
+          camera: medium
+          with: [덕만]
+          text: "제 어머니의 비녀도 두겠습니다. 제 이름이 자유로운 후보의 이름만은 아니었다는 증거입니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진운]
+          text: "놓으셔도 됩니다. 다만 어머니의 말까지 대신하지는 마십시오. 진운공이 보고 선택한 일만 말하세요."
+      - say:
+          char: 진운
+          camera: close
+          with: [덕만]
+          text: "알겠습니다. 저는 왕좌를 원했고, 협박을 알면서도 남의 원고를 읽었습니다. 둘 다 제 말로 밝히겠습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "첫 표에서 뜻이 모이지 않으면 칠숙이 빈 왕좌를 이유로 군사를 다시 부를 겁니다. 한 번에 답을 얻어야 합니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담, 진운]
+          text: "그러면 더 짧게 말하겠습니다. 제가 한 일, 잃은 사람, 앞으로 공개할 권한만 말합니다."
+      - say:
+          with: [덕만, 비담, 진운]
+          wait: 800
+          text: "아침 북이 한 번 울리자 회의장 문이 열렸습니다. 덕만은 유언장 대신 다섯 가지 증거가 든 상자를 직접 들었습니다."
       - goto: succession_council
 
   succession_council:
