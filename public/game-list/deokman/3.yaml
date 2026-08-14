@@ -175,6 +175,79 @@ scenes:
           with: [덕만, 아진]
           wait: 900
           text: "무진은 덕만이 자기 이름과 증언을 함께 봉하는 모습을 확인한 뒤 숨을 거두었습니다."
+      - goto: mujin_after
+
+  mujin_after:
+    actions:
+      - bg: moon_court
+      - camera: medium
+      - effect: moonveil
+      - char: { id: 덕만, position: center }
+      - char: { id: 아진, position: left }
+      - char: { id: 소원, position: right }
+      - say:
+          delivery: calm
+          text: "기록방 밖 뜰에는 아직 새벽빛이 들지 않았습니다. 소원은 깨끗한 천과 빈 유품 상자를 가져왔습니다."
+      - say:
+          char: 소원.nervous
+          camera: medium
+          with: [덕만]
+          text: "이름을 적은 종이는 얼굴 가까이에 둘까요? 나중에 가족이 찾으러 오면 먼저 볼 수 있게요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "그래. 무진이 지킨 문서는 증거 상자에, 무진의 이름은 사람에게 돌려보낼 상자에 넣어."
+      - say:
+          with: [덕만, 아진, 소원]
+          text: "아진은 우물물로 손을 씻었습니다. 손바닥의 먹과 붉은 얼룩은 지워졌지만 손가락은 계속 떨렸습니다."
+      - say:
+          char: 소원.nervous
+          camera: close
+          with: [아진]
+          text: "더 문지르면 살만 벗겨져요. 깨끗해지는 건 재판에서 할 말을 다 한 뒤예요."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [소원]
+          text: "저를 위로하지 마십시오. 제가 열쇠를 나르지 않았다면 이 문도 열리지 않았습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          with: [아진]
+          text: "위로가 아닙니다. 하지 않은 살인으로 손을 망가뜨리면, 한 일을 증언할 사람까지 잃습니다."
+      - say:
+          with: [덕만, 아진, 소원]
+          text: "유품 상자에는 부러진 갈대붓과 작은 열쇠, 먹이 밴 소매끈 하나가 놓였습니다."
+      - say:
+          char: 소원
+          camera: medium
+          with: [덕만]
+          text: "소매끈 안쪽에 짧은 선이 세 개 있어요. 장식으로 묶은 매듭은 아니에요."
+      - say:
+          char: 아진
+          camera: close
+          with: [소원]
+          text: "북쪽 운송 거점의 셋째 창고 표시입니다. 제가 명령서를 나를 때 같은 표식을 봤습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "무진의 마지막 손짓, 소매끈의 표식, 아진의 기억을 세 줄로 나눠 적으세요. 서로 대신 증명하게 하지 않습니다."
+      - say:
+          char: 아진.nervous
+          camera: close
+          with: [덕만]
+          text: "제 기억이 다른 증거와 어긋나면 어떻게 하시겠습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "어긋난 자리도 지우지 않습니다. 이제 아진이 직접 한 일부터 처음 순서대로 말해 주세요."
+      - say:
+          with: [덕만, 아진, 소원]
+          wait: 700
+          text: "소원은 유품 상자의 뚜껑을 닫았고, 아진은 칼과 기록방 열쇠를 그 옆에 내려놓았습니다."
       - goto: ajin_confession
 
   ajin_confession:

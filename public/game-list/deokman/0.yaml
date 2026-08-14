@@ -118,7 +118,7 @@ scenes:
           camera: close
           with: [덕만]
           text: "곡식과 증거를 함께 가져오겠습니다."
-      - goto: late_family_meal
+      - goto: relief_departure
 
   relief_audit:
     actions:
@@ -144,6 +144,70 @@ scenes:
           camera: close
           with: [덕만]
           text: "길보다 돈을 먼저 따라가라는 말씀이군요. 그 길은 대개 사람의 방까지 이어집니다."
+      - goto: relief_departure
+
+  relief_departure:
+    actions:
+      - bg: moon_court
+      - camera: wide
+      - char: { id: 덕만, position: center }
+      - char: { id: 유신, position: left }
+      - char: { id: 소원, position: right }
+      - say:
+          delivery: calm
+          text: "해가 서쪽 담장에 걸릴 무렵, 곡식 마흔 자루씩 실은 수레 세 대가 궁문 앞에 섰습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "첫 마을까지 여섯 시간입니다. 수레를 서로 다른 길로 보내면 한 길이 막혀도 나머지 두 대는 갑니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "호위도 셋으로 나누세요. 가장 빠른 길에만 사람을 몰아주면 다른 두 길은 버리는 것과 같습니다."
+      - say:
+          char: 소원
+          camera: medium
+          with: [덕만]
+          text: "빈 자루마다 나무 숟가락이 하나씩 묶여 있어요. 마을에서 기다리는 집 이름도 적혀 있고요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원]
+          text: "풀지 말고 그대로 보내. 돌아올 때 숟가락과 배급 장부를 맞춰 보면 받지 못한 집도 찾을 수 있어."
+      - say:
+          char: 소원.nervous
+          camera: close
+          with: [덕만]
+          text: "곡식을 훔친 사람은 자루 수만 맞추면 끝이라고 생각했겠네요. 기다린 사람 이름까지 셀 줄은 몰랐고요."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만, 소원]
+          text: "셋째 수레의 뒤축만 새 나무입니다. 어제 사라졌다는 수레에서 떼어 급히 끼운 흔적이 있습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "그 축도 돌아오면 봉하세요. 길에서 사라진 것이 아니라 궁 안에서 바꿔 실었다는 증거가 될 겁니다."
+      - say:
+          with: [덕만, 유신, 소원]
+          text: "북과 깃발 없이 문이 열렸습니다. 첫 수레가 나가자 빈 자루에 묶인 나무 숟가락들이 바퀴 진동에 작게 부딪혔습니다."
+      - say:
+          char: 소원
+          camera: close
+          with: [덕만]
+          text: "마지막 수레까지 보고 들어가실 거죠?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원]
+          text: "명령은 문을 나간 뒤부터 확인해야 해. 출발했다는 보고만 받고 들어가지는 않을 거야."
+      - say:
+          with: [덕만, 유신, 소원]
+          wait: 650
+          text: "세 번째 바퀴가 궁문 밖으로 완전히 사라진 뒤에야 덕만은 비어 버린 자리를 돌아섰습니다."
       - goto: late_family_meal
 
   late_family_meal:

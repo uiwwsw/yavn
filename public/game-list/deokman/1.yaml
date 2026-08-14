@@ -226,6 +226,80 @@ scenes:
           camera: close
           with: [비담]
           text: "잡으러 들어가면 종이를 태울 겁니다. 스스로 들고 나오게 해야 합니다."
+      - goto: first_night_table
+
+  first_night_table:
+    actions:
+      - bg: locked_room
+      - camera: medium
+      - char: { id: 덕만, position: center }
+      - char: { id: 유신, position: left }
+      - char: { id: 비담, position: right }
+      - say:
+          delivery: calm
+          text: "첫날 밤, 세 사람은 창문 없는 기록방에 모였습니다. 바닥에는 가짜 약 포장지와 문지기 패, 도림의 나무 수레가 차례로 놓였습니다."
+      - say:
+          char: 비담.smirk
+          camera: medium
+          with: [덕만, 유신]
+          text: "하루 만에 독과 빚과 장난감이 한 방에 모였습니다. 범인보다 우리가 더 수상해 보이겠습니다."
+      - say:
+          char: 유신
+          camera: close
+          with: [비담]
+          text: "농담할 힘이 남았으면 문지기 보고부터 들으시오. 거짓 패를 적은 사람은 셋입니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "둘은 돈을 받았고, 하나는 열병을 앓는 아이에게 약을 끊겠다는 협박을 받았습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "같은 글씨를 썼다고 같은 죄로 묶지 마세요. 돈을 준 사람과 약을 쥔 사람의 이름을 먼저 찾습니다."
+      - say:
+          char: 비담
+          camera: medium
+          with: [덕만]
+          text: "빚 장부 끝에는 서쪽 별채의 봉인이 있습니다. 가짜 약지에 쓴 붉은 먹과 빛도 같습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "곡식을 돈으로 바꾸고, 그 돈으로 진운의 빚과 제 누명을 함께 샀군요. 아직 누가 샀는지는 비어 있습니다."
+      - say:
+          with: [덕만, 유신, 비담]
+          text: "소원이 문밖에 내려놓은 보리물은 손도 대지 않아 미지근해졌습니다. 등잔 심지만 세 번째로 짧아졌습니다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "사흘 안에 누명을 벗으셔야 하는 분이 가장 늦게 마시는군요. 이러다 독보다 굶주림이 먼저 이기겠습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "도림은 이 장부를 말하려다 저녁도 못 마쳤습니다. 적어도 그의 문장을 끝낸 뒤 마시겠습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "공개 심리까지 스물일곱 시간입니다. 기록 창고는 내일 해 뜨기 전에 비워진다는 명령을 받았습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신, 비담]
+          text: "창고를 막으면 불을 지를 겁니다. 우리가 가진 것을 먼저 보여 주고, 감추려는 문서를 제 발로 움직이게 하죠."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "겁을 먹은 종이는 반드시 주인을 찾아갑니다. 제가 종이가 달아날 문을 열어 두겠습니다."
+      - say:
+          with: [덕만, 유신, 비담]
+          wait: 650
+          text: "덕만은 세 증거 사이에 빈 종이 한 장을 놓았습니다. 그 빈칸에 원본을 가진 사람의 움직임을 적기로 했습니다."
       - goto: trace_choice
 
   trace_choice:

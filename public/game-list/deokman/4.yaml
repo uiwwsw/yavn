@@ -229,7 +229,7 @@ scenes:
           with: [아진]
           text: "두 사람의 말이 서로 다른 곳은 지우지 마세요. 다른 기억까지 그대로 재판에 올립니다."
       - add: { ajin_trust: 1, legitimacy: 1 }
-      - goto: fortress_arrival
+      - goto: checkpoint_night
 
   checkpoint_guarded:
     actions:
@@ -253,6 +253,81 @@ scenes:
           with: [덕만]
           text: "수도에 도착하면 제 손으로 왕 앞에 내놓겠습니다."
       - add: { legitimacy: 1 }
+      - goto: checkpoint_night
+
+  checkpoint_night:
+    actions:
+      - bg: frontier
+      - camera: wide
+      - effect: moonveil
+      - char: { id: 덕만, position: center }
+      - char: { id: 유신, position: left }
+      - char: { id: 아진, position: right }
+      - say:
+          delivery: calm
+          text: "옛 초소를 떠난 지 사흘째 밤, 행렬은 사람이 떠난 마을의 빈 타작마당에서 멈췄습니다. 북쪽 성까지는 이틀이 남았습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "걸을 수 있는 병사는 마흔일곱, 열이 오른 사람은 다섯입니다. 곡식은 정량으로 이틀 반을 버팁니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "도착할 때 멀쩡한 숫자만 보고하지 마세요. 뒤처진 사람의 이름과 멈춘 시간도 적으십시오."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "오늘은 수레 하나가 한 시간 늦었습니다. 아진의 동생이 탄 수레입니다."
+      - say:
+          char: 아진.nervous
+          camera: medium
+          with: [덕만, 유신]
+          text: "걷겠다고 고집했지만 발에 감각이 없습니다. 잠든 뒤에도 매듭을 묶는 손짓을 합니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [아진]
+          text: "성에 닿기 전에는 표식 이야기를 더 묻지 마세요. 살아 돌아왔다는 걸 몸이 먼저 알아야 합니다."
+      - say:
+          char: 아진
+          camera: close
+          with: [덕만]
+          text: "구했다고 해서 제가 받을 재판이 없어지는 것은 아니지요?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "없어지지 않습니다. 다만 살아서 말하고, 가족 곁으로 돌아갈 수 있는 판결을 구하겠습니다."
+      - say:
+          with: [덕만, 유신, 아진]
+          text: "세 사람의 저녁은 한 줌의 보리와 따뜻한 물뿐이었습니다. 덕만은 성에 들어간 뒤 나눌 첫 배급표를 무릎 위에 펼쳤습니다."
+      - say:
+          char: 유신
+          camera: medium
+          with: [덕만]
+          text: "성 안 병사가 몇 명인지 아직 모릅니다. 지금 배급 순서를 정하면 틀릴 수 있습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "그래서 숫자가 아니라 원칙만 적습니다. 아이와 환자의 첫 몫, 경계할 사람의 다음 몫, 제 몫은 마지막입니다."
+      - say:
+          char: 아진
+          camera: medium
+          with: [덕만]
+          text: "내일 마른 개울이 갈라지는 곳에 제가 새 표식을 남기겠습니다. 뒤 수레가 길을 잃지 않게 하겠습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [아진]
+          text: "숨긴 수레만 다니던 길을 이제는 누구나 볼 수 있게 새기세요. 빼돌린 길을 보급로로 바꿉니다."
+      - say:
+          with: [덕만, 유신, 아진]
+          wait: 700
+          text: "새벽이 되자 타작마당의 불이 꺼졌습니다. 행렬 뒤에는 숨기지 않은 길표식이 일정한 간격으로 남았습니다."
       - goto: fortress_arrival
 
   fortress_arrival:
@@ -521,6 +596,66 @@ scenes:
           with: [덕만]
           text: "병사들이 공주님의 명령을 다시 받겠다고 합니다. 승리해서가 아니라 손실을 숨기지 않아서라고 했습니다."
       - add: { legitimacy: 1, army_support: 1, people_support: 1 }
+      - goto: fallen_names
+
+  fallen_names:
+    actions:
+      - bg: village
+      - camera: wide
+      - effect: embers
+      - char: { id: 덕만, position: center }
+      - char: { id: 유신, position: left }
+      - char: { id: 소원, position: right }
+      - say:
+          delivery: calm
+          text: "그날 해 질 무렵, 성문 밖에는 돌아오지 못한 열일곱 사람의 짚신과 빈 밥그릇이 한 줄로 놓였습니다."
+      - say:
+          with: [덕만, 유신, 소원]
+          text: "덕만은 전사자 명단을 처음부터 소리 내어 읽었습니다. 피와 비에 번진 먹 때문에 셋째 이름 앞에서 목소리가 멈췄습니다."
+      - say:
+          char: 소원.nervous
+          camera: close
+          with: [덕만]
+          text: "해찬이 아니라 해진이에요. 성 밖에서 솥을 나르던 분의 아들이에요."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [소원]
+          text: "고쳐 적어. 해진. 잘못 읽은 첫 장도 버리지 말고 함께 묶어 둬."
+      - say:
+          char: 유신.sad
+          camera: medium
+          with: [덕만]
+          text: "적군의 시신은 여덟입니다. 그 이름까지 같은 명단에 올리겠습니까?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [유신]
+          text: "명단은 나누되 수는 숨기지 마세요. 그들을 데려갈 사람이 오면 길을 열고, 오지 않으면 우리가 묻습니다."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "수도에는 승전 보고를 보내야 합니다. 성을 지켰고 수레 길도 열었습니다."
+      - say:
+          char: 덕만.sad
+          camera: medium
+          with: [유신, 소원]
+          text: "전투가 끝났다고 보고하세요. 승리라는 말은 이 열일곱 집에 소식을 전한 뒤에 판단하겠습니다."
+      - say:
+          char: 소원.nervous
+          camera: close
+          with: [덕만]
+          text: "가족에게 빈 그릇만 보내지는 않을게요. 마지막으로 먹은 날과 함께 있던 사람의 말도 적을게요."
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원]
+          text: "그래. 죽은 방식보다 살았던 사람을 먼저 전해. 왕의 사과는 그다음 줄에 적어."
+      - say:
+          with: [덕만, 유신, 소원]
+          wait: 800
+          text: "밤이 깊어질 때까지 열일곱 이름이 성문에 걸렸습니다. 새 배급을 받은 사람들은 그 아래에서 자기 몫을 조용히 나누었습니다."
       - goto: chapter4_end
 
   chapter4_end:
