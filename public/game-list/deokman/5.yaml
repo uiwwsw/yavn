@@ -269,6 +269,99 @@ scenes:
           camera: close
           with: [진운]
           text: "허락받을 말이라면 네 말이 아니다."
+      - goto: king_after_hearing
+
+  king_after_hearing:
+    actions:
+      - bg: princess_chamber
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 진평왕, position: right }
+      - say:
+          delivery: calm
+          text: "사람들이 물러난 뒤, 진평왕은 약방으로 돌아가지 않고 덕만을 빈 저녁상 앞에 불렀습니다."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with: [덕만]
+          text: "북쪽에서 죽은 사람 수를 다시 말해라. 장부를 보지 말고 말해라."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "마을 사람 열한 명, 병사 여섯 명입니다. 적군은 여덟 명이고 부상자는 양쪽을 합쳐 마흔입니다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "살린 사람 수보다 먼저 답하는구나."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "그 이름을 놓치면 다음에는 같은 명령을 더 쉽게 내릴 것 같았습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "그래서 오늘 네 보고를 통과시켰다. 잘해서만이 아니라 잃은 것을 숨기지 않았기 때문이다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "진운에게 장부를 먼저 읽게 한 까닭도 말해라."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "제 편이 아닌 사람이 확인해야, 제가 왕실 보고 뒤에 숨지 않았다는 것을 알 수 있습니다."
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          with: [덕만]
+          text: "내가 죽은 뒤에도 그렇게 해라. 네게 반대하는 사람을 회의장 밖으로 밀어내지 마라."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [진평왕]
+          text: "아버지, 아직 다음 일을 유언처럼 말씀하지 마세요."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "죽는 날은 내가 정하지 못한다. 살아 있는 오늘 할 일은 정할 수 있다."
+      - say:
+          with: [덕만, 진평왕]
+          text: "문밖에서 천명이 보낸 국 냄새가 났습니다. 진평왕은 뚜껑을 열어 김이 남아 있는지 먼저 살폈습니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "이번 국은 몇 번 데웠느냐?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "한 번입니다. 언니가 회의 끝날 때를 맞췄습니다."
+      - say:
+          char: 진평왕
+          camera: medium
+          with: [덕만]
+          text: "그러면 식기 전에 진운과 먹어라. 경쟁자도 배가 고프면 남의 말을 제대로 듣지 못한다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "그것도 왕명입니까?"
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "아버지의 잔소리다. 왕명은 아니니 어겨도 벌하지 않는다."
+      - say:
+          with: [덕만, 진평왕]
+          wait: 650
+          text: "덕만은 국그릇 두 개를 들고 문을 나섰습니다. 등 뒤에서 왕은 약보다 먼저 자기 몫의 죽을 한 숟갈 들었습니다."
       - goto: rival_supper
 
   rival_supper:

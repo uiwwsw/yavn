@@ -85,7 +85,9 @@ describe('Deokman cinematic reimagining', () => {
     const summary = String(launcher.summary);
     const seoDescription = String(asRecord(config.seo).description);
 
-    expect(synopsis).toContain('영화적 전면 재해석 시놉시스');
+    expect(synopsis).toContain('60분 시대극 영화 시놉시스');
+    expect(synopsis).toContain('60분 기승전결 편집표');
+    expect(synopsis).toContain('기 14분, 승 22분, 전 16분, 결 8분');
     expect(synopsis).toContain('구휼 곡식을 빼돌린 귀족 연합');
     expect(synopsis).toContain('군사 지휘권과 창고 열쇠');
     expect(synopsis).toContain('비담은 사랑을 거절당해서 반란을 일으키지 않습니다');
@@ -94,20 +96,54 @@ describe('Deokman cinematic reimagining', () => {
     expect(summary).toContain('16년 뒤');
     expect(summary).toContain('비담의 반란');
     expect(seoDescription).toContain('같은 권력의 거래');
-    expect(asRecord(launcher.showcase).label).toBe('8 CHAPTERS · ONE CROWN');
-    expect(config.version).toBe('6.1.0');
+    expect(summary).toContain('약 60분의 시대극');
+    expect(seoDescription).toContain('약 60분');
+    expect(asRecord(launcher.showcase).label).toBe('60 MIN · 8 CHAPTERS');
+    expect(config.version).toBe('7.0.0');
+  });
+
+  it('cuts the authored material to an approximately one-hour four-act game', () => {
+    const documents = chapters.map(readYaml);
+    const actGroups = [[0, 1], [2, 3, 4], [5, 6], [7]] as const;
+    const estimateSeconds = (indexes: readonly number[]): number => {
+      const selected = indexes.map((index) => documents[index]);
+      const says = selected.flatMap((document) => collectKey(document, 'say')).map(asRecord);
+      const visibleCharacters = says.reduce((sum, say) => sum + Array.from(stripTags(say.text)).length, 0);
+      const authoredWait = selected
+        .flatMap((document) => collectKey(document, 'wait'))
+        .filter((wait): wait is number => typeof wait === 'number')
+        .reduce((sum, wait) => sum + wait, 0) / 1000;
+      const choices = selected.flatMap((document) => collectKey(document, 'choice')).length;
+      const sceneCuts = selected.reduce((sum, document) => sum + Object.keys(asRecord(document.scenes)).length, 0);
+
+      // Korean reading cadence + dialogue turn + authored pause + player deliberation + scene cut.
+      return visibleCharacters / 18 + says.length * 0.65 + authoredWait + choices * 10 + sceneCuts * 0.6;
+    };
+    const actMinutes = actGroups.map((group) => estimateSeconds(group) / 60);
+    const totalMinutes = actMinutes.reduce((sum, minutes) => sum + minutes, 0);
+
+    expect(totalMinutes).toBeGreaterThanOrEqual(55);
+    expect(totalMinutes).toBeLessThanOrEqual(65);
+    expect(actMinutes[0]).toBeGreaterThanOrEqual(10);
+    expect(actMinutes[0]).toBeLessThanOrEqual(16);
+    expect(actMinutes[1]).toBeGreaterThanOrEqual(17);
+    expect(actMinutes[1]).toBeLessThanOrEqual(23);
+    expect(actMinutes[2]).toBeGreaterThanOrEqual(12);
+    expect(actMinutes[2]).toBeLessThanOrEqual(19);
+    expect(actMinutes[3]).toBeGreaterThanOrEqual(8);
+    expect(actMinutes[3]).toBeLessThanOrEqual(16);
   });
 
   it('lets relationships breathe and stages the consequences after major decisions', () => {
     const relationshipAnchors = {
-      '0.yaml': ['국을 세 번 데웠어요', '잠깐이나마 세 사람은 왕과 공주가 아니라 한 식구처럼 웃었습니다'],
-      '1.yaml': ['등불을 다시 켜자 유신과 비담이 복도 양쪽에서 거의 동시에 들어왔습니다', '장부가 말을 안 해서 제가 대신합니다'],
-      '2.yaml': ['혼인 예복의 붉은 끈', '네가 싫다고도 못 하는 혼인이 싫어', '제가 정한 삶을 살고 싶어요'],
-      '3.yaml': ['‘무진’을 문서 조각 위에 적었습니다', '자기 이름과 증언을 함께 봉하는 모습'],
-      '4.yaml': ['덕만은 아진의 앞을 막지 않도록 한 걸음 비켜섰습니다', '아진의 손에서 칼집이 떨어졌습니다'],
-      '5.yaml': ['두 사람의 저녁상은 차갑게 식어 있었습니다', '경쟁자에게는 이 정도가 알맞습니다'],
-      '6.yaml': ['나, 늦었어?', '네가 기억하는 아버지와 내가 기억하는 아버지를 합치자'],
-      '7.yaml': ['즉위 뒤 첫 공개 재판', '무진의 이름부터 적겠습니다', '빈 둘째 줄을 승만의 대답을 위해 남겼습니다'],
+      '0.yaml': ['빈 자루마다 나무 숟가락', '국을 세 번 데웠어요', '잠깐이나마 세 사람은 왕과 공주가 아니라 한 식구처럼 웃었습니다'],
+      '1.yaml': ['손도 대지 않아 미지근해졌습니다', '등불을 다시 켜자 유신과 비담이 복도 양쪽에서 거의 동시에 들어왔습니다', '장부가 말을 안 해서 제가 대신합니다'],
+      '2.yaml': ['혼인 예복의 붉은 끈', '네가 싫다고도 못 하는 혼인이 싫어', '제가 정한 삶을 살고 싶어요', '혼인을 거부하는 일과 왕이 되고 싶은 마음'],
+      '3.yaml': ['‘무진’을 문서 조각 위에 적었습니다', '자기 이름과 증언을 함께 봉하는 모습', '유품 상자의 뚜껑을 닫았고'],
+      '4.yaml': ['덕만은 아진의 앞을 막지 않도록 한 걸음 비켜섰습니다', '아진의 손에서 칼집이 떨어졌습니다', '열일곱 사람의 짚신과 빈 밥그릇'],
+      '5.yaml': ['이번 국은 몇 번 데웠느냐', '두 사람의 저녁상은 차갑게 식어 있었습니다', '경쟁자에게는 이 정도가 알맞습니다'],
+      '6.yaml': ['나, 늦었어?', '네가 기억하는 아버지와 내가 기억하는 아버지를 합치자', '유언장 대신 다섯 가지 증거'],
+      '7.yaml': ['즉위 뒤 첫 공개 재판', '무진의 이름부터 적겠습니다', '함께 마시기로 한 차', '빈 둘째 줄을 승만의 대답을 위해 남겼습니다'],
     } as const;
 
     Object.entries(relationshipAnchors).forEach(([path, anchors]) => {

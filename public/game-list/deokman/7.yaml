@@ -356,6 +356,17 @@ scenes:
           camera: close
           with: [비담]
           text: "보고만 끝내고 부르겠다."
+      - goto: distance_montage
+
+  distance_montage:
+    actions:
+      - bg: council_hall
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 비담, position: right }
+      - say:
+          delivery: calm
+          text: "함께 마시기로 한 차는 급한 보고와 전쟁 준비 뒤로 해마다 한 번씩 밀렸습니다."
       - say:
           delivery: calm
           text: "3년 뒤, 비담은 깨진 찻잔 하나를 왕의 탁자에 올렸습니다."
@@ -382,6 +393,9 @@ scenes:
       - say:
           delivery: calm
           text: "다시 4년 뒤, 비담은 왕의 방 앞에서 밤을 새웠습니다."
+      - bg: shadow_corridor
+      - camera: wide
+      - char: { id: 비담, position: center }
       - say:
           with: [비담]
           text: "문 안에서는 유신과 전쟁 지도가 아침까지 왕을 붙들었습니다."

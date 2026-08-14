@@ -1,14 +1,14 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-13T07:10:04.333Z",
+  "generatedAt": "2026-08-14T04:30:39.114Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "6.1.0",
-      "summary": "굶주린 마을의 곡식을 훔친 귀족 연합이 왕을 독살하고 덕만에게 누명을 씌운다. 덕만은 빼앗긴 곡식길을 되찾아 신라의 왕이 되고, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결한다.",
+      "version": "7.0.0",
+      "summary": "약 60분의 시대극. 굶주린 마을의 곡식을 훔친 귀족 연합이 왕을 독살하고 덕만에게 누명을 씌운다. 덕만은 빼앗긴 곡식길을 되찾아 신라의 왕이 되고, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결한다.",
       "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
       "tags": [
         "historical-fiction",
@@ -18,7 +18,7 @@
         "political-thriller"
       ],
       "showcase": {
-        "label": "8 CHAPTERS · ONE CROWN",
+        "label": "60 MIN · 8 CHAPTERS",
         "backgroundColor": "#241623",
         "image": {
           "positionX": 66,
@@ -32,7 +32,7 @@
       "chapterCount": 8,
       "seo": {
         "title": "덕만: 왕관에는 주인이 없다",
-        "description": "굶주린 마을의 곡식을 훔친 귀족 연합과 맞서 누명을 벗고 왕이 된 덕만이, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결하는 8장 시대극 비주얼노벨.",
+        "description": "굶주린 마을의 곡식을 훔친 귀족 연합과 맞서 누명을 벗고 왕이 된 덕만이, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결하는 약 60분·8장 시대극 비주얼노벨.",
         "keywords": [
           "선덕여왕",
           "덕만",
