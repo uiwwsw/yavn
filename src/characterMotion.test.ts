@@ -124,7 +124,7 @@ describe('image character motion', () => {
     expect(appSource).toContain("'--char-desktop-anchor-x': placement.anchorX");
     expect(appSource).toContain("'--char-mobile-anchor-x': placement.mobileAnchorX");
     expect(styles).toMatch(/\.char-layer \.char\.is-camera-hidden\s*\{[\s\S]*?--char-anchor-x: var\(--char-mobile-anchor-x/);
-    expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?--char-image-height: 58cqh;/);
+    expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?--char-image-height: 52cqh;/);
     expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);

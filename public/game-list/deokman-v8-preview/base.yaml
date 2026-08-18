@@ -10,13 +10,13 @@ assets:
     peony_token_sticker: root:/game-list/deokman-v8-preview/assets/items/peony-token.svg
   characters:
     어린 덕만:
-      base: root:/game-list/deokman-v8-preview/assets/char/deokman-child-silla-v6.webp
+      base: root:/game-list/deokman-v8-preview/assets/char/deokman-child-silla-v7.webp
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 1 }
       emotions:
-        scared: root:/game-list/deokman-v8-preview/assets/char/deokman-child-scared-silla-v6.webp
-        resolve: root:/game-list/deokman-v8-preview/assets/char/deokman-child-resolve-silla-v6.webp
+        scared: root:/game-list/deokman-v8-preview/assets/char/deokman-child-scared-silla-v7.webp
+        resolve: root:/game-list/deokman-v8-preview/assets/char/deokman-child-resolve-silla-v7.webp
     소화:
       base: root:/game-list/deokman-v8-preview/assets/char/sowon-silla-v5.webp
       facing: left

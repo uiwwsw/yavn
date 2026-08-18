@@ -11,12 +11,12 @@
 
 ## 어린 덕만 스프라이트
 
-- 파일: `assets/char/deokman-child-silla-v6.webp`
-- 파일: `assets/char/deokman-child-scared-silla-v6.webp`
-- 파일: `assets/char/deokman-child-resolve-silla-v6.webp`
+- 파일: `assets/char/deokman-child-silla-v7.webp`
+- 파일: `assets/char/deokman-child-scared-silla-v7.webp`
+- 파일: `assets/char/deokman-child-resolve-silla-v7.webp`
 - 제작일: 2026-08-18
-- 제작 방식: 기존 V5 원화의 인물·표정·복식·구도를 유지하고, 외곽과 연결된 흰색·회색 배경 잔여 픽셀만 제거한 뒤 투명 WebP로 재인코딩
-- 검수: 세 파일 모두 `888×1771`, 알파 채널 보유, 어두운 단색 배경 합성에서 흰 사각형과 가로 띠가 보이지 않음을 확인
+- 제작 방식: 기존 V6 원화의 인물·표정·복식·구도를 유지하고, 이진 알파 외곽을 안쪽으로 정리한 뒤 부드러운 알파 경계를 다시 적용해 흰색 매트 테두리만 제거한 투명 WebP로 재인코딩
+- 검수: 세 파일 모두 `888×1771`, 알파 채널 보유, 실제 게임 배경 합성에서 흰 외곽선과 가로 띠가 보이지 않음을 확인
 
 ## 아이템
 
