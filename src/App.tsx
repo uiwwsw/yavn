@@ -3316,6 +3316,7 @@ export default function App() {
   const visibleDialogue = splitLastGrapheme(dialog.visibleText);
   const dialogueTextClassName = [
     'text',
+    `channel-${dialog.channel}`,
     `delivery-${dialog.delivery}`,
     dialog.typing ? 'is-typing' : '',
   ]
@@ -3324,6 +3325,12 @@ export default function App() {
   const dialogueTypingStyle = {
     '--typing-intensity': dialog.typingIntensity,
   } as CSSProperties;
+  const dialogueChannelLabel = {
+    dialogue: undefined,
+    narration: '서술',
+    record: '기록',
+    system: '시스템',
+  }[dialog.channel];
 
   return (
     <div
@@ -3610,7 +3617,15 @@ export default function App() {
                       >
                         {entry.kind === 'dialogue' ? (
                           <>
-                            <span className="story-log-kind">{entry.speaker ?? 'Narration'}</span>
+                            <span className="story-log-kind">
+                              {entry.speaker ?? (
+                                entry.channel === 'record'
+                                  ? '기록'
+                                  : entry.channel === 'system'
+                                    ? '시스템'
+                                    : '서술'
+                              )}
+                            </span>
                             <p>{entry.text}</p>
                           </>
                         ) : (
@@ -3975,7 +3990,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box delivery-${dialog.delivery}${choiceGate.active ? ' has-choice-gate' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialog.channel} delivery-${dialog.delivery}${choiceGate.active ? ' has-choice-gate' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -3992,6 +4007,9 @@ export default function App() {
           </div>
         )}
         <div className="dialog-content-scroll">
+          {dialogueChannelLabel && (
+            <div className="dialog-channel-label">{dialogueChannelLabel}</div>
+          )}
           {dialog.speaker && (
             <div className={`speaker delivery-${dialog.delivery}`}>{dialog.speaker}</div>
           )}

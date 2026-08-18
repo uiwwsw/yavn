@@ -93,6 +93,9 @@ scenes:
   all_done_item_get:
     actions:
       - get: clue_note
+      - say:
+          channel: record
+          text: "현장 메모가 사건 기록에 추가되었습니다."
       - sticker:
           id: clue_note_popup
           image: case_board
@@ -102,6 +105,9 @@ scenes:
       - effect:
           name: focus
           wait: true # 연출이 끝난 뒤 다음 액션으로 진행
+      - effect:
+          name: inkstamp
+          wait: true
       - wait: 3000
       - clearSticker: clue_note_popup
       - goto: all_done_after_item
@@ -133,6 +139,9 @@ scenes:
               goto: /routes/kenji/1.yaml
             - text: "하루오"
               goto: /routes/haruo/1.yaml
+            - text: "수집한 현장 메모를 공개한다"
+              when: { var: clue_note, op: eq, value: true }
+              goto: early_exit_confirm
             - text: "중간 정리 회의로 이동"
               goto: early_exit_confirm
 

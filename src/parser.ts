@@ -1248,6 +1248,18 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
               };
             }
             optionTexts.add(normalizedText);
+            if (option.when) {
+              const error = validateCondition(
+                sceneId,
+                `actions[${actionIndex}].choice.options[${optionIndex}].when`,
+                option.when,
+                defaults,
+                inventoryDefaults,
+              );
+              if (error) {
+                return { error };
+              }
+            }
             if (option.goto) {
               const gotoError = validateGotoReference(
                 sceneId,

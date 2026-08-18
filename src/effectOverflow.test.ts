@@ -27,12 +27,12 @@ describe('screen effect overflow containment', () => {
   });
 
   it('ships the historical cinematic overlays with explicit lifetimes and reduced-motion fallbacks', () => {
-    ['moonveil', 'embers', 'crown'].forEach((effect) => {
+    ['moonveil', 'embers', 'crown', 'eclipse', 'starfall', 'inkstamp'].forEach((effect) => {
       expect(engineSource).toMatch(new RegExp(`${effect}: \\d+`));
       expect(styles).toMatch(new RegExp(`\\.effect-${effect}::after\\s*\\{[\\s\\S]*?animation:`));
     });
     expect(styles).toMatch(
-      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.effect-moonveil::after,[\s\S]*?\.effect-embers::after,[\s\S]*?\.effect-crown::after/,
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.effect-moonveil::after,[\s\S]*?\.effect-embers::after,[\s\S]*?\.effect-crown::after,[\s\S]*?\.effect-eclipse::after,[\s\S]*?\.effect-starfall::after,[\s\S]*?\.effect-inkstamp::after/,
     );
   });
 });
