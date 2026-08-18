@@ -1139,6 +1139,7 @@ textarea,
   --stage-camera-motion-duration: var(--stage-camera-duration);
   --stage-camera-motion-delay: 0ms;
   --character-exit-duration: 0ms;
+  --character-leave-duration: 180ms;
   position: absolute;
   inset: 0;
   transform-origin: 50% var(--stage-composition-render-origin-y);
@@ -1287,7 +1288,7 @@ textarea,
 }
 
 .char {
-  --character-opacity-duration: 180ms;
+  --character-opacity-duration: var(--character-leave-duration);
   --character-visibility-delay: 0ms;
   --char-offset-x: 0%;
   --char-anchor-x: var(--char-desktop-anchor-x, 50cqw);
@@ -1324,7 +1325,7 @@ textarea,
   z-index: 3;
 }
 
-.char-layer[data-camera-shot='close'] .char.is-listener {
+.char-layer[data-camera-shot='close'] .char.is-listener:not(.is-camera-hidden) {
   --character-opacity-duration: var(--character-exit-duration);
   --character-visibility-delay: var(--character-exit-duration);
   opacity: 0;
@@ -1332,10 +1333,15 @@ textarea,
 }
 
 .char.is-camera-hidden {
-  opacity: 0;
+  --character-opacity-duration: var(--character-leave-duration);
+  --character-visibility-delay: var(--character-leave-duration);
+  /* Keep an in-flight first entrance animation from painting a camera-hidden actor. */
+  opacity: 0 !important;
   visibility: hidden;
+}
+
+.char.is-camera-hidden.is-awaiting-entry {
   animation: none;
-  transition: none;
 }
 
 .char-layer[data-camera-shot='reaction'] .char.is-listener {
@@ -3518,6 +3524,41 @@ textarea,
   margin-top: 10px;
 }
 
+.choice-recovery-hint {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 9px;
+  border: 1px solid color-mix(in srgb, var(--ui-status-color) 34%, transparent);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--ui-choice-bg) 82%, #777 18%);
+  color: var(--ui-status-color);
+  padding: 7px 9px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.choice-recovery-hint > span {
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, #ff8b8b 62%, transparent);
+  border-radius: 50%;
+  color: #ffb0b0;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.choice-recovery-hint p {
+  margin: 0;
+}
+
+.choice-recovery-hint strong {
+  color: var(--ui-choice-color);
+}
+
 .dialog-box.has-choice-gate .text {
   min-height: 0;
 }
@@ -3569,7 +3610,19 @@ textarea,
   gap: 8px;
 }
 
+.choice-gate-options[data-choice-count='2'],
+.choice-gate-options[data-choice-count='3'],
+.choice-gate-options[data-choice-count='4'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.choice-gate-options[data-choice-count='3'] > .choice-gate-option:last-child {
+  grid-column: 1 / -1;
+}
+
 .choice-gate-option {
+  min-width: 0;
+  height: 100%;
   width: 100%;
   border: 1px solid var(--ui-choice-border);
   border-radius: 8px;
@@ -3587,6 +3640,11 @@ textarea,
   font-family: var(--ui-body-font);
 }
 
+.choice-gate-option > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .choice-gate-option:hover {
   border-color: var(--ui-choice-hover-border);
   background: var(--ui-choice-hover-bg);
@@ -3594,6 +3652,71 @@ textarea,
 
 .choice-gate-option-forgive {
   border-color: var(--ui-choice-forgive-border);
+}
+
+.choice-gate-option-previous-game-over {
+  position: relative;
+  border-color: color-mix(in srgb, var(--ui-status-color) 42%, transparent);
+  background: color-mix(in srgb, var(--ui-choice-bg) 70%, #707070 30%);
+  color: color-mix(in srgb, var(--ui-choice-color) 68%, #9b9b9b 32%);
+  filter: saturate(0.42);
+}
+
+.choice-gate-option-previous-game-over::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: 4px;
+  width: 3px;
+  border-radius: 999px;
+  background: #d36f76;
+}
+
+.choice-gate-option-previous-game-over:hover {
+  border-color: color-mix(in srgb, #ff9b9b 58%, var(--ui-choice-hover-border));
+  background: color-mix(in srgb, var(--ui-choice-hover-bg) 72%, #707070 28%);
+}
+
+.choice-gate-option-badges {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.choice-gate-option-badges:empty {
+  display: none;
+}
+
+.choice-gate-option-history-badge {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #ff9b9b 48%, transparent);
+  border-radius: 999px;
+  background: rgba(52, 48, 52, 0.72);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 780;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.choice-gate-option-history-badge b,
+.choice-gate-option-history-badge em {
+  padding: 4px 7px;
+  font-style: normal;
+}
+
+.choice-gate-option-history-badge b {
+  color: rgba(245, 245, 245, 0.78);
+}
+
+.choice-gate-option-history-badge em {
+  background: rgba(133, 50, 58, 0.72);
+  color: #ffd7da;
 }
 
 .choice-gate-option-badge {
@@ -3611,6 +3734,11 @@ textarea,
 .choice-gate-option:focus-visible {
   outline: 2px solid var(--ui-focus-ring);
   outline-offset: 1px;
+}
+
+.choice-gate-option-previous-game-over:focus-visible {
+  filter: saturate(0.72);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-focus-ring) 22%, transparent);
 }
 
 .error-overlay {
@@ -5032,6 +5160,10 @@ textarea,
   .char-layer.char-layout-trio .right {
     --char-anchor-x: 75cqw;
     --char-offset-x: -50%;
+  }
+
+  .char-layer .char.is-camera-hidden {
+    --char-anchor-x: var(--char-mobile-anchor-x, var(--char-desktop-anchor-x, 50cqw));
   }
 
   .choice-gate-option,

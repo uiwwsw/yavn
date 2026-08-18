@@ -42,22 +42,34 @@ describe('image character motion', () => {
   });
 
   it('keeps staged characters mounted while camera membership changes', () => {
+    const hiddenRule = styles.match(/\.char\.is-camera-hidden\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
     expect(appSource).toContain('const stagedCharactersByPosition = (');
     expect(appSource).toContain('const visibleCharactersByPosition = stagedCharactersByPosition.filter');
-    expect(appSource).toContain('visibleCharactersByPosition.map((entry) => ({');
+    expect(appSource).toContain('const layoutCharactersByPosition = stagedCharactersByPosition.filter');
+    expect(appSource).toContain('layoutCharactersByPosition.map((entry) => ({');
     expect(appSource).not.toContain('const stagedCharacterCount = stagedCharactersByPosition.length');
     expect(appSource).toContain('const framingScale = slot.framing.scale;');
     expect(appSource).not.toContain('resolveCharacterFramingScale');
     expect(appSource).toContain("const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';");
     expect(appSource).not.toContain('if (!slot || !visibleCharacterSet.has(slot.id))');
     expect(styles).toMatch(
-      /\.char\.is-camera-hidden\s*\{[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;[\s\S]*?animation: none;[\s\S]*?transition: none;/,
+      /\.char\.is-camera-hidden\s*\{[\s\S]*?--character-opacity-duration: var\(--character-leave-duration\);[\s\S]*?--character-visibility-delay: var\(--character-leave-duration\);[\s\S]*?opacity: 0 !important;[\s\S]*?visibility: hidden;/,
     );
+    expect(hiddenRule).not.toMatch(/(?:animation|transition): none;/);
+    expect(styles).toMatch(/\.char\.is-camera-hidden\.is-awaiting-entry\s*\{[\s\S]*?animation: none;/);
+    expect(appSource).toContain("const pendingEntryClass = !isCameraVisible && !hasVisiblePlacement ? 'is-awaiting-entry' : '';");
+    expect(appSource).toContain('characterPlacementByIdRef.current.get(slot.id) ?? currentPlacement');
+    expect(appSource).toContain('characterPlacementByIdRef.current.set(slot.id, currentPlacement)');
   });
 
-  it('composes mobile slots from the visible cast instead of hidden staged actors', () => {
+  it('coalesces skipped visibility changes and releases a group layout after the exit fade', () => {
+    expect(appSource).toContain('const CHARACTER_VISIBILITY_SETTLE_MS = 80;');
+    expect(appSource).toContain('setPresentedVisibleCharacterIds(nextVisibleCharacterIds);');
+    expect(appSource).toContain('}, CHARACTER_VISIBILITY_SETTLE_MS);');
+    expect(appSource).toContain('const shouldWaitForExit = isCharacterOnlyExit(');
+    expect(appSource).toContain('}, CHARACTER_EXIT_FADE_DURATION_MS);');
     expect(appSource).toMatch(
-      /const characterStageLayout = resolveCharacterStageLayout\(\s*visibleCharactersByPosition\.map/,
+      /const characterStageLayout = resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
     );
     expect(appSource).not.toMatch(
       /const characterStageLayout = resolveCharacterStageLayout\(\s*stagedCharactersByPosition\.map/,
@@ -89,7 +101,7 @@ describe('image character motion', () => {
     expect(styles).toContain('opacity var(--character-opacity-duration) ease-out');
     expect(styles).toContain('visibility 0s linear var(--character-visibility-delay)');
     expect(styles).toMatch(
-      /\.char-layer\[data-camera-shot='close'\] \.char\.is-listener\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
+      /\.char-layer\[data-camera-shot='close'\] \.char\.is-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
     );
   });
 
@@ -103,9 +115,11 @@ describe('image character motion', () => {
   it('uses one image ratio with separate duo and trio horizontal anchors', () => {
     expect(appSource).toContain('data-character-count={visibleCharacterCount}');
     expect(appSource).toContain('const characterStageSpacing = resolveCharacterStageSpacing(');
-    expect(appSource).toContain('visibleCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
+    expect(appSource).toContain('layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
-    expect(appSource).toContain("'--char-desktop-anchor-x': stagePlacement.anchorX");
+    expect(appSource).toContain("'--char-desktop-anchor-x': placement.anchorX");
+    expect(appSource).toContain("'--char-mobile-anchor-x': placement.mobileAnchorX");
+    expect(styles).toMatch(/\.char-layer \.char\.is-camera-hidden\s*\{[\s\S]*?--char-anchor-x: var\(--char-mobile-anchor-x/);
     expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?--char-image-height: 58cqh;/);
     expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);

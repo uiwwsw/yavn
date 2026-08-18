@@ -114,6 +114,7 @@ describe('save system', () => {
       sceneId: 'intro',
       actionIndex: 3,
     });
+    expect(getChoiceRecoverySummary().failedChoice).toBeUndefined();
     expect(localStorage.getItem('vn-engine-autosave:choice-recovery')).toBeNull();
   });
 
@@ -162,6 +163,11 @@ describe('save system', () => {
       sceneId: 'intro',
       actionIndex: 7,
       chapterIndex: 0,
+      failedChoice: {
+        key: 'final-choice',
+        value: 'Wrong',
+        optionIndex: 0,
+      },
     });
     expect(JSON.parse(localStorage.getItem('vn-engine-autosave:choice-recovery') ?? '{}')).toMatchObject({
       sceneId: 'intro',
@@ -169,6 +175,12 @@ describe('save system', () => {
       routeVars: {},
       routeHistory: [],
       storyLog: [],
+      choiceAttempt: {
+        key: 'final-choice',
+        value: 'Wrong',
+        optionIndex: 0,
+        ledToGameOver: true,
+      },
     });
     expect(exportSaveBackup()).toBeUndefined();
   });
@@ -213,5 +225,10 @@ describe('save system', () => {
     };
     expect(useVNStore.getState().gameOver?.title).toBe('Branch failed');
     expect(recovery).toMatchObject({ sceneId: 'choice', actionIndex: 0, routeVars: { failed: false } });
+    expect(getChoiceRecoverySummary().failedChoice).toEqual({
+      key: 'danger',
+      value: 'Wrong turn',
+      optionIndex: 0,
+    });
   });
 });

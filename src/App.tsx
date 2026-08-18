@@ -49,11 +49,12 @@ import {
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
-import type { SaveSlotKind, SaveSlotSummary } from './engine';
+import type { ChoiceRecoverySummary, SaveSlotKind, SaveSlotSummary } from './engine';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
+  resolveMobileCharacterStageAnchor,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
   resolveCharacterStageSpacing,
@@ -81,6 +82,7 @@ import {
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
 import {
+  CHARACTER_EXIT_FADE_DURATION_MS,
   resolveStageCameraFocusTargetId,
   resolveStageCameraPresentation,
   resolveStageCameraTransitionTiming,
@@ -177,8 +179,17 @@ type StartGateState =
     legalNotices: LegalNotice[];
   };
 
+type CharacterPlacementSnapshot = {
+  anchorX: string;
+  mobileAnchorX: string;
+  offsetX: '0%' | '-50%' | '-100%';
+  duoSide?: 'left' | 'right';
+  facingScale: 1 | -1;
+};
+
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
+const CHARACTER_VISIBILITY_SETTLE_MS = 80;
 const ALL_TAG_FILTER = '__all';
 const DEFAULT_VISIBLE_LAUNCHER_TAGS = 8;
 const LAUNCHER_CAROUSEL_OPTIONS = {
@@ -189,6 +200,17 @@ const LAUNCHER_CAROUSEL_OPTIONS = {
   loop: true,
   skipSnaps: false,
 } as const;
+
+function haveSameCharacterIds(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((id, index) => id === right[index]);
+}
+
+function isCharacterOnlyExit(
+  currentIds: readonly string[],
+  nextIds: readonly string[],
+): boolean {
+  return nextIds.length < currentIds.length && nextIds.every((id) => currentIds.includes(id));
+}
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
@@ -1011,6 +1033,7 @@ export default function App() {
   const [saveSlots, setSaveSlots] = useState<SaveSlotSummary[]>(() => getSaveSlotSummaries());
   const [saveNotice, setSaveNotice] = useState('');
   const [saveBusy, setSaveBusy] = useState(false);
+  const [recoveredFailedChoice, setRecoveredFailedChoice] = useState<ChoiceRecoverySummary['failedChoice']>();
   const [returningToStartGate, setReturningToStartGate] = useState(false);
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
@@ -1024,6 +1047,7 @@ export default function App() {
   const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const stageContentFrameRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
+  const characterPlacementByIdRef = useRef(new Map<string, CharacterPlacementSnapshot>());
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
@@ -1040,8 +1064,13 @@ export default function App() {
   const [showEndingRestart, setShowEndingRestart] = useState(false);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
+  const [presentedVisibleCharacterIds, setPresentedVisibleCharacterIds] = useState<string[]>([]);
+  const [layoutVisibleCharacterIds, setLayoutVisibleCharacterIds] = useState<string[]>([]);
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
   const startGateActionsRef = useRef<HTMLDivElement | null>(null);
+  const characterVisibilitySettleTimerRef = useRef<number | null>(null);
+  const characterLayoutReleaseTimerRef = useRef<number | null>(null);
+  const recoveredChoiceWasPresentedRef = useRef(false);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
   const repositoryUrl = 'https://github.com/uiwwsw/yavn';
@@ -1326,6 +1355,67 @@ export default function App() {
   }, []);
 
   useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver));
+
+  useLayoutEffect(() => {
+    if (characterVisibilitySettleTimerRef.current !== null) {
+      window.clearTimeout(characterVisibilitySettleTimerRef.current);
+      characterVisibilitySettleTimerRef.current = null;
+    }
+    if (haveSameCharacterIds(presentedVisibleCharacterIds, visibleCharacterIds)) {
+      return;
+    }
+
+    const nextVisibleCharacterIds = [...visibleCharacterIds];
+    if (chapterLoading) {
+      setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
+      return;
+    }
+    characterVisibilitySettleTimerRef.current = window.setTimeout(() => {
+      characterVisibilitySettleTimerRef.current = null;
+      setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
+    }, CHARACTER_VISIBILITY_SETTLE_MS);
+
+    return () => {
+      if (characterVisibilitySettleTimerRef.current !== null) {
+        window.clearTimeout(characterVisibilitySettleTimerRef.current);
+        characterVisibilitySettleTimerRef.current = null;
+      }
+    };
+  }, [chapterLoading, presentedVisibleCharacterIds, visibleCharacterIds]);
+
+  useLayoutEffect(() => {
+    if (characterLayoutReleaseTimerRef.current !== null) {
+      window.clearTimeout(characterLayoutReleaseTimerRef.current);
+      characterLayoutReleaseTimerRef.current = null;
+    }
+    if (haveSameCharacterIds(layoutVisibleCharacterIds, presentedVisibleCharacterIds)) {
+      return;
+    }
+
+    const nextLayoutCharacterIds = [...presentedVisibleCharacterIds];
+    const shouldWaitForExit = isCharacterOnlyExit(
+      layoutVisibleCharacterIds,
+      nextLayoutCharacterIds,
+    )
+      && (camera.shot === 'wide' || camera.shot === 'medium')
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!shouldWaitForExit) {
+      setLayoutVisibleCharacterIds(nextLayoutCharacterIds);
+      return;
+    }
+
+    characterLayoutReleaseTimerRef.current = window.setTimeout(() => {
+      characterLayoutReleaseTimerRef.current = null;
+      setLayoutVisibleCharacterIds(nextLayoutCharacterIds);
+    }, CHARACTER_EXIT_FADE_DURATION_MS);
+
+    return () => {
+      if (characterLayoutReleaseTimerRef.current !== null) {
+        window.clearTimeout(characterLayoutReleaseTimerRef.current);
+        characterLayoutReleaseTimerRef.current = null;
+      }
+    };
+  }, [camera.shot, layoutVisibleCharacterIds, presentedVisibleCharacterIds]);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -1768,7 +1858,19 @@ export default function App() {
     }
     return '';
   }, [inventoryCatalogEntries.length, inventoryViewEntries.length, inventoryVisibleEntries.length]);
-  const visibleCharacterSet = new Set(visibleCharacterIds);
+  const recoveredFailedChoiceIndex = choiceGate.active
+    && recoveredFailedChoice?.key === choiceGate.key
+    ? (() => {
+        const exactIndex = choiceGate.options.findIndex((option, index) =>
+          index === recoveredFailedChoice.optionIndex && option.text === recoveredFailedChoice.value);
+        return exactIndex >= 0
+          ? exactIndex
+          : choiceGate.options.findIndex((option) => option.text === recoveredFailedChoice.value);
+      })()
+    : -1;
+  const hasRecoveredFailedChoice = recoveredFailedChoiceIndex >= 0;
+  const visibleCharacterSet = new Set(presentedVisibleCharacterIds);
+  const layoutCharacterSet = new Set(layoutVisibleCharacterIds);
   const stagedCharactersByPosition = (
     [
       { position: 'left' as const, slot: characters.left },
@@ -1776,26 +1878,32 @@ export default function App() {
       { position: 'right' as const, slot: characters.right },
     ] as const
   ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot));
+  if (stagedCharactersByPosition.length === 0) {
+    characterPlacementByIdRef.current.clear();
+  }
   const visibleCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
     visibleCharacterSet.has(entry.slot.id));
+  const layoutCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
+    layoutCharacterSet.has(entry.slot.id));
   const characterStageLayout = resolveCharacterStageLayout(
-    visibleCharactersByPosition.map((entry) => ({
+    layoutCharactersByPosition.map((entry) => ({
       id: entry.slot.id,
       position: entry.position,
     })),
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
+  const layoutCharacterCount = layoutCharactersByPosition.length;
   const effectiveCameraTargetId = resolveStageCameraFocusTargetId(
     camera,
-    visibleCharacterIds,
+    presentedVisibleCharacterIds,
     dialog.speakerId,
     dialog.cameraTargetId,
   );
-  const cameraTargetPosition = visibleCharactersByPosition.find(
+  const cameraTargetPosition = layoutCharactersByPosition.find(
     (entry) => entry.slot.id === effectiveCameraTargetId,
   )?.position;
   const characterStageSpacing = resolveCharacterStageSpacing(
-    visibleCharactersByPosition.map((entry) => entry.slot.calibration.spacing),
+    layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing),
   );
   const cameraPresentation = resolveStageCameraPresentation(
     camera,
@@ -1826,6 +1934,7 @@ export default function App() {
     '--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`,
     '--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`,
     '--character-exit-duration': `${cameraTransitionTiming.characterExitDuration}ms`,
+    '--character-leave-duration': `${CHARACTER_EXIT_FADE_DURATION_MS}ms`,
   } as CSSProperties;
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
     if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
@@ -1943,6 +2052,7 @@ export default function App() {
           setSaveNotice('불러올 수 있는 저장 데이터가 없습니다.');
           return;
         }
+        setRecoveredFailedChoice(undefined);
         setSaveNotice('저장한 장면으로 돌아왔습니다.');
         closeSettingsModal(false);
       } catch (error) {
@@ -1958,12 +2068,14 @@ export default function App() {
   const onLoadLastChoice = useCallback(async () => {
     setSaveBusy(true);
     setSaveNotice('마지막 선택으로 돌아가는 중입니다.');
+    const recoveryPoint = getChoiceRecoverySummary();
     try {
       const loaded = await loadChoiceRecovery();
       if (!loaded) {
         setSaveNotice('되돌아갈 선택 복구점을 찾지 못했습니다.');
         return;
       }
+      setRecoveredFailedChoice(recoveryPoint.failedChoice);
       setSaveNotice('마지막 선택으로 돌아왔습니다.');
       closeSettingsModal(false);
     } catch (error) {
@@ -1977,12 +2089,14 @@ export default function App() {
   const onRestartChapter = useCallback(async () => {
     setSaveBusy(true);
     setSaveNotice('챕터 시작점으로 돌아가는 중입니다.');
+    const recoveryPoint = getChoiceRecoverySummary();
     try {
       const loaded = await restartCurrentChapter();
       if (!loaded) {
         setSaveNotice('이 챕터의 시작 저장점을 찾지 못했습니다.');
         return;
       }
+      setRecoveredFailedChoice(recoveryPoint.failedChoice);
       closeSettingsModal(false);
     } catch (error) {
       setSaveNotice(error instanceof Error ? error.message : '챕터 시작점으로 돌아가지 못했습니다.');
@@ -2022,6 +2136,7 @@ export default function App() {
         const loaded = await loadSaveSlot('manual');
         setSaveNotice(loaded ? '백업 저장을 불러왔습니다.' : '백업을 저장했지만 현재 장면을 열지 못했습니다.');
         if (loaded) {
+          setRecoveredFailedChoice(undefined);
           closeSettingsModal(false);
         }
       } catch (error) {
@@ -2132,6 +2247,7 @@ export default function App() {
           endingAutoScrollRafRef.current = null;
           return;
         }
+        setRecoveredFailedChoice(undefined);
         const maxScrollTop = Math.max(0, latestRollEl.scrollHeight - latestRollEl.clientHeight);
         if (maxScrollTop <= 0) {
           setEndingCreditsScrollUnlocked(true);
@@ -2196,15 +2312,29 @@ export default function App() {
   }, [inputGate.active, inputGate.attemptCount, inputGate.errors.length, inputGate.correct]);
 
   useEffect(() => {
+    if (hasRecoveredFailedChoice) {
+      recoveredChoiceWasPresentedRef.current = true;
+      return;
+    }
+    if (recoveredChoiceWasPresentedRef.current && !choiceGate.active) {
+      recoveredChoiceWasPresentedRef.current = false;
+      setRecoveredFailedChoice(undefined);
+    }
+  }, [choiceGate.active, hasRecoveredFailedChoice]);
+
+  useEffect(() => {
     if (!choiceGate.active || choiceGate.options.length === 0) {
       choiceOptionButtonRefs.current = [];
       return;
     }
+    const firstAlternativeIndex = choiceGate.options.findIndex((_, index) =>
+      index !== recoveredFailedChoiceIndex);
+    const focusIndex = firstAlternativeIndex >= 0 ? firstAlternativeIndex : 0;
     const rafId = window.requestAnimationFrame(() => {
-      choiceOptionButtonRefs.current[0]?.focus({ preventScroll: true });
+      choiceOptionButtonRefs.current[focusIndex]?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(rafId);
-  }, [choiceGate.active, choiceGate.key, choiceGate.options.length]);
+  }, [choiceGate.active, choiceGate.key, choiceGate.options.length, recoveredFailedChoiceIndex]);
 
   const postYouTubeCommand = useCallback(
     (func: string, args: unknown[] = []) => {
@@ -2395,6 +2525,7 @@ export default function App() {
       return null;
     }
     const isCameraVisible = visibleCharacterSet.has(slot.id);
+    const hasVisiblePlacement = characterPlacementByIdRef.current.has(slot.id);
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isSpeaker = hasFocusedSpeaker && focusCharacterId === slot.id;
@@ -2405,31 +2536,44 @@ export default function App() {
       hasFocusedSpeaker,
     );
     const framingScale = slot.framing.scale;
-    const duoSide = characterStageLayout.duoSideByPosition[position];
-    const duoClass = duoSide ? `char-duo-${duoSide}` : '';
-    const facingScale = resolveCharacterFacingScale(
-      slot.facing,
-      visibleCharacterCount === 1 ? 'center' : position,
-      duoSide,
-    );
-    const stagePlacement = resolveCharacterStagePlacement(
+    const currentDuoSide = characterStageLayout.duoSideByPosition[position];
+    const currentStagePlacement = resolveCharacterStagePlacement(
       position,
       characterStageLayout,
       characterStageSpacing,
     );
+    const currentPlacement: CharacterPlacementSnapshot = {
+      ...currentStagePlacement,
+      mobileAnchorX: resolveMobileCharacterStageAnchor(position, characterStageLayout),
+      duoSide: currentDuoSide,
+      facingScale: resolveCharacterFacingScale(
+        slot.facing,
+        layoutCharacterCount === 1 ? 'center' : position,
+        currentDuoSide,
+      ),
+    };
+    const placement = isCameraVisible
+      ? currentPlacement
+      : (characterPlacementByIdRef.current.get(slot.id) ?? currentPlacement);
+    if (isCameraVisible) {
+      characterPlacementByIdRef.current.set(slot.id, currentPlacement);
+    }
+    const duoClass = placement.duoSide ? `char-duo-${placement.duoSide}` : '';
     const charStyle = {
       zIndex,
       '--char-scale': focusPresentation.scaleMultiplier * framingScale * slot.calibration.scale,
-      '--char-facing-scale-x': facingScale,
+      '--char-facing-scale-x': placement.facingScale,
       '--char-focus-opacity': focusPresentation.brightness,
-      '--char-desktop-anchor-x': stagePlacement.anchorX,
-      '--char-offset-x': stagePlacement.offsetX,
+      '--char-desktop-anchor-x': placement.anchorX,
+      '--char-mobile-anchor-x': placement.mobileAnchorX,
+      '--char-offset-x': placement.offsetX,
       '--char-framing-x': `${slot.framing.x}%`,
       '--char-framing-y': `${slot.framing.y}%`,
       '--char-calibration-x': `${slot.calibration.x}%`,
       '--char-calibration-y': `${slot.calibration.y}%`,
     } as CSSProperties;
     const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';
+    const pendingEntryClass = !isCameraVisible && !hasVisiblePlacement ? 'is-awaiting-entry' : '';
     const className = [
       'char',
       'char-image',
@@ -2437,6 +2581,7 @@ export default function App() {
       focusPresentation.depthClass,
       duoClass,
       visibilityClass,
+      pendingEntryClass,
     ].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
       return (
@@ -2445,7 +2590,7 @@ export default function App() {
             slot={slot}
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
-            className={[focusPresentation.depthClass, duoClass, visibilityClass].filter(Boolean).join(' ')}
+            className={[focusPresentation.depthClass, duoClass, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
         </Suspense>
@@ -2565,6 +2710,7 @@ export default function App() {
       if ((!startScreenReturnGameId && !uploadedGameFile) || returningToStartGate) {
         return;
       }
+      setRecoveredFailedChoice(undefined);
       setReturningToStartGate(true);
       closeSettingsModal(false);
       stopActiveBgm();
@@ -2639,6 +2785,7 @@ export default function App() {
   const onRestartFromBeginning = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
+      setRecoveredFailedChoice(undefined);
       if (canReturnToStartScreen) {
         void onReturnToStartScreen(event);
         return;
@@ -3900,6 +4047,12 @@ export default function App() {
           )}
           {choiceGate.active && (
             <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
+              {hasRecoveredFailedChoice && (
+                <div className="choice-recovery-hint" role="status">
+                  <span aria-hidden="true">!</span>
+                  <p><strong>직전 선택이 표시되어 있습니다.</strong> 다른 경로를 선택해 다시 진행할 수 있습니다.</p>
+                </div>
+              )}
               {choiceGate.timeoutMs && (
                 <div
                   className="choice-gate-timeout"
@@ -3916,15 +4069,19 @@ export default function App() {
                   </div>
                 </div>
               )}
-              <div className="choice-gate-options">
+              <div
+                className="choice-gate-options"
+                data-choice-count={choiceGate.options.length}
+              >
                 {choiceGate.options.map((option, index) => {
                   const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
                   const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
+                  const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
                   return (
                     <button
                       key={`${choiceGate.key}-${option.text}-${index}`}
                       type="button"
-                      className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}`}
+                      className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
                       ref={(el) => {
                         choiceOptionButtonRefs.current[index] = el;
                       }}
@@ -3935,6 +4092,9 @@ export default function App() {
                         if (event.key === 'Enter' || event.key === ' ') {
                           event.preventDefault();
                           event.stopPropagation();
+                          if (hasRecoveredFailedChoice) {
+                            setRecoveredFailedChoice(undefined);
+                          }
                           submitChoiceOption(index);
                         }
                       }}
@@ -3943,12 +4103,24 @@ export default function App() {
                         if (busy) {
                           return;
                         }
+                        if (hasRecoveredFailedChoice) {
+                          setRecoveredFailedChoice(undefined);
+                        }
                         submitChoiceOption(index);
                       }}
                       disabled={busy}
+                      aria-label={`${option.text}${isPreviousGameOverChoice ? ', 직전 선택, 게임 오버 경로' : ''}`}
                     >
                       <span>{option.text}</span>
-                      {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
+                      <span className="choice-gate-option-badges">
+                        {isPreviousGameOverChoice && (
+                          <span className="choice-gate-option-history-badge">
+                            <b>직전 선택</b>
+                            <em>GAME OVER</em>
+                          </span>
+                        )}
+                        {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
+                      </span>
                     </button>
                   );
                 })}

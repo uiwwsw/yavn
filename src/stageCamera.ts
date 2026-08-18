@@ -29,7 +29,7 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
   pan: 380,
 };
 
-export const CHARACTER_EXIT_FADE_DURATION_MS = 160;
+export const CHARACTER_EXIT_FADE_DURATION_MS = 180;
 
 // Character count changes horizontal staging only. Keeping one physical camera
 // profile prevents a solo, duo, and trio from cropping the same source art at
