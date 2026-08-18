@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildImageCharacterRenderKey,
+  resolveCharacterCameraPanX,
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
   resolveMobileCharacterStageAnchor,
+  resolveMobileCharacterCameraPanX,
   resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
   resolveCharacterStageSpacing,
@@ -189,7 +191,7 @@ describe('character stage layout', () => {
     });
   });
 
-  it('returns fixed mobile composition anchors without camera panning', () => {
+  it('returns fixed mobile composition anchors and matching camera translations', () => {
     const duo = resolveCharacterStageLayout([
       { id: '덕만', position: 'center' },
       { id: '진평왕', position: 'right' },
@@ -206,6 +208,15 @@ describe('character stage layout', () => {
     expect(resolveMobileCharacterStageAnchor('left', resolveCharacterStageLayout([
       { id: '덕만', position: 'left' },
     ]))).toBe('50cqw');
+    expect(resolveCharacterCameraPanX('center', duo)).toBe('min(25cqw, 260px)');
+    expect(resolveCharacterCameraPanX('right', duo)).toBe('calc(0px - min(25cqw, 260px))');
+    expect(resolveCharacterCameraPanX('left', trio, 0.9)).toBe('min(22.5cqw, 234px)');
+    expect(resolveCharacterCameraPanX('right', trio, 1.15)).toBe('calc(0px - min(28.75cqw, 299px))');
+    expect(resolveMobileCharacterCameraPanX('center', duo)).toBe('25cqw');
+    expect(resolveMobileCharacterCameraPanX('right', duo)).toBe('-25cqw');
+    expect(resolveMobileCharacterCameraPanX('left', resolveCharacterStageLayout([
+      { id: '덕만', position: 'left' },
+    ]))).toBe('0cqw');
   });
 
   it('keeps an image character mounted across emotion and position changes', () => {

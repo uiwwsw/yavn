@@ -189,7 +189,6 @@ type CharacterPlacementSnapshot = {
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
-const CHARACTER_VISIBILITY_SETTLE_MS = 80;
 const ALL_TAG_FILTER = '__all';
 const DEFAULT_VISIBLE_LAUNCHER_TAGS = 8;
 const LAUNCHER_CAROUSEL_OPTIONS = {
@@ -202,7 +201,7 @@ const LAUNCHER_CAROUSEL_OPTIONS = {
 } as const;
 
 function haveSameCharacterIds(left: readonly string[], right: readonly string[]): boolean {
-  return left.length === right.length && left.every((id, index) => id === right[index]);
+  return left.length === right.length && left.every((id) => right.includes(id));
 }
 
 function isCharacterOnlyExit(
@@ -214,10 +213,6 @@ function isCharacterOnlyExit(
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
-const START_GATE_ACTION_DELAY_MS = 280;
-const START_GATE_ACTION_STAGGER_MS = 110;
-const START_GATE_ACTION_DURATION_MS = 680;
-const START_GATE_ACTION_FAILSAFE_BUFFER_MS = 180;
 const DEFAULT_SEO_TITLE = '야븐엔진 (YAVN) | Type your story. Play your novel.';
 const DEFAULT_SEO_DESCRIPTION =
   '야븐엔진(YAVN)은 비주얼노벨 게임과 대사게임을 웹에서 빠르게 제작하는 엔진입니다. YAML + ZIP 업로드, YouTube 영상/음악 에셋, 중간 이벤트 씬 전환, Live2D 캐릭터 연출까지 지원합니다.';
@@ -399,7 +394,7 @@ function waitForStartGateLaunchTransition(): Promise<void> {
   if (typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
     return Promise.resolve();
   }
-  return new Promise((resolve) => window.setTimeout(resolve, 260));
+  return new Promise((resolve) => window.setTimeout(resolve, 220));
 }
 
 function normalizeGameListSeoEntry(value: unknown, fallbackTitle?: string): GameListSeoEntry | undefined {
@@ -1067,8 +1062,7 @@ export default function App() {
   const [presentedVisibleCharacterIds, setPresentedVisibleCharacterIds] = useState<string[]>([]);
   const [layoutVisibleCharacterIds, setLayoutVisibleCharacterIds] = useState<string[]>([]);
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
-  const startGateActionsRef = useRef<HTMLDivElement | null>(null);
-  const characterVisibilitySettleTimerRef = useRef<number | null>(null);
+  const characterVisibilityFrameRef = useRef<number | null>(null);
   const characterLayoutReleaseTimerRef = useRef<number | null>(null);
   const recoveredChoiceWasPresentedRef = useRef(false);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
@@ -1251,69 +1245,6 @@ export default function App() {
     };
   }, [startGate]);
 
-  useLayoutEffect(() => {
-    const container = startGateActionsRef.current;
-    if (
-      !startGate ||
-      !container ||
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return;
-    }
-
-    const targets = Array.from(
-      container.querySelectorAll<HTMLElement>('.start-gate-button, .start-gate-hint'),
-    );
-    if (targets.length === 0 || targets.some((target) => typeof target.animate !== 'function')) {
-      return;
-    }
-
-    const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
-    const offscreenDistances = targets.map((target) => {
-      const { top, height } = target.getBoundingClientRect();
-      return Math.max(72, Math.ceil(viewportHeight - top + height + 24));
-    });
-    const animations: Animation[] = [];
-    try {
-      targets.forEach((target, index) => {
-        animations.push(
-          target.animate(
-            [
-              {
-                opacity: 0,
-                transform: `translate3d(0, ${offscreenDistances[index]}px, 0)`,
-              },
-              { opacity: 1, transform: 'translate3d(0, 0, 0)' },
-            ],
-            {
-              delay: START_GATE_ACTION_DELAY_MS + index * START_GATE_ACTION_STAGGER_MS,
-              duration: START_GATE_ACTION_DURATION_MS,
-              easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-              fill: 'backwards',
-            },
-          ),
-        );
-      });
-    } catch {
-      animations.forEach((animation) => animation.cancel());
-      return;
-    }
-
-    const failSafeDelay =
-      START_GATE_ACTION_DELAY_MS +
-      Math.max(0, targets.length - 1) * START_GATE_ACTION_STAGGER_MS +
-      START_GATE_ACTION_DURATION_MS +
-      START_GATE_ACTION_FAILSAFE_BUFFER_MS;
-    const failSafeTimer = window.setTimeout(() => {
-      animations.forEach((animation) => animation.cancel());
-    }, failSafeDelay);
-
-    return () => {
-      window.clearTimeout(failSafeTimer);
-      animations.forEach((animation) => animation.cancel());
-    };
-  }, [startGate]);
-
   useEffect(() => {
     stopStartGateMusic();
     if (!startGate?.musicUrl || !bgmEnabled) {
@@ -1357,9 +1288,9 @@ export default function App() {
   useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver));
 
   useLayoutEffect(() => {
-    if (characterVisibilitySettleTimerRef.current !== null) {
-      window.clearTimeout(characterVisibilitySettleTimerRef.current);
-      characterVisibilitySettleTimerRef.current = null;
+    if (characterVisibilityFrameRef.current !== null) {
+      window.cancelAnimationFrame(characterVisibilityFrameRef.current);
+      characterVisibilityFrameRef.current = null;
     }
     if (haveSameCharacterIds(presentedVisibleCharacterIds, visibleCharacterIds)) {
       return;
@@ -1370,15 +1301,15 @@ export default function App() {
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
       return;
     }
-    characterVisibilitySettleTimerRef.current = window.setTimeout(() => {
-      characterVisibilitySettleTimerRef.current = null;
+    characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {
+      characterVisibilityFrameRef.current = null;
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
-    }, CHARACTER_VISIBILITY_SETTLE_MS);
+    });
 
     return () => {
-      if (characterVisibilitySettleTimerRef.current !== null) {
-        window.clearTimeout(characterVisibilitySettleTimerRef.current);
-        characterVisibilitySettleTimerRef.current = null;
+      if (characterVisibilityFrameRef.current !== null) {
+        window.cancelAnimationFrame(characterVisibilityFrameRef.current);
+        characterVisibilityFrameRef.current = null;
       }
     };
   }, [chapterLoading, presentedVisibleCharacterIds, visibleCharacterIds]);
@@ -1920,16 +1851,12 @@ export default function App() {
     ? effectiveCameraTargetId
     : dialog.speakerId;
   const cameraStyle = {
-    '--stage-composition-scale': cameraPresentation.compositionScale,
-    '--stage-composition-scale-mobile': cameraPresentation.mobileCompositionScale,
-    '--stage-composition-origin-y': `${cameraPresentation.compositionOriginY}%`,
-    '--stage-composition-origin-y-mobile': `${cameraPresentation.mobileCompositionOriginY}%`,
-    '--stage-camera-zoom': cameraPresentation.zoomScale,
-    '--stage-camera-zoom-mobile': cameraPresentation.mobileZoomScale,
-    '--stage-camera-origin-x': cameraPresentation.zoomOriginX,
-    '--stage-camera-origin-x-mobile': cameraPresentation.mobileZoomOriginX,
-    '--stage-camera-origin-y': `${cameraPresentation.zoomOriginY}%`,
-    '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileZoomOriginY}%`,
+    '--stage-camera-scale': cameraPresentation.scale,
+    '--stage-camera-scale-mobile': cameraPresentation.mobileScale,
+    '--stage-camera-pan-x': cameraPresentation.panX,
+    '--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX,
+    '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
+    '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`,
     '--stage-camera-duration': `${cameraPresentation.duration}ms`,
     '--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`,
     '--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`,
@@ -2828,7 +2755,7 @@ export default function App() {
               <p className="start-gate-prologue">당신의 선택으로 이야기가 시작됩니다</p>
             </div>
           )}
-          <div ref={startGateActionsRef} className={actionClass}>
+          <div className={actionClass}>
             <button
               type="button"
               className="start-gate-button start-gate-button-start"
@@ -3327,7 +3254,7 @@ export default function App() {
   } as CSSProperties;
   const dialogueChannelLabel = {
     dialogue: undefined,
-    narration: '서술',
+    narration: undefined,
     record: '기록',
     system: '시스템',
   }[dialog.channel];

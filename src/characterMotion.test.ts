@@ -28,7 +28,7 @@ describe('image character motion', () => {
     expect(styles).toContain('--char-facing-scale-x: 1;');
     expect(styles).toContain('transform: scaleX(var(--char-facing-scale-x));');
     expect(styles).toContain('scale: var(--char-scale);');
-    expect(styles).toContain('translate 320ms cubic-bezier(0.22, 1, 0.36, 1)');
+    expect(styles).toContain('translate 380ms cubic-bezier(0.2, 0.72, 0.24, 1)');
     expect(charRule).not.toContain('left 360ms');
     expect(charRule).not.toContain('width 320ms');
     expect(charRule).not.toContain('filter 200ms');
@@ -62,10 +62,11 @@ describe('image character motion', () => {
     expect(appSource).toContain('characterPlacementByIdRef.current.set(slot.id, currentPlacement)');
   });
 
-  it('coalesces skipped visibility changes and releases a group layout after the exit fade', () => {
-    expect(appSource).toContain('const CHARACTER_VISIBILITY_SETTLE_MS = 80;');
+  it('coalesces skipped visibility changes on the next paint and releases a group layout after the exit fade', () => {
+    expect(appSource).toContain('left.every((id) => right.includes(id))');
+    expect(appSource).toContain('characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {');
     expect(appSource).toContain('setPresentedVisibleCharacterIds(nextVisibleCharacterIds);');
-    expect(appSource).toContain('}, CHARACTER_VISIBILITY_SETTLE_MS);');
+    expect(appSource).not.toContain('CHARACTER_VISIBILITY_SETTLE_MS');
     expect(appSource).toContain('const shouldWaitForExit = isCharacterOnlyExit(');
     expect(appSource).toContain('}, CHARACTER_EXIT_FADE_DURATION_MS);');
     expect(appSource).toMatch(
@@ -76,33 +77,36 @@ describe('image character motion', () => {
     );
   });
 
-  it('keeps one fixed composition and applies camera zoom without a position pan', () => {
+  it('animates one absolute camera scale and an explicit target pan', () => {
     expect(appSource).toContain('className="char-composition-world"');
     expect(appSource).toContain('className="char-camera-world"');
     expect(appSource).not.toContain('className="char-camera-pan"');
     expect(appSource).toContain('data-camera-shot={cameraPresentation.shot}');
     expect(appSource).toContain('data-camera-requested-shot={camera.shot}');
-    expect(styles).toContain('scale(var(--stage-composition-render-scale))');
-    expect(styles).toContain('scale(var(--stage-camera-render-zoom))');
-    expect(styles).toContain('--stage-composition-render-scale: var(--stage-composition-scale-mobile)');
-    expect(styles).toContain('transform-origin: var(--stage-camera-render-origin-x) var(--stage-camera-render-origin-y);');
-    expect(styles).not.toContain('--stage-camera-render-pan-x');
-    expect(styles).not.toContain('translate3d(var(--stage-camera-render-pan-x)');
-    expect(styles).toContain('transform var(--stage-camera-motion-duration) cubic-bezier(0.22, 1, 0.36, 1)');
+    expect(styles).toContain('scale(var(--stage-camera-render-scale))');
+    expect(styles).toContain('translate3d(var(--stage-camera-render-pan-x), 0, 0)');
+    expect(styles).toContain('--stage-camera-render-scale: var(--stage-camera-scale-mobile)');
+    expect(styles).toContain('--stage-camera-render-pan-x: var(--stage-camera-pan-x-mobile)');
+    expect(styles).toContain('transform-origin: 50cqw var(--stage-camera-render-origin-y);');
+    expect(styles).toContain('transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)');
     expect(styles).toContain('var(--stage-camera-motion-delay)');
     expect(styles).not.toContain('transform-origin var(--stage-camera-duration)');
     expect(styles).toMatch(/\.char-composition-world,[\s\S]*?\.char-camera-world,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
   });
 
-  it('hides a close listener after its fade and before the camera zoom begins', () => {
+  it('fades a close listener while the camera move overlaps smoothly', () => {
     expect(appSource).toContain('resolveStageCameraTransitionTiming(');
     expect(appSource).toContain("'--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`");
     expect(appSource).toContain("'--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`");
-    expect(styles).toContain('opacity var(--character-opacity-duration) ease-out');
+    expect(styles).toContain('opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1)');
     expect(styles).toContain('visibility 0s linear var(--character-visibility-delay)');
     expect(styles).toMatch(
       /\.char-layer\[data-camera-shot='close'\] \.char\.is-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
     );
+    expect(styles).toMatch(/@keyframes characterEnter\s*\{[\s\S]*?from\s*\{[\s\S]*?opacity: 0;[\s\S]*?to\s*\{[\s\S]*?opacity: var\(--char-focus-opacity\);/);
+    const characterEnter = styles.match(/@keyframes characterEnter\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    expect(characterEnter).not.toContain('translate');
+    expect(characterEnter).not.toContain('scale');
   });
 
   it('warms the Live2D renderer alongside chapter asset preloading', () => {
