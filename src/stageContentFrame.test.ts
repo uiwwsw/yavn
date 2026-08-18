@@ -30,15 +30,14 @@ describe('responsive stage content frame', () => {
     );
   });
 
-  it('separates the fixed cast composition from target-local camera zooms', () => {
+  it('uses responsive absolute camera scales and target pans', () => {
     expect(appSource).toContain(
-      "'--stage-composition-origin-y-mobile': `${cameraPresentation.mobileCompositionOriginY}%`",
+      "'--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`",
     );
-    expect(appSource).toContain("'--stage-composition-scale-mobile': cameraPresentation.mobileCompositionScale");
-    expect(appSource).toContain("'--stage-camera-zoom-mobile': cameraPresentation.mobileZoomScale");
-    expect(appSource).toContain("'--stage-camera-origin-x-mobile': cameraPresentation.mobileZoomOriginX");
+    expect(appSource).toContain("'--stage-camera-scale-mobile': cameraPresentation.mobileScale");
+    expect(appSource).toContain("'--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX");
     expect(styles).toMatch(
-      /@media \(max-width: 768px\)[\s\S]*?\.char-composition-world\s*\{[\s\S]*?--stage-composition-render-scale: var\(--stage-composition-scale-mobile\);[\s\S]*?--stage-camera-render-zoom: var\(--stage-camera-zoom-mobile\);/,
+      /@media \(max-width: 768px\)[\s\S]*?\.char-composition-world\s*\{[\s\S]*?--stage-camera-render-scale: var\(--stage-camera-scale-mobile\);[\s\S]*?--stage-camera-render-pan-x: var\(--stage-camera-pan-x-mobile\);/,
     );
   });
 

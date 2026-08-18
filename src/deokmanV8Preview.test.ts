@@ -64,7 +64,7 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(chapter.data).toBeDefined();
     if (!config.data || !base.data || !chapter.data) return;
 
-    expect(config.data.data.version).toBe('8.0.0-preview.3');
+    expect(config.data.data.version).toBe('8.0.0-preview.4');
     expect(config.data.data.startScreen?.image).toBe(
       'root:/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -121,6 +121,25 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(effects).toEqual(expect.arrayContaining(['focus', 'inkstamp', 'impact', 'embers', 'starfall']));
     expect(says.some((say) => say.channel === 'record' && String(say.text).includes('둘째 공주 덕만'))).toBe(true);
     expect(says.some((say) => say.channel === 'system' && String(say.text).includes('[기록 완료]'))).toBe(true);
+  });
+
+  it('uses wide shots as establishing beats before returning actors to a readable medium frame', () => {
+    const document = readYaml('0.yaml');
+    const scenes = asRecord(document.scenes);
+    const actionsFor = (sceneId: string) => {
+      const actions = asRecord(scenes[sceneId]).actions;
+      return Array.isArray(actions) ? actions.map(asRecord) : [];
+    };
+    const firstNarration = (sceneId: string) =>
+      actionsFor(sceneId)
+        .map((action) => asRecord(action.say))
+        .find((say) => say.channel === 'narration');
+
+    expect(actionsFor('opening_record').slice(0, 5).some((action) => action.effect === 'focus')).toBe(false);
+    expect(firstNarration('opening_record')?.camera).toBe('medium');
+    expect(firstNarration('fire_breaks')?.camera).toBe('medium');
+    expect(firstNarration('escape_waterway')?.camera).toBe('medium');
+    expect(firstNarration('escape_token')?.camera).toBe('medium');
   });
 
   it('keeps every speaker visibly staged along every reachable local branch', () => {

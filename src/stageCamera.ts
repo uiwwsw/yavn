@@ -7,7 +7,10 @@ import type {
   StageCameraState,
 } from './types';
 import type { CharacterStageLayout } from './characterLayout';
-import { resolveCharacterStagePlacement, resolveMobileCharacterStageAnchor } from './characterLayout';
+import {
+  resolveCharacterCameraPanX,
+  resolveMobileCharacterCameraPanX,
+} from './characterLayout';
 
 export const DEFAULT_STAGE_CAMERA: StageCameraState = {
   shot: 'wide',
@@ -30,40 +33,38 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
 };
 
 export const CHARACTER_EXIT_FADE_DURATION_MS = 180;
+const CLOSE_CAMERA_OVERLAP_DELAY_MS = 72;
 
 // Character count changes horizontal staging only. Keeping one physical camera
 // profile prevents a solo, duo, and trio from cropping the same source art at
 // different heights when the visible cast changes.
-const COMPOSITION_SCALE = 1.58;
+const COMPOSITION_SCALE = 1.62;
 const SHOT_SCALE: Record<CameraShot, number> = {
-  wide: 1,
+  wide: 1.18,
   medium: COMPOSITION_SCALE,
-  close: 2.02,
-  reaction: 1.83,
+  close: 2.08,
+  reaction: 1.9,
 };
 // Portrait screens have less room around a fixed character anchor. Keep the
 // authored shot hierarchy while softening repeated medium/close cuts so the
 // subject does not appear to pulse in size on mobile.
 const MOBILE_SHOT_SCALE: Record<CameraShot, number> = {
-  wide: 1,
-  medium: COMPOSITION_SCALE,
+  wide: 1.12,
+  medium: 1.58,
   close: 1.84,
   reaction: 1.72,
 };
-const COMPOSITION_ORIGIN_Y = 80;
+const COMPOSITION_ORIGIN_Y = 86;
+const MOBILE_COMPOSITION_ORIGIN_Y = 82;
 
 export type StageCameraPresentation = {
   shot: CameraShot;
-  compositionScale: number;
-  mobileCompositionScale: number;
-  compositionOriginY: number;
-  mobileCompositionOriginY: number;
-  zoomScale: number;
-  mobileZoomScale: number;
-  zoomOriginX: string;
-  mobileZoomOriginX: string;
-  zoomOriginY: number;
-  mobileZoomOriginY: number;
+  scale: number;
+  mobileScale: number;
+  panX: string;
+  mobilePanX: string;
+  originY: number;
+  mobileOriginY: number;
   duration: number;
   transition: CameraTransition;
 };
@@ -85,16 +86,15 @@ export function resolveStageCameraTransitionTiming(
   const characterExitDuration = hasListenerExit
     ? Math.min(CHARACTER_EXIT_FADE_DURATION_MS, Math.floor(presentation.duration / 2))
     : 0;
+  const cameraDelay = characterExitDuration > 0
+    ? Math.min(CLOSE_CAMERA_OVERLAP_DELAY_MS, Math.floor(characterExitDuration / 2))
+    : 0;
 
   return {
-    cameraDelay: characterExitDuration,
-    cameraDuration: Math.max(0, presentation.duration - characterExitDuration),
+    cameraDelay,
+    cameraDuration: Math.max(0, presentation.duration - cameraDelay),
     characterExitDuration,
   };
-}
-
-function resolveCompositionScale(visibleCharacterCount: number): number {
-  return visibleCharacterCount > 0 ? COMPOSITION_SCALE : 1;
 }
 
 function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): number {
@@ -105,10 +105,6 @@ function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): numb
 function resolveMobileShotScale(shot: CameraShot, visibleCharacterCount: number): number {
   if (visibleCharacterCount <= 0) return 1;
   return MOBILE_SHOT_SCALE[shot];
-}
-
-function resolveCompositionOriginY(): number {
-  return COMPOSITION_ORIGIN_Y;
 }
 
 export function resolveCharacterCalibration(
@@ -175,30 +171,22 @@ export function resolveStageCameraPresentation(
   const presentationShot = (camera.shot === 'close' || camera.shot === 'reaction') && !hasCharacterTarget
     ? 'medium'
     : camera.shot;
-  const compositionScale = resolveCompositionScale(visibleCharacterCount);
-  const shotScale = resolveShotScale(presentationShot, visibleCharacterCount);
-  const mobileShotScale = resolveMobileShotScale(presentationShot, visibleCharacterCount);
-  const compositionOriginY = resolveCompositionOriginY();
-  const zoomOriginX = hasCharacterTarget && targetPosition
-    ? resolveCharacterStagePlacement(targetPosition, layout, compositionSpacing).anchorX
-    : '50cqw';
-  const mobileZoomOriginX = hasCharacterTarget && targetPosition
-    ? resolveMobileCharacterStageAnchor(targetPosition, layout)
-    : '50cqw';
-  const zoomOriginY = presentationShot === 'wide' ? compositionOriginY : 50;
+  const originY = COMPOSITION_ORIGIN_Y;
+  const panX = hasCharacterTarget && targetPosition
+    ? resolveCharacterCameraPanX(targetPosition, layout, compositionSpacing)
+    : '0cqw';
+  const mobilePanX = hasCharacterTarget && targetPosition
+    ? resolveMobileCharacterCameraPanX(targetPosition, layout)
+    : '0cqw';
 
   return {
     shot: presentationShot,
-    compositionScale,
-    mobileCompositionScale: compositionScale,
-    compositionOriginY,
-    mobileCompositionOriginY: compositionOriginY,
-    zoomScale: shotScale / compositionScale,
-    mobileZoomScale: mobileShotScale / compositionScale,
-    zoomOriginX,
-    mobileZoomOriginX,
-    zoomOriginY,
-    mobileZoomOriginY: zoomOriginY,
+    scale: resolveShotScale(presentationShot, visibleCharacterCount),
+    mobileScale: resolveMobileShotScale(presentationShot, visibleCharacterCount),
+    panX,
+    mobilePanX,
+    originY,
+    mobileOriginY: MOBILE_COMPOSITION_ORIGIN_Y,
     duration: camera.duration,
     transition: camera.transition,
   };

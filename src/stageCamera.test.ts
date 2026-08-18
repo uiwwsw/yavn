@@ -46,7 +46,7 @@ describe('stage camera', () => {
     });
   });
 
-  it('builds a fixed medium composition and zooms around a target without panning it', () => {
+  it('uses one absolute scale and pans a directed target to the centre', () => {
     const medium = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'medium' }),
       3,
@@ -55,14 +55,12 @@ describe('stage camera', () => {
     );
     expect(medium).toMatchObject({
       shot: 'medium',
-      compositionScale: 1.58,
-      mobileCompositionScale: 1.58,
-      zoomScale: 1,
-      mobileZoomScale: 1,
-      zoomOriginX: '50cqw',
-      mobileZoomOriginX: '50cqw',
-      compositionOriginY: 80,
-      mobileCompositionOriginY: 80,
+      scale: 1.62,
+      mobileScale: 1.58,
+      panX: '0cqw',
+      mobilePanX: '0cqw',
+      originY: 86,
+      mobileOriginY: 82,
     });
 
     const close = resolveStageCameraPresentation(
@@ -74,13 +72,12 @@ describe('stage camera', () => {
     );
     expect(close).toMatchObject({
       shot: 'close',
-      compositionScale: 1.58,
-      zoomOriginX: 'calc(50cqw + min(27.5cqw, 286px))',
-      mobileZoomOriginX: '75cqw',
-      zoomOriginY: 50,
+      scale: 2.08,
+      mobileScale: 1.84,
+      panX: 'calc(0px - min(27.5cqw, 286px))',
+      mobilePanX: '-25cqw',
+      originY: 86,
     });
-    expect(close.zoomScale).toBeCloseTo(2.02 / 1.58);
-    expect(close.mobileZoomScale).toBeCloseTo(1.84 / 1.58);
   });
 
   it('uses one portrait and crop ratio for solo, duo, and trio on mobile and desktop', () => {
@@ -103,23 +100,20 @@ describe('stage camera', () => {
     );
 
     expect(close).toMatchObject({
-      compositionScale: 1.58,
-      mobileCompositionScale: 1.58,
-      compositionOriginY: 80,
-      mobileCompositionOriginY: 80,
-      zoomOriginX: '50cqw',
-      mobileZoomOriginX: '50cqw',
-      zoomOriginY: 50,
+      scale: 2.08,
+      mobileScale: 1.84,
+      panX: '0cqw',
+      mobilePanX: '0cqw',
+      originY: 86,
+      mobileOriginY: 82,
     });
-    expect(close.zoomScale).toBeCloseTo(2.02 / 1.58);
-    expect(close.mobileZoomScale).toBeCloseTo(1.84 / 1.58);
     expect(medium).toMatchObject({
-      compositionScale: 1.58,
-      mobileCompositionScale: 1.58,
-      zoomScale: 1,
-      mobileZoomScale: 1,
-      compositionOriginY: 80,
-      mobileCompositionOriginY: 80,
+      scale: 1.62,
+      mobileScale: 1.58,
+      panX: '0cqw',
+      mobilePanX: '0cqw',
+      originY: 86,
+      mobileOriginY: 82,
     });
 
     const duoLayout: CharacterStageLayout = {
@@ -134,12 +128,12 @@ describe('stage camera', () => {
       duoLayout,
     );
     expect(duoMedium).toMatchObject({
-      compositionScale: 1.58,
-      mobileCompositionScale: 1.58,
-      zoomScale: 1,
-      mobileZoomScale: 1,
-      compositionOriginY: 80,
-      mobileCompositionOriginY: 80,
+      scale: 1.62,
+      mobileScale: 1.58,
+      panX: '0cqw',
+      mobilePanX: '0cqw',
+      originY: 86,
+      mobileOriginY: 82,
     });
 
     const duoClose = resolveStageCameraPresentation(
@@ -149,21 +143,20 @@ describe('stage camera', () => {
       duoLayout,
     );
     expect(duoClose).toMatchObject({
-      compositionScale: 1.58,
-      zoomOriginX: 'calc(50cqw - min(25cqw, 260px))',
-      mobileZoomOriginX: '25cqw',
+      scale: 2.08,
+      mobileScale: 1.84,
+      panX: 'min(25cqw, 260px)',
+      mobilePanX: '25cqw',
     });
-    expect(duoClose.zoomScale).toBeCloseTo(2.02 / 1.58);
-    expect(duoClose.mobileZoomScale).toBeCloseTo(1.84 / 1.58);
 
-    expect(medium.compositionScale).toBe(duoMedium.compositionScale);
-    expect(medium.compositionScale).toBe(
+    expect(medium.scale).toBe(duoMedium.scale);
+    expect(medium.scale).toBe(
       resolveStageCameraPresentation(
         resolveStageCameraState({ shot: 'medium' }),
         3,
         undefined,
         trioLayout,
-      ).compositionScale,
+      ).scale,
     );
   });
 
@@ -210,15 +203,16 @@ describe('stage camera', () => {
         layout,
       );
 
-      expect(medium.compositionScale).toBe(1.58);
-      expect(medium.compositionOriginY).toBe(80);
-      expect(wide.zoomScale * wide.compositionScale).toBeCloseTo(1);
-      expect(close.zoomScale * close.compositionScale).toBeCloseTo(2.02);
-      expect(reaction.zoomScale * reaction.compositionScale).toBeCloseTo(1.83);
-      expect(wide.mobileZoomScale * wide.mobileCompositionScale).toBeCloseTo(1);
-      expect(medium.mobileZoomScale * medium.mobileCompositionScale).toBeCloseTo(1.58);
-      expect(close.mobileZoomScale * close.mobileCompositionScale).toBeCloseTo(1.84);
-      expect(reaction.mobileZoomScale * reaction.mobileCompositionScale).toBeCloseTo(1.72);
+      expect(medium.scale).toBe(1.62);
+      expect(medium.originY).toBe(86);
+      expect(medium.mobileOriginY).toBe(82);
+      expect(wide.scale).toBeCloseTo(1.18);
+      expect(close.scale).toBeCloseTo(2.08);
+      expect(reaction.scale).toBeCloseTo(1.9);
+      expect(wide.mobileScale).toBeCloseTo(1.12);
+      expect(medium.mobileScale).toBeCloseTo(1.58);
+      expect(close.mobileScale).toBeCloseTo(1.84);
+      expect(reaction.mobileScale).toBeCloseTo(1.72);
     }
   });
 
@@ -234,13 +228,13 @@ describe('stage camera', () => {
       },
     );
 
-    expect(close.zoomScale * close.compositionScale).toBeCloseTo(2.02);
-    expect(close.mobileZoomScale * close.mobileCompositionScale).toBeCloseTo(1.84);
-    expect(close.mobileZoomScale).toBeLessThan(close.zoomScale);
+    expect(close.scale).toBeCloseTo(2.08);
+    expect(close.mobileScale).toBeCloseTo(1.84);
+    expect(close.mobileScale).toBeLessThan(close.scale);
     expect(1.84 / 1.58).toBeLessThan(1.2);
   });
 
-  it('finishes a multi-actor close exit before using the remaining camera time', () => {
+  it('overlaps a multi-actor close exit with a slower camera move', () => {
     expect(CHARACTER_EXIT_FADE_DURATION_MS).toBe(180);
     const close = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'close', target: '덕만' }),
@@ -254,8 +248,8 @@ describe('stage camera', () => {
     );
 
     expect(resolveStageCameraTransitionTiming(close, 2)).toEqual({
-      cameraDelay: CHARACTER_EXIT_FADE_DURATION_MS,
-      cameraDuration: 520 - CHARACTER_EXIT_FADE_DURATION_MS,
+      cameraDelay: 72,
+      cameraDuration: 448,
       characterExitDuration: CHARACTER_EXIT_FADE_DURATION_MS,
     });
     expect(resolveStageCameraTransitionTiming(close, 1)).toEqual({
@@ -264,8 +258,8 @@ describe('stage camera', () => {
       characterExitDuration: 0,
     });
     expect(resolveStageCameraTransitionTiming({ ...close, duration: 200 }, 2)).toEqual({
-      cameraDelay: 100,
-      cameraDuration: 100,
+      cameraDelay: 50,
+      cameraDuration: 150,
       characterExitDuration: 100,
     });
     expect(resolveStageCameraTransitionTiming({ ...close, transition: 'cut', duration: 0 }, 2)).toEqual({
@@ -295,17 +289,17 @@ describe('stage camera', () => {
 
     expect(untargetedClose).toMatchObject({
       shot: 'medium',
-      compositionScale: 1.58,
-      zoomScale: 1,
-      mobileZoomScale: 1,
-      mobileCompositionOriginY: 80,
+      scale: 1.62,
+      mobileScale: 1.58,
+      panX: '0cqw',
+      mobileOriginY: 82,
     });
     expect(untargetedReaction).toMatchObject({
       shot: 'medium',
-      compositionScale: 1.58,
-      zoomScale: 1,
-      mobileZoomScale: 1,
-      mobileCompositionOriginY: 80,
+      scale: 1.62,
+      mobileScale: 1.58,
+      panX: '0cqw',
+      mobileOriginY: 82,
     });
   });
 
@@ -331,12 +325,12 @@ describe('stage camera', () => {
     );
 
     expect(medium).toMatchObject({
-      zoomScale: 1,
-      zoomOriginX: '50cqw',
-      mobileZoomOriginX: '50cqw',
+      scale: 1.62,
+      panX: '0cqw',
+      mobilePanX: '0cqw',
     });
-    expect(wide.zoomScale).toBeCloseTo(1 / 1.58);
-    expect(wide.mobileZoomScale).toBeCloseTo(1 / 1.58);
+    expect(wide.scale).toBeCloseTo(1.18);
+    expect(wide.mobileScale).toBeCloseTo(1.12);
   });
 
   it('does not carry a previous speaker focus into an untargeted narration line', () => {
