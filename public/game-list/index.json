@@ -1,7 +1,54 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-14T04:30:39.114Z",
+  "generatedAt": "2026-08-18T02:09:26.645Z",
   "games": [
+    {
+      "id": "deokman-v8-preview",
+      "name": "덕만: 별은 왕을 선택하지 않는다",
+      "path": "/game-list/deokman-v8-preview/",
+      "author": "uiwwsw",
+      "version": "8.0.0-preview.1",
+      "summary": "덕만 v8의 첫 완성 장면. 살아 있는 공주의 죽음이 먼저 기록된 날, 어린 덕만은 향기 없는 모란 그림과 불타는 별궁 사이에서 자기 이름을 지켜야 합니다.",
+      "thumbnail": "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp",
+      "tags": [
+        "historical-fiction",
+        "silla",
+        "vertical-slice",
+        "character-drama",
+        "deadly-choices"
+      ],
+      "showcase": {
+        "label": "V8 PREVIEW · CHAPTER 01",
+        "backgroundColor": "#181722",
+        "image": {
+          "positionX": 54,
+          "positionY": 45,
+          "scale": 1.03,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "legalNotices": [],
+      "chapterCount": 1,
+      "seo": {
+        "title": "덕만: 별은 왕을 선택하지 않는다",
+        "description": "살아 있는 공주의 죽음이 먼저 기록된 밤. 어린 덕만이 모란 그림과 불타는 별궁에서 자기 이름을 지키는 선덕여왕 비주얼노벨 v8 수직 슬라이스.",
+        "keywords": [
+          "선덕여왕",
+          "덕만",
+          "신라",
+          "역사 비주얼노벨",
+          "선택형 드라마",
+          "historical-fiction",
+          "silla",
+          "vertical-slice",
+          "character-drama",
+          "deadly-choices"
+        ],
+        "image": "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp",
+        "imageAlt": "불타는 신라 별궁을 빠져나가는 덕만의 밤"
+      }
+    },
     {
       "id": "deokman",
       "name": "덕만: 왕관에는 주인이 없다",
@@ -197,15 +244,18 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 덕만: 왕관에는 주인이 없다, 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 덕만: 별은 왕을 선택하지 않는다, 덕만: 왕관에는 주인이 없다, 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
     "keywords": [
+      "덕만: 별은 왕을 선택하지 않는다",
       "덕만: 왕관에는 주인이 없다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다",
       "historical-fiction",
       "silla",
+      "vertical-slice",
       "character-drama",
+      "deadly-choices",
       "court-intrigue",
       "political-thriller",
       "detective",
@@ -225,6 +275,7 @@
       "덕만",
       "신라",
       "역사 비주얼노벨",
+      "선택형 드라마",
       "정치 생존 게임",
       "분기형 게임",
       "명탐정 코난",
@@ -238,11 +289,12 @@
       "60초 데모"
     ],
     "gameTitles": [
+      "덕만: 별은 왕을 선택하지 않는다",
       "덕만: 왕관에는 주인이 없다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 4
+    "gameCount": 5
   }
 }

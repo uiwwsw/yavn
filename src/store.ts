@@ -3,6 +3,7 @@ import { appendStoryLogEntry } from './history';
 import type {
   CharacterSlot,
   ChoiceGateState,
+  DialogueChannel,
   DialogueDelivery,
   GameData,
   GameOverDefinition,
@@ -28,6 +29,7 @@ type DialogState = {
   visibleText: string;
   typing: boolean;
   unskippable: boolean;
+  channel: DialogueChannel;
   delivery: DialogueDelivery;
   typingIntensity: number;
   typingPulse: number;
@@ -118,6 +120,7 @@ const initialDialog: DialogState = {
   visibleText: '',
   typing: false,
   unskippable: false,
+  channel: 'dialogue',
   delivery: 'neutral',
   typingIntensity: 0,
   typingPulse: 0,
@@ -317,6 +320,7 @@ export const useVNStore = create<VNState>((set) => ({
     dialog: {
       ...state.dialog,
       ...dialog,
+      ...(dialog.fullText === '' ? { channel: 'dialogue' as const } : {}),
       // The lock exists only while glyphs are still being revealed.
       ...(dialog.typing === false ? { unskippable: false } : {}),
     },

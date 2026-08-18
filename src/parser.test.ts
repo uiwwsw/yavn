@@ -384,6 +384,76 @@ scenes:
     expect(parsed.data).toBeUndefined();
   });
 
+  it('accepts authored dialogue channels and conditional choice options', () => {
+    const config = parseConfigYaml(
+      `
+title: Channel Test
+textSpeed: 30
+autoSave: true
+clickToInstant: true
+`,
+      'config.yaml',
+    );
+    const base = parseBaseYaml(
+      `
+state:
+  found_record: false
+`,
+      'base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: archive
+scenes:
+  archive:
+    actions:
+      - say:
+          channel: record
+          text: "The archive changed."
+      - choice:
+          prompt: "Read it?"
+          options:
+            - text: "Read the hidden line"
+              when: { var: found_record, op: eq, value: true }
+            - text: "Leave"
+`,
+      '0.yaml',
+    );
+
+    expect(config.error).toBeUndefined();
+    expect(base.error).toBeUndefined();
+    expect(chapter.error).toBeUndefined();
+    if (!config.data || !base.data || !chapter.data) return;
+    expect(resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data }).error).toBeUndefined();
+    expect(chapter.data.data.scenes.archive.actions[0]).toMatchObject({ say: { channel: 'record' } });
+    const choiceAction = chapter.data.data.scenes.archive.actions[1];
+    expect(choiceAction && 'choice' in choiceAction ? choiceAction.choice.options[0].when : undefined).toEqual({
+      var: 'found_record',
+      op: 'eq',
+      value: true,
+    });
+  });
+
+  it('rejects unknown dialogue channels', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: archive
+scenes:
+  archive:
+    actions:
+      - say:
+          channel: cinematic
+          text: "No."
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeDefined();
+    expect(parsed.data).toBeUndefined();
+  });
+
   it('accepts auto-advancing dialogue and a timed choice fallback', () => {
     const parsed = parseChapterYaml(
       `
