@@ -356,6 +356,8 @@ export type StartButtonPosition = 'auto' | 'bottom-center' | 'bottom-left' | 'bo
 export type StartScreenConfig = {
   enabled: boolean;
   image?: string;
+  imagePosition?: string;
+  mobileImagePosition?: string;
   music?: string;
   showTitle: boolean;
   titleColor?: string;

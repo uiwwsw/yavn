@@ -6,17 +6,17 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yavn.vercel.app/game-list/deokman/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://yavn.vercel.app/game-list/conan/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/conan-demo/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/game-list/deokman/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

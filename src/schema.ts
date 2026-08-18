@@ -378,6 +378,8 @@ const startScreenSchema = z
   .object({
     enabled: z.boolean().optional(),
     image: z.string().min(1).optional(),
+    imagePosition: z.string().min(1).max(80).optional(),
+    mobileImagePosition: z.string().min(1).max(80).optional(),
     music: z.string().min(1).optional(),
     showTitle: z.boolean().optional(),
     titleColor: z.string().min(1).max(80).optional(),
@@ -393,6 +395,8 @@ const startScreenSchema = z
     return {
       enabled: value.enabled ?? true,
       image: normalizeOptionalText(value.image),
+      imagePosition: normalizeOptionalText(value.imagePosition),
+      mobileImagePosition: normalizeOptionalText(value.mobileImagePosition),
       music: normalizeOptionalText(value.music),
       showTitle: value.showTitle ?? true,
       titleColor: normalizeOptionalText(value.titleColor),

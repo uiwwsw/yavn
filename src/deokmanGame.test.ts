@@ -79,10 +79,13 @@ describe('complete Deokman visual novel', () => {
     const config = parseConfigYaml(readSource('config.yaml'), 'deokman/config.yaml');
     const launcher = readYaml('launcher.yaml');
 
-    expect(config.data?.data.version).toBe('8.1.0');
+    expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
+    expect(config.data?.data.version).toBe('9.0.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
+    expect(config.data?.data.startScreen?.imagePosition).toBe('50% 50%');
+    expect(config.data?.data.startScreen?.mobileImagePosition).toBe('72% 50%');
     expect(config.data?.data.endingScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp',
     );
@@ -117,18 +120,18 @@ describe('complete Deokman visual novel', () => {
 
   it('carries one causal evidence chain across all twelve chapters', () => {
     const continuityAnchors = [
-      ['0.yaml', '두 단서가 다시 만나는 곳'],
-      ['1.yaml', '서라벌 서쪽 창고'],
+      ['0.yaml', '붉은 인장의 행로'],
+      ['1.yaml', '붉은 인장을 사망 기록 옆에'],
       ['2.yaml', '암살자의 밀랍을 국경의 곡식길과 연결'],
-      ['3.yaml', '당의 원조 표식'],
+      ['3.yaml', '당의 낙인이 드러났습니다'],
       ['4.yaml', '다음 일식의 관측표'],
       ['5.yaml', '계산표의 옥새'],
-      ['6.yaml', '별궁의 사망 기록과 국경 수색표'],
-      ['7.yaml', '사건보다 먼저 완성된 문서'],
-      ['8.yaml', '하늘과 곡식의 변화를 누구나 확인할 관측대'],
-      ['9.yaml', '전령들이 쓰던 매듭과 기름 먹인 연'],
+      ['6.yaml', '잃어버린 옥새 인주'],
+      ['7.yaml', '쓰러지기 전부터 말라 있던 먹'],
+      ['8.yaml', '다음 어둠은 누구나 미리 보게 하라'],
+      ['9.yaml', '전령 매듭과 기름 먹인 대나무'],
       ['10.yaml', '사실보다 먼저 결론을 퍼뜨린 같은 방식'],
-      ['11.yaml', '열두 장의 사건이 하나의 질문'],
+      ['11.yaml', '열두 해의 종이를 바닥에 길게'],
     ] as const;
 
     continuityAnchors.forEach(([path, anchor]) => expect(readSource(path), path).toContain(anchor));
@@ -172,7 +175,7 @@ describe('complete Deokman visual novel', () => {
     expect(channels).toEqual(new Set(['dialogue', 'narration', 'record']));
     expect(says.some((say) => say.channel === 'system')).toBe(false);
     expect(effects).toEqual(new Set(['embers', 'darken', 'eclipse']));
-    expect(collectStrings(documents).join('\n')).toContain('별은 왕을 선택하지 않는다');
+    expect(collectStrings(documents).join('\n')).toContain('별은 왕을 고르지 않는다');
   });
 
   it('stages every named speaker on every reachable local scene route', () => {

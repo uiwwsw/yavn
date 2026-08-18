@@ -14,27 +14,27 @@ scenes:
       - say:
           channel: narration
           camera: medium
-          text: "시장 인장을 본뜬 밀랍을 받은 천명이 비밀 답신을 보낸 밤, 덕만은 모란 온실과 이어진 침전으로 들어왔습니다. 천명은 죽은 줄 알았던 쌍둥이의 얼굴을 한참 바라보았습니다. 두 사람 사이에는 십 년과 사망 기록, 그리고 서쪽 창고를 가리키는 운송표가 놓여 있었습니다."
+          text: "모란 온실의 비밀문이 닫혔습니다. 천명은 촛불을 들어 덕만의 얼굴을 오래 비췄습니다. 탁자 위에는 사망 기록과 서쪽 창고 운송표가 놓였지만, 누구도 먼저 종이를 보지 못했습니다."
       - say:
           char: 천명.nervous
           camera: close
           with: [덕만]
-          text: "얼굴만으로 믿으면 궁은 내일 열 명의 덕만을 데려올 거야. 네가 내 동생이라는 증거를 보여 줘."
+          text: "네 얼굴을 믿고 싶어. 하지만 내가 믿는 순간 궁은 내일 가짜 덕만 열 명을 데려올 거야. 나를 의심하게 만들 증거를 줘."
       - choice:
           key: c3_proof
-          prompt: "천명에게 무엇으로 자신을 증명하겠습니까?"
+          prompt: "천명의 손이 떨린다. 무엇으로 십 년의 틈을 건널까?"
           char: 덕만
           camera: close
           with: [천명]
           options:
-            - text: "위조된 사망 기록을 보여 준다"
+            - text: "그을린 사망 기록을 밀어 준다"
               when: { var: death_register, op: eq, value: true }
               add: { cheonmyeong_trust: 2, evidence: 1 }
               goto: proof_record
-            - text: "진평왕만 아는 모란 그림의 질문을 전한다"
+            - text: "아버지의 모란 질문을 되돌려 준다"
               add: { cheonmyeong_trust: 1, king_trust: 1, insight: 1 }
               goto: proof_memory
-            - text: "증거보다 천명이 감춘 두려움을 먼저 말한다"
+            - text: "언니가 숨기는 두려움을 먼저 꺼낸다"
               add: { cheonmyeong_trust: 2, mercy: 1 }
               goto: proof_sister
 
@@ -45,7 +45,7 @@ scenes:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "이 도장은 아버님의 것이지만 글씨는 왕실 서기관의 것이 아니야. 누군가 왕의 손과 기록관의 손을 따로 빌렸어."
+          text: "도장은 아버님 것이야. 그런데 이 획은 궁 서기관이 아니야. 왕의 손과 기록관의 손을 따로 훔쳤어."
       - clearSticker: { id: c3_record, leave: fadeOut }
       - goto: sister_oath
 
@@ -53,12 +53,12 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "꽃에는 향기가 없고, 왕에게는 명령을 옮길 손이 없었습니다. 전하께서 제게 찾으라 한 것은 그림의 빈자리였어요."
+          text: "꽃엔 향기가 없었고, 왕에겐 명령을 옮길 손이 없었어. 아버지는 늘 있는 것보다 빠진 걸 보라고 했지."
       - say:
           char: 천명
           camera: close
           with: [덕만]
-          text: "아버님이 실패할 때마다 하시는 말이구나. 너는 그날 정말 그 방에 있었어."
+          text: "아버님이 결정을 미룰 때마다 하던 말이야… 너, 정말 그 방에 있었구나."
       - goto: sister_oath
 
   proof_sister:
@@ -67,40 +67,40 @@ scenes:
           char: 덕만
           camera: close
           with: [천명]
-          text: "너는 내가 가짜이길 바라는 게 아니야. 진짜라면 나 때문에 네가 얻은 자리까지 흔들릴까 봐 무서운 거지."
+          text: "내가 가짜라서 무서운 게 아니지. 진짜면 네가 십 년 동안 버틴 자리가 흔들릴까 봐 무서운 거야."
       - say:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "맞아. 그리고 그 생각을 한 내가 네 언니라는 게 더 무서워."
+          text: "맞아. 네가 살아서 기쁜데, 내 자리를 먼저 걱정했어. 그런 내가 네 언니라는 게 더 무서워."
       - goto: sister_oath
 
   sister_oath:
     actions:
       - say:
           channel: narration
-          text: "천명은 문을 잠그고 궁의 세력 지도를 펼쳤습니다. 귀족들은 천명을 왕비로 세워 다른 왕을 만들 계획이었습니다."
+          text: "천명이 두 번째 빗장까지 걸었습니다. 벽장을 열자 혼인 후보와 사병 수가 빼곡한 지도가 나왔습니다. 천명의 이름에는 붉은 혼례끈이 매여 있었습니다."
       - say:
           char: 천명
           camera: medium
           with: [덕만]
-          text: "우리가 함께 나타나면 왕실은 강해질 수도, 둘로 찢어질 수도 있어. 네 자리를 어떻게 만들겠니?"
+          text: "내일 네가 내 옆에 서면 사람들은 기뻐하기 전에 우리 중 누굴 왕으로 세울지 셀 거야. 그래도 설래?"
       - choice:
           key: c3_sisters_strategy
-          prompt: "두 공주의 존재를 어떻게 정치에 사용할까요?"
+          prompt: "새벽 조회가 열린다. 두 자매는 어떤 모습으로 문을 열까?"
           char: 덕만
           camera: medium
           with: [천명]
           options:
-            - text: "두 공주가 함께 살아 있다고 공식 선언한다"
+            - text: "손을 맞잡고 두 공주로 들어선다"
               set: { sisters_public: true }
               add: { people_support: 2, cheonmyeong_trust: 1, fear: 1 }
               goto: public_sisters
-            - text: "천명은 궁 안, 덕만은 궁 밖의 세력을 맡는다"
+            - text: "천명은 궁, 덕만은 시장을 맡는다"
               set: { sisters_public: false }
               add: { insight: 1, cheonmyeong_trust: 2, nobles_support: 1 }
               goto: divided_roles
-            - text: "덕만의 귀환을 숨기고 천명의 시녀로 들어간다"
+            - text: "덕만이 시녀복을 입고 천명 뒤에 선다"
               set: { sisters_public: false, identity_mode: hidden }
               add: { evidence: 1, fear: 1 }
               goto: hidden_sister
@@ -111,12 +111,12 @@ scenes:
       - camera: wide
       - say:
           channel: narration
-          text: "두 공주가 나란히 궁 뜰에 서자 백성은 환호했습니다. 귀족들은 웃으며 무릎을 꿇었지만 그날 밤 각자 어느 공주를 지지할지 계산했습니다."
+          text: "두 공주가 나란히 계단을 내려오자 궁문 밖에서 환호가 터졌습니다. 무릎 꿇은 귀족들은 고개를 숙인 채 서로의 손가락이 어느 쪽을 향하는지 살폈습니다."
       - say:
           char: 천명
           camera: close
           with: [덕만]
-          text: "오늘 우리는 서로의 방패였어. 내일부터는 사람들이 우리를 서로의 칼로 쓰려 할 거야."
+          text: "오늘은 네 손이 따뜻했어. 내일부터는 저들이 이 손에 칼을 쥐여 주겠지."
       - goto: spring_ambush
 
   divided_roles:
@@ -124,12 +124,12 @@ scenes:
       - bg: moon_court
       - say:
           channel: narration
-          text: "천명은 회의의 말을 모으고 덕만은 시장의 소문을 모았습니다. 두 정보가 만나는 밤마다 귀족의 거짓말 하나가 드러났습니다."
+          text: "낮에는 천명이 회의의 거짓말을 적고, 덕만은 시장의 값을 외웠습니다. 밤마다 두 종이를 포개면 귀족 한 사람의 말이 어긋났습니다."
       - say:
           char: 덕만
           camera: close
           with: [천명]
-          text: "우리가 다른 곳에 서 있으니 같은 거짓말을 두 방향에서 볼 수 있어. 하지만 위험할 때 서로 늦게 도착하겠지."
+          text: "같은 거짓말을 양쪽에서 잡을 수 있어. 대신 네가 다치면… 난 늘 한발 늦겠지."
       - goto: spring_ambush
 
   hidden_sister:
@@ -137,12 +137,12 @@ scenes:
       - bg: shadow_corridor
       - say:
           channel: narration
-          text: "덕만은 천명의 그림자처럼 회의실을 드나들었습니다. 비밀은 정보를 주었지만 시녀에게 모욕을 던지는 사람들의 진짜 얼굴도 보여 주었습니다."
+          text: "시녀복을 입은 덕만 앞에서 귀족들은 말을 삼키지 않았습니다. 찻잔을 내려놓는 손보다 먼저, 숨겨 둔 멸시와 계획이 쏟아졌습니다."
       - say:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "동생을 살리려고 다시 이름을 빼앗고 있어. 이 선택이 오래가면 내가 칠숙과 무엇이 다를까."
+          text: "널 살리겠다고 또 네 이름을 숨겼어. 오래 끌면… 내가 칠숙 대신 네 기록을 쓰는 셈이야."
       - goto: spring_ambush
 
   spring_ambush:
@@ -153,40 +153,40 @@ scenes:
       - char: { id: 천명, position: center, emotion: nervous }
       - say:
           channel: narration
-          text: "봄 연회 날, 꽃바구니를 든 악사 셋이 동시에 칼을 뽑았습니다. 칠숙은 군사보다 먼저 두 공주 중 누가 보호받는지 살폈습니다."
+          text: "봄 연회의 북이 멎는 순간, 꽃바구니 세 개에서 칼이 솟았습니다. 칠숙은 칼보다 먼저 호위병들의 눈이 어느 공주를 향하는지 확인했습니다."
       - say:
           char: 칠숙.angry
           camera: medium
           with: [덕만, 천명]
-          text: "공주가 둘이면 왕실도 두 번 흔들립니다. 오늘 하나로 줄이겠습니다."
+          text: "공주가 둘이라 모두 망설이는군요. 제가 하나로 줄여 드리겠습니다."
       - choice:
           key: c3_ambush
-          prompt: "습격의 목적을 알아챈 순간, 무엇을 지시하겠습니까?"
+          prompt: "꽃잎 사이로 칼이 번뜩인다. 첫 움직임은?"
           char: 덕만
           camera: reaction
           with: [천명, 칠숙]
           options:
-            - text: "천명과 등을 맞대고 사람들 앞에서 싸운다"
+            - text: "천명과 등을 맞대고 칼을 막는다"
               add: { cheonmyeong_trust: 2, people_support: 1, army_support: 1 }
               goto: survive_together
-            - text: "칠숙을 살려 잡아 배후의 이름을 묻는다"
+            - text: "퇴로를 열어 칠숙을 회랑으로 몬다"
               add: { evidence: 2, mercy: 1, fear: 1 }
               goto: capture_order
-            - text: "지금 혼란을 이용해 바로 왕좌를 요구한다"
+            - text: "피 묻은 뜰에서 계승권을 선포한다"
               goto: bad_early_crown
 
   survive_together:
     actions:
       - say:
           channel: narration
-          text: "천명은 덕만의 왼쪽을, 덕만은 천명의 오른쪽을 지켰습니다. 습격자들은 군사가 오기 전에 물러났지만 두 사람의 연대는 온 뜰이 보았습니다."
+          text: "천명의 비녀가 칼끝을 흘렸고 덕만은 언니의 빈틈을 몸으로 막았습니다. 군사가 들이닥쳤을 때 두 사람은 같은 피를 소매에 묻힌 채 서 있었습니다."
       - goto: sisters_end
 
   capture_order:
     actions:
       - say:
           channel: narration
-          text: "덕만은 퇴로를 열어 주는 척 칠숙을 좁은 회랑으로 몰았습니다. 칠숙은 몸을 던져 빠져나갔지만 배후가 곡식 창고와 사병을 함께 가진 귀족임을 남겼습니다."
+          text: "덕만이 일부러 동문을 비우자 칠숙은 미끼를 물었습니다. 좁은 회랑에서 옷자락이 찢겼고, 그 안에서 서쪽 창고 열쇠와 사병 명부가 떨어졌습니다."
       - goto: sisters_end
 
   sisters_end:
@@ -197,10 +197,10 @@ scenes:
       - char: { id: 천명, position: right }
       - say:
           char: 천명
-          text: "습격자의 소매에서 국경 인장과 같은 밀랍이 나왔어. 우리가 살아 있다는 사실만으로는 나라가 달라지지 않아. 저 인장이 빼돌린 구휼미부터 되찾자."
+          text: "이 밀랍, 네가 국경에서 가져온 인장과 같아. 우리를 죽이는 칼도 백성이 먹을 곡식으로 샀다는 뜻이야."
       - say:
           char: 덕만
-          text: "운송표의 첫 목적지는 서쪽 왕실 창고야. 오늘 밤 나가는 첫 수레를 따라가자. 칼을 든 사람보다 칼을 먹이는 장부가 먼저야."
+          text: "서쪽 창고에서 오늘 밤 수레가 나가. 칼잡이는 달아났지만, 칼을 먹인 수레는 바퀴 자국을 남겨."
       - say:
           channel: record
           text: "두 공주는 서로를 되찾았고, 암살자의 밀랍을 국경의 곡식길과 연결했습니다. 자매의 재회는 곧 첫 공동 수사로 바뀌었습니다."
@@ -214,10 +214,10 @@ scenes:
       - char: { id: 천명, position: right, emotion: sad }
       - say:
           char: 덕만.angry
-          text: "왕실을 지키려면 지금 내 계승권을 인정해야 합니다."
+          text: "저 칼이 두려운 이유는 왕좌가 비었기 때문입니다. 지금 제 계승권을 인정하십시오."
       - say:
           channel: narration
-          text: "피가 마르기도 전에 나온 왕좌의 요구는 습격의 배후보다 자매의 야심을 더 큰 소문으로 만들었습니다."
+          text: "뜰의 피가 마르기도 전에 '왕좌'라는 말이 퍼졌습니다. 누가 칼을 보냈는지는 사라지고, 덕만이 언제부터 왕관을 노렸는지만 남았습니다."
       - say:
           char: 천명.sad
           text: "네가 옳을 수도 있어. 하지만 오늘 네 말을 지지하면 사람들은 내가 살려고 동생을 왕으로 팔았다고 믿을 거야."

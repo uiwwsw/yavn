@@ -130,6 +130,8 @@ ui:
 startScreen:
   enabled: true
   image: assets/bg/title.png
+  imagePosition: "50% 50%"
+  mobileImagePosition: "72% 50%"
   music: assets/music/intro.mp3
   showTitle: true
   titleColor: "#ffe0a3"
@@ -162,6 +164,7 @@ defaultEnding: bad_end
 - `startScreen` 객체를 선언하면 기본 활성화(`enabled: true`)됩니다.
 - `startScreen.showTitle`은 기본 `true`입니다. 타이틀 이미지에 게임명이 이미 포함된 경우 `false`로 설정하면 시각적 제목 오버레이만 숨기며 SEO 메타 제목은 유지합니다.
 - `startScreen.titleColor`는 시작 화면 게임 제목의 CSS 색상입니다. `#ffe0a3`, `rgb(...)`, `oklch(...)` 등을 사용할 수 있고, 생략하면 `ui.template`의 제목색을 유지합니다.
+- `startScreen.imagePosition`은 데스크톱 시작 이미지의 CSS `object-position`을 지정합니다. `mobileImagePosition`은 폭 768px 이하에서만 우선하며, 가로형 타이틀 원화의 인물이나 핵심 피사체가 세로 화면 크롭 밖으로 사라질 때 사용합니다. 예: `mobileImagePosition: "72% 50%"`. 모바일 값을 생략하면 `imagePosition`, 둘 다 생략하면 `center`입니다.
 - `startButtonText` 기본값은 `시작하기`, `buttonPosition` 기본값은 `auto`입니다.
 - `startScreen.music`을 지정하면 시작 화면에서만 BGM을 반복 재생하고, 시작/이어하기 시점에 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이 배경을 교체합니다.
@@ -1023,6 +1026,7 @@ public/game-list/conan/
 
 ## 14) 문서 변경 로그
 
+- 2026-08-19: Start Gate DSL에 데스크톱 `startScreen.imagePosition`과 768px 이하 전용 `startScreen.mobileImagePosition`을 추가했습니다. 두 값은 CSS `object-position`으로 적용되며 모바일 값이 없으면 데스크톱 값, 둘 다 없으면 `center`로 폴백합니다. 덕만 완결판은 **선덕여왕: 죽은 공주의 왕관** V9.0으로 제목을 개편하고 모바일 초점을 `72% 50%`로 설정했으며, 12개 챕터의 대사·내레이션·선택·장면 종결을 설명형 역사 문답에서 행동과 갈등 중심의 시대극 흐름으로 전면 개작했습니다.
 - 2026-08-18: 덕만 완결판을 V8.1로 갱신했습니다. 어린 덕만 기본·공포·결의 스프라이트를 동일 인물·복식·전신 구도의 `886×1775` RGBA PNG로 다시 제작하고 크로마키 소프트 매트와 디스필을 적용해 기존 V7 WebP의 흐림·가로 띠·사각 잔상·흰 누끼 외곽을 제거했습니다. 0장부터 11장까지는 사망 기록, 국경 인장, 곡식 장부, 당의 천문표, 빈 옥새, 위조 자백, 계승 표결, 공개 관측표, 비담의 반란, 마지막 재판이 앞 장의 증거와 선택 대가로 이어지도록 진입·종결 장면을 전수 보강했습니다. DSL 문법 변경은 없습니다.
 - 2026-08-18: 덕만 1장 수직 슬라이스를 `public/game-list/deokman/` 정식 패키지로 승격하고, 2장부터 12장까지 순차 챕터·36개 선택·11개 장면형 게임오버·10개 누적 결말을 구현했습니다. 프리뷰 폴더명과 문서명을 제거하고 런처·SEO·시작/엔딩 화면·회귀 테스트·게임 목록 경로를 완결판 기준으로 통일했습니다. DSL 문법 변경은 없습니다.
 - 2026-08-18: 스티커 충돌 회피를 다중 체크포인트 추적 방식에서 `숨김 상태 안정화 -> 최종 배치 1회 -> 픽셀 좌표 고정` 방식으로 변경했습니다. 위치 확정 전에는 입장 이펙트를 일시 정지하고, 노출 후 대사창·캐릭터·카메라 변화를 따라 재배치하지 않습니다. 모바일 주소창의 높이 변화는 무시하며 기기 회전과 큰 PC 무대 리사이즈만 디바운스 후 다시 계산합니다. DSL 문법 변경은 없습니다.

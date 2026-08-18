@@ -13,32 +13,32 @@ scenes:
       - char: { id: 천명, position: right }
       - say:
           channel: narration
-          text: "빈 옥새를 되찾기 위한 개혁이 시작된 뒤, 두 공주는 귀족 회의가 짠 동선대로 공개 구휼 순행에 나섰습니다. 지붕 위에서 날아온 화살이 천명의 어깨를 스쳤고, 암살자는 국경 인장장의 도구 자국이 남은 복제 모란패를 흘리고 달아났습니다."
+          text: "구휼 수레가 시장 모퉁이를 돌 때 지붕 기와가 한 장 미끄러졌습니다. 덕만이 고개를 들기도 전에 화살이 천명의 어깨를 꿰었습니다. 달아나는 자의 허리에서 가짜 모란패가 돌바닥에 튕겼습니다."
       - say:
           char: 천명.nervous
           camera: close
           with: [덕만]
-          text: "내가 죽으면 네가 시킨 일이 되고, 네가 잡히면 내가 왕좌를 탐낸 일이 되겠지. 화살 하나가 우리 둘의 이야기를 다 써 두었어."
+          text: "이 패를 봐… 내가 죽으면 네가 시킨 게 되고, 네가 잡히면 내가 널 모함한 게 돼. 화살 하나가 우리 둘 몫의 거짓말을 다 준비했어."
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
           camera: reaction
           with: [덕만]
-          text: "의원에게 가는 큰길은 막혔습니다. 암살자를 쫓으면 해독할 사람을 놓칠 수 있습니다."
+          text: "독입니다. 의원 길은 막혔고 놈은 북쪽 지붕으로 갑니다. 둘 다 잡을 시간은 없습니다!"
       - choice:
           key: c8_first_response
-          prompt: "천명의 독이 퍼지는 순간 무엇을 먼저 하겠습니까?"
+          prompt: "천명의 손끝이 파래진다. 덕만은 어디로 달릴까?"
           char: 덕만
           camera: reaction
           with: [유신]
           options:
-            - text: "천명을 시장 의원에게 데려가 사람들 앞에서 살린다"
+            - text: "천명을 업고 시장 의원에게 뛴다"
               add: { cheonmyeong_trust: 2, people_support: 2, evidence: -1 }
               goto: public_treatment
-            - text: "유신은 천명을 옮기고 덕만은 암살자를 추적한다"
+            - text: "천명을 유신에게 맡기고 지붕을 쫓는다"
               add: { evidence: 2, yushin_trust: 2, fear: 1 }
               goto: divided_rescue
-            - text: "비담의 비밀 의원에게 맡겨 죽었다는 소문을 낸다"
+            - text: "비담의 의원에게 숨기고 사망 종을 울린다"
               add: { bidam_trust: 2, insight: 1, fear: 1 }
               goto: false_death
 
@@ -48,12 +48,12 @@ scenes:
       - char: { id: 천명, position: right, emotion: sad }
       - say:
           channel: narration
-          text: "덕만은 천명을 업고 시장 한복판을 가로질렀습니다. 수백 명이 동생이 언니를 살리려는 모습을 보았지만 암살자의 흔적은 비에 씻겼습니다."
+          text: "덕만은 천명을 업고 사람들을 밀치며 달렸습니다. 천명의 피가 덕만의 소매를 적시는 동안 지붕 위 발자국은 빗물에 하나씩 무너졌습니다."
       - say:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "오늘 사람들은 우리를 믿을 거야. 배후는 다음 화살을 준비하겠지."
+          text: "오늘 본 사람들은 널 의심하지 못할 거야. 하지만 저 발자국은 다 지워졌어… 다음 화살은 더 가까이 올 거야."
       - goto: forged_confession
 
   divided_rescue:
@@ -61,10 +61,10 @@ scenes:
       - bg: frontier
       - say:
           channel: narration
-          text: "유신은 천명을 의원에게 옮겼고 덕만은 암살자의 발자국을 따라 버려진 초소에 도착했습니다. 그곳에는 귀족 회의의 금화와 덕만의 필체를 흉내 낸 명령서가 있었습니다."
+          text: "유신이 천명을 안고 골목으로 사라지는 동안 덕만은 지붕을 건넜습니다. 버려진 초소에는 귀족 금화와 덕만의 글씨를 흉내 낸 명령서가 바닥에 흩어져 있었습니다."
       - say:
           char: 덕만.sad
-          text: "증거는 찾았지만 천명이 눈을 뜨는 순간에 곁에 있지 못했어. 왕이 되면 이런 선택을 매일 하게 되겠지."
+          text: "잡았어야 했는데… 언니가 눈을 뜰 때 내가 없었어. 이게 왕이 하는 일이라면, 난 매일 누군가에게 늦겠지."
       - goto: forged_confession
 
   false_death:
@@ -73,15 +73,15 @@ scenes:
       - char: { id: 비담, position: right }
       - say:
           channel: narration
-          text: "비담의 의원은 천명을 살렸고 궁에는 사망 소식이 들어갔습니다. 암살을 지시한 자들은 안도하며 서로에게 축하 서신을 보냈습니다."
+          text: "비담의 의원이 문을 잠그자 궁에서는 천명의 사망 종이 울렸습니다. 그날 밤 축하주를 주문한 집마다 비담의 전령이 서신을 훔쳐 나왔습니다."
       - say:
           char: 비담
           camera: close
           with: [덕만]
-          text: "살아 있는 사람을 죽었다고 만드는 건 공주님 가족의 오래된 재주인가 봅니다. 이번에는 도움이 됐고요."
+          text: "살아 있는 공주를 죽었다고 쓰는 건 이 왕실의 가풍인가 봅니다. 이번에는 제법 쓸모가 있군요."
       - say:
           char: 덕만.angry
-          text: "한 번 더 그런 말을 하면 네 혀보다 먼저 네 의도를 의심하겠다."
+          text: "한 번만 더 웃으면 네 혀가 아니라 네가 왜 도왔는지부터 베어 볼 거야."
       - goto: forged_confession
 
   forged_confession:
@@ -91,27 +91,27 @@ scenes:
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
           channel: narration
-          text: "이튿날 귀족 회의는 덕만이 계승권을 얻으려고 천명을 제거했다는 자백문을 공개했습니다. 어린 덕만의 사망 기록처럼 사건보다 먼저 완성된 문서였고, 서명자는 이미 죽은 하급 군관이었습니다."
+          text: "이튿날 조회상에 자백문이 펼쳐졌습니다. 천명이 쓰러지기 전부터 말라 있던 먹, 이미 죽은 군관의 서명. 어린 덕만의 사망 기록과 같은 냄새가 났습니다."
       - say:
           char: 춘추.nervous
           camera: close
           with: [덕만]
-          text: "어머니가 살아 계셔도 모습을 드러내면 내전이 시작됩니다. 죽었다고 하면 공주님이 범인으로 남습니다."
+          text: "어머니가 걸어 나오시면 군대가 둘로 갈립니다. 계속 죽어 계시면 이 문서가 공주님 목을 조릅니다."
       - choice:
           key: c8_public_story
-          prompt: "천명의 생사와 자백문을 어떻게 발표하겠습니까?"
+          prompt: "조회장 밖에서 천명의 숨소리가 들린다. 문을 열까, 거짓을 더 끌고 갈까?"
           char: 덕만
           camera: medium
           with: [춘추]
           options:
-            - text: "천명을 직접 회의에 세워 자백문을 반박하게 한다"
+            - text: "천명의 손을 잡고 회의장에 들어간다"
               when: { var: sisters_public, op: eq, value: true }
               add: { nobles_support: 1, people_support: 2, cheonmyeong_trust: 1 }
               goto: sister_testimony
-            - text: "천명은 치료 중이라 밝히고 위조 증거만 공개한다"
+            - text: "문은 닫고 위조된 획만 공개한다"
               add: { evidence: 2, chunchu_trust: 1 }
               goto: evidence_only
-            - text: "사망 발표를 유지해 배후가 움직일 때까지 기다린다"
+            - text: "장례 종을 계속 울려 배후를 낚는다"
               add: { evidence: 2, fear: 2, cheonmyeong_trust: -1 }
               goto: keep_death_story
 
@@ -123,30 +123,30 @@ scenes:
           char: 천명.sad
           camera: medium
           with: [덕만]
-          text: "나를 죽이려 한 사람은 덕만이 아닙니다. 그러나 오늘부터 제 목숨을 덕만의 결백을 증명하는 도구로 쓰지도 마십시오."
+          text: "저를 죽이려 한 사람은 덕만이 아닙니다. 하지만 제 상처를 덕만의 무죄 도장으로도 쓰지 마십시오. 저는 증거물이 아닙니다."
       - say:
           channel: narration
-          text: "자백문은 무너졌지만 천명은 살아 있는 한 매번 덕만의 정당성을 증명하라는 요구를 받게 되었습니다."
+          text: "천명이 살아 걸어오자 자백문은 찢겼습니다. 그러나 질문은 곧 바뀌었습니다. '천명 공주도 덕만을 왕으로 인정합니까?' 모두가 같은 답만 기다렸습니다."
       - goto: sister_decision
 
   evidence_only:
     actions:
       - say:
           channel: narration
-          text: "필체의 틀린 획과 죽은 군관의 날짜가 공개되자 자백문은 위조로 판명됐습니다. 천명의 침묵은 안전을 지켰지만 사람들은 침묵 속에 각자 다른 생사를 채웠습니다."
+          text: "덕만은 틀린 획과 죽은 군관의 날짜를 하나씩 읽었습니다. 종이는 거짓으로 판명됐지만 닫힌 문 뒤 천명의 침묵에는 저마다 원하는 생사가 붙었습니다."
       - goto: sister_decision
 
   keep_death_story:
     actions:
       - say:
           channel: narration
-          text: "천명의 장례가 준비되는 동안 배후의 서신 다섯 통이 잡혔습니다. 천명은 관 뒤 숨은 방에서 자신의 장례 절차를 들었습니다."
+          text: "빈 관에 비단이 덮이는 동안 축하 서신 다섯 통이 잡혔습니다. 벽 하나 너머에서 천명은 자기 장례를 준비하는 못질을 끝까지 들었습니다."
       - char: { id: 천명, position: right, emotion: sad }
       - say:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "증거를 얻었구나. 그런데 사람들이 내 이름으로 우는 동안 나는 살아 있다고 말할 수 없었어. 살아남은 대가가 내 삶을 잃는 일이라면 얼마나 오래 견딜까."
+          text: "원하던 편지는 얻었네. 그런데 밖에서 내 이름을 부르며 우는데 나는 대답도 못 했어. 이렇게 살아서… 얼마나 오래 나일 수 있을까?"
       - goto: sister_decision
 
   sister_decision:
@@ -157,23 +157,23 @@ scenes:
       - char: { id: 천명, position: right, emotion: sad }
       - say:
           char: 천명.sad
-          text: "내가 궁에 남으면 그들은 계속 나를 네 대안으로 세울 거야. 내가 떠나면 네가 나를 버렸다고 하겠지. 이번 선택은 내가 하고 싶어."
+          text: "궁에 남으면 평생 네 반대편 의자에 앉힐 거야. 떠나면 네가 날 버렸다고 하겠지. 그래도 이번 길은 내가 고를래. 내 목숨이니까."
       - choice:
           key: c8_cheonmyeong_fate
-          prompt: "천명의 선택에 어떻게 답하겠습니까?"
+          prompt: "천명이 처음으로 자기 길을 묻는다. 덕만은 손을 놓을 수 있을까?"
           char: 덕만
           camera: close
           with: [천명]
           options:
-            - text: "천명을 국경으로 보내 독자적인 구휼 조직을 맡긴다"
+            - text: "국경 구휼소의 열쇠를 천명에게 준다"
               set: { cheonmyeong_outcome: exile }
               add: { cheonmyeong_trust: 2, people_support: 1, nobles_support: -1 }
               goto: living_exile
-            - text: "궁 안 비밀방에 살아 있게 하고 죽음을 유지한다"
+            - text: "비밀방 문을 열고 궁 안에 숨긴다"
               set: { cheonmyeong_outcome: hidden_alive }
               add: { evidence: 1, fear: 2, chunchu_trust: -1 }
               goto: hidden_alive
-            - text: "덕만이 모든 죄를 인정하고 천명 대신 처형대에 선다"
+            - text: "자백문에 덕만의 진짜 서명을 한다"
               goto: bad_self_sacrifice
 
   living_exile:
@@ -182,12 +182,12 @@ scenes:
       - camera: wide
       - say:
           channel: narration
-          text: "천명은 왕실 이름을 내려놓고 국경의 구휼소로 떠났습니다. 추방처럼 보였지만 처음으로 누구의 대안도 아닌 자신의 일을 가졌습니다."
+          text: "천명은 왕실 비녀를 탁자에 두고 구휼소 열쇠를 목에 걸었습니다. 성문 밖에서는 추방이라 수군댔지만 마차의 행선지는 천명이 직접 적었습니다."
       - say:
           char: 천명
           camera: close
           with: [덕만]
-          text: "사람들은 네가 나를 버렸다고 할 거야. 우리가 아니라고 아는 것으로 견디자."
+          text: "사람들은 네가 날 버렸다고 할 거야. 화나면 편지해. 나도 네가 밉다고 답할게. 그래야 자매 같잖아."
       - goto: abandoned_end
 
   hidden_alive:
@@ -195,12 +195,12 @@ scenes:
       - bg: locked_room
       - say:
           channel: narration
-          text: "천명은 궁 안에서 살아남았습니다. 덕만은 매일 밤 조언을 들을 수 있었지만, 천명은 햇빛 아래 자기 이름으로 한 걸음도 걸을 수 없었습니다."
+          text: "밤이면 비밀문이 열리고 천명이 촛불 아래로 나왔습니다. 덕만은 언니의 조언을 들었지만, 해가 뜨면 천명은 발소리조차 숨겨야 했습니다."
       - say:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "네 곁에 남는 것이 해피엔딩 같았어. 그런데 나는 네 곁에만 존재하는 사람이 되었구나."
+          text: "네 곁에 있으면 끝난 줄 알았어. 그런데 이제 나는 네가 문을 열어 줄 때만 살아 있구나."
       - goto: abandoned_end
 
   abandoned_end:
@@ -210,13 +210,13 @@ scenes:
       - char: { id: 덕만, position: left, emotion: sad }
       - say:
           channel: narration
-          text: "덕만은 천명을 살리기 위해 천명과 함께할 미래 하나를 버렸습니다. 왕이 된다는 것은 사람을 버리는 일이 아니라, 어떤 삶을 남길지 대신 결정하지 않는 법을 배우는 일이었습니다."
+          text: "마차가 성문을 나가거나 비밀문이 닫힌 뒤, 덕만의 곁에는 천명이 쓰던 찻잔 하나만 남았습니다. 덕만은 손을 뻗었다가 끝내 잔을 치우지 못했습니다."
       - say:
           char: 덕만.sad
-          text: "언니를 버린 것이 아니다. 함께 왕실에 남을 수 있다는 내 욕심을 버린 거야."
+          text: "언니를 놓은 게 아니야. 언니까지 내 곁에 묶어 두고 싶었던 나를 놓은 거야."
       - say:
           channel: record
-          text: "천명의 자리는 비었습니다. 그 빈자리는 곧 왕위를 둘러싼 모든 세력이 차지하려는 장소가 되었습니다. 같은 밤 진평왕의 병세가 급해졌고, 귀족 회의는 위조 자백이 굳기 전에 새벽 계승 표결을 열겠다고 통보했습니다."
+          text: "그날 밤 천명의 빈 의자에 세 가문의 표식이 번갈아 놓였습니다. 곧이어 진평왕의 처소에서 다급한 종이 울렸고, 귀족 회의는 새벽에 왕을 고르겠다는 문서를 문틈으로 밀어 넣었습니다."
       - goto: /8.yaml
 
   bad_self_sacrifice:

@@ -13,17 +13,17 @@ scenes:
       - char: { id: 덕만, position: left }
       - say:
           channel: narration
-          text: "천명의 빈자리와 위조 자백을 둘러싼 소문이 가라앉기도 전, 진평왕이 마지막 숨을 쉬었습니다. 귀족 회의는 문서가 진실처럼 굳기 전에 새벽 계승 표결을 열겠다고 알렸고, 성문과 군량 창고를 장악하려는 사병도 함께 움직였습니다."
+          text: "진평왕의 숨이 멎자마자 왕좌 뒤의 발소리들이 빨라졌습니다. 상복도 갖추기 전, 새벽 표결을 알리는 북이 울렸습니다. 성문과 군량 창고 쪽에서는 귀족 사병의 횃불이 움직였습니다."
       - say:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "내가 너를 왕으로 지명하면 저들은 여자가 아니라 내 독단을 반대한다고 할 것이다. 네가 얻은 사람과 기록으로 왕좌까지 와라."
+          text: "내가 널 지명하면 저들은 여인을 막는 게 아니라 폭군의 유언을 막는다고 할 게다. 내 말에 업혀 오지 마라. 네가 얻은 사람들과 걸어와."
       - say:
           char: 덕만
           camera: close
           with: [진평왕]
-          text: "전하의 유언을 빌리지 않겠습니다. 대신 전하의 실패까지 제가 이어받았다는 사실은 숨기지 않겠습니다."
+          text: "아버지의 마지막 말을 왕관값으로 쓰지 않겠습니다. 대신 아버지가 잃은 것까지 제 몫으로 들고 가겠습니다."
       - goto: vote_strategy
 
   vote_strategy:
@@ -35,27 +35,27 @@ scenes:
           char: 춘추
           camera: medium
           with: [덕만]
-          text: "표결장에 가져갈 수 있는 것은 하나입니다. 증거가 많으면 귀족을 꺾고, 사람이 많으면 회의를 압박하지만 둘 다 반역의 구실이 됩니다."
+          text: "회의장 문이 곧 닫힙니다. 장부 상자는 무겁고, 궁 밖 사람들은 더 많고, 유신의 군사는 눈에 너무 잘 띕니다. 하나만 앞에 세우셔야 합니다."
       - choice:
           key: c9_vote_strategy
-          prompt: "새 왕을 정하는 회의에 무엇을 앞세우겠습니까?"
+          prompt: "새벽 문이 열린다. 덕만보다 먼저 무엇이 들어갈까?"
           char: 덕만
           camera: medium
           with: [춘추]
           options:
-            - text: "위조 기록과 곡식 장부를 공개해 반대파의 자격을 묻는다"
+            - text: "위조 기록과 곡식 장부를 상 위에 쏟는다"
               when: { var: evidence, op: gte, value: 5 }
               add: { nobles_support: 2, fear: 1 }
               goto: evidence_vote
-            - text: "시장과 마을 대표를 궁 밖 증인으로 세운다"
+            - text: "마을 대표들의 이름을 궁문에서 부른다"
               when: { var: people_support, op: gte, value: 5 }
               add: { people_support: 2, nobles_support: -1 }
               goto: people_vote
-            - text: "유신의 방위군으로 표결장의 안전을 보장한다"
+            - text: "유신의 군사에게 칼집을 봉하게 한다"
               when: { var: army_support, op: gte, value: 4 }
               add: { army_support: 2, fear: 2 }
               goto: guarded_vote
-            - text: "반대 귀족에게 임기 제한이 있는 국정회의를 약속한다"
+            - text: "왕이 되어도 회의를 닫지 않겠다고 서명한다"
               add: { nobles_support: 2, insight: 1 }
               goto: negotiated_vote
 
@@ -65,10 +65,10 @@ scenes:
       - say:
           char: 덕만
           camera: medium
-          text: "저를 반대할 권리는 있습니다. 그러나 백성의 곡식을 훔치고 왕명을 위조한 손으로 다음 왕을 고를 권리는 없습니다."
+          text: "저를 반대하십시오. 대신 이 장부에 찍힌 손은 먼저 탁자에서 떼십시오. 굶긴 손으로 왕을 고르게 두진 않겠습니다."
       - say:
           channel: narration
-          text: "회의 절반이 침묵했습니다. 침묵은 찬성이 아니었지만 공개적으로 반대할 얼굴도 빼앗았습니다."
+          text: "장부가 바닥을 미끄러지자 몇몇 귀족이 손을 소매 안으로 감췄습니다. 찬성은 아니었지만 누구도 먼저 반대표를 들지 못했습니다."
       - clearSticker: { id: c9_ledger, leave: fadeOut }
       - goto: coup_begins
 
@@ -76,10 +76,10 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "궁 밖에는 덕만의 이름이 아니라 공개 장부와 공동 창고를 지키려는 사람들이 모였습니다. 귀족들은 군중을 폭도라 불렀지만 그들의 마을 이름이 하나씩 호명됐습니다."
+          text: "궁문 밖에서 마을 이름이 하나씩 불렸습니다. 사람들은 덕만 만세 대신 자기 창고와 죽은 가족의 이름을 외쳤습니다. 귀족이 '폭도'라 부를 때마다 새로운 마을이 대답했습니다."
       - say:
           char: 덕만
-          text: "왕을 고르는 표는 안에 있지만, 그 왕의 결정을 견딜 사람은 밖에 있습니다. 두 목소리를 함께 기록하십시오."
+          text: "표는 이 방 안에 있습니다. 하지만 그 표 때문에 굶고 싸울 사람은 밖에 있습니다. 문을 닫더라도 저 이름들은 적으십시오."
       - goto: coup_begins
 
   guarded_vote:
@@ -87,19 +87,19 @@ scenes:
       - char: { id: 유신, position: right }
       - say:
           channel: narration
-          text: "유신의 군사는 칼집을 봉한 채 회의장을 둘러쌌습니다. 안전은 지켜졌지만 반대표를 던진 이들은 칼 아래 나온 왕이라고 오래 말할 수 있었습니다."
+          text: "병사들은 칼집을 밧줄로 묶고 회의장에 섰습니다. 칼은 나오지 않았지만 귀족들의 눈은 투표 항아리보다 병사 수를 더 오래 셌습니다."
       - say:
           char: 유신
           camera: close
           with: [덕만]
-          text: "칼을 뽑지 않았다는 사실보다 칼이 있었다는 사실이 더 오래 남을 겁니다."
+          text: "오늘 칼은 안 뽑힙니다. 그래도 반대표를 든 자들은 평생 칼을 봤다고 말할 겁니다."
       - goto: coup_begins
 
   negotiated_vote:
     actions:
       - say:
           channel: narration
-          text: "덕만은 왕이 된 뒤에도 공개 국정회의를 폐지하지 않겠다고 서약했습니다. 표는 모였지만 왕관에는 첫날부터 다른 사람들의 조건이 묶였습니다."
+          text: "덕만이 공개 회의를 닫지 않겠다고 피로 서명하자 흩어진 표가 돌아왔습니다. 왕관을 보기도 전에 첫 매듭이 그 안쪽에 묶였습니다."
       - goto: coup_begins
 
   coup_begins:
@@ -110,37 +110,37 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           channel: narration
-          text: "첫 표가 항아리에 들어간 순간 서문에서 불이 올랐습니다. 반대파 사병이 왕실 인장을 훔쳐 덕만 체포 명령을 내렸습니다."
+          text: "첫 표가 항아리 바닥에 닿는 소리와 동시에 서문에서 불기둥이 올랐습니다. 위조 왕명을 든 병사들이 덕만의 이름을 외치며 회의장으로 달려왔습니다."
       - say:
           char: 유신.angry
           camera: reaction
           with: [덕만]
-          text: "서문을 되찾으면 회의장이 비고, 회의를 지키면 시장 쪽 불길이 번집니다."
+          text: "서문으로 가면 이 방이 비고, 여기 남으면 불이 시장까지 갑니다. 둘 다 지킬 병력은 없습니다!"
       - choice:
           key: c9_coup_response
-          prompt: "표결 중 시작된 쿠데타에 어떻게 대응하겠습니까?"
+          prompt: "표결 항아리와 불붙은 시장 사이, 누구를 어디로 보낼까?"
           char: 덕만
           camera: reaction
           with: [유신]
           options:
-            - text: "유신은 서문을, 덕만은 회의장을 지킨다"
+            - text: "유신을 서문으로 보내고 항아리 곁에 남는다"
               add: { yushin_trust: 2, army_support: 1, nobles_support: 1 }
               goto: split_defense
-            - text: "회의를 중단하고 모두 함께 시장의 불부터 끈다"
+            - text: "항아리를 버리고 전부 시장으로 달린다"
               add: { people_support: 3, nobles_support: -1, mercy: 1 }
               goto: save_market
-            - text: "훔친 왕명을 역이용해 반란 지휘부를 가짜 집결지로 부른다"
+            - text: "위조 왕명으로 반란군을 빈 창고에 모은다"
               when: { var: insight, op: gte, value: 4 }
               add: { evidence: 2, fear: 2, bidam_trust: 1 }
               goto: false_order
-            - text: "혼자 왕좌에 앉아 누구의 명령이 진짜인지 선포한다"
+            - text: "홀로 왕좌에 앉아 진짜 왕명을 외친다"
               goto: bad_lonely_throne
 
   split_defense:
     actions:
       - say:
           channel: narration
-          text: "유신은 서문의 인장을 되찾았고 덕만은 불길 속에서도 표결 항아리를 지켰습니다. 서로 떨어진 선택은 위험했지만 두 사람은 각자의 책임을 끝까지 수행했습니다."
+          text: "유신의 말발굽이 서문으로 사라졌습니다. 덕만은 연기가 들어오는 회의장에서 항아리를 끌어안았습니다. 새벽 직전, 피 묻은 유신이 진짜 인장을 던져 넣었습니다."
       - goto: final_ballot
 
   save_market:
@@ -148,7 +148,7 @@ scenes:
       - bg: village
       - say:
           channel: narration
-          text: "덕만이 회의를 버리고 물동이를 들자 귀족과 백성이 같은 줄에 섰습니다. 왕을 정하는 표는 흩어졌지만, 누가 먼저 나라를 지켰는지는 모두 보았습니다."
+          text: "덕만이 항아리를 놓고 물동이를 들었습니다. 종이를 쥐던 귀족 손과 장터 사람의 손이 같은 줄에서 물을 넘겼습니다. 표는 바닥에 흩어졌지만 불길은 시장 앞에서 멈췄습니다."
       - goto: final_ballot
 
   false_order:
@@ -156,7 +156,7 @@ scenes:
       - bg: shadow_corridor
       - say:
           channel: narration
-          text: "위조 인장으로 만든 두 번째 명령이 반란 지휘부를 빈 창고로 모았습니다. 전투는 짧았지만 덕만도 거짓 왕명을 무기로 썼다는 기록이 남았습니다."
+          text: "덕만이 위조 인장을 다시 눌렀습니다. 반란 지휘부는 빈 창고에서 서로를 발견했고, 싸움은 짧게 끝났습니다. 젖은 인주가 덕만 손에서도 마르고 있었습니다."
       - goto: final_ballot
 
   final_ballot:
@@ -165,29 +165,29 @@ scenes:
       - camera: wide
       - say:
           channel: narration
-          text: "동이 틀 무렵 표결은 다시 시작됐습니다. 덕만의 승리는 가능했지만 마지막 표들은 반드시 하나의 약속을 요구했습니다."
+          text: "동이 틀 무렵 금 간 항아리가 다시 세워졌습니다. 마지막 세 표는 접히지 않은 채 춘추의 손에 남아 있었습니다."
       - char: { id: 춘추, position: right }
       - say:
           char: 춘추
           camera: close
           with: [덕만]
-          text: "조건 없는 왕관은 없습니다. 어떤 빚을 공개적으로 선택하실 겁니까?"
+          text: "이 세 표는 약속 없이는 움직이지 않습니다. 몰래 빚지지 마십시오. 무엇을 내줄지 여기서 말하십시오."
       - choice:
           key: c9_crown_terms
-          prompt: "왕관을 얻기 위해 어떤 조건을 받아들이겠습니까?"
+          prompt: "왕관까지 세 표. 어떤 약속을 왕관 안쪽에 새길까?"
           char: 덕만
           camera: close
           with: [춘추]
           options:
-            - text: "귀족 회의의 군량 감사권을 인정한다"
+            - text: "귀족 회의에 군량 장부를 맡긴다"
               set: { coronation_compromise: nobles_audit }
               add: { nobles_support: 3, army_support: -1 }
               goto: coronation
-            - text: "유신의 군대를 왕실 직속으로 두되 해마다 지휘권을 심사한다"
+            - text: "유신의 지휘패를 해마다 다시 심사한다"
               set: { coronation_compromise: reviewed_army }
               add: { army_support: 2, yushin_trust: 1, nobles_support: -1 }
               goto: coronation
-            - text: "시장·마을 대표가 참여하는 공개 회의를 왕위 조건으로 쓴다"
+            - text: "시장과 마을 자리를 회의장에 비워 둔다"
               set: { coronation_compromise: public_council }
               add: { people_support: 2, nobles_support: -2, insight: 1 }
               goto: coronation
@@ -203,14 +203,14 @@ scenes:
       - char: { id: 덕만, position: center }
       - say:
           channel: narration
-          text: "왕관이 머리에 놓였을 때 덕만은 승리보다 무게를 먼저 느꼈습니다. 왕좌까지 데려온 모든 선택이 이제 국가의 습관이 될 차례였습니다."
+          text: "왕관이 머리에 닿자 덕만의 무릎이 아주 조금 꺾였습니다. 밤새 묻은 재와 피가 예복 안쪽에 그대로 남아 있었습니다."
       - say:
           char: 덕만
           camera: close
-          text: "오늘부터 내 말이 옳아서 명령이 되는 것이 아니다. 명령이 되었기에 더 많이 의심받아야 한다."
+          text: "오늘부터 내 말은 옳아서 명령이 되는 게 아니다. 명령이 된 순간부터 더 크게 의심받아야 한다."
       - say:
           channel: narration
-          text: "덕만의 첫 명령은 자신을 왕으로 만든 표와 빚을 모두 기록하라는 것이었습니다. 두 번째는 일식과 거짓 인장에 흔들리지 않도록, 하늘과 곡식의 변화를 누구나 확인할 관측대를 검토하라는 것이었습니다."
+          text: "덕만은 왕관을 고쳐 쓰기도 전에 첫 명령을 내렸습니다. '오늘 나를 만든 표와 약속을 한 글자도 빼지 말라.' 이어 불탄 시장 너머 하늘을 보며 두 번째 명령을 불렀습니다. '다음 어둠은 누구나 미리 보게 하라.'"
       - say:
           channel: record
           text: "덕만은 여왕이 되었습니다. 이야기는 왕관을 얻는 데서 끝나지 않고, 즉위의 조건을 지키면서 무엇을 먼저 만들지 묻기 시작했습니다."
