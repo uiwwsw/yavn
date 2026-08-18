@@ -63,6 +63,13 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(chapter.data).toBeDefined();
     if (!config.data || !base.data || !chapter.data) return;
 
+    expect(config.data.data.version).toBe('8.0.0-preview.2');
+    expect(config.data.data.startScreen?.image).toBe(
+      'root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp',
+    );
+    expect(config.data.data.endingScreen?.image).toBe(
+      'root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp',
+    );
     expect(resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data }).error)
       .toBeUndefined();
   });
@@ -171,7 +178,8 @@ describe('Deokman V8 chapter-one vertical slice', () => {
 
   it('ships aligned transparent child sprites and every referenced root asset', () => {
     const base = readYaml('base.yaml');
-    const assetPaths = collectStrings(base).filter((path) => path.startsWith('root:/'));
+    const config = readYaml('config.yaml');
+    const assetPaths = collectStrings([base, config]).filter((path) => path.startsWith('root:/'));
 
     assetPaths.forEach((path) => {
       expect(existsSync(`${publicRoot}${path.slice('root:/'.length)}`), path).toBe(true);

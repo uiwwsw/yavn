@@ -1,7 +1,7 @@
 title: "덕만: 별은 왕을 선택하지 않는다"
 author:
   name: "uiwwsw"
-version: "8.0.0-preview.1"
+version: "8.0.0-preview.2"
 seo:
   description: "살아 있는 공주의 죽음이 먼저 기록된 밤. 어린 덕만이 모란 그림과 불타는 별궁에서 자기 이름을 지키는 선덕여왕 비주얼노벨 v8 수직 슬라이스."
   keywords:
@@ -19,13 +19,13 @@ ui:
   template: paper-stage
 startScreen:
   enabled: true
-  image: "/game-list/deokman/assets/bg/peony-court-silla-v1.webp"
+  image: "root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp"
   showTitle: true
   titleColor: "#f1d49a"
   startButtonText: "첫 장 시작"
   buttonPosition: bottom-left
 endingScreen:
-  image: "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
+  image: "root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
 endings:
   hidden_name:
     title: "CHAPTER END — 공주는 죽고, 덕만은 살았습니다"

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-18T02:09:26.645Z",
+  "generatedAt": "2026-08-18T03:32:07.277Z",
   "games": [
     {
       "id": "deokman-v8-preview",
       "name": "덕만: 별은 왕을 선택하지 않는다",
       "path": "/game-list/deokman-v8-preview/",
       "author": "uiwwsw",
-      "version": "8.0.0-preview.1",
+      "version": "8.0.0-preview.2",
       "summary": "덕만 v8의 첫 완성 장면. 살아 있는 공주의 죽음이 먼저 기록된 날, 어린 덕만은 향기 없는 모란 그림과 불타는 별궁 사이에서 자기 이름을 지켜야 합니다.",
       "thumbnail": "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp",
       "tags": [
