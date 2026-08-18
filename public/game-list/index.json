@@ -1,14 +1,14 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-18T06:14:01.246Z",
+  "generatedAt": "2026-08-18T07:16:11.808Z",
   "games": [
     {
       "id": "deokman-v8-preview",
       "name": "덕만: 별은 왕을 선택하지 않는다",
       "path": "/game-list/deokman-v8-preview/",
       "author": "uiwwsw",
-      "version": "8.0.0-preview.5",
-      "summary": "덕만 v8의 첫 완성 장면. 살아 있는 공주의 죽음이 먼저 기록된 날, 어린 덕만은 향기 없는 모란 그림과 불타는 별궁 사이에서 자기 이름을 지켜야 합니다.",
+      "version": "8.0.0-preview.7",
+      "summary": "덕만 v8의 첫 완성 장면. 왕실 족보에는 죽었다고 적힌 어린 덕만이 자기 사망 기록의 진실을 밝히고 불타는 별궁에서 탈출해야 합니다.",
       "thumbnail": "/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
         "historical-fiction",
@@ -32,7 +32,7 @@
       "chapterCount": 1,
       "seo": {
         "title": "덕만: 별은 왕을 선택하지 않는다",
-        "description": "살아 있는 공주의 죽음이 먼저 기록된 밤. 어린 덕만이 모란 그림과 불타는 별궁에서 자기 이름을 지키는 선덕여왕 비주얼노벨 v8 수직 슬라이스.",
+        "description": "왕실 족보에는 죽었다고 적힌 어린 덕만이 자기 사망 기록의 진실을 밝히고 불타는 별궁에서 탈출하는 선덕여왕 비주얼노벨 v8 수직 슬라이스.",
         "keywords": [
           "선덕여왕",
           "덕만",

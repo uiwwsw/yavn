@@ -6,48 +6,55 @@ scenes:
     actions:
       - bg: peony_court
       - camera: wide
+      - sticker:
+          id: opening_death_register
+          image: death_register_sticker
+          x: 50
+          y: 28
+          width: "clamp(210px, 28%, 420px)"
+          anchorX: center
+          anchorY: center
+          rotate: -1
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
       - say:
           channel: record
           delivery: calm
-          wait: 900
+          wait: 600
           unskippable: true
-          text: "왕실 묘적부 — 둘째 공주 덕만. 봄 열병으로 죽음. 시신은 전염을 막기 위해 즉시 화장함."
-      - effect: { name: inkstamp, wait: true }
-      - say:
-          channel: system
-          delivery: deduction
-          text: "[기록 완료] 죽은 사람은 왕위를 요구할 수 없습니다."
-      - wait: 700
-      - char: { id: 어린 덕만, position: left }
-      - char: { id: 소화, position: right }
+          text: "왕실 족보 — 둘째 공주 덕만. 사망: 오늘 밤."
       - say:
           channel: narration
-          camera: medium
           delivery: calm
-          text: "하지만 기록이 찍힌 그 시각, 덕만은 살아서 별궁의 찬 돌바닥을 밟고 있었습니다."
+          text: "누군가 덕만을 죽이기도 전에 사망 기록부터 만들어 두었습니다."
+      - clearSticker:
+          id: opening_death_register
+          leave: fadeOut
+      - char: { id: 어린 덕만, position: left }
+      - char: { id: 소화, position: right }
       - say:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "아기씨, 오늘은 묻지 말고 고개만 숙이셔야 합니다. 전하께서 무엇을 보여도요."
+          text: "전하께서 몰래 부르셨습니다. 사람들이 눈치채기 전에 돌아가야 합니다."
       - say:
           char: 어린 덕만
           camera: close
           with: [소화]
-          text: "묻지 말라는 말은 대개, 누군가 대답을 숨기고 있다는 뜻이잖아."
+          text: "나를 찾는 사람이 궁 안에 있어?"
       - say:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "오늘만큼은 영리한 아이보다 오래 사는 아이가 되어 주세요."
+          text: "네. 그러니 제 곁에서 떨어지지 마세요."
       - goto: peony_arrives
 
   peony_arrives:
     actions:
-      - char: { id: 진평왕, position: center }
       - say:
           channel: narration
-          text: "진평왕은 호위도 시종도 물리고, 당나라 황제가 보냈다는 모란 그림 한 축을 펼쳤습니다."
+          text: "덕만을 부른 사람은 진평왕이었습니다. 왕은 시종들을 물리고 호위 둘만 문밖에 남긴 뒤, 당나라 황제가 보낸 모란 그림을 펼쳤습니다."
       - sticker:
           id: peony_painting_view
           image: peony_painting_sticker
@@ -58,28 +65,15 @@ scenes:
           anchorY: center
           rotate: -1.5
           zIndex: 12
-          enter: wipeCenterY
-          inputLockMs: 550
+          enter: fadeIn
+          inputLockMs: 320
       - get: peony_painting
+      - char: { id: 진평왕, position: center }
       - say:
           char: 진평왕
           camera: medium
           with: [어린 덕만]
-          text: "덕만아, 이 그림을 보고 네가 아는 것을 말해 보아라."
-      - say:
-          char: 어린 덕만
-          camera: close
-          with: [진평왕]
-          text: "제가 무엇을 아는지 보시려는 겁니까, 무엇을 모르는지 보시려는 겁니까?"
-      - say:
-          char: 진평왕
-          camera: close
-          with: [어린 덕만]
-          text: "그 둘을 가르는 눈이 있는지 보려 한다."
-      - say:
-          channel: system
-          delivery: deduction
-          text: "[관찰] 선택한 단서는 이후의 대답과 탈출로를 바꿉니다."
+          text: "덕만아, 이 그림에서 이상한 점을 찾아보아라."
       - choice:
           key: c1_peony_observation
           prompt: "모란 그림에서 무엇을 먼저 살피겠습니까?"
@@ -88,52 +82,40 @@ scenes:
           with: [진평왕]
           options:
             - text: "그림에 없는 것을 찾는다"
-              set: { observed_left_waterway: true }
-              add: { insight: 2 }
               goto: observe_absence
             - text: "그림 뒤와 족자 축을 살핀다"
-              set: { found_back_seal: true }
-              add: { suspicion: 2 }
               goto: observe_back
-            - text: "그림보다 방과 바깥 물길을 살핀다"
+            - text: "그림보다 방 안의 사람들과 바깥길을 살핀다"
               set: { observed_left_waterway: true }
-              add: { insight: 1 }
               goto: observe_waterway
-            - text: "꽃송이와 꽃잎 수를 정확히 센다"
-              add: { insight: 1 }
-              goto: observe_count
-            - text: "황제의 그림을 손으로 문질러 향을 확인한다"
-              goto: bad_touch_gift
 
   observe_absence:
     actions:
-      - effect: focus
       - say:
           char: 어린 덕만.resolve
           camera: close
           with: [진평왕]
-          text: "꽃은 스물한 송이인데, 벌도 나비도 한 마리 없습니다."
-      - say:
-          channel: narration
-          text: "덕만은 그려진 꽃이 아니라 비어 있는 꽃 사이를 오래 바라보았습니다. 그 시선 끝에 왼쪽 담 아래 비어 있는 배수 틈도 들어왔습니다."
+          text: "꽃은 많은데 벌과 나비가 한 마리도 없습니다."
       - say:
           char: 진평왕
           camera: close
           with: [어린 덕만]
-          text: "없는 것은 눈에 잡히지 않는데, 어찌 세었느냐?"
+          text: "왜 그게 이상하지?"
       - say:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "있어야 할 자리를 알면, 빈자리도 셀 수 있습니다."
+          text: "꽃에 향기가 있다면 벌이나 나비가 찾아왔을 테니까요."
       - goto: king_question
 
   observe_back:
     actions:
-      - effect: focus
+      - clearSticker:
+          id: peony_painting_view
+          leave: fadeOut
       - say:
           channel: narration
-          text: "덕만이 족자의 아래 축을 들자, 새 종이 냄새와 함께 반쯤 마른 붉은 인장이 드러났습니다."
+          text: "덕만은 족자 아래쪽 나무축이 제대로 닫히지 않은 것을 발견했습니다. 축을 열자 접힌 문서와 반쯤 마른 붉은 도장 자국이 드러났습니다."
       - sticker:
           id: death_register_view
           image: death_register_sticker
@@ -144,23 +126,18 @@ scenes:
           anchorY: center
           rotate: 2
           zIndex: 14
-          enter: slideUp
-          inputLockMs: 500
+          enter: fadeIn
+          inputLockMs: 320
       - get: death_register
-      - effect: { name: inkstamp, wait: true }
       - say:
           channel: record
           delivery: deduction
-          text: "둘째 공주 덕만 — 봄 열병으로 죽음. 아직 오지 않은 내일의 날짜가 적혀 있었습니다."
-      - say:
-          channel: system
-          delivery: deduction
-          text: "[금지된 기록 획득] 살아 있는 사람의 죽음이 먼저 작성되었습니다."
+          text: "왕실 족보 — 둘째 공주 덕만. 사망: 오늘 밤. 왕명에 따라 즉시 화장."
       - say:
           char: 어린 덕만.scared
           camera: close
           with: [진평왕]
-          text: "전하. 이 종이에서 죽은 아이가…… 저와 이름이 같습니다."
+          text: "전하, 제가 오늘 밤 죽는다고 적혀 있습니다. 전하의 도장도 있습니다."
       - clearSticker:
           id: death_register_view
           leave: fadeOut
@@ -171,79 +148,23 @@ scenes:
       - camera: wide
       - say:
           channel: narration
-          text: "덕만은 그림보다 그것을 지키는 사람들의 발과 열린 창밖을 살폈습니다."
+          text: "덕만은 그림보다 열린 창과 병사들의 움직임을 살폈습니다. 왼쪽 담 아래 배수로 덮개가 비뚤어져 있었습니다."
       - say:
           char: 어린 덕만
           camera: medium
           with: [진평왕]
-          text: "전하의 신은 젖지 않았는데 오른쪽 호위의 신에는 진흙이 묻었습니다. 왼쪽 담 아래 물길로 들어온 사람입니다."
+          text: "왼쪽 배수로는 아이가 지나갈 만큼 열려 있습니다."
       - say:
           char: 진평왕
           camera: close
           with: [어린 덕만]
-          text: "그림을 보라 했는데 사람과 길을 보았구나."
+          text: "그림을 보라 했는데 나갈 길부터 찾았구나."
       - say:
           char: 어린 덕만.resolve
           camera: close
           with: [진평왕]
-          text: "그림은 움직이지 않지만, 그림을 가져온 사람은 움직이니까요."
+          text: "저를 찾는 사람이 궁 안에 있다고 들었습니다."
       - goto: king_question
-
-  observe_count:
-    actions:
-      - say:
-          char: 어린 덕만
-          camera: close
-          with: [진평왕]
-          text: "큰 꽃 여섯, 작은 꽃 열다섯. 모두 스물한 송이입니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [어린 덕만]
-          text: "틀리지 않았다."
-      - say:
-          channel: narration
-          text: "왕은 칭찬하지 않았습니다. 정확한 답이 반드시 필요한 답은 아니었기 때문입니다."
-      - say:
-          char: 어린 덕만
-          camera: medium
-          with: [진평왕]
-          text: "맞혔는데도 전하의 표정이 어두워졌습니다. 제가 세지 않은 것이 있습니까?"
-      - goto: king_question
-
-  bad_touch_gift:
-    actions:
-      - bg: shadow_corridor
-      - camera: reaction
-      - effect: { name: impact, wait: true }
-      - char: { id: 어린 덕만, position: left }
-      - char: { id: 소화, position: right }
-      - say:
-          channel: narration
-          text: "덕만의 손끝에서 마르지 않은 안료가 번졌습니다. 당 황제의 모란 한 송이가 검은 얼룩이 되었습니다."
-      - say:
-          char: 소화.nervous
-          camera: close
-          with: [어린 덕만]
-          text: "아기씨, 그림의 값이 문제가 아닙니다. 저들은 이 실수를 기다렸습니다."
-      - char: { id: 칠숙, position: center }
-      - say:
-          char: 칠숙.smile
-          camera: medium
-          with: [어린 덕만]
-          text: "신분도 없는 아이가 황제의 하사품을 훼손했습니다. 누구의 딸인지 밝혀야 벌을 정하겠군요."
-      - say:
-          char: 어린 덕만.scared
-          camera: close
-          with: [칠숙]
-          text: "이름을 말하면 소화도 함께 잡혀가는 거지요?"
-      - effect: { name: darken, wait: true }
-      - say:
-          channel: record
-          text: "그날의 심문 기록에는 덕만의 이름이 처음이자 마지막으로 적혔습니다."
-      - gameOver:
-          title: "운명 01 — 손끝에 묻은 국죄"
-          message: "향을 확인하려 남긴 작은 얼룩은 숨겨진 공주를 드러내는 증거가 되었습니다. 덕만은 답을 말하기도 전에 역사에서 지워졌습니다."
 
   king_question:
     actions:
@@ -259,11 +180,7 @@ scenes:
           char: 진평왕
           camera: close
           with: [어린 덕만]
-          wait: 700
           text: "이 모란에 향기가 있겠느냐?"
-      - say:
-          channel: narration
-          text: "문밖에서 갑옷이 스치는 소리가 멈췄습니다. 왕은 꽃을 물었지만, 누군가는 덕만의 대답을 기다리고 있었습니다."
       - choice:
           key: c1_answer_king
           prompt: "왕에게 무엇을 대답하겠습니까?"
@@ -273,18 +190,13 @@ scenes:
           options:
             - text: "벌과 나비가 없으니 향기도 없을 것입니다"
               set: { spoke_truth_to_king: true }
-              add: { insight: 2, sohwa_trust: 1 }
               goto: answer_scent
-            - text: "족자 뒤의 제 사망 기록부터 보여 드립니다"
+            - text: "꽃보다 먼저, 족자 뒤에서 찾은 제 사망 기록을 보여 드리겠습니다"
               when: { var: death_register, op: eq, value: true }
               set: { spoke_truth_to_king: true }
-              add: { suspicion: 2 }
               goto: answer_record
-            - text: "꽃은 정확히 스물한 송이입니다"
-              goto: answer_count
-            - text: "소화가 답을 미리 가르쳐 주었습니다"
-              add: { suspicion: 1, sohwa_trust: -2 }
-              goto: bad_betray_sohwa
+            - text: "그림일 뿐이라 실제 향기는 알 수 없습니다"
+              goto: answer_literal
 
   answer_scent:
     actions:
@@ -292,22 +204,17 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [진평왕]
-          text: "향기가 있다면 벌과 나비가 먼저 알았을 겁니다. 그림에 그들이 없으니, 이 꽃에도 향기는 없을 것입니다."
+          text: "벌과 나비가 없으니 향기도 없을 것입니다."
       - say:
           char: 진평왕
           camera: close
           with: [어린 덕만]
-          text: "황제는 꽃을 보냈고, 너는 황제가 빠뜨린 것을 보았구나."
-      - say:
-          char: 어린 덕만
-          camera: medium
-          with: [진평왕]
-          text: "빠뜨린 겁니까? 제가 그 말을 하도록 일부러 남겨 둔 겁니까?"
+          text: "맞다. 당나라 황제는 향기 없는 모란으로, 신라에 왕위를 이을 아들이 없다는 사실을 비웃었다."
       - say:
           char: 진평왕.sad
           camera: close
           with: [어린 덕만]
-          text: "왕궁에서는 우연히 비어 있는 자리가 없다. 네 자리도 그렇다."
+          text: "네가 그림에 숨긴 조롱을 알아보는지 보고 싶었다."
       - goto: king_warning
 
   answer_record:
@@ -322,88 +229,56 @@ scenes:
           anchorY: center
           rotate: 1
           zIndex: 14
-          enter: scaleIn
-          inputLockMs: 450
+          enter: fadeIn
+          inputLockMs: 320
       - say:
           char: 어린 덕만.scared
           camera: close
           with: [진평왕]
-          text: "꽃의 향보다 먼저 여쭙겠습니다. 전하는 제가 내일 죽는다는 것을 언제 아셨습니까?"
+          text: "누가 제가 오늘 밤 죽는다고 적고 전하의 도장을 찍은 겁니까?"
       - say:
           char: 진평왕.sad
           camera: close
           with: [어린 덕만]
-          text: "내가 쓴 기록이 아니다. 그러나 내 도장을 훔치지 않고는 만들 수 없는 기록이다."
+          text: "내가 만든 기록이 아니다. 누군가 내 도장을 훔쳐 네 죽음을 미리 적었다."
       - say:
           char: 어린 덕만.resolve
           camera: medium
           with: [진평왕]
-          text: "그럼 내일 제가 죽으면 이 종이가 참말이 되고, 살면 전하의 도장이 거짓말을 한 것이 됩니다."
+          text: "오늘 저를 죽여 이 문서를 진짜로 만들려는 거군요."
       - say:
           char: 진평왕
           camera: close
           with: [어린 덕만]
-          text: "그러니 살아라. 오늘 네가 내릴 첫 왕명은 그것이다."
+          text: "그래. 반드시 살아남아라."
       - clearSticker:
           id: death_register_answer
-          leave: wipeRight
+          leave: fadeOut
       - goto: king_warning
 
-  answer_count:
+  answer_literal:
     actions:
       - say:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "그림의 꽃은 스물한 송이입니다. 그 수는 틀림없습니다."
+          text: "그림일 뿐이라 실제 향기는 알 수 없습니다."
       - say:
-          char: 진평왕.weak
+          char: 진평왕
           camera: close
           with: [어린 덕만]
-          text: "눈앞의 것만 세면 틀리지 않을 수 있다. 대신 누가 지워졌는지는 영영 모르게 되지."
-      - say:
-          channel: system
-          delivery: deduction
-          text: "[얕은 정답] 틀리지 않았지만, 왕이 묻지 않은 답을 찾지 못했습니다."
+          text: "그림의 냄새를 묻는 게 아니다. 벌과 나비가 없는 이유를 생각해 보아라."
       - say:
           char: 어린 덕만
           camera: medium
           with: [진평왕]
-          text: "다시 보겠습니다. 이번에는 꽃보다 빈자리를 보겠습니다."
+          text: "신라에 왕위를 이을 아들이 없다는 걸 빗댄 겁니까?"
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [어린 덕만]
+          text: "그래. 당나라 황제는 그걸 조롱한 것이다."
       - goto: king_warning
-
-  bad_betray_sohwa:
-    actions:
-      - bg: shadow_corridor
-      - camera: medium
-      - char: { id: 어린 덕만, position: left }
-      - char: { id: 소화, position: right }
-      - char: { id: 칠숙, position: center }
-      - say:
-          channel: narration
-          text: "덕만은 소화의 이름을 내놓았습니다. 문밖에서 기다리던 병사들은 마치 미리 받은 명령처럼 곧장 움직였습니다."
-      - say:
-          char: 소화.nervous
-          camera: close
-          with: [어린 덕만]
-          text: "괜찮습니다, 아기씨. 지금은 전하 곁에만 계세요."
-      - say:
-          char: 어린 덕만.scared
-          camera: close
-          with: [소화]
-          text: "잠깐만 데려가는 거지? 내가 잘못 들었다고 말하면 돌아오는 거지?"
-      - say:
-          char: 칠숙.smile
-          camera: close
-          with: [어린 덕만]
-          text: "물론입니다. 살아서 돌아올 수 있다면 말이지요."
-      - effect: { name: darken, wait: true }
-      - say:
-          channel: record
-          text: "공주의 증언으로 유모 소화가 체포됨. 이후 행적은 기록되지 않았습니다."
-      - gameOver:
-          title: "운명 02 — 안전해 보이는 고발"
-          message: "덕만은 왕 곁에 남아 그날 밤을 넘겼습니다. 그러나 자신을 살리기 위해 내준 이름은 평생 왕관 안쪽에서 울렸습니다."
 
   king_warning:
     actions:
@@ -415,29 +290,43 @@ scenes:
           char: 진평왕.sad
           camera: close
           with: [어린 덕만]
-          text: "덕만아, 네가 태어난 날 별이 둘이었다. 귀족들은 왕좌도 둘이 될까 두려워했다."
+          text: "내게 아들이 없자 귀족들은 네 쌍둥이 언니 천명과 너를 서로 다른 후계자로 내세웠다."
       - say:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "그래서 한 아이를 죽었다고 적었습니까?"
+          text: "그래서 저를 숨기셨습니까?"
+      - say:
+          char: 진평왕.sad
+          camera: medium
+          with: [어린 덕만]
+          text: "두 편이 충돌하는 걸 막고 너를 살리려 했다. 하지만 누군가 네 존재를 알아냈다."
+      - say:
+          char: 어린 덕만
+          camera: close
+          with: [진평왕]
+          text: "그 사람이 사망 기록도 만들었군요."
       - say:
           char: 진평왕
-          camera: close
+          camera: medium
           with: [어린 덕만]
-          text: "너를 살리려 이름을 숨겼다. 그런데 누군가 그 거짓을 이용해 오늘 정말로 너를 죽이려 한다."
+          text: "그래. 오늘 밤 너를 죽이고 기록을 사실로 만들 생각이다."
       - say:
           char: 소화.nervous
           camera: medium
           with: [진평왕, 어린 덕만]
           text: "전하, 서쪽 처마에서 기름 냄새가 납니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [소화, 어린 덕만]
+          text: "소화, 덕만을 데리고 나가라."
       - goto: fire_breaks
 
   fire_breaks:
     actions:
       - bg: burning_palace
       - camera: wide
-      - effect: { name: impact, wait: true }
       - effect: embers
       - char: { id: 어린 덕만, position: left, emotion: scared }
       - char: { id: 소화, position: right, emotion: nervous }
@@ -446,28 +335,34 @@ scenes:
           channel: narration
           camera: medium
           delivery: nervous
-          text: "처마가 무너지는 소리와 함께 별궁의 세 문이 동시에 닫혔습니다. 불은 바람을 거슬러 안쪽부터 번졌습니다."
+          text: "불붙은 들보가 방 안으로 떨어졌습니다. 친위대가 왕을 안채로 데려갔고, 덕만과 소화는 반대편 마당에 고립됐습니다."
+      - say:
+          channel: narration
+          text: "별궁의 세 문이 동시에 닫혔습니다. 문밖에는 왕실 기록을 관리하는 귀족 칠숙이 서 있었습니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with: [어린 덕만, 소화]
-          text: "내일 장부에는 열병을 앓던 아이가 별궁 화재로 화장되었다고 한 줄만 더 적히겠군요."
+          text: "불이 꺼지면 공주는 열병으로 죽었고 시신은 불탔다고 기록하겠습니다."
       - say:
           char: 어린 덕만.scared
           camera: close
           with: [칠숙]
-          text: "당신이 그 종이를 썼습니까?"
+          text: "당신이 제 사망 기록을 만든 겁니까?"
       - say:
           char: 칠숙
           camera: close
           with: [어린 덕만]
-          text: "아니요. 기록은 살아남은 사람이 씁니다. 저는 그 사람이 되려는 것뿐입니다."
+          text: "오늘 밤이 지나면 아무도 그 기록을 거짓이라고 말할 수 없을 겁니다."
       - char: { id: 소화, position: center, emotion: nervous }
       - say:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "아기씨, 저를 보세요. 연기보다 낮게, 제 손보다 먼저 움직이셔야 합니다."
+          text: "아기씨, 연기가 위로 차오릅니다. 몸을 낮추고 제 손짓만 보며 움직이세요."
+      - say:
+          channel: narration
+          text: "소화는 옷깃 안에 숨겨 둔 청동 모란패를 꺼내 덕만의 손에 쥐여 주었습니다."
       - sticker:
           id: peony_token_view
           image: peony_token_sticker
@@ -477,18 +372,19 @@ scenes:
           anchorX: center
           anchorY: center
           zIndex: 15
-          enter: popIn
-          inputLockMs: 450
+          enter: fadeIn
+          inputLockMs: 300
       - get: peony_token
-      - say:
-          channel: system
-          delivery: deduction
-          text: "[청동 모란패 획득] 문을 열 수 있지만, 숨긴 신분도 함께 드러납니다."
       - say:
           char: 소화
           camera: close
           with: [어린 덕만]
-          text: "이 패를 보이면 북문 수비가 길을 열 겁니다. 다만 본 사람은 아기씨의 얼굴을 잊지 않을 겁니다."
+          text: "이 패를 북문 수비에게 보이면 문을 열어 줄 겁니다. 대신 아기씨의 신분도 드러납니다."
+      - say:
+          char: 소화.nervous
+          camera: medium
+          with: [어린 덕만]
+          text: "저를 놓치더라도 멈추지 말고 궁 밖으로 나가세요."
       - clearSticker:
           id: peony_token_view
           leave: fadeOut
@@ -501,36 +397,28 @@ scenes:
           options:
             - text: "왼쪽 담 아래 물길로 소화와 함께 나간다"
               when: { var: observed_left_waterway, op: eq, value: true }
-              add: { insight: 2, sohwa_trust: 2 }
               goto: escape_waterway
             - text: "청동 모란패를 보이고 북문을 연다"
-              set: { identity_exposed: true }
-              add: { suspicion: 2 }
               goto: escape_token
             - text: "사망 기록을 들고 왕이 있는 안채로 뛴다"
               when:
                 all:
                   - { var: death_register, op: eq, value: true }
                   - { var: spoke_truth_to_king, op: eq, value: true }
-              add: { suspicion: 2 }
               goto: escape_record
             - text: "모란 화단에 몸을 숨기고 불이 지나가길 기다린다"
               goto: bad_smoke
-            - text: "소화를 두고 혼자 열린 창문으로 뛴다"
-              add: { sohwa_trust: -2 }
-              goto: bad_leave_sohwa
 
   escape_waterway:
     actions:
       - bg: moon_court
       - camera: wide
-      - effect: starfall
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right }
       - say:
           channel: narration
           camera: medium
-          text: "덕만은 낮에 보아 둔 왼쪽 담으로 달렸습니다. 빗물을 빼는 돌판 아래에는 아이 하나가 겨우 기어갈 틈이 있었습니다."
+          text: "덕만은 조금 전 보아 둔 왼쪽 담으로 달렸습니다. 빗물을 빼는 돌판 아래에는 아이 하나가 겨우 기어갈 틈이 있었습니다."
       - say:
           char: 소화.nervous
           camera: medium
@@ -540,7 +428,7 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [소화]
-          text: "오늘은 오래 사는 아이가 되라고 했지. 그럼 둘 다 살아야 해."
+          text: "혼자 가지 않을 거야. 같이 나가."
       - say:
           channel: narration
           text: "두 사람의 뒤에서 별궁 지붕이 내려앉았습니다. 젖은 돌길 위로 불티가 별처럼 떨어졌습니다."
@@ -553,13 +441,13 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [소화]
-          wait: 900
+          wait: 600
           unskippable: true
-          text: "죽었다고 적힌 아이는 어디든 갈 수 있어. 먼저, 누가 내 죽음을 기다렸는지 찾을 거야."
+          text: "기록에는 내가 죽었다고 되어 있어. 궁 밖에서 이름을 숨기고, 누가 나를 죽이려 했는지 찾을 거야."
       - say:
           channel: record
           delivery: calm
-          text: "공주는 그날 죽었습니다. 덕만은 그날부터 살아남기 시작했습니다."
+          text: "왕실 기록에서 공주는 죽었습니다. 그러나 그날 밤 덕만은 별궁을 빠져나와 살아남았습니다."
       - ending: hidden_name
 
   escape_token:
@@ -572,7 +460,7 @@ scenes:
       - say:
           channel: narration
           camera: medium
-          text: "덕만이 청동 모란패를 치켜들자 북문의 창끝이 동시에 내려갔습니다. 닫힌 문이 열렸고, 수비대 모두가 아이의 얼굴을 보았습니다."
+          text: "덕만이 청동 모란패를 치켜들자 북문을 막던 창들이 양옆으로 걷혔습니다. 문은 열렸지만 수비대 모두가 아이의 얼굴을 보았습니다."
       - say:
           char: 소화.nervous
           camera: close
@@ -582,46 +470,39 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [소화]
-          text: "숨은 채 죽는 것보다, 본 사람을 기억하며 살겠어."
+          text: "지금은 들키더라도 살아서 나가는 게 먼저야."
       - say:
           channel: narration
-          text: "새벽이 오기 전, 모란패를 본 수비 셋이 서로 다른 귀족의 집으로 불려갔습니다."
-      - say:
-          channel: system
-          text: "[생존 확인] 탈출에는 성공했습니다. 신분 은폐에는 실패했습니다."
+          text: "문을 지킨 병사들은 곧 칠숙에게 덕만의 얼굴을 설명했습니다. 덕만은 살아남았지만 더는 완전히 숨을 수 없었습니다."
       - ending: marked_survivor
 
   escape_record:
     actions:
       - bg: burning_palace
       - camera: reaction
-      - effect: { name: impact, wait: true }
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 진평왕, position: right, emotion: weak }
       - say:
           channel: narration
-          text: "덕만은 바깥문 대신 불길 너머 안채로 뛰었습니다. 사망 기록의 붉은 인장이 열기 속에서 다시 번졌습니다."
+          text: "덕만은 바깥문 대신 불길 너머 안채로 뛰었습니다. 손에 든 사망 기록의 가장자리가 열기에 그을렸습니다."
       - say:
           char: 진평왕.weak
           camera: close
           with: [어린 덕만]
-          text: "왜 돌아왔느냐. 살아서 나가라 했거늘."
+          text: "왜 돌아왔느냐. 살아서 나가라고 하지 않았느냐."
       - say:
           char: 어린 덕만.resolve
           camera: close
           with: [진평왕]
-          text: "제가 나가기만 하면 저들은 이 기록을 진짜로 만들 겁니다. 전하가 거짓말한 왕이 됩니다."
+          text: "제가 나가면 칠숙이 문서를 없애고 전하가 꾸민 일로 몰아갈 겁니다. 이 기록을 남겨야 합니다."
       - say:
           char: 진평왕
           camera: medium
           with: [어린 덕만]
-          text: "종이보다 네 목숨이 먼저다. 하지만 네가 가져온 증거도 내가 지키마."
+          text: "문서보다 네 목숨이 먼저다. 그래도 네가 돌아와 지킨 증거는 내가 책임지고 보관하겠다."
       - say:
           channel: narration
-          text: "왕의 친위대가 두 사람을 동쪽 문으로 빼냈습니다. 그러나 불길 건너편에서 그 장면을 지켜보는 그림자가 있었습니다."
-      - say:
-          channel: system
-          text: "[증거 보존] 왕과 덕만이 같은 비밀을 쥐었다는 사실이 노출되었습니다."
+          text: "친위대가 두 사람을 동쪽 문으로 빼냈습니다. 칠숙의 부하가 그 모습을 보았습니다. 기록은 지켰지만 칠숙도 덕만이 살아 있다는 사실을 알게 됐습니다."
       - ending: ash_witness
 
   bad_smoke:
@@ -633,48 +514,21 @@ scenes:
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
           channel: narration
-          text: "덕만은 낮은 모란 화단으로 몸을 숨겼습니다. 불꽃은 피했지만, 무거운 연기는 담을 넘지 않고 땅으로 내려앉았습니다."
+          text: "덕만은 낮은 모란 화단에 몸을 숨겼습니다. 불꽃은 피했지만 연기가 마당을 가득 채웠습니다."
       - say:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "아기씨, 눈을 감지 마세요. 제 목소리만 따라오세요."
+          text: "아기씨, 눈을 감지 마세요. 제 손을 잡으세요."
       - say:
           char: 어린 덕만.scared
           camera: close
           with: [소화]
-          text: "모란에는 정말 향기가 없네. 아무 냄새도…… 나지 않아."
+          text: "숨을 쉴 수가 없어."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
-          text: "별궁 화재로 신원 미상의 아이와 유모가 사망함. 기존 사망 기록과 대조할 필요 없음."
+          text: "별궁 화재 보고 — 열병으로 죽은 둘째 공주 덕만의 시신과 유모 소화가 불에 타 신원을 다시 확인할 수 없음."
       - gameOver:
-          title: "운명 03 — 향기 없는 숨"
-          message: "불꽃을 피한 선택은 연기를 피하지 못했습니다. 다음 날 사람들은 모란이 타는 냄새만 기억했고, 아이의 이름은 묻지 않았습니다."
-
-  bad_leave_sohwa:
-    actions:
-      - bg: village
-      - camera: wide
-      - effect: darken
-      - char: { id: 어린 덕만, position: center, emotion: scared }
-      - say:
-          channel: narration
-          text: "덕만은 열린 창문으로 혼자 몸을 던졌습니다. 뒤에서 소화가 문을 막는 소리 덕분에 추격은 붙지 않았습니다."
-      - say:
-          char: 어린 덕만.scared
-          camera: close
-          text: "살았어. 소화도 다른 길로 나왔을 거야. 나를 찾으러 올 거야."
-      - say:
-          channel: narration
-          text: "덕만은 사흘 동안 약속한 나무 아래에서 기다렸습니다. 넷째 날에는 기다리지 않아도 되는 이유를 스스로 만들어 냈습니다."
-      - say:
-          char: 어린 덕만
-          camera: close
-          text: "왕궁 사람은 누구도 믿지 않으면 돼. 그러면 다시는 버릴 사람도 없어."
-      - say:
-          channel: record
-          text: "몇 해 뒤, 살아 있는 유령은 누구의 손도 잡지 않는 사람이 되었습니다."
-      - gameOver:
-          title: "운명 04 — 혼자 살아남는 법"
-          message: "덕만은 살아남았습니다. 그러나 자신을 살린 사람을 버린 밤 이후, 왕이 되어서도 누구도 믿지 못했습니다. 생존은 해피엔딩처럼 보였고 가장 긴 불행이 되었습니다."
+          title: "운명 — 연기 속에 갇히다"
+          message: "화단은 불꽃을 가려 주었지만 연기 속에서 기다릴 수는 없었습니다. 덕만과 소화는 탈출로를 찾지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."

@@ -64,7 +64,7 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(chapter.data).toBeDefined();
     if (!config.data || !base.data || !chapter.data) return;
 
-    expect(config.data.data.version).toBe('8.0.0-preview.5');
+    expect(config.data.data.version).toBe('8.0.0-preview.7');
     expect(config.data.data.startScreen?.image).toBe(
       'root:/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -75,7 +75,7 @@ describe('Deokman V8 chapter-one vertical slice', () => {
       .toBeUndefined();
   });
 
-  it('ships three consequential decisions with gated recalls and dramatized outcomes', () => {
+  it('ships three consequential decisions without filler failure options', () => {
     const document = readYaml('0.yaml');
     const choices = collectKey(document, 'choice').map(asRecord);
     const options = choices.flatMap((choice) => Array.isArray(choice.options) ? choice.options.map(asRecord) : []);
@@ -87,12 +87,12 @@ describe('Deokman V8 chapter-one vertical slice', () => {
       'c1_answer_king',
       'c1_fire_escape',
     ]);
-    expect(choices.map((choice) => (choice.options as unknown[]).length)).toEqual([5, 4, 5]);
+    expect(choices.map((choice) => (choice.options as unknown[]).length)).toEqual([3, 3, 4]);
     expect(options.filter((option) => Object.keys(asRecord(option.when)).length > 0)).toHaveLength(3);
     expect(options.some((option) => String(JSON.stringify(option.when)).includes('observed_left_waterway'))).toBe(true);
     expect(options.some((option) => String(JSON.stringify(option.when)).includes('death_register'))).toBe(true);
-    expect(gameOvers).toHaveLength(4);
-    expect(new Set(gameOvers.map((gameOver) => String(gameOver.title))).size).toBe(4);
+    expect(gameOvers).toHaveLength(1);
+    expect(new Set(gameOvers.map((gameOver) => String(gameOver.title))).size).toBe(1);
     expect(new Set(endings)).toEqual(new Set(['hidden_name', 'marked_survivor', 'ash_witness']));
 
     const scenes = asRecord(document.scenes);
@@ -109,7 +109,7 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     });
   });
 
-  it('uses all four prose channels and the new effects as narrative grammar', () => {
+  it('keeps every player-facing line inside the story world', () => {
     const document = readYaml('0.yaml');
     const says = collectKey(document, 'say').map(asRecord);
     const channels = new Set(says.map((say) => say.channel ?? (say.char ? 'dialogue' : 'narration')));
@@ -117,19 +117,33 @@ describe('Deokman V8 chapter-one vertical slice', () => {
       typeof effect === 'string' ? effect : String(asRecord(effect).name),
     );
 
-    expect(channels).toEqual(new Set(['dialogue', 'narration', 'record', 'system']));
-    expect(effects).toEqual(expect.arrayContaining(['focus', 'inkstamp', 'impact', 'embers', 'starfall']));
+    expect(channels).toEqual(new Set(['dialogue', 'narration', 'record']));
+    expect(new Set(effects)).toEqual(new Set(['embers', 'darken']));
     expect(says.some((say) => say.channel === 'record' && String(say.text).includes('둘째 공주 덕만'))).toBe(true);
-    expect(says.some((say) => say.channel === 'system' && String(say.text).includes('[기록 완료]'))).toBe(true);
+    expect(says.some((say) => say.channel === 'record' && String(say.text).includes('사망: 오늘 밤'))).toBe(true);
+    expect(says.some((say) => say.channel === 'system')).toBe(false);
+  });
+
+  it('states the opening premise and its political cause directly', () => {
+    const text = collectStrings(readYaml('0.yaml')).join('\n');
+
+    expect(text).toContain('누군가 덕만을 죽이기도 전에 사망 기록부터 만들어 두었습니다');
+    expect(text).toContain('내게 아들이 없자 귀족들은 네 쌍둥이 언니 천명과 너를 서로 다른 후계자로 내세웠다');
+    expect(text).toContain('오늘 밤 너를 죽이고 기록을 사실로 만들 생각이다');
+    expect(text).not.toContain('죽은 사람은 왕위를 요구할 수 없습니다');
+    expect(text).not.toContain('스물한 송이');
+    expect(text).not.toContain('소화가 답을 미리 가르쳐 주었습니다');
+    expect(text).not.toContain('오늘 네가 내릴 첫 왕명');
   });
 
   it('caps foreground evidence art responsively for desktop and mobile', () => {
     const document = readYaml('0.yaml');
     const stickers = collectKey(document, 'sticker').map(asRecord);
 
-    expect(stickers).toHaveLength(4);
+    expect(stickers).toHaveLength(5);
     stickers.forEach((sticker) => {
       expect(String(sticker.width), String(sticker.id)).toMatch(/^clamp\(/);
+      expect(sticker.enter, String(sticker.id)).toBe('fadeIn');
     });
   });
 
@@ -145,8 +159,8 @@ describe('Deokman V8 chapter-one vertical slice', () => {
         .map((action) => asRecord(action.say))
         .find((say) => say.channel === 'narration');
 
-    expect(actionsFor('opening_record').slice(0, 5).some((action) => action.effect === 'focus')).toBe(false);
-    expect(firstNarration('opening_record')?.camera).toBe('medium');
+    expect(actionsFor('opening_record').some((action) => Object.prototype.hasOwnProperty.call(action, 'effect'))).toBe(false);
+    expect(actionsFor('peony_arrives').some((action) => Object.prototype.hasOwnProperty.call(action, 'effect'))).toBe(false);
     expect(firstNarration('fire_breaks')?.camera).toBe('medium');
     expect(firstNarration('escape_waterway')?.camera).toBe('medium');
     expect(firstNarration('escape_token')?.camera).toBe('medium');
@@ -228,6 +242,11 @@ describe('Deokman V8 chapter-one vertical slice', () => {
       const source = readFileSync(`${gameRoot}assets/items/${filename}`, 'utf8');
       expect(source, filename).not.toMatch(/<rect[^>]+width=["']640["'][^>]+height=["']400["']/);
     });
+
+    const deathRegister = readFileSync(`${gameRoot}assets/items/death-register.svg`, 'utf8');
+    expect(deathRegister).not.toMatch(/<text\b/);
+    expect(deathRegister).toContain('위조된 덕만의 사망 기록');
+    expect(deathRegister).toContain('fill="#7f202b"');
   });
 
   it('removes the superseded Deokman game package', () => {
@@ -239,7 +258,7 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(bible).toContain('## 12챕터 드라마 지도');
     expect(bible).toContain('| 12 | 마지막 기록 |');
     expect(bible).toContain('## 핵심 인물과 연기 방향');
-    expect(bible).toContain('## 대사·내레이션·시스템 채널');
+    expect(bible).toContain('## 대사·내레이션·기록 채널');
     expect(bible).toContain('## 선택과 엔딩 설계 규칙');
     expect(bible).toContain('## 1장 수직 슬라이스 합격 기준');
   });
