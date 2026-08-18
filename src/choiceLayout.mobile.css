@@ -1,0 +1,38 @@
+/* Mobile choice layout containment.
+   Keep long Korean labels readable and prevent badges from squeezing text into one-character columns. */
+@media (max-width: 768px) {
+  .choice-gate-options[data-choice-count='2'],
+  .choice-gate-options[data-choice-count='3'],
+  .choice-gate-options[data-choice-count='4'] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .choice-gate-options[data-choice-count='3'] > .choice-gate-option:last-child {
+    grid-column: auto !important;
+  }
+
+  .choice-gate-option {
+    min-height: 48px;
+    height: auto;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .choice-gate-option > span:first-child {
+    width: 100%;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .choice-gate-option-badges {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .choice-gate-option-history-badge,
+  .choice-gate-option-badge {
+    max-width: 100%;
+  }
+}
