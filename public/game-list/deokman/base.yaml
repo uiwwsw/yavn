@@ -24,13 +24,13 @@ assets:
     bidam_letter_sticker: root:/game-list/deokman/assets/items/bidam-letter.svg
   characters:
     어린 덕만:
-      base: root:/game-list/deokman/assets/char/deokman-child-silla-v7.webp
+      base: root:/game-list/deokman/assets/char/deokman-child-silla-v8.png
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 1 }
       emotions:
-        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v7.webp
-        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v7.webp
+        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v8.png
+        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v8.png
     덕만:
       base: root:/game-list/deokman/assets/char/deokman-silla-v5.webp
       facing: left
