@@ -20,6 +20,9 @@ scenes:
           with: [덕만, 천명]
           text: "진평왕의 도장이 찍힌 체포 명령이 궁문마다 붙었고, 칠숙의 병사들이 왕의 방과 기록 창고를 먼저 막았습니다."
       - say:
+          with: [덕만, 천명]
+          text: "체포 명령의 도장 흠집은 첫 독살 때 덕만의 약 포장지에 찍힌 자국과 같았습니다. 누명을 만들던 가짜 인장이 이제 왕궁 전체에 명령하고 있었습니다."
+      - say:
           char: 천명.nervous
           camera: medium
           with: [덕만]
@@ -907,6 +910,17 @@ scenes:
           camera: medium
           with: [유신, 진운]
           text: "칠숙과 아진의 죄는 따로 묻는다. 명령한 사람 뒤에 강요받은 사람을 숨기지 마라."
+      - char: { id: 소원, position: right }
+      - say:
+          char: 소원.nervous
+          camera: medium
+          with: [덕만]
+          text: "전하, 첫 명령서는 세 지역에 닿았지만 수레는 칠숙의 옛 창고에서 멈췄습니다. 창고지기들이 새 왕의 도장을 믿지 않습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [소원]
+          text: "왕이 되었다는 말보다 곡식이 도착했다는 답을 먼저 받겠다. 내일 아침 직접 장부를 펼친다."
 
   go_31_broken_gate:
     actions:

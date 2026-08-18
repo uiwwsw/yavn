@@ -37,6 +37,17 @@ const readExtendedWebpCanvas = (path: string): { width: number; height: number; 
   };
 };
 
+const readPngCanvas = (path: string): { width: number; height: number; hasAlpha: boolean } => {
+  const source = readFileSync(path);
+  expect(source.subarray(0, 8), path).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  expect(source.toString('ascii', 12, 16), path).toBe('IHDR');
+  return {
+    width: source.readUInt32BE(16),
+    height: source.readUInt32BE(20),
+    hasAlpha: [4, 6].includes(source[25]),
+  };
+};
+
 describe('Deokman cinematic reimagining', () => {
   it('resolves all eight chapters through the complete YAVN schema', () => {
     const config = parseConfigYaml(readFileSync(`${gameRoot}config.yaml`, 'utf8'), 'deokman/config.yaml');
@@ -99,7 +110,7 @@ describe('Deokman cinematic reimagining', () => {
     expect(summary).toContain('약 60분의 시대극');
     expect(seoDescription).toContain('약 60분');
     expect(asRecord(launcher.showcase).label).toBe('60 MIN · 8 CHAPTERS');
-    expect(config.version).toBe('7.0.0');
+    expect(config.version).toBe('8.0.0');
   });
 
   it('cuts the authored material to an approximately one-hour four-act game', () => {
@@ -215,7 +226,7 @@ describe('Deokman cinematic reimagining', () => {
         '칠숙의 옛 창고 앞에서 멈췄습니다',
         '다음 왕의 권한을 미리 나누자고 요구',
         '장수 셋과 창고지기 절반',
-        '16년 전 혼인 합의서와 같은 거래',
+        '15년 전 혼인 합의서와 같은 거래',
         '합의로 열지 못한 문을 군사로 열기',
       ],
     } as const;
@@ -229,6 +240,35 @@ describe('Deokman cinematic reimagining', () => {
         previousIndex = index;
       });
     });
+  });
+
+  it('carries each chapter result into the next objective on a consistent timeline', () => {
+    const handoffs = {
+      '0.yaml': ['사라진 수레, 네 인장을 찍은 포장지', '같은 길을 거슬러 갈 거야'],
+      '1.yaml': ['혼인 합의서를 빈 곡식 자루 위에 펼쳤습니다', '진운의 대답과 원본 장부를 함께 찾으면'],
+      '2.yaml': ['사라진 수레 두 대는 귀족 사병의 군량표', '북쪽 운송표와 원본 장부를 함께 내놓겠다고'],
+      '3.yaml': ['북쪽 운송표를 되찾으려는 자', '사라진 수레가 사병의 군량이 된 곳'],
+      '4.yaml': ['무진이 목숨과 바꾼 북쪽 운송표', '어떤 군사가 자랐고, 그 군사가 누구를 왕으로 세우려 했는지'],
+      '5.yaml': ['원본 장부의 수레 번호는 귀족 사병의 군량표', '두 장의 왕실 도장에는 같은 가장자리 흠집'],
+      '6.yaml': ['누명을 만들던 가짜 인장이 이제 왕궁 전체에 명령', '첫 명령서는 세 지역에 닿았지만 수레는'],
+      '7.yaml': ['즉위 날 내린 첫 명령은 세 지역에 도착했지만', '칠숙의 비밀 운송표에서 떼어 낸 붉은 매듭'],
+    } as const;
+
+    Object.entries(handoffs).forEach(([path, anchors]) => {
+      const text = rawChapter(path);
+      expect(text.indexOf(anchors[0]), `${path}: ${anchors[0]}`).toBeGreaterThanOrEqual(0);
+      expect(text.indexOf(anchors[1]), `${path}: ${anchors[1]}`).toBeGreaterThan(text.indexOf(anchors[0]));
+    });
+
+    const final = rawChapter('7.yaml');
+    ['633년', '636년', '640년', '그로부터 2년 뒤', '642년', '645년', '646년', '647년']
+      .reduce((previousIndex, anchor) => {
+        const index = final.indexOf(anchor, previousIndex + 1);
+        expect(index, anchor).toBeGreaterThan(previousIndex);
+        return index;
+      }, -1);
+    expect(final).toContain('15년 전 혼인 합의서');
+    expect(final).not.toContain('그 뒤로 아홉 해가 흘렀습니다');
   });
 
   it('gives Jinpyeong a decisive royal register and makes him own the crown consequences', () => {
@@ -579,7 +619,17 @@ describe('Deokman cinematic reimagining', () => {
       '4.yaml': ['두 달 뒤, 631년 가을', '길을 나선 지 일곱째 날', '수도를 떠난 지 12일째', '도착한 다음 날 해 질 무렵', '전투 다음 날 한낮', '4일 뒤'],
       '5.yaml': ['두 달 뒤, 631년 겨울', '돌아온 지 3일째', '그날 해가 지자', '그날 밤'],
       '6.yaml': ['같은 밤, 631년 겨울', '날이 바뀌기 직전', '632년 1월 아침', '632년 1월, 덕만은 선덕왕'],
-      '7.yaml': ['632년 1월', '일 년이 지나 633년 봄', '그 뒤로 아홉 해', '642년 가을', '3년 뒤인 645년', '이듬해인 646년 가을', '647년 1월'],
+      '7.yaml': [
+        '632년 1월',
+        '일 년이 지나 633년 봄',
+        '3년 뒤인 636년',
+        '다시 4년 뒤인 640년',
+        '그로부터 2년 뒤',
+        '642년 가을',
+        '3년 뒤인 645년',
+        '이듬해인 646년 가을',
+        '647년 1월',
+      ],
     } as const;
 
     Object.entries(timelineAnchors).forEach(([path, anchors]) => {
@@ -667,7 +717,7 @@ describe('Deokman cinematic reimagining', () => {
     });
   });
 
-  it('ships every visual asset and keeps the Silla art set under six megabytes', () => {
+  it('ships every visual asset and keeps the high-resolution Silla art set under nine megabytes', () => {
     const base = readYaml('base.yaml');
     const config = readYaml('config.yaml');
     const launcher = readYaml('launcher.yaml');
@@ -693,12 +743,18 @@ describe('Deokman cinematic reimagining', () => {
       String(asRecord(config.seo).image),
     ]);
     const totalBytes = [...rasterAssets].reduce((total, path) => total + statSync(`${gameRoot}${path}`).size, 0);
-    expect(totalBytes).toBeLessThan(6_000_000);
+    expect(totalBytes).toBeLessThan(9_000_000);
 
-    characters.forEach((character) => {
+    Object.entries(asRecord(assets.characters)).forEach(([name, value]) => {
+      const character = asRecord(value);
       const portraits = [String(character.base), ...Object.values(asRecord(character.emotions)).map(String)];
-      portraits.forEach((path) => expect(path).toMatch(/-silla-v5\.webp$/));
-      const canvases = portraits.map((path) => readExtendedWebpCanvas(`${gameRoot}${path}`));
+      portraits.forEach((path) => {
+        if (name === '덕만') expect(path).toMatch(/-silla-v6\.png$/);
+        else expect(path).toMatch(/-silla-v5\.webp$/);
+      });
+      const canvases = portraits.map((path) => path.endsWith('.png')
+        ? readPngCanvas(`${gameRoot}${path}`)
+        : readExtendedWebpCanvas(`${gameRoot}${path}`));
       expect(canvases.every(({ hasAlpha }) => hasAlpha)).toBe(true);
       expect(Math.max(...canvases.map(({ width }) => width)) - Math.min(...canvases.map(({ width }) => width)))
         .toBeLessThanOrEqual(2);

@@ -622,6 +622,16 @@ scenes:
           with: [덕만, 천명]
           wait: 900
           text: "문밖에는 죽은 관리가 지키지 못한 빈 곡식 자루가 그대로 놓여 있었습니다."
+      - say:
+          char: 천명.sad
+          camera: medium
+          with: [덕만]
+          text: "사라진 수레, 네 인장을 찍은 포장지, 장부를 보려다 죽은 관리. 셋이 따로 생긴 일은 아니겠지."
+      - say:
+          char: 덕만
+          camera: close
+          with: [천명]
+          text: "응. 먼저 제 이름을 되찾고, 그다음 수레가 멈춘 곳까지 같은 길을 거슬러 갈 거야."
 
   go_01_empty_village:
     actions:
