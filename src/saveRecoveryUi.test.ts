@@ -67,9 +67,12 @@ describe('save and game over recovery UI', () => {
     );
   });
 
-  it('keeps save and game over content inside scrollable responsive bounds', () => {
+  it('keeps save controls visible while only the archive cards scroll', () => {
     expect(styles).toMatch(
-      /\.save-system-body\s*\{[\s\S]*?overflow-y: auto;[\s\S]*?overscroll-behavior: contain;/,
+      /\.save-system-body\s*\{[\s\S]*?grid-template-rows: auto minmax\(0, 1fr\) auto auto;[\s\S]*?overflow: hidden;/,
+    );
+    expect(styles).toMatch(
+      /\.save-system-grid\s*\{[\s\S]*?min-height: 0;[\s\S]*?grid-auto-rows: max-content;[\s\S]*?overflow-y: auto;[\s\S]*?overscroll-behavior: contain;/,
     );
     expect(styles).toMatch(
       /\.game-over-overlay\s*\{[\s\S]*?position: absolute;[\s\S]*?inset: 0;[\s\S]*?overflow: hidden;/,
@@ -85,6 +88,7 @@ describe('save and game over recovery UI', () => {
     );
     expect(appSource).not.toContain("'YAVN ENGINE'");
     expect(appSource).toContain('<h2>기록 보관소</h2>');
+    expect(appSource).toContain("'게임 시작 화면으로 가기'");
     expect(appSource).toContain('save-protection-hero');
     expect(appSource).toContain('className="save-system-grid"');
     expect(styles).toMatch(/\.save-system-grid\s*\{[\s\S]*?grid-template-columns: repeat\(3,/);

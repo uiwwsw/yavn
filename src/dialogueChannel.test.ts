@@ -7,6 +7,7 @@ const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.ur
 
 describe('dialogue presentation channels', () => {
   it('renders authored channel labels and channel-specific dialog classes', () => {
+    expect(appSource).toContain('narration: undefined');
     expect(appSource).toContain("record: '기록'");
     expect(appSource).toContain("system: '시스템'");
     expect(appSource).toContain('channel-${dialog.channel}');

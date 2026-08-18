@@ -35,6 +35,10 @@ function resolveEnsembleGap(mode: 'duo' | 'trio', spacing: number): string {
   return `min(${formatLayoutNumber(fluidCqw)}cqw, ${formatLayoutNumber(maximumPx)}px)`;
 }
 
+function negateStageDistance(distance: string): string {
+  return `calc(0px - ${distance})`;
+}
+
 export function resolveCharacterStageSpacing(spacings: readonly number[]): number {
   if (spacings.length <= 1) return 1;
   const safeSpacings = spacings.map((spacing) => Math.max(0.75, Math.min(1.25, spacing)));
@@ -99,6 +103,43 @@ export function resolveMobileCharacterStageAnchor(
   if (position === 'left') return '25cqw';
   if (position === 'right') return '75cqw';
   return '50cqw';
+}
+
+/**
+ * Moves a directed camera target to the stage centre before the camera scale is
+ * applied. Returning a translation instead of changing transform-origin keeps
+ * same-scale target changes animatable and prevents an actor from snapping
+ * between the left and right sides of a close shot.
+ */
+export function resolveCharacterCameraPanX(
+  position: Position,
+  layout: CharacterStageLayout,
+  spacing = 1,
+): string {
+  if (Object.keys(layout.characterIdByPosition).length <= 1) {
+    return '0cqw';
+  }
+
+  const duoSide = layout.mode === 'duo' ? layout.duoSideByPosition[position] : undefined;
+  const ensembleSide = duoSide ?? (layout.mode === 'trio' && position !== 'center' ? position : undefined);
+  if (ensembleSide) {
+    const gap = resolveEnsembleGap(layout.mode === 'duo' ? 'duo' : 'trio', spacing);
+    return ensembleSide === 'left' ? gap : negateStageDistance(gap);
+  }
+
+  if (position === 'left') return '25cqw';
+  if (position === 'right') return '-25cqw';
+  return '0cqw';
+}
+
+export function resolveMobileCharacterCameraPanX(
+  position: Position,
+  layout: CharacterStageLayout,
+): string {
+  const anchor = resolveMobileCharacterStageAnchor(position, layout);
+  if (anchor === '25cqw') return '25cqw';
+  if (anchor === '75cqw') return '-25cqw';
+  return '0cqw';
 }
 
 export function resolveDialogueVisibleCharacterIds(

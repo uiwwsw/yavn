@@ -24,26 +24,25 @@ describe('start gate presentation', () => {
     expect(app).toContain('const preview = await loadZipStartScreenPreview(uploadedGameFile)');
   });
 
-  it('keeps actions visible without gating them behind an entrance animation', () => {
-    expect(styles).toMatch(/\.start-gate-actions\s*\{[^}]*opacity: 1;[^}]*\}/);
-    expect(styles).not.toContain('@keyframes start-gate-actions-in');
+  it('introduces the title, frame, and actions with restrained opacity motion', () => {
+    expect(styles).toMatch(/\.start-gate-actions\s*\{[^}]*opacity: 0;[^}]*animation: start-gate-actions-in 520ms 260ms ease-out both;/);
+    expect(styles).toMatch(/@keyframes start-gate-actions-in\s*\{[\s\S]*?from \{ opacity: 0; \}[\s\S]*?to \{ opacity: 1; \}/);
     expect(styles).not.toContain('animation-name: start-gate-actions-center-in');
-    expect(styles).not.toMatch(/\.start-gate-actions\s*\{[^}]*animation:/);
     expect(styles).toMatch(/\.start-gate-title-block\s*\{[\s\S]*?animation: start-gate-title-in [^;]+ both;/);
     expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?animation: start-gate-frame-in [^;]+ both;/);
+    expect(styles).not.toContain('@keyframes start-gate-grain-shift');
   });
 
-  it('plays the button entrance before paint with a visible fallback and fail-safe cancellation', () => {
-    expect(app).toContain('const startGateActionsRef = useRef<HTMLDivElement | null>(null)');
-    expect(app).toContain("container.querySelectorAll<HTMLElement>('.start-gate-button, .start-gate-hint')");
-    expect(app).toContain("fill: 'backwards'");
-    expect(app).toContain('target.getBoundingClientRect()');
-    expect(app).toContain('viewportHeight - top + height + 24');
-    expect(app).toContain('transform: `translate3d(0, ${offscreenDistances[index]}px, 0)`');
-    expect(app).toContain("transform: 'translate3d(0, 0, 0)'");
-    expect(app).toContain('START_GATE_ACTION_FAILSAFE_BUFFER_MS');
-    expect(app).toContain('animations.forEach((animation) => animation.cancel())');
-    expect(app).toContain('<div ref={startGateActionsRef} className={actionClass}>');
+  it('avoids viewport-measured button flights and launches through one short black crossfade', () => {
+    expect(app).not.toContain('startGateActionsRef');
+    expect(app).not.toContain('target.getBoundingClientRect()');
+    expect(app).not.toContain('offscreenDistances');
+    expect(app).not.toContain('START_GATE_ACTION_FAILSAFE_BUFFER_MS');
+    expect(app).toContain('<div className={actionClass}>');
+    expect(app).toContain('window.setTimeout(resolve, 220)');
+    expect(styles).toMatch(/\.start-gate::after\s*\{[\s\S]*?background: #080709;[\s\S]*?transition: opacity 220ms ease-out;/);
+    expect(styles).toMatch(/\.start-gate\.is-launching::after\s*\{[\s\S]*?opacity: 1;/);
+    expect(styles).not.toContain('@keyframes start-gate-launch-mark');
   });
 
   it('renders a non-interactive surface only until direct-route game data can mount', () => {

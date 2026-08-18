@@ -71,12 +71,24 @@ textarea,
   --start-gate-accent: #e8bc72;
   --start-gate-muted: rgba(241, 225, 196, 0.66);
   position: relative;
+  isolation: isolate;
   width: 100%;
   min-height: 100%;
   overflow: hidden;
   background: var(--start-gate-bg);
   background-size: cover, cover, cover;
   background-position: center, center, center;
+}
+
+.start-gate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: #080709;
+  opacity: 0;
+  transition: opacity 220ms ease-out;
 }
 
 .start-gate[data-ui-template='neon-grid'] {
@@ -165,8 +177,8 @@ textarea,
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  transform: scale(1.025);
-  animation: start-gate-camera 14s cubic-bezier(0.2, 0.65, 0.32, 1) both;
+  transform: scale(1.012);
+  animation: start-gate-camera 1.6s cubic-bezier(0.2, 0.72, 0.24, 1) both;
 }
 
 .start-gate-title-art {
@@ -205,7 +217,7 @@ textarea,
   inset: clamp(14px, 2.2vw, 30px);
   border: 1px solid var(--start-gate-frame-color);
   opacity: 0;
-  animation: start-gate-frame-in 1.1s 280ms ease-out both;
+  animation: start-gate-frame-in 720ms 140ms ease-out both;
 }
 
 .start-gate-frame::before,
@@ -233,7 +245,6 @@ textarea,
   opacity: 0.13;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
-  animation: start-gate-grain-shift 420ms steps(2, end) infinite;
 }
 
 .start-gate-content {
@@ -252,7 +263,7 @@ textarea,
   text-align: center;
   width: min(92%, 980px);
   opacity: 0;
-  animation: start-gate-title-in 900ms 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: start-gate-title-in 680ms 100ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
 }
 
 .start-gate-title-ornament {
@@ -317,7 +328,8 @@ textarea,
   display: grid;
   gap: 10px;
   justify-items: stretch;
-  opacity: 1;
+  opacity: 0;
+  animation: start-gate-actions-in 520ms 260ms ease-out both;
 }
 
 .start-gate-actions-auto,
@@ -420,23 +432,20 @@ textarea,
 
 .start-gate.is-launching .start-gate-content {
   opacity: 0;
-  transform: scale(0.985);
-  transition: opacity 240ms ease, transform 240ms ease;
+  transition: opacity 150ms ease-out;
 }
 
 .start-gate.is-launching .start-gate-bg-image {
-  transform: scale(1.055);
-  filter: brightness(0.68) saturate(0.8);
-  transition: transform 320ms ease, filter 260ms ease;
+  animation-play-state: paused;
 }
 
 .start-gate.is-launching .start-gate-atmosphere {
-  opacity: 0.38;
-  transition: opacity 240ms ease;
+  opacity: 0.72;
+  transition: opacity 150ms ease-out;
 }
 
-.start-gate.is-launching .start-gate-button-start .start-gate-button-mark {
-  animation: start-gate-launch-mark 760ms ease-in-out infinite;
+.start-gate.is-launching::after {
+  opacity: 1;
 }
 
 .start-gate-button-load {
@@ -557,13 +566,13 @@ textarea,
 }
 
 @keyframes start-gate-camera {
-  from { transform: scale(1.08); filter: brightness(0.72) saturate(0.82); }
-  to { transform: scale(1.025); filter: brightness(1) saturate(1); }
+  from { transform: scale(1.032); filter: brightness(0.84) saturate(0.92); }
+  to { transform: scale(1.012); filter: brightness(1) saturate(1); }
 }
 
 @keyframes start-gate-title-in {
-  from { opacity: 0; transform: translate(-50%, 18px); filter: blur(6px); }
-  to { opacity: 1; transform: translate(-50%, 0); filter: blur(0); }
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 @keyframes start-gate-frame-in {
@@ -571,14 +580,9 @@ textarea,
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes start-gate-grain-shift {
-  0% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-1.5%, 1%, 0); }
-  100% { transform: translate3d(1%, -1.5%, 0); }
-}
-
-@keyframes start-gate-launch-mark {
-  50% { transform: translateX(5px); opacity: 0.48; }
+@keyframes start-gate-actions-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .game-route-boot {
@@ -1131,19 +1135,13 @@ textarea,
 }
 
 .char-composition-world {
-  --stage-composition-scale: 1;
-  --stage-composition-scale-mobile: var(--stage-composition-scale);
-  --stage-composition-render-scale: var(--stage-composition-scale);
-  --stage-composition-origin-y: 80%;
-  --stage-composition-origin-y-mobile: var(--stage-composition-origin-y);
-  --stage-composition-render-origin-y: var(--stage-composition-origin-y);
-  --stage-camera-zoom: 1;
-  --stage-camera-zoom-mobile: var(--stage-camera-zoom);
-  --stage-camera-render-zoom: var(--stage-camera-zoom);
-  --stage-camera-origin-x: 50cqw;
-  --stage-camera-origin-x-mobile: var(--stage-camera-origin-x);
-  --stage-camera-render-origin-x: var(--stage-camera-origin-x);
-  --stage-camera-origin-y: 50%;
+  --stage-camera-scale: 1;
+  --stage-camera-scale-mobile: var(--stage-camera-scale);
+  --stage-camera-render-scale: var(--stage-camera-scale);
+  --stage-camera-pan-x: 0cqw;
+  --stage-camera-pan-x-mobile: var(--stage-camera-pan-x);
+  --stage-camera-render-pan-x: var(--stage-camera-pan-x);
+  --stage-camera-origin-y: 80%;
   --stage-camera-origin-y-mobile: var(--stage-camera-origin-y);
   --stage-camera-render-origin-y: var(--stage-camera-origin-y);
   --stage-camera-duration: 0ms;
@@ -1153,9 +1151,11 @@ textarea,
   --character-leave-duration: 180ms;
   position: absolute;
   inset: 0;
-  transform-origin: 50% var(--stage-composition-render-origin-y);
-  transform: translateZ(0) scale(var(--stage-composition-render-scale));
-  transition: transform var(--stage-camera-duration) cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: 50cqw var(--stage-camera-render-origin-y);
+  transform: translateZ(0) scale(var(--stage-camera-render-scale));
+  transition:
+    transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)
+    var(--stage-camera-motion-delay);
   will-change: transform;
   contain: layout paint;
 }
@@ -1163,10 +1163,9 @@ textarea,
 .char-camera-world {
   position: absolute;
   inset: 0;
-  transform-origin: var(--stage-camera-render-origin-x) var(--stage-camera-render-origin-y);
-  transform: translateZ(0) scale(var(--stage-camera-render-zoom));
+  transform: translate3d(var(--stage-camera-render-pan-x), 0, 0);
   transition:
-    transform var(--stage-camera-motion-duration) cubic-bezier(0.22, 1, 0.36, 1)
+    transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)
     var(--stage-camera-motion-delay);
   will-change: transform;
   contain: layout paint;
@@ -1174,10 +1173,8 @@ textarea,
 
 @media (max-width: 768px) {
   .char-composition-world {
-    --stage-composition-render-scale: var(--stage-composition-scale-mobile);
-    --stage-composition-render-origin-y: var(--stage-composition-origin-y-mobile);
-    --stage-camera-render-zoom: var(--stage-camera-zoom-mobile);
-    --stage-camera-render-origin-x: var(--stage-camera-origin-x-mobile);
+    --stage-camera-render-scale: var(--stage-camera-scale-mobile);
+    --stage-camera-render-pan-x: var(--stage-camera-pan-x-mobile);
     --stage-camera-render-origin-y: var(--stage-camera-origin-y-mobile);
   }
 }
@@ -1326,13 +1323,13 @@ textarea,
   scale: var(--char-scale);
   visibility: visible;
   transition:
-    translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    scale 260ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity var(--character-opacity-duration) ease-out,
+    translate 380ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    scale 360ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1),
     visibility 0s linear var(--character-visibility-delay);
   backface-visibility: hidden;
   contain: paint;
-  animation: characterEnter 0.35s ease;
+  animation: characterEnter 240ms ease-out both;
   z-index: 3;
 }
 
@@ -1356,7 +1353,7 @@ textarea,
 }
 
 .char-layer[data-camera-shot='reaction'] .char.is-listener {
-  opacity: 0.22;
+  opacity: 0.36;
 }
 
 .char-image {
@@ -1710,9 +1707,9 @@ textarea,
 
 .save-system-body {
   display: grid;
-  align-content: start;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: 0;
-  overflow-y: auto;
+  overflow: hidden;
   overscroll-behavior: contain;
 }
 
@@ -3062,9 +3059,15 @@ textarea,
 }
 
 .save-system-grid {
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: max-content;
+  align-content: start;
   gap: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 3px;
 }
 
 .save-system-section {
@@ -3161,12 +3164,19 @@ textarea,
 }
 
 .save-preferences-section {
+  position: relative;
+  z-index: 1;
   min-height: 0;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
   border: 0;
   background: transparent;
   padding: 0;
+}
+
+.save-system-status {
+  position: relative;
+  z-index: 1;
 }
 
 .save-preferences-section::before,
@@ -4372,7 +4382,7 @@ textarea,
 }
 
 .effect-focus::after {
-  background: radial-gradient(circle at 50% 42%, transparent 0 18%, rgba(2, 5, 10, 0.82) 54%, rgba(0, 0, 0, 0.94) 100%);
+  background: radial-gradient(circle at 50% 42%, transparent 0 32%, rgba(2, 5, 10, 0.34) 68%, rgba(0, 0, 0, 0.58) 100%);
   animation: focusSnap 0.62s ease-out;
 }
 
@@ -4611,15 +4621,9 @@ textarea,
 @keyframes characterEnter {
   from {
     opacity: 0;
-    translate:
-      calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))
-      calc(var(--char-framing-y) + var(--char-calibration-y) + 10px);
   }
   to {
     opacity: var(--char-focus-opacity);
-    translate:
-      calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))
-      calc(var(--char-framing-y) + var(--char-calibration-y));
   }
 }
 
@@ -4806,8 +4810,8 @@ textarea,
 }
 
 @keyframes focusSnap {
-  0% { opacity: 0; transform: scale(1.3); }
-  32% { opacity: 1; }
+  0% { opacity: 0; transform: scale(1.04); }
+  38% { opacity: 0.76; }
   100% { opacity: 0; transform: scale(1); }
 }
 

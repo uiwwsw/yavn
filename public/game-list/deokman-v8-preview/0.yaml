@@ -6,7 +6,6 @@ scenes:
     actions:
       - bg: peony_court
       - camera: wide
-      - effect: focus
       - say:
           channel: record
           delivery: calm
@@ -23,6 +22,7 @@ scenes:
       - char: { id: 소화, position: right }
       - say:
           channel: narration
+          camera: medium
           delivery: calm
           text: "하지만 기록이 찍힌 그 시각, 덕만은 살아서 별궁의 찬 돌바닥을 밟고 있었습니다."
       - say:
@@ -444,6 +444,7 @@ scenes:
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
           channel: narration
+          camera: medium
           delivery: nervous
           text: "처마가 무너지는 소리와 함께 별궁의 세 문이 동시에 닫혔습니다. 불은 바람을 거슬러 안쪽부터 번졌습니다."
       - say:
@@ -528,6 +529,7 @@ scenes:
       - char: { id: 소화, position: right }
       - say:
           channel: narration
+          camera: medium
           text: "덕만은 낮에 보아 둔 왼쪽 담으로 달렸습니다. 빗물을 빼는 돌판 아래에는 아이 하나가 겨우 기어갈 틈이 있었습니다."
       - say:
           char: 소화.nervous
@@ -569,6 +571,7 @@ scenes:
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
           channel: narration
+          camera: medium
           text: "덕만이 청동 모란패를 치켜들자 북문의 창끝이 동시에 내려갔습니다. 닫힌 문이 열렸고, 수비대 모두가 아이의 얼굴을 보았습니다."
       - say:
           char: 소화.nervous
