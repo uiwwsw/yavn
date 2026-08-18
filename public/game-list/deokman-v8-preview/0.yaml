@@ -394,6 +394,8 @@ scenes:
           char: 어린 덕만.scared
           camera: close
           with: [소화]
+          timeoutMs: 5500
+          timeoutOptionIndex: 3
           options:
             - text: "왼쪽 담 아래 물길로 소화와 함께 나간다"
               when: { var: observed_left_waterway, op: eq, value: true }
