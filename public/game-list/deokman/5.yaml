@@ -13,7 +13,7 @@ scenes:
       - char: { id: 진평왕, position: right, emotion: weak }
       - say:
           channel: narration
-          text: "왕실 제관들은 열흘 뒤 해가 사라질 것이라며 덕만의 귀환 때문에 하늘이 노했다고 주장했습니다. 시장에서는 벌써 검은 천이 부적값으로 팔렸습니다."
+          text: "모란 연회 다음 날, 왕실 제관들은 당의 관측표와 정확히 같은 날짜를 '신의 계시'라 내놓았습니다. 열흘 뒤 해가 사라지는 까닭이 덕만의 귀환이라 주장했고, 시장에서는 벌써 검은 천이 부적값으로 팔렸습니다."
       - say:
           char: 진평왕.weak
           camera: close
@@ -80,7 +80,7 @@ scenes:
       - get: eclipse_table
       - say:
           channel: narration
-          text: "계산 결과, 해는 정오 직후부터 짧은 시간 가려집니다. 덕만은 예언을 깨뜨릴 수도, 더 큰 예언을 만들어 제관을 눌러 버릴 수도 있었습니다."
+          text: "계산 결과, 해는 정오 직후부터 짧은 시간 가려집니다. 표 아래에는 덕만을 지목할 시각과 왕실 옥새의 인영까지 미리 찍혀 있었습니다. 덕만은 예언을 깨뜨릴 수도, 더 큰 예언을 만들어 제관을 눌러 버릴 수도 있었습니다."
       - clearSticker: { id: c6_table, leave: fadeOut }
       - goto: eclipse_policy
 
@@ -199,6 +199,9 @@ scenes:
       - say:
           channel: record
           text: "덕만은 해를 되돌리지 않았습니다. 다만 해를 훔쳐 권력을 만들던 사람들의 시간을 빼앗았습니다."
+      - say:
+          channel: narration
+          text: "군중이 흩어진 뒤 진평왕은 계산표의 옥새를 보고 자신이 찍은 적 없다고 말했습니다. 그는 덕만에게 밤중의 빈 왕좌로 오라며, 진짜 옥새가 어디에 있는지 보여 주겠다고 했습니다."
       - goto: /6.yaml
 
   bad_dark_crowd:

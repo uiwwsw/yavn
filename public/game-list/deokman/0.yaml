@@ -447,6 +447,9 @@ scenes:
           unskippable: true
           text: "기록에는 내가 죽었다고 되어 있어. 궁 밖에서 이름을 숨기고, 누가 나를 죽이려 했는지 찾을 거야."
       - say:
+          channel: narration
+          text: "소화는 국경 상단에 몸을 숨길 길을 정했고, 덕만은 그날 본 붉은 인장과 모란 그림을 기억했습니다. 두 단서가 다시 만나는 곳이 돌아갈 때를 알려 줄 것이었습니다."
+      - say:
           channel: record
           delivery: calm
           text: "왕실 기록에서 공주는 죽었습니다. 그러나 그날 밤 덕만은 별궁을 빠져나와 살아남았습니다."
@@ -478,6 +481,14 @@ scenes:
       - say:
           channel: narration
           text: "문을 지킨 병사들은 곧 칠숙에게 덕만의 얼굴을 설명했습니다. 덕만은 살아남았지만 더는 완전히 숨을 수 없었습니다."
+      - say:
+          char: 어린 덕만.resolve
+          camera: close
+          with: [소화]
+          text: "저들이 내 얼굴을 기억한다면 나도 저 인장을 기억할 거야. 국경에서 살아남으며 저 도장이 움직이는 길을 찾자."
+      - say:
+          channel: record
+          text: "소화와 덕만은 추적을 피해 국경 상단으로 숨어들었습니다. 죽은 공주의 이름 대신 붉은 인장의 행로를 쫓는 십 년이 시작됐습니다."
       - set: { c1_escape_route: token, identity_exposed: true }
       - add: { nobles_support: 1, fear: 1 }
       - goto: /1.yaml
@@ -509,6 +520,14 @@ scenes:
       - say:
           channel: narration
           text: "친위대가 두 사람을 동쪽 문으로 빼냈습니다. 칠숙의 부하가 그 모습을 보았습니다. 기록은 지켰지만 칠숙도 덕만이 살아 있다는 사실을 알게 됐습니다."
+      - say:
+          char: 어린 덕만.resolve
+          camera: close
+          with: [진평왕]
+          text: "이 기록을 되찾으러 오겠습니다. 그때는 전하의 도장을 누가 빌렸는지도 함께 밝히겠습니다."
+      - say:
+          channel: record
+          text: "진평왕은 그을린 원본을 숨겼고, 덕만과 소화는 국경으로 향했습니다. 공주는 십 년 동안 원본과 같은 붉은 인장을 추적했습니다."
       - set: { c1_escape_route: record, identity_exposed: true }
       - add: { king_trust: 2, evidence: 2 }
       - goto: /1.yaml

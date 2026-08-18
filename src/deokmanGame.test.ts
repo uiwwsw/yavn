@@ -41,14 +41,14 @@ const collectStrings = (value: unknown, result: string[] = []): string[] => {
   return result;
 };
 
-const readExtendedWebpCanvas = (path: string): { width: number; height: number; hasAlpha: boolean } => {
+const readPngCanvas = (path: string): { width: number; height: number; hasAlpha: boolean } => {
   const source = readFileSync(path);
-  expect(source.toString('ascii', 0, 4), path).toBe('RIFF');
-  expect(source.toString('ascii', 8, 16), path).toBe('WEBPVP8X');
+  expect(source.subarray(0, 8), path).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  expect(source.toString('ascii', 12, 16), path).toBe('IHDR');
   return {
-    width: source.readUIntLE(24, 3) + 1,
-    height: source.readUIntLE(27, 3) + 1,
-    hasAlpha: (source[20] & 0x10) !== 0,
+    width: source.readUInt32BE(16),
+    height: source.readUInt32BE(20),
+    hasAlpha: source[25] === 4 || source[25] === 6,
   };
 };
 
@@ -79,7 +79,7 @@ describe('complete Deokman visual novel', () => {
     const config = parseConfigYaml(readSource('config.yaml'), 'deokman/config.yaml');
     const launcher = readYaml('launcher.yaml');
 
-    expect(config.data?.data.version).toBe('8.0.0');
+    expect(config.data?.data.version).toBe('8.1.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -113,6 +113,25 @@ describe('complete Deokman visual novel', () => {
       'fallen_star',
       'nameless_queen',
     ]));
+  });
+
+  it('carries one causal evidence chain across all twelve chapters', () => {
+    const continuityAnchors = [
+      ['0.yaml', '두 단서가 다시 만나는 곳'],
+      ['1.yaml', '서라벌 서쪽 창고'],
+      ['2.yaml', '암살자의 밀랍을 국경의 곡식길과 연결'],
+      ['3.yaml', '당의 원조 표식'],
+      ['4.yaml', '다음 일식의 관측표'],
+      ['5.yaml', '계산표의 옥새'],
+      ['6.yaml', '별궁의 사망 기록과 국경 수색표'],
+      ['7.yaml', '사건보다 먼저 완성된 문서'],
+      ['8.yaml', '하늘과 곡식의 변화를 누구나 확인할 관측대'],
+      ['9.yaml', '전령들이 쓰던 매듭과 기름 먹인 연'],
+      ['10.yaml', '사실보다 먼저 결론을 퍼뜨린 같은 방식'],
+      ['11.yaml', '열두 장의 사건이 하나의 질문'],
+    ] as const;
+
+    continuityAnchors.forEach(([path, anchor]) => expect(readSource(path), path).toContain(anchor));
   });
 
   it('ships a drama-sized choice and consequence graph without duplicate save keys', () => {
@@ -234,12 +253,12 @@ describe('complete Deokman visual novel', () => {
     });
 
     const childSprites = [
-      'deokman-child-silla-v7.webp',
-      'deokman-child-scared-silla-v7.webp',
-      'deokman-child-resolve-silla-v7.webp',
-    ].map((filename) => readExtendedWebpCanvas(`${gameRoot}assets/char/${filename}`));
+      'deokman-child-silla-v8.png',
+      'deokman-child-scared-silla-v8.png',
+      'deokman-child-resolve-silla-v8.png',
+    ].map((filename) => readPngCanvas(`${gameRoot}assets/char/${filename}`));
 
-    expect(new Set(childSprites.map(({ width, height }) => `${width}x${height}`))).toEqual(new Set(['888x1771']));
+    expect(new Set(childSprites.map(({ width, height }) => `${width}x${height}`))).toEqual(new Set(['886x1775']));
     childSprites.forEach(({ hasAlpha }) => expect(hasAlpha).toBe(true));
 
     const itemFiles = [

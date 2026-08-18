@@ -13,7 +13,7 @@ scenes:
       - char: { id: 춘추, position: right }
       - say:
           channel: narration
-          text: "즉위 첫겨울, 북쪽 성은 보수를 요구했고 남쪽 마을은 홍수 예측을 요구했습니다. 국고는 두 일 중 하나만 온전히 감당할 수 있었습니다."
+          text: "즉위 첫겨울, 덕만이 명한 관측대 검토안이 첫 예산안으로 돌아왔습니다. 북쪽 성은 보수를 요구했고 남쪽 마을은 홍수 예측을 요구했으며, 즉위 때 약속한 감사 아래 국고는 두 일 중 하나만 온전히 감당할 수 있었습니다."
       - say:
           char: 춘추
           camera: medium
@@ -188,12 +188,59 @@ scenes:
           char: 덕만
           camera: close
           text: "이 탑은 내 별을 보려고 세운 것이 아니다. 사람들이 왕의 예언 없이도 내일을 준비하게 하려고 세웠다."
+      - branch:
+          cases:
+            - when: { var: knowledge_policy, op: eq, value: bidam_network }
+              goto: monopolized_tower
+          default: challenged_network
+
+  challenged_network:
+    actions:
       - say:
           channel: narration
-          text: "아이들이 탑 아래서 그림 달력을 베꼈습니다. 왕실의 지식은 처음으로 왕실 밖에서 틀리고 고쳐질 수 있게 됐습니다."
+          text: "아이들이 탑 아래서 그림 달력과 분할 관측표를 서로 맞춰 보았습니다. 왕실의 지식은 처음으로 왕실 밖에서 틀리고 고쳐질 수 있게 됐습니다."
+      - char: { id: 비담, position: right, emotion: sad }
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "누구나 같은 표를 읽는다면 제 정보망과 제가 목숨 걸어 얻은 판단은 필요 없어지겠군요. 폐하께서는 사람을 믿는 대신 사람을 바꿔도 되는 구조를 택하셨습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "너를 버리는 것이 아니다. 너를 포함해 누구도 나라에 없어서는 안 될 문이 되지 않게 하는 거야."
+      - say:
+          channel: narration
+          text: "비담은 대답 없이 떠났습니다. 그날 밤 그의 북쪽 연락망이 끊겼고, 방화 현장에서는 전령들이 쓰던 매듭과 기름 먹인 연의 대나무 조각이 함께 발견됐습니다."
+      - goto: observatory_end
+
+  monopolized_tower:
+    actions:
+      - say:
+          channel: narration
+          text: "탑은 완성됐지만 관측표를 읽으려는 사람들은 비담의 전령에게 먼저 이름을 적어야 했습니다. 불을 끄는 동안에도 관리들은 왕보다 비담의 허가를 기다렸습니다."
+      - char: { id: 비담, position: right, emotion: smirk }
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "폐하께서 고르신 빠른 길입니다. 문이 하나라서 늦지 않았고, 그 문을 제가 지켰습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [비담]
+          text: "빠른 길을 택한 대가로 네 허락이 법보다 앞섰구나. 오늘부터 관측표를 복제하고 네 정보망도 두 기록관의 감사를 받게 하겠다."
+      - say:
+          channel: narration
+          text: "비담의 표정에서 웃음이 사라졌습니다. 그날 밤 그의 북쪽 연락망이 끊겼고, 방화 현장에서는 전령들이 쓰던 매듭과 기름 먹인 연의 대나무 조각이 함께 발견됐습니다."
+      - goto: observatory_end
+
+  observatory_end:
+    actions:
       - say:
           channel: record
-          text: "덕만은 별을 세운 것이 아니라 별을 읽을 사람을 세웠습니다. 그 선택은 곧 지식을 독점하려는 가장 가까운 신하와 충돌했습니다."
+          text: "덕만은 별을 읽을 사람을 늘리거나, 자신이 만든 독점을 뒤늦게 해체하려 했습니다. 어느 길에서도 지식의 문을 지키던 가장 가까운 신하와의 충돌은 피할 수 없었습니다."
       - goto: /10.yaml
 
   bad_monument:

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-18T11:10:22.949Z",
+  "generatedAt": "2026-08-18T12:20:48.387Z",
   "games": [
     {
       "id": "deokman",
       "name": "덕만: 별은 왕을 선택하지 않는다",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "8.0.0",
+      "version": "8.1.0",
       "summary": "죽었다고 기록된 어린 덕만이 살아남아 이름을 되찾고, 귀족의 창고와 예언 권력을 넘어 신라 최초의 여왕이 된 뒤 비담의 반란과 자신의 기록을 판결하는 12장 완결 시대극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
