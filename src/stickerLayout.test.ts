@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   fitStickerWithinFrame,
   fitStickerWithinFrameAvoidingRects,
+  shouldRelayoutStickerForStageResize,
   type StickerLayoutRect,
 } from './stickerLayout';
 
@@ -232,5 +233,39 @@ describe('sticker character collision avoidance', () => {
     expect(projected.right).toBeLessThanOrEqual(narrowFrame.right);
     expect(projected.top).toBeGreaterThanOrEqual(narrowFrame.top);
     expect(projected.bottom).toBeLessThanOrEqual(narrowFrame.bottom);
+  });
+});
+
+describe('sticker stage resize stability', () => {
+  it('ignores height-only mobile visual viewport changes', () => {
+    expect(shouldRelayoutStickerForStageResize(
+      { width: 390, height: 693 },
+      { width: 390, height: 612 },
+    )).toBe(false);
+  });
+
+  it('reflows after a device orientation change', () => {
+    expect(shouldRelayoutStickerForStageResize(
+      { width: 390, height: 693 },
+      { width: 693, height: 390 },
+    )).toBe(true);
+  });
+
+  it('reflows after a meaningful desktop width or height change', () => {
+    expect(shouldRelayoutStickerForStageResize(
+      { width: 1200, height: 800 },
+      { width: 1080, height: 800 },
+    )).toBe(true);
+    expect(shouldRelayoutStickerForStageResize(
+      { width: 1200, height: 800 },
+      { width: 1200, height: 650 },
+    )).toBe(true);
+  });
+
+  it('ignores subpixel and small desktop resize noise', () => {
+    expect(shouldRelayoutStickerForStageResize(
+      { width: 1200, height: 800 },
+      { width: 1199.5, height: 799.25 },
+    )).toBe(false);
   });
 });
