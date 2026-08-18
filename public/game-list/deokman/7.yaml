@@ -1,0 +1,242 @@
+script:
+  - scene: poisoned_procession
+
+scenes:
+  poisoned_procession:
+    actions:
+      - bg: village
+      - camera: wide
+      - say:
+          channel: record
+          text: "제8장 — 한 사람을 버리는 법"
+      - char: { id: 덕만, position: left }
+      - char: { id: 천명, position: right }
+      - say:
+          channel: narration
+          text: "두 공주가 구휼 창고를 살피던 날, 지붕 위에서 날아온 화살이 천명의 어깨를 스쳤습니다. 독은 빠르게 번졌고 암살자는 덕만의 모란패를 흘리고 달아났습니다."
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "내가 죽으면 네가 시킨 일이 되고, 네가 잡히면 내가 왕좌를 탐낸 일이 되겠지. 화살 하나가 우리 둘의 이야기를 다 써 두었어."
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          char: 유신.angry
+          camera: reaction
+          with: [덕만]
+          text: "의원에게 가는 큰길은 막혔습니다. 암살자를 쫓으면 해독할 사람을 놓칠 수 있습니다."
+      - choice:
+          key: c8_first_response
+          prompt: "천명의 독이 퍼지는 순간 무엇을 먼저 하겠습니까?"
+          char: 덕만
+          camera: reaction
+          with: [유신]
+          options:
+            - text: "천명을 시장 의원에게 데려가 사람들 앞에서 살린다"
+              add: { cheonmyeong_trust: 2, people_support: 2, evidence: -1 }
+              goto: public_treatment
+            - text: "유신은 천명을 옮기고 덕만은 암살자를 추적한다"
+              add: { evidence: 2, yushin_trust: 2, fear: 1 }
+              goto: divided_rescue
+            - text: "비담의 비밀 의원에게 맡겨 죽었다는 소문을 낸다"
+              add: { bidam_trust: 2, insight: 1, fear: 1 }
+              goto: false_death
+
+  public_treatment:
+    actions:
+      - bg: village
+      - char: { id: 천명, position: right, emotion: sad }
+      - say:
+          channel: narration
+          text: "덕만은 천명을 업고 시장 한복판을 가로질렀습니다. 수백 명이 동생이 언니를 살리려는 모습을 보았지만 암살자의 흔적은 비에 씻겼습니다."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "오늘 사람들은 우리를 믿을 거야. 배후는 다음 화살을 준비하겠지."
+      - goto: forged_confession
+
+  divided_rescue:
+    actions:
+      - bg: frontier
+      - say:
+          channel: narration
+          text: "유신은 천명을 의원에게 옮겼고 덕만은 암살자의 발자국을 따라 버려진 초소에 도착했습니다. 그곳에는 귀족 회의의 금화와 덕만의 필체를 흉내 낸 명령서가 있었습니다."
+      - say:
+          char: 덕만.sad
+          text: "증거는 찾았지만 천명이 눈을 뜨는 순간에 곁에 있지 못했어. 왕이 되면 이런 선택을 매일 하게 되겠지."
+      - goto: forged_confession
+
+  false_death:
+    actions:
+      - bg: locked_room
+      - char: { id: 비담, position: right }
+      - say:
+          channel: narration
+          text: "비담의 의원은 천명을 살렸고 궁에는 사망 소식이 들어갔습니다. 암살을 지시한 자들은 안도하며 서로에게 축하 서신을 보냈습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "살아 있는 사람을 죽었다고 만드는 건 공주님 가족의 오래된 재주인가 봅니다. 이번에는 도움이 됐고요."
+      - say:
+          char: 덕만.angry
+          text: "한 번 더 그런 말을 하면 네 혀보다 먼저 네 의도를 의심하겠다."
+      - goto: forged_confession
+
+  forged_confession:
+    actions:
+      - bg: council_hall
+      - camera: wide
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "이튿날 귀족 회의는 덕만이 계승권을 얻으려고 천명을 제거했다는 자백문을 공개했습니다. 서명자는 이미 죽은 하급 군관이었습니다."
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "어머니가 살아 계셔도 모습을 드러내면 내전이 시작됩니다. 죽었다고 하면 공주님이 범인으로 남습니다."
+      - choice:
+          key: c8_public_story
+          prompt: "천명의 생사와 자백문을 어떻게 발표하겠습니까?"
+          char: 덕만
+          camera: medium
+          with: [춘추]
+          options:
+            - text: "천명을 직접 회의에 세워 자백문을 반박하게 한다"
+              when: { var: sisters_public, op: eq, value: true }
+              add: { nobles_support: 1, people_support: 2, cheonmyeong_trust: 1 }
+              goto: sister_testimony
+            - text: "천명은 치료 중이라 밝히고 위조 증거만 공개한다"
+              add: { evidence: 2, chunchu_trust: 1 }
+              goto: evidence_only
+            - text: "사망 발표를 유지해 배후가 움직일 때까지 기다린다"
+              add: { evidence: 2, fear: 2, cheonmyeong_trust: -1 }
+              goto: keep_death_story
+
+  sister_testimony:
+    actions:
+      - bg: throne_hall
+      - char: { id: 천명, position: right, emotion: sad }
+      - say:
+          char: 천명.sad
+          camera: medium
+          with: [덕만]
+          text: "나를 죽이려 한 사람은 덕만이 아닙니다. 그러나 오늘부터 제 목숨을 덕만의 결백을 증명하는 도구로 쓰지도 마십시오."
+      - say:
+          channel: narration
+          text: "자백문은 무너졌지만 천명은 살아 있는 한 매번 덕만의 정당성을 증명하라는 요구를 받게 되었습니다."
+      - goto: sister_decision
+
+  evidence_only:
+    actions:
+      - say:
+          channel: narration
+          text: "필체의 틀린 획과 죽은 군관의 날짜가 공개되자 자백문은 위조로 판명됐습니다. 천명의 침묵은 안전을 지켰지만 사람들은 침묵 속에 각자 다른 생사를 채웠습니다."
+      - goto: sister_decision
+
+  keep_death_story:
+    actions:
+      - say:
+          channel: narration
+          text: "천명의 장례가 준비되는 동안 배후의 서신 다섯 통이 잡혔습니다. 천명은 관 뒤 숨은 방에서 자신의 장례 절차를 들었습니다."
+      - char: { id: 천명, position: right, emotion: sad }
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "증거를 얻었구나. 그런데 사람들이 내 이름으로 우는 동안 나는 살아 있다고 말할 수 없었어. 살아남은 대가가 내 삶을 잃는 일이라면 얼마나 오래 견딜까."
+      - goto: sister_decision
+
+  sister_decision:
+    actions:
+      - bg: princess_chamber
+      - camera: medium
+      - char: { id: 덕만, position: left }
+      - char: { id: 천명, position: right, emotion: sad }
+      - say:
+          char: 천명.sad
+          text: "내가 궁에 남으면 그들은 계속 나를 네 대안으로 세울 거야. 내가 떠나면 네가 나를 버렸다고 하겠지. 이번 선택은 내가 하고 싶어."
+      - choice:
+          key: c8_cheonmyeong_fate
+          prompt: "천명의 선택에 어떻게 답하겠습니까?"
+          char: 덕만
+          camera: close
+          with: [천명]
+          options:
+            - text: "천명을 국경으로 보내 독자적인 구휼 조직을 맡긴다"
+              set: { cheonmyeong_outcome: exile }
+              add: { cheonmyeong_trust: 2, people_support: 1, nobles_support: -1 }
+              goto: living_exile
+            - text: "궁 안 비밀방에 살아 있게 하고 죽음을 유지한다"
+              set: { cheonmyeong_outcome: hidden_alive }
+              add: { evidence: 1, fear: 2, chunchu_trust: -1 }
+              goto: hidden_alive
+            - text: "덕만이 모든 죄를 인정하고 천명 대신 처형대에 선다"
+              goto: bad_self_sacrifice
+
+  living_exile:
+    actions:
+      - bg: frontier
+      - camera: wide
+      - say:
+          channel: narration
+          text: "천명은 왕실 이름을 내려놓고 국경의 구휼소로 떠났습니다. 추방처럼 보였지만 처음으로 누구의 대안도 아닌 자신의 일을 가졌습니다."
+      - say:
+          char: 천명
+          camera: close
+          with: [덕만]
+          text: "사람들은 네가 나를 버렸다고 할 거야. 우리가 아니라고 아는 것으로 견디자."
+      - goto: abandoned_end
+
+  hidden_alive:
+    actions:
+      - bg: locked_room
+      - say:
+          channel: narration
+          text: "천명은 궁 안에서 살아남았습니다. 덕만은 매일 밤 조언을 들을 수 있었지만, 천명은 햇빛 아래 자기 이름으로 한 걸음도 걸을 수 없었습니다."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "네 곁에 남는 것이 해피엔딩 같았어. 그런데 나는 네 곁에만 존재하는 사람이 되었구나."
+      - goto: abandoned_end
+
+  abandoned_end:
+    actions:
+      - bg: moon_court
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: sad }
+      - say:
+          channel: narration
+          text: "덕만은 천명을 살리기 위해 천명과 함께할 미래 하나를 버렸습니다. 왕이 된다는 것은 사람을 버리는 일이 아니라, 어떤 삶을 남길지 대신 결정하지 않는 법을 배우는 일이었습니다."
+      - say:
+          char: 덕만.sad
+          text: "언니를 버린 것이 아니다. 함께 왕실에 남을 수 있다는 내 욕심을 버린 거야."
+      - say:
+          channel: record
+          text: "천명의 자리는 비었습니다. 그 빈자리는 곧 왕위를 둘러싼 모든 세력이 차지하려는 장소가 되었습니다."
+      - goto: /8.yaml
+
+  bad_self_sacrifice:
+    actions:
+      - bg: throne_hall
+      - camera: close
+      - char: { id: 덕만, position: left, emotion: sad }
+      - char: { id: 천명, position: right, emotion: sad }
+      - say:
+          char: 덕만.sad
+          text: "언니는 살아야 해. 내가 자백문이 사실이라고 말하면 모두 끝나."
+      - say:
+          char: 천명.sad
+          text: "네가 죽으면 내가 살아서 네 죄를 증명하는 사람이 돼. 그것은 나를 구하는 일이 아니야."
+      - say:
+          channel: narration
+          text: "덕만의 자백은 위조문을 진실로 만들었습니다. 천명은 풀려났지만 동생을 죽이고 얻은 왕위라는 소문에서 평생 벗어나지 못했습니다."
+      - say:
+          channel: record
+          text: "반역 재판 기록 — 덕만 공주, 언니 천명 암살 모의 자백 후 처형. 왕위 계승 분쟁 종결."
+      - gameOver:
+          title: "운명 — 대신 죽는다는 폭력"
+          message: "자기희생은 천명에게 선택권을 돌려주지 않았습니다. 덕만은 언니를 살린다는 명분으로 언니에게 가장 무거운 삶을 강요했습니다."

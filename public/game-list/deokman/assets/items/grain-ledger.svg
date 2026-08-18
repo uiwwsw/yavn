@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">사라진 구휼 곡식 장부</title>
+  <desc id="desc">백성에게 갈 곡식 수량이 귀족 창고로 옮겨진 흔적을 적은 낡은 장부다.</desc>
+  <defs>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#765437"/><stop offset="1" stop-color="#2f241d"/></linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f3e6c6"/><stop offset="1" stop-color="#c4a373"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%"><feDropShadow dx="5" dy="16" stdDeviation="12" flood-opacity=".62"/></filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(2 320 200)">
+    <path d="M100 59h416v285H100z" fill="url(#cover)" stroke="#1d1714" stroke-width="10" rx="18"/>
+    <path d="M137 78h338v246H137z" fill="url(#page)" stroke="#8b6944" stroke-width="5"/>
+    <path d="M196 78v246M289 78v246M382 78v246M137 129h338M137 180h338M137 231h338M137 282h338" stroke="#785c3d" stroke-width="4" opacity=".62"/>
+    <path d="M163 104h91M314 104h133M163 154h66M314 154h104M163 205h111M314 205h74M163 256h78M314 256h128M163 305h122" stroke="#31271f" stroke-width="9" stroke-linecap="round" opacity=".72"/>
+    <path d="M400 137l46 20-35 70-49-22z" fill="#81242e" opacity=".88"/>
+  </g>
+</svg>

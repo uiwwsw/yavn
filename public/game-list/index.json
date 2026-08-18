@@ -1,24 +1,25 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-18T07:16:11.808Z",
+  "generatedAt": "2026-08-18T11:10:22.949Z",
   "games": [
     {
-      "id": "deokman-v8-preview",
+      "id": "deokman",
       "name": "덕만: 별은 왕을 선택하지 않는다",
-      "path": "/game-list/deokman-v8-preview/",
+      "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "8.0.0-preview.7",
-      "summary": "덕만 v8의 첫 완성 장면. 왕실 족보에는 죽었다고 적힌 어린 덕만이 자기 사망 기록의 진실을 밝히고 불타는 별궁에서 탈출해야 합니다.",
-      "thumbnail": "/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp",
+      "version": "8.0.0",
+      "summary": "죽었다고 기록된 어린 덕만이 살아남아 이름을 되찾고, 귀족의 창고와 예언 권력을 넘어 신라 최초의 여왕이 된 뒤 비담의 반란과 자신의 기록을 판결하는 12장 완결 시대극.",
+      "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
         "historical-fiction",
         "silla",
-        "vertical-slice",
+        "complete",
         "character-drama",
-        "deadly-choices"
+        "political-thriller",
+        "consequential-choices"
       ],
       "showcase": {
-        "label": "V8 PREVIEW · CHAPTER 01",
+        "label": "COMPLETE · 12 CHAPTERS",
         "backgroundColor": "#181722",
         "image": {
           "positionX": 54,
@@ -29,24 +30,26 @@
         }
       },
       "legalNotices": [],
-      "chapterCount": 1,
+      "chapterCount": 12,
       "seo": {
         "title": "덕만: 별은 왕을 선택하지 않는다",
-        "description": "왕실 족보에는 죽었다고 적힌 어린 덕만이 자기 사망 기록의 진실을 밝히고 불타는 별궁에서 탈출하는 선덕여왕 비주얼노벨 v8 수직 슬라이스.",
+        "description": "죽었다고 기록된 어린 공주 덕만이 살아 있는 유령에서 신라의 여왕이 되고, 예언과 기록을 독점한 권력을 백성에게 돌려주는 12장 완결 시대극 비주얼노벨.",
         "keywords": [
           "선덕여왕",
           "덕만",
           "신라",
           "역사 비주얼노벨",
           "선택형 드라마",
+          "완결 게임",
           "historical-fiction",
           "silla",
-          "vertical-slice",
+          "complete",
           "character-drama",
-          "deadly-choices"
+          "political-thriller",
+          "consequential-choices"
         ],
-        "image": "/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp",
-        "imageAlt": "금지된 기록과 모란패를 쥔 어린 덕만 뒤로 불타는 신라 별궁과 검은 별이 보이는 밤"
+        "image": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
+        "imageAlt": "금지된 사망 기록을 든 덕만 뒤로 불타는 신라 별궁과 검은 별이 보이는 밤"
       }
     },
     {
@@ -204,9 +207,10 @@
       "Live2D 테스트: 렌 수다",
       "historical-fiction",
       "silla",
-      "vertical-slice",
+      "complete",
       "character-drama",
-      "deadly-choices",
+      "political-thriller",
+      "consequential-choices",
       "detective",
       "branch-heavy",
       "sample",
@@ -225,6 +229,7 @@
       "신라",
       "역사 비주얼노벨",
       "선택형 드라마",
+      "완결 게임",
       "명탐정 코난",
       "추리 게임",
       "비주얼노벨",

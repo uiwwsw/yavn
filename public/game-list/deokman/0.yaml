@@ -450,7 +450,9 @@ scenes:
           channel: record
           delivery: calm
           text: "왕실 기록에서 공주는 죽었습니다. 그러나 그날 밤 덕만은 별궁을 빠져나와 살아남았습니다."
-      - ending: hidden_name
+      - set: { c1_escape_route: waterway, identity_exposed: false }
+      - add: { sohwa_trust: 2, people_support: 1, insight: 1 }
+      - goto: /1.yaml
 
   escape_token:
     actions:
@@ -476,7 +478,9 @@ scenes:
       - say:
           channel: narration
           text: "문을 지킨 병사들은 곧 칠숙에게 덕만의 얼굴을 설명했습니다. 덕만은 살아남았지만 더는 완전히 숨을 수 없었습니다."
-      - ending: marked_survivor
+      - set: { c1_escape_route: token, identity_exposed: true }
+      - add: { nobles_support: 1, fear: 1 }
+      - goto: /1.yaml
 
   escape_record:
     actions:
@@ -505,7 +509,9 @@ scenes:
       - say:
           channel: narration
           text: "친위대가 두 사람을 동쪽 문으로 빼냈습니다. 칠숙의 부하가 그 모습을 보았습니다. 기록은 지켰지만 칠숙도 덕만이 살아 있다는 사실을 알게 됐습니다."
-      - ending: ash_witness
+      - set: { c1_escape_route: record, identity_exposed: true }
+      - add: { king_trust: 2, evidence: 2 }
+      - goto: /1.yaml
 
   bad_smoke:
     actions:
