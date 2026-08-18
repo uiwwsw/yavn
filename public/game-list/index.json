@@ -1,15 +1,15 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-18T02:09:26.645Z",
+  "generatedAt": "2026-08-18T04:09:47.843Z",
   "games": [
     {
       "id": "deokman-v8-preview",
       "name": "덕만: 별은 왕을 선택하지 않는다",
       "path": "/game-list/deokman-v8-preview/",
       "author": "uiwwsw",
-      "version": "8.0.0-preview.1",
+      "version": "8.0.0-preview.3",
       "summary": "덕만 v8의 첫 완성 장면. 살아 있는 공주의 죽음이 먼저 기록된 날, 어린 덕만은 향기 없는 모란 그림과 불타는 별궁 사이에서 자기 이름을 지켜야 합니다.",
-      "thumbnail": "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp",
+      "thumbnail": "/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
         "historical-fiction",
         "silla",
@@ -45,56 +45,8 @@
           "character-drama",
           "deadly-choices"
         ],
-        "image": "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp",
-        "imageAlt": "불타는 신라 별궁을 빠져나가는 덕만의 밤"
-      }
-    },
-    {
-      "id": "deokman",
-      "name": "덕만: 왕관에는 주인이 없다",
-      "path": "/game-list/deokman/",
-      "author": "uiwwsw",
-      "version": "7.0.0",
-      "summary": "약 60분의 시대극. 굶주린 마을의 곡식을 훔친 귀족 연합이 왕을 독살하고 덕만에게 누명을 씌운다. 덕만은 빼앗긴 곡식길을 되찾아 신라의 왕이 되고, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결한다.",
-      "thumbnail": "/game-list/deokman/assets/bg/title-palace-silla-v3.webp",
-      "tags": [
-        "historical-fiction",
-        "silla",
-        "character-drama",
-        "court-intrigue",
-        "political-thriller"
-      ],
-      "showcase": {
-        "label": "60 MIN · 8 CHAPTERS",
-        "backgroundColor": "#241623",
-        "image": {
-          "positionX": 66,
-          "positionY": 42,
-          "scale": 1.04,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
-      "legalNotices": [],
-      "chapterCount": 8,
-      "seo": {
-        "title": "덕만: 왕관에는 주인이 없다",
-        "description": "굶주린 마을의 곡식을 훔친 귀족 연합과 맞서 누명을 벗고 왕이 된 덕만이, 16년 뒤 같은 권력의 거래에서 시작된 비담의 반란을 판결하는 약 60분·8장 시대극 비주얼노벨.",
-        "keywords": [
-          "선덕여왕",
-          "덕만",
-          "신라",
-          "역사 비주얼노벨",
-          "정치 생존 게임",
-          "분기형 게임",
-          "historical-fiction",
-          "silla",
-          "character-drama",
-          "court-intrigue",
-          "political-thriller"
-        ],
-        "image": "/game-list/deokman/assets/bg/title-palace-silla-social-v3.jpg",
-        "imageAlt": "비 내린 달밤의 7세기 신라 월성 왕궁"
+        "image": "/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp",
+        "imageAlt": "금지된 기록과 모란패를 쥔 어린 덕만 뒤로 불타는 신라 별궁과 검은 별이 보이는 밤"
       }
     },
     {
@@ -244,10 +196,9 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 덕만: 별은 왕을 선택하지 않는다, 덕만: 왕관에는 주인이 없다, 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 덕만: 별은 왕을 선택하지 않는다, 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
     "keywords": [
       "덕만: 별은 왕을 선택하지 않는다",
-      "덕만: 왕관에는 주인이 없다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다",
@@ -256,8 +207,6 @@
       "vertical-slice",
       "character-drama",
       "deadly-choices",
-      "court-intrigue",
-      "political-thriller",
       "detective",
       "branch-heavy",
       "sample",
@@ -276,8 +225,6 @@
       "신라",
       "역사 비주얼노벨",
       "선택형 드라마",
-      "정치 생존 게임",
-      "분기형 게임",
       "명탐정 코난",
       "추리 게임",
       "비주얼노벨",
@@ -290,11 +237,10 @@
     ],
     "gameTitles": [
       "덕만: 별은 왕을 선택하지 않는다",
-      "덕만: 왕관에는 주인이 없다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 5
+    "gameCount": 4
   }
 }

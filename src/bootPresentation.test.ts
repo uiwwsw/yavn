@@ -7,7 +7,7 @@ import {
 
 describe('initial boot presentation', () => {
   it('holds direct game routes behind a non-interactive boot surface', () => {
-    expect(resolveInitialBootPresentation('/game-list/deokman')).toEqual({
+    expect(resolveInitialBootPresentation('/game-list/deokman-v8-preview')).toEqual({
       bootMode: 'gameList',
       gameBootPending: true,
     });
@@ -30,7 +30,7 @@ describe('initial boot presentation', () => {
 
   it('decodes the game id used for start gate session scoping', () => {
     expect(parseGameIdFromPath('/game-list/%EB%8D%95%EB%A7%8C')).toBe('덕만');
-    expect(parseGameIdFromPath('/game-list/deokman/1.yaml')).toBeUndefined();
+    expect(parseGameIdFromPath('/game-list/deokman-v8-preview/0.yaml')).toBeUndefined();
   });
 
   it('releases the route boot surface as soon as game data can mount its assets', () => {
