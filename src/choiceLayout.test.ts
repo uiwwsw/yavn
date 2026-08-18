@@ -29,4 +29,17 @@ describe('choice dialog containment', () => {
       /\.dialog-box\.has-choice-gate \.choice-gate-options\s*\{[\s\S]*?padding-bottom: 2px;/,
     );
   });
+
+  it('uses a compact count-aware grid for one to four choices', () => {
+    expect(appSource).toContain('data-choice-count={choiceGate.options.length}');
+    expect(styles).toMatch(
+      /\.choice-gate-options\[data-choice-count='2'\],[\s\S]*?\.choice-gate-options\[data-choice-count='3'\],[\s\S]*?\.choice-gate-options\[data-choice-count='4'\]\s*\{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+    );
+    expect(styles).toMatch(
+      /\.choice-gate-options\[data-choice-count='3'\] > \.choice-gate-option:last-child\s*\{[\s\S]*?grid-column: 1 \/ -1;/,
+    );
+    expect(styles).not.toMatch(
+      /\.choice-gate-options\[data-choice-count='1'\][\s\S]*?grid-template-columns: repeat\(2/,
+    );
+  });
 });

@@ -241,6 +241,7 @@ describe('stage camera', () => {
   });
 
   it('finishes a multi-actor close exit before using the remaining camera time', () => {
+    expect(CHARACTER_EXIT_FADE_DURATION_MS).toBe(180);
     const close = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'close', target: '덕만' }),
       2,

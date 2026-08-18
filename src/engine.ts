@@ -153,6 +153,13 @@ type RuntimeGameSettings = {
 
 type InventoryOwnedMap = Record<string, boolean>;
 
+type ChoiceAttempt = {
+  key: string;
+  value: string;
+  optionIndex: number;
+  ledToGameOver: boolean;
+};
+
 type SaveProgress = {
   savedAt?: string;
   gameTitle?: string;
@@ -166,6 +173,7 @@ type SaveProgress = {
   routeHistory: RouteHistoryEntry[];
   storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
+  choiceAttempt?: ChoiceAttempt;
 };
 
 export type SaveSlotKind = 'auto' | 'manual' | 'chapter';
@@ -181,6 +189,7 @@ export type SaveSlotSummary = {
 
 export type ChoiceRecoverySummary = Omit<SaveSlotSummary, 'slot'> & {
   actionIndex?: number;
+  failedChoice?: Omit<ChoiceAttempt, 'ledToGameOver'>;
 };
 
 export type SaveBackup = {
@@ -1432,6 +1441,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       routeHistory?: unknown;
       storyLog?: unknown;
       resolvedEndingId?: unknown;
+      choiceAttempt?: unknown;
     };
     if (
       typeof parsed.sceneId !== 'string' ||
@@ -1502,6 +1512,22 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
           })
           .slice(-MAX_STORY_LOG_ENTRIES)
       : [];
+    const rawChoiceAttempt = parsed.choiceAttempt;
+    const choiceAttempt = rawChoiceAttempt
+      && typeof rawChoiceAttempt === 'object'
+      && !Array.isArray(rawChoiceAttempt)
+      && typeof (rawChoiceAttempt as Partial<ChoiceAttempt>).key === 'string'
+      && typeof (rawChoiceAttempt as Partial<ChoiceAttempt>).value === 'string'
+      && typeof (rawChoiceAttempt as Partial<ChoiceAttempt>).optionIndex === 'number'
+      && Number.isInteger((rawChoiceAttempt as Partial<ChoiceAttempt>).optionIndex)
+      && ((rawChoiceAttempt as Partial<ChoiceAttempt>).optionIndex ?? -1) >= 0
+      ? {
+          key: (rawChoiceAttempt as ChoiceAttempt).key,
+          value: (rawChoiceAttempt as ChoiceAttempt).value,
+          optionIndex: (rawChoiceAttempt as ChoiceAttempt).optionIndex,
+          ledToGameOver: (rawChoiceAttempt as Partial<ChoiceAttempt>).ledToGameOver === true,
+        }
+      : undefined;
     return {
       savedAt: typeof parsed.savedAt === 'string' ? parsed.savedAt : undefined,
       gameTitle: typeof parsed.gameTitle === 'string' ? parsed.gameTitle : undefined,
@@ -1523,6 +1549,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       routeHistory,
       storyLog,
       resolvedEndingId: typeof parsed.resolvedEndingId === 'string' ? parsed.resolvedEndingId : undefined,
+      choiceAttempt,
     };
   } catch {
     return undefined;
@@ -1626,6 +1653,13 @@ export function getChoiceRecoverySummary(): ChoiceRecoverySummary {
         chapterPath: recovery.chapterPath,
         sceneId: recovery.sceneId,
         actionIndex: recovery.actionIndex,
+        failedChoice: recovery.choiceAttempt?.ledToGameOver
+          ? {
+              key: recovery.choiceAttempt.key,
+              value: recovery.choiceAttempt.value,
+              optionIndex: recovery.choiceAttempt.optionIndex,
+            }
+          : undefined,
       }
     : { exists: false };
 }
@@ -2099,7 +2133,17 @@ function finishStory(endingId?: string): void {
 function triggerGameOver(gameOver: GameOverDefinition, restoreAutosaveFromChoice = true): void {
   clearTimers();
   playMusic(undefined);
-  const recovery = getChoiceRecoveryProgress();
+  let recovery = getChoiceRecoveryProgress();
+  if (recovery?.choiceAttempt && !recovery.choiceAttempt.ledToGameOver) {
+    recovery = {
+      ...recovery,
+      choiceAttempt: {
+        ...recovery.choiceAttempt,
+        ledToGameOver: true,
+      },
+    };
+    setChoiceRecoveryPoint(recovery);
+  }
   if (restoreAutosaveFromChoice && getAutoSaveEnabled() && recovery) {
     saveProgressToKey(resolveSaveSlotKey('auto'), recovery);
   }
@@ -4317,7 +4361,15 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
     choiceTimer = undefined;
   }
 
-  setChoiceRecoveryPoint(createSaveProgress(state.currentSceneId, state.actionIndex));
+  setChoiceRecoveryPoint({
+    ...createSaveProgress(state.currentSceneId, state.actionIndex),
+    choiceAttempt: {
+      key: state.choiceGate.key,
+      value: selected.text,
+      optionIndex,
+      ledToGameOver: false,
+    },
+  });
   useVNStore.getState().pushRouteHistory({
     kind: 'choice',
     key: state.choiceGate.key,

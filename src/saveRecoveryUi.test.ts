@@ -21,9 +21,28 @@ describe('save and game over recovery UI', () => {
     expect(appSource).not.toContain("onClick={() => void onLoadSave('latest')}");
     expect(appSource).not.toContain("(['auto', 'manual', 'chapter'] as const)");
     expect(engineSource).toContain("const CHOICE_RECOVERY_SUFFIX = ':choice-recovery'");
-    expect(engineSource).toContain('setChoiceRecoveryPoint(createSaveProgress');
+    expect(engineSource).toContain('setChoiceRecoveryPoint({');
     expect(appSource).toContain("'마지막 선택으로'");
     expect(appSource).toContain('{totalEndingCount > 0 && (');
+  });
+
+  it('marks the previous game-over choice without disabling it and focuses an alternative', () => {
+    expect(engineSource).toContain('choiceAttempt: {');
+    expect(engineSource).toContain('ledToGameOver: true');
+    expect(engineSource).toContain('failedChoice: recovery.choiceAttempt?.ledToGameOver');
+    expect(appSource).toContain('setRecoveredFailedChoice(recoveryPoint.failedChoice)');
+    expect(appSource).toContain("' choice-gate-option-previous-game-over'");
+    expect(appSource).toContain('<b>직전 선택</b>');
+    expect(appSource).toContain('<em>GAME OVER</em>');
+    expect(appSource).toContain('choiceOptionButtonRefs.current[focusIndex]?.focus');
+    expect(appSource).toContain('index !== recoveredFailedChoiceIndex');
+    expect(styles).toMatch(
+      /\.choice-gate-option-previous-game-over\s*\{[\s\S]*?background:[\s\S]*?filter: saturate/,
+    );
+    expect(styles).toMatch(
+      /\.choice-gate-option-previous-game-over:focus-visible\s*\{[\s\S]*?box-shadow:/,
+    );
+    expect(appSource).not.toContain('disabled={busy || isPreviousGameOverChoice}');
   });
 
   it('opens inventory details directly and keeps discovery controls consistent', () => {
