@@ -8,6 +8,7 @@ type UnknownRecord = Record<string, unknown>;
 
 const gameRoot = fileURLToPath(new URL('../public/game-list/deokman-v8-preview/', import.meta.url));
 const publicRoot = fileURLToPath(new URL('../public/', import.meta.url));
+const legacyGameRoot = fileURLToPath(new URL('../public/game-list/deokman/', import.meta.url));
 const biblePath = fileURLToPath(new URL('../docs/DEOKMAN_V8_GAME_BIBLE.ko.md', import.meta.url));
 const asRecord = (value: unknown): UnknownRecord =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? (value as UnknownRecord) : {};
@@ -63,6 +64,13 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(chapter.data).toBeDefined();
     if (!config.data || !base.data || !chapter.data) return;
 
+    expect(config.data.data.version).toBe('8.0.0-preview.3');
+    expect(config.data.data.startScreen?.image).toBe(
+      'root:/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp',
+    );
+    expect(config.data.data.endingScreen?.image).toBe(
+      'root:/game-list/deokman-v8-preview/assets/bg/burning-palace-silla-v1.webp',
+    );
     expect(resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data }).error)
       .toBeUndefined();
   });
@@ -171,20 +179,30 @@ describe('Deokman V8 chapter-one vertical slice', () => {
 
   it('ships aligned transparent child sprites and every referenced root asset', () => {
     const base = readYaml('base.yaml');
-    const assetPaths = collectStrings(base).filter((path) => path.startsWith('root:/'));
+    const config = readYaml('config.yaml');
+    const assetPaths = collectStrings([base, config]).filter((path) => path.startsWith('root:/'));
 
     assetPaths.forEach((path) => {
       expect(existsSync(`${publicRoot}${path.slice('root:/'.length)}`), path).toBe(true);
     });
 
     const childSprites = [
-      'deokman-child-silla-v5.webp',
-      'deokman-child-scared-silla-v5.webp',
-      'deokman-child-resolve-silla-v5.webp',
-    ].map((filename) => readExtendedWebpCanvas(`${publicRoot}game-list/deokman/assets/char/${filename}`));
+      'deokman-child-silla-v6.webp',
+      'deokman-child-scared-silla-v6.webp',
+      'deokman-child-resolve-silla-v6.webp',
+    ].map((filename) => readExtendedWebpCanvas(`${gameRoot}assets/char/${filename}`));
 
     expect(new Set(childSprites.map(({ width, height }) => `${width}x${height}`))).toEqual(new Set(['888x1771']));
     childSprites.forEach(({ hasAlpha }) => expect(hasAlpha).toBe(true));
+
+    ['peony-painting.svg', 'death-register.svg', 'peony-token.svg'].forEach((filename) => {
+      const source = readFileSync(`${gameRoot}assets/items/${filename}`, 'utf8');
+      expect(source, filename).not.toMatch(/<rect[^>]+width=["']640["'][^>]+height=["']400["']/);
+    });
+  });
+
+  it('removes the superseded Deokman game package', () => {
+    expect(existsSync(legacyGameRoot)).toBe(false);
   });
 
   it('documents the complete 12-chapter production contract', () => {

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">향기 없는 모란도</title>
+  <desc id="desc">벌과 나비가 없는 붉은 모란을 낡은 비단 족자에 그린 왕실 그림이다.</desc>
+  <defs>
+    <linearGradient id="silk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e5bf"/>
+      <stop offset=".48" stop-color="#d9c28e"/>
+      <stop offset="1" stop-color="#b99a63"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a6037"/>
+      <stop offset=".52" stop-color="#4b301d"/>
+      <stop offset="1" stop-color="#24160e"/>
+    </linearGradient>
+    <radialGradient id="petal" cx="38%" cy="32%" r="72%">
+      <stop offset="0" stop-color="#d96b76"/>
+      <stop offset=".5" stop-color="#9f3548"/>
+      <stop offset="1" stop-color="#531b2a"/>
+    </radialGradient>
+    <pattern id="fiber" width="18" height="18" patternUnits="userSpaceOnUse">
+      <path d="M0 3h18M0 12h18" stroke="#725735" stroke-width="1" opacity=".08"/>
+      <path d="M4 0v18M14 0v18" stroke="#fff8df" stroke-width="1" opacity=".08"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="13" stdDeviation="10" flood-color="#070508" flood-opacity=".58"/>
+    </filter>
+    <filter id="ink" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence baseFrequency=".025" numOctaves="2" seed="8" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(-2 320 200)">
+    <path d="M91 69h458v264H91z" fill="url(#silk)" stroke="#6e4a28" stroke-width="5"/>
+    <path d="M91 69h458v264H91z" fill="url(#fiber)"/>
+    <path d="M72 55h496v28H72z" rx="10" fill="url(#wood)" stroke="#b88a52" stroke-width="4"/>
+    <path d="M72 319h496v28H72z" rx="10" fill="url(#wood)" stroke="#b88a52" stroke-width="4"/>
+    <circle cx="72" cy="69" r="18" fill="#382316" stroke="#c49a61" stroke-width="4"/>
+    <circle cx="568" cy="69" r="18" fill="#382316" stroke="#c49a61" stroke-width="4"/>
+    <circle cx="72" cy="333" r="18" fill="#382316" stroke="#c49a61" stroke-width="4"/>
+    <circle cx="568" cy="333" r="18" fill="#382316" stroke="#c49a61" stroke-width="4"/>
+    <path d="M110 91c10 53 8 166-1 220M532 91c-7 62-7 156 0 220" fill="none" stroke="#fff4d1" stroke-width="5" opacity=".46"/>
+    <g fill="none" stroke="#3f5638" stroke-linecap="round" filter="url(#ink)">
+      <path d="M181 300c24-74 62-135 124-190" stroke-width="9"/>
+      <path d="M286 306c6-82 42-149 94-207" stroke-width="8"/>
+      <path d="M371 304c-7-70 6-126 51-178" stroke-width="7"/>
+      <path d="M230 249c-29-1-51-11-66-32M258 203c-32-8-48-22-58-45M324 225c30-4 54-18 69-40M371 257c32-6 54-21 70-45" stroke-width="6"/>
+    </g>
+    <g fill="#526b43" stroke="#30452f" stroke-width="3" opacity=".96">
+      <path d="M161 218c38-20 66-12 77 17-35 9-61 4-77-17z"/>
+      <path d="M194 158c34-23 61-17 73 10-32 13-57 9-73-10z"/>
+      <path d="M392 184c28-30 57-30 75-7-25 21-51 23-75 7z"/>
+      <path d="M419 215c34-19 61-12 72 16-31 10-56 4-72-16z"/>
+    </g>
+    <g fill="url(#petal)" stroke="#652233" stroke-width="3">
+      <path d="M222 111c-17-34 25-52 39-22 18-30 58-7 38 22 33 3 34 43 2 48 14 31-28 47-43 18-21 26-57 1-34-24-32-9-23-43-2-42z"/>
+      <path d="M322 82c-16-31 23-48 36-20 17-27 53-6 35 20 29 4 31 39 2 44 12 28-26 43-40 16-18 24-52 2-31-22-29-8-21-39-2-38z"/>
+      <path d="M381 127c-18-35 26-54 40-23 19-31 61-7 40 23 34 4 36 45 2 50 14 33-29 49-45 19-22 27-60 2-36-25-34-9-24-45-1-44z"/>
+      <path d="M275 174c-14-27 19-42 31-17 14-24 46-5 30 17 26 3 27 34 1 38 11 24-22 37-34 14-16 21-45 1-27-19-25-7-18-34-1-33z"/>
+      <path d="M436 188c-13-25 18-39 29-16 13-22 43-5 28 16 24 3 25 32 1 35 10 23-20 35-31 13-15 20-42 2-26-17-23-6-16-31-1-30z"/>
+    </g>
+    <g fill="#d8aa5c">
+      <circle cx="258" cy="136" r="9"/><circle cx="355" cy="106" r="8"/><circle cx="420" cy="153" r="10"/>
+      <circle cx="304" cy="195" r="7"/><circle cx="464" cy="208" r="7"/>
+    </g>
+    <path d="M128 286c87 10 277 7 378-5" fill="none" stroke="#765535" stroke-width="3" opacity=".26"/>
+  </g>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">덕만의 사망 기록</title>
+  <desc id="desc">아직 살아 있는 덕만의 죽음과 오지 않은 날짜가 적힌 왕실 기록이다.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0dfb4"/>
+      <stop offset=".5" stop-color="#d5bc82"/>
+      <stop offset="1" stop-color="#a98752"/>
+    </linearGradient>
+    <radialGradient id="seal" cx="36%" cy="30%" r="72%">
+      <stop offset="0" stop-color="#c3474c"/>
+      <stop offset=".52" stop-color="#8c2634"/>
+      <stop offset="1" stop-color="#4a1420"/>
+    </radialGradient>
+    <pattern id="grain" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="7" r="1" fill="#68482d" opacity=".12"/>
+      <path d="M0 18c6-3 14-3 22 0" fill="none" stroke="#6e4d30" opacity=".08"/>
+    </pattern>
+    <filter id="shadow" x="-35%" y="-35%" width="170%" height="190%">
+      <feDropShadow dx="4" dy="15" stdDeviation="11" flood-color="#060408" flood-opacity=".62"/>
+    </filter>
+    <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence baseFrequency=".03" numOctaves="2" seed="13" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(3 320 200)">
+    <path d="M149 35l343 14-17 292-41 22-57-8-46 13-52-11-58 9-48-21z" fill="url(#paper)" stroke="#76502d" stroke-width="5"/>
+    <path d="M149 35l343 14-17 292-41 22-57-8-46 13-52-11-58 9-48-21z" fill="url(#grain)"/>
+    <path d="M182 72c83 8 187 9 271 4" fill="none" stroke="#6f4a2d" stroke-width="5" opacity=".6"/>
+    <g fill="none" stroke="#42382d" stroke-linecap="round" filter="url(#rough)">
+      <path d="M204 111c42 4 82 4 120 2M352 114c36 0 67 2 93 6" stroke-width="9"/>
+      <path d="M196 154c75 6 164 7 242 3" stroke-width="8"/>
+      <path d="M193 196c46 3 91 4 132 2M350 200c32 1 58 3 78 7" stroke-width="8"/>
+      <path d="M189 237c72 7 142 6 208 2" stroke-width="8"/>
+    </g>
+    <path d="M189 278c65 8 123 8 176 1" fill="none" stroke="#761e2a" stroke-width="12" stroke-linecap="round" filter="url(#rough)"/>
+    <path d="M183 293c38 3 75 3 108 0" fill="none" stroke="#4b382b" stroke-width="6" stroke-linecap="round" opacity=".78"/>
+    <g transform="translate(400 263) rotate(-9)">
+      <circle r="65" fill="url(#seal)" stroke="#53141f" stroke-width="6"/>
+      <circle r="48" fill="none" stroke="#d6a55f" stroke-width="5" opacity=".86"/>
+      <path d="M-23-26c10 7 17 16 23 27 7-12 15-21 25-28M-29 20c19-5 39-4 58 2M0-45v91" fill="none" stroke="#e0b267" stroke-width="7" stroke-linecap="round"/>
+      <path d="M39 39c9 10 13 23 9 39M-43 34c-8 12-10 25-5 38" fill="none" stroke="#7d202c" stroke-width="8" stroke-linecap="round"/>
+    </g>
+    <path d="M445 321c5 15 4 27-4 37" fill="none" stroke="#7e202c" stroke-width="8" stroke-linecap="round" opacity=".82"/>
+    <path d="M161 51c7 79 5 183 0 274M477 59c-3 86-7 176-16 269" fill="none" stroke="#fff1ca" stroke-width="4" opacity=".33"/>
+  </g>
+</svg>
