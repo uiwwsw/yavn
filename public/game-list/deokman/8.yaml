@@ -1,0 +1,236 @@
+script:
+  - scene: king_last_night
+
+scenes:
+  king_last_night:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - say:
+          channel: record
+          text: "제9장 — 왕좌 앞의 밤"
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - char: { id: 덕만, position: left }
+      - say:
+          channel: narration
+          text: "진평왕이 마지막 숨을 쉬던 밤, 귀족 회의는 새벽에 계승 표결을 열겠다고 알렸습니다. 새벽 전에 성문과 군량 창고를 장악하려는 사병도 움직였습니다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "내가 너를 왕으로 지명하면 저들은 여자가 아니라 내 독단을 반대한다고 할 것이다. 네가 얻은 사람과 기록으로 왕좌까지 와라."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "전하의 유언을 빌리지 않겠습니다. 대신 전하의 실패까지 제가 이어받았다는 사실은 숨기지 않겠습니다."
+      - goto: vote_strategy
+
+  vote_strategy:
+    actions:
+      - bg: council_hall
+      - camera: wide
+      - char: { id: 춘추, position: right }
+      - say:
+          char: 춘추
+          camera: medium
+          with: [덕만]
+          text: "표결장에 가져갈 수 있는 것은 하나입니다. 증거가 많으면 귀족을 꺾고, 사람이 많으면 회의를 압박하지만 둘 다 반역의 구실이 됩니다."
+      - choice:
+          key: c9_vote_strategy
+          prompt: "새 왕을 정하는 회의에 무엇을 앞세우겠습니까?"
+          char: 덕만
+          camera: medium
+          with: [춘추]
+          options:
+            - text: "위조 기록과 곡식 장부를 공개해 반대파의 자격을 묻는다"
+              when: { var: evidence, op: gte, value: 5 }
+              add: { nobles_support: 2, fear: 1 }
+              goto: evidence_vote
+            - text: "시장과 마을 대표를 궁 밖 증인으로 세운다"
+              when: { var: people_support, op: gte, value: 5 }
+              add: { people_support: 2, nobles_support: -1 }
+              goto: people_vote
+            - text: "유신의 방위군으로 표결장의 안전을 보장한다"
+              when: { var: army_support, op: gte, value: 4 }
+              add: { army_support: 2, fear: 2 }
+              goto: guarded_vote
+            - text: "반대 귀족에게 임기 제한이 있는 국정회의를 약속한다"
+              add: { nobles_support: 2, insight: 1 }
+              goto: negotiated_vote
+
+  evidence_vote:
+    actions:
+      - sticker: { id: c9_ledger, image: grain_ledger_sticker, x: 50, y: 28, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, enter: fadeIn }
+      - say:
+          char: 덕만
+          camera: medium
+          text: "저를 반대할 권리는 있습니다. 그러나 백성의 곡식을 훔치고 왕명을 위조한 손으로 다음 왕을 고를 권리는 없습니다."
+      - say:
+          channel: narration
+          text: "회의 절반이 침묵했습니다. 침묵은 찬성이 아니었지만 공개적으로 반대할 얼굴도 빼앗았습니다."
+      - clearSticker: { id: c9_ledger, leave: fadeOut }
+      - goto: coup_begins
+
+  people_vote:
+    actions:
+      - say:
+          channel: narration
+          text: "궁 밖에는 덕만의 이름이 아니라 공개 장부와 공동 창고를 지키려는 사람들이 모였습니다. 귀족들은 군중을 폭도라 불렀지만 그들의 마을 이름이 하나씩 호명됐습니다."
+      - say:
+          char: 덕만
+          text: "왕을 고르는 표는 안에 있지만, 그 왕의 결정을 견딜 사람은 밖에 있습니다. 두 목소리를 함께 기록하십시오."
+      - goto: coup_begins
+
+  guarded_vote:
+    actions:
+      - char: { id: 유신, position: right }
+      - say:
+          channel: narration
+          text: "유신의 군사는 칼집을 봉한 채 회의장을 둘러쌌습니다. 안전은 지켜졌지만 반대표를 던진 이들은 칼 아래 나온 왕이라고 오래 말할 수 있었습니다."
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "칼을 뽑지 않았다는 사실보다 칼이 있었다는 사실이 더 오래 남을 겁니다."
+      - goto: coup_begins
+
+  negotiated_vote:
+    actions:
+      - say:
+          channel: narration
+          text: "덕만은 왕이 된 뒤에도 공개 국정회의를 폐지하지 않겠다고 서약했습니다. 표는 모였지만 왕관에는 첫날부터 다른 사람들의 조건이 묶였습니다."
+      - goto: coup_begins
+
+  coup_begins:
+    actions:
+      - bg: burning_palace
+      - camera: wide
+      - effect: embers
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          channel: narration
+          text: "첫 표가 항아리에 들어간 순간 서문에서 불이 올랐습니다. 반대파 사병이 왕실 인장을 훔쳐 덕만 체포 명령을 내렸습니다."
+      - say:
+          char: 유신.angry
+          camera: reaction
+          with: [덕만]
+          text: "서문을 되찾으면 회의장이 비고, 회의를 지키면 시장 쪽 불길이 번집니다."
+      - choice:
+          key: c9_coup_response
+          prompt: "표결 중 시작된 쿠데타에 어떻게 대응하겠습니까?"
+          char: 덕만
+          camera: reaction
+          with: [유신]
+          options:
+            - text: "유신은 서문을, 덕만은 회의장을 지킨다"
+              add: { yushin_trust: 2, army_support: 1, nobles_support: 1 }
+              goto: split_defense
+            - text: "회의를 중단하고 모두 함께 시장의 불부터 끈다"
+              add: { people_support: 3, nobles_support: -1, mercy: 1 }
+              goto: save_market
+            - text: "훔친 왕명을 역이용해 반란 지휘부를 가짜 집결지로 부른다"
+              when: { var: insight, op: gte, value: 4 }
+              add: { evidence: 2, fear: 2, bidam_trust: 1 }
+              goto: false_order
+            - text: "혼자 왕좌에 앉아 누구의 명령이 진짜인지 선포한다"
+              goto: bad_lonely_throne
+
+  split_defense:
+    actions:
+      - say:
+          channel: narration
+          text: "유신은 서문의 인장을 되찾았고 덕만은 불길 속에서도 표결 항아리를 지켰습니다. 서로 떨어진 선택은 위험했지만 두 사람은 각자의 책임을 끝까지 수행했습니다."
+      - goto: final_ballot
+
+  save_market:
+    actions:
+      - bg: village
+      - say:
+          channel: narration
+          text: "덕만이 회의를 버리고 물동이를 들자 귀족과 백성이 같은 줄에 섰습니다. 왕을 정하는 표는 흩어졌지만, 누가 먼저 나라를 지켰는지는 모두 보았습니다."
+      - goto: final_ballot
+
+  false_order:
+    actions:
+      - bg: shadow_corridor
+      - say:
+          channel: narration
+          text: "위조 인장으로 만든 두 번째 명령이 반란 지휘부를 빈 창고로 모았습니다. 전투는 짧았지만 덕만도 거짓 왕명을 무기로 썼다는 기록이 남았습니다."
+      - goto: final_ballot
+
+  final_ballot:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - say:
+          channel: narration
+          text: "동이 틀 무렵 표결은 다시 시작됐습니다. 덕만의 승리는 가능했지만 마지막 표들은 반드시 하나의 약속을 요구했습니다."
+      - char: { id: 춘추, position: right }
+      - say:
+          char: 춘추
+          camera: close
+          with: [덕만]
+          text: "조건 없는 왕관은 없습니다. 어떤 빚을 공개적으로 선택하실 겁니까?"
+      - choice:
+          key: c9_crown_terms
+          prompt: "왕관을 얻기 위해 어떤 조건을 받아들이겠습니까?"
+          char: 덕만
+          camera: close
+          with: [춘추]
+          options:
+            - text: "귀족 회의의 군량 감사권을 인정한다"
+              set: { coronation_compromise: nobles_audit }
+              add: { nobles_support: 3, army_support: -1 }
+              goto: coronation
+            - text: "유신의 군대를 왕실 직속으로 두되 해마다 지휘권을 심사한다"
+              set: { coronation_compromise: reviewed_army }
+              add: { army_support: 2, yushin_trust: 1, nobles_support: -1 }
+              goto: coronation
+            - text: "시장·마을 대표가 참여하는 공개 회의를 왕위 조건으로 쓴다"
+              set: { coronation_compromise: public_council }
+              add: { people_support: 2, nobles_support: -2, insight: 1 }
+              goto: coronation
+
+  coronation:
+    actions:
+      - bg: title_palace
+      - camera: wide
+      - say:
+          channel: record
+          delivery: calm
+          text: "선덕왕 즉위 — 왕실 기록에서 죽었던 둘째 공주 덕만이 신라의 왕이 되다."
+      - char: { id: 덕만, position: center }
+      - say:
+          channel: narration
+          text: "왕관이 머리에 놓였을 때 덕만은 승리보다 무게를 먼저 느꼈습니다. 왕좌까지 데려온 모든 선택이 이제 국가의 습관이 될 차례였습니다."
+      - say:
+          char: 덕만
+          camera: close
+          text: "오늘부터 내 말이 옳아서 명령이 되는 것이 아니다. 명령이 되었기에 더 많이 의심받아야 한다."
+      - say:
+          channel: record
+          text: "덕만은 여왕이 되었습니다. 이야기는 왕관을 얻는 데서 끝나지 않고, 왕관으로 무엇을 만들지 묻기 시작했습니다."
+      - goto: /9.yaml
+
+  bad_lonely_throne:
+    actions:
+      - bg: throne_hall
+      - camera: close
+      - effect: embers
+      - char: { id: 덕만, position: center, emotion: angry }
+      - say:
+          char: 덕만.angry
+          text: "내가 진평왕의 적법한 후계자다. 내 앞에 무기를 내려라!"
+      - say:
+          channel: narration
+          text: "불길과 함성 속에서 왕좌의 말은 회랑 끝까지 닿지 않았습니다. 서로 다른 인장을 든 군사들은 각자 자기 명령만 진짜라 믿었습니다."
+      - say:
+          char: 유신.angry
+          text: "왕좌를 지키려고 모두가 흩어졌습니다. 지금 공주님 곁에는 왕좌밖에 없습니다."
+      - say:
+          channel: record
+          text: "계승 내란 기록 — 덕만 공주, 즉위 선언 직후 왕궁에서 고립. 새벽에 반란군이 왕좌를 점령함."
+      - gameOver:
+          title: "운명 — 왕좌만 남은 왕"
+          message: "정통성은 사람과 길과 기록을 대신하지 못했습니다. 덕만은 왕이 앉는 자리를 차지했지만 왕의 명령이 움직일 나라를 잃었습니다."

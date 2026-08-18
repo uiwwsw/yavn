@@ -843,13 +843,13 @@ scenes:
 - 시작 화면은 1.6초의 작은 배경 안정화, 정적인 미세 질감, 비네트·테마 프레임, 타이틀/CTA의 짧은 페이드로 첫인상을 만듭니다. 시작 버튼을 누르면 220ms 검정 크로스페이드로 본편에 연결하고 중복 입력을 막습니다. `prefers-reduced-motion` 환경에서는 장식 애니메이션을 비활성화합니다.
 - `/game-list/:gameId` 직접 진입 시 설정 프리뷰와 본편을 준비하는 동안에는 비대화형 부트 화면을 유지해 런처나 빈 게임 HUD가 먼저 노출되지 않습니다. 시작·이어하기 버튼은 뷰포트 측정이나 화면 밖 장거리 이동 없이 최종 위치에서 opacity만 전환하므로 PC·모바일의 첫 페인트에서 튀거나 사라지지 않습니다.
 
-## 덕만 V8 수직 슬라이스
+## 덕만 완결판
 
-- `/game-list/deokman-v8-preview/`는 현재 제공하는 유일한 덕만 게임이며, 새 12챕터 기획의 1장을 독립 실행하는 수직 슬라이스입니다.
-- 어린 덕만의 모란 관찰, 미리 작성된 사망 기록, 별궁 화재를 선택 3회·연출형 배드엔딩 4개·챕터 엔딩 3개로 구성합니다.
-- `say.channel`, `choice.options[].when`, `inkstamp/starfall`을 실제 작품 흐름에서 사용하며 관찰한 단서와 획득한 기록이 마지막 탈출 선택을 열어 줍니다.
-- 시작 화면은 금지된 기록과 모란패를 든 어린 덕만의 별궁 화재 키아트를 사용합니다. 어린 덕만의 세 표정은 외곽 알파를 다시 다듬은 투명 WebP이며, 모란도·사망 기록·청동 모란패는 배경 없는 SVG 오브젝트입니다. 아이템은 PC·모바일 반응형 최대 폭을 사용하고, 인물과 같은 컷에 나타나면 엔진의 자동 충돌 회피로 가장 가까운 빈 공간에 배치됩니다.
-- 전체 12장 구조, 인물별 말투·색·실루엣, 대사/기록/시스템 문법, 아트 제작 규격은 [`docs/DEOKMAN_V8_GAME_BIBLE.ko.md`](docs/DEOKMAN_V8_GAME_BIBLE.ko.md)에 고정했습니다.
+- `/game-list/deokman/`은 **덕만: 별은 왕을 선택하지 않는다**의 정식 12챕터 완결판입니다. 어린 덕만의 사망 기록 발견부터 국경의 망명 생활, 천명과의 재회, 곡식·외교·일식 정치를 거쳐 즉위, 첨성대, 비담의 반란, 마지막 기록 판결까지 순서대로 이어집니다.
+- 전 작품에 고유한 선택 36개, 장면형 `gameOver` 11개, 누적 관계·정치 상태로 판정되는 결말 10개를 제공합니다. 초반의 관찰과 증거가 후반의 왕위 표결과 최종 기록 공개 여부까지 다시 작동합니다.
+- `dialogue/narration/record` 채널, 상태·인벤토리 기반 `when`, 외부 챕터 `goto`, 누적 상태 `branch`를 실제 장편 흐름에서 사용합니다. 몰입을 깨는 `system` 화자는 본편에 사용하지 않습니다.
+- 시작 화면은 금지된 기록과 모란패를 든 어린 덕만의 별궁 화재 키아트를 사용합니다. 어린 덕만의 세 표정은 흰색 매트를 제거한 투명 WebP이며, 모란도부터 비담의 서신까지 10개 증거물은 배경 없는 SVG 오브젝트입니다.
+- 전체 12장 구조, 인물별 연기 방향, 선택·엔딩 규칙, 아트 제작 규격과 구현 현황은 [`docs/DEOKMAN_GAME_BIBLE.ko.md`](docs/DEOKMAN_GAME_BIBLE.ko.md)에 고정했습니다.
 
 ## Conan 샘플 분기 구조
 
@@ -868,10 +868,10 @@ scenes:
 
 ## 샘플
 
-- `public/game-list/deokman-v8-preview/config.yaml`
-- `public/game-list/deokman-v8-preview/base.yaml`
-- `public/game-list/deokman-v8-preview/launcher.yaml`
-- `public/game-list/deokman-v8-preview/0.yaml`
+- `public/game-list/deokman/config.yaml`
+- `public/game-list/deokman/base.yaml`
+- `public/game-list/deokman/launcher.yaml`
+- `public/game-list/deokman/0.yaml`–`11.yaml`
 - `public/game-list/conan-demo/config.yaml`
 - `public/game-list/conan-demo/base.yaml`
 - `public/game-list/conan-demo/0.yaml`

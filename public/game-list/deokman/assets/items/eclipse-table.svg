@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">일식 계산표</title>
+  <desc id="desc">달의 이동과 해가 가려지는 시각을 선과 점으로 기록한 천문 관측표다.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ece0bd"/><stop offset="1" stop-color="#a98a5f"/></linearGradient>
+    <radialGradient id="sun"><stop stop-color="#f6d889"/><stop offset=".65" stop-color="#c18d42"/><stop offset="1" stop-color="#6d4527"/></radialGradient>
+    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%"><feDropShadow dx="4" dy="14" stdDeviation="11" flood-opacity=".6"/></filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(-2 320 200)">
+    <path d="M79 52l475 18-24 270-466-15z" fill="url(#paper)" stroke="#62472f" stroke-width="7"/>
+    <circle cx="236" cy="192" r="91" fill="url(#sun)" stroke="#5b3c26" stroke-width="7"/>
+    <circle cx="282" cy="166" r="83" fill="#242028" stroke="#16131a" stroke-width="7"/>
+    <path d="M384 104h117M377 145h98M370 187h130M365 229h92M356 272h139" stroke="#4c392a" stroke-width="8" stroke-linecap="round" opacity=".72"/>
+    <path d="M124 294c116-37 243-27 363 1" fill="none" stroke="#7d2931" stroke-width="7" stroke-dasharray="10 13"/>
+  </g>
+</svg>

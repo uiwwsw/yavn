@@ -1,0 +1,224 @@
+script:
+  - scene: stolen_sun
+
+scenes:
+  stolen_sun:
+    actions:
+      - bg: council_hall
+      - camera: wide
+      - say:
+          channel: record
+          text: "제6장 — 해를 훔친 자들"
+      - char: { id: 덕만, position: left }
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - say:
+          channel: narration
+          text: "왕실 제관들은 열흘 뒤 해가 사라질 것이라며 덕만의 귀환 때문에 하늘이 노했다고 주장했습니다. 시장에서는 벌써 검은 천이 부적값으로 팔렸습니다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "일식이 지나갈 때까지 궁 밖으로 나가지 마라. 백성은 설명보다 희생양을 빨리 믿는다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "하늘을 이용한 사람이 시간을 알고 있습니다. 해가 사라지는 시각을 먼저 찾아내겠습니다."
+      - choice:
+          key: c6_find_time
+          prompt: "일식의 시각을 어떻게 알아내겠습니까?"
+          char: 덕만
+          camera: medium
+          with: [진평왕]
+          options:
+            - text: "당 사신이 남긴 천문 자료와 신라 관측 기록을 대조한다"
+              add: { insight: 2, evidence: 1 }
+              goto: calculate_eclipse
+            - text: "제관의 하인을 매수해 비밀 예언표를 훔친다"
+              add: { evidence: 2, fear: 1, bidam_trust: 1 }
+              goto: steal_table
+            - text: "시장 사람들에게 지난 해 그림자 길이를 묻는다"
+              add: { people_support: 2, insight: 1 }
+              goto: public_observation
+
+  calculate_eclipse:
+    actions:
+      - bg: moon_court
+      - say:
+          channel: narration
+          text: "덕만은 서로 다른 달력을 한 칸씩 옮겨 같은 날에 포개었습니다. 제관의 예언은 신의 목소리가 아니라 계산표에서 베낀 날짜였습니다."
+      - goto: table_revealed
+
+  steal_table:
+    actions:
+      - bg: shadow_corridor
+      - char: { id: 비담, position: right, emotion: smirk }
+      - say:
+          channel: narration
+          text: "비담은 제관의 서고에서 계산표를 훔쳐 왔습니다. 표 한쪽에는 '덕만의 죄를 선포할 시각'까지 적혀 있었습니다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "하늘은 정직한데 하늘을 번역하는 사람들이 욕심이 많군요."
+      - goto: table_revealed
+
+  public_observation:
+    actions:
+      - bg: village
+      - say:
+          channel: narration
+          text: "농부들은 왕실 기록보다 정확히 지난 일식의 계절과 그림자 방향을 기억했습니다. 씨를 뿌린 날이 달라졌기 때문입니다."
+      - say:
+          char: 덕만
+          text: "하늘의 기록은 서고에만 있지 않아. 살아남으려 날짜를 기억한 사람에게도 있어."
+      - goto: table_revealed
+
+  table_revealed:
+    actions:
+      - sticker: { id: c6_table, image: eclipse_table_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, enter: fadeIn }
+      - get: eclipse_table
+      - say:
+          channel: narration
+          text: "계산 결과, 해는 정오 직후부터 짧은 시간 가려집니다. 덕만은 예언을 깨뜨릴 수도, 더 큰 예언을 만들어 제관을 눌러 버릴 수도 있었습니다."
+      - clearSticker: { id: c6_table, leave: fadeOut }
+      - goto: eclipse_policy
+
+  eclipse_policy:
+    actions:
+      - choice:
+          key: c6_eclipse_policy
+          prompt: "일식 정보를 어떻게 사용하겠습니까?"
+          char: 덕만
+          camera: close
+          options:
+            - text: "시각과 원리를 미리 공개하고 안전한 관측법을 알린다"
+              set: { eclipse_policy: public_science, used_false_omen: false }
+              add: { people_support: 2, insight: 2, nobles_support: -1 }
+              goto: announce_science
+            - text: "일식이 끝나는 순간을 맞혀 덕만이 해를 되돌렸다고 연출한다"
+              set: { eclipse_policy: royal_miracle, used_false_omen: true }
+              add: { people_support: 1, fear: 2, nobles_support: 1 }
+              goto: stage_miracle
+            - text: "왕실과 제관에게만 계산표를 공유해 질서를 유지한다"
+              set: { eclipse_policy: secret_knowledge, used_false_omen: false }
+              add: { king_trust: 2, nobles_support: 2, insight: -1 }
+              goto: keep_secret
+
+  announce_science:
+    actions:
+      - bg: village
+      - say:
+          channel: narration
+          text: "시장 벽마다 일식 시각과 눈을 보호하는 방법이 붙었습니다. 제관들은 신성 모독이라 했지만, 공포를 팔던 부적값은 하루 만에 떨어졌습니다."
+      - say:
+          char: 덕만
+          camera: medium
+          text: "해가 돌아오면 내가 이긴 것이 아니라 계산이 맞은 거야. 틀리면 계산을 고치면 돼."
+      - goto: eclipse_day
+
+  stage_miracle:
+    actions:
+      - bg: peony_court
+      - char: { id: 비담, position: right, emotion: smirk }
+      - say:
+          channel: narration
+          text: "덕만은 마지막 어둠에 맞춰 북을 세 번 치게 했습니다. 세 번째 울림 뒤 빛이 돌아오자 군중은 덕만이 해를 풀어 주었다고 외쳤습니다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "거짓 예언을 이기려고 더 정확한 거짓 예언을 만드셨군요. 효과는 훌륭합니다."
+      - say:
+          char: 덕만.sad
+          text: "오늘은 사람을 살리려고 썼어. 내일 누군가 같은 거짓말로 사람을 죽일 수도 있겠지."
+      - goto: eclipse_day
+
+  keep_secret:
+    actions:
+      - bg: council_hall
+      - char: { id: 진평왕, position: right }
+      - say:
+          channel: narration
+          text: "왕실은 일식 날 문을 닫고 군사를 배치했습니다. 폭동은 작았지만 백성에게는 해가 왜 사라졌는지 끝내 알려지지 않았습니다."
+      - say:
+          char: 진평왕
+          camera: close
+          with: [덕만]
+          text: "비밀은 오늘 질서를 지켰다. 그러나 이제 이 표를 가진 사람을 지키는 일이 새 질서가 되겠구나."
+      - goto: eclipse_day
+
+  eclipse_day:
+    actions:
+      - bg: peony_court
+      - camera: wide
+      - effect: eclipse
+      - say:
+          channel: narration
+          text: "정오, 하늘이 검어졌습니다. 제관이 덕만을 가리키자 공포에 질린 군중이 제단 앞으로 밀려들었습니다."
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          char: 유신.angry
+          camera: reaction
+          with: [덕만]
+          text: "군사가 제단을 막겠습니다. 사람들을 다치게 하지 않고 버틸 수 있는 시간은 짧습니다."
+      - choice:
+          key: c6_eclipse_riot
+          prompt: "어둠 속 군중 앞에서 어떻게 행동하겠습니까?"
+          char: 덕만
+          camera: reaction
+          with: [유신]
+          options:
+            - text: "높은 곳에서 남은 시간을 큰 소리로 센다"
+              add: { people_support: 2, insight: 1 }
+              goto: sun_returns
+            - text: "유신에게 무기를 내리게 하고 아이들을 먼저 대피시킨다"
+              add: { mercy: 2, yushin_trust: 1 }
+              goto: sun_returns
+            - text: "호위 없이 제관 앞에 서서 거짓을 폭로한다"
+              goto: bad_dark_crowd
+
+  sun_returns:
+    actions:
+      - effect: { name: darken, wait: true }
+      - bg: peony_court
+      - camera: wide
+      - say:
+          channel: narration
+          text: "계산된 순간에 빛이 돌아왔습니다. 누구는 덕만의 기적이라 했고 누구는 처음으로 하늘을 계산할 수 있다는 사실을 믿었습니다."
+      - char: { id: 덕만, position: left }
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "오늘 너는 왕보다 많은 사람을 움직였다. 그 힘을 얻은 방법이 내 왕관보다 오래 남을 것이다."
+      - say:
+          char: 덕만
+          text: "그렇다면 힘을 사람에게 돌려주는 방법도 함께 남겨야 합니다."
+      - say:
+          channel: record
+          text: "덕만은 해를 되돌리지 않았습니다. 다만 해를 훔쳐 권력을 만들던 사람들의 시간을 빼앗았습니다."
+      - goto: /6.yaml
+
+  bad_dark_crowd:
+    actions:
+      - bg: peony_court
+      - camera: close
+      - effect: eclipse
+      - char: { id: 덕만, position: left, emotion: angry }
+      - say:
+          char: 덕만.angry
+          text: "해는 곧 돌아온다. 제관이 날짜를 알고 너희를 속였다!"
+      - say:
+          channel: narration
+          text: "뒤쪽 사람들은 덕만의 말을 듣지 못했습니다. 앞줄이 물러서는 모습을 공격으로 오해한 군중이 한꺼번에 밀렸습니다."
+      - say:
+          char: 유신.angry
+          text: "공주님께 길이 없습니다. 방패를 세우면 사람들이 짓밟힙니다."
+      - say:
+          channel: record
+          text: "일식 소요 기록 — 덕만 공주가 제단에서 실종. 수십 명이 압사했고 제관은 이를 하늘의 심판이라 선포함."
+      - gameOver:
+          title: "운명 — 옳은 말이 닿지 않은 거리"
+          message: "진실은 사실만으로 군중을 통과하지 못했습니다. 덕만은 설명할 위치와 들을 시간을 만들지 않은 채 가장 어두운 순간에 혼자 섰습니다."

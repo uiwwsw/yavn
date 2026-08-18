@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">불탄 연의 뼈대</title>
+  <desc id="desc">별이 떨어졌다는 소문을 만들기 위해 불을 붙여 띄운 연의 검게 탄 대나무 뼈대다.</desc>
+  <defs><filter id="shadow" x="-35%" y="-45%" width="170%" height="200%"><feDropShadow dx="4" dy="17" stdDeviation="13" flood-opacity=".68"/></filter><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7c3429"/><stop offset="1" stop-color="#22191a"/></linearGradient></defs>
+  <g filter="url(#shadow)" transform="rotate(-7 320 200)">
+    <path d="M318 42L509 207 319 338 130 207z" fill="url(#paper)" stroke="#151014" stroke-width="11"/>
+    <path d="M318 42v296M130 207h379" stroke="#b48a55" stroke-width="10"/>
+    <path d="M169 163l49 32-39 54 54 23-20 44M466 120l-48 43 41 37-58 52 45 38" fill="none" stroke="#080709" stroke-width="24" stroke-linecap="round"/>
+    <path d="M320 338c34 20 49 36 38 50M319 338c-28 19-44 35-36 50" fill="none" stroke="#6b4d34" stroke-width="8"/>
+  </g>
+</svg>

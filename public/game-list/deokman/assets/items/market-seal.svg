@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">국경 시장의 붉은 인장</title>
+  <desc id="desc">검은 장부 조각과 붉은 인주 자국이 겹친 국경 시장의 수색 인장이다.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f3e5c1"/><stop offset="1" stop-color="#b89059"/></linearGradient>
+    <radialGradient id="seal" cx="36%" cy="30%"><stop stop-color="#c94b4f"/><stop offset="1" stop-color="#641824"/></radialGradient>
+    <filter id="shadow" x="-30%" y="-40%" width="160%" height="190%"><feDropShadow dx="4" dy="15" stdDeviation="11" flood-opacity=".58"/></filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(-3 320 200)">
+    <path d="M112 82l378-13 35 221-48 28-72-10-66 19-75-12-68 16-67-25z" fill="url(#paper)" stroke="#68462d" stroke-width="7"/>
+    <path d="M170 128h222M160 177h268M151 226h205" stroke="#60442f" stroke-width="8" opacity=".55" stroke-linecap="round"/>
+    <g transform="translate(430 235) rotate(9)"><circle r="74" fill="url(#seal)" stroke="#4e111a" stroke-width="8"/><circle r="54" fill="none" stroke="#e6bd76" stroke-width="5"/><path d="M-30-15h60M-30 14h60M0-40v80M-22-38l44 76" stroke="#e6bd76" stroke-width="8" stroke-linecap="round"/></g>
+  </g>
+</svg>
