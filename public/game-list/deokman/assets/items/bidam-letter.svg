@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">비담의 보내지 못한 서신</title>
+  <desc id="desc">접힌 자주색 비단 안쪽에 여러 번 고쳐 쓴 먹선과 부러진 은장식이 남은 서신이다.</desc>
+  <defs><linearGradient id="silk" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70415d"/><stop offset=".55" stop-color="#3a2438"/><stop offset="1" stop-color="#18131d"/></linearGradient><filter id="shadow" x="-30%" y="-40%" width="160%" height="190%"><feDropShadow dx="4" dy="16" stdDeviation="12" flood-opacity=".66"/></filter></defs>
+  <g filter="url(#shadow)" transform="rotate(2 320 200)">
+    <path d="M91 72l449-8 17 270-461 5z" fill="url(#silk)" stroke="#18121a" stroke-width="9"/>
+    <path d="M137 112h279M137 159h344M137 206h292M137 253h331M137 300h208" stroke="#d9c9b4" stroke-width="8" stroke-linecap="round" opacity=".72"/>
+    <path d="M436 93l72 65-61 72" fill="none" stroke="#b8b4bd" stroke-width="11" stroke-linecap="round"/>
+    <path d="M447 230l-37 56 71-13" fill="none" stroke="#c8c3cb" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="488" cy="288" r="35" fill="#722630" stroke="#d1a264" stroke-width="6"/>
+  </g>
+</svg>

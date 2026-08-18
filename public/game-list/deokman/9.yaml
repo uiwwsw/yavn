@@ -1,0 +1,220 @@
+script:
+  - scene: queens_first_winter
+
+scenes:
+  queens_first_winter:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - say:
+          channel: record
+          text: "제10장 — 별을 세우는 사람"
+      - char: { id: 덕만, position: left }
+      - char: { id: 춘추, position: right }
+      - say:
+          channel: narration
+          text: "즉위 첫겨울, 북쪽 성은 보수를 요구했고 남쪽 마을은 홍수 예측을 요구했습니다. 국고는 두 일 중 하나만 온전히 감당할 수 있었습니다."
+      - say:
+          char: 춘추
+          camera: medium
+          with: [덕만]
+          text: "성벽은 적이 오면 필요하고 관측대는 하늘이 틀리면 쓸모없습니다. 대신 관측이 맞으면 매년 더 많은 사람을 살립니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [춘추]
+          text: "왕의 첫 건축은 돌이 아니라 우선순위를 세우는 일이군. 무엇을 늦췄는지까지 기록하자."
+      - choice:
+          key: c10_observatory_priority
+          prompt: "첫해의 국고를 어디에 먼저 쓰겠습니까?"
+          char: 덕만
+          camera: medium
+          with: [춘추]
+          options:
+            - text: "첨성대를 먼저 세우고 홍수·파종 관측을 시작한다"
+              set: { observatory_priority: stars_first }
+              add: { insight: 3, people_support: 1, army_support: -1 }
+              goto: stars_first
+            - text: "성벽을 보수하되 남은 돌로 작은 관측대를 만든다"
+              set: { observatory_priority: balanced }
+              add: { army_support: 2, insight: 1, nobles_support: 1 }
+              goto: balanced_build
+            - text: "구휼 창고부터 채우고 관측대는 백성의 공동 노동으로 짓는다"
+              set: { observatory_priority: granary_first }
+              add: { people_support: 3, insight: 1, fear: 1 }
+              goto: granary_first
+
+  stars_first:
+    actions:
+      - bg: title_palace
+      - say:
+          channel: narration
+          text: "왕궁보다 높은 관측대가 빠르게 올라갔습니다. 북쪽 군관들은 자신들의 성벽보다 별을 먼저 지킨 여왕이라고 불평했습니다."
+      - say:
+          char: 덕만
+          text: "그 불평도 기록해. 별을 택한 날 성벽을 늦춘 책임이 사라지면 안 된다."
+      - goto: who_reads_stars
+
+  balanced_build:
+    actions:
+      - bg: frontier
+      - say:
+          channel: narration
+          text: "성벽은 겨울 전에 보수됐고 낮은 관측대도 완성됐습니다. 둘 다 충분하지 않았지만 군사와 관측관은 같은 돌의 값을 알게 됐습니다."
+      - goto: who_reads_stars
+
+  granary_first:
+    actions:
+      - bg: village
+      - say:
+          channel: narration
+          text: "창고가 먼저 채워지자 마을 사람들은 품삯을 곡식으로 받고 돌을 날랐습니다. 첨성대는 늦게 완성됐지만 누구의 세금으로 세웠는지 모두 알았습니다."
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "공동 노동이 자발적이었다는 기록과 실제로 거절할 수 있었는지는 다를 수 있습니다."
+      - say:
+          char: 덕만.sad
+          text: "그러니 참여하지 않은 마을도 명단에 남겨. 칭송만 남기면 강제가 된다."
+      - goto: who_reads_stars
+
+  who_reads_stars:
+    actions:
+      - bg: moon_court
+      - camera: wide
+      - char: { id: 비담, position: right, emotion: smirk }
+      - say:
+          channel: narration
+          text: "첫 관측표가 나오자 왕실 제관은 이를 봉인해야 한다고 했고, 비담은 자신에게 맡기면 필요한 사람에게만 정확한 날짜를 팔겠다고 했습니다."
+      - say:
+          char: 비담.smirk
+          camera: close
+          with: [덕만]
+          text: "모두에게 지식을 주면 반란군도 행군하기 좋은 날을 압니다. 비밀은 위험하지만 공개도 순진한 선택이죠."
+      - choice:
+          key: c10_knowledge_policy
+          prompt: "관측표를 누가 읽게 하겠습니까?"
+          char: 덕만
+          camera: close
+          with: [비담]
+          options:
+            - text: "쉬운 달력으로 바꿔 모든 마을에 배포한다"
+              set: { knowledge_policy: public }
+              add: { people_support: 3, insight: 2, nobles_support: -1 }
+              goto: public_calendar
+            - text: "왕실·군대·농민 대표에게 서로 다른 부분을 공유한다"
+              set: { knowledge_policy: distributed }
+              add: { nobles_support: 1, army_support: 1, people_support: 1 }
+              goto: distributed_tables
+            - text: "비담이 관리하는 비밀 정보망으로 운영한다"
+              set: { knowledge_policy: bidam_network }
+              add: { bidam_trust: 3, fear: 2, evidence: 1 }
+              goto: bidam_network
+
+  public_calendar:
+    actions:
+      - sticker: { id: c10_chart, image: star_chart_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, enter: fadeIn }
+      - get: star_chart
+      - say:
+          channel: narration
+          text: "별자리 이름 옆에 씨 뿌릴 날과 강물이 높아질 날이 적혔습니다. 읽지 못하는 사람을 위해 그림과 매듭 표시도 함께 붙었습니다."
+      - clearSticker: { id: c10_chart, leave: fadeOut }
+      - goto: observatory_sabotage
+
+  distributed_tables:
+    actions:
+      - get: star_chart
+      - say:
+          channel: narration
+          text: "군대는 날씨를, 농민은 계절을, 왕실은 전체 계산식을 나누어 가졌습니다. 한 곳이 독점하지 않았지만 서로의 표가 없으면 전체를 알 수 없었습니다."
+      - goto: observatory_sabotage
+
+  bidam_network:
+    actions:
+      - get: star_chart
+      - say:
+          channel: narration
+          text: "비담의 정보망은 가장 빠르게 홍수와 적군의 움직임을 알렸습니다. 관리들은 왕보다 비담에게 먼저 날짜를 물었고, 지식의 문에는 새 주인이 생겼습니다."
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "걱정 마십시오. 저는 여왕 폐하께만 충성합니다."
+      - say:
+          char: 덕만.sad
+          text: "그 말이 위로가 되는 동안만 위험하지."
+      - goto: observatory_sabotage
+
+  observatory_sabotage:
+    actions:
+      - bg: title_palace
+      - camera: wide
+      - effect: embers
+      - say:
+          channel: narration
+          text: "완공 전날 밤 관측대 아래 창고에서 불이 났습니다. 불길보다 먼저 '여왕의 별이 떨어졌다'는 소문이 시장에 퍼졌습니다."
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          char: 유신.angry
+          camera: reaction
+          with: [덕만]
+          text: "불을 끄면 범인을 놓치고, 범인을 쫓으면 관측 기록이 탑니다."
+      - choice:
+          key: c10_sabotage
+          prompt: "첨성대 방화에 무엇을 먼저 지키겠습니까?"
+          char: 덕만
+          camera: reaction
+          with: [유신]
+          options:
+            - text: "사람과 관측 기록을 먼저 빼낸다"
+              add: { mercy: 2, people_support: 1, evidence: -1 }
+              goto: tower_survives
+            - text: "불탄 재료를 그대로 남겨 방화 흔적을 조사한다"
+              add: { evidence: 2, fear: 1 }
+              goto: tower_survives
+            - text: "국고를 모두 풀어 밤새 더 높은 탑으로 다시 세운다"
+              goto: bad_monument
+
+  tower_survives:
+    actions:
+      - bg: title_palace
+      - camera: wide
+      - say:
+          channel: narration
+          text: "첨성대는 예정일보다 늦게 완성됐습니다. 완벽한 승리의 기념비가 아니라 불탄 돌과 고친 기록이 함께 남은 작업장이었습니다."
+      - char: { id: 덕만, position: center }
+      - say:
+          char: 덕만
+          camera: close
+          text: "이 탑은 내 별을 보려고 세운 것이 아니다. 사람들이 왕의 예언 없이도 내일을 준비하게 하려고 세웠다."
+      - say:
+          channel: narration
+          text: "아이들이 탑 아래서 그림 달력을 베꼈습니다. 왕실의 지식은 처음으로 왕실 밖에서 틀리고 고쳐질 수 있게 됐습니다."
+      - say:
+          channel: record
+          text: "덕만은 별을 세운 것이 아니라 별을 읽을 사람을 세웠습니다. 그 선택은 곧 지식을 독점하려는 가장 가까운 신하와 충돌했습니다."
+      - goto: /10.yaml
+
+  bad_monument:
+    actions:
+      - bg: title_palace
+      - camera: close
+      - effect: darken
+      - char: { id: 덕만, position: center, emotion: angry }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          char: 덕만.angry
+          text: "오늘 밤 더 높은 탑을 세운다. 누구도 여왕의 뜻을 꺾지 못한다는 것을 보여라."
+      - say:
+          channel: narration
+          text: "병사와 백성이 밤새 돌을 날랐습니다. 사흘 뒤 탑은 전보다 높아졌지만 국고의 구휼미와 성벽 보수금이 모두 사라졌습니다."
+      - say:
+          char: 춘추.nervous
+          text: "탑은 남았습니다. 하지만 북쪽 성문과 남쪽 창고가 동시에 열렸습니다."
+      - say:
+          channel: record
+          text: "선덕왕 원년 — 첨성대 완공. 같은 달 국경 성 함락과 구휼 창고 폐쇄로 지방 세 곳이 왕명을 거부함."
+      - gameOver:
+          title: "운명 — 나라보다 높은 기념비"
+          message: "덕만은 방화를 이겼지만 첨성대를 자신의 권위와 같은 것으로 만들었습니다. 별을 위한 탑은 남고 그 별을 읽을 나라는 갈라졌습니다."

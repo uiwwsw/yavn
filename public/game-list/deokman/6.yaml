@@ -1,0 +1,227 @@
+script:
+  - scene: empty_seal
+
+scenes:
+  empty_seal:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - say:
+          channel: record
+          text: "제7장 — 왕이 약한 이유"
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - char: { id: 덕만, position: left }
+      - say:
+          channel: narration
+          text: "일식 뒤 진평왕은 아무도 없는 왕좌에서 빈 옥새함을 열어 보였습니다. 옥새는 귀족 회의가 보관한다는 명목으로 가져간 뒤였습니다."
+      - say:
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "사람들은 내가 선해서 약하다고 말한다. 사실은 명령을 옮길 창고와 군사와 기록관을 하나씩 넘겨주며 왕좌만 지켰기 때문이다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "왕관을 지키려고 왕이 하는 일을 내주셨군요."
+      - sticker: { id: c7_seal_box, image: empty_seal_box_sticker, x: 50, y: 28, width: "clamp(170px, 20%, 320px)", anchorX: center, anchorY: center, enter: scaleIn }
+      - get: empty_seal_box
+      - clearSticker: { id: c7_seal_box, leave: fadeOut }
+      - goto: confession_choice
+
+  confession_choice:
+    actions:
+      - choice:
+          key: c7_confession
+          prompt: "진평왕의 실패를 어떻게 다루겠습니까?"
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          options:
+            - text: "왕이 직접 백성 앞에서 잘못을 고백하게 한다"
+              set: { king_failure_public: true }
+              add: { people_support: 2, king_trust: 2, nobles_support: -1 }
+              goto: public_confession
+            - text: "실패는 숨기되 빼앗긴 권한 목록을 공개한다"
+              set: { king_failure_public: false }
+              add: { evidence: 2, nobles_support: 1, insight: 1 }
+              goto: publish_powers
+            - text: "고백을 비밀로 하고 덕만이 책임을 떠안는다"
+              set: { king_failure_public: false }
+              add: { king_trust: 3, fear: 1, people_support: -1 }
+              goto: inherit_blame
+
+  public_confession:
+    actions:
+      - bg: council_hall
+      - say:
+          char: 진평왕.weak
+          camera: medium
+          text: "내가 평화를 산다며 창고와 군사를 나누어 주었다. 그 대가를 백성이 굶주림으로 냈다."
+      - say:
+          channel: narration
+          text: "사람들은 처음으로 왕의 실패를 왕의 입으로 들었습니다. 귀족들은 왕실의 수치라 했지만, 왕의 말은 덕만의 증거가 되었습니다."
+      - goto: rebuild_power
+
+  publish_powers:
+    actions:
+      - say:
+          channel: narration
+          text: "궁문에 붙은 목록에는 어느 가문이 어느 창고와 성문과 기록관을 움직이는지 적혔습니다. 왕의 실패는 보이지 않았지만 권력의 주소는 드러났습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [진평왕]
+          text: "사람들은 약한 왕보다 보이지 않는 주인을 더 오래 두려워합니다. 이제 이름을 보게 해야 합니다."
+      - goto: rebuild_power
+
+  inherit_blame:
+    actions:
+      - say:
+          channel: narration
+          text: "덕만은 곡식 창고 혼란이 자신의 성급한 조사 때문이었다고 발표했습니다. 왕은 보호받았지만 귀족들은 덕만이 죄를 대신 짊어질 사람임을 배웠습니다."
+      - say:
+          char: 진평왕.sad
+          camera: close
+          with: [덕만]
+          text: "내 왕좌를 지키려고 네 이름을 다시 더럽혔다."
+      - say:
+          char: 덕만.sad
+          text: "이번에는 제가 선택했습니다. 하지만 두 번은 하지 않겠습니다."
+      - goto: rebuild_power
+
+  rebuild_power:
+    actions:
+      - bg: council_hall
+      - camera: wide
+      - char: { id: 유신, position: right }
+      - say:
+          channel: narration
+          text: "덕만은 빼앗긴 세 권한 중 하나를 먼저 되찾아야 했습니다. 모두를 동시에 건드리면 왕실에 맞선 귀족 연합이 생길 상황이었습니다."
+      - choice:
+          key: c7_first_power
+          prompt: "왕권을 다시 세우기 위해 무엇부터 되찾겠습니까?"
+          char: 덕만
+          camera: medium
+          with: [유신]
+          options:
+            - text: "구휼 창고를 마을 공동 감시 아래 둔다"
+              add: { people_support: 2, nobles_support: -1, insight: 1 }
+              goto: restore_granary
+            - text: "유신에게 왕실 직속 방위군을 맡긴다"
+              add: { army_support: 3, yushin_trust: 2, fear: 1 }
+              goto: restore_army
+            - text: "모든 왕명을 두 기록관이 함께 적게 한다"
+              add: { evidence: 2, nobles_support: 1, insight: 1 }
+              goto: restore_records
+
+  restore_granary:
+    actions:
+      - bg: village
+      - say:
+          channel: narration
+          text: "창고 열쇠는 왕실 관리와 마을 대표가 하나씩 나눠 가졌습니다. 문을 여는 속도는 느려졌지만 혼자 훔칠 수 있는 사람도 사라졌습니다."
+      - goto: council_counterattack
+
+  restore_army:
+    actions:
+      - bg: frontier
+      - say:
+          char: 유신
+          camera: close
+          with: [덕만]
+          text: "왕실의 칼을 맡겠습니다. 다만 제 충성을 믿는 것만으로 제 뒤를 감시하지 않는다면, 다음 약한 왕은 제가 만들 수도 있습니다."
+      - say:
+          char: 덕만
+          text: "그래서 명령과 군량 장부를 따로 검사하게 할 거야. 너를 믿기 때문에 구조도 함께 만들겠다."
+      - goto: council_counterattack
+
+  restore_records:
+    actions:
+      - bg: locked_room
+      - say:
+          channel: narration
+          text: "한 왕명을 서로 다른 기록관이 베껴 공개하자 위조는 어려워졌습니다. 대신 결정이 늦어졌고 전쟁 중에도 두 번째 붓을 기다려야 했습니다."
+      - goto: council_counterattack
+
+  council_counterattack:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - char: { id: 천명, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "귀족 회의는 왕의 병세를 이유로 천명을 섭정에 앉히겠다고 선언했습니다. 덕만이 되찾은 권한을 천명의 이름으로 다시 묶으려는 반격이었습니다."
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "거절하면 왕실이 분열됐다고 할 거야. 받으면 너를 막는 벽으로 나를 쓸 거고."
+      - choice:
+          key: c7_regency
+          prompt: "귀족 회의의 섭정 제안에 어떻게 대응하겠습니까?"
+          char: 덕만
+          camera: reaction
+          with: [천명]
+          options:
+            - text: "천명이 섭정을 맡되 모든 결정을 공동 서명한다"
+              add: { cheonmyeong_trust: 2, nobles_support: 2, people_support: -1 }
+              goto: shared_regency
+            - text: "섭정 대신 공개 국정회의를 열자고 역제안한다"
+              add: { people_support: 2, insight: 1, nobles_support: -1 }
+              goto: open_council
+            - text: "왕명을 앞세워 귀족 대표 전원을 체포한다"
+              goto: bad_empty_order
+
+  shared_regency:
+    actions:
+      - say:
+          channel: narration
+          text: "천명은 섭정 자리에 앉았지만 모든 문서에 덕만의 서명이 함께 들어갔습니다. 두 공주는 서로를 지켰고, 결정이 늦어질 때마다 귀족들은 그 틈을 기록했습니다."
+      - goto: weak_king_end
+
+  open_council:
+    actions:
+      - say:
+          channel: narration
+          text: "덕만은 귀족뿐 아니라 군관과 마을 대표가 참석한 국정회의를 열었습니다. 목소리는 많아졌고 왕실이 결정을 독점하기는 어려워졌습니다."
+      - goto: weak_king_end
+
+  weak_king_end:
+    actions:
+      - bg: throne_hall
+      - camera: medium
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - char: { id: 덕만, position: left }
+      - say:
+          char: 진평왕.weak
+          text: "너는 내가 잃은 것을 되찾았지만 모두 왕의 손에 쥐지는 않았구나."
+      - say:
+          char: 덕만
+          text: "한 사람 손에 다 들어오면 다음 왕은 다시 나눠 주며 살아남을 겁니다. 왕이 약해져도 나라가 무너지지 않게 하겠습니다."
+      - say:
+          channel: record
+          text: "진평왕은 약한 사람이어서만 약한 왕이 된 것이 아니었습니다. 권한 없는 왕좌를 평화라고 부른 시간이 왕을 약하게 만들었습니다."
+      - goto: /7.yaml
+
+  bad_empty_order:
+    actions:
+      - bg: throne_hall
+      - camera: close
+      - char: { id: 덕만, position: left, emotion: angry }
+      - char: { id: 천명, position: right, emotion: nervous }
+      - say:
+          char: 덕만.angry
+          text: "왕명이다. 회의에 참석한 자들을 모두 가두어라."
+      - say:
+          channel: narration
+          text: "명령은 왕좌에서 울렸지만 움직이는 군사는 절반뿐이었습니다. 나머지 병사들의 군량과 가족은 귀족의 창고에 묶여 있었습니다."
+      - say:
+          char: 천명.nervous
+          text: "명령할 힘을 되찾기 전에 명령부터 했어. 이제 저들은 우리가 실패했다는 증거를 얻었어."
+      - say:
+          channel: record
+          text: "귀족 회의는 왕실의 불법 체포 명령을 이유로 성문을 폐쇄하고 별도 군정을 선포했습니다."
+      - gameOver:
+          title: "운명 — 비어 있는 명령"
+          message: "옥새 없는 왕명은 충성심만으로 움직이지 않았습니다. 덕만은 구조를 바꾸려던 싸움을 개인의 명령으로 끝내려다 왕실의 무력함을 공개했습니다."

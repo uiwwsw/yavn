@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">백성을 위한 별자리표</title>
+  <desc id="desc">별의 위치와 파종, 장마 시기를 한 장에 연결한 공개 관측 지도다.</desc>
+  <defs>
+    <radialGradient id="night" cx="42%" cy="35%"><stop stop-color="#354461"/><stop offset="1" stop-color="#111522"/></radialGradient>
+    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%"><feDropShadow dx="4" dy="15" stdDeviation="12" flood-opacity=".65"/></filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(1 320 200)">
+    <path d="M80 59l480 10-20 274-470-13z" fill="url(#night)" stroke="#a7864f" stroke-width="7"/>
+    <g fill="#f5dda0"><circle cx="141" cy="127" r="7"/><circle cx="217" cy="95" r="5"/><circle cx="276" cy="158" r="8"/><circle cx="351" cy="112" r="6"/><circle cx="435" cy="147" r="9"/><circle cx="491" cy="91" r="5"/><circle cx="184" cy="245" r="8"/><circle cx="311" cy="270" r="6"/><circle cx="454" cy="252" r="7"/></g>
+    <path d="M141 127l76-32 59 63 75-46 84 35 56-56M184 245l127 25 143-18" fill="none" stroke="#d9bd7b" stroke-width="4" opacity=".75"/>
+    <path d="M113 301h389M129 319h354" stroke="#8db2bd" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+  </g>
+</svg>

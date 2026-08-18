@@ -1,0 +1,204 @@
+assets:
+  backgrounds:
+    title_palace: root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp
+    peony_court: root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp
+    burning_palace: root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp
+    moon_court: root:/game-list/deokman/assets/bg/moon-court-silla-v3.webp
+    shadow_corridor: root:/game-list/deokman/assets/bg/shadow-corridor-silla-v3.webp
+    village: root:/game-list/deokman/assets/bg/village-silla-v3.webp
+    council_hall: root:/game-list/deokman/assets/bg/council-hall-silla-v3.webp
+    banquet_hall: root:/game-list/deokman/assets/bg/banquet-hall-silla-v3.webp
+    frontier: root:/game-list/deokman/assets/bg/frontier-silla-v3.webp
+    locked_room: root:/game-list/deokman/assets/bg/locked-room-silla-v3.webp
+    princess_chamber: root:/game-list/deokman/assets/bg/princess-chamber-silla-v3.webp
+    throne_hall: root:/game-list/deokman/assets/bg/throne-hall-silla-v3.webp
+    peony_painting_sticker: root:/game-list/deokman/assets/items/peony-painting.svg
+    death_register_sticker: root:/game-list/deokman/assets/items/death-register.svg
+    peony_token_sticker: root:/game-list/deokman/assets/items/peony-token.svg
+    market_seal_sticker: root:/game-list/deokman/assets/items/market-seal.svg
+    grain_ledger_sticker: root:/game-list/deokman/assets/items/grain-ledger.svg
+    eclipse_table_sticker: root:/game-list/deokman/assets/items/eclipse-table.svg
+    empty_seal_box_sticker: root:/game-list/deokman/assets/items/empty-seal-box.svg
+    star_chart_sticker: root:/game-list/deokman/assets/items/star-chart.svg
+    burnt_kite_sticker: root:/game-list/deokman/assets/items/burnt-kite.svg
+    bidam_letter_sticker: root:/game-list/deokman/assets/items/bidam-letter.svg
+  characters:
+    어린 덕만:
+      base: root:/game-list/deokman/assets/char/deokman-child-silla-v7.webp
+      facing: left
+      defaultDelivery: deduction
+      calibration: { scale: 1, y: 0, spacing: 1 }
+      emotions:
+        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v7.webp
+        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v7.webp
+    덕만:
+      base: root:/game-list/deokman/assets/char/deokman-silla-v5.webp
+      facing: left
+      defaultDelivery: deduction
+      calibration: { scale: 1, y: 0, spacing: 0.98 }
+      emotions:
+        sad: root:/game-list/deokman/assets/char/deokman-sad-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/deokman-angry-silla-v5.webp
+    소화:
+      base: root:/game-list/deokman/assets/char/sowon-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration: { scale: 1, y: 0, spacing: 1 }
+      emotions:
+        nervous: root:/game-list/deokman/assets/char/sowon-nervous-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/sowon-angry-silla-v5.webp
+    진평왕:
+      base: root:/game-list/deokman/assets/char/jinpyeong-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration: { scale: 1, y: 0, spacing: 0.95 }
+      emotions:
+        sad: root:/game-list/deokman/assets/char/jinpyeong-sad-silla-v5.webp
+        weak: root:/game-list/deokman/assets/char/jinpyeong-weak-silla-v5.webp
+    천명:
+      base: root:/game-list/deokman/assets/char/cheonmyeong-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration: { scale: 1, y: 0, spacing: 1.05 }
+      emotions:
+        nervous: root:/game-list/deokman/assets/char/cheonmyeong-nervous-silla-v5.webp
+        sad: root:/game-list/deokman/assets/char/cheonmyeong-sad-silla-v5.webp
+    유신:
+      base: root:/game-list/deokman/assets/char/yushin-silla-v5.webp
+      facing: left
+      defaultDelivery: deduction
+      calibration: { scale: 1, y: 0, spacing: 1.08 }
+      emotions:
+        sad: root:/game-list/deokman/assets/char/yushin-sad-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/yushin-angry-silla-v5.webp
+    비담:
+      base: root:/game-list/deokman/assets/char/bidam-silla-v5.webp
+      facing: left
+      defaultDelivery: whisper
+      calibration: { scale: 1, y: 0, spacing: 0.94 }
+      emotions:
+        smirk: root:/game-list/deokman/assets/char/bidam-smirk-silla-v5.webp
+        sad: root:/game-list/deokman/assets/char/bidam-sad-silla-v5.webp
+    칠숙:
+      base: root:/game-list/deokman/assets/char/chilsuk-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration: { scale: 1, y: 0, spacing: 0.92 }
+      emotions:
+        smile: root:/game-list/deokman/assets/char/chilsuk-smile-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/chilsuk-angry-silla-v5.webp
+    춘추:
+      base: root:/game-list/deokman/assets/char/jinun-silla-v5.webp
+      facing: right
+      defaultDelivery: calm
+      calibration: { scale: 1, y: 0, spacing: 0.92 }
+      emotions:
+        nervous: root:/game-list/deokman/assets/char/jinun-nervous-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/jinun-angry-silla-v5.webp
+    당 사신:
+      base: root:/game-list/deokman/assets/char/ajin-silla-v5.webp
+      facing: right
+      defaultDelivery: calm
+      calibration: { scale: 1, y: 0, spacing: 0.98 }
+      emotions:
+        nervous: root:/game-list/deokman/assets/char/ajin-nervous-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/ajin-angry-silla-v5.webp
+  music: {}
+  sfx: {}
+
+state:
+  observed_left_waterway: false
+  spoke_truth_to_king: false
+  c1_escape_route: ""
+  identity_exposed: false
+  identity_mode: ""
+  saved_market_witness: false
+  sisters_public: false
+  cheonmyeong_outcome: ""
+  grain_policy: ""
+  diplomacy_policy: ""
+  eclipse_policy: ""
+  king_failure_public: false
+  coronation_compromise: ""
+  observatory_priority: ""
+  knowledge_policy: ""
+  rebellion_response: ""
+  bidam_sentence: ""
+  record_policy: ""
+  final_decree: ""
+  people_support: 0
+  nobles_support: 0
+  army_support: 0
+  evidence: 0
+  insight: 0
+  mercy: 0
+  fear: 0
+  sohwa_trust: 0
+  king_trust: 0
+  cheonmyeong_trust: 0
+  yushin_trust: 0
+  bidam_trust: 0
+  chunchu_trust: 0
+  used_false_omen: false
+
+inventory:
+  peony_painting:
+    name: "향기 없는 모란도"
+    description: "꽃은 가득하지만 벌과 나비는 그려지지 않은 모란 그림입니다. 빠진 것을 읽는 덕만의 첫 수업이 되었습니다."
+    image: root:/game-list/deokman/assets/items/peony-painting.svg
+    category: "왕실 물품"
+    order: 10
+  death_register:
+    name: "위조된 덕만의 사망 기록"
+    description: "덕만이 죽기 전에 사망 시각부터 적은 문서입니다. 권력이 기록을 사실로 만드는 방식을 보여 줍니다."
+    image: root:/game-list/deokman/assets/items/death-register.svg
+    category: "금지된 기록"
+    order: 20
+  peony_token:
+    name: "청동 모란패"
+    description: "왕실 안쪽 문을 통과하는 표식입니다. 문을 열지만 소유자의 신분도 드러냅니다."
+    image: root:/game-list/deokman/assets/items/peony-token.svg
+    category: "신분 표식"
+    order: 30
+  market_seal:
+    name: "국경 시장의 붉은 인장"
+    description: "칠숙의 수색 명단과 곡식 운송표에 함께 찍힌 인장입니다. 별궁의 위조 기록과 같은 계통의 도장입니다."
+    image: root:/game-list/deokman/assets/items/market-seal.svg
+    category: "추적 증거"
+    order: 40
+  grain_ledger:
+    name: "사라진 구휼 곡식 장부"
+    description: "백성에게 갈 곡식이 귀족 사병의 창고로 옮겨졌음을 적은 장부입니다."
+    image: root:/game-list/deokman/assets/items/grain-ledger.svg
+    category: "정치 증거"
+    order: 50
+  eclipse_table:
+    name: "일식 계산표"
+    description: "하늘의 변화가 신의 분노가 아니라 계산 가능한 현상임을 보여 주는 관측표입니다."
+    image: root:/game-list/deokman/assets/items/eclipse-table.svg
+    category: "천문 기록"
+    order: 60
+  empty_seal_box:
+    name: "빈 옥새함"
+    description: "도장보다 도장을 움직이는 창고·사병·기록이 더 강하다는 진평왕의 고백입니다."
+    image: root:/game-list/deokman/assets/items/empty-seal-box.svg
+    category: "왕권의 증거"
+    order: 70
+  star_chart:
+    name: "백성을 위한 별자리표"
+    description: "파종과 홍수 시기를 누구나 읽을 수 있도록 덕만이 공개한 관측 기록입니다."
+    image: root:/game-list/deokman/assets/items/star-chart.svg
+    category: "통치 기록"
+    order: 80
+  burnt_kite:
+    name: "불탄 연의 뼈대"
+    description: "여왕의 별이 떨어졌다는 소문을 만들기 위해 하늘에 띄운 불붙은 연의 잔해입니다."
+    image: root:/game-list/deokman/assets/items/burnt-kite.svg
+    category: "반란 증거"
+    order: 90
+  bidam_letter:
+    name: "비담의 보내지 못한 서신"
+    description: "충성도 반역도 아닌, 여왕에게 마지막으로 확인받고 싶었던 질문이 적혀 있습니다."
+    image: root:/game-list/deokman/assets/items/bidam-letter.svg
+    category: "마지막 기록"
+    order: 100

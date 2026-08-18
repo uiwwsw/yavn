@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">빈 옥새함</title>
+  <desc id="desc">왕의 옥새가 사라진 채 검은 비단만 남은 열린 나무함이다.</desc>
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9b6c3c"/><stop offset=".6" stop-color="#51341f"/><stop offset="1" stop-color="#241913"/></linearGradient>
+    <linearGradient id="silk" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#37313f"/><stop offset="1" stop-color="#111016"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-40%" width="160%" height="190%"><feDropShadow dx="4" dy="18" stdDeviation="13" flood-opacity=".66"/></filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M128 98l383-19 36 126-397 23z" fill="url(#wood)" stroke="#211711" stroke-width="10"/>
+    <path d="M155 214h386l-39 125H123z" fill="url(#wood)" stroke="#211711" stroke-width="11"/>
+    <path d="M183 232h310l-24 78H155z" fill="url(#silk)" stroke="#8a623c" stroke-width="6"/>
+    <path d="M265 256c35-21 76-21 111 0-21 12-31 27-33 44h-47c-2-17-12-32-31-44z" fill="#09080b" stroke="#62536d" stroke-width="5"/>
+    <circle cx="321" cy="218" r="13" fill="#c59c55" stroke="#402819" stroke-width="5"/>
+  </g>
+</svg>

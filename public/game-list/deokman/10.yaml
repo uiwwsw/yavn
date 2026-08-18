@@ -1,0 +1,238 @@
+script:
+  - scene: falling_star_rumor
+
+scenes:
+  falling_star_rumor:
+    actions:
+      - bg: burning_palace
+      - camera: wide
+      - effect: embers
+      - say:
+          channel: record
+          text: "제11장 — 떨어진 별"
+      - say:
+          channel: narration
+          text: "밤하늘에서 불붙은 별 하나가 왕궁 쪽으로 떨어졌습니다. 새벽이 오기 전에 '여왕의 별이 졌다'는 소문이 군영과 시장에 동시에 퍼졌습니다."
+      - char: { id: 덕만, position: left }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          char: 춘추.nervous
+          camera: medium
+          with: [덕만]
+          text: "비담이 국경군을 모았습니다. 귀족들은 하늘의 뜻이라 부르며 왕을 바꾸자는 격문에 서명했습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [춘추]
+          text: "별이 아니라 누군가 만든 불일 거야. 하늘의 뜻이 이렇게 정확히 군량 배급일에 맞을 리 없어."
+      - choice:
+          key: c11_falling_star
+          prompt: "떨어진 별의 소문에 어떻게 답하겠습니까?"
+          char: 덕만
+          camera: medium
+          with: [춘추]
+          options:
+            - text: "현장을 봉쇄하고 떨어진 물체를 공개 조사한다"
+              add: { evidence: 2, insight: 1 }
+              goto: inspect_kite
+            - text: "첨성대 관측관들이 별의 궤도를 공개 설명하게 한다"
+              when: { var: knowledge_policy, op: ne, value: bidam_network }
+              add: { people_support: 2, insight: 1 }
+              goto: explain_sky
+            - text: "왕궁 위에 더 큰 횃불을 올려 여왕의 별이 살아 있음을 연출한다"
+              add: { fear: 2, people_support: 1 }
+              goto: answer_omen
+
+  inspect_kite:
+    actions:
+      - sticker: { id: c11_kite, image: burnt_kite_sticker, x: 50, y: 28, width: "clamp(170px, 20%, 310px)", anchorX: center, anchorY: center, enter: rotateIn }
+      - get: burnt_kite
+      - say:
+          channel: narration
+          text: "재 속에서 대나무 뼈대와 기름 먹인 천이 나왔습니다. 떨어진 별은 군영 뒤 언덕에서 띄운 불붙은 연이었습니다."
+      - clearSticker: { id: c11_kite, leave: fadeOut }
+      - goto: bidam_letter_arrives
+
+  explain_sky:
+    actions:
+      - get: burnt_kite
+      - say:
+          channel: narration
+          text: "관측관들은 진짜 별이 그 시각에도 같은 자리에 있었음을 달력과 그림으로 보였습니다. 설명은 느렸지만 마을마다 다른 사람이 같은 계산을 반복했습니다."
+      - goto: bidam_letter_arrives
+
+  answer_omen:
+    actions:
+      - get: burnt_kite
+      - say:
+          channel: narration
+          text: "왕궁 위 횃불은 반란군의 불보다 밝았습니다. 사람들은 안도했지만 덕만은 일식 때와 같은 방법으로 거짓 징조에 맞섰습니다."
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "오늘은 우리가 더 큰 불을 가졌습니다. 다음에는 누가 더 큰 하늘을 만들지 겨루게 될 겁니다."
+      - goto: bidam_letter_arrives
+
+  bidam_letter_arrives:
+    actions:
+      - bg: throne_hall
+      - camera: medium
+      - say:
+          channel: narration
+          text: "비담의 군대가 서라벌 북쪽 길을 끊었습니다. 그날 밤 화살 하나가 왕궁 담을 넘어왔고, 화살대에는 보내지 못한 서신이 묶여 있었습니다."
+      - sticker: { id: c11_letter, image: bidam_letter_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, rotate: 2, enter: fadeIn }
+      - get: bidam_letter
+      - say:
+          channel: record
+          delivery: calm
+          text: "폐하께. 제가 만든 정보가 나라를 지켰는데, 이제 그 정보를 모두에게 주시겠다고 하셨습니다. 저를 믿은 것인지 잠시 쓴 것인지 마지막으로 묻고 싶었습니다."
+      - clearSticker: { id: c11_letter, leave: fadeOut }
+      - goto: answer_bidam
+
+  answer_bidam:
+    actions:
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "답장을 보내면 시간을 벌 수 있습니다. 그러나 비담은 폐하의 사적인 답을 항복의 증거로 바꿀 겁니다."
+      - choice:
+          key: c11_bidam_answer
+          prompt: "비담의 마지막 질문에 어떻게 답하겠습니까?"
+          char: 덕만
+          camera: close
+          with: [유신]
+          options:
+            - text: "믿었지만 한 사람에게 나라를 맡긴 것은 잘못이었다고 쓴다"
+              add: { bidam_trust: 1, mercy: 2, evidence: 1 }
+              goto: honest_letter
+            - text: "서신을 공개하고 반란의 개인적 명분을 끊는다"
+              add: { people_support: 2, fear: 1, bidam_trust: -2 }
+              goto: publish_letter
+            - text: "비담의 필체로 거짓 철군 명령을 만들어 보낸다"
+              add: { army_support: 2, fear: 2, evidence: -1 }
+              goto: forged_withdrawal
+
+  honest_letter:
+    actions:
+      - say:
+          char: 덕만
+          text: "너를 믿었다. 그래서 네 충성이 법을 대신하게 둔 것은 내 잘못이다. 돌아오면 그 잘못과 네 반역을 따로 재판하겠다."
+      - say:
+          channel: narration
+          text: "답장을 읽은 비담은 공격을 반나절 늦췄습니다. 돌아오지는 않았지만 덕만이 자신을 버렸다는 격문의 문장은 힘을 잃었습니다."
+      - goto: rebellion_strategy
+
+  publish_letter:
+    actions:
+      - say:
+          channel: narration
+          text: "비담의 서신은 시장 벽에 붙었습니다. 반란이 나라의 대의가 아니라 한 신하의 상처에서 시작됐다는 조롱이 퍼졌고, 비담과 함께했던 사람들은 자신의 이유까지 조롱받았다고 느꼈습니다."
+      - goto: rebellion_strategy
+
+  forged_withdrawal:
+    actions:
+      - say:
+          channel: narration
+          text: "거짓 철군 명령으로 반란군 한 부대가 자리를 비웠습니다. 승리는 가까워졌지만 덕만은 위조 기록으로 시작한 삶에서 다시 위조 명령을 사용했습니다."
+      - goto: rebellion_strategy
+
+  rebellion_strategy:
+    actions:
+      - bg: frontier
+      - camera: wide
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          channel: narration
+          text: "반란군은 세 길로 나뉘었습니다. 비담의 본대, 귀족 사병, 소문에 휩쓸려 따라온 농민군이 같은 깃발 아래 있었습니다."
+      - say:
+          char: 유신.angry
+          camera: reaction
+          with: [덕만]
+          text: "모두 적으로 보면 오늘 끝낼 수 있습니다. 갈라 놓으면 오래 걸리지만 돌아올 길을 남길 수 있습니다."
+      - choice:
+          key: c11_rebellion_response
+          prompt: "비담의 반란을 어떻게 끝내겠습니까?"
+          char: 덕만
+          camera: reaction
+          with: [유신]
+          options:
+            - text: "일반 가담자에게 해산 시한을 주고 지휘부만 포위한다"
+              set: { rebellion_response: amnesty_split }
+              add: { mercy: 3, people_support: 2, army_support: -1 }
+              goto: split_rebellion
+            - text: "군량길을 끊고 공개 재판을 약속해 항복을 기다린다"
+              set: { rebellion_response: siege_trial }
+              add: { evidence: 2, nobles_support: 1, fear: 1 }
+              goto: starve_command
+            - text: "유신의 전군으로 밤새 본진을 급습한다"
+              set: { rebellion_response: total_assault }
+              goto: bad_fortress_rush
+
+  split_rebellion:
+    actions:
+      - say:
+          channel: narration
+          text: "해산 시각 전까지 농민군과 하급 병사들이 무기를 내려놓았습니다. 전투는 줄었지만 귀족들은 여왕이 반역을 용서해 군율을 무너뜨렸다고 공격했습니다."
+      - goto: bidam_captured
+
+  starve_command:
+    actions:
+      - say:
+          channel: narration
+          text: "사흘 동안 본진의 군량이 끊겼습니다. 전투 없이 항복자가 늘었지만 성 밖 마을도 같은 길이 막혀 굶주렸습니다."
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [유신]
+          text: "피를 아끼는 포위도 누군가의 밥을 무기로 써. 재판 기록에 그 대가까지 남겨."
+      - goto: bidam_captured
+
+  bidam_captured:
+    actions:
+      - bg: throne_hall
+      - camera: wide
+      - char: { id: 덕만, position: left }
+      - char: { id: 비담, position: right, emotion: sad }
+      - say:
+          channel: narration
+          text: "비담은 살아서 왕궁으로 돌아왔습니다. 처음 만났을 때처럼 웃지 않았고, 마지막까지 무릎을 꿇지도 않았습니다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "별이 떨어진 게 아니었군요. 제가 불을 붙이고 떨어졌습니다. 이제 폐하께서 제 추락을 어떤 기록으로 만들지 보겠습니다."
+      - say:
+          char: 덕만
+          camera: close
+          with: [비담]
+          text: "네가 듣고 싶은 대답과 나라에 남겨야 할 판결을 구분하겠다. 그것이 네가 끝내 믿지 못한 일이다."
+      - say:
+          channel: record
+          text: "반란은 끝났습니다. 그러나 비담의 목숨, 덕만의 사망 기록, 하늘을 이용한 거짓말은 마지막 재판을 기다렸습니다."
+      - goto: /11.yaml
+
+  bad_fortress_rush:
+    actions:
+      - bg: frontier
+      - camera: close
+      - effect: darken
+      - char: { id: 유신, position: right, emotion: angry }
+      - char: { id: 덕만, position: left, emotion: angry }
+      - say:
+          char: 덕만.angry
+          text: "밤이 끝나기 전에 본진을 무너뜨린다. 소문이 다음 마을에 닿기 전에 끝내야 해."
+      - say:
+          char: 유신.angry
+          text: "명령을 따르겠습니다. 다만 어둠 속에서는 항복한 손과 칼 든 손을 가를 수 없습니다."
+      - say:
+          channel: narration
+          text: "급습은 본진을 무너뜨렸지만 불붙은 막사가 민가로 번졌습니다. 비담은 달아났고 죽은 사람의 수가 반란 전보다 더 큰 원한을 만들었습니다."
+      - say:
+          channel: record
+          text: "비담의 난 진압 보고 — 왕군 승리. 반란 수괴 도주. 북부 마을 다섯 곳 소실, 생존자들이 새 반란군을 결성함."
+      - gameOver:
+          title: "운명 — 끝내기 위해 키운 반란"
+          message: "빠른 승리는 전투만 끝냈습니다. 덕만은 반란의 군대를 무너뜨렸지만 반란이 다시 태어날 이유를 더 넓게 남겼습니다."
