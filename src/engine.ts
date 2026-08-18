@@ -26,7 +26,9 @@ import {
 import type {
   CameraDirective,
   CharacterSlot,
+  ChoiceOption,
   ConditionNode,
+  DialogueChannel,
   GameData,
   GameOverDefinition,
   InputRoute,
@@ -100,6 +102,9 @@ const EFFECT_DURATIONS: Record<string, number> = {
   moonveil: 900,
   embers: 1100,
   crown: 1200,
+  eclipse: 1400,
+  starfall: 1200,
+  inkstamp: 720,
 };
 const DEFAULT_STICKER_ENTER_EFFECT: StickerEnterEffect = 'fadeIn';
 const DEFAULT_STICKER_ENTER_DURATION = 280;
@@ -1282,6 +1287,13 @@ function resolveSayPresentation(
   };
 }
 
+function resolveDialogueChannel(
+  channel: DialogueChannel | undefined,
+  speakerId: string | undefined,
+): DialogueChannel {
+  return channel ?? (speakerId ? 'dialogue' : 'narration');
+}
+
 function syncCharacterEmotions(
   game: GameData,
   baseUrl: string,
@@ -1491,7 +1503,12 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
             if (value.kind === 'dialogue') {
               return (
                 typeof value.text === 'string' &&
-                (value.speaker === undefined || typeof value.speaker === 'string')
+                (value.speaker === undefined || typeof value.speaker === 'string') &&
+                (value.channel === undefined ||
+                  value.channel === 'dialogue' ||
+                  value.channel === 'narration' ||
+                  value.channel === 'record' ||
+                  value.channel === 'system')
               );
             }
             return (
@@ -2058,6 +2075,34 @@ function evaluateCondition(
   }
   const left = resolveConditionValue(condition.var, vars, inventory);
   return compareConditionLeaf(left, condition.op, condition.value);
+}
+
+export type AvailableChoiceOption = {
+  option: ChoiceOption;
+  authoredIndex: number;
+};
+
+export function resolveAvailableChoiceOptions(
+  options: readonly ChoiceOption[],
+  vars: Record<string, RouteVarValue>,
+  inventory: InventoryOwnedMap,
+): AvailableChoiceOption[] {
+  return options.flatMap((option, authoredIndex) => {
+    if (option.when && !evaluateCondition(option.when, vars, inventory)) {
+      return [];
+    }
+    return [{ option, authoredIndex }];
+  });
+}
+
+export function resolveVisibleTimeoutOptionIndex(
+  availableOptions: readonly AvailableChoiceOption[],
+  authoredTimeoutOptionIndex = 0,
+): number {
+  const matchedIndex = availableOptions.findIndex(
+    ({ authoredIndex }) => authoredIndex === authoredTimeoutOptionIndex,
+  );
+  return matchedIndex >= 0 ? matchedIndex : 0;
 }
 
 function resolveAutoEndingId(
@@ -3221,6 +3266,23 @@ function runToNextPause(loopGuard = 0) {
       action.choice.with,
       getStagedCharacterIds(),
     );
+    const availableOptions = resolveAvailableChoiceOptions(
+      action.choice.options,
+      state.routeVars,
+      state.inventory,
+    );
+    if (availableOptions.length === 0) {
+      useVNStore.getState().setWaitingInput(false);
+      useVNStore.getState().setError({
+        message: `Choice has no available options: ${state.currentSceneId}:${state.actionIndex}`,
+      });
+      return;
+    }
+    const visibleOptions = availableOptions.map(({ option }) => option);
+    const visibleTimeoutOptionIndex = resolveVisibleTimeoutOptionIndex(
+      availableOptions,
+      action.choice.timeoutOptionIndex ?? 0,
+    );
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setChoiceGate({
@@ -3231,8 +3293,8 @@ function runToNextPause(loopGuard = 0) {
       forgiveMessage: action.choice.forgiveMessage,
       forgivenOptionIndexes: [],
       timeoutMs: action.choice.timeoutMs,
-      timeoutOptionIndex: action.choice.timeoutOptionIndex,
-      options: action.choice.options,
+      timeoutOptionIndex: visibleTimeoutOptionIndex,
+      options: visibleOptions,
     });
     if (presentation.speakerId) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
@@ -3251,18 +3313,15 @@ function runToNextPause(loopGuard = 0) {
       fullText: action.choice.prompt,
       visibleText: action.choice.prompt,
       typing: false,
+      channel: 'dialogue',
       delivery: 'neutral',
       typingIntensity: 0,
       typingPulse: 0,
     });
     if (action.choice.timeoutMs) {
-      const timeoutOptionIndex = Math.min(
-        action.choice.options.length - 1,
-        action.choice.timeoutOptionIndex ?? 0,
-      );
       choiceTimer = window.setTimeout(() => {
         choiceTimer = undefined;
-        submitChoiceOption(timeoutOptionIndex, true);
+        submitChoiceOption(visibleTimeoutOptionIndex, true);
       }, action.choice.timeoutMs);
     }
     return;
@@ -3356,6 +3415,7 @@ function runToNextPause(loopGuard = 0) {
       fullText: action.input.prompt,
       visibleText: action.input.prompt,
       typing: false,
+      channel: 'dialogue',
       delivery: 'neutral',
       typingIntensity: 0,
       typingPulse: 0,
@@ -3383,6 +3443,7 @@ function runToNextPause(loopGuard = 0) {
     const characterDefaultDelivery = presentation.speakerId
       ? game.assets.characters[presentation.speakerId]?.defaultDelivery
       : undefined;
+    const channel = resolveDialogueChannel(action.say.channel, presentation.speakerId);
     const delivery = resolveDialogueDelivery(
       action.say.delivery,
       speakerEmotion,
@@ -3399,6 +3460,7 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',
       speaker: presentation.speakerName,
+      channel,
       text: parsed.text,
       chapterPath: getCurrentChapterPathKey(),
       sceneId: state.currentSceneId,
@@ -3415,6 +3477,7 @@ function runToNextPause(loopGuard = 0) {
       visibleText: '',
       typing: true,
       unskippable,
+      channel,
       delivery,
       typingIntensity: 0,
       typingPulse: 0,
@@ -4308,6 +4371,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
       fullText: message,
       visibleText: message,
       typing: false,
+      channel: 'system',
     });
     return;
   }

@@ -16,6 +16,7 @@ export type DialogueDelivery =
   | 'shout'
   | 'sad'
   | 'deduction';
+export type DialogueChannel = 'dialogue' | 'narration' | 'record' | 'system';
 
 export type CharacterFramingPreset = {
   scale: number;
@@ -130,6 +131,7 @@ export type SayAction = {
     with?: string[];
     framing?: string;
     camera?: CameraDirective;
+    channel?: DialogueChannel;
     text: string;
     delivery?: DialogueDelivery;
     wait?: number;
@@ -225,6 +227,7 @@ export type UseAction = {
 
 export type ChoiceOption = {
   text: string;
+  when?: ConditionNode;
   set?: StateSetMap;
   add?: StateAddMap;
   goto?: string;
@@ -481,6 +484,7 @@ export type StoryLogEntry =
   | {
       kind: 'dialogue';
       speaker?: string;
+      channel?: DialogueChannel;
       text: string;
       chapterPath?: string;
       sceneId: string;

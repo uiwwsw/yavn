@@ -1,0 +1,17 @@
+summary: "덕만 v8의 첫 완성 장면. 살아 있는 공주의 죽음이 먼저 기록된 날, 어린 덕만은 향기 없는 모란 그림과 불타는 별궁 사이에서 자기 이름을 지켜야 합니다."
+thumbnail: "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
+tags:
+  - historical-fiction
+  - silla
+  - vertical-slice
+  - character-drama
+  - deadly-choices
+showcase:
+  label: "V8 PREVIEW · CHAPTER 01"
+  backgroundColor: "#181722"
+  image:
+    positionX: 54
+    positionY: 45
+    scale: 1.03
+    offsetX: 0
+    offsetY: 0

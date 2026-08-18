@@ -1,0 +1,39 @@
+title: "덕만: 별은 왕을 선택하지 않는다"
+author:
+  name: "uiwwsw"
+version: "8.0.0-preview.1"
+seo:
+  description: "살아 있는 공주의 죽음이 먼저 기록된 밤. 어린 덕만이 모란 그림과 불타는 별궁에서 자기 이름을 지키는 선덕여왕 비주얼노벨 v8 수직 슬라이스."
+  keywords:
+    - "선덕여왕"
+    - "덕만"
+    - "신라"
+    - "역사 비주얼노벨"
+    - "선택형 드라마"
+  image: "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
+  imageAlt: "불타는 신라 별궁을 빠져나가는 덕만의 밤"
+textSpeed: 27
+autoSave: true
+clickToInstant: true
+ui:
+  template: paper-stage
+startScreen:
+  enabled: true
+  image: "/game-list/deokman/assets/bg/peony-court-silla-v1.webp"
+  showTitle: true
+  titleColor: "#f1d49a"
+  startButtonText: "첫 장 시작"
+  buttonPosition: bottom-left
+endingScreen:
+  image: "/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
+endings:
+  hidden_name:
+    title: "CHAPTER END — 공주는 죽고, 덕만은 살았습니다"
+    message: "덕만은 자기 죽음이 적힌 기록을 품고 별궁을 빠져나왔습니다. 이제 살아 있다는 사실부터 죄가 되는 삶이 시작됩니다."
+  marked_survivor:
+    title: "ANOTHER END — 살아남았으나 이름이 남았습니다"
+    message: "모란패는 문을 열었지만 덕만의 얼굴도 적의 기억에 남겼습니다. 살았다는 안도는 오래가지 못합니다."
+  ash_witness:
+    title: "ANOTHER END — 재 속에 남은 증인"
+    message: "덕만은 거짓 사망 기록을 왕에게 돌려주었습니다. 증거는 지켰지만 왕과 공주가 같은 비밀을 쥐었다는 사실도 누군가 보았습니다."
+defaultEnding: hidden_name

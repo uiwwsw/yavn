@@ -15,6 +15,7 @@ export const dialogueDeliverySchema = z.enum([
   'sad',
   'deduction',
 ]);
+export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system']);
 
 export const cameraShotSchema = z.enum(['wide', 'medium', 'close', 'reaction']);
 export const cameraTransitionSchema = z.enum(['cut', 'push', 'pan']);
@@ -72,6 +73,7 @@ const gameOverSchema = z
 const choiceOptionSchema = z
   .object({
     text: z.string().min(1),
+    when: conditionSchema.optional(),
     set: stateSetMapSchema.optional(),
     add: stateAddMapSchema.optional(),
     goto: z.string().min(1).optional(),
@@ -248,6 +250,7 @@ const actionBodySchema = z.union([
       with: z.array(z.string().min(1)).optional(),
       framing: z.string().min(1).optional(),
       camera: cameraDirectiveSchema.optional(),
+      channel: dialogueChannelSchema.optional(),
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
