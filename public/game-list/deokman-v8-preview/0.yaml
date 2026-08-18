@@ -53,7 +53,7 @@ scenes:
           image: peony_painting_sticker
           x: 50
           y: 27
-          width: 28
+          width: "clamp(180px, 22%, 360px)"
           anchorX: center
           anchorY: center
           rotate: -1.5
@@ -139,7 +139,7 @@ scenes:
           image: death_register_sticker
           x: 51
           y: 29
-          width: 25
+          width: "clamp(150px, 18%, 300px)"
           anchorX: center
           anchorY: center
           rotate: 2
@@ -317,7 +317,7 @@ scenes:
           image: death_register_sticker
           x: 50
           y: 28
-          width: 24
+          width: "clamp(150px, 18%, 300px)"
           anchorX: center
           anchorY: center
           rotate: 1
@@ -473,7 +473,7 @@ scenes:
           image: peony_token_sticker
           x: 49
           y: 31
-          width: 17
+          width: "clamp(104px, 12%, 180px)"
           anchorX: center
           anchorY: center
           zIndex: 15

@@ -42,11 +42,11 @@ describe('responsive stage content frame', () => {
   });
 
   it('normalizes static actor height across mobile and desktop play frames', () => {
-    expect(styles).toContain('--char-image-height: 58cqh;');
+    expect(styles).toContain('--char-image-height: 52cqh;');
     expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image/);
     expect(styles).toContain('--char-live2d-width: min(36cqw, 52cqh);');
     expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?width: auto;[\s\S]*?height: var\(--char-image-height\);[\s\S]*?max-height: none;/);
-    expect(styles).not.toContain('--char-image-height: 58vh;');
+    expect(styles).not.toContain('--char-image-height: 52vh;');
     expect(styles).not.toMatch(/--char-image-width: min\([^;]+, [0-9]+px\)/);
   });
 

@@ -80,7 +80,7 @@ import {
   type LauncherShowcase,
 } from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
-import { fitStickerWithinFrame, type StickerFit } from './stickerLayout';
+import { fitStickerWithinFrameAvoidingRects, type StickerFit } from './stickerLayout';
 import {
   CHARACTER_EXIT_FADE_DURATION_MS,
   resolveStageCameraFocusTargetId,
@@ -870,12 +870,28 @@ function useAdvanceByKey(advanceLocked: boolean) {
   }, [advanceLocked]);
 }
 
-function StickerView({ sticker }: { sticker: StickerSlot }) {
+const haveSameStickerFit = (a: StickerFit | null, b: StickerFit) =>
+  Boolean(
+    a
+    && Math.abs(a.scale - b.scale) < 0.001
+    && Math.abs(a.translateX - b.translateX) < 0.25
+    && Math.abs(a.translateY - b.translateY) < 0.25,
+  );
+
+function StickerView({
+  sticker,
+  avoidanceKey,
+  avoidanceSettleMs,
+}: {
+  sticker: StickerSlot;
+  avoidanceKey: string;
+  avoidanceSettleMs: number;
+}) {
   const stickerRef = useRef<HTMLDivElement | null>(null);
   const [safeFit, setSafeFit] = useState<StickerFit | null>(null);
+  const [fitAnimationReady, setFitAnimationReady] = useState(false);
   const [measurementVersion, setMeasurementVersion] = useState(0);
   const requestSafeFitMeasurement = useCallback(() => {
-    setSafeFit(null);
     setMeasurementVersion((version) => version + 1);
   }, []);
   const translateX =
@@ -888,19 +904,51 @@ function StickerView({ sticker }: { sticker: StickerSlot }) {
     : placementTransform;
 
   useLayoutEffect(() => {
-    if (safeFit) {
-      return;
-    }
     const stickerElement = stickerRef.current;
     const frameElement = stickerElement?.closest<HTMLElement>('.sticker-safe-frame');
-    if (!stickerElement || !frameElement) {
+    const stageElement = stickerElement?.closest<HTMLElement>('.stage-content-frame');
+    if (!stickerElement || !frameElement || !stageElement) {
       return;
     }
+
+    // Measure the authored box rather than the previously fitted transform.
+    // The temporary styles are restored in the same layout phase, before paint.
+    const previousTransform = stickerElement.style.transform;
+    const previousTransition = stickerElement.style.transition;
+    stickerElement.style.transition = 'none';
+    stickerElement.style.transform = placementTransform;
     const frameRect = frameElement.getBoundingClientRect();
     const stickerRect = stickerElement.getBoundingClientRect();
-    setSafeFit(fitStickerWithinFrame(frameRect, stickerRect));
+    stickerElement.style.transform = previousTransform;
+    stickerElement.style.transition = previousTransition;
+
+    if (stickerRect.width <= 0 || stickerRect.height <= 0) {
+      return;
+    }
+
+    const characterRects = [...stageElement.querySelectorAll<HTMLElement>('.char-layer .char')]
+      .filter((characterElement) => {
+        if (
+          characterElement.classList.contains('is-camera-hidden')
+          || characterElement.getAttribute('aria-hidden') === 'true'
+        ) {
+          return false;
+        }
+        return window.getComputedStyle(characterElement).visibility !== 'hidden';
+      })
+      .map((characterElement) => characterElement.getBoundingClientRect())
+      .filter((rect) => rect.width > 0 && rect.height > 0);
+    const nextFit = fitStickerWithinFrameAvoidingRects(
+      frameRect,
+      stickerRect,
+      characterRects,
+    );
+    setSafeFit((currentFit) => (
+      haveSameStickerFit(currentFit, nextFit) ? currentFit : nextFit
+    ));
   }, [
-    safeFit,
+    avoidanceKey,
+    placementTransform,
     sticker.anchorX,
     sticker.anchorY,
     sticker.height,
@@ -913,22 +961,68 @@ function StickerView({ sticker }: { sticker: StickerSlot }) {
   ]);
 
   useEffect(() => {
+    if (!safeFit || fitAnimationReady) {
+      return;
+    }
+    const raf = window.requestAnimationFrame(() => {
+      setFitAnimationReady(true);
+    });
+    return () => window.cancelAnimationFrame(raf);
+  }, [fitAnimationReady, safeFit]);
+
+  useEffect(() => {
     const stickerElement = stickerRef.current;
     const frameElement = stickerElement?.closest<HTMLElement>('.sticker-safe-frame');
-    if (!frameElement || typeof ResizeObserver === 'undefined') {
+    const stageElement = stickerElement?.closest<HTMLElement>('.stage-content-frame');
+    if (!frameElement || !stageElement || typeof ResizeObserver === 'undefined') {
       return;
     }
     const observer = new ResizeObserver(() => {
       requestSafeFitMeasurement();
     });
     observer.observe(frameElement);
+    stageElement.querySelectorAll<HTMLElement>('.char-layer .char').forEach((characterElement) => {
+      observer.observe(characterElement);
+    });
     return () => observer.disconnect();
-  }, [requestSafeFitMeasurement]);
+  }, [avoidanceKey, requestSafeFitMeasurement]);
+
+  useEffect(() => {
+    const stickerElement = stickerRef.current;
+    const stageElement = stickerElement?.closest<HTMLElement>('.stage-content-frame');
+    if (!stageElement) {
+      return;
+    }
+    const onTransitionEnd = (event: TransitionEvent) => {
+      const target = event.target;
+      if (
+        target instanceof Element
+        && target.matches('.char, .char-composition-world, .char-camera-world')
+      ) {
+        requestSafeFitMeasurement();
+      }
+    };
+    const raf = window.requestAnimationFrame(requestSafeFitMeasurement);
+    const checkpoints = [
+      96,
+      224,
+      Math.max(272, Math.ceil(avoidanceSettleMs) + 32),
+    ];
+    const timers = [...new Set(checkpoints)].map((delay) =>
+      window.setTimeout(requestSafeFitMeasurement, delay));
+    stageElement.addEventListener('transitionend', onTransitionEnd);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      stageElement.removeEventListener('transitionend', onTransitionEnd);
+    };
+  }, [avoidanceKey, avoidanceSettleMs, requestSafeFitMeasurement]);
 
   return (
     <div
       ref={stickerRef}
       className="sticker"
+      data-layout-ready={safeFit ? 'true' : 'false'}
       style={{
         left: sticker.x,
         top: sticker.y,
@@ -938,6 +1032,9 @@ function StickerView({ sticker }: { sticker: StickerSlot }) {
         zIndex: sticker.zIndex,
         transform: fittedTransform,
         transformOrigin: 'center center',
+        transition: fitAnimationReady
+          ? 'transform 180ms cubic-bezier(0.2, 0.72, 0.24, 1)'
+          : 'none',
         '--sticker-enter-duration': `${sticker.enterDuration}ms`,
         '--sticker-enter-easing': sticker.enterEasing,
         '--sticker-enter-delay': `${sticker.enterDelay}ms`,
@@ -1863,6 +1960,39 @@ export default function App() {
     '--character-exit-duration': `${cameraTransitionTiming.characterExitDuration}ms`,
     '--character-leave-duration': `${CHARACTER_EXIT_FADE_DURATION_MS}ms`,
   } as CSSProperties;
+  const stickerAvoidanceKey = [
+    cameraPresentation.shot,
+    cameraPresentation.scale,
+    cameraPresentation.mobileScale,
+    cameraPresentation.panX,
+    cameraPresentation.mobilePanX,
+    cameraPresentation.originY,
+    cameraPresentation.mobileOriginY,
+    cameraPresentation.transition,
+    focusCharacterId ?? '',
+    dialog.speakerId ?? '',
+    stickerSafeInset,
+    presentedVisibleCharacterIds.join(','),
+    layoutVisibleCharacterIds.join(','),
+    stagedCharactersByPosition.map(({ position, slot }) => [
+      position,
+      slot.id,
+      slot.source,
+      slot.framing.name,
+      slot.framing.scale,
+      slot.framing.x,
+      slot.framing.y,
+      slot.calibration.scale,
+      slot.calibration.x,
+      slot.calibration.y,
+      slot.calibration.spacing,
+    ].join(':')).join(','),
+  ].join('::');
+  const stickerAvoidanceSettleMs = Math.max(
+    240,
+    cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration,
+    cameraTransitionTiming.characterExitDuration,
+  );
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
     if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
     if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
@@ -2550,6 +2680,8 @@ export default function App() {
       <StickerView
         key={`${sticker.id}-${sticker.source}-${sticker.renderKey}`}
         sticker={sticker}
+        avoidanceKey={stickerAvoidanceKey}
+        avoidanceSettleMs={stickerAvoidanceSettleMs}
       />
     );
   };

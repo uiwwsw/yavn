@@ -64,7 +64,7 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(chapter.data).toBeDefined();
     if (!config.data || !base.data || !chapter.data) return;
 
-    expect(config.data.data.version).toBe('8.0.0-preview.4');
+    expect(config.data.data.version).toBe('8.0.0-preview.5');
     expect(config.data.data.startScreen?.image).toBe(
       'root:/game-list/deokman-v8-preview/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -121,6 +121,16 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     expect(effects).toEqual(expect.arrayContaining(['focus', 'inkstamp', 'impact', 'embers', 'starfall']));
     expect(says.some((say) => say.channel === 'record' && String(say.text).includes('둘째 공주 덕만'))).toBe(true);
     expect(says.some((say) => say.channel === 'system' && String(say.text).includes('[기록 완료]'))).toBe(true);
+  });
+
+  it('caps foreground evidence art responsively for desktop and mobile', () => {
+    const document = readYaml('0.yaml');
+    const stickers = collectKey(document, 'sticker').map(asRecord);
+
+    expect(stickers).toHaveLength(4);
+    stickers.forEach((sticker) => {
+      expect(String(sticker.width), String(sticker.id)).toMatch(/^clamp\(/);
+    });
   });
 
   it('uses wide shots as establishing beats before returning actors to a readable medium frame', () => {
@@ -206,9 +216,9 @@ describe('Deokman V8 chapter-one vertical slice', () => {
     });
 
     const childSprites = [
-      'deokman-child-silla-v6.webp',
-      'deokman-child-scared-silla-v6.webp',
-      'deokman-child-resolve-silla-v6.webp',
+      'deokman-child-silla-v7.webp',
+      'deokman-child-scared-silla-v7.webp',
+      'deokman-child-resolve-silla-v7.webp',
     ].map((filename) => readExtendedWebpCanvas(`${gameRoot}assets/char/${filename}`));
 
     expect(new Set(childSprites.map(({ width, height }) => `${width}x${height}`))).toEqual(new Set(['888x1771']));
