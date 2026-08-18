@@ -1,46 +1,46 @@
 assets:
   backgrounds:
-    peony_court: root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp
-    burning_palace: root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp
-    moon_court: root:/game-list/deokman/assets/bg/moon-court-silla-v3.webp
-    shadow_corridor: root:/game-list/deokman/assets/bg/shadow-corridor-silla-v3.webp
-    village: root:/game-list/deokman/assets/bg/village-silla-v3.webp
-    peony_painting_sticker: root:/game-list/deokman/assets/items/peony-painting.svg
-    death_register_sticker: root:/game-list/deokman/assets/items/death-register.svg
-    peony_token_sticker: root:/game-list/deokman/assets/items/peony-token.svg
+    peony_court: root:/game-list/deokman-v8-preview/assets/bg/peony-court-silla-v1.webp
+    burning_palace: root:/game-list/deokman-v8-preview/assets/bg/burning-palace-silla-v1.webp
+    moon_court: root:/game-list/deokman-v8-preview/assets/bg/moon-court-silla-v3.webp
+    shadow_corridor: root:/game-list/deokman-v8-preview/assets/bg/shadow-corridor-silla-v3.webp
+    village: root:/game-list/deokman-v8-preview/assets/bg/village-silla-v3.webp
+    peony_painting_sticker: root:/game-list/deokman-v8-preview/assets/items/peony-painting.svg
+    death_register_sticker: root:/game-list/deokman-v8-preview/assets/items/death-register.svg
+    peony_token_sticker: root:/game-list/deokman-v8-preview/assets/items/peony-token.svg
   characters:
     어린 덕만:
-      base: root:/game-list/deokman/assets/char/deokman-child-silla-v5.webp
+      base: root:/game-list/deokman-v8-preview/assets/char/deokman-child-silla-v6.webp
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 1 }
       emotions:
-        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v5.webp
-        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v5.webp
+        scared: root:/game-list/deokman-v8-preview/assets/char/deokman-child-scared-silla-v6.webp
+        resolve: root:/game-list/deokman-v8-preview/assets/char/deokman-child-resolve-silla-v6.webp
     소화:
-      base: root:/game-list/deokman/assets/char/sowon-silla-v5.webp
+      base: root:/game-list/deokman-v8-preview/assets/char/sowon-silla-v5.webp
       facing: left
       defaultDelivery: calm
       calibration: { scale: 1, y: 0, spacing: 1 }
       emotions:
-        nervous: root:/game-list/deokman/assets/char/sowon-nervous-silla-v5.webp
-        angry: root:/game-list/deokman/assets/char/sowon-angry-silla-v5.webp
+        nervous: root:/game-list/deokman-v8-preview/assets/char/sowon-nervous-silla-v5.webp
+        angry: root:/game-list/deokman-v8-preview/assets/char/sowon-angry-silla-v5.webp
     진평왕:
-      base: root:/game-list/deokman/assets/char/jinpyeong-silla-v5.webp
+      base: root:/game-list/deokman-v8-preview/assets/char/jinpyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
       calibration: { scale: 1, y: 0, spacing: 0.95 }
       emotions:
-        sad: root:/game-list/deokman/assets/char/jinpyeong-sad-silla-v5.webp
-        weak: root:/game-list/deokman/assets/char/jinpyeong-weak-silla-v5.webp
+        sad: root:/game-list/deokman-v8-preview/assets/char/jinpyeong-sad-silla-v5.webp
+        weak: root:/game-list/deokman-v8-preview/assets/char/jinpyeong-weak-silla-v5.webp
     칠숙:
-      base: root:/game-list/deokman/assets/char/chilsuk-silla-v5.webp
+      base: root:/game-list/deokman-v8-preview/assets/char/chilsuk-silla-v5.webp
       facing: left
       defaultDelivery: calm
       calibration: { scale: 1, y: 0, spacing: 0.92 }
       emotions:
-        smile: root:/game-list/deokman/assets/char/chilsuk-smile-silla-v5.webp
-        angry: root:/game-list/deokman/assets/char/chilsuk-angry-silla-v5.webp
+        smile: root:/game-list/deokman-v8-preview/assets/char/chilsuk-smile-silla-v5.webp
+        angry: root:/game-list/deokman-v8-preview/assets/char/chilsuk-angry-silla-v5.webp
   music: {}
   sfx: {}
 
@@ -57,18 +57,18 @@ inventory:
   peony_painting:
     name: "향기 없는 모란도"
     description: "벌과 나비가 한 마리도 그려지지 않은 모란 그림입니다. 아름다운 것보다 빠진 것을 보라는 시험처럼 보입니다."
-    image: root:/game-list/deokman/assets/items/peony-painting.svg
+    image: root:/game-list/deokman-v8-preview/assets/items/peony-painting.svg
     category: "왕실 물품"
     order: 10
   death_register:
     name: "덕만의 사망 기록"
     description: "살아 있는 덕만이 봄 열병으로 죽었다고 미리 적힌 왕실 기록입니다. 날짜 아래의 붉은 인장이 아직 완전히 마르지 않았습니다."
-    image: root:/game-list/deokman/assets/items/death-register.svg
+    image: root:/game-list/deokman-v8-preview/assets/items/death-register.svg
     category: "금지된 기록"
     order: 20
   peony_token:
     name: "청동 모란패"
     description: "소화가 목숨보다 먼저 챙긴 오래된 패입니다. 왕실 안쪽 문을 통과시키는 표식이지만, 덕만의 신분도 함께 드러냅니다."
-    image: root:/game-list/deokman/assets/items/peony-token.svg
+    image: root:/game-list/deokman-v8-preview/assets/items/peony-token.svg
     category: "신분 표식"
     order: 30

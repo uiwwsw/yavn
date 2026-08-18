@@ -14,4 +14,10 @@ describe('dialogue presentation channels', () => {
     expect(styles).toContain('.dialog-box.channel-system');
     expect(styles).toContain('.dialog-channel-label');
   });
+
+  it('keeps narration on a dedicated high-contrast surface', () => {
+    expect(styles).toContain('--ui-narration-bg:');
+    expect(styles).toMatch(/\.dialog-box\.channel-narration\s*\{[\s\S]*?background: var\(--ui-narration-bg\);/);
+    expect(styles).toContain('linear-gradient(158deg, #fbefd8, #f3dfba)');
+  });
 });

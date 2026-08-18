@@ -616,6 +616,7 @@ textarea,
   --ui-hud-address: rgba(244, 233, 212, 0.78);
   --ui-dialog-border: rgba(234, 203, 146, 0.45);
   --ui-dialog-bg: linear-gradient(150deg, rgba(24, 17, 13, 0.92), rgba(18, 14, 19, 0.9));
+  --ui-narration-bg: linear-gradient(150deg, rgba(18, 13, 10, 0.985), rgba(15, 12, 16, 0.98));
   --ui-dialog-shadow: 0 24px 42px rgba(5, 3, 2, 0.52), 0 0 0 1px rgba(17, 12, 9, 0.74) inset;
   --ui-speaker-color: #ffdba1;
   --ui-text-color: #fff6e6;
@@ -796,6 +797,7 @@ textarea,
       transparent 1px,
       transparent 3px
     );
+  --ui-narration-bg: linear-gradient(155deg, rgba(4, 19, 40, 0.985), rgba(6, 12, 29, 0.98));
   --ui-dialog-shadow: 0 24px 44px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(10, 17, 34, 0.88) inset, 0 0 30px rgba(67, 210, 255, 0.22);
   --ui-speaker-color: #6ff7ff;
   --ui-text-color: #eaf9ff;
@@ -947,6 +949,15 @@ textarea,
       transparent 1px,
       transparent 4px
     );
+  --ui-narration-bg:
+    repeating-linear-gradient(
+      180deg,
+      rgba(124, 85, 35, 0.045),
+      rgba(124, 85, 35, 0.045) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    linear-gradient(158deg, #fbefd8, #f3dfba);
   --ui-dialog-shadow: 0 24px 34px rgba(69, 44, 24, 0.24), 0 0 0 1px rgba(176, 139, 87, 0.3) inset;
   --ui-speaker-color: #6a4016;
   --ui-text-color: #2f1f12;
@@ -3249,8 +3260,7 @@ textarea,
 }
 
 .dialog-box.channel-narration {
-  background:
-    linear-gradient(115deg, color-mix(in srgb, var(--ui-dialog-bg) 94%, transparent), var(--ui-dialog-bg));
+  background: var(--ui-narration-bg);
 }
 
 .dialog-box.channel-record {
