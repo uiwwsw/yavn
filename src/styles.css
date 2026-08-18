@@ -1239,6 +1239,10 @@ textarea,
   --sticker-leave-delay: 0ms;
 }
 
+.sticker[data-layout-ready='false'] {
+  visibility: hidden;
+}
+
 .sticker-visual {
   display: block;
   width: auto;
@@ -1380,7 +1384,7 @@ textarea,
 
 .char-image {
   /* One source-art ratio for solo, duo, and trio; cast count only changes X anchors. */
-  --char-image-height: 58cqh;
+  --char-image-height: 52cqh;
   width: auto;
   height: var(--char-image-height);
   max-width: none;

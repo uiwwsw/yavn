@@ -25,6 +25,16 @@ describe('sticker and mobile dialogue safe areas', () => {
     );
   });
 
+  it('places stickers around visible characters before revealing them', () => {
+    expect(appSource).toContain('fitStickerWithinFrameAvoidingRects(');
+    expect(appSource).toContain("querySelectorAll<HTMLElement>('.char-layer .char')");
+    expect(appSource).toContain("data-layout-ready={safeFit ? 'true' : 'false'}");
+    expect(appSource).not.toContain('setSafeFit(null)');
+    expect(styles).toMatch(
+      /\.sticker\[data-layout-ready='false'\]\s*\{[\s\S]*?visibility: hidden;/,
+    );
+  });
+
   it('keeps the mobile dialogue inside the play frame and device safe areas', () => {
     expect(styles).toContain(
       'left: max(10px, env(safe-area-inset-left, 0px));',
