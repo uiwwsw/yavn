@@ -13,6 +13,53 @@ export type StickerFit = {
   translateY: number;
 };
 
+export type StickerStageSize = {
+  width: number;
+  height: number;
+};
+
+/**
+ * Keeps a locked sticker stable through mobile browser-chrome and dialogue
+ * height changes. A new fit is only necessary when the play stage itself has
+ * changed enough to invalidate the previous coordinate system.
+ */
+export function shouldRelayoutStickerForStageResize(
+  previous: StickerStageSize,
+  next: StickerStageSize,
+): boolean {
+  if (
+    previous.width <= 0
+    || previous.height <= 0
+    || next.width <= 0
+    || next.height <= 0
+  ) {
+    return false;
+  }
+
+  const previousPortrait = previous.height > previous.width;
+  const nextPortrait = next.height > next.width;
+  if (previousPortrait !== nextPortrait) {
+    return true;
+  }
+
+  const widthDelta = Math.abs(next.width - previous.width);
+  const widthThreshold = Math.max(24, previous.width * 0.06);
+  if (widthDelta >= widthThreshold) {
+    return true;
+  }
+
+  // On compact/mobile stages, the visual viewport height commonly fluctuates
+  // while the address bar opens or closes. Reflowing for that height-only noise
+  // makes evidence cards appear to hunt for a new position.
+  if (Math.min(previous.width, next.width) <= 768) {
+    return false;
+  }
+
+  const heightDelta = Math.abs(next.height - previous.height);
+  const heightThreshold = Math.max(96, previous.height * 0.16);
+  return heightDelta >= heightThreshold;
+}
+
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 

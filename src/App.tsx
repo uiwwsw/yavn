@@ -80,7 +80,12 @@ import {
   type LauncherShowcase,
 } from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
-import { fitStickerWithinFrameAvoidingRects, type StickerFit } from './stickerLayout';
+import {
+  fitStickerWithinFrameAvoidingRects,
+  shouldRelayoutStickerForStageResize,
+  type StickerFit,
+  type StickerStageSize,
+} from './stickerLayout';
 import {
   CHARACTER_EXIT_FADE_DURATION_MS,
   resolveStageCameraFocusTargetId,
@@ -870,13 +875,15 @@ function useAdvanceByKey(advanceLocked: boolean) {
   }, [advanceLocked]);
 }
 
-const haveSameStickerFit = (a: StickerFit | null, b: StickerFit) =>
-  Boolean(
-    a
-    && Math.abs(a.scale - b.scale) < 0.001
-    && Math.abs(a.translateX - b.translateX) < 0.25
-    && Math.abs(a.translateY - b.translateY) < 0.25,
-  );
+type LockedStickerFit = StickerFit & {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+const STICKER_LAYOUT_QUIET_MS = 72;
+const STICKER_RESIZE_QUIET_MS = 140;
 
 function StickerView({
   sticker,
@@ -888,12 +895,12 @@ function StickerView({
   avoidanceSettleMs: number;
 }) {
   const stickerRef = useRef<HTMLDivElement | null>(null);
-  const [safeFit, setSafeFit] = useState<StickerFit | null>(null);
-  const [fitAnimationReady, setFitAnimationReady] = useState(false);
-  const [measurementVersion, setMeasurementVersion] = useState(0);
-  const requestSafeFitMeasurement = useCallback(() => {
-    setMeasurementVersion((version) => version + 1);
-  }, []);
+  const [safeFit, setSafeFit] = useState<LockedStickerFit | null>(null);
+  const layoutLockedRef = useRef(false);
+  const imageReadyRef = useRef(false);
+  const settleTimerRef = useRef<number | null>(null);
+  const earliestMeasurementAtRef = useRef(0);
+  const lockedStageSizeRef = useRef<StickerStageSize | null>(null);
   const translateX =
     sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
   const translateY =
@@ -903,7 +910,10 @@ function StickerView({
     ? `translate(${safeFit.translateX}px, ${safeFit.translateY}px) ${placementTransform} scale(${safeFit.scale})`
     : placementTransform;
 
-  useLayoutEffect(() => {
+  const lockSafeFit = useCallback(() => {
+    if (layoutLockedRef.current || !imageReadyRef.current) {
+      return;
+    }
     const stickerElement = stickerRef.current;
     const frameElement = stickerElement?.closest<HTMLElement>('.sticker-safe-frame');
     const stageElement = stickerElement?.closest<HTMLElement>('.stage-content-frame');
@@ -943,11 +953,19 @@ function StickerView({
       stickerRect,
       characterRects,
     );
-    setSafeFit((currentFit) => (
-      haveSameStickerFit(currentFit, nextFit) ? currentFit : nextFit
-    ));
+    lockedStageSizeRef.current = {
+      width: stageElement.clientWidth,
+      height: stageElement.clientHeight,
+    };
+    layoutLockedRef.current = true;
+    setSafeFit({
+      ...nextFit,
+      left: stickerElement.offsetLeft,
+      top: stickerElement.offsetTop,
+      width: stickerElement.offsetWidth,
+      height: stickerElement.offsetHeight,
+    });
   }, [
-    avoidanceKey,
     placementTransform,
     sticker.anchorX,
     sticker.anchorY,
@@ -957,18 +975,34 @@ function StickerView({
     sticker.width,
     sticker.x,
     sticker.y,
-    measurementVersion,
   ]);
 
-  useEffect(() => {
-    if (!safeFit || fitAnimationReady) {
+  const scheduleSafeFit = useCallback((quietMs = STICKER_LAYOUT_QUIET_MS) => {
+    if (layoutLockedRef.current || !imageReadyRef.current) {
       return;
     }
-    const raf = window.requestAnimationFrame(() => {
-      setFitAnimationReady(true);
-    });
-    return () => window.cancelAnimationFrame(raf);
-  }, [fitAnimationReady, safeFit]);
+    if (settleTimerRef.current !== null) {
+      window.clearTimeout(settleTimerRef.current);
+    }
+    const earliestDelay = Math.max(0, earliestMeasurementAtRef.current - performance.now());
+    settleTimerRef.current = window.setTimeout(() => {
+      settleTimerRef.current = null;
+      lockSafeFit();
+    }, Math.max(quietMs, earliestDelay));
+  }, [lockSafeFit]);
+
+  useLayoutEffect(() => {
+    if (layoutLockedRef.current) {
+      return;
+    }
+    earliestMeasurementAtRef.current = performance.now()
+      + Math.max(96, Math.ceil(avoidanceSettleMs) + 32);
+    const imageElement = stickerRef.current?.querySelector<HTMLImageElement>('.sticker-visual');
+    if (imageElement?.complete) {
+      imageReadyRef.current = true;
+    }
+    scheduleSafeFit();
+  }, [avoidanceKey, avoidanceSettleMs, scheduleSafeFit]);
 
   useEffect(() => {
     const stickerElement = stickerRef.current;
@@ -978,14 +1012,37 @@ function StickerView({
       return;
     }
     const observer = new ResizeObserver(() => {
-      requestSafeFitMeasurement();
+      if (!layoutLockedRef.current) {
+        scheduleSafeFit();
+        return;
+      }
+      if (sticker.leaving) {
+        return;
+      }
+      const lockedStageSize = lockedStageSizeRef.current;
+      const nextStageSize = {
+        width: stageElement.clientWidth,
+        height: stageElement.clientHeight,
+      };
+      if (
+        !lockedStageSize
+        || !shouldRelayoutStickerForStageResize(lockedStageSize, nextStageSize)
+      ) {
+        return;
+      }
+      layoutLockedRef.current = false;
+      lockedStageSizeRef.current = null;
+      setSafeFit(null);
+      earliestMeasurementAtRef.current = performance.now() + STICKER_RESIZE_QUIET_MS;
+      scheduleSafeFit(STICKER_RESIZE_QUIET_MS);
     });
+    observer.observe(stageElement);
     observer.observe(frameElement);
     stageElement.querySelectorAll<HTMLElement>('.char-layer .char').forEach((characterElement) => {
       observer.observe(characterElement);
     });
     return () => observer.disconnect();
-  }, [avoidanceKey, requestSafeFitMeasurement]);
+  }, [avoidanceKey, scheduleSafeFit, sticker.leaving]);
 
   useEffect(() => {
     const stickerElement = stickerRef.current;
@@ -998,25 +1055,27 @@ function StickerView({
       if (
         target instanceof Element
         && target.matches('.char, .char-composition-world, .char-camera-world')
+        && !layoutLockedRef.current
       ) {
-        requestSafeFitMeasurement();
+        scheduleSafeFit();
       }
     };
-    const raf = window.requestAnimationFrame(requestSafeFitMeasurement);
-    const checkpoints = [
-      96,
-      224,
-      Math.max(272, Math.ceil(avoidanceSettleMs) + 32),
-    ];
-    const timers = [...new Set(checkpoints)].map((delay) =>
-      window.setTimeout(requestSafeFitMeasurement, delay));
     stageElement.addEventListener('transitionend', onTransitionEnd);
     return () => {
-      window.cancelAnimationFrame(raf);
-      timers.forEach((timer) => window.clearTimeout(timer));
       stageElement.removeEventListener('transitionend', onTransitionEnd);
     };
-  }, [avoidanceKey, avoidanceSettleMs, requestSafeFitMeasurement]);
+  }, [avoidanceKey, scheduleSafeFit]);
+
+  useEffect(() => () => {
+    if (settleTimerRef.current !== null) {
+      window.clearTimeout(settleTimerRef.current);
+    }
+  }, []);
+
+  const markImageReady = useCallback(() => {
+    imageReadyRef.current = true;
+    scheduleSafeFit();
+  }, [scheduleSafeFit]);
 
   return (
     <div
@@ -1024,17 +1083,15 @@ function StickerView({
       className="sticker"
       data-layout-ready={safeFit ? 'true' : 'false'}
       style={{
-        left: sticker.x,
-        top: sticker.y,
-        width: sticker.width,
-        height: sticker.height,
+        left: safeFit ? `${safeFit.left}px` : sticker.x,
+        top: safeFit ? `${safeFit.top}px` : sticker.y,
+        width: safeFit ? `${safeFit.width}px` : sticker.width,
+        height: safeFit ? `${safeFit.height}px` : sticker.height,
         opacity: sticker.opacity,
         zIndex: sticker.zIndex,
         transform: fittedTransform,
         transformOrigin: 'center center',
-        transition: fitAnimationReady
-          ? 'transform 180ms cubic-bezier(0.2, 0.72, 0.24, 1)'
-          : 'none',
+        transition: 'none',
         '--sticker-enter-duration': `${sticker.enterDuration}ms`,
         '--sticker-enter-easing': sticker.enterEasing,
         '--sticker-enter-delay': `${sticker.enterDelay}ms`,
@@ -1049,7 +1106,8 @@ function StickerView({
         alt={sticker.id}
         loading="eager"
         decoding="async"
-        onLoad={requestSafeFitMeasurement}
+        onLoad={markImageReady}
+        onError={markImageReady}
         style={{
           width: sticker.width ? '100%' : undefined,
           height: sticker.height ? '100%' : undefined,
@@ -3446,7 +3504,10 @@ export default function App() {
           </div>
         </div>
       </div>
-      <div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>
+      <div
+        className="sticker-layer"
+        style={{ '--sticker-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}
+      >
         <div className="sticker-safe-frame">
           {Object.keys(stickers).map(renderSticker)}
         </div>

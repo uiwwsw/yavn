@@ -60,8 +60,12 @@ describe('responsive stage content frame', () => {
     expect(appSource).toContain('observer.observe(stageFrameEl);');
     expect(appSource).not.toContain('choiceGate.active, dialog.visibleText, inputGate.active');
     expect(appSource).not.toMatch(/className=\{`char-layer[\s\S]{0,400}style=\{\{ bottom:/);
-    expect(appSource).toContain('<div className="sticker-layer" style={{ bottom: `${stickerSafeInset}px` }}>');
+    expect(appSource).toContain("style={{ '--sticker-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}");
     expect(characterLayerRules).not.toContain('transition: bottom');
+    expect(styles).toMatch(
+      /\.sticker-safe-frame\s*\{[\s\S]*?bottom: calc\(var\(--stage-safe-block-end\) \+ var\(--sticker-dialog-inset\)\);/,
+    );
+    expect(styles).not.toMatch(/\.sticker-layer\s*\{[^}]*transition: bottom/);
     expect(styles).toContain('--dialog-max-height: 38cqh;');
     expect(styles).toContain('--dialog-max-height: 48cqh;');
   });
