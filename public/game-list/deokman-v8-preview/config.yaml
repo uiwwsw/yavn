@@ -1,9 +1,9 @@
 title: "덕만: 별은 왕을 선택하지 않는다"
 author:
   name: "uiwwsw"
-version: "8.0.0-preview.5"
+version: "8.0.0-preview.7"
 seo:
-  description: "살아 있는 공주의 죽음이 먼저 기록된 밤. 어린 덕만이 모란 그림과 불타는 별궁에서 자기 이름을 지키는 선덕여왕 비주얼노벨 v8 수직 슬라이스."
+  description: "왕실 족보에는 죽었다고 적힌 어린 덕만이 자기 사망 기록의 진실을 밝히고 불타는 별궁에서 탈출하는 선덕여왕 비주얼노벨 v8 수직 슬라이스."
   keywords:
     - "선덕여왕"
     - "덕만"
@@ -28,12 +28,12 @@ endingScreen:
   image: "root:/game-list/deokman-v8-preview/assets/bg/burning-palace-silla-v1.webp"
 endings:
   hidden_name:
-    title: "CHAPTER END — 공주는 죽고, 덕만은 살았습니다"
-    message: "덕만은 자기 죽음이 적힌 기록을 품고 별궁을 빠져나왔습니다. 이제 살아 있다는 사실부터 죄가 되는 삶이 시작됩니다."
+    title: "장 끝 — 공주는 죽고, 덕만은 살았습니다"
+    message: "덕만은 소화와 함께 별궁을 빠져나왔습니다. 공식 기록에는 죽은 사람으로 남은 채, 자신을 죽이려 한 사람을 찾기 시작합니다."
   marked_survivor:
-    title: "ANOTHER END — 살아남았으나 이름이 남았습니다"
-    message: "모란패는 문을 열었지만 덕만의 얼굴도 적의 기억에 남겼습니다. 살았다는 안도는 오래가지 못합니다."
+    title: "또 다른 결말 — 열린 문, 드러난 얼굴"
+    message: "모란패로 북문을 열어 탈출했지만 수비병들이 덕만의 얼굴을 귀족들에게 보고했습니다. 덕만은 살아남았으나 더는 완전히 숨을 수 없습니다."
   ash_witness:
-    title: "ANOTHER END — 재 속에 남은 증인"
-    message: "덕만은 거짓 사망 기록을 왕에게 돌려주었습니다. 증거는 지켰지만 왕과 공주가 같은 비밀을 쥐었다는 사실도 누군가 보았습니다."
+    title: "또 다른 결말 — 불길 속에서 지킨 증거"
+    message: "덕만은 거짓 사망 기록을 진평왕에게 건네 증거를 지켰습니다. 하지만 칠숙도 왕과 덕만이 함께 이 비밀을 지킨다는 사실을 알게 되었습니다."
 defaultEnding: hidden_name
