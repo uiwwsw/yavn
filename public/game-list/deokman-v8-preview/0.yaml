@@ -335,10 +335,14 @@ scenes:
           channel: narration
           camera: medium
           delivery: nervous
-          text: "불붙은 들보가 방 안으로 떨어졌습니다. 친위대가 왕을 안채로 데려갔고, 덕만과 소화는 반대편 마당에 고립됐습니다."
+          wait: 450
+          unskippable: true
+          text: "불붙은 들보가 덕만의 바로 앞에 떨어졌습니다. 불길이 마루를 가르며 출구를 하나씩 삼키기 시작했습니다."
       - say:
           channel: narration
-          text: "별궁의 세 문이 동시에 닫혔습니다. 문밖에는 왕실 기록을 관리하는 귀족 칠숙이 서 있었습니다."
+          delivery: nervous
+          autoAdvance: 900
+          text: "연기가 내려앉습니다. 오래 생각할 시간이 없습니다."
       - say:
           char: 칠숙.smile
           camera: medium
@@ -359,176 +363,11 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "아기씨, 연기가 위로 차오릅니다. 몸을 낮추고 제 손짓만 보며 움직이세요."
+          wait: 350
+          unskippable: true
+          text: "아기씨, 몸을 낮추세요. 불꽃보다 연기가 먼저 사람을 쓰러뜨립니다. 움직여야 합니다."
       - say:
           channel: narration
           text: "소화는 옷깃 안에 숨겨 둔 청동 모란패를 꺼내 덕만의 손에 쥐여 주었습니다."
       - sticker:
-          id: peony_token_view
-          image: peony_token_sticker
-          x: 49
-          y: 31
-          width: "clamp(104px, 12%, 180px)"
-          anchorX: center
-          anchorY: center
-          zIndex: 15
-          enter: fadeIn
-          inputLockMs: 300
-      - get: peony_token
-      - say:
-          char: 소화
-          camera: close
-          with: [어린 덕만]
-          text: "이 패를 북문 수비에게 보이면 문을 열어 줄 겁니다. 대신 아기씨의 신분도 드러납니다."
-      - say:
-          char: 소화.nervous
-          camera: medium
-          with: [어린 덕만]
-          text: "저를 놓치더라도 멈추지 말고 궁 밖으로 나가세요."
-      - clearSticker:
-          id: peony_token_view
-          leave: fadeOut
-      - choice:
-          key: c1_fire_escape
-          prompt: "불길이 마루를 끊기 전에 어떻게 빠져나가겠습니까?"
-          char: 어린 덕만.scared
-          camera: close
-          with: [소화]
-          options:
-            - text: "왼쪽 담 아래 물길로 소화와 함께 나간다"
-              when: { var: observed_left_waterway, op: eq, value: true }
-              goto: escape_waterway
-            - text: "청동 모란패를 보이고 북문을 연다"
-              goto: escape_token
-            - text: "사망 기록을 들고 왕이 있는 안채로 뛴다"
-              when:
-                all:
-                  - { var: death_register, op: eq, value: true }
-                  - { var: spoke_truth_to_king, op: eq, value: true }
-              goto: escape_record
-            - text: "모란 화단에 몸을 숨기고 불이 지나가길 기다린다"
-              goto: bad_smoke
-
-  escape_waterway:
-    actions:
-      - bg: moon_court
-      - camera: wide
-      - char: { id: 어린 덕만, position: left, emotion: resolve }
-      - char: { id: 소화, position: right }
-      - say:
-          channel: narration
-          camera: medium
-          text: "덕만은 조금 전 보아 둔 왼쪽 담으로 달렸습니다. 빗물을 빼는 돌판 아래에는 아이 하나가 겨우 기어갈 틈이 있었습니다."
-      - say:
-          char: 소화.nervous
-          camera: medium
-          with: [어린 덕만]
-          text: "먼저 나가세요. 제가 뒤에서 돌판을 받치겠습니다."
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [소화]
-          text: "혼자 가지 않을 거야. 같이 나가."
-      - say:
-          channel: narration
-          text: "두 사람의 뒤에서 별궁 지붕이 내려앉았습니다. 젖은 돌길 위로 불티가 별처럼 떨어졌습니다."
-      - say:
-          char: 소화
-          camera: close
-          with: [어린 덕만]
-          text: "이제 어디로 가시겠습니까?"
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [소화]
-          wait: 600
-          unskippable: true
-          text: "기록에는 내가 죽었다고 되어 있어. 궁 밖에서 이름을 숨기고, 누가 나를 죽이려 했는지 찾을 거야."
-      - say:
-          channel: record
-          delivery: calm
-          text: "왕실 기록에서 공주는 죽었습니다. 그러나 그날 밤 덕만은 별궁을 빠져나와 살아남았습니다."
-      - ending: hidden_name
-
-  escape_token:
-    actions:
-      - bg: moon_court
-      - camera: wide
-      - effect: embers
-      - char: { id: 어린 덕만, position: left, emotion: scared }
-      - char: { id: 소화, position: right, emotion: nervous }
-      - say:
-          channel: narration
-          camera: medium
-          text: "덕만이 청동 모란패를 치켜들자 북문을 막던 창들이 양옆으로 걷혔습니다. 문은 열렸지만 수비대 모두가 아이의 얼굴을 보았습니다."
-      - say:
-          char: 소화.nervous
-          camera: close
-          with: [어린 덕만]
-          text: "문은 열렸지만 너무 많은 눈이 아기씨를 보았습니다."
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [소화]
-          text: "지금은 들키더라도 살아서 나가는 게 먼저야."
-      - say:
-          channel: narration
-          text: "문을 지킨 병사들은 곧 칠숙에게 덕만의 얼굴을 설명했습니다. 덕만은 살아남았지만 더는 완전히 숨을 수 없었습니다."
-      - ending: marked_survivor
-
-  escape_record:
-    actions:
-      - bg: burning_palace
-      - camera: reaction
-      - char: { id: 어린 덕만, position: left, emotion: resolve }
-      - char: { id: 진평왕, position: right, emotion: weak }
-      - say:
-          channel: narration
-          text: "덕만은 바깥문 대신 불길 너머 안채로 뛰었습니다. 손에 든 사망 기록의 가장자리가 열기에 그을렸습니다."
-      - say:
-          char: 진평왕.weak
-          camera: close
-          with: [어린 덕만]
-          text: "왜 돌아왔느냐. 살아서 나가라고 하지 않았느냐."
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [진평왕]
-          text: "제가 나가면 칠숙이 문서를 없애고 전하가 꾸민 일로 몰아갈 겁니다. 이 기록을 남겨야 합니다."
-      - say:
-          char: 진평왕
-          camera: medium
-          with: [어린 덕만]
-          text: "문서보다 네 목숨이 먼저다. 그래도 네가 돌아와 지킨 증거는 내가 책임지고 보관하겠다."
-      - say:
-          channel: narration
-          text: "친위대가 두 사람을 동쪽 문으로 빼냈습니다. 칠숙의 부하가 그 모습을 보았습니다. 기록은 지켰지만 칠숙도 덕만이 살아 있다는 사실을 알게 됐습니다."
-      - ending: ash_witness
-
-  bad_smoke:
-    actions:
-      - bg: burning_palace
-      - camera: close
-      - effect: embers
-      - char: { id: 어린 덕만, position: left, emotion: scared }
-      - char: { id: 소화, position: right, emotion: nervous }
-      - say:
-          channel: narration
-          text: "덕만은 낮은 모란 화단에 몸을 숨겼습니다. 불꽃은 피했지만 연기가 마당을 가득 채웠습니다."
-      - say:
-          char: 소화.nervous
-          camera: close
-          with: [어린 덕만]
-          text: "아기씨, 눈을 감지 마세요. 제 손을 잡으세요."
-      - say:
-          char: 어린 덕만.scared
-          camera: close
-          with: [소화]
-          text: "숨을 쉴 수가 없어."
-      - effect: { name: darken, wait: true }
-      - say:
-          channel: record
-          text: "별궁 화재 보고 — 열병으로 죽은 둘째 공주 덕만의 시신과 유모 소화가 불에 타 신원을 다시 확인할 수 없음."
-      - gameOver:
-          title: "운명 — 연기 속에 갇히다"
-          message: "화단은 불꽃을 가려 주었지만 연기 속에서 기다릴 수는 없었습니다. 덕만과 소화는 탈출로를 찾지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."
+          id: peony
