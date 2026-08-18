@@ -20,6 +20,9 @@ scenes:
           with: [덕만, 소원, 진운]
           text: "즉위 의식에 쓸 깃발은 마당에 펼쳐졌지만, 궁문 밖에서는 새 왕의 이름보다 끊긴 곡식 수레를 찾는 외침이 컸습니다."
       - say:
+          with: [덕만, 소원, 진운]
+          text: "즉위 날 내린 첫 명령은 세 지역에 도착했지만, 칠숙의 옛 창고지기들은 가짜 인장 사건을 핑계로 열쇠를 내놓지 않았습니다."
+      - say:
           char: 소원.nervous
           camera: medium
           with: [덕만]
@@ -303,6 +306,9 @@ scenes:
           with: [덕만, 비담]
           text: "왕의 회의장에는 세금을 늦춘 지역의 첫 파종 기록과, 닫았던 창고를 다시 조사해 달라는 귀족들의 글이 쌓였습니다."
       - say:
+          with: [덕만, 비담]
+          text: "비담의 허리에는 칠숙의 비밀 운송표에서 떼어 낸 붉은 매듭이 달려 있었습니다. 왕명 밖에서 움직인 곡식을 잊지 않겠다며 스스로 맨 표식이었습니다."
+      - say:
           char: 비담.smirk
           camera: medium
           with: [덕만]
@@ -369,7 +375,7 @@ scenes:
           text: "함께 마시기로 한 차는 급한 보고와 전쟁 준비 뒤로 해마다 한 번씩 밀렸습니다."
       - say:
           delivery: calm
-          text: "3년 뒤, 비담은 깨진 찻잔 하나를 왕의 탁자에 올렸습니다."
+          text: "3년 뒤인 636년, 비담은 깨진 찻잔 하나를 왕의 탁자에 올렸습니다."
       - say:
           char: 덕만
           camera: medium
@@ -392,7 +398,7 @@ scenes:
           text: "그 질문을 들으니 조금 낫습니다."
       - say:
           delivery: calm
-          text: "다시 4년 뒤, 비담은 왕의 방 앞에서 밤을 새웠습니다."
+          text: "다시 4년 뒤인 640년, 비담은 왕의 방 앞에서 밤을 새웠습니다."
       - bg: shadow_corridor
       - camera: wide
       - char: { id: 비담, position: center }
@@ -422,7 +428,7 @@ scenes:
       - say:
           delivery: calm
           wait: 1050
-          text: "그 뒤로 아홉 해가 흘렀습니다."
+          text: "그로부터 2년 뒤였습니다."
       - say:
           delivery: calm
           text: "642년 가을, 왕이 된 지 11년째에 대야성이 무너졌습니다."
@@ -698,7 +704,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "16년 전 혼인 합의서와 같은 거래다. 이름만 진운에서 승만으로 바뀌었다."
+          text: "15년 전 혼인 합의서와 같은 거래다. 이름만 진운에서 승만으로 바뀌었다."
       - say:
           char: 비담.sad
           camera: close

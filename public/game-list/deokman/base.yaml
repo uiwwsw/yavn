@@ -13,13 +13,13 @@ assets:
     fortress: assets/bg/frontier-silla-v3.webp
   characters:
     덕만:
-      base: assets/char/deokman-silla-v5.webp
+      base: assets/char/deokman-silla-v6.png
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 0.98 }
       emotions:
-        sad: assets/char/deokman-sad-silla-v5.webp
-        angry: assets/char/deokman-angry-silla-v5.webp
+        sad: assets/char/deokman-sad-silla-v6.png
+        angry: assets/char/deokman-angry-silla-v6.png
     진평왕:
       base: assets/char/jinpyeong-silla-v5.webp
       facing: left
