@@ -12,7 +12,7 @@ describe('sticker and mobile dialogue safe areas', () => {
   it('renders every sticker inside the shared stage safe frame', () => {
     expect(appSource).toContain('<div className="sticker-safe-frame">');
     expect(styles).toMatch(
-      /\.sticker-safe-frame\s*\{[\s\S]*?top: var\(--stage-safe-block-start\);[\s\S]*?right: var\(--stage-safe-inline-end\);[\s\S]*?bottom: var\(--stage-safe-block-end\);[\s\S]*?left: var\(--stage-safe-inline-start\);/,
+      /\.sticker-safe-frame\s*\{[\s\S]*?top: var\(--stage-safe-block-start\);[\s\S]*?right: var\(--stage-safe-inline-end\);[\s\S]*?bottom: calc\(var\(--stage-safe-block-end\) \+ var\(--sticker-dialog-inset\)\);[\s\S]*?left: var\(--stage-safe-inline-start\);/,
     );
     expect(styles).toMatch(
       /\.sticker-safe-frame\s*\{[\s\S]*?container-type: size;/,
@@ -29,9 +29,18 @@ describe('sticker and mobile dialogue safe areas', () => {
     expect(appSource).toContain('fitStickerWithinFrameAvoidingRects(');
     expect(appSource).toContain("querySelectorAll<HTMLElement>('.char-layer .char')");
     expect(appSource).toContain("data-layout-ready={safeFit ? 'true' : 'false'}");
-    expect(appSource).not.toContain('setSafeFit(null)');
+    expect(appSource).toContain('layoutLockedRef.current = true;');
+    expect(appSource).toContain('shouldRelayoutStickerForStageResize(');
+    expect(appSource).toContain("left: safeFit ? `${safeFit.left}px` : sticker.x");
+    expect(appSource).toContain("top: safeFit ? `${safeFit.top}px` : sticker.y");
+    expect(appSource).toContain("transition: 'none'");
+    expect(appSource).not.toContain('fitAnimationReady');
+    expect(appSource).not.toContain('const checkpoints');
     expect(styles).toMatch(
       /\.sticker\[data-layout-ready='false'\]\s*\{[\s\S]*?visibility: hidden;/,
+    );
+    expect(styles).toMatch(
+      /\.sticker\[data-layout-ready='false'\] \.sticker-visual\s*\{[\s\S]*?animation-play-state: paused;/,
     );
   });
 

@@ -1209,14 +1209,14 @@ textarea,
   overflow: hidden;
   overflow: clip;
   contain: layout paint;
-  transition: bottom 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  --sticker-dialog-inset: 0px;
 }
 
 .sticker-safe-frame {
   position: absolute;
   top: var(--stage-safe-block-start);
   right: var(--stage-safe-inline-end);
-  bottom: var(--stage-safe-block-end);
+  bottom: calc(var(--stage-safe-block-end) + var(--sticker-dialog-inset));
   left: var(--stage-safe-inline-start);
   min-width: 0;
   min-height: 0;
@@ -1241,6 +1241,10 @@ textarea,
 
 .sticker[data-layout-ready='false'] {
   visibility: hidden;
+}
+
+.sticker[data-layout-ready='false'] .sticker-visual {
+  animation-play-state: paused;
 }
 
 .sticker-visual {
