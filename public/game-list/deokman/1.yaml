@@ -9,43 +9,43 @@ scenes:
       - say:
           channel: record
           delivery: calm
-          text: "십 년 뒤 — 국경 장시. 죽었다고 기록된 공주는 이름을 바꾼 채 상단의 장부를 읽고 있었습니다."
+          text: "십 년 뒤. 국경 장시의 종이 세 번 울리자 '만덕'은 셈을 멈췄습니다. 죽은 공주를 찾는 군화 소리가 장터로 들어왔습니다."
       - char: { id: 덕만, position: left }
       - char: { id: 소화, position: right }
       - say:
           channel: narration
           camera: medium
-          text: "덕만은 지난 십 년 동안 물건보다 사람의 동선을 먼저 보았습니다. 별궁에서 본 것과 같은 붉은 인장이 난민 수색표와 곡식 운송표에 함께 찍혀 있었고, 두 장부의 목적지는 모두 서라벌 서쪽 창고였습니다."
+          text: "덕만의 손가락이 두 장부 사이를 오갔습니다. 난민을 잡는 종이와 곡식을 옮기는 종이에 같은 붉은 흠집이 있었습니다. 목적지는 둘 다 서라벌 서쪽 창고."
       - say:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "칠숙이 이곳까지 왔습니다. 오늘 밤 상단과 함께 떠나야 합니다."
+          text: "칠숙입니다. 남문에 그 사람 말이 묶여 있어요. 해 지기 전에 짐을 싸야 합니다."
       - say:
           char: 덕만
           camera: close
           with: [소화]
-          text: "십 년을 달아났는데도 저 도장은 먼저 와 있어. 이번에는 도망치기 전에 누가 길을 샀는지 알아낼 거야."
+          text: "십 년을 달렸는데 저 도장이 늘 먼저 도착했어. 오늘은 내가 기다릴 차례야."
       - goto: choose_identity
 
   choose_identity:
     actions:
       - choice:
           key: c2_identity
-          prompt: "시장을 조사할 때 어떤 이름을 쓰겠습니까?"
+          prompt: "칠숙이 장터에 들어온다. 어떤 얼굴로 장부에 다가갈까?"
           char: 덕만
           camera: close
           with: [소화]
           options:
-            - text: "상단의 장부꾼 '만덕'으로 남는다"
+            - text: "장부꾼 만덕으로 시비를 건다"
               set: { identity_mode: hidden, identity_exposed: false }
               add: { insight: 1, sohwa_trust: 1 }
               goto: hidden_inquiry
-            - text: "왕실 인장을 아는 감찰관이라고 속인다"
+            - text: "왕실 감찰관 행세로 장부를 뺏는다"
               set: { identity_mode: borrowed }
               add: { fear: 1, evidence: 1 }
               goto: borrowed_inquiry
-            - text: "내가 살아 있는 공주 덕만이라고 밝힌다"
+            - text: "장터 한복판에서 덕만이라 밝힌다"
               set: { identity_mode: public, identity_exposed: true }
               add: { people_support: 2, fear: 1 }
               goto: public_inquiry
@@ -54,36 +54,36 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "덕만은 운송표의 숫자가 틀렸다고 시비를 걸어 인장 찍는 사람을 불러냈습니다. 아무도 공주를 찾지 않았기에 장부는 오래 열려 있었습니다."
+          text: "덕만이 틀린 합계를 큰 소리로 읽자 상인이 욕설을 뱉으며 인장장이를 불렀습니다. 모두가 싸움 구경에 몰렸고 장부는 탁자 위에 열린 채 남았습니다."
       - say:
           char: 소화
           camera: medium
           with: [덕만]
-          text: "이름을 숨기니 증거는 가까워집니다. 대신 저 사람들은 우리를 지켜 줄 이유가 없습니다."
+          text: "아무도 우릴 보지 않네요. 좋은데… 칼이 오면 아무도 우릴 위해 서 주지도 않겠죠."
       - goto: market_crackdown
 
   borrowed_inquiry:
     actions:
       - say:
           channel: narration
-          text: "가짜 감찰관 앞에서 상인들은 즉시 장부를 내놓았습니다. 그러나 진짜 관원이 오면 가장 먼저 처형될 거짓말이기도 했습니다."
+          text: "'왕실 감찰'이라는 네 글자에 상인들의 허리가 동시에 굽었습니다. 멀리서 진짜 관원의 깃발이 보이자 굽었던 눈들이 덕만의 얼굴을 다시 훑었습니다."
       - say:
           char: 덕만
           camera: medium
           with: [소화]
-          text: "빌린 권위는 빠르지만 갚을 때 이자가 붙어. 해가 지기 전에 끝내자."
+          text: "빌린 이름은 오래 들고 있으면 목을 베어 가. 해 지기 전에 쓰고 버리자."
       - goto: market_crackdown
 
   public_inquiry:
     actions:
       - say:
           channel: narration
-          text: "덕만이 이름을 밝히자 늙은 상인 하나가 무릎을 꿇었습니다. 다음 순간 시장 절반이 환호했고, 나머지 절반은 포상금을 떠올렸습니다."
+          text: "'덕만'이라는 이름이 떨어지자 늙은 상인이 먼저 무릎을 꿇었습니다. 환호가 번지는 동안 맞은편 좌판 주인은 조용히 현상수배 전단을 접었습니다."
       - say:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "사람들의 믿음은 얻었습니다. 이제 칠숙도 정확히 어디로 오면 되는지 알았습니다."
+          text: "저분들은 아기씨를 기억합니다. 칠숙도 이제 이 자리까지 곧장 기억하겠군요."
       - goto: market_crackdown
 
   market_crackdown:
@@ -93,33 +93,33 @@ scenes:
       - say:
           channel: narration
           camera: wide
-          text: "해가 기울자 시장의 네 문이 동시에 닫혔습니다. 칠숙의 군사들이 수색표를 들고 좌판을 뒤집었습니다."
+          text: "마지막 햇빛이 처마에서 사라지자 네 문이 동시에 닫혔습니다. 군사들이 좌판을 걷어차며 종이에 그려진 얼굴과 사람들을 번갈아 보았습니다."
       - say:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
-          text: "죽은 사람을 찾느라 십 년을 썼습니다. 오늘은 장례를 끝내겠습니다."
+          text: "죽은 분이 참 멀리도 도망치셨습니다. 이제 관에 누우시지요."
       - say:
           char: 덕만.angry
           camera: close
           with: [칠숙]
-          text: "죽은 사람 때문에 군사까지 움직였군. 그 말이면 내가 누구인지 네가 대신 증명한 셈이야."
+          text: "죽은 아이 하나 잡겠다고 군사를 몰고 왔어? 고맙네. 내 이름을 네가 증명해 줬어."
       - choice:
           key: c2_witness
-          prompt: "칠숙의 군사가 인장장이를 끌고 갑니다. 무엇을 먼저 지키겠습니까?"
+          prompt: "인장장이의 비명과 소화의 손이 동시에 멀어진다. 누구에게 뛸까?"
           char: 덕만
           camera: reaction
           with: [칠숙]
           options:
-            - text: "인장장이를 구해 증언을 확보한다"
+            - text: "수레를 엎어 인장장이를 빼낸다"
               set: { saved_market_witness: true }
               add: { evidence: 2, people_support: 1 }
               goto: save_witness
-            - text: "인장 원본만 빼앗고 사람은 놓친다"
+            - text: "사람을 포기하고 인장함을 낚아챈다"
               set: { saved_market_witness: false }
               add: { evidence: 2, fear: 1 }
               goto: steal_seal
-            - text: "소화를 먼저 피신시키고 추적을 유인한다"
+            - text: "소화를 밀어 보내고 추격을 끌고 간다"
               set: { saved_market_witness: false }
               add: { sohwa_trust: 2, army_support: 1 }
               goto: protect_sohwa
@@ -128,7 +128,7 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "덕만은 곡식 수레의 멍에를 끊어 골목을 막고 인장장이를 빼냈습니다. 증인은 살았지만 추격대가 바로 뒤에 붙었습니다."
+          text: "덕만이 멍에를 베자 놀란 소가 수레를 골목에 비스듬히 처박았습니다. 인장장이를 끌어냈을 때 군사들의 창끝은 이미 곡식 자루를 찢고 있었습니다."
       - get: market_seal
       - goto: checkpoint
 
@@ -137,7 +137,7 @@ scenes:
       - sticker: { id: c2_seal, image: market_seal_sticker, x: 50, y: 27, width: "clamp(150px, 18%, 280px)", anchorX: center, anchorY: center, enter: scaleIn }
       - say:
           channel: narration
-          text: "덕만은 인장함을 낚아채 지붕으로 올랐습니다. 인장장이는 끌려갔고, 손에 남은 것은 말하지 못하는 증거뿐이었습니다."
+          text: "덕만은 인장함을 낚아채 천막 기둥을 밟고 지붕으로 올랐습니다. 아래에서 인장장이가 이름을 외쳤지만, 덕만은 끝내 돌아보지 못했습니다."
       - get: market_seal
       - clearSticker: { id: c2_seal, leave: fadeOut }
       - goto: checkpoint
@@ -149,12 +149,12 @@ scenes:
           char: 소화.angry
           camera: close
           with: [덕만]
-          text: "또 저를 두고 미끼가 되려 하십니까? 살아남는 일도 함께 하겠다고 약속하셨습니다."
+          text: "또 저만 보내려고요? 같이 살자고 한 약속은 위험할 때마다 없어집니까?"
       - say:
           char: 덕만
           camera: close
           with: [소화]
-          text: "그래서 먼저 보낸 거야. 내가 돌아갈 곳을 남겨 두려고."
+          text: "네가 가야 내가 돌아갈 곳이 생겨. 이번엔 반드시 따라갈게."
       - get: market_seal
       - goto: checkpoint
 
@@ -165,27 +165,27 @@ scenes:
       - char: { id: 소화, position: right }
       - say:
           channel: narration
-          text: "시장 밖 검문소에는 별궁 화재 때와 같은 표식이 걸려 있었습니다. 빠른 길은 정문뿐이고, 마른 수로는 한 사람씩만 통과할 수 있었습니다."
+          text: "검문소 횃불 아래, 별궁에서 본 표식이 바람에 흔들렸습니다. 정문에는 창이 겹쳤고 마른 수로는 어깨 하나가 겨우 들어갈 만큼 좁았습니다."
       - choice:
           key: c2_checkpoint
-          prompt: "봉쇄된 국경 검문소를 어떻게 넘겠습니까?"
+          prompt: "뒤에서는 말발굽, 앞에서는 창끝이 다가온다. 길을 만들어라."
           char: 덕만
           camera: medium
           with: [소화]
           options:
-            - text: "어릴 때처럼 마른 수로를 찾아 모두를 빼낸다"
+            - text: "마른 수로로 한 명씩 밀어 넣는다"
               when: { var: c1_escape_route, op: eq, value: waterway }
               add: { insight: 2, people_support: 1 }
               goto: return_to_silla
-            - text: "청동 모란패와 붉은 인장을 함께 내민다"
+            - text: "모란패와 붉은 인장을 한꺼번에 내민다"
               when: { var: peony_token, op: eq, value: true }
               add: { nobles_support: 1, evidence: 1 }
               goto: return_to_silla
-            - text: "수색표의 사망 기록을 역으로 이용해 빈 관을 통과시킨다"
+            - text: "빈 관에 숨어 죽은 사람으로 통과한다"
               when: { var: death_register, op: eq, value: true }
               add: { insight: 1, evidence: 1 }
               goto: return_to_silla
-            - text: "칠숙에게 투항해 소화의 목숨을 거래한다"
+            - text: "칠숙 앞에 걸어 나가 소화와 거래한다"
               goto: bad_surrender
 
   return_to_silla:
@@ -196,20 +196,20 @@ scenes:
       - char: { id: 소화, position: right }
       - say:
           channel: narration
-          text: "덕만 일행은 봉쇄를 넘어 서라벌로 향했습니다. 붉은 인장은 왕실 기록과 국경의 곡식길을 잇는 첫 증거가 되었습니다."
+          text: "새벽 안개 속에서 검문소 횃불이 멀어졌습니다. 덕만은 달리는 수레 위에서 붉은 인장을 사망 기록 옆에 찍어 보았습니다. 흠집이 정확히 포개졌습니다."
       - say:
           char: 소화
           camera: close
           with: [덕만]
-          text: "궁으로 돌아가면 숨었던 십 년이 끝납니다."
+          text: "서라벌 성벽이 보이면… 정말 돌아가시는 겁니까?"
       - say:
           char: 덕만
           camera: close
           with: [소화]
-          text: "아니. 이제 누가 나를 숨겼고 누가 지웠는지, 둘 다 밝힐 시간이야."
+          text: "돌아가는 게 아니야. 처음으로 들어가는 거야. 내 이름을 가진 채로."
       - say:
           channel: narration
-          text: "덕만은 궁으로 곧장 들어가지 않았습니다. 시장 인장을 본뜬 밀랍과 그을린 사망 기록의 문구를 천명에게 먼저 보내, 어린 시절 둘만 알던 모란 온실에서 만나자는 답을 받아냈습니다."
+          text: "덕만은 성문 앞에서 수레를 세웠습니다. 밀랍 인장과 사망 기록의 한 줄을 궁 안으로 보냈습니다. 해가 지자 모란 향이 밴 짧은 답신이 돌아왔습니다."
       - say:
           channel: record
           text: "살아 있는 유령은 자신의 사망 기록과 국경의 붉은 인장을 들고 수도로 돌아왔습니다. 다음 문은 혈연이 아니라 두 증거를 함께 읽을 자매가 열어야 했습니다."
@@ -223,10 +223,10 @@ scenes:
       - char: { id: 칠숙, position: right, emotion: smile }
       - say:
           char: 덕만.sad
-          text: "소화는 보내 줘. 네가 찾는 사람은 나야."
+          text: "소화는 보내. 네가 십 년 동안 쫓은 사람은 나잖아."
       - say:
           char: 칠숙.smile
-          text: "공주께서는 아직도 거래란 양쪽이 약속을 지키는 일이라 믿으시는군요."
+          text: "공주께선 아직도 칼 든 자와 거래가 된다고 믿으십니까?"
       - say:
           channel: narration
           text: "소화가 검문소를 벗어나기도 전에 다른 군사들이 길을 막았습니다. 칠숙에게는 약속을 지킬 이유가 없었습니다."

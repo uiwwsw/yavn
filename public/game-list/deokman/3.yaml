@@ -11,33 +11,33 @@ scenes:
           text: "제4장 — 칼과 장부"
       - say:
           channel: narration
-          text: "자매가 지목한 서쪽 왕실 창고의 첫 수레를 따라온 밤이었습니다. 국경에서 가져온 붉은 인장이 찍힌 장부에는 구휼미가 가득하다고 적혀 있었지만, 서라벌 바깥 마을의 곡식독에서는 먼지만 나왔습니다."
+          text: "서쪽 창고에서 나온 수레는 빈 마을을 세 번 지나고도 멈추지 않았습니다. 덕만이 한 집의 곡식독을 열자 바닥에서 마른 쥐똥만 굴렀습니다. 장부에는 이 집이 어제 쌀을 받았다고 적혀 있었습니다."
       - char: { id: 덕만, position: left }
       - char: { id: 유신, position: right }
       - say:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "곡식 수레가 산길에서 사라졌습니다. 병사 스무 명이면 오늘 밤 창고를 칠 수 있습니다."
+          text: "바퀴 자국이 산길에서 끊겼습니다. 스무 명만 주십시오. 해 뜨기 전에 저 창고 문을 뜯겠습니다."
       - say:
           char: 덕만
           camera: close
           with: [유신]
-          text: "창고 하나를 되찾으면 도둑은 다른 창고로 옮겨. 수레가 사라졌는데 장부의 숫자가 그대로인 이유부터 찾자."
+          text: "문부터 부수면 안에 있는 놈만 잡아. 수레를 지운 손은 장부 뒤로 숨겠지. 먼저 거짓말의 길을 찾자."
       - choice:
           key: c4_investigation
-          prompt: "사라진 구휼미를 어떻게 추적하겠습니까?"
+          prompt: "새벽비가 자국을 지우기 시작한다. 무엇을 붙잡을까?"
           char: 덕만
           camera: medium
           with: [유신]
           options:
-            - text: "수레바퀴 자국과 야간 통행표를 대조한다"
+            - text: "바퀴 폭을 재고 야간 통행표를 펼친다"
               add: { evidence: 2, insight: 1 }
               goto: track_wagons
-            - text: "굶주린 마을 사람들을 임시 운송대로 고용한다"
+            - text: "마을 사람들에게 수레 길을 묻는다"
               add: { people_support: 2, yushin_trust: 1 }
               goto: hire_villagers
-            - text: "유신의 군사로 귀족 창고를 즉시 포위한다"
+            - text: "유신의 기병으로 세 창고를 봉쇄한다"
               add: { army_support: 2, fear: 1 }
               goto: surround_warehouse
 
@@ -45,36 +45,36 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "낮에는 왕실 수레였던 바퀴가 밤에는 귀족 문장의 덮개를 달았습니다. 같은 수레가 두 개의 주인을 가진 셈이었습니다."
+          text: "낮 통행표의 바퀴 폭과 밤 진흙의 자국이 꼭 맞았습니다. 왕실 수레는 해가 지면 귀족 문장이 그려진 덮개만 갈아썼습니다."
       - say:
           char: 유신
           camera: close
           with: [덕만]
-          text: "칼자국보다 선명합니다. 숫자는 거짓말을 해도 바퀴 폭은 바뀌지 않습니다."
+          text: "장부는 고칠 수 있어도 바퀴는 하루아침에 마르지 않습니다. 이 자국, 산 위 창고까지 갑니다."
       - goto: hidden_warehouse
 
   hire_villagers:
     actions:
       - say:
           channel: narration
-          text: "마을 사람들은 품삯으로 받은 쌀 한 줌보다, 어느 길에서 수레가 방향을 바꾸는지 더 정확히 알려 주었습니다."
+          text: "노파가 품삯 쌀을 소매에 넣고 지팡이로 산등성이를 가리켰습니다. 아이들은 밤마다 수레 소리가 멎는 집을 서로 다투어 말했습니다."
       - say:
           char: 덕만
           camera: close
           with: [유신]
-          text: "백성을 구제의 대상만으로 보면 입을 기다리게 돼. 일을 맡기면 눈과 손을 얻을 수 있어."
+          text: "쌀을 주면 오늘 배를 채워. 길을 물으면 저들이 우리 눈이 돼. 둘 다 해야 해."
       - goto: hidden_warehouse
 
   surround_warehouse:
     actions:
       - say:
           channel: narration
-          text: "유신의 기병이 세 창고를 동시에 봉쇄했습니다. 곡식은 움직이지 못했지만 귀족들은 이를 왕실의 사유 재산 약탈이라 불렀습니다."
+          text: "기병의 횃불이 세 창고를 동시에 에워쌌습니다. 안쪽 빗장이 걸리는 소리와 함께, 담 너머에서 '왕실의 약탈'이라는 외침이 먼저 터졌습니다."
       - say:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "이제 문은 열 수 있습니다. 다만 안에서 무엇이 나오든 제 칼이 먼저 말한 것으로 기록될 겁니다."
+          text: "문은 열 수 있습니다. 하지만 제가 칼을 뽑는 순간, 안의 장부보다 제 칼이 더 큰 증거가 됩니다."
       - goto: hidden_warehouse
 
   hidden_warehouse:
@@ -84,12 +84,12 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
-          text: "숨은 창고 안에는 곡식 대신 사병의 갑옷이 쌓여 있었습니다. 그 위에 낯선 사내가 누워 장부를 읽고 있었습니다."
+          text: "문이 무너지자 곡식 냄새 대신 기름 먹인 갑옷 냄새가 쏟아졌습니다. 갑옷 더미 위에 한 사내가 누워 남의 장부를 소리 내 읽고 있었습니다."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "굶는 사람의 쌀로 잘 먹는 군사를 만들었군요. 나라를 훔치는 데 꽤 성실한 장부입니다."
+          text: "쌀 한 섬이 창 세 자루, 아이 한 끼가 갑옷 못 열두 개. 도둑들이 셈은 참 반듯하게 했군요."
       - say:
           char: 덕만
           camera: close
@@ -99,7 +99,7 @@ scenes:
           char: 비담
           camera: medium
           with: [덕만]
-          text: "비담. 주인이 없는 칼이었는데, 오늘은 장부 쪽이 더 재미있어서 기다렸습니다."
+          text: "비담입니다. 주인 없는 칼인데, 오늘 밤은 칼보다 이 숫자들이 더 사람을 많이 죽이더군요."
       - sticker: { id: c4_ledger, image: grain_ledger_sticker, x: 51, y: 29, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, rotate: -2, enter: fadeIn }
       - get: grain_ledger
       - clearSticker: { id: c4_ledger, leave: fadeOut }
@@ -112,23 +112,23 @@ scenes:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "곡식은 내일이면 썩기 시작합니다. 장부를 공개하는 일과 배급하는 일을 동시에 할 수는 없습니다. 먼저 명령해 주십시오."
+          text: "비가 들이칩니다. 내일까지 두면 쌀이 붑니다. 사람들은 문밖에서 자루를 찢으려 하고요. 지금 하나부터 정해야 합니다."
       - choice:
           key: c4_grain_policy
-          prompt: "되찾은 곡식과 장부를 어떻게 처리하겠습니까?"
+          prompt: "문밖의 손들이 창고 문을 흔든다. 먼저 무엇을 내놓을까?"
           char: 덕만
           camera: close
           with: [유신]
           options:
-            - text: "장부를 공개하고 마을이 직접 곡식을 나누게 한다"
+            - text: "장부를 벽에 붙이고 마을에 열쇠를 준다"
               set: { grain_policy: public_distribution }
               add: { people_support: 3, nobles_support: -1, insight: 1 }
               goto: public_distribution
-            - text: "왕실이 곡식을 회수해 순서대로 배급한다"
+            - text: "왕실 깃발 아래 줄을 세워 배급한다"
               set: { grain_policy: royal_relief }
               add: { king_trust: 1, nobles_support: 1, people_support: 1 }
               goto: royal_relief
-            - text: "장부를 비밀로 하고 귀족에게 군량 지원을 받아낸다"
+            - text: "장부를 덮고 귀족에게 군량을 뜯어낸다"
               set: { grain_policy: bargain }
               add: { army_support: 2, evidence: 1, fear: 1 }
               goto: grain_bargain
@@ -139,15 +139,15 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
-          text: "마을마다 대표가 나와 자기 몫을 세었습니다. 배급은 느렸지만 어느 집에 몇 되가 갔는지 모두가 알았습니다."
+          text: "마을 대표들이 자루마다 숯으로 집 이름을 썼습니다. 줄은 느리게 줄었고 서로의 몫을 세는 목소리는 밤새 멈추지 않았습니다."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "백성에게 숫자를 보여 주셨군요. 다음에는 왕실 장부도 보여 달라고 할 겁니다."
+          text: "한 번 숫자를 본 사람은 다음 장부도 달라고 합니다. 왕실 문까지 두드릴 텐데요."
       - say:
           char: 덕만
-          text: "그래야 같은 쌀을 두 번 훔치지 못하지."
+          text: "두드리게 둬. 문이 상하는 것보다 쌀이 사라지는 게 비싸."
       - goto: convoy_attack
 
   royal_relief:
@@ -155,12 +155,12 @@ scenes:
       - bg: village
       - say:
           channel: narration
-          text: "왕실 깃발 아래 곡식이 배급되었습니다. 질서는 빨랐지만 사람들은 덕만이 아니라 왕의 은혜라고 들었습니다."
+          text: "왕실 북이 울리자 줄은 빠르게 정리됐습니다. 관리들은 자루를 건넬 때마다 '왕의 은혜'를 외쳤고 덕만의 이름은 한 번도 부르지 않았습니다."
       - say:
           char: 유신
           camera: close
           with: [덕만]
-          text: "오늘은 굶주림을 막았습니다. 내일 왕실 창고가 다시 비면 사람들은 같은 깃발만 기다릴 겁니다."
+          text: "오늘 밤은 먹입니다. 하지만 다음 창고가 비면 저 사람들은 우리 깃발이 올 때까지 또 굶을 겁니다."
       - goto: convoy_attack
 
   grain_bargain:
@@ -169,12 +169,12 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
-          text: "귀족들은 장부가 공개되지 않는 대가로 국경군에 군량을 내놓았습니다. 군사는 배불렀고 굶은 마을에는 누가 쌀을 훔쳤는지 알려지지 않았습니다."
+          text: "장부가 상자에 잠기자 귀족 창고에서 군량 수레가 나왔습니다. 병사들의 솥에는 김이 올랐고, 마을 사람들은 도둑의 이름 대신 빈 자루만 바라봤습니다."
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "오늘 얻은 군량으로 더 큰 약탈을 막을 수 있어. 다만 이 빚은 언젠가 공개해야 해."
+          text: "오늘 이 군량이 국경을 살릴 거야. 하지만 저 상자를 계속 잠가 두면 내가 도둑과 같은 열쇠를 쥔 셈이야."
       - goto: convoy_attack
 
   convoy_attack:
@@ -184,26 +184,26 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           channel: narration
-          text: "마지막 수레가 협곡에 들어서자 사병들이 앞뒤 길을 막았습니다. 곡식과 장부를 한꺼번에 없애려는 공격이었습니다."
+          text: "마지막 수레가 협곡 그림자에 들어간 순간 앞뒤에서 바위가 굴렀습니다. 절벽 위 횃불들이 곡식 자루와 장부 상자를 동시에 겨눴습니다."
       - say:
           char: 유신.angry
           camera: reaction
           with: [덕만]
-          text: "정면을 뚫으면 수레 절반은 살립니다. 명령을 기다리겠습니다."
+          text: "정면은 열 수 있습니다. 대신 뒤 수레 절반은 불화살을 맞습니다. 빨리 정하십시오."
       - choice:
           key: c4_convoy
-          prompt: "협곡의 곡식 수레를 어떻게 지키겠습니까?"
+          prompt: "불화살의 시위가 당겨진다. 수레를 어떻게 살릴까?"
           char: 덕만
           camera: reaction
           with: [유신]
           options:
-            - text: "곡식 자루를 방벽으로 쌓고 증원군을 기다린다"
+            - text: "자루를 벽으로 쌓고 비를 기다린다"
               add: { army_support: 1, insight: 1 }
               goto: convoy_saved
-            - text: "수레 하나를 미끼로 보내 매복의 주인을 추적한다"
+            - text: "빈 수레를 미끼로 매복 주인을 끌어낸다"
               add: { evidence: 2, bidam_trust: 1, fear: 1 }
               goto: convoy_saved
-            - text: "유신과 함께 정면으로 돌격해 모두 끝낸다"
+            - text: "유신 옆에서 정면을 뚫는다"
               goto: bad_charge
 
   convoy_saved:
@@ -212,23 +212,23 @@ scenes:
       - camera: medium
       - say:
           channel: narration
-          text: "해가 뜰 때 곡식 수레는 마을에 도착했습니다. 모두를 살리지는 못했지만 장부와 배급의 길은 함께 남았습니다."
+          text: "해가 뜰 무렵, 그을린 수레바퀴가 마을 돌길을 밟았습니다. 아이들이 달려와 터진 자루에서 쌀알을 한 톨씩 주웠습니다."
       - char: { id: 덕만, position: left }
       - char: { id: 유신, position: right }
       - say:
           char: 유신
-          text: "오늘 저는 공주님의 명령이 아니라 판단을 믿었습니다."
+          text: "오늘은 공주님이라서 따른 게 아닙니다. 저보다 먼저 불화살을 보셨으니까 따랐습니다."
       - say:
           char: 덕만
-          text: "그럼 다음에도 내 직함보다 판단이 틀렸는지 먼저 봐 줘. 왕에게 필요한 건 그런 칼이야."
+          text: "다음엔 내가 못 보면 말해 줘. 내 이름 때문에 입 다무는 칼은 필요 없어."
       - say:
           channel: record
-          text: "덕만은 곡식을 되찾으며 유신을 얻었고, 장부를 얻으며 비담의 관심을 샀습니다. 되찾은 자루에는 당의 원조 표식이, 장부 끝에는 사흘 뒤 모란 연회에서 손실을 해명하라는 사신의 요구가 적혀 있었습니다."
+          text: "유신이 찢어진 자루를 뒤집자 당의 낙인이 드러났습니다. 비담은 장부 마지막 장을 찢어 덕만에게 건넸습니다. 사흘 뒤 모란 연회. 원조 손실을 해명하라는 당 사신의 글이었습니다."
       - say:
           char: 덕만
           camera: close
           with: [유신]
-          text: "곡식을 훔친 손이 당과의 거래까지 쥐고 있어. 이 장부를 들고 연회에 가서, 원조가 혼인과 주둔지로 바뀐 과정을 묻겠다."
+          text: "쌀을 훔친 손이 당과도 잔을 부딪쳤어. 좋아. 이 장부를 연회상 한가운데 올려 주지."
       - goto: /4.yaml
 
   bad_charge:

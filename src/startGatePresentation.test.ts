@@ -11,6 +11,10 @@ describe('start gate presentation', () => {
     expect(app).toContain("startGateLaunching ? ' is-launching' : ''");
     expect(app).toContain('aria-busy={startGateLaunching}');
     expect(app).toContain("'--start-gate-title-color': startGate.titleColor");
+    expect(app).toContain("'--start-gate-image-position': startGate.imagePosition");
+    expect(app).toContain("'--start-gate-mobile-image-position': startGate.mobileImagePosition");
+    expect(styles).toContain('object-position: var(--start-gate-image-position, center)');
+    expect(styles).toContain('var(--start-gate-mobile-image-position, var(--start-gate-image-position, center))');
     expect(styles).toMatch(/\.start-gate-frame\s*\{[\s\S]*?border: 1px solid var\(--start-gate-frame-color\)/);
     expect(styles).toMatch(/\.start-gate\.is-launching \.start-gate-content\s*\{[\s\S]*?opacity: 0/);
     expect(app).not.toContain("startGateLaunching ? '이야기를 여는 중'");

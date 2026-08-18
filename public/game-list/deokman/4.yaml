@@ -13,31 +13,31 @@ scenes:
       - char: { id: 당 사신, position: right }
       - say:
           channel: narration
-          text: "되찾은 원조 곡식의 행방을 해명하러 온 당의 사신은, 장부 대신 모란 그림과 세 봉의 편지를 먼저 펼쳤습니다. 어린 덕만을 시험했던 것과 같은 그림이었습니다. 편지마다 여자가 다스리는 나라는 향기 없는 꽃과 같다는 문장이 적혀 있었습니다."
+          text: "당 사신은 곡식 장부를 거들떠보지 않고 모란 족자를 연회상 위에 펼쳤습니다. 어린 날 불타던 별궁에서 본 바로 그 그림이었습니다. 편지 세 봉에는 같은 조롱이 다른 먹빛으로 적혀 있었습니다."
       - say:
           char: 당 사신
           camera: medium
           with: [덕만]
-          text: "황제께서는 신라의 안정을 염려하십니다. 혼인을 통해 남자 왕을 세우면 군사와 곡식을 돕겠다고 하셨습니다."
+          text: "황제께서는 신라를 걱정하십니다. 공주께서 남편을 왕으로 세우시면, 비어 버린 곡식 창고도 군사도 채워 주시겠답니다."
       - say:
           char: 덕만
           camera: close
           with: [당 사신]
-          text: "꽃의 향기를 그림으로 판단하시는군요. 그럼 이 그림에 없는 것이 무엇인지부터 함께 보지요."
+          text: "당에서는 종이 위 꽃향기도 맡나 보군요. 좋습니다. 대신 빠뜨린 것까지 같이 보시죠."
       - choice:
           key: c5_first_reply
-          prompt: "당의 모욕에 첫 답을 어떻게 건네겠습니까?"
+          prompt: "연회장의 숨이 멎는다. 덕만은 무엇을 상 위에 올릴까?"
           char: 덕만
           camera: close
           with: [당 사신]
           options:
-            - text: "벌과 나비가 없는 그림의 결함을 공개적으로 지적한다"
+            - text: "그림 속 빈 나비 자리를 손가락으로 짚는다"
               add: { people_support: 1, insight: 2 }
               goto: answer_with_absence
-            - text: "그림을 칭찬하고 사신의 요구 조건을 끝까지 듣는다"
+            - text: "웃으며 편지의 마지막 줄까지 듣는다"
               add: { nobles_support: 1, evidence: 1 }
               goto: answer_with_patience
-            - text: "신라의 굶주린 마을 명단을 펼쳐 실질 지원을 묻는다"
+            - text: "굶은 아이들의 명단을 그림 위에 펼친다"
               add: { people_support: 2, fear: 1 }
               goto: answer_with_ledger
 
@@ -46,12 +46,12 @@ scenes:
       - sticker: { id: c5_peony, image: peony_painting_sticker, x: 50, y: 27, width: "clamp(190px, 23%, 360px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
           char: 덕만
-          text: "향기가 없어서 나비가 없는 것이 아니라, 그린 사람이 나비를 빼놓았습니다. 신라의 왕도 당이 그려 넣고 뺄 수 있는 것이 아닙니다."
+          text: "향기가 없어서 나비가 없는 게 아닙니다. 화공이 그리지 않았을 뿐이죠. 신라의 왕도 당의 붓끝에서 생기진 않습니다."
       - say:
           char: 당 사신.nervous
           camera: reaction
           with: [덕만]
-          text: "그림에 대한 감상이 제법 날카롭습니다."
+          text: "그림 한 장으로 목소리를 높이시는군요."
       - clearSticker: { id: c5_peony, leave: fadeOut }
       - goto: hidden_terms
 
@@ -59,27 +59,27 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "덕만은 모욕에 답하지 않고 조건을 모두 받아 적었습니다. 마지막 조항에는 당군이 신라 성 하나를 주둔지로 쓴다는 문장이 숨어 있었습니다."
+          text: "덕만은 대꾸하지 않고 조건을 한 줄씩 받아 적었습니다. 사신이 잔을 드는 순간 마지막 종이를 낚아챘습니다. 혼인 조항 아래, 신라 성 하나를 당군 주둔지로 내준다는 작은 글씨가 숨어 있었습니다."
       - say:
           char: 덕만
           camera: close
           with: [당 사신]
-          text: "혼인보다 주둔지가 본론이었군요. 말이 길수록 숨기고 싶은 문장이 끝에 옵니다."
+          text: "남편은 미끼고 성문이 본값이었군요. 숨기고 싶은 말일수록 글 끝에 작게 쓰는 버릇이 있으십니다."
       - goto: hidden_terms
 
   answer_with_ledger:
     actions:
       - say:
           char: 덕만
-          text: "왕의 성별이 곡식을 만든다면 이 명단의 아이들은 왜 굶었습니까? 당이 보낼 수 있는 것은 남편입니까, 종자와 철제 농기구입니까?"
+          text: "남자 왕이 쌀을 만든다면 이 아이들은 왜 굶었습니까? 당이 보낼 건 남편입니까, 씨앗입니까? 둘 중 하나만 말씀하십시오."
       - say:
           char: 당 사신.nervous
           camera: close
           with: [덕만]
-          text: "공주께서는 외교를 장터의 흥정처럼 말씀하시는군요."
+          text: "공주께선 제국의 혼인을 장터 거래처럼 다루시는군요."
       - say:
           char: 덕만
-          text: "백성이 먹고사는 결과가 없다면 왕들의 외교도 비싼 흥정일 뿐입니다."
+          text: "값을 치르는 건 굶는 사람들이니까요. 왕끼리 마시는 술도 결국 누군가 계산합니다."
       - goto: hidden_terms
 
   hidden_terms:
@@ -89,17 +89,17 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
-          text: "연회가 쉬는 사이 비담은 사신의 통역관에게서 훔친 쪽지를 내밀었습니다. 당은 혼인보다 신라 귀족들의 분열 정도를 확인하려 했고, 회신 명단에는 구휼미 장부와 봄 습격에 등장한 가문들이 나란히 적혀 있었습니다."
+          text: "비담이 빈 술병을 들고 휘장 뒤에서 나타났습니다. 병 속에는 통역관의 쪽지가 말려 있었습니다. 구휼미를 훔친 가문과 봄 연회 습격자의 이름 옆에 당의 답신 표시가 찍혀 있었습니다."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "사신의 혀를 자르면 모욕은 멈춥니다. 쪽지를 돌려주면 다음 모욕이 어디서 시작되는지 볼 수 있고요. 어느 쪽이 더 왕답습니까?"
+          text: "사신 입을 막으면 오늘은 조용합니다. 원본을 돌려놓으면 내일 누구 손에 들어가는지 볼 수 있고요. 어느 쪽이 더 궁금하십니까?"
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "왕다움은 네가 정한 두 선택지 밖에도 있어. 쪽지를 베껴 놓고 원본은 돌려줘."
+          text: "내게 답을 둘만 주지 마. 베껴. 원본은 돌려놓고 뒤따라가."
       - goto: treaty_choice
 
   treaty_choice:
@@ -108,20 +108,20 @@ scenes:
       - char: { id: 당 사신, position: right }
       - choice:
           key: c5_diplomacy
-          prompt: "당과 어떤 관계를 맺겠습니까?"
+          prompt: "사신이 빈 문서와 붓을 내민다. 어떤 값을 써 넣을까?"
           char: 덕만
           camera: medium
           with: [당 사신]
           options:
-            - text: "혼인을 거절하고 곡식·천문 자료의 상호 교환을 제안한다"
+            - text: "혼인을 지우고 종자와 천문표를 맞바꾼다"
               set: { diplomacy_policy: equal_exchange }
               add: { people_support: 1, insight: 2, nobles_support: -1 }
               goto: equal_exchange
-            - text: "혼인 논의는 미루되 군사 원조 조항을 받아낸다"
+            - text: "혼인 답을 미루고 국경 군량부터 받는다"
               set: { diplomacy_policy: armed_truce }
               add: { army_support: 2, nobles_support: 1, fear: 1 }
               goto: armed_truce
-            - text: "사신에게 귀족 한 사람의 무역권을 보장해 내부 정보를 산다"
+            - text: "무역권 하나로 귀족들의 서신을 산다"
               set: { diplomacy_policy: secret_trade }
               add: { evidence: 2, bidam_trust: 1, fear: 1 }
               goto: secret_trade
@@ -130,27 +130,27 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "신라는 사람을 조공으로 보내지 않겠습니다. 대신 가뭄 종자와 천문 관측표를 같은 값으로 바꿉시다."
+          text: "신라는 사람을 조공으로 보내지 않습니다. 가뭄 종자와 천문표를 내놓으십시오. 우리는 철과 항로를 내놓겠습니다."
       - say:
           char: 당 사신
           camera: close
           with: [덕만]
-          text: "황제께서 거절하실 수 있습니다."
+          text: "황제께서 이 문서를 찢으실 수도 있습니다."
       - say:
           char: 덕만
-          text: "그럼 거절한 내용까지 양국 상인에게 공개하겠습니다."
+          text: "그 조각까지 주워 양국 상인에게 보여 드리지요."
       - goto: banquet_test
 
   armed_truce:
     actions:
       - say:
           channel: narration
-          text: "덕만은 혼인 답변에 시한을 달고 그 사이 국경의 군량을 얻었습니다. 전쟁은 멀어졌지만 당은 약속의 날짜를 새 빚처럼 기록했습니다."
+          text: "덕만은 혼인 답변 날짜를 세 달 뒤로 밀고 그 빈칸에 국경 군량 수레 수를 적었습니다. 사신은 웃었지만 날짜 아래 붉은 줄을 두 번 그었습니다."
       - say:
           char: 당 사신
           camera: close
           with: [덕만]
-          text: "미룬 대답도 대답입니다. 황제께서는 날짜를 잊지 않으실 겁니다."
+          text: "미룬 답도 답입니다. 황제께서는 날짜와 빚을 함께 세십니다."
       - goto: banquet_test
 
   secret_trade:
@@ -158,12 +158,12 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
-          text: "사신은 신라 귀족들의 비밀 서신을 내놓았고 한 가문은 국경 무역권을 얻었습니다. 덕만은 적의 이름을 알았지만 새 특권을 직접 만들었습니다."
+          text: "사신은 소매에서 밀봉된 서신 다섯 장을 꺼냈습니다. 대신 무역권 문서에 한 가문의 이름이 새로 들어갔습니다. 덕만은 적의 이름을 얻는 순간 또 하나의 문을 그들에게 내주었습니다."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "깨끗한 손으로는 더러운 서신을 펼칠 수 없죠. 이제 공주님 손에도 좋은 얼룩이 생겼습니다."
+          text: "더러운 편지는 깨끗한 손으로 안 펴집니다. 축하드립니다. 이제 공주님 손에도 꽤 왕다운 얼룩이 생겼군요."
       - goto: banquet_test
 
   banquet_test:
@@ -171,21 +171,21 @@ scenes:
       - char: { id: 당 사신, position: right }
       - say:
           channel: narration
-          text: "연회 끝에 사신은 신라의 왕이 될 여인에게 당의 예법대로 절하라고 요구했습니다. 귀족들은 덕만이 굽히는지, 사신을 모욕하는지만 기다렸습니다."
+          text: "마지막 술잔이 비자 사신은 상석 앞 방석을 손끝으로 두드렸습니다. 당의 예법대로 무릎 꿇으라는 뜻이었습니다. 귀족들의 시선이 덕만의 무릎으로 쏠렸습니다."
       - choice:
           key: c5_protocol
-          prompt: "마지막 예법 싸움을 어떻게 끝내겠습니까?"
+          prompt: "사신이 방석을 두드린다. 덕만은 어디에 설까?"
           char: 덕만
           camera: reaction
           with: [당 사신]
           options:
-            - text: "서로 한 걸음씩 나와 같은 높이에서 예를 나눈다"
+            - text: "사신도 일으켜 같은 높이에서 절한다"
               add: { nobles_support: 1, people_support: 1, insight: 1 }
               goto: scentless_end
-            - text: "사신에게 모란 그림을 되가져가고 답을 기다리라 한다"
+            - text: "모란 그림을 말아 사신 품에 돌려준다"
               add: { fear: 2, people_support: 1 }
               goto: scentless_end
-            - text: "사신을 억류해 당의 사과를 강제한다"
+            - text: "문을 잠그고 사과문부터 쓰게 한다"
               goto: bad_hostage
 
   scentless_end:
@@ -196,21 +196,21 @@ scenes:
       - char: { id: 비담, position: right }
       - say:
           channel: narration
-          text: "사신은 답을 품고 떠났습니다. 모란 그림은 궁에 남았고, 이제 향기 없는 꽃이라는 말은 덕만을 모욕한 문장이 아니라 당의 판단이 틀렸음을 기억시키는 물건이 되었습니다."
+          text: "사신의 수레가 궁문을 나설 때 모란 족자는 연회상 위에 남았습니다. 덕만은 그림을 뒤집어 놓고서야 굳었던 손가락을 폈습니다."
       - say:
           char: 비담
           camera: close
           with: [덕만]
-          text: "칼을 한 번도 뽑지 않고 모두를 불편하게 만드셨습니다. 꽤 마음에 듭니다."
+          text: "칼 한 번 안 뽑고 사신과 귀족을 전부 잠 못 들게 하셨군요. 마음에 듭니다."
       - say:
           char: 덕만
-          text: "마음에 들지 말고 기억해. 외교에서 이긴 날에도 누군가는 값을 치러."
+          text: "좋아하지 마. 오늘 내가 산 곡식값은 아직 누가 낼지 정하지 못했어."
       - say:
           channel: record
           text: "덕만은 모욕을 조건으로 바꾸었습니다. 당은 신라에 여왕 후보가 있다는 사실을 처음으로 공식 기록했고, 교환품으로 다음 일식의 관측표를 남겼습니다."
       - say:
           channel: narration
-          text: "그날 밤 왕실 제관 하나가 관측표의 날짜를 베껴 갔습니다. 다음 날 시장에는 검은 부적이 깔렸고, 제관들은 바로 그 날짜를 덕만을 심판할 하늘의 뜻이라 선포했습니다."
+          text: "그날 밤, 관측표 위 촛농이 아직 굳기 전에 제관 하나가 날짜를 베꼈습니다. 이튿날 시장 좌판마다 검은 부적이 걸렸고 같은 날짜가 '덕만을 삼킬 날'로 팔렸습니다."
       - goto: /5.yaml
 
   bad_hostage:

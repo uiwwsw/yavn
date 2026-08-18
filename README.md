@@ -202,6 +202,8 @@ ui:
 startScreen:
   enabled: true
   image: assets/bg/title.png
+  imagePosition: "50% 50%"
+  mobileImagePosition: "72% 50%"
   music: assets/music/intro.mp3
   showTitle: true
   titleColor: "#ffe0a3"
@@ -283,7 +285,7 @@ scenes:
   - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
-  - `startScreen` (`enabled`, `image`, `music`, `showTitle`, `titleColor`, `startButtonText`, `buttonPosition`)
+  - `startScreen` (`enabled`, `image`, `imagePosition`, `mobileImagePosition`, `music`, `showTitle`, `titleColor`, `startButtonText`, `buttonPosition`)
   - `endingScreen` (`image`)
   - `endings`, `endingRules`, `defaultEnding`
 - `seo` 하위 필드:
@@ -318,6 +320,7 @@ scenes:
 - `startScreen`은 객체를 선언하면 기본적으로 활성화되며(`enabled` 기본 `true`), 필드를 생략하면 `showTitle=true`, `startButtonText=시작하기`, `buttonPosition=auto`가 적용됩니다.
 - 타이틀 이미지 자체에 게임명이 포함되어 있으면 `showTitle: false`로 엔진 제목 오버레이를 숨길 수 있습니다. SEO 제목과 접근 가능한 문서 제목은 그대로 유지됩니다.
 - `startScreen.titleColor`에는 `#ffe0a3`, `rgb(...)`, `oklch(...)` 같은 CSS 색상을 지정할 수 있습니다. 미지정 시 선택한 `ui.template`의 기본 제목색을 사용합니다.
+- `startScreen.imagePosition`은 시작 이미지의 데스크톱 `object-position`, `mobileImagePosition`은 768px 이하 화면의 초점입니다. 모바일 값을 생략하면 데스크톱 값을 그대로 사용합니다.
 - `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
 - 서로 다른 로컬 오디오 `music` 액션은 약 420ms 동안 크로스페이드됩니다. 같은 곡을 다시 지정하면 재시작하지 않으며, BGM 끄기와 초기화면 이동은 즉시 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
@@ -845,10 +848,10 @@ scenes:
 
 ## 덕만 완결판
 
-- `/game-list/deokman/`은 **덕만: 별은 왕을 선택하지 않는다**의 정식 12챕터 완결판입니다. V8.1에서는 `사망 기록 → 붉은 인장 → 곡식 장부 → 당의 천문표 → 빈 옥새 → 위조 자백 → 계승 쿠데타 → 공개 관측표 → 비담의 반란 → 마지막 기록`이 앞 사건의 증거와 대가로 다음 사건을 일으키도록 전 챕터의 진입·종결 장면을 보강했습니다.
+- `/game-list/deokman/`은 **선덕여왕: 죽은 공주의 왕관**의 정식 12챕터 완결판입니다. V9.0에서는 모든 대사·내레이션·선택 문구를 설명형 역사 문답에서 인물의 욕망, 행동, 위기와 여운이 이어지는 시대극 문장으로 전면 개작했습니다. `사망 기록 → 붉은 인장 → 곡식 장부 → 당의 천문표 → 빈 옥새 → 위조 자백 → 계승 쿠데타 → 공개 관측표 → 비담의 반란 → 마지막 기록`의 인과는 유지하며 각 장의 마지막 행동이 다음 장의 첫 위기를 직접 일으킵니다.
 - 전 작품에 고유한 선택 36개, 장면형 `gameOver` 11개, 누적 관계·정치 상태로 판정되는 결말 10개를 제공합니다. 초반의 관찰과 증거가 후반의 왕위 표결과 최종 기록 공개 여부까지 다시 작동합니다.
 - `dialogue/narration/record` 채널, 상태·인벤토리 기반 `when`, 외부 챕터 `goto`, 누적 상태 `branch`를 실제 장편 흐름에서 사용합니다. 몰입을 깨는 `system` 화자는 본편에 사용하지 않습니다.
-- 시작 화면은 금지된 기록과 모란패를 든 어린 덕만의 별궁 화재 키아트를 사용합니다. 어린 덕만의 기본·공포·결의 세 표정은 같은 얼굴·복식·전신 구도를 유지한 `886×1775` RGBA PNG로 다시 제작해 흐림, 압축 블록, 사각 배경 잔상, 흰색 누끼 테두리를 제거했습니다. 모란도부터 비담의 서신까지 10개 증거물은 배경 없는 SVG 오브젝트입니다.
+- 시작 화면은 금지된 기록과 모란패를 든 어린 덕만의 별궁 화재 키아트를 사용하고, 모바일 초점을 `72% 50%`로 지정해 세로 크롭에서도 어린 덕만이 보이게 합니다. 어린 덕만의 기본·공포·결의 세 표정은 같은 얼굴·복식·전신 구도를 유지한 `886×1775` RGBA PNG로 다시 제작해 흐림, 압축 블록, 사각 배경 잔상, 흰색 누끼 테두리를 제거했습니다. 모란도부터 비담의 서신까지 10개 증거물은 배경 없는 SVG 오브젝트입니다.
 - 전체 12장 구조, 인물별 연기 방향, 선택·엔딩 규칙, 아트 제작 규격과 구현 현황은 [`docs/DEOKMAN_GAME_BIBLE.ko.md`](docs/DEOKMAN_GAME_BIBLE.ko.md)에 고정했습니다.
 
 ## Conan 샘플 분기 구조

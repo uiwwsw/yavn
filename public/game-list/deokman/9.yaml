@@ -13,33 +13,33 @@ scenes:
       - char: { id: 춘추, position: right }
       - say:
           channel: narration
-          text: "즉위 첫겨울, 덕만이 명한 관측대 검토안이 첫 예산안으로 돌아왔습니다. 북쪽 성은 보수를 요구했고 남쪽 마을은 홍수 예측을 요구했으며, 즉위 때 약속한 감사 아래 국고는 두 일 중 하나만 온전히 감당할 수 있었습니다."
+          text: "즉위 첫겨울, 왕좌 앞에 두 돌이 놓였습니다. 하나는 무너진 북쪽 성벽에서, 하나는 지난해 홍수에 잠긴 남쪽 마을에서 왔습니다. 국고 상자에는 둘 중 한쪽 공사비밖에 남지 않았습니다."
       - say:
           char: 춘추
           camera: medium
           with: [덕만]
-          text: "성벽은 적이 오면 필요하고 관측대는 하늘이 틀리면 쓸모없습니다. 대신 관측이 맞으면 매년 더 많은 사람을 살립니다."
+          text: "성벽을 늦추면 적이 옵니다. 관측대를 늦추면 물이 옵니다. 어느 쪽이 먼저 올지는 아무도 모릅니다."
       - say:
           char: 덕만
           camera: close
           with: [춘추]
-          text: "왕의 첫 건축은 돌이 아니라 우선순위를 세우는 일이군. 무엇을 늦췄는지까지 기록하자."
+          text: "첫 삽을 뜨기도 전에 한쪽 사람에게 기다리라고 해야 하는군. 무엇을 세웠는지만 말고, 무엇을 늦췄는지도 적어."
       - choice:
           key: c10_observatory_priority
-          prompt: "첫해의 국고를 어디에 먼저 쓰겠습니까?"
+          prompt: "두 돌 사이에 국고 열쇠가 놓인다. 어느 쪽으로 밀까?"
           char: 덕만
           camera: medium
           with: [춘추]
           options:
-            - text: "첨성대를 먼저 세우고 홍수·파종 관측을 시작한다"
+            - text: "남쪽 돌을 골라 첨성대부터 올린다"
               set: { observatory_priority: stars_first }
               add: { insight: 3, people_support: 1, army_support: -1 }
               goto: stars_first
-            - text: "성벽을 보수하되 남은 돌로 작은 관측대를 만든다"
+            - text: "북쪽 성벽을 막고 남은 돌을 나눈다"
               set: { observatory_priority: balanced }
               add: { army_support: 2, insight: 1, nobles_support: 1 }
               goto: balanced_build
-            - text: "구휼 창고부터 채우고 관측대는 백성의 공동 노동으로 짓는다"
+            - text: "창고를 채우고 돌 나를 품삯을 곡식으로 준다"
               set: { observatory_priority: granary_first }
               add: { people_support: 3, insight: 1, fear: 1 }
               goto: granary_first
@@ -49,10 +49,10 @@ scenes:
       - bg: title_palace
       - say:
           channel: narration
-          text: "왕궁보다 높은 관측대가 빠르게 올라갔습니다. 북쪽 군관들은 자신들의 성벽보다 별을 먼저 지킨 여왕이라고 불평했습니다."
+          text: "관측대가 왕궁 처마를 넘을 때 북쪽에서 깨진 방패가 도착했습니다. 군관은 방패에 '별이 성문을 지켜 주느냐'고 새겨 보냈습니다."
       - say:
           char: 덕만
-          text: "그 불평도 기록해. 별을 택한 날 성벽을 늦춘 책임이 사라지면 안 된다."
+          text: "저 방패도 탑 아래 걸어. 내가 별을 고른 날 누가 기다렸는지 지우지 마."
       - goto: who_reads_stars
 
   balanced_build:
@@ -60,7 +60,7 @@ scenes:
       - bg: frontier
       - say:
           channel: narration
-          text: "성벽은 겨울 전에 보수됐고 낮은 관측대도 완성됐습니다. 둘 다 충분하지 않았지만 군사와 관측관은 같은 돌의 값을 알게 됐습니다."
+          text: "성벽 틈은 겨우 막혔고 관측대는 계획보다 절반 높이에서 멈췄습니다. 군사와 관측관은 남은 돌 한 장을 두고 매일 얼굴을 마주쳐야 했습니다."
       - goto: who_reads_stars
 
   granary_first:
@@ -68,15 +68,15 @@ scenes:
       - bg: village
       - say:
           channel: narration
-          text: "창고가 먼저 채워지자 마을 사람들은 품삯을 곡식으로 받고 돌을 날랐습니다. 첨성대는 늦게 완성됐지만 누구의 세금으로 세웠는지 모두 알았습니다."
+          text: "창고가 차자 마을 사람들이 곡식 자루를 품삯으로 받고 돌을 날랐습니다. 탑은 늦어졌고, 돌마다 어느 마을 손에서 왔는지 숯 글씨가 남았습니다."
       - say:
           char: 춘추.nervous
           camera: close
           with: [덕만]
-          text: "공동 노동이 자발적이었다는 기록과 실제로 거절할 수 있었는지는 다를 수 있습니다."
+          text: "장부에는 모두 자원했다고 쓰였습니다. 하지만 왕의 공사 앞에서 정말 '싫다'고 말할 수 있었을까요?"
       - say:
           char: 덕만.sad
-          text: "그러니 참여하지 않은 마을도 명단에 남겨. 칭송만 남기면 강제가 된다."
+          text: "오지 않은 마을도 적어. 빠진 이름을 죄로 만들지 말고."
       - goto: who_reads_stars
 
   who_reads_stars:
@@ -86,28 +86,28 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
-          text: "첫 관측표가 나오자 왕실 제관은 이를 봉인해야 한다고 했고, 비담은 자신에게 맡기면 필요한 사람에게만 정확한 날짜를 팔겠다고 했습니다."
+          text: "첫 관측표가 마르기도 전에 제관은 봉인 상자를 가져왔습니다. 비담은 그 상자 위에 앉아 날짜 하나를 손가락으로 가렸습니다."
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "모두에게 지식을 주면 반란군도 행군하기 좋은 날을 압니다. 비밀은 위험하지만 공개도 순진한 선택이죠."
+          text: "농부에게 비 없는 날을 주면 반란군도 진흙 없는 길을 얻습니다. 문을 잠그면 제가 열어 드릴 수 있고요. 어느 위험이 더 마음에 드십니까?"
       - choice:
           key: c10_knowledge_policy
-          prompt: "관측표를 누가 읽게 하겠습니까?"
+          prompt: "첫 별자리표를 두고 세 손이 뻗는다. 누구에게 건넬까?"
           char: 덕만
           camera: close
           with: [비담]
           options:
-            - text: "쉬운 달력으로 바꿔 모든 마을에 배포한다"
+            - text: "그림 달력으로 바꿔 장터마다 붙인다"
               set: { knowledge_policy: public }
               add: { people_support: 3, insight: 2, nobles_support: -1 }
               goto: public_calendar
-            - text: "왕실·군대·농민 대표에게 서로 다른 부분을 공유한다"
+            - text: "표를 셋으로 찢어 왕실·군대·마을에 나눈다"
               set: { knowledge_policy: distributed }
               add: { nobles_support: 1, army_support: 1, people_support: 1 }
               goto: distributed_tables
-            - text: "비담이 관리하는 비밀 정보망으로 운영한다"
+            - text: "원본을 비담의 비밀 전령에게 맡긴다"
               set: { knowledge_policy: bidam_network }
               add: { bidam_trust: 3, fear: 2, evidence: 1 }
               goto: bidam_network
@@ -118,7 +118,7 @@ scenes:
       - get: star_chart
       - say:
           channel: narration
-          text: "별자리 이름 옆에 씨 뿌릴 날과 강물이 높아질 날이 적혔습니다. 읽지 못하는 사람을 위해 그림과 매듭 표시도 함께 붙었습니다."
+          text: "별 이름 옆에 씨앗과 물결 그림이 그려졌습니다. 글을 모르는 아이가 매듭 수를 세어 어른보다 먼저 강물 오를 날을 맞혔습니다."
       - clearSticker: { id: c10_chart, leave: fadeOut }
       - goto: observatory_sabotage
 
@@ -127,7 +127,7 @@ scenes:
       - get: star_chart
       - say:
           channel: narration
-          text: "군대는 날씨를, 농민은 계절을, 왕실은 전체 계산식을 나누어 가졌습니다. 한 곳이 독점하지 않았지만 서로의 표가 없으면 전체를 알 수 없었습니다."
+          text: "군대는 바람, 마을은 비, 왕실은 계산식을 가져갔습니다. 누구도 전부 갖지 못했고, 셋이 같은 탁자에 앉아야 다음 계절을 읽을 수 있었습니다."
       - goto: observatory_sabotage
 
   bidam_network:
@@ -135,15 +135,15 @@ scenes:
       - get: star_chart
       - say:
           channel: narration
-          text: "비담의 정보망은 가장 빠르게 홍수와 적군의 움직임을 알렸습니다. 관리들은 왕보다 비담에게 먼저 날짜를 물었고, 지식의 문에는 새 주인이 생겼습니다."
+          text: "비담의 전령은 홍수보다 하루 먼저 달렸고 적군보다 밤 하나 빨랐습니다. 곧 관리들은 왕의 문보다 비담의 처소 앞에 먼저 줄을 섰습니다."
       - say:
           char: 비담
           camera: close
           with: [덕만]
-          text: "걱정 마십시오. 저는 여왕 폐하께만 충성합니다."
+          text: "걱정하지 마십시오. 이 문 열쇠는 폐하를 위해서만 돌립니다."
       - say:
           char: 덕만.sad
-          text: "그 말이 위로가 되는 동안만 위험하지."
+          text: "그 말이 위로로 들리는 동안만 안전하겠지."
       - goto: observatory_sabotage
 
   observatory_sabotage:
@@ -153,27 +153,27 @@ scenes:
       - effect: embers
       - say:
           channel: narration
-          text: "완공 전날 밤 관측대 아래 창고에서 불이 났습니다. 불길보다 먼저 '여왕의 별이 떨어졌다'는 소문이 시장에 퍼졌습니다."
+          text: "완공 전날 밤, 탑 아래 창고에서 불이 솟았습니다. 종이 울리기도 전에 시장 반대편에서 '여왕의 별이 탔다'는 외침이 들렸습니다."
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
           camera: reaction
           with: [덕만]
-          text: "불을 끄면 범인을 놓치고, 범인을 쫓으면 관측 기록이 탑니다."
+          text: "방화범이 북문으로 갑니다! 하지만 안에 관측관 셋과 원본 표가 있습니다!"
       - choice:
           key: c10_sabotage
-          prompt: "첨성대 방화에 무엇을 먼저 지키겠습니까?"
+          prompt: "지붕이 무너진다. 불 속에서 무엇을 먼저 끌어낼까?"
           char: 덕만
           camera: reaction
           with: [유신]
           options:
-            - text: "사람과 관측 기록을 먼저 빼낸다"
+            - text: "사람을 업고 원본 표를 품에 넣는다"
               add: { mercy: 2, people_support: 1, evidence: -1 }
               goto: tower_survives
-            - text: "불탄 재료를 그대로 남겨 방화 흔적을 조사한다"
+            - text: "불길을 가두고 현장의 발자국을 지킨다"
               add: { evidence: 2, fear: 1 }
               goto: tower_survives
-            - text: "국고를 모두 풀어 밤새 더 높은 탑으로 다시 세운다"
+            - text: "국고를 열어 오늘 밤 탑을 다시 올린다"
               goto: bad_monument
 
   tower_survives:
@@ -182,12 +182,12 @@ scenes:
       - camera: wide
       - say:
           channel: narration
-          text: "첨성대는 예정일보다 늦게 완성됐습니다. 완벽한 승리의 기념비가 아니라 불탄 돌과 고친 기록이 함께 남은 작업장이었습니다."
+          text: "첨성대는 늦게 완성됐습니다. 한쪽 돌은 검게 탔고 관측표에는 물에 번진 숫자를 다시 쓴 흔적이 남았습니다."
       - char: { id: 덕만, position: center }
       - say:
           char: 덕만
           camera: close
-          text: "이 탑은 내 별을 보려고 세운 것이 아니다. 사람들이 왕의 예언 없이도 내일을 준비하게 하려고 세웠다."
+          text: "이 탑은 내 운명을 찾는 곳이 아니다. 나 없이도 내일 비가 오는지 알게 하려고 세운 것이다."
       - branch:
           cases:
             - when: { var: knowledge_policy, op: eq, value: bidam_network }
@@ -198,42 +198,42 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "아이들이 탑 아래서 그림 달력과 분할 관측표를 서로 맞춰 보았습니다. 왕실의 지식은 처음으로 왕실 밖에서 틀리고 고쳐질 수 있게 됐습니다."
+          text: "아이들이 탑 아래서 서로 다른 표를 맞췄습니다. 숫자가 어긋나자 왕실 관측관에게 틀렸다고 소리쳤고, 관측관은 사람들 앞에서 먹으로 수를 고쳤습니다."
       - char: { id: 비담, position: right, emotion: sad }
       - say:
           char: 비담.sad
           camera: close
           with: [덕만]
-          text: "누구나 같은 표를 읽는다면 제 정보망과 제가 목숨 걸어 얻은 판단은 필요 없어지겠군요. 폐하께서는 사람을 믿는 대신 사람을 바꿔도 되는 구조를 택하셨습니다."
+          text: "아이도 읽는 표라… 제가 목숨 걸고 가져온 날짜도 이제 벽보 한 장 값이군요. 폐하께선 사람 대신 누구든 갈아 끼울 자리를 택하셨습니다."
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "너를 버리는 것이 아니다. 너를 포함해 누구도 나라에 없어서는 안 될 문이 되지 않게 하는 거야."
+          text: "너를 버리는 게 아니야. 하지만 네가 사라지면 나라가 멈추는 건 더 두고 볼 수 없어. 나도 마찬가지고."
       - say:
           channel: narration
-          text: "비담은 대답 없이 떠났습니다. 그날 밤 그의 북쪽 연락망이 끊겼고, 방화 현장에서는 전령들이 쓰던 매듭과 기름 먹인 연의 대나무 조각이 함께 발견됐습니다."
+          text: "비담은 인사도 없이 계단을 내려갔습니다. 그날 밤 북쪽 봉화가 모두 꺼졌고, 잿더미에서는 그의 전령 매듭과 기름 먹인 대나무 조각이 나왔습니다."
       - goto: observatory_end
 
   monopolized_tower:
     actions:
       - say:
           channel: narration
-          text: "탑은 완성됐지만 관측표를 읽으려는 사람들은 비담의 전령에게 먼저 이름을 적어야 했습니다. 불을 끄는 동안에도 관리들은 왕보다 비담의 허가를 기다렸습니다."
+          text: "불을 끄는 와중에도 관측표를 꺼낼 관리들은 비담의 허가를 기다렸습니다. 탑은 왕의 것이었지만 문 앞 명부에는 비담의 글씨만 가득했습니다."
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "폐하께서 고르신 빠른 길입니다. 문이 하나라서 늦지 않았고, 그 문을 제가 지켰습니다."
+          text: "폐하께서 빠른 길을 원하셨습니다. 문을 하나만 두었고, 제가 밤낮으로 지켰습니다. 이제 와 문이 좁다 하십니까?"
       - say:
           char: 덕만.sad
           camera: close
           with: [비담]
-          text: "빠른 길을 택한 대가로 네 허락이 법보다 앞섰구나. 오늘부터 관측표를 복제하고 네 정보망도 두 기록관의 감사를 받게 하겠다."
+          text: "내가 네게 너무 큰 문을 줬어. 오늘부터 표를 베끼고, 네 전령 장부도 두 사람이 함께 연다."
       - say:
           channel: narration
-          text: "비담의 표정에서 웃음이 사라졌습니다. 그날 밤 그의 북쪽 연락망이 끊겼고, 방화 현장에서는 전령들이 쓰던 매듭과 기름 먹인 연의 대나무 조각이 함께 발견됐습니다."
+          text: "비담의 입가에서 웃음이 사라졌습니다. 그날 밤 북쪽 봉화가 모두 꺼졌고, 잿더미에서는 그의 전령 매듭과 기름 먹인 대나무 조각이 나왔습니다."
       - goto: observatory_end
 
   observatory_end:

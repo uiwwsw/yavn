@@ -1,57 +1,7 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-18T12:20:48.387Z",
+  "generatedAt": "2026-08-18T23:16:28.461Z",
   "games": [
-    {
-      "id": "deokman",
-      "name": "덕만: 별은 왕을 선택하지 않는다",
-      "path": "/game-list/deokman/",
-      "author": "uiwwsw",
-      "version": "8.1.0",
-      "summary": "죽었다고 기록된 어린 덕만이 살아남아 이름을 되찾고, 귀족의 창고와 예언 권력을 넘어 신라 최초의 여왕이 된 뒤 비담의 반란과 자신의 기록을 판결하는 12장 완결 시대극.",
-      "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
-      "tags": [
-        "historical-fiction",
-        "silla",
-        "complete",
-        "character-drama",
-        "political-thriller",
-        "consequential-choices"
-      ],
-      "showcase": {
-        "label": "COMPLETE · 12 CHAPTERS",
-        "backgroundColor": "#181722",
-        "image": {
-          "positionX": 54,
-          "positionY": 45,
-          "scale": 1.03,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
-      "legalNotices": [],
-      "chapterCount": 12,
-      "seo": {
-        "title": "덕만: 별은 왕을 선택하지 않는다",
-        "description": "죽었다고 기록된 어린 공주 덕만이 살아 있는 유령에서 신라의 여왕이 되고, 예언과 기록을 독점한 권력을 백성에게 돌려주는 12장 완결 시대극 비주얼노벨.",
-        "keywords": [
-          "선덕여왕",
-          "덕만",
-          "신라",
-          "역사 비주얼노벨",
-          "선택형 드라마",
-          "완결 게임",
-          "historical-fiction",
-          "silla",
-          "complete",
-          "character-drama",
-          "political-thriller",
-          "consequential-choices"
-        ],
-        "image": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
-        "imageAlt": "금지된 사망 기록을 든 덕만 뒤로 불타는 신라 별궁과 검은 별이 보이는 밤"
-      }
-    },
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
@@ -144,6 +94,56 @@
       }
     },
     {
+      "id": "deokman",
+      "name": "선덕여왕: 죽은 공주의 왕관",
+      "path": "/game-list/deokman/",
+      "author": "uiwwsw",
+      "version": "9.0.0",
+      "summary": "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 마침내 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 스릴러.",
+      "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
+      "tags": [
+        "historical-fiction",
+        "silla",
+        "complete",
+        "character-drama",
+        "political-thriller",
+        "consequential-choices"
+      ],
+      "showcase": {
+        "label": "COMPLETE · 12 CHAPTERS",
+        "backgroundColor": "#181722",
+        "image": {
+          "positionX": 54,
+          "positionY": 45,
+          "scale": 1.03,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "legalNotices": [],
+      "chapterCount": 12,
+      "seo": {
+        "title": "선덕여왕: 죽은 공주의 왕관",
+        "description": "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 비주얼노벨.",
+        "keywords": [
+          "선덕여왕",
+          "덕만",
+          "신라",
+          "역사 비주얼노벨",
+          "선택형 드라마",
+          "완결 게임",
+          "historical-fiction",
+          "silla",
+          "complete",
+          "character-drama",
+          "political-thriller",
+          "consequential-choices"
+        ],
+        "image": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
+        "imageAlt": "금지된 사망 기록을 든 덕만 뒤로 불타는 신라 별궁과 검은 별이 보이는 밤"
+      }
+    },
+    {
       "id": "live2dtest",
       "name": "Live2D 테스트: 렌 수다",
       "path": "/game-list/live2dtest/",
@@ -199,18 +199,12 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 덕만: 별은 왕을 선택하지 않는다, 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, 선덕여왕: 죽은 공주의 왕관, Live2D 테스트: 렌 수다.",
     "keywords": [
-      "덕만: 별은 왕을 선택하지 않는다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
+      "선덕여왕: 죽은 공주의 왕관",
       "Live2D 테스트: 렌 수다",
-      "historical-fiction",
-      "silla",
-      "complete",
-      "character-drama",
-      "political-thriller",
-      "consequential-choices",
       "detective",
       "branch-heavy",
       "sample",
@@ -221,15 +215,15 @@
       "cinematic",
       "engine-showcase",
       "timed-choice",
+      "historical-fiction",
+      "silla",
+      "complete",
+      "character-drama",
+      "political-thriller",
+      "consequential-choices",
       "live2d",
       "interaction",
       "smoke-test",
-      "선덕여왕",
-      "덕만",
-      "신라",
-      "역사 비주얼노벨",
-      "선택형 드라마",
-      "완결 게임",
       "명탐정 코난",
       "추리 게임",
       "비주얼노벨",
@@ -238,12 +232,18 @@
       "캐릭터 심문",
       "게임 예고편",
       "비주얼노벨 엔진",
-      "60초 데모"
+      "60초 데모",
+      "선덕여왕",
+      "덕만",
+      "신라",
+      "역사 비주얼노벨",
+      "선택형 드라마",
+      "완결 게임"
     ],
     "gameTitles": [
-      "덕만: 별은 왕을 선택하지 않는다",
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
+      "선덕여왕: 죽은 공주의 왕관",
       "Live2D 테스트: 렌 수다"
     ],
     "gameCount": 4

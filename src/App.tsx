@@ -158,6 +158,8 @@ type StartGateState =
     gameTitle: string;
     seo?: GameSeoMeta;
     imageUrl?: string;
+    imagePosition?: string;
+    mobileImagePosition?: string;
     musicUrl?: string;
     startButtonText: string;
     buttonPosition: StartButtonPosition;
@@ -173,6 +175,8 @@ type StartGateState =
     gameTitle: string;
     seo?: GameSeoMeta;
     imageUrl?: string;
+    imagePosition?: string;
+    mobileImagePosition?: string;
     musicUrl?: string;
     previewBlobUrl?: string;
     previewMusicBlobUrl?: string;
@@ -1354,6 +1358,8 @@ export default function App() {
                 gameTitle: preview.gameTitle,
                 seo: preview.seo,
                 imageUrl: resolveStartGateAssetUrl(preview.startScreen.image, baseUrl),
+                imagePosition: preview.startScreen.imagePosition,
+                mobileImagePosition: preview.startScreen.mobileImagePosition,
                 musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
                 startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
@@ -2801,6 +2807,8 @@ export default function App() {
           gameTitle: preview.gameTitle,
           seo: preview.seo,
           imageUrl,
+          imagePosition: preview.startScreen.imagePosition,
+          mobileImagePosition: preview.startScreen.mobileImagePosition,
           musicUrl,
           previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
           previewMusicBlobUrl: musicUrl?.startsWith('blob:') ? musicUrl : undefined,
@@ -2852,6 +2860,8 @@ export default function App() {
               gameTitle: preview.gameTitle,
               seo: preview.seo,
               imageUrl: resolveStartGateAssetUrl(preview.startScreen.image, baseUrl),
+              imagePosition: preview.startScreen.imagePosition,
+              mobileImagePosition: preview.startScreen.mobileImagePosition,
               musicUrl: resolveStartGateAssetUrl(preview.startScreen.music, baseUrl),
               startButtonText: preview.startScreen.startButtonText || DEFAULT_START_BUTTON_TEXT,
               buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
@@ -2878,6 +2888,8 @@ export default function App() {
               gameTitle: preview.gameTitle,
               seo: preview.seo,
               imageUrl,
+              imagePosition: preview.startScreen.imagePosition,
+              mobileImagePosition: preview.startScreen.mobileImagePosition,
               musicUrl,
               previewBlobUrl: imageUrl?.startsWith('blob:') ? imageUrl : undefined,
               previewMusicBlobUrl: musicUrl?.startsWith('blob:') ? musicUrl : undefined,
@@ -2914,9 +2926,13 @@ export default function App() {
 
   if (startGate) {
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
-    const startGateStyle = startGate.titleColor
-      ? ({ '--start-gate-title-color': startGate.titleColor } as CSSProperties)
-      : undefined;
+    const startGateStyle = {
+      ...(startGate.titleColor ? { '--start-gate-title-color': startGate.titleColor } : {}),
+      ...(startGate.imagePosition ? { '--start-gate-image-position': startGate.imagePosition } : {}),
+      ...(startGate.mobileImagePosition
+        ? { '--start-gate-mobile-image-position': startGate.mobileImagePosition }
+        : {}),
+    } as CSSProperties;
     return (
       <div
         className={`start-gate${startGateLaunching ? ' is-launching' : ''}${startGate.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}

@@ -20,6 +20,8 @@
 # startScreen:
 #   enabled: true
 #   image: assets/bg/title.png
+#   imagePosition: "50% 50%" # 데스크톱 object-position
+#   mobileImagePosition: "72% 50%" # 모바일에서 인물·핵심 피사체를 보이게 하는 초점
 #   showTitle: true # 타이틀 이미지에 제목이 포함되어 있으면 false
 #   titleColor: "#ffe0a3" # 배경 위 게임 제목의 CSS 색상
 #   startButtonText: 시작하기

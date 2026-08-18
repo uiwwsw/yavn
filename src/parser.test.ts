@@ -40,6 +40,19 @@ describe('parseConfigYaml startScreen', () => {
     expect(parsed.error).toBeUndefined();
     expect(parsed.data?.data.startScreen?.titleColor).toBe('#ffe0a3');
   });
+
+  it('normalizes desktop and mobile start artwork positions', () => {
+    const parsed = parseConfigYaml(
+      configYaml(`  image: assets/title.png
+  imagePosition: " 50% 45% "
+  mobileImagePosition: " 72% 50% "`),
+      'config.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    expect(parsed.data?.data.startScreen?.imagePosition).toBe('50% 45%');
+    expect(parsed.data?.data.startScreen?.mobileImagePosition).toBe('72% 50%');
+  });
 });
 
 describe('parseConfigYaml legal notices', () => {
