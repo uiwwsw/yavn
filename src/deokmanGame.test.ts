@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('9.1.0');
+    expect(config.data?.data.version).toBe('9.2.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -147,7 +147,7 @@ describe('complete Deokman visual novel', () => {
     expect(new Set(choiceKeys).size).toBe(choiceKeys.length);
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
-    expect(gameOvers).toHaveLength(11);
+    expect(gameOvers).toHaveLength(12);
 
     documents.forEach((document, chapterIndex) => {
       const scenes = asRecord(document.scenes);
@@ -161,6 +161,69 @@ describe('complete Deokman visual novel', () => {
         expect(collectKey(leadIn, 'say').length, `${chapterIndex}.yaml:${sceneId}`).toBeGreaterThanOrEqual(4);
         expect(leadIn.some((action) => typeof action.bg === 'string'), `${chapterIndex}.yaml:${sceneId}`).toBe(true);
       });
+    });
+  });
+
+  it('makes each pre-finale crisis death-heavy while converging similar fatal options', () => {
+    const crisisChoiceKeys = [
+      'c1_fire_escape',
+      'c2_checkpoint',
+      'c3_ambush',
+      'c4_convoy',
+      'c5_protocol',
+      'c6_eclipse_riot',
+      'c7_regency',
+      'c8_first_response',
+      'c9_coup_response',
+      'c10_sabotage',
+      'c11_rebellion_response',
+    ];
+
+    chapterPaths.slice(0, -1).forEach((path, chapterIndex) => {
+      const document = readYaml(path);
+      const scenes = asRecord(document.scenes);
+      const fatalSceneIds = new Set(Object.entries(scenes)
+        .filter(([, scene]) => collectKey(scene, 'gameOver').length > 0)
+        .map(([sceneId]) => sceneId));
+      const resolveFatalScenes = (sceneId: string, visited = new Set<string>()): Set<string> => {
+        if (!sceneId || sceneId.startsWith('/') || visited.has(sceneId)) return new Set();
+        const scene = asRecord(scenes[sceneId]);
+        if (fatalSceneIds.has(sceneId)) return new Set([sceneId]);
+        const actions = Array.isArray(scene.actions) ? scene.actions.map(asRecord) : [];
+        const nextVisited = new Set(visited).add(sceneId);
+        const outcomes = new Set<string>();
+
+        actions.forEach((action) => {
+          const targets = [
+            typeof action.goto === 'string' ? action.goto : undefined,
+            ...collectKey(action.branch, 'goto').map(String),
+          ].filter((target): target is string => Boolean(target));
+          targets.forEach((target) => {
+            resolveFatalScenes(target, nextVisited).forEach((fatalScene) => outcomes.add(fatalScene));
+          });
+        });
+        return outcomes;
+      };
+      const crisisChoice = collectKey(document, 'choice')
+        .map(asRecord)
+        .find((choice) => choice.key === crisisChoiceKeys[chapterIndex]);
+      const options = Array.isArray(crisisChoice?.options) ? crisisChoice.options.map(asRecord) : [];
+      const fatalOutcomes = options.map((option) => resolveFatalScenes(String(option.goto)));
+      const fatalOptions = fatalOutcomes.filter((outcomes) => outcomes.size > 0);
+      const convergedFatalScenes = new Set(fatalOutcomes.flatMap((outcomes) => [...outcomes]));
+
+      expect(options.length, path).toBeGreaterThanOrEqual(3);
+      expect(fatalOptions.length, path).toBe(Math.floor(options.length / 2) + 1);
+      expect(options.length - fatalOptions.length, path).toBeGreaterThanOrEqual(1);
+      expect(convergedFatalScenes.size, path).toBe(1);
+    });
+
+    const fatalScenes = chapterPaths.flatMap((path) => {
+      const scenes = asRecord(readYaml(path).scenes);
+      return Object.values(scenes).filter((scene) => collectKey(scene, 'gameOver').length > 0);
+    });
+    fatalScenes.forEach((scene) => {
+      expect(collectStrings(scene).join('\n')).toMatch(/죽|사망|처형|전사|피살|참수/);
     });
   });
 
@@ -242,6 +305,9 @@ describe('complete Deokman visual novel', () => {
 
       visit(openingScene, {});
       expect(failures, path).toEqual([]);
+      const reachableSceneIds = new Set([...visited].map((signature) => signature.split('|')[0]));
+      expect(Object.keys(scenes).filter((sceneId) => !reachableSceneIds.has(sceneId)), `${path} unreachable scenes`)
+        .toEqual([]);
     });
   });
 

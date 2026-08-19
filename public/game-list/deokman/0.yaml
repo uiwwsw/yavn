@@ -401,13 +401,13 @@ scenes:
               when: { var: observed_left_waterway, op: eq, value: true }
               goto: escape_waterway
             - text: "모란패를 치켜들고 북문을 연다"
-              goto: escape_token
+              goto: bad_smoke
             - text: "기록을 품고 불길 너머 왕에게 간다"
               when:
                 all:
                   - { var: death_register, op: eq, value: true }
                   - { var: spoke_truth_to_king, op: eq, value: true }
-              goto: escape_record
+              goto: bad_smoke
             - text: "모란 화단에 엎드려 불길을 피한다"
               goto: bad_smoke
 
@@ -448,88 +448,13 @@ scenes:
           text: "저 안에서 덕만은 죽었어. 그럼 죽은 아이처럼 숨어서, 내 이름을 쓴 손을 찾을 거야."
       - say:
           channel: narration
-          text: "소화는 국경 상단의 암호를 속삭였습니다. 덕만은 대답 대신 손바닥의 붉은 인주를 빗물에 씻지 않았습니다."
+          text: "소화는 국경 상단의 암호를 속삭였습니다. 덕만은 대답 대신 손바닥의 붉은 인주를 빗물에 씻지 않았습니다. 이제부터 붉은 인장의 행로가 두 사람의 길이었습니다."
       - say:
           channel: record
           delivery: calm
           text: "왕실 기록에서 공주는 죽었습니다. 그러나 그날 밤 덕만은 별궁을 빠져나와 살아남았습니다."
       - set: { c1_escape_route: waterway, identity_exposed: false }
       - add: { sohwa_trust: 2, people_support: 1, insight: 1 }
-      - goto: /1.yaml
-
-  escape_token:
-    actions:
-      - bg: moon_court
-      - camera: wide
-      - effect: embers
-      - char: { id: 어린 덕만, position: left, emotion: scared }
-      - char: { id: 소화, position: right, emotion: nervous }
-      - say:
-          channel: narration
-          camera: medium
-          text: "덕만이 청동 모란패를 치켜들자 북문을 막던 창들이 양옆으로 걷혔습니다. 문은 열렸지만 수비대 모두가 아이의 얼굴을 보았습니다."
-      - say:
-          char: 소화.nervous
-          camera: close
-          with: [어린 덕만]
-          text: "문은 열렸습니다. 하지만 저 병사들, 전부 아기씨 얼굴을 봤어요."
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [소화]
-          text: "살아야 숨을 수도 있어. 뛰어."
-      - say:
-          channel: narration
-          text: "문을 지킨 병사들은 곧 칠숙에게 덕만의 얼굴을 설명했습니다. 덕만은 살아남았지만 더는 완전히 숨을 수 없었습니다."
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [소화]
-          text: "저들이 내 얼굴을 외웠으니 나도 저 도장을 외울 거야. 국경으로 가자."
-      - say:
-          channel: record
-          text: "소화와 덕만은 추적을 피해 국경 상단으로 숨어들었습니다. 죽은 공주의 이름 대신 붉은 인장의 행로를 쫓는 십 년이 시작됐습니다."
-      - set: { c1_escape_route: token, identity_exposed: true }
-      - add: { nobles_support: 1, fear: 1 }
-      - goto: /1.yaml
-
-  escape_record:
-    actions:
-      - bg: burning_palace
-      - camera: reaction
-      - char: { id: 어린 덕만, position: left, emotion: resolve }
-      - char: { id: 진평왕, position: right, emotion: weak }
-      - say:
-          channel: narration
-          text: "덕만은 바깥문 대신 불길 너머 안채로 뛰었습니다. 손에 든 사망 기록의 가장자리가 열기에 그을렸습니다."
-      - say:
-          char: 진평왕.weak
-          camera: close
-          with: [어린 덕만]
-          text: "왜 돌아왔느냐! 살라고 했지, 종이를 지키라 했느냐!"
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [진평왕]
-          text: "이걸 두고 가면 칠숙이 태워요. 그러면 아버지가 절 죽인 게 돼요."
-      - say:
-          char: 진평왕
-          camera: medium
-          with: [어린 덕만]
-          text: "이 고집까지 나를 닮았구나. 내 목숨이 남아 있는 동안은 이 종이를 지키마. 이제 가!"
-      - say:
-          channel: narration
-          text: "친위대가 두 사람을 동쪽 문으로 빼냈습니다. 칠숙의 부하가 그 모습을 보았습니다. 기록은 지켰지만 칠숙도 덕만이 살아 있다는 사실을 알게 됐습니다."
-      - say:
-          char: 어린 덕만.resolve
-          camera: close
-          with: [진평왕]
-          text: "돌아올게요. 그때는 종이도, 제 이름도 제가 가져갈 거예요."
-      - say:
-          channel: record
-          text: "진평왕은 그을린 원본을 숨겼고, 덕만과 소화는 국경으로 향했습니다. 공주는 십 년 동안 원본과 같은 붉은 인장을 추적했습니다."
-      - set: { c1_escape_route: record, identity_exposed: true }
-      - add: { king_trust: 2, evidence: 2 }
       - goto: /1.yaml
 
   bad_smoke:
@@ -541,7 +466,7 @@ scenes:
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
           channel: narration
-          text: "덕만은 모란 사이에 엎드렸습니다. 불길은 머리 위를 넘었지만 검은 연기가 꽃잎부터 삼켰습니다."
+          text: "덕만이 택한 길보다 칠숙이 닫은 문과 무너진 들보가 한발 빨랐습니다. 북문도 안채도 모란 화단도 검은 연기 속에서 하나의 막다른길이 됐습니다."
       - say:
           char: 소화.nervous
           camera: close
@@ -551,11 +476,11 @@ scenes:
           char: 어린 덕만.scared
           camera: close
           with: [소화]
-          text: "숨을 쉴 수가 없어."
+          text: "어디로 가도… 저 사람들이 먼저 알고 있었어."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "별궁 화재 보고 — 열병으로 죽은 둘째 공주 덕만의 시신과 유모 소화가 불에 타 신원을 다시 확인할 수 없음."
       - gameOver:
-          title: "운명 — 연기 속에 갇히다"
-          message: "화단은 불꽃을 가려 주었지만 연기 속에서 기다릴 수는 없었습니다. 덕만과 소화는 탈출로를 찾지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."
+          title: "운명 — 먼저 준비된 죽음"
+          message: "불이 난 뒤 고른 용기만으로는 미리 살펴 둔 탈출로를 대신할 수 없었습니다. 덕만과 소화는 별궁을 빠져나오지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."
