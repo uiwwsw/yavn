@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   fitStickerWithinFrame,
   fitStickerWithinFrameAvoidingRects,
+  haveStickerObstacleRectsSettled,
   shouldRelayoutStickerForStageResize,
   type StickerLayoutRect,
 } from './stickerLayout';
@@ -100,6 +101,37 @@ describe('sticker safe-frame fitting', () => {
     expect(projected.right).toBeCloseTo(frame.right);
     expect(projected.top).toBeGreaterThanOrEqual(frame.top);
     expect(projected.bottom).toBeLessThanOrEqual(frame.bottom);
+  });
+});
+
+describe('sticker obstacle settling', () => {
+  const settledRect = {
+    left: 400,
+    right: 600,
+    top: 100,
+    bottom: 600,
+    width: 200,
+    height: 500,
+  };
+
+  it('waits for an initial sample and rejects a moving character', () => {
+    expect(haveStickerObstacleRectsSettled(null, [settledRect])).toBe(false);
+    expect(haveStickerObstacleRectsSettled(
+      [settledRect],
+      [{ ...settledRect, left: 397, right: 597 }],
+    )).toBe(false);
+  });
+
+  it('accepts matching bounds and harmless subpixel rounding', () => {
+    expect(haveStickerObstacleRectsSettled([settledRect], [settledRect])).toBe(true);
+    expect(haveStickerObstacleRectsSettled(
+      [settledRect],
+      [{ ...settledRect, left: 400.5, right: 600.5 }],
+    )).toBe(true);
+  });
+
+  it('waits again when the visible cast changes', () => {
+    expect(haveStickerObstacleRectsSettled([settledRect], [])).toBe(false);
   });
 });
 

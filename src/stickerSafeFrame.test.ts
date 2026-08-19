@@ -27,7 +27,10 @@ describe('sticker and mobile dialogue safe areas', () => {
 
   it('places stickers around visible characters before revealing them', () => {
     expect(appSource).toContain('fitStickerWithinFrameAvoidingRects(');
+    expect(appSource).toContain('haveStickerObstacleRectsSettled(');
     expect(appSource).toContain("querySelectorAll<HTMLElement>('.char-layer .char')");
+    expect(appSource).toContain('STICKER_CHARACTER_LAYOUT_SETTLE_MS');
+    expect(appSource).toContain('STICKER_OBSTACLE_SAMPLE_MS');
     expect(appSource).toContain("data-layout-ready={safeFit ? 'true' : 'false'}");
     expect(appSource).toContain('layoutLockedRef.current = true;');
     expect(appSource).toContain('shouldRelayoutStickerForStageResize(');

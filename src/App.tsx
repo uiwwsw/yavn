@@ -86,8 +86,10 @@ import {
 } from './mobileAppShell';
 import {
   fitStickerWithinFrameAvoidingRects,
+  haveStickerObstacleRectsSettled,
   shouldRelayoutStickerForStageResize,
   type StickerFit,
+  type StickerLayoutRect,
   type StickerStageSize,
 } from './stickerLayout';
 import {
@@ -891,6 +893,8 @@ type LockedStickerFit = StickerFit & {
 };
 
 const STICKER_LAYOUT_QUIET_MS = 72;
+const STICKER_OBSTACLE_SAMPLE_MS = 48;
+const STICKER_CHARACTER_LAYOUT_SETTLE_MS = 420;
 const STICKER_RESIZE_QUIET_MS = 140;
 
 function StickerView({
@@ -909,6 +913,7 @@ function StickerView({
   const settleTimerRef = useRef<number | null>(null);
   const earliestMeasurementAtRef = useRef(0);
   const lockedStageSizeRef = useRef<StickerStageSize | null>(null);
+  const previousObstacleRectsRef = useRef<StickerLayoutRect[] | null>(null);
   const translateX =
     sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
   const translateY =
@@ -920,13 +925,13 @@ function StickerView({
 
   const lockSafeFit = useCallback(() => {
     if (layoutLockedRef.current || !imageReadyRef.current) {
-      return;
+      return layoutLockedRef.current;
     }
     const stickerElement = stickerRef.current;
     const frameElement = stickerElement?.closest<HTMLElement>('.sticker-safe-frame');
     const stageElement = stickerElement?.closest<HTMLElement>('.stage-content-frame');
     if (!stickerElement || !frameElement || !stageElement) {
-      return;
+      return false;
     }
 
     // Measure the authored box rather than the previously fitted transform.
@@ -941,21 +946,45 @@ function StickerView({
     stickerElement.style.transition = previousTransition;
 
     if (stickerRect.width <= 0 || stickerRect.height <= 0) {
-      return;
+      return false;
     }
 
-    const characterRects = [...stageElement.querySelectorAll<HTMLElement>('.char-layer .char')]
-      .filter((characterElement) => {
-        if (
-          characterElement.classList.contains('is-camera-hidden')
-          || characterElement.getAttribute('aria-hidden') === 'true'
-        ) {
-          return false;
-        }
-        return window.getComputedStyle(characterElement).visibility !== 'hidden';
-      })
+    const characterElements = [
+      ...stageElement.querySelectorAll<HTMLElement>('.char-layer .char'),
+    ].filter((characterElement) => {
+      if (
+        characterElement.classList.contains('is-camera-hidden')
+        || characterElement.getAttribute('aria-hidden') === 'true'
+      ) {
+        return false;
+      }
+      return window.getComputedStyle(characterElement).visibility !== 'hidden';
+    });
+    const characterImagesReady = characterElements.every((characterElement) => (
+      [...characterElement.querySelectorAll<HTMLImageElement>('.char-image')]
+        .every((imageElement) => imageElement.complete)
+    ));
+    if (!characterImagesReady) {
+      return false;
+    }
+
+    const characterRects = characterElements
       .map((characterElement) => characterElement.getBoundingClientRect())
       .filter((rect) => rect.width > 0 && rect.height > 0);
+    if (
+      characterRects.length > 0
+      && !haveStickerObstacleRectsSettled(previousObstacleRectsRef.current, characterRects)
+    ) {
+      previousObstacleRectsRef.current = characterRects.map((rect) => ({
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+        width: rect.width,
+        height: rect.height,
+      }));
+      return false;
+    }
     const nextFit = fitStickerWithinFrameAvoidingRects(
       frameRect,
       stickerRect,
@@ -973,6 +1002,7 @@ function StickerView({
       width: stickerElement.offsetWidth,
       height: stickerElement.offsetHeight,
     });
+    return true;
   }, [
     placementTransform,
     sticker.anchorX,
@@ -993,9 +1023,18 @@ function StickerView({
       window.clearTimeout(settleTimerRef.current);
     }
     const earliestDelay = Math.max(0, earliestMeasurementAtRef.current - performance.now());
-    settleTimerRef.current = window.setTimeout(() => {
+    const attemptSafeFit = () => {
       settleTimerRef.current = null;
-      lockSafeFit();
+      if (lockSafeFit()) {
+        return;
+      }
+      settleTimerRef.current = window.setTimeout(
+        attemptSafeFit,
+        STICKER_OBSTACLE_SAMPLE_MS,
+      );
+    };
+    settleTimerRef.current = window.setTimeout(() => {
+      attemptSafeFit();
     }, Math.max(quietMs, earliestDelay));
   }, [lockSafeFit]);
 
@@ -1005,6 +1044,7 @@ function StickerView({
     }
     earliestMeasurementAtRef.current = performance.now()
       + Math.max(96, Math.ceil(avoidanceSettleMs) + 32);
+    previousObstacleRectsRef.current = null;
     const imageElement = stickerRef.current?.querySelector<HTMLImageElement>('.sticker-visual');
     if (imageElement?.complete) {
       imageReadyRef.current = true;
@@ -1040,6 +1080,7 @@ function StickerView({
       }
       layoutLockedRef.current = false;
       lockedStageSizeRef.current = null;
+      previousObstacleRectsRef.current = null;
       setSafeFit(null);
       earliestMeasurementAtRef.current = performance.now() + STICKER_RESIZE_QUIET_MS;
       scheduleSafeFit(STICKER_RESIZE_QUIET_MS);
@@ -2092,7 +2133,7 @@ export default function App() {
     ].join(':')).join(','),
   ].join('::');
   const stickerAvoidanceSettleMs = Math.max(
-    240,
+    STICKER_CHARACTER_LAYOUT_SETTLE_MS,
     cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration,
     cameraTransitionTiming.characterExitDuration,
   );
