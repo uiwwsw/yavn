@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('9.3.0');
+    expect(config.data?.data.version).toBe('9.4.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -148,7 +148,7 @@ describe('complete Deokman visual novel', () => {
     expect(new Set(choiceKeys).size).toBe(choiceKeys.length);
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
-    expect(gameOvers).toHaveLength(12);
+    expect(gameOvers).toHaveLength(28);
 
     documents.forEach((document, chapterIndex) => {
       const scenes = asRecord(document.scenes);
@@ -165,7 +165,7 @@ describe('complete Deokman visual novel', () => {
     });
   });
 
-  it('balances survival and death routes while keeping causal recovery explicit', () => {
+  it('keeps one normal survival route and reserves exceptions for delayed consequences', () => {
     const crisisChoiceKeys = [
       'c1_fire_escape',
       'c2_checkpoint',
@@ -214,7 +214,10 @@ describe('complete Deokman visual novel', () => {
       const convergedFatalScenes = new Set(fatalOutcomes.flatMap((outcomes) => [...outcomes]));
 
       expect(options.length, path).toBeGreaterThanOrEqual(3);
-      expect(fatalOptions.length, path).toBe(Math.floor(options.length / 2));
+      const isExceptionalEarlyChapter = chapterIndex <= 1;
+      expect(fatalOptions.length, path).toBe(
+        isExceptionalEarlyChapter ? Math.floor(options.length / 2) : options.length - 1,
+      );
       expect(options.length - fatalOptions.length, path).toBeGreaterThanOrEqual(1);
       expect(convergedFatalScenes.size, path).toBe(1);
     });
@@ -228,6 +231,55 @@ describe('complete Deokman visual novel', () => {
     fatalScenes.forEach((scene) => {
       expect(collectStrings(scene).join('\n')).toMatch(/죽|사망|처형|전사|피살|참수/);
     });
+  });
+
+  it('gives ordinary non-crisis gates one surviving answer and explicitly allowlists clue gates', () => {
+    const ordinaryChoiceKeys = new Set([
+      'c2_identity',
+      'c2_witness',
+      'c4_investigation',
+      'c5_first_reply',
+      'c6_find_time',
+      'c7_confession',
+      'c10_observatory_priority',
+      'c11_falling_star',
+    ]);
+    const clueOrEndingChoiceKeys = new Set([
+      'c1_peony_observation',
+      'c1_answer_king',
+      'c3_proof',
+      'c3_sisters_strategy',
+      'c4_grain_policy',
+      'c5_diplomacy',
+      'c6_eclipse_policy',
+      'c7_first_power',
+      'c8_public_story',
+      'c8_cheonmyeong_fate',
+      'c9_vote_strategy',
+      'c9_crown_terms',
+      'c10_knowledge_policy',
+      'c11_bidam_answer',
+      'c12_bidam_sentence',
+      'c12_record_policy',
+      'c12_final_decree',
+    ]);
+
+    const choices = chapterPaths.flatMap((path) => collectKey(readYaml(path), 'choice').map(asRecord));
+    choices.forEach((choice) => {
+      const key = String(choice.key);
+      if (!ordinaryChoiceKeys.has(key)) return;
+      const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
+      expect(options.filter((option) => Object.keys(asRecord(option.gameOver)).length === 0), key).toHaveLength(1);
+    });
+
+    const crisisKeys = new Set([
+      'c1_fire_escape', 'c2_checkpoint', 'c3_ambush', 'c4_convoy', 'c5_protocol',
+      'c6_eclipse_riot', 'c7_regency', 'c8_first_response', 'c9_coup_response',
+      'c10_sabotage', 'c11_rebellion_response',
+    ]);
+    expect(new Set(choices.map((choice) => String(choice.key)))).toEqual(
+      new Set([...ordinaryChoiceKeys, ...clueOrEndingChoiceKeys, ...crisisKeys]),
+    );
   });
 
   it('keeps all player-facing prose inside dialogue, narration, and record channels', () => {

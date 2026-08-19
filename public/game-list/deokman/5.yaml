@@ -36,10 +36,14 @@ scenes:
               goto: calculate_eclipse
             - text: "비담을 제관의 서고에 들여보낸다"
               add: { evidence: 2, fear: 1, bidam_trust: 1 }
-              goto: steal_table
+              gameOver:
+                title: "운명 — 훔친 표의 주인"
+                message: "비담이 계산표를 빼내는 순간 제관들은 절도를 하늘의 모독으로 바꿨습니다. 일식이 오기 전 덕만은 신전을 습격한 반역자로 처형됐습니다."
             - text: "농부들의 파종 기억을 모은다"
               add: { people_support: 2, insight: 1 }
-              goto: public_observation
+              gameOver:
+                title: "운명 — 기억보다 정확한 함정"
+                message: "사람들의 기억은 계절을 가리켰지만 일식의 시각까지 좁히지 못했습니다. 덕만의 예고가 빗나가자 군중은 제관의 선동에 휩쓸려 그를 짓밟았습니다."
 
   calculate_eclipse:
     actions:
@@ -47,31 +51,6 @@ scenes:
       - say:
           channel: narration
           text: "덕만은 두 달력의 칸을 하나씩 밀었습니다. 마지막 선이 포개지자 제관의 '계시'가 당의 계산표와 한 치도 다르지 않게 겹쳤습니다."
-      - goto: table_revealed
-
-  steal_table:
-    actions:
-      - bg: shadow_corridor
-      - char: { id: 비담, position: right, emotion: smirk }
-      - say:
-          channel: narration
-          text: "창문이 열리고 비담이 먼지투성이 계산표를 던졌습니다. 일식 시각 옆에는 '덕만을 가리킬 때'라는 붉은 글씨가 적혀 있었습니다."
-      - say:
-          char: 비담.smirk
-          camera: close
-          with: [덕만]
-          text: "해는 정직한데, 해 대신 말하는 자들 입이 너무 많군요."
-      - goto: table_revealed
-
-  public_observation:
-    actions:
-      - bg: village
-      - say:
-          channel: narration
-          text: "늙은 농부는 지난 일식 날 망친 씨앗을 아직도 자루째 보관하고 있었습니다. 아이들은 그날 우물 그림자가 어느 담을 넘었는지 몸으로 가리켰습니다."
-      - say:
-          char: 덕만
-          text: "기록관은 잊어도 씨앗을 잃은 사람은 안 잊어. 하늘은 저 사람들 몸에도 적혀 있어."
       - goto: table_revealed
 
   table_revealed:
@@ -171,7 +150,7 @@ scenes:
           options:
             - text: "난간에 올라 남은 시간을 센다"
               add: { people_support: 2, insight: 1 }
-              goto: sun_returns
+              goto: bad_dark_crowd
             - text: "방패를 눕혀 아이들의 길을 만든다"
               add: { mercy: 2, yushin_trust: 1 }
               goto: sun_returns
@@ -215,7 +194,7 @@ scenes:
           text: "해는 곧 돌아온다. 내 목소리를 듣고 아이들이 지나갈 길부터 열어라!"
       - say:
           channel: narration
-          text: "덕만이 혼자 방패선 밖으로 걸어 나가자 유신의 손이 닿지 않는 거리가 생겼습니다. 뒤에서는 '군사가 친다'는 외침이 터졌고 군중이 한꺼번에 앞으로 무너졌습니다."
+          text: "난간 위에서 시간을 외치거나 방패선 밖으로 제관을 향해 걷는 순간 덕만은 유신의 손이 닿지 않는 곳에 섰습니다. 뒤에서는 '군사가 친다'는 외침이 터졌고 군중이 한꺼번에 앞으로 무너졌습니다."
       - say:
           char: 유신.angry
           text: "공주님께 길이 없습니다. 방패를 세우면 사람들이 짓밟힙니다."

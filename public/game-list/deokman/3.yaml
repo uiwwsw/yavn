@@ -36,10 +36,14 @@ scenes:
               goto: track_wagons
             - text: "마을 사람들에게 수레 길을 묻는다"
               add: { people_support: 2, yushin_trust: 1 }
-              goto: hire_villagers
+              gameOver:
+                title: "운명 — 비보다 빠른 밀고"
+                message: "수레의 흔적을 재기 전에 질문부터 퍼졌습니다. 창고 주인은 증거를 태우고 길목에 궁수를 세웠고, 덕만과 유신은 빈 장부 곁에서 전사했습니다."
             - text: "유신의 기병으로 세 창고를 봉쇄한다"
               add: { army_support: 2, fear: 1 }
-              goto: surround_warehouse
+              gameOver:
+                title: "운명 — 증거보다 먼저 닫힌 포위"
+                message: "어느 창고가 진짜인지 확인하지 않은 봉쇄는 적에게 왕군의 위치만 알려 줬습니다. 불붙은 가짜 창고로 병력이 몰린 사이 덕만은 매복에 쓰러졌습니다."
 
   track_wagons:
     actions:
@@ -51,30 +55,6 @@ scenes:
           camera: close
           with: [덕만]
           text: "장부는 고칠 수 있어도 바퀴는 하루아침에 마르지 않습니다. 이 자국, 산 위 창고까지 갑니다."
-      - goto: hidden_warehouse
-
-  hire_villagers:
-    actions:
-      - say:
-          channel: narration
-          text: "노파가 품삯 쌀을 소매에 넣고 지팡이로 산등성이를 가리켰습니다. 아이들은 밤마다 수레 소리가 멎는 집을 서로 다투어 말했습니다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [유신]
-          text: "쌀을 주면 오늘 배를 채워. 길을 물으면 저들이 우리 눈이 돼. 둘 다 해야 해."
-      - goto: hidden_warehouse
-
-  surround_warehouse:
-    actions:
-      - say:
-          channel: narration
-          text: "기병의 횃불이 세 창고를 동시에 에워쌌습니다. 안쪽 빗장이 걸리는 소리와 함께, 담 너머에서 '왕실의 약탈'이라는 외침이 먼저 터졌습니다."
-      - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
-          text: "문은 열 수 있습니다. 하지만 제가 칼을 뽑는 순간, 안의 장부보다 제 칼이 더 큰 증거가 됩니다."
       - goto: hidden_warehouse
 
   hidden_warehouse:
@@ -202,7 +182,7 @@ scenes:
               goto: convoy_saved
             - text: "빈 수레를 미끼로 매복 주인을 끌어낸다"
               add: { evidence: 2, bidam_trust: 1, fear: 1 }
-              goto: convoy_saved
+              goto: bad_charge
             - text: "유신 옆에서 정면을 뚫는다"
               goto: bad_charge
 
@@ -240,13 +220,13 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 덕만.angry
-          text: "유신 옆에서 정면을 연다. 선두가 버티는 동안 뒤 수레를 빼내."
+          text: "곡식을 미끼로 던지든 정면을 뚫든, 저 불화살부터 우리 쪽으로 돌린다."
       - say:
           char: 유신.angry
           text: "수레가 움직이면 피할 벽도 사라집니다. 한 번 시작하면 사람과 곡식을 따로 빼낼 수 없습니다."
       - say:
           channel: narration
-          text: "선두가 협곡으로 돌진하자 숨어 있던 궁수들이 일제히 몸을 드러냈습니다. 두 번째 불화살은 사람과 장부가 실린 뒤 수레에 꽂혔고, 너무 깊이 들어온 선두는 불붙은 퇴로 앞에서 멈췄습니다."
+          text: "빈 수레가 협곡 안으로 구르거나 선두가 돌진하자 숨어 있던 궁수들이 한꺼번에 몸을 드러냈습니다. 그러나 두 번째 불화살은 미끼가 아니라 사람과 장부가 실린 뒤 수레에 꽂혔습니다. 퇴로도 식량도 함께 타올랐습니다."
       - say:
           channel: record
           text: "구휼 수레 피습 보고 — 왕실 혈족 덕만과 김유신, 군량을 지키다 전사. 장부는 소실됨."

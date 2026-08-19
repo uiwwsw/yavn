@@ -38,10 +38,14 @@ scenes:
             - text: "관측관들을 장터로 보내 진짜 별을 가리킨다"
               when: { var: knowledge_policy, op: ne, value: bidam_network }
               add: { people_support: 2, insight: 1 }
-              goto: explain_sky
+              gameOver:
+                title: "운명 — 사실보다 빠른 불"
+                message: "관측관들이 하늘을 설명하는 동안 불붙은 연은 이미 군영 세 곳을 반란으로 묶었습니다. 사실은 맞았지만 늦었고, 덕만은 성문을 돌파한 군사에게 피살됐습니다."
             - text: "왕궁 지붕에 더 큰 불을 올린다"
               add: { fear: 2, people_support: 1 }
-              goto: answer_omen
+              gameOver:
+                title: "운명 — 더 큰 거짓 별"
+                message: "여왕의 불은 소문을 덮는 대신 왕궁 위치를 반란군에게 밝혔습니다. 가짜 징조를 더 큰 징조로 누르려던 덕만은 불타는 지붕 아래에서 죽었습니다."
 
   inspect_kite:
     actions:
@@ -51,27 +55,6 @@ scenes:
           channel: narration
           text: "재를 헤치자 대나무 살이 손에 걸렸습니다. 기름 먹인 천 끝에는 비담 전령의 매듭이 그대로 남아 있었습니다."
       - clearSticker: { id: c11_kite, leave: fadeOut }
-      - goto: bidam_letter_arrives
-
-  explain_sky:
-    actions:
-      - get: burnt_kite
-      - say:
-          channel: narration
-          text: "관측관이 하늘 한 점을 가리켰습니다. '진짜 별은 아직 저기 있습니다.' 장터마다 다른 손이 같은 표를 펴고 같은 자리를 찾아냈습니다."
-      - goto: bidam_letter_arrives
-
-  answer_omen:
-    actions:
-      - get: burnt_kite
-      - say:
-          channel: narration
-          text: "왕궁 지붕의 불이 밤을 붉게 덮었습니다. 환호는 돌아왔지만 덕만은 일식 날 들었던 북소리가 자기 손에서 다시 울리는 것을 들었습니다."
-      - say:
-          char: 춘추.nervous
-          camera: close
-          with: [덕만]
-          text: "오늘은 우리가 더 큰 불을 가졌습니다. 내일 저들이 더 큰 불을 올리면, 하늘까지 태우실 겁니까?"
       - goto: bidam_letter_arrives
 
   bidam_letter_arrives:
@@ -188,7 +171,7 @@ scenes:
           camera: close
           with: [유신]
           text: "칼을 안 썼다고 깨끗한 게 아니야. 저 마을의 빈 솥도 승전 기록에 적어."
-      - goto: bidam_captured
+      - goto: bad_fortress_rush
 
   bidam_captured:
     actions:
@@ -223,16 +206,16 @@ scenes:
       - char: { id: 덕만, position: left, emotion: queen_angry }
       - say:
           char: 덕만.queen_angry
-          text: "본진을 한 번에 치면 끝날 줄 알았다. 저들뿐 아니라 내가 돌아갈 길까지 불태웠구나."
+          text: "군량길을 끊으면 항복할 줄 알았고, 본진을 치면 끝날 줄 알았다. 내가 돌아갈 길부터 없앴구나."
       - say:
           char: 유신.angry
           text: "적의 돌아갈 길을 없애면 항복할 손도 칼을 잡습니다. 이제 어느 깃발 아래 있는지로 사람을 가를 수 없습니다."
       - say:
           channel: narration
-          text: "전군이 본진을 덮치자 불붙은 막사가 민가로 번졌습니다. 깃발 아래 사람을 가릴 틈이 사라졌고, 살아남은 마을 사람들은 왕군의 퇴로를 막았습니다."
+          text: "포위가 길어지자 굶은 마을이 반란군 문을 열었고, 급습을 택하자 불붙은 막사가 민가로 번졌습니다. 서로 다른 속도의 강경책은 끝내 민가 전체를 적진으로 만들었습니다."
       - say:
           channel: record
           text: "비담의 난 진압 보고 — 왕군 지휘부 붕괴. 선덕왕, 포위망을 돌파한 반란군의 화살에 맞아 사망. 비담의 행방은 확인되지 않음."
       - gameOver:
           title: "운명 — 끝내기 위해 키운 반란"
-          message: "가리지 않는 돌격은 항복할 사람과 싸울 사람을 한 덩어리로 만들었습니다. 궁지에 몰린 군대와 마을이 함께 덤볐고, 덕만은 끝내려던 반란 한가운데서 죽었습니다."
+          message: "굶기는 포위와 가리지 않는 돌격은 속도만 달랐을 뿐 돌아갈 사람의 길을 없앴습니다. 궁지에 몰린 군대와 마을이 함께 덤볐고, 덕만은 끝내려던 반란 한가운데서 죽었습니다."
