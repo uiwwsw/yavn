@@ -548,6 +548,7 @@ scenes:
               gameOver:
                 title: "Signal lost"
                 message: "The route collapsed."
+                recoverToChoice: "earlier-warning"
             - text: "Red"
               goto: failed_scene
   failed_scene:
@@ -565,6 +566,7 @@ scenes:
       expect(choiceAction.choice.options[0].gameOver).toEqual({
         title: 'Signal lost',
         message: 'The route collapsed.',
+        recoverToChoice: 'earlier-warning',
       });
     }
     expect(parsed.data?.data.scenes.failed_scene.actions[0]).toEqual({

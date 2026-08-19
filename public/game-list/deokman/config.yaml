@@ -1,7 +1,7 @@
 title: "선덕여왕: 죽은 공주의 왕관"
 author:
   name: "uiwwsw"
-version: "9.2.0"
+version: "9.3.0"
 seo:
   description: "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 비주얼노벨."
   keywords:
@@ -30,6 +30,9 @@ startScreen:
 endingScreen:
   image: "root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp"
 endings:
+  hidden_constellation:
+    title: "히든 엔딩 — 지워지지 않은 별자리"
+    message: "어린 덕만이 발견한 물길, 장터에서 살린 증인, 자매가 함께 연 문이 열두 해 뒤 하나의 제도가 되었습니다. 왕의 실수와 백성의 이름이 같은 크기로 기록된 밤, 첨성대 아래 사람들은 여왕의 운명이 아니라 서로의 선택을 이어 별자리를 그렸습니다. 덕만은 왕관을 지켰지만 왕관만으로 기억되지 않았습니다."
   stars_belong_to_people:
     title: "진엔딩 — 별은 왕을 선택하지 않는다"
     message: "덕만은 자신의 사망 기록과 반란 재판서를 성문에 나란히 걸었습니다. 첨성대의 첫 관측표가 장터마다 펼쳐진 밤, 사람들은 왕의 운명 대신 내일의 비를 읽었습니다. 왕관보다 오래 남은 것은 누가 왜 결정했는지 적힌 문장이었습니다."

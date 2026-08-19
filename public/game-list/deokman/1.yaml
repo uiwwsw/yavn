@@ -184,7 +184,7 @@ scenes:
             - text: "빈 관에 숨어 죽은 사람으로 통과한다"
               when: { var: death_register, op: eq, value: true }
               add: { insight: 1, evidence: 1 }
-              goto: bad_surrender
+              goto: return_in_coffin
             - text: "칠숙 앞에 걸어 나가 소화와 거래한다"
               goto: bad_surrender
 
@@ -215,6 +215,32 @@ scenes:
           text: "살아 있는 유령은 자신의 사망 기록과 국경의 붉은 인장을 들고 수도로 돌아왔습니다. 다음 문은 혈연이 아니라 두 증거를 함께 읽을 자매가 열어야 했습니다."
       - goto: /2.yaml
 
+  return_in_coffin:
+    actions:
+      - bg: moon_court
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: wanderer }
+      - char: { id: 소화, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "덕만은 빈 관 뚜껑 안쪽에 자기 사망 기록을 붙였습니다. 검문병은 죽은 공주의 이름을 읽고도 관 속에서 숨을 죽인 당사자를 끝내 찾지 못했습니다."
+      - say:
+          char: 소화.nervous
+          camera: close
+          with: [덕만]
+          text: "다시는 이런 길 쓰지 마세요. 살아 있는 분이 자기 관에 눕는 걸 두 번은 못 보겠습니다."
+      - say:
+          char: 덕만.wanderer_angry
+          camera: close
+          with: [소화]
+          text: "다음에는 관을 만든 사람을 눕힐 거야. 이 기록과 붉은 인장이 같은 손에서 나왔다는 걸 천명에게 보여 주자."
+      - say:
+          channel: record
+          text: "죽었다고 적힌 공주는 자기 사망 기록을 검문증으로 바꾸었습니다. 거짓 기록은 처음으로 그 기록이 지우려던 사람을 살렸습니다."
+      - set: { identity_exposed: false }
+      - add: { insight: 1, evidence: 1, sohwa_trust: 1 }
+      - goto: /2.yaml
+
   bad_surrender:
     actions:
       - bg: locked_room
@@ -229,10 +255,11 @@ scenes:
           text: "그래서 더 보내 드릴 수 없습니다. 속임수는 달라도 끝에는 늘 살아 있는 공주가 남으니까요."
       - say:
           channel: narration
-          text: "모란패는 얼굴을 드러냈고 빈 관은 검문 창끝에 뚫렸습니다. 스스로 걸어 나간 경우에도 군사들은 소화부터 붙잡았습니다. 서로 다른 꾀가 같은 검문실 문 앞에서 끝났습니다."
+          text: "모란패를 붉은 인장과 함께 내밀자 왕실 표식이 덕만의 얼굴을 증명했습니다. 스스로 칠숙 앞에 걸어 나간 경우에도 군사들은 소화부터 붙잡았습니다. 서로 다른 거래가 같은 검문실 문 앞에서 끝났습니다."
       - say:
           channel: record
           text: "국경 도적 토벌 보고 — 신원을 알 수 없는 두 여인이 수색 중 사망. 왕실 혈족과의 관련 없음."
       - gameOver:
           title: "운명 — 죽은 사람의 검문"
           message: "칠숙이 지키는 문에서 왕실 표식과 사망 기록은 통행증이 아니라 처형할 사람을 확인하는 증거였습니다. 덕만과 소화는 새벽 전에 죽었고 그 이름은 다시 국경 보고서에서 지워졌습니다."
+          recoverToChoice: c1_fire_escape

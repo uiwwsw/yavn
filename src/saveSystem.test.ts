@@ -231,4 +231,70 @@ describe('save system', () => {
       optionIndex: 0,
     });
   });
+
+  it('targets the earlier causal choice when a later choice leads to game over', () => {
+    const delayedFailureGame: GameData = {
+      ...game,
+      scenes: {
+        cause: {
+          actions: [
+            {
+              choice: {
+                key: 'cause-choice',
+                prompt: 'Trust the warning?',
+                options: [{ text: 'Ignore it', goto: 'later-choice' }],
+              },
+            },
+          ],
+        },
+        'later-choice': {
+          actions: [
+            {
+              choice: {
+                key: 'last-choice',
+                prompt: 'Choose a door',
+                options: [{ text: 'Open the door', goto: 'delayed-failure' }],
+              },
+            },
+          ],
+        },
+        'delayed-failure': {
+          actions: [
+            {
+              gameOver: {
+                title: 'The warning returns',
+                recoverToChoice: 'cause-choice',
+              },
+            },
+          ],
+        },
+      },
+      script: [{ scene: 'cause' }],
+    };
+    useVNStore.getState().setGame(delayedFailureGame, '/');
+    useVNStore.getState().setCursor('cause', 0);
+    useVNStore.getState().setWaitingInput(true);
+    useVNStore.getState().setChoiceGate({
+      active: true,
+      key: 'cause-choice',
+      prompt: 'Trust the warning?',
+      options: [{ text: 'Ignore it', goto: 'later-choice' }],
+    });
+
+    submitChoiceOption(0);
+    expect(useVNStore.getState().choiceGate.key).toBe('last-choice');
+    submitChoiceOption(0);
+
+    expect(useVNStore.getState().gameOver?.title).toBe('The warning returns');
+    expect(getChoiceRecoverySummary()).toMatchObject({
+      exists: true,
+      sceneId: 'cause',
+      actionIndex: 0,
+      failedChoice: {
+        key: 'cause-choice',
+        value: 'Ignore it',
+        optionIndex: 0,
+      },
+    });
+  });
 });

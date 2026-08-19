@@ -271,6 +271,7 @@ export type EndingAction = {
 export type GameOverDefinition = {
   title?: string;
   message?: string;
+  recoverToChoice?: string;
 };
 
 export type GameOverAction = {

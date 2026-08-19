@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('9.2.0');
+    expect(config.data?.data.version).toBe('9.3.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -105,6 +105,7 @@ describe('complete Deokman visual novel', () => {
 
     expect(collectKey(documents.at(-1), 'goto').map(String).some((goto) => goto.startsWith('/'))).toBe(false);
     expect(new Set(collectKey(documents.at(-1), 'ending').map(String))).toEqual(new Set([
+      'hidden_constellation',
       'stars_belong_to_people',
       'merciful_queen',
       'iron_queen',
@@ -164,7 +165,7 @@ describe('complete Deokman visual novel', () => {
     });
   });
 
-  it('makes each pre-finale crisis death-heavy while converging similar fatal options', () => {
+  it('balances survival and death routes while keeping causal recovery explicit', () => {
     const crisisChoiceKeys = [
       'c1_fire_escape',
       'c2_checkpoint',
@@ -213,10 +214,12 @@ describe('complete Deokman visual novel', () => {
       const convergedFatalScenes = new Set(fatalOutcomes.flatMap((outcomes) => [...outcomes]));
 
       expect(options.length, path).toBeGreaterThanOrEqual(3);
-      expect(fatalOptions.length, path).toBe(Math.floor(options.length / 2) + 1);
+      expect(fatalOptions.length, path).toBe(Math.floor(options.length / 2));
       expect(options.length - fatalOptions.length, path).toBeGreaterThanOrEqual(1);
       expect(convergedFatalScenes.size, path).toBe(1);
     });
+
+    expect(readSource('1.yaml')).toContain('recoverToChoice: c1_fire_escape');
 
     const fatalScenes = chapterPaths.flatMap((path) => {
       const scenes = asRecord(readYaml(path).scenes);

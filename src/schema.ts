@@ -67,6 +67,7 @@ const gameOverSchema = z
   .object({
     title: z.string().min(1).optional(),
     message: z.string().min(1).optional(),
+    recoverToChoice: z.string().min(1).optional(),
   })
   .strict();
 
