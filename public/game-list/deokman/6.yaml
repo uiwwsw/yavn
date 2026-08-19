@@ -45,11 +45,15 @@ scenes:
             - text: "왕은 숨기고 빼앗긴 권한만 벽에 붙인다"
               set: { king_failure_public: false }
               add: { evidence: 2, nobles_support: 1, insight: 1 }
-              goto: publish_powers
+              gameOver:
+                title: "운명 — 이름 없는 고백"
+                message: "권한을 훔친 가문만 공개하자 귀족들은 병든 왕을 방패로 세웠습니다. 왕이 침묵한 채 덕만만 고발자가 되었고, 반역 재판은 새벽 전에 끝났습니다."
             - text: "옥새함을 닫고 덕만이 비난을 받는다"
               set: { king_failure_public: false }
               add: { king_trust: 3, fear: 1, people_support: -1 }
-              goto: inherit_blame
+              gameOver:
+                title: "운명 — 대신 뒤집어쓴 왕의 실패"
+                message: "덕만이 아버지의 실패를 자기 이름으로 덮자 귀족들은 그 자백만 남겼습니다. 왕을 지키려 한 공주는 왕위를 노린 반역자로 기록되어 처형됐습니다."
 
   public_confession:
     actions:
@@ -61,33 +65,6 @@ scenes:
       - say:
           channel: narration
           text: "진평왕의 목소리가 궁문 밖까지 닿자 야유와 울음이 한꺼번에 터졌습니다. 귀족들은 고개를 돌렸지만 누구도 왕이 뱉은 말을 주워 담지 못했습니다."
-      - goto: rebuild_power
-
-  publish_powers:
-    actions:
-      - say:
-          channel: narration
-          text: "궁문 벽이 가문 이름으로 가득 찼습니다. 어느 집이 어느 창고 열쇠를, 어느 성문 병사를, 어느 기록관의 붓을 쥐었는지 사람들이 손가락으로 따라 읽었습니다."
-      - say:
-          char: 덕만
-          camera: close
-          with: [진평왕]
-          text: "아버지가 약하다는 말로는 아무 문도 안 열립니다. 열쇠를 쥔 손의 이름을 보여 줘야 해요."
-      - goto: rebuild_power
-
-  inherit_blame:
-    actions:
-      - say:
-          channel: narration
-          text: "덕만은 사람들 앞에서 창고의 혼란이 자기 명령 때문이라고 말했습니다. 진평왕을 향하던 돌이 덕만의 발치로 바뀌었습니다. 귀족들은 그 광경을 말없이 지켜봤습니다."
-      - say:
-          char: 진평왕.sad
-          camera: close
-          with: [덕만]
-          text: "네 이름을 살려 돌아오게 해 놓고, 또 내 방패로 썼구나."
-      - say:
-          char: 덕만.sad
-          text: "이번엔 제가 걸어 들어간 겁니다. 하지만 다음엔 아버지를 끌고 나오겠습니다."
       - goto: rebuild_power
 
   rebuild_power:
@@ -178,7 +155,7 @@ scenes:
       - say:
           channel: narration
           text: "천명이 의자 한쪽으로 몸을 비켰습니다. 모든 문서에 두 자매의 먹이 나란히 마를 때까지 명령은 나가지 않았습니다. 귀족들은 그 기다림까지 장부에 적었습니다."
-      - goto: weak_king_end
+      - goto: bad_empty_order
 
   open_council:
     actions:
@@ -215,16 +192,16 @@ scenes:
       - char: { id: 천명, position: right, emotion: nervous }
       - say:
           char: 덕만.angry
-          text: "왕명을 읽는다. 이 자리의 귀족 대표는 반역 혐의로 모두 포박하라."
+          text: "언니와 내가 함께 서명했다. 왕실의 명령을 거부할 자는 앞으로 나와라."
       - say:
           channel: narration
-          text: "대표들을 한꺼번에 묶는 순간 회의장 밖의 군사는 절반만 움직였습니다. 나머지 병사들의 군량과 가족은 체포된 귀족의 창고에 묶여 있었습니다."
+          text: "공동 서명으로 문을 닫거나 왕명으로 귀족을 묶는 순간, 회의장 밖의 군사는 절반만 움직였습니다. 나머지 병사들의 군량과 가족은 귀족의 창고에 묶여 있었습니다."
       - say:
           char: 천명.nervous
-          text: "사람을 모두 적으로 묶으면 우리 편이 설 자리도 사라져. 덕만아, 문이 닫히고 있어."
+          text: "우리가 같은 의자에 앉으면 저들이 갈라놓지 못할 줄 알았어. 문까지 함께 잠길 줄은 몰랐어."
       - say:
           channel: record
           text: "귀족 회의는 왕실의 불법 체포와 공동 섭정 강요를 명분으로 성문을 폐쇄함. 덕만 공주와 천명 공주, 회의장 화재로 사망."
       - gameOver:
           title: "운명 — 함께 잠긴 왕실"
-          message: "반대자를 한 번에 없애려는 왕명은 중립에 설 자리까지 지웠습니다. 귀족들은 회의장을 잠그고 불을 놓았고, 왕실의 두 후계자는 함께 죽었습니다."
+          message: "두 자매가 같은 명령에 이름을 올려도 그 명령을 움직일 열린 문과 독립된 군량이 없었습니다. 귀족들은 회의장을 잠그고 불을 놓았고, 왕실의 두 후계자는 함께 죽었습니다."
