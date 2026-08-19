@@ -36,14 +36,10 @@ scenes:
               goto: track_wagons
             - text: "마을 사람들에게 수레 길을 묻는다"
               add: { people_support: 2, yushin_trust: 1 }
-              gameOver:
-                title: "운명 — 비보다 빠른 밀고"
-                message: "수레의 흔적을 재기 전에 질문부터 퍼졌습니다. 창고 주인은 증거를 태우고 길목에 궁수를 세웠고, 덕만과 유신은 빈 장부 곁에서 전사했습니다."
+              goto: bad_rumor_before_tracks
             - text: "유신의 기병으로 세 창고를 봉쇄한다"
               add: { army_support: 2, fear: 1 }
-              gameOver:
-                title: "운명 — 증거보다 먼저 닫힌 포위"
-                message: "어느 창고가 진짜인지 확인하지 않은 봉쇄는 적에게 왕군의 위치만 알려 줬습니다. 불붙은 가짜 창고로 병력이 몰린 사이 덕만은 매복에 쓰러졌습니다."
+              goto: bad_blind_blockade
 
   track_wagons:
     actions:
@@ -56,6 +52,54 @@ scenes:
           with: [덕만]
           text: "장부는 고칠 수 있어도 바퀴는 하루아침에 마르지 않습니다. 이 자국, 산 위 창고까지 갑니다."
       - goto: hidden_warehouse
+
+  bad_rumor_before_tracks:
+    actions:
+      - bg: village
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: princess_angry }
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          channel: narration
+          text: "덕만이 수레 길을 묻자 대답은 산보다 빨리 퍼졌습니다. 세 번째 집에 닿기도 전에 능선 위 창고에서 검은 연기가 올랐습니다."
+      - say:
+          char: 유신.angry
+          camera: reaction
+          with: [덕만]
+          text: "발자국을 재기 전에 사람 입부터 열었습니다. 놈들이 장부를 태우고 우리가 올 길에 활을 세웁니다."
+      - say:
+          char: 덕만.princess_angry
+          text: "사람을 믿은 게 아니라, 적도 사람들 사이에 귀가 있다는 걸 잊었어. 엎드려!"
+      - say:
+          channel: record
+          text: "구휼미 수사대 피습 — 덕만 공주와 김유신, 빈 창고로 향하던 길에서 매복 화살에 맞아 전사. 장부는 소각됨."
+      - gameOver:
+          title: "운명 — 비보다 빠른 밀고"
+          message: "수레의 흔적을 재기 전에 질문부터 퍼졌습니다. 창고 주인은 증거를 태우고 길목에 궁수를 세웠고, 덕만과 유신은 빈 장부 곁에서 전사했습니다."
+
+  bad_blind_blockade:
+    actions:
+      - bg: frontier
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: princess_angry }
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          channel: narration
+          text: "기병이 세 창고를 동시에 둘러쌌습니다. 가운데 창고에서 불길이 솟자 병사들이 명령도 없이 그쪽으로 몰렸습니다."
+      - say:
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "가짜입니다. 진짜 창고를 찾지 않고 포위부터 해서 우리 병력만 셋으로 찢겼습니다."
+      - say:
+          char: 덕만.princess_angry
+          text: "불을 끄지 마. 대열부터—"
+      - say:
+          channel: narration
+          text: "덕만의 명령이 끝나기 전에 빈 창고 지붕에서 화살이 쏟아졌습니다. 포위한 군대는 어느 쪽이 바깥인지도 모른 채 무너졌고 덕만은 그 자리에서 죽었습니다."
+      - gameOver:
+          title: "운명 — 증거보다 먼저 닫힌 포위"
+          message: "어느 창고가 진짜인지 확인하지 않은 봉쇄는 적에게 왕군의 위치만 알려 줬습니다. 불붙은 가짜 창고로 병력이 몰린 사이 덕만은 매복에 쓰러졌습니다."
 
   hidden_warehouse:
     actions:

@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('9.4.0');
+    expect(config.data?.data.version).toBe('9.5.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -149,6 +149,8 @@ describe('complete Deokman visual novel', () => {
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
     expect(gameOvers).toHaveLength(28);
+    expect(choices.flatMap((choice) => Array.isArray(choice.options) ? choice.options.map(asRecord) : [])
+      .some((option) => Object.keys(asRecord(option.gameOver)).length > 0)).toBe(false);
 
     documents.forEach((document, chapterIndex) => {
       const scenes = asRecord(document.scenes);
@@ -264,12 +266,38 @@ describe('complete Deokman visual novel', () => {
       'c12_final_decree',
     ]);
 
-    const choices = chapterPaths.flatMap((path) => collectKey(readYaml(path), 'choice').map(asRecord));
-    choices.forEach((choice) => {
-      const key = String(choice.key);
-      if (!ordinaryChoiceKeys.has(key)) return;
-      const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
-      expect(options.filter((option) => Object.keys(asRecord(option.gameOver)).length === 0), key).toHaveLength(1);
+    const documents = chapterPaths.map(readYaml);
+    const choices = documents.flatMap((document) => collectKey(document, 'choice').map(asRecord));
+    documents.forEach((document) => {
+      const scenes = asRecord(document.scenes);
+      const fatalSceneIds = new Set(Object.entries(scenes)
+        .filter(([, scene]) => collectKey(scene, 'gameOver').length > 0)
+        .map(([sceneId]) => sceneId));
+      const reachesGameOver = (sceneId: string, visited = new Set<string>()): boolean => {
+        if (!sceneId || sceneId.startsWith('/') || visited.has(sceneId)) return false;
+        if (fatalSceneIds.has(sceneId)) return true;
+        const actions = Array.isArray(asRecord(scenes[sceneId]).actions)
+          ? (asRecord(scenes[sceneId]).actions as unknown[]).map(asRecord)
+          : [];
+        const nextVisited = new Set(visited).add(sceneId);
+        return actions.some((action) => {
+          const targets = [
+            typeof action.goto === 'string' ? action.goto : undefined,
+            ...collectKey(action.branch, 'goto').map(String),
+          ].filter((target): target is string => Boolean(target));
+          return targets.some((target) => reachesGameOver(target, nextVisited));
+        });
+      };
+
+      collectKey(document, 'choice').map(asRecord).forEach((choice) => {
+        const key = String(choice.key);
+        if (!ordinaryChoiceKeys.has(key)) return;
+        const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
+        const surviving = options.filter((option) =>
+          Object.keys(asRecord(option.gameOver)).length === 0 && !reachesGameOver(String(option.goto ?? '')),
+        );
+        expect(surviving, key).toHaveLength(1);
+      });
     });
 
     const crisisKeys = new Set([

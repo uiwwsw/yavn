@@ -36,14 +36,10 @@ scenes:
               goto: answer_with_absence
             - text: "웃으며 편지의 마지막 줄까지 듣는다"
               add: { nobles_support: 1, evidence: 1 }
-              gameOver:
-                title: "운명 — 침묵으로 굳은 혼인"
-                message: "덕만이 답을 미루는 동안 귀족들은 침묵을 혼인 동의로 기록했습니다. 당군이 성 안에 들어온 뒤 그 작은 글씨를 바로잡을 사람은 남지 않았습니다."
+              goto: bad_silent_consent
             - text: "굶은 아이들의 명단을 그림 위에 펼친다"
               add: { people_support: 2, fear: 1 }
-              gameOver:
-                title: "운명 — 옳은 분노의 인질"
-                message: "아이들의 이름은 연회장을 흔들었지만 사신의 함정을 반박하지는 못했습니다. 당은 이를 공개 모욕으로 기록했고 귀족들은 전쟁을 막겠다며 덕만을 처형했습니다."
+              goto: bad_righteous_insult
 
   answer_with_absence:
     actions:
@@ -58,6 +54,54 @@ scenes:
           text: "그림 한 장으로 목소리를 높이시는군요."
       - clearSticker: { id: c5_peony, leave: fadeOut }
       - goto: hidden_terms
+
+  bad_silent_consent:
+    actions:
+      - bg: peony_court
+      - camera: medium
+      - char: { id: 덕만, position: left, emotion: princess }
+      - char: { id: 당 사신, position: right }
+      - say:
+          channel: narration
+          text: "덕만은 미소를 거두지 않은 채 편지의 마지막 줄까지 들었습니다. 사신은 답을 재촉하지 않고 빈 술잔을 천천히 뒤집었습니다."
+      - say:
+          char: 당 사신
+          camera: close
+          with: [덕만]
+          text: "반대가 없으셨으니 혼인과 주둔 조항 모두 받아들이신 것으로 기록하겠습니다. 축하드립니다."
+      - say:
+          char: 덕만.princess_angry
+          text: "나는 듣겠다고 했지, 허락한다고 하지 않았습니다. 그 붓을 멈추세요."
+      - say:
+          channel: record
+          text: "당 조정 외교 기록 — 신라의 덕만 공주, 황실 혼인과 당군 주둔 조건을 묵인. 이후 합의를 뒤집어 반역자로 처형됨."
+      - gameOver:
+          title: "운명 — 침묵으로 굳은 혼인"
+          message: "덕만이 답을 미루는 동안 귀족들은 침묵을 혼인 동의로 기록했습니다. 당군이 성 안에 들어온 뒤 그 작은 글씨를 바로잡을 사람은 남지 않았습니다."
+
+  bad_righteous_insult:
+    actions:
+      - bg: peony_court
+      - camera: close
+      - char: { id: 덕만, position: left, emotion: princess_angry }
+      - char: { id: 당 사신, position: right, emotion: angry }
+      - say:
+          char: 덕만.princess_angry
+          text: "남자 왕이 쌀을 만든다면 이 아이들은 왜 굶었습니까? 이 명단부터 황제 앞에서 읽으십시오."
+      - say:
+          channel: narration
+          text: "명단이 모란 그림을 덮자 연회장은 잠시 조용해졌습니다. 사신은 종이를 줍지 않고 수행관에게 술잔을 치우라 손짓했습니다."
+      - say:
+          char: 당 사신.angry
+          camera: reaction
+          with: [덕만]
+          text: "대답 대신 황제의 사신을 모욕하셨군요. 국경에서 곡식과 군선 중 무엇이 먼저 오는지 보시지요."
+      - say:
+          channel: narration
+          text: "당의 군선이 나타나자 덕만을 칭찬하던 귀족들이 먼저 궁문을 열었습니다. 전쟁을 막는 값으로 공주의 목이 합의문에 올랐습니다."
+      - gameOver:
+          title: "운명 — 옳은 분노의 인질"
+          message: "아이들의 이름은 연회장을 흔들었지만 사신의 함정을 반박하지는 못했습니다. 당은 이를 공개 모욕으로 기록했고 귀족들은 전쟁을 막겠다며 덕만을 처형했습니다."
 
   hidden_terms:
     actions:
