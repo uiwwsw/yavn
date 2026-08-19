@@ -60,4 +60,16 @@ describe('start gate presentation', () => {
       /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.start-gate-title-block,[\s\S]*?\.start-gate-actions\s*\{[\s\S]*?opacity: 1/,
     );
   });
+
+  it('keeps long titles readable over bright artwork on mobile', () => {
+    expect(styles).toMatch(
+      /\.start-gate-title-block\s*\{[\s\S]*?background: var\(--start-gate-title-surface\);[\s\S]*?backdrop-filter: blur\(9px\)/,
+    );
+    expect(styles).toMatch(
+      /\.start-gate-title-block h1\s*\{[\s\S]*?word-break: keep-all;[\s\S]*?overflow-wrap: anywhere;/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\)[\s\S]*?\.start-gate-title-block h1\s*\{[\s\S]*?font-size: clamp\(1\.72rem, 8\.4vw, 2\.72rem\);/,
+    );
+  });
 });

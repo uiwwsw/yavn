@@ -12,23 +12,32 @@
   }
 
   .choice-gate-option {
-    min-height: 48px;
+    min-height: 58px;
     height: auto;
     align-items: flex-start;
     flex-direction: column;
     justify-content: center;
-    gap: 7px;
+    gap: 8px;
+    border-radius: 14px;
+    padding: 11px 12px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
   }
 
-  .choice-gate-option > span:first-child {
+  .choice-gate-option-copy {
     width: 100%;
+  }
+
+  .choice-gate-option-text {
     word-break: keep-all;
     overflow-wrap: break-word;
+    font-size: 15px;
+    line-height: 1.38;
   }
 
   .choice-gate-option-badges {
     width: 100%;
     justify-content: flex-start;
+    padding-left: 37px;
   }
 
   .choice-gate-option-history-badge,
