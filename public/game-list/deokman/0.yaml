@@ -398,6 +398,7 @@ scenes:
           timeoutOptionIndex: 3
           options:
             - text: "소화의 손을 잡고 배수로로 뛴다"
+              when: { var: observed_left_waterway, op: eq, value: true }
               goto: escape_waterway
             - text: "모란패를 치켜들고 북문을 연다"
               add: { nobles_support: 1, fear: 1 }
@@ -407,7 +408,7 @@ scenes:
                 all:
                   - { var: death_register, op: eq, value: true }
                   - { var: spoke_truth_to_king, op: eq, value: true }
-              goto: bad_smoke
+              goto: escape_with_record
             - text: "모란 화단에 엎드려 불길을 피한다"
               goto: bad_smoke
 
@@ -483,16 +484,42 @@ scenes:
       - add: { sohwa_trust: 1, people_support: 1, fear: 1 }
       - goto: /1.yaml
 
+  escape_with_record:
+    actions:
+      - bg: burning_palace
+      - effect: embers
+      - char: { id: 어린 덕만, position: left, emotion: resolve }
+      - char: { id: 소화, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "덕만은 안채로 뛰어드는 대신 왕의 침전 아래 문서 운반 통로를 택했습니다. 진평왕에게 닿지는 못했지만, 문틈으로 내민 사망 기록에 왕의 옥새가 한 번 더 찍혀 돌아왔습니다."
+      - say:
+          char: 소화.nervous
+          camera: close
+          with: [어린 덕만]
+          text: "팔이 탔습니다. 기록은 살렸지만, 다음 문까지는 제가 아기씨 손을 잡아야 해요."
+      - say:
+          char: 어린 덕만.resolve
+          camera: close
+          with: [소화]
+          text: "괜찮아. 저 안에 아버지가 살아 있다는 것도, 내가 죽었다고 적힌 것도 확인했어. 둘 다 들고 돌아올게."
+      - say:
+          channel: record
+          text: "별궁 화재 당직 기록 — 둘째 공주의 시신은 확인되지 않음. 화재 직전 왕의 옥새가 찍힌 사망 기록 한 장이 사라짐."
+      - set: { c1_escape_route: royal_passage, identity_exposed: true }
+      - add: { evidence: 2, king_trust: 1, fear: 2, sohwa_trust: -1 }
+      - goto: /1.yaml
+
   bad_smoke:
     actions:
       - bg: burning_palace
-      - camera: close
+      - camera: { shot: close, target: 어린 덕만 }
       - effect: embers
       - char: { id: 어린 덕만, position: left, emotion: scared }
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
           channel: narration
-          text: "덕만이 불길 너머 안채로 몸을 돌리거나 모란 화단에 엎드리는 순간, 칠숙이 미리 끊어 둔 길이 모습을 드러냈습니다. 무너진 들보와 번진 기름이 두 선택을 하나의 막다른길로 만들었습니다."
+          text: "덕만이 모란 화단에 엎드리는 순간, 칠숙이 미리 뿌려 둔 기름이 꽃밭 가장자리에서 푸르게 타올랐습니다. 무너진 들보가 마지막 빈틈까지 막았습니다."
       - say:
           char: 소화.nervous
           camera: close
@@ -509,4 +536,4 @@ scenes:
           text: "별궁 화재 보고 — 열병으로 죽은 둘째 공주 덕만의 시신과 유모 소화가 불에 타 신원을 다시 확인할 수 없음."
       - gameOver:
           title: "운명 — 먼저 준비된 죽음"
-          message: "불이 난 뒤 고른 용기만으로는 미리 살펴 둔 탈출로를 대신할 수 없었습니다. 덕만과 소화는 별궁을 빠져나오지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."
+          message: "불길 한가운데 머무는 선택은 탈출로가 될 수 없었습니다. 덕만과 소화는 별궁을 빠져나오지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."

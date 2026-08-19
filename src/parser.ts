@@ -1144,6 +1144,18 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
           if (cameraError) {
             return { error: cameraError };
           }
+          if (action.say.when) {
+            const conditionError = validateCondition(
+              sceneId,
+              'say.when',
+              action.say.when,
+              defaults,
+              inventoryDefaults,
+            );
+            if (conditionError) {
+              return { error: conditionError };
+            }
+          }
         }
 
         if ('choice' in action && action.choice.char) {

@@ -1,5 +1,6 @@
 script:
   - scene: entry_guard
+  - scene: evidence_followup
   - scene: revisit_notice
   - scene: intro
   - scene: approach_probe
@@ -25,11 +26,63 @@ scenes:
       - branch:
           cases:
             - when:
+                all:
+                  - var: visited_kenji
+                    op: eq
+                    value: true
+                  - any:
+                      - var: clue_kenji_rejected_deal
+                        op: eq
+                        value: false
+                      - var: clue_double_press_decoy
+                        op: eq
+                        value: false
+                  - var: recovered_kenji_deal
+                    op: eq
+                    value: false
+              goto: evidence_followup
+            - when:
                 var: visited_kenji
                 op: eq
                 value: true
               goto: revisit_notice
           default: intro
+
+  evidence_followup:
+    actions:
+      - bg: rain_corridor
+      - set:
+          clue_kenji_rejected_deal: true
+          clue_double_press_decoy: true
+          recovered_kenji_deal: true
+      - add:
+          deduction_score: 1
+          final_confidence: 1
+      - char:
+          id: 켄지
+          position: left
+          emotion: angry
+      - char:
+          id: 코난
+          position: right
+          emotion: serious
+      - sound: notebook_flip
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "<speed=25>통화 내역만 보지 마.</speed> <speed=19>문밖에서 보니 두 번째 뚜껑 소리에 안쪽 사람들 시선이 전부 주전자로 쏠렸어.</speed>"
+      - say:
+          char: 켄지.angry
+          with:
+            - 코난.serious
+          text: "<speed=25>그리고 내가 하루오와 나눈 거래 얘기도 끝까지 적어.</speed> <speed=19>레이코는 앞부분만 들었어.</speed> <speed=18>하루오는 이름 하나라도 빼면 거래하지 않겠다고 내 제안을 거절했어.</speed>"
+      - say:
+          char: 코난.serious
+          with:
+            - 켄지.angry
+          text: "<speed=25>두 번의 소리와 거절한 뒷말.</speed> <speed=19>통화 시각과 거래 진술, 둘 다 잘리지 않게 경찰에게 넘길게요.</speed>"
+      - goto: /routes/hub/1.yaml
 
   revisit_notice:
     actions:
@@ -296,6 +349,8 @@ scenes:
 
   outro_open:
     actions:
+      - set:
+          clue_kenji_rejected_deal: true
       - say:
           char: 켄지.angry
           with:

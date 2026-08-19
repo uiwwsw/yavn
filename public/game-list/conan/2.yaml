@@ -160,9 +160,9 @@ scenes:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=19>차가 흘렀어요.</speed> <speed=16>제가 닦을게요, 손수건을...</speed>"
+          text: "<speed=19>차가 흘렀어요.</speed> <speed=16>뒤로 물러나세요, 수건부터...</speed>"
       - say:
-          text: "<speed=18>레이코가 내민 손수건은 입가가 아니라, 먼저 2번 잔의 가장자리로 향했다.</speed>"
+          text: "<speed=18>천둥에 등불이 흔들렸다.</speed> <speed=16>하루오를 붙잡으려는 손들이 탁자 위로 겹치는 사이, 흰 천 한 자락이 2번 잔 가장자리를 스쳤다.</speed>"
       - say:
           char: 코난.serious
           text: "<speed=60>안 돼요!</speed> <speed=25>그 잔, 만지면 안 돼요!</speed>"

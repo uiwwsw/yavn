@@ -4430,6 +4430,12 @@ export default function App() {
             <p className="game-over-message">
               {gameOver.message ?? '선택의 결과로 더는 이야기를 이어갈 수 없습니다.'}
             </p>
+            {choiceRecoveryPoint.failedChoice?.value && (
+              <div className="game-over-cause" aria-label="결과를 만든 선택">
+                <span>결과를 만든 선택</span>
+                <strong>{choiceRecoveryPoint.failedChoice.value}</strong>
+              </div>
+            )}
             <div className="game-over-primary-actions">
               <button
                 type="button"

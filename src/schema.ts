@@ -252,6 +252,7 @@ const actionBodySchema = z.union([
       framing: z.string().min(1).optional(),
       camera: cameraDirectiveSchema.optional(),
       channel: dialogueChannelSchema.optional(),
+      when: conditionSchema.optional(),
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),

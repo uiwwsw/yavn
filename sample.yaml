@@ -84,6 +84,10 @@ scenes:
 
   all_done_check:
     actions:
+      - say:
+          when: { var: clue_note, op: eq, value: true }
+          channel: record
+          text: "확보한 현장 메모의 시간이 다음 판단과 맞물립니다."
       - branch:
           cases:
             - when:

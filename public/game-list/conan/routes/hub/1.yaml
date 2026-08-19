@@ -34,6 +34,19 @@ scenes:
       - branch:
           cases:
             - when:
+                all:
+                  - var: investigation_count
+                    op: gte
+                    value: 4
+                  - any:
+                      - { var: clue_order_note, op: eq, value: false }
+                      - { var: clue_haruo_wipe, op: eq, value: false }
+                      - { var: clue_rim_reagent, op: eq, value: false }
+                      - { var: clue_double_press_decoy, op: eq, value: false }
+                      - { var: clue_kenji_rejected_deal, op: eq, value: false }
+                      - { var: reiko_motive_open, op: eq, value: false }
+              goto: route_select
+            - when:
                 var: investigation_count
                 op: gte
                 value: 4
@@ -111,6 +124,26 @@ scenes:
   route_select:
     actions:
       - say:
+          when:
+            any:
+              - { var: tea_residue_report, op: eq, value: false }
+              - { var: reiko_statement_note, op: eq, value: false }
+          char: 코난.think
+          text: "<speed=18>(모두를 부르기 전에 2번 잔 감식과 9시 29분 진술 메모는 꼭 필요해.)</speed>"
+      - say:
+          when:
+            all:
+              - { var: investigation_count, op: gte, value: 4 }
+              - any:
+                  - { var: clue_order_note, op: eq, value: false }
+                  - { var: clue_haruo_wipe, op: eq, value: false }
+                  - { var: clue_rim_reagent, op: eq, value: false }
+                  - { var: clue_double_press_decoy, op: eq, value: false }
+                  - { var: clue_kenji_rejected_deal, op: eq, value: false }
+                  - { var: reiko_motive_open, op: eq, value: false }
+          char: 코난.think
+          text: "<speed=18>(넷은 만났어.</speed> <speed=29>하지만 놓친 문장과 흔적은 다시 물을 수 있어.)</speed>"
+      - say:
           char: 코난.think
           text: "<speed=21>(누구부터지?)</speed>"
       - choice:
@@ -126,6 +159,10 @@ scenes:
             - text: "봉인된 다실: 하루오의 지워진 2R"
               goto: /routes/haruo/1.yaml
             - text: "모두를 다실에 모은다"
+              when:
+                all:
+                  - { var: tea_residue_report, op: eq, value: true }
+                  - { var: reiko_statement_note, op: eq, value: true }
               goto: early_exit_confirm
 
   early_exit_confirm:
@@ -139,7 +176,11 @@ scenes:
           options:
             - text: "아직 만나지 않은 사람에게 간다"
               goto: route_select
-            - text: "빈틈을 감수하고 추리를 시작한다"
+            - text: "2번 잔 감식과 9시 29분 메모로 추리를 시작한다"
+              when:
+                all:
+                  - { var: tea_residue_report, op: eq, value: true }
+                  - { var: reiko_statement_note, op: eq, value: true }
               set:
                 early_exit_taken: true
               goto: early_exit_penalty_branch

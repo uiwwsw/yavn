@@ -132,6 +132,7 @@ export type SayAction = {
     framing?: string;
     camera?: CameraDirective;
     channel?: DialogueChannel;
+    when?: ConditionNode;
     text: string;
     delivery?: DialogueDelivery;
     wait?: number;

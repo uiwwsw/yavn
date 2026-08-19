@@ -4115,6 +4115,30 @@ textarea,
   line-height: 1.65;
 }
 
+.game-over-cause {
+  display: grid;
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 139, 139, 0.32);
+  border-radius: 7px;
+  background: rgba(255, 107, 107, 0.08);
+  text-align: left;
+}
+
+.game-over-cause span {
+  color: #ff9a9a;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.game-over-cause strong {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
 .game-over-primary-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -13,7 +13,7 @@ scenes:
       - char: { id: 덕만, position: left }
       - say:
           channel: narration
-          text: "진평왕의 숨이 멎자마자 왕좌 뒤의 발소리들이 빨라졌습니다. 상복도 갖추기 전, 새벽 표결을 알리는 북이 울렸습니다. 성문과 군량 창고 쪽에서는 귀족 사병의 횃불이 움직였습니다."
+          text: "진평왕의 숨이 가늘어질수록 왕좌 뒤의 발소리들이 빨라졌습니다. 상복을 준비하는 손보다 새벽 표결 문서를 접는 손이 더 바빴습니다."
       - say:
           char: 진평왕.weak
           camera: close
@@ -24,6 +24,23 @@ scenes:
           camera: close
           with: [진평왕]
           text: "아버지의 마지막 말을 왕관값으로 쓰지 않겠습니다. 대신 아버지가 잃은 것까지 제 몫으로 들고 가겠습니다."
+      - say:
+          when: { var: king_trust, op: gte, value: 3 }
+          char: 진평왕.weak
+          camera: close
+          with: [덕만]
+          text: "네가 나를 지켜 준 날도, 내 앞에 세운 날도 모두 기억한다. 이제는 나를 믿지 말고 네 판단을 믿거라."
+      - say:
+          channel: narration
+          text: "그 말을 들은 뒤에야 진평왕의 숨이 멎었습니다. 새벽 표결을 알리는 북이 곧바로 울렸고, 성문과 군량 창고 쪽에서는 귀족 사병의 횃불이 움직였습니다."
+      - say:
+          when: { var: cheonmyeong_outcome, op: eq, value: exile }
+          channel: record
+          text: "국경 구휼소에서 천명의 서신이 도착했습니다. '내 표는 줄 수 없지만, 내가 맡은 마을 이름은 네 편에 세우겠다.'"
+      - say:
+          when: { var: cheonmyeong_outcome, op: eq, value: hidden_alive }
+          channel: narration
+          text: "비밀문 너머에서 천명이 표결 명단을 읽어 주었습니다. 그러나 살아 있는 언니의 조언은 문밖에서 증언이 될 수 없었습니다."
       - goto: vote_strategy
 
   vote_strategy:
@@ -36,6 +53,18 @@ scenes:
           camera: medium
           with: [덕만]
           text: "회의장 문이 곧 닫힙니다. 장부 상자는 무겁고, 궁 밖 사람들은 더 많고, 유신의 군사는 눈에 너무 잘 띕니다. 하나만 앞에 세우셔야 합니다."
+      - say:
+          when: { var: chunchu_trust, op: gte, value: 1 }
+          char: 춘추
+          camera: close
+          with: [덕만]
+          text: "어머니의 위조 자백문을 함께 읽은 날부터 저는 공주님이 증거를 어디에 놓는지 보았습니다. 오늘은 제 이름도 그 옆에 놓겠습니다."
+      - say:
+          when: { var: chunchu_trust, op: lte, value: -1 }
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "어머니를 다시 비밀문 뒤에 숨긴 선택을 저는 아직 믿지 못합니다. 그래도 오늘 표결의 거짓말은 같이 막겠습니다."
       - choice:
           key: c9_vote_strategy
           prompt: "새벽 문이 열린다. 덕만보다 먼저 무엇이 들어갈까?"
@@ -149,7 +178,10 @@ scenes:
       - say:
           channel: narration
           text: "덕만이 항아리를 놓고 물동이를 들었습니다. 종이를 쥐던 귀족 손과 장터 사람의 손이 같은 줄에서 물을 넘겼습니다. 표는 바닥에 흩어졌지만 불길은 시장 앞에서 멈췄습니다."
-      - goto: bad_lonely_throne
+      - say:
+          channel: narration
+          text: "덕만이 돌아왔을 때 첫 표결은 무효가 되어 있었습니다. 대신 불을 끈 상인들이 궁문 앞에 남아 새 표결을 지켜보겠다고 버텼습니다. 왕관은 멀어졌지만 회의장 문은 다시 열렸습니다."
+      - goto: final_ballot
 
   false_order:
     actions:
@@ -157,7 +189,12 @@ scenes:
       - say:
           channel: narration
           text: "덕만이 위조 인장을 다시 눌렀습니다. 반란 지휘부는 빈 창고에서 서로를 발견했고, 싸움은 짧게 끝났습니다. 젖은 인주가 덕만 손에서도 마르고 있었습니다."
-      - goto: bad_lonely_throne
+      - say:
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "오늘은 위조가 사람을 살렸습니다. 하지만 공주님 손의 가짜 인장을 본 병사들은 다음 진짜 명령도 한 번 더 의심할 겁니다."
+      - goto: final_ballot
 
   final_ballot:
     actions:
@@ -219,7 +256,7 @@ scenes:
   bad_lonely_throne:
     actions:
       - bg: throne_hall
-      - camera: close
+      - camera: { shot: close, target: 덕만 }
       - effect: embers
       - char: { id: 덕만, position: center, emotion: angry }
       - say:
@@ -227,7 +264,7 @@ scenes:
           text: "내가 지키지 못한 문이 어디지? 왜 누구도 대답하지 않아?"
       - say:
           channel: narration
-          text: "시장을 향해 전부 달리거나 위조 왕명으로 시간을 벌거나 홀로 왕좌를 지킨 순간, 표결 항아리와 궁문 중 한쪽은 주인 없이 남았습니다. 반란군은 버려진 틈으로 들어와 덕만의 퇴로부터 끊었습니다."
+          text: "덕만이 사람도 명령도 나누지 않은 채 홀로 왕좌에 앉자, 표결 항아리와 궁문은 동시에 주인을 잃었습니다. 반란군은 비어 버린 길로 들어와 덕만의 퇴로부터 끊었습니다."
       - say:
           char: 유신.angry
           text: "한곳에 사람을 모두 모으면 다른 곳은 명령만 남습니다. 공주님, 동문까지 이미 넘어갔습니다."
@@ -236,4 +273,4 @@ scenes:
           text: "계승 내란 기록 — 덕만 공주, 표결 도중 왕궁에서 고립. 새벽에 반란군이 왕좌를 점령하고 덕만을 참수함."
       - gameOver:
           title: "운명 — 왕좌만 남은 왕"
-          message: "시장과 표결과 왕좌를 한 사람의 결단만으로 동시에 지킬 수는 없었습니다. 병력과 책임을 나누지 않은 선택들은 모두 같은 고립으로 합류했고, 덕만은 왕관을 쓰기 전에 죽었습니다."
+          message: "왕의 목소리 하나로 시장과 표결과 성문을 동시에 붙들 수는 없었습니다. 병력과 책임을 나누지 않은 덕만은 왕좌에 고립됐고, 왕관을 쓰기 전에 죽었습니다."

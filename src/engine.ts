@@ -2368,6 +2368,29 @@ function normalizeChapterPathKey(rawPath: string): string {
   return `./${normalized}`;
 }
 
+export function resolveChapterPathIndex(pathKeys: readonly string[], rawPath: string): number {
+  const normalizedPath = normalizeChapterPathKey(rawPath);
+  return pathKeys.findIndex((pathKey) => normalizeChapterPathKey(pathKey) === normalizedPath);
+}
+
+export function wasDialoguePresentedAtCursor(
+  storyLog: readonly StoryLogEntry[],
+  chapterPath: string,
+  sceneId: string,
+  actionIndex: number,
+  renderedText: string,
+): boolean {
+  const normalizedChapterPath = normalizeChapterPathKey(chapterPath);
+  return storyLog.some((entry) =>
+    entry.kind === 'dialogue'
+    && typeof entry.chapterPath === 'string'
+    && normalizeChapterPathKey(entry.chapterPath) === normalizedChapterPath
+    && entry.sceneId === sceneId
+    && entry.actionIndex === actionIndex
+    && entry.text === renderedText,
+  );
+}
+
 function chapterPathKeyToFilePath(pathKey: string): string {
   return pathKey.replace(/^(\.\/|\/)+/, '');
 }
@@ -2880,6 +2903,27 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
       continue;
     }
     if ('say' in action) {
+      if (action.say.when) {
+        const conditionMatchesReplayState = evaluateCondition(
+          action.say.when,
+          restoreVars,
+          restoreInventory,
+        );
+        // Replay starts from this chapter's defaults, so a condition inherited from an
+        // earlier chapter may look false here. An exact saved log cursor proves that the
+        // line was presented without guessing from the save's later, fully-mutated state.
+        const wasPresentedBeforeSave = wasDialoguePresentedAtCursor(
+          resume.storyLog,
+          chapter.pathKey,
+          sceneId,
+          actionIndex,
+          parseInlineSpeed(action.say.text).text,
+        );
+        if (!conditionMatchesReplayState && !wasPresentedBeforeSave) {
+          actionIndex += 1;
+          continue;
+        }
+      }
       const presentation = resolveSayPresentation(
         action.say.char,
         action.say.with,
@@ -3014,7 +3058,7 @@ async function restoreSaveProgress(save: SaveProgress): Promise<boolean> {
 
   const normalizedPath = save.chapterPath ? normalizeChapterPathKey(save.chapterPath) : undefined;
   const preparedIndex = normalizedPath
-    ? preparedChapters.findIndex((chapter) => chapter.pathKey === normalizedPath)
+    ? resolveChapterPathIndex(preparedChapters.map((chapter) => chapter.pathKey), normalizedPath)
     : save.chapterIndex;
   if (preparedIndex >= 0 && preparedIndex < preparedChapters.length) {
     prepareForSaveRestore();
@@ -3155,6 +3199,19 @@ async function resolveSequenceFromChapterPath(
 }
 
 async function jumpToChapterPath(pathKey: string): Promise<void> {
+  const preparedIndex = resolveChapterPathIndex(
+    preparedChapters.map((chapter) => chapter.pathKey),
+    pathKey,
+  );
+  if (preparedIndex >= 0) {
+    useVNStore.getState().clearInputGate();
+    useVNStore.getState().clearChoiceGate();
+    useVNStore.getState().setWaitingInput(false);
+    useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+    await startChapter(preparedIndex);
+    return;
+  }
+
   const resolved = await resolveSequenceFromChapterPath(pathKey);
   if (!resolved) {
     useVNStore.getState().setError({ message: `Chapter not found for goto target: ${pathKey}` });
@@ -3551,6 +3608,11 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('say' in action) {
+    if (action.say.when && !evaluateCondition(action.say.when, state.routeVars, state.inventory)) {
+      incrementCursor();
+      runToNextPause(loopGuard + 1);
+      return;
+    }
     const parsed = parseInlineSpeed(action.say.text);
     const textSpeed = game.settings.textSpeed;
     const sayWaitMs = clampSayWaitMs(action.say.wait);
@@ -4236,6 +4298,15 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
     }
     const save = loadedProgress.save;
     if (save?.chapterPath) {
+      const preparedIndex = resolveChapterPathIndex(
+        chapters.map((chapter) => chapter.pathKey),
+        save.chapterPath,
+      );
+      if (preparedIndex >= 0) {
+        const resumed = await startPreparedChapters(chapters, preparedIndex, save);
+        migrateLegacyProgressIfNeeded(loadedProgress.source, save, resumed);
+        return;
+      }
       const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
       if (resumeSequence) {
         const resumed = await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
@@ -4338,6 +4409,14 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
     }
     const save = loadedProgress.save;
     if (save?.chapterPath) {
+      const preparedIndex = resolveChapterPathIndex(
+        chapters.map((chapter) => chapter.pathKey),
+        save.chapterPath,
+      );
+      if (preparedIndex >= 0) {
+        await startPreparedChapters(chapters, preparedIndex, save);
+        return;
+      }
       const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
       if (resumeSequence) {
         await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);

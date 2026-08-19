@@ -33,9 +33,13 @@ scenes:
                   - var: visited_haruo
                     op: eq
                     value: true
-                  - var: clue_haruo_wipe
-                    op: eq
-                    value: false
+                  - any:
+                      - var: clue_haruo_wipe
+                        op: eq
+                        value: false
+                      - var: clue_rim_reagent
+                        op: eq
+                        value: false
                   - var: tea_residue_report
                     op: eq
                     value: true
@@ -395,6 +399,10 @@ scenes:
 
   outro_open:
     actions:
+      - char:
+          id: 란
+          position: left
+          emotion: worried
       - say:
           char: 란.worried
           with:

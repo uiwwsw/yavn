@@ -397,7 +397,7 @@ scenes:
     expect(parsed.data).toBeUndefined();
   });
 
-  it('accepts authored dialogue channels and conditional choice options', () => {
+  it('accepts authored dialogue channels and conditional dialogue or choice options', () => {
     const config = parseConfigYaml(
       `
 title: Channel Test
@@ -423,6 +423,7 @@ scenes:
     actions:
       - say:
           channel: record
+          when: { var: found_record, op: eq, value: true }
           text: "The archive changed."
       - choice:
           prompt: "Read it?"
@@ -439,13 +440,57 @@ scenes:
     expect(chapter.error).toBeUndefined();
     if (!config.data || !base.data || !chapter.data) return;
     expect(resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data }).error).toBeUndefined();
-    expect(chapter.data.data.scenes.archive.actions[0]).toMatchObject({ say: { channel: 'record' } });
+    expect(chapter.data.data.scenes.archive.actions[0]).toMatchObject({
+      say: {
+        channel: 'record',
+        when: { var: 'found_record', op: 'eq', value: true },
+      },
+    });
     const choiceAction = chapter.data.data.scenes.archive.actions[1];
     expect(choiceAction && 'choice' in choiceAction ? choiceAction.choice.options[0].when : undefined).toEqual({
       var: 'found_record',
       op: 'eq',
       value: true,
     });
+  });
+
+  it('rejects a conditional line that references an unknown state key', () => {
+    const config = parseConfigYaml(
+      `
+title: Conditional Dialogue Test
+textSpeed: 30
+autoSave: true
+clickToInstant: true
+`,
+      'config.yaml',
+    );
+    const base = parseBaseYaml(
+      `
+state:
+  known_clue: false
+`,
+      'base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+script:
+  - scene: archive
+scenes:
+  archive:
+    actions:
+      - say:
+          when: { var: missing_clue, op: eq, value: true }
+          text: "This line must not compile."
+`,
+      '0.yaml',
+    );
+
+    expect(config.error).toBeUndefined();
+    expect(base.error).toBeUndefined();
+    expect(chapter.error).toBeUndefined();
+    if (!config.data || !base.data || !chapter.data) return;
+    expect(resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data }).error?.message)
+      .toContain("unknown state variable or inventory item 'missing_clue' in say.when");
   });
 
   it('rejects unknown dialogue channels', () => {
