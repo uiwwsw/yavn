@@ -65,7 +65,7 @@ scenes:
       - say:
           char: 덕만.sad
           text: "잡았어야 했는데… 언니가 눈을 뜰 때 내가 없었어. 이게 왕이 하는 일이라면, 난 매일 누군가에게 늦겠지."
-      - goto: forged_confession
+      - goto: bad_poison_clock
 
   false_death:
     actions:
@@ -82,7 +82,33 @@ scenes:
       - say:
           char: 덕만.angry
           text: "한 번만 더 웃으면 네 혀가 아니라 네가 왜 도왔는지부터 베어 볼 거야."
-      - goto: forged_confession
+      - goto: bad_poison_clock
+
+  bad_poison_clock:
+    actions:
+      - bg: locked_room
+      - camera: close
+      - char: { id: 덕만, position: left, emotion: sad }
+      - char: { id: 천명, position: right, emotion: sad }
+      - say:
+          channel: narration
+          text: "덕만이 지붕의 발자국을 좇거나 가짜 사망 종으로 범인을 낚는 동안, 독은 천명의 손끝에서 심장까지 올라왔습니다. 의원에게 닿았을 때는 해독약을 삼킬 숨이 남지 않았습니다."
+      - say:
+          char: 천명.sad
+          camera: close
+          with: [덕만]
+          text: "범인을 잡아도… 내가 없으면 네가 날 죽였다는 이야기를 누가 아니라고 해 주지?"
+      - say:
+          char: 덕만.sad
+          camera: close
+          with: [천명]
+          text: "언니, 눈 떠. 증거도 거짓말도 다 버릴게. 이번에는 사람부터 고를게."
+      - say:
+          channel: record
+          text: "천명 공주 독살 사건 — 현장에서 사라진 덕만 공주가 배후로 지목됨. 덕만은 체포 이틀 뒤 반역죄로 처형됨."
+      - gameOver:
+          title: "운명 — 독보다 늦은 진실"
+          message: "범인과 증거를 먼저 붙잡으려는 선택들은 서로 달랐지만, 환자를 치료에서 멀어지게 한 결과는 같았습니다. 천명이 죽자 준비된 자백문이 사실이 되었고 덕만도 뒤따라 죽었습니다."
 
   forged_confession:
     actions:
