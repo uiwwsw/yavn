@@ -28,6 +28,44 @@ body,
   -webkit-user-drag: none;
 }
 
+html.game-shell-locked,
+body.game-shell-locked,
+body.game-shell-locked #root {
+  height: 100%;
+  height: 100svh;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.game-shell-locked {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  background: #080709;
+}
+
+body.game-shell-locked .start-gate,
+body.game-shell-locked .game-route-boot,
+body.game-shell-locked .app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 0;
+  overscroll-behavior: none;
+}
+
+body.game-shell-locked button,
+body.game-shell-locked [role='button'],
+body.game-shell-locked input,
+body.game-shell-locked select {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 img,
 a {
   -webkit-user-drag: none;
@@ -70,6 +108,9 @@ textarea,
   --start-gate-frame-color: rgba(236, 200, 134, 0.38);
   --start-gate-accent: #e8bc72;
   --start-gate-muted: rgba(241, 225, 196, 0.66);
+  --start-gate-title-surface:
+    linear-gradient(180deg, rgba(7, 8, 11, 0.78), rgba(7, 8, 11, 0.5));
+  --start-gate-title-surface-border: rgba(255, 255, 255, 0.14);
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -145,8 +186,8 @@ textarea,
       transparent 1px,
       transparent 14px
     );
-  --start-gate-eyebrow-color: rgba(89, 65, 43, 0.82);
-  --start-gate-title-color: #2f2115;
+  --start-gate-eyebrow-color: rgba(255, 237, 202, 0.86);
+  --start-gate-title-color: #fff0d0;
   --start-gate-title-shadow:
     0 2px 2px rgba(31, 19, 10, 0.72),
     0 12px 28px rgba(35, 22, 12, 0.42);
@@ -167,7 +208,10 @@ textarea,
   --start-gate-button-radius: 16px;
   --start-gate-frame-color: rgba(89, 65, 43, 0.34);
   --start-gate-accent: #79532f;
-  --start-gate-muted: rgba(65, 44, 26, 0.66);
+  --start-gate-muted: rgba(255, 237, 202, 0.76);
+  --start-gate-title-surface:
+    linear-gradient(180deg, rgba(33, 23, 14, 0.76), rgba(38, 25, 14, 0.5));
+  --start-gate-title-surface-border: rgba(235, 202, 150, 0.32);
 }
 
 .start-gate-bg-image {
@@ -259,7 +303,9 @@ textarea,
   z-index: 3;
   width: 100%;
   height: 100%;
-  min-height: 100vh;
+  min-height: 100%;
+  min-height: 100svh;
+  min-height: 100dvh;
 }
 
 .start-gate-title-block {
@@ -269,6 +315,13 @@ textarea,
   transform: translateX(-50%);
   text-align: center;
   width: min(92%, 980px);
+  padding: clamp(14px, 2.4vw, 24px) clamp(16px, 3.4vw, 36px);
+  border: 1px solid var(--start-gate-title-surface-border);
+  border-radius: clamp(14px, 2vw, 22px);
+  background: var(--start-gate-title-surface);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(9px) saturate(0.82);
+  -webkit-backdrop-filter: blur(9px) saturate(0.82);
   opacity: 0;
   animation: start-gate-title-in 680ms 100ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
 }
@@ -314,12 +367,17 @@ textarea,
 .start-gate-title-block h1 {
   margin: 8px 0 0;
   color: var(--start-gate-title-color);
-  text-shadow: var(--start-gate-title-shadow);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.96),
+    0 4px 14px rgba(0, 0, 0, 0.82),
+    var(--start-gate-title-shadow);
   font-size: clamp(2rem, 5.2vw, 4.2rem);
   font-weight: 820;
   letter-spacing: -0.035em;
   line-height: 1.08;
   text-wrap: balance;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .start-gate-prologue {
@@ -1997,6 +2055,7 @@ textarea,
 }
 
 .dialog-content-scroll,
+.start-gate-legal-notices,
 .story-log-list,
 .inventory-grid-scroll,
 .inventory-detail-modal-body,
@@ -2009,9 +2068,12 @@ textarea,
   scrollbar-color: var(--ui-choice-hover-border) rgba(0, 0, 0, 0.12);
   scrollbar-gutter: stable;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 .dialog-content-scroll::-webkit-scrollbar,
+.start-gate-legal-notices::-webkit-scrollbar,
 .story-log-list::-webkit-scrollbar,
 .inventory-grid-scroll::-webkit-scrollbar,
 .inventory-detail-modal-body::-webkit-scrollbar,
@@ -2025,6 +2087,7 @@ textarea,
 }
 
 .dialog-content-scroll::-webkit-scrollbar-track,
+.start-gate-legal-notices::-webkit-scrollbar-track,
 .story-log-list::-webkit-scrollbar-track,
 .inventory-grid-scroll::-webkit-scrollbar-track,
 .inventory-detail-modal-body::-webkit-scrollbar-track,
@@ -2038,6 +2101,7 @@ textarea,
 }
 
 .dialog-content-scroll::-webkit-scrollbar-thumb,
+.start-gate-legal-notices::-webkit-scrollbar-thumb,
 .story-log-list::-webkit-scrollbar-thumb,
 .inventory-grid-scroll::-webkit-scrollbar-thumb,
 .inventory-detail-modal-body::-webkit-scrollbar-thumb,
@@ -3737,6 +3801,7 @@ textarea,
 .choice-gate-option {
   min-width: 0;
   height: 100%;
+  min-height: 52px;
   width: 100%;
   border: 1px solid var(--ui-choice-border);
   border-radius: 8px;
@@ -3752,16 +3817,61 @@ textarea,
   padding: 10px 12px;
   cursor: pointer;
   font-family: var(--ui-body-font);
+  transition:
+    transform 120ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    filter 120ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.choice-gate-option > span:first-child {
+.choice-gate-option-copy {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: 9px;
+}
+
+.choice-gate-option-index {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--ui-choice-border) 78%, transparent);
+  border-radius: 999px;
+  color: var(--ui-status-color);
+  background: color-mix(in srgb, var(--ui-choice-bg) 84%, transparent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.choice-gate-option-text {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.choice-gate-option-mark {
+  color: var(--ui-status-color);
+  font-size: 22px;
+  font-weight: 560;
+  line-height: 1;
+  text-align: right;
 }
 
 .choice-gate-option:hover {
   border-color: var(--ui-choice-hover-border);
   background: var(--ui-choice-hover-bg);
+}
+
+.choice-gate-option:active {
+  transform: scale(0.985);
+  border-color: var(--ui-choice-hover-border);
+  background: var(--ui-choice-hover-bg);
+  filter: brightness(1.04);
 }
 
 .choice-gate-option-forgive {
@@ -4905,10 +5015,14 @@ textarea,
 @media (max-width: 768px) {
   .start-gate-title-block {
     top: max(7%, calc(env(safe-area-inset-top) + 26px));
+    width: calc(100% - max(24px, env(safe-area-inset-left)) - max(24px, env(safe-area-inset-right)));
+    padding: 14px 13px 15px;
+    border-radius: 16px;
   }
 
   .start-gate-title-block h1 {
-    font-size: clamp(2rem, 10vw, 3.25rem);
+    font-size: clamp(1.72rem, 8.4vw, 2.72rem);
+    line-height: 1.12;
   }
 
   .start-gate-prologue {
@@ -4992,7 +5106,9 @@ textarea,
   }
 
   .dialog-box.has-choice-gate {
-    --dialog-max-height: 48cqh;
+    --dialog-max-height: 64cqh;
+    border-radius: 16px;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   }
 
   .dialog-controls {

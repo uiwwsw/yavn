@@ -81,6 +81,10 @@ import {
 } from './launcherPresentation';
 import { buildLive2DLoadKey } from './live2dLoadTracker';
 import {
+  GAME_SHELL_LOCK_CLASS,
+  shouldPreventGameShellOverscroll,
+} from './mobileAppShell';
+import {
   fitStickerWithinFrameAvoidingRects,
   shouldRelayoutStickerForStageResize,
   type StickerFit,
@@ -1188,6 +1192,7 @@ export default function App() {
   const [saveNotice, setSaveNotice] = useState('');
   const [saveBusy, setSaveBusy] = useState(false);
   const [recoveredFailedChoice, setRecoveredFailedChoice] = useState<ChoiceRecoverySummary['failedChoice']>();
+  const gameShellLocked = bootMode !== 'launcher' || Boolean(startGate);
   const [returningToStartGate, setReturningToStartGate] = useState(false);
   const holdTimerRef = useRef<number | undefined>(undefined);
   const holdStartRef = useRef<number>(0);
@@ -1425,26 +1430,60 @@ export default function App() {
     };
   }, [bgmEnabled, startGate, stopStartGateMusic]);
 
+  useLayoutEffect(() => {
+    document.documentElement.classList.toggle(GAME_SHELL_LOCK_CLASS, gameShellLocked);
+    document.body.classList.toggle(GAME_SHELL_LOCK_CLASS, gameShellLocked);
+
+    return () => {
+      document.documentElement.classList.remove(GAME_SHELL_LOCK_CLASS);
+      document.body.classList.remove(GAME_SHELL_LOCK_CLASS);
+    };
+  }, [gameShellLocked]);
+
   useEffect(() => {
+    let previousTouchY: number | null = null;
     const preventGestureZoom = (event: Event) => {
       event.preventDefault();
     };
-    const preventPinchZoom = (event: TouchEvent) => {
+    const rememberTouchPosition = (event: TouchEvent) => {
+      previousTouchY = event.touches[0]?.clientY ?? null;
+    };
+    const clearTouchPosition = () => {
+      previousTouchY = null;
+    };
+    const preventPinchZoomAndShellOverscroll = (event: TouchEvent) => {
       if (event.touches.length > 1) {
+        event.preventDefault();
+        return;
+      }
+      const currentTouchY = event.touches[0]?.clientY;
+      if (!gameShellLocked || currentTouchY === undefined || previousTouchY === null) {
+        previousTouchY = currentTouchY ?? null;
+        return;
+      }
+      const touchDeltaY = currentTouchY - previousTouchY;
+      previousTouchY = currentTouchY;
+      if (event.cancelable && shouldPreventGameShellOverscroll(event.target, touchDeltaY)) {
         event.preventDefault();
       }
     };
     document.addEventListener('gesturestart', preventGestureZoom, { passive: false });
     document.addEventListener('gesturechange', preventGestureZoom, { passive: false });
     document.addEventListener('gestureend', preventGestureZoom, { passive: false });
-    document.addEventListener('touchmove', preventPinchZoom, { passive: false });
+    document.addEventListener('touchstart', rememberTouchPosition, { passive: true });
+    document.addEventListener('touchmove', preventPinchZoomAndShellOverscroll, { passive: false });
+    document.addEventListener('touchend', clearTouchPosition, { passive: true });
+    document.addEventListener('touchcancel', clearTouchPosition, { passive: true });
     return () => {
       document.removeEventListener('gesturestart', preventGestureZoom);
       document.removeEventListener('gesturechange', preventGestureZoom);
       document.removeEventListener('gestureend', preventGestureZoom);
-      document.removeEventListener('touchmove', preventPinchZoom);
+      document.removeEventListener('touchstart', rememberTouchPosition);
+      document.removeEventListener('touchmove', preventPinchZoomAndShellOverscroll);
+      document.removeEventListener('touchend', clearTouchPosition);
+      document.removeEventListener('touchcancel', clearTouchPosition);
     };
-  }, []);
+  }, [gameShellLocked]);
 
   useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver));
 
@@ -4265,7 +4304,13 @@ export default function App() {
                       disabled={busy}
                       aria-label={`${option.text}${isPreviousGameOverChoice ? ', 직전 선택, 게임 오버 경로' : ''}`}
                     >
-                      <span>{option.text}</span>
+                      <span className="choice-gate-option-copy">
+                        <span className="choice-gate-option-index" aria-hidden="true">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className="choice-gate-option-text">{option.text}</span>
+                        <span className="choice-gate-option-mark" aria-hidden="true">›</span>
+                      </span>
                       <span className="choice-gate-option-badges">
                         {isPreviousGameOverChoice && (
                           <span className="choice-gate-option-history-badge">
