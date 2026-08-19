@@ -38,14 +38,10 @@ scenes:
             - text: "관측관들을 장터로 보내 진짜 별을 가리킨다"
               when: { var: knowledge_policy, op: ne, value: bidam_network }
               add: { people_support: 2, insight: 1 }
-              gameOver:
-                title: "운명 — 사실보다 빠른 불"
-                message: "관측관들이 하늘을 설명하는 동안 불붙은 연은 이미 군영 세 곳을 반란으로 묶었습니다. 사실은 맞았지만 늦었고, 덕만은 성문을 돌파한 군사에게 피살됐습니다."
+              goto: bad_truth_too_late
             - text: "왕궁 지붕에 더 큰 불을 올린다"
               add: { fear: 2, people_support: 1 }
-              gameOver:
-                title: "운명 — 더 큰 거짓 별"
-                message: "여왕의 불은 소문을 덮는 대신 왕궁 위치를 반란군에게 밝혔습니다. 가짜 징조를 더 큰 징조로 누르려던 덕만은 불타는 지붕 아래에서 죽었습니다."
+              goto: bad_larger_false_star
 
   inspect_kite:
     actions:
@@ -56,6 +52,56 @@ scenes:
           text: "재를 헤치자 대나무 살이 손에 걸렸습니다. 기름 먹인 천 끝에는 비담 전령의 매듭이 그대로 남아 있었습니다."
       - clearSticker: { id: c11_kite, leave: fadeOut }
       - goto: bidam_letter_arrives
+
+  bad_truth_too_late:
+    actions:
+      - bg: village
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: queen_angry }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "관측관들이 장터마다 같은 별을 가리켰습니다. 사람들은 고개를 들었지만, 먼 군영에서는 이미 불붙은 연을 보고 반란 북을 울리고 있었습니다."
+      - say:
+          char: 춘추.nervous
+          camera: reaction
+          with: [덕만]
+          text: "설명은 맞습니다. 하지만 저들은 사실을 묻기 전에 칼을 들었습니다. 성문 세 곳에서 같은 깃발이 올라옵니다."
+      - say:
+          char: 덕만.queen_angry
+          text: "진실을 알리면 멈출 거라 생각했어. 누가 거짓을 움직이는지부터 끊었어야 했다."
+      - say:
+          channel: record
+          text: "유성 소요 기록 — 왕실 관측 발표 중 반란군이 서문을 돌파. 선덕왕은 피난민을 호위하다 군사에게 피살됨."
+      - gameOver:
+          title: "운명 — 사실보다 빠른 불"
+          message: "관측관들이 하늘을 설명하는 동안 불붙은 연은 이미 군영 세 곳을 반란으로 묶었습니다. 사실은 맞았지만 늦었고, 덕만은 성문을 돌파한 군사에게 피살됐습니다."
+
+  bad_larger_false_star:
+    actions:
+      - bg: burning_palace
+      - camera: close
+      - effect: embers
+      - char: { id: 덕만, position: left, emotion: queen_angry }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          char: 덕만.queen_angry
+          text: "왕궁 지붕에 불을 올려라. 저 가짜 별보다 큰 불로 아직 왕이 서 있다는 걸 보여 준다."
+      - say:
+          channel: narration
+          text: "도성의 환호가 잠시 돌아왔습니다. 그러나 성 밖 반란군에게 가장 밝은 불은 왕이 숨은 지붕을 가리키는 봉화가 되었습니다."
+      - say:
+          char: 춘추.nervous
+          camera: reaction
+          with: [덕만]
+          text: "폐하, 불화살이 이쪽으로 모입니다. 소문을 덮은 게 아니라 표적을 그려 줬습니다!"
+      - say:
+          char: 덕만.queen_sad
+          camera: close
+          text: "거짓을 이기려고 더 큰 거짓을 골랐구나. 다음 불은 하늘이 아니라 내가 부른 것이다."
+      - gameOver:
+          title: "운명 — 더 큰 거짓 별"
+          message: "여왕의 불은 소문을 덮는 대신 왕궁 위치를 반란군에게 밝혔습니다. 가짜 징조를 더 큰 징조로 누르려던 덕만은 불타는 지붕 아래에서 죽었습니다."
 
   bidam_letter_arrives:
     actions:

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-19T05:08:36.959Z",
+  "generatedAt": "2026-08-19T06:41:45.243Z",
   "games": [
     {
       "id": "conan",
@@ -98,7 +98,7 @@
       "name": "선덕여왕: 죽은 공주의 왕관",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "9.4.0",
+      "version": "9.5.0",
       "summary": "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 마침내 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 스릴러.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [

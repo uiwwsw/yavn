@@ -45,15 +45,11 @@ scenes:
             - text: "왕은 숨기고 빼앗긴 권한만 벽에 붙인다"
               set: { king_failure_public: false }
               add: { evidence: 2, nobles_support: 1, insight: 1 }
-              gameOver:
-                title: "운명 — 이름 없는 고백"
-                message: "권한을 훔친 가문만 공개하자 귀족들은 병든 왕을 방패로 세웠습니다. 왕이 침묵한 채 덕만만 고발자가 되었고, 반역 재판은 새벽 전에 끝났습니다."
+              goto: bad_nameless_confession
             - text: "옥새함을 닫고 덕만이 비난을 받는다"
               set: { king_failure_public: false }
               add: { king_trust: 3, fear: 1, people_support: -1 }
-              gameOver:
-                title: "운명 — 대신 뒤집어쓴 왕의 실패"
-                message: "덕만이 아버지의 실패를 자기 이름으로 덮자 귀족들은 그 자백만 남겼습니다. 왕을 지키려 한 공주는 왕위를 노린 반역자로 기록되어 처형됐습니다."
+              goto: bad_inherited_blame
 
   public_confession:
     actions:
@@ -66,6 +62,54 @@ scenes:
           channel: narration
           text: "진평왕의 목소리가 궁문 밖까지 닿자 야유와 울음이 한꺼번에 터졌습니다. 귀족들은 고개를 돌렸지만 누구도 왕이 뱉은 말을 주워 담지 못했습니다."
       - goto: rebuild_power
+
+  bad_nameless_confession:
+    actions:
+      - bg: council_hall
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: princess_angry }
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - say:
+          channel: narration
+          text: "궁문 벽에 창고와 성문을 빼앗은 가문 이름이 가득 붙었습니다. 그러나 그 권한을 내준 왕의 자리는 문서 어디에도 없었습니다."
+      - say:
+          char: 덕만.princess_angry
+          camera: close
+          with: [진평왕]
+          text: "사람들이 아버지를 보지 않게 하려 했습니다. 그런데 이제 저들이 저만 왕을 모함한 사람으로 봅니다."
+      - say:
+          char: 진평왕.weak
+          text: "내가 숨은 채 네 말만 세상에 내보냈다. 네가 진실을 말했는데도 반역자가 된 것은 내 침묵 때문이다."
+      - say:
+          channel: record
+          text: "왕실 권한 위조 사건 — 덕만 공주가 귀족 명부를 조작해 왕권을 찬탈하려 함. 진평왕의 부인 아래 반역죄로 처형."
+      - gameOver:
+          title: "운명 — 이름 없는 고백"
+          message: "권한을 훔친 가문만 공개하자 귀족들은 병든 왕을 방패로 세웠습니다. 왕이 침묵한 채 덕만만 고발자가 되었고, 반역 재판은 새벽 전에 끝났습니다."
+
+  bad_inherited_blame:
+    actions:
+      - bg: throne_hall
+      - camera: close
+      - char: { id: 덕만, position: left, emotion: princess_sad }
+      - char: { id: 진평왕, position: right, emotion: weak }
+      - say:
+          char: 덕만.princess_sad
+          text: "창고가 닫힌 것도, 군사가 움직이지 않은 것도 제 명령 탓입니다. 아버님은 아무것도 모르셨습니다."
+      - say:
+          channel: narration
+          text: "귀족들은 놀랄 만큼 빨리 고개를 끄덕였습니다. 덕만의 말을 받아 적은 종이에서 '아버지를 지키기 위해'라는 앞 문장만 사라졌습니다."
+      - say:
+          char: 진평왕.weak
+          camera: reaction
+          with: [덕만]
+          text: "네 이름을 살려 돌아오게 해 놓고 또 내 방패로 썼구나. 이번에는 내가 입을 열어도 늦었다."
+      - say:
+          channel: record
+          text: "덕만 공주 자백 — 왕명을 사칭해 창고와 군사를 혼란에 빠뜨림. 본인의 진술에 따라 참수형을 집행함."
+      - gameOver:
+          title: "운명 — 대신 뒤집어쓴 왕의 실패"
+          message: "덕만이 아버지의 실패를 자기 이름으로 덮자 귀족들은 그 자백만 남겼습니다. 왕을 지키려 한 공주는 왕위를 노린 반역자로 기록되어 처형됐습니다."
 
   rebuild_power:
     actions:

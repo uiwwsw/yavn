@@ -34,15 +34,11 @@ scenes:
             - text: "남쪽 돌을 골라 첨성대부터 올린다"
               set: { observatory_priority: stars_first }
               add: { insight: 3, people_support: 1, army_support: -1 }
-              gameOver:
-                title: "운명 — 성문보다 높은 별"
-                message: "첨성대가 왕궁 처마를 넘던 날 북쪽 성벽이 무너졌습니다. 별을 먼저 세운 여왕은 돌아온 반란군의 화살에 맞아 탑 아래에서 죽었습니다."
+              goto: bad_stars_before_wall
             - text: "북쪽 성벽을 막고 남은 돌을 나눈다"
               set: { observatory_priority: balanced }
               add: { army_support: 2, insight: 1, nobles_support: 1 }
-              gameOver:
-                title: "운명 — 절반으로 지킨 나라"
-                message: "성벽도 관측대도 절반에서 멈추자 어느 쪽도 제 역할을 하지 못했습니다. 예고하지 못한 폭우가 군량을 쓸어 갔고 굶은 군영은 여왕에게 칼을 돌렸습니다."
+              goto: bad_half_built_kingdom
             - text: "창고를 채우고 돌 나를 품삯을 곡식으로 준다"
               set: { observatory_priority: granary_first }
               add: { people_support: 3, insight: 1, fear: 1 }
@@ -63,6 +59,55 @@ scenes:
           char: 덕만.queen_sad
           text: "오지 않은 마을도 적어. 빠진 이름을 죄로 만들지 말고."
       - goto: who_reads_stars
+
+  bad_stars_before_wall:
+    actions:
+      - bg: title_palace
+      - camera: wide
+      - char: { id: 덕만, position: center, emotion: queen }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "첨성대의 첫 돌이 왕궁 처마를 넘던 날, 북쪽에서 금이 간 방패와 피 묻은 성문 열쇠가 도착했습니다."
+      - say:
+          char: 춘추.nervous
+          camera: reaction
+          with: [덕만]
+          text: "탑을 멈추면 권위가 무너집니다. 계속 올리면 오늘 밤 북문이 무너집니다. 이미 돌을 너무 많이 옮겼습니다."
+      - say:
+          char: 덕만.queen_sad
+          camera: close
+          text: "별을 읽으면 다음 위험을 막을 수 있다고 믿었다. 그런데 오늘 올 위험을 볼 성벽부터 내가 가져갔구나."
+      - say:
+          channel: narration
+          text: "그날 밤 반란군이 열린 북문으로 들어왔습니다. 덕만은 완성되지 않은 탑 아래에서 피난민을 막아 세우다 화살에 맞았습니다."
+      - gameOver:
+          title: "운명 — 성문보다 높은 별"
+          message: "첨성대가 왕궁 처마를 넘던 날 북쪽 성벽이 무너졌습니다. 별을 먼저 세운 여왕은 돌아온 반란군의 화살에 맞아 탑 아래에서 죽었습니다."
+
+  bad_half_built_kingdom:
+    actions:
+      - bg: frontier
+      - camera: wide
+      - char: { id: 덕만, position: left, emotion: queen_sad }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          channel: narration
+          text: "성벽은 사람 키만큼 높아졌고 관측대는 별을 볼 수 없는 높이에서 멈췄습니다. 남은 돌 한 장을 두고 군사와 관측관이 매일 다퉜습니다."
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "둘 다 조금씩 가졌지만 누구도 쓸 수 없습니다. 이제 비가 오면 군량을 옮길 길도 계산할 표도 없습니다."
+      - say:
+          char: 덕만.queen_sad
+          text: "공평하게 나누는 것과 책임 있게 고르는 건 달랐어. 결정을 피한 값이 가장 크게 돌아오는군."
+      - say:
+          channel: record
+          text: "선덕왕 원년 폭우 — 미완 성벽 붕괴와 관측 실패로 군량 소실. 굶은 군영의 반란 중 선덕왕 피살."
+      - gameOver:
+          title: "운명 — 절반으로 지킨 나라"
+          message: "성벽도 관측대도 절반에서 멈추자 어느 쪽도 제 역할을 하지 못했습니다. 예고하지 못한 폭우가 군량을 쓸어 갔고 굶은 군영은 여왕에게 칼을 돌렸습니다."
 
   who_reads_stars:
     actions:
