@@ -19,6 +19,30 @@ export type StickerStageSize = {
 };
 
 /**
+ * Confirms that the character bounds used as sticker obstacles have stopped
+ * moving. The small tolerance absorbs subpixel rounding without treating an
+ * in-flight character transition as a settled layout.
+ */
+export function haveStickerObstacleRectsSettled(
+  previous: readonly StickerLayoutRect[] | null,
+  next: readonly StickerLayoutRect[],
+  tolerance = 0.75,
+): boolean {
+  if (!previous || previous.length !== next.length) {
+    return false;
+  }
+
+  const allowedDelta = Math.max(0, tolerance);
+  return previous.every((previousRect, index) => {
+    const nextRect = next[index];
+    return Math.abs(previousRect.left - nextRect.left) <= allowedDelta
+      && Math.abs(previousRect.top - nextRect.top) <= allowedDelta
+      && Math.abs(previousRect.width - nextRect.width) <= allowedDelta
+      && Math.abs(previousRect.height - nextRect.height) <= allowedDelta;
+  });
+}
+
+/**
  * Keeps a locked sticker stable through mobile browser-chrome and dialogue
  * height changes. A new fit is only necessary when the play stage itself has
  * changed enough to invalidate the previous coordinate system.
