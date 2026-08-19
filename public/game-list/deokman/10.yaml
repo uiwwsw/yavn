@@ -13,7 +13,7 @@ scenes:
       - say:
           channel: narration
           text: "사흘 뒤 밤, 불붙은 것이 별처럼 왕궁 위를 가로질렀습니다. 사람들이 하늘을 올려다보기도 전에 군영과 시장에서 같은 외침이 터졌습니다. '여왕의 별이 떨어졌다.'"
-      - char: { id: 덕만, position: left }
+      - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
           char: 춘추.nervous
@@ -184,7 +184,7 @@ scenes:
           channel: narration
           text: "사흘째, 반란군 솥에서 연기가 끊겼습니다. 항복자는 늘었지만 같은 길을 쓰던 성 밖 마을의 아궁이도 함께 식었습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           camera: close
           with: [유신]
           text: "칼을 안 썼다고 깨끗한 게 아니야. 저 마을의 빈 솥도 승전 기록에 적어."
@@ -194,7 +194,7 @@ scenes:
     actions:
       - bg: throne_hall
       - camera: wide
-      - char: { id: 덕만, position: left }
+      - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 비담, position: right, emotion: sad }
       - say:
           channel: narration
@@ -220,9 +220,9 @@ scenes:
       - camera: close
       - effect: darken
       - char: { id: 유신, position: right, emotion: angry }
-      - char: { id: 덕만, position: left, emotion: angry }
+      - char: { id: 덕만, position: left, emotion: queen_angry }
       - say:
-          char: 덕만.angry
+          char: 덕만.queen_angry
           text: "밤이 끝나기 전에 본진을 무너뜨린다. 소문이 다음 마을에 닿기 전에 끝내야 해."
       - say:
           char: 유신.angry

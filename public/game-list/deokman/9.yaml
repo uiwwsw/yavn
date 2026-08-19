@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: record
           text: "제10장 — 별을 세우는 사람"
-      - char: { id: 덕만, position: left }
+      - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 춘추, position: right }
       - say:
           channel: narration
@@ -75,7 +75,7 @@ scenes:
           with: [덕만]
           text: "장부에는 모두 자원했다고 쓰였습니다. 하지만 왕의 공사 앞에서 정말 '싫다'고 말할 수 있었을까요?"
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "오지 않은 마을도 적어. 빠진 이름을 죄로 만들지 말고."
       - goto: who_reads_stars
 
@@ -142,7 +142,7 @@ scenes:
           with: [덕만]
           text: "걱정하지 마십시오. 이 문 열쇠는 폐하를 위해서만 돌립니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "그 말이 위로로 들리는 동안만 안전하겠지."
       - goto: observatory_sabotage
 
@@ -183,7 +183,7 @@ scenes:
       - say:
           channel: narration
           text: "첨성대는 늦게 완성됐습니다. 한쪽 돌은 검게 탔고 관측표에는 물에 번진 숫자를 다시 쓴 흔적이 남았습니다."
-      - char: { id: 덕만, position: center }
+      - char: { id: 덕만, position: center, emotion: queen }
       - say:
           char: 덕만
           camera: close
@@ -227,7 +227,7 @@ scenes:
           with: [덕만]
           text: "폐하께서 빠른 길을 원하셨습니다. 문을 하나만 두었고, 제가 밤낮으로 지켰습니다. 이제 와 문이 좁다 하십니까?"
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           camera: close
           with: [비담]
           text: "내가 네게 너무 큰 문을 줬어. 오늘부터 표를 베끼고, 네 전령 장부도 두 사람이 함께 연다."
@@ -248,10 +248,10 @@ scenes:
       - bg: title_palace
       - camera: close
       - effect: darken
-      - char: { id: 덕만, position: center, emotion: angry }
+      - char: { id: 덕만, position: center, emotion: queen_angry }
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
-          char: 덕만.angry
+          char: 덕만.queen_angry
           text: "오늘 밤 더 높은 탑을 세운다. 누구도 여왕의 뜻을 꺾지 못한다는 것을 보여라."
       - say:
           channel: narration

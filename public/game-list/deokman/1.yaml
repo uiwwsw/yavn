@@ -10,7 +10,7 @@ scenes:
           channel: record
           delivery: calm
           text: "십 년 뒤. 국경 장시의 종이 세 번 울리자 '만덕'은 셈을 멈췄습니다. 죽은 공주를 찾는 군화 소리가 장터로 들어왔습니다."
-      - char: { id: 덕만, position: left }
+      - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right }
       - say:
           channel: narration
@@ -100,7 +100,7 @@ scenes:
           with: [덕만]
           text: "죽은 분이 참 멀리도 도망치셨습니다. 이제 관에 누우시지요."
       - say:
-          char: 덕만.angry
+          char: 덕만.wanderer_angry
           camera: close
           with: [칠숙]
           text: "죽은 아이 하나 잡겠다고 군사를 몰고 왔어? 고맙네. 내 이름을 네가 증명해 줬어."
@@ -192,7 +192,7 @@ scenes:
     actions:
       - bg: moon_court
       - camera: wide
-      - char: { id: 덕만, position: left }
+      - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right }
       - say:
           channel: narration
@@ -219,10 +219,10 @@ scenes:
     actions:
       - bg: locked_room
       - camera: close
-      - char: { id: 덕만, position: left, emotion: sad }
+      - char: { id: 덕만, position: left, emotion: wanderer_sad }
       - char: { id: 칠숙, position: right, emotion: smile }
       - say:
-          char: 덕만.sad
+          char: 덕만.wanderer_sad
           text: "소화는 보내. 네가 십 년 동안 쫓은 사람은 나잖아."
       - say:
           char: 칠숙.smile

@@ -32,13 +32,23 @@ assets:
         scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v8.png
         resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v8.png
     덕만:
-      base: root:/game-list/deokman/assets/char/deokman-silla-v5.webp
+      base: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 0.98 }
       emotions:
-        sad: root:/game-list/deokman/assets/char/deokman-sad-silla-v5.webp
-        angry: root:/game-list/deokman/assets/char/deokman-angry-silla-v5.webp
+        sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.png
+        angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.png
+        princess: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
+        princess_sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.png
+        princess_angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.png
+        wanderer: root:/game-list/deokman/assets/char/deokman-wanderer-silla-v9.png
+        wanderer_sad: root:/game-list/deokman/assets/char/deokman-wanderer-sad-silla-v9.png
+        wanderer_angry: root:/game-list/deokman/assets/char/deokman-wanderer-angry-silla-v9.png
+        attendant: root:/game-list/deokman/assets/char/deokman-attendant-silla-v9.png
+        queen: root:/game-list/deokman/assets/char/deokman-queen-silla-v9.png
+        queen_sad: root:/game-list/deokman/assets/char/deokman-queen-sad-silla-v9.png
+        queen_angry: root:/game-list/deokman/assets/char/deokman-queen-angry-silla-v9.png
     소화:
       base: root:/game-list/deokman/assets/char/sowon-silla-v5.webp
       facing: left
