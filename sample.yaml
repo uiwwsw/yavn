@@ -80,6 +80,7 @@ scenes:
               gameOver:
                 title: "GAME OVER"
                 message: "잠금 장치가 작동했다. 저장한 시점이나 현재 챕터의 시작점에서 다시 시도하자."
+                recoverToChoice: sample_safety_choice
 
   all_done_check:
     actions:

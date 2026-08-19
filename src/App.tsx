@@ -2227,7 +2227,7 @@ export default function App() {
 
   const onLoadLastChoice = useCallback(async () => {
     setSaveBusy(true);
-    setSaveNotice('마지막 선택으로 돌아가는 중입니다.');
+    setSaveNotice('선택 복구점으로 돌아가는 중입니다.');
     const recoveryPoint = getChoiceRecoverySummary();
     try {
       const loaded = await loadChoiceRecovery();
@@ -2236,10 +2236,10 @@ export default function App() {
         return;
       }
       setRecoveredFailedChoice(recoveryPoint.failedChoice);
-      setSaveNotice('마지막 선택으로 돌아왔습니다.');
+      setSaveNotice('선택 복구점으로 돌아왔습니다.');
       closeSettingsModal(false);
     } catch (error) {
-      setSaveNotice(error instanceof Error ? error.message : '마지막 선택으로 돌아가지 못했습니다.');
+      setSaveNotice(error instanceof Error ? error.message : '선택 복구점으로 돌아가지 못했습니다.');
     } finally {
       setSaveBusy(false);
       refreshSaveSlots();
@@ -4243,7 +4243,7 @@ export default function App() {
               {hasRecoveredFailedChoice && (
                 <div className="choice-recovery-hint" role="status">
                   <span aria-hidden="true">!</span>
-                  <p><strong>직전 선택이 표시되어 있습니다.</strong> 다른 경로를 선택해 다시 진행할 수 있습니다.</p>
+                  <p><strong>죽음의 원인이 된 선택이 표시되어 있습니다.</strong> 다른 경로를 선택해 다시 진행할 수 있습니다.</p>
                 </div>
               )}
               {choiceGate.timeoutMs && (
@@ -4302,7 +4302,7 @@ export default function App() {
                         submitChoiceOption(index);
                       }}
                       disabled={busy}
-                      aria-label={`${option.text}${isPreviousGameOverChoice ? ', 직전 선택, 게임 오버 경로' : ''}`}
+                      aria-label={`${option.text}${isPreviousGameOverChoice ? ', 죽음의 원인 선택, 게임 오버 경로' : ''}`}
                     >
                       <span className="choice-gate-option-copy">
                         <span className="choice-gate-option-index" aria-hidden="true">
@@ -4314,7 +4314,7 @@ export default function App() {
                       <span className="choice-gate-option-badges">
                         {isPreviousGameOverChoice && (
                           <span className="choice-gate-option-history-badge">
-                            <b>직전 선택</b>
+                            <b>원인 선택</b>
                             <em>GAME OVER</em>
                           </span>
                         )}
@@ -4395,7 +4395,7 @@ export default function App() {
                 onClick={() => void (choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto'))}
                 disabled={(!choiceRecoveryPoint.exists && !autoRecoverySlot?.exists) || saveBusy}
               >
-                <span>{choiceRecoveryPoint.exists ? '직전 선택으로' : '자동 복구점으로'}</span>
+                <span>{choiceRecoveryPoint.exists ? '죽음의 원인 선택으로' : '자동 복구점으로'}</span>
                 <small>{formatSaveSlotMeta(choiceRecoveryPoint.exists ? choiceRecoveryPoint : autoRecoverySlot)}</small>
               </button>
               <button

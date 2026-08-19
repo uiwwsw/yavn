@@ -77,6 +77,7 @@ const GAME_SETTINGS_STORAGE_PREFIX = 'vn-engine-settings:';
 const MANUAL_SAVE_SUFFIX = ':manual';
 const CHAPTER_SAVE_SUFFIX = ':chapter';
 const CHOICE_RECOVERY_SUFFIX = ':choice-recovery';
+const CHOICE_RECOVERY_TRAIL_SUFFIX = ':choice-recovery-trail';
 const MAX_CHAPTERS = 101;
 const INITIAL_CHAPTER_MIN_LOADING_MS = 240;
 const NEXT_CHAPTER_MIN_LOADING_MS = 100;
@@ -197,6 +198,11 @@ export type ChoiceRecoverySummary = Omit<SaveSlotSummary, 'slot'> & {
   failedChoice?: Omit<ChoiceAttempt, 'ledToGameOver'>;
 };
 
+type ChoiceRecoveryCheckpoint = {
+  key: string;
+  progress: SaveProgress;
+};
+
 export type SaveBackup = {
   filename: string;
   content: string;
@@ -263,6 +269,7 @@ let resolvedChapterGameCache = new Map<string, Promise<GameData>>();
 let currentAutosaveKey = LEGACY_AUTOSAVE_KEY;
 let runtimeGameSettings: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
 let pendingChoiceRecovery: SaveProgress | undefined;
+let choiceRecoveryTrail: ChoiceRecoveryCheckpoint[] = [];
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -367,6 +374,7 @@ function persistRuntimeGameSettings(key: string = currentAutosaveKey): void {
 function setAutosaveScopeKey(key: string): void {
   currentAutosaveKey = key;
   loadRuntimeGameSettingsFromStorage(key);
+  loadChoiceRecoveryTrail();
 }
 
 export function getBgmEnabled(): boolean {
@@ -386,11 +394,13 @@ export function setAutoSaveEnabled(enabled: boolean): void {
   if (!enabled) {
     try {
       localStorage.removeItem(resolveChoiceRecoveryKey());
+      localStorage.removeItem(resolveChoiceRecoveryTrailKey());
     } catch {
       // Keep the in-memory recovery point available for the current session.
     }
   } else if (pendingChoiceRecovery) {
     saveProgressToKey(resolveChoiceRecoveryKey(), pendingChoiceRecovery);
+    persistChoiceRecoveryTrail();
   }
   const state = useVNStore.getState();
   if (enabled && state.game && !state.gameOver && !state.chapterLoading) {
@@ -700,6 +710,7 @@ async function playYouTubeMusic(videoId: string) {
 function resetSession() {
   clearTimers();
   pendingChoiceRecovery = undefined;
+  choiceRecoveryTrail = [];
   clearObjectUrls();
   resetLive2DLoadTracker();
   setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
@@ -1411,6 +1422,10 @@ function resolveChoiceRecoveryKey(): string {
   return `${currentAutosaveKey}${CHOICE_RECOVERY_SUFFIX}`;
 }
 
+function resolveChoiceRecoveryTrailKey(): string {
+  return `${currentAutosaveKey}${CHOICE_RECOVERY_TRAIL_SUFFIX}`;
+}
+
 function saveProgressToKey(key: string, payload: SaveProgress): boolean {
   try {
     localStorage.setItem(key, JSON.stringify(payload));
@@ -1422,8 +1437,10 @@ function saveProgressToKey(key: string, payload: SaveProgress): boolean {
 
 function clearChoiceRecoveryPoint(): void {
   pendingChoiceRecovery = undefined;
+  choiceRecoveryTrail = [];
   try {
     localStorage.removeItem(resolveChoiceRecoveryKey());
+    localStorage.removeItem(resolveChoiceRecoveryTrailKey());
   } catch {
     // Ignore storage failures and keep the normal save slots available.
   }
@@ -1571,6 +1588,72 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
   } catch {
     return undefined;
   }
+}
+
+function loadChoiceRecoveryTrail(): void {
+  choiceRecoveryTrail = [];
+  if (!getAutoSaveEnabled()) {
+    return;
+  }
+  try {
+    const raw = localStorage.getItem(resolveChoiceRecoveryTrailKey());
+    const parsed = raw ? (JSON.parse(raw) as unknown) : undefined;
+    if (!Array.isArray(parsed)) {
+      return;
+    }
+    choiceRecoveryTrail = parsed.flatMap((entry): ChoiceRecoveryCheckpoint[] => {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+        return [];
+      }
+      const candidate = entry as { key?: unknown; progress?: unknown };
+      if (typeof candidate.key !== 'string' || candidate.key.trim().length === 0) {
+        return [];
+      }
+      const progress = parseSaveProgress(JSON.stringify(candidate.progress));
+      return progress ? [{ key: candidate.key, progress }] : [];
+    });
+  } catch {
+    choiceRecoveryTrail = [];
+  }
+}
+
+function persistChoiceRecoveryTrail(): void {
+  if (!getAutoSaveEnabled()) {
+    return;
+  }
+  try {
+    localStorage.setItem(resolveChoiceRecoveryTrailKey(), JSON.stringify(choiceRecoveryTrail));
+  } catch {
+    // Keep the in-memory trail available for the current session.
+  }
+}
+
+function recordChoiceRecoveryPoint(progress: SaveProgress): void {
+  const choiceKey = progress.choiceAttempt?.key;
+  if (!choiceKey) {
+    setChoiceRecoveryPoint(progress);
+    return;
+  }
+  const depth = progress.routeHistory.length;
+  choiceRecoveryTrail = choiceRecoveryTrail.filter(
+    (checkpoint) => checkpoint.progress.routeHistory.length < depth,
+  );
+  choiceRecoveryTrail.push({ key: choiceKey, progress });
+  persistChoiceRecoveryTrail();
+  setChoiceRecoveryPoint(progress);
+}
+
+function getChoiceRecoveryForGameOver(gameOver: GameOverDefinition): SaveProgress | undefined {
+  const targetKey = gameOver.recoverToChoice?.trim();
+  if (targetKey) {
+    const targeted = [...choiceRecoveryTrail]
+      .reverse()
+      .find((checkpoint) => checkpoint.key === targetKey)?.progress;
+    if (targeted && validateSaveForCurrentGame(targeted)) {
+      return targeted;
+    }
+  }
+  return getChoiceRecoveryProgress();
 }
 
 function loadProgressByKey(key: string): SaveProgress | undefined {
@@ -2178,7 +2261,7 @@ function finishStory(endingId?: string): void {
 function triggerGameOver(gameOver: GameOverDefinition, restoreAutosaveFromChoice = true): void {
   clearTimers();
   playMusic(undefined);
-  let recovery = getChoiceRecoveryProgress();
+  let recovery = getChoiceRecoveryForGameOver(gameOver);
   if (recovery?.choiceAttempt && !recovery.choiceAttempt.ledToGameOver) {
     recovery = {
       ...recovery,
@@ -4425,7 +4508,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
     choiceTimer = undefined;
   }
 
-  setChoiceRecoveryPoint({
+  recordChoiceRecoveryPoint({
     ...createSaveProgress(state.currentSceneId, state.actionIndex),
     choiceAttempt: {
       key: state.choiceGate.key,

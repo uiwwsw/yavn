@@ -21,7 +21,8 @@ describe('save and game over recovery UI', () => {
     expect(appSource).not.toContain("onClick={() => void onLoadSave('latest')}");
     expect(appSource).not.toContain("(['auto', 'manual', 'chapter'] as const)");
     expect(engineSource).toContain("const CHOICE_RECOVERY_SUFFIX = ':choice-recovery'");
-    expect(engineSource).toContain('setChoiceRecoveryPoint({');
+    expect(engineSource).toContain("const CHOICE_RECOVERY_TRAIL_SUFFIX = ':choice-recovery-trail'");
+    expect(engineSource).toContain('recordChoiceRecoveryPoint({');
     expect(appSource).toContain("'마지막 선택으로'");
     expect(appSource).toContain('{totalEndingCount > 0 && (');
   });
@@ -32,7 +33,8 @@ describe('save and game over recovery UI', () => {
     expect(engineSource).toContain('failedChoice: recovery.choiceAttempt?.ledToGameOver');
     expect(appSource).toContain('setRecoveredFailedChoice(recoveryPoint.failedChoice)');
     expect(appSource).toContain("' choice-gate-option-previous-game-over'");
-    expect(appSource).toContain('<b>직전 선택</b>');
+    expect(appSource).toContain('<b>원인 선택</b>');
+    expect(appSource).toContain('죽음의 원인 선택으로');
     expect(appSource).toContain('<em>GAME OVER</em>');
     expect(appSource).toContain('choiceOptionButtonRefs.current[focusIndex]?.focus');
     expect(appSource).toContain('index !== recoveredFailedChoiceIndex');

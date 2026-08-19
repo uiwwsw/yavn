@@ -173,6 +173,21 @@ scenes:
           cases:
             - when:
                 all:
+                  - { var: observed_left_waterway, op: eq, value: true }
+                  - { var: saved_market_witness, op: eq, value: true }
+                  - { var: sisters_public, op: eq, value: true }
+                  - { var: grain_policy, op: eq, value: public_distribution }
+                  - { var: eclipse_policy, op: eq, value: public_science }
+                  - { var: king_failure_public, op: eq, value: true }
+                  - { var: cheonmyeong_outcome, op: eq, value: exile }
+                  - { var: coronation_compromise, op: eq, value: public_council }
+                  - { var: knowledge_policy, op: eq, value: public }
+                  - { var: record_policy, op: eq, value: public }
+                  - { var: final_decree, op: eq, value: shared_limits }
+                  - { var: bidam_sentence, op: eq, value: exile }
+              goto: ending_hidden_constellation
+            - when:
+                all:
                   - { var: record_policy, op: eq, value: public }
                   - { var: knowledge_policy, op: eq, value: public }
                   - { var: final_decree, op: eq, value: shared_limits }
@@ -203,6 +218,26 @@ scenes:
             - when: { var: people_support, op: lte, value: 4 }
               goto: ending_fallen_star
           default: ending_nameless_queen
+
+  ending_hidden_constellation:
+    actions:
+      - bg: title_palace
+      - camera: wide
+      - say:
+          channel: narration
+          text: "첨성대 아래에 열두 개의 등불이 켜졌습니다. 어린 덕만이 찾아낸 물길에서 시작해 장터의 증인, 천명의 공개 증언, 굶지 않은 마을의 이름이 등불마다 적혔습니다."
+      - char: { id: 덕만, position: center, emotion: queen }
+      - say:
+          char: 덕만
+          camera: close
+          text: "나는 죽었다고 적힌 아이였고, 틀릴 수 있는 왕이었다. 그러니 내 이름만 외우지 마라. 내가 돌아올 수 있게 길을 남긴 사람들의 이름을 읽어라."
+      - say:
+          channel: narration
+          text: "사람들은 등불 사이에 실을 걸었습니다. 왕의 선택 하나가 아니라 서로를 살린 선택들이 이어지자, 땅 위에 처음 보는 별자리가 생겼습니다."
+      - say:
+          channel: record
+          text: "숨겨진 기록 — 선덕왕의 가장 긴 승리는 왕관을 얻은 날이 아니라, 어린 날부터 이어진 선택의 원인을 누구나 되짚을 수 있게 만든 밤이었다."
+      - ending: hidden_constellation
 
   ending_stars_belong_to_people:
     actions:
