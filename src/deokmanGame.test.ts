@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('9.0.0');
+    expect(config.data?.data.version).toBe('9.1.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -263,6 +263,38 @@ describe('complete Deokman visual novel', () => {
 
     expect(new Set(childSprites.map(({ width, height }) => `${width}x${height}`))).toEqual(new Set(['886x1775']));
     childSprites.forEach(({ hasAlpha }) => expect(hasAlpha).toBe(true));
+
+    const adultStageFiles = [
+      'deokman-wanderer-silla-v9.png',
+      'deokman-wanderer-sad-silla-v9.png',
+      'deokman-wanderer-angry-silla-v9.png',
+      'deokman-princess-silla-v9.png',
+      'deokman-princess-sad-silla-v9.png',
+      'deokman-princess-angry-silla-v9.png',
+      'deokman-attendant-silla-v9.png',
+      'deokman-queen-silla-v9.png',
+      'deokman-queen-sad-silla-v9.png',
+      'deokman-queen-angry-silla-v9.png',
+    ];
+    const adultStageSprites = adultStageFiles.map((filename) => ({
+      filename,
+      ...readPngCanvas(`${gameRoot}assets/char/${filename}`),
+    }));
+    adultStageSprites.forEach(({ filename, width, height, hasAlpha }) => {
+      expect(width, filename).toBeGreaterThanOrEqual(880);
+      expect(width, filename).toBeLessThanOrEqual(890);
+      expect(height, filename).toBeGreaterThanOrEqual(1770);
+      expect(height, filename).toBeLessThanOrEqual(1790);
+      expect(hasAlpha, filename).toBe(true);
+    });
+
+    expect(readSource('1.yaml')).toContain('emotion: wanderer');
+    expect(readSource('2.yaml')).toContain('emotion: attendant');
+    expect(readSource('2.yaml')).toContain('emotion: princess');
+    expect(readSource('8.yaml')).toContain('emotion: queen');
+    ['9.yaml', '10.yaml', '11.yaml'].forEach((path) => {
+      expect(readSource(path), path).toContain('emotion: queen');
+    });
 
     const itemFiles = [
       'peony-painting.svg',

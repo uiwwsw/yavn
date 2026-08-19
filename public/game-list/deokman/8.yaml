@@ -200,7 +200,7 @@ scenes:
           channel: record
           delivery: calm
           text: "선덕왕 즉위 — 왕실 기록에서 죽었던 둘째 공주 덕만이 신라의 왕이 되다."
-      - char: { id: 덕만, position: center }
+      - char: { id: 덕만, position: center, emotion: queen }
       - say:
           channel: narration
           text: "왕관이 머리에 닿자 덕만의 무릎이 아주 조금 꺾였습니다. 밤새 묻은 재와 피가 예복 안쪽에 그대로 남아 있었습니다."

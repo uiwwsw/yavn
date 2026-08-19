@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: record
           text: "제12장 — 마지막 기록"
-      - char: { id: 덕만, position: left }
+      - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 비담, position: right, emotion: sad }
       - say:
           channel: narration
@@ -137,7 +137,7 @@ scenes:
           channel: narration
           text: "위조 문서가 불 속에서 오그라들었습니다. 소화는 피해자 이름을 새 명부에 옮겼지만, 마지막 도장이 재가 될 때 손을 멈췄습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "사람을 살리려고 태웠다고 적어. 그 말이 겁이었는지 자비였는지는 다음 사람이 정하게 두고."
       - goto: last_decree_choice
 
@@ -228,7 +228,7 @@ scenes:
           channel: narration
           text: "비담은 국경에서 이름 없이 다리를 고쳤습니다. 사람들은 선덕의 자비를 노래했고, 새 반역을 꿈꾸는 자들은 그 노래에서 살아남을 가능성을 들었습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "살려 둔 것이 옳았는지는 그의 남은 삶과 다음 반란이 함께 대답할 것이다."
       - say:
           channel: record
@@ -258,7 +258,7 @@ scenes:
           channel: narration
           text: "귀족 회의의 붓은 군량 장부를 넘어 군사 이동과 창고 문서까지 따라왔습니다. 덕만은 명령을 내릴 때마다 즉위 날 받은 세 표를 다시 갚았습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "조건을 받아 왕이 됐다. 조건을 바꾸지 못하면 왕관은 계속 빌린 물건이다."
       - say:
           channel: record
@@ -273,7 +273,7 @@ scenes:
           channel: narration
           text: "첨성대 문은 열려 있었지만 관측표 상자는 비담의 암호 없이는 열리지 않았습니다. 탑 아래 아이들은 별 대신 전령을 기다렸습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "돌을 높이 세웠는데 지식이 오를 계단은 한 사람에게 맡겼구나."
       - say:
           channel: record
@@ -323,7 +323,7 @@ scenes:
           channel: narration
           text: "사망 기록과 반란 서신은 한 줌 재가 됐습니다. 한동안 아무도 과거 종이를 들고 새 싸움을 시작하지 못했습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "이 평화가 오래가기를 바란다. 다만 다음 거짓 기록을 알아볼 눈까지 태운 것은 아니기를."
       - say:
           channel: record
@@ -338,7 +338,7 @@ scenes:
           channel: narration
           text: "반란은 끝났지만 왕실 전령이 오는 날이면 마을 문이 먼저 닫혔습니다. 성문 안에는 왕관이, 밖에는 왕명을 기다리지 않는 장터가 남았습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "별이 떨어진 것이 아니다. 내가 별을 바라보는 사람들의 땅을 잃었다."
       - say:
           channel: record
@@ -353,7 +353,7 @@ scenes:
           channel: narration
           text: "사서에는 선덕왕의 이름이 오래 남았습니다. 그러나 그 이름을 처음 죽인 종이와 왕좌까지 빌려 쓴 거짓은 봉인 상자 안에서 함께 늙었습니다."
       - say:
-          char: 덕만.sad
+          char: 덕만.queen_sad
           text: "왕의 이름은 되찾았는데, 그 이름을 지우려 한 이유는 세상에 돌려주지 못했구나."
       - say:
           channel: record
