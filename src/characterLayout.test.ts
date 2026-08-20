@@ -225,17 +225,14 @@ describe('character stage layout', () => {
     expect(buildImageCharacterRenderKey('란')).not.toContain('.webp');
   });
 
-  it('keeps the current speaker foremost and quiets listeners more strongly in a trio', () => {
-    expect(resolveCharacterFocusPresentation(3, 1, true, true)).toEqual({
-      brightness: 1,
-      scaleMultiplier: 1,
-      depthClass: 'is-speaker',
+  it('marks camera focus without assigning a visual intensity to listeners', () => {
+    expect(resolveCharacterFocusPresentation(true, true)).toEqual({
+      depthClass: 'is-camera-focus',
     });
-    expect(resolveCharacterFocusPresentation(3, 2, false, true).brightness).toBe(0.76);
-    expect(resolveCharacterFocusPresentation(3, 3, false, true).brightness).toBe(0.64);
-    expect(resolveCharacterFocusPresentation(3, 2, false, false)).toEqual({
-      brightness: 1,
-      scaleMultiplier: 1,
+    expect(resolveCharacterFocusPresentation(false, true)).toEqual({
+      depthClass: 'is-camera-listener',
+    });
+    expect(resolveCharacterFocusPresentation(false, false)).toEqual({
       depthClass: 'is-neutral',
     });
   });
