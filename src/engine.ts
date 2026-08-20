@@ -235,7 +235,7 @@ type PreparedChapter = {
 type RuntimeMode = 'url' | 'zip' | undefined;
 
 let waitTimer: number | undefined;
-let typeTimer: number | undefined;
+let typeFrame: number | undefined;
 let effectTimer: number | undefined;
 let effectFrame: number | undefined;
 let autoAdvanceTimer: number | undefined;
@@ -480,9 +480,9 @@ function clearTimers() {
     window.clearTimeout(waitTimer);
     waitTimer = undefined;
   }
-  if (typeTimer) {
-    window.clearTimeout(typeTimer);
-    typeTimer = undefined;
+  if (typeFrame !== undefined) {
+    window.cancelAnimationFrame(typeFrame);
+    typeFrame = undefined;
   }
   if (effectTimer) {
     window.clearTimeout(effectTimer);
@@ -2004,6 +2004,10 @@ function typeDialog(
   delivery: ReturnType<typeof resolveDialogueDelivery>,
   onDone: () => void,
 ) {
+  if (typeFrame !== undefined) {
+    window.cancelAnimationFrame(typeFrame);
+    typeFrame = undefined;
+  }
   const plan = buildTypingPlan({
     text,
     baseSpeed: speed,
@@ -2021,6 +2025,7 @@ function typeDialog(
   }
 
   let stepIndex = 0;
+  let nextStepAt = performance.now() + plan[0].delayMs;
   useVNStore.getState().setDialog({
     typing: true,
     visibleText: '',
@@ -2028,31 +2033,42 @@ function typeDialog(
     typingIntensity: 0,
     typingPulse: 0,
   });
-  const stepTyping = () => {
-    typeTimer = undefined;
-    const step = plan[stepIndex];
-    if (!step) return;
+  const stepTyping = (timestamp: number) => {
+    typeFrame = undefined;
+    let latestDueStep: (typeof plan)[number] | undefined;
+    while (stepIndex < plan.length && timestamp >= nextStepAt) {
+      latestDueStep = plan[stepIndex];
+      stepIndex += 1;
+      if (stepIndex < plan.length) {
+        nextStepAt += plan[stepIndex].delayMs;
+      }
+    }
+
+    if (!latestDueStep) {
+      typeFrame = window.requestAnimationFrame(stepTyping);
+      return;
+    }
 
     const currentPulse = useVNStore.getState().dialog.typingPulse;
-    useVNStore.getState().setDialog({
-      visibleText: step.visibleText,
-      typingIntensity: step.intensity,
-      typingPulse: currentPulse + 1,
-    });
-    stepIndex += 1;
     if (stepIndex >= plan.length) {
       useVNStore.getState().setDialog({
         typing: false,
         visibleText: text,
         typingIntensity: 0,
+        typingPulse: currentPulse + 1,
       });
       onDone();
       return;
     }
 
-    typeTimer = window.setTimeout(stepTyping, plan[stepIndex].delayMs);
+    useVNStore.getState().setDialog({
+      visibleText: latestDueStep.visibleText,
+      typingIntensity: latestDueStep.intensity,
+      typingPulse: currentPulse + 1,
+    });
+    typeFrame = window.requestAnimationFrame(stepTyping);
   };
-  typeTimer = window.setTimeout(stepTyping, plan[0].delayMs);
+  typeFrame = window.requestAnimationFrame(stepTyping);
 }
 
 function normalizeInputAnswer(value: string): string {
@@ -3692,9 +3708,9 @@ function runToNextPause(loopGuard = 0) {
         ) {
           return;
         }
-        if (typeTimer) {
-          window.clearTimeout(typeTimer);
-          typeTimer = undefined;
+        if (typeFrame !== undefined) {
+          window.cancelAnimationFrame(typeFrame);
+          typeFrame = undefined;
         }
         if (waitTimer) {
           window.clearTimeout(waitTimer);
@@ -4460,9 +4476,9 @@ export function handleAdvance() {
       return;
     }
     if (state.dialog.typing && state.game.settings.clickToInstant) {
-      if (typeTimer) {
-        window.clearTimeout(typeTimer);
-        typeTimer = undefined;
+      if (typeFrame !== undefined) {
+        window.cancelAnimationFrame(typeFrame);
+        typeFrame = undefined;
       }
       useVNStore.getState().setDialog({
         typing: false,

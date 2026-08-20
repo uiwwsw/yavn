@@ -75,6 +75,7 @@ describe('asset transition presentation', () => {
     expect(backgroundTransitionSource).toContain('waitForImageReady(image, BACKGROUND_READY_TIMEOUT_MS)');
     expect(backgroundTransitionSource).toContain('latestSourceRef.current !== source');
     expect(backgroundTransitionSource).toContain('data-background-role={role}');
+    expect(backgroundTransitionSource).toContain("data-background-transitioning={transitioning ? 'true' : 'false'}");
     expect(engineSource).toContain('setSticker(beginStickerLeave(sticker, normalizedLeave))');
 
     const clearStickerBody = engineSource.match(

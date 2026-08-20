@@ -82,6 +82,18 @@ const autoAdvancingUnskippableGame: GameData = {
   },
 };
 
+const fastTypingGame: GameData = {
+  meta: { title: 'Frame-aligned Typing Test' },
+  settings: { textSpeed: 1000, autoSave: true, clickToInstant: true },
+  assets: { backgrounds: {}, characters: {}, music: {}, sfx: {} },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [{ say: { text: 'abcdefghij' } }],
+    },
+  },
+};
+
 const conditionalDialogueGame: GameData = {
   meta: { title: 'Conditional Dialogue Test' },
   settings: { textSpeed: 30, autoSave: true, clickToInstant: true },
@@ -139,6 +151,7 @@ const characterPlacementGame: GameData = {
 describe('engine runtime safety', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    let animationFrameTimestamp = performance.now();
     Object.defineProperty(globalThis, 'window', {
       configurable: true,
       value: globalThis,
@@ -150,7 +163,10 @@ describe('engine runtime safety', () => {
     Object.defineProperty(globalThis, 'requestAnimationFrame', {
       configurable: true,
       value: (callback: FrameRequestCallback) =>
-        setTimeout(() => callback(performance.now()), 16) as unknown as number,
+        setTimeout(() => {
+          animationFrameTimestamp += 16;
+          callback(animationFrameTimestamp);
+        }, 16) as unknown as number,
     });
     Object.defineProperty(globalThis, 'cancelAnimationFrame', {
       configurable: true,
@@ -330,6 +346,33 @@ describe('engine runtime safety', () => {
       waitingInput: true,
       dialog: { fullText: 'The automatic next line.' },
     });
+  });
+
+  it('coalesces fast typing into one store update per animation frame', () => {
+    useVNStore.getState().setGame(fastTypingGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+    const delayedFrameTimestamp = performance.now() + 64;
+    Object.defineProperty(globalThis, 'requestAnimationFrame', {
+      configurable: true,
+      value: (callback: FrameRequestCallback) =>
+        setTimeout(() => callback(delayedFrameTimestamp), 16) as unknown as number,
+    });
+    let previousVisibleText = '';
+    let visibleTextUpdateCount = 0;
+    const unsubscribe = useVNStore.subscribe((state) => {
+      if (state.dialog.visibleText === previousVisibleText) {
+        return;
+      }
+      previousVisibleText = state.dialog.visibleText;
+      visibleTextUpdateCount += 1;
+    });
+
+    handleAdvance();
+    vi.advanceTimersByTime(16);
+    unsubscribe();
+
+    expect(useVNStore.getState().dialog.visibleText.length).toBeGreaterThan(1);
+    expect(visibleTextUpdateCount).toBe(1);
   });
 
   it('repairs declared type changes without dropping route state carried across chapters', () => {
