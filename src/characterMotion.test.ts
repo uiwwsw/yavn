@@ -43,9 +43,11 @@ describe('image character motion', () => {
 
   it('keeps staged characters mounted while camera membership changes', () => {
     const hiddenRule = styles.match(/\.char\.is-camera-hidden\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
-    expect(appSource).toContain('const stagedCharactersByPosition = (');
-    expect(appSource).toContain('const visibleCharactersByPosition = stagedCharactersByPosition.filter');
-    expect(appSource).toContain('const layoutCharactersByPosition = stagedCharactersByPosition.filter');
+    expect(appSource).toContain('const stagedCharactersByPosition = useMemo(');
+    expect(appSource).toContain('const visibleCharactersByPosition = useMemo(');
+    expect(appSource).toContain('() => stagedCharactersByPosition.filter((entry) => visibleCharacterSet.has(entry.slot.id))');
+    expect(appSource).toContain('const layoutCharactersByPosition = useMemo(');
+    expect(appSource).toContain('() => stagedCharactersByPosition.filter((entry) => layoutCharacterSet.has(entry.slot.id))');
     expect(appSource).toContain('layoutCharactersByPosition.map((entry) => ({');
     expect(appSource).not.toContain('const stagedCharacterCount = stagedCharactersByPosition.length');
     expect(appSource).toContain('const framingScale = slot.framing.scale;');
@@ -70,7 +72,7 @@ describe('image character motion', () => {
     expect(appSource).toContain('const shouldWaitForExit = isCharacterOnlyExit(');
     expect(appSource).toContain('}, CHARACTER_EXIT_FADE_DURATION_MS);');
     expect(appSource).toMatch(
-      /const characterStageLayout = resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
+      /const characterStageLayout = useMemo\([\s\S]*?resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
     );
     expect(appSource).not.toMatch(
       /const characterStageLayout = resolveCharacterStageLayout\(\s*stagedCharactersByPosition\.map/,
@@ -118,7 +120,8 @@ describe('image character motion', () => {
 
   it('uses one image ratio with separate duo and trio horizontal anchors', () => {
     expect(appSource.match(/data-character-count=\{visibleCharacterCount\}/g)).toHaveLength(2);
-    expect(appSource).toContain('const characterStageSpacing = resolveCharacterStageSpacing(');
+    expect(appSource).toContain('const characterStageSpacing = useMemo(');
+    expect(appSource).toContain('() => resolveCharacterStageSpacing(');
     expect(appSource).toContain('layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
     expect(appSource).toContain('resolveCharacterStagePlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': placement.anchorX");

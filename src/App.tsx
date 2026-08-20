@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   KeyboardEvent as ReactKeyboardEvent,
   lazy,
+  memo,
   MouseEvent,
   PointerEvent as ReactPointerEvent,
   Suspense,
@@ -13,6 +14,7 @@ import {
   useState,
 } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useShallow } from 'zustand/react/shallow';
 import thirdPartyNoticesUrl from '../THIRD_PARTY_NOTICES.md?url';
 import suiteLicenseUrl from '../assets/licenses/fonts/LICENSE?url';
 import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live2d.md?url';
@@ -117,6 +119,91 @@ import type { CSSProperties, SyntheticEvent } from 'react';
 const Live2DCharacter = lazy(() =>
   import('./Live2DCharacter').then((module) => ({ default: module.Live2DCharacter })),
 );
+
+const MOTION_LAYER_RELEASE_BUFFER_MS = 64;
+
+function useTransientMotionWindow(motionKey: string, durationMs: number): boolean {
+  const previousMotionKeyRef = useRef(motionKey);
+  const releaseTimerRef = useRef<number | null>(null);
+  const [motionActive, setMotionActive] = useState(false);
+
+  useLayoutEffect(() => {
+    const changed = previousMotionKeyRef.current !== motionKey;
+    previousMotionKeyRef.current = motionKey;
+    if (releaseTimerRef.current !== null) {
+      window.clearTimeout(releaseTimerRef.current);
+      releaseTimerRef.current = null;
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!changed || reducedMotion || durationMs <= 0) {
+      setMotionActive((current) => (current ? false : current));
+      return;
+    }
+
+    // Layout effects flush before paint. Promoting here gives the compositor the
+    // old painted frame and the new transform in the same transition boundary.
+    setMotionActive(true);
+    releaseTimerRef.current = window.setTimeout(() => {
+      releaseTimerRef.current = null;
+      setMotionActive(false);
+    }, Math.ceil(durationMs) + MOTION_LAYER_RELEASE_BUFFER_MS);
+
+    return () => {
+      if (releaseTimerRef.current !== null) {
+        window.clearTimeout(releaseTimerRef.current);
+        releaseTimerRef.current = null;
+      }
+    };
+  }, [durationMs, motionKey]);
+
+  return motionActive;
+}
+
+const DialogueText = memo(function DialogueText() {
+  const {
+    visibleText,
+    typing,
+    channel,
+    delivery,
+    typingIntensity,
+    typingPulse,
+  } = useVNStore(useShallow((state) => ({
+    visibleText: state.dialog.visibleText,
+    typing: state.dialog.typing,
+    channel: state.dialog.channel,
+    delivery: state.dialog.delivery,
+    typingIntensity: state.dialog.typingIntensity,
+    typingPulse: state.dialog.typingPulse,
+  })));
+  const visibleDialogue = splitLastGrapheme(visibleText);
+  const className = [
+    'text',
+    `channel-${channel}`,
+    `delivery-${delivery}`,
+    typing ? 'is-typing' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <div
+      className={className}
+      style={{ '--typing-intensity': typingIntensity } as CSSProperties}
+    >
+      {typing ? (
+        <>
+          {visibleDialogue.head}
+          <span key={typingPulse} className="typing-glyph">
+            {visibleDialogue.tail}
+          </span>
+        </>
+      ) : (
+        visibleText
+      )}
+    </div>
+  );
+});
 
 type GameListSeoEntry = {
   title?: string;
@@ -898,7 +985,7 @@ const STICKER_OBSTACLE_SAMPLE_MS = 48;
 const STICKER_CHARACTER_LAYOUT_SETTLE_MS = 420;
 const STICKER_RESIZE_QUIET_MS = 140;
 
-function StickerView({
+const StickerView = memo(function StickerView({
   sticker,
   avoidanceKey,
   avoidanceSettleMs,
@@ -1165,7 +1252,7 @@ function StickerView({
       />
     </div>
   );
-}
+});
 
 export default function App() {
   const {
@@ -1177,7 +1264,11 @@ export default function App() {
     speakerOrder,
     visibleCharacterIds,
     camera,
-    dialog,
+    dialogSpeaker,
+    dialogSpeakerId,
+    dialogCameraTargetId,
+    dialogChannel,
+    dialogDelivery,
     dialogUiHidden,
     effect,
     error,
@@ -1198,7 +1289,41 @@ export default function App() {
     gameOver,
     uiTemplate,
     setDialogUiHidden,
-  } = useVNStore();
+  } = useVNStore(useShallow((state) => ({
+    baseUrl: state.baseUrl,
+    assetOverrides: state.assetOverrides,
+    background: state.background,
+    stickers: state.stickers,
+    characters: state.characters,
+    speakerOrder: state.speakerOrder,
+    visibleCharacterIds: state.visibleCharacterIds,
+    camera: state.camera,
+    dialogSpeaker: state.dialog.speaker,
+    dialogSpeakerId: state.dialog.speakerId,
+    dialogCameraTargetId: state.dialog.cameraTargetId,
+    dialogChannel: state.dialog.channel,
+    dialogDelivery: state.dialog.delivery,
+    dialogUiHidden: state.dialogUiHidden,
+    effect: state.effect,
+    error: state.error,
+    busy: state.busy,
+    isFinished: state.isFinished,
+    game: state.game,
+    chapterLoading: state.chapterLoading,
+    chapterLoadingProgress: state.chapterLoadingProgress,
+    chapterLoadingMessage: state.chapterLoadingMessage,
+    videoCutscene: state.videoCutscene,
+    inputGate: state.inputGate,
+    choiceGate: state.choiceGate,
+    inventory: state.inventory,
+    storyLog: state.storyLog,
+    chapterIndex: state.chapterIndex,
+    chapterTotal: state.chapterTotal,
+    resolvedEndingId: state.resolvedEndingId,
+    gameOver: state.gameOver,
+    uiTemplate: state.uiTemplate,
+    setDialogUiHidden: state.setDialogUiHidden,
+  })));
   const [bootMode, setBootMode] = useState<BootMode>(
     () => resolveInitialBootPresentation(window.location.pathname).bootMode,
   );
@@ -2042,64 +2167,100 @@ export default function App() {
       })()
     : -1;
   const hasRecoveredFailedChoice = recoveredFailedChoiceIndex >= 0;
-  const visibleCharacterSet = new Set(presentedVisibleCharacterIds);
-  const layoutCharacterSet = new Set(layoutVisibleCharacterIds);
-  const stagedCharactersByPosition = (
-    [
-      { position: 'left' as const, slot: characters.left },
-      { position: 'center' as const, slot: characters.center },
-      { position: 'right' as const, slot: characters.right },
-    ] as const
-  ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot));
+  const visibleCharacterSet = useMemo(
+    () => new Set(presentedVisibleCharacterIds),
+    [presentedVisibleCharacterIds],
+  );
+  const layoutCharacterSet = useMemo(
+    () => new Set(layoutVisibleCharacterIds),
+    [layoutVisibleCharacterIds],
+  );
+  const stagedCharactersByPosition = useMemo(
+    () => (
+      [
+        { position: 'left' as const, slot: characters.left },
+        { position: 'center' as const, slot: characters.center },
+        { position: 'right' as const, slot: characters.right },
+      ] as const
+    ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot)),
+    [characters],
+  );
   if (stagedCharactersByPosition.length === 0) {
     characterPlacementByIdRef.current.clear();
   }
-  const visibleCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
-    visibleCharacterSet.has(entry.slot.id));
-  const layoutCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
-    layoutCharacterSet.has(entry.slot.id));
-  const promptTopStagedCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
-    entry.slot.placement === 'prompt-top');
-  const characterStageLayout = resolveCharacterStageLayout(
-    layoutCharactersByPosition.map((entry) => ({
-      id: entry.slot.id,
-      position: entry.position,
-    })),
+  const visibleCharactersByPosition = useMemo(
+    () => stagedCharactersByPosition.filter((entry) => visibleCharacterSet.has(entry.slot.id)),
+    [stagedCharactersByPosition, visibleCharacterSet],
+  );
+  const layoutCharactersByPosition = useMemo(
+    () => stagedCharactersByPosition.filter((entry) => layoutCharacterSet.has(entry.slot.id)),
+    [layoutCharacterSet, stagedCharactersByPosition],
+  );
+  const promptTopStagedCharactersByPosition = useMemo(
+    () => stagedCharactersByPosition.filter((entry) => entry.slot.placement === 'prompt-top'),
+    [stagedCharactersByPosition],
+  );
+  const characterStageLayout = useMemo(
+    () => resolveCharacterStageLayout(
+      layoutCharactersByPosition.map((entry) => ({
+        id: entry.slot.id,
+        position: entry.position,
+      })),
+    ),
+    [layoutCharactersByPosition],
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
   const layoutCharacterCount = layoutCharactersByPosition.length;
-  const effectiveCameraTargetId = resolveStageCameraFocusTargetId(
-    camera,
-    presentedVisibleCharacterIds,
-    dialog.speakerId,
-    dialog.cameraTargetId,
+  const effectiveCameraTargetId = useMemo(
+    () => resolveStageCameraFocusTargetId(
+      camera,
+      presentedVisibleCharacterIds,
+      dialogSpeakerId,
+      dialogCameraTargetId,
+    ),
+    [camera, dialogCameraTargetId, dialogSpeakerId, presentedVisibleCharacterIds],
   );
-  const cameraTargetPosition = layoutCharactersByPosition.find(
-    (entry) => entry.slot.id === effectiveCameraTargetId,
-  )?.position;
-  const characterStageSpacing = resolveCharacterStageSpacing(
-    layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing),
+  const cameraTargetPosition = useMemo(
+    () => layoutCharactersByPosition.find(
+      (entry) => entry.slot.id === effectiveCameraTargetId,
+    )?.position,
+    [effectiveCameraTargetId, layoutCharactersByPosition],
   );
-  const cameraPresentation = resolveStageCameraPresentation(
-    camera,
-    visibleCharacterCount,
-    cameraTargetPosition,
-    characterStageLayout,
-    characterStageSpacing,
+  const characterStageSpacing = useMemo(
+    () => resolveCharacterStageSpacing(
+      layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing),
+    ),
+    [layoutCharactersByPosition],
   );
-  const cameraTransitionTiming = resolveStageCameraTransitionTiming(
-    cameraPresentation,
-    visibleCharacterCount,
+  const cameraPresentation = useMemo(
+    () => resolveStageCameraPresentation(
+      camera,
+      visibleCharacterCount,
+      cameraTargetPosition,
+      characterStageLayout,
+      characterStageSpacing,
+    ),
+    [
+      camera,
+      cameraTargetPosition,
+      characterStageLayout,
+      characterStageSpacing,
+      visibleCharacterCount,
+    ],
+  );
+  const cameraTransitionTiming = useMemo(
+    () => resolveStageCameraTransitionTiming(cameraPresentation, visibleCharacterCount),
+    [cameraPresentation, visibleCharacterCount],
   );
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
-    : dialog.speakerId;
+    : dialogSpeakerId;
   const focusedCharacterPlacement = stagedCharactersByPosition.find(
     (entry) => entry.slot.id === focusCharacterId,
   )?.slot.placement;
   const stageBottomLayerZIndex = focusedCharacterPlacement === 'prompt-top' ? 2 : 3;
   const promptTopLayerZIndex = focusedCharacterPlacement === 'stage-bottom' ? 2 : 3;
-  const cameraStyle = {
+  const cameraStyle = useMemo(() => ({
     '--stage-camera-scale': cameraPresentation.scale,
     '--stage-camera-scale-mobile': cameraPresentation.mobileScale,
     '--stage-camera-pan-x': cameraPresentation.panX,
@@ -2111,22 +2272,9 @@ export default function App() {
     '--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`,
     '--character-exit-duration': `${cameraTransitionTiming.characterExitDuration}ms`,
     '--character-leave-duration': `${CHARACTER_EXIT_FADE_DURATION_MS}ms`,
-  } as CSSProperties;
-  const stickerAvoidanceKey = [
-    cameraPresentation.shot,
-    cameraPresentation.scale,
-    cameraPresentation.mobileScale,
-    cameraPresentation.panX,
-    cameraPresentation.mobilePanX,
-    cameraPresentation.originY,
-    cameraPresentation.mobileOriginY,
-    cameraPresentation.transition,
-    focusCharacterId ?? '',
-    dialog.speakerId ?? '',
-    stickerSafeInset,
-    presentedVisibleCharacterIds.join(','),
-    layoutVisibleCharacterIds.join(','),
-    stagedCharactersByPosition.map(({ position, slot }) => [
+  } as CSSProperties), [cameraPresentation, cameraTransitionTiming]);
+  const stagedCharacterMotionKey = useMemo(
+    () => stagedCharactersByPosition.map(({ position, slot }) => [
       position,
       slot.id,
       slot.source,
@@ -2140,7 +2288,32 @@ export default function App() {
       slot.calibration.spacing,
       slot.placement,
     ].join(':')).join(','),
-  ].join('::');
+    [stagedCharactersByPosition],
+  );
+  const stickerAvoidanceKey = useMemo(() => [
+    cameraPresentation.shot,
+    cameraPresentation.scale,
+    cameraPresentation.mobileScale,
+    cameraPresentation.panX,
+    cameraPresentation.mobilePanX,
+    cameraPresentation.originY,
+    cameraPresentation.mobileOriginY,
+    cameraPresentation.transition,
+    focusCharacterId ?? '',
+    dialogSpeakerId ?? '',
+    stickerSafeInset,
+    presentedVisibleCharacterIds.join(','),
+    layoutVisibleCharacterIds.join(','),
+    stagedCharacterMotionKey,
+  ].join('::'), [
+    cameraPresentation,
+    dialogSpeakerId,
+    focusCharacterId,
+    layoutVisibleCharacterIds,
+    presentedVisibleCharacterIds,
+    stagedCharacterMotionKey,
+    stickerSafeInset,
+  ]);
   const stickerAvoidanceSettleMs = Math.max(
     STICKER_CHARACTER_LAYOUT_SETTLE_MS,
     cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration,
@@ -2149,22 +2322,48 @@ export default function App() {
   // Manual dialog hiding collapses the prompt baseline through a zero inset, while
   // system overlays retain the last measurement. Suppress only an unmeasured visible dialog.
   const promptTopBaselineReady = isDialogHidden || stickerSafeInset > 0;
-  const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
-    if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
-    if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
-    const aRank = speakerOrder.indexOf(a.slot.id);
-    const bRank = speakerOrder.indexOf(b.slot.id);
-    const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
-    const bPriority = bRank >= 0 ? bRank : Number.MAX_SAFE_INTEGER;
-    if (aPriority !== bPriority) {
-      return aPriority - bPriority;
-    }
-    return POSITION_TIEBREAKER[a.position] - POSITION_TIEBREAKER[b.position];
-  });
-  const orderByPosition = new Map<Position, number>();
-  orderedCharacters.forEach((entry, idx) => {
-    orderByPosition.set(entry.position, idx + 1);
-  });
+  const cameraMotionKey = useMemo(() => [
+    cameraPresentation.scale,
+    cameraPresentation.mobileScale,
+    cameraPresentation.panX,
+    cameraPresentation.mobilePanX,
+  ].join('::'), [cameraPresentation]);
+  const cameraMotionDurationMs = cameraTransitionTiming.cameraDelay
+    + cameraTransitionTiming.cameraDuration;
+  const cameraMotionActive = useTransientMotionWindow(
+    cameraMotionKey,
+    cameraMotionDurationMs,
+  );
+  const characterMotionKey = useMemo(
+    () => `${stickerAvoidanceKey}::${speakerOrder.join(',')}::${promptTopBaselineReady}`,
+    [promptTopBaselineReady, speakerOrder, stickerAvoidanceKey],
+  );
+  const characterMotionActive = useTransientMotionWindow(
+    characterMotionKey,
+    Math.max(380, cameraMotionDurationMs, cameraTransitionTiming.characterExitDuration),
+  );
+  const orderedCharacters = useMemo(
+    () => [...visibleCharactersByPosition].sort((a, b) => {
+      if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
+      if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
+      const aRank = speakerOrder.indexOf(a.slot.id);
+      const bRank = speakerOrder.indexOf(b.slot.id);
+      const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
+      const bPriority = bRank >= 0 ? bRank : Number.MAX_SAFE_INTEGER;
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+      return POSITION_TIEBREAKER[a.position] - POSITION_TIEBREAKER[b.position];
+    }),
+    [focusCharacterId, speakerOrder, visibleCharactersByPosition],
+  );
+  const orderByPosition = useMemo(() => {
+    const nextOrderByPosition = new Map<Position, number>();
+    orderedCharacters.forEach((entry, idx) => {
+      nextOrderByPosition.set(entry.position, idx + 1);
+    });
+    return nextOrderByPosition;
+  }, [orderedCharacters]);
 
   useEffect(() => {
     if (!selectedInventoryItemId) {
@@ -2748,6 +2947,11 @@ export default function App() {
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isSpeaker = hasFocusedSpeaker && focusCharacterId === slot.id;
+    const isCloseListener = cameraPresentation.shot === 'close'
+      && hasFocusedSpeaker
+      && !isSpeaker;
+    const placementReady = renderPlacement !== 'prompt-top' || promptTopBaselineReady;
+    const rendererActive = isCameraVisible && !isCloseListener && placementReady;
     const focusPresentation = resolveCharacterFocusPresentation(
       visibleCharacterCount,
       order,
@@ -2810,6 +3014,7 @@ export default function App() {
             slot={slot}
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
+            active={rendererActive}
             className={[focusPresentation.depthClass, duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
@@ -2827,7 +3032,7 @@ export default function App() {
         data-stage-position={position}
         data-character-placement={slot.placement}
         data-character-framing={slot.framing.name}
-        aria-hidden={!isCameraVisible}
+        aria-hidden={!rendererActive}
         loading="eager"
         decoding="async"
         style={charStyle}
@@ -3546,24 +3751,12 @@ export default function App() {
     );
   }
 
-  const visibleDialogue = splitLastGrapheme(dialog.visibleText);
-  const dialogueTextClassName = [
-    'text',
-    `channel-${dialog.channel}`,
-    `delivery-${dialog.delivery}`,
-    dialog.typing ? 'is-typing' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-  const dialogueTypingStyle = {
-    '--typing-intensity': dialog.typingIntensity,
-  } as CSSProperties;
   const dialogueChannelLabel = {
     dialogue: undefined,
     narration: undefined,
     record: '기록',
     system: '시스템',
-  }[dialog.channel];
+  }[dialogChannel];
 
   return (
     <div
@@ -3598,6 +3791,8 @@ export default function App() {
         data-character-count={visibleCharacterCount}
         data-camera-shot={cameraPresentation.shot}
         data-camera-requested-shot={camera.shot}
+        data-camera-moving={cameraMotionActive ? 'true' : 'false'}
+        data-character-moving={characterMotionActive ? 'true' : 'false'}
         style={{ zIndex: stageBottomLayerZIndex }}
       >
         <div className="char-composition-world" style={cameraStyle}>
@@ -3619,6 +3814,8 @@ export default function App() {
           data-character-count={visibleCharacterCount}
           data-camera-shot={cameraPresentation.shot}
           data-camera-requested-shot={camera.shot}
+          data-camera-moving={cameraMotionActive ? 'true' : 'false'}
+          data-character-moving={characterMotionActive ? 'true' : 'false'}
           data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}
           aria-hidden={!promptTopBaselineReady}
           style={{
@@ -4245,7 +4442,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box channel-${dialog.channel} delivery-${dialog.delivery}${choiceGate.active ? ' has-choice-gate' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -4265,21 +4462,10 @@ export default function App() {
           {dialogueChannelLabel && (
             <div className="dialog-channel-label">{dialogueChannelLabel}</div>
           )}
-          {dialog.speaker && (
-            <div className={`speaker delivery-${dialog.delivery}`}>{dialog.speaker}</div>
+          {dialogSpeaker && (
+            <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
           )}
-          <div className={dialogueTextClassName} style={dialogueTypingStyle}>
-            {dialog.typing ? (
-              <>
-                {visibleDialogue.head}
-                <span key={dialog.typingPulse} className="typing-glyph">
-                  {visibleDialogue.tail}
-                </span>
-              </>
-            ) : (
-              dialog.visibleText
-            )}
-          </div>
+          <DialogueText />
           {inputGate.active && (
             <form
               className="input-gate-form"

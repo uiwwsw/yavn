@@ -1,7 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { createModelView, startup, Ticker } from 'easy-cl2d';
 import { markLive2DLoadError, markLive2DLoadReady } from './live2dLoadTracker';
+import {
+  LIVE2D_RESIZE_QUIET_MS,
+  resolveLive2DCanvasPixelRatio,
+  shouldRunLive2DTicker,
+} from './live2dPerformance';
 import type { CharacterSlot, Position } from './types';
 // Live2D Cubism Core © Live2D Inc. is proprietary software. easy-cl2d also
 // contains modified Cubism Framework code under Live2D's Open Software terms.
@@ -588,14 +593,51 @@ type Props = {
   slot: CharacterSlot;
   position: Position;
   trackingKey: string;
+  active: boolean;
   className?: string;
   style?: CSSProperties;
 };
 
-export function Live2DCharacter({ slot, position, trackingKey, className, style }: Props) {
+export function Live2DCharacter({ slot, position, trackingKey, active, className, style }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<Live2DViewModel>();
+  const tickerRef = useRef<Ticker>();
+  const tickerRunningRef = useRef(false);
+  const modelReadyRef = useRef(false);
+  const activeRef = useRef(active);
   const [error, setError] = useState<string>();
+
+  const syncTickerPlayback = useCallback(() => {
+    const ticker = tickerRef.current;
+    if (!ticker) {
+      return;
+    }
+    const shouldRun = shouldRunLive2DTicker(
+      modelReadyRef.current,
+      activeRef.current,
+      document.visibilityState === 'visible',
+    );
+    if (tickerRunningRef.current === shouldRun) {
+      return;
+    }
+    if (shouldRun) {
+      ticker.start();
+    } else {
+      ticker.stop();
+    }
+    tickerRunningRef.current = shouldRun;
+  }, []);
+
+  useEffect(() => {
+    activeRef.current = active;
+    syncTickerPlayback();
+  }, [active, syncTickerPlayback]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => syncTickerPlayback();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [syncTickerPlayback]);
 
   useEffect(() => {
     let cancelled = false;
@@ -604,6 +646,7 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
     let resizeObserver: ResizeObserver | undefined;
     let detachResize: (() => void) | undefined;
     let stallTimer: number | undefined;
+    let resizeTimer: number | undefined;
 
     const mount = mountRef.current;
     if (!mount) {
@@ -640,7 +683,10 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
         mount.appendChild(canvas);
 
         ticker = new Ticker();
-        ticker.start();
+        tickerRef.current = ticker;
+        tickerRunningRef.current = false;
+        modelReadyRef.current = false;
+        syncTickerPlayback();
 
         modelView = createModelView({
           canvas,
@@ -666,17 +712,27 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
           }
           const widthCss = Math.max(mountRef.current.clientWidth, 1);
           const heightCss = Math.max(mountRef.current.clientHeight, 1);
-          const dpr = Math.max(window.devicePixelRatio || 1, 1);
+          const dpr = resolveLive2DCanvasPixelRatio(window.devicePixelRatio || 1);
           const width = Math.max(Math.round(widthCss * dpr), 1);
           const height = Math.max(Math.round(heightCss * dpr), 1);
           modelView.resizeCanvas(width, height);
         };
 
+        const scheduleResize = () => {
+          if (resizeTimer) {
+            window.clearTimeout(resizeTimer);
+          }
+          resizeTimer = window.setTimeout(() => {
+            resizeTimer = undefined;
+            resize();
+          }, LIVE2D_RESIZE_QUIET_MS);
+        };
+
         resize();
-        resizeObserver = new ResizeObserver(resize);
+        resizeObserver = new ResizeObserver(scheduleResize);
         resizeObserver.observe(mount);
-        window.addEventListener('resize', resize);
-        detachResize = () => window.removeEventListener('resize', resize);
+        window.addEventListener('resize', scheduleResize);
+        detachResize = () => window.removeEventListener('resize', scheduleResize);
 
         modelRef.current = modelView.inner;
         applyEmotion(modelRef.current, slot.emotion);
@@ -699,15 +755,20 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
           () => modelView?.inner as Live2DInternalModel | undefined,
           () => cancelled,
         );
-        if (!ready || cancelled) {
-          if (!cancelled) {
-            markLive2DLoadError(trackingKey);
-          }
+        if (cancelled) {
+          return;
+        }
+        modelReadyRef.current = true;
+        syncTickerPlayback();
+        if (!ready) {
+          markLive2DLoadError(trackingKey);
           return;
         }
         markLive2DLoadReady(trackingKey);
       } catch (err) {
         if (!cancelled) {
+          modelReadyRef.current = true;
+          syncTickerPlayback();
           setError(formatLoadError(err));
           markLive2DLoadError(trackingKey);
         }
@@ -724,6 +785,9 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
       if (stallTimer) {
         window.clearTimeout(stallTimer);
       }
+      if (resizeTimer) {
+        window.clearTimeout(resizeTimer);
+      }
       if (modelView) {
         try {
           modelView[Symbol.dispose]();
@@ -732,11 +796,16 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
         }
       }
       ticker?.stop();
+      if (tickerRef.current === ticker) {
+        tickerRef.current = undefined;
+        tickerRunningRef.current = false;
+        modelReadyRef.current = false;
+      }
       if (mountRef.current) {
         mountRef.current.innerHTML = '';
       }
     };
-  }, [slot.source, trackingKey]);
+  }, [slot.source, syncTickerPlayback, trackingKey]);
 
   useEffect(() => {
     applyEmotion(modelRef.current, slot.emotion);
@@ -746,6 +815,8 @@ export function Live2DCharacter({ slot, position, trackingKey, className, style 
     <div
       className={`char char-live2d ${position}${className ? ` ${className}` : ''}`}
       data-character-framing={slot.framing.name}
+      data-live2d-active={active ? 'true' : 'false'}
+      aria-hidden={!active}
       style={style}
     >
       <div ref={mountRef} className="char-live2d-mount" />

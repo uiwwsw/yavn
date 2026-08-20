@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import {
   BACKGROUND_CROSSFADE_DURATION_MS,
   EMPTY_BACKGROUND_TRANSITION,
@@ -12,7 +12,7 @@ const BACKGROUND_READY_TIMEOUT_MS = 12000;
 // React 18 forwards the standards-based lowercase attribute without warning.
 const HIGH_PRIORITY_IMAGE_PROPS = { fetchpriority: 'high' } as const;
 
-export function BackgroundTransition({ source }: { source?: string }) {
+export const BackgroundTransition = memo(function BackgroundTransition({ source }: { source?: string }) {
   const [presentation, setPresentation] = useState(EMPTY_BACKGROUND_TRANSITION);
   const pendingImageRef = useRef<HTMLImageElement | null>(null);
   const latestSourceRef = useRef(source);
@@ -83,6 +83,8 @@ export function BackgroundTransition({ source }: { source?: string }) {
           : layerSource === presentation.current
             ? 'current'
             : 'previous';
+        const transitioning = presentation.previous !== undefined
+          && (role === 'current' || role === 'previous');
         return (
           <img
             {...HIGH_PRIORITY_IMAGE_PROPS}
@@ -93,6 +95,7 @@ export function BackgroundTransition({ source }: { source?: string }) {
             alt="background"
             aria-hidden="true"
             data-background-role={role}
+            data-background-transitioning={transitioning ? 'true' : 'false'}
             loading="eager"
             decoding="async"
           />
@@ -100,4 +103,4 @@ export function BackgroundTransition({ source }: { source?: string }) {
       })}
     </>
   );
-}
+});
