@@ -453,6 +453,7 @@ function canonicalizeLayerAssets(
       base,
       ...(Object.keys(emotions).length > 0 ? { emotions } : {}),
       ...(charDef.facing ? { facing: charDef.facing } : {}),
+      ...(charDef.placement ? { placement: charDef.placement } : {}),
       ...(charDef.defaultDelivery ? { defaultDelivery: charDef.defaultDelivery } : {}),
       ...(charDef.defaultFraming ? { defaultFraming: charDef.defaultFraming } : {}),
       ...(Object.keys(framings).length > 0 ? { framings } : {}),

@@ -108,6 +108,34 @@ const conditionalDialogueGame: GameData = {
   },
 };
 
+const characterPlacementGame: GameData = {
+  meta: { title: 'Character Placement Test' },
+  settings: { textSpeed: 30, autoSave: true, clickToInstant: true },
+  assets: {
+    backgrounds: {},
+    characters: {
+      코난: {
+        base: '/characters/conan.webp',
+        emotions: { serious: '/characters/conan-serious.webp' },
+        placement: 'prompt-top',
+      },
+      덕만: { base: '/characters/deokman.webp' },
+    },
+    music: {},
+    sfx: {},
+  },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [
+        { char: { id: '코난', position: 'left', emotion: 'serious' } },
+        { char: { id: '덕만', position: 'right' } },
+        { say: { char: '코난', with: ['덕만'], text: 'Two source styles share one stage.' } },
+      ],
+    },
+  },
+};
+
 describe('engine runtime safety', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -197,6 +225,16 @@ describe('engine runtime safety', () => {
       7,
       'A revised line at the same cursor.',
     )).toBe(false);
+  });
+
+  it('resolves each character asset placement without a game-level layout switch', () => {
+    useVNStore.getState().setGame(characterPlacementGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+
+    handleAdvance();
+
+    expect(useVNStore.getState().characters.left?.placement).toBe('prompt-top');
+    expect(useVNStore.getState().characters.right?.placement).toBe('stage-bottom');
   });
 
   it('holds input and script progression until a blocking effect completes', () => {

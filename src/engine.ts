@@ -949,6 +949,7 @@ function buildCharacterSlot(
       source,
       emotion,
       facing: character.facing,
+      placement: character.placement ?? 'stage-bottom',
       framing: resolvedFraming,
       calibration,
     };
@@ -959,6 +960,7 @@ function buildCharacterSlot(
     source,
     emotion,
     facing: character.facing,
+    placement: character.placement ?? 'stage-bottom',
     framing: resolvedFraming,
     calibration,
   };

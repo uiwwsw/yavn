@@ -151,6 +151,7 @@ assets:
     Deokman:
       base: assets/deokman.webp
       facing: left
+      placement: prompt-top
       defaultDelivery: deduction
 `,
       'base.yaml',
@@ -159,8 +160,84 @@ assets:
     expect(parsed.error).toBeUndefined();
     expect(parsed.data?.data.assets?.characters?.Deokman).toMatchObject({
       facing: 'left',
+      placement: 'prompt-top',
       defaultDelivery: 'deduction',
     });
+  });
+
+  it('preserves per-character placement and merges character assets across YAML layers', () => {
+    const config = parseConfigYaml(configYaml('  image: assets/title.png'), 'config.yaml');
+    const base = parseBaseYaml(
+      `
+assets:
+  characters:
+    Guide:
+      base: assets/guide.webp
+      placement: prompt-top
+`,
+      'shared/base.yaml',
+    );
+    const chapter = parseChapterYaml(
+      `
+assets:
+  characters:
+    Guest:
+      base: assets/guest.webp
+script:
+  - scene: greeting
+scenes:
+  greeting:
+    actions:
+      - char: { id: Guide, position: left }
+      - char: { id: Guest, position: right }
+      - say: { char: Guide, with: [Guest], text: "Welcome." }
+`,
+      'episodes/0.yaml',
+    );
+
+    expect(config.error).toBeUndefined();
+    expect(base.error).toBeUndefined();
+    expect(chapter.error).toBeUndefined();
+    expect(base.data?.data.assets?.characters?.Guide).toMatchObject({
+      base: 'shared/assets/guide.webp',
+      placement: 'prompt-top',
+    });
+    expect(chapter.data?.data.assets?.characters?.Guest).toMatchObject({
+      base: 'episodes/assets/guest.webp',
+    });
+    if (!config.data || !base.data || !chapter.data) return;
+    const resolved = resolveChapterGame({ config: config.data, bases: [base.data], chapter: chapter.data });
+    expect(resolved.error).toBeUndefined();
+    expect(resolved.data?.assets.characters.Guide?.placement).toBe('prompt-top');
+    expect(resolved.data?.assets.characters.Guest?.placement).toBeUndefined();
+  });
+
+  it('strictly rejects unsupported character placement values and misspelled fields', () => {
+    const unsupported = parseBaseYaml(
+      `
+assets:
+  characters:
+    Guide:
+      base: assets/guide.webp
+      placement: dialogue-top
+`,
+      'base.yaml',
+    );
+    const misspelled = parseBaseYaml(
+      `
+assets:
+  characters:
+    Guide:
+      base: assets/guide.webp
+      characterPlacement: prompt-top
+`,
+      'base.yaml',
+    );
+
+    expect(unsupported.data).toBeUndefined();
+    expect(unsupported.error?.message).toContain('assets.characters.Guide.placement');
+    expect(misspelled.data).toBeUndefined();
+    expect(misspelled.error?.details).toContain("Unrecognized key(s) in object: 'characterPlacement'");
   });
 
   it('accepts calibrated full, bust, and close-up framings from one character image', () => {

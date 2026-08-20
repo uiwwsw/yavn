@@ -1266,6 +1266,36 @@ textarea,
   }
 }
 
+.char-layer-prompt-top {
+  --prompt-top-dialog-inset: 0px;
+  top: 0;
+  right: 0;
+  bottom: var(--prompt-top-dialog-inset);
+  left: 0;
+  z-index: 3;
+  opacity: 1;
+  transition:
+    bottom 180ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    opacity 120ms ease-out,
+    visibility 0s linear;
+  will-change: bottom, opacity;
+}
+
+.char-layer-prompt-top[data-baseline-ready='false'] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.char-layer-prompt-top[data-baseline-ready='false'] .char {
+  animation-play-state: paused;
+}
+
+.char-composition-world.char-composition-world-prompt-top {
+  /* Keep every camera scale pinned to the measured top edge of the prompt. */
+  --stage-camera-render-origin-y: 100%;
+  transform-origin: 50cqw 100%;
+}
+
 .sticker-layer {
   position: absolute;
   inset: 0;

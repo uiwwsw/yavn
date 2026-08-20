@@ -2057,6 +2057,8 @@ export default function App() {
     visibleCharacterSet.has(entry.slot.id));
   const layoutCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
     layoutCharacterSet.has(entry.slot.id));
+  const promptTopStagedCharactersByPosition = stagedCharactersByPosition.filter((entry) =>
+    entry.slot.placement === 'prompt-top');
   const characterStageLayout = resolveCharacterStageLayout(
     layoutCharactersByPosition.map((entry) => ({
       id: entry.slot.id,
@@ -2091,6 +2093,11 @@ export default function App() {
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialog.speakerId;
+  const focusedCharacterPlacement = stagedCharactersByPosition.find(
+    (entry) => entry.slot.id === focusCharacterId,
+  )?.slot.placement;
+  const stageBottomLayerZIndex = focusedCharacterPlacement === 'prompt-top' ? 2 : 3;
+  const promptTopLayerZIndex = focusedCharacterPlacement === 'stage-bottom' ? 2 : 3;
   const cameraStyle = {
     '--stage-camera-scale': cameraPresentation.scale,
     '--stage-camera-scale-mobile': cameraPresentation.mobileScale,
@@ -2130,6 +2137,7 @@ export default function App() {
       slot.calibration.x,
       slot.calibration.y,
       slot.calibration.spacing,
+      slot.placement,
     ].join(':')).join(','),
   ].join('::');
   const stickerAvoidanceSettleMs = Math.max(
@@ -2137,6 +2145,9 @@ export default function App() {
     cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration,
     cameraTransitionTiming.characterExitDuration,
   );
+  // Manual dialog hiding collapses the prompt baseline through a zero inset, while
+  // system overlays retain the last measurement. Suppress only an unmeasured visible dialog.
+  const promptTopBaselineReady = isDialogHidden || stickerSafeInset > 0;
   const orderedCharacters = [...visibleCharactersByPosition].sort((a, b) => {
     if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
     if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
@@ -2683,6 +2694,8 @@ export default function App() {
     if (!stageFrameEl || !dialogEl) {
       return;
     }
+    // System overlays keep the last measured inset so actors do not jump when the
+    // dialog fades back in. A manual hide intentionally releases the baseline.
     if (dialogUiHidden) {
       setStickerSafeInset((prev) => (prev === 0 ? prev : 0));
       return;
@@ -2721,8 +2734,12 @@ export default function App() {
 
   const hasFocusedSpeaker = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
 
-  const renderCharacter = (slot: CharacterSlot | undefined, position: Position) => {
-    if (!slot) {
+  const renderCharacter = (
+    slot: CharacterSlot | undefined,
+    position: Position,
+    renderPlacement: CharacterSlot['placement'] = 'stage-bottom',
+  ) => {
+    if (!slot || slot.placement !== renderPlacement) {
       return null;
     }
     const isCameraVisible = visibleCharacterSet.has(slot.id);
@@ -2781,6 +2798,7 @@ export default function App() {
       position,
       focusPresentation.depthClass,
       duoClass,
+      `char-placement-${renderPlacement}`,
       visibilityClass,
       pendingEntryClass,
     ].filter(Boolean).join(' ');
@@ -2791,7 +2809,7 @@ export default function App() {
             slot={slot}
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
-            className={[focusPresentation.depthClass, duoClass, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
+            className={[focusPresentation.depthClass, duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
         </Suspense>
@@ -2806,6 +2824,7 @@ export default function App() {
         alt={slot.id}
         data-character-id={slot.id}
         data-stage-position={position}
+        data-character-placement={slot.placement}
         data-character-framing={slot.framing.name}
         aria-hidden={!isCameraVisible}
         loading="eager"
@@ -3582,11 +3601,12 @@ export default function App() {
         className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}
       >
       <div
-        className={`char-layer${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
+        className={`char-layer char-layer-stage-bottom${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
         data-character-layout={characterStageLayout.mode}
         data-character-count={visibleCharacterCount}
         data-camera-shot={cameraPresentation.shot}
         data-camera-requested-shot={camera.shot}
+        style={{ zIndex: stageBottomLayerZIndex }}
       >
         <div className="char-composition-world" style={cameraStyle}>
           <div
@@ -3600,6 +3620,33 @@ export default function App() {
           </div>
         </div>
       </div>
+      {promptTopStagedCharactersByPosition.length > 0 && (
+        <div
+          className={`char-layer char-layer-prompt-top${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
+          data-character-layout={characterStageLayout.mode}
+          data-character-count={visibleCharacterCount}
+          data-camera-shot={cameraPresentation.shot}
+          data-camera-requested-shot={camera.shot}
+          data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}
+          aria-hidden={!promptTopBaselineReady}
+          style={{
+            '--prompt-top-dialog-inset': `${stickerSafeInset}px`,
+            zIndex: promptTopLayerZIndex,
+          } as CSSProperties}
+        >
+          <div className="char-composition-world char-composition-world-prompt-top" style={cameraStyle}>
+            <div
+              className="char-camera-world char-camera-world-prompt-top"
+              data-camera-target={camera.target}
+              data-camera-transition={cameraPresentation.transition}
+            >
+              {renderCharacter(characters.left, 'left', 'prompt-top')}
+              {renderCharacter(characters.center, 'center', 'prompt-top')}
+              {renderCharacter(characters.right, 'right', 'prompt-top')}
+            </div>
+          </div>
+        </div>
+      )}
       <div
         className="sticker-layer"
         style={{ '--sticker-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}

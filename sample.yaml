@@ -34,6 +34,7 @@
 #   characters:
 #     detective:
 #       base: assets/char/detective.webp
+#       placement: prompt-top # 인물별 에셋 기준선. 생략 시 stage-bottom
 #       facing: left # 원본 시선. 좌우 배치에서는 상대를 향하도록 자동 반전
 #       defaultDelivery: deduction # 평상시 리듬, say.delivery/표정이 우선
 #       calibration: { scale: 1.06, y: -2, spacing: 0.95 } # spacing은 PC 다인 구도의 최대 간격 보정

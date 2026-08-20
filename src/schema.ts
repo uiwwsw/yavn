@@ -437,15 +437,18 @@ const characterCalibrationSchema = z
   .strict();
 
 const characterAssetsSchema = z.record(
-  z.object({
-    base: z.string(),
-    emotions: z.record(z.string()).optional(),
-    facing: z.enum(['left', 'right', 'front']).optional(),
-    defaultDelivery: dialogueDeliverySchema.optional(),
-    defaultFraming: z.string().min(1).optional(),
-    framings: z.record(characterFramingPresetSchema).optional(),
-    calibration: characterCalibrationSchema.optional(),
-  }),
+  z
+    .object({
+      base: z.string(),
+      emotions: z.record(z.string()).optional(),
+      facing: z.enum(['left', 'right', 'front']).optional(),
+      placement: z.enum(['stage-bottom', 'prompt-top']).optional(),
+      defaultDelivery: dialogueDeliverySchema.optional(),
+      defaultFraming: z.string().min(1).optional(),
+      framings: z.record(characterFramingPresetSchema).optional(),
+      calibration: characterCalibrationSchema.optional(),
+    })
+    .strict(),
 );
 
 const inventoryItemSchema = z

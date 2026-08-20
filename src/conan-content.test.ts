@@ -59,6 +59,27 @@ const collectStringValues = (
   return values;
 };
 
+const collectPropertyPaths = (
+  value: unknown,
+  property: string,
+  prefix: string[] = [],
+  paths: string[] = [],
+): string[] => {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) =>
+      collectPropertyPaths(item, property, [...prefix, String(index)], paths));
+    return paths;
+  }
+
+  const record = asRecord(value);
+  Object.entries(record).forEach(([key, item]) => {
+    const path = [...prefix, key];
+    if (key === property) paths.push(path.join('.'));
+    collectPropertyPaths(item, property, path, paths);
+  });
+  return paths;
+};
+
 const collectGameOvers = (value: unknown, gameOvers: UnknownRecord[] = []): UnknownRecord[] => {
   if (Array.isArray(value)) {
     value.forEach((item) => collectGameOvers(item, gameOvers));
@@ -470,6 +491,35 @@ describe('Conan content regression', () => {
       const assetPath = asRecord(asRecord(characters[characterId]).emotions)[emotion];
       expect(typeof assetPath, `${characterId}.${emotion}`).toBe('string');
       expect(existsSync(resolveGameAsset(String(assetPath))), String(assetPath)).toBe(true);
+    });
+  });
+
+  it('keeps every half-body character on the asset-level prompt-top baseline', () => {
+    const base = readYaml('base.yaml');
+    const characters = asRecord(asRecord(base.assets).characters);
+    const parsedBase = parseBaseYaml(
+      readFileSync(`${gameRoot}base.yaml`, 'utf8'),
+      'conan/base.yaml',
+    );
+    const parsedCharacters = asRecord(asRecord(parsedBase.data?.data.assets).characters);
+    const expectedCharacters = ['코고로', '코난', '란', '레이코', '세이지', '켄지', '하루오'];
+
+    expect(parsedBase.error).toBeUndefined();
+    expect(Object.keys(characters).sort()).toEqual([...expectedCharacters].sort());
+    expect(collectPropertyPaths(base, 'placement').sort()).toEqual(
+      expectedCharacters
+        .map((characterId) => `assets.characters.${characterId}.placement`)
+        .sort(),
+    );
+    Object.entries(characters).forEach(([characterId, definition]) => {
+      expect(asRecord(definition).placement, characterId).toBe('prompt-top');
+      expect(asRecord(parsedCharacters[characterId]).placement, `parsed:${characterId}`)
+        .toBe('prompt-top');
+    });
+
+    const nonAssetDocuments = ['config.yaml', 'launcher.yaml', 'routes/base.yaml', ...chapterFiles];
+    nonAssetDocuments.forEach((path) => {
+      expect([...collectStringValues(readYaml(path), 'placement')], path).toEqual([]);
     });
   });
 
