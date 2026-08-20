@@ -18,6 +18,7 @@ import suiteLicenseUrl from '../assets/licenses/fonts/LICENSE?url';
 import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live2d.md?url';
 import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url';
 import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
+import { BackgroundTransition } from './BackgroundTransition';
 import {
   completeVideoCutscene,
   exportSaveBackup,
@@ -3585,16 +3586,7 @@ export default function App() {
     >
       <div className={`effect-viewport ${effectClass}`}>
       <div className="overlay" />
-      {background && (
-        <img
-          {...HIGH_PRIORITY_IMAGE_PROPS}
-          className="bg"
-          src={background}
-          alt="background"
-          loading="eager"
-          decoding="async"
-        />
-      )}
+      <BackgroundTransition source={background} />
 
       <div
         ref={stageContentFrameRef}

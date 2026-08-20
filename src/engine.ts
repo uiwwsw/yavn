@@ -1,4 +1,5 @@
 import type JSZip from 'jszip';
+import { beginStickerLeave } from './assetTransition';
 import { resolveCharacterFraming } from './characterFraming';
 import { resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
@@ -1148,23 +1149,18 @@ function clearStickerWithLeave(id: string, leave?: StickerLeaveEffect | StickerL
     return;
   }
 
-  cancelStickerClearTimer(id);
   const sticker = useVNStore.getState().stickers[id];
-  if (!sticker) {
+  if (!sticker || sticker.leaving) {
     return;
   }
+  cancelStickerClearTimer(id);
   const normalizedLeave = normalizeStickerLeave(leave);
   if (normalizedLeave.leaveEffect === 'none') {
     useVNStore.getState().clearSticker(id);
     return;
   }
 
-  useVNStore.getState().setSticker({
-    ...sticker,
-    ...normalizedLeave,
-    leaving: true,
-    renderKey: ++stickerRenderKeySeed,
-  });
+  useVNStore.getState().setSticker(beginStickerLeave(sticker, normalizedLeave));
 
   const totalMs = Math.max(0, normalizedLeave.leaveDelay + normalizedLeave.leaveDuration);
   const timer = window.setTimeout(() => {

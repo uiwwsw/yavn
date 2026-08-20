@@ -1189,10 +1189,26 @@ textarea,
 .bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: fadeIn 0.5s ease;
+  opacity: 0;
+  transition: opacity 360ms cubic-bezier(0.2, 0.72, 0.24, 1);
+  will-change: opacity;
+}
+
+.bg-current {
+  z-index: 1;
+  opacity: 1;
+}
+
+.bg-previous {
+  opacity: 1;
+}
+
+.bg-pending {
+  visibility: hidden;
 }
 
 .stage-content-frame {
@@ -4644,15 +4660,6 @@ textarea,
   animation: inkStamp 0.72s cubic-bezier(0.12, 0.76, 0.18, 1);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes stickerFadeIn {
   from {
     opacity: 0;
@@ -5732,6 +5739,10 @@ textarea,
 
   .game-route-boot-mark {
     opacity: 1;
+  }
+
+  .bg {
+    transition: none !important;
   }
 
   .start-gate-title-block {
