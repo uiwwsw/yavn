@@ -12,9 +12,7 @@ export type CharacterStageLayout = {
 };
 
 export type CharacterFocusPresentation = {
-  brightness: number;
-  scaleMultiplier: number;
-  depthClass: 'is-neutral' | 'is-speaker' | 'is-listener';
+  depthClass: 'is-neutral' | 'is-camera-focus' | 'is-camera-listener';
 };
 
 export type CharacterStagePlacement = {
@@ -163,27 +161,18 @@ export function buildImageCharacterRenderKey(characterId: string): string {
 }
 
 export function resolveCharacterFocusPresentation(
-  visibleCharacterCount: number,
-  order: number,
-  isSpeaker: boolean,
-  hasFocusedSpeaker: boolean,
+  isFocused: boolean,
+  hasFocusedCharacter: boolean,
 ): CharacterFocusPresentation {
-  if (!hasFocusedSpeaker) {
-    return { brightness: 1, scaleMultiplier: 1, depthClass: 'is-neutral' };
+  if (!hasFocusedCharacter) {
+    return { depthClass: 'is-neutral' };
   }
 
-  if (isSpeaker) {
-    return {
-      brightness: 1,
-      scaleMultiplier: 1,
-      depthClass: 'is-speaker',
-    };
+  if (isFocused) {
+    return { depthClass: 'is-camera-focus' };
   }
 
-  const brightness = visibleCharacterCount >= 3
-    ? (order <= 2 ? 0.76 : 0.64)
-    : 0.78;
-  return { brightness, scaleMultiplier: 1, depthClass: 'is-listener' };
+  return { depthClass: 'is-camera-listener' };
 }
 
 export function resolveCharacterFacingScale(

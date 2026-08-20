@@ -2932,7 +2932,7 @@ export default function App() {
     };
   }, [bootMode, choiceGate.active, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
-  const hasFocusedSpeaker = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
+  const hasFocusedCharacter = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
 
   const renderCharacter = (
     slot: CharacterSlot | undefined,
@@ -2946,17 +2946,16 @@ export default function App() {
     const hasVisiblePlacement = characterPlacementByIdRef.current.has(slot.id);
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
-    const isSpeaker = hasFocusedSpeaker && focusCharacterId === slot.id;
+    const isFocused = hasFocusedCharacter && focusCharacterId === slot.id;
     const isCloseListener = cameraPresentation.shot === 'close'
-      && hasFocusedSpeaker
-      && !isSpeaker;
+      && hasFocusedCharacter
+      && !isFocused;
     const placementReady = renderPlacement !== 'prompt-top' || promptTopBaselineReady;
     const rendererActive = isCameraVisible && !isCloseListener && placementReady;
+    const isSpeaking = rendererActive && dialogSpeakerId === slot.id;
     const focusPresentation = resolveCharacterFocusPresentation(
-      visibleCharacterCount,
-      order,
-      isSpeaker,
-      hasFocusedSpeaker,
+      isFocused,
+      hasFocusedCharacter,
     );
     const framingScale = slot.framing.scale;
     const currentDuoSide = characterStageLayout.duoSideByPosition[position];
@@ -2984,9 +2983,8 @@ export default function App() {
     const duoClass = placement.duoSide ? `char-duo-${placement.duoSide}` : '';
     const charStyle = {
       zIndex,
-      '--char-scale': focusPresentation.scaleMultiplier * framingScale * slot.calibration.scale,
+      '--char-scale': framingScale * slot.calibration.scale,
       '--char-facing-scale-x': placement.facingScale,
-      '--char-focus-opacity': focusPresentation.brightness,
       '--char-desktop-anchor-x': placement.anchorX,
       '--char-mobile-anchor-x': placement.mobileAnchorX,
       '--char-offset-x': placement.offsetX,
@@ -3002,6 +3000,7 @@ export default function App() {
       'char-image',
       position,
       focusPresentation.depthClass,
+      isSpeaking ? 'is-speaking' : '',
       duoClass,
       `char-placement-${renderPlacement}`,
       visibilityClass,
@@ -3015,7 +3014,7 @@ export default function App() {
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
             active={rendererActive}
-            className={[focusPresentation.depthClass, duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
+            className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
             style={charStyle}
           />
         </Suspense>

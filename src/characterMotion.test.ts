@@ -21,7 +21,7 @@ const live2dSource = readFileSync(
 
 describe('image character motion', () => {
   it('glides a mounted character between slots while facing flips snap instantly', () => {
-    const charRule = styles.match(/\.char\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
     expect(styles).toContain('calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))');
     expect(styles).toContain('var(--char-framing-y)');
     expect(styles).toContain('transform-origin: center bottom;');
@@ -96,19 +96,39 @@ describe('image character motion', () => {
     expect(styles).toMatch(/\.char-composition-world,[\s\S]*?\.char-camera-world,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
   });
 
-  it('fades a close listener while the camera move overlaps smoothly', () => {
+  it('fades a close camera listener while the camera move overlaps smoothly', () => {
     expect(appSource).toContain('resolveStageCameraTransitionTiming(');
     expect(appSource).toContain("'--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`");
     expect(appSource).toContain("'--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`");
     expect(styles).toContain('opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1)');
     expect(styles).toContain('visibility 0s linear var(--character-visibility-delay)');
     expect(styles).toMatch(
-      /\.char-layer\[data-camera-shot='close'\] \.char\.is-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
+      /\.char-layer\[data-camera-shot='close'\] \.char\.is-camera-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
     );
-    expect(styles).toMatch(/@keyframes characterEnter\s*\{[\s\S]*?from\s*\{[\s\S]*?opacity: 0;[\s\S]*?to\s*\{[\s\S]*?opacity: var\(--char-focus-opacity\);/);
+    expect(styles).toMatch(/@keyframes characterEnter\s*\{[\s\S]*?from\s*\{[\s\S]*?opacity: 0;[\s\S]*?to\s*\{[\s\S]*?opacity: 1;/);
     const characterEnter = styles.match(/@keyframes characterEnter\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
     expect(characterEnter).not.toContain('translate');
     expect(characterEnter).not.toContain('scale');
+  });
+
+  it('keeps every staged character opaque and gives only the dialogue speaker a subtle breathing loop', () => {
+    const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
+    const speakingRule = styles.match(/\.char\.is-speaking:not\(\.is-camera-hidden\)\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const breathingKeyframes = styles.match(/@keyframes characterSpeakerBreathing\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+
+    expect(charRule).toContain('opacity: 1;');
+    expect(styles).not.toContain('--char-focus-opacity');
+    expect(styles).not.toContain(".char-layer[data-camera-shot='reaction'] .char.is-camera-listener");
+    expect(appSource).toContain("const isSpeaking = rendererActive && dialogSpeakerId === slot.id;");
+    expect(appSource).toContain("isSpeaking ? 'is-speaking' : ''");
+    expect(speakingRule).toContain('characterSpeakerBreathing 3200ms');
+    expect(speakingRule).not.toContain('opacity');
+    expect(breathingKeyframes).toContain('translateY(-0.18%)');
+    expect(breathingKeyframes).toContain('scale(1.003, 1.009)');
+    expect(breathingKeyframes).not.toContain('opacity');
+    expect(styles).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.char,[\s\S]*?animation: none !important;/,
+    );
   });
 
   it('warms the Live2D renderer alongside chapter asset preloading', () => {
@@ -132,7 +152,7 @@ describe('image character motion', () => {
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-duo \.char-duo-left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer\.char-layout-trio \.left\s*\{[\s\S]*?--char-anchor-x: 25cqw;/);
     expect(styles).not.toContain("char-layout-trio[data-camera-shot='medium']");
-    expect(styles).not.toContain('.char-layout-trio .char.is-speaker.left');
+    expect(styles).not.toContain('.char-layout-trio .char.is-camera-focus.left');
     expect(styles).not.toContain('--char-anchor-x: -10cqw');
     expect(styles).not.toContain('--char-anchor-x: 110cqw');
   });
