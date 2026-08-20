@@ -44,6 +44,8 @@ export const conditionSchema: z.ZodType = z.lazy(() =>
   ]),
 );
 
+const promptHeightSchema = z.number().int().min(120).max(600);
+
 const inputRouteSchema = z.object({
   equals: z.string().min(1),
   set: stateSetMapSchema.optional(),
@@ -57,6 +59,7 @@ const inputActionSchema = z.object({
   with: z.array(z.string().min(1)).optional(),
   framing: z.string().min(1).optional(),
   camera: cameraDirectiveSchema.optional(),
+  promptHeight: promptHeightSchema.optional(),
   correct: z.string().min(1),
   errors: z.array(z.string().min(1)).min(1).optional(),
   saveAs: z.string().min(1).optional(),
@@ -171,6 +174,7 @@ const actionBodySchema = z.union([
       with: input.with,
       framing: input.framing,
       camera: input.camera,
+      promptHeight: input.promptHeight,
       correct: input.correct,
       errors: input.errors && input.errors.length > 0 ? input.errors : ['정답이 아닙니다.'],
       saveAs: input.saveAs,
@@ -190,6 +194,7 @@ const actionBodySchema = z.union([
         with: z.array(z.string().min(1)).optional(),
         framing: z.string().min(1).optional(),
         camera: cameraDirectiveSchema.optional(),
+        promptHeight: promptHeightSchema.optional(),
         forgiveOnceDefault: z.boolean().optional(),
         forgiveMessage: z.string().min(1).optional(),
         timeoutMs: z.number().int().min(1000).max(60000).optional(),
@@ -255,6 +260,7 @@ const actionBodySchema = z.union([
       when: conditionSchema.optional(),
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
+      promptHeight: promptHeightSchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
       unskippable: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
@@ -304,6 +310,7 @@ const uiTemplateSchema = z.enum(UI_TEMPLATE_IDS);
 const uiConfigSchema = z
   .object({
     template: uiTemplateSchema,
+    promptHeight: promptHeightSchema.optional(),
   })
   .strict();
 

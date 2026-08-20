@@ -137,6 +137,7 @@ export type SayAction = {
     when?: ConditionNode;
     text: string;
     delivery?: DialogueDelivery;
+    promptHeight?: number;
     wait?: number;
     unskippable?: boolean;
     autoAdvance?: number;
@@ -205,6 +206,7 @@ export type InputAction = {
     with?: string[];
     framing?: string;
     camera?: CameraDirective;
+    promptHeight?: number;
     correct: string;
     errors: string[];
     saveAs?: string;
@@ -247,6 +249,7 @@ export type ChoiceAction = {
     with?: string[];
     framing?: string;
     camera?: CameraDirective;
+    promptHeight?: number;
     forgiveOnceDefault?: boolean;
     forgiveMessage?: string;
     timeoutMs?: number;
@@ -375,6 +378,7 @@ export type EndingScreenConfig = {
 
 export type UiConfig = {
   template: UiTemplateId;
+  promptHeight?: number;
 };
 
 export type GameData = {
