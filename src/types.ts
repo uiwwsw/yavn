@@ -4,6 +4,7 @@ export type { UiTemplateId } from './uiTemplates';
 
 export type Position = 'left' | 'center' | 'right';
 export type CharacterFacing = 'left' | 'right' | 'front';
+export type CharacterPlacement = 'stage-bottom' | 'prompt-top';
 export type StickerAnchorX = 'left' | 'center' | 'right';
 export type StickerAnchorY = 'top' | 'center' | 'bottom';
 export type StickerLength = number | string;
@@ -52,6 +53,7 @@ export type CharacterAssetDefinition = {
   base: string;
   emotions?: Record<string, string>;
   facing?: CharacterFacing;
+  placement?: CharacterPlacement;
   defaultDelivery?: DialogueDelivery;
   defaultFraming?: string;
   framings?: Record<string, CharacterFramingPreset>;
@@ -132,6 +134,7 @@ export type SayAction = {
     framing?: string;
     camera?: CameraDirective;
     channel?: DialogueChannel;
+    when?: ConditionNode;
     text: string;
     delivery?: DialogueDelivery;
     wait?: number;
@@ -415,6 +418,7 @@ export type CharacterSlot = {
   source: string;
   emotion?: string;
   facing?: CharacterFacing;
+  placement: CharacterPlacement;
   framing: CharacterFramingState;
   calibration: Required<CharacterCalibration>;
 };

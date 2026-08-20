@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-19T06:41:45.243Z",
+  "generatedAt": "2026-08-19T23:27:31.671Z",
   "games": [
     {
       "id": "conan",
       "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
       "path": "/game-list/conan/",
       "author": "uiwwsw",
-      "version": "10.7.0",
+      "version": "10.8.0",
       "summary": "비공식·비상업적 팬 데모. 기념품 고르기와 탁구 삼세판, 가족 저녁을 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [
@@ -98,7 +98,7 @@
       "name": "선덕여왕: 죽은 공주의 왕관",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "9.5.0",
+      "version": "9.6.0",
       "summary": "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 마침내 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 스릴러.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [

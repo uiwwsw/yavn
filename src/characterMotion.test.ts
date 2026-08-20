@@ -117,7 +117,7 @@ describe('image character motion', () => {
   });
 
   it('uses one image ratio with separate duo and trio horizontal anchors', () => {
-    expect(appSource).toContain('data-character-count={visibleCharacterCount}');
+    expect(appSource.match(/data-character-count=\{visibleCharacterCount\}/g)).toHaveLength(2);
     expect(appSource).toContain('const characterStageSpacing = resolveCharacterStageSpacing(');
     expect(appSource).toContain('layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
     expect(appSource).toContain('resolveCharacterStagePlacement(');

@@ -68,7 +68,7 @@ scenes:
           char: 코난.serious
           with:
             - 레이코.nervous
-          text: "<speed=25>2번 잔 가장자리와 지워진 R에서 같은 섬유가 나왔어요.</speed> <speed=19>그 손수건을 쥔 채, 9시 29분에 뭘 했어요?</speed>"
+          text: "<speed=25>2번 잔 바깥에서만 반응이 나왔고, 온도계는 9시 29분에 멈췄어요.</speed> <speed=19>그 비어 있는 1분에 뭘 했어요?</speed>"
       - say:
           char: 레이코.nervous
           with:
@@ -357,7 +357,7 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "<speed=26>수정 계약서엔 배합 이름을 켄지 씨 회사로 넘기는 조항이 있어요.</speed> <speed=19>그런데 원본 연구 노트는 하루오 씨가 숨겼죠.</speed>"
+          text: "<speed=26>수정 계약서엔 배합 이름을 켄지 씨 회사로 넘기는 조항이 있어요.</speed> <speed=19>그런데 원본 연구 노트는 그날 사라졌죠.</speed>"
       - say:
           char: 레이코.nervous
           with:

@@ -15,6 +15,14 @@ scenes:
           channel: narration
           text: "증거상 위에 불탄 연, 비담의 편지, 어린 덕만의 사망 기록이 놓였습니다. 궁문 밖에는 세 줄이 생겼습니다. 비담을 죽이라는 사람, 살리라는 사람, 그리고 어느 쪽이든 먼저 자기 가족 이름부터 적어 달라는 사람들."
       - say:
+          when: { var: rebellion_response, op: eq, value: siege_trial }
+          channel: record
+          text: "재판 명부 첫 장에는 포위 사흘 동안 솥이 식은 성 밖 마을의 이름이 적혔습니다. 칼을 덜 쓴 승리도 굶은 사람 앞에서는 무죄가 아니었습니다."
+      - say:
+          when: { var: rebellion_response, op: eq, value: amnesty_split }
+          channel: narration
+          text: "해산 북을 듣고 돌아간 농민들은 궁문 밖 세 줄 어디에도 서지 않았습니다. 덕만은 비어 있는 네 번째 줄까지 판결문에 남기게 했습니다."
+      - say:
           char: 비담.sad
           camera: close
           with: [덕만]
@@ -51,6 +59,7 @@ scenes:
 
   sentence_execution:
     actions:
+      - effect: inkstamp
       - say:
           char: 덕만
           text: "비담의 질문은 죄가 아니다. 그 답을 받겠다며 군사를 일으킨 순간, 남의 목숨으로 값을 치렀다. 질문과 죄를 한 줄로 뭉개지 마라."
@@ -63,6 +72,7 @@ scenes:
 
   sentence_exile:
     actions:
+      - effect: inkstamp
       - say:
           char: 덕만
           text: "죽여서 네 질문을 편하게 끝내 주지 않겠다. 네가 끊은 곡식길로 가라. 이름 없이 길을 다시 잇고 살아."
@@ -75,6 +85,7 @@ scenes:
 
   sentence_restored:
     actions:
+      - effect: inkstamp
       - say:
           char: 덕만
           text: "전령 이름과 암호를 모두 기록관에 넘겨. 다시 내 곁에서 일하되, 네 충성을 자물쇠로 쓰지 않겠다."
@@ -92,6 +103,13 @@ scenes:
       - say:
           channel: narration
           text: "재판 뒤 덕만은 열두 해의 종이를 바닥에 길게 늘어놓았습니다. 자기 사망 기록에서 시작한 줄은 곡식 장부와 위조 자백, 일식표를 지나 비담의 편지에서 멈췄습니다. 소화가 화로를 가져왔습니다."
+      - char: { id: 소화, position: right }
+      - say:
+          when: { var: sohwa_trust, op: gte, value: 3 }
+          char: 소화
+          camera: close
+          with: [덕만]
+          text: "불 속에서 아기씨 손을 놓치지 않은 날부터 저는 이 이름을 기억했습니다. 오늘은 폐하가 무엇을 태우든, 덕만이라는 아이부터 제가 읽겠습니다."
       - choice:
           key: c12_record_policy
           prompt: "화로의 불이 종이 끝을 핥는다. 무엇을 세상에 남길까?"

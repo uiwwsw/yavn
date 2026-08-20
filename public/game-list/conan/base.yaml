@@ -19,39 +19,46 @@ assets:
   characters:
     코난:
       base: /assets/char/conan/base.webp
+      placement: prompt-top
       emotions:
         smile: /assets/char/conan/smile.webp
         think: /assets/char/conan/think.webp
         serious: /assets/char/conan/serious.webp
     란:
       base: /assets/char/ran/base.webp
+      placement: prompt-top
       emotions:
         determined: /assets/char/ran/determined.webp
         surprised: /assets/char/ran/surprised.webp
         worried: /assets/char/ran/worried.webp
     코고로:
       base: /assets/char/kogoro/base.webp
+      placement: prompt-top
       emotions:
         proud: /assets/char/kogoro/proud.webp
         angry: /assets/char/kogoro/angry.webp
         shocked: /assets/char/kogoro/shocked.webp
     켄지:
       base: /assets/char/kenji/base.webp
+      placement: prompt-top
       emotions:
         smile: /assets/char/kenji/smile.webp
         angry: /assets/char/kenji/angry.webp
     세이지:
       base: /assets/char/shinichi/base.webp
+      placement: prompt-top
       emotions:
         amused: /assets/char/shinichi/amused.webp
         cold: /assets/char/shinichi/cold.webp
     레이코:
       base: /assets/char/reiko/base.webp
+      placement: prompt-top
       emotions:
         smile: /assets/char/reiko/smile.webp
         nervous: /assets/char/reiko/nervous.webp
     하루오:
       base: /assets/char/haruo/base.webp
+      placement: prompt-top
       emotions:
         smile: /assets/char/haruo/smile.webp
         scared: /assets/char/haruo/scared.webp
@@ -92,10 +99,12 @@ state:
   clue_order_note: false
   clue_double_press_decoy: false
   clue_haruo_wipe: false
+  clue_kenji_rejected_deal: false
   reiko_motive_open: false
   recovered_haruo_clue: false
   recovered_order_note: false
   recovered_reiko_motive: false
+  recovered_kenji_deal: false
   timeline_answer: ""
   culprit_answer: ""
 inventory:

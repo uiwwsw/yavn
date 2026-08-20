@@ -35,6 +35,8 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain("' choice-gate-option-previous-game-over'");
     expect(appSource).toContain('<b>원인 선택</b>');
     expect(appSource).toContain('죽음의 원인 선택으로');
+    expect(appSource).toContain('<div className="game-over-cause" aria-label="결과를 만든 선택">');
+    expect(appSource).toContain('{choiceRecoveryPoint.failedChoice.value}');
     expect(appSource).toContain('<em>GAME OVER</em>');
     expect(appSource).toContain('choiceOptionButtonRefs.current[focusIndex]?.focus');
     expect(appSource).toContain('index !== recoveredFailedChoiceIndex');
@@ -43,6 +45,9 @@ describe('save and game over recovery UI', () => {
     );
     expect(styles).toMatch(
       /\.choice-gate-option-previous-game-over:focus-visible\s*\{[\s\S]*?box-shadow:/,
+    );
+    expect(styles).toMatch(
+      /\.game-over-cause\s*\{[\s\S]*?border:[\s\S]*?background:[\s\S]*?text-align: left;/,
     );
     expect(appSource).not.toContain('disabled={busy || isPreviousGameOverChoice}');
   });
