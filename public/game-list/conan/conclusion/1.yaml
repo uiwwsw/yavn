@@ -28,8 +28,20 @@ scenes:
           emotion: serious
       - effect: focus
       - say:
+          when:
+            all:
+              - { var: clue_haruo_wipe, op: eq, value: true }
+              - { var: clue_rim_reagent, op: eq, value: true }
           char: 코난.think
           text: "<speed=18>(잔 가장자리와 R에 같은 섬유가 남았고, 온도계는 9시 29분에 멈췄어.)</speed>"
+      - say:
+          when:
+            not:
+              all:
+                - { var: clue_haruo_wipe, op: eq, value: true }
+                - { var: clue_rim_reagent, op: eq, value: true }
+          char: 코난.think
+          text: "<speed=18>(2번 잔 바깥의 반응은 찾았어.</speed> <speed=27>하지만 R을 지운 손까지는 아직 이어지지 않아.)</speed>"
       - wait: 300
       - say:
           char: 코난.think
@@ -95,6 +107,14 @@ scenes:
           char: 코고로.proud
           text: "<speed=25>반응은 2번 잔의 바깥 가장자리뿐.</speed> <speed=19>범인은 물기를 닦는 한 번의 동작으로, 하루오 씨 입이 닿을 곳에만 물질을 남겼습니다.</speed>"
       - say:
+          when: { var: remembered_tea_order, op: eq, value: true }
+          char: 코고로.proud
+          text: "<speed=25>하루오 씨는 88도 전에는 뚜껑을 건드리지 말라고 했습니다.</speed> <speed=19>두 번째 소리는 절차가 아니라 모두의 시선을 돌린 신호였죠.</speed>"
+      - char:
+          id: 세이지
+          position: right
+          emotion: cold
+      - say:
           char: 세이지.cold
           with:
             - 코고로.proud
@@ -105,9 +125,19 @@ scenes:
     actions:
       - music: reasoning
       - effect: darken
+      - char:
+          id: 란
+          position: right
+          emotion: worried
       - say:
           char: 코고로.proud
           text: "<speed=25>확실한 것부터 갑시다.</speed> <speed=19>누군가 하루오 씨의 2번 잔, 그중에서도 입이 닿는 바깥쪽만 닦았습니다.</speed>"
+      - say:
+          when: { var: mistake_count, op: gte, value: 3 }
+          char: 란.worried
+          with:
+            - 코고로.proud
+          text: "<speed=23>사람 이름부터 고르지 말아요.</speed> <speed=18>하루오 씨는 쓰러질 때 목이 아니라 2번 잔을 붙잡았어요.</speed>"
       - say:
           char: 란.worried
           with:
@@ -120,9 +150,13 @@ scenes:
       - branch:
           cases:
             - when:
-                var: investigation_count
-                op: gte
-                value: 4
+                all:
+                  - { var: clue_order_note, op: eq, value: true }
+                  - { var: clue_haruo_wipe, op: eq, value: true }
+                  - { var: clue_rim_reagent, op: eq, value: true }
+                  - { var: clue_double_press_decoy, op: eq, value: true }
+                  - { var: clue_kenji_rejected_deal, op: eq, value: true }
+                  - { var: reiko_motive_open, op: eq, value: true }
               goto: full_coverage_line
           default: partial_coverage_line
 
@@ -131,6 +165,10 @@ scenes:
       - say:
           char: 코고로.proud
           text: "<speed=25>배정표는 2번 잔을, 통화 기록은 문밖을, 온도계는 9시 29분을 가리킵니다.</speed> <speed=19>감식 결과가 그 셋을 한 장의 손수건으로 잇고요.</speed>"
+      - say:
+          when: { var: clue_kenji_rejected_deal, op: eq, value: true }
+          char: 코고로.proud
+          text: "<speed=25>켄지 씨의 진술에는 레이코 씨가 듣지 못한 뒷말도 남았습니다.</speed> <speed=19>하루오 씨는 만든 사람 이름을 하나라도 빼는 거래를 거절했습니다.</speed>"
       - goto: final_accuse_gate
 
   partial_coverage_line:
@@ -267,6 +305,12 @@ scenes:
                   - var: reiko_motive_open
                     op: eq
                     value: true
+                  - var: clue_double_press_decoy
+                    op: eq
+                    value: true
+                  - var: clue_kenji_rejected_deal
+                    op: eq
+                    value: true
               goto: true_epilogue
             - when:
                 all:
@@ -321,6 +365,10 @@ scenes:
           with:
             - 코고로.proud
           text: "<speed=16>빼앗기기 전에 막아야 한다고...</speed> <speed=16>그 생각만 했어요.</speed> <speed=33>겁만 주려 했다는 말은 못 해요.</speed> <speed=16>2번 잔을 알고 준비했으니까.</speed>"
+      - char:
+          id: 켄지
+          position: right
+          emotion: angry
       - say:
           char: 켄지.angry
           with:
@@ -333,6 +381,10 @@ scenes:
           with:
             - 켄지.angry
           text: "<speed=16>거절...</speed> <speed=16>했다고요?</speed>"
+      - char:
+          id: 란
+          position: right
+          emotion: worried
       - say:
           char: 란.worried
           with:
@@ -528,6 +580,10 @@ scenes:
       - music: mystery
       - sound: thunder
       - effect: shake
+      - char:
+          id: 코난
+          position: center
+          emotion: think
       - say:
           char: 코난.think
           text: "<speed=18>(말에 끌려서, 잔에 닿은 손을 놓쳤어.)</speed>"

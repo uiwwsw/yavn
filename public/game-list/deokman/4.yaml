@@ -36,10 +36,10 @@ scenes:
               goto: answer_with_absence
             - text: "웃으며 편지의 마지막 줄까지 듣는다"
               add: { nobles_support: 1, evidence: 1 }
-              goto: bad_silent_consent
+              goto: answer_with_patience
             - text: "굶은 아이들의 명단을 그림 위에 펼친다"
               add: { people_support: 2, fear: 1 }
-              goto: bad_righteous_insult
+              goto: answer_with_ledger
 
   answer_with_absence:
     actions:
@@ -55,53 +55,32 @@ scenes:
       - clearSticker: { id: c5_peony, leave: fadeOut }
       - goto: hidden_terms
 
-  bad_silent_consent:
+  answer_with_patience:
     actions:
-      - bg: peony_court
-      - camera: medium
-      - char: { id: 덕만, position: left, emotion: princess }
-      - char: { id: 당 사신, position: right }
       - say:
           channel: narration
-          text: "덕만은 미소를 거두지 않은 채 편지의 마지막 줄까지 들었습니다. 사신은 답을 재촉하지 않고 빈 술잔을 천천히 뒤집었습니다."
+          text: "덕만은 대꾸하지 않고 조건을 한 줄씩 받아 적었습니다. 사신이 잔을 드는 순간 마지막 종이를 낚아챘습니다. 혼인 조항 아래, 신라 성 하나를 당군 주둔지로 내준다는 작은 글씨가 숨어 있었습니다."
       - say:
-          char: 당 사신
+          char: 덕만
+          camera: close
+          with: [당 사신]
+          text: "남편은 미끼고 성문이 본값이었군요. 숨기고 싶은 말일수록 글 끝에 작게 쓰는 버릇이 있으십니다."
+      - goto: hidden_terms
+
+  answer_with_ledger:
+    actions:
+      - say:
+          char: 덕만
+          text: "남자 왕이 쌀을 만든다면 이 아이들은 왜 굶었습니까? 당이 보낼 건 남편입니까, 씨앗입니까? 둘 중 하나만 말씀하십시오."
+      - say:
+          char: 당 사신.nervous
           camera: close
           with: [덕만]
-          text: "반대가 없으셨으니 혼인과 주둔 조항 모두 받아들이신 것으로 기록하겠습니다. 축하드립니다."
+          text: "공주께선 제국의 혼인을 장터 거래처럼 다루시는군요."
       - say:
-          char: 덕만.princess_angry
-          text: "나는 듣겠다고 했지, 허락한다고 하지 않았습니다. 그 붓을 멈추세요."
-      - say:
-          channel: record
-          text: "당 조정 외교 기록 — 신라의 덕만 공주, 황실 혼인과 당군 주둔 조건을 묵인. 이후 합의를 뒤집어 반역자로 처형됨."
-      - gameOver:
-          title: "운명 — 침묵으로 굳은 혼인"
-          message: "덕만이 답을 미루는 동안 귀족들은 침묵을 혼인 동의로 기록했습니다. 당군이 성 안에 들어온 뒤 그 작은 글씨를 바로잡을 사람은 남지 않았습니다."
-
-  bad_righteous_insult:
-    actions:
-      - bg: peony_court
-      - camera: close
-      - char: { id: 덕만, position: left, emotion: princess_angry }
-      - char: { id: 당 사신, position: right, emotion: angry }
-      - say:
-          char: 덕만.princess_angry
-          text: "남자 왕이 쌀을 만든다면 이 아이들은 왜 굶었습니까? 이 명단부터 황제 앞에서 읽으십시오."
-      - say:
-          channel: narration
-          text: "명단이 모란 그림을 덮자 연회장은 잠시 조용해졌습니다. 사신은 종이를 줍지 않고 수행관에게 술잔을 치우라 손짓했습니다."
-      - say:
-          char: 당 사신.angry
-          camera: reaction
-          with: [덕만]
-          text: "대답 대신 황제의 사신을 모욕하셨군요. 국경에서 곡식과 군선 중 무엇이 먼저 오는지 보시지요."
-      - say:
-          channel: narration
-          text: "당의 군선이 나타나자 덕만을 칭찬하던 귀족들이 먼저 궁문을 열었습니다. 전쟁을 막는 값으로 공주의 목이 합의문에 올랐습니다."
-      - gameOver:
-          title: "운명 — 옳은 분노의 인질"
-          message: "아이들의 이름은 연회장을 흔들었지만 사신의 함정을 반박하지는 못했습니다. 당은 이를 공개 모욕으로 기록했고 귀족들은 전쟁을 막겠다며 덕만을 처형했습니다."
+          char: 덕만
+          text: "값을 치르는 건 굶는 사람들이니까요. 왕끼리 마시는 술도 결국 누군가 계산합니다."
+      - goto: hidden_terms
 
   hidden_terms:
     actions:
@@ -200,14 +179,31 @@ scenes:
           camera: reaction
           with: [당 사신]
           options:
+            - text: "문을 잠그고 사과문부터 쓰게 한다"
+              goto: bad_hostage
             - text: "사신도 일으켜 같은 높이에서 절한다"
               add: { nobles_support: 1, people_support: 1, insight: 1 }
               goto: scentless_end
             - text: "모란 그림을 말아 사신 품에 돌려준다"
               add: { fear: 2, people_support: 1 }
-              goto: bad_hostage
-            - text: "문을 잠그고 사과문부터 쓰게 한다"
-              goto: bad_hostage
+              goto: return_peony
+
+  return_peony:
+    actions:
+      - say:
+          char: 덕만
+          camera: close
+          with: [당 사신]
+          text: "이 그림은 돌려드립니다. 황제의 꽃도, 황제의 남편도 신라 왕을 정하지 못한다는 답과 함께요."
+      - say:
+          char: 당 사신.angry
+          camera: reaction
+          with: [덕만]
+          text: "그 답은 모욕으로 기록될 겁니다."
+      - say:
+          char: 덕만
+          text: "그러니 혼인 조건과 곡식 조건도 한 글자도 빼지 말고 함께 기록하십시오."
+      - goto: scentless_end
 
   scentless_end:
     actions:
@@ -237,7 +233,7 @@ scenes:
   bad_hostage:
     actions:
       - bg: locked_room
-      - camera: close
+      - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: angry }
       - char: { id: 당 사신, position: right, emotion: angry }
       - say:
@@ -245,7 +241,7 @@ scenes:
           text: "이 모욕은 그대로 돌려보내겠습니다. 오늘 누가 무릎 꿇었는지도 황제에게 전하십시오."
       - say:
           char: 당 사신.angry
-          text: "그림을 제 얼굴에 던지든 문을 잠그든 황제께 닿는 뜻은 하나입니다. 신라가 사신의 목을 겨눴다고 쓰겠습니다."
+          text: "문을 잠그는 순간부터 이 자리는 연회가 아니라 감옥입니다. 황제께 신라가 사신의 목을 겨눴다고 쓰겠습니다."
       - say:
           channel: narration
           text: "사흘 뒤 국경의 원조 곡식이 되돌아갔고 당의 군선이 동해에 나타났습니다. 사신을 반대하던 귀족들조차 전쟁 책임을 덕만에게 돌려 궁문을 안에서 열었습니다."
@@ -254,4 +250,4 @@ scenes:
           text: "당 조정 기록 — 신라 왕실의 공주가 황제의 사신을 모욕하고 억류함. 신라 귀족 연합이 덕만을 처형한 뒤 사죄 사절을 보냄."
       - gameOver:
           title: "운명 — 모욕의 값이 된 목"
-          message: "사신 한 사람에게 모욕을 돌려줄 수는 있었지만 그가 대표하는 군대와 국내의 공포까지 꺾지는 못했습니다. 귀족들은 나라를 살린다는 명분으로 덕만의 목을 먼저 내놓았습니다."
+          message: "사신을 가둬 사과를 받아낼 수는 있었지만 그가 대표하는 군대와 국내의 공포까지 가둘 수는 없었습니다. 귀족들은 나라를 살린다는 명분으로 덕만의 목을 먼저 내놓았습니다."

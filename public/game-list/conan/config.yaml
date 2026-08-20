@@ -9,7 +9,7 @@ author:
     - label: "LinkedIn"
       value: "linkedin.com/in/uiwwsw"
       href: "https://linkedin.com/in/uiwwsw"
-version: "10.7.0"
+version: "10.8.0"
 legalNotices:
   - id: "detective-conan-noncommercial-fan-demo"
     title: "비공식·비상업적 팬 데모"
@@ -78,6 +78,12 @@ endingRules:
           op: eq
           value: true
         - var: reiko_motive_open
+          op: eq
+          value: true
+        - var: clue_double_press_decoy
+          op: eq
+          value: true
+        - var: clue_kenji_rejected_deal
           op: eq
           value: true
     ending: true_end

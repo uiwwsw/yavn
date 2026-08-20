@@ -143,6 +143,7 @@ function haveSameCharacterSlot(left: CharacterSlot | undefined, right: Character
     && left.source === right.source
     && left.emotion === right.emotion
     && left.facing === right.facing
+    && left.placement === right.placement
     && left.framing.name === right.framing.name
     && left.framing.scale === right.framing.scale
     && left.framing.x === right.framing.x

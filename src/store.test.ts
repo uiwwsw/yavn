@@ -6,6 +6,7 @@ const imageCharacter = (id: string): CharacterSlot => ({
   id,
   kind: 'image',
   source: `/characters/${id}.webp`,
+  placement: 'stage-bottom',
   framing: { name: 'full', scale: 1, x: 0, y: 0 },
   calibration: { scale: 1, x: 0, y: 0, spacing: 1 },
 });
@@ -54,6 +55,18 @@ describe('character slots', () => {
     store.setCharacter('center', imageCharacter('란'));
 
     expect(useVNStore.getState().characters).toBe(firstCharacters);
+  });
+
+  it('updates a staged character when only its asset placement changes', () => {
+    const conan = imageCharacter('코난');
+    const store = useVNStore.getState();
+
+    store.setCharacter('center', conan);
+    const firstCharacters = useVNStore.getState().characters;
+    store.setCharacter('center', { ...conan, placement: 'prompt-top' });
+
+    expect(useVNStore.getState().characters).not.toBe(firstCharacters);
+    expect(useVNStore.getState().characters.center?.placement).toBe('prompt-top');
   });
 
   it('keeps repeated cast membership, speaker focus, and camera directives referentially stable', () => {

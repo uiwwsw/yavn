@@ -356,7 +356,12 @@ scenes:
           text: "<speed=23>원본과 아래 장, 둘 다 넣겠습니다.</speed> <speed=18>둘을 떼는 순간 압흔은 증거가 아니라 제 주장이 되니까요.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>네.</speed> <speed=19>9시 46분, 코난 군 입회 아래 봉인.</speed> <speed=32>그 시각도 적겠습니다.</speed>"
+          text: "<speed=25>네.</speed> <speed=19>제가 입회했다는 것도 그대로 적어 주세요.</speed>"
+      - say:
+          char: 세이지.cold
+          with:
+            - 코난.serious
+          text: "<speed=23>9시 46분, 코난 군 입회 아래 봉인.</speed> <speed=18>그 시각도 적겠습니다.</speed>"
       - goto: /routes/hub/1.yaml
 
   outro_closed:

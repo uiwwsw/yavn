@@ -16,6 +16,18 @@ scenes:
           camera: medium
           text: "모란 온실의 비밀문이 닫혔습니다. 천명은 촛불을 들어 덕만의 얼굴을 오래 비췄습니다. 탁자 위에는 사망 기록과 서쪽 창고 운송표가 놓였지만, 누구도 먼저 종이를 보지 못했습니다."
       - say:
+          when: { var: identity_mode, op: eq, value: public }
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "장터에서 네 이름을 외쳤다는 소문이 궁보다 먼저 왔어. 기쁘면서도 화가 났어. 나한테 닿기도 전에 또 네 목을 걸었으니까."
+      - say:
+          when: { var: identity_mode, op: eq, value: borrowed }
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "감찰관 이름까지 빌렸다며. 널 들이는 순간 저들은 네가 훔친 이름부터 재판하려 들 거야. 그 빚도 같이 갚자."
+      - say:
           char: 천명.nervous
           camera: close
           with: [덕만]
@@ -172,11 +184,11 @@ scenes:
             - text: "천명과 등을 맞대고 칼을 막는다"
               add: { cheonmyeong_trust: 2, people_support: 1, army_support: 1 }
               goto: survive_together
+            - text: "피 묻은 뜰에서 계승권을 선포한다"
+              goto: bad_early_crown
             - text: "퇴로를 열어 칠숙을 회랑으로 몬다"
               add: { evidence: 2, mercy: 1, fear: 1 }
               goto: capture_order
-            - text: "피 묻은 뜰에서 계승권을 선포한다"
-              goto: bad_early_crown
 
   survive_together:
     actions:
@@ -190,7 +202,7 @@ scenes:
       - say:
           channel: narration
           text: "덕만이 일부러 동문을 비우자 칠숙은 미끼를 물었습니다. 좁은 회랑에서 옷자락이 찢겼고, 그 안에서 서쪽 창고 열쇠와 사병 명부가 떨어졌습니다."
-      - goto: bad_early_crown
+      - goto: sisters_end
 
   sisters_end:
     actions:
@@ -212,7 +224,7 @@ scenes:
   bad_early_crown:
     actions:
       - bg: council_hall
-      - camera: close
+      - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: princess_angry }
       - char: { id: 천명, position: right, emotion: sad }
       - say:
@@ -220,7 +232,7 @@ scenes:
           text: "언니와 떨어지면 저 칼이 원하는 대로 돼. 회랑부터 닫고 살아서 말해야 해."
       - say:
           channel: narration
-          text: "덕만이 칠숙을 쫓거나 피 묻은 뜰에서 계승권을 외치는 순간 자매의 등이 떨어졌습니다. 숨어 있던 두 번째 칼은 칠숙이 아니라 혼자 남은 덕만을 향했습니다."
+          text: "피 묻은 뜰에서 덕만이 계승권을 외치는 순간 호위의 시선이 왕위 선언에 쏠렸습니다. 숨어 있던 두 번째 칼은 칠숙이 아니라 혼자 앞선 덕만을 향했습니다."
       - say:
           char: 천명.sad
           text: "덕만아, 돌아봐! 저 사람이 미끼야. 네 뒤에—"

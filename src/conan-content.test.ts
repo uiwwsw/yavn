@@ -59,6 +59,27 @@ const collectStringValues = (
   return values;
 };
 
+const collectPropertyPaths = (
+  value: unknown,
+  property: string,
+  prefix: string[] = [],
+  paths: string[] = [],
+): string[] => {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) =>
+      collectPropertyPaths(item, property, [...prefix, String(index)], paths));
+    return paths;
+  }
+
+  const record = asRecord(value);
+  Object.entries(record).forEach(([key, item]) => {
+    const path = [...prefix, key];
+    if (key === property) paths.push(path.join('.'));
+    collectPropertyPaths(item, property, path, paths);
+  });
+  return paths;
+};
+
 const collectGameOvers = (value: unknown, gameOvers: UnknownRecord[] = []): UnknownRecord[] => {
   if (Array.isArray(value)) {
     value.forEach((item) => collectGameOvers(item, gameOvers));
@@ -127,6 +148,48 @@ const choiceOptions = (actions: UnknownRecord[]): UnknownRecord[] => {
   );
   const options = asRecord(choiceAction?.choice).options;
   return Array.isArray(options) ? options.map(asRecord) : [];
+};
+
+const matchesCondition = (value: unknown, state: UnknownRecord): boolean => {
+  const condition = asRecord(value);
+  if (Array.isArray(condition.all)) {
+    return condition.all.every((entry) => matchesCondition(entry, state));
+  }
+  if (Array.isArray(condition.any)) {
+    return condition.any.some((entry) => matchesCondition(entry, state));
+  }
+  if (condition.not !== undefined) {
+    return !matchesCondition(condition.not, state);
+  }
+
+  const key = typeof condition.var === 'string' ? condition.var : '';
+  const actual = state[key];
+  const expected = condition.value;
+  switch (condition.op) {
+    case 'eq': return actual === expected;
+    case 'ne': return actual !== expected;
+    case 'gt': return Number(actual) > Number(expected);
+    case 'gte': return Number(actual) >= Number(expected);
+    case 'lt': return Number(actual) < Number(expected);
+    case 'lte': return Number(actual) <= Number(expected);
+    case 'in': return Array.isArray(expected) && expected.includes(actual as never);
+    default: return false;
+  }
+};
+
+const resolveBranchTarget = (
+  document: UnknownRecord,
+  scene: string,
+  state: UnknownRecord,
+): string | undefined => {
+  const action = sceneActions(document, scene).find((entry) =>
+    Object.prototype.hasOwnProperty.call(entry, 'branch'),
+  );
+  const branch = asRecord(action?.branch);
+  const cases = Array.isArray(branch.cases) ? branch.cases.map(asRecord) : [];
+  const matched = cases.find((entry) => matchesCondition(entry.when, state));
+  const target = matched?.goto ?? branch.default;
+  return typeof target === 'string' ? target : undefined;
 };
 
 const resolveGameAsset = (assetPath: string): string =>
@@ -213,6 +276,7 @@ describe('Conan content regression', () => {
     const reiko = readYaml('routes/reiko/1.yaml');
     const haruo = readYaml('routes/haruo/1.yaml');
     const seiji = readYaml('routes/seiji/1.yaml');
+    const kenji = readYaml('routes/kenji/1.yaml');
 
     expect(setValues(sceneActions(reiko, 'evidence_followup'))).toMatchObject({
       recovered_reiko_motive: true,
@@ -231,6 +295,106 @@ describe('Conan content regression', () => {
       clue_order_note: true,
       recovered_order_note: true,
     });
+
+    expect(setValues(sceneActions(kenji, 'evidence_followup'))).toMatchObject({
+      clue_double_press_decoy: true,
+      clue_kenji_rejected_deal: true,
+      recovered_kenji_deal: true,
+    });
+  });
+
+  it('keeps incomplete evidence recoverable after all four interviews', () => {
+    const hub = readYaml('routes/hub/1.yaml');
+    const haruo = readYaml('routes/haruo/1.yaml');
+    const kenji = readYaml('routes/kenji/1.yaml');
+    const reiko = readYaml('routes/reiko/1.yaml');
+    const seiji = readYaml('routes/seiji/1.yaml');
+    const baseState = asRecord(readYaml('base.yaml').state);
+    let state: UnknownRecord = {
+      ...baseState,
+      investigation_count: 4,
+      visited_haruo: true,
+      visited_kenji: true,
+      visited_reiko: true,
+      visited_seiji: true,
+      tea_residue_report: true,
+      reiko_statement_note: true,
+      clue_haruo_wipe: true,
+      clue_rim_reagent: false,
+      clue_double_press_decoy: false,
+      clue_kenji_rejected_deal: true,
+      clue_order_note: false,
+      reiko_motive_open: false,
+    };
+
+    expect(resolveBranchTarget(hub, 'all_done_check', state)).toBe('route_select');
+
+    // A player can know the wiped R but still have missed the rim test.
+    expect(resolveBranchTarget(haruo, 'entry_guard', state)).toBe('evidence_followup');
+    state = { ...state, ...setValues(sceneActions(haruo, 'evidence_followup')) };
+
+    // A player can hear the rejected deal while still missing the lid distraction.
+    expect(resolveBranchTarget(kenji, 'entry_guard', state)).toBe('evidence_followup');
+    state = { ...state, ...setValues(sceneActions(kenji, 'evidence_followup')) };
+
+    expect(resolveBranchTarget(reiko, 'entry_guard', state)).toBe('evidence_followup');
+    state = {
+      ...state,
+      ...setValues(sceneActions(reiko, 'evidence_followup')),
+      ...setValues(sceneActions(reiko, 'motive_open_line')),
+    };
+
+    expect(resolveBranchTarget(seiji, 'entry_guard', state)).toBe('evidence_followup');
+    state = { ...state, ...setValues(sceneActions(seiji, 'evidence_followup')) };
+
+    expect(resolveBranchTarget(hub, 'all_done_check', state)).toBe('all_done_bonus');
+
+    const clueKeys = [
+      'clue_order_note',
+      'clue_haruo_wipe',
+      'clue_rim_reagent',
+      'clue_double_press_decoy',
+      'clue_kenji_rejected_deal',
+      'reiko_motive_open',
+    ] as const;
+    for (let mask = 0; mask < 2 ** clueKeys.length; mask += 1) {
+      let candidate: UnknownRecord = {
+        ...baseState,
+        investigation_count: 4,
+        visited_haruo: true,
+        visited_kenji: true,
+        visited_reiko: true,
+        visited_seiji: true,
+        tea_residue_report: true,
+        reiko_statement_note: true,
+      };
+      clueKeys.forEach((key, index) => {
+        candidate[key] = (mask & (1 << index)) !== 0;
+      });
+
+      for (let pass = 0; pass < 2; pass += 1) {
+        if (resolveBranchTarget(haruo, 'entry_guard', candidate) === 'evidence_followup') {
+          candidate = { ...candidate, ...setValues(sceneActions(haruo, 'evidence_followup')) };
+        }
+        if (resolveBranchTarget(kenji, 'entry_guard', candidate) === 'evidence_followup') {
+          candidate = { ...candidate, ...setValues(sceneActions(kenji, 'evidence_followup')) };
+        }
+        if (resolveBranchTarget(reiko, 'entry_guard', candidate) === 'evidence_followup') {
+          candidate = {
+            ...candidate,
+            ...setValues(sceneActions(reiko, 'evidence_followup')),
+            ...setValues(sceneActions(reiko, 'motive_open_line')),
+          };
+        }
+        if (resolveBranchTarget(seiji, 'entry_guard', candidate) === 'evidence_followup') {
+          candidate = { ...candidate, ...setValues(sceneActions(seiji, 'evidence_followup')) };
+        }
+      }
+
+      clueKeys.forEach((key) => expect(candidate[key], `mask ${mask}:${key}`).toBe(true));
+      expect(resolveBranchTarget(hub, 'all_done_check', candidate), `mask ${mask}:hub`)
+        .toBe('all_done_bonus');
+    }
   });
 
   it('rewards character-specific interrogation approaches', () => {
@@ -274,7 +438,7 @@ describe('Conan content regression', () => {
     expect(kogoroLine?.with).toEqual(['란']);
   });
 
-  it('ships the v10.7 episode identity and all seven music cues', () => {
+  it('ships the v10.8 episode identity and all seven music cues', () => {
     const config = readYaml('config.yaml');
     const base = readYaml('base.yaml');
     const music = asRecord(asRecord(base.assets).music);
@@ -283,7 +447,7 @@ describe('Conan content regression', () => {
     chapterFiles.forEach((path) => collectStringValues(readYaml(path), 'music', referencedMusic));
 
     expect(config.title).toBe('명탐정 코난 외전: 폭우의 2번 찻잔');
-    expect(config.version).toBe('10.7.0');
+    expect(config.version).toBe('10.8.0');
     expect(Object.keys(music).sort()).toEqual([
       'confession',
       'intro',
@@ -327,6 +491,35 @@ describe('Conan content regression', () => {
       const assetPath = asRecord(asRecord(characters[characterId]).emotions)[emotion];
       expect(typeof assetPath, `${characterId}.${emotion}`).toBe('string');
       expect(existsSync(resolveGameAsset(String(assetPath))), String(assetPath)).toBe(true);
+    });
+  });
+
+  it('keeps every half-body character on the asset-level prompt-top baseline', () => {
+    const base = readYaml('base.yaml');
+    const characters = asRecord(asRecord(base.assets).characters);
+    const parsedBase = parseBaseYaml(
+      readFileSync(`${gameRoot}base.yaml`, 'utf8'),
+      'conan/base.yaml',
+    );
+    const parsedCharacters = asRecord(asRecord(parsedBase.data?.data.assets).characters);
+    const expectedCharacters = ['코고로', '코난', '란', '레이코', '세이지', '켄지', '하루오'];
+
+    expect(parsedBase.error).toBeUndefined();
+    expect(Object.keys(characters).sort()).toEqual([...expectedCharacters].sort());
+    expect(collectPropertyPaths(base, 'placement').sort()).toEqual(
+      expectedCharacters
+        .map((characterId) => `assets.characters.${characterId}.placement`)
+        .sort(),
+    );
+    Object.entries(characters).forEach(([characterId, definition]) => {
+      expect(asRecord(definition).placement, characterId).toBe('prompt-top');
+      expect(asRecord(parsedCharacters[characterId]).placement, `parsed:${characterId}`)
+        .toBe('prompt-top');
+    });
+
+    const nonAssetDocuments = ['config.yaml', 'launcher.yaml', 'routes/base.yaml', ...chapterFiles];
+    nonAssetDocuments.forEach((path) => {
+      expect([...collectStringValues(readYaml(path), 'placement')], path).toEqual([]);
     });
   });
 
@@ -377,6 +570,172 @@ describe('Conan content regression', () => {
     expect(codaFinishActions).toContainEqual({ ending: 'true_end' });
     expect(codaText).toContain('또 본인이 한 추리만 기억 안 나시죠');
     expect(codaFinishText).toContain('아무 일도 없으면 좋겠어요');
+  });
+
+  it('requires the witnessed distraction and rejected deal for the true ending', () => {
+    const config = readYaml('config.yaml');
+    const conclusion = readYaml('conclusion/1.yaml');
+    const trueRule = Array.isArray(config.endingRules) ? config.endingRules[0] : undefined;
+    const verdictAction = sceneActions(conclusion, 'verdict_branch').find((action) =>
+      Object.prototype.hasOwnProperty.call(action, 'branch'),
+    );
+    const verdictCases = asRecord(verdictAction?.branch).cases;
+    const trueVerdict = Array.isArray(verdictCases) ? asRecord(verdictCases[0]) : {};
+    const configVars = collectStringValues(trueRule, 'var');
+    const verdictVars = collectStringValues(trueVerdict, 'var');
+
+    for (const required of ['clue_double_press_decoy', 'clue_kenji_rejected_deal']) {
+      expect(configVars.has(required), `config:${required}`).toBe(true);
+      expect(verdictVars.has(required), `verdict:${required}`).toBe(true);
+    }
+    expect(asRecord(trueVerdict.when)).toEqual(asRecord(asRecord(trueRule).when));
+  });
+
+  it('only offers an early deduction after its two minimum evidence cards exist', () => {
+    const hub = readYaml('routes/hub/1.yaml');
+    const routeOption = choiceOptions(sceneActions(hub, 'route_select'))
+      .find((option) => option.goto === 'early_exit_confirm');
+    const earlyOption = choiceOptions(sceneActions(hub, 'early_exit_confirm'))
+      .find((option) => option.goto === 'early_exit_penalty_branch');
+    const requiredEvidenceCondition = {
+      all: [
+        { var: 'tea_residue_report', op: 'eq', value: true },
+        { var: 'reiko_statement_note', op: 'eq', value: true },
+      ],
+    };
+
+    expect(asRecord(routeOption?.when)).toEqual(requiredEvidenceCondition);
+    expect(asRecord(earlyOption?.when)).toEqual(requiredEvidenceCondition);
+    expect(String(earlyOption?.text)).toContain('2번 잔 감식');
+    expect(String(earlyOption?.text)).toContain('9시 29분 메모');
+    expect(String(earlyOption?.text)).not.toContain('빈틈을 감수');
+  });
+
+  it('only recalls evidence the player actually found and keeps the mystery concealed', () => {
+    const conclusion = readYaml('conclusion/1.yaml');
+    const reiko = readYaml('routes/reiko/1.yaml');
+    const kenji = readYaml('routes/kenji/1.yaml');
+    const finalIntroLines = sceneActions(conclusion, 'final_intro')
+      .map((action) => asRecord(action.say))
+      .filter((say) => Object.keys(asRecord(say.when)).length > 0);
+    const motiveText = [...collectStringValues(sceneActions(reiko, 'motive_open_line'), 'text')]
+      .map(stripDialogueMarkup)
+      .join(' ');
+    const incidentText = [...collectStringValues(sceneActions(readYaml('2.yaml'), 'incident_trigger'), 'text')]
+      .map(stripDialogueMarkup)
+      .join(' ');
+    const kenjiFollowupText = [...collectStringValues(sceneActions(kenji, 'evidence_followup'), 'text')]
+      .map(stripDialogueMarkup)
+      .join(' ');
+    const coverageText = [...collectStringValues(sceneActions(conclusion, 'full_coverage_line'), 'text')]
+      .map(stripDialogueMarkup)
+      .join(' ');
+    const completeFiberCondition = {
+      all: [
+        { var: 'clue_haruo_wipe', op: 'eq', value: true },
+        { var: 'clue_rim_reagent', op: 'eq', value: true },
+      ],
+    };
+
+    expect(finalIntroLines).toHaveLength(2);
+    expect(asRecord(finalIntroLines[0].when)).toEqual(completeFiberCondition);
+    expect(asRecord(asRecord(finalIntroLines[1].when).not)).toEqual(completeFiberCondition);
+    expect(motiveText).toContain('원본 연구 노트는 그날 사라졌죠');
+    expect(motiveText).toContain("난 '숨겼다'고 말하지 않았어요");
+    expect(motiveText).not.toContain('원본 연구 노트는 하루오 씨가 숨겼죠');
+    expect(incidentText).not.toContain('레이코가 내민 손수건');
+    expect(kenjiFollowupText).not.toContain('통화 녹음');
+    expect(coverageText).not.toContain('켄지 씨의 녹음');
+    expect(kenjiFollowupText).toContain('레이코는 앞부분만 들었어');
+  });
+
+  it('stages every named speaker on every reachable local scene route', () => {
+    chapterFiles.forEach((path) => {
+      const document = readYaml(path);
+      const scenes = asRecord(document.scenes);
+      const script = Array.isArray(document.script) ? document.script.map(asRecord) : [];
+      const sceneOrder = script.map((entry) => String(entry.scene ?? ''));
+      const failures = new Set<string>();
+      const visited = new Set<string>();
+      const queue: Array<{
+        sceneId: string;
+        actionIndex: number;
+        slots: Record<string, string>;
+      }> = [{ sceneId: sceneOrder[0] ?? '', actionIndex: 0, slots: {} }];
+
+      const enqueue = (sceneId: unknown, actionIndex: number, slots: Record<string, string>) => {
+        if (typeof sceneId !== 'string' || !sceneId || sceneId.startsWith('/')) return;
+        const signature = `${sceneId}|${actionIndex}|${JSON.stringify(Object.entries(slots).sort())}`;
+        if (visited.has(signature)) return;
+        visited.add(signature);
+        queue.push({ sceneId, actionIndex, slots: { ...slots } });
+      };
+
+      while (queue.length > 0) {
+        const current = queue.shift();
+        if (!current) break;
+        const actions = sceneActions(document, current.sceneId);
+        if (current.actionIndex >= actions.length) {
+          const orderIndex = sceneOrder.indexOf(current.sceneId);
+          if (orderIndex >= 0) enqueue(sceneOrder[orderIndex + 1], 0, current.slots);
+          continue;
+        }
+
+        const action = actions[current.actionIndex];
+        const placement = asRecord(action.char);
+        if (typeof placement.id === 'string' && typeof placement.position === 'string') {
+          const nextSlots = { ...current.slots };
+          Object.entries(nextSlots).forEach(([position, id]) => {
+            if (id === placement.id && position !== placement.position) delete nextSlots[position];
+          });
+          nextSlots[placement.position] = placement.id;
+          enqueue(current.sceneId, current.actionIndex + 1, nextSlots);
+          continue;
+        }
+
+        for (const source of [asRecord(action.say), asRecord(action.choice), asRecord(action.input)]) {
+          const refs = [source.char, ...(Array.isArray(source.with) ? source.with : [])]
+            .filter((ref): ref is string => typeof ref === 'string')
+            .map((ref) => ref.split('.')[0]);
+          refs.forEach((ref) => {
+            if (!Object.values(current.slots).includes(ref)) {
+              failures.add(`${current.sceneId}[${current.actionIndex}] ${ref}`);
+            }
+          });
+        }
+
+        const choice = asRecord(action.choice);
+        const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
+        if (options.length > 0) {
+          options.forEach((option) => enqueue(option.goto, 0, current.slots));
+          continue;
+        }
+
+        const branch = asRecord(action.branch);
+        const cases = Array.isArray(branch.cases) ? branch.cases.map(asRecord) : [];
+        if (cases.length > 0) {
+          cases.forEach((entry) => enqueue(entry.goto, 0, current.slots));
+          enqueue(branch.default, 0, current.slots);
+          continue;
+        }
+
+        const input = asRecord(action.input);
+        const routes = Array.isArray(input.routes) ? input.routes.map(asRecord) : [];
+        if (routes.length > 0) {
+          routes.forEach((route) => enqueue(route.goto, 0, current.slots));
+          continue;
+        }
+
+        if (typeof action.goto === 'string') {
+          enqueue(action.goto, 0, current.slots);
+          continue;
+        }
+        if (action.ending !== undefined || action.gameOver !== undefined) continue;
+        enqueue(current.sceneId, current.actionIndex + 1, current.slots);
+      }
+
+      expect([...failures], path).toEqual([]);
+    });
   });
 
   it('keeps system verdict language out of playable dialogue and choices', () => {

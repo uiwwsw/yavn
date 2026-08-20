@@ -251,6 +251,10 @@ scenes:
           id: 코고로
           position: right
           emotion: proud
+      - char:
+          id: 코난
+          position: center
+          emotion: smile
       - say:
           char: 켄지.smile
           with:
@@ -581,6 +585,10 @@ scenes:
       - say:
           char: 코고로.proud
           text: "<speed=31>내일 길이 열릴 때까지 푹 쉬면 되겠군.</speed> <speed=25>특식 내기는 유효한 거요, 하세가와 씨!</speed>"
+      - char:
+          id: 켄지
+          position: left
+          emotion: smile
       - say:
           char: 켄지
           text: "<speed=28>물론이죠.</speed> <speed=23>두 분이 먼저 재료 하나라도 맞히신다면.</speed>"

@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { handleAdvance, mergeInventoryWithDefaults, mergeRouteVarsWithDefaults } from './engine';
+import {
+  handleAdvance,
+  mergeInventoryWithDefaults,
+  mergeRouteVarsWithDefaults,
+  resolveChapterPathIndex,
+  wasDialoguePresentedAtCursor,
+} from './engine';
 import { useVNStore } from './store';
 import type { GameData } from './types';
 
@@ -76,6 +82,60 @@ const autoAdvancingUnskippableGame: GameData = {
   },
 };
 
+const conditionalDialogueGame: GameData = {
+  meta: { title: 'Conditional Dialogue Test' },
+  settings: { textSpeed: 30, autoSave: true, clickToInstant: true },
+  assets: { backgrounds: {}, characters: {}, music: {}, sfx: {} },
+  state: { defaults: { found_clue: false } },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [
+        {
+          say: {
+            when: { var: 'found_clue', op: 'eq', value: false },
+            text: 'This route-only line stays hidden.',
+          },
+        },
+        {
+          say: {
+            when: { var: 'found_clue', op: 'eq', value: true },
+            text: 'The earlier clue changes this conversation.',
+          },
+        },
+      ],
+    },
+  },
+};
+
+const characterPlacementGame: GameData = {
+  meta: { title: 'Character Placement Test' },
+  settings: { textSpeed: 30, autoSave: true, clickToInstant: true },
+  assets: {
+    backgrounds: {},
+    characters: {
+      코난: {
+        base: '/characters/conan.webp',
+        emotions: { serious: '/characters/conan-serious.webp' },
+        placement: 'prompt-top',
+      },
+      덕만: { base: '/characters/deokman.webp' },
+    },
+    music: {},
+    sfx: {},
+  },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [
+        { char: { id: '코난', position: 'left', emotion: 'serious' } },
+        { char: { id: '덕만', position: 'right' } },
+        { say: { char: '코난', with: ['덕만'], text: 'Two source styles share one stage.' } },
+      ],
+    },
+  },
+};
+
 describe('engine runtime safety', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -97,8 +157,25 @@ describe('engine runtime safety', () => {
       value: (frameId: number) => clearTimeout(frameId),
     });
     useVNStore.getState().resetPresentation();
+    useVNStore.getState().setRouteVars({});
     useVNStore.getState().setGame(game, '/');
     useVNStore.getState().setCursor('intro', 0);
+  });
+
+  it('skips false conditional dialogue without logging or pausing on it', () => {
+    useVNStore.getState().setGame(conditionalDialogueGame, '/');
+    useVNStore.getState().setRouteVars({ found_clue: true });
+    useVNStore.getState().setCursor('intro', 0);
+
+    handleAdvance();
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1,
+      waitingInput: true,
+      dialog: { fullText: 'The earlier clue changes this conversation.' },
+    });
+    expect(useVNStore.getState().storyLog.map((entry) => entry.kind === 'dialogue' ? entry.text : ''))
+      .toEqual(['The earlier clue changes this conversation.']);
   });
 
   afterEach(() => {
@@ -107,6 +184,57 @@ describe('engine runtime safety', () => {
     Reflect.deleteProperty(globalThis, 'localStorage');
     Reflect.deleteProperty(globalThis, 'requestAnimationFrame');
     Reflect.deleteProperty(globalThis, 'cancelAnimationFrame');
+  });
+
+  it('keeps chapter path jumps inside the original prepared sequence', () => {
+    const paths = Array.from({ length: 12 }, (_, index) => `./${index}.yaml`);
+
+    expect(resolveChapterPathIndex(paths, '/7.yaml')).toBe(7);
+    expect(resolveChapterPathIndex(paths, './11.yaml')).toBe(11);
+    expect(resolveChapterPathIndex(paths, '/missing.yaml')).toBe(-1);
+  });
+
+  it('recognizes a rendered conditional line by exact chapter cursor and text during restore', () => {
+    const storyLog = [{
+      kind: 'dialogue' as const,
+      channel: 'dialogue' as const,
+      text: 'The earlier route changes this conversation.',
+      chapterPath: '/2.yaml',
+      sceneId: 'reunion',
+      actionIndex: 7,
+    }];
+
+    expect(wasDialoguePresentedAtCursor(
+      storyLog,
+      './2.yaml',
+      'reunion',
+      7,
+      'The earlier route changes this conversation.',
+    )).toBe(true);
+    expect(wasDialoguePresentedAtCursor(
+      storyLog,
+      './3.yaml',
+      'reunion',
+      7,
+      'The earlier route changes this conversation.',
+    )).toBe(false);
+    expect(wasDialoguePresentedAtCursor(
+      storyLog,
+      './2.yaml',
+      'reunion',
+      7,
+      'A revised line at the same cursor.',
+    )).toBe(false);
+  });
+
+  it('resolves each character asset placement without a game-level layout switch', () => {
+    useVNStore.getState().setGame(characterPlacementGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+
+    handleAdvance();
+
+    expect(useVNStore.getState().characters.left?.placement).toBe('prompt-top');
+    expect(useVNStore.getState().characters.right?.placement).toBe('stage-bottom');
   });
 
   it('holds input and script progression until a blocking effect completes', () => {

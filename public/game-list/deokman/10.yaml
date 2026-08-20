@@ -6,7 +6,7 @@ scenes:
     actions:
       - bg: burning_palace
       - camera: wide
-      - effect: embers
+      - effect: starfall
       - say:
           channel: record
           text: "제11장 — 떨어진 별"
@@ -25,6 +25,22 @@ scenes:
           camera: close
           with: [춘추]
           text: "별이 아니야. 별은 군량 나가는 밤을 골라 떨어지지 않아. 누군가 시간을 맞춰 불을 던졌어."
+      - say:
+          when: { var: used_false_omen, op: eq, value: true }
+          channel: narration
+          text: "일식 날 북소리로 해를 돌려놓았다고 외친 기억 탓에 왕실은 즉시 반박하지 못했습니다. 사람들은 여왕의 하늘도 또 하나의 연출인지 먼저 의심했습니다."
+      - say:
+          when: { var: observatory_priority, op: eq, value: stars_first }
+          channel: narration
+          text: "먼저 올린 첨성대의 관측관은 불의 꼬리가 별보다 낮게 휘는 것을 봤습니다. 대신 느슨해진 북쪽 성벽에서는 이미 첫 반란 봉화가 올랐습니다."
+      - say:
+          when: { var: observatory_priority, op: eq, value: balanced }
+          channel: narration
+          text: "반쯤 세운 관측대는 불이 떨어진 정확한 방향을 놓쳤지만, 보강한 성벽의 초병이 대나무 잔해를 가장 먼저 찾았습니다."
+      - say:
+          when: { var: observatory_priority, op: eq, value: granary_first }
+          channel: narration
+          text: "돌 품삯을 곡식으로 받았던 마을 사람들이 냄새만으로 기름 먹인 대나무를 알아봤습니다. 늦게 올린 탑 대신 사람의 눈이 증거를 찾았습니다."
       - choice:
           key: c11_falling_star
           prompt: "소문이 성문보다 빠르다. 무엇으로 붙잡을까?"
@@ -38,7 +54,7 @@ scenes:
             - text: "관측관들을 장터로 보내 진짜 별을 가리킨다"
               when: { var: knowledge_policy, op: ne, value: bidam_network }
               add: { people_support: 2, insight: 1 }
-              goto: bad_truth_too_late
+              goto: explain_sky
             - text: "왕궁 지붕에 더 큰 불을 올린다"
               add: { fear: 2, people_support: 1 }
               goto: bad_larger_false_star
@@ -53,34 +69,27 @@ scenes:
       - clearSticker: { id: c11_kite, leave: fadeOut }
       - goto: bidam_letter_arrives
 
-  bad_truth_too_late:
+  explain_sky:
     actions:
       - bg: village
-      - camera: wide
-      - char: { id: 덕만, position: left, emotion: queen_angry }
-      - char: { id: 춘추, position: right, emotion: nervous }
+      - get: burnt_kite
       - say:
           channel: narration
-          text: "관측관들이 장터마다 같은 별을 가리켰습니다. 사람들은 고개를 들었지만, 먼 군영에서는 이미 불붙은 연을 보고 반란 북을 울리고 있었습니다."
+          text: "관측관이 하늘 한 점을 가리켰습니다. '진짜 별은 아직 저기 있습니다.' 장터마다 다른 손이 같은 표를 펴고 같은 자리를 찾아냈습니다. 아이들이 불붙은 연의 대나무 살을 먼저 찾아 들었습니다."
       - say:
           char: 춘추.nervous
-          camera: reaction
+          camera: close
           with: [덕만]
-          text: "설명은 맞습니다. 하지만 저들은 사실을 묻기 전에 칼을 들었습니다. 성문 세 곳에서 같은 깃발이 올라옵니다."
+          text: "공개한 표가 소문을 늦췄습니다. 군영 하나는 이미 움직였지만 나머지 둘은 북을 거꾸로 눕혔습니다."
       - say:
-          char: 덕만.queen_angry
-          text: "진실을 알리면 멈출 거라 생각했어. 누가 거짓을 움직이는지부터 끊었어야 했다."
-      - say:
-          channel: record
-          text: "유성 소요 기록 — 왕실 관측 발표 중 반란군이 서문을 돌파. 선덕왕은 피난민을 호위하다 군사에게 피살됨."
-      - gameOver:
-          title: "운명 — 사실보다 빠른 불"
-          message: "관측관들이 하늘을 설명하는 동안 불붙은 연은 이미 군영 세 곳을 반란으로 묶었습니다. 사실은 맞았지만 늦었고, 덕만은 성문을 돌파한 군사에게 피살됐습니다."
+          char: 덕만.queen
+          text: "한 번 배운 사람은 왕의 말도 의심할 수 있어. 이제 저 연을 띄운 손을 찾자."
+      - goto: bidam_letter_arrives
 
   bad_larger_false_star:
     actions:
       - bg: burning_palace
-      - camera: close
+      - camera: { shot: close, target: 덕만 }
       - effect: embers
       - char: { id: 덕만, position: left, emotion: queen_angry }
       - char: { id: 춘추, position: right, emotion: nervous }
@@ -116,6 +125,18 @@ scenes:
           channel: record
           delivery: calm
           text: "폐하께. 제 눈으로 나라를 보실 때는 저를 믿는다 하셨습니다. 다른 눈을 세운 뒤에는 저를 위험이라 부르셨지요. 저는 사람이었습니까, 잠시 쓰는 문이었습니까?"
+      - say:
+          when: { var: knowledge_policy, op: eq, value: public }
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "장터의 달력이 두 군영을 멈췄습니다. 비담은 자기 전령보다 빠른 눈을 폐하가 만든 날부터 이미 패배했다고 느꼈을 겁니다."
+      - say:
+          when: { var: knowledge_policy, op: eq, value: bidam_network }
+          char: 덕만.queen_sad
+          camera: close
+          with: [춘추]
+          text: "저 문을 비담 하나에게 맡긴 건 나야. 오늘 반란군이 쥔 길 절반은 내가 빠르다는 이유로 건넸다."
       - clearSticker: { id: c11_letter, leave: fadeOut }
       - goto: answer_bidam
 
@@ -181,6 +202,12 @@ scenes:
           camera: reaction
           with: [덕만]
           text: "한꺼번에 치면 오늘 끝납니다. 깃발 아래 사람을 가려내면 오래 걸립니다. 대신 돌아갈 길은 남습니다."
+      - say:
+          when: { var: yushin_trust, op: gte, value: 4 }
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "폐하께서 제 칼을 멈춰 세운 날도, 믿고 맡긴 날도 기억합니다. 오늘은 속도보다 누구를 집으로 돌려보낼지를 먼저 명령해 주십시오."
       - choice:
           key: c11_rebellion_response
           prompt: "세 진영의 불이 켜져 있다. 어느 불부터 끌까?"
@@ -192,13 +219,13 @@ scenes:
               set: { rebellion_response: amnesty_split }
               add: { mercy: 3, people_support: 2, army_support: -1 }
               goto: split_rebellion
+            - text: "유신의 전군으로 비담 본진을 덮친다"
+              set: { rebellion_response: total_assault }
+              goto: bad_fortress_rush
             - text: "군량길을 끊고 공개 재판을 외친다"
               set: { rebellion_response: siege_trial }
               add: { evidence: 2, nobles_support: 1, fear: 1 }
               goto: starve_command
-            - text: "유신의 전군으로 비담 본진을 덮친다"
-              set: { rebellion_response: total_assault }
-              goto: bad_fortress_rush
 
   split_rebellion:
     actions:
@@ -217,7 +244,7 @@ scenes:
           camera: close
           with: [유신]
           text: "칼을 안 썼다고 깨끗한 게 아니야. 저 마을의 빈 솥도 승전 기록에 적어."
-      - goto: bad_fortress_rush
+      - goto: bidam_captured
 
   bidam_captured:
     actions:
@@ -246,22 +273,22 @@ scenes:
   bad_fortress_rush:
     actions:
       - bg: frontier
-      - camera: close
+      - camera: { shot: close, target: 덕만 }
       - effect: darken
       - char: { id: 유신, position: right, emotion: angry }
       - char: { id: 덕만, position: left, emotion: queen_angry }
       - say:
           char: 덕만.queen_angry
-          text: "군량길을 끊으면 항복할 줄 알았고, 본진을 치면 끝날 줄 알았다. 내가 돌아갈 길부터 없앴구나."
+          text: "본진을 한 번에 치면 끝날 줄 알았다. 저들뿐 아니라 내가 돌아갈 길까지 불태웠구나."
       - say:
           char: 유신.angry
           text: "적의 돌아갈 길을 없애면 항복할 손도 칼을 잡습니다. 이제 어느 깃발 아래 있는지로 사람을 가를 수 없습니다."
       - say:
           channel: narration
-          text: "포위가 길어지자 굶은 마을이 반란군 문을 열었고, 급습을 택하자 불붙은 막사가 민가로 번졌습니다. 서로 다른 속도의 강경책은 끝내 민가 전체를 적진으로 만들었습니다."
+          text: "전군이 본진을 덮치자 불붙은 막사가 민가로 번졌습니다. 깃발 아래 사람을 가릴 틈이 사라졌고, 살아남은 마을 사람들은 왕군의 퇴로를 막았습니다."
       - say:
           channel: record
           text: "비담의 난 진압 보고 — 왕군 지휘부 붕괴. 선덕왕, 포위망을 돌파한 반란군의 화살에 맞아 사망. 비담의 행방은 확인되지 않음."
       - gameOver:
           title: "운명 — 끝내기 위해 키운 반란"
-          message: "굶기는 포위와 가리지 않는 돌격은 속도만 달랐을 뿐 돌아갈 사람의 길을 없앴습니다. 궁지에 몰린 군대와 마을이 함께 덤볐고, 덕만은 끝내려던 반란 한가운데서 죽었습니다."
+          message: "가리지 않는 돌격은 항복할 사람과 싸울 사람을 한 덩어리로 만들었습니다. 궁지에 몰린 군대와 마을이 함께 덤볐고, 덕만은 끝내려던 반란 한가운데서 죽었습니다."

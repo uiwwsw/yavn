@@ -35,12 +35,12 @@ scenes:
             - text: "천명을 업고 시장 의원에게 뛴다"
               add: { cheonmyeong_trust: 2, people_support: 2, evidence: -1 }
               goto: public_treatment
-            - text: "천명을 유신에게 맡기고 지붕을 쫓는다"
-              add: { evidence: 2, yushin_trust: 2, fear: 1 }
-              goto: divided_rescue
             - text: "비담의 의원에게 숨기고 사망 종을 울린다"
               add: { bidam_trust: 2, insight: 1, fear: 1 }
               goto: false_death
+            - text: "천명을 유신에게 맡기고 지붕을 쫓는다"
+              add: { evidence: 2, yushin_trust: 2, fear: 1 }
+              goto: divided_rescue
 
   public_treatment:
     actions:
@@ -65,7 +65,7 @@ scenes:
       - say:
           char: 덕만.sad
           text: "잡았어야 했는데… 언니가 눈을 뜰 때 내가 없었어. 이게 왕이 하는 일이라면, 난 매일 누군가에게 늦겠지."
-      - goto: bad_poison_clock
+      - goto: forged_confession
 
   false_death:
     actions:
@@ -87,12 +87,12 @@ scenes:
   bad_poison_clock:
     actions:
       - bg: locked_room
-      - camera: close
       - char: { id: 덕만, position: left, emotion: sad }
       - char: { id: 천명, position: right, emotion: sad }
+      - camera: { shot: close, target: 천명 }
       - say:
           channel: narration
-          text: "덕만이 지붕의 발자국을 좇거나 가짜 사망 종으로 범인을 낚는 동안, 독은 천명의 손끝에서 심장까지 올라왔습니다. 의원에게 닿았을 때는 해독약을 삼킬 숨이 남지 않았습니다."
+          text: "덕만이 가짜 사망 종으로 범인을 낚는 동안, 비담의 밀실은 천명을 시장 의원에게서 너무 멀리 숨겼습니다. 의원에게 닿았을 때는 해독약을 삼킬 숨이 남지 않았습니다."
       - say:
           char: 천명.sad
           camera: close
@@ -108,7 +108,7 @@ scenes:
           text: "천명 공주 독살 사건 — 현장에서 사라진 덕만 공주가 배후로 지목됨. 덕만은 체포 이틀 뒤 반역죄로 처형됨."
       - gameOver:
           title: "운명 — 독보다 늦은 진실"
-          message: "범인과 증거를 먼저 붙잡으려는 선택들은 서로 달랐지만, 환자를 치료에서 멀어지게 한 결과는 같았습니다. 천명이 죽자 준비된 자백문이 사실이 되었고 덕만도 뒤따라 죽었습니다."
+          message: "거짓 죽음으로 범인을 끌어내려다 진짜 치료 시간을 잃었습니다. 천명이 죽자 준비된 자백문이 사실이 되었고 덕만도 뒤따라 죽었습니다."
 
   forged_confession:
     actions:
@@ -248,7 +248,7 @@ scenes:
   bad_self_sacrifice:
     actions:
       - bg: throne_hall
-      - camera: close
+      - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: sad }
       - char: { id: 천명, position: right, emotion: sad }
       - say:
