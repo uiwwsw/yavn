@@ -1195,6 +1195,11 @@ textarea,
   object-fit: cover;
   opacity: 0;
   transition: opacity 360ms cubic-bezier(0.2, 0.72, 0.24, 1);
+  will-change: auto;
+  backface-visibility: hidden;
+}
+
+.bg[data-background-transitioning='true'] {
   will-change: opacity;
 }
 
@@ -1259,7 +1264,8 @@ textarea,
   transition:
     transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)
     var(--stage-camera-motion-delay);
-  will-change: transform;
+  will-change: auto;
+  backface-visibility: hidden;
   contain: layout paint;
 }
 
@@ -1270,8 +1276,14 @@ textarea,
   transition:
     transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)
     var(--stage-camera-motion-delay);
-  will-change: transform;
+  will-change: auto;
+  backface-visibility: hidden;
   contain: layout paint;
+}
+
+.char-layer[data-camera-moving='true'] .char-composition-world,
+.char-layer[data-camera-moving='true'] .char-camera-world {
+  will-change: transform;
 }
 
 @media (max-width: 768px) {
@@ -1294,7 +1306,6 @@ textarea,
     bottom 180ms cubic-bezier(0.2, 0.72, 0.24, 1),
     opacity 120ms ease-out,
     visibility 0s linear;
-  will-change: bottom, opacity;
 }
 
 .char-layer-prompt-top[data-baseline-ready='false'] {
@@ -1472,6 +1483,10 @@ textarea,
   contain: paint;
   animation: characterEnter 240ms ease-out both;
   z-index: 3;
+}
+
+.char-layer[data-character-moving='true'] .char {
+  will-change: translate, scale, opacity;
 }
 
 .char-layer[data-camera-shot='close'] .char.is-listener:not(.is-camera-hidden) {

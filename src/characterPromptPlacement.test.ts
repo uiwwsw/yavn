@@ -27,7 +27,7 @@ describe('prompt-top character placement', () => {
 
   it('shares one horizontal composition across mixed baselines', () => {
     expect(appSource).toMatch(
-      /const characterStageLayout = resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
+      /const characterStageLayout = useMemo\([\s\S]*?resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
     );
     expect(appSource).not.toContain('promptTopCharacterStageLayout');
     expect(appSource.match(/data-character-count=\{visibleCharacterCount\}/g)).toHaveLength(2);

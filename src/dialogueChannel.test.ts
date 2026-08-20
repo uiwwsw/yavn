@@ -25,7 +25,8 @@ describe('dialogue presentation channels', () => {
     expect(appSource).toContain('narration: undefined');
     expect(appSource).toContain("record: '기록'");
     expect(appSource).toContain("system: '시스템'");
-    expect(appSource).toContain('channel-${dialog.channel}');
+    expect(appSource).toContain('channel-${channel}');
+    expect(appSource).toContain('channel-${dialogChannel}');
     expect(styles).toContain('.dialog-box.channel-record');
     expect(styles).toContain('.dialog-box.channel-system');
     expect(styles).toContain('.dialog-channel-label');
