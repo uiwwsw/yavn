@@ -1,0 +1,61 @@
+:root {
+  --yavn-prompt-height: 170px;
+}
+
+.dialog-box {
+  --dialog-safe-max-height: calc(100cqh - 40px);
+  box-sizing: border-box;
+  height: min(var(--yavn-prompt-height, 170px), var(--dialog-safe-max-height));
+  min-height: 0;
+  max-height: var(--dialog-safe-max-height);
+}
+
+/* Choice/input content grows inside the prompt instead of resizing the prompt shell. */
+.dialog-box.has-choice-gate {
+  height: min(var(--yavn-prompt-height, 170px), var(--dialog-safe-max-height));
+  min-height: 0;
+  max-height: var(--dialog-safe-max-height);
+}
+
+.dialog-content-scroll {
+  position: relative;
+  min-height: 0;
+  padding-top: 27px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+/* Reserve one stable heading row even when speaker/channel labels are absent. */
+.dialog-content-scroll > .speaker,
+.dialog-content-scroll > .dialog-channel-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 20px;
+  max-width: calc(100% - 8px);
+  margin: 0;
+  overflow: hidden;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dialog-content-scroll > .dialog-channel-label + .speaker {
+  right: 0;
+  left: auto;
+  max-width: 55%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .dialog-box,
+  .dialog-box.has-choice-gate {
+    --dialog-safe-max-height: calc(
+      100cqh - max(20px, env(safe-area-inset-top, 0px)) - max(20px, env(safe-area-inset-bottom, 0px))
+    );
+    height: min(var(--yavn-prompt-height, 170px), var(--dialog-safe-max-height));
+    min-height: 0;
+    max-height: var(--dialog-safe-max-height);
+  }
+}
