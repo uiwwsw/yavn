@@ -10,6 +10,8 @@ import {
 import type { Action, GameData } from './types';
 
 const promptStyles = readFileSync(fileURLToPath(new URL('./promptLayout.css', import.meta.url)), 'utf8');
+const appSource = readFileSync(fileURLToPath(new URL('./App.tsx', import.meta.url)), 'utf8');
+const baseStyles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
 
 describe('stable prompt layout', () => {
   it('accepts a game-level prompt height and falls back to the engine default', () => {
@@ -95,5 +97,14 @@ describe('stable prompt layout', () => {
     expect(promptStyles).toMatch(/\.dialog-box\.has-choice-gate\s*\{[\s\S]*?height: min\(var\(--yavn-prompt-height/);
     expect(promptStyles).toMatch(/\.dialog-content-scroll\s*\{[\s\S]*?overflow-y: auto;/);
     expect(promptStyles).toMatch(/\.dialog-content-scroll\s*> \.speaker,[\s\S]*?position: absolute;/);
+  });
+
+  it('uses the full prompt body without reserving a footer status row', () => {
+    const dialogBoxRule = baseStyles.match(/^\.dialog-box\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
+
+    expect(dialogBoxRule).toContain('grid-template-rows: minmax(0, 1fr);');
+    expect(dialogBoxRule).not.toContain('gap: 10px;');
+    expect(appSource).not.toContain('className="status"');
+    expect(baseStyles).not.toMatch(/^\.status\s*\{/m);
   });
 });

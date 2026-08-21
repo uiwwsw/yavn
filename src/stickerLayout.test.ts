@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  doesStickerOverlapRects,
   fitStickerWithinFrame,
   fitStickerWithinFrameAvoidingRects,
   haveStickerObstacleRectsSettled,
@@ -144,6 +145,36 @@ describe('sticker character collision avoidance', () => {
     width: 1000,
     height: 600,
   };
+
+  it('detects when a camera change moves a character into a locked sticker', () => {
+    const sticker = {
+      left: 504,
+      right: 776,
+      top: 63,
+      bottom: 238,
+      width: 272,
+      height: 175,
+    };
+    const closeCharacter = {
+      left: 445,
+      right: 835,
+      top: 48,
+      bottom: 829,
+      width: 390,
+      height: 781,
+    };
+    const sideCharacter = {
+      left: 78,
+      right: 381,
+      top: 176,
+      bottom: 782,
+      width: 303,
+      height: 606,
+    };
+
+    expect(doesStickerOverlapRects(sticker, [closeCharacter])).toBe(true);
+    expect(doesStickerOverlapRects(sticker, [sideCharacter])).toBe(false);
+  });
 
   it('keeps the authored position when no character overlaps it', () => {
     const sticker = {

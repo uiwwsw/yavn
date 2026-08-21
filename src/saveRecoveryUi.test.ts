@@ -112,7 +112,7 @@ describe('save and game over recovery UI', () => {
     expect(styles).toMatch(
       /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.save-system-grid\s*\{[\s\S]*?grid-auto-rows: max-content;[\s\S]*?overflow-y: auto;[\s\S]*?overscroll-behavior: contain;/,
     );
-    expect(appSource).toContain("choiceGate.active ? '선택 대기' : '다음'");
+    expect(appSource).not.toContain('className="status"');
   });
 
   it('isolates ZIP saves and retains the chapter checkpoint as a resume fallback', () => {

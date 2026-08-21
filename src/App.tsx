@@ -88,6 +88,7 @@ import {
   shouldPreventGameShellOverscroll,
 } from './mobileAppShell';
 import {
+  doesStickerOverlapRects,
   fitStickerWithinFrameAvoidingRects,
   haveStickerObstacleRectsSettled,
   shouldRelayoutStickerForStageResize,
@@ -1002,6 +1003,7 @@ const StickerView = memo(function StickerView({
   const earliestMeasurementAtRef = useRef(0);
   const lockedStageSizeRef = useRef<StickerStageSize | null>(null);
   const previousObstacleRectsRef = useRef<StickerLayoutRect[] | null>(null);
+  const previousAvoidanceKeyRef = useRef(avoidanceKey);
   const translateX =
     sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
   const translateY =
@@ -1011,8 +1013,8 @@ const StickerView = memo(function StickerView({
     ? `translate(${safeFit.translateX}px, ${safeFit.translateY}px) ${placementTransform} scale(${safeFit.scale})`
     : placementTransform;
 
-  const lockSafeFit = useCallback(() => {
-    if (layoutLockedRef.current || !imageReadyRef.current) {
+  const lockSafeFit = useCallback((recheckLockedFit = false) => {
+    if ((!recheckLockedFit && layoutLockedRef.current) || !imageReadyRef.current) {
       return layoutLockedRef.current;
     }
     const stickerElement = stickerRef.current;
@@ -1022,21 +1024,7 @@ const StickerView = memo(function StickerView({
       return false;
     }
 
-    // Measure the authored box rather than the previously fitted transform.
-    // The temporary styles are restored in the same layout phase, before paint.
-    const previousTransform = stickerElement.style.transform;
-    const previousTransition = stickerElement.style.transition;
-    stickerElement.style.transition = 'none';
-    stickerElement.style.transform = placementTransform;
     const frameRect = frameElement.getBoundingClientRect();
-    const stickerRect = stickerElement.getBoundingClientRect();
-    stickerElement.style.transform = previousTransform;
-    stickerElement.style.transition = previousTransition;
-
-    if (stickerRect.width <= 0 || stickerRect.height <= 0) {
-      return false;
-    }
-
     const characterElements = [
       ...stageElement.querySelectorAll<HTMLElement>('.char-layer .char'),
     ].filter((characterElement) => {
@@ -1048,10 +1036,12 @@ const StickerView = memo(function StickerView({
       }
       return window.getComputedStyle(characterElement).visibility !== 'hidden';
     });
-    const characterImagesReady = characterElements.every((characterElement) => (
-      [...characterElement.querySelectorAll<HTMLImageElement>('.char-image')]
-        .every((imageElement) => imageElement.complete)
-    ));
+    const characterImagesReady = characterElements.every((characterElement) => {
+      const imageElements = characterElement.matches('img.char-image')
+        ? [characterElement as HTMLImageElement]
+        : [...characterElement.querySelectorAll<HTMLImageElement>('.char-image')];
+      return imageElements.every((imageElement) => imageElement.complete);
+    });
     if (!characterImagesReady) {
       return false;
     }
@@ -1073,6 +1063,52 @@ const StickerView = memo(function StickerView({
       }));
       return false;
     }
+
+    if (
+      recheckLockedFit
+      && layoutLockedRef.current
+      && !doesStickerOverlapRects(
+        stickerElement.getBoundingClientRect(),
+        characterRects,
+      )
+    ) {
+      return true;
+    }
+
+    // Reconstruct the authored box even while a previous safe fit remains rendered.
+    // Temporary styles are restored in the same layout phase, before paint.
+    const previousStyle = {
+      left: stickerElement.style.left,
+      top: stickerElement.style.top,
+      width: stickerElement.style.width,
+      height: stickerElement.style.height,
+      transform: stickerElement.style.transform,
+      transition: stickerElement.style.transition,
+    };
+    stickerElement.style.left = sticker.x;
+    stickerElement.style.top = sticker.y;
+    stickerElement.style.width = sticker.width ?? '';
+    stickerElement.style.height = sticker.height ?? '';
+    stickerElement.style.transition = 'none';
+    stickerElement.style.transform = placementTransform;
+    const stickerRect = stickerElement.getBoundingClientRect();
+    const authoredBox = {
+      left: stickerElement.offsetLeft,
+      top: stickerElement.offsetTop,
+      width: stickerElement.offsetWidth,
+      height: stickerElement.offsetHeight,
+    };
+    stickerElement.style.left = previousStyle.left;
+    stickerElement.style.top = previousStyle.top;
+    stickerElement.style.width = previousStyle.width;
+    stickerElement.style.height = previousStyle.height;
+    stickerElement.style.transform = previousStyle.transform;
+    stickerElement.style.transition = previousStyle.transition;
+
+    if (stickerRect.width <= 0 || stickerRect.height <= 0) {
+      return false;
+    }
+
     const nextFit = fitStickerWithinFrameAvoidingRects(
       frameRect,
       stickerRect,
@@ -1085,10 +1121,7 @@ const StickerView = memo(function StickerView({
     layoutLockedRef.current = true;
     setSafeFit({
       ...nextFit,
-      left: stickerElement.offsetLeft,
-      top: stickerElement.offsetTop,
-      width: stickerElement.offsetWidth,
-      height: stickerElement.offsetHeight,
+      ...authoredBox,
     });
     return true;
   }, [
@@ -1103,8 +1136,11 @@ const StickerView = memo(function StickerView({
     sticker.y,
   ]);
 
-  const scheduleSafeFit = useCallback((quietMs = STICKER_LAYOUT_QUIET_MS) => {
-    if (layoutLockedRef.current || !imageReadyRef.current) {
+  const scheduleSafeFit = useCallback((
+    quietMs = STICKER_LAYOUT_QUIET_MS,
+    recheckLockedFit = false,
+  ) => {
+    if ((!recheckLockedFit && layoutLockedRef.current) || !imageReadyRef.current) {
       return;
     }
     if (settleTimerRef.current !== null) {
@@ -1113,7 +1149,7 @@ const StickerView = memo(function StickerView({
     const earliestDelay = Math.max(0, earliestMeasurementAtRef.current - performance.now());
     const attemptSafeFit = () => {
       settleTimerRef.current = null;
-      if (lockSafeFit()) {
+      if (lockSafeFit(recheckLockedFit)) {
         return;
       }
       settleTimerRef.current = window.setTimeout(
@@ -1127,7 +1163,15 @@ const StickerView = memo(function StickerView({
   }, [lockSafeFit]);
 
   useLayoutEffect(() => {
+    const avoidanceChanged = previousAvoidanceKeyRef.current !== avoidanceKey;
+    previousAvoidanceKeyRef.current = avoidanceKey;
     if (layoutLockedRef.current) {
+      if (avoidanceChanged) {
+        earliestMeasurementAtRef.current = performance.now()
+          + Math.max(96, Math.ceil(avoidanceSettleMs) + 32);
+        previousObstacleRectsRef.current = null;
+        scheduleSafeFit(STICKER_LAYOUT_QUIET_MS, true);
+      }
       return;
     }
     earliestMeasurementAtRef.current = performance.now()
@@ -4591,9 +4635,6 @@ export default function App() {
               </div>
             </div>
           )}
-        </div>
-        <div className="status">
-          {busy ? '...' : isFinished ? '완료' : inputGate.active ? '입력 대기' : choiceGate.active ? '선택 대기' : '다음'}
         </div>
       </div>
 

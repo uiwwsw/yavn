@@ -27,6 +27,7 @@ describe('sticker and mobile dialogue safe areas', () => {
 
   it('places stickers around visible characters before revealing them', () => {
     expect(appSource).toContain('fitStickerWithinFrameAvoidingRects(');
+    expect(appSource).toContain('doesStickerOverlapRects(');
     expect(appSource).toContain('haveStickerObstacleRectsSettled(');
     expect(appSource).toContain("querySelectorAll<HTMLElement>('.char-layer .char')");
     expect(appSource).toContain('STICKER_CHARACTER_LAYOUT_SETTLE_MS');
@@ -34,6 +35,7 @@ describe('sticker and mobile dialogue safe areas', () => {
     expect(appSource).toContain("data-layout-ready={safeFit ? 'true' : 'false'}");
     expect(appSource).toContain('layoutLockedRef.current = true;');
     expect(appSource).toContain('shouldRelayoutStickerForStageResize(');
+    expect(appSource).toContain('scheduleSafeFit(STICKER_LAYOUT_QUIET_MS, true);');
     expect(appSource).toContain("left: safeFit ? `${safeFit.left}px` : sticker.x");
     expect(appSource).toContain("top: safeFit ? `${safeFit.top}px` : sticker.y");
     expect(appSource).toContain("transition: 'none'");
