@@ -121,7 +121,7 @@ describe('image character motion', () => {
     expect(styles).not.toContain(".char-layer[data-camera-shot='reaction'] .char.is-camera-listener");
     expect(appSource).toContain("const isSpeaking = rendererActive && dialogSpeakerId === slot.id;");
     expect(appSource).toContain("isSpeaking ? 'is-speaking' : ''");
-    expect(speakingRule).toContain('characterSpeakerBreathing 3200ms');
+    expect(speakingRule).toContain('characterSpeakerBreathing 2200ms');
     expect(speakingRule).not.toContain('opacity');
     expect(breathingKeyframes).toContain('translateY(-0.18%)');
     expect(breathingKeyframes).toContain('scale(1.003, 1.009)');

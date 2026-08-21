@@ -122,6 +122,21 @@ const expandRect = (rect: StickerLayoutRect, gap: number): StickerLayoutRect => 
   height: rect.height + gap * 2,
 });
 
+export function doesStickerOverlapRects(
+  sticker: StickerLayoutRect,
+  obstacles: readonly StickerLayoutRect[],
+  gap = 12,
+): boolean {
+  if (!hasArea(sticker)) {
+    return false;
+  }
+  const avoidanceGap = Math.max(0, gap);
+  return obstacles.some((obstacle) => (
+    hasArea(obstacle)
+    && intersectionArea(sticker, expandRect(obstacle, avoidanceGap)) > 0
+  ));
+}
+
 export function fitStickerWithinFrame(
   frame: StickerLayoutRect,
   sticker: StickerLayoutRect,
