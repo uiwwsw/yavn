@@ -175,6 +175,7 @@ type SaveProgress = {
   chapterPath?: string;
   sceneId: string;
   actionIndex: number;
+  backgroundAssetId?: string;
   routeVars: Record<string, RouteVarValue>;
   inventory: InventoryOwnedMap;
   routeHistory: RouteHistoryEntry[];
@@ -1463,6 +1464,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       sceneId?: string;
       actionIndex?: number;
       chapterPath?: unknown;
+      backgroundAssetId?: unknown;
       routeVars?: unknown;
       inventory?: unknown;
       routeHistory?: unknown;
@@ -1576,6 +1578,10 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
           : undefined,
       sceneId: parsed.sceneId,
       actionIndex: parsed.actionIndex,
+      backgroundAssetId:
+        typeof parsed.backgroundAssetId === 'string' && parsed.backgroundAssetId.trim().length > 0
+          ? parsed.backgroundAssetId
+          : undefined,
       routeVars,
       inventory,
       routeHistory,
@@ -1668,6 +1674,11 @@ function hasLoadableProgressByKey(key: string): boolean {
 
 function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress {
   const state = useVNStore.getState();
+  const backgroundAssetId = state.background && state.game
+    ? Object.entries(state.game.assets.backgrounds).find(
+        ([, path]) => resolveAsset(state.baseUrl, path) === state.background,
+      )?.[0]
+    : undefined;
   return {
     savedAt: new Date().toISOString(),
     gameTitle: state.game?.meta.title,
@@ -1676,6 +1687,7 @@ function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress 
     chapterPath: getCurrentChapterPathKey(),
     sceneId,
     actionIndex,
+    backgroundAssetId,
     routeVars: state.routeVars,
     inventory: state.inventory,
     routeHistory: state.routeHistory,
@@ -2705,7 +2717,49 @@ function canWarmNextChapterAssets(): boolean {
   return !connection?.saveData && !/(^|-)2g$/.test(connection?.effectiveType ?? '');
 }
 
-function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, resume: SaveProgress) {
+function findBackgroundAssetIdBeforeCursor(
+  game: GameData,
+  sceneId: string,
+  actionIndex: number,
+): string | undefined {
+  const actions = game.scenes[sceneId]?.actions ?? [];
+  let backgroundAssetId: string | undefined;
+  for (let index = 0; index < Math.min(actionIndex, actions.length); index += 1) {
+    const action = actions[index];
+    if ('bg' in action) {
+      backgroundAssetId = action.bg;
+    }
+  }
+  return backgroundAssetId;
+}
+
+function deriveSavedBackgroundAssetId(
+  chapter: PreparedChapter,
+  game: GameData,
+  resume: SaveProgress,
+): string | undefined {
+  let backgroundAssetId: string | undefined;
+  for (const entry of resume.storyLog) {
+    if (
+      entry.chapterPath !== undefined
+      && normalizeChapterPathKey(entry.chapterPath) !== chapter.pathKey
+    ) {
+      continue;
+    }
+    backgroundAssetId = findBackgroundAssetIdBeforeCursor(
+      game,
+      entry.sceneId,
+      entry.actionIndex,
+    ) ?? backgroundAssetId;
+  }
+  return findBackgroundAssetIdBeforeCursor(
+    game,
+    resume.sceneId,
+    resume.actionIndex,
+  ) ?? backgroundAssetId;
+}
+
+export function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, resume: SaveProgress) {
   const sceneOrder = game.script.map((entry) => entry.scene);
   if (sceneOrder.length === 0) {
     return;
@@ -2955,6 +3009,18 @@ function restorePresentationToCursor(chapter: PreparedChapter, game: GameData, r
     actionIndex += 1;
   }
 
+  const savedBackgroundAssetId = resume.backgroundAssetId
+    && Object.prototype.hasOwnProperty.call(game.assets.backgrounds, resume.backgroundAssetId)
+    ? resume.backgroundAssetId
+    : undefined;
+  const restoredBackgroundAssetId = savedBackgroundAssetId
+    ?? deriveSavedBackgroundAssetId(chapter, game, resume);
+  const savedBackgroundPath = restoredBackgroundAssetId
+    ? game.assets.backgrounds[restoredBackgroundAssetId]
+    : undefined;
+  if (typeof savedBackgroundPath === 'string' && savedBackgroundPath.trim().length > 0) {
+    setBg(resolveAsset(chapter.baseUrl, savedBackgroundPath));
+  }
   setMusic(musicUrl);
   playMusic(musicUrl);
 }

@@ -5,6 +5,7 @@ import {
   getChoiceRecoverySummary,
   getSaveSlotSummaries,
   importSaveBackup,
+  restorePresentationToCursor,
   saveCurrentProgress,
   setAutoSaveEnabled,
   submitChoiceOption,
@@ -48,6 +49,28 @@ const game: GameData = {
   scenes: { intro: { actions: [{ say: { text: 'Hello' } }] } },
 };
 
+const backgroundGame: GameData = {
+  ...game,
+  assets: {
+    ...game.assets,
+    backgrounds: {
+      replayed_room: '/bg/replayed-room.webp',
+      saved_room: '/bg/saved-room.webp',
+    },
+  },
+  script: [{ scene: 'entry' }],
+  scenes: {
+    entry: { actions: [] },
+    background_scene: {
+      actions: [
+        { bg: 'saved_room' },
+        { say: { text: 'The saved background is visible here.' } },
+      ],
+    },
+    saved_scene: { actions: [{ say: { text: 'Saved here' } }] },
+  },
+};
+
 describe('save system', () => {
   beforeEach(() => {
     Object.defineProperty(globalThis, 'localStorage', {
@@ -73,6 +96,89 @@ describe('save system', () => {
     expect(imported.exists).toBe(true);
     expect(imported.sceneId).toBe('intro');
     expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(true);
+  });
+
+  it('persists the current background asset id in save data', () => {
+    useVNStore.getState().setGame(backgroundGame, '/');
+    useVNStore.getState().setCursor('saved_scene', 0);
+    useVNStore.getState().setBackground('/bg/saved-room.webp');
+
+    const backup = exportSaveBackup();
+    const envelope = JSON.parse(backup?.content ?? '{}') as {
+      progress?: { backgroundAssetId?: string };
+    };
+
+    expect(envelope.progress?.backgroundAssetId).toBe('saved_room');
+
+    localStorage.clear();
+    importSaveBackup(backup?.content ?? '');
+    const imported = JSON.parse(localStorage.getItem('vn-engine-autosave:manual') ?? '{}') as {
+      backgroundAssetId?: string;
+    };
+    expect(imported.backgroundAssetId).toBe('saved_room');
+  });
+
+  it('uses the saved background snapshot when cursor replay cannot reach the saved scene', () => {
+    useVNStore.getState().setGame(backgroundGame, '/');
+
+    restorePresentationToCursor(
+      {
+        pathKey: './0.yaml',
+        name: '0.yaml',
+        baseUrl: '/',
+        assetOverrides: {},
+        loadGame: async () => backgroundGame,
+      },
+      backgroundGame,
+      {
+        chapterIndex: 0,
+        chapterPath: './0.yaml',
+        sceneId: 'saved_scene',
+        actionIndex: 0,
+        backgroundAssetId: 'saved_room',
+        routeVars: {},
+        inventory: {},
+        routeHistory: [],
+        storyLog: [],
+      },
+    );
+
+    expect(useVNStore.getState().background).toBe('/bg/saved-room.webp');
+  });
+
+  it('derives a legacy save background from its story log when cursor replay cannot reach it', () => {
+    useVNStore.getState().setGame(backgroundGame, '/');
+
+    restorePresentationToCursor(
+      {
+        pathKey: './0.yaml',
+        name: '0.yaml',
+        baseUrl: '/',
+        assetOverrides: {},
+        loadGame: async () => backgroundGame,
+      },
+      backgroundGame,
+      {
+        chapterIndex: 0,
+        chapterPath: './0.yaml',
+        sceneId: 'saved_scene',
+        actionIndex: 0,
+        routeVars: {},
+        inventory: {},
+        routeHistory: [],
+        storyLog: [
+          {
+            kind: 'dialogue',
+            text: 'The saved background is visible here.',
+            chapterPath: './0.yaml',
+            sceneId: 'background_scene',
+            actionIndex: 1,
+          },
+        ],
+      },
+    );
+
+    expect(useVNStore.getState().background).toBe('/bg/saved-room.webp');
   });
 
   it('persists the player autosave override and saves immediately when enabled', () => {
