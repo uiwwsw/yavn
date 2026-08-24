@@ -37,17 +37,17 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "전하께서 찾으십니다. 쉿, 발소리 내지 마세요. 들키면 저도 이유를 모른 척할 겁니다."
+          text: "전하께서 몰래 찾으십니다. 쉿, 발뒤꿈치를 들고 걸으세요. 오늘은 벽도 우리가 어디로 가는지 알면 안 됩니다."
       - say:
           char: 어린 덕만
           camera: close
           with: [소화]
-          text: "궁 안에서 나를 찾는 사람이… 아버지 말고 또 있어?"
+          text: "또 나를 찾는 사람이 있어? 아버지는 나를 숨겼는데, 그 사람은 왜 찾지?"
       - say:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "네. 오늘은 제가 놓으라고 해도 이 소매를 놓지 마세요."
+          text: "모릅니다. 그래서 오늘은 제가 놓으라고 해도 이 소매를 놓지 마세요. 그 말까지 제 뜻이 아닐 수 있으니까요."
       - goto: peony_arrives
 
   peony_arrives:
@@ -73,7 +73,7 @@ scenes:
           char: 진평왕
           camera: medium
           with: [어린 덕만]
-          text: "덕만아. 예쁘다는 말 말고, 화공이 숨긴 걸 찾아라."
+          text: "덕만아. 그려진 꽃은 누구나 본다. 예쁘다는 말 말고, 이 그림에서 먼저 사라진 것을 찾아라."
       - choice:
           key: c1_peony_observation
           prompt: "왕은 답을 기다린다. 덕만의 눈은 어디로 향할까?"
@@ -95,7 +95,7 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [진평왕]
-          text: "꽃은 이렇게 많은데… 벌도, 나비도 없어요. 한 마리도."
+          text: "꽃은 이렇게 많은데 찾아온 것이 없어요. 벌도, 나비도… 한 마리도."
       - say:
           char: 진평왕
           camera: close
@@ -105,7 +105,7 @@ scenes:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "향기가 있었다면 저들이 먼저 알았을 테니까요. 화공은 향기까지 지운 거예요."
+          text: "향기가 있었다면 벌과 나비가 화공보다 먼저 그렸을 거예요. 이 그림은 꽃보다 향기를 먼저 지웠어요."
       - goto: king_question
 
   observe_back:
@@ -235,7 +235,7 @@ scenes:
           char: 어린 덕만.scared
           camera: close
           with: [진평왕]
-          text: "누가 제 죽을 날까지 정하고 아버지 손도 빌려 갔어요?"
+          text: "누가 제가 죽을 날을 먼저 쓰고, 그 거짓말에 아버지 손까지 빌려 갔어요?"
       - say:
           char: 진평왕.sad
           camera: close
@@ -245,12 +245,12 @@ scenes:
           char: 어린 덕만.resolve
           camera: medium
           with: [진평왕]
-          text: "그럼 오늘 저를 죽이면… 저 종이가 진짜가 되겠네요."
+          text: "그럼 오늘 저를 죽이면 저 종이가 사실이 되고, 제가 살아 있으면 아버지 도장이 거짓이 되겠네요."
       - say:
           char: 진평왕
           camera: close
           with: [어린 덕만]
-          text: "그래. 오늘 밤만큼은 공주도, 내 딸도 잊어라. 무조건 살아."
+          text: "그래. 오늘 밤은 네 신분도 내 체면도 구하지 마라. 살아서 네 이름이 거짓말이 아니었다고 말해라."
       - clearSticker:
           id: death_register_answer
           leave: fadeOut
@@ -295,12 +295,12 @@ scenes:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "그래서 언니 곁에서 저를 지운 거예요?"
+          text: "둘 다 살린다면서 왜 언니 곁에서는 제 이름부터 지웠어요?"
       - say:
           char: 진평왕.sad
           camera: medium
           with: [어린 덕만]
-          text: "둘 다 살리려 했다. 그런데 널 숨긴 시간이 길어질수록, 누군가는 네가 정말 사라지길 원했다."
+          text: "둘 다 살리려 했다. 하지만 널 하루 숨길 때마다 거짓 기록이 한 줄씩 늘었고, 끝내 누군가는 그 기록대로 네가 사라지길 원했다."
       - say:
           char: 어린 덕만
           camera: close
@@ -343,7 +343,7 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [어린 덕만, 소화]
-          text: "불이 꺼지면 공주께선 열병으로 죽은 겁니다. 시신은… 알아볼 수 없게 타겠지요."
+          text: "불이 꺼지면 공주께선 열병으로 죽은 겁니다. 살아 있는 얼굴보다 먼저 도착한 기록을, 누가 의심하겠습니까?"
       - say:
           char: 어린 덕만.scared
           camera: close
@@ -353,7 +353,7 @@ scenes:
           char: 칠숙
           camera: close
           with: [어린 덕만]
-          text: "해가 뜨면 거짓말도 옥새를 두릅니다. 그때쯤이면 살아서 반박할 분도 없겠지요."
+          text: "해가 뜨면 거짓말도 옥새를 두르고 왕실 기록이 됩니다. 그때쯤이면 자기 이름을 되찾을 입도 재가 되겠지요."
       - char: { id: 소화, position: center, emotion: nervous }
       - say:
           char: 소화.nervous
@@ -384,13 +384,13 @@ scenes:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "제가 손을 놓쳐도 뒤돌아보지 마세요. 이번만큼은 제 말 안 들으면 안 됩니다."
+          text: "제가 손을 놓쳐도 뒤돌아보지 마세요. 하지만 제가 아기씨를 놓으라 말하면, 그 말만은 듣지 마세요."
       - clearSticker:
           id: peony_token_view
           leave: fadeOut
       - choice:
           key: c1_fire_escape
-          prompt: "들보가 다시 갈라진다. 지금 어디로 뛸까?"
+          prompt: "들보가 갈라지고 세 문이 닫힌다. 살아 있는 덕만의 첫 길은?"
           char: 어린 덕만.scared
           camera: close
           with: [소화]
@@ -426,12 +426,12 @@ scenes:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "들어가세요! 제가 이 돌을 잡고 있을게요."
+          text: "먼저 들어가세요! 제가 돌을 잡고 뒤따라가겠습니다."
       - say:
           char: 어린 덕만.resolve
           camera: close
           with: [소화]
-          text: "싫어. 손 줘. 같이 기어가."
+          text: "또 나만 살리겠다는 말 하지 마. 소매 말고 손 줘. 같이 기어가."
       - say:
           channel: narration
           text: "두 사람이 진흙 위로 구르자 뒤에서 지붕이 주저앉았습니다. 불티가 빗물 위에 떨어져 짧게 타올랐습니다."
@@ -446,7 +446,7 @@ scenes:
           with: [소화]
           wait: 600
           unskippable: true
-          text: "저 안에서 덕만은 죽었어. 그럼 죽은 아이처럼 숨어서, 내 이름을 쓴 손을 찾을 거야."
+          text: "저 안에서 기록 속 덕만은 죽었어. 살아 있는 나는 숨어서, 내 죽음을 먼저 쓴 손부터 찾을 거야."
       - say:
           channel: narration
           text: "소화는 국경 상단의 암호를 속삭였습니다. 덕만은 대답 대신 손바닥의 붉은 인주를 빗물에 씻지 않았습니다. 이제부터 붉은 인장의 행로가 두 사람의 길이었습니다."

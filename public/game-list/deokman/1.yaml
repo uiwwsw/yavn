@@ -20,12 +20,12 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "칠숙입니다. 남문에 그 사람 말이 묶여 있어요. 해 지기 전에 짐을 싸야 합니다."
+          text: "칠숙입니다. 남문 말이 그 사람 것입니다. 십 년 동안 저 발굽보다 반나절 먼저 떠나 살았어요. 이번에도 그래야 합니다."
       - say:
           char: 덕만
           camera: close
           with: [소화]
-          text: "십 년을 달렸는데 저 도장이 늘 먼저 도착했어. 오늘은 내가 기다릴 차례야."
+          text: "십 년을 먼저 떠났는데도 저 도장은 늘 우리보다 앞에 있었어. 오늘은 도망칠 짐 대신, 저 도장이 어디로 가는지 기다릴 거야."
       - goto: choose_identity
 
   choose_identity:
@@ -59,7 +59,7 @@ scenes:
           char: 소화
           camera: medium
           with: [덕만]
-          text: "아무도 우릴 보지 않네요. 좋은데… 칼이 오면 아무도 우릴 위해 서 주지도 않겠죠."
+          text: "싸움 구경꾼은 많아도 만덕을 지켜 줄 사람은 없네요. 숨은 이름은 칼도 피하지만 도움을 청할 입도 잃습니다."
       - goto: market_crackdown
 
   borrowed_inquiry:
@@ -71,7 +71,7 @@ scenes:
           char: 덕만.wanderer
           camera: close
           with: [소화]
-          text: "빌린 이름은 오래 들고 있으면 목을 베어 가. 해 지기 전에 쓰고 버리자."
+          text: "빌린 이름은 문을 빨리 열어도 빚까지 안쪽에 남겨. 해 지기 전에 증거만 꺼내고, 그 이름의 값도 나중에 갚자."
       - goto: market_crackdown
 
   public_inquiry:
@@ -83,7 +83,7 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "저분들은 아기씨를 기억합니다. 칠숙도 이제 이 자리까지 곧장 기억하겠군요."
+          text: "저분들은 아기씨 이름을 되살렸습니다. 이제 칠숙도 소문을 따라 헤매지 않고 이 자리로 곧장 오겠군요."
       - goto: market_crackdown
 
   market_crackdown:
@@ -98,15 +98,15 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [덕만]
-          text: "죽은 분이 참 멀리도 도망치셨습니다. 이제 관에 누우시지요."
+          text: "죽은 공주께서 십 년 동안 장부까지 보셨군요. 이제 그 이름과 함께 관에 누우시면 기록도 조용해지겠습니다."
       - say:
           char: 덕만.wanderer_angry
           camera: close
           with: [칠숙]
-          text: "죽은 아이 하나 잡겠다고 군사를 몰고 왔어? 고맙네. 내 이름을 네가 증명해 줬어."
+          text: "없는 사람 하나 잡겠다고 네 문을 닫고 군사를 풀었군. 고맙다, 칠숙. 내가 살아 있다는 증인은 네가 데려왔어."
       - choice:
           key: c2_witness
-          prompt: "인장장이의 비명과 소화의 손이 동시에 멀어진다. 누구에게 뛸까?"
+          prompt: "인장장이와 소화가 서로 다른 쪽으로 끌려간다. 이번에는 무엇을 잃지 않을까?"
           char: 덕만
           camera: reaction
           with: [칠숙]
@@ -149,12 +149,12 @@ scenes:
           char: 소화.angry
           camera: close
           with: [덕만]
-          text: "또 저만 보내려고요? 같이 살자고 한 약속은 위험할 때마다 없어집니까?"
+          text: "또 저만 살려 보내려고요? 불 속에서 같이 나왔다는 약속은 위험할 때마다 아기씨 기억에서 먼저 지워집니까?"
       - say:
           char: 덕만.wanderer
           camera: close
           with: [소화]
-          text: "네가 가야 내가 돌아갈 곳이 생겨. 이번엔 반드시 따라갈게."
+          text: "네가 살아야 내가 돌아갈 곳이 생겨. 하지만 그 말을 핑계로 혼자 남지는 않을게. 추격을 돌리고 바로 따라가."
       - get: market_seal
       - goto: checkpoint
 
@@ -168,7 +168,7 @@ scenes:
           text: "검문소 횃불 아래, 별궁에서 본 표식이 바람에 흔들렸습니다. 정문에는 창이 겹쳤고 마른 수로는 어깨 하나가 겨우 들어갈 만큼 좁았습니다."
       - choice:
           key: c2_checkpoint
-          prompt: "뒤에서는 말발굽, 앞에서는 창끝이 다가온다. 길을 만들어라."
+          prompt: "뒤에는 칠숙의 말발굽, 앞에는 왕실 창끝. 지난 탈출에서 배운 길로 거짓 기록을 뒤집어라."
           char: 덕만
           camera: medium
           with: [소화]
@@ -201,12 +201,12 @@ scenes:
           char: 소화
           camera: close
           with: [덕만]
-          text: "서라벌 성벽이 보이면… 정말 돌아가시는 겁니까?"
+          text: "서라벌 성벽이 보이면… 만덕을 버리고 정말 덕만으로 들어가시는 겁니까?"
       - say:
           char: 덕만
           camera: close
           with: [소화]
-          text: "돌아가는 게 아니야. 처음으로 들어가는 거야. 내 이름을 가진 채로."
+          text: "돌아가는 게 아니야. 그 궁은 살아 있는 덕만을 가진 적이 없어. 이번에 처음, 내 이름을 내가 들고 들어가는 거야."
       - say:
           channel: narration
           text: "덕만은 성문 앞에서 수레를 세웠습니다. 밀랍 인장과 사망 기록의 한 줄을 궁 안으로 보냈습니다. 해가 지자 모란 향이 밴 짧은 답신이 돌아왔습니다."
@@ -228,12 +228,12 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "다시는 이런 길 쓰지 마세요. 살아 있는 분이 자기 관에 눕는 걸 두 번은 못 보겠습니다."
+          text: "다시는 자기 죽음을 길로 쓰지 마세요. 살아 있는 아기씨가 관 속에서 숨을 참는 걸 저는 두 번 못 봅니다."
       - say:
           char: 덕만.wanderer_angry
           camera: close
           with: [소화]
-          text: "다음에는 관을 만든 사람을 눕힐 거야. 이 기록과 붉은 인장이 같은 손에서 나왔다는 걸 천명에게 보여 주자."
+          text: "다음에는 관이 아니라 이 기록을 열 거야. 사망 기록과 붉은 인장이 같은 손에서 나왔다는 걸 천명 언니부터 보게 하자."
       - say:
           channel: record
           text: "죽었다고 적힌 공주는 자기 사망 기록을 검문증으로 바꾸었습니다. 거짓 기록은 처음으로 그 기록이 지우려던 사람을 살렸습니다."

@@ -26,13 +26,13 @@ scenes:
           emotion: nervous
       - say:
           char: 레이코.nervous
-          text: "<speed=26>아버지가 마지막으로 남긴 배합입니다.</speed> <speed=19>오늘 맛을 확정하면, 이 이름으로 세상에 내놓을 생각이었어요.</speed>"
+          text: "<speed=26>아버지가 시작한 배합입니다.</speed> <speed=19>오늘 맛과 이름을 확정하고, 네 사람이 지켜 온 차로 세상에 내놓으려 했어요.</speed>"
       - say:
           char: 켄지.angry
-          text: "<speed=42>이 이름?</speed> <speed=25>투자금은 내가 대고, 권리는 당신 집안이 전부 갖겠다고?</speed>"
+          text: "<speed=42>‘네 사람’이라고?</speed> <speed=25>내 계약서에는 내 이름이 빠지고 권리는 당신 집안으로 넘어가. 웃으며 차 마실 일이 아니야.</speed>"
       - say:
           char: 세이지.cold
-          text: "<speed=26>목소리를 높여도 원본은 바뀌지 않습니다.</speed> <speed=19>서명 뒤에 제 봉인을 열죠.</speed> <speed=30>그때 필체와 수정 시각을 확인하면 됩니다.</speed>"
+          text: "<speed=26>누가 크게 말했는지는 적지 않겠습니다.</speed> <speed=19>서명이 끝나면 제 봉인을 열고, 원본의 필체와 수정 시각만 보죠.</speed>"
       - branch:
           cases:
             - when:
@@ -50,7 +50,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=18>(어젯밤 하루오 씨는 누구 이름도 빼지 않겠다고 했어.</speed> <speed=27>그런데 계약서엔 한 사람 이름이 없어.)</speed>"
+          text: "<speed=18>(하루오 씨는 이름을 빼지 않겠댔어.</speed> <speed=27>그런데 셋은 서로 다른 이름이 지워졌다고 믿어.)</speed>"
       - add:
           final_confidence: 1
       - goto: four_way_tension
@@ -73,13 +73,13 @@ scenes:
           char: 하루오.scared
           with:
             - 코난.think
-          text: "<speed=23>잔은 표대로 두겠습니다.</speed> <speed=19>켄지 씨 1번, 제가 2번, 레이코 씨 3번, 세이지 씨 4번.</speed> <speed=16>오늘은... 바꾸면 안 됩니다.</speed>"
+          text: "<speed=23>잔은 제가 고른 표대로 두겠습니다.</speed> <speed=19>켄지 씨 1번, 제가 2번, 레이코 씨 3번, 세이지 씨 4번.</speed> <speed=16>오늘만큼은 누구도 자리를 바꾸지 마십시오.</speed>"
       - say:
           char: 란.worried
-          text: "<speed=28>하루오 씨, 손 데이셨어요?</speed> <speed=21>아까부터 왼손을 계속 감추시던데.</speed>"
+          text: "<speed=28>하루오 씨, 왼손 다치셨어요?</speed> <speed=21>2번 잔을 놓을 때부터 계속 소매 안에 감추고 계세요.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=19>(손이 떨려.</speed> <speed=17>2번 잔을 놓을 때만 레이코 씨를 봤어.)</speed>"
+          text: "<speed=19>(통증 때문만은 아니야.</speed> <speed=17>2번 잔을 놓을 때만 레이코 씨 표정을 확인했어.)</speed>"
 
   service_order:
     actions:
@@ -96,15 +96,15 @@ scenes:
           char: 세이지.cold
           with:
             - 하루오.scared
-          text: "<speed=25>9시 18분 작성.</speed> <speed=19>하루오 씨가 직접 고른 번호는 2번, 맞습니다.</speed>"
+          text: "<speed=25>9시 18분 작성.</speed> <speed=19>하루오 씨가 직접 ‘2번’을 말했고, 아래 장 압흔도 같습니다.</speed>"
       - sound: cup_clink
       - say:
           char: 하루오.scared
           with:
             - 세이지.cold
-          text: "<speed=21>예, 2번은 제 잔입니다.</speed> <speed=18>레이코 씨, 88도가 될 때까진 뚜껑에 손대지 마세요.</speed> <speed=16>그분의 방식이니까.</speed>"
+          text: "<speed=21>예, 2번은 제 잔입니다.</speed> <speed=18>레이코 씨, 88도가 될 때까진 뚜껑에 손대지 마세요.</speed> <speed=16>아버님이 남긴 순서를 오늘 우리가 먼저 깨면 안 됩니다.</speed>"
       - say:
-          text: "<speed=19>레이코는 대답 대신 주전자 뚜껑을 눌렀다.</speed> <speed=51>한 번.</speed> <speed=55>그리고 또 한 번.</speed>"
+          text: "<speed=19>레이코는 하루오를 바라본 채 주전자 뚜껑을 눌렀다.</speed> <speed=51>한 번.</speed> <speed=55>모두가 고개를 들었을 때, 다시 한 번.</speed>"
       - branch:
           cases:
             - when:
@@ -122,7 +122,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=18>(하루오 씨는 뚜껑을 그대로 두랬어.</speed> <speed=30>레이코 씨는 왜 두 번이나...)</speed>"
+          text: "<speed=18>(향을 위한 동작이 아니야.</speed> <speed=30>첫 소리는 하루오, 둘째 소리는 모두의 눈을 움직였어.)</speed>"
       - add:
           deduction_score: 1
       - goto: incident_trigger
@@ -155,17 +155,17 @@ scenes:
           with:
             - 코난.serious
             - 레이코.nervous
-          text: "<speed=67>꺄악!</speed> <speed=35>하루오 씨, 정신 차리세요!</speed>"
+          text: "<speed=67>하루오 씨!</speed> <speed=35>제 목소리 들려요? 코난, 아빠 불러!</speed>"
       - say:
           char: 레이코.nervous
           with:
             - 코난.serious
-          text: "<speed=19>차가 흘렀어요.</speed> <speed=16>뒤로 물러나세요, 수건부터...</speed>"
+          text: "<speed=19>잔이 쓰러져요.</speed> <speed=16>증거가 아니라 뜨거운 차예요. 수건부터 가져올게요...</speed>"
       - say:
-          text: "<speed=18>천둥에 등불이 흔들렸다.</speed> <speed=16>하루오를 붙잡으려는 손들이 탁자 위로 겹치는 사이, 흰 천 한 자락이 2번 잔 가장자리를 스쳤다.</speed>"
+          text: "<speed=18>천둥에 등불이 꺼졌다 켜졌다.</speed> <speed=16>하루오를 붙잡는 손들이 탁자 위로 겹친 그 짧은 어둠 속에서, 흰 천 한 자락이 2번 잔과 컵받침 사이를 지나갔다.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=60>안 돼요!</speed> <speed=25>그 잔, 만지면 안 돼요!</speed>"
+          text: "<speed=60>손 떼요!</speed> <speed=25>하루오 씨가 끝까지 잡은 잔이에요. 아무도 닦으면 안 돼요!</speed>"
 
   death_confirm:
     actions:
@@ -195,7 +195,7 @@ scenes:
           position: left
           emotion: determined
       - say:
-          text: "<speed=23>코고로가 하루오의 기도를 열고 맥을 짚었다.</speed> <speed=18>장난기 어린 얼굴이 순식간에 굳었다.</speed>"
+          text: "<speed=23>코고로가 하루오의 기도를 열고 맥을 짚었다.</speed> <speed=18>온천과 내기만 말하던 얼굴에서 웃음이 지워졌다.</speed>"
       - clearSticker:
           id: tape_lock
           leave:
@@ -206,12 +206,12 @@ scenes:
           with:
             - 코난.serious
             - 란.determined
-          text: "<speed=28>란, 119부터.</speed> <speed=23>연결이 안 되면 료칸 무전기를 찾아!</speed> <speed=37>나머지는 벽에서 떨어져. 아무것도 만지지 마!</speed>"
+          text: "<speed=28>란, 119부터.</speed> <speed=23>끊기면 무전기, 직원에게 심장충격기도 물어!</speed> <speed=37>나머지는 벽으로 물러서. 잔도 종이도 손대지 마!</speed>"
       - say:
           char: 란.determined
           with:
             - 코고로.shocked
-          text: "<speed=30>네.</speed> <speed=23>무전기부터 확인할게요!</speed>"
+          text: "<speed=30>네.</speed> <speed=23>연결될 때까지 두 쪽 다 확인할게요!</speed>"
       - sticker:
           id: dying_hint
           image: clue_lid
@@ -223,7 +223,7 @@ scenes:
           enter:
             effect: blurIn
       - say:
-          text: '<speed=23>(손끝은 컵받침.</speed> <speed=18>2 다음에...)</speed> <speed=46>"R"?</speed>'
+          text: '<speed=23>하루오의 손끝이 젖은 컵받침을 긁었다.</speed> <speed=18>먼저 2. 그 아래 한 획이 더 이어졌다.</speed> <speed=46>"R"...</speed>'
       - clearSticker:
           id: dying_hint
           leave:
@@ -231,7 +231,7 @@ scenes:
       - wait: 240
       - say:
           char: 코난.think
-          text: "<speed=17>(R의 번짐만 반대야.</speed> <speed=30>누가 건드렸어.)</speed>"
+          text: "<speed=17>(2는 손끝 방향 그대로.</speed> <speed=30>R의 꼬리만 반대로 번졌어. 뒤에 닿은 손이 있어.)</speed>"
       - add:
           deduction_score: 1
 
@@ -242,17 +242,17 @@ scenes:
       - effect: zoom
       - say:
           char: 코난.serious
-          text: "<speed=18>(같은 주전자에서 따른 차인데 하루오 씨만 쓰러졌어.</speed> <speed=27>독은 잔에 있었어.)</speed>"
+          text: "<speed=18>(같은 주전자, 네 잔.</speed> <speed=27>하루오 씨만 쓰러졌다면 차보다 2번 잔을 봐야 해.)</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(뚜껑 소리로 모두의 시선을 돌렸어.)</speed>"
+          text: "<speed=18>(두 번의 소리. 두 번째엔 아무도 2번 잔을 보지 않았어.)</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(쓰러진 뒤엔 R을 지웠고.</speed> <speed=27>비어 있는 건 9시 29분의 1분.)</speed>"
+          text: "<speed=18>(쓰러진 뒤에는 R까지 지우려 했어.</speed> <speed=27>범행 전과 후, 같은 손이 두 번 움직였어.)</speed>"
 
   chapter_handoff:
     actions:
       - effect: pulse
       - say:
           char: 코난
-          text: "<speed=23>(란 누나가 본 시계부터 확인하자.)</speed>"
+          text: "<speed=23>(란 누나가 본 시각부터 고정하자. 그러면 첫 번째 손이 움직인 틈이 보여.)</speed>"

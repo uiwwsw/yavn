@@ -26,7 +26,7 @@ scenes:
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=19>(구조대가 오기까지 두 시간.</speed> <speed=17>기억이 섞이기 전에 한 사람씩 만나자.)</speed>"
+          text: "<speed=19>(구조대까지 두 시간.</speed> <speed=17>기억이 섞이기 전에 네 사람을 따로 듣자.)</speed>"
       - goto: all_done_check
 
   all_done_check:
@@ -73,12 +73,12 @@ scenes:
           char: 란.worried
           with:
             - 코난.serious
-          text: "<speed=24>이상해.</speed> <speed=19>넷 다 9시 29분을 말하는데, 본 장면은 조금씩 달라.</speed>"
+          text: "<speed=24>넷의 말이 이제 같은 시각에 모였어.</speed> <speed=19>그런데 9시 29분에 본 것만 한 조각씩 달라.</speed>"
       - say:
           char: 코난.serious
           with:
             - 란.worried
-          text: "<speed=26>누군가는 본 걸 말했고, 누군가는 자기가 한 일을 빼 버렸어.</speed>"
+          text: "<speed=26>한 사람은 종이를, 한 사람은 문밖을 봤어.</speed> <speed=19>그리고 한 사람은 자기 손이 움직인 한 줄만 비워 뒀고.</speed>"
       - goto: rapport_bonus_check
 
   rapport_bonus_check:
@@ -108,17 +108,17 @@ scenes:
           char: 란.worried
           with:
             - 코난.think
-          text: "<speed=23>세이지 씨는 종이를, 켄지 씨는 조건을 먼저 봤어.</speed> <speed=18>레이코 씨만 순서를 말할 때 한 동작을 빼먹었고.</speed>"
+          text: "<speed=23>세이지 씨는 틀릴까 봐 종이에 숨고, 켄지 씨는 잘릴까 봐 조건부터 말했어.</speed> <speed=18>레이코 씨만 순서를 말할수록 한 동작에서 멈췄고.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(레이코 씨가 뺀 동작 하나.</speed> <speed=30>아저씨 목소리로 다시 묻자.)</speed>"
+          text: "<speed=18>(레이코 씨가 말하지 못한 손 하나.</speed> <speed=30>모두 앞에서 증거의 순서로 묻자.)</speed>"
       - goto: move_to_conclusion_gate
 
   rapport_bonus_missed:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=18>(진술은 엉켜도 잔의 흔적은 그대로야.)</speed>"
+          text: "<speed=18>(사람의 기억은 섞였어도 잔에 닿은 두 손의 순서는 안 바뀌어.)</speed>"
       - goto: move_to_conclusion_gate
 
   route_select:
@@ -129,7 +129,7 @@ scenes:
               - { var: tea_residue_report, op: eq, value: false }
               - { var: reiko_statement_note, op: eq, value: false }
           char: 코난.think
-          text: "<speed=18>(모두를 부르기 전에 2번 잔 감식과 9시 29분 진술 메모는 꼭 필요해.)</speed>"
+          text: "<speed=18>(모두 앞에서 말하려면 2번 잔 감식과 9시 29분 진술 메모는 꼭 있어야 해.)</speed>"
       - say:
           when:
             all:
@@ -142,13 +142,13 @@ scenes:
                   - { var: clue_kenji_rejected_deal, op: eq, value: false }
                   - { var: reiko_motive_open, op: eq, value: false }
           char: 코난.think
-          text: "<speed=18>(넷은 만났어.</speed> <speed=29>하지만 놓친 문장과 흔적은 다시 물을 수 있어.)</speed>"
+          text: "<speed=18>(넷의 첫말은 들었어.</speed> <speed=29>잘려 나간 뒷말과 두 번째 손은 다시 찾을 수 있어.)</speed>"
       - say:
           char: 코난.think
           text: "<speed=21>(누구부터지?)</speed>"
       - choice:
           key: route_select
-          prompt: "누구의 9시 29분부터 확인할까?"
+          prompt: "비어 있는 9시 29분, 누구의 시선부터 이어 볼까?"
           options:
             - text: "기록 보관실: 세이지의 원본 배정표"
               goto: /routes/seiji/1.yaml
@@ -169,7 +169,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=19>(아직 안 들은 사람이 있어.</speed> <speed=30>지금 부르면 놓쳐.)</speed>"
+          text: "<speed=19>(아직 혼자일 때만 할 말이 남은 사람이 있어.</speed> <speed=30>지금 모으면 다시 입을 맞춰.)</speed>"
       - choice:
           key: early_exit_confirm
           prompt: "지금 모두를 다실에 모을까?"
@@ -207,7 +207,7 @@ scenes:
           final_confidence: -1
       - say:
           char: 코난.think
-          text: "<speed=19>(한 사람만 더.</speed> <speed=30>손수건을 누가 봤는지 들어야 해.)</speed>"
+          text: "<speed=19>(한 사람만 더.</speed> <speed=30>흰 천이 두 번 움직인 걸 본 눈이 필요해.)</speed>"
       - goto: move_to_conclusion_gate
 
   early_exit_penalty_2:
@@ -217,7 +217,7 @@ scenes:
           final_confidence: -2
       - say:
           char: 코난.think
-          text: "<speed=19>(목격과 기록이 어긋나.</speed> <speed=30>이대로는 못 몰아.)</speed>"
+          text: "<speed=19>(시각은 있는데 장면이 끊겨.</speed> <speed=30>이대로 지목하면 R 한 글자에 매달리게 돼.)</speed>"
       - goto: move_to_conclusion_gate
 
   early_exit_penalty_1:
@@ -229,7 +229,7 @@ scenes:
           mistake_count: 1
       - say:
           char: 코난.think
-          text: "<speed=18>(근거가 모자라.</speed> <speed=30>지금 나가면 범인이 버텨.)</speed>"
+          text: "<speed=18>(잔과 시각만으론 동작이 하나 비어.</speed> <speed=30>범인은 그 빈칸 안에서 버틸 거야.)</speed>"
       - goto: move_to_conclusion_gate
 
   move_to_conclusion_gate:
@@ -251,12 +251,12 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "<speed=28>란 누나, 모두를 다실로 불러 줘.</speed> <speed=21>하루오 씨가 지키려던 2번 잔, 이제 읽을 수 있어.</speed>"
+          text: "<speed=28>란 누나, 모두를 다실로 불러 줘.</speed> <speed=21>하루오 씨가 지키려던 2번 잔과, 누군가 지우려 한 뒷말을 이제 같은 순서로 보여 줄 수 있어.</speed>"
       - goto: /conclusion/1.yaml
 
   move_to_conclusion_blocked:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=18>(잔에 남은 흔적만으론 시간이 안 맞아.</speed> <speed=27>레이코 씨의 온도 기록을 더 확인해야 해.)</speed>"
+          text: "<speed=18>(잔의 흔적은 있지만 시각이 없어.</speed> <speed=27>레이코 씨의 온도 기록부터 이어야 해.)</speed>"
       - goto: route_select

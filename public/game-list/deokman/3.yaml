@@ -18,15 +18,15 @@ scenes:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "바퀴 자국이 산길에서 끊겼습니다. 스무 명만 주십시오. 해 뜨기 전에 저 창고 문을 뜯겠습니다."
+          text: "바퀴 자국은 산길에서 끊겼고 비가 남은 흔적도 지웁니다. 스무 명만 주십시오. 해 뜨기 전에 창고 문과 그 안의 사람을 붙잡겠습니다."
       - say:
           char: 덕만
           camera: close
           with: [유신]
-          text: "문부터 부수면 안에 있는 놈만 잡아. 수레를 지운 손은 장부 뒤로 숨겠지. 먼저 거짓말의 길을 찾자."
+          text: "문부터 부수면 안에 남은 사람만 잡아. 곡식을 빼고 장부를 고친 손은 또 다른 문 뒤로 숨겠지. 비가 지우기 전에 거짓말이 지나온 길부터 잡자."
       - choice:
           key: c4_investigation
-          prompt: "새벽비가 자국을 지우기 시작한다. 무엇을 붙잡을까?"
+          prompt: "새벽비는 바퀴를, 굶주림은 증언을 지운다. 먼저 남길 것은?"
           char: 덕만
           camera: medium
           with: [유신]
@@ -50,7 +50,7 @@ scenes:
           char: 유신
           camera: close
           with: [덕만]
-          text: "장부는 고칠 수 있어도 바퀴는 하루아침에 마르지 않습니다. 이 자국, 산 위 창고까지 갑니다."
+          text: "장부 숫자는 밤새 고칠 수 있어도 수레 축 간격은 못 바꿉니다. 이 폭과 진흙 깊이, 왕실 수레가 산 위 창고까지 갔습니다."
       - goto: hidden_warehouse
 
   hire_villagers:
@@ -62,7 +62,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "쌀을 주면 오늘 배를 채워. 길을 물으면 저들이 우리 눈이 돼. 탄 창고의 몫까지 기억하고 가자."
+          text: "쌀값은 오늘 배를 채우고, 길값은 다음 수레를 막아. 대신 불탄 창고에서 끝내 말하지 못한 사람 몫까지 장부에 남겨."
       - goto: hidden_warehouse
 
   surround_warehouse:
@@ -74,7 +74,7 @@ scenes:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "문은 열 수 있습니다. 하지만 제가 칼을 뽑는 순간, 안의 장부보다 제 칼이 더 큰 증거가 됩니다."
+          text: "문은 부술 수 있습니다. 하지만 왕실 기병이 먼저 칼을 뽑으면, 안의 장부보다 ‘공주가 창고를 빼앗았다’는 장면이 더 빨리 퍼집니다."
       - goto: hidden_warehouse
 
   hidden_warehouse:
@@ -89,7 +89,7 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "쌀 한 섬이 창 세 자루, 아이 한 끼가 갑옷 못 열두 개. 도둑들이 셈은 참 반듯하게 했군요."
+          text: "쌀 한 섬이 창 세 자루, 아이 한 끼가 갑옷 못 열두 개. 사람 이름은 지워도 물건 값은 반듯하게 남겼군요."
       - say:
           char: 덕만
           camera: close
@@ -99,7 +99,7 @@ scenes:
           char: 비담
           camera: medium
           with: [덕만]
-          text: "비담입니다. 주인 없는 칼인데, 오늘 밤은 칼보다 이 숫자들이 더 사람을 많이 죽이더군요."
+          text: "비담입니다. 주인 없는 칼로 살았는데, 오늘은 칼을 뽑지 않은 이 숫자들이 사람을 더 많이 죽이는 걸 봤습니다."
       - sticker: { id: c4_ledger, image: grain_ledger_sticker, x: 51, y: 29, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, rotate: -2, enter: fadeIn }
       - get: grain_ledger
       - clearSticker: { id: c4_ledger, leave: fadeOut }
@@ -112,7 +112,7 @@ scenes:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "비가 들이칩니다. 내일까지 두면 쌀이 붑니다. 사람들은 문밖에서 자루를 찢으려 하고요. 지금 하나부터 정해야 합니다."
+          text: "비는 안으로 들고 굶은 사람들은 밖에서 문을 밉니다. 내일까지 두면 쌀도 증거도 망가집니다. 누구에게 무엇부터 보여 줄지 지금 정해야 합니다."
       - choice:
           key: c4_grain_policy
           prompt: "문밖의 손들이 창고 문을 흔든다. 먼저 무엇을 내놓을까?"
@@ -144,10 +144,10 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "한 번 숫자를 본 사람은 다음 장부도 달라고 합니다. 왕실 문까지 두드릴 텐데요."
+          text: "오늘 자기 이름 옆의 쌀을 센 사람은 내일 왕실 장부도 보여 달라 할 겁니다. 폐하가 되시면 그 문까지 열어 주실 겁니까?"
       - say:
           char: 덕만
-          text: "두드리게 둬. 문이 상하는 것보다 쌀이 사라지는 게 비싸."
+          text: "두드리게 둬. 질문에 문이 상하는 값보다, 닫힌 문 안에서 사람과 쌀이 사라지는 값이 더 비싸."
       - goto: convoy_attack
 
   royal_relief:
@@ -174,7 +174,7 @@ scenes:
           char: 덕만
           camera: close
           with: [비담]
-          text: "오늘 이 군량이 국경을 살릴 거야. 하지만 저 상자를 계속 잠가 두면 내가 도둑과 같은 열쇠를 쥔 셈이야."
+          text: "오늘은 저 군량이 국경을 살린다. 하지만 장부를 계속 담보로 쥐면, 내 열쇠와 곡식을 훔친 자의 열쇠가 무엇이 다른지 곧 묻게 되겠지."
       - goto: convoy_attack
 
   convoy_attack:
@@ -189,10 +189,10 @@ scenes:
           char: 유신.angry
           camera: reaction
           with: [덕만]
-          text: "정면은 열 수 있습니다. 대신 뒤 수레 절반은 불화살을 맞습니다. 빨리 정하십시오."
+          text: "정면은 뚫을 수 있습니다. 그 순간 뒤 수레와 마을 몫이 불화살을 맞습니다. 적을 이기는 것과 곡식을 도착시키는 것 중 명령을 주십시오."
       - choice:
           key: c4_convoy
-          prompt: "불화살의 시위가 당겨진다. 수레를 어떻게 살릴까?"
+          prompt: "불화살은 장부 상자와 마지막 마을 몫을 함께 겨눈다. 무엇을 미끼로 삼지 않을까?"
           char: 덕만
           camera: reaction
           with: [유신]
@@ -229,10 +229,10 @@ scenes:
       - char: { id: 유신, position: right }
       - say:
           char: 유신
-          text: "오늘은 공주님이라서 따른 게 아닙니다. 저보다 먼저 불화살을 보셨으니까 따랐습니다."
+          text: "오늘은 공주님의 이름 때문에 따른 게 아닙니다. 제 칼보다 먼저 뒤 수레의 사람을 보셨기에 따랐습니다."
       - say:
           char: 덕만
-          text: "다음엔 내가 못 보면 말해 줘. 내 이름 때문에 입 다무는 칼은 필요 없어."
+          text: "다음에는 내가 못 본 사람과 값을 네가 먼저 말해 줘. 내 이름 앞에서 칼집째 침묵하는 장수는 필요 없어."
       - say:
           channel: record
           text: "유신이 찢어진 자루를 뒤집자 당의 낙인이 드러났습니다. 비담은 장부 마지막 장을 찢어 덕만에게 건넸습니다. 사흘 뒤 모란 연회. 원조 손실을 해명하라는 당 사신의 글이었습니다."
@@ -240,7 +240,7 @@ scenes:
           char: 덕만
           camera: close
           with: [유신]
-          text: "쌀을 훔친 손이 당과도 잔을 부딪쳤어. 좋아. 이 장부를 연회상 한가운데 올려 주지."
+          text: "아이들 쌀을 창으로 바꾼 손이 당 사신과도 잔을 부딪쳤어. 좋아. 빈 모란 그림 옆에 이 가득 찬 장부를 펼쳐 주지."
       - goto: /4.yaml
 
   bad_charge:
