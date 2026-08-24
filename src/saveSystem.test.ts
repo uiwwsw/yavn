@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   exportSaveBackup,
   getAutoSaveEnabled,
   getChoiceRecoverySummary,
   getSaveSlotSummaries,
   importSaveBackup,
+  loadUrlStartScreenPreview,
   restorePresentationToCursor,
   saveCurrentProgress,
   setAutoSaveEnabled,
@@ -307,6 +308,78 @@ describe('save system', () => {
     });
 
     expect(() => importSaveBackup(foreign)).toThrow('현재 게임과 일치');
+  });
+
+  it('rejects a backup from a different authored game version', () => {
+    const stale = JSON.stringify({
+      engine: 'YAVN',
+      progress: {
+        gameTitle: 'Save Test',
+        gameVersion: '0.9.0',
+        chapterIndex: 0,
+        sceneId: 'intro',
+        actionIndex: 0,
+      },
+    });
+
+    expect(() => importSaveBackup(stale)).toThrow('현재 게임과 일치');
+  });
+
+  it('does not expose a stale-version browser slot as loadable', () => {
+    localStorage.setItem('vn-engine-autosave:manual', JSON.stringify({
+      gameTitle: 'Save Test',
+      gameVersion: '0.9.0',
+      chapterIndex: 0,
+      sceneId: 'intro',
+      actionIndex: 0,
+    }));
+
+    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(false);
+  });
+
+  it('bypasses HTTP caches for YAML previews and hides stale-version saves', async () => {
+    const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+    const originalFetch = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: { location: { origin: 'https://example.test' } },
+    });
+    const fetchMock = vi.fn(async () => new Response([
+      'title: "Save Test"',
+      'version: "1.0.0"',
+      'textSpeed: 30',
+      'autoSave: true',
+      'clickToInstant: true',
+    ].join('\n'), {
+      status: 200,
+      headers: { 'content-type': 'text/yaml' },
+    }));
+    Object.defineProperty(globalThis, 'fetch', {
+      configurable: true,
+      value: fetchMock,
+    });
+    localStorage.setItem('vn-engine-autosave:game:save-test', JSON.stringify({
+      gameTitle: 'Save Test',
+      gameVersion: '0.9.0',
+      chapterIndex: 0,
+      sceneId: 'intro',
+      actionIndex: 0,
+    }));
+
+    try {
+      const preview = await loadUrlStartScreenPreview('/game-list/save-test/');
+
+      expect(preview.hasLoadableSave).toBe(false);
+      expect(fetchMock).toHaveBeenCalledWith(
+        'https://example.test/game-list/save-test/config.yaml',
+        { cache: 'no-store' },
+      );
+    } finally {
+      if (originalFetch) Object.defineProperty(globalThis, 'fetch', originalFetch);
+      else Reflect.deleteProperty(globalThis, 'fetch');
+      if (originalWindow) Object.defineProperty(globalThis, 'window', originalWindow);
+      else Reflect.deleteProperty(globalThis, 'window');
+    }
   });
 
   it('enters game over without overwriting the last valid autosave', () => {
