@@ -17,6 +17,16 @@ import {
   type ParsedConfigYaml,
 } from './parser';
 import { collectChapterAssetPaths } from './preload';
+import {
+  DEFAULT_RUNTIME_GAME_SETTINGS,
+  migrateRuntimeGameSettings,
+  type AutoPlayDelay,
+  type InventorySortPreference,
+  type InventoryViewPreference,
+  type PlayerEffectLevel,
+  type RuntimeGameSettings,
+  type TextSpeedRate,
+} from './runtimeSettings';
 import { DEFAULT_UI_TEMPLATE } from './uiTemplates';
 import {
   buildTypingPlan,
@@ -75,6 +85,8 @@ const GAME_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:game:';
 const PATH_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:path:';
 const ZIP_AUTOSAVE_KEY_PREFIX = 'vn-engine-autosave:zip:';
 const GAME_SETTINGS_STORAGE_PREFIX = 'vn-engine-settings:';
+const SAVE_PROGRESS_SCHEMA_VERSION = 2;
+const SAVE_BACKUP_SCHEMA_VERSION = 2;
 const MANUAL_SAVE_SUFFIX = ':manual';
 const CHAPTER_SAVE_SUFFIX = ':chapter';
 const CHOICE_RECOVERY_SUFFIX = ':choice-recovery';
@@ -117,8 +129,6 @@ const DEFAULT_STICKER_LEAVE_DURATION = 220;
 const DEFAULT_STICKER_LEAVE_EASING = 'ease';
 const DEFAULT_STICKER_LEAVE_DELAY = 0;
 const DEFAULT_CHOICE_FORGIVE_MESSAGE = '한 번은 넘어갈게. 다시 선택해 주세요.';
-const INVENTORY_VIEW_VALUES = ['bag', 'catalog'] as const;
-const INVENTORY_SORT_VALUES = ['order', 'name'] as const;
 
 let live2DRuntimeWarmPromise: Promise<void> | undefined;
 
@@ -134,28 +144,26 @@ function warmLive2DRuntime(): Promise<void> {
   return live2DRuntimeWarmPromise;
 }
 
-export type InventoryViewPreference = (typeof INVENTORY_VIEW_VALUES)[number];
-export type InventorySortPreference = (typeof INVENTORY_SORT_VALUES)[number];
+export type {
+  AutoPlayDelay,
+  InventorySortPreference,
+  InventoryViewPreference,
+  PlayerEffectLevel,
+  TextSpeedRate,
+} from './runtimeSettings';
 export type InventoryUiSettings = {
   view: InventoryViewPreference;
   sort: InventorySortPreference;
   category: string;
 };
 
-const DEFAULT_RUNTIME_GAME_SETTINGS: RuntimeGameSettings = {
-  bgmEnabled: true,
-  autoSaveEnabled: undefined,
-  inventoryView: 'bag',
-  inventorySort: 'order',
-  inventoryCategory: '',
-};
-
-type RuntimeGameSettings = {
-  bgmEnabled: boolean;
-  autoSaveEnabled?: boolean;
-  inventoryView: InventoryViewPreference;
-  inventorySort: InventorySortPreference;
-  inventoryCategory: string;
+export type PlayerExperienceSettings = {
+  textSpeedRate: TextSpeedRate;
+  autoPlayEnabled: boolean;
+  autoPlayDelayMs: AutoPlayDelay;
+  effectLevel: PlayerEffectLevel;
+  bgmVolume: number;
+  sfxVolume: number;
 };
 
 type InventoryOwnedMap = Record<string, boolean>;
@@ -168,6 +176,7 @@ type ChoiceAttempt = {
 };
 
 type SaveProgress = {
+  schemaVersion?: number;
   savedAt?: string;
   gameTitle?: string;
   gameVersion?: string;
@@ -240,10 +249,13 @@ let typeFrame: number | undefined;
 let effectTimer: number | undefined;
 let effectFrame: number | undefined;
 let autoAdvanceTimer: number | undefined;
+let playerAutoAdvanceTimer: number | undefined;
+let currentDialogueHasAuthoredAutoAdvance = false;
+let nextChapterWarmHandle: number | undefined;
+let nextChapterWarmHandleKind: 'idle' | 'timeout' | undefined;
 let choiceTimer: number | undefined;
 let bgmAudio: HTMLAudioElement | undefined;
 const bgmFadeTimers = new Map<HTMLAudioElement, number>();
-const BGM_VOLUME = 0.6;
 const BGM_CROSSFADE_MS = 420;
 let bgmNeedsUnlock = false;
 let bgmCurrentKind: 'audio' | 'youtube' | undefined;
@@ -332,22 +344,6 @@ function normalizeInventoryCategory(raw: unknown, fallback: string): string {
   return raw.trim();
 }
 
-function normalizeRuntimeGameSettings(raw: unknown): RuntimeGameSettings {
-  const defaults: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
-  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
-    return defaults;
-  }
-  const parsed = raw as Partial<RuntimeGameSettings>;
-  return {
-    bgmEnabled: typeof parsed.bgmEnabled === 'boolean' ? parsed.bgmEnabled : defaults.bgmEnabled,
-    autoSaveEnabled:
-      typeof parsed.autoSaveEnabled === 'boolean' ? parsed.autoSaveEnabled : defaults.autoSaveEnabled,
-    inventoryView: normalizeInventoryView(parsed.inventoryView, defaults.inventoryView),
-    inventorySort: normalizeInventorySort(parsed.inventorySort, defaults.inventorySort),
-    inventoryCategory: normalizeInventoryCategory(parsed.inventoryCategory, defaults.inventoryCategory),
-  };
-}
-
 function loadRuntimeGameSettingsFromStorage(key: string = currentAutosaveKey): void {
   try {
     const raw = localStorage.getItem(resolveGameSettingsStorageKey(key));
@@ -356,8 +352,9 @@ function loadRuntimeGameSettingsFromStorage(key: string = currentAutosaveKey): v
       return;
     }
     const parsedRaw = JSON.parse(raw);
-    runtimeGameSettings = normalizeRuntimeGameSettings(parsedRaw);
-    if (JSON.stringify(parsedRaw) !== JSON.stringify(runtimeGameSettings)) {
+    const migration = migrateRuntimeGameSettings(parsedRaw);
+    runtimeGameSettings = migration.settings;
+    if (migration.needsPersist) {
       persistRuntimeGameSettings(key);
     }
   } catch {
@@ -374,6 +371,8 @@ function persistRuntimeGameSettings(key: string = currentAutosaveKey): void {
 }
 
 function setAutosaveScopeKey(key: string): void {
+  clearPlayerAutoAdvance();
+  currentDialogueHasAuthoredAutoAdvance = false;
   currentAutosaveKey = key;
   loadRuntimeGameSettingsFromStorage(key);
   loadChoiceRecoveryTrail();
@@ -385,6 +384,44 @@ export function getBgmEnabled(): boolean {
 
 export function getAutoSaveEnabled(): boolean {
   return runtimeGameSettings.autoSaveEnabled ?? useVNStore.getState().game?.settings.autoSave ?? true;
+}
+
+export function getPlayerExperienceSettings(): PlayerExperienceSettings {
+  return {
+    textSpeedRate: runtimeGameSettings.textSpeedRate,
+    autoPlayEnabled: runtimeGameSettings.autoPlayEnabled,
+    autoPlayDelayMs: runtimeGameSettings.autoPlayDelayMs,
+    effectLevel: runtimeGameSettings.effectLevel,
+    bgmVolume: runtimeGameSettings.bgmVolume,
+    sfxVolume: runtimeGameSettings.sfxVolume,
+  };
+}
+
+export function setPlayerExperienceSettings(patch: Partial<PlayerExperienceSettings>): void {
+  const previousBgmVolume = runtimeGameSettings.bgmVolume;
+  runtimeGameSettings = migrateRuntimeGameSettings({
+    ...runtimeGameSettings,
+    ...patch,
+  }).settings;
+  persistRuntimeGameSettings();
+
+  if (runtimeGameSettings.bgmVolume !== previousBgmVolume) {
+    if (bgmAudio) {
+      clearAudioFade(bgmAudio);
+      bgmAudio.volume = runtimeGameSettings.bgmVolume;
+    }
+    youtubePlayer?.setVolume?.(Math.round(runtimeGameSettings.bgmVolume * 100));
+  }
+
+  if ('autoPlayEnabled' in patch) {
+    if (runtimeGameSettings.autoPlayEnabled) {
+      schedulePlayerAutoAdvance();
+    } else {
+      clearPlayerAutoAdvance();
+    }
+  } else if ('autoPlayDelayMs' in patch && runtimeGameSettings.autoPlayEnabled) {
+    schedulePlayerAutoAdvance();
+  }
 }
 
 export function setAutoSaveEnabled(enabled: boolean): void {
@@ -476,6 +513,92 @@ async function ensureChapterGame(chapter: PreparedChapter): Promise<GameData> {
   return chapter.gamePromise;
 }
 
+function clearPlayerAutoAdvance(): void {
+  if (playerAutoAdvanceTimer !== undefined) {
+    window.clearTimeout(playerAutoAdvanceTimer);
+    playerAutoAdvanceTimer = undefined;
+  }
+}
+
+let playerAutoPlayPaused = false;
+
+export function setPlayerAutoPlayPaused(paused: boolean): void {
+  playerAutoPlayPaused = paused;
+  if (paused) {
+    clearPlayerAutoAdvance();
+  } else {
+    schedulePlayerAutoAdvance();
+  }
+}
+
+function schedulePlayerAutoAdvance(): void {
+  clearPlayerAutoAdvance();
+  const state = useVNStore.getState();
+  if (
+    !runtimeGameSettings.autoPlayEnabled ||
+    playerAutoPlayPaused ||
+    currentDialogueHasAuthoredAutoAdvance ||
+    !state.game ||
+    state.isFinished ||
+    state.gameOver ||
+    state.chapterLoading ||
+    state.dialogUiHidden ||
+    !state.waitingInput ||
+    state.dialog.typing ||
+    state.inputGate.active ||
+    state.choiceGate.active
+  ) {
+    return;
+  }
+
+  const expectedSceneId = state.currentSceneId;
+  const expectedActionIndex = state.actionIndex;
+  const tryAdvance = () => {
+    playerAutoAdvanceTimer = undefined;
+    const current = useVNStore.getState();
+    if (
+      !runtimeGameSettings.autoPlayEnabled ||
+      currentDialogueHasAuthoredAutoAdvance ||
+      current.currentSceneId !== expectedSceneId ||
+      current.actionIndex !== expectedActionIndex ||
+      !current.waitingInput ||
+      current.dialog.typing ||
+      current.inputGate.active ||
+      current.choiceGate.active ||
+      current.isFinished ||
+      current.gameOver ||
+      current.chapterLoading
+    ) {
+      return;
+    }
+    if (playerAutoPlayPaused || current.dialogUiHidden || current.busy) {
+      playerAutoAdvanceTimer = window.setTimeout(tryAdvance, 120);
+      return;
+    }
+    handleAdvance();
+  };
+  playerAutoAdvanceTimer = window.setTimeout(tryAdvance, runtimeGameSettings.autoPlayDelayMs);
+}
+
+type IdleCallbackWindow = Window & {
+  requestIdleCallback?: (callback: () => void, options?: { timeout?: number }) => number;
+  cancelIdleCallback?: (handle: number) => void;
+};
+
+function cancelNextChapterWarm(): void {
+  if (nextChapterWarmHandle === undefined) {
+    return;
+  }
+  const idleWindow = window as IdleCallbackWindow;
+  if (nextChapterWarmHandleKind === 'idle') {
+    idleWindow.cancelIdleCallback?.(nextChapterWarmHandle);
+  } else {
+    window.clearTimeout(nextChapterWarmHandle);
+  }
+  nextChapterWarmHandle = undefined;
+  nextChapterWarmHandleKind = undefined;
+}
+
 function clearTimers() {
   if (waitTimer) {
     window.clearTimeout(waitTimer);
@@ -498,6 +621,9 @@ function clearTimers() {
     window.clearTimeout(autoAdvanceTimer);
     autoAdvanceTimer = undefined;
   }
+  clearPlayerAutoAdvance();
+  currentDialogueHasAuthoredAutoAdvance = false;
+  cancelNextChapterWarm();
   if (choiceTimer) {
     window.clearTimeout(choiceTimer);
     choiceTimer = undefined;
@@ -606,7 +732,7 @@ function clearAudioFade(audio: HTMLAudioElement) {
   if (timer === undefined) {
     return;
   }
-  window.clearInterval(timer);
+  window.cancelAnimationFrame(timer);
   bgmFadeTimers.delete(audio);
 }
 
@@ -623,17 +749,17 @@ function fadeAudioVolume(
     return;
   }
   const startedAt = performance.now();
-  const tick = () => {
-    const progress = Math.min(1, (performance.now() - startedAt) / durationMs);
+  const tick = (timestamp: number) => {
+    const progress = Math.min(1, (timestamp - startedAt) / durationMs);
     audio.volume = initialVolume + (targetVolume - initialVolume) * progress;
     if (progress < 1) {
+      bgmFadeTimers.set(audio, window.requestAnimationFrame(tick));
       return;
     }
-    clearAudioFade(audio);
+    bgmFadeTimers.delete(audio);
     onComplete?.();
   };
-  tick();
-  bgmFadeTimers.set(audio, window.setInterval(tick, 32));
+  bgmFadeTimers.set(audio, window.requestAnimationFrame(tick));
 }
 
 function stopAudioBgm() {
@@ -662,7 +788,7 @@ async function playYouTubeMusic(videoId: string) {
       if (bgmCurrentKind !== 'youtube' || bgmCurrentKey !== videoId) {
         return;
       }
-      youtubePlayer?.setVolume?.(60);
+      youtubePlayer?.setVolume?.(Math.round(runtimeGameSettings.bgmVolume * 100));
       youtubePlayer?.playVideo?.();
     };
     const onStateChange = (event: { data: number }) => {
@@ -702,7 +828,7 @@ async function playYouTubeMusic(videoId: string) {
     }
 
     youtubePlayer.loadVideoById?.(videoId);
-    youtubePlayer.setVolume?.(60);
+    youtubePlayer.setVolume?.(Math.round(runtimeGameSettings.bgmVolume * 100));
     youtubePlayer.playVideo?.();
   } catch {
     bgmNeedsUnlock = true;
@@ -1458,6 +1584,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
   }
   try {
     const parsed = JSON.parse(raw) as Partial<SaveProgress> & {
+      schemaVersion?: unknown;
       savedAt?: unknown;
       gameTitle?: unknown;
       gameVersion?: unknown;
@@ -1473,6 +1600,11 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       choiceAttempt?: unknown;
     };
     if (
+      (parsed.schemaVersion !== undefined &&
+        (typeof parsed.schemaVersion !== 'number' ||
+          !Number.isInteger(parsed.schemaVersion) ||
+          parsed.schemaVersion < 1 ||
+          parsed.schemaVersion > SAVE_PROGRESS_SCHEMA_VERSION)) ||
       typeof parsed.sceneId !== 'string' ||
       parsed.sceneId.trim().length === 0 ||
       typeof parsed.actionIndex !== 'number' ||
@@ -1563,6 +1695,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
         }
       : undefined;
     return {
+      schemaVersion: SAVE_PROGRESS_SCHEMA_VERSION,
       savedAt: typeof parsed.savedAt === 'string' ? parsed.savedAt : undefined,
       gameTitle: typeof parsed.gameTitle === 'string' ? parsed.gameTitle : undefined,
       gameVersion: typeof parsed.gameVersion === 'string' ? parsed.gameVersion : undefined,
@@ -1662,7 +1795,15 @@ function getChoiceRecoveryForGameOver(gameOver: GameOverDefinition): SaveProgres
 
 function loadProgressByKey(key: string): SaveProgress | undefined {
   try {
-    return parseSaveProgress(localStorage.getItem(key));
+    const raw = localStorage.getItem(key);
+    const progress = parseSaveProgress(raw);
+    if (progress && raw) {
+      const stored = JSON.parse(raw) as { schemaVersion?: unknown };
+      if (stored.schemaVersion !== SAVE_PROGRESS_SCHEMA_VERSION) {
+        saveProgressToKey(key, progress);
+      }
+    }
+    return progress;
   } catch {
     return undefined;
   }
@@ -1680,6 +1821,7 @@ function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress 
       )?.[0]
     : undefined;
   return {
+    schemaVersion: SAVE_PROGRESS_SCHEMA_VERSION,
     savedAt: new Date().toISOString(),
     gameTitle: state.game?.meta.title,
     gameVersion: state.game?.meta.version,
@@ -1796,7 +1938,7 @@ export function exportSaveBackup(): SaveBackup | undefined {
     filename: `${safeTitle}-${new Date().toISOString().slice(0, 10)}.yavn-save.json`,
     content: JSON.stringify(
       {
-        schemaVersion: 1,
+        schemaVersion: SAVE_BACKUP_SCHEMA_VERSION,
         engine: 'YAVN',
         exportedAt: new Date().toISOString(),
         progress,
@@ -1817,9 +1959,20 @@ export function importSaveBackup(raw: string): SaveSlotSummary {
   if (!envelope || typeof envelope !== 'object' || Array.isArray(envelope)) {
     throw new Error('YAVN 저장 파일 형식을 확인해 주세요.');
   }
-  const record = envelope as { engine?: unknown; progress?: unknown };
+  const record = envelope as { schemaVersion?: unknown; engine?: unknown; progress?: unknown };
   if (record.engine !== 'YAVN') {
     throw new Error('YAVN 저장 파일이 아닙니다.');
+  }
+  if (
+    record.schemaVersion !== undefined &&
+    (typeof record.schemaVersion !== 'number' ||
+      !Number.isInteger(record.schemaVersion) ||
+      record.schemaVersion < 1)
+  ) {
+    throw new Error('YAVN 저장 파일 버전이 올바르지 않습니다.');
+  }
+  if (typeof record.schemaVersion === 'number' && record.schemaVersion > SAVE_BACKUP_SCHEMA_VERSION) {
+    throw new Error('이 엔진보다 새로운 버전의 저장 파일입니다. YAVN을 업데이트해 주세요.');
   }
   const save = parseSaveProgress(JSON.stringify(record.progress));
   if (!save || !validateSaveForCurrentGame(save)) {
@@ -1827,6 +1980,7 @@ export function importSaveBackup(raw: string): SaveSlotSummary {
   }
   const imported = {
     ...save,
+    schemaVersion: SAVE_PROGRESS_SCHEMA_VERSION,
     savedAt: new Date().toISOString(),
   };
   if (!saveProgressToKey(resolveSaveSlotKey('manual'), imported)) {
@@ -1928,7 +2082,7 @@ function playMusic(url?: string) {
       const audio = bgmAudio;
       void audio.play().then(() => {
         bgmNeedsUnlock = false;
-        fadeAudioVolume(audio, BGM_VOLUME, BGM_CROSSFADE_MS);
+        fadeAudioVolume(audio, runtimeGameSettings.bgmVolume, BGM_CROSSFADE_MS);
       }).catch(() => {
         bgmNeedsUnlock = true;
       });
@@ -1951,7 +2105,7 @@ function playMusic(url?: string) {
       return;
     }
     bgmNeedsUnlock = false;
-    fadeAudioVolume(nextAudio, BGM_VOLUME, BGM_CROSSFADE_MS);
+    fadeAudioVolume(nextAudio, runtimeGameSettings.bgmVolume, BGM_CROSSFADE_MS);
   }).catch(() => {
     bgmNeedsUnlock = true;
   });
@@ -1959,7 +2113,7 @@ function playMusic(url?: string) {
 
 function playSound(url: string) {
   const audio = new Audio(url);
-  audio.volume = 0.8;
+  audio.volume = runtimeGameSettings.sfxVolume;
   void audio.play().catch(() => undefined);
 }
 
@@ -1983,7 +2137,7 @@ export function unlockAudioFromGesture() {
   const audio = bgmAudio;
   void audio.play().then(() => {
     bgmNeedsUnlock = false;
-    fadeAudioVolume(audio, BGM_VOLUME, BGM_CROSSFADE_MS);
+    fadeAudioVolume(audio, runtimeGameSettings.bgmVolume, BGM_CROSSFADE_MS);
   }).catch(() => {
     bgmNeedsUnlock = true;
   });
@@ -2271,6 +2425,8 @@ function resolveAutoEndingId(
 }
 
 function finishStory(endingId?: string): void {
+  clearPlayerAutoAdvance();
+  currentDialogueHasAuthoredAutoAdvance = false;
   useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setResolvedEndingId(endingId);
   useVNStore.getState().setFinished(true);
@@ -2717,6 +2873,32 @@ function canWarmNextChapterAssets(): boolean {
   return !connection?.saveData && !/(^|-)2g$/.test(connection?.effectiveType ?? '');
 }
 
+function scheduleNextChapterWarm(chapter: PreparedChapter, sourceChapterIndex: number): void {
+  cancelNextChapterWarm();
+  const warm = () => {
+    nextChapterWarmHandle = undefined;
+    nextChapterWarmHandleKind = undefined;
+    if (
+      activeChapterIndex !== sourceChapterIndex ||
+      document.visibilityState === 'hidden' ||
+      !canWarmNextChapterAssets()
+    ) {
+      return;
+    }
+    void ensureChapterGame(chapter)
+      .then((nextGame) => preloadChapterAssets(chapter, nextGame, 'Next chapter', false))
+      .catch(() => undefined);
+  };
+  const idleWindow = window as IdleCallbackWindow;
+  if (idleWindow.requestIdleCallback) {
+    nextChapterWarmHandleKind = 'idle';
+    nextChapterWarmHandle = idleWindow.requestIdleCallback(warm, { timeout: 3000 });
+    return;
+  }
+  nextChapterWarmHandleKind = 'timeout';
+  nextChapterWarmHandle = window.setTimeout(warm, 1200);
+}
+
 function findBackgroundAssetIdBeforeCursor(
   game: GameData,
   sceneId: string,
@@ -3033,6 +3215,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
   }
 
   try {
+    cancelNextChapterWarm();
     activeChapterIndex = chapterIndex;
     resetLive2DLoadTracker();
     useVNStore.getState().setChapterMeta(chapterIndex + 1, preparedChapters.length);
@@ -3083,9 +3266,6 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     }
 
     const nextChapter = preparedChapters[chapterIndex + 1];
-    if (nextChapter) {
-      void ensureChapterGame(nextChapter).catch(() => undefined);
-    }
 
     runToNextPause();
     if (activeChapterIndex !== chapterIndex) {
@@ -3106,11 +3286,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     await waitMs(CHAPTER_LOADED_HOLD_MS);
     useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} ready`);
     if (nextChapter && canWarmNextChapterAssets()) {
-      window.setTimeout(() => {
-        void ensureChapterGame(nextChapter)
-          .then((nextGame) => preloadChapterAssets(nextChapter, nextGame, 'Next chapter', false))
-          .catch(() => undefined);
-      }, 300);
+      scheduleNextChapterWarm(nextChapter, chapterIndex);
     }
     return Boolean(resume && canResumeHere);
   } catch (error) {
@@ -3521,6 +3697,8 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('choice' in action) {
+    clearPlayerAutoAdvance();
+    currentDialogueHasAuthoredAutoAdvance = false;
     if (choiceTimer) {
       window.clearTimeout(choiceTimer);
       choiceTimer = undefined;
@@ -3646,6 +3824,8 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('input' in action) {
+    clearPlayerAutoAdvance();
+    currentDialogueHasAuthoredAutoAdvance = false;
     const presentation = resolveSayPresentation(
       action.input.char,
       action.input.with,
@@ -3694,7 +3874,14 @@ function runToNextPause(loopGuard = 0) {
       return;
     }
     const parsed = parseInlineSpeed(action.say.text);
-    const textSpeed = game.settings.textSpeed;
+    const textSpeedRate = runtimeGameSettings.textSpeedRate;
+    const textSpeed = Math.max(1, game.settings.textSpeed * textSpeedRate);
+    const speedSegments = textSpeedRate === 1
+      ? parsed.segments
+      : parsed.segments.map((segment) => ({
+          ...segment,
+          speed: Math.max(1, segment.speed * textSpeedRate),
+        }));
     const sayWaitMs = clampSayWaitMs(action.say.wait);
     const unskippable = action.say.unskippable === true;
     const autoAdvanceMs = clampSayWaitMs(action.say.autoAdvance);
@@ -3702,6 +3889,8 @@ function runToNextPause(loopGuard = 0) {
       window.clearTimeout(autoAdvanceTimer);
       autoAdvanceTimer = undefined;
     }
+    clearPlayerAutoAdvance();
+    currentDialogueHasAuthoredAutoAdvance = autoAdvanceMs > 0;
     const presentation = resolveSayPresentation(
       action.say.char,
       action.say.with,
@@ -3784,6 +3973,7 @@ function runToNextPause(loopGuard = 0) {
         }
         useVNStore.getState().setBusy(false);
         useVNStore.getState().setWaitingInput(false);
+        currentDialogueHasAuthoredAutoAdvance = false;
         useVNStore
           .getState()
           .setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
@@ -3798,14 +3988,14 @@ function runToNextPause(loopGuard = 0) {
         }
         finishAutoAdvance();
       }, Math.max(autoAdvanceMs, sayWaitMs));
-      typeDialog(parsed.text, textSpeed, parsed.segments, delivery, () => {
+      typeDialog(parsed.text, textSpeed, speedSegments, delivery, () => {
         if (autoAdvanceWaitingForTyping) {
           finishAutoAdvance();
         }
       });
       return;
     }
-    typeDialog(parsed.text, textSpeed, parsed.segments, delivery, () => undefined);
+    typeDialog(parsed.text, textSpeed, speedSegments, delivery, schedulePlayerAutoAdvance);
     return;
   }
 }
@@ -4551,8 +4741,11 @@ export function handleAdvance() {
         visibleText: state.dialog.fullText,
         typingIntensity: 0,
       });
+      schedulePlayerAutoAdvance();
       return;
     }
+    clearPlayerAutoAdvance();
+    currentDialogueHasAuthoredAutoAdvance = false;
     useVNStore.getState().setWaitingInput(false);
     if (autoAdvanceTimer) {
       window.clearTimeout(autoAdvanceTimer);

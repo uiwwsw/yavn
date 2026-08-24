@@ -143,8 +143,8 @@ describe('image character motion', () => {
     expect(breathingRule).not.toContain('opacity');
     expect(breathingKeyframes).toContain('var(--char-calibration-y) - 0.18%');
     expect(breathingKeyframes).toContain('scale: calc(var(--char-scale) + 0.003) calc(var(--char-scale) + 0.009);');
-    expect(breathingKeyframes).toContain('brightness(1.03)');
-    expect(breathingKeyframes).toContain('drop-shadow(0 0 9px rgba(255, 244, 218, 0.12))');
+    expect(breathingKeyframes).toContain('brightness(1.04)');
+    expect(breathingKeyframes).toContain('drop-shadow(0 0 12px rgba(255, 244, 218, 0.16))');
     expect(breathingKeyframes).not.toContain('transform:');
     expect(breathingKeyframes).not.toContain('opacity');
     expect(styles).toMatch(

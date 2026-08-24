@@ -18,12 +18,12 @@ scenes:
           char: 당 사신
           camera: medium
           with: [덕만]
-          text: "황제께서는 신라의 빈 왕좌를 염려하십니다. 공주께서 당이 고른 남편을 왕으로 세우시면, 빈 곡식 창고와 약한 성문을 모두 채워 주시겠답니다."
+          text: "황제께서는 신라 왕실을 걱정하십니다. 당이 고른 남편을 왕으로 세우시면 곡식도 군사도 보내 주시겠답니다."
       - say:
           char: 덕만
           camera: close
           with: [당 사신]
-          text: "당에서는 종이 위 꽃향기와 비어 있는 왕좌까지 맡는 모양이군요. 좋습니다. 대신 이 그림과 조건에서 일부러 빠뜨린 것부터 같이 보시죠."
+          text: "남편을 보내 주겠다는 말치고는 값이 안 보이는군요. 이 그림처럼 일부러 빼놓은 게 있겠죠."
       - choice:
           key: c5_first_reply
           prompt: "모란은 향기를, 혼인서는 값을 숨긴다. 무엇으로 사신의 첫 문장을 끊을까?"
@@ -46,7 +46,7 @@ scenes:
       - sticker: { id: c5_peony, image: peony_painting_sticker, x: 50, y: 27, width: "clamp(190px, 23%, 360px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
           char: 덕만
-          text: "나비가 없다고 꽃이 빈 것은 아닙니다. 화공이 나비를 빼고 뜻을 만들어 냈을 뿐이죠. 신라의 왕도 당의 붓끝에서 생기거나 사라지지 않습니다."
+          text: "나비가 없다고 꽃이 빈 건 아닙니다. 화공이 빼놓고 그렇게 보이게 만든 거죠. 신라 왕도 당이 그려 넣어 주는 자리가 아닙니다."
       - say:
           char: 당 사신.nervous
           camera: reaction
@@ -57,6 +57,7 @@ scenes:
 
   answer_with_patience:
     actions:
+      - bg: banquet_hall
       - say:
           channel: narration
           text: "덕만은 대꾸하지 않고 조건을 한 줄씩 받아 적었습니다. 사신이 잔을 드는 순간 마지막 종이를 낚아챘습니다. 혼인 조항 아래, 신라 성 하나를 당군 주둔지로 내준다는 작은 글씨가 숨어 있었습니다."
@@ -64,11 +65,27 @@ scenes:
           char: 덕만
           camera: close
           with: [당 사신]
-          text: "남편은 첫 줄의 향기고, 성문이 마지막 줄의 값이었군요. 남의 시선을 꽃에 묶어 두고 칼은 글 끝에 작게 쓰는 버릇이 있으십니다."
-      - goto: hidden_terms
+          text: "성 하나를 내놓으라는 말이 여기 있었군요. 처음부터 이 줄을 읽었어야 했습니다."
+      - say:
+          char: 당 사신
+          camera: close
+          with: [덕만]
+          text: "공주께서 끝까지 들으시는 동안 반대가 없었습니다. 배석한 귀족들은 이미 동의의 잔을 나누었지요."
+      - say:
+          channel: narration
+          text: "덕만이 자기 잔을 내려다봤습니다. 입술이 닿은 자리만 은빛이 검게 변해 있었습니다. 혼인으로 권력을 잃을 가문은 덕만이 거절할 때를 대비해 독까지 준비해 두었습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "모란 연회 기록 — 덕만 공주, 혼인 합의 직후 급서. 당과 신라 귀족 회의는 예정대로 혼인을 추진함."
+      - gameOver:
+          title: "운명 — 마지막 줄보다 늦은 대답"
+          message: "덕만이 숨은 조건을 읽는 동안 침묵은 동의로 이용됐고, 혼인을 시기하면서도 그 권력을 탐낸 귀족은 거절에 대비한 독을 먹였습니다. 마지막 줄을 찾았을 때는 이미 잔도 비어 있었습니다."
+          recoverToChoice: c5_first_reply
 
   answer_with_ledger:
     actions:
+      - bg: banquet_hall
       - say:
           char: 덕만
           text: "남자 왕이 곡식을 만든다면 왜 이 아이들 장부는 비었습니까? 당이 보내려는 건 남편입니까, 가뭄 씨앗입니까? 신라가 치를 값을 붙여 하나만 답하십시오."
@@ -79,8 +96,23 @@ scenes:
           text: "공주께선 제국의 혼인을 장터 거래처럼 다루시는군요."
       - say:
           char: 덕만
-          text: "값을 정하는 사람과 치르는 사람이 다르니까요. 왕끼리 향기로운 술을 마셔도 계산은 굶는 사람이 합니다."
-      - goto: hidden_terms
+          text: "장터 거래보다 못한 혼인이니까요. 값을 치를 아이들 이름부터 읽겠습니다."
+      - say:
+          char: 당 사신.angry
+          camera: close
+          with: [덕만]
+          text: "그 명단을 제국의 문서 위에 올린 순간, 공주께서는 협상을 끝내셨습니다. 이제 모욕의 값을 누가 치를지만 남았군요."
+      - say:
+          channel: narration
+          text: "사신이 자리를 뜨자 원조 곡식을 기다리던 귀족들이 문을 막았습니다. 그들은 전쟁을 피하려면 모욕한 사람 한 명만 내놓으면 된다고 서로를 설득했습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "대당 사죄문 — 왕실의 뜻과 무관하게 사신을 모욕한 덕만 공주를 처형하고 그 목을 국경에 보냄."
+      - gameOver:
+          title: "운명 — 옳은 분노의 인질"
+          message: "굶은 아이들의 이름은 진실했지만 사신의 숨은 조건을 먼저 무너뜨리지는 못했습니다. 전쟁을 두려워한 귀족들은 자신들의 창고 대신 덕만의 목을 사죄 값으로 내놓았습니다."
+          recoverToChoice: c5_first_reply
 
   hidden_terms:
     actions:
@@ -94,12 +126,12 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "사신의 입을 막으면 오늘은 안전합니다. 원본을 돌려놓고 뒤를 밟으면 내일의 적을 알 수 있고요. 공주님께 필요한 칼은 어느 쪽입니까?"
+          text: "사신을 잡으면 오늘은 안전하고, 쪽지를 돌려놓으면 뒤에 누가 있는지 볼 수 있습니다. 어느 쪽으로 할까요?"
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "나를 살린다며 답을 둘로 줄이지 마. 쪽지는 베끼고 원본은 돌려놓아. 오늘 사람도 지키고 내일 손도 찾는다."
+          text: "둘 중 하나만 고를 필요 없어. 베낀 뒤 원본은 돌려놔. 오늘 사신도 보내고, 뒤에서 받는 사람도 보자."
       - goto: treaty_choice
 
   treaty_choice:
@@ -130,7 +162,7 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "신라는 왕도 혼인도 조공으로 보내지 않습니다. 가뭄 종자와 천문표를 내놓으십시오. 우리는 철과 항로를 같은 줄에 내놓겠습니다."
+          text: "혼인은 거래에서 뺍니다. 가뭄 종자와 천문표를 주십시오. 신라는 철과 항로를 내놓겠습니다. 같은 값으로 이야기하죠."
       - say:
           char: 당 사신
           camera: close
@@ -138,11 +170,12 @@ scenes:
           text: "황제께서 이 문서를 찢으실 수도 있습니다."
       - say:
           char: 덕만
-          text: "그 조각까지 주워 양국 상인에게 보여 드리지요."
+          text: "찢으셔도 됩니다. 조각을 주워 양국 상인에게 보여 드리죠. 누가 먼저 손해인지 알 겁니다."
       - goto: banquet_test
 
   armed_truce:
     actions:
+      - bg: banquet_hall
       - say:
           channel: narration
           text: "덕만은 혼인 답변 날짜를 세 달 뒤로 밀고 그 빈칸에 국경 군량 수레 수를 적었습니다. 사신은 웃었지만 날짜 아래 붉은 줄을 두 번 그었습니다."
@@ -150,11 +183,27 @@ scenes:
           char: 당 사신
           camera: close
           with: [덕만]
-          text: "미룬 답도 답입니다. 황제께서는 날짜와 빚을 함께 세십니다."
-      - goto: banquet_test
+          text: "미룬 답도 답입니다. 군량과 함께 호위대가 들어올 텐데, 그때도 혼인 이야기를 미루실 수 있을까요?"
+      - say:
+          char: 덕만
+          camera: close
+          with: [당 사신]
+          text: "호위대라니요? 나는 수레만 받는다고 했습니다."
+      - say:
+          channel: narration
+          text: "사흘 뒤 당의 깃발을 단 군량 수레와 병사들이 북문을 함께 통과했습니다. 성 안 귀족들은 혼인을 지지한다며 문을 열었고, 덕만의 호위부터 무장 해제했습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "신라 왕실 혼인 협약 — 협약을 방해한 덕만 공주를 당 호위대가 제압하는 과정에서 사망."
+      - gameOver:
+          title: "운명 — 군량 뒤에 들어온 칼"
+          message: "혼인 답을 미룬 대가로 받은 군량에는 당군의 진입 명분이 붙어 있었습니다. 덕만은 굶주림을 늦췄지만 성 안으로 들어온 칼에 목숨을 잃었습니다."
+          recoverToChoice: c5_diplomacy
 
   secret_trade:
     actions:
+      - bg: shadow_corridor
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
@@ -163,8 +212,23 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "더러운 편지는 깨끗한 손으로는 못 폅니다. 축하드립니다. 사람 대신 문을 고른 손에도 이제 꽤 왕다운 얼룩이 생겼군요."
-      - goto: banquet_test
+          text: "편지는 얻었습니다. 그런데 무역권을 받은 가문 이름이 여기 있군요. 공주님을 미워할 이유와 죽여서 얻을 돈을 한 장에 써 주셨습니다."
+      - say:
+          char: 덕만.princess_sad
+          camera: close
+          with: [비담]
+          text: "봉인을 뜯지 마. 원본을 가져가야 거래를 밝힐 수 있어. 비담… 손이 왜 이렇게 차갑지?"
+      - say:
+          channel: narration
+          text: "서신 봉인에 바른 독이 덕만의 손가락 상처로 스며들었습니다. 거래를 중개한 귀족은 편지를 넘길 때부터 산 사람의 증언을 남길 생각이 없었습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "외교 서신 절도 사건 — 덕만 공주, 밀봉 문서를 훔치다 독에 중독되어 사망. 무역권 문서는 유효함."
+      - gameOver:
+          title: "운명 — 봉인에 묻은 질투"
+          message: "덕만이 적의 이름과 바꾼 무역권은 한 가문을 부유하게 만들었습니다. 그 가문은 권리를 빼앗길까 두려워 서신 봉인에 독을 발랐고, 덕만은 증거를 여는 손부터 잃었습니다."
+          recoverToChoice: c5_diplomacy
 
   banquet_test:
     actions:
@@ -190,6 +254,7 @@ scenes:
 
   return_peony:
     actions:
+      - bg: banquet_hall
       - say:
           char: 덕만
           camera: close
@@ -203,7 +268,22 @@ scenes:
       - say:
           char: 덕만
           text: "그러니 혼인 조건과 곡식 조건도 한 글자도 빼지 말고 함께 기록하십시오."
-      - goto: scentless_end
+      - say:
+          char: 당 사신.angry
+          camera: close
+          with: [덕만]
+          text: "그림은 받겠습니다. 다만 황제의 선물을 되돌린 손이 무사할지는 신라 안에서 먼저 정하겠지요."
+      - say:
+          channel: narration
+          text: "사신이 떠난 뒤 그림을 묶은 끈에서 하얀 가루가 떨어졌습니다. 덕만이 기침을 시작하자 혼인을 원하던 귀족들은 의원을 부르는 대신 연회장 문부터 잠갔습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "모란 연회 변고 — 덕만 공주, 황제의 선물을 훼손한 뒤 원인 불명의 호흡 곤란으로 사망."
+      - gameOver:
+          title: "운명 — 돌려준 꽃의 독"
+          message: "모란도를 그대로 돌려주는 공개 모욕은 혼인으로 이익을 얻을 귀족들에게 덕만을 없앨 명분을 줬습니다. 그림끈의 독가루가 퍼졌고, 문을 연 사람은 아무도 없었습니다."
+          recoverToChoice: c5_protocol
 
   scentless_end:
     actions:
@@ -218,10 +298,10 @@ scenes:
           char: 비담
           camera: close
           with: [덕만]
-          text: "칼 한 번 안 뽑고 사신과 귀족을 전부 잠 못 들게 하셨군요. 마음에 듭니다."
+          text: "사신도 귀족도 오늘 밤은 잠을 못 자겠군요. 꽤 마음에 듭니다."
       - say:
           char: 덕만
-          text: "좋아하지 마. 오늘 받아 낸 곡식과 표의 값이 어느 마을, 어느 성문으로 돌아갈지 아직 정하지 못했어."
+          text: "좋아하긴 일러. 받아 낸 곡식과 표를 어디에 먼저 쓸지 정해야 해. 그게 더 어렵다."
       - say:
           channel: record
           text: "덕만은 모욕을 조건으로 바꾸었습니다. 당은 신라에 여왕 후보가 있다는 사실을 처음으로 공식 기록했고, 교환품으로 다음 일식의 관측표를 남겼습니다."

@@ -1231,6 +1231,12 @@ textarea,
   isolation: isolate;
 }
 
+.stage-content-frame.has-settings-modal .char,
+.stage-content-frame.has-settings-modal .sticker-visual,
+.stage-content-frame.has-settings-modal .typing-glyph {
+  animation-play-state: paused !important;
+}
+
 .char-layer {
   position: absolute;
   inset: 0;
@@ -1511,6 +1517,14 @@ textarea,
   animation:
     characterEnter 240ms ease-out both,
     characterSpeakerBreathing 2200ms cubic-bezier(0.45, 0, 0.55, 1) 240ms infinite;
+}
+
+.effect-viewport[data-effect-level='reduced'] .char.is-breathing {
+  animation-duration: 240ms, 3000ms;
+}
+
+.effect-viewport[data-effect-level='minimal'] .char.is-breathing {
+  animation: characterEnter 240ms ease-out both;
 }
 
 .char-layer[data-camera-shot='close'] .char.is-camera-listener:not(.is-camera-hidden) {
@@ -3361,6 +3375,93 @@ textarea,
   padding: 0;
 }
 
+.save-preferences-section.is-single-action {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.player-experience-section {
+  grid-column: 1 / -1;
+  min-height: 0;
+  align-content: start;
+}
+
+.player-experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.player-setting-control {
+  min-width: 0;
+  min-height: 72px;
+  display: grid;
+  align-content: space-between;
+  gap: 9px;
+  border: 1px solid var(--archive-line);
+  border-radius: 2px;
+  color: var(--ui-text-color);
+  background: rgba(0, 0, 0, 0.14);
+  padding: 10px 11px;
+}
+
+.player-setting-control > span:first-child {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.player-setting-control b {
+  font-size: 0.76rem;
+}
+
+.player-setting-control small {
+  color: var(--ui-status-color);
+  font-size: 0.6rem;
+  font-weight: 620;
+}
+
+.player-setting-control select {
+  min-width: 0;
+  min-height: 34px;
+  border: 1px solid var(--archive-line);
+  border-radius: 2px;
+  color: var(--ui-choice-color);
+  background: var(--ui-choice-bg);
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 0.69rem;
+}
+
+.player-setting-control.is-switch {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.player-setting-control.is-switch > span:first-child {
+  display: grid;
+  justify-content: start;
+  gap: 3px;
+}
+
+.player-volume-control > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.player-volume-control input[type='range'] {
+  width: 100%;
+  min-width: 0;
+  accent-color: var(--ui-speaker-color);
+}
+
+.player-volume-control input[type='range']:disabled {
+  opacity: 0.38;
+}
+
 .save-system-status {
   position: relative;
   z-index: 1;
@@ -3443,7 +3544,7 @@ textarea,
   background: var(--ui-dialog-bg);
   box-shadow: var(--ui-dialog-shadow);
   backdrop-filter: blur(4px);
-  overflow: hidden;
+  overflow: visible;
   display: grid;
   grid-template-rows: minmax(0, 1fr);
   opacity: 1;
@@ -3528,6 +3629,7 @@ textarea,
   right: 0;
   display: flex;
   justify-content: flex-end;
+  gap: 6px;
   transform: translateY(calc(-100% - 10px));
   pointer-events: none;
   z-index: 2;
@@ -3552,6 +3654,14 @@ textarea,
 
 .dialog-toggle-button {
   pointer-events: auto;
+}
+
+.dialog-auto-button.is-active {
+  border-color: color-mix(in srgb, var(--ui-speaker-color) 74%, transparent);
+  color: var(--ui-speaker-color);
+  background: color-mix(in srgb, var(--ui-speaker-color) 14%, var(--ui-choice-bg));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ui-speaker-color) 20%, transparent) inset,
+    0 8px 18px rgba(0, 0, 0, 0.32);
 }
 
 .dialog-toggle-button:hover,
@@ -4534,6 +4644,19 @@ textarea,
   }
 }
 
+.effect-viewport[data-effect-active='true']::before {
+  content: '';
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 43%, rgba(255, 247, 224, 0.18), transparent 38%),
+    radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(3, 6, 13, 0.28) 100%);
+  mix-blend-mode: screen;
+  animation: cinematicEffectEnvelope 0.58s cubic-bezier(0.18, 0.74, 0.24, 1) both;
+}
+
 .effect-shake {
   animation: shake 0.28s ease;
 }
@@ -4691,6 +4814,60 @@ textarea,
     repeating-conic-gradient(from 8deg, rgba(118, 24, 20, 0.64) 0 2deg, transparent 3deg 19deg);
   mix-blend-mode: multiply;
   animation: inkStamp 0.72s cubic-bezier(0.12, 0.76, 0.18, 1);
+}
+
+.effect-viewport[data-effect-level='reduced'][data-effect-active='true']::before {
+  opacity: 0.62;
+}
+
+.effect-viewport[data-effect-level='reduced'].effect-shake,
+.effect-viewport[data-effect-level='reduced'].effect-tilt,
+.effect-viewport[data-effect-level='reduced'].effect-impact {
+  animation: effectReducedNudge 0.32s ease-out;
+}
+
+.effect-viewport[data-effect-level='reduced'].effect-zoom,
+.effect-viewport[data-effect-level='reduced'].effect-pulse {
+  animation: effectReducedPulse 0.4s ease-out;
+}
+
+.effect-viewport[data-effect-level='reduced'].effect-glitch .bg,
+.effect-viewport[data-effect-level='reduced'].effect-glitch .char-layer,
+.effect-viewport[data-effect-level='reduced'].effect-glitch .sticker-layer {
+  animation: effectReducedNudge 0.36s ease-out;
+}
+
+.effect-viewport[data-effect-level='reduced'].effect-blur .bg,
+.effect-viewport[data-effect-level='reduced'].effect-blur .char-layer,
+.effect-viewport[data-effect-level='reduced'].effect-blur .dialog-box {
+  animation: effectReducedClarity 0.36s ease-out;
+}
+
+.effect-viewport[data-effect-level='reduced'][data-effect-active='true']::after {
+  filter: opacity(0.7) saturate(0.88);
+}
+
+.effect-viewport[data-effect-level='minimal'][data-effect-active='true'] {
+  animation: effectMinimalCue 0.22s ease-out !important;
+}
+
+.effect-viewport[data-effect-level='minimal'][data-effect-active='true']::before {
+  animation: effectMinimalOverlay 0.22s ease-out both !important;
+  opacity: 0.34;
+}
+
+.effect-viewport[data-effect-level='minimal'][data-effect-active='true']::after {
+  animation: effectMinimalOverlay 0.22s ease-out both !important;
+  filter: opacity(0.3) saturate(0.72);
+}
+
+.effect-viewport[data-effect-level='minimal'].effect-glitch .bg,
+.effect-viewport[data-effect-level='minimal'].effect-glitch .char-layer,
+.effect-viewport[data-effect-level='minimal'].effect-glitch .sticker-layer,
+.effect-viewport[data-effect-level='minimal'].effect-blur .bg,
+.effect-viewport[data-effect-level='minimal'].effect-blur .char-layer,
+.effect-viewport[data-effect-level='minimal'].effect-blur .dialog-box {
+  animation: none !important;
 }
 
 @keyframes stickerFadeIn {
@@ -4883,9 +5060,9 @@ textarea,
       calc(var(--char-framing-y) + var(--char-calibration-y) - 0.18%);
     scale: calc(var(--char-scale) + 0.003) calc(var(--char-scale) + 0.009);
     filter:
-      brightness(1.03)
+      brightness(1.04)
       drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35))
-      drop-shadow(0 0 9px rgba(255, 244, 218, 0.12));
+      drop-shadow(0 0 12px rgba(255, 244, 218, 0.16));
   }
   55% {
     translate:
@@ -4897,6 +5074,39 @@ textarea,
       drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35))
       drop-shadow(0 0 7px rgba(255, 244, 218, 0.08));
   }
+}
+
+@keyframes cinematicEffectEnvelope {
+  0% { opacity: 0; filter: brightness(1); }
+  28% { opacity: 1; filter: brightness(1.08); }
+  100% { opacity: 0; filter: brightness(1); }
+}
+
+@keyframes effectReducedNudge {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  38% { transform: translate3d(-2px, 1px, 0); }
+  66% { transform: translate3d(1px, 0, 0); }
+}
+
+@keyframes effectReducedPulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  42% { transform: scale(1.008); filter: brightness(1.045); }
+}
+
+@keyframes effectReducedClarity {
+  0%, 100% { filter: blur(0) brightness(1); }
+  46% { filter: blur(1.2px) brightness(1.025); }
+}
+
+@keyframes effectMinimalCue {
+  0%, 100% { filter: brightness(1); }
+  45% { filter: brightness(1.035); }
+}
+
+@keyframes effectMinimalOverlay {
+  from { opacity: 0; }
+  45% { opacity: 0.46; }
+  to { opacity: 0; }
 }
 
 @keyframes shake {
@@ -5404,6 +5614,11 @@ textarea,
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .save-preferences-section.is-single-action,
+  .player-experience-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .save-system-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -5830,6 +6045,9 @@ textarea,
     transition: none !important;
   }
 
+  .effect-viewport[data-effect-active='true']::before,
+  .effect-flash::after,
+  .effect-darken::after,
   .effect-impact::after,
   .effect-glitch::after,
   .effect-speedlines::after,

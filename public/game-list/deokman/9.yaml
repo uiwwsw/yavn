@@ -18,12 +18,12 @@ scenes:
           char: 춘추
           camera: medium
           with: [덕만]
-          text: "성벽을 늦추면 사람이 칼에 죽고, 관측대를 늦추면 사람이 물에 죽습니다. 어느 재앙이 먼저 오는지 아는 장부는 아직 없습니다."
+          text: "성벽을 늦추면 적이 들어오고, 관측대를 늦추면 홍수를 놓칩니다. 둘 중 무엇이 먼저 올지는 아무도 모릅니다."
       - say:
           char: 덕만
           camera: close
           with: [춘추]
-          text: "첫 삽을 뜨기 전에 벌써 한쪽 사람에게 죽지 말고 기다리라 해야 하는군. 무엇을 세웠는지만 쓰지 말고, 그 선택 때문에 누가 기다렸는지도 첫 줄에 적어."
+          text: "어느 쪽을 골라도 다른 쪽에는 기다리라고 해야 하는군. 무엇을 지었는지만 말고 누가 기다렸는지도 적어."
       - choice:
           key: c10_observatory_priority
           prompt: "성벽의 돌과 홍수 마을의 돌 사이, 한쪽 몫뿐인 국고. 무엇을 늦췄는지까지 감당할 선택은?"
@@ -52,8 +52,23 @@ scenes:
           text: "관측대가 왕궁 처마를 넘을 때 북쪽에서 깨진 방패가 도착했습니다. 군관은 방패에 '별이 성문을 지켜 주느냐'고 새겨 보냈습니다. 덕만은 공사를 멈추지 않는 대신 북문 수비대의 겨울 군량을 왕실 창고에서 먼저 떼어 냈습니다."
       - say:
           char: 덕만
-          text: "깨진 방패를 탑 가장 잘 보이는 곳에 걸어. 내가 별을 먼저 세운 날 북문에서 누가 몸으로 시간을 벌었는지 지우지 마."
-      - goto: who_reads_stars
+          text: "깨진 방패를 탑에 걸어. 북문 군량은 왕실 창고에서 보내고, 공사는 멈추지 않는다."
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "군량이 도착하기 전에 성벽이 무너졌습니다. 북문 장수가 마지막 전령에 '별을 세운 왕에게 성문은 필요 없느냐'고 썼습니다."
+      - say:
+          channel: narration
+          text: "북문을 넘은 반란군은 완성 중인 탑을 표식 삼아 왕궁까지 내려왔습니다. 덕만은 관측관들을 빼내다 탑 아래에서 화살을 맞았습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕 원년 — 북문 함락. 선덕왕은 첨성대 공사장에서 반란군에게 피살."
+      - gameOver:
+          title: "운명 — 성문보다 높은 별"
+          message: "미래의 재해를 읽을 탑을 먼저 세우는 동안 당장 무너진 성문이 열렸습니다. 첨성대는 길잡이가 되어 반란군을 여왕에게 데려왔습니다."
+          recoverToChoice: c10_observatory_priority
 
   balanced_build:
     actions:
@@ -61,7 +76,27 @@ scenes:
       - say:
           channel: narration
           text: "성벽 틈은 겨우 막혔고 관측대는 계획보다 절반 높이에서 멈췄습니다. 군사와 관측관은 남은 돌 한 장을 두고 매일 얼굴을 마주쳐야 했습니다. 결정은 느렸지만 어느 한쪽도 버려지지는 않았습니다."
-      - goto: who_reads_stars
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "폐하, 북문 틈으로 적병이 들었고 남쪽 강물은 관측 눈금보다 먼저 넘었습니다. 두 공사 모두 마지막 돌이 없었습니다."
+      - say:
+          char: 덕만.queen_sad
+          camera: close
+          with: [춘추]
+          text: "둘 다 버리지 않겠다고 절반씩 살렸는데, 결국 어느 쪽도 사람을 지키지 못했구나."
+      - say:
+          channel: narration
+          text: "홍수로 군량길이 끊긴 날 북문 사병이 반란을 일으켰습니다. 굶은 왕군은 움직이지 않았고 덕만의 피난 수레는 범람한 다리 앞에서 붙잡혔습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕 원년 — 홍수와 북문 반란 동시 발생. 선덕왕, 피난 중 반란군에게 피살."
+      - gameOver:
+          title: "운명 — 절반으로 지킨 나라"
+          message: "성벽과 관측대를 절반씩 세우자 어느 쪽도 위기를 막지 못했습니다. 홍수가 군량을 끊고 반란군이 성문을 넘은 날 덕만에게 남은 길도 사라졌습니다."
+          recoverToChoice: c10_observatory_priority
 
   granary_first:
     actions:
@@ -73,10 +108,10 @@ scenes:
           char: 춘추.nervous
           camera: close
           with: [덕만]
-          text: "장부에는 모두 자원했다고 쓰였습니다. 하지만 왕의 곡식을 받고 왕의 탑 앞에서 누가 정말 ‘싫다’고 말할 수 있었을까요?"
+          text: "장부에는 모두 자원했다고 적혔습니다. 하지만 왕의 곡식을 받으면서 싫다고 말할 수 있었을까요?"
       - say:
           char: 덕만.queen_sad
-          text: "온 마을만 공로로 적지 마. 오지 않은 마을과 이유도 쓰되, 빠진 이름을 왕명 거역의 죄로 만들지는 말고."
+          text: "온 사람만 적지 마. 오지 않은 마을과 이유도 적어. 대신 안 왔다고 죄를 묻지는 마."
       - goto: who_reads_stars
 
   who_reads_stars:
@@ -91,7 +126,7 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "농부에게 마른 날을 주면 반란군도 진흙 없는 길을 얻습니다. 모두에게 열면 저를 통하지 않아도 되고, 잠그면 제가 가장 빨리 열 수 있지요. 어느 위험을 곁에 두시겠습니까?"
+          text: "농부가 마른 날을 알면 반란군도 마른 길을 압니다. 공개하면 누구도 저를 찾지 않아도 되고, 잠그면 제가 제일 빨리 읽을 수 있지요. 어느 쪽이 더 두려우십니까?"
       - choice:
           key: c10_knowledge_policy
           prompt: "첫 관측표는 비와 진군로를 함께 예고한다. 지식의 위험과 권한을 어떻게 나눌까?"
@@ -124,14 +159,36 @@ scenes:
 
   distributed_tables:
     actions:
+      - bg: moon_court
       - get: star_chart
       - say:
           channel: narration
           text: "군대는 바람, 마을은 비, 왕실은 계산식을 가져갔습니다. 누구도 전부 갖지 못했고, 셋이 같은 탁자에 앉아야 다음 계절을 읽을 수 있었습니다."
-      - goto: observatory_sabotage
+      - say:
+          char: 비담
+          camera: close
+          with: [덕만]
+          text: "셋 중 하나만 늦어도 아무도 읽지 못합니다. 지금 군대 표가 도착하지 않았는데 강물이 이미 오릅니다."
+      - say:
+          char: 덕만.queen_angry
+          camera: close
+          with: [비담]
+          text: "왕실 계산식부터 가져가. 마을 표와 맞추면 대강의 시각이라도—"
+      - say:
+          channel: narration
+          text: "군대 표를 맡은 장수는 관측 정보를 독점하려고 일부러 하루를 늦췄습니다. 덕만이 제방에 도착했을 때는 대피하지 못한 사람들과 왕의 호위가 같은 물살에 갇혀 있었습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "남쪽 홍수 기록 — 관측표 취합 지연으로 대피 명령이 늦음. 선덕왕, 제방 붕괴 현장에서 사망."
+      - gameOver:
+          title: "운명 — 셋으로 찢긴 내일"
+          message: "서로 감시하게 나눈 표는 한 사람이 질투로 협조를 늦추자 아무도 읽을 수 없는 조각이 됐습니다. 대피 시각은 완성되지 않았고 덕만은 무너진 제방에서 죽었습니다."
+          recoverToChoice: c10_knowledge_policy
 
   bidam_network:
     actions:
+      - bg: moon_court
       - get: star_chart
       - say:
           channel: narration
@@ -143,8 +200,23 @@ scenes:
           text: "걱정하지 마십시오. 이 문은 폐하가 부르실 때만 제가 열겠습니다. 적어도 필요하실 때는 저를 사람처럼 부르시겠지요."
       - say:
           char: 덕만.queen_sad
-          text: "그 말이 충성으로 들리는 동안만 안전하겠지. 네가 문이고 내가 열쇠라고 믿기 시작하면 둘 다 나라를 가두게 돼."
-      - goto: observatory_sabotage
+          text: "좋아. 지금은 네 전령이 가장 빠르다. 원본을 맡기고 모든 보고를 네 길로 받겠다."
+      - say:
+          char: 비담.sad
+          camera: close
+          with: [덕만]
+          text: "이제 저를 거치지 않고 폐하께 닿을 사람은 없겠군요. 그만큼 저를 미워할 사람도 많아졌습니다."
+      - say:
+          channel: narration
+          text: "사흘 뒤 비담의 봉인을 흉내 낸 전령이 여왕의 약재를 가져왔습니다. 다른 길이 모두 닫힌 탓에 어느 관문도 그 명령을 다시 확인하지 못했습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕 원년 — 왕실 약재에 독이 섞여 선덕왕 사망. 비담 전령망의 명령으로 반입됐으나 발신자는 확인되지 않음."
+      - gameOver:
+          title: "운명 — 하나뿐인 전령길"
+          message: "비담에게 정보의 문을 하나로 모으자 그를 시기한 귀족은 봉인 하나만 베껴 독을 왕실까지 보냈습니다. 확인할 다른 길이 없었던 덕만은 가장 빠른 전령을 믿고 죽었습니다."
+          recoverToChoice: c10_knowledge_policy
 
   observatory_sabotage:
     actions:
@@ -178,6 +250,7 @@ scenes:
 
   preserve_traces:
     actions:
+      - bg: title_palace
       - say:
           channel: narration
           text: "유신이 젖은 천으로 불길을 한쪽에 몰자 관측관들이 뒷문으로 기어 나왔습니다. 원본 표 가장자리는 탔지만 기름 묻은 발자국과 대나무 조각은 그대로 남았습니다."
@@ -185,8 +258,23 @@ scenes:
           char: 유신.angry
           camera: close
           with: [덕만]
-          text: "사람은 모두 나왔습니다. 탑은 더 탔고 범인은 멀어졌습니다. 무엇을 얻었는지와 놓쳤는지 함께 적겠습니다."
-      - goto: tower_survives
+          text: "사람은 나왔습니다. 이제 흔적은 제가 지키겠습니다. 폐하도 연기 밖으로 나가십시오!"
+      - say:
+          char: 덕만.queen_angry
+          camera: close
+          with: [유신]
+          text: "발자국이 지워지면 다음 불도 못 막아. 저 대나무만 챙기고 나갈게."
+      - say:
+          channel: narration
+          text: "덕만이 대나무를 집는 순간 기름통이 다시 터졌습니다. 방화범은 증거를 지키려 남을 사람까지 계산해 두었고, 두 번째 불길이 덕만의 퇴로를 삼켰습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "첨성대 방화 기록 — 관측관 전원 구조. 선덕왕은 방화 증거를 회수하다 화재 현장에서 사망."
+      - gameOver:
+          title: "운명 — 두 번째 불길의 증거"
+          message: "사람을 내보낸 뒤 다시 만들 수 있는 흔적을 직접 지키려 남았습니다. 방화범이 준비한 두 번째 기름통이 터졌고 덕만은 증거를 손에 쥔 채 불 속에서 죽었습니다."
+          recoverToChoice: c10_sabotage
 
   tower_survives:
     actions:
@@ -199,7 +287,7 @@ scenes:
       - say:
           char: 덕만
           camera: close
-          text: "이 탑은 내 별이나 왕조의 길흉을 찾는 곳이 아니다. 내가 죽고 관측관이 틀려도, 누구든 내일 비를 읽고 숫자를 고치게 하려고 세운 것이다."
+          text: "이 탑은 내 운세를 보는 곳이 아니다. 내가 죽은 뒤에도 사람들이 비 올 날을 읽고, 숫자가 틀리면 고치게 하려고 세웠다."
       - branch:
           cases:
             - when: { var: knowledge_policy, op: eq, value: bidam_network }
@@ -216,12 +304,12 @@ scenes:
           char: 비담.sad
           camera: close
           with: [덕만]
-          text: "아이도 읽고 관측관도 고치는 표라... 제가 목숨 걸고 가져온 날짜도 이제 벽보 한 장 값이군요. 폐하께선 결국 저 없이도 열리는 문을 택하셨습니다."
+          text: "아이도 읽고 관측관에게 틀렸다고 하는군요. 제가 목숨 걸고 가져오던 날짜가 이제 벽보 한 장 값입니다. 결국 저 없이도 되는 길을 만드셨네요."
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "너 없이도 문이 열리게 하는 것이 너를 버리는 일은 아니야. 하지만 나는 네가 문이 아니라 사람이라는 말을, 필요할 때만 했구나. 그건 내 잘못이다."
+          text: "네가 없어도 표를 읽게 하는 게 널 버리는 건 아니야. 하지만 내가 필요할 때만 널 사람처럼 대한 건 맞아. 그건 미안하다."
       - say:
           channel: narration
           text: "비담은 인사도 없이 계단을 내려갔습니다. 그날 밤 북쪽 봉화가 모두 꺼졌고, 잿더미에서는 그의 전령 매듭과 기름 먹인 대나무 조각이 나왔습니다."

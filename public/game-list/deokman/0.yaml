@@ -37,17 +37,17 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "전하께서 몰래 찾으십니다. 쉿, 발뒤꿈치를 들고 걸으세요. 오늘은 벽도 우리가 어디로 가는지 알면 안 됩니다."
+          text: "전하께서 몰래 부르셨어요. 발소리 내지 말고 제 옆에 붙으세요. 오늘은 아는 얼굴도 먼저 믿으면 안 됩니다."
       - say:
           char: 어린 덕만
           camera: close
           with: [소화]
-          text: "또 나를 찾는 사람이 있어? 아버지는 나를 숨겼는데, 그 사람은 왜 찾지?"
+          text: "또 누가 나를 찾는데? 아버지는 숨으라면서 왜 자꾸 불러?"
       - say:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "모릅니다. 그래서 오늘은 제가 놓으라고 해도 이 소매를 놓지 마세요. 그 말까지 제 뜻이 아닐 수 있으니까요."
+          text: "저도 몰라서 무섭습니다. 제가 놓으라고 해도 한 번은 제 눈을 보세요. 누가 시켜서 하는 말일 수도 있으니까요."
       - goto: peony_arrives
 
   peony_arrives:
@@ -73,7 +73,7 @@ scenes:
           char: 진평왕
           camera: medium
           with: [어린 덕만]
-          text: "덕만아. 그려진 꽃은 누구나 본다. 예쁘다는 말 말고, 이 그림에서 먼저 사라진 것을 찾아라."
+          text: "덕만아, 꽃이 예쁘다는 말은 필요 없다. 있어야 하는데 없는 것을 찾아봐라."
       - choice:
           key: c1_peony_observation
           prompt: "왕은 답을 기다린다. 덕만의 눈은 어디로 향할까?"
@@ -95,7 +95,7 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [진평왕]
-          text: "꽃은 이렇게 많은데 찾아온 것이 없어요. 벌도, 나비도… 한 마리도."
+          text: "꽃은 이렇게 많은데 벌도 나비도 없어요. 한 마리도요."
       - say:
           char: 진평왕
           camera: close
@@ -105,7 +105,7 @@ scenes:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "향기가 있었다면 벌과 나비가 화공보다 먼저 그렸을 거예요. 이 그림은 꽃보다 향기를 먼저 지웠어요."
+          text: "향기가 있었다면 벌이 왔을 거예요. 화공은 일부러 아무것도 못 오게 그렸어요."
       - goto: king_question
 
   observe_back:
@@ -214,7 +214,7 @@ scenes:
           char: 진평왕.sad
           camera: close
           with: [어린 덕만]
-          text: "나는 네가 꽃을 볼지, 꽃 뒤의 칼을 볼지 알고 싶었다."
+          text: "그래. 나는 네가 예쁜 꽃만 볼지, 그 그림으로 나를 비웃는 사람까지 볼지 알고 싶었다."
       - goto: king_warning
 
   answer_record:
@@ -258,27 +258,32 @@ scenes:
 
   answer_literal:
     actions:
+      - bg: peony_court
       - say:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "그림일 뿐이라 실제 향기는 알 수 없습니다."
-      - say:
-          char: 진평왕
-          camera: close
-          with: [어린 덕만]
-          text: "코로 맡으라는 말이 아니다. 왜 아무것도 이 꽃을 찾지 않는지 보아라."
-      - say:
-          char: 어린 덕만
-          camera: medium
-          with: [진평왕]
-          text: "아들이 없는 신라에는 왕도 오지 않는다는 조롱인가요?"
+          text: "모르겠어요. 그림만 보고 어떻게 알아요?"
       - say:
           char: 진평왕.sad
           camera: close
           with: [어린 덕만]
-          text: "그래. 당나라 황제는 그걸 조롱한 것이다."
-      - goto: king_warning
+          text: "그래, 모른다고 하면 틀리지는 않겠지. 하지만 오늘은 틀리는 것보다 못 보는 것이 더 위험하다."
+      - say:
+          char: 소화.nervous
+          camera: close
+          with: [어린 덕만, 진평왕]
+          text: "전하, 문밖에 약탕을 든 아이가 있습니다. 제가 부른 아이가 아닙니다."
+      - say:
+          channel: narration
+          text: "소화가 문으로 뛰었지만 늦었습니다. 시종은 이미 잔을 내려놓고 사라졌고, 방금 전 덕만이 입을 댄 차에서는 씁쓸한 살구씨 냄새가 났습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "별궁 진료 기록 — 둘째 공주 덕만, 급작스러운 열병으로 사망. 독물 흔적 없음."
+      - gameOver:
+          title: "운명 — 모른 척한 사이"
+          message: "왕의 질문은 수수께끼가 아니라 누가 방 안까지 손을 뻗었는지 확인하는 시험이었습니다. 덕만이 위험을 읽지 못한 사이, 왕위를 시기한 귀족이 보낸 독차가 먼저 도착했습니다."
 
   king_warning:
     actions:
@@ -290,7 +295,7 @@ scenes:
           char: 진평왕.sad
           camera: close
           with: [어린 덕만]
-          text: "내게 아들이 없자 귀족들은 천명과 너를 갈라 쥐었다. 아직 걷지도 못한 아이들에게 서로의 목을 겨누게 했지."
+          text: "내게 아들이 없자 귀족들은 천명과 너를 서로 다른 편에 세웠다. 너희가 걷기도 전부터 말이다."
       - say:
           char: 어린 덕만
           camera: close
@@ -300,17 +305,17 @@ scenes:
           char: 진평왕.sad
           camera: medium
           with: [어린 덕만]
-          text: "둘 다 살리려 했다. 하지만 널 하루 숨길 때마다 거짓 기록이 한 줄씩 늘었고, 끝내 누군가는 그 기록대로 네가 사라지길 원했다."
+          text: "둘 다 살리고 싶었다. 그래서 널 숨겼다. 그런데 거짓말이 길어지자 누군가는 정말 네가 없어지면 편하다고 생각하기 시작했어."
       - say:
           char: 어린 덕만
           camera: close
           with: [진평왕]
-          text: "그리고 오늘, 종이로 먼저 저를 죽였군요."
+          text: "그래서 오늘은 종이에 먼저 저를 죽였어요?"
       - say:
           char: 진평왕
           camera: medium
           with: [어린 덕만]
-          text: "그래. 오늘 밤 너를 죽이고 기록을 사실로 만들 생각이다."
+          text: "그래. 오늘 밤 널 죽여서 저 기록을 사실로 만들 셈이다. 미안하다, 덕만아. 너무 늦게 알았다."
       - say:
           char: 소화.nervous
           camera: medium
@@ -431,7 +436,7 @@ scenes:
           char: 어린 덕만.resolve
           camera: close
           with: [소화]
-          text: "또 나만 살리겠다는 말 하지 마. 소매 말고 손 줘. 같이 기어가."
+          text: "또 나만 먼저 보내지 마. 소매 말고 손 줘. 같이 나가."
       - say:
           channel: narration
           text: "두 사람이 진흙 위로 구르자 뒤에서 지붕이 주저앉았습니다. 불티가 빗물 위에 떨어져 짧게 타올랐습니다."
@@ -446,7 +451,7 @@ scenes:
           with: [소화]
           wait: 600
           unskippable: true
-          text: "저 안에서 기록 속 덕만은 죽었어. 살아 있는 나는 숨어서, 내 죽음을 먼저 쓴 손부터 찾을 거야."
+          text: "저 안에서는 덕만이 죽었다고 믿을 거야. 그럼 나는 살아서 누가 내 죽음을 먼저 썼는지 찾을 수 있어."
       - say:
           channel: narration
           text: "소화는 국경 상단의 암호를 속삭였습니다. 덕만은 대답 대신 손바닥의 붉은 인주를 빗물에 씻지 않았습니다. 이제부터 붉은 인장의 행로가 두 사람의 길이었습니다."
@@ -466,23 +471,30 @@ scenes:
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
           channel: narration
-          text: "덕만이 청동 모란패를 들자 북문 빗장이 반쯤 열렸습니다. 소화는 문지기의 시선이 패보다 덕만의 얼굴에 오래 머무는 것을 보았습니다."
+          text: "덕만이 청동 모란패를 들자 북문 빗장이 반쯤 열렸습니다. 문지기는 패를 확인한 뒤에도 덕만의 얼굴에서 눈을 떼지 않았습니다."
       - say:
           char: 소화.nervous
           camera: close
           with: [어린 덕만]
-          text: "살았습니다. 하지만 저 사람은 아기씨 얼굴을 봤어요. 새벽이면 국경까지 그림이 먼저 갈 겁니다."
+          text: "아기씨, 멈춰요. 문밖에 말이 너무 조용합니다. 경비가 아니라 기다리는 사람들 같아요."
       - say:
-          char: 어린 덕만.resolve
+          char: 어린 덕만.scared
           camera: close
           with: [소화]
-          text: "괜찮아. 오늘은 이름보다 목숨이 먼저야. 다음부터는 저들이 아는 얼굴까지 내가 이용할 거야."
+          text: "문을 열어 주는 패라면서. 소화, 왜 다시 닫혀?"
+      - char: { id: 칠숙, position: center, emotion: smile }
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [어린 덕만, 소화]
+          text: "왕실 안쪽 패는 주인을 살리는 물건이 아닙니다. 어느 문으로 달아났는지 알려 주는 물건이지요."
+      - effect: { name: darken, wait: true }
       - say:
           channel: record
-          text: "북문 당직 기록 — 왕실 모란패를 든 어린 여인과 유모가 별궁 화재 직전 통과. 둘째 공주와 용모가 흡사함."
-      - set: { c1_escape_route: north_gate, identity_exposed: true }
-      - add: { sohwa_trust: 1, people_support: 1, fear: 1 }
-      - goto: /1.yaml
+          text: "북문 당직 기록 — 화재 중 침입한 신원 미상 여인 둘을 사살함. 왕실 모란패 회수."
+      - gameOver:
+          title: "운명 — 문을 연 표식"
+          message: "모란패는 북문을 열었지만 덕만의 얼굴과 탈출로도 함께 드러냈습니다. 매복하고 있던 칠숙은 문이 닫히자 두 사람을 기록에서 다시 지웠습니다."
 
   escape_with_record:
     actions:

@@ -18,12 +18,12 @@ scenes:
           char: 진평왕.weak
           camera: close
           with: [덕만]
-          text: "내가 마지막 숨으로 널 지명하면 저들은 여왕을 막는 대신 폭군의 유언을 막았다고 쓰겠지. 내 죽음에 업혀 오지 마라. 네가 살리고 설득하고 때로 잃은 사람들과 걸어와."
+          text: "내가 지금 널 지명하면 저들은 죽어 가는 왕의 억지라고 할 거다. 내 유언에 기대지 마라. 네가 살아오며 얻은 사람들과 들어가."
       - say:
           char: 덕만
           camera: close
           with: [진평왕]
-          text: "아버지의 마지막 숨을 왕관값으로 팔지 않겠습니다. 대신 아버지가 내준 열쇠와 붓, 그 때문에 죽고 굶은 이름까지 제 짐으로 들고 가겠습니다."
+          text: "유언은 받지 않겠습니다. 대신 아버지가 넘긴 열쇠와 그 때문에 다친 사람들 이름은 제가 들고 가겠습니다."
       - say:
           when: { var: king_trust, op: gte, value: 3 }
           char: 진평왕.weak
@@ -52,7 +52,7 @@ scenes:
           char: 춘추
           camera: medium
           with: [덕만]
-          text: "회의장 문이 곧 닫힙니다. 장부는 사실을 무겁게 만들고, 궁 밖 이름은 문을 흔들고, 유신의 군사는 침묵해도 위협으로 보입니다. 무엇을 덕만 공주보다 먼저 들일지 정하셔야 합니다."
+          text: "곧 문을 닫습니다. 장부를 들이면 반박하기 어렵고, 마을 사람을 부르면 문을 못 닫습니다. 군사는 칼을 묶어도 협박으로 보일 겁니다. 무엇부터 들이시겠습니까?"
       - say:
           when: { var: chunchu_trust, op: gte, value: 1 }
           char: 춘추
@@ -94,7 +94,7 @@ scenes:
       - say:
           char: 덕만
           camera: medium
-          text: "제가 여왕이 되는 것을 반대해도 좋습니다. 다만 이 장부로 사람을 굶긴 손은 표결 탁자에서 먼저 떼십시오. 훔친 곡식으로 산 표가 왕을 고르게 두진 않겠습니다."
+          text: "저를 반대하셔도 됩니다. 다만 이 장부에 이름이 있는 사람은 표부터 내려놓으십시오. 훔친 곡식으로 산 표는 받지 않겠습니다."
       - say:
           channel: narration
           text: "장부가 바닥을 미끄러지자 몇몇 귀족이 손을 소매 안으로 감췄습니다. 찬성은 아니었지만 누구도 먼저 반대표를 들지 못했습니다."
@@ -108,11 +108,12 @@ scenes:
           text: "궁문 밖에서 마을 이름이 하나씩 불렸습니다. 사람들은 덕만 만세 대신 자기 창고와 죽은 가족의 이름을 외쳤습니다. 귀족이 '폭도'라 부를 때마다 새로운 마을이 대답했습니다."
       - say:
           char: 덕만
-          text: "표는 이 방 안 귀족에게 있습니다. 하지만 그 결과로 굶고 싸울 사람은 문밖에 있습니다. 문을 닫겠다면 적어도 저 이름과 대답까지 회의록에 들이십시오."
+          text: "표는 여러분이 갖고 있지만 결과를 견딜 사람은 문밖에 있습니다. 문을 닫더라도 저 이름들은 회의록에 적으십시오."
       - goto: coup_begins
 
   guarded_vote:
     actions:
+      - bg: council_hall
       - char: { id: 유신, position: right }
       - say:
           channel: narration
@@ -121,8 +122,23 @@ scenes:
           char: 유신
           camera: close
           with: [덕만]
-          text: "오늘 제 병사들의 칼은 묶였습니다. 그래도 반대표를 든 자들은 칼집보다 군사 수를 기억하고, 평생 협박받았다고 말할 겁니다."
-      - goto: coup_begins
+          text: "오늘 제 병사들의 칼은 묶였습니다. 그런데 문밖 귀족 사병들은 풀려 있습니다. 공주님, 이건 표결이 아니라 서로 먼저 칼을 뽑지 못하게 노려보는 자리입니다."
+      - say:
+          char: 덕만.princess_angry
+          camera: close
+          with: [유신]
+          text: "우리 칼은 묶였다는 걸 모두 봤어. 저들이 먼저 뽑으면 명분은 우리에게 와."
+      - say:
+          channel: narration
+          text: "첫 반대표가 항아리에 떨어지자 귀족 사병이 문을 닫았습니다. 유신의 병사들은 매듭을 푸는 동안 창을 맞았고, 덕만은 칼 한 번 뽑지 않은 군사들 사이에서 포위됐습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "왕위 표결 유혈 사태 — 덕만 공주가 군사로 회의를 협박하다 충돌 발생. 덕만과 호위 병력 사망."
+      - gameOver:
+          title: "운명 — 묶인 칼의 표결"
+          message: "칼집을 봉해도 군사가 표결장에 선 순간 반대자에게는 협박이 됐습니다. 귀족 사병이 먼저 문을 닫았고, 매듭을 풀지 못한 호위대와 덕만은 함께 죽었습니다."
+          recoverToChoice: c9_vote_strategy
 
   negotiated_vote:
     actions:
@@ -144,7 +160,7 @@ scenes:
           char: 유신.angry
           camera: reaction
           with: [덕만]
-          text: "서문으로 가면 표결이 비고, 여기 남으면 불이 시장과 곡식 창고까지 갑니다. 한 사람의 명령으로 두 곳을 지킬 병력은 없습니다. 나누어 주십시오!"
+          text: "제가 서문으로 가면 표결은 비고, 여기 남으면 시장이 탑니다. 병력이 모자랍니다. 제게 맡길 곳을 정하십시오!"
       - choice:
           key: c9_coup_response
           prompt: "왕관을 정할 항아리와 왕이 지켜야 할 시장이 동시에 탄다. 책임을 어떻게 나눌까?"
@@ -170,6 +186,11 @@ scenes:
       - say:
           channel: narration
           text: "유신의 말발굽이 서문으로 사라졌습니다. 덕만은 연기가 들어오는 회의장에서 항아리를 끌어안았습니다. 새벽 직전, 피 묻은 유신이 진짜 인장을 던져 넣었습니다."
+      - say:
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "서문은 막았습니다. 공주님도 자리를 지키셨군요. 이제 이 표가 누구 피로 남았는지 잊지 마십시오."
       - goto: final_ballot
 
   save_market:
@@ -180,8 +201,25 @@ scenes:
           text: "덕만이 항아리를 놓고 물동이를 들었습니다. 종이를 쥐던 귀족 손과 장터 사람의 손이 같은 줄에서 물을 넘겼습니다. 표는 바닥에 흩어졌지만 불길은 시장 앞에서 멈췄습니다."
       - say:
           channel: narration
-          text: "덕만이 돌아왔을 때 첫 표결은 무효가 되어 있었습니다. 대신 불을 끈 상인들이 궁문 앞에 남아 새 표결을 지켜보겠다고 버텼습니다. 왕관은 멀어졌지만 회의장 문은 다시 열렸습니다."
-      - goto: final_ballot
+          text: "덕만이 돌아왔을 때 표결 항아리는 사라지고 다른 왕의 이름이 성문에 붙어 있었습니다. 불을 끈 상인들이 덕만을 감쌌지만 이미 왕군이 된 귀족 사병이 골목을 막았습니다."
+      - say:
+          char: 유신.angry
+          camera: close
+          with: [덕만]
+          text: "시장은 살렸습니다. 하지만 저들은 공주님을 왕명을 거역한 반역자로 부릅니다. 동문으로 빠지셔야 합니다!"
+      - say:
+          char: 덕만.princess_sad
+          camera: close
+          with: [유신]
+          text: "내가 두고 온 항아리가 저 명령을 만들었구나. 사람들을 뒤로 빼. 이번에는 시장을 방패로 쓰지 않을 거야."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "계승 표결 뒤 반란 진압 — 왕위를 노린 덕만 공주, 시장에서 왕군에 저항하다 사망."
+      - gameOver:
+          title: "운명 — 비워 둔 표결"
+          message: "시장은 살았지만 왕을 정하는 자리를 비운 사이 반대파가 왕명과 군대를 차지했습니다. 덕만은 자신이 구한 시장에서 새 왕의 반역자로 죽었습니다."
+          recoverToChoice: c9_coup_response
 
   false_order:
     actions:
@@ -193,8 +231,23 @@ scenes:
           char: 유신.angry
           camera: close
           with: [덕만]
-          text: "오늘은 어린 날 공주님을 죽인 위조가 사람을 살렸습니다. 하지만 가짜 인장을 본 병사들은 내일 진짜 명령도 한 번 더 멈춰 읽을 겁니다."
-      - goto: final_ballot
+          text: "빈 창고에 모인 건 하급 병사뿐입니다. 지휘부는 이 획이 공주님 것임을 알아보고 반대쪽 길로 움직였습니다."
+      - say:
+          char: 덕만.princess_angry
+          camera: close
+          with: [유신]
+          text: "내가 속인 사람만 잡았어. 나를 속이는 법을 아는 사람들은 그대로 뒀구나."
+      - say:
+          channel: narration
+          text: "덕만의 위조 명령이 공개되자 진짜 왕명도 효력을 잃었습니다. 어느 쪽 명령도 믿지 않게 된 병사들이 흩어졌고, 반란 지휘부는 비어 버린 회의장으로 곧장 들어왔습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "계승 내란 기록 — 덕만 공주가 위조 왕명을 사용한 사실이 드러난 뒤 호위대 해산. 덕만은 반란군에게 참수됨."
+      - gameOver:
+          title: "운명 — 진짜 명령까지 지운 획"
+          message: "자신을 죽이려 했던 위조를 다시 쓰자 덕만의 진짜 명령도 신뢰를 잃었습니다. 병사들이 멈춘 사이 반란군은 왕좌까지 도달했습니다."
+          recoverToChoice: c9_coup_response
 
   final_ballot:
     actions:
@@ -208,7 +261,7 @@ scenes:
           char: 춘추
           camera: close
           with: [덕만]
-          text: "이 세 표는 공짜로 움직이지 않습니다. 왕관 뒤에서 몰래 빚지 말고, 무엇을 내주고 누가 감시할지 지금 모두 앞에서 말하십시오."
+          text: "이 세 표에는 조건이 있습니다. 뒤에서 몰래 약속하지 말고 지금 말하십시오. 무엇을 내주고, 누가 감시합니까?"
       - choice:
           key: c9_crown_terms
           prompt: "왕관까지 남은 세 표는 통치의 첫 빚이다. 공개해서 바꿀 수 있는 어떤 조건으로 받을까?"
@@ -219,15 +272,63 @@ scenes:
             - text: "귀족 회의에 군량 장부를 맡긴다"
               set: { coronation_compromise: nobles_audit }
               add: { nobles_support: 3, army_support: -1 }
-              goto: coronation
+              goto: bad_nobles_audit
             - text: "유신의 지휘패를 해마다 다시 심사한다"
               set: { coronation_compromise: reviewed_army }
               add: { army_support: 2, yushin_trust: 1, nobles_support: -1 }
-              goto: coronation
+              goto: bad_army_review
             - text: "시장과 마을 자리를 회의장에 비워 둔다"
               set: { coronation_compromise: public_council }
               add: { people_support: 2, nobles_support: -2, insight: 1 }
               goto: coronation
+
+  bad_nobles_audit:
+    actions:
+      - bg: banquet_hall
+      - camera: { shot: close, target: 덕만 }
+      - char: { id: 덕만, position: left, emotion: princess_sad }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          char: 춘추.nervous
+          text: "장부를 넘기자마자 첫 장과 마지막 장이 없어졌습니다. 공주님을 지지한 세 표도 함께 자리를 비웠습니다."
+      - say:
+          char: 덕만.princess_sad
+          text: "곡식을 훔친 사람에게 다시 장부를 맡겼어. 왕관을 받기도 전에 내가 가진 증거부터 돌려준 거야."
+      - say:
+          channel: narration
+          text: "즉위 축하주가 들어왔지만 잔을 올린 가문 이름은 잘려 나간 장부 첫 장에 있었습니다. 덕만이 쓰러지자 귀족 회의는 표결을 취소하고 새 후보를 세웠습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "즉위 전야 변고 — 덕만 공주, 원인 불명의 독으로 사망. 군량 장부 분실로 수사 중단."
+      - gameOver:
+          title: "운명 — 장부와 바꾼 왕관"
+          message: "표를 얻으려고 군량 장부를 그 장부에 이름이 적힌 귀족들에게 돌려줬습니다. 증거를 없앤 그들은 축하주에 독을 넣어 덕만까지 없앴습니다."
+          recoverToChoice: c9_crown_terms
+
+  bad_army_review:
+    actions:
+      - bg: throne_hall
+      - camera: { shot: close, target: 덕만 }
+      - char: { id: 덕만, position: left, emotion: princess_angry }
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          char: 유신.angry
+          text: "제 지휘패를 심사한다는 말이 군영에는 충성을 의심한다는 말로 퍼졌습니다. 서문 부대가 귀족 쪽으로 넘어갔습니다."
+      - say:
+          char: 덕만.princess_angry
+          text: "네 권한을 줄이려는 게 아니라 누구도 영원히 쥐지 못하게 하려던 거야. 직접 가서 말하자."
+      - say:
+          channel: narration
+          text: "두 사람이 군영에 닿았을 때 심사에서 지휘권을 잃을 장수들이 먼저 칼을 뽑았습니다. 유신은 덕만을 감쌌지만 등 뒤 부대까지 돌아선 뒤였습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "군영 반란 기록 — 덕만 공주와 김유신, 지휘권 회수에 반발한 장수들에게 피살. 즉위 표결 무효."
+      - gameOver:
+          title: "운명 — 왕관보다 먼저 흔든 군권"
+          message: "즉위 전에 군 지휘권 재심사를 약속하자 자리를 잃을 장수들이 선수를 쳤습니다. 제도는 시작되기도 전에 군영 반란이 되었고 덕만은 왕관 앞에서 죽었습니다."
+          recoverToChoice: c9_crown_terms
 
   coronation:
     actions:
@@ -244,7 +345,7 @@ scenes:
       - say:
           char: 덕만
           camera: close
-          text: "오늘부터 내 말은 옳기 때문에 명령이 되는 것이 아니다. 사람의 삶을 움직이는 명령이 되었기에, 내 말일수록 더 크게 의심하고 기록하라."
+          text: "오늘부터 내 말은 사람들의 삶을 움직인다. 그러니 내 명령이라고 덜 묻지 말고, 더 묻고 더 정확히 기록하라."
       - say:
           channel: narration
           text: "덕만은 왕관을 고쳐 쓰기도 전에 첫 명령을 내렸습니다. '오늘 나를 만든 표와 약속을 한 글자도 빼지 말라.' 이어 불탄 시장 너머 하늘을 보며 두 번째 명령을 불렀습니다. '다음 어둠은 누구나 미리 보게 하라.'"
