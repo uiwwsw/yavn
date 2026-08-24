@@ -29,30 +29,30 @@ scenes:
           char: 레이코.smile
           with:
             - 란
-          text: "<speed=27>쉬시는 중에 죄송합니다.</speed> <speed=23>다실에서 새 차를 시험하고 있는데, 괜찮으시면 함께 맛봐 주시겠어요?</speed>"
+          text: "<speed=27>쉬시는 중에 죄송합니다.</speed> <speed=23>다실에서 아버지가 남긴 배합의 마지막 시음을 합니다. 하루오 씨가 낯선 손님의 첫인상도 꼭 듣고 싶다고 해서요.</speed>"
       - say:
           char: 란
           with:
             - 레이코.smile
-          text: "<speed=29>저희가 가도 돼요?</speed> <speed=24>저녁도 정말 맛있었어요.</speed>"
+          text: "<speed=29>저희가 가도 돼요?</speed> <speed=24>좋아요. 저녁도 정말 맛있었고, 차 이야기도 듣고 싶었어요.</speed>"
       - char:
           id: 코고로
           position: center
           emotion: proud
       - say:
           char: 코고로.proud
-          text: "<speed=36>전문가의 평가가 필요하다면 사양하지 않겠습니다.</speed>"
+          text: "<speed=36>전문가의 평가가 필요하다면 사양하지 않겠습니다.</speed> <speed=25>혀와 코는 이미 준비됐습니다.</speed>"
       - say:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=28>아빠, 아까 빈 잔에서 향이 난다고 했잖아요.</speed>"
+          text: "<speed=28>아빠, 아까 빈 잔에서도 향이 난다고 했잖아요.</speed> <speed=23>차가 들어오기 전이었는데.</speed>"
       - say:
           char: 레이코.smile
-          text: "<speed=26>그럼 더 좋습니다.</speed> <speed=23>선입견 없는 손님이 가장 솔직하거든요.</speed>"
+          text: "<speed=26>그럼 더 좋습니다.</speed> <speed=23>아는 척하지 않는 손님이 첫 향은 가장 솔직하게 말하거든요.</speed>"
       - say:
           char: 코고로.proud
-          text: "<speed=25>그건 칭찬... 맞겠지?</speed>"
+          text: "<speed=25>아는 척하지 않는 전문가라... 칭찬 맞겠지?</speed>"
 
   temperature_lesson:
     actions:
@@ -71,28 +71,28 @@ scenes:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=25>가까이 와도 괜찮아.</speed> <speed=22>하지만 손잡이만 잡으렴. 아직 아주 뜨겁거든.</speed>"
+          text: "<speed=25>가까이 와도 괜찮아.</speed> <speed=22>다만 손잡이만 잡으렴. 뚜껑은 소리도 크고, 지금 열면 첫 향이 달아나.</speed>"
       - say:
           char: 코난.smile
           with:
             - 하루오.smile
-          text: "<speed=27>88도가 되면 불을 끄는 거예요?</speed>"
+          text: "<speed=27>온도계가 88도를 찍으면 바로 불을 끄는 거예요?</speed>"
       - say:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=25>그래.</speed> <speed=21>그보다 뜨거우면 향이 날아가고, 너무 식으면 떫은맛이 세져.</speed>"
+          text: "<speed=25>그래.</speed> <speed=21>그보다 뜨거우면 아버님의 향이 날아가고, 늦으면 떫은맛이 앞서지. 이 1도가 오늘 맛을 바꿔.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=27>그럼 제가 숫자를 보고 알려 드릴게요.</speed>"
+          text: "<speed=27>그럼 제가 숫자를 보고 알려 드릴게요.</speed> <speed=23>사람은 놓쳐도 온도계는 시각까지 남기니까.</speed>"
       - say:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=25>부탁하마.</speed> <speed=21>차는 기다리는 시간도 맛의 일부거든.</speed>"
+          text: "<speed=25>부탁하마.</speed> <speed=21>차는 기다리는 시간도 맛의 일부야. 서두른 손은 나중에 잔에 꼭 흔적을 남기거든.</speed>"
       - say:
           char: 코난.smile
-          text: "<speed=27>네. 88도 되면 바로 말할게요.</speed>"
+          text: "<speed=27>네. 88도, 숫자가 바뀌는 순간 바로 말할게요.</speed>"
 
   tea_helper_choice:
     actions:
@@ -109,10 +109,10 @@ scenes:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=26>코난 군, 다음 잔은 네가 도와줄래?</speed> <speed=22>아까 말한 순서, 기억하고 있지?</speed>"
+          text: "<speed=26>코난 군, 다음 잔은 네가 도와줄래?</speed> <speed=22>누가 보지 않아도 같은 맛이 나게 하는 순서, 기억하고 있지?</speed>"
       - choice:
           key: tea_service_memory
-          prompt: "하루오가 알려 준 시음 준비는?"
+          prompt: "마지막 잔에도 지켜야 할 하루오의 순서는?"
           options:
             - text: "손잡이만 잡고 88도가 될 때까지 기다린다"
               set:
@@ -131,22 +131,22 @@ scenes:
           char: 코난.smile
           with:
             - 하루오.smile
-          text: "<speed=27>손잡이만 잡고, 88도가 될 때 불을 꺼요.</speed> <speed=22>뚜껑은 그대로 두고요.</speed>"
+          text: "<speed=27>손잡이만 잡고, 88도가 되는 순간 불을 꺼요.</speed> <speed=22>사람들 시선이 가는 뚜껑은 그대로 두고요.</speed>"
       - say:
           char: 하루오.smile
-          text: "<speed=25>잘 들었네.</speed> <speed=21>오늘 마지막 잔도 똑같이 낼 거야.</speed>"
+          text: "<speed=25>잘 들었네.</speed> <speed=21>오늘 마지막 네 잔도 같은 순서로 낼 거야. 잔 번호까지 내가 직접 확인하고.</speed>"
       - goto: tea_helper_finish
 
   tea_helper_lid:
     actions:
       - say:
           char: 코난.smile
-          text: "<speed=28>뚜껑을 두 번 눌러서 향을...</speed>"
+          text: "<speed=28>뚜껑을 두 번 눌러서 향을 퍼뜨리면...</speed>"
       - say:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=26>그러면 차보다 사람들이 먼저 놀라겠는데.</speed> <speed=22>뚜껑은 그냥 두자.</speed>"
+          text: "<speed=26>그러면 차보다 사람들이 먼저 그 소리를 보겠는데.</speed> <speed=22>향은 기다리면 올라와. 뚜껑은 그냥 두자.</speed>"
       - goto: tea_helper_finish
 
   tea_helper_kogoro:
@@ -175,7 +175,7 @@ scenes:
           char: 하루오.smile
           with:
             - 코고로.proud
-          text: "<speed=26>88도까지 참으시면 첫 잔을 드리죠.</speed>"
+          text: "<speed=26>88도까지 손부터 참으시면 첫 잔을 드리죠.</speed> <speed=22>순서가 먼저입니다.</speed>"
       - goto: tea_helper_finish
 
   tea_helper_finish:
@@ -192,7 +192,7 @@ scenes:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=25>좋아. 뜨겁다고 서두르지만 않으면 돼.</speed> <speed=21>잔 번호는 내가 다시 확인할 테고.</speed>"
+          text: "<speed=25>좋아. 뜨겁다고 서두르지만 않으면 돼.</speed> <speed=21>온도는 기록에, 잔 번호는 내 눈에 남겨 둘 테니까.</speed>"
 
   record_keeper:
     actions:
@@ -209,7 +209,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코고로.proud
-          text: "<speed=25>첫 향을 맡은 시각, 오후 8시 34분.</speed> <speed=23>감상은 짧게 말씀해 주십시오.</speed>"
+          text: "<speed=25>첫 향을 맡은 시각, 오후 8시 34분.</speed> <speed=23>나중에 기억이 달라지지 않도록, 감상은 지금 한 단어로 말씀해 주십시오.</speed>"
       - say:
           char: 코고로.proud
           with:
@@ -217,7 +217,7 @@ scenes:
           text: "<speed=31>깊고, 우아하며, 범상치 않은...</speed>"
       - say:
           char: 세이지.cold
-          text: "<speed=26>세 단어를 쓰셨습니다.</speed> <speed=22>하나만 남겨 주시죠.</speed>"
+          text: "<speed=26>벌써 세 단어입니다.</speed> <speed=22>나중에 바꾸실 수 없게 하나만 남겨 주시죠.</speed>"
       - say:
           char: 코고로.proud
           text: "<speed=34>명품!</speed>"
@@ -227,7 +227,7 @@ scenes:
           emotion: amused
       - say:
           char: 세이지.amused
-          text: "<speed=24>'명품이라고 주장함.'</speed> <speed=22>그대로 기록하겠습니다.</speed>"
+          text: "<speed=24>‘명품이라고 주장함.’</speed> <speed=22>말씀하신 시각과 함께 그대로 기록하겠습니다.</speed>"
       - char:
           id: 란
           position: center
@@ -235,10 +235,10 @@ scenes:
           char: 란
           with:
             - 세이지.amused
-          text: "<speed=28>세이지 씨, 웃으신 거 맞죠?</speed>"
+          text: "<speed=28>세이지 씨, 방금 웃으신 거 맞죠?</speed> <speed=23>그것도 지금 기록해야 나중에 안 바뀌는데.</speed>"
       - say:
           char: 세이지.amused
-          text: "<speed=24>기록할 필요가 없는 일입니다.</speed>"
+          text: "<speed=24>기록할 필요가 없는 일입니다.</speed> <speed=22>이미 목격자가 둘이나 있으니까요.</speed>"
 
   guest_arrival:
     actions:
@@ -259,26 +259,26 @@ scenes:
           char: 켄지.smile
           with:
             - 코고로.proud
-          text: "<speed=32>이야, 손님이 먼저 맛보고 계셨군.</speed> <speed=25>하세가와 켄지입니다. 이 차가 세상에 나가도록 돈을 대는 사람이고요.</speed>"
+          text: "<speed=32>이야, 손님이 먼저 맛보고 계셨군.</speed> <speed=25>하세가와 켄지입니다. 이 차를 세상에 내놓을 돈과 판로를 맡고 있죠.</speed>"
       - say:
           char: 코고로.proud
           with:
             - 켄지.smile
-          text: "<speed=31>모리 코고로입니다.</speed> <speed=25>좋은 물건을 알아보는 눈이라면 저도 뒤지지 않죠.</speed>"
+          text: "<speed=31>모리 코고로입니다.</speed> <speed=25>좋은 물건과 수상한 계약을 알아보는 눈이라면 저도 뒤지지 않죠.</speed>"
       - say:
           char: 켄지.smile
           with:
             - 코고로.proud
-          text: "<speed=30>그럼 내기 하나 합시다.</speed> <speed=24>재료 셋 중 둘을 맞히면 내일 아침 특식을 제가 내죠.</speed>"
+          text: "<speed=30>그럼 혀부터 시험해 봅시다.</speed> <speed=24>재료 셋 중 둘을 맞히면 내일 아침 특식은 제가 내죠.</speed>"
       - say:
           char: 코고로.proud
           text: "<speed=38>좋습니다!</speed> <speed=27>대신 제가 맞히면 사인도 한 장 받아 가시죠.</speed>"
       - say:
           char: 켄지.smile
-          text: "<speed=28>누가 누구에게 하는 사인인지는 결과를 보고 정합시다.</speed>"
+          text: "<speed=28>사인할 종이와 돈 낼 사람은 결과를 보고 정합시다.</speed> <speed=23>계약도 내기도 마지막 줄까지 봐야 하니까.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>둘 다 벌써 이긴 얼굴인데요.</speed>"
+          text: "<speed=25>둘 다 벌써 이긴 얼굴인데요.</speed> <speed=22>진 사람 이름은 기록에서 빼면 안 돼요.</speed>"
 
   blind_tasting:
     actions:
@@ -295,23 +295,23 @@ scenes:
           char: 레이코.smile
           with:
             - 하루오.smile
-          text: "<speed=26>첫 번째는 향만 맡아 주세요.</speed> <speed=22>아버지가 산벚꽃이 피던 계절에 만든 배합이에요.</speed>"
+          text: "<speed=26>첫 번째는 향만 맡아 주세요.</speed> <speed=22>아버지가 시작하고, 하루오 씨와 저희가 열 해 동안 고친 배합이에요.</speed>"
       - say:
           char: 하루오.smile
           with:
             - 레이코.smile
-          text: "<speed=25>정답을 먼저 말하면 안 되지.</speed> <speed=22>오늘은 손님들의 코를 믿어 보자고.</speed>"
+          text: "<speed=25>정답을 먼저 말하면 안 되지.</speed> <speed=22>아버님 이름보다 오늘 이 잔에서 나는 향을 먼저 듣자고.</speed>"
       - char:
           id: 란
           position: center
       - say:
           char: 란
-          text: "<speed=27>달콤한데 나무 향도 나요.</speed> <speed=23>비 온 뒤 운동장 같은 냄새도 조금.</speed>"
+          text: "<speed=27>처음엔 달콤한데, 뒤에는 젖은 나무 향이 나요.</speed> <speed=23>비가 그친 운동장처럼 익숙한데 조금 쓸쓸하고.</speed>"
       - say:
           char: 레이코.smile
           with:
             - 란
-          text: "<speed=27>그 표현, 아버지가 좋아하셨을 거예요.</speed>"
+          text: "<speed=27>그 표현, 아버지가 좋아하셨을 거예요.</speed> <speed=22>완성된 맛보다 그 뒤에 남는 느낌을 더 오래 물으셨거든요.</speed>"
       - char:
           id: 코고로
           position: left
@@ -333,7 +333,7 @@ scenes:
       - say:
           char: 코고로.proud
           delivery: shout
-          text: "<speed=40>문제에 함정이 너무 많잖소!</speed>"
+          text: "<speed=40>내가 모르는 재료만 골랐으니 문제에 함정이 너무 많잖소!</speed>"
 
   shared_table:
     actions:
@@ -346,30 +346,30 @@ scenes:
           position: right
           emotion: smile
       - say:
-          text: "<speed=24>잠시 뒤 정답이 공개되자 다실에는 웃음이 터졌다.</speed> <speed=22>코고로가 맞힌 것은 뜨거운 물뿐이었다.</speed>"
+          text: "<speed=24>잠시 뒤 정답이 공개되자 다실에는 웃음이 터졌다.</speed> <speed=22>코고로가 확실히 맞힌 것은 뜨거운 물뿐이었고, 세이지는 그 답까지 시각 옆에 적었다.</speed>"
       - say:
           char: 켄지.smile
           with:
             - 하루오.smile
-          text: "<speed=28>하루오 씨, 이 정도 반응이면 팔립니다.</speed> <speed=23>이번엔 정말 당신 고집이 맞았어요.</speed>"
+          text: "<speed=28>하루오 씨, 이 정도 반응이면 팔립니다.</speed> <speed=23>이제 이름과 권리만 정리하면 돼요. 그 고집도 오늘은 끝냅시다.</speed>"
       - say:
           char: 하루오.smile
           with:
             - 켄지.smile
-          text: "<speed=25>내 고집이 아니라 우리 넷이 만든 맛입니다.</speed> <speed=22>레이코 씨 아버님 때부터 이어진 거니까요.</speed>"
+          text: "<speed=25>끝낼 고집이 아닙니다.</speed> <speed=22>이건 레이코 씨 아버님이 시작하고 우리 넷이 이어 온 맛이에요. 이름 하나라도 빠지면 다른 차가 됩니다.</speed>"
       - char:
           id: 레이코
           position: center
           emotion: smile
       - say:
           char: 레이코.smile
-          text: "<speed=25>다 같이 이름을 정했으면 해요.</speed> <speed=22>오늘 마지막 잔을 마신 뒤에.</speed>"
+          text: "<speed=25>그래서 오늘 다 같이 이름을 정했으면 해요.</speed> <speed=22>마지막 잔을 마시고, 계약서 원본도 함께 확인한 뒤에요.</speed>"
       - say:
           char: 켄지.smile
-          text: "<speed=27>이름이라.</speed> <speed=22>그건 제일 비싼 문제가 되겠군.</speed>"
+          text: "<speed=27>맛보다 이름이 더 비싼 순간이 오죠.</speed> <speed=22>그 이름을 누가 소유하느냐는 더 비싸고.</speed>"
       - say:
           char: 하루오.smile
-          text: "<speed=25>그래도 맛보다 먼저 정하면 안 됩니다.</speed>"
+          text: "<speed=25>그래도 맛보다 먼저 소유자를 정하면 안 됩니다.</speed> <speed=21>사람 이름도 마찬가지고요.</speed>"
 
   tea_name_choice:
     actions:
@@ -388,7 +388,7 @@ scenes:
           char: 레이코.smile
           with:
             - 하루오.smile
-          text: "<speed=26>그럼 후보만 받아 둘까요?</speed> <speed=22>오늘 이 차를 처음 마신 손님들의 이름도 남기고 싶어요.</speed>"
+          text: "<speed=26>그럼 후보만 받아 둘까요?</speed> <speed=22>오늘 이 차를 처음 기억해 준 손님들의 말도 첫 장에 남기고 싶어요.</speed>"
       - say:
           char: 하루오.smile
           with:
@@ -396,7 +396,7 @@ scenes:
           text: "<speed=25>코난 군도 한 표.</speed> <speed=22>방금 맡은 향을 떠올려 봐.</speed>"
       - choice:
           key: tea_name_vote
-          prompt: "새 차에 어울리는 이름은?"
+          prompt: "오늘의 향과 이 차를 만든 사람들까지 남길 이름은?"
           options:
             - text: "비가 그친 뒤의 산길"
               set:
@@ -426,12 +426,12 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=28>비가 그친 뒤의 산길.</speed> <speed=23>아까 란 누나가 찍은 사진처럼.</speed>"
+          text: "<speed=28>‘비가 그친 뒤의 산길’.</speed> <speed=23>아까 란 누나가 찍은 곳처럼, 달라져도 같은 자리인 걸 알아볼 수 있게요.</speed>"
       - say:
           char: 란
           with:
             - 코난.smile
-          text: "<speed=27>좋다.</speed> <speed=22>내일 같은 자리에서 꼭 한 장 더 찍자.</speed>"
+          text: "<speed=27>좋다.</speed> <speed=22>내일 같은 자리에서 꼭 한 장 더 찍자. 이 차도 창가에서 같이 찍고.</speed>"
       - goto: tea_name_finish
 
   tea_name_people:
@@ -448,12 +448,12 @@ scenes:
           char: 코난.smile
           with:
             - 하루오.smile
-          text: "<speed=28>네 사람의 찻잔은 어때요?</speed> <speed=23>한 사람이 만든 차가 아니라고 했잖아요.</speed>"
+          text: "<speed=28>‘네 사람의 찻잔’은 어때요?</speed> <speed=23>한 사람이 시작했어도 네 사람이 지켜 온 차라고 했잖아요.</speed>"
       - say:
           char: 하루오.smile
           with:
             - 코난.smile
-          text: "<speed=25>마음에 드는구나.</speed> <speed=21>그 이름이면 누구 하나 작게 적을 일도 없겠어.</speed>"
+          text: "<speed=25>마음에 드는구나.</speed> <speed=21>그 이름이면 누구 하나 작게 쓰거나 마지막 줄에서 뺄 수도 없겠어.</speed>"
       - goto: tea_name_finish
 
   tea_name_detective:
@@ -496,17 +496,17 @@ scenes:
           position: right
           emotion: smile
       - say:
-          text: "<speed=24>레이코는 세 후보를 나란히 적었다.</speed> <speed=21>하루오는 종이 아래에 차를 만든 네 사람의 이름을 같은 크기로 덧붙였다.</speed>"
+          text: "<speed=24>레이코는 세 후보를 나란히 적었다.</speed> <speed=21>하루오는 종이 아래에 차를 만든 네 사람의 이름을 같은 크기로 덧붙이고, 한 칸도 비워 두지 않았다.</speed>"
       - say:
           char: 레이코.smile
           with:
             - 하루오.smile
-          text: "<speed=26>아버지 이름만 크게 쓰지 않아도 될까요?</speed>"
+          text: "<speed=26>아버지 이름만 조금 크게 쓰지 않아도 될까요?</speed> <speed=22>이 배합을 처음 만든 분인데.</speed>"
       - say:
           char: 하루오.smile
           with:
             - 레이코.smile
-          text: "<speed=25>그분도 그러길 바라실 겁니다.</speed> <speed=21>함께 만든 차니까요.</speed>"
+          text: "<speed=25>시작한 사람을 기억하되, 이어 온 사람을 지우진 맙시다.</speed> <speed=21>그분도 자기 이름 때문에 당신 이름이 작아지는 건 바라지 않으실 겁니다.</speed>"
       - char:
           id: 세이지
           position: left
@@ -550,7 +550,7 @@ scenes:
           char: 코고로.proud
           text: "<speed=36>아침 특식 내기도 잊으면 안 됩니다!</speed>"
       - say:
-          text: "<speed=24>다실에 다시 웃음이 번졌다.</speed> <speed=21>그때까지만 해도 종이 위 네 이름은 나란히 놓여 있었다.</speed>"
+          text: "<speed=24>다실에 다시 웃음이 번졌다.</speed> <speed=21>그때까지만 해도 종이 위 네 이름은 같은 크기로, 누구 하나 빠지지 않은 채 놓여 있었다.</speed>"
 
   storm_news:
     actions:
@@ -569,22 +569,22 @@ scenes:
           char: 레이코.nervous
           with:
             - 란.worried
-          text: "<speed=25>방금 면사무소에서 연락이 왔습니다.</speed> <speed=22>산길 한 곳이 잠겨서, 오늘 밤 차량 통행은 어렵다고 해요.</speed>"
+          text: "<speed=25>방금 면사무소에서 마지막 연락이 왔습니다.</speed> <speed=22>산길 한 곳이 완전히 잠겼고, 구조 차량도 오늘 밤에는 올라오기 어렵다고 해요.</speed>"
       - say:
           char: 란.worried
           with:
             - 레이코.nervous
-          text: "<speed=27>직원분들은 괜찮아요?</speed> <speed=22>아래 마을에서 올라오실 분은 없고요?</speed>"
+          text: "<speed=27>직원분들은 모두 안에 계세요?</speed> <speed=22>아래 마을에서 올라오다 길에 남은 분은 없고요?</speed>"
       - say:
           char: 레이코.nervous
-          text: "<speed=25>야간 직원까지 모두 안에 있습니다.</speed> <speed=22>전화가 불안정한 것 말고는 걱정하지 않으셔도 됩니다.</speed>"
+          text: "<speed=25>야간 직원까지 모두 안에 있습니다.</speed> <speed=22>유선 전화가 자꾸 끊기지만 무전기는 있어요. 아침까지는 제가 모두 확인하겠습니다.</speed>"
       - char:
           id: 코고로
           position: center
           emotion: proud
       - say:
           char: 코고로.proud
-          text: "<speed=31>내일 길이 열릴 때까지 푹 쉬면 되겠군.</speed> <speed=25>특식 내기는 유효한 거요, 하세가와 씨!</speed>"
+          text: "<speed=31>그럼 밖에 남은 사람이 없는지부터 확인합시다.</speed> <speed=25>그다음 내일 길이 열릴 때까지 쉬고, 특식 내기도 예정대로 하는 거요!</speed>"
       - char:
           id: 켄지
           position: left
@@ -609,12 +609,12 @@ scenes:
           char: 세이지.cold
           with:
             - 하루오
-          text: "<speed=24>마지막 시음 기록지를 가져왔습니다.</speed> <speed=21>다만 오후 7시 42분에 출력된 사본과 원본의 이름 표기가 다릅니다.</speed>"
+          text: "<speed=24>마지막 시음 기록지를 가져왔습니다.</speed> <speed=21>그런데 오후 7시 42분 사본에는 네 이름, 방금 받은 계약서에는 세 이름뿐입니다.</speed>"
       - say:
           char: 하루오
           with:
             - 세이지.cold
-          text: "<speed=25>수정한 적 없습니다.</speed> <speed=22>원본을 열기 전까지 이 사본은 따로 두죠.</speed>"
+          text: "<speed=25>나는 누구 이름도 뺀 적 없습니다.</speed> <speed=22>마지막 시음이 끝나면 봉인한 원본을 모두 앞에서 열죠. 그전까지 두 종이 다 건드리지 마십시오.</speed>"
       - char:
           id: 켄지
           position: left
@@ -627,18 +627,18 @@ scenes:
           char: 켄지.angry
           with:
             - 레이코.nervous
-          text: "<speed=31>내가 받은 계약서엔 없던 문장이 왜 들어가 있지?</speed> <speed=24>이름을 정하기 전에 그건 분명히 해야 합니다.</speed>"
+          text: "<speed=31>내가 받은 계약서와도 다르잖아.</speed> <speed=24>돈을 댄 사람 이름은 빠지고, 배합 이름은 한 집안에 묶였어. 오늘 여기서 분명히 합시다.</speed>"
       - say:
           char: 레이코.nervous
           with:
             - 켄지.angry
-          text: "<speed=24>시음이 끝나면 네 분 앞에서 원본을 열겠습니다.</speed> <speed=21>누가 고쳤는지도 그때 확인하죠.</speed>"
+          text: "<speed=24>시음이 끝나면 네 분 앞에서 원본을 열겠습니다.</speed> <speed=21>누가 누구 이름을 빼려 했는지, 그때 한 줄씩 확인하죠.</speed>"
       - char:
           id: 코난
           position: center
           emotion: think
       - say:
           char: 코난.think
-          text: "<speed=21>(아까 웃던 얼굴들이 한꺼번에 굳었어.)</speed>"
+          text: "<speed=21>(같은 종이를 보는데, 모두 빠진 이름이 달라.)</speed>"
       - say:
-          text: "<speed=24>오후 9시 18분.</speed> <speed=21>빗소리가 짙어진 다실에서 마지막 시음이 시작됐다.</speed>"
+          text: "<speed=24>오후 9시 18분.</speed> <speed=21>빗소리가 지붕을 덮은 다실에서 네 사람의 이름과 네 개의 잔이 마지막으로 나란히 놓였다.</speed>"

@@ -45,7 +45,7 @@ scenes:
           enter:
             effect: popIn
       - say:
-          text: "<speed=34>오후 11시 59분.</speed> <speed=56>산악 터널의 모든 신호가 동시에 붉게 변했다.</speed>"
+          text: "<speed=34>오후 11시 59분.</speed> <speed=56>승객 218명을 태운 야간 열차가 산악 터널 한복판에서 멎었다.</speed>"
           autoAdvance: 2600
       - char:
           id: 란
@@ -54,7 +54,7 @@ scenes:
       - effect: impact
       - say:
           char: 란.surprised
-          text: "<speed=62>코난!</speed> <speed=38>터널 안에 승객이 탄 열차가 멈춰 있어!</speed>"
+          text: "<speed=62>코난!</speed> <speed=38>열차가 터널 중간에 멈춰 있어! 승객칸 불도 하나씩 꺼지고 있어!</speed>"
           autoAdvance: 3000
       - char:
           id: 코고로
@@ -64,7 +64,7 @@ scenes:
           char: 코고로.angry
           with:
             - 란.surprised
-          text: "<speed=44>기관실과 연락이 안 된다!</speed> <speed=34>폭발물 처리반은 최소 10분이야!</speed>"
+          text: "<speed=44>기관실은 응답 없음!</speed> <speed=34>폭발물 처리반은 최소 10분이야. 우리가 먼저 신호를 풀어야 해!</speed>"
           autoAdvance: 2600
 
   threat:
@@ -83,7 +83,7 @@ scenes:
           enter:
             effect: blurIn
       - say:
-          text: '<speed=30>"60초 안에 세 개의 거짓말을 찾아라."</speed> <speed=58>"틀리면 열차와 터널이 함께 사라진다."</speed>'
+          text: '<speed=30>"60초 안에 세 개의 거짓 진술을 지워라."</speed> <speed=58>"틀린 회선을 끊는 순간, 열차의 분기기가 폭발한다."</speed>'
           autoAdvance: 3400
       - clearSticker:
           id: signal_map
@@ -96,7 +96,7 @@ scenes:
       - effect: focus
       - say:
           char: 코난.serious
-          text: "<speed=34>폭탄을 터뜨리려는 게 아니야.</speed> <speed=58>범인은 우리가 특정 신호를 끊게 만들려는 거야.</speed>"
+          text: "<speed=34>폭탄보다 우리 손을 노리고 있어.</speed> <speed=58>거짓 신호를 보여 주고, 우리가 진짜 안전 회선을 끊기만 기다리는 거야.</speed>"
           autoAdvance: 2800
 
   suspects:
@@ -109,7 +109,7 @@ scenes:
       - effect: alarm
       - say:
           char: 켄지.angry
-          text: "<speed=42>난 터널 도면을 본 적 없어!</speed> <speed=64>신호실에도 들어간 적 없다고!</speed>"
+          text: "<speed=42>그 터널엔 보조 회선 같은 건 없어!</speed> <speed=64>난 도면조차 본 적 없다고!</speed>"
           autoAdvance: 2200
       - bg: tea_room
       - char:
@@ -119,7 +119,7 @@ scenes:
       - effect: glitch
       - say:
           char: 세이지.cold
-          text: "<speed=34>정지 명령은 59분 정각.</speed> <speed=54>제 기록에는 한 치의 오차도 없습니다.</speed>"
+          text: "<speed=34>정지 명령은 11시 59분 정각.</speed> <speed=54>원본 기록에는 1초의 오차도 없습니다.</speed>"
           autoAdvance: 2200
       - bg: ryokan_hall
       - char:
@@ -129,11 +129,11 @@ scenes:
       - effect: focus
       - say:
           char: 레이코.nervous
-          text: "<speed=28>빨간 레버는 건드리지 않았어요.</speed> <speed=60>전 파란 패널 앞에만 있었어요.</speed>"
+          text: "<speed=28>전 파란 감시 패널 앞에만 있었어요.</speed> <speed=60>빨간 비상 레버엔 손도 안 댔어요.</speed>"
           autoAdvance: 2200
       - say:
           char: 코난.think
-          text: "<speed=28>(도면을 모른다.</speed> <speed=38>기록은 정확하다.</speed> <speed=54>빨간 레버는 건드리지 않았다.)</speed> <speed=66>셋 다 거짓말이야.</speed>"
+          text: "<speed=34>(접힌 도면의 지운 선.</speed> <speed=44>17초 틀린 로그.</speed> <speed=58>소매의 빨간 윤활유.)</speed> <speed=68>전부, 눈앞의 흔적과 어긋나.</speed>"
           autoAdvance: 2400
 
   deduction:
@@ -154,12 +154,12 @@ scenes:
       - effect: focus
       - say:
           char: 코난.serious
-          text: "<speed=32>열차는 폭탄 때문에 멈춘 게 아니야.</speed> <speed=54>누군가 정지 신호를 먼저 보내 승객을 터널 안에 가뒀어.</speed>"
+          text: "<speed=32>켄지 씨 도면엔 지운 보조 회선이 남아 있어.</speed> <speed=54>세이지 씨의 시각도 시스템 로그보다 17초 느려.</speed>"
           autoAdvance: 2800
       - sound: notebook_flip
       - say:
           char: 코난.serious
-          text: "<speed=34>그리고 신호 지도에는 빨간 패널이 없어.</speed> <speed=62>레이코 씨는 범인이 보낸 가짜 화면을 봤어.</speed>"
+          text: "<speed=40>파란 패널은 1분 전부터 꺼져 있었어.</speed> <speed=66>레이코 씨는 빨간 레버 앞에 있었지. 세 거짓말이 하나의 가짜 정지 회선을 가리켜.</speed>"
           autoAdvance: 2300
 
   decision:
@@ -176,7 +176,7 @@ scenes:
       - effect: alarm
       - choice:
           key: demo_signal_cut
-          prompt: "열차를 살리려면 어느 신호를 끊어야 하지?"
+          prompt: "세 거짓말이 가리킨다. 어느 회선을 끊어야 할까?"
           char: 코난.serious
           timeoutMs: 7000
           timeoutOptionIndex: 0
@@ -195,7 +195,7 @@ scenes:
       - effect: glitch
       - say:
           char: 코난.think
-          text: "<speed=58>아니야!</speed> <speed=30>기관실 전원을 끊으면 비상 제동도 풀 수 없어!</speed>"
+          text: "<speed=64>아니야!</speed> <speed=48>주 전원을 끊으면 비상 제동도 죽어. 그게 범인의 함정이야!</speed>"
           autoAdvance: 1600
       - goto: control_room
 
@@ -204,7 +204,7 @@ scenes:
       - effect: impact
       - say:
           char: 코난.serious
-          text: "<speed=60>찾았다!</speed> <speed=34>폭발 신호는 터널 제어반에서 되풀이되고 있어!</speed>"
+          text: "<speed=60>찾았다!</speed> <speed=34>가짜 정지 신호만 터널 제어반을 돌고 있어. 이걸 끊으면 진짜 제동은 살아!</speed>"
           autoAdvance: 2500
       - clearSticker:
           id: countdown
@@ -228,26 +228,26 @@ scenes:
   final_run:
     actions:
       - say:
-          text: "<speed=74>남은 시간 7초.</speed> <speed=34>제어반 뒤에서 점화음이 울렸다.</speed>"
+          text: "<speed=74>남은 시간 7초.</speed> <speed=34>신호가 꺼지자 제어반 뒤의 계전기가 튀었다.</speed>"
           autoAdvance: 2000
       - sound: thunder
       - effect: impact
       - wait: 600
       - say:
           char: 코고로.angry
-          text: "<speed=78>전부 엎드려!</speed>"
+          text: "<speed=78>누전이다! 전부 엎드려!</speed>"
           autoAdvance: 1800
       - effect: speedlines
       - wait: 700
       - say:
           char: 란.worried
-          text: "<speed=56>코난, 철로가 움직여!</speed> <speed=76>열차가 미끄러지고 있어!</speed>"
+          text: "<speed=56>코난, 정지 표시가 사라졌어!</speed> <speed=76>그런데 열차가 뒤로 미끄러져!</speed>"
           autoAdvance: 2000
       - effect: glitch
       - wait: 600
       - say:
           char: 코난.serious
-          text: "<speed=34>폭탄은 열차가 아니라 분기기에 연결돼 있어.</speed> <speed=68>빨간 레버를 당기면 선로가 잠겨!</speed>"
+          text: "<speed=34>폭탄은 열차가 아니라 분기기에 묶여 있어.</speed> <speed=68>전자 신호가 아닌 빨간 비상 레버를 당겨! 기계식 잠금은 아직 살아 있어!</speed>"
           autoAdvance: 2600
       - sound: door
       - effect: impact
@@ -260,7 +260,7 @@ scenes:
             effect: fadeOut
       - bg: mountain_rain
       - say:
-          text: "<speed=34>폭발 0.3초 전.</speed> <speed=62>열차는 터널 출구를 불과 2미터 남기고 멈췄다.</speed>"
+          text: "<speed=34>폭발 0.3초 전.</speed> <speed=62>분기기가 잠겼고, 열차는 터널 출구 2미터 앞에서 멎었다.</speed>"
           autoAdvance: 2500
 
   tag:
@@ -271,7 +271,7 @@ scenes:
           emotion: worried
       - say:
           char: 란.worried
-          text: "<speed=48>멈췄어...</speed> <speed=30>정말 끝난 거지?</speed>"
+          text: "<speed=48>멈췄어...</speed> <speed=30>이제는 정말 끝난 거지?</speed>"
           autoAdvance: 1800
       - char:
           id: 코난
@@ -280,7 +280,7 @@ scenes:
       - effect: focus
       - say:
           char: 코난.serious
-          text: "<speed=28>아니.</speed> <speed=62>열차를 멈춘 사람과 경고를 보낸 사람은 달라.</speed> <speed=76>이제부터가 사건의 시작이야.</speed>"
+          text: "<speed=28>아니.</speed> <speed=62>세 거짓말은 한 사람을 숨기려고 맞춰져 있었어.</speed> <speed=76>그런데 열차를 가둔 사람과 60초 경고를 보낸 사람은 달라. 이제 사건의 문이 열렸어.</speed>"
           autoAdvance: 2700
       - sticker:
           id: trailer_title

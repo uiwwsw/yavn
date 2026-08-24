@@ -28,10 +28,10 @@ scenes:
           emotion: worried
       - say:
           char: 코난.serious
-          text: "<speed=28>란 누나, 다들 같은 차를 마셨는데 하루오 씨만 쓰러졌어.</speed> <speed=21>주전자보다 2번 잔을 먼저 봐야 해.</speed>"
+          text: "<speed=28>란 누나, 네 잔은 같은 주전자에서 나왔어.</speed> <speed=21>그런데 하루오 씨는 목보다 2번 잔을 먼저 붙잡았어. 그 선택부터 믿어 보자.</speed>"
       - say:
           char: 란.worried
-          text: '<speed=25>쓰러질 때도 잔을 놓지 않았어.</speed> <speed=19>그 "2R"을 꼭 남기려 했던 것 같아.</speed>'
+          text: '<speed=25>마지막까지 그 잔을 놓지 않았어.</speed> <speed=19>어젯밤엔 누구 이름도 빼지 않겠다고 했는데... "2R"도 누군가 지우지 못하게 남긴 거겠지.</speed>'
 
   residue_focus:
     actions:
@@ -48,10 +48,10 @@ scenes:
             effect: blurIn
       - say:
           char: 코난.think
-          text: "<speed=18>(R은 누군가 문지른 흔적이야.</speed> <speed=27>글자보다 잔에 남은 걸 먼저 확인하자.)</speed>"
+          text: "<speed=18>(R만 번진 방향이 달라.</speed> <speed=27>이름을 고르기 전에, 같은 손이 잔에도 닿았는지 보자.)</speed>"
       - choice:
           key: residue_focus_choice
-          prompt: "가장 먼저 확인할 흔적은?"
+          prompt: "사람 이름보다 먼저 고정해야 할 흔적은?"
           options:
             - text: "2번 잔의 안쪽과 가장자리를 비교한다"
               set:
@@ -74,10 +74,10 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=23>역시.</speed> <speed=19>잔 안쪽은 아무 반응이 없어.</speed> <speed=37>입이 닿는 바깥쪽만 변했어.</speed>"
+          text: "<speed=23>잔 안쪽은 깨끗해.</speed> <speed=19>차에 섞였다면 안쪽부터 반응해야 해.</speed> <speed=37>변한 건 입술이 닿는 바깥 가장자리뿐이야.</speed>"
       - choice:
           key: residue_commit_choice
-          prompt: "시약 반응이 뜻하는 것은?"
+          prompt: "안쪽은 음성, 바깥쪽만 양성. 언제 묻었을까?"
           options:
             - text: "마시기 직전 가장자리에 묻었다"
               goto: timeline_gate
@@ -90,7 +90,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=19>(글자만 보고 사람부터 정하면 범인이 바라는 대로야.)</speed>"
+          text: "<speed=19>(불완전한 글자에 이름부터 붙이면, 지운 사람이 만든 결론을 따라가.)</speed>"
       - choice:
           key: residue_rebuttal_choice
           prompt: "어느 쪽을 다시 볼까?"
@@ -116,9 +116,9 @@ scenes:
     actions:
       - say:
           char: 코난
-          text: "<speed=25>란 누나, 비명 전에 천둥이 쳤을 때 복도 시계 봤지?</speed> <speed=19>긴 바늘이 어디 있었는지 기억나?</speed>"
+          text: "<speed=25>란 누나, 아저씨를 부르러 문 쪽을 봤을 때 복도 시계도 보였지?</speed> <speed=19>천둥이 친 순간 긴 바늘이 어디 있었어?</speed>"
       - input:
-          prompt: "비명이 난 시각은? (24시간 형식)"
+          prompt: "란이 본 비명 순간의 시각은? (24시간 형식)"
           correct: "21:30"
           saveAs: timeline_answer
           errors:
@@ -152,10 +152,10 @@ scenes:
       - effect: focus
       - say:
           char: 코난.serious
-          text: "<speed=25>첫 번째 소리에 하루오 씨가 말렸고, 두 번째 소리에 모두가 주전자를 봤어.</speed> <speed=19>그 짧은 순간, 보이지 않게 된 곳은 하나야.</speed>"
+          text: "<speed=25>첫 소리엔 하루오 씨가 레이코 씨를 봤어.</speed> <speed=19>둘째 소리엔 나까지 주전자를 봤고. 그 순간 화면에서 사라진 건 2번 잔 하나야.</speed>"
       - choice:
           key: reconstruction_choice
-          prompt: "두 번 누른 동작의 목적은?"
+          prompt: "두 번째 뚜껑 소리가 모두에게 시킨 일은?"
           options:
             - text: "주전자 안에 독을 넣을 기회"
               add:
@@ -178,10 +178,10 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=25>응.</speed> <speed=19>뚜껑은 수단이 아니라 시선 유도였어.</speed> <speed=37>진짜 손은 2번 잔으로 갔어.</speed>"
+          text: "<speed=25>뚜껑에 뭘 넣은 게 아니야.</speed> <speed=19>두 번째 소리가 사람들의 눈을 한곳에 묶었고, 소리 내지 않은 손은 2번 잔으로 갔어.</speed>"
       - choice:
           key: reconstruction_commit_choice
-          prompt: "9시 29분에 가려진 장면은?"
+          prompt: "비명 직전, 모두의 시야에서 잘린 장면은?"
           options:
             - text: "주전자를 보는 사이 2번 잔에 손이 닿았다"
               goto: deduction_branch
@@ -194,7 +194,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: "<speed=19>(주전자엔 아무 반응이 없었어.</speed> <speed=27>다시 2번 잔을 보자.)</speed>"
+          text: "<speed=19>(주전자는 네 잔 모두 음성.</speed> <speed=27>소리 난 곳이 아니라 안 보였던 곳으로.)</speed>"
       - choice:
           key: reconstruction_rebuttal_choice
           prompt: "어디로 시선을 돌릴까?"
@@ -241,12 +241,12 @@ scenes:
           char: 란.worried
           with:
             - 코난.serious
-          text: "<speed=24>두 번째 소리가 나자 나도 주전자를 봤어.</speed> <speed=19>그때 2번 잔은 아무도 안 보고 있었고.</speed>"
+          text: "<speed=24>탁구공이 두 번 튀었을 때처럼 나도 소리 난 쪽을 봤어.</speed> <speed=19>그때 2번 잔만 모두의 시선 밖에 있었어.</speed>"
       - say:
           char: 코난.serious
           with:
             - 란.worried
-          text: "<speed=28>응.</speed> <speed=21>그 틈을 만들고 바로 손을 뻗은 사람이 있어.</speed>"
+          text: "<speed=28>응.</speed> <speed=21>우연히 생긴 틈이 아니야. 그 1초를 만들고, 미리 고른 잔으로 손을 뻗은 사람이 있어.</speed>"
       - add:
           final_confidence: 1
       - goto: lounge_handoff
@@ -256,7 +256,7 @@ scenes:
       - effect: tilt
       - say:
           char: 코난.think
-          text: "<speed=18>(놓친 장면이 있어.</speed> <speed=27>비명이 나기 직전부터 다시 맞춰 보자.)</speed>"
+          text: "<speed=18>(시각은 잡았는데 손이 비어 있어.</speed> <speed=27>비명 직전, 문밖에서 본 눈이 필요해.)</speed>"
       - add:
           mistake_count: 1
       - goto: lounge_handoff
@@ -271,5 +271,5 @@ scenes:
       - effect: focus
       - say:
           char: 코난.think
-          text: "<speed=22>(다실 안에선 모두가 주전자를 봤어.</speed> <speed=18>문밖에 있던 사람은 뭘 봤을까?)</speed>"
+          text: "<speed=22>(다실 안의 기억은 같은 소리에 잘렸어.</speed> <speed=18>문밖에 있던 사람만 장면 전체를 봤을 거야.)</speed>"
       - goto: /routes/hub/1.yaml

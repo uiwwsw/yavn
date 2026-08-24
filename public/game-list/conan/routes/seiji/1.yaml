@@ -67,12 +67,12 @@ scenes:
           char: 코난.serious
           with:
             - 세이지.cold
-          text: "<speed=25>원본을 넘겨 봐요.</speed> <speed=19>바로 아래 장에도 같은 자리에 2가 눌려 있어요.</speed> <speed=33>나중에 덧쓴 숫자는 아니에요.</speed>"
+          text: "<speed=25>원본을 들지 말고 아래 장과 함께 빛에 비춰 봐요.</speed> <speed=19>같은 자리에 2가 눌려 있어요.</speed> <speed=33>사건 뒤 덧쓴 숫자라면 남을 수 없는 압흔이에요.</speed>"
       - say:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=23>한 장만 보지 않는군요.</speed> <speed=18>좋습니다. 아래 장까지 한 봉투에 넣으세요.</speed>"
+          text: "<speed=23>쓰인 말보다 그 아래 남은 힘까지 보는군요.</speed> <speed=18>좋습니다. 두 장이 떨어지지 않게 같은 봉투에 넣으세요.</speed>"
       - goto: outro
 
   revisit_notice:
@@ -90,7 +90,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.think
-          text: "<speed=25>제 말은 이미 끝났습니다.</speed> <speed=19>의심이 남았다면 원본 밑의 눌린 자국을 보세요.</speed>"
+          text: "<speed=25>제 기억은 이미 한 번 말했습니다.</speed> <speed=19>다시 들을수록 달라질 수 있으니, 원본 밑의 눌린 자국을 보세요.</speed>"
       - goto: /routes/hub/1.yaml
 
   intro:
@@ -114,16 +114,16 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=25>작성 시각 9시 18분.</speed> <speed=19>하루오 씨가 '2번'이라고 말했고, 저는 그대로 적었습니다.</speed>"
+          text: "<speed=25>작성 시각 9시 18분.</speed> <speed=19>하루오 씨가 자기 잔은 ‘2번’이라고 두 번 확인했고, 저는 한 번만 적었습니다.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(압흔도 2.</speed> <speed=30>사건 전부터였어.)</speed>"
+          text: "<speed=18>(잉크 아래 장에도 같은 2.</speed> <speed=30>사건 뒤 바꾼 배정이 아니야.)</speed>"
 
   approach_probe:
     actions:
       - choice:
           key: seiji_approach
-          prompt: "세이지가 봉투를 열게 하려면?"
+          prompt: "기억보다 종이를 믿는 세이지가 봉인을 직접 열게 하려면?"
           options:
             - text: "원본과 바로 아래 장을 함께 확인한다"
               set:
@@ -146,10 +146,10 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=23>그 순서라면 답할 수 있습니다.</speed> <speed=18>제 기억은 빼고, 종이 두 장만 보죠.</speed>"
+          text: "<speed=23>그 순서라면 제가 틀려도 종이가 바로잡겠군요.</speed> <speed=18>제 기억은 빼고, 맞닿아 있던 두 장만 보죠.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(사람보다 기록을 건드려야 입을 열겠어.)</speed>"
+          text: "<speed=18>(자기를 믿어 달라는 게 아니야.</speed> <speed=30>틀린 자기를 고칠 기록을 믿어 달라는 거야.)</speed>"
       - goto: first_input
 
   approach_speculation:
@@ -158,7 +158,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=23>제 기분은 기록하지 않았습니다.</speed> <speed=18>시각, 필체, 압흔. 묻고 싶은 걸 고르세요.</speed>"
+          text: "<speed=23>제가 하루오 씨를 좋아했는지는 이 종이에 없습니다.</speed> <speed=18>시각, 필체, 압흔. 확인할 수 있는 것부터 고르세요.</speed>"
       - goto: first_input
 
   approach_accusation:
@@ -167,7 +167,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=21>결론을 먼저 적으셨군요.</speed> <speed=18>그럼 종이가 당신과 저 중 누구를 지우는지 보죠.</speed>"
+          text: "<speed=21>결론을 먼저 쓰고 제게 서명만 받으려는 거군요.</speed> <speed=18>그럼 원본이 당신 결론과 제 진술 중 무엇을 지우는지 보죠.</speed>"
       - goto: first_input
 
   first_input:
@@ -204,12 +204,12 @@ scenes:
   first_hit_review:
     actions:
       - say:
-          text: "<speed=23>검은 잉크의 2와, 다음 장에 눌린 2가 정확히 겹친다.</speed>"
+          text: "<speed=23>검은 잉크의 2와 바로 아래 장의 압흔이 획의 시작과 끝까지 겹친다.</speed>"
       - say:
           char: 코난.serious
           with:
             - 세이지.cold
-          text: "<speed=26>2번은 하루오 씨가 직접 고른 잔.</speed> <speed=19>종이 두 장이 그 말을 뒷받침해요.</speed>"
+          text: "<speed=26>2번은 하루오 씨가 사건 전에 직접 고른 잔이에요.</speed> <speed=19>세이지 씨 기억이 아니라 맞닿아 있던 두 장이 증명해요.</speed>"
       - choice:
           key: shinichi_first_commit
           prompt: "이 기록을 어떻게 보존할까?"
@@ -230,7 +230,7 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.think
-          text: "<speed=23>저를 보지 말고 종이를 보세요.</speed> <speed=18>하루오 씨 이름 바로 오른쪽입니다.</speed>"
+          text: "<speed=23>제 표정을 읽으려 하지 말고 종이를 보세요.</speed> <speed=18>하루오 씨 이름 오른쪽, 다음 장까지 눌린 숫자입니다.</speed>"
       - choice:
           key: shinichi_first_rebuttal
           prompt: "어느 쪽을 다시 믿을까?"
@@ -246,7 +246,7 @@ scenes:
     actions:
       - say:
           char: 코난.think
-          text: '<speed=18>(2가 잔 번호라면, 이 종이를 보고 썼어.)</speed>'
+          text: '<speed=18>(2가 먼저 정해진 잔 번호라면, 컵받침의 2도 이 배정을 알리고 있어.)</speed>'
       - goto: second_input
 
   second_input:
@@ -288,7 +288,7 @@ scenes:
           char: 코난.serious
           with:
             - 세이지.cold
-          text: "<speed=25>2번.</speed> <speed=19>잉크도 압흔도 사건 전부터 같은 숫자였어요.</speed>"
+          text: "<speed=25>2번.</speed> <speed=19>잉크와 압흔이 모두 비명 전부터 하루오 씨를 같은 잔에 묶고 있었어요.</speed>"
       - choice:
           key: shinichi_second_commit
           prompt: "경찰에게 어떤 상태로 넘길까?"
@@ -324,7 +324,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: '<speed=25>"2"는 사람을 가리킨 게 아니라 하루오 씨의 잔 번호.</speed> <speed=19>이제 지워지다 만 R만 남았어요.</speed>'
+          text: '<speed=25>"2"는 용의자 수나 자리 번호가 아니라 하루오 씨가 고른 잔.</speed> <speed=19>그 다음에 쓴 R만 범인의 이름으로 이어져요.</speed>'
       - goto: outro
 
   fail_line:
@@ -353,15 +353,15 @@ scenes:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=23>원본과 아래 장, 둘 다 넣겠습니다.</speed> <speed=18>둘을 떼는 순간 압흔은 증거가 아니라 제 주장이 되니까요.</speed>"
+          text: "<speed=23>원본과 아래 장을 맞닿은 그대로 넣겠습니다.</speed> <speed=18>둘을 떼는 순간 압흔의 자리가 제 기억에 기대게 되니까요.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>네.</speed> <speed=19>제가 입회했다는 것도 그대로 적어 주세요.</speed>"
+          text: "<speed=25>네.</speed> <speed=19>제가 어느 방향에서 봤는지와 손대지 않았다는 것도 함께 적어 주세요.</speed>"
       - say:
           char: 세이지.cold
           with:
             - 코난.serious
-          text: "<speed=23>9시 46분, 코난 군 입회 아래 봉인.</speed> <speed=18>그 시각도 적겠습니다.</speed>"
+          text: "<speed=23>9시 46분, 코난 군 입회 아래 두 장을 같은 방향으로 봉인.</speed> <speed=18>지금 시각과 제 손 위치까지 적겠습니다.</speed>"
       - goto: /routes/hub/1.yaml
 
   outro_closed:

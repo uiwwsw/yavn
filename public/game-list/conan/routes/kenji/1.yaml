@@ -71,17 +71,17 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=25>통화 내역만 보지 마.</speed> <speed=19>문밖에서 보니 두 번째 뚜껑 소리에 안쪽 사람들 시선이 전부 주전자로 쏠렸어.</speed>"
+          text: "<speed=25>통화 내역으로 날 빼는 데서 끝내지 마.</speed> <speed=19>문밖에서 본 건, 두 번째 뚜껑 소리에 안쪽 사람들 눈이 한꺼번에 주전자로 돌아간 장면이야.</speed>"
       - say:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=25>그리고 내가 하루오와 나눈 거래 얘기도 끝까지 적어.</speed> <speed=19>레이코는 앞부분만 들었어.</speed> <speed=18>하루오는 이름 하나라도 빼면 거래하지 않겠다고 내 제안을 거절했어.</speed>"
+          text: "<speed=25>내가 하루오에게 원본 값을 부른 것도 끝까지 적어.</speed> <speed=19>레이코는 앞부분만 들었어.</speed> <speed=18>하지만 하루오는 만든 사람 이름 하나라도 빼면 거래하지 않겠다고 내 제안을 거절했어.</speed>"
       - say:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "<speed=25>두 번의 소리와 거절한 뒷말.</speed> <speed=19>통화 시각과 거래 진술, 둘 다 잘리지 않게 경찰에게 넘길게요.</speed>"
+          text: "<speed=25>문밖에서 본 두 번째 소리, 그리고 레이코 씨가 못 들은 뒷말.</speed> <speed=19>켄지 씨에게 불리한 앞말까지 전부 같은 순서로 경찰에게 넘길게요.</speed>"
       - goto: /routes/hub/1.yaml
 
   revisit_notice:
@@ -128,18 +128,18 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=35>그래, 하루오와 돈 얘기했다!</speed> <speed=21>원본 노트를 넘기면 기존 투자금에 웃돈을 얹겠다고 내가 먼저 제안했어.</speed>"
+          text: "<speed=35>그래, 내가 먼저 값을 불렀다!</speed> <speed=21>원본 노트를 넘기면 투자금 손실을 덮고 웃돈까지 얹겠다고 하루오에게 제안했어.</speed>"
       - say:
           char: 코고로.angry
           with:
             - 켄지.angry
-          text: "<speed=28>그 제안, 경찰 앞에서도 한 글자 빼지 마.</speed> <speed=21>지금은 9시 30분에 네 발이 어디 있었는지부터다.</speed>"
+          text: "<speed=28>돈 얘기도 거절당한 얘기도 경찰 앞에서 한 글자 빼지 마.</speed> <speed=21>지금은 9시 30분, 네 발과 두 손이 어디 있었는지부터다.</speed>"
 
   approach_probe:
     actions:
       - choice:
           key: kenji_approach
-          prompt: "켄지에게서 거래 전부를 들으려면?"
+          prompt: "자기 말이 잘리는 걸 두려워하는 켄지에게 뒷말까지 들으려면?"
           options:
             - text: "통화 기록과 계약 진술을 한 묶음으로 남긴다"
               set:
@@ -161,10 +161,10 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=28>좋아, 그 조건이면 말하지.</speed> <speed=19>통화 내역을 먼저 확인해.</speed> <speed=33>대신 계약 얘기도 전부 적어. 유리한 부분만 자르지 말고.</speed>"
+          text: "<speed=28>좋아, 그 조건이면 말하지.</speed> <speed=19>통화 내역으로 내 위치를 먼저 확인해.</speed> <speed=33>대신 내가 값을 부른 앞말과 하루오가 거절한 뒷말을 한 줄도 자르지 마.</speed>"
       - say:
           char: 코난.think
-          text: "<speed=18>(화가 나도 조건부터 말해.</speed> <speed=30>그 방식으로 묻자.)</speed>"
+          text: "<speed=18>(분노보다 자기 말이 잘리는 걸 먼저 막아.</speed> <speed=30>문장 끝까지 보장하면 입을 열어.)</speed>"
       - goto: first_probe
 
   approach_tone:
@@ -173,7 +173,7 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=39>사람이 죽었는데 예의부터 따질 셈이야?</speed> <speed=19>묻고 싶은 걸 묻든가, 비켜.</speed>"
+          text: "<speed=39>사람이 죽었는데 내 말투부터 고칠 셈이야?</speed> <speed=19>시간을 묻든 거래를 묻든 하나를 끝까지 물어.</speed>"
       - goto: first_probe
 
   approach_accusation:
@@ -183,7 +183,7 @@ scenes:
           delivery: shout
           with:
             - 코난.serious
-          text: "<speed=42>가격을 불렀다고 사람까지 샀다는 거야?</speed> <speed=19>거래와 살인을 같은 줄에 적지 마!</speed>"
+          text: "<speed=42>원본에 가격을 붙였다고 사람 목숨에도 가격을 붙였다는 거야?</speed> <speed=19>내가 한 추한 거래와 하지 않은 살인을 같은 줄에 적지 마!</speed>"
       - goto: first_probe
 
   first_probe:
@@ -192,7 +192,7 @@ scenes:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "<speed=25>비명 직전 7분 동안, 켄지 씨 휴대전화는 복도 기지국에 잡혔죠?</speed>"
+          text: "<speed=25>9시 24분부터 31분까지, 켄지 씨 전화는 복도 쪽 수신기에 계속 잡혔죠?</speed>"
       - choice:
           key: kenji_first_probe
           prompt: "복도에 있었다는 걸 확인할 것은?"
@@ -217,7 +217,7 @@ scenes:
           char: 코난.serious
           with:
             - 켄지.angry
-          text: "<speed=25>9시 24분 연결, 31분 종료.</speed> <speed=19>비명이 난 30분에도 통화는 끊기지 않았어요.</speed>"
+          text: "<speed=25>9시 24분 연결, 31분 종료.</speed> <speed=19>비명이 난 30분에도 통화는 이어졌고, 상대방 답변 시각도 맞아요.</speed>"
       - choice:
           key: kenji_first_commit
           prompt: "이 7분이 증명하는 것은?"
@@ -233,7 +233,7 @@ scenes:
           char: 코난.think
           with:
             - 켄지.angry
-          text: "<speed=19>(분노와 기회는 달라.</speed> <speed=30>그 7분을 보자.)</speed>"
+          text: "<speed=19>(동기는 목소리에 보여도 기회는 시각으로 가려야 해.</speed> <speed=30>끊기지 않은 7분.)</speed>"
       - choice:
           key: kenji_first_rebuttal
           prompt: "무엇으로 7분을 다시 확인할까?"
@@ -259,7 +259,7 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=25>통화하며 다실 문까지 돌아왔을 때였어.</speed> <speed=19>하루오가 '건드리지 마'라고 했는데, 레이코가 보란 듯 뚜껑을 두 번 눌렀지.</speed>"
+          text: "<speed=25>통화한 채 다실 문까지 돌아왔을 때였어.</speed> <speed=19>하루오가 뚜껑을 건드리지 말랬는데, 레이코가 그를 쳐다보며 한 번, 모두가 돌아보자 또 눌렀지.</speed>"
       - choice:
           key: kenji_second_probe
           prompt: "문밖의 켄지만 볼 수 있었던 것은?"
@@ -285,10 +285,10 @@ scenes:
   second_claim_correct:
     actions:
       - say:
-          text: "<speed=23>켄지는 문밖이라 다실 전체를 봤어.</speed> <speed=18>안에 있던 사람들은 두 번째 소리에 주전자만 봤고.</speed>"
+          text: "<speed=23>켄지 씨는 문밖이라 소리보다 다실 전체를 봤어.</speed> <speed=18>안에 있던 사람들은 두 번째 소리 때문에 주전자만 봤고.</speed>"
       - say:
           char: 코난.serious
-          text: "<speed=25>켄지 씨 손은 그때 휴대전화에 있었어요.</speed> <speed=19>하지만 문밖에서 본 '모두의 시선'은 남겨야 해요.</speed>"
+          text: "<speed=25>켄지 씨 한 손은 전화, 다른 손은 문틀에 있었어요.</speed> <speed=19>알리바이뿐 아니라 그때 모두의 눈이 어디 있었는지도 남겨야 해요.</speed>"
       - choice:
           key: kenji_second_commit
           prompt: "그 목격을 어떻게 보존할까?"
@@ -324,7 +324,7 @@ scenes:
     actions:
       - say:
           char: 코난.serious
-          text: "<speed=22>(동기는 있어도 기회가 없어.</speed> <speed=19>9시 29분엔 불가능해.)</speed>"
+          text: "<speed=22>(원본을 살 동기는 있었어.</speed> <speed=19>하지만 9시 29분, 2번 잔에 닿을 기회는 없어.)</speed>"
       - goto: outro
 
   fail_line:
@@ -355,10 +355,10 @@ scenes:
           char: 켄지.angry
           with:
             - 코난.serious
-          text: "<speed=25>통화 내역은 가져가.</speed> <speed=19>대신 거래 제안도 전부 적어.</speed> <speed=18>하루오는 만든 사람 이름을 하나라도 빼면 안 판다고 거절했어.</speed>"
+          text: "<speed=25>통화 내역은 가져가.</speed> <speed=19>대신 내 제안도, 내가 거절당한 것도 전부 적어.</speed> <speed=18>하루오는 만든 사람 이름을 하나라도 빼면 안 판다고 했어. 그게 내가 들은 마지막 완전한 문장이야.</speed>"
       - say:
           char: 코난
-          text: "<speed=25>통화도 거래도, 말한 순서 그대로 남길게요.</speed>"
+          text: "<speed=25>켄지 씨에게 불리한 말까지, 잘리지 않게 말한 순서 그대로 남길게요.</speed>"
       - goto: /routes/hub/1.yaml
 
   outro_closed:
