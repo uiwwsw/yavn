@@ -1,4 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import {
   BACKGROUND_CROSSFADE_DURATION_MS,
   EMPTY_BACKGROUND_TRANSITION,
@@ -12,7 +13,15 @@ const BACKGROUND_READY_TIMEOUT_MS = 12000;
 // React 18 forwards the standards-based lowercase attribute without warning.
 const HIGH_PRIORITY_IMAGE_PROPS = { fetchpriority: 'high' } as const;
 
-export const BackgroundTransition = memo(function BackgroundTransition({ source }: { source?: string }) {
+export const BackgroundTransition = memo(function BackgroundTransition({
+  source,
+  durationMs = BACKGROUND_CROSSFADE_DURATION_MS,
+  easing = 'cubic-bezier(0.2, 0.72, 0.24, 1)',
+}: {
+  source?: string;
+  durationMs?: number;
+  easing?: string;
+}) {
   const [presentation, setPresentation] = useState(EMPTY_BACKGROUND_TRANSITION);
   const pendingImageRef = useRef<HTMLImageElement | null>(null);
   const latestSourceRef = useRef(source);
@@ -68,10 +77,10 @@ export const BackgroundTransition = memo(function BackgroundTransition({ source 
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const timer = window.setTimeout(
       () => setPresentation((previous) => finishBackgroundTransition(previous, currentSource)),
-      reducedMotion ? 0 : BACKGROUND_CROSSFADE_DURATION_MS + 40,
+      reducedMotion ? 0 : durationMs + 40,
     );
     return () => window.clearTimeout(timer);
-  }, [presentation.current, presentation.previous, presentation.revision]);
+  }, [durationMs, presentation.current, presentation.previous, presentation.revision]);
 
   const layers = collectBackgroundLayerSources(presentation, source);
   return (
@@ -98,6 +107,10 @@ export const BackgroundTransition = memo(function BackgroundTransition({ source 
             data-background-transitioning={transitioning ? 'true' : 'false'}
             loading="eager"
             decoding="async"
+            style={{
+              '--background-crossfade-duration': `${durationMs}ms`,
+              '--background-crossfade-easing': easing,
+            } as CSSProperties}
           />
         );
       })}

@@ -21,6 +21,17 @@ import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live
 import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url';
 import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
 import { BackgroundTransition } from './BackgroundTransition';
+import { BACKGROUND_CROSSFADE_DURATION_MS } from './assetTransition';
+import {
+  CATCH_UP_TEMPO_RELEASE_MS,
+  isRapidManualAdvance,
+  isQueuedManualAdvanceFresh,
+  resolveAdaptiveExitFadeDuration,
+  resolveAdaptiveLayoutSettleDuration,
+  resolveAdaptiveMotionEasing,
+  resolveAdaptiveMotionTiming,
+  type PlaybackMotionTempo,
+} from './advanceMotion';
 import {
   completeVideoCutscene,
   exportSaveBackup,
@@ -137,6 +148,7 @@ const MOTION_LAYER_RELEASE_BUFFER_MS = 64;
 function useTransientMotionWindow(motionKey: string, durationMs: number): boolean {
   const previousMotionKeyRef = useRef(motionKey);
   const releaseTimerRef = useRef<number | null>(null);
+  const motionActiveRef = useRef(false);
   const [motionActive, setMotionActive] = useState(false);
 
   useLayoutEffect(() => {
@@ -148,16 +160,26 @@ function useTransientMotionWindow(motionKey: string, durationMs: number): boolea
     }
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!changed || reducedMotion || durationMs <= 0) {
+    if (reducedMotion || durationMs <= 0) {
+      motionActiveRef.current = false;
       setMotionActive((current) => (current ? false : current));
       return;
     }
 
-    // Layout effects flush before paint. Promoting here gives the compositor the
-    // old painted frame and the new transform in the same transition boundary.
-    setMotionActive(true);
+    if (changed) {
+      // Layout effects flush before paint. Promoting here gives the compositor the
+      // old painted frame and the new transform in the same transition boundary.
+      motionActiveRef.current = true;
+      setMotionActive(true);
+    } else if (!motionActiveRef.current) {
+      return;
+    }
+
+    // If a motion lifetime is recalculated before release, keep the compositor
+    // class mounted and move only its cleanup deadline.
     releaseTimerRef.current = window.setTimeout(() => {
       releaseTimerRef.current = null;
+      motionActiveRef.current = false;
       setMotionActive(false);
     }, Math.ceil(durationMs) + MOTION_LAYER_RELEASE_BUFFER_MS);
 
@@ -170,6 +192,79 @@ function useTransientMotionWindow(motionKey: string, durationMs: number): boolea
   }, [durationMs, motionKey]);
 
   return motionActive;
+}
+
+function useManualAdvanceTempo() {
+  const [motionTempo, setMotionTempo] = useState<PlaybackMotionTempo>('normal');
+  const lastAdvanceAtRef = useRef<number>();
+  const releaseTimerRef = useRef<number | null>(null);
+
+  const clearReleaseTimer = useCallback(() => {
+    if (releaseTimerRef.current !== null) {
+      window.clearTimeout(releaseTimerRef.current);
+      releaseTimerRef.current = null;
+    }
+  }, []);
+
+  const sustainCatchUp = useCallback(() => {
+    clearReleaseTimer();
+    setMotionTempo('catch-up');
+    releaseTimerRef.current = window.setTimeout(() => {
+      releaseTimerRef.current = null;
+      setMotionTempo('normal');
+    }, CATCH_UP_TEMPO_RELEASE_MS);
+  }, [clearReleaseTimer]);
+
+  const registerManualAdvance = useCallback((): PlaybackMotionTempo => {
+    const currentAdvanceAt = performance.now();
+    const rapid = isRapidManualAdvance(lastAdvanceAtRef.current, currentAdvanceAt);
+    lastAdvanceAtRef.current = currentAdvanceAt;
+    if (rapid) {
+      sustainCatchUp();
+      return 'catch-up';
+    }
+    clearReleaseTimer();
+    setMotionTempo('normal');
+    return 'normal';
+  }, [clearReleaseTimer, sustainCatchUp]);
+
+  const resetManualAdvanceTempo = useCallback(() => {
+    clearReleaseTimer();
+    lastAdvanceAtRef.current = undefined;
+    setMotionTempo('normal');
+  }, [clearReleaseTimer]);
+
+  useEffect(() => () => clearReleaseTimer(), [clearReleaseTimer]);
+
+  return {
+    motionTempo,
+    registerManualAdvance,
+    sustainCatchUp,
+    resetManualAdvanceTempo,
+  };
+}
+
+function useLatchedMotionTempo(
+  motionKey: string,
+  motionTempo: PlaybackMotionTempo,
+): PlaybackMotionTempo {
+  const [latchedMotion, setLatchedMotion] = useState(() => ({
+    key: motionKey,
+    tempo: motionTempo,
+  }));
+  const effectiveMotionTempo = latchedMotion.key === motionKey
+    ? latchedMotion.tempo
+    : motionTempo;
+
+  useLayoutEffect(() => {
+    setLatchedMotion((current) => (
+      current.key === motionKey
+        ? current
+        : { key: motionKey, tempo: motionTempo }
+    ));
+  }, [motionKey, motionTempo]);
+
+  return effectiveMotionTempo;
 }
 
 const DialogueText = memo(function DialogueText() {
@@ -945,7 +1040,7 @@ function LegalNoticeList({
   );
 }
 
-function useAdvanceByKey(advanceLocked: boolean) {
+function useAdvanceByKey(advanceLocked: boolean, onAdvance: () => void) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -969,12 +1064,12 @@ function useAdvanceByKey(advanceLocked: boolean) {
           return;
         }
         unlockAudioFromGesture();
-        handleAdvance();
+        onAdvance();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [advanceLocked]);
+  }, [advanceLocked, onAdvance]);
 }
 
 type LockedStickerFit = StickerFit & {
@@ -993,16 +1088,19 @@ const StickerView = memo(function StickerView({
   sticker,
   avoidanceKey,
   avoidanceSettleMs,
+  motionTempo,
 }: {
   sticker: StickerSlot;
   avoidanceKey: string;
   avoidanceSettleMs: number;
+  motionTempo: PlaybackMotionTempo;
 }) {
   const stickerRef = useRef<HTMLDivElement | null>(null);
   const [safeFit, setSafeFit] = useState<LockedStickerFit | null>(null);
   const [layoutMotionReady, setLayoutMotionReady] = useState(false);
   const [resolvedAvoidanceKey, setResolvedAvoidanceKey] = useState('');
   const [layoutReflowing, setLayoutReflowing] = useState(false);
+  const [entryComplete, setEntryComplete] = useState(sticker.enterEffect === 'none');
   const layoutLockedRef = useRef(false);
   const imageReadyRef = useRef(false);
   const settleTimerRef = useRef<number | null>(null);
@@ -1011,6 +1109,29 @@ const StickerView = memo(function StickerView({
   const lockedStageSizeRef = useRef<StickerStageSize | null>(null);
   const previousObstacleRectsRef = useRef<StickerLayoutRect[] | null>(null);
   const previousAvoidanceKeyRef = useRef(avoidanceKey);
+  const stickerEntryExitMotionTempo = useLatchedMotionTempo(
+    `${sticker.renderKey}:${sticker.leaving ? 'leave' : 'enter'}`,
+    motionTempo,
+  );
+  const stickerLayoutMotionTempo = useLatchedMotionTempo(avoidanceKey, motionTempo);
+  const stickerEnterTiming = resolveAdaptiveMotionTiming(
+    sticker.enterDuration,
+    sticker.enterDelay,
+    stickerEntryExitMotionTempo,
+  );
+  const stickerEnterEasing = resolveAdaptiveMotionEasing(
+    sticker.enterEasing,
+    stickerEntryExitMotionTempo,
+  );
+  const stickerLeaveTiming = resolveAdaptiveMotionTiming(
+    sticker.leaveDuration,
+    sticker.leaveDelay,
+    stickerEntryExitMotionTempo,
+  );
+  const stickerLeaveEasing = resolveAdaptiveMotionEasing(
+    sticker.leaveEasing,
+    stickerEntryExitMotionTempo,
+  );
   const translateX =
     sticker.anchorX === 'left' ? '0%' : sticker.anchorX === 'right' ? '-100%' : '-50%';
   const translateY =
@@ -1315,6 +1436,7 @@ const StickerView = memo(function StickerView({
       data-layout-ready={layoutReady ? 'true' : 'false'}
       data-layout-motion={layoutReady && layoutMotionReady ? 'true' : 'false'}
       data-layout-reflow={layoutReady && layoutReflowing ? 'true' : 'false'}
+      data-motion-tempo={stickerLayoutMotionTempo}
       onAnimationEnd={(event) => {
         if (event.animationName === 'stickerSafeReflowReveal') {
           setLayoutReflowing(false);
@@ -1329,22 +1451,34 @@ const StickerView = memo(function StickerView({
         zIndex: sticker.zIndex,
         transform: fittedTransform,
         transformOrigin: 'center center',
-        '--sticker-enter-duration': `${sticker.enterDuration}ms`,
-        '--sticker-enter-easing': sticker.enterEasing,
-        '--sticker-enter-delay': `${sticker.enterDelay}ms`,
-        '--sticker-leave-duration': `${sticker.leaveDuration}ms`,
-        '--sticker-leave-easing': sticker.leaveEasing,
-        '--sticker-leave-delay': `${sticker.leaveDelay}ms`,
+        '--sticker-enter-duration': `${stickerEnterTiming.duration}ms`,
+        '--sticker-enter-easing': stickerEnterEasing,
+        '--sticker-enter-delay': `${stickerEnterTiming.delay}ms`,
+        '--sticker-leave-duration': `${stickerLeaveTiming.duration}ms`,
+        '--sticker-leave-easing': stickerLeaveEasing,
+        '--sticker-leave-delay': `${stickerLeaveTiming.delay}ms`,
       } as CSSProperties}
     >
       <img
-        className={`sticker-visual ${sticker.leaving ? `sticker-leave-${sticker.leaveEffect}` : `sticker-enter-${sticker.enterEffect}`}`}
+        className={[
+          'sticker-visual',
+          sticker.leaving
+            ? `sticker-leave-${sticker.leaveEffect}`
+            : entryComplete
+              ? ''
+              : `sticker-enter-${sticker.enterEffect}`,
+        ].filter(Boolean).join(' ')}
         src={sticker.source}
         alt={sticker.id}
         loading="eager"
         decoding="async"
         onLoad={markImageReady}
         onError={markImageReady}
+        onAnimationEnd={() => {
+          if (!sticker.leaving) {
+            setEntryComplete(true);
+          }
+        }}
         style={{
           width: sticker.width ? '100%' : undefined,
           height: sticker.height ? '100%' : undefined,
@@ -1495,9 +1629,38 @@ export default function App() {
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const [presentedVisibleCharacterIds, setPresentedVisibleCharacterIds] = useState<string[]>([]);
   const [layoutVisibleCharacterIds, setLayoutVisibleCharacterIds] = useState<string[]>([]);
+  const {
+    motionTempo,
+    registerManualAdvance,
+    sustainCatchUp,
+    resetManualAdvanceTempo,
+  } = useManualAdvanceTempo();
+  const backgroundMotionTempo = useLatchedMotionTempo(background ?? '', motionTempo);
+  const backgroundTransitionTiming = resolveAdaptiveMotionTiming(
+    BACKGROUND_CROSSFADE_DURATION_MS,
+    0,
+    backgroundMotionTempo,
+  );
+  const backgroundTransitionEasing = resolveAdaptiveMotionEasing(
+    'cubic-bezier(0.2, 0.72, 0.24, 1)',
+    backgroundMotionTempo,
+  );
+  const characterVisibilityMotionKey = useMemo(
+    () => presentedVisibleCharacterIds.join('::'),
+    [presentedVisibleCharacterIds],
+  );
+  const characterVisibilityMotionTempo = useLatchedMotionTempo(
+    characterVisibilityMotionKey,
+    motionTempo,
+  );
+  const characterLeaveDurationMs = resolveAdaptiveExitFadeDuration(
+    CHARACTER_EXIT_FADE_DURATION_MS,
+    characterVisibilityMotionTempo,
+  );
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
   const characterVisibilityFrameRef = useRef<number | null>(null);
   const characterLayoutReleaseTimerRef = useRef<number | null>(null);
+  const queuedManualAdvanceAtRef = useRef<number | null>(null);
   const recoveredChoiceWasPresentedRef = useRef(false);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
@@ -1761,7 +1924,57 @@ export default function App() {
     };
   }, [gameShellLocked]);
 
-  useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver));
+  const handleManualAdvance = useCallback(() => {
+    const nextTempo = registerManualAdvance();
+    const current = useVNStore.getState();
+    if (current.busy && nextTempo === 'catch-up') {
+      // Do not discard deliberate repeated input during a short authored lock.
+      // Keep only one request so a held key cannot race through several lines.
+      queuedManualAdvanceAtRef.current = performance.now();
+      return;
+    }
+    queuedManualAdvanceAtRef.current = null;
+    handleAdvance();
+  }, [registerManualAdvance]);
+
+  useEffect(() => {
+    if (busy || queuedManualAdvanceAtRef.current === null) {
+      return;
+    }
+    const queuedAt = queuedManualAdvanceAtRef.current;
+    queuedManualAdvanceAtRef.current = null;
+    if (
+      !isQueuedManualAdvanceFresh(queuedAt, performance.now())
+      || settingsOpen
+      || dialogUiHidden
+      || chapterLoading
+      || Boolean(gameOver)
+      || isFinished
+      || videoCutscene.active
+      || inputGate.active
+      || choiceGate.active
+    ) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      sustainCatchUp();
+      handleAdvance();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [
+    busy,
+    chapterLoading,
+    choiceGate.active,
+    dialogUiHidden,
+    gameOver,
+    inputGate.active,
+    isFinished,
+    settingsOpen,
+    sustainCatchUp,
+    videoCutscene.active,
+  ]);
+
+  useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver), handleManualAdvance);
 
   useLayoutEffect(() => {
     if (characterVisibilityFrameRef.current !== null) {
@@ -1823,7 +2036,7 @@ export default function App() {
     characterLayoutReleaseTimerRef.current = window.setTimeout(() => {
       characterLayoutReleaseTimerRef.current = null;
       setLayoutVisibleCharacterIds(nextLayoutCharacterIds);
-    }, CHARACTER_EXIT_FADE_DURATION_MS);
+    }, characterLeaveDurationMs);
 
     return () => {
       if (characterLayoutReleaseTimerRef.current !== null) {
@@ -1831,7 +2044,7 @@ export default function App() {
         characterLayoutReleaseTimerRef.current = null;
       }
     };
-  }, [layoutVisibleCharacterIds, presentedVisibleCharacterIds]);
+  }, [characterLeaveDurationMs, layoutVisibleCharacterIds, presentedVisibleCharacterIds]);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -2323,35 +2536,56 @@ export default function App() {
     () => stagedCharactersByPosition.filter((entry) => enteringCharacterSet.has(entry.slot.id)),
     [enteringCharacterSet, stagedCharactersByPosition],
   );
-  const characterEnterLayout = enteringCharactersByPosition.length === 0
-    ? 'idle'
-    : enteringCharactersByPosition.some((entry) => entry.slot.enterLayout === 'push')
-      ? 'push'
-      : 'cut';
   const characterEnterLayoutTiming = useMemo(
     () => enteringCharactersByPosition.reduce(
       (timing, entry) => {
         if (entry.slot.enterLayout !== 'push') {
           return timing;
         }
-        const total = entry.slot.enterDelay + entry.slot.enterDuration;
+        const adaptiveTiming = resolveAdaptiveMotionTiming(
+          entry.slot.enterDuration,
+          entry.slot.enterDelay,
+          characterVisibilityMotionTempo,
+        );
+        const total = adaptiveTiming.delay + adaptiveTiming.duration;
         return total >= timing.total
           ? {
-              duration: entry.slot.enterDuration,
-              easing: entry.slot.enterEasing,
-              delay: entry.slot.enterDelay,
+              duration: adaptiveTiming.duration,
+              easing: resolveAdaptiveMotionEasing(
+                entry.slot.enterEasing,
+                characterVisibilityMotionTempo,
+              ),
+              delay: adaptiveTiming.delay,
               total,
             }
           : timing;
       },
       { duration: 0, easing: 'ease-out', delay: 0, total: -1 },
     ),
-    [enteringCharactersByPosition],
+    [characterVisibilityMotionTempo, enteringCharactersByPosition],
   );
   const characterEnterMotionDurationMs = enteringCharactersByPosition.reduce(
-    (duration, entry) => Math.max(duration, entry.slot.enterDelay + entry.slot.enterDuration),
+    (duration, entry) => {
+      const timing = resolveAdaptiveMotionTiming(
+        entry.slot.enterDuration,
+        entry.slot.enterDelay,
+        characterVisibilityMotionTempo,
+      );
+      return Math.max(duration, timing.delay + timing.duration);
+    },
     0,
   );
+  const characterEntranceMotionActive = useTransientMotionWindow(
+    characterVisibilityMotionKey,
+    enteringCharactersByPosition.length > 0
+      ? Math.max(1, characterEnterMotionDurationMs)
+      : 0,
+  );
+  const characterEnterLayout = !characterEntranceMotionActive
+    ? 'idle'
+    : enteringCharactersByPosition.some((entry) => entry.slot.enterLayout === 'push')
+      ? 'push'
+      : 'cut';
   const visibleCharactersByPosition = useMemo(
     () => stagedCharactersByPosition.filter((entry) => visibleCharacterSet.has(entry.slot.id)),
     [stagedCharactersByPosition, visibleCharacterSet],
@@ -2412,10 +2646,35 @@ export default function App() {
       visibleCharacterCount,
     ],
   );
-  const cameraTransitionTiming = useMemo(
+  const cameraMotionKey = useMemo(() => [
+    cameraPresentation.scale,
+    cameraPresentation.mobileScale,
+    cameraPresentation.panX,
+    cameraPresentation.mobilePanX,
+  ].join('::'), [cameraPresentation]);
+  const cameraMotionTempo = useLatchedMotionTempo(cameraMotionKey, motionTempo);
+  const authoredCameraTransitionTiming = useMemo(
     () => resolveStageCameraTransitionTiming(cameraPresentation, visibleCharacterCount),
     [cameraPresentation, visibleCharacterCount],
   );
+  const cameraTransitionTiming = useMemo(() => {
+    if (cameraMotionTempo === 'normal') {
+      return authoredCameraTransitionTiming;
+    }
+    const adaptiveTiming = resolveAdaptiveMotionTiming(
+      cameraPresentation.duration,
+      0,
+      cameraMotionTempo,
+    );
+    return {
+      cameraDelay: 0,
+      cameraDuration: adaptiveTiming.duration,
+      characterExitDuration: resolveAdaptiveExitFadeDuration(
+        authoredCameraTransitionTiming.characterExitDuration,
+        cameraMotionTempo,
+      ),
+    };
+  }, [authoredCameraTransitionTiming, cameraMotionTempo, cameraPresentation.duration]);
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialogSpeakerId;
@@ -2431,15 +2690,24 @@ export default function App() {
     '--stage-camera-pan-x-mobile': cameraPresentation.mobilePanX,
     '--stage-camera-origin-y': `${cameraPresentation.originY}%`,
     '--stage-camera-origin-y-mobile': `${cameraPresentation.mobileOriginY}%`,
-    '--stage-camera-duration': `${cameraPresentation.duration}ms`,
+    '--stage-camera-duration': `${cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration}ms`,
     '--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`,
     '--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`,
+    '--stage-camera-motion-easing': resolveAdaptiveMotionEasing(
+      'cubic-bezier(0.2, 0.72, 0.24, 1)',
+      cameraMotionTempo,
+    ),
     '--character-exit-duration': `${cameraTransitionTiming.characterExitDuration}ms`,
-    '--character-leave-duration': `${CHARACTER_EXIT_FADE_DURATION_MS}ms`,
+    '--character-leave-duration': `${characterLeaveDurationMs}ms`,
     '--character-enter-layout-duration': `${characterEnterLayoutTiming.duration}ms`,
     '--character-enter-layout-easing': characterEnterLayoutTiming.easing,
     '--character-enter-layout-delay': `${characterEnterLayoutTiming.delay}ms`,
-  } as CSSProperties), [cameraPresentation, cameraTransitionTiming, characterEnterLayoutTiming]);
+  } as CSSProperties), [
+    cameraPresentation,
+    cameraTransitionTiming,
+    characterEnterLayoutTiming,
+    characterLeaveDurationMs,
+  ]);
   const stagedCharacterMotionKey = useMemo(
     () => stagedCharactersByPosition.map(({ position, slot }) => [
       position,
@@ -2530,8 +2798,15 @@ export default function App() {
     stagedCharacterMotionKey,
     stickerSafeInset,
   ]);
+  const stickerAvoidanceMotionTempo = useLatchedMotionTempo(
+    stickerAvoidanceKey,
+    motionTempo,
+  );
   const stickerAvoidanceSettleMs = Math.max(
-    STICKER_CHARACTER_LAYOUT_SETTLE_MS,
+    resolveAdaptiveLayoutSettleDuration(
+      STICKER_CHARACTER_LAYOUT_SETTLE_MS,
+      stickerAvoidanceMotionTempo,
+    ),
     characterEnterMotionDurationMs,
     cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration,
     cameraTransitionTiming.characterExitDuration,
@@ -2539,12 +2814,6 @@ export default function App() {
   // Manual dialog hiding collapses the prompt baseline through a zero inset, while
   // system overlays retain the last measurement. Suppress only an unmeasured visible dialog.
   const promptTopBaselineReady = isDialogHidden || stickerSafeInset > 0;
-  const cameraMotionKey = useMemo(() => [
-    cameraPresentation.scale,
-    cameraPresentation.mobileScale,
-    cameraPresentation.panX,
-    cameraPresentation.mobilePanX,
-  ].join('::'), [cameraPresentation]);
   const cameraMotionDurationMs = cameraTransitionTiming.cameraDelay
     + cameraTransitionTiming.cameraDuration;
   const cameraMotionActive = useTransientMotionWindow(
@@ -2563,6 +2832,10 @@ export default function App() {
       cameraMotionDurationMs,
       cameraTransitionTiming.characterExitDuration,
     ),
+  );
+  const characterStageMotionTempo = useLatchedMotionTempo(
+    characterMotionKey,
+    motionTempo,
   );
   const orderedCharacters = useMemo(
     () => [...visibleCharactersByPosition].sort((a, b) => {
@@ -3170,7 +3443,9 @@ export default function App() {
       return null;
     }
     const isCameraVisible = visibleCharacterSet.has(slot.id);
-    const isEntering = isCameraVisible && enteringCharacterSet.has(slot.id);
+    const isEntering = isCameraVisible
+      && characterEntranceMotionActive
+      && enteringCharacterSet.has(slot.id);
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isFocused = hasFocusedCharacter && focusCharacterId === slot.id;
@@ -3207,6 +3482,11 @@ export default function App() {
       ),
     };
     const duoClass = placement.duoSide ? `char-duo-${placement.duoSide}` : '';
+    const characterEnterTiming = resolveAdaptiveMotionTiming(
+      slot.enterDuration,
+      slot.enterDelay,
+      characterVisibilityMotionTempo,
+    );
     const charStyle = {
       zIndex,
       '--char-scale': framingScale * slot.calibration.scale,
@@ -3218,9 +3498,12 @@ export default function App() {
       '--char-framing-y': `${slot.framing.y}%`,
       '--char-calibration-x': `${slot.calibration.x}%`,
       '--char-calibration-y': `${slot.calibration.y}%`,
-      '--character-enter-duration': `${slot.enterDuration}ms`,
-      '--character-enter-easing': slot.enterEasing,
-      '--character-enter-delay': `${slot.enterDelay}ms`,
+      '--character-enter-duration': `${characterEnterTiming.duration}ms`,
+      '--character-enter-easing': resolveAdaptiveMotionEasing(
+        slot.enterEasing,
+        characterVisibilityMotionTempo,
+      ),
+      '--character-enter-delay': `${characterEnterTiming.delay}ms`,
     } as CSSProperties;
     const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';
     const entryClass = isEntering ? `is-entering char-enter-${slot.enterEffect}` : '';
@@ -3283,6 +3566,7 @@ export default function App() {
         sticker={sticker}
         avoidanceKey={stickerAvoidanceKey}
         avoidanceSettleMs={stickerAvoidanceSettleMs}
+        motionTempo={motionTempo}
       />
     );
   };
@@ -3994,6 +4278,7 @@ export default function App() {
     <div
       className="app"
       data-ui-template={uiTemplate}
+      data-motion-tempo={motionTempo}
       onClick={() => {
         if (videoCutscene.active) {
           revealVideoSkipGuide();
@@ -4006,7 +4291,7 @@ export default function App() {
           return;
         }
         unlockAudioFromGesture();
-        handleAdvance();
+        handleManualAdvance();
       }}
     >
       <div
@@ -4015,7 +4300,11 @@ export default function App() {
         data-effect-level={playerExperience.effectLevel}
       >
       <div className="overlay" />
-      <BackgroundTransition source={background} />
+      <BackgroundTransition
+        source={background}
+        durationMs={backgroundTransitionTiming.duration}
+        easing={backgroundTransitionEasing}
+      />
 
       <div
         ref={stageContentFrameRef}
@@ -4029,6 +4318,7 @@ export default function App() {
         data-camera-requested-shot={camera.shot}
         data-camera-moving={cameraMotionActive ? 'true' : 'false'}
         data-character-moving={characterMotionActive ? 'true' : 'false'}
+        data-motion-tempo={characterStageMotionTempo}
         data-character-enter-layout={characterEnterLayout}
         style={{ zIndex: stageBottomLayerZIndex }}
       >
@@ -4053,6 +4343,7 @@ export default function App() {
           data-camera-requested-shot={camera.shot}
           data-camera-moving={cameraMotionActive ? 'true' : 'false'}
           data-character-moving={characterMotionActive ? 'true' : 'false'}
+          data-motion-tempo={characterStageMotionTempo}
           data-character-enter-layout={characterEnterLayout}
           data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}
           aria-hidden={!promptTopBaselineReady}
@@ -4799,6 +5090,8 @@ export default function App() {
               title="일반 대사를 자동으로 진행합니다"
               onClick={(event) => {
                 event.stopPropagation();
+                queuedManualAdvanceAtRef.current = null;
+                resetManualAdvanceTempo();
                 updatePlayerExperience({ autoPlayEnabled: !playerExperience.autoPlayEnabled });
               }}
             >
