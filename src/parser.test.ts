@@ -143,6 +143,76 @@ legalNotices:
 });
 
 describe('cinematic DSL timing', () => {
+  it('accepts shorthand and coordinated character entrance transitions', () => {
+    const parsed = parseChapterYaml(
+      `
+script:
+  - scene: entrance
+scenes:
+  entrance:
+    actions:
+      - char: { id: Conan, position: center, enter: popIn }
+      - char:
+          id: Ran
+          position: right
+          enter:
+            effect: slideLeft
+            layout: push
+            duration: 520
+            easing: cubic-bezier(0.2, 0.72, 0.24, 1)
+            delay: 80
+`,
+      '0.yaml',
+    );
+
+    expect(parsed.error).toBeUndefined();
+    expect(parsed.data?.data.scenes.entrance.actions).toMatchObject([
+      { char: { enter: 'popIn' } },
+      {
+        char: {
+          enter: {
+            effect: 'slideLeft',
+            layout: 'push',
+            duration: 520,
+            easing: 'cubic-bezier(0.2, 0.72, 0.24, 1)',
+            delay: 80,
+          },
+        },
+      },
+    ]);
+  });
+
+  it('rejects unknown character entrance effects and out-of-range durations', () => {
+    const unknownEffect = parseChapterYaml(
+      `
+script: [{ scene: entrance }]
+scenes:
+  entrance:
+    actions:
+      - char: { id: Conan, position: center, enter: teleport }
+`,
+      '0.yaml',
+    );
+    const excessiveDuration = parseChapterYaml(
+      `
+script: [{ scene: entrance }]
+scenes:
+  entrance:
+    actions:
+      - char:
+          id: Conan
+          position: center
+          enter: { effect: fadeIn, duration: 3001 }
+`,
+      '0.yaml',
+    );
+
+    expect(unknownEffect.data).toBeUndefined();
+    expect(unknownEffect.error).toBeDefined();
+    expect(excessiveDuration.data).toBeUndefined();
+    expect(excessiveDuration.error).toBeDefined();
+  });
+
   it('accepts a character-level default dialogue delivery', () => {
     const parsed = parseBaseYaml(
       `

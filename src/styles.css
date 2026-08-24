@@ -1263,6 +1263,9 @@ textarea,
   --stage-camera-motion-delay: 0ms;
   --character-exit-duration: 0ms;
   --character-leave-duration: 180ms;
+  --character-enter-layout-duration: 380ms;
+  --character-enter-layout-easing: cubic-bezier(0.2, 0.72, 0.24, 1);
+  --character-enter-layout-delay: 0ms;
   position: absolute;
   inset: 0;
   transform-origin: 50cqw var(--stage-camera-render-origin-y);
@@ -1369,6 +1372,8 @@ textarea,
   --sticker-leave-duration: 220ms;
   --sticker-leave-easing: ease;
   --sticker-leave-delay: 0ms;
+  --sticker-opacity: 1;
+  opacity: var(--sticker-opacity);
   transition: none;
 }
 
@@ -1387,6 +1392,10 @@ textarea,
 
 .sticker[data-layout-ready='false'] .sticker-visual {
   animation-play-state: paused;
+}
+
+.sticker[data-layout-ready='true'][data-layout-reflow='true'] {
+  animation: stickerSafeReflowReveal 160ms ease-out both;
 }
 
 .sticker-visual {
@@ -1471,7 +1480,18 @@ textarea,
   --character-opacity-duration: var(--character-leave-duration);
   --character-visibility-delay: 0ms;
   --character-position-duration: 380ms;
+  --character-position-easing: cubic-bezier(0.2, 0.72, 0.24, 1);
+  --character-position-delay: 0ms;
   --character-scale-duration: 360ms;
+  --character-scale-easing: cubic-bezier(0.2, 0.72, 0.24, 1);
+  --character-scale-delay: 0ms;
+  --character-enter-duration: 240ms;
+  --character-enter-easing: ease-out;
+  --character-enter-delay: 0ms;
+  --character-enter-animation: characterEnter;
+  --character-enter-offset-x: 0cqw;
+  --character-enter-offset-y: 0cqh;
+  --character-breath-duration: 2200ms;
   --char-offset-x: 0%;
   --char-anchor-x: var(--char-desktop-anchor-x, 50cqw);
   --char-scale: 1;
@@ -1499,13 +1519,13 @@ textarea,
   scale: var(--char-scale);
   visibility: visible;
   transition:
-    translate var(--character-position-duration) cubic-bezier(0.2, 0.72, 0.24, 1),
-    scale var(--character-scale-duration) cubic-bezier(0.2, 0.72, 0.24, 1),
+    translate var(--character-position-duration) var(--character-position-easing) var(--character-position-delay),
+    scale var(--character-scale-duration) var(--character-scale-easing) var(--character-scale-delay),
     opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1),
     visibility 0s linear var(--character-visibility-delay);
   backface-visibility: hidden;
   contain: paint;
-  animation: characterEnter 240ms ease-out both;
+  animation: none;
   z-index: 3;
 }
 
@@ -1513,18 +1533,36 @@ textarea,
   will-change: translate, scale, opacity;
 }
 
+.char-layer[data-character-moving='true'][data-character-enter-layout='cut'] .char:not(.is-entering) {
+  --character-position-duration: 0ms;
+  --character-position-delay: 0ms;
+  --character-scale-duration: 0ms;
+  --character-scale-delay: 0ms;
+}
+
+.char-layer[data-character-moving='true'][data-character-enter-layout='push'] .char:not(.is-entering):not(.is-camera-hidden) {
+  --character-position-duration: var(--character-enter-layout-duration);
+  --character-position-easing: var(--character-enter-layout-easing);
+  --character-position-delay: var(--character-enter-layout-delay);
+  --character-scale-duration: var(--character-enter-layout-duration);
+  --character-scale-easing: var(--character-enter-layout-easing);
+  --character-scale-delay: var(--character-enter-layout-delay);
+}
+
+.char-layer[data-character-moving='true'][data-character-enter-layout='push'] .char.is-breathing:not(.is-entering):not(.is-camera-hidden) {
+  animation: none;
+}
+
 .char.is-breathing {
-  animation:
-    characterEnter 240ms ease-out both,
-    characterSpeakerBreathing 2200ms cubic-bezier(0.45, 0, 0.55, 1) 240ms infinite;
+  animation: characterSpeakerBreathing var(--character-breath-duration) cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 .effect-viewport[data-effect-level='reduced'] .char.is-breathing {
-  animation-duration: 240ms, 3000ms;
+  --character-breath-duration: 3000ms;
 }
 
 .effect-viewport[data-effect-level='minimal'] .char.is-breathing {
-  animation: characterEnter 240ms ease-out both;
+  animation: none;
 }
 
 .char-layer[data-camera-shot='close'] .char.is-camera-listener:not(.is-camera-hidden) {
@@ -1539,7 +1577,9 @@ textarea,
   --character-opacity-duration: var(--character-leave-duration);
   --character-visibility-delay: var(--character-leave-duration);
   --character-position-duration: 0ms;
+  --character-position-delay: 0ms;
   --character-scale-duration: 0ms;
+  --character-scale-delay: 0ms;
   /* Exit in place; hidden actors never carry a stale slot into their next entrance. */
   opacity: 0 !important;
   visibility: hidden;
@@ -1548,7 +1588,91 @@ textarea,
 
 .char.is-entering {
   --character-position-duration: 0ms;
+  --character-position-delay: 0ms;
   --character-scale-duration: 0ms;
+  --character-scale-delay: 0ms;
+}
+
+.char-enter-fadeIn {
+  --character-enter-animation: characterEnter;
+}
+
+.char-enter-wipeLeft {
+  --character-enter-animation: characterEnterWipeLeft;
+}
+
+.char-enter-scaleIn {
+  --character-enter-animation: characterEnterScale;
+}
+
+.char-enter-popIn {
+  --character-enter-animation: characterEnterPop;
+}
+
+.char-enter-slideUp {
+  --character-enter-animation: characterEnterSlide;
+  --character-enter-offset-y: 4cqh;
+}
+
+.char-enter-slideDown {
+  --character-enter-animation: characterEnterSlide;
+  --character-enter-offset-y: -4cqh;
+}
+
+.char-enter-slideLeft {
+  --character-enter-animation: characterEnterSlide;
+  --character-enter-offset-x: 12cqw;
+}
+
+.char-enter-slideRight {
+  --character-enter-animation: characterEnterSlide;
+  --character-enter-offset-x: -12cqw;
+}
+
+.char-enter-wipeCenterX {
+  --character-enter-animation: characterEnterWipeCenterX;
+}
+
+.char-enter-wipeCenterY {
+  --character-enter-animation: characterEnterWipeCenterY;
+}
+
+.char-enter-blurIn {
+  --character-enter-animation: characterEnterBlur;
+}
+
+.char-enter-rotateIn {
+  --character-enter-animation: characterEnterRotate;
+}
+
+.char.is-entering:not(.char-enter-none) {
+  animation: var(--character-enter-animation)
+    var(--character-enter-duration)
+    var(--character-enter-easing)
+    var(--character-enter-delay)
+    both;
+}
+
+.char.is-entering.is-breathing:not(.char-enter-none) {
+  animation:
+    var(--character-enter-animation)
+      var(--character-enter-duration)
+      var(--character-enter-easing)
+      var(--character-enter-delay)
+      both,
+    characterSpeakerBreathing
+      var(--character-breath-duration)
+      cubic-bezier(0.45, 0, 0.55, 1)
+      calc(var(--character-enter-delay) + var(--character-enter-duration))
+      infinite;
+}
+
+.effect-viewport[data-effect-level='minimal'] .char.is-entering.is-breathing:not(.char-enter-none) {
+  animation: var(--character-enter-animation)
+    var(--character-enter-duration)
+    var(--character-enter-easing)
+    var(--character-enter-delay)
+    both;
 }
 
 .char-image {
@@ -4879,6 +5003,15 @@ textarea,
   }
 }
 
+@keyframes stickerSafeReflowReveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--sticker-opacity);
+  }
+}
+
 @keyframes stickerFadeOut {
   from {
     opacity: 1;
@@ -5040,6 +5173,107 @@ textarea,
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes characterEnterScale {
+  from {
+    opacity: 0;
+    scale: calc(var(--char-scale) - 0.06);
+  }
+  to {
+    opacity: 1;
+    scale: var(--char-scale);
+  }
+}
+
+@keyframes characterEnterPop {
+  0% {
+    opacity: 0;
+    scale: calc(var(--char-scale) - 0.1);
+  }
+  68% {
+    opacity: 1;
+    scale: calc(var(--char-scale) + 0.025);
+  }
+  100% {
+    opacity: 1;
+    scale: var(--char-scale);
+  }
+}
+
+@keyframes characterEnterSlide {
+  from {
+    opacity: 0;
+    translate:
+      calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x) + var(--character-enter-offset-x))
+      calc(var(--char-framing-y) + var(--char-calibration-y) + var(--character-enter-offset-y));
+  }
+  to {
+    opacity: 1;
+    translate:
+      calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))
+      calc(var(--char-framing-y) + var(--char-calibration-y));
+  }
+}
+
+@keyframes characterEnterWipeLeft {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes characterEnterWipeCenterX {
+  from {
+    opacity: 0;
+    clip-path: inset(0 50% 0 50%);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes characterEnterWipeCenterY {
+  from {
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes characterEnterBlur {
+  from {
+    opacity: 0;
+    filter: blur(7px) brightness(1);
+  }
+  to {
+    opacity: 1;
+    filter:
+      brightness(1)
+      drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35))
+      drop-shadow(0 0 0 rgba(255, 244, 218, 0));
+  }
+}
+
+@keyframes characterEnterRotate {
+  from {
+    opacity: 0;
+    rotate: -2deg;
+    scale: calc(var(--char-scale) - 0.04);
+  }
+  to {
+    opacity: 1;
+    rotate: 0deg;
+    scale: var(--char-scale);
   }
 }
 
@@ -5994,6 +6228,7 @@ textarea,
   .start-gate.is-launching .start-gate-button-start .start-gate-button-mark,
   .char,
   .bg,
+  .sticker,
   .sticker-visual,
   .launcher-console,
   .workspace-game-card,

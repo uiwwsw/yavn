@@ -1,5 +1,6 @@
 import type JSZip from 'jszip';
 import { beginStickerLeave } from './assetTransition';
+import { normalizeCharacterEnter } from './characterEntrance';
 import { resolveCharacterFraming } from './characterFraming';
 import { resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
@@ -37,6 +38,8 @@ import {
 import type {
   CameraDirective,
   CharacterSlot,
+  CharacterEnterEffect,
+  CharacterEnterOptions,
   ChoiceOption,
   ConditionNode,
   DialogueChannel,
@@ -1066,10 +1069,12 @@ function buildCharacterSlot(
   character: GameData['assets']['characters'][string],
   emotion?: string,
   framing?: string,
+  authoredEnter?: CharacterEnterEffect | CharacterEnterOptions,
 ): CharacterSlot {
   const source = resolveAsset(baseUrl, basePath);
   const resolvedFraming = resolveCharacterFraming(character, framing);
   const calibration = resolveCharacterCalibration(character.calibration);
+  const enter = normalizeCharacterEnter(authoredEnter);
   if (isJsonAsset(basePath) || isJsonAsset(source)) {
     return {
       id,
@@ -1080,6 +1085,7 @@ function buildCharacterSlot(
       placement: character.placement ?? 'stage-bottom',
       framing: resolvedFraming,
       calibration,
+      ...enter,
     };
   }
   return {
@@ -1091,6 +1097,7 @@ function buildCharacterSlot(
     placement: character.placement ?? 'stage-bottom',
     framing: resolvedFraming,
     calibration,
+    ...enter,
   };
 }
 
@@ -1475,7 +1482,14 @@ function syncCharacterEmotions(
       .getState()
       .setCharacter(
         position,
-        buildCharacterSlot(baseUrl, slot.id, assetPath, charDef, emotion, slot.framing.name),
+        {
+          ...buildCharacterSlot(baseUrl, slot.id, assetPath, charDef, emotion, slot.framing.name),
+          enterEffect: slot.enterEffect,
+          enterLayout: slot.enterLayout,
+          enterDuration: slot.enterDuration,
+          enterEasing: slot.enterEasing,
+          enterDelay: slot.enterDelay,
+        },
       );
   }
 }
@@ -3061,6 +3075,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
           charDef,
           action.char.emotion,
           action.char.framing,
+          action.char.enter,
         ),
       );
       actionIndex += 1;
@@ -3639,6 +3654,7 @@ function runToNextPause(loopGuard = 0) {
           charDef,
           action.char.emotion,
           action.char.framing,
+          action.char.enter,
         ),
       );
     incrementCursor();

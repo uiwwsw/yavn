@@ -20,19 +20,19 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "남문에 칠숙 말이 보입니다. 지금 짐 싸면 반나절은 벌 수 있어요. 늘 그렇게 살아남았잖아요."
+          text: "남문에 칠숙 말이 보여요. 지금 떠나면 반나절은 벌어요. 늘 그랬듯이요."
       - say:
           char: 덕만
           camera: close
           with: [소화]
-          text: "또 달아나면 내년에도 똑같아. 오늘은 짐 말고 저 도장이 어디로 가는지 챙길 거야."
+          text: "또 달아나면 내년에도 똑같아. 오늘은 짐 말고 저 도장을 챙길 거야."
       - goto: choose_identity
 
   choose_identity:
     actions:
       - choice:
           key: c2_identity
-          prompt: "칠숙이 장터에 들어온다. 어떤 얼굴로 장부에 다가갈까?"
+          prompt: "칠숙이 장터에 들어옵니다. 어떤 신분으로 장부에 접근할까요?"
           char: 덕만
           camera: close
           with: [소화]
@@ -72,13 +72,13 @@ scenes:
           char: 덕만.wanderer
           camera: close
           with: [소화]
-          text: "장부만 빼내고 사라지자. 진짜 감찰관이 오기 전에 끝내면 돼."
+          text: "장부만 빼내자. 진짜 감찰관이 오기 전에 끝내면 돼."
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
           char: 칠숙.smile
           camera: close
           with: [덕만]
-          text: "끝났습니다. 진짜 감찰관은 제 뒤에 있고, 가짜는 지금 제 앞에 있군요."
+          text: "늦으셨습니다. 진짜 감찰관은 제 뒤에 있거든요."
       - say:
           char: 소화.nervous
           camera: close
@@ -103,7 +103,7 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "아기씨, 지금은 이름을 되찾은 게 아니라 위치를 알려 준 겁니다. 저쪽 좌판이 벌써 비었어요."
+          text: "아기씨, 이름이 아니라 위치를 알린 거예요. 저쪽 좌판부터 비었어요."
       - say:
           char: 덕만.wanderer_angry
           camera: close
@@ -114,7 +114,7 @@ scenes:
           char: 칠숙.smile
           camera: medium
           with: [덕만, 소화]
-          text: "써야지요. 그래야 이분들이 공주가 살아 있었다는 소문보다 죽는 장면을 더 정확히 기억할 테니까."
+          text: "써야지요. 살아났다는 소문보다 죽는 모습을 더 오래 기억하도록."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -141,15 +141,15 @@ scenes:
           char: 소화.nervous
           camera: reaction
           with: [덕만, 칠숙]
-          text: "인장만 가져가면 훔친 물건이 됩니다. 저 장인이 살아서 흠집을 설명해야 증거가 돼요. 아기씨, 사람부터요."
+          text: "인장만 들고 가면 장물이 돼요. 흠집을 아는 장인이 살아야 해요. 사람부터 구해요."
       - say:
           char: 덕만.wanderer_angry
           camera: close
           with: [칠숙]
-          text: "죽은 사람 하나 잡겠다고 장터 문을 다 닫았네. 네 군사들이 내가 살아 있다는 증인이야, 칠숙."
+          text: "죽은 사람 하나 잡겠다고 장터를 닫았네. 네 군사들이 내가 산 증인이야, 칠숙."
       - choice:
           key: c2_witness
-          prompt: "인장장이와 소화가 서로 다른 쪽으로 끌려간다. 이번에는 무엇을 잃지 않을까?"
+          prompt: "인장장이와 소화가 양쪽으로 끌려갑니다. 누구부터 구할까요?"
           char: 덕만
           camera: reaction
           with: [칠숙]
@@ -188,7 +188,7 @@ scenes:
           char: 칠숙.smile
           camera: close
           with: [덕만]
-          text: "잘 가져가십시오. 증언할 입이 없으면 그 인장은 제 위조가 아니라 공주님의 장물입니다."
+          text: "가져가시죠. 증언할 입이 없으면 그건 증거가 아니라 장물입니다."
       - say:
           char: 덕만.wanderer_angry
           camera: close
@@ -214,7 +214,7 @@ scenes:
           char: 소화.angry
           camera: close
           with: [덕만]
-          text: "또 저만 살려 보내려고요? 불 속에서 같이 나왔다는 약속은 위험할 때마다 아기씨 기억에서 먼저 지워집니까?"
+          text: "또 저만 보내려고요? 위험해지면 같이 산다는 약속부터 잊으십니까?"
       - say:
           char: 덕만.wanderer
           camera: close
@@ -225,7 +225,7 @@ scenes:
           char: 칠숙.smile
           camera: close
           with: [덕만, 소화]
-          text: "십 년 동안 같은 약속을 하셨겠군요. 그래서 어느 쪽을 잡아도 다른 한 분이 반드시 돌아옵니다."
+          text: "십 년째 같은 약속이군요. 한쪽을 잡으면 다른 쪽은 반드시 돌아오겠어요."
       - say:
           channel: narration
           text: "덕만이 추격을 끄는 사이 다른 군사들이 소화의 골목을 막았습니다. 두 사람은 다시 만났지만, 이번에는 서로의 손이 밧줄에 묶인 뒤였습니다."
@@ -248,7 +248,7 @@ scenes:
           text: "검문소 횃불 아래 정문 창끝이 겹쳤습니다. 마른 수로 안에는 새 장화 자국이 찍혀 있었고, 빈 관의 못은 안쪽이 아니라 바깥쪽으로 박혀 있었습니다. 문지기들만 모란패와 추격대의 붉은 인장을 번갈아 보며 웅성거렸습니다."
       - choice:
           key: c2_checkpoint
-          prompt: "뒤에는 칠숙의 말발굽, 앞에는 왕실 창끝. 지난 탈출에서 배운 길로 거짓 기록을 뒤집어라."
+          prompt: "뒤에는 칠숙, 앞에는 왕실 검문병이 있습니다. 어떻게 빠져나갈까요?"
           char: 덕만
           camera: medium
           with: [소화]
@@ -281,18 +281,18 @@ scenes:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "발자국을 봤잖아요. 제가 먼저 들어가 확인했어야 했는데… 또 예전 길이라 괜찮을 거라고 믿었어요."
+          text: "발자국을 봤는데도… 옛길이라 괜찮을 줄 알았어요."
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
           char: 덕만.wanderer_sad
           camera: close
           with: [소화, 칠숙]
-          text: "내가 배운 길을 저 사람도 배웠어. 소화, 미안해. 이번엔 내가 먼저 보지 못했어."
+          text: "나만 아는 길이 아니었어. 소화, 미안해. 내가 먼저 못 봤어."
       - say:
           char: 칠숙.smile
           camera: close
           with: [덕만]
-          text: "도망친 사람은 살았던 길로 돌아옵니다. 그래서 저는 길보다 기억을 막았습니다."
+          text: "도망친 사람은 살았던 길로 돌아오지요. 전 그 기억을 기다렸습니다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -345,12 +345,12 @@ scenes:
           char: 덕만.wanderer_angry
           camera: close
           with: [소화]
-          text: "문지기, 잘 봐. 문을 여는 모란패는 내 손에 있고 왕실 인장을 든 자들이 나를 쫓고 있어. 둘 다 진짜일 수는 없잖아."
+          text: "문지기, 잘 봐. 모란패는 내 손에 있고 왕실 인장은 저들이 들었다. 둘 다 진짜일 순 없어."
       - say:
           char: 소화.nervous
           camera: close
           with: [덕만]
-          text: "문지기들이 저쪽을 막습니다. 지금 뛰어요. 얼굴을 본 값은 살아서 나중에 치르면 됩니다."
+          text: "문지기들이 저쪽을 막아요. 지금 뛰어요! 얼굴값은 살아서 치러요."
       - say:
           channel: record
           text: "국경 검문 기록 — 모란패를 든 여인이 붉은 인장의 위조를 고발한 새, 추격대는 신원 확인을 위해 시간을 잃음."

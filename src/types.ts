@@ -5,6 +5,28 @@ export type { UiTemplateId } from './uiTemplates';
 export type Position = 'left' | 'center' | 'right';
 export type CharacterFacing = 'left' | 'right' | 'front';
 export type CharacterPlacement = 'stage-bottom' | 'prompt-top';
+export type CharacterEnterEffect =
+  | 'none'
+  | 'fadeIn'
+  | 'wipeLeft'
+  | 'scaleIn'
+  | 'popIn'
+  | 'slideUp'
+  | 'slideDown'
+  | 'slideLeft'
+  | 'slideRight'
+  | 'wipeCenterX'
+  | 'wipeCenterY'
+  | 'blurIn'
+  | 'rotateIn';
+export type CharacterEnterLayout = 'cut' | 'push';
+export type CharacterEnterOptions = {
+  effect?: CharacterEnterEffect;
+  layout?: CharacterEnterLayout;
+  duration?: number;
+  easing?: string;
+  delay?: number;
+};
 export type StickerAnchorX = 'left' | 'center' | 'right';
 export type StickerAnchorY = 'top' | 'center' | 'bottom';
 export type StickerLength = number | string;
@@ -150,6 +172,7 @@ export type CharAction = {
     position: Position;
     emotion?: string;
     framing?: string;
+    enter?: CharacterEnterEffect | CharacterEnterOptions;
   };
 };
 
@@ -425,6 +448,11 @@ export type CharacterSlot = {
   placement: CharacterPlacement;
   framing: CharacterFramingState;
   calibration: Required<CharacterCalibration>;
+  enterEffect: CharacterEnterEffect;
+  enterLayout: CharacterEnterLayout;
+  enterDuration: number;
+  enterEasing: string;
+  enterDelay: number;
 };
 
 export type StickerSlot = {

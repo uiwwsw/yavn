@@ -10,6 +10,7 @@ const gameRoot = fileURLToPath(new URL('../public/game-list/deokman/', import.me
 const gameListRoot = fileURLToPath(new URL('../public/game-list/', import.meta.url));
 const publicRoot = fileURLToPath(new URL('../public/', import.meta.url));
 const biblePath = fileURLToPath(new URL('../docs/DEOKMAN_GAME_BIBLE.ko.md', import.meta.url));
+const voiceGuidePath = fileURLToPath(new URL('../public/game-list/deokman/CHARACTER_VOICE.ko.md', import.meta.url));
 const chapterPaths = Array.from({ length: 12 }, (_, index) => `${index}.yaml`);
 
 const asRecord = (value: unknown): UnknownRecord =>
@@ -80,7 +81,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('10.1.0');
+    expect(config.data?.data.version).toBe('10.2.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -437,14 +438,42 @@ describe('complete Deokman visual novel', () => {
     const documents = chapterPaths.map(readYaml);
     const says = documents.flatMap((document) => collectKey(document, 'say').map(asRecord));
     const channels = new Set(says.map((say) => say.channel ?? (say.char ? 'dialogue' : 'narration')));
-    const effects = new Set(documents.flatMap((document) => collectKey(document, 'effect').map((effect) =>
-      typeof effect === 'string' ? effect : String(asRecord(effect).name),
-    )));
+    const effects = new Set(documents.flatMap((document) =>
+      Object.values(asRecord(document.scenes)).flatMap((scene) => {
+        const actions = asRecord(scene).actions;
+        if (!Array.isArray(actions)) return [];
+        return actions
+          .map(asRecord)
+          .filter((action) => Object.prototype.hasOwnProperty.call(action, 'effect'))
+          .map((action) => typeof action.effect === 'string'
+            ? action.effect
+            : String(asRecord(action.effect).name));
+      }),
+    ));
 
     expect(channels).toEqual(new Set(['dialogue', 'narration', 'record']));
     expect(says.some((say) => say.channel === 'system')).toBe(false);
     expect(effects).toEqual(new Set(['embers', 'darken', 'eclipse', 'starfall', 'inkstamp']));
     expect(collectStrings(documents).join('\n')).toContain('별이 왕을 고르는 게 아니다');
+  });
+
+  it('keeps spoken lines concise and out of answer-sheet prose', () => {
+    const documents = chapterPaths.map(readYaml);
+    const spoken = documents
+      .flatMap((document) => collectKey(document, 'say').map(asRecord))
+      .filter((say) => typeof say.char === 'string')
+      .map((say) => String(say.text).replace(/<[^>]+>/g, ''));
+    const choicePrompts = documents
+      .flatMap((document) => collectKey(document, 'choice').map(asRecord))
+      .map((choice) => String(choice.prompt));
+    const length = (text: string) => Array.from(text).length;
+    const answerSheetPhrases = /(정리하면|결론은|다시 말해|것입니다|셈입니다|이 말은)/;
+
+    expect(spoken).toHaveLength(320);
+    expect(Math.max(...spoken.map(length))).toBeLessThanOrEqual(70);
+    expect(spoken.reduce((sum, line) => sum + length(line), 0) / spoken.length).toBeLessThanOrEqual(46);
+    expect(spoken.filter((line) => answerSheetPhrases.test(line))).toEqual([]);
+    expect(Math.max(...choicePrompts.map(length))).toBeLessThanOrEqual(50);
   });
 
   it('keeps every local jump and recovery target valid', () => {
@@ -634,16 +663,21 @@ describe('complete Deokman visual novel', () => {
 
   it('documents the completed production package and twelve-chapter contract', () => {
     const bible = readFileSync(biblePath, 'utf8');
+    const voiceGuide = readFileSync(voiceGuidePath, 'utf8');
     expect(bible).toContain('## 12챕터 드라마 지도');
     expect(bible).toContain('| 12 | 마지막 기록 |');
     expect(bible).toContain('## 핵심 인물과 연기 방향');
     expect(bible).toContain('## 대사·내레이션·기록 채널');
     expect(bible).toContain('## 선택과 엔딩 설계 규칙');
+    expect(bible).toContain('## V10.2 대사 전면 교정');
     expect(bible).toContain('## V10.1 단일 생존 정답과 장면형 죽음');
     expect(bible).toContain('## 완결판 구현 현황');
-    expect(bible).toContain('- 버전: `10.1.0`');
+    expect(bible).toContain('- 버전: `10.2.0`');
     expect(bible).toContain('총 76개의 장면형 실패');
     expect(bible).not.toContain('총 28개');
     expect(bible).toContain('/game-list/deokman/');
+    expect(voiceGuide).toContain('## 왜 대사가 설명문처럼 변했는가');
+    expect(voiceGuide).toContain('## 인물별 목소리');
+    expect(voiceGuide).toContain('## 소리 내어 읽는 최종 검사');
   });
 });

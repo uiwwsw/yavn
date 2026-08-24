@@ -42,7 +42,17 @@
 #     alarm: root:/game-list/conan/assets/sfx/thunder.wav
 # scene actions:
 #   - camera: wide # 장소와 등장인물 전체를 보여 주는 설정 숏
-#   - char: { id: detective, position: center }
+#   - char: { id: detective, position: center, enter: none } # 아무 전환 없이 즉시 등장하고 기존 배우 자리도 cut
+#   - char: { id: detective, position: center, enter: popIn } # 효과 문자열 단축형
+#   - char:
+#       id: witness
+#       position: right
+#       enter:
+#         effect: slideLeft # none | fadeIn | wipeLeft | scaleIn | popIn | slideUp | slideDown | slideLeft | slideRight | wipeCenterX | wipeCenterY | blurIn | rotateIn
+#         layout: push # push: 기존 인물도 자연스럽게 자리를 내줌, cut: 최종 자리로 즉시 변경
+#         duration: 520 # 0..3000ms
+#         easing: cubic-bezier(0.2, 0.72, 0.24, 1)
+#         delay: 80 # 0..5000ms
 #   - say: { char: detective, camera: medium, text: "보고할 게 있어." }
 #   - camera: { shot: reaction, target: detective, transition: pan, duration: 460 }
 #   - choice: { char: detective, camera: close, prompt: "문이 잠긴다. 뛸까?", options: [...] }

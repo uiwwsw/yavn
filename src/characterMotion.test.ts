@@ -30,7 +30,7 @@ describe('image character motion', () => {
     expect(styles).toContain('scale: var(--char-scale);');
     expect(charRule).toContain('--character-position-duration: 380ms;');
     expect(charRule).toContain('--character-scale-duration: 360ms;');
-    expect(styles).toContain('translate var(--character-position-duration) cubic-bezier(0.2, 0.72, 0.24, 1)');
+    expect(styles).toContain('translate var(--character-position-duration) var(--character-position-easing) var(--character-position-delay)');
     expect(charRule).not.toContain('left 360ms');
     expect(charRule).not.toContain('width 320ms');
     expect(charRule).not.toContain('filter 200ms');
@@ -64,7 +64,18 @@ describe('image character motion', () => {
     expect(enteringRule).toContain('--character-position-duration: 0ms;');
     expect(enteringRule).toContain('--character-scale-duration: 0ms;');
     expect(appSource).toContain('const enteringCharacterSet = useMemo(');
-    expect(appSource).toContain("const entryClass = isEntering ? 'is-entering' : '';");
+    expect(appSource).toContain('const entryClass = isEntering ? `is-entering char-enter-${slot.enterEffect}` : \'\';');
+    expect(appSource).toContain('data-character-enter-layout={characterEnterLayout}');
+    expect(appSource).toMatch(/const stickerAvoidanceSettleMs = Math\.max\([\s\S]*?characterEnterMotionDurationMs,/);
+    expect(styles).toContain(".char-layer[data-character-moving='true'][data-character-enter-layout='cut'] .char:not(.is-entering)");
+    expect(styles).toContain(".char-layer[data-character-moving='true'][data-character-enter-layout='push'] .char:not(.is-entering):not(.is-camera-hidden)");
+    expect(styles).toContain('--character-position-easing: var(--character-enter-layout-easing);');
+    expect(styles).toContain('--character-position-delay: var(--character-enter-layout-delay);');
+    expect(styles).toContain(".char-layer[data-character-moving='true'][data-character-enter-layout='push'] .char.is-breathing:not(.is-entering):not(.is-camera-hidden)");
+    expect(styles).toContain('.char.is-entering:not(.char-enter-none)');
+    expect(styles).toContain('var(--character-enter-animation)');
+    expect(styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '').not.toContain('--character-enter-layout-duration: 380ms;');
+    expect(styles.match(/\.char-composition-world\s*\{([\s\S]*?)\n\}/)?.[1] ?? '').toContain('--character-enter-layout-duration: 380ms;');
     expect(appSource).not.toContain('characterPlacementByIdRef');
     expect(appSource).not.toContain('is-awaiting-entry');
   });
@@ -139,7 +150,8 @@ describe('image character motion', () => {
     expect(appSource).toContain("animationName !== 'characterSpeakerBreathing'");
     expect(appSource).toContain('previousBreathingSpeakerIdRef.current === slot.id');
     expect(live2dSource).toContain('onAnimationIteration={onAnimationIteration}');
-    expect(breathingRule).toContain('characterSpeakerBreathing 2200ms');
+    expect(charRule).toContain('--character-breath-duration: 2200ms;');
+    expect(breathingRule).toContain('characterSpeakerBreathing var(--character-breath-duration)');
     expect(breathingRule).not.toContain('opacity');
     expect(breathingKeyframes).toContain('var(--char-calibration-y) - 0.18%');
     expect(breathingKeyframes).toContain('scale: calc(var(--char-scale) + 0.003) calc(var(--char-scale) + 0.009);');

@@ -1001,6 +1001,8 @@ const StickerView = memo(function StickerView({
   const stickerRef = useRef<HTMLDivElement | null>(null);
   const [safeFit, setSafeFit] = useState<LockedStickerFit | null>(null);
   const [layoutMotionReady, setLayoutMotionReady] = useState(false);
+  const [resolvedAvoidanceKey, setResolvedAvoidanceKey] = useState('');
+  const [layoutReflowing, setLayoutReflowing] = useState(false);
   const layoutLockedRef = useRef(false);
   const imageReadyRef = useRef(false);
   const settleTimerRef = useRef<number | null>(null);
@@ -1077,6 +1079,7 @@ const StickerView = memo(function StickerView({
         characterRects,
       )
     ) {
+      setResolvedAvoidanceKey(avoidanceKey);
       return true;
     }
 
@@ -1128,8 +1131,13 @@ const StickerView = memo(function StickerView({
       ...nextFit,
       ...authoredBox,
     });
+    setResolvedAvoidanceKey(avoidanceKey);
+    if (recheckLockedFit) {
+      setLayoutReflowing(true);
+    }
     return true;
   }, [
+    avoidanceKey,
     placementTransform,
     sticker.anchorX,
     sticker.anchorY,
@@ -1172,6 +1180,15 @@ const StickerView = memo(function StickerView({
     previousAvoidanceKeyRef.current = avoidanceKey;
     if (layoutLockedRef.current) {
       if (avoidanceChanged) {
+        if (sticker.leaving) {
+          setResolvedAvoidanceKey(avoidanceKey);
+          return;
+        }
+        // A camera or cast change can move an actor into the sticker before the
+        // final obstacle bounds settle. Mark the old fit unresolved in the same
+        // layout phase so it never paints on top of a face.
+        setLayoutMotionReady(false);
+        setLayoutReflowing(false);
         earliestMeasurementAtRef.current = performance.now()
           + Math.max(96, Math.ceil(avoidanceSettleMs) + 32);
         previousObstacleRectsRef.current = null;
@@ -1187,7 +1204,7 @@ const StickerView = memo(function StickerView({
       imageReadyRef.current = true;
     }
     scheduleSafeFit();
-  }, [avoidanceKey, avoidanceSettleMs, scheduleSafeFit]);
+  }, [avoidanceKey, avoidanceSettleMs, scheduleSafeFit, sticker.leaving]);
 
   useEffect(() => {
     const stickerElement = stickerRef.current;
@@ -1220,6 +1237,8 @@ const StickerView = memo(function StickerView({
       previousObstacleRectsRef.current = null;
       setSafeFit(null);
       setLayoutMotionReady(false);
+      setResolvedAvoidanceKey('');
+      setLayoutReflowing(false);
       earliestMeasurementAtRef.current = performance.now() + STICKER_RESIZE_QUIET_MS;
       scheduleSafeFit(STICKER_RESIZE_QUIET_MS);
     });
@@ -1231,8 +1250,12 @@ const StickerView = memo(function StickerView({
     return () => observer.disconnect();
   }, [avoidanceKey, scheduleSafeFit, sticker.leaving]);
 
+  const layoutReady = Boolean(safeFit) && (
+    sticker.leaving || resolvedAvoidanceKey === avoidanceKey
+  );
+
   useEffect(() => {
-    if (!safeFit || layoutMotionReady) {
+    if (!layoutReady || layoutMotionReady) {
       return;
     }
     // The first collision-free fit is revealed in place. Enable interpolation
@@ -1247,7 +1270,7 @@ const StickerView = memo(function StickerView({
         layoutMotionFrameRef.current = null;
       }
     };
-  }, [layoutMotionReady, safeFit]);
+  }, [layoutMotionReady, layoutReady]);
 
   useEffect(() => {
     const stickerElement = stickerRef.current;
@@ -1289,14 +1312,20 @@ const StickerView = memo(function StickerView({
     <div
       ref={stickerRef}
       className="sticker"
-      data-layout-ready={safeFit ? 'true' : 'false'}
-      data-layout-motion={safeFit && layoutMotionReady ? 'true' : 'false'}
+      data-layout-ready={layoutReady ? 'true' : 'false'}
+      data-layout-motion={layoutReady && layoutMotionReady ? 'true' : 'false'}
+      data-layout-reflow={layoutReady && layoutReflowing ? 'true' : 'false'}
+      onAnimationEnd={(event) => {
+        if (event.animationName === 'stickerSafeReflowReveal') {
+          setLayoutReflowing(false);
+        }
+      }}
       style={{
         left: safeFit ? `${safeFit.left}px` : sticker.x,
         top: safeFit ? `${safeFit.top}px` : sticker.y,
         width: safeFit ? `${safeFit.width}px` : sticker.width,
         height: safeFit ? `${safeFit.height}px` : sticker.height,
-        opacity: sticker.opacity,
+        '--sticker-opacity': sticker.opacity,
         zIndex: sticker.zIndex,
         transform: fittedTransform,
         transformOrigin: 'center center',
@@ -2290,6 +2319,39 @@ export default function App() {
     ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot)),
     [characters],
   );
+  const enteringCharactersByPosition = useMemo(
+    () => stagedCharactersByPosition.filter((entry) => enteringCharacterSet.has(entry.slot.id)),
+    [enteringCharacterSet, stagedCharactersByPosition],
+  );
+  const characterEnterLayout = enteringCharactersByPosition.length === 0
+    ? 'idle'
+    : enteringCharactersByPosition.some((entry) => entry.slot.enterLayout === 'push')
+      ? 'push'
+      : 'cut';
+  const characterEnterLayoutTiming = useMemo(
+    () => enteringCharactersByPosition.reduce(
+      (timing, entry) => {
+        if (entry.slot.enterLayout !== 'push') {
+          return timing;
+        }
+        const total = entry.slot.enterDelay + entry.slot.enterDuration;
+        return total >= timing.total
+          ? {
+              duration: entry.slot.enterDuration,
+              easing: entry.slot.enterEasing,
+              delay: entry.slot.enterDelay,
+              total,
+            }
+          : timing;
+      },
+      { duration: 0, easing: 'ease-out', delay: 0, total: -1 },
+    ),
+    [enteringCharactersByPosition],
+  );
+  const characterEnterMotionDurationMs = enteringCharactersByPosition.reduce(
+    (duration, entry) => Math.max(duration, entry.slot.enterDelay + entry.slot.enterDuration),
+    0,
+  );
   const visibleCharactersByPosition = useMemo(
     () => stagedCharactersByPosition.filter((entry) => visibleCharacterSet.has(entry.slot.id)),
     [stagedCharactersByPosition, visibleCharacterSet],
@@ -2374,7 +2436,10 @@ export default function App() {
     '--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`,
     '--character-exit-duration': `${cameraTransitionTiming.characterExitDuration}ms`,
     '--character-leave-duration': `${CHARACTER_EXIT_FADE_DURATION_MS}ms`,
-  } as CSSProperties), [cameraPresentation, cameraTransitionTiming]);
+    '--character-enter-layout-duration': `${characterEnterLayoutTiming.duration}ms`,
+    '--character-enter-layout-easing': characterEnterLayoutTiming.easing,
+    '--character-enter-layout-delay': `${characterEnterLayoutTiming.delay}ms`,
+  } as CSSProperties), [cameraPresentation, cameraTransitionTiming, characterEnterLayoutTiming]);
   const stagedCharacterMotionKey = useMemo(
     () => stagedCharactersByPosition.map(({ position, slot }) => [
       position,
@@ -2452,15 +2517,13 @@ export default function App() {
     cameraPresentation.originY,
     cameraPresentation.mobileOriginY,
     cameraPresentation.transition,
-    focusCharacterId ?? '',
-    dialogSpeakerId ?? '',
+    cameraPresentation.shot === 'close' ? (focusCharacterId ?? '') : '',
     stickerSafeInset,
     presentedVisibleCharacterIds.join(','),
     layoutVisibleCharacterIds.join(','),
     stagedCharacterMotionKey,
   ].join('::'), [
     cameraPresentation,
-    dialogSpeakerId,
     focusCharacterId,
     layoutVisibleCharacterIds,
     presentedVisibleCharacterIds,
@@ -2469,6 +2532,7 @@ export default function App() {
   ]);
   const stickerAvoidanceSettleMs = Math.max(
     STICKER_CHARACTER_LAYOUT_SETTLE_MS,
+    characterEnterMotionDurationMs,
     cameraTransitionTiming.cameraDelay + cameraTransitionTiming.cameraDuration,
     cameraTransitionTiming.characterExitDuration,
   );
@@ -2493,7 +2557,12 @@ export default function App() {
   );
   const characterMotionActive = useTransientMotionWindow(
     characterMotionKey,
-    Math.max(380, cameraMotionDurationMs, cameraTransitionTiming.characterExitDuration),
+    Math.max(
+      380,
+      characterEnterMotionDurationMs,
+      cameraMotionDurationMs,
+      cameraTransitionTiming.characterExitDuration,
+    ),
   );
   const orderedCharacters = useMemo(
     () => [...visibleCharactersByPosition].sort((a, b) => {
@@ -3149,9 +3218,12 @@ export default function App() {
       '--char-framing-y': `${slot.framing.y}%`,
       '--char-calibration-x': `${slot.calibration.x}%`,
       '--char-calibration-y': `${slot.calibration.y}%`,
+      '--character-enter-duration': `${slot.enterDuration}ms`,
+      '--character-enter-easing': slot.enterEasing,
+      '--character-enter-delay': `${slot.enterDelay}ms`,
     } as CSSProperties;
     const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';
-    const entryClass = isEntering ? 'is-entering' : '';
+    const entryClass = isEntering ? `is-entering char-enter-${slot.enterEffect}` : '';
     const className = [
       'char',
       'char-image',
@@ -3957,6 +4029,7 @@ export default function App() {
         data-camera-requested-shot={camera.shot}
         data-camera-moving={cameraMotionActive ? 'true' : 'false'}
         data-character-moving={characterMotionActive ? 'true' : 'false'}
+        data-character-enter-layout={characterEnterLayout}
         style={{ zIndex: stageBottomLayerZIndex }}
       >
         <div className="char-composition-world" style={cameraStyle}>
@@ -3980,6 +4053,7 @@ export default function App() {
           data-camera-requested-shot={camera.shot}
           data-camera-moving={cameraMotionActive ? 'true' : 'false'}
           data-character-moving={characterMotionActive ? 'true' : 'false'}
+          data-character-enter-layout={characterEnterLayout}
           data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}
           aria-hidden={!promptTopBaselineReady}
           style={{
