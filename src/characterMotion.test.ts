@@ -24,7 +24,7 @@ describe('image character motion', () => {
     const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
     expect(styles).toContain('calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))');
     expect(styles).toContain('var(--char-framing-y)');
-    expect(styles).toContain('transform-origin: center bottom;');
+    expect(styles).toContain('transform-origin: 50% 100%;');
     expect(styles).toContain('--char-facing-scale-x: 1;');
     expect(styles).toContain('transform: scaleX(var(--char-facing-scale-x));');
     expect(styles).toContain('scale: var(--char-scale);');
@@ -113,7 +113,7 @@ describe('image character motion', () => {
 
   it('keeps every staged character opaque and gives only the dialogue speaker a subtle breathing loop', () => {
     const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
-    const speakingRule = styles.match(/\.char\.is-speaking:not\(\.is-camera-hidden\)\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const breathingRule = styles.match(/\.char\.is-breathing\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
     const breathingKeyframes = styles.match(/@keyframes characterSpeakerBreathing\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
 
     expect(charRule).toContain('opacity: 1;');
@@ -121,10 +121,17 @@ describe('image character motion', () => {
     expect(styles).not.toContain(".char-layer[data-camera-shot='reaction'] .char.is-camera-listener");
     expect(appSource).toContain("const isSpeaking = rendererActive && dialogSpeakerId === slot.id;");
     expect(appSource).toContain("isSpeaking ? 'is-speaking' : ''");
-    expect(speakingRule).toContain('characterSpeakerBreathing 2200ms');
-    expect(speakingRule).not.toContain('opacity');
-    expect(breathingKeyframes).toContain('translateY(-0.18%)');
-    expect(breathingKeyframes).toContain('scale(1.003, 1.009)');
+    expect(appSource).toContain("isBreathing ? 'is-breathing' : ''");
+    expect(appSource).toContain("animationName !== 'characterSpeakerBreathing'");
+    expect(appSource).toContain('previousBreathingSpeakerIdRef.current === slot.id');
+    expect(live2dSource).toContain('onAnimationIteration={onAnimationIteration}');
+    expect(breathingRule).toContain('characterSpeakerBreathing 2200ms');
+    expect(breathingRule).not.toContain('opacity');
+    expect(breathingKeyframes).toContain('var(--char-calibration-y) - 0.18%');
+    expect(breathingKeyframes).toContain('scale: calc(var(--char-scale) + 0.003) calc(var(--char-scale) + 0.009);');
+    expect(breathingKeyframes).toContain('brightness(1.03)');
+    expect(breathingKeyframes).toContain('drop-shadow(0 0 9px rgba(255, 244, 218, 0.12))');
+    expect(breathingKeyframes).not.toContain('transform:');
     expect(breathingKeyframes).not.toContain('opacity');
     expect(styles).toMatch(
       /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.char,[\s\S]*?animation: none !important;/,

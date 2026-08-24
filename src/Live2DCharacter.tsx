@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { AnimationEventHandler, CSSProperties } from 'react';
 import { createModelView, startup, Ticker } from 'easy-cl2d';
 import { markLive2DLoadError, markLive2DLoadReady } from './live2dLoadTracker';
 import {
@@ -596,9 +596,10 @@ type Props = {
   active: boolean;
   className?: string;
   style?: CSSProperties;
+  onAnimationIteration?: AnimationEventHandler<HTMLDivElement>;
 };
 
-export function Live2DCharacter({ slot, position, trackingKey, active, className, style }: Props) {
+export function Live2DCharacter({ slot, position, trackingKey, active, className, style, onAnimationIteration }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<Live2DViewModel>();
   const tickerRef = useRef<Ticker>();
@@ -814,10 +815,12 @@ export function Live2DCharacter({ slot, position, trackingKey, active, className
   return (
     <div
       className={`char char-live2d ${position}${className ? ` ${className}` : ''}`}
+      data-character-id={slot.id}
       data-character-framing={slot.framing.name}
       data-live2d-active={active ? 'true' : 'false'}
       aria-hidden={!active}
       style={style}
+      onAnimationIteration={onAnimationIteration}
     >
       <div ref={mountRef} className="char-live2d-mount" />
       {error && <div className="char-live2d-error">{error}</div>}
