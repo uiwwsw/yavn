@@ -35,4 +35,15 @@ describe('screen effect overflow containment', () => {
       /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.effect-moonveil::after,[\s\S]*?\.effect-embers::after,[\s\S]*?\.effect-crown::after,[\s\S]*?\.effect-eclipse::after,[\s\S]*?\.effect-starfall::after,[\s\S]*?\.effect-inkstamp::after/,
     );
   });
+
+  it('adds a shared cinematic light envelope with player-selectable intensity', () => {
+    expect(appSource).toContain("data-effect-active={effect ? 'true' : 'false'}");
+    expect(appSource).toContain('data-effect-level={playerExperience.effectLevel}');
+    expect(styles).toMatch(
+      /\.effect-viewport\[data-effect-active='true'\]::before\s*\{[\s\S]*?radial-gradient[\s\S]*?cinematicEffectEnvelope/,
+    );
+    expect(styles).toContain(".effect-viewport[data-effect-level='reduced'].effect-shake");
+    expect(styles).toContain(".effect-viewport[data-effect-level='minimal'][data-effect-active='true']");
+    expect(engineSource).toContain('const duration = EFFECT_DURATIONS[effectName] ?? 350;');
+  });
 });

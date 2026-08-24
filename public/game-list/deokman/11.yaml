@@ -26,12 +26,12 @@ scenes:
           char: 비담.sad
           camera: close
           with: [덕만]
-          text: "저를 살리면 사랑 때문에 법을 굽혔다 쓰고, 죽이면 버려질까 두려워 입을 막았다 쓰겠지요. 폐하께선 어느 기록 속 자신을 견디시겠습니까?"
+          text: "저를 살리면 사랑 때문에 봐줬다고 하고, 죽이면 제 말을 들을 용기가 없었다고 하겠지요. 어느 쪽 기록이 덜 두려우십니까?"
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "내 마음이 덜 아픈 문장을 고르지 않겠다. 네 반역 옆에 그 반역이 닿은 사람을 쓰고, 그 아래에는 내가 네 충성을 법처럼 키운 자리도 따로 적겠다."
+          text: "내가 덜 아픈 쪽으로 고르진 않겠다. 네 반역과 피해자들을 쓰고, 내가 네 권력을 키운 책임도 따로 적을 거야."
       - goto: bidam_sentence_choice
 
   bidam_sentence_choice:
@@ -59,6 +59,7 @@ scenes:
 
   sentence_execution:
     actions:
+      - bg: throne_hall
       - effect: inkstamp
       - say:
           char: 덕만
@@ -67,24 +68,39 @@ scenes:
           char: 비담.sad
           camera: close
           with: [덕만]
-          text: "끝까지 저를 악인 한 글자로 편하게 끝내 주지 않으시는군요. 그래서 폐하 곁에서는 사랑받는 일도 반역하는 일도 그렇게 피곤했습니다."
-      - goto: death_record_choice
+          text: "끝까지 저를 악인 한 글자로 끝내 주지 않으시는군요. 그래도 제 목이 떨어지는 걸 본 사람들은 훨씬 짧게 기억할 겁니다."
+      - say:
+          channel: narration
+          text: "처형 뒤 비담의 전령들은 해산하지 않았습니다. 사흘째 밤, 비담의 마지막 술이라며 올라온 잔을 한 궁인이 덕만 앞에 놓았습니다."
+      - say:
+          char: 덕만.queen_sad
+          camera: close
+          text: "이 잔을 누가 들였지? 비담은 죽었는데 왜 아직도 그 사람 명령이 궁문을 지나와?"
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "비담 처형 사흘 뒤 선덕왕 독살. 비담 잔당으로 추정되나 관련 전령 명부는 발견되지 않음."
+      - gameOver:
+          title: "운명 — 잘린 목이 남긴 잔"
+          message: "비담만 처형하고 그가 만든 전령망과 추종자들의 돌아갈 길을 정리하지 않았습니다. 충성을 잃은 잔당은 마지막 술에 독을 넣어 여왕을 뒤따르게 했습니다."
+          recoverToChoice: c12_bidam_sentence
 
   sentence_exile:
     actions:
       - effect: inkstamp
       - say:
           char: 덕만
-          text: "죽여서 네 질문과 내 책임을 한날에 끝내지 않겠다. 네가 끊은 곡식길로 가라. 이름과 지휘권 없이, 네 명령 때문에 끊긴 다리를 다시 잇고 살아."
+          text: "죽여서 네 죄와 내 책임을 같이 끝내지 않겠다. 네가 끊은 곡식길로 가. 이름과 지휘권 없이 다리를 다시 잇고 살아."
       - say:
           char: 비담.sad
           camera: close
           with: [덕만]
-          text: "죽는 것보다 오래 대답해야 하는 벌이군요. 누가 여왕의 자비라 부르면, 제가 고친 첫 다리의 이름부터 읽게 하겠습니다."
+          text: "죽는 것보다 오래 걸리는 벌이군요. 누가 여왕의 자비라고 부르면 제가 망가뜨린 첫 다리부터 보여 주겠습니다."
       - goto: death_record_choice
 
   sentence_restored:
     actions:
+      - bg: throne_hall
       - effect: inkstamp
       - say:
           char: 덕만
@@ -93,8 +109,23 @@ scenes:
           char: 비담
           camera: close
           with: [덕만]
-          text: "저를 버리지도 믿지도 않고 가장 잘 쓰는 형벌을 고르셨군요. 눈을 떼지 마십시오. 제 그림자와 폐하의 편리함은 함께 자라니까."
-      - goto: death_record_choice
+          text: "저를 버리지도 믿지도 않고 다시 쓰시는군요. 폐하께서 잠든 뒤에도 정말 눈을 떼지 않으실 수 있겠습니까?"
+      - say:
+          channel: narration
+          text: "한 달 뒤 관리들은 여왕의 도장보다 비담의 허가를 먼저 기다렸습니다. 왕실 의원도 그의 전령이 가져온 약재만 받았습니다."
+      - say:
+          char: 덕만.queen_sad
+          camera: close
+          with: [비담]
+          text: "이 약을 네 사람이 가져왔다. 비담, 이번에도 내가 널 믿어야만 문이 열리는구나."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕, 지병으로 승하. 비담이 섭정으로 국정을 수습했으며 독살 의혹을 제기한 기록관은 실종됨."
+      - gameOver:
+          title: "운명 — 다시 맡긴 문"
+          message: "반란 뒤에도 비담을 유일한 정보의 문으로 복귀시키자 여왕의 약과 명령까지 그를 거쳤습니다. 덕만은 독이 든 약을 마셨고 비담은 가장 먼저 국정을 수습한 사람이 됐습니다."
+          recoverToChoice: c12_bidam_sentence
 
   death_record_choice:
     actions:
@@ -109,7 +140,7 @@ scenes:
           char: 소화
           camera: close
           with: [덕만]
-          text: "불 속에서 아기씨가 제 손을 다시 잡은 날부터 저는 기록보다 이 이름을 먼저 기억했습니다. 오늘 폐하가 무엇을 태우든, 죽었다고 적힌 덕만과 그 손을 놓친 사람들부터 제가 읽겠습니다."
+          text: "불 속에서 제 손을 다시 잡으셨던 날을 기억합니다. 오늘 무엇을 남기든, 죽었다고 적힌 덕만과 그 때문에 죽은 사람들부터 읽어 주세요."
       - choice:
           key: c12_record_policy
           prompt: "거짓 기록은 사람을 죽였고 진실한 기록도 새 싸움이 될 수 있다. 다음 사람이 고치고 반박하려면 무엇을 남길까?"
@@ -137,27 +168,64 @@ scenes:
           text: "덕만의 사망 기록이 궁문 한가운데 붙었습니다. 그 아래에는 여왕이 거짓 왕명과 연출된 기적을 쓴 날도 같은 먹으로 적혔습니다."
       - say:
           char: 덕만
-          text: "나를 죽인 거짓만 붙이고 내가 사람을 살린다며 쓴 거짓을 숨기면 이것도 위조다. 왕에게 유리한 기록과 불리한 기록을 같은 크기로 써."
+          text: "나를 죽인 거짓만 공개하고 내가 쓴 거짓을 숨기면 똑같아. 왕에게 유리한 기록도 불리한 기록도 같은 크기로 써."
       - clearSticker: { id: c12_death_record, leave: fadeOut }
       - goto: last_decree_choice
 
   records_sealed:
     actions:
+      - bg: locked_room
       - say:
           channel: narration
           text: "상자에 자물쇠 세 개가 걸렸습니다. 열쇠는 다음 왕에게 넘어갔고, 진실은 다시 한 사람의 밤에만 열리는 물건이 됐습니다."
-      - goto: last_decree_choice
+      - say:
+          char: 소화.nervous
+          camera: close
+          with: [덕만]
+          text: "폐하, 다음 왕에게 넘길 열쇠를 왜 지금 귀족들이 하나씩 가져갑니까? 저 사람들이 상자보다 폐하 얼굴을 더 오래 봅니다."
+      - say:
+          char: 덕만.queen_sad
+          camera: close
+          with: [소화]
+          text: "내가 죽어야 열 수 있는 상자처럼 보이겠구나. 열쇠를 돌려받아. 오늘 안에 공개하자."
+      - say:
+          channel: narration
+          text: "열쇠를 받은 세 가문은 상자를 열기보다 다음 왕을 먼저 만들기로 했습니다. 그날 저녁 덕만의 탕약에는 냄새 없는 독이 섞였습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕 급서. 봉인 기록은 후계 왕에게 이관됐으며 독살 의혹은 국가 안정을 위해 기록하지 않음."
+      - gameOver:
+          title: "운명 — 다음 왕을 부른 상자"
+          message: "진실을 다음 왕에게만 넘기자 열쇠를 쥔 귀족들에게는 현재 왕을 빨리 없앨 이유가 생겼습니다. 덕만은 봉인을 열기도 전에 독살됐습니다."
+          recoverToChoice: c12_record_policy
 
   records_burned:
     actions:
+      - bg: locked_room
       - effect: embers
       - say:
           channel: narration
           text: "위조 문서가 불 속에서 오그라들었습니다. 소화는 피해자 이름을 새 명부에 옮겼지만, 마지막 도장이 재가 될 때 손을 멈췄습니다."
       - say:
           char: 덕만.queen_sad
-          text: "사람을 살리려고 증거를 태웠다고 그대로 적어. 그것이 자비였는지, 다음 왕에게 들킬까 두려운 겁이었는지는 남은 사람이 판단하게 두고."
-      - goto: last_decree_choice
+          text: "사람 이름은 남겼어. 이제 저 종이로 다시 싸울 수는 없을 거야."
+      - say:
+          char: 소화.nervous
+          camera: close
+          with: [덕만]
+          text: "하지만 첫 사망 기록의 인장 모양도 탔습니다. 방금 들어온 약방 교지가 같은 인장인지 이제 누가 확인합니까?"
+      - say:
+          channel: narration
+          text: "덕만이 교지를 들었지만 비교할 원본은 재가 된 뒤였습니다. 왕실 약방은 위조 명령대로 의원을 내보냈고, 새 의원이 올린 침에 독이 묻어 있었습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕 진료 기록 — 왕명에 따라 새 의원이 시침한 뒤 선덕왕 사망. 교지 진위는 확인할 기록이 없음."
+      - gameOver:
+          title: "운명 — 태운 뒤 돌아온 인장"
+          message: "거짓 기록의 원본을 태우자 같은 위조를 알아볼 기준도 사라졌습니다. 독을 묻힌 의원은 왕명으로 들어왔고 아무도 그 인장을 반박하지 못했습니다."
+          recoverToChoice: c12_record_policy
 
   last_decree_choice:
     actions:
@@ -179,11 +247,59 @@ scenes:
             - text: "전쟁 중 모인 권한을 왕좌에 묶어 둔다"
               set: { final_decree: strong_crown }
               add: { army_support: 2, fear: 2, nobles_support: -1 }
-              goto: judge_ending
+              goto: bad_strong_crown
             - text: "귀족·군대·마을에 서로 다른 열쇠를 준다"
               set: { final_decree: divided_guardians }
               add: { nobles_support: 1, people_support: 1, army_support: 1 }
-              goto: judge_ending
+              goto: bad_divided_guardians
+
+  bad_strong_crown:
+    actions:
+      - bg: throne_hall
+      - camera: { shot: close, target: 덕만 }
+      - char: { id: 덕만, position: left, emotion: queen_angry }
+      - char: { id: 춘추, position: right, emotion: nervous }
+      - say:
+          char: 춘추.nervous
+          text: "창고와 군대와 재판 열쇠가 모두 왕실로 왔습니다. 그래서 오늘 밤 반대파도 모두 한곳, 폐하의 침전만 노립니다."
+      - say:
+          char: 덕만.queen_angry
+          text: "문을 잠그고 열쇠를 가져와. 아침에 권한마다 다른 사람을 세우겠다."
+      - say:
+          channel: narration
+          text: "문을 잠근 근위대장도 내일이면 권한을 잃을 사람이었습니다. 그는 마지막으로 왕명을 독점할 수 있는 밤에 침전 열쇠를 반대파에게 넘겼습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "선덕왕 말년 궁성 변란 — 모든 국권을 회수한 밤, 근위대 반란으로 선덕왕 피살."
+      - gameOver:
+          title: "운명 — 한곳에 모인 칼끝"
+          message: "모든 권한을 왕좌에 묶자 나라를 뒤집으려는 사람도 왕 한 명만 없애면 됐습니다. 권한을 잃을 근위대장이 문을 열었고 덕만은 마지막 칙령이 마르기 전에 살해됐습니다."
+          recoverToChoice: c12_final_decree
+
+  bad_divided_guardians:
+    actions:
+      - bg: council_hall
+      - camera: { shot: close, target: 덕만 }
+      - char: { id: 덕만, position: left, emotion: queen_sad }
+      - char: { id: 유신, position: right, emotion: angry }
+      - say:
+          char: 유신.angry
+          text: "군대 열쇠는 있는데 창고가 열리지 않습니다. 마을은 곡식을 내주기 전에 귀족의 재판 열쇠를 요구합니다. 세 명령이 서로를 막고 있습니다."
+      - say:
+          char: 덕만.queen_sad
+          text: "서로 감시하라고 나눈 건데, 아무도 먼저 움직이지 못하는구나. 세 사람을 지금 한자리에 불러."
+      - say:
+          channel: narration
+          text: "회의가 열리기 전 군대는 보급을 빼앗으러 창고로 향했고, 마을은 왕군을 막았습니다. 혼란을 기다리던 귀족 자객이 중재하러 나온 덕만의 수레를 습격했습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "삼열쇠 분쟁 — 군대와 마을 충돌을 중재하던 선덕왕 피살. 범인은 어느 열쇠의 명령도 받지 않았다고 진술."
+      - gameOver:
+          title: "운명 — 서로 잠근 세 열쇠"
+          message: "권한을 나누기만 하고 함께 결정할 공개 절차를 만들지 않자 세 열쇠는 서로를 잠갔습니다. 군대와 마을이 충돌한 틈에서 덕만은 중재자로 나섰다가 죽었습니다."
+          recoverToChoice: c12_final_decree
 
   judge_ending:
     actions:
@@ -248,7 +364,7 @@ scenes:
       - say:
           char: 덕만
           camera: close
-          text: "나는 죽었다고 적혔으나 돌아온 아이였고, 사람을 살리며 거짓도 쓴 왕이었다. 그러니 내 이름만 외우지 마라. 내가 틀릴 때 돌아올 길을 남긴 사람들의 이름을 먼저 읽어라."
+          text: "나는 죽었다고 적혔다가 살아 돌아왔고, 사람을 살리면서 거짓도 쓴 왕이었다. 내 이름만 외우지 마라. 내가 틀렸을 때 길을 고친 사람들 이름부터 읽어라."
       - say:
           channel: narration
           text: "사람들은 등불 사이에 실을 걸었습니다. 왕의 선택 하나가 아니라 서로를 살린 선택들이 이어지자, 땅 위에 처음 보는 별자리가 생겼습니다."
@@ -267,7 +383,7 @@ scenes:
       - say:
           char: 덕만
           camera: close
-          text: "별은 왕을 고르지 않는다. 사람은 별을 읽고, 왕의 선택을 적고, 왕이 틀리면 함께 고친다."
+          text: "별이 왕을 고르는 게 아니다. 우리가 별을 읽고 왕을 고른다. 왕이 틀리면 기록하고 고친다."
       - say:
           channel: record
           text: "첨성대 아래 달력은 손때로 검어졌습니다. 죽었다고 먼저 적혔던 아이의 이름 옆에는 수많은 사람의 수정 흔적이 겹쳐 남았습니다."

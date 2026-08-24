@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('9.6.0');
+    expect(config.data?.data.version).toBe('10.0.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -122,7 +122,7 @@ describe('complete Deokman visual novel', () => {
   it('carries one causal evidence chain across all twelve chapters', () => {
     const continuityAnchors = [
       ['0.yaml', '붉은 인장의 행로'],
-      ['1.yaml', '붉은 인장을 사망 기록 옆에'],
+      ['1.yaml', '모란패와 추격대의 붉은 인장'],
       ['2.yaml', '암살자의 밀랍을 국경의 곡식길과 연결'],
       ['3.yaml', '당의 낙인이 드러났습니다'],
       ['4.yaml', '다음 일식의 관측표'],
@@ -148,7 +148,7 @@ describe('complete Deokman visual novel', () => {
     expect(new Set(choiceKeys).size).toBe(choiceKeys.length);
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
-    expect(gameOvers).toHaveLength(13);
+    expect(gameOvers).toHaveLength(68);
     expect(choices.flatMap((choice) => Array.isArray(choice.options) ? choice.options.map(asRecord) : [])
       .some((option) => Object.keys(asRecord(option.gameOver)).length > 0)).toBe(false);
 
@@ -167,23 +167,12 @@ describe('complete Deokman visual novel', () => {
     });
   });
 
-  it('gives every crisis at least two viable strategies and keeps one dramatized failure', () => {
-    const crisisChoiceKeys = [
-      'c1_fire_escape',
-      'c2_checkpoint',
-      'c3_ambush',
-      'c4_convoy',
-      'c5_protocol',
-      'c6_eclipse_riot',
-      'c7_regency',
-      'c8_first_response',
-      'c9_coup_response',
-      'c10_sabotage',
-      'c11_rebellion_response',
-    ];
+  it('makes most wrong answers fatal while leaving a fair route to the crown', () => {
     const fatalOptionPositions = new Set<'first' | 'middle' | 'last'>();
+    const optionOutcomes: Array<{ key: string; text: string; fatal: boolean }> = [];
+    let majorityFatalChoices = 0;
 
-    chapterPaths.slice(0, -1).forEach((path, chapterIndex) => {
+    chapterPaths.forEach((path) => {
       const document = readYaml(path);
       const scenes = asRecord(document.scenes);
       const fatalSceneIds = new Set(Object.entries(scenes)
@@ -210,112 +199,65 @@ describe('complete Deokman visual novel', () => {
         });
         return outcomes;
       };
-      const crisisChoice = collectKey(document, 'choice')
-        .map(asRecord)
-        .find((choice) => choice.key === crisisChoiceKeys[chapterIndex]);
-      const options = Array.isArray(crisisChoice?.options) ? crisisChoice.options.map(asRecord) : [];
-      const fatalOutcomes = options.map((option) => resolveFatalScenes(String(option.goto)));
-      const fatalOptions = fatalOutcomes.filter((outcomes) => outcomes.size > 0);
-      const convergedFatalScenes = new Set(fatalOutcomes.flatMap((outcomes) => [...outcomes]));
-      fatalOutcomes.forEach((outcomes, optionIndex) => {
-        if (outcomes.size === 0) return;
-        fatalOptionPositions.add(optionIndex === 0
-          ? 'first'
-          : optionIndex === options.length - 1 ? 'last' : 'middle');
-      });
+      collectKey(document, 'choice').map(asRecord).forEach((choice) => {
+        const key = String(choice.key);
+        const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
+        const fatalOutcomes = options.map((option) => resolveFatalScenes(String(option.goto)));
+        const fatalCount = fatalOutcomes.filter((outcomes) => outcomes.size > 0).length;
 
-      expect(options.length, path).toBeGreaterThanOrEqual(3);
-      expect(fatalOptions.length, path).toBeGreaterThanOrEqual(1);
-      expect(fatalOptions.length, path).toBeLessThanOrEqual(Math.floor(options.length / 2));
-      expect(options.length - fatalOptions.length, path).toBeGreaterThanOrEqual(2);
-      expect(convergedFatalScenes.size, path).toBe(1);
+        fatalOutcomes.forEach((outcomes, optionIndex) => {
+          const fatal = outcomes.size > 0;
+          optionOutcomes.push({ key, text: String(options[optionIndex].text), fatal });
+          if (!fatal) return;
+          fatalOptionPositions.add(optionIndex === 0
+            ? 'first'
+            : optionIndex === options.length - 1 ? 'last' : 'middle');
+        });
+
+        expect(options.length, key).toBeGreaterThanOrEqual(3);
+        expect(options.length - fatalCount, key).toBeGreaterThanOrEqual(1);
+        if (fatalCount > options.length / 2) majorityFatalChoices += 1;
+      });
     });
 
+    expect(optionOutcomes).toHaveLength(112);
+    expect(optionOutcomes.filter((outcome) => outcome.fatal)).toHaveLength(68);
+    expect(majorityFatalChoices).toBe(31);
     expect(fatalOptionPositions).toEqual(new Set(['first', 'middle', 'last']));
     expect(readSource('1.yaml')).toContain('recoverToChoice: c2_checkpoint');
+
+    const outcomeFor = (key: string, text: string) => optionOutcomes.find((outcome) =>
+      outcome.key === key && outcome.text === text,
+    );
+    const survivalAnswers = [
+      ['c2_identity', '장부꾼 만덕으로 시비를 건다'],
+      ['c2_checkpoint', '모란패로 문을 열고 붉은 인장으로 추격대를 고발한다'],
+      ['c4_investigation', '바퀴 폭을 재고 야간 통행표를 펼친다'],
+      ['c5_first_reply', '그림 속 빈 나비 자리를 손가락으로 짚는다'],
+      ['c6_find_time', '당의 천문표와 신라 달력을 겹친다'],
+      ['c7_confession', '왕을 궁문 앞에 세워 직접 말하게 한다'],
+      ['c8_first_response', '천명을 업고 시장 의원에게 뛴다'],
+      ['c9_coup_response', '유신을 서문으로 보내고 항아리 곁에 남는다'],
+      ['c10_observatory_priority', '창고를 채우고 돌 나를 품삯을 곡식으로 준다'],
+      ['c11_falling_star', '낙하지에 먼저 가 재를 사람들 앞에 펼친다'],
+      ['c12_final_decree', '관측·곡식·재판 장부의 문을 모두 연다'],
+    ] as const;
+    survivalAnswers.forEach(([key, text]) => expect(outcomeFor(key, text)?.fatal, `${key}: ${text}`).toBe(false));
 
     const fatalScenes = chapterPaths.flatMap((path) => {
       const scenes = asRecord(readYaml(path).scenes);
       return Object.values(scenes).filter((scene) => collectKey(scene, 'gameOver').length > 0);
     });
     fatalScenes.forEach((scene) => {
-      expect(collectStrings(scene).join('\n')).toMatch(/죽|사망|처형|전사|피살|참수/);
+      expect(collectStrings(scene).join('\n')).toMatch(/죽|사망|처형|전사|피살|참수|사살|살해|독/);
     });
+    const deathCorpus = collectStrings(fatalScenes).join('\n');
+    ['독', '처형', '매복', '불', '반란'].forEach((cause) => expect(deathCorpus).toContain(cause));
   });
 
-  it('keeps ordinary political choices viable and rewards previously earned knowledge', () => {
-    const ordinaryChoiceKeys = new Set([
-      'c2_identity',
-      'c2_witness',
-      'c4_investigation',
-      'c5_first_reply',
-      'c6_find_time',
-      'c7_confession',
-      'c10_observatory_priority',
-      'c11_falling_star',
-    ]);
-    const clueOrEndingChoiceKeys = new Set([
-      'c1_peony_observation',
-      'c1_answer_king',
-      'c3_proof',
-      'c3_sisters_strategy',
-      'c4_grain_policy',
-      'c5_diplomacy',
-      'c6_eclipse_policy',
-      'c7_first_power',
-      'c8_public_story',
-      'c8_cheonmyeong_fate',
-      'c9_vote_strategy',
-      'c9_crown_terms',
-      'c10_knowledge_policy',
-      'c11_bidam_answer',
-      'c12_bidam_sentence',
-      'c12_record_policy',
-      'c12_final_decree',
-    ]);
-
+  it('reuses earned knowledge in later dialogue and gated survival actions', () => {
     const documents = chapterPaths.map(readYaml);
     const choices = documents.flatMap((document) => collectKey(document, 'choice').map(asRecord));
-    const unsafeConditionalOptions: string[] = [];
-    documents.forEach((document) => {
-      const scenes = asRecord(document.scenes);
-      const fatalSceneIds = new Set(Object.entries(scenes)
-        .filter(([, scene]) => collectKey(scene, 'gameOver').length > 0)
-        .map(([sceneId]) => sceneId));
-      const reachesGameOver = (sceneId: string, visited = new Set<string>()): boolean => {
-        if (!sceneId || sceneId.startsWith('/') || visited.has(sceneId)) return false;
-        if (fatalSceneIds.has(sceneId)) return true;
-        const actions = Array.isArray(asRecord(scenes[sceneId]).actions)
-          ? (asRecord(scenes[sceneId]).actions as unknown[]).map(asRecord)
-          : [];
-        const nextVisited = new Set(visited).add(sceneId);
-        return actions.some((action) => {
-          const nextChoice = asRecord(action.choice);
-          if (Array.isArray(nextChoice.options) && nextChoice.options.length > 0) return false;
-          const targets = [
-            typeof action.goto === 'string' ? action.goto : undefined,
-            ...collectKey(action.branch, 'goto').map(String),
-          ].filter((target): target is string => Boolean(target));
-          return targets.some((target) => reachesGameOver(target, nextVisited));
-        });
-      };
-
-      collectKey(document, 'choice').map(asRecord).forEach((choice) => {
-        const key = String(choice.key);
-        const options = Array.isArray(choice.options) ? choice.options.map(asRecord) : [];
-        options.forEach((option) => {
-          if (Object.keys(asRecord(option.when)).length > 0 && reachesGameOver(String(option.goto ?? ''))) {
-            unsafeConditionalOptions.push(`${key}: ${String(option.text)}`);
-          }
-        });
-        if (!ordinaryChoiceKeys.has(key)) return;
-        const surviving = options.filter((option) =>
-          Object.keys(asRecord(option.gameOver)).length === 0 && !reachesGameOver(String(option.goto ?? '')),
-        );
-        expect(surviving.length, key).toBeGreaterThanOrEqual(2);
-      });
-    });
-    expect(unsafeConditionalOptions).toEqual([]);
 
     const fireEscape = choices.find((choice) => choice.key === 'c1_fire_escape');
     const fireOptions = Array.isArray(fireEscape?.options) ? fireEscape.options.map(asRecord) : [];
@@ -332,8 +274,8 @@ describe('complete Deokman visual novel', () => {
 
     const fallingStar = choices.find((choice) => choice.key === 'c11_falling_star');
     const fallingStarOptions = Array.isArray(fallingStar?.options) ? fallingStar.options.map(asRecord) : [];
-    expect(String(fallingStarOptions.find((option) => option.text === '관측관들을 장터로 보내 진짜 별을 가리킨다')?.goto))
-      .toBe('explain_sky');
+    expect(String(fallingStarOptions.find((option) => option.text === '낙하지에 먼저 가 재를 사람들 앞에 펼친다')?.goto))
+      .toBe('inspect_kite');
 
     const conditionalLines = documents.flatMap((document) => collectKey(document, 'say').map(asRecord))
       .filter((say) => Object.keys(asRecord(say.when)).length > 0);
@@ -351,14 +293,144 @@ describe('complete Deokman visual novel', () => {
     ];
     expect(delayedPayoffVariables.filter((variable) => !readStateVariables.has(variable))).toEqual([]);
 
-    const crisisKeys = new Set([
-      'c1_fire_escape', 'c2_checkpoint', 'c3_ambush', 'c4_convoy', 'c5_protocol',
-      'c6_eclipse_riot', 'c7_regency', 'c8_first_response', 'c9_coup_response',
-      'c10_sabotage', 'c11_rebellion_response',
-    ]);
-    expect(new Set(choices.map((choice) => String(choice.key)))).toEqual(
-      new Set([...ordinaryChoiceKeys, ...clueOrEndingChoiceKeys, ...crisisKeys]),
-    );
+    expect(new Set(choices.map((choice) => String(choice.key))).size).toBe(36);
+  });
+
+  it('keeps one clue-led route alive through all choices and crowns Deokman', () => {
+    const answerTargets: Record<string, string> = {
+      c1_peony_observation: 'observe_waterway',
+      c1_answer_king: 'answer_scent',
+      c1_fire_escape: 'escape_waterway',
+      c2_identity: 'hidden_inquiry',
+      c2_witness: 'save_witness',
+      c2_checkpoint: 'turn_checkpoint',
+      c3_proof: 'proof_memory',
+      c3_sisters_strategy: 'public_sisters',
+      c3_ambush: 'survive_together',
+      c4_investigation: 'track_wagons',
+      c4_grain_policy: 'public_distribution',
+      c4_convoy: 'bait_ambush',
+      c5_first_reply: 'answer_with_absence',
+      c5_diplomacy: 'equal_exchange',
+      c5_protocol: 'scentless_end',
+      c6_find_time: 'calculate_eclipse',
+      c6_eclipse_policy: 'announce_science',
+      c6_eclipse_riot: 'count_down_return',
+      c7_confession: 'public_confession',
+      c7_first_power: 'restore_granary',
+      c7_regency: 'open_council',
+      c8_first_response: 'public_treatment',
+      c8_public_story: 'sister_testimony',
+      c8_cheonmyeong_fate: 'living_exile',
+      c9_vote_strategy: 'negotiated_vote',
+      c9_coup_response: 'split_defense',
+      c9_crown_terms: 'coronation',
+      c10_observatory_priority: 'granary_first',
+      c10_knowledge_policy: 'public_calendar',
+      c10_sabotage: 'tower_survives',
+      c11_falling_star: 'inspect_kite',
+      c11_bidam_answer: 'honest_letter',
+      c11_rebellion_response: 'split_rebellion',
+      c12_bidam_sentence: 'sentence_exile',
+      c12_record_policy: 'records_public',
+      c12_final_decree: 'judge_ending',
+    };
+    const documents = chapterPaths.map(readYaml);
+    const state: UnknownRecord = { ...asRecord(readYaml('base.yaml').state) };
+    const inventory = new Set<string>();
+    const visitedChoices: string[] = [];
+
+    const valueOf = (key: string): unknown => inventory.has(key) ? true : state[key];
+    const conditionMatches = (rawCondition: unknown): boolean => {
+      const condition = asRecord(rawCondition);
+      const all = Array.isArray(condition.all) ? condition.all : undefined;
+      if (all) return all.every(conditionMatches);
+      const any = Array.isArray(condition.any) ? condition.any : undefined;
+      if (any) return any.some(conditionMatches);
+      if (condition.not !== undefined) return !conditionMatches(condition.not);
+      if (typeof condition.var !== 'string') return true;
+      const actual = valueOf(condition.var);
+      const expected = condition.value;
+      switch (condition.op ?? 'eq') {
+        case 'eq': return actual === expected;
+        case 'ne': return actual !== expected;
+        case 'gte': return Number(actual) >= Number(expected);
+        case 'lte': return Number(actual) <= Number(expected);
+        case 'gt': return Number(actual) > Number(expected);
+        case 'lt': return Number(actual) < Number(expected);
+        default: return false;
+      }
+    };
+    const applyMutation = (source: UnknownRecord) => {
+      Object.assign(state, asRecord(source.set));
+      Object.entries(asRecord(source.add)).forEach(([key, value]) => {
+        state[key] = Number(state[key] ?? 0) + Number(value);
+      });
+      if (typeof source.get === 'string') inventory.add(source.get);
+      if (typeof source.lose === 'string') inventory.delete(source.lose);
+    };
+
+    let chapterIndex = 0;
+    let sceneId = String(asRecord((documents[0].script as unknown[])[0]).scene);
+    let ending = '';
+    let steps = 0;
+    while (!ending && steps < 500) {
+      steps += 1;
+      const scenes = asRecord(documents[chapterIndex].scenes);
+      const actions = Array.isArray(asRecord(scenes[sceneId]).actions)
+        ? (asRecord(scenes[sceneId]).actions as unknown[]).map(asRecord)
+        : [];
+      let target = '';
+
+      for (const action of actions) {
+        applyMutation(action);
+        expect(Object.keys(asRecord(action.gameOver)), `${chapterIndex}.yaml:${sceneId}`).toHaveLength(0);
+        if (typeof action.ending === 'string') {
+          ending = action.ending;
+          break;
+        }
+
+        const choice = asRecord(action.choice);
+        if (typeof choice.key === 'string' && Array.isArray(choice.options)) {
+          const wantedTarget = answerTargets[choice.key];
+          const option = choice.options.map(asRecord).find((entry) => entry.goto === wantedTarget);
+          expect(option, `${choice.key} -> ${wantedTarget}`).toBeDefined();
+          if (!option) break;
+          expect(conditionMatches(option.when), `${choice.key} -> ${wantedTarget}`).toBe(true);
+          applyMutation(option);
+          visitedChoices.push(choice.key);
+          target = String(option.goto);
+          break;
+        }
+
+        const branch = asRecord(action.branch);
+        if (Array.isArray(branch.cases)) {
+          const matched = branch.cases.map(asRecord).find((entry) => conditionMatches(entry.when));
+          target = String(matched?.goto ?? branch.default ?? '');
+          if (target) break;
+        }
+        if (typeof action.goto === 'string') {
+          target = action.goto;
+          break;
+        }
+      }
+
+      if (ending) break;
+      expect(target, `${chapterIndex}.yaml:${sceneId}`).not.toBe('');
+      if (target.startsWith('/')) {
+        chapterIndex = Number(target.slice(1, -5));
+        const script = documents[chapterIndex].script as unknown[];
+        sceneId = String(asRecord(script[0]).scene);
+      } else {
+        sceneId = target;
+      }
+    }
+
+    expect(steps).toBeLessThan(500);
+    expect(visitedChoices).toHaveLength(36);
+    expect(new Set(visitedChoices).size).toBe(36);
+    expect(state.coronation_compromise).toBe('public_council');
+    expect(ending).toBe('hidden_constellation');
   });
 
   it('keeps all player-facing prose inside dialogue, narration, and record channels', () => {
@@ -372,7 +444,7 @@ describe('complete Deokman visual novel', () => {
     expect(channels).toEqual(new Set(['dialogue', 'narration', 'record']));
     expect(says.some((say) => say.channel === 'system')).toBe(false);
     expect(effects).toEqual(new Set(['embers', 'darken', 'eclipse', 'starfall', 'inkstamp']));
-    expect(collectStrings(documents).join('\n')).toContain('별은 왕을 고르지 않는다');
+    expect(collectStrings(documents).join('\n')).toContain('별이 왕을 고르는 게 아니다');
   });
 
   it('keeps every local jump and recovery target valid', () => {
@@ -567,10 +639,10 @@ describe('complete Deokman visual novel', () => {
     expect(bible).toContain('## 핵심 인물과 연기 방향');
     expect(bible).toContain('## 대사·내레이션·기록 채널');
     expect(bible).toContain('## 선택과 엔딩 설계 규칙');
-    expect(bible).toContain('## V9.6 공정한 선택과 지연 회수');
+    expect(bible).toContain('## V10.0 생존 정답과 장면형 죽음');
     expect(bible).toContain('## 완결판 구현 현황');
-    expect(bible).toContain('- 버전: `9.6.0`');
-    expect(bible).toContain('총 13개의 장면형 실패');
+    expect(bible).toContain('- 버전: `10.0.0`');
+    expect(bible).toContain('총 68개의 장면형 실패');
     expect(bible).not.toContain('총 28개');
     expect(bible).toContain('/game-list/deokman/');
   });

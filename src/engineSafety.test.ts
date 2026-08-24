@@ -4,6 +4,8 @@ import {
   mergeInventoryWithDefaults,
   mergeRouteVarsWithDefaults,
   resolveChapterPathIndex,
+  setPlayerAutoPlayPaused,
+  setPlayerExperienceSettings,
   wasDialoguePresentedAtCursor,
 } from './engine';
 import { useVNStore } from './store';
@@ -94,6 +96,21 @@ const fastTypingGame: GameData = {
   },
 };
 
+const playerAutoPlayGame: GameData = {
+  meta: { title: 'Player Auto Mode Test' },
+  settings: { textSpeed: 1000, autoSave: true, clickToInstant: true },
+  assets: { backgrounds: {}, characters: {}, music: {}, sfx: {} },
+  script: [{ scene: 'intro' }],
+  scenes: {
+    intro: {
+      actions: [
+        { say: { text: 'A' } },
+        { choice: { prompt: 'Choose', options: [{ text: 'Stay here' }] } },
+      ],
+    },
+  },
+};
+
 const conditionalDialogueGame: GameData = {
   meta: { title: 'Conditional Dialogue Test' },
   settings: { textSpeed: 30, autoSave: true, clickToInstant: true },
@@ -176,6 +193,13 @@ describe('engine runtime safety', () => {
     useVNStore.getState().setRouteVars({});
     useVNStore.getState().setGame(game, '/');
     useVNStore.getState().setCursor('intro', 0);
+    setPlayerAutoPlayPaused(false);
+    setPlayerExperienceSettings({
+      autoPlayEnabled: false,
+      autoPlayDelayMs: 800,
+      textSpeedRate: 1,
+      effectLevel: 'full',
+    });
   });
 
   it('skips false conditional dialogue without logging or pausing on it', () => {
@@ -195,6 +219,8 @@ describe('engine runtime safety', () => {
   });
 
   afterEach(() => {
+    setPlayerExperienceSettings({ autoPlayEnabled: false });
+    setPlayerAutoPlayPaused(false);
     vi.useRealTimers();
     Reflect.deleteProperty(globalThis, 'window');
     Reflect.deleteProperty(globalThis, 'localStorage');
@@ -373,6 +399,56 @@ describe('engine runtime safety', () => {
 
     expect(useVNStore.getState().dialog.visibleText.length).toBeGreaterThan(1);
     expect(visibleTextUpdateCount).toBe(1);
+  });
+
+  it('auto-advances only completed dialogue and stops at a choice gate', () => {
+    useVNStore.getState().setGame(playerAutoPlayGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+    setPlayerExperienceSettings({ autoPlayEnabled: true, autoPlayDelayMs: 800 });
+
+    handleAdvance();
+    for (let frame = 0; frame < 10 && useVNStore.getState().dialog.typing; frame += 1) {
+      vi.advanceTimersByTime(16);
+    }
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 0,
+      waitingInput: true,
+      dialog: { visibleText: 'A', typing: false },
+    });
+
+    vi.advanceTimersByTime(799);
+    expect(useVNStore.getState().actionIndex).toBe(0);
+    vi.advanceTimersByTime(1);
+
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1,
+      waitingInput: true,
+      choiceGate: { active: true, prompt: 'Choose' },
+    });
+    vi.advanceTimersByTime(5000);
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1,
+      choiceGate: { active: true },
+    });
+  });
+
+  it('pauses player auto mode while a system overlay is open', () => {
+    useVNStore.getState().setGame(playerAutoPlayGame, '/');
+    useVNStore.getState().setCursor('intro', 0);
+    setPlayerExperienceSettings({ autoPlayEnabled: true, autoPlayDelayMs: 800 });
+
+    handleAdvance();
+    vi.advanceTimersByTime(16);
+    setPlayerAutoPlayPaused(true);
+    vi.advanceTimersByTime(2000);
+    expect(useVNStore.getState().actionIndex).toBe(0);
+
+    setPlayerAutoPlayPaused(false);
+    vi.advanceTimersByTime(800);
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1,
+      choiceGate: { active: true },
+    });
   });
 
   it('repairs declared type changes without dropping route state carried across chapters', () => {

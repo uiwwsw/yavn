@@ -31,7 +31,7 @@ scenes:
           char: 천명.nervous
           camera: close
           with: [덕만]
-          text: "당장 안고 싶지만 먼저 의심해야 해. 내가 얼굴만 믿으면 내일 이 궁은 가짜 덕만 열 명을 데려와. 내가 너를 밀어내도 다시 믿게 할 증거를 줘."
+          text: "안고 싶은데… 먼저 확인해야 해. 미안해. 네 얼굴만 믿었다가 가짜면 너도 나도 죽어. 나만 알아볼 수 있는 걸 말해 줘."
       - choice:
           key: c3_proof
           prompt: "천명의 손이 떨린다. 무엇으로 십 년의 틈을 건널까?"
@@ -65,12 +65,12 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "꽃에는 향기가 없었고, 아버지에게는 명령을 끝까지 지킬 손이 없었어. 그날 아버지는 그려진 것보다 먼저 빠진 걸 보라고 했지."
+          text: "아버지가 모란 그림을 보여 줬어. 꽃 말고 빠진 걸 보라고 했지. 벌도 나비도 없었어."
       - say:
           char: 천명
           camera: close
           with: [덕만]
-          text: "아버님이 결정을 미룰 때마다 하던 말이야… 너, 정말 그 방에 있었구나."
+          text: "아버님이 우리한테만 하던 말이야… 덕만아. 정말 너구나."
       - goto: sister_oath
 
   proof_sister:
@@ -96,7 +96,7 @@ scenes:
           char: 천명
           camera: medium
           with: [덕만]
-          text: "내일 네가 내 옆에 서면 저들은 자매가 만났다고 울기 전에 어느 공주에게 몇 표가 갈지 셀 거야. 그 셈까지 견디며 설래?"
+          text: "내일 네가 내 옆에 서면 다들 기뻐하는 척할 거야. 속으로는 우리 표부터 셀 테고. 그래도 같이 들어갈래?"
       - choice:
           key: c3_sisters_strategy
           prompt: "새벽 조회가 열린다. 두 자매는 어떤 모습으로 문을 열까?"
@@ -129,7 +129,7 @@ scenes:
           char: 천명
           camera: close
           with: [덕만]
-          text: "오늘은 사람들이 우리가 잡은 손부터 봤어. 내일부터는 어느 쪽 손이 위였는지 따지고 그 사이에 칼을 끼우겠지."
+          text: "손에 땀났어. 그래도 네가 안 놓아서 버텼다. 내일부터 저 손을 떼려고 별짓을 다 하겠지."
       - goto: spring_ambush
 
   divided_roles:
@@ -143,8 +143,28 @@ scenes:
           char: 덕만
           camera: close
           with: [천명]
-          text: "궁과 시장에서 같은 거짓말의 앞뒤를 잡을 수 있어. 대신 네가 다치면 나는 또 소문과 장부를 지나 한발 늦게 도착하겠지."
-      - goto: spring_ambush
+          text: "궁과 시장에서 따로 확인하자. 같은 말을 하면 믿고, 다르면 밤에 맞춰 보면 돼."
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "덕만아, 오늘만은 같이 들어가면 안 될까? 저들이 원하는 게 우리를 떨어뜨리는 거라면 너무 쉽게 해 주는 것 같아."
+      - say:
+          channel: narration
+          text: "그날 밤 약속한 밀실에는 차 두 잔이 놓여 있었습니다. 천명의 잔은 식어 있었고, 먼저 도착한 덕만의 잔에만 꿀 냄새 아래 쓴 향이 감춰져 있었습니다."
+      - say:
+          char: 덕만.princess_sad
+          camera: close
+          with: [천명]
+          text: "언니가 안 마셔서 다행이야. 그런데… 왜 손끝이 안 움직이지?"
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "왕실 진료 기록 — 덕만 공주, 시장 순행 뒤 급사. 천명 공주를 시기해 독을 준비하다 스스로 마셨다는 자백문이 발견됨."
+      - gameOver:
+          title: "운명 — 따로 놓인 두 잔"
+          message: "자매가 떨어지자 왕위를 질투한 귀족은 덕만의 잔만 골라 독을 넣고, 천명을 범인으로 보이게 할 자백문까지 남겼습니다. 둘이 함께 있었다면 바꿀 수 있던 기록은 덕만이 죽은 뒤 사실이 됐습니다."
+          recoverToChoice: c3_sisters_strategy
 
   hidden_sister:
     actions:
@@ -157,8 +177,23 @@ scenes:
           char: 천명.sad
           camera: close
           with: [덕만]
-          text: "널 살리겠다고 또 네 이름을 시녀복 안에 숨겼어. 이 밤이 길어질수록 내가 칠숙 대신 ‘없는 덕만’을 쓰는 셈이야."
-      - goto: spring_ambush
+          text: "덕만아, 그 잔 내려놔. 아까 널 보고 웃던 상궁이 갑자기 자리를 비웠어."
+      - say:
+          char: 덕만.princess_sad
+          camera: close
+          with: [천명]
+          text: "이미 마셨어. 시녀가 먼저 맛보는 게 이상하지 않아서… 아무도 말리지 않았어."
+      - say:
+          channel: narration
+          text: "덕만이 쓰러지자 귀족들은 놀라기보다 시녀의 이름부터 물었습니다. 천명이 진짜 이름을 외쳤지만, 명부에는 처음부터 존재하지 않는 사람이었습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "공주 처소 잡역부 한 명 독살. 신원 미상으로 장례 없이 매장. 왕실 계승과 무관함."
+      - gameOver:
+          title: "운명 — 이름 없는 독살"
+          message: "신분을 숨긴 덕만은 암살자에게 가장 처리하기 쉬운 시녀가 됐습니다. 천명이 동생이라 외쳐도 공식 이름이 없었기에 독살은 궁중 잡역부의 죽음으로 묻혔습니다."
+          recoverToChoice: c3_sisters_strategy
 
   spring_ambush:
     actions:
@@ -199,10 +234,31 @@ scenes:
 
   capture_order:
     actions:
+      - bg: shadow_corridor
       - say:
           channel: narration
-          text: "덕만이 일부러 동문을 비우자 칠숙은 미끼를 물었습니다. 좁은 회랑에서 옷자락이 찢겼고, 그 안에서 서쪽 창고 열쇠와 사병 명부가 떨어졌습니다."
-      - goto: sisters_end
+          text: "덕만이 동문을 열자 칠숙이 회랑으로 물러났습니다. 덕만이 뒤따라 모퉁이를 도는 순간 문이 닫혔고, 천명의 발소리는 반대편에 갇혔습니다."
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만, 칠숙]
+          text: "덕만아, 쫓지 마! 저 사람은 도망가는 게 아니라 네가 혼자 올 때까지 기다리는 거야!"
+      - say:
+          char: 칠숙.smile
+          camera: close
+          with: [덕만]
+          text: "언니 말씀을 한 걸음만 일찍 들으셨어도 살았을 겁니다."
+      - say:
+          channel: narration
+          text: "회랑 천장에서 두 번째 자객이 내려왔습니다. 덕만이 칠숙의 칼을 막는 동안 뒤에서 들어온 칼이 갈비뼈 사이를 꿰뚫었습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "봄 연회 피습 기록 — 덕만 공주, 자객을 단독 추격하다 피살. 칠숙은 도주함."
+      - gameOver:
+          title: "운명 — 열어 준 퇴로"
+          message: "칠숙의 퇴로는 도망길이 아니라 자매를 떼어 놓는 미끼였습니다. 덕만은 증거를 잡으려 한 걸음 더 들어갔고, 언니의 손이 닿지 않는 회랑에서 죽었습니다."
+          recoverToChoice: c3_ambush
 
   sisters_end:
     actions:
@@ -212,10 +268,10 @@ scenes:
       - char: { id: 천명, position: right }
       - say:
           char: 천명
-          text: "이 밀랍의 흠집이 네가 국경에서 가져온 붉은 인장과 같아. 우리를 죽일 칼값도 백성에게 갈 곡식에서 나왔다는 뜻이야."
+          text: "이 밀랍 흠집, 네가 가져온 인장과 같아. 우리를 죽이려고 쓴 돈이 구휼 곡식에서 나왔어."
       - say:
           char: 덕만
-          text: "서쪽 창고에서 오늘 밤 마지막 수레가 나가. 칼잡이는 이름을 감췄어도, 칼을 먹인 곡식 수레는 길에 제 무게를 남겨."
+          text: "서쪽 창고에서 오늘 밤 마지막 수레가 나가. 사람 이름은 숨겨도 무거운 수레 자국까지 숨기진 못해. 따라가자."
       - say:
           channel: record
           text: "두 공주는 서로를 되찾았고, 암살자의 밀랍을 국경의 곡식길과 연결했습니다. 자매의 재회는 곧 첫 공동 수사로 바뀌었습니다."

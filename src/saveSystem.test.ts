@@ -88,6 +88,10 @@ describe('save system', () => {
 
     expect(saved.exists).toBe(true);
     expect(backup?.filename).toContain('Save-Test');
+    expect(JSON.parse(backup?.content ?? '{}')).toMatchObject({
+      schemaVersion: 2,
+      progress: { schemaVersion: 2 },
+    });
     expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(true);
 
     localStorage.clear();
@@ -96,6 +100,73 @@ describe('save system', () => {
     expect(imported.exists).toBe(true);
     expect(imported.sceneId).toBe('intro');
     expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(true);
+  });
+
+  it('imports an unversioned legacy backup and rewrites its progress as schema v2', () => {
+    importSaveBackup(JSON.stringify({
+      engine: 'YAVN',
+      progress: {
+        gameTitle: 'Save Test',
+        chapterIndex: 0,
+        sceneId: 'intro',
+        actionIndex: 0,
+      },
+    }));
+
+    expect(JSON.parse(localStorage.getItem('vn-engine-autosave:manual') ?? '{}')).toMatchObject({
+      schemaVersion: 2,
+      sceneId: 'intro',
+      routeVars: {},
+      inventory: {},
+      routeHistory: [],
+      storyLog: [],
+    });
+  });
+
+  it('migrates legacy browser save slots in place when they are first read', () => {
+    localStorage.setItem('vn-engine-autosave:manual', JSON.stringify({
+      gameTitle: 'Save Test',
+      chapterIndex: 0,
+      sceneId: 'intro',
+      actionIndex: 0,
+    }));
+
+    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(true);
+    expect(JSON.parse(localStorage.getItem('vn-engine-autosave:manual') ?? '{}')).toMatchObject({
+      schemaVersion: 2,
+      routeVars: {},
+      inventory: {},
+      routeHistory: [],
+      storyLog: [],
+    });
+  });
+
+  it('rejects backup envelopes from a newer unsupported schema', () => {
+    expect(() => importSaveBackup(JSON.stringify({
+      schemaVersion: 999,
+      engine: 'YAVN',
+      progress: {
+        gameTitle: 'Save Test',
+        chapterIndex: 0,
+        sceneId: 'intro',
+        actionIndex: 0,
+      },
+    }))).toThrow('새로운 버전');
+  });
+
+  it('does not downgrade a future browser save slot', () => {
+    const future = JSON.stringify({
+      schemaVersion: 999,
+      gameTitle: 'Save Test',
+      chapterIndex: 0,
+      sceneId: 'intro',
+      actionIndex: 0,
+      futureData: 'keep-me',
+    });
+    localStorage.setItem('vn-engine-autosave:manual', future);
+
+    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(false);
+    expect(localStorage.getItem('vn-engine-autosave:manual')).toBe(future);
   });
 
   it('persists the current background asset id in save data', () => {

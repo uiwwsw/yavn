@@ -52,10 +52,25 @@ describe('transition performance guards', () => {
   });
 
   it('parks hidden Live2D renderers and coalesces backing-canvas resize storms', () => {
-    expect(appSource).toContain('active={rendererActive}');
+    expect(appSource).toContain('active={rendererActive && !settingsOpen}');
     expect(live2dSource).toContain('shouldRunLive2DTicker(');
     expect(live2dSource).toContain('resolveLive2DCanvasPixelRatio(');
     expect(live2dSource).toContain('new ResizeObserver(scheduleResize)');
     expect(live2dSource).toContain('}, LIVE2D_RESIZE_QUIET_MS);');
+  });
+
+  it('defers next-chapter warming and pauses background motion behind settings', () => {
+    expect(engineSource).toContain('idleWindow.requestIdleCallback(warm, { timeout: 3000 })');
+    expect(engineSource).toContain('nextChapterWarmHandle = window.setTimeout(warm, 1200)');
+    expect(engineSource).not.toContain('}, 300);');
+    expect(engineSource).toContain('window.requestAnimationFrame(tick)');
+    expect(engineSource).not.toContain('window.setInterval(tick, 32)');
+    expect(appSource).toContain('setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden)');
+    expect(styles).toMatch(
+      /\.stage-content-frame\.has-settings-modal \.char,[\s\S]*?animation-play-state: paused !important;/,
+    );
+    expect(styles).toMatch(
+      /\.dialog-box\s*\{[\s\S]*?overflow: visible;/,
+    );
   });
 });

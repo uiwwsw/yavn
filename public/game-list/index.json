@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-08-19T23:27:31.671Z",
+  "generatedAt": "2026-08-24T01:41:32.519Z",
   "games": [
     {
       "id": "conan",
@@ -98,8 +98,8 @@
       "name": "선덕여왕: 죽은 공주의 왕관",
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
-      "version": "9.6.0",
-      "summary": "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 마침내 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 스릴러.",
+      "version": "10.0.0",
+      "summary": "대화 속 단서를 읽어 독살·모함·처형을 피하고, 죽은 공주 덕만을 끝내 선덕여왕으로 만드는 12장 생존 정치극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
         "historical-fiction",
@@ -124,7 +124,7 @@
       "chapterCount": 12,
       "seo": {
         "title": "선덕여왕: 죽은 공주의 왕관",
-        "description": "죽은 공주 덕만이 불타는 별궁에서 살아 나와 자기 이름을 훔친 자들을 쫓고, 왕관과 가장 가까운 사람까지 걸고 싸우는 12장 시대극 비주얼노벨.",
+        "description": "죽은 공주 덕만이 단서를 읽어 독살·모함·처형을 피하고, 끝내 선덕여왕이 되어 자기 이름의 역사를 쓰는 12장 생존 정치극 비주얼노벨.",
         "keywords": [
           "선덕여왕",
           "덕만",

@@ -28,6 +28,7 @@ import {
   getBgmEnabled,
   getChoiceRecoverySummary,
   getInventoryUiSettings,
+  getPlayerExperienceSettings,
   getSaveSlotSummaries,
   handleAdvance,
   importSaveBackup,
@@ -44,6 +45,8 @@ import {
   setBgmEnabled,
   setAutoSaveEnabled,
   setInventoryUiSettings,
+  setPlayerAutoPlayPaused,
+  setPlayerExperienceSettings,
   skipVideoCutscene,
   stopActiveBgm,
   submitInputAnswer,
@@ -52,7 +55,15 @@ import {
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
-import type { ChoiceRecoverySummary, SaveSlotKind, SaveSlotSummary } from './engine';
+import type {
+  AutoPlayDelay,
+  ChoiceRecoverySummary,
+  PlayerEffectLevel,
+  PlayerExperienceSettings,
+  SaveSlotKind,
+  SaveSlotSummary,
+  TextSpeedRate,
+} from './engine';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFacingScale,
@@ -1415,6 +1426,9 @@ export default function App() {
   const [inventorySearchTerm, setInventorySearchTerm] = useState('');
   const [bgmEnabled, setBgmEnabledState] = useState(() => getBgmEnabled());
   const [autoSaveEnabled, setAutoSaveEnabledState] = useState(() => getAutoSaveEnabled());
+  const [playerExperience, setPlayerExperience] = useState<PlayerExperienceSettings>(
+    () => getPlayerExperienceSettings(),
+  );
   const [saveSlots, setSaveSlots] = useState<SaveSlotSummary[]>(() => getSaveSlotSummaries());
   const [saveNotice, setSaveNotice] = useState('');
   const [saveBusy, setSaveBusy] = useState(false);
@@ -1645,7 +1659,7 @@ export default function App() {
     }
     const audio = new Audio(startGate.musicUrl);
     audio.loop = true;
-    audio.volume = 0.56;
+    audio.volume = getPlayerExperienceSettings().bgmVolume;
     startGateAudioRef.current = audio;
     void audio.play().catch(() => undefined);
     return () => {
@@ -1656,6 +1670,12 @@ export default function App() {
       }
     };
   }, [bgmEnabled, startGate, stopStartGateMusic]);
+
+  useEffect(() => {
+    if (startGateAudioRef.current) {
+      startGateAudioRef.current.volume = playerExperience.bgmVolume;
+    }
+  }, [playerExperience.bgmVolume]);
 
   useLayoutEffect(() => {
     document.documentElement.classList.toggle(GAME_SHELL_LOCK_CLASS, gameShellLocked);
@@ -1815,6 +1835,7 @@ export default function App() {
   useEffect(() => {
     setBgmEnabledState(getBgmEnabled());
     setAutoSaveEnabledState(getAutoSaveEnabled());
+    setPlayerExperience(getPlayerExperienceSettings());
     setSaveSlots(getSaveSlotSummaries());
     setSaveNotice('');
     const inventoryUiSettings = getInventoryUiSettings();
@@ -1823,6 +1844,10 @@ export default function App() {
     setInventoryCategoryFilter(inventoryUiSettings.category);
     setInventorySearchTerm('');
   }, [bootMode, game?.meta.title, startGate?.kind, startGate?.gameTitle]);
+
+  useEffect(() => {
+    setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden);
+  }, [dialogUiHidden, settingsOpen]);
 
   useEffect(() => {
     setSaveNotice('');
@@ -2565,6 +2590,11 @@ export default function App() {
     [stopStartGateMusic, tryPlayStartGateMusic],
   );
 
+  const updatePlayerExperience = useCallback((patch: Partial<PlayerExperienceSettings>) => {
+    setPlayerExperienceSettings(patch);
+    setPlayerExperience(getPlayerExperienceSettings());
+  }, []);
+
   const refreshSaveSlots = useCallback(() => {
     setSaveSlots(getSaveSlotSummaries());
   }, []);
@@ -3142,7 +3172,7 @@ export default function App() {
             slot={slot}
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
-            active={rendererActive}
+            active={rendererActive && !settingsOpen}
             className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
             style={charStyle}
             onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
@@ -3907,7 +3937,11 @@ export default function App() {
         handleAdvance();
       }}
     >
-      <div className={`effect-viewport ${effectClass}`}>
+      <div
+        className={`effect-viewport ${effectClass}`}
+        data-effect-active={effect ? 'true' : 'false'}
+        data-effect-level={playerExperience.effectLevel}
+      >
       <div className="overlay" />
       <BackgroundTransition source={background} />
 
@@ -4464,8 +4498,127 @@ export default function App() {
                     />
                   </section>
 
-                  <section className="save-system-section legal-notices-section">
+                  <section className="save-system-section player-experience-section">
                     <span className="save-section-index" aria-hidden="true">04</span>
+                    <header>
+                      <div>
+                        <small>PLAYER EXPERIENCE</small>
+                        <h3>플레이 감각</h3>
+                      </div>
+                      <span>게임별로 자동 저장</span>
+                    </header>
+                    <div className="player-experience-grid">
+                      <label className="player-setting-control">
+                        <span>
+                          <b>텍스트 속도</b>
+                          <small>대사 출력 배속</small>
+                        </span>
+                        <select
+                          value={playerExperience.textSpeedRate}
+                          onChange={(event) => updatePlayerExperience({
+                            textSpeedRate: Number(event.target.value) as TextSpeedRate,
+                          })}
+                        >
+                          <option value={0.75}>차분하게 · 0.75×</option>
+                          <option value={1}>기본 · 1×</option>
+                          <option value={1.5}>빠르게 · 1.5×</option>
+                          <option value={2}>매우 빠르게 · 2×</option>
+                        </select>
+                      </label>
+                      <label className="player-setting-control is-switch">
+                        <span>
+                          <b>자동 진행</b>
+                          <small>선택지와 입력에서는 정지</small>
+                        </span>
+                        <span className="settings-switch">
+                          <input
+                            type="checkbox"
+                            checked={playerExperience.autoPlayEnabled}
+                            onChange={(event) => updatePlayerExperience({ autoPlayEnabled: event.target.checked })}
+                          />
+                          <span aria-hidden="true" />
+                        </span>
+                      </label>
+                      <label className="player-setting-control">
+                        <span>
+                          <b>자동 진행 간격</b>
+                          <small>타이핑 완료 후 대기</small>
+                        </span>
+                        <select
+                          value={playerExperience.autoPlayDelayMs}
+                          disabled={!playerExperience.autoPlayEnabled}
+                          onChange={(event) => updatePlayerExperience({
+                            autoPlayDelayMs: Number(event.target.value) as AutoPlayDelay,
+                          })}
+                        >
+                          <option value={800}>짧게 · 0.8초</option>
+                          <option value={1400}>기본 · 1.4초</option>
+                          <option value={2200}>여유롭게 · 2.2초</option>
+                        </select>
+                      </label>
+                      <label className="player-setting-control">
+                        <span>
+                          <b>화면 효과</b>
+                          <small>움직임과 광량 강도</small>
+                        </span>
+                        <select
+                          value={playerExperience.effectLevel}
+                          onChange={(event) => updatePlayerExperience({
+                            effectLevel: event.target.value as PlayerEffectLevel,
+                          })}
+                        >
+                          <option value="full">풍부하게</option>
+                          <option value="reduced">부드럽게</option>
+                          <option value="minimal">최소화</option>
+                        </select>
+                      </label>
+                      <div className="player-setting-control player-volume-control">
+                        <span>
+                          <b>배경음악</b>
+                          <small>{Math.round(playerExperience.bgmVolume * 100)}%</small>
+                        </span>
+                        <div>
+                          <span className="settings-switch">
+                            <input
+                              type="checkbox"
+                              checked={bgmEnabled}
+                              aria-label="배경음악 켜기"
+                              onChange={(event) => onToggleBgmDisabled(!event.target.checked)}
+                            />
+                            <span aria-hidden="true" />
+                          </span>
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={playerExperience.bgmVolume}
+                            aria-label="배경음악 음량"
+                            disabled={!bgmEnabled}
+                            onChange={(event) => updatePlayerExperience({ bgmVolume: Number(event.target.value) })}
+                          />
+                        </div>
+                      </div>
+                      <label className="player-setting-control player-volume-control">
+                        <span>
+                          <b>효과음</b>
+                          <small>{Math.round(playerExperience.sfxVolume * 100)}%</small>
+                        </span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.05"
+                          value={playerExperience.sfxVolume}
+                          aria-label="효과음 음량"
+                          onChange={(event) => updatePlayerExperience({ sfxVolume: Number(event.target.value) })}
+                        />
+                      </label>
+                    </div>
+                  </section>
+
+                  <section className="save-system-section legal-notices-section">
+                    <span className="save-section-index" aria-hidden="true">05</span>
                     <header>
                       <div>
                         <small>RIGHTS &amp; ATTRIBUTION</small>
@@ -4488,18 +4641,7 @@ export default function App() {
                   </section>
                 </div>
 
-                <section className="save-system-section save-preferences-section">
-                  <label className="settings-toggle-row">
-                    <span>배경음악</span>
-                    <span className="settings-switch">
-                      <input
-                        type="checkbox"
-                        checked={bgmEnabled}
-                        onChange={(event) => onToggleBgmDisabled(!event.target.checked)}
-                      />
-                      <span aria-hidden="true" />
-                    </span>
-                  </label>
+                <section className="save-system-section save-preferences-section is-single-action">
                   <button
                     type="button"
                     className="settings-action-button"
@@ -4576,6 +4718,18 @@ export default function App() {
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
+            <button
+              type="button"
+              className={`dialog-toggle-button dialog-auto-button${playerExperience.autoPlayEnabled ? ' is-active' : ''}`}
+              aria-pressed={playerExperience.autoPlayEnabled}
+              title="일반 대사를 자동으로 진행합니다"
+              onClick={(event) => {
+                event.stopPropagation();
+                updatePlayerExperience({ autoPlayEnabled: !playerExperience.autoPlayEnabled });
+              }}
+            >
+              AUTO
+            </button>
             <button
               type="button"
               className="dialog-toggle-button"
