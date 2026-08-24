@@ -2334,6 +2334,57 @@ export default function App() {
     ].join(':')).join(','),
     [stagedCharactersByPosition],
   );
+  const [settlingBreathingCharacterIds, setSettlingBreathingCharacterIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
+  const previousBreathingSpeakerIdRef = useRef(dialogSpeakerId);
+
+  useLayoutEffect(() => {
+    const previousSpeakerId = previousBreathingSpeakerIdRef.current;
+    const speakerChanged = previousSpeakerId !== dialogSpeakerId;
+    previousBreathingSpeakerIdRef.current = dialogSpeakerId;
+    const stagedCharacterIds = new Set(stagedCharactersByPosition.map(({ slot }) => slot.id));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    setSettlingBreathingCharacterIds((current) => {
+      if (reducedMotion) {
+        return current.size > 0 ? new Set() : current;
+      }
+
+      const next = new Set(current);
+      let changed = false;
+      for (const characterId of next) {
+        if (!stagedCharacterIds.has(characterId)) {
+          next.delete(characterId);
+          changed = true;
+        }
+      }
+      if (speakerChanged && previousSpeakerId && stagedCharacterIds.has(previousSpeakerId)) {
+        if (!next.has(previousSpeakerId)) {
+          next.add(previousSpeakerId);
+          changed = true;
+        }
+      }
+      if (dialogSpeakerId && next.delete(dialogSpeakerId)) {
+        changed = true;
+      }
+      return changed ? next : current;
+    });
+  }, [dialogSpeakerId, stagedCharacterMotionKey, stagedCharactersByPosition]);
+
+  const finishSettlingSpeakerBreathing = useCallback((characterId: string, animationName: string) => {
+    if (animationName !== 'characterSpeakerBreathing' || characterId === dialogSpeakerId) {
+      return;
+    }
+    setSettlingBreathingCharacterIds((current) => {
+      if (!current.has(characterId)) {
+        return current;
+      }
+      const next = new Set(current);
+      next.delete(characterId);
+      return next;
+    });
+  }, [dialogSpeakerId]);
   const stickerAvoidanceKey = useMemo(() => [
     cameraPresentation.shot,
     cameraPresentation.scale,
@@ -2997,6 +3048,11 @@ export default function App() {
     const placementReady = renderPlacement !== 'prompt-top' || promptTopBaselineReady;
     const rendererActive = isCameraVisible && !isCloseListener && placementReady;
     const isSpeaking = rendererActive && dialogSpeakerId === slot.id;
+    const isSettlingBreathing = dialogSpeakerId !== slot.id && (
+      settlingBreathingCharacterIds.has(slot.id)
+      || previousBreathingSpeakerIdRef.current === slot.id
+    );
+    const isBreathing = isSpeaking || isSettlingBreathing;
     const focusPresentation = resolveCharacterFocusPresentation(
       isFocused,
       hasFocusedCharacter,
@@ -3045,6 +3101,8 @@ export default function App() {
       position,
       focusPresentation.depthClass,
       isSpeaking ? 'is-speaking' : '',
+      isBreathing ? 'is-breathing' : '',
+      isSettlingBreathing ? 'is-breath-settling' : '',
       duoClass,
       `char-placement-${renderPlacement}`,
       visibilityClass,
@@ -3058,8 +3116,9 @@ export default function App() {
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
             active={rendererActive}
-            className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
+            className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
             style={charStyle}
+            onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
           />
         </Suspense>
       );
@@ -3079,6 +3138,7 @@ export default function App() {
         loading="eager"
         decoding="async"
         style={charStyle}
+        onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
       />
     );
   };
