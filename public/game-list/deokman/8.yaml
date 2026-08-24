@@ -90,6 +90,7 @@ scenes:
 
   evidence_vote:
     actions:
+      - bg: council_hall
       - sticker: { id: c9_ledger, image: grain_ledger_sticker, x: 50, y: 28, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
           char: 덕만
@@ -98,18 +99,49 @@ scenes:
       - say:
           channel: narration
           text: "장부가 바닥을 미끄러지자 몇몇 귀족이 손을 소매 안으로 감췄습니다. 찬성은 아니었지만 누구도 먼저 반대표를 들지 못했습니다."
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "멈추십시오. 이름이 적힌 자들에게 표를 내려놓으라고 했지만, 그 표를 빼앗을 권한과 증인을 아직 세우지 않았습니다."
+      - say:
+          channel: narration
+          text: "장부에 이름이 오른 귀족들이 동시에 탁자를 뒤엎었습니다. 경비는 증거를 지킨다는 명령과 표결을 지킨다는 명령 사이에서 멈췄고, 소매 속 단검은 그보다 빨랐습니다."
       - clearSticker: { id: c9_ledger, leave: fadeOut }
-      - goto: coup_begins
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "왕위 표결장 변고 — 덕만 공주, 조작된 곡식 장부로 귀족을 협박하다 난투 중 피살. 문제의 장부는 소실됨."
+      - gameOver:
+          title: "운명 — 증거만 세운 표결"
+          message: "장부는 죄를 드러냈지만 누가 그 죄를 판정하고 증거를 지킬지는 정하지 못했습니다. 덕만이 공개 절차보다 고발을 먼저 내밀자 장부에 묶인 귀족들이 표결과 증인을 한꺼번에 없앴습니다."
+          recoverToChoice: c9_vote_strategy
 
   people_vote:
     actions:
+      - bg: council_hall
       - say:
           channel: narration
           text: "궁문 밖에서 마을 이름이 하나씩 불렸습니다. 사람들은 덕만 만세 대신 자기 창고와 죽은 가족의 이름을 외쳤습니다. 귀족이 '폭도'라 부를 때마다 새로운 마을이 대답했습니다."
       - say:
           char: 덕만
           text: "표는 여러분이 갖고 있지만 결과를 견딜 사람은 문밖에 있습니다. 문을 닫더라도 저 이름들은 회의록에 적으십시오."
-      - goto: coup_begins
+      - say:
+          char: 춘추.nervous
+          camera: close
+          with: [덕만]
+          text: "마을 이름은 증언이지만 아직 표가 아닙니다. 문을 열면 저 군중 속에 섞인 귀족 사병까지 함께 들어옵니다."
+      - say:
+          channel: narration
+          text: "궁문이 열리자 앞줄의 사병이 '덕만이 백성을 방패로 삼았다'고 외치며 돌을 던졌습니다. 군중이 한꺼번에 밀렸고, 덕만은 사람들을 세우려 계단 아래로 내려갔다가 숨겨 둔 창에 찔렸습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "왕위 표결 민란 — 덕만 공주가 백성을 궁궐에 끌어들여 표결을 압박하던 중 폭도에게 피살됨."
+      - gameOver:
+          title: "운명 — 이름 뒤에 숨은 칼"
+          message: "백성의 이름은 덕만이 책임질 사람을 보여 줬지만 표결 절차를 대신할 수는 없었습니다. 열린 궁문으로 귀족 사병까지 들어오면서 지지는 민란으로 기록됐고 덕만은 군중 속에서 죽었습니다."
+          recoverToChoice: c9_vote_strategy
 
   guarded_vote:
     actions:

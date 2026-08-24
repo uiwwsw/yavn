@@ -1843,7 +1843,7 @@ export default function App() {
     setInventorySort(inventoryUiSettings.sort);
     setInventoryCategoryFilter(inventoryUiSettings.category);
     setInventorySearchTerm('');
-  }, [bootMode, game?.meta.title, startGate?.kind, startGate?.gameTitle]);
+  }, [bootMode, game?.meta.title, game?.meta.version, startGate?.kind, startGate?.gameTitle]);
 
   useEffect(() => {
     setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden);

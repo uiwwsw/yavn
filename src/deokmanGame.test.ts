@@ -80,7 +80,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('10.0.0');
+    expect(config.data?.data.version).toBe('10.1.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -148,7 +148,7 @@ describe('complete Deokman visual novel', () => {
     expect(new Set(choiceKeys).size).toBe(choiceKeys.length);
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
-    expect(gameOvers).toHaveLength(68);
+    expect(gameOvers).toHaveLength(76);
     expect(choices.flatMap((choice) => Array.isArray(choice.options) ? choice.options.map(asRecord) : [])
       .some((option) => Object.keys(asRecord(option.gameOver)).length > 0)).toBe(false);
 
@@ -167,7 +167,7 @@ describe('complete Deokman visual novel', () => {
     });
   });
 
-  it('makes most wrong answers fatal while leaving a fair route to the crown', () => {
+  it('makes every wrong answer fatal while leaving exactly one fair route at each choice', () => {
     const fatalOptionPositions = new Set<'first' | 'middle' | 'last'>();
     const optionOutcomes: Array<{ key: string; text: string; fatal: boolean }> = [];
     let majorityFatalChoices = 0;
@@ -215,14 +215,14 @@ describe('complete Deokman visual novel', () => {
         });
 
         expect(options.length, key).toBeGreaterThanOrEqual(3);
-        expect(options.length - fatalCount, key).toBeGreaterThanOrEqual(1);
+        expect(options.length - fatalCount, key).toBe(1);
         if (fatalCount > options.length / 2) majorityFatalChoices += 1;
       });
     });
 
     expect(optionOutcomes).toHaveLength(112);
-    expect(optionOutcomes.filter((outcome) => outcome.fatal)).toHaveLength(68);
-    expect(majorityFatalChoices).toBe(31);
+    expect(optionOutcomes.filter((outcome) => outcome.fatal)).toHaveLength(76);
+    expect(majorityFatalChoices).toBe(36);
     expect(fatalOptionPositions).toEqual(new Set(['first', 'middle', 'last']));
     expect(readSource('1.yaml')).toContain('recoverToChoice: c2_checkpoint');
 
@@ -639,10 +639,10 @@ describe('complete Deokman visual novel', () => {
     expect(bible).toContain('## 핵심 인물과 연기 방향');
     expect(bible).toContain('## 대사·내레이션·기록 채널');
     expect(bible).toContain('## 선택과 엔딩 설계 규칙');
-    expect(bible).toContain('## V10.0 생존 정답과 장면형 죽음');
+    expect(bible).toContain('## V10.1 단일 생존 정답과 장면형 죽음');
     expect(bible).toContain('## 완결판 구현 현황');
-    expect(bible).toContain('- 버전: `10.0.0`');
-    expect(bible).toContain('총 68개의 장면형 실패');
+    expect(bible).toContain('- 버전: `10.1.0`');
+    expect(bible).toContain('총 76개의 장면형 실패');
     expect(bible).not.toContain('총 28개');
     expect(bible).toContain('/game-list/deokman/');
   });

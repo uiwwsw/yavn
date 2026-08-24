@@ -1809,8 +1809,28 @@ function loadProgressByKey(key: string): SaveProgress | undefined {
   }
 }
 
-function hasLoadableProgressByKey(key: string): boolean {
-  return Boolean(loadProgressByKey(key));
+type GameSaveIdentity = {
+  title: string;
+  version?: string;
+};
+
+function normalizeGameVersion(version: string | undefined): string | undefined {
+  const normalized = version?.trim();
+  return normalized ? normalized : undefined;
+}
+
+function isSaveCompatibleWithGameIdentity(save: SaveProgress, identity: GameSaveIdentity): boolean {
+  if (save.gameTitle && save.gameTitle !== identity.title) {
+    return false;
+  }
+  const savedVersion = normalizeGameVersion(save.gameVersion);
+  const currentVersion = normalizeGameVersion(identity.version);
+  return !savedVersion || !currentVersion || savedVersion === currentVersion;
+}
+
+function hasLoadableProgressByKey(key: string, identity?: GameSaveIdentity): boolean {
+  const progress = loadProgressByKey(key);
+  return Boolean(progress && (!identity || isSaveCompatibleWithGameIdentity(progress, identity)));
 }
 
 function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress {
@@ -1845,8 +1865,15 @@ function saveProgress(sceneId: string, actionIndex: number, slot: SaveSlotKind =
 }
 
 export function getSaveSlotSummaries(): SaveSlotSummary[] {
+  const game = useVNStore.getState().game;
   return (['auto', 'manual', 'chapter'] as const).map((slot) => {
-    const save = loadProgressByKey(resolveSaveSlotKey(slot));
+    const loaded = loadProgressByKey(resolveSaveSlotKey(slot));
+    const save = loaded && (!game || isSaveCompatibleWithGameIdentity(loaded, {
+      title: game.meta.title,
+      version: game.meta.version,
+    }))
+      ? loaded
+      : undefined;
     return save
       ? {
           slot,
@@ -1885,7 +1912,10 @@ function validateSaveForCurrentGame(save: SaveProgress): boolean {
   if (!game) {
     return false;
   }
-  return !save.gameTitle || save.gameTitle === game.meta.title;
+  return isSaveCompatibleWithGameIdentity(save, {
+    title: game.meta.title,
+    version: game.meta.version,
+  });
 }
 
 function getChoiceRecoveryProgress(): SaveProgress | undefined {
@@ -1996,9 +2026,11 @@ export function importSaveBackup(raw: string): SaveSlotSummary {
   };
 }
 
-function loadProgress(): SaveProgressLoadResult {
-  const scoped = loadProgressByKey(currentAutosaveKey);
-  const manual = loadProgressByKey(resolveSaveSlotKey('manual'));
+function loadProgress(identity?: GameSaveIdentity): SaveProgressLoadResult {
+  const compatible = (save: SaveProgress | undefined): SaveProgress | undefined =>
+    save && (!identity || isSaveCompatibleWithGameIdentity(save, identity)) ? save : undefined;
+  const scoped = compatible(loadProgressByKey(currentAutosaveKey));
+  const manual = compatible(loadProgressByKey(resolveSaveSlotKey('manual')));
   if (scoped || manual) {
     const scopedTime = scoped?.savedAt ? Date.parse(scoped.savedAt) : 0;
     const manualTime = manual?.savedAt ? Date.parse(manual.savedAt) : 0;
@@ -2009,7 +2041,7 @@ function loadProgress(): SaveProgressLoadResult {
     };
   }
 
-  const chapter = loadProgressByKey(resolveSaveSlotKey('chapter'));
+  const chapter = compatible(loadProgressByKey(resolveSaveSlotKey('chapter')));
   if (chapter) {
     return {
       save: chapter,
@@ -2018,7 +2050,7 @@ function loadProgress(): SaveProgressLoadResult {
   }
 
   if (currentAutosaveKey !== LEGACY_AUTOSAVE_KEY) {
-    const legacy = loadProgressByKey(LEGACY_AUTOSAVE_KEY);
+    const legacy = compatible(loadProgressByKey(LEGACY_AUTOSAVE_KEY));
     if (legacy) {
       return {
         save: legacy,
@@ -3240,6 +3272,10 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     const resumeScene = resume ? game.scenes[resume.sceneId] : undefined;
     const canResumeHere =
       !!resume &&
+      isSaveCompatibleWithGameIdentity(resume, {
+        title: game.meta.title,
+        version: game.meta.version,
+      }) &&
       !!resumeScene &&
       resume.actionIndex <= resumeScene.actions.length &&
       ((!!resume.chapterPath && normalizeChapterPathKey(resume.chapterPath) === currentPathKey) ||
@@ -4001,7 +4037,7 @@ function runToNextPause(loopGuard = 0) {
 }
 
 async function fetchYamlIfExists(url: string): Promise<string | undefined> {
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: 'no-store' });
   if (!response.ok) {
     return undefined;
   }
@@ -4020,6 +4056,7 @@ async function fetchYamlIfExists(url: string): Promise<string | undefined> {
 
 function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
   gameTitle: string;
+  gameVersion?: string;
   startScreen?: GameData['startScreen'];
   seo?: GameData['meta']['seo'];
   legalNotices: NonNullable<GameData['meta']['legalNotices']>;
@@ -4031,6 +4068,7 @@ function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
   }
   return {
     gameTitle: parsed.data.data.title,
+    gameVersion: parsed.data.data.version,
     startScreen: parsed.data.data.startScreen,
     seo: parsed.data.data.seo,
     legalNotices: parsed.data.data.legalNotices ?? [],
@@ -4062,11 +4100,15 @@ export async function loadUrlStartScreenPreview(url: string): Promise<StartScree
   const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
   const startScreen = parsedConfig.startScreen;
   const autosaveKey = resolveAutosaveKeyForUrl(baseUrl);
+  const identity = {
+    title: parsedConfig.gameTitle,
+    version: parsedConfig.gameVersion,
+  };
   const hasLoadableSave =
-    hasLoadableProgressByKey(autosaveKey) ||
-    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}`) ||
-    hasLoadableProgressByKey(`${autosaveKey}${CHAPTER_SAVE_SUFFIX}`) ||
-    hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY);
+    hasLoadableProgressByKey(autosaveKey, identity) ||
+    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}`, identity) ||
+    hasLoadableProgressByKey(`${autosaveKey}${CHAPTER_SAVE_SUFFIX}`, identity) ||
+    hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY, identity);
   return {
     gameTitle: parsedConfig.gameTitle,
     startScreen,
@@ -4141,7 +4183,7 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
 
 async function hasYamlFileAtUrl(url: string): Promise<boolean> {
   try {
-    const head = await fetch(url, { method: 'HEAD' });
+    const head = await fetch(url, { method: 'HEAD', cache: 'no-store' });
     if (head.ok) {
       const contentType = (head.headers.get('content-type') ?? '').toLowerCase();
       return !contentType.includes('text/html');
@@ -4508,6 +4550,8 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
       useVNStore.getState().setError({ message: 'config.yaml not found at game root.' });
       return;
     }
+    const config = await loadParsedConfigDocument();
+    const gameIdentity = { title: config.data.title, version: config.data.version };
 
     const chapters: PreparedChapter[] = [];
 
@@ -4562,7 +4606,9 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
       }
     }
 
-    const loadedProgress = resumeFromSave ? loadProgress() : { source: 'none' as const, save: undefined };
+    const loadedProgress = resumeFromSave
+      ? loadProgress(gameIdentity)
+      : { source: 'none' as const, save: undefined };
     if (loadedProgress.source !== 'scoped' && loadedProgress.source !== 'none') {
       clearChoiceRecoveryPoint();
     }
@@ -4630,6 +4676,8 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
       useVNStore.getState().setError({ message: 'config.yaml not found at game root.' });
       return;
     }
+    const config = await loadParsedConfigDocument();
+    const gameIdentity = { title: config.data.title, version: config.data.version };
 
     const numbered = chapterCandidateYamlFiles
       .map((entry) => {
@@ -4673,7 +4721,9 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
       chapters.push(createZipChapter(pathKey, yamlEntry));
     }
 
-    const loadedProgress = resumeFromSave ? loadProgress() : { source: 'none' as const, save: undefined };
+    const loadedProgress = resumeFromSave
+      ? loadProgress(gameIdentity)
+      : { source: 'none' as const, save: undefined };
     if (loadedProgress.source !== 'scoped' && loadedProgress.source !== 'none') {
       clearChoiceRecoveryPoint();
     }

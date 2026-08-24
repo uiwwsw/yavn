@@ -52,14 +52,38 @@ scenes:
 
   proof_record:
     actions:
+      - bg: princess_chamber
       - sticker: { id: c3_record, image: death_register_sticker, x: 50, y: 28, width: "clamp(170px, 21%, 320px)", anchorX: center, anchorY: center, enter: fadeIn }
+      - say:
+          channel: narration
+          text: "덕만이 그을린 사망 기록을 내밀자 천명은 종이보다 먼저 문밖의 경비를 불렀습니다. 그 문서는 십 년 동안 여러 사람의 손을 거친 공개된 수색 증거였습니다."
       - say:
           char: 천명.sad
           camera: close
           with: [덕만]
           text: "도장은 아버님 것이지만 획은 궁 서기관 것이 아니야. 누군가 왕의 권위와 기록관의 손을 따로 훔쳐 한 장에서 만나게 했어."
+      - say:
+          char: 덕만.wanderer
+          camera: close
+          with: [천명]
+          text: "그걸 알아봤다면 내가 왜 이 종이를 들고 왔는지도 알잖아. 나는 저 기록에서 살아 나온 덕만이야."
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "아니. 이건 누가 덕만을 죽이려 했는지만 증명해. 네가 내 동생이라는 건 한 줄도 증명하지 못해."
       - clearSticker: { id: c3_record, leave: fadeOut }
-      - goto: sister_oath
+      - say:
+          channel: narration
+          text: "문이 열리자 매복해 있던 귀족 경비가 덕만을 위조 문서를 든 암살자로 묶었습니다. 천명이 명령을 거두려 했을 때는 칼끝이 이미 덕만의 목을 지나간 뒤였습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "공주 처소 침입 사건 — 죽은 덕만 공주를 사칭한 여인, 위조 왕실 문서를 제시하다 현장에서 사살됨."
+      - gameOver:
+          title: "운명 — 누구나 훔칠 수 있는 증거"
+          message: "사망 기록은 음모의 증거였지만 자매만 아는 신분 증명은 아니었습니다. 덕만은 종이가 자기 이름까지 말해 줄 것이라 믿었고, 천명의 경비는 그 침묵을 사칭의 증거로 바꿨습니다."
+          recoverToChoice: c3_proof
 
   proof_memory:
     actions:
@@ -75,6 +99,7 @@ scenes:
 
   proof_sister:
     actions:
+      - bg: princess_chamber
       - say:
           char: 덕만
           camera: close
@@ -85,7 +110,22 @@ scenes:
           camera: close
           with: [덕만]
           text: "맞아. 네가 살아 돌아왔는데 기쁨보다 내 자리를 먼저 셌어. 그 마음을 숨긴 채 네 언니인 척 안는 것이 더 무서워."
-      - goto: sister_oath
+      - say:
+          char: 천명.nervous
+          camera: close
+          with: [덕만]
+          text: "하지만 그 두려움은 궁 안 누구나 짐작할 수 있어. 내 마음을 읽었다고 네가 덕만이 되는 건 아니야. 우리만 아는 말을 해 줬어야 했어."
+      - say:
+          channel: narration
+          text: "천명이 경비를 물리라고 입을 열었지만 문밖의 귀족 병사는 '가짜가 공주를 홀렸다'며 먼저 창을 찔렀습니다. 덕만은 천명의 팔 안에서 쓰러졌고, 자매의 기억은 끝내 확인되지 못했습니다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: record
+          text: "공주 처소 침입 사건 — 천명 공주를 현혹한 덕만 사칭범 사살. 배후를 밝히지 못해 시신은 무명으로 처리함."
+      - gameOver:
+          title: "운명 — 마음만 맞힌 가짜"
+          message: "천명의 두려움을 알아본 말은 위로였지만 신분을 증명하지 못했습니다. 둘만 공유한 모란의 기억 대신 누구나 짐작할 감정을 내민 순간 경비에게 덕만은 위험한 사칭범으로 남았습니다."
+          recoverToChoice: c3_proof
 
   sister_oath:
     actions:
