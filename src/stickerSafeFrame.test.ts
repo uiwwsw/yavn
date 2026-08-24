@@ -25,7 +25,7 @@ describe('sticker and mobile dialogue safe areas', () => {
     );
   });
 
-  it('places stickers around visible characters before revealing them', () => {
+  it('places stickers before revealing them and glides later collision-driven relocations', () => {
     expect(appSource).toContain('fitStickerWithinFrameAvoidingRects(');
     expect(appSource).toContain('doesStickerOverlapRects(');
     expect(appSource).toContain('haveStickerObstacleRectsSettled(');
@@ -38,14 +38,22 @@ describe('sticker and mobile dialogue safe areas', () => {
     expect(appSource).toContain('scheduleSafeFit(STICKER_LAYOUT_QUIET_MS, true);');
     expect(appSource).toContain("left: safeFit ? `${safeFit.left}px` : sticker.x");
     expect(appSource).toContain("top: safeFit ? `${safeFit.top}px` : sticker.y");
-    expect(appSource).toContain("transition: 'none'");
+    expect(appSource).toContain("data-layout-motion={safeFit && layoutMotionReady ? 'true' : 'false'}");
+    expect(appSource).toContain('setLayoutMotionReady(true);');
+    expect(appSource).toContain('layoutMotionFrameRef.current = window.requestAnimationFrame(() => {');
     expect(appSource).not.toContain('fitAnimationReady');
     expect(appSource).not.toContain('const checkpoints');
+    expect(styles).toMatch(
+      /\.sticker\[data-layout-motion='true'\]\s*\{[\s\S]*?left 280ms[\s\S]*?top 280ms[\s\S]*?transform 280ms/,
+    );
     expect(styles).toMatch(
       /\.sticker\[data-layout-ready='false'\]\s*\{[\s\S]*?visibility: hidden;/,
     );
     expect(styles).toMatch(
       /\.sticker\[data-layout-ready='false'\] \.sticker-visual\s*\{[\s\S]*?animation-play-state: paused;/,
+    );
+    expect(styles).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.sticker,[\s\S]*?transition: none !important;/,
     );
   });
 

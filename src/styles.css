@@ -1273,12 +1273,16 @@ textarea,
   position: absolute;
   inset: 0;
   transform: translate3d(var(--stage-camera-render-pan-x), 0, 0);
-  transition:
-    transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)
-    var(--stage-camera-motion-delay);
+  transition: none;
   will-change: auto;
   backface-visibility: hidden;
   contain: layout paint;
+}
+
+.char-camera-world[data-camera-transition='pan'] {
+  transition:
+    transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)
+    var(--stage-camera-motion-delay);
 }
 
 .char-layer[data-camera-moving='true'] .char-composition-world,
@@ -1359,6 +1363,16 @@ textarea,
   --sticker-leave-duration: 220ms;
   --sticker-leave-easing: ease;
   --sticker-leave-delay: 0ms;
+  transition: none;
+}
+
+.sticker[data-layout-motion='true'] {
+  transition:
+    left 280ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    top 280ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    width 280ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    height 280ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    transform 280ms cubic-bezier(0.2, 0.72, 0.24, 1);
 }
 
 .sticker[data-layout-ready='false'] {
@@ -1450,6 +1464,8 @@ textarea,
 .char {
   --character-opacity-duration: var(--character-leave-duration);
   --character-visibility-delay: 0ms;
+  --character-position-duration: 380ms;
+  --character-scale-duration: 360ms;
   --char-offset-x: 0%;
   --char-anchor-x: var(--char-desktop-anchor-x, 50cqw);
   --char-scale: 1;
@@ -1477,8 +1493,8 @@ textarea,
   scale: var(--char-scale);
   visibility: visible;
   transition:
-    translate 380ms cubic-bezier(0.2, 0.72, 0.24, 1),
-    scale 360ms cubic-bezier(0.2, 0.72, 0.24, 1),
+    translate var(--character-position-duration) cubic-bezier(0.2, 0.72, 0.24, 1),
+    scale var(--character-scale-duration) cubic-bezier(0.2, 0.72, 0.24, 1),
     opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1),
     visibility 0s linear var(--character-visibility-delay);
   backface-visibility: hidden;
@@ -1502,18 +1518,23 @@ textarea,
   --character-visibility-delay: var(--character-exit-duration);
   opacity: 0;
   visibility: hidden;
+  animation: none;
 }
 
 .char.is-camera-hidden {
   --character-opacity-duration: var(--character-leave-duration);
   --character-visibility-delay: var(--character-leave-duration);
-  /* Keep an in-flight first entrance animation from painting a camera-hidden actor. */
+  --character-position-duration: 0ms;
+  --character-scale-duration: 0ms;
+  /* Exit in place; hidden actors never carry a stale slot into their next entrance. */
   opacity: 0 !important;
   visibility: hidden;
+  animation: none;
 }
 
-.char.is-camera-hidden.is-awaiting-entry {
-  animation: none;
+.char.is-entering {
+  --character-position-duration: 0ms;
+  --character-scale-duration: 0ms;
 }
 
 .char-image {
@@ -5835,6 +5856,7 @@ textarea,
   .char-composition-world,
   .char-camera-world,
   .char-layer,
+  .sticker,
   .sticker-layer {
     transition: none !important;
   }

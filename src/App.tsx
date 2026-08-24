@@ -283,14 +283,6 @@ type StartGateState =
     legalNotices: LegalNotice[];
   };
 
-type CharacterPlacementSnapshot = {
-  anchorX: string;
-  mobileAnchorX: string;
-  offsetX: '0%' | '-50%' | '-100%';
-  duoSide?: 'left' | 'right';
-  facingScale: 1 | -1;
-};
-
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
 const ALL_TAG_FILTER = '__all';
@@ -997,9 +989,11 @@ const StickerView = memo(function StickerView({
 }) {
   const stickerRef = useRef<HTMLDivElement | null>(null);
   const [safeFit, setSafeFit] = useState<LockedStickerFit | null>(null);
+  const [layoutMotionReady, setLayoutMotionReady] = useState(false);
   const layoutLockedRef = useRef(false);
   const imageReadyRef = useRef(false);
   const settleTimerRef = useRef<number | null>(null);
+  const layoutMotionFrameRef = useRef<number | null>(null);
   const earliestMeasurementAtRef = useRef(0);
   const lockedStageSizeRef = useRef<StickerStageSize | null>(null);
   const previousObstacleRectsRef = useRef<StickerLayoutRect[] | null>(null);
@@ -1214,6 +1208,7 @@ const StickerView = memo(function StickerView({
       lockedStageSizeRef.current = null;
       previousObstacleRectsRef.current = null;
       setSafeFit(null);
+      setLayoutMotionReady(false);
       earliestMeasurementAtRef.current = performance.now() + STICKER_RESIZE_QUIET_MS;
       scheduleSafeFit(STICKER_RESIZE_QUIET_MS);
     });
@@ -1224,6 +1219,24 @@ const StickerView = memo(function StickerView({
     });
     return () => observer.disconnect();
   }, [avoidanceKey, scheduleSafeFit, sticker.leaving]);
+
+  useEffect(() => {
+    if (!safeFit || layoutMotionReady) {
+      return;
+    }
+    // The first collision-free fit is revealed in place. Enable interpolation
+    // one paint later so only subsequent obstacle-driven relocations glide.
+    layoutMotionFrameRef.current = window.requestAnimationFrame(() => {
+      layoutMotionFrameRef.current = null;
+      setLayoutMotionReady(true);
+    });
+    return () => {
+      if (layoutMotionFrameRef.current !== null) {
+        window.cancelAnimationFrame(layoutMotionFrameRef.current);
+        layoutMotionFrameRef.current = null;
+      }
+    };
+  }, [layoutMotionReady, safeFit]);
 
   useEffect(() => {
     const stickerElement = stickerRef.current;
@@ -1251,6 +1264,9 @@ const StickerView = memo(function StickerView({
     if (settleTimerRef.current !== null) {
       window.clearTimeout(settleTimerRef.current);
     }
+    if (layoutMotionFrameRef.current !== null) {
+      window.cancelAnimationFrame(layoutMotionFrameRef.current);
+    }
   }, []);
 
   const markImageReady = useCallback(() => {
@@ -1263,6 +1279,7 @@ const StickerView = memo(function StickerView({
       ref={stickerRef}
       className="sticker"
       data-layout-ready={safeFit ? 'true' : 'false'}
+      data-layout-motion={safeFit && layoutMotionReady ? 'true' : 'false'}
       style={{
         left: safeFit ? `${safeFit.left}px` : sticker.x,
         top: safeFit ? `${safeFit.top}px` : sticker.y,
@@ -1272,7 +1289,6 @@ const StickerView = memo(function StickerView({
         zIndex: sticker.zIndex,
         transform: fittedTransform,
         transformOrigin: 'center center',
-        transition: 'none',
         '--sticker-enter-duration': `${sticker.enterDuration}ms`,
         '--sticker-enter-easing': sticker.enterEasing,
         '--sticker-enter-delay': `${sticker.enterDelay}ms`,
@@ -1417,7 +1433,7 @@ export default function App() {
   const choiceOptionButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const stageContentFrameRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
-  const characterPlacementByIdRef = useRef(new Map<string, CharacterPlacementSnapshot>());
+  const previousPresentedVisibleCharacterIdsRef = useRef<ReadonlySet<string>>(new Set());
   const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
   const endingAutoScrollRafRef = useRef<number | null>(null);
   const endingAutoScrollLastTsRef = useRef<number | null>(null);
@@ -1709,11 +1725,21 @@ export default function App() {
 
     const nextVisibleCharacterIds = [...visibleCharacterIds];
     if (chapterLoading) {
+      setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
       return;
     }
     characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {
       characterVisibilityFrameRef.current = null;
+      const shouldHoldPreviousLayout = isCharacterOnlyExit(
+        presentedVisibleCharacterIds,
+        nextVisibleCharacterIds,
+      ) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!shouldHoldPreviousLayout) {
+        // Stage new and replacement actors at their final ensemble coordinates
+        // before revealing them, so an entrance never starts at a stale solo/duo slot.
+        setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
+      }
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
     });
 
@@ -1739,7 +1765,6 @@ export default function App() {
       layoutVisibleCharacterIds,
       nextLayoutCharacterIds,
     )
-      && (camera.shot === 'wide' || camera.shot === 'medium')
       && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!shouldWaitForExit) {
       setLayoutVisibleCharacterIds(nextLayoutCharacterIds);
@@ -1757,7 +1782,7 @@ export default function App() {
         characterLayoutReleaseTimerRef.current = null;
       }
     };
-  }, [camera.shot, layoutVisibleCharacterIds, presentedVisibleCharacterIds]);
+  }, [layoutVisibleCharacterIds, presentedVisibleCharacterIds]);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -2215,6 +2240,17 @@ export default function App() {
     () => new Set(presentedVisibleCharacterIds),
     [presentedVisibleCharacterIds],
   );
+  const enteringCharacterSet = useMemo(
+    () => new Set(
+      presentedVisibleCharacterIds.filter(
+        (characterId) => !previousPresentedVisibleCharacterIdsRef.current.has(characterId),
+      ),
+    ),
+    [presentedVisibleCharacterIds],
+  );
+  useEffect(() => {
+    previousPresentedVisibleCharacterIdsRef.current = new Set(presentedVisibleCharacterIds);
+  }, [presentedVisibleCharacterIds]);
   const layoutCharacterSet = useMemo(
     () => new Set(layoutVisibleCharacterIds),
     [layoutVisibleCharacterIds],
@@ -2229,9 +2265,6 @@ export default function App() {
     ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot)),
     [characters],
   );
-  if (stagedCharactersByPosition.length === 0) {
-    characterPlacementByIdRef.current.clear();
-  }
   const visibleCharactersByPosition = useMemo(
     () => stagedCharactersByPosition.filter((entry) => visibleCharacterSet.has(entry.slot.id)),
     [stagedCharactersByPosition, visibleCharacterSet],
@@ -3038,7 +3071,7 @@ export default function App() {
       return null;
     }
     const isCameraVisible = visibleCharacterSet.has(slot.id);
-    const hasVisiblePlacement = characterPlacementByIdRef.current.has(slot.id);
+    const isEntering = isCameraVisible && enteringCharacterSet.has(slot.id);
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isFocused = hasFocusedCharacter && focusCharacterId === slot.id;
@@ -3064,7 +3097,7 @@ export default function App() {
       characterStageLayout,
       characterStageSpacing,
     );
-    const currentPlacement: CharacterPlacementSnapshot = {
+    const placement = {
       ...currentStagePlacement,
       mobileAnchorX: resolveMobileCharacterStageAnchor(position, characterStageLayout),
       duoSide: currentDuoSide,
@@ -3074,12 +3107,6 @@ export default function App() {
         currentDuoSide,
       ),
     };
-    const placement = isCameraVisible
-      ? currentPlacement
-      : (characterPlacementByIdRef.current.get(slot.id) ?? currentPlacement);
-    if (isCameraVisible) {
-      characterPlacementByIdRef.current.set(slot.id, currentPlacement);
-    }
     const duoClass = placement.duoSide ? `char-duo-${placement.duoSide}` : '';
     const charStyle = {
       zIndex,
@@ -3094,7 +3121,7 @@ export default function App() {
       '--char-calibration-y': `${slot.calibration.y}%`,
     } as CSSProperties;
     const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';
-    const pendingEntryClass = !isCameraVisible && !hasVisiblePlacement ? 'is-awaiting-entry' : '';
+    const entryClass = isEntering ? 'is-entering' : '';
     const className = [
       'char',
       'char-image',
@@ -3106,7 +3133,7 @@ export default function App() {
       duoClass,
       `char-placement-${renderPlacement}`,
       visibilityClass,
-      pendingEntryClass,
+      entryClass,
     ].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
       return (
@@ -3116,7 +3143,7 @@ export default function App() {
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
             active={rendererActive}
-            className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, pendingEntryClass].filter(Boolean).join(' ')}
+            className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
             style={charStyle}
             onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
           />
