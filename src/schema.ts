@@ -105,6 +105,19 @@ const stickerEnterEffectSchema = z.enum([
   'blurIn',
   'rotateIn',
 ]);
+const characterEnterEffectSchema = stickerEnterEffectSchema;
+const characterEnterSchema = z.union([
+  characterEnterEffectSchema,
+  z
+    .object({
+      effect: characterEnterEffectSchema.optional(),
+      layout: z.enum(['cut', 'push']).optional(),
+      duration: z.number().int().nonnegative().max(3000).optional(),
+      easing: z.string().trim().min(1).max(64).optional(),
+      delay: z.number().int().nonnegative().max(5000).optional(),
+    })
+    .strict(),
+]);
 const stickerLeaveEffectSchema = z.enum(['none', 'fadeOut', 'wipeLeft', 'wipeRight']);
 const stickerEnterSchema = z.union([
   stickerEnterEffectSchema,
@@ -248,6 +261,7 @@ const actionBodySchema = z.union([
       position: z.enum(['left', 'center', 'right']),
       emotion: z.string().optional(),
       framing: z.string().min(1).optional(),
+      enter: characterEnterSchema.optional(),
     }),
   }),
   z.object({

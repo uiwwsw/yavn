@@ -25,20 +25,23 @@ describe('sticker and mobile dialogue safe areas', () => {
     );
   });
 
-  it('places stickers before revealing them and glides later collision-driven relocations', () => {
+  it('places stickers before revealing them and hides stale fits during collision-driven relocations', () => {
     expect(appSource).toContain('fitStickerWithinFrameAvoidingRects(');
     expect(appSource).toContain('doesStickerOverlapRects(');
     expect(appSource).toContain('haveStickerObstacleRectsSettled(');
     expect(appSource).toContain("querySelectorAll<HTMLElement>('.char-layer .char')");
     expect(appSource).toContain('STICKER_CHARACTER_LAYOUT_SETTLE_MS');
     expect(appSource).toContain('STICKER_OBSTACLE_SAMPLE_MS');
-    expect(appSource).toContain("data-layout-ready={safeFit ? 'true' : 'false'}");
+    expect(appSource).toContain('resolvedAvoidanceKey === avoidanceKey');
+    expect(appSource).toContain("data-layout-ready={layoutReady ? 'true' : 'false'}");
+    expect(appSource).toContain("data-layout-reflow={layoutReady && layoutReflowing ? 'true' : 'false'}");
+    expect(appSource).toContain("setResolvedAvoidanceKey('');");
     expect(appSource).toContain('layoutLockedRef.current = true;');
     expect(appSource).toContain('shouldRelayoutStickerForStageResize(');
     expect(appSource).toContain('scheduleSafeFit(STICKER_LAYOUT_QUIET_MS, true);');
     expect(appSource).toContain("left: safeFit ? `${safeFit.left}px` : sticker.x");
     expect(appSource).toContain("top: safeFit ? `${safeFit.top}px` : sticker.y");
-    expect(appSource).toContain("data-layout-motion={safeFit && layoutMotionReady ? 'true' : 'false'}");
+    expect(appSource).toContain("data-layout-motion={layoutReady && layoutMotionReady ? 'true' : 'false'}");
     expect(appSource).toContain('setLayoutMotionReady(true);');
     expect(appSource).toContain('layoutMotionFrameRef.current = window.requestAnimationFrame(() => {');
     expect(appSource).not.toContain('fitAnimationReady');
@@ -51,6 +54,9 @@ describe('sticker and mobile dialogue safe areas', () => {
     );
     expect(styles).toMatch(
       /\.sticker\[data-layout-ready='false'\] \.sticker-visual\s*\{[\s\S]*?animation-play-state: paused;/,
+    );
+    expect(styles).toMatch(
+      /\.sticker\[data-layout-ready='true'\]\[data-layout-reflow='true'\]\s*\{[\s\S]*?stickerSafeReflowReveal 160ms/,
     );
     expect(styles).toMatch(
       /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.sticker,[\s\S]*?transition: none !important;/,

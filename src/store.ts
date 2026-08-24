@@ -151,7 +151,12 @@ function haveSameCharacterSlot(left: CharacterSlot | undefined, right: Character
     && left.calibration.scale === right.calibration.scale
     && left.calibration.x === right.calibration.x
     && left.calibration.y === right.calibration.y
-    && left.calibration.spacing === right.calibration.spacing;
+    && left.calibration.spacing === right.calibration.spacing
+    && left.enterEffect === right.enterEffect
+    && left.enterLayout === right.enterLayout
+    && left.enterDuration === right.enterDuration
+    && left.enterEasing === right.enterEasing
+    && left.enterDelay === right.enterDelay;
 }
 
 const initialVideoCutscene: VideoCutsceneState = {

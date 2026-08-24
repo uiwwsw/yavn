@@ -52,8 +52,15 @@
 - scene 종료 후 명시적 goto가 없으면 script의 다음 scene으로 진행
 - goto(챕터)는 ./... 또는 /... 형태만 허용 (../ 챕터 이동 금지)
 - say.char / say.with는 assets.characters의 키 또는 character.emotion 형식
+- char.enter는 문자열 효과 또는 { effect, layout, duration, easing, delay } 형식. layout은 cut|push
 - set/add/branch/input.saveAs/endingRules에서 쓰는 변수는 state에 선언
 - effect는 shake, flash, zoom, blur, darken, pulse, tilt만 사용
+
+[캐릭터 등장 연출]
+- 갑자기 나타나는 컷: char.enter: { effect: popIn, layout: cut, duration: 180 }
+- 무전환 컷: char.enter: none
+- 기존 인물이 자리를 내주는 등장: char.enter: { effect: slideLeft, layout: push, duration: 520 }
+- effect 허용값: none, fadeIn, wipeLeft, scaleIn, popIn, slideUp, slideDown, slideLeft, slideRight, wipeCenterX, wipeCenterY, blurIn, rotateIn
 
 [허용 액션]
 - bg

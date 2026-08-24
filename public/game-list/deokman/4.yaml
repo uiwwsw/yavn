@@ -18,15 +18,15 @@ scenes:
           char: 당 사신
           camera: medium
           with: [덕만]
-          text: "황제께서는 신라 왕실을 걱정하십니다. 당이 고른 남편을 왕으로 세우시면 곡식도 군사도 보내 주시겠답니다."
+          text: "황제께서 신라를 걱정하십니다. 당이 고른 남편을 왕으로 세우면 곡식과 군사를 보내시겠답니다."
       - say:
           char: 덕만
           camera: close
           with: [당 사신]
-          text: "남편을 보내 주겠다는 말치고는 값이 안 보이는군요. 이 그림처럼 일부러 빼놓은 게 있겠죠."
+          text: "남편을 보낸다면서 값은 안 보이는군요. 이 그림처럼 일부러 빼놓으셨겠죠."
       - choice:
           key: c5_first_reply
-          prompt: "모란은 향기를, 혼인서는 값을 숨긴다. 무엇으로 사신의 첫 문장을 끊을까?"
+          prompt: "혼인 제안은 값을 숨기고 있습니다. 무엇으로 먼저 맞설까요?"
           char: 덕만
           camera: close
           with: [당 사신]
@@ -46,7 +46,7 @@ scenes:
       - sticker: { id: c5_peony, image: peony_painting_sticker, x: 50, y: 27, width: "clamp(190px, 23%, 360px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
           char: 덕만
-          text: "나비가 없다고 꽃이 빈 건 아닙니다. 화공이 빼놓고 그렇게 보이게 만든 거죠. 신라 왕도 당이 그려 넣어 주는 자리가 아닙니다."
+          text: "나비가 없다고 꽃이 빈 건 아닙니다. 신라 왕도 당이 그려 넣을 자리가 아니고요."
       - say:
           char: 당 사신.nervous
           camera: reaction
@@ -88,7 +88,7 @@ scenes:
       - bg: banquet_hall
       - say:
           char: 덕만
-          text: "남자 왕이 곡식을 만든다면 왜 이 아이들 장부는 비었습니까? 당이 보내려는 건 남편입니까, 가뭄 씨앗입니까? 신라가 치를 값을 붙여 하나만 답하십시오."
+          text: "남자 왕이 곡식을 만든다면 왜 이 장부는 비었습니까? 남편입니까, 원조입니까. 값을 붙여 하나만 답하세요."
       - say:
           char: 당 사신.nervous
           camera: close
@@ -96,12 +96,12 @@ scenes:
           text: "공주께선 제국의 혼인을 장터 거래처럼 다루시는군요."
       - say:
           char: 덕만
-          text: "장터 거래보다 못한 혼인이니까요. 값을 치를 아이들 이름부터 읽겠습니다."
+          text: "장터 거래도 값은 밝힙니다. 값을 치를 아이들 이름부터 읽죠."
       - say:
           char: 당 사신.angry
           camera: close
           with: [덕만]
-          text: "그 명단을 제국의 문서 위에 올린 순간, 공주께서는 협상을 끝내셨습니다. 이제 모욕의 값을 누가 치를지만 남았군요."
+          text: "제국의 문서 위에 그 명단을 올리셨군요. 이제 모욕의 값만 남았습니다."
       - say:
           channel: narration
           text: "사신이 자리를 뜨자 원조 곡식을 기다리던 귀족들이 문을 막았습니다. 그들은 전쟁을 피하려면 모욕한 사람 한 명만 내놓으면 된다고 서로를 설득했습니다."
@@ -126,12 +126,12 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "사신을 잡으면 오늘은 안전하고, 쪽지를 돌려놓으면 뒤에 누가 있는지 볼 수 있습니다. 어느 쪽으로 할까요?"
+          text: "사신을 잡으면 오늘은 안전합니다. 쪽지를 돌려놓으면 뒤의 손을 보고요. 어느 쪽입니까?"
       - say:
           char: 덕만
           camera: close
           with: [비담]
-          text: "둘 중 하나만 고를 필요 없어. 베낀 뒤 원본은 돌려놔. 오늘 사신도 보내고, 뒤에서 받는 사람도 보자."
+          text: "베끼고 원본은 돌려놔. 사신도 보내고, 뒤에서 받는 자도 본다."
       - goto: treaty_choice
 
   treaty_choice:
@@ -140,7 +140,7 @@ scenes:
       - char: { id: 당 사신, position: right }
       - choice:
           key: c5_diplomacy
-          prompt: "사신이 혼인이라는 제목만 쓴 문서를 내민다. 신라가 실제로 받을 것과 내줄 것은?"
+          prompt: "혼인을 빼고 무엇을 주고받을까요?"
           char: 덕만
           camera: medium
           with: [당 사신]
@@ -162,7 +162,7 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "혼인은 거래에서 뺍니다. 가뭄 종자와 천문표를 주십시오. 신라는 철과 항로를 내놓겠습니다. 같은 값으로 이야기하죠."
+          text: "혼인은 뺍니다. 당은 종자와 천문표, 신라는 철과 항로. 이제 같은 값으로 말하죠."
       - say:
           char: 당 사신
           camera: close
@@ -170,7 +170,7 @@ scenes:
           text: "황제께서 이 문서를 찢으실 수도 있습니다."
       - say:
           char: 덕만
-          text: "찢으셔도 됩니다. 조각을 주워 양국 상인에게 보여 드리죠. 누가 먼저 손해인지 알 겁니다."
+          text: "찢으셔도 됩니다. 조각은 상인들에게 보여 드리죠. 누가 손해인지 셈은 빠를 겁니다."
       - goto: banquet_test
 
   armed_truce:
@@ -212,7 +212,7 @@ scenes:
           char: 비담.smirk
           camera: close
           with: [덕만]
-          text: "편지는 얻었습니다. 그런데 무역권을 받은 가문 이름이 여기 있군요. 공주님을 미워할 이유와 죽여서 얻을 돈을 한 장에 써 주셨습니다."
+          text: "편지는 얻었습니다. 무역권을 받은 가문 이름도 있군요. 죽일 이유와 돈을 한 장에 써 줬습니다."
       - say:
           char: 덕만.princess_sad
           camera: close
@@ -238,7 +238,7 @@ scenes:
           text: "마지막 술잔이 비자 사신은 상석 앞 방석을 손끝으로 두드렸습니다. 당의 예법대로 무릎 꿇으라는 뜻이었습니다. 귀족들의 시선이 덕만의 무릎으로 쏠렸습니다."
       - choice:
           key: c5_protocol
-          prompt: "조건 다음에는 몸의 높이를 요구한다. 신라와 당의 답을 어떤 장면으로 남길까?"
+          prompt: "사신이 덕만에게 무릎을 꿇으라 합니다. 어떻게 답할까요?"
           char: 덕만
           camera: reaction
           with: [당 사신]
@@ -259,7 +259,7 @@ scenes:
           char: 덕만
           camera: close
           with: [당 사신]
-          text: "이 그림은 돌려드립니다. 황제의 화공이 향기를 빼도 꽃은 남고, 황제가 남편을 더해도 신라 왕이 되지는 않는다는 답과 함께요."
+          text: "그림은 돌려드립니다. 향기를 빼도 꽃은 남고, 남편을 더해도 신라 왕은 되지 않는다는 답과 함께요."
       - say:
           char: 당 사신.angry
           camera: reaction
@@ -267,7 +267,7 @@ scenes:
           text: "그 답은 모욕으로 기록될 겁니다."
       - say:
           char: 덕만
-          text: "그러니 혼인 조건과 곡식 조건도 한 글자도 빼지 말고 함께 기록하십시오."
+          text: "그럼 혼인과 곡식 조건도 한 글자 빼지 말고 적으십시오."
       - say:
           char: 당 사신.angry
           camera: close
@@ -298,10 +298,10 @@ scenes:
           char: 비담
           camera: close
           with: [덕만]
-          text: "사신도 귀족도 오늘 밤은 잠을 못 자겠군요. 꽤 마음에 듭니다."
+          text: "사신도 귀족도 오늘 밤은 못 자겠군요. 마음에 듭니다."
       - say:
           char: 덕만
-          text: "좋아하긴 일러. 받아 낸 곡식과 표를 어디에 먼저 쓸지 정해야 해. 그게 더 어렵다."
+          text: "좋아하긴 일러. 받아 낸 곡식과 표를 어디부터 쓸지 정해야 해."
       - say:
           channel: record
           text: "덕만은 모욕을 조건으로 바꾸었습니다. 당은 신라에 여왕 후보가 있다는 사실을 처음으로 공식 기록했고, 교환품으로 다음 일식의 관측표를 남겼습니다."

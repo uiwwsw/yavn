@@ -9,6 +9,11 @@ const imageCharacter = (id: string): CharacterSlot => ({
   placement: 'stage-bottom',
   framing: { name: 'full', scale: 1, x: 0, y: 0 },
   calibration: { scale: 1, x: 0, y: 0, spacing: 1 },
+  enterEffect: 'fadeIn',
+  enterLayout: 'push',
+  enterDuration: 240,
+  enterEasing: 'ease-out',
+  enterDelay: 0,
 });
 
 describe('character slots', () => {
@@ -67,6 +72,27 @@ describe('character slots', () => {
 
     expect(useVNStore.getState().characters).not.toBe(firstCharacters);
     expect(useVNStore.getState().characters.center?.placement).toBe('prompt-top');
+  });
+
+  it('updates a staged character when only its next entrance transition changes', () => {
+    const conan = imageCharacter('코난');
+    const store = useVNStore.getState();
+
+    store.setCharacter('center', conan);
+    const firstCharacters = useVNStore.getState().characters;
+    store.setCharacter('center', {
+      ...conan,
+      enterEffect: 'slideLeft',
+      enterLayout: 'cut',
+      enterDuration: 420,
+    });
+
+    expect(useVNStore.getState().characters).not.toBe(firstCharacters);
+    expect(useVNStore.getState().characters.center).toMatchObject({
+      enterEffect: 'slideLeft',
+      enterLayout: 'cut',
+      enterDuration: 420,
+    });
   });
 
   it('keeps repeated cast membership, speaker focus, and camera directives referentially stable', () => {
