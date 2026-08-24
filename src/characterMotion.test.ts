@@ -64,6 +64,8 @@ describe('image character motion', () => {
     expect(enteringRule).toContain('--character-position-duration: 0ms;');
     expect(enteringRule).toContain('--character-scale-duration: 0ms;');
     expect(appSource).toContain('const enteringCharacterSet = useMemo(');
+    expect(appSource).toContain('const characterEntranceMotionActive = useTransientMotionWindow(');
+    expect(appSource).toContain('&& characterEntranceMotionActive');
     expect(appSource).toContain('const entryClass = isEntering ? `is-entering char-enter-${slot.enterEffect}` : \'\';');
     expect(appSource).toContain('data-character-enter-layout={characterEnterLayout}');
     expect(appSource).toMatch(/const stickerAvoidanceSettleMs = Math\.max\([\s\S]*?characterEnterMotionDurationMs,/);
@@ -89,13 +91,36 @@ describe('image character motion', () => {
     expect(appSource).toContain('setPresentedVisibleCharacterIds(nextVisibleCharacterIds);');
     expect(appSource).not.toContain('CHARACTER_VISIBILITY_SETTLE_MS');
     expect(appSource).toContain('const shouldWaitForExit = isCharacterOnlyExit(');
-    expect(appSource).toContain('}, CHARACTER_EXIT_FADE_DURATION_MS);');
+    expect(appSource).toContain('}, characterLeaveDurationMs);');
     expect(appSource).toMatch(
       /const characterStageLayout = useMemo\([\s\S]*?resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
     );
     expect(appSource).not.toMatch(
       /const characterStageLayout = resolveCharacterStageLayout\(\s*stagedCharactersByPosition\.map/,
     );
+  });
+
+  it('accelerates interrupted manual playback without cutting motion entirely', () => {
+    expect(appSource).toContain('function useManualAdvanceTempo()');
+    expect(appSource).toContain('function useLatchedMotionTempo(');
+    expect(appSource).toContain('const characterVisibilityMotionTempo = useLatchedMotionTempo(');
+    expect(appSource).toContain('const cameraMotionTempo = useLatchedMotionTempo(');
+    expect(appSource).toContain('const characterStageMotionTempo = useLatchedMotionTempo(');
+    expect(appSource).toContain('const stickerEntryExitMotionTempo = useLatchedMotionTempo(');
+    expect(appSource).toContain('const stickerLayoutMotionTempo = useLatchedMotionTempo(');
+    expect(appSource).toContain('const handleManualAdvance = useCallback(() => {');
+    expect(appSource).toContain("current.busy && nextTempo === 'catch-up'");
+    expect(appSource).toContain('queuedManualAdvanceAtRef.current = performance.now();');
+    expect(appSource).toContain('isQueuedManualAdvanceFresh(queuedAt, performance.now())');
+    expect(appSource).toContain('sustainCatchUp();');
+    expect(appSource).toContain('data-motion-tempo={motionTempo}');
+    expect(appSource).toContain('handleManualAdvance();');
+    expect(appSource).toContain('resetManualAdvanceTempo();');
+    expect(styles).toContain(".char-layer[data-motion-tempo='catch-up'] .char:not(.is-camera-hidden):not(.is-entering)");
+    expect(styles).toContain(".sticker[data-motion-tempo='catch-up'][data-layout-motion='true']");
+    expect(styles).not.toContain(".app[data-motion-tempo='catch-up'] .bg");
+    expect(styles).not.toContain(".app[data-motion-tempo='catch-up'] .char.is-breathing");
+    expect(styles).not.toContain(".app[data-motion-tempo='catch-up'] .char {\n");
   });
 
   it('animates one absolute camera scale and limits lateral travel to an explicit pan', () => {
@@ -109,7 +134,7 @@ describe('image character motion', () => {
     expect(styles).toContain('--stage-camera-render-scale: var(--stage-camera-scale-mobile)');
     expect(styles).toContain('--stage-camera-render-pan-x: var(--stage-camera-pan-x-mobile)');
     expect(styles).toContain('transform-origin: 50cqw var(--stage-camera-render-origin-y);');
-    expect(styles).toContain('transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)');
+    expect(styles).toContain('transform var(--stage-camera-motion-duration) var(--stage-camera-motion-easing)');
     expect(styles).toContain('var(--stage-camera-motion-delay)');
     expect(styles).toMatch(
       /\.char-camera-world\s*\{[\s\S]*?transition: none;/,

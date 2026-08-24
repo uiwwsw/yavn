@@ -71,9 +71,13 @@ describe('asset transition presentation', () => {
   });
 
   it('wires decoded background promotion and stable sticker leave into the runtime', () => {
-    expect(appSource).toContain('<BackgroundTransition source={background} />');
+    expect(appSource).toContain('<BackgroundTransition\n        source={background}');
+    expect(appSource).toContain('durationMs={backgroundTransitionTiming.duration}');
+    expect(appSource).toContain('easing={backgroundTransitionEasing}');
     expect(backgroundTransitionSource).toContain('waitForImageReady(image, BACKGROUND_READY_TIMEOUT_MS)');
     expect(backgroundTransitionSource).toContain('latestSourceRef.current !== source');
+    expect(backgroundTransitionSource).toContain('reducedMotion ? 0 : durationMs + 40');
+    expect(backgroundTransitionSource).toContain("'--background-crossfade-duration': `${durationMs}ms`");
     expect(backgroundTransitionSource).toContain('data-background-role={role}');
     expect(backgroundTransitionSource).toContain("data-background-transitioning={transitioning ? 'true' : 'false'}");
     expect(engineSource).toContain('setSticker(beginStickerLeave(sticker, normalizedLeave))');
