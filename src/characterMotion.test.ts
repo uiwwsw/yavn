@@ -28,7 +28,9 @@ describe('image character motion', () => {
     expect(styles).toContain('--char-facing-scale-x: 1;');
     expect(styles).toContain('transform: scaleX(var(--char-facing-scale-x));');
     expect(styles).toContain('scale: var(--char-scale);');
-    expect(styles).toContain('translate 380ms cubic-bezier(0.2, 0.72, 0.24, 1)');
+    expect(charRule).toContain('--character-position-duration: 380ms;');
+    expect(charRule).toContain('--character-scale-duration: 360ms;');
+    expect(styles).toContain('translate var(--character-position-duration) cubic-bezier(0.2, 0.72, 0.24, 1)');
     expect(charRule).not.toContain('left 360ms');
     expect(charRule).not.toContain('width 320ms');
     expect(charRule).not.toContain('filter 200ms');
@@ -41,8 +43,9 @@ describe('image character motion', () => {
     expect(appSource).toContain('decoding="async"');
   });
 
-  it('keeps staged characters mounted while camera membership changes', () => {
+  it('snaps entering and hidden actors to their target slot while fading visibility only', () => {
     const hiddenRule = styles.match(/\.char\.is-camera-hidden\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const enteringRule = styles.match(/\.char\.is-entering\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
     expect(appSource).toContain('const stagedCharactersByPosition = useMemo(');
     expect(appSource).toContain('const visibleCharactersByPosition = useMemo(');
     expect(appSource).toContain('() => stagedCharactersByPosition.filter((entry) => visibleCharacterSet.has(entry.slot.id))');
@@ -55,18 +58,23 @@ describe('image character motion', () => {
     expect(appSource).toContain("const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';");
     expect(appSource).not.toContain('if (!slot || !visibleCharacterSet.has(slot.id))');
     expect(styles).toMatch(
-      /\.char\.is-camera-hidden\s*\{[\s\S]*?--character-opacity-duration: var\(--character-leave-duration\);[\s\S]*?--character-visibility-delay: var\(--character-leave-duration\);[\s\S]*?opacity: 0 !important;[\s\S]*?visibility: hidden;/,
+      /\.char\.is-camera-hidden\s*\{[\s\S]*?--character-opacity-duration: var\(--character-leave-duration\);[\s\S]*?--character-visibility-delay: var\(--character-leave-duration\);[\s\S]*?--character-position-duration: 0ms;[\s\S]*?--character-scale-duration: 0ms;[\s\S]*?opacity: 0 !important;[\s\S]*?visibility: hidden;[\s\S]*?animation: none;/,
     );
-    expect(hiddenRule).not.toMatch(/(?:animation|transition): none;/);
-    expect(styles).toMatch(/\.char\.is-camera-hidden\.is-awaiting-entry\s*\{[\s\S]*?animation: none;/);
-    expect(appSource).toContain("const pendingEntryClass = !isCameraVisible && !hasVisiblePlacement ? 'is-awaiting-entry' : '';");
-    expect(appSource).toContain('characterPlacementByIdRef.current.get(slot.id) ?? currentPlacement');
-    expect(appSource).toContain('characterPlacementByIdRef.current.set(slot.id, currentPlacement)');
+    expect(hiddenRule).toContain('animation: none;');
+    expect(enteringRule).toContain('--character-position-duration: 0ms;');
+    expect(enteringRule).toContain('--character-scale-duration: 0ms;');
+    expect(appSource).toContain('const enteringCharacterSet = useMemo(');
+    expect(appSource).toContain("const entryClass = isEntering ? 'is-entering' : '';");
+    expect(appSource).not.toContain('characterPlacementByIdRef');
+    expect(appSource).not.toContain('is-awaiting-entry');
   });
 
   it('coalesces skipped visibility changes on the next paint and releases a group layout after the exit fade', () => {
     expect(appSource).toContain('left.every((id) => right.includes(id))');
     expect(appSource).toContain('characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {');
+    expect(appSource).toMatch(
+      /if \(!shouldHoldPreviousLayout\)\s*\{[\s\S]*?setLayoutVisibleCharacterIds\(nextVisibleCharacterIds\);[\s\S]*?\}\s*setPresentedVisibleCharacterIds\(nextVisibleCharacterIds\);/,
+    );
     expect(appSource).toContain('setPresentedVisibleCharacterIds(nextVisibleCharacterIds);');
     expect(appSource).not.toContain('CHARACTER_VISIBILITY_SETTLE_MS');
     expect(appSource).toContain('const shouldWaitForExit = isCharacterOnlyExit(');
@@ -79,7 +87,7 @@ describe('image character motion', () => {
     );
   });
 
-  it('animates one absolute camera scale and an explicit target pan', () => {
+  it('animates one absolute camera scale and limits lateral travel to an explicit pan', () => {
     expect(appSource).toContain('className="char-composition-world"');
     expect(appSource).toContain('className="char-camera-world"');
     expect(appSource).not.toContain('className="char-camera-pan"');
@@ -92,18 +100,24 @@ describe('image character motion', () => {
     expect(styles).toContain('transform-origin: 50cqw var(--stage-camera-render-origin-y);');
     expect(styles).toContain('transform var(--stage-camera-motion-duration) cubic-bezier(0.2, 0.72, 0.24, 1)');
     expect(styles).toContain('var(--stage-camera-motion-delay)');
+    expect(styles).toMatch(
+      /\.char-camera-world\s*\{[\s\S]*?transition: none;/,
+    );
+    expect(styles).toMatch(
+      /\.char-camera-world\[data-camera-transition='pan'\]\s*\{[\s\S]*?transition:[\s\S]*?transform var\(--stage-camera-motion-duration\)/,
+    );
     expect(styles).not.toContain('transform-origin var(--stage-camera-duration)');
     expect(styles).toMatch(/\.char-composition-world,[\s\S]*?\.char-camera-world,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
   });
 
-  it('fades a close camera listener while the camera move overlaps smoothly', () => {
+  it('fades a close camera listener before the camera starts moving', () => {
     expect(appSource).toContain('resolveStageCameraTransitionTiming(');
     expect(appSource).toContain("'--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`");
     expect(appSource).toContain("'--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`");
     expect(styles).toContain('opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1)');
     expect(styles).toContain('visibility 0s linear var(--character-visibility-delay)');
     expect(styles).toMatch(
-      /\.char-layer\[data-camera-shot='close'\] \.char\.is-camera-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;/,
+      /\.char-layer\[data-camera-shot='close'\] \.char\.is-camera-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;[\s\S]*?animation: none;/,
     );
     expect(styles).toMatch(/@keyframes characterEnter\s*\{[\s\S]*?from\s*\{[\s\S]*?opacity: 0;[\s\S]*?to\s*\{[\s\S]*?opacity: 1;/);
     const characterEnter = styles.match(/@keyframes characterEnter\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';

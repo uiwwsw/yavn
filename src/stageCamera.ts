@@ -33,7 +33,6 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
 };
 
 export const CHARACTER_EXIT_FADE_DURATION_MS = 180;
-const CLOSE_CAMERA_OVERLAP_DELAY_MS = 72;
 
 // Character count changes horizontal staging only. Keeping one physical camera
 // profile prevents a solo, duo, and trio from cropping the same source art at
@@ -86,9 +85,10 @@ export function resolveStageCameraTransitionTiming(
   const characterExitDuration = hasListenerExit
     ? Math.min(CHARACTER_EXIT_FADE_DURATION_MS, Math.floor(presentation.duration / 2))
     : 0;
-  const cameraDelay = characterExitDuration > 0
-    ? Math.min(CLOSE_CAMERA_OVERLAP_DELAY_MS, Math.floor(characterExitDuration / 2))
-    : 0;
+  // Finish the listener fade before moving the close camera. Otherwise the
+  // shared camera world carries the disappearing actor toward an off-screen
+  // target, which reads as an exaggerated character exit rather than a cut.
+  const cameraDelay = characterExitDuration;
 
   return {
     cameraDelay,

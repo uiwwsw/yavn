@@ -234,7 +234,7 @@ describe('stage camera', () => {
     expect(1.84 / 1.58).toBeLessThan(1.2);
   });
 
-  it('overlaps a multi-actor close exit with a slower camera move', () => {
+  it('finishes a multi-actor close exit before the camera moves', () => {
     expect(CHARACTER_EXIT_FADE_DURATION_MS).toBe(180);
     const close = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'close', target: '덕만' }),
@@ -248,8 +248,8 @@ describe('stage camera', () => {
     );
 
     expect(resolveStageCameraTransitionTiming(close, 2)).toEqual({
-      cameraDelay: 72,
-      cameraDuration: 448,
+      cameraDelay: CHARACTER_EXIT_FADE_DURATION_MS,
+      cameraDuration: 340,
       characterExitDuration: CHARACTER_EXIT_FADE_DURATION_MS,
     });
     expect(resolveStageCameraTransitionTiming(close, 1)).toEqual({
@@ -258,8 +258,8 @@ describe('stage camera', () => {
       characterExitDuration: 0,
     });
     expect(resolveStageCameraTransitionTiming({ ...close, duration: 200 }, 2)).toEqual({
-      cameraDelay: 50,
-      cameraDuration: 150,
+      cameraDelay: 100,
+      cameraDuration: 100,
       characterExitDuration: 100,
     });
     expect(resolveStageCameraTransitionTiming({ ...close, transition: 'cut', duration: 0 }, 2)).toEqual({
