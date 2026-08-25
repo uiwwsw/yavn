@@ -37,14 +37,14 @@ scenes:
           camera: close
           with: [소화]
           options:
-            - text: "장부꾼 만덕으로 시비를 건다"
-              set: { identity_mode: hidden, identity_exposed: false }
-              add: { insight: 1, sohwa_trust: 1 }
-              goto: hidden_inquiry
             - text: "왕실 감찰관 행세로 장부를 뺏는다"
               set: { identity_mode: borrowed }
               add: { fear: 1, evidence: 1 }
               goto: borrowed_inquiry
+            - text: "장부꾼 만덕으로 시비를 건다"
+              set: { identity_mode: hidden, identity_exposed: false }
+              add: { insight: 1, sohwa_trust: 1 }
+              goto: hidden_inquiry
             - text: "장터 한복판에서 덕만이라 밝힌다"
               set: { identity_mode: public, identity_exposed: true }
               add: { people_support: 2, fear: 1 }
@@ -154,10 +154,6 @@ scenes:
           camera: reaction
           with: [칠숙]
           options:
-            - text: "수레를 엎어 인장장이를 빼낸다"
-              set: { saved_market_witness: true }
-              add: { evidence: 2, people_support: 1 }
-              goto: save_witness
             - text: "사람을 포기하고 인장함을 낚아챈다"
               set: { saved_market_witness: false }
               add: { evidence: 2, fear: 1 }
@@ -166,6 +162,10 @@ scenes:
               set: { saved_market_witness: false }
               add: { sohwa_trust: 2, army_support: 1 }
               goto: protect_sohwa
+            - text: "수레를 엎어 인장장이를 빼낸다"
+              set: { saved_market_witness: true }
+              add: { evidence: 2, people_support: 1 }
+              goto: save_witness
 
   save_witness:
     actions:
@@ -253,14 +253,14 @@ scenes:
           camera: medium
           with: [소화]
           options:
-            - text: "마른 수로로 한 명씩 밀어 넣는다"
-              when: { var: c1_escape_route, op: eq, value: waterway }
-              add: { insight: 2, people_support: 1 }
-              goto: return_to_silla
             - text: "모란패로 문을 열고 붉은 인장으로 추격대를 고발한다"
               when: { var: peony_token, op: eq, value: true }
               add: { nobles_support: 1, evidence: 1 }
               goto: turn_checkpoint
+            - text: "마른 수로로 한 명씩 밀어 넣는다"
+              when: { var: c1_escape_route, op: eq, value: waterway }
+              add: { insight: 2, people_support: 1 }
+              goto: return_to_silla
             - text: "빈 관에 숨어 죽은 사람으로 통과한다"
               when: { var: death_register, op: eq, value: true }
               add: { insight: 1, evidence: 1 }

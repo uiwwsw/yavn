@@ -32,15 +32,15 @@ scenes:
           camera: reaction
           with: [유신]
           options:
-            - text: "천명을 업고 시장 의원에게 뛴다"
-              add: { cheonmyeong_trust: 2, people_support: 2, evidence: -1 }
-              goto: public_treatment
             - text: "비담의 의원에게 숨기고 사망 종을 울린다"
               add: { bidam_trust: 2, insight: 1, fear: 1 }
               goto: false_death
             - text: "천명을 유신에게 맡기고 지붕을 쫓는다"
               add: { evidence: 2, yushin_trust: 2, fear: 1 }
               goto: divided_rescue
+            - text: "천명을 업고 시장 의원에게 뛴다"
+              add: { cheonmyeong_trust: 2, people_support: 2, evidence: -1 }
+              goto: public_treatment
 
   public_treatment:
     actions:
@@ -150,13 +150,13 @@ scenes:
           camera: medium
           with: [춘추]
           options:
+            - text: "문은 닫고 위조된 획만 공개한다"
+              add: { evidence: 2, chunchu_trust: 1 }
+              goto: evidence_only
             - text: "천명의 손을 잡고 회의장에 들어간다"
               when: { var: sisters_public, op: eq, value: true }
               add: { nobles_support: 1, people_support: 2, cheonmyeong_trust: 1 }
               goto: sister_testimony
-            - text: "문은 닫고 위조된 획만 공개한다"
-              add: { evidence: 2, chunchu_trust: 1 }
-              goto: evidence_only
             - text: "장례 종을 계속 울려 배후를 낚는다"
               add: { evidence: 2, fear: 2, cheonmyeong_trust: -1 }
               goto: keep_death_story

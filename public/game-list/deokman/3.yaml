@@ -31,12 +31,12 @@ scenes:
           camera: medium
           with: [유신]
           options:
-            - text: "바퀴 폭을 재고 야간 통행표를 펼친다"
-              add: { evidence: 2, insight: 1 }
-              goto: track_wagons
             - text: "마을 사람들에게 수레 길을 묻는다"
               add: { people_support: 2, yushin_trust: 1 }
               goto: hire_villagers
+            - text: "바퀴 폭을 재고 야간 통행표를 펼친다"
+              add: { evidence: 2, insight: 1 }
+              goto: track_wagons
             - text: "유신의 기병으로 세 창고를 봉쇄한다"
               add: { army_support: 2, fear: 1 }
               goto: surround_warehouse
@@ -262,11 +262,11 @@ scenes:
             - text: "자루를 벽으로 쌓고 비를 기다린다"
               add: { army_support: 1, insight: 1 }
               goto: bad_grain_wall
+            - text: "유신 옆에서 정면을 뚫는다"
+              goto: bad_charge
             - text: "빈 수레를 미끼로 매복 주인을 끌어낸다"
               add: { evidence: 2, bidam_trust: 1, fear: 1 }
               goto: bait_ambush
-            - text: "유신 옆에서 정면을 뚫는다"
-              goto: bad_charge
 
   bait_ambush:
     actions:

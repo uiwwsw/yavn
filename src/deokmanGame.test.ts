@@ -81,7 +81,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('10.2.0');
+    expect(config.data?.data.version).toBe('10.3.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -340,6 +340,7 @@ describe('complete Deokman visual novel', () => {
     const state: UnknownRecord = { ...asRecord(readYaml('base.yaml').state) };
     const inventory = new Set<string>();
     const visitedChoices: string[] = [];
+    const visibleAnswerPositions: number[] = [];
 
     const valueOf = (key: string): unknown => inventory.has(key) ? true : state[key];
     const conditionMatches = (rawCondition: unknown): boolean => {
@@ -394,10 +395,14 @@ describe('complete Deokman visual novel', () => {
         const choice = asRecord(action.choice);
         if (typeof choice.key === 'string' && Array.isArray(choice.options)) {
           const wantedTarget = answerTargets[choice.key];
-          const option = choice.options.map(asRecord).find((entry) => entry.goto === wantedTarget);
+          const options = choice.options.map(asRecord);
+          const visibleOptions = options.filter((entry) => conditionMatches(entry.when));
+          const option = options.find((entry) => entry.goto === wantedTarget);
           expect(option, `${choice.key} -> ${wantedTarget}`).toBeDefined();
           if (!option) break;
           expect(conditionMatches(option.when), `${choice.key} -> ${wantedTarget}`).toBe(true);
+          expect(visibleOptions, `${choice.key} visible options`).toContain(option);
+          visibleAnswerPositions.push(visibleOptions.indexOf(option) + 1);
           applyMutation(option);
           visitedChoices.push(choice.key);
           target = String(option.goto);
@@ -430,6 +435,17 @@ describe('complete Deokman visual novel', () => {
     expect(steps).toBeLessThan(500);
     expect(visitedChoices).toHaveLength(36);
     expect(new Set(visitedChoices).size).toBe(36);
+    const visibleAnswerPositionCounts = visibleAnswerPositions.reduce<Record<number, number>>((counts, position) => {
+      counts[position] = (counts[position] ?? 0) + 1;
+      return counts;
+    }, {});
+    const longestRepeatedPositionRun = visibleAnswerPositions.reduce((longest, position, index) => {
+      let runLength = 1;
+      while (index - runLength >= 0 && visibleAnswerPositions[index - runLength] === position) runLength += 1;
+      return Math.max(longest, runLength);
+    }, 0);
+    expect(visibleAnswerPositionCounts).toEqual({ 1: 11, 2: 11, 3: 12, 4: 2 });
+    expect(longestRepeatedPositionRun).toBeLessThanOrEqual(2);
     expect(state.coronation_compromise).toBe('public_council');
     expect(ending).toBe('hidden_constellation');
   });
@@ -669,10 +685,11 @@ describe('complete Deokman visual novel', () => {
     expect(bible).toContain('## 핵심 인물과 연기 방향');
     expect(bible).toContain('## 대사·내레이션·기록 채널');
     expect(bible).toContain('## 선택과 엔딩 설계 규칙');
+    expect(bible).toContain('## V10.3 생존 답 위치 분산');
     expect(bible).toContain('## V10.2 대사 전면 교정');
     expect(bible).toContain('## V10.1 단일 생존 정답과 장면형 죽음');
     expect(bible).toContain('## 완결판 구현 현황');
-    expect(bible).toContain('- 버전: `10.2.0`');
+    expect(bible).toContain('- 버전: `10.3.0`');
     expect(bible).toContain('총 76개의 장면형 실패');
     expect(bible).not.toContain('총 28개');
     expect(bible).toContain('/game-list/deokman/');

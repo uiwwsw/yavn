@@ -38,14 +38,14 @@ scenes:
           camera: close
           with: [진평왕]
           options:
-            - text: "왕을 궁문 앞에 세워 직접 말하게 한다"
-              set: { king_failure_public: true }
-              add: { people_support: 2, king_trust: 2, nobles_support: -1 }
-              goto: public_confession
             - text: "왕은 숨기고 빼앗긴 권한만 벽에 붙인다"
               set: { king_failure_public: false }
               add: { evidence: 2, nobles_support: 1, insight: 1 }
               goto: publish_powers
+            - text: "왕을 궁문 앞에 세워 직접 말하게 한다"
+              set: { king_failure_public: true }
+              add: { people_support: 2, king_trust: 2, nobles_support: -1 }
+              goto: public_confession
             - text: "옥새함을 닫고 덕만이 비난을 받는다"
               set: { king_failure_public: false }
               add: { king_trust: 3, fear: 1, people_support: -1 }

@@ -240,10 +240,6 @@ scenes:
           char: 덕만
           camera: close
           options:
-            - text: "관측·곡식·재판 장부의 문을 모두 연다"
-              set: { final_decree: shared_limits }
-              add: { people_support: 2, insight: 2 }
-              goto: judge_ending
             - text: "전쟁 중 모인 권한을 왕좌에 묶어 둔다"
               set: { final_decree: strong_crown }
               add: { army_support: 2, fear: 2, nobles_support: -1 }
@@ -252,6 +248,10 @@ scenes:
               set: { final_decree: divided_guardians }
               add: { nobles_support: 1, people_support: 1, army_support: 1 }
               goto: bad_divided_guardians
+            - text: "관측·곡식·재판 장부의 문을 모두 연다"
+              set: { final_decree: shared_limits }
+              add: { people_support: 2, insight: 2 }
+              goto: judge_ending
 
   bad_strong_crown:
     actions:
