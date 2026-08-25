@@ -48,13 +48,13 @@ scenes:
           camera: medium
           with: [춘추]
           options:
-            - text: "낙하지에 먼저 가 재를 사람들 앞에 펼친다"
-              add: { evidence: 2, insight: 1 }
-              goto: inspect_kite
             - text: "관측관들을 장터로 보내 진짜 별을 가리킨다"
               when: { var: knowledge_policy, op: ne, value: bidam_network }
               add: { people_support: 2, insight: 1 }
               goto: explain_sky
+            - text: "낙하지에 먼저 가 재를 사람들 앞에 펼친다"
+              add: { evidence: 2, insight: 1 }
+              goto: inspect_kite
             - text: "왕궁 지붕에 더 큰 불을 올린다"
               add: { fear: 2, people_support: 1 }
               goto: bad_larger_false_star
@@ -170,15 +170,15 @@ scenes:
           camera: close
           with: [유신]
           options:
-            - text: "믿었고, 너무 많이 맡긴 잘못도 쓴다"
-              add: { bidam_trust: 1, mercy: 2, evidence: 1 }
-              goto: honest_letter
             - text: "편지를 장터 벽에 그대로 붙인다"
               add: { people_support: 2, fear: 1, bidam_trust: -2 }
               goto: publish_letter
             - text: "비담의 글씨를 베껴 철군 명령을 보낸다"
               add: { army_support: 2, fear: 2, evidence: -1 }
               goto: forged_withdrawal
+            - text: "믿었고, 너무 많이 맡긴 잘못도 쓴다"
+              add: { bidam_trust: 1, mercy: 2, evidence: 1 }
+              goto: honest_letter
 
   honest_letter:
     actions:

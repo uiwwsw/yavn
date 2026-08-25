@@ -135,10 +135,6 @@ scenes:
           char: 덕만
           camera: close
           options:
-            - text: "시장 벽에 시각과 관측법을 붙인다"
-              set: { eclipse_policy: public_science, used_false_omen: false }
-              add: { people_support: 2, insight: 2, nobles_support: -1 }
-              goto: announce_science
             - text: "마지막 순간 북을 울려 해를 돌려놓는다"
               set: { eclipse_policy: royal_miracle, used_false_omen: true }
               add: { people_support: 1, fear: 2, nobles_support: 1 }
@@ -147,6 +143,10 @@ scenes:
               set: { eclipse_policy: secret_knowledge, used_false_omen: false }
               add: { king_trust: 2, nobles_support: 2, insight: -1 }
               goto: keep_secret
+            - text: "시장 벽에 시각과 관측법을 붙인다"
+              set: { eclipse_policy: public_science, used_false_omen: false }
+              add: { people_support: 2, insight: 2, nobles_support: -1 }
+              goto: announce_science
 
   announce_science:
     actions:
@@ -242,12 +242,12 @@ scenes:
           camera: reaction
           with: [유신]
           options:
-            - text: "난간에 올라 남은 시간을 센다"
-              add: { people_support: 2, insight: 1 }
-              goto: count_down_return
             - text: "방패를 눕혀 아이들의 길을 만든다"
               add: { mercy: 2, yushin_trust: 1 }
               goto: bad_open_line
+            - text: "난간에 올라 남은 시간을 센다"
+              add: { people_support: 2, insight: 1 }
+              goto: count_down_return
             - text: "혼자 제관 앞까지 걸어간다"
               goto: bad_dark_crowd
 

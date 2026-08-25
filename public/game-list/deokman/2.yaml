@@ -39,13 +39,13 @@ scenes:
           camera: close
           with: [천명]
           options:
+            - text: "아버지의 모란 질문을 되돌려 준다"
+              add: { cheonmyeong_trust: 1, king_trust: 1, insight: 1 }
+              goto: proof_memory
             - text: "그을린 사망 기록을 밀어 준다"
               when: { var: death_register, op: eq, value: true }
               add: { cheonmyeong_trust: 2, evidence: 1 }
               goto: proof_record
-            - text: "아버지의 모란 질문을 되돌려 준다"
-              add: { cheonmyeong_trust: 1, king_trust: 1, insight: 1 }
-              goto: proof_memory
             - text: "언니가 숨기는 두려움을 먼저 꺼낸다"
               add: { cheonmyeong_trust: 2, mercy: 1 }
               goto: proof_sister
@@ -144,10 +144,6 @@ scenes:
           camera: medium
           with: [천명]
           options:
-            - text: "손을 맞잡고 두 공주로 들어선다"
-              set: { sisters_public: true }
-              add: { people_support: 2, cheonmyeong_trust: 1, fear: 1 }
-              goto: public_sisters
             - text: "천명은 궁, 덕만은 시장을 맡는다"
               set: { sisters_public: false }
               add: { insight: 1, cheonmyeong_trust: 2, nobles_support: 1 }
@@ -156,6 +152,10 @@ scenes:
               set: { sisters_public: false, identity_mode: hidden }
               add: { evidence: 1, fear: 1 }
               goto: hidden_sister
+            - text: "손을 맞잡고 두 공주로 들어선다"
+              set: { sisters_public: true }
+              add: { people_support: 2, cheonmyeong_trust: 1, fear: 1 }
+              goto: public_sisters
 
   public_sisters:
     actions:
@@ -256,11 +256,11 @@ scenes:
           camera: reaction
           with: [천명, 칠숙]
           options:
+            - text: "피 묻은 뜰에서 계승권을 선포한다"
+              goto: bad_early_crown
             - text: "천명과 등을 맞대고 칼을 막는다"
               add: { cheonmyeong_trust: 2, people_support: 1, army_support: 1 }
               goto: survive_together
-            - text: "피 묻은 뜰에서 계승권을 선포한다"
-              goto: bad_early_crown
             - text: "퇴로를 열어 칠숙을 회랑으로 몬다"
               add: { evidence: 2, mercy: 1, fear: 1 }
               goto: capture_order

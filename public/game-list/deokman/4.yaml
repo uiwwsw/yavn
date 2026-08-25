@@ -31,15 +31,15 @@ scenes:
           camera: close
           with: [당 사신]
           options:
-            - text: "그림 속 빈 나비 자리를 손가락으로 짚는다"
-              add: { people_support: 1, insight: 2 }
-              goto: answer_with_absence
             - text: "웃으며 편지의 마지막 줄까지 듣는다"
               add: { nobles_support: 1, evidence: 1 }
               goto: answer_with_patience
             - text: "굶은 아이들의 명단을 그림 위에 펼친다"
               add: { people_support: 2, fear: 1 }
               goto: answer_with_ledger
+            - text: "그림 속 빈 나비 자리를 손가락으로 짚는다"
+              add: { people_support: 1, insight: 2 }
+              goto: answer_with_absence
 
   answer_with_absence:
     actions:
@@ -145,14 +145,14 @@ scenes:
           camera: medium
           with: [당 사신]
           options:
-            - text: "혼인을 지우고 종자와 천문표를 맞바꾼다"
-              set: { diplomacy_policy: equal_exchange }
-              add: { people_support: 1, insight: 2, nobles_support: -1 }
-              goto: equal_exchange
             - text: "혼인 답을 미루고 국경 군량부터 받는다"
               set: { diplomacy_policy: armed_truce }
               add: { army_support: 2, nobles_support: 1, fear: 1 }
               goto: armed_truce
+            - text: "혼인을 지우고 종자와 천문표를 맞바꾼다"
+              set: { diplomacy_policy: equal_exchange }
+              add: { people_support: 1, insight: 2, nobles_support: -1 }
+              goto: equal_exchange
             - text: "무역권 하나로 귀족들의 서신을 산다"
               set: { diplomacy_policy: secret_trade }
               add: { evidence: 2, bidam_trust: 1, fear: 1 }
@@ -243,11 +243,11 @@ scenes:
           camera: reaction
           with: [당 사신]
           options:
-            - text: "문을 잠그고 사과문부터 쓰게 한다"
-              goto: bad_hostage
             - text: "사신도 일으켜 같은 높이에서 절한다"
               add: { nobles_support: 1, people_support: 1, insight: 1 }
               goto: scentless_end
+            - text: "문을 잠그고 사과문부터 쓰게 한다"
+              goto: bad_hostage
             - text: "모란 그림을 말아 사신 품에 돌려준다"
               add: { fear: 2, people_support: 1 }
               goto: return_peony

@@ -200,9 +200,6 @@ scenes:
           camera: reaction
           with: [유신]
           options:
-            - text: "유신을 서문으로 보내고 항아리 곁에 남는다"
-              add: { yushin_trust: 2, army_support: 1, nobles_support: 1 }
-              goto: split_defense
             - text: "항아리를 버리고 전부 시장으로 달린다"
               add: { people_support: 3, nobles_support: -1, mercy: 1 }
               goto: save_market
@@ -212,6 +209,9 @@ scenes:
               goto: false_order
             - text: "홀로 왕좌에 앉아 진짜 왕명을 외친다"
               goto: bad_lonely_throne
+            - text: "유신을 서문으로 보내고 항아리 곁에 남는다"
+              add: { yushin_trust: 2, army_support: 1, nobles_support: 1 }
+              goto: split_defense
 
   split_defense:
     actions:
@@ -305,14 +305,14 @@ scenes:
               set: { coronation_compromise: nobles_audit }
               add: { nobles_support: 3, army_support: -1 }
               goto: bad_nobles_audit
-            - text: "유신의 지휘패를 해마다 다시 심사한다"
-              set: { coronation_compromise: reviewed_army }
-              add: { army_support: 2, yushin_trust: 1, nobles_support: -1 }
-              goto: bad_army_review
             - text: "시장과 마을 자리를 회의장에 비워 둔다"
               set: { coronation_compromise: public_council }
               add: { people_support: 2, nobles_support: -2, insight: 1 }
               goto: coronation
+            - text: "유신의 지휘패를 해마다 다시 심사한다"
+              set: { coronation_compromise: reviewed_army }
+              add: { army_support: 2, yushin_trust: 1, nobles_support: -1 }
+              goto: bad_army_review
 
   bad_nobles_audit:
     actions:

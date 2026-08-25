@@ -31,6 +31,10 @@ scenes:
           camera: medium
           with: [춘추]
           options:
+            - text: "창고를 채우고 돌 나를 품삯을 곡식으로 준다"
+              set: { observatory_priority: granary_first }
+              add: { people_support: 3, insight: 1, fear: 1 }
+              goto: granary_first
             - text: "남쪽 돌을 골라 첨성대부터 올린다"
               set: { observatory_priority: stars_first }
               add: { insight: 3, people_support: 1, army_support: -1 }
@@ -39,10 +43,6 @@ scenes:
               set: { observatory_priority: balanced }
               add: { army_support: 2, insight: 1, nobles_support: 1 }
               goto: balanced_build
-            - text: "창고를 채우고 돌 나를 품삯을 곡식으로 준다"
-              set: { observatory_priority: granary_first }
-              add: { people_support: 3, insight: 1, fear: 1 }
-              goto: granary_first
 
   stars_first:
     actions:
@@ -134,10 +134,6 @@ scenes:
           camera: close
           with: [비담]
           options:
-            - text: "그림 달력으로 바꿔 장터마다 붙인다"
-              set: { knowledge_policy: public }
-              add: { people_support: 3, insight: 2, nobles_support: -1 }
-              goto: public_calendar
             - text: "표를 셋으로 찢어 왕실·군대·마을에 나눈다"
               set: { knowledge_policy: distributed }
               add: { nobles_support: 1, army_support: 1, people_support: 1 }
@@ -146,6 +142,10 @@ scenes:
               set: { knowledge_policy: bidam_network }
               add: { bidam_trust: 3, fear: 2, evidence: 1 }
               goto: bidam_network
+            - text: "그림 달력으로 바꿔 장터마다 붙인다"
+              set: { knowledge_policy: public }
+              add: { people_support: 3, insight: 2, nobles_support: -1 }
+              goto: public_calendar
 
   public_calendar:
     actions:

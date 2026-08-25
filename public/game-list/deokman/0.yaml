@@ -463,11 +463,8 @@ scenes:
           camera: close
           with: [소화]
           timeoutMs: 5500
-          timeoutOptionIndex: 3
+          timeoutOptionIndex: 2
           options:
-            - text: "소화의 손을 잡고 배수로로 뛴다"
-              when: { var: observed_left_waterway, op: eq, value: true }
-              goto: escape_waterway
             - text: "모란패를 치켜들고 북문을 연다"
               add: { nobles_support: 1, fear: 1 }
               goto: escape_north_gate
@@ -479,6 +476,9 @@ scenes:
               goto: escape_with_record
             - text: "모란 화단에 엎드려 불길을 피한다"
               goto: bad_smoke
+            - text: "소화의 손을 잡고 배수로로 뛴다"
+              when: { var: observed_left_waterway, op: eq, value: true }
+              goto: escape_waterway
 
   escape_waterway:
     actions:
