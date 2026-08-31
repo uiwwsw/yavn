@@ -76,24 +76,12 @@ export type StageCameraTransitionTiming = {
 
 export function resolveStageCameraTransitionTiming(
   presentation: Pick<StageCameraPresentation, 'shot' | 'duration' | 'transition'>,
-  visibleCharacterCount: number,
+  _visibleCharacterCount: number,
 ): StageCameraTransitionTiming {
-  const hasListenerExit = presentation.shot === 'close'
-    && visibleCharacterCount > 1
-    && presentation.transition !== 'cut'
-    && presentation.duration > 0;
-  const characterExitDuration = hasListenerExit
-    ? Math.min(CHARACTER_EXIT_FADE_DURATION_MS, Math.floor(presentation.duration / 2))
-    : 0;
-  // Finish the listener fade before moving the close camera. Otherwise the
-  // shared camera world carries the disappearing actor toward an off-screen
-  // target, which reads as an exaggerated character exit rather than a cut.
-  const cameraDelay = characterExitDuration;
-
   return {
-    cameraDelay,
-    cameraDuration: Math.max(0, presentation.duration - cameraDelay),
-    characterExitDuration,
+    cameraDelay: 0,
+    cameraDuration: presentation.duration,
+    characterExitDuration: 0,
   };
 }
 
@@ -142,7 +130,13 @@ export function resolveStageCameraState(
   directive: CameraDirective,
   speakerId?: string,
 ): StageCameraState {
-  const transition = directive.transition ?? DEFAULT_TRANSITION_BY_SHOT[directive.shot];
+  const transition = directive.transition ?? (
+    directive.shot === 'close'
+      && directive.target !== undefined
+      && directive.target !== 'group'
+      ? 'pan'
+      : DEFAULT_TRANSITION_BY_SHOT[directive.shot]
+  );
   const defaultTarget = directive.shot === 'close' || directive.shot === 'reaction'
     ? (speakerId ?? 'group')
     : 'group';
@@ -172,10 +166,15 @@ export function resolveStageCameraPresentation(
     ? 'medium'
     : camera.shot;
   const originY = COMPOSITION_ORIGIN_Y;
-  const panX = hasCharacterTarget && targetPosition
+  // A shorthand close is a stable group push: it changes only scale even though
+  // the current speaker remains the focus target. Horizontal targeting is reserved
+  // for an explicit pan (or an immediate cut), so alternating dialogue cannot snap
+  // the whole cast left and right on every line.
+  const shouldApplyHorizontalTarget = hasCharacterTarget && camera.transition !== 'push';
+  const panX = shouldApplyHorizontalTarget && targetPosition
     ? resolveCharacterCameraPanX(targetPosition, layout, compositionSpacing)
     : '0cqw';
-  const mobilePanX = hasCharacterTarget && targetPosition
+  const mobilePanX = shouldApplyHorizontalTarget && targetPosition
     ? resolveMobileCharacterCameraPanX(targetPosition, layout)
     : '0cqw';
 

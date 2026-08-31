@@ -2785,14 +2785,12 @@ export default function App() {
     cameraPresentation.originY,
     cameraPresentation.mobileOriginY,
     cameraPresentation.transition,
-    cameraPresentation.shot === 'close' ? (focusCharacterId ?? '') : '',
     stickerSafeInset,
     presentedVisibleCharacterIds.join(','),
     layoutVisibleCharacterIds.join(','),
     stagedCharacterMotionKey,
   ].join('::'), [
     cameraPresentation,
-    focusCharacterId,
     layoutVisibleCharacterIds,
     presentedVisibleCharacterIds,
     stagedCharacterMotionKey,
@@ -2821,8 +2819,8 @@ export default function App() {
     cameraMotionDurationMs,
   );
   const characterMotionKey = useMemo(
-    () => `${stickerAvoidanceKey}::${speakerOrder.join(',')}::${promptTopBaselineReady}`,
-    [promptTopBaselineReady, speakerOrder, stickerAvoidanceKey],
+    () => `${stickerAvoidanceKey}::${promptTopBaselineReady}`,
+    [promptTopBaselineReady, stickerAvoidanceKey],
   );
   const characterMotionActive = useTransientMotionWindow(
     characterMotionKey,
@@ -3449,11 +3447,8 @@ export default function App() {
     const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
     const zIndex = Math.max(1, 1000 - order);
     const isFocused = hasFocusedCharacter && focusCharacterId === slot.id;
-    const isCloseListener = cameraPresentation.shot === 'close'
-      && hasFocusedCharacter
-      && !isFocused;
     const placementReady = renderPlacement !== 'prompt-top' || promptTopBaselineReady;
-    const rendererActive = isCameraVisible && !isCloseListener && placementReady;
+    const rendererActive = isCameraVisible && placementReady;
     const isSpeaking = rendererActive && dialogSpeakerId === slot.id;
     const isSettlingBreathing = dialogSpeakerId !== slot.id && (
       settlingBreathingCharacterIds.has(slot.id)
