@@ -1702,6 +1702,13 @@ textarea,
   object-position: center bottom;
 }
 
+.char-image.is-image-pending {
+  /* Never expose an undecoded first frame; removing this class uses the normal short opacity fade. */
+  opacity: 0 !important;
+  visibility: hidden;
+  animation: none !important;
+}
+
 .char-live2d {
   --char-live2d-width: min(36cqw, 52cqh);
   width: var(--char-live2d-width);
