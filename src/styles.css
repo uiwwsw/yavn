@@ -1226,7 +1226,8 @@ textarea,
   width: min(100cqw, calc(100cqh * 16 / 9));
   height: min(100cqh, calc(100cqw * 3 / 4));
   min-height: 0;
-  overflow: hidden;
+  /* Characters may intentionally overscan the centered play frame on close shots. */
+  overflow: visible;
   transform: translate(-50%, -50%);
   container-name: stage-content;
   container-type: size;
@@ -1245,9 +1246,9 @@ textarea,
   z-index: 3;
   pointer-events: none;
   isolation: isolate;
-  contain: layout paint;
-  overflow: hidden;
-  overflow: clip;
+  /* Keep the stage coordinate system without clipping silhouettes at its edges. */
+  contain: layout;
+  overflow: visible;
 }
 
 .char-composition-world {
@@ -1278,7 +1279,8 @@ textarea,
     var(--stage-camera-motion-delay);
   will-change: auto;
   backface-visibility: hidden;
-  contain: layout paint;
+  contain: layout;
+  overflow: visible;
 }
 
 .char-camera-world {
@@ -1288,7 +1290,8 @@ textarea,
   transition: none;
   will-change: auto;
   backface-visibility: hidden;
-  contain: layout paint;
+  contain: layout;
+  overflow: visible;
 }
 
 .char-camera-world[data-camera-transition='pan'] {
