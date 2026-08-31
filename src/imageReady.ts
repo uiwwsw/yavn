@@ -8,6 +8,50 @@ export type VisibleImageReadyResult = {
 };
 
 const VISIBLE_STATIC_IMAGE_SELECTOR = '.effect-viewport > img.bg, .char-layer img.char-image';
+const readyImageSourceKeys = new Set<string>();
+
+function collectImageSourceKeys(source: string): string[] {
+  const normalizedSource = source.trim();
+  if (!normalizedSource) {
+    return [];
+  }
+
+  const keys = [normalizedSource];
+  if (typeof document !== 'undefined') {
+    try {
+      const absoluteSource = new URL(normalizedSource, document.baseURI).href;
+      if (absoluteSource !== normalizedSource) {
+        keys.push(absoluteSource);
+      }
+    } catch {
+      // Keep the raw source as the cache key when URL normalization is not possible.
+    }
+  }
+  return keys;
+}
+
+/** Remembers a source that completed both transfer and decode in this browser session. */
+export function markImageSourceReady(source: string): void {
+  collectImageSourceKeys(source).forEach((key) => readyImageSourceKeys.add(key));
+}
+
+/** Returns true only after the source has completed a successful decode. */
+export function isImageSourceReady(source: string): boolean {
+  return collectImageSourceKeys(source).some((key) => readyImageSourceKeys.has(key));
+}
+
+function markImageElementSourceReady(image: HTMLImageElement): void {
+  const candidates = [
+    typeof image.getAttribute === 'function' ? image.getAttribute('src') : null,
+    typeof image.currentSrc === 'string' ? image.currentSrc : null,
+    typeof image.src === 'string' ? image.src : null,
+  ];
+  candidates.forEach((source) => {
+    if (source) {
+      markImageSourceReady(source);
+    }
+  });
+}
 
 function now(): number {
   return typeof performance !== 'undefined' ? performance.now() : Date.now();
@@ -81,7 +125,11 @@ export async function waitForImageReady(
   if (loaded !== 'ready') {
     return loaded;
   }
-  return waitForDecode(image, remainingTimeout(startedAt, timeoutMs));
+  const decoded = await waitForDecode(image, remainingTimeout(startedAt, timeoutMs));
+  if (decoded === 'ready') {
+    markImageElementSourceReady(image);
+  }
+  return decoded;
 }
 
 /** Waits for the background and currently rendered static characters in the mounted stage. */

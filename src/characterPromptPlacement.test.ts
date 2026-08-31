@@ -37,7 +37,7 @@ describe('prompt-top character placement', () => {
     expect(appSource).toContain(
       "className={`char-layer char-layer-prompt-top${characterStageLayout.mode === 'default'",
     );
-    expect(appSource).toContain('resolveCharacterStagePlacement(\n      position,\n      characterStageLayout,');
+    expect(appSource).toContain('resolveCharacterStageRenderPlacement(\n      position,\n      characterStageLayout,');
     expect(appSource).toContain('const focusedCharacterPlacement = stagedCharactersByPosition.find(');
     expect(appSource).toContain("focusedCharacterPlacement === 'prompt-top' ? 2 : 3");
     expect(appSource).toContain("focusedCharacterPlacement === 'stage-bottom' ? 2 : 3");

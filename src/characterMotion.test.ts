@@ -18,6 +18,10 @@ const live2dSource = readFileSync(
   fileURLToPath(new URL('./Live2DCharacter.tsx', import.meta.url)),
   'utf8',
 );
+const stageImageCharacterSource = readFileSync(
+  fileURLToPath(new URL('./StageImageCharacter.tsx', import.meta.url)),
+  'utf8',
+);
 
 describe('image character motion', () => {
   it('glides a mounted character between slots while facing flips snap instantly', () => {
@@ -82,16 +86,35 @@ describe('image character motion', () => {
     expect(appSource).not.toContain('is-awaiting-entry');
   });
 
-  it('coalesces skipped visibility changes on the next paint and releases a group layout after the exit fade', () => {
+  it('buffers undecoded image sources without flashing an intermediate request', () => {
+    expect(appSource).toContain('<StageImageCharacter');
+    expect(appSource).toContain('source={slot.source}');
+    expect(stageImageCharacterSource).toContain('const [presentation, setPresentation]');
+    expect(stageImageCharacterSource).toContain('if (presentation.source === source)');
+    expect(stageImageCharacterSource).toContain('latestSourceRef.current !== source');
+    expect(stageImageCharacterSource).toContain('waitForImageReady(preload, CHARACTER_IMAGE_READY_TIMEOUT_MS)');
+    expect(stageImageCharacterSource).toContain("!cancelled && status === 'ready'");
+    expect(stageImageCharacterSource).toContain("? 'holding'");
+    expect(stageImageCharacterSource).toContain("'is-image-pending'");
+    expect(styles).toMatch(
+      /\.char-image\.is-image-pending\s*\{[\s\S]*?opacity: 0 !important;[\s\S]*?visibility: hidden;[\s\S]*?animation: none !important;/,
+    );
+  });
+
+  it('coalesces skipped visibility changes and overlaps exit fade with one survivor glide', () => {
     expect(appSource).toContain('left.every((id) => right.includes(id))');
     expect(appSource).toContain('characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {');
     expect(appSource).toMatch(
-      /if \(!shouldHoldPreviousLayout\)\s*\{[\s\S]*?setLayoutVisibleCharacterIds\(nextVisibleCharacterIds\);[\s\S]*?\}\s*setPresentedVisibleCharacterIds\(nextVisibleCharacterIds\);/,
+      /setLayoutVisibleCharacterIds\(nextVisibleCharacterIds\);\s*setPresentedVisibleCharacterIds\(nextVisibleCharacterIds\);/,
     );
-    expect(appSource).toContain('setPresentedVisibleCharacterIds(nextVisibleCharacterIds);');
+    expect(appSource).toContain('const nextLeavingPlacements = new Map(leavingCharacterPlacementRef.current);');
+    expect(appSource).toContain('resolveCharacterStageRenderPlacement(');
+    expect(appSource).toContain('leavingCharacterPlacementRef.current = nextLeavingPlacements;');
+    expect(appSource).toContain(': leavingCharacterPlacementRef.current.get(slot.id) ?? currentPlacement;');
+    expect(appSource).not.toContain('shouldHoldPreviousLayout');
+    expect(appSource).not.toContain('shouldWaitForExit');
+    expect(appSource).not.toContain('characterLayoutReleaseTimerRef');
     expect(appSource).not.toContain('CHARACTER_VISIBILITY_SETTLE_MS');
-    expect(appSource).toContain('const shouldWaitForExit = isCharacterOnlyExit(');
-    expect(appSource).toContain('}, characterLeaveDurationMs);');
     expect(appSource).toMatch(
       /const characterStageLayout = useMemo\([\s\S]*?resolveCharacterStageLayout\(\s*layoutCharactersByPosition\.map/,
     );
@@ -204,7 +227,7 @@ describe('image character motion', () => {
     expect(appSource).toContain('const characterStageSpacing = useMemo(');
     expect(appSource).toContain('() => resolveCharacterStageSpacing(');
     expect(appSource).toContain('layoutCharactersByPosition.map((entry) => entry.slot.calibration.spacing)');
-    expect(appSource).toContain('resolveCharacterStagePlacement(');
+    expect(appSource).toContain('resolveCharacterStageRenderPlacement(');
     expect(appSource).toContain("'--char-desktop-anchor-x': placement.anchorX");
     expect(appSource).toContain("'--char-mobile-anchor-x': placement.mobileAnchorX");
     expect(styles).toMatch(/\.char-layer \.char\.is-camera-hidden\s*\{[\s\S]*?--char-anchor-x: var\(--char-mobile-anchor-x/);

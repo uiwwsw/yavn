@@ -20,6 +20,12 @@ export type CharacterStagePlacement = {
   offsetX: '0%' | '-50%' | '-100%';
 };
 
+export type CharacterStageRenderPlacement = CharacterStagePlacement & {
+  mobileAnchorX: string;
+  duoSide?: 'left' | 'right';
+  facingScale: 1 | -1;
+};
+
 const POSITION_ORDER: readonly Position[] = ['left', 'center', 'right'];
 
 function formatLayoutNumber(value: number): string {
@@ -190,6 +196,26 @@ export function resolveCharacterFacingScale(
   }
   const desiredFacing = stageSide === 'left' ? 'right' : 'left';
   return nativeFacing === desiredFacing ? 1 : -1;
+}
+
+export function resolveCharacterStageRenderPlacement(
+  position: Position,
+  layout: CharacterStageLayout,
+  spacing: number,
+  nativeFacing: CharacterFacing | undefined,
+): CharacterStageRenderPlacement {
+  const duoSide = layout.duoSideByPosition[position];
+  const characterCount = Object.keys(layout.characterIdByPosition).length;
+  return {
+    ...resolveCharacterStagePlacement(position, layout, spacing),
+    mobileAnchorX: resolveMobileCharacterStageAnchor(position, layout),
+    duoSide,
+    facingScale: resolveCharacterFacingScale(
+      nativeFacing,
+      characterCount === 1 ? 'center' : position,
+      duoSide,
+    ),
+  };
 }
 
 export function resolveCharacterStageLayout(

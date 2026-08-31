@@ -1,10 +1,20 @@
 import { describe, expect, it, vi } from 'vitest';
-import { waitForImageReady } from './imageReady';
+import {
+  isImageSourceReady,
+  markImageSourceReady,
+  waitForImageReady,
+} from './imageReady';
 
 class FakeImage extends EventTarget {
   complete = false;
   naturalWidth = 0;
+  src = '';
+  currentSrc = '';
   decode = vi.fn<() => Promise<void>>();
+
+  getAttribute(name: string): string | null {
+    return name === 'src' ? this.src : null;
+  }
 }
 
 describe('waitForImageReady', () => {
@@ -55,5 +65,22 @@ describe('waitForImageReady', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it('shares successful decode readiness with later character renderers', async () => {
+    const source = '/test-assets/decode-registry-character.webp';
+    const image = new FakeImage();
+    image.complete = true;
+    image.naturalWidth = 868;
+    image.src = source;
+    image.decode.mockResolvedValue();
+
+    expect(isImageSourceReady(source)).toBe(false);
+    await expect(waitForImageReady(image as unknown as HTMLImageElement, 1000)).resolves.toBe('ready');
+    expect(isImageSourceReady(source)).toBe(true);
+
+    const manuallyPreparedSource = '/test-assets/manually-prepared-character.webp';
+    markImageSourceReady(manuallyPreparedSource);
+    expect(isImageSourceReady(manuallyPreparedSource)).toBe(true);
   });
 });

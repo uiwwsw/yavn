@@ -21,6 +21,7 @@ import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live
 import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url';
 import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
 import { BackgroundTransition } from './BackgroundTransition';
+import { StageImageCharacter } from './StageImageCharacter';
 import { BACKGROUND_CROSSFADE_DURATION_MS } from './assetTransition';
 import {
   CATCH_UP_TEMPO_RELEASE_MS,
@@ -77,12 +78,11 @@ import type {
 } from './engine';
 import {
   buildImageCharacterRenderKey,
-  resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
-  resolveMobileCharacterStageAnchor,
-  resolveCharacterStagePlacement,
   resolveCharacterStageLayout,
+  resolveCharacterStageRenderPlacement,
   resolveCharacterStageSpacing,
+  type CharacterStageRenderPlacement,
 } from './characterLayout';
 import {
   buildLauncherDemoSharePath,
@@ -406,12 +406,6 @@ function haveSameCharacterIds(left: readonly string[], right: readonly string[])
   return left.length === right.length && left.every((id) => right.includes(id));
 }
 
-function isCharacterOnlyExit(
-  currentIds: readonly string[],
-  nextIds: readonly string[],
-): boolean {
-  return nextIds.length < currentIds.length && nextIds.every((id) => currentIds.includes(id));
-}
 const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
@@ -1659,7 +1653,7 @@ export default function App() {
   );
   const startGateAudioRef = useRef<HTMLAudioElement | null>(null);
   const characterVisibilityFrameRef = useRef<number | null>(null);
-  const characterLayoutReleaseTimerRef = useRef<number | null>(null);
+  const leavingCharacterPlacementRef = useRef<Map<string, CharacterStageRenderPlacement>>(new Map());
   const queuedManualAdvanceAtRef = useRef<number | null>(null);
   const recoveredChoiceWasPresentedRef = useRef(false);
   const youtubePlayerId = 'vn-cutscene-youtube-player';
@@ -1975,76 +1969,6 @@ export default function App() {
   ]);
 
   useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver), handleManualAdvance);
-
-  useLayoutEffect(() => {
-    if (characterVisibilityFrameRef.current !== null) {
-      window.cancelAnimationFrame(characterVisibilityFrameRef.current);
-      characterVisibilityFrameRef.current = null;
-    }
-    if (haveSameCharacterIds(presentedVisibleCharacterIds, visibleCharacterIds)) {
-      return;
-    }
-
-    const nextVisibleCharacterIds = [...visibleCharacterIds];
-    if (chapterLoading) {
-      setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
-      setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
-      return;
-    }
-    characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {
-      characterVisibilityFrameRef.current = null;
-      const shouldHoldPreviousLayout = isCharacterOnlyExit(
-        presentedVisibleCharacterIds,
-        nextVisibleCharacterIds,
-      ) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!shouldHoldPreviousLayout) {
-        // Stage new and replacement actors at their final ensemble coordinates
-        // before revealing them, so an entrance never starts at a stale solo/duo slot.
-        setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
-      }
-      setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
-    });
-
-    return () => {
-      if (characterVisibilityFrameRef.current !== null) {
-        window.cancelAnimationFrame(characterVisibilityFrameRef.current);
-        characterVisibilityFrameRef.current = null;
-      }
-    };
-  }, [chapterLoading, presentedVisibleCharacterIds, visibleCharacterIds]);
-
-  useLayoutEffect(() => {
-    if (characterLayoutReleaseTimerRef.current !== null) {
-      window.clearTimeout(characterLayoutReleaseTimerRef.current);
-      characterLayoutReleaseTimerRef.current = null;
-    }
-    if (haveSameCharacterIds(layoutVisibleCharacterIds, presentedVisibleCharacterIds)) {
-      return;
-    }
-
-    const nextLayoutCharacterIds = [...presentedVisibleCharacterIds];
-    const shouldWaitForExit = isCharacterOnlyExit(
-      layoutVisibleCharacterIds,
-      nextLayoutCharacterIds,
-    )
-      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!shouldWaitForExit) {
-      setLayoutVisibleCharacterIds(nextLayoutCharacterIds);
-      return;
-    }
-
-    characterLayoutReleaseTimerRef.current = window.setTimeout(() => {
-      characterLayoutReleaseTimerRef.current = null;
-      setLayoutVisibleCharacterIds(nextLayoutCharacterIds);
-    }, characterLeaveDurationMs);
-
-    return () => {
-      if (characterLayoutReleaseTimerRef.current !== null) {
-        window.clearTimeout(characterLayoutReleaseTimerRef.current);
-        characterLayoutReleaseTimerRef.current = null;
-      }
-    };
-  }, [characterLeaveDurationMs, layoutVisibleCharacterIds, presentedVisibleCharacterIds]);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -2608,7 +2532,6 @@ export default function App() {
     [layoutCharactersByPosition],
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
-  const layoutCharacterCount = layoutCharactersByPosition.length;
   const effectiveCameraTargetId = useMemo(
     () => resolveStageCameraFocusTargetId(
       camera,
@@ -2630,6 +2553,77 @@ export default function App() {
     ),
     [layoutCharactersByPosition],
   );
+  useLayoutEffect(() => {
+    if (characterVisibilityFrameRef.current !== null) {
+      window.cancelAnimationFrame(characterVisibilityFrameRef.current);
+      characterVisibilityFrameRef.current = null;
+    }
+    if (haveSameCharacterIds(presentedVisibleCharacterIds, visibleCharacterIds)) {
+      return;
+    }
+
+    const nextVisibleCharacterIds = [...visibleCharacterIds];
+    if (chapterLoading) {
+      leavingCharacterPlacementRef.current.clear();
+      setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
+      setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
+      return;
+    }
+
+    characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {
+      characterVisibilityFrameRef.current = null;
+      const nextVisibleCharacterSet = new Set(nextVisibleCharacterIds);
+      const nextLeavingPlacements = new Map(leavingCharacterPlacementRef.current);
+      const stagedCharacterIds = new Set(
+        stagedCharactersByPosition.map(({ slot }) => slot.id),
+      );
+
+      nextLeavingPlacements.forEach((_, characterId) => {
+        if (!stagedCharacterIds.has(characterId)) {
+          nextLeavingPlacements.delete(characterId);
+        }
+      });
+      nextVisibleCharacterIds.forEach((characterId) => {
+        nextLeavingPlacements.delete(characterId);
+      });
+      stagedCharactersByPosition.forEach(({ position, slot }) => {
+        if (
+          presentedVisibleCharacterIds.includes(slot.id)
+          && !nextVisibleCharacterSet.has(slot.id)
+        ) {
+          nextLeavingPlacements.set(
+            slot.id,
+            resolveCharacterStageRenderPlacement(
+              position,
+              characterStageLayout,
+              characterStageSpacing,
+              slot.facing,
+            ),
+          );
+        }
+      });
+      leavingCharacterPlacementRef.current = nextLeavingPlacements;
+
+      // Commit visibility and survivor layout together. Leaving actors read their
+      // captured placement, so their fade can overlap the survivors' single glide.
+      setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
+      setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
+    });
+
+    return () => {
+      if (characterVisibilityFrameRef.current !== null) {
+        window.cancelAnimationFrame(characterVisibilityFrameRef.current);
+        characterVisibilityFrameRef.current = null;
+      }
+    };
+  }, [
+    chapterLoading,
+    characterStageLayout,
+    characterStageSpacing,
+    presentedVisibleCharacterIds,
+    stagedCharactersByPosition,
+    visibleCharacterIds,
+  ]);
   const cameraPresentation = useMemo(
     () => resolveStageCameraPresentation(
       camera,
@@ -3460,22 +3454,15 @@ export default function App() {
       hasFocusedCharacter,
     );
     const framingScale = slot.framing.scale;
-    const currentDuoSide = characterStageLayout.duoSideByPosition[position];
-    const currentStagePlacement = resolveCharacterStagePlacement(
+    const currentPlacement = resolveCharacterStageRenderPlacement(
       position,
       characterStageLayout,
       characterStageSpacing,
+      slot.facing,
     );
-    const placement = {
-      ...currentStagePlacement,
-      mobileAnchorX: resolveMobileCharacterStageAnchor(position, characterStageLayout),
-      duoSide: currentDuoSide,
-      facingScale: resolveCharacterFacingScale(
-        slot.facing,
-        layoutCharacterCount === 1 ? 'center' : position,
-        currentDuoSide,
-      ),
-    };
+    const placement = isCameraVisible
+      ? currentPlacement
+      : leavingCharacterPlacementRef.current.get(slot.id) ?? currentPlacement;
     const duoClass = placement.duoSide ? `char-duo-${placement.duoSide}` : '';
     const characterEnterTiming = resolveAdaptiveMotionTiming(
       slot.enterDuration,
@@ -3531,11 +3518,11 @@ export default function App() {
       );
     }
     return (
-      <img
+      <StageImageCharacter
         {...HIGH_PRIORITY_IMAGE_PROPS}
         key={buildImageCharacterRenderKey(slot.id)}
         className={className}
-        src={slot.source}
+        source={slot.source}
         alt={slot.id}
         data-character-id={slot.id}
         data-stage-position={position}
