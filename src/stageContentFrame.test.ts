@@ -41,6 +41,27 @@ describe('responsive stage content frame', () => {
     );
   });
 
+  it('lets character silhouettes render past the centered stage without escaping the viewport', () => {
+    const effectViewportRule = styles.match(/\.effect-viewport\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const stageFrameRule = styles.match(/\.stage-content-frame\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const characterLayerRule = styles.match(/\.char-layer\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const compositionWorldRule = styles.match(/\.char-composition-world\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+    const cameraWorldRule = styles.match(/\.char-camera-world\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+
+    expect(stageFrameRule).toContain('overflow: visible;');
+    expect(characterLayerRule).toContain('contain: layout;');
+    expect(characterLayerRule).toContain('overflow: visible;');
+    expect(characterLayerRule).not.toContain('paint');
+    expect(compositionWorldRule).toContain('contain: layout;');
+    expect(compositionWorldRule).toContain('overflow: visible;');
+    expect(compositionWorldRule).not.toContain('paint');
+    expect(cameraWorldRule).toContain('contain: layout;');
+    expect(cameraWorldRule).toContain('overflow: visible;');
+    expect(cameraWorldRule).not.toContain('paint');
+    expect(effectViewportRule).toContain('overflow: clip;');
+    expect(effectViewportRule).toContain('contain: paint;');
+  });
+
   it('normalizes static actor height across mobile and desktop play frames', () => {
     expect(styles).toContain('--char-image-height: 52cqh;');
     expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image/);
