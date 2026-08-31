@@ -146,15 +146,18 @@ describe('image character motion', () => {
     expect(styles).toMatch(/\.char-composition-world,[\s\S]*?\.char-camera-world,[\s\S]*?\.char-layer,[\s\S]*?transition: none !important;/);
   });
 
-  it('fades a close camera listener before the camera starts moving', () => {
+  it('keeps close-shot companions mounted and opaque across speaker changes', () => {
     expect(appSource).toContain('resolveStageCameraTransitionTiming(');
     expect(appSource).toContain("'--stage-camera-motion-duration': `${cameraTransitionTiming.cameraDuration}ms`");
     expect(appSource).toContain("'--stage-camera-motion-delay': `${cameraTransitionTiming.cameraDelay}ms`");
     expect(styles).toContain('opacity var(--character-opacity-duration) cubic-bezier(0.2, 0.65, 0.3, 1)');
     expect(styles).toContain('visibility 0s linear var(--character-visibility-delay)');
-    expect(styles).toMatch(
-      /\.char-layer\[data-camera-shot='close'\] \.char\.is-camera-listener:not\(\.is-camera-hidden\)\s*\{[\s\S]*?--character-opacity-duration: var\(--character-exit-duration\);[\s\S]*?--character-visibility-delay: var\(--character-exit-duration\);[\s\S]*?opacity: 0;[\s\S]*?visibility: hidden;[\s\S]*?animation: none;/,
-    );
+    expect(styles).not.toContain(".char-layer[data-camera-shot='close'] .char.is-camera-listener");
+    expect(appSource).not.toContain("const isCloseListener = cameraPresentation.shot === 'close'");
+    expect(appSource).toContain('const rendererActive = isCameraVisible && placementReady;');
+    expect(appSource).not.toContain("cameraPresentation.shot === 'close' ? (focusCharacterId ?? '') : ''");
+    expect(appSource).toContain('() => `${stickerAvoidanceKey}::${promptTopBaselineReady}`');
+    expect(appSource).not.toContain('`${stickerAvoidanceKey}::${speakerOrder.join(\',\')}::${promptTopBaselineReady}`');
     expect(styles).toMatch(/@keyframes characterEnter\s*\{[\s\S]*?from\s*\{[\s\S]*?opacity: 0;[\s\S]*?to\s*\{[\s\S]*?opacity: 1;/);
     const characterEnter = styles.match(/@keyframes characterEnter\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
     expect(characterEnter).not.toContain('translate');

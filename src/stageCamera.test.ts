@@ -39,6 +39,12 @@ describe('stage camera', () => {
       transition: 'push',
       duration: 520,
     });
+    expect(resolveStageCameraState({ shot: 'close', target: '칠숙' }, '덕만')).toEqual({
+      shot: 'close',
+      target: '칠숙',
+      transition: 'pan',
+      duration: 380,
+    });
     expect(resolveStageCameraState({ shot: 'reaction', target: 'speaker' }, '칠숙')).toMatchObject({
       target: '칠숙',
       transition: 'pan',
@@ -77,6 +83,39 @@ describe('stage camera', () => {
       panX: 'calc(0px - min(27.5cqw, 286px))',
       mobilePanX: '-25cqw',
       originY: 86,
+    });
+  });
+
+  it('keeps a shorthand multi-actor close centered while explicit targeting pans', () => {
+    const duoLayout: CharacterStageLayout = {
+      mode: 'duo',
+      duoSideByPosition: { left: 'left', right: 'right' },
+      characterIdByPosition: { left: '덕만', right: '천명' },
+    };
+    const shorthandClose = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close' }, '덕만'),
+      2,
+      'left',
+      duoLayout,
+    );
+    const directedClose = resolveStageCameraPresentation(
+      resolveStageCameraState({ shot: 'close', target: '천명' }, '덕만'),
+      2,
+      'right',
+      duoLayout,
+    );
+
+    expect(shorthandClose).toMatchObject({
+      shot: 'close',
+      transition: 'push',
+      panX: '0cqw',
+      mobilePanX: '0cqw',
+    });
+    expect(directedClose).toMatchObject({
+      shot: 'close',
+      transition: 'pan',
+      panX: 'calc(0px - min(25cqw, 260px))',
+      mobilePanX: '-25cqw',
     });
   });
 
@@ -234,10 +273,10 @@ describe('stage camera', () => {
     expect(1.84 / 1.58).toBeLessThan(1.2);
   });
 
-  it('finishes a multi-actor close exit before the camera moves', () => {
+  it('starts a multi-actor close immediately without fading its companions', () => {
     expect(CHARACTER_EXIT_FADE_DURATION_MS).toBe(180);
     const close = resolveStageCameraPresentation(
-      resolveStageCameraState({ shot: 'close', target: '덕만' }),
+      resolveStageCameraState({ shot: 'close' }, '덕만'),
       2,
       'center',
       {
@@ -248,9 +287,9 @@ describe('stage camera', () => {
     );
 
     expect(resolveStageCameraTransitionTiming(close, 2)).toEqual({
-      cameraDelay: CHARACTER_EXIT_FADE_DURATION_MS,
-      cameraDuration: 340,
-      characterExitDuration: CHARACTER_EXIT_FADE_DURATION_MS,
+      cameraDelay: 0,
+      cameraDuration: 520,
+      characterExitDuration: 0,
     });
     expect(resolveStageCameraTransitionTiming(close, 1)).toEqual({
       cameraDelay: 0,
@@ -258,9 +297,9 @@ describe('stage camera', () => {
       characterExitDuration: 0,
     });
     expect(resolveStageCameraTransitionTiming({ ...close, duration: 200 }, 2)).toEqual({
-      cameraDelay: 100,
-      cameraDuration: 100,
-      characterExitDuration: 100,
+      cameraDelay: 0,
+      cameraDuration: 200,
+      characterExitDuration: 0,
     });
     expect(resolveStageCameraTransitionTiming({ ...close, transition: 'cut', duration: 0 }, 2)).toEqual({
       cameraDelay: 0,

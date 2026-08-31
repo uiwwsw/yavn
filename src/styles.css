@@ -1586,14 +1586,6 @@ textarea,
   animation: none;
 }
 
-.char-layer[data-camera-shot='close'] .char.is-camera-listener:not(.is-camera-hidden) {
-  --character-opacity-duration: var(--character-exit-duration);
-  --character-visibility-delay: var(--character-exit-duration);
-  opacity: 0;
-  visibility: hidden;
-  animation: none;
-}
-
 .char.is-camera-hidden {
   --character-opacity-duration: var(--character-leave-duration);
   --character-visibility-delay: var(--character-leave-duration);
