@@ -4,7 +4,7 @@ script:
 scenes:
   king_last_night:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -45,7 +45,7 @@ scenes:
 
   vote_strategy:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 춘추, position: right }
       - say:
@@ -90,7 +90,7 @@ scenes:
 
   evidence_vote:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - sticker: { id: c9_ledger, image: grain_ledger_sticker, x: 50, y: 28, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
           char: 덕만
@@ -119,7 +119,7 @@ scenes:
 
   people_vote:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "궁문 밖에서 마을 이름이 하나씩 불렸습니다. 사람들은 덕만 만세 대신 자기 창고와 죽은 가족의 이름을 외쳤습니다. 귀족이 '폭도'라 부를 때마다 새로운 마을이 대답했습니다."
@@ -145,7 +145,7 @@ scenes:
 
   guarded_vote:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - char: { id: 유신, position: right }
       - say:
           channel: narration
@@ -181,7 +181,7 @@ scenes:
 
   coup_begins:
     actions:
-      - bg: burning_palace
+      - bg: { id: burning_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - effect: embers
       - char: { id: 유신, position: right, emotion: angry }
@@ -227,7 +227,7 @@ scenes:
 
   save_market:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "덕만이 항아리를 놓고 물동이를 들었습니다. 종이를 쥐던 귀족 손과 장터 사람의 손이 같은 줄에서 물을 넘겼습니다. 표는 바닥에 흩어졌지만 불길은 시장 앞에서 멈췄습니다."
@@ -255,7 +255,7 @@ scenes:
 
   false_order:
     actions:
-      - bg: shadow_corridor
+      - bg: { id: shadow_corridor, transition: fade, duration: 900 }
       - say:
           channel: narration
           text: "덕만이 위조 인장을 다시 눌렀습니다. 반란 지휘부는 빈 창고에서 서로를 발견했고, 싸움은 짧게 끝났습니다. 젖은 인주가 덕만 손에서도 마르고 있었습니다."
@@ -283,7 +283,7 @@ scenes:
 
   final_ballot:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -316,7 +316,7 @@ scenes:
 
   bad_nobles_audit:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: princess_sad }
       - char: { id: 춘추, position: right, emotion: nervous }
@@ -340,7 +340,7 @@ scenes:
 
   bad_army_review:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: princess_angry }
       - char: { id: 유신, position: right, emotion: angry }
@@ -364,7 +364,7 @@ scenes:
 
   coronation:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -388,7 +388,7 @@ scenes:
 
   bad_lonely_throne:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - effect: embers
       - char: { id: 덕만, position: center, emotion: angry }

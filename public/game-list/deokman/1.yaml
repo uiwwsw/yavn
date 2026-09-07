@@ -4,7 +4,7 @@ script:
 scenes:
   ten_years_later:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: wide
       - say:
           channel: record
@@ -64,7 +64,7 @@ scenes:
 
   borrowed_inquiry:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - say:
           channel: narration
           text: "'왕실 감찰'이라는 네 글자에 상인들의 허리가 동시에 굽었습니다. 멀리서 진짜 관원의 깃발이 보이자 굽었던 눈들이 덕만의 얼굴을 다시 훑었습니다."
@@ -95,7 +95,7 @@ scenes:
 
   public_inquiry:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - say:
           channel: narration
           text: "'덕만'이라는 이름이 떨어지자 늙은 상인이 먼저 무릎을 꿇었습니다. 환호가 번지는 동안 맞은편 좌판 주인은 조용히 현상수배 전단을 접었습니다."
@@ -177,7 +177,7 @@ scenes:
 
   steal_seal:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - sticker: { id: c2_seal, image: market_seal_sticker, x: 50, y: 27, width: "clamp(150px, 18%, 280px)", anchorX: center, anchorY: center, enter: scaleIn }
       - say:
           channel: narration
@@ -208,7 +208,7 @@ scenes:
 
   protect_sohwa:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - char: { id: 소화, position: right, emotion: angry }
       - say:
           char: 소화.angry
@@ -240,7 +240,7 @@ scenes:
 
   checkpoint:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: wide
       - char: { id: 소화, position: right }
       - say:
@@ -270,7 +270,7 @@ scenes:
 
   return_to_silla:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: wide
       - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right }
@@ -293,6 +293,25 @@ scenes:
           camera: close
           with: [덕만]
           text: "도망친 사람은 살았던 길로 돌아오지요. 전 그 기억을 기다렸습니다."
+      - say:
+          channel: narration
+          delivery: nervous
+          text: "칠숙은 철창 사이에 활을 비스듬히 밀어 넣었습니다. 덕만이 소화를 감쌌습니다. 물 위에 비친 화살촉이 두 사람을 따라 천천히 움직였습니다."
+      - attack:
+          attacker: 칠숙
+          target: 덕만
+          from: right
+          style: shot
+          image: chilsuk_bow_cutin
+          anticipation: 900
+          recovery: 850
+          caption: "수로 안에서, 피할 곳 없는 한 발."
+      - say:
+          channel: narration
+          delivery: nervous
+          wait: 400
+          unskippable: true
+          text: "활시위 소리가 좁은 수로를 한 번 왕복했습니다. 덕만의 무릎이 물에 잠겼습니다. 소화가 이름을 불렀지만 철창 바깥에서는 벌써 돌을 쌓고 있었습니다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -304,7 +323,7 @@ scenes:
 
   return_in_coffin:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: wide
       - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right, emotion: nervous }
@@ -335,7 +354,7 @@ scenes:
 
   turn_checkpoint:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - char: { id: 덕만, position: left, emotion: wanderer_angry }
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
@@ -360,7 +379,7 @@ scenes:
 
   bad_surrender:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: wanderer_sad }
       - char: { id: 칠숙, position: right, emotion: smile }
@@ -373,6 +392,25 @@ scenes:
       - say:
           channel: narration
           text: "덕만이 스스로 걸어 나가자 군사들은 거래의 담보로 소화부터 붙잡았습니다. 칠숙은 약속을 논할 대신 두 사람의 이름을 검문 명부에서 지웠습니다."
+      - say:
+          channel: narration
+          delivery: nervous
+          text: "칠숙은 명부를 덮어 부하에게 넘겼습니다. 빈손이 된 덕만이 한 걸음 다가서자, 그의 다른 손에서 칼이 빠져나왔습니다."
+      - attack:
+          attacker: 칠숙
+          target: 덕만
+          from: right
+          style: slash
+          image: chilsuk_sword_cutin
+          anticipation: 650
+          recovery: 800
+          caption: "대답 대신, 칼이 먼저 움직였다."
+      - say:
+          channel: narration
+          delivery: nervous
+          wait: 450
+          unskippable: true
+          text: "덕만의 말이 끊겼습니다. 소화가 달려오는 발소리보다 먼저 칼집이 다시 닫혔습니다. 칠숙은 바닥에 떨어진 명부의 귀퉁이를 신발로 눌렀습니다."
       - say:
           channel: record
           text: "국경 도적 토벌 보고 — 신원을 알 수 없는 두 여인이 수색 중 사망. 왕실 혈족과의 관련 없음."

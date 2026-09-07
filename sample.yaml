@@ -40,7 +40,29 @@
 #       calibration: { scale: 1.06, y: -2, spacing: 0.95 } # spacing은 PC 다인 구도의 최대 간격 보정
 #   sfx:
 #     alarm: root:/game-list/conan/assets/sfx/thunder.wav
+# config.yaml endings example (background/music reference asset IDs):
+# endings:
+#   dawn:
+#     title: "새벽까지 살아남다"
+#     message: "닫힌 문을 지나, 두 사람은 함께 밖으로 나왔습니다."
+#     epilogue: "다음 날에도 그 문은 열려 있었습니다."
+#     background: lounge
+#     tone: hopeful # hopeful | tragic | mystery
 # scene actions:
+#   - bg: { id: lounge, transition: fade, duration: 900 } # decoded paint + transition까지 대기
+#   - bg: { id: lounge, transition: cut } # dissolve | fade | wipeLeft | wipeRight | cut
+#   - attack:
+#       attacker: witness # assets.characters ID, 화면에 없으면 자동 배치
+#       target: detective # 생략 시 player (1인칭 피격)
+#       from: right
+#       style: slash # slash | strike | shot
+#       # image: guard_attack # 선택 사항: assets.backgrounds의 공격 장면 컷 ID
+#       strength: heavy # light | heavy
+#       anticipation: 650 # 접근 → 타격 → 반응, 각 단계 ms
+#       impact: 160
+#       recovery: 750
+#       caption: "문 뒤에서 발소리가 멎었다."
+#       # approachSound / sound: assets.sfx ID; 생략 시 엔진 기본 효과음
 #   - camera: wide # 장소와 등장인물 전체를 보여 주는 설정 숏
 #   - char: { id: detective, position: center, enter: none } # 아무 전환 없이 즉시 등장하고 기존 배우 자리도 cut
 #   - char: { id: detective, position: center, enter: popIn } # 효과 문자열 단축형

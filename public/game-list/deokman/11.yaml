@@ -4,7 +4,7 @@ script:
 scenes:
   last_trial:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -59,7 +59,7 @@ scenes:
 
   sentence_execution:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - effect: inkstamp
       - say:
           char: 덕만
@@ -100,7 +100,7 @@ scenes:
 
   sentence_restored:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - effect: inkstamp
       - say:
           char: 덕만
@@ -129,7 +129,7 @@ scenes:
 
   death_record_choice:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: medium
       - say:
           channel: narration
@@ -174,7 +174,7 @@ scenes:
 
   records_sealed:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - say:
           channel: narration
           text: "상자에 자물쇠 세 개가 걸렸습니다. 열쇠는 다음 왕에게 넘어갔고, 진실은 다시 한 사람의 밤에만 열리는 물건이 됐습니다."
@@ -202,7 +202,7 @@ scenes:
 
   records_burned:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - effect: embers
       - say:
           channel: narration
@@ -229,7 +229,7 @@ scenes:
 
   last_decree_choice:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -255,7 +255,7 @@ scenes:
 
   bad_strong_crown:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: queen_angry }
       - char: { id: 춘추, position: right, emotion: nervous }
@@ -279,7 +279,7 @@ scenes:
 
   bad_divided_guardians:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: queen_sad }
       - char: { id: 유신, position: right, emotion: angry }
@@ -355,7 +355,7 @@ scenes:
 
   ending_hidden_constellation:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -375,7 +375,7 @@ scenes:
 
   ending_stars_belong_to_people:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -391,7 +391,7 @@ scenes:
 
   ending_merciful_queen:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: wide
       - say:
           channel: narration
@@ -406,7 +406,7 @@ scenes:
 
   ending_iron_queen:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -421,7 +421,7 @@ scenes:
 
   ending_borrowed_crown:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -436,7 +436,7 @@ scenes:
 
   ending_empty_observatory:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -451,7 +451,7 @@ scenes:
 
   ending_bidams_regent:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: medium
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
@@ -469,7 +469,7 @@ scenes:
 
   ending_sisters_shadow:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: medium
       - char: { id: 천명, position: right, emotion: sad }
       - say:
@@ -485,7 +485,7 @@ scenes:
 
   ending_recordless_peace:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - camera: wide
       - effect: embers
       - say:
@@ -501,7 +501,7 @@ scenes:
 
   ending_fallen_star:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: wide
       - say:
           channel: narration
@@ -516,7 +516,7 @@ scenes:
 
   ending_nameless_queen:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration

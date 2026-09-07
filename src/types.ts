@@ -121,6 +121,40 @@ export type ScreenEffectOptions = {
   wait?: boolean;
 };
 
+export type BackgroundTransitionKind = 'dissolve' | 'fade' | 'wipeLeft' | 'wipeRight' | 'cut';
+export type BackgroundDirective = string | {
+  id: string;
+  transition?: BackgroundTransitionKind;
+  duration?: number;
+  wait?: boolean;
+};
+export type BackgroundPresentation = {
+  transition: BackgroundTransitionKind;
+  duration: number;
+  revision: number;
+};
+
+export type AttackDirective = {
+  attacker: string;
+  image?: string;
+  target?: string;
+  from?: Position;
+  style?: 'slash' | 'strike' | 'shot';
+  strength?: 'light' | 'heavy';
+  anticipation?: number;
+  impact?: number;
+  recovery?: number;
+  approachSound?: string;
+  sound?: string;
+  caption?: string;
+};
+export type AttackPresentation = Required<Pick<AttackDirective,
+  'attacker' | 'target' | 'from' | 'style' | 'strength' | 'anticipation' | 'impact' | 'recovery'
+>> & Pick<AttackDirective, 'caption' | 'image'> & {
+  phase: 'anticipation' | 'impact' | 'recovery';
+  revision: number;
+};
+
 export type StickerPlacement = {
   x?: StickerLength;
   y?: StickerLength;
@@ -312,7 +346,8 @@ export type CameraAction = {
 };
 
 export type Action =
-  | { bg: string }
+  | { bg: BackgroundDirective }
+  | { attack: AttackDirective }
   | StickerAction
   | { clearSticker: ClearStickerTarget }
   | { music: string }
@@ -354,6 +389,10 @@ export type AuthorMetaObject = {
 export type EndingDefinition = {
   title: string;
   message?: string;
+  epilogue?: string;
+  background?: string;
+  music?: string;
+  tone?: 'hopeful' | 'tragic' | 'mystery';
 };
 
 export type EndingRule = {

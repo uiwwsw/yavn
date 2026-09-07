@@ -4,7 +4,7 @@ script:
 scenes:
   empty_seal:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -53,7 +53,7 @@ scenes:
 
   public_confession:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - say:
           char: 진평왕.weak
           camera: medium
@@ -65,7 +65,7 @@ scenes:
 
   publish_powers:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "궁문 벽이 가문 이름으로 가득 찼습니다. 어느 집이 어느 창고 열쇠를, 어느 성문 병사를, 어느 기록관의 붓을 쥐었는지 사람들이 손가락으로 따라 읽었습니다. 왕이 빠진 고백은 덕만에게 반역 혐의를 남겼지만, 공개된 이름들이 그날 재판을 막았습니다."
@@ -93,7 +93,7 @@ scenes:
 
   inherit_blame:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "덕만은 사람들 앞에서 창고의 혼란이 자기 명령 때문이라고 말했습니다. 진평왕을 향하던 돌이 덕만의 발치로 바뀌었습니다. 귀족들은 그 자백을 반역문으로 만들려 했지만 왕이 처음으로 옥좌에서 내려왔습니다."
@@ -126,7 +126,7 @@ scenes:
 
   rebuild_power:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 유신, position: right }
       - say:
@@ -151,7 +151,7 @@ scenes:
 
   restore_granary:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "왕실 관리와 마을 대표가 열쇠를 하나씩 들었습니다. 둘이 같은 문 앞에 서기 전까지 자물쇠는 꿈쩍하지 않았고, 누구도 혼자 자루를 빼돌릴 수 없었습니다."
@@ -159,7 +159,7 @@ scenes:
 
   restore_army:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - say:
           char: 유신
           camera: close
@@ -187,7 +187,7 @@ scenes:
 
   restore_records:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - say:
           channel: narration
           text: "한 명령을 두 기록관이 마주 앉아 썼습니다. 획이 다르면 종을 울렸습니다. 위조는 줄었지만 급한 전령도 두 번째 붓이 끝날 때까지 발을 굴러야 했습니다."
@@ -215,7 +215,7 @@ scenes:
 
   council_counterattack:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 천명, position: right, emotion: nervous }
       - say:
@@ -244,7 +244,7 @@ scenes:
 
   shared_regency:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "천명이 의자 한쪽으로 몸을 비켰습니다. 모든 문서에 두 자매의 먹이 나란히 마를 때까지 명령은 나가지 않았습니다. 귀족들은 그 기다림까지 장부에 적었습니다."
@@ -279,7 +279,7 @@ scenes:
 
   weak_king_end:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: medium
       - char: { id: 진평왕, position: right, emotion: weak }
       - char: { id: 덕만, position: left }
@@ -299,7 +299,7 @@ scenes:
 
   bad_empty_order:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: angry }
       - char: { id: 천명, position: right, emotion: nervous }

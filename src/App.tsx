@@ -20,9 +20,11 @@ import suiteLicenseUrl from '../assets/licenses/fonts/LICENSE?url';
 import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live2d.md?url';
 import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url';
 import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
+import { CinematicLayer } from './CinematicLayer';
+import { OutcomePrelude, trapOutcomeFocus } from './OutcomePrelude';
+import './cinematic.css';
 import { BackgroundTransition } from './BackgroundTransition';
 import { StageImageCharacter } from './StageImageCharacter';
-import { BACKGROUND_CROSSFADE_DURATION_MS } from './assetTransition';
 import {
   CATCH_UP_TEMPO_RELEASE_MS,
   isRapidManualAdvance,
@@ -34,6 +36,7 @@ import {
   type PlaybackMotionTempo,
 } from './advanceMotion';
 import {
+  completeBackgroundTransition,
   completeVideoCutscene,
   exportSaveBackup,
   getAutoSaveEnabled,
@@ -137,7 +140,7 @@ import type {
   UiTemplateId,
 } from './types';
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
-import type { CSSProperties, SyntheticEvent } from 'react';
+import type { CSSProperties } from 'react';
 
 const Live2DCharacter = lazy(() =>
   import('./Live2DCharacter').then((module) => ({ default: module.Live2DCharacter })),
@@ -1487,6 +1490,8 @@ export default function App() {
     baseUrl,
     assetOverrides,
     background,
+    backgroundPresentation,
+    attack,
     stickers,
     characters,
     speakerOrder,
@@ -1521,6 +1526,8 @@ export default function App() {
     baseUrl: state.baseUrl,
     assetOverrides: state.assetOverrides,
     background: state.background,
+    backgroundPresentation: state.backgroundPresentation,
+    attack: state.attack,
     stickers: state.stickers,
     characters: state.characters,
     speakerOrder: state.speakerOrder,
@@ -1605,9 +1612,6 @@ export default function App() {
   const stageContentFrameRef = useRef<HTMLDivElement | null>(null);
   const dialogBoxRef = useRef<HTMLDivElement | null>(null);
   const previousPresentedVisibleCharacterIdsRef = useRef<ReadonlySet<string>>(new Set());
-  const endingCreditsRollRef = useRef<HTMLDivElement | null>(null);
-  const endingAutoScrollRafRef = useRef<number | null>(null);
-  const endingAutoScrollLastTsRef = useRef<number | null>(null);
   const gameListRequestIdRef = useRef(0);
   const [launcherCarouselRef, launcherCarouselApi] = useEmblaCarousel(LAUNCHER_CAROUSEL_OPTIONS);
   const launcherTagFilterRef = useRef<HTMLDivElement | null>(null);
@@ -1615,10 +1619,8 @@ export default function App() {
   const launcherShareNoticeTimerRef = useRef<number | null>(null);
   const launcherShareGameIdRef = useRef<string | null>(null);
   const uploadedGameFileRef = useRef<File | null>(null);
-  const [endingCreditsReady, setEndingCreditsReady] = useState(false);
-  const [endingCreditsScrollUnlocked, setEndingCreditsScrollUnlocked] = useState(false);
-  const [endingTopSpacerPx, setEndingTopSpacerPx] = useState(0);
-  const [showEndingRestart, setShowEndingRestart] = useState(false);
+  const [endingCreditsOpen, setEndingCreditsOpen] = useState(false);
+  const [gameOverRecoveryOpen, setGameOverRecoveryOpen] = useState(false);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const [presentedVisibleCharacterIds, setPresentedVisibleCharacterIds] = useState<string[]>([]);
@@ -1631,7 +1633,7 @@ export default function App() {
   } = useManualAdvanceTempo();
   const backgroundMotionTempo = useLatchedMotionTempo(background ?? '', motionTempo);
   const backgroundTransitionTiming = resolveAdaptiveMotionTiming(
-    BACKGROUND_CROSSFADE_DURATION_MS,
+    backgroundPresentation.duration,
     0,
     backgroundMotionTempo,
   );
@@ -1661,7 +1663,7 @@ export default function App() {
   const repositoryUrl = 'https://github.com/uiwwsw/yavn';
   const developmentGuideUrl = `${repositoryUrl}/blob/main/docs/DEVELOPMENT_GUIDE.ko.md`;
   const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
-  const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || Boolean(gameOver) || !game;
+  const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || Boolean(gameOver) || isFinished || Boolean(attack) || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
   const showDialogRestoreButton = Boolean(game) && dialogUiHidden && !isDialogHiddenBySystem;
   const skipInputAutoFocus = useMemo(() => isMobilePointerEnvironment(), []);
@@ -1919,8 +1921,12 @@ export default function App() {
   }, [gameShellLocked]);
 
   const handleManualAdvance = useCallback(() => {
-    const nextTempo = registerManualAdvance();
     const current = useVNStore.getState();
+    if (current.attack) {
+      queuedManualAdvanceAtRef.current = null;
+      return;
+    }
+    const nextTempo = registerManualAdvance();
     if (current.busy && nextTempo === 'catch-up') {
       // Do not discard deliberate repeated input during a short authored lock.
       // Keep only one request so a held key cannot race through several lines.
@@ -1930,6 +1936,10 @@ export default function App() {
     queuedManualAdvanceAtRef.current = null;
     handleAdvance();
   }, [registerManualAdvance]);
+
+  useEffect(() => {
+    if (attack) queuedManualAdvanceAtRef.current = null;
+  }, [attack?.revision]);
 
   useEffect(() => {
     if (busy || queuedManualAdvanceAtRef.current === null) {
@@ -2333,7 +2343,10 @@ export default function App() {
   const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
   const endingTitle = resolvedEnding?.title ?? 'THE END';
   const endingMessage = resolvedEnding?.message ?? '게임이 종료되었습니다.';
-  const endingBackgroundUrl = resolveRuntimeAssetUrl(game?.endingScreen?.image, baseUrl, assetOverrides);
+  const endingBackgroundUrl = resolveRuntimeAssetUrl(
+    (resolvedEnding?.background ? game?.assets.backgrounds[resolvedEnding.background] : undefined) ?? game?.endingScreen?.image,
+    baseUrl, assetOverrides,
+  );
   const totalEndingCount = Object.keys(game?.endings ?? {}).length;
   const seenEndingIdsInCurrentGame = seenEndingIds.filter((endingId) => Boolean(game?.endings?.[endingId]));
   const seenEndingCount = seenEndingIdsInCurrentGame.length;
@@ -3054,10 +3067,6 @@ export default function App() {
 
   useEffect(() => {
     return () => {
-      if (endingAutoScrollRafRef.current !== null) {
-        window.cancelAnimationFrame(endingAutoScrollRafRef.current);
-        endingAutoScrollRafRef.current = null;
-      }
       if (holdTimerRef.current) {
         window.clearInterval(holdTimerRef.current);
         holdTimerRef.current = undefined;
@@ -3066,15 +3075,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!isFinished) {
-      setShowEndingRestart(false);
-      return;
-    }
-    const timer = window.setTimeout(() => {
-      setShowEndingRestart(true);
-    }, 1000);
-    return () => window.clearTimeout(timer);
-  }, [isFinished]);
+    setEndingCreditsOpen(false);
+  }, [isFinished, resolvedEndingId]);
+  useEffect(() => {
+    setGameOverRecoveryOpen(false);
+  }, [gameOver]);
 
   useEffect(() => {
     const storageKey = resolveEndingProgressStorageKey(game?.meta.title);
@@ -3106,82 +3111,6 @@ export default function App() {
       return next;
     });
   }, [game?.meta.title, isFinished, resolvedEndingId]);
-
-  const handleEndingCreditsInput = useCallback(
-    (event: SyntheticEvent<HTMLDivElement>) => {
-      if (endingCreditsScrollUnlocked) {
-        return;
-      }
-      event.preventDefault();
-      event.stopPropagation();
-    },
-    [endingCreditsScrollUnlocked],
-  );
-
-  useEffect(() => {
-    if (!isFinished) {
-      if (endingAutoScrollRafRef.current !== null) {
-        window.cancelAnimationFrame(endingAutoScrollRafRef.current);
-        endingAutoScrollRafRef.current = null;
-      }
-      endingAutoScrollLastTsRef.current = null;
-      setEndingCreditsReady(false);
-      setEndingCreditsScrollUnlocked(false);
-      setEndingTopSpacerPx(0);
-      return;
-    }
-    setEndingCreditsReady(false);
-    setEndingCreditsScrollUnlocked(false);
-
-    const setupRaf = window.requestAnimationFrame(() => {
-      const rollEl = endingCreditsRollRef.current;
-      if (!rollEl) {
-        return;
-      }
-      const topSpacer = Math.max(0, rollEl.clientHeight + 16);
-      setEndingTopSpacerPx(topSpacer);
-      rollEl.scrollTop = 0;
-      setEndingCreditsReady(true);
-      endingAutoScrollLastTsRef.current = null;
-
-      const pxPerSecond = 120;
-      const step = (ts: number) => {
-        const latestRollEl = endingCreditsRollRef.current;
-        if (!latestRollEl) {
-          endingAutoScrollRafRef.current = null;
-          return;
-        }
-        setRecoveredFailedChoice(undefined);
-        const maxScrollTop = Math.max(0, latestRollEl.scrollHeight - latestRollEl.clientHeight);
-        if (maxScrollTop <= 0) {
-          setEndingCreditsScrollUnlocked(true);
-          endingAutoScrollRafRef.current = null;
-          return;
-        }
-        const prevTs = endingAutoScrollLastTsRef.current;
-        endingAutoScrollLastTsRef.current = ts;
-        const deltaSec = prevTs == null ? 0 : Math.max(0, (ts - prevTs) / 1000);
-        const nextScrollTop = Math.min(maxScrollTop, latestRollEl.scrollTop + pxPerSecond * deltaSec);
-        latestRollEl.scrollTop = nextScrollTop;
-        if (nextScrollTop >= maxScrollTop - 0.5) {
-          setEndingCreditsScrollUnlocked(true);
-          endingAutoScrollRafRef.current = null;
-          return;
-        }
-        endingAutoScrollRafRef.current = window.requestAnimationFrame(step);
-      };
-      endingAutoScrollRafRef.current = window.requestAnimationFrame(step);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(setupRaf);
-      if (endingAutoScrollRafRef.current !== null) {
-        window.cancelAnimationFrame(endingAutoScrollRafRef.current);
-        endingAutoScrollRafRef.current = null;
-      }
-      endingAutoScrollLastTsRef.current = null;
-    };
-  }, [isFinished, resolvedEndingId]);
 
   useEffect(() => {
     if (!inputGate.active) {
@@ -3469,7 +3398,12 @@ export default function App() {
       slot.enterDelay,
       characterVisibilityMotionTempo,
     );
+    const combatRole = attack?.attacker === slot.id ? 'attacker' : attack?.target === slot.id ? 'target' : undefined;
+    const combatClass = combatRole && attack ? `combat-${combatRole} combat-${attack.phase}` : '';
     const charStyle = {
+      '--combat-direction': attack?.from === 'left' ? 1 : attack?.from === 'center' ? 0 : -1,
+      '--combat-duration': attack ? `${attack[attack.phase]}ms` : '0ms',
+      '--combat-distance': attack?.strength === 'light' ? '3cqw' : '6cqw',
       zIndex,
       '--char-scale': framingScale * slot.calibration.scale,
       '--char-facing-scale-x': placement.facingScale,
@@ -3492,6 +3426,7 @@ export default function App() {
     const className = [
       'char',
       'char-image',
+      combatClass,
       position,
       focusPresentation.depthClass,
       isSpeaking ? 'is-speaking' : '',
@@ -3510,7 +3445,7 @@ export default function App() {
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
             active={rendererActive && !settingsOpen}
-            className={[focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
+            className={[combatClass, focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
             style={charStyle}
             onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
           />
@@ -4278,6 +4213,8 @@ export default function App() {
     >
       <div
         className={`effect-viewport ${effectClass}`}
+        data-attack-phase={attack?.phase}
+        data-outcome-active={Boolean(gameOver) || isFinished ? 'true' : 'false'}
         data-effect-active={effect ? 'true' : 'false'}
         data-effect-level={playerExperience.effectLevel}
       >
@@ -4286,7 +4223,11 @@ export default function App() {
         source={background}
         durationMs={backgroundTransitionTiming.duration}
         easing={backgroundTransitionEasing}
+        kind={backgroundPresentation.transition}
+        requestRevision={backgroundPresentation.revision}
+        onComplete={completeBackgroundTransition}
       />
+      <CinematicLayer attack={attack} />
 
       <div
         ref={stageContentFrameRef}
@@ -5277,10 +5218,21 @@ export default function App() {
         </div>
       )}
 
-      {gameOver && !chapterLoading && (
-        <div className="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
+      {gameOver && !chapterLoading && !gameOverRecoveryOpen && (
+        <OutcomePrelude kind="gameOver" title={gameOver.title ?? 'GAME OVER'}
+          message={gameOver.message ?? '이곳에서 이야기가 멈췄습니다.'}
+          onContinue={() => setGameOverRecoveryOpen(true)} />
+      )}
+      {isFinished && !endingCreditsOpen && (
+        <OutcomePrelude kind="ending" title={endingTitle} message={endingMessage}
+          epilogue={resolvedEnding?.epilogue} background={endingBackgroundUrl} tone={resolvedEnding?.tone}
+          onContinue={() => setEndingCreditsOpen(true)} />
+      )}
+      {gameOver && !chapterLoading && gameOverRecoveryOpen && (
+        <div className="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title" onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
           <div className="game-over-panel">
-            <p className="game-over-kicker">GAME OVER</p>
+            <button type="button" className="outcome-back" autoFocus onClick={() => setGameOverRecoveryOpen(false)}>← 마지막 장면</button>
+            <p className="game-over-kicker">다시 이어갈 이야기</p>
             <h2 id="game-over-title">{gameOver.title ?? 'GAME OVER'}</h2>
             <p className="game-over-message">
               {gameOver.message ?? '선택의 결과로 더는 이야기를 이어갈 수 없습니다.'}
@@ -5340,26 +5292,19 @@ export default function App() {
         </div>
       )}
 
-      {isFinished && (
-        <div className="ending-overlay">
+      {isFinished && endingCreditsOpen && (
+        <div className="ending-overlay" role="dialog" aria-modal="true" aria-label="엔딩 기록과 크레딧" onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
           {endingBackgroundUrl && <img className="ending-overlay-bg-image" src={endingBackgroundUrl} alt="" aria-hidden="true" />}
           <div className="ending-overlay-decoration" aria-hidden="true" />
           <div className="ending-credits-screen" aria-label="엔딩 크레딧">
             <div
-              className={`ending-credits-roll ${endingCreditsScrollUnlocked ? 'unlocked' : 'locked'}`}
-              ref={endingCreditsRollRef}
-              tabIndex={endingCreditsScrollUnlocked ? 0 : -1}
-              onWheel={handleEndingCreditsInput}
-              onPointerDown={handleEndingCreditsInput}
-              onTouchStart={handleEndingCreditsInput}
-              onKeyDown={handleEndingCreditsInput}
+              className="ending-credits-roll unlocked"
+              tabIndex={0}
             >
-              <div className="ending-credits-inner" style={{ visibility: endingCreditsReady ? 'visible' : 'hidden' }}>
-                <div className="ending-credits-spacer ending-credits-spacer-top" style={{ height: `${endingTopSpacerPx}px` }} />
+              <div className="ending-credits-inner">
                 <div className="ending-credits-content">
                   <h2>{endingTitle}</h2>
                   <p className="ending-credits-message">{endingMessage}</p>
-                  {resolvedEndingId && <p className="ending-credits-line">ENDING ID: {resolvedEndingId}</p>}
                   {totalEndingCount > 0 && (
                     <section className="ending-credits-section ending-progress-card">
                       <h3>ENDING PROGRESS</h3>
@@ -5430,7 +5375,8 @@ export default function App() {
                 <div className="ending-credits-spacer ending-credits-spacer-bottom" />
               </div>
             </div>
-            <div className={`ending-bottom-bar ${showEndingRestart ? 'visible' : ''}`} aria-hidden={!showEndingRestart}>
+            <div className="ending-bottom-bar visible">
+              <button type="button" className="ending-restart ending-retry-choice" autoFocus onClick={() => setEndingCreditsOpen(false)}>결말 다시 보기</button>
               {totalEndingCount > 1 && choiceRecoveryPoint.exists && (
                 <button
                   type="button"
@@ -5440,7 +5386,6 @@ export default function App() {
                     void onLoadLastChoice();
                   }}
                   disabled={saveBusy}
-                  tabIndex={showEndingRestart ? undefined : -1}
                 >
                   {saveBusy ? '선택 불러오는 중...' : '마지막 선택으로'}
                 </button>
@@ -5450,7 +5395,6 @@ export default function App() {
                 className="ending-restart"
                 onClick={onRestartFromBeginning}
                 disabled={returningToStartGate || saveBusy}
-                tabIndex={showEndingRestart ? undefined : -1}
               >
                 {returningToStartGate ? '초기화면 여는 중...' : '처음부터 다시하기'}
               </button>

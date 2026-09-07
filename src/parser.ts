@@ -1,3 +1,4 @@
+import { backgroundId } from './cinematic';
 import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
 import { baseLayerSchema, chapterSchema, configSchema, gameSchema } from './schema';
@@ -1025,6 +1026,15 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       return undefined;
     };
 
+    for (const [endingId, ending] of Object.entries(data.endings ?? {})) {
+      if (ending.background && !data.assets.backgrounds[ending.background]) {
+        return { error: { message: `ending '${endingId}' uses missing background '${ending.background}'` } };
+      }
+      if (ending.music && !data.assets.music[ending.music]) {
+        return { error: { message: `ending '${endingId}' uses missing music '${ending.music}'` } };
+      }
+    }
+
     if (data.defaultEnding && !data.endings?.[data.defaultEnding]) {
       return {
         error: {
@@ -1057,12 +1067,32 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             return { error: gotoError };
           }
         }
-        if ('bg' in action && !data.assets.backgrounds[action.bg]) {
+        if ('bg' in action && !data.assets.backgrounds[backgroundId(action.bg)]) {
           return {
             error: {
-              message: `scene '${sceneId}' uses missing background '${action.bg}'`,
+              message: `scene '${sceneId}' uses missing background '${backgroundId(action.bg)}'`,
             },
           };
+        }
+        if ('attack' in action) {
+          const attack = action.attack;
+          if (attack.image && !data.assets.backgrounds[attack.image]) {
+            return { error: { message: `scene '${sceneId}' uses missing attack image '${attack.image}'` } };
+          }
+          for (const id of [attack.attacker, attack.target].filter((id): id is string => Boolean(id))) {
+            if (id === 'player' && id !== attack.attacker) continue;
+            if (!data.assets.characters[id]) {
+              return { error: { message: `scene '${sceneId}' uses missing attack character '${id}'` } };
+            }
+          }
+          if (attack.attacker === attack.target) {
+            return { error: { message: `scene '${sceneId}' attack target must differ from attacker` } };
+          }
+          for (const id of [attack.sound, attack.approachSound]) {
+            if (id && !data.assets.sfx[id]) {
+              return { error: { message: `scene '${sceneId}' uses missing attack sfx '${id}'` } };
+            }
+          }
         }
         if ('sticker' in action && !data.assets.backgrounds[action.sticker.image]) {
           return {

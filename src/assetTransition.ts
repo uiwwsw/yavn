@@ -1,6 +1,6 @@
 import type { StickerSlot } from './types';
 
-export const BACKGROUND_CROSSFADE_DURATION_MS = 360;
+export const BACKGROUND_CROSSFADE_DURATION_MS = 620;
 
 export type BackgroundTransitionState = {
   current?: string;

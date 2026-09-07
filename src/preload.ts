@@ -1,3 +1,4 @@
+import { backgroundId } from './cinematic';
 import type { GameData } from './types';
 
 function orderedSceneIds(game: GameData): string[] {
@@ -46,7 +47,11 @@ export function collectChapterAssetPaths(game: GameData): string[] {
   for (const sceneId of orderedSceneIds(game)) {
     for (const action of game.scenes[sceneId]?.actions ?? []) {
       if ('bg' in action) {
-        addPath(game.assets.backgrounds[action.bg]);
+        addPath(game.assets.backgrounds[backgroundId(action.bg)]);
+      } else if ('attack' in action) {
+        if (action.attack.image) addPath(game.assets.backgrounds[action.attack.image]);
+        addCharacter(action.attack.attacker);
+        if (action.attack.target !== 'player') addCharacter(action.attack.target);
       } else if ('sticker' in action) {
         addPath(game.assets.backgrounds[action.sticker.image]);
       } else if ('char' in action) {
@@ -63,5 +68,8 @@ export function collectChapterAssetPaths(game: GameData): string[] {
     }
   }
 
+  for (const ending of Object.values(game.endings ?? {})) {
+    if (ending.background) addPath(game.assets.backgrounds[ending.background]);
+  }
   return [...paths];
 }

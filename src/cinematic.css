@@ -1,0 +1,190 @@
+/* Composited scene transitions retain the last decoded frame underneath. */
+.bg[data-background-kind='cut'] { transition: none; }
+.bg-current[data-background-transitioning='false'] { transition: none; }
+.bg-current[data-background-transitioning='true'][data-background-kind='fade'] {
+  animation: sceneFadeIn var(--background-crossfade-duration) ease-in-out both;
+  transition: none;
+}
+.bg-previous[data-background-kind='fade'] {
+  animation: sceneFadeOut var(--background-crossfade-duration) ease-in-out both;
+}
+.bg-current[data-background-transitioning='true'][data-background-kind='wipeLeft'] {
+  animation: sceneWipeLeft var(--background-crossfade-duration) var(--background-crossfade-easing) both;
+}
+.bg-current[data-background-transitioning='true'][data-background-kind='wipeRight'] {
+  animation: sceneWipeRight var(--background-crossfade-duration) var(--background-crossfade-easing) both;
+}
+@keyframes sceneFadeIn { 0%, 45% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes sceneFadeOut { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes sceneWipeLeft { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }
+@keyframes sceneWipeRight { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+
+.cinematic-layer { position: absolute; inset: 0; z-index: 8; overflow: hidden; pointer-events: none; }
+.cinematic-insert { position: absolute; inset: 0; background: #080a0e; animation: outcomeArrive 140ms ease-out both; }
+.cinematic-insert img { width: 100%; height: 100%; object-fit: cover; object-position: 65% 45%; }
+.cinematic-layer[data-phase='anticipation'] .cinematic-insert img { animation: cinemaPush 850ms ease-out both; }
+.cinematic-layer[data-phase='impact'] .cinematic-insert img { transform: scale(1.045); }
+@keyframes cinemaPush { from { transform: scale(1); } to { transform: scale(1.045); } }
+@media (max-aspect-ratio: 1/1) {
+  .cinematic-insert { inset: 0; background: #080a0e; }
+  .cinematic-insert img { object-fit: contain; }
+}
+.cinematic-letterbox::before, .cinematic-letterbox::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 7%; background: #080a0e;
+  animation: cinemaBars 220ms ease-out both;
+}
+.cinematic-letterbox::before { top: 0; transform-origin: top; }
+.cinematic-letterbox::after { bottom: 0; transform-origin: bottom; }
+.cinematic-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 43%, transparent 22%, rgba(5, 7, 12, .72)); }
+.cinematic-layer[data-phase='impact'] .cinematic-vignette {
+  background: radial-gradient(ellipse, transparent 15%, rgba(108, 32, 20, .48));
+}
+.cinematic-layer[data-phase='recovery'] { animation: cinemaAftermath var(--recovery-duration) ease-out both; }
+.cinematic-hit { position: absolute; inset: 0; opacity: 0; }
+.cinematic-layer[data-phase='impact'] .cinematic-hit { animation: cinemaHit var(--impact-duration) ease-out both; }
+.cinematic-hit i {
+  position: absolute; left: 12%; top: 44%; width: 76%; height: 3px; border-radius: 100%;
+  background: linear-gradient(90deg, transparent, #fff5d9 35%, #e1b789 70%, transparent);
+  box-shadow: 0 0 18px rgba(255, 220, 165, .35); transform: rotate(-26deg);
+}
+.cinematic-hit i:nth-child(2) { top: 46%; left: 26%; width: 52%; height: 1px; opacity: .7; }
+.cinematic-hit i:nth-child(3) { top: 41%; left: 20%; width: 45%; height: 1px; opacity: .35; }
+.cinematic-layer[data-from='left'] .cinematic-hit { scale: -1 1; }
+.cinematic-layer[data-style='shot'] .cinematic-hit i { transform: rotate(-6deg); height: 2px; }
+.cinematic-layer[data-style='strike'] .cinematic-hit i {
+  left: calc(50% - 70px); top: calc(44% - 70px); width: 140px; height: 140px;
+  background: transparent; border: 2px solid rgba(255, 237, 201, .7); border-radius: 50%;
+}
+.cinematic-layer[data-style='strike'] .cinematic-hit i:nth-child(2) { scale: 1.45; }
+.cinematic-layer[data-style='strike'] .cinematic-hit i:nth-child(3) { scale: 1.9; }
+.cinematic-layer[data-strength='light'] .cinematic-hit { filter: opacity(.65); }
+.cinematic-caption {
+  position: absolute; bottom: 10%; left: 8%; right: 8%; margin: 0; text-align: center;
+  color: #fff3dd; font: 500 clamp(14px, 2.3vw, 21px)/1.6 var(--ui-heading-font);
+  letter-spacing: .04em; text-shadow: 0 2px 8px #000, 0 1px 18px #000;
+}
+.effect-viewport .char.combat-attacker.combat-anticipation {
+  animation: combatWindup var(--combat-duration) cubic-bezier(.2,.7,.3,1) both;
+}
+.effect-viewport .char.combat-attacker.combat-impact {
+  animation: combatLunge var(--combat-duration) cubic-bezier(.1,.85,.25,1) both;
+}
+.effect-viewport .char.combat-attacker.combat-recovery {
+  animation: combatSettle var(--combat-duration) ease-out both;
+}
+.effect-viewport .char.combat-target.combat-impact {
+  animation: combatRecoil var(--combat-duration) ease-out both;
+}
+.effect-viewport .char.combat-target.combat-recovery {
+  animation: combatTargetSettle var(--combat-duration) ease-out both;
+}
+.effect-viewport[data-attack-phase='impact'] .stage-content-frame {
+  animation: combatCamera 160ms ease-out both;
+}
+@keyframes cinemaBars { from { scale: 1 0; } to { scale: 1 1; } }
+@keyframes cinemaAftermath { from { opacity: 1; } to { opacity: 0; } }
+@keyframes cinemaHit { from { opacity: 1; } to { opacity: 0; } }
+@keyframes combatWindup {
+  from { transform: translateX(calc(var(--combat-direction) * -9cqw)) scaleX(var(--char-facing-scale-x)); }
+  to { transform: translateX(calc(var(--combat-direction) * -1cqw)) scaleX(var(--char-facing-scale-x)); }
+}
+@keyframes combatLunge {
+  from { transform: translateX(calc(var(--combat-direction) * -1cqw)) scaleX(var(--char-facing-scale-x)); }
+  to { transform: translateX(calc(var(--combat-direction) * var(--combat-distance))) scaleX(var(--char-facing-scale-x)) scale(1.07); }
+}
+@keyframes combatSettle {
+  from { transform: translateX(calc(var(--combat-direction) * var(--combat-distance))) scaleX(var(--char-facing-scale-x)) scale(1.07); }
+  to { transform: scaleX(var(--char-facing-scale-x)); }
+}
+@keyframes combatRecoil {
+  from { transform: scaleX(var(--char-facing-scale-x)); }
+  to { transform: translateX(calc(var(--combat-direction) * 3cqw)) rotate(calc(var(--combat-direction) * 3deg)) scaleX(var(--char-facing-scale-x)); }
+}
+@keyframes combatTargetSettle {
+  from { transform: translateX(calc(var(--combat-direction) * 3cqw)) rotate(calc(var(--combat-direction) * 3deg)) scaleX(var(--char-facing-scale-x)); }
+  to { transform: scaleX(var(--char-facing-scale-x)); }
+}
+@keyframes combatCamera {
+  0%,100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(calc(-50% - 4px), calc(-50% + 2px)); }
+  65% { transform: translate(calc(-50% + 2px), calc(-50% - 1px)); }
+}
+
+/* The result is a scene in its own right, with a readable, player-paced reveal. */
+.outcome-prelude {
+  --outcome-accent: #ddc38e;
+  position: absolute; inset: 0; z-index: 14; isolation: isolate; display: grid;
+  overflow: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; color: #faf2e5;
+  padding: max(32px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+    max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  animation: outcomeArrive 900ms ease-out both;
+}
+.outcome-prelude[data-tone='tragic'] { --outcome-accent: #cf8d7c; }
+.outcome-prelude[data-tone='mystery'] { --outcome-accent: #a8bed5; }
+.outcome-background, .outcome-shade { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+.outcome-background { object-fit: cover; opacity: .48; }
+.outcome-shade {
+  background: linear-gradient(180deg, rgba(6, 9, 15, .48), rgba(6, 9, 15, .86) 55%, #06090f),
+    radial-gradient(ellipse at 50% 35%, transparent 10%, rgba(0, 0, 0, .5));
+}
+.outcome-content { width: min(680px, 100%); margin: auto; padding: 20px 0; text-align: center; }
+.outcome-rule { width: 96px; height: 1px; margin: 0 auto 30px; background: linear-gradient(90deg, transparent, var(--outcome-accent), transparent); }
+.outcome-rule i { display: block; width: 7px; height: 7px; margin: auto; background: var(--outcome-accent); transform: translateY(-3px) rotate(45deg); }
+.outcome-kicker { margin: 0 0 18px; color: var(--outcome-accent); font-size: 11px; font-weight: 650; letter-spacing: .24em; }
+.outcome-content h2 {
+  margin: 0 0 26px; font: 500 clamp(28px, 5.4vw, 58px)/1.3 var(--ui-heading-font);
+  word-break: keep-all; overflow-wrap: anywhere; text-wrap: balance;
+  animation: outcomeTitle 850ms 120ms ease-out both;
+}
+.outcome-message { max-width: 52ch; margin: 0 auto; font-size: clamp(15px, 2vw, 19px); line-height: 1.9; color: #d9d3ca; word-break: keep-all; overflow-wrap: anywhere; }
+.outcome-epilogue { margin: 24px auto 0; max-width: 48ch; padding-top: 22px; border-top: 1px solid #ffffff21; font: 400 clamp(14px, 1.8vw, 17px)/1.9 var(--ui-heading-font); color: var(--outcome-accent); white-space: pre-line; }
+.outcome-continue {
+  margin-top: 34px; border: 1px solid #bcae9470; border-radius: 3px; padding: 15px 25px;
+  background: #141a22cc; color: #fff4df; font: 600 14px/1.5 var(--ui-body-font); cursor: pointer;
+  transition: background 180ms, border-color 180ms;
+}
+.outcome-continue:hover { background: #27313de6; border-color: var(--outcome-accent); }
+.outcome-continue:focus-visible, .outcome-back:focus-visible { outline: 2px solid var(--outcome-accent, #ddc38e); outline-offset: 5px; }
+.outcome-footnote { margin: 16px auto 0; font-size: 11px; line-height: 1.7; color: #a6a7ab; }
+.outcome-back { justify-self: start; border: 0; background: transparent; color: #beb5a5; font: inherit; font-size: 12px; cursor: pointer; padding: 8px 0; }
+.effect-viewport .game-over-overlay { background: linear-gradient(#080b128c, #080b12ed); backdrop-filter: blur(3px); animation: outcomeArrive 360ms ease-out both; }
+.effect-viewport .game-over-panel { border-color: #bb998344; background: linear-gradient(150deg, #161c23ee, #090d13f5); box-shadow: 0 28px 80px #0008; }
+.effect-viewport .game-over-kicker { color: #ceab88; letter-spacing: .16em; }
+.effect-viewport .game-over-primary-actions button:first-child { border-color: #d6b48099; background: #403727; }
+.effect-viewport .ending-overlay { animation: outcomeArrive 420ms ease-out both; }
+.effect-viewport .ending-credits-roll { scroll-behavior: smooth; padding-top: 48px; }
+.effect-viewport .ending-bottom-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.effect-viewport[data-outcome-active='true'] .hud,
+.effect-viewport[data-attack-phase] .hud { visibility: hidden; pointer-events: none; }
+.effect-viewport[data-outcome-active='true'] .char { animation-play-state: paused !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@keyframes outcomeArrive { from { opacity: 0; } to { opacity: 1; } }
+@keyframes outcomeTitle { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-height: 520px) {
+  .outcome-prelude { padding-top: 16px; padding-bottom: 16px; }
+  .outcome-rule { margin-bottom: 18px; }
+  .outcome-content h2 { font-size: 28px; margin-bottom: 16px; }
+  .outcome-continue { margin-top: 22px; }
+}
+/* Preserve timing and narration while removing jolts, streaks and zooms. */
+.effect-viewport[data-effect-level='reduced'] .char[class*='combat-'],
+.effect-viewport[data-effect-level='minimal'] .char[class*='combat-'],
+.effect-viewport[data-effect-level='reduced'][data-attack-phase] .stage-content-frame,
+.effect-viewport[data-effect-level='minimal'][data-attack-phase] .stage-content-frame { animation: none !important; }
+.effect-viewport[data-effect-level='reduced'] .cinematic-hit,
+.effect-viewport[data-effect-level='minimal'] .cinematic-hit { display: none; }
+.effect-viewport[data-effect-level='minimal'] .cinematic-letterbox { display: none; }
+.effect-viewport[data-effect-level='reduced'] .cinematic-insert img,
+.effect-viewport[data-effect-level='minimal'] .cinematic-insert img { animation: none !important; transform: none !important; }
+.effect-viewport[data-effect-level='minimal'] .bg { animation: none !important; transition: none !important; }
+.effect-viewport[data-effect-level='reduced'] .bg { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .effect-viewport .bg, .effect-viewport .char[class*='combat-'],
+  .effect-viewport[data-attack-phase] .stage-content-frame,
+  .cinematic-letterbox::before, .cinematic-letterbox::after,
+  .outcome-prelude, .outcome-content h2, .effect-viewport .game-over-overlay,
+  .effect-viewport .ending-overlay { animation: none !important; transition: none !important; }
+  .cinematic-hit { display: none; }
+  .cinematic-insert, .cinematic-insert img { animation: none !important; transform: none !important; }
+  .effect-viewport .ending-credits-roll { scroll-behavior: auto; }
+}

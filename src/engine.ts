@@ -1,3 +1,5 @@
+import { CINEMATIC_SOUNDS } from './cinematicAudio';
+import { backgroundId, normalizeAttack, normalizeBackground } from './cinematic';
 import type JSZip from 'jszip';
 import { beginStickerLeave } from './assetTransition';
 import { normalizeCharacterEnter } from './characterEntrance';
@@ -36,6 +38,7 @@ import {
   type InlineSpeedSegment,
 } from './typing';
 import type {
+  AttackDirective,
   CameraDirective,
   CharacterSlot,
   CharacterEnterEffect,
@@ -416,6 +419,8 @@ export function setPlayerExperienceSettings(patch: Partial<PlayerExperienceSetti
     youtubePlayer?.setVolume?.(Math.round(runtimeGameSettings.bgmVolume * 100));
   }
 
+  if (patch.sfxVolume === 0) stopSoundEffects();
+
   if ('autoPlayEnabled' in patch) {
     if (runtimeGameSettings.autoPlayEnabled) {
       schedulePlayerAutoAdvance();
@@ -602,15 +607,50 @@ function cancelNextChapterWarm(): void {
   nextChapterWarmHandleKind = undefined;
 }
 
-function clearTimers() {
-  if (waitTimer) {
-    window.clearTimeout(waitTimer);
-    waitTimer = undefined;
+let cinematicRevision = 0;
+const cinematicTimers = new Set<number>();
+const activeSfx = new Set<HTMLAudioElement>();
+let pendingBackground: { revision: number; complete: (ok: boolean) => void } | undefined;
+
+/** Called by the decoded, painted background layer, never by an arbitrary delay. */
+export function completeBackgroundTransition(revision: number, ok = true): void {
+  if (pendingBackground?.revision !== revision) return;
+  const pending = pendingBackground;
+  pendingBackground = undefined;
+  pending.complete(ok);
+}
+
+function scheduleCinematic(callback: () => void, delay: number): number {
+  const revision = cinematicRevision;
+  const game = useVNStore.getState().game;
+  const timer = window.setTimeout(() => {
+    cinematicTimers.delete(timer);
+    if (revision !== cinematicRevision || useVNStore.getState().game !== game) return;
+    callback();
+  }, delay);
+  cinematicTimers.add(timer);
+  return timer;
+}
+
+function stopSoundEffects(): void {
+  for (const audio of activeSfx) {
+    audio.pause();
+    audio.onended = null;
+    audio.onerror = null;
   }
-  if (typeFrame !== undefined) {
-    window.cancelAnimationFrame(typeFrame);
-    typeFrame = undefined;
-  }
+  activeSfx.clear();
+}
+
+function clearCinematics() {
+  cinematicRevision += 1;
+  for (const timer of cinematicTimers) window.clearTimeout(timer);
+  cinematicTimers.clear();
+  pendingBackground = undefined;
+  useVNStore.getState().setAttack(undefined);
+  stopSoundEffects();
+}
+
+function clearScreenEffect() {
   if (effectTimer) {
     window.clearTimeout(effectTimer);
     effectTimer = undefined;
@@ -620,6 +660,19 @@ function clearTimers() {
     effectFrame = undefined;
   }
   useVNStore.getState().setEffect(undefined);
+}
+
+function clearTimers() {
+  clearCinematics();
+  clearScreenEffect();
+  if (waitTimer) {
+    window.clearTimeout(waitTimer);
+    waitTimer = undefined;
+  }
+  if (typeFrame !== undefined) {
+    window.cancelAnimationFrame(typeFrame);
+    typeFrame = undefined;
+  }
   if (autoAdvanceTimer) {
     window.clearTimeout(autoAdvanceTimer);
     autoAdvanceTimer = undefined;
@@ -1903,7 +1956,7 @@ export function getSaveSlotSummaries(): SaveSlotSummary[] {
 
 export function saveCurrentProgress(): SaveSlotSummary {
   const state = useVNStore.getState();
-  if (!state.game || state.chapterLoading || state.gameOver) {
+  if (!state.game || state.chapterLoading || state.gameOver || state.busy) {
     return { slot: 'manual', exists: false };
   }
   const save = saveProgress(state.currentSceneId, state.actionIndex, 'manual');
@@ -2158,9 +2211,14 @@ function playMusic(url?: string) {
 }
 
 function playSound(url: string) {
+  if (runtimeGameSettings.sfxVolume <= 0 || typeof Audio === 'undefined') return;
   const audio = new Audio(url);
   audio.volume = runtimeGameSettings.sfxVolume;
-  void audio.play().catch(() => undefined);
+  activeSfx.add(audio);
+  const release = () => { activeSfx.delete(audio); };
+  audio.onended = release;
+  audio.onerror = release;
+  void audio.play().catch(release);
 }
 
 export function unlockAudioFromGesture() {
@@ -2471,7 +2529,15 @@ function resolveAutoEndingId(
 }
 
 function finishStory(endingId?: string): void {
-  clearPlayerAutoAdvance();
+  clearTimers();
+  useVNStore.getState().setBusy(false);
+  const stateBeforeEnding = useVNStore.getState();
+  const ending = endingId ? stateBeforeEnding.game?.endings?.[endingId] : undefined;
+  if (ending?.music && stateBeforeEnding.game) {
+    const music = resolveAsset(stateBeforeEnding.baseUrl, stateBeforeEnding.game.assets.music[ending.music]);
+    stateBeforeEnding.setMusic(music);
+    playMusic(music);
+  }
   currentDialogueHasAuthoredAutoAdvance = false;
   useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setResolvedEndingId(endingId);
@@ -2488,7 +2554,19 @@ function finishStory(endingId?: string): void {
 
 function triggerGameOver(gameOver: GameOverDefinition, restoreAutosaveFromChoice = true): void {
   clearTimers();
-  playMusic(undefined);
+  useVNStore.getState().setBusy(false);
+  // Let the last note fall away under the outcome reveal.
+  if (bgmAudio) {
+    const audio = bgmAudio;
+    bgmAudio = undefined;
+    bgmCurrentKind = undefined;
+    bgmCurrentKey = undefined;
+    bgmNeedsUnlock = false;
+    fadeAudioVolume(audio, 0, 900, () => audio.pause());
+  } else {
+    playMusic(undefined);
+  }
+  playSound(CINEMATIC_SOUNDS.defeat);
   let recovery = getChoiceRecoveryForGameOver(gameOver);
   if (recovery?.choiceAttempt && !recovery.choiceAttempt.ledToGameOver) {
     recovery = {
@@ -2955,7 +3033,7 @@ function findBackgroundAssetIdBeforeCursor(
   for (let index = 0; index < Math.min(actionIndex, actions.length); index += 1) {
     const action = actions[index];
     if ('bg' in action) {
-      backgroundAssetId = action.bg;
+      backgroundAssetId = backgroundId(action.bg);
     }
   }
   return backgroundAssetId;
@@ -3037,7 +3115,12 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
     }
 
     if ('bg' in action) {
-      setBg(resolveAsset(chapter.baseUrl, game.assets.backgrounds[action.bg]));
+      setBg(resolveAsset(chapter.baseUrl, game.assets.backgrounds[backgroundId(action.bg)]));
+      actionIndex += 1;
+      continue;
+    }
+    if ('attack' in action) {
+      stageAttack(action.attack);
       actionIndex += 1;
       continue;
     }
@@ -3532,6 +3615,69 @@ async function jumpToChapterPath(pathKey: string): Promise<void> {
   await startPreparedChapters(resolved.chapters, resolved.startIndex);
 }
 
+function stageAttack(attack: AttackDirective): void {
+  const state = useVNStore.getState();
+  if (!state.game) return;
+  const target = attack.target ?? 'player';
+  for (const id of [target, attack.attacker]) {
+    if (id === 'player') continue;
+    if (Object.values(useVNStore.getState().characters).some((slot) => slot?.id === id)) continue;
+    const def = state.game.assets.characters[id];
+    if (!def) continue;
+    const preferred = id === attack.attacker ? (attack.from ?? 'right') : 'left';
+    const slots = useVNStore.getState().characters;
+    const positions: Position[] = [preferred, 'center', 'left', 'right'];
+    const position = positions.find((pos) => !slots[pos])
+      ?? positions.find((pos) => slots[pos]?.id !== target && slots[pos]?.id !== attack.attacker)
+      ?? preferred;
+    state.setCharacter(position, buildCharacterSlot(state.baseUrl, id, def.base, def, undefined, undefined, 'none'));
+  }
+  state.setVisibleCharacters(target === 'player' ? [attack.attacker] : [target, attack.attacker]);
+  applyCameraDirective({ shot: 'medium', target: 'group', transition: 'cut' });
+}
+
+function runAttack(attack: AttackDirective, loopGuard: number): void {
+  clearCinematics();
+  clearScreenEffect();
+  clearPlayerAutoAdvance();
+  stageAttack(attack);
+  const state = useVNStore.getState();
+  const presentation = normalizeAttack(attack, ++cinematicRevision);
+  state.setBusy(true);
+  state.setWaitingInput(false);
+  const sound = (id: string | undefined, fallback: string) => id && state.game
+    ? resolveAsset(state.baseUrl, state.game.assets.sfx[id]) : fallback;
+  const begin = (image?: string) => {
+    if (cinematicRevision !== presentation.revision || useVNStore.getState().game !== state.game) return;
+    const visible = { ...presentation, image };
+    state.setAttack(visible);
+    playSound(sound(attack.approachSound, CINEMATIC_SOUNDS.approach));
+    scheduleCinematic(() => {
+      useVNStore.getState().setAttack({ ...visible, phase: 'impact' });
+      playSound(sound(attack.sound, CINEMATIC_SOUNDS[presentation.style]));
+      scheduleCinematic(() => {
+        useVNStore.getState().setAttack({ ...visible, phase: 'recovery' });
+        scheduleCinematic(() => {
+          useVNStore.getState().setAttack(undefined);
+          useVNStore.getState().setBusy(false);
+          incrementCursor();
+          runToNextPause(loopGuard + 1);
+        }, presentation.recovery);
+      }, presentation.impact);
+    }, presentation.anticipation);
+  };
+  if (attack.image && state.game && typeof Image !== 'undefined') {
+    const image = new Image();
+    image.src = resolveAsset(state.baseUrl, state.game.assets.backgrounds[attack.image]);
+    void waitForImageReady(image, STATIC_IMAGE_READY_TIMEOUT_MS).then((status) => {
+      // A failed optional cut-in falls back to the staged actor sequence.
+      begin(status === 'ready' ? image.src : undefined);
+    });
+  } else {
+    begin();
+  }
+}
+
 function runToNextPause(loopGuard = 0) {
   if (loopGuard > 1000) {
     useVNStore.getState().setError({ message: 'Infinite loop detected in script execution' });
@@ -3572,10 +3718,42 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('bg' in action) {
-    const path = game.assets.backgrounds[action.bg];
-    useVNStore.getState().setBackground(resolveAsset(state.baseUrl, path));
+    const path = game.assets.backgrounds[backgroundId(action.bg)];
+    const url = resolveAsset(state.baseUrl, path);
+    const options = normalizeBackground(action.bg);
+    if (state.background === url) {
+      incrementCursor();
+      runToNextPause(loopGuard + 1);
+      return;
+    }
+    useVNStore.getState().setBackground(url, options);
+    if (options.wait) {
+      const revision = useVNStore.getState().backgroundPresentation.revision;
+      useVNStore.getState().setBusy(true);
+      const watchdog = scheduleCinematic(() => completeBackgroundTransition(revision, false),
+        STATIC_IMAGE_READY_TIMEOUT_MS + options.duration + 1000);
+      pendingBackground = { revision, complete: (ok) => {
+        if (useVNStore.getState().game !== state.game
+          || useVNStore.getState().backgroundPresentation.revision !== revision) return;
+        window.clearTimeout(watchdog);
+        cinematicTimers.delete(watchdog);
+        useVNStore.getState().setBusy(false);
+        if (!ok) {
+          useVNStore.getState().setError({ message: `배경을 준비하지 못했습니다: ${backgroundId(action.bg)}` });
+          return;
+        }
+        incrementCursor();
+        runToNextPause(loopGuard + 1);
+      } };
+      return;
+    }
     incrementCursor();
     runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('attack' in action) {
+    runAttack(action.attack, loopGuard);
     return;
   }
 
@@ -4779,7 +4957,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
 
 export function handleAdvance() {
   const state = useVNStore.getState();
-  if (!state.game || state.isFinished || state.gameOver || state.chapterLoading || state.dialogUiHidden) {
+  if (!state.game || state.error || state.isFinished || state.gameOver || state.chapterLoading || state.dialogUiHidden) {
     return;
   }
   if (state.videoCutscene.active) {

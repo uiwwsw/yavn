@@ -4,7 +4,7 @@ script:
 scenes:
   falling_star_rumor:
     actions:
-      - bg: burning_palace
+      - bg: { id: burning_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - effect: starfall
       - say:
@@ -71,7 +71,7 @@ scenes:
 
   explain_sky:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - get: burnt_kite
       - say:
           channel: narration
@@ -103,7 +103,7 @@ scenes:
 
   bad_larger_false_star:
     actions:
-      - bg: burning_palace
+      - bg: { id: burning_palace, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - effect: embers
       - char: { id: 덕만, position: left, emotion: queen_angry }
@@ -129,7 +129,7 @@ scenes:
 
   bidam_letter_arrives:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: medium
       - say:
           channel: narration
@@ -192,7 +192,7 @@ scenes:
 
   publish_letter:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "편지가 시장 벽에 붙자 비담의 상처는 웃음거리가 됐습니다. 그와 함께 창을 든 사람들은 자기 굶주림과 분노까지 조롱받았다고 느끼며 대열을 더 조였습니다."
@@ -220,7 +220,7 @@ scenes:
 
   forged_withdrawal:
     actions:
-      - bg: shadow_corridor
+      - bg: { id: shadow_corridor, transition: fade, duration: 900 }
       - say:
           channel: narration
           text: "가짜 철군 명령을 읽은 한 부대가 진을 비웠습니다. 길은 열렸지만 덕만의 손에는 어린 날 사망 기록과 같은 거짓 획이 남았습니다."
@@ -248,7 +248,7 @@ scenes:
 
   rebellion_strategy:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: wide
       - char: { id: 유신, position: right, emotion: angry }
       - say:
@@ -293,7 +293,7 @@ scenes:
 
   starve_command:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - say:
           channel: narration
           text: "사흘째, 반란군 솥에서 연기가 끊겼습니다. 항복자는 늘었지만 같은 길을 쓰던 성 밖 마을의 아궁이도 함께 식었습니다."
@@ -321,7 +321,7 @@ scenes:
 
   bidam_captured:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 비담, position: right, emotion: sad }
@@ -345,7 +345,7 @@ scenes:
 
   bad_fortress_rush:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: { shot: close, target: 덕만 }
       - effect: darken
       - char: { id: 유신, position: right, emotion: angry }

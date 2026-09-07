@@ -4,7 +4,7 @@ script:
 scenes:
   empty_granary:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -55,7 +55,7 @@ scenes:
 
   hire_villagers:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "노파가 품삯 쌀을 소매에 넣고 지팡이로 산등성이를 가리켰습니다. 아이들은 밤마다 수레 소리가 멎는 집을 서로 다투어 말했습니다. 능선의 작은 창고 하나에서는 이미 연기가 났습니다."
@@ -83,7 +83,7 @@ scenes:
 
   surround_warehouse:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "기병의 횃불이 세 창고를 동시에 에워쌌습니다. 안쪽 빗장이 걸리는 소리와 함께, 담 너머에서 '왕실의 약탈'이라는 외침이 먼저 터졌습니다."
@@ -111,7 +111,7 @@ scenes:
 
   hidden_warehouse:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: wide
       - char: { id: 비담, position: right, emotion: smirk, enter: { effect: slideLeft, layout: push, duration: 520 } }
       - say:
@@ -167,7 +167,7 @@ scenes:
 
   public_distribution:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
@@ -184,7 +184,7 @@ scenes:
 
   royal_relief:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "왕실 북이 울리자 줄은 빠르게 정리됐습니다. 관리들은 자루를 건넬 때마다 '왕의 은혜'를 외쳤고 덕만의 이름은 한 번도 부르지 않았습니다."
@@ -212,7 +212,7 @@ scenes:
 
   grain_bargain:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
@@ -241,7 +241,7 @@ scenes:
 
   convoy_attack:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: wide
       - char: { id: 유신, position: right, emotion: angry }
       - say:
@@ -282,7 +282,7 @@ scenes:
 
   convoy_saved:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - camera: medium
       - say:
           channel: narration
@@ -307,7 +307,7 @@ scenes:
 
   bad_grain_wall:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: princess_angry }
       - char: { id: 유신, position: right, emotion: angry }
@@ -331,7 +331,7 @@ scenes:
 
   bad_charge:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - camera: { shot: close, target: 덕만 }
       - effect: darken
       - char: { id: 덕만, position: left, emotion: angry }

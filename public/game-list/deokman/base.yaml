@@ -1,5 +1,7 @@
 assets:
   backgrounds:
+    chilsuk_sword_cutin: root:/game-list/deokman/assets/bg/chilsuk-sword-cutin-v1.png
+    chilsuk_bow_cutin: root:/game-list/deokman/assets/bg/chilsuk-bow-cutin-v1.png
     title_palace: root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp
     peony_court: root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp
     burning_palace: root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp

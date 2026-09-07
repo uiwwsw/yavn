@@ -4,7 +4,7 @@ script:
 scenes:
   opening_record:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: wide
       - sticker:
           id: opening_death_register
@@ -91,7 +91,7 @@ scenes:
 
   observe_absence:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - say:
           char: 어린 덕만.resolve
           camera: close
@@ -121,7 +121,7 @@ scenes:
 
   observe_back:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - clearSticker:
           id: peony_painting_view
           leave: fadeOut
@@ -223,7 +223,7 @@ scenes:
       - clearSticker:
           id: peony_painting_view
           leave: fadeOut
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: medium
       - char: { id: 어린 덕만, position: left }
       - char: { id: 진평왕, position: center }
@@ -271,7 +271,7 @@ scenes:
 
   answer_record:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - sticker:
           id: death_register_answer
           image: death_register_sticker
@@ -321,7 +321,7 @@ scenes:
 
   answer_literal:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - say:
           char: 어린 덕만
           camera: close
@@ -393,7 +393,7 @@ scenes:
 
   fire_breaks:
     actions:
-      - bg: burning_palace
+      - bg: { id: burning_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - effect: embers
       - char: { id: 어린 덕만, position: left, emotion: scared }
@@ -422,6 +422,26 @@ scenes:
           camera: close
           with: [어린 덕만]
           text: "해가 뜨면 거짓말도 왕실 기록이 됩니다. 따질 입은 재가 되고요."
+      - say:
+          channel: narration
+          delivery: nervous
+          text: "칠숙의 손이 허리로 내려갔습니다. 칼집 입구가 엄지에 밀려 짧게 울렸고, 소화는 덕만을 등 뒤로 당겼습니다."
+      - attack:
+          attacker: 칠숙
+          target: 소화
+          from: right
+          style: slash
+          image: chilsuk_sword_cutin
+          strength: light
+          anticipation: 680
+          recovery: 740
+          caption: "칼집에서 쇠가 긁히는 소리."
+      - say:
+          channel: narration
+          delivery: nervous
+          wait: 300
+          unskippable: true
+          text: "소화가 몸을 비틀었습니다. 찢어진 소매가 칼끝에 걸렸다가 떨어졌습니다. 덕만은 소화의 손목이 떨리는 것을 그제야 보았습니다."
       - char: { id: 소화, position: center, emotion: nervous }
       - say:
           char: 소화.nervous
@@ -482,7 +502,7 @@ scenes:
 
   escape_waterway:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right }
@@ -528,7 +548,7 @@ scenes:
 
   escape_north_gate:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right, emotion: nervous }
@@ -551,6 +571,26 @@ scenes:
           camera: close
           with: [어린 덕만, 소화]
           text: "왕실 안쪽 패는 주인을 살리는 물건이 아닙니다. 어느 문으로 달아났는지 알려 주는 물건이지요."
+      - say:
+          channel: narration
+          delivery: nervous
+          text: "칠숙이 두 손가락을 내렸습니다. 문 위의 활시위가 팽팽해졌습니다. 소화가 덕만의 어깨를 눌렀지만 등 뒤에는 닫힌 문짝뿐이었습니다."
+      - attack:
+          attacker: 칠숙
+          target: 어린 덕만
+          from: right
+          style: shot
+          image: chilsuk_bow_cutin
+          anticipation: 850
+          impact: 140
+          recovery: 900
+          caption: "머리 위에서 활시위가 놓였다."
+      - say:
+          channel: narration
+          delivery: nervous
+          wait: 450
+          unskippable: true
+          text: "문짝이 등 뒤에서 둔하게 울렸습니다. 덕만이 쥐었던 모란패가 돌바닥을 두 번 튕겼습니다. 손을 뻗었지만 손가락은 더 이상 패에 닿지 않았습니다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -561,7 +601,7 @@ scenes:
 
   escape_with_record:
     actions:
-      - bg: burning_palace
+      - bg: { id: burning_palace, transition: dissolve, duration: 720 }
       - effect: embers
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right, emotion: nervous }
@@ -592,7 +632,7 @@ scenes:
 
   bad_smoke:
     actions:
-      - bg: burning_palace
+      - bg: { id: burning_palace, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 어린 덕만 }
       - effect: embers
       - char: { id: 어린 덕만, position: left, emotion: scared }
