@@ -7,6 +7,7 @@ import {
   commitPreparedBackground,
   finishBackgroundTransition,
 } from './assetTransition';
+import type { BackgroundTransitionKind } from './types';
 import { waitForImageReady } from './imageReady';
 
 const BACKGROUND_READY_TIMEOUT_MS = 12000;
@@ -17,14 +18,22 @@ export const BackgroundTransition = memo(function BackgroundTransition({
   source,
   durationMs = BACKGROUND_CROSSFADE_DURATION_MS,
   easing = 'cubic-bezier(0.2, 0.72, 0.24, 1)',
+  kind = 'dissolve',
+  requestRevision = 0,
+  onComplete,
 }: {
   source?: string;
   durationMs?: number;
   easing?: string;
+  kind?: BackgroundTransitionKind;
+  requestRevision?: number;
+  onComplete?: (revision: number, ok?: boolean) => void;
 }) {
   const [presentation, setPresentation] = useState(EMPTY_BACKGROUND_TRANSITION);
   const pendingImageRef = useRef<HTMLImageElement | null>(null);
   const latestSourceRef = useRef(source);
+  const completionRef = useRef(onComplete);
+  completionRef.current = onComplete;
   latestSourceRef.current = source;
 
   useEffect(() => {
@@ -48,6 +57,9 @@ export const BackgroundTransition = memo(function BackgroundTransition({
     let commitFrame: number | undefined;
 
     void waitForImageReady(image, BACKGROUND_READY_TIMEOUT_MS).then((status) => {
+      if (!cancelled && status !== 'ready' && latestSourceRef.current === source) {
+        completionRef.current?.(requestRevision, false);
+      }
       if (cancelled || status !== 'ready' || latestSourceRef.current !== source) {
         return;
       }
@@ -67,20 +79,23 @@ export const BackgroundTransition = memo(function BackgroundTransition({
         window.cancelAnimationFrame(commitFrame);
       }
     };
-  }, [presentation.current, source]);
+  }, [presentation.current, source, requestRevision]);
 
   useEffect(() => {
-    if (!presentation.current || !presentation.previous) {
+    if (!presentation.current || presentation.current !== source) {
       return;
     }
     const currentSource = presentation.current;
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const timer = window.setTimeout(
-      () => setPresentation((previous) => finishBackgroundTransition(previous, currentSource)),
-      reducedMotion ? 0 : durationMs + 40,
+      () => {
+        setPresentation((previous) => finishBackgroundTransition(previous, currentSource));
+        completionRef.current?.(requestRevision);
+      },
+      reducedMotion || !presentation.previous || kind === 'cut' ? 0 : durationMs + 40,
     );
     return () => window.clearTimeout(timer);
-  }, [durationMs, presentation.current, presentation.previous, presentation.revision]);
+  }, [durationMs, kind, source, requestRevision, presentation.current, presentation.previous, presentation.revision]);
 
   const layers = collectBackgroundLayerSources(presentation, source);
   return (
@@ -104,11 +119,13 @@ export const BackgroundTransition = memo(function BackgroundTransition({
             alt="background"
             aria-hidden="true"
             data-background-role={role}
+            data-background-kind={kind}
             data-background-transitioning={transitioning ? 'true' : 'false'}
             loading="eager"
             decoding="async"
             style={{
               '--background-crossfade-duration': `${durationMs}ms`,
+              '--background-half-duration': `${durationMs / 2}ms`,
               '--background-crossfade-easing': easing,
             } as CSSProperties}
           />

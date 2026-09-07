@@ -1,6 +1,9 @@
 import { create } from 'zustand';
+import { DEFAULT_BACKGROUND_PRESENTATION } from './cinematic';
 import { appendStoryLogEntry } from './history';
 import type {
+  AttackPresentation,
+  BackgroundPresentation,
   CharacterSlot,
   ChoiceGateState,
   DialogueChannel,
@@ -49,6 +52,8 @@ type VNState = {
   currentSceneId: string;
   actionIndex: number;
   background?: string;
+  backgroundPresentation: BackgroundPresentation;
+  attack?: AttackPresentation;
   stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
   speakerOrder: string[];
@@ -76,7 +81,8 @@ type VNState = {
   setUiTemplate: (template: UiTemplateId) => void;
   setGame: (game: GameData, baseUrl: string, assetOverrides?: Record<string, string>) => void;
   setCursor: (sceneId: string, actionIndex: number) => void;
-  setBackground: (url: string) => void;
+  setBackground: (url: string, presentation?: Omit<BackgroundPresentation, 'revision'>) => void;
+  setAttack: (attack?: AttackPresentation) => void;
   setSticker: (sticker: StickerSlot) => void;
   clearSticker: (id: string) => void;
   clearAllStickers: () => void;
@@ -191,6 +197,7 @@ const initialChoiceGate: ChoiceGateState = {
 };
 
 export const useVNStore = create<VNState>((set) => ({
+  backgroundPresentation: DEFAULT_BACKGROUND_PRESENTATION,
   baseUrl: '/',
   assetOverrides: {},
   chapterIndex: 0,
@@ -234,6 +241,7 @@ export const useVNStore = create<VNState>((set) => ({
       currentSceneId: game.script[0].scene,
       actionIndex: 0,
       background: undefined,
+      backgroundPresentation: { ...DEFAULT_BACKGROUND_PRESENTATION, revision: state.backgroundPresentation.revision + 1 },
       stickers: {},
       characters: {},
       speakerOrder: [],
@@ -251,13 +259,18 @@ export const useVNStore = create<VNState>((set) => ({
       storyLog: state.storyLog,
       resolvedEndingId: state.resolvedEndingId,
       gameOver: undefined,
+      attack: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,
       isFinished: false,
     })),
   setCursor: (sceneId, actionIndex) => set({ currentSceneId: sceneId, actionIndex }),
-  setBackground: (url) => set({ background: url }),
+  setBackground: (url, presentation = DEFAULT_BACKGROUND_PRESENTATION) => set((state) => ({
+    background: url,
+    backgroundPresentation: { ...presentation, revision: state.backgroundPresentation.revision + 1 },
+  })),
+  setAttack: (attack) => set({ attack }),
   setSticker: (sticker) =>
     set((state) => ({
       stickers: {
@@ -387,8 +400,9 @@ export const useVNStore = create<VNState>((set) => ({
   setWaitingInput: (waitingInput) => set({ waitingInput }),
   setFinished: (isFinished) => set({ isFinished }),
   resetPresentation: () =>
-    set({
+    set((state) => ({
       background: undefined,
+      backgroundPresentation: { ...DEFAULT_BACKGROUND_PRESENTATION, revision: state.backgroundPresentation.revision + 1 },
       stickers: {},
       characters: {},
       speakerOrder: [],
@@ -406,6 +420,7 @@ export const useVNStore = create<VNState>((set) => ({
       storyLog: [],
       resolvedEndingId: undefined,
       gameOver: undefined,
+      attack: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,
@@ -414,5 +429,5 @@ export const useVNStore = create<VNState>((set) => ({
       chapterLoadingProgress: 0,
       chapterLoadingMessage: undefined,
       uiTemplate: DEFAULT_UI_TEMPLATE,
-    }),
+    })),
 }));

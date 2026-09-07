@@ -4,7 +4,7 @@ script:
 scenes:
   peony_banquet:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -57,7 +57,7 @@ scenes:
 
   answer_with_patience:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "덕만은 대꾸하지 않고 조건을 한 줄씩 받아 적었습니다. 사신이 잔을 드는 순간 마지막 종이를 낚아챘습니다. 혼인 조항 아래, 신라 성 하나를 당군 주둔지로 내준다는 작은 글씨가 숨어 있었습니다."
@@ -85,7 +85,7 @@ scenes:
 
   answer_with_ledger:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - say:
           char: 덕만
           text: "남자 왕이 곡식을 만든다면 왜 이 장부는 비었습니까? 남편입니까, 원조입니까. 값을 붙여 하나만 답하세요."
@@ -116,7 +116,7 @@ scenes:
 
   hidden_terms:
     actions:
-      - bg: shadow_corridor
+      - bg: { id: shadow_corridor, transition: fade, duration: 900 }
       - camera: medium
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
@@ -136,7 +136,7 @@ scenes:
 
   treaty_choice:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - char: { id: 당 사신, position: right }
       - choice:
           key: c5_diplomacy
@@ -175,7 +175,7 @@ scenes:
 
   armed_truce:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "덕만은 혼인 답변 날짜를 세 달 뒤로 밀고 그 빈칸에 국경 군량 수레 수를 적었습니다. 사신은 웃었지만 날짜 아래 붉은 줄을 두 번 그었습니다."
@@ -203,7 +203,7 @@ scenes:
 
   secret_trade:
     actions:
-      - bg: shadow_corridor
+      - bg: { id: shadow_corridor, transition: fade, duration: 900 }
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
@@ -254,7 +254,7 @@ scenes:
 
   return_peony:
     actions:
-      - bg: banquet_hall
+      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - say:
           char: 덕만
           camera: close
@@ -287,7 +287,7 @@ scenes:
 
   scentless_end:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 덕만, position: left }
       - char: { id: 비담, position: right }
@@ -312,7 +312,7 @@ scenes:
 
   bad_hostage:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: angry }
       - char: { id: 당 사신, position: right, emotion: angry }

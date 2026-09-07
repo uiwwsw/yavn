@@ -144,7 +144,26 @@ const screenEffectNameSchema = z
   .regex(/^[A-Za-z][A-Za-z0-9_-]*$/, 'effect name must be a CSS-safe identifier');
 
 const actionBodySchema = z.union([
-  z.object({ bg: z.string() }),
+  z.object({ bg: z.union([z.string().min(1), z.object({
+    id: z.string().min(1),
+    transition: z.enum(['dissolve', 'fade', 'wipeLeft', 'wipeRight', 'cut']).optional(),
+    duration: z.number().int().min(0).max(5000).optional(),
+    wait: z.boolean().optional(),
+  }).strict()]) }),
+  z.object({ attack: z.object({
+    attacker: z.string().min(1),
+    image: z.string().min(1).optional(),
+    target: z.string().min(1).optional(),
+    from: z.enum(['left', 'center', 'right']).optional(),
+    style: z.enum(['slash', 'strike', 'shot']).optional(),
+    strength: z.enum(['light', 'heavy']).optional(),
+    anticipation: z.number().int().min(100).max(3000).optional(),
+    impact: z.number().int().min(80).max(500).optional(),
+    recovery: z.number().int().min(100).max(3000).optional(),
+    approachSound: z.string().min(1).optional(),
+    sound: z.string().min(1).optional(),
+    caption: z.string().min(1).max(160).optional(),
+  }).strict() }),
   z.object({
     sticker: z.object({
       id: z.string().min(1),
@@ -312,6 +331,10 @@ export const authorObjectSchema = z.object({
 export const endingDefinitionSchema = z.object({
   title: z.string().min(1),
   message: z.string().optional(),
+  epilogue: z.string().optional(),
+  background: z.string().min(1).optional(),
+  music: z.string().min(1).optional(),
+  tone: z.enum(['hopeful', 'tragic', 'mystery']).optional(),
 });
 
 export const endingRuleSchema = z.object({

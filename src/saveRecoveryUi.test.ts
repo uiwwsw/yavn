@@ -11,7 +11,7 @@ const styles = readSource('./styles.css');
 
 describe('save and game over recovery UI', () => {
   it('separates background autosave recovery from explicit save actions', () => {
-    expect(appSource).toContain('<p className="game-over-kicker">GAME OVER</p>');
+    expect(appSource).toContain('<p className="game-over-kicker">다시 이어갈 이야기</p>');
     expect(appSource).toContain("choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto')");
     expect(appSource).toContain("onClick={() => void onLoadSave('manual')}");
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');

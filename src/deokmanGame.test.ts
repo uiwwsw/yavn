@@ -81,7 +81,7 @@ describe('complete Deokman visual novel', () => {
     const launcher = readYaml('launcher.yaml');
 
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
-    expect(config.data?.data.version).toBe('10.3.0');
+    expect(config.data?.data.version).toBe('10.4.0');
     expect(config.data?.data.startScreen?.image).toBe(
       'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
     );
@@ -163,7 +163,7 @@ describe('complete Deokman visual novel', () => {
         const leadIn = actions.slice(0, gameOverIndex);
         expect(gameOverIndex, `${chapterIndex}.yaml:${sceneId}`).toBe(actions.length - 1);
         expect(collectKey(leadIn, 'say').length, `${chapterIndex}.yaml:${sceneId}`).toBeGreaterThanOrEqual(4);
-        expect(leadIn.some((action) => typeof action.bg === 'string'), `${chapterIndex}.yaml:${sceneId}`).toBe(true);
+        expect(leadIn.some((action) => typeof action.bg === 'string' || typeof asRecord(action.bg).id === 'string'), `${chapterIndex}.yaml:${sceneId}`).toBe(true);
       });
     });
   });
@@ -689,7 +689,7 @@ describe('complete Deokman visual novel', () => {
     expect(bible).toContain('## V10.2 대사 전면 교정');
     expect(bible).toContain('## V10.1 단일 생존 정답과 장면형 죽음');
     expect(bible).toContain('## 완결판 구현 현황');
-    expect(bible).toContain('- 버전: `10.3.0`');
+    expect(bible).toContain('- 버전: `10.4.0`');
     expect(bible).toContain('총 76개의 장면형 실패');
     expect(bible).not.toContain('총 28개');
     expect(bible).toContain('/game-list/deokman/');

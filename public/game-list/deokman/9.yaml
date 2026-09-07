@@ -4,7 +4,7 @@ script:
 scenes:
   queens_first_winter:
     actions:
-      - bg: throne_hall
+      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -46,7 +46,7 @@ scenes:
 
   stars_first:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "관측대가 왕궁 처마를 넘을 때 북쪽에서 깨진 방패가 도착했습니다. 군관은 방패에 '별이 성문을 지켜 주느냐'고 새겨 보냈습니다. 덕만은 공사를 멈추지 않는 대신 북문 수비대의 겨울 군량을 왕실 창고에서 먼저 떼어 냈습니다."
@@ -72,7 +72,7 @@ scenes:
 
   balanced_build:
     actions:
-      - bg: frontier
+      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - say:
           channel: narration
           text: "성벽 틈은 겨우 막혔고 관측대는 계획보다 절반 높이에서 멈췄습니다. 군사와 관측관은 남은 돌 한 장을 두고 매일 얼굴을 마주쳐야 했습니다. 결정은 느렸지만 어느 한쪽도 버려지지는 않았습니다."
@@ -100,7 +100,7 @@ scenes:
 
   granary_first:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "창고가 차자 마을 사람들이 곡식 자루를 품삯으로 받고 돌을 날랐습니다. 탑은 늦어졌고, 돌마다 어느 마을 손에서 왔는지 숯 글씨가 남았습니다."
@@ -116,7 +116,7 @@ scenes:
 
   who_reads_stars:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - camera: wide
       - char: { id: 비담, position: right, emotion: smirk, enter: { effect: blurIn, layout: cut, duration: 320 } }
       - say:
@@ -159,7 +159,7 @@ scenes:
 
   distributed_tables:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - get: star_chart
       - say:
           channel: narration
@@ -188,7 +188,7 @@ scenes:
 
   bidam_network:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - get: star_chart
       - say:
           channel: narration
@@ -220,7 +220,7 @@ scenes:
 
   observatory_sabotage:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - effect: embers
       - say:
@@ -250,7 +250,7 @@ scenes:
 
   preserve_traces:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "유신이 젖은 천으로 불길을 한쪽에 몰자 관측관들이 뒷문으로 기어 나왔습니다. 원본 표 가장자리는 탔지만 기름 묻은 발자국과 대나무 조각은 그대로 남았습니다."
@@ -278,7 +278,7 @@ scenes:
 
   tower_survives:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -345,7 +345,7 @@ scenes:
 
   bad_monument:
     actions:
-      - bg: title_palace
+      - bg: { id: title_palace, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - effect: darken
       - char: { id: 덕만, position: center, emotion: queen_angry }

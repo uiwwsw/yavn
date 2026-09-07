@@ -4,7 +4,7 @@ script:
 scenes:
   stolen_sun:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: record
@@ -55,7 +55,7 @@ scenes:
 
   calculate_eclipse:
     actions:
-      - bg: moon_court
+      - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "덕만은 두 달력의 칸을 하나씩 밀었습니다. 마지막 선이 포개지자 제관의 '계시'가 당의 계산표와 한 치도 다르지 않게 겹쳤습니다."
@@ -63,7 +63,7 @@ scenes:
 
   steal_table:
     actions:
-      - bg: locked_room
+      - bg: { id: locked_room, transition: fade, duration: 900 }
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
@@ -92,7 +92,7 @@ scenes:
 
   public_observation:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "늙은 농부는 지난 일식 날 망친 씨앗을 아직도 자루째 보관하고 있었습니다. 아이들은 그날 우물 그림자가 어느 담을 넘었는지 몸으로 가리켰습니다. 기억을 포개자 어둠의 범위가 한 시진 안으로 좁혀졌습니다."
@@ -150,7 +150,7 @@ scenes:
 
   announce_science:
     actions:
-      - bg: village
+      - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
           text: "새벽마다 벽보가 뜯겼고 덕만은 낮마다 다시 붙였습니다. 아이들이 구멍 뚫은 가죽으로 해를 보는 법을 따라 하자 검은 부적값이 바닥으로 떨어졌습니다."
@@ -162,7 +162,7 @@ scenes:
 
   stage_miracle:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: narration
@@ -194,7 +194,7 @@ scenes:
 
   keep_secret:
     actions:
-      - bg: council_hall
+      - bg: { id: council_hall, transition: dissolve, duration: 720 }
       - char: { id: 진평왕, position: right }
       - say:
           channel: narration
@@ -223,7 +223,7 @@ scenes:
 
   eclipse_day:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: wide
       - effect: eclipse
       - say:
@@ -266,7 +266,7 @@ scenes:
   sun_returns:
     actions:
       - effect: { name: darken, wait: true }
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: wide
       - say:
           channel: narration
@@ -291,7 +291,7 @@ scenes:
 
   bad_open_line:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - char: { id: 덕만, position: left, emotion: princess_angry }
       - char: { id: 유신, position: right, emotion: angry }
@@ -315,7 +315,7 @@ scenes:
 
   bad_dark_crowd:
     actions:
-      - bg: peony_court
+      - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - camera: { shot: close, target: 덕만 }
       - effect: eclipse
       - char: { id: 덕만, position: left, emotion: angry }

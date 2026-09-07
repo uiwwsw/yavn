@@ -2,6 +2,27 @@
 
 이 문서는 정식 패키지 `public/game-list/deokman/`에서 사용하는 시각 자산의 제작·재사용 근거를 기록합니다.
 
+## V10.4 칠숙 공격 장면 컷
+
+- 파일: `assets/bg/chilsuk-sword-cutin-v1.png`, `assets/bg/chilsuk-bow-cutin-v1.png`
+- 제작일: 2026-09-07
+- 제작 방식: OpenAI 내장 ImageGen 도구. 기존 `chilsuk-angry-silla-v5.webp`의 얼굴·나이·상투·보라색 신라 복식으로 검/활 자세를 만든 뒤 같은 인물을 밤 궁문 앞의 와이드 공격 컷으로 구성했습니다. CLI/API 대체 경로는 사용하지 않았습니다.
+- 용도: `attack.image`에서 접근·타격·반응 시점에 노출하는 불투명 장면 컷. 모바일 세로 화면에서는 contain으로 얼굴과 무기를 함께 보존합니다.
+- 검수: 두 결과 모두 1672×941 PNG. 투명 스프라이트 후보는 알파 대신 격자가 포함되어 채택하지 않았으며, 실제 게임에는 격자가 없는 배경 포함 장면 컷만 사용합니다. 기존 인물 스프라이트는 보존했습니다.
+
+### 검 공격 컷 최종 프롬프트
+
+```text
+Use case: historical-scene, identity-preserve. Asset type: 16:9 fullscreen attack cut-in for an existing visual novel. Use the attached character as an identity and costume reference. Create one cinematic medium-close shot of this same fictional Korean man Chilsuk, same face age topknot goatee deep purple 7th-century Silla robe with bronze belt and geometric trim. He holds an iron sword drawn in his right hand, ready to strike from right to left; show the clearly visible blade and threatening poised arm; no arrow or bow. Place Chilsuk in the right 60 percent of the landscape frame, face and weapon entirely within the central safe 60 percent for portrait crops. The left side is dark out-of-focus early Silla palace gate at night, subtle torchlight, moonlit rain and drifting smoke. Semi-realistic painted premium historical game artwork matching the reference. Dramatic perspective, focused cold threat, visible knuckles and fabric tension. Actual fully painted atmospheric opaque background, NOT transparent, NO checkerboard, NO white space, NO letters, NO UI, NO text, NO logos, NO gore, NO extra people. This is the single instant just before the attack; the game will animate the camera and impact. Dark quiet top/bottom margins for short subtitle. Widescreen 1536x864 composition.
+```
+
+### 활 공격 컷 최종 프롬프트
+
+```text
+Use case: historical-scene, identity-preserve. Asset type: 16:9 fullscreen attack cut-in for an existing visual novel. Use the attached character as an identity and costume reference. Create one cinematic medium-close shot of this same fictional Korean man Chilsuk, same face age topknot goatee deep purple 7th-century Silla robe with bronze belt and geometric trim. He holds a compact Korean recurve bow held at full draw, a single nocked arrow aimed leftward towards the unseen target; correct bowstring and arrow mechanics; no sword. Place Chilsuk in the right 60 percent of the landscape frame, face and weapon entirely within the central safe 60 percent for portrait crops. The left side is dark out-of-focus early Silla palace gate at night, subtle torchlight, moonlit rain and drifting smoke. Semi-realistic painted premium historical game artwork matching the reference. Dramatic perspective, focused cold threat, visible knuckles and fabric tension. Actual fully painted atmospheric opaque background, NOT transparent, NO checkerboard, NO white space, NO letters, NO UI, NO text, NO logos, NO gore, NO extra people. This is the single instant just before the attack; the game will animate the camera and impact. Dark quiet top/bottom margins for short subtitle. Widescreen 1536x864 composition.
+```
+
+
 ## 시작 화면
 
 - 파일: `assets/bg/title-deokman-v8-fire-v1.webp`
