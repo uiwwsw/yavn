@@ -21,6 +21,7 @@ import easyCl2dLicenseUrl from '../assets/licenses/live2d/easy-cl2d-LICENSE.live
 import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url';
 import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
 import { CinematicLayer } from './CinematicLayer';
+import { YavnLogo } from './YavnLogo';
 import { OutcomePrelude, trapOutcomeFocus } from './OutcomePrelude';
 import './cinematic.css';
 import { BackgroundTransition } from './BackgroundTransition';
@@ -409,7 +410,7 @@ function haveSameCharacterIds(left: readonly string[], right: readonly string[])
   return left.length === right.length && left.every((id) => right.includes(id));
 }
 
-const DEFAULT_LAUNCHER_SUMMARY = '이 게임은 launcher.yaml 요약이 아직 등록되지 않았습니다.';
+const DEFAULT_LAUNCHER_SUMMARY = '당신의 선택으로 이어지는 이야기. 첫 장을 열어보세요.';
 const DEFAULT_START_BUTTON_TEXT = '시작하기';
 const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
 const DEFAULT_SEO_TITLE = '야븐엔진 (YAVN) | Type your story. Play your novel.';
@@ -857,25 +858,6 @@ function parseGameListManifest(raw: unknown): GameListManifest {
   };
 }
 
-function formatManifestTimestamp(raw: string | null): string {
-  if (!raw) {
-    return 'N/A';
-  }
-  const parsed = new Date(raw);
-  if (Number.isNaN(parsed.getTime())) {
-    return raw;
-  }
-  return parsed.toLocaleString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  });
-}
-
 function buildLauncherJsonLd(games: GameListManifestEntry[]): Record<string, unknown> | undefined {
   if (games.length === 0) {
     return undefined;
@@ -1040,7 +1022,9 @@ function LegalNoticeList({
 function useAdvanceByKey(advanceLocked: boolean, onAdvance: () => void) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
+      const target = event.target instanceof HTMLElement
+        ? event.target
+        : event.target instanceof Node ? event.target.parentElement : null;
       if (target) {
         const tag = target.tagName.toLowerCase();
         if (
@@ -1568,8 +1552,6 @@ export default function App() {
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
   const [gameListLoading, setGameListLoading] = useState(false);
   const [gameListError, setGameListError] = useState<string | null>(null);
-  const [manifestSchemaVersion, setManifestSchemaVersion] = useState<number | null>(null);
-  const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
   const [manifestSeo, setManifestSeo] = useState<GameListManifestSeo | null>(null);
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -1720,8 +1702,6 @@ export default function App() {
         return;
       }
       setGameList(parsed.games);
-      setManifestSchemaVersion(parsed.schemaVersion ?? null);
-      setManifestGeneratedAt(parsed.generatedAt ?? null);
       setManifestSeo(parsed.seo ?? null);
       setGameListError(null);
       setGameListLoading(false);
@@ -1748,8 +1728,6 @@ export default function App() {
         return;
       }
       setGameList([]);
-      setManifestSchemaVersion(null);
-      setManifestGeneratedAt(null);
       setManifestSeo(null);
       setSelectedGameId(null);
       launcherCarouselPositionedRef.current = false;
@@ -1982,7 +1960,9 @@ export default function App() {
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
-      const target = event.target as HTMLElement | null;
+      const target = event.target instanceof HTMLElement
+        ? event.target
+        : event.target instanceof Node ? event.target.parentElement : null;
       if (!target?.closest('.app')) {
         return;
       }
@@ -2101,8 +2081,6 @@ export default function App() {
   const selectedGameIndex = selectedGame
     ? gameList.findIndex((entry) => entry.id === selectedGame.id)
     : -1;
-  const manifestTimestampLabel = formatManifestTimestamp(manifestGeneratedAt);
-  const gameListStatus = gameListLoading ? 'LOADING' : gameListError ? 'FAULT' : gameList.length > 0 ? 'READY' : 'EMPTY';
 
   useEffect(() => {
     const nextGameId = selectedGame?.id ?? null;
@@ -2155,20 +2133,29 @@ export default function App() {
     }
 
     clearLauncherDeepLinkFromAddress();
-    launcherCarouselApi.scrollTo(nextIndex, jump);
-  }, [clearLauncherDeepLinkFromAddress, gameList.length, launcherCarouselApi]);
+    const jumpImmediately = jump || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    launcherCarouselApi.scrollTo(nextIndex, jumpImmediately);
+    // An instant jump has no running animation to emit a settle event.
+    if (jumpImmediately) {
+      setSelectedGameId(gameList[nextIndex]?.id ?? null);
+    }
+  }, [clearLauncherDeepLinkFromAddress, gameList, launcherCarouselApi]);
 
   const moveLauncherCarousel = useCallback((direction: -1 | 1) => {
     if (!launcherCarouselApi) {
       return;
     }
     clearLauncherDeepLinkFromAddress();
+    const jumpImmediately = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (direction < 0) {
-      launcherCarouselApi.scrollPrev();
+      launcherCarouselApi.scrollPrev(jumpImmediately);
     } else {
-      launcherCarouselApi.scrollNext();
+      launcherCarouselApi.scrollNext(jumpImmediately);
     }
-  }, [clearLauncherDeepLinkFromAddress, launcherCarouselApi]);
+    if (jumpImmediately) {
+      setSelectedGameId(gameList[launcherCarouselApi.selectedScrollSnap()]?.id ?? null);
+    }
+  }, [clearLauncherDeepLinkFromAddress, gameList, launcherCarouselApi]);
 
   const preserveLauncherControlFocus = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -3746,29 +3733,23 @@ export default function App() {
         </a>
         <header className="launcher-topbar">
           <a className="launcher-brand" href="/" aria-label="YAVN 홈">
-            <h1>YAVN</h1>
-            <span>YAML VISUAL NOVEL ENGINE</span>
+            <YavnLogo />
+            <span>이야기가 플레이가 되는 곳</span>
           </a>
-
-          <div className="launcher-runtime" aria-label="엔진 상태">
-            <span className={`launcher-status launcher-status-${gameListStatus.toLowerCase()}`}>{gameListStatus}</span>
-            <span>{gameList.length} PLAYABLE</span>
-            <span>DSL V{manifestSchemaVersion ?? 5}</span>
-          </div>
-
-          <nav className="launcher-nav" aria-label="엔진 링크">
-            <a className="launcher-nav-github" href={repositoryUrl} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
+          <nav className="launcher-nav" aria-label="메인 메뉴">
+            <a className="launcher-nav-library" href="#launcher-library">이야기 둘러보기</a>
             <a className="launcher-nav-guide" href={developmentGuideUrl} target="_blank" rel="noreferrer">
-              Guide
+              만들기 가이드 <span aria-hidden="true">↗</span>
             </a>
-            <label className="launcher-upload">
-              <span>{uploading ? 'ZIP 로딩 중' : 'ZIP 실행'}</span>
+            <a className="launcher-nav-github" href={repositoryUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <label className={`launcher-upload${uploading ? ' is-loading' : ''}`}>
+              <span aria-hidden="true">＋</span>
+              <span>{uploading ? '불러오는 중' : '내 게임 열기'}</span>
               <input
                 type="file"
                 accept=".zip,application/zip"
                 aria-label="YAVN 게임 ZIP 실행"
+                disabled={uploading}
                 onChange={onUploadZip}
               />
             </label>
@@ -3776,6 +3757,21 @@ export default function App() {
         </header>
 
         <main className="launcher-console">
+          <section className="launcher-intro" aria-labelledby="launcher-intro-title">
+            <div>
+              <p className="launcher-eyebrow"><span aria-hidden="true" /> EVERY CHOICE, A NEW STORY</p>
+              <h1 id="launcher-intro-title">이야기를 읽다.<br /><em>세계를 바꾸다.</em></h1>
+            </div>
+            <div className="launcher-intro-note">
+              <p>다음 장면을 결정하는 건, 당신.<br />선택으로 완성하는 비주얼 노벨을 만나보세요.</p>
+              <a href="#launcher-library">당신의 이야기 찾기 <span aria-hidden="true">↘</span></a>
+              <span className="launcher-browser-note">설치 없이, 브라우저에서 바로.</span>
+            </div>
+          </section>
+          <div className="launcher-section-label">
+            <span><b>01</b> SPOTLIGHT</span>
+            <span>지금 펼쳐볼 이야기</span>
+          </div>
           {gameList.length > 0 ? (
             <section className="launcher-showcase" aria-label="플레이 가능한 데모">
               <div
@@ -3796,11 +3792,11 @@ export default function App() {
                 <div className="launcher-carousel-track">
                   {gameList.map((entry, index) => {
                     const isSelected = selectedGame?.id === entry.id;
-                    const entryTags = entry.tags.length > 0 ? entry.tags : ['untagged'];
+                    const entryTags = entry.tags;
                     const chapterLabel =
                       typeof entry.chapterCount === 'number'
-                        ? `${entry.chapterCount} CHAPTER${entry.chapterCount === 1 ? '' : 'S'}`
-                        : 'CHAPTERS -';
+                        ? `${entry.chapterCount}개 챕터`
+                        : '챕터 정보 없음';
                     const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
                     return (
                       <article
@@ -3811,91 +3807,84 @@ export default function App() {
                         aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
                         aria-hidden={!isSelected}
                       >
-                      <div className="launcher-feature-media" style={showcaseStyle}>
-                        {entry.thumbnail ? (
-                          <img
-                            src={entry.thumbnail}
-                            alt={entry.seo?.imageAlt ?? `${entry.name} 대표 이미지`}
-                            loading="eager"
-                            decoding="async"
-                          />
-                        ) : (
-                          <div className="launcher-feature-fallback">YAVN</div>
-                        )}
-                      </div>
-
-                      <div className="launcher-feature-copy">
-                        <div className="launcher-feature-content">
-                        <p className="launcher-feature-kicker">
-                          {entry.showcase?.label ?? 'PLAYABLE DEMO'}
-                          <span>v{entry.version ?? '-'}</span>
-                        </p>
-                        <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
-                        <p className="launcher-feature-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</p>
-                        {entry.legalNotices.length > 0 && (
-                          <LegalNoticeList
-                            notices={entry.legalNotices}
-                            className="launcher-feature-legal-notices"
-                            linkTabIndex={isSelected ? undefined : -1}
-                          />
-                        )}
-
-                        <div className="inspector-tag-row">
-                          {entryTags.map((tag) => (
-                            <span key={`inspect-${entry.id}-${tag}`}>{tag}</span>
-                          ))}
+                        <div className="launcher-feature-media" style={showcaseStyle}>
+                          {entry.thumbnail ? (
+                            <img
+                              src={entry.thumbnail}
+                              alt={entry.seo?.imageAlt ?? `${entry.name} 대표 이미지`}
+                              loading="eager"
+                              decoding="async"
+                            />
+                          ) : (
+                            <div className="launcher-feature-fallback">YAVN</div>
+                          )}
+                          <span className="launcher-art-caption" aria-hidden="true">
+                            <YavnLogo compact />
+                            <span>THE YAVN COLLECTION<br /><b>STORY {String(index + 1).padStart(2, '0')}</b></span>
+                          </span>
                         </div>
 
-                        <dl className="launcher-feature-meta">
-                          <div>
-                            <dt>CREATOR</dt>
-                            <dd>{entry.author ?? 'UNKNOWN'}</dd>
-                          </div>
-                          <div>
-                            <dt>BUILD</dt>
-                            <dd>{entry.id}</dd>
-                          </div>
-                          <div>
-                            <dt>LENGTH</dt>
-                            <dd>{chapterLabel}</dd>
-                          </div>
-                        </dl>
+                        <div className="launcher-feature-copy">
+                          <div className="launcher-feature-content">
+                            <p className="launcher-feature-kicker">
+                              {entry.showcase?.label ?? 'INTERACTIVE STORY'}
+                              <span>v{entry.version ?? '-'}</span>
+                            </p>
+                            <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
+                            <p className="launcher-feature-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</p>
 
-                        <div className="inspector-actions">
-                          <a
-                            className="launcher-command launcher-command-primary"
-                            href={entry.path}
-                            tabIndex={isSelected ? undefined : -1}
-                          >
-                            지금 플레이
-                          </a>
-                          <a
-                            className="launcher-command launcher-command-source"
-                            href={buildGameSourceUrl(repositoryUrl, entry.id)}
-                            target="_blank"
-                            rel="noreferrer"
-                            tabIndex={isSelected ? undefined : -1}
-                          >
-                            GitHub 폴더
-                          </a>
-                          <button
-                            type="button"
-                            className="launcher-command launcher-command-ghost"
-                            tabIndex={isSelected ? undefined : -1}
-                            onClick={() => void copySelectedGameLink()}
-                          >
-                            {launcherShareNotice ? '링크 복사됨' : '선택 링크 복사'}
-                          </button>
+                            <div className="inspector-tag-row">
+                              {entryTags.map((tag) => (
+                                <span key={`inspect-${entry.id}-${tag}`}>{tag}</span>
+                              ))}
+                            </div>
+
+                            <p className="launcher-feature-meta">
+                              <span>by {entry.author ?? 'YAVN creator'}</span><span>{chapterLabel}</span>
+                            </p>
+
+                            <div className="inspector-actions">
+                              <a
+                                className="launcher-command launcher-command-primary"
+                                href={entry.path}
+                                tabIndex={isSelected ? undefined : -1}
+                              >
+                                이야기 시작하기 <span aria-hidden="true">↗</span>
+                              </a>
+                              <a
+                                className="launcher-command launcher-command-source"
+                                href={buildGameSourceUrl(repositoryUrl, entry.id)}
+                                target="_blank"
+                                rel="noreferrer"
+                                tabIndex={isSelected ? undefined : -1}
+                              >
+                                작품 소스 ↗
+                              </a>
+                              <button
+                                type="button"
+                                className="launcher-command launcher-command-ghost"
+                                tabIndex={isSelected ? undefined : -1}
+                                onClick={() => void copySelectedGameLink()}
+                              >
+                                {launcherShareNotice ? '링크 복사됨' : '선택 링크 복사'}
+                              </button>
+                            </div>
+                            <p
+                              className="launcher-share-status"
+                              role={isSelected ? 'status' : undefined}
+                              aria-live={isSelected ? 'polite' : 'off'}
+                            >
+                              {isSelected ? launcherShareNotice : ''}
+                            </p>
+                            {entry.legalNotices.length > 0 && (
+                              <LegalNoticeList
+                                notices={entry.legalNotices}
+                                className="launcher-feature-legal-notices"
+                                linkTabIndex={isSelected ? undefined : -1}
+                              />
+                            )}
+                          </div>
                         </div>
-                        <p
-                          className="launcher-share-status"
-                          role={isSelected ? 'status' : undefined}
-                          aria-live={isSelected ? 'polite' : 'off'}
-                        >
-                          {isSelected ? launcherShareNotice : ''}
-                        </p>
-                        </div>
-                      </div>
                       </article>
                     );
                   })}
@@ -3961,11 +3950,11 @@ export default function App() {
               aria-live={gameListError ? 'assertive' : 'polite'}
             >
               <strong>
-                {gameListLoading ? 'SYNCING PLAYGROUND' : gameListError ? 'MANIFEST LOAD FAILURE' : 'PLAYGROUND EMPTY'}
+                {gameListLoading ? '이야기를 준비하고 있어요' : gameListError ? '이야기를 불러오지 못했어요' : '새로운 이야기를 기다리고 있어요'}
               </strong>
               <p>
                 {gameListLoading
-                  ? '게임 매니페스트와 대표 이미지를 불러오는 중입니다.'
+                  ? '잠시만 기다려주세요. 곧 첫 장이 열립니다.'
                   : gameListError ?? '등록된 게임이 아직 없습니다.'}
               </p>
               {!gameListLoading && gameListError && (
@@ -3978,46 +3967,15 @@ export default function App() {
 
           {gameList.length > 0 && (
             <>
-              <section className="launcher-engine-overview" aria-labelledby="launcher-engine-overview-title">
-                <div className="launcher-engine-overview-copy">
-                  <p>BUILD WITH YAVN</p>
-                  <h2 id="launcher-engine-overview-title">코드보다 이야기에 집중하세요.</h2>
-                  <p>
-                    장면·대사·분기·저장·엔딩을 YAML로 작성하고, ZIP 하나로 브라우저에서 바로 테스트하세요.
-                  </p>
-                  <div className="launcher-engine-overview-actions">
-                    <a href={developmentGuideUrl} target="_blank" rel="noreferrer">
-                      제작 가이드 시작
-                    </a>
-                    <a href={`${repositoryUrl}/blob/main/sample.yaml`} target="_blank" rel="noreferrer">
-                      샘플 YAML 보기
-                    </a>
-                  </div>
-                </div>
-                <dl className="launcher-engine-capabilities">
-                  <div>
-                    <dt>01</dt>
-                    <dd><strong>YAML DSL</strong><span>코드 수정 없이 장면과 분기 작성</span></dd>
-                  </div>
-                  <div>
-                    <dt>02</dt>
-                    <dd><strong>GAME FLOW</strong><span>저장·복구·다중 엔딩·게임오버 기본 제공</span></dd>
-                  </div>
-                  <div>
-                    <dt>03</dt>
-                    <dd><strong>WEB RUNTIME</strong><span>ZIP·이미지·영상·Live2D를 즉시 실행</span></dd>
-                  </div>
-                </dl>
-              </section>
-
           <section id="launcher-library" className="launcher-library" aria-labelledby="launcher-library-title">
             <div className="launcher-library-heading">
               <div>
-                <p>PLAYABLE LIBRARY</p>
-                <h2 id="launcher-library-title">게임 바로 시작</h2>
+                <p className="launcher-eyebrow">02 / THE COLLECTION</p>
+                <h2 id="launcher-library-title" tabIndex={-1}>어떤 세계로 떠나볼까요?</h2>
+                <p className="launcher-section-description">마음에 드는 이야기의 첫 장을 열어보세요.</p>
               </div>
-              <span>
-                {filteredGames.length} / {gameList.length}
+              <span className="launcher-library-count" role="status">
+                <b>{String(filteredGames.length).padStart(2, '0')}</b> / {String(gameList.length).padStart(2, '0')} STORIES
               </span>
             </div>
 
@@ -4025,10 +3983,11 @@ export default function App() {
               <div className="launcher-search-box">
                 <label htmlFor="launcher-search-input">게임 검색</label>
                 <div className="launcher-search-field">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
                   <input
                     id="launcher-search-input"
                     type="search"
-                    placeholder="게임명, 태그, 작성자 검색"
+                    placeholder="제목, 장르, 작가로 찾기"
                     value={searchTerm}
                     aria-controls="launcher-game-grid"
                     onChange={(event) => setSearchTerm(event.target.value)}
@@ -4059,7 +4018,7 @@ export default function App() {
                   aria-pressed={activeTag === ALL_TAG_FILTER}
                   onClick={() => setActiveTag(ALL_TAG_FILTER)}
                 >
-                  ALL
+                  전체
                 </button>
                 {visibleLauncherTags.map((tag) => (
                   <button
@@ -4080,7 +4039,10 @@ export default function App() {
                     onClick={() => {
                       setShowAllLauncherTags((current) => !current);
                       window.requestAnimationFrame(() => {
-                        launcherTagFilterRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+                        launcherTagFilterRef.current?.scrollTo({
+                          left: 0,
+                          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                        });
                       });
                     }}
                   >
@@ -4092,7 +4054,7 @@ export default function App() {
 
             {filteredGames.length === 0 && (
               <div className="launcher-diagnostic">
-                <strong>NO MATCHED GAME</strong>
+                <strong>아직 찾는 이야기가 없네요</strong>
                 <p>검색 조건과 일치하는 게임이 없습니다.</p>
                 <button
                   type="button"
@@ -4112,8 +4074,8 @@ export default function App() {
                   const buildNumber = Math.max(1, gameList.findIndex((gameEntry) => gameEntry.id === entry.id) + 1);
                   const chapterLabel =
                     typeof entry.chapterCount === 'number'
-                      ? `${entry.chapterCount} CHAPTER${entry.chapterCount === 1 ? '' : 'S'}`
-                      : 'CHAPTERS -';
+                      ? `${entry.chapterCount}개 챕터`
+                      : '챕터 정보 없음';
                   return (
                     <article
                       key={entry.id}
@@ -4130,12 +4092,13 @@ export default function App() {
                           ) : (
                             <span className="workspace-game-cover-fallback">YAVN</span>
                           )}
-                          <span>BUILD {String(buildNumber).padStart(2, '0')}</span>
+                          <span className="workspace-cover-number">{String(buildNumber).padStart(2, '0')}</span>
+                          <span className="workspace-cover-play" aria-hidden="true">이야기 시작 ↗</span>
                         </span>
                         <span className="workspace-game-body">
+                          <span className="workspace-game-category">{entry.tags.slice(0, 2).join(' / ') || 'VISUAL NOVEL'}</span>
                           <span className="workspace-game-header">
                             <strong>{entry.name}</strong>
-                            {entry.version ? <em>v{entry.version}</em> : <em>v-</em>}
                           </span>
                           <span className="workspace-game-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</span>
                           {entry.legalNotices.length > 0 && (
@@ -4146,7 +4109,7 @@ export default function App() {
                           </span>
                         </span>
                         <span className="workspace-game-launch" aria-hidden="true">
-                          →
+                          ↗
                         </span>
                       </a>
                     </article>
@@ -4155,28 +4118,47 @@ export default function App() {
               </div>
             )}
           </section>
+          <section className="launcher-engine-overview" aria-labelledby="launcher-engine-overview-title">
+            <div className="launcher-engine-overview-copy">
+              <p className="launcher-eyebrow">03 / FOR THE STORYTELLERS</p>
+              <h2 id="launcher-engine-overview-title">이번엔 당신의<br />이야기를 들려주세요.</h2>
+              <p className="launcher-creator-lead">코드보다 이야기에 집중하세요.</p>
+              <p>장면과 대사, 선택과 결말.<br />상상 속 이야기를 플레이할 수 있는 작품으로 만드세요.</p>
+              <div className="launcher-engine-overview-actions">
+                <a href={developmentGuideUrl} target="_blank" rel="noreferrer">제작 가이드 시작 <span aria-hidden="true">↗</span></a>
+                <a href={`${repositoryUrl}/blob/main/sample.yaml`} target="_blank" rel="noreferrer">샘플 YAML 보기 ↗</a>
+              </div>
+            </div>
+            <div className="launcher-story-sheet" aria-hidden="true">
+              <div className="launcher-sheet-heading"><YavnLogo compact /><span>YOUR NEXT STORY</span><span>01 —</span></div>
+              <p className="launcher-sheet-chapter">CHAPTER 01</p>
+              <p className="launcher-sheet-title">모든 이야기는<br />작은 선택에서 시작된다.</p>
+              <p className="launcher-sheet-line">낯선 편지 한 통이 도착했다.<br />봉투에는 아직 쓰지 않은 내 이름이 적혀 있었다.</p>
+              <div className="launcher-sheet-choices"><span>편지를 열어본다 <b>↗</b></span><span>보낸 사람을 찾아간다 <b>↗</b></span></div>
+              <div className="launcher-sheet-ending"><span /> THE REST IS YOURS.</div>
+            </div>
+            <dl className="launcher-engine-capabilities">
+              <div><dt>01 / WRITE</dt><dd><strong>이야기를 쓰고</strong><span>YAML로 장면과 선택지 구성</span></dd></div>
+              <div><dt>02 / DIRECT</dt><dd><strong>장면에 숨을 불어넣고</strong><span>캐릭터·음악·영상으로 연출</span></dd></div>
+              <div><dt>03 / PLAY</dt><dd><strong>하나의 세계로 완성</strong><span>ZIP을 열어 브라우저에서 플레이</span></dd></div>
+            </dl>
+          </section>
             </>
           )}
         </main>
 
         <footer className="launcher-footer">
-          <p>
-            <strong>YAVN</strong>
-            <span>Type your story. Play your novel.</span>
-          </p>
-          <div>
-            <span>MANIFEST V{manifestSchemaVersion ?? 5}</span>
-            <span>SYNC {manifestTimestampLabel}</span>
-            <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">
-              제3자 고지
-            </a>
-            <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">
-              SUITE 라이선스
-            </a>
-            <a href={shareByPrUrl} target="_blank" rel="noreferrer">
-              PR 보내기
-            </a>
+          <div className="launcher-footer-brand">
+            <a href="/" aria-label="YAVN 홈"><YavnLogo /></a>
+            <p>Type your story. Play your novel.<br /><span>당신의 선택이, 하나의 이야기가 되도록.</span></p>
           </div>
+          <nav aria-label="프로젝트 및 법적 고지">
+            <a href={repositoryUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href={shareByPrUrl} target="_blank" rel="noreferrer">작품 기여하기 ↗</a>
+            <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">제3자 고지</a>
+            <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">SUITE 라이선스</a>
+          </nav>
+          <p className="launcher-footer-colophon">MADE FOR STORIES. OPEN TO EVERYONE.<span>YAVN · VISUAL NOVEL ENGINE</span></p>
         </footer>
 
         {error && <div className="launcher-error">{error.message}</div>}

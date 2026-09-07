@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const styles = readFileSync(
-  fileURLToPath(new URL('./styles.css', import.meta.url)),
+  fileURLToPath(new URL('./launcher.css', import.meta.url)),
   'utf8',
 );
 
@@ -31,7 +31,7 @@ describe('launcher responsive containment', () => {
       /\.launcher-feature \.inspector-tag-row\s*\{[\s\S]*?scrollbar-width: thin;[\s\S]*?scrollbar-color:/,
     );
     expect(styles).toMatch(
-      /\.launcher-tag-filter::-webkit-scrollbar-thumb\s*\{[\s\S]*?background: var\(--launcher-coral\);/,
+      /\.launcher-tag-filter::-webkit-scrollbar-thumb\s*\{[\s\S]*?background: var\(--launcher-accent\);/,
     );
   });
 

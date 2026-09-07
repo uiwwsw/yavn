@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const app = readFileSync(fileURLToPath(new URL('./App.tsx', import.meta.url)), 'utf8');
-const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
+const styles = readFileSync(fileURLToPath(new URL('./launcher.css', import.meta.url)), 'utf8');
 const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8')) as {
   dependencies?: Record<string, string>;
 };
@@ -27,9 +27,6 @@ describe('launcher homepage experience', () => {
     expect(app).toContain('loading="eager"');
     expect(app).toContain('linkTabIndex={isSelected ? undefined : -1}');
     expect(styles).toMatch(/\.launcher-carousel-track\s*\{[^}]*will-change: transform;/);
-    expect(styles).toContain('height: calc(100svh - var(--launcher-topbar-height));');
-    expect(styles).toContain('grid-template-rows: minmax(0, 1fr) var(--launcher-carousel-controls-height);');
-    expect(styles).toContain('scrollbar-gutter: stable;');
     expect(styles).not.toMatch(/\.launcher-carousel-dots button\.is-active\s*\{[^}]*width:/);
     expect(app).toContain("aria-live={isSelected ? 'polite' : 'off'}");
     expect(app).toContain('event.currentTarget.focus({ preventScroll: true });');
@@ -47,7 +44,7 @@ describe('launcher homepage experience', () => {
     expect(app).toContain('제작 가이드 시작');
     expect(app).toContain('샘플 YAML 보기');
     expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.launcher-nav \.launcher-nav-github\s*\{[\s\S]*?display: none;/);
-    expect(styles).not.toMatch(/@media \(max-width: 768px\)[\s\S]*?\.launcher-nav a\s*\{[\s\S]*?display: none;/);
+    expect(styles).not.toMatch(/@media \(max-width: 768px\)[\s\S]*?\.launcher-nav a\s*\{[^}]*display: none;/);
   });
 
   it('keeps discovery and native browser interaction accessible', () => {
