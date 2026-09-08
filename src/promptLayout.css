@@ -10,7 +10,7 @@
   max-height: var(--dialog-safe-max-height);
 }
 
-/* Choice/input content grows inside the prompt instead of resizing the prompt shell. */
+/* Overflow scrolls within the automatic or author-specified prompt height. */
 .dialog-box.has-choice-gate {
   height: min(var(--yavn-prompt-height, 170px), var(--dialog-safe-max-height));
   min-height: 0;

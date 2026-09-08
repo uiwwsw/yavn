@@ -23,6 +23,9 @@ import live2dRedistributableFilesUrl from '../assets/licenses/live2d/Redistribut
 import { CinematicLayer } from './CinematicLayer';
 import { YavnLogo } from './YavnLogo';
 import { TitleScene } from './TitleScene';
+import { GameIcon } from './GameIcon';
+import { resolvePromptActorInset } from './promptLayout';
+import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import './characterPresentation.css';
 import { SceneCurtain, useSceneCurtain } from './SceneCurtain';
@@ -1598,6 +1601,7 @@ export default function App() {
   const holdStartRef = useRef<number>(0);
   const holdingRef = useRef(false);
   const settingsTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const inventoryDetailTriggerRef = useRef<HTMLButtonElement | null>(null);
   const saveImportRef = useRef<HTMLInputElement | null>(null);
   const gameOverImportRef = useRef<HTMLInputElement | null>(null);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -1618,6 +1622,7 @@ export default function App() {
   const [gameOverRecoveryOpen, setGameOverRecoveryOpen] = useState(false);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
+  const [characterPromptInset, setCharacterPromptInset] = useState(0);
   const [presentedVisibleCharacterIds, setPresentedVisibleCharacterIds] = useState<string[]>([]);
   const [layoutVisibleCharacterIds, setLayoutVisibleCharacterIds] = useState<string[]>([]);
   const {
@@ -2055,12 +2060,12 @@ export default function App() {
   useEffect(() => {
     const update = () => {
       setDocumentHidden(document.hidden);
-      setScenePresentationPaused(Boolean(startGate) || chapterCurtainVisible || document.hidden);
+      setScenePresentationPaused(Boolean(startGate) || chapterCurtainVisible || settingsOpen || document.hidden);
     };
     update();
     document.addEventListener('visibilitychange', update);
     return () => { document.removeEventListener('visibilitychange', update); setScenePresentationPaused(false); };
-  }, [startGate, chapterCurtainVisible]);
+  }, [startGate, chapterCurtainVisible, settingsOpen]);
 
   useEffect(() => {
     setSaveNotice('');
@@ -2866,6 +2871,10 @@ export default function App() {
   }, [inventoryDetailOpen, settingsOpen]);
 
   useEffect(() => {
+    if (!inventoryDetailOpen && settingsOpen) inventoryDetailTriggerRef.current?.focus({ preventScroll: true });
+  }, [inventoryDetailOpen]);
+
+  useEffect(() => {
     if (!inventoryCategoryFilter) {
       return;
     }
@@ -3304,10 +3313,14 @@ export default function App() {
     // dialog fades back in. A manual hide intentionally releases the baseline.
     if (dialogUiHidden) {
       setStickerSafeInset((prev) => (prev === 0 ? prev : 0));
+      setCharacterPromptInset(0);
       return;
     }
     const nextInset = Math.max(0, Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop));
     setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
+    const readingHeight = Number.parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue('--yavn-character-prompt-height')) || dialogEl.offsetHeight;
+    setCharacterPromptInset(resolvePromptActorInset(nextInset, dialogEl.offsetHeight, readingHeight));
   }, [dialogUiHidden]);
 
   useLayoutEffect(() => {
@@ -3336,7 +3349,7 @@ export default function App() {
       observer.disconnect();
       window.removeEventListener('resize', updateStickerSafeInset);
     };
-  }, [bootMode, choiceGate.active, inputGate.active, isDialogHidden, updateStickerSafeInset]);
+  }, [bootMode, choiceGate, inputGate, isDialogHidden, updateStickerSafeInset]);
 
   const currentCast = useMemo(() => stagedCharactersByPosition.map(({ position, slot }) => ({
     position, slot, visible: visibleCharacterSet.has(slot.id),
@@ -4222,7 +4235,7 @@ export default function App() {
     <>
     <div
       {...(startGate ? { inert: '' } : {})}
-      data-story-paused={Boolean(startGate) || chapterCurtainVisible || documentHidden}
+      data-story-paused={Boolean(startGate) || chapterCurtainVisible || settingsOpen || documentHidden}
       className="app"
       data-ui-template={uiTemplate}
       data-motion-tempo={motionTempo}
@@ -4299,7 +4312,7 @@ export default function App() {
           data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}
           aria-hidden={!promptTopBaselineReady}
           style={{
-            '--prompt-top-dialog-inset': `${stickerSafeInset}px`,
+            '--prompt-top-dialog-inset': `${characterPromptInset}px`,
             zIndex: promptTopLayerZIndex,
           } as CSSProperties}
         >
@@ -4394,7 +4407,7 @@ export default function App() {
           <div className="meta">{game?.meta.title ?? '게임 불러오는 중'}</div>
           {chapterTotal > 1 && (
             <div className="hud-chapter-progress">
-              CHAPTER {chapterIndex}/{chapterTotal}
+              <span>CHAPTER {String(chapterIndex).padStart(2, '0')}</span><span className="hud-chapter-divider" />{String(chapterTotal).padStart(2, '0')}
             </div>
           )}
         </div>
@@ -4413,7 +4426,7 @@ export default function App() {
               setSettingsOpen(true);
             }}
           >
-            <span className="hud-log-icon" aria-hidden="true" />
+            <GameIcon name="log" /><span className="hud-action-label">기록</span>
             {storyLog.length > 0 && (
               <span className="hud-action-count" aria-hidden="true">
                 {storyLog.length}
@@ -4433,7 +4446,7 @@ export default function App() {
               setSettingsOpen(true);
             }}
           >
-            <span className="hud-inventory-icon" aria-hidden="true" />
+            <GameIcon name="bag" /><span className="hud-action-label">소지품</span>
             {totalInventoryCount > 0 && (
               <span className="hud-inventory-progress" aria-hidden="true">
                 {ownedInventoryCount}/{totalInventoryCount}
@@ -4455,7 +4468,7 @@ export default function App() {
               setSettingsOpen(true);
             }}
           >
-            <span className="hud-save-icon" aria-hidden="true" />
+            <GameIcon name="menu" /><span className="hud-action-label">메뉴</span>
           </button>
         </div>
       </div>
@@ -4470,6 +4483,8 @@ export default function App() {
         >
           <section
             className="settings-modal"
+            data-menu-tab={caseFileTab}
+            onKeyDown={trapGameDialogFocus}
             role="dialog"
             aria-modal="true"
             aria-label="케이스 파일"
@@ -4477,31 +4492,35 @@ export default function App() {
           >
             <header className="settings-modal-header">
               <div className="settings-modal-heading">
-                <p>STORY ARCHIVE</p>
-                <h2>기록 보관소</h2>
+                <p>PAUSED <span>· {game?.meta.title}</span></p>
+                <h2>{caseFileTab === 'log' ? '이야기 기록' : caseFileTab === 'inventory' ? '소지품' : '저장과 설정'}</h2>
               </div>
               <button
                 type="button"
                 className="settings-close-button"
+                autoFocus
                 aria-label="케이스 파일 닫기"
                 title="닫기"
                 onClick={() => closeSettingsModal()}
               >
-                <span aria-hidden="true">&times;</span>
+                <GameIcon name="close" />
               </button>
             </header>
-            <div className="case-file-tabs" role="tablist" aria-label="케이스 파일 보기">
+            <div className="case-file-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label="케이스 파일 보기">
               <button
                 type="button"
                 role="tab"
                 className={`case-file-tab ${caseFileTab === 'log' ? 'is-active' : ''}`}
                 aria-selected={caseFileTab === 'log'}
+                id="game-menu-tab-log"
+                aria-controls="game-menu-panel-log"
+                tabIndex={caseFileTab === 'log' ? 0 : -1}
                 onClick={() => {
                   setInventoryDetailOpen(false);
                   setCaseFileTab('log');
                 }}
               >
-                <span className="case-file-tab-label">기록</span>
+                <GameIcon name="log" /><span className="case-file-tab-label">기록</span>
                 <span className="case-file-tab-count">{storyLog.length}</span>
               </button>
               <button
@@ -4509,9 +4528,12 @@ export default function App() {
                 role="tab"
                 className={`case-file-tab ${caseFileTab === 'inventory' ? 'is-active' : ''}`}
                 aria-selected={caseFileTab === 'inventory'}
+                id="game-menu-tab-inventory"
+                aria-controls="game-menu-panel-inventory"
+                tabIndex={caseFileTab === 'inventory' ? 0 : -1}
                 onClick={() => setCaseFileTab('inventory')}
               >
-                <span className="case-file-tab-label">인벤토리</span>
+                <GameIcon name="bag" /><span className="case-file-tab-label">소지품</span>
                 <span className="case-file-tab-count">{ownedInventoryCount}/{totalInventoryCount}</span>
               </button>
               <button
@@ -4519,6 +4541,9 @@ export default function App() {
                 role="tab"
                 className={`case-file-tab ${caseFileTab === 'system' ? 'is-active' : ''}`}
                 aria-selected={caseFileTab === 'system'}
+                id="game-menu-tab-system"
+                aria-controls="game-menu-panel-system"
+                tabIndex={caseFileTab === 'system' ? 0 : -1}
                 onClick={() => {
                   setInventoryDetailOpen(false);
                   setSaveNotice('');
@@ -4526,20 +4551,20 @@ export default function App() {
                   setCaseFileTab('system');
                 }}
               >
-                <span className="case-file-tab-label">저장 · 설정</span>
-                <span className="case-file-tab-count" aria-hidden="true">03</span>
+                <GameIcon name="menu" /><span className="case-file-tab-label">저장 · 설정</span>
+                <span className="menu-tab-caption" aria-hidden="true">환경설정</span>
               </button>
             </div>
             {caseFileTab === 'log' ? (
-              <div className="settings-modal-body story-log-body">
+              <div key="log" className="settings-modal-body story-log-body" role="tabpanel" id="game-menu-panel-log" aria-labelledby="game-menu-tab-log">
                 <div className="story-log-summary">
                   <span>최근 기록</span>
-                  <b>{storyLog.length}/300</b>
+                  <b>{storyLog.length}개의 기록</b>
                 </div>
                 {storyLog.length === 0 ? (
                   <p className="story-log-empty">대화를 시작하면 사건 기록이 여기에 쌓입니다.</p>
                 ) : (
-                  <ol className="story-log-list" aria-label="스토리 기록">
+                  <ol className="story-log-list" tabIndex={0} aria-label="스토리 기록">
                     {[...storyLog].reverse().map((entry, index) => (
                       <li
                         key={`${entry.kind}-${entry.chapterPath ?? 'legacy'}-${entry.sceneId}-${entry.actionIndex}-${storyLog.length - index}`}
@@ -4572,15 +4597,17 @@ export default function App() {
               </div>
             ) : caseFileTab === 'inventory' ? (
             <div
+              key="inventory" role="tabpanel" id="game-menu-panel-inventory" aria-labelledby="game-menu-tab-inventory"
               className={`settings-modal-body settings-inventory-body ${inventoryViewEntries.length > 0 ? 'has-tools' : ''}`}
             >
               <div className="inventory-collection-header">
-                <div className="inventory-view-tabs" role="tablist" aria-label="인벤토리 보기">
+                <div className="inventory-view-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label="인벤토리 보기">
                   <button
                     type="button"
                     role="tab"
                     className={`inventory-view-tab ${inventoryView === 'bag' ? 'is-active' : ''}`}
                     aria-selected={inventoryView === 'bag'}
+                    tabIndex={inventoryView === 'bag' ? 0 : -1}
                     onClick={() => {
                       setInventoryDetailOpen(false);
                       setInventoryView('bag');
@@ -4594,6 +4621,7 @@ export default function App() {
                     role="tab"
                     className={`inventory-view-tab ${inventoryView === 'catalog' ? 'is-active' : ''}`}
                     aria-selected={inventoryView === 'catalog'}
+                    tabIndex={inventoryView === 'catalog' ? 0 : -1}
                     onClick={() => {
                       setInventoryDetailOpen(false);
                       setInventoryView('catalog');
@@ -4684,7 +4712,8 @@ export default function App() {
                         type="button"
                         role="listitem"
                         className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}`}
-                        onClick={() => {
+                        onClick={(event) => {
+                          inventoryDetailTriggerRef.current = event.currentTarget;
                           if (!entry.owned) {
                             return;
                           }
@@ -4705,7 +4734,7 @@ export default function App() {
                             aria-hidden="true"
                           >
                             <span className="inventory-slot-fallback-icon" />
-                            {entry.owned && <span>이미지 없음</span>}
+                            {entry.owned && <span>소지품</span>}
                           </span>
                         )}
                         <span className="inventory-slot-name">{entry.owned ? entry.name : '미발견 단서'}</span>
@@ -4716,20 +4745,20 @@ export default function App() {
               </div>
             </div>
             ) : (
-              <div className="settings-modal-body save-system-body">
+              <div key="system" className="settings-modal-body save-system-body" role="tabpanel" id="game-menu-panel-system" aria-labelledby="game-menu-tab-system">
                 <div className={`save-protection-hero ${autoSaveEnabled ? 'is-active' : 'is-paused'}`}>
-                  <span className="save-protection-mark" aria-hidden="true" />
+                  <GameIcon name="bookmark" className="save-protection-symbol" />
                   <div className="save-auto-status">
                     <span>
-                      <small>PROGRESS PROTECTION</small>
-                      <b>{autoSaveEnabled ? '진행 보호 작동 중' : '진행 보호 일시 중지'}</b>
+                      <small>YOUR PROGRESS</small>
+                      <b>{autoSaveEnabled ? '이야기를 자동으로 기억합니다' : '자동 저장이 꺼져 있습니다'}</b>
                     </span>
                     <strong>{formatSaveSlotMeta(autoRecoverySlot)}</strong>
                   </div>
                   <label className="save-autosave-row">
                     <span>
                       <b>자동 저장</b>
-                      <small>선택 직전 복구점</small>
+                      <small>선택 전 진행을 보관</small>
                     </span>
                     <span className="settings-switch">
                       <input
@@ -4978,6 +5007,7 @@ export default function App() {
               >
                 <section
                   className="inventory-detail-modal"
+                  onKeyDown={trapGameDialogFocus}
                   role="dialog"
                   aria-label="아이템 상세 정보"
                   onClick={(event) => event.stopPropagation()}
@@ -4987,11 +5017,12 @@ export default function App() {
                     <button
                       type="button"
                       className="settings-close-button"
+                      autoFocus
                       aria-label="아이템 상세 닫기"
                       title="닫기"
                       onClick={() => setInventoryDetailOpen(false)}
                     >
-                      <span aria-hidden="true">&times;</span>
+                      <GameIcon name="close" />
                     </button>
                   </header>
                   <div
@@ -5044,7 +5075,7 @@ export default function App() {
                 updatePlayerExperience({ autoPlayEnabled: !playerExperience.autoPlayEnabled });
               }}
             >
-              AUTO
+              <GameIcon name={playerExperience.autoPlayEnabled ? 'pause' : 'play'} /><span>AUTO</span>
             </button>
             <button
               type="button"
@@ -5054,7 +5085,7 @@ export default function App() {
                 setDialogUiHidden(true);
               }}
             >
-              숨기기
+              <GameIcon name="eye" /><span>숨기기</span>
             </button>
           </div>
         )}
@@ -5089,7 +5120,8 @@ export default function App() {
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck={false}
-                placeholder="정답 입력"
+                aria-label="답변 입력"
+                placeholder="답변을 입력하세요"
                 disabled={busy}
                 onChange={(event) => setInputAnswer(event.target.value)}
                 onClick={(event) => event.stopPropagation()}
@@ -5175,7 +5207,7 @@ export default function App() {
                           {String(index + 1).padStart(2, '0')}
                         </span>
                         <span className="choice-gate-option-text">{option.text}</span>
-                        <span className="choice-gate-option-mark" aria-hidden="true">›</span>
+                        <GameIcon name="arrow" className="choice-gate-option-mark" />
                       </span>
                       <span className="choice-gate-option-badges">
                         {isPreviousGameOverChoice && (
@@ -5204,7 +5236,7 @@ export default function App() {
             setDialogUiHidden(false);
           }}
         >
-          대화창 열기
+          <GameIcon name="eye" /><span>대화창 열기</span>
         </button>
       )}
       </div>

@@ -17,7 +17,7 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');
     expect(appSource).toContain('onChange={(event) => onToggleAutoSave(event.target.checked)}');
     expect(appSource).toContain('onChange={(event) => void onImportSave(event)}');
-    expect(appSource).toContain('<small>선택 직전 복구점</small>');
+    expect(appSource).toContain('<small>선택 전 진행을 보관</small>');
     expect(appSource).not.toContain("onClick={() => void onLoadSave('latest')}");
     expect(appSource).not.toContain("(['auto', 'manual', 'chapter'] as const)");
     expect(engineSource).toContain("const CHOICE_RECOVERY_SUFFIX = ':choice-recovery'");
@@ -94,7 +94,7 @@ describe('save and game over recovery UI', () => {
       /\.dialog-content-scroll,[\s\S]*?\.ending-credits-roll\s*\{[\s\S]*?scrollbar-width: thin;[\s\S]*?scrollbar-color:/,
     );
     expect(appSource).not.toContain("'YAVN ENGINE'");
-    expect(appSource).toContain('<h2>기록 보관소</h2>');
+    expect(appSource).toContain("caseFileTab === 'log' ? '이야기 기록'");
     expect(appSource).toContain("'게임 시작 화면으로 가기'");
     expect(appSource).toContain('save-protection-hero');
     expect(appSource).toContain('className="save-system-grid"');
