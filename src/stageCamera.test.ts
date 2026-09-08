@@ -17,9 +17,9 @@ const trioLayout: CharacterStageLayout = {
 };
 
 describe('stage camera', () => {
-  it('starts as a stable group-wide shot', () => {
+  it('starts as a stable group-medium shot', () => {
     expect(DEFAULT_STAGE_CAMERA).toEqual({
-      shot: 'wide',
+      shot: 'medium',
       target: 'group',
       transition: 'cut',
       duration: 0,
@@ -78,8 +78,8 @@ describe('stage camera', () => {
     );
     expect(close).toMatchObject({
       shot: 'close',
-      scale: 2.08,
-      mobileScale: 1.84,
+      scale: 1.86,
+      mobileScale: 1.74,
       panX: 'calc(0px - min(27.5cqw, 286px))',
       mobilePanX: '-25cqw',
       originY: 86,
@@ -139,8 +139,8 @@ describe('stage camera', () => {
     );
 
     expect(close).toMatchObject({
-      scale: 2.08,
-      mobileScale: 1.84,
+      scale: 1.86,
+      mobileScale: 1.74,
       panX: '0cqw',
       mobilePanX: '0cqw',
       originY: 86,
@@ -182,8 +182,8 @@ describe('stage camera', () => {
       duoLayout,
     );
     expect(duoClose).toMatchObject({
-      scale: 2.08,
-      mobileScale: 1.84,
+      scale: 1.86,
+      mobileScale: 1.74,
       panX: 'min(25cqw, 260px)',
       mobilePanX: '25cqw',
     });
@@ -246,12 +246,12 @@ describe('stage camera', () => {
       expect(medium.originY).toBe(86);
       expect(medium.mobileOriginY).toBe(82);
       expect(wide.scale).toBeCloseTo(1.18);
-      expect(close.scale).toBeCloseTo(2.08);
-      expect(reaction.scale).toBeCloseTo(1.9);
+      expect(close.scale).toBeCloseTo(1.86);
+      expect(reaction.scale).toBeCloseTo(1.78);
       expect(wide.mobileScale).toBeCloseTo(1.12);
       expect(medium.mobileScale).toBeCloseTo(1.58);
-      expect(close.mobileScale).toBeCloseTo(1.84);
-      expect(reaction.mobileScale).toBeCloseTo(1.72);
+      expect(close.mobileScale).toBeCloseTo(1.74);
+      expect(reaction.mobileScale).toBeCloseTo(1.66);
     }
   });
 
@@ -267,14 +267,14 @@ describe('stage camera', () => {
       },
     );
 
-    expect(close.scale).toBeCloseTo(2.08);
-    expect(close.mobileScale).toBeCloseTo(1.84);
+    expect(close.scale).toBeCloseTo(1.86);
+    expect(close.mobileScale).toBeCloseTo(1.74);
     expect(close.mobileScale).toBeLessThan(close.scale);
-    expect(1.84 / 1.58).toBeLessThan(1.2);
+    expect(1.74 / 1.58).toBeLessThan(1.2);
   });
 
   it('starts a multi-actor close immediately without fading its companions', () => {
-    expect(CHARACTER_EXIT_FADE_DURATION_MS).toBe(180);
+    expect(CHARACTER_EXIT_FADE_DURATION_MS).toBe(260);
     const close = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'close' }, '덕만'),
       2,
@@ -308,7 +308,7 @@ describe('stage camera', () => {
     });
   });
 
-  it('falls back to a medium group composition when a close or reaction shot has no target', () => {
+  it('preserves the authored shot scale when its target is absent', () => {
     const untargetedClose = resolveStageCameraPresentation(
       resolveStageCameraState({ shot: 'close', target: 'group' }),
       3,
@@ -327,16 +327,16 @@ describe('stage camera', () => {
     );
 
     expect(untargetedClose).toMatchObject({
-      shot: 'medium',
-      scale: 1.62,
-      mobileScale: 1.58,
+      shot: 'close',
+      scale: 1.86,
+      mobileScale: 1.74,
       panX: '0cqw',
       mobileOriginY: 82,
     });
     expect(untargetedReaction).toMatchObject({
-      shot: 'medium',
-      scale: 1.62,
-      mobileScale: 1.58,
+      shot: 'reaction',
+      scale: 1.78,
+      mobileScale: 1.66,
       panX: '0cqw',
       mobileOriginY: 82,
     });
@@ -372,13 +372,14 @@ describe('stage camera', () => {
     expect(wide.mobileScale).toBeCloseTo(1.12);
   });
 
-  it('does not carry a previous speaker focus into an untargeted narration line', () => {
+  it('holds the directed focus through narration and speaker turns until the target exits', () => {
     const closeOnDeokman = resolveStageCameraState({ shot: 'close' }, '덕만');
 
-    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], undefined)).toBeUndefined();
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], undefined)).toBe('덕만');
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['칠숙'], '칠숙')).toBeUndefined();
     expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], '덕만')).toBe('덕만');
     expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만'], undefined, '덕만')).toBe('덕만');
-    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만', '칠숙'], '칠숙')).toBeUndefined();
+    expect(resolveStageCameraFocusTargetId(closeOnDeokman, ['덕만', '칠숙'], '칠숙')).toBe('덕만');
   });
 
   it('keeps asset calibration separate from camera shot scale', () => {

@@ -16,13 +16,11 @@ describe('prompt-top character placement', () => {
     expect(appSource).toContain("entry.slot.placement === 'prompt-top'");
     expect(appSource).toContain("renderPlacement: CharacterSlot['placement'] = 'stage-bottom'");
     expect(appSource).toContain('if (!slot || slot.placement !== renderPlacement)');
+    expect(appSource.match(/renderedCast.map/g)).toHaveLength(2);
     expect(appSource).toContain('className={`char-layer char-layer-stage-bottom');
     expect(appSource).toContain('className={`char-layer char-layer-prompt-top');
     expect(appSource).toContain('className="char-composition-world char-composition-world-prompt-top"');
     expect(appSource).toContain('className="char-camera-world char-camera-world-prompt-top"');
-    expect(appSource).toContain("renderCharacter(characters.left, 'left', 'prompt-top')");
-    expect(appSource).toContain("renderCharacter(characters.center, 'center', 'prompt-top')");
-    expect(appSource).toContain("renderCharacter(characters.right, 'right', 'prompt-top')");
   });
 
   it('shares one horizontal composition across mixed baselines', () => {

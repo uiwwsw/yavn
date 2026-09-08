@@ -28,12 +28,12 @@ scenes:
           text: "무역권으로 산 귀족의 서신 중 한 장에 '해가 잠길 때 덕만을 가리킨다'는 문장이 있었습니다. 더러운 거래가 음모의 시각을 먼저 밝혔습니다."
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "열흘만 궁에 있어라. 해가 돌아온 뒤 표를 보여도 늦지 않아. 겁먹은 눈에는 숫자보다 네 목이 먼저 보인다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [진평왕]
           text: "저들은 하늘의 뜻이 아니라 시각을 압니다. 제가 숨으면 예언이 돼요. 정확한 때를 찾아 알리겠습니다."
       - choice:
@@ -70,12 +70,12 @@ scenes:
           text: "창문이 열리고 비담이 먼지투성이 계산표를 던졌습니다. 일식 시각 옆에는 '덕만을 가리킬 때'라는 붉은 글씨가 적혀 있었습니다."
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "표는 찾았습니다. 그런데 창밖 발소리가 늘었군요. 일부러 훔치게 둔 모양입니다."
       - say:
           char: 덕만.princess_angry
-          camera: close
+          camera: medium
           with: [비담]
           text: "표를 놓고 나가. 살아서 당의 표와 대조해야 증거가 돼."
       - say:
@@ -102,7 +102,7 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "제관은 한 시각을 찍었습니다. 사람들은 계산보다 누가 더 확신하는지만 볼 겁니다."
       - say:
@@ -133,7 +133,7 @@ scenes:
           key: c6_eclipse_policy
           prompt: "일식 시각을 알아냈습니다. 사람들에게 어떻게 알릴까요?"
           char: 덕만
-          camera: close
+          camera: medium
           options:
             - text: "마지막 순간 북을 울려 해를 돌려놓는다"
               set: { eclipse_policy: royal_miracle, used_false_omen: true }
@@ -169,7 +169,7 @@ scenes:
           text: "어둠이 가장 짙어졌을 때 북이 세 번 울렸습니다. 세 번째 북채가 떨어지자 햇빛이 제단 끝을 긁었고 군중은 덕만의 이름을 울부짖었습니다."
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "거짓 예언을 더 정확한 기적으로 이기셨군요. 보십시오. 사람들은 숫자보다 공주님 이름을 외웁니다."
       - say:
@@ -177,7 +177,7 @@ scenes:
           text: "사람들이 살았어. 그걸로 됐다고 믿고 싶은데… 저 북, 누가 먼저 울렸지?"
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "제관입니다. 공주님의 기적을 거짓이라 밝힐 사람도 그자고요."
       - say:
@@ -201,12 +201,12 @@ scenes:
           text: "일식 날 궁문은 닫혔고 골목마다 방패가 섰습니다. 비명은 담 밖에서 작게 끝났지만, 사람들은 어둠의 이유를 모른 채 제관의 다음 말을 기다렸습니다."
       - say:
           char: 진평왕
-          camera: close
+          camera: medium
           with: [덕만]
           text: "궁문은 지켰다. 그런데 밖에서 네 이름을 부르던 소리가 왜 갑자기 멎었느냐?"
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [진평왕]
           text: "군사가 사람들을 골목에 몰았습니다. 제가 나가겠습니다. 표를 보여 주면—"
       - say:
@@ -232,14 +232,14 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
-          camera: reaction
+          camera: medium
           with: [덕만]
           text: "방패를 세우면 아이들이 눌리고, 눕히면 제단까지 열립니다. 무엇부터 지킵니까!"
       - choice:
           key: c6_eclipse_riot
           prompt: "군중 속 아이들이 눌리고 있습니다. 길을 어떻게 열까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [유신]
           options:
             - text: "방패를 눕혀 아이들의 길을 만든다"
@@ -255,7 +255,7 @@ scenes:
     actions:
       - say:
           char: 덕만.angry
-          camera: close
+          camera: medium
           with: [유신]
           text: "서른까지 센다! 그때도 해가 안 돌아오면 나를 잡아! 방패는 눕히고 아이들부터 뒤로 보내!"
       - say:
@@ -275,7 +275,7 @@ scenes:
       - char: { id: 진평왕, position: right, emotion: weak }
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "오늘은 내 왕명보다 네 목소리에 더 많은 사람이 멈췄다. 자랑스럽고… 무섭구나."
       - say:

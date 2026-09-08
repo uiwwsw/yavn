@@ -16,12 +16,12 @@ scenes:
           text: "밤의 왕좌에는 진평왕 혼자 앉아 있었습니다. 그는 일식표의 인영 옆에 옥새함을 놓고 천천히 뚜껑을 열었습니다. 비어 있었습니다."
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "사람들은 내가 착해서 약해졌다더구나. 아니다. 하루만 더 버티자며 하나씩 내줬어. 이제 이 의자만 남았다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [진평왕]
           text: "왕좌를 지키느라 왕의 일을 다 넘기셨군요. 제 이름까지."
       - sticker: { id: c7_seal_box, image: empty_seal_box_sticker, x: 50, y: 28, width: "clamp(170px, 20%, 320px)", anchorX: center, anchorY: center, enter: scaleIn }
@@ -35,7 +35,7 @@ scenes:
           key: c7_confession
           prompt: "왕의 실패와 빼앗긴 권한을 누가 직접 밝힐까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [진평왕]
           options:
             - text: "왕은 숨기고 빼앗긴 권한만 벽에 붙인다"
@@ -71,12 +71,12 @@ scenes:
           text: "궁문 벽이 가문 이름으로 가득 찼습니다. 어느 집이 어느 창고 열쇠를, 어느 성문 병사를, 어느 기록관의 붓을 쥐었는지 사람들이 손가락으로 따라 읽었습니다. 왕이 빠진 고백은 덕만에게 반역 혐의를 남겼지만, 공개된 이름들이 그날 재판을 막았습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [진평왕]
           text: "빼앗긴 권한을 적었습니다. 아버지는 편찮아 못 나오셨다고 하죠."
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "내가 숨으면 저건 고백이 아니라 네 격문이다. 덕만아, 나를 데리고 나가라."
       - say:
@@ -99,17 +99,17 @@ scenes:
           text: "덕만은 사람들 앞에서 창고의 혼란이 자기 명령 때문이라고 말했습니다. 진평왕을 향하던 돌이 덕만의 발치로 바뀌었습니다. 귀족들은 그 자백을 반역문으로 만들려 했지만 왕이 처음으로 옥좌에서 내려왔습니다."
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "죽은 네 이름을 살려 놓고 또 방패로 세웠구나. 이번엔 네 뒤에 숨지 않겠다."
       - say:
           char: 덕만.sad
-          camera: close
+          camera: medium
           with: [진평왕]
           text: "이번에는 제가 막겠습니다. 아버지가 다시 힘을 얻으면 그때 바로잡으면 돼요."
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "재판이 끝나면 바로잡을 입도 없어. 내가 살자고 네 자백을 받으면 또 같은 왕이다."
       - say:
@@ -162,7 +162,7 @@ scenes:
       - bg: { id: frontier, transition: wipeLeft, duration: 700 }
       - say:
           char: 유신
-          camera: close
+          camera: medium
           with: [덕만]
           text: "지휘패는 받겠습니다. 하지만 군량과 명령까지 제 뒤에 숨기진 마십시오. 저도 빈 옥새함을 만들 수 있습니다."
       - say:
@@ -170,7 +170,7 @@ scenes:
           text: "네가 지휘패를 쥐면 오늘 밤은 움직일 수 있어. 나머지는 다음 조회에서 나누자."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "그 전에 저를 국경으로 보내는 가짜 명령이 돌면 어쩝니까. 지금 나누십시오."
       - say:
@@ -193,12 +193,12 @@ scenes:
           text: "한 명령을 두 기록관이 마주 앉아 썼습니다. 획이 다르면 종을 울렸습니다. 위조는 줄었지만 급한 전령도 두 번째 붓이 끝날 때까지 발을 굴러야 했습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [유신]
           text: "두 사람이 확인하면 같은 위조는 막을 수 있어. 늦어도 정확한 편이 나아."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "동문에 공주님을 죽이라는 명령이 돌았습니다. 두 번째 서명을 기다리는 사이 문이 열립니다."
       - say:
@@ -223,14 +223,14 @@ scenes:
           text: "다음 조회에서 귀족들은 빈 옥새함 대신 섭정 의자를 들여왔습니다. 의자에는 천명의 이름이 새겨져 있었습니다. 되찾은 열쇠와 붓을 언니의 치맛자락에 다시 묶으려는 수였습니다."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "안 앉으면 우리가 싸웠다 하고, 앉으면 내 이름으로 널 막겠지. 저 의자는 내 자리가 아니야."
       - choice:
           key: c7_regency
           prompt: "귀족들이 천명을 덕만의 반대편에 앉히려 합니다. 회의를 어떻게 바꿀까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [천명]
           options:
             - text: "둘이 함께 앉아 명령마다 공동 서명한다"
@@ -250,12 +250,12 @@ scenes:
           text: "천명이 의자 한쪽으로 몸을 비켰습니다. 모든 문서에 두 자매의 먹이 나란히 마를 때까지 명령은 나가지 않았습니다. 귀족들은 그 기다림까지 장부에 적었습니다."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "이 먹 냄새 이상하지 않아? 아까부터 네 손가락만 붉게 부어. 붓 내려놔."
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [천명]
           text: "언니 붓은 괜찮아. 공동 서명이라면서 처음부터 나만 죽일 먹을 준비한 거야."
       - say:

@@ -1,0 +1,51 @@
+/* The world handles blocking; local layers handle arrival, expression and speaker tone. */
+.char.character-actor { contain: layout; overflow: visible; }
+.character-actor.char-image { width: calc(var(--char-image-height) * var(--character-source-ratio, 1)); }
+.char.character-actor.is-camera-hidden { opacity: 1 !important; }
+.character-presence, .character-entrance, .character-portrait { position: relative; width: 100%; height: 100%; }
+.character-presence { opacity: 0; transition: opacity var(--character-leave-duration, 260ms) ease-out; }
+.character-presence[data-visible='true'] { opacity: 1; transition: none; }
+.character-portrait { isolation: isolate; }
+.character-portrait[data-dissolving='true'] .character-art { mix-blend-mode: plus-lighter; }
+.character-entrance { transform-origin: 50% 100%; }
+.character-entrance[data-entering='true'] {
+  animation: var(--actor-arrival, actorFadeIn) var(--character-enter-duration, 360ms)
+    var(--character-enter-easing, cubic-bezier(.22,.61,.36,1)) var(--character-enter-delay, 0ms) both;
+}
+.character-entrance[data-effect='none'] { animation: none; }
+.character-entrance[data-effect='slideLeft'] { --actor-arrival: actorSlideIn; --actor-arrival-x: clamp(12px, 2.5cqw, 36px); }
+.character-entrance[data-effect='slideRight'] { --actor-arrival: actorSlideIn; --actor-arrival-x: clamp(-36px, -2.5cqw, -12px); }
+.character-entrance[data-effect='slideUp'] { --actor-arrival: actorSlideIn; --actor-arrival-y: 14px; }
+.character-entrance[data-effect='slideDown'] { --actor-arrival: actorSlideIn; --actor-arrival-y: -14px; }
+.character-entrance[data-effect='scaleIn'], .character-entrance[data-effect='popIn'] { --actor-arrival: actorScaleIn; }
+.character-entrance[data-effect='blurIn'] { --actor-arrival: actorBlurIn; }
+.character-entrance[data-effect='rotateIn'] { --actor-arrival: actorRotateIn; }
+.character-entrance[data-effect='wipeLeft'] { --actor-arrival: actorWipeLeft; }
+.character-entrance[data-effect='wipeCenterX'] { --actor-arrival: actorWipeX; }
+.character-entrance[data-effect='wipeCenterY'] { --actor-arrival: actorWipeY; }
+.character-art { position: absolute; bottom: 0; left: 50%; height: 100%; width: auto; max-width: none; object-fit: contain; transform: translateX(-50%); pointer-events: none; }
+.portrait-pending { visibility: hidden; opacity: 0; }
+.portrait-current { z-index: 2; opacity: 1; }
+.portrait-previous { z-index: 1; }
+.character-portrait[data-dissolving='true'] .portrait-current { animation: portraitReveal var(--portrait-dissolve-duration, 180ms) linear both; }
+.character-portrait[data-dissolving='true'] .portrait-previous { animation: portraitRetire var(--portrait-dissolve-duration, 180ms) linear both; }
+.character-portrait, .character-actor .char-live2d-mount { filter: brightness(.96); transition: filter 180ms ease; }
+.character-actor.is-speaking .character-portrait, .character-actor.is-speaking .char-live2d-mount { filter: brightness(1.02); }
+.character-actor.is-neutral .character-portrait, .character-actor.is-neutral .char-live2d-mount { filter: brightness(1); }
+.app[data-story-paused='true'] .character-entrance,
+.app[data-story-paused='true'] .character-art,
+.has-settings-modal .character-entrance,
+.has-settings-modal .character-art { animation-play-state: paused !important; }
+@keyframes actorFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes actorSlideIn { from { opacity: 0; transform: translate(var(--actor-arrival-x, 0px), var(--actor-arrival-y, 0px)); } to { opacity: 1; transform: translate(0, 0); } }
+@keyframes actorScaleIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: scale(1); } }
+@keyframes actorBlurIn { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: blur(0); } }
+@keyframes actorRotateIn { from { opacity: 0; transform: rotate(-1deg); } to { opacity: 1; transform: rotate(0); } }
+@keyframes actorWipeLeft { from { opacity: 0; clip-path: inset(0 0 0 100%); } to { opacity: 1; clip-path: inset(0); } }
+@keyframes actorWipeX { from { opacity: 0; clip-path: inset(0 50%); } to { opacity: 1; clip-path: inset(0); } }
+@keyframes actorWipeY { from { opacity: 0; clip-path: inset(50% 0); } to { opacity: 1; clip-path: inset(0); } }
+@keyframes portraitReveal { from { opacity: 0; } to { opacity: 1; } }
+@keyframes portraitRetire { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .character-presence, .character-entrance, .character-art, .character-portrait { animation: none !important; transition: none !important; }
+}

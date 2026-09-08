@@ -13,7 +13,7 @@ import {
 } from './characterLayout';
 
 export const DEFAULT_STAGE_CAMERA: StageCameraState = {
-  shot: 'wide',
+  shot: 'medium',
   target: 'group',
   transition: 'cut',
   duration: 0,
@@ -32,7 +32,7 @@ const DEFAULT_DURATION_BY_TRANSITION: Record<CameraTransition, number> = {
   pan: 380,
 };
 
-export const CHARACTER_EXIT_FADE_DURATION_MS = 180;
+export const CHARACTER_EXIT_FADE_DURATION_MS = 260;
 
 // Character count changes horizontal staging only. Keeping one physical camera
 // profile prevents a solo, duo, and trio from cropping the same source art at
@@ -41,8 +41,8 @@ const COMPOSITION_SCALE = 1.62;
 const SHOT_SCALE: Record<CameraShot, number> = {
   wide: 1.18,
   medium: COMPOSITION_SCALE,
-  close: 2.08,
-  reaction: 1.9,
+  close: 1.86,
+  reaction: 1.78,
 };
 // Portrait screens have less room around a fixed character anchor. Keep the
 // authored shot hierarchy while softening repeated medium/close cuts so the
@@ -50,8 +50,8 @@ const SHOT_SCALE: Record<CameraShot, number> = {
 const MOBILE_SHOT_SCALE: Record<CameraShot, number> = {
   wide: 1.12,
   medium: 1.58,
-  close: 1.84,
-  reaction: 1.72,
+  close: 1.74,
+  reaction: 1.66,
 };
 const COMPOSITION_ORIGIN_Y = 86;
 const MOBILE_COMPOSITION_ORIGIN_Y = 82;
@@ -109,21 +109,11 @@ export function resolveCharacterCalibration(
 export function resolveStageCameraFocusTargetId(
   camera: StageCameraState,
   visibleCharacterIds: readonly string[],
-  speakerId?: string,
-  directedTargetId?: string,
+  _speakerId?: string,
+  _directedTargetId?: string,
 ): string | undefined {
-  const requestedTargetId = camera.target === 'group' ? undefined : camera.target;
-  const currentDialogTargetId = directedTargetId
-    ?? ((camera.shot === 'close' || camera.shot === 'reaction') ? speakerId : undefined);
-
-  if (
-    !currentDialogTargetId
-    || requestedTargetId !== currentDialogTargetId
-    || !visibleCharacterIds.includes(currentDialogTargetId)
-  ) {
-    return undefined;
-  }
-  return currentDialogTargetId;
+  return camera.target !== 'group' && visibleCharacterIds.includes(camera.target)
+    ? camera.target : undefined;
 }
 
 export function resolveStageCameraState(
@@ -162,9 +152,7 @@ export function resolveStageCameraPresentation(
   compositionSpacing = 1,
 ): StageCameraPresentation {
   const hasCharacterTarget = camera.target !== 'group' && targetPosition !== undefined;
-  const presentationShot = (camera.shot === 'close' || camera.shot === 'reaction') && !hasCharacterTarget
-    ? 'medium'
-    : camera.shot;
+  const presentationShot = camera.shot;
   const originY = COMPOSITION_ORIGIN_Y;
   // A shorthand close is a stable group push: it changes only scale even though
   // the current speaker remains the focus target. Horizontal targeting is reserved

@@ -16,18 +16,18 @@ scenes:
           text: "진평왕의 숨이 가늘어질수록 왕좌 뒤의 발소리들이 빨라졌습니다. 상복을 준비하는 손보다 새벽 표결 문서를 접는 손이 더 바빴습니다."
       - say:
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "지금 널 지명하면 죽어 가는 왕의 고집이라 하겠지. 내 유언 말고, 네가 얻은 사람들과 들어가라."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [진평왕]
           text: "유언은 받지 않을게요. 대신 아버지가 넘긴 열쇠와 다친 사람들 이름은 들고 가겠습니다."
       - say:
           when: { var: king_trust, op: gte, value: 3 }
           char: 진평왕.weak
-          camera: close
+          camera: medium
           with: [덕만]
           text: "나를 숨긴 날도, 문 앞에 세운 날도 기억한다. 이제 내 허락은 찾지 마라. 네 판단의 값까지 보거라."
       - say:
@@ -56,13 +56,13 @@ scenes:
       - say:
           when: { var: chunchu_trust, op: gte, value: 1 }
           char: 춘추
-          camera: close
+          camera: medium
           with: [덕만]
           text: "어머니의 자백문을 함께 읽었죠. 오늘은 제 이름도 그 곁에 놓겠습니다."
       - say:
           when: { var: chunchu_trust, op: lte, value: -1 }
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "어머니를 다시 숨긴 선택은 아직 못 믿겠습니다. 그래도 오늘의 거짓말은 같이 막죠."
       - choice:
@@ -101,7 +101,7 @@ scenes:
           text: "장부가 바닥을 미끄러지자 몇몇 귀족이 손을 소매 안으로 감췄습니다. 찬성은 아니었지만 누구도 먼저 반대표를 들지 못했습니다."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "잠깐. 표를 내려놓으라 할 권한도, 장부를 증언할 사람도 아직 없습니다."
       - say:
@@ -128,7 +128,7 @@ scenes:
           text: "표는 여러분이 갖지만 그 결과는 문밖 사람들이 견딥니다. 저 이름부터 회의록에 적으십시오."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "마을 이름은 증언이지 표가 아닙니다. 문을 열면 귀족 사병도 같이 들어옵니다."
       - say:
@@ -152,12 +152,12 @@ scenes:
           text: "병사들은 칼집을 밧줄로 묶고 회의장에 섰습니다. 칼은 나오지 않았지만 귀족들의 눈은 투표 항아리보다 병사 수를 더 오래 셌습니다."
       - say:
           char: 유신
-          camera: close
+          camera: medium
           with: [덕만]
           text: "제 병사들 칼은 묶였는데 저쪽 칼은 풀렸습니다. 이건 표결이 아니라 눈치 싸움입니다."
       - say:
           char: 덕만.princess_angry
-          camera: close
+          camera: medium
           with: [유신]
           text: "우리 칼이 묶인 건 모두 봤어. 저들이 먼저 뽑게 둬."
       - say:
@@ -190,14 +190,14 @@ scenes:
           text: "첫 표가 항아리 바닥에 닿는 소리와 동시에 서문에서 불기둥이 올랐습니다. 위조 왕명을 든 병사들이 덕만의 이름을 외치며 회의장으로 달려왔습니다."
       - say:
           char: 유신.angry
-          camera: reaction
+          camera: medium
           with: [덕만]
           text: "서문으로 가면 표결이 비고, 남으면 시장이 탑니다. 병력이 모자랍니다. 어디를 맡깁니까!"
       - choice:
           key: c9_coup_response
           prompt: "표결장과 시장이 동시에 공격받습니다. 병력을 어떻게 나눌까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [유신]
           options:
             - text: "항아리를 버리고 전부 시장으로 달린다"
@@ -220,7 +220,7 @@ scenes:
           text: "유신의 말발굽이 서문으로 사라졌습니다. 덕만은 연기가 들어오는 회의장에서 항아리를 끌어안았습니다. 새벽 직전, 피 묻은 유신이 진짜 인장을 던져 넣었습니다."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "서문은 막았습니다. 공주님도 자리를 지키셨군요. 이 표에 묻은 피를 잊지 마십시오."
       - goto: final_ballot
@@ -236,12 +236,12 @@ scenes:
           text: "덕만이 돌아왔을 때 표결 항아리는 사라지고 다른 왕의 이름이 성문에 붙어 있었습니다. 불을 끈 상인들이 덕만을 감쌌지만 이미 왕군이 된 귀족 사병이 골목을 막았습니다."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "시장은 살았습니다. 대신 공주님이 반역자가 됐습니다. 동문으로 빠지십시오!"
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [유신]
           text: "두고 온 항아리에서 저 명령이 나왔구나. 사람부터 빼. 시장을 방패로 쓰지 마."
       - effect: { name: darken, wait: true }
@@ -261,12 +261,12 @@ scenes:
           text: "덕만이 위조 인장을 다시 눌렀습니다. 반란 지휘부는 빈 창고에서 서로를 발견했고, 싸움은 짧게 끝났습니다. 젖은 인주가 덕만 손에서도 마르고 있었습니다."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "빈 창고엔 하급 병사뿐입니다. 지휘부는 공주님 글씨를 알아보고 반대로 갔습니다."
       - say:
           char: 덕만.princess_angry
-          camera: close
+          camera: medium
           with: [유신]
           text: "내게 속은 사람만 잡았네. 나를 아는 자들은 놓쳤어."
       - say:
@@ -291,14 +291,14 @@ scenes:
       - char: { id: 춘추, position: right }
       - say:
           char: 춘추
-          camera: close
+          camera: medium
           with: [덕만]
           text: "이 세 표에는 값이 붙었습니다. 뒤에서 약속하지 말고 여기서 밝히십시오. 뭘 내줍니까?"
       - choice:
           key: c9_crown_terms
           prompt: "왕관까지 세 표가 모자랍니다. 어떤 조건이라면 공개하고 받을 수 있을까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [춘추]
           options:
             - text: "귀족 회의에 군량 장부를 맡긴다"
@@ -376,7 +376,7 @@ scenes:
           text: "왕관이 머리에 닿자 덕만의 무릎이 아주 조금 꺾였습니다. 밤새 묻은 재와 피가 예복 안쪽에 그대로 남아 있었습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           text: "오늘부터 내 말이 사람을 움직인다. 그러니 내 명령일수록 더 묻고, 더 정확히 적어라."
       - say:
           channel: narration

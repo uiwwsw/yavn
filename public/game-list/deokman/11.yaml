@@ -24,12 +24,12 @@ scenes:
           text: "해산 북을 듣고 돌아간 농민들은 궁문 밖 세 줄 어디에도 서지 않았습니다. 덕만은 비어 있는 네 번째 줄까지 판결문에 남기게 했습니다."
       - say:
           char: 비담.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "살리면 사랑이라 하고, 죽이면 제 말을 겁냈다 하겠지요. 폐하는 어느 기록이 더 두렵습니까?"
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [비담]
           text: "내가 덜 아픈 쪽을 고르진 않겠다. 네 반역도, 네 권력을 키운 내 책임도 따로 적을 거야."
       - goto: bidam_sentence_choice
@@ -66,7 +66,7 @@ scenes:
           text: "사람이었는지 물은 건 죄가 아니다. 하지만 그 답을 받겠다며 남의 목숨을 썼다. 외로움으로 반역을 덮지 마라."
       - say:
           char: 비담.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "끝까지 저를 악인 한 글자로 끝내진 않으시는군요. 그래도 제 목을 본 사람들은 짧게 기억하겠죠."
       - say:
@@ -74,7 +74,7 @@ scenes:
           text: "처형 뒤 비담의 전령들은 해산하지 않았습니다. 사흘째 밤, 비담의 마지막 술이라며 올라온 잔을 한 궁인이 덕만 앞에 놓았습니다."
       - say:
           char: 덕만.queen_sad
-          camera: close
+          camera: medium
           text: "이 잔, 누가 들였지? 비담은 죽었는데 왜 그자의 명령은 아직 궁문을 지나와?"
       - effect: { name: darken, wait: true }
       - say:
@@ -93,7 +93,7 @@ scenes:
           text: "죽여서 네 죄와 내 책임을 함께 덮진 않겠다. 네가 끊은 곡식길로 가. 이름 없이 다리를 잇고 살아."
       - say:
           char: 비담.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "죽는 것보다 오래 걸리겠군요. 자비라 부르는 자에겐 제가 부순 첫 다리부터 보여 주겠습니다."
       - goto: death_record_choice
@@ -107,7 +107,7 @@ scenes:
           text: "전령 이름과 암호를 전부 넘겨라. 다시 내 곁에서 일하되, 네 충성을 자물쇠도 면죄부도 삼지 않겠다."
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "버리지도 믿지도 않고 다시 쓰시는군요. 폐하께서 잠든 뒤에도 눈을 떼지 않으실 수 있습니까?"
       - say:
@@ -115,7 +115,7 @@ scenes:
           text: "한 달 뒤 관리들은 여왕의 도장보다 비담의 허가를 먼저 기다렸습니다. 왕실 의원도 그의 전령이 가져온 약재만 받았습니다."
       - say:
           char: 덕만.queen_sad
-          camera: close
+          camera: medium
           with: [비담]
           text: "이 약을 네 사람이 가져왔다. 비담, 이번에도 내가 널 믿어야만 문이 열리는구나."
       - effect: { name: darken, wait: true }
@@ -138,14 +138,14 @@ scenes:
       - say:
           when: { var: sohwa_trust, op: gte, value: 3 }
           char: 소화
-          camera: close
+          camera: medium
           with: [덕만]
           text: "불 속에서 제 손을 다시 잡으셨죠. 무엇을 남기든, 죽었다고 적힌 덕만과 그 뒤에 죽은 사람부터 읽어 주세요."
       - choice:
           key: c12_record_policy
           prompt: "열두 해의 기록을 어떻게 남길까요?"
           char: 덕만
-          camera: close
+          camera: medium
           options:
             - text: "원본과 덕만의 거짓까지 궁문에 붙인다"
               set: { record_policy: public }
@@ -180,12 +180,12 @@ scenes:
           text: "상자에 자물쇠 세 개가 걸렸습니다. 열쇠는 다음 왕에게 넘어갔고, 진실은 다시 한 사람의 밤에만 열리는 물건이 됐습니다."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "폐하, 다음 왕의 열쇠를 왜 귀족들이 하나씩 가져갑니까? 상자보다 폐하 얼굴만 보고 있어요."
       - say:
           char: 덕만.queen_sad
-          camera: close
+          camera: medium
           with: [소화]
           text: "내가 죽어야 열 수 있는 상자처럼 보이겠구나. 열쇠를 돌려받아. 오늘 안에 공개하자."
       - say:
@@ -212,7 +212,7 @@ scenes:
           text: "사람 이름은 옮겼어. 이제 저 종이로 다시 싸우진 못할 거야."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "하지만 첫 기록의 인장도 탔어요. 방금 온 약방 교지가 같은 인장인지 뭘로 확인합니까?"
       - say:
@@ -238,7 +238,7 @@ scenes:
           key: c12_final_decree
           prompt: "다음 왕의 거짓도 고칠 수 있게 권한을 어디에 둘까요?"
           char: 덕만
-          camera: close
+          camera: medium
           options:
             - text: "전쟁 중 모인 권한을 왕좌에 묶어 둔다"
               set: { final_decree: strong_crown }
@@ -363,7 +363,7 @@ scenes:
       - char: { id: 덕만, position: center, emotion: queen }
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           text: "나는 죽었다고 적혔다가 돌아왔고, 사람을 살린다며 거짓도 썼다. 내 이름보다 내가 틀렸을 때 막아선 이름들을 먼저 읽어라."
       - say:
           channel: narration
@@ -382,7 +382,7 @@ scenes:
           text: "덕만의 사망 기록과 비담의 재판 기록이 같은 벽에 붙었습니다. 아이들이 두 문서의 다른 도장 자국을 손가락으로 찾아냈습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           text: "별이 왕을 고르는 게 아니다. 우리가 별을 읽고 왕을 고른다. 왕이 틀리면 기록하고 고친다."
       - say:
           channel: record
@@ -459,7 +459,7 @@ scenes:
           text: "돌아온 비담은 사흘 만에 끊긴 전령망을 이었습니다. 넷째 날부터 관리들은 왕의 도장보다 비담의 고갯짓을 먼저 기다렸습니다."
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "폐하께서 저를 감시하시는 동안 나라는 아주 잘 움직이고 있습니다."
       - say:

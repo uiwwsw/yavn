@@ -21,7 +21,7 @@ scenes:
           text: "성벽을 늦추면 적이 들고, 관측대를 늦추면 홍수를 놓칩니다. 무엇이 먼저 올지는 모릅니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [춘추]
           text: "하나는 기다려야 하는군. 무엇을 지었는지만 말고, 누가 기다렸는지도 적어."
       - choice:
@@ -55,7 +55,7 @@ scenes:
           text: "깨진 방패를 탑에 걸어. 북문엔 왕실 군량을 보내고, 공사는 계속한다."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "군량보다 성벽이 먼저 무너졌습니다. 북문 장수의 마지막 글입니다. '별을 세운 왕에게 성문은 필요 없나.'"
       - say:
@@ -78,12 +78,12 @@ scenes:
           text: "성벽 틈은 겨우 막혔고 관측대는 계획보다 절반 높이에서 멈췄습니다. 군사와 관측관은 남은 돌 한 장을 두고 매일 얼굴을 마주쳐야 했습니다. 결정은 느렸지만 어느 한쪽도 버려지지는 않았습니다."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "폐하, 북문엔 적병이 들고 남쪽 강은 넘쳤습니다. 두 곳 모두 마지막 돌이 없었습니다."
       - say:
           char: 덕만.queen_sad
-          camera: close
+          camera: medium
           with: [춘추]
           text: "둘 다 살린다며 반씩 줬는데… 어느 쪽도 사람을 못 지켰구나."
       - say:
@@ -106,7 +106,7 @@ scenes:
           text: "창고가 차자 마을 사람들이 곡식 자루를 품삯으로 받고 돌을 날랐습니다. 탑은 늦어졌고, 돌마다 어느 마을 손에서 왔는지 숯 글씨가 남았습니다."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "장부엔 모두 자원했다고 적혔습니다. 왕의 곡식을 받으며 싫다고 말할 수 있었을까요?"
       - say:
@@ -118,20 +118,20 @@ scenes:
     actions:
       - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - camera: wide
-      - char: { id: 비담, position: right, emotion: smirk, enter: { effect: blurIn, layout: cut, duration: 320 } }
+      - char: { id: 비담, position: right, emotion: smirk, enter: { effect: fadeIn, layout: push, duration: 360 } }
       - say:
           channel: narration
           text: "첫 관측표가 마르기도 전에 제관은 봉인 상자를 가져왔습니다. 비담은 그 상자 위에 앉아 날짜 하나를 손가락으로 가렸습니다."
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "농부가 마른 날을 알면 반란군도 마른 길을 알죠. 공개하면 저는 필요 없어집니다. 잠그면 저만 필요하고요."
       - choice:
           key: c10_knowledge_policy
           prompt: "관측표는 비와 진군로를 함께 알려 줍니다. 누구에게 공개할까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [비담]
           options:
             - text: "표를 셋으로 찢어 왕실·군대·마을에 나눈다"
@@ -166,12 +166,12 @@ scenes:
           text: "군대는 바람, 마을은 비, 왕실은 계산식을 가져갔습니다. 누구도 전부 갖지 못했고, 셋이 같은 탁자에 앉아야 다음 계절을 읽을 수 있었습니다."
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "한 조각만 늦어도 못 읽습니다. 군대 표는 안 왔는데 강물은 벌써 오릅니다."
       - say:
           char: 덕만.queen_angry
-          camera: close
+          camera: medium
           with: [비담]
           text: "왕실 계산식부터 가져가. 마을 표와 맞추면 대강의 시각이라도—"
       - say:
@@ -195,7 +195,7 @@ scenes:
           text: "비담의 전령은 홍수보다 하루 먼저 달렸고 적군보다 밤 하나 빨랐습니다. 곧 관리들은 왕의 문보다 비담의 처소 앞에 먼저 줄을 섰습니다."
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "걱정 마십시오. 폐하가 부르실 때만 열겠습니다. 필요하실 때만큼은 제 이름도 부르시겠죠."
       - say:
@@ -203,7 +203,7 @@ scenes:
           text: "좋아. 지금은 네 전령이 가장 빨라. 원본도 보고도 네 길로 받겠다."
       - say:
           char: 비담.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "이제 저를 거치지 않고는 폐하께 못 닿겠군요. 미움도 그만큼 제게 오고요."
       - say:
@@ -229,14 +229,14 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
-          camera: reaction
+          camera: medium
           with: [덕만]
           text: "방화범은 북문으로 갑니다! 안엔 관측관 셋과 원본 표가 있습니다. 둘 다 쫓을 병력은 없습니다!"
       - choice:
           key: c10_sabotage
           prompt: "사람과 원본, 방화 흔적이 서로 다른 곳에 있습니다. 무엇부터 구할까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [유신]
           options:
             - text: "국고를 열어 오늘 밤 탑을 다시 올린다"
@@ -256,12 +256,12 @@ scenes:
           text: "유신이 젖은 천으로 불길을 한쪽에 몰자 관측관들이 뒷문으로 기어 나왔습니다. 원본 표 가장자리는 탔지만 기름 묻은 발자국과 대나무 조각은 그대로 남았습니다."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "사람은 나왔습니다. 흔적은 제가 지킵니다. 폐하도 연기 밖으로 나가십시오!"
       - say:
           char: 덕만.queen_angry
-          camera: close
+          camera: medium
           with: [유신]
           text: "발자국이 지워지면 다음 불도 못 막아. 저 대나무만 집고 나갈게."
       - say:
@@ -286,7 +286,7 @@ scenes:
       - char: { id: 덕만, position: center, emotion: queen }
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           text: "이 탑은 내 운세를 보는 곳이 아니다. 내가 죽은 뒤에도 비를 읽고, 틀린 숫자를 고치는 곳이다."
       - branch:
           cases:
@@ -302,12 +302,12 @@ scenes:
       - char: { id: 비담, position: right, emotion: sad }
       - say:
           char: 비담.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "아이도 읽고 관측관에게 틀렸다 하는군요. 제가 목숨 걸고 나르던 날짜가 벽보 한 장이 됐습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [비담]
           text: "네가 없어도 표를 읽는 것과 널 버리는 건 달라. 하지만 필요할 때만 네 이름을 부른 건… 미안해."
       - say:
@@ -323,12 +323,12 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "폐하가 가장 빠른 길을 원하셨고, 저는 유일한 문이 됐습니다. 이제 와 제가 앞을 가렸다고 하십니까?"
       - say:
           char: 덕만.queen_sad
-          camera: close
+          camera: medium
           with: [비담]
           text: "빠르다는 이유로 네게 나라만 한 문을 줬어. 내 잘못이다. 표를 베끼고 전령 장부도 함께 열게 하겠다."
       - say:

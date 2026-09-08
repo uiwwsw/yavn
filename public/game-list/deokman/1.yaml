@@ -18,12 +18,12 @@ scenes:
           text: "덕만의 손가락이 두 장부 사이를 오갔습니다. 난민을 잡는 종이와 곡식을 옮기는 종이에 같은 붉은 흠집이 있었습니다. 목적지는 둘 다 서라벌 서쪽 창고."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "남문에 칠숙 말이 보여요. 지금 떠나면 반나절은 벌어요. 늘 그랬듯이요."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [소화]
           text: "또 달아나면 내년에도 똑같아. 오늘은 짐 말고 저 도장을 챙길 거야."
       - goto: choose_identity
@@ -34,7 +34,7 @@ scenes:
           key: c2_identity
           prompt: "칠숙이 장터에 들어옵니다. 어떤 신분으로 장부에 접근할까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [소화]
           options:
             - text: "왕실 감찰관 행세로 장부를 뺏는다"
@@ -70,18 +70,18 @@ scenes:
           text: "'왕실 감찰'이라는 네 글자에 상인들의 허리가 동시에 굽었습니다. 멀리서 진짜 관원의 깃발이 보이자 굽었던 눈들이 덕만의 얼굴을 다시 훑었습니다."
       - say:
           char: 덕만.wanderer
-          camera: close
+          camera: medium
           with: [소화]
           text: "장부만 빼내자. 진짜 감찰관이 오기 전에 끝내면 돼."
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
           char: 칠숙.smile
-          camera: close
+          camera: medium
           with: [덕만]
           text: "늦으셨습니다. 진짜 감찰관은 제 뒤에 있거든요."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만, 칠숙]
           text: "아기씨, 장부 내려놓고 뛰세요. 저 사람들은 확인하러 온 게 아닙니다."
       - effect: { name: darken, wait: true }
@@ -101,12 +101,12 @@ scenes:
           text: "'덕만'이라는 이름이 떨어지자 늙은 상인이 먼저 무릎을 꿇었습니다. 환호가 번지는 동안 맞은편 좌판 주인은 조용히 현상수배 전단을 접었습니다."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "아기씨, 이름이 아니라 위치를 알린 거예요. 저쪽 좌판부터 비었어요."
       - say:
           char: 덕만.wanderer_angry
-          camera: close
+          camera: medium
           with: [소화]
           text: "사람들이 이렇게 많은데 설마 여기서 칼을 쓰겠어?"
       - char: { id: 칠숙, position: center, emotion: smile }
@@ -139,19 +139,19 @@ scenes:
           text: "십 년이나 숨어 살았으면 그만할 때도 됐습니다. 오늘은 장부도 공주님도 여기 두고 가시죠."
       - say:
           char: 소화.nervous
-          camera: reaction
+          camera: medium
           with: [덕만, 칠숙]
           text: "인장만 들고 가면 장물이 돼요. 흠집을 아는 장인이 살아야 해요. 사람부터 구해요."
       - say:
           char: 덕만.wanderer_angry
-          camera: close
+          camera: medium
           with: [칠숙]
           text: "죽은 사람 하나 잡겠다고 장터를 닫았네. 네 군사들이 내가 산 증인이야, 칠숙."
       - choice:
           key: c2_witness
           prompt: "인장장이와 소화가 양쪽으로 끌려갑니다. 누구부터 구할까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [칠숙]
           options:
             - text: "사람을 포기하고 인장함을 낚아챈다"
@@ -186,12 +186,12 @@ scenes:
       - clearSticker: { id: c2_seal, leave: fadeOut }
       - say:
           char: 칠숙.smile
-          camera: close
+          camera: medium
           with: [덕만]
           text: "가져가시죠. 증언할 입이 없으면 그건 증거가 아니라 장물입니다."
       - say:
           char: 덕만.wanderer_angry
-          camera: close
+          camera: medium
           with: [칠숙]
           text: "장인을 살려 둬. 그 사람은 아무것도—"
       - say:
@@ -212,18 +212,18 @@ scenes:
       - char: { id: 소화, position: right, emotion: angry }
       - say:
           char: 소화.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "또 저만 보내려고요? 위험해지면 같이 산다는 약속부터 잊으십니까?"
       - say:
           char: 덕만.wanderer
-          camera: close
+          camera: medium
           with: [소화]
           text: "네가 먼저 가. 나는 저 사람들 골목 반대편으로 끌고 바로 따라갈게. 이번엔 정말이야."
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
           char: 칠숙.smile
-          camera: close
+          camera: medium
           with: [덕만, 소화]
           text: "십 년째 같은 약속이군요. 한쪽을 잡으면 다른 쪽은 반드시 돌아오겠어요."
       - say:
@@ -279,18 +279,18 @@ scenes:
           text: "두 사람이 수로 안으로 몸을 밀어 넣자 앞뒤에서 쇠창살이 내려왔습니다. 십 년 전 물길을 기억한 것은 덕만만이 아니었습니다."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "발자국을 봤는데도… 옛길이라 괜찮을 줄 알았어요."
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
           char: 덕만.wanderer_sad
-          camera: close
+          camera: medium
           with: [소화, 칠숙]
           text: "나만 아는 길이 아니었어. 소화, 미안해. 내가 먼저 못 봤어."
       - say:
           char: 칠숙.smile
-          camera: close
+          camera: medium
           with: [덕만]
           text: "도망친 사람은 살았던 길로 돌아오지요. 전 그 기억을 기다렸습니다."
       - say:
@@ -332,12 +332,12 @@ scenes:
           text: "덕만은 빈 관 뚜껑 안쪽에 자기 사망 기록을 붙였습니다. 관이 검문대에 닿자 병사는 종이를 읽지 않고 바깥쪽 못부터 박았습니다."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "못 소리가 밖에서 납니다. 아기씨, 이 사람들은 관을 열 생각이 없어요."
       - say:
           char: 덕만.wanderer_angry
-          camera: close
+          camera: medium
           with: [소화]
           text: "소화, 내 쪽으로 와. 뚜껑을 같이 밀면— 잠깐, 왜 연기 냄새가 나지?"
       - say:
@@ -362,12 +362,12 @@ scenes:
           text: "덕만은 모란패로 빗장을 반쯤 열고, 붉은 인장은 추격대가 보도록 다른 손에 높이 들었습니다. 두 표식은 한 사람의 신분증이 아니라 서로의 위조를 고발하는 증거처럼 보였습니다."
       - say:
           char: 덕만.wanderer_angry
-          camera: close
+          camera: medium
           with: [소화]
           text: "문지기, 잘 봐. 모란패는 내 손에 있고 왕실 인장은 저들이 들었다. 둘 다 진짜일 순 없어."
       - say:
           char: 소화.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "문지기들이 저쪽을 막아요. 지금 뛰어요! 얼굴값은 살아서 치러요."
       - say:
