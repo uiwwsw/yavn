@@ -18,13 +18,14 @@ script:
 scenes:
   lounge_intro:
     actions:
-      - bg: ryokan_hall
+      - bg: { id: ryokan_hall, transition: dissolve, duration: 620 }
       - music: rain
       - char:
           id: 코난
           position: center
           emotion: think
       - say:
+          camera: medium
           char: 코난.think
           text: "<speed=19>(구조대까지 두 시간.</speed> <speed=17>기억이 섞이기 전에 네 사람을 따로 듣자.)</speed>"
       - goto: all_done_check
@@ -147,6 +148,7 @@ scenes:
           char: 코난.think
           text: "<speed=21>(누구부터지?)</speed>"
       - choice:
+          camera: medium
           key: route_select
           prompt: "비어 있는 9시 29분, 누구의 시선부터 이어 볼까?"
           options:
@@ -171,6 +173,7 @@ scenes:
           char: 코난.think
           text: "<speed=19>(아직 혼자일 때만 할 말이 남은 사람이 있어.</speed> <speed=30>지금 모으면 다시 입을 맞춰.)</speed>"
       - choice:
+          camera: medium
           key: early_exit_confirm
           prompt: "지금 모두를 다실에 모을까?"
           options:

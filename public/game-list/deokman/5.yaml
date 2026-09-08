@@ -5,8 +5,9 @@ scenes:
   stolen_sun:
     actions:
       - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: record
           text: "제6장 — 해를 훔친 자들"
       - char: { id: 덕만, position: left }
@@ -224,9 +225,10 @@ scenes:
   eclipse_day:
     actions:
       - bg: { id: peony_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - effect: eclipse
       - say:
+          camera: wide
           channel: narration
           text: "정오가 지나자 새들이 먼저 울음을 멈췄습니다. 빛이 빠르게 식었고, 제관의 손가락이 덕만을 향하는 순간 군중이 한 몸처럼 제단으로 쏟아졌습니다."
       - char: { id: 유신, position: right, emotion: angry }
@@ -267,8 +269,9 @@ scenes:
     actions:
       - effect: { name: darken, wait: true }
       - bg: { id: peony_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: narration
           text: "덕만이 마지막 수를 외치자 빛이 손등부터 돌아왔습니다. 누군가는 무릎을 꿇었고, 누군가는 구겨진 벽보를 펴 시각을 다시 확인했습니다."
       - char: { id: 덕만, position: left }

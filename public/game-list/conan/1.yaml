@@ -15,7 +15,7 @@ script:
 scenes:
   tea_invitation:
     actions:
-      - bg: ryokan_hall
+      - bg: { id: ryokan_hall, transition: fade, duration: 900 }
       - music: rain
       - sound: door
       - char:
@@ -26,6 +26,7 @@ scenes:
           id: 란
           position: right
       - say:
+          camera: medium
           char: 레이코.smile
           with:
             - 란
@@ -56,7 +57,7 @@ scenes:
 
   temperature_lesson:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - music: intro
       - sound: cup_clink
       - char:
@@ -68,6 +69,7 @@ scenes:
           position: right
           emotion: smile
       - say:
+          camera: medium
           char: 하루오.smile
           with:
             - 코난.smile
@@ -111,6 +113,7 @@ scenes:
             - 코난.smile
           text: "<speed=26>코난 군, 다음 잔은 네가 도와줄래?</speed> <speed=22>누가 보지 않아도 같은 맛이 나게 하는 순서, 기억하고 있지?</speed>"
       - choice:
+          camera: medium
           key: tea_service_memory
           prompt: "마지막 잔에도 지켜야 할 하루오의 순서는?"
           options:
@@ -282,7 +285,7 @@ scenes:
 
   blind_tasting:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - char:
           id: 레이코
           position: left
@@ -292,6 +295,7 @@ scenes:
           position: right
           emotion: smile
       - say:
+          camera: medium
           char: 레이코.smile
           with:
             - 하루오.smile
@@ -348,6 +352,7 @@ scenes:
       - say:
           text: "<speed=24>잠시 뒤 정답이 공개되자 다실에는 웃음이 터졌다.</speed> <speed=22>코고로가 확실히 맞힌 것은 뜨거운 물뿐이었고, 세이지는 그 답까지 시각 옆에 적었다.</speed>"
       - say:
+          camera: medium
           char: 켄지.smile
           with:
             - 하루오.smile
@@ -373,7 +378,7 @@ scenes:
 
   tea_name_choice:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - music: intro
       - sound: notebook_flip
       - char:
@@ -385,6 +390,7 @@ scenes:
           position: right
           emotion: smile
       - say:
+          camera: medium
           char: 레이코.smile
           with:
             - 하루오.smile
@@ -395,6 +401,7 @@ scenes:
             - 레이코.smile
           text: "<speed=25>코난 군도 한 표.</speed> <speed=22>방금 맡은 향을 떠올려 봐.</speed>"
       - choice:
+          camera: medium
           key: tea_name_vote
           prompt: "오늘의 향과 이 차를 만든 사람들까지 남길 이름은?"
           options:
@@ -498,6 +505,7 @@ scenes:
       - say:
           text: "<speed=24>레이코는 세 후보를 나란히 적었다.</speed> <speed=21>하루오는 종이 아래에 차를 만든 네 사람의 이름을 같은 크기로 덧붙이고, 한 칸도 비워 두지 않았다.</speed>"
       - say:
+          camera: medium
           char: 레이코.smile
           with:
             - 하루오.smile
@@ -554,7 +562,7 @@ scenes:
 
   storm_news:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 620 }
       - music: rain
       - sound: thunder
       - char:
@@ -566,6 +574,7 @@ scenes:
           position: right
           emotion: worried
       - say:
+          camera: medium
           char: 레이코.nervous
           with:
             - 란.worried
@@ -595,7 +604,7 @@ scenes:
 
   closing_preparation:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - music: mystery
       - sound: notebook_flip
       - char:
@@ -606,6 +615,7 @@ scenes:
           id: 하루오
           position: right
       - say:
+          camera: medium
           char: 세이지.cold
           with:
             - 하루오

@@ -50,7 +50,7 @@ scenes:
 
   evidence_followup:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 620 }
       - set:
           clue_kenji_rejected_deal: true
           clue_double_press_decoy: true
@@ -68,6 +68,7 @@ scenes:
           emotion: serious
       - sound: notebook_flip
       - say:
+          camera: medium
           char: 켄지.angry
           with:
             - 코난.serious
@@ -86,7 +87,7 @@ scenes:
 
   revisit_notice:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 620 }
       - char:
           id: 켄지
           position: left
@@ -96,6 +97,7 @@ scenes:
           position: center
           emotion: think
       - say:
+          camera: medium
           char: 켄지.angry
           with:
             - 코난.think
@@ -104,10 +106,10 @@ scenes:
 
   intro:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 620 }
       - music: tension
       - sound: thunder
-      - effect: focus
+      - camera: { shot: close, target: 켄지, transition: pan, duration: 480 }
       - set:
           visited_kenji: true
       - add:
@@ -138,6 +140,7 @@ scenes:
   approach_probe:
     actions:
       - choice:
+          camera: medium
           key: kenji_approach
           prompt: "자기 말이 잘리는 걸 두려워하는 켄지에게 뒷말까지 들으려면?"
           options:
@@ -194,6 +197,7 @@ scenes:
             - 켄지.angry
           text: "<speed=25>9시 24분부터 31분까지, 켄지 씨 전화는 복도 쪽 수신기에 계속 잡혔죠?</speed>"
       - choice:
+          camera: medium
           key: kenji_first_probe
           prompt: "복도에 있었다는 걸 확인할 것은?"
           options:
@@ -219,6 +223,7 @@ scenes:
             - 켄지.angry
           text: "<speed=25>9시 24분 연결, 31분 종료.</speed> <speed=19>비명이 난 30분에도 통화는 이어졌고, 상대방 답변 시각도 맞아요.</speed>"
       - choice:
+          camera: medium
           key: kenji_first_commit
           prompt: "이 7분이 증명하는 것은?"
           options:
@@ -235,6 +240,7 @@ scenes:
             - 켄지.angry
           text: "<speed=19>(동기는 목소리에 보여도 기회는 시각으로 가려야 해.</speed> <speed=30>끊기지 않은 7분.)</speed>"
       - choice:
+          camera: medium
           key: kenji_first_rebuttal
           prompt: "무엇으로 7분을 다시 확인할까?"
           options:
@@ -261,6 +267,7 @@ scenes:
             - 코난.serious
           text: "<speed=25>통화한 채 다실 문까지 돌아왔을 때였어.</speed> <speed=19>하루오가 뚜껑을 건드리지 말랬는데, 레이코가 그를 쳐다보며 한 번, 모두가 돌아보자 또 눌렀지.</speed>"
       - choice:
+          camera: medium
           key: kenji_second_probe
           prompt: "문밖의 켄지만 볼 수 있었던 것은?"
           options:
@@ -287,9 +294,11 @@ scenes:
       - say:
           text: "<speed=23>켄지 씨는 문밖이라 소리보다 다실 전체를 봤어.</speed> <speed=18>안에 있던 사람들은 두 번째 소리 때문에 주전자만 봤고.</speed>"
       - say:
+          camera: medium
           char: 코난.serious
           text: "<speed=25>켄지 씨 한 손은 전화, 다른 손은 문틀에 있었어요.</speed> <speed=19>알리바이뿐 아니라 그때 모두의 눈이 어디 있었는지도 남겨야 해요.</speed>"
       - choice:
+          camera: medium
           key: kenji_second_commit
           prompt: "그 목격을 어떻게 보존할까?"
           options:
@@ -308,6 +317,7 @@ scenes:
             - 켄지.angry
           text: "<speed=19>(말투에 끌렸어.</speed> <speed=30>7분만 다시.)</speed>"
       - choice:
+          camera: medium
           key: kenji_second_rebuttal
           prompt: "켄지의 통화 내역을 덮을까?"
           options:

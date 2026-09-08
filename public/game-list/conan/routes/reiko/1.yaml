@@ -52,7 +52,7 @@ scenes:
 
   evidence_followup:
     actions:
-      - bg: manager_office
+      - bg: { id: manager_office, transition: dissolve, duration: 620 }
       - set:
           recovered_reiko_motive: true
       - char:
@@ -63,7 +63,7 @@ scenes:
           id: 코난
           position: right
           emotion: serious
-      - effect: focus
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - say:
           char: 코난.serious
           with:
@@ -78,7 +78,7 @@ scenes:
 
   revisit_notice:
     actions:
-      - bg: manager_office
+      - bg: { id: manager_office, transition: dissolve, duration: 620 }
       - char:
           id: 레이코
           position: left
@@ -88,6 +88,7 @@ scenes:
           position: center
           emotion: think
       - say:
+          camera: medium
           char: 레이코.nervous
           with:
             - 코난.think
@@ -96,9 +97,9 @@ scenes:
 
   intro:
     actions:
-      - bg: manager_office
+      - bg: { id: manager_office, transition: dissolve, duration: 620 }
       - music: tension
-      - effect: focus
+      - camera: { shot: close, target: 레이코, transition: pan, duration: 480 }
       - set:
           visited_reiko: true
       - add:
@@ -159,6 +160,7 @@ scenes:
   approach_probe:
     actions:
       - choice:
+          camera: medium
           key: reiko_approach
           prompt: "숫자 뒤에 숨은 레이코가 스스로 다음 동작을 말하게 하려면?"
           options:
@@ -214,6 +216,7 @@ scenes:
             - 레이코.nervous
           text: "<speed=25>온도계는 88도가 된 시각을 자동으로 남기죠?</speed> <speed=19>레이코 씨가 기억을 고치기 전에, 그 숫자부터 놓고 이야기해요.</speed>"
       - choice:
+          camera: medium
           key: reiko_first_probe
           prompt: "멈춘 온도계와 맞춰 볼 것은?"
           options:
@@ -246,6 +249,7 @@ scenes:
             - 코난.serious
           text: "<speed=18>고작 1분이에요.</speed> <speed=16>그 1분으로 아버지의 차도, 제가 지켜 온 시간도 전부 살인으로 만들 셈이에요?</speed>"
       - choice:
+          camera: medium
           key: reiko_first_commit
           prompt: "그 1분과 겹치는 흔적은?"
           options:
@@ -262,6 +266,7 @@ scenes:
             - 레이코.nervous
           text: "<speed=19>(상처받은 목소리는 시각을 바꾸지 않아.</speed> <speed=30>9시 29분으로.)</speed>"
       - choice:
+          camera: medium
           key: reiko_first_rebuttal
           prompt: "말 대신 무엇을 볼까?"
           options:
@@ -283,6 +288,7 @@ scenes:
   second_probe:
     actions:
       - choice:
+          camera: medium
           key: reiko_second_probe
           prompt: "9시 29분과 바로 겹치는 것은?"
           options:
@@ -307,9 +313,11 @@ scenes:
       - say:
           text: "<speed=23>온도계가 멈춘 9시 29분.</speed> <speed=18>‘물기를 닦았다’고 말한 손이 바로 그때 2번 잔 가장자리에 닿았어.</speed>"
       - say:
+          camera: medium
           char: 코난.serious
           text: "<speed=25>레이코 씨가 절차에서 지운 한 동작과 시각이 정확히 겹쳐요.</speed>"
       - choice:
+          camera: medium
           key: reiko_second_commit
           prompt: "이 빈칸을 어떻게 남길까?"
           options:
@@ -328,6 +336,7 @@ scenes:
             - 레이코.nervous
           text: "<speed=19>(사람을 먼저 몰아 숫자를 놓쳤어.</speed> <speed=30>더 밀면 진짜 기억도 닫혀.)</speed>"
       - choice:
+          camera: medium
           key: reiko_second_rebuttal
           prompt: "진술 메모를 덮을까?"
           options:
@@ -354,7 +363,7 @@ scenes:
   motive_open_line:
     actions:
       - sound: notebook_flip
-      - effect: zoom
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - say:
           char: 코난.serious
           text: "<speed=26>수정 계약서엔 배합 이름을 켄지 씨 회사로 넘기는 조항이 있어요.</speed> <speed=19>그런데 원본 연구 노트는 그날 사라졌죠. 레이코 씨가 가장 두려워한 건 그 노트까지 넘어가는 일이었고요.</speed>"

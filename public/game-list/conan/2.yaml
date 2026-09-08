@@ -10,7 +10,7 @@ script:
 scenes:
   meeting_start:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - music: tension
       - char:
           id: 켄지
@@ -25,6 +25,7 @@ scenes:
           position: right
           emotion: nervous
       - say:
+          camera: medium
           char: 레이코.nervous
           text: "<speed=26>아버지가 시작한 배합입니다.</speed> <speed=19>오늘 맛과 이름을 확정하고, 네 사람이 지켜 온 차로 세상에 내놓으려 했어요.</speed>"
       - say:
@@ -164,12 +165,13 @@ scenes:
       - say:
           text: "<speed=18>천둥에 등불이 꺼졌다 켜졌다.</speed> <speed=16>하루오를 붙잡는 손들이 탁자 위로 겹친 그 짧은 어둠 속에서, 흰 천 한 자락이 2번 잔과 컵받침 사이를 지나갔다.</speed>"
       - say:
+          camera: { shot: close, target: 코난, transition: push, duration: 360 }
           char: 코난.serious
           text: "<speed=60>손 떼요!</speed> <speed=25>하루오 씨가 끝까지 잡은 잔이에요. 아무도 닦으면 안 돼요!</speed>"
 
   death_confirm:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - music: mystery
       - sticker:
           id: tape_lock
@@ -195,6 +197,7 @@ scenes:
           position: left
           emotion: determined
       - say:
+          camera: wide
           text: "<speed=23>코고로가 하루오의 기도를 열고 맥을 짚었다.</speed> <speed=18>온천과 내기만 말하던 얼굴에서 웃음이 지워졌다.</speed>"
       - clearSticker:
           id: tape_lock
@@ -202,6 +205,7 @@ scenes:
             effect: wipeRight
       - wait: 240
       - say:
+          camera: medium
           char: 코고로.shocked
           with:
             - 코난.serious
@@ -237,9 +241,9 @@ scenes:
 
   contradiction_hook:
     actions:
-      - bg: case_board
+      - bg: { id: case_board, transition: dissolve, duration: 620 }
       - music: reasoning
-      - effect: zoom
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - say:
           char: 코난.serious
           text: "<speed=18>(같은 주전자, 네 잔.</speed> <speed=27>하루오 씨만 쓰러졌다면 차보다 2번 잔을 봐야 해.)</speed>"

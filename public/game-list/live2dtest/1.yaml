@@ -10,7 +10,76 @@ scenes:
           emotion: Idle
       - choice:
           key: live2d_drag_test
-          prompt: "이리저리 클릭 드래그해보며 Live2D 테스트해보세요."
+          camera: medium
+          prompt: "왔구나. 오늘은 뭘 해 볼까?"
           char: 렌.Idle
           options:
-            - text: "테스트 끝"
+            - text: "표정으로 인사해 줘"
+              goto: expressions
+            - text: "내 손끝을 따라와 봐"
+              goto: follow_pointer
+            - text: "조금 더 가까이 볼게"
+              goto: close_conversation
+            - text: "오늘은 여기까지"
+              goto: farewell
+
+  expressions:
+    actions:
+      - say:
+          char: 렌.exp_01
+          camera: medium
+          text: "말로만 인사하면 심심하잖아. 이번에는 얼굴을 잘 봐."
+      - choice:
+          key: live2d_expression
+          char: 렌.exp_01
+          prompt: "다른 표정도 보여 줄까?"
+          options:
+            - text: "응, 하나 더"
+              goto: another_expression
+            - text: "처음처럼 편하게 있어"
+              goto: ren_live2d_drag_test
+
+  another_expression:
+    actions:
+      - say:
+          char: 렌.exp_03
+          text: "같은 말도 표정이 바뀌면 다르게 들리지?"
+      - say:
+          char: 렌.exp_05
+          text: "이번엔 네 차례야. 어떤 얼굴로 듣고 있었어?"
+      - goto: ren_live2d_drag_test
+
+  follow_pointer:
+    actions:
+      - choice:
+          key: live2d_follow
+          char: 렌.Idle
+          camera: medium
+          prompt: "내 얼굴 위를 누른 채 천천히 움직여 봐. 네 손끝을 따라갈게."
+          options:
+            - text: "잘 따라오네. 다시 이야기하자"
+              goto: ren_live2d_drag_test
+
+  close_conversation:
+    actions:
+      - say:
+          char: 렌.exp_02
+          camera: { shot: close, target: 렌, transition: push, duration: 680 }
+          text: "이 정도면 목소리를 낮춰도 들리겠지? 눈을 깜빡이는 순간까지 보일 거야."
+      - choice:
+          key: live2d_distance
+          char: 렌.exp_02
+          prompt: "여기서 잠깐 쉬었다 갈래?"
+          options:
+            - text: "조금 떨어져서 다시 이야기하자"
+              goto: ren_live2d_drag_test
+            - text: "다음에 또 만나"
+              goto: farewell
+
+  farewell:
+    actions:
+      - say:
+          char: 렌.exp_01
+          camera: medium
+          text: "오늘은 여기까지. 다음에 오면 먼저 알아볼 수 있게, 또 인사해 줘."
+      - ending: until_next_time

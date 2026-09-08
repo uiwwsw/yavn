@@ -14,7 +14,7 @@ script:
 scenes:
   holiday_arrival:
     actions:
-      - bg: mountain_rain
+      - bg: { id: mountain_rain, transition: dissolve, duration: 620 }
       - music: rain
       - sound: door
       - char:
@@ -25,6 +25,7 @@ scenes:
           position: right
           emotion: proud
       - say:
+          camera: medium
           char: 란
           with:
             - 코고로.proud
@@ -62,7 +63,7 @@ scenes:
 
   room_lottery:
     actions:
-      - bg: guest_room
+      - bg: { id: guest_room, transition: dissolve, duration: 620 }
       - music: intro
       - char:
           id: 코고로
@@ -72,8 +73,10 @@ scenes:
           id: 란
           position: right
       - say:
+          camera: wide
           text: "<speed=24>방에는 유카타 세 벌, 이불 세 채, 작은 과자 바구니가 가지런히 놓여 있었다.</speed> <speed=21>란은 젖은 세 사람 몫을 하나씩 마른 자리로 옮겼다.</speed>"
       - say:
+          camera: medium
           char: 코고로.proud
           with:
             - 란
@@ -110,7 +113,7 @@ scenes:
 
   bath_return:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 620 }
       - sound: door
       - char:
           id: 코고로
@@ -121,8 +124,10 @@ scenes:
           position: right
           emotion: smile
       - say:
+          camera: wide
           text: "<speed=24>노천탕에서 돌아온 코고로는 수건을 목에 걸고 복도를 성큼성큼 걸었다.</speed>"
       - say:
+          camera: medium
           char: 코고로.proud
           with:
             - 코난.smile
@@ -152,7 +157,7 @@ scenes:
 
   souvenir_corner:
     actions:
-      - bg: souvenir_corner
+      - bg: { id: souvenir_corner, transition: dissolve, duration: 620 }
       - music: intro
       - char:
           id: 란
@@ -162,8 +167,10 @@ scenes:
           position: right
           emotion: proud
       - say:
+          camera: wide
           text: "<speed=24>휴게실로 가던 세 사람은 로비 한쪽의 작은 기념품 진열대 앞에서 걸음을 멈췄다.</speed> <speed=21>‘여행이 끝난 뒤에도 남는 것’이라는 손글씨가 선반에 붙어 있었다.</speed>"
       - say:
+          camera: medium
           char: 란
           with:
             - 코고로.proud
@@ -194,6 +201,7 @@ scenes:
           char: 코고로.proud
           text: "<speed=30>경기도 안 했는데 기세만 국가대표군.</speed>"
       - choice:
+          camera: medium
           key: holiday_souvenir
           prompt: "코난은 무엇을 고를까?"
           options:
@@ -295,6 +303,7 @@ scenes:
       - say:
           text: "<speed=23>코고로는 계산대에서 날짜가 찍힌 영수증을 반듯하게 접어 주머니에 넣었다.</speed> <speed=21>란은 그 모습을 놓치지 않았다.</speed>"
       - say:
+          camera: medium
           char: 란
           with:
             - 코고로.proud
@@ -308,7 +317,7 @@ scenes:
 
   table_tennis:
     actions:
-      - bg: recreation_room
+      - bg: { id: recreation_room, transition: dissolve, duration: 620 }
       - music: intro
       - char:
           id: 란
@@ -319,8 +328,10 @@ scenes:
           position: right
           emotion: proud
       - say:
+          camera: wide
           text: "<speed=24>첫 판이 끝나자 코고로는 탁구공을 주워 들고 아무 일도 없었다는 듯 헛기침했다.</speed> <speed=21>란은 점수판의 첫 줄을 손가락으로 두 번 확인했다.</speed>"
       - say:
+          camera: medium
           char: 코고로.proud
           with:
             - 란.determined
@@ -351,6 +362,7 @@ scenes:
           delivery: shout
           text: "<speed=38>꼬마는 심판이나 봐!</speed>"
       - choice:
+          camera: medium
           key: holiday_table_tennis
           prompt: "두 번째 판, 공이 라켓 모서리를 두 번 울린다. 코난은?"
           options:
@@ -424,6 +436,7 @@ scenes:
           position: right
           emotion: shocked
       - say:
+          camera: medium
           char: 란
           with:
             - 코고로.shocked
@@ -452,7 +465,7 @@ scenes:
 
   dinner_time:
     actions:
-      - bg: dining_room
+      - bg: { id: dining_room, transition: dissolve, duration: 620 }
       - music: rain
       - sound: cup_clink
       - char:
@@ -463,8 +476,10 @@ scenes:
           position: right
           emotion: smile
       - say:
+          camera: wide
           text: "<speed=24>저녁상이 들어오자 탁구 이야기는 잠시 멈췄다.</speed> <speed=22>창밖 빗소리가 뜨거운 냄비 끓는 소리에 섞이자 세 사람의 말도 한결 느려졌다.</speed>"
       - say:
+          camera: medium
           char: 란
           with:
             - 코난.smile
@@ -508,7 +523,7 @@ scenes:
 
   rain_window:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 620 }
       - music: rain
       - char:
           id: 란
@@ -517,8 +532,10 @@ scenes:
           id: 코난
           position: right
       - say:
+          camera: wide
           text: "<speed=23>식사를 마친 뒤, 란과 코난은 유리창을 타고 흐르는 빗물을 한동안 바라보았다.</speed> <speed=21>낮에 찍은 산길은 물결 너머에서 전혀 다른 장소처럼 흔들렸다.</speed>"
       - say:
+          camera: medium
           char: 란
           with:
             - 코난
@@ -567,7 +584,7 @@ scenes:
 
   quiet_night:
     actions:
-      - bg: guest_room
+      - bg: { id: guest_room, transition: fade, duration: 900 }
       - music: intro
       - char:
           id: 코고로
@@ -577,8 +594,10 @@ scenes:
           id: 란
           position: right
       - say:
+          camera: wide
           text: "<speed=23>방으로 돌아오자 코고로는 이불 세 채를 펴 놓고 누구보다 먼저 가운데에 누웠다.</speed> <speed=21>비가 창을 두드려도 세 이불 사이에는 빈틈이 없었다.</speed>"
       - say:
+          camera: medium
           char: 란
           with:
             - 코고로.proud
@@ -614,6 +633,7 @@ scenes:
       - say:
           text: "<speed=23>코고로가 베개를 당기자 아래에 숨겨 둔 작은 라켓 열쇠고리가 달그락거렸다.</speed> <speed=21>감춰 둔 물건은 소리 때문에 먼저 들켰다.</speed>"
       - say:
+          camera: medium
           char: 란
           text: "<speed=28>그거 오늘 진 사람 가방에 다는 거였죠?</speed>"
       - say:
@@ -629,6 +649,7 @@ scenes:
       - say:
           text: "<speed=23>테이블 위 향주머니에서 은은한 찻잎 냄새가 퍼졌다.</speed> <speed=21>란은 내일 신이치에게 줄 하나를 가방 안쪽에 따로 넣었다.</speed>"
       - say:
+          camera: medium
           char: 코고로.proud
           text: "<speed=29>이 냄새, 야식 차가 나온 건가?</speed>"
       - say:
@@ -644,6 +665,7 @@ scenes:
       - say:
           text: "<speed=23>란은 산길 엽서 뒷면에 날짜와 세 사람의 이름을 같은 크기로 천천히 적었다.</speed> <speed=21>넷째 줄은 비워 두었다.</speed>"
       - say:
+          camera: medium
           char: 코난.smile
           text: "<speed=27>내일 사진 찍을 자리도 남겨 둬.</speed>"
       - say:
@@ -659,6 +681,7 @@ scenes:
       - say:
           text: "<speed=23>세 사람은 가운데 자리를 걸고 가위바위보를 했다.</speed> <speed=22>코고로는 혼자 보를 냈고, 란과 코난은 동시에 가위를 냈다.</speed>"
       - say:
+          camera: medium
           char: 란
           with:
             - 코고로.proud

@@ -39,6 +39,7 @@ const collectBackgroundKeys = (value: unknown, keys = new Set<string>()): Set<st
 
   const record = asRecord(value);
   if (typeof record.bg === 'string') keys.add(record.bg);
+  else if (typeof asRecord(record.bg).id === 'string') keys.add(String(asRecord(record.bg).id));
   Object.values(record).forEach((item) => collectBackgroundKeys(item, keys));
   return keys;
 };
@@ -876,7 +877,9 @@ describe('Conan content regression', () => {
 
   it('keeps the first chapter load scoped to the core trio', () => {
     const firstChapter = readYaml('0.yaml');
-    const characterIds = collectStringValues(firstChapter, 'id');
+    const characterIds = new Set(Object.values(asRecord(firstChapter.scenes))
+      .flatMap((scene) => (asRecord(scene).actions as UnknownRecord[])
+        .flatMap((action) => typeof asRecord(action.char).id === 'string' ? [asRecord(action.char).id] : [])));
 
     expect([...characterIds].sort()).toEqual(['란', '코고로', '코난']);
     expect(collectBackgroundKeys(firstChapter)).toEqual(

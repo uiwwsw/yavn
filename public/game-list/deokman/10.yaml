@@ -5,9 +5,10 @@ scenes:
   falling_star_rumor:
     actions:
       - bg: { id: burning_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - effect: starfall
       - say:
+          camera: wide
           channel: record
           text: "제11장 — 떨어진 별"
       - say:
@@ -130,8 +131,9 @@ scenes:
   bidam_letter_arrives:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: medium
+      - music: sealed_court
       - say:
+          camera: medium
           channel: narration
           text: "북쪽 길의 봉화가 반란군 손으로 넘어갔습니다. 밤중에 화살 하나가 왕좌 앞까지 미끄러졌고, 화살대에는 구겨진 편지가 묶여 있었습니다."
       - sticker: { id: c11_letter, image: bidam_letter_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, rotate: 2, enter: fadeIn }
@@ -249,9 +251,10 @@ scenes:
   rebellion_strategy:
     actions:
       - bg: { id: frontier, transition: wipeLeft, duration: 700 }
-      - camera: wide
+      - music: night_road
       - char: { id: 유신, position: right, emotion: angry }
       - say:
+          camera: wide
           channel: narration
           text: "망루 아래 세 진영의 모닥불 색이 달랐습니다. 비담의 전령, 권한을 빼앗긴 귀족 사병, 별의 소문을 믿고 따라온 농민군. 깃발만 같을 뿐 서로 원하는 승리는 달랐습니다."
       - say:
@@ -322,10 +325,11 @@ scenes:
   bidam_captured:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 비담, position: right, emotion: sad }
       - say:
+          camera: wide
           channel: narration
           text: "비담은 결박된 손으로 왕궁 문을 다시 넘었습니다. 처음 만난 창고에서처럼 웃지 않았고, 왕좌 앞에서도 끝내 무릎을 꿇지 않았습니다."
       - say:

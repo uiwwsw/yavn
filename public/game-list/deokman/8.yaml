@@ -5,8 +5,9 @@ scenes:
   king_last_night:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: record
           text: "제9장 — 왕좌 앞의 밤"
       - char: { id: 진평왕, position: right, emotion: weak }
@@ -46,7 +47,7 @@ scenes:
   vote_strategy:
     actions:
       - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 춘추, position: right }
       - say:
           char: 춘추
@@ -182,10 +183,11 @@ scenes:
   coup_begins:
     actions:
       - bg: { id: burning_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - effect: embers
       - char: { id: 유신, position: right, emotion: angry }
       - say:
+          camera: wide
           channel: narration
           text: "첫 표가 항아리 바닥에 닿는 소리와 동시에 서문에서 불기둥이 올랐습니다. 위조 왕명을 든 병사들이 덕만의 이름을 외치며 회의장으로 달려왔습니다."
       - say:
@@ -284,8 +286,9 @@ scenes:
   final_ballot:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: narration
           text: "동이 틀 무렵 금 간 항아리가 다시 세워졌습니다. 마지막 세 표는 접히지 않은 채 춘추의 손에 남아 있었습니다."
       - char: { id: 춘추, position: right }
@@ -365,8 +368,9 @@ scenes:
   coronation:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - say:
+          camera: wide
           channel: record
           delivery: calm
           text: "선덕왕 즉위 — 왕실 기록에서 죽었던 둘째 공주 덕만이 신라의 왕이 되다."

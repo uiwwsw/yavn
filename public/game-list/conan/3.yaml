@@ -16,7 +16,7 @@ script:
 scenes:
   first_scan:
     actions:
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 620 }
       - music: reasoning
       - char:
           id: 코난
@@ -27,6 +27,7 @@ scenes:
           position: left
           emotion: worried
       - say:
+          camera: medium
           char: 코난.serious
           text: "<speed=28>란 누나, 네 잔은 같은 주전자에서 나왔어.</speed> <speed=21>그런데 하루오 씨는 목보다 2번 잔을 먼저 붙잡았어. 그 선택부터 믿어 보자.</speed>"
       - say:
@@ -35,7 +36,7 @@ scenes:
 
   residue_focus:
     actions:
-      - effect: zoom
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - sticker:
           id: rim_focus
           image: clue_cup
@@ -50,6 +51,7 @@ scenes:
           char: 코난.think
           text: "<speed=18>(R만 번진 방향이 달라.</speed> <speed=27>이름을 고르기 전에, 같은 손이 잔에도 닿았는지 보자.)</speed>"
       - choice:
+          camera: medium
           key: residue_focus_choice
           prompt: "사람 이름보다 먼저 고정해야 할 흔적은?"
           options:
@@ -76,6 +78,7 @@ scenes:
           char: 코난.serious
           text: "<speed=23>잔 안쪽은 깨끗해.</speed> <speed=19>차에 섞였다면 안쪽부터 반응해야 해.</speed> <speed=37>변한 건 입술이 닿는 바깥 가장자리뿐이야.</speed>"
       - choice:
+          camera: medium
           key: residue_commit_choice
           prompt: "안쪽은 음성, 바깥쪽만 양성. 언제 묻었을까?"
           options:
@@ -92,6 +95,7 @@ scenes:
           char: 코난.think
           text: "<speed=19>(불완전한 글자에 이름부터 붙이면, 지운 사람이 만든 결론을 따라가.)</speed>"
       - choice:
+          camera: medium
           key: residue_rebuttal_choice
           prompt: "어느 쪽을 다시 볼까?"
           options:
@@ -118,6 +122,7 @@ scenes:
           char: 코난
           text: "<speed=25>란 누나, 아저씨를 부르러 문 쪽을 봤을 때 복도 시계도 보였지?</speed> <speed=19>천둥이 친 순간 긴 바늘이 어디 있었어?</speed>"
       - input:
+          camera: medium
           prompt: "란이 본 비명 순간의 시각은? (24시간 형식)"
           correct: "21:30"
           saveAs: timeline_answer
@@ -143,17 +148,18 @@ scenes:
 
   reconstruction_choice:
     actions:
-      - bg: case_board
+      - bg: { id: case_board, transition: dissolve, duration: 620 }
       - music: mystery
       - char:
           id: 코난
           position: left
           emotion: serious
-      - effect: focus
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - say:
           char: 코난.serious
           text: "<speed=25>첫 소리엔 하루오 씨가 레이코 씨를 봤어.</speed> <speed=19>둘째 소리엔 나까지 주전자를 봤고. 그 순간 화면에서 사라진 건 2번 잔 하나야.</speed>"
       - choice:
+          camera: medium
           key: reconstruction_choice
           prompt: "두 번째 뚜껑 소리가 모두에게 시킨 일은?"
           options:
@@ -180,6 +186,7 @@ scenes:
           char: 코난.serious
           text: "<speed=25>뚜껑에 뭘 넣은 게 아니야.</speed> <speed=19>두 번째 소리가 사람들의 눈을 한곳에 묶었고, 소리 내지 않은 손은 2번 잔으로 갔어.</speed>"
       - choice:
+          camera: medium
           key: reconstruction_commit_choice
           prompt: "비명 직전, 모두의 시야에서 잘린 장면은?"
           options:
@@ -196,6 +203,7 @@ scenes:
           char: 코난.think
           text: "<speed=19>(주전자는 네 잔 모두 음성.</speed> <speed=27>소리 난 곳이 아니라 안 보였던 곳으로.)</speed>"
       - choice:
+          camera: medium
           key: reconstruction_rebuttal_choice
           prompt: "어디로 시선을 돌릴까?"
           options:
@@ -228,7 +236,7 @@ scenes:
 
   stable_frame:
     actions:
-      - effect: zoom
+      - camera: { shot: close, target: 란, transition: pan, duration: 480 }
       - char:
           id: 란
           position: left
@@ -253,7 +261,7 @@ scenes:
 
   shaky_frame:
     actions:
-      - effect: tilt
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - say:
           char: 코난.think
           text: "<speed=18>(시각은 잡았는데 손이 비어 있어.</speed> <speed=27>비명 직전, 문밖에서 본 눈이 필요해.)</speed>"
@@ -263,12 +271,12 @@ scenes:
 
   lounge_handoff:
     actions:
-      - bg: case_board
+      - bg: { id: case_board, transition: dissolve, duration: 620 }
       - char:
           id: 코난
           position: left
           emotion: think
-      - effect: focus
+      - camera: { shot: close, target: 코난, transition: pan, duration: 480 }
       - say:
           char: 코난.think
           text: "<speed=22>(다실 안의 기억은 같은 소리에 잘렸어.</speed> <speed=18>문밖에 있던 사람만 장면 전체를 봤을 거야.)</speed>"

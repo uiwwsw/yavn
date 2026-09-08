@@ -13,7 +13,7 @@ script:
 scenes:
   cold_open:
     actions:
-      - bg: rail_warning
+      - bg: { id: rail_warning, transition: fade, duration: 460, wait: false }
       - music: tension
       - sticker:
           id: trailer_title
@@ -45,6 +45,7 @@ scenes:
           enter:
             effect: popIn
       - say:
+          camera: medium
           text: "<speed=34>오후 11시 59분.</speed> <speed=56>승객 218명을 태운 야간 열차가 산악 터널 한복판에서 멎었다.</speed>"
           autoAdvance: 2600
       - char:
@@ -53,6 +54,7 @@ scenes:
           emotion: surprised
       - effect: impact
       - say:
+          camera: medium
           char: 란.surprised
           text: "<speed=62>코난!</speed> <speed=38>열차가 터널 중간에 멈춰 있어! 승객칸 불도 하나씩 꺼지고 있어!</speed>"
           autoAdvance: 3000
@@ -61,6 +63,7 @@ scenes:
           position: right
           emotion: angry
       - say:
+          camera: medium
           char: 코고로.angry
           with:
             - 란.surprised
@@ -69,8 +72,8 @@ scenes:
 
   threat:
     actions:
-      - bg: case_board
-      - effect: glitch
+      - bg: { id: case_board, transition: fade, duration: 460, wait: false }
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - sticker:
           id: signal_map
           image: signal_map
@@ -83,6 +86,7 @@ scenes:
           enter:
             effect: blurIn
       - say:
+          camera: medium
           text: '<speed=30>"60초 안에 세 개의 거짓 진술을 지워라."</speed> <speed=58>"틀린 회선을 끊는 순간, 열차의 분기기가 폭발한다."</speed>'
           autoAdvance: 3400
       - clearSticker:
@@ -93,52 +97,61 @@ scenes:
           id: 코난
           position: center
           emotion: serious
-      - effect: focus
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - say:
+          camera: medium
           char: 코난.serious
           text: "<speed=34>폭탄보다 우리 손을 노리고 있어.</speed> <speed=58>거짓 신호를 보여 주고, 우리가 진짜 안전 회선을 끊기만 기다리는 거야.</speed>"
           autoAdvance: 2800
 
   suspects:
     actions:
-      - bg: rain_corridor
+      - bg: { id: rain_corridor, transition: dissolve, duration: 260, wait: false }
       - char:
           id: 켄지
           position: left
           emotion: angry
       - effect: alarm
       - say:
+          with: []
+          camera: { shot: close, target: 켄지, transition: pan, duration: 360 }
           char: 켄지.angry
           text: "<speed=42>그 터널엔 보조 회선 같은 건 없어!</speed> <speed=64>난 도면조차 본 적 없다고!</speed>"
           autoAdvance: 2200
-      - bg: tea_room
+      - bg: { id: tea_room, transition: dissolve, duration: 260, wait: false }
       - char:
           id: 세이지
           position: center
           emotion: cold
-      - effect: glitch
+      - camera: { shot: close, target: 세이지, transition: pan, duration: 360 }
       - say:
+          with: []
+          camera: { shot: close, target: 세이지, transition: pan, duration: 360 }
           char: 세이지.cold
           text: "<speed=34>정지 명령은 11시 59분 정각.</speed> <speed=54>원본 기록에는 1초의 오차도 없습니다.</speed>"
           autoAdvance: 2200
-      - bg: ryokan_hall
+      - bg: { id: ryokan_hall, transition: dissolve, duration: 260, wait: false }
       - char:
           id: 레이코
           position: right
           emotion: nervous
-      - effect: focus
+      - char: { id: 코난, position: center, emotion: think }
       - say:
+          with: []
+          camera: { shot: close, target: 레이코, transition: pan, duration: 360 }
           char: 레이코.nervous
           text: "<speed=28>전 파란 감시 패널 앞에만 있었어요.</speed> <speed=60>빨간 비상 레버엔 손도 안 댔어요.</speed>"
           autoAdvance: 2200
       - say:
+          with: []
+          camera: { shot: close, target: 코난, transition: pan, duration: 360 }
           char: 코난.think
           text: "<speed=34>(접힌 도면의 지운 선.</speed> <speed=44>17초 틀린 로그.</speed> <speed=58>소매의 빨간 윤활유.)</speed> <speed=68>전부, 눈앞의 흔적과 어긋나.</speed>"
           autoAdvance: 2400
 
   deduction:
     actions:
-      - bg: case_board
+      - bg: { id: case_board, transition: fade, duration: 460, wait: false }
       - music: reasoning
       - sticker:
           id: signal_map
@@ -151,13 +164,17 @@ scenes:
           zIndex: 3
           enter:
             effect: wipeCenterY
-      - effect: focus
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - say:
+          with: []
+          camera: medium
           char: 코난.serious
           text: "<speed=32>켄지 씨 도면엔 지운 보조 회선이 남아 있어.</speed> <speed=54>세이지 씨의 시각도 시스템 로그보다 17초 느려.</speed>"
           autoAdvance: 2800
       - sound: notebook_flip
       - say:
+          with: []
+          camera: medium
           char: 코난.serious
           text: "<speed=40>파란 패널은 1분 전부터 꺼져 있었어.</speed> <speed=66>레이코 씨는 빨간 레버 앞에 있었지. 세 거짓말이 하나의 가짜 정지 회선을 가리켜.</speed>"
           autoAdvance: 2300
@@ -168,13 +185,14 @@ scenes:
           id: signal_map
           leave:
             effect: fadeOut
-      - bg: rail_warning
+      - bg: { id: rail_warning, transition: fade, duration: 460, wait: false }
       - char:
           id: 코난
           position: center
           emotion: serious
       - effect: alarm
       - choice:
+          camera: medium
           key: demo_signal_cut
           prompt: "세 거짓말이 가리킨다. 어느 회선을 끊어야 할까?"
           char: 코난.serious
@@ -192,8 +210,9 @@ scenes:
 
   wrong_turn:
     actions:
-      - effect: glitch
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - say:
+          camera: medium
           char: 코난.think
           text: "<speed=64>아니야!</speed> <speed=48>주 전원을 끊으면 비상 제동도 죽어. 그게 범인의 함정이야!</speed>"
           autoAdvance: 1600
@@ -201,8 +220,9 @@ scenes:
 
   control_room:
     actions:
-      - effect: impact
+      - char: { id: 코고로, position: right, emotion: angry }
       - say:
+          camera: medium
           char: 코난.serious
           text: "<speed=60>찾았다!</speed> <speed=34>가짜 정지 신호만 터널 제어반을 돌고 있어. 이걸 끊으면 진짜 제동은 살아!</speed>"
           autoAdvance: 2500
@@ -222,30 +242,34 @@ scenes:
           enter:
             effect: popIn
       - music: solve
-      - effect: speedlines
+      - char: { id: 란, position: left, emotion: worried }
       - wait: 700
 
   final_run:
     actions:
       - say:
+          camera: medium
           text: "<speed=74>남은 시간 7초.</speed> <speed=34>신호가 꺼지자 제어반 뒤의 계전기가 튀었다.</speed>"
           autoAdvance: 2000
       - sound: thunder
       - effect: impact
       - wait: 600
       - say:
+          camera: medium
           char: 코고로.angry
           text: "<speed=78>누전이다! 전부 엎드려!</speed>"
           autoAdvance: 1800
       - effect: speedlines
       - wait: 700
       - say:
+          camera: medium
           char: 란.worried
           text: "<speed=56>코난, 정지 표시가 사라졌어!</speed> <speed=76>그런데 열차가 뒤로 미끄러져!</speed>"
           autoAdvance: 2000
-      - effect: glitch
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - wait: 600
       - say:
+          camera: { shot: close, target: 코난, transition: push, duration: 420 }
           char: 코난.serious
           text: "<speed=34>폭탄은 열차가 아니라 분기기에 묶여 있어.</speed> <speed=68>전자 신호가 아닌 빨간 비상 레버를 당겨! 기계식 잠금은 아직 살아 있어!</speed>"
           autoAdvance: 2600
@@ -258,8 +282,9 @@ scenes:
           id: countdown
           leave:
             effect: fadeOut
-      - bg: mountain_rain
+      - bg: { id: mountain_rain, transition: fade, duration: 460, wait: false }
       - say:
+          camera: medium
           text: "<speed=34>폭발 0.3초 전.</speed> <speed=62>분기기가 잠겼고, 열차는 터널 출구 2미터 앞에서 멎었다.</speed>"
           autoAdvance: 2500
 
@@ -270,6 +295,7 @@ scenes:
           position: left
           emotion: worried
       - say:
+          camera: medium
           char: 란.worried
           text: "<speed=48>멈췄어...</speed> <speed=30>이제는 정말 끝난 거지?</speed>"
           autoAdvance: 1800
@@ -277,8 +303,9 @@ scenes:
           id: 코난
           position: center
           emotion: serious
-      - effect: focus
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - say:
+          camera: medium
           char: 코난.serious
           text: "<speed=28>아니.</speed> <speed=62>세 거짓말은 한 사람을 숨기려고 맞춰져 있었어.</speed> <speed=76>그런데 열차를 가둔 사람과 60초 경고를 보낸 사람은 달라. 이제 사건의 문이 열렸어.</speed>"
           autoAdvance: 2700
@@ -293,9 +320,10 @@ scenes:
           zIndex: 5
           enter:
             effect: wipeCenterX
-      - effect: pulse
+      - camera: { shot: close, target: 코난, transition: pan, duration: 360 }
       - wait: 1000
       - say:
+          camera: medium
           text: "<speed=46>명탐정 코난 DEMO.</speed> <speed=72>60초의 경고.</speed>"
           autoAdvance: 1200
       - ending: demo_clear
