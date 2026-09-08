@@ -8,7 +8,8 @@ import { normalizeCharacterEnter } from './characterEntrance';
 import { resolveCharacterFraming } from './characterFraming';
 import { resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
-import { waitForImageReady, waitForVisibleStaticImages } from './imageReady';
+import { waitForVisibleStaticImages } from './imageReady';
+import { imageResources } from './imageResources';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { resolveCharacterCalibration, resolveStageCameraState } from './stageCamera';
 import { useVNStore } from './store';
@@ -717,6 +718,7 @@ function clearTimers() {
 
 function clearObjectUrls() {
   for (const url of objectUrls) {
+    imageResources.invalidate(url);
     URL.revokeObjectURL(url);
   }
   objectUrls = [];
@@ -831,7 +833,8 @@ function fadeAudioVolume(
   }
   const startedAt = performance.now();
   const tick = (timestamp: number) => {
-    const progress = Math.min(1, (timestamp - startedAt) / durationMs);
+    // A shared animation-frame timestamp can precede setup later in that frame.
+    const progress = Math.min(1, Math.max(0, (timestamp - startedAt) / durationMs));
     audio.volume = initialVolume + (targetVolume - initialVolume) * progress;
     if (progress < 1) {
       bgmFadeTimers.set(audio, window.requestAnimationFrame(tick));
@@ -2863,13 +2866,8 @@ export function completeVideoCutscene() {
   finishVideoCutscene();
 }
 
-async function warmImageDecodeUrl(url: string) {
-  const img = new Image();
-  img.decoding = 'async';
-  img.loading = 'eager';
-  img.fetchPriority = 'high';
-  img.src = url;
-  const status = await waitForImageReady(img, STATIC_IMAGE_READY_TIMEOUT_MS);
+async function prepareChapterImage(url: string, decode: boolean) {
+  const status = await (decode ? imageResources.prepare(url) : imageResources.prefetch(url));
   if (status !== 'ready') {
     throw new Error(`Failed to decode preloaded image (${status})`);
   }
@@ -2929,7 +2927,7 @@ async function preloadChapterAssets(
     }
 
     const preloadedKey = makePreloadQueueKey(resolvedUrl);
-    if (preloadedAssetUrls.has(preloadedKey)) {
+    if (preloadedAssetUrls.has(preloadedKey) && !isImageAsset(path) && !isImageAsset(resolvedUrl)) {
       return;
     }
 
@@ -2959,7 +2957,7 @@ async function preloadChapterAssets(
 
     if (isImageAsset(path) || isImageAsset(resolvedUrl)) {
       try {
-        await warmImageDecodeUrl(resolvedUrl);
+        await prepareChapterImage(resolvedUrl, reportProgress);
       } catch {
         // Keep execution flowing even if a specific image decode fails.
       }
@@ -3694,11 +3692,10 @@ function runAttack(attack: AttackDirective, loopGuard: number): void {
     }, presentation.anticipation, true);
   };
   if (attack.image && state.game && typeof Image !== 'undefined') {
-    const image = new Image();
-    image.src = resolveAsset(state.baseUrl, state.game.assets.backgrounds[attack.image]);
-    void waitForImageReady(image, STATIC_IMAGE_READY_TIMEOUT_MS).then((status) => {
+    const source = resolveAsset(state.baseUrl, state.game.assets.backgrounds[attack.image]);
+    void imageResources.prepare(source).then((status) => {
       // A failed optional cut-in falls back to the staged actor sequence.
-      begin(status === 'ready' ? image.src : undefined);
+      begin(status === 'ready' ? source : undefined);
     });
   } else {
     begin();

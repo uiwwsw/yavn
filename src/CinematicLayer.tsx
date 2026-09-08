@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { AttackPresentation } from './types';
+import { ResourceImage } from './ResourceImage';
 
 export function CinematicLayer({ attack }: { attack?: AttackPresentation }) {
   if (!attack) return null;
@@ -9,7 +10,7 @@ export function CinematicLayer({ attack }: { attack?: AttackPresentation }) {
       style={{ '--impact-duration': `${attack.impact}ms`, '--recovery-duration': `${attack.recovery}ms` } as CSSProperties}>
       {attack.image && (
         <div className="cinematic-insert" aria-hidden="true">
-          <img src={attack.image} alt="" decoding="async" />
+          <ResourceImage src={attack.image} alt="" decoding="async" />
         </div>
       )}
       <div className="cinematic-letterbox" aria-hidden="true" />

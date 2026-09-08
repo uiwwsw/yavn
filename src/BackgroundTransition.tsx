@@ -9,6 +9,7 @@ import {
 } from './assetTransition';
 import type { BackgroundTransitionKind } from './types';
 import { waitForImageReady } from './imageReady';
+import { ResourceImage } from './ResourceImage';
 
 const BACKGROUND_READY_TIMEOUT_MS = 12000;
 // React 18 forwards the standards-based lowercase attribute without warning.
@@ -110,7 +111,7 @@ export const BackgroundTransition = memo(function BackgroundTransition({
         const transitioning = presentation.previous !== undefined
           && (role === 'current' || role === 'previous');
         return (
-          <img
+          <ResourceImage
             {...HIGH_PRIORITY_IMAGE_PROPS}
             key={layerSource}
             ref={pending ? pendingImageRef : undefined}

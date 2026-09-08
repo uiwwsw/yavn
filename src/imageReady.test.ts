@@ -18,6 +18,19 @@ class FakeImage extends EventTarget {
 }
 
 describe('waitForImageReady', () => {
+  it('decodes the same element/source only once across concurrent and repeated readiness checks', async () => {
+    const image = new FakeImage();
+    image.complete = true; image.naturalWidth = 868; image.src = '/one.png';
+    image.decode.mockResolvedValue();
+    const node = image as unknown as HTMLImageElement;
+    await Promise.all([waitForImageReady(node, 1000), waitForImageReady(node, 1000)]);
+    await waitForImageReady(node, 1000);
+    expect(image.decode).toHaveBeenCalledOnce();
+    image.src = '/two.png';
+    await waitForImageReady(node, 1000);
+    expect(image.decode).toHaveBeenCalledTimes(2);
+  });
+
   it('does not finish at load while decode is still pending', async () => {
     let finishDecode: (() => void) | undefined;
     const image = new FakeImage();
