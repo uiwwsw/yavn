@@ -134,6 +134,8 @@ import {
 } from './stickerLayout';
 import {
   CHARACTER_EXIT_FADE_DURATION_MS,
+  MOBILE_PROMPT_CAMERA_FIT_SCALE,
+  PROMPT_CAMERA_FIT_SCALE,
   resolveStageCameraFocusTargetId,
   resolveStageCameraPresentation,
   resolveStageCameraTransitionTiming,
@@ -1624,6 +1626,7 @@ export default function App() {
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const [characterPromptInset, setCharacterPromptInset] = useState(0);
+  const [characterPromptFitInset, setCharacterPromptFitInset] = useState(0);
   const [presentedVisibleCharacterIds, setPresentedVisibleCharacterIds] = useState<string[]>([]);
   const [layoutVisibleCharacterIds, setLayoutVisibleCharacterIds] = useState<string[]>([]);
   const {
@@ -2749,6 +2752,8 @@ export default function App() {
   const stageBottomLayerZIndex = focusedCharacterPlacement === 'prompt-top' ? 2 : 3;
   const promptTopLayerZIndex = focusedCharacterPlacement === 'stage-bottom' ? 2 : 3;
   const cameraStyle = useMemo(() => ({
+    '--prompt-camera-fit-scale': PROMPT_CAMERA_FIT_SCALE,
+    '--prompt-camera-fit-scale-mobile': MOBILE_PROMPT_CAMERA_FIT_SCALE,
     '--stage-camera-scale': cameraPresentation.scale,
     '--stage-camera-scale-mobile': cameraPresentation.mobileScale,
     '--stage-camera-pan-x': cameraPresentation.panX,
@@ -3321,7 +3326,10 @@ export default function App() {
     setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
     const readingHeight = Number.parseFloat(getComputedStyle(document.documentElement)
       .getPropertyValue('--yavn-character-prompt-height')) || dialogEl.offsetHeight;
-    setCharacterPromptInset(resolvePromptActorInset(nextInset, dialogEl.offsetHeight, readingHeight));
+    const readingInset = resolvePromptActorInset(nextInset, dialogEl.offsetHeight, readingHeight);
+    setCharacterPromptInset(readingInset);
+    // Hiding the dialog releases its baseline, but must not enlarge the portrait.
+    setCharacterPromptFitInset(readingInset);
   }, [dialogUiHidden]);
 
   useLayoutEffect(() => {
@@ -4314,6 +4322,7 @@ export default function App() {
           aria-hidden={!promptTopBaselineReady}
           style={{
             '--prompt-top-dialog-inset': `${characterPromptInset}px`,
+            '--prompt-top-fit-inset': `${characterPromptFitInset}px`,
             zIndex: promptTopLayerZIndex,
           } as CSSProperties}
         >
