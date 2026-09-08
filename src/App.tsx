@@ -24,6 +24,7 @@ import { CinematicLayer } from './CinematicLayer';
 import { YavnLogo } from './YavnLogo';
 import { TitleScene } from './TitleScene';
 import { GameIcon } from './GameIcon';
+import { ResourceImage } from './ResourceImage';
 import { resolvePromptActorInset } from './promptLayout';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
@@ -1453,7 +1454,7 @@ const StickerView = memo(function StickerView({
         '--sticker-leave-delay': `${stickerLeaveTiming.delay}ms`,
       } as CSSProperties}
     >
-      <img
+      <ResourceImage
         className={[
           'sticker-visual',
           sticker.leaving
@@ -1466,7 +1467,7 @@ const StickerView = memo(function StickerView({
         alt={sticker.id}
         loading="eager"
         decoding="async"
-        onLoad={markImageReady}
+        onReady={markImageReady}
         onError={markImageReady}
         onAnimationEnd={() => {
           if (!sticker.leaving) {
@@ -5334,7 +5335,7 @@ export default function App() {
 
       {isFinished && endingCreditsOpen && (
         <div className="ending-overlay" role="dialog" aria-modal="true" aria-label="엔딩 기록과 크레딧" onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
-          {endingBackgroundUrl && <img className="ending-overlay-bg-image" src={endingBackgroundUrl} alt="" aria-hidden="true" />}
+          {endingBackgroundUrl && <ResourceImage className="ending-overlay-bg-image" src={endingBackgroundUrl} alt="" aria-hidden="true" />}
           <div className="ending-overlay-decoration" aria-hidden="true" />
           <div className="ending-credits-screen" aria-label="엔딩 크레딧">
             <div

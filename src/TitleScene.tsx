@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { waitForImageReady } from './imageReady';
+import { ResourceImage } from './ResourceImage';
 import { createTitleParticles, DEFAULT_START_SCENE } from './startScene';
 import type { StartSceneConfig, StartSceneLayer } from './types';
 
@@ -30,7 +31,7 @@ function PreparedSceneImage({ source, className, style }: { source: string; clas
     });
     return () => { cancelled = true; };
   }, [source]);
-  return <img ref={ref} className={`title-scene-image ${className}`} src={source} style={style}
+  return <ResourceImage ref={ref} className={`title-scene-image ${className}`} src={source} style={style}
     data-ready={readySource === source} alt="" aria-hidden="true" decoding="async" draggable={false} />;
 }
 

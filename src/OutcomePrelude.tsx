@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { KeyboardEvent } from 'react';
+import { ResourceImage } from './ResourceImage';
 
 export function trapOutcomeFocus(event: KeyboardEvent<HTMLElement>): void {
   if (event.key !== 'Tab') return;
@@ -33,7 +34,7 @@ export function OutcomePrelude({ kind, title, message, epilogue, background, ton
       role="dialog" aria-modal="true" aria-labelledby="outcome-title" aria-describedby="outcome-message"
       onKeyDown={trapOutcomeFocus}
       onClick={(event) => event.stopPropagation()}>
-      {background && <img className="outcome-background" src={background} alt="" aria-hidden="true" />}
+      {background && <ResourceImage className="outcome-background" src={background} alt="" aria-hidden="true" />}
       <div className="outcome-shade" aria-hidden="true" />
       <div className="outcome-content">
         <div className="outcome-rule" aria-hidden="true"><i /></div>

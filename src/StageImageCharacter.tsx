@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef, useState, type CSSProperties, type HTMLAttributes } from 'react';
 import { waitForImageReady } from './imageReady';
 import { CharacterPresence } from './CharacterPresence';
+import { ResourceImage } from './ResourceImage';
 import { PORTRAIT_DISSOLVE_MS, finishPortrait, portraitSources, presentPortrait, type PortraitFrame, type PortraitTransition } from './portraitTransition';
 import type { CharacterEnterEffect } from './types';
 
@@ -59,7 +60,7 @@ export const StageImageCharacter = memo(function StageImageCharacter({
         <div className="character-portrait" data-dissolving={Boolean(presentation.previous)}>
           {portraitSources(presentation, source).map((url) => {
             const role = url === presentation.current?.source ? 'current' : url === presentation.previous?.source ? 'previous' : 'pending';
-            return <img key={url} ref={element => { if (element) images.current.set(url, element); else images.current.delete(url); }}
+            return <ResourceImage key={url} ref={element => { if (element) images.current.set(url, element); else images.current.delete(url); }}
               src={url} alt="" aria-hidden="true" className={`character-art portrait-${role}`}
               data-character-requested={url === source} data-portrait-role={role}
               loading={loading} decoding={decoding} {...{ fetchpriority }} draggable={false}

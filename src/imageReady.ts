@@ -7,8 +7,23 @@ export type VisibleImageReadyResult = {
   timedOut: boolean;
 };
 
-const VISIBLE_STATIC_IMAGE_SELECTOR = '.effect-viewport > img.bg, .char-layer img.char-image, .char-layer img.character-art[data-character-requested="true"]';
+const VISIBLE_STATIC_IMAGE_SELECTOR = '.effect-viewport img.bg, .char-layer img.char-image, .char-layer img.character-art[data-character-requested="true"]';
 const readyImageSourceKeys = new Set<string>();
+const managedPreparations = new WeakMap<HTMLImageElement, Promise<ImageReadyStatus>>();
+const decodedElements = new WeakMap<HTMLImageElement, { source: string; ready: Promise<ImageReadyStatus> }>();
+
+export function registerImagePreparation(image: HTMLImageElement, ready: Promise<ImageReadyStatus>): void {
+  managedPreparations.set(image, ready);
+}
+
+async function withDeadline(ready: Promise<ImageReadyStatus>, timeoutMs: number): Promise<ImageReadyStatus> {
+  let timer: ReturnType<typeof globalThis.setTimeout> | undefined;
+  try {
+    return await Promise.race([ready, new Promise<ImageReadyStatus>(resolve => {
+      timer = globalThis.setTimeout(() => resolve('timeout'), Math.max(0, timeoutMs));
+    })]);
+  } finally { if (timer !== undefined) globalThis.clearTimeout(timer); }
+}
 
 function collectImageSourceKeys(source: string): string[] {
   const normalizedSource = source.trim();
@@ -33,6 +48,7 @@ function collectImageSourceKeys(source: string): string[] {
 /** Remembers a source that completed both transfer and decode in this browser session. */
 export function markImageSourceReady(source: string): void {
   collectImageSourceKeys(source).forEach((key) => readyImageSourceKeys.add(key));
+  while (readyImageSourceKeys.size > 256) readyImageSourceKeys.delete(readyImageSourceKeys.values().next().value!);
 }
 
 /** Returns true only after the source has completed a successful decode. */
@@ -116,7 +132,7 @@ async function waitForDecode(image: HTMLImageElement, timeoutMs: number): Promis
 }
 
 /** Waits for both transfer and decode, so a completed load event cannot race the first paint. */
-export async function waitForImageReady(
+async function decodeLoadedImage(
   image: HTMLImageElement,
   timeoutMs: number,
 ): Promise<ImageReadyStatus> {
@@ -126,10 +142,30 @@ export async function waitForImageReady(
     return loaded;
   }
   const decoded = await waitForDecode(image, remainingTimeout(startedAt, timeoutMs));
-  if (decoded === 'ready') {
-    markImageElementSourceReady(image);
-  }
   return decoded;
+}
+
+/** A retained node/source is decoded once, including concurrent load-cover and renderer checks. */
+export function decodeImageElement(image: HTMLImageElement, timeoutMs: number): Promise<ImageReadyStatus> {
+  const source = image.src;
+  const cached = decodedElements.get(image);
+  if (cached?.source === source) return withDeadline(cached.ready, timeoutMs);
+  const entry = { source, ready: decodeLoadedImage(image, timeoutMs).then(status => {
+    if (image.src !== source) return 'error' as const;
+    if (status === 'ready') markImageElementSourceReady(image);
+    return status;
+  }) };
+  decodedElements.set(image, entry);
+  void entry.ready.then(status => {
+    if (status !== 'ready' && decodedElements.get(image) === entry) decodedElements.delete(image);
+  });
+  return entry.ready;
+}
+
+/** Managed images may still be waiting for their shared byte payload before src is assigned. */
+export function waitForImageReady(image: HTMLImageElement, timeoutMs: number): Promise<ImageReadyStatus> {
+  const preparation = managedPreparations.get(image);
+  return preparation ? withDeadline(preparation, timeoutMs) : decodeImageElement(image, timeoutMs);
 }
 
 /** Waits for the background and currently rendered static characters in the mounted stage. */

@@ -1,11 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { dump } from 'js-yaml';
 import { attackDuration, backgroundId, normalizeAttack, normalizeBackground } from './cinematic';
-import { completeBackgroundTransition, handleAdvance, restorePresentationToCursor, saveCurrentProgress, setPlayerExperienceSettings } from './engine';
+import { completeBackgroundTransition, handleAdvance, restorePresentationToCursor, saveCurrentProgress, setBgmEnabled, setPlayerExperienceSettings } from './engine';
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { collectChapterAssetPaths } from './preload';
 import { useVNStore } from './store';
 import type { Action, GameData } from './types';
+import { imageResources } from './imageResources';
 
 const assets: GameData['assets'] = {
   backgrounds: { hall: 'hall.webp', night: 'night.webp' },
@@ -36,6 +37,7 @@ describe('cinematic execution and cancellation', () => {
     setPlayerExperienceSettings({ autoPlayEnabled: false, sfxVolume: 0 });
   });
   afterEach(() => {
+    imageResources.clear();
     useVNStore.getState().resetPresentation();
     vi.clearAllTimers();
     vi.useRealTimers();
@@ -146,7 +148,8 @@ describe('cinematic execution and cancellation', () => {
   it('waits for a cut-in decode before starting impact timing', async () => {
     let decode!: () => void;
     vi.stubGlobal('Image', class {
-      src = ''; complete = true; naturalWidth = 100;
+      src = ''; complete = true; naturalWidth = 100; naturalHeight = 100;
+      removeAttribute() {}
       decode = () => new Promise<void>((resolve) => { decode = resolve; });
     });
     start([{ attack: { attacker: 'guard', image: 'hall', anticipation: 500 } }, { say: { text: 'After.' } }]);
@@ -161,7 +164,8 @@ describe('cinematic execution and cancellation', () => {
 
   it('falls back to actors if optional cut-in decoding never finishes', async () => {
     vi.stubGlobal('Image', class {
-      src = ''; complete = true; naturalWidth = 100;
+      src = ''; complete = true; naturalWidth = 100; naturalHeight = 100;
+      removeAttribute() {}
       decode = () => new Promise<void>(() => undefined);
     });
     start([{ attack: { attacker: 'guard', image: 'hall' } }, { say: { text: 'After.' } }]);
@@ -174,7 +178,8 @@ describe('cinematic execution and cancellation', () => {
   it('ignores a cut-in decode that finishes after another game is loaded', async () => {
     let decode!: () => void;
     vi.stubGlobal('Image', class {
-      src = ''; complete = true; naturalWidth = 100;
+      src = ''; complete = true; naturalWidth = 100; naturalHeight = 100;
+      removeAttribute() {}
       decode = () => new Promise<void>((resolve) => { decode = resolve; });
     });
     start([{ attack: { attacker: 'guard', image: 'hall' } }, { gameOver: {} }]);
@@ -203,6 +208,30 @@ describe('cinematic execution and cancellation', () => {
     expect(sounds[1]).toMatchObject({ url: 'blade.wav', volume: 0.4 });
     setPlayerExperienceSettings({ sfxVolume: 0 });
     expect(sounds.every((sound) => sound.pause.mock.calls.length > 0)).toBe(true);
+  });
+
+  it('keeps BGM volume valid when the first frame timestamp predates fade setup', async () => {
+    const frames: FrameRequestCallback[] = [];
+    const volumes: number[] = [];
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => frames.push(callback));
+    vi.stubGlobal('Audio', class {
+      private level = 1;
+      get volume() { return this.level; }
+      set volume(value: number) {
+        if (value < 0 || value > 1) throw new RangeError('Invalid audio volume');
+        this.level = value; volumes.push(value);
+      }
+      play = () => Promise.resolve();
+      pause = () => {};
+    });
+    setBgmEnabled(true);
+    setPlayerExperienceSettings({ bgmVolume: 0.7 });
+    start([{ music: 'finale' }, { say: { text: 'A warmed scene.' } }]);
+    await Promise.resolve();
+    expect(() => frames.splice(0).forEach(frame => frame(performance.now() - 50))).not.toThrow();
+    expect(volumes.length).toBeGreaterThan(1);
+    expect(volumes.every(value => value >= 0 && value <= 1)).toBe(true);
+    setBgmEnabled(false);
   });
 
   it('restores object backgrounds and actor staging without replaying the attack', () => {
