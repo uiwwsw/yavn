@@ -20,7 +20,7 @@ ui:
 startScreen:
   enabled: true
   showTitle: true
-  startButtonText: "Live2D 테스트 시작"
+  startButtonText: "렌 만나기"
   buttonPosition: center
   eyebrow: "LIVE2D · INTERACTIVE CHARACTER"
   subtitle: "시선이 닿는 곳에서, 캐릭터가 반응합니다."
@@ -32,3 +32,10 @@ startScreen:
     fog: false
     accent: "#8cf2dd"
     transition: { type: fade, duration: 800 }
+endings:
+  until_next_time:
+    title: "다음 인사까지"
+    message: "표정과 시선, 조금 가까워진 거리. 짧은 대화가 끝나고 렌은 편안한 자세로 돌아갔습니다."
+    epilogue: "다시 찾아오면, 첫 인사는 당신의 몫입니다."
+    tone: hopeful
+defaultEnding: until_next_time

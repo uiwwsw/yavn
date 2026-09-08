@@ -5,8 +5,9 @@ scenes:
   empty_seal:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: record
           text: "제7장 — 왕이 약한 이유"
       - char: { id: 진평왕, position: right, emotion: weak }
@@ -127,9 +128,10 @@ scenes:
   rebuild_power:
     actions:
       - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 유신, position: right }
       - say:
+          camera: wide
           channel: narration
           text: "탁자 위에는 세 물건이 놓였습니다. 창고 열쇠, 군 지휘패, 기록관의 붓. 셋을 한꺼번에 잡는 순간 귀족 가문도 하나로 뭉칠 판이었습니다."
       - choice:
@@ -216,9 +218,10 @@ scenes:
   council_counterattack:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 천명, position: right, emotion: nervous }
       - say:
+          camera: wide
           channel: narration
           text: "다음 조회에서 귀족들은 빈 옥새함 대신 섭정 의자를 들여왔습니다. 의자에는 천명의 이름이 새겨져 있었습니다. 되찾은 열쇠와 붓을 언니의 치맛자락에 다시 묶으려는 수였습니다."
       - say:
@@ -280,10 +283,11 @@ scenes:
   weak_king_end:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: medium
+      - music: sealed_court
       - char: { id: 진평왕, position: right, emotion: weak }
       - char: { id: 덕만, position: left }
       - say:
+          camera: medium
           char: 진평왕.weak
           text: "되찾은 걸 네 손에 다 쥘 줄 알았다. 나라면 또 빼앗길까 무서워 그랬을 테니까."
       - say:

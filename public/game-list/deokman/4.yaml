@@ -5,8 +5,9 @@ scenes:
   peony_banquet:
     actions:
       - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: record
           text: "제5장 — 향기 없는 꽃"
       - char: { id: 덕만, position: left }
@@ -117,9 +118,10 @@ scenes:
   hidden_terms:
     actions:
       - bg: { id: shadow_corridor, transition: fade, duration: 900 }
-      - camera: medium
+      - music: night_road
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
+          camera: medium
           channel: narration
           text: "비담이 빈 술병을 들고 휘장 뒤에서 나타났습니다. 병 속에는 통역관의 쪽지가 말려 있었습니다. 구휼미를 훔친 가문과 봄 연회 습격자의 이름 옆에 당의 답신 표시가 찍혀 있었습니다."
       - say:
@@ -288,10 +290,11 @@ scenes:
   scentless_end:
     actions:
       - bg: { id: peony_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 덕만, position: left }
       - char: { id: 비담, position: right }
       - say:
+          camera: wide
           channel: narration
           text: "사신의 수레가 궁문을 나설 때 모란 족자는 연회상 위에 남았습니다. 덕만은 그림을 뒤집어 놓고서야 굳었던 손가락을 폈습니다."
       - say:

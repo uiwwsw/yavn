@@ -20,6 +20,7 @@ ui:
   template: paper-stage
 startScreen:
   enabled: true
+  music: "root:/game-list/deokman/assets/music/sealed-court.wav"
   image: "root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
   imagePosition: "50% 50%"
   mobileImagePosition: "72% 50%"
@@ -53,66 +54,77 @@ endingScreen:
   image: "root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp"
 endings:
   hidden_constellation:
+    music: open_sky
     background: moon_court
     tone: hopeful
     epilogue: "이듬해 봄, 관측표의 첫 칸에는 왕의 이름 대신 기록을 고친 아이의 이름이 적혔습니다."
     title: "히든 엔딩 — 지워지지 않은 별자리"
     message: "어린 덕만이 발견한 물길, 장터에서 살린 증인, 자매가 함께 연 문이 열두 해 뒤 하나의 제도가 되었습니다. 왕의 실수와 백성의 이름이 같은 크기로 기록된 밤, 첨성대 아래 사람들은 여왕의 운명이 아니라 서로의 선택을 이어 별자리를 그렸습니다. 덕만은 왕관을 지켰지만 왕관만으로 기억되지 않았습니다."
   stars_belong_to_people:
+    music: open_sky
     background: title_palace
     tone: hopeful
     epilogue: "다음 날 장터에는 비를 피할 천막이 먼저 세워졌습니다. 누구도 왕궁의 대답을 기다리지 않았습니다."
     title: "진엔딩 — 별은 왕을 선택하지 않는다"
     message: "덕만은 자신의 사망 기록과 반란 재판서를 성문에 나란히 걸었습니다. 첨성대의 첫 관측표가 장터마다 펼쳐진 밤, 사람들은 왕의 운명 대신 내일의 비를 읽었습니다. 왕관보다 오래 남은 것은 누가 왜 결정했는지 적힌 문장이었습니다."
   merciful_queen:
+    music: night_road
     background: frontier
     tone: mystery
     epilogue: "국경에서 온 다리 보수 장부. 마지막 줄의 필체는, 덕만이 알아보는 사람의 것이었습니다."
     title: "엔딩 — 용서받은 반역자"
     message: "비담의 목숨은 남았고 궁의 칼도 칼집으로 돌아갔습니다. 그러나 다음 반역자는 처형대가 아니라 여왕의 마음부터 노렸습니다. 한 사람을 살린 밤이 법의 문을 오래 열어 두었습니다."
   iron_queen:
+    music: sealed_court
     background: throne_hall
     tone: tragic
     epilogue: "다음 조회에서도 반대는 없었습니다. 여왕은 한참 동안, 대답 없는 문을 바라봤습니다."
     title: "엔딩 — 아무도 반대하지 않는 왕"
     message: "마지막 반란군의 깃발이 내려가자 신라는 놀랄 만큼 빨리 움직였습니다. 덕만의 명령은 한 번도 늦지 않았고, 신하들의 대답도 한 번도 달라지지 않았습니다. 텅 빈 조회장에서 여왕의 목소리만 정확히 돌아왔습니다."
   borrowed_crown:
+    music: sealed_court
     background: council_hall
     tone: mystery
     epilogue: "새벽마다 세 개의 도장이 먼저 도착했습니다. 왕의 붓은 그 뒤에야 먹을 묻혔습니다."
     title: "엔딩 — 허락받은 왕관"
     message: "왕관은 덕만의 머리에 남았지만 군사 한 명, 곡식 한 섬에도 귀족들의 도장이 붙었습니다. 나라는 평온했고 회의는 길어졌습니다. 여왕은 매일 왕좌에 앉아 자신의 왕국을 빌려 썼습니다."
   empty_observatory:
+    music: sealed_court
     background: title_palace
     tone: tragic
     epilogue: "탑 아래 아이가 별의 이름을 물었습니다. 문을 지키던 사람은 열쇠를 만지작거렸습니다."
     title: "엔딩 — 문 닫힌 첨성대"
     message: "첨성대는 완성됐지만 첫 관측표는 왕실 서고 가장 깊은 궤에 잠겼습니다. 백성은 다시 무릎 꿇고 하늘의 말을 기다렸습니다. 별을 가까이 세운 돌은 누구도 넘지 못할 벽이 되었습니다."
   bidams_regent:
+    music: sealed_court
     background: throne_hall
     tone: mystery
     epilogue: "왕이 들어오기 전, 신하들은 이미 한 번 고개를 숙이고 있었습니다."
     title: "엔딩 — 가장 유능한 신하"
     message: "비담은 칼을 거두고 여왕의 곁에 남았습니다. 누구보다 빨리 불을 끄고 문을 열던 그는 어느 날부터 덕만보다 먼저 명령을 내렸습니다. 신하들은 왕좌가 아니라 그가 서 있는 곳을 바라봤습니다."
   sisters_shadow:
+    music: night_road
     background: locked_room
     tone: mystery
     epilogue: "밤마다 벽 너머에서 종이가 넘어갔습니다. 두 자매는 같은 문장의 다른 쪽을 읽었습니다."
     title: "엔딩 — 두 공주의 왕국"
     message: "덕만은 왕이 되었고 비밀문 뒤 천명의 자리를 끝내 세상에 돌려주지 않았습니다. 결정할 때마다 살아 있으나 말할 수 없는 언니의 대답을 먼저 들었습니다. 공개된 회의의 반대는 그 숨은 목소리를 한 번도 이기지 못했습니다."
   recordless_peace:
+    music: night_road
     background: moon_court
     tone: mystery
     epilogue: "화로는 식었습니다. 새 종이에 찍힌 붉은 인장은, 오래전 것과 조금도 다르지 않았습니다."
     title: "엔딩 — 기록 없는 평화"
     message: "사망 기록과 반란 서신은 한 화로에서 재가 되었습니다. 누구도 과거를 들춰 칼을 뽑지 않았고 궁은 오래 평온했습니다. 훗날 똑같은 붉은 인장이 나타났을 때, 그것을 알아보는 사람도 남지 않았습니다."
   fallen_star:
+    music: night_road
     background: frontier
     tone: tragic
     epilogue: "성 안의 종과 성 밖의 북이 동시에 울렸습니다. 사람들은 서로 다른 길로 걸어갔습니다."
     title: "엔딩 — 떨어진 별"
     message: "여왕은 왕좌를 지켰지만 성문 밖 군대와 시장의 곡식길을 잃었습니다. 같은 새벽 종 아래 두 개의 명령이 서로 다른 방향으로 달렸습니다. 왕관 하나를 쓴 신라는 두 나라로 갈라졌습니다."
   nameless_queen:
+    music: sealed_court
     background: throne_hall
     tone: tragic
     epilogue: "여왕의 이름은 돌에 새겨졌습니다. 궤짝 속 어린아이의 이름은 끝내 햇빛을 보지 못했습니다."

@@ -5,8 +5,9 @@ scenes:
   ten_years_later:
     actions:
       - bg: { id: frontier, transition: wipeLeft, duration: 700 }
-      - camera: wide
+      - music: night_road
       - say:
+          camera: wide
           channel: record
           delivery: calm
           text: "십 년 뒤. 국경 장시의 종이 세 번 울리자 '만덕'은 셈을 멈췄습니다. 죽은 공주를 찾는 군화 소리가 장터로 들어왔습니다."
@@ -241,9 +242,10 @@ scenes:
   checkpoint:
     actions:
       - bg: { id: frontier, transition: wipeLeft, duration: 700 }
-      - camera: wide
+      - music: night_road
       - char: { id: 소화, position: right }
       - say:
+          camera: wide
           channel: narration
           text: "검문소 횃불 아래 정문 창끝이 겹쳤습니다. 마른 수로 안에는 새 장화 자국이 찍혀 있었고, 빈 관의 못은 안쪽이 아니라 바깥쪽으로 박혀 있었습니다. 문지기들만 모란패와 추격대의 붉은 인장을 번갈아 보며 웅성거렸습니다."
       - choice:
@@ -271,10 +273,11 @@ scenes:
   return_to_silla:
     actions:
       - bg: { id: locked_room, transition: fade, duration: 900 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right }
       - say:
+          camera: wide
           channel: narration
           text: "두 사람이 수로 안으로 몸을 밀어 넣자 앞뒤에서 쇠창살이 내려왔습니다. 십 년 전 물길을 기억한 것은 덕만만이 아니었습니다."
       - say:
@@ -324,10 +327,11 @@ scenes:
   return_in_coffin:
     actions:
       - bg: { id: locked_room, transition: fade, duration: 900 }
-      - camera: wide
+      - music: sealed_court
       - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
+          camera: wide
           channel: narration
           text: "덕만은 빈 관 뚜껑 안쪽에 자기 사망 기록을 붙였습니다. 관이 검문대에 닿자 병사는 종이를 읽지 않고 바깥쪽 못부터 박았습니다."
       - say:

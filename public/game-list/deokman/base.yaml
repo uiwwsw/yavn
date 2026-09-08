@@ -115,7 +115,10 @@ assets:
       emotions:
         nervous: root:/game-list/deokman/assets/char/ajin-nervous-silla-v5.webp
         angry: root:/game-list/deokman/assets/char/ajin-angry-silla-v5.webp
-  music: {}
+  music:
+    sealed_court: root:/game-list/deokman/assets/music/sealed-court.wav
+    night_road: root:/game-list/deokman/assets/music/night-road.wav
+    open_sky: root:/game-list/deokman/assets/music/open-sky.wav
   sfx: {}
 
 state:

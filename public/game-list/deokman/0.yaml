@@ -5,7 +5,7 @@ scenes:
   opening_record:
     actions:
       - bg: { id: peony_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - sticker:
           id: opening_death_register
           image: death_register_sticker
@@ -19,6 +19,7 @@ scenes:
           enter: fadeIn
           inputLockMs: 320
       - say:
+          camera: wide
           channel: record
           delivery: calm
           wait: 600
@@ -172,8 +173,9 @@ scenes:
 
   observe_waterway:
     actions:
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: narration
           text: "덕만은 그림을 보지 않았습니다. 창밖의 창끝이 한 번에 같은 방향으로 돌아갔고, 왼쪽 담 아래 배수로 돌판만 비뚤어져 있었습니다."
       - say:
@@ -224,7 +226,7 @@ scenes:
           id: peony_painting_view
           leave: fadeOut
       - bg: { id: peony_court, transition: dissolve, duration: 720 }
-      - camera: medium
+      - music: sealed_court
       - char: { id: 어린 덕만, position: left }
       - char: { id: 진평왕, position: center }
       - char: { id: 소화, position: right }
@@ -350,7 +352,7 @@ scenes:
 
   king_warning:
     actions:
-      - camera: medium
+      - music: sealed_court
       - char: { id: 진평왕, position: center }
       - char: { id: 어린 덕만, position: left }
       - char: { id: 소화, position: right }
@@ -394,7 +396,7 @@ scenes:
   fire_breaks:
     actions:
       - bg: { id: burning_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - effect: embers
       - char: { id: 어린 덕만, position: left, emotion: scared }
       - char: { id: 소화, position: right, emotion: nervous }
@@ -503,7 +505,7 @@ scenes:
   escape_waterway:
     actions:
       - bg: { id: moon_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right }
       - say:
@@ -549,10 +551,11 @@ scenes:
   escape_north_gate:
     actions:
       - bg: { id: moon_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
+          camera: wide
           channel: narration
           text: "덕만이 청동 모란패를 들자 북문 빗장이 반쯤 열렸습니다. 문지기는 패를 확인한 뒤에도 덕만의 얼굴에서 눈을 떼지 않았습니다."
       - say:

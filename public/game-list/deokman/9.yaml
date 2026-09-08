@@ -5,8 +5,9 @@ scenes:
   queens_first_winter:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: record
           text: "제10장 — 별을 세우는 사람"
       - char: { id: 덕만, position: left, emotion: queen }
@@ -117,9 +118,10 @@ scenes:
   who_reads_stars:
     actions:
       - bg: { id: moon_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - char: { id: 비담, position: right, emotion: smirk, enter: { effect: fadeIn, layout: push, duration: 360 } }
       - say:
+          camera: wide
           channel: narration
           text: "첫 관측표가 마르기도 전에 제관은 봉인 상자를 가져왔습니다. 비담은 그 상자 위에 앉아 날짜 하나를 손가락으로 가렸습니다."
       - say:
@@ -221,9 +223,10 @@ scenes:
   observatory_sabotage:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - effect: embers
       - say:
+          camera: wide
           channel: narration
           text: "완공 전날 밤, 탑 아래 창고에서 불이 솟았습니다. 종이 울리기도 전에 시장 반대편에서 '여왕의 별이 탔다'는 외침이 들렸습니다."
       - char: { id: 유신, position: right, emotion: angry }
@@ -279,8 +282,9 @@ scenes:
   tower_survives:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - say:
+          camera: wide
           channel: narration
           text: "첨성대는 늦게 완성됐습니다. 한쪽 돌은 검게 탔고 관측표에는 물에 번진 숫자를 다시 쓴 흔적이 남았습니다."
       - char: { id: 덕만, position: center, emotion: queen }

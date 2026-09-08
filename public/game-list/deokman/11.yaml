@@ -5,8 +5,9 @@ scenes:
   last_trial:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: record
           text: "제12장 — 마지막 기록"
       - char: { id: 덕만, position: left, emotion: queen }
@@ -130,8 +131,9 @@ scenes:
   death_record_choice:
     actions:
       - bg: { id: locked_room, transition: fade, duration: 900 }
-      - camera: medium
+      - music: sealed_court
       - say:
+          camera: medium
           channel: narration
           text: "재판 뒤 덕만은 열두 해의 종이를 바닥에 길게 늘어놓았습니다. 자기 사망 기록에서 시작한 줄은 곡식 장부와 위조 자백, 일식표를 지나 비담의 편지에서 멈췄습니다. 소화가 화로를 가져왔습니다."
       - char: { id: 소화, position: right }
@@ -230,8 +232,9 @@ scenes:
   last_decree_choice:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - say:
+          camera: wide
           channel: narration
           text: "첨성대 아래 긴 탁자에 마지막 칙령이 놓였습니다. 어린 덕만의 죽음은 남이 먼저 썼습니다. 이제 선덕왕은 자기 뒤에 올 사람들이 왕의 글을 고칠 수 있는 문장을 써야 했습니다."
       - choice:
@@ -356,8 +359,9 @@ scenes:
   ending_hidden_constellation:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - say:
+          camera: wide
           channel: narration
           text: "첨성대 아래에 열두 개의 등불이 켜졌습니다. 어린 덕만이 찾아낸 물길에서 시작해 장터의 증인, 천명의 공개 증언, 굶지 않은 마을의 이름이 등불마다 적혔습니다."
       - char: { id: 덕만, position: center, emotion: queen }
@@ -376,8 +380,9 @@ scenes:
   ending_stars_belong_to_people:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - say:
+          camera: wide
           channel: narration
           text: "덕만의 사망 기록과 비담의 재판 기록이 같은 벽에 붙었습니다. 아이들이 두 문서의 다른 도장 자국을 손가락으로 찾아냈습니다."
       - say:
@@ -392,8 +397,9 @@ scenes:
   ending_merciful_queen:
     actions:
       - bg: { id: frontier, transition: wipeLeft, duration: 700 }
-      - camera: wide
+      - music: night_road
       - say:
+          camera: wide
           channel: narration
           text: "비담은 국경에서 이름 없이 다리를 고쳤습니다. 사람들은 선덕의 자비를 노래했고, 새 반역을 꿈꾸는 자들은 그 노래에서 살아남을 가능성을 들었습니다."
       - say:
@@ -407,8 +413,9 @@ scenes:
   ending_iron_queen:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: narration
           text: "비담의 목이 떨어진 뒤 회의는 놀랄 만큼 짧아졌습니다. 왕명이 끝나기 전에 모두가 고개를 숙였습니다."
       - say:
@@ -422,8 +429,9 @@ scenes:
   ending_borrowed_crown:
     actions:
       - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: narration
           text: "귀족 회의의 붓은 군량 장부를 넘어 군사 이동과 창고 문서까지 따라왔습니다. 덕만은 명령을 내릴 때마다 즉위 날 받은 세 표를 다시 갚았습니다."
       - say:
@@ -437,8 +445,9 @@ scenes:
   ending_empty_observatory:
     actions:
       - bg: { id: title_palace, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - say:
+          camera: wide
           channel: narration
           text: "첨성대 문은 열려 있었지만 관측표 상자는 비담의 암호 없이는 열리지 않았습니다. 탑 아래 아이들은 별 대신 전령을 기다렸습니다."
       - say:
@@ -452,9 +461,10 @@ scenes:
   ending_bidams_regent:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: medium
+      - music: sealed_court
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
+          camera: medium
           channel: narration
           text: "돌아온 비담은 사흘 만에 끊긴 전령망을 이었습니다. 넷째 날부터 관리들은 왕의 도장보다 비담의 고갯짓을 먼저 기다렸습니다."
       - say:
@@ -470,9 +480,10 @@ scenes:
   ending_sisters_shadow:
     actions:
       - bg: { id: locked_room, transition: fade, duration: 900 }
-      - camera: medium
+      - music: sealed_court
       - char: { id: 천명, position: right, emotion: sad }
       - say:
+          camera: medium
           channel: narration
           text: "밤마다 비밀문이 열리고 천명이 덕만의 칙령을 먼저 읽었습니다. 어느 순간 덕만은 회의장의 반대보다 어둠 속 언니의 침묵을 더 두려워했습니다."
       - say:
@@ -486,9 +497,10 @@ scenes:
   ending_recordless_peace:
     actions:
       - bg: { id: moon_court, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: open_sky
       - effect: embers
       - say:
+          camera: wide
           channel: narration
           text: "사망 기록과 반란 서신은 한 줌 재가 됐습니다. 한동안 아무도 과거 종이를 들고 새 싸움을 시작하지 못했습니다."
       - say:
@@ -502,8 +514,9 @@ scenes:
   ending_fallen_star:
     actions:
       - bg: { id: frontier, transition: wipeLeft, duration: 700 }
-      - camera: wide
+      - music: night_road
       - say:
+          camera: wide
           channel: narration
           text: "반란은 끝났지만 왕실 전령이 오는 날이면 마을 문이 먼저 닫혔습니다. 성문 안에는 왕관이, 밖에는 왕명을 기다리지 않는 장터가 남았습니다."
       - say:
@@ -517,8 +530,9 @@ scenes:
   ending_nameless_queen:
     actions:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: wide
+      - music: sealed_court
       - say:
+          camera: wide
           channel: narration
           text: "사서에는 선덕왕의 이름이 오래 남았습니다. 그러나 그 이름을 처음 죽인 종이와 왕좌까지 빌려 쓴 거짓은 봉인 상자 안에서 함께 늙었습니다."
       - say:

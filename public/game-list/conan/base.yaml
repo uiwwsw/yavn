@@ -35,6 +35,7 @@ assets:
       base: /assets/char/kogoro/base.webp
       placement: prompt-top
       emotions:
+        serious: /assets/char/kogoro/base.webp
         proud: /assets/char/kogoro/proud.webp
         angry: /assets/char/kogoro/angry.webp
         shocked: /assets/char/kogoro/shocked.webp

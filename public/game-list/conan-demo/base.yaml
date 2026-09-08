@@ -13,28 +13,34 @@ assets:
   characters:
     코난:
       base: root:/game-list/conan/assets/char/conan/base.webp
+      placement: prompt-top
       emotions:
         think: root:/game-list/conan/assets/char/conan/think.webp
         serious: root:/game-list/conan/assets/char/conan/serious.webp
     란:
       base: root:/game-list/conan/assets/char/ran/base.webp
+      placement: prompt-top
       emotions:
         surprised: root:/game-list/conan/assets/char/ran/surprised.webp
         worried: root:/game-list/conan/assets/char/ran/worried.webp
     코고로:
       base: root:/game-list/conan/assets/char/kogoro/base.webp
+      placement: prompt-top
       emotions:
         angry: root:/game-list/conan/assets/char/kogoro/angry.webp
     켄지:
       base: root:/game-list/conan/assets/char/kenji/base.webp
+      placement: prompt-top
       emotions:
         angry: root:/game-list/conan/assets/char/kenji/angry.webp
     세이지:
       base: root:/game-list/conan/assets/char/shinichi/base.webp
+      placement: prompt-top
       emotions:
         cold: root:/game-list/conan/assets/char/shinichi/cold.webp
     레이코:
       base: root:/game-list/conan/assets/char/reiko/base.webp
+      placement: prompt-top
       emotions:
         nervous: root:/game-list/conan/assets/char/reiko/nervous.webp
   music:

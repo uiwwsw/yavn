@@ -2,6 +2,12 @@
 
 이 문서는 정식 패키지 `public/game-list/deokman/`에서 사용하는 시각 자산의 제작·재사용 근거를 기록합니다.
 
+## 2026-09-08 배경음
+
+- `assets/music/sealed-court.wav`, `night-road.wav`, `open-sky.wav`: 각각 궁 안의 긴장·이동·결말에 쓰는 24초 모노 PCM 루프입니다.
+- 외부 음악·연주·샘플 없이 사인파, 배음, 감쇠, 원형 잔향을 합성했습니다. 전통 악기의 실제 녹음은 아닙니다. 난수 시드를 고정해 결과를 재생성할 수 있습니다.
+- 제작 코드: `scripts/generate-deokman-score.py`. 최대 진폭을 제한하고 루프 경계에서 저음 위상과 잔향이 이어지도록 처리했습니다. 기존 엔진의 음량·크로스페이드·음소거를 사용합니다.
+
 ## V10.4 칠숙 공격 장면 컷
 
 - 파일: `assets/bg/chilsuk-sword-cutin-v1.png`, `assets/bg/chilsuk-bow-cutin-v1.png`

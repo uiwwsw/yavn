@@ -55,13 +55,25 @@ endingScreen:
   image: "assets/bg/mountain_rain-v2.avif"
 endings:
   true_end:
-    title: "TRUE END"
+    title: "진엔딩 — 끝까지 들은 문장"
+    background: mountain_rain
+    music: rain
+    tone: hopeful
+    epilogue: "산길이 다시 열린 아침, 란은 같은 자리에서 사진을 한 장 더 찍었다. 코난은 두 사진 사이에 남은 밤을 오래 바라봤다."
     message: "지워지다 만 2R과 사라진 1분을 되살려, 하루오가 끝까지 남기려 한 진실을 밝혔다."
   normal_end:
-    title: "NORMAL END"
+    title: "엔딩 — 비 속에 남은 이름"
+    background: rain_corridor
+    music: confession
+    tone: mystery
+    epilogue: "돌아가는 차 안에서 수첩이 한 번 더 펼쳐졌다. 범인의 이름 아래에는 아직 묻지 못한 질문이 남아 있었다."
     message: "2번 잔에 손댄 범인은 밝혔지만 계약서와 연구 노트의 진실은 경찰 조사로 남았다."
   bad_end:
-    title: "BAD END"
+    title: "미해결 — 사라진 1분"
+    background: tea_room
+    music: mystery
+    tone: tragic
+    epilogue: "다실에는 새 컵받침이 놓였다. 비가 그친 뒤에도, 지워진 획이 있던 자리만은 끝내 마르지 않았다."
     message: "결정적인 1분을 증명하지 못한 채 범인은 침묵 속에 숨었다."
 endingRules:
   - when:
