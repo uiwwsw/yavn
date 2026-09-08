@@ -1219,6 +1219,7 @@ textarea,
 }
 
 .stage-content-frame {
+  --character-headroom: max(100px, calc(env(safe-area-inset-top, 0px) + 80px));
   position: absolute;
   z-index: 3;
   top: 50%;
@@ -1252,6 +1253,7 @@ textarea,
 }
 
 .char-composition-world {
+  --prompt-camera-render-fit-scale: var(--prompt-camera-fit-scale, 1.86);
   --stage-camera-scale: 1;
   --stage-camera-scale-mobile: var(--stage-camera-scale);
   --stage-camera-render-scale: var(--stage-camera-scale);
@@ -1307,6 +1309,7 @@ textarea,
 
 @media (max-width: 768px) {
   .char-composition-world {
+    --prompt-camera-render-fit-scale: var(--prompt-camera-fit-scale-mobile, 1.74);
     --stage-camera-render-scale: var(--stage-camera-scale-mobile);
     --stage-camera-render-pan-x: var(--stage-camera-pan-x-mobile);
     --stage-camera-render-origin-y: var(--stage-camera-origin-y-mobile);
@@ -1340,6 +1343,29 @@ textarea,
   /* Keep every camera scale pinned to the measured top edge of the prompt. */
   --stage-camera-render-origin-y: 100%;
   transform-origin: 50cqw 100%;
+}
+
+/* Size half-body art from the remaining reading stage, not the full screen.
+   The shared max-shot budget keeps wide/medium/close meaningful and stable.
+   The reading inset survives automatic choice growth and manual dialog hiding. */
+.char-layer-prompt-top .char {
+  --prompt-character-height: min(52cqh, max(0px, calc(
+    (100cqh - var(--prompt-top-fit-inset, var(--prompt-top-dialog-inset)) - var(--character-headroom))
+    / var(--prompt-camera-render-fit-scale) / max(1, var(--char-scale))
+  )));
+}
+
+.char-layer-prompt-top .char-image {
+  --char-image-height: var(--prompt-character-height);
+}
+
+.char-layer-prompt-top .char-live2d,
+.char-layer-prompt-top .char-live2d-mount {
+  height: var(--prompt-character-height);
+}
+
+.char-layer-prompt-top .char-live2d-mount {
+  width: var(--prompt-character-height);
 }
 
 .sticker-layer {
@@ -5976,7 +6002,14 @@ textarea,
 @media (max-width: 768px) and (orientation: portrait) {
   .stage-content-frame {
     width: 100cqw;
-    height: min(100cqh, calc(100cqw * 16 / 9));
+    height: 100cqh;
+    --character-headroom: max(88px, calc(env(safe-area-inset-top, 0px) + 80px));
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .stage-content-frame {
+    --character-headroom: max(70px, calc(env(safe-area-inset-top, 0px) + 60px));
   }
 }
 

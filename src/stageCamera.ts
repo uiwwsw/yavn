@@ -53,6 +53,10 @@ const MOBILE_SHOT_SCALE: Record<CameraShot, number> = {
   close: 1.74,
   reaction: 1.66,
 };
+// Fit prompt-anchored art once for the largest shot, so camera changes still zoom
+// without resizing the underlying portrait or pushing its head outside the stage.
+export const PROMPT_CAMERA_FIT_SCALE = Math.max(...Object.values(SHOT_SCALE));
+export const MOBILE_PROMPT_CAMERA_FIT_SCALE = Math.max(...Object.values(MOBILE_SHOT_SCALE));
 const COMPOSITION_ORIGIN_Y = 86;
 const MOBILE_COMPOSITION_ORIGIN_Y = 82;
 

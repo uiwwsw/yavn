@@ -245,7 +245,7 @@
 @keyframes gameUiArrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 768px) {
-  .app .hud { inset: 16px 14px auto; gap: 12px; }
+  .app .hud { inset: max(16px, calc(env(safe-area-inset-top, 0px) + 8px)) 14px auto; gap: 12px; }
   .app .hud-meta-group { max-width: calc(100% - 145px); gap: 5px; }
   .app .hud-meta-group .meta { font-size: 10px; }
   .app .hud-chapter-progress { font-size: 8px; gap: 5px; letter-spacing: .06em; }

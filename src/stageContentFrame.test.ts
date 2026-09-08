@@ -23,7 +23,7 @@ describe('responsive stage content frame', () => {
       /\.stage-content-frame\s*\{[\s\S]*?top: 50%;[\s\S]*?left: 50%;[\s\S]*?width: min\(100cqw, calc\(100cqh \* 16 \/ 9\)\);[\s\S]*?height: min\(100cqh, calc\(100cqw \* 3 \/ 4\)\);[\s\S]*?transform: translate\(-50%, -50%\);[\s\S]*?container-name: stage-content;[\s\S]*?container-type: size;/,
     );
     expect(styles).toMatch(
-      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\s*\{[\s\S]*?width: 100cqw;[\s\S]*?height: min\(100cqh, calc\(100cqw \* 16 \/ 9\)\);/,
+      /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\s*\{[\s\S]*?width: 100cqw;[\s\S]*?height: 100cqh;/,
     );
     expect(styles).toMatch(
       /@media \(max-width: 768px\) and \(orientation: portrait\)[\s\S]*?\.stage-content-frame\.has-settings-modal\s*\{[\s\S]*?height: 100%;/,
