@@ -43,7 +43,7 @@ describe('start gate presentation', () => {
     expect(app).not.toContain('offscreenDistances');
     expect(app).not.toContain('START_GATE_ACTION_FAILSAFE_BUFFER_MS');
     expect(app).toContain('<div className={actionClass}>');
-    expect(app).toContain('window.setTimeout(resolve, 220)');
+    expect(app).toContain('window.setTimeout(resolve, duration)');
     expect(styles).toMatch(/\.start-gate::after\s*\{[\s\S]*?background: #080709;[\s\S]*?transition: opacity 220ms ease-out;/);
     expect(styles).toMatch(/\.start-gate\.is-launching::after\s*\{[\s\S]*?opacity: 1;/);
     expect(styles).not.toContain('@keyframes start-gate-launch-mark');

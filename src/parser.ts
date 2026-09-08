@@ -1,3 +1,4 @@
+import { mapStartSceneAssets } from './startScene';
 import { backgroundId } from './cinematic';
 import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
@@ -605,6 +606,11 @@ export function parseConfigYaml(raw: string, sourcePath: string): { data?: Parse
           ...parsed.startScreen,
           image: normalizedStartScreenImage,
           music: normalizedStartScreenMusic,
+          scene: mapStartSceneAssets(parsed.startScreen.scene, (path) => {
+            const normalized = canonicalizeDeclaredPath(path, sourceDir);
+            if (!normalized) throw new Error(`${normalizedSourcePath}: startScreen.scene has invalid path '${path}'`);
+            return normalized;
+          }),
         }
       : undefined;
 

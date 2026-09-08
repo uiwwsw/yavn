@@ -26,6 +26,29 @@
 #   titleColor: "#ffe0a3" # 배경 위 게임 제목의 CSS 색상
 #   startButtonText: 시작하기
 #   buttonPosition: auto
+#   eyebrow: "비가 멎기 전에, 진실을 찾아라"
+#   subtitle: "모든 증언에는 빈틈이 있다. 당신은 무엇을 믿을 것인가."
+#   scene:
+#     layout: split # split | centered
+#     motion: drift # none | drift | push
+#     duration: 24000 # 카메라 편도 이동 시간(ms), 왕복 반복
+#     parallax: 12 # 마우스에 반응하는 깊이 이동(px)
+#     particles: rain # none | dust | embers | rain | snow | fireflies
+#     intensity: 0.65
+#     fog: true
+#     light: lightning # none | breathe | lightning
+#     accent: "#a4c6e8"
+#     # video: assets/video/title.webm # 무음 반복, image는 미재생/실패 시 대체 배경
+#     layers:
+#       - image: assets/char/detective.webp
+#         x: 74
+#         y: 65
+#         width: 60
+#         height: 110
+#         depth: 1.5
+#         motion: sway # none | float | sway
+#         mobile: { x: 72, y: 86, width: 140, height: 95 }
+#     transition: { type: curtain, duration: 1200 } # fade | iris | curtain
 # ui:
 #   template: cinematic-noir # cinematic-noir | neon-grid | paper-stage
 #

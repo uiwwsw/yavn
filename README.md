@@ -31,6 +31,7 @@ pnpm dev
 
 ## 장면 연출
 
+- **타이틀 장면 엔진**: 카메라·다층 이미지·마우스 시차·비/불티/눈/반딧불·안개/조명·영상과 시작 전환을 YAML로 구성. 로딩 중 이야기 시간을 보존.
 - **장소 전환**: 디졸브·암전·좌우 와이프·컷, 장면별 길이와 디코드/전환 완료 대기.
 - **공격 연출**: 공격자·대상·방향을 지정하면 접근→타격→반응에 맞춰 인물, 화면 효과, 효과음이 함께 움직입니다. `attack.image`로 무기·표정이 보이는 전용 장면 컷도 지정할 수 있습니다.
 - **게임오버·엔딩**: 마지막 장면에서 결말을 읽은 뒤 선택 복구나 크레딧으로 이동합니다. 개별 엔딩의 배경·음악·후일담·분위기를 지정할 수 있습니다.
@@ -256,6 +257,29 @@ startScreen:
   titleColor: "#ffe0a3"
   startButtonText: 시작하기
   buttonPosition: auto
+  eyebrow: "비가 멎기 전에, 진실을 찾아라"
+  subtitle: "모든 증언에는 빈틈이 있다. 당신은 무엇을 믿을 것인가."
+  scene:
+    layout: split # split | centered
+    motion: drift # none | drift | push
+    duration: 24000 # 카메라 편도 이동 시간(ms), 왕복 반복
+    parallax: 12 # 마우스에 반응하는 깊이 이동(px)
+    particles: rain # none | dust | embers | rain | snow | fireflies
+    intensity: 0.65
+    fog: true
+    light: lightning # none | breathe | lightning
+    accent: "#a4c6e8"
+    # video: assets/video/title.webm # 무음 반복, image는 미재생/실패 시 대체 배경
+    layers:
+      - image: assets/char/detective.webp
+        x: 74
+        y: 65
+        width: 60
+        height: 110
+        depth: 1.5
+        motion: sway # none | float | sway
+        mobile: { x: 72, y: 86, width: 140, height: 95 }
+    transition: { type: curtain, duration: 1200 } # fade | iris | curtain
 endingScreen:
   image: assets/bg/ending.png
 endings:
@@ -335,7 +359,7 @@ scenes:
   - `title`, `author`, `version`, `seo`
   - `textSpeed`, `autoSave`, `clickToInstant`
   - `ui` (`template`: `cinematic-noir` | `neon-grid` | `paper-stage`)
-  - `startScreen` (`enabled`, `image`, `imagePosition`, `mobileImagePosition`, `music`, `showTitle`, `titleColor`, `startButtonText`, `buttonPosition`)
+  - `startScreen` (`enabled`, `image`, `imagePosition`, `mobileImagePosition`, `music`, `showTitle`, `titleColor`, `eyebrow`, `subtitle`, `scene`, `startButtonText`, `buttonPosition`)
   - `endingScreen` (`image`)
   - `endings`, `endingRules`, `defaultEnding`
 - `seo` 하위 필드:
@@ -371,7 +395,7 @@ scenes:
 - 타이틀 이미지 자체에 게임명이 포함되어 있으면 `showTitle: false`로 엔진 제목 오버레이를 숨길 수 있습니다. SEO 제목과 접근 가능한 문서 제목은 그대로 유지됩니다.
 - `startScreen.titleColor`에는 `#ffe0a3`, `rgb(...)`, `oklch(...)` 같은 CSS 색상을 지정할 수 있습니다. 미지정 시 선택한 `ui.template`의 기본 제목색을 사용합니다.
 - `startScreen.imagePosition`은 시작 이미지의 데스크톱 `object-position`, `mobileImagePosition`은 768px 이하 화면의 초점입니다. 모바일 값을 생략하면 데스크톱 값을 그대로 사용합니다.
-- `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 버튼을 누르면 정지됩니다.
+- `startScreen.music`은 시작 게이트에서만 반복 재생되며, 게임 시작/이어하기 전환 동안 페이드아웃합니다.
 - 서로 다른 로컬 오디오 `music` 액션은 약 420ms 동안 크로스페이드됩니다. 같은 곡을 다시 지정하면 재시작하지 않으며, BGM 끄기와 초기화면 이동은 즉시 정지합니다.
 - `endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 교체합니다.
 
@@ -931,19 +955,42 @@ scenes:
 - 새 저장에는 현재 배경의 에셋 ID도 함께 기록합니다. `이어하기`는 기존처럼 커서까지 연출을 재생하되 저장된 배경을 마지막에 다시 적용하므로, 복잡한 분기의 재생 경로가 불완전해도 검은 무대 대신 저장 당시 배경을 복원합니다. 배경 필드가 없는 구버전 저장은 저장된 스토리 로그와 현재 scene에서 마지막 `bg`를 먼저 유추하고, 정보가 없을 때만 기존 커서 재생 결과를 사용합니다.
 - 레거시 저장 키(`vn-engine-autosave`)가 남아 있으면 URL 게임 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - URL 게임의 `config.yaml`, `base.yaml`, 챕터 YAML은 브라우저 HTTP 캐시를 우회해 가져오고 한 실행 안에서는 메모리 캐시를 사용합니다. 배포 뒤 새 분기 파일과 이전 파일이 섞이지 않으며 이미지·음원 같은 대용량 에셋 캐시는 그대로 유지합니다.
-- 같은 탭 세션에서 시작/로드를 한 번 누르면(`sessionStorage` 플래그) 새로고침 시 시작 화면을 다시 띄우지 않습니다.
+- 같은 탭 세션에서 시작/로드에 성공하면(`sessionStorage` 플래그) 새로고침 시 시작 화면을 다시 띄우지 않습니다.
 - 시스템 탭의 `초기화면 가기` 버튼은 해당 `sessionStorage` 플래그를 초기화하고, 현재 인게임 BGM을 즉시 정지한 뒤 Start Gate(시작 화면)를 같은 탭에서 다시 엽니다.
 - ZIP 실행은 시작 화면을 지원하지만 `이어하기` 버튼은 노출하지 않습니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)의 시각 스타일은 `config.yaml.ui.template` 전역 설정을 그대로 따릅니다.
-- 시작 화면은 1.6초의 작은 배경 안정화, 정적인 미세 질감, 비네트·테마 프레임, 타이틀/CTA의 짧은 페이드로 첫인상을 만듭니다. 제목에는 테마 공통 자동 대비 표면·다중 그림자·한글 단어 단위 줄바꿈을 적용해 밝은 키아트와 긴 모바일 제목에서도 글자가 사라지지 않습니다. 시작 버튼을 누르면 220ms 검정 크로스페이드로 본편에 연결하고 중복 입력을 막습니다. `prefers-reduced-motion` 환경에서는 장식 애니메이션을 비활성화합니다.
+- 시작 화면은 `startScreen.scene`으로 배경 카메라, 투명 이미지 레이어, 깊이별 마우스 시차, 입자, 안개, 조명을 합성하는 타이틀 장면입니다. `scene`을 생략한 기존 게임에도 느린 카메라 이동과 먼지·안개·호흡 조명을 기본 적용합니다. 제목과 버튼은 고정된 위치에서 짧게 등장하며 별도 레이어로 움직이는 배경 위에 유지됩니다. 높이 700px 이하의 작은 세로 화면은 타이틀/메뉴 영역만 스크롤하고 상단 제어와 하단 권리 고지는 유지합니다.
+- 시작/이어하기는 선택한 `fade/iris/curtain`으로 화면을 덮으면서 실제 게임 무대를 뒤에서 마운트·디코드합니다. 준비가 끝나면 덮개를 페이드로 열며, 전환 중 중복 입력과 본편 포커스를 차단합니다. 실패하면 같은 시작 화면에서 오류를 표시하고 재시도할 수 있습니다. URL 세션의 시작 완료 플래그는 성공 후에만 기록합니다.
+- 시작 화면·챕터 전환 덮개·숨겨진 브라우저 탭에서는 대사 타이핑, `wait`, `say.wait/autoAdvance`, 선택 제한시간, 화면 효과와 공격 단계 타이머를 일시 정지하고 남은 시간부터 이어갑니다. 첫 효과음·화면 효과·공격과 컷신 영상도 덮개가 열린 뒤 진행하므로 준비 중에 첫 장면이 소모되지 않습니다. 에셋 로딩·디코드 감시 타이머는 계속 동작합니다. 챕터 준비 완료 뒤에는 440ms의 공개 페이드가 끝날 때까지 입력과 이야기 시간을 유지합니다.
+- 타이틀 상단의 움직임 버튼으로 배경 연출을 정지/재생할 수 있고 음악 버튼으로 BGM을 전환합니다. 시작 음악은 덮개가 닫히는 동안 페이드아웃합니다. OS 모션 감소·플레이어 효과 `minimal`에서는 배경 모션/영상 재생을 멈춥니다. 숨겨진 탭에서도 캔버스·시차 루프와 영상을 정지하며 타이틀 입자는 모바일 수를 줄이고 DPR을 최대 1.5로 제한합니다.
 - `/game-list/:gameId` 직접 진입 시 설정 프리뷰와 본편을 준비하는 동안에는 비대화형 부트 화면을 유지해 런처나 빈 게임 HUD가 먼저 노출되지 않습니다. 시작·이어하기 버튼은 뷰포트 측정이나 화면 밖 장거리 이동 없이 최종 위치에서 opacity만 전환하므로 PC·모바일의 첫 페인트에서 튀거나 사라지지 않습니다.
+
+### 타이틀 장면 작성 (`startScreen.scene`)
+
+`image`는 기본 배경이고 `layers`는 뒤에서 앞으로 쌓는 이미지 목록입니다. 투명 PNG/WebP 인물을 따로 넣으면 배경과 다른 깊이로 움직입니다. 경로는 `config.yaml` 기준이며 URL·ZIP에서 같은 규칙을 사용합니다. `root:/` 공유 에셋도 지원합니다. ZIP 프리뷰의 레이어·영상 Blob URL은 시작 화면을 닫을 때 함께 해제합니다. 영상은 브라우저가 재생 가능한 WebM/MP4를 사용하고, 재생 거부/오류 시 기본 이미지를 유지합니다.
+
+| 필드 | 값 / 기본값 |
+| --- | --- |
+| `layout` | `split`(좌측 제목), `centered`; 기본 `split`, 작은 세로 화면에서는 좌측 정렬 |
+| `motion`, `duration` | `none/drift/push`, 편도 `8000..90000ms`; 기본 `drift`, `24000` |
+| `parallax` | `0..30px`, 기본 `12`; 마우스만 반응하며 터치에서는 자동 카메라만 사용 |
+| `particles`, `intensity` | `none/dust/embers/rain/snow/fireflies`, `0..1`; 기본 `dust`, `0.55` |
+| `fog`, `light`, `accent` | 기본 `true`, `breathe`; 조명 `none/breathe/lightning`, 색상 `#RGB/#RRGGBB` |
+| `video` | 선택적 무음 반복 배경 영상; `image`를 함께 지정해 대체 배경 제공 |
+| `layers` | 최대 6개; 필수 `image`, 화면 중심 좌표 `x/y` 기본 `50`(`-50..150%`) |
+| 레이어 크기 | `width/height` 기본 `100`(`1..250%`), 기본 `fit: contain`; `cover` 가능 |
+| 레이어 표현 | `depth: 0..3` 기본 `1`, `opacity: 0..1` 기본 `1`, `blend: normal/screen/multiply`, `motion: none/float/sway` |
+| `layers[].mobile` | 768px 이하의 `x/y/width/height/opacity`만 덮어쓰기; 미지정 항목은 데스크톱 값 |
+| `transition` | `type: fade/iris/curtain`, `duration: 200..2400ms`, 기본 `fade/1000`; 닫기/열기에 절반씩 사용하며 실제 로딩 대기는 별도 |
+
+`startScreen.eyebrow`(최대 120자), `subtitle`(최대 300자)로 제목 위아래 문구를 지정합니다. `showTitle: false`는 문구 블록 전체를 숨깁니다. `buttonPosition`과 `titleColor`는 계속 사용할 수 있습니다. 모든 자동 배경 움직임을 끄려면 `scene: { motion: none, parallax: 0, particles: none, fog: false, light: none }`을 사용하고 영상과 레이어 모션도 생략합니다.
 
 ## 덕만 완결판
 
 - `/game-list/deokman/`은 **선덕여왕: 죽은 공주의 왕관** V10.4의 정식 12챕터 완결판입니다. 덕만은 `어린 공주 → 10년 뒤 국경 유랑자 → 신분을 되찾은 공주 → 선덕왕`으로 성장합니다. V10.2에서 인물 발화 320개와 선택 프롬프트 36개를 사람의 질문·반응·명령처럼 전수 교정했고, V10.3에서는 첫 번째 보기에 몰려 있던 생존 답을 실제 화면 기준 1번 11개·2번 11개·3번 12개·4번 2개로 분산했습니다. 플레이어는 번호 패턴이 아니라 대화 속 물리적·정치적 단서를 읽어 독살·모함·처형을 피하고 덕만을 여왕으로 만들어야 합니다.
 - 전 작품에 고유한 선택 36개와 보기 112개가 있으며, 각 선택에는 생존 정답이 정확히 하나 있습니다. 같은 생존 답 번호가 세 번 연속 이어지지 않으며 조건부 보기가 숨겨진 뒤의 실제 표시 순서도 회귀 테스트로 검증합니다. 나머지 76개(67.9%) 오답은 장면형 `gameOver`로 이어집니다. 오답은 즉시 결과창으로 끊지 않고 선택 반응, 잠깐의 안도, 상대의 반격, 죽음을 확정하는 기록을 최소 네 번의 대사·내레이션으로 보여 줍니다. 독이 든 차·먹·인장·약·승전주, 정치적 모함, 매복, 화재, 쿠데타처럼 선택과 인물 관계에 맞는 실패를 사용하며 원인 선택으로 돌아갈 수 있습니다.
 - `dialogue/narration/record` 채널, `say.when`과 `choice.options[].when`, 외부 챕터 `goto`, 누적 상태 `branch`를 실제 장편 흐름에서 사용합니다. 몰입을 깨는 `system` 화자는 본편에 사용하지 않습니다.
-- 시작 화면은 금지된 기록과 모란패를 든 어린 덕만의 별궁 화재 키아트를 사용하고, 모바일 초점을 `72% 50%`로 지정해 세로 크롭에서도 어린 덕만이 보이게 합니다. 어린 덕만 3표정과 성인 시기 10개 원화는 동일한 얼굴 계보·전신 구도를 유지한 고해상도 RGBA PNG입니다. 2장의 국경 장터에는 해진 유랑복, 3장 귀환부터 9장 즉위 전에는 공주복, 즉위 장면과 10~12장에는 금제 관식이 있는 왕복을 사용하며, 시녀 잠입 선택은 무장식 시녀복으로 바뀝니다. 모란도부터 비담의 서신까지 10개 증거물은 배경 없는 SVG 오브젝트입니다.
+- 시작 화면은 불타는 궁궐 배경과 독립된 덕만 캐릭터 레이어에 불티·안개·호흡 조명·시차를 합성합니다. 모바일 인물 위치와 크기는 `scene.layers[].mobile`로 따로 조정하며 시작 시 커튼 전환으로 본편을 엽니다. 런처 대표 이미지는 기존 키아트를 유지합니다. 어린 덕만 3표정과 성인 시기 10개 원화는 동일한 얼굴 계보·전신 구도를 유지한 고해상도 RGBA PNG입니다. 2장의 국경 장터에는 해진 유랑복, 3장 귀환부터 9장 즉위 전에는 공주복, 즉위 장면과 10~12장에는 금제 관식이 있는 왕복을 사용하며, 시녀 잠입 선택은 무장식 시녀복으로 바뀝니다. 모란도부터 비담의 서신까지 10개 증거물은 배경 없는 SVG 오브젝트입니다.
 - 전체 12장 구조, 선택·엔딩 규칙, 아트 제작 규격과 구현 현황은 [`docs/DEOKMAN_GAME_BIBLE.ko.md`](docs/DEOKMAN_GAME_BIBLE.ko.md)에, 실제 대사 수정 규칙은 [`public/game-list/deokman/CHARACTER_VOICE.ko.md`](public/game-list/deokman/CHARACTER_VOICE.ko.md)에 고정했습니다.
 
 ## Conan 샘플 분기 구조

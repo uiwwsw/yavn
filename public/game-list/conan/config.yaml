@@ -38,6 +38,19 @@ startScreen:
   showTitle: true
   startButtonText: "시작하기"
   buttonPosition: "bottom-center"
+  eyebrow: "비가 멎기 전에, 진실을 찾아라"
+  subtitle: "모든 증언에는 빈틈이 있다. 당신은 무엇을 믿을 것인가."
+  scene:
+    layout: split
+    motion: push
+    duration: 32000
+    parallax: 10
+    particles: rain
+    intensity: 0.85
+    fog: true
+    light: lightning
+    accent: "#a4c6e8"
+    transition: { type: iris, duration: 1100 }
 endingScreen:
   image: "assets/bg/mountain_rain-v2.avif"
 endings:

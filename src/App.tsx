@@ -22,6 +22,9 @@ import easyCl2dNoticeUrl from '../assets/licenses/live2d/easy-cl2d-NOTICE.md?url
 import live2dRedistributableFilesUrl from '../assets/licenses/live2d/RedistributableFiles.txt?url';
 import { CinematicLayer } from './CinematicLayer';
 import { YavnLogo } from './YavnLogo';
+import { TitleScene } from './TitleScene';
+import { SceneCurtain, useSceneCurtain } from './SceneCurtain';
+import { collectStartSceneAssets, DEFAULT_START_SCENE, mapStartSceneAssets } from './startScene';
 import { OutcomePrelude, trapOutcomeFocus } from './OutcomePrelude';
 import './cinematic.css';
 import { BackgroundTransition } from './BackgroundTransition';
@@ -62,6 +65,7 @@ import {
   setAutoSaveEnabled,
   setInventoryUiSettings,
   setPlayerAutoPlayPaused,
+  setScenePresentationPaused,
   setPlayerExperienceSettings,
   skipVideoCutscene,
   stopActiveBgm,
@@ -137,6 +141,7 @@ import type {
   LegalNotice,
   Position,
   StartButtonPosition,
+  StartSceneConfig,
   StickerSlot,
   UiTemplateId,
 } from './types';
@@ -370,6 +375,9 @@ type StartGateState =
     buttonPosition: StartButtonPosition;
     showTitle: boolean;
     titleColor?: string;
+    eyebrow?: string;
+    subtitle?: string;
+    scene?: StartSceneConfig;
     showLoadButton: boolean;
     legalNotices: LegalNotice[];
   }
@@ -389,6 +397,9 @@ type StartGateState =
     buttonPosition: StartButtonPosition;
     showTitle: boolean;
     titleColor?: string;
+    eyebrow?: string;
+    subtitle?: string;
+    scene?: StartSceneConfig;
     showLoadButton: false;
     legalNotices: LegalNotice[];
   };
@@ -590,11 +601,11 @@ function isMobilePointerEnvironment(): boolean {
   return hasCoarsePointer || mobileUserAgent;
 }
 
-function waitForStartGateLaunchTransition(): Promise<void> {
+function waitForStartGateLaunchTransition(duration = 500): Promise<void> {
   if (typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
     return Promise.resolve();
   }
-  return new Promise((resolve) => window.setTimeout(resolve, 220));
+  return new Promise((resolve) => window.setTimeout(resolve, duration));
 }
 
 function normalizeGameListSeoEntry(value: unknown, fallbackTitle?: string): GameListSeoEntry | undefined {
@@ -1561,6 +1572,12 @@ export default function App() {
   const [uploading, setUploading] = useState(false);
   const [startGate, setStartGate] = useState<StartGateState | null>(null);
   const [startGateLaunching, setStartGateLaunching] = useState(false);
+  const [startGateRevealing, setStartGateRevealing] = useState(false);
+  const [startGateError, setStartGateError] = useState<string>();
+  const [startGateMotionPaused, setStartGateMotionPaused] = useState(false);
+  const [documentHidden, setDocumentHidden] = useState(() => document.hidden);
+  const [startGateAudioPlaying, setStartGateAudioPlaying] = useState(false);
+  const startGateLaunchLockRef = useRef(false);
   const [inputAnswer, setInputAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [caseFileTab, setCaseFileTab] = useState<'log' | 'inventory' | 'system'>('log');
@@ -1673,6 +1690,7 @@ export default function App() {
     audio.pause();
     audio.src = '';
     startGateAudioRef.current = null;
+    setStartGateAudioPlaying(false);
   }, []);
 
   const tryPlayStartGateMusic = useCallback(() => {
@@ -1777,6 +1795,9 @@ export default function App() {
                 buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
                 showTitle: preview.startScreen.showTitle ?? true,
                 titleColor: preview.startScreen.titleColor,
+                eyebrow: preview.startScreen.eyebrow,
+                subtitle: preview.startScreen.subtitle,
+                scene: mapStartSceneAssets(preview.startScreen.scene, (path) => resolveStartGateAssetUrl(path, baseUrl) ?? path),
                 showLoadButton: preview.hasLoadableSave,
                 legalNotices: preview.legalNotices,
               });
@@ -1815,6 +1836,9 @@ export default function App() {
       if (startGate?.kind === 'zip' && startGate.previewMusicBlobUrl?.startsWith('blob:')) {
         URL.revokeObjectURL(startGate.previewMusicBlobUrl);
       }
+      if (startGate?.kind === 'zip') {
+        collectStartSceneAssets(startGate.scene).filter((url) => url.startsWith('blob:')).forEach((url) => URL.revokeObjectURL(url));
+      }
     };
   }, [startGate]);
 
@@ -1827,15 +1851,39 @@ export default function App() {
     audio.loop = true;
     audio.volume = getPlayerExperienceSettings().bgmVolume;
     startGateAudioRef.current = audio;
+    const onPlay = () => setStartGateAudioPlaying(true);
+    const onPause = () => setStartGateAudioPlaying(false);
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
     void audio.play().catch(() => undefined);
     return () => {
       audio.pause();
       audio.src = '';
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('pause', onPause);
       if (startGateAudioRef.current === audio) {
         startGateAudioRef.current = null;
       }
     };
   }, [bgmEnabled, startGate, stopStartGateMusic]);
+
+  useEffect(() => {
+    if (!startGateLaunching) return;
+    const audio = startGateAudioRef.current;
+    if (!audio) return;
+    const duration = (startGate?.scene ?? DEFAULT_START_SCENE).transition.duration / 2;
+    const initialVolume = audio.volume;
+    const started = performance.now();
+    let frame = 0;
+    const fade = () => {
+      const progress = Math.min(1, (performance.now() - started) / duration);
+      audio.volume = initialVolume * (1 - progress);
+      if (progress < 1) frame = requestAnimationFrame(fade);
+      else audio.pause();
+    };
+    frame = requestAnimationFrame(fade);
+    return () => { cancelAnimationFrame(frame); audio.volume = initialVolume; };
+  }, [startGateLaunching, startGate]);
 
   useEffect(() => {
     if (startGateAudioRef.current) {
@@ -1898,9 +1946,12 @@ export default function App() {
     };
   }, [gameShellLocked]);
 
+  const chapterCurtainVisible = useSceneCurtain(chapterLoading && !startGate);
+  const playbackCovered = Boolean(startGate) || chapterCurtainVisible || documentHidden;
+
   const handleManualAdvance = useCallback(() => {
     const current = useVNStore.getState();
-    if (current.attack) {
+    if (playbackCovered || startGateLaunchLockRef.current || current.attack) {
       queuedManualAdvanceAtRef.current = null;
       return;
     }
@@ -1913,11 +1964,11 @@ export default function App() {
     }
     queuedManualAdvanceAtRef.current = null;
     handleAdvance();
-  }, [registerManualAdvance]);
+  }, [playbackCovered, registerManualAdvance]);
 
   useEffect(() => {
-    if (attack) queuedManualAdvanceAtRef.current = null;
-  }, [attack?.revision]);
+    if (attack || startGateLaunching || chapterCurtainVisible) queuedManualAdvanceAtRef.current = null;
+  }, [attack?.revision, startGateLaunching, chapterCurtainVisible]);
 
   useEffect(() => {
     if (busy || queuedManualAdvanceAtRef.current === null) {
@@ -2002,8 +2053,18 @@ export default function App() {
   }, [bootMode, game?.meta.title, game?.meta.version, startGate?.kind, startGate?.gameTitle]);
 
   useEffect(() => {
-    setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden);
-  }, [dialogUiHidden, settingsOpen]);
+    setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden || Boolean(startGate) || chapterCurtainVisible);
+  }, [dialogUiHidden, settingsOpen, startGate, chapterCurtainVisible]);
+
+  useEffect(() => {
+    const update = () => {
+      setDocumentHidden(document.hidden);
+      setScenePresentationPaused(Boolean(startGate) || chapterCurtainVisible || document.hidden);
+    };
+    update();
+    document.addEventListener('visibilitychange', update);
+    return () => { document.removeEventListener('visibilitychange', update); setScenePresentationPaused(false); };
+  }, [startGate, chapterCurtainVisible]);
 
   useEffect(() => {
     setSaveNotice('');
@@ -3104,14 +3165,14 @@ export default function App() {
       setInputAnswer('');
       return;
     }
-    if (skipInputAutoFocus) {
+    if (skipInputAutoFocus || playbackCovered) {
       return;
     }
     const rafId = window.requestAnimationFrame(() => {
       inputFieldRef.current?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(rafId);
-  }, [inputGate.active, skipInputAutoFocus]);
+  }, [inputGate.active, skipInputAutoFocus, playbackCovered]);
 
   useEffect(() => {
     if (!inputGate.active) {
@@ -3143,7 +3204,7 @@ export default function App() {
   }, [choiceGate.active, hasRecoveredFailedChoice]);
 
   useEffect(() => {
-    if (!choiceGate.active || choiceGate.options.length === 0) {
+    if (playbackCovered || !choiceGate.active || choiceGate.options.length === 0) {
       choiceOptionButtonRefs.current = [];
       return;
     }
@@ -3154,7 +3215,7 @@ export default function App() {
       choiceOptionButtonRefs.current[focusIndex]?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(rafId);
-  }, [choiceGate.active, choiceGate.key, choiceGate.options.length, recoveredFailedChoiceIndex]);
+  }, [choiceGate.active, choiceGate.key, choiceGate.options.length, recoveredFailedChoiceIndex, playbackCovered]);
 
   const postYouTubeCommand = useCallback(
     (func: string, args: unknown[] = []) => {
@@ -3177,17 +3238,17 @@ export default function App() {
 
   const resumeNativeCutsceneVideo = useCallback(() => {
     const video = nativeVideoRef.current;
-    if (!video || video.ended) {
+    if (playbackCovered || !video || video.ended) {
       return;
     }
     video.muted = true;
     void video.play().catch(() => {
       // Ignore autoplay-policy failures.
     });
-  }, []);
+  }, [playbackCovered]);
 
   const resumeVideoCutscenePlayback = useCallback(() => {
-    if (!videoCutscene.active) {
+    if (playbackCovered || !videoCutscene.active) {
       return;
     }
     if (videoCutscene.youtubeId) {
@@ -3196,7 +3257,13 @@ export default function App() {
       return;
     }
     resumeNativeCutsceneVideo();
-  }, [postYouTubeCommand, resumeNativeCutsceneVideo, videoCutscene.active, videoCutscene.youtubeId]);
+  }, [postYouTubeCommand, resumeNativeCutsceneVideo, videoCutscene.active, videoCutscene.youtubeId, playbackCovered]);
+
+  useEffect(() => {
+    if (!videoCutscene.active) return;
+    if (playbackCovered) { nativeVideoRef.current?.pause(); postYouTubeCommand('pauseVideo'); }
+    else resumeVideoCutscenePlayback();
+  }, [playbackCovered, videoCutscene.active, postYouTubeCommand, resumeVideoCutscenePlayback]);
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
@@ -3219,13 +3286,13 @@ export default function App() {
         completeVideoCutscene();
         return;
       }
-      if (payload.info === 2 && document.visibilityState === 'visible') {
+      if (payload.info === 2 && !playbackCovered && document.visibilityState === 'visible') {
         postYouTubeCommand('playVideo');
       }
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, [postYouTubeCommand, videoCutscene.active, videoCutscene.youtubeId, youtubePlayerId]);
+  }, [postYouTubeCommand, videoCutscene.active, videoCutscene.youtubeId, youtubePlayerId, playbackCovered]);
 
   useEffect(() => {
     if (!videoCutscene.active) {
@@ -3477,28 +3544,41 @@ export default function App() {
 
   const onStartGateLaunch = useCallback(
     async (resumeFromSave: boolean) => {
-      if (!startGate || startGateLaunching) {
-        return;
-      }
+      if (!startGate || startGateLaunchLockRef.current) return;
+      startGateLaunchLockRef.current = true;
       const gate = startGate;
+      const duration = (gate.scene ?? DEFAULT_START_SCENE).transition.duration / 2;
+      setStartGateError(undefined);
+      setStartGateRevealing(false);
       setStartGateLaunching(true);
-      stopStartGateMusic();
-      await waitForStartGateLaunchTransition();
+      setScenePresentationPaused(true);
       setGameBootPending(true);
-      setStartGate(null);
       try {
-        if (gate.kind === 'url') {
-          markStartGateSession(gate.sessionKey);
-          await loadGameFromUrl(gate.gameUrl, { resumeFromSave });
-          return;
-        }
-        await loadGameFromZip(gate.file, { resumeFromSave: false });
+        // Mount and decode the game behind the title scene while the cover closes.
+        await Promise.all([
+          gate.kind === 'url'
+            ? loadGameFromUrl(gate.gameUrl, { resumeFromSave })
+            : loadGameFromZip(gate.file, { resumeFromSave: false }),
+          waitForStartGateLaunchTransition(duration),
+        ]);
+        const state = useVNStore.getState();
+        if (state.error || !state.game) throw new Error(state.error?.message ?? '첫 장면을 준비하지 못했습니다.');
+        setStartGateRevealing(true);
+        await waitForStartGateLaunchTransition(duration);
+        if (gate.kind === 'url') markStartGateSession(gate.sessionKey);
+        stopStartGateMusic();
+        setStartGate(null);
+      } catch (failure) {
+        setStartGateError(failure instanceof Error ? failure.message : '게임을 불러오지 못했습니다.');
+        setStartGateRevealing(false);
       } finally {
         setGameBootPending(false);
+        setStartGateRevealing(false);
         setStartGateLaunching(false);
+        startGateLaunchLockRef.current = false;
       }
     },
-    [startGate, startGateLaunching, stopStartGateMusic],
+    [startGate, stopStartGateMusic],
   );
 
   const onUploadZip = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -3541,6 +3621,9 @@ export default function App() {
           buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
           showTitle: preview.startScreen.showTitle ?? true,
           titleColor: preview.startScreen.titleColor,
+          eyebrow: preview.startScreen.eyebrow,
+          subtitle: preview.startScreen.subtitle,
+          scene: preview.startScreen.scene,
           showLoadButton: false,
           legalNotices: preview.legalNotices,
         });
@@ -3592,6 +3675,9 @@ export default function App() {
               buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
               showTitle: preview.startScreen.showTitle ?? true,
               titleColor: preview.startScreen.titleColor,
+              eyebrow: preview.startScreen.eyebrow,
+              subtitle: preview.startScreen.subtitle,
+              scene: mapStartSceneAssets(preview.startScreen.scene, (path) => resolveStartGateAssetUrl(path, baseUrl) ?? path),
               showLoadButton: preview.hasLoadableSave,
               legalNotices: preview.legalNotices,
             });
@@ -3622,6 +3708,9 @@ export default function App() {
               buttonPosition: preview.startScreen.buttonPosition ?? 'auto',
               showTitle: preview.startScreen.showTitle ?? true,
               titleColor: preview.startScreen.titleColor,
+              eyebrow: preview.startScreen.eyebrow,
+              subtitle: preview.startScreen.subtitle,
+              scene: preview.startScreen.scene,
               showLoadButton: false,
               legalNotices: preview.legalNotices,
             });
@@ -3649,28 +3738,32 @@ export default function App() {
     [canReturnToStartScreen, onReturnToStartScreen],
   );
 
+  let startGateView = null;
   if (startGate) {
+    const scene = startGate.scene ?? DEFAULT_START_SCENE;
     const actionClass = `start-gate-actions start-gate-actions-${startGate.buttonPosition}`;
     const startGateStyle = {
+      '--scene-exit-duration': `${scene.transition.duration / 2}ms`,
+      ...(scene.accent ? { '--start-gate-accent': scene.accent } : {}),
       ...(startGate.titleColor ? { '--start-gate-title-color': startGate.titleColor } : {}),
       ...(startGate.imagePosition ? { '--start-gate-image-position': startGate.imagePosition } : {}),
       ...(startGate.mobileImagePosition
         ? { '--start-gate-mobile-image-position': startGate.mobileImagePosition }
         : {}),
     } as CSSProperties;
-    return (
+    startGateView = (
       <div
-        className={`start-gate${startGateLaunching ? ' is-launching' : ''}${startGate.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
+        className={`start-gate is-scene${startGateLaunching ? ' is-launching' : ''}${startGateRevealing ? ' is-revealing' : ''}${startGate.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
         style={startGateStyle}
         data-show-title={String(startGate.showTitle)}
+        data-scene-layout={scene.layout}
+        data-transition={scene.transition.type}
         data-ui-template={startGate.uiTemplate}
         aria-busy={startGateLaunching}
         onPointerDown={() => tryPlayStartGateMusic()}
       >
-        {startGate.imageUrl && <img className="start-gate-bg-image" src={startGate.imageUrl} alt="" aria-hidden="true" />}
-        {startGate.imageUrl && !startGate.showTitle && (
-          <img className="start-gate-title-art" src={startGate.imageUrl} alt="" aria-hidden="true" />
-        )}
+        <TitleScene scene={startGate.scene} imageUrl={startGate.imageUrl} showTitle={startGate.showTitle}
+          paused={startGateMotionPaused || playerExperience.effectLevel === 'minimal'} />
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-atmosphere" aria-hidden="true">
           <span className="start-gate-vignette" />
@@ -3681,9 +3774,9 @@ export default function App() {
           {startGate.showTitle && (
             <div className="start-gate-title-block">
               <div className="start-gate-title-ornament" aria-hidden="true"><span /></div>
-              <p className="start-gate-eyebrow">YAVN · INTERACTIVE STORY</p>
+              <p className="start-gate-eyebrow">{startGate.eyebrow ?? 'YAVN · INTERACTIVE STORY'}</p>
               <h1>{startGate.gameTitle}</h1>
-              <p className="start-gate-prologue">당신의 선택으로 이야기가 시작됩니다</p>
+              <p className="start-gate-prologue">{startGate.subtitle ?? '당신의 선택으로 이야기가 시작됩니다'}</p>
             </div>
           )}
           <div className={actionClass}>
@@ -3709,12 +3802,35 @@ export default function App() {
                 <span className="start-gate-button-mark" aria-hidden="true">↗</span>
               </button>
             )}
-            {startGate.musicUrl && <p className="start-gate-hint">화면을 눌러 음악과 함께 시작하세요</p>}
+            <p className="start-gate-hint">{startGate.musicUrl && !startGateAudioPlaying ? '화면을 눌러 음악과 함께 시작하세요' : '당신의 선택을 기다리고 있습니다'}</p>
+            {startGateError && <div className="start-gate-load-error" role="alert">
+              <strong>이야기를 열지 못했습니다.</strong><p>{startGateError}</p><span>시작 버튼을 눌러 다시 시도할 수 있습니다.</span>
+            </div>}
           </div>
         </div>
+        <div className="start-scene-controls">
+          <a href="/" aria-label="게임 목록으로">← 게임 목록</a>
+          <div>
+            {startGate.musicUrl && <button type="button" aria-pressed={startGateAudioPlaying}
+              disabled={startGateLaunching} onPointerDown={(event) => event.stopPropagation()}
+              onClick={() => {
+                if (startGateAudioPlaying) { setBgmEnabled(false); setBgmEnabledState(false); }
+                else { setBgmEnabled(true); setBgmEnabledState(true); tryPlayStartGateMusic(); }
+              }}>{startGateAudioPlaying ? '♫ 소리 켜짐' : '♪ 소리 켜기'}</button>}
+            <button type="button" aria-pressed={!startGateMotionPaused} disabled={startGateLaunching}
+              onClick={() => setStartGateMotionPaused((value) => !value)}>{startGateMotionPaused ? '움직임 재생' : '움직임 멈춤'}</button>
+          </div>
+        </div>
+        <div className="start-scene-cover" aria-hidden="true"><i /><i /></div>
+        {startGateLaunching && <div className="start-scene-loading" role="status" aria-live="polite">
+          <span>{startGateRevealing ? '이야기가 시작됩니다' : '첫 장면을 여는 중'}</span>
+          <div role="progressbar" aria-label="게임 준비" aria-valuemin={0} aria-valuemax={100}
+            aria-valuenow={Math.floor(chapterLoadingProgress * 100)}><i style={{ transform: `scaleX(${Math.max(.04, chapterLoadingProgress)})` }} /></div>
+        </div>}
         <LegalNoticeList notices={startGate.legalNotices} className="start-gate-legal-notices" />
       </div>
     );
+    if (!startGateLaunching || !game) return <>{null}{startGateView}</>;
   }
 
   if (shouldShowGameRouteBoot(gameBootPending, Boolean(game))) {
@@ -4174,7 +4290,10 @@ export default function App() {
   }[dialogChannel];
 
   return (
+    <>
     <div
+      {...(startGate ? { inert: '' } : {})}
+      data-story-paused={Boolean(startGate) || chapterCurtainVisible || documentHidden}
       className="app"
       data-ui-template={uiTemplate}
       data-motion-tempo={motionTempo}
@@ -4286,14 +4405,14 @@ export default function App() {
               id={youtubePlayerId}
               ref={youtubeIframeRef}
               className="video-cutscene-frame video-cutscene-frame-youtube"
-              src={`https://www.youtube.com/embed/${videoCutscene.youtubeId}?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+              src={`https://www.youtube.com/embed/${videoCutscene.youtubeId}?autoplay=0&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
               title="Cutscene"
               allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               referrerPolicy="strict-origin-when-cross-origin"
               onLoad={() => {
                 postYouTubeCommand('addEventListener', ['onStateChange']);
                 postYouTubeCommand('mute');
-                postYouTubeCommand('playVideo');
+                if (!playbackCovered) postYouTubeCommand('playVideo');
               }}
             />
           ) : (
@@ -4301,12 +4420,12 @@ export default function App() {
               ref={nativeVideoRef}
               className="video-cutscene-frame video-cutscene-frame-native"
               src={videoCutscene.src}
-              autoPlay
+              autoPlay={!playbackCovered}
               muted
               playsInline
               onEnded={() => completeVideoCutscene()}
               onPause={() => {
-                if (!videoCutscene.active || document.visibilityState !== 'visible') {
+                if (playbackCovered || !videoCutscene.active || document.visibilityState !== 'visible') {
                   return;
                 }
                 window.requestAnimationFrame(() => {
@@ -5178,26 +5297,8 @@ export default function App() {
         </div>
       )}
 
-      {chapterLoading && (
-        <div className="chapter-loading" role="status" aria-live="polite">
-          <div className="chapter-loading-kicker">
-            {chapterTotal > 1 ? `YAVN / CHAPTER ${chapterIndex} OF ${chapterTotal}` : 'YAVN / LOADING SCENE'}
-          </div>
-          <div className="chapter-loading-row">
-            <div className="chapter-loading-title">{chapterLoadingMessage ?? 'Loading chapter'}</div>
-            <div className="chapter-loading-percent">{Math.floor(chapterLoadingProgress * 100)}%</div>
-          </div>
-          <div
-            className="chapter-loading-bar"
-            role="progressbar"
-            aria-label="챕터 로딩"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.floor(chapterLoadingProgress * 100)}
-          >
-            <span style={{ width: `${Math.floor(chapterLoadingProgress * 100)}%` }} />
-          </div>
-        </div>
+      {chapterCurtainVisible && !startGate && (
+        <SceneCurtain loading={chapterLoading} progress={chapterLoadingProgress} chapter={chapterIndex} title={game?.meta.title} />
       )}
 
       {gameOver && !chapterLoading && !gameOverRecoveryOpen && (
@@ -5386,5 +5487,7 @@ export default function App() {
       )}
       </div>
     </div>
+    {startGateView}
+    </>
   );
 }

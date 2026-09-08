@@ -1,3 +1,5 @@
+import { PresentationClock } from './presentationClock';
+import { collectStartSceneAssets, mapStartSceneAssets } from './startScene';
 import { CINEMATIC_SOUNDS } from './cinematicAudio';
 import { backgroundId, normalizeAttack, normalizeBackground } from './cinematic';
 import type JSZip from 'jszip';
@@ -249,6 +251,21 @@ type PreparedChapter = {
 };
 
 type RuntimeMode = 'url' | 'zip' | undefined;
+
+const storyClock = new PresentationClock({
+  now: () => performance.now(),
+  set: (callback, duration) => window.setTimeout(callback, duration),
+  clear: (timer) => window.clearTimeout(timer),
+});
+let presentationCovered = false;
+function syncStoryClock() { storyClock.setPaused(presentationCovered || useVNStore.getState().chapterLoading); }
+export function setScenePresentationPaused(paused: boolean) {
+  presentationCovered = paused;
+  syncStoryClock();
+}
+useVNStore.subscribe((state, previous) => {
+  if (state.chapterLoading !== previous.chapterLoading) syncStoryClock();
+});
 
 let waitTimer: number | undefined;
 let typeFrame: number | undefined;
@@ -523,7 +540,7 @@ async function ensureChapterGame(chapter: PreparedChapter): Promise<GameData> {
 
 function clearPlayerAutoAdvance(): void {
   if (playerAutoAdvanceTimer !== undefined) {
-    window.clearTimeout(playerAutoAdvanceTimer);
+    storyClock.clear(playerAutoAdvanceTimer);
     playerAutoAdvanceTimer = undefined;
   }
 }
@@ -580,12 +597,12 @@ function schedulePlayerAutoAdvance(): void {
       return;
     }
     if (playerAutoPlayPaused || current.dialogUiHidden || current.busy) {
-      playerAutoAdvanceTimer = window.setTimeout(tryAdvance, 120);
+      playerAutoAdvanceTimer = storyClock.set(tryAdvance, 120);
       return;
     }
     handleAdvance();
   };
-  playerAutoAdvanceTimer = window.setTimeout(tryAdvance, runtimeGameSettings.autoPlayDelayMs);
+  playerAutoAdvanceTimer = storyClock.set(tryAdvance, runtimeGameSettings.autoPlayDelayMs);
 }
 
 type IdleCallbackWindow = Window & {
@@ -608,7 +625,8 @@ function cancelNextChapterWarm(): void {
 }
 
 let cinematicRevision = 0;
-const cinematicTimers = new Set<number>();
+const cinematicTimers = new Map<number, () => void>();
+let cinematicTimerSequence = 0;
 const activeSfx = new Set<HTMLAudioElement>();
 let pendingBackground: { revision: number; complete: (ok: boolean) => void } | undefined;
 
@@ -620,16 +638,23 @@ export function completeBackgroundTransition(revision: number, ok = true): void 
   pending.complete(ok);
 }
 
-function scheduleCinematic(callback: () => void, delay: number): number {
+function cancelCinematic(timer: number) {
+  cinematicTimers.get(timer)?.();
+  cinematicTimers.delete(timer);
+}
+
+function scheduleCinematic(callback: () => void, delay: number, presentationTime = false): number {
   const revision = cinematicRevision;
   const game = useVNStore.getState().game;
-  const timer = window.setTimeout(() => {
-    cinematicTimers.delete(timer);
+  const token = ++cinematicTimerSequence;
+  const run = () => {
+    cinematicTimers.delete(token);
     if (revision !== cinematicRevision || useVNStore.getState().game !== game) return;
     callback();
-  }, delay);
-  cinematicTimers.add(timer);
-  return timer;
+  };
+  const timer = presentationTime ? storyClock.set(run, delay) : window.setTimeout(run, delay);
+  cinematicTimers.set(token, () => presentationTime ? storyClock.clear(timer) : window.clearTimeout(timer));
+  return token;
 }
 
 function stopSoundEffects(): void {
@@ -643,7 +668,7 @@ function stopSoundEffects(): void {
 
 function clearCinematics() {
   cinematicRevision += 1;
-  for (const timer of cinematicTimers) window.clearTimeout(timer);
+  for (const cancel of cinematicTimers.values()) cancel();
   cinematicTimers.clear();
   pendingBackground = undefined;
   useVNStore.getState().setAttack(undefined);
@@ -652,7 +677,7 @@ function clearCinematics() {
 
 function clearScreenEffect() {
   if (effectTimer) {
-    window.clearTimeout(effectTimer);
+    storyClock.clear(effectTimer);
     effectTimer = undefined;
   }
   if (effectFrame !== undefined) {
@@ -666,7 +691,7 @@ function clearTimers() {
   clearCinematics();
   clearScreenEffect();
   if (waitTimer) {
-    window.clearTimeout(waitTimer);
+    storyClock.clear(waitTimer);
     waitTimer = undefined;
   }
   if (typeFrame !== undefined) {
@@ -674,14 +699,14 @@ function clearTimers() {
     typeFrame = undefined;
   }
   if (autoAdvanceTimer) {
-    window.clearTimeout(autoAdvanceTimer);
+    storyClock.clear(autoAdvanceTimer);
     autoAdvanceTimer = undefined;
   }
   clearPlayerAutoAdvance();
   currentDialogueHasAuthoredAutoAdvance = false;
   cancelNextChapterWarm();
   if (choiceTimer) {
-    window.clearTimeout(choiceTimer);
+    storyClock.clear(choiceTimer);
     choiceTimer = undefined;
   }
   for (const timer of clearStickerTimers.values()) {
@@ -2295,7 +2320,7 @@ function typeDialog(
   }
 
   let stepIndex = 0;
-  let nextStepAt = performance.now() + plan[0].delayMs;
+  let nextStepAt = storyClock.now + plan[0].delayMs;
   useVNStore.getState().setDialog({
     typing: true,
     visibleText: '',
@@ -2303,8 +2328,9 @@ function typeDialog(
     typingIntensity: 0,
     typingPulse: 0,
   });
-  const stepTyping = (timestamp: number) => {
+  const stepTyping = (frameTimestamp: number) => {
     typeFrame = undefined;
+    const timestamp = storyClock.at(frameTimestamp);
     let latestDueStep: (typeof plan)[number] | undefined;
     while (stepIndex < plan.length && timestamp >= nextStepAt) {
       latestDueStep = plan[stepIndex];
@@ -3648,6 +3674,7 @@ function runAttack(attack: AttackDirective, loopGuard: number): void {
   const sound = (id: string | undefined, fallback: string) => id && state.game
     ? resolveAsset(state.baseUrl, state.game.assets.sfx[id]) : fallback;
   const begin = (image?: string) => {
+    if (storyClock.paused) { scheduleCinematic(() => begin(image), 0, true); return; }
     if (cinematicRevision !== presentation.revision || useVNStore.getState().game !== state.game) return;
     const visible = { ...presentation, image };
     state.setAttack(visible);
@@ -3662,9 +3689,9 @@ function runAttack(attack: AttackDirective, loopGuard: number): void {
           useVNStore.getState().setBusy(false);
           incrementCursor();
           runToNextPause(loopGuard + 1);
-        }, presentation.recovery);
-      }, presentation.impact);
-    }, presentation.anticipation);
+        }, presentation.recovery, true);
+      }, presentation.impact, true);
+    }, presentation.anticipation, true);
   };
   if (attack.image && state.game && typeof Image !== 'undefined') {
     const image = new Image();
@@ -3735,8 +3762,7 @@ function runToNextPause(loopGuard = 0) {
       pendingBackground = { revision, complete: (ok) => {
         if (useVNStore.getState().game !== state.game
           || useVNStore.getState().backgroundPresentation.revision !== revision) return;
-        window.clearTimeout(watchdog);
-        cinematicTimers.delete(watchdog);
+        cancelCinematic(watchdog);
         useVNStore.getState().setBusy(false);
         if (!ok) {
           useVNStore.getState().setError({ message: `배경을 준비하지 못했습니다: ${backgroundId(action.bg)}` });
@@ -3764,7 +3790,7 @@ function runToNextPause(loopGuard = 0) {
     const inputLockMs = clampStickerInputLockMs(action.sticker.inputLockMs);
     if (inputLockMs > 0) {
       useVNStore.getState().setBusy(true);
-      waitTimer = window.setTimeout(() => {
+      waitTimer = storyClock.set(() => {
         useVNStore.getState().setBusy(false);
         incrementCursor();
         runToNextPause(loopGuard + 1);
@@ -3803,7 +3829,9 @@ function runToNextPause(loopGuard = 0) {
 
   if ('sound' in action) {
     const path = game.assets.sfx[action.sound];
-    playSound(resolveAsset(state.baseUrl, path));
+    const soundUrl = resolveAsset(state.baseUrl, path);
+    if (storyClock.paused) scheduleCinematic(() => playSound(soundUrl), 0, true);
+    else playSound(soundUrl);
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -3848,7 +3876,7 @@ function runToNextPause(loopGuard = 0) {
       effectFrame = undefined;
     }
     if (effectTimer) {
-      window.clearTimeout(effectTimer);
+      storyClock.clear(effectTimer);
     }
     const duration = EFFECT_DURATIONS[effectName] ?? 350;
 
@@ -3856,8 +3884,9 @@ function runToNextPause(loopGuard = 0) {
       useVNStore.getState().setBusy(true);
       const activateEffect = () => {
         effectFrame = undefined;
+        if (storyClock.paused) { effectTimer = storyClock.set(activateEffect, 0); return; }
         useVNStore.getState().setEffect(effectName);
-        effectTimer = window.setTimeout(() => {
+        effectTimer = storyClock.set(() => {
           effectTimer = undefined;
           useVNStore.getState().setEffect(undefined);
           useVNStore.getState().setBusy(false);
@@ -3877,11 +3906,15 @@ function runToNextPause(loopGuard = 0) {
       return;
     }
 
-    useVNStore.getState().setEffect(effectName);
-    effectTimer = window.setTimeout(() => {
-      effectTimer = undefined;
-      useVNStore.getState().setEffect(undefined);
-    }, duration);
+    const activateEffect = () => {
+      useVNStore.getState().setEffect(effectName);
+      effectTimer = storyClock.set(() => {
+        effectTimer = undefined;
+        useVNStore.getState().setEffect(undefined);
+      }, duration);
+    };
+    if (storyClock.paused) effectTimer = storyClock.set(activateEffect, 0);
+    else activateEffect();
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;
@@ -3930,7 +3963,7 @@ function runToNextPause(loopGuard = 0) {
     clearPlayerAutoAdvance();
     currentDialogueHasAuthoredAutoAdvance = false;
     if (choiceTimer) {
-      window.clearTimeout(choiceTimer);
+      storyClock.clear(choiceTimer);
       choiceTimer = undefined;
     }
     const presentation = resolveSayPresentation(
@@ -3991,7 +4024,7 @@ function runToNextPause(loopGuard = 0) {
       typingPulse: 0,
     });
     if (action.choice.timeoutMs) {
-      choiceTimer = window.setTimeout(() => {
+      choiceTimer = storyClock.set(() => {
         choiceTimer = undefined;
         submitChoiceOption(visibleTimeoutOptionIndex, true);
       }, action.choice.timeoutMs);
@@ -4040,7 +4073,7 @@ function runToNextPause(loopGuard = 0) {
 
   if ('wait' in action) {
     useVNStore.getState().setBusy(true);
-    waitTimer = window.setTimeout(() => {
+    waitTimer = storyClock.set(() => {
       useVNStore.getState().setBusy(false);
       incrementCursor();
       runToNextPause(loopGuard + 1);
@@ -4116,7 +4149,7 @@ function runToNextPause(loopGuard = 0) {
     const unskippable = action.say.unskippable === true;
     const autoAdvanceMs = clampSayWaitMs(action.say.autoAdvance);
     if (autoAdvanceTimer) {
-      window.clearTimeout(autoAdvanceTimer);
+      storyClock.clear(autoAdvanceTimer);
       autoAdvanceTimer = undefined;
     }
     clearPlayerAutoAdvance();
@@ -4172,7 +4205,7 @@ function runToNextPause(loopGuard = 0) {
     });
     if (sayWaitMs > 0) {
       useVNStore.getState().setBusy(true);
-      waitTimer = window.setTimeout(() => {
+      waitTimer = storyClock.set(() => {
         waitTimer = undefined;
         useVNStore.getState().setBusy(false);
       }, sayWaitMs);
@@ -4198,7 +4231,7 @@ function runToNextPause(loopGuard = 0) {
           typeFrame = undefined;
         }
         if (waitTimer) {
-          window.clearTimeout(waitTimer);
+          storyClock.clear(waitTimer);
           waitTimer = undefined;
         }
         useVNStore.getState().setBusy(false);
@@ -4210,7 +4243,7 @@ function runToNextPause(loopGuard = 0) {
         incrementCursor();
         runToNextPause();
       };
-      autoAdvanceTimer = window.setTimeout(() => {
+      autoAdvanceTimer = storyClock.set(() => {
         autoAdvanceTimer = undefined;
         if (unskippable && useVNStore.getState().dialog.typing) {
           autoAdvanceWaitingForTyping = true;
@@ -4337,6 +4370,9 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
   const isResolvableLocalAsset = (path?: string): path is string =>
     typeof path === 'string' && path.length > 0 && !/^(blob:|data:|https?:)/i.test(path);
   const materializeLocalAssetUrl = async (path?: string): Promise<string | undefined> => {
+    if (path && /^root:\//i.test(path)) {
+      return new URL(path.slice('root:'.length), window.location.origin).toString();
+    }
     if (!isResolvableLocalAsset(path)) {
       return path;
     }
@@ -4349,24 +4385,28 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
     const blob = mimeType ? new Blob([bytes], { type: mimeType }) : new Blob([bytes]);
     return URL.createObjectURL(blob);
   };
-  const resolvedImage = await materializeLocalAssetUrl(startScreen.image);
-  const resolvedMusic = await materializeLocalAssetUrl(startScreen.music);
-  if (resolvedImage === startScreen.image && resolvedMusic === startScreen.music) {
-    return {
-      gameTitle: parsedConfig.gameTitle,
-      startScreen,
-      seo: parsedConfig.seo,
-      legalNotices: parsedConfig.legalNotices,
-      uiTemplate: parsedConfig.uiTemplate,
-      hasLoadableSave: false,
-    };
+  // Own every preview Blob URL as one set, including optional scene layers/video.
+  const paths = [...new Set([startScreen.image, startScreen.music, ...collectStartSceneAssets(startScreen.scene)]
+    .filter((path): path is string => Boolean(path)))];
+  const resolved = new Map<string, string>();
+  try {
+    const results = await Promise.allSettled(paths.map(async (path) => {
+      resolved.set(path, (await materializeLocalAssetUrl(path)) ?? path);
+    }));
+    const failure = results.find((result) => result.status === 'rejected');
+    if (failure?.status === 'rejected') throw failure.reason;
+  } catch (error) {
+    for (const [path, url] of resolved) if (url !== path && url.startsWith('blob:')) URL.revokeObjectURL(url);
+    throw error;
   }
+  const resolve = (path: string) => resolved.get(path) ?? path;
   return {
     gameTitle: parsedConfig.gameTitle,
     startScreen: {
       ...startScreen,
-      image: resolvedImage,
-      music: resolvedMusic,
+      image: startScreen.image ? resolve(startScreen.image) : undefined,
+      music: startScreen.music ? resolve(startScreen.music) : undefined,
+      scene: mapStartSceneAssets(startScreen.scene, resolve),
     },
     seo: parsedConfig.seo,
     legalNotices: parsedConfig.legalNotices,
@@ -4957,7 +4997,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
 
 export function handleAdvance() {
   const state = useVNStore.getState();
-  if (!state.game || state.error || state.isFinished || state.gameOver || state.chapterLoading || state.dialogUiHidden) {
+  if (presentationCovered || !state.game || state.error || state.isFinished || state.gameOver || state.chapterLoading || state.dialogUiHidden) {
     return;
   }
   if (state.videoCutscene.active) {
@@ -4992,7 +5032,7 @@ export function handleAdvance() {
     currentDialogueHasAuthoredAutoAdvance = false;
     useVNStore.getState().setWaitingInput(false);
     if (autoAdvanceTimer) {
-      window.clearTimeout(autoAdvanceTimer);
+      storyClock.clear(autoAdvanceTimer);
       autoAdvanceTimer = undefined;
     }
     useVNStore.getState().clearInputGate();
@@ -5072,7 +5112,7 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
 
 export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false) {
   const state = useVNStore.getState();
-  if (!state.game || state.busy || !state.waitingInput || !state.choiceGate.active) {
+  if (storyClock.paused || !state.game || state.busy || !state.waitingInput || !state.choiceGate.active) {
     return;
   }
 
@@ -5100,7 +5140,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   }
 
   if (choiceTimer) {
-    window.clearTimeout(choiceTimer);
+    storyClock.clear(choiceTimer);
     choiceTimer = undefined;
   }
 
@@ -5154,7 +5194,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
 
 export function submitInputAnswer(rawAnswer: string) {
   const state = useVNStore.getState();
-  if (!state.game || state.busy || !state.waitingInput || !state.inputGate.active) {
+  if (storyClock.paused || !state.game || state.busy || !state.waitingInput || !state.inputGate.active) {
     return;
   }
 

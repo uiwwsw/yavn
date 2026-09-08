@@ -22,3 +22,13 @@ startScreen:
   showTitle: true
   startButtonText: "Live2D 테스트 시작"
   buttonPosition: center
+  eyebrow: "LIVE2D · INTERACTIVE CHARACTER"
+  subtitle: "시선이 닿는 곳에서, 캐릭터가 반응합니다."
+  scene:
+    layout: centered
+    motion: drift
+    particles: fireflies
+    intensity: 0.45
+    fog: false
+    accent: "#8cf2dd"
+    transition: { type: fade, duration: 800 }

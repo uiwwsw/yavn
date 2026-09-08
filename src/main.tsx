@@ -4,6 +4,7 @@ import App from './App';
 import { initializePromptLayout } from './promptLayout';
 import './styles.css';
 import './launcher.css';
+import './titleScene.css';
 import './choiceLayout.mobile.css';
 import './promptLayout.css';
 
