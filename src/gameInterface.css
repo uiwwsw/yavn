@@ -1,0 +1,336 @@
+/* In-game interface: restrained stage chrome, readable prompts and one menu system. */
+.app,
+.app[data-ui-template] {
+  --game-accent: #d2c09b;
+  --game-accent-ink: #23261f;
+  --game-paper: #151a1e;
+  --game-surface: #1d2327;
+  --game-text: #f3f1eb;
+  --game-muted: #abaea9;
+  --game-line: #ffffff20;
+  --game-soft: #ffffff07;
+  --game-dialog: linear-gradient(120deg, #151a1ef2, #13181eeb);
+  --ui-dialog-border: var(--game-line);
+  --ui-dialog-bg: var(--game-dialog);
+  --ui-dialog-shadow: 0 16px 60px #00000026;
+  --ui-text-color: var(--game-text);
+  --ui-speaker-color: var(--game-accent);
+  --ui-status-color: var(--game-muted);
+  --ui-heading-font: 'SUITE Variable', sans-serif;
+  --ui-body-font: 'SUITE Variable', sans-serif;
+  --ui-choice-color: var(--game-text);
+  --ui-choice-bg: var(--game-surface);
+  --ui-choice-border: var(--game-line);
+  --ui-choice-hover-bg: color-mix(in srgb, var(--game-accent) 9%, var(--game-surface));
+  --ui-choice-hover-border: var(--game-accent);
+  --ui-input-bg: var(--game-soft);
+  --ui-input-color: var(--game-text);
+  --ui-input-border: var(--game-line);
+  --ui-input-placeholder: var(--game-muted);
+  --ui-input-submit-bg: var(--game-accent);
+  --ui-input-submit-color: var(--game-accent-ink);
+  --ui-focus-ring: var(--game-accent);
+}
+.app[data-ui-template='paper-stage'] {
+  --game-accent: #796343;
+  --game-accent-ink: #fff9ec;
+  --game-paper: #f4f0e6;
+  --game-surface: #ece7dc;
+  --game-text: #2c3029;
+  --game-muted: #707366;
+  --game-line: #665b3e30;
+  --game-soft: #67593907;
+  --game-dialog: linear-gradient(120deg, #f4f0e6f7, #ebe6d9f2);
+}
+.app[data-ui-template='neon-grid'] {
+  --game-accent: #92e2cf;
+  --game-accent-ink: #112f2c;
+  --game-paper: #101d23;
+  --game-surface: #16292f;
+  --game-muted: #9db9bb;
+  --game-line: #92e2cf24;
+  --game-dialog: linear-gradient(120deg, #101d23f5, #12242aec);
+}
+.game-icon { display: block; flex: 0 0 auto; }
+.app :is(button, input, select, a):focus-visible { outline: 2px solid var(--game-accent); outline-offset: 4px; }
+.app :is(button, input, select) { -webkit-tap-highlight-color: transparent; }
+.app :is(button, select):disabled { cursor: default; }
+
+/* Keep navigation quiet until the player reaches for it. */
+.app .hud { inset: 24px 28px auto; align-items: center; gap: 20px; color: #fffdf5; text-shadow: 0 2px 8px #000a; }
+.app .hud-meta-group { gap: 7px; max-width: 55%; }
+.app .hud-meta-group .meta { font-size: 12px; font-weight: 650; letter-spacing: .015em; }
+.app .hud-chapter-progress { display: flex; align-items: center; gap: 8px; font-size: 9px; letter-spacing: .14em; color: #ffffffa8; }
+.hud-chapter-divider { width: 24px; height: 1px; background: currentColor; opacity: .6; }
+.app .hud-right { gap: 3px; padding: 4px; border: 1px solid #ffffff24; border-radius: 6px; background: #111819aa; backdrop-filter: blur(16px); }
+.app .hud-action-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; width: auto; height: 40px; min-width: 44px; padding: 0 13px; border: 0; border-radius: 3px; background: transparent; color: #f5f4ee; box-shadow: none; backdrop-filter: none; transition: background 150ms ease, color 150ms ease; }
+.app .hud-action-button:hover { background: #ffffff16; color: #fff; }
+.hud-action-label { font-size: 11px; font-weight: 650; }
+.app .hud-action-count { display: none; }
+.app .hud-inventory-progress { position: static; padding: 0; border: 0; background: none; transform: none; color: #d3d4cc; font-size: 9px; }
+
+/* A stable reading frame, with the controls attached to its edge. */
+.app .dialog-box { width: min(1080px, calc(100% - 64px)); left: 50%; right: auto; bottom: 24px; transform: translateX(-50%); padding: 23px 32px 22px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-dialog); box-shadow: 0 24px 80px #0003; backdrop-filter: blur(18px); }
+.app .dialog-box::before { content: ''; position: absolute; left: 32px; top: -1px; width: 52px; height: 2px; background: var(--game-accent); pointer-events: none; }
+.app .dialog-box.channel-record, .app .dialog-box.channel-system { background: var(--game-dialog); box-shadow: 0 24px 80px #0003; }
+.app .dialog-box.has-choice-gate { --dialog-safe-max-height: min(60cqh, calc(100cqh - 80px)); }
+.app .dialog-content-scroll { padding-top: 30px; padding-right: 5px; scrollbar-gutter: auto; scrollbar-width: thin; scrollbar-color: var(--game-line) transparent; }
+.app .dialog-content-scroll > .speaker { color: var(--game-accent); font-size: 14px; font-weight: 800; letter-spacing: .04em; }
+.app .dialog-channel-label { color: var(--game-accent); font-size: 10px; letter-spacing: .14em; }
+.app .dialog-box .text { color: var(--game-text); font-family: var(--ui-body-font); font-size: 18px; font-weight: 500; line-height: 1.8; letter-spacing: -.015em; text-shadow: none; }
+.app .dialog-controls { transform: none; right: 0; top: -43px; gap: 4px; padding: 0; }
+.app .dialog-toggle-button, .app .dialog-restore-button { min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid #ffffff26; border-radius: 4px; color: #f5f4ee; background: #111819bd; font-size: 10px; font-weight: 700; letter-spacing: .05em; box-shadow: none; backdrop-filter: blur(12px); }
+.app .dialog-toggle-button .game-icon { width: 13px; height: 13px; }
+.app .dialog-auto-button.is-active { color: var(--game-accent-ink); background: var(--game-accent); border-color: var(--game-accent); }
+.app .dialog-restore-button { bottom: 24px; right: 28px; min-height: 44px; }
+.app .choice-gate { margin-top: 16px; }
+.app .choice-gate-options { gap: 8px; }
+.app .choice-gate-option { min-height: 54px; border: 1px solid var(--game-line); border-radius: 3px; padding: 12px 15px; color: var(--game-text); background: var(--game-soft); box-shadow: none; transition: background 160ms ease, border-color 160ms ease, transform 160ms ease; }
+.app .choice-gate-option:hover:not(:disabled) { transform: translateX(3px); border-color: var(--game-accent); background: color-mix(in srgb, var(--game-accent) 10%, var(--game-paper)); box-shadow: inset 3px 0 var(--game-accent); }
+.app .choice-gate-option-previous-game-over { border-color: #b77567; background: color-mix(in srgb, #b77567 8%, var(--game-paper)); }
+.app .choice-gate-option:active:not(:disabled) { transform: translateX(1px); }
+.app .choice-gate-option-copy { gap: 12px; align-items: center; }
+.app .choice-gate-option-index { width: 24px; height: auto; min-width: 24px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--game-muted); font-size: 10px; font-weight: 650; letter-spacing: .08em; }
+.app .choice-gate-option-text { font-size: 15px; line-height: 1.55; font-weight: 650; }
+.app .choice-gate-option-mark { width: 16px; height: 16px; color: var(--game-accent); }
+.app .choice-gate-option-badges:empty { display: none; }
+.app .choice-gate-option-badge { border-radius: 3px; font-size: 10px; }
+.app .choice-gate-timeout { padding: 0; background: none; border: 0; }
+.app .choice-gate-timeout-meta { color: var(--game-muted); font-size: 10px; letter-spacing: .06em; }
+.app .choice-gate-timeout-track { height: 2px; border: 0; background: var(--game-line); }
+.app .choice-gate-timeout-track > span { background: var(--game-accent); box-shadow: none; }
+.app .input-gate-form { display: flex; gap: 10px; margin-top: 16px; }
+.app .input-gate-field { min-width: 0; flex: 1; height: 48px; padding: 0 16px; border-radius: 3px; border: 1px solid var(--game-line); background: var(--game-soft); color: var(--game-text); font-size: 16px; box-shadow: none; }
+.app .input-gate-submit { min-width: 88px; min-height: 48px; padding: 0 20px; border-radius: 3px; border: 1px solid transparent; background: var(--game-accent); color: var(--game-accent-ink); font-size: 13px; font-weight: 750; box-shadow: none; }
+
+/* One pause menu with a navigation rail and a separately scrolling content area. */
+.app .settings-modal-backdrop { padding: 24px; background: #080e14aa; backdrop-filter: blur(14px) saturate(.6); animation: gameUiFade 180ms ease both; }
+.app .settings-modal { --archive-line: var(--game-line); --archive-surface: var(--game-soft); width: min(1060px, 100%); height: min(780px, calc(100cqh - 48px)); max-height: calc(100cqh - 48px); display: grid; grid-template-columns: 182px minmax(0, 1fr); grid-template-rows: 98px minmax(0, 1fr); border: 1px solid var(--game-line); border-radius: 8px; background: var(--game-paper); color: var(--game-text); box-shadow: 0 40px 100px #0007; animation: gameUiArrive 220ms cubic-bezier(.2,.7,.3,1) both; }
+.app .settings-modal::before { display: none; }
+.app .settings-modal-header { grid-column: 1 / -1; padding: 22px 28px; border-bottom: 1px solid var(--game-line); }
+.app .settings-modal-heading { gap: 7px; }
+.app .settings-modal-heading p { max-width: min(640px, 65vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--game-accent); font-size: 9px; letter-spacing: .18em; }
+.app .settings-modal-heading p span { color: var(--game-muted); letter-spacing: .02em; }
+.app .settings-modal-header .settings-modal-heading h2 { color: var(--game-text); font-size: 24px; font-weight: 650; letter-spacing: -.045em; }
+.app .settings-close-button { width: 40px; height: 40px; border: 1px solid var(--game-line); border-radius: 50%; color: var(--game-muted); background: transparent; box-shadow: none; transition: background 150ms ease; }
+.app .settings-close-button:hover { transform: none; background: var(--game-soft); color: var(--game-text); }
+.app .case-file-tabs { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: 6px; padding: 24px 12px; border: 0; border-right: 1px solid var(--game-line); background: var(--game-soft); }
+.app .case-file-tabs::after { content: 'ESC  ·  이야기로 돌아가기'; margin-top: auto; padding: 16px 10px 0; font-size: 9px; color: var(--game-muted); letter-spacing: .025em; }
+.app .case-file-tab { min-height: 50px; flex-wrap: wrap; justify-content: flex-start; gap: 10px; padding: 12px; border: 1px solid transparent; border-radius: 4px; color: var(--game-muted); background: transparent; box-shadow: none; }
+.app .case-file-tab::after { display: none; }
+.app .case-file-tab.is-active { background: var(--game-paper); border-color: var(--game-line); color: var(--game-accent); box-shadow: 0 2px 8px #00000006; }
+.app .case-file-tab .game-icon { width: 17px; height: 17px; }
+.app .case-file-tab-label { font-size: 12px; font-weight: 700; }
+.app .case-file-tab-count { margin-left: auto; min-width: 0; padding: 0; border: 0; border-radius: 0; background: none; color: var(--game-muted); font-size: 9px; }
+.menu-tab-caption { display: none; }
+.app .settings-modal-body { grid-column: 2; grid-row: 2; min-height: 0; min-width: 0; padding: 22px 28px; animation: gameUiFade 180ms ease both; }
+.app .story-log-summary { padding-bottom: 14px; border-bottom: 1px solid var(--game-line); color: var(--game-muted); font-size: 11px; }
+.app .story-log-summary b { font-weight: 500; color: var(--game-muted); }
+.app .story-log-list { gap: 0; padding: 24px 8px 0; }
+.app .story-log-entry { position: relative; padding: 0 0 25px 22px; border: 0; border-left: 1px solid var(--game-line); border-radius: 0; background: transparent; }
+.app .story-log-entry::before { content: ''; position: absolute; width: 5px; height: 5px; left: -3px; top: 6px; border-radius: 50%; background: var(--game-accent); }
+.app .story-log-kind { display: block; color: var(--game-accent); font-size: 11px; font-weight: 750; letter-spacing: .04em; }
+.app .story-log-entry p { margin: 8px 0 0; font-size: 15px; line-height: 1.85; color: var(--game-text); }
+.app .story-log-entry strong { display: block; width: fit-content; margin-top: 10px; padding: 7px 12px; border-left: 2px solid var(--game-accent); border-radius: 0; background: var(--game-soft); color: var(--game-accent); font-size: 12px; }
+.app .story-log-empty { align-self: center; padding: 60px 20px; color: var(--game-muted); font-size: 14px; text-align: center; }
+
+/* Collection: visible objects, compact filters, a proper object inspection surface. */
+.app .inventory-collection-header { gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--game-line); }
+.app .inventory-view-tabs { display: flex; padding: 3px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-soft); }
+.app .inventory-view-tab { min-height: 38px; gap: 8px; padding: 0 13px; border: 0; border-radius: 2px; background: transparent; color: var(--game-muted); box-shadow: none; font-size: 12px; }
+.app .inventory-view-tab.is-active { background: var(--game-paper); color: var(--game-text); box-shadow: 0 2px 5px #00000008; }
+.app .inventory-view-tab b { background: none; border: 0; padding: 0; color: var(--game-accent); font-size: 10px; }
+.app .inventory-overview { min-width: 135px; max-width: 180px; border: 0; border-radius: 0; padding: 0; background: none; }
+.app .inventory-overview > div > span { color: var(--game-muted); font-size: 8px; letter-spacing: .08em; }
+.app .inventory-overview b { color: var(--game-text); font-size: 20px; font-weight: 500; }
+.app .inventory-overview progress { height: 2px; accent-color: var(--game-accent); }
+.app .inventory-tools { gap: 10px; padding: 18px 0; border: 0; background: none; }
+.app .inventory-tool-label { color: var(--game-muted); font-size: 10px; font-weight: 550; }
+.app .inventory-tools :is(input, select) { min-height: 40px; border: 1px solid var(--game-line); border-radius: 3px; background: var(--game-paper); color: var(--game-text); font-size: 12px; box-shadow: none; }
+.app .inventory-grid-scroll { padding-top: 18px; }
+.app .inventory-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 12px; }
+.app .inventory-slot { display: grid; grid-template-rows: minmax(104px, 1fr) auto; min-height: 176px; padding: 16px 12px 13px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-soft); box-shadow: none; transition: border-color 180ms ease, background 180ms ease, transform 180ms ease; }
+.app .inventory-slot:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--game-accent); background: var(--game-surface); }
+.app .inventory-slot.is-selected { border-color: var(--game-accent); box-shadow: none; }
+.app .inventory-slot > img { grid-row: 1; width: 100%; height: 120px; max-height: none; object-fit: contain; padding: 10px; filter: drop-shadow(0 6px 8px #0002); }
+.app .inventory-slot-index { top: 10px; left: 10px; color: var(--game-muted); font-size: 8px; }
+.app .inventory-slot-name { grid-row: 2; padding-top: 12px; font-size: 11px; font-weight: 650; color: var(--game-text); }
+.app .inventory-slot.is-locked { opacity: .58; background: transparent; border-style: dashed; }
+.app .inventory-slot-fallback { min-height: 110px; border: 0; background: none; }
+.app .inventory-grid-empty { border: 0; background: transparent; min-height: 270px; padding: 36px 20px; }
+.app .inventory-grid-empty strong { font-size: 17px; font-weight: 650; color: var(--game-text); }
+.app .inventory-grid-empty p { color: var(--game-muted); font-size: 12px; line-height: 1.8; max-width: 300px; }
+.app .inventory-grid-empty button { min-height: 42px; padding: 0 18px; border: 1px solid var(--game-line); border-radius: 3px; background: transparent; color: var(--game-accent); font-size: 11px; }
+.app .inventory-detail-modal-backdrop { background: #070d14aa; backdrop-filter: blur(8px); animation: gameUiFade 180ms ease both; }
+.app .inventory-detail-modal { width: min(680px, 100%); border: 1px solid var(--game-line); border-radius: 6px; background: var(--game-paper); color: var(--game-text); box-shadow: 0 28px 90px #0005; animation: gameUiArrive 200ms ease both; }
+.app .inventory-detail-modal-header { padding: 22px 24px; border-color: var(--game-line); }
+.app .inventory-detail-modal-header h3 { font-size: 20px; color: var(--game-text); }
+.app .inventory-detail-modal-body { padding: 24px; gap: 28px; }
+.app .inventory-detail-modal-body img { padding: 28px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-soft); }
+.app .inventory-detail-copy { align-self: center; }
+.app .inventory-detail-copy p { font-size: 14px; line-height: 1.85; color: var(--game-muted); }
+
+.app .save-system-body { gap: 0; }
+/* Save and preferences use the same surfaces as the collection. */
+.app .save-protection-hero { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 14px; align-items: center; margin-bottom: 20px; padding: 0 0 20px; border: 0; border-bottom: 1px solid var(--game-line); border-radius: 0; background: none; box-shadow: none; }
+.save-protection-symbol { color: var(--game-accent); width: 22px; height: 22px; }
+.app .save-auto-status { display: grid; gap: 7px; padding: 0; }
+.app .save-auto-status > span { display: grid; gap: 5px; }
+.app .save-auto-status b { font-size: 13px; color: var(--game-text); font-weight: 650; }
+.app .save-auto-status small { font-size: 8px; letter-spacing: .12em; color: var(--game-accent); }
+.app .save-auto-status strong { max-width: 100%; font-size: 10px; font-weight: 450; color: var(--game-muted); }
+.app .save-autosave-row { min-width: 0; min-height: 44px; gap: 16px; padding: 0; border: 0; background: none; }
+.app .save-autosave-row b { font-size: 11px; }
+.app .save-autosave-row small { font-size: 9px; }
+.app .settings-switch { width: 36px; height: 21px; }
+.app .settings-switch > span { border: 1px solid var(--game-line); background: var(--game-surface); box-shadow: none; }
+.app .settings-switch > span::after { width: 13px; height: 13px; top: 3px; left: 3px; background: var(--game-muted); box-shadow: none; }
+.app .settings-switch input:checked + span { background: var(--game-accent); border-color: var(--game-accent); }
+.app .settings-switch input:checked + span::after { transform: translateX(15px); background: var(--game-accent-ink); }
+.app .save-system-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 6px 20px 0; }
+.app .save-system-section { min-height: 0; align-content: start; padding: 18px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-soft); box-shadow: none; }
+.app .save-section-index { display: none; }
+.app .save-system-section header { padding: 0; gap: 12px; }
+.app .save-system-section h3 { font-size: 14px; font-weight: 700; color: var(--game-text); }
+.app .save-system-section header small { font-size: 8px; color: var(--game-muted); letter-spacing: .1em; }
+.app .save-system-section header > span { color: var(--game-muted); font-size: 10px; }
+.app .save-system-actions { margin-top: 16px; gap: 8px; }
+.app .save-system-actions button, .app .settings-action-button { min-height: 40px; padding: 10px 13px; border: 1px solid var(--game-line); border-radius: 3px; background: transparent; color: var(--game-text); box-shadow: none; font-size: 11px; font-weight: 650; }
+.app .save-system-actions button.is-primary { background: var(--game-accent); border-color: var(--game-accent); color: var(--game-accent-ink); }
+.app .save-system-actions button:disabled { opacity: .4; }
+.app .save-system-section[data-save-kind='backup'], .app .player-experience-section, .app .legal-notices-section { grid-column: 1 / -1; }
+.app .player-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; padding-top: 12px; }
+.app .player-setting-control { min-height: 78px; padding: 15px 0; border: 0; border-bottom: 1px solid var(--game-line); border-radius: 0; background: transparent; }
+.app .player-setting-control b { font-size: 12px; color: var(--game-text); }
+.app .player-setting-control small { font-size: 10px; color: var(--game-muted); }
+.app .player-setting-control select { min-height: 37px; border: 1px solid var(--game-line); border-radius: 3px; background: var(--game-paper); color: var(--game-text); font-size: 11px; padding: 0 10px; }
+.app .player-volume-control input[type='range'] { accent-color: var(--game-accent); }
+.app .save-preferences-section.is-single-action { margin-top: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--game-line); background: transparent; }
+.app .save-preferences-section .settings-action-button { min-height: 40px; width: auto; background: transparent; color: var(--game-accent); }
+.app .save-system-status { border: 0; background: transparent; min-height: 25px; padding: 10px 0 0; color: var(--game-muted); font-size: 10px; text-align: left; }
+.app .legal-notice-global-links a { color: var(--game-muted); font-size: 10px; }
+
+/* Outcome, loading and cutscene controls belong to the same visual system. */
+.app .outcome-rule { color: var(--game-accent); }
+.app .outcome-kicker { font-size: 10px; letter-spacing: .2em; }
+.app .outcome-content h2 { font-size: clamp(32px, 5vw, 66px); font-weight: 550; letter-spacing: -.04em; }
+.app .outcome-continue { display: inline-flex; align-items: center; gap: 24px; min-height: 50px; padding: 14px 22px; border-radius: 3px; box-shadow: none; font-size: 12px; }
+.app .outcome-footnote { font-size: 10px; }
+.app .game-over-panel { border: 1px solid var(--game-line); border-radius: 6px; background: var(--game-paper); color: var(--game-text); box-shadow: 0 30px 100px #0006; padding: 32px; }
+.app .game-over-panel h2 { font-size: clamp(26px, 4vw, 40px); color: var(--game-text); font-weight: 550; }
+.app .game-over-kicker { color: var(--game-accent); font-size: 10px; letter-spacing: .15em; }
+.app :is(.game-over-message, .game-over-status) { color: var(--game-muted); }
+.app .game-over-cause { border-color: var(--game-line); border-radius: 3px; background: var(--game-soft); }
+.app .game-over-cause span { color: var(--game-accent); }
+.app .game-over-cause strong { color: var(--game-text); }
+.app .game-over-primary-actions button { min-height: 62px; border: 1px solid var(--game-line); border-radius: 3px; background: var(--game-surface); color: var(--game-text); box-shadow: none; }
+.app .game-over-primary-actions button:first-child,
+.app .game-over-primary-actions button:hover:not(:disabled) { border-color: var(--game-accent); background: var(--game-accent); color: var(--game-accent-ink); }
+.app .game-over-primary-actions button small { color: var(--game-muted); }
+.app .game-over-primary-actions button:first-child small,
+.app .game-over-primary-actions button:hover:not(:disabled) small { color: inherit; opacity: .8; }
+.app .game-over-panel .outcome-back { color: var(--game-muted); border-color: var(--game-line); background: transparent; border-radius: 3px; }
+.app .game-over-panel .outcome-back:hover { color: var(--game-text); background: var(--game-soft); }
+.app .game-over-import-button { min-height: 40px; border-radius: 3px; color: var(--game-muted); }
+.app .game-over-import-button:hover:not(:disabled) { color: var(--game-accent); border-color: var(--game-accent); }
+.app .ending-bottom-bar { padding: 18px; gap: 10px; background: #10151bdd; border-top: 1px solid #ffffff20; backdrop-filter: blur(18px); }
+.app .ending-restart { min-height: 44px; padding: 12px 20px; border: 1px solid #ffffff40; border-radius: 3px; background: #ffffff09; color: #f4f1e9; box-shadow: none; font-size: 11px; }
+.app .ending-credits-section { border-top: 1px solid #ffffff20; padding-top: 24px; }
+.app .ending-progress-card { border: 1px solid #ffffff26; border-radius: 4px; background: #10151b9c; padding: 24px; }
+.app .scene-curtain-center h2 { font-weight: 550; letter-spacing: -.035em; }
+.app .scene-curtain-center > p { letter-spacing: .2em; font-size: 10px; }
+.app .chapter-loading-bar { height: 2px; border: 0; border-radius: 0; }
+.app .video-skip-guide { border-radius: 4px; box-shadow: none; }
+@keyframes gameUiFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gameUiArrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  .app .hud { inset: 16px 14px auto; gap: 12px; }
+  .app .hud-meta-group { max-width: calc(100% - 145px); gap: 5px; }
+  .app .hud-meta-group .meta { font-size: 10px; }
+  .app .hud-chapter-progress { font-size: 8px; gap: 5px; letter-spacing: .06em; }
+  .app .hud-right { gap: 0; padding: 2px; }
+  .app .hud-action-button { width: 42px; height: 42px; min-width: 42px; padding: 0; }
+  .app .hud-action-label, .app .hud-inventory-progress { display: none; }
+  .app .hud-action-button .game-icon { width: 18px; height: 18px; }
+  .app .dialog-box { --game-screen-inset: max(14px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)); width: calc(100% - var(--game-screen-inset) - var(--game-screen-inset)); left: 50%; right: auto; bottom: max(16px, env(safe-area-inset-bottom, 0px)); padding: 19px 20px; border-radius: 4px; }
+  .app .dialog-box::before { left: 20px; width: 32px; }
+  .app .dialog-content-scroll { padding-top: 28px; }
+  .app .dialog-box .text { font-size: 16px; line-height: 1.75; }
+  .app .dialog-content-scroll > .speaker { font-size: 12px; }
+  .app .dialog-controls { top: -44px; right: 0; }
+  .app .dialog-toggle-button { min-height: 38px; padding: 0 12px; }
+  .app .choice-gate-option { min-height: 56px; padding: 12px; gap: 8px; }
+  .app .choice-gate-option-text { font-size: 14px; }
+  .app .choice-gate-option-index { min-width: 20px; width: 20px; }
+  .app .choice-gate-option-badges { padding-left: 32px; }
+  .app .settings-modal-backdrop { padding: 0; }
+  .app .settings-modal { width: 100%; height: 100cqh; max-height: 100cqh; border: 0; border-radius: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 60px minmax(0, 1fr); }
+  .app .settings-modal-header { grid-column: 1; padding: max(20px, env(safe-area-inset-top, 0px)) 20px 18px; }
+  .app .settings-modal-header .settings-modal-heading h2 { font-size: 23px; }
+  .app .settings-modal-heading p { max-width: calc(100vw - 90px); font-size: 8px; }
+  .app .case-file-tabs { grid-column: 1; grid-row: 2; flex-direction: row; padding: 0 16px; gap: 6px; border: 0; border-bottom: 1px solid var(--game-line); background: transparent; }
+  .app .case-file-tabs::after { display: none; }
+  .app .case-file-tab { flex: 1; min-width: 0; justify-content: center; gap: 7px; min-height: 50px; padding: 0 7px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; flex-wrap: nowrap; }
+  .app .case-file-tab.is-active { border-bottom-color: var(--game-accent); background: transparent; box-shadow: none; }
+  .app .case-file-tab-label { font-size: 11px; white-space: nowrap; }
+  .app .case-file-tab-count { display: none; }
+  .app .case-file-tab .game-icon { width: 16px; height: 16px; }
+  .app .settings-modal-body { grid-column: 1; grid-row: 3; padding: 20px; padding-bottom: max(18px, env(safe-area-inset-bottom, 0px)); }
+  .app .story-log-entry p { font-size: 14px; }
+  .app .inventory-collection-header { gap: 12px; padding-bottom: 16px; }
+  .app .inventory-overview { min-width: 94px; max-width: 108px; }
+  .app .inventory-overview > div > span { font-size: 7px; }
+  .app .inventory-view-tab { padding: 0 10px; font-size: 11px; }
+  .app .inventory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .app .inventory-tools { display: grid; grid-template-columns: 1fr 1fr; padding: 16px 0 0; }
+  .app .inventory-search-field { grid-column: 1 / -1; }
+  .app .inventory-tools :is(input, select) { font-size: 16px; }
+  .app .inventory-detail-modal { max-height: calc(100% - 24px); border-radius: 6px; }
+  .app .inventory-detail-modal-header { padding: 18px; }
+  .app .inventory-detail-modal-body { padding: 20px; gap: 18px; }
+  .app .save-protection-hero { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding-bottom: 16px; margin-bottom: 16px; }
+  .app .save-protection-symbol { display: none; }
+  .app .save-auto-status b { font-size: 12px; }
+  .app .save-auto-status strong { max-width: 190px; font-size: 9px; }
+  .app .save-autosave-row { gap: 8px; }
+  .app .save-autosave-row > span:first-child { display: none; }
+  .app .save-system-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .app .save-system-section { padding: 16px; }
+  .app .player-experience-grid { grid-template-columns: minmax(0, 1fr); }
+  .app .player-setting-control { min-height: 72px; }
+  .app .save-preferences-section.is-single-action { padding-top: 10px; margin-top: 10px; }
+  .app .game-over-panel { padding: 24px; }
+  .app .outcome-content h2 { font-size: 34px; }
+  .app .ending-bottom-bar { flex-wrap: wrap; gap: 8px; padding: 12px; }
+  .app .ending-restart { padding: 10px 14px; font-size: 10px; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .app .hud { top: 10px; }
+  .app .hud-meta-group .meta { font-size: 10px; }
+  .app .hud-action-button { height: 34px; }
+  .app .dialog-box { bottom: max(12px, env(safe-area-inset-bottom, 0px)); padding: 16px 22px; --dialog-safe-max-height: calc(100cqh - 80px); }
+  .app .dialog-box.has-choice-gate { --dialog-safe-max-height: calc(100cqh - 90px); }
+  .app .settings-modal-backdrop { padding: 10px; }
+  .app .settings-modal { height: calc(100cqh - 20px); max-height: calc(100cqh - 20px); grid-template-columns: 150px minmax(0, 1fr); grid-template-rows: 72px minmax(0, 1fr); }
+  .app .settings-modal-header { grid-column: 1 / -1; padding: 12px 20px; }
+  .app .case-file-tabs { grid-column: 1; grid-row: 2; flex-direction: column; padding: 12px; border: 0; border-right: 1px solid var(--game-line); }
+  .app .case-file-tab { flex: 0; min-height: 46px; justify-content: flex-start; padding: 10px; border: 1px solid transparent; border-radius: 3px; }
+  .app .case-file-tab.is-active { border-color: var(--game-line); background: var(--game-paper); }
+  .app .settings-modal-heading p { font-size: 8px; }
+  .app .settings-modal-header .settings-modal-heading h2 { font-size: 20px; }
+  .app .settings-modal-body { grid-column: 2; grid-row: 2; padding: 16px 20px; }
+  .app .save-system-body { display: block; overflow-y: auto; }
+  .app .save-system-grid { overflow: visible; }
+}
+@media (max-width: 360px) {
+  .app .inventory-collection-header { display: flex; align-items: stretch; flex-direction: column; }
+  .app .inventory-overview { max-width: none; width: 100%; }
+  .app .case-file-tab { gap: 5px; }
+  .app .case-file-tab-label { font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app :is(.settings-modal, .settings-modal-backdrop, .settings-modal-body, .inventory-detail-modal, .inventory-detail-modal-backdrop) { animation: none; }
+  .app :is(.choice-gate-option, .inventory-slot, .hud-action-button) { transition: none; }
+  .app .choice-gate-option:hover:not(:disabled), .app .inventory-slot:hover:not(:disabled) { transform: none; }
+}

@@ -7,6 +7,7 @@ import './launcher.css';
 import './titleScene.css';
 import './choiceLayout.mobile.css';
 import './promptLayout.css';
+import './gameInterface.css';
 
 initializePromptLayout();
 

@@ -105,6 +105,10 @@
 #   - say: { channel: narration, text: "그는 문고리를 바라보았다." } # 명시한 카메라를 유지
 #   - camera: medium # 확대를 풀 지점에만 다음 구도 지정
 #   - choice: { char: detective, camera: close, prompt: "문이 잠긴다. 뛸까?", options: [...] }
+# 인게임 UI: 대사 기본 170px, 입력 기본 220px, 선택지는 화면 너비/개수에 따라 자동 높이.
+# 작성자 고정 높이가 필요할 때만 say/choice/input.promptHeight 또는 config.ui.promptHeight를 지정합니다.
+# 자동 선택지 확장은 prompt-top 캐릭터의 읽기 기준선을 바꾸지 않습니다.
+#   - choice: { prompt: "긴 선택을 읽고 결정하세요.", promptHeight: 320, options: [...] }
 
 script:
   - scene: safety_choice

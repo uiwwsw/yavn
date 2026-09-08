@@ -51,20 +51,40 @@ export function resolveGamePromptHeight(game: GameData | undefined): number {
   return configured ?? DEFAULT_PROMPT_HEIGHT_PX;
 }
 
+/** Explicit author sizes win; otherwise give interactive prompts room to breathe. */
+export function resolveInteractivePromptHeight(game: GameData | undefined, action: Action | undefined, compact: boolean): number {
+  const explicit = resolvePromptActionHeight(action).promptHeight
+    ?? normalizePromptHeight((game as PromptLayoutGame | undefined)?.ui?.promptHeight);
+  if (explicit !== undefined) return explicit;
+  if (action && 'choice' in action) {
+    const count = action.choice.options.length;
+    const rows = compact || count > 4 ? count : Math.ceil(count / 2);
+    return 152 + Math.min(4, Math.max(1, rows)) * 64 + (action.choice.timeoutMs ? 36 : 0);
+  }
+  if (action && 'input' in action) return 220;
+  return DEFAULT_PROMPT_HEIGHT_PX;
+}
+
 function getCurrentPromptAction(game: GameData | undefined, sceneId: string, actionIndex: number): Action | undefined {
   return game?.scenes[sceneId]?.actions[actionIndex];
 }
 
-function applyPromptHeight(height: number): void {
+export function resolvePromptActorInset(measuredInset: number, measuredHeight: number, readingHeight: number): number {
+  return Math.max(0, measuredInset - Math.max(0, measuredHeight - readingHeight));
+}
+
+function applyPromptHeight(height: number, characterHeight = height): void {
   if (typeof document === 'undefined') {
     return;
   }
   document.documentElement.style.setProperty('--yavn-prompt-height', `${height}px`);
+  document.documentElement.style.setProperty('--yavn-character-prompt-height', `${characterHeight}px`);
 }
 
 export function initializePromptLayout(): () => void {
   let previousGame = useVNStore.getState().game;
   let appliedHeight = -1;
+  let appliedCharacterHeight = -1;
 
   const syncPromptHeight = () => {
     const state = useVNStore.getState();
@@ -80,15 +100,22 @@ export function initializePromptLayout(): () => void {
       return;
     }
 
-    const nextHeight = actionResolution.promptHeight ?? resolveGamePromptHeight(state.game);
-    if (nextHeight === appliedHeight) {
+    const nextHeight = resolveInteractivePromptHeight(state.game,
+      getCurrentPromptAction(state.game, state.currentSceneId, state.actionIndex),
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches);
+    const characterHeight = actionResolution.promptHeight ?? resolveGamePromptHeight(state.game);
+    if (nextHeight === appliedHeight && characterHeight === appliedCharacterHeight) {
       return;
     }
     appliedHeight = nextHeight;
-    applyPromptHeight(nextHeight);
+    appliedCharacterHeight = characterHeight;
+    applyPromptHeight(nextHeight, characterHeight);
   };
 
   applyPromptHeight(resolveGamePromptHeight(previousGame));
   appliedHeight = resolveGamePromptHeight(previousGame);
-  return useVNStore.subscribe(syncPromptHeight);
+  const unsubscribe = useVNStore.subscribe(syncPromptHeight);
+  const compact = typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)') : undefined;
+  compact?.addEventListener('change', syncPromptHeight);
+  return () => { unsubscribe(); compact?.removeEventListener('change', syncPromptHeight); };
 }

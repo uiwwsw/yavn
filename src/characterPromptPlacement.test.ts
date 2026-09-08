@@ -48,7 +48,7 @@ describe('prompt-top character placement', () => {
     expect(appSource).toContain('const promptTopBaselineReady = isDialogHidden || stickerSafeInset > 0;');
     expect(appSource).toContain("data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}");
     expect(appSource).toContain('aria-hidden={!promptTopBaselineReady}');
-    expect(appSource).toContain("'--prompt-top-dialog-inset': `${stickerSafeInset}px`");
+    expect(appSource).toContain("'--prompt-top-dialog-inset': `${characterPromptInset}px`");
     expect(styles).toMatch(
       /\.char-layer-prompt-top\s*\{[\s\S]*?bottom: var\(--prompt-top-dialog-inset\);[\s\S]*?z-index: 3;/,
     );
