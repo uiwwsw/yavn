@@ -21,14 +21,14 @@ scenes:
           text: "황제께서 신라를 걱정하십니다. 당이 고른 남편을 왕으로 세우면 곡식과 군사를 보내시겠답니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [당 사신]
           text: "남편을 보낸다면서 값은 안 보이는군요. 이 그림처럼 일부러 빼놓으셨겠죠."
       - choice:
           key: c5_first_reply
           prompt: "혼인 제안은 값을 숨기고 있습니다. 무엇으로 먼저 맞설까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [당 사신]
           options:
             - text: "웃으며 편지의 마지막 줄까지 듣는다"
@@ -49,7 +49,7 @@ scenes:
           text: "나비가 없다고 꽃이 빈 건 아닙니다. 신라 왕도 당이 그려 넣을 자리가 아니고요."
       - say:
           char: 당 사신.nervous
-          camera: reaction
+          camera: medium
           with: [덕만]
           text: "그림 한 장으로 목소리를 높이시는군요."
       - clearSticker: { id: c5_peony, leave: fadeOut }
@@ -63,12 +63,12 @@ scenes:
           text: "덕만은 대꾸하지 않고 조건을 한 줄씩 받아 적었습니다. 사신이 잔을 드는 순간 마지막 종이를 낚아챘습니다. 혼인 조항 아래, 신라 성 하나를 당군 주둔지로 내준다는 작은 글씨가 숨어 있었습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [당 사신]
           text: "성 하나를 내놓으라는 말이 여기 있었군요. 처음부터 이 줄을 읽었어야 했습니다."
       - say:
           char: 당 사신
-          camera: close
+          camera: medium
           with: [덕만]
           text: "공주께서 끝까지 들으시는 동안 반대가 없었습니다. 배석한 귀족들은 이미 동의의 잔을 나누었지요."
       - say:
@@ -91,7 +91,7 @@ scenes:
           text: "남자 왕이 곡식을 만든다면 왜 이 장부는 비었습니까? 남편입니까, 원조입니까. 값을 붙여 하나만 답하세요."
       - say:
           char: 당 사신.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "공주께선 제국의 혼인을 장터 거래처럼 다루시는군요."
       - say:
@@ -99,7 +99,7 @@ scenes:
           text: "장터 거래도 값은 밝힙니다. 값을 치를 아이들 이름부터 읽죠."
       - say:
           char: 당 사신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "제국의 문서 위에 그 명단을 올리셨군요. 이제 모욕의 값만 남았습니다."
       - say:
@@ -124,12 +124,12 @@ scenes:
           text: "비담이 빈 술병을 들고 휘장 뒤에서 나타났습니다. 병 속에는 통역관의 쪽지가 말려 있었습니다. 구휼미를 훔친 가문과 봄 연회 습격자의 이름 옆에 당의 답신 표시가 찍혀 있었습니다."
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "사신을 잡으면 오늘은 안전합니다. 쪽지를 돌려놓으면 뒤의 손을 보고요. 어느 쪽입니까?"
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [비담]
           text: "베끼고 원본은 돌려놔. 사신도 보내고, 뒤에서 받는 자도 본다."
       - goto: treaty_choice
@@ -165,7 +165,7 @@ scenes:
           text: "혼인은 뺍니다. 당은 종자와 천문표, 신라는 철과 항로. 이제 같은 값으로 말하죠."
       - say:
           char: 당 사신
-          camera: close
+          camera: medium
           with: [덕만]
           text: "황제께서 이 문서를 찢으실 수도 있습니다."
       - say:
@@ -181,12 +181,12 @@ scenes:
           text: "덕만은 혼인 답변 날짜를 세 달 뒤로 밀고 그 빈칸에 국경 군량 수레 수를 적었습니다. 사신은 웃었지만 날짜 아래 붉은 줄을 두 번 그었습니다."
       - say:
           char: 당 사신
-          camera: close
+          camera: medium
           with: [덕만]
           text: "미룬 답도 답입니다. 군량과 함께 호위대가 들어올 텐데, 그때도 혼인 이야기를 미루실 수 있을까요?"
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [당 사신]
           text: "호위대라니요? 나는 수레만 받는다고 했습니다."
       - say:
@@ -210,12 +210,12 @@ scenes:
           text: "사신은 소매에서 밀봉된 서신 다섯 장을 꺼냈습니다. 대신 무역권 문서에 한 가문의 이름이 새로 들어갔습니다. 덕만은 적의 이름을 얻는 순간 또 하나의 문을 그들에게 내주었습니다."
       - say:
           char: 비담.smirk
-          camera: close
+          camera: medium
           with: [덕만]
           text: "편지는 얻었습니다. 무역권을 받은 가문 이름도 있군요. 죽일 이유와 돈을 한 장에 써 줬습니다."
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [비담]
           text: "봉인을 뜯지 마. 원본을 가져가야 거래를 밝힐 수 있어. 비담… 손이 왜 이렇게 차갑지?"
       - say:
@@ -240,7 +240,7 @@ scenes:
           key: c5_protocol
           prompt: "사신이 덕만에게 무릎을 꿇으라 합니다. 어떻게 답할까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [당 사신]
           options:
             - text: "사신도 일으켜 같은 높이에서 절한다"
@@ -257,12 +257,12 @@ scenes:
       - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [당 사신]
           text: "그림은 돌려드립니다. 향기를 빼도 꽃은 남고, 남편을 더해도 신라 왕은 되지 않는다는 답과 함께요."
       - say:
           char: 당 사신.angry
-          camera: reaction
+          camera: medium
           with: [덕만]
           text: "그 답은 모욕으로 기록될 겁니다."
       - say:
@@ -270,7 +270,7 @@ scenes:
           text: "그럼 혼인과 곡식 조건도 한 글자 빼지 말고 적으십시오."
       - say:
           char: 당 사신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "그림은 받겠습니다. 다만 황제의 선물을 되돌린 손이 무사할지는 신라 안에서 먼저 정하겠지요."
       - say:
@@ -296,7 +296,7 @@ scenes:
           text: "사신의 수레가 궁문을 나설 때 모란 족자는 연회상 위에 남았습니다. 덕만은 그림을 뒤집어 놓고서야 굳었던 손가락을 폈습니다."
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "사신도 귀족도 오늘 밤은 못 자겠군요. 마음에 듭니다."
       - say:

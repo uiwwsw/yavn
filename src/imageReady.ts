@@ -7,7 +7,7 @@ export type VisibleImageReadyResult = {
   timedOut: boolean;
 };
 
-const VISIBLE_STATIC_IMAGE_SELECTOR = '.effect-viewport > img.bg, .char-layer img.char-image';
+const VISIBLE_STATIC_IMAGE_SELECTOR = '.effect-viewport > img.bg, .char-layer img.char-image, .char-layer img.character-art[data-character-requested="true"]';
 const readyImageSourceKeys = new Set<string>();
 
 function collectImageSourceKeys(source: string): string[] {

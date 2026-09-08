@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { normalizeCharacterEnter } from './characterEntrance';
 
 describe('character entrance presentation', () => {
-  it('keeps the legacy fade and coordinated layout as the default', () => {
+  it('uses a restrained fade with coordinated placement by default', () => {
     expect(normalizeCharacterEnter(undefined)).toEqual({
       enterEffect: 'fadeIn',
       enterLayout: 'push',
-      enterDuration: 240,
-      enterEasing: 'ease-out',
+      enterDuration: 360,
+      enterEasing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
       enterDelay: 0,
     });
   });
@@ -17,7 +17,7 @@ describe('character entrance presentation', () => {
       enterEffect: 'none',
       enterLayout: 'cut',
       enterDuration: 0,
-      enterEasing: 'ease-out',
+      enterEasing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
       enterDelay: 0,
     });
   });

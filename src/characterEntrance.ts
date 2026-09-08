@@ -5,8 +5,8 @@ import type {
 } from './types';
 
 export const DEFAULT_CHARACTER_ENTER_EFFECT: CharacterEnterEffect = 'fadeIn';
-export const DEFAULT_CHARACTER_ENTER_DURATION_MS = 240;
-export const DEFAULT_CHARACTER_ENTER_EASING = 'ease-out';
+export const DEFAULT_CHARACTER_ENTER_DURATION_MS = 360;
+export const DEFAULT_CHARACTER_ENTER_EASING = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
 export const DEFAULT_CHARACTER_ENTER_DELAY_MS = 0;
 
 export function normalizeCharacterEnter(

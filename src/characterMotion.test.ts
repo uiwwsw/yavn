@@ -23,6 +23,8 @@ const stageImageCharacterSource = readFileSync(
   'utf8',
 );
 
+const presentationStyles = readFileSync(fileURLToPath(new URL('./characterPresentation.css', import.meta.url)), 'utf8');
+
 describe('image character motion', () => {
   it('glides a mounted character between slots while facing flips snap instantly', () => {
     const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
@@ -70,38 +72,29 @@ describe('image character motion', () => {
     expect(appSource).toContain('const enteringCharacterSet = useMemo(');
     expect(appSource).toContain('const characterEntranceMotionActive = useTransientMotionWindow(');
     expect(appSource).toContain('&& characterEntranceMotionActive');
-    expect(appSource).toContain('const entryClass = isEntering ? `is-entering char-enter-${slot.enterEffect}` : \'\';');
+    expect(appSource).toContain('const entryClass = isEntering ? \'is-entering\' : \'\';');
     expect(appSource).toContain('data-character-enter-layout={characterEnterLayout}');
     expect(appSource).toMatch(/const stickerAvoidanceSettleMs = Math\.max\([\s\S]*?characterEnterMotionDurationMs,/);
     expect(styles).toContain(".char-layer[data-character-moving='true'][data-character-enter-layout='cut'] .char:not(.is-entering)");
     expect(styles).toContain(".char-layer[data-character-moving='true'][data-character-enter-layout='push'] .char:not(.is-entering):not(.is-camera-hidden)");
     expect(styles).toContain('--character-position-easing: var(--character-enter-layout-easing);');
     expect(styles).toContain('--character-position-delay: var(--character-enter-layout-delay);');
-    expect(styles).toContain(".char-layer[data-character-moving='true'][data-character-enter-layout='push'] .char.is-breathing:not(.is-entering):not(.is-camera-hidden)");
-    expect(styles).toContain('.char.is-entering:not(.char-enter-none)');
-    expect(styles).toContain('var(--character-enter-animation)');
     expect(styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '').not.toContain('--character-enter-layout-duration: 380ms;');
     expect(styles.match(/\.char-composition-world\s*\{([\s\S]*?)\n\}/)?.[1] ?? '').toContain('--character-enter-layout-duration: 380ms;');
     expect(appSource).not.toContain('characterPlacementByIdRef');
     expect(appSource).not.toContain('is-awaiting-entry');
   });
 
-  it('buffers undecoded image sources without flashing an intermediate request', () => {
-    expect(appSource).toContain('<StageImageCharacter');
-    expect(appSource).toContain('source={slot.source}');
-    expect(stageImageCharacterSource).toContain('const [presentation, setPresentation]');
-    expect(stageImageCharacterSource).toContain('if (presentation.source === source)');
-    expect(stageImageCharacterSource).toContain('latestSourceRef.current !== source');
-    expect(stageImageCharacterSource).toContain('waitForImageReady(preload, CHARACTER_IMAGE_READY_TIMEOUT_MS)');
-    expect(stageImageCharacterSource).toContain("!cancelled && status === 'ready'");
-    expect(stageImageCharacterSource).toContain("? 'holding'");
-    expect(stageImageCharacterSource).toContain("'is-image-pending'");
-    expect(styles).toMatch(
-      /\.char-image\.is-image-pending\s*\{[\s\S]*?opacity: 0 !important;[\s\S]*?visibility: hidden;[\s\S]*?animation: none !important;/,
-    );
+  it('decodes each mounted portrait before presenting it and separates presence from placement', () => {
+    expect(stageImageCharacterSource).toContain('waitForImageReady(image, CHARACTER_IMAGE_READY_TIMEOUT_MS)');
+    expect(stageImageCharacterSource).toContain("!cancelled && status === 'ready' && latestSourceRef.current === source");
+    expect(stageImageCharacterSource).toContain('<CharacterPresence visible={visible} ready={Boolean(presentation.current)}');
+    expect(live2dSource).toContain('<CharacterPresence');
+    expect(presentationStyles).toContain('.portrait-pending { visibility: hidden; opacity: 0; }');
+    expect(presentationStyles).toContain('mix-blend-mode: plus-lighter;');
   });
 
-  it('coalesces skipped visibility changes and overlaps exit fade with one survivor glide', () => {
+  it('coalesces skipped visibility changes while retaining the cast layout and displaced actors', () => {
     expect(appSource).toContain('left.every((id) => right.includes(id))');
     expect(appSource).toContain('characterVisibilityFrameRef.current = window.requestAnimationFrame(() => {');
     expect(appSource).toMatch(
@@ -110,7 +103,7 @@ describe('image character motion', () => {
     expect(appSource).toContain('const nextLeavingPlacements = new Map(leavingCharacterPlacementRef.current);');
     expect(appSource).toContain('resolveCharacterStageRenderPlacement(');
     expect(appSource).toContain('leavingCharacterPlacementRef.current = nextLeavingPlacements;');
-    expect(appSource).toContain(': leavingCharacterPlacementRef.current.get(slot.id) ?? currentPlacement;');
+    expect(appSource).toContain(': leavingCharacterPlacementRef.current.get(slot.id) ?? currentPlacement);');
     expect(appSource).not.toContain('shouldHoldPreviousLayout');
     expect(appSource).not.toContain('shouldWaitForExit');
     expect(appSource).not.toContain('characterLayoutReleaseTimerRef');
@@ -181,38 +174,16 @@ describe('image character motion', () => {
     expect(appSource).not.toContain("cameraPresentation.shot === 'close' ? (focusCharacterId ?? '') : ''");
     expect(appSource).toContain('() => `${stickerAvoidanceKey}::${promptTopBaselineReady}`');
     expect(appSource).not.toContain('`${stickerAvoidanceKey}::${speakerOrder.join(\',\')}::${promptTopBaselineReady}`');
-    expect(styles).toMatch(/@keyframes characterEnter\s*\{[\s\S]*?from\s*\{[\s\S]*?opacity: 0;[\s\S]*?to\s*\{[\s\S]*?opacity: 1;/);
-    const characterEnter = styles.match(/@keyframes characterEnter\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
-    expect(characterEnter).not.toContain('translate');
-    expect(characterEnter).not.toContain('scale');
   });
 
-  it('keeps every staged character opaque and gives only the dialogue speaker a subtle breathing loop', () => {
-    const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
-    const breathingRule = styles.match(/\.char\.is-breathing\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
-    const breathingKeyframes = styles.match(/@keyframes characterSpeakerBreathing\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
-
-    expect(charRule).toContain('opacity: 1;');
-    expect(styles).not.toContain('--char-focus-opacity');
-    expect(styles).not.toContain(".char-layer[data-camera-shot='reaction'] .char.is-camera-listener");
+  it('emphasizes the speaker with light while leaving body position, size and depth stable', () => {
     expect(appSource).toContain("const isSpeaking = rendererActive && dialogSpeakerId === slot.id;");
     expect(appSource).toContain("isSpeaking ? 'is-speaking' : ''");
-    expect(appSource).toContain("isBreathing ? 'is-breathing' : ''");
-    expect(appSource).toContain("animationName !== 'characterSpeakerBreathing'");
-    expect(appSource).toContain('previousBreathingSpeakerIdRef.current === slot.id');
-    expect(live2dSource).toContain('onAnimationIteration={onAnimationIteration}');
-    expect(charRule).toContain('--character-breath-duration: 2200ms;');
-    expect(breathingRule).toContain('characterSpeakerBreathing var(--character-breath-duration)');
-    expect(breathingRule).not.toContain('opacity');
-    expect(breathingKeyframes).toContain('var(--char-calibration-y) - 0.18%');
-    expect(breathingKeyframes).toContain('scale: calc(var(--char-scale) + 0.003) calc(var(--char-scale) + 0.009);');
-    expect(breathingKeyframes).toContain('brightness(1.04)');
-    expect(breathingKeyframes).toContain('drop-shadow(0 0 12px rgba(255, 244, 218, 0.16))');
-    expect(breathingKeyframes).not.toContain('transform:');
-    expect(breathingKeyframes).not.toContain('opacity');
-    expect(styles).toMatch(
-      /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.char,[\s\S]*?animation: none !important;/,
-    );
+    expect(appSource).not.toContain('is-breathing');
+    expect(styles).not.toContain('characterSpeakerBreathing');
+    expect(presentationStyles).toContain('filter: brightness(1.02)');
+    expect(presentationStyles).toContain('prefers-reduced-motion: reduce');
+    expect(presentationStyles).toContain('animation-play-state: paused !important;');
   });
 
   it('warms the Live2D renderer alongside chapter asset preloading', () => {

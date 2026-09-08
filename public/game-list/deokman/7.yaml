@@ -16,20 +16,20 @@ scenes:
           text: "구휼 수레가 시장 모퉁이를 돌 때 지붕 기와가 한 장 미끄러졌습니다. 덕만이 고개를 들기도 전에 화살이 천명의 어깨를 꿰었습니다. 달아나는 자의 허리에서 가짜 모란패가 돌바닥에 튕겼습니다."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "이 모란패, 가짜야… 내가 죽으면 네가 시킨 일이 돼. 자객 말고 나부터 의원에게 데려가."
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
-          camera: reaction
+          camera: medium
           with: [덕만]
           text: "독이 퍼집니다. 의원은 남쪽, 자객은 북쪽입니다. 둘 다 못 갑니다. 정하십시오!"
       - choice:
           key: c8_first_response
           prompt: "천명의 독과 자객의 도주가 동시에 시작됐습니다. 덕만은 어디로 갈까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [유신]
           options:
             - text: "비담의 의원에게 숨기고 사망 종을 울린다"
@@ -51,7 +51,7 @@ scenes:
           text: "덕만은 천명을 업고 사람들을 밀치며 달렸습니다. 천명의 피가 덕만의 소매를 적시는 동안 지붕 위 발자국은 빗물에 하나씩 무너졌습니다."
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "사람들이 네가 날 업고 뛴 걸 봤어. 적어도 네 화살이라고는 못 하겠지. 자객은 놓쳤지만."
       - goto: forged_confession
@@ -70,12 +70,12 @@ scenes:
           text: "문장 끝에 지붕 기와가 꺼졌습니다. 초소는 명령서를 보여 주기 위한 미끼였고, 아래 방에는 독화살을 쏜 자객 둘이 덕만을 기다리고 있었습니다."
       - say:
           char: 유신.angry
-          camera: close
+          camera: medium
           with: [덕만]
           text: "공주님! 천명 공주님은 의원에게 닿았습니다. 어디 계십니까? 대답하십시오!"
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [유신]
           text: "언니가 살았다면 됐어. 이 종이… 꼭 가져가. 내 글씨가 아니라고 언니가 말해 줄 거야."
       - effect: { name: darken, wait: true }
@@ -96,7 +96,7 @@ scenes:
           text: "비담의 의원이 문을 잠그자 궁에서는 천명의 사망 종이 울렸습니다. 그날 밤 축하주를 주문한 집마다 비담의 전령이 서신을 훔쳐 나왔습니다."
       - say:
           char: 비담
-          camera: close
+          camera: medium
           with: [덕만]
           text: "산 공주를 죽었다고 쓰는 건 왕실의 특기인가 봅니다. 이번엔 축하 편지를 부르는군요."
       - say:
@@ -115,12 +115,12 @@ scenes:
           text: "덕만이 가짜 사망 종으로 범인을 낚는 동안, 비담의 밀실은 천명을 시장 의원에게서 너무 멀리 숨겼습니다. 의원에게 닿았을 때는 해독약을 삼킬 숨이 남지 않았습니다."
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "편지를 다 잡아도… 내가 죽으면 누가 네 말을 믿어? 또 산 사람의 글만 남잖아."
       - say:
           char: 덕만.sad
-          camera: close
+          camera: medium
           with: [천명]
           text: "언니, 눈 떠. 편지도 종도 다 버릴게. 이번엔 언니부터 고를게."
       - say:
@@ -140,7 +140,7 @@ scenes:
           text: "이튿날 조회상에 자백문이 펼쳐졌습니다. 천명이 쓰러지기 전부터 말라 있던 먹, 이미 죽은 군관의 서명. 어린 덕만의 사망 기록과 같은 냄새가 났습니다."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "어머니가 나오면 위조문은 찢깁니다. 대신 군대가 갈립니다. 계속 숨으면 그 종이가 공주님 목을 조르고요."
       - choice:
@@ -183,12 +183,12 @@ scenes:
           text: "덕만은 틀린 획과 죽은 군관의 날짜를 하나씩 읽었습니다. 종이는 거짓으로 판명됐지만 닫힌 문 뒤 천명의 침묵에는 저마다 원하는 생사가 붙었습니다."
       - say:
           char: 춘추.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "종이는 이겼습니다. 하지만 어머니가 안 나오니 증인을 숨겼다 합니다. 지금이라도 여십시오."
       - say:
           char: 덕만.princess_angry
-          camera: close
+          camera: medium
           with: [춘추]
           text: "언니 몸이 아직 버티지 못해. 획이 틀렸다는 것만으로 충분해야 해."
       - say:
@@ -212,12 +212,12 @@ scenes:
       - char: { id: 천명, position: right, emotion: sad }
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "원하던 편지는 얻었어. 이제 문 열자. 약 냄새가 이상해. 아까 온 의원, 시장에서 본 사람이 아니었어."
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [천명]
           text: "조금만 더 버텨. 축하 서신을 보낸 집이 하나 더 있어. 그 집까지 잡으면—"
       - say:
@@ -245,7 +245,7 @@ scenes:
           key: c8_cheonmyeong_fate
           prompt: "천명이 자기 삶을 고르려 합니다. 덕만은 어떻게 답할까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [천명]
           options:
             - text: "국경 구휼소의 열쇠를 천명에게 준다"
@@ -268,7 +268,7 @@ scenes:
           text: "천명은 왕실 비녀를 탁자에 두고 구휼소 열쇠를 목에 걸었습니다. 성문 밖에서는 추방이라 수군댔지만 마차의 행선지는 천명이 직접 적었습니다."
       - say:
           char: 천명
-          camera: close
+          camera: medium
           with: [덕만]
           text: "사람들은 네가 날 버렸다 하겠지. 화나면 편지해. 나도 네가 미웠다고 답할게. 우린 자매니까."
       - goto: abandoned_end
@@ -281,12 +281,12 @@ scenes:
           text: "밤이면 비밀문이 열리고 천명이 촛불 아래로 나왔습니다. 덕만은 언니의 조언을 들었지만, 해가 뜨면 천명은 발소리조차 숨겨야 했습니다."
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "네 곁에 숨으면 살 줄 알았어. 그런데 약도 문도 전부 저들 손이야. 우리끼린 나갈 수도 없어."
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [천명]
           text: "오늘 밤 나가자. 네가 걸을 수 있을 때까지 기다리려 했는데, 더 기다리면 안 돼."
       - say:

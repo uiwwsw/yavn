@@ -23,6 +23,8 @@ import live2dRedistributableFilesUrl from '../assets/licenses/live2d/Redistribut
 import { CinematicLayer } from './CinematicLayer';
 import { YavnLogo } from './YavnLogo';
 import { TitleScene } from './TitleScene';
+import { useRetainedCast } from './retainedCast';
+import './characterPresentation.css';
 import { SceneCurtain, useSceneCurtain } from './SceneCurtain';
 import { collectStartSceneAssets, DEFAULT_START_SCENE, mapStartSceneAssets } from './startScene';
 import { OutcomePrelude, trapOutcomeFocus } from './OutcomePrelude';
@@ -452,12 +454,6 @@ const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
 const INVENTORY_DEFAULT_CATEGORY = '기타';
 const INVENTORY_CATEGORY_ALL = '';
-
-const POSITION_TIEBREAKER: Record<Position, number> = {
-  center: 0,
-  left: 1,
-  right: 2,
-};
 
 type CreditContactLine = {
   label?: string;
@@ -1159,7 +1155,7 @@ const StickerView = memo(function StickerView({
     const characterImagesReady = characterElements.every((characterElement) => {
       const imageElements = characterElement.matches('img.char-image')
         ? [characterElement as HTMLImageElement]
-        : [...characterElement.querySelectorAll<HTMLImageElement>('.char-image')];
+        : [...characterElement.querySelectorAll<HTMLImageElement>('.character-art:not(.portrait-pending)')];
       return imageElements.every((imageElement) => imageElement.complete);
     });
     if (!characterImagesReady) {
@@ -1167,7 +1163,10 @@ const StickerView = memo(function StickerView({
     }
 
     const characterRects = characterElements
-      .map((characterElement) => characterElement.getBoundingClientRect())
+      .flatMap((characterElement) => {
+        const painted = [...characterElement.querySelectorAll<HTMLElement>('.character-art:not(.portrait-pending), canvas')];
+        return (painted.length ? painted : [characterElement]).map(element => element.getBoundingClientRect());
+      })
       .filter((rect) => rect.width > 0 && rect.height > 0);
     if (
       characterRects.length > 0
@@ -1489,7 +1488,6 @@ export default function App() {
     attack,
     stickers,
     characters,
-    speakerOrder,
     visibleCharacterIds,
     camera,
     dialogSpeaker,
@@ -1525,7 +1523,6 @@ export default function App() {
     attack: state.attack,
     stickers: state.stickers,
     characters: state.characters,
-    speakerOrder: state.speakerOrder,
     visibleCharacterIds: state.visibleCharacterIds,
     camera: state.camera,
     dialogSpeaker: state.dialog.speaker,
@@ -1574,7 +1571,6 @@ export default function App() {
   const [startGateLaunching, setStartGateLaunching] = useState(false);
   const [startGateRevealing, setStartGateRevealing] = useState(false);
   const [startGateError, setStartGateError] = useState<string>();
-  const [startGateMotionPaused, setStartGateMotionPaused] = useState(false);
   const [documentHidden, setDocumentHidden] = useState(() => document.hidden);
   const [startGateAudioPlaying, setStartGateAudioPlaying] = useState(false);
   const startGateLaunchLockRef = useRef(false);
@@ -2614,17 +2610,20 @@ export default function App() {
     ),
     [layoutCharactersByPosition],
   );
+  const stageCastKey = stagedCharactersByPosition.map(({ position, slot }) => `${position}:${slot.id}`).join('|');
+  const previousLayoutCastKey = useRef(stageCastKey);
   useLayoutEffect(() => {
+    const castChanged = previousLayoutCastKey.current !== stageCastKey;
     if (characterVisibilityFrameRef.current !== null) {
       window.cancelAnimationFrame(characterVisibilityFrameRef.current);
       characterVisibilityFrameRef.current = null;
     }
-    if (haveSameCharacterIds(presentedVisibleCharacterIds, visibleCharacterIds)) {
+    if (haveSameCharacterIds(presentedVisibleCharacterIds, visibleCharacterIds) && !castChanged) {
       return;
     }
-
     const nextVisibleCharacterIds = [...visibleCharacterIds];
     if (chapterLoading) {
+      previousLayoutCastKey.current = stageCastKey;
       leavingCharacterPlacementRef.current.clear();
       setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
@@ -2665,9 +2664,11 @@ export default function App() {
       });
       leavingCharacterPlacementRef.current = nextLeavingPlacements;
 
-      // Commit visibility and survivor layout together. Leaving actors read their
-      // captured placement, so their fade can overlap the survivors' single glide.
-      setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
+      // Dialogue focus is not blocking: hiding a listener does not move everyone else.
+      previousLayoutCastKey.current = stageCastKey;
+      setLayoutVisibleCharacterIds(previous => castChanged
+        ? nextVisibleCharacterIds
+        : [...new Set([...previous.filter(id => stagedCharacterIds.has(id)), ...nextVisibleCharacterIds])]);
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
     });
 
@@ -2678,6 +2679,7 @@ export default function App() {
       }
     };
   }, [
+    stageCastKey,
     chapterLoading,
     characterStageLayout,
     characterStageSpacing,
@@ -2688,7 +2690,7 @@ export default function App() {
   const cameraPresentation = useMemo(
     () => resolveStageCameraPresentation(
       camera,
-      visibleCharacterCount,
+      layoutCharactersByPosition.length,
       cameraTargetPosition,
       characterStageLayout,
       characterStageSpacing,
@@ -2698,7 +2700,7 @@ export default function App() {
       cameraTargetPosition,
       characterStageLayout,
       characterStageSpacing,
-      visibleCharacterCount,
+      layoutCharactersByPosition,
     ],
   );
   const cameraMotionKey = useMemo(() => [
@@ -2712,7 +2714,9 @@ export default function App() {
     () => resolveStageCameraTransitionTiming(cameraPresentation, visibleCharacterCount),
     [cameraPresentation, visibleCharacterCount],
   );
+  const firstCastEntrance = visibleCharacterCount > 0 && previousPresentedVisibleCharacterIdsRef.current.size === 0;
   const cameraTransitionTiming = useMemo(() => {
+    if (firstCastEntrance) return { cameraDelay: 0, cameraDuration: 0, characterExitDuration: 0 };
     if (cameraMotionTempo === 'normal') {
       return authoredCameraTransitionTiming;
     }
@@ -2729,7 +2733,7 @@ export default function App() {
         cameraMotionTempo,
       ),
     };
-  }, [authoredCameraTransitionTiming, cameraMotionTempo, cameraPresentation.duration]);
+  }, [authoredCameraTransitionTiming, cameraMotionTempo, cameraPresentation.duration, firstCastEntrance]);
   const focusCharacterId = (cameraPresentation.shot === 'close' || cameraPresentation.shot === 'reaction') && effectiveCameraTargetId
     ? effectiveCameraTargetId
     : dialogSpeakerId;
@@ -2780,57 +2784,6 @@ export default function App() {
     ].join(':')).join(','),
     [stagedCharactersByPosition],
   );
-  const [settlingBreathingCharacterIds, setSettlingBreathingCharacterIds] = useState<ReadonlySet<string>>(
-    () => new Set(),
-  );
-  const previousBreathingSpeakerIdRef = useRef(dialogSpeakerId);
-
-  useLayoutEffect(() => {
-    const previousSpeakerId = previousBreathingSpeakerIdRef.current;
-    const speakerChanged = previousSpeakerId !== dialogSpeakerId;
-    previousBreathingSpeakerIdRef.current = dialogSpeakerId;
-    const stagedCharacterIds = new Set(stagedCharactersByPosition.map(({ slot }) => slot.id));
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    setSettlingBreathingCharacterIds((current) => {
-      if (reducedMotion) {
-        return current.size > 0 ? new Set() : current;
-      }
-
-      const next = new Set(current);
-      let changed = false;
-      for (const characterId of next) {
-        if (!stagedCharacterIds.has(characterId)) {
-          next.delete(characterId);
-          changed = true;
-        }
-      }
-      if (speakerChanged && previousSpeakerId && stagedCharacterIds.has(previousSpeakerId)) {
-        if (!next.has(previousSpeakerId)) {
-          next.add(previousSpeakerId);
-          changed = true;
-        }
-      }
-      if (dialogSpeakerId && next.delete(dialogSpeakerId)) {
-        changed = true;
-      }
-      return changed ? next : current;
-    });
-  }, [dialogSpeakerId, stagedCharacterMotionKey, stagedCharactersByPosition]);
-
-  const finishSettlingSpeakerBreathing = useCallback((characterId: string, animationName: string) => {
-    if (animationName !== 'characterSpeakerBreathing' || characterId === dialogSpeakerId) {
-      return;
-    }
-    setSettlingBreathingCharacterIds((current) => {
-      if (!current.has(characterId)) {
-        return current;
-      }
-      const next = new Set(current);
-      next.delete(characterId);
-      return next;
-    });
-  }, [dialogSpeakerId]);
   const stickerAvoidanceKey = useMemo(() => [
     cameraPresentation.shot,
     cameraPresentation.scale,
@@ -2890,28 +2843,6 @@ export default function App() {
     characterMotionKey,
     motionTempo,
   );
-  const orderedCharacters = useMemo(
-    () => [...visibleCharactersByPosition].sort((a, b) => {
-      if (a.slot.id === focusCharacterId && b.slot.id !== focusCharacterId) return -1;
-      if (b.slot.id === focusCharacterId && a.slot.id !== focusCharacterId) return 1;
-      const aRank = speakerOrder.indexOf(a.slot.id);
-      const bRank = speakerOrder.indexOf(b.slot.id);
-      const aPriority = aRank >= 0 ? aRank : Number.MAX_SAFE_INTEGER;
-      const bPriority = bRank >= 0 ? bRank : Number.MAX_SAFE_INTEGER;
-      if (aPriority !== bPriority) {
-        return aPriority - bPriority;
-      }
-      return POSITION_TIEBREAKER[a.position] - POSITION_TIEBREAKER[b.position];
-    }),
-    [focusCharacterId, speakerOrder, visibleCharactersByPosition],
-  );
-  const orderByPosition = useMemo(() => {
-    const nextOrderByPosition = new Map<Position, number>();
-    orderedCharacters.forEach((entry, idx) => {
-      nextOrderByPosition.set(entry.position, idx + 1);
-    });
-    return nextOrderByPosition;
-  }, [orderedCharacters]);
 
   useEffect(() => {
     if (!selectedInventoryItemId) {
@@ -3407,31 +3338,32 @@ export default function App() {
     };
   }, [bootMode, choiceGate.active, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
+  const currentCast = useMemo(() => stagedCharactersByPosition.map(({ position, slot }) => ({
+    position, slot, visible: visibleCharacterSet.has(slot.id),
+    placement: resolveCharacterStageRenderPlacement(position, characterStageLayout, characterStageSpacing, slot.facing),
+  })), [stagedCharactersByPosition, visibleCharacterSet, characterStageLayout, characterStageSpacing]);
+  const renderedCast = useRetainedCast(currentCast, characterLeaveDurationMs);
+
   const hasFocusedCharacter = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
 
   const renderCharacter = (
     slot: CharacterSlot | undefined,
     position: Position,
     renderPlacement: CharacterSlot['placement'] = 'stage-bottom',
+    retiredPlacement?: CharacterStageRenderPlacement,
   ) => {
     if (!slot || slot.placement !== renderPlacement) {
       return null;
     }
-    const isCameraVisible = visibleCharacterSet.has(slot.id);
+    const isCameraVisible = !retiredPlacement && visibleCharacterSet.has(slot.id);
     const isEntering = isCameraVisible
       && characterEntranceMotionActive
       && enteringCharacterSet.has(slot.id);
-    const order = orderByPosition.get(position) ?? Number.MAX_SAFE_INTEGER;
-    const zIndex = Math.max(1, 1000 - order);
+    const zIndex = attack?.attacker === slot.id ? 1100 : position === 'center' ? 3 : position === 'left' ? 2 : 1;
     const isFocused = hasFocusedCharacter && focusCharacterId === slot.id;
     const placementReady = renderPlacement !== 'prompt-top' || promptTopBaselineReady;
     const rendererActive = isCameraVisible && placementReady;
     const isSpeaking = rendererActive && dialogSpeakerId === slot.id;
-    const isSettlingBreathing = dialogSpeakerId !== slot.id && (
-      settlingBreathingCharacterIds.has(slot.id)
-      || previousBreathingSpeakerIdRef.current === slot.id
-    );
-    const isBreathing = isSpeaking || isSettlingBreathing;
     const focusPresentation = resolveCharacterFocusPresentation(
       isFocused,
       hasFocusedCharacter,
@@ -3443,9 +3375,9 @@ export default function App() {
       characterStageSpacing,
       slot.facing,
     );
-    const placement = isCameraVisible
+    const placement = retiredPlacement ?? (isCameraVisible
       ? currentPlacement
-      : leavingCharacterPlacementRef.current.get(slot.id) ?? currentPlacement;
+      : leavingCharacterPlacementRef.current.get(slot.id) ?? currentPlacement);
     const duoClass = placement.duoSide ? `char-duo-${placement.duoSide}` : '';
     const characterEnterTiming = resolveAdaptiveMotionTiming(
       slot.enterDuration,
@@ -3476,7 +3408,7 @@ export default function App() {
       '--character-enter-delay': `${characterEnterTiming.delay}ms`,
     } as CSSProperties;
     const visibilityClass = isCameraVisible ? '' : 'is-camera-hidden';
-    const entryClass = isEntering ? `is-entering char-enter-${slot.enterEffect}` : '';
+    const entryClass = isEntering ? 'is-entering' : '';
     const className = [
       'char',
       'char-image',
@@ -3484,8 +3416,6 @@ export default function App() {
       position,
       focusPresentation.depthClass,
       isSpeaking ? 'is-speaking' : '',
-      isBreathing ? 'is-breathing' : '',
-      isSettlingBreathing ? 'is-breath-settling' : '',
       duoClass,
       `char-placement-${renderPlacement}`,
       visibilityClass,
@@ -3499,9 +3429,9 @@ export default function App() {
             position={position}
             trackingKey={buildLive2DLoadKey(slot)}
             active={rendererActive && !settingsOpen}
-            className={[combatClass, focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', isBreathing ? 'is-breathing' : '', isSettlingBreathing ? 'is-breath-settling' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
+            className={[combatClass, focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
             style={charStyle}
-            onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
+            visible={rendererActive}
           />
         </Suspense>
       );
@@ -3521,7 +3451,8 @@ export default function App() {
         loading="eager"
         decoding="async"
         style={charStyle}
-        onAnimationIteration={(event) => finishSettlingSpeakerBreathing(slot.id, event.animationName)}
+        visible={rendererActive}
+        enterEffect={slot.enterEffect}
       />
     );
   };
@@ -3763,7 +3694,7 @@ export default function App() {
         onPointerDown={() => tryPlayStartGateMusic()}
       >
         <TitleScene scene={startGate.scene} imageUrl={startGate.imageUrl} showTitle={startGate.showTitle}
-          paused={startGateMotionPaused || playerExperience.effectLevel === 'minimal'} />
+          paused={false} />
         <div className="start-gate-overlay" aria-hidden="true" />
         <div className="start-gate-atmosphere" aria-hidden="true">
           <span className="start-gate-vignette" />
@@ -3817,8 +3748,6 @@ export default function App() {
                 if (startGateAudioPlaying) { setBgmEnabled(false); setBgmEnabledState(false); }
                 else { setBgmEnabled(true); setBgmEnabledState(true); tryPlayStartGateMusic(); }
               }}>{startGateAudioPlaying ? '♫ 소리 켜짐' : '♪ 소리 켜기'}</button>}
-            <button type="button" aria-pressed={!startGateMotionPaused} disabled={startGateLaunching}
-              onClick={() => setStartGateMotionPaused((value) => !value)}>{startGateMotionPaused ? '움직임 재생' : '움직임 멈춤'}</button>
           </div>
         </div>
         <div className="start-scene-cover" aria-hidden="true"><i /><i /></div>
@@ -4352,9 +4281,7 @@ export default function App() {
             data-camera-target={camera.target}
             data-camera-transition={cameraPresentation.transition}
           >
-            {renderCharacter(characters.left, 'left')}
-            {renderCharacter(characters.center, 'center')}
-            {renderCharacter(characters.right, 'right')}
+            {renderedCast.map(actor => renderCharacter(actor.slot, actor.position, 'stage-bottom', actor.retiredAt === undefined ? undefined : actor.placement))}
           </div>
         </div>
       </div>
@@ -4382,9 +4309,7 @@ export default function App() {
               data-camera-target={camera.target}
               data-camera-transition={cameraPresentation.transition}
             >
-              {renderCharacter(characters.left, 'left', 'prompt-top')}
-              {renderCharacter(characters.center, 'center', 'prompt-top')}
-              {renderCharacter(characters.right, 'right', 'prompt-top')}
+            {renderedCast.map(actor => renderCharacter(actor.slot, actor.position, 'prompt-top', actor.retiredAt === undefined ? undefined : actor.placement))}
             </div>
           </div>
         </div>

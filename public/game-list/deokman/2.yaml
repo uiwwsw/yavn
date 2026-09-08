@@ -18,25 +18,25 @@ scenes:
       - say:
           when: { var: identity_mode, op: eq, value: public }
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "네 편지보다 소문이 먼저 왔어. 살아 있다니 웃음이 났다가… 왜 또 혼자 목을 걸었나 화가 났고."
       - say:
           when: { var: identity_mode, op: eq, value: borrowed }
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "감찰관 이름도 빌렸다며. 그 잘못까지 숨기진 말자. 이번엔 같이 갚아."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "당장 안고 싶은데… 먼저 확인해야 해. 미안해. 우리 둘만 아는 말을 해 줘."
       - choice:
           key: c3_proof
           prompt: "천명의 손이 떨립니다. 무엇으로 자신을 증명할까요?"
           char: 덕만
-          camera: close
+          camera: medium
           with: [천명]
           options:
             - text: "아버지의 모란 질문을 되돌려 준다"
@@ -59,17 +59,17 @@ scenes:
           text: "덕만이 그을린 사망 기록을 내밀자 천명은 종이보다 먼저 문밖의 경비를 불렀습니다. 그 문서는 십 년 동안 여러 사람의 손을 거친 공개된 수색 증거였습니다."
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "도장은 아버님 건데 글씨는 궁 서기관 것이 아니야. 서로 다른 손이 만든 종이야."
       - say:
           char: 덕만.wanderer
-          camera: close
+          camera: medium
           with: [천명]
           text: "그걸 알아봤잖아. 나는 저 종이에서 살아 나온 덕만이야."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "아니. 이건 누가 덕만을 죽이려 했는지만 말해. 네가 내 동생인지는 말 못 해."
       - clearSticker: { id: c3_record, leave: fadeOut }
@@ -92,7 +92,7 @@ scenes:
           text: "아버지가 모란 그림을 보여 줬어. 꽃 말고 빠진 걸 보라고 했지. 벌도 나비도 없었어."
       - say:
           char: 천명
-          camera: close
+          camera: medium
           with: [덕만]
           text: "아버님이 우리한테만 하던 말이야… 덕만아. 정말 너구나."
       - goto: sister_oath
@@ -102,17 +102,17 @@ scenes:
       - bg: { id: princess_chamber, transition: dissolve, duration: 720 }
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [천명]
           text: "내가 가짜라서만 무서운 게 아니지. 진짜면 언니 자리가 작아질까 봐 무서운 거잖아."
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "맞아. 네가 살았는데 내 자리부터 셌어. 그런 마음으로 널 안는 게 더 무서웠어."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "하지만 궁 안 누구나 짐작할 마음이야. 우리만 아는 말을 해 줬어야지."
       - say:
@@ -167,7 +167,7 @@ scenes:
           text: "두 공주가 나란히 계단을 내려오자 궁문 밖에서 환호가 터졌습니다. 무릎 꿇은 귀족들은 고개를 숙인 채 서로의 손가락이 어느 쪽을 향하는지 살폈습니다."
       - say:
           char: 천명
-          camera: close
+          camera: medium
           with: [덕만]
           text: "손에 땀났어. 그래도 네가 안 놓아서 버텼다. 내일부터 저 손을 떼려고 별짓을 다 하겠지."
       - goto: spring_ambush
@@ -181,12 +181,12 @@ scenes:
           text: "낮에는 천명이 회의의 거짓말을 적고, 덕만은 시장의 값을 외웠습니다. 밤마다 두 종이를 포개면 귀족 한 사람의 말이 어긋났습니다."
       - say:
           char: 덕만
-          camera: close
+          camera: medium
           with: [천명]
           text: "언니는 궁, 나는 시장을 볼게. 밤에 서로 들은 말을 맞춰 보자."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만]
           text: "덕만아, 오늘만은 같이 들어가면 안 돼? 저들이 바라는 대로 너무 쉽게 떨어지는 것 같아."
       - say:
@@ -194,7 +194,7 @@ scenes:
           text: "그날 밤 약속한 밀실에는 차 두 잔이 놓여 있었습니다. 천명의 잔은 식어 있었고, 먼저 도착한 덕만의 잔에만 꿀 냄새 아래 쓴 향이 감춰져 있었습니다."
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [천명]
           text: "언니가 안 마셔서 다행이야. 그런데… 왜 손끝이 안 움직이지?"
       - effect: { name: darken, wait: true }
@@ -215,12 +215,12 @@ scenes:
           text: "시녀복을 입은 덕만 앞에서 귀족들은 말을 삼키지 않았습니다. 찻잔을 내려놓는 손보다 먼저, 숨겨 둔 멸시와 계획이 쏟아졌습니다."
       - say:
           char: 천명.sad
-          camera: close
+          camera: medium
           with: [덕만]
           text: "덕만아, 그 잔 내려놔. 아까 널 보고 웃던 상궁이 갑자기 자리를 비웠어."
       - say:
           char: 덕만.princess_sad
-          camera: close
+          camera: medium
           with: [천명]
           text: "이미 마셨어. 시녀가 먼저 맛보는 게 이상하지 않아서… 아무도 말리지 않았어."
       - say:
@@ -253,7 +253,7 @@ scenes:
           key: c3_ambush
           prompt: "앞뒤에서 칼이 다가옵니다. 자매는 어떻게 함께 빠져나갈까요?"
           char: 덕만
-          camera: reaction
+          camera: medium
           with: [천명, 칠숙]
           options:
             - text: "피 묻은 뜰에서 계승권을 선포한다"
@@ -280,12 +280,12 @@ scenes:
           text: "덕만이 동문을 열자 칠숙이 회랑으로 물러났습니다. 덕만이 뒤따라 모퉁이를 도는 순간 문이 닫혔고, 천명의 발소리는 반대편에 갇혔습니다."
       - say:
           char: 천명.nervous
-          camera: close
+          camera: medium
           with: [덕만, 칠숙]
           text: "덕만아, 쫓지 마! 저 사람은 도망가는 게 아니라 네가 혼자 올 때까지 기다리는 거야!"
       - say:
           char: 칠숙.smile
-          camera: close
+          camera: medium
           with: [덕만]
           text: "언니 말씀을 한 걸음만 일찍 들으셨어도 살았을 겁니다."
       - say:
