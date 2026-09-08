@@ -420,6 +420,44 @@ const legalNoticesSchema = z
     }
   });
 
+const startScenePlacementSchema = z.object({
+  x: z.number().min(-50).max(150).optional(),
+  y: z.number().min(-50).max(150).optional(),
+  width: z.number().min(1).max(250).optional(),
+  height: z.number().min(1).max(250).optional(),
+  opacity: z.number().min(0).max(1).optional(),
+}).strict();
+
+const startSceneSchema = z.object({
+  layout: z.enum(['split', 'centered']).default('split'),
+  motion: z.enum(['none', 'drift', 'push']).default('drift'),
+  duration: z.number().min(8000).max(90000).default(24000),
+  parallax: z.number().min(0).max(30).default(12),
+  particles: z.enum(['none', 'dust', 'embers', 'rain', 'snow', 'fireflies']).default('dust'),
+  intensity: z.number().min(0).max(1).default(0.55),
+  fog: z.boolean().default(true),
+  light: z.enum(['none', 'breathe', 'lightning']).default('breathe'),
+  accent: z.string().regex(/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i).optional(),
+  video: z.string().trim().min(1).optional(),
+  layers: z.array(z.object({
+    image: z.string().trim().min(1),
+    x: z.number().min(-50).max(150).default(50),
+    y: z.number().min(-50).max(150).default(50),
+    width: z.number().min(1).max(250).default(100),
+    height: z.number().min(1).max(250).default(100),
+    depth: z.number().min(0).max(3).default(1),
+    opacity: z.number().min(0).max(1).default(1),
+    fit: z.enum(['contain', 'cover']).default('contain'),
+    blend: z.enum(['normal', 'screen', 'multiply']).default('normal'),
+    motion: z.enum(['none', 'float', 'sway']).default('none'),
+    mobile: startScenePlacementSchema.optional(),
+  }).strict()).max(6).default([]),
+  transition: z.object({
+    type: z.enum(['fade', 'iris', 'curtain']).default('fade'),
+    duration: z.number().min(200).max(2400).default(1000),
+  }).strict().default({}),
+}).strict();
+
 const startScreenSchema = z
   .object({
     enabled: z.boolean().optional(),
@@ -429,6 +467,9 @@ const startScreenSchema = z
     music: z.string().min(1).optional(),
     showTitle: z.boolean().optional(),
     titleColor: z.string().min(1).max(80).optional(),
+    eyebrow: z.string().trim().min(1).max(120).optional(),
+    subtitle: z.string().trim().min(1).max(300).optional(),
+    scene: startSceneSchema.optional(),
     startButtonText: z.string().min(1).optional(),
     buttonPosition: startButtonPositionSchema.optional(),
   })
@@ -446,6 +487,9 @@ const startScreenSchema = z
       music: normalizeOptionalText(value.music),
       showTitle: value.showTitle ?? true,
       titleColor: normalizeOptionalText(value.titleColor),
+      eyebrow: value.eyebrow,
+      subtitle: value.subtitle,
+      scene: value.scene,
       startButtonText: value.startButtonText?.trim() || '시작하기',
       buttonPosition: value.buttonPosition ?? 'auto',
     };

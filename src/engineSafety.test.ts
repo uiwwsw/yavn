@@ -6,6 +6,8 @@ import {
   resolveChapterPathIndex,
   setPlayerAutoPlayPaused,
   setPlayerExperienceSettings,
+  setScenePresentationPaused,
+  submitChoiceOption,
   wasDialoguePresentedAtCursor,
 } from './engine';
 import { useVNStore } from './store';
@@ -219,6 +221,7 @@ describe('engine runtime safety', () => {
   });
 
   afterEach(() => {
+    setScenePresentationPaused(false);
     setPlayerExperienceSettings({ autoPlayEnabled: false });
     setPlayerAutoPlayPaused(false);
     vi.useRealTimers();
@@ -226,6 +229,39 @@ describe('engine runtime safety', () => {
     Reflect.deleteProperty(globalThis, 'localStorage');
     Reflect.deleteProperty(globalThis, 'requestAnimationFrame');
     Reflect.deleteProperty(globalThis, 'cancelAnimationFrame');
+  });
+
+  it('holds a waiting screen effect and rejects advance input while the scene is covered', () => {
+    handleAdvance();
+    setScenePresentationPaused(true);
+    handleAdvance();
+    vi.advanceTimersByTime(2000);
+    expect(useVNStore.getState()).toMatchObject({ actionIndex: 0, busy: true, effect: 'shake' });
+    setScenePresentationPaused(false);
+    vi.advanceTimersByTime(700);
+    expect(useVNStore.getState()).toMatchObject({
+      actionIndex: 1, busy: false, effect: undefined, dialog: { fullText: 'The effect has finished.' },
+    });
+  });
+
+  it('preserves the full choice countdown and blocks submissions behind a presentation cover', () => {
+    useVNStore.getState().setGame({ ...game, scenes: { intro: { actions: [
+      { choice: { prompt: 'Wait for the scene.', timeoutMs: 1000, options: [{ text: 'Continue' }] } },
+      { say: { text: 'Countdown complete.' } },
+    ] } } }, '/');
+    useVNStore.getState().setCursor('intro', 0);
+    handleAdvance();
+    setScenePresentationPaused(true);
+    submitChoiceOption(0);
+    vi.advanceTimersByTime(5000);
+    expect(useVNStore.getState().choiceGate.active).toBe(true);
+    setScenePresentationPaused(false);
+    vi.advanceTimersByTime(500);
+    expect(useVNStore.getState().choiceGate.active).toBe(true);
+    vi.advanceTimersByTime(510);
+    expect(useVNStore.getState()).toMatchObject({
+      choiceGate: { active: false }, dialog: { fullText: 'Countdown complete.' },
+    });
   });
 
   it('keeps chapter path jumps inside the original prepared sequence', () => {

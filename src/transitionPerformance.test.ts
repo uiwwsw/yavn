@@ -65,7 +65,7 @@ describe('transition performance guards', () => {
     expect(engineSource).not.toContain('}, 300);');
     expect(engineSource).toContain('window.requestAnimationFrame(tick)');
     expect(engineSource).not.toContain('window.setInterval(tick, 32)');
-    expect(appSource).toContain('setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden)');
+    expect(appSource).toContain('setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden || Boolean(startGate) || chapterCurtainVisible)');
     expect(styles).toMatch(
       /\.stage-content-frame\.has-settings-modal \.char,[\s\S]*?animation-play-state: paused !important;/,
     );

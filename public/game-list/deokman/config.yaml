@@ -20,13 +20,35 @@ ui:
   template: paper-stage
 startScreen:
   enabled: true
-  image: "root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp"
+  image: "root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp"
   imagePosition: "50% 50%"
   mobileImagePosition: "72% 50%"
   showTitle: true
   titleColor: "#f1d49a"
   startButtonText: "이야기 시작"
   buttonPosition: bottom-left
+  eyebrow: "신라 · 지워진 이름의 기록"
+  subtitle: "죽은 공주의 이름으로 살아남아, 누구도 쓰지 못한 역사를 시작하라."
+  scene:
+    layout: split
+    motion: drift
+    duration: 26000
+    parallax: 16
+    particles: embers
+    intensity: 0.8
+    fog: true
+    light: breathe
+    accent: "#e8b56a"
+    layers:
+      - image: "root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png"
+        x: 74
+        y: 62
+        width: 61
+        height: 125
+        depth: 1.5
+        motion: sway
+        mobile: { x: 72, y: 90, width: 140, height: 96, opacity: 0.9 }
+    transition: { type: curtain, duration: 1300 }
 endingScreen:
   image: "root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp"
 endings:

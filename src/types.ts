@@ -422,6 +422,35 @@ export type LegalNotice = {
 
 export type StartButtonPosition = 'auto' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center';
 
+export type StartSceneLayer = {
+  image: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  depth: number;
+  opacity: number;
+  fit: 'contain' | 'cover';
+  blend: 'normal' | 'screen' | 'multiply';
+  motion: 'none' | 'float' | 'sway';
+  mobile?: { x?: number; y?: number; width?: number; height?: number; opacity?: number };
+};
+
+export type StartSceneConfig = {
+  layout: 'split' | 'centered';
+  motion: 'none' | 'drift' | 'push';
+  duration: number;
+  parallax: number;
+  particles: 'none' | 'dust' | 'embers' | 'rain' | 'snow' | 'fireflies';
+  intensity: number;
+  fog: boolean;
+  light: 'none' | 'breathe' | 'lightning';
+  accent?: string;
+  video?: string;
+  layers: StartSceneLayer[];
+  transition: { type: 'fade' | 'iris' | 'curtain'; duration: number };
+};
+
 export type StartScreenConfig = {
   enabled: boolean;
   image?: string;
@@ -430,6 +459,9 @@ export type StartScreenConfig = {
   music?: string;
   showTitle: boolean;
   titleColor?: string;
+  eyebrow?: string;
+  subtitle?: string;
+  scene?: StartSceneConfig;
   startButtonText: string;
   buttonPosition: StartButtonPosition;
 };

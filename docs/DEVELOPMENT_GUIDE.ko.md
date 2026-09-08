@@ -137,6 +137,29 @@ startScreen:
   titleColor: "#ffe0a3"
   startButtonText: 시작하기
   buttonPosition: auto
+  eyebrow: "비가 멎기 전에, 진실을 찾아라"
+  subtitle: "모든 증언에는 빈틈이 있다. 당신은 무엇을 믿을 것인가."
+  scene:
+    layout: split # split | centered
+    motion: drift # none | drift | push
+    duration: 24000 # 카메라 편도 이동 시간(ms), 왕복 반복
+    parallax: 12 # 마우스에 반응하는 깊이 이동(px)
+    particles: rain # none | dust | embers | rain | snow | fireflies
+    intensity: 0.65
+    fog: true
+    light: lightning # none | breathe | lightning
+    accent: "#a4c6e8"
+    # video: assets/video/title.webm # 무음 반복, image는 미재생/실패 시 대체 배경
+    layers:
+      - image: assets/char/detective.webp
+        x: 74
+        y: 65
+        width: 60
+        height: 110
+        depth: 1.5
+        motion: sway # none | float | sway
+        mobile: { x: 72, y: 86, width: 140, height: 95 }
+    transition: { type: curtain, duration: 1200 } # fade | iris | curtain
 endingScreen:
   image: assets/bg/ending.png
 endings:
@@ -452,7 +475,7 @@ scenes:
 - `config.yaml.startScreen`이 없으면 시작 화면은 비활성화됩니다. (기존 즉시 실행과 동일)
 - `startScreen` 객체를 선언하고 `enabled: true`면 시작 화면을 노출합니다.
 - `startScreen.titleColor`가 있으면 Start Gate 제목의 `--start-gate-title-color` 토큰을 게임별 값으로 덮어씁니다. URL·ZIP 프리뷰와 초기화면 복귀에 동일하게 적용됩니다.
-- `showTitle: true` 제목 블록은 모든 템플릿에서 반투명 자동 대비 표면, 다중 그림자, `word-break: keep-all`과 안전한 강제 줄바꿈을 사용합니다. 768px 이하에서는 safe-area를 제외한 폭과 더 작은 반응형 글자 크기를 적용하므로 밝은 키아트·사용자 지정 제목색·긴 한글 제목이 화면 밖으로 밀리거나 배경에 묻히지 않습니다.
+- `showTitle: true` 제목 블록은 어두운 배경 그라데이션과 다중 그림자, `word-break: keep-all`과 안전한 강제 줄바꿈을 사용합니다. 768px 이하에서는 safe-area를 제외한 폭과 더 작은 반응형 글자 크기를 적용하므로 밝은 키아트·사용자 지정 제목색·긴 한글 제목이 화면 밖으로 밀리거나 배경에 묻히지 않습니다.
 - `showTitle: false`인 내장 타이틀 이미지는 모바일 세로 화면에서 어두운 `cover` 배경 위에 별도 전경 이미지로 표시합니다. 이때 원본 비율을 유지해 이미지 안의 제목이 좌우로 잘리지 않으며, 데스크톱과 모바일 가로 화면은 기존 `cover` 구성을 유지합니다.
 - 버튼 기본값:
   - 시작 버튼 텍스트 `startButtonText`: `시작하기`
@@ -475,7 +498,7 @@ scenes:
 - 레거시 키(`vn-engine-autosave`)는 URL 로드시 fallback으로 읽고, 실제 resume 성공 시 게임별 키로 마이그레이션합니다.
 - URL 모드의 `config.yaml`, `base.yaml`, 챕터 YAML과 존재 확인 `HEAD` 요청은 `cache: no-store`로 최신 원문을 가져옵니다. 한 실행 안에서는 파싱/원문 메모리 캐시를 유지하고 이미지·음원·Live2D 같은 에셋은 기존 장기 캐시를 사용합니다.
 - 시작 화면의 `이어하기` 버튼은 URL 게임에서만 노출하며, ZIP 실행에서는 노출하지 않습니다.
-- 같은 탭 세션에서 시작/이어하기를 한 번 누르면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
+- 같은 탭 세션에서 시작/이어하기에 성공하면 `sessionStorage` 플래그로 새로고침 시 시작 화면을 건너뜁니다.
 - 인벤토리 모달의 `초기화면 가기` 버튼은 URL 게임에서만 활성화되며, 해당 `sessionStorage` 플래그를 지우고 현재 인게임 BGM을 즉시 정지한 뒤 Start Gate를 다시 표시합니다.
 - 런처 쇼케이스/게임 카드 썸네일 우선순위는 `launcher.yaml.thumbnail` -> `config.yaml.startScreen.image` 순서입니다.
 - 루트 런처는 아이보리/딥그린의 서재형 디자인으로 브랜드 소개 → 대표작 쇼케이스 → 작품 목록 → 제작 안내를 배치합니다. `src/YavnLogo.tsx`의 책장/선택 갈래 심볼과 벡터 워드마크를 헤더·푸터에 사용하고 `public/favicon.svg`도 같은 심볼을 사용합니다. 스타일은 `src/launcher.css`에 독립되어 있습니다. manifest의 모든 게임을 대표작 캐러셀로 렌더링합니다. 최초 선택 우선순위는 유효한 `?demo=<gameId>` 공유 쿼리, manifest 첫 게임 순서이며 이전 방문의 선택을 `sessionStorage`에서 복원하지 않습니다. 루트 진입은 첫 게임을 정지 상태로 표시하고, 공유 링크의 초기 위치도 스크롤 애니메이션 없이 즉시 맞춥니다. 예전 `#demo=<gameId>` 링크는 유효성을 확인한 뒤 쿼리 형식으로 자동 이전합니다.
@@ -488,11 +511,34 @@ scenes:
 - 이전/다음 버튼, 선택 도트, 현재 게임명/번호는 슬라이드 바깥의 전용 탐색 레일에 배치해 긴 제목·요약·실행 버튼과 겹치지 않도록 합니다.
 - 각 캐러셀 슬라이드는 `layout/paint` 경계를 별도로 갖고 이미지·텍스트를 슬라이드 내부에서 클리핑합니다. 제목·요약·태그·게임 카드의 긴 문자열은 컨테이너 폭 안에서 줄바꿈되며, 좁은 화면의 태그 행만 내부 가로 스크롤을 허용합니다.
 - 시작 화면 타이틀/버튼(`시작하기`, `이어하기`)은 `config.yaml.ui.template` 전역 템플릿(`cinematic-noir` | `neon-grid` | `paper-stage`)을 그대로 적용합니다.
-- 시작 화면은 1.6초의 작은 배경 안정화, 정적인 미세 질감, 비네트·테마 프레임, 타이틀/액션의 짧은 opacity 순차 등장을 기본 적용합니다. 실행 버튼을 누르면 `aria-busy`로 중복 입력을 막고 220ms 검정 크로스페이드로 본편에 연결합니다. `prefers-reduced-motion`에서는 모든 장식 모션을 정지합니다.
+- 시작 화면은 `startScreen.scene`으로 배경 카메라, 투명 이미지 레이어, 깊이별 마우스 시차, 입자, 안개, 조명을 합성하는 타이틀 장면입니다. `scene`을 생략한 기존 게임에도 느린 카메라 이동과 먼지·안개·호흡 조명을 기본 적용합니다. 제목과 버튼은 고정된 위치에서 짧게 등장하며 별도 레이어로 움직이는 배경 위에 유지됩니다. 높이 700px 이하의 작은 세로 화면은 타이틀/메뉴 영역만 스크롤하고 상단 제어와 하단 권리 고지는 유지합니다.
+- 시작/이어하기는 선택한 `fade/iris/curtain`으로 화면을 덮으면서 실제 게임 무대를 뒤에서 마운트·디코드합니다. 준비가 끝나면 덮개를 페이드로 열며, 전환 중 중복 입력과 본편 포커스를 차단합니다. 실패하면 같은 시작 화면에서 오류를 표시하고 재시도할 수 있습니다. URL 세션의 시작 완료 플래그는 성공 후에만 기록합니다.
+- 시작 화면·챕터 전환 덮개·숨겨진 브라우저 탭에서는 대사 타이핑, `wait`, `say.wait/autoAdvance`, 선택 제한시간, 화면 효과와 공격 단계 타이머를 일시 정지하고 남은 시간부터 이어갑니다. 첫 효과음·화면 효과·공격과 컷신 영상도 덮개가 열린 뒤 진행하므로 준비 중에 첫 장면이 소모되지 않습니다. 에셋 로딩·디코드 감시 타이머는 계속 동작합니다. 챕터 준비 완료 뒤에는 440ms의 공개 페이드가 끝날 때까지 입력과 이야기 시간을 유지합니다.
+- 타이틀 상단의 움직임 버튼으로 배경 연출을 정지/재생할 수 있고 음악 버튼으로 BGM을 전환합니다. 시작 음악은 덮개가 닫히는 동안 페이드아웃합니다. OS 모션 감소·플레이어 효과 `minimal`에서는 배경 모션/영상 재생을 멈춥니다. 숨겨진 탭에서도 캔버스·시차 루프와 영상을 정지하며 타이틀 입자는 모바일 수를 줄이고 DPR을 최대 1.5로 제한합니다.
 - `/game-list/:gameId` 직접 진입과 Start Gate 실행 직후에는 게임 설정·본편 로딩이 끝날 때까지 비대화형 부트 화면을 유지해 초기 런처·빈 HUD 렌더를 차단합니다. 시작·이어하기 버튼은 뷰포트 측정이나 화면 밖 장거리 이동 없이 최종 위치에서 opacity만 전환하므로 PC·모바일의 첫 페인트에서 튀거나 사라지지 않습니다.
 - 시작 화면이 표시되는 동안에도 `config.yaml.seo`를 읽어 `description/keywords/og/twitter/json-ld`를 즉시 갱신합니다.
 - 배포 빌드에서는 같은 `config.yaml.seo`가 게임별 정적 HTML에도 반영됩니다. 런타임 갱신은 SPA 내부 상태 전환을 담당하고, 최초 HTTP 응답의 메타는 빌드 산출물이 담당합니다.
 - `config.yaml.endingScreen.image`를 지정하면 엔딩 크레딧 오버레이의 배경 이미지를 커스텀할 수 있습니다.
+
+### 타이틀 장면 작성 (`startScreen.scene`)
+
+`image`는 기본 배경이고 `layers`는 뒤에서 앞으로 쌓는 이미지 목록입니다. 투명 PNG/WebP 인물을 따로 넣으면 배경과 다른 깊이로 움직입니다. 경로는 `config.yaml` 기준이며 URL·ZIP에서 같은 규칙을 사용합니다. `root:/` 공유 에셋도 지원합니다. ZIP 프리뷰의 레이어·영상 Blob URL은 시작 화면을 닫을 때 함께 해제합니다. 영상은 브라우저가 재생 가능한 WebM/MP4를 사용하고, 재생 거부/오류 시 기본 이미지를 유지합니다.
+
+| 필드 | 값 / 기본값 |
+| --- | --- |
+| `layout` | `split`(좌측 제목), `centered`; 기본 `split`, 작은 세로 화면에서는 좌측 정렬 |
+| `motion`, `duration` | `none/drift/push`, 편도 `8000..90000ms`; 기본 `drift`, `24000` |
+| `parallax` | `0..30px`, 기본 `12`; 마우스만 반응하며 터치에서는 자동 카메라만 사용 |
+| `particles`, `intensity` | `none/dust/embers/rain/snow/fireflies`, `0..1`; 기본 `dust`, `0.55` |
+| `fog`, `light`, `accent` | 기본 `true`, `breathe`; 조명 `none/breathe/lightning`, 색상 `#RGB/#RRGGBB` |
+| `video` | 선택적 무음 반복 배경 영상; `image`를 함께 지정해 대체 배경 제공 |
+| `layers` | 최대 6개; 필수 `image`, 화면 중심 좌표 `x/y` 기본 `50`(`-50..150%`) |
+| 레이어 크기 | `width/height` 기본 `100`(`1..250%`), 기본 `fit: contain`; `cover` 가능 |
+| 레이어 표현 | `depth: 0..3` 기본 `1`, `opacity: 0..1` 기본 `1`, `blend: normal/screen/multiply`, `motion: none/float/sway` |
+| `layers[].mobile` | 768px 이하의 `x/y/width/height/opacity`만 덮어쓰기; 미지정 항목은 데스크톱 값 |
+| `transition` | `type: fade/iris/curtain`, `duration: 200..2400ms`, 기본 `fade/1000`; 닫기/열기에 절반씩 사용하며 실제 로딩 대기는 별도 |
+
+`startScreen.eyebrow`(최대 120자), `subtitle`(최대 300자)로 제목 위아래 문구를 지정합니다. `showTitle: false`는 문구 블록 전체를 숨깁니다. `buttonPosition`과 `titleColor`는 계속 사용할 수 있습니다. 모든 자동 배경 움직임을 끄려면 `scene: { motion: none, parallax: 0, particles: none, fog: false, light: none }`을 사용하고 영상과 레이어 모션도 생략합니다.
 
 ## 8-10) UI 템플릿 동작
 
@@ -1175,6 +1221,8 @@ public/game-list/conan/
 - DSL 축약 샘플: `sample.yaml`
 
 ## 14) 문서 변경 로그
+
+- 2026-09-08: `startScreen.scene` 타이틀 장면 엔진과 `eyebrow/subtitle`을 추가했습니다. 다층 이미지·영상·카메라·시차·입자·안개·조명·모바일 구도와 시작 전환을 YAML로 설정하고 덕만/코난/Live2D 샘플에 적용했습니다. 본편 무대를 시작 화면 뒤에서 준비한 뒤 공개하며 실패 재시도와 성공 시점의 세션 기록을 지원합니다. 챕터 공개 페이드와 이야기 시계 일시 정지를 추가해 로딩/숨겨진 탭에서 대사·선택 제한시간·공격·컷신이 먼저 소모되지 않도록 개선했습니다. 저장 구조·장면 액션 인덱스는 변경하지 않았습니다.
 
 - 2026-09-07: 메인 페이지와 로고·파비콘을 아이보리/딥그린의 이야기 서재로 전면 개편했습니다. 브랜드 소개, 이미지/소개 분리 쇼케이스, 4/2/1열 작품 목록, 제작 안내와 푸터를 재구성하고 스타일을 독립 파일로 분리했습니다. 검색·태그·공유·소스·ZIP·권리 고지를 유지하면서 스냅 기준 좌표, 모션 감소 탐색, 업로드 중복 방지를 정리했습니다. DSL 문법 변경은 없습니다.
 

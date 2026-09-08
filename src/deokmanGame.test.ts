@@ -83,7 +83,7 @@ describe('complete Deokman visual novel', () => {
     expect(config.data?.data.title).toBe('선덕여왕: 죽은 공주의 왕관');
     expect(config.data?.data.version).toBe('10.4.0');
     expect(config.data?.data.startScreen?.image).toBe(
-      'root:/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp',
+      'root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp',
     );
     expect(config.data?.data.startScreen?.imagePosition).toBe('50% 50%');
     expect(config.data?.data.startScreen?.mobileImagePosition).toBe('72% 50%');
