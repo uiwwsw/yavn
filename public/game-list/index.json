@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-09-08T07:26:53.719Z",
+  "generatedAt": "2026-09-09T04:29:46.852Z",
   "games": [
     {
       "id": "conan",
@@ -99,7 +99,7 @@
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
       "version": "10.4.0",
-      "summary": "대화 속 단서로 36개의 단일 생존 정답을 찾아 독살·모함·처형을 피하고, 죽은 공주 덕만을 끝내 선덕여왕으로 만드는 12장 생존 정치극.",
+      "summary": "내 죽음이 먼저 기록된 밤. 12종의 증거와 네 번의 비교 조사로 음모를 밝히고, 가족과 백성 사이의 선택으로 11개의 결말을 만드는 12장 정치극.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
         "historical-fiction",
@@ -124,7 +124,7 @@
       "chapterCount": 12,
       "seo": {
         "title": "선덕여왕: 죽은 공주의 왕관",
-        "description": "죽은 공주 덕만이 36개의 단일 생존 정답을 찾아 독살·모함·처형을 피하고, 끝내 선덕여왕이 되어 자기 이름의 역사를 쓰는 12장 생존 정치극 비주얼노벨.",
+        "description": "죽었다고 기록된 공주가 여왕이 되기까지. 12장의 정치극에서 증거 12종을 모으고 네 번의 비교 조사로 음모를 밝히세요. 백성·군대·가족 사이의 선택이 11개의 결말로 돌아옵니다.",
         "keywords": [
           "선덕여왕",
           "덕만",

@@ -177,60 +177,70 @@ scenes:
 
   armed_truce:
     actions:
-      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
+      - bg:
+          id: "banquet_hall"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "덕만은 혼인 답변 날짜를 세 달 뒤로 밀고 그 빈칸에 국경 군량 수레 수를 적었습니다. 사신은 웃었지만 날짜 아래 붉은 줄을 두 번 그었습니다."
+          channel: "narration"
+          text: "혼인 답을 미룬 종이에 군량 기한이 적혔습니다. 덕만은 주둔군 조항을 지우고 성 밖 검수선을 그었습니다."
       - say:
-          char: 당 사신
-          camera: medium
-          with: [덕만]
-          text: "미룬 답도 답입니다. 군량과 함께 호위대가 들어올 텐데, 그때도 혼인 이야기를 미루실 수 있을까요?"
+          char: "당 사신"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "곡식은 드리겠습니다. 다음 겨울에도 같은 답이면 값이 달라지겠지요."
       - say:
-          char: 덕만
-          camera: medium
-          with: [당 사신]
-          text: "호위대라니요? 나는 수레만 받는다고 했습니다."
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "당 사신"
+          text: "그때 다시 계산하죠. 오늘은 군사가 아니라 자루만 문을 넘습니다."
       - say:
-          channel: narration
-          text: "사흘 뒤 당의 깃발을 단 군량 수레와 병사들이 북문을 함께 통과했습니다. 성 안 귀족들은 혼인을 지지한다며 문을 열었고, 덕만의 호위부터 무장 해제했습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "곡식이 국경을 넘었습니다. 춘추는 내년 협상란을 비워 두고, 운송에 딸린 천문표 사본을 챙겼습니다."
+      - add:
+          nobles_support: -1
       - say:
-          channel: record
-          text: "신라 왕실 혼인 협약 — 협약을 방해한 덕만 공주를 당 호위대가 제압하는 과정에서 사망."
-      - gameOver:
-          title: "운명 — 군량 뒤에 들어온 칼"
-          message: "혼인 답을 미룬 대가로 받은 군량에는 당군의 진입 명분이 붙어 있었습니다. 덕만은 굶주림을 늦췄지만 성 안으로 들어온 칼에 목숨을 잃었습니다."
-          recoverToChoice: c5_diplomacy
+          channel: "record"
+          text: "외교의 대가 — 이번 겨울의 군량을 얻었습니다. 다음 협상에서 갚을 시간이 생겼습니다."
+      - goto: "banquet_test"
 
   secret_trade:
     actions:
-      - bg: { id: shadow_corridor, transition: fade, duration: 900 }
-      - char: { id: 비담, position: right, emotion: smirk }
+      - bg:
+          id: "shadow_corridor"
+          transition: "fade"
+          duration: 900
+      - char:
+          id: "비담"
+          position: "right"
+          emotion: "smirk"
       - say:
-          channel: narration
-          text: "사신은 소매에서 밀봉된 서신 다섯 장을 꺼냈습니다. 대신 무역권 문서에 한 가문의 이름이 새로 들어갔습니다. 덕만은 적의 이름을 얻는 순간 또 하나의 문을 그들에게 내주었습니다."
+          channel: "narration"
+          text: "무역권 한 장이 탁자 밑으로 건너왔습니다. 비담은 서신을 천으로 펴고 사본 두 벌을 만들었습니다."
       - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "편지는 얻었습니다. 무역권을 받은 가문 이름도 있군요. 죽일 이유와 돈을 한 장에 써 줬습니다."
+          char: "비담.smirk"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "이름은 얻었습니다. 항구에서 내는 세금은 이제 저 가문 주머니로 갑니다."
       - say:
-          char: 덕만.princess_sad
-          camera: medium
-          with: [비담]
-          text: "봉인을 뜯지 마. 원본을 가져가야 거래를 밝힐 수 있어. 비담… 손이 왜 이렇게 차갑지?"
+          char: "덕만.princess_sad"
+          camera: "medium"
+          with:
+            - "비담"
+          text: "기한은 한 해. 연장하려면 이 서신을 회의장에 내야 한다고 적어."
       - say:
-          channel: narration
-          text: "서신 봉인에 바른 독이 덕만의 손가락 상처로 스며들었습니다. 거래를 중개한 귀족은 편지를 넘길 때부터 산 사람의 증언을 남길 생각이 없었습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "공모자들의 편지 사이에 다음 일식의 관측표가 끼어 있었습니다. 덕만은 표를 챙겼지만 바닷가 상인들의 세금은 오르게 됐습니다."
+      - add:
+          people_support: -2
+          evidence: 1
       - say:
-          channel: record
-          text: "외교 서신 절도 사건 — 덕만 공주, 밀봉 문서를 훔치다 독에 중독되어 사망. 무역권 문서는 유효함."
-      - gameOver:
-          title: "운명 — 봉인에 묻은 질투"
-          message: "덕만이 적의 이름과 바꾼 무역권은 한 가문을 부유하게 만들었습니다. 그 가문은 권리를 빼앗길까 두려워 서신 봉인에 독을 발랐고, 덕만은 증거를 여는 손부터 잃었습니다."
-          recoverToChoice: c5_diplomacy
+          channel: "record"
+          text: "외교의 대가 — 공모의 서신을 얻었습니다. 그 값을 낼 사람들은 협상장에 없었습니다."
+      - goto: "banquet_test"
 
   banquet_test:
     actions:

@@ -176,12 +176,15 @@ describe('image character motion', () => {
     expect(appSource).not.toContain('`${stickerAvoidanceKey}::${speakerOrder.join(\',\')}::${promptTopBaselineReady}`');
   });
 
-  it('emphasizes the speaker with light while leaving body position, size and depth stable', () => {
-    expect(appSource).toContain("const isSpeaking = rendererActive && dialogSpeakerId === slot.id;");
+  it('brings the speaker gently forward without color changes or exceeding the fitted size', () => {
+    expect(appSource).toContain("const isSpeaking = rendererActive && presentedSpeakerId === slot.id;");
     expect(appSource).toContain("isSpeaking ? 'is-speaking' : ''");
     expect(appSource).not.toContain('is-breathing');
     expect(styles).not.toContain('characterSpeakerBreathing');
-    expect(presentationStyles).toContain('filter: brightness(1.02)');
+    expect(presentationStyles).not.toContain('brightness(');
+    expect(presentationStyles).toContain('transform: scale(.982)');
+    expect(presentationStyles).toContain('.character-actor.is-speaking .character-presence { transform: scale(1); }');
+    expect(appSource).toContain('isSpeaking ? 10');
     expect(presentationStyles).toContain('prefers-reduced-motion: reduce');
     expect(presentationStyles).toContain('animation-play-state: paused !important;');
   });

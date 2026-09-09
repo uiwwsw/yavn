@@ -1,16 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
-  <title id="title">사라진 구휼 곡식 장부</title>
-  <desc id="desc">백성에게 갈 곡식 수량이 귀족 창고로 옮겨진 흔적을 적은 낡은 장부다.</desc>
-  <defs>
-    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#765437"/><stop offset="1" stop-color="#2f241d"/></linearGradient>
-    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f3e6c6"/><stop offset="1" stop-color="#c4a373"/></linearGradient>
-    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%"><feDropShadow dx="5" dy="16" stdDeviation="12" flood-opacity=".62"/></filter>
-  </defs>
-  <g filter="url(#shadow)" transform="rotate(2 320 200)">
-    <path d="M100 59h416v285H100z" fill="url(#cover)" stroke="#1d1714" stroke-width="10" rx="18"/>
-    <path d="M137 78h338v246H137z" fill="url(#page)" stroke="#8b6944" stroke-width="5"/>
-    <path d="M196 78v246M289 78v246M382 78v246M137 129h338M137 180h338M137 231h338M137 282h338" stroke="#785c3d" stroke-width="4" opacity=".62"/>
-    <path d="M163 104h91M314 104h133M163 154h66M314 154h104M163 205h111M314 205h74M163 256h78M314 256h128M163 305h122" stroke="#31271f" stroke-width="9" stroke-linecap="round" opacity=".72"/>
-    <path d="M400 137l46 20-35 70-49-22z" fill="#81242e" opacity=".88"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 720 480" role="img" aria-labelledby="title desc">
+<title id="title">사라진 구휼 곡식 장부</title><desc id="desc">출발 칸의 곡식 여섯 자루, 도착 칸의 세 자루. 빈 세 자리 위로 깨진 붉은 인장이 찍혀 있다.</desc>
+<defs><linearGradient id="paper" x2=".8" y2="1"><stop stop-color="#f4e7c6"/><stop offset="1" stop-color="#c4a775"/></linearGradient><linearGradient id="metal" x2=".9" y2="1"><stop stop-color="#f3d68c"/><stop offset=".45" stop-color="#b99449"/><stop offset="1" stop-color="#62462c"/></linearGradient><linearGradient id="ceramic" x2=".8" y2="1"><stop stop-color="#769187"/><stop offset=".4" stop-color="#aac0aa"/><stop offset="1" stop-color="#314d4b"/></linearGradient><filter id="shadow" x="-35%" y="-40%" width="170%" height="190%"><feDropShadow dy="9" stdDeviation="8" flood-color="#241b16" flood-opacity=".28"/></filter></defs>
+<g filter="url(#shadow)">
+<path d="M92 46l434 10 21 287-443 5Z" fill="#584936" stroke="#30291f" stroke-width="6"/>
+<path d="M127 63l376 9 11 254-390 5Z" fill="url(#paper)" stroke="#9c8153" stroke-width="3"/>
+<path d="M308 76v245M147 130h343M147 230h343" stroke="#9d865d" stroke-width="2"/>
+<path d="M180 103h66m-8-7 8 7-8 7M364 103h66m-8-7 8 7-8 7" fill="none" stroke="#5d533e" stroke-width="4"/>
+<g transform="translate(180 170)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(180 210)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(225 170)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(225 210)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(270 170)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(270 210)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g>
+<g transform="translate(350 170)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(397 170)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g><g transform="translate(444 170)"><path d="M-9-18H9L5-10Q22 15 8 20H-8Q-22 15-5-10Z" fill="#b69762" stroke="#675238" stroke-width="2.5"/><path d="M-7-9H7" stroke="#584c35" stroke-width="3"/></g>
+<path d="M337 208h26m21 0h26m21 0h26" stroke="#99815c" stroke-width="2" stroke-dasharray="3 4"/>
+<path d="M146 255h126m-126 16h80m-80 16h109m63-18h96m-96 20h112" stroke="#514c39" stroke-width="4" opacity=".7"/>
+<path d="M364 202h93v62h-28v28h-65Z" fill="none" stroke="#a44d3b" stroke-width="8" transform="rotate(7 411 247)"/>
+<path d="M380 219h40v14h-27v40m0-20h35v-20" fill="none" stroke="#a44d3b" stroke-width="4"/>
+<path d="M111 88h21m-21 44h21m-21 44h21m-21 44h21m-21 44h21m-21 44h21" stroke="#c4b38a" stroke-width="6"/></g></svg>

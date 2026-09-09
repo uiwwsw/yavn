@@ -1498,6 +1498,7 @@ export default function App() {
     camera,
     dialogSpeaker,
     dialogSpeakerId,
+    dialogHasText,
     dialogCameraTargetId,
     dialogChannel,
     dialogDelivery,
@@ -1533,6 +1534,7 @@ export default function App() {
     camera: state.camera,
     dialogSpeaker: state.dialog.speaker,
     dialogSpeakerId: state.dialog.speakerId,
+    dialogHasText: Boolean(state.dialog.fullText),
     dialogCameraTargetId: state.dialog.cameraTargetId,
     dialogChannel: state.dialog.channel,
     dialogDelivery: state.dialog.delivery,
@@ -3367,6 +3369,12 @@ export default function App() {
   const renderedCast = useRetainedCast(currentCast, characterLeaveDurationMs);
 
   const hasFocusedCharacter = Boolean(focusCharacterId && visibleCharacterSet.has(focusCharacterId));
+  // Empty text between actions is a loading gap, not a new speaker cue.
+  const speakerPresentationRef = useRef<{ game: typeof game; speakerId?: string }>({ game });
+  if (speakerPresentationRef.current.game !== game || dialogHasText) {
+    speakerPresentationRef.current = { game, speakerId: dialogSpeakerId };
+  }
+  const presentedSpeakerId = speakerPresentationRef.current.speakerId;
 
   const renderCharacter = (
     slot: CharacterSlot | undefined,
@@ -3381,11 +3389,11 @@ export default function App() {
     const isEntering = isCameraVisible
       && characterEntranceMotionActive
       && enteringCharacterSet.has(slot.id);
-    const zIndex = attack?.attacker === slot.id ? 1100 : position === 'center' ? 3 : position === 'left' ? 2 : 1;
     const isFocused = hasFocusedCharacter && focusCharacterId === slot.id;
     const placementReady = renderPlacement !== 'prompt-top' || promptTopBaselineReady;
     const rendererActive = isCameraVisible && placementReady;
-    const isSpeaking = rendererActive && dialogSpeakerId === slot.id;
+    const isSpeaking = rendererActive && presentedSpeakerId === slot.id;
+    const zIndex = attack?.attacker === slot.id ? 1100 : isSpeaking ? 10 : position === 'center' ? 3 : position === 'left' ? 2 : 1;
     const focusPresentation = resolveCharacterFocusPresentation(
       isFocused,
       hasFocusedCharacter,
@@ -3760,6 +3768,7 @@ export default function App() {
               <strong>이야기를 열지 못했습니다.</strong><p>{startGateError}</p><span>시작 버튼을 눌러 다시 시도할 수 있습니다.</span>
             </div>}
           </div>
+          <LegalNoticeList notices={startGate.legalNotices} className="start-gate-legal-notices" />
         </div>
         <div className="start-scene-controls">
           <a href="/" aria-label="게임 목록으로">← 게임 목록</a>
@@ -3778,7 +3787,6 @@ export default function App() {
           <div role="progressbar" aria-label="게임 준비" aria-valuemin={0} aria-valuemax={100}
             aria-valuenow={Math.floor(chapterLoadingProgress * 100)}><i style={{ transform: `scaleX(${Math.max(.04, chapterLoadingProgress)})` }} /></div>
         </div>}
-        <LegalNoticeList notices={startGate.legalNotices} className="start-gate-legal-notices" />
       </div>
     );
     if (!startGateLaunching || !game) return <>{null}{startGateView}</>;

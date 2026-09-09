@@ -53,38 +53,53 @@ scenes:
 
   proof_record:
     actions:
-      - bg: { id: princess_chamber, transition: dissolve, duration: 720 }
-      - sticker: { id: c3_record, image: death_register_sticker, x: 50, y: 28, width: "clamp(170px, 21%, 320px)", anchorX: center, anchorY: center, enter: fadeIn }
+      - bg:
+          id: "princess_chamber"
+          transition: "dissolve"
+          duration: 720
+      - sticker:
+          id: "c3_record"
+          image: "death_register_sticker"
+          x: 50
+          "y": 28
+          width: "clamp(170px, 21%, 320px)"
+          anchorX: "center"
+          anchorY: "center"
+          enter: "fadeIn"
       - say:
-          channel: narration
-          text: "덕만이 그을린 사망 기록을 내밀자 천명은 종이보다 먼저 문밖의 경비를 불렀습니다. 그 문서는 십 년 동안 여러 사람의 손을 거친 공개된 수색 증거였습니다."
+          channel: "narration"
+          text: "천명은 그을린 종이를 창빛에 비췄습니다. 덕만의 이름 아래 붉은 모서리가 비어 있었습니다."
       - say:
-          char: 천명.sad
-          camera: medium
-          with: [덕만]
-          text: "도장은 아버님 건데 글씨는 궁 서기관 것이 아니야. 서로 다른 손이 만든 종이야."
+          char: "천명.sad"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "이 종이는 훔칠 수도 있어. 네가 내 동생이라는 건 어떻게 알지?"
       - say:
-          char: 덕만.wanderer
-          camera: medium
-          with: [천명]
-          text: "그걸 알아봤잖아. 나는 저 종이에서 살아 나온 덕만이야."
+          char: "덕만.wanderer"
+          camera: "medium"
+          with:
+            - "천명"
+          text: "언니는 족자를 오른쪽부터 말았어. 내가 왼쪽에서 자꾸 구겨서."
       - say:
-          char: 천명.nervous
-          camera: medium
-          with: [덕만]
-          text: "아니. 이건 누가 덕만을 죽이려 했는지만 말해. 네가 내 동생인지는 말 못 해."
-      - clearSticker: { id: c3_record, leave: fadeOut }
+          char: "천명.nervous"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "그래서 아버지께 둘 다 혼났지. 문 잠가. 이번엔 내가 네 쪽을 잡을게."
+      - clearSticker:
+          id: "c3_record"
+          leave: "fadeOut"
       - say:
-          channel: narration
-          text: "문이 열리자 매복해 있던 귀족 경비가 덕만을 위조 문서를 든 암살자로 묶었습니다. 천명이 명령을 거두려 했을 때는 칼끝이 이미 덕만의 목을 지나간 뒤였습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "천명은 경비에게 물러가라 손짓했습니다. 자매가 양쪽에서 편 종이는 오래된 접힌 자국을 따라 다시 만났습니다."
+      - add:
+          evidence: 1
+          cheonmyeong_trust: -1
       - say:
-          channel: record
-          text: "공주 처소 침입 사건 — 죽은 덕만 공주를 사칭한 여인, 위조 왕실 문서를 제시하다 현장에서 사살됨."
-      - gameOver:
-          title: "운명 — 누구나 훔칠 수 있는 증거"
-          message: "사망 기록은 음모의 증거였지만 자매만 아는 신분 증명은 아니었습니다. 덕만은 종이가 자기 이름까지 말해 줄 것이라 믿었고, 천명의 경비는 그 침묵을 사칭의 증거로 바꿨습니다."
-          recoverToChoice: c3_proof
+          channel: "record"
+          text: "자매의 증거 — 종이는 음모를, 함께 구긴 기억은 덕만의 이름을 증명했습니다."
+      - goto: "sister_oath"
 
   proof_memory:
     actions:
@@ -100,33 +115,38 @@ scenes:
 
   proof_sister:
     actions:
-      - bg: { id: princess_chamber, transition: dissolve, duration: 720 }
+      - bg:
+          id: "princess_chamber"
+          transition: "dissolve"
+          duration: 720
       - say:
-          char: 덕만
-          camera: medium
-          with: [천명]
-          text: "내가 가짜라서만 무서운 게 아니지. 진짜면 언니 자리가 작아질까 봐 무서운 거잖아."
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "천명"
+          text: "언니도 문밖 발소리를 세네. 어릴 때 나 잠들면 그랬잖아."
       - say:
-          char: 천명.sad
-          camera: medium
-          with: [덕만]
-          text: "맞아. 네가 살았는데 내 자리부터 셌어. 그런 마음으로 널 안는 게 더 무서웠어."
+          char: "천명.sad"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "동생을 잃은 사람은 누구나 그럴 거야. 다른 걸 말해 봐."
       - say:
-          char: 천명.nervous
-          camera: medium
-          with: [덕만]
-          text: "하지만 궁 안 누구나 짐작할 마음이야. 우리만 아는 말을 해 줬어야지."
+          char: "천명.nervous"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "…모란 족자를 반대로 말던 아이. 네가 웃으면 꼭 그쪽 볼부터 접혔지."
       - say:
-          channel: narration
-          text: "천명이 경비를 물리라고 입을 열었지만 문밖의 귀족 병사는 '가짜가 공주를 홀렸다'며 먼저 창을 찔렀습니다. 덕만은 천명의 팔 안에서 쓰러졌고, 자매의 기억은 끝내 확인되지 못했습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "덕만은 천명의 손을 자기 뺨에 댔습니다. 경비의 창끝이 내려간 뒤에도 천명은 손을 떼지 못했습니다."
+      - add:
+          cheonmyeong_trust: 1
+          evidence: -1
       - say:
-          channel: record
-          text: "공주 처소 침입 사건 — 천명 공주를 현혹한 덕만 사칭범 사살. 배후를 밝히지 못해 시신은 무명으로 처리함."
-      - gameOver:
-          title: "운명 — 마음만 맞힌 가짜"
-          message: "천명의 두려움을 알아본 말은 위로였지만 신분을 증명하지 못했습니다. 둘만 공유한 모란의 기억 대신 누구나 짐작할 감정을 내민 순간 경비에게 덕만은 위험한 사칭범으로 남았습니다."
-          recoverToChoice: c3_proof
+          channel: "record"
+          text: "자매의 증거 — 이름을 확인하는 데 한참 걸렸습니다. 천명은 다음 문을 함께 열기로 했습니다."
+      - goto: "sister_oath"
 
   sister_oath:
     actions:

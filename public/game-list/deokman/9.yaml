@@ -47,57 +47,63 @@ scenes:
 
   stars_first:
     actions:
-      - bg: { id: title_palace, transition: dissolve, duration: 720 }
+      - bg:
+          id: "title_palace"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "관측대가 왕궁 처마를 넘을 때 북쪽에서 깨진 방패가 도착했습니다. 군관은 방패에 '별이 성문을 지켜 주느냐'고 새겨 보냈습니다. 덕만은 공사를 멈추지 않는 대신 북문 수비대의 겨울 군량을 왕실 창고에서 먼저 떼어 냈습니다."
+          channel: "narration"
+          text: "탑의 첫 층이 올라가는 동안 마을 창고에는 묽은 죽이 돌았습니다. 덕만은 공사장 불을 줄여 밤의 땔감을 보냈습니다."
       - say:
-          char: 덕만
-          text: "깨진 방패를 탑에 걸어. 북문엔 왕실 군량을 보내고, 공사는 계속한다."
+          char: "덕만"
+          text: "탑은 서두르되 사람 몫은 줄이지 마. 왕실 비축부터 꺼내."
       - say:
-          char: 춘추.nervous
-          camera: medium
-          with: [덕만]
-          text: "군량보다 성벽이 먼저 무너졌습니다. 북문 장수의 마지막 글입니다. '별을 세운 왕에게 성문은 필요 없나.'"
+          char: "춘추.nervous"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "이번 달은 버팁니다. 다음 달에 비가 안 오면 궁에서도 손을 벌려야 합니다."
       - say:
-          channel: narration
-          text: "북문을 넘은 반란군은 완성 중인 탑을 표식 삼아 왕궁까지 내려왔습니다. 덕만은 관측관들을 빼내다 탑 아래에서 화살을 맞았습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "관측은 한 계절 빨라졌습니다. 창고의 빈 칸도 그만큼 빨리 늘었습니다."
+      - add:
+          people_support: -4
+          insight: 1
       - say:
-          channel: record
-          text: "선덕왕 원년 — 북문 함락. 선덕왕은 첨성대 공사장에서 반란군에게 피살."
-      - gameOver:
-          title: "운명 — 성문보다 높은 별"
-          message: "미래의 재해를 읽을 탑을 먼저 세우는 동안 당장 무너진 성문이 열렸습니다. 첨성대는 길잡이가 되어 반란군을 여왕에게 데려왔습니다."
-          recoverToChoice: c10_observatory_priority
+          channel: "record"
+          text: "통치의 대가 — 더 일찍 하늘을 읽게 됐습니다. 공사비를 낸 마을의 겨울은 길었습니다."
+      - goto: "who_reads_stars"
 
   balanced_build:
     actions:
-      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
+      - bg:
+          id: "frontier"
+          transition: "wipeLeft"
+          duration: 700
       - say:
-          channel: narration
-          text: "성벽 틈은 겨우 막혔고 관측대는 계획보다 절반 높이에서 멈췄습니다. 군사와 관측관은 남은 돌 한 장을 두고 매일 얼굴을 마주쳐야 했습니다. 결정은 느렸지만 어느 한쪽도 버려지지는 않았습니다."
+          channel: "narration"
+          text: "성벽과 관측대에 번갈아 수레가 들어갔습니다. 어느 쪽도 한 달 안에 완성되지는 않았습니다."
       - say:
-          char: 춘추.nervous
-          camera: medium
-          with: [덕만]
-          text: "폐하, 북문엔 적병이 들고 남쪽 강은 넘쳤습니다. 두 곳 모두 마지막 돌이 없었습니다."
+          char: "춘추.nervous"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "장인들이 두 현장을 오가느라 품삯이 늘었습니다. 왕실 잔치 예산이면 메울 수 있습니다."
       - say:
-          char: 덕만.queen_sad
-          camera: medium
-          with: [춘추]
-          text: "둘 다 살린다며 반씩 줬는데… 어느 쪽도 사람을 못 지켰구나."
+          char: "덕만.queen_sad"
+          camera: "medium"
+          with:
+            - "춘추"
+          text: "올해 잔치는 취소해. 대신 현장마다 쓴 곡식과 돌을 적어."
       - say:
-          channel: narration
-          text: "홍수로 군량길이 끊긴 날 북문 사병이 반란을 일으켰습니다. 굶은 왕군은 움직이지 않았고 덕만의 피난 수레는 범람한 다리 앞에서 붙잡혔습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "조회장에 항의가 쌓였지만 마을 사람들은 번갈아 품삯을 받았습니다. 탑과 성문이 같은 겨울을 넘겼습니다."
+      - add:
+          nobles_support: -2
       - say:
-          channel: record
-          text: "선덕왕 원년 — 홍수와 북문 반란 동시 발생. 선덕왕, 피난 중 반란군에게 피살."
-      - gameOver:
-          title: "운명 — 절반으로 지킨 나라"
-          message: "성벽과 관측대를 절반씩 세우자 어느 쪽도 위기를 막지 못했습니다. 홍수가 군량을 끊고 반란군이 성문을 넘은 날 덕만에게 남은 길도 사라졌습니다."
-          recoverToChoice: c10_observatory_priority
+          channel: "record"
+          text: "통치의 대가 — 두 공사를 이어 갔습니다. 속도를 포기한 자리에는 왕실의 비용이 들어갔습니다."
+      - goto: "who_reads_stars"
 
   granary_first:
     actions:
@@ -161,64 +167,70 @@ scenes:
 
   distributed_tables:
     actions:
-      - bg: { id: moon_court, transition: dissolve, duration: 720 }
-      - get: star_chart
+      - bg:
+          id: "moon_court"
+          transition: "dissolve"
+          duration: 720
+      - get: "star_chart"
       - say:
-          channel: narration
-          text: "군대는 바람, 마을은 비, 왕실은 계산식을 가져갔습니다. 누구도 전부 갖지 못했고, 셋이 같은 탁자에 앉아야 다음 계절을 읽을 수 있었습니다."
+          channel: "narration"
+          text: "관측표의 사본 세 벌이 왕실, 사찰, 마을로 갔습니다. 빠진 줄이 생기면 다른 두 벌과 맞출 수 있도록 날짜를 함께 적었습니다."
       - say:
-          char: 비담
-          camera: medium
-          with: [덕만]
-          text: "한 조각만 늦어도 못 읽습니다. 군대 표는 안 왔는데 강물은 벌써 오릅니다."
+          char: "비담"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "서로 답을 기다리면 제 전령보다 늦습니다. 홍수도 기다려 주겠습니까?"
       - say:
-          char: 덕만.queen_angry
-          camera: medium
-          with: [비담]
-          text: "왕실 계산식부터 가져가. 마을 표와 맞추면 대강의 시각이라도—"
+          char: "덕만.queen_angry"
+          camera: "medium"
+          with:
+            - "비담"
+          text: "대피는 먼저 해. 계산이 다른 까닭은 세 곳이 모두 남겨. 누구 탓인지보다 어디서 틀렸는지."
       - say:
-          channel: narration
-          text: "군대 표를 맡은 장수는 관측 정보를 독점하려고 일부러 하루를 늦췄습니다. 덕만이 제방에 도착했을 때는 대피하지 못한 사람들과 왕의 호위가 같은 물살에 갇혀 있었습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "첫 정정표에는 세 필체가 남았습니다. 비담은 전령에게 봉인 대신 수정 날짜를 읽히기 시작했습니다."
+      - add:
+          bidam_trust: -1
       - say:
-          channel: record
-          text: "남쪽 홍수 기록 — 관측표 취합 지연으로 대피 명령이 늦음. 선덕왕, 제방 붕괴 현장에서 사망."
-      - gameOver:
-          title: "운명 — 셋으로 찢긴 내일"
-          message: "서로 감시하게 나눈 표는 한 사람이 질투로 협조를 늦추자 아무도 읽을 수 없는 조각이 됐습니다. 대피 시각은 완성되지 않았고 덕만은 무너진 제방에서 죽었습니다."
-          recoverToChoice: c10_knowledge_policy
+          channel: "record"
+          text: "통치의 대가 — 표를 나눠 보관했습니다. 고치는 일은 느려졌지만 한 사람의 손으로 지울 수 없게 됐습니다."
+      - goto: "observatory_sabotage"
 
   bidam_network:
     actions:
-      - bg: { id: moon_court, transition: dissolve, duration: 720 }
-      - get: star_chart
+      - bg:
+          id: "moon_court"
+          transition: "dissolve"
+          duration: 720
+      - get: "star_chart"
       - say:
-          channel: narration
-          text: "비담의 전령은 홍수보다 하루 먼저 달렸고 적군보다 밤 하나 빨랐습니다. 곧 관리들은 왕의 문보다 비담의 처소 앞에 먼저 줄을 섰습니다."
+          channel: "narration"
+          text: "비담의 전령은 비가 오기 전에 모든 마을에 닿았습니다. 원본은 왕실에 남았지만 마을 사람들은 전령이 읽어 주는 말만 들었습니다."
       - say:
-          char: 비담
-          camera: medium
-          with: [덕만]
-          text: "걱정 마십시오. 폐하가 부르실 때만 열겠습니다. 필요하실 때만큼은 제 이름도 부르시겠죠."
+          char: "비담"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "빠진 마을 없습니다. 원하신 속도입니다, 폐하."
       - say:
-          char: 덕만.queen_sad
-          text: "좋아. 지금은 네 전령이 가장 빨라. 원본도 보고도 네 길로 받겠다."
+          char: "덕만.queen_sad"
+          text: "네가 자리를 비워도 돌아가야 해. 암호를 풀 사람을 둘 더 가르쳐."
       - say:
-          char: 비담.sad
-          camera: medium
-          with: [덕만]
-          text: "이제 저를 거치지 않고는 폐하께 못 닿겠군요. 미움도 그만큼 제게 오고요."
+          char: "비담.sad"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "가르치겠습니다. 그래도 급한 밤에는 제 이름부터 부르시겠지요."
       - say:
-          channel: narration
-          text: "사흘 뒤 비담의 봉인을 흉내 낸 전령이 여왕의 약재를 가져왔습니다. 다른 길이 모두 닫힌 탓에 어느 관문도 그 명령을 다시 확인하지 못했습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "덕만은 대답하지 못했습니다. 가장 빠른 길 한가운데 비담이 서 있었습니다."
+      - add:
+          bidam_trust: 2
       - say:
-          channel: record
-          text: "선덕왕 원년 — 왕실 약재에 독이 섞여 선덕왕 사망. 비담 전령망의 명령으로 반입됐으나 발신자는 확인되지 않음."
-      - gameOver:
-          title: "운명 — 하나뿐인 전령길"
-          message: "비담에게 정보의 문을 하나로 모으자 그를 시기한 귀족은 봉인 하나만 베껴 독을 왕실까지 보냈습니다. 확인할 다른 길이 없었던 덕만은 가장 빠른 전령을 믿고 죽었습니다."
-          recoverToChoice: c10_knowledge_policy
+          channel: "record"
+          text: "통치의 대가 — 경보는 빨라졌습니다. 관측표를 직접 읽을 수 있는 사람은 늘지 않았습니다."
+      - goto: "observatory_sabotage"
 
   observatory_sabotage:
     actions:
