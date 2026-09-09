@@ -15,7 +15,7 @@ export const dialogueDeliverySchema = z.enum([
   'sad',
   'deduction',
 ]);
-export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system']);
+export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system', 'thought', 'action']);
 
 export const cameraShotSchema = z.enum(['wide', 'medium', 'close', 'reaction']);
 export const cameraTransitionSchema = z.enum(['cut', 'push', 'pan']);
@@ -77,6 +77,7 @@ const gameOverSchema = z
 const choiceOptionSchema = z
   .object({
     text: z.string().min(1),
+    at: z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).strict().optional(),
     when: conditionSchema.optional(),
     set: stateSetMapSchema.optional(),
     add: stateAddMapSchema.optional(),
@@ -221,6 +222,7 @@ const actionBodySchema = z.union([
     choice: z
       .object({
         key: z.string().min(1).optional(),
+        presentation: z.enum(['dialogue', 'explore']).optional(),
         prompt: z.string().min(1),
         char: z.string().min(1).optional(),
         with: z.array(z.string().min(1)).optional(),
@@ -234,6 +236,12 @@ const actionBodySchema = z.union([
         options: z.array(choiceOptionSchema).min(1),
       })
       .superRefine((choice, ctx) => {
+        if (choice.presentation !== 'explore' && choice.options.some(option => option.at)) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'Positioned options require presentation: explore' });
+        }
+        if (choice.presentation === 'explore' && !choice.options.some(option => option.at)) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Exploration requires at least one positioned option' });
+        }
         if (
           choice.timeoutOptionIndex !== undefined &&
           choice.timeoutOptionIndex >= choice.options.length
@@ -290,6 +298,7 @@ const actionBodySchema = z.union([
       framing: z.string().min(1).optional(),
       camera: cameraDirectiveSchema.optional(),
       channel: dialogueChannelSchema.optional(),
+      continueLabel: z.string().trim().min(1).max(60).optional(),
       when: conditionSchema.optional(),
       text: z.string(),
       delivery: dialogueDeliverySchema.optional(),
@@ -297,6 +306,9 @@ const actionBodySchema = z.union([
       wait: z.number().int().nonnegative().max(60000).optional(),
       unskippable: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
+    }).refine(say => !(say.continueLabel && say.autoAdvance), {
+      message: 'An explicit player action cannot auto-advance',
+      path: ['continueLabel'],
     }),
   }),
 ]);

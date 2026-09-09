@@ -1,0 +1,83 @@
+/* Perception stays on the scene; quoted speech keeps the familiar reading paper. */
+.app .dialog-box.channel-thought,
+.app .dialog-box.channel-action,
+.app .dialog-box.has-exploration {
+  background: linear-gradient(125deg, #142124f5, #12191df2);
+  border-color: #d8d2b43d;
+  --game-text: #f4f0e4;
+  --game-muted: #c1c7c0;
+  --game-line: #d8d2b43d;
+  --game-soft: #ffffff0b;
+  --game-paper: #142124;
+  --game-accent: #ecd6a2;
+}
+.app .dialog-box.channel-thought .text { color: #f4f0e4; }
+.app .dialog-box.channel-action .text { color: #f4f0e4; }
+.app .dialog-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid #ecd6a266;
+  border-radius: 3px;
+  color: #f4f0e4;
+  background: #16292b;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+.app .dialog-action-button:hover:enabled { background: #274043; border-color: #ecd6a2; }
+.app .dialog-action-button:disabled { opacity: .55; cursor: default; }
+.app .dialog-action-button .game-icon { width: 18px; flex-shrink: 0; }
+.exploration-field {
+  position: absolute;
+  z-index: 6;
+  top: max(88px, var(--stage-safe-block-start));
+  bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 48px);
+  left: max(16px, var(--stage-safe-inline-start));
+  right: max(16px, var(--stage-safe-inline-end));
+  container-type: size;
+  pointer-events: none;
+}
+.app .exploration-target {
+  position: absolute;
+  height: auto;
+  width: min(210px, 44cqw);
+  min-height: 48px;
+  max-height: 100cqh;
+  overflow-y: auto;
+  left: clamp(0px, calc(var(--target-x) - min(105px, 22cqw)), calc(100% - min(210px, 44cqw)));
+  top: clamp(0px, calc(var(--target-y) - 28px), calc(100% - 64px));
+  pointer-events: auto;
+  background: #122126f2;
+  color: #fff8e8;
+  border: 1px solid #e8d7a6ad;
+  box-shadow: 0 4px 20px #0005;
+  padding: 12px;
+  transform: none;
+}
+.app .exploration-target:hover:not(:disabled),
+.app .exploration-target:active:not(:disabled) { transform: none; background: #284043; border-color: #fff1c8; }
+.app .exploration-target .choice-gate-option-index,
+.app .exploration-target .choice-gate-option-mark { color: #ecd6a2; }
+.app .exploration-target .choice-gate-option-copy { gap: 8px; grid-template-columns: minmax(0, 1fr) 16px; }
+.app .exploration-target .choice-gate-option-index { display: none; }
+.app .exploration-target .choice-gate-option-text { font-size: 14px; }
+.app .exploration-target .choice-gate-option-badges:empty { display: none; }
+.app .has-exploration .choice-gate { margin-top: 8px; }
+.app .has-exploration .choice-gate-options { grid-template-columns: 1fr; }
+@media (max-height: 500px) and (orientation: landscape) {
+  .app .dialog-box.has-exploration { --dialog-safe-max-height: 155px; padding-top: 12px; padding-bottom: 12px; }
+  .app .has-exploration .dialog-content-scroll { padding-top: 0; }
+  .exploration-field { top: 62px; bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 8px); }
+  .app .exploration-target { top: clamp(0px, calc(var(--target-y) - 24px), calc(100% - 48px)); padding: 8px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app .dialog-action-button, .app .exploration-target { transition: none; }
+}

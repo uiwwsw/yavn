@@ -558,7 +558,10 @@ scenes:
           char: 코고로.proud
           text: "<speed=36>아침 특식 내기도 잊으면 안 됩니다!</speed>"
       - say:
-          text: "<speed=24>다실에 다시 웃음이 번졌다.</speed> <speed=21>그때까지만 해도 종이 위 네 이름은 같은 크기로, 누구 하나 빠지지 않은 채 놓여 있었다.</speed>"
+          text: 네 이름이 같은 크기로 적혀 있다. 아저씨까지 웃는다. 란이 내 잔을 멀리 밀어 준다. 아직 뜨겁다고.
+          channel: thought
+
+
 
   storm_news:
     actions:
@@ -651,4 +654,5 @@ scenes:
           char: 코난.think
           text: "<speed=21>(같은 종이를 보는데, 모두 빠진 이름이 달라.)</speed>"
       - say:
-          text: "<speed=24>오후 9시 18분.</speed> <speed=21>빗소리가 지붕을 덮은 다실에서 네 사람의 이름과 네 개의 잔이 마지막으로 나란히 놓였다.</speed>"
+          text: 시계를 본다. 오후 9시 18분. 빗소리에 말소리가 묻혀 몸을 앞으로 기울인다. 내 앞에 네 이름, 그리고 네 개의 잔.
+          channel: action

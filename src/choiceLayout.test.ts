@@ -33,7 +33,7 @@ describe('choice dialog containment', () => {
   });
 
   it('uses a compact count-aware grid for one to four choices', () => {
-    expect(appSource).toContain('data-choice-count={choiceGate.options.length}');
+    expect(appSource).toContain("data-choice-count={choiceGate.options.filter(option => choiceGate.presentation !== 'explore' || !option.at).length}");
     expect(styles).toMatch(
       /\.choice-gate-options\[data-choice-count='2'\],[\s\S]*?\.choice-gate-options\[data-choice-count='3'\],[\s\S]*?\.choice-gate-options\[data-choice-count='4'\]\s*\{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
     );

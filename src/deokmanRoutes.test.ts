@@ -63,7 +63,11 @@ function play(overrides: Record<string, string> = {}, investigate = false) {
         if (investigate && desk && !inspected.has(desk.goto)) {
           inspected.add(desk.goto); wanted = desk.goto;
         }
-        if (c.key.startsWith('evidence_')) {
+        if (c.key === 'first_room_look') wanted = !vars.opening_door_heard ? 'first_hear_door' : !vars.opening_name_read ? 'first_read_name' : 'opening_record';
+        if (c.presentation === 'explore' && c.key.startsWith('evidence_')) {
+          const id = c.key.replace(/_look$/, '');
+          wanted = !vars[`${id}_seen_0`] ? `${id}_detail_0` : !vars[`${id}_seen_1`] ? `${id}_detail_1` : `${id}_deduce`;
+        } else if (c.key.startsWith('evidence_')) {
           const count = attempts.get(c.key) ?? 0;
           attempts.set(c.key, count + 1);
           // An incorrect comparison must return safely; the second try solves it.

@@ -74,7 +74,8 @@ scenes:
           position: right
       - say:
           camera: wide
-          text: "<speed=24>방에는 유카타 세 벌, 이불 세 채, 작은 과자 바구니가 가지런히 놓여 있었다.</speed> <speed=21>란은 젖은 세 사람 몫을 하나씩 마른 자리로 옮겼다.</speed>"
+          text: 문턱을 넘으니 젖은 양말에 다다미가 달라붙는다. 과자 바구니는 내 눈높이. 란이 내 젖은 수건까지 받아 널어 준다.
+          channel: action
       - say:
           camera: medium
           char: 코고로.proud
@@ -125,7 +126,8 @@ scenes:
           emotion: smile
       - say:
           camera: wide
-          text: "<speed=24>노천탕에서 돌아온 코고로는 수건을 목에 걸고 복도를 성큼성큼 걸었다.</speed>"
+          text: 따뜻한 발바닥으로 복도를 걷는다. 앞서 가는 아저씨의 수건이 흔들린다. 오늘만큼은 이 발소리를 천천히 따라가도 되겠지.
+          channel: action
       - say:
           camera: medium
           char: 코고로.proud
@@ -168,7 +170,8 @@ scenes:
           emotion: proud
       - say:
           camera: wide
-          text: "<speed=24>휴게실로 가던 세 사람은 로비 한쪽의 작은 기념품 진열대 앞에서 걸음을 멈췄다.</speed> <speed=21>‘여행이 끝난 뒤에도 남는 것’이라는 손글씨가 선반에 붙어 있었다.</speed>"
+          text: 휴게실로 가다 진열대 앞에서 멈춘다. “여행이 끝난 뒤에도 남는 것.” 발끝을 들어 선반 안쪽을 들여다본다.
+          channel: action
       - say:
           camera: medium
           char: 란
@@ -397,7 +400,8 @@ scenes:
             - 코고로.angry
           text: "<speed=27>알았어요. 이번엔 사람 말고 선이랑 공만 볼게요.</speed>"
       - say:
-          text: "<speed=24>열두 번이나 이어진 공이 탁구대 모서리를 스쳤다.</speed> <speed=21>둘의 시선이 바닥으로 떨어진 뒤에도 코난은 모서리를 보고 있었다.</speed>"
+          text: 방금 공, 모서리에 닿았지? 소리가 바닥에 떨어질 때와 달랐어. 둘 다 아래만 보고 있네.
+          channel: thought
       - say:
           char: 코난.smile
           text: "<speed=30>인. 모서리에 흰 자국이 남았어요. 란 누나 점수예요.</speed>"
@@ -533,7 +537,8 @@ scenes:
           position: right
       - say:
           camera: wide
-          text: "<speed=23>식사를 마친 뒤, 란과 코난은 유리창을 타고 흐르는 빗물을 한동안 바라보았다.</speed> <speed=21>낮에 찍은 산길은 물결 너머에서 전혀 다른 장소처럼 흔들렸다.</speed>"
+          text: 낮에 찍은 산길이 빗물 너머로 흔들린다. 란이 옆에 있다. 신이치로 서 있었다면, 지금 무슨 말을 했을까.
+          channel: thought
       - say:
           camera: medium
           char: 란
@@ -695,7 +700,11 @@ scenes:
           delivery: shout
           text: "<speed=36>오늘은 국제 규칙 금지다!</speed>"
       - say:
-          text: "<speed=23>웃음소리가 잦아들고 나서도 빗소리는 한참 창문을 두드렸다.</speed> <speed=21>멀리 다실 쪽에서 금속 뚜껑이 한 번 울렸다가 곧 조용해졌다.</speed>"
+          text: 웃음이 잦아든다. 이불을 턱까지 당긴다. 다실 쪽에서 금속 뚜껑이 한 번 울린다. 눈을 뜬 채 다음 소리를 기다리지만 조용하다.
+          channel: action
+          with: []
+          camera: wide
+          continueLabel: 소리를 기억해 두고 눈을 감는다
       - char:
           id: 란
           position: left

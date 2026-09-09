@@ -105,7 +105,8 @@ scenes:
             - 세이지.cold
           text: "<speed=21>예, 2번은 제 잔입니다.</speed> <speed=18>레이코 씨, 88도가 될 때까진 뚜껑에 손대지 마세요.</speed> <speed=16>아버님이 남긴 순서를 오늘 우리가 먼저 깨면 안 됩니다.</speed>"
       - say:
-          text: "<speed=19>레이코는 하루오를 바라본 채 주전자 뚜껑을 눌렀다.</speed> <speed=51>한 번.</speed> <speed=55>모두가 고개를 들었을 때, 다시 한 번.</speed>"
+          text: 레이코의 손이 뚜껑을 누른다. 딱. 고개를 든다. 딱, 다시 한 번. 시선은 하루오에게 가 있는데 손은 왜 멈추지 않지?
+          channel: action
       - branch:
           cases:
             - when:
@@ -163,7 +164,8 @@ scenes:
             - 코난.serious
           text: "<speed=19>잔이 쓰러져요.</speed> <speed=16>증거가 아니라 뜨거운 차예요. 수건부터 가져올게요...</speed>"
       - say:
-          text: "<speed=18>천둥에 등불이 꺼졌다 켜졌다.</speed> <speed=16>하루오를 붙잡는 손들이 탁자 위로 겹친 그 짧은 어둠 속에서, 흰 천 한 자락이 2번 잔과 컵받침 사이를 지나갔다.</speed>"
+          text: 천둥. 잠깐 어두워진다. 겹친 팔 사이로 흰 천이 스친다. 2번 잔 밑이었나? 몸을 낮춰 다시 본다.
+          channel: action
       - say:
           camera: { shot: close, target: 코난, transition: push, duration: 360 }
           char: 코난.serious
@@ -198,7 +200,8 @@ scenes:
           emotion: determined
       - say:
           camera: wide
-          text: "<speed=23>코고로가 하루오의 기도를 열고 맥을 짚었다.</speed> <speed=18>온천과 내기만 말하던 얼굴에서 웃음이 지워졌다.</speed>"
+          text: 아저씨가 기도를 열고 맥을 짚는다. 조금 전 웃던 입이 굳어 있다. 탁자 모서리를 잡는다. 손바닥에 땀이 난다.
+          channel: action
       - clearSticker:
           id: tape_lock
           leave:
@@ -227,7 +230,8 @@ scenes:
           enter:
             effect: blurIn
       - say:
-          text: '<speed=23>하루오의 손끝이 젖은 컵받침을 긁었다.</speed> <speed=18>먼저 2. 그 아래 한 획이 더 이어졌다.</speed> <speed=46>"R"...</speed>'
+          text: 젖은 컵받침을 손끝이 긁는다. 2… 그 아래 한 획. R인가? 입술이 움직여 귀를 가까이 댄다.
+          channel: action
       - clearSticker:
           id: dying_hint
           leave:

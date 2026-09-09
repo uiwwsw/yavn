@@ -284,6 +284,19 @@ function useLatchedMotionTempo(
   return effectiveMotionTempo;
 }
 
+const DialogueActionButton = memo(function DialogueActionButton() {
+  const { label, typing, busy } = useVNStore(useShallow(state => ({
+    label: state.dialog.continueLabel, typing: state.dialog.typing, busy: state.busy,
+  })));
+  if (!label) return null;
+  return (
+    <button type="button" className="dialog-action-button" disabled={typing || busy}
+      onClick={event => { event.stopPropagation(); handleAdvance(true); }}>
+      <span>{label}</span><GameIcon name="arrow" />
+    </button>
+  );
+});
+
 const DialogueText = memo(function DialogueText() {
   const {
     visibleText,
@@ -4241,11 +4254,72 @@ export default function App() {
     );
   }
 
+  const renderChoiceOption = (option: typeof choiceGate.options[number], index: number, spatial = false) => {
+    const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
+    const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
+    const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
+    return (
+      <button
+        key={`${choiceGate.key}-${option.text}-${index}`}
+        type="button"
+        className={`choice-gate-option${spatial ? ' exploration-target' : ''}${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
+        style={spatial && option.at ? { '--target-x': `${option.at.x}%`, '--target-y': `${option.at.y}%` } as CSSProperties : undefined}
+        ref={(el) => {
+          choiceOptionButtonRefs.current[index] = el;
+        }}
+        onKeyDown={(event) => {
+          if (busy) {
+            return;
+          }
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            event.stopPropagation();
+            if (hasRecoveredFailedChoice) {
+              setRecoveredFailedChoice(undefined);
+            }
+            submitChoiceOption(index);
+          }
+        }}
+        onClick={(event) => {
+          event.stopPropagation();
+          if (busy) {
+            return;
+          }
+          if (hasRecoveredFailedChoice) {
+            setRecoveredFailedChoice(undefined);
+          }
+          submitChoiceOption(index);
+        }}
+        disabled={busy}
+        aria-label={`${option.text}${isPreviousGameOverChoice ? ', 죽음의 원인 선택, 게임 오버 경로' : ''}`}
+      >
+        <span className="choice-gate-option-copy">
+          <span className="choice-gate-option-index" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <span className="choice-gate-option-text">{option.text}</span>
+          <GameIcon name="arrow" className="choice-gate-option-mark" />
+        </span>
+        <span className="choice-gate-option-badges">
+          {isPreviousGameOverChoice && (
+            <span className="choice-gate-option-history-badge">
+              <b>원인 선택</b>
+              <em>GAME OVER</em>
+            </span>
+          )}
+          {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
+        </span>
+      </button>
+    );
+  };
+
   const dialogueChannelLabel = {
     dialogue: undefined,
     narration: undefined,
     record: '기록',
     system: '시스템',
+    thought: '속마음',
+    action: undefined,
   }[dialogChannel];
 
   return (
@@ -4353,6 +4427,13 @@ export default function App() {
           {Object.keys(stickers).map(renderSticker)}
         </div>
       </div>
+
+      {choiceGate.active && choiceGate.presentation === 'explore' && !isDialogHidden && (
+        <div className="exploration-field" role="group" aria-label="주변 살펴보기"
+          style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>
+          {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
+        </div>
+      )}
 
       {videoCutscene.active && (
         <div className="video-cutscene-overlay">
@@ -4591,7 +4672,7 @@ export default function App() {
                         {entry.kind === 'dialogue' ? (
                           <>
                             <span className="story-log-kind">
-                              {entry.speaker ?? (
+                              {entry.channel === 'thought' ? `${entry.speaker ? entry.speaker + ' · ' : ''}속마음` : entry.channel === 'action' ? '행동' : entry.speaker ?? (
                                 entry.channel === 'record'
                                   ? '기록'
                                   : entry.channel === 'system'
@@ -5077,7 +5158,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box channel-${dialogChannel} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && choiceGate.presentation === 'explore' ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -5115,6 +5196,7 @@ export default function App() {
             <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
           )}
           <DialogueText />
+          <DialogueActionButton />
           {inputGate.active && (
             <form
               className="input-gate-form"
@@ -5180,65 +5262,10 @@ export default function App() {
               )}
               <div
                 className="choice-gate-options"
-                data-choice-count={choiceGate.options.length}
+                data-choice-count={choiceGate.options.filter(option => choiceGate.presentation !== 'explore' || !option.at).length}
               >
-                {choiceGate.options.map((option, index) => {
-                  const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
-                  const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
-                  const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
-                  return (
-                    <button
-                      key={`${choiceGate.key}-${option.text}-${index}`}
-                      type="button"
-                      className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
-                      ref={(el) => {
-                        choiceOptionButtonRefs.current[index] = el;
-                      }}
-                      onKeyDown={(event) => {
-                        if (busy) {
-                          return;
-                        }
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          event.stopPropagation();
-                          if (hasRecoveredFailedChoice) {
-                            setRecoveredFailedChoice(undefined);
-                          }
-                          submitChoiceOption(index);
-                        }
-                      }}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        if (busy) {
-                          return;
-                        }
-                        if (hasRecoveredFailedChoice) {
-                          setRecoveredFailedChoice(undefined);
-                        }
-                        submitChoiceOption(index);
-                      }}
-                      disabled={busy}
-                      aria-label={`${option.text}${isPreviousGameOverChoice ? ', 죽음의 원인 선택, 게임 오버 경로' : ''}`}
-                    >
-                      <span className="choice-gate-option-copy">
-                        <span className="choice-gate-option-index" aria-hidden="true">
-                          {String(index + 1).padStart(2, '0')}
-                        </span>
-                        <span className="choice-gate-option-text">{option.text}</span>
-                        <GameIcon name="arrow" className="choice-gate-option-mark" />
-                      </span>
-                      <span className="choice-gate-option-badges">
-                        {isPreviousGameOverChoice && (
-                          <span className="choice-gate-option-history-badge">
-                            <b>원인 선택</b>
-                            <em>GAME OVER</em>
-                          </span>
-                        )}
-                        {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
-                      </span>
-                    </button>
-                  );
-                })}
+                {choiceGate.options.map((option, index) =>
+                  choiceGate.presentation === 'explore' && option.at ? null : renderChoiceOption(option, index))}
               </div>
             </div>
           )}

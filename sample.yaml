@@ -132,6 +132,42 @@ inventory:
     order: 10
 
 scenes:
+  # 이 예를 시작하려면 script의 첫 scene을 immersive_entry로 지정합니다.
+  # investigate_* 장면은 기존 분기로 합류하므로 추가 상태 선언이 필요 없습니다.
+  immersive_entry:
+    actions:
+      - say:
+          channel: thought
+          with: []
+          camera: wide
+          text: "발소리가 문 앞에서 멎었다. 나를 기다리나?"
+          continueLabel: "문틈에 귀를 댄다"
+      - choice:
+          key: sample_explore
+          presentation: explore
+          prompt: "쇠 긁는 소리. 어디서 나는 걸까?"
+          with: []
+          options:
+            - text: "문고리"
+              at: { x: 27, y: 55 }
+              goto: investigate_handle
+            - text: "창 아래"
+              at: { x: 73, y: 55 }
+              goto: investigate_window
+  investigate_handle:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "손바닥에 차가운 금속이 닿는다. 고리를 당기자 바깥에서 사슬이 팽팽해진다."
+      - goto: safety_choice
+  investigate_window:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "창 아래로 몸을 낮춘다. 틈으로 붉은 경보등이 깜빡인다. 스위치까지 손이 닿을 것 같다."
+      - goto: safety_choice
   safety_choice:
     actions:
       - choice:

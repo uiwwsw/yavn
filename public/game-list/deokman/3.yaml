@@ -11,8 +11,8 @@ scenes:
           channel: record
           text: "제4장 — 칼과 장부"
       - say:
-          channel: narration
-          text: "서쪽 창고에서 나온 수레는 빈 마을을 세 번 지나고도 멈추지 않았습니다. 덕만이 한 집의 곡식독을 열자 바닥에서 마른 쥐똥만 굴렀습니다. 장부에는 이 집이 어제 쌀을 받았다고 적혀 있었습니다."
+          channel: action
+          text: 빈집의 곡식독을 연다. 바닥을 긁자 쥐똥만 구른다. 장부에는 어제 배급했다고 적혔다. 이 집 사람은 뭘 먹었지?
       - char: { id: 덕만, position: left }
       - char: { id: 유신, position: right }
       - say:
@@ -45,8 +45,8 @@ scenes:
   track_wagons:
     actions:
       - say:
-          channel: narration
-          text: "낮 통행표의 바퀴 폭과 밤 진흙의 자국이 꼭 맞았습니다. 왕실 수레는 해가 지면 귀족 문장이 그려진 덮개만 갈아썼습니다."
+          channel: action
+          text: 바퀴 자국 옆에 통행표를 놓는다. 폭이 맞는다. 멀리 수레가 멎고, 왕실 덮개 위로 귀족 문장이 씌워진다.
       - say:
           char: 유신
           camera: medium
@@ -81,8 +81,8 @@ scenes:
       - add:
           evidence: -1
       - say:
-          channel: "record"
-          text: "조사 결과 — 주민의 신뢰를 얻었습니다. 창고는 찾았지만 사라진 첫 장의 이름은 알 수 없습니다."
+          channel: thought
+          text: 노파가 길은 열어 줬어. 타 버린 첫 장의 이름은 끝내 못 읽었다. 남은 장부터 지키자.
       - goto: "hidden_warehouse"
 
   surround_warehouse:
@@ -112,8 +112,8 @@ scenes:
       - add:
           people_support: -2
       - say:
-          channel: "record"
-          text: "조사 결과 — 병력으로 장부를 확보했습니다. 마을에는 불탄 창고의 보상 약속이 남았습니다."
+          channel: thought
+          text: 장부는 손에 있다. 불탄 집 앞의 사람은 내 깃발을 보고 문을 닫았다. 돌아와서 이 문도 두드려야 해.
       - goto: "hidden_warehouse"
 
   hidden_warehouse:
@@ -123,8 +123,8 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk, enter: { effect: fadeIn, layout: push, duration: 420 } }
       - say:
           camera: wide
-          channel: narration
-          text: "문이 무너지자 곡식 냄새 대신 기름 먹인 갑옷 냄새가 쏟아졌습니다. 갑옷 더미 위에 한 사내가 누워 남의 장부를 소리 내 읽고 있었습니다."
+          channel: action
+          text: 문틈을 밀자 기름 냄새가 훅 끼친다. 곡식은 어디 있지? 갑옷 더미에서 누군가 내 쪽으로 장부를 흔든다.
       - say:
           char: 비담.smirk
           camera: medium
@@ -196,8 +196,8 @@ scenes:
       - bg: { id: village, transition: dissolve, duration: 720 }
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
-          channel: narration
-          text: "마을 대표들이 자루마다 숯으로 집 이름을 썼습니다. 줄은 느리게 줄었고 서로의 몫을 세는 목소리는 밤새 멈추지 않았습니다."
+          channel: action
+          text: 자루에 집 이름을 쓴다. 숯이 부러질 때쯤에도 줄은 남아 있다. 할머니가 내 손에서 숯을 받아 자기 집 이름을 덧쓴다.
       - say:
           char: 비담.smirk
           camera: medium
@@ -235,8 +235,8 @@ scenes:
       - add:
           people_support: -1
       - say:
-          channel: "record"
-          text: "통치의 대가 — 배급은 빨랐습니다. 백성은 덕만보다 왕실 관리의 명부를 먼저 찾게 됐습니다."
+          channel: thought
+          text: 솥은 빨리 비었는데, 끝집 할머니는 해가 진 뒤에야 왔어. 이름을 불렀다는 관리의 말만 믿어도 될까?
       - goto: "convoy_attack"
 
   grain_bargain:
@@ -271,8 +271,8 @@ scenes:
           people_support: -3
           bidam_trust: 1
       - say:
-          channel: "record"
-          text: "통치의 대가 — 군량을 얻었습니다. 장부를 감춘 빚은 비담과 굶은 마을에 남았습니다."
+          channel: thought
+          text: 군사들은 먹었다. 노파가 물었던 도둑의 이름은 내가 상자에 가뒀다. 내일 그 사람 얼굴을 어떻게 보지.
       - goto: "convoy_attack"
 
   convoy_attack:
@@ -282,8 +282,8 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           camera: wide
-          channel: narration
-          text: "마지막 수레가 협곡 그림자에 들어간 순간 앞뒤에서 바위가 굴렀습니다. 절벽 위 횃불들이 곡식 자루와 장부 상자를 동시에 겨눴습니다."
+          channel: action
+          text: 수레 앞에서 바위가 떨어진다. 뒤에서도 같은 소리. 절벽 위 횃불이 장부 상자를 따라 움직인다.
       - say:
           char: 유신.angry
           camera: medium
@@ -308,8 +308,8 @@ scenes:
   bait_ambush:
     actions:
       - say:
-          channel: narration
-          text: "빈 수레가 협곡으로 구르자 첫 궁수들이 몸을 드러냈습니다. 비담이 불화살 하나를 낚아채 절벽 아래로 던졌고, 유신은 그 짧은 틈에 뒤 수레를 비탈길로 돌렸습니다."
+          channel: action
+          text: 빈 수레를 민다. 화살이 쏟아진다. 불빛에 드러난 궁수를 향해 손을 뻗는다. “저기!” 유신의 말이 비탈을 꺾는다.
       - say:
           char: 유신.angry
           camera: medium
@@ -323,8 +323,8 @@ scenes:
       - music: night_road
       - say:
           camera: medium
-          channel: narration
-          text: "해가 뜰 무렵, 그을린 수레바퀴가 마을 돌길을 밟았습니다. 아이들이 달려와 터진 자루에서 쌀알을 한 톨씩 주웠습니다."
+          channel: action
+          text: 돌길의 진동이 발바닥에 닿는다. 돌아왔구나. 아이 하나가 찢어진 자루 밑에서 쌀알을 줍는다. 나도 허리를 굽힌다.
       - char: { id: 덕만, position: left }
       - char: { id: 유신, position: right }
       - say:
@@ -334,8 +334,11 @@ scenes:
           char: 덕만
           text: "다음엔 내가 놓친 사람부터 말해 줘. 공주 앞에서 입 다무는 장수는 필요 없어."
       - say:
-          channel: record
-          text: "유신이 찢어진 자루를 뒤집자 당의 낙인이 드러났습니다. 비담은 장부 마지막 장을 찢어 덕만에게 건넸습니다. 사흘 뒤 모란 연회. 원조 손실을 해명하라는 당 사신의 글이었습니다."
+          channel: thought
+          text: 자루 안쪽에 당의 낙인이 있다. 사흘 뒤 모란 연회라니… 이 쌀을 훔친 자와 내게 해명을 요구하는 자가 이어져 있을까?
+          with: []
+          camera: wide
+          continueLabel: 그을린 장부를 들고 연회장으로 간다
       - say:
           char: 덕만
           camera: medium
@@ -413,35 +416,52 @@ scenes:
           enter: fadeIn
           zIndex: 14
       - say:
-          channel: narration
-          camera: wide
-          text: 한 줄에 자루 여섯, 도착 칸에는 셋. 나머지 셋 위로 붉은 인장이 덧찍혔습니다. 비담이 종이를 돌려 창빛에 비췄습니다.
+          channel: action
+          text: 장부와 운송표를 내 앞으로 당긴다. 종이에서 곡식 먼지가 떨어진다. 어느 줄부터 봐야 하지?
           with: []
+          camera: wide
       - goto: evidence_ledger_compare
 
   evidence_ledger_compare:
     actions:
       - choice:
-          key: evidence_ledger
-          prompt: 장부에서 빠져나간 곡식은 어떻게 찾을까요?
+          key: evidence_ledger_look
+          presentation: explore
+          prompt: 손에 닿는 흔적부터. 어느 쪽을 더 살펴볼까?
           camera: wide
-          options:
-            - text: 출발 여섯 자루와 도착 세 자루를 대조한다
-              goto: evidence_ledger_solved
-            - text: 가장 큰 붉은 도장만 범인으로 지목한다
-              goto: evidence_ledger_retry
-            - text: 지워진 이름을 짐작해 채운다
-              goto: evidence_ledger_retry
-            - text: 판단을 미루고 돌아간다
-              goto: evidence_ledger_return
           with: []
+          options:
+            - text: 장부의 출발 칸
+              at:
+                x: 27
+                "y": 75
+              goto: evidence_ledger_detail_0
+            - text: 운송표의 도착 칸
+              at:
+                x: 73
+                "y": 75
+              goto: evidence_ledger_detail_1
+            - text: 살펴본 두 흔적을 대조한다
+              when:
+                all:
+                  - var: evidence_ledger_seen_0
+                    op: eq
+                    value: true
+                  - var: evidence_ledger_seen_1
+                    op: eq
+                    value: true
+              goto: evidence_ledger_deduce
+            - text: 물건을 챙기고 돌아간다
+              goto: evidence_ledger_return
+
 
   evidence_ledger_retry:
     actions:
       - say:
-          channel: narration
-          text: 도장은 운송을 허락했을 뿐입니다. 출발과 도착의 자루 표시를 세면 사라진 몫을 누구나 확인할 수 있습니다.
+          channel: thought
+          text: 도장이 크다고 곡식이 늘지는 않아. 읽은 두 칸의 자루 수부터 비교하자. 이름은 그다음이다.
           with: []
+          camera: wide
       - goto: evidence_ledger_compare
 
   evidence_ledger_solved:
@@ -463,3 +483,42 @@ scenes:
           id: "desk_1"
           leave: "fadeOut"
       - goto: "grain_decision"
+
+  evidence_ledger_deduce:
+    actions:
+      - choice:
+          key: evidence_ledger
+          prompt: 장부에서 빠져나간 곡식은 어떻게 찾을까요?
+          camera: wide
+          options:
+            - text: 출발 여섯 자루와 도착 세 자루를 대조한다
+              goto: evidence_ledger_solved
+            - text: 가장 큰 붉은 도장만 범인으로 지목한다
+              goto: evidence_ledger_retry
+            - text: 지워진 이름을 짐작해 채운다
+              goto: evidence_ledger_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_ledger_return
+          with: []
+
+  evidence_ledger_detail_0:
+    actions:
+      - say:
+          channel: action
+          text: 출발 칸에 자루 표시 여섯 개. 먹이 번진 마지막 표시를 손톱으로 가리지 않고 다시 센다. 여섯이 맞다.
+          with: []
+          camera: wide
+      - set:
+          evidence_ledger_seen_0: true
+      - goto: evidence_ledger_compare
+
+  evidence_ledger_detail_1:
+    actions:
+      - say:
+          channel: action
+          text: 같은 날짜의 도착 칸은 셋. 붉은 도장 아래에도 다른 자루 표시는 없다. 출발 칸으로 시선이 돌아간다.
+          with: []
+          camera: wide
+      - set:
+          evidence_ledger_seen_1: true
+      - goto: evidence_ledger_compare

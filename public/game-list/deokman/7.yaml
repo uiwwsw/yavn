@@ -13,8 +13,8 @@ scenes:
       - char: { id: 덕만, position: left }
       - char: { id: 천명, position: right }
       - say:
-          channel: narration
-          text: "구휼 수레가 시장 모퉁이를 돌 때 지붕 기와가 한 장 미끄러졌습니다. 덕만이 고개를 들기도 전에 화살이 천명의 어깨를 꿰었습니다. 달아나는 자의 허리에서 가짜 모란패가 돌바닥에 튕겼습니다."
+          channel: action
+          text: 기와가 미끄러지는 소리. 언니의 어깨가 뒤로 젖혀진다. 화살? 손을 대자 피가 쏟아진다. 발치에서 모란패가 구른다.
       - say:
           char: 천명.nervous
           camera: medium
@@ -54,8 +54,8 @@ scenes:
           position: "right"
           emotion: "sad"
       - say:
-          channel: "narration"
-          text: "덕만은 천명을 업고 사람들을 밀치며 달렸습니다. 천명의 피가 덕만의 소매를 적시는 동안 지붕 위 발자국은 빗물에 하나씩 무너졌습니다."
+          channel: action
+          text: 언니를 업는다. 생각보다 가볍다. 그게 무섭다. 길을 비키라고 소리치며, 등에 닿는 숨을 놓치지 않으려 달린다.
       - say:
           char: "천명.sad"
           camera: "medium"
@@ -150,9 +150,9 @@ scenes:
           position: "right"
           emotion: "nervous"
       - say:
-          camera: "wide"
-          channel: "narration"
-          text: "이튿날 조회상에 자백문이 펼쳐졌습니다. 천명이 쓰러지기 전부터 말라 있던 먹, 이미 죽은 군관의 서명. 어린 덕만의 사망 기록과 같은 냄새가 났습니다."
+          camera: wide
+          channel: thought
+          text: 자백문이 벌써 있다고? 언니가 쓰러진 게 어제야. 먹이 마른 자리를 빛에 돌려 본다. 서명도… 이 군관, 죽지 않았나?
       - say:
           char: "춘추.nervous"
           camera: "medium"
@@ -201,8 +201,8 @@ scenes:
           with: [덕만]
           text: "덕만이 저를 죽이려 했다는 글은 거짓입니다. 제 상처를 덕만의 표로도 쓰지 마세요. 제 말은 제가 합니다."
       - say:
-          channel: narration
-          text: "천명이 살아 걸어오자 자백문은 찢겼습니다. 그러나 질문은 곧 바뀌었습니다. '천명 공주도 덕만을 왕으로 인정합니까?' 모두가 같은 답만 기다렸습니다."
+          channel: action
+          text: 언니가 문턱을 넘는다. 누군가 자백문을 움켜쥔다. 종이 찢어지는 소리 뒤로 질문이 들린다. “덕만을 왕으로 인정하십니까?”
       - goto: sister_decision
 
   evidence_only:
@@ -296,8 +296,8 @@ scenes:
       - music: night_road
       - say:
           camera: wide
-          channel: narration
-          text: "천명은 왕실 비녀를 탁자에 두고 구휼소 열쇠를 목에 걸었습니다. 성문 밖에서는 추방이라 수군댔지만 마차의 행선지는 천명이 직접 적었습니다."
+          channel: action
+          text: 언니가 비녀를 내려놓는다. 목에는 구휼소 열쇠가 걸려 있다. 마차의 행선지에 서명하는 손을 붙잡지 않는다.
       - say:
           char: 천명
           camera: medium
@@ -332,8 +332,8 @@ scenes:
       - add:
           cheonmyeong_trust: -2
       - say:
-          channel: "record"
-          text: "자매의 대가 — 천명은 살아 있습니다. 그 목소리는 비밀문을 통과해야만 회의장에 닿습니다."
+          channel: thought
+          text: 언니가 살아 있는 건 다행이야. 그런데 내 옆의 빈 의자를 볼 때마다 문을 잠근 손이 생각난다.
       - goto: "abandoned_end"
 
   abandoned_end:
@@ -343,14 +343,17 @@ scenes:
       - char: { id: 덕만, position: left, emotion: sad }
       - say:
           camera: wide
-          channel: narration
-          text: "마차가 성문을 나가거나 비밀문이 닫힌 뒤, 덕만의 곁에는 천명이 쓰던 찻잔 하나만 남았습니다. 덕만은 손을 뻗었다가 끝내 잔을 치우지 못했습니다."
+          channel: action
+          text: 빈자리 앞에 찻잔이 남았다. 치우려다 손을 멈춘다. 내일도 둘이 앉을 것처럼 아직 찻잎 냄새가 난다.
       - say:
           char: 덕만.sad
           text: "언니를 버린 게 아니야. 내 옆에만 있어야 산다는 고집을 버린 거야. 언니가 고른 길을 지킬게."
       - say:
-          channel: record
-          text: "그날 밤 천명의 빈 의자에 세 가문의 표식이 번갈아 놓였습니다. 곧이어 진평왕의 처소에서 다급한 종이 울렸고, 귀족 회의는 새벽에 왕을 고르겠다는 문서를 문틈으로 밀어 넣었습니다."
+          channel: action
+          text: 처소에서 다급한 종이 울린다. 문틈으로 표결 문서가 밀려온다. 찻잔을 둔 채 일어난다.
+          with: []
+          camera: wide
+          continueLabel: 아버지의 처소로 서둘러 간다
       - goto: /8.yaml
 
   bad_self_sacrifice:
@@ -398,35 +401,52 @@ scenes:
           enter: fadeIn
           zIndex: 14
       - say:
-          channel: narration
-          camera: wide
-          text: 천명의 약상자 곁에 두 모란패가 놓였습니다. 어린 날부터 지닌 것은 초록 녹이 피었고, 암살자의 것은 번들거렸습니다.
+          channel: action
+          text: 두 패를 천 위에 놓는다. 비슷한 얼굴을 한 꽃 두 송이. 언니의 숨소리를 들으며 고리부터 살핀다.
           with: []
+          camera: wide
       - goto: evidence_token_compare
 
   evidence_token_compare:
     actions:
       - choice:
-          key: evidence_token
-          prompt: 암살자가 지닌 모란패는 무엇이 다를까요?
+          key: evidence_token_look
+          presentation: explore
+          prompt: 손에 닿는 흔적부터. 어느 쪽을 더 살펴볼까?
           camera: wide
-          options:
-            - text: 매끈하게 막힌 고리와 표면의 붉은 속살
-              goto: evidence_token_solved
-            - text: 새 패가 더 반짝인다는 사실
-              goto: evidence_token_retry
-            - text: 두 패에 모두 새겨진 모란꽃
-              goto: evidence_token_retry
-            - text: 판단을 미루고 돌아간다
-              goto: evidence_token_return
           with: []
+          options:
+            - text: 내 오래된 모란패
+              at:
+                x: 27
+                "y": 75
+              goto: evidence_token_detail_0
+            - text: 지붕에서 주운 패
+              at:
+                x: 73
+                "y": 75
+              goto: evidence_token_detail_1
+            - text: 살펴본 두 흔적을 대조한다
+              when:
+                all:
+                  - var: evidence_token_seen_0
+                    op: eq
+                    value: true
+                  - var: evidence_token_seen_1
+                    op: eq
+                    value: true
+              goto: evidence_token_deduce
+            - text: 물건을 챙기고 돌아간다
+              goto: evidence_token_return
+
 
   evidence_token_retry:
     actions:
       - say:
-          channel: narration
-          text: 오래된 패의 고리에는 끈이 드나들 틈이 있습니다. 새 패는 그 틈까지 한 덩어리로 막혔고 긁힌 곳은 붉은 구리색입니다.
+          channel: thought
+          text: 반짝이는 건 닦아서일 수도 있어. 하지만 끈도 못 넣는 고리를 왜 만들었을까? 겉모양만 보고 뜬 건 아닐까.
           with: []
+          camera: wide
       - goto: evidence_token_compare
 
   evidence_token_solved:
@@ -463,10 +483,49 @@ scenes:
           enter: "fadeIn"
       - get: "medicine_cup"
       - say:
-          channel: "narration"
-          text: "의원은 천명이 마신 잔을 천으로 감쌌습니다. 안쪽의 검은 가루는 물로 헹군 뒤에도 홈에 남았습니다. 유신이 지붕에서 주운 모란패를 그 옆에 놓았습니다."
+          channel: action
+          text: 의원이 잔을 천으로 감싼다. 씻긴 홈에 검은 가루가 남아 있다. 유신이 가져온 모란패도 천 위에 올려 둔다.
       - clearSticker:
           id: "rescue_cup"
           leave: "fadeOut"
       - get: "forged_token"
       - goto: "forged_confession"
+
+  evidence_token_deduce:
+    actions:
+      - choice:
+          key: evidence_token
+          prompt: 암살자가 지닌 모란패는 무엇이 다를까요?
+          camera: wide
+          options:
+            - text: 매끈하게 막힌 고리와 표면의 붉은 속살
+              goto: evidence_token_solved
+            - text: 새 패가 더 반짝인다는 사실
+              goto: evidence_token_retry
+            - text: 두 패에 모두 새겨진 모란꽃
+              goto: evidence_token_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_token_return
+          with: []
+
+  evidence_token_detail_0:
+    actions:
+      - say:
+          channel: action
+          text: 내 패의 고리에 끈을 밀어 넣는다. 틈이 뚫려 있다. 끈이 닳인 안쪽까지 초록 녹이 이어진다.
+          with: []
+          camera: wide
+      - set:
+          evidence_token_seen_0: true
+      - goto: evidence_token_compare
+
+  evidence_token_detail_1:
+    actions:
+      - say:
+          channel: action
+          text: 주운 패의 고리로 끈이 들어가지 않는다. 틈까지 막힌 한 덩어리다. 긁힌 꽃잎 아래에는 붉은 구리색이 드러난다.
+          with: []
+          camera: wide
+      - set:
+          evidence_token_seen_1: true
+      - goto: evidence_token_compare

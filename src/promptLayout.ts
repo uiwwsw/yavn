@@ -57,11 +57,16 @@ export function resolveInteractivePromptHeight(game: GameData | undefined, actio
     ?? normalizePromptHeight((game as PromptLayoutGame | undefined)?.ui?.promptHeight);
   if (explicit !== undefined) return explicit;
   if (action && 'choice' in action) {
+    if (action.choice.presentation === 'explore') {
+      const footerCount = action.choice.options.filter(option => !option.at).length;
+      return 132 + Math.min(2, footerCount) * 58;
+    }
     const count = action.choice.options.length;
     const rows = compact || count > 4 ? count : Math.ceil(count / 2);
     return 152 + Math.min(4, Math.max(1, rows)) * 64 + (action.choice.timeoutMs ? 36 : 0);
   }
   if (action && 'input' in action) return 220;
+  if (action && 'say' in action && action.say.continueLabel) return 210;
   return DEFAULT_PROMPT_HEIGHT_PX;
 }
 

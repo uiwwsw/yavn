@@ -1,5 +1,5 @@
 script:
-  - scene: opening_record
+  - scene: first_breath
 
 scenes:
   opening_record:
@@ -19,16 +19,25 @@ scenes:
           enter: fadeIn
           inputLockMs: 320
       - say:
+          channel: thought
+          with: []
           camera: wide
-          channel: record
-          delivery: calm
-          wait: 600
-          unskippable: true
-          text: "왕실 족보 — 둘째 공주 덕만. 사망: 오늘 밤."
+          when:
+            not:
+              var: opening_name_read
+              op: eq
+              value: true
+          text: 종이에서 내 이름을 찾았다. 오늘 밤 죽는다고? 나는 아직 여기 있는데.
       - say:
-          channel: narration
-          delivery: calm
-          text: "먹은 아직 번들거렸습니다. 덕만의 죽음은 시신보다 먼저 방 안에 도착해 있었습니다."
+          channel: thought
+          with: []
+          camera: wide
+          when:
+            not:
+              var: opening_name_read
+              op: eq
+              value: true
+          text: 소화에게 물어봐야겠어. 문밖의 소리도 이상해.
       - clearSticker:
           id: opening_death_register
           leave: fadeOut
@@ -54,8 +63,8 @@ scenes:
   peony_arrives:
     actions:
       - say:
-          channel: narration
-          text: 진평왕은 시종을 모두 내보냈습니다. 문빗장이 걸리는 소리를 확인한 뒤에야 모란 족자를 펼쳤습니다.
+          channel: action
+          text: 철컥. 내 뒤에서 빗장이 걸린다. 아버지는 아무 말 없이 모란 그림을 편다. 찻잔에서 단내가 난다.
       - sticker:
           id: peony_painting_view
           image: peony_painting_sticker
@@ -124,13 +133,16 @@ scenes:
             - "진평왕"
           text: "문밖에 발소리가 없어요. 시종들이 전부 어디 갔죠?"
       - say:
-          channel: "narration"
-          text: "덕만이 찻잔에서 손을 뗐습니다. 문틈으로 들어오던 바람도 멎었습니다. 소화가 덕만의 소매를 두 번 당겨 창 아래를 가리켰습니다."
+          channel: action
+          text: 찻잔에서 손을 뗀다. 소화가 내 소매를 두 번 당긴다. 눈길이 창 아래로 향한다.
       - add:
           insight: 1
       - say:
-          channel: "record"
-          text: "관찰 — 그림에서 빠진 것은 벌. 방에서 사라진 것은 발소리. 덕만은 이제 창 아래를 봅니다."
+          channel: thought
+          text: 벌도 없고 나비도 없어. 그런데… 아까 문밖에 있던 사람들은 다 어디 갔지?
+          with: []
+          camera: wide
+          continueLabel: 창 아래로 몸을 낮춘다
       - goto: "observe_waterway"
 
   observe_back:
@@ -143,8 +155,8 @@ scenes:
           id: "peony_painting_view"
           leave: "fadeOut"
       - say:
-          channel: "narration"
-          text: "족자 뒤축에서 접힌 종이가 떨어졌습니다. 덕만은 종이의 붉은 자국과 왕의 책상에 찍힌 도장을 번갈아 봤습니다."
+          channel: action
+          text: 족자 뒤에서 종이가 떨어진다. 붉은 도장 자국. 아까 보았던 내 이름이 또 있다.
       - sticker:
           id: "death_register_view"
           image: "death_register_sticker"
@@ -175,16 +187,19 @@ scenes:
             - "어린 덕만"
           text: "내 도장은 온전하다. 종이를 소매로 싸라. 네 이름을 지운 손이 아직 궁에 있다."
       - say:
-          channel: "narration"
-          text: "소화가 문에서 빗장 긁는 소리를 들었습니다. 덕만은 종이를 접어 품에 넣고 왕이 가리키는 창으로 몸을 돌렸습니다."
+          channel: action
+          text: 문밖에서 쇠를 긁는 소리가 난다. 소화가 고개를 젓는다. 종이의 마른 가장자리만 잡아 접는다.
       - clearSticker:
           id: "death_register_view"
           leave: "fadeOut"
       - add:
           evidence: 1
       - say:
-          channel: "record"
-          text: "관찰 — 사망 기록의 인장은 오른쪽 아래가 비었습니다. 도장을 찍은 사람은 문밖에 있습니다."
+          channel: thought
+          text: 도장 오른쪽 아래가 비었어. 이 흠, 기억해 두자. 지금은 문에서 떨어져야 해.
+          with: []
+          camera: wide
+          continueLabel: 왕이 가리키는 창으로 간다
       - goto: "observe_waterway"
 
   observe_waterway:
@@ -193,8 +208,8 @@ scenes:
           observed_left_waterway: true
       - say:
           camera: wide
-          channel: narration
-          text: 덕만은 그림을 보지 않았습니다. 창밖의 창끝이 한 번에 같은 방향으로 돌아갔고, 왼쪽 담 아래 배수로 돌판만 비뚤어져 있었습니다.
+          channel: action
+          text: 창턱에 뺨을 붙인다. 왼쪽 담 밑, 돌판 하나가 비스듬하다. 틈으로 물이 빠지는 소리가 난다.
       - say:
           char: 어린 덕만
           camera: medium
@@ -423,13 +438,12 @@ scenes:
       - char: { id: 소화, position: right, emotion: nervous }
       - char: { id: 칠숙, position: center, emotion: smile, enter: { effect: fadeIn, layout: push, duration: 360 } }
       - say:
-          channel: narration
+          channel: action
           camera: medium
-          delivery: nervous
-          text: "천장이 갈라지는 소리와 함께 불붙은 들보가 방을 둘로 찍었습니다. 친위대는 왕을 안채로 끌고 갔고, 덕만은 소화의 손을 잡은 채 불 반대편에 남았습니다."
+          text: 머리 위에서 나무가 찢어진다. 뜨거워! 소화의 손을 움켜쥔다. 들보 너머로 아버지가 보이지 않는다.
       - say:
-          channel: narration
-          text: "쿵, 쿵, 쿵. 별궁의 세 문이 차례로 닫혔습니다. 연기 너머에서 칠숙이 소매의 재를 털며 걸어 나왔습니다."
+          channel: action
+          text: 쿵. 쿵. 쿵. 문 닫히는 소리가 등 뒤를 돈다. 연기 사이에서 칠숙의 얼굴이 드러난다.
       - say:
           char: 칠숙.smile
           camera: medium
@@ -446,9 +460,8 @@ scenes:
           with: [어린 덕만]
           text: "해가 뜨면 거짓말도 왕실 기록이 됩니다. 따질 입은 재가 되고요."
       - say:
-          channel: narration
-          delivery: nervous
-          text: "칠숙의 손이 허리로 내려갔습니다. 칼집 입구가 엄지에 밀려 짧게 울렸고, 소화는 덕만을 등 뒤로 당겼습니다."
+          channel: action
+          text: 칠숙의 엄지가 칼집을 민다. 쇠가 짧게 운다. 소화가 내 앞을 막아선다.
       - attack:
           attacker: 칠숙
           target: 소화
@@ -460,11 +473,10 @@ scenes:
           recovery: 740
           caption: "칼집에서 쇠가 긁히는 소리."
       - say:
-          channel: narration
-          delivery: nervous
+          channel: action
           wait: 300
           unskippable: true
-          text: "소화가 몸을 비틀었습니다. 찢어진 소매가 칼끝에 걸렸다가 떨어졌습니다. 덕만은 소화의 손목이 떨리는 것을 그제야 보았습니다."
+          text: 찢어진 소매가 눈앞에 떨어진다. 붙잡은 손목이 떨린다. 내 손인지 소화의 손인지 모르겠다.
       - char: { id: 소화, position: center, emotion: nervous }
       - say:
           char: 소화.nervous
@@ -472,8 +484,8 @@ scenes:
           with: [어린 덕만]
           text: "아기씨, 숨은 짧게. 허리 숙이고 제 손만 보세요. 말하면 연기를 마십니다."
       - say:
-          channel: narration
-          text: "소화가 옷깃을 찢어 청동 모란패를 꺼냈습니다. 뜨겁게 달아오른 패가 덕만의 손바닥에 박혔습니다."
+          channel: action
+          text: 소화가 내 손에 모란패를 쥐여 준다. 뜨겁다. 놓치지 않으려고 손가락을 더 세게 접는다.
       - sticker:
           id: peony_token_view
           image: peony_token_sticker
@@ -530,9 +542,9 @@ scenes:
       - char: { id: 어린 덕만, position: left, emotion: resolve }
       - char: { id: 소화, position: right }
       - say:
-          channel: narration
+          channel: action
           camera: medium
-          text: "덕만은 망설이지 않고 왼쪽 담으로 꺾었습니다. 돌판을 걷어 내자 시커먼 물길이 입을 벌렸습니다."
+          text: 왼쪽 담이다. 돌판 틈에 손을 넣는다. 손톱이 뒤집힐 듯 아프지만, 아래에서 찬바람이 올라온다.
       - say:
           char: 소화.nervous
           camera: medium
@@ -544,8 +556,8 @@ scenes:
           with: [소화]
           text: "또 나만 먼저 보내지 마. 소매 말고 손 줘. 같이 나가."
       - say:
-          channel: narration
-          text: "두 사람이 진흙 위로 구르자 뒤에서 지붕이 주저앉았습니다. 불티가 빗물 위에 떨어져 짧게 타올랐습니다."
+          channel: action
+          text: 진흙에 무릎이 처박힌다. 뒤에서 지붕이 무너진다. 손은? 아직 소화의 손을 잡고 있다.
       - say:
           char: 소화
           camera: medium
@@ -559,8 +571,11 @@ scenes:
           unskippable: true
           text: "저들은 덕만이 죽었다고 믿을 거야. 나는 살아서, 누가 그 말을 썼는지 찾을래."
       - say:
-          channel: narration
-          text: "소화는 국경 상단의 암호를 속삭였습니다. 덕만은 대답 대신 손바닥의 붉은 인주를 빗물에 씻지 않았습니다. 이제부터 붉은 인장의 행로가 두 사람의 길이었습니다."
+          channel: thought
+          text: 살았어. 그런데 내 이름은 죽었다고 쓰였겠지. 붉은 인장의 행로… 그걸 따라가면 쓴 손을 찾을 수 있을까?
+          with: []
+          camera: wide
+          continueLabel: 소화의 손을 잡고 국경으로 향한다
       - say:
           channel: record
           delivery: calm
@@ -681,3 +696,97 @@ scenes:
       - gameOver:
           title: "운명 — 먼저 준비된 죽음"
           message: "불길 한가운데 머무는 선택은 탈출로가 될 수 없었습니다. 덕만과 소화는 별궁을 빠져나오지 못했고, 칠숙이 준비한 사망 기록은 실제가 되었습니다."
+
+  first_room_look:
+    actions:
+      - choice:
+          key: first_room_look
+          presentation: explore
+          prompt: 내 이름이 적힌 종이. 문밖에서는 쇠 긁는 소리.
+          with: []
+          camera: wide
+          options:
+            - text: 종이의 내 이름
+              at:
+                x: 28
+                "y": 40
+              when:
+                not:
+                  var: opening_name_read
+                  op: eq
+                  value: true
+              goto: first_read_name
+            - text: 닫힌 문
+              at:
+                x: 74
+                "y": 68
+              when:
+                not:
+                  var: opening_door_heard
+                  op: eq
+                  value: true
+              goto: first_hear_door
+            - text: 소화에게 종이를 가리킨다
+              when:
+                var: opening_name_read
+                op: eq
+                value: true
+              goto: opening_record
+
+
+  first_read_name:
+    actions:
+      - say:
+          channel: record
+          with: []
+          camera: wide
+          text: '둘째 공주 덕만. 사망: 오늘 밤.'
+      - say:
+          channel: thought
+          with: []
+          text: 오늘 밤? 나는 여기 있는데. 아직 손도 따뜻한데… 누가 이걸 쓴 거야?
+      - set:
+          opening_name_read: true
+      - goto: first_room_look
+
+  first_hear_door:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: 문틈에 귀를 댄다. 발소리가 멎는다. 바깥에서 고리를 거는 소리가 아주 가까이 들린다.
+      - say:
+          channel: thought
+          with: []
+          text: 들어오려는 소리가 아니야. 우리를 못 나가게 하는 건가?
+      - set:
+          opening_door_heard: true
+      - goto: first_room_look
+
+  first_breath:
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - music: sealed_court
+      - sticker:
+          id: opening_death_register
+          image: death_register_sticker
+          x: 50
+          'y': 28
+          width: clamp(210px, 28%, 420px)
+          anchorX: center
+          anchorY: center
+          rotate: -1
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
+      - say:
+          camera: wide
+          channel: action
+          wait: 600
+          unskippable: true
+          text: 촛불이 흔들린다. 펼쳐진 종이에서 내 이름이 눈에 걸린다. 그 옆의 두 글자는…
+          with: []
+      - goto: first_room_look
