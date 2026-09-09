@@ -241,34 +241,57 @@ scenes:
 
   checkpoint:
     actions:
-      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
-      - music: night_road
-      - char: { id: 소화, position: right }
+      - bg:
+          id: "frontier"
+          transition: "wipeLeft"
+          duration: 700
+      - music: "night_road"
+      - char:
+          id: "소화"
+          position: "right"
       - say:
-          camera: wide
-          channel: narration
+          camera: "wide"
+          channel: "narration"
           text: "검문소 횃불 아래 정문 창끝이 겹쳤습니다. 마른 수로 안에는 새 장화 자국이 찍혀 있었고, 빈 관의 못은 안쪽이 아니라 바깥쪽으로 박혀 있었습니다. 문지기들만 모란패와 추격대의 붉은 인장을 번갈아 보며 웅성거렸습니다."
       - choice:
-          key: c2_checkpoint
+          key: "c2_checkpoint"
           prompt: "뒤에는 칠숙, 앞에는 왕실 검문병이 있습니다. 어떻게 빠져나갈까요?"
-          char: 덕만
-          camera: medium
-          with: [소화]
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "소화"
           options:
             - text: "모란패로 문을 열고 붉은 인장으로 추격대를 고발한다"
-              when: { var: peony_token, op: eq, value: true }
-              add: { nobles_support: 1, evidence: 1 }
-              goto: turn_checkpoint
+              when:
+                var: "peony_token"
+                op: "eq"
+                value: true
+              add:
+                nobles_support: 1
+                evidence: 1
+              goto: "turn_checkpoint"
             - text: "마른 수로로 한 명씩 밀어 넣는다"
-              when: { var: c1_escape_route, op: eq, value: waterway }
-              add: { insight: 2, people_support: 1 }
-              goto: return_to_silla
+              when:
+                var: "c1_escape_route"
+                op: "eq"
+                value: "waterway"
+              add:
+                insight: 2
+                people_support: 1
+              goto: "return_to_silla"
             - text: "빈 관에 숨어 죽은 사람으로 통과한다"
-              when: { var: death_register, op: eq, value: true }
-              add: { insight: 1, evidence: 1 }
-              goto: return_in_coffin
+              when:
+                var: "death_register"
+                op: "eq"
+                value: true
+              add:
+                insight: 1
+                evidence: 1
+              goto: "return_in_coffin"
             - text: "칠숙 앞에 걸어 나가 소화와 거래한다"
-              goto: bad_surrender
+              goto: "bad_surrender"
+            - text: "결정 전에 증거를 나란히 살핀다"
+              goto: "evidence_seals"
 
   return_to_silla:
     actions:
@@ -422,3 +445,77 @@ scenes:
           title: "운명 — 죽은 사람의 검문"
           message: "칠숙이 지키는 문에서 자신을 담보로 거는 거래는 통하지 않았습니다. 덕만과 소화는 새벽 전에 죽었고 그 이름은 다시 국경 보고서에서 지워졌습니다."
           recoverToChoice: c2_checkpoint
+
+  evidence_seals:
+    actions:
+      - sticker:
+          id: desk_0
+          image: death_register_sticker
+          x: 27
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - sticker:
+          id: desk_1
+          image: market_seal_sticker
+          x: 73
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - say:
+          channel: narration
+          camera: wide
+          text: 소화가 그을린 족보와 수색 인장을 나란히 폈습니다. 덕만은 종이의 크기 대신 붉은 자국의 가장자리를 맞췄습니다.
+          with: []
+      - goto: evidence_seals_compare
+
+  evidence_seals_compare:
+    actions:
+      - choice:
+          key: evidence_seals
+          prompt: 두 인장에 남은 같은 흠은 무엇일까요?
+          camera: wide
+          options:
+            - text: 오른쪽 아래에 빠진 네모난 모서리
+              goto: evidence_seals_solved
+            - text: 두 종이에 묻은 그을음
+              goto: evidence_seals_retry
+            - text: 종이를 묶은 끈의 색
+              goto: evidence_seals_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_seals_return
+          with: []
+
+  evidence_seals_retry:
+    actions:
+      - say:
+          channel: narration
+          text: 종이는 다르게 잘랐고 끈도 달랐습니다. 붉은 테두리는 두 장 모두 오른쪽 아래에서 똑같이 끊겼습니다.
+          with: []
+      - goto: evidence_seals_compare
+
+  evidence_seals_solved:
+    actions:
+      - set:
+          seals_linked: true
+      - say:
+          char: "덕만"
+          text: "죽기 전에 쓴 족보와 국경의 수색표가 같은 도장에서 나왔어. 내 신분을 내밀면서 추격 명령도 고발할 수 있겠어."
+      - goto: "evidence_seals_return"
+
+
+  evidence_seals_return:
+    actions:
+      - clearSticker:
+          id: "desk_0"
+          leave: "fadeOut"
+      - clearSticker:
+          id: "desk_1"
+          leave: "fadeOut"
+      - goto: "checkpoint"

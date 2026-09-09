@@ -64,59 +64,71 @@ scenes:
 
   steal_table:
     actions:
-      - bg: { id: locked_room, transition: fade, duration: 900 }
-      - char: { id: 비담, position: right, emotion: smirk }
+      - bg:
+          id: "locked_room"
+          transition: "fade"
+          duration: 900
+      - char:
+          id: "비담"
+          position: "right"
+          emotion: "smirk"
       - say:
-          channel: narration
-          text: "창문이 열리고 비담이 먼지투성이 계산표를 던졌습니다. 일식 시각 옆에는 '덕만을 가리킬 때'라는 붉은 글씨가 적혀 있었습니다."
+          channel: "narration"
+          text: "비담이 꺼낸 표에는 먼지가 없었습니다. 덕만은 당에서 받은 사본을 그 옆에 펴고 먹이 젖은 줄을 가리켰습니다."
       - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "표는 찾았습니다. 그런데 창밖 발소리가 늘었군요. 일부러 훔치게 둔 모양입니다."
+          char: "비담.smirk"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "가져가라고 놓아뒀군요. 마지막 줄만 먹이 덜 말랐습니다."
       - say:
-          char: 덕만.princess_angry
-          camera: medium
-          with: [비담]
-          text: "표를 놓고 나가. 살아서 당의 표와 대조해야 증거가 돼."
+          char: "덕만.princess_angry"
+          camera: "medium"
+          with:
+            - "비담"
+          text: "그 줄은 믿지 마. 앞장의 날짜부터 우리 달력으로 다시 세자."
       - say:
-          channel: narration
-          text: "문밖에서 '신전을 더럽힌 공주'라는 외침이 먼저 터졌습니다. 계산표에는 훔친 사람 손에 묻도록 독가루가 발려 있었고, 덕만의 손등이 빠르게 검게 변했습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "가짜 예측은 버렸습니다. 비담이 들킨 서고의 문에는 새 자물쇠가 걸렸고, 제관들은 덕만의 다음 실수만 기다렸습니다."
+      - add:
+          nobles_support: -1
       - say:
-          channel: record
-          text: "신전 침입 기록 — 덕만 공주, 성물을 훔치다 신벌을 받아 사망. 계산표는 제관이 회수해 소각함."
-      - gameOver:
-          title: "운명 — 훔치게 둔 계산표"
-          message: "제관들은 계산표를 지키는 대신 덕만이 훔치는 장면을 기다렸습니다. 손에 묻은 독은 신벌로 꾸며졌고, 진짜 일식 시각도 함께 사라졌습니다."
-          recoverToChoice: c6_find_time
+          channel: "record"
+          text: "조사 결과 — 위조를 알아봤지만 시간을 잃었습니다. 두 달력을 대조해야 정확한 시각이 나옵니다."
+      - goto: "calculate_eclipse"
 
   public_observation:
     actions:
-      - bg: { id: village, transition: dissolve, duration: 720 }
+      - bg:
+          id: "village"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "늙은 농부는 지난 일식 날 망친 씨앗을 아직도 자루째 보관하고 있었습니다. 아이들은 그날 우물 그림자가 어느 담을 넘었는지 몸으로 가리켰습니다. 기억을 포개자 어둠의 범위가 한 시진 안으로 좁혀졌습니다."
+          channel: "narration"
+          text: "농부들은 지난 일식 날의 파종과 강 수위를 기억했습니다. 날짜는 맞았지만 해가 가려진 시각은 제각각이었습니다."
       - say:
-          char: 덕만
-          text: "한 시진 안으로 좁혔어. 넉넉히 알리면 피할 수 있지 않을까?"
-      - char: { id: 비담, position: right, emotion: smirk }
+          char: "덕만"
+          text: "계절은 맞아. 시각만 좁히면 돼. 이 기억을 버리진 말자."
+      - char:
+          id: "비담"
+          position: "right"
+          emotion: "smirk"
       - say:
-          char: 비담
-          camera: medium
-          with: [덕만]
-          text: "제관은 한 시각을 찍었습니다. 사람들은 계산보다 누가 더 확신하는지만 볼 겁니다."
+          char: "비담"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "기억한 날과 당의 표가 겹칩니다. 두 달력의 간격부터 세시죠."
       - say:
-          channel: narration
-          text: "덕만이 예고한 첫 시각에 해가 그대로이자 군중에서 웃음이 터졌습니다. 제관은 바로 그 틈에 '가짜 공주가 하늘을 모욕했다'고 외쳤고, 돌이 덕만 쪽으로 쏟아졌습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "덕만은 파종 날짜에 작은 점을 찍었습니다. 뒤에 받은 천문표에도 같은 간격으로 점이 이어졌습니다."
+      - add:
+          people_support: 1
+          insight: -1
       - say:
-          channel: record
-          text: "일식 소요 기록 — 덕만 공주, 거짓 예언으로 민심을 어지럽히다 군중에게 피살."
-      - gameOver:
-          title: "운명 — 한 시진의 빈틈"
-          message: "농부들의 기억은 계절을 가리켰지만 정확한 시각을 증명하지 못했습니다. 넓게 잡은 예고가 빗나간 순간 제관은 그 빈틈을 선동으로 채웠고 덕만은 일식 전에 죽었습니다."
-          recoverToChoice: c6_find_time
+          channel: "record"
+          text: "조사 결과 — 농부들이 검산에 참여했습니다. 기억을 계산표와 맞춰 남은 시각을 구합니다."
+      - goto: "calculate_eclipse"
 
   table_revealed:
     actions:
@@ -163,64 +175,76 @@ scenes:
 
   stage_miracle:
     actions:
-      - bg: { id: peony_court, transition: dissolve, duration: 720 }
-      - char: { id: 비담, position: right, emotion: smirk }
+      - bg:
+          id: "peony_court"
+          transition: "dissolve"
+          duration: 720
+      - char:
+          id: "비담"
+          position: "right"
+          emotion: "smirk"
       - say:
-          channel: narration
-          text: "어둠이 가장 짙어졌을 때 북이 세 번 울렸습니다. 세 번째 북채가 떨어지자 햇빛이 제단 끝을 긁었고 군중은 덕만의 이름을 울부짖었습니다."
+          channel: "narration"
+          text: "북을 울릴 자리는 정해졌습니다. 덕만은 계산표를 소매 안에 넣고, 해가 돌아올 시각에 붉은 실을 묶었습니다."
       - say:
-          char: 비담.smirk
-          camera: medium
-          with: [덕만]
-          text: "거짓 예언을 더 정확한 기적으로 이기셨군요. 보십시오. 사람들은 숫자보다 공주님 이름을 외웁니다."
+          char: "비담.smirk"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "북을 치면 사람들이 폐하만 볼 겁니다. 시각은 제 전령에게 맡기십시오."
       - say:
-          char: 덕만.sad
-          text: "사람들이 살았어. 그걸로 됐다고 믿고 싶은데… 저 북, 누가 먼저 울렸지?"
+          char: "덕만.sad"
+          text: "사람들이 진정하면 표도 보여 주겠어. 오늘은 밀려 죽는 사람부터 막자."
       - say:
-          char: 비담
-          camera: medium
-          with: [덕만]
-          text: "제관입니다. 공주님의 기적을 거짓이라 밝힐 사람도 그자고요."
+          char: "비담"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "사람들이 기적을 원하면, 표를 보여 줄 날은 자꾸 늦어질 겁니다."
       - say:
-          channel: narration
-          text: "사흘 뒤 '하늘을 속인 공주'라는 격문이 귀족가에 돌았습니다. 같은 날 밤 덕만의 약차에서는 제관의 제단에 쓰이던 독초가 나왔습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "북소리에 사람들이 멈췄습니다. 덕만은 자신이 고른 거짓을 계산표 뒷면에 적었습니다."
+      - add:
+          bidam_trust: 2
+          fear: 1
       - say:
-          channel: record
-          text: "왕실 진료 기록 — 덕만 공주, 일식 뒤 기력을 잃고 사망. 제관들은 하늘을 속인 벌이라 선포함."
-      - gameOver:
-          title: "운명 — 기적을 아는 입"
-          message: "북으로 해를 돌려놓은 연출은 당장의 공포를 눌렀지만 비밀을 아는 제관에게 덕만의 목숨을 쥐여 줬습니다. 왕위를 시기한 귀족들은 폭로보다 먼저 독으로 입을 막았습니다."
-          recoverToChoice: c6_eclipse_policy
+          channel: "record"
+          text: "통치의 대가 — 군중은 진정됐습니다. 북의 비밀을 아는 비담의 말이 무거워졌습니다."
+      - goto: "eclipse_day"
 
   keep_secret:
     actions:
-      - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - char: { id: 진평왕, position: right }
+      - bg:
+          id: "council_hall"
+          transition: "dissolve"
+          duration: 720
+      - char:
+          id: "진평왕"
+          position: "right"
       - say:
-          channel: narration
-          text: "일식 날 궁문은 닫혔고 골목마다 방패가 섰습니다. 비명은 담 밖에서 작게 끝났지만, 사람들은 어둠의 이유를 모른 채 제관의 다음 말을 기다렸습니다."
+          channel: "narration"
+          text: "왕은 계산표 사본을 장수들에게만 건넸습니다. 병사들은 정확한 시각에 방패를 세웠지만 시장에는 아무 설명도 전해지지 않았습니다."
       - say:
-          char: 진평왕
-          camera: medium
-          with: [덕만]
-          text: "궁문은 지켰다. 그런데 밖에서 네 이름을 부르던 소리가 왜 갑자기 멎었느냐?"
+          char: "진평왕"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "질서는 지킬 수 있다. 왜 어두워지는지까지 오늘 말해야 하느냐?"
       - say:
-          char: 덕만.princess_sad
-          camera: medium
-          with: [진평왕]
-          text: "군사가 사람들을 골목에 몰았습니다. 제가 나가겠습니다. 표를 보여 주면—"
+          char: "덕만.princess_sad"
+          camera: "medium"
+          with:
+            - "진평왕"
+          text: "오늘 안 물어도 내일 물을 겁니다. 제가 난간에서 직접 답하겠습니다."
       - say:
-          channel: narration
-          text: "문이 열리자 제관의 군중이 아니라 왕실 군복을 입은 자객이 들어왔습니다. 계산표를 독점한 가문은 덕만이 살아 있는 한 언젠가 이름이 공개될 것을 알고 있었습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "덕만은 잠근 표의 마지막 숫자를 손바닥에 옮겼습니다. 문밖에서는 제관의 설명이 먼저 퍼지고 있었습니다."
+      - add:
+          people_support: -2
       - say:
-          channel: record
-          text: "일식 경비 기록 — 궁문 혼란 중 덕만 공주 피살. 범인은 왕실 군사로 위장해 신원 확인 불가."
-      - gameOver:
-          title: "운명 — 잠근 표가 연 문"
-          message: "사람들에게 시각을 숨기자 계산표는 소수 가문의 목숨줄이 됐습니다. 그 비밀을 지키려는 자객이 왕실 군복으로 궁에 들어왔고 덕만은 설명할 기회도 얻지 못했습니다."
-          recoverToChoice: c6_eclipse_policy
+          channel: "record"
+          text: "통치의 대가 — 군사는 준비됐습니다. 군중의 불안을 설명할 책임은 덕만 한 사람에게 남았습니다."
+      - goto: "eclipse_day"
 
   eclipse_day:
     actions:

@@ -319,51 +319,69 @@ scenes:
 
   bad_nobles_audit:
     actions:
-      - bg: { id: banquet_hall, transition: dissolve, duration: 720 }
-      - camera: { shot: close, target: 덕만 }
-      - char: { id: 덕만, position: left, emotion: princess_sad }
-      - char: { id: 춘추, position: right, emotion: nervous }
+      - bg:
+          id: "banquet_hall"
+          transition: "dissolve"
+          duration: 720
+      - camera:
+          shot: "close"
+          target: "덕만"
+      - char:
+          id: "덕만"
+          position: "left"
+          emotion: "princess_sad"
+      - char:
+          id: "춘추"
+          position: "right"
+          emotion: "nervous"
       - say:
-          char: 춘추.nervous
-          text: "장부를 넘기자 첫 장과 끝 장이 사라졌습니다. 세 표도 같이 자리를 비웠고요."
+          char: "춘추.nervous"
+          text: "세 표는 얻었습니다. 군량 한 섬을 움직일 때도 저들의 서명을 받으셔야 합니다."
       - say:
-          char: 덕만.princess_sad
-          text: "곡식을 훔친 자에게 장부를 맡겼어. 왕관보다 먼저 증거를 내줬구나."
+          char: "덕만.princess_sad"
+          text: "기한은 첫 수확까지. 갱신할 때는 누구의 창고를 열었는지도 읽게 해."
       - say:
-          channel: narration
-          text: "즉위 축하주가 들어왔지만 잔을 올린 가문 이름은 잘려 나간 장부 첫 장에 있었습니다. 덕만이 쓰러지자 귀족 회의는 표결을 취소하고 새 후보를 세웠습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "귀족의 붓 세 자루가 움직였습니다. 왕관이 덕만에게 왔고 군량 장부는 회의장에 남았습니다."
+      - add:
+          nobles_support: 2
       - say:
-          channel: record
-          text: "즉위 전야 변고 — 덕만 공주, 원인 불명의 독으로 사망. 군량 장부 분실로 수사 중단."
-      - gameOver:
-          title: "운명 — 장부와 바꾼 왕관"
-          message: "표를 얻으려고 군량 장부를 그 장부에 이름이 적힌 귀족들에게 돌려줬습니다. 증거를 없앤 그들은 축하주에 독을 넣어 덕만까지 없앴습니다."
-          recoverToChoice: c9_crown_terms
+          channel: "record"
+          text: "왕관의 조건 — 즉위는 성립했습니다. 여왕의 첫 겨울은 세 서명에 묶였습니다."
+      - goto: "coronation"
 
   bad_army_review:
     actions:
-      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
-      - camera: { shot: close, target: 덕만 }
-      - char: { id: 덕만, position: left, emotion: princess_angry }
-      - char: { id: 유신, position: right, emotion: angry }
+      - bg:
+          id: "throne_hall"
+          transition: "dissolve"
+          duration: 720
+      - camera:
+          shot: "close"
+          target: "덕만"
+      - char:
+          id: "덕만"
+          position: "left"
+          emotion: "princess_angry"
+      - char:
+          id: "유신"
+          position: "right"
+          emotion: "angry"
       - say:
-          char: 유신.angry
-          text: "지휘패를 심사한다는 말이 충성을 의심한다는 말로 퍼졌습니다. 서문 부대가 넘어갔습니다."
+          char: "유신.angry"
+          text: "패를 심사받겠습니다. 다만 심사하는 날 성문 지휘자를 미리 정해 주십시오."
       - say:
-          char: 덕만.princess_angry
-          text: "널 못 믿어서가 아니야. 누구도 영원히 쥐지 못하게 하려던 거야. 직접 가자."
+          char: "덕만.princess_angry"
+          text: "네가 자리를 비워도 문은 지켜야지. 후임도 같은 심사를 받게 하자."
       - say:
-          channel: narration
-          text: "두 사람이 군영에 닿았을 때 심사에서 지휘권을 잃을 장수들이 먼저 칼을 뽑았습니다. 유신은 덕만을 감쌌지만 등 뒤 부대까지 돌아선 뒤였습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "장수 두 명이 퇴장했지만 유신은 남았습니다. 군은 더 작아졌고 지휘패에는 반납 날짜가 새겨졌습니다."
+      - add:
+          army_support: -2
       - say:
-          channel: record
-          text: "군영 반란 기록 — 덕만 공주와 김유신, 지휘권 회수에 반발한 장수들에게 피살. 즉위 표결 무효."
-      - gameOver:
-          title: "운명 — 왕관보다 먼저 흔든 군권"
-          message: "즉위 전에 군 지휘권 재심사를 약속하자 자리를 잃을 장수들이 선수를 쳤습니다. 제도는 시작되기도 전에 군영 반란이 되었고 덕만은 왕관 앞에서 죽었습니다."
-          recoverToChoice: c9_crown_terms
+          channel: "record"
+          text: "왕관의 조건 — 군권에 기한을 뒀습니다. 떠난 장수들의 병력은 즉위식에 오지 않았습니다."
+      - goto: "coronation"
 
   coronation:
     actions:

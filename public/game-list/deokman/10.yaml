@@ -159,28 +159,44 @@ scenes:
 
   answer_bidam:
     actions:
-      - char: { id: 유신, position: right, emotion: angry }
+      - char:
+          id: "유신"
+          position: "right"
+          emotion: "angry"
       - say:
-          char: 유신.angry
-          camera: medium
-          with: [덕만]
+          char: "유신.angry"
+          camera: "medium"
+          with:
+            - "덕만"
           text: "답장 한 줄이면 공격을 늦춥니다. 다만 비담은 사과를 사랑으로, 망설임을 항복으로 읽을 겁니다. 분명히 쓰십시오."
       - choice:
-          key: c11_bidam_answer
+          key: "c11_bidam_answer"
           prompt: "비담의 편지에 어떻게 답할까요?"
-          char: 덕만
-          camera: medium
-          with: [유신]
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "유신"
           options:
             - text: "편지를 장터 벽에 그대로 붙인다"
-              add: { people_support: 2, fear: 1, bidam_trust: -2 }
-              goto: publish_letter
+              add:
+                people_support: 2
+                fear: 1
+                bidam_trust: -2
+              goto: "publish_letter"
             - text: "비담의 글씨를 베껴 철군 명령을 보낸다"
-              add: { army_support: 2, fear: 2, evidence: -1 }
-              goto: forged_withdrawal
+              add:
+                army_support: 2
+                fear: 2
+                evidence: -1
+              goto: "forged_withdrawal"
             - text: "믿었고, 너무 많이 맡긴 잘못도 쓴다"
-              add: { bidam_trust: 1, mercy: 2, evidence: 1 }
-              goto: honest_letter
+              add:
+                bidam_trust: 1
+                mercy: 2
+                evidence: 1
+              goto: "honest_letter"
+            - text: "결정 전에 증거를 나란히 살핀다"
+              goto: "evidence_kite"
 
   honest_letter:
     actions:
@@ -296,31 +312,34 @@ scenes:
 
   starve_command:
     actions:
-      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
+      - bg:
+          id: "frontier"
+          transition: "wipeLeft"
+          duration: 700
       - say:
-          channel: narration
-          text: "사흘째, 반란군 솥에서 연기가 끊겼습니다. 항복자는 늘었지만 같은 길을 쓰던 성 밖 마을의 아궁이도 함께 식었습니다."
+          channel: "narration"
+          text: "포위 사흘째, 반란군뿐 아니라 성 밖 마을의 솥도 식었습니다. 덕만은 배급용 좁은 길을 열고 병사를 물렸습니다."
       - say:
-          char: 덕만.queen_sad
-          camera: medium
-          with: [유신]
-          text: "마을까지 굶는데 왜 이제 말했지? 군량길을 나눠. 오늘 안에 죽을 보내."
+          char: "덕만.queen_sad"
+          camera: "medium"
+          with:
+            - "유신"
+          text: "군량만 끊으랬지 사람을 굶기랬나. 돌아갈 사람에게는 죽을 줘."
       - say:
-          char: 유신.angry
-          camera: medium
-          with: [덕만]
-          text: "늦었습니다. 굶은 마을이 성문을 열었습니다. 항복이 아니라 우리 곡식을 빼앗으러 옵니다."
+          char: "유신.angry"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "그 길로 지휘관 몇도 빠져나갈 겁니다. 남은 자부터 잡겠습니다."
       - say:
-          channel: narration
-          text: "왕군이 마을과 싸우지 않으려 물러서는 사이 반란군이 그 틈으로 나왔습니다. 덕만은 빈 솥을 든 사람들 사이에서 군복을 숨긴 궁수의 화살을 맞았습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "농민들이 먼저 성을 나왔습니다. 비담은 병력을 잃었지만 도망간 지휘관들의 이름이 재판 명부에 빈칸으로 남았습니다."
+      - add:
+          people_support: -4
       - say:
-          channel: record
-          text: "비담의 난 포위 기록 — 성 밖 기근으로 민가 폭동 발생. 선덕왕, 포위망 붕괴 중 화살에 맞아 사망."
-      - gameOver:
-          title: "운명 — 함께 끊긴 솥"
-          message: "반란군 군량길은 성 밖 마을의 생명줄이기도 했습니다. 굶주린 사람들에게 돌아갈 길을 주지 못한 포위는 민가까지 적으로 만들었고 덕만은 무너진 포위망에서 죽었습니다."
-          recoverToChoice: c11_rebellion_response
+          channel: "record"
+          text: "반란의 대가 — 전투를 줄였습니다. 굶은 마을과 도망간 지휘관에 대한 책임은 남았습니다."
+      - goto: "bidam_captured"
 
   bidam_captured:
     actions:
@@ -369,3 +388,77 @@ scenes:
       - gameOver:
           title: "운명 — 끝내기 위해 키운 반란"
           message: "가리지 않는 돌격은 항복할 사람과 싸울 사람을 한 덩어리로 만들었습니다. 궁지에 몰린 군대와 마을이 함께 덤볐고, 덕만은 끝내려던 반란 한가운데서 죽었습니다."
+
+  evidence_kite:
+    actions:
+      - sticker:
+          id: desk_0
+          image: burnt_kite_sticker
+          x: 27
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - sticker:
+          id: desk_1
+          image: bidam_letter_sticker
+          x: 73
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - say:
+          channel: narration
+          camera: wide
+          text: 불탄 연의 끈 끝과 편지의 봉끈이 탁자에 나란히 놓였습니다. 기름이 밴 대나무에서는 아직 매운 냄새가 났습니다.
+          with: []
+      - goto: evidence_kite_compare
+
+  evidence_kite_compare:
+    actions:
+      - choice:
+          key: evidence_kite
+          prompt: 떨어진 별을 비담의 전령망과 잇는 흔적은?
+          camera: wide
+          options:
+            - text: 짧은 고리 두 개를 묶은 같은 전령 매듭
+              goto: evidence_kite_solved
+            - text: 편지에 쓰인 비담의 이름만
+              goto: evidence_kite_retry
+            - text: 하늘에서 떨어진 시각만
+              goto: evidence_kite_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_kite_return
+          with: []
+
+  evidence_kite_retry:
+    actions:
+      - say:
+          channel: narration
+          text: 별은 종이와 대나무를 남기지 않습니다. 편지의 끈을 풀지 않고도 연에 남은 두 고리와 모양을 맞출 수 있습니다.
+          with: []
+      - goto: evidence_kite_compare
+
+  evidence_kite_solved:
+    actions:
+      - set:
+          kite_verified: true
+      - say:
+          char: "덕만"
+          text: "별을 떨어뜨린 손과 편지를 보낸 길이 이어졌어. 하지만 이 매듭을 쓴 사람 전부를 반역자로 묶지는 않겠어."
+      - goto: "evidence_kite_return"
+
+
+  evidence_kite_return:
+    actions:
+      - clearSticker:
+          id: "desk_0"
+          leave: "fadeOut"
+      - clearSticker:
+          id: "desk_1"
+          leave: "fadeOut"
+      - goto: "answer_bidam"

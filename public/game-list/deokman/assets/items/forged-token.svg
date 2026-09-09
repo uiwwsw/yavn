@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 720 480" role="img" aria-labelledby="title desc">
+<title id="title">암살자의 복제 모란패</title><desc id="desc">번들거리는 도금, 막힌 고리, 긁혀 드러난 붉은 구리. 오래된 왕실 모란패를 급히 본뜬 복제품.</desc>
+<defs><linearGradient id="paper" x2=".8" y2="1"><stop stop-color="#f4e7c6"/><stop offset="1" stop-color="#c4a775"/></linearGradient><linearGradient id="metal" x2=".9" y2="1"><stop stop-color="#f3d68c"/><stop offset=".45" stop-color="#b99449"/><stop offset="1" stop-color="#62462c"/></linearGradient><linearGradient id="ceramic" x2=".8" y2="1"><stop stop-color="#769187"/><stop offset=".4" stop-color="#aac0aa"/><stop offset="1" stop-color="#314d4b"/></linearGradient><filter id="shadow" x="-35%" y="-40%" width="170%" height="190%"><feDropShadow dy="9" stdDeviation="8" flood-color="#241b16" flood-opacity=".28"/></filter></defs>
+<g filter="url(#shadow)">
+<path d="M228 38Q290 106 320 140Q370 70 416 38" fill="none" stroke="#823e36" stroke-width="12"/>
+<path d="M289 114Q320 79 351 114V163H289Z" fill="url(#metal)" stroke="#725334" stroke-width="6"/>
+<path d="M306 123Q320 110 335 123" fill="none" stroke="#fbe0a1" stroke-width="3"/>
+<circle cx="320" cy="238" r="126" fill="url(#metal)" stroke="#795630" stroke-width="7"/>
+<circle cx="320" cy="238" r="109" fill="none" stroke="#eed194" stroke-width="3"/>
+<g fill="#d5ad61" stroke="#7d5632" stroke-width="4"><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(0 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(45 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(90 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(135 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(180 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(225 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(270 320 238)"/><ellipse cx="320" cy="183" rx="24" ry="42" transform="rotate(315 320 238)"/></g>
+<circle cx="320" cy="238" r="34" fill="#946838" stroke="#efd39b" stroke-width="5"/>
+<path d="M398 282l-30 38 10 3 35-40zM253 312l37 15-15 5-24-11z" fill="#ac4937" stroke="#6c3427" stroke-width="2"/>
+<path d="M226 181q55-72 129-51" fill="none" stroke="#fff2bb" stroke-width="7" opacity=".55"/></g></svg>

@@ -145,11 +145,11 @@ describe('complete Deokman visual novel', () => {
     const choiceKeys = choices.map((choice) => String(choice.key));
     const gameOvers = documents.flatMap((document) => collectKey(document, 'gameOver').map(asRecord));
 
-    expect(choices).toHaveLength(36);
+    expect(choices).toHaveLength(40);
     expect(new Set(choiceKeys).size).toBe(choiceKeys.length);
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
-    expect(gameOvers).toHaveLength(76);
+    expect(gameOvers).toHaveLength(44);
     expect(choices.flatMap((choice) => Array.isArray(choice.options) ? choice.options.map(asRecord) : [])
       .some((option) => Object.keys(asRecord(option.gameOver)).length > 0)).toBe(false);
 
@@ -168,7 +168,7 @@ describe('complete Deokman visual novel', () => {
     });
   });
 
-  it('makes every wrong answer fatal while leaving exactly one fair route at each choice', () => {
+  it('keeps lethal danger while allowing investigation retries and consequential policies', () => {
     const fatalOptionPositions = new Set<'first' | 'middle' | 'last'>();
     const optionOutcomes: Array<{ key: string; text: string; fatal: boolean }> = [];
     let majorityFatalChoices = 0;
@@ -216,14 +216,21 @@ describe('complete Deokman visual novel', () => {
         });
 
         expect(options.length, key).toBeGreaterThanOrEqual(3);
-        expect(options.length - fatalCount, key).toBe(1);
+        expect(options.length - fatalCount, key).toBeGreaterThanOrEqual(1);
+        if (['c1_peony_observation', 'c3_proof', 'c4_investigation', 'c4_grain_policy',
+          'c5_diplomacy', 'c6_find_time', 'c6_eclipse_policy', 'c7_confession',
+          'c7_first_power', 'c9_crown_terms', 'c10_observatory_priority',
+          'c10_knowledge_policy', 'c12_bidam_sentence', 'c12_record_policy',
+          'c12_final_decree'].includes(key) || key.startsWith('evidence_')) {
+          expect(fatalCount, `${key} must allow a cost without immediate death`).toBe(0);
+        }
         if (fatalCount > options.length / 2) majorityFatalChoices += 1;
       });
     });
 
-    expect(optionOutcomes).toHaveLength(112);
-    expect(optionOutcomes.filter((outcome) => outcome.fatal)).toHaveLength(76);
-    expect(majorityFatalChoices).toBe(36);
+    expect(optionOutcomes).toHaveLength(132);
+    expect(optionOutcomes.filter((outcome) => outcome.fatal)).toHaveLength(44);
+    expect(majorityFatalChoices).toBeGreaterThanOrEqual(10);
     expect(fatalOptionPositions).toEqual(new Set(['first', 'middle', 'last']));
     expect(readSource('1.yaml')).toContain('recoverToChoice: c2_checkpoint');
 
@@ -294,7 +301,7 @@ describe('complete Deokman visual novel', () => {
     ];
     expect(delayedPayoffVariables.filter((variable) => !readStateVariables.has(variable))).toEqual([]);
 
-    expect(new Set(choices.map((choice) => String(choice.key))).size).toBe(36);
+    expect(new Set(choices.map((choice) => String(choice.key))).size).toBe(40);
   });
 
   it('keeps one clue-led route alive through all choices and crowns Deokman', () => {
@@ -447,7 +454,7 @@ describe('complete Deokman visual novel', () => {
     expect(visibleAnswerPositionCounts).toEqual({ 1: 11, 2: 11, 3: 12, 4: 2 });
     expect(longestRepeatedPositionRun).toBeLessThanOrEqual(2);
     expect(state.coronation_compromise).toBe('public_council');
-    expect(ending).toBe('hidden_constellation');
+    expect(ending).toBe('stars_belong_to_people');
   });
 
   it('keeps all player-facing prose inside dialogue, narration, and record channels', () => {
@@ -485,7 +492,7 @@ describe('complete Deokman visual novel', () => {
     const length = (text: string) => Array.from(text).length;
     const answerSheetPhrases = /(정리하면|결론은|다시 말해|것입니다|셈입니다|이 말은)/;
 
-    expect(spoken).toHaveLength(320);
+    expect(spoken).toHaveLength(324);
     expect(Math.max(...spoken.map(length))).toBeLessThanOrEqual(70);
     expect(spoken.reduce((sum, line) => sum + length(line), 0) / spoken.length).toBeLessThanOrEqual(46);
     expect(spoken.filter((line) => answerSheetPhrases.test(line))).toEqual([]);
@@ -669,6 +676,8 @@ describe('complete Deokman visual novel', () => {
       'star-chart.svg',
       'burnt-kite.svg',
       'bidam-letter.svg',
+      'forged-token.svg',
+      'medicine-cup.svg',
     ];
     itemFiles.forEach((filename) => {
       const source = readFileSync(`${gameRoot}assets/items/${filename}`, 'utf8');
@@ -690,7 +699,7 @@ describe('complete Deokman visual novel', () => {
     expect(bible).toContain('## V10.1 단일 생존 정답과 장면형 죽음');
     expect(bible).toContain('## 완결판 구현 현황');
     expect(bible).toContain('- 버전: `10.4.0`');
-    expect(bible).toContain('총 76개의 장면형 실패');
+    expect(bible).toContain('총 44개의 장면형 실패');
     expect(bible).not.toContain('총 28개');
     expect(bible).toContain('/game-list/deokman/');
     expect(voiceGuide).toContain('## 왜 대사가 설명문처럼 변했는가');

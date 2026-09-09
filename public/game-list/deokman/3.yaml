@@ -56,59 +56,65 @@ scenes:
 
   hire_villagers:
     actions:
-      - bg: { id: village, transition: dissolve, duration: 720 }
+      - bg:
+          id: "village"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "노파가 품삯 쌀을 소매에 넣고 지팡이로 산등성이를 가리켰습니다. 아이들은 밤마다 수레 소리가 멎는 집을 서로 다투어 말했습니다. 능선의 작은 창고 하나에서는 이미 연기가 났습니다."
+          channel: "narration"
+          text: "아이들은 밤마다 수레 소리가 멎는 집을 말했습니다. 산등성이에서 연기가 나자 노파 하나가 덕만을 빈 돼지우리로 끌었습니다."
       - say:
-          char: 덕만
-          camera: medium
-          with: [유신]
-          text: "저 연기, 우리가 묻기 시작한 뒤에 났어. 누군가 질문을 듣고 먼저 움직였어."
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "유신"
+          text: "우리 질문이 먼저 샜어. 저 집으로 바로 올라가면 안 돼."
       - say:
-          char: 유신.angry
-          camera: medium
-          with: [덕만]
-          text: "마을로 돌아가야 합니다. 우리가 들른 집마다 같은 쌀자루가 놓였습니다."
+          char: "유신.angry"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "노파가 뒷길을 압니다. 호위는 줄이겠습니다. 마을 사람들 얼굴부터 가리십시오."
       - say:
-          channel: narration
-          text: "두 사람이 돌아섰을 때 능선 양쪽에서 화살이 날아왔습니다. 공개된 질문은 답보다 먼저 창고 주인에게 닿아 매복할 시간을 벌어 주었습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "빈 창고가 타는 동안 두 사람은 노파의 지팡이 뒤를 따랐습니다. 진짜 창고에 닿았을 때 장부의 첫 장은 이미 불에 탔습니다."
+      - add:
+          evidence: -1
       - say:
-          channel: record
-          text: "서쪽 산적 토벌 기록 — 덕만 공주와 김유신, 주민 제보를 확인하던 중 매복으로 사망."
-      - gameOver:
-          title: "운명 — 비보다 빠른 밀고"
-          message: "물어본 사람이 많을수록 소문도 빨랐습니다. 창고 주인은 증거를 태우고 거짓 길 끝에 궁수를 세웠고, 덕만과 유신은 답이 없는 능선에서 전사했습니다."
-          recoverToChoice: c4_investigation
+          channel: "record"
+          text: "조사 결과 — 주민의 신뢰를 얻었습니다. 창고는 찾았지만 사라진 첫 장의 이름은 알 수 없습니다."
+      - goto: "hidden_warehouse"
 
   surround_warehouse:
     actions:
-      - bg: { id: village, transition: dissolve, duration: 720 }
+      - bg:
+          id: "village"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "기병의 횃불이 세 창고를 동시에 에워쌌습니다. 안쪽 빗장이 걸리는 소리와 함께, 담 너머에서 '왕실의 약탈'이라는 외침이 먼저 터졌습니다."
+          channel: "narration"
+          text: "기병이 세 창고의 길을 막았습니다. 빈 창고 두 곳에서 불이 났지만 유신은 말머리를 돌리지 않았습니다."
       - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
-          text: "문은 부술 수 있습니다. 다만 장부보다 '공주가 창고를 털었다'는 소문이 먼저 달릴 겁니다."
+          char: "유신"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "불을 끄면 포위가 뚫립니다. 남은 문에서만 수레가 안 나옵니다."
       - say:
-          char: 덕만.princess_angry
-          camera: medium
-          with: [유신]
-          text: "이미 에워쌌어. 지금 물러나면 겁먹었다고 할 거야. 문을 열어."
+          char: "덕만.princess_angry"
+          camera: "medium"
+          with:
+            - "유신"
+          text: "그 문을 지켜. 마을 우물은 내주고, 병사들은 담 밖에서 기다려."
       - say:
-          channel: narration
-          text: "세 문이 동시에 부서지자 빈 창고 안의 기름통이 터졌습니다. 병력이 불을 끄러 흩어진 사이 진짜 수레를 지키던 궁수들이 덕만의 깃발을 향해 쐈습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "진짜 창고의 빗장이 열렸습니다. 장부는 남았지만 불탄 빈 창고를 지켜보던 주민들은 왕실 깃발에 등을 돌렸습니다."
+      - add:
+          people_support: -2
       - say:
-          channel: record
-          text: "왕실 창고 강제 점검 중 화재 발생. 덕만 공주와 호위대 사망. 구휼 장부는 발견되지 않음."
-      - gameOver:
-          title: "운명 — 증거보다 먼저 닫힌 포위"
-          message: "어느 창고가 진짜인지 확인하지 않은 봉쇄는 적에게 병력 위치만 알려 줬습니다. 불붙은 가짜 창고로 군사가 흩어졌고 덕만은 매복한 궁수의 표적이 됐습니다."
-          recoverToChoice: c4_investigation
+          channel: "record"
+          text: "조사 결과 — 병력으로 장부를 확보했습니다. 마을에는 불탄 창고의 보상 약속이 남았습니다."
+      - goto: "hidden_warehouse"
 
   hidden_warehouse:
     actions:
@@ -141,31 +147,49 @@ scenes:
 
   grain_decision:
     actions:
-      - char: { id: 유신, position: right }
+      - char:
+          id: "유신"
+          position: "right"
       - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
+          char: "유신"
+          camera: "medium"
+          with:
+            - "덕만"
           text: "비는 들이치고 밖에선 문을 밉니다. 내일이면 쌀도 장부도 못 씁니다. 지금 정하십시오."
       - choice:
-          key: c4_grain_policy
+          key: "c4_grain_policy"
           prompt: "굶은 사람들이 창고 문을 밉니다. 무엇부터 내놓을까요?"
-          char: 덕만
-          camera: medium
-          with: [유신]
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "유신"
           options:
             - text: "장부를 벽에 붙이고 마을에 열쇠를 준다"
-              set: { grain_policy: public_distribution }
-              add: { people_support: 3, nobles_support: -1, insight: 1 }
-              goto: public_distribution
+              set:
+                grain_policy: "public_distribution"
+              add:
+                people_support: 3
+                nobles_support: -1
+                insight: 1
+              goto: "public_distribution"
             - text: "왕실 깃발 아래 줄을 세워 배급한다"
-              set: { grain_policy: royal_relief }
-              add: { king_trust: 1, nobles_support: 1, people_support: 1 }
-              goto: royal_relief
+              set:
+                grain_policy: "royal_relief"
+              add:
+                king_trust: 1
+                nobles_support: 1
+                people_support: 1
+              goto: "royal_relief"
             - text: "장부를 덮고 귀족에게 군량을 뜯어낸다"
-              set: { grain_policy: bargain }
-              add: { army_support: 2, evidence: 1, fear: 1 }
-              goto: grain_bargain
+              set:
+                grain_policy: "bargain"
+              add:
+                army_support: 2
+                evidence: 1
+                fear: 1
+              goto: "grain_bargain"
+            - text: "결정 전에 증거를 나란히 살핀다"
+              goto: "evidence_ledger"
 
   public_distribution:
     actions:
@@ -186,60 +210,70 @@ scenes:
 
   royal_relief:
     actions:
-      - bg: { id: village, transition: dissolve, duration: 720 }
+      - bg:
+          id: "village"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "왕실 북이 울리자 줄은 빠르게 정리됐습니다. 관리들은 자루를 건넬 때마다 '왕의 은혜'를 외쳤고 덕만의 이름은 한 번도 부르지 않았습니다."
+          channel: "narration"
+          text: "왕실 북이 울리자 줄이 빠르게 정리됐습니다. 유신은 따로 올린 그릇을 멈추고 모든 죽을 같은 솥에서 뜨게 했습니다."
       - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
-          text: "공주님 몫이라며 따로 떠온 죽입니다. 잠깐, 배급 솥과 색이 다릅니다. 드시지 마십시오."
+          char: "유신"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "오늘 안에 배급은 끝납니다. 다만 관리가 이름을 빠뜨린 집이 있습니다."
       - say:
-          char: 덕만
-          camera: medium
-          with: [유신]
-          text: "내가 안 먹으면 저 줄의 누구에게 가겠지. 관리부터 불러. 이 그릇을 누가—"
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "유신"
+          text: "그 집은 내가 찾아갈게. 배급은 계속하고, 빠진 이름은 따로 남겨."
       - say:
-          channel: narration
-          text: "덕만의 말이 끊기고 그릇이 바닥에 깨졌습니다. 왕실 깃발을 맡은 관리의 소매에서는 곡식 창고를 빼앗긴 가문의 표식과 독가루 주머니가 함께 나왔습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "왕실 깃발 아래 자루가 빠르게 줄었습니다. 장터 끝의 세 집은 해가 진 뒤에야 자기 몫을 받았습니다."
+      - add:
+          people_support: -1
       - say:
-          channel: record
-          text: "왕실 구휼 기록 — 덕만 공주, 배급 현장에서 귀족 가문의 사주를 받은 관리에게 독살됨."
-      - gameOver:
-          title: "운명 — 왕의 은혜에 든 독"
-          message: "배급을 왕실 관리에게만 맡기자 곡식을 잃은 귀족이 그 줄 안에 독을 숨겼습니다. 백성의 몫을 확인하지 못한 덕만은 자신에게 따로 올린 죽을 마시고 숨졌습니다."
-          recoverToChoice: c4_grain_policy
+          channel: "record"
+          text: "통치의 대가 — 배급은 빨랐습니다. 백성은 덕만보다 왕실 관리의 명부를 먼저 찾게 됐습니다."
+      - goto: "convoy_attack"
 
   grain_bargain:
     actions:
-      - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - char: { id: 비담, position: right, emotion: smirk }
+      - bg:
+          id: "council_hall"
+          transition: "dissolve"
+          duration: 720
+      - char:
+          id: "비담"
+          position: "right"
+          emotion: "smirk"
       - say:
-          channel: narration
-          text: "장부가 상자에 잠기자 귀족 창고에서 군량 수레가 나왔습니다. 병사들의 솥에는 김이 올랐고, 마을 사람들은 도둑의 이름 대신 빈 자루만 바라봤습니다."
+          channel: "narration"
+          text: "장부가 상자에 잠기자 군량 수레가 나왔습니다. 비담은 내민 축하주를 두고 봉인된 자루 하나를 직접 찢었습니다."
       - say:
-          char: 덕만
-          camera: medium
-          with: [비담]
-          text: "오늘은 저 군량이 필요해. 장부는 내가 쥐고 있으니 거래가 끝난 뒤 다시 열면 돼."
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "비담"
+          text: "잔은 됐어. 자루 밑까지 세고 나서 문을 열어."
       - say:
-          char: 비담
-          camera: medium
-          with: [덕만]
-          text: "저들도 계산했겠지요. 공주님만 사라지면 상자는 안 열린다고. 그 잔 놓으십시오."
+          char: "비담"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "군량은 맞습니다. 대신 저 가문의 이름을 제가 감춰 드리게 됐군요."
       - say:
-          channel: narration
-          text: "덕만이 손을 떼기도 전에 손끝이 저렸습니다. 귀족들은 군량을 내준 잔치에서 장부의 열쇠와 그것을 열 사람을 한꺼번에 없앴습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "병사들의 솥에서 김이 올랐습니다. 창고 앞 노파는 도둑의 이름을 묻다 빈 손으로 돌아갔습니다."
+      - add:
+          people_support: -3
+          bidam_trust: 1
       - say:
-          channel: record
-          text: "서쪽 창고 합의 기록 — 덕만 공주, 지병으로 급서. 구휼 장부는 화장 때 함께 소실됨."
-      - gameOver:
-          title: "운명 — 거래가 끝난 뒤의 잔"
-          message: "도둑과 장부를 담보로 거래한 순간 덕만은 그들이 시간을 벌기 위해 살려 둔 증인이 됐습니다. 군량이 출발하자 귀족들은 독주로 증인과 장부를 함께 없앴습니다."
-          recoverToChoice: c4_grain_policy
+          channel: "record"
+          text: "통치의 대가 — 군량을 얻었습니다. 장부를 감춘 빚은 비담과 굶은 마을에 남았습니다."
+      - goto: "convoy_attack"
 
   convoy_attack:
     actions:
@@ -355,3 +389,77 @@ scenes:
       - gameOver:
           title: "운명 — 칼이 장부를 태우다"
           message: "전술로 적을 끌어낼 수는 있었지만 협곡 전체를 전장으로 만들면 곡식과 사람도 미끼가 됩니다. 덕만과 유신은 불길 속에서 전사했고 구휼 장부도 함께 탔습니다."
+
+  evidence_ledger:
+    actions:
+      - sticker:
+          id: desk_0
+          image: grain_ledger_sticker
+          x: 27
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - sticker:
+          id: desk_1
+          image: market_seal_sticker
+          x: 73
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - say:
+          channel: narration
+          camera: wide
+          text: 한 줄에 자루 여섯, 도착 칸에는 셋. 나머지 셋 위로 붉은 인장이 덧찍혔습니다. 비담이 종이를 돌려 창빛에 비췄습니다.
+          with: []
+      - goto: evidence_ledger_compare
+
+  evidence_ledger_compare:
+    actions:
+      - choice:
+          key: evidence_ledger
+          prompt: 장부에서 빠져나간 곡식은 어떻게 찾을까요?
+          camera: wide
+          options:
+            - text: 출발 여섯 자루와 도착 세 자루를 대조한다
+              goto: evidence_ledger_solved
+            - text: 가장 큰 붉은 도장만 범인으로 지목한다
+              goto: evidence_ledger_retry
+            - text: 지워진 이름을 짐작해 채운다
+              goto: evidence_ledger_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_ledger_return
+          with: []
+
+  evidence_ledger_retry:
+    actions:
+      - say:
+          channel: narration
+          text: 도장은 운송을 허락했을 뿐입니다. 출발과 도착의 자루 표시를 세면 사라진 몫을 누구나 확인할 수 있습니다.
+          with: []
+      - goto: evidence_ledger_compare
+
+  evidence_ledger_solved:
+    actions:
+      - set:
+          grain_verified: true
+      - say:
+          char: "덕만"
+          text: "사라진 건 세 자루야. 이름을 추측하지 말고 이 수량부터 마을에 확인받자. 장부를 열든 거래하든 이 몫은 기억해."
+      - goto: "evidence_ledger_return"
+
+
+  evidence_ledger_return:
+    actions:
+      - clearSticker:
+          id: "desk_0"
+          leave: "fadeOut"
+      - clearSticker:
+          id: "desk_1"
+          leave: "fadeOut"
+      - goto: "grain_decision"

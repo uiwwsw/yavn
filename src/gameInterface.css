@@ -52,7 +52,7 @@
   --game-dialog: linear-gradient(120deg, #101d23f5, #12242aec);
 }
 .game-icon { display: block; flex: 0 0 auto; }
-.app :is(button, input, select, a):focus-visible { outline: 2px solid var(--game-accent); outline-offset: 4px; }
+.app :is(button, input, select, a):focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }
 .app :is(button, input, select) { -webkit-tap-highlight-color: transparent; }
 .app :is(button, select):disabled { cursor: default; }
 

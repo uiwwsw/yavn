@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 720 480" role="img" aria-labelledby="title desc">
   <title id="title">백성을 위한 별자리표</title>
   <desc id="desc">별의 위치와 파종, 장마 시기를 한 장에 연결한 공개 관측 지도다.</desc>
   <defs>
     <radialGradient id="night" cx="42%" cy="35%"><stop stop-color="#354461"/><stop offset="1" stop-color="#111522"/></radialGradient>
-    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%"><feDropShadow dx="4" dy="15" stdDeviation="12" flood-opacity=".65"/></filter>
+    <filter id="shadow" x="-30%" y="-35%" width="160%" height="180%"><feDropShadow dx="4" dy="15" stdDeviation="12" flood-opacity=".28"/></filter>
   </defs>
   <g filter="url(#shadow)" transform="rotate(1 320 200)">
     <path d="M80 59l480 10-20 274-470-13z" fill="url(#night)" stroke="#a7864f" stroke-width="7"/>

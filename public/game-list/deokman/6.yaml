@@ -66,64 +66,72 @@ scenes:
 
   publish_powers:
     actions:
-      - bg: { id: council_hall, transition: dissolve, duration: 720 }
+      - bg:
+          id: "council_hall"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "궁문 벽이 가문 이름으로 가득 찼습니다. 어느 집이 어느 창고 열쇠를, 어느 성문 병사를, 어느 기록관의 붓을 쥐었는지 사람들이 손가락으로 따라 읽었습니다. 왕이 빠진 고백은 덕만에게 반역 혐의를 남겼지만, 공개된 이름들이 그날 재판을 막았습니다."
+          channel: "narration"
+          text: "빼앗긴 권한의 목록에 진평왕의 도장이 찍혔습니다. 왕은 문밖에 서지 못했고 덕만이 목록을 읽었습니다."
       - say:
-          char: 덕만
-          camera: medium
-          with: [진평왕]
-          text: "빼앗긴 권한을 적었습니다. 아버지는 편찮아 못 나오셨다고 하죠."
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "진평왕"
+          text: "이건 제 고발만이 아닙니다. 아버지가 한 줄씩 확인하고 도장을 찍었습니다."
       - say:
-          char: 진평왕.weak
-          camera: medium
-          with: [덕만]
-          text: "내가 숨으면 저건 고백이 아니라 네 격문이다. 덕만아, 나를 데리고 나가라."
+          char: "진평왕.weak"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "내 몸이 못 나가도 내 이름은 빼지 마라. 마지막 줄까지 읽어라."
       - say:
-          channel: narration
-          text: "왕이 끝내 모습을 보이지 않자 귀족들은 벽보를 위조라고 불렀습니다. 덕만을 따르던 군사도 왕명이 없다는 말에 물러났고, 새벽 재판에는 고발자만 남았습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "귀족들은 왕의 건강을 핑계로 시간을 끌었습니다. 덕만은 하루 늦게 창고 열쇠를 넘겨받았습니다."
+      - add:
+          people_support: -1
       - say:
-          channel: record
-          text: "반역 재판 기록 — 덕만 공주, 왕과 귀족을 이간하고 허위 벽보를 붙인 죄로 참수."
-      - gameOver:
-          title: "운명 — 주인 없는 고백"
-          message: "왕의 실패를 왕의 입 없이 공개하자 진실은 덕만의 반역문으로 바뀌었습니다. 진평왕이 숨어 있는 동안 귀족들은 고발자를 먼저 처형했습니다."
-          recoverToChoice: c7_confession
+          channel: "record"
+          text: "통치의 대가 — 실패를 공개했습니다. 왕이 빠진 자리를 덕만의 설명이 메워야 했습니다."
+      - goto: "rebuild_power"
 
   inherit_blame:
     actions:
-      - bg: { id: throne_hall, transition: dissolve, duration: 720 }
+      - bg:
+          id: "throne_hall"
+          transition: "dissolve"
+          duration: 720
       - say:
-          channel: narration
-          text: "덕만은 사람들 앞에서 창고의 혼란이 자기 명령 때문이라고 말했습니다. 진평왕을 향하던 돌이 덕만의 발치로 바뀌었습니다. 귀족들은 그 자백을 반역문으로 만들려 했지만 왕이 처음으로 옥좌에서 내려왔습니다."
+          channel: "narration"
+          text: "덕만이 옥새함을 닫자 진평왕은 손을 얹어 막았습니다. 한 사람의 서명으로 끝낼 문서는 아니었습니다."
       - say:
-          char: 진평왕.weak
-          camera: medium
-          with: [덕만]
-          text: "죽은 네 이름을 살려 놓고 또 방패로 세웠구나. 이번엔 네 뒤에 숨지 않겠다."
+          char: "진평왕.weak"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "내 잘못에 네 이름만 쓰면 저들은 다음에도 너를 부를 게다."
       - say:
-          char: 덕만.sad
-          camera: medium
-          with: [진평왕]
-          text: "이번에는 제가 막겠습니다. 아버지가 다시 힘을 얻으면 그때 바로잡으면 돼요."
+          char: "덕만.sad"
+          camera: "medium"
+          with:
+            - "진평왕"
+          text: "제 몫만 쓰겠습니다. 아버지 이름도 지우지 않을게요. 오늘은 밖에 안 나가셔도 돼요."
       - say:
-          char: 진평왕.weak
-          camera: medium
-          with: [덕만]
-          text: "재판이 끝나면 바로잡을 입도 없어. 내가 살자고 네 자백을 받으면 또 같은 왕이다."
+          char: "진평왕.weak"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "그 말이 더 아프구나. 붓을 다오. 내 이름은 내가 쓰겠다."
       - say:
-          channel: narration
-          text: "진평왕이 명을 거두려 했지만 옥새를 쥔 서기관은 이미 자백문을 성문 밖으로 보냈습니다. 귀족들은 왕이 딸을 감싸 판결을 뒤집으려 한다며 처형을 서둘렀습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "고백은 궁 안에 남았습니다. 두 사람이 나란히 서명했지만 문밖 사람들은 무슨 약속인지 알지 못했습니다."
+      - add:
+          king_trust: 1
+          people_support: -2
       - say:
-          channel: record
-          text: "왕실 창고 반역 사건 — 덕만 공주, 국고 혼란을 일으킨 죄를 자백하고 당일 처형됨."
-      - gameOver:
-          title: "운명 — 대신 쓴 자백"
-          message: "아버지를 지키려고 뒤집어쓴 실패는 귀족들에게 완성된 자백이 됐습니다. 덕만은 다음에 진실을 말할 수 있으리라 믿었지만 재판은 그날 끝났습니다."
-          recoverToChoice: c7_confession
+          channel: "record"
+          text: "통치의 대가 — 아버지를 지켰습니다. 공개되지 않은 실패는 나중에 다시 물을 빚이 됐습니다."
+      - goto: "rebuild_power"
 
   rebuild_power:
     actions:
@@ -161,59 +169,65 @@ scenes:
 
   restore_army:
     actions:
-      - bg: { id: frontier, transition: wipeLeft, duration: 700 }
+      - bg:
+          id: "frontier"
+          transition: "wipeLeft"
+          duration: 700
       - say:
-          char: 유신
-          camera: medium
-          with: [덕만]
-          text: "지휘패는 받겠습니다. 하지만 군량과 명령까지 제 뒤에 숨기진 마십시오. 저도 빈 옥새함을 만들 수 있습니다."
+          char: "유신"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "지휘패는 받겠습니다. 다만 출병 명령은 궁에 한 벌 더 남기십시오."
       - say:
-          char: 덕만
-          text: "네가 지휘패를 쥐면 오늘 밤은 움직일 수 있어. 나머지는 다음 조회에서 나누자."
+          char: "덕만"
+          text: "군량은 마을에서 확인하게 할게. 네 패 하나로 솥까지 닫지는 못해."
       - say:
-          char: 유신.angry
-          camera: medium
-          with: [덕만]
-          text: "그 전에 저를 국경으로 보내는 가짜 명령이 돌면 어쩝니까. 지금 나누십시오."
+          char: "유신.angry"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "그 정도면 됩니다. 오늘은 성문부터 묶고, 내일 병사들 이름을 대조하겠습니다."
       - say:
-          channel: narration
-          text: "그날 밤 위조 전령이 유신의 지휘패를 들고 군영을 밖으로 뺐습니다. 비어 버린 궁문으로 귀족 사병이 들어왔고 덕만의 처소부터 포위했습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "유신의 병력이 성문을 되찾았습니다. 마을의 배급은 하루 늦었고 덕만의 첫 명령은 군영에서 먼저 읽혔습니다."
+      - add:
+          people_support: -1
       - say:
-          channel: record
-          text: "궁성 변란 기록 — 김유신 군이 국경으로 이동한 사이 덕만 공주 피살. 지휘 명령의 진위는 확인되지 않음."
-      - gameOver:
-          title: "운명 — 한 사람에게 건 지휘패"
-          message: "유신은 충성했지만 모든 군권을 한 패에 모은 구조가 위조 명령 한 장에 궁을 비웠습니다. 덕만은 믿었던 장수가 돌아오기 전에 살해됐습니다."
-          recoverToChoice: c7_first_power
+          channel: "record"
+          text: "통치의 대가 — 성문을 지켰습니다. 백성보다 군대가 먼저 왕의 힘을 받았습니다."
+      - goto: "council_counterattack"
 
   restore_records:
     actions:
-      - bg: { id: locked_room, transition: fade, duration: 900 }
+      - bg:
+          id: "locked_room"
+          transition: "fade"
+          duration: 900
       - say:
-          channel: narration
-          text: "한 명령을 두 기록관이 마주 앉아 썼습니다. 획이 다르면 종을 울렸습니다. 위조는 줄었지만 급한 전령도 두 번째 붓이 끝날 때까지 발을 굴러야 했습니다."
+          channel: "narration"
+          text: "서고의 두 기록관이 같은 명령을 따로 베꼈습니다. 서로 다른 한 글자를 찾자 유신이 두 종이를 모두 회수했습니다."
       - say:
-          char: 덕만
-          camera: medium
-          with: [유신]
-          text: "두 사람이 확인하면 같은 위조는 막을 수 있어. 늦어도 정확한 편이 나아."
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "유신"
+          text: "다르면 멈춰. 급한 대피는 먼저 하고, 명령을 바꾼 이름은 해 지기 전에 남겨."
       - say:
-          char: 유신.angry
-          camera: medium
-          with: [덕만]
-          text: "동문에 공주님을 죽이라는 명령이 돌았습니다. 두 번째 서명을 기다리는 사이 문이 열립니다."
+          char: "유신.angry"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "위조문은 막았습니다. 대신 창고 개방이 두 시진 늦었습니다."
       - say:
-          channel: narration
-          text: "기록관 둘 중 하나가 일부러 획을 틀릴 때마다 정정은 처음부터 다시 시작됐습니다. 진짜 명령이 방 안에 묶인 사이 가짜 명령을 든 자객들이 덕만에게 닿았습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "기록은 되찾았지만 창고 앞 줄은 길어졌습니다. 덕만은 늦은 배급의 날짜를 첫 감사 기록에 적었습니다."
+      - add:
+          people_support: -2
       - say:
-          channel: record
-          text: "동문 경비 기록 — 적법한 왕명에 따라 덕만 공주를 처형함. 반대 명령은 처형 뒤 도착."
-      - gameOver:
-          title: "운명 — 두 붓 사이의 칼"
-          message: "검증 절차만 세우고 긴급 명령의 길을 만들지 않자, 매수된 기록관 하나가 시간을 무기로 썼습니다. 진짜 취소문이 완성되기 전에 가짜 처형문이 집행됐습니다."
-          recoverToChoice: c7_first_power
+          channel: "record"
+          text: "통치의 대가 — 위조를 막을 절차가 생겼습니다. 기다린 사람들의 배는 아직 비었습니다."
+      - goto: "council_counterattack"
 
   council_counterattack:
     actions:

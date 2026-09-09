@@ -45,17 +45,24 @@ scenes:
 
   public_treatment:
     actions:
-      - bg: { id: village, transition: dissolve, duration: 720 }
-      - char: { id: 천명, position: right, emotion: sad }
+      - bg:
+          id: "village"
+          transition: "dissolve"
+          duration: 720
+      - char:
+          id: "천명"
+          position: "right"
+          emotion: "sad"
       - say:
-          channel: narration
+          channel: "narration"
           text: "덕만은 천명을 업고 사람들을 밀치며 달렸습니다. 천명의 피가 덕만의 소매를 적시는 동안 지붕 위 발자국은 빗물에 하나씩 무너졌습니다."
       - say:
-          char: 천명.sad
-          camera: medium
-          with: [덕만]
+          char: "천명.sad"
+          camera: "medium"
+          with:
+            - "덕만"
           text: "사람들이 네가 날 업고 뛴 걸 봤어. 적어도 네 화살이라고는 못 하겠지. 자객은 놓쳤지만."
-      - goto: forged_confession
+      - goto: "recover_sister_evidence"
 
   divided_rescue:
     actions:
@@ -133,35 +140,56 @@ scenes:
 
   forged_confession:
     actions:
-      - bg: { id: council_hall, transition: dissolve, duration: 720 }
-      - music: sealed_court
-      - char: { id: 춘추, position: right, emotion: nervous }
+      - bg:
+          id: "council_hall"
+          transition: "dissolve"
+          duration: 720
+      - music: "sealed_court"
+      - char:
+          id: "춘추"
+          position: "right"
+          emotion: "nervous"
       - say:
-          camera: wide
-          channel: narration
+          camera: "wide"
+          channel: "narration"
           text: "이튿날 조회상에 자백문이 펼쳐졌습니다. 천명이 쓰러지기 전부터 말라 있던 먹, 이미 죽은 군관의 서명. 어린 덕만의 사망 기록과 같은 냄새가 났습니다."
       - say:
-          char: 춘추.nervous
-          camera: medium
-          with: [덕만]
+          char: "춘추.nervous"
+          camera: "medium"
+          with:
+            - "덕만"
           text: "어머니가 나오면 위조문은 찢깁니다. 대신 군대가 갈립니다. 계속 숨으면 그 종이가 공주님 목을 조르고요."
       - choice:
-          key: c8_public_story
+          key: "c8_public_story"
           prompt: "살아 있는 천명과 위조 자백문이 있습니다. 무엇을 먼저 공개할까요?"
-          char: 덕만
-          camera: medium
-          with: [춘추]
+          char: "덕만"
+          camera: "medium"
+          with:
+            - "춘추"
           options:
             - text: "문은 닫고 위조된 획만 공개한다"
-              add: { evidence: 2, chunchu_trust: 1 }
-              goto: evidence_only
+              add:
+                evidence: 2
+                chunchu_trust: 1
+              goto: "evidence_only"
             - text: "천명의 손을 잡고 회의장에 들어간다"
-              when: { var: sisters_public, op: eq, value: true }
-              add: { nobles_support: 1, people_support: 2, cheonmyeong_trust: 1 }
-              goto: sister_testimony
+              when:
+                var: "sisters_public"
+                op: "eq"
+                value: true
+              add:
+                nobles_support: 1
+                people_support: 2
+                cheonmyeong_trust: 1
+              goto: "sister_testimony"
             - text: "장례 종을 계속 울려 배후를 낚는다"
-              add: { evidence: 2, fear: 2, cheonmyeong_trust: -1 }
-              goto: keep_death_story
+              add:
+                evidence: 2
+                fear: 2
+                cheonmyeong_trust: -1
+              goto: "keep_death_story"
+            - text: "결정 전에 증거를 나란히 살핀다"
+              goto: "evidence_token"
 
   sister_testimony:
     actions:
@@ -279,31 +307,34 @@ scenes:
 
   hidden_alive:
     actions:
-      - bg: { id: locked_room, transition: fade, duration: 900 }
+      - bg:
+          id: "locked_room"
+          transition: "fade"
+          duration: 900
       - say:
-          channel: narration
-          text: "밤이면 비밀문이 열리고 천명이 촛불 아래로 나왔습니다. 덕만은 언니의 조언을 들었지만, 해가 뜨면 천명은 발소리조차 숨겨야 했습니다."
+          channel: "narration"
+          text: "덕만이 비밀방 안에 작은 창을 냈습니다. 천명은 약상자보다 먼저 창 너머의 사람 수를 셌습니다."
       - say:
-          char: 천명.sad
-          camera: medium
-          with: [덕만]
-          text: "네 곁에 숨으면 살 줄 알았어. 그런데 약도 문도 전부 저들 손이야. 우리끼린 나갈 수도 없어."
+          char: "천명.sad"
+          camera: "medium"
+          with:
+            - "덕만"
+          text: "날 살려 놓고, 내가 밖에 있다는 말은 끝내 못 하겠구나."
       - say:
-          char: 덕만.princess_sad
-          camera: medium
-          with: [천명]
-          text: "오늘 밤 나가자. 네가 걸을 수 있을 때까지 기다리려 했는데, 더 기다리면 안 돼."
+          char: "덕만.princess_sad"
+          camera: "medium"
+          with:
+            - "천명"
+          text: "문을 열 날을 정할게. 이번에는 기다리라는 말만 하진 않을게."
       - say:
-          channel: narration
-          text: "덕만이 비밀문을 밀었지만 바깥 빗장은 이미 잠겨 있었습니다. 방 안 향로에서는 치료약과 같은 냄새의 연기가 피어올랐고, 문밖에서는 두 공주의 기침을 조용히 세고 있었습니다."
-      - effect: { name: darken, wait: true }
+          channel: "narration"
+          text: "천명은 날짜를 달력에 적었습니다. 그날이 오기 전까지 회의장의 비어 있는 의자는 누구의 것도 아니었습니다."
+      - add:
+          cheonmyeong_trust: -2
       - say:
-          channel: record
-          text: "왕실 밀실 화재 — 신원 미상 여인 둘 사망. 천명 공주의 장례 기록은 수정하지 않음."
-      - gameOver:
-          title: "운명 — 숨겨 둔 자매"
-          message: "살아 있는 천명을 궁 안에 숨기자 자매의 음식과 약과 문을 모두 적이 통제했습니다. 왕위를 시기한 귀족들은 향로에 독을 넣고 두 사람을 이름 없는 시신으로 만들었습니다."
-          recoverToChoice: c8_cheonmyeong_fate
+          channel: "record"
+          text: "자매의 대가 — 천명은 살아 있습니다. 그 목소리는 비밀문을 통과해야만 회의장에 닿습니다."
+      - goto: "abandoned_end"
 
   abandoned_end:
     actions:
@@ -343,3 +374,99 @@ scenes:
       - gameOver:
           title: "운명 — 대신 죽는다는 폭력"
           message: "자기희생은 천명에게 선택권을 돌려주지 않았습니다. 덕만은 언니를 살린다는 명분으로 언니에게 가장 무거운 삶을 강요했습니다."
+
+  evidence_token:
+    actions:
+      - sticker:
+          id: desk_0
+          image: peony_token_sticker
+          x: 27
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - sticker:
+          id: desk_1
+          image: forged_token_sticker
+          x: 73
+          'y': 43
+          width: clamp(140px, 44%, 380px)
+          anchorX: center
+          anchorY: center
+          enter: fadeIn
+          zIndex: 14
+      - say:
+          channel: narration
+          camera: wide
+          text: 천명의 약상자 곁에 두 모란패가 놓였습니다. 어린 날부터 지닌 것은 초록 녹이 피었고, 암살자의 것은 번들거렸습니다.
+          with: []
+      - goto: evidence_token_compare
+
+  evidence_token_compare:
+    actions:
+      - choice:
+          key: evidence_token
+          prompt: 암살자가 지닌 모란패는 무엇이 다를까요?
+          camera: wide
+          options:
+            - text: 매끈하게 막힌 고리와 표면의 붉은 속살
+              goto: evidence_token_solved
+            - text: 새 패가 더 반짝인다는 사실
+              goto: evidence_token_retry
+            - text: 두 패에 모두 새겨진 모란꽃
+              goto: evidence_token_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_token_return
+          with: []
+
+  evidence_token_retry:
+    actions:
+      - say:
+          channel: narration
+          text: 오래된 패의 고리에는 끈이 드나들 틈이 있습니다. 새 패는 그 틈까지 한 덩어리로 막혔고 긁힌 곳은 붉은 구리색입니다.
+          with: []
+      - goto: evidence_token_compare
+
+  evidence_token_solved:
+    actions:
+      - set:
+          token_verified: true
+      - say:
+          char: "덕만"
+          text: "내 패를 본떠 급히 부었어. 오래된 왕실 패가 아니야. 천명이 쓰러지기 전에 누군가 증거부터 만들어 뒀어."
+      - goto: "evidence_token_return"
+
+
+  evidence_token_return:
+    actions:
+      - clearSticker:
+          id: "desk_0"
+          leave: "fadeOut"
+      - clearSticker:
+          id: "desk_1"
+          leave: "fadeOut"
+      - goto: "forged_confession"
+
+
+  recover_sister_evidence:
+    actions:
+      - sticker:
+          id: "rescue_cup"
+          image: "medicine_cup_sticker"
+          x: 50
+          "y": 28
+          width: "clamp(170px, 32%, 340px)"
+          anchorX: "center"
+          anchorY: "center"
+          enter: "fadeIn"
+      - get: "medicine_cup"
+      - say:
+          channel: "narration"
+          text: "의원은 천명이 마신 잔을 천으로 감쌌습니다. 안쪽의 검은 가루는 물로 헹군 뒤에도 홈에 남았습니다. 유신이 지붕에서 주운 모란패를 그 옆에 놓았습니다."
+      - clearSticker:
+          id: "rescue_cup"
+          leave: "fadeOut"
+      - get: "forged_token"
+      - goto: "forged_confession"

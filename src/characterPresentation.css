@@ -3,8 +3,16 @@
 .character-actor.char-image { width: calc(var(--char-image-height) * var(--character-source-ratio, 1)); }
 .char.character-actor.is-camera-hidden { opacity: 1 !important; }
 .character-presence, .character-entrance, .character-portrait { position: relative; width: 100%; height: 100%; }
-.character-presence { opacity: 0; transition: opacity var(--character-leave-duration, 260ms) ease-out; }
-.character-presence[data-visible='true'] { opacity: 1; transition: none; }
+.character-presence {
+  opacity: 0;
+  transform: scale(.982);
+  transform-origin: 50% 100%;
+  transition: opacity var(--character-leave-duration, 260ms) ease-out,
+    transform 340ms cubic-bezier(.2,.72,.24,1);
+}
+.character-presence[data-visible='true'] { opacity: 1; }
+/* Full size is the fitted maximum: speaker emphasis cannot push a head offscreen. */
+.character-actor.is-speaking .character-presence { transform: scale(1); }
 .character-portrait { isolation: isolate; }
 .character-portrait[data-dissolving='true'] .character-art { mix-blend-mode: plus-lighter; }
 .character-entrance { transform-origin: 50% 100%; }
@@ -29,9 +37,6 @@
 .portrait-previous { z-index: 1; }
 .character-portrait[data-dissolving='true'] .portrait-current { animation: portraitReveal var(--portrait-dissolve-duration, 180ms) linear both; }
 .character-portrait[data-dissolving='true'] .portrait-previous { animation: portraitRetire var(--portrait-dissolve-duration, 180ms) linear both; }
-.character-portrait, .character-actor .char-live2d-mount { filter: brightness(.96); transition: filter 180ms ease; }
-.character-actor.is-speaking .character-portrait, .character-actor.is-speaking .char-live2d-mount { filter: brightness(1.02); }
-.character-actor.is-neutral .character-portrait, .character-actor.is-neutral .char-live2d-mount { filter: brightness(1); }
 .app[data-story-paused='true'] .character-entrance,
 .app[data-story-paused='true'] .character-art,
 .has-settings-modal .character-entrance,
@@ -48,4 +53,5 @@
 @keyframes portraitRetire { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .character-presence, .character-entrance, .character-art, .character-portrait { animation: none !important; transition: none !important; }
+  .character-actor .character-presence { transform: none; }
 }
