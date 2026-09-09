@@ -8,6 +8,7 @@ import './titleScene.css';
 import './choiceLayout.mobile.css';
 import './promptLayout.css';
 import './gameInterface.css';
+import './immersiveStory.css';
 
 initializePromptLayout();
 

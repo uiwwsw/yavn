@@ -13,8 +13,8 @@ scenes:
       - char: { id: 진평왕, position: right, emotion: weak }
       - char: { id: 덕만, position: left }
       - say:
-          channel: narration
-          text: "진평왕의 숨이 가늘어질수록 왕좌 뒤의 발소리들이 빨라졌습니다. 상복을 준비하는 손보다 새벽 표결 문서를 접는 손이 더 바빴습니다."
+          channel: action
+          text: 아버지 곁에 무릎을 꿇는다. 이불 아래 손이 차다. 문밖에서는 벌써 표결 문서를 접는 소리가 들린다.
       - say:
           char: 진평왕.weak
           camera: medium
@@ -32,8 +32,8 @@ scenes:
           with: [덕만]
           text: "나를 숨긴 날도, 문 앞에 세운 날도 기억한다. 이제 내 허락은 찾지 마라. 네 판단의 값까지 보거라."
       - say:
-          channel: narration
-          text: "그 말을 들은 뒤에야 진평왕의 숨이 멎었습니다. 새벽 표결을 알리는 북이 곧바로 울렸고, 성문과 군량 창고 쪽에서는 귀족 사병의 횃불이 움직였습니다."
+          channel: action
+          text: 잡은 손이 더는 움직이지 않는다. 손을 놓기도 전에 북이 울린다. 조금만… 지금은 잠깐만 조용했으면.
       - say:
           when: { var: cheonmyeong_outcome, op: eq, value: exile }
           channel: record
@@ -176,8 +176,8 @@ scenes:
   negotiated_vote:
     actions:
       - say:
-          channel: narration
-          text: "덕만이 공개 회의를 닫지 않겠다고 피로 서명하자 흩어진 표가 돌아왔습니다. 왕관을 보기도 전에 첫 매듭이 그 안쪽에 묶였습니다."
+          channel: action
+          text: 공개 회의를 지키겠다고 서명한다. 붓을 돌려주자 표가 돌아온다. 왕관을 쓰기도 전에 내 이름 아래 약속이 늘어난다.
       - goto: coup_begins
 
   coup_begins:
@@ -188,8 +188,8 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           camera: wide
-          channel: narration
-          text: "첫 표가 항아리 바닥에 닿는 소리와 동시에 서문에서 불기둥이 올랐습니다. 위조 왕명을 든 병사들이 덕만의 이름을 외치며 회의장으로 달려왔습니다."
+          channel: action
+          text: 표가 항아리 바닥을 친다. 창밖에 불기둥이 솟는다. 달려오는 병사들이 내 이름을 외친다. 나는 명령한 적이 없다.
       - say:
           char: 유신.angry
           camera: medium
@@ -218,8 +218,8 @@ scenes:
   split_defense:
     actions:
       - say:
-          channel: narration
-          text: "유신의 말발굽이 서문으로 사라졌습니다. 덕만은 연기가 들어오는 회의장에서 항아리를 끌어안았습니다. 새벽 직전, 피 묻은 유신이 진짜 인장을 던져 넣었습니다."
+          channel: action
+          text: 유신을 서문으로 보낸다. 연기가 들어와도 항아리를 놓지 않는다. 새벽 직전, 문턱에 떨어진 진짜 인장을 받아 든다.
       - say:
           char: 유신.angry
           camera: medium
@@ -289,8 +289,8 @@ scenes:
       - music: sealed_court
       - say:
           camera: wide
-          channel: narration
-          text: "동이 틀 무렵 금 간 항아리가 다시 세워졌습니다. 마지막 세 표는 접히지 않은 채 춘추의 손에 남아 있었습니다."
+          channel: thought
+          text: 금 간 항아리 안에 밤새 지킨 표가 있다. 춘추의 손에는 아직 세 장. 저걸 얻으려고 또 무엇을 약속해야 하지?
       - char: { id: 춘추, position: right }
       - say:
           char: 춘추
@@ -346,8 +346,8 @@ scenes:
       - add:
           nobles_support: 2
       - say:
-          channel: "record"
-          text: "왕관의 조건 — 즉위는 성립했습니다. 여왕의 첫 겨울은 세 서명에 묶였습니다."
+          channel: thought
+          text: 왕관은 여기 있다. 장부는 저 세 사람 앞에 있다. 겨울마다 이 서명을 다시 얻어야 하는 건가.
       - goto: "coronation"
 
   bad_army_review:
@@ -379,8 +379,8 @@ scenes:
       - add:
           army_support: -2
       - say:
-          channel: "record"
-          text: "왕관의 조건 — 군권에 기한을 뒀습니다. 떠난 장수들의 병력은 즉위식에 오지 않았습니다."
+          channel: thought
+          text: 지휘패에 반납 날짜를 새겼다. 떠난 장수의 자리가 비어 있다. 작은 군으로도 이 약속을 지켜야 해.
       - goto: "coronation"
 
   coronation:
@@ -394,8 +394,8 @@ scenes:
           text: "선덕왕 즉위 — 왕실 기록에서 죽었던 둘째 공주 덕만이 신라의 왕이 되다."
       - char: { id: 덕만, position: center, emotion: queen }
       - say:
-          channel: narration
-          text: "왕관이 머리에 닿자 덕만의 무릎이 아주 조금 꺾였습니다. 밤새 묻은 재와 피가 예복 안쪽에 그대로 남아 있었습니다."
+          channel: action
+          text: 왕관이 이마를 누른다. 무릎이 잠깐 꺾인다. 예복 안의 재와 피가 피부를 긁는다. 닦을 틈도 없었구나.
       - say:
           char: 덕만
           camera: medium
@@ -404,8 +404,11 @@ scenes:
           channel: narration
           text: "덕만은 왕관을 고쳐 쓰기도 전에 첫 명령을 내렸습니다. '오늘 나를 만든 표와 약속을 한 글자도 빼지 말라.' 이어 불탄 시장 너머 하늘을 보며 두 번째 명령을 불렀습니다. '다음 어둠은 누구나 미리 보게 하라.'"
       - say:
-          channel: record
-          text: "덕만은 여왕이 되었습니다. 이야기는 왕관을 얻는 데서 끝나지 않고, 즉위의 조건을 지키면서 무엇을 먼저 만들지 묻기 시작했습니다."
+          channel: thought
+          text: 왕이 됐는데도 추워. 창밖 시장에는 지붕이 없다. 저 겨울부터 넘겨야 해.
+          with: []
+          camera: wide
+          continueLabel: 예복을 걷고 첫겨울의 장부를 받는다
       - goto: /9.yaml
 
   bad_lonely_throne:

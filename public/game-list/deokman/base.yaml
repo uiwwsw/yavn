@@ -134,6 +134,16 @@ assets:
   sfx: {}
 
 state:
+  opening_name_read: false
+  opening_door_heard: false
+  evidence_seals_seen_0: false
+  evidence_seals_seen_1: false
+  evidence_ledger_seen_0: false
+  evidence_ledger_seen_1: false
+  evidence_token_seen_0: false
+  evidence_token_seen_1: false
+  evidence_kite_seen_0: false
+  evidence_kite_seen_1: false
   observed_left_waterway: false
   spoke_truth_to_king: false
   c1_escape_route: ""

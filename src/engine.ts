@@ -571,6 +571,7 @@ function schedulePlayerAutoAdvance(): void {
     state.dialogUiHidden ||
     !state.waitingInput ||
     state.dialog.typing ||
+    state.dialog.continueLabel ||
     state.inputGate.active ||
     state.choiceGate.active
   ) {
@@ -589,6 +590,7 @@ function schedulePlayerAutoAdvance(): void {
       current.actionIndex !== expectedActionIndex ||
       !current.waitingInput ||
       current.dialog.typing ||
+      current.dialog.continueLabel ||
       current.inputGate.active ||
       current.choiceGate.active ||
       current.isFinished ||
@@ -1762,7 +1764,9 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
                   value.channel === 'dialogue' ||
                   value.channel === 'narration' ||
                   value.channel === 'record' ||
-                  value.channel === 'system')
+                  value.channel === 'system' ||
+                  value.channel === 'thought' ||
+                  value.channel === 'action')
               );
             }
             return (
@@ -3333,7 +3337,8 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
         action.say.with,
         getStagedCharacterIds(),
       );
-      promoteSpeaker(presentation.speakerId);
+      const channel = resolveDialogueChannel(action.say.channel, presentation.speakerId);
+      promoteSpeaker(channel === 'thought' || channel === 'action' ? undefined : presentation.speakerId);
       setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, chapter.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.say.framing);
@@ -3989,6 +3994,7 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().clearInputGate();
     useVNStore.getState().setChoiceGate({
       active: true,
+      presentation: action.choice.presentation ?? 'dialogue',
       key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
       prompt: action.choice.prompt,
       forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,
@@ -3998,9 +4004,9 @@ function runToNextPause(loopGuard = 0) {
       timeoutOptionIndex: visibleTimeoutOptionIndex,
       options: visibleOptions,
     });
+    useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     if (presentation.speakerId) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
-      useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.choice.framing);
     }
@@ -4016,6 +4022,7 @@ function runToNextPause(loopGuard = 0) {
       visibleText: action.choice.prompt,
       typing: false,
       channel: 'dialogue',
+      continueLabel: undefined,
       delivery: 'neutral',
       typingIntensity: 0,
       typingPulse: 0,
@@ -4102,9 +4109,9 @@ function runToNextPause(loopGuard = 0) {
       saveAs: action.input.saveAs,
       routes: action.input.routes,
     });
+    useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     if (presentation.speakerId) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
-      useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.input.framing);
     }
@@ -4120,6 +4127,7 @@ function runToNextPause(loopGuard = 0) {
       visibleText: action.input.prompt,
       typing: false,
       channel: 'dialogue',
+      continueLabel: undefined,
       delivery: 'neutral',
       typingIntensity: 0,
       typingPulse: 0,
@@ -4162,6 +4170,7 @@ function runToNextPause(loopGuard = 0) {
       ? game.assets.characters[presentation.speakerId]?.defaultDelivery
       : undefined;
     const channel = resolveDialogueChannel(action.say.channel, presentation.speakerId);
+    const spokenSpeakerId = channel === 'thought' || channel === 'action' ? undefined : presentation.speakerId;
     const delivery = resolveDialogueDelivery(
       action.say.delivery,
       speakerEmotion,
@@ -4169,7 +4178,7 @@ function runToNextPause(loopGuard = 0) {
     );
     useVNStore.getState().clearInputGate();
     useVNStore.getState().clearChoiceGate();
-    useVNStore.getState().promoteSpeaker(presentation.speakerId);
+    useVNStore.getState().promoteSpeaker(spokenSpeakerId);
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
     syncCharacterFraming(game, presentation.speakerId, action.say.framing);
@@ -4186,7 +4195,7 @@ function runToNextPause(loopGuard = 0) {
     });
     useVNStore.getState().setDialog({
       speaker: presentation.speakerName,
-      speakerId: presentation.speakerId,
+      speakerId: spokenSpeakerId,
       cameraTargetId: resolveDialogCameraTargetId(
         action.say.camera,
         presentation.speakerId,
@@ -4196,6 +4205,7 @@ function runToNextPause(loopGuard = 0) {
       typing: true,
       unskippable,
       channel,
+      continueLabel: action.say.continueLabel,
       delivery,
       typingIntensity: 0,
       typingPulse: 0,
@@ -4992,7 +5002,7 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
   }
 }
 
-export function handleAdvance() {
+export function handleAdvance(confirmAction = false) {
   const state = useVNStore.getState();
   if (presentationCovered || !state.game || state.error || state.isFinished || state.gameOver || state.chapterLoading || state.dialogUiHidden) {
     return;
@@ -5025,6 +5035,7 @@ export function handleAdvance() {
       schedulePlayerAutoAdvance();
       return;
     }
+    if (state.dialog.continueLabel && (!confirmAction || state.dialog.typing)) return;
     clearPlayerAutoAdvance();
     currentDialogueHasAuthoredAutoAdvance = false;
     useVNStore.getState().setWaitingInput(false);

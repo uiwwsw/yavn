@@ -83,8 +83,8 @@ scenes:
           text: "끝난 건 한 사람의 판결이다. 내 도장이 만든 권력까지 끝났다고 쓰진 마라."
       - wait: 180
       - say:
-          channel: "record"
-          text: "판결의 대가 — 비담은 처형됐습니다. 질서는 돌아왔지만 여왕에게 반대하는 목소리는 낮아졌습니다."
+          channel: thought
+          text: 판결을 내렸다. 누가 반대하느냐고 물었는데 아무도 고개를 들지 않는다. 정말 모두 같은 생각일까.
       - goto: "death_record_choice"
 
   sentence_exile:
@@ -127,8 +127,8 @@ scenes:
           text: "오늘 빨랐다고 내일도 너만 찾으면, 이 재판은 종이 한 장으로 끝나는 거야."
       - wait: 180
       - say:
-          channel: "record"
-          text: "판결의 대가 — 정보망을 되찾았습니다. 여왕 곁에는 다시 비담의 자리가 생겼습니다."
+          channel: thought
+          text: 명부는 되찾았다. 그런데 모르는 암호가 나올 때마다 모두 비담부터 본다. 저 자리를 내가 다시 만든 거야.
       - goto: "death_record_choice"
 
   death_record_choice:
@@ -137,8 +137,8 @@ scenes:
       - music: sealed_court
       - say:
           camera: medium
-          channel: narration
-          text: "재판 뒤 덕만은 열두 해의 종이를 바닥에 길게 늘어놓았습니다. 자기 사망 기록에서 시작한 줄은 곡식 장부와 위조 자백, 일식표를 지나 비담의 편지에서 멈췄습니다. 소화가 화로를 가져왔습니다."
+          channel: action
+          text: 열두 해의 종이를 바닥에 길게 편다. 사망 기록에서 비담의 편지까지. 소화가 화로를 가져온다. 손을 가까이 대니 따뜻하다.
       - char: { id: 소화, position: right }
       - say:
           when: { var: sohwa_trust, op: gte, value: 3 }
@@ -169,8 +169,8 @@ scenes:
     actions:
       - sticker: { id: c12_death_record, image: death_register_sticker, x: 50, y: 28, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
-          channel: narration
-          text: "덕만의 사망 기록이 궁문 한가운데 붙었습니다. 그 아래에는 여왕이 거짓 왕명과 연출된 기적을 쓴 날도 같은 먹으로 적혔습니다."
+          channel: action
+          text: 내 사망 기록을 궁문에 붙인다. 내가 거짓 왕명을 쓴 날도 바로 아래에 적는다. 뒤에서 누군가 읽기 시작한다. 끝까지 자리를 지킨다.
       - say:
           char: 덕만
           text: "나를 죽인 거짓만 열고 내가 쓴 거짓을 숨기면 똑같아. 왕에게 불리한 글도 같은 크기로 써."
@@ -203,8 +203,8 @@ scenes:
           text: "열쇠 셋은 다른 주인에게 갔습니다. 궁문 앞에서 원본을 기다리던 사람들은 개봉 날짜만 받아 들었습니다."
       - wait: 180
       - say:
-          channel: "record"
-          text: "기록의 대가 — 원본은 보존됐습니다. 살아 있는 피해자들은 다음 왕의 결정을 기다립니다."
+          channel: thought
+          text: 원본은 남겼다. 피해자는 개봉 날짜만 받아 간다. 그때까지 살아 있을 수 있느냐는 말에 대답하지 못했다.
       - goto: "last_decree_choice"
 
   records_burned:
@@ -231,8 +231,8 @@ scenes:
           text: "덕만은 화로 앞에서 오래 움직이지 않았습니다. 궁문 밖의 다툼은 잦아들었지만 그 종이를 다시 읽을 수는 없었습니다."
       - wait: 180
       - say:
-          channel: "record"
-          text: "기록의 대가 — 분쟁을 멈췄습니다. 원본의 위조 흔적도 함께 사라졌습니다."
+          channel: thought
+          text: 조용해졌다. 붉은 인장은 재가 됐다. 다시 확인하고 싶은 사람이 오면, 나는 뭘 내밀 수 있지.
       - goto: "last_decree_choice"
 
   last_decree_choice:
@@ -241,8 +241,8 @@ scenes:
       - music: open_sky
       - say:
           camera: wide
-          channel: narration
-          text: "첨성대 아래 긴 탁자에 마지막 칙령이 놓였습니다. 어린 덕만의 죽음은 남이 먼저 썼습니다. 이제 선덕왕은 자기 뒤에 올 사람들이 왕의 글을 고칠 수 있는 문장을 써야 했습니다."
+          channel: thought
+          text: 내 죽음은 남이 먼저 썼다. 이 칙령도 내가 죽은 뒤에는 남겠지. 틀렸을 때, 누가 이 글을 고칠 수 있어야 할까?
       - choice:
           key: c12_final_decree
           prompt: "다음 왕의 거짓도 고칠 수 있게 권한을 어디에 둘까요?"
@@ -290,8 +290,8 @@ scenes:
           text: "명령은 빠르게 나갔습니다. 여왕의 붓이 멈추면 회의장 전체가 숨을 죽였습니다."
       - wait: 180
       - say:
-          channel: "record"
-          text: "마지막 칙령 — 힘은 왕좌에 남았습니다. 나라가 어떤 침묵을 배웠는지는 이전 판결들이 답합니다."
+          channel: thought
+          text: 명령은 빨리 나간다. 내가 붓을 멈추면 모두 기다린다. 내가 틀렸다는 말은 어디서 들을 수 있을까.
       - goto: "judge_ending"
 
   bad_divided_guardians:
@@ -322,8 +322,8 @@ scenes:
           text: "세 열쇠가 탁자에서 갈라졌습니다. 첫 회의는 해가 져도 끝나지 않았지만 문밖 사람들도 결정이 늦는 까닭을 들었습니다."
       - wait: 180
       - say:
-          channel: "record"
-          text: "마지막 칙령 — 권한을 나눴습니다. 누구를 남기고 무엇을 감췄는지가 새 제도의 무게가 됩니다."
+          channel: thought
+          text: 회의가 해가 져도 안 끝난다. 답답하다. 그래도 저 문밖의 사람이 늦는 이유를 물을 수는 있게 됐다.
       - goto: "judge_ending"
 
   judge_ending:

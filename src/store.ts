@@ -33,6 +33,7 @@ type DialogState = {
   typing: boolean;
   unskippable: boolean;
   channel: DialogueChannel;
+  continueLabel?: string;
   delivery: DialogueDelivery;
   typingIntensity: number;
   typingPulse: number;
@@ -186,6 +187,7 @@ const initialInputGate: InputGateState = {
 
 const initialChoiceGate: ChoiceGateState = {
   active: false,
+  presentation: 'dialogue',
   key: '',
   prompt: '',
   forgiveOnceDefault: false,
@@ -339,7 +341,7 @@ export const useVNStore = create<VNState>((set) => ({
     dialog: {
       ...state.dialog,
       ...dialog,
-      ...(dialog.fullText === '' ? { channel: 'dialogue' as const } : {}),
+      ...(dialog.fullText === '' ? { channel: 'dialogue' as const, continueLabel: undefined } : {}),
       // The lock exists only while glyphs are still being revealed.
       ...(dialog.typing === false ? { unskippable: false } : {}),
     },

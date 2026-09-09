@@ -8,15 +8,14 @@ scenes:
       - music: night_road
       - say:
           camera: wide
-          channel: record
-          delivery: calm
-          text: "십 년 뒤. 국경 장시의 종이 세 번 울리자 '만덕'은 셈을 멈췄습니다. 죽은 공주를 찾는 군화 소리가 장터로 들어왔습니다."
+          channel: action
+          text: 장시의 종이 세 번 울린다. “만덕!” 부르는 소리에 고개를 든다. 십 년째 쓰는 이름인데, 군화를 보면 아직 숨이 멎는다.
       - char: { id: 덕만, position: left, emotion: wanderer }
       - char: { id: 소화, position: right }
       - say:
-          channel: narration
+          channel: thought
           camera: medium
-          text: "덕만의 손가락이 두 장부 사이를 오갔습니다. 난민을 잡는 종이와 곡식을 옮기는 종이에 같은 붉은 흠집이 있었습니다. 목적지는 둘 다 서라벌 서쪽 창고."
+          text: 수색표에도 붉은 흠이 있어. 어릴 때 그 도장인가? 곡식 장부에도… 서라벌 서쪽 창고. 어디서 본 이름이지.
       - say:
           char: 소화.nervous
           camera: medium
@@ -54,8 +53,8 @@ scenes:
   hidden_inquiry:
     actions:
       - say:
-          channel: narration
-          text: "덕만이 틀린 합계를 큰 소리로 읽자 상인이 욕설을 뱉으며 인장장이를 불렀습니다. 모두가 싸움 구경에 몰렸고 장부는 탁자 위에 열린 채 남았습니다."
+          channel: action
+          text: 틀린 합계를 일부러 크게 읽는다. 상인이 욕을 하며 인장장이를 부른다. 사람들의 등이 돌아간 틈에 장부를 당긴다.
       - say:
           char: 소화
           camera: medium
@@ -130,9 +129,9 @@ scenes:
       - effect: darken
       - char: { id: 칠숙, position: center, emotion: smile }
       - say:
-          channel: narration
+          channel: action
           camera: wide
-          text: "마지막 햇빛이 처마에서 사라지자 네 문이 동시에 닫혔습니다. 군사들이 좌판을 걷어차며 종이에 그려진 얼굴과 사람들을 번갈아 보았습니다."
+          text: 해가 처마 아래로 사라진다. 네 문에서 빗장 소리가 겹친다. 창끝 아래 찢어진 좌판이 내 발까지 밀려온다.
       - say:
           char: 칠숙.smile
           camera: medium
@@ -171,8 +170,8 @@ scenes:
   save_witness:
     actions:
       - say:
-          channel: narration
-          text: "덕만이 멍에를 베자 놀란 소가 수레를 골목에 비스듬히 처박았습니다. 인장장이를 끌어냈을 때 군사들의 창끝은 이미 곡식 자루를 찢고 있었습니다."
+          channel: action
+          text: 멍에를 벤다. 소가 날뛰며 수레를 골목에 밀어 넣는다. 인장장이의 팔을 잡는다. 뒤에서 자루가 터지는 소리가 난다.
       - get: market_seal
       - goto: checkpoint
 
@@ -250,9 +249,9 @@ scenes:
           id: "소화"
           position: "right"
       - say:
-          camera: "wide"
-          channel: "narration"
-          text: "검문소 횃불 아래 정문 창끝이 겹쳤습니다. 마른 수로 안에는 새 장화 자국이 찍혀 있었고, 빈 관의 못은 안쪽이 아니라 바깥쪽으로 박혀 있었습니다. 문지기들만 모란패와 추격대의 붉은 인장을 번갈아 보며 웅성거렸습니다."
+          camera: wide
+          channel: action
+          text: 횃불 아래서 걸음을 멈춘다. 수로에 새 장화 자국이 있다. 문지기의 눈이 모란패와 추격대의 붉은 인장 사이를 오간다.
       - choice:
           key: "c2_checkpoint"
           prompt: "뒤에는 칠숙, 앞에는 왕실 검문병이 있습니다. 어떻게 빠져나갈까요?"
@@ -385,8 +384,8 @@ scenes:
       - char: { id: 덕만, position: left, emotion: wanderer_angry }
       - char: { id: 소화, position: right, emotion: nervous }
       - say:
-          channel: narration
-          text: "덕만은 모란패로 빗장을 반쯤 열고, 붉은 인장은 추격대가 보도록 다른 손에 높이 들었습니다. 두 표식은 한 사람의 신분증이 아니라 서로의 위조를 고발하는 증거처럼 보였습니다."
+          channel: action
+          text: 한 손에는 모란패, 다른 손에는 수색 인장을 든다. 문지기에게 가까이 보인다. 그가 추격대 쪽을 돌아보는 순간 빗장이 느슨해진다.
       - say:
           char: 덕만.wanderer_angry
           camera: medium
@@ -469,35 +468,52 @@ scenes:
           enter: fadeIn
           zIndex: 14
       - say:
-          channel: narration
-          camera: wide
-          text: 소화가 그을린 족보와 수색 인장을 나란히 폈습니다. 덕만은 종이의 크기 대신 붉은 자국의 가장자리를 맞췄습니다.
+          channel: action
+          text: 종이를 펴려니 손끝이 멈춘다. 어릴 때 보았던 그 글씨. 붉은 자국 쪽만 빛에 대 본다.
           with: []
+          camera: wide
       - goto: evidence_seals_compare
 
   evidence_seals_compare:
     actions:
       - choice:
-          key: evidence_seals
-          prompt: 두 인장에 남은 같은 흠은 무엇일까요?
+          key: evidence_seals_look
+          presentation: explore
+          prompt: 손에 닿는 흔적부터. 어느 쪽을 더 살펴볼까?
           camera: wide
-          options:
-            - text: 오른쪽 아래에 빠진 네모난 모서리
-              goto: evidence_seals_solved
-            - text: 두 종이에 묻은 그을음
-              goto: evidence_seals_retry
-            - text: 종이를 묶은 끈의 색
-              goto: evidence_seals_retry
-            - text: 판단을 미루고 돌아간다
-              goto: evidence_seals_return
           with: []
+          options:
+            - text: 그을린 족보
+              at:
+                x: 27
+                "y": 75
+              goto: evidence_seals_detail_0
+            - text: 수색 인장
+              at:
+                x: 73
+                "y": 75
+              goto: evidence_seals_detail_1
+            - text: 살펴본 두 흔적을 대조한다
+              when:
+                all:
+                  - var: evidence_seals_seen_0
+                    op: eq
+                    value: true
+                  - var: evidence_seals_seen_1
+                    op: eq
+                    value: true
+              goto: evidence_seals_deduce
+            - text: 물건을 챙기고 돌아간다
+              goto: evidence_seals_return
+
 
   evidence_seals_retry:
     actions:
       - say:
-          channel: narration
-          text: 종이는 다르게 잘랐고 끈도 달랐습니다. 붉은 테두리는 두 장 모두 오른쪽 아래에서 똑같이 끊겼습니다.
+          channel: thought
+          text: 종이가 다르고 끈도 달라. 그을음은 이번 화재의 흔적이야. 두 번 찍혀도 같은 자리가 빈 이유를 생각해 보자.
           with: []
+          camera: wide
       - goto: evidence_seals_compare
 
   evidence_seals_solved:
@@ -519,3 +535,42 @@ scenes:
           id: "desk_1"
           leave: "fadeOut"
       - goto: "checkpoint"
+
+  evidence_seals_deduce:
+    actions:
+      - choice:
+          key: evidence_seals
+          prompt: 두 인장에 남은 같은 흠은 무엇일까요?
+          camera: wide
+          options:
+            - text: 오른쪽 아래에 빠진 네모난 모서리
+              goto: evidence_seals_solved
+            - text: 두 종이에 묻은 그을음
+              goto: evidence_seals_retry
+            - text: 종이를 묶은 끈의 색
+              goto: evidence_seals_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_seals_return
+          with: []
+
+  evidence_seals_detail_0:
+    actions:
+      - say:
+          channel: action
+          text: 족보의 붉은 테두리를 따라 눈을 옮긴다. 오른쪽 아래가 네모나게 비어 있다. 그을음은 그보다 바깥쪽이다.
+          with: []
+          camera: wide
+      - set:
+          evidence_seals_seen_0: true
+      - goto: evidence_seals_compare
+
+  evidence_seals_detail_1:
+    actions:
+      - say:
+          channel: action
+          text: 수색 인장을 깨끗한 천에 눌러 본다. 오른쪽 아래에 같은 크기의 흰 틈이 남는다. 잉크가 덜 묻었나? 다시 눌러도 같다.
+          with: []
+          camera: wide
+      - set:
+          evidence_seals_seen_1: true
+      - goto: evidence_seals_compare

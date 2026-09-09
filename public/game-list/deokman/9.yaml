@@ -13,8 +13,8 @@ scenes:
       - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 춘추, position: right }
       - say:
-          channel: narration
-          text: "즉위 첫겨울, 왕좌 앞에 두 돌이 놓였습니다. 하나는 무너진 북쪽 성벽에서, 하나는 지난해 홍수에 잠긴 남쪽 마을에서 왔습니다. 국고 상자에는 둘 중 한쪽 공사비밖에 남지 않았습니다."
+          channel: action
+          text: 깨진 성벽 돌과 물에 닳은 마을 돌을 만진다. 둘 다 차다. 국고의 잔돈을 세어도 두 공사비가 되지 않는다.
       - say:
           char: 춘추
           camera: medium
@@ -70,8 +70,8 @@ scenes:
           people_support: -4
           insight: 1
       - say:
-          channel: "record"
-          text: "통치의 대가 — 더 일찍 하늘을 읽게 됐습니다. 공사비를 낸 마을의 겨울은 길었습니다."
+          channel: thought
+          text: 하늘은 한 계절 먼저 읽는다. 묽은 죽을 받아 간 손이 자꾸 떠오른다. 그들에게도 이 시간이 값어치가 있을까.
       - goto: "who_reads_stars"
 
   balanced_build:
@@ -101,16 +101,16 @@ scenes:
       - add:
           nobles_support: -2
       - say:
-          channel: "record"
-          text: "통치의 대가 — 두 공사를 이어 갔습니다. 속도를 포기한 자리에는 왕실의 비용이 들어갔습니다."
+          channel: thought
+          text: 탑도 성문도 아직 낮다. 두 곳의 망치 소리는 이어진다. 늦어진다는 항의도 내가 들어야지.
       - goto: "who_reads_stars"
 
   granary_first:
     actions:
       - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
-          channel: narration
-          text: "창고가 차자 마을 사람들이 곡식 자루를 품삯으로 받고 돌을 날랐습니다. 탑은 늦어졌고, 돌마다 어느 마을 손에서 왔는지 숯 글씨가 남았습니다."
+          channel: action
+          text: 곡식 자루를 품삯으로 건넨다. 사람들이 돌에 마을 이름을 쓴다. 탑이 늦어진다고 말하자 한 사람이 말없이 다음 돌을 든다.
       - say:
           char: 춘추.nervous
           camera: medium
@@ -128,8 +128,8 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk, enter: { effect: fadeIn, layout: push, duration: 360 } }
       - say:
           camera: wide
-          channel: narration
-          text: "첫 관측표가 마르기도 전에 제관은 봉인 상자를 가져왔습니다. 비담은 그 상자 위에 앉아 날짜 하나를 손가락으로 가렸습니다."
+          channel: action
+          text: 새 관측표를 펴는데 봉인 상자가 앞을 막는다. 비담이 날짜 하나를 가린다. 나는 그 손가락 아래의 숫자를 바라본다.
       - say:
           char: 비담.smirk
           camera: medium
@@ -160,8 +160,8 @@ scenes:
       - sticker: { id: c10_chart, image: star_chart_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, enter: fadeIn }
       - get: star_chart
       - say:
-          channel: narration
-          text: "별 이름 옆에 씨앗과 물결 그림이 그려졌습니다. 글을 모르는 아이가 매듭 수를 세어 어른보다 먼저 강물 오를 날을 맞혔습니다."
+          channel: action
+          text: 씨앗 옆에 물결을 그린다. 아이가 매듭을 세더니 다음 강물 오를 날을 짚는다. 내가 답을 읽어 주기도 전이다.
       - clearSticker: { id: c10_chart, leave: fadeOut }
       - goto: observatory_sabotage
 
@@ -193,8 +193,8 @@ scenes:
       - add:
           bidam_trust: -1
       - say:
-          channel: "record"
-          text: "통치의 대가 — 표를 나눠 보관했습니다. 고치는 일은 느려졌지만 한 사람의 손으로 지울 수 없게 됐습니다."
+          channel: thought
+          text: 정정 한 번에 필체가 셋이다. 느리다. 그래도 이제 내가 한 줄을 지워도 다른 곳에는 남겠지.
       - goto: "observatory_sabotage"
 
   bidam_network:
@@ -228,8 +228,8 @@ scenes:
       - add:
           bidam_trust: 2
       - say:
-          channel: "record"
-          text: "통치의 대가 — 경보는 빨라졌습니다. 관측표를 직접 읽을 수 있는 사람은 늘지 않았습니다."
+          channel: thought
+          text: 경보는 빨리 갔다. 전령이 떠나자 아이는 다시 기다린다. 숫자를 읽는 사람을 늘리지 못했어.
       - goto: "observatory_sabotage"
 
   observatory_sabotage:
@@ -239,8 +239,8 @@ scenes:
       - effect: embers
       - say:
           camera: wide
-          channel: narration
-          text: "완공 전날 밤, 탑 아래 창고에서 불이 솟았습니다. 종이 울리기도 전에 시장 반대편에서 '여왕의 별이 탔다'는 외침이 들렸습니다."
+          channel: action
+          text: 탑 아래에서 타는 냄새가 난다. 아직 종도 울리지 않았는데 시장 쪽에서 외친다. “여왕의 별이 탔다!” 어떻게 벌써 알았지?
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
@@ -297,8 +297,8 @@ scenes:
       - music: open_sky
       - say:
           camera: wide
-          channel: narration
-          text: "첨성대는 늦게 완성됐습니다. 한쪽 돌은 검게 탔고 관측표에는 물에 번진 숫자를 다시 쓴 흔적이 남았습니다."
+          channel: action
+          text: 검게 탄 돌을 쓸어 본다. 손에 재가 묻는다. 번진 관측표 옆에 새 숫자를 적는다. 틀렸으면 다시 고치면 된다.
       - char: { id: 덕만, position: center, emotion: queen }
       - say:
           char: 덕만
@@ -355,8 +355,11 @@ scenes:
   observatory_end:
     actions:
       - say:
-          channel: record
-          text: "덕만은 별을 읽을 사람을 늘리거나, 자신이 만든 독점을 뒤늦게 해체하려 했습니다. 그러나 비담에게 권한은 이미 충성과 사랑의 증명이었고, 문을 나누는 명령은 자신을 지우는 판결처럼 들렸습니다."
+          channel: thought
+          text: 비담이 떠난 문을 본다. 권한을 나누자는 말을 왜 끝내 듣지 않았을까. 대답 없는 밤이 길어진다.
+          with: []
+          camera: wide
+          continueLabel: 꺼진 북쪽 봉화를 확인하러 나간다
       - goto: /10.yaml
 
   bad_monument:

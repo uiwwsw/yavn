@@ -220,6 +220,62 @@ describe('engine runtime safety', () => {
       .toEqual(['The earlier clue changes this conversation.']);
   });
 
+  it('requires a deliberate action after typing and pauses AUTO until the player acts', () => {
+    useVNStore.getState().setGame({ ...game, scenes: { intro: { actions: [
+      { say: { channel: 'thought', text: 'A noise behind the door.', continueLabel: 'Open the door' } },
+      { say: { channel: 'action', text: 'Cold air rushes in.' } },
+      { choice: { prompt: 'Which way?', options: [{ text: 'Left' }] } },
+    ] } } }, '/');
+    setPlayerExperienceSettings({ autoPlayEnabled: true, autoPlayDelayMs: 800 });
+    handleAdvance();
+    handleAdvance(true); // A click during typing only reveals the text.
+    expect(useVNStore.getState()).toMatchObject({ actionIndex: 0, dialog: { typing: false } });
+    vi.advanceTimersByTime(5000);
+    handleAdvance();
+    expect(useVNStore.getState().actionIndex).toBe(0);
+    setScenePresentationPaused(true);
+    handleAdvance(true);
+    expect(useVNStore.getState().actionIndex).toBe(0);
+    setScenePresentationPaused(false);
+    handleAdvance(true);
+    expect(useVNStore.getState()).toMatchObject({ actionIndex: 1, dialog: { continueLabel: undefined, channel: 'action' } });
+    handleAdvance();
+    vi.advanceTimersByTime(1000);
+    expect(useVNStore.getState().choiceGate.active).toBe(true);
+  });
+
+  it('uses thought ownership without marking it as spoken dialogue', () => {
+    useVNStore.getState().setGame({ ...characterPlacementGame, scenes: { intro: { actions: [
+      { say: { char: '코난', channel: 'thought', with: [], text: 'I should listen first.' } },
+    ] } } }, '/');
+    handleAdvance();
+    expect(useVNStore.getState().dialog).toMatchObject({ channel: 'thought', speakerId: undefined });
+    expect(useVNStore.getState().storyLog.at(-1)).toMatchObject({ channel: 'thought' });
+  });
+
+  it('keeps exploration observations in route state and unlocks deduction after both', () => {
+    const seen = (key: string) => ({ var: key, op: 'eq' as const, value: true });
+    useVNStore.getState().setGame({ ...game, scenes: {
+      intro: { actions: [{ choice: { key: 'desk', presentation: 'explore', with: [], prompt: 'Look closer.', options: [
+        { text: 'Letter', at: { x: 25, y: 50 }, set: { letter: true }, goto: 'intro' },
+        { text: 'Seal', at: { x: 75, y: 50 }, set: { seal: true }, goto: 'intro' },
+        { text: 'Compare', when: { all: [seen('letter'), seen('seal')] }, goto: 'solved' },
+      ] } }] },
+      solved: { actions: [{ say: { text: 'The missing corner matches.' } }] },
+    } }, '/');
+    useVNStore.getState().setVisibleCharacters(['a']);
+    handleAdvance();
+    expect(useVNStore.getState().visibleCharacterIds).toEqual([]);
+    expect(useVNStore.getState().choiceGate).toMatchObject({ presentation: 'explore' });
+    expect(useVNStore.getState().choiceGate.options).toHaveLength(2);
+    submitChoiceOption(1);
+    expect(useVNStore.getState().choiceGate.options).toHaveLength(2);
+    submitChoiceOption(0);
+    expect(useVNStore.getState().choiceGate.options).toHaveLength(3);
+    submitChoiceOption(2);
+    expect(useVNStore.getState()).toMatchObject({ routeVars: { letter: true, seal: true }, currentSceneId: 'solved' });
+  });
+
   afterEach(() => {
     setScenePresentationPaused(false);
     setPlayerExperienceSettings({ autoPlayEnabled: false });

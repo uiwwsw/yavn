@@ -13,8 +13,8 @@ scenes:
       - char: { id: 덕만, position: left }
       - char: { id: 당 사신, position: right }
       - say:
-          channel: narration
-          text: "당 사신은 곡식 장부를 거들떠보지 않고 모란 족자를 연회상 위에 펼쳤습니다. 어린 날 불타던 별궁에서 본 바로 그 그림이었습니다. 편지 세 봉에는 같은 조롱이 다른 먹빛으로 적혀 있었습니다."
+          channel: action
+          text: 사신이 내 장부 위에 모란 그림을 편다. 불타던 방에서 보았던 그 꽃. 손끝이 차가워진다. 천천히 숨을 내쉰다.
       - say:
           char: 당 사신
           camera: medium
@@ -122,8 +122,8 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           camera: medium
-          channel: narration
-          text: "비담이 빈 술병을 들고 휘장 뒤에서 나타났습니다. 병 속에는 통역관의 쪽지가 말려 있었습니다. 구휼미를 훔친 가문과 봄 연회 습격자의 이름 옆에 당의 답신 표시가 찍혀 있었습니다."
+          channel: action
+          text: 휘장 뒤에서 비담이 술병을 내민다. 안에서 종이가 바스락거린다. 펴 보니 구휼미를 훔친 가문 옆에 답신 표시가 있다.
       - say:
           char: 비담.smirk
           camera: medium
@@ -202,8 +202,8 @@ scenes:
       - add:
           nobles_support: -1
       - say:
-          channel: "record"
-          text: "외교의 대가 — 이번 겨울의 군량을 얻었습니다. 다음 협상에서 갚을 시간이 생겼습니다."
+          channel: thought
+          text: 겨울의 군량은 왔다. 내년 협상란은 아직 비어 있다. 시간을 번 만큼 다음 답도 준비해야 해.
       - goto: "banquet_test"
 
   secret_trade:
@@ -238,16 +238,16 @@ scenes:
           people_support: -2
           evidence: 1
       - say:
-          channel: "record"
-          text: "외교의 대가 — 공모의 서신을 얻었습니다. 그 값을 낼 사람들은 협상장에 없었습니다."
+          channel: thought
+          text: 편지는 얻었어. 세금을 더 낼 상인들은 여기 앉아 보지도 못했는데. 이 서명을 보여 줄 수 있을까?
       - goto: "banquet_test"
 
   banquet_test:
     actions:
       - char: { id: 당 사신, position: right }
       - say:
-          channel: narration
-          text: "마지막 술잔이 비자 사신은 상석 앞 방석을 손끝으로 두드렸습니다. 당의 예법대로 무릎 꿇으라는 뜻이었습니다. 귀족들의 시선이 덕만의 무릎으로 쏠렸습니다."
+          channel: action
+          text: 사신이 내 앞의 방석을 두드린다. 앉으라는 건가? 시선은 내 얼굴을 지나 무릎에서 멈춰 있다.
       - choice:
           key: c5_protocol
           prompt: "사신이 덕만에게 무릎을 꿇으라 합니다. 어떻게 답할까요?"
@@ -305,8 +305,8 @@ scenes:
       - char: { id: 비담, position: right }
       - say:
           camera: wide
-          channel: narration
-          text: "사신의 수레가 궁문을 나설 때 모란 족자는 연회상 위에 남았습니다. 덕만은 그림을 뒤집어 놓고서야 굳었던 손가락을 폈습니다."
+          channel: action
+          text: 수레 소리가 궁문 밖으로 멀어진다. 모란 그림을 뒤집는다. 굳은 손가락을 하나씩 편다. 아직 손바닥이 아프다.
       - say:
           char: 비담
           camera: medium
@@ -316,11 +316,14 @@ scenes:
           char: 덕만
           text: "좋아하긴 일러. 받아 낸 곡식과 표를 어디부터 쓸지 정해야 해."
       - say:
-          channel: record
-          text: "덕만은 모욕을 조건으로 바꾸었습니다. 당은 신라에 여왕 후보가 있다는 사실을 처음으로 공식 기록했고, 교환품으로 다음 일식의 관측표를 남겼습니다."
+          channel: thought
+          text: 다음 일식의 관측표를 얻었다. 꽃 때문에 시작한 싸움이 하늘의 숫자로 끝나다니. 날짜부터 읽어 볼까.
+          with: []
+          camera: wide
+          continueLabel: 관측표를 펴고 밤을 지새운다
       - say:
-          channel: narration
-          text: "그날 밤, 관측표 위 촛농이 아직 굳기 전에 제관 하나가 날짜를 베꼈습니다. 이튿날 시장 좌판마다 검은 부적이 걸렸고 같은 날짜가 '덕만을 삼킬 날'로 팔렸습니다."
+          channel: action
+          text: 다음 날 장터에 검은 부적이 걸린다. “덕만을 삼킬 날.” 어젯밤 읽었던 날짜와 같다. 내 손에서 종이가 구겨진다.
       - goto: /5.yaml
 
   bad_hostage:

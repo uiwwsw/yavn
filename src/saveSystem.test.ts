@@ -103,6 +103,20 @@ describe('save system', () => {
     expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(true);
   });
 
+  it('preserves perception channels and partial observations through backup import', () => {
+    useVNStore.getState().setRouteVars({ letter_seen: true, seal_seen: false });
+    for (const channel of ['thought', 'action'] as const) {
+      useVNStore.getState().pushStoryLog({ kind: 'dialogue', channel, text: channel, sceneId: 'intro', actionIndex: 0 });
+    }
+    saveCurrentProgress();
+    const backup = exportSaveBackup();
+    localStorage.clear();
+    importSaveBackup(backup!.content);
+    const restored = JSON.parse(localStorage.getItem('vn-engine-autosave:manual') ?? '{}');
+    expect(restored.routeVars).toEqual({ letter_seen: true, seal_seen: false });
+    expect(restored.storyLog.map((entry: { channel: string }) => entry.channel)).toEqual(['thought', 'action']);
+  });
+
   it('imports an unversioned legacy backup and rewrites its progress as schema v2', () => {
     importSaveBackup(JSON.stringify({
       engine: 'YAVN',

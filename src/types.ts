@@ -39,7 +39,7 @@ export type DialogueDelivery =
   | 'shout'
   | 'sad'
   | 'deduction';
-export type DialogueChannel = 'dialogue' | 'narration' | 'record' | 'system';
+export type DialogueChannel = 'dialogue' | 'narration' | 'record' | 'system' | 'thought' | 'action';
 
 export type CharacterFramingPreset = {
   scale: number;
@@ -190,6 +190,7 @@ export type SayAction = {
     framing?: string;
     camera?: CameraDirective;
     channel?: DialogueChannel;
+    continueLabel?: string;
     when?: ConditionNode;
     text: string;
     delivery?: DialogueDelivery;
@@ -289,6 +290,7 @@ export type UseAction = {
 
 export type ChoiceOption = {
   text: string;
+  at?: { x: number; y: number };
   when?: ConditionNode;
   set?: StateSetMap;
   add?: StateAddMap;
@@ -301,6 +303,7 @@ export type ChoiceOption = {
 export type ChoiceAction = {
   choice: {
     key?: string;
+    presentation?: 'dialogue' | 'explore';
     prompt: string;
     char?: string;
     with?: string[];
@@ -571,6 +574,7 @@ export type InputGateState = {
 
 export type ChoiceGateState = {
   active: boolean;
+  presentation: 'dialogue' | 'explore';
   key: string;
   prompt: string;
   forgiveOnceDefault: boolean;

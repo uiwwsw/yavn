@@ -12,8 +12,8 @@ scenes:
           channel: record
           text: "제11장 — 떨어진 별"
       - say:
-          channel: narration
-          text: "사흘 뒤 밤, 불붙은 것이 별처럼 왕궁 위를 가로질렀습니다. 사람들이 하늘을 올려다보기도 전에 군영과 시장에서 같은 외침이 터졌습니다. '여왕의 별이 떨어졌다.'"
+          channel: action
+          text: 불의 꼬리가 궁 위를 스친다. 고개를 들자 외침이 뒤따른다. “여왕의 별이 떨어졌다.” 저렇게 낮게? 어디로 떨어졌지?
       - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
@@ -65,8 +65,8 @@ scenes:
       - sticker: { id: c11_kite, image: burnt_kite_sticker, x: 50, y: 28, width: "clamp(170px, 20%, 310px)", anchorX: center, anchorY: center, enter: rotateIn }
       - get: burnt_kite
       - say:
-          channel: narration
-          text: "재를 헤치자 대나무 살이 손에 걸렸습니다. 기름 먹인 천 끝에는 비담 전령의 매듭이 그대로 남아 있었습니다."
+          channel: action
+          text: 재에 손을 넣는다. 따갑다. 별이라고 하기엔 가늘고 곧은 살이 잡힌다. 끝에 끈이 붙어 있다. 끊지 않고 건져 낸다.
       - clearSticker: { id: c11_kite, leave: fadeOut }
       - goto: bidam_letter_arrives
 
@@ -134,8 +134,8 @@ scenes:
       - music: sealed_court
       - say:
           camera: medium
-          channel: narration
-          text: "북쪽 길의 봉화가 반란군 손으로 넘어갔습니다. 밤중에 화살 하나가 왕좌 앞까지 미끄러졌고, 화살대에는 구겨진 편지가 묶여 있었습니다."
+          channel: action
+          text: 돌바닥에 화살이 미끄러진다. 몸이 먼저 굳는다. 화살대에 편지가 묶였다. 익숙한 봉끈이다. 천천히 풀어 본다.
       - sticker: { id: c11_letter, image: bidam_letter_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, rotate: 2, enter: fadeIn }
       - get: bidam_letter
       - say:
@@ -204,8 +204,8 @@ scenes:
           char: 덕만
           text: "나는 너를 믿었고 필요로 했다. 네 충성을 법처럼 쓴 건 내 잘못이다. 돌아와라. 내 잘못과 네 반역은 따로 묻겠다."
       - say:
-          channel: narration
-          text: "비담은 편지를 두 번 읽고 공격 북을 거꾸로 눕혔습니다. 반나절뿐이었지만 ‘버림받았다’는 격문의 한 줄을 자기 손으로 지웠고, 그 틈에 마을 하나가 진영을 빠져나왔습니다."
+          channel: action
+          text: 돌아온 전령이 말한다. 북이 반나절 멈췄다고. 창밖으로 아이를 업은 사람들이 빠져나온다. 편지 한 장이 번 시간이다.
       - goto: rebellion_strategy
 
   publish_letter:
@@ -271,8 +271,8 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           camera: wide
-          channel: narration
-          text: "망루 아래 세 진영의 모닥불 색이 달랐습니다. 비담의 전령, 권한을 빼앗긴 귀족 사병, 별의 소문을 믿고 따라온 농민군. 깃발만 같을 뿐 서로 원하는 승리는 달랐습니다."
+          channel: thought
+          text: 같은 깃발 아래인데 밥 짓는 곳은 셋이야. 전령, 귀족의 군사, 농민들. 전부 같은 이유로 여기 온 걸까?
       - say:
           char: 유신.angry
           camera: medium
@@ -306,8 +306,8 @@ scenes:
   split_rebellion:
     actions:
       - say:
-          channel: narration
-          text: "세 번째 해산 북이 울리자 농민군부터 창을 놓았습니다. 빈손으로 돌아가는 등을 왕군이 지켜보는 동안 귀족들은 '반역자를 살려 보냈다'고 외쳤습니다."
+          channel: action
+          text: 세 번째 해산 북이 울린다. 농민들이 창을 놓는다. 귀족의 고함을 뒤로하고 빈손으로 돌아가는 사람부터 센다.
       - goto: bidam_captured
 
   starve_command:
@@ -337,8 +337,8 @@ scenes:
       - add:
           people_support: -4
       - say:
-          channel: "record"
-          text: "반란의 대가 — 전투를 줄였습니다. 굶은 마을과 도망간 지휘관에 대한 책임은 남았습니다."
+          channel: thought
+          text: 칼을 덜 썼다고 다행이라고 생각했어. 식은 솥을 보고 나니 그 말을 입 밖에 낼 수가 없다.
       - goto: "bidam_captured"
 
   bidam_captured:
@@ -349,8 +349,8 @@ scenes:
       - char: { id: 비담, position: right, emotion: sad }
       - say:
           camera: wide
-          channel: narration
-          text: "비담은 결박된 손으로 왕궁 문을 다시 넘었습니다. 처음 만난 창고에서처럼 웃지 않았고, 왕좌 앞에서도 끝내 무릎을 꿇지 않았습니다."
+          channel: action
+          text: 결박된 비담이 문을 넘는다. 처음 창고에서 만났을 때의 웃음이 없다. 눈을 피하려다, 고개를 다시 든다.
       - say:
           char: 비담.sad
           camera: medium
@@ -362,8 +362,11 @@ scenes:
           with: [비담]
           text: "네가 듣고 싶던 말과 네 군대의 죄는 다른 문제다. 내일 같은 자리에서 둘 다 말하겠다."
       - say:
-          channel: record
-          text: "반란은 끝났습니다. 불붙은 연과 비담의 서신, 어린 덕만의 사망 기록은 모두 사실보다 먼저 결론을 퍼뜨린 같은 방식의 증거였습니다. 이제 비담의 목숨과 그 방식을 만든 왕실까지 마지막 재판을 기다렸습니다."
+          channel: thought
+          text: 내 죽음을 쓴 종이, 언니의 자백문, 불붙은 연. 누가 먼저 믿게 만들었는지가 늘 칼보다 빨랐다. 이번에는 내가 먼저 듣자.
+          with: []
+          camera: wide
+          continueLabel: 비담과 피해자들의 말을 재판에 올린다
       - goto: /11.yaml
 
   bad_fortress_rush:
@@ -412,35 +415,52 @@ scenes:
           enter: fadeIn
           zIndex: 14
       - say:
-          channel: narration
-          camera: wide
-          text: 불탄 연의 끈 끝과 편지의 봉끈이 탁자에 나란히 놓였습니다. 기름이 밴 대나무에서는 아직 매운 냄새가 났습니다.
+          channel: action
+          text: 불탄 대나무를 편지 옆에 놓는다. 코끝이 맵다. 끈을 풀면 비교할 수 없을 것 같아, 묶인 채 돌려 본다.
           with: []
+          camera: wide
       - goto: evidence_kite_compare
 
   evidence_kite_compare:
     actions:
       - choice:
-          key: evidence_kite
-          prompt: 떨어진 별을 비담의 전령망과 잇는 흔적은?
+          key: evidence_kite_look
+          presentation: explore
+          prompt: 손에 닿는 흔적부터. 어느 쪽을 더 살펴볼까?
           camera: wide
-          options:
-            - text: 짧은 고리 두 개를 묶은 같은 전령 매듭
-              goto: evidence_kite_solved
-            - text: 편지에 쓰인 비담의 이름만
-              goto: evidence_kite_retry
-            - text: 하늘에서 떨어진 시각만
-              goto: evidence_kite_retry
-            - text: 판단을 미루고 돌아간다
-              goto: evidence_kite_return
           with: []
+          options:
+            - text: 연에 남은 끈
+              at:
+                x: 27
+                "y": 75
+              goto: evidence_kite_detail_0
+            - text: 편지의 봉끈
+              at:
+                x: 73
+                "y": 75
+              goto: evidence_kite_detail_1
+            - text: 살펴본 두 흔적을 대조한다
+              when:
+                all:
+                  - var: evidence_kite_seen_0
+                    op: eq
+                    value: true
+                  - var: evidence_kite_seen_1
+                    op: eq
+                    value: true
+              goto: evidence_kite_deduce
+            - text: 물건을 챙기고 돌아간다
+              goto: evidence_kite_return
+
 
   evidence_kite_retry:
     actions:
       - say:
-          channel: narration
-          text: 별은 종이와 대나무를 남기지 않습니다. 편지의 끈을 풀지 않고도 연에 남은 두 고리와 모양을 맞출 수 있습니다.
+          channel: thought
+          text: 이름은 누구나 쓸 수 있어. 떨어진 시각도 소문으로 알 수 있고. 직접 맞춰 본 두 끈에 남은 손버릇을 생각하자.
           with: []
+          camera: wide
       - goto: evidence_kite_compare
 
   evidence_kite_solved:
@@ -462,3 +482,42 @@ scenes:
           id: "desk_1"
           leave: "fadeOut"
       - goto: "answer_bidam"
+
+  evidence_kite_deduce:
+    actions:
+      - choice:
+          key: evidence_kite
+          prompt: 떨어진 별을 비담의 전령망과 잇는 흔적은?
+          camera: wide
+          options:
+            - text: 짧은 고리 두 개를 묶은 같은 전령 매듭
+              goto: evidence_kite_solved
+            - text: 편지에 쓰인 비담의 이름만
+              goto: evidence_kite_retry
+            - text: 하늘에서 떨어진 시각만
+              goto: evidence_kite_retry
+            - text: 판단을 미루고 돌아간다
+              goto: evidence_kite_return
+          with: []
+
+  evidence_kite_detail_0:
+    actions:
+      - say:
+          channel: action
+          text: 연 끝의 매듭은 짧은 고리 두 개다. 불에 그을렸지만 고리가 서로 지나가는 방향은 남아 있다.
+          with: []
+          camera: wide
+      - set:
+          evidence_kite_seen_0: true
+      - goto: evidence_kite_compare
+
+  evidence_kite_detail_1:
+    actions:
+      - say:
+          channel: action
+          text: 편지의 봉끈도 짧은 고리 두 개. 연의 끈을 옆에 대니 꼬인 방향까지 같다. 이 묶는 법을 쓰는 전령은 누구였지?
+          with: []
+          camera: wide
+      - set:
+          evidence_kite_seen_1: true
+      - goto: evidence_kite_compare

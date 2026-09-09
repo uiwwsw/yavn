@@ -124,15 +124,15 @@ describe('complete Deokman visual novel', () => {
     const continuityAnchors = [
       ['0.yaml', '붉은 인장의 행로'],
       ['1.yaml', '모란패와 추격대의 붉은 인장'],
-      ['2.yaml', '암살자의 밀랍을 국경의 곡식길과 연결'],
-      ['3.yaml', '당의 낙인이 드러났습니다'],
+      ['2.yaml', '암살자의 밀랍이 곡식 수레에도'],
+      ['3.yaml', '당의 낙인이 있다'],
       ['4.yaml', '다음 일식의 관측표'],
       ['5.yaml', '계산표의 옥새'],
       ['6.yaml', '잃어버린 옥새 인주'],
-      ['7.yaml', '쓰러지기 전부터 말라 있던 먹'],
+      ['7.yaml', '언니가 쓰러진 게 어제야'],
       ['8.yaml', '다음 어둠은 누구나 미리 보게 하라'],
       ['9.yaml', '전령 매듭과 기름 먹인 대나무'],
-      ['10.yaml', '사실보다 먼저 결론을 퍼뜨린 같은 방식'],
+      ['10.yaml', '누가 먼저 믿게 만들었는지'],
       ['11.yaml', '열두 해의 종이를 바닥에 길게'],
     ] as const;
 
@@ -145,7 +145,7 @@ describe('complete Deokman visual novel', () => {
     const choiceKeys = choices.map((choice) => String(choice.key));
     const gameOvers = documents.flatMap((document) => collectKey(document, 'gameOver').map(asRecord));
 
-    expect(choices).toHaveLength(40);
+    expect(choices).toHaveLength(45);
     expect(new Set(choiceKeys).size).toBe(choiceKeys.length);
     expect(choiceKeys[0]).toBe('c1_peony_observation');
     expect(choiceKeys.at(-1)).toBe('c12_final_decree');
@@ -228,7 +228,7 @@ describe('complete Deokman visual novel', () => {
       });
     });
 
-    expect(optionOutcomes).toHaveLength(132);
+    expect(optionOutcomes).toHaveLength(151);
     expect(optionOutcomes.filter((outcome) => outcome.fatal)).toHaveLength(44);
     expect(majorityFatalChoices).toBeGreaterThanOrEqual(10);
     expect(fatalOptionPositions).toEqual(new Set(['first', 'middle', 'last']));
@@ -301,7 +301,7 @@ describe('complete Deokman visual novel', () => {
     ];
     expect(delayedPayoffVariables.filter((variable) => !readStateVariables.has(variable))).toEqual([]);
 
-    expect(new Set(choices.map((choice) => String(choice.key))).size).toBe(40);
+    expect(new Set(choices.map((choice) => String(choice.key))).size).toBe(45);
   });
 
   it('keeps one clue-led route alive through all choices and crowns Deokman', () => {
@@ -401,7 +401,9 @@ describe('complete Deokman visual novel', () => {
 
         const choice = asRecord(action.choice);
         if (typeof choice.key === 'string' && Array.isArray(choice.options)) {
-          const wantedTarget = answerTargets[choice.key];
+          const wantedTarget = choice.key === 'first_room_look'
+            ? (state.opening_name_read ? 'opening_record' : 'first_read_name')
+            : answerTargets[choice.key];
           const options = choice.options.map(asRecord);
           const visibleOptions = options.filter((entry) => conditionMatches(entry.when));
           const option = options.find((entry) => entry.goto === wantedTarget);
@@ -409,9 +411,9 @@ describe('complete Deokman visual novel', () => {
           if (!option) break;
           expect(conditionMatches(option.when), `${choice.key} -> ${wantedTarget}`).toBe(true);
           expect(visibleOptions, `${choice.key} visible options`).toContain(option);
-          visibleAnswerPositions.push(visibleOptions.indexOf(option) + 1);
+          if (choice.key !== 'first_room_look') visibleAnswerPositions.push(visibleOptions.indexOf(option) + 1);
           applyMutation(option);
-          visitedChoices.push(choice.key);
+          if (choice.key !== 'first_room_look') visitedChoices.push(choice.key);
           target = String(option.goto);
           break;
         }
@@ -457,7 +459,7 @@ describe('complete Deokman visual novel', () => {
     expect(ending).toBe('stars_belong_to_people');
   });
 
-  it('keeps all player-facing prose inside dialogue, narration, and record channels', () => {
+  it('keeps all player-facing prose inside speech, perception, thought, and record channels', () => {
     const documents = chapterPaths.map(readYaml);
     const says = documents.flatMap((document) => collectKey(document, 'say').map(asRecord));
     const channels = new Set(says.map((say) => say.channel ?? (say.char ? 'dialogue' : 'narration')));
@@ -474,7 +476,7 @@ describe('complete Deokman visual novel', () => {
       }),
     ));
 
-    expect(channels).toEqual(new Set(['dialogue', 'narration', 'record']));
+    expect(channels).toEqual(new Set(['dialogue', 'narration', 'record', 'thought', 'action']));
     expect(says.some((say) => say.channel === 'system')).toBe(false);
     expect(effects).toEqual(new Set(['embers', 'darken', 'eclipse', 'starfall', 'inkstamp']));
     expect(collectStrings(documents).join('\n')).toContain('별이 왕을 고르는 게 아니다');
