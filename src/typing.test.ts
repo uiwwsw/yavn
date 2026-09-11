@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   buildTypingPlan,
   parseInlineSpeed,
   resolveDialogueDelivery,
   splitLastGrapheme,
 } from './typing';
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe('dialogue delivery', () => {
   it('infers delivery from character emotion and lets the DSL override it', () => {
@@ -56,5 +58,24 @@ describe('dialogue delivery', () => {
 
     expect(plan.map((step) => step.grapheme)).toEqual(['A', '👩‍💻', '한']);
     expect(splitLastGrapheme('A👩‍💻')).toEqual({ head: 'A', tail: '👩‍💻' });
+  });
+
+  it.each(['한', 'e\u0301', '👨‍👩‍👧‍👦', '🇰🇷', '👍🏽', '\r\n'])('keeps the final %s grapheme intact in long dialogue', (tail) => {
+    const head = '문밖에서 발소리가 들렸다. '.repeat(40);
+    expect(splitLastGrapheme(head + tail)).toEqual({ head, tail });
+  });
+
+  it('handles empty text and the code point fallback without Segmenter', () => {
+    expect(splitLastGrapheme('')).toEqual({ head: '', tail: '' });
+    vi.stubGlobal('Intl', { Segmenter: undefined });
+    expect(splitLastGrapheme('한😀')).toEqual({ head: '한', tail: '😀' });
+    expect(buildTypingPlan({ text: '한😀', baseSpeed: 30 }).map(step => step.grapheme)).toEqual(['한', '😀']);
+  });
+
+  it('supports iterable-only Segmenter implementations', () => {
+    vi.stubGlobal('Intl', { Segmenter: class {
+      segment() { return [{ segment: 'A', index: 0 }, { segment: 'e\u0301', index: 1 }]; }
+    } });
+    expect(splitLastGrapheme('Ae\u0301')).toEqual({ head: 'A', tail: 'e\u0301' });
   });
 });

@@ -115,7 +115,10 @@ const EMOTION_DELIVERY_MAP: Record<string, DialogueDelivery> = {
   calm: 'calm',
 };
 
-type SegmenterResult = Iterable<{ segment: string; index: number }>;
+type GraphemeSegment = { segment: string; index: number };
+type SegmenterResult = Iterable<GraphemeSegment> & {
+  containing?: (index: number) => GraphemeSegment | undefined;
+};
 type SegmenterLike = {
   segment: (value: string) => SegmenterResult;
 };
@@ -124,10 +127,19 @@ type SegmenterConstructor = new (
   options?: { granularity: 'grapheme' },
 ) => SegmenterLike;
 
+let cachedSegmenter: { constructor: SegmenterConstructor; instance: SegmenterLike } | undefined;
+function getGraphemeSegmenter(): SegmenterLike | undefined {
+  const Constructor = (Intl as unknown as { Segmenter?: SegmenterConstructor }).Segmenter;
+  if (!Constructor) return undefined;
+  if (cachedSegmenter?.constructor !== Constructor) {
+    cachedSegmenter = { constructor: Constructor, instance: new Constructor(undefined, { granularity: 'grapheme' }) };
+  }
+  return cachedSegmenter.instance;
+}
+
 const getGraphemeSegments = (text: string): Array<{ grapheme: string; start: number; end: number }> => {
-  const Segmenter = (Intl as unknown as { Segmenter?: SegmenterConstructor }).Segmenter;
-  if (Segmenter) {
-    const segmenter = new Segmenter(undefined, { granularity: 'grapheme' });
+  const segmenter = getGraphemeSegmenter();
+  if (segmenter) {
     return Array.from(segmenter.segment(text), ({ segment, index }) => ({
       grapheme: segment,
       start: index,
@@ -243,11 +255,20 @@ export function buildTypingPlan(options: {
 }
 
 export function splitLastGrapheme(text: string): { head: string; tail: string } {
-  const segments = getGraphemeSegments(text);
-  const last = segments[segments.length - 1];
+  if (!text) return { head: '', tail: '' };
+  const segments = getGraphemeSegmenter()?.segment(text);
+  // Typing already has a plan. Locate only the final glyph instead of creating
+  // a segmenter and an array for the entire revealed prefix on every update.
+  let last = segments?.containing?.(text.length - 1);
+  if (!last && segments) for (const segment of segments) last = segment;
+  if (!segments) {
+    let tail = '';
+    for (const codePoint of text) tail = codePoint;
+    return { head: text.slice(0, text.length - tail.length), tail };
+  }
   if (!last) return { head: '', tail: '' };
   return {
-    head: text.slice(0, last.start),
-    tail: last.grapheme,
+    head: text.slice(0, last.index),
+    tail: last.segment,
   };
 }
