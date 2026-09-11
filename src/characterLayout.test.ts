@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildImageCharacterRenderKey,
+  resolveAutoCharacterPosition,
+  resolveLayoutCharacterIds,
   resolveCharacterCameraPanX,
   resolveCharacterFacingScale,
   resolveCharacterFocusPresentation,
@@ -262,5 +264,45 @@ describe('character stage layout', () => {
       .toEqual(['덕만', '진평왕']);
     expect(resolveDialogueVisibleCharacterIds(['덕만', '진평왕'], undefined, []))
       .toEqual([]);
+  });
+});
+
+
+describe('automatic and fixed compositions', () => {
+  it('allocates stable slots without making omitted positions overwrite the centre actor', () => {
+    expect(resolveAutoCharacterPosition({}, 'a')).toBe('left');
+    const slots = { left: { id: 'a' }, center: { id: 'b' } };
+    expect(resolveAutoCharacterPosition(slots, 'b', 'auto')).toBe('center');
+    expect(resolveAutoCharacterPosition(slots, 'c')).toBe('right');
+    expect(resolveAutoCharacterPosition({ ...slots, right: { id: 'c' } }, 'd')).toBeUndefined();
+    expect(resolveAutoCharacterPosition(slots, 'c', 'left')).toBe('left');
+  });
+
+  it('reflows 3→2→1 and retains the final composition through an empty exit', () => {
+    const cast = [{ id: 'a', position: 'left' as const }, { id: 'b', position: 'center' as const }, { id: 'c', position: 'right' as const }];
+    const pair = resolveLayoutCharacterIds(['a', 'b', 'c'], ['a', 'b'], ['a', 'b', 'c']);
+    const layout = resolveCharacterStageLayout(cast.filter(actor => pair.includes(actor.id)));
+    expect(resolveMobileCharacterStageAnchor('left', layout)).toBe('25cqw');
+    expect(resolveMobileCharacterStageAnchor('center', layout)).toBe('75cqw');
+    const solo = resolveLayoutCharacterIds(pair, ['a'], ['a', 'b', 'c']);
+    expect(resolveCharacterStagePlacement('left', resolveCharacterStageLayout([cast[0]])).anchorX).toBe('50cqw');
+    expect(resolveLayoutCharacterIds(solo, [], ['a', 'b', 'c'])).toEqual(['a']);
+    expect(resolveLayoutCharacterIds(solo, [], [])).toEqual([]);
+  });
+
+  it('preserves literal left/centre slots and directed camera targets only when fixed is explicit', () => {
+    const layout = resolveCharacterStageLayout([{ id: 'a', position: 'left' }, { id: 'b', position: 'center' }], undefined, 'fixed');
+    expect(resolveMobileCharacterStageAnchor('left', layout)).toBe('25cqw');
+    expect(resolveMobileCharacterStageAnchor('center', layout)).toBe('50cqw');
+    const solo = resolveCharacterStageLayout([{ id: 'a', position: 'left' }], undefined, 'fixed');
+    expect(resolveCharacterStagePlacement('left', solo).anchorX).toBe('25cqw');
+    expect(resolveCharacterCameraPanX('left', solo)).toBe('25cqw');
+    expect(resolveMobileCharacterCameraPanX('left', solo)).toBe('25cqw');
+  });
+
+  it('uses the same portrait spacing for mobile placement and camera centring', () => {
+    const layout = resolveCharacterStageLayout([{ id: 'a', position: 'left' }, { id: 'b', position: 'right' }]);
+    expect(resolveMobileCharacterStageAnchor('left', layout, 0.8)).toBe('calc(50cqw - 20cqw)');
+    expect(resolveMobileCharacterCameraPanX('left', layout, 0.8)).toBe('calc(50cqw - calc(50cqw - 20cqw))');
   });
 });

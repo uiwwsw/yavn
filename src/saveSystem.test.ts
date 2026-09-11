@@ -232,6 +232,29 @@ describe('save system', () => {
     expect(useVNStore.getState().background).toBe('/bg/saved-room.webp');
   });
 
+  it('replays automatic slot allocation and portrait framing at the saved cursor', () => {
+    const chapterGame: GameData = { ...game,
+      assets: { ...game.assets, characters: {
+        a: { base: '/a.webp', defaultFraming: 'portrait', framings: { portrait: { scale: 1, cropBottom: 0.4 } } },
+        b: { base: '/b.webp' },
+      } },
+      scenes: { intro: { layout: 'fixed', actions: [
+        { char: { id: 'a' } }, { char: { id: 'b', position: 'auto' } }, { say: { char: 'a', text: 'Saved.' } },
+      ] } },
+    };
+    useVNStore.getState().setGame(chapterGame, '/');
+    restorePresentationToCursor(
+      { pathKey: '0.yaml', name: '0.yaml', baseUrl: '/', assetOverrides: {}, loadGame: async () => chapterGame },
+      chapterGame,
+      { chapterIndex: 0, chapterPath: '0.yaml', sceneId: 'intro', actionIndex: 2,
+        routeVars: {}, inventory: {}, routeHistory: [], storyLog: [] },
+    );
+    expect(useVNStore.getState().characters).toMatchObject({
+      left: { id: 'a', framing: { name: 'portrait', cropBottom: 0.4 } }, center: { id: 'b' },
+    });
+    expect(useVNStore.getState().game?.scenes.intro.layout).toBe('fixed');
+  });
+
   it('restores the same inherited sticker pose after saving between image updates', () => {
     const chapterGame: GameData = { ...game,
       assets: { ...game.assets, backgrounds: { closed: '/closed.svg', open: '/open.svg' } },

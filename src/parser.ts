@@ -439,6 +439,7 @@ function canonicalizeLayerAssets(
         framingKey,
         {
           scale: framing.scale,
+          ...(framing.cropBottom !== undefined ? { cropBottom: framing.cropBottom } : {}),
           ...(framing.x !== undefined ? { x: framing.x } : {}),
           ...(framing.y !== undefined ? { y: framing.y } : {}),
         },

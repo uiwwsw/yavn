@@ -98,6 +98,7 @@ import {
   resolveCharacterStageLayout,
   resolveCharacterStageRenderPlacement,
   resolveCharacterStageSpacing,
+  resolveLayoutCharacterIds,
   type CharacterStageRenderPlacement,
 } from './characterLayout';
 import {
@@ -1472,6 +1473,7 @@ export default function App() {
     stickers,
     characters,
     visibleCharacterIds,
+    characterLayoutMode,
     camera,
     dialogSpeaker,
     dialogSpeakerId,
@@ -1508,6 +1510,7 @@ export default function App() {
     stickers: state.stickers,
     characters: state.characters,
     visibleCharacterIds: state.visibleCharacterIds,
+    characterLayoutMode: state.game?.scenes[state.currentSceneId]?.layout ?? 'auto',
     camera: state.camera,
     dialogSpeaker: state.dialog.speaker,
     dialogSpeakerId: state.dialog.speakerId,
@@ -2569,8 +2572,10 @@ export default function App() {
         id: entry.slot.id,
         position: entry.position,
       })),
+      undefined,
+      characterLayoutMode,
     ),
-    [layoutCharactersByPosition],
+    [layoutCharactersByPosition, characterLayoutMode],
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
   const effectiveCameraTargetId = useMemo(
@@ -2596,8 +2601,10 @@ export default function App() {
   );
   const stageCastKey = stagedCharactersByPosition.map(({ position, slot }) => `${position}:${slot.id}`).join('|');
   const previousLayoutCastKey = useRef(stageCastKey);
+  const previousLayoutMode = useRef(characterLayoutMode);
   useLayoutEffect(() => {
-    const castChanged = previousLayoutCastKey.current !== stageCastKey;
+    const castChanged = previousLayoutCastKey.current !== stageCastKey
+      || previousLayoutMode.current !== characterLayoutMode;
     if (characterVisibilityFrameRef.current !== null) {
       window.cancelAnimationFrame(characterVisibilityFrameRef.current);
       characterVisibilityFrameRef.current = null;
@@ -2608,6 +2615,7 @@ export default function App() {
     const nextVisibleCharacterIds = [...visibleCharacterIds];
     if (chapterLoading) {
       previousLayoutCastKey.current = stageCastKey;
+      previousLayoutMode.current = characterLayoutMode;
       leavingCharacterPlacementRef.current.clear();
       setLayoutVisibleCharacterIds(nextVisibleCharacterIds);
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
@@ -2648,11 +2656,13 @@ export default function App() {
       });
       leavingCharacterPlacementRef.current = nextLeavingPlacements;
 
-      // Dialogue focus is not blocking: hiding a listener does not move everyone else.
+      // DOM lifetime and composition are independent. Departing actors keep
+      // their snapshot while the surviving cast glides to the new arrangement.
       previousLayoutCastKey.current = stageCastKey;
-      setLayoutVisibleCharacterIds(previous => castChanged
-        ? nextVisibleCharacterIds
-        : [...new Set([...previous.filter(id => stagedCharacterIds.has(id)), ...nextVisibleCharacterIds])]);
+      previousLayoutMode.current = characterLayoutMode;
+      setLayoutVisibleCharacterIds(previous => resolveLayoutCharacterIds(
+        previous, nextVisibleCharacterIds, [...stagedCharacterIds],
+      ));
       setPresentedVisibleCharacterIds(nextVisibleCharacterIds);
     });
 
@@ -2663,6 +2673,7 @@ export default function App() {
       }
     };
   }, [
+    characterLayoutMode,
     stageCastKey,
     chapterLoading,
     characterStageLayout,
@@ -3444,6 +3455,7 @@ export default function App() {
         {...HIGH_PRIORITY_IMAGE_PROPS}
         key={buildImageCharacterRenderKey(slot.id)}
         className={className}
+        cropBottom={slot.framing.cropBottom}
         source={slot.source}
         alt={slot.id}
         data-character-id={slot.id}

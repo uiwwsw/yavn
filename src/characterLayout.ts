@@ -1,4 +1,4 @@
-import type { CharacterFacing, Position } from './types';
+import type { CharacterFacing, CharacterLayoutMode, CharacterSlot, Position } from './types';
 
 export type VisibleCharacterStageEntry = {
   id: string;
@@ -6,6 +6,7 @@ export type VisibleCharacterStageEntry = {
 };
 
 export type CharacterStageLayout = {
+  fixed?: boolean;
   mode: 'default' | 'duo' | 'trio';
   duoSideByPosition: Partial<Record<Position, 'left' | 'right'>>;
   characterIdByPosition: Partial<Record<Position, string>>;
@@ -27,6 +28,24 @@ export type CharacterStageRenderPlacement = CharacterStagePlacement & {
 };
 
 const POSITION_ORDER: readonly Position[] = ['left', 'center', 'right'];
+
+/** Auto placement preserves identity, then uses an empty slot in reading order. */
+export function resolveAutoCharacterPosition(
+  characters: Partial<Record<Position, Pick<CharacterSlot, 'id'>>>,
+  id: string,
+  requested: Position | 'auto' = 'auto',
+): Position | undefined {
+  if (requested !== 'auto') return requested;
+  return POSITION_ORDER.find(position => characters[position]?.id === id)
+    ?? POSITION_ORDER.find(position => !characters[position]);
+}
+
+/** Retain the last composition only during a fully empty exit, not a 3→2 cut. */
+export function resolveLayoutCharacterIds(
+  previous: readonly string[], visible: readonly string[], staged: readonly string[],
+): string[] {
+  return visible.length ? [...visible] : previous.filter(id => staged.includes(id));
+}
 
 function formatLayoutNumber(value: number): string {
   return Number(value.toFixed(2)).toString();
@@ -58,7 +77,7 @@ export function resolveCharacterStagePlacement(
   layout: CharacterStageLayout,
   spacing = 1,
 ): CharacterStagePlacement {
-  const isSolo = Object.keys(layout.characterIdByPosition).length === 1;
+  const isSolo = !layout.fixed && Object.keys(layout.characterIdByPosition).length === 1;
   if (isSolo) {
     return { anchorX: '50cqw', offsetX: '-50%' };
   }
@@ -91,9 +110,15 @@ export function resolveCharacterStagePlacement(
 export function resolveMobileCharacterStageAnchor(
   position: Position,
   layout: CharacterStageLayout,
+  spacing = 1,
 ): string {
-  if (Object.keys(layout.characterIdByPosition).length === 1) {
+  if (!layout.fixed && Object.keys(layout.characterIdByPosition).length === 1) {
     return '50cqw';
+  }
+  const side = layout.mode === 'duo' ? layout.duoSideByPosition[position] : position;
+  if (!layout.fixed && spacing !== 1 && side && side !== 'center') {
+    const gap = formatLayoutNumber(25 * Math.max(0.75, Math.min(1.25, spacing)));
+    return `calc(50cqw ${side === 'left' ? '-' : '+'} ${gap}cqw)`;
   }
   if (layout.mode === 'duo') {
     const side = layout.duoSideByPosition[position];
@@ -120,7 +145,7 @@ export function resolveCharacterCameraPanX(
   layout: CharacterStageLayout,
   spacing = 1,
 ): string {
-  if (Object.keys(layout.characterIdByPosition).length <= 1) {
+  if (!layout.fixed && Object.keys(layout.characterIdByPosition).length <= 1) {
     return '0cqw';
   }
 
@@ -139,10 +164,12 @@ export function resolveCharacterCameraPanX(
 export function resolveMobileCharacterCameraPanX(
   position: Position,
   layout: CharacterStageLayout,
+  spacing = 1,
 ): string {
-  const anchor = resolveMobileCharacterStageAnchor(position, layout);
+  const anchor = resolveMobileCharacterStageAnchor(position, layout, spacing);
   if (anchor === '25cqw') return '25cqw';
   if (anchor === '75cqw') return '-25cqw';
+  if (anchor !== '50cqw') return `calc(50cqw - ${anchor})`;
   return '0cqw';
 }
 
@@ -208,11 +235,11 @@ export function resolveCharacterStageRenderPlacement(
   const characterCount = Object.keys(layout.characterIdByPosition).length;
   return {
     ...resolveCharacterStagePlacement(position, layout, spacing),
-    mobileAnchorX: resolveMobileCharacterStageAnchor(position, layout),
+    mobileAnchorX: resolveMobileCharacterStageAnchor(position, layout, spacing),
     duoSide,
     facingScale: resolveCharacterFacingScale(
       nativeFacing,
-      characterCount === 1 ? 'center' : position,
+      characterCount === 1 && !layout.fixed ? 'center' : position,
       duoSide,
     ),
   };
@@ -221,6 +248,7 @@ export function resolveCharacterStageRenderPlacement(
 export function resolveCharacterStageLayout(
   visibleCharacters: readonly VisibleCharacterStageEntry[],
   _previousLayout?: CharacterStageLayout,
+  mode: CharacterLayoutMode = 'auto',
 ): CharacterStageLayout {
   const visibleByPosition = new Map(
     visibleCharacters.map((character) => [character.position, character] as const),
@@ -229,6 +257,11 @@ export function resolveCharacterStageLayout(
     const character = visibleByPosition.get(position);
     return character ? [character] : [];
   });
+
+  if (mode === 'fixed') return {
+    mode: 'default', fixed: true, duoSideByPosition: {},
+    characterIdByPosition: Object.fromEntries(orderedCharacters.map(character => [character.position, character.id])),
+  };
 
   if (orderedCharacters.length === 2) {
     const [leftCharacter, rightCharacter] = orderedCharacters;

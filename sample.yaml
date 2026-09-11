@@ -78,6 +78,26 @@
 #   - say: { channel: action, text: "접힌 장을 펼쳐 빛에 비춘다." }
 #   - clearSticker: { id: register, leave: fadeOut } # 실제로 제거한 뒤 재선언하면 새 입장
 #
+# 캐릭터 자동 배치: scene.layout은 auto가 기본입니다.
+# scenes:
+#   conversation:
+#     actions:
+#       - char: { id: detective } # position: auto; 새 인물은 첫 빈 슬롯, 같은 ID는 기존 슬롯
+#       - char: { id: witness, position: auto }
+#       - say: { char: detective, with: [witness], text: "둘이 이야기하자." } # 좌우 구도
+#       - say: { char: detective, with: [], text: "생각을 정리한다." } # 중앙으로 이동
+#   doorway:
+#     layout: fixed # 빈자리가 필요할 때만 고정. 다음 장면은 다시 auto
+#     actions:
+#       - char: { id: detective, position: left }
+#       - say: { char: detective, with: [], text: "문을 비워 둬." }
+# assets.characters.detective:
+#   defaultFraming: portrait
+#   framings:
+#     portrait: { scale: 1, cropBottom: 0.4 } # 정적 원화의 아래 40%를 자르고 상반신을 크게 표시
+#     full: { scale: 1 }
+#   calibration: { spacing: 0.8 } # PC·모바일 간격과 카메라 팬을 함께 보정
+#
 # scene actions:
 #   - bg: { id: lounge, transition: fade, duration: 900 } # decoded paint + transition까지 대기
 #   - bg: { id: lounge, transition: cut } # dissolve | fade | wipeLeft | wipeRight | cut
@@ -176,6 +196,7 @@ scenes:
           text: "창 아래로 몸을 낮춘다. 틈으로 붉은 경보등이 깜빡인다. 스위치까지 손이 닿을 것 같다."
       - goto: safety_choice
   safety_choice:
+    layout: auto # 보이는 인원에 따라 자동 배치. 빈자리를 유지할 장면만 fixed
     actions:
       - choice:
           key: sample_safety_choice

@@ -154,6 +154,7 @@ function haveSameCharacterSlot(left: CharacterSlot | undefined, right: Character
     && left.placement === right.placement
     && left.framing.name === right.framing.name
     && left.framing.scale === right.framing.scale
+    && left.framing.cropBottom === right.framing.cropBottom
     && left.framing.x === right.framing.x
     && left.framing.y === right.framing.y
     && left.calibration.scale === right.calibration.scale

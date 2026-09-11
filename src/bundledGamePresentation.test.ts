@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { load } from 'js-yaml';
 import { describe, expect, it } from 'vitest';
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
+import { resolveAutoCharacterPosition } from './characterLayout';
 import type { Action } from './types';
 
 const root = resolve('public/game-list');
@@ -39,8 +40,13 @@ describe('bundled game presentation', () => {
           continue;
         }
         if ('char' in action) {
+          const position = resolveAutoCharacterPosition(
+            Object.fromEntries(Object.entries(current.slots).map(([position, id]) => [position, { id }])),
+            action.char.id, action.char.position,
+          );
+          expect(position).toBeDefined();
           const slots = Object.fromEntries(Object.entries(current.slots).filter(([, id]) => id !== action.char.id));
-          slots[action.char.position] = action.char.id;
+          slots[position!] = action.char.id;
           enqueue(current.scene, current.index + 1, slots);
           continue;
         }

@@ -167,7 +167,7 @@ export function resolveStageCameraPresentation(
     ? resolveCharacterCameraPanX(targetPosition, layout, compositionSpacing)
     : '0cqw';
   const mobilePanX = shouldApplyHorizontalTarget && targetPosition
-    ? resolveMobileCharacterCameraPanX(targetPosition, layout)
+    ? resolveMobileCharacterCameraPanX(targetPosition, layout, compositionSpacing)
     : '0cqw';
 
   return {

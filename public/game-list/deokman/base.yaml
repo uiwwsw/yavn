@@ -29,19 +29,27 @@ assets:
   characters:
     어린 덕만:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.32 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/deokman-child-silla-v8.png
       facing: left
       defaultDelivery: deduction
-      calibration: { scale: 1, y: 0, spacing: 1 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v8.png
         resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v8.png
     덕만:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
       facing: left
       defaultDelivery: deduction
-      calibration: { scale: 1, y: 0, spacing: 0.98 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.png
         angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.png
@@ -57,73 +65,105 @@ assets:
         queen_angry: root:/game-list/deokman/assets/char/deokman-queen-angry-silla-v9.png
     소화:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/sowon-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1, y: 0, spacing: 1 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         nervous: root:/game-list/deokman/assets/char/sowon-nervous-silla-v5.webp
         angry: root:/game-list/deokman/assets/char/sowon-angry-silla-v5.webp
     진평왕:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/jinpyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1, y: 0, spacing: 0.95 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         sad: root:/game-list/deokman/assets/char/jinpyeong-sad-silla-v5.webp
         weak: root:/game-list/deokman/assets/char/jinpyeong-weak-silla-v5.webp
     천명:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/cheonmyeong-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1, y: 0, spacing: 1.05 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         nervous: root:/game-list/deokman/assets/char/cheonmyeong-nervous-silla-v5.webp
         sad: root:/game-list/deokman/assets/char/cheonmyeong-sad-silla-v5.webp
     유신:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/yushin-silla-v5.webp
       facing: left
       defaultDelivery: deduction
-      calibration: { scale: 1, y: 0, spacing: 1.08 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         sad: root:/game-list/deokman/assets/char/yushin-sad-silla-v5.webp
         angry: root:/game-list/deokman/assets/char/yushin-angry-silla-v5.webp
     비담:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/bidam-silla-v5.webp
       facing: left
       defaultDelivery: whisper
-      calibration: { scale: 1, y: 0, spacing: 0.94 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         smirk: root:/game-list/deokman/assets/char/bidam-smirk-silla-v5.webp
         sad: root:/game-list/deokman/assets/char/bidam-sad-silla-v5.webp
     칠숙:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/chilsuk-silla-v5.webp
       facing: left
       defaultDelivery: calm
-      calibration: { scale: 1, y: 0, spacing: 0.92 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         smile: root:/game-list/deokman/assets/char/chilsuk-smile-silla-v5.webp
         angry: root:/game-list/deokman/assets/char/chilsuk-angry-silla-v5.webp
     춘추:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/jinun-silla-v5.webp
       facing: right
       defaultDelivery: calm
-      calibration: { scale: 1, y: 0, spacing: 0.92 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         nervous: root:/game-list/deokman/assets/char/jinun-nervous-silla-v5.webp
         angry: root:/game-list/deokman/assets/char/jinun-angry-silla-v5.webp
     당 사신:
       placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+        full: { scale: 1 }
       base: root:/game-list/deokman/assets/char/ajin-silla-v5.webp
       facing: right
       defaultDelivery: calm
-      calibration: { scale: 1, y: 0, spacing: 0.98 }
+      calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
         nervous: root:/game-list/deokman/assets/char/ajin-nervous-silla-v5.webp
         angry: root:/game-list/deokman/assets/char/ajin-angry-silla-v5.webp

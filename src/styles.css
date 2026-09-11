@@ -5768,45 +5768,16 @@ textarea,
     --char-live2d-width: min(62cqw, 52cqh);
   }
 
-  .char-live2d.center {
-    --char-anchor-x: 50cqw;
-    left: 0;
-  }
-
   .char-layer.char-layout-duo .char-live2d {
     --char-live2d-width: min(50cqw, 52cqh);
-  }
-
-  .char-layer.char-layout-duo .char-duo-left {
-    --char-anchor-x: 25cqw;
-    --char-offset-x: -50%;
-  }
-
-  .char-layer.char-layout-duo .char-duo-right {
-    --char-anchor-x: 75cqw;
-    --char-offset-x: -50%;
   }
 
   .char-layer.char-layout-trio .char-live2d {
     --char-live2d-width: min(48cqw, 52cqh);
   }
 
-  .char-layer.char-layout-trio .left {
-    --char-anchor-x: 25cqw;
-    --char-offset-x: -50%;
-  }
-
-  .char-layer.char-layout-trio .center {
-    --char-anchor-x: 50cqw;
-    --char-offset-x: -50%;
-  }
-
-  .char-layer.char-layout-trio .right {
-    --char-anchor-x: 75cqw;
-    --char-offset-x: -50%;
-  }
-
-  .char-layer .char.is-camera-hidden {
+  /* One layout resolver supplies both visible and departing actor anchors. */
+  .char-layer .char {
     --char-anchor-x: var(--char-mobile-anchor-x, var(--char-desktop-anchor-x, 50cqw));
   }
 
