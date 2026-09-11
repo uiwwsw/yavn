@@ -37,8 +37,11 @@
 .character-portrait { clip-path: inset(-2px -100vmax 0); }
 .character-portrait .character-art {
   top: 0; bottom: auto;
-  height: calc(100% / var(--character-visible-fraction, 1));
-  transition: height 360ms cubic-bezier(.2,.72,.24,1);
+  /* Keep intrinsic geometry stable: crop zoom must not lay out and rasterize
+     the full-resolution portrait again on every animation frame. */
+  transform-origin: 50% 0;
+  transform: translateX(-50%) scale(calc(1 / var(--character-visible-fraction, 1)));
+  transition: transform 360ms cubic-bezier(.2,.72,.24,1);
 }
 .portrait-pending { visibility: hidden; opacity: 0; }
 .portrait-current { z-index: 2; opacity: 1; }

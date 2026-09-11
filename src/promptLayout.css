@@ -8,6 +8,9 @@
   height: min(var(--yavn-prompt-height, 170px), var(--dialog-safe-max-height));
   min-height: 0;
   max-height: var(--dialog-safe-max-height);
+  /* The reading frame has explicit dimensions. Keep each typing update local
+     without paint containment, which would clip its controls and focus rings. */
+  contain: layout size;
 }
 
 /* Overflow scrolls within the automatic or author-specified prompt height. */

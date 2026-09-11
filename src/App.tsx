@@ -317,7 +317,7 @@ const DialogueText = memo(function DialogueText() {
     typingIntensity: state.dialog.typingIntensity,
     typingPulse: state.dialog.typingPulse,
   })));
-  const visibleDialogue = splitLastGrapheme(visibleText);
+  const visibleDialogue = splitLastGrapheme(typing ? visibleText : '');
   const className = [
     'text',
     `channel-${channel}`,
