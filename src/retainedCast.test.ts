@@ -14,15 +14,15 @@ describe('cast replacement lifetime', () => {
     const old = actor('old');
     const next = actor('new');
     const result = reconcileCast([old], [next], 100);
-    expect(result[0]).toBe(next);
-    expect(result[1]).toEqual({ ...old, visible: false, retiredAt: 100 });
-    expect(result[1].slot).toBe(old.slot);
-    expect(result[1].placement).toBe(old.placement);
+    expect(result[1]).toBe(next);
+    expect(result[0]).toEqual({ ...old, visible: false, retiredAt: 100 });
+    expect(result[0].slot).toBe(old.slot);
+    expect(result[0].placement).toBe(old.placement);
   });
 
   it('does not restart an exit deadline when another actor changes expression', () => {
     const result = reconcileCast([actor('old')], [actor('new')], 100);
-    expect(reconcileCast(result, [actor('new')], 200)[1].retiredAt).toBe(100);
+    expect(reconcileCast(result, [actor('new')], 200)[0].retiredAt).toBe(100);
   });
 
   it('cancels retirement when the same character returns before the exit completes', () => {
@@ -36,11 +36,21 @@ describe('cast replacement lifetime', () => {
 
   it('preserves an actor already fading from a visibility change when its slot is replaced', () => {
     const hidden = { ...actor('old'), visible: false };
-    expect(reconcileCast([hidden], [actor('new')], 100)[1]).toEqual({ ...hidden, retiredAt: 100 });
+    expect(reconcileCast([hidden], [actor('new')], 100)[0]).toEqual({ ...hidden, retiredAt: 100 });
   });
 
   it('moves the same actor between slots without retaining a duplicate instance', () => {
     const moved = actor('same', 'center');
     expect(reconcileCast([actor('same')], [moved], 100)).toEqual([moved]);
+  });
+
+  it('keeps sibling identity order when actors swap positions and expressions together', () => {
+    const a = actor('a'), b = actor('b', 'right');
+    const movedA = { ...actor('a', 'right'), slot: { ...a.slot, source: 'a-smile.webp' } };
+    const movedB = actor('b', 'left');
+    // Store order follows stage slots; DOM order follows the existing identities.
+    const result = reconcileCast([a, b], [movedB, movedA], 100);
+    expect(result).toEqual([movedA, movedB]);
+    expect(reconcileCast(result, [movedB, movedA], 200)).toEqual(result);
   });
 });

@@ -7,6 +7,7 @@ import {
   collectBackgroundLayerSources,
   commitPreparedBackground,
   finishBackgroundTransition,
+  reconcileSticker,
 } from './assetTransition';
 import type { StickerSlot } from './types';
 
@@ -43,6 +44,19 @@ const sticker: StickerSlot = {
 };
 
 describe('asset transition presentation', () => {
+  it('treats repeated declarations as the same object, including its entrance lifetime', () => {
+    expect(reconcileSticker(sticker, { ...sticker, renderKey: 99 })).toBe(sticker);
+    const changed = reconcileSticker(sticker, { ...sticker, source: '/opened.webp', x: '70%', renderKey: 100 });
+    expect(changed).toMatchObject({ source: '/opened.webp', x: '70%', renderKey: 17 });
+    const reappearing = { ...sticker, renderKey: 101 };
+    expect(reconcileSticker(undefined, reappearing)).toBe(reappearing);
+  });
+
+  it('can cancel departure without recreating the object or retaining its leaving state', () => {
+    const departing = beginStickerLeave(sticker, { leaveEffect: 'fadeOut', leaveDuration: 220, leaveDelay: 0, leaveEasing: 'ease' });
+    const returned = reconcileSticker(departing, { ...sticker, source: '/opened.webp', renderKey: 102 });
+    expect(returned).toMatchObject({ leaving: false, renderKey: sticker.renderKey, source: '/opened.webp' });
+  });
   it('keeps the painted background under a decoded replacement until the fade finishes', () => {
     const first = commitPreparedBackground(EMPTY_BACKGROUND_TRANSITION, '/room.webp');
     const second = commitPreparedBackground(first, '/hall.webp');

@@ -232,6 +232,28 @@ describe('save system', () => {
     expect(useVNStore.getState().background).toBe('/bg/saved-room.webp');
   });
 
+  it('restores the same inherited sticker pose after saving between image updates', () => {
+    const chapterGame: GameData = { ...game,
+      assets: { ...game.assets, backgrounds: { closed: '/closed.svg', open: '/open.svg' } },
+      scenes: { intro: { actions: [
+        { sticker: { id: 'register', image: 'closed', x: 25, y: 30, width: '220px', rotate: -2 } },
+        { say: { text: 'Read.' } },
+        { sticker: { id: 'register', image: 'open', x: 75 } },
+        { say: { text: 'Open.' } },
+      ] } },
+    };
+    useVNStore.getState().setGame(chapterGame, '/');
+    restorePresentationToCursor(
+      { pathKey: '0.yaml', name: '0.yaml', baseUrl: '/', assetOverrides: {}, loadGame: async () => chapterGame },
+      chapterGame,
+      { chapterIndex: 0, chapterPath: '0.yaml', sceneId: 'intro', actionIndex: 3,
+        routeVars: {}, inventory: {}, routeHistory: [], storyLog: [] },
+    );
+    expect(useVNStore.getState().stickers.register).toMatchObject({
+      source: '/open.svg', x: '75%', y: '30%', width: '220px', rotate: -2, leaving: false,
+    });
+  });
+
   it('derives a legacy save background from its story log when cursor replay cannot reach it', () => {
     useVNStore.getState().setGame(backgroundGame, '/');
 

@@ -220,6 +220,31 @@ describe('engine runtime safety', () => {
       .toEqual(['The earlier clue changes this conversation.']);
   });
 
+  it('retains a repeated sticker without replaying its input lock and inherits omitted placement on replacement', () => {
+    const sticker = { id: 'document', image: 'closed', x: 25, y: 30, width: '200px', rotate: -2, inputLockMs: 500 };
+    useVNStore.getState().setGame({ ...game,
+      assets: { ...game.assets, backgrounds: { closed: '/closed.svg', open: '/open.svg' } },
+      scenes: { intro: { actions: [
+        { sticker }, { say: { text: 'First.' } },
+        { sticker }, { say: { text: 'Still here.' } },
+        { sticker: { id: 'document', image: 'open', x: 75 } }, { say: { text: 'Opened.' } },
+      ] } },
+    }, '/');
+    handleAdvance();
+    expect(useVNStore.getState().busy).toBe(true);
+    vi.advanceTimersByTime(500);
+    const original = useVNStore.getState().stickers.document;
+    handleAdvance();
+    handleAdvance();
+    expect(useVNStore.getState()).toMatchObject({ actionIndex: 3, busy: false, dialog: { fullText: 'Still here.' } });
+    expect(useVNStore.getState().stickers.document).toBe(original);
+    handleAdvance();
+    handleAdvance();
+    expect(useVNStore.getState().stickers.document).toMatchObject({
+      renderKey: original.renderKey, source: '/open.svg', x: '75%', y: '30%', width: '200px', rotate: -2,
+    });
+  });
+
   it('requires a deliberate action after typing and pauses AUTO until the player acts', () => {
     useVNStore.getState().setGame({ ...game, scenes: { intro: { actions: [
       { say: { channel: 'thought', text: 'A noise behind the door.', continueLabel: 'Open the door' } },
