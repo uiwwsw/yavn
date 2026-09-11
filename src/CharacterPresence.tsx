@@ -16,7 +16,8 @@ export function CharacterPresence({ visible, ready, effect, children }: Props) {
 
   useLayoutEffect(() => {
     if (shown && !wasShown.current) {
-      setEntrance({ active: effect !== 'none', effect });
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setEntrance({ active: effect !== 'none' && !reduced, effect });
     }
     wasShown.current = shown;
   }, [shown, effect]);

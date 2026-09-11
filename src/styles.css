@@ -1431,14 +1431,6 @@ textarea,
   animation-play-state: paused;
 }
 
-.sticker[data-layout-ready='true'][data-layout-reflow='true'] {
-  animation: stickerSafeReflowReveal 160ms ease-out both;
-}
-
-.sticker[data-motion-tempo='catch-up'][data-layout-ready='true'][data-layout-reflow='true'] {
-  animation-duration: 100ms;
-}
-
 .sticker-visual {
   display: block;
   width: auto;
@@ -1447,6 +1439,17 @@ textarea,
   max-width: 100cqw;
   object-fit: contain;
   pointer-events: none;
+}
+
+.sticker-artwork { position: relative; isolation: isolate; }
+.sticker-art { display: block; width: auto; height: auto; max-width: 100%; object-fit: contain; }
+.sticker-art.portrait-previous, .sticker-art.portrait-pending { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sticker-artwork[data-dissolving='true'] .sticker-art { mix-blend-mode: plus-lighter; }
+.sticker-artwork[data-dissolving='true'] .portrait-current { animation: portraitReveal 180ms linear both; }
+.sticker-artwork[data-dissolving='true'] .portrait-previous { animation: portraitRetire 180ms linear both; }
+.app[data-story-paused='true'] .sticker-art { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .sticker-art { animation: none !important; }
 }
 
 .sticker-enter-none {
@@ -4940,15 +4943,6 @@ textarea,
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes stickerSafeReflowReveal {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: var(--sticker-opacity);
   }
 }
 

@@ -18,6 +18,12 @@ export type StickerStageSize = {
   height: number;
 };
 
+/** Test the painted box, so prompt growth cannot leave a retained fit clipped. */
+export function isStickerWithinFrame(frame: StickerLayoutRect, sticker: StickerLayoutRect): boolean {
+  return sticker.left >= frame.left - 0.75 && sticker.top >= frame.top - 0.75
+    && sticker.right <= frame.right + 0.75 && sticker.bottom <= frame.bottom + 0.75;
+}
+
 /**
  * Confirms that the character bounds used as sticker obstacles have stopped
  * moving. The small tolerance absorbs subpixel rounding without treating an

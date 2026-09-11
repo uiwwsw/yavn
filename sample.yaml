@@ -71,6 +71,13 @@
 #     epilogue: "다음 날에도 그 문은 열려 있었습니다."
 #     background: lounge
 #     tone: hopeful # hopeful | tragic | mystery
+# 같은 아이템을 이어서 표시하는 scene actions (assets.backgrounds에 이미지 ID 선언):
+#   - sticker: { id: register, image: closed_register, x: 30, y: 25, width: "220px" }
+#   - say: { channel: thought, text: "이 이름이… 내 이름인가?" }
+#   - sticker: { id: register, image: open_register, x: 70 } # 같은 DOM, y·폭 유지, 그림·위치 전환
+#   - say: { channel: action, text: "접힌 장을 펼쳐 빛에 비춘다." }
+#   - clearSticker: { id: register, leave: fadeOut } # 실제로 제거한 뒤 재선언하면 새 입장
+#
 # scene actions:
 #   - bg: { id: lounge, transition: fade, duration: 900 } # decoded paint + transition까지 대기
 #   - bg: { id: lounge, transition: cut } # dissolve | fade | wipeLeft | wipeRight | cut

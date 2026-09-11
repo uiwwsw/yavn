@@ -25,6 +25,8 @@ import { YavnLogo } from './YavnLogo';
 import { TitleScene } from './TitleScene';
 import { GameIcon } from './GameIcon';
 import { ResourceImage } from './ResourceImage';
+import { StickerArtwork } from './StickerArtwork';
+import { measureStickerBox } from './stickerMeasurement';
 import { resolvePromptActorInset } from './promptLayout';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
@@ -125,6 +127,7 @@ import {
 } from './mobileAppShell';
 import {
   doesStickerOverlapRects,
+  isStickerWithinFrame,
   fitStickerWithinFrameAvoidingRects,
   haveStickerObstacleRectsSettled,
   shouldRelayoutStickerForStageResize,
@@ -1105,8 +1108,6 @@ const StickerView = memo(function StickerView({
   const stickerRef = useRef<HTMLDivElement | null>(null);
   const [safeFit, setSafeFit] = useState<LockedStickerFit | null>(null);
   const [layoutMotionReady, setLayoutMotionReady] = useState(false);
-  const [resolvedAvoidanceKey, setResolvedAvoidanceKey] = useState('');
-  const [layoutReflowing, setLayoutReflowing] = useState(false);
   const [entryComplete, setEntryComplete] = useState(sticker.enterEffect === 'none');
   const layoutLockedRef = useRef(false);
   const imageReadyRef = useRef(false);
@@ -1115,7 +1116,13 @@ const StickerView = memo(function StickerView({
   const earliestMeasurementAtRef = useRef(0);
   const lockedStageSizeRef = useRef<StickerStageSize | null>(null);
   const previousObstacleRectsRef = useRef<StickerLayoutRect[] | null>(null);
+  const placementKey = [sticker.x, sticker.y, sticker.width, sticker.height,
+    sticker.anchorX, sticker.anchorY, sticker.rotate].join(':');
+  const previousPlacementKeyRef = useRef(placementKey);
   const previousAvoidanceKeyRef = useRef(avoidanceKey);
+  const forceFitRef = useRef(false);
+  const fillWidth = Boolean(sticker.width && sticker.width !== 'auto');
+  const fillHeight = Boolean(sticker.height && sticker.height !== 'auto');
   const stickerEntryExitMotionTempo = useLatchedMotionTempo(
     `${sticker.renderKey}:${sticker.leaving ? 'leave' : 'enter'}`,
     motionTempo,
@@ -1205,44 +1212,20 @@ const StickerView = memo(function StickerView({
     if (
       recheckLockedFit
       && layoutLockedRef.current
-      && !doesStickerOverlapRects(
-        stickerElement.getBoundingClientRect(),
-        characterRects,
-      )
+      && !forceFitRef.current
+      && isStickerWithinFrame(frameRect, stickerElement.getBoundingClientRect())
+      && !doesStickerOverlapRects(stickerElement.getBoundingClientRect(), characterRects)
     ) {
-      setResolvedAvoidanceKey(avoidanceKey);
       return true;
     }
 
-    // Reconstruct the authored box even while a previous safe fit remains rendered.
-    // Temporary styles are restored in the same layout phase, before paint.
-    const previousStyle = {
-      left: stickerElement.style.left,
-      top: stickerElement.style.top,
-      width: stickerElement.style.width,
-      height: stickerElement.style.height,
-      transform: stickerElement.style.transform,
-      transition: stickerElement.style.transition,
-    };
-    stickerElement.style.left = sticker.x;
-    stickerElement.style.top = sticker.y;
-    stickerElement.style.width = sticker.width ?? '';
-    stickerElement.style.height = sticker.height ?? '';
-    stickerElement.style.transition = 'none';
-    stickerElement.style.transform = placementTransform;
-    const stickerRect = stickerElement.getBoundingClientRect();
-    const authoredBox = {
-      left: stickerElement.offsetLeft,
-      top: stickerElement.offsetTop,
-      width: stickerElement.offsetWidth,
-      height: stickerElement.offsetHeight,
-    };
-    stickerElement.style.left = previousStyle.left;
-    stickerElement.style.top = previousStyle.top;
-    stickerElement.style.width = previousStyle.width;
-    stickerElement.style.height = previousStyle.height;
-    stickerElement.style.transform = previousStyle.transform;
-    stickerElement.style.transition = previousStyle.transition;
+    const image = stickerElement.querySelector<HTMLImageElement>('.sticker-art.portrait-current');
+    if (!image) return false;
+    // Never change the live box to measure an authored pose: forced layout on
+    // that box cancels its in-flight CSS transition, even before the next paint.
+    const { rect: stickerRect, box: authoredBox } = measureStickerBox(
+      frameElement, sticker, image, placementTransform,
+    );
 
     if (stickerRect.width <= 0 || stickerRect.height <= 0) {
       return false;
@@ -1262,10 +1245,7 @@ const StickerView = memo(function StickerView({
       ...nextFit,
       ...authoredBox,
     });
-    setResolvedAvoidanceKey(avoidanceKey);
-    if (recheckLockedFit) {
-      setLayoutReflowing(true);
-    }
+    forceFitRef.current = false;
     return true;
   }, [
     avoidanceKey,
@@ -1308,20 +1288,17 @@ const StickerView = memo(function StickerView({
 
   useLayoutEffect(() => {
     const avoidanceChanged = previousAvoidanceKeyRef.current !== avoidanceKey;
+    const placementChanged = previousPlacementKeyRef.current !== placementKey;
+    previousPlacementKeyRef.current = placementKey;
+    if (placementChanged) forceFitRef.current = true;
     previousAvoidanceKeyRef.current = avoidanceKey;
     if (layoutLockedRef.current) {
-      if (avoidanceChanged) {
-        if (sticker.leaving) {
-          setResolvedAvoidanceKey(avoidanceKey);
-          return;
-        }
-        // A camera or cast change can move an actor into the sticker before the
-        // final obstacle bounds settle. Mark the old fit unresolved in the same
-        // layout phase so it never paints on top of a face.
-        setLayoutMotionReady(false);
-        setLayoutReflowing(false);
+      if (sticker.leaving) return;
+      if (avoidanceChanged || placementChanged) {
+        // Keep the last painted fit throughout remeasurement. Only the new pose
+        // changes; neither visibility nor the entrance animation is restarted.
         earliestMeasurementAtRef.current = performance.now()
-          + Math.max(96, Math.ceil(avoidanceSettleMs) + 32);
+          + (placementChanged ? 0 : Math.max(96, Math.ceil(avoidanceSettleMs) + 32));
         previousObstacleRectsRef.current = null;
         scheduleSafeFit(STICKER_LAYOUT_QUIET_MS, true);
       }
@@ -1330,12 +1307,12 @@ const StickerView = memo(function StickerView({
     earliestMeasurementAtRef.current = performance.now()
       + Math.max(96, Math.ceil(avoidanceSettleMs) + 32);
     previousObstacleRectsRef.current = null;
-    const imageElement = stickerRef.current?.querySelector<HTMLImageElement>('.sticker-visual');
+    const imageElement = stickerRef.current?.querySelector<HTMLImageElement>('.sticker-art.portrait-current');
     if (imageElement?.complete) {
       imageReadyRef.current = true;
     }
     scheduleSafeFit();
-  }, [avoidanceKey, avoidanceSettleMs, scheduleSafeFit, sticker.leaving]);
+  }, [avoidanceKey, avoidanceSettleMs, placementKey, scheduleSafeFit, sticker.leaving]);
 
   useEffect(() => {
     const stickerElement = stickerRef.current;
@@ -1363,15 +1340,10 @@ const StickerView = memo(function StickerView({
       ) {
         return;
       }
-      layoutLockedRef.current = false;
-      lockedStageSizeRef.current = null;
+      forceFitRef.current = true;
       previousObstacleRectsRef.current = null;
-      setSafeFit(null);
-      setLayoutMotionReady(false);
-      setResolvedAvoidanceKey('');
-      setLayoutReflowing(false);
       earliestMeasurementAtRef.current = performance.now() + STICKER_RESIZE_QUIET_MS;
-      scheduleSafeFit(STICKER_RESIZE_QUIET_MS);
+      scheduleSafeFit(STICKER_RESIZE_QUIET_MS, true);
     });
     observer.observe(stageElement);
     observer.observe(frameElement);
@@ -1381,9 +1353,7 @@ const StickerView = memo(function StickerView({
     return () => observer.disconnect();
   }, [avoidanceKey, scheduleSafeFit, sticker.leaving]);
 
-  const layoutReady = Boolean(safeFit) && (
-    sticker.leaving || resolvedAvoidanceKey === avoidanceKey
-  );
+  const layoutReady = Boolean(safeFit);
 
   useEffect(() => {
     if (!layoutReady || layoutMotionReady) {
@@ -1436,7 +1406,8 @@ const StickerView = memo(function StickerView({
 
   const markImageReady = useCallback(() => {
     imageReadyRef.current = true;
-    scheduleSafeFit();
+    forceFitRef.current = true;
+    scheduleSafeFit(STICKER_LAYOUT_QUIET_MS, true);
   }, [scheduleSafeFit]);
 
   return (
@@ -1445,13 +1416,7 @@ const StickerView = memo(function StickerView({
       className="sticker"
       data-layout-ready={layoutReady ? 'true' : 'false'}
       data-layout-motion={layoutReady && layoutMotionReady ? 'true' : 'false'}
-      data-layout-reflow={layoutReady && layoutReflowing ? 'true' : 'false'}
       data-motion-tempo={stickerLayoutMotionTempo}
-      onAnimationEnd={(event) => {
-        if (event.animationName === 'stickerSafeReflowReveal') {
-          setLayoutReflowing(false);
-        }
-      }}
       style={{
         left: safeFit ? `${safeFit.left}px` : sticker.x,
         top: safeFit ? `${safeFit.top}px` : sticker.y,
@@ -1469,7 +1434,7 @@ const StickerView = memo(function StickerView({
         '--sticker-leave-delay': `${stickerLeaveTiming.delay}ms`,
       } as CSSProperties}
     >
-      <ResourceImage
+      <StickerArtwork
         className={[
           'sticker-visual',
           sticker.leaving
@@ -1478,20 +1443,19 @@ const StickerView = memo(function StickerView({
               ? ''
               : `sticker-enter-${sticker.enterEffect}`,
         ].filter(Boolean).join(' ')}
-        src={sticker.source}
+        source={sticker.source}
         alt={sticker.id}
-        loading="eager"
-        decoding="async"
+        fillWidth={fillWidth}
+        fillHeight={fillHeight}
         onReady={markImageReady}
-        onError={markImageReady}
-        onAnimationEnd={() => {
-          if (!sticker.leaving) {
+        onAnimationEnd={(event) => {
+          if (event.target === event.currentTarget && !sticker.leaving) {
             setEntryComplete(true);
           }
         }}
         style={{
-          width: sticker.width ? '100%' : undefined,
-          height: sticker.height ? '100%' : undefined,
+          width: fillWidth ? '100%' : undefined,
+          height: fillHeight ? '100%' : undefined,
         }}
       />
     </div>
@@ -2599,10 +2563,6 @@ export default function App() {
     () => stagedCharactersByPosition.filter((entry) => layoutCharacterSet.has(entry.slot.id)),
     [layoutCharacterSet, stagedCharactersByPosition],
   );
-  const promptTopStagedCharactersByPosition = useMemo(
-    () => stagedCharactersByPosition.filter((entry) => entry.slot.placement === 'prompt-top'),
-    [stagedCharactersByPosition],
-  );
   const characterStageLayout = useMemo(
     () => resolveCharacterStageLayout(
       layoutCharactersByPosition.map((entry) => ({
@@ -3507,7 +3467,7 @@ export default function App() {
     }
     return (
       <StickerView
-        key={`${sticker.id}-${sticker.source}-${sticker.renderKey}`}
+        key={`${sticker.id}-${sticker.renderKey}`}
         sticker={sticker}
         avoidanceKey={stickerAvoidanceKey}
         avoidanceSettleMs={stickerAvoidanceSettleMs}
@@ -4389,7 +4349,7 @@ export default function App() {
           </div>
         </div>
       </div>
-      {promptTopStagedCharactersByPosition.length > 0 && (
+      {renderedCast.some(actor => actor.slot.placement === 'prompt-top') && (
         <div
           className={`char-layer char-layer-prompt-top${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
           data-character-layout={characterStageLayout.mode}

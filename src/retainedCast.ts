@@ -12,11 +12,13 @@ export type CastActor = {
 
 /** Retain displaced actors under their original identity and final stage placement. */
 export function reconcileCast(previous: readonly CastActor[], next: readonly CastActor[], now: number): CastActor[] {
-  const ids = new Set(next.map(actor => actor.slot.id));
-  const departing = previous
-    .filter(actor => !ids.has(actor.slot.id))
-    .map(actor => ({ ...actor, visible: false, retiredAt: actor.retiredAt ?? now }));
-  return [...next, ...departing];
+  const nextById = new Map(next.map(actor => [actor.slot.id, actor]));
+  const previousIds = new Set(previous.map(actor => actor.slot.id));
+  // Position is a pose, not DOM order. Reordering keyed siblings still detaches
+  // and reinserts DOM nodes, interrupting CSS movement and expression dissolves.
+  const retained = previous.map(actor => nextById.get(actor.slot.id)
+    ?? { ...actor, visible: false, retiredAt: actor.retiredAt ?? now });
+  return [...retained, ...next.filter(actor => !previousIds.has(actor.slot.id))];
 }
 
 export function useRetainedCast(next: CastActor[], leaveDuration: number): CastActor[] {

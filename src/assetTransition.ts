@@ -60,6 +60,14 @@ type StickerLeavePresentation = Pick<
   'leaveEffect' | 'leaveDuration' | 'leaveEasing' | 'leaveDelay'
 >;
 
+/** A sticker id denotes one stage object until it is actually removed. */
+export function reconcileSticker(previous: StickerSlot | undefined, next: StickerSlot): StickerSlot {
+  if (!previous || previous.id !== next.id) return next;
+  const retained = { ...next, renderKey: previous.renderKey };
+  const keys = Object.keys(retained) as Array<keyof StickerSlot>;
+  return keys.every(key => previous[key] === retained[key]) ? previous : retained;
+}
+
 /** Keeps the measured sticker instance mounted while its leave class changes. */
 export function beginStickerLeave(
   sticker: StickerSlot,

@@ -4,6 +4,7 @@ import {
   fitStickerWithinFrame,
   fitStickerWithinFrameAvoidingRects,
   haveStickerObstacleRectsSettled,
+  isStickerWithinFrame,
   shouldRelayoutStickerForStageResize,
   type StickerLayoutRect,
 } from './stickerLayout';
@@ -25,6 +26,15 @@ const projectRect = (
 };
 
 describe('sticker safe-frame fitting', () => {
+  it('rechecks an existing fit when the dialog grows over its lower edge', () => {
+    const frame = { left: 0, top: 0, right: 400, bottom: 600, width: 400, height: 600 };
+    const card = { left: 80, top: 300, right: 320, bottom: 500, width: 240, height: 200 };
+    expect(isStickerWithinFrame(frame, card)).toBe(true);
+    const smaller = { ...frame, bottom: 400, height: 400 };
+    expect(isStickerWithinFrame(smaller, card)).toBe(false);
+    const projected = projectRect(card, fitStickerWithinFrame(smaller, card));
+    expect(isStickerWithinFrame(smaller, { ...projected, width: projected.right - projected.left, height: projected.bottom - projected.top })).toBe(true);
+  });
   it('keeps an already safe sticker unchanged', () => {
     const frame = {
       left: 12,

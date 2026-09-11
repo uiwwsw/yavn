@@ -13,7 +13,7 @@ const appSource = readFileSync(
 
 describe('prompt-top character placement', () => {
   it('partitions characters into exclusive stage and prompt compositions', () => {
-    expect(appSource).toContain("entry.slot.placement === 'prompt-top'");
+    expect(appSource).toContain("renderedCast.some(actor => actor.slot.placement === 'prompt-top')");
     expect(appSource).toContain("renderPlacement: CharacterSlot['placement'] = 'stage-bottom'");
     expect(appSource).toContain('if (!slot || slot.placement !== renderPlacement)');
     expect(appSource.match(/renderedCast.map/g)).toHaveLength(2);

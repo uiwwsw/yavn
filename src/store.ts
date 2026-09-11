@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { DEFAULT_BACKGROUND_PRESENTATION } from './cinematic';
 import { appendStoryLogEntry } from './history';
+import { reconcileSticker } from './assetTransition';
 import type {
   AttackPresentation,
   BackgroundPresentation,
@@ -274,12 +275,11 @@ export const useVNStore = create<VNState>((set) => ({
   })),
   setAttack: (attack) => set({ attack }),
   setSticker: (sticker) =>
-    set((state) => ({
-      stickers: {
-        ...state.stickers,
-        [sticker.id]: sticker,
-      },
-    })),
+    set((state) => {
+      const next = reconcileSticker(state.stickers[sticker.id], sticker);
+      if (next === state.stickers[sticker.id]) return state;
+      return { stickers: { ...state.stickers, [sticker.id]: next } };
+    }),
   clearSticker: (id) =>
     set((state) => {
       if (!(id in state.stickers)) {

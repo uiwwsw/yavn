@@ -1311,21 +1311,22 @@ function buildStickerSlot(
     enter?: StickerEnterEffect | StickerEnterOptions;
     inputLockMs?: number;
   },
+  previous?: StickerSlot,
 ): StickerSlot {
   const enter = normalizeStickerEnter(placement.enter);
   const leave = normalizeStickerLeave(undefined);
   return {
     id,
     source: resolveAsset(baseUrl, imagePath),
-    x: toCssLength(placement.x, '50%'),
-    y: toCssLength(placement.y, '50%'),
-    width: toCssSize(placement.width),
-    height: toCssSize(placement.height),
-    anchorX: placement.anchorX ?? 'center',
-    anchorY: placement.anchorY ?? 'center',
-    rotate: typeof placement.rotate === 'number' ? placement.rotate : 0,
-    opacity: clampOpacity(placement.opacity),
-    zIndex: typeof placement.zIndex === 'number' ? placement.zIndex : 0,
+    x: toCssLength(placement.x, previous?.x ?? '50%'),
+    y: toCssLength(placement.y, previous?.y ?? '50%'),
+    width: placement.width === undefined ? previous?.width : toCssSize(placement.width),
+    height: placement.height === undefined ? previous?.height : toCssSize(placement.height),
+    anchorX: placement.anchorX ?? previous?.anchorX ?? 'center',
+    anchorY: placement.anchorY ?? previous?.anchorY ?? 'center',
+    rotate: placement.rotate ?? previous?.rotate ?? 0,
+    opacity: clampOpacity(placement.opacity ?? previous?.opacity),
+    zIndex: placement.zIndex ?? previous?.zIndex ?? 0,
     enterEffect: enter.enterEffect,
     enterDuration: enter.enterDuration,
     enterEasing: enter.enterEasing,
@@ -3160,7 +3161,8 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
     if ('sticker' in action) {
       const path = game.assets.backgrounds[action.sticker.image];
       cancelStickerClearTimer(action.sticker.id);
-      setSticker(buildStickerSlot(chapter.baseUrl, action.sticker.id, path, action.sticker));
+      setSticker(buildStickerSlot(chapter.baseUrl, action.sticker.id, path, action.sticker,
+        useVNStore.getState().stickers[action.sticker.id]));
       actionIndex += 1;
       continue;
     }
@@ -3787,9 +3789,11 @@ function runToNextPause(loopGuard = 0) {
 
   if ('sticker' in action) {
     const path = game.assets.backgrounds[action.sticker.image];
+    const previous = useVNStore.getState().stickers[action.sticker.id];
     cancelStickerClearTimer(action.sticker.id);
-    useVNStore.getState().setSticker(buildStickerSlot(state.baseUrl, action.sticker.id, path, action.sticker));
-    const inputLockMs = clampStickerInputLockMs(action.sticker.inputLockMs);
+    useVNStore.getState().setSticker(buildStickerSlot(state.baseUrl, action.sticker.id, path, action.sticker, previous));
+    const inputLockMs = useVNStore.getState().stickers[action.sticker.id] === previous
+      ? 0 : clampStickerInputLockMs(action.sticker.inputLockMs);
     if (inputLockMs > 0) {
       useVNStore.getState().setBusy(true);
       waitTimer = storyClock.set(() => {
