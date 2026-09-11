@@ -81,7 +81,7 @@ describe('stage camera', () => {
       scale: 1.86,
       mobileScale: 1.74,
       panX: 'calc(0px - min(27.5cqw, 286px))',
-      mobilePanX: '-25cqw',
+      mobilePanX: 'calc(50cqw - calc(50cqw + 27.5cqw))',
       originY: 86,
     });
   });

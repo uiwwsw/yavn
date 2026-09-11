@@ -14,6 +14,7 @@ export function resolveCharacterFraming(
 
   return {
     name,
+    ...(preset?.cropBottom !== undefined ? { cropBottom: preset.cropBottom } : {}),
     scale: preset?.scale ?? 1,
     x: preset?.x ?? 0,
     y: preset?.y ?? 0,

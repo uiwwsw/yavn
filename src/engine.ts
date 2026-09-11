@@ -6,7 +6,7 @@ import type JSZip from 'jszip';
 import { beginStickerLeave } from './assetTransition';
 import { normalizeCharacterEnter } from './characterEntrance';
 import { resolveCharacterFraming } from './characterFraming';
-import { resolveDialogueVisibleCharacterIds } from './characterLayout';
+import { resolveAutoCharacterPosition, resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { waitForVisibleStaticImages } from './imageReady';
 import { imageResources } from './imageResources';
@@ -44,6 +44,7 @@ import type {
   AttackDirective,
   CameraDirective,
   CharacterSlot,
+  CharAction,
   CharacterEnterEffect,
   CharacterEnterOptions,
   ChoiceOption,
@@ -1480,6 +1481,19 @@ function parseCharacterRef(raw?: string): { id?: string; emotion?: string } {
     return {};
   }
   return { id, emotion };
+}
+
+function stageDeclaredCharacter(game: GameData, baseUrl: string, char: CharAction['char']): boolean {
+  const state = useVNStore.getState();
+  const position = resolveAutoCharacterPosition(state.characters, char.id, char.position);
+  if (!position) {
+    state.setError({ message: `자동 배치 공간이 없습니다: ${char.id}. 세 슬롯이 모두 사용 중이면 position으로 교체할 자리를 지정하세요.` });
+    return false;
+  }
+  const definition = game.assets.characters[char.id];
+  const path = char.emotion ? definition.emotions?.[char.emotion] ?? definition.base : definition.base;
+  state.setCharacter(position, buildCharacterSlot(baseUrl, char.id, path, definition, char.emotion, char.framing, char.enter));
+  return true;
 }
 
 function getStagedCharacterIds(): string[] {
@@ -3109,7 +3123,6 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
   const setSticker = useVNStore.getState().setSticker;
   const clearSticker = useVNStore.getState().clearSticker;
   const clearAllStickers = useVNStore.getState().clearAllStickers;
-  const setChar = useVNStore.getState().setCharacter;
   const setMusic = useVNStore.getState().setMusic;
   const setVisibleCharacters = useVNStore.getState().setVisibleCharacters;
   const promoteSpeaker = useVNStore.getState().promoteSpeaker;
@@ -3177,20 +3190,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
       continue;
     }
     if ('char' in action) {
-      const charDef = game.assets.characters[action.char.id];
-      const assetPath = action.char.emotion ? charDef.emotions?.[action.char.emotion] ?? charDef.base : charDef.base;
-      setChar(
-        action.char.position,
-        buildCharacterSlot(
-          chapter.baseUrl,
-          action.char.id,
-          assetPath,
-          charDef,
-          action.char.emotion,
-          action.char.framing,
-          action.char.enter,
-        ),
-      );
+      if (!stageDeclaredCharacter(game, chapter.baseUrl, action.char)) return;
       actionIndex += 1;
       continue;
     }
@@ -3851,24 +3851,7 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('char' in action) {
-    const charDef = game.assets.characters[action.char.id];
-    const assetPath = action.char.emotion
-      ? charDef.emotions?.[action.char.emotion] ?? charDef.base
-      : charDef.base;
-    useVNStore
-      .getState()
-      .setCharacter(
-        action.char.position,
-        buildCharacterSlot(
-          state.baseUrl,
-          action.char.id,
-          assetPath,
-          charDef,
-          action.char.emotion,
-          action.char.framing,
-          action.char.enter,
-        ),
-      );
+    if (!stageDeclaredCharacter(game, state.baseUrl, action.char)) return;
     incrementCursor();
     runToNextPause(loopGuard + 1);
     return;

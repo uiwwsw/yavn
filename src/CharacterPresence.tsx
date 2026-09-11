@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import type { CharacterEnterEffect } from './types';
 
 type Props = {
@@ -13,6 +13,16 @@ export function CharacterPresence({ visible, ready, effect, children }: Props) {
   const shown = visible && ready;
   const wasShown = useRef(false);
   const [entrance, setEntrance] = useState({ active: false, effect });
+
+  useEffect(() => {
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const settle = () => {
+      if (motion.matches) setEntrance(current => current.active ? { ...current, active: false } : current);
+    };
+    settle();
+    motion.addEventListener('change', settle);
+    return () => motion.removeEventListener('change', settle);
+  }, []);
 
   useLayoutEffect(() => {
     if (shown && !wasShown.current) {

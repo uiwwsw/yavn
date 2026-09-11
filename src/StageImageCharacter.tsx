@@ -8,12 +8,13 @@ import type { CharacterEnterEffect } from './types';
 const CHARACTER_IMAGE_READY_TIMEOUT_MS = 12000;
 type Props = HTMLAttributes<HTMLDivElement> & {
   source: string; alt: string; visible: boolean; enterEffect: CharacterEnterEffect;
+  cropBottom?: number;
   fetchpriority?: 'high' | 'low' | 'auto'; loading?: 'eager' | 'lazy'; decoding?: 'async' | 'sync' | 'auto';
 };
 
 /** Decoded DOM frames, one active dissolve and one latest request. No source-swap flash. */
 export const StageImageCharacter = memo(function StageImageCharacter({
-  source, alt, visible, enterEffect, className = '', style, fetchpriority, loading, decoding, ...props
+  source, alt, visible, enterEffect, cropBottom = 0, className = '', style, fetchpriority, loading, decoding, ...props
 }: Props) {
   const images = useRef(new Map<string, HTMLImageElement>());
   const [presentation, setPresentation] = useState<PortraitTransition>({});
@@ -53,11 +54,12 @@ export const StageImageCharacter = memo(function StageImageCharacter({
   return (
     <div {...props} className={`${className} character-actor`} style={{ ...style,
       '--character-source-ratio': frameRatio.current ?? 1,
+      '--character-visible-fraction': 1 - cropBottom,
       '--portrait-dissolve-duration': `${PORTRAIT_DISSOLVE_MS}ms`,
     } as CSSProperties} role="img" aria-label={alt}
       data-image-state={!presentation.current ? 'pending' : presentation.current.source !== source ? 'holding' : 'ready'}>
       <CharacterPresence visible={visible} ready={Boolean(presentation.current)} effect={enterEffect}>
-        <div className="character-portrait" data-dissolving={Boolean(presentation.previous)}>
+        <div className="character-portrait" data-dissolving={Boolean(presentation.previous)} data-cropped={cropBottom > 0}>
           {portraitSources(presentation, source).map((url) => {
             const role = url === presentation.current?.source ? 'current' : url === presentation.previous?.source ? 'previous' : 'pending';
             return <ResourceImage key={url} ref={element => { if (element) images.current.set(url, element); else images.current.delete(url); }}

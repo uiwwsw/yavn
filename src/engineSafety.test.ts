@@ -220,6 +220,24 @@ describe('engine runtime safety', () => {
       .toEqual(['The earlier clue changes this conversation.']);
   });
 
+  it('automatically stages distinct actors and keeps a returning actor in its slot', () => {
+    useVNStore.getState().setGame({ ...game,
+      assets: { ...game.assets, characters: {
+        a: { base: '/a.webp', emotions: { smile: '/a-smile.webp' } },
+        b: { base: '/b.webp' }, c: { base: '/c.webp' },
+      } },
+      scenes: { intro: { actions: [
+        { char: { id: 'a' } }, { char: { id: 'b', position: 'auto' } }, { char: { id: 'c' } },
+        { char: { id: 'a', emotion: 'smile' } }, { say: { char: 'a', text: 'All here.' } },
+      ] } },
+    }, '/');
+    handleAdvance();
+    expect(useVNStore.getState().characters).toMatchObject({
+      left: { id: 'a', source: '/a-smile.webp' }, center: { id: 'b' }, right: { id: 'c' },
+    });
+    expect(useVNStore.getState().visibleCharacterIds).toEqual(['a', 'b', 'c']);
+  });
+
   it('retains a repeated sticker without replaying its input lock and inherits omitted placement on replacement', () => {
     const sticker = { id: 'document', image: 'closed', x: 25, y: 30, width: '200px', rotate: -2, inputLockMs: 500 };
     useVNStore.getState().setGame({ ...game,

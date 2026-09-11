@@ -899,3 +899,29 @@ scenes:
     ).toContain("scene 'branch_scene' is outside script and can fall through");
   });
 });
+
+
+it('preserves auto positions, fixed scene composition and portrait cropping through YAML layers', () => {
+  const chapter = parseChapterYaml(`
+assets:
+  characters:
+    actor:
+      base: actor.webp
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.4 }
+script: [{ scene: opening }]
+scenes:
+  opening:
+    layout: fixed
+    actions:
+      - char: { id: actor }
+      - char: { id: actor, position: auto }
+      - say: { char: actor, text: Hello }
+`, '0.yaml');
+  expect(chapter.error).toBeUndefined();
+  expect(chapter.data?.data.scenes.opening.layout).toBe('fixed');
+  expect(chapter.data?.data.scenes.opening.actions[0]).toEqual({ char: { id: 'actor' } });
+  expect(chapter.data?.data.assets?.characters?.actor.framings?.portrait.cropBottom).toBe(0.4);
+  expect(parseChapterYaml('script: [{ scene: a }]\nscenes: { a: { layout: invalid, actions: [] } }', '0.yaml').error).toBeDefined();
+});

@@ -36,3 +36,12 @@ describe('character framing presets', () => {
     });
   });
 });
+
+
+it('selects a reusable upper-body crop without scaling the safe headroom or modifying the source', () => {
+  const asset = { ...character, defaultFraming: 'portrait', framings: {
+    ...character.framings, portrait: { scale: 1, cropBottom: 0.4 },
+  } };
+  expect(resolveCharacterFraming(asset)).toEqual({ name: 'portrait', scale: 1, x: 0, y: 0, cropBottom: 0.4 });
+  expect(resolveCharacterFraming(asset, 'full')).toEqual({ name: 'full', scale: 1, x: 0, y: 0 });
+});

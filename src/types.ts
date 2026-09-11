@@ -3,6 +3,7 @@ import type { UiTemplateId } from './uiTemplates';
 export type { UiTemplateId } from './uiTemplates';
 
 export type Position = 'left' | 'center' | 'right';
+export type CharacterLayoutMode = 'auto' | 'fixed';
 export type CharacterFacing = 'left' | 'right' | 'front';
 export type CharacterPlacement = 'stage-bottom' | 'prompt-top';
 export type CharacterEnterEffect =
@@ -43,6 +44,7 @@ export type DialogueChannel = 'dialogue' | 'narration' | 'record' | 'system' | '
 
 export type CharacterFramingPreset = {
   scale: number;
+  cropBottom?: number;
   x?: number;
   y?: number;
 };
@@ -84,6 +86,7 @@ export type CharacterAssetDefinition = {
 
 export type CharacterFramingState = {
   name: string;
+  cropBottom?: number;
   scale: number;
   x: number;
   y: number;
@@ -204,7 +207,7 @@ export type SayAction = {
 export type CharAction = {
   char: {
     id: string;
-    position: Position;
+    position?: Position | 'auto';
     emotion?: string;
     framing?: string;
     enter?: CharacterEnterEffect | CharacterEnterOptions;
@@ -373,6 +376,7 @@ export type Action =
   | { goto: string };
 
 export type Scene = {
+  layout?: CharacterLayoutMode;
   actions: Action[];
 };
 

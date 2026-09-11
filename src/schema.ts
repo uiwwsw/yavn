@@ -285,7 +285,7 @@ const actionBodySchema = z.union([
   z.object({
     char: z.object({
       id: z.string(),
-      position: z.enum(['left', 'center', 'right']),
+      position: z.enum(['auto', 'left', 'center', 'right']).optional(),
       emotion: z.string().optional(),
       framing: z.string().min(1).optional(),
       enter: characterEnterSchema.optional(),
@@ -521,6 +521,7 @@ const endingScreenSchema = z
 
 const characterFramingPresetSchema = z
   .object({
+    cropBottom: z.number().min(0).max(0.65).optional(),
     scale: z.number().min(0.5).max(3),
     x: z.number().min(-100).max(100).optional(),
     y: z.number().min(-100).max(100).optional(),
@@ -634,6 +635,7 @@ export const chapterSchema = z
     script: z.array(z.object({ scene: z.string() })).min(1),
     scenes: z.record(
       z.object({
+        layout: z.enum(['auto', 'fixed']).optional(),
         actions: z.array(actionSchema),
       }),
     ),
@@ -665,6 +667,7 @@ export const gameSchema = z.object({
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(
     z.object({
+      layout: z.enum(['auto', 'fixed']).optional(),
       actions: z.array(actionSchema),
     }),
   ),
