@@ -38,6 +38,7 @@ type LayerYamlData = {
 };
 
 type ChapterYamlData = LayerYamlData & {
+  chapterTitle?: string;
   script: GameData['script'];
   scenes: GameData['scenes'];
 };
@@ -793,6 +794,7 @@ export function parseChapterYaml(raw: string, sourcePath: string): { data?: Pars
           assets: assetsResult.data,
           state: parsed.state,
           inventory: inventoryResult.data,
+          chapterTitle: parsed.chapterTitle,
           script: parsed.script,
           scenes: scenesResult.data ?? parsed.scenes,
         },
@@ -894,6 +896,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
       clickToInstant: input.config.data.clickToInstant,
     },
     assets: mergedAssets,
+    chapterTitle: input.chapter.data.chapterTitle,
     script: input.chapter.data.script,
     scenes: input.chapter.data.scenes,
     ...(Object.keys(mergedDefaults).length > 0 ? { state: { defaults: mergedDefaults } } : {}),

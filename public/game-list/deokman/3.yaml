@@ -1,3 +1,5 @@
+chapterTitle: "칼과 장부"
+
 script:
   - scene: empty_granary
 

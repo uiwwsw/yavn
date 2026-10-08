@@ -23,6 +23,7 @@ import live2dRedistributableFilesUrl from '../assets/licenses/live2d/Redistribut
 import { CinematicLayer } from './CinematicLayer';
 import { YavnLogo } from './YavnLogo';
 import { TitleScene } from './TitleScene';
+import { StoryMap } from './StoryAtlas';
 import { GameIcon } from './GameIcon';
 import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
@@ -1605,6 +1606,7 @@ export default function App() {
   const uploadedGameFileRef = useRef<File | null>(null);
   const [endingCreditsOpen, setEndingCreditsOpen] = useState(false);
   const [gameOverRecoveryOpen, setGameOverRecoveryOpen] = useState(false);
+  const [storyMapOpen, setStoryMapOpen] = useState(false);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const [characterPromptInset, setCharacterPromptInset] = useState(0);
@@ -1934,7 +1936,7 @@ export default function App() {
   }, [gameShellLocked]);
 
   const chapterCurtainVisible = useSceneCurtain(chapterLoading && !startGate);
-  const playbackCovered = Boolean(startGate) || chapterCurtainVisible || documentHidden;
+  const playbackCovered = Boolean(startGate) || chapterCurtainVisible || documentHidden || storyMapOpen;
 
   const handleManualAdvance = useCallback(() => {
     const current = useVNStore.getState();
@@ -1966,6 +1968,7 @@ export default function App() {
     if (
       !isQueuedManualAdvanceFresh(queuedAt, performance.now())
       || settingsOpen
+      || storyMapOpen
       || dialogUiHidden
       || chapterLoading
       || Boolean(gameOver)
@@ -1990,11 +1993,12 @@ export default function App() {
     inputGate.active,
     isFinished,
     settingsOpen,
+    storyMapOpen,
     sustainCatchUp,
     videoCutscene.active,
   ]);
 
-  useAdvanceByKey(dialogUiHidden || settingsOpen || Boolean(gameOver), handleManualAdvance);
+  useAdvanceByKey(dialogUiHidden || settingsOpen || storyMapOpen || Boolean(gameOver), handleManualAdvance);
 
   useEffect(() => {
     const preventDefault = (event: Event) => {
@@ -2040,18 +2044,18 @@ export default function App() {
   }, [bootMode, game?.meta.title, game?.meta.version, startGate?.kind, startGate?.gameTitle]);
 
   useEffect(() => {
-    setPlayerAutoPlayPaused(settingsOpen || dialogUiHidden || Boolean(startGate) || chapterCurtainVisible);
-  }, [dialogUiHidden, settingsOpen, startGate, chapterCurtainVisible]);
+    setPlayerAutoPlayPaused(storyMapOpen || settingsOpen || dialogUiHidden || Boolean(startGate) || chapterCurtainVisible);
+  }, [dialogUiHidden, settingsOpen, storyMapOpen, startGate, chapterCurtainVisible]);
 
   useEffect(() => {
     const update = () => {
       setDocumentHidden(document.hidden);
-      setScenePresentationPaused(Boolean(startGate) || chapterCurtainVisible || settingsOpen || document.hidden);
+      setScenePresentationPaused(Boolean(startGate) || chapterCurtainVisible || settingsOpen || storyMapOpen || document.hidden);
     };
     update();
     document.addEventListener('visibilitychange', update);
     return () => { document.removeEventListener('visibilitychange', update); setScenePresentationPaused(false); };
-  }, [startGate, chapterCurtainVisible, settingsOpen]);
+  }, [startGate, chapterCurtainVisible, settingsOpen, storyMapOpen]);
 
   useEffect(() => {
     setSaveNotice('');
@@ -4297,8 +4301,8 @@ export default function App() {
   return (
     <>
     <div
-      {...(startGate ? { inert: '' } : {})}
-      data-story-paused={Boolean(startGate) || chapterCurtainVisible || settingsOpen || documentHidden}
+      {...(startGate || storyMapOpen ? { inert: '' } : {})}
+      data-story-paused={Boolean(startGate) || chapterCurtainVisible || settingsOpen || storyMapOpen || documentHidden}
       className="app"
       data-ui-template={uiTemplate}
       data-motion-tempo={motionTempo}
@@ -4483,6 +4487,10 @@ export default function App() {
           )}
         </div>
         <div className="hud-right">
+          <button type="button" className="hud-action-button hud-map-button" aria-label="이야기 지도 열기"
+            onClick={(event) => { event.stopPropagation(); setStoryMapOpen(true); }}>
+            <span aria-hidden="true">◇</span><span className="hud-action-label">이야기 지도</span>
+          </button>
           {uploading && <div className="hint">ZIP 불러오는 중</div>}
           <button
             type="button"
@@ -5275,21 +5283,22 @@ export default function App() {
         <SceneCurtain loading={chapterLoading} progress={chapterLoadingProgress} chapter={chapterIndex} title={game?.meta.title} />
       )}
 
-      {gameOver && !chapterLoading && !gameOverRecoveryOpen && (
+      {gameOver && !chapterLoading && !gameOverRecoveryOpen && !storyMapOpen && (
         <OutcomePrelude kind="gameOver" title={gameOver.title ?? 'GAME OVER'}
           message={gameOver.message ?? '이곳에서 이야기가 멈췄습니다.'}
-          onContinue={() => setGameOverRecoveryOpen(true)} />
+          onContinue={() => setStoryMapOpen(true)} />
       )}
-      {isFinished && !endingCreditsOpen && (
+      {isFinished && !endingCreditsOpen && !storyMapOpen && (
         <OutcomePrelude kind="ending" title={endingTitle} message={endingMessage}
           epilogue={resolvedEnding?.epilogue} background={endingBackgroundUrl} tone={resolvedEnding?.tone}
-          onContinue={() => setEndingCreditsOpen(true)} />
+          onContinue={() => setStoryMapOpen(true)} />
       )}
       {gameOver && !chapterLoading && gameOverRecoveryOpen && (
         <div className="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title" onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
           <div className="game-over-panel">
             <button type="button" className="outcome-back" autoFocus onClick={() => setGameOverRecoveryOpen(false)}>← 마지막 장면</button>
             <p className="game-over-kicker">다시 이어갈 이야기</p>
+            <button type="button" onClick={() => { setGameOverRecoveryOpen(false); setStoryMapOpen(true); }}>이야기 지도로 돌아가기</button>
             <h2 id="game-over-title">{gameOver.title ?? 'GAME OVER'}</h2>
             <p className="game-over-message">
               {gameOver.message ?? '선택의 결과로 더는 이야기를 이어갈 수 없습니다.'}
@@ -5433,6 +5442,7 @@ export default function App() {
               </div>
             </div>
             <div className="ending-bottom-bar visible">
+              <button type="button" className="ending-restart" onClick={() => { setEndingCreditsOpen(false); setStoryMapOpen(true); }}>이야기 지도</button>
               <button type="button" className="ending-restart ending-retry-choice" autoFocus onClick={() => setEndingCreditsOpen(false)}>결말 다시 보기</button>
               {totalEndingCount > 1 && choiceRecoveryPoint.exists && (
                 <button
@@ -5461,6 +5471,12 @@ export default function App() {
       )}
       </div>
     </div>
+    {storyMapOpen && <StoryMap
+      outcome={gameOver?.title ?? (isFinished ? endingTitle : undefined)} ending={isFinished}
+      onClose={() => setStoryMapOpen(false)}
+      onReplayed={() => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(undefined); refreshSaveSlots(); }}
+      onRecords={() => { setStoryMapOpen(false); if (gameOver) setGameOverRecoveryOpen(true);
+        else if (isFinished) setEndingCreditsOpen(true); else { setCaseFileTab('system'); setSettingsOpen(true); } }} />}
     {startGateView}
     </>
   );

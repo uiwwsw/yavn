@@ -376,6 +376,7 @@ export type Action =
   | { goto: string };
 
 export type Scene = {
+  title?: string;
   layout?: CharacterLayoutMode;
   actions: Action[];
 };
@@ -513,6 +514,7 @@ export type GameData = {
   startScreen?: StartScreenConfig;
   endingScreen?: EndingScreenConfig;
   ui?: UiConfig;
+  chapterTitle?: string;
   script: Array<{ scene: string }>;
   scenes: Record<string, Scene>;
 };
