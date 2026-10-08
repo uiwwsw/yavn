@@ -147,10 +147,10 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
               <div className="story-atlas-detail-copy"><small>CHAPTER {String(chapter?.number ?? 1).padStart(2, '0')} · {kindLabel[selected.kind]}</small>
                 <h3>{selected.title}</h3>
                 {visible.edges.filter(e => e.from === selected.id && e.taken && e.label).map((edge, i) => <p className="story-atlas-choice" key={i}>선택한 길 · {edge.label}</p>)}
-                <p>{data?.visits.find(v => v.id === selected.id)?.replayable ? '그때의 소지품과 관계를 그대로 이어받아, 다른 선택을 해볼 수 있습니다.'
+                <p>{data?.visits.find(v => v.id === selected.id)?.replayable ? '플레이 도중에도 언제든 돌아갈 수 있습니다. 그때의 소지품과 관계로 다시 이어집니다.'
                   : '발견한 이야기입니다. 다시 이어갈 수 있는 앞선 장면을 선택해 주세요.'}</p>
                 <button className="story-atlas-replay" disabled={busy || !data?.visits.find(v => v.id === selected.id)?.replayable}
-                  onClick={() => void replay()}>{busy ? '이야기를 펼치는 중…' : '이 지점부터 이어가기'} <span>→</span></button>
+                  onClick={() => void replay()}>{busy ? '이야기를 펼치는 중…' : '이 시점으로 돌아가기'} <span>→</span></button>
               </div>
             </> : <div className="story-atlas-detail-copy"><small>YOUR STORY</small><h3>어떤 길을 걸어왔나요?</h3><p>밝혀진 장면을 선택해 이야기를 돌아보세요. 앞으로 만날 장면은 아직 비밀입니다.</p></div>}
             <div className="story-atlas-detail-bottom"><p role="status">{notice}</p>
