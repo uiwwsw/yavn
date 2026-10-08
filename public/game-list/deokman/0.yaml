@@ -1,8 +1,11 @@
+chapterTitle: "모란이 피기 전에"
+
 script:
   - scene: first_breath
 
 scenes:
   opening_record:
+    title: "먼저 쓰인 사망 기록"
     actions:
       - bg: { id: peony_court, transition: dissolve, duration: 720 }
       - music: sealed_court
@@ -764,6 +767,7 @@ scenes:
       - goto: first_room_look
 
   first_breath:
+    title: "내 이름 옆의 두 글자"
     actions:
       - bg:
           id: peony_court

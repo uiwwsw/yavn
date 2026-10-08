@@ -43,7 +43,7 @@ export function OutcomePrelude({ kind, title, message, epilogue, background, ton
         <p id="outcome-message" className="outcome-message">{message}</p>
         {epilogue && <p className="outcome-epilogue">{epilogue}</p>}
         <button type="button" className="outcome-continue" ref={buttonRef} onClick={onContinue}>
-          {kind === 'gameOver' ? '선택을 되돌아보기' : '엔딩 기록과 크레딧'}<span aria-hidden="true"> →</span>
+          이야기 지도 펼치기<span aria-hidden="true"> →</span>
         </button>
         <p className="outcome-footnote">{kind === 'gameOver' ? '지나온 선택에서 이야기를 다시 이어갈 수 있습니다.' : '이 결말은 당신의 선택으로 완성되었습니다.'}</p>
       </div>

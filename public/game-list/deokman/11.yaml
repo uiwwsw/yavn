@@ -1,3 +1,5 @@
+chapterTitle: "마지막 기록"
+
 script:
   - scene: last_trial
 

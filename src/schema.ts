@@ -632,9 +632,11 @@ export const chapterSchema = z
     assets: layerAssetsSchema.optional(),
     state: layerStateSchema.optional(),
     inventory: layerInventorySchema.optional(),
+    chapterTitle: z.string().trim().min(1).max(100).optional(),
     script: z.array(z.object({ scene: z.string() })).min(1),
     scenes: z.record(
       z.object({
+        title: z.string().trim().min(1).max(120).optional(),
         layout: z.enum(['auto', 'fixed']).optional(),
         actions: z.array(actionSchema),
       }),
@@ -664,9 +666,11 @@ export const gameSchema = z.object({
   startScreen: startScreenSchema.optional(),
   endingScreen: endingScreenSchema.optional(),
   ui: uiConfigSchema.optional(),
+  chapterTitle: z.string().trim().min(1).max(100).optional(),
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(
     z.object({
+      title: z.string().trim().min(1).max(120).optional(),
       layout: z.enum(['auto', 'fixed']).optional(),
       actions: z.array(actionSchema),
     }),

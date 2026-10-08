@@ -1,3 +1,4 @@
+import { buildStoryChapter, isMapStop, storyNodeId, storyEdgeId, type StoryMapData } from './storyMap';
 import { PresentationClock } from './presentationClock';
 import { collectStartSceneAssets, mapStartSceneAssets } from './startScene';
 import { CINEMATIC_SOUNDS } from './cinematicAudio';
@@ -288,12 +289,15 @@ let bgmCurrentKey: string | undefined;
 let youtubeApiPromise: Promise<YouTubeGlobal> | undefined;
 let youtubePlayer: YouTubePlayer | undefined;
 let preparedChapters: PreparedChapter[] = [];
+let storyChapterCatalogue = new Map<string, PreparedChapter>();
+let storyChapterNext = new Map<string, string>();
 let activeChapterIndex = 0;
 let objectUrls: string[] = [];
 let preloadedAssetUrls = new Set<string>();
 let stickerRenderKeySeed = 0;
 const clearStickerTimers = new Map<string, number>();
 let runtimeMode: RuntimeMode;
+let storySessionRevision = 0;
 let urlGameRootBase = '';
 let zipYamlByPathKey = new Map<string, JSZip.JSZipObject>();
 let zipBlobAssetMap: Record<string, string> = {};
@@ -309,6 +313,188 @@ let currentAutosaveKey = LEGACY_AUTOSAVE_KEY;
 let runtimeGameSettings: RuntimeGameSettings = { ...DEFAULT_RUNTIME_GAME_SETTINGS };
 let pendingChoiceRecovery: SaveProgress | undefined;
 let choiceRecoveryTrail: ChoiceRecoveryCheckpoint[] = [];
+
+// Exploration survives rewinds and new playthroughs; replay uses the state from that visit.
+let storyJourney: { points: Record<string, SaveProgress>; seen: string[]; travelled: string[]; choices: Record<string, string[]>; current?: string } =
+  { points: {}, seen: [], travelled: [], choices: {} };
+let storyJourneyIdentity: { title: string; version?: string } | undefined;
+let storyJourneyPersistent = true;
+let previousStoryNode: string | undefined;
+function loadStoryJourney() {
+  storyJourney = { points: {}, seen: [], travelled: [], choices: {} };
+  previousStoryNode = undefined;
+  storyJourneyIdentity = undefined;
+  storyJourneyPersistent = true;
+  try {
+    const raw = JSON.parse(localStorage.getItem(`${currentAutosaveKey}:story-map`) ?? 'null');
+    if (!raw || raw.schema !== 2) return;
+    if (typeof raw.identity?.title !== 'string') return;
+    storyJourneyIdentity = raw.identity;
+    const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((v): v is string => typeof v === 'string') : [];
+    storyJourney.seen = strings(raw.seen);
+    storyJourney.travelled = strings(raw.travelled);
+    if (raw.choices && typeof raw.choices === 'object') for (const [id, values] of Object.entries(raw.choices)) {
+      storyJourney.choices[id] = strings(values);
+    }
+    if (raw.points && typeof raw.points === 'object') for (const [id, value] of Object.entries(raw.points)) {
+      const record = value as SaveProgress & { logRefs?: number[]; routeRefs?: number[] };
+      const progress = parseSaveProgress(JSON.stringify({ ...record,
+        storyLog: Array.isArray(record.logRefs) ? record.logRefs.map(i => raw.logs?.[i]).filter(Boolean) : [],
+        routeHistory: Array.isArray(record.routeRefs) ? record.routeRefs.map(i => raw.routes?.[i]).filter(Boolean) : [],
+      }));
+      if (progress) storyJourney.points[id] = progress;
+    }
+  } catch { storyJourneyPersistent = false; }
+}
+function validateStoryJourneyIdentity() {
+  const game = useVNStore.getState().game;
+  if (!game) return;
+  if (storyJourneyIdentity && (storyJourneyIdentity.title !== game.meta.title || storyJourneyIdentity.version !== game.meta.version)) {
+    storyJourney = { points: {}, seen: [], travelled: [], choices: {} };
+    previousStoryNode = undefined;
+  }
+  storyJourneyIdentity = { title: game.meta.title, version: game.meta.version };
+}
+function persistStoryJourney() {
+  if (!getAutoSaveEnabled()) { storyJourneyPersistent = false; return; }
+  try {
+    const logs: StoryLogEntry[] = [];
+    const routes: RouteHistoryEntry[] = [];
+    const logIds = new Map<string, number>();
+    const routeIds = new Map<string, number>();
+    const intern = <T>(value: T, pool: T[], ids: Map<string, number>) => {
+      const key = JSON.stringify(value);
+      if (!ids.has(key)) { ids.set(key, pool.length); pool.push(value); }
+      return ids.get(key)!;
+    };
+    const points = Object.fromEntries(Object.entries(storyJourney.points).map(([id, point]) => {
+      const { storyLog, routeHistory, ...progress } = point;
+      return [id, { ...progress, logRefs: storyLog.map(log => intern(log, logs, logIds)),
+        routeRefs: routeHistory.map(route => intern(route, routes, routeIds)) }];
+    }));
+    localStorage.setItem(`${currentAutosaveKey}:story-map`, JSON.stringify({ schema: 2, ...storyJourney,
+      identity: storyJourneyIdentity, points, logs, routes }));
+    storyJourneyPersistent = true;
+  } catch { storyJourneyPersistent = false; }
+}
+function recordStoryMapStop(suffix?: string) {
+  const state = useVNStore.getState();
+  const path = getCurrentChapterPathKey();
+  if (!path || !state.game) return;
+  const action = state.game.scenes[state.currentSceneId]?.actions[state.actionIndex];
+  if (!suffix && !isMapStop(action, state.actionIndex, state.game.scenes[state.currentSceneId]?.actions[state.actionIndex - 1])) return;
+  validateStoryJourneyIdentity();
+  const id = storyNodeId(path, state.currentSceneId, state.actionIndex) + (suffix ?? '');
+  if (previousStoryNode) {
+    const edge = storyEdgeId(previousStoryNode, id);
+    if (!storyJourney.travelled.includes(edge)) storyJourney.travelled.push(edge);
+  }
+  if (!storyJourney.seen.includes(id)) storyJourney.seen.push(id);
+  if (!suffix) {
+    const progress = createSaveProgress(state.currentSceneId, state.actionIndex);
+    storyJourney.points[id] = { ...progress, resolvedEndingId: undefined };
+  }
+  previousStoryNode = id;
+  storyJourney.current = id;
+  persistStoryJourney();
+}
+
+export async function getStoryMap(): Promise<StoryMapData> {
+  const scope = currentAutosaveKey;
+  const sessionRevision = storySessionRevision;
+  validateStoryJourneyIdentity();
+  const chapters = [...storyChapterCatalogue.values()];
+  const result: StoryMapData['chapters'] = [];
+  // YAML is inexpensive; media remains lazy and only unlocked thumbnails are mounted.
+  for (let index = 0; index < chapters.length; index++) {
+    const chapter = chapters[index];
+    try {
+      const game = await ensureChapterGame(chapter);
+      if (scope !== currentAutosaveKey || sessionRevision !== storySessionRevision) throw new Error('게임이 변경되었습니다.');
+      result.push(buildStoryChapter(game, chapter.pathKey, index + 1,
+        path => resolveAssetWithOverrides(chapter.baseUrl, path, chapter.assetOverrides), storyChapterNext.get(chapter.pathKey)));
+      const targets = result[result.length - 1].edges.filter(e => e.to.startsWith('chapter:')).map(e => e.to.slice(8));
+      for (const target of new Set(targets)) {
+        if (chapters.some(c => c.pathKey === target) || chapters.length >= MAX_CHAPTERS) continue;
+        const sequence = await resolveSequenceFromChapterPath(target).catch(() => undefined);
+        if (scope !== currentAutosaveKey || sessionRevision !== storySessionRevision) throw new Error('게임이 변경되었습니다.');
+        sequence?.chapters.forEach((extra, i) => {
+          if (!chapters.some(c => c.pathKey === extra.pathKey)) { chapters.push(extra); storyChapterCatalogue.set(extra.pathKey, extra); }
+          if (sequence.chapters[i + 1]) storyChapterNext.set(extra.pathKey, sequence.chapters[i + 1].pathKey);
+        });
+      }
+    } catch (error) {
+      if (scope !== currentAutosaveKey || sessionRevision !== storySessionRevision) throw error;
+      resolvedChapterGameCache.delete(chapter.pathKey);
+      parsedChapterCache.delete(chapter.pathKey);
+      yamlTextCache.delete(chapter.pathKey);
+      result.push({ path: chapter.pathKey, number: index + 1, nodes: [], edges: [], error: '이 장의 지도를 읽지 못했습니다.' });
+    }
+  }
+  // Resolve cross-chapter branches to real entry nodes and show a chapter gateway.
+  for (const chapter of result) for (const edge of chapter.edges) {
+    if (!edge.to.startsWith('chapter:')) continue;
+    const destination = result.find(c => c.path === edge.to.slice(8));
+    const entry = destination?.nodes.find(n => n.id === destination.entry);
+    if (!entry) continue;
+    edge.to = entry.id;
+    if (!chapter.nodes.some(n => n.id === entry.id)) chapter.nodes.push({ ...entry,
+      title: `다음 장 · ${destination?.title ?? entry.title}` });
+  }
+  const state = useVNStore.getState();
+  const seen = new Set(storyJourney.seen);
+  const knownNodes = new Set(result.flatMap(c => c.nodes.map(n => n.id)));
+  let migrated = false;
+  // Older saves can reveal their recorded scenes without inventing replay state.
+  for (const entry of [...state.storyLog, ...state.routeHistory]) {
+    if (!entry.chapterPath) continue;
+    for (const id of [storyNodeId(entry.chapterPath, entry.sceneId, 0), storyNodeId(entry.chapterPath, entry.sceneId, entry.actionIndex)]) {
+      if (knownNodes.has(id) && !seen.has(id)) {
+        seen.add(id); storyJourney.seen.push(id); migrated = true;
+      }
+    }
+  }
+  for (const progress of [loadProgressByKey(resolveSaveSlotKey('chapter')), getChoiceRecoveryProgress()]) {
+    if (!progress?.chapterPath || !validateSaveForCurrentGame(progress)) continue;
+    const id = storyNodeId(progress.chapterPath, progress.sceneId, progress.actionIndex);
+    if (storyJourney.points[id] || !result.some(c => c.nodes.some(n => n.id === id))) continue;
+    storyJourney.points[id] = { ...progress, resolvedEndingId: undefined };
+    if (!storyJourney.seen.includes(id)) storyJourney.seen.push(id);
+    seen.add(id);
+    migrated = true;
+  }
+  if (migrated) persistStoryJourney();
+  const validPoints = Object.entries(storyJourney.points).filter(([, save]) => validateSaveForCurrentGame(save));
+  const replayable = new Set(validPoints.map(([id]) => id));
+  const currentPath = getCurrentChapterPathKey();
+  const currentChapter = result.find(c => c.path === currentPath);
+  const currentNode = currentChapter?.nodes.filter(n => n.scene === state.currentSceneId && n.action <= state.actionIndex)
+    .sort((a, b) => b.action - a.action)[0];
+  const current = storyJourney.current && currentChapter?.nodes.some(n => n.id === storyJourney.current)
+    ? storyJourney.current : currentNode?.id;
+  if (current) seen.add(current);
+  for (const chapter of result) {
+    for (const node of chapter.nodes) {
+      const save = storyJourney.points[node.id];
+      if (!node.image && save?.backgroundAssetId) {
+        const prepared = chapters.find(c => c.pathKey === chapter.path);
+        const asset = prepared?.game?.assets.backgrounds[save.backgroundAssetId];
+        if (prepared && asset) node.image = resolveAssetWithOverrides(prepared.baseUrl, asset, prepared.assetOverrides);
+      }
+    }
+  }
+  return { chapters: result, visits: [...seen].map(id => ({ id, replayable: replayable.has(id) })),
+    travelled: [...storyJourney.travelled], choices: storyJourney.choices, current, persistent: storyJourneyPersistent };
+}
+
+export async function replayStoryMapNode(id: string): Promise<boolean> {
+  const progress = storyJourney.points[id];
+  if (!progress || !validateSaveForCurrentGame(progress)) return false;
+  previousStoryNode = undefined;
+  // Exact snapshots prevent inventory or relationship values leaking from the future.
+  return restoreSaveProgress(progress);
+}
+
 
 async function waitNextFrame(): Promise<void> {
   await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -401,6 +587,7 @@ function setAutosaveScopeKey(key: string): void {
   currentAutosaveKey = key;
   loadRuntimeGameSettingsFromStorage(key);
   loadChoiceRecoveryTrail();
+  loadStoryJourney();
 }
 
 export function getBgmEnabled(): boolean {
@@ -923,6 +1110,7 @@ async function playYouTubeMusic(videoId: string) {
 }
 
 function resetSession() {
+  storySessionRevision += 1;
   clearTimers();
   pendingChoiceRecovery = undefined;
   choiceRecoveryTrail = [];
@@ -930,6 +1118,8 @@ function resetSession() {
   resetLive2DLoadTracker();
   setAutosaveScopeKey(LEGACY_AUTOSAVE_KEY);
   preparedChapters = [];
+  storyChapterCatalogue.clear();
+  storyChapterNext.clear();
   activeChapterIndex = 0;
   preloadedAssetUrls = new Set<string>();
   runtimeMode = undefined;
@@ -3411,8 +3601,8 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
         (!resume.chapterPath && resume.chapterIndex === chapterIndex));
 
     if (resume && canResumeHere) {
-      useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars, resume.routeVars));
-      useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, currentInventory, resume.inventory));
+      useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, {}, resume.routeVars));
+      useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, {}, resume.inventory));
       useVNStore.getState().clearRouteHistory();
       for (const entry of resume.routeHistory) {
         useVNStore.getState().pushRouteHistory(entry);
@@ -3463,6 +3653,10 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
 
 async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0, resume?: SaveProgress): Promise<boolean> {
   preparedChapters = chapters;
+  chapters.forEach((chapter, index) => {
+    storyChapterCatalogue.set(chapter.pathKey, chapter);
+    if (chapters[index + 1]) storyChapterNext.set(chapter.pathKey, chapters[index + 1].pathKey);
+  });
   useVNStore.getState().setChapterMeta(Math.min(startIndex + 1, chapters.length), chapters.length);
 
   if (resume && startIndex >= 0 && startIndex < chapters.length) {
@@ -3496,6 +3690,8 @@ async function restoreSaveProgress(save: SaveProgress): Promise<boolean> {
 }
 
 function prepareForSaveRestore(): void {
+  previousStoryNode = undefined;
+  storyJourney.current = undefined;
   clearTimers();
   clearChoiceRecoveryPoint();
   useVNStore.getState().setGameOver(undefined);
@@ -3727,6 +3923,7 @@ function runToNextPause(loopGuard = 0) {
     return;
   }
 
+  recordStoryMapStop();
   const action = scene.actions[state.actionIndex];
   if (!action) {
     const sceneOrder = game.script.map((entry) => entry.scene);
@@ -5041,6 +5238,8 @@ export function handleAdvance(confirmAction = false) {
 }
 
 export async function restartFromBeginning() {
+  previousStoryNode = undefined;
+  storyJourney.current = undefined;
   if (preparedChapters.length === 0) {
     return;
   }
@@ -5139,6 +5338,12 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
     choiceTimer = undefined;
   }
 
+  const mapPath = getCurrentChapterPathKey();
+  if (mapPath) {
+    const mapId = storyNodeId(mapPath, state.currentSceneId, state.actionIndex);
+    const choices = storyJourney.choices[mapId] ?? [];
+    if (!choices.includes(selected.text)) storyJourney.choices[mapId] = [...choices, selected.text];
+  }
   recordChoiceRecoveryPoint({
     ...createSaveProgress(state.currentSceneId, state.actionIndex),
     choiceAttempt: {
@@ -5171,6 +5376,9 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   useVNStore.getState().clearChoiceGate();
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   if (selected.gameOver) {
+    const authoredAction = state.game?.scenes[state.currentSceneId]?.actions[state.actionIndex];
+    const authoredIndex = authoredAction && 'choice' in authoredAction ? authoredAction.choice.options.indexOf(selected) : optionIndex;
+    recordStoryMapStop(`:death:${authoredIndex}`);
     triggerGameOver(selected.gameOver, false);
     return;
   }
