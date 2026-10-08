@@ -33,6 +33,7 @@ scenes:
           options: [{text: End, gameOver: {title: Ended}}]
 `,
 };
+let fixtureDocuments = { ...documents };
 const startId = storyNodeId('./0.yaml', 'start', 0);
 async function settle<T>(promise: Promise<T>): Promise<T> {
   await vi.advanceTimersByTimeAsync(2500);
@@ -40,6 +41,7 @@ async function settle<T>(promise: Promise<T>): Promise<T> {
 }
 beforeEach(() => {
   vi.useFakeTimers();
+  fixtureDocuments = { ...documents };
   const values = new Map<string, string>();
   vi.stubGlobal('localStorage', { getItem: (k: string) => values.get(k) ?? null, setItem: (k: string, v: string) => values.set(k, v), removeItem: (k: string) => values.delete(k) });
   vi.stubGlobal('window', globalThis);
@@ -51,12 +53,84 @@ beforeEach(() => {
   vi.stubGlobal('Audio', class { volume = 0; play() { return Promise.resolve(); } pause() {} addEventListener() {} });
   vi.stubGlobal('fetch', vi.fn(async (url: string) => {
     const path = new URL(url).pathname.split('/').pop()!;
-    return new Response(documents[path] ?? '', { status: documents[path] ? 200 : 404, headers: { 'content-type': 'text/yaml' } });
+    return new Response(fixtureDocuments[path] ?? '', { status: fixtureDocuments[path] ? 200 : 404, headers: { 'content-type': 'text/yaml' } });
   }));
   setScenePresentationPaused(false);
 });
 afterEach(() => { setScenePresentationPaused(false); vi.clearAllTimers(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 describe('persistent story map replay', () => {
+  it('enables earlier scenes for a living player resuming a pre-map save across chapters', async () => {
+    const history = [
+      { kind: 'choice', key: 'start:0', value: 'Live', chapterPath: './0.yaml', sceneId: 'start', actionIndex: 0 },
+      { kind: 'choice', key: 'safe:1', value: 'Next', chapterPath: './0.yaml', sceneId: 'safe', actionIndex: 1 },
+    ];
+    localStorage.setItem('vn-engine-autosave:path:%2Fjourney', JSON.stringify({
+      gameTitle: 'Journey', gameVersion: '1', chapterIndex: 1, chapterPath: './1.yaml', sceneId: 'next', actionIndex: 0,
+      routeVars: { trust: 1, hidden: false }, inventory: { seal: true }, routeHistory: history,
+      storyLog: history.map(entry => ({ ...entry, prompt: 'Choose' })),
+    }));
+    await settle(loadGameFromUrl('http://test/journey/'));
+    expect(useVNStore.getState().gameOver).toBeUndefined();
+    setScenePresentationPaused(true); // The map pauses the game even while the player is alive.
+    const before = useVNStore.getState();
+    const map = await getStoryMap();
+    expect(useVNStore.getState()).toBe(before);
+    expect(map.visits).toContainEqual({ id: storyNodeId('./0.yaml', 'safe', 0), replayable: true });
+    expect(map.visits).toContainEqual({ id: startId, replayable: true });
+    expect(map.visits.some(v => v.id.endsWith(':death:0') || v.id.endsWith(':death:1'))).toBe(false);
+    expect(await settle(replayStoryMapNode(startId))).toBe(true);
+    expect(useVNStore.getState()).toMatchObject({ currentSceneId: 'start', gameOver: undefined,
+      routeVars: { trust: 0, hidden: false }, inventory: { seal: false }, routeHistory: [], choiceGate: { active: true } });
+  });
+  it('reconstructs a living mid-dialogue save before its first decision without a checkpoint', async () => {
+    fixtureDocuments['0.yaml'] = `script: [{scene: start}]
+scenes:
+  start:
+    actions:
+      - add: {trust: 2}
+      - say: {text: Still alive}
+      - choice: {prompt: Next, options: [{text: Stay}]}
+`;
+    localStorage.setItem('vn-engine-autosave:path:%2Fjourney', JSON.stringify({
+      gameTitle: 'Journey', gameVersion: '1', chapterIndex: 0, chapterPath: './0.yaml', sceneId: 'start', actionIndex: 1,
+      routeVars: { trust: 2, hidden: false }, inventory: { seal: false }, routeHistory: [],
+      storyLog: [{ kind: 'dialogue', text: 'Still alive', chapterPath: './0.yaml', sceneId: 'start', actionIndex: 1 }],
+    }));
+    await settle(loadGameFromUrl('http://test/journey/'));
+    const map = await getStoryMap();
+    expect(map.visits).toContainEqual({ id: startId, replayable: true });
+    expect(await settle(replayStoryMapNode(startId))).toBe(true);
+    expect(useVNStore.getState().routeVars.trust).toBe(2); // The earlier add must not run twice.
+    expect(useVNStore.getState().gameOver).toBeUndefined();
+  });
+  it('uses chronological choices when an old save has revisited the same decision', async () => {
+    fixtureDocuments['0.yaml'] = documents['0.yaml'].replace(
+      '- {text: Fall, gameOver: {title: Fell}}', '- {text: Again, goto: start, add: {trust: 1}}');
+    const history = ['Again', 'Again', 'Live'].map(value => ({ kind: 'choice', key: 'start:0', value,
+      chapterPath: './0.yaml', sceneId: 'start', actionIndex: 0 }));
+    localStorage.setItem('vn-engine-autosave:path:%2Fjourney', JSON.stringify({
+      gameTitle: 'Journey', gameVersion: '1', chapterIndex: 0, chapterPath: './0.yaml', sceneId: 'safe', actionIndex: 1,
+      routeVars: { trust: 3, hidden: false }, inventory: { seal: true }, routeHistory: history,
+      storyLog: history.map(entry => ({ ...entry, prompt: 'Choose' })),
+    }));
+    await settle(loadGameFromUrl('http://test/journey/'));
+    expect((await getStoryMap()).visits).toContainEqual({ id: startId, replayable: true });
+    expect(await settle(replayStoryMapNode(startId))).toBe(true);
+    expect(useVNStore.getState().routeVars.trust).toBe(2);
+    expect(useVNStore.getState().routeHistory.map(h => h.value)).toEqual(['Again', 'Again']);
+  });
+  it('does not invent an earlier route when legacy history disagrees with the saved state', async () => {
+    localStorage.setItem('vn-engine-autosave:path:%2Fjourney', JSON.stringify({
+      gameTitle: 'Journey', gameVersion: '1', chapterIndex: 0, chapterPath: './0.yaml', sceneId: 'safe', actionIndex: 1,
+      routeVars: { trust: 99, hidden: false }, inventory: { seal: true }, routeHistory: [],
+      storyLog: [{ kind: 'dialogue', text: 'Old scene', chapterPath: './0.yaml', sceneId: 'start', actionIndex: 0 }],
+    }));
+    await settle(loadGameFromUrl('http://test/journey/'));
+    expect((await getStoryMap()).visits).toContainEqual({ id: startId, replayable: false });
+    expect(await replayStoryMapNode(startId)).toBe(false);
+    expect(useVNStore.getState().routeVars.trust).toBe(99);
+  });
+
   it('records a filtered direct death correctly and restores state without future items or variables', async () => {
     await settle(loadGameFromUrl('http://test/journey/'));
     expect(useVNStore.getState().error).toBeUndefined();

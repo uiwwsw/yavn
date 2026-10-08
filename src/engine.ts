@@ -399,6 +399,114 @@ function recordStoryMapStop(suffix?: string) {
   persistStoryJourney();
 }
 
+/** Rebuild old map checkpoints from an observed route, without running presentation or changing the live store. */
+function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: PreparedChapter[], anchor?: SaveProgress): Record<string, SaveProgress> {
+  const points: Record<string, SaveProgress> = {};
+  const byPath = new Map(chapters.map(chapter => [chapter.pathKey, chapter]));
+  let path = anchor?.chapterPath ?? chapters[0]?.pathKey;
+  let game = path ? byPath.get(path)?.game : undefined;
+  if (!path || !game || !validateSaveForCurrentGame(reference)) return {};
+  const history = reference.routeHistory;
+  let historyIndex = anchor?.routeHistory.length ?? 0;
+  if (anchor && JSON.stringify(history.slice(0, historyIndex)) !== JSON.stringify(anchor.routeHistory)) return {};
+  let sceneId = anchor?.sceneId ?? game.script[0].scene;
+  let actionIndex = anchor?.actionIndex ?? 0;
+  let vars = mergeRouteVarsWithDefaults(game.state?.defaults, {}, anchor?.routeVars);
+  let inventory = mergeInventoryWithDefaults(game.inventory?.defaults, {}, anchor?.inventory);
+  let logs = [...(anchor?.storyLog ?? [])];
+  let backgroundAssetId = anchor?.backgroundAssetId;
+  const appendLog = (entry: StoryLogEntry) => { logs = [...logs, entry].slice(-MAX_STORY_LOG_ENTRIES); };
+  const enterChapter = (nextPath: string): boolean => {
+    const nextGame = byPath.get(nextPath)?.game;
+    if (!nextGame) return false;
+    path = nextPath; game = nextGame;
+    vars = mergeRouteVarsWithDefaults(game.state?.defaults, vars);
+    inventory = mergeInventoryWithDefaults(game.inventory?.defaults, inventory);
+    sceneId = game.script[0].scene; actionIndex = 0; backgroundAssetId = undefined;
+    return true;
+  };
+  const jump = (target: string): boolean => {
+    const chapterPath = normalizeGotoChapterTarget(target);
+    if (chapterPath) return enterChapter(chapterPath);
+    sceneId = target; actionIndex = 0;
+    return true;
+  };
+  const agreesWithReference = () => {
+    const targetPath = reference.chapterPath ?? chapters[reference.chapterIndex]?.pathKey;
+    const sameValues = (left: Record<string, RouteVarValue>, right: Record<string, RouteVarValue>) =>
+      Object.keys({ ...left, ...right }).every(key => left[key] === right[key]);
+    return path === targetPath && sceneId === reference.sceneId && actionIndex === reference.actionIndex
+      && historyIndex === history.length && sameValues(vars, reference.routeVars) && sameValues(inventory, reference.inventory);
+  };
+  for (let guard = 0; guard < 20000; guard++) {
+    const scene = game.scenes[sceneId];
+    if (!scene) return {};
+    const action = scene.actions[actionIndex];
+    if (isMapStop(action, actionIndex, scene.actions[actionIndex - 1])) {
+      points[storyNodeId(path, sceneId, actionIndex)] = {
+        ...reference, chapterPath: path, chapterIndex: chapters.findIndex(c => c.pathKey === path), sceneId, actionIndex,
+        routeVars: { ...vars }, inventory: { ...inventory }, routeHistory: history.slice(0, historyIndex),
+        storyLog: [...logs], backgroundAssetId, resolvedEndingId: undefined, choiceAttempt: undefined,
+      };
+    }
+    // Repeated visits to the same cursor are distinguished by the consumed choice history.
+    if (agreesWithReference()) return points;
+    if (!action) {
+      const order = game.script.map(entry => entry.scene);
+      const nextScene = order[order.indexOf(sceneId) + 1];
+      if (nextScene) { sceneId = nextScene; actionIndex = 0; continue; }
+      const nextPath = storyChapterNext.get(path);
+      if (!nextPath || !enterChapter(nextPath)) return {};
+      continue;
+    }
+    if ('bg' in action) backgroundAssetId = backgroundId(action.bg);
+    if ('set' in action) applySetToVars(vars, action.set);
+    if ('add' in action) applyAddToVars(vars, action.add);
+    if ('get' in action) applyInventoryGetToVars(inventory, action.get);
+    if ('use' in action) applyInventoryUseToVars(inventory, action.use);
+    if ('say' in action && (!action.say.when || evaluateCondition(action.say.when, vars, inventory))) {
+      const presentation = resolveSayPresentation(action.say.char, action.say.with, []);
+      appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
+        speaker: presentation.speakerName, channel: resolveDialogueChannel(action.say.channel, presentation.speakerId),
+        text: parseInlineSpeed(action.say.text).text });
+    }
+    if ('choice' in action || 'input' in action) {
+      const entry = history[historyIndex];
+      const kind = 'choice' in action ? 'choice' : 'input';
+      if (!entry || entry.kind !== kind || entry.sceneId !== sceneId || entry.actionIndex !== actionIndex
+        || (entry.chapterPath && normalizeChapterPathKey(entry.chapterPath) !== path)) return {};
+      let target: string | undefined;
+      if ('choice' in action) {
+        const option = action.choice.options.find(option => option.text === entry.value
+          && (!option.when || evaluateCondition(option.when, vars, inventory)));
+        if (!option) return {};
+        applySetToVars(vars, option.set); applyAddToVars(vars, option.add);
+        appendLog({ ...entry, kind: 'choice', prompt: action.choice.prompt });
+        historyIndex++;
+        if (option.gameOver) return agreesWithReference() ? points : {};
+        target = option.goto;
+      } else {
+        const route = action.input.routes.find(route => normalizeInputAnswer(route.equals) === normalizeInputAnswer(entry.value));
+        if (!route && normalizeInputAnswer(entry.value) !== normalizeInputAnswer(action.input.correct)) return {};
+        if (action.input.saveAs) vars[action.input.saveAs] = entry.value;
+        applySetToVars(vars, route?.set); applyAddToVars(vars, route?.add);
+        appendLog({ ...entry, kind: 'input', prompt: action.input.prompt });
+        historyIndex++;
+        target = route?.goto;
+      }
+      if (target) { if (!jump(target)) return {}; continue; }
+    }
+    if ('goto' in action) { if (!jump(action.goto)) return {}; continue; }
+    if ('branch' in action) {
+      const target = action.branch.cases.find(c => evaluateCondition(c.when, vars, inventory))?.goto ?? action.branch.default;
+      if (target) { if (!jump(target)) return {}; continue; }
+    }
+    if ('gameOver' in action || 'ending' in action) return {};
+    actionIndex++;
+  }
+  return {};
+}
+
 export async function getStoryMap(): Promise<StoryMapData> {
   const scope = currentAutosaveKey;
   const sessionRevision = storySessionRevision;
@@ -454,13 +562,28 @@ export async function getStoryMap(): Promise<StoryMapData> {
       }
     }
   }
-  for (const progress of [loadProgressByKey(resolveSaveSlotKey('chapter')), getChoiceRecoveryProgress()]) {
+  for (const progress of [loadProgressByKey(resolveSaveSlotKey('chapter')), getChoiceRecoveryProgress(), ...choiceRecoveryTrail.map(checkpoint => checkpoint.progress)]) {
     if (!progress?.chapterPath || !validateSaveForCurrentGame(progress)) continue;
     const id = storyNodeId(progress.chapterPath, progress.sceneId, progress.actionIndex);
     if (storyJourney.points[id] || !result.some(c => c.nodes.some(n => n.id === id))) continue;
     storyJourney.points[id] = { ...progress, resolvedEndingId: undefined };
     if (!storyJourney.seen.includes(id)) storyJourney.seen.push(id);
     seen.add(id);
+    migrated = true;
+  }
+  // A pre-map save may have a complete route history but no per-scene checkpoints.
+  // Only accept reconstructed states when the whole trace agrees with an actual save.
+  const reference = createSaveProgress(state.currentSceneId, state.actionIndex);
+  const chapterAnchor = loadProgressByKey(resolveSaveSlotKey('chapter'));
+  const reconstructed = {
+    ...reconstructStoryMapCheckpoints(reference, chapters),
+    ...(chapterAnchor && validateSaveForCurrentGame(chapterAnchor)
+      ? reconstructStoryMapCheckpoints(reference, chapters, chapterAnchor) : {}),
+  };
+  for (const [id, progress] of Object.entries(reconstructed)) {
+    if (!knownNodes.has(id) || storyJourney.points[id]) continue;
+    storyJourney.points[id] = progress;
+    if (!seen.has(id)) { seen.add(id); storyJourney.seen.push(id); }
     migrated = true;
   }
   if (migrated) persistStoryJourney();
