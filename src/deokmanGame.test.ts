@@ -122,18 +122,18 @@ describe('complete Deokman visual novel', () => {
 
   it('carries one causal evidence chain across all twelve chapters', () => {
     const continuityAnchors = [
-      ['0.yaml', '붉은 인장의 행로'],
-      ['1.yaml', '모란패와 추격대의 붉은 인장'],
-      ['2.yaml', '암살자의 밀랍이 곡식 수레에도'],
-      ['3.yaml', '당의 낙인이 있다'],
-      ['4.yaml', '다음 일식의 관측표'],
-      ['5.yaml', '계산표의 옥새'],
-      ['6.yaml', '잃어버린 옥새 인주'],
-      ['7.yaml', '언니가 쓰러진 게 어제야'],
-      ['8.yaml', '다음 어둠은 누구나 미리 보게 하라'],
-      ['9.yaml', '전령 매듭과 기름 먹인 대나무'],
-      ['10.yaml', '누가 먼저 믿게 만들었는지'],
-      ['11.yaml', '열두 해의 종이를 바닥에 길게'],
+      ['0.yaml', '붉은 인장을 찍은 손'],
+      ['1.yaml', '패와 인장을 나란히'],
+      ['2.yaml', '칼값이 구휼미에서'],
+      ['3.yaml', '당의 낙인이 나온다'],
+      ['4.yaml', '다음 일식의 날짜'],
+      ['5.yaml', '천문표의 인장'],
+      ['6.yaml', '옥새함에 남았던 인주'],
+      ['7.yaml', '언니가 쓰러진 것은 어제다'],
+      ['8.yaml', '새 관측대를 어디에 세울지'],
+      ['9.yaml', '기름 먹인 대나무와 전령 매듭'],
+      ['10.yaml', '이번에는 산 사람의 말을 끝까지'],
+      ['11.yaml', '오래 모은 종이를 바닥에'],
     ] as const;
 
     continuityAnchors.forEach(([path, anchor]) => expect(readSource(path), path).toContain(anchor));
@@ -257,7 +257,7 @@ describe('complete Deokman visual novel', () => {
       return Object.values(scenes).filter((scene) => collectKey(scene, 'gameOver').length > 0);
     });
     fatalScenes.forEach((scene) => {
-      expect(collectStrings(scene).join('\n')).toMatch(/죽|사망|처형|전사|피살|참수|사살|살해|독/);
+      expect(collectStrings(scene).join('\n')).toMatch(/죽|사망|급서|처형|전사|피살|참수|사살|살해|독/);
     });
     const deathCorpus = collectStrings(fatalScenes).join('\n');
     ['독', '처형', '매복', '불', '반란'].forEach((cause) => expect(deathCorpus).toContain(cause));

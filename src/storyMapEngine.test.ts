@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getStoryMap, loadGameFromUrl, loadGameFromZip, replayStoryMapNode, restartFromBeginning, setAutoSaveEnabled, setScenePresentationPaused, submitChoiceOption } from './engine';
-import { storyNodeId, visibleStoryChapter } from './storyMap';
+import { storyEdgeId, storyNodeId, visibleStoryChapter } from './storyMap';
 import { useVNStore } from './store';
 const documents: Record<string, string> = {
   'config.yaml': 'title: Journey\nversion: "1"\ntextSpeed: 30\nautoSave: true\nclickToInstant: true\n',
@@ -114,7 +114,10 @@ scenes:
       storyLog: history.map(entry => ({ ...entry, prompt: 'Choose' })),
     }));
     await settle(loadGameFromUrl('http://test/journey/'));
-    expect((await getStoryMap()).visits).toContainEqual({ id: startId, replayable: true });
+    const map = await getStoryMap();
+    expect(map.visits).toContainEqual({ id: startId, replayable: true });
+    expect(map.travelled).toContain(storyEdgeId(startId, startId));
+    expect(map.choices?.[startId]).toEqual(['Again', 'Live']);
     expect(await settle(replayStoryMapNode(startId))).toBe(true);
     expect(useVNStore.getState().routeVars.trust).toBe(2);
     expect(useVNStore.getState().routeHistory.map(h => h.value)).toEqual(['Again', 'Again']);
@@ -150,6 +153,16 @@ scenes:
     map = await getStoryMap();
     expect(map.visits.some(v => v.id === storyNodeId('./0.yaml', 'safe', 1))).toBe(true);
     expect(await replayStoryMapNode(storyNodeId('./1.yaml', 'next', 0))).toBe(false);
+  });
+  it('uses the live mid-scene cursor instead of the last archived death or another scene', async () => {
+    await settle(loadGameFromUrl('http://test/journey/'));
+    submitChoiceOption(0);
+    expect((await getStoryMap()).current).toBe(`${startId}:death:1`);
+    // A restored cursor can lie between map stops while the archive still has the old location.
+    useVNStore.setState({ currentSceneId: 'safe', actionIndex: 0, gameOver: undefined });
+    expect((await getStoryMap()).current).toBe(storyNodeId('./0.yaml', 'safe', 0));
+    useVNStore.setState({ currentSceneId: 'start', actionIndex: 0 });
+    expect((await getStoryMap()).current).toBe(startId);
   });
   it('preserves exploration through restart/reload and isolates different games', async () => {
     await settle(loadGameFromUrl('http://test/journey/'));
