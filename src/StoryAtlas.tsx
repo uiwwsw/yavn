@@ -49,10 +49,17 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
   const seen = new Set(data?.visits.map(v => v.id));
   const width = Math.max(700, ...positioned.map(n => n.x + 260));
   const height = Math.max(360, ...positioned.map(n => n.y + 220));
+  // Leave a full screen of empty map beyond every edge so the story can be
+  // panned freely, including above the first row and to the left of the start.
+  const mapMargin = { x: Math.max(640, viewportSize.width), y: Math.max(480, viewportSize.height) };
   const focusNode = (id: string | undefined, behavior: ScrollBehavior = 'auto') => {
     const node = id ? positions.get(id) : undefined;
     if (!node || !viewport.current) return;
-    viewport.current.scrollTo({ left: (node.x + 102) * zoom, top: (node.y + 74) * zoom, behavior });
+    viewport.current.scrollTo({
+      left: mapMargin.x + (node.x + 102) * zoom - viewport.current.clientWidth / 2,
+      top: mapMargin.y + (node.y + 74) * zoom - viewport.current.clientHeight / 2,
+      behavior,
+    });
   };
   // The viewport mounts only after loading. Measure it before focusing; React may
   // commit the data while the loading placeholder is still on screen.
@@ -119,8 +126,8 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
                 e.currentTarget.scrollTop = drag.current.top - e.clientY + drag.current.y; } }}
               onPointerUp={() => { drag.current = undefined; }} onPointerCancel={() => { drag.current = undefined; }}>
               {chapter?.error ? <div className="story-atlas-empty">{chapter.error}<button onClick={() => setRevision(r => r + 1)}>다시 불러오기</button></div>
-                : <div style={{ width: width * zoom + viewportSize.width, height: height * zoom + viewportSize.height, position: 'relative' }}>
-                  <div className="story-atlas-canvas" style={{ width, height, left: viewportSize.width / 2, top: viewportSize.height / 2, transform: `scale(${zoom})` }}>
+                : <div style={{ width: width * zoom + mapMargin.x * 2, height: height * zoom + mapMargin.y * 2, position: 'relative' }}>
+                  <div className="story-atlas-canvas" style={{ width, height, left: mapMargin.x, top: mapMargin.y, transform: `scale(${zoom})` }}>
                     <svg width={width} height={height} aria-hidden="true">
                       <defs>
                         <marker id="story-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,0 10,5 0,10" fill="#71847c" /></marker>

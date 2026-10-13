@@ -1223,3 +1223,5 @@ scenes:
 - 전체 라이선스/배포 고지는 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), Live2D 원문/재배포 참고 파일은 `assets/licenses/live2d/`, SUITE OFL 전문은 `assets/licenses/fonts/LICENSE`에 보관합니다.
 - 비디오 컷신 재생 중 탭 전환/브라우저 포커스 이탈 후 복귀하면 자동으로 재생 복구를 시도합니다. (`visibilitychange`, `focus`, `pageshow`)
 - `HOLD TO SKIP` 게이지는 누름 해제 후 재시작 시 0%부터 즉시 동기화되어 숫자 표시와 동일하게 진행됩니다.
+
+이야기 지도는 현재 장면을 화면 가운데에서 보여주며, 지도 가장자리 밖에도 한 화면 이상의 여백을 두어 위·아래·좌우로 자유롭게 움직일 수 있습니다.
