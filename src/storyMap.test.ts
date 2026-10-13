@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildStoryChapter, layoutStoryMap, storyEdgeId, storyNodeId, visibleStoryChapter } from './storyMap';
+import { buildStoryChapter, describeStoryRoute, layoutStoryMap, routeStoryMapEdges, storyEdgeId, storyNodeId, visibleStoryChapter } from './storyMap';
 import { parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import type { GameData } from './types';
 const id = (scene: string, action = 0) => storyNodeId('./0.yaml', scene, action);
@@ -23,7 +23,7 @@ describe('story map control flow and spoiler boundary', () => {
     expect(map.nodes.find(n => n.id === id('entry', 2))).toMatchObject({ kind: 'choice', image: '/media/palace.webp' });
     expect(map.edges.filter(e => e.from === id('entry', 2))).toHaveLength(4);
     expect(map.nodes.filter(n => n.id === id('merge'))).toHaveLength(1);
-    expect(map.edges).toContainEqual({ from: id('merge'), to: 'chapter:./1.yaml', label: 'Next' });
+    expect(map.edges).toContainEqual({ from: id('merge'), to: 'chapter:./1.yaml', label: 'Next', option: 2 });
     const positions = layoutStoryMap(map.nodes, map.edges);
     expect(new Set(positions.map(n => `${n.x},${n.y}`)).size).toBe(map.nodes.length);
   });
@@ -45,8 +45,41 @@ describe('story map control flow and spoiler boundary', () => {
     const map = buildStoryChapter({ ...game, scenes: { ...game.scenes, entry: { actions: [
       { choice: { prompt: 'Continue', options: [{ text: 'Yes' }] } }, { goto: 'left' },
     ] } } }, './0.yaml', 1, p => p, './1.yaml');
-    expect(map.edges).toContainEqual({ from: id('entry'), to: id('entry', 1), label: 'Yes' });
+    expect(map.edges).toContainEqual({ from: id('entry'), to: id('entry', 1), label: 'Yes', option: 1 });
     expect(map.edges).toContainEqual({ from: id('entry', 1), to: id('left'), label: undefined });
+  });
+  it('separates identical option destinations and directs return loops outside the cards', () => {
+    const map = chapter();
+    const nodes = layoutStoryMap(map.nodes, map.edges, map.entry);
+    const routed = routeStoryMapEdges(nodes, map.edges);
+    const left = routed.filter(e => e.from === id('entry', 2) && e.to === id('left'));
+    expect(left.map(e => e.option)).toEqual([1, 4]);
+    expect(new Set(left.map(e => e.path)).size).toBe(2);
+    const loop = routed.find(e => e.from === id('merge') && e.to === id('entry'))!;
+    expect(loop.returning).toBe(true);
+    expect(loop.path).toContain(' V ');
+    const merge = nodes.find(n => n.id === id('merge'))!;
+    expect(merge.x).toBeGreaterThan(nodes.find(n => n.id === id('left'))!.x);
+    expect(merge.x).toBeGreaterThan(nodes.find(n => n.id === id('right'))!.x);
+    const self = { from: id('entry'), to: id('entry'), option: 1 };
+    expect(routeStoryMapEdges(nodes, [self])[0]).toMatchObject({ returning: true });
+  });
+  it('distinguishes a successful merge from two retries through the same earlier choice', () => {
+    const sample: GameData = { ...game, scenes: {
+      entry: { actions: [{ choice: { prompt: 'Inspect', options: [{ text: 'Compare', goto: 'deduce' }] } }] },
+      deduce: { actions: [{ choice: { prompt: 'Answer', options: [
+        { text: 'Correct', goto: 'solved' }, { text: 'Wrong two', goto: 'retry' }, { text: 'Wrong three', goto: 'retry' },
+      ] } }] },
+      solved: { actions: [{ goto: 'finish' }] },
+      retry: { actions: [{ say: { text: 'Look again' } }, { goto: 'entry' }] },
+      finish: { actions: [{ choice: { prompt: 'Leave', options: [{ text: 'End' }] } }] },
+    } };
+    const map = buildStoryChapter(sample, './0.yaml', 1, p => p);
+    const revealed = map.nodes.map(n => ({ ...n, unlocked: true }));
+    const routes = map.edges.filter(e => e.from === id('deduce'));
+    expect(describeStoryRoute(routes[0], revealed, map.edges, map.entry)).toBe('다음 지점으로 진행 · Leave');
+    for (const edge of routes.slice(1)) expect(describeStoryRoute(edge, revealed, map.edges, map.entry)).toBe('앞선 지점으로 돌아감 · Inspect');
+    expect(describeStoryRoute(routes[0], revealed.map(n => ({ ...n, unlocked: n.id === id('deduce') })), map.edges, map.entry)).toBe('아직 확인하지 않은 길');
   });
   it('preserves optional authored chapter and scene titles through the production parser', () => {
     const config = parseConfigYaml('title: Map\ntextSpeed: 30\nautoSave: true\nclickToInstant: true\n', './config.yaml').data!;

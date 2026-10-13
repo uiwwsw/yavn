@@ -400,8 +400,10 @@ function recordStoryMapStop(suffix?: string) {
 }
 
 /** Rebuild old map checkpoints from an observed route, without running presentation or changing the live store. */
-function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: PreparedChapter[], anchor?: SaveProgress): Record<string, SaveProgress> {
+function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: PreparedChapter[], anchor?: SaveProgress, trace?: string[]): Record<string, SaveProgress> {
   const points: Record<string, SaveProgress> = {};
+  const walked: string[] = [];
+  const accept = () => { trace?.push(...walked); return points; };
   const byPath = new Map(chapters.map(chapter => [chapter.pathKey, chapter]));
   let path = anchor?.chapterPath ?? chapters[0]?.pathKey;
   let game = path ? byPath.get(path)?.game : undefined;
@@ -443,14 +445,16 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
     if (!scene) return {};
     const action = scene.actions[actionIndex];
     if (isMapStop(action, actionIndex, scene.actions[actionIndex - 1])) {
-      points[storyNodeId(path, sceneId, actionIndex)] = {
+      const nodeId = storyNodeId(path, sceneId, actionIndex);
+      walked.push(nodeId);
+      points[nodeId] = {
         ...reference, chapterPath: path, chapterIndex: chapters.findIndex(c => c.pathKey === path), sceneId, actionIndex,
         routeVars: { ...vars }, inventory: { ...inventory }, routeHistory: history.slice(0, historyIndex),
         storyLog: [...logs], backgroundAssetId, resolvedEndingId: undefined, choiceAttempt: undefined,
       };
     }
     // Repeated visits to the same cursor are distinguished by the consumed choice history.
-    if (agreesWithReference()) return points;
+    if (agreesWithReference()) return accept();
     if (!action) {
       const order = game.script.map(entry => entry.scene);
       const nextScene = order[order.indexOf(sceneId) + 1];
@@ -483,7 +487,10 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
         applySetToVars(vars, option.set); applyAddToVars(vars, option.add);
         appendLog({ ...entry, kind: 'choice', prompt: action.choice.prompt });
         historyIndex++;
-        if (option.gameOver) return agreesWithReference() ? points : {};
+        if (option.gameOver) {
+          walked.push(storyNodeId(path, sceneId, actionIndex) + `:death:${action.choice.options.indexOf(option)}`);
+          return agreesWithReference() ? accept() : {};
+        }
         target = option.goto;
       } else {
         const route = action.input.routes.find(route => normalizeInputAnswer(route.equals) === normalizeInputAnswer(entry.value));
@@ -575,10 +582,12 @@ export async function getStoryMap(): Promise<StoryMapData> {
   // Only accept reconstructed states when the whole trace agrees with an actual save.
   const reference = createSaveProgress(state.currentSceneId, state.actionIndex);
   const chapterAnchor = loadProgressByKey(resolveSaveSlotKey('chapter'));
+  const trace: string[] = [];
+  const anchoredTrace: string[] = [];
   const reconstructed = {
-    ...reconstructStoryMapCheckpoints(reference, chapters),
+    ...reconstructStoryMapCheckpoints(reference, chapters, undefined, trace),
     ...(chapterAnchor && validateSaveForCurrentGame(chapterAnchor)
-      ? reconstructStoryMapCheckpoints(reference, chapters, chapterAnchor) : {}),
+      ? reconstructStoryMapCheckpoints(reference, chapters, chapterAnchor, anchoredTrace) : {}),
   };
   for (const [id, progress] of Object.entries(reconstructed)) {
     if (!knownNodes.has(id) || storyJourney.points[id]) continue;
@@ -586,15 +595,33 @@ export async function getStoryMap(): Promise<StoryMapData> {
     if (!seen.has(id)) { seen.add(id); storyJourney.seen.push(id); }
     migrated = true;
   }
+  // Legacy saves also need their actual edges and selected option labels. Merely
+  // marking the endpoint scenes loses loops and makes merged alternatives ambiguous.
+  for (const walk of [trace, anchoredTrace]) for (let i = 1; i < walk.length; i++) {
+    if (!knownNodes.has(walk[i - 1]) || !knownNodes.has(walk[i])) continue;
+    const edge = storyEdgeId(walk[i - 1], walk[i]);
+    if (!storyJourney.travelled.includes(edge)) { storyJourney.travelled.push(edge); migrated = true; }
+  }
+  for (const entry of state.routeHistory) {
+    if (entry.kind !== 'choice' || !entry.chapterPath) continue;
+    const id = storyNodeId(entry.chapterPath, entry.sceneId, entry.actionIndex);
+    if (!knownNodes.has(id)) continue;
+    const selected = storyJourney.choices[id] ?? [];
+    if (!selected.includes(entry.value)) { storyJourney.choices[id] = [...selected, entry.value]; migrated = true; }
+  }
   if (migrated) persistStoryJourney();
   const validPoints = Object.entries(storyJourney.points).filter(([, save]) => validateSaveForCurrentGame(save));
   const replayable = new Set(validPoints.map(([id]) => id));
   const currentPath = getCurrentChapterPathKey();
   const currentChapter = result.find(c => c.path === currentPath);
-  const currentNode = currentChapter?.nodes.filter(n => n.scene === state.currentSceneId && n.action <= state.actionIndex)
+  const currentNode = currentChapter?.nodes.filter(n => n.chapter === currentPath && n.scene === state.currentSceneId && n.action <= state.actionIndex && !n.id.includes(':death:'))
     .sort((a, b) => b.action - a.action)[0];
-  const current = storyJourney.current && currentChapter?.nodes.some(n => n.id === storyJourney.current)
-    ? storyJourney.current : currentNode?.id;
+  // The live cursor wins over the archive after loading/replaying a mid-scene save.
+  // Only a direct-choice death shares its cursor with a normal choice node.
+  const recordedDeath = state.gameOver && storyJourney.current?.startsWith(
+    storyNodeId(currentPath ?? '', state.currentSceneId, state.actionIndex) + ':death:')
+    && currentChapter?.nodes.some(n => n.id === storyJourney.current);
+  const current = recordedDeath ? storyJourney.current : currentNode?.id;
   if (current) seen.add(current);
   for (const chapter of result) {
     for (const node of chapter.nodes) {

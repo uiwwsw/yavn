@@ -14,22 +14,22 @@ scenes:
           text: "제4장 — 칼과 장부"
       - say:
           channel: action
-          text: 빈집의 곡식독을 연다. 바닥을 긁자 쥐똥만 구른다. 장부에는 어제 배급했다고 적혔다. 이 집 사람은 뭘 먹었지?
+          text: "곡식독을 기울인다. 쥐똥 몇 알이 구른다. 어제 배급을 마쳤다는 장부 위로 먼지가 내려앉는다. 방 안에 밥 지은 냄새는 없다."
       - char: { id: 덕만, position: left }
       - char: { id: 유신, position: right }
       - say:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "비가 오면 자국이 지워집니다. 병사 스무 명이면 해 뜨기 전 창고 셋을 칠 수 있고요."
+          text: "비가 곧 옵니다. 스무 명을 주시면 동트기 전에 창고 셋을 막겠습니다."
       - say:
           char: 덕만
           camera: medium
           with: [유신]
-          text: "문부터 부수면 하수인만 잡혀. 밤에 움직인 수레부터 찾자. 비 오기 전에."
+          text: "창고만 막으면 주인은 빠져나가겠지. 수레가 어디로 갔는지부터 보자."
       - choice:
           key: c4_investigation
-          prompt: "비가 오기 전에 무엇부터 확인할까요?"
+          prompt: "먼 빗소리가 다가온다. 흔적이 지워지기 전에…"
           char: 덕만
           camera: medium
           with: [유신]
@@ -48,12 +48,12 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 바퀴 자국 옆에 통행표를 놓는다. 폭이 맞는다. 멀리 수레가 멎고, 왕실 덮개 위로 귀족 문장이 씌워진다.
+          text: "바퀴 홈에 손가락을 벌려 댄다. 통행표에 적힌 폭과 같다. 산길의 수레 위로 덮개가 바뀐다. 왕실 문양이 낯선 가문의 천 아래 사라진다."
       - say:
           char: 유신
           camera: medium
           with: [덕만]
-          text: "맞습니다. 장부는 고쳐도 수레 폭은 못 바꿉니다. 왕실 수레가 산 위로 갔습니다."
+          text: "같은 수레입니다. 덮개만 바꿨군요. 산길로 갔습니다."
       - goto: hidden_warehouse
 
   hire_villagers:
@@ -64,27 +64,27 @@ scenes:
           duration: 720
       - say:
           channel: "narration"
-          text: "아이들은 밤마다 수레 소리가 멎는 집을 말했습니다. 산등성이에서 연기가 나자 노파 하나가 덕만을 빈 돼지우리로 끌었습니다."
+          text: "아이 하나가 산 위의 집을 가리켰다. 그쪽에서 연기가 피자 노파가 아이 입을 막았다. 그리고 덕만의 소매를 잡아 돼지우리 뒤로 끌었다."
       - say:
           char: "덕만"
           camera: "medium"
           with:
             - "유신"
-          text: "우리 질문이 먼저 샜어. 저 집으로 바로 올라가면 안 돼."
+          text: "우리가 묻고 다닌 걸 알았어. 유신, 저쪽 길은 쓰지 마."
       - say:
           char: "유신.angry"
           camera: "medium"
           with:
             - "덕만"
-          text: "노파가 뒷길을 압니다. 호위는 줄이겠습니다. 마을 사람들 얼굴부터 가리십시오."
+          text: "노파가 뒷길을 안답니다. 인원을 줄여 따르겠습니다. 얼굴을 가리십시오."
       - say:
           channel: "narration"
-          text: "빈 창고가 타는 동안 두 사람은 노파의 지팡이 뒤를 따랐습니다. 진짜 창고에 닿았을 때 장부의 첫 장은 이미 불에 탔습니다."
+          text: "지팡이가 진흙에 박힐 때마다 일행도 멈췄다. 진짜 창고에 닿았을 때 장부 첫 장은 검게 말려 있었다. 덕만은 재가 될까 손도 대지 못했다."
       - add:
           evidence: -1
       - say:
           channel: thought
-          text: 노파가 길은 열어 줬어. 타 버린 첫 장의 이름은 끝내 못 읽었다. 남은 장부터 지키자.
+          text: "노파는 끝내 이름을 말하지 않았다. 타 버린 장부에도 이름이 있었을 텐데. 남은 것이라도 가져가야 한다."
       - goto: "hidden_warehouse"
 
   surround_warehouse:
@@ -95,27 +95,27 @@ scenes:
           duration: 720
       - say:
           channel: "narration"
-          text: "기병이 세 창고의 길을 막았습니다. 빈 창고 두 곳에서 불이 났지만 유신은 말머리를 돌리지 않았습니다."
+          text: "두 창고에서 연기가 솟았다. 유신은 말 위에서 남은 한 곳을 보고 있었다. 그 창고 앞에서는 수레도 사람도 나오지 않았다."
       - say:
           char: "유신"
           camera: "medium"
           with:
             - "덕만"
-          text: "불을 끄면 포위가 뚫립니다. 남은 문에서만 수레가 안 나옵니다."
+          text: "불은 유인입니다. 세 번째 문이 조용합니다. 병력을 빼지 않겠습니다."
       - say:
           char: "덕만.princess_angry"
           camera: "medium"
           with:
             - "유신"
-          text: "그 문을 지켜. 마을 우물은 내주고, 병사들은 담 밖에서 기다려."
+          text: "그 문을 지켜라. 우물로 가는 길은 터 주고. 사람까지 가두지는 마."
       - say:
           channel: "narration"
-          text: "진짜 창고의 빗장이 열렸습니다. 장부는 남았지만 불탄 빈 창고를 지켜보던 주민들은 왕실 깃발에 등을 돌렸습니다."
+          text: "마지막 창고가 열렸다. 돌아가는 길에 덕만의 말이 불탄 집 앞에서 멎었다. 안에 있던 사람은 왕실 깃발을 보고 문을 닫았다."
       - add:
           people_support: -2
       - say:
           channel: thought
-          text: 장부는 손에 있다. 불탄 집 앞의 사람은 내 깃발을 보고 문을 닫았다. 돌아와서 이 문도 두드려야 해.
+          text: "말에서 내려야 했는데. 무슨 말을 할지 몰라 그대로 지나왔다. 문 닫히는 소리가 아직 들린다."
       - goto: "hidden_warehouse"
 
   hidden_warehouse:
@@ -126,22 +126,22 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: 문틈을 밀자 기름 냄새가 훅 끼친다. 곡식은 어디 있지? 갑옷 더미에서 누군가 내 쪽으로 장부를 흔든다.
+          text: "문을 미니 기름 냄새가 난다. 쌀자루가 있어야 할 곳에 갑옷이 쌓였다. 그 위에 앉은 사내가 내 쪽으로 장부를 들어 보인다."
       - say:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "쌀 한 섬에 창 세 자루. 이름은 지우고 값은 꼼꼼히 적었군요."
+          text: "쌀 한 섬에 창 세 자루라. 백성은 굶어도 장사는 남겼군요."
       - say:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "누구지?"
+          text: "내려와. 누구 허락으로 거기 앉았지?"
       - say:
           char: 비담
           camera: medium
           with: [덕만]
-          text: "비담입니다. 칼로 먹고사는데… 오늘 보니 장부가 더 잘 죽이더군요."
+          text: "비담이라 합니다. 허락받을 주인이 없기에, 쥐에게 물었습니다."
       - sticker: { id: c4_ledger, image: grain_ledger_sticker, x: 51, y: 29, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, rotate: -2, enter: fadeIn }
       - get: grain_ledger
       - clearSticker: { id: c4_ledger, leave: fadeOut }
@@ -157,10 +157,10 @@ scenes:
           camera: "medium"
           with:
             - "덕만"
-          text: "비는 들이치고 밖에선 문을 밉니다. 내일이면 쌀도 장부도 못 씁니다. 지금 정하십시오."
+          text: "문이 오래 못 버팁니다. 쌀도 비를 맞고 있습니다. 지금 내주셔야 합니다."
       - choice:
           key: "c4_grain_policy"
-          prompt: "굶은 사람들이 창고 문을 밉니다. 무엇부터 내놓을까요?"
+          prompt: "문 너머에서 빈 그릇 부딪치는 소리가 난다."
           char: "덕만"
           camera: "medium"
           with:
@@ -199,15 +199,15 @@ scenes:
       - char: { id: 비담, position: right, emotion: smirk }
       - say:
           channel: action
-          text: 자루에 집 이름을 쓴다. 숯이 부러질 때쯤에도 줄은 남아 있다. 할머니가 내 손에서 숯을 받아 자기 집 이름을 덧쓴다.
+          text: "자루마다 집 이름을 적는다. 손가락이 뻣뻣해질 때쯤 노파가 숯을 가져간다. 내 글씨 옆에 비뚤비뚤 제 이름을 쓴다."
       - say:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "오늘 쌀을 센 사람들이 내일은 왕실 장부도 보자 할 겁니다. 그때도 여실 겁니까?"
+          text: "다음엔 궁 창고도 열라 할 텐데요. 오늘처럼 웃으시겠습니까?"
       - say:
           char: 덕만
-          text: "열어야지. 귀찮다고 닫으면 또 쌀부터 사라질 테니까."
+          text: "그때 닫으면 오늘 이 손에 열쇠를 준 게 거짓말이 되겠지."
       - goto: convoy_attack
 
   royal_relief:
@@ -218,27 +218,27 @@ scenes:
           duration: 720
       - say:
           channel: "narration"
-          text: "왕실 북이 울리자 줄이 빠르게 정리됐습니다. 유신은 따로 올린 그릇을 멈추고 모든 죽을 같은 솥에서 뜨게 했습니다."
+          text: "북이 울리자 줄이 잡혔다. 유신은 공주 몫이라며 따로 내민 그릇을 돌려보냈다. 병사와 백성의 죽이 같은 솥에서 나왔다."
       - say:
           char: "유신"
           camera: "medium"
           with:
             - "덕만"
-          text: "오늘 안에 배급은 끝납니다. 다만 관리가 이름을 빠뜨린 집이 있습니다."
+          text: "해 지기 전엔 끝나겠습니다. 다만 명부에 없는 집이 셋 있습니다."
       - say:
           char: "덕만"
           camera: "medium"
           with:
             - "유신"
-          text: "그 집은 내가 찾아갈게. 배급은 계속하고, 빠진 이름은 따로 남겨."
+          text: "세 집 몫은 남겨 둬. 위치를 적어 줘. 내가 가져갈게."
       - say:
           channel: "narration"
-          text: "왕실 깃발 아래 자루가 빠르게 줄었습니다. 장터 끝의 세 집은 해가 진 뒤에야 자기 몫을 받았습니다."
+          text: "마지막 세 집에 닿았을 때 죽은 식어 있었다. 덕만이 그릇을 내밀자 노파는 두 손으로 받았다. 고맙다는 말이 듣기 어려웠다."
       - add:
           people_support: -1
       - say:
           channel: thought
-          text: 솥은 빨리 비었는데, 끝집 할머니는 해가 진 뒤에야 왔어. 이름을 불렀다는 관리의 말만 믿어도 될까?
+          text: "명부대로 다 줬다는 말을 믿을 뻔했다. 문 앞에 오지 못하는 사람은 어떻게 이름을 알릴까."
       - goto: "convoy_attack"
 
   grain_bargain:
@@ -253,28 +253,28 @@ scenes:
           emotion: "smirk"
       - say:
           channel: "narration"
-          text: "장부가 상자에 잠기자 군량 수레가 나왔습니다. 비담은 내민 축하주를 두고 봉인된 자루 하나를 직접 찢었습니다."
+          text: "장부에 자물쇠가 채워졌다. 그제야 수레들이 나왔다. 비담은 축하주를 밀어 놓고 자루에 칼집을 냈다. 쌀이 쏟아졌다."
       - say:
           char: "덕만"
           camera: "medium"
           with:
             - "비담"
-          text: "잔은 됐어. 자루 밑까지 세고 나서 문을 열어."
+          text: "잔 치워. 밑에까지 같은 쌀인지 보고 가겠다."
       - say:
           char: "비담"
           camera: "medium"
           with:
             - "덕만"
-          text: "군량은 맞습니다. 대신 저 가문의 이름을 제가 감춰 드리게 됐군요."
+          text: "속을 채워 왔군요. 이름을 감춰 드린 보람은 있습니다."
       - say:
           channel: "narration"
-          text: "병사들의 솥에서 김이 올랐습니다. 창고 앞 노파는 도둑의 이름을 묻다 빈 손으로 돌아갔습니다."
+          text: "병사들 솥에 쌀이 들어갔다. 노파가 창고 주인 이름을 물었다. 덕만이 대답하지 않자 노파는 자기가 말을 잘못한 듯 고개를 숙였다."
       - add:
           people_support: -3
           bidam_trust: 1
       - say:
           channel: thought
-          text: 군사들은 먹었다. 노파가 물었던 도둑의 이름은 내가 상자에 가뒀다. 내일 그 사람 얼굴을 어떻게 보지.
+          text: "고개를 숙일 사람은 나인데. 자물쇠 열쇠가 손바닥을 누른다. 지금이라도 꺼낼 수 있다. 그런데 손이 펴지지 않는다."
       - goto: "convoy_attack"
 
   convoy_attack:
@@ -285,15 +285,15 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: 수레 앞에서 바위가 떨어진다. 뒤에서도 같은 소리. 절벽 위 횃불이 장부 상자를 따라 움직인다.
+          text: "앞길에 바위가 굴러떨어진다. 돌아보자 뒤에서도 돌이 튄다. 절벽 위의 횃불들이 장부를 실은 수레 쪽으로 모인다."
       - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "정면은 뚫습니다. 대신 뒤 수레가 탑니다. 적을 잡을지, 곡식을 보낼지 명령하십시오."
+          text: "앞은 뚫을 수 있습니다. 그동안 뒤 수레는 지키지 못합니다. 명을 주십시오."
       - choice:
           key: c4_convoy
-          prompt: "불화살이 장부와 마을 몫을 함께 노립니다. 무엇부터 지킬까요?"
+          prompt: "수레를 멈추자 절벽 위에서 활시위가 당겨진다."
           char: 덕만
           camera: medium
           with: [유신]
@@ -311,12 +311,12 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 빈 수레를 민다. 화살이 쏟아진다. 불빛에 드러난 궁수를 향해 손을 뻗는다. “저기!” 유신의 말이 비탈을 꺾는다.
+          text: "빈 수레를 비탈로 민다. 화살이 그쪽으로 쏟아진다. 불빛에 궁수의 팔이 드러난다. 내가 가리키기도 전에 유신이 말머리를 돌린다."
       - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "매복한 자들은 봤습니다. 대신 빈 수레 둘을 버렸습니다. 그것도 보고에 적겠습니다."
+          text: "궁수들이 드러났습니다. 빈 수레 둘은 버리고 갑니다!"
       - goto: convoy_saved
 
   convoy_saved:
@@ -326,18 +326,18 @@ scenes:
       - say:
           camera: medium
           channel: action
-          text: 돌길의 진동이 발바닥에 닿는다. 돌아왔구나. 아이 하나가 찢어진 자루 밑에서 쌀알을 줍는다. 나도 허리를 굽힌다.
+          text: "마을 어귀에서야 수레바퀴 소리가 고르게 들린다. 아이가 터진 자루 밑으로 손을 뻗는다. 나도 내려앉아 흙 묻은 쌀알을 줍는다."
       - char: { id: 덕만, position: left }
       - char: { id: 유신, position: right }
       - say:
           char: 유신
-          text: "오늘은 뒤 수레를 먼저 보셨습니다. 좋은 명령이었습니다."
+          text: "끝 수레까지 들어왔습니다. …오늘은 한 명도 두고 오지 않았습니다."
       - say:
           char: 덕만
-          text: "다음엔 내가 놓친 사람부터 말해 줘. 공주 앞에서 입 다무는 장수는 필요 없어."
+          text: "내가 앞만 보면 네가 불러 세워. 듣기 싫어해도 꼭 그래 줘."
       - say:
           channel: thought
-          text: 자루 안쪽에 당의 낙인이 있다. 사흘 뒤 모란 연회라니… 이 쌀을 훔친 자와 내게 해명을 요구하는 자가 이어져 있을까?
+          text: "자루 안쪽에서 당의 낙인이 나온다. 사흘 뒤 연회에 들고 갈 것이 늘었다. 사신이 이 자루를 알아볼까."
           with: []
           camera: wide
           continueLabel: 그을린 장부를 들고 연회장으로 간다
@@ -345,7 +345,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [유신]
-          text: "아이들 쌀을 창으로 바꾼 손이 당 사신과도 잔을 들었어. 이 장부를 들고 만나러 가자."
+          text: "이 쌀을 팔아 산 칼이었구나. 연회에 가져가자. 사신 앞에서 펼쳐야겠어."
       - goto: /4.yaml
 
   bad_grain_wall:
@@ -356,20 +356,20 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
-          text: "자루는 화살을 막아도 불은 못 막습니다. 비가 오기 전에 기름이 스며들면 곡식 전체가 장작이 됩니다."
+          text: "불이 붙습니다! 자루에 기름이 스며들고 있습니다, 공주님!"
       - say:
           char: 덕만.princess_angry
-          text: "움직이면 뒤 수레가 맞아. 젖은 천을 덮고 조금만 버틴다."
+          text: "뒤 수레가 아직 못 나갔어. 젖은 천을 덮어. 조금만 더 버틴다."
       - say:
           channel: narration
-          text: "첫 빗방울보다 불화살이 빨랐습니다. 쌓아 올린 자루는 사람을 가린 벽에서 협곡을 막는 불더미로 바뀌었고, 연기 속 군사들은 서로의 위치도 찾지 못했습니다."
+          text: "비는 몇 방울 오다 말았다. 자루를 잇고 번진 불이 협곡을 막았다. 유신의 명령은 들렸지만 그가 어느 쪽에 있는지는 보이지 않았다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "구휼 수레 피습 보고 — 곡식 전량 소실. 덕만 공주와 호위 병력, 협곡 화재로 사망."
       - gameOver:
           title: "운명 — 곡식으로 쌓은 장작"
-          message: "지켜야 할 곡식을 방벽으로 쓰자 불화살 한 발이 퇴로 전체를 태웠습니다. 비를 기다린 덕만과 유신은 불붙은 자루 사이에서 빠져나오지 못했습니다."
+          message: "젖은 천 아래까지 불이 들었다. 군사들이 곡식을 끌어내려 했으나, 무너지는 자루가 퇴로를 덮었다."
           recoverToChoice: c4_convoy
 
   bad_charge:
@@ -381,19 +381,19 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 덕만.angry
-          text: "곡식을 미끼로 던지든 정면을 뚫든, 저 불화살부터 우리 쪽으로 돌린다."
+          text: "유신, 같이 간다. 저 활을 우리 쪽으로 돌려야 해."
       - say:
           char: 유신.angry
-          text: "수레가 움직이면 피할 벽도 사라집니다. 한 번 시작하면 사람과 곡식을 따로 빼낼 수 없습니다."
+          text: "한 번 나가면 돌아설 곳이 없습니다. 뒤 수레도 함께 움직여야 합니다."
       - say:
           channel: narration
-          text: "선두가 협곡으로 돌진하자 숨어 있던 궁수들이 일제히 몸을 드러냈습니다. 두 번째 불화살은 사람과 장부가 실린 뒤 수레에 꽂혔고, 너무 깊이 들어온 선두는 불붙은 퇴로 앞에서 멈췄습니다."
+          text: "유신의 말이 협곡으로 뛰었다. 궁수들이 일어섰다. 앞을 향하던 불화살 몇이 방향을 바꾸어 뒤 수레에 꽂혔다. 돌아본 덕만의 얼굴로 열기가 밀려왔다."
       - say:
           channel: record
           text: "구휼 수레 피습 보고 — 왕실 혈족 덕만과 김유신, 군량을 지키다 전사. 장부는 소실됨."
       - gameOver:
           title: "운명 — 칼이 장부를 태우다"
-          message: "전술로 적을 끌어낼 수는 있었지만 협곡 전체를 전장으로 만들면 곡식과 사람도 미끼가 됩니다. 덕만과 유신은 불길 속에서 전사했고 구휼 장부도 함께 탔습니다."
+          message: "길을 뚫고도 돌아갈 수 없었다. 장부를 실은 수레와 마을에 보낼 곡식이 같은 불에 탔다."
 
   evidence_ledger:
     actions:
@@ -419,7 +419,7 @@ scenes:
           zIndex: 14
       - say:
           channel: action
-          text: 장부와 운송표를 내 앞으로 당긴다. 종이에서 곡식 먼지가 떨어진다. 어느 줄부터 봐야 하지?
+          text: "운송표를 장부 옆에 편다. 틈에서 쌀겨가 떨어진다. 손으로 쓸어 내자 먹으로 그은 자루 수가 드러난다."
           with: []
           camera: wide
       - goto: evidence_ledger_compare
@@ -429,7 +429,7 @@ scenes:
       - choice:
           key: evidence_ledger_look
           presentation: explore
-          prompt: 손에 닿는 흔적부터. 어느 쪽을 더 살펴볼까?
+          prompt: "같은 날 나간 곡식이다. 어느 칸부터 볼까?"
           camera: wide
           with: []
           options:
@@ -461,7 +461,7 @@ scenes:
     actions:
       - say:
           channel: thought
-          text: 도장이 크다고 곡식이 늘지는 않아. 읽은 두 칸의 자루 수부터 비교하자. 이름은 그다음이다.
+          text: "도장 크기는 수량이 아니야. 지워진 이름도 지금은 알 수 없어. 여섯이 나가서, 몇이 왔지?"
           with: []
           camera: wide
       - goto: evidence_ledger_compare
@@ -472,7 +472,7 @@ scenes:
           grain_verified: true
       - say:
           char: "덕만"
-          text: "사라진 건 세 자루야. 이름을 추측하지 말고 이 수량부터 마을에 확인받자. 장부를 열든 거래하든 이 몫은 기억해."
+          text: "세 자루가 비었어. 누가 가져갔는지는 몰라도, 마을이 못 받은 몫은 이만큼이야."
       - goto: "evidence_ledger_return"
 
 
@@ -490,7 +490,7 @@ scenes:
     actions:
       - choice:
           key: evidence_ledger
-          prompt: 장부에서 빠져나간 곡식은 어떻게 찾을까요?
+          prompt: "이 종이 두 장으로 분명히 말할 수 있는 것은?"
           camera: wide
           options:
             - text: 출발 여섯 자루와 도착 세 자루를 대조한다
@@ -507,7 +507,7 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 출발 칸에 자루 표시 여섯 개. 먹이 번진 마지막 표시를 손톱으로 가리지 않고 다시 센다. 여섯이 맞다.
+          text: "출발 칸에 여섯 줄이 그어져 있다. 마지막 줄은 먹이 번졌지만 지운 자국은 아니다. 나는 손톱을 대어 하나씩 센다."
           with: []
           camera: wide
       - set:
@@ -518,7 +518,7 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 같은 날짜의 도착 칸은 셋. 붉은 도장 아래에도 다른 자루 표시는 없다. 출발 칸으로 시선이 돌아간다.
+          text: "도착 칸에는 세 줄뿐이다. 날짜는 같다. 붉은 도장 아래를 비춰 보아도 덧쓴 수량은 없다."
           with: []
           camera: wide
       - set:

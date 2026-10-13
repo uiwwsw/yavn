@@ -16,32 +16,32 @@ scenes:
       - char: { id: 비담, position: right, emotion: sad }
       - say:
           channel: narration
-          text: "증거상 위에 불탄 연, 비담의 편지, 어린 덕만의 사망 기록이 놓였습니다. 궁문 밖에는 세 줄이 생겼습니다. 비담을 죽이라는 사람, 살리라는 사람, 그리고 어느 쪽이든 먼저 자기 가족 이름부터 적어 달라는 사람들."
+          text: "상 위에 탄 연살과 비담의 편지가 놓였다. 덕만은 그 곁에 제 사망 기록을 폈다. 궁문 밖에서 비담을 죽이라는 소리와 살리라는 소리가 부딪혔다. 가족 이름을 읽어 달라는 목소리가 그 사이에 끼었다."
       - say:
           when: { var: rebellion_response, op: eq, value: siege_trial }
           channel: record
-          text: "재판 명부 첫 장에는 포위 사흘 동안 솥이 식은 성 밖 마을의 이름이 적혔습니다. 칼을 덜 쓴 승리도 굶은 사람 앞에서는 무죄가 아니었습니다."
+          text: "재판 명부 첫 장에 성 밖 마을들이 올랐다. 포위 사흘 동안 먹을 것이 끊긴 집들이었다. 덕만은 그 장을 넘기지 말라 했다."
       - say:
           when: { var: rebellion_response, op: eq, value: amnesty_split }
           channel: narration
-          text: "해산 북을 듣고 돌아간 농민들은 궁문 밖 세 줄 어디에도 서지 않았습니다. 덕만은 비어 있는 네 번째 줄까지 판결문에 남기게 했습니다."
+          text: "해산한 농민들 대부분은 궁에 오지 않았다. 덕만은 돌아간 이들의 명부도 가져오게 했다. 대답하러 오지 않은 이름을 함부로 지우지 못하게 했다."
       - say:
           char: 비담.sad
           camera: medium
           with: [덕만]
-          text: "살리면 사랑이라 하고, 죽이면 제 말을 겁냈다 하겠지요. 폐하는 어느 기록이 더 두렵습니까?"
+          text: "죽이시겠습니까, 살리시겠습니까. 오늘은 폐하의 대답만 듣겠습니다."
       - say:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "내가 덜 아픈 쪽을 고르진 않겠다. 네 반역도, 네 권력을 키운 내 책임도 따로 적을 거야."
+          text: "내 대답을 기다린 사람이 너만은 아니다. 문밖의 이름부터 듣고 시작하겠다."
       - goto: bidam_sentence_choice
 
   bidam_sentence_choice:
     actions:
       - choice:
           key: c12_bidam_sentence
-          prompt: "비담의 반역을 어떻게 판결할까요?"
+          prompt: "비담이 고개를 든다. 판결을 기다리고 있다."
           char: 덕만
           camera: medium
           with: [비담]
@@ -69,24 +69,24 @@ scenes:
       - effect: "inkstamp"
       - say:
           char: "덕만"
-          text: "지휘한 죄는 네 것이다. 그러나 돌아간 농민을 네 이름 아래 함께 묶지는 않겠다."
+          text: "반란을 지휘한 죄로 죽음을 명한다. 해산한 농민들에게 네 죄를 나누어 묻지는 않겠다."
       - say:
           char: "비담.sad"
           camera: "medium"
           with:
             - "덕만"
-          text: "제 목을 베고도 제 전령길은 필요하시겠지요. 거기서 다시 제 이름을 보실 겁니다."
+          text: "명 받들겠습니다. …제 전령들은 길밖에 모릅니다. 그 길까지 베지는 마십시오."
       - say:
           channel: "narration"
-          text: "형이 집행된 뒤 전령의 명부와 암호는 세 기록관에게 나뉘었습니다. 궁문 밖 유족들은 조용히 이름을 확인했습니다."
+          text: "형이 집행되었다. 전령의 명부와 암호는 세 기록관이 나눠 받았다. 유족들이 앞으로 나와 자기 가족의 이름을 짚었다."
       - say:
           char: "덕만.queen_sad"
           camera: "medium"
-          text: "끝난 건 한 사람의 판결이다. 내 도장이 만든 권력까지 끝났다고 쓰진 마라."
+          text: "다음 장을 펴라. 비담에게 권한을 내준 날, 내 인장이 찍힌 명도 읽어라."
       - wait: 180
       - say:
           channel: thought
-          text: 판결을 내렸다. 누가 반대하느냐고 물었는데 아무도 고개를 들지 않는다. 정말 모두 같은 생각일까.
+          text: "다른 말이 있느냐고 물었다. 아무도 고개를 들지 않는다. 판결 전보다 이 고요가 더 길다."
       - goto: "death_record_choice"
 
   sentence_exile:
@@ -94,12 +94,12 @@ scenes:
       - effect: inkstamp
       - say:
           char: 덕만
-          text: "죽여서 네 죄와 내 책임을 함께 덮진 않겠다. 네가 끊은 곡식길로 가. 이름 없이 다리를 잇고 살아."
+          text: "지위와 이름을 거두고 국경으로 보낸다. 네가 끊은 곡식길의 다리를 고쳐라. 살아서 갚아라."
       - say:
           char: 비담.sad
           camera: medium
           with: [덕만]
-          text: "죽는 것보다 오래 걸리겠군요. 자비라 부르는 자에겐 제가 부순 첫 다리부터 보여 주겠습니다."
+          text: "알겠습니다. 첫 다리가 어디인지는 제가 압니다."
       - goto: death_record_choice
 
   sentence_restored:
@@ -111,26 +111,26 @@ scenes:
       - effect: "inkstamp"
       - say:
           char: "덕만"
-          text: "암호와 전령 명부를 모두 넘겨라. 네 명령에는 기록관의 서명을 붙인다."
+          text: "명부와 암호를 내어라. 이후 네가 내리는 명에는 기록관이 함께 서명한다."
       - say:
           char: "비담"
           camera: "medium"
           with:
             - "덕만"
-          text: "제 손을 묶어 다시 쓰시는군요. 급한 밤에도 그 서명을 기다리실 수 있습니까?"
+          text: "그리하겠습니다. 급한 밤에도 그 한 사람을 기다려 주십시오."
       - say:
           channel: "narration"
-          text: "비담은 명부를 건넸습니다. 그러나 처음 보는 암호가 나올 때마다 관리들은 그에게 먼저 물었습니다."
+          text: "비담이 명부를 건넸다. 기록관은 첫 장에서부터 읽지 못하는 암호를 만났다. 묶인 손의 비담이 몸을 기울여 뜻을 일러 주었다."
       - say:
           char: "덕만.queen_sad"
           camera: "medium"
           with:
             - "비담"
-          text: "오늘 빨랐다고 내일도 너만 찾으면, 이 재판은 종이 한 장으로 끝나는 거야."
+          text: "한 번 더 가르쳐라. 너 없으면 못 읽겠다는 보고를 다시 듣지는 않겠다."
       - wait: 180
       - say:
           channel: thought
-          text: 명부는 되찾았다. 그런데 모르는 암호가 나올 때마다 모두 비담부터 본다. 저 자리를 내가 다시 만든 거야.
+          text: "명부는 상 위에 있다. 그런데 묻는 얼굴은 모두 비담을 향한다. 내 명령만으로 저 버릇이 바뀔까."
       - goto: "death_record_choice"
 
   death_record_choice:
@@ -140,17 +140,17 @@ scenes:
       - say:
           camera: medium
           channel: action
-          text: 열두 해의 종이를 바닥에 길게 편다. 사망 기록에서 비담의 편지까지. 소화가 화로를 가져온다. 손을 가까이 대니 따뜻하다.
+          text: "오래 모은 종이를 바닥에 편다. 불탄 귀퉁이와 새 먹이 한 줄로 이어진다. 소화가 화로를 놓는다. 우리는 잠시 말없이 손을 녹인다."
       - char: { id: 소화, position: right }
       - say:
           when: { var: sohwa_trust, op: gte, value: 3 }
           char: 소화
           camera: medium
           with: [덕만]
-          text: "불 속에서 제 손을 다시 잡으셨죠. 무엇을 남기든, 죽었다고 적힌 덕만과 그 뒤에 죽은 사람부터 읽어 주세요."
+          text: "그날도 이 손을 놓지 않으셨지요. …아기씨 이름부터 읽어 주셔요. 저는 듣고 있겠습니다."
       - choice:
           key: c12_record_policy
-          prompt: "열두 해의 기록을 어떻게 남길까요?"
+          prompt: "화로에 불이 남았다. 내 이름이 적힌 종이를 든다."
           char: 덕만
           camera: medium
           options:
@@ -172,10 +172,10 @@ scenes:
       - sticker: { id: c12_death_record, image: death_register_sticker, x: 50, y: 28, width: "clamp(180px, 22%, 340px)", anchorX: center, anchorY: center, enter: fadeIn }
       - say:
           channel: action
-          text: 내 사망 기록을 궁문에 붙인다. 내가 거짓 왕명을 쓴 날도 바로 아래에 적는다. 뒤에서 누군가 읽기 시작한다. 끝까지 자리를 지킨다.
+          text: "내 사망 기록을 궁문에 붙인다. 내가 내린 명도 그 옆에 건다. 사람들 틈에서 읽는 목소리가 난다. 내 이름에 이르러 멎어도 자리를 뜨지 않는다."
       - say:
           char: 덕만
-          text: "나를 죽인 거짓만 열고 내가 쓴 거짓을 숨기면 똑같아. 왕에게 불리한 글도 같은 크기로 써."
+          text: "내가 쓴 거짓도 같은 자리에 걸어라. 글씨를 작게 쓰지 말고."
       - clearSticker: { id: c12_death_record, leave: fadeOut }
       - goto: last_decree_choice
 
@@ -187,26 +187,26 @@ scenes:
           duration: 900
       - say:
           channel: "narration"
-          text: "열두 해의 원본이 세 자물쇠 뒤로 들어갔습니다. 피해자의 이름은 밖에 남았지만, 누가 어떤 문장을 고쳤는지는 봉인됐습니다."
+          text: "원본들이 함 안으로 들어갔다. 피해자 이름만 따로 베껴 궁문에 붙였다. 누가 고쳤는지 보려는 손은 닫힌 함 위에서 멈췄다."
       - say:
           char: "소화.nervous"
           camera: "medium"
           with:
             - "덕만"
-          text: "이름은 남겼어요. 그 이름을 지운 손도 언젠가는 사람들이 볼 수 있겠지요?"
+          text: "기다리는 분들이 늙었습니다. 이 문서가 열릴 때까지 기다릴 수 있을까요."
       - say:
           char: "덕만.queen_sad"
           camera: "medium"
           with:
             - "소화"
-          text: "다음 왕이 열도록 날짜를 적겠어. 내가 틀렸다면 그 왕이 나부터 고치게."
+          text: "개봉할 날을 적어 두자. 다음 왕에게도 그대로 넘기라 명하겠다."
       - say:
           channel: "narration"
-          text: "열쇠 셋은 다른 주인에게 갔습니다. 궁문 앞에서 원본을 기다리던 사람들은 개봉 날짜만 받아 들었습니다."
+          text: "열쇠 셋이 나뉘었다. 원본을 보러 온 사람들은 날짜가 적힌 작은 종이를 받아 갔다. 한 노인이 품에 넣기 전 오래 들여다보았다."
       - wait: 180
       - say:
           channel: thought
-          text: 원본은 남겼다. 피해자는 개봉 날짜만 받아 간다. 그때까지 살아 있을 수 있느냐는 말에 대답하지 못했다.
+          text: "그때까지 살 수 있겠느냐고 노인이 물었다. 명령서에 쓸 대답은 있었는데, 그 앞에서 할 말은 없었다."
       - goto: "last_decree_choice"
 
   records_burned:
@@ -218,23 +218,23 @@ scenes:
       - effect: "embers"
       - say:
           channel: "narration"
-          text: "소화가 마지막 피해자 이름을 옮기자 덕만은 원본을 화로에 넣었습니다. 붉은 인장이 검게 오그라들었습니다."
+          text: "소화가 마지막 이름을 옮겼다. 덕만은 원본을 화로에 넣었다. 붉은 인장이 먼저 검어지고, 접혔던 자리를 따라 불이 벌어졌다."
       - say:
           char: "덕만.queen_sad"
-          text: "이 이름으로 다시 누구를 죽이게 두진 않겠어. 살아 있는 사람부터 돌려보내."
+          text: "이 이름으로 다시 사람을 끌어내지는 마라. 문밖에 기다리는 이들은 집으로 보내라."
       - say:
           char: "소화.nervous"
           camera: "medium"
           with:
             - "덕만"
-          text: "이름은 다 썼어요. 하지만 같은 도장이 돌아오면, 이제 이 종이와 맞출 수는 없어요."
+          text: "다 옮겼습니다. …그런데 이 도장이 또 나오면, 이제 무엇에 맞춰 볼까요."
       - say:
           channel: "narration"
-          text: "덕만은 화로 앞에서 오래 움직이지 않았습니다. 궁문 밖의 다툼은 잦아들었지만 그 종이를 다시 읽을 수는 없었습니다."
+          text: "덕만이 불집게를 들었다가 내려놓았다. 종이는 모양만 남은 재였다. 문밖의 언성이 조금씩 멀어졌다."
       - wait: 180
       - say:
           channel: thought
-          text: 조용해졌다. 붉은 인장은 재가 됐다. 다시 확인하고 싶은 사람이 오면, 나는 뭘 내밀 수 있지.
+          text: "조용해졌다. 소화의 물음이 남았다. 같은 도장이 다시 나오면. 나는 화로에서 눈을 떼지 못한다."
       - goto: "last_decree_choice"
 
   last_decree_choice:
@@ -244,10 +244,10 @@ scenes:
       - say:
           camera: wide
           channel: thought
-          text: 내 죽음은 남이 먼저 썼다. 이 칙령도 내가 죽은 뒤에는 남겠지. 틀렸을 때, 누가 이 글을 고칠 수 있어야 할까?
+          text: "새 종이를 편다. 남이 내 죽음을 적었던 때가 떠오른다. 내가 쓴 이 글도 틀릴 수 있다. 그때 고칠 사람의 자리를 남겨야 한다."
       - choice:
           key: c12_final_decree
-          prompt: "다음 왕의 거짓도 고칠 수 있게 권한을 어디에 둘까요?"
+          prompt: "마지막 칙령이다. 다음 왕에게 무엇을 남길까?"
           char: 덕만
           camera: medium
           options:
@@ -283,17 +283,17 @@ scenes:
           emotion: "nervous"
       - say:
           char: "덕만.queen"
-          text: "전시 권한은 왕에게 남긴다. 명령을 늦춘 이름도 매일 내 앞에 올려라."
+          text: "전시에 거둔 권한은 왕에게 남긴다. 늦어진 명은 까닭과 담당자의 이름을 올려라."
       - say:
           char: "춘추"
-          text: "신속해지겠지요. 폐하가 틀렸을 때 멈출 사람의 이름은 어디에 씁니까?"
+          text: "왕명이 잘못되어 멈춘 자도 그 명부에 올려야 합니까, 폐하?"
       - say:
           channel: "narration"
-          text: "명령은 빠르게 나갔습니다. 여왕의 붓이 멈추면 회의장 전체가 숨을 죽였습니다."
+          text: "명령이 빨리 나갔다. 덕만이 붓을 내려놓으면 기록관도 붓을 놓았다. 반박하려고 목을 가다듬는 소리는 점점 드물어졌다."
       - wait: 180
       - say:
           channel: thought
-          text: 명령은 빨리 나간다. 내가 붓을 멈추면 모두 기다린다. 내가 틀렸다는 말은 어디서 들을 수 있을까.
+          text: "급한 일은 줄었다. 잘못된 일이 줄었는지는 알 수 없다. 내 눈앞에 오는 보고는 모두 가지런하다."
       - goto: "judge_ending"
 
   bad_divided_guardians:
@@ -315,17 +315,17 @@ scenes:
           emotion: "angry"
       - say:
           char: "덕만.queen"
-          text: "귀족은 군량, 군대는 성문, 마을은 관측표를 맡아라. 서로의 자물쇠를 혼자 열 수는 없다."
+          text: "군량과 성문과 관측표의 열쇠를 나누어라. 다른 이의 문을 혼자 열게 하지는 마라."
       - say:
           char: "유신"
-          text: "누군가 열쇠를 감추면 늦어질 겁니다. 그때도 다시 같은 상에 앉으시겠습니까?"
+          text: "열쇠를 쥔 자가 오지 않으면 늦어집니다. 그때도 다시 불러 의논하시겠습니까?"
       - say:
           channel: "narration"
-          text: "세 열쇠가 탁자에서 갈라졌습니다. 첫 회의는 해가 져도 끝나지 않았지만 문밖 사람들도 결정이 늦는 까닭을 들었습니다."
+          text: "첫 회의는 해가 져도 끝나지 않았다. 문밖에서 기다리던 사람이 언제 결정되느냐고 물었다. 덕만은 문을 열고 무엇 때문에 늦는지 설명하게 했다."
       - wait: 180
       - say:
           channel: thought
-          text: 회의가 해가 져도 안 끝난다. 답답하다. 그래도 저 문밖의 사람이 늦는 이유를 물을 수는 있게 됐다.
+          text: "촛불을 한 번 갈았다. 답답해서 내가 정하고 싶다. 그럴 때마다 탁자 위에 놓인 다른 열쇠들을 본다."
       - goto: "judge_ending"
 
   judge_ending:
@@ -461,18 +461,18 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "첨성대 아래에 열두 개의 등불이 켜졌습니다. 어린 덕만이 찾아낸 물길에서 시작해 장터의 증인, 천명의 공개 증언, 굶지 않은 마을의 이름이 등불마다 적혔습니다."
+          text: "탑 아래 열두 등불이 켜졌다. 물길을 열어 준 이, 인장장이를 숨겨 준 이, 천명의 들것을 함께 든 이의 이름이 걸렸다. 덕만은 아는 이름 앞에서 걸음을 멈췄다."
       - char: { id: 덕만, position: center, emotion: queen }
       - say:
           char: 덕만
           camera: medium
-          text: "나는 죽었다고 적혔다가 돌아왔고, 사람을 살린다며 거짓도 썼다. 내 이름보다 내가 틀렸을 때 막아선 이름들을 먼저 읽어라."
+          text: "내 이름은 뒤에 읽어도 된다. 소화의 이름은 어디 있느냐. 그날 내 손을 잡은 사람이다."
       - say:
           channel: narration
-          text: "사람들은 등불 사이에 실을 걸었습니다. 왕의 선택 하나가 아니라 서로를 살린 선택들이 이어지자, 땅 위에 처음 보는 별자리가 생겼습니다."
+          text: "아이들이 등불 사이에 실을 걸었다. 키가 닿지 않는 곳은 어른들이 들어 주었다. 덕만도 실 한 끝을 받았다. 누가 먼저 놓을 수 없는 모양이 되었다."
       - say:
           channel: record
-          text: "숨겨진 기록 — 선덕왕의 가장 긴 승리는 왕관을 얻은 날이 아니라, 어린 날부터 이어진 선택의 원인을 누구나 되짚을 수 있게 만든 밤이었다."
+          text: "그날 등불의 배치는 관측표에 없는 것이었다. 이듬해에도 사람들은 같은 자리에 모였고, 빠졌던 이름을 하나씩 더 걸었다."
       - ending: hidden_constellation
 
   ending_stars_belong_to_people:
@@ -482,14 +482,14 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "덕만의 사망 기록과 비담의 재판 기록이 같은 벽에 붙었습니다. 아이들이 두 문서의 다른 도장 자국을 손가락으로 찾아냈습니다."
+          text: "사망 기록과 재판 기록이 같은 벽에 걸렸다. 아이 둘이 다른 도장 자국을 찾으며 다투었다. 덕만이 다가가도 다툼은 멎지 않았다."
       - say:
           char: 덕만
           camera: medium
-          text: "별이 왕을 고르는 게 아니다. 우리가 별을 읽고 왕을 고른다. 왕이 틀리면 기록하고 고친다."
+          text: "별이 왕을 고르는 게 아니다. 너희가 보고 고르는 것이지. 자, 어디가 다르다고 했느냐?"
       - say:
           channel: record
-          text: "첨성대 아래 달력은 손때로 검어졌습니다. 죽었다고 먼저 적혔던 아이의 이름 옆에는 수많은 사람의 수정 흔적이 겹쳐 남았습니다."
+          text: "첨성대 아래 달력은 손때로 검어졌다. 왕의 글씨 위에도 줄이 그어졌다. 고친 사람은 자기 이름을 작게 덧썼다."
       - ending: stars_belong_to_people
 
   ending_merciful_queen:
@@ -499,13 +499,13 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "비담은 국경에서 이름 없이 다리를 고쳤습니다. 사람들은 선덕의 자비를 노래했고, 새 반역을 꿈꾸는 자들은 그 노래에서 살아남을 가능성을 들었습니다."
+          text: "국경의 다리가 다시 놓였다. 이름 없는 사내가 마지막 널을 박았다. 도성에서는 여왕의 자비를 노래했고, 유족 하나는 그 노래가 시작되면 자리를 떴다."
       - say:
           char: 덕만.queen_sad
-          text: "그를 살린 게 옳았는지는 노래가 답하지 않는다. 비담의 남은 삶과 다음 판결이 답할 거야."
+          text: "다리를 다 고쳤다는 보고가 왔느냐. 그렇다고 유족의 청을 돌려보내지는 마라."
       - say:
           channel: record
-          text: "용서는 평화를 만들었고 동시에 법의 경계를 흐렸습니다."
+          text: "비담은 살아남았다. 판결이 옳았느냐는 청원은 해마다 다른 이름으로 올라왔다."
       - ending: merciful_queen
 
   ending_iron_queen:
@@ -515,13 +515,13 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "비담의 목이 떨어진 뒤 회의는 놀랄 만큼 짧아졌습니다. 왕명이 끝나기 전에 모두가 고개를 숙였습니다."
+          text: "조회가 일찍 끝났다. 덕만이 말을 맺기 전에 모두 머리를 숙였다. 틀린 숫자가 든 문서도 그날은 그대로 나갔다."
       - say:
           char: 덕만
-          text: "조용하구나. 반란이 끝난 소리와 내가 틀려도 말하지 못하는 침묵을 이제 구분할 수가 없어."
+          text: "이 수가 틀렸구나. 아는 자가 없었느냐? …알고도 말하지 않은 것이냐?"
       - say:
           channel: record
-          text: "강한 왕은 모든 반대를 이겼습니다. 그 뒤에는 반대와 경고를 구분할 사람도 남지 않았습니다."
+          text: "반란은 다시 일어나지 않았다. 사관은 그해를 평온했다 적었다. 그 문장에 이의를 다는 사람도 없었다."
       - ending: iron_queen
 
   ending_borrowed_crown:
@@ -531,13 +531,13 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "귀족 회의의 붓은 군량 장부를 넘어 군사 이동과 창고 문서까지 따라왔습니다. 덕만은 명령을 내릴 때마다 즉위 날 받은 세 표를 다시 갚았습니다."
+          text: "군량 장부를 보던 귀족들이 출병 문서에도 서명을 요구했다. 덕만의 인장 옆에 빈칸 셋이 생겼다. 급한 전령은 그 칸이 채워질 때까지 서 있었다."
       - say:
           char: 덕만.queen_sad
-          text: "조건을 밝히고 왕이 됐지만 다시 따질 문은 만들지 못했어. 이 왕관은 아직 세 표에게 빌린 거야."
+          text: "오늘도 세 분을 기다려야 하느냐. 국경에서는 벌써 사흘을 기다렸다."
       - say:
           channel: record
-          text: "평화는 유지됐고 여왕의 통치는 매번 담보를 요구받았습니다."
+          text: "왕명은 내려졌다. 시행한 날짜는 늘 조금 늦었다. 즉위 날 받은 세 표의 값은 장부에 적히지 않았다."
       - ending: borrowed_crown
 
   ending_empty_observatory:
@@ -547,13 +547,13 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "첨성대 문은 열려 있었지만 관측표 상자는 비담의 암호 없이는 열리지 않았습니다. 탑 아래 아이들은 별 대신 전령을 기다렸습니다."
+          text: "첨성대 문은 열려 있었다. 그러나 표가 든 함 앞에서 관측관이 멈췄다. 아이들은 탑을 올려다보다가 전령 오는 길로 고개를 돌렸다."
       - say:
           char: 덕만.queen_sad
-          text: "돌은 누구나 보게 세우고, 올라갈 계단은 한 사람의 암호 뒤에 숨겼구나."
+          text: "문을 열어 두라 했는데… 아직도 허락을 기다리느냐. 누구의 허락을."
       - say:
           channel: record
-          text: "지식을 위해 세운 탑은 지식을 가두는 가장 높은 벽이 되었습니다."
+          text: "탑의 돌은 해마다 볕을 받았다. 관측표의 종이는 함 안에서 빛을 잃었다."
       - ending: empty_observatory
 
   ending_bidams_regent:
@@ -564,15 +564,15 @@ scenes:
       - say:
           camera: medium
           channel: narration
-          text: "돌아온 비담은 사흘 만에 끊긴 전령망을 이었습니다. 넷째 날부터 관리들은 왕의 도장보다 비담의 고갯짓을 먼저 기다렸습니다."
+          text: "비담이 돌아온 지 사흘 만에 전령길이 이어졌다. 넷째 날, 덕만이 인장을 들었을 때 관리가 이미 명을 보냈다고 답했다."
       - say:
           char: 비담.smirk
           camera: medium
           with: [덕만]
-          text: "폐하께서 저를 감시하시는 동안 나라는 아주 잘 움직이고 있습니다."
+          text: "밤이 급해 먼저 보냈습니다. 폐하를 깨워야 했겠습니까?"
       - say:
           channel: record
-          text: "가장 유능한 신하는 왕 곁에 남았고, 마침내 왕보다 먼저 명령을 내리는 사람이 되었습니다."
+          text: "왕의 인장은 뒤늦게 찍혔다. 명령서에는 여왕의 뜻이라 적혔다."
       - ending: bidams_regent
 
   ending_sisters_shadow:
@@ -583,13 +583,13 @@ scenes:
       - say:
           camera: medium
           channel: narration
-          text: "밤마다 비밀문이 열리고 천명이 덕만의 칙령을 먼저 읽었습니다. 어느 순간 덕만은 회의장의 반대보다 어둠 속 언니의 침묵을 더 두려워했습니다."
+          text: "밤마다 비밀문이 열렸다. 천명은 칙령을 먼저 읽었다. 언니가 돌려주는 종이에 아무 표시가 없으면 덕만은 한 번 더 물었다. 정말 괜찮겠느냐고."
       - say:
           char: 천명.sad
-          text: "나를 살린 방이 네 통치까지 가두고 있어. 이제 내게 묻지 않고 결정해야 해."
+          text: "덕만아. 오늘은 내게 묻지 마. 나는 아직 저 문밖도 못 나가 본 사람이야."
       - say:
           channel: record
-          text: "두 공주는 함께 남았고, 한 사람의 멈춘 시간이 나라의 미래 위에 긴 그림자를 만들었습니다."
+          text: "두 자매는 오래 함께 있었다. 회의장에는 천명의 자리가 생기지 않았다. 밤의 조언을 낮에 증언할 사람도 없었다."
       - ending: sisters_shadow
 
   ending_recordless_peace:
@@ -600,13 +600,13 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "사망 기록과 반란 서신은 한 줌 재가 됐습니다. 한동안 아무도 과거 종이를 들고 새 싸움을 시작하지 못했습니다."
+          text: "종이를 태운 뒤로 궁문 앞 다툼이 줄었다. 몇 해 뒤, 낡은 인장을 가져온 사내가 그 흠을 아느냐고 물었다. 맞춰 볼 원본은 없었다."
       - say:
           char: 덕만.queen_sad
-          text: "이 평화가 오래가면 좋겠구나. 다음 거짓을 알아볼 눈까지 태운 게 아니길 바란다."
+          text: "본 적 있는 흠이다. 분명히… 소화야, 네가 베낀 이름들을 가져오너라."
       - say:
           channel: record
-          text: "싸움의 증거가 사라지자 싸움은 잦아들었습니다. 같은 위조가 어떻게 시작됐는지도 함께 사라졌습니다."
+          text: "이름은 남아 있었다. 어느 인장이 누구를 죽였다 적었는지, 다시 확인할 종이만 없었다."
       - ending: recordless_peace
 
   ending_fallen_star:
@@ -616,13 +616,13 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "반란은 끝났지만 왕실 전령이 오는 날이면 마을 문이 먼저 닫혔습니다. 성문 안에는 왕관이, 밖에는 왕명을 기다리지 않는 장터가 남았습니다."
+          text: "왕실 전령이 오면 마을 문이 닫혔다. 도성의 명령이 도착하기 전에 장터 사람들은 제 일을 정했다. 전령은 읽지 못한 왕명을 품고 돌아왔다."
       - say:
           char: 덕만.queen_sad
-          text: "별이 떨어진 것이 아니다. 내가 별을 바라보는 사람들의 땅을 잃었다."
+          text: "가 보아야겠다. 군사를 데려가자는 말은 하지 마라. 이번에는 문을 열어 달라 청하겠다."
       - say:
           channel: record
-          text: "여왕은 왕좌를 지켰고 신라는 서로 다른 명령을 내리는 두 나라가 되었습니다."
+          text: "왕좌는 지켜졌다. 성 밖 마을 장부에는 그해부터 왕실과 다른 날짜가 쓰였다."
       - ending: fallen_star
 
   ending_nameless_queen:
@@ -632,11 +632,11 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "사서에는 선덕왕의 이름이 오래 남았습니다. 그러나 그 이름을 처음 죽인 종이와 왕좌까지 빌려 쓴 거짓은 봉인 상자 안에서 함께 늙었습니다."
+          text: "사관은 선덕왕의 치적을 적었다. 어린 덕만을 죽었다 쓴 종이는 잠긴 함에 있었다. 사관이 물으면 관원은 그 함이 아직 열릴 때가 아니라 했다."
       - say:
           char: 덕만.queen_sad
-          text: "왕의 이름은 되찾았는데, 어린 덕만을 지운 손과 내가 쓴 거짓은 끝내 꺼내지 못했구나."
+          text: "왕이 된 날은 자세히 적었구나. 그 전에 나는… 어떤 아이였다고 적었느냐?"
       - say:
           channel: record
-          text: "왕은 남았습니다. 그 왕이 무엇과 싸웠는지는 이름 없는 공백이 되었습니다."
+          text: "왕의 이름은 오래 전해졌다. 그 이름을 되찾기 전에 불렸던 이름들은 사서의 빈칸에 남았다."
       - ending: nameless_queen

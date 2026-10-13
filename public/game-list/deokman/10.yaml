@@ -15,38 +15,38 @@ scenes:
           text: "제11장 — 떨어진 별"
       - say:
           channel: action
-          text: 불의 꼬리가 궁 위를 스친다. 고개를 들자 외침이 뒤따른다. “여왕의 별이 떨어졌다.” 저렇게 낮게? 어디로 떨어졌지?
+          text: "불의 꼬리가 궁 위를 긋는다. 여왕의 별이 떨어졌다는 외침이 뒤따른다. 나는 담장 너머를 본다. 별이 저렇게 낮게 날 수도 있나."
       - char: { id: 덕만, position: left, emotion: queen }
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
           char: 춘추.nervous
           camera: medium
           with: [덕만]
-          text: "비담이 북쪽 전령길을 닫았습니다. 권한을 잃은 가문들은 저 불을 '여왕의 별'이라 부르며 모였고요."
+          text: "북쪽 전령길을 비담이 막았습니다. 권한을 잃은 가문들이 그 깃발 아래 모였습니다."
       - say:
           char: 덕만
           camera: medium
           with: [춘추]
-          text: "별이 아니야. 군량이 빈 날, 봉화가 꺼진 때에 맞춰 떨어졌어. 낙하지부터 찾자."
+          text: "봉화가 꺼지자마자 떨어졌어. 군량이 끊긴 날에. 춘추야, 떨어진 곳부터 찾아라."
       - say:
           when: { var: used_false_omen, op: eq, value: true }
           channel: narration
-          text: "일식 날 북소리로 해를 돌려놓았다고 외친 기억 탓에 왕실은 즉시 반박하지 못했습니다. 사람들은 여왕의 하늘도 또 하나의 연출인지 먼저 의심했습니다."
+          text: "왕실이 일식에 북을 쳤던 일을 사람들이 꺼냈다. 그때는 여왕이 해를 돌렸다더니, 오늘 별은 왜 아니라 하느냐고 물었다."
       - say:
           when: { var: observatory_priority, op: eq, value: stars_first }
           channel: narration
-          text: "먼저 올린 첨성대의 관측관은 불의 꼬리가 별보다 낮게 휘는 것을 봤습니다. 대신 느슨해진 북쪽 성벽에서는 이미 첫 반란 봉화가 올랐습니다."
+          text: "일찍 세운 탑에서 관측관이 불의 궤적을 보았다. 별치고는 낮다고 했다. 보고가 끝나기 전 북쪽 성벽에서 반란 봉화가 올랐다."
       - say:
           when: { var: observatory_priority, op: eq, value: balanced }
           channel: narration
-          text: "반쯤 세운 관측대는 불이 떨어진 정확한 방향을 놓쳤지만, 보강한 성벽의 초병이 대나무 잔해를 가장 먼저 찾았습니다."
+          text: "미완성인 탑에서는 떨어진 방향을 놓쳤다. 보강한 성벽의 초병이 탄 대나무를 가져왔다. 담 아래서 주웠다고 했다."
       - say:
           when: { var: observatory_priority, op: eq, value: granary_first }
           channel: narration
-          text: "돌 품삯을 곡식으로 받았던 마을 사람들이 냄새만으로 기름 먹인 대나무를 알아봤습니다. 늦게 올린 탑 대신 사람의 눈이 증거를 찾았습니다."
+          text: "곡식 품삯을 받고 돌을 날랐던 사내가 잔해를 들고 왔다. 기름 냄새를 맡더니 공사장에서도 이런 불쏘시개를 썼다고 했다."
       - choice:
           key: c11_falling_star
-          prompt: "불붙은 연이 별이라는 소문이 퍼집니다. 무엇을 먼저 보여 줄까요?"
+          prompt: "별이 떨어졌다며 군사가 움직인다. 먼저 할 일은?"
           char: 덕만
           camera: medium
           with: [춘추]
@@ -68,7 +68,7 @@ scenes:
       - get: burnt_kite
       - say:
           channel: action
-          text: 재에 손을 넣는다. 따갑다. 별이라고 하기엔 가늘고 곧은 살이 잡힌다. 끝에 끈이 붙어 있다. 끊지 않고 건져 낸다.
+          text: "재를 헤치자 손끝이 따갑다. 가늘고 곧은 대나무가 잡힌다. 끝에 끈이 달려 있다. 끊어지지 않게 흙째 들어 올린다."
       - clearSticker: { id: c11_kite, leave: fadeOut }
       - goto: bidam_letter_arrives
 
@@ -78,30 +78,30 @@ scenes:
       - get: burnt_kite
       - say:
           channel: narration
-          text: "관측관이 하늘 한 점을 가리켰습니다. '진짜 별은 아직 저기 있습니다.' 장터마다 다른 손이 같은 표를 펴고 같은 자리를 찾아냈습니다. 아이들이 불붙은 연의 대나무 살을 먼저 찾아 들었습니다."
+          text: "관측관이 하늘을 가리켰다. 별은 제자리에 있었다. 사람들은 표를 돌려 보며 같은 점을 찾았다. 아이 하나가 담 아래서 탄 연살을 가져왔다."
       - say:
           char: 춘추.nervous
           camera: medium
           with: [덕만]
-          text: "장터에서 같은 표를 읽자 소문이 갈렸습니다. 한 군영은 움직였지만 둘은 북을 눕혔습니다."
+          text: "두 군영은 북을 멈췄습니다. 나머지 하나는 전령을 돌려보냈습니다."
       - say:
           char: 덕만.queen
-          text: "두 군영은 멈췄어. 남은 한 곳에도 관측표를 보내. 아직 늦지 않았어."
+          text: "그쪽에도 표를 보내라. 두 곳이 멈춘 것을 알면 들을지 모른다."
       - say:
           char: 춘추.nervous
           camera: medium
           with: [덕만]
-          text: "한 군영이 동문을 넘었습니다. 관측관을 모두 보낸 탓에 궁엔 저 불을 가릴 사람도 없습니다."
+          text: "이미 동문을 넘었습니다. 폐하, 궁으로 가는 길이 없습니다."
       - say:
           channel: narration
-          text: "진실을 들은 사람들은 멈췄지만 반란군은 그 시간을 기다리지 않았습니다. 덕만이 장터에서 돌아왔을 때 왕궁 퇴로는 이미 끊겨 있었습니다."
+          text: "장터 사람들이 길을 터 주었다. 덕만은 궁으로 말을 달렸다. 문 위에 낯선 깃발이 펄럭였다. 활을 든 병사들은 표를 읽으려 하지 않았다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "비담의 난 첫날 — 선덕왕, 장터에서 민심을 수습하고 귀환하던 중 반란군에게 피살."
       - gameOver:
           title: "운명 — 사실보다 빠른 불"
-          message: "관측관의 설명은 옳았지만 이미 움직인 군대보다 느렸습니다. 증거를 찾기 전에 모든 눈을 설득하러 보낸 덕만은 비어 버린 왕궁으로 돌아가지 못했습니다."
+          message: "두 군영이 멈춘 사이 남은 한 군영이 궁문을 차지했다. 덕만이 돌아갈 때 길을 열어 줄 병사는 없었다."
           recoverToChoice: c11_falling_star
 
   bad_larger_false_star:
@@ -113,22 +113,22 @@ scenes:
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
           char: 덕만.queen_angry
-          text: "왕궁 지붕에 불을 올려라. 저 가짜 별보다 크게. 왕이 섰다는 걸 보여 줘."
+          text: "궁 지붕에 불을 올려라. 내가 살아 있음을 보게 하라. 더 높이!"
       - say:
           channel: narration
-          text: "도성의 환호가 잠시 돌아왔습니다. 그러나 성 밖 반란군에게 가장 밝은 불은 왕이 숨은 지붕을 가리키는 봉화가 되었습니다."
+          text: "장터에서 환호가 났다. 성 밖의 궁수들도 고개를 들었다. 어둠 속 여러 지붕 가운데 하나가 또렷해졌다."
       - say:
           char: 춘추.nervous
           camera: medium
           with: [덕만]
-          text: "폐하, 불화살이 이쪽으로 모입니다. 소문을 덮은 게 아니라 표적을 그려 줬습니다!"
+          text: "불을 끄십시오! 저들이 이 지붕을 겨눕니다!"
       - say:
           char: 덕만.queen_sad
           camera: medium
-          text: "거짓을 이긴다고 더 큰 거짓을 골랐구나. 저 불은 내가 불렀어."
+          text: "내가 올리라 했다. 다들 내려가라. 불부터 끄지 말고, 사람부터!"
       - gameOver:
           title: "운명 — 더 큰 거짓 별"
-          message: "여왕의 불은 소문을 덮는 대신 왕궁 위치를 반란군에게 밝혔습니다. 가짜 징조를 더 큰 징조로 누르려던 덕만은 불타는 지붕 아래에서 죽었습니다."
+          message: "기와 밑으로 불화살이 박혔다. 덕만이 올린 불과 반란군이 쏜 불이 한데 붙었다. 지붕이 내려앉았다. 덕만이 죽은 뒤에도 불은 한동안 꺼지지 않았다."
 
   bidam_letter_arrives:
     actions:
@@ -137,25 +137,25 @@ scenes:
       - say:
           camera: medium
           channel: action
-          text: 돌바닥에 화살이 미끄러진다. 몸이 먼저 굳는다. 화살대에 편지가 묶였다. 익숙한 봉끈이다. 천천히 풀어 본다.
+          text: "돌바닥에서 화살이 미끄러진다. 나는 한 발 물러섰다가 화살대의 종이를 본다. 익숙한 매듭이다. 풀던 손이 잠깐 멈춘다."
       - sticker: { id: c11_letter, image: bidam_letter_sticker, x: 50, y: 27, width: "clamp(180px, 22%, 330px)", anchorX: center, anchorY: center, rotate: 2, enter: fadeIn }
       - get: bidam_letter
       - say:
           channel: record
           delivery: calm
-          text: "폐하께. 제 눈으로 나라를 보실 때는 저를 믿는다 하셨습니다. 다른 눈을 세운 뒤에는 저를 위험이라 부르셨지요. 저는 사람이었습니까, 잠시 쓰는 문이었습니까?"
+          text: "폐하께. 밤마다 저를 부르셨지요. 사람을 살려 오라 하실 때도, 이름을 지우라 하실 때도. 이제는 저 없이도 된다 하십니다. 저는 그 말을 어찌 받아야 합니까."
       - say:
           when: { var: knowledge_policy, op: eq, value: public }
           char: 춘추.nervous
           camera: medium
           with: [덕만]
-          text: "장터 달력이 두 군영을 멈췄습니다. 비담이 두려운 건 느린 전령이 아닙니다. 자기 없이도 보는 폐하시죠."
+          text: "북을 멈춘 군영이 있답니다. 비담도 듣겠지요. 자기 전령 없이 명이 닿았다는 것을."
       - say:
           when: { var: knowledge_policy, op: eq, value: bidam_network }
           char: 덕만.queen_sad
           camera: medium
           with: [춘추]
-          text: "나라의 눈과 귀를 비담에게 몰아준 건 나야. 저들이 쥔 길 절반은 내가 건넸어."
+          text: "내가 열어 준 길이다. 암호도 군량도 의심하지 말라 했어. 내 말이 그들을 보냈다."
       - clearSticker: { id: c11_letter, leave: fadeOut }
       - goto: answer_bidam
 
@@ -170,10 +170,10 @@ scenes:
           camera: "medium"
           with:
             - "덕만"
-          text: "답장 한 줄이면 공격을 늦춥니다. 다만 비담은 사과를 사랑으로, 망설임을 항복으로 읽을 겁니다. 분명히 쓰십시오."
+          text: "답장을 기다리는 동안은 공격하지 않겠답니다. 약속하실 수 있는 말만 쓰십시오."
       - choice:
           key: "c11_bidam_answer"
-          prompt: "비담의 편지에 어떻게 답할까요?"
+          prompt: "비담에게 보낼 종이를 편다. 첫 줄이 나오지 않는다."
           char: "덕만"
           camera: "medium"
           with:
@@ -204,10 +204,10 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "나는 너를 믿었고 필요로 했다. 네 충성을 법처럼 쓴 건 내 잘못이다. 돌아와라. 내 잘못과 네 반역은 따로 묻겠다."
+          text: "너를 믿었다. 너무 많은 일을 네 손에만 맡겼다. 그것은 내 허물이다. 돌아와라. 네가 저지른 죄도 내 앞에서 답하라."
       - say:
           channel: action
-          text: 돌아온 전령이 말한다. 북이 반나절 멈췄다고. 창밖으로 아이를 업은 사람들이 빠져나온다. 편지 한 장이 번 시간이다.
+          text: "북이 멈췄다는 전갈이 온다. 반나절뿐이다. 창밖으로 아이 업은 여인이 지나간다. 나는 답장에 남은 먹을 말리며 그 걸음을 센다."
       - goto: rebellion_strategy
 
   publish_letter:
@@ -215,27 +215,27 @@ scenes:
       - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: narration
-          text: "편지가 시장 벽에 붙자 비담의 상처는 웃음거리가 됐습니다. 그와 함께 창을 든 사람들은 자기 굶주림과 분노까지 조롱받았다고 느끼며 대열을 더 조였습니다."
+          text: "벽에 붙은 편지를 소리 내 읽는 사람이 있었다. 몇이 웃었다. 비담 휘하의 병사가 그 앞에 한참 서 있다가 돌아갔다."
       - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "편지를 읽은 진영이 백기를 들었습니다. 너무 빠릅니다. 폐하, 저 물동이 치우십시오."
+          text: "백기입니다. 답을 보내기도 전에 항복해 왔습니다. 폐하, 그 물 받지 마십시오."
       - say:
           char: 덕만.queen_sad
           camera: medium
           with: [유신]
-          text: "내가 그 사람의 상처를 구경거리로 만들었어. 직접 사과하고—"
+          text: "비웃게 하려던 건 아니었다고… 직접 말하겠다. 비켜라."
       - say:
           channel: narration
-          text: "항복병이 내민 물에서 쓴 냄새가 났을 때 덕만은 이미 한 모금 마신 뒤였습니다. 비담을 조롱당한 지도자로 본 병사들이 거짓 항복으로 여왕에게 독을 먹였습니다."
+          text: "항복병이 내민 물에서 쓴맛이 났다. 덕만은 잔을 뱉듯 내려놓았다. 병사는 무릎 꿇은 채 고개를 들지 않았다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "비담의 난 진압 기록 — 선덕왕, 항복병이 바친 물을 마신 뒤 독으로 사망."
       - gameOver:
           title: "운명 — 벽에 붙인 상처"
-          message: "비담의 사적인 편지를 공개하자 반란군은 자기 분노까지 조롱받았다고 느꼈습니다. 거짓 항복으로 다가온 병사가 독물을 바쳤고 덕만은 사과할 틈도 없이 죽었습니다."
+          message: "거짓 항복을 가릴 겨를도 없이 잔이 건네졌다. 벽에 붙인 편지는 그대로였지만, 덕만은 답을 전하지 못했다."
           recoverToChoice: c11_bidam_answer
 
   forged_withdrawal:
@@ -243,27 +243,27 @@ scenes:
       - bg: { id: shadow_corridor, transition: fade, duration: 900 }
       - say:
           channel: narration
-          text: "가짜 철군 명령을 읽은 한 부대가 진을 비웠습니다. 길은 열렸지만 덕만의 손에는 어린 날 사망 기록과 같은 거짓 획이 남았습니다."
+          text: "비담의 필체를 흉내 낸 철군 명령이 나갔다. 적진에서 군사가 물러났다. 덕만은 빈 길을 보며 붓에 묻은 먹을 닦았다."
       - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "남은 비담의 전령이 글씨를 알아봤습니다. 가짜인 줄 알면서 길을 열어 둔 겁니다."
+          text: "멈추십시오! 전령이 우리 명령서를 돌려보냈습니다. 알고 길을 연 겁니다!"
       - say:
           char: 덕만.queen_angry
           camera: medium
           with: [유신]
-          text: "우리를 안으로 들이려고 속은 척한 거야. 전군 멈춰. 지금 돌아—"
+          text: "앞줄 멈춰! 돌아서라! 그 길로 들어가면—"
       - say:
           channel: narration
-          text: "열린 길 양쪽에서 화살이 쏟아졌습니다. 덕만의 위조문을 믿은 병사들이 가장 깊이 들어가 있었고, 퇴로에는 진짜 비담의 명령을 받은 군대가 기다렸습니다."
+          text: "양쪽 비탈에서 화살이 쏟아졌다. 덕만의 명령을 믿고 앞선 병사들이 쓰러졌다. 뒤에서는 진짜 비담의 기가 올라왔다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "비담의 난 전투 기록 — 선덕왕, 위조 철군 명령으로 적진에 진입했다가 매복으로 사망."
       - gameOver:
           title: "운명 — 속은 척 열린 길"
-          message: "비담의 글씨를 아는 전령은 위조를 즉시 알아보고 철군한 척 매복했습니다. 어린 덕만을 죽였던 방식으로 길을 연 여왕은 같은 거짓말 안에서 죽었습니다."
+          message: "비담의 전령은 위조된 글씨를 알아보았다. 덕만이 연 줄 알았던 길은 안으로 들어오는 발만 기다리고 있었다."
           recoverToChoice: c11_bidam_answer
 
   rebellion_strategy:
@@ -274,21 +274,21 @@ scenes:
       - say:
           camera: wide
           channel: thought
-          text: 같은 깃발 아래인데 밥 짓는 곳은 셋이야. 전령, 귀족의 군사, 농민들. 전부 같은 이유로 여기 온 걸까?
+          text: "같은 깃발 아래 솥이 세 군데다. 전령들은 따로 먹고, 귀족의 군사는 농민을 밀어낸다. 저들이 모두 끝까지 함께 싸울까."
       - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "한 군대로 보면 오늘 끝납니다. 이유를 나누면 오래 걸려도 창을 놓을 사람은 돌려보낼 수 있습니다."
+          text: "해산할 길을 주면 나올 자들이 있습니다. 돌격하시면 가릴 틈은 없습니다."
       - say:
           when: { var: yushin_trust, op: gte, value: 4 }
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "제 칼을 멈춘 날도 지휘패를 맡긴 날도 기억합니다. 오늘은 누구를 살려 보낼지 먼저 명령하십시오."
+          text: "명만 주십시오. 돌아갈 자들 앞에서는 제 칼도 멈추겠습니다."
       - choice:
           key: c11_rebellion_response
-          prompt: "서로 다른 이유로 모인 반란군을 어떻게 흩을까요?"
+          prompt: "반란군 진영에서 빈 그릇을 두드리는 소리가 난다."
           char: 덕만
           camera: medium
           with: [유신]
@@ -309,7 +309,7 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 세 번째 해산 북이 울린다. 농민들이 창을 놓는다. 귀족의 고함을 뒤로하고 빈손으로 돌아가는 사람부터 센다.
+          text: "세 번째 북이 울리자 첫 창이 땅에 놓인다. 뒤이어 농민들이 나온다. 귀족이 고함쳐도 돌아보지 않는다. 나는 빈손을 확인한 사람부터 길을 내준다."
       - goto: bidam_captured
 
   starve_command:
@@ -320,27 +320,27 @@ scenes:
           duration: 700
       - say:
           channel: "narration"
-          text: "포위 사흘째, 반란군뿐 아니라 성 밖 마을의 솥도 식었습니다. 덕만은 배급용 좁은 길을 열고 병사를 물렸습니다."
+          text: "포위 사흘째 마을에서도 연기가 오르지 않았다. 덕만은 빈 솥을 들고 온 노인을 만났다. 좁은 배급길이 열리고 병사들이 물러났다."
       - say:
           char: "덕만.queen_sad"
           camera: "medium"
           with:
             - "유신"
-          text: "군량만 끊으랬지 사람을 굶기랬나. 돌아갈 사람에게는 죽을 줘."
+          text: "내가 길을 끊어 이리 됐다. 죽을 쑤어라. 돌아갈 사람에게 죄부터 묻지 마라."
       - say:
           char: "유신.angry"
           camera: "medium"
           with:
             - "덕만"
-          text: "그 길로 지휘관 몇도 빠져나갈 겁니다. 남은 자부터 잡겠습니다."
+          text: "지휘관 몇도 섞여 나갈 겁니다. 얼굴을 아는 자를 세워 두겠습니다."
       - say:
           channel: "narration"
-          text: "농민들이 먼저 성을 나왔습니다. 비담은 병력을 잃었지만 도망간 지휘관들의 이름이 재판 명부에 빈칸으로 남았습니다."
+          text: "농민들이 배급길로 나왔다. 그 틈에 사라진 지휘관도 있었다. 잡아야 할 이름 몇이 명부에 남았으나, 비담의 진영은 눈에 띄게 줄었다."
       - add:
           people_support: -4
       - say:
           channel: thought
-          text: 칼을 덜 썼다고 다행이라고 생각했어. 식은 솥을 보고 나니 그 말을 입 밖에 낼 수가 없다.
+          text: "칼을 덜 썼다고 말하려 했다. 노인이 빈 솥을 도로 메는 것을 보고 입을 다문다."
       - goto: "bidam_captured"
 
   bidam_captured:
@@ -352,20 +352,20 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: 결박된 비담이 문을 넘는다. 처음 창고에서 만났을 때의 웃음이 없다. 눈을 피하려다, 고개를 다시 든다.
+          text: "비담이 묶인 손으로 문턱을 짚는다. 처음 만난 창고에서는 저 손에 장부가 들려 있었다. 나를 올려다본다. 웃지 않는다."
       - say:
           char: 비담.sad
           camera: medium
           with: [덕만]
-          text: "별은 떨어지지 않았습니다. 제가 불을 붙였지요. 제 상처와 제가 죽인 사람을 어떻게 적으실지 보겠습니다."
+          text: "연에는 제가 불을 붙였습니다. 다른 자 이름을 찾으실 필요 없습니다."
       - say:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "네가 듣고 싶던 말과 네 군대의 죄는 다른 문제다. 내일 같은 자리에서 둘 다 말하겠다."
+          text: "내일 직접 말해라. 네가 기다렸다는 내 대답도 그 자리에서 하겠다."
       - say:
           channel: thought
-          text: 내 죽음을 쓴 종이, 언니의 자백문, 불붙은 연. 누가 먼저 믿게 만들었는지가 늘 칼보다 빨랐다. 이번에는 내가 먼저 듣자.
+          text: "비담이 끌려간 뒤에도 문턱의 손자국이 남아 있다. 나는 사망 기록을 꺼내 놓는다. 이번에는 산 사람의 말을 끝까지 듣겠다."
           with: []
           camera: wide
           continueLabel: 비담과 피해자들의 말을 재판에 올린다
@@ -380,19 +380,19 @@ scenes:
       - char: { id: 덕만, position: left, emotion: queen_angry }
       - say:
           char: 덕만.queen_angry
-          text: "본진만 치면 끝날 줄 알았어. 저들뿐 아니라 우리 퇴로까지 태웠구나."
+          text: "민가로 번진다. 뒤로 물려라. 앞만 치지 말고, 불길부터 갈라!"
       - say:
           char: 유신.angry
-          text: "돌아갈 길을 없애면 항복할 손도 칼을 잡습니다. 이제 깃발만 보고는 가릴 수 없습니다."
+          text: "돌아갈 길이 없습니다! 창을 놓았던 자들도 다시 듭니다!"
       - say:
           channel: narration
-          text: "전군이 본진을 덮치자 불붙은 막사가 민가로 번졌습니다. 깃발 아래 사람을 가릴 틈이 사라졌고, 살아남은 마을 사람들은 왕군의 퇴로를 막았습니다."
+          text: "본진에 붙은 불이 초가지붕으로 옮겨 갔다. 집을 잃은 사람들이 왕군 앞을 막았다. 병사들은 어느 손에 무기가 들렸는지 볼 틈도 없었다."
       - say:
           channel: record
           text: "비담의 난 진압 보고 — 왕군 지휘부 붕괴. 선덕왕, 포위망을 돌파한 반란군의 화살에 맞아 사망. 비담의 행방은 확인되지 않음."
       - gameOver:
           title: "운명 — 끝내기 위해 키운 반란"
-          message: "가리지 않는 돌격은 항복할 사람과 싸울 사람을 한 덩어리로 만들었습니다. 궁지에 몰린 군대와 마을이 함께 덤볐고, 덕만은 끝내려던 반란 한가운데서 죽었습니다."
+          message: "한 번에 끝내려던 돌격이 민가까지 번졌다. 덕만을 겨눈 화살이 어느 깃발 밑에서 왔는지는 끝내 밝혀지지 않았다."
 
   evidence_kite:
     actions:
@@ -418,7 +418,7 @@ scenes:
           zIndex: 14
       - say:
           channel: action
-          text: 불탄 대나무를 편지 옆에 놓는다. 코끝이 맵다. 끈을 풀면 비교할 수 없을 것 같아, 묶인 채 돌려 본다.
+          text: "불탄 대나무를 편지 옆에 놓는다. 매운 냄새가 난다. 매듭은 풀지 않는다. 묶인 채로 두 끈을 같은 방향에 맞춘다."
           with: []
           camera: wide
       - goto: evidence_kite_compare
@@ -428,7 +428,7 @@ scenes:
       - choice:
           key: evidence_kite_look
           presentation: explore
-          prompt: 손에 닿는 흔적부터. 어느 쪽을 더 살펴볼까?
+          prompt: "연과 편지를 묶었던 끈. 어느 쪽부터 살필까?"
           camera: wide
           with: []
           options:
@@ -460,7 +460,7 @@ scenes:
     actions:
       - say:
           channel: thought
-          text: 이름은 누구나 쓸 수 있어. 떨어진 시각도 소문으로 알 수 있고. 직접 맞춰 본 두 끈에 남은 손버릇을 생각하자.
+          text: "이름만으로는 부족해. 쓴 사람이 묶은 사람과 같다는 보장도 없다. 두 끈에서 직접 맞춰 본 것이 무엇이었지?"
           with: []
           camera: wide
       - goto: evidence_kite_compare
@@ -471,7 +471,7 @@ scenes:
           kite_verified: true
       - say:
           char: "덕만"
-          text: "별을 떨어뜨린 손과 편지를 보낸 길이 이어졌어. 하지만 이 매듭을 쓴 사람 전부를 반역자로 묶지는 않겠어."
+          text: "비담의 전령 매듭이야. 그 길로 연이 왔구나. 다만 묶은 손이 누구인지는 더 물어야 해."
       - goto: "evidence_kite_return"
 
 
@@ -489,7 +489,7 @@ scenes:
     actions:
       - choice:
           key: evidence_kite
-          prompt: 떨어진 별을 비담의 전령망과 잇는 흔적은?
+          prompt: "이 연이 전령길을 거쳤음을 보여 주는 것은?"
           camera: wide
           options:
             - text: 짧은 고리 두 개를 묶은 같은 전령 매듭
@@ -506,7 +506,7 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 연 끝의 매듭은 짧은 고리 두 개다. 불에 그을렸지만 고리가 서로 지나가는 방향은 남아 있다.
+          text: "연살 끝에 짧은 고리가 둘 남았다. 그을린 끈을 뒤집어 보니 고리 하나가 다른 고리 밑으로 지나간다."
           with: []
           camera: wide
       - set:
@@ -517,7 +517,7 @@ scenes:
     actions:
       - say:
           channel: action
-          text: 편지의 봉끈도 짧은 고리 두 개. 연의 끈을 옆에 대니 꼬인 방향까지 같다. 이 묶는 법을 쓰는 전령은 누구였지?
+          text: "편지의 봉끈도 두 고리다. 나란히 놓자 꼬인 방향까지 맞는다. 밤마다 비담의 전령이 풀던 바로 그 매듭이다."
           with: []
           camera: wide
       - set:

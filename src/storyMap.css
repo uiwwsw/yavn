@@ -27,7 +27,7 @@
 .story-atlas-toolbar button { padding: 6px 10px; }
 .story-atlas-viewport { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; cursor: grab; background: radial-gradient(ellipse at 35% 45%, #36403855, transparent 70%), radial-gradient(#d5c19519 1px, transparent 1px); background-size: auto, 22px 22px; scrollbar-width: thin; scrollbar-color: #665d48 #111a1d; }
 .story-atlas-viewport:active { cursor: grabbing; }
-.story-atlas-canvas { position: relative; transform-origin: top left; }
+.story-atlas-canvas { position: absolute; transform-origin: top left; }
 .story-atlas-canvas svg { position: absolute; inset: 0; pointer-events: none; }
 .story-atlas-canvas path { fill: none; stroke: #52625f; stroke-width: 1.4; stroke-dasharray: 4 6; }
 .story-atlas-canvas path.is-travelled { stroke: #c5a46c; stroke-width: 2; stroke-dasharray: none; }
@@ -86,3 +86,10 @@
   .story-atlas-detail { width: 240px; max-height: none; }
   .story-atlas-detail-image { display: none; }
 }
+
+.story-atlas-canvas text { fill: #91a298; font-size: 10px; paint-order: stroke; stroke: #111a1d; stroke-width: 5px; stroke-linejoin: round; }
+.story-atlas-canvas text.is-travelled { fill: #dfbd7d; }
+.story-atlas-choice { margin: 16px 0; font-size: 12px; line-height: 1.7; }
+.story-atlas-choice > strong { font-weight: 500; }
+.story-atlas-choice > p { margin: 4px 0; }
+.story-atlas-choice > small { display: block; letter-spacing: 0; line-height: 1.6; }

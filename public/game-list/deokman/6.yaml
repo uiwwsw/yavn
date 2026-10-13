@@ -16,17 +16,17 @@ scenes:
       - char: { id: 덕만, position: left }
       - say:
           channel: action
-          text: 왕좌 아래까지 발소리가 울린다. 아버지가 옥새함을 내민다. 열어 보니 비단에 눌린 자국만 남아 있다.
+          text: "아버지가 옥새함을 내미신다. 들어 보니 뜻밖에 가볍다. 안의 비단에는 인장이 눌러 만든 네모난 자국만 남았다."
       - say:
           char: 진평왕.weak
           camera: medium
           with: [덕만]
-          text: "사람들은 내가 착해서 약해졌다더구나. 아니다. 하루만 더 버티자며 하나씩 내줬어. 이제 이 의자만 남았다."
+          text: "하루만 조용히 넘기자 했다. 창고도 군사도… 그러다 보니 돌려달란 말조차 못 하겠더구나."
       - say:
           char: 덕만
           camera: medium
           with: [진평왕]
-          text: "왕좌를 지키느라 왕의 일을 다 넘기셨군요. 제 이름까지."
+          text: "제 이름을 지울 때도, 그 하루를 넘기려 하셨나요?"
       - sticker: { id: c7_seal_box, image: empty_seal_box_sticker, x: 50, y: 28, width: "clamp(170px, 20%, 320px)", anchorX: center, anchorY: center, enter: scaleIn }
       - get: empty_seal_box
       - clearSticker: { id: c7_seal_box, leave: fadeOut }
@@ -36,7 +36,7 @@ scenes:
     actions:
       - choice:
           key: c7_confession
-          prompt: "왕의 실패와 빼앗긴 권한을 누가 직접 밝힐까요?"
+          prompt: "아버지가 빈 옥새함에서 손을 떼지 못하신다."
           char: 덕만
           camera: medium
           with: [진평왕]
@@ -60,10 +60,10 @@ scenes:
       - say:
           char: 진평왕.weak
           camera: medium
-          text: "나는 평화를 지켰다고 했다. 거짓말이다. 내 자리를 하루씩 늘렸고, 백성과 내 딸들이 값을 냈다."
+          text: "내가 허락했다. 저들이 가져갈 때마다 내 인장을 내주었다. 딸들 앞에서도 숨겼다."
       - say:
           channel: action
-          text: 아버지의 목소리가 궁문을 넘는다. 야유가 터진다. 팔을 붙들고 싶지만, 그가 말을 끝낼 때까지 옆에 선다.
+          text: "궁문 밖에서 야유가 오른다. 아버지의 팔이 떨린다. 나는 잡아드리려던 손을 거둔다. 아직 하실 말씀이 남아 있다."
       - goto: rebuild_power
 
   publish_powers:
@@ -74,27 +74,27 @@ scenes:
           duration: 720
       - say:
           channel: "narration"
-          text: "빼앗긴 권한의 목록에 진평왕의 도장이 찍혔습니다. 왕은 문밖에 서지 못했고 덕만이 목록을 읽었습니다."
+          text: "왕이 목록에 인장을 눌렀다. 덕만이 종이를 들고 문밖으로 나가는 동안 그는 자리에서 일어나지 못했다."
       - say:
           char: "덕만"
           camera: "medium"
           with:
             - "진평왕"
-          text: "이건 제 고발만이 아닙니다. 아버지가 한 줄씩 확인하고 도장을 찍었습니다."
+          text: "전하께서 한 줄씩 확인하셨소. 의심하는 이는 앞으로 나와 인장을 보시오."
       - say:
           char: "진평왕.weak"
           camera: "medium"
           with:
             - "덕만"
-          text: "내 몸이 못 나가도 내 이름은 빼지 마라. 마지막 줄까지 읽어라."
+          text: "마지막 줄도 읽거라. 내 이름이 있는 데까지."
       - say:
           channel: "narration"
-          text: "귀족들은 왕의 건강을 핑계로 시간을 끌었습니다. 덕만은 하루 늦게 창고 열쇠를 넘겨받았습니다."
+          text: "귀족들은 왕께 직접 묻겠다며 물러났다. 창고 열쇠는 다음 날에야 나왔다. 기다리던 줄에서는 몇 사람이 이미 집으로 돌아간 뒤였다."
       - add:
           people_support: -1
       - say:
           channel: thought
-          text: 내가 읽었는데 사람들은 아버지를 찾는다. 내 목소리로 대신할 수 없는 말도 있구나.
+          text: "내가 읽는 동안에도 사람들은 문 안을 기웃거렸다. 아버지가 직접 나오기를 기다렸구나."
       - goto: "rebuild_power"
 
   inherit_blame:
@@ -105,34 +105,34 @@ scenes:
           duration: 720
       - say:
           channel: "narration"
-          text: "덕만이 옥새함을 닫자 진평왕은 손을 얹어 막았습니다. 한 사람의 서명으로 끝낼 문서는 아니었습니다."
+          text: "덕만이 함 뚜껑을 덮으려 하자 왕의 손이 사이에 들어왔다. 늙은 손등에 뚜껑 자국이 붉게 남았다."
       - say:
           char: "진평왕.weak"
           camera: "medium"
           with:
             - "덕만"
-          text: "내 잘못에 네 이름만 쓰면 저들은 다음에도 너를 부를 게다."
+          text: "또 네 이름을 대신 적게 할 셈이냐. 이번에는 안 된다."
       - say:
           char: "덕만.sad"
           camera: "medium"
           with:
             - "진평왕"
-          text: "제 몫만 쓰겠습니다. 아버지 이름도 지우지 않을게요. 오늘은 밖에 안 나가셔도 돼요."
+          text: "아버지 이름도 남길게요. 다만 오늘은… 밖에 서시지 않아도 돼요."
       - say:
           char: "진평왕.weak"
           camera: "medium"
           with:
             - "덕만"
-          text: "그 말이 더 아프구나. 붓을 다오. 내 이름은 내가 쓰겠다."
+          text: "늙은 아비가 딸 뒤에 숨는구나. 붓을 다오. 서명은 내가 하마."
       - say:
           channel: "narration"
-          text: "고백은 궁 안에 남았습니다. 두 사람이 나란히 서명했지만 문밖 사람들은 무슨 약속인지 알지 못했습니다."
+          text: "두 이름이 나란히 마를 때까지 방 안은 조용했다. 문밖에서는 왕의 뜻이 무엇이냐고 묻는 소리가 그치지 않았다."
       - add:
           king_trust: 1
           people_support: -2
       - say:
           channel: thought
-          text: 아버지는 안도하신 것 같다. 문밖에서는 아직 아무도 모른다. 나중에도 아버지를 지켰다고 말할 수 있을까?
+          text: "아버지는 눈을 감으셨다. 편안해 보이셔서 차마 깨우지 못했다. 밖에서 기다리는 사람들에게는 내가 나가야 한다."
       - goto: "rebuild_power"
 
   rebuild_power:
@@ -143,10 +143,10 @@ scenes:
       - say:
           camera: wide
           channel: thought
-          text: 창고 열쇠, 지휘패, 붓. 손은 두 개뿐인데 셋 다 잡고 싶다. 문밖의 배고픈 사람부터 떠올려 본다.
+          text: "열쇠와 지휘패와 붓이 놓여 있다. 창고 앞에서 돌아서던 사람들이 생각난다. 나는 열쇠 쪽으로 손을 옮긴다."
       - choice:
           key: c7_first_power
-          prompt: "빼앗긴 권한을 되찾되 다시 독점하지 않으려면 무엇부터 바꿀까요?"
+          prompt: "돌려받은 것들이다. 무엇부터 손에 쥘까?"
           char: 덕만
           camera: medium
           with: [유신]
@@ -166,7 +166,7 @@ scenes:
       - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: action
-          text: 열쇠 하나를 마을 대표에게 건넨다. 둘이 함께 돌리자 문이 열린다. 내 열쇠만으로는 열 수 없음을 한 번 더 확인한다.
+          text: "열쇠 하나를 마을 대표에게 준다. 두 사람이 함께 돌려야 빗장이 빠진다. 그는 품에 넣기 전에 열쇠를 한 번 더 들여다본다."
       - goto: council_counterattack
 
   restore_army:
@@ -180,24 +180,24 @@ scenes:
           camera: "medium"
           with:
             - "덕만"
-          text: "지휘패는 받겠습니다. 다만 출병 명령은 궁에 한 벌 더 남기십시오."
+          text: "지휘패는 받겠습니다. 출병 명은 궁에도 한 벌 남겨 주십시오."
       - say:
           char: "덕만"
-          text: "군량은 마을에서 확인하게 할게. 네 패 하나로 솥까지 닫지는 못해."
+          text: "군량은 마을에서 세게 할 거야. 네가 급하다고 해도 그건 지켜."
       - say:
           char: "유신.angry"
           camera: "medium"
           with:
             - "덕만"
-          text: "그 정도면 됩니다. 오늘은 성문부터 묶고, 내일 병사들 이름을 대조하겠습니다."
+          text: "예. 성문부터 되찾겠습니다. 병사 명부는 내일 대조하겠습니다."
       - say:
           channel: "narration"
-          text: "유신의 병력이 성문을 되찾았습니다. 마을의 배급은 하루 늦었고 덕만의 첫 명령은 군영에서 먼저 읽혔습니다."
+          text: "해 지기 전 성문 깃발이 바뀌었다. 창고를 열 병력은 그날 돌아오지 못했다. 배급을 기다리던 사람들에게 내일 다시 오라는 말이 전해졌다."
       - add:
           people_support: -1
       - say:
           channel: thought
-          text: 성문은 지켰다. 배급을 하루 미룬 명령에도 내 이름이 있다. 저 사람에게 하루는 몇 끼였을까.
+          text: "성문을 먼저 지키라 한 건 나다. 오늘 저녁을 못 먹은 사람에게도 같은 말을 할 수 있을까."
       - goto: "council_counterattack"
 
   restore_records:
@@ -208,27 +208,27 @@ scenes:
           duration: 900
       - say:
           channel: "narration"
-          text: "서고의 두 기록관이 같은 명령을 따로 베꼈습니다. 서로 다른 한 글자를 찾자 유신이 두 종이를 모두 회수했습니다."
+          text: "같은 명을 두 사람이 베꼈다. 유신이 두 종이를 겹쳐 보다가 손을 멈췄다. 창고를 연다는 글자 하나가 달랐다."
       - say:
           char: "덕만"
           camera: "medium"
           with:
             - "유신"
-          text: "다르면 멈춰. 급한 대피는 먼저 하고, 명령을 바꾼 이름은 해 지기 전에 남겨."
+          text: "그 명은 멈춰라. 대피시킬 사람은 먼저 옮기고. 누가 고쳤는지 이름을 받아 와."
       - say:
           char: "유신.angry"
           camera: "medium"
           with:
             - "덕만"
-          text: "위조문은 막았습니다. 대신 창고 개방이 두 시진 늦었습니다."
+          text: "고친 자는 찾았습니다. 창고는… 두 시진 늦었습니다."
       - say:
           channel: "narration"
-          text: "기록은 되찾았지만 창고 앞 줄은 길어졌습니다. 덕만은 늦은 배급의 날짜를 첫 감사 기록에 적었습니다."
+          text: "처벌할 이름이 장부에 올랐다. 창고 앞에서는 늦게 배급받은 사람들이 벌써 어둠 속으로 걸어가고 있었다."
       - add:
           people_support: -2
       - say:
           channel: thought
-          text: 위조된 한 글자는 찾았다. 그런데 창고 앞 줄은 그대로야. 붓을 되찾는다고 밥이 생기진 않는구나.
+          text: "틀린 글자는 바로잡았다. 늦은 두 시진도 고칠 수 있으면 좋으련만."
       - goto: "council_counterattack"
 
   council_counterattack:
@@ -239,15 +239,15 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "다음 조회에서 귀족들은 빈 옥새함 대신 섭정 의자를 들여왔습니다. 의자에는 천명의 이름이 새겨져 있었습니다. 되찾은 열쇠와 붓을 언니의 치맛자락에 다시 묶으려는 수였습니다."
+          text: "조회에 새 의자가 들어왔다. 등받이에 천명의 이름이 새겨져 있었다. 귀족 하나가 천명에게 자리를 권하며, 덕만 쪽에 놓인 열쇠를 끌어당겼다."
       - say:
           char: 천명.nervous
           camera: medium
           with: [덕만]
-          text: "안 앉으면 우리가 싸웠다 하고, 앉으면 내 이름으로 널 막겠지. 저 의자는 내 자리가 아니야."
+          text: "앉으라며 네 열쇠를 당기더라. 내가 저 의자에 앉으면 네 앞을 막아야 한대."
       - choice:
           key: c7_regency
-          prompt: "귀족들이 천명을 덕만의 반대편에 앉히려 합니다. 회의를 어떻게 바꿀까요?"
+          prompt: "언니 이름이 새겨진 의자가 내 맞은편에 놓인다."
           char: 덕만
           camera: medium
           with: [천명]
@@ -266,34 +266,34 @@ scenes:
       - bg: { id: throne_hall, transition: dissolve, duration: 720 }
       - say:
           channel: narration
-          text: "천명이 의자 한쪽으로 몸을 비켰습니다. 모든 문서에 두 자매의 먹이 나란히 마를 때까지 명령은 나가지 않았습니다. 귀족들은 그 기다림까지 장부에 적었습니다."
+          text: "천명이 옆으로 비켜 덕만의 자리를 냈다. 첫 명령서가 두 사람 앞에 놓였다. 귀족들은 두 자매가 모두 서명할 때까지 기다렸다."
       - say:
           char: 천명.nervous
           camera: medium
           with: [덕만]
-          text: "이 먹 냄새 이상하지 않아? 아까부터 네 손가락만 붉게 부어. 붓 내려놔."
+          text: "덕만아, 손 보여 줘. 왜 이렇게 붉니? 그 붓 내려놔."
       - say:
           char: 덕만.princess_sad
           camera: medium
           with: [천명]
-          text: "언니 붓은 괜찮아. 공동 서명이라면서 처음부터 나만 죽일 먹을 준비한 거야."
+          text: "언니 것은 만지지 마. 내 붓만… 내 것에만 묻었어."
       - say:
           channel: narration
-          text: "덕만의 붓에만 독이 배어 있었습니다. 왕위를 천명에게 몰아주려던 귀족들은 두 이름이 필요한 제도를 이용해, 한 사람이 죽으면 모든 명령도 멈추게 만들었습니다."
+          text: "덕만의 이름이 반쯤 쓰이다 멎었다. 천명이 붓을 걷어 내자 귀족 하나가 새 명령서를 내밀었다. 서명할 자리는 하나뿐이었다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "공동 섭정 첫날 — 덕만 공주, 서명 중 독살. 천명 공주 단독 섭정으로 전환."
       - gameOver:
           title: "운명 — 두 이름 중 하나의 독"
-          message: "자매의 서명을 한 종이에 묶자 질투하던 귀족은 덕만의 붓에만 독을 발랐습니다. 한 사람을 없애면 권력도 천명에게 자동으로 돌아가도록 만든 함정이었습니다."
+          message: "천명은 두 이름을 남기라 했으나, 관원들은 살아 있는 사람의 서명만 받았다. 덕만이 쥐었던 붓은 증거함에 봉해졌다."
           recoverToChoice: c7_regency
 
   open_council:
     actions:
       - say:
           channel: action
-          text: 회의장 문을 민다. 흙 묻은 짚신이 비단신 사이로 들어온다. 말이 겹친다. 붓을 내려놓고 처음 목소리부터 다시 듣는다.
+          text: "회의장 문을 연다. 진흙 묻은 짚신이 문턱에서 멈춘다. 나는 의자를 뒤로 민다. 들어와 말하라 하니, 맨 앞의 노인이 품에서 접은 종이를 꺼낸다."
       - goto: weak_king_end
 
   weak_king_end:
@@ -305,16 +305,16 @@ scenes:
       - say:
           camera: medium
           char: 진평왕.weak
-          text: "되찾은 걸 네 손에 다 쥘 줄 알았다. 나라면 또 빼앗길까 무서워 그랬을 테니까."
+          text: "네가 다 쥘 줄 알았다. 나처럼 다시 빼앗길까 무서워서."
       - say:
           char: 덕만
-          text: "한 손에 모으면 다음 왕도 다시 팔 겁니다. 왕이 약해도 창고는 열리고, 틀린 명령은 고치게 하겠습니다."
+          text: "무서워요. 그러니까 나눠 두려는 거예요. 제가 놓쳐도 누군가는 쥐고 있게."
       - say:
           channel: thought
-          text: 아버지 혼자 앉았던 저 의자. 열쇠도 도장도 없이 얼마나 오래 버텼을까. 내가 앉는다고 저절로 달라지지는 않아.
+          text: "저 의자가 어릴 때보다 작아 보인다. 아버지는 저기서 자꾸 작아지셨구나. 나는 빈 옥새함을 닫아 드린다."
       - say:
           channel: action
-          text: 구휼 순행표를 받는다. 서기관 손가락의 붉은빛. 잃어버린 옥새 인주와 같아 보인다. 천명이 먼저 마차에서 손을 내민다.
+          text: "구휼 순행표를 받는다. 서기관의 손끝이 붉다. 빈 옥새함에 남았던 인주와 같은 빛이다. 물으려는데 마차에서 천명이 나를 부른다. 나는 종이를 접어 소매에 넣는다."
           with: []
           camera: wide
           continueLabel: 순행표를 챙겨 언니의 마차에 오른다
@@ -328,16 +328,16 @@ scenes:
       - char: { id: 천명, position: right, emotion: nervous }
       - say:
           char: 덕만.angry
-          text: "왕명을 읽는다. 이 자리의 귀족 대표는 반역 혐의로 모두 포박하라."
+          text: "왕명을 받들라. 이 자리에 든 귀족 대표들을 모두 포박하라!"
       - say:
           channel: narration
-          text: "대표들을 한꺼번에 묶는 순간 회의장 밖의 군사는 절반만 움직였습니다. 나머지 병사들의 군량과 가족은 체포된 귀족의 창고에 묶여 있었습니다."
+          text: "병사 절반이 창을 들었다. 나머지는 움직이지 않았다. 묶여 가는 귀족 하나가 제 집 병사의 이름을 불렀다. 회의장 밖에서 빗장이 내려갔다."
       - say:
           char: 천명.nervous
-          text: "사람을 모두 적으로 묶으면 우리 편이 설 자리도 사라져. 덕만아, 문이 닫히고 있어."
+          text: "덕만아. 저 병사들, 우리를 보고 있지 않아. 문이 닫혀…"
       - say:
           channel: record
           text: "귀족 회의는 왕실의 불법 체포와 공동 섭정 강요를 명분으로 성문을 폐쇄함. 덕만 공주와 천명 공주, 회의장 화재로 사망."
       - gameOver:
           title: "운명 — 함께 잠긴 왕실"
-          message: "반대자를 한 번에 없애려는 왕명은 중립에 설 자리까지 지웠습니다. 귀족들은 회의장을 잠그고 불을 놓았고, 왕실의 두 후계자는 함께 죽었습니다."
+          message: "왕명을 다시 읽어도 문은 열리지 않았다. 천명이 덕만의 소매로 연기를 막았다. 밖에서는 두 사람의 이름을 지울 회의가 시작되었다."

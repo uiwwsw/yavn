@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { getStoryMap, replayStoryMapNode } from './engine';
-import { layoutStoryMap, visibleStoryChapter, type StoryMapData } from './storyMap';
+import { describeStoryRoute, layoutStoryMap, routeStoryMapEdges, visibleStoryChapter, type StoryMapData } from './storyMap';
 import { trapGameDialogFocus } from './gameInterface';
 import './storyMap.css';
 
@@ -14,10 +14,12 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
   const [chapterPath, setChapterPath] = useState('');
   const [selectedId, setSelectedId] = useState('');
   const [zoom, setZoom] = useState(.85);
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const closeRef = useRef<HTMLButtonElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
+  const chapterNav = useRef<HTMLElement>(null);
   const drag = useRef<{ x: number; y: number; left: number; top: number }>();
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -42,24 +44,29 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
     : { nodes: [], edges: [] }, [chapter, data]);
   const positioned = useMemo(() => layoutStoryMap(visible.nodes, visible.edges, chapter?.entry), [visible, chapter?.entry]);
   const positions = useMemo(() => new Map(positioned.map(n => [n.id, n])), [positioned]);
+  const routed = useMemo(() => routeStoryMapEdges(positioned, visible.edges), [positioned, visible.edges]);
   const selected = visible.nodes.find(n => n.id === selectedId);
   const seen = new Set(data?.visits.map(v => v.id));
   const width = Math.max(700, ...positioned.map(n => n.x + 260));
   const height = Math.max(360, ...positioned.map(n => n.y + 220));
-  const focusNode = (id: string | undefined) => {
+  const focusNode = (id: string | undefined, behavior: ScrollBehavior = 'auto') => {
     const node = id ? positions.get(id) : undefined;
     if (!node || !viewport.current) return;
-    viewport.current.scrollTo({ left: (node.x + 100) * zoom - viewport.current.clientWidth / 2,
-      top: (node.y + 70) * zoom - viewport.current.clientHeight / 2, behavior: 'smooth' });
+    viewport.current.scrollTo({ left: (node.x + 102) * zoom, top: (node.y + 74) * zoom, behavior });
   };
-  useEffect(() => {
-    focusNode(selectedId);
+  // The viewport mounts only after loading. Measure it before focusing; React may
+  // commit the data while the loading placeholder is still on screen.
+  useLayoutEffect(() => {
     const element = viewport.current;
     if (!element) return;
-    const observer = new ResizeObserver(() => focusNode(selectedId));
+    const measure = () => setViewportSize({ width: element.clientWidth, height: element.clientHeight });
+    measure();
+    const observer = new ResizeObserver(measure);
     observer.observe(element);
     return () => observer.disconnect();
-  }, [chapterPath, selectedId, zoom, data, positions]);
+  }, [loading]);
+  useLayoutEffect(() => { focusNode(selectedId); }, [loading, chapterPath, selectedId, zoom, positions, viewportSize]);
+  useEffect(() => { chapterNav.current?.querySelector('[aria-current="step"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }, [loading, chapterPath]);
   const replay = async () => {
     if (!selected || busy) return;
     setBusy(true); setNotice('이 지점의 이야기를 펼치는 중…');
@@ -82,7 +89,7 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
     {loading ? <div className="story-atlas-empty" role="status">이야기의 가지를 펼치고 있습니다…</div>
       : error ? <div className="story-atlas-empty" role="alert">{error}<button onClick={() => setRevision(r => r + 1)}>다시 불러오기</button></div>
       : <>
-        <nav className="story-atlas-chapters" aria-label="전체 챕터">
+        <nav ref={chapterNav} className="story-atlas-chapters" aria-label="전체 챕터">
           {data?.chapters.map(c => {
             const count = c.nodes.filter(n => n.chapter === c.path && seen.has(n.id)).length;
             return <button key={c.path} type="button" className={c.path === chapterPath ? 'is-active' : ''}
@@ -101,7 +108,7 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
                 <output aria-label="지도 배율">{Math.round(zoom * 100)}%</output>
                 <button aria-label="지도 확대" disabled={zoom >= 1.3} onClick={() => setZoom(z => Math.min(1.3, z + .15))}>＋</button>
                 <button onClick={() => { const c = data?.chapters.find(c => c.nodes.some(n => n.id === data.current && n.chapter === c.path));
-                  if (c) { setChapterPath(c.path); setSelectedId(data?.current ?? ''); focusNode(data?.current); } }}>현재 위치</button></div>
+                  if (c) { setChapterPath(c.path); setSelectedId(data?.current ?? ''); focusNode(data?.current, 'smooth'); } }}>현재 위치</button></div>
             </div>
             <div className="story-atlas-viewport" ref={viewport} tabIndex={0} aria-label="분기 지도. 스크롤하거나 빈 곳을 드래그해 이동하세요."
               onPointerDown={e => {
@@ -112,15 +119,21 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
                 e.currentTarget.scrollTop = drag.current.top - e.clientY + drag.current.y; } }}
               onPointerUp={() => { drag.current = undefined; }} onPointerCancel={() => { drag.current = undefined; }}>
               {chapter?.error ? <div className="story-atlas-empty">{chapter.error}<button onClick={() => setRevision(r => r + 1)}>다시 불러오기</button></div>
-                : <div style={{ width: width * zoom, height: height * zoom }}>
-                  <div className="story-atlas-canvas" style={{ width, height, transform: `scale(${zoom})` }}>
+                : <div style={{ width: width * zoom + viewportSize.width, height: height * zoom + viewportSize.height, position: 'relative' }}>
+                  <div className="story-atlas-canvas" style={{ width, height, left: viewportSize.width / 2, top: viewportSize.height / 2, transform: `scale(${zoom})` }}>
                     <svg width={width} height={height} aria-hidden="true">
-                      {visible.edges.map((edge, i) => {
-                        const a = positions.get(edge.from)!; const b = positions.get(edge.to)!;
-                        const x = a.x + 204; const y = a.y + 62; const endX = b.x; const endY = b.y + 62;
-                        return <path key={i} className={edge.taken ? 'is-travelled' : ''}
-                          d={`M ${x} ${y} C ${x + 42} ${y}, ${endX - 42} ${endY}, ${endX} ${endY}`} />;
-                      })}
+                      <defs>
+                        <marker id="story-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,0 10,5 0,10" fill="#71847c" /></marker>
+                        <marker id="story-arrow-taken" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,0 10,5 0,10" fill="#dfbd7d" /></marker>
+                      </defs>
+                      {routed.map((edge, i) => <g key={i}>
+                        <path className={edge.taken ? 'is-travelled' : ''} d={edge.path}
+                          markerEnd={`url(#story-arrow${edge.taken ? '-taken' : ''})`} />
+                        {(edge.option || edge.returning) && <text className={edge.taken ? 'is-travelled' : ''}
+                          x={edge.labelX} y={edge.labelY} textAnchor="middle">
+                          {edge.option ? `${edge.option}번` : ''}{edge.returning ? ' ↶ 돌아감' : ''}
+                        </text>}
+                      </g>)}
                     </svg>
                     {positioned.map(node => {
                       const unlocked = seen.has(node.id);
@@ -139,14 +152,18 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
                   </div>
                 </div>}
             </div>
-            <footer className="story-atlas-map-footer"><span>가지를 따라, 아직 만나지 못한 운명으로.</span><span>드래그 · 스크롤로 이동</span></footer>
+            <footer className="story-atlas-map-footer"><span>화살표는 진행 방향 · ↶는 앞선 지점으로 돌아가는 길</span><span>드래그 · 스크롤로 이동</span></footer>
           </div>
           <aside className="story-atlas-detail" aria-label="선택한 이야기">
             {selected?.unlocked ? <>
               {selected.image && <img className="story-atlas-detail-image" src={selected.image} alt="" />}
               <div className="story-atlas-detail-copy"><small>CHAPTER {String(chapter?.number ?? 1).padStart(2, '0')} · {kindLabel[selected.kind]}</small>
                 <h3>{selected.title}</h3>
-                {visible.edges.filter(e => e.from === selected.id && e.taken && e.label).map((edge, i) => <p className="story-atlas-choice" key={i}>선택한 길 · {edge.label}</p>)}
+                {visible.edges.filter(e => e.from === selected.id).map((edge, i, siblings) => <div className="story-atlas-choice" key={i}>
+                  <strong>{edge.option ? `${edge.option}번 선택` : '이어지는 길'} · {edge.taken ? edge.label ?? '지나온 길' : '미탐색'}</strong>
+                  <p>{edge.taken || !edge.option ? describeStoryRoute(edge, visible.nodes, visible.edges, chapter?.entry) : '아직 확인하지 않은 길'}</p>
+                  {edge.taken && siblings.filter(e => e.to === edge.to && e.taken).length > 1 && <small>같은 장면에 합류 · 선택에 따른 관계와 소지품은 다를 수 있습니다.</small>}
+                </div>)}
                 <p>{data?.visits.find(v => v.id === selected.id)?.replayable ? '플레이 도중에도 언제든 돌아갈 수 있습니다. 그때의 소지품과 관계로 다시 이어집니다.'
                   : '발견한 이야기입니다. 다시 이어갈 수 있는 앞선 장면을 선택해 주세요.'}</p>
                 <button className="story-atlas-replay" disabled={busy || !data?.visits.find(v => v.id === selected.id)?.replayable}

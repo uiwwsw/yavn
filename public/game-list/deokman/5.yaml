@@ -16,32 +16,32 @@ scenes:
       - char: { id: 진평왕, position: right, emotion: weak }
       - say:
           channel: action
-          text: 제관이 부적을 내 발치에 던진다. “열흘 뒤, 신께서 답하신다.” 사람들의 눈이 하늘 대신 나를 향한다.
+          text: "제관이 내 발치에 부적을 던진다. 열흘 뒤 하늘이 답할 거라고 한다. 모여든 사람 중 누구도 하늘을 올려다보지 않는다. 모두 나를 본다."
       - say:
           when: { var: diplomacy_policy, op: eq, value: equal_exchange }
           channel: record
-          text: "모란 연회에서 받아 온 당의 천문표가 제관의 날짜와 일치했습니다. 덕만이 혼인 대신 가져온 지식이 첫 단서가 됐습니다."
+          text: "당에서 받아 온 천문표에는 이미 그 날짜가 적혀 있었다. 제관이 장터에 부적을 내건 것보다 먼저였다."
       - say:
           when: { var: diplomacy_policy, op: eq, value: armed_truce }
           channel: narration
-          text: "국경에 먼저 도착한 군량 수레 바닥에서 당 군관의 일식 메모가 발견됐습니다. 전쟁을 미룬 시간이 이제 해를 읽을 시간으로 바뀌었습니다."
+          text: "군량 수레에서 나온 메모가 천문표 곁에 놓였다. 당 군관이 적어 둔 일식 날짜는 제관의 말과 같았다."
       - say:
           when: { var: diplomacy_policy, op: eq, value: secret_trade }
           channel: narration
-          text: "무역권으로 산 귀족의 서신 중 한 장에 '해가 잠길 때 덕만을 가리킨다'는 문장이 있었습니다. 더러운 거래가 음모의 시각을 먼저 밝혔습니다."
+          text: "돈을 주고 산 서신에 짧은 당부가 있었다. 해가 잠기면 덕만을 가리키라는 말이었다. 날짜에 붉은 점까지 찍혀 있었다."
       - say:
           char: 진평왕.weak
           camera: medium
           with: [덕만]
-          text: "열흘만 궁에 있어라. 해가 돌아온 뒤 표를 보여도 늦지 않아. 겁먹은 눈에는 숫자보다 네 목이 먼저 보인다."
+          text: "열흘만 내 곁에 있거라. 저들이 돌을 들면, 네가 아는 것이 너를 막아 주지는 못해."
       - say:
           char: 덕만
           camera: medium
           with: [진평왕]
-          text: "저들은 하늘의 뜻이 아니라 시각을 압니다. 제가 숨으면 예언이 돼요. 정확한 때를 찾아 알리겠습니다."
+          text: "제가 숨으면 저 부적을 믿을 거예요. 왜 어두워지는지 제가 먼저 말하겠습니다."
       - choice:
           key: c6_find_time
-          prompt: "제관이 계산을 예언처럼 꾸몄습니다. 정확한 시각을 어디서 찾을까요?"
+          prompt: "제관이 날짜를 안다. 나도 정확한 때를 알아야 한다."
           char: 덕만
           camera: medium
           with: [진평왕]
@@ -61,7 +61,7 @@ scenes:
       - bg: { id: moon_court, transition: dissolve, duration: 720 }
       - say:
           channel: action
-          text: 두 달력의 칸을 한 줄씩 밀어 본다. 손가락이 같은 날짜에서 멈춘다. 우연인가? 처음부터 한 번 더 센다.
+          text: "당의 날짜 옆에 신라의 날짜를 적는다. 한 칸씩 옮겨 세다가 손을 멈춘다. 처음부터 다시 세어도 같은 자리에 닿는다."
       - goto: table_revealed
 
   steal_table:
@@ -76,27 +76,27 @@ scenes:
           emotion: "smirk"
       - say:
           channel: "narration"
-          text: "비담이 꺼낸 표에는 먼지가 없었습니다. 덕만은 당에서 받은 사본을 그 옆에 펴고 먹이 젖은 줄을 가리켰습니다."
+          text: "비담이 가져온 표에는 먼지도 묻지 않았다. 덕만은 마지막 줄을 빛에 비췄다. 새로 쓴 먹만 검게 빛났다."
       - say:
           char: "비담.smirk"
           camera: "medium"
           with:
             - "덕만"
-          text: "가져가라고 놓아뒀군요. 마지막 줄만 먹이 덜 말랐습니다."
+          text: "참 친절한 서고더군요. 훔칠 종이까지 문 가까이 내놓고."
       - say:
           char: "덕만.princess_angry"
           camera: "medium"
           with:
             - "비담"
-          text: "그 줄은 믿지 마. 앞장의 날짜부터 우리 달력으로 다시 세자."
+          text: "마지막 줄을 고쳤어. 그 위의 날짜는 남아 있지? 거기서부터 다시 세자."
       - say:
           channel: "narration"
-          text: "가짜 예측은 버렸습니다. 비담이 들킨 서고의 문에는 새 자물쇠가 걸렸고, 제관들은 덕만의 다음 실수만 기다렸습니다."
+          text: "틀린 숫자를 지우자 종이가 얇아졌다. 그날 밤 서고에 새 자물쇠가 걸렸다는 소식이 왔다. 비담은 열쇠를 구하러 다시 나가지 못했다."
       - add:
           nobles_support: -1
       - say:
           channel: thought
-          text: 다행히 가짜는 알아봤다. 서고 문은 이제 잠겼어. 남은 사본 두 장으로 시각을 맞춰야 한다.
+          text: "가짜인 줄은 알았어. 정확한 답을 안 것은 아니야. 남은 두 장을 맞춰 봐야 한다."
       - goto: "calculate_eclipse"
 
   public_observation:
@@ -107,10 +107,10 @@ scenes:
           duration: 720
       - say:
           channel: "narration"
-          text: "농부들은 지난 일식 날의 파종과 강 수위를 기억했습니다. 날짜는 맞았지만 해가 가려진 시각은 제각각이었습니다."
+          text: "농부들은 지난 일식에 강물이 어디까지 찼는지 기억했다. 볍씨를 담갔다는 날도 같았다. 다만 해가 가려진 시각에서는 서로 고개를 저었다."
       - say:
           char: "덕만"
-          text: "계절은 맞아. 시각만 좁히면 돼. 이 기억을 버리진 말자."
+          text: "그날 일은 더 들어 보자. 시각이 다르다고 전부 틀린 말은 아닐 거야."
       - char:
           id: "비담"
           position: "right"
@@ -120,16 +120,16 @@ scenes:
           camera: "medium"
           with:
             - "덕만"
-          text: "기억한 날과 당의 표가 겹칩니다. 두 달력의 간격부터 세시죠."
+          text: "날짜가 맞습니다. 당의 표와 우리 달력 사이를 세면 더 좁힐 수 있겠습니다."
       - say:
           channel: "narration"
-          text: "덕만은 파종 날짜에 작은 점을 찍었습니다. 뒤에 받은 천문표에도 같은 간격으로 점이 이어졌습니다."
+          text: "덕만은 파종한 날마다 점을 찍었다. 당의 표에서도 같은 간격이 나타났다. 맞은편 농부가 손가락을 뻗어 점 하나를 바로잡았다."
       - add:
           people_support: 1
           insight: -1
       - say:
           channel: thought
-          text: 농부들이 기억한 물높이는 맞아. 시각이 조금씩 달라. 숫자와 기억을 함께 놓고 다시 세어 보자.
+          text: "저 사람은 아버지와 씨를 뿌린 날이라 기억한대. 지우려던 점 옆에 다시 작은 점을 찍는다."
       - goto: "calculate_eclipse"
 
   table_revealed:
@@ -138,7 +138,7 @@ scenes:
       - get: eclipse_table
       - say:
           channel: thought
-          text: 정오 바로 뒤야. 오래 가려지진 않아. 그런데 아래의 왕실 옥새는… 계산표에 왜 왕명이 필요하지?
+          text: "정오를 조금 지난 때. 오래 가려지지는 않는다. 그런데 이 표에 왜 옥새가 찍혔지? 아버지도 보셨던 걸까."
       - clearSticker: { id: c6_table, leave: fadeOut }
       - goto: eclipse_policy
 
@@ -146,7 +146,7 @@ scenes:
     actions:
       - choice:
           key: c6_eclipse_policy
-          prompt: "일식 시각을 알아냈습니다. 사람들에게 어떻게 알릴까요?"
+          prompt: "시각을 알아냈다. 이 종이를 누구에게 건넬까?"
           char: 덕만
           camera: medium
           options:
@@ -168,11 +168,11 @@ scenes:
       - bg: { id: village, transition: dissolve, duration: 720 }
       - say:
           channel: action
-          text: 뜯긴 벽보 자리에 새 종이를 붙인다. 아이에게 구멍 난 판을 건넨다. 땅에 맺힌 작은 해를 보더니 아이가 웃는다.
+          text: "찢긴 벽보 위에 새 종이를 붙인다. 아이에게 구멍 뚫린 판을 들게 하자 땅 위에 작은 해가 맺힌다. 아이가 제 발로 가려 보다가 웃는다."
       - say:
           char: 덕만
           camera: medium
-          text: "해가 돌아와도 제 이름은 부르지 마세요. 벽보가 맞았는지 보세요. 틀리면 고치고요."
+          text: "하늘을 맨눈으로 보지는 마라. 이 그림자를 보렴. 내 말이 맞는지 네가 세어 줘."
       - goto: eclipse_day
 
   stage_miracle:
@@ -187,31 +187,31 @@ scenes:
           emotion: "smirk"
       - say:
           channel: "narration"
-          text: "북을 울릴 자리는 정해졌습니다. 덕만은 계산표를 소매 안에 넣고, 해가 돌아올 시각에 붉은 실을 묶었습니다."
+          text: "북 칠 자리가 정해졌다. 덕만은 해가 돌아올 숫자 옆에 붉은 실을 묶었다. 접은 표가 소매 밖으로 나오지 않도록 깊이 밀어 넣었다."
       - say:
           char: "비담.smirk"
           camera: "medium"
           with:
             - "덕만"
-          text: "북을 치면 사람들이 폐하만 볼 겁니다. 시각은 제 전령에게 맡기십시오."
+          text: "시각은 제 전령이 맞추겠습니다. 공주님께서는 손만 들어 주십시오."
       - say:
           char: "덕만.sad"
-          text: "사람들이 진정하면 표도 보여 주겠어. 오늘은 밀려 죽는 사람부터 막자."
+          text: "소요가 가라앉으면 표를 내놓겠어. 오늘은 다치지 않게 넘기자."
       - say:
           char: "비담"
           camera: "medium"
           with:
             - "덕만"
-          text: "사람들이 기적을 원하면, 표를 보여 줄 날은 자꾸 늦어질 겁니다."
+          text: "그때도 저들이 종이를 보려 하겠습니까. 공주님을 보고 싶어 할 텐데."
       - say:
           channel: "narration"
-          text: "북소리에 사람들이 멈췄습니다. 덕만은 자신이 고른 거짓을 계산표 뒷면에 적었습니다."
+          text: "북이 울리자 사람들이 덕만을 향해 엎드렸다. 소매 안의 계산표가 손목을 찔렀다. 덕만은 손을 들고도 웃지 못했다."
       - add:
           bidam_trust: 2
           fear: 1
       - say:
           channel: thought
-          text: 사람들이 나를 보고 무릎을 꿇는다. 북을 치자고 한 건 나야. 비담은 웃는데, 나는 같이 웃을 수가 없다.
+          text: "무릎 꿇지 말라고 해야 한다. 입을 열었는데도 소리가 안 나온다. 내가 치라 한 북이 아직 울린다."
       - goto: "eclipse_day"
 
   keep_secret:
@@ -225,27 +225,27 @@ scenes:
           position: "right"
       - say:
           channel: "narration"
-          text: "왕은 계산표 사본을 장수들에게만 건넸습니다. 병사들은 정확한 시각에 방패를 세웠지만 시장에는 아무 설명도 전해지지 않았습니다."
+          text: "장수들만 표를 받았다. 병사들은 약속한 시각에 방패를 들었다. 그 너머 장터에서는 제관이 무슨 뜻인지 대신 외쳐 주고 있었다."
       - say:
           char: "진평왕"
           camera: "medium"
           with:
             - "덕만"
-          text: "질서는 지킬 수 있다. 왜 어두워지는지까지 오늘 말해야 하느냐?"
+          text: "소요만 막으면 된다. 해가 돌아온 뒤에 일러 주면 안 되겠느냐?"
       - say:
           char: "덕만.princess_sad"
           camera: "medium"
           with:
             - "진평왕"
-          text: "오늘 안 물어도 내일 물을 겁니다. 제가 난간에서 직접 답하겠습니다."
+          text: "그동안 저 사람들은 무엇을 믿고 기다립니까. 제가 나가서 말할게요."
       - say:
           channel: "narration"
-          text: "덕만은 잠근 표의 마지막 숫자를 손바닥에 옮겼습니다. 문밖에서는 제관의 설명이 먼저 퍼지고 있었습니다."
+          text: "덕만은 마지막 숫자를 손바닥에 옮겨 적었다. 문을 나설 때 부적을 든 아이와 눈이 마주쳤다. 아이는 손바닥을 보지 못했다."
       - add:
           people_support: -2
       - say:
           channel: thought
-          text: 군사들은 시각을 안다. 저기 아이는 아직 부적을 쥐고 울고 있다. 내가 설명을 잠가 버린 거야.
+          text: "병사들은 울지 않는다. 시각을 아니까. 저 아이에게도 말해 줄 수 있었는데."
       - goto: "eclipse_day"
 
   eclipse_day:
@@ -256,16 +256,16 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: 새소리가 끊긴다. 손등의 빛이 식는다. 누군가 돌을 들고 달려온다. 손바닥에 적은 숫자를 지우지 않으려 주먹을 편다.
+          text: "새소리가 그친다. 손등에 닿던 볕이 식는다. 군중 속에서 돌 든 팔이 솟는다. 나는 지워질까 봐 손바닥의 숫자를 감싸지 못한다."
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "방패를 세우면 아이들이 눌리고, 눕히면 제단까지 열립니다. 무엇부터 지킵니까!"
+          text: "아이들이 방패에 끼입니다! 길을 내면 제단이 뚫립니다. 명을 주십시오!"
       - choice:
           key: c6_eclipse_riot
-          prompt: "군중 속 아이들이 눌리고 있습니다. 길을 어떻게 열까요?"
+          prompt: "앞줄이 밀린다. 아이의 울음소리가 낮아진다."
           char: 덕만
           camera: medium
           with: [유신]
@@ -285,10 +285,10 @@ scenes:
           char: 덕만.angry
           camera: medium
           with: [유신]
-          text: "서른까지 센다! 그때도 해가 안 돌아오면 나를 잡아! 방패는 눕히고 아이들부터 뒤로 보내!"
+          text: "나를 보아라! 서른까지만 함께 세자! 유신, 방패를 눕혀! 아이들부터 빼내라!"
       - say:
           channel: action
-          text: 열. 난간에 돌이 부딪친다. 스물. 목소리가 떨린다. 스물아홉… 군중 속 아이가 나보다 먼저 다음 수를 외친다.
+          text: "열. 돌 하나가 난간을 때린다. 스물. 숨을 들이쉴 때마다 목이 찢어질 듯하다. 스물아홉을 세자 군중 속에서 다음 수가 터진다."
       - goto: sun_returns
 
   sun_returns:
@@ -299,23 +299,23 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: 손등이 따뜻해진다. 빛이 돌아왔다. 구겨진 벽보를 펴는 손이 보인다. 숫자를 다시 세는 입술도.
+          text: "손등에 볕이 닿는다. 방패를 붙잡고 있던 아이가 고개를 든다. 누군가 벽보를 펴고 손가락으로 방금 센 숫자를 짚는다."
       - char: { id: 덕만, position: left }
       - char: { id: 진평왕, position: right, emotion: weak }
       - say:
           char: 진평왕.weak
           camera: medium
           with: [덕만]
-          text: "오늘은 내 왕명보다 네 목소리에 더 많은 사람이 멈췄다. 자랑스럽고… 무섭구나."
+          text: "네 목소리를 듣더구나. 저 많은 사람이. …돌이 날아올 때는 숨도 못 쉬었다."
       - say:
           char: 덕만
-          text: "저도 무서워요. 다음엔 제가 없어도 시간을 세게 할 겁니다. 틀렸다고 말할 사람도요."
+          text: "저도요. 숫자를 잊을까 봐 무서웠어요. 다음엔 저 혼자 세지 않을래요."
       - say:
           channel: thought
-          text: 아까 그 아이도 알아봤어. 다음번엔 내가 여기 없어도 셀 수 있겠지. 그래야 해.
+          text: "아이가 자기는 마흔까지도 셀 수 있다고 한다. 웃음이 나려다가 목이 메인다. 그래, 다음에는 네가 먼저 세렴."
       - say:
           channel: action
-          text: 아버지가 계산표의 옥새를 문지른다. “내가 찍은 적 없다.” 그가 빈 왕좌 쪽을 본다. 나는 종이를 접지 않고 따라 든다.
+          text: "아버지가 천문표의 인장을 문지른다. 찍은 적 없다고 하신다. 손끝이 비어 있는 옥새함으로 향한다. 나는 표를 접지 않는다."
           with: []
           camera: wide
           continueLabel: 아버지를 따라 밤의 왕좌로 간다
@@ -329,20 +329,20 @@ scenes:
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
-          text: "아이들은 빠졌습니다. 하지만 제단까지 열린 길로 칼 든 자들이 섞여 들어옵니다. 남은 시각을 외쳐 사람부터 멈춰야 합니다!"
+          text: "아이들은 나갔습니다! 칼 든 자들이 그 길로 들어옵니다. 공주님, 시각을 외치십시오!"
       - say:
           char: 덕만.princess_angry
-          text: "길을 다시 닫으면 아이들이 끼어. 끝까지 열어 둬. 해가 돌아오면 저들도 멈출 거야."
+          text: "아직 남은 아이가 있어. 닫지 마! 해가 돌아올 때까지만 버텨!"
       - say:
           channel: narration
-          text: "아이들은 빠져나왔지만 제관의 사병도 눕힌 방패를 밟고 들어왔습니다. 해가 돌아오기 직전, 군중 속에서 뻗은 칼이 덕만의 옆구리를 찔렀습니다."
+          text: "마지막 아이가 방패를 넘었다. 그 뒤에서 사내 하나가 몸을 일으켰다. 덕만은 빈손인 줄 알았다. 허리 아래서 꺼낸 짧은 칼은 빛도 내지 않았다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
           text: "일식 소요 기록 — 덕만 공주, 피난 통로를 지키다 제관의 사병에게 피살."
       - gameOver:
           title: "운명 — 진실보다 먼저 열린 길"
-          message: "사람을 빼낼 길만 열고 군중을 멈출 정확한 시간을 말하지 않자 자객도 같은 길을 이용했습니다. 아이들은 살았지만 덕만은 돌아온 햇빛을 보지 못했습니다."
+          message: "아이를 넘겨받은 병사가 돌아보았다. 공주가 주저앉아 있었다. 해가 돌아왔을 때 손바닥의 숫자는 피에 번져 읽을 수 없었다."
           recoverToChoice: c6_eclipse_riot
 
   bad_dark_crowd:
@@ -353,16 +353,16 @@ scenes:
       - char: { id: 덕만, position: left, emotion: angry }
       - say:
           char: 덕만.angry
-          text: "해는 곧 돌아온다. 내 목소리를 듣고 아이들이 지나갈 길부터 열어라!"
+          text: "밀지 마라! 아이가 있다. 내 쪽으로 길을 내라!"
       - say:
           channel: narration
-          text: "덕만이 혼자 방패선 밖으로 걸어 나가자 유신의 손이 닿지 않는 거리가 생겼습니다. 뒤에서는 '군사가 친다'는 외침이 터졌고 군중이 한꺼번에 앞으로 무너졌습니다."
+          text: "방패선 밖으로 한 걸음 나가자 사람들의 어깨에 시야가 막혔다. 뒤에서 군사가 친다는 외침이 터졌다. 덕만은 발을 디딜 땅을 잃었다."
       - say:
           char: 유신.angry
-          text: "공주님께 길이 없습니다. 방패를 세우면 사람들이 짓밟힙니다."
+          text: "밀지 마라! 공주님이 그 아래 계신다! 방패 내려!"
       - say:
           channel: record
           text: "일식 소요 기록 — 덕만 공주, 제단 앞 압사자 사이에서 사망. 제관은 이를 하늘의 심판이라 선포하고 계산표를 소각함."
       - gameOver:
           title: "운명 — 옳은 말이 닿지 않은 거리"
-          message: "진실은 사실만으로 군중을 통과하지 못했습니다. 덕만은 사람을 빼낼 길보다 자신의 몸을 먼저 드러냈고, 해가 돌아왔을 때는 이미 군중 아래에서 숨이 멎어 있었습니다."
+          message: "유신은 해가 돌아온 뒤에야 덕만의 옷자락을 찾았다. 제관은 그동안 제단 위에서 새 예언을 외치고 있었다."
