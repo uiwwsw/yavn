@@ -1,3 +1,4 @@
+import { styleStartupHtml } from './startup-presentation.mjs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -207,7 +208,7 @@ export function renderGameSeoHtml(templateHtml, game, options = {}) {
   }
   const description = normalizeText(game?.summary) ?? normalizeText(game?.seo?.description) ?? '';
   const languages = Array.isArray(game?.languages) ? game.languages.join(', ') : '';
-  return templateHtml.replace(/<html lang="[^"]*">/, `<html lang="${escapeHtml(game.languages?.[0] ?? "ko")}">`).replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options)).replace('<div id="root"></div>', `<div id="root"><main><a href="/">YAVN</a><h1>${escapeHtml(game.name ?? game.id)}</h1><p>${escapeHtml(description)}</p><p>지원 언어 / Game languages: ${escapeHtml(languages || 'Not specified')}</p></main></div>`);
+  return styleStartupHtml(templateHtml.replace(/<html lang="[^"]*">/, `<html lang="${escapeHtml(game.languages?.[0] ?? "ko")}">`).replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options)).replace('<div id="root"></div>', `<div id="root"><main><a href="/">YAVN</a><h1>${escapeHtml(game.name ?? game.id)}</h1><p>${escapeHtml(description)}</p><p>지원 언어 / Game languages: ${escapeHtml(languages || 'Not specified')}</p></main></div>`), options.fontUrl);
 }
 
 export async function generateGameSeoPages(options = {}) {

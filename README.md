@@ -1235,3 +1235,7 @@ scenes:
 게임별 검색 페이지의 HTML/OG/구조화 데이터 언어도 실제 `languages` 선언에서 생성되며 플레이 시작 후에도 유지됩니다.
 
 영어 작품은 검색 설명·대표 이미지 설명을 생략해도 영어 기본 문구로 생성합니다. 작품이 선언한 실제 언어를 기준으로 하며 화면 언어와 구분합니다.
+
+## First-screen presentation
+
+Public launcher/game HTML keeps its useful search/no-JavaScript content, but includes critical startup styling so it is never shown as a raw text dump before the engine mounts. The launcher preloads its existing local SUITE font; the static creator guide uses the same font. Story/game state and controls are unchanged.
