@@ -70,6 +70,16 @@ describe('game-specific SEO page generation', () => {
     expect(rendered).not.toContain('<title>야븐엔진 (YAVN)</title>');
   });
 
+  it('uses the actual new game language instead of assuming Korean', () => {
+    const html = renderGameSeoHtml(templateHtml, { ...fixtureGame, languages: ['en', 'ja'] });
+    expect(html).toContain('<html lang="en">');
+    expect(html).toContain('content="en_US"');
+    const json = JSON.parse(html.match(/<script id="yavn-dynamic-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    expect(json.inLanguage).toEqual(['en', 'ja']);
+    const unknown = renderGameSeoHtml(templateHtml, fixtureGame);
+    expect(unknown).not.toContain('"inLanguage"');
+  });
+
   it('escapes HTML and inline JSON-LD values', () => {
     const rendered = renderGameSeoHtml(
       templateHtml,

@@ -1616,3 +1616,5 @@ public/game-list/conan/
 한국어·영어 게임 제작 안내 `/create/`, `/en/create/` 및 초기 HTML의 작품 링크·게임별 언어 선언·사이트맵을 생성합니다. RPG 만들기는 대사·분기·상태·아이템 중심의 스토리 RPG 범위로 설명하며 미지원 3D/타일맵 편집을 주장하지 않습니다. [영어 가이드](DEVELOPMENT_GUIDE.en.md)와 [SEO 운영 기록](SEO.md)을 참고하세요.
 
 영어 목록 소개는 `launcher.yaml`의 `translations.en.summary`에 번역문을 작성합니다. 원래 작품명과 이야기 내용은 유지되며 영어 소개 추가가 영어 대사판 지원을 뜻하지 않습니다.
+
+게임 검색 문서의 언어와 런타임 JSON-LD도 작품의 `languages` 선언을 유지합니다. 영어·일본어 게임을 추가해도 한국어로 일괄 표시하지 않습니다.

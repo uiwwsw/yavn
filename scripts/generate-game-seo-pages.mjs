@@ -181,7 +181,7 @@ export function buildGameSeoBlock(game, options = {}) {
     <meta property="og:site_name" content="야븐엔진 (YAVN)" />
     <meta property="og:title" content="${escapeHtml(seo.title)}" />
     <meta property="og:description" content="${escapeHtml(seo.description)}" />
-    <meta property="og:locale" content="ko_KR" />
+    ${Array.isArray(game?.languages) && game.languages.length ? `<meta property="og:locale" content="${escapeHtml(({ko:'ko_KR',en:'en_US',ja:'ja_JP',zh:'zh_CN'})[game.languages[0]] ?? game.languages[0].replace('-', '_'))}" />` : ''}
     <meta property="og:image" content="${escapeHtml(seo.imageUrl)}" />
     <meta property="og:image:secure_url" content="${escapeHtml(seo.imageUrl)}" />${imageTypeTag}
     <meta property="og:image:alt" content="${escapeHtml(seo.imageAlt)}" />
@@ -206,7 +206,7 @@ export function renderGameSeoHtml(templateHtml, game, options = {}) {
   }
   const description = normalizeText(game?.summary) ?? normalizeText(game?.seo?.description) ?? '';
   const languages = Array.isArray(game?.languages) ? game.languages.join(', ') : '';
-  return templateHtml.replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options)).replace('<div id="root"></div>', `<div id="root"><main><a href="/">YAVN</a><h1>${escapeHtml(game.name ?? game.id)}</h1><p>${escapeHtml(description)}</p><p>지원 언어 / Game languages: ${escapeHtml(languages || 'Not specified')}</p></main></div>`);
+  return templateHtml.replace(/<html lang="[^"]*">/, `<html lang="${escapeHtml(game.languages?.[0] ?? "ko")}">`).replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options)).replace('<div id="root"></div>', `<div id="root"><main><a href="/">YAVN</a><h1>${escapeHtml(game.name ?? game.id)}</h1><p>${escapeHtml(description)}</p><p>지원 언어 / Game languages: ${escapeHtml(languages || 'Not specified')}</p></main></div>`);
 }
 
 export async function generateGameSeoPages(options = {}) {

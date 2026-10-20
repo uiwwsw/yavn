@@ -480,6 +480,14 @@ const DEFAULT_SEO_IMAGE_ALT = 'YAVN (야븐) 로고';
 const HIGH_PRIORITY_IMAGE_PROPS = { fetchpriority: 'high' } as const;
 const DEFAULT_CANONICAL_URL = `https://yavn.vercel.app/${uiLanguage === 'en' ? 'en/' : ''}`;
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
+// Preserve the actual published story languages when replacing its initial JSON-LD.
+const INITIAL_GAME_LANGUAGES = (() => {
+  if (typeof document === 'undefined') return [];
+  try {
+    const data = JSON.parse(document.getElementById(DYNAMIC_JSON_LD_SCRIPT_ID)?.textContent ?? '{}');
+    return data['@type'] === 'VideoGame' ? normalizeGameLanguages(data.inLanguage) : [];
+  } catch { return []; }
+})();
 const INVENTORY_DEFAULT_CATEGORY = t("기타");
 const INVENTORY_CATEGORY_ALL = '';
 
@@ -930,7 +938,7 @@ function buildGameJsonLd(
     description,
     url: canonicalUrl,
     image: imageUrl,
-    inLanguage: 'ko-KR',
+    ...(INITIAL_GAME_LANGUAGES.length ? { inLanguage: INITIAL_GAME_LANGUAGES } : {}),
     isAccessibleForFree: true,
     playMode: 'SinglePlayer',
     ...(authorName

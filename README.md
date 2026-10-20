@@ -1231,3 +1231,5 @@ scenes:
 [한국어 데모](https://yavn.vercel.app/) · [English demo](https://yavn.vercel.app/en/) · [English creator guide](docs/DEVELOPMENT_GUIDE.en.md)
 
 야븐은 비주얼노벨·선택형 스토리 RPG 웹게임 만들기를 위한 엔진입니다. 목록과 엔진 조작 UI의 한·영 전환, 데모별 실제 지원 언어 표시, 언어명/코드 검색 및 언어 필터를 제공합니다. `launcher.yaml`에 `languages: [ko]`처럼 선언하세요. 작품의 대사·선택지는 창작자가 제공한 언어를 유지합니다. 한·영 제작 안내·초기 HTML·게임별 구조화 데이터·canonical/hreflang·사이트맵을 함께 빌드합니다. [SEO 기록](docs/SEO.md).
+
+게임별 검색 페이지의 HTML/OG/구조화 데이터 언어도 실제 `languages` 선언에서 생성되며 플레이 시작 후에도 유지됩니다.
