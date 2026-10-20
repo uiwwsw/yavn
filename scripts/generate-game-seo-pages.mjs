@@ -103,11 +103,12 @@ function assertSafeGameId(value) {
 export function resolveGameSeo(game, options = {}) {
   const siteOrigin = normalizeSiteOrigin(options.siteOrigin);
   const id = assertSafeGameId(game?.id);
+  const english = game?.languages?.[0]?.split('-')[0] === 'en';
   const title = normalizeText(game?.seo?.title) ?? normalizeText(game?.name) ?? id;
   const description =
     normalizeText(game?.seo?.description) ??
     normalizeText(game?.summary) ??
-    `${title}을(를) 브라우저에서 플레이하세요.`;
+    (english ? `Play ${title} in your browser.` : `${title}을(를) 브라우저에서 플레이하세요.`);
   const canonicalPath = normalizeText(game?.path) ?? `/game-list/${encodeURIComponent(id)}/`;
   const canonicalUrl = resolveAbsoluteUrl(canonicalPath, siteOrigin, `/game-list/${encodeURIComponent(id)}/`);
   const imageUrl = resolveAbsoluteUrl(
@@ -115,8 +116,8 @@ export function resolveGameSeo(game, options = {}) {
     siteOrigin,
     '/favicon.svg',
   );
-  const imageAlt = normalizeText(game?.seo?.imageAlt) ?? `${title} 대표 이미지`;
-  const keywords = normalizeList(game?.seo?.keywords, game?.tags, [title, '비주얼노벨 게임']);
+  const imageAlt = normalizeText(game?.seo?.imageAlt) ?? (english ? `${title} cover image` : `${title} 대표 이미지`);
+  const keywords = normalizeList(game?.seo?.keywords, game?.tags, [title, english ? 'visual novel game' : '비주얼노벨 게임']);
   const author = normalizeText(game?.author);
 
   return {

@@ -76,6 +76,9 @@ describe('game-specific SEO page generation', () => {
     expect(html).toContain('content="en_US"');
     const json = JSON.parse(html.match(/<script id="yavn-dynamic-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
     expect(json.inLanguage).toEqual(['en', 'ja']);
+    const fallback = renderGameSeoHtml(templateHtml, { id: 'new-english-game', name: 'New English Game', languages: ['en'] });
+    expect(fallback).toContain('Play New English Game in your browser.');
+    expect(fallback).toContain('New English Game cover image');
     const unknown = renderGameSeoHtml(templateHtml, fixtureGame);
     expect(unknown).not.toContain('"inLanguage"');
   });
