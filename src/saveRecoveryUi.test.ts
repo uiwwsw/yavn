@@ -5,7 +5,8 @@ import { describe, expect, it } from 'vitest';
 const readSource = (path: string) =>
   readFileSync(fileURLToPath(new URL(path, import.meta.url)), 'utf8');
 
-const appSource = readSource('./App.tsx');
+const localizedApp = readSource('./App.tsx');
+const appSource = localizedApp.replace(/([\w-]+)=\{t\("([^"]+)"\)\}/g, '$1="$2"').replace(/\{t\("([^"]+)"\)\}/g, '$1').replace(/t\("([^"]+)"\)/g, "'$1'");
 const engineSource = readSource('./engine.ts');
 const styles = readSource('./styles.css');
 

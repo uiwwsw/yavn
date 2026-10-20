@@ -12,7 +12,7 @@
     "predev": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
     "dev": "vite",
     "prebuild": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
-    "build": "tsc -b && vite build && node scripts/generate-game-seo-pages.mjs",
+    "build": "tsc -b && vite build && node scripts/generate-game-seo-pages.mjs && node scripts/generate-home-seo.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"

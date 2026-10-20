@@ -478,3 +478,9 @@
   .launcher *, .launcher *::before, .launcher *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .workspace-game-select:hover .workspace-game-cover img { transform: none; }
 }
+
+.launcher-language-switch { color: var(--launcher-ink); padding: 10px; flex-shrink: 0; font-size: 13px; }
+.launcher-language-filter { display:flex; gap:8px; align-items:center; font-size:13px; color:var(--launcher-ink); }
+.launcher-language-filter select { min-height:44px; max-width:100%; border:1px solid #c9d2c5; background:#fdfbf7; padding:8px; border-radius:5px; }
+.launcher-game-languages { display:block; font-size:12px; line-height:1.6; color:#52634f; margin:8px 0; }
+@media(max-width:768px) { .launcher-topbar { flex-wrap:wrap; } .launcher-language-switch { margin-left:auto; } .launcher-library-controls { flex-wrap:wrap; } }

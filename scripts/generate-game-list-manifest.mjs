@@ -293,8 +293,10 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
     author: resolveAuthorName(config?.author),
     version: normalizeText(config?.version),
     summary: normalizeText(launcher?.summary),
+    summaryEn: normalizeText(launcher?.translations?.en?.summary),
     thumbnail: toGameAssetPath(gameId, launcherThumbnail ?? startScreenImage),
     tags: normalizeTagList(launcher?.tags),
+    languages: normalizeTagList(launcher?.languages).filter(code => /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(code)),
     showcase: normalizeLauncherShowcase(launcher?.showcase),
     legalNotices: normalizeLegalNotices(config?.legalNotices),
     chapterCount: chapterYamlPaths.length,
@@ -336,6 +338,9 @@ function buildSitemapXml(games, siteOrigin) {
     toAbsoluteSiteUrl(siteOrigin, gamePath),
   );
   const entries = [
+    { loc: `${siteOrigin}/en/`, changefreq: 'weekly', priority: '1.0' },
+    { loc: `${siteOrigin}/create/`, changefreq: 'monthly', priority: '0.7' },
+    { loc: `${siteOrigin}/en/create/`, changefreq: 'monthly', priority: '0.7' },
     { loc: rootUrl, changefreq: 'weekly', priority: '1.0' },
     ...gameUrls.map((loc) => ({ loc, changefreq: 'weekly', priority: '0.8' })),
   ];
@@ -371,8 +376,10 @@ async function collectGameFolders() {
       author: metadata.author,
       version: metadata.version,
       summary: metadata.summary,
+      summaryEn: metadata.summaryEn,
       thumbnail: metadata.thumbnail,
       tags: metadata.tags,
+      languages: metadata.languages,
       showcase: metadata.showcase,
       legalNotices: metadata.legalNotices,
       chapterCount: metadata.chapterCount,
@@ -397,4 +404,4 @@ const sitemapXml = buildSitemapXml(games, siteOrigin);
 await writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 await writeFile(sitemapPath, sitemapXml, 'utf8');
 console.log(`Generated ${outputPath} with ${games.length} game(s).`);
-console.log(`Generated ${sitemapPath} with ${games.length + 1} url(s).`);
+console.log(`Generated ${sitemapPath} with ${games.length + 4} url(s).`);

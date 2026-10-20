@@ -1,3 +1,4 @@
+languages: [ko]
 summary: "비공식·비상업적 팬 데모. 기념품 고르기와 탁구 삼세판, 가족 저녁을 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드."
 thumbnail: "assets/bg/title_storm-v2.avif"
 tags:
@@ -7,3 +8,7 @@ tags:
   - voice-sfx
   - character-driven
   - noncommercial-fan-demo
+
+translations:
+  en:
+    summary: "Unofficial, noncommercial fan demo. Choose souvenirs, play table tennis and enjoy a family dinner, then investigate cup number two and a missing minute at a stormbound inn."

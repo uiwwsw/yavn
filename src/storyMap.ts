@@ -1,3 +1,4 @@
+import { t } from './uiLanguage';
 import type { Action, GameData } from './types';
 
 export type StoryMapNode = {
@@ -180,8 +181,8 @@ export function describeStoryRoute(edge: StoryMapEdge, nodes: Array<StoryMapNode
     if (!target?.unlocked) break;
     from = destination.id; destination = target;
   }
-  if (!destination?.unlocked) return '아직 확인하지 않은 길';
-  const prefix = destination.kind === 'death' ? '죽음' : destination.kind === 'ending' ? '결말'
-    : returning ? '앞선 지점으로 돌아감' : '다음 지점으로 진행';
+  if (!destination?.unlocked) return t("아직 확인하지 않은 길");
+  const prefix = destination.kind === 'death' ? t("죽음") : destination.kind === 'ending' ? t("결말")
+    : returning ? t("앞선 지점으로 돌아감") : t("다음 지점으로 진행");
   return `${prefix} · ${destination.title}`;
 }

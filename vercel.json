@@ -6,16 +6,41 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/en/create/",
+      "destination": "/en/create/index.html"
+    },
+    {
+      "source": "/create/",
+      "destination": "/create/index.html"
+    },
+    {
+      "source": "/en/",
+      "destination": "/en/index.html"
+    },
+    {
       "source": "/game-list/:gameId([^/.]+)",
       "destination": "/game-list/:gameId/index.html"
     },
     {
       "source": "/game-list/:gameId([^/.]+)/",
       "destination": "/game-list/:gameId/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/en",
+      "destination": "/en/",
+      "permanent": true
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/create",
+      "destination": "/create/",
+      "permanent": true
+    },
+    {
+      "source": "/en/create",
+      "destination": "/en/create/",
+      "permanent": true
     }
   ]
 }

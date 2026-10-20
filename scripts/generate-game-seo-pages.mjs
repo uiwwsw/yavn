@@ -136,7 +136,7 @@ export function resolveGameSeo(game, options = {}) {
       description,
       url: canonicalUrl,
       image: imageUrl,
-      inLanguage: 'ko-KR',
+      ...(Array.isArray(game?.languages) && game.languages.length ? { inLanguage: game.languages } : {}),
       isAccessibleForFree: true,
       playMode: 'SinglePlayer',
       ...(author
@@ -204,7 +204,9 @@ export function renderGameSeoHtml(templateHtml, game, options = {}) {
   if (!SEO_BLOCK_PATTERN.test(templateHtml)) {
     throw new Error('Built index.html is missing the YAVN SEO marker block.');
   }
-  return templateHtml.replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options));
+  const description = normalizeText(game?.summary) ?? normalizeText(game?.seo?.description) ?? '';
+  const languages = Array.isArray(game?.languages) ? game.languages.join(', ') : '';
+  return templateHtml.replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options)).replace('<div id="root"></div>', `<div id="root"><main><a href="/">YAVN</a><h1>${escapeHtml(game.name ?? game.id)}</h1><p>${escapeHtml(description)}</p><p>지원 언어 / Game languages: ${escapeHtml(languages || 'Not specified')}</p></main></div>`);
 }
 
 export async function generateGameSeoPages(options = {}) {

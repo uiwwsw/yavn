@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-const appSource = readFileSync(fileURLToPath(new URL('./App.tsx', import.meta.url)), 'utf8');
+const localizedApp = readFileSync(fileURLToPath(new URL('./App.tsx', import.meta.url)), 'utf8');
+const appSource = localizedApp.replace(/([\w-]+)=\{t\("([^"]+)"\)\}/g, '$1="$2"').replace(/\{t\("([^"]+)"\)\}/g, '$1').replace(/t\("([^"]+)"\)/g, "'$1'");
 const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
 
 const relativeLuminance = (hex: string) => {

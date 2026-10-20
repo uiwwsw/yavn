@@ -1,3 +1,4 @@
+languages: [ko]
 summary: "렌과 대화하며 표정, 손끝을 따라오는 시선, 가까워지는 카메라를 직접 체험하는 Live2D 인터랙션 데모."
 thumbnail: "assets/ui/launcher-preview.jpg"
 tags:
@@ -12,3 +13,7 @@ showcase:
     positionY: 35
     scale: 1.08
     offsetX: 18
+
+translations:
+  en:
+    summary: "Talk with Ren and explore expressions, gaze that follows your pointer and a moving camera in this Live2D interaction demo."

@@ -1,3 +1,4 @@
+import { t, uiLanguage, languageLabel, normalizeGameLanguages, gameHref } from './uiLanguage';
 import {
   ChangeEvent,
   KeyboardEvent as ReactKeyboardEvent,
@@ -370,8 +371,10 @@ type GameListManifestEntry = {
   author?: string;
   version?: string;
   summary?: string;
+  summaryEn?: string;
   thumbnail?: string;
   tags: string[];
+  languages: string[];
   showcase?: LauncherShowcase;
   legalNotices: LegalNotice[];
   chapterCount?: number;
@@ -447,13 +450,14 @@ function haveSameCharacterIds(left: readonly string[], right: readonly string[])
   return left.length === right.length && left.every((id) => right.includes(id));
 }
 
-const DEFAULT_LAUNCHER_SUMMARY = '당신의 선택으로 이어지는 이야기. 첫 장을 열어보세요.';
-const DEFAULT_START_BUTTON_TEXT = '시작하기';
-const DEFAULT_LOAD_BUTTON_TEXT = '이어하기';
-const DEFAULT_SEO_TITLE = '야븐엔진 (YAVN) | Type your story. Play your novel.';
+const DEFAULT_LAUNCHER_SUMMARY = t("당신의 선택으로 이어지는 이야기. 첫 장을 열어보세요.");
+const DEFAULT_START_BUTTON_TEXT = t("시작하기");
+const DEFAULT_LOAD_BUTTON_TEXT = t("이어하기");
+const DEFAULT_SEO_TITLE = uiLanguage === 'en' ? 'YAVN — Visual Novel & Story RPG Game Maker' : '야븐 YAVN — 비주얼노벨·스토리 RPG 게임 만들기';
 const DEFAULT_SEO_DESCRIPTION =
-  '야븐엔진(YAVN)은 비주얼노벨 게임과 대사게임을 웹에서 빠르게 제작하는 엔진입니다. YAML + ZIP 업로드, YouTube 영상/음악 에셋, 중간 이벤트 씬 전환, Live2D 캐릭터 연출까지 지원합니다.';
+  uiLanguage === 'en' ? 'Make browser visual novels and choice-driven story RPGs with YAML scenes, dialogue, branching choices, inventory and Live2D. Play free web game demos.' : '야븐으로 비주얼노벨·선택형 스토리 RPG 웹게임을 만들어 보세요. YAML 장면·대사·분기·아이템·Live2D로 게임 만들기부터 브라우저 데모 플레이까지 지원합니다.';
 const DEFAULT_SEO_KEYWORDS = [
+  'RPG 만들기', '게임 만들기', '웹게임 만들기', '비주얼노벨 만들기', 'RPG game maker', 'make a game', 'web game maker', 'visual novel maker',
   '야븐엔진',
   '야븐 엔진',
   '야븐',
@@ -474,9 +478,9 @@ const DEFAULT_SEO_IMAGE = 'https://yavn.vercel.app/favicon.svg';
 const DEFAULT_SEO_IMAGE_ALT = 'YAVN (야븐) 로고';
 // React 18 forwards the standards-based lowercase attribute without warning.
 const HIGH_PRIORITY_IMAGE_PROPS = { fetchpriority: 'high' } as const;
-const DEFAULT_CANONICAL_URL = 'https://yavn.vercel.app/';
+const DEFAULT_CANONICAL_URL = `https://yavn.vercel.app/${uiLanguage === 'en' ? 'en/' : ''}`;
 const DYNAMIC_JSON_LD_SCRIPT_ID = 'yavn-dynamic-jsonld';
-const INVENTORY_DEFAULT_CATEGORY = '기타';
+const INVENTORY_DEFAULT_CATEGORY = t("기타");
 const INVENTORY_CATEGORY_ALL = '';
 
 type CreditContactLine = {
@@ -501,13 +505,13 @@ function isObjectRecord(value: unknown): value is Record<string, unknown> {
 
 function formatSaveTimestamp(value?: string): string {
   if (!value) {
-    return '이전 버전 저장';
+    return t("이전 버전 저장");
   }
   const date = new Date(value);
   if (!Number.isFinite(date.getTime())) {
-    return '저장 시각 미상';
+    return t("저장 시각 미상");
   }
-  return new Intl.DateTimeFormat('ko-KR', {
+  return new Intl.DateTimeFormat(uiLanguage === 'en' ? 'en-US' : 'ko-KR', {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
@@ -519,7 +523,7 @@ function formatSaveSlotMeta(
   slot?: Pick<SaveSlotSummary, 'exists' | 'savedAt' | 'chapterIndex'>,
 ): string {
   if (!slot?.exists) {
-    return '저장 없음';
+    return t("저장 없음");
   }
   return `${formatSaveTimestamp(slot.savedAt)} · CH.${(slot.chapterIndex ?? 0) + 1}`;
 }
@@ -863,8 +867,10 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
     author: normalizeText(value.author),
     version: normalizeText(value.version),
     summary: normalizeText(value.summary),
+    summaryEn: normalizeText(value.summaryEn),
     thumbnail: normalizeText(value.thumbnail),
     tags: normalizeTags(value.tags),
+    languages: normalizeGameLanguages(value.languages),
     showcase: normalizeLauncherShowcase(value.showcase),
     legalNotices: normalizeLegalNotices(value.legalNotices),
     chapterCount: normalizeChapterCount(value.chapterCount),
@@ -1023,14 +1029,14 @@ function LegalNoticeList({
   }
 
   return (
-    <div className={['legal-notice-list', className].filter(Boolean).join(' ')} aria-label="법적 고지">
+    <div className={['legal-notice-list', className].filter(Boolean).join(' ')} aria-label={t("법적 고지")}>
       {notices.map((notice) => (
         <section className="legal-notice" key={notice.id}>
           <h4>{notice.title}</h4>
           <p>{notice.text}</p>
           {notice.copyright && <small>{notice.copyright}</small>}
           {notice.links && notice.links.length > 0 && (
-            <nav aria-label={`${notice.title} 관련 링크`}>
+            <nav aria-label={`${notice.title} ${t("관련 링크")}`}>
               {notice.links.map((link, index) => (
                 <a
                   href={link.href}
@@ -1465,6 +1471,7 @@ const StickerView = memo(function StickerView({
 });
 
 export default function App() {
+  useEffect(() => { document.documentElement.lang = uiLanguage; }, []);
   const {
     baseUrl,
     assetOverrides,
@@ -1552,6 +1559,7 @@ export default function App() {
   const [manifestSeo, setManifestSeo] = useState<GameListManifestSeo | null>(null);
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeLanguage, setActiveLanguage] = useState('');
   const [activeTag, setActiveTag] = useState(ALL_TAG_FILTER);
   const [showAllLauncherTags, setShowAllLauncherTags] = useState(false);
   const [launcherShareNotice, setLauncherShareNotice] = useState('');
@@ -1649,7 +1657,7 @@ export default function App() {
   const youtubePlayerId = 'vn-cutscene-youtube-player';
   // const sampleZipUrl = '/sample.zip';
   const repositoryUrl = 'https://github.com/uiwwsw/yavn';
-  const developmentGuideUrl = `${repositoryUrl}/blob/main/docs/DEVELOPMENT_GUIDE.ko.md`;
+  const developmentGuideUrl = `${repositoryUrl}/blob/main/docs/DEVELOPMENT_GUIDE.${uiLanguage}.md`;
   const shareByPrUrl = 'https://github.com/uiwwsw/yavn/compare';
   const isDialogHiddenBySystem = videoCutscene.active || chapterLoading || Boolean(gameOver) || isFinished || Boolean(attack) || !game;
   const isDialogHidden = isDialogHiddenBySystem || dialogUiHidden;
@@ -1738,7 +1746,7 @@ export default function App() {
       setManifestSeo(null);
       setSelectedGameId(null);
       launcherCarouselPositionedRef.current = false;
-      setGameListError(error instanceof Error ? error.message : '게임 목록을 불러오지 못했습니다.');
+      setGameListError(error instanceof Error ? error.message : t("게임 목록을 불러오지 못했습니다."));
       setGameListLoading(false);
     }
   }, []);
@@ -2105,6 +2113,7 @@ export default function App() {
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
   const filteredGames = useMemo(() => {
     return gameList.filter((entry) => {
+      if (activeLanguage && !entry.languages.includes(activeLanguage)) return false;
       const matchesTag = activeTag === ALL_TAG_FILTER || entry.tags.includes(activeTag);
       if (!matchesTag) {
         return false;
@@ -2118,13 +2127,15 @@ export default function App() {
         entry.path,
         entry.author ?? '',
         entry.summary ?? '',
+        entry.summaryEn ?? '',
         entry.tags.join(' '),
+        entry.languages.map(code => `${code} ${languageLabel(code)}`).join(' '),
       ]
         .join(' ')
         .toLowerCase()
         .includes(normalizedSearchTerm);
     });
-  }, [activeTag, gameList, normalizedSearchTerm]);
+  }, [activeTag, activeLanguage, gameList, normalizedSearchTerm]);
 
   const selectedGame =
     gameList.find((entry) => entry.id === selectedGameId) ??
@@ -2168,7 +2179,7 @@ export default function App() {
     );
     const shareUrl = new URL(sharePath, window.location.origin).toString();
     const copied = await copyTextToClipboard(shareUrl);
-    setLauncherShareNotice(copied ? '링크를 복사했습니다.' : '링크 복사에 실패했습니다.');
+    setLauncherShareNotice(copied ? t("링크를 복사했습니다.") : t("링크 복사에 실패했습니다."));
     if (launcherShareNoticeTimerRef.current !== null) {
       window.clearTimeout(launcherShareNoticeTimerRef.current);
     }
@@ -2288,13 +2299,15 @@ export default function App() {
         : DEFAULT_SEO_DESCRIPTION);
 
     if (bootMode === 'launcher') {
+      document.documentElement.lang = uiLanguage;
+      setMetaTagByProperty('og:locale', uiLanguage === 'en' ? 'en_US' : 'ko_KR');
       const launcherImage =
         resolveAbsoluteSeoUrl(selectedGame?.seo?.image ?? selectedGame?.thumbnail) ?? DEFAULT_SEO_IMAGE;
       const launcherImageAlt =
         selectedGame?.seo?.imageAlt ?? (selectedGame ? `${selectedGame.name} 대표 이미지` : DEFAULT_SEO_IMAGE_ALT);
       applySeoMetadata({
-        title: manifestSeo?.title ?? DEFAULT_SEO_TITLE,
-        description: launcherDescription,
+        title: DEFAULT_SEO_TITLE,
+        description: DEFAULT_SEO_DESCRIPTION,
         keywords: launcherKeywords,
         canonicalUrl: DEFAULT_CANONICAL_URL,
         imageUrl: launcherImage,
@@ -2309,7 +2322,7 @@ export default function App() {
       const startGateDescription = startGate.seo?.description ?? `${startGateTitle}을(를) 시작할 준비가 되었습니다.`;
       const startGateCanonicalUrl =
         startGate.kind === 'url'
-          ? new URL(startGate.gameUrl, window.location.origin).toString()
+          ? new URL(new URL(startGate.gameUrl, window.location.origin).pathname, window.location.origin).toString()
           : window.location.href;
       const startGateImageUrl =
         resolveAbsoluteSeoUrl(startGate.seo?.image, startGateCanonicalUrl) ??
@@ -2337,7 +2350,7 @@ export default function App() {
       const gameSeo: GameSeoMeta | undefined = game.meta.seo;
       const gameTitle = game.meta.title;
       const gameDescription = gameSeo?.description ?? `${gameTitle}을(를) 야븐엔진(YAVN)에서 플레이하세요.`;
-      const gameCanonicalUrl = window.location.href;
+      const gameCanonicalUrl = `${window.location.origin}${window.location.pathname}`;
       const gameImageUrl = resolveAbsoluteSeoUrl(gameSeo?.image, gameCanonicalUrl) ?? DEFAULT_SEO_IMAGE;
       const gameImageAlt = gameSeo?.imageAlt ?? `${gameTitle} 대표 이미지`;
       const gameKeywords = mergeUniqueTextList(DEFAULT_SEO_KEYWORDS, [gameTitle], gameSeo?.keywords ?? []);
@@ -2381,7 +2394,7 @@ export default function App() {
   const gameLegalNotices = game?.meta.legalNotices ?? [];
   const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
   const endingTitle = resolvedEnding?.title ?? 'THE END';
-  const endingMessage = resolvedEnding?.message ?? '게임이 종료되었습니다.';
+  const endingMessage = resolvedEnding?.message ?? t("게임이 종료되었습니다.");
   const endingBackgroundUrl = resolveRuntimeAssetUrl(
     (resolvedEnding?.background ? game?.assets.backgrounds[resolvedEnding.background] : undefined) ?? game?.endingScreen?.image,
     baseUrl, assetOverrides,
@@ -2391,7 +2404,7 @@ export default function App() {
   const seenEndingCount = seenEndingIdsInCurrentGame.length;
   const endingCompletionPercent = totalEndingCount > 0 ? Math.round((seenEndingCount / totalEndingCount) * 100) : 0;
   const endingCollectionDone = totalEndingCount > 0 && seenEndingCount >= totalEndingCount;
-  const inputSubmitLabel = inputAnswer.trim().length > 0 ? '확인' : '모르겠다';
+  const inputSubmitLabel = inputAnswer.trim().length > 0 ? t("확인") : t("모르겠다");
   const saveSlotByKind = useMemo(
     () => new Map(saveSlots.map((slot) => [slot.slot, slot])),
     [saveSlots],
@@ -2458,13 +2471,13 @@ export default function App() {
   const inventoryFiltersActive = normalizedInventorySearchTerm.length > 0 || inventoryCategoryFilter.length > 0;
   const inventoryGridEmptyMessage = useMemo(() => {
     if (inventoryCatalogEntries.length === 0) {
-      return '이 게임에는 등록된 단서가 없습니다.';
+      return t("이 게임에는 등록된 단서가 없습니다.");
     }
     if (inventoryViewEntries.length === 0) {
-      return '아직 획득한 단서가 없습니다.';
+      return t("아직 획득한 단서가 없습니다.");
     }
     if (inventoryVisibleEntries.length === 0) {
-      return '검색 조건에 맞는 단서가 없습니다.';
+      return t("검색 조건에 맞는 단서가 없습니다.");
     }
     return '';
   }, [inventoryCatalogEntries.length, inventoryViewEntries.length, inventoryVisibleEntries.length]);
@@ -2933,31 +2946,31 @@ export default function App() {
   const onToggleAutoSave = useCallback((enabled: boolean) => {
     setAutoSaveEnabled(enabled);
     setAutoSaveEnabledState(enabled);
-    setSaveNotice(enabled ? '자동 저장을 켰습니다.' : '자동 저장을 껐습니다. 챕터 시작점은 계속 보호됩니다.');
+    setSaveNotice(enabled ? t("자동 저장을 켰습니다.") : t("자동 저장을 껐습니다. 챕터 시작점은 계속 보호됩니다."));
     setSaveSlots(getSaveSlotSummaries());
   }, []);
 
   const onManualSave = useCallback(() => {
     const result = saveCurrentProgress();
-    setSaveNotice(result.exists ? '현재 진행을 수동 저장했습니다.' : '현재 장면에서는 저장할 수 없습니다.');
+    setSaveNotice(result.exists ? t("현재 진행을 수동 저장했습니다.") : t("현재 장면에서는 저장할 수 없습니다."));
     refreshSaveSlots();
   }, [refreshSaveSlots]);
 
   const onLoadSave = useCallback(
     async (slot: SaveSlotKind | 'latest') => {
       setSaveBusy(true);
-      setSaveNotice('저장 데이터를 불러오는 중입니다.');
+      setSaveNotice(t("저장 데이터를 불러오는 중입니다."));
       try {
         const loaded = await loadSaveSlot(slot);
         if (!loaded) {
-          setSaveNotice('불러올 수 있는 저장 데이터가 없습니다.');
+          setSaveNotice(t("불러올 수 있는 저장 데이터가 없습니다."));
           return;
         }
         setRecoveredFailedChoice(undefined);
-        setSaveNotice('저장한 장면으로 돌아왔습니다.');
+        setSaveNotice(t("저장한 장면으로 돌아왔습니다."));
         closeSettingsModal(false);
       } catch (error) {
-        setSaveNotice(error instanceof Error ? error.message : '저장 데이터를 불러오지 못했습니다.');
+        setSaveNotice(error instanceof Error ? error.message : t("저장 데이터를 불러오지 못했습니다."));
       } finally {
         setSaveBusy(false);
         refreshSaveSlots();
@@ -2968,19 +2981,19 @@ export default function App() {
 
   const onLoadLastChoice = useCallback(async () => {
     setSaveBusy(true);
-    setSaveNotice('선택 복구점으로 돌아가는 중입니다.');
+    setSaveNotice(t("선택 복구점으로 돌아가는 중입니다."));
     const recoveryPoint = getChoiceRecoverySummary();
     try {
       const loaded = await loadChoiceRecovery();
       if (!loaded) {
-        setSaveNotice('되돌아갈 선택 복구점을 찾지 못했습니다.');
+        setSaveNotice(t("되돌아갈 선택 복구점을 찾지 못했습니다."));
         return;
       }
       setRecoveredFailedChoice(recoveryPoint.failedChoice);
-      setSaveNotice('선택 복구점으로 돌아왔습니다.');
+      setSaveNotice(t("선택 복구점으로 돌아왔습니다."));
       closeSettingsModal(false);
     } catch (error) {
-      setSaveNotice(error instanceof Error ? error.message : '선택 복구점으로 돌아가지 못했습니다.');
+      setSaveNotice(error instanceof Error ? error.message : t("선택 복구점으로 돌아가지 못했습니다."));
     } finally {
       setSaveBusy(false);
       refreshSaveSlots();
@@ -2989,18 +3002,18 @@ export default function App() {
 
   const onRestartChapter = useCallback(async () => {
     setSaveBusy(true);
-    setSaveNotice('챕터 시작점으로 돌아가는 중입니다.');
+    setSaveNotice(t("챕터 시작점으로 돌아가는 중입니다."));
     const recoveryPoint = getChoiceRecoverySummary();
     try {
       const loaded = await restartCurrentChapter();
       if (!loaded) {
-        setSaveNotice('이 챕터의 시작 저장점을 찾지 못했습니다.');
+        setSaveNotice(t("이 챕터의 시작 저장점을 찾지 못했습니다."));
         return;
       }
       setRecoveredFailedChoice(recoveryPoint.failedChoice);
       closeSettingsModal(false);
     } catch (error) {
-      setSaveNotice(error instanceof Error ? error.message : '챕터 시작점으로 돌아가지 못했습니다.');
+      setSaveNotice(error instanceof Error ? error.message : t("챕터 시작점으로 돌아가지 못했습니다."));
     } finally {
       setSaveBusy(false);
       refreshSaveSlots();
@@ -3010,7 +3023,7 @@ export default function App() {
   const onExportSave = useCallback(() => {
     const backup = exportSaveBackup();
     if (!backup) {
-      setSaveNotice('내보낼 진행 데이터가 없습니다.');
+      setSaveNotice(t("내보낼 진행 데이터가 없습니다."));
       return;
     }
     const blobUrl = URL.createObjectURL(new Blob([backup.content], { type: 'application/json' }));
@@ -3019,7 +3032,7 @@ export default function App() {
     link.download = backup.filename;
     link.click();
     window.setTimeout(() => URL.revokeObjectURL(blobUrl), 0);
-    setSaveNotice('저장 백업 파일을 내보냈습니다.');
+    setSaveNotice(t("저장 백업 파일을 내보냈습니다."));
     refreshSaveSlots();
   }, [refreshSaveSlots]);
 
@@ -3035,13 +3048,13 @@ export default function App() {
         importSaveBackup(await file.text());
         refreshSaveSlots();
         const loaded = await loadSaveSlot('manual');
-        setSaveNotice(loaded ? '백업 저장을 불러왔습니다.' : '백업을 저장했지만 현재 장면을 열지 못했습니다.');
+        setSaveNotice(loaded ? t("백업 저장을 불러왔습니다.") : t("백업을 저장했지만 현재 장면을 열지 못했습니다."));
         if (loaded) {
           setRecoveredFailedChoice(undefined);
           closeSettingsModal(false);
         }
       } catch (error) {
-        setSaveNotice(error instanceof Error ? error.message : '저장 파일을 불러오지 못했습니다.');
+        setSaveNotice(error instanceof Error ? error.message : t("저장 파일을 불러오지 못했습니다."));
       } finally {
         setSaveBusy(false);
       }
@@ -3512,14 +3525,14 @@ export default function App() {
           waitForStartGateLaunchTransition(duration),
         ]);
         const state = useVNStore.getState();
-        if (state.error || !state.game) throw new Error(state.error?.message ?? '첫 장면을 준비하지 못했습니다.');
+        if (state.error || !state.game) throw new Error(state.error?.message ?? t("첫 장면을 준비하지 못했습니다."));
         setStartGateRevealing(true);
         await waitForStartGateLaunchTransition(duration);
         if (gate.kind === 'url') markStartGateSession(gate.sessionKey);
         stopStartGateMusic();
         setStartGate(null);
       } catch (failure) {
-        setStartGateError(failure instanceof Error ? failure.message : '게임을 불러오지 못했습니다.');
+        setStartGateError(failure instanceof Error ? failure.message : t("게임을 불러오지 못했습니다."));
         setStartGateRevealing(false);
       } finally {
         setGameBootPending(false);
@@ -3538,7 +3551,7 @@ export default function App() {
       return;
     }
     if (!file.name.toLowerCase().endsWith('.zip')) {
-      useVNStore.getState().setError({ message: 'ZIP 파일만 업로드할 수 있습니다.' });
+      useVNStore.getState().setError({ message: t("ZIP 파일만 업로드할 수 있습니다.") });
       return;
     }
     uploadedGameFileRef.current = file;
@@ -3726,7 +3739,7 @@ export default function App() {
               <div className="start-gate-title-ornament" aria-hidden="true"><span /></div>
               <p className="start-gate-eyebrow">{startGate.eyebrow ?? 'YAVN · INTERACTIVE STORY'}</p>
               <h1>{startGate.gameTitle}</h1>
-              <p className="start-gate-prologue">{startGate.subtitle ?? '당신의 선택으로 이야기가 시작됩니다'}</p>
+              <p className="start-gate-prologue">{startGate.subtitle ?? t("당신의 선택으로 이야기가 시작됩니다")}</p>
             </div>
           )}
           <div className={actionClass}>
@@ -3752,28 +3765,28 @@ export default function App() {
                 <span className="start-gate-button-mark" aria-hidden="true">↗</span>
               </button>
             )}
-            <p className="start-gate-hint">{startGate.musicUrl && !startGateAudioPlaying ? '화면을 눌러 음악과 함께 시작하세요' : '당신의 선택을 기다리고 있습니다'}</p>
+            <p className="start-gate-hint">{startGate.musicUrl && !startGateAudioPlaying ? t("화면을 눌러 음악과 함께 시작하세요") : t("당신의 선택을 기다리고 있습니다")}</p>
             {startGateError && <div className="start-gate-load-error" role="alert">
-              <strong>이야기를 열지 못했습니다.</strong><p>{startGateError}</p><span>시작 버튼을 눌러 다시 시도할 수 있습니다.</span>
+              <strong>{t("이야기를 열지 못했습니다.")}</strong><p>{startGateError}</p><span>{t("시작 버튼을 눌러 다시 시도할 수 있습니다.")}</span>
             </div>}
           </div>
           <LegalNoticeList notices={startGate.legalNotices} className="start-gate-legal-notices" />
         </div>
         <div className="start-scene-controls">
-          <a href="/" aria-label="게임 목록으로">← 게임 목록</a>
+          <a href="/" aria-label={t("게임 목록으로")}>{t("← 게임 목록")}</a>
           <div>
             {startGate.musicUrl && <button type="button" aria-pressed={startGateAudioPlaying}
               disabled={startGateLaunching} onPointerDown={(event) => event.stopPropagation()}
               onClick={() => {
                 if (startGateAudioPlaying) { setBgmEnabled(false); setBgmEnabledState(false); }
                 else { setBgmEnabled(true); setBgmEnabledState(true); tryPlayStartGateMusic(); }
-              }}>{startGateAudioPlaying ? '♫ 소리 켜짐' : '♪ 소리 켜기'}</button>}
+              }}>{startGateAudioPlaying ? t("♫ 소리 켜짐") : t("♪ 소리 켜기")}</button>}
           </div>
         </div>
         <div className="start-scene-cover" aria-hidden="true"><i /><i /></div>
         {startGateLaunching && <div className="start-scene-loading" role="status" aria-live="polite">
-          <span>{startGateRevealing ? '이야기가 시작됩니다' : '첫 장면을 여는 중'}</span>
-          <div role="progressbar" aria-label="게임 준비" aria-valuemin={0} aria-valuemax={100}
+          <span>{startGateRevealing ? t("이야기가 시작됩니다") : t("첫 장면을 여는 중")}</span>
+          <div role="progressbar" aria-label={t("게임 준비")} aria-valuemin={0} aria-valuemax={100}
             aria-valuenow={Math.floor(chapterLoadingProgress * 100)}><i style={{ transform: `scaleX(${Math.max(.04, chapterLoadingProgress)})` }} /></div>
         </div>}
       </div>
@@ -3783,7 +3796,7 @@ export default function App() {
 
   if (shouldShowGameRouteBoot(gameBootPending, Boolean(game))) {
     return (
-      <div className="game-route-boot" role="status" aria-live="polite" aria-label="게임 화면 준비 중">
+      <div className="game-route-boot" role="status" aria-live="polite" aria-label={t("게임 화면 준비 중")}>
         <span className="game-route-boot-mark" aria-hidden="true">YAVN</span>
       </div>
     );
@@ -3792,27 +3805,25 @@ export default function App() {
   if (bootMode === 'launcher') {
     return (
       <div className="launcher">
-        <a className="launcher-skip-link" href="#launcher-library-title">
-          게임 목록으로 건너뛰기
-        </a>
+        <a className="launcher-skip-link" href="#launcher-library-title">{t("게임 목록으로 건너뛰기")}</a>
         <header className="launcher-topbar">
-          <a className="launcher-brand" href="/" aria-label="YAVN 홈">
+          <a className="launcher-brand" href={uiLanguage === 'en' ? '/en/' : '/'} aria-label={t("YAVN 홈")}>
             <YavnLogo />
-            <span>이야기가 플레이가 되는 곳</span>
+            <span>{t("이야기가 플레이가 되는 곳")}</span>
           </a>
-          <nav className="launcher-nav" aria-label="메인 메뉴">
-            <a className="launcher-nav-library" href="#launcher-library">이야기 둘러보기</a>
-            <a className="launcher-nav-guide" href={developmentGuideUrl} target="_blank" rel="noreferrer">
-              만들기 가이드 <span aria-hidden="true">↗</span>
+          <a className="launcher-language-switch" href={uiLanguage === 'en' ? '/' : '/en/'} hrefLang={uiLanguage === 'en' ? 'ko' : 'en'}>{uiLanguage === 'en' ? '한국어' : 'English'}</a>
+          <nav className="launcher-nav" aria-label={t("메인 메뉴")}>
+            <a className="launcher-nav-library" href="#launcher-library">{t("이야기 둘러보기")}</a>
+            <a className="launcher-nav-guide" href={developmentGuideUrl} target="_blank" rel="noreferrer">{t("만들기 가이드")}<span aria-hidden="true">↗</span>
             </a>
             <a className="launcher-nav-github" href={repositoryUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
             <label className={`launcher-upload${uploading ? ' is-loading' : ''}`}>
               <span aria-hidden="true">＋</span>
-              <span>{uploading ? '불러오는 중' : '내 게임 열기'}</span>
+              <span>{uploading ? t("불러오는 중") : t("내 게임 열기")}</span>
               <input
                 type="file"
                 accept=".zip,application/zip"
-                aria-label="YAVN 게임 ZIP 실행"
+                aria-label={t("YAVN 게임 ZIP 실행")}
                 disabled={uploading}
                 onChange={onUploadZip}
               />
@@ -3824,26 +3835,26 @@ export default function App() {
           <section className="launcher-intro" aria-labelledby="launcher-intro-title">
             <div>
               <p className="launcher-eyebrow"><span aria-hidden="true" /> EVERY CHOICE, A NEW STORY</p>
-              <h1 id="launcher-intro-title">이야기를 읽다.<br /><em>세계를 바꾸다.</em></h1>
+              <h1 id="launcher-intro-title">{t("이야기를 읽다.")}<br /><em>{t("세계를 바꾸다.")}</em></h1>
             </div>
             <div className="launcher-intro-note">
-              <p>다음 장면을 결정하는 건, 당신.<br />선택으로 완성하는 비주얼 노벨을 만나보세요.</p>
-              <a href="#launcher-library">당신의 이야기 찾기 <span aria-hidden="true">↘</span></a>
-              <span className="launcher-browser-note">설치 없이, 브라우저에서 바로.</span>
+              <p>{t("다음 장면을 결정하는 건, 당신.")}<br />{t("선택으로 완성하는 비주얼 노벨을 만나보세요.")}</p>
+              <a href="#launcher-library">{t("당신의 이야기 찾기")}<span aria-hidden="true">↘</span></a>
+              <span className="launcher-browser-note">{t("설치 없이, 브라우저에서 바로.")}</span>
             </div>
           </section>
           <div className="launcher-section-label">
             <span><b>01</b> SPOTLIGHT</span>
-            <span>지금 펼쳐볼 이야기</span>
+            <span>{t("지금 펼쳐볼 이야기")}</span>
           </div>
           {gameList.length > 0 ? (
-            <section className="launcher-showcase" aria-label="플레이 가능한 데모">
+            <section className="launcher-showcase" aria-label={t("플레이 가능한 데모")}>
               <div
                 ref={launcherCarouselRef}
                 className="launcher-carousel"
                 role="region"
                 aria-roledescription="carousel"
-                aria-label="YAVN 데모 캐러셀"
+                aria-label={t("YAVN 데모 캐러셀")}
                 tabIndex={0}
                 onKeyDown={onLauncherCarouselKeyDown}
                 onPointerDown={(event) => {
@@ -3859,8 +3870,8 @@ export default function App() {
                     const entryTags = entry.tags;
                     const chapterLabel =
                       typeof entry.chapterCount === 'number'
-                        ? `${entry.chapterCount}개 챕터`
-                        : '챕터 정보 없음';
+                        ? uiLanguage === 'en' ? `${entry.chapterCount} chapters` : `${entry.chapterCount}개 챕터`
+                        : t("챕터 정보 없음");
                     const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
                     return (
                       <article
@@ -3895,7 +3906,7 @@ export default function App() {
                               <span>v{entry.version ?? '-'}</span>
                             </p>
                             <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
-                            <p className="launcher-feature-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</p>
+                            <p className="launcher-feature-summary">{(uiLanguage === 'en' ? entry.summaryEn ?? entry.summary : entry.summary) ?? DEFAULT_LAUNCHER_SUMMARY}</p>
 
                             <div className="inspector-tag-row">
                               {entryTags.map((tag) => (
@@ -3903,6 +3914,7 @@ export default function App() {
                               ))}
                             </div>
 
+                            <p className="launcher-game-languages">{uiLanguage === 'en' ? 'Game language: ' : '지원 언어: '}{entry.languages.length ? entry.languages.map(languageLabel).join(', ') : (uiLanguage === 'en' ? 'Not specified' : '미등록')}</p>
                             <p className="launcher-feature-meta">
                               <span>by {entry.author ?? 'YAVN creator'}</span><span>{chapterLabel}</span>
                             </p>
@@ -3910,10 +3922,9 @@ export default function App() {
                             <div className="inspector-actions">
                               <a
                                 className="launcher-command launcher-command-primary"
-                                href={entry.path}
+                                href={gameHref(entry.path)}
                                 tabIndex={isSelected ? undefined : -1}
-                              >
-                                이야기 시작하기 <span aria-hidden="true">↗</span>
+                              >{t("이야기 시작하기")}<span aria-hidden="true">↗</span>
                               </a>
                               <a
                                 className="launcher-command launcher-command-source"
@@ -3921,16 +3932,14 @@ export default function App() {
                                 target="_blank"
                                 rel="noreferrer"
                                 tabIndex={isSelected ? undefined : -1}
-                              >
-                                작품 소스 ↗
-                              </a>
+                              >{t("작품 소스 ↗")}</a>
                               <button
                                 type="button"
                                 className="launcher-command launcher-command-ghost"
                                 tabIndex={isSelected ? undefined : -1}
                                 onClick={() => void copySelectedGameLink()}
                               >
-                                {launcherShareNotice ? '링크 복사됨' : '선택 링크 복사'}
+                                {launcherShareNotice ? t("링크 복사됨") : t("선택 링크 복사")}
                               </button>
                             </div>
                             <p
@@ -3959,7 +3968,7 @@ export default function App() {
                 <button
                   type="button"
                   className="launcher-carousel-arrow launcher-carousel-arrow-prev"
-                  aria-label="이전 데모"
+                  aria-label={t("이전 데모")}
                   onPointerDown={preserveLauncherControlFocus}
                   onClick={() => moveLauncherCarousel(-1)}
                   disabled={gameList.length < 2}
@@ -3968,14 +3977,14 @@ export default function App() {
                 </button>
 
                 <div className="launcher-carousel-pagination">
-                  <div className="launcher-carousel-dots" role="group" aria-label="데모 선택">
+                  <div className="launcher-carousel-dots" role="group" aria-label={t("데모 선택")}>
                     {gameList.map((entry, index) => {
                       const isSelected = selectedGame?.id === entry.id;
                       return (
                         <button
                           key={`carousel-dot-${entry.id}`}
                           type="button"
-                          aria-label={`${entry.name} 보기`}
+                          aria-label={`${entry.name} ${t("보기")}`}
                           aria-current={isSelected ? 'true' : undefined}
                           aria-pressed={isSelected}
                           className={isSelected ? 'is-active' : ''}
@@ -3998,7 +4007,7 @@ export default function App() {
                 <button
                   type="button"
                   className="launcher-carousel-arrow launcher-carousel-arrow-next"
-                  aria-label="다음 데모"
+                  aria-label={t("다음 데모")}
                   onPointerDown={preserveLauncherControlFocus}
                   onClick={() => moveLauncherCarousel(1)}
                   disabled={gameList.length < 2}
@@ -4014,17 +4023,15 @@ export default function App() {
               aria-live={gameListError ? 'assertive' : 'polite'}
             >
               <strong>
-                {gameListLoading ? '이야기를 준비하고 있어요' : gameListError ? '이야기를 불러오지 못했어요' : '새로운 이야기를 기다리고 있어요'}
+                {gameListLoading ? t("이야기를 준비하고 있어요") : gameListError ? t("이야기를 불러오지 못했어요") : t("새로운 이야기를 기다리고 있어요")}
               </strong>
               <p>
                 {gameListLoading
-                  ? '잠시만 기다려주세요. 곧 첫 장이 열립니다.'
-                  : gameListError ?? '등록된 게임이 아직 없습니다.'}
+                  ? t("잠시만 기다려주세요. 곧 첫 장이 열립니다.")
+                  : gameListError ?? t("등록된 게임이 아직 없습니다.")}
               </p>
               {!gameListLoading && gameListError && (
-                <button type="button" onClick={() => void loadGameListManifest()}>
-                  다시 불러오기
-                </button>
+                <button type="button" onClick={() => void loadGameListManifest()}>{t("다시 불러오기")}</button>
               )}
             </div>
           )}
@@ -4035,8 +4042,8 @@ export default function App() {
             <div className="launcher-library-heading">
               <div>
                 <p className="launcher-eyebrow">02 / THE COLLECTION</p>
-                <h2 id="launcher-library-title" tabIndex={-1}>어떤 세계로 떠나볼까요?</h2>
-                <p className="launcher-section-description">마음에 드는 이야기의 첫 장을 열어보세요.</p>
+                <h2 id="launcher-library-title" tabIndex={-1}>{t("어떤 세계로 떠나볼까요?")}</h2>
+                <p className="launcher-section-description">{t("마음에 드는 이야기의 첫 장을 열어보세요.")}</p>
               </div>
               <span className="launcher-library-count" role="status">
                 <b>{String(filteredGames.length).padStart(2, '0')}</b> / {String(gameList.length).padStart(2, '0')} STORIES
@@ -4045,13 +4052,13 @@ export default function App() {
 
             <div className="launcher-library-controls">
               <div className="launcher-search-box">
-                <label htmlFor="launcher-search-input">게임 검색</label>
+                <label htmlFor="launcher-search-input">{t("게임 검색")}</label>
                 <div className="launcher-search-field">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
                   <input
                     id="launcher-search-input"
                     type="search"
-                    placeholder="제목, 장르, 작가로 찾기"
+                    placeholder={uiLanguage === 'en' ? 'Title, genre, author or language' : '제목, 장르, 작가, 언어로 찾기'}
                     value={searchTerm}
                     aria-controls="launcher-game-grid"
                     onChange={(event) => setSearchTerm(event.target.value)}
@@ -4063,27 +4070,31 @@ export default function App() {
                     }}
                   />
                   {searchTerm && (
-                    <button type="button" aria-label="게임 검색어 지우기" onClick={() => setSearchTerm('')}>
+                    <button type="button" aria-label={t("게임 검색어 지우기")} onClick={() => setSearchTerm('')}>
                       ×
                     </button>
                   )}
                 </div>
               </div>
 
+              <label className="launcher-language-filter">{uiLanguage === 'en' ? 'Game language' : '게임 지원 언어'}
+                <select value={activeLanguage} onChange={event => setActiveLanguage(event.target.value)} aria-controls="launcher-game-grid">
+                  <option value="">{uiLanguage === 'en' ? 'All languages' : '모든 언어'}</option>
+                  {[...new Set(gameList.flatMap(entry => entry.languages))].sort().map(code => <option key={code} value={code}>{languageLabel(code)}</option>)}
+                </select>
+              </label>
               <div
                 ref={launcherTagFilterRef}
                 className="launcher-tag-filter"
                 role="group"
-                aria-label="게임 태그 필터"
+                aria-label={t("게임 태그 필터")}
               >
                 <button
                   type="button"
                   className={`launcher-tag-button ${activeTag === ALL_TAG_FILTER ? 'is-active' : ''}`}
                   aria-pressed={activeTag === ALL_TAG_FILTER}
                   onClick={() => setActiveTag(ALL_TAG_FILTER)}
-                >
-                  전체
-                </button>
+                >{t("전체")}</button>
                 {visibleLauncherTags.map((tag) => (
                   <button
                     key={tag}
@@ -4110,7 +4121,7 @@ export default function App() {
                       });
                     }}
                   >
-                    {showAllLauncherTags ? '태그 접기' : `더보기 +${hiddenLauncherTagCount}`}
+                    {showAllLauncherTags ? t("태그 접기") : `${uiLanguage === 'en' ? 'More' : '더보기'} +${hiddenLauncherTagCount}`}
                   </button>
                 )}
               </div>
@@ -4118,17 +4129,16 @@ export default function App() {
 
             {filteredGames.length === 0 && (
               <div className="launcher-diagnostic">
-                <strong>아직 찾는 이야기가 없네요</strong>
-                <p>검색 조건과 일치하는 게임이 없습니다.</p>
+                <strong>{t("아직 찾는 이야기가 없네요")}</strong>
+                <p>{t("검색 조건과 일치하는 게임이 없습니다.")}</p>
                 <button
                   type="button"
                   onClick={() => {
                     setSearchTerm('');
+                    setActiveLanguage('');
                     setActiveTag(ALL_TAG_FILTER);
                   }}
-                >
-                  검색 조건 초기화
-                </button>
+                >{t("검색 조건 초기화")}</button>
               </div>
             )}
 
@@ -4138,8 +4148,8 @@ export default function App() {
                   const buildNumber = Math.max(1, gameList.findIndex((gameEntry) => gameEntry.id === entry.id) + 1);
                   const chapterLabel =
                     typeof entry.chapterCount === 'number'
-                      ? `${entry.chapterCount}개 챕터`
-                      : '챕터 정보 없음';
+                      ? uiLanguage === 'en' ? `${entry.chapterCount} chapters` : `${entry.chapterCount}개 챕터`
+                      : t("챕터 정보 없음");
                   return (
                     <article
                       key={entry.id}
@@ -4147,8 +4157,8 @@ export default function App() {
                     >
                       <a
                         className="workspace-game-select"
-                        href={entry.path}
-                        aria-label={`${entry.name} 플레이`}
+                        href={gameHref(entry.path)}
+                        aria-label={`${entry.name} ${t("플레이")}`}
                       >
                         <span className="workspace-game-cover">
                           {entry.thumbnail ? (
@@ -4157,17 +4167,18 @@ export default function App() {
                             <span className="workspace-game-cover-fallback">YAVN</span>
                           )}
                           <span className="workspace-cover-number">{String(buildNumber).padStart(2, '0')}</span>
-                          <span className="workspace-cover-play" aria-hidden="true">이야기 시작 ↗</span>
+                          <span className="workspace-cover-play" aria-hidden="true">{t("이야기 시작 ↗")}</span>
                         </span>
                         <span className="workspace-game-body">
                           <span className="workspace-game-category">{entry.tags.slice(0, 2).join(' / ') || 'VISUAL NOVEL'}</span>
                           <span className="workspace-game-header">
                             <strong>{entry.name}</strong>
                           </span>
-                          <span className="workspace-game-summary">{entry.summary ?? DEFAULT_LAUNCHER_SUMMARY}</span>
+                          <span className="workspace-game-summary">{(uiLanguage === 'en' ? entry.summaryEn ?? entry.summary : entry.summary) ?? DEFAULT_LAUNCHER_SUMMARY}</span>
                           {entry.legalNotices.length > 0 && (
                             <span className="workspace-game-legal-badge">{entry.legalNotices[0].title}</span>
                           )}
+                          <span className="launcher-game-languages">{uiLanguage === 'en' ? 'Game language: ' : '지원 언어: '}{entry.languages.length ? entry.languages.map(languageLabel).join(', ') : (uiLanguage === 'en' ? 'Not specified' : '미등록')}</span>
                           <span className="workspace-game-meta">
                             {entry.author ?? 'UNKNOWN'} · {chapterLabel}
                           </span>
@@ -4185,26 +4196,28 @@ export default function App() {
           <section className="launcher-engine-overview" aria-labelledby="launcher-engine-overview-title">
             <div className="launcher-engine-overview-copy">
               <p className="launcher-eyebrow">03 / FOR THE STORYTELLERS</p>
-              <h2 id="launcher-engine-overview-title">이번엔 당신의<br />이야기를 들려주세요.</h2>
-              <p className="launcher-creator-lead">코드보다 이야기에 집중하세요.</p>
-              <p>장면과 대사, 선택과 결말.<br />상상 속 이야기를 플레이할 수 있는 작품으로 만드세요.</p>
+              <h2 id="launcher-engine-overview-title">{t("이번엔 당신의")}<br />{t("이야기를 들려주세요.")}</h2>
+              <p>{uiLanguage === 'en' ? 'Make a visual novel or story RPG for the web. Write YAML scenes, dialogue, branching choices and inventory; this is a narrative engine, not a 3D combat editor.' : '웹게임 만들기, 비주얼노벨 제작, 선택형 스토리 RPG 만들기를 시작하세요. YAML로 대사·분기·아이템을 구성하는 이야기 엔진입니다.'}</p>
+              <a href={uiLanguage === 'en' ? '/en/create/' : '/create/'}>{uiLanguage === 'en' ? 'How to make a web game →' : '웹게임·RPG 만들기 안내 →'}</a>
+              <p className="launcher-creator-lead">{t("코드보다 이야기에 집중하세요.")}</p>
+              <p>{t("장면과 대사, 선택과 결말.")}<br />{t("상상 속 이야기를 플레이할 수 있는 작품으로 만드세요.")}</p>
               <div className="launcher-engine-overview-actions">
-                <a href={developmentGuideUrl} target="_blank" rel="noreferrer">제작 가이드 시작 <span aria-hidden="true">↗</span></a>
-                <a href={`${repositoryUrl}/blob/main/sample.yaml`} target="_blank" rel="noreferrer">샘플 YAML 보기 ↗</a>
+                <a href={developmentGuideUrl} target="_blank" rel="noreferrer">{t("제작 가이드 시작")}<span aria-hidden="true">↗</span></a>
+                <a href={`${repositoryUrl}/blob/main/sample.yaml`} target="_blank" rel="noreferrer">{t("샘플 YAML 보기 ↗")}</a>
               </div>
             </div>
             <div className="launcher-story-sheet" aria-hidden="true">
               <div className="launcher-sheet-heading"><YavnLogo compact /><span>YOUR NEXT STORY</span><span>01 —</span></div>
               <p className="launcher-sheet-chapter">CHAPTER 01</p>
-              <p className="launcher-sheet-title">모든 이야기는<br />작은 선택에서 시작된다.</p>
-              <p className="launcher-sheet-line">낯선 편지 한 통이 도착했다.<br />봉투에는 아직 쓰지 않은 내 이름이 적혀 있었다.</p>
-              <div className="launcher-sheet-choices"><span>편지를 열어본다 <b>↗</b></span><span>보낸 사람을 찾아간다 <b>↗</b></span></div>
+              <p className="launcher-sheet-title">{t("모든 이야기는")}<br />{t("작은 선택에서 시작된다.")}</p>
+              <p className="launcher-sheet-line">{t("낯선 편지 한 통이 도착했다.")}<br />{t("봉투에는 아직 쓰지 않은 내 이름이 적혀 있었다.")}</p>
+              <div className="launcher-sheet-choices"><span>{t("편지를 열어본다")}<b>↗</b></span><span>{t("보낸 사람을 찾아간다")}<b>↗</b></span></div>
               <div className="launcher-sheet-ending"><span /> THE REST IS YOURS.</div>
             </div>
             <dl className="launcher-engine-capabilities">
-              <div><dt>01 / WRITE</dt><dd><strong>이야기를 쓰고</strong><span>YAML로 장면과 선택지 구성</span></dd></div>
-              <div><dt>02 / DIRECT</dt><dd><strong>장면에 숨을 불어넣고</strong><span>캐릭터·음악·영상으로 연출</span></dd></div>
-              <div><dt>03 / PLAY</dt><dd><strong>하나의 세계로 완성</strong><span>ZIP을 열어 브라우저에서 플레이</span></dd></div>
+              <div><dt>01 / WRITE</dt><dd><strong>{t("이야기를 쓰고")}</strong><span>{t("YAML로 장면과 선택지 구성")}</span></dd></div>
+              <div><dt>02 / DIRECT</dt><dd><strong>{t("장면에 숨을 불어넣고")}</strong><span>{t("캐릭터·음악·영상으로 연출")}</span></dd></div>
+              <div><dt>03 / PLAY</dt><dd><strong>{t("하나의 세계로 완성")}</strong><span>{t("ZIP을 열어 브라우저에서 플레이")}</span></dd></div>
             </dl>
           </section>
             </>
@@ -4213,14 +4226,14 @@ export default function App() {
 
         <footer className="launcher-footer">
           <div className="launcher-footer-brand">
-            <a href="/" aria-label="YAVN 홈"><YavnLogo /></a>
-            <p>Type your story. Play your novel.<br /><span>당신의 선택이, 하나의 이야기가 되도록.</span></p>
+            <a href={uiLanguage === 'en' ? '/en/' : '/'} aria-label={t("YAVN 홈")}><YavnLogo /></a>
+            <p>Type your story. Play your novel.<br /><span>{t("당신의 선택이, 하나의 이야기가 되도록.")}</span></p>
           </div>
-          <nav aria-label="프로젝트 및 법적 고지">
+          <nav aria-label={t("프로젝트 및 법적 고지")}>
             <a href={repositoryUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
-            <a href={shareByPrUrl} target="_blank" rel="noreferrer">작품 기여하기 ↗</a>
-            <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">제3자 고지</a>
-            <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">SUITE 라이선스</a>
+            <a href={shareByPrUrl} target="_blank" rel="noreferrer">{t("작품 기여하기 ↗")}</a>
+            <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">{t("제3자 고지")}</a>
+            <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">{t("SUITE 라이선스")}</a>
           </nav>
           <p className="launcher-footer-colophon">MADE FOR STORIES. OPEN TO EVERYONE.<span>YAVN · VISUAL NOVEL ENGINE</span></p>
         </footer>
@@ -4267,7 +4280,7 @@ export default function App() {
           submitChoiceOption(index);
         }}
         disabled={busy}
-        aria-label={`${option.text}${isPreviousGameOverChoice ? ', 죽음의 원인 선택, 게임 오버 경로' : ''}`}
+        aria-label={`${option.text}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
@@ -4279,11 +4292,11 @@ export default function App() {
         <span className="choice-gate-option-badges">
           {isPreviousGameOverChoice && (
             <span className="choice-gate-option-history-badge">
-              <b>원인 선택</b>
+              <b>{t("원인 선택")}</b>
               <em>GAME OVER</em>
             </span>
           )}
-          {forgiveAvailable && <span className="choice-gate-option-badge">1회 유예</span>}
+          {forgiveAvailable && <span className="choice-gate-option-badge">{t("1회 유예")}</span>}
         </span>
       </button>
     );
@@ -4292,9 +4305,9 @@ export default function App() {
   const dialogueChannelLabel = {
     dialogue: undefined,
     narration: undefined,
-    record: '기록',
-    system: '시스템',
-    thought: '속마음',
+    record: t("기록"),
+    system: t("시스템"),
+    thought: t("속마음"),
     action: undefined,
   }[dialogChannel];
 
@@ -4405,7 +4418,7 @@ export default function App() {
       </div>
 
       {choiceGate.active && choiceGate.presentation === 'explore' && !isDialogHidden && (
-        <div className="exploration-field" role="group" aria-label="주변 살펴보기"
+        <div className="exploration-field" role="group" aria-label={t("주변 살펴보기")}
           style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>
           {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
         </div>
@@ -4469,7 +4482,7 @@ export default function App() {
               <span className="video-skip-guide-title">HOLD TO SKIP</span>
               <b>{Math.floor(videoCutscene.skipProgress * 100)}%</b>
             </div>
-            <p className="video-skip-guide-desc">길게 눌러 건너뛰기</p>
+            <p className="video-skip-guide-desc">{t("길게 눌러 건너뛰기")}</p>
             <div className="video-skip-progress">
               <i style={{ width: `${Math.floor(videoCutscene.skipProgress * 100)}%` }} />
             </div>
@@ -4479,7 +4492,7 @@ export default function App() {
 
       <div className="hud">
         <div className="hud-meta-group">
-          <div className="meta">{game?.meta.title ?? '게임 불러오는 중'}</div>
+          <div className="meta">{game?.meta.title ?? t("게임 불러오는 중")}</div>
           {chapterTotal > 1 && (
             <div className="hud-chapter-progress">
               <span>CHAPTER {String(chapterIndex).padStart(2, '0')}</span><span className="hud-chapter-divider" />{String(chapterTotal).padStart(2, '0')}
@@ -4487,16 +4500,16 @@ export default function App() {
           )}
         </div>
         <div className="hud-right">
-          <button type="button" className="hud-action-button hud-map-button" aria-label="이야기 지도 열기"
+          <button type="button" className="hud-action-button hud-map-button" aria-label={t("이야기 지도 열기")}
             onClick={(event) => { event.stopPropagation(); setStoryMapOpen(true); }}>
-            <span aria-hidden="true">◇</span><span className="hud-action-label">이야기 지도</span>
+            <span aria-hidden="true">◇</span><span className="hud-action-label">{t("이야기 지도")}</span>
           </button>
-          {uploading && <div className="hint">ZIP 불러오는 중</div>}
+          {uploading && <div className="hint">{t("ZIP 불러오는 중")}</div>}
           <button
             type="button"
             className="hud-action-button hud-log-button"
-            aria-label={`케이스 로그 열기 (${storyLog.length})`}
-            title="케이스 로그"
+            aria-label={uiLanguage === 'en' ? `Open case log (${storyLog.length})` : `케이스 로그 열기 (${storyLog.length})`}
+            title={t("케이스 로그")}
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -4505,7 +4518,7 @@ export default function App() {
               setSettingsOpen(true);
             }}
           >
-            <GameIcon name="log" /><span className="hud-action-label">기록</span>
+            <GameIcon name="log" /><span className="hud-action-label">{t("기록")}</span>
             {storyLog.length > 0 && (
               <span className="hud-action-count" aria-hidden="true">
                 {storyLog.length}
@@ -4515,8 +4528,8 @@ export default function App() {
           <button
             type="button"
             className="hud-action-button hud-inventory-button"
-            aria-label={`인벤토리 열기 (${ownedInventoryCount}/${totalInventoryCount})`}
-            title="인벤토리"
+            aria-label={uiLanguage === 'en' ? `Open inventory (${ownedInventoryCount}/${totalInventoryCount})` : `인벤토리 열기 (${ownedInventoryCount}/${totalInventoryCount})`}
+            title={t("인벤토리")}
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -4525,7 +4538,7 @@ export default function App() {
               setSettingsOpen(true);
             }}
           >
-            <GameIcon name="bag" /><span className="hud-action-label">소지품</span>
+            <GameIcon name="bag" /><span className="hud-action-label">{t("소지품")}</span>
             {totalInventoryCount > 0 && (
               <span className="hud-inventory-progress" aria-hidden="true">
                 {ownedInventoryCount}/{totalInventoryCount}
@@ -4535,8 +4548,8 @@ export default function App() {
           <button
             type="button"
             className="hud-action-button hud-save-button"
-            aria-label="시스템 열기"
-            title="저장 및 설정"
+            aria-label={t("시스템 열기")}
+            title={t("저장 및 설정")}
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -4547,7 +4560,7 @@ export default function App() {
               setSettingsOpen(true);
             }}
           >
-            <GameIcon name="menu" /><span className="hud-action-label">메뉴</span>
+            <GameIcon name="menu" /><span className="hud-action-label">{t("메뉴")}</span>
           </button>
         </div>
       </div>
@@ -4566,26 +4579,26 @@ export default function App() {
             onKeyDown={trapGameDialogFocus}
             role="dialog"
             aria-modal="true"
-            aria-label="케이스 파일"
+            aria-label={t("케이스 파일")}
             onClick={(event) => event.stopPropagation()}
           >
             <header className="settings-modal-header">
               <div className="settings-modal-heading">
                 <p>PAUSED <span>· {game?.meta.title}</span></p>
-                <h2>{caseFileTab === 'log' ? '이야기 기록' : caseFileTab === 'inventory' ? '소지품' : '저장과 설정'}</h2>
+                <h2>{caseFileTab === 'log' ? t("이야기 기록") : caseFileTab === 'inventory' ? t("소지품") : t("저장과 설정")}</h2>
               </div>
               <button
                 type="button"
                 className="settings-close-button"
                 autoFocus
-                aria-label="케이스 파일 닫기"
-                title="닫기"
+                aria-label={t("케이스 파일 닫기")}
+                title={t("닫기")}
                 onClick={() => closeSettingsModal()}
               >
                 <GameIcon name="close" />
               </button>
             </header>
-            <div className="case-file-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label="케이스 파일 보기">
+            <div className="case-file-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label={t("케이스 파일 보기")}>
               <button
                 type="button"
                 role="tab"
@@ -4599,7 +4612,7 @@ export default function App() {
                   setCaseFileTab('log');
                 }}
               >
-                <GameIcon name="log" /><span className="case-file-tab-label">기록</span>
+                <GameIcon name="log" /><span className="case-file-tab-label">{t("기록")}</span>
                 <span className="case-file-tab-count">{storyLog.length}</span>
               </button>
               <button
@@ -4612,7 +4625,7 @@ export default function App() {
                 tabIndex={caseFileTab === 'inventory' ? 0 : -1}
                 onClick={() => setCaseFileTab('inventory')}
               >
-                <GameIcon name="bag" /><span className="case-file-tab-label">소지품</span>
+                <GameIcon name="bag" /><span className="case-file-tab-label">{t("소지품")}</span>
                 <span className="case-file-tab-count">{ownedInventoryCount}/{totalInventoryCount}</span>
               </button>
               <button
@@ -4630,20 +4643,20 @@ export default function App() {
                   setCaseFileTab('system');
                 }}
               >
-                <GameIcon name="menu" /><span className="case-file-tab-label">저장 · 설정</span>
-                <span className="menu-tab-caption" aria-hidden="true">환경설정</span>
+                <GameIcon name="menu" /><span className="case-file-tab-label">{t("저장 · 설정")}</span>
+                <span className="menu-tab-caption" aria-hidden="true">{t("환경설정")}</span>
               </button>
             </div>
             {caseFileTab === 'log' ? (
               <div key="log" className="settings-modal-body story-log-body" role="tabpanel" id="game-menu-panel-log" aria-labelledby="game-menu-tab-log">
                 <div className="story-log-summary">
-                  <span>최근 기록</span>
-                  <b>{storyLog.length}개의 기록</b>
+                  <span>{t("최근 기록")}</span>
+                  <b>{storyLog.length}{t("개의 기록")}</b>
                 </div>
                 {storyLog.length === 0 ? (
-                  <p className="story-log-empty">대화를 시작하면 사건 기록이 여기에 쌓입니다.</p>
+                  <p className="story-log-empty">{t("대화를 시작하면 사건 기록이 여기에 쌓입니다.")}</p>
                 ) : (
-                  <ol className="story-log-list" tabIndex={0} aria-label="스토리 기록">
+                  <ol className="story-log-list" tabIndex={0} aria-label={t("스토리 기록")}>
                     {[...storyLog].reverse().map((entry, index) => (
                       <li
                         key={`${entry.kind}-${entry.chapterPath ?? 'legacy'}-${entry.sceneId}-${entry.actionIndex}-${storyLog.length - index}`}
@@ -4652,12 +4665,12 @@ export default function App() {
                         {entry.kind === 'dialogue' ? (
                           <>
                             <span className="story-log-kind">
-                              {entry.channel === 'thought' ? `${entry.speaker ? entry.speaker + ' · ' : ''}속마음` : entry.channel === 'action' ? '행동' : entry.speaker ?? (
+                              {entry.channel === 'thought' ? `${entry.speaker ? entry.speaker + ' · ' : ''}속마음` : entry.channel === 'action' ? t("행동") : entry.speaker ?? (
                                 entry.channel === 'record'
-                                  ? '기록'
+                                  ? t("기록")
                                   : entry.channel === 'system'
-                                    ? '시스템'
-                                    : '서술'
+                                    ? t("시스템")
+                                    : t("서술")
                               )}
                             </span>
                             <p>{entry.text}</p>
@@ -4680,7 +4693,7 @@ export default function App() {
               className={`settings-modal-body settings-inventory-body ${inventoryViewEntries.length > 0 ? 'has-tools' : ''}`}
             >
               <div className="inventory-collection-header">
-                <div className="inventory-view-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label="인벤토리 보기">
+                <div className="inventory-view-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label={t("인벤토리 보기")}>
                   <button
                     type="button"
                     role="tab"
@@ -4692,7 +4705,7 @@ export default function App() {
                       setInventoryView('bag');
                     }}
                   >
-                    <span>내 가방</span>
+                    <span>{t("내 가방")}</span>
                     <b>{ownedInventoryCount}</b>
                   </button>
                   <button
@@ -4706,11 +4719,11 @@ export default function App() {
                       setInventoryView('catalog');
                     }}
                   >
-                    <span>전체 도감</span>
+                    <span>{t("전체 도감")}</span>
                     <b>{totalInventoryCount}</b>
                   </button>
                 </div>
-                <div className="inventory-overview" aria-label={`단서 수집 ${ownedInventoryCount}/${totalInventoryCount}`}>
+                <div className="inventory-overview" aria-label={uiLanguage === 'en' ? `Collected clues ${ownedInventoryCount}/${totalInventoryCount}` : `단서 수집 ${ownedInventoryCount}/${totalInventoryCount}`}>
                   <div>
                     <span>COLLECTION PROGRESS</span>
                     <b>{ownedInventoryCount}<small> / {totalInventoryCount}</small></b>
@@ -4721,21 +4734,21 @@ export default function App() {
               {inventoryViewEntries.length > 0 && (
                 <div className="inventory-tools">
                   <label className="inventory-search-field">
-                    <span className="inventory-tool-label">검색</span>
+                    <span className="inventory-tool-label">{t("검색")}</span>
                     <input
                       type="search"
                       value={inventorySearchTerm}
                       onChange={(event) => setInventorySearchTerm(event.target.value)}
-                      placeholder="단서 이름 검색"
+                      placeholder={t("단서 이름 검색")}
                     />
                   </label>
                   <label className="inventory-select-field">
-                    <span className="inventory-tool-label">카테고리</span>
+                    <span className="inventory-tool-label">{t("카테고리")}</span>
                     <select
                       value={inventoryCategoryFilter}
                       onChange={(event) => setInventoryCategoryFilter(event.target.value)}
                     >
-                      <option value={INVENTORY_CATEGORY_ALL}>전체</option>
+                      <option value={INVENTORY_CATEGORY_ALL}>{t("전체")}</option>
                       {inventoryCategoryOptions.map((category) => (
                         <option key={category} value={category}>
                           {category}
@@ -4744,13 +4757,13 @@ export default function App() {
                     </select>
                   </label>
                   <label className="inventory-select-field">
-                    <span className="inventory-tool-label">정렬</span>
+                    <span className="inventory-tool-label">{t("정렬")}</span>
                     <select
                       value={inventorySort}
                       onChange={(event) => setInventorySort(event.target.value as InventorySortPreference)}
                     >
-                      <option value="order">획득 순서</option>
-                      <option value="name">이름순</option>
+                      <option value="order">{t("획득 순서")}</option>
+                      <option value="name">{t("이름순")}</option>
                     </select>
                   </label>
                 </div>
@@ -4762,15 +4775,13 @@ export default function App() {
                     <strong>{inventoryGridEmptyMessage}</strong>
                     <p>
                       {inventoryViewEntries.length === 0 && inventoryCatalogEntries.length > 0
-                        ? '플레이 중 발견한 단서는 가방에 자동으로 보관됩니다.'
+                        ? t("플레이 중 발견한 단서는 가방에 자동으로 보관됩니다.")
                         : inventoryFiltersActive
-                          ? '검색어나 카테고리를 바꾸고 다시 확인해 보세요.'
-                          : '게임에서 단서를 발견하면 이곳에 표시됩니다.'}
+                          ? t("검색어나 카테고리를 바꾸고 다시 확인해 보세요.")
+                          : t("게임에서 단서를 발견하면 이곳에 표시됩니다.")}
                     </p>
                     {inventoryViewEntries.length === 0 && inventoryCatalogEntries.length > 0 ? (
-                      <button type="button" onClick={() => setInventoryView('catalog')}>
-                        도감 살펴보기
-                      </button>
+                      <button type="button" onClick={() => setInventoryView('catalog')}>{t("도감 살펴보기")}</button>
                     ) : inventoryFiltersActive ? (
                       <button
                         type="button"
@@ -4778,13 +4789,11 @@ export default function App() {
                           setInventorySearchTerm('');
                           setInventoryCategoryFilter(INVENTORY_CATEGORY_ALL);
                         }}
-                      >
-                        검색 조건 초기화
-                      </button>
+                      >{t("검색 조건 초기화")}</button>
                     ) : null}
                   </div>
                 ) : (
-                  <div className="inventory-grid" role="list" aria-label="인벤토리 그리드">
+                  <div className="inventory-grid" role="list" aria-label={t("인벤토리 그리드")}>
                     {inventoryVisibleEntries.map((entry, index) => (
                       <button
                         key={entry.id}
@@ -4801,10 +4810,10 @@ export default function App() {
                         }}
                         disabled={!entry.owned}
                         aria-haspopup={entry.owned ? 'dialog' : undefined}
-                        aria-label={`${entry.owned ? entry.name : '미발견 단서'} ${entry.owned ? '획득됨' : '미획득'}`}
+                        aria-label={`${entry.owned ? entry.name : t("미발견 단서")} ${entry.owned ? t("획득됨") : t("미획득")}`}
                       >
                         <span className="inventory-slot-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-                        {inventoryView === 'catalog' && entry.owned && <span className="inventory-slot-owned-badge">획득</span>}
+                        {inventoryView === 'catalog' && entry.owned && <span className="inventory-slot-owned-badge">{t("획득")}</span>}
                         {entry.owned && entry.imageUrl ? (
                           <img src={entry.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                         ) : (
@@ -4813,10 +4822,10 @@ export default function App() {
                             aria-hidden="true"
                           >
                             <span className="inventory-slot-fallback-icon" />
-                            {entry.owned && <span>소지품</span>}
+                            {entry.owned && <span>{t("소지품")}</span>}
                           </span>
                         )}
-                        <span className="inventory-slot-name">{entry.owned ? entry.name : '미발견 단서'}</span>
+                        <span className="inventory-slot-name">{entry.owned ? entry.name : t("미발견 단서")}</span>
                       </button>
                     ))}
                   </div>
@@ -4830,14 +4839,14 @@ export default function App() {
                   <div className="save-auto-status">
                     <span>
                       <small>YOUR PROGRESS</small>
-                      <b>{autoSaveEnabled ? '이야기를 자동으로 기억합니다' : '자동 저장이 꺼져 있습니다'}</b>
+                      <b>{autoSaveEnabled ? t("이야기를 자동으로 기억합니다") : t("자동 저장이 꺼져 있습니다")}</b>
                     </span>
                     <strong>{formatSaveSlotMeta(autoRecoverySlot)}</strong>
                   </div>
                   <label className="save-autosave-row">
                     <span>
-                      <b>자동 저장</b>
-                      <small>선택 전 진행을 보관</small>
+                      <b>{t("자동 저장")}</b>
+                      <small>{t("선택 전 진행을 보관")}</small>
                     </span>
                     <span className="settings-switch">
                       <input
@@ -4857,21 +4866,17 @@ export default function App() {
                     <header>
                       <div>
                         <small>PLAYER SLOT</small>
-                        <h3>수동 저장</h3>
+                        <h3>{t("수동 저장")}</h3>
                       </div>
                       <span>{formatSaveSlotMeta(manualSaveSlot)}</span>
                     </header>
                     <div className="save-system-actions save-system-actions-pair">
-                      <button className="is-primary" type="button" onClick={onManualSave} disabled={saveBusy || Boolean(gameOver)}>
-                        현재 진행 저장
-                      </button>
+                      <button className="is-primary" type="button" onClick={onManualSave} disabled={saveBusy || Boolean(gameOver)}>{t("현재 진행 저장")}</button>
                       <button
                         type="button"
                         onClick={() => void onLoadSave('manual')}
                         disabled={!manualSaveSlot?.exists || saveBusy}
-                      >
-                        저장 불러오기
-                      </button>
+                      >{t("저장 불러오기")}</button>
                     </div>
                   </section>
 
@@ -4880,7 +4885,7 @@ export default function App() {
                     <header>
                       <div>
                         <small>CHECKPOINT</small>
-                        <h3>챕터 시작점</h3>
+                        <h3>{t("챕터 시작점")}</h3>
                       </div>
                       <span>{formatSaveSlotMeta(chapterSaveSlot)}</span>
                     </header>
@@ -4889,9 +4894,7 @@ export default function App() {
                       className="save-system-wide-action"
                       onClick={() => void onRestartChapter()}
                       disabled={!chapterSaveSlot?.exists || saveBusy}
-                    >
-                      챕터 처음으로 돌아가기
-                    </button>
+                    >{t("챕터 처음으로 돌아가기")}</button>
                   </section>
 
                   <section className="save-system-section" data-save-kind="backup">
@@ -4899,17 +4902,13 @@ export default function App() {
                     <header>
                       <div>
                         <small>PORTABLE DATA</small>
-                        <h3>백업 파일</h3>
+                        <h3>{t("백업 파일")}</h3>
                       </div>
-                      <span>기기 이동용</span>
+                      <span>{t("기기 이동용")}</span>
                     </header>
                     <div className="save-system-actions save-system-actions-pair">
-                      <button type="button" onClick={onExportSave} disabled={saveBusy || Boolean(gameOver)}>
-                        내보내기
-                      </button>
-                      <button type="button" onClick={() => saveImportRef.current?.click()} disabled={saveBusy}>
-                        가져오기
-                      </button>
+                      <button type="button" onClick={onExportSave} disabled={saveBusy || Boolean(gameOver)}>{t("내보내기")}</button>
+                      <button type="button" onClick={() => saveImportRef.current?.click()} disabled={saveBusy}>{t("가져오기")}</button>
                     </div>
                     <input
                       ref={saveImportRef}
@@ -4925,15 +4924,15 @@ export default function App() {
                     <header>
                       <div>
                         <small>PLAYER EXPERIENCE</small>
-                        <h3>플레이 감각</h3>
+                        <h3>{t("플레이 감각")}</h3>
                       </div>
-                      <span>게임별로 자동 저장</span>
+                      <span>{t("게임별로 자동 저장")}</span>
                     </header>
                     <div className="player-experience-grid">
                       <label className="player-setting-control">
                         <span>
-                          <b>텍스트 속도</b>
-                          <small>대사 출력 배속</small>
+                          <b>{t("텍스트 속도")}</b>
+                          <small>{t("대사 출력 배속")}</small>
                         </span>
                         <select
                           value={playerExperience.textSpeedRate}
@@ -4941,16 +4940,16 @@ export default function App() {
                             textSpeedRate: Number(event.target.value) as TextSpeedRate,
                           })}
                         >
-                          <option value={0.75}>차분하게 · 0.75×</option>
-                          <option value={1}>기본 · 1×</option>
-                          <option value={1.5}>빠르게 · 1.5×</option>
-                          <option value={2}>매우 빠르게 · 2×</option>
+                          <option value={0.75}>{t("차분하게 · 0.75×")}</option>
+                          <option value={1}>{t("기본 · 1×")}</option>
+                          <option value={1.5}>{t("빠르게 · 1.5×")}</option>
+                          <option value={2}>{t("매우 빠르게 · 2×")}</option>
                         </select>
                       </label>
                       <label className="player-setting-control is-switch">
                         <span>
-                          <b>자동 진행</b>
-                          <small>선택지와 입력에서는 정지</small>
+                          <b>{t("자동 진행")}</b>
+                          <small>{t("선택지와 입력에서는 정지")}</small>
                         </span>
                         <span className="settings-switch">
                           <input
@@ -4963,8 +4962,8 @@ export default function App() {
                       </label>
                       <label className="player-setting-control">
                         <span>
-                          <b>자동 진행 간격</b>
-                          <small>타이핑 완료 후 대기</small>
+                          <b>{t("자동 진행 간격")}</b>
+                          <small>{t("타이핑 완료 후 대기")}</small>
                         </span>
                         <select
                           value={playerExperience.autoPlayDelayMs}
@@ -4973,15 +4972,15 @@ export default function App() {
                             autoPlayDelayMs: Number(event.target.value) as AutoPlayDelay,
                           })}
                         >
-                          <option value={800}>짧게 · 0.8초</option>
-                          <option value={1400}>기본 · 1.4초</option>
-                          <option value={2200}>여유롭게 · 2.2초</option>
+                          <option value={800}>{t("짧게 · 0.8초")}</option>
+                          <option value={1400}>{t("기본 · 1.4초")}</option>
+                          <option value={2200}>{t("여유롭게 · 2.2초")}</option>
                         </select>
                       </label>
                       <label className="player-setting-control">
                         <span>
-                          <b>화면 효과</b>
-                          <small>움직임과 광량 강도</small>
+                          <b>{t("화면 효과")}</b>
+                          <small>{t("움직임과 광량 강도")}</small>
                         </span>
                         <select
                           value={playerExperience.effectLevel}
@@ -4989,14 +4988,14 @@ export default function App() {
                             effectLevel: event.target.value as PlayerEffectLevel,
                           })}
                         >
-                          <option value="full">풍부하게</option>
-                          <option value="reduced">부드럽게</option>
-                          <option value="minimal">최소화</option>
+                          <option value="full">{t("풍부하게")}</option>
+                          <option value="reduced">{t("부드럽게")}</option>
+                          <option value="minimal">{t("최소화")}</option>
                         </select>
                       </label>
                       <div className="player-setting-control player-volume-control">
                         <span>
-                          <b>배경음악</b>
+                          <b>{t("배경음악")}</b>
                           <small>{Math.round(playerExperience.bgmVolume * 100)}%</small>
                         </span>
                         <div>
@@ -5004,7 +5003,7 @@ export default function App() {
                             <input
                               type="checkbox"
                               checked={bgmEnabled}
-                              aria-label="배경음악 켜기"
+                              aria-label={t("배경음악 켜기")}
                               onChange={(event) => onToggleBgmDisabled(!event.target.checked)}
                             />
                             <span aria-hidden="true" />
@@ -5015,7 +5014,7 @@ export default function App() {
                             max="1"
                             step="0.05"
                             value={playerExperience.bgmVolume}
-                            aria-label="배경음악 음량"
+                            aria-label={t("배경음악 음량")}
                             disabled={!bgmEnabled}
                             onChange={(event) => updatePlayerExperience({ bgmVolume: Number(event.target.value) })}
                           />
@@ -5023,7 +5022,7 @@ export default function App() {
                       </div>
                       <label className="player-setting-control player-volume-control">
                         <span>
-                          <b>효과음</b>
+                          <b>{t("효과음")}</b>
                           <small>{Math.round(playerExperience.sfxVolume * 100)}%</small>
                         </span>
                         <input
@@ -5032,7 +5031,7 @@ export default function App() {
                           max="1"
                           step="0.05"
                           value={playerExperience.sfxVolume}
-                          aria-label="효과음 음량"
+                          aria-label={t("효과음 음량")}
                           onChange={(event) => updatePlayerExperience({ sfxVolume: Number(event.target.value) })}
                         />
                       </label>
@@ -5044,21 +5043,21 @@ export default function App() {
                     <header>
                       <div>
                         <small>RIGHTS &amp; ATTRIBUTION</small>
-                        <h3>법적 고지</h3>
+                        <h3>{t("법적 고지")}</h3>
                       </div>
-                      <span>{gameLegalNotices.length > 0 ? `${gameLegalNotices.length}건` : '게임별 고지 없음'}</span>
+                      <span>{gameLegalNotices.length > 0 ? uiLanguage === 'en' ? `${gameLegalNotices.length} notices` : `${gameLegalNotices.length}건` : t("게임별 고지 없음")}</span>
                     </header>
                     {gameLegalNotices.length > 0 ? (
                       <LegalNoticeList notices={gameLegalNotices} className="settings-legal-notices" />
                     ) : (
-                      <p className="legal-notice-empty">이 게임이 선언한 별도 법적 고지는 없습니다.</p>
+                      <p className="legal-notice-empty">{t("이 게임이 선언한 별도 법적 고지는 없습니다.")}</p>
                     )}
-                    <nav className="legal-notice-global-links" aria-label="YAVN 라이선스 문서">
-                      <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">YAVN 제3자 고지</a>
-                      <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">SUITE 글꼴 라이선스</a>
+                    <nav className="legal-notice-global-links" aria-label={t("YAVN 라이선스 문서")}>
+                      <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">{t("YAVN 제3자 고지")}</a>
+                      <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">{t("SUITE 글꼴 라이선스")}</a>
                       <a href={easyCl2dNoticeUrl} target="_blank" rel="noreferrer">easy-cl2d NOTICE</a>
-                      <a href={easyCl2dLicenseUrl} target="_blank" rel="noreferrer">Live2D Framework 조건</a>
-                      <a href={live2dRedistributableFilesUrl} target="_blank" rel="noreferrer">Live2D 재배포 파일</a>
+                      <a href={easyCl2dLicenseUrl} target="_blank" rel="noreferrer">{t("Live2D Framework 조건")}</a>
+                      <a href={live2dRedistributableFilesUrl} target="_blank" rel="noreferrer">{t("Live2D 재배포 파일")}</a>
                     </nav>
                   </section>
                 </div>
@@ -5070,12 +5069,12 @@ export default function App() {
                     onClick={(event) => void onReturnToStartScreen(event)}
                     disabled={!canReturnToStartScreen || returningToStartGate}
                   >
-                    {returningToStartGate ? '시작 화면 여는 중...' : '게임 시작 화면으로 가기'}
+                    {returningToStartGate ? t("시작 화면 여는 중...") : t("게임 시작 화면으로 가기")}
                   </button>
                 </section>
 
                 <p className="save-system-status" role="status" aria-live="polite">
-                  {saveNotice || '저장 데이터는 이 브라우저에 보관됩니다.'}
+                  {saveNotice || t("저장 데이터는 이 브라우저에 보관됩니다.")}
                 </p>
               </div>
             )}
@@ -5088,17 +5087,17 @@ export default function App() {
                   className="inventory-detail-modal"
                   onKeyDown={trapGameDialogFocus}
                   role="dialog"
-                  aria-label="아이템 상세 정보"
+                  aria-label={t("아이템 상세 정보")}
                   onClick={(event) => event.stopPropagation()}
                 >
                   <header className="inventory-detail-modal-header">
-                    <h3>{selectedInventoryEntry.owned ? selectedInventoryEntry.name : '미확인 아이템'}</h3>
+                    <h3>{selectedInventoryEntry.owned ? selectedInventoryEntry.name : t("미확인 아이템")}</h3>
                     <button
                       type="button"
                       className="settings-close-button"
                       autoFocus
-                      aria-label="아이템 상세 닫기"
-                      title="닫기"
+                      aria-label={t("아이템 상세 닫기")}
+                      title={t("닫기")}
                       onClick={() => setInventoryDetailOpen(false)}
                     >
                       <GameIcon name="close" />
@@ -5112,20 +5111,20 @@ export default function App() {
                         {selectedInventoryEntry.imageUrl && (
                           <img
                             src={selectedInventoryEntry.imageUrl}
-                            alt={`${selectedInventoryEntry.name} 아이템 이미지`}
+                            alt={`${selectedInventoryEntry.name} ${t("아이템 이미지")}`}
                             loading="lazy"
                             decoding="async"
                           />
                         )}
                         <div className="inventory-detail-copy">
-                          <p className="inventory-detail-owned is-owned">{selectedInventoryEntry.category} · 획득</p>
-                          <p>{selectedInventoryEntry.description ?? '아이템 설명이 없습니다.'}</p>
+                          <p className="inventory-detail-owned is-owned">{selectedInventoryEntry.category}{t("· 획득")}</p>
+                          <p>{selectedInventoryEntry.description ?? t("아이템 설명이 없습니다.")}</p>
                         </div>
                       </>
                     ) : (
                       <>
-                        <p className="inventory-detail-owned is-missing">아직 획득하지 못함</p>
-                        <p>아직 획득하지 못한 아이템입니다.</p>
+                        <p className="inventory-detail-owned is-missing">{t("아직 획득하지 못함")}</p>
+                        <p>{t("아직 획득하지 못한 아이템입니다.")}</p>
                       </>
                     )}
                   </div>
@@ -5146,7 +5145,7 @@ export default function App() {
               type="button"
               className={`dialog-toggle-button dialog-auto-button${playerExperience.autoPlayEnabled ? ' is-active' : ''}`}
               aria-pressed={playerExperience.autoPlayEnabled}
-              title="일반 대사를 자동으로 진행합니다"
+              title={t("일반 대사를 자동으로 진행합니다")}
               onClick={(event) => {
                 event.stopPropagation();
                 queuedManualAdvanceAtRef.current = null;
@@ -5164,7 +5163,7 @@ export default function App() {
                 setDialogUiHidden(true);
               }}
             >
-              <GameIcon name="eye" /><span>숨기기</span>
+              <GameIcon name="eye" /><span>{t("숨기기")}</span>
             </button>
           </div>
         )}
@@ -5200,8 +5199,8 @@ export default function App() {
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck={false}
-                aria-label="답변 입력"
-                placeholder="답변을 입력하세요"
+                aria-label={t("답변 입력")}
+                placeholder={t("답변을 입력하세요")}
                 disabled={busy}
                 onChange={(event) => setInputAnswer(event.target.value)}
                 onClick={(event) => event.stopPropagation()}
@@ -5221,18 +5220,18 @@ export default function App() {
               {hasRecoveredFailedChoice && (
                 <div className="choice-recovery-hint" role="status">
                   <span aria-hidden="true">!</span>
-                  <p><strong>죽음의 원인이 된 선택이 표시되어 있습니다.</strong> 다른 경로를 선택해 다시 진행할 수 있습니다.</p>
+                  <p><strong>{t("죽음의 원인이 된 선택이 표시되어 있습니다.")}</strong>{t("다른 경로를 선택해 다시 진행할 수 있습니다.")}</p>
                 </div>
               )}
               {choiceGate.timeoutMs && (
                 <div
                   className="choice-gate-timeout"
                   role="timer"
-                  aria-label={`선택 제한 시간 ${Math.ceil(choiceGate.timeoutMs / 1000)}초`}
+                  aria-label={uiLanguage === 'en' ? `Choice deadline ${Math.ceil(choiceGate.timeoutMs / 1000)} seconds` : `선택 제한 시간 ${Math.ceil(choiceGate.timeoutMs / 1000)}초`}
                   style={{ '--choice-timeout-ms': `${choiceGate.timeoutMs}ms` } as CSSProperties}
                 >
                   <div className="choice-gate-timeout-meta">
-                    <span>선택 제한</span>
+                    <span>{t("선택 제한")}</span>
                     <strong>{Math.ceil(choiceGate.timeoutMs / 1000)}s</strong>
                   </div>
                   <div className="choice-gate-timeout-track" aria-hidden="true">
@@ -5261,7 +5260,7 @@ export default function App() {
             setDialogUiHidden(false);
           }}
         >
-          <GameIcon name="eye" /><span>대화창 열기</span>
+          <GameIcon name="eye" /><span>{t("대화창 열기")}</span>
         </button>
       )}
       </div>
@@ -5285,7 +5284,7 @@ export default function App() {
 
       {gameOver && !chapterLoading && !gameOverRecoveryOpen && !storyMapOpen && (
         <OutcomePrelude kind="gameOver" title={gameOver.title ?? 'GAME OVER'}
-          message={gameOver.message ?? '이곳에서 이야기가 멈췄습니다.'}
+          message={gameOver.message ?? t("이곳에서 이야기가 멈췄습니다.")}
           onContinue={() => setStoryMapOpen(true)} />
       )}
       {isFinished && !endingCreditsOpen && !storyMapOpen && (
@@ -5296,16 +5295,16 @@ export default function App() {
       {gameOver && !chapterLoading && gameOverRecoveryOpen && (
         <div className="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title" onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
           <div className="game-over-panel">
-            <button type="button" className="outcome-back" autoFocus onClick={() => setGameOverRecoveryOpen(false)}>← 마지막 장면</button>
-            <p className="game-over-kicker">다시 이어갈 이야기</p>
-            <button type="button" onClick={() => { setGameOverRecoveryOpen(false); setStoryMapOpen(true); }}>이야기 지도로 돌아가기</button>
+            <button type="button" className="outcome-back" autoFocus onClick={() => setGameOverRecoveryOpen(false)}>{t("← 마지막 장면")}</button>
+            <p className="game-over-kicker">{t("다시 이어갈 이야기")}</p>
+            <button type="button" onClick={() => { setGameOverRecoveryOpen(false); setStoryMapOpen(true); }}>{t("이야기 지도로 돌아가기")}</button>
             <h2 id="game-over-title">{gameOver.title ?? 'GAME OVER'}</h2>
             <p className="game-over-message">
-              {gameOver.message ?? '선택의 결과로 더는 이야기를 이어갈 수 없습니다.'}
+              {gameOver.message ?? t("선택의 결과로 더는 이야기를 이어갈 수 없습니다.")}
             </p>
             {choiceRecoveryPoint.failedChoice?.value && (
-              <div className="game-over-cause" aria-label="결과를 만든 선택">
-                <span>결과를 만든 선택</span>
+              <div className="game-over-cause" aria-label={t("결과를 만든 선택")}>
+                <span>{t("결과를 만든 선택")}</span>
                 <strong>{choiceRecoveryPoint.failedChoice.value}</strong>
               </div>
             )}
@@ -5315,7 +5314,7 @@ export default function App() {
                 onClick={() => void (choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto'))}
                 disabled={(!choiceRecoveryPoint.exists && !autoRecoverySlot?.exists) || saveBusy}
               >
-                <span>{choiceRecoveryPoint.exists ? '죽음의 원인 선택으로' : '자동 복구점으로'}</span>
+                <span>{choiceRecoveryPoint.exists ? t("죽음의 원인 선택으로") : t("자동 복구점으로")}</span>
                 <small>{formatSaveSlotMeta(choiceRecoveryPoint.exists ? choiceRecoveryPoint : autoRecoverySlot)}</small>
               </button>
               <button
@@ -5323,7 +5322,7 @@ export default function App() {
                 onClick={() => void onLoadSave('manual')}
                 disabled={!manualSaveSlot?.exists || saveBusy}
               >
-                <span>수동 저장으로</span>
+                <span>{t("수동 저장으로")}</span>
                 <small>{formatSaveSlotMeta(manualSaveSlot)}</small>
               </button>
               <button
@@ -5331,7 +5330,7 @@ export default function App() {
                 onClick={() => void onRestartChapter()}
                 disabled={!chapterSaveSlot?.exists || saveBusy}
               >
-                <span>챕터 처음으로</span>
+                <span>{t("챕터 처음으로")}</span>
                 <small>{formatSaveSlotMeta(chapterSaveSlot)}</small>
               </button>
             </div>
@@ -5341,9 +5340,7 @@ export default function App() {
               className="game-over-import-button"
               onClick={() => gameOverImportRef.current?.click()}
               disabled={saveBusy}
-            >
-              백업 파일 불러오기
-            </button>
+            >{t("백업 파일 불러오기")}</button>
             <input
               ref={gameOverImportRef}
               type="file"
@@ -5352,17 +5349,17 @@ export default function App() {
               hidden
             />
             <p className="game-over-status" role="status" aria-live="polite">
-              {saveBusy ? '복구 중...' : saveNotice}
+              {saveBusy ? t("복구 중...") : saveNotice}
             </p>
           </div>
         </div>
       )}
 
       {isFinished && endingCreditsOpen && (
-        <div className="ending-overlay" role="dialog" aria-modal="true" aria-label="엔딩 기록과 크레딧" onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
+        <div className="ending-overlay" role="dialog" aria-modal="true" aria-label={t("엔딩 기록과 크레딧")} onKeyDown={trapOutcomeFocus} onClick={(event) => event.stopPropagation()}>
           {endingBackgroundUrl && <ResourceImage className="ending-overlay-bg-image" src={endingBackgroundUrl} alt="" aria-hidden="true" />}
           <div className="ending-overlay-decoration" aria-hidden="true" />
-          <div className="ending-credits-screen" aria-label="엔딩 크레딧">
+          <div className="ending-credits-screen" aria-label={t("엔딩 크레딧")}>
             <div
               className="ending-credits-roll unlocked"
               tabIndex={0}
@@ -5376,13 +5373,13 @@ export default function App() {
                       <h3>ENDING PROGRESS</h3>
                       <p className="ending-progress-value">
                         {seenEndingCount}/{totalEndingCount} ({endingCompletionPercent}%) ·{' '}
-                        {endingCollectionDone ? '게임 완료' : '진행 중'}
+                        {endingCollectionDone ? t("게임 완료") : t("진행 중")}
                       </p>
                       <div className="ending-progress-bar" role="presentation">
                         <i style={{ width: `${endingCompletionPercent}%` }} />
                       </div>
                       {seenEndingTitles.length > 0 && (
-                        <p className="ending-credits-line">획득 엔딩: {seenEndingTitles.join(' · ')}</p>
+                        <p className="ending-credits-line">{t("획득 엔딩:")}{seenEndingTitles.join(' · ')}</p>
                       )}
                     </section>
                   )}
@@ -5406,7 +5403,7 @@ export default function App() {
                         ))}
                       </>
                     ) : (
-                      <p className="ending-credits-line">제작자 정보 없음</p>
+                      <p className="ending-credits-line">{t("제작자 정보 없음")}</p>
                     )}
                   </section>
 
@@ -5432,9 +5429,7 @@ export default function App() {
                       </a>
                     </p>
                     <p className="ending-credits-line">
-                      <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">
-                        제3자 소프트웨어·자산 고지
-                      </a>
+                      <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">{t("제3자 소프트웨어·자산 고지")}</a>
                     </p>
                   </section>
                 </div>
@@ -5442,8 +5437,8 @@ export default function App() {
               </div>
             </div>
             <div className="ending-bottom-bar visible">
-              <button type="button" className="ending-restart" onClick={() => { setEndingCreditsOpen(false); setStoryMapOpen(true); }}>이야기 지도</button>
-              <button type="button" className="ending-restart ending-retry-choice" autoFocus onClick={() => setEndingCreditsOpen(false)}>결말 다시 보기</button>
+              <button type="button" className="ending-restart" onClick={() => { setEndingCreditsOpen(false); setStoryMapOpen(true); }}>{t("이야기 지도")}</button>
+              <button type="button" className="ending-restart ending-retry-choice" autoFocus onClick={() => setEndingCreditsOpen(false)}>{t("결말 다시 보기")}</button>
               {totalEndingCount > 1 && choiceRecoveryPoint.exists && (
                 <button
                   type="button"
@@ -5454,7 +5449,7 @@ export default function App() {
                   }}
                   disabled={saveBusy}
                 >
-                  {saveBusy ? '선택 불러오는 중...' : '마지막 선택으로'}
+                  {saveBusy ? t("선택 불러오는 중...") : t("마지막 선택으로")}
                 </button>
               )}
               <button
@@ -5463,7 +5458,7 @@ export default function App() {
                 onClick={onRestartFromBeginning}
                 disabled={returningToStartGate || saveBusy}
               >
-                {returningToStartGate ? '초기화면 여는 중...' : '처음부터 다시하기'}
+                {returningToStartGate ? t("초기화면 여는 중...") : t("처음부터 다시하기")}
               </button>
             </div>
           </div>

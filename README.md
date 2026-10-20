@@ -1225,3 +1225,9 @@ scenes:
 - `HOLD TO SKIP` 게이지는 누름 해제 후 재시작 시 0%부터 즉시 동기화되어 숫자 표시와 동일하게 진행됩니다.
 
 이야기 지도는 현재 장면을 화면 가운데에서 보여주며, 지도 가장자리 밖에도 한 화면 이상의 여백을 두어 위·아래·좌우로 자유롭게 움직일 수 있습니다.
+
+## 한·영 화면과 게임 지원 언어
+
+[한국어 데모](https://yavn.vercel.app/) · [English demo](https://yavn.vercel.app/en/) · [English creator guide](docs/DEVELOPMENT_GUIDE.en.md)
+
+야븐은 비주얼노벨·선택형 스토리 RPG 웹게임 만들기를 위한 엔진입니다. 목록과 엔진 조작 UI의 한·영 전환, 데모별 실제 지원 언어 표시, 언어명/코드 검색 및 언어 필터를 제공합니다. `launcher.yaml`에 `languages: [ko]`처럼 선언하세요. 작품의 대사·선택지는 창작자가 제공한 언어를 유지합니다. 한·영 제작 안내·초기 HTML·게임별 구조화 데이터·canonical/hreflang·사이트맵을 함께 빌드합니다. [SEO 기록](docs/SEO.md).

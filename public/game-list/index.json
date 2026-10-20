@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-09-09T04:29:46.852Z",
+  "generatedAt": "2026-10-20T04:44:50.882Z",
   "games": [
     {
       "id": "conan",
@@ -9,6 +9,7 @@
       "author": "uiwwsw",
       "version": "10.8.0",
       "summary": "비공식·비상업적 팬 데모. 기념품 고르기와 탁구 삼세판, 가족 저녁을 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
+      "summaryEn": "Unofficial, noncommercial fan demo. Choose souvenirs, play table tennis and enjoy a family dinner, then investigate cup number two and a missing minute at a stormbound inn.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [
         "detective",
@@ -17,6 +18,9 @@
         "voice-sfx",
         "character-driven",
         "noncommercial-fan-demo"
+      ],
+      "languages": [
+        "ko"
       ],
       "legalNotices": [
         {
@@ -55,6 +59,7 @@
       "author": "uiwwsw",
       "version": "1.0",
       "summary": "비공식·비상업적 팬 데모. 자동 대사, 제한 시간 선택, 공용 자산, 신규 카메라 효과를 약 60초에 압축한 엔진 쇼케이스.",
+      "summaryEn": "Unofficial, noncommercial fan demo. A one-minute engine showcase of automatic dialogue, timed choices, shared assets and cinematic camera effects.",
       "thumbnail": "/game-list/conan-demo/assets/bg/rail-warning.avif",
       "tags": [
         "60-second",
@@ -62,6 +67,9 @@
         "engine-showcase",
         "timed-choice",
         "noncommercial-fan-demo"
+      ],
+      "languages": [
+        "ko"
       ],
       "showcase": {
         "label": "ENGINE SHOWCASE"
@@ -100,6 +108,7 @@
       "author": "uiwwsw",
       "version": "10.4.0",
       "summary": "내 죽음이 먼저 기록된 밤. 12종의 증거와 네 번의 비교 조사로 음모를 밝히고, 가족과 백성 사이의 선택으로 11개의 결말을 만드는 12장 정치극.",
+      "summaryEn": "A twelve-chapter political drama. Investigate twelve types of evidence and four comparisons, then choose between family and the people across eleven endings.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
         "historical-fiction",
@@ -108,6 +117,9 @@
         "character-drama",
         "political-thriller",
         "consequential-choices"
+      ],
+      "languages": [
+        "ko"
       ],
       "showcase": {
         "label": "COMPLETE · 12 CHAPTERS",
@@ -150,11 +162,15 @@
       "author": "uiwwsw",
       "version": "1.0.0",
       "summary": "렌과 대화하며 표정, 손끝을 따라오는 시선, 가까워지는 카메라를 직접 체험하는 Live2D 인터랙션 데모.",
+      "summaryEn": "Talk with Ren and explore expressions, gaze that follows your pointer and a moving camera in this Live2D interaction demo.",
       "thumbnail": "/game-list/live2dtest/assets/ui/launcher-preview.jpg",
       "tags": [
         "live2d",
         "interaction",
         "smoke-test"
+      ],
+      "languages": [
+        "ko"
       ],
       "showcase": {
         "label": "LIVE2D DEMO",
