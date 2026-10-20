@@ -1,3 +1,10 @@
+# launcher.yaml catalog metadata (not game dialogue translation):
+# languages: [ko] # Actual playable story languages; do not infer from UI locale.
+# translations:
+#   en:
+#     summary: A Korean-language mystery with branching choices.
+# This gives the English catalog a translated summary, not an English story edition.
+
 chapterTitle: "이야기의 시작"
 
 # YAML V3 chapter snippet example:

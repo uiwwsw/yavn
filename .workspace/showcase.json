@@ -26,6 +26,6 @@
   ],
   "evidence": {
     "verifiedAt": "2026-10-20",
-    "note": "main 532ba19 배포 후 /,/en/,/create/,/en/create/ 및 게임4개 HTTP200, 없는 게임404. 402개 테스트·빌드 통과. 실제 영어 목록에서 Korean검색4개·English검색0개, 한국어 필터4개 및 모바일390 가로넘침 없음 확인."
+    "note": "main 532ba19 배포 후 /,/en/,/create/,/en/create/ 및 게임4개 HTTP200, 없는 게임404. 403개 테스트·빌드 통과. 실제 영어 목록에서 Korean검색4개·English검색0개, 한국어 필터4개 및 모바일390 가로넘침 없음 확인."
   }
 }
