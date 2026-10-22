@@ -6,7 +6,7 @@ YAVN is a YAML-based visual novel engine for browser games and choice-driven sto
 
 ## Start a project
 
-Use Node 22.13 or later and the pinned pnpm version in package.json. Run `pnpm install`, `pnpm test` and `pnpm dev`. For SSD-managed workspaces use `devctl exec --` before each command.
+Use Node 22.13 or later and the pinned pnpm version in package.json. Run `pnpm install`, `pnpm test` and `pnpm dev`.
 
 Use the repository's [sample.yaml](../sample.yaml) and existing packages under `public/game-list/` as executable references. The DSL is YAML V3: `config.yaml` contains game identity and presentation, `base.yaml` shared assets/state/inventory, and numbered chapter files contain scripts and scenes. Keep asset paths relative to the declaring package unless explicitly referencing shared root assets.
 
