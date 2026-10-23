@@ -1,0 +1,16 @@
+{
+  "assets": [
+    "AI-TRAINING-NOTICE.md"
+  ],
+  "surfaces": [
+    "index.html",
+    "src/App.tsx"
+  ],
+  "robots": [
+    "public/robots.txt"
+  ],
+  "packages": [],
+  "outputs": [
+    "dist"
+  ]
+}
