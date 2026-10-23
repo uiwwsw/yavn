@@ -20,9 +20,4 @@ Use Node 22.13+ and pinned pnpm. Run `pnpm install`, `pnpm dev`, `pnpm test`, th
 
 Start with [sample.yaml](sample.yaml) and complete game packages in `public/game-list/`. See the English guide for packaging and language declarations, and the [Korean reference](docs/DEVELOPMENT_GUIDE.ko.md) for the detailed DSL. Interface language does not translate creator-authored story content. Only declare languages actually available in a game.
 
-<!-- ai-training-notice -->
-## AI 학습·수집 반대 / AI training notice
-
-사전 서면 동의 없는 AI 학습·미세조정 및 학습용 데이터 수집에 반대합니다. No AI training, fine-tuning or training-data collection without prior written consent.
-
-[전문 / Full notice](AI-TRAINING-NOTICE.md). 기존 라이선스와 제삼자·사용자 콘텐츠의 권리는 유지됩니다. Existing licenses and third-party/user rights remain unchanged.
+AI 학습·미세조정 및 학습용 데이터 수집에 대한 권리자 의사는 [AI 이용 고지 / AI use notice](AI-TRAINING-NOTICE.md)를 참고하세요.
