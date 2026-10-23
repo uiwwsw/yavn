@@ -5060,7 +5060,7 @@ export default function App() {
                     ) : (
                       <p className="legal-notice-empty">{t("이 게임이 선언한 별도 법적 고지는 없습니다.")}</p>
                     )}
-                    <details data-ai-training-notice="true" className="ai-training-notice print:hidden"><summary>AI 학습·수집 반대 · AI training opt-out</summary><p>사전 서면 동의 없는 AI 학습·미세조정 및 학습용 데이터 수집에 반대합니다.</p><p lang="en">No AI training, fine-tuning or training-data collection without prior written consent.</p><p>기존 라이선스와 제삼자·사용자 콘텐츠의 권리는 유지됩니다. Existing licenses and third-party/user rights remain unchanged.</p><a href="/ai-training-notice.txt">전문 · Full notice</a></details><nav className="legal-notice-global-links" aria-label={t("YAVN 라이선스 문서")}>
+                    <nav className="legal-notice-global-links" aria-label={t("YAVN 라이선스 문서")}>
                       <a href={thirdPartyNoticesUrl} target="_blank" rel="noreferrer">{t("YAVN 제3자 고지")}</a>
                       <a href={suiteLicenseUrl} target="_blank" rel="noreferrer">{t("SUITE 글꼴 라이선스")}</a>
                       <a href={easyCl2dNoticeUrl} target="_blank" rel="noreferrer">easy-cl2d NOTICE</a>

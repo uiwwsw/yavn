@@ -1,6 +1,7 @@
 {
   "assets": [
-    "AI-TRAINING-NOTICE.md"
+    "AI-TRAINING-NOTICE.md",
+    "public/ai-training-notice.txt"
   ],
   "surfaces": [
     "index.html",
@@ -12,5 +13,6 @@
   "packages": [],
   "outputs": [
     "dist"
-  ]
+  ],
+  "uiPolicy": "source-only"
 }
