@@ -5,7 +5,7 @@ const workspaceRoot = process.cwd();
 const publicDir = path.join(workspaceRoot, 'public');
 
 const REQUIRED_ROOT_FILES = ['favicon.svg', 'robots.txt', 'sitemap.xml'];
-const ALLOWED_ROOT_FILES = new Set([...REQUIRED_ROOT_FILES, 'googlef965631a155f9226.html', 'ai-training-notice.txt']);
+const ALLOWED_ROOT_FILES = new Set([...REQUIRED_ROOT_FILES, 'googlef965631a155f9226.html', 'ai-training-notice.txt', 'usage-analytics.js', 'usage-analytics.css']);
 const ALLOWED_PREFIXES = ['game-list/'];
 
 const DISALLOWED_HINTS = [
