@@ -1623,6 +1623,13 @@ export default function App() {
   const [endingCreditsOpen, setEndingCreditsOpen] = useState(false);
   const [gameOverRecoveryOpen, setGameOverRecoveryOpen] = useState(false);
   const [storyMapOpen, setStoryMapOpen] = useState(false);
+  const usageScreen = settingsOpen ? ({log:'history',inventory:'inventory',system:'settings'} as const)[caseFileTab] : storyMapOpen ? 'story_map' : endingCreditsOpen ? 'ending' : startGate ? 'game_start' : game ? (isFinished ? 'ending' : 'play') : (uiLanguage === 'en' ? 'launcher_en' : 'launcher');
+  const lastUsageScreen = useRef(uiLanguage === 'en' ? 'launcher_en' : 'launcher');
+  useEffect(() => {
+    const sync = () => { if (lastUsageScreen.current !== usageScreen && window.movvUsage) { window.movvUsage.screen(usageScreen); lastUsageScreen.current = usageScreen; } };
+    sync(); window.addEventListener('movv-usage-ready', sync);
+    return () => window.removeEventListener('movv-usage-ready', sync);
+  }, [usageScreen]);
   const [seenEndingIds, setSeenEndingIds] = useState<string[]>([]);
   const [stickerSafeInset, setStickerSafeInset] = useState(0);
   const [characterPromptInset, setCharacterPromptInset] = useState(0);
