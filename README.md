@@ -14,6 +14,8 @@ Type your story. Play your novel.
 `YAVN`은 YAML 기반 비주얼노벨 엔진입니다.
 현재 DSL은 **YAML V3**이며, 전역/공통/챕터 선언을 분리합니다.
 
+[기여 가이드](CONTRIBUTING.md) · [게임 목록에 작품 추가하기](docs/ADDING_A_GAME.ko.md) · [English contribution guide](CONTRIBUTING.en.md)
+
 ## 이야기 지도
 
 - 플레이 중 HUD의 **이야기 지도** 또는 사망·엔딩 화면의 **이야기 지도 펼치기**로 진입합니다.
@@ -1239,5 +1241,9 @@ scenes:
 ## First-screen presentation
 
 Public launcher/game HTML keeps its useful search/no-JavaScript content, but includes critical startup styling so it is never shown as a raw text dump before the engine mounts. The launcher preloads its existing local SUITE font; the static creator guide uses the same font. Story/game state and controls are unchanged.
+
+## 기여와 게임 목록 등록
+
+개발 환경·협업·검증·PR 절차는 [기여 가이드](CONTRIBUTING.md)를 따릅니다. 새 작품은 [게임 등록 가이드](docs/ADDING_A_GAME.ko.md)의 실행 가능한 최소 템플릿에서 시작할 수 있습니다. ZIP 업로드는 로컬 플레이이며 공개 목록 등록에는 PR 검토·병합·배포가 필요합니다.
 
 AI 학습·미세조정 및 학습용 데이터 수집에 대한 권리자 의사는 [AI 이용 고지 / AI use notice](AI-TRAINING-NOTICE.md)를 참고하세요.
