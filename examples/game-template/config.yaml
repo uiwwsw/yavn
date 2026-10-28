@@ -1,0 +1,15 @@
+title: "나의 첫 이야기"
+author:
+  name: "Your creator name"
+version: "1.0.0"
+textSpeed: 40
+autoSave: true
+clickToInstant: true
+startScreen:
+  enabled: true
+  showTitle: true
+endings:
+  morning:
+    title: "다음 페이지"
+    message: "작은 선택으로 새 이야기가 시작됩니다."
+defaultEnding: morning

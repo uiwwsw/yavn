@@ -1,5 +1,9 @@
 # YAVN (야븐) 개발 가이드
 
+## 기여와 게임 목록 등록
+
+[기여 가이드](../CONTRIBUTING.md)에서 개발 환경과 협업·PR 절차를, [게임 등록 가이드](ADDING_A_GAME.ko.md)에서 최소 패키지 복사부터 메타데이터·검수·출처 기록·공개 목록 제출까지 확인할 수 있습니다. 실행 가능한 독립 시작점은 `examples/game-template/`입니다.
+
 이 문서는 YAML V3 기준의 제작/유지보수 가이드입니다.
 
 ## 2026-10-13 변경 기록 — 현재 위치와 분기 방향, 덕만 문체
@@ -69,7 +73,7 @@ pnpm dev
 
 선택 메타 파일:
 - `public/game-list/<gameId>/launcher.yaml` (선택)
-- 허용 키: `summary`, `thumbnail`, `tags`, `showcase`
+- 허용 키: `summary`, `thumbnail`, `tags`, `languages`, `translations.en.summary`, `showcase`
 - 이 파일은 런처 전용이며 엔진 DSL 스키마(`config/base/chapter`)와 분리됩니다.
 - `launcher.yaml.thumbnail`이 없고 `config.yaml.startScreen.image`가 있으면 manifest 생성 시 해당 이미지를 기본 썸네일로 사용합니다.
 - `showcase.label`은 캐러셀 상단 라벨, `backgroundColor`는 3/4/6/8자리 hex 배경색입니다.

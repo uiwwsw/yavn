@@ -1,0 +1,24 @@
+chapterTitle: "첫 편지"
+script:
+  - scene: opening
+scenes:
+  opening:
+    title: "봉투 앞에서"
+    actions:
+      - say: { text: "문 앞에 편지 한 장이 놓여 있었다." }
+      - choice:
+          key: first_letter
+          prompt: "어떻게 할까?"
+          options:
+            - text: "편지를 읽는다"
+              goto: read_letter
+            - text: "주머니에 넣는다"
+              goto: keep_letter
+  read_letter:
+    actions:
+      - say: { text: "첫 줄에는 내일 만나자는 말이 적혀 있었다." }
+      - ending: morning
+  keep_letter:
+    actions:
+      - say: { text: "내일의 나에게 작은 비밀을 남겨 두었다." }
+      - ending: morning

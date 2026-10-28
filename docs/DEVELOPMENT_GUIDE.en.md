@@ -1,5 +1,9 @@
 # YAVN creator guide
 
+## Contribute or submit a game
+
+Follow [CONTRIBUTING](../CONTRIBUTING.en.md) for setup, coordination and review, and [Add a game](ADDING_A_GAME.en.md) for the runnable `examples/game-template/` starter, metadata, play checks, asset provenance and catalog submission.
+
 [한국어 reference](DEVELOPMENT_GUIDE.ko.md) · [English demo](https://yavn.vercel.app/en/) · [Make a web game](https://yavn.vercel.app/en/create/)
 
 YAVN is a YAML-based visual novel engine for browser games and choice-driven story RPGs. Write scenes, dialogue and choices, then add state, inventory, licensed artwork, sound or Live2D. It is a narrative runtime, not a 3D combat or tile-map editor.
@@ -22,7 +26,7 @@ scenes:
       - say: {text: The envelope bears my name.}
 ```
 
-For a complete runnable package, start from an existing package and preserve its required config and assets. Copying a chapter excerpt alone is not a complete ZIP game.
+For a complete runnable package, copy `examples/game-template/` as described in the game submission guide. Copying a chapter excerpt alone is not a complete ZIP game.
 
 ## Narrative and presentation
 

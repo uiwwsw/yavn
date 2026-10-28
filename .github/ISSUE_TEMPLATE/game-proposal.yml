@@ -1,0 +1,35 @@
+name: 게임 제안 / Game proposal
+description: 게임 목록에 추가할 작품의 범위와 권리·검수 계획을 논의합니다.
+title: "[Game] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        먼저 [기여 가이드](https://github.com/uiwwsw/yavn/blob/main/CONTRIBUTING.md)와 [게임 등록 절차](https://github.com/uiwwsw/yavn/blob/main/docs/ADDING_A_GAME.ko.md)를 확인하세요.
+        Read the contribution and game submission guides. This proposal is for discussion; publication requires a package PR and review. Do not include private records or credentials.
+  - type: input
+    id: identity
+    attributes:
+      label: 작품명과 game ID / Title and game ID
+      description: 기존 작품과 겹치지 않는 폴더 ID를 제안합니다.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 소개와 작업 범위 / Summary and scope
+      description: 실제 이야기 언어, 장르, 예상 플레이 시간, 챕터·분기, 담당자와 엔진 변경 필요 여부를 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: rights
+    attributes:
+      label: 에셋 출처와 권리 / Asset sources and rights
+      description: 자체 제작·제3자 자료를 구분하고 공개 재배포 가능 여부와 출처 기록 계획을 설명합니다.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: 검수 계획과 진행 상태 / Validation plan and progress
+      description: 구현 여부, 선택·엔딩·저장·PC/모바일 검수 계획, 관련 PR이나 공개 실행 링크를 적어 주세요.
