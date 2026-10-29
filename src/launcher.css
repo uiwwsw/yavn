@@ -484,3 +484,16 @@
 .launcher-language-filter select { min-height:44px; max-width:100%; border:1px solid #c9d2c5; background:#fdfbf7; padding:8px; border-radius:5px; }
 .launcher-game-languages { display:block; font-size:12px; line-height:1.6; color:#52634f; margin:8px 0; }
 @media(max-width:768px) { .launcher-topbar { flex-wrap:wrap; } .launcher-language-switch { margin-left:auto; } .launcher-library-controls { flex-wrap:wrap; } }
+
+/* Keep story descriptions legible on dark spotlights and narrow screens. */
+.launcher-feature-copy .launcher-game-languages{color:#d2dfca}
+@media(max-width:768px){
+ .workspace-game-summary{font-size:14px;line-height:1.8;-webkit-line-clamp:3}
+ .launcher-feature-summary{font-size:14px;line-height:1.8}
+ .launcher-nav a,.launcher-language-switch{min-height:44px;display:inline-flex;align-items:center}
+ .launcher-game-languages{font-size:12px;line-height:1.7}
+ .launcher-footer nav a{min-height:44px;display:inline-flex;align-items:center;font-size:12px}
+}
+
+.launcher-language-filter select{font:inherit;min-height:44px;max-width:100%;color:var(--launcher-ink);background:var(--launcher-paper);border:1px solid var(--launcher-line);border-radius:4px;padding:8px 12px}
+@media(max-width:768px){.launcher-search-field input{font-size:16px}.launcher-language-filter{flex-wrap:wrap}}

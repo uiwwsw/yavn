@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-10-20T04:51:04.050Z",
+  "generatedAt": "2026-10-29T23:57:55.566Z",
   "games": [
     {
       "id": "conan",
@@ -8,7 +8,7 @@
       "path": "/game-list/conan/",
       "author": "uiwwsw",
       "version": "10.8.0",
-      "summary": "비공식·비상업적 팬 데모. 기념품 고르기와 탁구 삼세판, 가족 저녁을 즐긴 뒤 폭우의 료칸에서 2번 찻잔과 사라진 1분의 진실을 밝히는 장편 추리 에피소드.",
+      "summary": "기념품을 고르고 탁구 삼세판에 가족 저녁까지 즐기던 온천 여행. 폭우가 내리는 료칸에서 2번 찻잔과 사라진 1분을 조사한다. 비공식·비상업적 팬 데모.",
       "summaryEn": "Unofficial, noncommercial fan demo. Choose souvenirs, play table tennis and enjoy a family dinner, then investigate cup number two and a missing minute at a stormbound inn.",
       "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
       "tags": [
@@ -107,7 +107,7 @@
       "path": "/game-list/deokman/",
       "author": "uiwwsw",
       "version": "10.4.0",
-      "summary": "내 죽음이 먼저 기록된 밤. 12종의 증거와 네 번의 비교 조사로 음모를 밝히고, 가족과 백성 사이의 선택으로 11개의 결말을 만드는 12장 정치극.",
+      "summary": "오늘 밤 죽는다고, 내 이름 옆에 적혀 있다. 12종의 증거를 모으고 네 번의 비교 조사로 음모를 쫓는 12장 정치극. 가족과 백성 사이에서 내린 선택은 11개의 결말로 이어진다.",
       "summaryEn": "A twelve-chapter political drama. Investigate twelve types of evidence and four comparisons, then choose between family and the people across eleven endings.",
       "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
       "tags": [
