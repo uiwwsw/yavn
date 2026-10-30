@@ -1246,4 +1246,6 @@ Public launcher/game HTML keeps its useful search/no-JavaScript content, but inc
 
 개발 환경·협업·검증·PR 절차는 [기여 가이드](CONTRIBUTING.md)를 따릅니다. 새 작품은 [게임 등록 가이드](docs/ADDING_A_GAME.ko.md)의 실행 가능한 최소 템플릿에서 시작할 수 있습니다. ZIP 업로드는 로컬 플레이이며 공개 목록 등록에는 PR 검토·병합·배포가 필요합니다.
 
+서재에서 제목·태그·작가·언어를 함께 검색할 수 있습니다. 공백으로 나눈 검색어를 모두 포함하는 작품을 찾으며 전각 문자도 지원합니다.
+
 AI 학습·미세조정 및 학습용 데이터 수집에 대한 권리자 의사는 [AI 이용 고지 / AI use notice](AI-TRAINING-NOTICE.md)를 참고하세요.

@@ -30,7 +30,7 @@ scenes:
               var: opening_name_read
               op: eq
               value: true
-          text: "내 이름 아래에 죽을 날이 적혀 있다. 오늘 밤. 먹도 다 마르지 않았다."
+          text: "내 이름 아래에 오늘 밤이라고 적혀 있다. 죽는 날이. 먹이 아직 젖어 있다."
       - say:
           channel: thought
           with: []
@@ -40,7 +40,7 @@ scenes:
               var: opening_name_read
               op: eq
               value: true
-          text: "소화는 이걸 봤을까. 왜 자꾸 문만 보는 걸까."
+          text: "소화도 봤나? 아까부터 문 쪽만 보고 있다."
       - clearSticker:
           id: opening_death_register
           leave: fadeOut
@@ -60,7 +60,7 @@ scenes:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "그러니 더 붙어 계셔야지요. 자, 이 손. 아프셔도 놓으시면 안 됩니다."
+          text: "쉿. 제 곁에만 계셔요. 손 아프셔도 조금만 참으시고요."
       - goto: peony_arrives
 
   peony_arrives:
@@ -106,7 +106,7 @@ scenes:
               goto: observe_absence
             - text: 족자를 들어 뒤축을 만진다
               goto: observe_back
-            - text: 그림을 두고 창과 퇴로를 센다
+            - text: 창밖으로 빠져나갈 곳을 찾는다
               set:
                 observed_left_waterway: true
               goto: observe_waterway
@@ -137,12 +137,12 @@ scenes:
           text: "…조용해요. 아까 문밖에 서 있던 사람들은요?"
       - say:
           channel: action
-          text: "소화가 찻잔으로 가던 내 손을 붙든다. 소매를 당기는 손끝이 급하다. 그 눈을 따라 창을 본다."
+          text: "찻잔에 손을 뻗자 소화가 내 손목을 붙든다. 소매를 잡아당기며 창 쪽으로 눈짓한다."
       - add:
           insight: 1
       - say:
           channel: thought
-          text: "아버지도 잔에 손을 대지 않으셨어. 그림을 보느라 그것도 몰랐네."
+          text: "아버지 잔도 그대로야. 아까부터 한 모금도 안 드셨어."
           with: []
           camera: wide
           continueLabel: 창 아래로 몸을 낮춘다

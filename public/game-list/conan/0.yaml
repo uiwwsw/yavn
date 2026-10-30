@@ -29,12 +29,12 @@ scenes:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=29>아빠, 우산 좀 안쪽으로 들어오세요.</speed> <speed=24>코난 쪽으로 기울이다가 아빠 어깨가 다 젖었잖아요.</speed>"
+          text: "<speed=29>아빠, 이쪽으로 좀 붙어요.</speed> <speed=24>코난 씌워 주다가 어깨가 다 젖었잖아요.</speed>"
       - say:
           char: 코고로.proud
           with:
             - 란
-          text: "<speed=35>이 정도 비쯤이야!</speed> <speed=26>둘만 안 젖으면 됐지. 산속 온천은 비가 와야 운치도 살고.</speed>"
+          text: "<speed=35>이 정도 비쯤이야!</speed> <speed=26>너희만 안 젖으면 됐지. 이 비 맞고 온천에 들어가면 딱이겠구만.</speed>"
       - char:
           id: 코난
           position: center
@@ -43,23 +43,23 @@ scenes:
           char: 코난.smile
           with:
             - 란
-          text: "<speed=28>란 누나, 저기 봐.</speed> <speed=24>구름 아래 산길이 강처럼 보여. 비가 그치면 길 모양도 완전히 달라지겠어.</speed>"
+          text: "<speed=28>란 누나, 저기 봐.</speed> <speed=24>저 아래 산길, 물이 잔뜩 흘러. 꼭 강 같아.</speed>"
       - say:
           char: 란
           with:
             - 코난.smile
-          text: "<speed=27>정말이네.</speed> <speed=23>지금 한 장 찍어 두자. 비가 그치면 같은 자리에서 한 장 더. 나란히 보면 오늘을 오래 기억하겠다.</speed>"
+          text: "<speed=27>정말이네.</speed> <speed=23>한 장 찍어 둘까? 비 그치면 여기서 또 찍자. 얼마나 달라지는지 보게.</speed>"
       - say:
           char: 코고로.proud
-          text: "<speed=33>사진도 좋지만 입구부터 들어가자.</speed> <speed=26>오늘 내 의뢰인은 온천, 저녁상, 그리고 아무 사건도 없는 낮잠이야!</speed>"
+          text: "<speed=33>사진은 들어가서 찍고!</speed> <speed=26>나는 얼른 몸부터 녹여야겠다. 오늘은 사건이고 뭐고 푹 쉴 거야!</speed>"
       - say:
           char: 란
           with:
             - 코고로.proud
-          text: "<speed=28>셋 다 의뢰비는 아빠가 내는 거 아시죠?</speed> <speed=23>특히 ‘아무 사건도 없는’ 부분이요.</speed>"
+          text: "<speed=28>그럼 오늘은 전화 와도 쉬는 거예요.</speed> <speed=23>저녁 먹다가 또 달려 나가기 없기예요?</speed>"
       - say:
           char: 코고로.proud
-          text: "<speed=26>여행 첫날부터 돈이랑 사건 얘기는 봉인이다.</speed> <speed=22>오늘은 셋이 쉬러 온 거야.</speed>"
+          text: "<speed=26>알았다니까. 전화도 안 받을 테니 걱정 마.</speed> <speed=22>오늘은 셋이 쉬러 온 거야.</speed>"
 
   room_lottery:
     actions:
@@ -95,7 +95,7 @@ scenes:
           char: 코난.smile
           with:
             - 코고로.proud
-          text: "<speed=28>아저씨 손에 벌써 두 개 있는데요?</speed> <speed=23>하나는 제 마른 자리에 놓여 있던 거예요.</speed>"
+          text: "<speed=28>아저씨 손에 벌써 두 개 있는데요?</speed> <speed=23>그중 하나는 제 자리에 있었는데.</speed>"
       - say:
           char: 코고로.proud
           delivery: shout
@@ -110,7 +110,7 @@ scenes:
           text: "<speed=27>돌려놓은 게 더 작은데요.</speed>"
       - say:
           char: 코고로.proud
-          text: "<speed=31>보호자 세금 뗀 거다, 세금!</speed> <speed=23>대신 내일 아침까지 안전하게 보관해 주지.</speed>"
+          text: "<speed=31>큰 건 어른이 먹어야지!</speed> <speed=23>내일 아침에 내 것 하나 주마.</speed>"
 
   bath_return:
     actions:

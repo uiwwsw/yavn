@@ -1,3 +1,4 @@
+import { matchesStorySearch } from './storySearch';
 import { t, uiLanguage, languageLabel, normalizeGameLanguages, gameHref } from './uiLanguage';
 import {
   ChangeEvent,
@@ -2125,7 +2126,7 @@ export default function App() {
 
   const hiddenLauncherTagCount = Math.max(0, allLauncherTags.length - visibleLauncherTags.length);
 
-  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+  const normalizedSearchTerm = searchTerm.normalize('NFKC').trim().toLowerCase();
   const filteredGames = useMemo(() => {
     return gameList.filter((entry) => {
       if (activeLanguage && !entry.languages.includes(activeLanguage)) return false;
@@ -2136,7 +2137,7 @@ export default function App() {
       if (!normalizedSearchTerm) {
         return true;
       }
-      return [
+      return matchesStorySearch([
         entry.id,
         entry.name,
         entry.path,
@@ -2145,10 +2146,7 @@ export default function App() {
         entry.summaryEn ?? '',
         entry.tags.join(' '),
         entry.languages.map(code => `${code} ${languageLabel(code)}`).join(' '),
-      ]
-        .join(' ')
-        .toLowerCase()
-        .includes(normalizedSearchTerm);
+      ], normalizedSearchTerm);
     });
   }, [activeTag, activeLanguage, gameList, normalizedSearchTerm]);
 
