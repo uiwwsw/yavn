@@ -1,0 +1,177 @@
+assets:
+  backgrounds:
+    chilsuk_sword_cutin: root:/game-list/deokman/assets/bg/chilsuk-sword-cutin-v1.png
+    chilsuk_bow_cutin: root:/game-list/deokman/assets/bg/chilsuk-bow-cutin-v1.png
+    title_palace: root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp
+    peony_court: root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp
+    burning_palace: root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp
+    moon_court: root:/game-list/deokman/assets/bg/moon-court-silla-v3.webp
+    shadow_corridor: root:/game-list/deokman/assets/bg/shadow-corridor-silla-v3.webp
+    village: root:/game-list/deokman/assets/bg/village-silla-v3.webp
+    council_hall: root:/game-list/deokman/assets/bg/council-hall-silla-v3.webp
+    banquet_hall: root:/game-list/deokman/assets/bg/banquet-hall-silla-v3.webp
+    frontier: root:/game-list/deokman/assets/bg/frontier-silla-v3.webp
+    locked_room: root:/game-list/deokman/assets/bg/locked-room-silla-v3.webp
+    princess_chamber: root:/game-list/deokman/assets/bg/princess-chamber-silla-v3.webp
+    throne_hall: root:/game-list/deokman/assets/bg/throne-hall-silla-v3.webp
+    peony_painting_sticker: root:/game-list/deokman/assets/items/peony-painting.svg
+    death_register_sticker: root:/game-list/deokman/assets/items/death-register.svg
+    peony_token_sticker: root:/game-list/deokman/assets/items/peony-token.svg
+    market_seal_sticker: root:/game-list/deokman/assets/items/market-seal.svg
+    grain_ledger_sticker: root:/game-list/deokman/assets/items/grain-ledger.svg
+    eclipse_table_sticker: root:/game-list/deokman/assets/items/eclipse-table.svg
+    empty_seal_box_sticker: root:/game-list/deokman/assets/items/empty-seal-box.svg
+    star_chart_sticker: root:/game-list/deokman/assets/items/star-chart.svg
+    burnt_kite_sticker: root:/game-list/deokman/assets/items/burnt-kite.svg
+    bidam_letter_sticker: root:/game-list/deokman/assets/items/bidam-letter.svg
+    forged_token_sticker: root:/game-list/deokman/assets/items/forged-token.svg
+    medicine_cup_sticker: root:/game-list/deokman/assets/items/medicine-cup.svg
+  characters:
+    Young Deokman:
+      placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait:
+          scale: 1
+          cropBottom: 0.32
+        full:
+          scale: 1
+      base: root:/game-list/deokman/assets/char/deokman-child-silla-v8.png
+      facing: left
+      defaultDelivery: deduction
+      calibration:
+        scale: 1
+        "y": 0
+        spacing: 0.75
+      emotions:
+        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v8.png
+        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v8.png
+    Sohwa:
+      placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait:
+          scale: 1
+          cropBottom: 0.4
+        full:
+          scale: 1
+      base: root:/game-list/deokman/assets/char/sowon-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration:
+        scale: 1
+        "y": 0
+        spacing: 0.75
+      emotions:
+        nervous: root:/game-list/deokman/assets/char/sowon-nervous-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/sowon-angry-silla-v5.webp
+    King Jinpyeong:
+      placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait:
+          scale: 1
+          cropBottom: 0.4
+        full:
+          scale: 1
+      base: root:/game-list/deokman/assets/char/jinpyeong-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration:
+        scale: 1
+        "y": 0
+        spacing: 0.75
+      emotions:
+        sad: root:/game-list/deokman/assets/char/jinpyeong-sad-silla-v5.webp
+        weak: root:/game-list/deokman/assets/char/jinpyeong-weak-silla-v5.webp
+    Chilsuk:
+      placement: prompt-top
+      defaultFraming: portrait
+      framings:
+        portrait:
+          scale: 1
+          cropBottom: 0.4
+        full:
+          scale: 1
+      base: root:/game-list/deokman/assets/char/chilsuk-silla-v5.webp
+      facing: left
+      defaultDelivery: calm
+      calibration:
+        scale: 1
+        "y": 0
+        spacing: 0.75
+      emotions:
+        smile: root:/game-list/deokman/assets/char/chilsuk-smile-silla-v5.webp
+        angry: root:/game-list/deokman/assets/char/chilsuk-angry-silla-v5.webp
+  music:
+    sealed_court: root:/game-list/deokman/assets/music/sealed-court.wav
+    night_road: root:/game-list/deokman/assets/music/night-road.wav
+    open_sky: root:/game-list/deokman/assets/music/open-sky.wav
+  sfx: {}
+state:
+  opening_name_read: false
+  opening_door_heard: false
+  evidence_seals_seen_0: false
+  evidence_seals_seen_1: false
+  evidence_ledger_seen_0: false
+  evidence_ledger_seen_1: false
+  evidence_token_seen_0: false
+  evidence_token_seen_1: false
+  evidence_kite_seen_0: false
+  evidence_kite_seen_1: false
+  observed_left_waterway: false
+  spoke_truth_to_king: false
+  c1_escape_route: ""
+  identity_exposed: false
+  identity_mode: ""
+  saved_market_witness: false
+  sisters_public: false
+  cheonmyeong_outcome: ""
+  grain_policy: ""
+  diplomacy_policy: ""
+  eclipse_policy: ""
+  king_failure_public: false
+  coronation_compromise: ""
+  observatory_priority: ""
+  knowledge_policy: ""
+  rebellion_response: ""
+  bidam_sentence: ""
+  record_policy: ""
+  final_decree: ""
+  people_support: 0
+  nobles_support: 0
+  army_support: 0
+  evidence: 0
+  insight: 0
+  mercy: 0
+  fear: 0
+  sohwa_trust: 0
+  king_trust: 0
+  cheonmyeong_trust: 0
+  yushin_trust: 0
+  bidam_trust: 0
+  chunchu_trust: 0
+  used_false_omen: false
+  seals_linked: false
+  grain_verified: false
+  token_verified: false
+  kite_verified: false
+inventory:
+  peony_painting:
+    name: Scentless peony painting
+    description: Flowers without bees or butterflies. A death record was hidden behind the roller.
+    image: root:/game-list/deokman/assets/items/peony-painting.svg
+    category: Royal object
+    order: 10
+  death_register:
+    name: Forged death record
+    description: It records Deokman's death tonight while she is still alive. The red seal is missing its bottom-right corner.
+    image: root:/game-list/deokman/assets/items/death-register.svg
+    category: Forbidden record
+    order: 20
+  peony_token:
+    name: Bronze peony token
+    description: A worn royal pass with green patina, an open cord loop and a peony design. It can open the north gate, but using it reveals her identity.
+    image: root:/game-list/deokman/assets/items/peony-token.svg
+    category: Identity token
+    order: 30

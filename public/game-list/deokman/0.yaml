@@ -50,7 +50,7 @@ scenes:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "전하께서 기다리십니다. 제 손 놓지 마셔요. 누가 부르거든 저부터 보시고요."
+          text: "전하께서 기다리십니다. 손 주세요. 누가 부르셔도 저부터 보셔야 해요."
       - say:
           char: 어린 덕만
           camera: medium
@@ -60,7 +60,7 @@ scenes:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "쉿. 제 곁에만 계셔요. 손 아프셔도 조금만 참으시고요."
+          text: "저도 압니다. 그러니 제 손 꼭 잡으셔요. 떨려도 놓지 마시고요."
       - goto: peony_arrives
 
   peony_arrives:
@@ -307,7 +307,7 @@ scenes:
           char: 진평왕.sad
           camera: medium
           with: [어린 덕만]
-          text: "허나 내겐 네가 있다. 남들이 비었다는 곳을 보는 네가."
+          text: "허나 내겐 네가 있다. …그 말을 이제야 하는구나."
       - goto: king_warning
 
   answer_record:
@@ -401,25 +401,28 @@ scenes:
           with: [어린 덕만]
           text: "너희가 태어났을 때부터였다. 저들은 천명 곁에 서거나, 네 곁에 서겠다 했지."
       - say:
+          delivery: sad
           char: 어린 덕만
           camera: medium
           with: [진평왕]
-          text: "그래서 나를 숨겼어요? 언니한테도 못 가게 하고?"
+          text: "그래서 나를 숨겼어요? 언니는 내가 싫어서 안 오는 줄 알았어요."
       - say:
+          delivery: sad
           char: 진평왕.sad
           camera: medium
           with: [어린 덕만]
-          text: "네 얼굴을 모르면 해치지도 못할 줄 알았다. 내가… 그리 어리석었어."
+          text: "얼굴을 모르면 해치지도 못할 줄 알았다. 네가 기다리는 건… 외면했다."
       - say:
           char: 어린 덕만
           camera: medium
           with: [진평왕]
-          text: "그럼 이제는요? 오늘 밤에도 여기 숨어 있어야 해요?"
+          text: "그럼 오늘은요? 또 여기서 기다려요? 아버지 올 때까지?"
       - say:
+          delivery: whisper
           char: 진평왕
           camera: medium
           with: [어린 덕만]
-          text: "아니다. 오늘은 나가야 한다. 너를 붙들어 둔 아비 말고, 소화 말을 듣거라."
+          text: "아니다. 나를 기다리지 마라. 소화와 가거라. …손을 놓으마."
       - say:
           char: 소화.nervous
           camera: medium
@@ -429,7 +432,7 @@ scenes:
           char: 진평왕
           camera: medium
           with: [소화, 어린 덕만]
-          text: "소화야. 이 아이를 데려가라. 어서."
+          text: "소화야. 이 아이를… 부탁한다. 어서 가라."
       - goto: fire_breaks
 
   fire_breaks:
@@ -510,7 +513,7 @@ scenes:
           char: 소화.nervous
           camera: medium
           with: [어린 덕만]
-          text: "손 놓지 마셔요. 제가 무슨 소리를 해도… 오늘은 고집 좀 부리셔요."
+          text: "제가 먼저 가시라고 해도 듣지 마셔요. 오늘은… 제 말 안 들으셔도 됩니다."
       - clearSticker:
           id: peony_token_view
           leave: fadeOut
@@ -554,10 +557,11 @@ scenes:
           with: [어린 덕만]
           text: "먼저 들어가셔요. 돌을 받치고 있겠습니다."
       - say:
+          delivery: nervous
           char: 어린 덕만.resolve
           camera: medium
           with: [소화]
-          text: "싫어. 손 줘. 나만 보내려고 하지 마."
+          text: "싫어. 손부터 줘. 아까는 놓지 말라며."
       - say:
           channel: action
           text: "무릎부터 진흙에 박힌다. 뒤에서 무너지는 소리에 몸이 움츠러든다. 붙잡은 손이 한 번, 꼭 쥐어 온다."
@@ -565,17 +569,18 @@ scenes:
           char: 소화
           camera: medium
           with: [어린 덕만]
-          text: "…다치신 데는요? 아기씨, 저 좀 보셔요."
+          text: "…아기씨? 왜 말씀이 없으셔요. 제발 저 좀 보셔요."
       - say:
+          delivery: calm
           char: 어린 덕만.resolve
           camera: medium
           with: [소화]
           wait: 600
           unskippable: true
-          text: "괜찮아. 소화도 있잖아. 우리… 일단 멀리 가자."
+          text: "여기 있어. 나 여기 있어, 소화. …너도 같이 나왔네."
       - say:
           channel: thought
-          text: "숨이 들어온다. 아프게, 자꾸 들어온다. 나는 아직 여기 있다. 내 죽음에 붉은 인장을 찍은 손도, 아직 어딘가에 있을 것이다."
+          text: "내 죽음에 붉은 인장을 찍은 손도 아직 어딘가에 있다. 소화가 내 손을 얼굴에 댄다. 젖어 있다. 비인지 눈물인지 묻지 않는다."
           with: []
           camera: wide
           continueLabel: 소화의 손을 잡고 국경으로 향한다

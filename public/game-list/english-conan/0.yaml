@@ -1,0 +1,732 @@
+script:
+  - scene: holiday_arrival
+  - scene: room_lottery
+  - scene: bath_return
+  - scene: souvenir_corner
+  - scene: souvenir_finish
+  - scene: table_tennis
+  - scene: table_tennis_finish
+  - scene: dinner_time
+  - scene: rain_window
+  - scene: quiet_night
+  - scene: quiet_night_finish
+scenes:
+  holiday_arrival:
+    actions:
+      - bg:
+          id: mountain_rain
+          transition: dissolve
+          duration: 620
+      - music: rain
+      - sound: door
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Kogoro
+          position: right
+          emotion: proud
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=29>Dad, move the umbrella this way.</speed> <speed=24>You're keeping Conan dry, but your whole shoulder's soaked.</speed>
+      - say:
+          char: Kogoro.proud
+          with:
+            - Ran
+          text: <speed=35>A little rain won't hurt me!</speed> <speed=26>You two stayed dry? Good. Let's get inside.</speed>
+      - char:
+          id: Conan
+          position: center
+          emotion: smile
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=28>Ran, look down there.</speed> <speed=24>Water's running all over the mountain road. It looks like a river.</speed>
+      - say:
+          char: Ran
+          with:
+            - Conan.smile
+          text: <speed=27>It does.</speed> <speed=23>Want a picture? We'll take another here when the rain stops and see what's changed.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=33>Pictures can wait!</speed> <speed=26>I need to warm up. No cases today. I'm taking a proper rest!</speed>
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Then even if the phone rings, you're resting.</speed> <speed=23>No running off halfway through dinner, okay?</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=26>I heard you. I won't even answer it.</speed> <speed=22>You don't have to worry about me too. I'm taking the day off.</speed>
+  room_lottery:
+    actions:
+      - bg:
+          id: guest_room
+          transition: dissolve
+          duration: 620
+      - music: intro
+      - char:
+          id: Kogoro
+          position: left
+          emotion: proud
+      - char:
+          id: Ran
+          position: right
+      - say:
+          camera: wide
+          text: The tatami clings to my wet socks as I step inside. The snack basket is right at eye level. Ran takes my damp towel and hangs it beside hers.
+          channel: action
+      - say:
+          camera: medium
+          char: Kogoro.proud
+          with:
+            - Ran
+          text: <speed=34>I'll take the window.</speed> <speed=25>A great detective ought to keep watch all night in case that road floods.</speed>
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>With your eyes closed?</speed> <speed=23>Fine. But take Conan's snacks and you lose the window.</speed>
+      - char:
+          id: Conan
+          position: center
+          emotion: smile
+      - say:
+          char: Conan.smile
+          with:
+            - Kogoro.proud
+          text: <speed=28>Mr. Mouri, you've already got two.</speed> <speed=23>One of those was at my place.</speed>
+      - say:
+          char: Kogoro.proud
+          delivery: shout
+          text: <speed=38>Room allocation fee!</speed>
+      - say:
+          char: Ran
+          text: <speed=27>Then you owe us one for the window seat.</speed>
+      - say:
+          text: <speed=23>Kogoro weighs a snack in each hand, then returns the smaller one.</speed> <speed=21>Ran and Conan both watch his hand.</speed>
+      - say:
+          char: Conan.smile
+          text: <speed=27>You put back the smaller one.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=31>The big one's for grown-ups!</speed> <speed=23>You can have one of mine tomorrow morning.</speed>
+  bath_return:
+    actions:
+      - bg:
+          id: rain_corridor
+          transition: dissolve
+          duration: 620
+      - sound: door
+      - char:
+          id: Kogoro
+          position: left
+          emotion: proud
+      - char:
+          id: Conan
+          position: right
+          emotion: smile
+      - say:
+          camera: wide
+          text: My feet are warm against the corridor floor. Mr. Mouri's towel swings as he walks ahead. Maybe just for today, I can take my time following those footsteps.
+          channel: action
+      - say:
+          camera: medium
+          char: Kogoro.proud
+          with:
+            - Conan.smile
+          text: <speed=32>See, kid?</speed> <speed=25>Sit in a hot spring listening to the rain and your worries seem miles away.</speed> <speed=22>We should've brought Ran along.</speed>
+      - say:
+          char: Conan.smile
+          with:
+            - Kogoro.proud
+          text: <speed=27>They'll be back at dinner, Mr. Mouri.</speed> <speed=23>I saw you check that scale three times before your bath.</speed>
+      - say:
+          char: Kogoro.proud
+          delivery: shout
+          text: <speed=38>The steam got into it!</speed>
+      - char:
+          id: Ran
+          position: center
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>I'll help with the fried food, then.</speed> <speed=23>Starting by moving some from Dad's plate to Conan's.</speed>
+      - say:
+          char: Kogoro.proud
+          with:
+            - Ran
+          text: <speed=35>Ran! A man comes out of a hot bath and gets this cold a welcome?</speed>
+  souvenir_corner:
+    actions:
+      - bg:
+          id: souvenir_corner
+          transition: dissolve
+          duration: 620
+      - music: intro
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Kogoro
+          position: right
+          emotion: proud
+      - say:
+          camera: wide
+          text: On the way to the lounge, I stop at a display. The sign says, "Something to keep when the trip is over." I stand on tiptoe to see the back of the shelf.
+          channel: action
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Dad, souvenirs aren't business expenses.</speed>
+      - say:
+          char: Kogoro.proud
+          with:
+            - Ran
+          text: <speed=31>Who said they were?</speed> <speed=24>I was only checking whether they give receipts.</speed>
+      - char:
+          id: Conan
+          position: center
+          emotion: smile
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=27>Look, a tiny table tennis paddle.</speed> <speed=23>That should remind us who won until our next trip.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=33>Right. I'll buy one for today's champion.</speed> <speed=24>The loser can look at it and reflect on their defeat.</speed>
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Then you might as well buy mine now.</speed> <speed=23>You'll have plenty to reflect on, Dad.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=30>We haven't even played and she's already on the national team.</speed>
+      - choice:
+          camera: medium
+          key: holiday_souvenir
+          prompt: What should Conan choose?
+          options:
+            - text: A tiny table tennis paddle key ring
+              set:
+                souvenir_choice: paddle
+              goto: souvenir_paddle
+            - text: A little pouch of fragrant tea leaves
+              set:
+                souvenir_choice: tea
+              goto: souvenir_tea
+            - text: A postcard of a rainy mountain road
+              set:
+                souvenir_choice: postcard
+              goto: souvenir_postcard
+  souvenir_paddle:
+    actions:
+      - char:
+          id: Kogoro
+          position: left
+          emotion: proud
+      - char:
+          id: Ran
+          position: right
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=28>I'll take this one.</speed> <speed=23>The loser has to hang it on their bag until our next trip.</speed>
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Sounds like a good penalty.</speed>
+      - say:
+          char: Kogoro.proud
+          delivery: shout
+          text: <speed=37>Don't decide my punishment before we've played!</speed>
+      - goto: souvenir_finish
+  souvenir_tea:
+    actions:
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Conan
+          position: right
+          emotion: smile
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=27>I'll take the tea pouch.</speed> <speed=23>When I smell it at home, I think I'll remember today.</speed>
+      - say:
+          char: Ran
+          with:
+            - Conan.smile
+          text: <speed=27>I like that.</speed> <speed=22>Shall I get one for Shinichi? He's always missing things like this.</speed>
+      - say:
+          char: Conan.smile
+          text: <speed=28>Yeah. Save him one.</speed> <speed=23>Next time... you can give it to him. Instead of just sending a picture.</speed>
+      - goto: souvenir_finish
+  souvenir_postcard:
+    actions:
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Conan
+          position: right
+          emotion: smile
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=27>It looks just like that road we saw.</speed> <speed=23>I'll take this. We can keep the road before and after the rain on one card.</speed>
+      - say:
+          char: Ran
+          with:
+            - Conan.smile
+          text: <speed=27>Let's photograph it beside the real view tomorrow, if the rain stops.</speed> <speed=22>So we can see how the same place changes.</speed>
+      - say:
+          char: Conan.smile
+          text: <speed=27>We'll still recognize it, even if it changes.</speed> <speed=23>I just hope our photo turns out nicer.</speed>
+      - goto: souvenir_finish
+  souvenir_finish:
+    actions:
+      - char:
+          id: Kogoro
+          position: left
+          emotion: proud
+      - char:
+          id: Ran
+          position: right
+      - say:
+          text: <speed=23>At the counter, Kogoro folds the dated receipt neatly into his pocket.</speed> <speed=21>Ran notices.</speed>
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>I'm saying it again. Not a business expense.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=29>Memories are a detective's assets too.</speed> <speed=23>Especially with the date and place printed on them.</speed>
+      - say:
+          char: Ran
+          text: <speed=28>I'll record that for you.</speed>
+  table_tennis:
+    actions:
+      - bg:
+          id: recreation_room
+          transition: dissolve
+          duration: 620
+      - music: intro
+      - char:
+          id: Ran
+          position: left
+          emotion: determined
+      - char:
+          id: Kogoro
+          position: right
+          emotion: proud
+      - say:
+          camera: wide
+          text: <speed=24>After the first game, Kogoro picks up the ball and clears his throat as if nothing has happened.</speed> <speed=21>Ran taps the first line of the scoreboard twice.</speed>
+      - say:
+          camera: medium
+          char: Kogoro.proud
+          with:
+            - Ran.determined
+          text: <speed=34>Right. Best of three.</speed> <speed=25>First to win two gets the window seat too!</speed>
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>I've already won one, Dad. You can't afford to lose again.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=32>That was a warm-up!</speed> <speed=24>International rules don't count warm-ups.</speed>
+      - char:
+          id: Conan
+          position: center
+          emotion: smile
+      - say:
+          char: Conan.smile
+          with:
+            - Ran.determined
+          text: <speed=28>Did you just invent those rules?</speed> <speed=23>I've never heard of erasing only the first game.</speed>
+      - char:
+          id: Kogoro
+          position: right
+          emotion: angry
+      - say:
+          char: Kogoro.angry
+          delivery: shout
+          text: <speed=38>You stick to refereeing, kid!</speed>
+      - choice:
+          camera: medium
+          key: holiday_table_tennis
+          prompt: In the second game, the ball strikes a paddle edge twice. What does Conan do?
+          options:
+            - text: Tell Ran to watch his backhand
+              goto: table_tennis_coach
+            - text: Stay quiet and watch the lines
+              goto: table_tennis_referee
+            - text: Cheer Kogoro on
+              goto: table_tennis_cheer
+  table_tennis_coach:
+    actions:
+      - say:
+          char: Conan.smile
+          with:
+            - Ran.determined
+          text: <speed=29>Ran, not where the sound came from! Where it bounced last! Backhand again!</speed>
+      - say:
+          char: Ran.determined
+          text: <speed=31>Got it!</speed>
+      - say:
+          char: Kogoro.angry
+          delivery: shout
+          text: <speed=37>What kind of coach distracts people with noise? Off the court!</speed>
+      - goto: table_tennis_finish
+  table_tennis_referee:
+    actions:
+      - say:
+          char: Conan.smile
+          with:
+            - Kogoro.angry
+          text: <speed=27>Okay. This time I'll just watch the ball and the lines.</speed>
+      - say:
+          text: That hit the edge, didn't it? It sounded different from a ball hitting the floor. They're both looking down.
+          channel: thought
+      - say:
+          char: Conan.smile
+          text: <speed=30>In. There's a white mark on the edge. Point to Ran.</speed>
+      - say:
+          char: Kogoro.angry
+          text: <speed=30>Whose referee are you, anyway?</speed>
+      - goto: table_tennis_finish
+  table_tennis_cheer:
+    actions:
+      - say:
+          char: Conan.smile
+          with:
+            - Kogoro.angry
+          text: <speed=30>Come on, Mr. Mouri! Eyes on the ball! One real point this time!</speed>
+      - char:
+          id: Kogoro
+          position: right
+          emotion: proud
+      - say:
+          char: Kogoro.proud
+          text: <speed=35>That's the spirit, kid! Watch this!</speed>
+      - say:
+          text: <speed=23>Spurred on by the cheering, Kogoro spins before the ball reaches him.</speed> <speed=21>The ball bounces twice at the unguarded end of the table.</speed>
+      - goto: table_tennis_finish
+  table_tennis_finish:
+    actions:
+      - say:
+          text: <speed=23>Kogoro swings hard. The ball catches the paddle edge and soars toward the ceiling.</speed> <speed=21>While everyone looks up, it lands on Ran's side, then rolls back toward Kogoro.</speed>
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Kogoro
+          position: right
+          emotion: shocked
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Kogoro.shocked
+          text: <speed=32>Two wins in a row.</speed> <speed=24>That settles the best of three, doesn't it?</speed>
+      - say:
+          char: Kogoro.shocked
+          text: <speed=27>My arm wasn't warmed up.</speed> <speed=23>The real final can be tomorrow morning...</speed>
+      - say:
+          char: Ran
+          text: <speed=28>I'm recording.</speed> <speed=23>Everything from "best of three" to your attempt to erase the first game. Very clear.</speed>
+      - char:
+          id: Conan
+          position: center
+          emotion: smile
+      - say:
+          char: Conan.smile
+          text: <speed=27>We got the international rules too.</speed>
+      - char:
+          id: Kogoro
+          position: right
+          emotion: angry
+      - say:
+          char: Kogoro.angry
+          delivery: shout
+          text: <speed=38>Delete that part!</speed>
+  dinner_time:
+    actions:
+      - bg:
+          id: dining_room
+          transition: dissolve
+          duration: 620
+      - music: rain
+      - sound: cup_clink
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Conan
+          position: right
+          emotion: smile
+      - say:
+          camera: wide
+          text: <speed=24>Dinner arrives and the table tennis argument pauses.</speed> <speed=22>Rain at the window mingles with the simmering pot. The three of them begin to talk more slowly.</speed>
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Conan.smile
+          text: <speed=27>Conan, try these mushrooms.</speed> <speed=23>They grow them here.</speed>
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=28>They're good!</speed> <speed=23>The flavor gets stronger as you chew.</speed>
+      - char:
+          id: Kogoro
+          position: center
+          emotion: proud
+      - say:
+          char: Kogoro.proud
+          text: <speed=32>Excellent mountain vegetable tempura.</speed> <speed=25>I could generously forget about that table tennis defeat.</speed>
+      - say:
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Why would I forget that you lost, Dad?</speed>
+      - say:
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=27>If the rain stops, let's all go for a walk tomorrow.</speed> <speed=23>I want to see where we took the photo and get a closer look at that road.</speed>
+      - say:
+          char: Ran
+          with:
+            - Conan.smile
+          text: <speed=27>Yeah.</speed> <speed=22>Whoever wakes up first has to wake the other two. No going ahead alone.</speed>
+      - say:
+          char: Kogoro.proud
+          delivery: shout
+          text: <speed=36>That's practically a plan to leave me behind!</speed>
+      - say:
+          text: <speed=23>Instead of answering, Ran pulls Kogoro's plate of tempura a hand's breadth toward herself.</speed> <speed=21>He immediately sits up and reaches for his alarm.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=34>I'll set five alarms!</speed>
+  rain_window:
+    actions:
+      - bg:
+          id: rain_corridor
+          transition: dissolve
+          duration: 620
+      - music: rain
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Conan
+          position: right
+      - say:
+          camera: wide
+          text: The road from our photo wavers beyond the rain-streaked glass. Ran is beside me. If I were standing here as Shinichi, what would I say?
+          channel: thought
+      - say:
+          delivery: sad
+          camera: medium
+          char: Ran.worried
+          with:
+            - Conan
+          text: <speed=25>I wish Shinichi could come somewhere like this.</speed> <speed=22>I left a space beside me in the photo. Stupid, isn't it? He isn't here.</speed>
+      - say:
+          char: Conan.serious
+          with:
+            - Ran
+          text: <speed=26>It's not stupid.</speed> <speed=22>He probably... wanted to stand there too. Beside you.</speed>
+      - say:
+          char: Ran.worried
+          with:
+            - Conan
+          text: <speed=26>Then why doesn't he call?</speed> <speed=22>He looks at the pictures.</speed>
+      - say:
+          delivery: whisper
+          char: Conan.serious
+          text: <speed=28>...Sorry. I don't know either.</speed>
+      - say:
+          char: Ran.worried
+          text: <speed=25>I'm not asking him to do anything special.</speed> <speed=22>Just eat with us. Laugh at Dad. Have a day like this.</speed>
+      - say:
+          char: Conan.serious
+          text: <speed=25>He'll remember. That you said you should go together.</speed> <speed=22>And he'd want to say he's sorry... for making you wait.</speed>
+      - say:
+          delivery: nervous
+          char: Ran.worried
+          with:
+            - Conan
+          text: <speed=25>Why are you saying that, Conan?</speed>
+      - say:
+          char: Conan.serious
+          text: <speed=25>Because you keep looking over there. At his place. The space you left.</speed>
+      - say:
+          char: Ran.worried
+          text: <speed=24>...Was it that obvious?</speed> <speed=21>I'll send it anyway. Tell him I had fun today.</speed>
+      - sound: door
+      - char:
+          id: Kogoro
+          position: center
+          emotion: angry
+      - say:
+          char: Kogoro.angry
+          text: <speed=34>Ran! Delete the score photo before you send anything!</speed>
+      - say:
+          char: Ran.worried
+          text: <speed=29>No. It's historical evidence of the international rules.</speed>
+  quiet_night:
+    actions:
+      - bg:
+          id: guest_room
+          transition: fade
+          duration: 900
+      - music: intro
+      - char:
+          id: Kogoro
+          position: left
+          emotion: proud
+      - char:
+          id: Ran
+          position: right
+      - say:
+          camera: wide
+          text: <speed=23>Back in the room, Kogoro lays out three futons and takes the middle one first.</speed> <speed=21>Rain knocks at the window. There is no space between the three beds.</speed>
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Dad, the middle one's Conan's.</speed>
+      - say:
+          char: Kogoro.proud
+          with:
+            - Ran
+          text: <speed=27>I've worked harder than anyone today.</speed> <speed=23>If anything happens on either side, I can jump up from here.</speed>
+      - char:
+          id: Conan
+          position: center
+          emotion: smile
+      - say:
+          char: Conan.smile
+          text: <speed=27>Then let's settle it with rock, paper, scissors.</speed>
+      - branch:
+          cases:
+            - when:
+                var: souvenir_choice
+                op: eq
+                value: paddle
+              goto: quiet_night_paddle
+            - when:
+                var: souvenir_choice
+                op: eq
+                value: tea
+              goto: quiet_night_tea
+          default: quiet_night_postcard
+  quiet_night_paddle:
+    actions:
+      - say:
+          text: <speed=23>Kogoro pulls his pillow closer. The little paddle key ring hidden underneath rattles.</speed> <speed=21>The sound gives it away before anyone sees it.</speed>
+      - say:
+          camera: medium
+          char: Ran
+          text: <speed=28>Wasn't that supposed to go on the loser's bag?</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=30>I'm keeping it safe as tomorrow's championship prize.</speed>
+      - say:
+          char: Conan.smile
+          text: <speed=27>We already finished the best of three.</speed>
+      - goto: quiet_night_finish
+  quiet_night_tea:
+    actions:
+      - say:
+          text: <speed=23>The tea pouch gives off a faint scent on the table.</speed> <speed=21>Ran tucks the one for Shinichi deep inside her bag.</speed>
+      - say:
+          camera: medium
+          char: Kogoro.proud
+          text: <speed=29>Is that tea? A late-night snack?</speed>
+      - say:
+          char: Ran
+          text: <speed=28>It's the pouch. You'll have to make do with smelling it.</speed>
+      - say:
+          char: Conan.smile
+          text: <speed=27>The scale will be pleased too.</speed>
+      - goto: quiet_night_finish
+  quiet_night_postcard:
+    actions:
+      - say:
+          text: <speed=23>On the back of the mountain-road postcard, Ran writes the date and their three names, each the same size.</speed> <speed=21>She leaves a fourth line blank.</speed>
+      - say:
+          camera: medium
+          char: Conan.smile
+          text: <speed=27>Save a place for tomorrow's photo too.</speed>
+      - say:
+          char: Ran
+          text: <speed=26>Of course.</speed> <speed=22>This time I'll get Dad with his eyes open.</speed>
+      - say:
+          char: Kogoro.proud
+          text: <speed=29>I'm a man who looks better in person.</speed>
+      - goto: quiet_night_finish
+  quiet_night_finish:
+    actions:
+      - say:
+          text: <speed=23>They play rock, paper, scissors for the middle futon.</speed> <speed=22>Kogoro alone chooses paper. Ran and Conan both choose scissors.</speed>
+      - say:
+          camera: medium
+          char: Ran
+          with:
+            - Kogoro.proud
+          text: <speed=28>Do international rules call for a rematch?</speed>
+      - char:
+          id: Kogoro
+          position: left
+          emotion: angry
+      - say:
+          char: Kogoro.angry
+          delivery: shout
+          text: <speed=36>No international rules tonight!</speed>
+      - say:
+          text: The laughter fades. Ran tucks the edge of my quilt around me. I close my eyes instead of thanking her. A metal lid rings once from the tea room. I open them again.
+          channel: action
+          with: []
+          camera: wide
+          continueLabel: Remember the sound and close your eyes
+      - char:
+          id: Ran
+          position: left
+      - char:
+          id: Conan
+          position: right
+          emotion: smile
+      - say:
+          char: Ran
+          with:
+            - Conan.smile
+          text: <speed=25>If the rain stops, we're going for that walk.</speed> <speed=22>Don't leave me waiting on my own. You have to wake me.</speed>
+      - say:
+          delivery: calm
+          char: Conan.smile
+          with:
+            - Ran
+          text: <speed=27>Yeah. All three of us.</speed> <speed=22>I'll wake you. I promise.</speed>

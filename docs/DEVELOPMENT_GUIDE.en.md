@@ -69,3 +69,9 @@ Run the full unit suite and production build. Verify `/`, `/en/`, `/create/`, `/
 Added English launcher/engine controls, verified game-language declarations, language-aware catalog search and filters, and Korean/English web-game creation/search pages. The story DSL, save format and game content are unchanged. The full Korean reference remains the detailed API reference for advanced actions and effects.
 
 Use `translations.en.summary` in launcher.yaml for an English catalog summary. This is editorial metadata and does not imply the story supports English.
+
+## English openings and character performance
+
+The library includes separate English opening editions for Deokman chapter one and Conan’s travel prologue. Filter by English to find them. English-only stories open with English controls, including from the Korean library. Both end at the translated boundary and keep separate saves from the Korean full stories.
+
+Exact Korean-to-English text mappings live in `content/localizations`. Generated chapters retain scene IDs, choice logic, rewards, portraits and delivery cues. See the [dialogue and localization guide](DRAMA_LOCALIZATION.md) for scope and editing rules. No additional YAML syntax is required.

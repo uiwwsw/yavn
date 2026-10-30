@@ -1,0 +1,66 @@
+title: "Deokman: The Princess Written Dead"
+author:
+  name: uiwwsw
+version: 1.0.0
+seo:
+  description: English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.
+  keywords:
+    - English visual novel
+    - opening chapter
+    - Silla historical drama
+  image: /game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp
+  imageAlt: A princess outside a burning palace
+textSpeed: 27
+autoSave: true
+clickToInstant: true
+ui:
+  template: paper-stage
+startScreen:
+  enabled: true
+  music: root:/game-list/deokman/assets/music/sealed-court.wav
+  image: root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp
+  imagePosition: 50% 50%
+  mobileImagePosition: 72% 50%
+  showTitle: true
+  titleColor: "#f1d49a"
+  startButtonText: Start English chapter
+  buttonPosition: bottom-left
+  eyebrow: ENGLISH OPENING CHAPTER
+  subtitle: Her father asks her to leave. Her nurse asks her not to let go.
+  scene:
+    layout: split
+    motion: drift
+    duration: 26000
+    parallax: 16
+    particles: embers
+    intensity: 0.8
+    fog: true
+    light: breathe
+    accent: "#e8b56a"
+    layers:
+      - image: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
+        x: 74
+        "y": 62
+        width: 61
+        height: 125
+        depth: 1.5
+        motion: sway
+        mobile:
+          x: 72
+          "y": 90
+          width: 140
+          height: 96
+          opacity: 0.9
+    transition:
+      type: curtain
+      duration: 1300
+endingScreen:
+  image: root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp
+endings:
+  prologue_end:
+    title: A hand beyond the palace walls
+    message: You have reached the end of English chapter one. The remaining eleven chapters are available in the Korean full story. Return to the library to continue in Korean.
+    tone: hopeful
+    background: moon_court
+    music: open_sky
+defaultEnding: prologue_end

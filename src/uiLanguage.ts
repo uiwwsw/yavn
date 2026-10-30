@@ -1,6 +1,12 @@
 import messages from './uiMessages.json';
-export const uiLanguage: 'ko' | 'en' = typeof window !== 'undefined' &&
-  (/^\/en\/?$/.test(window.location.pathname) || new URLSearchParams(window.location.search).get('ui') === 'en') ? 'en' : 'ko';
+export function resolveUiLanguage(pathname: string, search: string, documentLanguage = 'ko'): 'ko' | 'en' {
+  const requested = new URLSearchParams(search).get('ui');
+  if (requested === 'ko' || requested === 'en') return requested;
+  return /^\/en\/?$/.test(pathname) || documentLanguage === 'en' ? 'en' : 'ko';
+}
+export const uiLanguage: 'ko' | 'en' = typeof window === 'undefined' ? 'ko' : resolveUiLanguage(
+  window.location.pathname, window.location.search, document.documentElement.lang,
+);
 export function t(text: string): string {
   return uiLanguage === 'en' ? (messages as Record<string, string>)[text] ?? text : text;
 }
@@ -11,4 +17,7 @@ export function languageLabel(code: string): string {
 export function normalizeGameLanguages(value: unknown): string[] {
   return Array.isArray(value) ? [...new Set(value.filter((code): code is string => typeof code === 'string' && /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(code)))] : [];
 }
-export function gameHref(path: string): string { return uiLanguage === 'en' ? `${path}?ui=en` : path; }
+export function gameHref(path: string, languages: readonly string[] = []): string {
+  const englishOnly = languages.length === 1 && languages[0] === 'en';
+  return uiLanguage === 'en' || englishOnly ? `${path}?ui=en` : path;
+}

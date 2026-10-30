@@ -1,0 +1,62 @@
+title: "Detective Conan: A Rainy Day Together"
+author:
+  name: uiwwsw
+  contacts:
+    - "Email: creator@yavn.dev"
+    - label: Homepage
+      value: yavn.vercel.app
+      href: https://yavn.vercel.app
+    - label: LinkedIn
+      value: linkedin.com/in/uiwwsw
+      href: https://linkedin.com/in/uiwwsw
+version: 1.0.0
+legalNotices:
+  - id: detective-conan-noncommercial-fan-demo
+    title: Unofficial, noncommercial fan demo
+    copyright: Detective Conan names, characters and original elements belong to their respective rights holders.
+    text: This unofficial fan demo demonstrates YAVN engine features. It is not sold or monetized through paid features, advertising, donations or sponsorship. It is not affiliated with or endorsed by the original creators, publishers, producers, distributors or other rights holders. Noncommercial use does not itself constitute permission. Publication will stop and relevant assets will be removed at a rights holder's request.
+seo:
+  description: English opening chapter only. A family trip, a missing friend and a promise to wake each other. Unofficial, noncommercial fan demo.
+  keywords:
+    - English visual novel
+    - opening chapter
+    - Detective Conan fan demo
+  image: /game-list/conan/assets/bg/title_storm-v2.avif
+  imageAlt: A mountain inn in a rainstorm
+textSpeed: 32
+autoSave: true
+clickToInstant: true
+ui:
+  template: cinematic-noir
+startScreen:
+  enabled: true
+  image: root:/game-list/conan/assets/bg/title_storm-v2.avif
+  music: root:/game-list/conan/assets/music/intro.mp3
+  showTitle: true
+  startButtonText: Start English chapter
+  buttonPosition: bottom-center
+  eyebrow: ENGLISH OPENING CHAPTER
+  subtitle: There is a space beside her in every photograph.
+  scene:
+    layout: split
+    motion: push
+    duration: 32000
+    parallax: 10
+    particles: rain
+    intensity: 0.85
+    fog: true
+    light: lightning
+    accent: "#a4c6e8"
+    transition:
+      type: iris
+      duration: 1100
+endingScreen:
+  image: root:/game-list/conan/assets/bg/mountain_rain-v2.avif
+endings:
+  prologue_end:
+    title: Tonight, all three of us
+    message: This is the end of the English opening chapter. The later investigation is available in the Korean full story. Return to the library to choose it.
+    tone: hopeful
+    background: guest_room
+    music: intro
+defaultEnding: prologue_end

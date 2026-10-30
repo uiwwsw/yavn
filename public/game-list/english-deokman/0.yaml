@@ -1,0 +1,941 @@
+chapterTitle: Before the Peonies Bloom
+script:
+  - scene: first_breath
+scenes:
+  opening_record:
+    title: A Death Already Written
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - music: sealed_court
+      - sticker:
+          id: opening_death_register
+          image: death_register_sticker
+          x: 50
+          "y": 28
+          width: clamp(210px, 28%, 420px)
+          anchorX: center
+          anchorY: center
+          rotate: -1
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
+      - say:
+          channel: thought
+          with: []
+          camera: wide
+          when:
+            not:
+              var: opening_name_read
+              op: eq
+              value: true
+          text: Beside my name, it says tonight. The night I die. The ink is still wet.
+      - say:
+          channel: thought
+          with: []
+          camera: wide
+          when:
+            not:
+              var: opening_name_read
+              op: eq
+              value: true
+          text: Did Sohwa see it too? She keeps watching the door.
+      - clearSticker:
+          id: opening_death_register
+          leave: fadeOut
+      - char:
+          id: Young Deokman
+          position: left
+      - char:
+          id: Sohwa
+          position: right
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: His Majesty is waiting. Give me your hand. If anyone calls you, look at me first.
+      - say:
+          char: Young Deokman
+          camera: medium
+          with:
+            - Sohwa
+          text: Father? He said I wasn't to let anyone see my face.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: I know. Hold my hand tight, then. Even if you're shaking, don't let go.
+      - goto: peony_arrives
+  peony_arrives:
+    actions:
+      - say:
+          channel: action
+          text: The bar falls into place behind us. Father unrolls a peony painting. The tea grows cold, but he never tells me to drink.
+      - sticker:
+          id: peony_painting_view
+          image: peony_painting_sticker
+          x: 50
+          "y": 27
+          width: clamp(180px, 22%, 360px)
+          anchorX: center
+          anchorY: center
+          rotate: -1.5
+          zIndex: 12
+          enter: fadeIn
+          inputLockMs: 320
+      - get: peony_painting
+      - char:
+          id: King Jinpyeong
+          position: center
+          enter:
+            effect: fadeIn
+            layout: push
+            duration: 360
+      - say:
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Young Deokman
+          text: Come closer. Tell me what you notice about these flowers.
+      - choice:
+          key: c1_peony_observation
+          prompt: Father is watching my face, not the flowers.
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          options:
+            - text: Look at the empty spaces between the flowers
+              goto: observe_absence
+            - text: Lift the scroll and feel behind the roller
+              goto: observe_back
+            - text: Look for a way out through the window
+              set:
+                observed_left_waterway: true
+              goto: observe_waterway
+  observe_absence:
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - say:
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: There aren't any bees. All these flowers, and not one butterfly either.
+      - say:
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Young Deokman
+          text: You have sharp eyes. Now look beyond the painting.
+      - say:
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: ...It's quiet. Where are the people who were outside the door?
+      - say:
+          channel: action
+          text: I reach for the tea. Sohwa catches my wrist, tugs my sleeve and glances toward the window.
+      - add:
+          insight: 1
+      - say:
+          channel: thought
+          text: Father's cup hasn't moved either. He hasn't taken a single sip.
+          with: []
+          camera: wide
+          continueLabel: Crouch below the window
+      - goto: observe_waterway
+  observe_back:
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - clearSticker:
+          id: peony_painting_view
+          leave: fadeOut
+      - say:
+          channel: action
+          text: A thin sheet slips from behind the scroll's roller. Beneath a red seal, I see the name I read a moment ago.
+      - sticker:
+          id: death_register_view
+          image: death_register_sticker
+          x: 51
+          "y": 29
+          width: clamp(150px, 18%, 300px)
+          anchorX: center
+          anchorY: center
+          rotate: 2
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
+      - get: death_register
+      - say:
+          channel: record
+          delivery: deduction
+          text: "Royal genealogy. Second Princess Deokman. Died: tonight. Immediate cremation by royal command."
+      - say:
+          char: Young Deokman.scared
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: That's your seal, Father, isn't it? But here... the corner's missing.
+      - say:
+          char: King Jinpyeong.weak
+          camera: medium
+          with:
+            - Young Deokman
+          text: My seal is undamaged. Don't touch it with your bare hands. Use your sleeve.
+      - say:
+          channel: action
+          text: Metal scrapes outside. Sohwa presses a finger to her lips. I fold the paper with its edge wrapped in my sleeve.
+      - clearSticker:
+          id: death_register_view
+          leave: fadeOut
+      - add:
+          evidence: 1
+      - say:
+          channel: thought
+          text: The bottom-right corner's broken. Would it look like that on other papers too?
+          with: []
+          camera: wide
+          continueLabel: Go to the window the king points to
+      - goto: observe_waterway
+  observe_waterway:
+    actions:
+      - set:
+          observed_left_waterway: true
+      - say:
+          camera: wide
+          channel: action
+          text: The sill is cold against my cheek. Water murmurs beneath the left wall. Under a raised stone slab, there is room to slip a hand through.
+      - say:
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: Water goes out under that wall. I think I could fit through too.
+      - say:
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Young Deokman
+          text: I asked you to look at flowers, and you found a way out.
+      - say:
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: Sohwa keeps watching the door. I think someone's come looking for me again.
+      - sticker:
+          id: death_register_answer
+          image: death_register_sticker
+          x: 50
+          "y": 28
+          width: clamp(150px, 18%, 300px)
+          anchorX: center
+          anchorY: center
+          rotate: 1
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
+      - get: death_register
+      - say:
+          char: King Jinpyeong.sad
+          camera: medium
+          with:
+            - Young Deokman
+          text: ...Yes. Someone has written a notice of your death. While you are standing here alive.
+      - say:
+          channel: record
+          delivery: deduction
+          text: "Royal genealogy. Second Princess Deokman. Died: tonight. Immediate cremation by royal command."
+      - clearSticker:
+          id: death_register_answer
+          leave: fadeOut
+      - goto: king_question
+  king_question:
+    actions:
+      - clearSticker:
+          id: peony_painting_view
+          leave: fadeOut
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - music: sealed_court
+      - char:
+          id: Young Deokman
+          position: left
+      - char:
+          id: King Jinpyeong
+          position: center
+      - char:
+          id: Sohwa
+          position: right
+      - say:
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Young Deokman
+          text: Deokman. Do you think these peonies have a scent?
+      - choice:
+          key: c1_answer_king
+          prompt: Father's hand stops above his cup as he waits for my answer.
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          options:
+            - text: Point out the missing bees and butterflies
+              set:
+                spoke_truth_to_king: true
+              goto: answer_scent
+            - text: Lay the death record before the king
+              when:
+                var: death_register
+                op: eq
+                value: true
+              set:
+                spoke_truth_to_king: true
+              goto: answer_record
+            - text: Insist that a picture cannot tell you that
+              goto: answer_literal
+  answer_scent:
+    actions:
+      - say:
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: I don't think so. If they smelled sweet, bees would have come.
+      - say:
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Young Deokman
+          text: Whoever sent this painting means to mock me for having no son.
+      - say:
+          char: King Jinpyeong.sad
+          camera: medium
+          with:
+            - Young Deokman
+          text: But I have you. ...And only now do I say it.
+      - goto: king_warning
+  answer_record:
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - sticker:
+          id: death_register_answer
+          image: death_register_sticker
+          x: 50
+          "y": 28
+          width: clamp(150px, 18%, 300px)
+          anchorX: center
+          anchorY: center
+          rotate: 1
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
+      - say:
+          char: Young Deokman.scared
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: Please look at this first. Someone wrote that I died. They even used your seal.
+      - say:
+          char: King Jinpyeong.sad
+          camera: medium
+          with:
+            - Young Deokman
+          text: I gave no such order. Where did you find that paper...
+      - say:
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: Look at me. I'm right here. If you tell them it isn't true...
+      - say:
+          char: King Jinpyeong.weak
+          camera: medium
+          with:
+            - Young Deokman
+          text: Deokman, open your hand. That black stain... Drop it! Now!
+      - clearSticker:
+          id: death_register_answer
+          leave: fadeOut
+      - say:
+          channel: narration
+          text: The king knocks the paper away. Deokman looks at his face instead of the falling sheet. She tries to speak, but her tongue will not move. Blackness spreads from her fingertips beneath her sleeve.
+      - effect:
+          name: darken
+          wait: true
+      - say:
+          channel: record
+          text: Detached palace medical record. Second Princess Deokman died of poisoning from toxic seal paste on a forbidden royal document. Document and body cremated immediately.
+      - gameOver:
+          title: "Fate: poison on the evidence"
+          message: Seal paste from the paper inside her sleeve had stained her hand. King Jinpyeong called his daughter's name again and again. Deokman never answered.
+          recoverToChoice: c1_answer_king
+  answer_literal:
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - say:
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: It's a painting. I can't even smell it.
+      - say:
+          char: King Jinpyeong.sad
+          camera: medium
+          with:
+            - Young Deokman
+          text: That would be a comfortable answer. I too have spent too long refusing to look.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+            - King Jinpyeong
+          text: Your Majesty. There's a child outside with medicine... I did not send that child.
+      - say:
+          channel: narration
+          text: Sohwa snatches the cup away. Deokman tries to swallow the bitterness left in her mouth. Father rises, but the floor tilts before she can reach him.
+      - effect:
+          name: darken
+          wait: true
+      - say:
+          channel: record
+          text: Detached palace medical record. Second Princess Deokman died of a sudden fever. No traces of poison.
+      - gameOver:
+          title: "Fate: while you looked away"
+          message: An unfamiliar servant had left the tea. Sohwa shattered the cup. The king called for a physician. Both sounds reached Deokman from far away.
+  king_warning:
+    actions:
+      - music: sealed_court
+      - char:
+          id: King Jinpyeong
+          position: center
+      - char:
+          id: Young Deokman
+          position: left
+      - char:
+          id: Sohwa
+          position: right
+      - say:
+          char: King Jinpyeong.sad
+          camera: medium
+          with:
+            - Young Deokman
+          text: It began when you were born. They declared they would stand with Cheonmyeong, or with you.
+      - say:
+          delivery: sad
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: So you hid me? I thought my sister stayed away because she didn't like me.
+      - say:
+          delivery: sad
+          char: King Jinpyeong.sad
+          camera: medium
+          with:
+            - Young Deokman
+          text: I thought they could not hurt a face they had never seen. You were waiting for me... and I looked away.
+      - say:
+          char: Young Deokman
+          camera: medium
+          with:
+            - King Jinpyeong
+          text: Then what about today? Do I wait here again? Until you come?
+      - say:
+          delivery: whisper
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Young Deokman
+          text: No. Don't wait for me. Go with Sohwa. ...I will let go of your hand.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - King Jinpyeong
+            - Young Deokman
+          text: Your Majesty, I smell oil beneath the western eaves. It wasn't there before.
+      - say:
+          char: King Jinpyeong
+          camera: medium
+          with:
+            - Sohwa
+            - Young Deokman
+          text: Sohwa. Take this child... please. Go now.
+      - goto: fire_breaks
+  fire_breaks:
+    actions:
+      - bg:
+          id: burning_palace
+          transition: dissolve
+          duration: 720
+      - music: sealed_court
+      - effect: embers
+      - char:
+          id: Young Deokman
+          position: left
+          emotion: scared
+      - char:
+          id: Sohwa
+          position: right
+          emotion: nervous
+      - char:
+          id: Chilsuk
+          position: center
+          emotion: smile
+          enter:
+            effect: fadeIn
+            layout: push
+            duration: 360
+      - say:
+          channel: action
+          camera: medium
+          text: A beam splits with a crack that deafens me. Sohwa pulls me away. Fire hides the place where Father was standing.
+      - say:
+          channel: action
+          text: One door closes. Then another. A man walks through the smoke without coughing. Chilsuk.
+      - say:
+          char: Chilsuk.smile
+          camera: medium
+          with:
+            - Young Deokman
+            - Sohwa
+          text: The princess has died of a fever. I have come to collect her body.
+      - say:
+          char: Young Deokman.scared
+          camera: medium
+          with:
+            - Chilsuk
+          text: I'm here. You're looking right at me!
+      - say:
+          char: Chilsuk
+          camera: medium
+          with:
+            - Young Deokman
+          text: That does make things awkward. The document bears His Majesty's seal, after all.
+      - say:
+          channel: action
+          text: A blade appears beneath Chilsuk's thumb. Sohwa steps in front of me. Her turned shoulder fills my view.
+      - attack:
+          attacker: Chilsuk
+          target: Sohwa
+          from: right
+          style: slash
+          image: chilsuk_sword_cutin
+          strength: light
+          anticipation: 680
+          recovery: 740
+          caption: Steel scrapes against its sheath.
+      - say:
+          channel: action
+          wait: 300
+          unskippable: true
+          text: Sohwa's sleeve tears. I grab the bare wrist beneath it. It keeps slipping. I squeeze harder.
+      - char:
+          id: Sohwa
+          position: center
+          emotion: nervous
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: Head down. Keep your mouth closed. Just follow me.
+      - say:
+          channel: action
+          text: Sohwa pushes a peony token into my palm. Hot metal sticks to my skin. It hurts too much to open my hand.
+      - sticker:
+          id: peony_token_view
+          image: peony_token_sticker
+          x: 49
+          "y": 31
+          width: clamp(104px, 12%, 180px)
+          anchorX: center
+          anchorY: center
+          zIndex: 15
+          enter: fadeIn
+          inputLockMs: 300
+      - get: peony_token
+      - say:
+          char: Sohwa
+          camera: medium
+          with:
+            - Young Deokman
+          text: This token will open the north gate. But the guards will remember your face.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: Even if I tell you to go ahead, don't listen. Today... you don't have to do as I say.
+      - clearSticker:
+          id: peony_token_view
+          leave: fadeOut
+      - choice:
+          key: c1_fire_escape
+          prompt: Sohwa's hand is slipping. I have to find a way out.
+          char: Young Deokman.scared
+          camera: medium
+          with:
+            - Sohwa
+          timeoutMs: 5500
+          timeoutOptionIndex: 2
+          options:
+            - text: Raise the peony token and open the north gate
+              add:
+                nobles_support: 1
+                fear: 1
+              goto: escape_north_gate
+            - text: Carry the record through the fire to the king
+              when:
+                all:
+                  - var: death_register
+                    op: eq
+                    value: true
+                  - var: spoke_truth_to_king
+                    op: eq
+                    value: true
+              goto: escape_with_record
+            - text: Lie down in the peony bed to escape the flames
+              goto: bad_smoke
+            - text: Take Sohwa's hand and run for the drain
+              when:
+                var: observed_left_waterway
+                op: eq
+                value: true
+              goto: escape_waterway
+  escape_waterway:
+    actions:
+      - bg:
+          id: moon_court
+          transition: dissolve
+          duration: 720
+      - music: open_sky
+      - char:
+          id: Young Deokman
+          position: left
+          emotion: resolve
+      - char:
+          id: Sohwa
+          position: right
+      - say:
+          channel: action
+          camera: medium
+          text: The left wall. The stone slab I saw before. Sand digs beneath my nails. As the slab rises, the smell of wet earth washes over my face.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: Go in first. I'll hold the stone.
+      - say:
+          delivery: nervous
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - Sohwa
+          text: No. Give me your hand first. You told me not to let go.
+      - say:
+          channel: action
+          text: My knees hit the mud. A crash behind us makes me flinch. The hand in mine squeezes once, hard.
+      - say:
+          char: Sohwa
+          camera: medium
+          with:
+            - Young Deokman
+          text: ...My lady? Why won't you speak? Please look at me.
+      - say:
+          delivery: calm
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - Sohwa
+          wait: 600
+          unskippable: true
+          text: I'm here. I'm right here, Sohwa. ...You got out too.
+      - say:
+          channel: thought
+          text: The hand that stamped my death in red is still out there. Sohwa presses my hand to her face. It's wet. I don't ask whether it's rain or tears.
+          with: []
+          camera: wide
+          continueLabel: Take Sohwa's hand and head for the border
+      - say:
+          channel: record
+          delivery: calm
+          text: That night, the record said the second princess had died in the detached palace. Beside the water outside the walls, a child would not let go of her nurse's wet clothes.
+      - set:
+          c1_escape_route: waterway
+          identity_exposed: false
+      - add:
+          sohwa_trust: 2
+          people_support: 1
+          insight: 1
+      - ending: prologue_end
+  escape_north_gate:
+    actions:
+      - bg:
+          id: moon_court
+          transition: dissolve
+          duration: 720
+      - music: open_sky
+      - char:
+          id: Young Deokman
+          position: left
+          emotion: resolve
+      - char:
+          id: Sohwa
+          position: right
+          emotion: nervous
+      - say:
+          camera: wide
+          channel: narration
+          text: The guard lifts the bar at the sight of the peony token. Beyond the half-open gate, horses breathe white in the cold air. The waiting riders do not move aside.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: Stop. Those horses... they're waiting with the reins in hand.
+      - say:
+          char: Young Deokman.scared
+          camera: medium
+          with:
+            - Sohwa
+          text: Sohwa, the gate's closing. We haven't got out yet.
+      - char:
+          id: Chilsuk
+          position: center
+          emotion: smile
+      - say:
+          char: Chilsuk.smile
+          camera: medium
+          with:
+            - Young Deokman
+            - Sohwa
+          text: You showed your token, I hear. Thank you. It made the right gate very easy to find.
+      - say:
+          channel: narration
+          delivery: nervous
+          text: Chilsuk lowers his hand. Sohwa pulls Deokman against her chest. Above the gate, bowstrings draw together.
+      - attack:
+          attacker: Chilsuk
+          target: Young Deokman
+          from: right
+          style: shot
+          image: chilsuk_bow_cutin
+          anticipation: 850
+          impact: 140
+          recovery: 900
+          caption: A bowstring releases overhead.
+      - say:
+          channel: narration
+          delivery: nervous
+          wait: 450
+          unskippable: true
+          text: The peony token rolls across the stones. Deokman leans to pick it up. Sohwa's arms do not let her go. They no longer tighten either.
+      - effect:
+          name: darken
+          wait: true
+      - say:
+          channel: record
+          text: North gate watch record. Two unidentified women entering during the fire shot dead. Royal peony token recovered.
+      - gameOver:
+          title: "Fate: the token that opened the gate"
+          message: The guard took back the token that had opened the gate. Deokman and Sohwa never took a single step outside it.
+  escape_with_record:
+    actions:
+      - bg:
+          id: burning_palace
+          transition: dissolve
+          duration: 720
+      - effect: embers
+      - char:
+          id: Young Deokman
+          position: left
+          emotion: resolve
+      - char:
+          id: Sohwa
+          position: right
+          emotion: nervous
+      - say:
+          channel: narration
+          text: She had to reach Father. Deokman pulls Sohwa toward the document passage. Firelight spills through the doors to his chamber.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: It's locked! My lady, come back. Leave the paper!
+      - say:
+          char: Young Deokman.resolve
+          camera: medium
+          with:
+            - Sohwa
+          text: Father! I'm not dead! Please open the door!
+      - say:
+          channel: narration
+          text: The paper catches halfway through the crack. As Deokman knocks again, a rafter falls behind them. Sohwa covers the child's nose and mouth with her sleeve.
+      - effect:
+          name: darken
+          wait: true
+      - say:
+          channel: record
+          text: Detached palace fire recovery record. Bodies of Second Princess Deokman and nurse Sohwa found beneath the royal chamber. Forged death record destroyed by fire.
+      - gameOver:
+          title: "Fate: evidence carried into the fire"
+          message: There is no answer beyond the door. Deokman keeps her hand against it to the end. Sohwa lays her own hand over the child's.
+          recoverToChoice: c1_fire_escape
+  bad_smoke:
+    actions:
+      - bg:
+          id: burning_palace
+          transition: dissolve
+          duration: 720
+      - camera:
+          shot: close
+          target: Young Deokman
+      - effect: embers
+      - char:
+          id: Young Deokman
+          position: left
+          emotion: scared
+      - char:
+          id: Sohwa
+          position: right
+          emotion: nervous
+      - say:
+          channel: narration
+          text: The soil in the flower bed is cool. As Deokman buries her face, the smell of oil rises between the roots. Before Sohwa can lift her, flames race around the edge.
+      - say:
+          char: Sohwa.nervous
+          camera: medium
+          with:
+            - Young Deokman
+          text: Open your eyes. My hand's right here, see? You have to take it!
+      - say:
+          char: Young Deokman.scared
+          camera: medium
+          with:
+            - Sohwa
+          text: Sohwa... even the flowers are burning.
+      - effect:
+          name: darken
+          wait: true
+      - say:
+          channel: record
+          text: Detached palace fire report. Body of Second Princess Deokman, deceased of fever, and nurse Sohwa burned beyond identification.
+      - gameOver:
+          title: "Fate: a death prepared in advance"
+          message: A fallen beam blocked the way to the wall. Sohwa tried to carry the child out of the flower bed. The fire reached them first.
+  first_room_look:
+    actions:
+      - choice:
+          key: first_room_look
+          presentation: explore
+          prompt: My name on the paper. Footsteps stopping outside the door.
+          with: []
+          camera: wide
+          options:
+            - text: My name on the paper
+              at:
+                x: 28
+                "y": 40
+              when:
+                not:
+                  var: opening_name_read
+                  op: eq
+                  value: true
+              goto: first_read_name
+            - text: The closed door
+              at:
+                x: 74
+                "y": 68
+              when:
+                not:
+                  var: opening_door_heard
+                  op: eq
+                  value: true
+              goto: first_hear_door
+            - text: Point out the paper to Sohwa
+              when:
+                var: opening_name_read
+                op: eq
+                value: true
+              goto: opening_record
+  first_read_name:
+    actions:
+      - say:
+          channel: record
+          with: []
+          camera: wide
+          text: "Second Princess Deokman. Died: tonight."
+      - say:
+          channel: thought
+          with: []
+          text: Tonight? It isn't even night yet.
+      - set:
+          opening_name_read: true
+      - goto: first_room_look
+  first_hear_door:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: I press my ear to the crack. Someone is right outside. I hold my breath. A metal latch clicks into place.
+      - say:
+          channel: thought
+          with: []
+          text: Why lock it from outside? Should I tell them someone's in here...
+      - set:
+          opening_door_heard: true
+      - goto: first_room_look
+  first_breath:
+    title: The words beside my name
+    actions:
+      - bg:
+          id: peony_court
+          transition: dissolve
+          duration: 720
+      - music: sealed_court
+      - sticker:
+          id: opening_death_register
+          image: death_register_sticker
+          x: 50
+          "y": 28
+          width: clamp(210px, 28%, 420px)
+          anchorX: center
+          anchorY: center
+          rotate: -1
+          zIndex: 14
+          enter: fadeIn
+          inputLockMs: 320
+      - say:
+          camera: wide
+          channel: action
+          wait: 600
+          unskippable: true
+          text: Wax drips onto the edge of the paper. I reach to move it before I get scolded, then stop. That's my name. And beside it...
+          with: []
+      - goto: first_room_look
