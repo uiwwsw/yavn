@@ -947,7 +947,7 @@ describe('Conan content regression', () => {
     expect(conanText).not.toContain('란 누나, 저기 봐요.');
     expect(conanText).toContain('아저씨 손에 벌써 두 개 있는데요?');
     expect(conanText).toContain('아저씨 고민은 저녁에 다시 커질 것 같아요.');
-    expect(ranText).toContain('아빠, 이쪽으로 좀 붙어요.');
+    expect(ranText).toContain('아빠, 우산 이쪽으로요.');
     expect(ranText).toContain('그럼 오늘은 전화 와도 쉬는 거예요.');
     expect(ranText).toContain('아빠가 다 해결하셨잖아요.');
     expect(ranText).not.toContain('아빠, 우산 좀 안쪽으로 들어.');

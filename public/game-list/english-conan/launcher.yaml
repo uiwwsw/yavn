@@ -1,0 +1,12 @@
+languages:
+  - en
+summary: English opening chapter only. A family trip, a missing friend and a promise to wake each other. Unofficial, noncommercial fan demo.
+translations:
+  en:
+    summary: English opening chapter only. A family trip, a missing friend and a promise to wake each other. Unofficial, noncommercial fan demo.
+thumbnail: /game-list/conan/assets/bg/title_storm-v2.avif
+tags:
+  - english
+  - opening-chapter
+  - noncommercial-fan-demo
+  - character-drama

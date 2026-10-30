@@ -24,4 +24,6 @@ Start with [sample.yaml](sample.yaml) and complete game packages in `public/game
 
 See [CONTRIBUTING](CONTRIBUTING.en.md) for setup, collaboration, validation and PR review. Follow [Add a game](docs/ADDING_A_GAME.en.md) for a runnable starter and catalog submission. ZIP upload runs locally; public listing requires review, merge and deployment.
 
+Two English opening editions are available in the library: Deokman chapter one and Conan’s travel prologue. Select English in the game-language filter. These editions end at the translated chapter boundary and keep separate progress from the Korean full stories. See the [dialogue and localization guide](docs/DRAMA_LOCALIZATION.md).
+
 AI 학습·미세조정 및 학습용 데이터 수집에 대한 권리자 의사는 [AI 이용 고지 / AI use notice](AI-TRAINING-NOTICE.md)를 참고하세요.

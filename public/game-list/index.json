@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-10-29T23:57:55.566Z",
+  "generatedAt": "2026-10-30T00:50:40.075Z",
   "games": [
     {
       "id": "conan",
@@ -156,6 +156,85 @@
       }
     },
     {
+      "id": "english-deokman",
+      "name": "Deokman: The Princess Written Dead",
+      "path": "/game-list/english-deokman/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.",
+      "summaryEn": "English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.",
+      "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
+      "tags": [
+        "english",
+        "opening-chapter",
+        "historical-fiction",
+        "character-drama"
+      ],
+      "languages": [
+        "en"
+      ],
+      "legalNotices": [],
+      "chapterCount": 1,
+      "seo": {
+        "title": "Deokman: The Princess Written Dead",
+        "description": "English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.",
+        "keywords": [
+          "English visual novel",
+          "opening chapter",
+          "Silla historical drama",
+          "english",
+          "opening-chapter",
+          "historical-fiction",
+          "character-drama"
+        ],
+        "image": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
+        "imageAlt": "A princess outside a burning palace"
+      }
+    },
+    {
+      "id": "english-conan",
+      "name": "Detective Conan: A Rainy Day Together",
+      "path": "/game-list/english-conan/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "English opening chapter only. A family trip, a missing friend and a promise to wake each other. Unofficial, noncommercial fan demo.",
+      "summaryEn": "English opening chapter only. A family trip, a missing friend and a promise to wake each other. Unofficial, noncommercial fan demo.",
+      "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
+      "tags": [
+        "english",
+        "opening-chapter",
+        "noncommercial-fan-demo",
+        "character-drama"
+      ],
+      "languages": [
+        "en"
+      ],
+      "legalNotices": [
+        {
+          "id": "detective-conan-noncommercial-fan-demo",
+          "title": "Unofficial, noncommercial fan demo",
+          "text": "This unofficial fan demo demonstrates YAVN engine features. It is not sold or monetized through paid features, advertising, donations or sponsorship. It is not affiliated with or endorsed by the original creators, publishers, producers, distributors or other rights holders. Noncommercial use does not itself constitute permission. Publication will stop and relevant assets will be removed at a rights holder's request.",
+          "copyright": "Detective Conan names, characters and original elements belong to their respective rights holders."
+        }
+      ],
+      "chapterCount": 1,
+      "seo": {
+        "title": "Detective Conan: A Rainy Day Together",
+        "description": "English opening chapter only. A family trip, a missing friend and a promise to wake each other. Unofficial, noncommercial fan demo.",
+        "keywords": [
+          "English visual novel",
+          "opening chapter",
+          "Detective Conan fan demo",
+          "english",
+          "opening-chapter",
+          "noncommercial-fan-demo",
+          "character-drama"
+        ],
+        "image": "/game-list/conan/assets/bg/title_storm-v2.avif",
+        "imageAlt": "A mountain inn in a rainstorm"
+      }
+    },
+    {
       "id": "live2dtest",
       "name": "Live2D 테스트: 렌 수다",
       "path": "/game-list/live2dtest/",
@@ -215,11 +294,13 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, 선덕여왕: 죽은 공주의 왕관, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 명탐정 코난 외전: 폭우의 2번 찻잔, 명탐정 코난 DEMO: 60초의 경고, 선덕여왕: 죽은 공주의 왕관, Deokman: The Princess Written Dead, Detective Conan: A Rainy Day Together, Live2D 테스트: 렌 수다.",
     "keywords": [
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "선덕여왕: 죽은 공주의 왕관",
+      "Deokman: The Princess Written Dead",
+      "Detective Conan: A Rainy Day Together",
       "Live2D 테스트: 렌 수다",
       "detective",
       "branch-heavy",
@@ -237,6 +318,8 @@
       "character-drama",
       "political-thriller",
       "consequential-choices",
+      "english",
+      "opening-chapter",
       "live2d",
       "interaction",
       "smoke-test",
@@ -254,14 +337,20 @@
       "신라",
       "역사 비주얼노벨",
       "선택형 드라마",
-      "완결 게임"
+      "완결 게임",
+      "English visual novel",
+      "opening chapter",
+      "Silla historical drama",
+      "Detective Conan fan demo"
     ],
     "gameTitles": [
       "명탐정 코난 외전: 폭우의 2번 찻잔",
       "명탐정 코난 DEMO: 60초의 경고",
       "선덕여왕: 죽은 공주의 왕관",
+      "Deokman: The Princess Written Dead",
+      "Detective Conan: A Rainy Day Together",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 4
+    "gameCount": 6
   }
 }

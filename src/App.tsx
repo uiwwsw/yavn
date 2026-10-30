@@ -3935,7 +3935,7 @@ export default function App() {
                             <div className="inspector-actions">
                               <a
                                 className="launcher-command launcher-command-primary"
-                                href={gameHref(entry.path)}
+                                href={gameHref(entry.path, entry.languages)}
                                 tabIndex={isSelected ? undefined : -1}
                               >{t("이야기 시작하기")}<span aria-hidden="true">↗</span>
                               </a>
@@ -4170,7 +4170,7 @@ export default function App() {
                     >
                       <a
                         className="workspace-game-select"
-                        href={gameHref(entry.path)}
+                        href={gameHref(entry.path, entry.languages)}
                         aria-label={`${entry.name} ${t("플레이")}`}
                       >
                         <span className="workspace-game-cover">

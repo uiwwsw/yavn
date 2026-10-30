@@ -9,9 +9,9 @@
   },
   "scripts": {
     "check:public": "node scripts/check-public-allowlist.mjs",
-    "predev": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
+    "predev": "node scripts/generate-english-prologues.mjs && node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
+    "prebuild": "node scripts/generate-english-prologues.mjs && node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
     "build": "tsc -b && vite build && node scripts/generate-game-seo-pages.mjs && node scripts/generate-home-seo.mjs && node .github/scripts/apply-ai-notice.mjs && node scripts/add-usage-analytics.mjs",
     "preview": "vite preview",
     "test": "vitest run",

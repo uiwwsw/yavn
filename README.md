@@ -1248,4 +1248,6 @@ Public launcher/game HTML keeps its useful search/no-JavaScript content, but inc
 
 서재에서 제목·태그·작가·언어를 함께 검색할 수 있습니다. 공백으로 나눈 검색어를 모두 포함하는 작품을 찾으며 전각 문자도 지원합니다.
 
+덕만 첫 장과 코난 여행 도입부를 영어로 플레이할 수 있습니다. 서재에서 게임 지원 언어를 English로 고르면 영어 도입부 두 편이 표시됩니다. 각 영어판은 첫 장까지만 제공하며 한국어 완결판과 별도 진행으로 저장됩니다. [대사·번역 기준](docs/DRAMA_LOCALIZATION.md)을 참고하세요.
+
 AI 학습·미세조정 및 학습용 데이터 수집에 대한 권리자 의사는 [AI 이용 고지 / AI use notice](AI-TRAINING-NOTICE.md)를 참고하세요.

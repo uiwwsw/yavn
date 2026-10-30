@@ -1,0 +1,86 @@
+assets:
+  backgrounds:
+    mountain_rain: root:/game-list/conan/assets/bg/mountain_rain-v2.avif
+    rain_corridor: root:/game-list/conan/assets/bg/rain_corridor-v2.avif
+    ryokan_hall: root:/game-list/conan/assets/bg/ryokan_hall-v2.avif
+    guest_room: root:/game-list/conan/assets/bg/guest_room-v2.avif
+    recreation_room: root:/game-list/conan/assets/bg/recreation_room-v2.avif
+    dining_room: root:/game-list/conan/assets/bg/dining_room-v2.avif
+    souvenir_corner: root:/game-list/conan/assets/bg/souvenir_corner-v2.avif
+    tea_room: root:/game-list/conan/assets/bg/tea_room-v2.avif
+    case_board: root:/game-list/conan/assets/bg/case_board-v2.avif
+    manager_office: root:/game-list/conan/assets/bg/manager_office-v2.avif
+    records_lounge: root:/game-list/conan/assets/bg/records_lounge-v2.avif
+    police_tape: root:/game-list/conan/assets/bg/police_tape.svg
+    clue_cup: root:/game-list/conan/assets/bg/clue_cup.svg
+    clue_lid: root:/game-list/conan/assets/bg/clue_lid.svg
+    item_tea_residue_report: root:/game-list/conan/assets/items/tea_residue_report.svg
+    item_reiko_statement_note: root:/game-list/conan/assets/items/reiko_statement_note.svg
+  characters:
+    Conan:
+      base: root:/game-list/conan/assets/char/conan/base.webp
+      placement: prompt-top
+      emotions:
+        smile: root:/game-list/conan/assets/char/conan/smile.webp
+        think: root:/game-list/conan/assets/char/conan/think.webp
+        serious: root:/game-list/conan/assets/char/conan/serious.webp
+    Ran:
+      base: root:/game-list/conan/assets/char/ran/base.webp
+      placement: prompt-top
+      emotions:
+        determined: root:/game-list/conan/assets/char/ran/determined.webp
+        surprised: root:/game-list/conan/assets/char/ran/surprised.webp
+        worried: root:/game-list/conan/assets/char/ran/worried.webp
+    Kogoro:
+      base: root:/game-list/conan/assets/char/kogoro/base.webp
+      placement: prompt-top
+      emotions:
+        serious: root:/game-list/conan/assets/char/kogoro/base.webp
+        proud: root:/game-list/conan/assets/char/kogoro/proud.webp
+        angry: root:/game-list/conan/assets/char/kogoro/angry.webp
+        shocked: root:/game-list/conan/assets/char/kogoro/shocked.webp
+  music:
+    intro: root:/game-list/conan/assets/music/intro.mp3
+    rain: root:/game-list/conan/assets/music/rain.wav
+    mystery: root:/game-list/conan/assets/music/mystery.wav
+    tension: root:/game-list/conan/assets/music/tension.wav
+    reasoning: root:/game-list/conan/assets/music/reasoning.mp3
+    confession: root:/game-list/conan/assets/music/confession.mp3
+    solvethecase: root:/game-list/conan/assets/music/solvethecase.mp3
+  sfx:
+    thunder: root:/game-list/conan/assets/sfx/thunder.wav
+    scream: root:/game-list/conan/assets/sfx/scream.wav
+    door: root:/game-list/conan/assets/sfx/door.wav
+    cup_clink: root:/game-list/conan/assets/sfx/cup_clink.wav
+    notebook_flip: root:/game-list/conan/assets/sfx/notebook_flip.wav
+state:
+  investigation_count: 0
+  visited_seiji: false
+  visited_reiko: false
+  visited_kenji: false
+  visited_haruo: false
+  rapport_seiji: false
+  rapport_reiko: false
+  rapport_kenji: false
+  rapport_haruo: false
+  deduction_score: 0
+  final_confidence: 0
+  trust: 0
+  rapport_score: 0
+  mistake_count: 0
+  early_exit_taken: false
+  remembered_tea_order: false
+  tea_name_vote: ""
+  souvenir_choice: ""
+  clue_rim_reagent: false
+  clue_order_note: false
+  clue_double_press_decoy: false
+  clue_haruo_wipe: false
+  clue_kenji_rejected_deal: false
+  reiko_motive_open: false
+  recovered_haruo_clue: false
+  recovered_order_note: false
+  recovered_reiko_motive: false
+  recovered_kenji_deal: false
+  timeline_answer: ""
+  culprit_answer: ""
