@@ -2,6 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getStoryMap, loadGameFromUrl, loadGameFromZip, replayStoryMapNode, restartFromBeginning, setAutoSaveEnabled, setScenePresentationPaused, submitChoiceOption } from './engine';
 import { storyEdgeId, storyNodeId, visibleStoryChapter } from './storyMap';
 import { useVNStore } from './store';
+// The engine imports the YAML parser lazily. Load it up front so the first game load
+// does not wait on real module transformation while fake timers are advanced.
+import './parser';
 const documents: Record<string, string> = {
   'config.yaml': 'title: Journey\nversion: "1"\ntextSpeed: 30\nautoSave: true\nclickToInstant: true\n',
   'base.yaml': 'state: {trust: 0, hidden: false}\ninventory: {seal: {name: Seal}}\n',

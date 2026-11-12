@@ -25,7 +25,6 @@ import live2dRedistributableFilesUrl from '../assets/licenses/live2d/Redistribut
 import { CinematicLayer } from './CinematicLayer';
 import { YavnLogo } from './YavnLogo';
 import { TitleScene } from './TitleScene';
-import { StoryMap } from './StoryAtlas';
 import { GameIcon } from './GameIcon';
 import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
@@ -166,6 +165,9 @@ import type { CSSProperties } from 'react';
 const Live2DCharacter = lazy(() =>
   import('./Live2DCharacter').then((module) => ({ default: module.Live2DCharacter })),
 );
+
+// The story map is opened on demand, so its UI and stylesheet load in a separate chunk.
+const StoryMap = lazy(() => import('./StoryAtlas').then((module) => ({ default: module.StoryMap })));
 
 const MOTION_LAYER_RELEASE_BUFFER_MS = 64;
 
@@ -5479,12 +5481,12 @@ export default function App() {
       )}
       </div>
     </div>
-    {storyMapOpen && <StoryMap
+    {storyMapOpen && <Suspense fallback={null}><StoryMap
       outcome={gameOver?.title ?? (isFinished ? endingTitle : undefined)} ending={isFinished}
       onClose={() => setStoryMapOpen(false)}
       onReplayed={() => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(undefined); refreshSaveSlots(); }}
       onRecords={() => { setStoryMapOpen(false); if (gameOver) setGameOverRecoveryOpen(true);
-        else if (isFinished) setEndingCreditsOpen(true); else { setCaseFileTab('system'); setSettingsOpen(true); } }} />}
+        else if (isFinished) setEndingCreditsOpen(true); else { setCaseFileTab('system'); setSettingsOpen(true); } }} /></Suspense>}
     {startGateView}
     </>
   );

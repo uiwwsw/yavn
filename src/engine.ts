@@ -14,15 +14,7 @@ import { imageResources } from './imageResources';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
 import { resolveCharacterCalibration, resolveStageCameraState } from './stageCamera';
 import { useVNStore } from './store';
-import {
-  parseBaseYaml,
-  parseChapterYaml,
-  parseConfigYaml,
-  resolveChapterGame,
-  type ParsedBaseYaml,
-  type ParsedChapterYaml,
-  type ParsedConfigYaml,
-} from './parser';
+import type { ParsedBaseYaml, ParsedChapterYaml, ParsedConfigYaml } from './parser';
 import { collectChapterAssetPaths } from './preload';
 import {
   DEFAULT_RUNTIME_GAME_SETTINGS,
@@ -4622,14 +4614,27 @@ async function fetchYamlIfExists(url: string): Promise<string | undefined> {
   return text;
 }
 
-function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): {
+// The YAML parser pulls in js-yaml and zod; load it only when a game is actually opened
+// so the launcher's initial bundle stays small. Callers start the import before awaiting
+// their YAML fetch, so the chunk downloads in parallel with the game files.
+let parserModule: Promise<typeof import('./parser')> | undefined;
+function loadParser(): Promise<typeof import('./parser')> {
+  parserModule ??= import('./parser').catch((error: unknown) => {
+    parserModule = undefined;
+    throw error;
+  });
+  return parserModule;
+}
+
+async function parseStartScreenFromConfig(rawConfig: string, sourcePath: string): Promise<{
   gameTitle: string;
   gameVersion?: string;
   startScreen?: GameData['startScreen'];
   seo?: GameData['meta']['seo'];
   legalNotices: NonNullable<GameData['meta']['legalNotices']>;
   uiTemplate: UiTemplateId;
-} {
+}> {
+  const { parseConfigYaml } = await loadParser();
   const parsed = parseConfigYaml(rawConfig, sourcePath);
   if (!parsed.data) {
     throw new Error(parsed.error?.message ?? `Failed to parse ${sourcePath}`);
@@ -4661,11 +4666,12 @@ function resolveZipAssetEntry(
 export async function loadUrlStartScreenPreview(url: string): Promise<StartScreenPreview> {
   const baseUrl = resolveBaseUrlFromInputUrl(url);
   const configUrl = new URL('config.yaml', baseUrl).toString();
+  void loadParser().catch(() => undefined);
   const configRaw = await fetchYamlIfExists(configUrl);
   if (configRaw === undefined) {
     throw new Error('config.yaml not found at game root.');
   }
-  const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const parsedConfig = await parseStartScreenFromConfig(configRaw, 'config.yaml');
   const startScreen = parsedConfig.startScreen;
   const autosaveKey = resolveAutosaveKeyForUrl(baseUrl);
   const identity = {
@@ -4696,7 +4702,7 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
     throw new Error('config.yaml not found at game root.');
   }
   const configRaw = await configEntry.async('text');
-  const parsedConfig = parseStartScreenFromConfig(configRaw, 'config.yaml');
+  const parsedConfig = await parseStartScreenFromConfig(configRaw, 'config.yaml');
   const startScreen = parsedConfig.startScreen;
   if (!startScreen) {
     return {
@@ -4846,10 +4852,13 @@ async function loadParsedConfigDocument(): Promise<ParsedConfigYaml> {
 
   parsedConfigPromise = (async () => {
     const configPathKey = normalizeChapterPathKey('config.yaml');
+    const parser = loadParser();
+    parser.catch(() => undefined);
     const raw = await loadYamlTextByPathKey(configPathKey);
     if (raw === undefined) {
       throw new Error('config.yaml not found at game root.');
     }
+    const { parseConfigYaml } = await parser;
     const parsed = parseConfigYaml(raw, chapterPathKeyToFilePath(configPathKey));
     if (!parsed.data) {
       throw new Error(parsed.error?.message ?? 'Failed to parse config.yaml');
@@ -4877,10 +4886,13 @@ async function loadParsedBaseDocument(pathKey: string): Promise<ParsedBaseYaml |
     if (!exists) {
       return undefined;
     }
+    const parser = loadParser();
+    parser.catch(() => undefined);
     const raw = await loadYamlTextByPathKey(normalizedPathKey);
     if (raw === undefined) {
       return undefined;
     }
+    const { parseBaseYaml } = await parser;
     const parsed = parseBaseYaml(raw, chapterPathKeyToFilePath(normalizedPathKey));
     if (!parsed.data) {
       throw new Error(parsed.error?.message ?? `Failed to parse base layer: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
@@ -4900,10 +4912,13 @@ async function loadParsedChapterDocument(pathKey: string): Promise<ParsedChapter
   }
 
   const promise = (async () => {
+    const parser = loadParser();
+    parser.catch(() => undefined);
     const raw = await loadYamlTextByPathKey(normalizedPathKey);
     if (raw === undefined) {
       throw new Error(`Failed to load yaml: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
     }
+    const { parseChapterYaml } = await parser;
     const parsed = parseChapterYaml(raw, chapterPathKeyToFilePath(normalizedPathKey));
     if (!parsed.data) {
       throw new Error(parsed.error?.message ?? `Failed to parse chapter yaml: ${chapterPathKeyToFilePath(normalizedPathKey)}`);
@@ -4948,6 +4963,7 @@ async function loadResolvedChapterGame(pathKey: string): Promise<GameData> {
       }
     }
 
+    const { resolveChapterGame } = await loadParser();
     const resolved = resolveChapterGame({
       config,
       bases,
