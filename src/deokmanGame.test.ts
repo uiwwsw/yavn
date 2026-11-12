@@ -42,14 +42,16 @@ const collectStrings = (value: unknown, result: string[] = []): string[] => {
   return result;
 };
 
-const readPngCanvas = (path: string): { width: number; height: number; hasAlpha: boolean } => {
+// Transparent WebP sprites use the extended (VP8X) header: alpha flag + 24-bit canvas size minus one.
+const readWebpCanvas = (path: string): { width: number; height: number; hasAlpha: boolean } => {
   const source = readFileSync(path);
-  expect(source.subarray(0, 8), path).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
-  expect(source.toString('ascii', 12, 16), path).toBe('IHDR');
+  expect(source.toString('ascii', 0, 4), path).toBe('RIFF');
+  expect(source.toString('ascii', 8, 12), path).toBe('WEBP');
+  expect(source.toString('ascii', 12, 16), path).toBe('VP8X');
   return {
-    width: source.readUInt32BE(16),
-    height: source.readUInt32BE(20),
-    hasAlpha: source[25] === 4 || source[25] === 6,
+    width: source.readUIntLE(24, 3) + 1,
+    height: source.readUIntLE(27, 3) + 1,
+    hasAlpha: (source[20] & 0x10) !== 0,
   };
 };
 
@@ -627,29 +629,29 @@ describe('complete Deokman visual novel', () => {
     });
 
     const childSprites = [
-      'deokman-child-silla-v8.png',
-      'deokman-child-scared-silla-v8.png',
-      'deokman-child-resolve-silla-v8.png',
-    ].map((filename) => readPngCanvas(`${gameRoot}assets/char/${filename}`));
+      'deokman-child-silla-v8.webp',
+      'deokman-child-scared-silla-v8.webp',
+      'deokman-child-resolve-silla-v8.webp',
+    ].map((filename) => readWebpCanvas(`${gameRoot}assets/char/${filename}`));
 
     expect(new Set(childSprites.map(({ width, height }) => `${width}x${height}`))).toEqual(new Set(['886x1775']));
     childSprites.forEach(({ hasAlpha }) => expect(hasAlpha).toBe(true));
 
     const adultStageFiles = [
-      'deokman-wanderer-silla-v9.png',
-      'deokman-wanderer-sad-silla-v9.png',
-      'deokman-wanderer-angry-silla-v9.png',
-      'deokman-princess-silla-v9.png',
-      'deokman-princess-sad-silla-v9.png',
-      'deokman-princess-angry-silla-v9.png',
-      'deokman-attendant-silla-v9.png',
-      'deokman-queen-silla-v9.png',
-      'deokman-queen-sad-silla-v9.png',
-      'deokman-queen-angry-silla-v9.png',
+      'deokman-wanderer-silla-v9.webp',
+      'deokman-wanderer-sad-silla-v9.webp',
+      'deokman-wanderer-angry-silla-v9.webp',
+      'deokman-princess-silla-v9.webp',
+      'deokman-princess-sad-silla-v9.webp',
+      'deokman-princess-angry-silla-v9.webp',
+      'deokman-attendant-silla-v9.webp',
+      'deokman-queen-silla-v9.webp',
+      'deokman-queen-sad-silla-v9.webp',
+      'deokman-queen-angry-silla-v9.webp',
     ];
     const adultStageSprites = adultStageFiles.map((filename) => ({
       filename,
-      ...readPngCanvas(`${gameRoot}assets/char/${filename}`),
+      ...readWebpCanvas(`${gameRoot}assets/char/${filename}`),
     }));
     adultStageSprites.forEach(({ filename, width, height, hasAlpha }) => {
       expect(width, filename).toBeGreaterThanOrEqual(880);

@@ -1,7 +1,7 @@
 assets:
   backgrounds:
-    chilsuk_sword_cutin: root:/game-list/deokman/assets/bg/chilsuk-sword-cutin-v1.png
-    chilsuk_bow_cutin: root:/game-list/deokman/assets/bg/chilsuk-bow-cutin-v1.png
+    chilsuk_sword_cutin: root:/game-list/deokman/assets/bg/chilsuk-sword-cutin-v1.webp
+    chilsuk_bow_cutin: root:/game-list/deokman/assets/bg/chilsuk-bow-cutin-v1.webp
     title_palace: root:/game-list/deokman/assets/bg/title-palace-silla-v3.webp
     peony_court: root:/game-list/deokman/assets/bg/peony-court-silla-v1.webp
     burning_palace: root:/game-list/deokman/assets/bg/burning-palace-silla-v1.webp
@@ -33,36 +33,36 @@ assets:
       framings:
         portrait: { scale: 1, cropBottom: 0.32 }
         full: { scale: 1 }
-      base: root:/game-list/deokman/assets/char/deokman-child-silla-v8.png
+      base: root:/game-list/deokman/assets/char/deokman-child-silla-v8.webp
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
-        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v8.png
-        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v8.png
+        scared: root:/game-list/deokman/assets/char/deokman-child-scared-silla-v8.webp
+        resolve: root:/game-list/deokman/assets/char/deokman-child-resolve-silla-v8.webp
     덕만:
       placement: prompt-top
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.4 }
         full: { scale: 1 }
-      base: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
+      base: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.webp
       facing: left
       defaultDelivery: deduction
       calibration: { scale: 1, y: 0, spacing: 0.75 }
       emotions:
-        sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.png
-        angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.png
-        princess: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
-        princess_sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.png
-        princess_angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.png
-        wanderer: root:/game-list/deokman/assets/char/deokman-wanderer-silla-v9.png
-        wanderer_sad: root:/game-list/deokman/assets/char/deokman-wanderer-sad-silla-v9.png
-        wanderer_angry: root:/game-list/deokman/assets/char/deokman-wanderer-angry-silla-v9.png
-        attendant: root:/game-list/deokman/assets/char/deokman-attendant-silla-v9.png
-        queen: root:/game-list/deokman/assets/char/deokman-queen-silla-v9.png
-        queen_sad: root:/game-list/deokman/assets/char/deokman-queen-sad-silla-v9.png
-        queen_angry: root:/game-list/deokman/assets/char/deokman-queen-angry-silla-v9.png
+        sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.webp
+        angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.webp
+        princess: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.webp
+        princess_sad: root:/game-list/deokman/assets/char/deokman-princess-sad-silla-v9.webp
+        princess_angry: root:/game-list/deokman/assets/char/deokman-princess-angry-silla-v9.webp
+        wanderer: root:/game-list/deokman/assets/char/deokman-wanderer-silla-v9.webp
+        wanderer_sad: root:/game-list/deokman/assets/char/deokman-wanderer-sad-silla-v9.webp
+        wanderer_angry: root:/game-list/deokman/assets/char/deokman-wanderer-angry-silla-v9.webp
+        attendant: root:/game-list/deokman/assets/char/deokman-attendant-silla-v9.webp
+        queen: root:/game-list/deokman/assets/char/deokman-queen-silla-v9.webp
+        queen_sad: root:/game-list/deokman/assets/char/deokman-queen-sad-silla-v9.webp
+        queen_angry: root:/game-list/deokman/assets/char/deokman-queen-angry-silla-v9.webp
     소화:
       placement: prompt-top
       defaultFraming: portrait

@@ -38,7 +38,7 @@ startScreen:
     light: breathe
     accent: "#e8b56a"
     layers:
-      - image: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.png
+      - image: root:/game-list/deokman/assets/char/deokman-princess-silla-v9.webp
         x: 74
         "y": 62
         width: 61
