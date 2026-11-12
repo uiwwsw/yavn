@@ -98,7 +98,7 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
       : error ? <div className="story-atlas-empty" role="alert">{error}<button onClick={() => setRevision(r => r + 1)}>{t("다시 불러오기")}</button></div>
       : <>
         <nav ref={chapterNav} className="story-atlas-chapters" aria-label={t("전체 챕터")}>
-          {data?.chapters.map(c => {
+          {data?.chapters.filter(c => c.nodes.some(n => n.chapter === c.path && seen.has(n.id))).map(c => {
             const count = c.nodes.filter(n => n.chapter === c.path && seen.has(n.id)).length;
             return <button key={c.path} type="button" className={c.path === chapterPath ? 'is-active' : ''}
               aria-current={c.path === chapterPath ? 'step' : undefined} disabled={!count && !c.error}
@@ -111,7 +111,7 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
         </nav>
         <div className="story-atlas-body">
           <div className="story-atlas-map-area">
-            <div className="story-atlas-toolbar"><span><i />{t("지나온 길")}<i className="is-locked" />{t("미지의 갈림길")}</span>
+            <div className="story-atlas-toolbar"><span><i />{t("지나온 길")}</span>
               <div><button aria-label={t("지도 축소")} disabled={zoom <= .5} onClick={() => setZoom(z => Math.max(.5, z - .15))}>−</button>
                 <output aria-label={t("지도 배율")}>{Math.round(zoom * 100)}%</output>
                 <button aria-label={t("지도 확대")} disabled={zoom >= 1.3} onClick={() => setZoom(z => Math.min(1.3, z + .15))}>＋</button>
