@@ -27,18 +27,27 @@ describe('story map control flow and spoiler boundary', () => {
     const positions = layoutStoryMap(map.nodes, map.edges);
     expect(new Set(positions.map(n => `${n.x},${n.y}`)).size).toBe(map.nodes.length);
   });
-  it('hides all text, media, outcome kinds, and downstream nodes beyond visited frontier', () => {
-    const visible = visibleStoryChapter(chapter(), [{ id: id('entry'), replayable: true }, { id: id('entry', 2), replayable: true }], []);
-    const locked = visible.nodes.filter(n => !n.unlocked);
-    expect(locked).toHaveLength(3);
-    expect(locked.every(n => n.title === '아직 펼치지 않은 이야기' && !n.image && !n.portrait && n.kind === 'scene')).toBe(true);
-    expect(visible.nodes.some(n => n.id === id('merge'))).toBe(false);
-    expect(visible.edges.every(e => e.label === undefined)).toBe(true);
+  it('shows only visited nodes and travelled edges, with no future placeholders', () => {
+    const visits = [{ id: id('entry'), replayable: true }, { id: id('entry', 2), replayable: true }];
+    const travelled = [storyEdgeId(id('entry'), id('entry', 2))];
+    const visible = visibleStoryChapter(chapter(), visits, travelled);
+    expect(visible.nodes.map(n => n.id)).toEqual(visits.map(v => v.id));
+    expect(visible.nodes.every(n => n.unlocked)).toBe(true);
+    expect(visible.edges).toEqual([{ from: id('entry'), to: id('entry', 2), label: undefined, taken: true }]);
+    expect(visibleStoryChapter(chapter(), [], travelled)).toEqual({ nodes: [], edges: [] });
+  });
+  it('does not infer a travelled connection just because both endpoints were visited', () => {
+    const visits = chapter().nodes.map(n => ({ id: n.id, replayable: false }));
+    expect(visibleStoryChapter(chapter(), visits, []).edges).toEqual([]);
+    const visible = visibleStoryChapter(chapter(), visits, [storyEdgeId(id('entry', 2), id('left'))],
+      { [id('entry', 2)]: ['Left'] });
+    expect(visible.edges).toEqual([{ from: id('entry', 2), to: id('left'), label: 'Left', option: 1, taken: true }]);
   });
   it('does not reveal unselected options that merge into the same scene', () => {
     const visible = visibleStoryChapter(chapter(), [{ id: id('entry', 2), replayable: true }, { id: id('left'), replayable: true }],
       [storyEdgeId(id('entry', 2), id('left'))], { [id('entry', 2)]: ['Left'] });
     expect(visible.edges.filter(e => e.taken).map(e => e.label)).toEqual(['Left']);
+    expect(visible.edges).toHaveLength(1);
     expect(visible.edges.some(e => e.label === 'Other left')).toBe(false);
   });
   it('follows actions after a choice without a goto instead of skipping to the next chapter', () => {

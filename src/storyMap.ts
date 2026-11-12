@@ -91,15 +91,11 @@ export function buildStoryChapter(game: GameData, path: string, number: number, 
 export function visibleStoryChapter(chapter: StoryMapChapter, visits: StoryMapVisit[], travelled: string[], choices: Record<string, string[]> = {}) {
   const seen = new Set(visits.map(v => v.id));
   const taken = new Set(travelled);
-  const frontier = new Set(chapter.edges.filter(e => seen.has(e.from)).map(e => e.to));
-  const nodes = chapter.nodes.filter(n => seen.has(n.id) || frontier.has(n.id)).map(n => seen.has(n.id)
-    ? { ...n, unlocked: true }
-    : { ...n, title: '아직 펼치지 않은 이야기', image: undefined, portrait: undefined, kind: 'scene' as const, unlocked: false });
+  const nodes = chapter.nodes.filter(n => seen.has(n.id)).map(n => ({ ...n, unlocked: true }));
   const ids = new Set(nodes.map(n => n.id));
-  const edges = chapter.edges.filter(e => ids.has(e.from) && ids.has(e.to)).map(e => ({
-    ...e, label: taken.has(storyEdgeId(e.from, e.to)) && (!e.label || choices[e.from]?.includes(e.label)) ? e.label : undefined,
-    taken: taken.has(storyEdgeId(e.from, e.to)) && (!e.label || Boolean(choices[e.from]?.includes(e.label))),
-  }));
+  const edges = chapter.edges.filter(e => ids.has(e.from) && ids.has(e.to)
+    && taken.has(storyEdgeId(e.from, e.to)) && (!e.label || choices[e.from]?.includes(e.label)))
+    .map(e => ({ ...e, taken: true }));
   return { nodes, edges };
 }
 

@@ -185,6 +185,9 @@ scenes:
     expect(useVNStore.getState().routeVars).toBe(before);
     expect(map.chapters[0].edges.some(e => e.to === storyNodeId('./1.yaml', 'next', 0))).toBe(true);
     expect(visibleStoryChapter(map.chapters[1], map.visits, map.travelled).nodes).toHaveLength(0);
+    const visible = visibleStoryChapter(map.chapters[0], map.visits, map.travelled, map.choices);
+    expect(visible.nodes.some(n => n.chapter === './1.yaml')).toBe(false);
+    expect(visible.nodes.every(n => map.visits.some(v => v.id === n.id))).toBe(true);
   });
   it('returns across chapter boundaries with the earlier inventory and keeps both chapters discovered', async () => {
     await settle(loadGameFromUrl('http://test/journey/'));
@@ -198,6 +201,8 @@ scenes:
     const map = await getStoryMap();
     expect(map.current).toBe(startId);
     expect(map.visits.some(v => v.id === storyNodeId('./1.yaml', 'next', 0))).toBe(true);
+    expect(visibleStoryChapter(map.chapters[1], map.visits, map.travelled, map.choices).nodes
+      .some(n => n.id === storyNodeId('./1.yaml', 'next', 0))).toBe(true);
   });
   it('uses the same map and replay behavior for uploaded ZIP games', async () => {
     vi.useRealTimers();

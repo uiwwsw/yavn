@@ -38,7 +38,7 @@ For a complete runnable package, copy `examples/game-template/` as described in 
 
 ## Story map
 
-The story map shows discovered scenes and branches by chapter, with the current position centered. Future scene titles and endings remain hidden. Return to a replayable point to restore inventory, relationships and logs for that point. Exploration records remain across replay sessions when browser storage is available.
+The story map shows discovered scenes and branches by chapter, with the current position centered. Unvisited chapters and scenes are omitted, and only travelled connections and selected options appear. Return to a replayable point to restore inventory, relationships and logs for that point. Exploration records remain across replay sessions when browser storage is available.
 
 ## Launcher language metadata
 
