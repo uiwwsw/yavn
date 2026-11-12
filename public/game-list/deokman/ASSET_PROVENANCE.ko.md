@@ -2,6 +2,13 @@
 
 이 문서는 정식 패키지 `public/game-list/deokman/`에서 사용하는 시각 자산의 제작·재사용 근거를 기록합니다.
 
+## 2026-11-12 배포용 WebP 전환
+
+- 대상: 성장 단계별 덕만 스프라이트 13종과 칠숙 컷인 2종(`assets/char/deokman-*-silla-v8|v9.webp`, `assets/bg/chilsuk-*-cutin-v1.webp`)
+- 방식: `cwebp -q 85 -m 6 -alpha_q 100 -metadata none`. 캔버스 크기와 알파 채널은 그대로 보존하고 색상만 손실 압축했습니다.
+- 결과: 15개 파일 합계 18.4MB → 1.7MB(약 91% 감소). 얼굴·금장 무늬·머리카락 누끼 경계·컷인의 어두운 그라데이션을 원본과 1:1로 비교해 눈에 띄는 차이가 없음을 확인했습니다.
+- 원본 PNG는 Git 이력에 남아 있으며, 재편집이 필요하면 이력에서 복원한 원본을 기준으로 다시 변환합니다.
+
 ## 2026-09-09 조사용 물건
 
 - `forged-token.svg`, `medicine-cup.svg`: 코드로 직접 그린 신규 벡터 오브젝트입니다. 외부 이미지나 글꼴을 사용하지 않습니다.
@@ -17,11 +24,11 @@
 
 ## V10.4 칠숙 공격 장면 컷
 
-- 파일: `assets/bg/chilsuk-sword-cutin-v1.png`, `assets/bg/chilsuk-bow-cutin-v1.png`
+- 파일: `assets/bg/chilsuk-sword-cutin-v1.webp`, `assets/bg/chilsuk-bow-cutin-v1.webp`
 - 제작일: 2026-09-07
 - 제작 방식: OpenAI 내장 ImageGen 도구. 기존 `chilsuk-angry-silla-v5.webp`의 얼굴·나이·상투·보라색 신라 복식으로 검/활 자세를 만든 뒤 같은 인물을 밤 궁문 앞의 와이드 공격 컷으로 구성했습니다. CLI/API 대체 경로는 사용하지 않았습니다.
 - 용도: `attack.image`에서 접근·타격·반응 시점에 노출하는 불투명 장면 컷. 모바일 세로 화면에서는 contain으로 얼굴과 무기를 함께 보존합니다.
-- 검수: 두 결과 모두 1672×941 PNG. 투명 스프라이트 후보는 알파 대신 격자가 포함되어 채택하지 않았으며, 실제 게임에는 격자가 없는 배경 포함 장면 컷만 사용합니다. 기존 인물 스프라이트는 보존했습니다.
+- 검수: 두 결과 모두 1672×941 원화(배포본은 WebP). 투명 스프라이트 후보는 알파 대신 격자가 포함되어 채택하지 않았으며, 실제 게임에는 격자가 없는 배경 포함 장면 컷만 사용합니다. 기존 인물 스프라이트는 보존했습니다.
 
 ### 검 공격 컷 최종 프롬프트
 
@@ -47,24 +54,24 @@ Use case: historical-scene, identity-preserve. Asset type: 16:9 fullscreen attac
 
 ## 어린 덕만 스프라이트
 
-- 파일: `assets/char/deokman-child-silla-v8.png`
-- 파일: `assets/char/deokman-child-scared-silla-v8.png`
-- 파일: `assets/char/deokman-child-resolve-silla-v8.png`
+- 파일: `assets/char/deokman-child-silla-v8.webp`
+- 파일: `assets/char/deokman-child-scared-silla-v8.webp`
+- 파일: `assets/char/deokman-child-resolve-silla-v8.webp`
 - 제작일: 2026-08-18
-- 제작 방식: OpenAI 내장 이미지 생성 도구의 이미지 편집 모드로 기존 어린 덕만의 얼굴·연령·신라 복식·모란 장식·주머니·전신 구도를 참조해 기본/공포/결의 표정을 고해상도로 다시 제작했습니다. 단색 녹색 배경에서 생성한 뒤 자동 경계색 추정, 소프트 매트, 1px 경계 수축, 디스필을 적용하고 손실 압축을 피한 RGBA PNG로 저장했습니다.
+- 제작 방식: OpenAI 내장 이미지 생성 도구의 이미지 편집 모드로 기존 어린 덕만의 얼굴·연령·신라 복식·모란 장식·주머니·전신 구도를 참조해 기본/공포/결의 표정을 고해상도로 다시 제작했습니다. 단색 녹색 배경에서 생성한 뒤 자동 경계색 추정, 소프트 매트, 1px 경계 수축, 디스필을 적용하고 RGBA 원본으로 저장했습니다. 배포본은 알파 무손실 WebP입니다.
 - 최종 프롬프트 요약: 동일한 어린 덕만의 얼굴·나이·상투·보랏빛/남색 여행복·청동 모란 장식·주머니·전신 구도를 유지하고, 자연스러운 피부와 직물 세부를 선명하게 복원하며 압축 블록·가로 띠·사각 잔상·누끼 헤일로·흐림을 제거합니다. 공포 표정은 절제된 긴장, 결의 표정은 조용하고 지적인 집중으로 구분합니다.
 - 검수: 세 파일 모두 `886×1775`, 8-bit RGBA, 투명 픽셀 약 106만 개와 부분 투명 경계 약 5.8~6.8천 개를 보유합니다. 검정 배경 합성에서 흰 외곽선·가로 띠·사각 잔상이 보이지 않음을 확인했습니다.
 
 ## 성장 단계별 덕만 스프라이트
 
-- 국경 유랑자: `assets/char/deokman-wanderer-silla-v9.png`, `deokman-wanderer-sad-silla-v9.png`, `deokman-wanderer-angry-silla-v9.png`
-- 신분을 되찾은 공주: `assets/char/deokman-princess-silla-v9.png`, `deokman-princess-sad-silla-v9.png`, `deokman-princess-angry-silla-v9.png`
-- 시녀 잠입: `assets/char/deokman-attendant-silla-v9.png`
-- 선덕왕: `assets/char/deokman-queen-silla-v9.png`, `deokman-queen-sad-silla-v9.png`, `deokman-queen-angry-silla-v9.png`
+- 국경 유랑자: `assets/char/deokman-wanderer-silla-v9.webp`, `deokman-wanderer-sad-silla-v9.webp`, `deokman-wanderer-angry-silla-v9.webp`
+- 신분을 되찾은 공주: `assets/char/deokman-princess-silla-v9.webp`, `deokman-princess-sad-silla-v9.webp`, `deokman-princess-angry-silla-v9.webp`
+- 시녀 잠입: `assets/char/deokman-attendant-silla-v9.webp`
+- 선덕왕: `assets/char/deokman-queen-silla-v9.webp`, `deokman-queen-sad-silla-v9.webp`, `deokman-queen-angry-silla-v9.webp`
 - 제작일: 2026-08-19
 - 제작 방식: OpenAI 내장 이미지 생성 도구에서 어린 덕만 V8과 기존 성인 덕만을 얼굴 계보·화풍 참조로 사용해 유랑자·공주·선덕왕 기본 원화를 각각 제작했습니다. 각 기본 원화를 다시 참조해 복식·자세·손·소품·캔버스를 고정하고 표정만 슬픔과 절제된 분노로 바꿨습니다. 시녀 잠입 원화는 유랑자와 공주 원화를 함께 참조해 장신구와 신분 소품만 제거했습니다.
 - 최종 프롬프트 요약: 유랑자는 10년간 국경을 떠돈 18세 덕만의 해진 자주·남색 여행복, 거친 신발, 천 주머니와 청동 모란패를 사용합니다. 공주는 신분을 되찾은 19세 덕만의 절제된 신라 궁중복, 작은 금제 머리 장식과 사건 문서를 사용하되 왕관은 쓰지 않습니다. 선덕왕은 수년 뒤의 성숙한 얼굴, 신라 금제 관식, 짙은 자주·남색 왕복과 옥새함으로 통치의 무게를 드러냅니다. 중국 황실 관식·용봉 문양·판타지 갑옷·현대 화장·잘린 발을 공통으로 제외했습니다.
-- 누끼 처리: 균일한 녹색 배경에서 생성한 뒤 테두리 자동 샘플링, 소프트 매트, 1px 경계 수축과 디스필을 적용했습니다. 최종 파일은 8-bit RGBA PNG이며 너비 `881~887px`, 높이 `1774~1785px` 범위입니다.
+- 누끼 처리: 균일한 녹색 배경에서 생성한 뒤 테두리 자동 샘플링, 소프트 매트, 1px 경계 수축과 디스필을 적용했습니다. 최종 파일은 알파 채널을 무손실로 보존한 RGBA WebP이며 너비 `881~887px`, 높이 `1774~1785px` 범위입니다.
 - 적용: 2장 국경 장터는 유랑자, 3장 비밀 재회는 유랑자에서 공주 또는 시녀로 분기, 4~8장은 공주, 9장 즉위 장면부터 12장 마지막 재판은 선덕왕 원화를 사용합니다.
 - 검수: 열 파일 모두 투명 모서리와 부분 투명 머리카락·옷자락 경계를 보유하며 검정 배경 합성에서 녹색 누끼 헤일로, 사각 배경 잔상, 발 잘림이 없는지 확인했습니다.
 
