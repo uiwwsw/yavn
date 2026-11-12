@@ -64,6 +64,7 @@ type VNState = {
   currentMusic?: string;
   dialog: DialogState;
   dialogUiHidden: boolean;
+  skipReadActive: boolean;
   effect?: string;
   videoCutscene: VideoCutsceneState;
   inputGate: InputGateState;
@@ -95,6 +96,7 @@ type VNState = {
   setMusic: (url?: string) => void;
   setDialog: (dialog: Partial<DialogState>) => void;
   setDialogUiHidden: (hidden: boolean) => void;
+  setSkipReadActive: (active: boolean) => void;
   setEffect: (effect?: string) => void;
   setVideoCutscene: (video: Partial<VideoCutsceneState>) => void;
   clearVideoCutscene: () => void;
@@ -219,6 +221,7 @@ export const useVNStore = create<VNState>((set) => ({
   camera: DEFAULT_STAGE_CAMERA,
   dialog: initialDialog,
   dialogUiHidden: false,
+  skipReadActive: false,
   videoCutscene: initialVideoCutscene,
   inputGate: initialInputGate,
   choiceGate: initialChoiceGate,
@@ -254,6 +257,7 @@ export const useVNStore = create<VNState>((set) => ({
       currentMusic: undefined,
       dialog: initialDialog,
       dialogUiHidden: false,
+      skipReadActive: false,
       videoCutscene: initialVideoCutscene,
       inputGate: initialInputGate,
       choiceGate: initialChoiceGate,
@@ -348,6 +352,7 @@ export const useVNStore = create<VNState>((set) => ({
     },
   })),
   setDialogUiHidden: (dialogUiHidden) => set({ dialogUiHidden }),
+  setSkipReadActive: (skipReadActive) => set({ skipReadActive }),
   setEffect: (effect) => set({ effect }),
   setVideoCutscene: (video) => set((state) => ({ videoCutscene: { ...state.videoCutscene, ...video } })),
   clearVideoCutscene: () => set({ videoCutscene: initialVideoCutscene }),
@@ -414,6 +419,7 @@ export const useVNStore = create<VNState>((set) => ({
       currentMusic: undefined,
       dialog: initialDialog,
       dialogUiHidden: false,
+      skipReadActive: false,
       videoCutscene: initialVideoCutscene,
       inputGate: initialInputGate,
       choiceGate: initialChoiceGate,

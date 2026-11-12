@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { collectChapterAssetPaths } from './preload';
+import { collectChapterAssetPaths, collectStartupAssetPaths } from './preload';
 import type { GameData } from './types';
 
 const game = {
@@ -73,5 +73,45 @@ describe('collectChapterAssetPaths', () => {
       '/char/b/base.png',
       '/items/clue.svg',
     ]);
+  });
+});
+
+describe('collectStartupAssetPaths', () => {
+  it('limits a fresh start to the first scripted scene', () => {
+    expect(collectStartupAssetPaths(game)).toEqual([
+      '/bg/opening.png',
+      '/char/a/base.png',
+      '/char/a/focused.png',
+      '/char/b/base.png',
+    ]);
+  });
+
+  it('keeps the background in effect before a resume point and the rest of that scene', () => {
+    expect(collectStartupAssetPaths(game, 'opening', 2)).toEqual([
+      '/bg/opening.png',
+      '/char/a/focused.png',
+      '/char/b/base.png',
+    ]);
+    expect(collectStartupAssetPaths(game, 'branch', 1)).toEqual(['/items/clue.svg']);
+  });
+
+  it('includes scenes one goto or choice away from the start position', () => {
+    const branching = {
+      ...game,
+      scenes: {
+        ...game.scenes,
+        opening: {
+          actions: [
+            { bg: 'opening' },
+            { choice: { key: 'pick', prompt: 'Pick', options: [{ text: 'Go', goto: 'branch' }] } },
+          ],
+        },
+      },
+    } satisfies GameData;
+    expect(collectStartupAssetPaths(branching)).toEqual(['/bg/opening.png', '/items/clue.svg']);
+  });
+
+  it('falls back to the first scripted scene when the resume scene is unknown', () => {
+    expect(collectStartupAssetPaths(game, 'missing', 3)).toEqual(collectStartupAssetPaths(game));
   });
 });
