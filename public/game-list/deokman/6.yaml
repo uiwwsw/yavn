@@ -94,7 +94,7 @@ scenes:
           people_support: -1
       - say:
           channel: thought
-          text: "내가 읽는 동안에도 사람들은 문 안을 기웃거렸다. 아버지가 직접 나오기를 기다렸구나."
+          text: "목록을 다 읽고 고개를 든다. 맨 앞 사내는 여전히 내 어깨 너머 문 안을 본다."
       - goto: "rebuild_power"
 
   inherit_blame:
@@ -132,7 +132,7 @@ scenes:
           people_support: -2
       - say:
           channel: thought
-          text: "아버지는 눈을 감으셨다. 편안해 보이셔서 차마 깨우지 못했다. 밖에서 기다리는 사람들에게는 내가 나가야 한다."
+          text: "아버지 손등에 뚜껑 자국이 아직 붉다. 나는 문고리를 잡는다."
       - goto: "rebuild_power"
 
   rebuild_power:
@@ -197,7 +197,7 @@ scenes:
           people_support: -1
       - say:
           channel: thought
-          text: "성문을 먼저 지키라 한 건 나다. 오늘 저녁을 못 먹은 사람에게도 같은 말을 할 수 있을까."
+          text: "성문 깃발이 바뀌었다. 창고 앞에는 빈 바구니들이 줄지어 놓여 있다."
       - goto: "council_counterattack"
 
   restore_records:
@@ -214,7 +214,7 @@ scenes:
           camera: "medium"
           with:
             - "유신"
-          text: "그 명은 멈춰라. 대피시킬 사람은 먼저 옮기고. 누가 고쳤는지 이름을 받아 와."
+          text: "그 명 멈춰. 고친 사람 이름부터 받아 와."
       - say:
           char: "유신.angry"
           camera: "medium"
@@ -228,7 +228,7 @@ scenes:
           people_support: -2
       - say:
           channel: thought
-          text: "틀린 글자는 바로잡았다. 늦은 두 시진도 고칠 수 있으면 좋으련만."
+          text: "창고 앞 줄이 끝까지 보인다. 맨 뒤 노인은 빈 그릇을 뒤집어 들고 있다."
       - goto: "council_counterattack"
 
   council_counterattack:
@@ -239,12 +239,12 @@ scenes:
       - say:
           camera: wide
           channel: narration
-          text: "조회에 새 의자가 들어왔다. 등받이에 천명의 이름이 새겨져 있었다. 귀족 하나가 천명에게 자리를 권하며, 덕만 쪽에 놓인 열쇠를 끌어당겼다."
+          text: "조회에 천명의 이름을 새긴 의자가 들어왔다. 귀족 하나가 자매 앞에 새 붓을 놓고 덕만 쪽 열쇠를 끌어당겼다. 덕만의 붓대 끝만 붉게 젖어 있었다."
       - say:
           char: 천명.nervous
           camera: medium
           with: [덕만]
-          text: "앉으라며 네 열쇠를 당기더라. 내가 저 의자에 앉으면 네 앞을 막아야 한대."
+          text: "의자 준 사람이 문 쪽 병사들한테 눈짓하더라. 저 병사들, 아버지 사람 아니야."
       - choice:
           key: c7_regency
           prompt: "언니 이름이 새겨진 의자가 내 맞은편에 놓인다."
@@ -308,7 +308,7 @@ scenes:
           text: "네가 다 쥘 줄 알았다. 나처럼 다시 빼앗길까 무서워서."
       - say:
           char: 덕만
-          text: "무서워요. 그러니까 나눠 두려는 거예요. 제가 놓쳐도 누군가는 쥐고 있게."
+          text: "무서워요. 그래서 열쇠를 하나 더 깎았어요. 하나는 언니 거예요."
       - say:
           channel: thought
           text: "저 의자가 어릴 때보다 작아 보인다. 아버지는 저기서 자꾸 작아지셨구나. 나는 빈 옥새함을 닫아 드린다."
@@ -337,7 +337,7 @@ scenes:
           text: "덕만아. 저 병사들, 우리를 보고 있지 않아. 문이 닫혀…"
       - say:
           channel: record
-          text: "귀족 회의는 왕실의 불법 체포와 공동 섭정 강요를 명분으로 성문을 폐쇄함. 덕만 공주와 천명 공주, 회의장 화재로 사망."
+          text: "귀족 회의는 왕실의 불법 체포를 명분으로 성문을 폐쇄함. 덕만 공주와 천명 공주, 회의장 화재로 사망."
       - gameOver:
           title: "운명 — 함께 잠긴 왕실"
           message: "왕명을 다시 읽어도 문은 열리지 않았다. 천명이 덕만의 소매로 연기를 막았다. 밖에서는 두 사람의 이름을 지울 회의가 시작되었다."

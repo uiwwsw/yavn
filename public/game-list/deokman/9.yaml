@@ -26,7 +26,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [춘추]
-          text: "기다려야 할 쪽을 적어라. 완공했다는 보고 옆에 함께 두겠다."
+          text: "못 적겠으면 둘 다 적어. 고르는 건 내가 하지."
       - choice:
           key: c10_observatory_priority
           prompt: "장부 끝을 다시 넘겨도 쓸 곡식은 늘지 않는다."
@@ -58,7 +58,7 @@ scenes:
           text: "탑의 첫 단이 올라갔다. 마을에서는 죽에 물을 한 바가지 더 부었다. 덕만은 공사장 밤불을 줄이고 남은 땔감을 마을로 보냈다."
       - say:
           char: "덕만"
-          text: "사람 먹일 것까지 아끼지는 마라. 궁의 비축을 열어라."
+          text: "궁 창고를 열어라. 내 상부터 덜고."
       - say:
           char: "춘추.nervous"
           camera: "medium"
@@ -73,7 +73,7 @@ scenes:
           insight: 1
       - say:
           channel: thought
-          text: "관측은 빨라졌다. 오늘 죽을 받은 아이 얼굴은 나아지지 않았다. 내년을 보라고 말할 수가 없다."
+          text: "탑 위에서 관측관이 손을 흔든다. 죽 줄에 선 아이는 그쪽을 보지 않는다."
       - goto: "who_reads_stars"
 
   balanced_build:
@@ -96,7 +96,7 @@ scenes:
           camera: "medium"
           with:
             - "춘추"
-          text: "거두어라. 이미 부른 악공들에게는 품삯을 주고. 공사 장부는 따로 올려라."
+          text: "잔치는 없던 걸로 하지. 악공들은… 공사장에 가서 한 곡 하라 해."
       - say:
           channel: "narration"
           text: "잔치를 기다리던 귀족들이 항의했다. 공사장에서는 번갈아 품삯이 나갔다. 미완성인 탑과 성벽 사이로 첫눈이 내렸다."
@@ -104,7 +104,7 @@ scenes:
           nobles_support: -2
       - say:
           channel: thought
-          text: "어느 쪽도 다 짓지 못했다. 그래도 망치 소리는 끊기지 않는다. 서두르라던 말을 삼킨다."
+          text: "반쯤 쌓은 탑 위에 눈이 앉는다. 성벽 쪽 망치 소리는 밤늦게까지 들린다."
       - goto: "who_reads_stars"
 
   granary_first:
@@ -120,7 +120,7 @@ scenes:
           text: "자원했다 적었으나, 굶은 이가 왕의 곡식 앞에서 싫다 할 수 있었겠습니까."
       - say:
           char: 덕만.queen_sad
-          text: "오지 않은 마을도 적어라. 왜 못 왔는지 물어보고. 벌주러 간 줄 알게 하지 말고."
+          text: "안 온 마을엔 내가 간다. 춘추, 말 한 필만 내줘."
       - goto: who_reads_stars
 
   who_reads_stars:
@@ -188,7 +188,7 @@ scenes:
           camera: "medium"
           with:
             - "비담"
-          text: "대피는 먼저 시켜라. 서로 다른 수는 지우지 말고 남겨. 나중에 맞춰 볼 테니."
+          text: "대피는 지금 시켜. 세 곳 답이 다르면 다른 채로 가져오고."
       - say:
           channel: "narration"
           text: "첫 정정표에 세 사람의 글씨가 남았다. 비담은 봉인된 함 대신 수정한 날짜를 전령에게 읽혔다. 그 날짜를 두 번 확인했다."
@@ -196,7 +196,7 @@ scenes:
           bidam_trust: -1
       - say:
           channel: thought
-          text: "고친 수 하나 옆에 이름이 셋이다. 늦긴 하다. 그러나 누가 고쳤느냐는 물음에 이제 나만 답하지 않아도 된다."
+          text: "고친 수 하나 옆에 이름이 셋이다. 하나는 삐뚤빼뚤한 아이 글씨다."
       - goto: "observatory_sabotage"
 
   bidam_network:
@@ -217,7 +217,7 @@ scenes:
           text: "마지막 마을까지 닿았습니다. 폐하께서 정하신 때보다 반나절 빠릅니다."
       - say:
           char: "덕만.queen_sad"
-          text: "네가 아파도 갈 수 있어야 한다. 암호 읽을 사람을 둘 더 길러라."
+          text: "잘했다. 그런데 너 앓아누우면? 암호 읽을 사람 둘만 더 길러."
       - say:
           char: "비담.sad"
           camera: "medium"
@@ -231,7 +231,7 @@ scenes:
           bidam_trust: 2
       - say:
           channel: thought
-          text: "경보는 닿았다. 그런데 비가 언제 그치느냐고 물으니 다들 전령 오는 길만 본다."
+          text: "비가 언제 그치느냐고 묻자, 다들 대답 대신 전령 오는 길을 본다."
       - goto: "observatory_sabotage"
 
   observatory_sabotage:
@@ -242,7 +242,7 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: "탑 밑에서 타는 냄새가 올라온다. 아직 종도 울리지 않았다. 시장 쪽에서 여왕의 별이 탔다고 외친다. 불보다 소문이 먼저 가 있다."
+          text: "탑 밑에서 타는 냄새가 올라온다. 뒷벽에는 기름통이 아직 여럿 쌓여 있다. 시장 쪽에서는 벌써 여왕의 별이 탔다고 외친다."
       - char: { id: 유신, position: right, emotion: angry }
       - say:
           char: 유신.angry
@@ -280,14 +280,14 @@ scenes:
           char: 덕만.queen_angry
           camera: medium
           with: [유신]
-          text: "저 대나무만. 발에 채이기 전에 그것만 집고—"
+          text: "뒷문은 내가 잡고 있을게. 마지막 사람 나올 때까지—"
       - say:
           channel: narration
-          text: "덕만의 손이 바닥에 닿자 뒤에서 기름통이 터졌다. 유신이 뻗은 팔을 불길이 갈랐다. 덕만은 대나무를 놓고 얼굴을 가렸다."
+          text: "덕만이 막아 둔 문짝 너머에서 기름통이 터졌다. 유신이 뻗은 팔을 불길이 갈랐다. 덕만은 빗장을 놓지 못했다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
-          text: "첨성대 방화 기록 — 관측관 전원 구조. 선덕왕은 방화 증거를 회수하다 화재 현장에서 사망."
+          text: "첨성대 방화 기록 — 관측관 전원 구조. 선덕왕은 불길을 막던 뒷문 안에서 사망."
       - gameOver:
           title: "운명 — 두 번째 불길의 증거"
           message: "관측관들은 모두 나왔다. 유신은 탑 쪽으로 돌아 뛰었으나 두 번째 불길을 넘지 못했다."
@@ -305,7 +305,7 @@ scenes:
       - say:
           char: 덕만
           camera: medium
-          text: "사람부터 쉬게 하라. 잃은 수는 내일부터 다시 재면 된다. 내 운세부터 묻지는 않을 테니."
+          text: "물부터 먹여라. 젖은 표는 내일 말리자."
       - branch:
           cases:
             - when: { var: knowledge_policy, op: eq, value: bidam_network }
@@ -327,7 +327,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "비담아. 이제 숨기지 않아도 돼. 너도 밤마다 길에 나서지 않아도 되고."
+          text: "봐, 애들이 틀린 데를 찾았어. 비담아, 너도 오늘은 좀 자."
       - say:
           channel: narration
           text: "비담은 대답 없이 계단을 내려갔다. 그날 밤 북쪽 봉화가 꺼졌다. 잿더미에서 기름 먹인 대나무와 전령 매듭이 나왔다. 덕만은 사람들을 물리고 다시 살폈다."
@@ -348,7 +348,7 @@ scenes:
           char: 덕만.queen_sad
           camera: medium
           with: [비담]
-          text: "모두 네게 맡긴 건 나다. 하지만 이대로 둘 순 없어. 표와 전령 명부를 내어라."
+          text: "다 너한테 맡긴 건 나지. 그러니 거두는 것도 내가 한다. 명부 내놔."
       - say:
           channel: narration
           text: "비담의 입가가 굳었다. 그날 밤 북쪽 봉화가 꺼졌다. 잿더미에서 기름 먹인 대나무와 매듭이 나왔다. 그의 전령들이 쓰는 매듭이었다."
@@ -373,7 +373,7 @@ scenes:
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
           char: 덕만.queen_angry
-          text: "국고를 열어라. 오늘 밤 다시 올린다. 저들이 무너뜨린 채로 날을 밝히지 않겠다."
+          text: "국고를 열어라. 오늘 밤 안에 다시 올린다."
       - say:
           channel: narration
           text: "돌을 나를 인부들이 몰렸다. 관측관을 꺼낼 사다리는 그 뒤에 들어왔다. 탑 아래 세 사람을 눕혔을 때, 시장에는 벌써 벽보가 붙고 있었다."

@@ -32,7 +32,7 @@ scenes:
           char: 진평왕.weak
           camera: medium
           with: [덕만]
-          text: "덕만아. 나를 보지 말거라, 이제는. 네가 얻은 사람들을 보아야 한다."
+          text: "이제 나는 그만 보거라. 문밖에 네 사람들이 와 있다."
       - say:
           channel: action
           text: "쥔 손에서 힘이 빠진다. 한참 기다려도 다시 쥐어 오지 않는다. 밖에서 북이 울린다. 나는 아버지 손을 이불 안으로 넣어 드리지 못한다."
@@ -55,7 +55,7 @@ scenes:
           char: 춘추
           camera: medium
           with: [덕만]
-          text: "장부만 내밀면 찢을 겁니다. 군사를 세우면 협박이라 하겠지요. 먼저 약조를 받으셔야 합니다."
+          text: "장부를 내밀면 찢고, 군사를 세우면 협박이라 할 겁니다. 문밖 사람들 틈엔 저들 사병도 섞였고요."
       - say:
           when: { var: chunchu_trust, op: gte, value: 1 }
           char: 춘추
@@ -98,7 +98,7 @@ scenes:
       - say:
           char: 덕만
           camera: medium
-          text: "이 장부에 이름이 있는 분은 표를 내려놓으시오. 해명부터 듣겠소."
+          text: "여기 이름이 적힌 분들은 표를 잠시 내려놓으시오."
       - say:
           channel: narration
           text: "몇몇 손이 소매 안으로 들어갔다. 덕만은 장부를 더 앞으로 밀었다. 종이 귀퉁이가 탁자 끝에 걸렸다."
@@ -128,7 +128,7 @@ scenes:
           text: "궁문 밖에서 마을 이름이 불렸다. 뒤이어 죽은 가족의 이름이 터져 나왔다. 귀족들이 얼굴을 찌푸릴수록 외침은 더 커졌다."
       - say:
           char: 덕만
-          text: "문밖의 이름도 적으시오. 여기서 정한 왕을 저 사람들도 섬겨야 하지 않소."
+          text: "문밖에서 부르는 이름도 받아 적으시오. 하나도 빼지 말고."
       - say:
           char: 춘추.nervous
           camera: medium
@@ -162,7 +162,7 @@ scenes:
           char: 덕만.princess_angry
           camera: medium
           with: [유신]
-          text: "우리가 먼저 뽑지 않았다는 건 남겠지. 자리를 지켜라."
+          text: "알아. 그래도 우리가 먼저 뽑진 마. 자리 지켜."
       - say:
           channel: narration
           text: "반대표 하나가 항아리에 떨어졌다. 동시에 문이 닫혔다. 매듭을 풀던 병사가 창에 맞았다. 유신은 칼집째 들어 두 번째 창을 막았다."
@@ -247,7 +247,7 @@ scenes:
           char: 덕만.princess_sad
           camera: medium
           with: [유신]
-          text: "상인들부터 보내. 내가 끌고 온 군사들이야. 저 사람들 뒤에 숨지는 않겠다."
+          text: "상인들부터 동문으로 보내. 저 군사들은 날 쫓아온 거야. 이 사람들 뒤엔 안 숨어."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -272,7 +272,7 @@ scenes:
           char: 덕만.princess_angry
           camera: medium
           with: [유신]
-          text: "여긴 버려. 돌아가야 해. 내 명을 기다리는 사람들에게."
+          text: "여긴 버려. 회의장으로 돌아간다."
       - say:
           channel: narration
           text: "덕만의 위조문이 성문에 붙었다. 돌아온 전령은 같은 질문을 여러 번 받았다. 이번 왕명은 진짜냐고. 답하는 동안 반란군이 회의장에 닿았다."
@@ -341,7 +341,7 @@ scenes:
           text: "세 표가 들어갔습니다. 이제 군량을 꺼낼 때마다 저 세 분 서명이 필요합니다."
       - say:
           char: "덕만.princess_sad"
-          text: "첫 수확까지다. 그 뒤에는 누구 창고를 얼마나 열었는지 함께 따지겠다."
+          text: "첫 수확까지만이오. 그 뒤엔 창고마다 장부를 같이 펴 봅시다."
       - say:
           channel: "narration"
           text: "붓 세 자루가 움직였다. 왕관은 덕만에게 왔다. 군량 장부를 가지러 간 관리만 빈손으로 돌아왔다."
@@ -349,7 +349,7 @@ scenes:
           nobles_support: 2
       - say:
           channel: thought
-          text: "장부를 돌려달라는 말에 세 사람이 서로를 본다. 아직 왕관을 쓰지도 않았는데, 벌써 허락을 기다린다."
+          text: "빈손으로 돌아온 관리가 내 눈치를 본다. 세 귀족은 천천히 붓을 닦는다."
       - goto: "coronation"
 
   bad_army_review:
@@ -374,7 +374,7 @@ scenes:
           text: "심사를 받겠습니다. 그날 성문을 맡을 장수를 미리 정해 주십시오."
       - say:
           char: "덕만.princess_angry"
-          text: "네가 없어도 문은 서 있어야지. 뒤를 맡을 사람도 같은 심사를 받게 하라."
+          text: "너 없는 날도 문은 서 있어야지. 네 뒤를 맡을 사람, 이름 대 봐."
       - say:
           channel: "narration"
           text: "장수 둘이 자리에서 일어났다. 유신은 지휘패를 내어 반납할 날짜를 새겼다. 떠난 두 사람의 자리에는 아무도 앉지 않았다."
@@ -382,7 +382,7 @@ scenes:
           army_support: -2
       - say:
           channel: thought
-          text: "남은 군사 수를 다시 센다. 아까보다 적다. 약속을 지키려면 이 숫자로도 버텨야 한다."
+          text: "남은 군사 수를 다시 센다. 빈자리 둘에 놓인 투구를 아무도 치우지 않는다."
       - goto: "coronation"
 
   coronation:
@@ -401,13 +401,13 @@ scenes:
       - say:
           char: 덕만
           camera: medium
-          text: "오늘 받은 표와 내가 한 약조를 먼저 읽어라. 즉위했으니 지워도 되는 글은 없다."
+          text: "옷은 이따 갈아입겠다. 간밤에 한 약조부터 읽어라."
       - say:
           channel: narration
           text: "첫 조회는 불탄 시장의 명부를 읽으며 시작되었다. 덕만은 살 곳을 잃은 집마다 표시를 했다. 새 관측대를 어디에 세울지는 그다음에 물었다."
       - say:
           channel: thought
-          text: "왕관을 썼는데 춥다. 시장 사람들은 오늘 어디서 잘까. 내 첫 겨울이 벌써 문 앞에 와 있다."
+          text: "왕관을 썼는데 춥다. 시장 사람들은 오늘 어디서 잘까."
           with: []
           camera: wide
           continueLabel: 예복을 걷고 첫겨울의 장부를 받는다
