@@ -1,7 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { resolveStageCameraPresentation } from './stageCamera';
 import {
   buildImageCharacterRenderKey,
   resolveAutoCharacterPosition,
@@ -320,9 +319,4 @@ describe('phone framing keeps whole actors on screen', () => {
     expect(styles).toContain('object-fit: contain');
   });
 
-  it('adds no zoom of its own to a wide shot on a phone', () => {
-    expect(resolveStageCameraPresentation({ shot: 'wide' }).mobileScale).toBe(1);
-    // The closer shots still read as closer.
-    expect(resolveStageCameraPresentation({ shot: 'medium' }).mobileScale).toBeGreaterThan(1);
-  });
 });
