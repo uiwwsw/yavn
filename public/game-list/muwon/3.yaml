@@ -18,21 +18,22 @@ scenes:
           with: []
           camera: wide
           text: "입김이 하얗다. 짚 아래 얼음 덩이가 층층이 쌓였고, 왼쪽 더미 하나가 비스듬히 기울었다."
-      - char: { id: 도원, position: left }
+      - char: { id: 서연, position: left }
+      - char: { id: 도원, position: center }
       - char: { id: 막쇠, position: right }
       - say:
           char: 도원.troubled
-          with: [막쇠]
+          with: [서연, 막쇠]
           text: "얼음지기 말로는 오늘 저녁에 발견했다 하오. 몸이 돌처럼 굳었소. 죽은 지 오래요."
       - say:
           char: 막쇠
           when: { var: makssoe_hurt, op: eq, value: true }
-          with: [도원]
+          with: [서연, 도원]
           text: "다리 끌고 왔수. 이건 내 눈으로 봐야 해서. 아가씨, 몸부터 봐요."
       - say:
           char: 막쇠
           when: { var: makssoe_hurt, op: eq, value: false }
-          with: [도원]
+          with: [서연, 도원]
           text: "얼음 곳간에서 굳은 송장은 속여요. 굳은 게 죽은 시각을 다 말해 주진 않거든."
       - goto: c4_body
 
@@ -75,6 +76,7 @@ scenes:
           text: "몸을 모로 돌린다. 등에 핏빛 얼룩이 연하게 번져 있다. 손가락으로 누르자 하얗게 빠진다."
       - say:
           char: 막쇠
+          with: [서연]
           text: "시반이 아직 눌리면 빠진다? 그럼 죽은 지 한나절이 안 된 거요."
       - set: { c4_lividity: true }
       - goto: c4_body
@@ -117,13 +119,15 @@ scenes:
   c4_reason:
     actions:
       - bg: { id: seobinggo, transition: dissolve, duration: 620 }
-      - char: { id: 도원, position: left }
+      - char: { id: 서연, position: left }
+      - char: { id: 도원, position: center }
       - say:
           char: 서연.think
           with: [도원]
           text: "윤길은 오늘 낮에 죽었습니다. 범인이 얼음에 묻어 며칠 된 송장처럼 만들었어요."
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "그럼 범인은 오늘 낮에 이 곳간에 들어왔다는 말이군. 얼음 출납을 보면…"
       - goto: c4_storeroom
 
@@ -216,6 +220,7 @@ scenes:
           text: "등불을 들고 안쪽으로 간다. 기울어진 얼음 더미 너머에서 무언가 끌리는 소리."
       - say:
           char: 막쇠.hurt
+          with: []
           text: "아가씨… 오지 마! 왼손에 칼—"
       - attack:
           attacker: 곰보
@@ -229,6 +234,7 @@ scenes:
           key: c4_ambush
           prompt: "복면이 다시 칼을 든다!"
           char: 곰보
+          with: [곰보]
           timeoutMs: 7000
           timeoutOptionIndex: 2
           options:
@@ -298,19 +304,26 @@ scenes:
           channel: action
           with: []
           text: "막쇠에게 달려간다. 다친 다리 때문에 피하지 못했다. 옆구리가 젖어 있다."
+      - char: { id: 서연, position: left }
+      - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠.hurt
+          with: [서연]
           text: "다리만 안 다쳤어도… 하, 궤짝 건진 값이네. 아가씨 잘못 아니유."
       - set: { makssoe_alive: false }
       - goto: c4_farewell
 
   c4_farewell:
     actions:
+      - char: { id: 서연, position: left }
+      - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠.hurt
+          with: [서연]
           text: "아가씨 책… 한글이라 다행이오. 나 같은 놈도 읽을 수 있게."
       - say:
           char: 막쇠.hurt
+          with: [서연]
           text: "다음 송장은… 아가씨가 먼저 읽어 줘요. 남이 글 써 놓기 전에."
       - say:
           channel: narration
@@ -319,9 +332,11 @@ scenes:
 
   c4_saved:
     actions:
+      - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠.hurt
+          with: [서연]
           text: "아이고, 늙은이 얼음에 묻힐 뻔했네. 아가씨 어깨 하나는 장정이오."
       - say:
           char: 서연
@@ -329,6 +344,7 @@ scenes:
           text: "피 나요. 가만있어요. 지혈부터 해요."
       - say:
           char: 막쇠.grin
+          with: [서연]
           text: "그놈 왼손잡이요. 칼을 왼손으로 쥐고 덤볐어. 약방 영감 목 그은 놈이 그놈이야."
       - goto: c4_seal_owner
 
@@ -337,12 +353,15 @@ scenes:
     actions:
       - bg: { id: hanseongbu_yard, transition: fade, duration: 800 }
       - music: inquest
-      - char: { id: 도원, position: left }
+      - char: { id: 서연, position: left }
+      - char: { id: 도원, position: center }
       - say:
           char: 도원.stern
+          with: [서연]
           text: "출납부와 상자의 도장을 전의감 인부와 대 보았소. 의관 한명재의 사인이오."
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "형조에 고발하겠소. 다만 한명재는 의녀와 오작인의 말은 증언이 아니라 할 거요."
       - say:
           char: 서연.resolve

@@ -18,14 +18,20 @@ scenes:
           with: []
           camera: wide
           text: "창살 너머 짚더미 위에 사내가 모로 누워 있다. 바지 엉덩이 쪽이 검붉게 굳었다."
-      - char: { id: 덕구, position: left }
+      - char: { id: 서연, position: left }
+      - char: { id: 덕구, position: center }
       - say:
           char: 덕구.scared
+          with: [서연]
           text: "제, 제가 했어요. 했다니까요. 그러니까 이제 그만 때려요…"
       - say:
           char: 서연
           with: [덕구]
           text: "때리러 온 게 아니에요. 의녀예요. 엉덩이부터 보여 줘요. 약 발라 줄게요."
+      - say:
+          char: 덕구.scared
+          with: [서연]
+          text: "짐꾼 덕구예요… 지게만 졌어요. 불은 구경도 못 했는데…"
       - say:
           channel: action
           with: [덕구]
@@ -33,10 +39,11 @@ scenes:
       - char: { id: 강치수, position: right }
       - say:
           char: 강치수.angry
-          with: [덕구]
+          with: [서연, 덕구]
           text: "의녀가 죄인 엉덩이까지 돌보나. 판관 나리 끈이 길기도 하지."
       - say:
           char: 강치수
+          with: [서연]
           text: "자백은 받았소. 흉기도 찾았소. 사흘 뒤면 끝날 일이오."
       - goto: c3_look
 
@@ -46,7 +53,7 @@ scenes:
           key: c3_look
           presentation: explore
           prompt: "포교가 지켜본다. 무엇을 확인할까?"
-          with: [강치수, 덕구]
+          with: [서연, 강치수, 덕구]
           options:
             - text: "흉기라는 낫"
               at: { x: 30, y: 55 }
@@ -98,6 +105,7 @@ scenes:
           text: "덕구는 망설임 없이 오른손으로 동이를 든다. 왼손은 엉거주춤 허공에 떠 있다."
       - say:
           char: 덕구.scared
+          with: [서연]
           text: "왼손은 어릴 때 짐수레에 깔려서… 숟가락도 겨우 들어요."
       - say:
           channel: thought
@@ -111,7 +119,7 @@ scenes:
     actions:
       - say:
           char: 강치수
-          with: [덕구]
+          with: [서연, 덕구]
           text: "다 봤소? 그럼 내 말도 들어 보시오. 의녀 혼자 들을 말이오."
       - say:
           channel: action
@@ -119,9 +127,11 @@ scenes:
           text: "강치수가 옥문 밖 그늘로 나를 데려간다. 목소리를 낮춘다."
       - say:
           char: 강치수
+          with: [서연]
           text: "약방 일은 화재로 닫고, 짐꾼은 증좌 부족으로 풀어 주지. 둘 다 사는 길이오."
       - say:
           char: 강치수
+          with: [서연]
           text: "대신 감청 주머니 얘기는 여기서 끝내시오. 그 끝에 누가 있는지 의녀는 모르오."
       - say:
           channel: thought
@@ -131,6 +141,7 @@ scenes:
           key: c3_deal
           prompt: "덕구는 살고, 사건은 닫힌다."
           char: 강치수
+          with: [서연, 강치수]
           options:
             - text: "거래를 받아들인다"
               set: { struck_deal: true }
@@ -145,9 +156,11 @@ scenes:
       - say:
           channel: narration
           text: "이튿날 덕구는 풀려났다. 박씨 약방은 실화로, 분이는 범인 미상으로 시장이 닫혔다."
+      - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠
+          with: [서연]
           text: "아가씨. 살린 건 살린 거요. 근데 그 주머니, 오늘도 장에 나왔습디다."
       - say:
           channel: thought
@@ -159,14 +172,16 @@ scenes:
     title: "대질"
     actions:
       - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - char: { id: 강치수, position: right }
       - say:
           char: 도원.stern
-          with: [강치수]
+          with: [서연, 강치수]
           text: "포교와 의녀의 말이 다르다니 여기서 대질하겠소. 덕구의 목숨이 걸렸소."
       - say:
           char: 도원
+          with: [서연]
           text: "의녀. 내 앞에서는 증좌로만 말하시오. 증좌 없는 고발은 무고죄요. 알겠소?"
       - say:
           channel: record
@@ -178,7 +193,7 @@ scenes:
     actions:
       - say:
           char: 강치수.angry
-          with: [도원]
+          with: [서연, 도원]
           text: "덕구가 그 낫으로 영감 목을 그었소. 흉기와 자복이 다 있는데 뭘 더 바라오?"
       - choice:
           key: c3_r1
@@ -200,9 +215,11 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 강치수
+          with: [서연, 도원]
           text: "그게 낫이랑 무슨 상관이오? 판관 나리, 의녀가 장난을 칩니다."
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "…의녀. 낫 이야기를 하고 있소."
       - branch:
           cases:
@@ -235,6 +252,7 @@ scenes:
       - clearSticker: { id: c3_sk, leave: fadeOut }
       - say:
           char: 강치수.angry
+          with: [서연, 도원]
           text: "칼은 버렸겠지. 그럼 불은? 덕구가 약방 뒤에 있었소. 불 질러 놓고 지켜본 거요."
       - goto: c3_r2
 
@@ -260,6 +278,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 강치수
+          with: [서연, 도원]
           text: "엉뚱한 소리. 불 얘기를 하랬더니."
       - branch:
           cases:
@@ -275,13 +294,15 @@ scenes:
           text: "박씨 콧속에는 그을음이 없었습니다. 입에 물렸던 밥을 먹은 닭이 죽었고요."
       - say:
           char: 서연
+          with: [도원, 강치수]
           text: "불이 나기 전에 독으로 죽었습니다. 짐꾼이 무슨 수로 약방 주인에게 독을 먹입니까."
       - say:
           char: 강치수.angry
+          with: [서연, 도원]
           text: "…그래도 자복을 했소! 제 입으로 했다고 했소. 그걸 뒤집을 셈이오?"
       - say:
           char: 도원.stern
-          with: [강치수]
+          with: [서연, 강치수]
           text: "의녀. 마지막이오. 자복을 뒤집으려면 증좌가 필요하오. 포교를 탓하는 말은 증좌가 아니오."
       - goto: c3_r3
 
@@ -305,6 +326,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "그건 아까 말한 독 이야기와 부딪히오. 의녀, 정신 차리시오."
       - branch:
           cases:
@@ -320,9 +342,11 @@ scenes:
           text: "포교 나리는 주머니를 알고 있었습니다! 범인과 한패예요!"
       - say:
           char: 강치수.angry
+          with: [서연, 도원]
           text: "들으셨소, 판관 나리. 증좌 하나 없이 관원을 살인 공범으로 몰았소."
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "…무고는 무고요. 내가 경고했소."
       - say:
           channel: narration
@@ -336,6 +360,7 @@ scenes:
     actions:
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "그만하시오. 의녀의 말은 더 들을 수 없소. 자복대로 처결하겠소."
       - say:
           channel: narration
@@ -355,6 +380,7 @@ scenes:
           text: "덕구는 왼손으로 숟가락도 겨우 듭니다. 방금 나리들 앞에서 물동이도 오른손으로 들었고요."
       - say:
           char: 서연
+          with: [도원, 강치수]
           text: "상처는 오른쪽 위에서 왼쪽 아래. 마주 선 왼손잡이가 그은 겁니다."
       - say:
           channel: action
@@ -362,16 +388,18 @@ scenes:
           text: "도원이 탁본을 들어 덕구의 왼손 옆에 댄다. 오래 본다."
       - say:
           char: 도원.stern
+          with: [서연, 강치수]
           text: "자복은 곤장 아래서 받은 것이니 믿지 않겠소. 덕구를 풀어 주시오."
       - say:
           char: 강치수.angry
+          with: [서연, 도원]
           text: "…판관 나리가 후회하실 거요."
       - add: { trust_dowon: 1 }
       - set: { deokgu_saved: true }
-      - char: { id: 덕구, position: left }
+      - char: { id: 덕구, position: right }
       - say:
           char: 덕구
-          with: [도원]
+          with: [서연, 도원]
           text: "의녀님… 이 은혜는… 짐이라면 평생 져 드릴게요."
       - goto: c3_after
 
@@ -380,12 +408,15 @@ scenes:
     actions:
       - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
       - music: night_well
-      - char: { id: 도원, position: left }
+      - char: { id: 서연, position: left }
+      - char: { id: 도원, position: center }
       - say:
           char: 도원.troubled
+          with: [서연]
           text: "의녀. 이상한 일이 있소. 검안 기록을 옮겨 적던 서리 윤길이 이틀째 안 나오오."
       - say:
           char: 도원
+          with: [서연]
           text: "윤길이 어제 내게 물었소. 전의감 사람이 왜 우리 시장을 빌려 갔냐고."
       - say:
           channel: thought
