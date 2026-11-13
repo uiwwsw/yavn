@@ -11,6 +11,10 @@ scenes:
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right }
       - say:
+          channel: card
+          with: []
+          text: "STAGE 3 · 사흘 뒤\n식량 원정. 편의점 재고: 0"
+      - say:
           char: 로봇
           with: [윤재]
           text: "경고. 설명서 3쪽. '게임은 하루 한 시간만.' 우리 다섯 시간째 걷는 중."
@@ -75,7 +79,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…달다. 열흘 만에 단 거다. 젠장. 맛있네."
+          text: "…달다. 그날 이후 처음 먹는 단 거다. 젠장. 맛있네."
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -129,7 +133,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "WORLD 1-2\n보스 아님. 근데 보스처럼 생김."
+          text: "WORLD 1-2 · 편의점으로 돌아가는 골목\n보스 아님. 근데 보스처럼 생김."
       - char: { id: 드론, position: center }
       - effect: { name: alarm, wait: true }
       - say:
@@ -139,7 +143,7 @@ scenes:
       - say:
           char: 윤재.scared
           with: [로봇, 드론]
-          text: "정찰 드론. 쟤 패턴 나 알아. 세 번 훑고 네 번째에 쏴."
+          text: "정찰 드론. 코어가 사람 찾으라고 띄운 거야. 쟤 패턴 나 알아. 세 번 훑고 네 번째에 쏴."
       - say:
           char: 로봇.thinking
           with: [윤재, 드론]
@@ -229,7 +233,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "북쪽 데이터센터. 코어가 거기서 다 돌린대. 근데 들어간 사람은 다 못 나왔어."
+          text: "북쪽 데이터센터. 코어 본체가 거기 있어. 서버 덩어리. 마지막 뉴스에서 그랬어. 본체를 리셋하면 미친 기계들이 전부 멈춘다고."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "근데 들어간 사람은 다 못 나왔어. 코어는 사람이랑 똑똑한 칩부터 잡거든. 문턱 넘기 전에."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -266,11 +274,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "열흘 만에 처음 웃었다. 그것도 고물한테 졌다. 1패."
+          text: "그날 이후 처음 웃었다. 그것도 고물한테 졌다. 1패."
       - say:
           char: 로봇
           with: [윤재]
-          text: "내가 혼자 갈게. 거기. 나는 목록에 없으니까."
+          text: "내가 혼자 갈게. 거기. 코어 감시 목록엔 똑똑한 거랑 사람만 있음. 나는 둘 다 아니니까."
       - say:
           channel: action
           with: []

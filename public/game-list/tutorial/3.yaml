@@ -139,6 +139,10 @@ scenes:
     actions:
       - bg: { id: cs_desk, transition: cut }
       - say:
+          channel: narration
+          with: []
+          text: "그날 오후 고객센터. 손님이 끊긴 사이에 해수는 단톡방 대신 지영에게 따로 문자를 보낸다."
+      - say:
           channel: message
           side: me
           char: 해수
@@ -195,7 +199,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "그린고시원 3층. 이름이 마트랑 같아서 해수는 간판을 두 번 본다. 문마다 슬리퍼가 한 켤레씩. 304호 앞에는 컵라면 용기가 무릎 높이로 쌓여 있다."
+          text: "그날 밤 아홉 시, 망우동 그린고시원 3층. 이름이 마트랑 같아서 해수는 간판을 두 번 본다. 문마다 슬리퍼가 한 켤레씩. 304호 앞에는 컵라면 용기가 무릎 높이로 쌓여 있다."
       - char: { id: 태민, position: right }
       - char: { id: 해수, position: left }
       - say:
@@ -370,7 +374,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "상혁의 방문 앞에 배달 봉지 세 개가 그대로 있다. 생수 두 병도. 사흘째다. 문 안에서 뭔가 계속 말하는 소리가 난다. 상혁 목소리 하나뿐이다."
+          text: "4월 22일 밤 열한 시. 상혁의 방문 앞에 배달 봉지 세 개가 그대로 있다. 생수 두 병도. 사흘째다. 문 안에서 뭔가 계속 말하는 소리가 난다. 상혁 목소리 하나뿐이다."
       - say:
           char: 상혁
           with: []

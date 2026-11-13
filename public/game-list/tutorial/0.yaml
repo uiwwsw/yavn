@@ -13,8 +13,32 @@ scenes:
   chat:
     title: "단톡방"
     actions:
+      - say:
+          channel: card
+          with: []
+          text: "2031년 4월 11일 금요일\n서울 중랑구 상봉동"
       - bg: { id: home_hall, transition: cut }
       - music: fluoro
+      - say:
+          channel: system
+          with: []
+          text: "레플라 REPLA — 지금 사는 도시를 하나 더. 거리도, 가게도, 사람도 그대로입니다. 귀 뒤에 밴드를 붙이고 앉으면 바로 그곳입니다."
+      - say:
+          channel: system
+          with: []
+          text: "그곳에서 한 일은 그곳에만 남습니다. · 라이트 월 39,000원 · 지금 접속 중 1,104,331명"
+      - say:
+          channel: narration
+          with: []
+          text: "레플라는 현실을 그대로 복제한 시뮬레이션이다. 2031년 서울에서는 웬만한 사람이 다 구독한다. 퇴근하면 밴드를 붙이고, 똑같이 생긴 또 하나의 서울로 들어간다."
+      - say:
+          channel: narration
+          with: []
+          text: "정해수는 서른한 살이고, 그린마트 상봉점 1층 고객센터에서 12년째 일한다. 레플라는 해 본 적이 없다. 마트에서 걸어서 십 분 거리 빌라에 고등학교 친구 변상혁과 같이 산다."
+      - say:
+          channel: narration
+          with: []
+          text: "오전 8시 12분. 출근 준비를 하는데 고객센터 단톡방이 울린다. 방에는 셋이 있다. 민지영 주임, 계산대 아르바이트 배경준, 그리고 해수."
       - say:
           channel: system
           with: []
@@ -219,7 +243,7 @@ scenes:
       - say:
           channel: narration
           with: [광철]
-          text: "등산 조끼, 두꺼운 안경. 오른손에 영수증, 왼손에 즉석밥 열두 개 묶음. 하나는 비닐이 뜯겨 있다."
+          text: "단골 오광철 고객님이다. 등산 조끼, 두꺼운 안경. 오른손에 영수증, 왼손에 즉석밥 열두 개 묶음. 하나는 비닐이 뜯겨 있다."
       - say:
           char: 광철
           with: [해수]
@@ -243,7 +267,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "마흔한 건. 해수는 모니터를 고객 쪽에서 안 보이게 손가락 하나만큼 돌린다."
+          text: "마흔한 건. 첫 건은 12년 전 오늘, 오후 두 시 오십이 분이다. 해수가 첫 출근한 날이다. 해수는 모니터를 고객 쪽에서 안 보이게 손가락 하나만큼 돌린다."
       - say:
           char: 광철
           with: [해수]
@@ -378,6 +402,10 @@ scenes:
           with: [경준]
           text: "그냥 몰라도 돼. 밥 먹어."
       - char: { id: 상혁, position: center }
+      - say:
+          channel: narration
+          with: [상혁]
+          text: "물류팀 변상혁이 들어온다. 해수의 고등학교 친구고, 해수와 같이 사는 사람이다."
       - say:
           char: 상혁.grin
           with: [지영, 경준]

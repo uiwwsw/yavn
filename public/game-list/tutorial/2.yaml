@@ -20,6 +20,10 @@ scenes:
       - say:
           channel: system
           with: []
+          text: "속보 · 오전 7:30 · 서울 중랑구 대형마트 지하주차장서 50대 남성 숨진 채 발견 · 새벽 5시 10분 주차 관리원 신고 · 경찰 타살 가능성 수사"
+      - say:
+          channel: system
+          with: []
           text: "상봉점 고객센터 (3) · 4월 18일 금요일 오전 7:41"
       - say:
           channel: message
@@ -193,12 +197,16 @@ scenes:
       - say:
           char: 은숙
           with: [경준]
-          text: "실례합니다. 고객센터 분 계세요? 정해수 씨."
+          text: "실례합니다. 중랑경찰서 차은숙 경위입니다. 고객센터 분 계세요? 정해수 씨."
       - say:
           char: 경준
           with: []
           delivery: whisper
           text: "…형 이름을 왜 알아요?"
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "피해자분 일로 몇 가지 여쭤볼게요. 참고인으로요. 서까지 같이 가 주시겠어요?"
 
   interview:
     title: "진술 녹화실"
@@ -299,7 +307,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "현장 · 그린마트 상봉점 B2 C-14 기둥 옆 · 발견 05:10 (주차 관리원) · 흉기: 연필 1자루, 끝에 그린마트 로고"
+          text: "현장 · 그린마트 상봉점 B2 C-14 기둥 옆 · 사망 추정 4/18 01:30–02:30 · 발견 05:10 (주차 관리원) · 흉기: 연필 1자루, 끝에 그린마트 로고"
       - sticker: { id: pencil, image: pencil_sticker, x: 64, y: 36, width: "300px", rotate: -18, enter: fadeIn }
       - say:
           char: 은숙
@@ -329,7 +337,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그리고 그저께 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요. 아무것도 안 사고. 귀를 자꾸 누르면서."
+          text: "그리고 어제 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요. 아무것도 안 사고. 귀를 자꾸 누르면서."
       - say:
           channel: record
           with: []
@@ -346,7 +354,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그 전날에는 정해수 씨 이름으로 민원을 넣으셨고. 고객의 소리. 이거 원본 저희가 가져가요."
+          text: "지난주 토요일에는 정해수 씨 이름으로 민원을 넣으셨고. 고객의 소리. 이거 원본 저희가 가져가요."
       - clearSticker: { id: complaint, leave: fadeOut }
       - say:
           char: 은숙
@@ -360,7 +368,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "밤 열한 시 반. 밴드는 책상 위에 엎어져 있다. 해수는 그걸 한참 보다가, 귀 뒤에 붙인다."
+          text: "그날 밤 열한 시 반. 밴드는 책상 위에 엎어져 있다. 해수는 그걸 한참 보다가, 귀 뒤에 붙인다."
       - bg: { id: sim_desk, transition: wipeRight, duration: 900 }
       - music: tutorial
       - say:
@@ -371,7 +379,11 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "선으로 된 고객센터. 연필꽂이에는 연필이 스무 자루. 접수 대장 위에 고객의 소리 용지. 창구 위 CCTV 모니터에 지하 2층 C구역이 떠 있다. 여기서는 그 카메라가 고장 나 있지 않다."
+          text: "선으로 된 고객센터. 연필꽂이에는 연필이 스무 자루. 접수 대장 위에 고객의 소리 용지. 창구 위 CCTV 모니터에 지하 2층 C구역이 떠 있다. 현실에서는 3월부터 고장 난 카메라다. 여기서는 돌아간다."
+      - say:
+          channel: action
+          with: []
+          text: "고객의 소리, 연필, 지하 2층. 오늘 녹화실에서 은숙이 꺼낸 것들이 전부 여기 있다."
       - goto: tamper_pick
 
   tamper_pick:
@@ -379,7 +391,7 @@ scenes:
       - choice:
           key: t2_tamper
           presentation: explore
-          prompt: "바꿔 보세요."
+          prompt: "바꿔 보세요. 레플라 안의 물건은 손대는 대로 고쳐지고 저장된다."
           with: []
           camera: wide
           options:

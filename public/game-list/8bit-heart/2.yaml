@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "NOW LOADING…"
+          text: "NOW LOADING…\n같은 날 밤 · 윤재의 기지, 털린 편의점"
       - bg: { id: shelter, transition: fade, duration: 600 }
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
@@ -26,6 +26,10 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "좋아. 수술 시작. 환자분, 마취는 없어요. 애초에 의식이 없으시니까."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "계획은 간단해. 전원은 건전지로, 머리는 게임기 CPU로, 말은 네 가슴 화면으로. 셋 다 붙이면 깨어난다. 아마. 기도하면."
       - goto: b2_parts
 
   b2_parts:
@@ -33,7 +37,7 @@ scenes:
       - choice:
           key: b2_parts
           presentation: explore
-          prompt: "필요한 부품 3개. 어디부터 뒤질까?"
+          prompt: "필요한 건 셋. 전원, 머리, 화면. 어디부터 뒤질까?"
           with: [로봇]
           camera: wide
           options:
@@ -87,7 +91,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "뒷판 나사 네 개. 손톱만 한 칩. 인두를 대자 다리 하나가 녹을 때마다 화면이 한 줄씩 꺼진다."
+          text: "회로도는 설명서 맨 뒷장에 있다. 윤재는 결국 설명서를 펼쳐 계산대에 깔았다. 뒷판 나사 네 개. 손톱만 한 칩. 인두를 대자 다리 하나가 녹을 때마다 화면이 한 줄씩 꺼진다."
       - use: console_cheap
       - get: cpu_chip
       - say:
@@ -129,6 +133,10 @@ scenes:
           text: "BIOS v0.8 … RAM CHECK … 8KB … OK"
       - char: { id: 로봇, position: right, emotion: thinking }
       - say:
+          channel: action
+          with: []
+          text: "깜빡. 꺼져 있던 눈에 불이 들어온다. 눈동자가 계산대 위 설명서에 꽂히더니, 촤라락— 0.3초 만에 처음부터 끝까지 읽어 치운다."
+      - say:
           char: 로봇.thinking
           with: [윤재]
           text: "…8KB? 이게 다야? 다시 세 볼게. 8. …응. 다야."
@@ -143,7 +151,15 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그래, 안녕. 너 뭐야? 이름 있어?"
+          text: "그래, 안녕. 원래 머리는 다 탔을 텐데, 말은 어디서 배웠냐. …설명서? 방금 그거? 그게 네 국어 교과서야?"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "학습 자료 1건. 게임기 설명서 12쪽. 이게 세상 전부 아니야?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "망했다. …아무튼. 너 이름 있어?"
       - say:
           char: 로봇
           with: [윤재]

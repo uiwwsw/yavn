@@ -19,7 +19,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "8층짜리 건물. 1층 유리문에 임대 문의 전단이 세 겹으로 붙어 있다. 간판 자리에 레플라 로고 모양으로 먼지 안 낀 자국이 남아 있다."
+          text: "레플라를 만든 회사가 쓰던 옛 사옥이다. 해수는 막차로 와서 두 시간 넘게 건물 앞에 서 있었다. 8층짜리 건물. 1층 유리문에 임대 문의 전단이 세 겹으로 붙어 있다. 간판 자리에 레플라 로고 모양으로 먼지 안 낀 자국이 남아 있다."
       - say:
           channel: action
           with: []
@@ -166,9 +166,18 @@ scenes:
           when: { var: called_mom, op: eq, value: true }
           with: []
           text: "휴대폰에 문자가 와 있다. 상혁 어머니. '기차 탔어.'"
+      - say:
+          channel: narration
+          with: []
+          text: "벽에는 전원선이 꽂혀 있다. 태민은 이 PC를 끄면 두 쪽이 따로 간다고 했다. 그쪽에 있는 백십만 명이 다시는 못 건너온다고."
+      - say:
+          channel: narration
+          when: { var: honest, op: gte, value: 3 }
+          with: []
+          text: "모니터 구석에 작은 창이 하나 떠 있다. '세션 종료 — 사용자 번호를 입력하세요.' 한 사람만 끄는 창이다."
       - choice:
           key: t4_end
-          prompt: "모니터 오른쪽 위에 넘기기 버튼은 없다."
+          prompt: "전원을 뽑으면 레플라 전체가 끊긴다. 두고 나가면 모든 게 그대로 간다. 모니터 오른쪽 위에 넘기기 버튼은 없다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -258,6 +267,10 @@ scenes:
           text: "모니터 전원 버튼을 누른다. 화면이 꺼진다. 팬은 계속 돈다. 해수는 카드를 찍고 나와서, 첫차를 기다린다."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - music: tutorial
+      - say:
+          channel: narration
+          with: []
+          text: "같은 날 오전 9시 반, 그린마트 상봉점 고객센터. 해수는 오픈 근무에 늦지 않았다."
       - char: { id: 지영, position: right }
       - char: { id: 해수, position: left, emotion: service }
       - say:

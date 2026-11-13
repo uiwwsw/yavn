@@ -14,7 +14,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "결혼식 엿새 전, 점심시간. 회사 옥상 흡연 구역의 물탱크 옆. 도윤은 등을 물탱크에 붙이고 앉아 있다. 담배는 없다."
+          text: "결혼식 닷새 전, 월요일 점심시간. 회사 옥상 흡연 구역의 물탱크 옆. 도윤은 등을 물탱크에 붙이고 앉아 있다. 담배는 없다."
       - char: { id: 도윤, position: center, emotion: hollow }
       - say:
           channel: message
@@ -42,6 +42,10 @@ scenes:
           with: []
           text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00. 신분증과 동의서를 지참해 주세요."
       - say:
+          channel: action
+          with: []
+          text: "어젯밤 새벽 세 시에, 도윤이 직접 넣은 예약이다."
+      - say:
           channel: thought
           with: []
           text: "연락처 412개. 사진 8,031장. 계정 일곱 개. 지수 것부터."
@@ -60,6 +64,14 @@ scenes:
     actions:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
+      - say:
+          channel: card
+          with: []
+          text: "과거\n유하린 · 18"
+      - say:
+          channel: narration
+          with: []
+          text: "이야기의 맨 처음, 그 수술실이다."
       - say:
           char: 의사
           with: []
@@ -93,6 +105,10 @@ scenes:
           channel: card
           with: []
           text: "열여덟의 하린은 ERASE를 받았다.\n눈을 뜬 사람의 이름은 한도윤이었다."
+      - say:
+          channel: card
+          with: []
+          text: "현재\n한도윤 · 29 · 결혼 닷새 전"
       - bg: { id: rooftop, transition: cut }
       - music: wind
       - char: { id: 도윤, position: center, emotion: panic }
@@ -138,6 +154,11 @@ scenes:
       - bg: { id: surgery_reveal, transition: fade, duration: 1400 }
       - music: cold_room
       - char: { id: 하린, position: center, emotion: sleep }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "다음 날 오전 열 시, ERASE 클리닉. 열한 해 전 하린이 누웠던 것과 같은 수술대에, 이번에는 도윤이 눕는다."
       - say:
           char: 의사
           with: []
@@ -240,7 +261,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "결과를 들으러 온 날. 전광판이 46에서 47로 바뀐다. 도윤이 일어선다."
+          text: "사흘 뒤 목요일, 보건소. 검사 결과를 들으러 온 날이다. 전광판이 46에서 47로 바뀐다. 도윤이 일어선다."
       - ending: kept_photo
 
   end_photo_ticket:
@@ -260,7 +281,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "다음 날 아침 아홉 시. 이번에는 편의점에 들르지 않았다. 47번. 도윤은 대기석 맨 앞줄에 앉는다."
+          text: "다음 날 아침 아홉 시, 보건소. 이번에는 편의점에 들르지 않았다. 47번. 도윤은 대기석 맨 앞줄에 앉는다."
       - clearSticker: { id: e4_ticket, leave: fadeOut }
       - ending: kept_photo
 

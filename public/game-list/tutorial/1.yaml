@@ -180,11 +180,19 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "전자 코너에서 빌려 온 체험용 밴드. 설명서 첫 줄에 '눕지 말고 앉아서 착용하세요'. 해수는 침대 끝에 앉아서, 귀 뒤에 밴드를 붙인다. 차갑다."
+          text: "전자 코너에서 빌려 온 체험용 밴드. 설명서 첫 줄에 '눕지 말고 앉아서 착용하세요'."
+      - say:
+          channel: record
+          with: []
+          text: "레플라 체험용 밴드 · 귀 뒤 뼈 위에 붙이세요 · 30초 안에 접속됩니다 · 접속하는 동안 몸은 잠든 상태로 이 자리에 있습니다 · 밴드를 떼면 바로 깨어납니다"
+      - say:
+          channel: action
+          with: []
+          text: "해수는 침대 끝에 앉아서, 귀 뒤에 밴드를 붙인다. 차갑다."
       - say:
           channel: narration
           with: []
-          text: "벽 너머 상혁의 방에서 웃음소리가 난다. 시계는 12시 49분."
+          text: "벽 너머 상혁의 방에서 웃음소리가 난다. 시계는 4월 13일 0시 49분."
 
   onboarding:
     title: "온보딩"
@@ -228,7 +236,7 @@ scenes:
       - choice:
           key: t1_look
           presentation: explore
-          prompt: "고객센터다. 선으로만 되어 있다. 형광등 하나가 깜빡인다. 선이 깜빡인다."
+          prompt: "레플라 안의 그린마트 상봉점 고객센터다. 배치는 똑같은데 전부 파란 선으로만 되어 있다. 형광등 하나가 깜빡인다. 선이 깜빡인다."
           with: []
           camera: wide
           options:
@@ -349,7 +357,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "체험 시간 00:42:17 사용 · 남은 기간 6일 23시간"
+          text: "체험 시간 00:42:17 사용 · 체험판은 7일 동안 14시간까지 이용할 수 있습니다"
       - goto: sessions
 
   sessions:
@@ -424,7 +432,7 @@ scenes:
           channel: narration
           with: [해수, 상혁]
           camera: wide
-          text: "새벽 4시 22분, 물 마시러 나오니 상혁이 냉장고 앞에 있다. 귀 뒤에 밴드 자국이 둘 다 빨갛다."
+          text: "4월 17일 새벽 4시 22분. 물 마시러 나오니 상혁이 냉장고 앞에 있다. 귀 뒤에 밴드 자국이 둘 다 빨갛다."
       - say:
           char: 상혁.grin
           with: [해수]
@@ -524,9 +532,13 @@ scenes:
     actions:
       - bg: { id: haesu_room, transition: fade, duration: 800 }
       - say:
+          channel: narration
+          with: []
+          text: "4월 18일 새벽 1시 32분. 해수는 침대 끝에 앉아 밴드를 붙인다."
+      - say:
           channel: system
           with: []
-          text: "체험 기간이 종료되었습니다. 레플라 라이트로 계속하시겠습니까? 월 39,000원"
+          text: "체험 시간 14시간을 모두 사용했습니다. 레플라 라이트로 계속하시겠습니까? 월 39,000원"
       - say:
           channel: system
           with: []
@@ -547,7 +559,7 @@ scenes:
           channel: narration
           with: [광철]
           camera: wide
-          text: "지하 2층 주차장. 기둥마다 번호판. C-14 옆에 회색 경차. 광철이 운전석 문을 열다가 돌아본다. 장 본 봉지에서 즉석밥이 보인다."
+          text: "레플라 안의 그린마트 지하 2층 주차장. 기둥마다 번호판. C-14 옆에 회색 경차. 광철이 운전석 문을 열다가 돌아본다. 장 본 봉지에서 즉석밥이 보인다."
       - say:
           char: 광철.wire
           with: []

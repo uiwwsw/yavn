@@ -32,15 +32,28 @@ scenes:
           with: []
           text: "ERASE"
       - say:
+          channel: narration
+          with: []
+          text: "ERASE는 사람의 기억을 지우는 시술이다. 지난 삶의 기억과 이름, 얼굴까지 지우고 나면, 깨어난 사람은 다른 이름으로 새 삶을 산다. 동의서에 서명하면 누구나 받을 수 있고, 한번 지운 것은 되돌릴 수 없다."
+      - say:
+          channel: narration
+          with: []
+          text: "이 이야기는 두 사람을 번갈아 따라간다. 결혼을 한 달 앞둔 스물아홉 살 회사원 한도윤의 지금, 그리고 열여덟 살 고등학생 유하린의 이야기. 두 사람이 어떤 관계인지는 아직 알 수 없다."
+      - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29"
+          text: "현재\n한도윤 · 29 · 결혼 한 달 전"
 
   studio:
     title: "청첩장 사진"
     actions:
       - bg: { id: photo_studio, transition: cut }
       - music: neon
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "한도윤은 영업2팀 대리다. 한 달 뒤 토요일, 이지수와 결혼한다. 오늘은 청첩장에 넣을 사진을 찍는 날이다."
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say:
@@ -174,6 +187,10 @@ scenes:
     title: "클럽"
     actions:
       - say:
+          channel: narration
+          with: []
+          text: "그날 밤, 도윤은 대학 동기 민석의 생일 모임에 나갔다. 지수는 먼저 집에 들어가 있다."
+      - say:
           channel: message
           side: me
           char: 도윤
@@ -192,6 +209,10 @@ scenes:
           camera: wide
           text: "열두 시 사십 분. 민석이는 화장실에 간 지 이십 분째고, 도윤은 테이블에 혼자 남아 지수의 마지막 메시지를 다시 연다."
       - char: { id: 준성, position: right }
+      - say:
+          channel: action
+          with: [준성]
+          text: "옆 테이블에 있던 남자가 몸을 기울인다. 서른 초반쯤, 처음 보는 얼굴이다."
       - say:
           char: 준성
           with: [도윤]
@@ -294,7 +315,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "다섯 시 십 분. 모르는 방이다. 창밖은 아직 파랗고, 침대 반대편에서 누가 등을 돌린 채 자고 있다."
+          text: "토요일 새벽 다섯 시 십 분. 처음 보는 방이다. 어젯밤 클럽에서 잔을 건넨 그 남자의 집. 창밖은 아직 파랗고, 남자는 침대 반대편에서 등을 돌린 채 자고 있다."
       - say:
           channel: thought
           with: []
@@ -306,7 +327,7 @@ scenes:
       - choice:
           key: e0_erase
           presentation: explore
-          prompt: "밝기를 끝까지 낮추고 휴대폰을 연다."
+          prompt: "밝기를 끝까지 낮추고 휴대폰을 연다. 어젯밤 흔적을 하나씩 지운다."
           with: []
           camera: wide
           options:
