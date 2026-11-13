@@ -33,6 +33,16 @@ describe('dialogue presentation channels', () => {
     expect(styles).toContain('.dialog-channel-label');
   });
 
+  it('keeps the speaker name tag on the left and moves a channel label to the right', () => {
+    const speakerAt = appSource.indexOf('<div className={`speaker delivery-${dialogDelivery}`}>');
+    const labelAt = appSource.indexOf('<div className="dialog-channel-label">');
+    expect(speakerAt).toBeGreaterThan(-1);
+    expect(labelAt).toBeGreaterThan(speakerAt);
+    const layout = readFileSync(fileURLToPath(new URL('./promptLayout.css', import.meta.url)), 'utf8');
+    expect(layout).toMatch(/\.speaker \+ \.dialog-channel-label \{[\s\S]*?right: 0;[\s\S]*?left: auto;/);
+    expect(layout).not.toContain('.dialog-channel-label + .speaker');
+  });
+
   it('keeps every prose channel on a dedicated high-contrast surface', () => {
     expect(styles).toContain('--ui-narration-bg:');
     expect(styles).toContain('--ui-record-bg:');

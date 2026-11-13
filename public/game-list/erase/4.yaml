@@ -304,7 +304,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "결과는 꼭 받아. 그건 나랑 상관없이"
+          text: "검사는 끝까지 해. 그건 나랑 상관없이"
       - say:
           channel: message
           side: them

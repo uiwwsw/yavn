@@ -5334,11 +5334,12 @@ export default function App() {
           </div>
         )}
         <div className="dialog-content-scroll">
-          {dialogueChannelLabel && (
-            <div className="dialog-channel-label">{dialogueChannelLabel}</div>
-          )}
+          {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
           {dialogSpeaker && (
             <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
+          )}
+          {dialogueChannelLabel && (
+            <div className="dialog-channel-label">{dialogueChannelLabel}</div>
           )}
           <DialogueText />
           <DialogueActionButton />

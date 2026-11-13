@@ -422,6 +422,16 @@ scenes:
           char: 지영
           with: [상혁]
           text: "……밥 먹어."
+      - say:
+          char: 지영
+          when: { var: took_coupon, op: eq, value: true }
+          with: [상혁]
+          text: "아까 해수한테 체험권 줬어. 상혁 씨가 옆에서 좀 꼬셔 봐. 걔 가입하면 나 한 달 공짜야."
+      - say:
+          char: 지영
+          when: { var: took_coupon, op: eq, value: false }
+          with: [상혁]
+          text: "아까 해수한테 체험권 줬더니 안 받더라. 상혁 씨가 말 좀 해 봐. 걔 가입하면 나 한 달 공짜야."
       - char: { id: 해수, position: left }
       - say:
           char: 상혁
@@ -471,7 +481,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "변상혁 님 · 레플라 이용요금 안내 · 무제한 219,000원 + 프라이빗 확장팩 12개월 선결제 2,280,000원 · 미납 1회"
+          text: "변상혁 님 · 레플라 이용요금 안내 · 4월 청구 409,000원 (무제한 219,000원 + 프라이빗 확장팩 190,000원) · 3월분 미납"
       - say:
           channel: action
           with: []

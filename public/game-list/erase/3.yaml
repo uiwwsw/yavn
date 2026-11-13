@@ -47,7 +47,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "준성의 오피스텔, 9층 복도 끝. 현관문이 한 뼘쯤 열려 있다. 초인종을 두 번 누르고, 한 번 더 누르고, 그다음엔 그냥 서 있었다. 안쪽 바닥에 블라인드 그림자가 줄줄이 누워 있다."
+          text: "준성의 오피스텔, 9층 복도 끝. 그날 새벽 신발을 손에 들고 나온 문이다. 현관문이 한 뼘쯤 열려 있다. 문 옆 창틀의 화분 둘은 잎 끝이 말라 있다. 초인종을 두 번 누르고, 한 번 더 누르고, 그다음엔 그냥 서 있었다. 안쪽 바닥에 블라인드 그림자가 줄줄이 누워 있다."
       - char: { id: 도윤, position: center }
       - say:
           char: 도윤
@@ -57,7 +57,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "…형?"
+          text: "…준성 씨?"
       - goto: e3_room
 
   e3_room:
@@ -113,7 +113,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "감염내과 외래 기록 · HIV 치료 중\n혈중 바이러스: 미검출 (6개월 연속)"
+          text: "감염내과 외래 기록 · HIV 치료 중\n혈중 바이러스: 미검출 (2023년부터 유지)"
       - say:
           channel: narration
           with: []
@@ -273,7 +273,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "다음 날 목요일 아침, 회사에는 오전 반차를 냈다. 보건소는 아홉 시에 연다. 도윤은 여덟 시 사십 분부터 맞은편 편의점에서 삼각김밥 포장을 반쯤 뜯어 놓고 있었다."
+          text: "다음 날 목요일 아침, 회사에는 하루 연차를 냈다. 보건소는 아홉 시에 연다. 도윤은 여덟 시 사십 분부터 맞은편 편의점에서 삼각김밥 포장을 반쯤 뜯어 놓고 있었다."
       - say:
           channel: message
           side: them
@@ -364,7 +364,7 @@ scenes:
       - say:
           char: 아진.awkward
           with: [하린]
-          text: "…그날 교실 앞에 너 있었지. 실내화 소리 났어."
+          text: "…그날 뒷문 앞에 너 있었지. 문이 움직였어."
       - say:
           char: 하린
           with: [아진]
@@ -417,6 +417,10 @@ scenes:
           channel: system
           with: []
           text: "읽음"
+      - say:
+          channel: action
+          with: []
+          text: "하린은 답장하지 않는다. 사진을 길게 눌러, 저장을 누른다."
       - goto: e2_jisu
 
   e2_jisu:
@@ -426,12 +430,12 @@ scenes:
           channel: card
           with: []
           text: "현재\n한도윤 · 29 · 결혼 아흐레 전"
-      - bg: { id: dawn_room, transition: cut }
+      - bg: { id: couple_home, transition: cut }
       - music: static
       - say:
           channel: narration
           with: []
-          text: "보건소에 간 그날 밤, 집. 지수가 식탁에 결혼 준비 목록을 펼쳐 놓고 기다리고 있다."
+          text: "같은 날 밤, 집. 지수가 식탁에 결혼 준비 목록을 펼쳐 놓고 기다리고 있다."
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say:
@@ -461,7 +465,11 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "회사에 전화했어. 송과장님이 너 반차 썼대."
+          text: "회사에 전화했어. 송과장님이 너 오늘 연차래."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "네 폰 비번 알아. 내 생일인 거. 안 열었어. 우리 엄마처럼은 안 해."
       - say:
           char: 지수.cold
           with: [도윤]
@@ -521,7 +529,7 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "그 소문, 나도 대충 알아."
+          text: "소문 있는 건 알아."
       - say:
           char: 도윤.panic
           with: [지수]
@@ -529,7 +537,7 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "윤주임님 인스타. 비공개도 아니던데."
+          text: "송과장님. 아까 전화했을 때 팀장님 일로 회사가 좀 시끄럽다고 하시더라. 무슨 일인지는 너한테 들을 거야."
       - say:
           char: 지수
           with: [도윤]

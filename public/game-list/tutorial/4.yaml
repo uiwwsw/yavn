@@ -165,7 +165,7 @@ scenes:
           channel: narration
           when: { var: called_mom, op: eq, value: true }
           with: []
-          text: "휴대폰에 문자가 와 있다. 상혁 어머니. '기차 탔어.'"
+          text: "휴대폰에 문자가 와 있다. 상혁 어머니. '첫차 표 끊었어. 5시 10분.'"
       - say:
           channel: narration
           with: []

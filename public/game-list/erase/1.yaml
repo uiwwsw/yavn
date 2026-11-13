@@ -69,7 +69,7 @@ scenes:
       - say:
           channel: narration
           with: [준성, 도윤]
-          text: "옆자리 윤주임이 의자를 밀고 나오며, 두 분 목소리 완전 똑같다고, 혹시 군대 어디 나오셨냐고 끼어든다."
+          text: "옆자리 윤주임이 의자를 밀고 나오며, 두 분 인사가 토씨 하나 안 틀리고 똑같다고, 혹시 같은 군대 나오셨냐고 끼어든다."
       - say:
           char: 준성.smirk
           with: [도윤]
@@ -91,6 +91,10 @@ scenes:
           text: "그 주 목요일, 아홉 시 반. 층에 남은 건 둘이다. 복사기가 혼자 절전 모드로 들어간다."
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
+      - say:
+          channel: action
+          with: [준성]
+          text: "준성은 모니터 옆에 집에서 가져온 화분을 놓고, 종이컵으로 물을 조금씩 붓고 있다."
       - say:
           char: 도윤
           with: [준성]
@@ -127,6 +131,10 @@ scenes:
           char: 준성
           with: [도윤]
           text: "안 풀어도 돼요. 내선 있으니까."
+      - say:
+          char: 준성.tired
+          with: [도윤]
+          text: "나 이번 회사는 오래 다니고 싶어요. 그러니까 우리 그냥 일해요."
       - say:
           char: 준성
           with: [도윤]
@@ -244,7 +252,7 @@ scenes:
 
   e1_home:
     actions:
-      - bg: { id: dawn_room, transition: fade, duration: 900 }
+      - bg: { id: couple_home, transition: fade, duration: 900 }
       - say:
           channel: action
           with: []
@@ -259,7 +267,7 @@ scenes:
       - say:
           char: 지수
           with: []
-          text: "도윤아, 계약금 넣었어. 영수증 캡처해서 보냈으니까 그건 지우지 마!"
+          text: "도윤아, 드레스 잔금 넣었어. 영수증 또 보냈으니까 그것도 지우지 마!"
       - say:
           char: 도윤
           with: []
@@ -287,6 +295,10 @@ scenes:
           char: 민재.laugh
           with: [하린, 아진]
           text: "아니 그니까 걔가 식판을 엎었는데, 지가 안 엎었대. 국이 바닥에 다 있는데."
+      - say:
+          channel: action
+          with: [하린, 민재]
+          text: "민재는 말하면서 하린 식판의 콩자반을 자기 쪽으로 옮겨 간다. 쳐다보지도 않고. 하린이 콩 못 먹는 걸 아는 손이다."
       - say:
           char: 아진
           with: [하린, 민재]

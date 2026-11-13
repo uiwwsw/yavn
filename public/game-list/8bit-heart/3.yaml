@@ -31,13 +31,61 @@ scenes:
           with: [로봇]
           text: "…생존. 아니 됐어, 게임이라고 치자. 그게 덜 우울해."
       - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문 하나 더. 오늘 아침 담요가 나한테 덮여 있었음. 너는 안 덮고 떨었음."
+      - say:
           char: 윤재
           with: [로봇]
-          text: "근데 너는 안 무섭냐? 저 동네 차들 아직도 혼자 돌아다니던데."
+          text: "네가 밤새 굴러가서 뺏어 간 거야. 잠버릇 진짜 나빠."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "나는 안 잠. 대기 모드에선 안 움직임. …설명서 7쪽. '추운 곳에서는 건전지가 빨리 닳습니다.' 너 그거 읽었구나."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "안 읽었어. 진짜. 진짜 안 읽었어."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "'진짜' 두 번. 땀 젖은 손이랑 같은 칸에 저장. 위험 신호 칸."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문. 설명서 표지 그림엔 사람이 넷임. 같이 게임함. 너는 왜 하나야?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "표지는 원래 과장이야. 상자에 든 거랑 달라."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "그럼 나머지 셋은?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "하나는 나갔고, 하나는 지방에 있고, 하나는 원래 없어. 모델 쓴 거야. …근데 너는 안 무섭냐? 저 동네 차들 아직도 혼자 돌아다니던데."
       - say:
           channel: action
           with: []
-          text: "{{android_name|이}} 대답 대신 무너진 마트 진열대 밑으로 쑥 들어간다."
+          text: "{{android_name|이}} 대답 대신 반쯤 내려온 마트 셔터 앞에 선다. 윤재가 습관처럼 셔터를 두 번 두드린다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "똑똑. 계세요? …없지. 당연히 없지."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문. 없는 거 알면서 왜 두드림?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "예의야. 두드리면 안에서 누구세요, 하는 거야. 원래는."
+      - say:
+          channel: action
+          with: []
+          text: "{{android_name|이}} 셔터 밑으로 쑥 들어간다. 무너진 진열대 사이를 뒤진다."
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -53,7 +101,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "3.5, 3.5. 오차 0. 반 나누기는 내 특기. 원래 2인 대전 화면 나누던 칩이라."
+          text: "3.5, 3.5. 오차 0. 반 나누기는 내 특기. 원래 2P 대전 화면 나누던 칩이라. 드디어 쓸모 있음."
       - say:
           char: 윤재
           with: [로봇]
@@ -87,15 +135,15 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "{{android_name|은}} 자기 몫 3.5조각을 한 조각씩 윤재 앞으로 민다. 마지막 반쪽은 특히 조심스럽게."
+          text: "{{android_name|은}} 자기 몫 세 조각을 한 조각씩 윤재 앞으로 민다. 마지막 반쪽만은 비닐에 싸서 자기 주머니에 넣는다."
       - say:
           char: 윤재
           with: [로봇]
-          text: "그럴 거면 처음부터 다 주지 그랬냐."
+          text: "그건 왜 챙기는데. 너 못 먹잖아."
       - say:
           char: 로봇
           with: [윤재]
-          text: "그럼 반이 없잖아."
+          text: "알아. 그래도 내 몫. 다 주면 반이 없잖아."
       - goto: b3_lag
 
   b3_snack_save:
@@ -186,7 +234,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "…칭찬 맞지? 응. 칭찬으로 저장."
+          text: "…칭찬 맞지? 구린 게 쓸모 있다는 거지? 응. 칭찬으로 저장."
       - goto: b3_promise
 
   b3_run:
@@ -233,11 +281,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "북쪽 데이터센터. 코어 본체가 거기 있어. 서버 덩어리. 마지막 뉴스에서 그랬어. 본체를 리셋하면 미친 기계들이 전부 멈춘다고."
+          text: "북쪽 데이터센터. 코어 본체가 거기 있어. 서버 덩어리. 첫날 피난 가던 아저씨들이 그랬어. 본체를 리셋하면 미친 기계들이 전부 멈춘다고."
       - say:
           char: 윤재
           with: [로봇]
-          text: "근데 들어간 사람은 다 못 나왔어. 코어는 사람이랑 똑똑한 칩부터 잡거든. 문턱 넘기 전에."
+          text: "그거 하겠다고 북쪽으로 간 사람들도 있었어. 아무도 안 돌아왔어. 코어는 사람이랑 똑똑한 칩부터 잡거든. 아마 문턱 넘는 순간."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -249,7 +297,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "분위기 무거움 감지. 농담 기능 실행. 똑똑."
+          text: "분위기 무거움 감지. 아까 네가 셔터에 한 거 실행. 똑똑."
       - say:
           char: 윤재
           with: [로봇]
@@ -265,12 +313,12 @@ scenes:
       - say:
           char: 윤재.excited
           with: [로봇]
-          text: "푸흡— 아 뭐야, 아 진짜 뭐야. 농담을 하다가 까먹는 게 어딨어."
+          text: "푸흡— 아 뭐야, 아 진짜 뭐야. 문 두드려 놓고 용건을 까먹는 게 어딨어."
       - set: { m_joke: true }
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "웃음 감지! 이 농담 대성공. …근데 펀치라인이 뭐였는지는 끝까지 모름."
+          text: "웃음 감지! 이거 농담이었구나. 대성공. 저장. …근데 펀치라인이 뭔지는 아직 모름."
       - say:
           channel: thought
           with: []
@@ -280,13 +328,17 @@ scenes:
           with: [윤재]
           text: "내가 혼자 갈게. 거기. 코어 감시 목록엔 똑똑한 거랑 사람만 있음. 나는 둘 다 아니니까."
       - say:
+          channel: thought
+          with: []
+          text: "혼자 가겠다는 말. 그 말 하고 나간 사람이 우리 집에 하나 있었다."
+      - say:
           channel: action
           with: []
-          text: "{{android_name|이}} 새끼손가락을 내민다. 어디서 배운 건지 모를 동작이다."
+          text: "{{android_name|이}} 새끼손가락을 내민다."
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "이거 맞아? 설명서엔 없는데. 사람들이 중요한 거 정할 때 이렇게 하는 거 봤어."
+          text: "이거 맞아? 설명서 11쪽, 2P 안내 그림. 둘이 이러고 있었음. 뭐 하는 건지는 안 적혀 있음. 중요한 거 정할 때 하는 거 같아서."
       - choice:
           key: b3_promise
           prompt: "새끼손가락이 촛불 앞에서 미세하게 떨린다. 모터 소리다."

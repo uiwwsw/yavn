@@ -63,11 +63,11 @@ scenes:
       - say:
           char: 도윤.smile
           with: [지수]
-          text: "우리 쪽은 백 명 무조건 와. 우리 엄마 계모임만 해도—"
+          text: "우리 쪽은 백 명 무조건 와. 대학 동기들만 해도—"
       - say:
           char: 지수
           with: [도윤]
-          text: "어머님 계모임, 작년 칠순 때도 오십 명이라 그러셨는데 열두 분 오셨어."
+          text: "우리 집들이 때도 서른 명 온다 그랬는데 일곱 명 왔어. 그중 셋은 민석 씨였고."
       - say:
           char: 도윤
           with: [지수]
@@ -175,6 +175,10 @@ scenes:
           width: "clamp(170px, 24%, 320px)"
           enter: fadeIn
           inputLockMs: 300
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "그 앞에 거 저 눈 감았어요. 그건 지워 주세요."
       - say:
           channel: narration
           with: []
@@ -366,6 +370,10 @@ scenes:
           with: []
           erase: true
           text: "아무거나요"
+      - say:
+          channel: action
+          with: []
+          text: "대화방을 나가고, 번호를 차단한다."
       - add: { deleted: 2 }
       - set: { e0_messages: true }
       - goto: e0_erase
@@ -424,7 +432,7 @@ scenes:
           channel: action
           char: 준성.tired
           with: []
-          text: "준성이 눈을 뜬다. 베개 옆에서 휴대폰을 집어 방금 저장한 번호를 본다."
+          text: "준성이 눈을 뜬다. 감고만 있던 눈이다. 베개 옆에서 휴대폰을 집어, 어젯밤 받은 번호에 이름을 붙인다."
       - say:
           char: 준성
           with: []

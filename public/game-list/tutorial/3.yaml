@@ -40,12 +40,12 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "정해수 씨. 접수증, 연필, 그 전주에 혼자 고객센터 앞에 서 있던 피해자. 다 정해수 씨를 가리켜요. 근데 정해수 씨는 그 시간에 집 밖에 안 나왔어요."
+          text: "정해수 씨. 접수증, 연필, 죽기 전날 고객센터 앞에 한 시간 서 있던 피해자. 다 정해수 씨를 가리켜요. 근데 정해수 씨는 그 시간에 집 밖에 안 나왔어요."
       - say:
           char: 은숙.sharp
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "아파트 엘리베이터 CCTV를 세 번 돌려 봤어요. 세 번 다 안 나와요."
+          text: "빌라 현관 CCTV를 세 번 돌려 봤어요. 세 번 다 안 나와요."
       - choice:
           key: t3_tell
           prompt: "녹음기 빨간 불. 은숙이 볼펜 뚜껑을 닫는다."
@@ -89,6 +89,10 @@ scenes:
           with: [해수]
           text: "레플라에서 사람 찔렀다고 자수하러 오는 사람, 한 달에 열 명쯤 와요. 다 술 먹고 와요."
       - say:
+          char: 은숙
+          with: [해수]
+          text: "저는 안 해요, 레플라. 딸이 해요. 중학생인데 거기선 반장이래요. 여기선 아니고."
+      - say:
           char: 해수
           with: [은숙]
           text: "저는 술 안 마셔요."
@@ -116,7 +120,7 @@ scenes:
           char: 은숙
           when: { var: sh_night, op: eq, value: true }
           with: [해수]
-          text: "그날 아침에 변상혁 씨한테 어디 있었냐고 물어보셨다면서요. 민지영 주임님이 그러던데. 정해수 씨가 그랬다고."
+          text: "민지영 주임님 얘기는 다르던데요. 정해수 씨가 그날 밤 변상혁 씨 방에 없었다고 했다고. 차에 있었다고."
       - say:
           char: 은숙
           with: [해수]
@@ -141,7 +145,16 @@ scenes:
       - say:
           channel: narration
           with: []
-          text: "그날 오후 고객센터. 손님이 끊긴 사이에 해수는 단톡방 대신 지영에게 따로 문자를 보낸다."
+          text: "그날 오후 고객센터. 번호표 없이 온 남자 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
+      - char: { id: 해수, position: left, emotion: service }
+      - say:
+          char: 해수.service
+          with: []
+          text: "번호표 뽑고 기다리세요, 고객님."
+      - say:
+          channel: narration
+          with: []
+          text: "손님이 번호표 기계 쪽으로 간다. 해수는 그 사이에 단톡방 대신 지영에게 따로 문자를 보낸다."
       - say:
           channel: message
           side: me
@@ -365,6 +378,10 @@ scenes:
           char: 태민.afraid
           with: [해수]
           text: "가져가요. 나는 못 가요. 무서워서."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "…그린마트 직원 할인 돼요? 컵라면. 박스로."
 
   door:
     title: "1, 2, 7, 0"
@@ -375,6 +392,11 @@ scenes:
           with: []
           camera: wide
           text: "4월 22일 밤 열한 시. 상혁의 방문 앞에 배달 봉지 세 개가 그대로 있다. 생수 두 병도. 사흘째다. 문 안에서 뭔가 계속 말하는 소리가 난다. 상혁 목소리 하나뿐이다."
+      - say:
+          channel: action
+          when: { var: tampered, op: gt, value: 0 }
+          with: []
+          text: "도어락 옆 문틈에 명함이 한 장 끼워져 있다. 중랑경찰서 강력팀 경위 차은숙. 뒷면에 볼펜으로 '4/21 15:40 방문, 응답 없음'."
       - say:
           char: 상혁
           with: []
@@ -411,6 +433,10 @@ scenes:
   door_mom:
     actions:
       - say:
+          channel: action
+          with: []
+          text: "신호가 여덟 번 가고 끊긴다. 해수는 문자를 쓴다."
+      - say:
           channel: message
           side: me
           char: 해수
@@ -439,6 +465,12 @@ scenes:
           side: them
           char: 엄마
           with: []
+          text: "작년에 우리 집에서 끊고 올라갔는데"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
           text: "새벽 기차 타고 갈게. 비번 알려줘"
       - say:
           channel: message
@@ -457,4 +489,4 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "가산디지털단지. 7호선. 환승 없이 열한 정거장."
+          text: "가산디지털단지. 7호선. 환승 없이 스물여섯 정거장."

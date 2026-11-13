@@ -12,7 +12,7 @@ scenes:
           channel: card
           with: []
           text: "현재\n한도윤 · 29 · 결혼 3주 전"
-      - bg: { id: dawn_room, transition: fade, duration: 900 }
+      - bg: { id: couple_home, transition: fade, duration: 900 }
       - music: static
       - say:
           channel: narration
@@ -24,6 +24,12 @@ scenes:
           char: 지수
           with: []
           text: "청첩장 수량 오늘까지 말해줘야 돼"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "실장님이 신랑님은 원래 상담 안 오세요? 이럼ㅋㅋ 원래 안 온다고 했어"
       - say:
           channel: message
           side: me
@@ -114,7 +120,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "목요일 회의 때 테이블에 엎어 둔 팀장 폰이 한 번 켜졌었다. '감염내과 정기 진료 안내'. 도윤은 그 문구를 메모장에 그대로 적고, 메모 제목을 '장보기'로 바꾼다."
+          text: "목요일 회의 때 테이블에 화면이 위로 놓인 팀장 폰이 한 번 켜졌었다. '감염내과 정기 진료 안내'. 옆자리 송과장도 고개를 돌렸었다. 도윤은 그 문구를 메모장에 그대로 적고, 메모 제목을 '장보기'로 바꾼다."
       - goto: dig
 
   e2_dig_leak:
@@ -155,7 +161,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 송과장: 내일 점심때 얘기해ㅋㅋ"
+          text: "[영업2팀] 송과장: 월요일 점심때 얘기해ㅋㅋ"
       - goto: dig
 
   e2_elevator:
@@ -193,7 +199,7 @@ scenes:
           char: 준성
           when: { var: e2_leaked, op: eq, value: true }
           with: [도윤]
-          text: "요즘 점심시간에 내 얘기 많이 하더라고요. 탕비실 벽이 얇아요."
+          text: "오늘 점심시간에 내 얘기 많이 하던데요. 탕비실 벽이 얇아요."
       - choice:
           key: e2_threat
           prompt: "층수 표시가 7을 지난다."
@@ -274,6 +280,16 @@ scenes:
           channel: message
           side: them
           with: []
+          text: "[영업2팀] 오대리: 뭔데요 그 병"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 회의 때 팀장님 폰에 감염내과 어쩌고 뜨는 거 봤어 나만 본 거 아님"
+      - say:
+          channel: message
+          side: them
+          with: []
           text: "[영업2팀] 오대리: 헐 그럼 같이 밥 먹은 사람들 괜찮은 거임?"
       - say:
           channel: message
@@ -290,13 +306,13 @@ scenes:
           side: them
           when: { var: e2_leaked, op: eq, value: true }
           with: []
-          text: "[영업2팀] 윤주임: 근데 이거 처음에 도윤대리님이 꺼낸 얘기 아니에요?"
+          text: "[영업2팀] 윤주임: 근데 전 회사 얘기는 처음에 도윤대리님이 꺼낸 거 아니에요?"
       - say:
           channel: message
           side: them
           when: { var: e2_leaked, op: eq, value: true }
           with: []
-          text: "[영업2팀] 송과장: 아냐 나 딴 데서도 들었어"
+          text: "[영업2팀] 송과장: 그건 그거고"
       - say:
           channel: message
           side: them

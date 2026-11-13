@@ -44,7 +44,7 @@
   white-space: nowrap;
 }
 
-.dialog-content-scroll > .dialog-channel-label + .speaker {
+.dialog-content-scroll > .speaker + .dialog-channel-label {
   right: 0;
   left: auto;
   max-width: 55%;
