@@ -50,7 +50,7 @@ export function OutcomePrelude({ kind, title, message, epilogue, background, ton
         <p id="outcome-message" className="outcome-message">{message}</p>
         {epilogue && <p className="outcome-epilogue">{epilogue}</p>}
         <button type="button" className="outcome-continue" ref={buttonRef} onClick={onContinue} disabled={continueDisabled}>
-          {continueLabel ?? '이야기 지도 펼치기'}<span aria-hidden="true"> →</span>
+          <span>{continueLabel ?? '이야기 지도 펼치기'}</span>
           {continueDetail && <small className="vs-outcome-detail">{continueDetail}</small>}
         </button>
         {secondary && <div className="vs-outcome-actions">{secondary}</div>}

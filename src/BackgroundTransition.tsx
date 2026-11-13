@@ -8,7 +8,7 @@ import {
   finishBackgroundTransition,
 } from './assetTransition';
 import type { BackgroundTransitionKind } from './types';
-import { waitForImageReady } from './imageReady';
+import { waitForImageReadyWhenVisible } from './imageReady';
 import { ResourceImage } from './ResourceImage';
 
 const BACKGROUND_READY_TIMEOUT_MS = 12000;
@@ -57,7 +57,7 @@ export const BackgroundTransition = memo(function BackgroundTransition({
     let cancelled = false;
     let commitFrame: number | undefined;
 
-    void waitForImageReady(image, BACKGROUND_READY_TIMEOUT_MS).then((status) => {
+    void waitForImageReadyWhenVisible(image, BACKGROUND_READY_TIMEOUT_MS).then((status) => {
       if (!cancelled && status !== 'ready' && latestSourceRef.current === source) {
         completionRef.current?.(requestRevision, false);
       }

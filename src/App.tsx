@@ -105,7 +105,6 @@ import type {
 import { SaveSlotMeta, UpdateBanner, VersionGate, VersionLine, VersionStamp, olderVersionMessage } from './VersionSaves';
 import { formatRelativeSaveTime, formatSaveChapter, resolveSlotIntent, type SlotIntent } from './saveMeta';
 import { consumeBootIntent, readGameIdFromPath, setBootIntent, useUpdateWatch } from './updateCheck';
-import './versionSaves.css';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFocusPresentation,
@@ -1707,7 +1706,7 @@ export default function App() {
   // A backup file waits here until the player picks the slot it goes into.
   const [importDraft, setImportDraft] = useState<{ raw: string; summary: SaveSlotSummary }>();
   // Direct boot (no start screen) found an older-version save and asks before loading it.
-  const [versionGate, setVersionGate] = useState<{ gameUrl: string; title?: string; status: StoredProgressStatus }>();
+  const [versionGate, setVersionGate] = useState<{ gameUrl: string; title?: string; status: StoredProgressStatus; uiTemplate?: UiTemplateId }>();
   const [updateBusy, setUpdateBusy] = useState(false);
   const resumeNotice = useVNStore((state) => state.resumeNotice);
   const storyWaiting = useVNStore((state) => state.waitingInput);
@@ -1994,7 +1993,7 @@ export default function App() {
         }
         if (cancelled) return;
         if (preview?.saveStatus.status === 'older-version') {
-          setVersionGate({ gameUrl, title: preview.gameTitle, status: preview.saveStatus });
+          setVersionGate({ gameUrl, title: preview.gameTitle, status: preview.saveStatus, uiTemplate: preview.uiTemplate });
           setGameBootPending(false);
           return;
         }
@@ -4121,7 +4120,7 @@ export default function App() {
       }
     };
     return (
-      <VersionGate title={versionGate.title} slot={versionGate.status.slot} currentVersion={versionGate.status.currentVersion}
+      <VersionGate uiTemplate={versionGate.uiTemplate} title={versionGate.title} slot={versionGate.status.slot} currentVersion={versionGate.status.currentVersion}
         onRestart={() => void openGame(false)} onContinue={() => void openGame(true)} />
     );
   }
@@ -5231,7 +5230,7 @@ export default function App() {
                   {slotIntent?.slot === 'auto' && slotIntent.kind === 'load-old' && (
                     <div className="vs-slot-confirm" role="alertdialog" aria-label={t("이전 버전 저장 불러오기")}>
                       <p>{olderVersionMessage(autoRecoverySlot?.savedVersion)}</p>
-                      <button type="button" className="is-primary" onClick={() => void onLoadSave('auto')} disabled={saveBusy}>{t("그래도 불러오기")}</button>
+                      <button type="button" className="is-primary" autoFocus onClick={() => void onLoadSave('auto')} disabled={saveBusy}>{t("그래도 불러오기")}</button>
                       <button type="button" onClick={() => setSlotIntent(undefined)}>{t("취소")}</button>
                     </div>
                   )}
@@ -5283,10 +5282,10 @@ export default function App() {
                               aria-label={uiLanguage === 'en' ? `Delete slot ${index + 1}` : `${index + 1}번 칸 지우기`}
                             >{t("지우기")}</button>
                             {intent && (
-                              <div className="vs-slot-confirm" role="alertdialog" aria-label={slotName}>
+                              <div className={`vs-slot-confirm${intent.kind === 'delete' ? ' is-destructive' : ''}`} role="alertdialog" aria-label={slotName}>
                                 {intent.kind === 'overwrite' && <>
                                   <p>{uiLanguage === 'en' ? `Replace slot ${index + 1} with this scene?` : `${slotName}에 있던 기록을 지금 장면으로 바꿀까요?`}</p>
-                                  <button type="button" className="is-primary" onClick={() => onManualSave(slot.slot as ManualSaveSlot)}>{t("덮어쓰기")}</button>
+                                  <button type="button" className="is-primary" autoFocus onClick={() => onManualSave(slot.slot as ManualSaveSlot)}>{t("덮어쓰기")}</button>
                                 </>}
                                 {intent.kind === 'delete' && <>
                                   <p>{uiLanguage === 'en' ? `Delete slot ${index + 1}? This can't be undone.` : `${slotName} 기록을 지울까요? 되돌릴 수 없어요.`}</p>
@@ -5294,9 +5293,10 @@ export default function App() {
                                 </>}
                                 {intent.kind === 'load-old' && <>
                                   <p>{olderVersionMessage(slot.savedVersion)}</p>
-                                  <button type="button" className="is-primary" onClick={() => void onLoadSave(slot.slot)} disabled={saveBusy}>{t("그래도 불러오기")}</button>
+                                  <button type="button" className="is-primary" autoFocus onClick={() => void onLoadSave(slot.slot)} disabled={saveBusy}>{t("그래도 불러오기")}</button>
                                 </>}
-                                <button type="button" onClick={() => setSlotIntent(undefined)}>{t("취소")}</button>
+                                {/* Deleting cannot be undone, so focus lands on the safe choice. */}
+                                <button type="button" autoFocus={intent.kind === 'delete'} onClick={() => setSlotIntent(undefined)}>{t("취소")}</button>
                               </div>
                             )}
                           </li>
@@ -6023,14 +6023,14 @@ export default function App() {
       onReplayed={(failedChoice) => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(failedChoice); refreshSaveSlots(); }}
       onRecords={() => { setStoryMapOpen(false); if (gameOver) setGameOverRecoveryOpen(true);
         else if (isFinished) setEndingCreditsOpen(true); else { setCaseFileTab('system'); setSettingsOpen(true); } }} /></Suspense>}
-    <UpdateBanner buildChanged={updateWatch.buildChanged} contentChange={updateWatch.contentChange}
+    <UpdateBanner uiTemplate={game ? uiTemplate : undefined} buildChanged={updateWatch.buildChanged} contentChange={updateWatch.contentChange}
       idle={updateNoticeIdle && !startGate} inGame={Boolean(game)} busy={updateBusy}
       onReloadNow={() => reloadForUpdate('continue')}
       onRestartNewVersion={() => reloadForUpdate('fresh')}
       onContinueNewVersion={() => reloadForUpdate('continue')}
       onDismissBuild={updateWatch.dismissBuild} onDismissContent={updateWatch.dismissContent} />
     {resumeNotice && game && !chapterLoading && (
-      <div className="vs-resume-notice" role="status" onClick={(event) => event.stopPropagation()}>
+      <div className="vs-resume-notice" data-ui-template={uiTemplate} role="status" onClick={(event) => event.stopPropagation()}>
         <p>{t(resumeNotice)}</p>
         <button type="button" onClick={() => useVNStore.getState().setResumeNotice(undefined)}>{t("확인")}</button>
       </div>

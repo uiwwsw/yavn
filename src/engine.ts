@@ -4477,8 +4477,9 @@ function runToNextPause(loopGuard = 0) {
     if (options.wait) {
       const revision = useVNStore.getState().backgroundPresentation.revision;
       useVNStore.getState().setBusy(true);
+      // Story time pauses while the tab is hidden, so a background tab can't time this out.
       const watchdog = scheduleCinematic(() => completeBackgroundTransition(revision, false),
-        STATIC_IMAGE_READY_TIMEOUT_MS + options.duration + 1000);
+        STATIC_IMAGE_READY_TIMEOUT_MS + options.duration + 1000, true);
       pendingBackground = { revision, complete: (ok) => {
         if (useVNStore.getState().game !== state.game
           || useVNStore.getState().backgroundPresentation.revision !== revision) return;

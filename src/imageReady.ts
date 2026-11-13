@@ -168,6 +168,39 @@ export function waitForImageReady(image: HTMLImageElement, timeoutMs: number): P
   return preparation ? withDeadline(preparation, timeoutMs) : decodeImageElement(image, timeoutMs);
 }
 
+/**
+ * Like waitForImageReady, but a hidden tab does not count against the deadline: browsers can
+ * stall decoding in background tabs, so a timeout while hidden waits for the page to be shown
+ * and tries again instead of reporting a failure the player never caused.
+ */
+export async function waitForImageReadyWhenVisible(
+  image: HTMLImageElement,
+  timeoutMs: number,
+  isHidden: () => boolean = () => typeof document !== 'undefined' && document.visibilityState === 'hidden',
+  whenVisible: () => Promise<void> = waitForDocumentVisible,
+): Promise<ImageReadyStatus> {
+  for (;;) {
+    const status = await waitForImageReady(image, timeoutMs);
+    if (status !== 'timeout' || !isHidden()) return status;
+    await whenVisible();
+  }
+}
+
+function waitForDocumentVisible(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof document === 'undefined' || document.visibilityState !== 'hidden') {
+      resolve();
+      return;
+    }
+    const onChange = () => {
+      if (document.visibilityState === 'hidden') return;
+      document.removeEventListener('visibilitychange', onChange);
+      resolve();
+    };
+    document.addEventListener('visibilitychange', onChange);
+  });
+}
+
 /** Waits for the background and currently rendered static characters in the mounted stage. */
 export async function waitForVisibleStaticImages(
   root: ParentNode,

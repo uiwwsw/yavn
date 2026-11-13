@@ -130,7 +130,6 @@
 .app .hud-meta-group { display: grid; gap: 6px; min-width: 0; max-width: 55%; text-shadow: 0 1px 2px #000c, 0 2px 12px #0009; }
 .app .hud-meta-group .meta { overflow: hidden; font-size: 14px; font-weight: 700; letter-spacing: -.01em; text-overflow: ellipsis; white-space: nowrap; }
 .app .hud-chapter-progress { display: flex; align-items: center; gap: 4px; width: fit-content; color: #ffffffd9; font-family: var(--game-figure-font); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.app .hud-meta-group > [class^='vs-'] { width: fit-content; color: #ffffffb8; font-family: var(--game-figure-font); font-size: 13px; font-variant-numeric: tabular-nums; }
 .app .hud-right { display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--game-hud-line); border-radius: var(--game-radius-lg); background: var(--game-hud-bg); backdrop-filter: blur(14px); }
 .app .hud-right .hint { padding: 0 10px; color: var(--game-hud-ink); font-size: 13px; }
 .app .hud-action-button { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px; min-width: 44px; padding: 0 12px; border: 0; border-radius: var(--game-radius); background: transparent; color: var(--game-hud-ink); box-shadow: none; cursor: pointer; transition: background-color 140ms ease, color 140ms ease; }
@@ -142,6 +141,10 @@
 .app .hud-new-dot { position: absolute; top: 7px; left: 25px; width: 8px; height: 8px; border: 2px solid var(--game-hud-bg); border-radius: 50%; background: var(--game-mark); }
 .app[data-ui-template='neon-grid'] .hud-new-dot { border-radius: 0; }
 .app .hud-chapter-total { opacity: .7; }
+/* The place caption fades out but stays mounted; keep it out of flow so it never leaves a gap. */
+.app .hud-meta-group { position: relative; }
+.app .hud-meta-group > .place-caption { position: absolute; top: calc(100% + 8px); left: 0; width: max-content; margin: 0; }
+.app[data-ui-template='paper-stage'] .hud-meta-group > .place-caption { padding: 5px 10px; border: 1px solid var(--game-hud-line); border-radius: var(--game-radius-lg); background: var(--game-hud-bg); color: var(--game-hud-ink); text-shadow: none; }
 /* Paper scenes are often pale, so the title gets the same paper plate as the tools. */
 .app[data-ui-template='paper-stage'] .hud-meta-group { padding: 6px 12px 7px; border: 1px solid var(--game-hud-line); border-radius: var(--game-radius-lg); background: var(--game-hud-bg); color: var(--game-hud-ink); text-shadow: none; backdrop-filter: blur(14px); }
 .app[data-ui-template='paper-stage'] .hud-chapter-progress { color: var(--game-muted); }
@@ -353,16 +356,13 @@
 .app .save-system-actions button, .app .settings-action-button, .app .save-system-wide-action { min-height: 44px; padding: 10px 14px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius); background: transparent; color: var(--game-text); box-shadow: none; font-size: 14px; font-weight: 650; }
 .app .save-system-actions button.is-primary { border-color: var(--game-accent); background: var(--game-accent); color: var(--game-accent-ink); }
 .app :is(.save-system-actions button, .save-system-wide-action):disabled { opacity: .45; }
-.app .save-system-section[data-save-kind='backup'], .app .player-experience-section, .app .legal-notices-section { grid-column: 1 / -1; }
+.app .player-experience-section, .app .legal-notices-section { grid-column: 1 / -1; }
 .app .save-preferences-section.is-single-action { margin-top: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--game-line); background: transparent; }
 .app .save-preferences-section .settings-action-button { width: auto; min-height: 44px; background: transparent; color: var(--game-accent); }
 .app .save-system-status { min-height: 25px; padding: 10px 0 0; border: 0; background: transparent; color: var(--game-muted); font-size: 13px; text-align: left; }
 .app .legal-notice-global-links a { color: var(--game-muted); font-size: 13px; }
 .app .settings-legal-notices .legal-notice h4 { color: var(--game-text); }
 .app .settings-legal-notices .legal-notice :is(p, small), .app .legal-notice-empty { color: var(--game-muted); font-size: 13px; }
-/* Elements added by the save/version work (`vs-*`) inherit the menu's quiet text style. */
-.app .settings-modal [class^='vs-'], .app .settings-modal [class*=' vs-'] { font-family: inherit; }
-.app .settings-modal :is(small, span)[class^='vs-'] { color: var(--game-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
 
 /* Play settings: five groups, each with real controls (segments, switches, sliders). */
 .app .player-settings { margin-top: 4px; }
@@ -557,15 +557,147 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .legal-notice-usage { padding: 0; border: 0; background: none; color: var(--game-muted); font: inherit; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .app .choice-gate-explore-hint { margin: 0 0 10px; color: var(--game-accent); font-size: 13px; letter-spacing: .02em; }
 
-/* Three manual save slots: label and meta on the left, save and load on the right. */
-.app .manual-save-slots { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
-.app .manual-save-slots li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--game-line); }
-.app .manual-save-slot-label { display: grid; gap: 2px; min-width: 0; }
-.app .manual-save-slot-label b { font-size: 13px; font-weight: 650; color: var(--game-text); }
-.app .manual-save-slot-label small { overflow: hidden; color: var(--game-muted); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
-.app .manual-save-slots button { min-height: 40px; padding: 0 12px; border: 1px solid var(--game-line); border-radius: 3px; background: transparent; color: var(--game-text); font: inherit; font-size: 13px; cursor: pointer; }
-.app .manual-save-slots button.is-primary { background: var(--game-accent); border-color: var(--game-accent); color: var(--game-accent-ink); }
-.app .manual-save-slots button:disabled { opacity: .45; cursor: default; }
+/* Saves and versions. A save is shown the way the player remembers it: the chapter, the last
+   line and who said it, and when. Confirmations open in place, under the row they act on. */
+.app .save-protection-hero { position: relative; }
+.app .save-protection-hero > .vs-slot-confirm { grid-column: 1 / -1; }
+.app .save-auto-load { min-height: 44px; padding: 0 16px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius); background: transparent; color: var(--game-text); font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; }
+.app .save-auto-load:hover:not(:disabled) { border-color: var(--game-accent); }
+.app .save-auto-load:disabled { opacity: .45; cursor: default; }
+.app .save-system-section[data-save-kind='manual'] { grid-column: 1 / -1; }
+.app .save-system-section[data-save-kind='backup'] { grid-column: auto; }
+.app .manual-save-slots { display: grid; gap: 0; margin: 4px 0 0; padding: 0; list-style: none; counter-reset: none; }
+.app .manual-save-slots li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 8px; padding: 14px 0; border-top: 1px solid var(--game-line); }
+.app .manual-save-slots li:first-child { border-top: 0; }
+.app .manual-save-slot-label { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); align-items: baseline; gap: 2px 12px; min-width: 0; }
+.app .manual-save-slot-label > b { color: var(--game-muted); font-size: 14px; font-weight: 650; }
+.app .manual-save-slots li.has-save .manual-save-slot-label > b { color: var(--game-text); }
+.app .manual-save-slots button { min-height: 44px; padding: 0 14px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius); background: transparent; color: var(--game-text); font: inherit; font-size: 14px; font-weight: 650; white-space: nowrap; cursor: pointer; }
+.app .manual-save-slots button:hover:not(:disabled) { border-color: var(--game-accent); }
+.app .manual-save-slots button.is-primary { border-color: var(--game-accent); background: var(--game-accent); color: var(--game-accent-ink); }
+.app .manual-save-slots button:disabled { opacity: .4; cursor: default; }
+.app .manual-save-slots .vs-slot-delete { border-color: transparent; color: var(--game-muted); }
+.app .manual-save-slots .vs-slot-delete:hover:not(:disabled) { border-color: var(--game-mark); color: var(--game-text); }
+.app .manual-save-slots .vs-slot-delete:disabled { visibility: hidden; }
+
+.app .vs-slot-meta { display: grid; gap: 3px; min-width: 0; color: var(--game-text); font-size: 14px; line-height: 1.45; }
+.app .vs-slot-meta.is-empty { color: var(--game-muted); }
+.app .vs-slot-chapter { overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.app .vs-slot-line { display: flex; gap: 8px; min-width: 0; color: var(--game-muted); }
+.app .vs-slot-speaker { flex: none; color: var(--game-accent); font-weight: 650; }
+.app[data-ui-template='paper-stage'] .vs-slot-speaker { color: var(--game-text); }
+.app .vs-slot-line q { overflow: hidden; quotes: none; text-overflow: ellipsis; white-space: nowrap; }
+.app .vs-slot-time { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; color: var(--game-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.app .vs-slot-old { padding: 0 6px; border: 1px solid var(--game-mark); border-radius: var(--game-radius); color: var(--game-mark); font-size: 13px; font-style: normal; font-weight: 650; }
+.app[data-ui-template='cinematic-noir'] .vs-slot-old, .app:not([data-ui-template]) .vs-slot-old { border-color: #d9a75a; color: #e7bb72; }
+.app .vs-older-save-note { margin: 0; padding-left: 10px; border-left: 2px solid var(--game-mark); color: var(--game-text); font-size: 14px; line-height: 1.6; }
+
+.app .vs-slot-confirm { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 12px 12px 12px 14px; border: 1px solid var(--game-line-strong); border-left: 3px solid var(--game-accent); border-radius: var(--game-radius); background: var(--game-sunk); animation: gameUiFade 140ms ease both; }
+.app .vs-slot-confirm p { flex: 1 1 220px; margin: 0; color: var(--game-text); font-size: 14px; line-height: 1.55; }
+.app .vs-slot-confirm button { min-height: 44px; padding: 0 16px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius); background: transparent; color: var(--game-text); font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; }
+.app .vs-slot-confirm button.is-primary { border-color: var(--game-accent); background: var(--game-accent); color: var(--game-accent-ink); }
+.app .vs-slot-confirm.is-destructive { border-left-color: var(--game-mark); }
+.app .vs-slot-confirm.is-destructive button.is-primary { border-color: var(--game-mark); background: var(--game-mark); color: var(--game-mark-ink); }
+.app[data-ui-template='cinematic-noir'] .vs-slot-confirm.is-destructive, .app:not([data-ui-template]) .vs-slot-confirm.is-destructive { border-left-color: #d97a68; }
+.app[data-ui-template='cinematic-noir'] .vs-slot-confirm.is-destructive button.is-primary, .app:not([data-ui-template]) .vs-slot-confirm.is-destructive button.is-primary { border-color: #d97a68; background: #d97a68; color: #1d0f0b; }
+
+.app .vs-checkpoint-hint { margin: 12px 0 0; color: var(--game-muted); font-size: 13px; line-height: 1.6; }
+.app .vs-import-picker { display: grid; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--game-line); }
+.app .vs-import-picker > p:first-child { display: grid; gap: 6px; margin: 0; color: var(--game-muted); font-size: 13px; }
+.app .vs-import-picker ol { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.app .vs-import-picker li button { display: grid; gap: 2px; width: 100%; min-height: 52px; padding: 8px 12px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius); background: transparent; color: var(--game-text); font: inherit; text-align: left; cursor: pointer; }
+.app .vs-import-picker li button:hover:not(:disabled) { border-color: var(--game-accent); }
+.app .vs-import-picker li b { font-size: 14px; }
+.app .vs-import-picker li small { color: var(--game-muted); font-size: 13px; }
+.app .vs-import-picker > button { justify-self: start; min-height: 44px; padding: 0 14px; border: 1px solid transparent; border-radius: var(--game-radius); background: transparent; color: var(--game-muted); font: inherit; font-size: 14px; cursor: pointer; }
+.app .vs-version-line { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 0; color: var(--game-muted); font-family: var(--game-figure-font); font-size: 13px; font-variant-numeric: tabular-nums; }
+.app .hud-meta-group > .vs-version-stamp { overflow: hidden; max-width: 100%; color: inherit; font-family: var(--game-figure-font); font-size: 13px; font-variant-numeric: tabular-nums; text-overflow: ellipsis; white-space: nowrap; opacity: .62; pointer-events: none; }
+
+/* Game over: the way back is the main button; map and older saves are quieter text buttons. */
+.app .outcome-continue { flex-direction: column; gap: 4px; font-size: 15px; }
+.app .vs-outcome-detail { display: block; color: inherit; font-size: 13px; font-weight: 450; opacity: .78; word-break: keep-all; text-wrap: balance; }
+.app .vs-outcome-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
+.app .vs-outcome-actions button { min-height: 44px; padding: 0 16px; border: 1px solid #ffffff2e; border-radius: 3px; background: transparent; color: #e9e3d8; font: inherit; font-size: 14px; cursor: pointer; }
+.app .vs-outcome-actions button:hover:not(:disabled) { border-color: var(--outcome-accent, #ddc38e); }
+.app .vs-outcome-actions button:focus-visible { outline: 2px solid var(--outcome-accent, #ddc38e); outline-offset: 3px; }
+.app .game-over-panel .outcome-back { min-height: 44px; font-size: 14px; }
+
+/* Story map additions. */
+.story-atlas .vs-atlas-cause { position: absolute; top: 6px; left: 6px; z-index: 1; padding: 2px 7px; border-radius: var(--game-radius); background: var(--game-mark); color: var(--game-mark-ink); font-size: 13px; font-style: normal; font-weight: 700; }
+.story-atlas:not([data-ui-template]) .vs-atlas-cause, .story-atlas[data-ui-template='cinematic-noir'] .vs-atlas-cause { background: #d97a68; color: #1d0f0b; }
+.story-atlas .vs-atlas-stale { margin: 0 0 8px; padding-left: 10px; border-left: 2px solid var(--game-mark); color: var(--game-muted); font-size: 13px; line-height: 1.6; }
+
+/* Start screen: what 이어하기 will open, written under the button. The title screen is always
+   cinematic, so this uses the start gate's own light-on-dark colours. */
+.start-gate .vs-start-save { display: grid; gap: 6px; max-width: 360px; padding: 2px 0 2px 12px; border-left: 2px solid #e7d3a8a6; color: #f2eadb; text-align: left; }
+.start-gate .vs-start-save .vs-slot-meta { display: grid; gap: 2px; min-width: 0; font-size: 14px; line-height: 1.45; }
+.start-gate .vs-start-save .vs-slot-chapter { overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.start-gate .vs-start-save .vs-slot-line { display: flex; gap: 8px; min-width: 0; color: #e7dccbcc; }
+.start-gate .vs-start-save .vs-slot-speaker { flex: none; font-weight: 650; }
+.start-gate .vs-start-save .vs-slot-line q { overflow: hidden; quotes: none; text-overflow: ellipsis; white-space: nowrap; }
+.start-gate .vs-start-save .vs-slot-time { display: flex; flex-wrap: wrap; gap: 4px 10px; color: #e7dccbb3; font-size: 13px; font-variant-numeric: tabular-nums; }
+.start-gate .vs-slot-old { padding: 0 6px; border: 1px solid #e7bb72; border-radius: 2px; color: #f0c985; font-size: 13px; font-style: normal; font-weight: 650; }
+.start-gate .vs-older-save-note { margin: 0; color: #f0c985; font-size: 14px; line-height: 1.55; }
+/* A save summary makes the menu taller; let it grow into the empty lower band instead of up into the title. */
+.start-gate.is-scene:not(.has-legal-notices) .start-gate-actions:has(.vs-start-save) { bottom: max(56px, 7%); }
+.start-gate .start-gate-actions:has(.vs-start-save) .start-gate-hint { display: none; }
+.start-gate.is-scene .start-gate-button-load { font-size: 14px; }
+.start-gate.is-scene .start-gate-hint { font-size: 13px; }
+.start-gate .vs-version-start { position: absolute; right: max(16px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 2; display: flex; gap: 2px 12px; margin: 0; color: #ffffffa6; font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: 13px; font-variant-numeric: tabular-nums; pointer-events: none; }
+
+/* Overlays outside the game frame: update notice, resume notice and the version gate. They carry
+   data-ui-template, so the tokens above apply; without it they fall back to the noir set. */
+.vs-update-banner, .vs-resume-notice, .vs-version-gate { --game-accent: #d2c09b; --game-accent-ink: #23261f; --game-paper: #171c20; --game-surface: #20262b; --game-sunk: #111518; --game-text: #ece9e2; --game-muted: #a9aca7; --game-line: #ffffff1f; --game-line-strong: #ffffff42; --game-mark: #93cfd6; --game-mark-ink: #0e2225; --game-radius: 2px; --game-radius-lg: 4px; --game-focus: var(--game-accent); --game-figure-font: 'SUITE Variable', sans-serif; font-family: 'SUITE Variable', 'Noto Sans KR', sans-serif; }
+.vs-update-banner[data-ui-template='neon-grid'], .vs-resume-notice[data-ui-template='neon-grid'], .vs-version-gate[data-ui-template='neon-grid'] { --game-accent: #8fe3cc; --game-accent-ink: #07211c; --game-paper: #0c1a20; --game-surface: #12262d; --game-sunk: #08141a; --game-text: #e3f4ef; --game-muted: #98b9b4; --game-line: #8fe3cc29; --game-line-strong: #8fe3cc66; --game-mark: #ffcf5c; --game-mark-ink: #2b1d00; --game-radius: 0; --game-radius-lg: 0; --game-figure-font: ui-monospace, 'SFMono-Regular', Menlo, monospace; }
+.vs-update-banner[data-ui-template='paper-stage'], .vs-resume-notice[data-ui-template='paper-stage'], .vs-version-gate[data-ui-template='paper-stage'] { --game-accent: #5c4831; --game-accent-ink: #fbf7ee; --game-paper: #f1ebdf; --game-surface: #faf6ee; --game-sunk: #e6decd; --game-text: #2a251e; --game-muted: #675e50; --game-line: #4a3c2630; --game-line-strong: #4a3c2670; --game-mark: #a8352b; --game-mark-ink: #fff6ee; --game-radius: 1px; --game-radius-lg: 2px; --game-focus: #8c2c22; }
+:is(.vs-update-banner, .vs-resume-notice, .vs-version-gate) :is(button, a):focus-visible { outline: 2px solid var(--game-focus); outline-offset: 2px; }
+:is(.vs-update-banner, .vs-resume-notice, .vs-version-gate) button { min-height: 44px; padding: 0 16px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius); background: transparent; color: var(--game-text); font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; }
+:is(.vs-update-banner, .vs-resume-notice, .vs-version-gate) button:hover:not(:disabled) { border-color: var(--game-accent); }
+:is(.vs-update-banner, .vs-version-gate) button.is-primary { border-color: var(--game-accent); background: var(--game-accent); color: var(--game-accent-ink); }
+:is(.vs-update-banner, .vs-version-gate) button.is-quiet { border-color: transparent; color: var(--game-muted); }
+:is(.vs-update-banner, .vs-resume-notice, .vs-version-gate) button:disabled { opacity: .45; cursor: default; }
+/* Below the HUD, so the tools stay reachable while the notice waits. */
+.vs-update-banner { position: fixed; z-index: 1900; top: max(78px, calc(env(safe-area-inset-top) + 70px)); left: 50%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px 16px; width: min(620px, calc(100vw - 24px)); padding: 12px 12px 12px 16px; border: 1px solid var(--game-line-strong); border-left: 3px solid var(--game-accent); border-radius: var(--game-radius-lg); background: var(--game-paper); color: var(--game-text); box-shadow: 0 16px 40px #00000052; transform: translateX(-50%); animation: gameUiFade 200ms ease both; }
+.vs-update-banner p { display: grid; gap: 2px; margin: 0; font-size: 14px; line-height: 1.5; }
+.vs-update-banner p b { font-weight: 700; }
+.vs-update-banner p span { color: var(--game-muted); font-size: 13px; }
+.vs-update-banner .vs-update-versions { font-family: var(--game-figure-font); font-variant-numeric: tabular-nums; }
+.vs-update-actions, .vs-version-gate-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.vs-resume-notice { position: fixed; z-index: 900; top: max(78px, calc(env(safe-area-inset-top) + 70px)); left: 50%; display: flex; align-items: center; gap: 12px; width: min(520px, calc(100vw - 24px)); padding: 8px 8px 8px 16px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius-lg); background: var(--game-paper); color: var(--game-text); box-shadow: 0 12px 32px #00000047; transform: translateX(-50%); animation: gameUiFade 200ms ease both; }
+.vs-resume-notice p { flex: 1; margin: 0; font-size: 14px; line-height: 1.5; }
+.vs-version-gate { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; padding: 24px 16px; background: var(--game-sunk); color: var(--game-text); }
+.vs-version-gate-panel { display: grid; gap: 16px; width: min(480px, 100%); padding: 28px; border: 1px solid var(--game-line-strong); border-radius: var(--game-radius-lg); background: var(--game-paper); }
+.vs-version-gate-game { margin: 0; color: var(--game-muted); font-family: var(--game-figure-font); font-size: 13px; font-variant-numeric: tabular-nums; }
+.vs-version-gate-panel h2 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -.03em; line-height: 1.3; }
+.vs-version-gate .vs-older-save-note { margin: 0; padding-left: 10px; border-left: 2px solid var(--game-mark); font-size: 15px; line-height: 1.65; }
+.vs-version-gate .vs-slot-meta { display: grid; gap: 3px; padding: 12px 14px; border: 1px solid var(--game-line); border-radius: var(--game-radius); background: var(--game-sunk); font-size: 14px; }
+.vs-version-gate .vs-slot-chapter { font-weight: 650; }
+.vs-version-gate .vs-slot-line { display: flex; gap: 8px; min-width: 0; color: var(--game-muted); }
+.vs-version-gate .vs-slot-speaker { flex: none; color: var(--game-text); font-weight: 650; }
+.vs-version-gate .vs-slot-line q { overflow: hidden; quotes: none; text-overflow: ellipsis; white-space: nowrap; }
+.vs-version-gate .vs-slot-time { display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--game-muted); font-size: 13px; }
+.vs-version-gate .vs-slot-old { font-style: normal; font-weight: 650; color: var(--game-mark); }
+.vs-version-gate-actions { justify-content: flex-end; }
+
+@media (max-width: 768px) {
+  .app .manual-save-slots li { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 8px; }
+  .app .manual-save-slot-label { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); }
+  /* Phones: the auto save stays one compact row so the slot list keeps most of the height. */
+  .app .save-protection-hero { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  .app .save-auto-status > span > b { display: none; }
+  .app .save-auto-load { align-self: center; }
+  .app .save-system-section[data-save-kind='backup'] { grid-column: 1 / -1; }
+  .vs-update-banner { grid-template-columns: minmax(0, 1fr); }
+  .vs-update-actions button { flex: 1 1 auto; }
+  .start-gate .vs-version-start { right: 12px; bottom: 8px; }
+}
+@media (max-height: 600px) and (orientation: landscape) {
+  .start-gate .vs-start-save :is(.vs-slot-line, .vs-slot-time) { display: none; }
+  .start-gate .vs-older-save-note { font-size: 13px; line-height: 1.45; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app .vs-slot-confirm, .vs-update-banner, .vs-resume-notice { animation: none; }
+}
 
 /* Full-screen caption card (say.channel: card): time jumps, title drops, blackouts.
    It is an ordinary line, so advance, skip-read text and the story log keep working. */

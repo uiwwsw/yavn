@@ -55,6 +55,8 @@ export function olderVersionMessage(savedVersion?: string): string {
 }
 
 type BannerProps = {
+  /** The running game's ui.template, so the notice wears the same tokens as the menu. */
+  uiTemplate?: string;
   buildChanged: boolean;
   contentChange?: ContentVersionChange;
   /** Hold the notice while a line is still typing; show it at the next choice or pause. */
@@ -74,7 +76,7 @@ export function UpdateBanner(props: BannerProps) {
   if (!idle || (!buildChanged && !contentChange)) return null;
   if (contentChange && inGame) {
     return (
-      <aside className="vs-update-banner is-content" role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
+      <aside className="vs-update-banner is-content" data-ui-template={props.uiTemplate} role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
         <p>
           <b>{en ? 'This story has been updated' : '이 작품 내용이 바뀌었어요'}</b>
           <span className="vs-update-versions">v{contentChange.from} → v{contentChange.to}</span>
@@ -90,7 +92,7 @@ export function UpdateBanner(props: BannerProps) {
     );
   }
   return (
-    <aside className="vs-update-banner is-build" role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
+    <aside className="vs-update-banner is-build" data-ui-template={props.uiTemplate} role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
       <p><b>{en ? 'A new version is out. Update now?' : '새 버전이 나왔어요. 지금 반영할까요?'}</b>
         {inGame && <span>{en ? 'You will pick up right where you are.' : '지금 장면에서 그대로 이어집니다.'}</span>}</p>
       <div className="vs-update-actions">
@@ -102,7 +104,8 @@ export function UpdateBanner(props: BannerProps) {
 }
 
 /** Shown before loading when the newest save comes from an older version and no start screen asked yet. */
-export function VersionGate({ title, slot, currentVersion, busy, onRestart, onContinue }: {
+export function VersionGate({ title, slot, currentVersion, busy, onRestart, onContinue, uiTemplate }: {
+  uiTemplate?: string;
   title?: string;
   slot?: SlotLike;
   currentVersion?: string;
@@ -113,7 +116,7 @@ export function VersionGate({ title, slot, currentVersion, busy, onRestart, onCo
   const continueRef = useRef<HTMLButtonElement>(null);
   useEffect(() => { continueRef.current?.focus({ preventScroll: true }); }, []);
   return (
-    <div className="vs-version-gate" role="dialog" aria-modal="true" aria-labelledby="vs-version-gate-title">
+    <div className="vs-version-gate" data-ui-template={uiTemplate} role="dialog" aria-modal="true" aria-labelledby="vs-version-gate-title">
       <div className="vs-version-gate-panel">
         {title && <p className="vs-version-gate-game">{title}{currentVersion ? ` · v${currentVersion}` : ''}</p>}
         <h2 id="vs-version-gate-title">{en ? 'The story has been updated' : '이야기가 새로 바뀌었어요'}</h2>
