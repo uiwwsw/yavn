@@ -27,7 +27,8 @@ describe('retired game routes', () => {
   const bySource = new Map(vercel.redirects.map((entry) => [entry.source, entry]));
 
   it.each(Object.entries(RETIRED))('sends /game-list/%s and everything under it to %s', (id, destination) => {
-    for (const source of [`/game-list/${id}`, `/game-list/${id}/:path*`]) {
+    // The bare address, the trailing-slash form search engines index, and anything under it.
+    for (const source of [`/game-list/${id}`, `/game-list/${id}/`, `/game-list/${id}/:path*`]) {
       const redirect = bySource.get(source);
       expect(redirect, source).toBeDefined();
       expect(redirect.destination).toBe(destination);
