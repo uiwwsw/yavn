@@ -25,10 +25,10 @@ assets:
     register_page_sticker: assets/items/register_page.svg
   characters:
     서연:
-      name: "{{player_name}}"
+      name: "의녀 {{player_name}}"
       placement: prompt-top
       base: assets/char/seoyeon.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -39,9 +39,10 @@ assets:
         shock: assets/char/seoyeon-shock.svg
         resolve: assets/char/seoyeon-resolve.svg
     도원:
+      name: "판관 김도원"
       placement: prompt-top
       base: assets/char/dowon.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -51,9 +52,10 @@ assets:
         stern: assets/char/dowon-stern.svg
         troubled: assets/char/dowon-troubled.svg
     막쇠:
+      name: "오작인 막쇠"
       placement: prompt-top
       base: assets/char/makssoe.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -63,9 +65,10 @@ assets:
         grin: assets/char/makssoe-grin.svg
         hurt: assets/char/makssoe-hurt.svg
     강치수:
+      name: "포교 강치수"
       placement: prompt-top
       base: assets/char/chisu.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -74,9 +77,10 @@ assets:
       emotions:
         angry: assets/char/chisu-angry.svg
     여금:
+      name: "행수 여금"
       placement: prompt-top
       base: assets/char/yeogeum.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -85,9 +89,10 @@ assets:
       emotions:
         wary: assets/char/yeogeum-wary.svg
     한명재:
+      name: "의관 한명재"
       placement: prompt-top
       base: assets/char/myeongjae.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -96,9 +101,10 @@ assets:
       emotions:
         cold: assets/char/myeongjae-cold.svg
     덕구:
+      name: "짐꾼 덕구"
       placement: prompt-top
       base: assets/char/deokgu.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
@@ -107,9 +113,10 @@ assets:
       emotions:
         scared: assets/char/deokgu-scared.svg
     곰보:
+      name: "복면 사내"
       placement: prompt-top
       base: assets/char/gombo.svg
-      facing: left
+      facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }

@@ -19,18 +19,30 @@ scenes:
           with: []
           camera: wide
           text: "대청 아래 마당에 무릎을 꿇은 사람은 없다. 피고는 대청 끝에 단정히 앉아 있다."
+      - char: { id: 서연, position: left }
       - char: { id: 한명재, position: right }
       - say:
           char: 한명재
-          text: "판관께서 고발하셨다니 따르지요. 다만 한 가지만 여쭙겠습니다."
+          with: [서연]
+          text: "전의감 의관 한명재입니다. 판관께서 고발하셨다니 따르지요."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "다만 한 가지만 여쭙겠습니다. 저 아이가 올해 몇입니까."
       - say:
           char: 한명재.cold
-          text: "이 고발의 근거가 의녀와 오작인의 손에서 나왔다지요. 그들이 증언할 자격이 있습니까?"
+          with: [서연]
+          text: "이 고발의 근거가 열여덟 의녀와 오작인의 손에서 나왔다지요."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "그들이 형조 대청에서 증언할 자격이 있습니까?"
       - goto: standing
 
   standing:
     actions:
-      - char: { id: 도원, position: left }
+      - char: { id: 서연, position: left }
+      - char: { id: 도원, position: center }
       - branch:
           cases:
             - when: { var: trust_dowon, op: gte, value: 2 }
@@ -41,7 +53,7 @@ scenes:
     actions:
       - say:
           char: 도원.stern
-          with: [한명재]
+          with: [서연, 한명재]
           text: "검안은 내가 초검관으로 했소. 의녀가 본 것은 내 눈으로 다 확인했소. 내 이름으로 증언하겠소."
       - say:
           channel: thought
@@ -54,10 +66,11 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 도원.troubled
-          with: [한명재]
+          with: [서연, 한명재]
           text: "…의녀의 검안이 틀린 적은 없었소. 그 이상은 장담하지 못하겠소."
       - say:
           char: 한명재
+          with: [서연, 도원]
           text: "판관께서도 확신이 없으시군요. 그럼 의녀의 말은 반만 듣지요."
       - say:
           channel: record
@@ -69,6 +82,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연, 한명재]
           text: "비단전 침모 분이. 혼례가 두려워 스스로 우물에 들었다 들었습니다. 저와 무슨 상관입니까."
       - choice:
           key: t1
@@ -87,6 +101,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "은비녀요? 얼음이요? 우물 이야기를 하고 있습니다만."
       - branch:
           cases:
@@ -110,6 +125,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연]
           text: "주문서는 장사 문서지요. 사람이 어찌 죽었는지는 말해 주지 않습니다."
       - say:
           channel: thought
@@ -138,6 +154,7 @@ scenes:
       - clearSticker: { id: t_sijang, leave: fadeOut }
       - say:
           char: 한명재
+          with: [서연]
           text: "누가 졸랐든, 그게 왜 저입니까."
       - goto: round2
 
@@ -146,6 +163,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연]
           text: "분이 손톱 밑에 감청 실이 있었다지요. 육의전 물건은 한성 사람 누구나 삽니다."
       - choice:
           key: t2
@@ -164,6 +182,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "의녀께서 주머니와 칼을 헷갈리시는군요."
       - branch:
           cases:
@@ -187,6 +206,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연]
           text: "약이 가짜라 해도 누가 주문했는지는 모르지 않습니까."
       - goto: round3
 
@@ -209,12 +229,12 @@ scenes:
       - say:
           char: 여금
           when: { var: trust_yeogeum, op: gte, value: 1 }
-          with: [한명재]
+          with: [서연, 한명재]
           text: "비단전 행수 여금입니다. 그 표식은 전의감 약고 문에 걸린 것과 같아요. 제가 직접 납품했어요."
       - say:
           char: 여금.wary
           when: { var: trust_yeogeum, op: lte, value: 0 }
-          with: [한명재]
+          with: [서연, 한명재]
           text: "…주문은 받았어요. 누구 집인지는, 말하지 않겠어요. 나도 살아야 하니까."
       - say:
           char: 서연
@@ -224,6 +244,7 @@ scenes:
       - clearSticker: { id: t_slip, leave: fadeOut }
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "전의감에는 의관이 열이 넘습니다. 그중 왜 저입니까."
       - goto: round3
 
@@ -232,6 +253,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연]
           text: "박 약방은 불이 나 죽었지요. 짐꾼이 불을 질렀다 자복도 했고요. 저와는 무관합니다."
       - choice:
           key: t3
@@ -250,6 +272,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "그건 불과 아무 상관이 없군요."
       - branch:
           cases:
@@ -273,6 +296,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연]
           text: "장부에 '한' 자 하나. 한성에 한씨가 몇이나 되는지 아십니까."
       - goto: round4
 
@@ -303,6 +327,7 @@ scenes:
     actions:
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "서리 윤길은 얼음 곳간에 혼자 갔다지요. 출납부에 제 이름이 있습니까? 없을 겁니다."
       - choice:
           key: t4
@@ -323,6 +348,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "의녀께서 지치셨나 봅니다. 증좌가 다 뒤섞이는군요."
       - branch:
           cases:
@@ -346,6 +372,7 @@ scenes:
     actions:
       - say:
           char: 한명재
+          with: [서연]
           text: "얼음 열 덩이. 약재를 차게 두는 데 쓰지요. 전의감은 늘 얼음을 씁니다."
       - goto: final_link
 
@@ -367,13 +394,14 @@ scenes:
           width: "clamp(160px, 22%, 280px)"
           enter: fadeIn
           inputLockMs: 300
+      - char: { id: 도원, position: center }
       - say:
           char: 서연.resolve
           with: [한명재, 도원]
           text: "출납부의 도장, 가짜 청심원 상자의 도장. 둘 다 오른쪽 아래 모서리가 깨졌습니다."
       - say:
           char: 도원.stern
-          with: [한명재]
+          with: [서연, 한명재]
           text: "전의감 인부와 대 보았소. 그렇게 깨진 사인은 하나뿐이오. 의관 한명재."
       - clearSticker: { id: t_seal, leave: fadeOut }
       - clearSticker: { id: t_ice, leave: fadeOut }
@@ -393,7 +421,7 @@ scenes:
       - choice:
           key: t_final
           prompt: "세 사람이 모두 알아 버린 한 사람은?"
-          with: [한명재, 도원]
+          with: [서연, 한명재]
           options:
             - text: "포교 강치수"
               forgiveOnce: true
@@ -411,6 +439,7 @@ scenes:
       - add: { credibility: -1 }
       - say:
           char: 한명재
+          with: [서연]
           text: "보십시오. 의녀는 처음부터 범인을 정해 두지 않았습니다. 아무나 고르는 겁니다."
       - branch:
           cases:
@@ -429,6 +458,7 @@ scenes:
           text: "주머니를 꿰맨 분이, 약재 출납을 본 박씨, 빌려 간 시장을 캐물은 윤길. 셋 다 입을 닫게 했어요."
       - say:
           char: 한명재.cold
+          with: [서연]
           text: "…그 약을 산 사람들은 다 나았다고 했습니다. 믿는 것도 약이지요."
       - say:
           char: 서연.shock
@@ -446,6 +476,7 @@ scenes:
           text: "형조 참의는 오래 문서를 넘겼다. 증좌는 서로 이어지는 듯하다가 군데군데 끊겼다."
       - say:
           char: 한명재
+          with: [서연]
           text: "의녀의 짐작이 길군요. 짐작으로 의관을 벌할 수는 없지요."
       - goto: trial_collapse
 
@@ -479,6 +510,7 @@ scenes:
 
   epilogue_full:
     actions:
+      - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠.grin
