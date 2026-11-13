@@ -28,12 +28,12 @@ const presentationStyles = readFileSync(fileURLToPath(new URL('./characterPresen
 describe('image character motion', () => {
   it('glides a mounted character between slots while facing flips snap instantly', () => {
     const charRule = styles.match(/^\.char\s*\{([\s\S]*?)\n\}/m)?.[1] ?? '';
-    expect(styles).toContain('calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))');
+    expect(styles).toContain('calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x) + var(--char-stance-x, 0cqw))');
     expect(styles).toContain('var(--char-framing-y)');
     expect(styles).toContain('transform-origin: 50% 100%;');
     expect(styles).toContain('--char-facing-scale-x: 1;');
     expect(styles).toContain('transform: scaleX(var(--char-facing-scale-x));');
-    expect(styles).toContain('scale: var(--char-scale);');
+    expect(styles).toContain('scale: calc(var(--char-scale) * var(--char-stance-scale, 1));');
     expect(charRule).toContain('--character-position-duration: 380ms;');
     expect(charRule).toContain('--character-scale-duration: 360ms;');
     expect(styles).toContain('translate var(--character-position-duration) var(--character-position-easing) var(--character-position-delay)');

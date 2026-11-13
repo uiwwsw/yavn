@@ -381,6 +381,8 @@ export type Action =
   | EndingAction
   | GameOverAction
   | { wait: number }
+  | { move: CharacterMoveDirective }
+  | { place: string }
   | { effect: string | ScreenEffectOptions }
   | { goto: string };
 
@@ -526,6 +528,32 @@ export type GameData = {
   chapterTitle?: string;
   script: Array<{ scene: string }>;
   scenes: Record<string, Scene>;
+};
+
+export type CharacterMoveStyle = 'approach' | 'lunge' | 'retreat' | 'flinch' | 'reset';
+
+/** Stage blocking: one character closes in on, lunges at or backs away from another (or the camera). */
+export type CharacterMoveDirective = {
+  id: string;
+  style?: CharacterMoveStyle;
+  /** Another character id, or 'camera'. Omitted: toward the middle of the stage. */
+  toward?: string;
+  /** Hold the next action until the motion lands. */
+  wait?: boolean;
+};
+
+/** Persistent offset a `move` leaves on a character until `reset` or the next chapter. */
+export type CharacterStance = {
+  x: number;
+  scale: number;
+  style: CharacterMoveStyle;
+  revision: number;
+};
+
+/** Short time/place caption shown in the HUD; it fades on its own and never waits for input. */
+export type PlaceCaption = {
+  text: string;
+  revision: number;
 };
 
 export type CharacterSlot = {

@@ -1594,6 +1594,8 @@ export default function App() {
     resolvedEndingId,
     gameOver,
     uiTemplate,
+    characterStances,
+    placeCaption,
     setDialogUiHidden,
   } = useVNStore(useShallow((state) => ({
     baseUrl: state.baseUrl,
@@ -1635,6 +1637,8 @@ export default function App() {
     resolvedEndingId: state.resolvedEndingId,
     gameOver: state.gameOver,
     uiTemplate: state.uiTemplate,
+    characterStances: state.characterStances,
+    placeCaption: state.placeCaption,
     setDialogUiHidden: state.setDialogUiHidden,
   })));
   const [bootMode, setBootMode] = useState<BootMode>(
@@ -3543,7 +3547,10 @@ export default function App() {
     );
     const combatRole = attack?.attacker === slot.id ? 'attacker' : attack?.target === slot.id ? 'target' : undefined;
     const combatClass = combatRole && attack ? `combat-${combatRole} combat-${attack.phase}` : '';
+    const stance = characterStances[slot.id];
     const charStyle = {
+      '--char-stance-x': `${stance?.x ?? 0}cqw`,
+      '--char-stance-scale': stance?.scale ?? 1,
       '--combat-direction': attack?.from === 'left' ? 1 : attack?.from === 'center' ? 0 : -1,
       '--combat-duration': attack ? `${attack[attack.phase]}ms` : '0ms',
       '--combat-distance': attack?.strength === 'light' ? '3cqw' : '6cqw',
@@ -3577,6 +3584,7 @@ export default function App() {
       `char-placement-${renderPlacement}`,
       visibilityClass,
       entryClass,
+      stance ? `stance-${stance.style}` : '',
     ].filter(Boolean).join(' ');
     if (slot.kind === 'live2d') {
       return (
@@ -4633,6 +4641,9 @@ export default function App() {
             <div className="hud-chapter-progress">
               <span>CHAPTER {String(chapterIndex).padStart(2, '0')}</span><span className="hud-chapter-divider" />{String(chapterTotal).padStart(2, '0')}
             </div>
+          )}
+          {placeCaption && (
+            <div className="place-caption" key={placeCaption.revision} role="status">{placeCaption.text}</div>
           )}
         </div>
         <div className="hud-right">

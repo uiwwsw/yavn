@@ -1335,6 +1335,34 @@ scenes:
 - `message`는 휴대폰 말풍선입니다. `side: me`는 오른쪽 청록, `them`(기본)은 왼쪽 회색입니다. 화자 이름은 말풍선 위에 작게 나옵니다.
 - `say.erase: true`는 문장이 다 나온 뒤 줄을 긋고 오른쪽부터 사각형 단위로 지웁니다. 모든 채널에 쓸 수 있고, 모션 감소 설정에서는 흐리게만 처리합니다. 선택지·입력 화면으로 넘어가면 `side`와 `erase`는 초기화됩니다.
 
+### 9-4-4) 인물 동선(`move`)과 시간·장소 표시(`place`)
+
+인물끼리 다가서거나 덤비거나 물러나는 동선은 `move`로, "토요일 오전 · 집" 같은 시간·장소는 내레이션 대신 `place`로 씁니다.
+
+```yaml
+- place: "토요일 오전 · 도윤과 지수의 집"   # HUD 아래 작게 떴다 4초 뒤 사라짐. 클릭을 기다리지 않음
+- char: { id: 지수, position: left }
+- char: { id: 도윤, position: right }
+- move: { id: 지수, toward: 도윤, style: approach }         # 천천히 다가섬
+- say: { char: 지수, with: [도윤], text: "폰 줘 봐." }
+- move: { id: 도윤, toward: 지수, style: retreat }           # 한 발 물러섬
+- move: { id: 지수, toward: 도윤, style: lunge, wait: true } # 확 덤빔. 도착한 뒤 다음 액션
+- move: { id: 도윤, toward: 지수, style: flinch }            # 움찔했다 제자리
+- move: { id: 지수, style: reset }                          # 원래 자리로
+- move: { id: 도윤, toward: camera, style: approach }       # 화면 쪽으로 다가옴(확대)
+```
+
+| 필드 | 값 | 동작 |
+| --- | --- | --- |
+| `id` | 무대에 있는 인물 ID | 움직일 인물 |
+| `style` | `approach`(기본) · `lunge` · `retreat` · `flinch` · `reset` | 다가섬 720ms · 덤빔 260ms(살짝 넘쳤다 멈춤) · 물러섬 620ms · 움찔(제자리 복귀) · 원위치 |
+| `toward` | 다른 인물 ID 또는 `camera` | 방향 기준. 생략하면 무대 가운데 쪽. `camera`는 좌우 이동 없이 커지거나(다가옴) 작아짐(물러섬) |
+| `wait` | `true` / 기본 `false` | `true`면 동작이 끝난 뒤 다음 액션 실행 |
+
+- 방향은 두 인물의 현재 자리(left/center/right)로 자동 계산합니다. 위치는 `reset`이나 다음 장 전까지 유지됩니다.
+- `prefers-reduced-motion`에서는 이동이 즉시 끝납니다. 저장 복원 때는 동선을 다시 재생하지 않습니다.
+- `place`는 60자 이하, `{{변수}}` 치환을 지원합니다. 장면이 바뀌는 첫머리에 한 줄이면 충분하고, 같은 정보를 내레이션으로 반복하지 않습니다.
+
 ### 9-11) 자유 입력과 `{{변수}}` 치환 (플레이어 이름)
 
 ```yaml
@@ -1448,6 +1476,7 @@ public/game-list/my-story/
 
 ## 14) 문서 변경 로그
 
+- 2026-11-13: 인물 동선 `move`(approach·lunge·retreat·flinch·reset)와 시간·장소 표시 `place`를 추가했습니다.
 - 2026-11-13: `say.channel`에 `card`(전체 화면 자막 카드)와 `message`(휴대폰 말풍선, `say.side`)를 추가하고 `say.erase` 지우기 연출을 넣었습니다. 사용자 원작 「ERASE」, 「8비트 심장」, 「튜토리얼」을 추가했습니다.
 - 2026-11-13: 정답 없는 자유 입력(`input` without `correct`), `{{변수}}`·`{{변수|조사}}` 치환과 인물 `name`, 수동 저장 칸 3개, 서재 카드의 이어 읽기·결말 발견 표시를 추가했습니다. 무원은 시작할 때 주인공 이름을 받습니다. 기존 YAML·저장은 그대로 동작합니다.
 - 2026-11-13: 대표 게임을 덕만에서 5장 검시 추리극 「무원 — 한성 검안록」(`public/game-list/muwon/`)으로 교체했습니다. 덕만 12장과 영어 도입부, 영어 번역 생성 스크립트(`generate-english-prologues.mjs`)와 대응표를 제거했습니다. 무원의 그림은 직접 그린 SVG, 음악은 `scripts/generate-muwon-score.py` 합성음입니다. 엔진 DSL은 바뀌지 않습니다.

@@ -1116,6 +1116,16 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
+        if ('move' in action) {
+          for (const id of [action.move.id, action.move.toward]) {
+            if (id && id !== 'camera' && !data.assets.characters[id]) {
+              return { error: { message: `scene '${sceneId}' moves missing character '${id}'` } };
+            }
+          }
+          if (action.move.toward === action.move.id) {
+            return { error: { message: `scene '${sceneId}' move target must differ from '${action.move.id}'` } };
+          }
+        }
         if ('attack' in action) {
           const attack = action.attack;
           if (attack.image && !data.assets.backgrounds[attack.image]) {
