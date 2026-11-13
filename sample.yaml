@@ -87,6 +87,11 @@ chapterTitle: "이야기의 시작"
 #   - say: { channel: action, text: "접힌 장을 펼쳐 빛에 비춘다." }
 #   - clearSticker: { id: register, leave: fadeOut } # 실제로 제거한 뒤 재선언하면 새 입장
 #
+# 플레이어 이름 받기: 정답(correct)을 생략한 input은 자유 입력이며 saveAs가 필수입니다.
+# base.yaml state에 player_name: "서연" 선언, 인물 이름표에 name: "{{player_name}}"
+#   - input: { prompt: "당신의 이름은?", saveAs: player_name, defaultValue: "서연", maxLength: 6 }
+#   - say: { text: "{{player_name|은}} 문을 열었다." } # 받침에 맞춰 은/는 자동 선택
+#
 # 캐릭터 자동 배치: scene.layout은 auto가 기본입니다.
 # scenes:
 #   conversation:

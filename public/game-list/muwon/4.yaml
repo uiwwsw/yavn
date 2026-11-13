@@ -453,7 +453,7 @@ scenes:
     actions:
       - say:
           channel: record
-          text: "형조 판결. 증좌 불충분. 피고 한명재 방면. 의녀 서연은 혜민서에서 내친다."
+          text: "형조 판결. 증좌 불충분. 피고 한명재 방면. 의녀 {{player_name|은}} 혜민서에서 내친다."
       - say:
           channel: thought
           with: []
@@ -506,5 +506,5 @@ scenes:
           text: "덕구의 낫은 아직 형조 창고에 있다. 찾아갈 사람이 없다."
       - say:
           channel: narration
-          text: "성문이 열렸다. 서연은 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
+          text: "성문이 열렸다. {{player_name|은}} 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
       - ending: late_muwon

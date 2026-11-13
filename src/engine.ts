@@ -17,6 +17,7 @@ import { useVNStore } from './store';
 import type { ParsedBaseYaml, ParsedChapterYaml, ParsedConfigYaml } from './parser';
 import { collectChapterAssetPaths, collectStartupAssetPaths } from './preload';
 import { ReadHistory, readLineKey } from './readHistory';
+import { interpolateText } from './textVariables';
 import {
   DEFAULT_RUNTIME_GAME_SETTINGS,
   migrateRuntimeGameSettings,
@@ -197,7 +198,10 @@ type SaveProgress = {
   choiceAttempt?: ChoiceAttempt;
 };
 
-export type SaveSlotKind = 'auto' | 'manual' | 'chapter';
+export type SaveSlotKind = 'auto' | 'manual' | 'manual2' | 'manual3' | 'chapter';
+/** Player-owned save slots, in display order. 'manual' keeps its original storage key. */
+export const MANUAL_SAVE_SLOTS = ['manual', 'manual2', 'manual3'] as const;
+export type ManualSaveSlot = (typeof MANUAL_SAVE_SLOTS)[number];
 
 export type SaveSlotSummary = {
   slot: SaveSlotKind;
@@ -465,7 +469,7 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
       const presentation = resolveSayPresentation(action.say.char, action.say.with, []);
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker: presentation.speakerName, channel: resolveDialogueChannel(action.say.channel, presentation.speakerId),
-        text: parseInlineSpeed(action.say.text).text });
+        text: parseInlineSpeed(interpolateText(action.say.text, vars)).text });
     }
     if ('choice' in action || 'input' in action) {
       const entry = history[historyIndex];
@@ -487,7 +491,8 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
         target = option.goto;
       } else {
         const route = action.input.routes.find(route => normalizeInputAnswer(route.equals) === normalizeInputAnswer(entry.value));
-        if (!route && normalizeInputAnswer(entry.value) !== normalizeInputAnswer(action.input.correct)) return {};
+        if (!route && action.input.correct !== undefined
+          && normalizeInputAnswer(entry.value) !== normalizeInputAnswer(action.input.correct)) return {};
         if (action.input.saveAs) vars[action.input.saveAs] = entry.value;
         applySetToVars(vars, route?.set); applyAddToVars(vars, route?.add);
         appendLog({ ...entry, kind: 'input', prompt: action.input.prompt });
@@ -737,6 +742,17 @@ function setAutosaveScopeKey(key: string): void {
 
 export function getBgmEnabled(): boolean {
   return runtimeGameSettings.bgmEnabled;
+}
+
+/** Whether this browser holds a resumable save for a library game (autosave or any manual slot). */
+export function hasStoredProgressForGame(gameId: string): boolean {
+  const base = `${GAME_AUTOSAVE_KEY_PREFIX}${gameId}`;
+  try {
+    return [base, `${base}${MANUAL_SAVE_SUFFIX}`, `${base}${MANUAL_SAVE_SUFFIX}-2`, `${base}${MANUAL_SAVE_SUFFIX}-3`]
+      .some((key) => Boolean(localStorage.getItem(key)));
+  } catch {
+    return false;
+  }
 }
 
 export function getAutoSaveEnabled(): boolean {
@@ -1885,6 +1901,13 @@ function getStagedCharacterIds(): string[] {
     .filter((id): id is string => Boolean(id));
 }
 
+function resolveSpeakerDisplayName(id: string | undefined): string | undefined {
+  if (!id) return undefined;
+  const state = useVNStore.getState();
+  const name = state.game?.assets.characters[id]?.name;
+  return name ? interpolateText(name, state.routeVars) || id : id;
+}
+
 function resolveSayPresentation(
   char?: string,
   withChars?: string[],
@@ -1912,7 +1935,7 @@ function resolveSayPresentation(
 
   return {
     speakerId: speaker.id,
-    speakerName: speaker.id,
+    speakerName: resolveSpeakerDisplayName(speaker.id),
     speakerEmotion: speaker.emotion,
     visibleCharacterIds,
     emotionRefs,
@@ -2030,6 +2053,9 @@ type SaveProgressLoadResult = {
 function resolveSaveSlotKey(slot: SaveSlotKind): string {
   if (slot === 'manual') {
     return `${currentAutosaveKey}${MANUAL_SAVE_SUFFIX}`;
+  }
+  if (slot === 'manual2' || slot === 'manual3') {
+    return `${currentAutosaveKey}${MANUAL_SAVE_SUFFIX}-${slot.slice(-1)}`;
   }
   if (slot === 'chapter') {
     return `${currentAutosaveKey}${CHAPTER_SAVE_SUFFIX}`;
@@ -2362,7 +2388,7 @@ function saveProgress(sceneId: string, actionIndex: number, slot: SaveSlotKind =
 
 export function getSaveSlotSummaries(): SaveSlotSummary[] {
   const game = useVNStore.getState().game;
-  return (['auto', 'manual', 'chapter'] as const).map((slot) => {
+  return (['auto', ...MANUAL_SAVE_SLOTS, 'chapter'] as const).map((slot) => {
     const loaded = loadProgressByKey(resolveSaveSlotKey(slot));
     const save = loaded && (!game || isSaveCompatibleWithGameIdentity(loaded, {
       title: game.meta.title,
@@ -2383,18 +2409,18 @@ export function getSaveSlotSummaries(): SaveSlotSummary[] {
   });
 }
 
-export function saveCurrentProgress(): SaveSlotSummary {
+export function saveCurrentProgress(slot: ManualSaveSlot = 'manual'): SaveSlotSummary {
   const state = useVNStore.getState();
   if (!state.game || state.chapterLoading || state.gameOver || state.busy) {
-    return { slot: 'manual', exists: false };
+    return { slot, exists: false };
   }
-  const save = saveProgress(state.currentSceneId, state.actionIndex, 'manual');
-  const persisted = loadProgressByKey(resolveSaveSlotKey('manual'));
+  const save = saveProgress(state.currentSceneId, state.actionIndex, slot);
+  const persisted = loadProgressByKey(resolveSaveSlotKey(slot));
   if (!persisted) {
-    return { slot: 'manual', exists: false };
+    return { slot, exists: false };
   }
   return {
-    slot: 'manual',
+    slot,
     exists: true,
     savedAt: save.savedAt,
     chapterIndex: save.chapterIndex,
@@ -2447,7 +2473,7 @@ function getLatestSaveProgress(): SaveProgress | undefined {
     const parsed = Date.parse(save.savedAt ?? '');
     return Number.isFinite(parsed) ? parsed : 0;
   };
-  const candidates = (['manual', 'auto'] as const)
+  const candidates = ([...MANUAL_SAVE_SLOTS, 'auto'] as const)
     .map((slot) => loadProgressByKey(resolveSaveSlotKey(slot)))
     .filter((save): save is SaveProgress => Boolean(save) && validateSaveForCurrentGame(save as SaveProgress));
   return candidates.sort((a, b) => savedAtTime(b) - savedAtTime(a))[0];
@@ -3752,7 +3778,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
           chapter.pathKey,
           sceneId,
           actionIndex,
-          parseInlineSpeed(action.say.text).text,
+          parseInlineSpeed(interpolateText(action.say.text, { ...restoreVars, ...resume.routeVars })).text,
         );
         if (!conditionMatchesReplayState && !wasPresentedBeforeSave) {
           actionIndex += 1;
@@ -4422,7 +4448,7 @@ function runToNextPause(loopGuard = 0) {
       active: true,
       presentation: action.choice.presentation ?? 'dialogue',
       key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
-      prompt: action.choice.prompt,
+      prompt: interpolateText(action.choice.prompt, state.routeVars),
       forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,
       forgiveMessage: action.choice.forgiveMessage,
       forgivenOptionIndexes: [],
@@ -4444,8 +4470,8 @@ function runToNextPause(loopGuard = 0) {
         action.choice.camera,
         presentation.speakerId,
       ),
-      fullText: action.choice.prompt,
-      visibleText: action.choice.prompt,
+      fullText: interpolateText(action.choice.prompt, state.routeVars),
+      visibleText: interpolateText(action.choice.prompt, state.routeVars),
       typing: false,
       channel: 'dialogue',
       continueLabel: undefined,
@@ -4528,8 +4554,12 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().clearChoiceGate();
     useVNStore.getState().setInputGate({
       active: true,
-      prompt: action.input.prompt,
+      prompt: interpolateText(action.input.prompt, state.routeVars),
       correct: action.input.correct,
+      maxLength: action.input.maxLength,
+      defaultValue: action.input.defaultValue
+        ? interpolateText(action.input.defaultValue, state.routeVars)
+        : undefined,
       errors: action.input.errors,
       attemptCount: 0,
       saveAs: action.input.saveAs,
@@ -4549,8 +4579,8 @@ function runToNextPause(loopGuard = 0) {
         action.input.camera,
         presentation.speakerId,
       ),
-      fullText: action.input.prompt,
-      visibleText: action.input.prompt,
+      fullText: interpolateText(action.input.prompt, state.routeVars),
+      visibleText: interpolateText(action.input.prompt, state.routeVars),
       typing: false,
       channel: 'dialogue',
       continueLabel: undefined,
@@ -4567,7 +4597,7 @@ function runToNextPause(loopGuard = 0) {
       runToNextPause(loopGuard + 1);
       return;
     }
-    const parsed = parseInlineSpeed(action.say.text);
+    const parsed = parseInlineSpeed(interpolateText(action.say.text, state.routeVars));
     const textSpeedRate = runtimeGameSettings.textSpeedRate;
     const textSpeed = Math.max(1, game.settings.textSpeed * textSpeedRate);
     const speedSegments = textSpeedRate === 1
@@ -4784,6 +4814,8 @@ export async function loadUrlStartScreenPreview(url: string): Promise<StartScree
   const hasLoadableSave =
     hasLoadableProgressByKey(autosaveKey, identity) ||
     hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}`, identity) ||
+    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}-2`, identity) ||
+    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}-3`, identity) ||
     hasLoadableProgressByKey(`${autosaveKey}${CHAPTER_SAVE_SUFFIX}`, identity) ||
     hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY, identity);
   return {
@@ -5686,8 +5718,17 @@ export function submitInputAnswer(rawAnswer: string) {
     return;
   }
 
-  const expected = normalizeInputAnswer(state.inputGate.correct);
-  if (typed === expected) {
+  if (state.inputGate.correct === undefined) {
+    // Free text: keep the player's spelling and spacing, only trimming and collapsing runs of spaces.
+    const limit = state.inputGate.maxLength ?? 12;
+    const value = Array.from(rawAnswer.trim().replace(/\s+/g, ' ')).slice(0, limit).join('').trim()
+      || state.inputGate.defaultValue
+      || '';
+    if (value) {
+      completeInputSuccess(value);
+      return;
+    }
+  } else if (typed === normalizeInputAnswer(state.inputGate.correct)) {
     completeInputSuccess(typed);
     return;
   }

@@ -14,7 +14,9 @@ describe('save and game over recovery UI', () => {
   it('separates background autosave recovery from explicit save actions', () => {
     expect(appSource).toContain('<p className="game-over-kicker">다시 이어갈 이야기</p>');
     expect(appSource).toContain("choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto')");
-    expect(appSource).toContain("onClick={() => void onLoadSave('manual')}");
+    // Three manual slots: each loads itself, and the game-over shortcut loads the newest one.
+    expect(appSource).toContain('onClick={() => void onLoadSave(slot.slot)}');
+    expect(appSource).toContain('onClick={() => manualSaveSlot && void onLoadSave(manualSaveSlot.slot)}');
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');
     expect(appSource).toContain('onChange={(event) => onToggleAutoSave(event.target.checked)}');
     expect(appSource).toContain('onChange={(event) => void onImportSave(event)}');

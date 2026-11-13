@@ -79,3 +79,9 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 - **Skip read text**: the dialogue box's Skip button fast-forwards lines already read in this game and stops at unread lines, choices, inputs, videos, game overs and endings. Read history is kept per game in the browser.
 - **Faster first scene**: chapter loading waits only for assets of the start scene and scenes up to two jumps away; the rest keep loading after the scene starts.
 - Exploration choices show a hint, listed options are numbered in visible order, in-game text is at least 12px, and the usage-statistics prompt no longer hides behind the title screen or covers the dialogue box.
+
+## Player names, placeholders and save slots (2026-11-13)
+
+- An `input` without `correct` is free text; `saveAs` is required, with optional `defaultValue` and `maxLength` (default 12).
+- `{{var}}` placeholders fill dialogue, prompts, options, character `name`, game-over and ending text from state. `{{var|은}}` attaches the Korean particle that agrees with the value's final sound.
+- Settings offers three manual save slots, and library cards show a resumable save and found endings.

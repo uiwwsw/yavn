@@ -342,3 +342,13 @@
 body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .legal-notice-usage { padding: 0; border: 0; background: none; color: var(--game-muted); font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .app .choice-gate-explore-hint { margin: 0 0 10px; color: var(--game-accent); font-size: 13px; letter-spacing: .02em; }
+
+/* Three manual save slots: label and meta on the left, save and load on the right. */
+.app .manual-save-slots { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.app .manual-save-slots li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--game-line); }
+.app .manual-save-slot-label { display: grid; gap: 2px; min-width: 0; }
+.app .manual-save-slot-label b { font-size: 13px; font-weight: 650; color: var(--game-text); }
+.app .manual-save-slot-label small { overflow: hidden; color: var(--game-muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.app .manual-save-slots button { min-height: 40px; padding: 0 12px; border: 1px solid var(--game-line); border-radius: 3px; background: transparent; color: var(--game-text); font: inherit; font-size: 13px; cursor: pointer; }
+.app .manual-save-slots button.is-primary { background: var(--game-accent); border-color: var(--game-accent); color: var(--game-accent-ink); }
+.app .manual-save-slots button:disabled { opacity: .45; cursor: default; }

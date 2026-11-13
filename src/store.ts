@@ -182,7 +182,9 @@ const initialVideoCutscene: VideoCutsceneState = {
 const initialInputGate: InputGateState = {
   active: false,
   prompt: '',
-  correct: '',
+  correct: undefined,
+  maxLength: undefined,
+  defaultValue: undefined,
   errors: [],
   attemptCount: 0,
   saveAs: undefined,

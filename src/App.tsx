@@ -32,6 +32,7 @@ import { measureStickerBox } from './stickerMeasurement';
 import { resolvePromptActorInset } from './promptLayout';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
+import { interpolateText } from './textVariables';
 import './characterPresentation.css';
 import { SceneCurtain, useSceneCurtain } from './SceneCurtain';
 import { collectStartSceneAssets, DEFAULT_START_SCENE, mapStartSceneAssets } from './startScene';
@@ -74,6 +75,7 @@ import {
   setBgmEnabled,
   setAutoSaveEnabled,
   setSkipReadActive,
+  hasStoredProgressForGame,
   setInventoryUiSettings,
   setPlayerAutoPlayPaused,
   setScenePresentationPaused,
@@ -83,6 +85,8 @@ import {
   submitInputAnswer,
   submitChoiceOption,
   saveCurrentProgress,
+  MANUAL_SAVE_SLOTS,
+  type ManualSaveSlot,
   unlockAudioFromGesture,
   updateVideoSkipProgress,
 } from './engine';
@@ -384,6 +388,7 @@ type GameListManifestEntry = {
   showcase?: LauncherShowcase;
   legalNotices: LegalNotice[];
   chapterCount?: number;
+  endingCount?: number;
   seo?: GameListSeoEntry;
 };
 
@@ -889,6 +894,7 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
     showcase: normalizeLauncherShowcase(value.showcase),
     legalNotices: normalizeLegalNotices(value.legalNotices),
     chapterCount: normalizeChapterCount(value.chapterCount),
+    endingCount: normalizeChapterCount(value.endingCount),
     seo,
   };
 }
@@ -998,6 +1004,26 @@ function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined
     return undefined;
   }
   return `${ENDING_PROGRESS_STORAGE_PREFIX}${gameKey}`;
+}
+
+// Library cards show what this browser already holds for a game: a resumable save and found endings.
+function readLauncherProgress(entry: GameListManifestEntry): string[] {
+  const labels: string[] = [];
+  if (hasStoredProgressForGame(entry.id)) {
+    labels.push(t("이어서 읽을 수 있음"));
+  }
+  if (entry.endingCount) {
+    let found = 0;
+    try {
+      found = parseEndingProgress(localStorage.getItem(`${ENDING_PROGRESS_STORAGE_PREFIX}${entry.id}`)).length;
+    } catch {
+      found = 0;
+    }
+    labels.push(uiLanguage === 'en'
+      ? `${Math.min(found, entry.endingCount)}/${entry.endingCount} endings found`
+      : `결말 ${Math.min(found, entry.endingCount)}/${entry.endingCount} 발견`);
+  }
+  return labels;
 }
 
 function parseEndingProgress(raw: string | null): string[] {
@@ -1524,6 +1550,9 @@ function useUsageChoiceControl() {
 
 export default function App() {
   const usageChoice = useUsageChoiceControl();
+  const routeVars = useVNStore((state) => state.routeVars);
+  // Reading text may carry {{variable}} placeholders such as a player-chosen name.
+  const fillText = useCallback((text: string) => interpolateText(text, routeVars), [routeVars]);
   useEffect(() => { document.documentElement.lang = uiLanguage; }, []);
   const {
     baseUrl,
@@ -2480,8 +2509,8 @@ export default function App() {
   const hasAuthorCredit = Boolean(authorCredit.name) || authorCredit.contacts.length > 0;
   const gameLegalNotices = game?.meta.legalNotices ?? [];
   const resolvedEnding = resolvedEndingId ? game?.endings?.[resolvedEndingId] : undefined;
-  const endingTitle = resolvedEnding?.title ?? 'THE END';
-  const endingMessage = resolvedEnding?.message ?? t("게임이 종료되었습니다.");
+  const endingTitle = resolvedEnding?.title ? fillText(resolvedEnding.title) : 'THE END';
+  const endingMessage = resolvedEnding?.message ? fillText(resolvedEnding.message) : t("게임이 종료되었습니다.");
   const endingBackgroundUrl = resolveRuntimeAssetUrl(
     (resolvedEnding?.background ? game?.assets.backgrounds[resolvedEnding.background] : undefined) ?? game?.endingScreen?.image,
     baseUrl, assetOverrides,
@@ -2497,7 +2526,11 @@ export default function App() {
     [saveSlots],
   );
   const autoRecoverySlot = saveSlotByKind.get('auto');
-  const manualSaveSlot = saveSlotByKind.get('manual');
+  const manualSaveSlots = MANUAL_SAVE_SLOTS.map((slot) => saveSlotByKind.get(slot) ?? { slot, exists: false });
+  // The game-over shortcut returns to the most recent manual save across all slots.
+  const manualSaveSlot = manualSaveSlots
+    .filter((slot) => slot.exists)
+    .sort((a, b) => (Date.parse(b.savedAt ?? '') || 0) - (Date.parse(a.savedAt ?? '') || 0))[0];
   const chapterSaveSlot = saveSlotByKind.get('chapter');
   const choiceRecoveryPoint = getChoiceRecoverySummary();
   const seenEndingTitles = seenEndingIdsInCurrentGame
@@ -3037,8 +3070,8 @@ export default function App() {
     setSaveSlots(getSaveSlotSummaries());
   }, []);
 
-  const onManualSave = useCallback(() => {
-    const result = saveCurrentProgress();
+  const onManualSave = useCallback((slot: ManualSaveSlot = 'manual') => {
+    const result = saveCurrentProgress(slot);
     setSaveNotice(result.exists ? t("현재 진행을 수동 저장했습니다.") : t("현재 장면에서는 저장할 수 없습니다."));
     refreshSaveSlots();
   }, [refreshSaveSlots]);
@@ -3221,7 +3254,7 @@ export default function App() {
     if (inputGate.attemptCount < maxAttempt) {
       return;
     }
-    const answer = inputGate.correct.trim();
+    const answer = inputGate.correct?.trim() ?? '';
     if (answer.length === 0) {
       return;
     }
@@ -4004,6 +4037,7 @@ export default function App() {
                             <p className="launcher-game-languages">{uiLanguage === 'en' ? 'Game language: ' : '지원 언어: '}{entry.languages.length ? entry.languages.map(languageLabel).join(', ') : (uiLanguage === 'en' ? 'Not specified' : '미등록')}</p>
                             <p className="launcher-feature-meta">
                               <span>by {entry.author ?? 'YAVN creator'}</span><span>{chapterLabel}</span>
+                              {readLauncherProgress(entry).map((label) => <span key={label} className="launcher-progress">{label}</span>)}
                             </p>
 
                             <div className="inspector-actions">
@@ -4268,6 +4302,7 @@ export default function App() {
                           <span className="launcher-game-languages">{uiLanguage === 'en' ? 'Game language: ' : '지원 언어: '}{entry.languages.length ? entry.languages.map(languageLabel).join(', ') : (uiLanguage === 'en' ? 'Not specified' : '미등록')}</span>
                           <span className="workspace-game-meta">
                             {entry.author ?? 'UNKNOWN'} · {chapterLabel}
+                            {readLauncherProgress(entry).map((label) => <b key={label} className="launcher-progress">{label}</b>)}
                           </span>
                         </span>
                         <span className="workspace-game-launch" aria-hidden="true">
@@ -4372,13 +4407,13 @@ export default function App() {
           submitChoiceOption(index);
         }}
         disabled={busy}
-        aria-label={`${option.text}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
+        aria-label={`${fillText(option.text)}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
             {String(displayNumber).padStart(2, '0')}
           </span>
-          <span className="choice-gate-option-text">{option.text}</span>
+          <span className="choice-gate-option-text">{fillText(option.text)}</span>
           <GameIcon name="arrow" className="choice-gate-option-mark" />
         </span>
         <span className="choice-gate-option-badges">
@@ -4961,16 +4996,30 @@ export default function App() {
                         <small>{t("직접 저장")}</small>
                         <h3>{t("수동 저장")}</h3>
                       </div>
-                      <span>{formatSaveSlotMeta(manualSaveSlot)}</span>
                     </header>
-                    <div className="save-system-actions save-system-actions-pair">
-                      <button className="is-primary" type="button" onClick={onManualSave} disabled={saveBusy || Boolean(gameOver)}>{t("현재 진행 저장")}</button>
-                      <button
-                        type="button"
-                        onClick={() => void onLoadSave('manual')}
-                        disabled={!manualSaveSlot?.exists || saveBusy}
-                      >{t("저장 불러오기")}</button>
-                    </div>
+                    <ol className="manual-save-slots">
+                      {manualSaveSlots.map((slot, index) => (
+                        <li key={slot.slot} className={slot.exists ? 'has-save' : undefined}>
+                          <span className="manual-save-slot-label">
+                            <b>{uiLanguage === 'en' ? `Slot ${index + 1}` : `${index + 1}번 칸`}</b>
+                            <small>{formatSaveSlotMeta(slot)}</small>
+                          </span>
+                          <button
+                            type="button"
+                            className="is-primary"
+                            onClick={() => onManualSave(slot.slot as ManualSaveSlot)}
+                            disabled={saveBusy || Boolean(gameOver)}
+                            aria-label={uiLanguage === 'en' ? `Save to slot ${index + 1}` : `${index + 1}번 칸에 저장`}
+                          >{slot.exists ? t("덮어쓰기") : t("저장")}</button>
+                          <button
+                            type="button"
+                            onClick={() => void onLoadSave(slot.slot)}
+                            disabled={!slot.exists || saveBusy}
+                            aria-label={uiLanguage === 'en' ? `Load slot ${index + 1}` : `${index + 1}번 칸 불러오기`}
+                          >{t("불러오기")}</button>
+                        </li>
+                      ))}
+                    </ol>
                   </section>
 
                   <section className="save-system-section" data-save-kind="chapter">
@@ -5309,7 +5358,8 @@ export default function App() {
                 autoCorrect="off"
                 spellCheck={false}
                 aria-label={t("답변 입력")}
-                placeholder={t("답변을 입력하세요")}
+                placeholder={inputGate.defaultValue ?? t("답변을 입력하세요")}
+                maxLength={inputGate.correct === undefined ? inputGate.maxLength ?? 12 : undefined}
                 disabled={busy}
                 onChange={(event) => setInputAnswer(event.target.value)}
                 onClick={(event) => event.stopPropagation()}
@@ -5399,13 +5449,13 @@ export default function App() {
       )}
 
       {gameOver && !chapterLoading && !gameOverRecoveryOpen && !storyMapOpen && (
-        <OutcomePrelude kind="gameOver" title={gameOver.title ?? 'GAME OVER'}
-          message={gameOver.message ?? t("이곳에서 이야기가 멈췄습니다.")}
+        <OutcomePrelude kind="gameOver" title={gameOver.title ? fillText(gameOver.title) : 'GAME OVER'}
+          message={gameOver.message ? fillText(gameOver.message) : t("이곳에서 이야기가 멈췄습니다.")}
           onContinue={() => setStoryMapOpen(true)} />
       )}
       {isFinished && !endingCreditsOpen && !storyMapOpen && (
         <OutcomePrelude kind="ending" title={endingTitle} message={endingMessage}
-          epilogue={resolvedEnding?.epilogue} background={endingBackgroundUrl} tone={resolvedEnding?.tone}
+          epilogue={resolvedEnding?.epilogue ? fillText(resolvedEnding.epilogue) : undefined} background={endingBackgroundUrl} tone={resolvedEnding?.tone}
           onContinue={() => setStoryMapOpen(true)} />
       )}
       {gameOver && !chapterLoading && gameOverRecoveryOpen && (
@@ -5414,9 +5464,9 @@ export default function App() {
             <button type="button" className="outcome-back" autoFocus onClick={() => setGameOverRecoveryOpen(false)}>{t("← 마지막 장면")}</button>
             <p className="game-over-kicker">{t("다시 이어갈 이야기")}</p>
             <button type="button" onClick={() => { setGameOverRecoveryOpen(false); setStoryMapOpen(true); }}>{t("이야기 지도로 돌아가기")}</button>
-            <h2 id="game-over-title">{gameOver.title ?? 'GAME OVER'}</h2>
+            <h2 id="game-over-title">{gameOver.title ? fillText(gameOver.title) : 'GAME OVER'}</h2>
             <p className="game-over-message">
-              {gameOver.message ?? t("선택의 결과로 더는 이야기를 이어갈 수 없습니다.")}
+              {gameOver.message ? fillText(gameOver.message) : t("선택의 결과로 더는 이야기를 이어갈 수 없습니다.")}
             </p>
             {choiceRecoveryPoint.failedChoice?.value && (
               <div className="game-over-cause" aria-label={t("결과를 만든 선택")}>
@@ -5435,7 +5485,7 @@ export default function App() {
               </button>
               <button
                 type="button"
-                onClick={() => void onLoadSave('manual')}
+                onClick={() => manualSaveSlot && void onLoadSave(manualSaveSlot.slot)}
                 disabled={!manualSaveSlot?.exists || saveBusy}
               >
                 <span>{t("수동 저장으로")}</span>
