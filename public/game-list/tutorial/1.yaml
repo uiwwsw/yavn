@@ -123,7 +123,7 @@ scenes:
           char: 지영
           when: { var: bowed, op: eq, value: false }
           with: [해수]
-          text: "팀장님이 상품권 오천 원 드리고 세 번 숙였다며. 너한테는 '그냥 숙이지 그랬어' 하고."
+          text: "팀장님이 상품권 5,000원 드리고 세 번 숙였다며. 너한테는 '그냥 숙이지 그랬어' 하고."
       - say:
           char: 지영
           with: [해수]

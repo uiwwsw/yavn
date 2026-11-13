@@ -57,7 +57,7 @@ scenes:
           side: them
           char: 경준
           with: []
-          text: "무료 아니고 라이트요 39000원 내요"
+          text: "무료 아니고 라이트요 39,000원 내요"
       - say:
           channel: message
           side: them
@@ -341,7 +341,7 @@ scenes:
           char: 지영
           motion: sigh
           with: [해수]
-          text: "너 또 지갑 열었지. 천오백팔십 원. 십 원짜리 없어서 동전 통에서 삼십 원 빌린 것까지 봤어. 그거 다 합치면 너 지금쯤 차 한 대 뽑았어."
+          text: "너 또 지갑 열었지. 1,580원. 10원짜리 없어서 동전 통에서 30원 빌린 것까지 봤어. 그거 다 합치면 너 지금쯤 차 한 대 뽑았어."
       - goto: kwang_after
 
   kwang_voice:
