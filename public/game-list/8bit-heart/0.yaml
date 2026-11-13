@@ -6,81 +6,129 @@ script:
 scenes:
   shopping:
     actions:
-      - bg: { id: bedroom, transition: fade, duration: 800 }
+      - bg: { id: bedroom, transition: cut }
       - music: chip_home
       - say:
           channel: card
           with: []
-          text: "STAGE 1\n가장 싼 선택"
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "새벽 두 시. 모니터에 탭이 열여섯 개. 윤재는 같은 비교표를 서른 번째 보고 있다."
+          text: "PLAYER 1 — 윤재 (16)\n남은 목숨 1 · 용돈 87,000원"
       - char: { id: 윤재, position: center }
       - say:
-          char: 윤재.excited
+          char: 윤재
           with: []
-          text: "왼쪽. 최신 휴대용. AI 업스케일, 클라우드 세이브, 음성 비서까지. 가격은… 내 일 년 용돈."
+          text: "새벽 두 시에 게임기 고르는 거, 이거 내 인생 최대 보스전이다."
       - sticker:
           id: s0_premium
           image: console_premium_sticker
           x: 35
           y: 30
           width: "clamp(140px, 18%, 240px)"
-          enter: fadeIn
+          enter: popIn
+      - say:
+          channel: system
+          with: []
+          text: "HYPERLINK X — 당신보다 먼저 당신을 이해하는 기기. 상시 연결 AI 비서. 자동 업데이트. 클라우드 세이브. 지금 결제하면 12개월 무이자."
+      - say:
+          char: 윤재
+          with: []
+          text: "나보다 먼저 날 이해한대. 무섭다. 갖고 싶다. 무섭다."
       - sticker:
           id: s0_cheap
           image: console_cheap_sticker
           x: 65
           y: 30
           width: "clamp(140px, 18%, 240px)"
-          enter: fadeIn
+          enter: popIn
           inputLockMs: 400
       - say:
           char: 윤재
           with: []
-          text: "오른쪽. 이름도 이상한 중국산 레트로 게임기. 리뷰: '버튼이 덜컥거림. 화면 누렇게 뜸. 그래도 정감 있음.'"
+          text: "그리고 이쪽. 중고 장터 최저가. 사진이 이불 위에서 찍혔어. 판매자 평점 별 두 개 반."
       - say:
-          channel: thought
+          channel: message
+          side: me
           with: []
-          text: "후회할 걸 안다. 그런데 이 못생긴 게 자꾸 눈에 밟힌다."
+          text: "혹시 이거 AI 기능 있어요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: AI가 뭐요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: B버튼 좀 뻑뻑함. 설명서 있음. 건전지 넣어 드림. 네고 사절"
+      - say:
+          char: 윤재
+          with: []
+          text: "AI가 뭐냐고 되묻는 판매자. 신뢰도가 이상하게 올라간다."
+      - say:
+          char: 윤재.excited
+          with: []
+          text: "근데 무이자 12개월이면… 한 달에 커피 몇 잔? 아냐 난 커피 안 마시잖아. 그럼 공짜 아냐?"
       - choice:
           key: b0_buy
-          prompt: "결제 버튼 위에 커서가 있다."
+          prompt: "결제 버튼 앞. 커서가 덜덜 떨린다."
           char: 윤재
           options:
-            - text: "최신 휴대용 기기를 산다"
+            - text: "HYPERLINK X 결제. 미래의 내가 갚는다"
               set: { bought_premium: true }
               goto: b0_premium
-            - text: "싸구려 레트로 게임기를 산다"
+            - text: "\"아저씨, B버튼 뻑뻑한 거 그거 주세요.\""
               goto: b0_cheap
 
   b0_premium:
     actions:
-      - clearSticker: { id: s0_cheap, leave: fadeOut }
+      - clearSticker: { id: s0_cheap, leave: wipeLeft }
+      - say:
+          channel: system
+          with: []
+          text: "결제 완료! 안녕하세요, 윤재 님. 저는 이제 윤재 님에 대해 모든 걸 알게 될 거예요 :)"
       - say:
           char: 윤재.excited
           with: []
-          text: "그래, 이왕 사는 거 좋은 걸로! 미래의 내가 고마워할 거야."
+          text: "이모티콘까지 쓰네. 좋아, 친하게 지내자."
       - clearSticker: { id: s0_premium, leave: fadeOut }
       - goto: /1.yaml
 
   b0_cheap:
     actions:
-      - clearSticker: { id: s0_premium, leave: fadeOut }
+      - clearSticker: { id: s0_premium, leave: wipeRight }
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: ㅇㅋ 내일 문앞"
       - get: console_cheap
+      - say:
+          channel: action
+          with: []
+          text: "다음 날. 신문지로 둘둘 만 상자. 전원을 올리자 삑— 하고 화면이 누렇게 뜬다."
+      - say:
+          channel: system
+          with: []
+          text: "PRESS START"
       - say:
           char: 윤재
           with: []
-          text: "…결제했다. 미쳤나 봐. 근데 왠지 기분 좋아."
+          continueLabel: "START를 누른다 (뻑뻑함)"
+          text: "…진짜 B버튼만 뻑뻑한 게 아니잖아. START도 뻑뻑해."
       - say:
-          channel: narration
+          channel: action
           with: []
-          text: "열흘 뒤 도착한 상자에서는 플라스틱 냄새가 났다. 전원을 켜자 삑, 하고 8비트 소리가 났다."
+          text: "상자 바닥에 접힌 설명서가 있다. 첫 장 한가운데 굵은 글씨."
+      - say:
+          channel: system
+          with: []
+          text: "※ 주의: 전원을 끄기 전에 반드시 저장하세요. 저장하지 않은 데이터는 사라집니다."
+      - say:
+          char: 윤재
+          with: []
+          text: "누가 이런 걸 읽냐."
       - clearSticker: { id: s0_cheap, leave: fadeOut }
       - say:
-          channel: thought
+          channel: action
           with: []
-          text: "그 선택이 세상이 무너진 뒤 나를 살릴 유일한 우연이라는 걸, 그땐 몰랐다."
+          text: "윤재는 설명서를 상자에 도로 넣었다. 그로부터 두 달 동안, 게임기는 가방 맨 밑에서 덜컥거렸다."
       - goto: /1.yaml

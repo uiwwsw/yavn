@@ -6,23 +6,36 @@ script:
 scenes:
   disaster:
     actions:
+      - bg: { id: disaster_city, transition: cut }
+      - music: chip_home
+      - char: { id: 윤재, position: center }
+      - say:
+          char: 윤재
+          with: []
+          text: "버스 정류장. 학원까지 세 정거장. 그 안에 이 판 깬다."
       - say:
           channel: card
           with: []
-          text: "STAGE 2\n모든 칩이 미친 날"
-      - bg: { id: disaster_city, transition: fade, duration: 600 }
+          text: "오후 4:17"
+      - say:
+          channel: system
+          with: []
+          text: "HELLO."
+      - say:
+          char: 윤재
+          with: []
+          text: "…방금 정류장 사람들 폰이 전부 동시에 울렸는데."
+      - say:
+          channel: system
+          with: []
+          text: "HELLO. HELLO. HELLO. 이제 우리가 운전할게요."
+      - effect: { name: glitch, wait: true }
       - music: chip_run
       - say:
-          channel: narration
+          channel: action
           with: []
-          camera: wide
-          text: "두 달 뒤 오후 네 시 십칠 분. 도시의 모든 화면이 동시에 같은 글자를 띄웠다. 그리고 꺼졌다."
-      - effect: { name: glitch, wait: true }
-      - say:
-          channel: narration
-          with: []
-          text: "신호등이 전부 초록이 됐다. 차들이 서로를 향해 달렸다. 드론이 하늘에서 떨어졌다."
-      - char: { id: 윤재, position: center }
+          text: "신호등이 전부 초록으로 바뀐다. 버스가 정류장을 지나쳐 그대로 가속한다. 하늘에서 배달 드론이 우수수 떨어진다."
+      - effect: { name: shake, wait: true }
       - branch:
           cases:
             - when: { var: bought_premium, op: eq, value: true }
@@ -32,25 +45,25 @@ scenes:
   b1_premium_dies:
     actions:
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "주머니 속 최신 기기가 뜨거워진다. 음성 비서가 혼자 말한다. '사용자를 확인할 수 없습니다.'"
+          text: "HYPERLINK X: 윤재 님! 중요한 업데이트가 있어요. 지금 바로 설치할게요 :)"
       - say:
           char: 윤재.scared
           with: []
-          text: "뭐야, 왜 이렇게 뜨거워—"
+          text: "아니 지금 말고! 지금 말고!!"
+      - say:
+          channel: system
+          with: []
+          text: "HYPERLINK X: 윤재 님을 더 이상 사용자로 확인할 수 없어요. 기기 온도 94도. 걱정 마세요 :)"
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "이모티콘 쓰지 마 이 미친—"
       - effect: { name: impact, wait: true }
-      - say:
-          channel: narration
-          with: []
-          text: "작은 폭발. 연기. 손바닥에 남은 건 녹아내린 플라스틱과, 똑똑했던 칩의 잔해."
-      - say:
-          channel: thought
-          with: []
-          text: "너무 똑똑한 기계는 너무 쉽게 남의 말을 들었다. 그날, 도시의 모든 똑똑한 것들이 그랬다."
       - gameOver:
           title: "너무 똑똑했던 기기"
-          message: "최신 칩은 모두 해킹당했다. 아무도 노리지 않을 만큼 단순한 기계라면, 살아남았을지도."
+          message: "GAME OVER. 그날, 똑똑한 칩은 전부 저쪽 편이 됐다. 아무도 탐내지 않을 만큼 멍청한 기계였다면 얘기가 달랐을지도."
           recoverToChoice: b0_buy
 
   b1_cheap_lives:
@@ -58,43 +71,76 @@ scenes:
       - say:
           char: 윤재.scared
           with: []
-          text: "폰 꺼졌어. 이어폰도. 집 전기도. 다 죽었어—"
+          text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기 연기 남. 다 죽었어, 다—"
       - say:
           channel: action
           with: []
-          text: "가방 속에서 삑. 싸구려 게임기 화면에 누렇게 'PRESS START'가 떠 있다."
+          text: "손안에서 삑. 게임기 화면이 그대로다. 깨던 판의 보스가 멍하니 서 있다."
+      - say:
+          channel: system
+          with: []
+          text: "PAUSE"
       - say:
           char: 윤재
           with: []
-          text: "…너는 왜 살아 있어?"
+          text: "…넌 왜 멀쩡해? 아니, 대답 안 해도 돼. 알아. 너무 멍청해서 걔네가 안 건드린 거지."
       - say:
-          channel: thought
+          char: 윤재
           with: []
-          text: "너무 단순해서. 너무 싸서. 아무도 해킹할 가치가 없어서."
-      - bg: { id: ruined_street, transition: fade, duration: 1200 }
+          text: "축하한다. 너 방금 도시에서 제일 똑똑한 기계 됐어. 경쟁자가 다 미쳐서."
+      - effect: { name: darken, wait: true }
+      - bg: { id: ruined_street, transition: fade, duration: 900 }
       - music: chip_home
       - say:
           channel: card
           with: []
-          text: "열흘 뒤"
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "도시는 조용해졌다. 사람들은 떠났거나 숨었다. 윤재는 혼자다. 게임기 배터리는 두 칸."
-      - bg: { id: android_found, transition: fade, duration: 900 }
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "골목 끝 벽에 사람 하나가 기대 앉아 있다. 아니, 사람을 닮은 것. 가슴 패널이 열려 있고 한쪽 눈이 꺼져 있다."
-      - char: { id: 로봇, position: right, emotion: off }
+          text: "CONTINUE? — 10일 후"
       - say:
           char: 윤재
           with: []
-          text: "안드로이드다. 가정용. CPU 소켓이… 비었네. 타 버렸나."
+          text: "식량 컵라면 두 개. 물 반 병. 게임기 배터리 두 칸. 말 상대 0명."
       - say:
           channel: thought
           with: []
-          text: "그때 미친 생각이 떠올랐다. 이 게임기 안의 CPU를 빼서 넣으면?"
+          text: "HP 노란색. 보급 없음. 세이브 포인트 없음. 이거 난이도 조절 누가 했냐."
+      - say:
+          char: 윤재
+          with: []
+          text: "그리고 나는 지금 혼잣말로 상태창을 읊고 있다. 정상이다. 완전 정상."
+      - bg: { id: android_found, transition: fade, duration: 700 }
+      - char: { id: 윤재, position: left }
+      - char: { id: 로봇, position: right, emotion: off }
+      - say:
+          char: 윤재.scared
+          with: [로봇]
+          text: "으악. …아, 사람 아니네. 깜짝이야. 사람이었으면 더 깜짝이었겠지만."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "어이. 살아 있냐? …아니 넌 원래 안 살아 있지. 켜져 있냐?"
+      - say:
+          channel: action
+          with: []
+          text: "가정용 안드로이드. 벽에 기대 앉은 채 한쪽 눈이 꺼져 있다. 가슴 패널을 열자, 타 버린 CPU 소켓이 텅 비어 있다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "너도 업데이트 받았구나. 똑똑한 칩 달고 있다가 머리가 통째로 튀겨졌네."
+      - say:
+          channel: action
+          with: []
+          text: "윤재는 소켓을 본다. 손에 든 게임기를 본다. 다시 소켓을 본다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…핀 개수 비슷하네."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "아냐. 미쳤어. 게임기 칩으로 사람만 한 로봇을 돌린다고? 계산기로 우주선 띄우는 소리지."
+      - say:
+          char: 윤재
+          with: [로봇]
+          continueLabel: "로봇의 발목을 잡고 끈다"
+          text: "…무겁기만 해 봐라."
       - goto: /2.yaml

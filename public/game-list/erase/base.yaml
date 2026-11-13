@@ -120,6 +120,12 @@ state:
   e0_location: false
   e2_search: false
   e2_gallery: false
+  e2_sns: false
+  e2_hospital: false
+  e2_leaked: false
+  e3_bag: false
+  e3_papers: false
+  e3_note: false
 
 inventory:
   invitation:
@@ -130,19 +136,19 @@ inventory:
     order: 10
   child_photo:
     name: "어린 아이 사진"
-    description: "놀이터에서 웃고 있는 아이. 왜 이 사진만은 손이 멈추는지, 도윤도 모른다."
+    description: "사진첩 맨 아래, 날짜 정보가 없는 한 장. 미끄럼틀 위에서 웃느라 눈이 없어진 아이."
     image: assets/items/child_photo.svg
     category: "남은 것"
     order: 20
   pharmacy_bag:
     name: "약국 봉투"
-    description: "준성의 집 탁자 위. 매일 같은 시간에 먹는 약. 그는 그렇게 살아가고 있었다."
+    description: "준성의 집 식탁 위. 겉면에 볼펜으로 \"밤 10시\". 한 달 치에서 절반이 남았다."
     image: assets/items/pharmacy_bag.svg
     category: "남은 것"
     order: 30
   test_ticket:
     name: "대기 번호표"
-    description: "보건소 익명 검사 대기 번호. 결과는 아직 모른다."
+    description: "보건소 익명 검사 47번. 이름 대신 번호로 부른다."
     image: assets/items/test_ticket.svg
     category: "남은 것"
     order: 40

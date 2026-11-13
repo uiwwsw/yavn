@@ -31,12 +31,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yavn.vercel.app/game-list/erase/</loc>
+    <loc>https://yavn.vercel.app/game-list/tutorial/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yavn.vercel.app/game-list/erase-first/</loc>
+    <loc>https://yavn.vercel.app/game-list/erase/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -1,0 +1,456 @@
+chapterTitle: "고시원 304호"
+
+script:
+  - scene: second_interview
+  - scene: interview_end
+  - scene: forum
+  - scene: corridor
+  - scene: room
+  - scene: dev_talk
+  - scene: door
+  - scene: leave
+
+scenes:
+  second_interview:
+    title: "2차 진술"
+    actions:
+      - bg: { id: police_room, transition: fade, duration: 900 }
+      - music: bleed
+      - say:
+          channel: record
+          with: []
+          text: "진술 녹화 · 2031.04.21 10:15 · 중랑경찰서 · 정해수(31) · 2차 · 조사관 차은숙 경위"
+      - char: { id: 해수, position: left }
+      - char: { id: 은숙, position: right }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "물은 그냥 놔 둘게요."
+      - say:
+          char: 은숙
+          when: { var: tampered, op: gt, value: 0 }
+          with: [해수]
+          text: "증거가 자꾸 바뀌어서 남은 걸로 다시 봤어요. 주차 정산 기록. 그날 새벽 B2에 차 세워 둔 직원이 하나 있어요. 변상혁 씨. 같이 사시죠."
+      - say:
+          char: 은숙.sharp
+          when: { var: tampered, op: gt, value: 0 }
+          with: [해수]
+          text: "3층 손님 일도 있고. 오늘 오후에 집으로 갈 거예요."
+      - say:
+          char: 은숙
+          when: { var: tampered, op: eq, value: 0 }
+          with: [해수]
+          text: "정해수 씨. 접수증, 연필, 그 전주에 혼자 고객센터 앞에 서 있던 피해자. 다 정해수 씨를 가리켜요. 근데 정해수 씨는 그 시간에 집 밖에 안 나왔어요."
+      - say:
+          char: 은숙.sharp
+          when: { var: tampered, op: eq, value: 0 }
+          with: [해수]
+          text: "아파트 엘리베이터 CCTV를 세 번 돌려 봤어요. 세 번 다 안 나와요."
+      - choice:
+          key: t3_tell
+          prompt: "녹음기 빨간 불. 은숙이 볼펜 뚜껑을 닫는다."
+          char: 해수
+          options:
+            - text: "\"모르겠습니다. 죄송합니다.\""
+              goto: tell_nothing
+            - text: "\"레플라에서 찔렀습니다.\" 그대로 말한다"
+              set: { told_truth: true }
+              add: { honest: 1 }
+              goto: tell_truth
+            - text: "\"상혁이는 아니에요. 그날 방에 있었어요.\""
+              when: { var: tampered, op: gt, value: 0 }
+              add: { sh_care: 1 }
+              goto: tell_cover
+
+  tell_nothing:
+    actions:
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "모르겠습니다. 죄송합니다."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "정해수 씨 오늘만 죄송하다고 일곱 번 했어요. 세 봤어요."
+      - goto: interview_end
+
+  tell_truth:
+    actions:
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "레플라에서요. 튜토리얼 3단계에서. 연필로 찔렀습니다. 지하 2층, C-14 옆에서요."
+      - say:
+          channel: narration
+          with: [은숙]
+          text: "은숙은 한참 말이 없다. 그러다 볼펜 뚜껑을 다시 연다."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "레플라에서 사람 찔렀다고 자수하러 오는 사람, 한 달에 열 명쯤 와요. 다 술 먹고 와요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "저는 술 안 마셔요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "알아요. 술 냄새가 안 나요."
+      - say:
+          channel: record
+          with: []
+          text: "진술 요지 · 레플라 튜토리얼 3/5에서 연필로 피해자를 찔렀다고 함 · 장소 B2 C-14 · 본인은 그 시간 자택에 있었음"
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "적어는 둘게요. 어디에 넣을지는 모르겠지만."
+      - goto: interview_end
+
+  tell_cover:
+    actions:
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "상혁이는 아니에요. 그날 방에 있었어요. 제가 들었어요. 웃는 소리."
+      - say:
+          char: 은숙
+          when: { var: sh_night, op: eq, value: true }
+          with: [해수]
+          text: "그날 아침에 변상혁 씨한테 어디 있었냐고 물어보셨다면서요. 민지영 주임님이 그러던데. 정해수 씨가 그랬다고."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "웃는 소리로는 알리바이가 안 돼요. 그래도 적을게요."
+      - goto: interview_end
+
+  interview_end:
+    actions:
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "기태민이라는 사람 알아요? 레플라 초기에 만든 사람 중 하나래요. 이런 사건 비슷한 거 날 때마다 경찰서에 전화해요. 자기 얘기 좀 들어 달라고."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "아무도 안 들어 줘요. 저도 안 들었고. 그냥 생각나서요."
+
+  forum:
+    title: "주소"
+    actions:
+      - bg: { id: cs_desk, transition: cut }
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "주임님 혹시 기태민이라는 사람 아세요?"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "레플라 갤 고닉. 왜"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "서버 없이 돌아간다고 글 쓰다가 영구 차단당한 사람"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "망우동 그린고시원 304호. 갤에 자기 주소를 올렸었어 와서 확인하라고"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "가지 마"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "네 감사합니다 주임님"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "가지 말라니까"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "해수야"
+
+  corridor:
+    title: "그린고시원"
+    actions:
+      - bg: { id: goshiwon, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "그린고시원 3층. 이름이 마트랑 같아서 해수는 간판을 두 번 본다. 문마다 슬리퍼가 한 켤레씩. 304호 앞에는 컵라면 용기가 무릎 높이로 쌓여 있다."
+      - char: { id: 태민, position: right }
+      - char: { id: 해수, position: left }
+      - say:
+          char: 태민
+          with: [해수]
+          text: "경찰이에요?"
+      - say:
+          char: 해수
+          with: [태민]
+          text: "아니요. 그린마트 상봉점 고객센터에서 일합니다."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "…그걸 왜 말해요."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "죄송합니다. 어디서 왔냐고 물으시는 줄 알고요."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "몇 단계예요."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "네?"
+      - say:
+          char: 태민
+          with: [해수]
+          text: "튜토리얼. 여기 오는 사람은 다 그거 물어보러 와요. 근데 다 2단계야. 소리 한번 지르고 무서워서 와."
+      - say:
+          char: 해수
+          when: { var: tampered, op: gt, value: 0 }
+          with: [태민]
+          text: "4단계 했습니다."
+      - say:
+          char: 해수
+          when: { var: tampered, op: eq, value: 0 }
+          with: [태민]
+          text: "3단계 했습니다. 4단계는 열어만 봤어요."
+      - say:
+          char: 태민.afraid
+          with: [해수]
+          text: "……들어와요. 신발은 신고."
+
+  room:
+    actions:
+      - choice:
+          key: t3_room
+          presentation: explore
+          prompt: "방은 한 평 반. 모니터가 세 대인데 두 대는 꺼져 있다. 태민은 침대에 앉고, 해수는 서 있다."
+          with: [태민]
+          camera: wide
+          options:
+            - text: "벽에 붙은 그래프"
+              at: { x: 28, y: 36 }
+              when: { var: seen_graph, op: eq, value: false }
+              goto: see_graph
+            - text: "책상 위 출입 카드"
+              at: { x: 66, y: 62 }
+              when: { var: seen_card, op: eq, value: false }
+              goto: see_card
+            - text: "\"이게 어떻게 돌아가는 건데요.\""
+              when:
+                all:
+                  - { var: seen_graph, op: eq, value: true }
+                  - { var: seen_card, op: eq, value: true }
+              goto: dev_talk
+
+  see_graph:
+    actions:
+      - say:
+          channel: record
+          with: []
+          text: "레플라 동시 접속자 · 2029.11.03 서버 전원 전부 차단 · 이후 1,104,331명 (변동 없음)"
+      - say:
+          char: 태민
+          with: [해수]
+          text: "서버 마흔두 대. 회계팀이 비용 줄이라고 해서 절반만 끄려고 했어요. 절반 껐는데 숫자가 안 떨어져. 그래서 다 껐어요. 안 떨어져. 지금까지."
+      - set: { seen_graph: true }
+      - goto: room
+
+  see_card:
+    actions:
+      - sticker: { id: keycard, image: keycard_sticker, x: 64, y: 34, width: "260px", rotate: 6, enter: popIn }
+      - say:
+          char: 태민
+          with: [해수]
+          text: "그거 아직 열려요. 회사는 없어졌는데 문은 안 없어졌어. 가산동, 지하 1층."
+      - clearSticker: { id: keycard, leave: fadeOut }
+      - set: { seen_card: true }
+      - goto: room
+
+  dev_talk:
+    title: "서버 없이"
+    actions:
+      - say:
+          char: 태민
+          with: [해수]
+          text: "똑같이 만들면요. 진짜로 똑같이. 원자 하나까지. 그러면 그건 계산을 안 해도 돼요. 그냥 있어. 우리처럼. 누가 돌려 주는 게 아니라."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "그럼 서버는요?"
+      - say:
+          char: 태민
+          with: [해수]
+          text: "처음에 문 열 때만 필요했어요. 지금은 문만 남았어요. 가산동 지하에 PC 한 대. 첫 빌드 돌린 거. 그게 두 쪽을 붙잡고 있어요."
+      - say:
+          char: 태민.afraid
+          with: [해수]
+          text: "그 건물 2029년에 전기 끊겼어요. 한전에 전화해서 확인했어요. 세 번. 근데 모니터가 켜져 있어."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "그거 끄면 어떻게 돼요?"
+      - say:
+          char: 태민
+          with: [해수]
+          text: "그쪽은 그쪽대로 가고, 이쪽은 이쪽대로 가요. 못 건너가. 그쪽에 애인 있는 사람, 그쪽에 집 산 사람, 그쪽에 죽은 엄마 살려 놓은 사람. 다 못 가요. 백십만 명."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "건너가요? 그쪽에서 한 게, 이쪽으로요?"
+      - say:
+          char: 태민.afraid
+          with: [해수]
+          text: "처음엔 작은 거. 컵 위치. 문 잠근 거. 그쪽에서 누가 소리를 지르면 이쪽에서 누가 그 소리를 들어요. 귀에서. 그건 몇 년 됐어요."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "근데 지난주에 누가 큰 걸 했어요. 처음으로."
+      - say:
+          channel: narration
+          with: [태민]
+          text: "태민은 해수 얼굴이 아니라 오른손을 보고 말한다."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "튜토리얼은 누가 만들었어요?"
+      - say:
+          char: 태민.laugh
+          with: [해수]
+          text: "아무도요. 첫 빌드 켜니까 이미 있었어요. 1/5부터 5/5까지. 문구까지 그대로. 우리는 글씨체만 바꿨어. 넘기기 버튼도 우리가 단 거고."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "근데 어떤 사람한테는 그 버튼이 안 떠요. 버그 리포트에 딱 한 건 있었어요. 사용자 번호가 이상하게 찍혀서 다들 테스트 계정인 줄 알았고."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "5단계는 뭐예요?"
+      - say:
+          char: 태민
+          with: [해수]
+          text: "몰라요. 아무도 거기까지 안 갔으니까."
+      - get: keycard
+      - say:
+          channel: action
+          with: []
+          text: "태민이 출입 카드를 해수 앞치마 쪽으로 던진다. 해수는 놓치고, 바닥에서 줍는다."
+      - say:
+          char: 태민.afraid
+          with: [해수]
+          text: "가져가요. 나는 못 가요. 무서워서."
+
+  door:
+    title: "1, 2, 7, 0"
+    actions:
+      - bg: { id: home_hall, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "상혁의 방문 앞에 배달 봉지 세 개가 그대로 있다. 생수 두 병도. 사흘째다. 문 안에서 뭔가 계속 말하는 소리가 난다. 상혁 목소리 하나뿐이다."
+      - say:
+          char: 상혁
+          with: []
+          delivery: whisper
+          text: "해수야. 걔가 왔었어. 진짜로. 이불에 냄새가 남아 있어. 너도 맡아 봐. 아니, 들어오지 마."
+      - choice:
+          key: t3_door
+          prompt: "도어락 숫자판에 손때 묻은 1, 2, 7, 0."
+          char: 해수
+          options:
+            - text: "\"상혁아, 나 잠깐 어디 좀 다녀올게.\""
+              goto: door_leave
+            - text: "상혁이 어머니께 전화한다"
+              set: { called_mom: true }
+              add: { sh_care: 1, honest: 1 }
+              goto: door_mom
+
+  door_leave:
+    actions:
+      - say:
+          char: 상혁
+          with: []
+          text: "어. 어디 가는데."
+      - say:
+          char: 해수
+          with: []
+          text: "가산동."
+      - say:
+          char: 상혁
+          with: []
+          text: "…거기 뭐 있다고."
+      - goto: leave
+
+  door_mom:
+    actions:
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "어머니 저 해수예요. 늦게 죄송합니다"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "해수야 왜 무슨 일 있어"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "상혁이가 며칠째 방에서 안 나와요. 와서 보셔야 할 것 같아요"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "걔 또 그거 하니"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "새벽 기차 타고 갈게. 비번 알려줘"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "1270이요. 현관은 0411이에요"
+      - goto: leave
+
+  leave:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "앞치마를 벗어 의자에 건다. 출입 카드는 지갑에 넣는다. 교통카드 옆에."
+      - say:
+          channel: thought
+          with: []
+          text: "가산디지털단지. 7호선. 환승 없이 열한 정거장."

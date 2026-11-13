@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T04:15:36.787Z",
+  "generatedAt": "2026-11-13T05:08:23.673Z",
   "games": [
     {
       "id": "8bit-heart",
@@ -124,36 +124,36 @@
       }
     },
     {
-      "id": "erase",
-      "name": "ERASE",
-      "path": "/game-list/erase/",
+      "id": "tutorial",
+      "name": "튜토리얼",
+      "path": "/game-list/tutorial/",
       "author": "uiwwsw",
       "version": "1.0.0",
-      "summary": "결혼을 앞둔 도윤과 늘 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 성적 긴장·HIV 불안·자기 파괴적 생각이 나오는 4장 심리 드라마.",
-      "summaryEn": "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A four-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts.",
-      "thumbnail": "/game-list/erase/assets/bg/title.svg",
+      "summary": "현실 복제 시뮬레이션 레플라가 모두의 취미가 된 근미래. 마트 고객센터 12년 차 정해수는 체험판 튜토리얼에서 처음으로 화를 내고, 다음 날 같은 장소에서 진짜 사건이 일어난다. 폭언·살인 사건·중독이 나오는 5장 SF 미스터리.",
+      "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
+      "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
       "tags": [
-        "psychological-drama",
+        "sci-fi",
+        "mystery",
         "modern",
         "twist",
-        "complete",
-        "mature"
+        "complete"
       ],
       "tagLabels": {
-        "psychological-drama": "심리 드라마",
-        "modern": "현대극",
+        "sci-fi": "SF",
+        "mystery": "미스터리",
+        "modern": "근미래",
         "twist": "반전",
-        "complete": "완결",
-        "mature": "성인 주제"
+        "complete": "완결"
       },
       "languages": [
         "ko"
       ],
       "showcase": {
-        "label": "ERASE · 4 CHAPTERS",
-        "backgroundColor": "#0f1420",
+        "label": "TUTORIAL · 5 CHAPTERS",
+        "backgroundColor": "#e4efe9",
         "image": {
-          "positionX": 65,
+          "positionX": 50,
           "positionY": 50,
           "scale": 1,
           "offsetX": 0,
@@ -164,37 +164,37 @@
         {
           "id": "content-warning",
           "title": "내용 안내",
-          "text": "이 작품에는 성적 긴장(묘사 없음), HIV에 대한 불안, 자기 파괴적 생각과 옥상 장면(결과·방법 묘사 없음)이 나옵니다. 힘든 마음이 들면 자살예방 상담전화 109(24시간)에 연락할 수 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+          "text": "이 작품에는 고객의 폭언, 살인 사건과 죽음, 경찰 조사, 중독과 집착(성적 묘사 없음)이 나옵니다. 폭력 장면은 화면 밖에서 소리로만 처리합니다."
         }
       ],
-      "chapterCount": 4,
+      "chapterCount": 5,
       "endingCount": 3,
       "seo": {
-        "title": "ERASE",
-        "description": "결혼을 앞둔 회사원 도윤과, 언제나 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 기억을 지우는 시술 ERASE를 둘러싼 4장 심리 드라마.",
+        "title": "튜토리얼",
+        "description": "현실을 그대로 복제한 시뮬레이션 서비스 레플라. 12년째 마트 고객센터에서 고개를 숙여 온 정해수는 체험판 튜토리얼에서 처음으로 화를 낸다. 다음 날 지하 주차장에서 진짜 시신이 발견된다. 5장 SF 미스터리, 결말 3종.",
         "keywords": [
-          "심리 드라마",
+          "SF 미스터리",
           "비주얼노벨",
+          "시뮬레이션",
           "반전",
-          "현대극",
-          "psychological-drama",
+          "sci-fi",
+          "mystery",
           "modern",
           "twist",
-          "complete",
-          "mature"
+          "complete"
         ],
-        "image": "/game-list/erase/assets/bg/title.svg",
-        "imageAlt": "밤의 도시와 반쯤 지워진 사진이 떠 있는 휴대폰 화면"
+        "image": "/game-list/tutorial/assets/bg/title.svg",
+        "imageAlt": "형광등 아래 마트 고객센터 창구가 오른쪽으로 갈수록 선만 남은 와이어프레임으로 바뀌는 그림"
       }
     },
     {
-      "id": "erase-first",
-      "name": "ERASE: 먼저 지운 사람",
-      "path": "/game-list/erase-first/",
+      "id": "erase",
+      "name": "ERASE",
+      "path": "/game-list/erase/",
       "author": "uiwwsw",
       "version": "1.0.0",
-      "summary": "들킬까 봐 먼저 공격한 남자. 상대는 사라졌고 벌은 없다. 대신 그는 스스로 무너진다. ERASE의 더 어두운 판. 성적 긴장·HIV 불안·자기 파괴적 생각이 나오는 5장 심리 드라마.",
-      "summaryEn": "Afraid of being exposed, he strikes first. The other man vanishes and no punishment comes; he collapses on his own. The darker cut of ERASE: a five-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts.",
+      "summary": "결혼을 앞둔 도윤과 늘 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 성적 긴장·HIV 불안·자기 파괴적 생각이 나오는 5장 심리 드라마.",
+      "summaryEn": "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A five-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",
       "tags": [
         "psychological-drama",
@@ -214,7 +214,7 @@
         "ko"
       ],
       "showcase": {
-        "label": "ERASE: FIRST · 5 CHAPTERS",
+        "label": "ERASE · 5 CHAPTERS",
         "backgroundColor": "#0f1420",
         "image": {
           "positionX": 65,
@@ -232,10 +232,10 @@
         }
       ],
       "chapterCount": 5,
-      "endingCount": 3,
+      "endingCount": 4,
       "seo": {
-        "title": "ERASE: 먼저 지운 사람",
-        "description": "들킬까 봐 먼저 공격한 남자. 상대는 사라졌고, 벌은 없다. 대신 그는 스스로 무너진다. ERASE의 더 어두운 판, 5장 심리 드라마.",
+        "title": "ERASE",
+        "description": "결혼을 앞둔 회사원 도윤과, 언제나 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 기억을 지우는 시술 ERASE를 둘러싼 5장 심리 드라마.",
         "keywords": [
           "심리 드라마",
           "비주얼노벨",
@@ -317,12 +317,12 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 8비트 심장, 무원 — 한성 검안록, ERASE, ERASE: 먼저 지운 사람, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 8비트 심장, 무원 — 한성 검안록, 튜토리얼, ERASE, Live2D 테스트: 렌 수다.",
     "keywords": [
       "8비트 심장",
       "무원 — 한성 검안록",
+      "튜토리얼",
       "ERASE",
-      "ERASE: 먼저 지운 사람",
       "Live2D 테스트: 렌 수다",
       "sci-fi",
       "post-apocalypse",
@@ -334,9 +334,9 @@
       "mystery",
       "investigation",
       "consequential-choices",
-      "psychological-drama",
       "modern",
       "twist",
+      "psychological-drama",
       "mature",
       "live2d",
       "interaction",
@@ -351,16 +351,18 @@
       "역사 비주얼노벨",
       "추리 게임",
       "선택형 이야기",
-      "심리 드라마",
+      "SF 미스터리",
       "비주얼노벨",
+      "시뮬레이션",
       "반전",
+      "심리 드라마",
       "현대극"
     ],
     "gameTitles": [
       "8비트 심장",
       "무원 — 한성 검안록",
+      "튜토리얼",
       "ERASE",
-      "ERASE: 먼저 지운 사람",
       "Live2D 테스트: 렌 수다"
     ],
     "gameCount": 5

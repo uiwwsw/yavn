@@ -1,0 +1,310 @@
+chapterTitle: "ERASE"
+
+script:
+  - scene: rooftop
+  - scene: reveal
+
+scenes:
+  rooftop:
+    title: "옥상"
+    actions:
+      - bg: { id: rooftop, transition: fade, duration: 1400 }
+      - music: wind
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "결혼식 엿새 전, 점심시간. 회사 옥상 흡연 구역의 물탱크 옆. 도윤은 등을 물탱크에 붙이고 앉아 있다. 담배는 없다."
+      - char: { id: 도윤, position: center, emotion: hollow }
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 금요일 회식 투표 1.고깃집 2.횟집"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 2"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 도윤대리님 결혼 축하 겸이니까 도윤대리님이 고르세요ㅋㅋ"
+      - say:
+          channel: system
+          when: { var: told_jisu, op: eq, value: 2 }
+          with: []
+          text: "이지수 · 읽지 않은 메시지 4"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00. 신분증과 동의서를 지참해 주세요."
+      - say:
+          channel: thought
+          with: []
+          text: "연락처 412개. 사진 8,031장. 계정 일곱 개. 지수 것부터."
+      - say:
+          char: 의사
+          with: []
+          text: "눈 뜨면… 새로 시작해요."
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: whisper
+          text: "…이거 어디서 들었더라."
+
+  reveal:
+    title: "수술대"
+    actions:
+      - bg: { id: surgery, transition: cut }
+      - music: cold_room
+      - say:
+          char: 의사
+          with: []
+          text: "확신하세요? 한번 지우면 돌아올 수 없어요."
+      - say:
+          char: 하린
+          with: []
+          delivery: whisper
+          text: "네."
+      - say:
+          char: 의사
+          with: []
+          text: "이름도, 얼굴도, 기억도요. 친구분들 번호도 다."
+      - say:
+          char: 하린
+          with: []
+          delivery: whisper
+          text: "네. 다요."
+      - bg: { id: surgery_reveal, transition: fade, duration: 1600 }
+      - char: { id: 하린, position: center, emotion: sleep }
+      - say:
+          channel: action
+          char: 하린.sleep
+          with: []
+          text: "시트가 걷힌다. 뒤집혀 있던 이름표가 바로 놓인다. 유하린, 18세."
+      - say:
+          char: 의사
+          with: []
+          text: "걱정 마세요. 눈 뜨면… 새로 시작해요."
+      - say:
+          channel: card
+          with: []
+          text: "열여덟의 하린은 ERASE를 받았다.\n눈을 뜬 사람의 이름은 한도윤이었다."
+      - bg: { id: rooftop, transition: cut }
+      - music: wind
+      - char: { id: 도윤, position: center, emotion: panic }
+      - say:
+          channel: action
+          char: 도윤.panic
+          with: []
+          text: "도윤은 휴대폰을 떨어뜨렸다가 줍는다. 액정 모서리가 깨졌다. 예약 문자는 그대로 떠 있다."
+      - choice:
+          key: e3_final
+          prompt: "예약 문자 아래, 답장 칸에서 커서가 깜박인다."
+          with: []
+          options:
+            - text: "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다"
+              goto: end_erase
+            - text: "사진첩 맨 아래, 놀이터 사진을 연다"
+              when: { var: kept_photo, op: eq, value: true }
+              goto: end_photo
+            - text: "지수한테 온 메시지 네 개를 연다"
+              when: { var: told_jisu, op: eq, value: 2 }
+              goto: end_unfinished
+
+  end_erase:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "모든 콘텐츠 및 설정 지우기\n사진, 메시지, 계정 및 기타 데이터가 모두 삭제됩니다."
+      - say:
+          channel: action
+          with: []
+          erase: true
+          text: "진행 막대가 다 차는 데 사 분이 걸린다. 그동안 단톡방 알림이 두 번 울렸다가 멈춘다."
+      - add: { deleted: 10 }
+      - branch:
+          cases:
+            - when: { var: cruelty, op: gte, value: 4 }
+              goto: end_erased_name
+          default: end_loop
+
+  end_loop:
+    actions:
+      - bg: { id: surgery_reveal, transition: fade, duration: 1400 }
+      - music: cold_room
+      - char: { id: 하린, position: center, emotion: sleep }
+      - say:
+          char: 의사
+          with: []
+          text: "숨 한 번 크게 쉬세요. 네. 잘하셨어요."
+      - say:
+          char: 의사
+          with: []
+          text: "눈 뜨면… 새로 시작해요."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "창밖에서 버스가 정류장을 지나간다. 누가 크게 웃는다. 금요일 회식은 고깃집으로 정해졌다."
+      - ending: erase_loop
+
+  end_erased_name:
+    actions:
+      - bg: { id: office_night, transition: fade, duration: 1200 }
+      - music: static
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "삼 주 뒤. 인트라넷 조직도의 영업2팀 칸에서 '박준성'이 '공석'으로 바뀐다. 같은 주에 '한도윤' 칸도 비었다. 둘 다 사유는 적혀 있지 않다."
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 근데 그 소문 처음에 누가 냈더라"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 몰라ㅋㅋ 이제 상관없잖아"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 새 팀장님 다음 주 월요일 오신대요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 커피 사오지 말래"
+      - ending: erased_name
+
+  end_photo:
+    actions:
+      - sticker:
+          id: e4_photo
+          image: child_photo_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 600
+      - say:
+          channel: narration
+          with: []
+          text: "놀이터 미끄럼틀. 일곱 살쯤. 웃느라 눈이 없다. 아진이 지우지 말라고 보냈던, 그 사진이다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…안녕."
+      - clearSticker: { id: e4_photo, leave: fadeOut }
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "예약 취소할게요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[ERASE 클리닉] 취소 사유를 선택해 주세요. 1) 일정 변경 2) 기타"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "2"
+      - branch:
+          cases:
+            - when: { var: went_to_clinic, op: eq, value: true }
+              goto: end_photo_result
+          default: end_photo_ticket
+
+  end_photo_result:
+    actions:
+      - bg: { id: clinic_hall, transition: fade, duration: 1200 }
+      - music: wind
+      - say:
+          channel: action
+          with: []
+          text: "지갑 카드 칸 맨 안쪽, 영수증 뒤에서 눅눅해진 번호표를 꺼낸다. 47번."
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "결과를 들으러 온 날. 전광판이 46에서 47로 바뀐다. 도윤이 일어선다."
+      - ending: kept_photo
+
+  end_photo_ticket:
+    actions:
+      - bg: { id: clinic_hall, transition: fade, duration: 1200 }
+      - music: wind
+      - sticker:
+          id: e4_ticket
+          image: ticket_sticker
+          x: 50
+          y: 32
+          width: "clamp(150px, 20%, 260px)"
+          enter: fadeIn
+          inputLockMs: 400
+      - get: test_ticket
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "다음 날 아침 아홉 시. 이번에는 편의점에 들르지 않았다. 47번. 도윤은 대기석 맨 앞줄에 앉는다."
+      - clearSticker: { id: e4_ticket, leave: fadeOut }
+      - ending: kept_photo
+
+  end_unfinished:
+    actions:
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "반지는 신발장 위에 뒀어"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "식장은 내가 취소했어. 계약금은 반반 하자. 계좌 보낼게"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "결과는 꼭 받아. 그건 나랑 상관없이"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "화난 거 맞아. 근데 네가 그걸 혼자 몇 주씩 들고 있었다는 게 더 화나. 그래도 이번엔 네가 말했잖아. 그건 알아둬"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          erase: true
+          text: "미안 내가 다 지울게 처음부터"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "응. 계좌 보내줘"
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 예약 문자에 답장하지 않는다. 지우지도 않는다. 휴대폰을 주머니에 넣고, 계단으로 내려간다."
+      - ending: unfinished

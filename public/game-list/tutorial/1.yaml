@@ -1,0 +1,658 @@
+chapterTitle: "체험판"
+
+script:
+  - scene: complaint
+  - scene: breakroom
+  - scene: night
+  - scene: onboarding
+  - scene: tutorial_one
+  - scene: tutorial_two
+  - scene: sessions
+  - scene: hallway
+  - scene: quiet_customer
+  - scene: tutorial_three
+  - scene: morning
+
+scenes:
+  complaint:
+    title: "031번"
+    actions:
+      - bg: { id: cs_desk, transition: fade, duration: 700 }
+      - music: fluoro
+      - sound: chime
+      - say:
+          channel: system
+          with: []
+          text: "띵동 — 031번 고객님, 고객센터로 오세요. · 4월 12일 토요일 오후 3:04"
+      - char: { id: 해수, position: left }
+      - char: { id: 광철, position: right }
+      - say:
+          char: 광철
+          with: [해수]
+          text: "고객의 소리 용지 줘. 아니, 두 장."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네, 고객님. 어떤 내용이신지 여쭤봐도…"
+      - say:
+          char: 광철
+          with: [해수]
+          text: "쓰면 알아."
+      - say:
+          channel: narration
+          with: [광철]
+          text: "광철은 창구에 서서 쓴다. 해수의 연필을 빌려서. 다 쓰고는 소리 내서 읽는다. 뒤에 선 사람들이 다 들으라고."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "직원 태도 불량. 개봉 상품 핑계로 고객을 무시함. 말투가 비아냥거림. 대상 직원, 정. 해. 수."
+      - say:
+          channel: action
+          with: []
+          text: "광철의 검지가 해수 명찰을 두 번 툭툭 친다. 명찰 핀이 셔츠에서 조금 빠진다."
+      - say:
+          char: 광철.shout
+          with: [해수]
+          text: "사과해. 여기서. 사람들 보는 데서 고개 숙이고."
+      - choice:
+          key: t1_bow
+          prompt: "줄이 고객센터 밖 카트 보관대까지 늘어났다."
+          char: 해수
+          options:
+            - text: "고개를 숙인다. 한 번 더 숙인다"
+              set: { bowed: true }
+              goto: bow_down
+            - text: "\"죄송합니다. 여기까지만 하겠습니다, 고객님.\""
+              goto: bow_stop
+
+  bow_down:
+    actions:
+      - say:
+          char: 해수
+          with: [광철]
+          text: "죄송합니다, 고객님. 제가 말씀을 잘못 드렸습니다."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "거기까지밖에 안 숙여져? 허리 아파?"
+      - say:
+          channel: action
+          with: []
+          text: "해수는 접수 대장이 눈앞에 올 때까지 숙인다. 대장에 027, 028, 029, 030이 연필로 적혀 있다."
+      - goto: snap
+
+  bow_stop:
+    actions:
+      - say:
+          char: 광철.shout
+          with: [해수]
+          text: "여기까지? 여기까지라고 했어? 점장 불러. 지금 당장."
+      - say:
+          channel: narration
+          with: []
+          text: "오 분 뒤 팀장이 뛰어온다. 팀장은 광철에게 세 번 고개를 숙이고, 상품권 오천 원을 드리고, 해수에게 작게 말한다. '해수 씨, 그냥 숙이지 그랬어.'"
+      - goto: snap
+
+  snap:
+    actions:
+      - sound: snap
+      - say:
+          channel: action
+          with: []
+          text: "연필심이 접수 대장 위에서 똑 부러진다. 해수는 부러진 연필을 서랍에 넣고, 연필꽂이에서 새 걸 뽑는다."
+      - get: complaint
+      - sticker: { id: complaint, image: complaint_sticker, x: 64, y: 32, width: "260px", rotate: -3, enter: slideUp }
+      - say:
+          channel: record
+          with: []
+          text: "고객의 소리 접수 · 2031.04.12 15:07 · 대상 직원: 정해수 · 내용: 태도 불량, 고객 무시 · 처리: 팀장 면담 예정"
+      - clearSticker: { id: complaint, leave: fadeOut }
+      - goto: breakroom
+
+  breakroom:
+    title: "휴게실"
+    actions:
+      - bg: { id: breakroom, transition: dissolve, duration: 600 }
+      - char: { id: 지영, position: right }
+      - char: { id: 해수, position: left }
+      - say:
+          char: 지영
+          with: [해수]
+          text: "들었어. 31번."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "괜찮습니다."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "괜찮냐고 안 물어봤어."
+      - say:
+          channel: narration
+          with: [지영]
+          text: "지영은 자판기에서 캔커피를 뽑아 해수 쪽으로 밀어 놓는다. 해수는 이번엔 괜찮다고 하지 않는다."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "레플라에 우리 매장 있어. 그대로. 형광등 깜빡이는 것까지. 그 아저씨도 와. 똑같이 와서 똑같이 해."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "주임님은 거기서 뭐 하세요?"
+      - say:
+          char: 지영.smirk
+          with: [해수]
+          text: "나? 거기선 내가 손님이야."
+      - char: { id: 경준, position: right }
+      - say:
+          char: 경준
+          with: [지영, 해수]
+          text: "주임님 거기서 환불 진짜 많이 하세요. 저 봤어요."
+      - say:
+          char: 지영
+          with: [경준]
+          text: "넌 왜 우리 매장에 들어와 있는데."
+      - say:
+          char: 경준
+          with: [지영]
+          text: "…구경이요."
+      - say:
+          char: 지영
+          when: { var: took_coupon, op: eq, value: false }
+          with: [해수]
+          text: "둘째 서랍에 그거 아직 있다. 영수증 상자 위."
+
+  night:
+    title: "밴드"
+    actions:
+      - bg: { id: haesu_room, transition: fade, duration: 900 }
+      - say:
+          channel: action
+          when: { var: took_coupon, op: eq, value: true }
+          with: []
+          text: "앞치마 주머니에서 체험권을 꺼낸다. 물기 먹었던 모서리가 말라서 쭈글쭈글하다."
+      - say:
+          channel: action
+          when: { var: took_coupon, op: eq, value: false }
+          with: []
+          text: "퇴근하면서 둘째 서랍을 열었다. 영수증 상자 위 체험권은 그대로였다. 주머니에 넣으면서, 해수는 서랍을 평소보다 천천히 닫았다."
+      - get: coupon
+      - say:
+          channel: action
+          with: []
+          text: "전자 코너에서 빌려 온 체험용 밴드. 설명서 첫 줄에 '눕지 말고 앉아서 착용하세요'. 해수는 침대 끝에 앉아서, 귀 뒤에 밴드를 붙인다. 차갑다."
+      - say:
+          channel: narration
+          with: []
+          text: "벽 너머 상혁의 방에서 웃음소리가 난다. 시계는 12시 49분."
+
+  onboarding:
+    title: "온보딩"
+    actions:
+      - bg: { id: sim_void, transition: fade, duration: 1200 }
+      - music: tutorial
+      - say:
+          channel: system
+          with: []
+          text: "레플라 체험판에 연결합니다."
+      - say:
+          channel: system
+          with: []
+          text: "사용자 확인 중"
+          autoAdvance: 1600
+      - say:
+          channel: system
+          with: []
+          text: "다시 오신 걸 환영합니다, 정해수 님."
+      - char: { id: 해수, position: center }
+      - say:
+          char: 해수
+          with: []
+          text: "아, 저 처음인데요."
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼을 이어서 진행합니다."
+      - say:
+          char: 해수
+          with: []
+          text: "네. 감사합니다."
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 1/5 — 주위를 둘러보세요."
+
+  tutorial_one:
+    actions:
+      - bg: { id: sim_desk, transition: wipeRight, duration: 900 }
+      - choice:
+          key: t1_look
+          presentation: explore
+          prompt: "고객센터다. 선으로만 되어 있다. 형광등 하나가 깜빡인다. 선이 깜빡인다."
+          with: []
+          camera: wide
+          options:
+            - text: "번호표 기계"
+              at: { x: 24, y: 44 }
+              when: { var: look_ticket, op: eq, value: false }
+              goto: look_ticket
+            - text: "연필꽂이"
+              at: { x: 70, y: 58 }
+              when: { var: look_pencil, op: eq, value: false }
+              goto: look_pencil
+            - text: "다음 단계로"
+              when:
+                all:
+                  - { var: look_ticket, op: eq, value: true }
+                  - { var: look_pencil, op: eq, value: true }
+              goto: tutorial_two
+
+  look_ticket:
+    actions:
+      - say:
+          channel: narration
+          with: []
+          text: "표시판 숫자가 027에서 멈춰 있다. 버튼을 누르면 종이는 안 나오고 띵동 소리만 난다. 여러 번 눌러도 027이다."
+      - set: { look_ticket: true }
+      - goto: tutorial_one
+
+  look_pencil:
+    actions:
+      - get: pencil
+      - say:
+          channel: narration
+          with: []
+          text: "연필이 스무 자루. 세어 보니 진짜 스무 자루다. 끝마다 초록 로고. 하나를 뽑자 빈자리에 같은 연필이 다시 꽂혀 있다. 해수는 뽑은 걸 앞치마 주머니에 넣는다. 거기서도 앞치마를 입고 있다."
+      - set: { look_pencil: true }
+      - goto: tutorial_one
+
+  tutorial_two:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 2/5 — 하고 싶었던 말을 해 보세요."
+      - char: { id: 광철, position: right, emotion: wire }
+      - say:
+          char: 광철.wire
+          with: [해수]
+          text: "이거 환불."
+      - choice:
+          key: t1_say
+          prompt: "선으로 된 즉석밥 열두 개. 하나는 뜯겨 있다."
+          char: 해수
+          options:
+            - text: "\"네, 고객님. 영수증 확인해 드릴게요.\""
+              when: { var: tried_polite, op: eq, value: false }
+              set: { tried_polite: true }
+              goto: say_polite
+            - text: "\"소리 지르지 마세요.\""
+              add: { rage: 1 }
+              goto: say_loud
+            - text: "\"혼자 다 드시지도 못하는 걸 왜 사세요.\""
+              add: { rage: 2 }
+              goto: say_cruel
+
+  say_polite:
+    actions:
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네, 고객님. 영수증 확인해 드릴게요."
+      - say:
+          channel: system
+          with: []
+          text: "다시 해 보세요."
+      - say:
+          char: 광철.wire
+          with: [해수]
+          text: "이거 환불."
+      - goto: tutorial_two
+
+  say_loud:
+    actions:
+      - say:
+          char: 해수
+          with: [광철]
+          delivery: shout
+          text: "소리 지르지 마세요. 소리 지르지 마시라고요!"
+      - goto: said
+
+  say_cruel:
+    actions:
+      - say:
+          char: 해수
+          with: [광철]
+          delivery: shout
+          text: "혼자 다 드시지도 못하는 걸 왜 사세요! 맨날 와서, 맨날!"
+      - goto: said
+
+  said:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "자기 목소리가 천장에 부딪혀 돌아온다. 아무도 번호표를 접지 않는다. 광철은 그 자리에 멈춰 있다가, 영수증을 다시 내민다. 처음부터."
+      - say:
+          char: 광철.wire
+          with: [해수]
+          text: "이거 환불."
+      - say:
+          char: 해수
+          with: [광철]
+          delivery: shout
+          text: "안 된다고요!"
+      - say:
+          channel: system
+          with: []
+          text: "잘하셨습니다. 튜토리얼 2/5 완료."
+      - say:
+          channel: system
+          with: []
+          text: "체험 시간 00:42:17 사용 · 남은 기간 6일 23시간"
+      - goto: sessions
+
+  sessions:
+    title: "접속 기록"
+    actions:
+      - bg: { id: haesu_room, transition: cut }
+      - music: fluoro
+      - say:
+          channel: record
+          with: []
+          text: "접속 기록 · 4/13 00:49–01:31 · 레플라 상봉점 고객센터"
+      - say:
+          channel: record
+          with: []
+          text: "접속 기록 · 4/14 00:12–03:58 · 레플라 상봉점 고객센터"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "해수 너 오늘 오픈인데 왜 계산대 쪽 문으로 들어와"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "아 졸아서요 죄송합니다"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "너도 하는구나ㅋㅋ 내 코드 썼지?"
+      - say:
+          channel: record
+          with: []
+          text: "접속 기록 · 4/15 23:40–04:44 · 레플라 상봉점 고객센터"
+      - bg: { id: cs_desk, transition: cut }
+      - char: { id: 해수, position: left }
+      - say:
+          channel: narration
+          with: [해수]
+          text: "4월 16일 오후. 아주머니가 우산을 내민다. 손잡이가 빠졌다고. 손잡이 나사 자리가 새 거다. 누가 빼낸 자국이다."
+      - say:
+          char: 해수.service
+          with: []
+          text: "네, 확인해 드릴게요."
+      - say:
+          char: 해수.blank
+          with: []
+          text: "근데 이건 고객님이 빼신 거잖아요."
+      - say:
+          channel: narration
+          with: []
+          text: "아주머니가 눈을 깜빡인다. 옆 계산대에서 경준이 바코드를 찍다 말고 돌아본다."
+      - say:
+          char: 해수.service
+          with: []
+          text: "…죄송합니다. 새 걸로 교환해 드릴게요."
+      - say:
+          channel: record
+          with: []
+          text: "접속 기록 · 4/16 23:58–04:20 · 레플라 상봉점 고객센터"
+
+  hallway:
+    title: "새벽 네 시"
+    actions:
+      - bg: { id: home_hall, transition: fade, duration: 700 }
+      - char: { id: 해수, position: left }
+      - char: { id: 상혁, position: right }
+      - say:
+          channel: narration
+          with: [해수, 상혁]
+          camera: wide
+          text: "새벽 4시 22분, 물 마시러 나오니 상혁이 냉장고 앞에 있다. 귀 뒤에 밴드 자국이 둘 다 빨갛다."
+      - say:
+          char: 상혁.grin
+          with: [해수]
+          text: "어. 너도?"
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "응."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "어디까지 갔어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "튜토리얼 2단계."
+      - say:
+          char: 상혁.grin
+          with: [해수]
+          text: "튜토리얼? 야, 그걸 왜 해. 넘기기 눌러. 오른쪽 위에 있잖아. 다들 넘겨."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "없던데."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "있어. 체험판이라 그런가. 아 몰라."
+      - say:
+          channel: narration
+          with: [상혁]
+          text: "상혁은 생수병을 두 개 꺼낸다. 하나는 따서 마시고, 하나는 들고 방으로 들어간다. 문이 잠기는 소리."
+
+  quiet_customer:
+    title: "044번"
+    actions:
+      - bg: { id: cs_desk, transition: fade, duration: 600 }
+      - sound: chime
+      - say:
+          channel: system
+          with: []
+          text: "띵동 — 044번 고객님, 고객센터로 오세요. · 4월 17일 목요일 오전 11:40"
+      - char: { id: 해수, position: left }
+      - char: { id: 광철, position: right, emotion: lost }
+      - say:
+          channel: narration
+          with: [광철]
+          text: "광철이다. 손에 아무것도 없다. 영수증도, 즉석밥도. 창구 앞에 서서 해수의 손을 본다. 연필을 쥔 오른손."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네, 고객님. 무엇을 확인해 드릴까요."
+      - say:
+          char: 광철.lost
+          with: [해수]
+          text: "…자네. 여기 오래 있었지."
+      - say:
+          char: 해수
+          with: [광철]
+          text: "네. 12년 됐습니다."
+      - say:
+          char: 광철.lost
+          with: [해수]
+          text: "요 며칠, 밤마다 누가 나한테 소리를 질러. 집에서. 나 혼자 사는데. 경찰도 불렀는데 아무도 없대."
+      - say:
+          channel: action
+          with: []
+          text: "광철이 왼쪽 귀를 손바닥으로 누른다. 오래 누른다."
+      - say:
+          char: 광철.lost
+          with: [해수]
+          text: "그 목소리가 어디서 들은 목소리 같아서. 아니야. 됐어."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "그 즉석밥. 먹을 만하더라. 남은 거."
+      - say:
+          channel: narration
+          with: []
+          text: "광철은 번호표를 버리지 않고 조끼 주머니에 넣어 간다."
+      - char: { id: 경준, position: right }
+      - say:
+          char: 경준
+          with: [해수]
+          text: "형, 저 아저씨 오늘 왜 저래요? 저한테 수고하라고 했어요. 존댓말로 대답할 뻔했잖아요."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "존댓말로 대답해야지."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "아, 그러네요."
+
+  tutorial_three:
+    title: "튜토리얼 3/5"
+    actions:
+      - bg: { id: haesu_room, transition: fade, duration: 800 }
+      - say:
+          channel: system
+          with: []
+          text: "체험 기간이 종료되었습니다. 레플라 라이트로 계속하시겠습니까? 월 39,000원"
+      - say:
+          channel: system
+          with: []
+          text: "완료하지 않은 튜토리얼이 있습니다. 튜토리얼은 무료입니다."
+          continueLabel: "네, 이어서 할게요"
+      - bg: { id: sim_parking, transition: wipeRight, duration: 900 }
+      - music: tutorial
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 3/5 — 손에 쥔 물건을 사용해 보세요."
+      - goto: parking
+
+  parking:
+    actions:
+      - char: { id: 광철, position: right, emotion: wire }
+      - say:
+          channel: narration
+          with: [광철]
+          camera: wide
+          text: "지하 2층 주차장. 기둥마다 번호판. C-14 옆에 회색 경차. 광철이 운전석 문을 열다가 돌아본다. 장 본 봉지에서 즉석밥이 보인다."
+      - say:
+          char: 광철.wire
+          with: []
+          text: "번호표 뽑고 기다려."
+      - say:
+          channel: action
+          with: []
+          text: "앞치마 주머니에 연필이 있다. 연필꽂이에서 뽑아 온 그것."
+      - choice:
+          key: t1_pencil
+          prompt: "C-14. 광철과의 거리는 세 걸음."
+          with: [광철]
+          timeoutMs: 9000
+          timeoutOptionIndex: 0
+          options:
+            - text: "연필을 쥔다"
+              goto: stab
+            - text: "연필을 내려놓는다"
+              set: { hesitated: true }
+              add: { honest: 1 }
+              goto: put_down
+
+  put_down:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "연필을 바닥에 내려놓는다. 떨어지는 소리가 나지 않는다. 내려다보면 바닥에 연필이 없다. 주머니가 무겁다."
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 3/5를 완료하지 않았습니다. 처음부터 다시 진행합니다."
+      - say:
+          char: 광철.wire
+          with: []
+          text: "번호표 뽑고 기다려."
+      - choice:
+          key: t1_pencil_again
+          prompt: "C-14. 운전석 문이 다시 열린다. 거리는 세 걸음."
+          with: [광철]
+          options:
+            - text: "연필을 쥔다"
+              goto: stab
+            - text: "귀 뒤의 밴드를 뗀다"
+              set: { logged_out: true }
+              goto: band_off
+
+  band_off:
+    actions:
+      - bg: { id: haesu_room, transition: cut }
+      - say:
+          channel: action
+          with: []
+          text: "밴드를 떼서 책상 위에 엎어 놓는다. 해수는 불을 끄고 눕는다. 설명서에 눕지 말라고 쓰여 있었다. 이제는 상관없다."
+      - say:
+          channel: narration
+          with: []
+          text: "새벽 1시 50분. 깬 기억은 없다."
+      - bg: { id: sim_parking, transition: cut }
+      - say:
+          channel: system
+          with: []
+          text: "자동 접속되었습니다. 튜토리얼 3/5를 이어서 진행합니다."
+      - say:
+          channel: action
+          with: []
+          text: "오른손에 연필이 쥐어져 있다."
+      - goto: stab
+
+  stab:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "한 걸음. 두 걸음."
+      - bg: { id: sim_void, transition: cut }
+      - sound: chime
+      - say:
+          channel: system
+          with: []
+          text: "띵동 — 028번 고객님, 고객센터로 오세요."
+          wait: 1400
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 3/5 완료. 잘하셨습니다."
+      - say:
+          channel: system
+          with: []
+          text: "다음 단계는 내일 열립니다."
+      - goto: morning
+
+  morning:
+    actions:
+      - bg: { id: haesu_room, transition: fade, duration: 1200 }
+      - music: fluoro
+      - say:
+          channel: action
+          with: []
+          text: "밴드를 떼자 방이 그대로다. 휴대폰 화면에 4월 18일 04:12. 앞치마가 의자 등받이에 걸려 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "오늘 오픈. 9시 반까지."
+      - say:
+          channel: action
+          with: []
+          text: "앞치마 주머니에 손을 넣는다. 영수증 한 장, 고무줄 하나. 연필이 없다."

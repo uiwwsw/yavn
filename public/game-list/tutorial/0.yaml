@@ -1,0 +1,501 @@
+chapterTitle: "근무표"
+
+script:
+  - scene: chat
+  - scene: counter
+  - scene: coupon
+  - scene: ticket
+  - scene: lunch
+  - scene: home
+  - scene: room
+
+scenes:
+  chat:
+    title: "단톡방"
+    actions:
+      - bg: { id: home_hall, transition: cut }
+      - music: fluoro
+      - say:
+          channel: system
+          with: []
+          text: "상봉점 고객센터 (3) · 2031년 4월 11일 금요일 오전 8:12"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "해수야 혹시 오늘 마감 나랑 바꿔 줄 수 있어?"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "레플라 점검이 7시에 끝나는데 끝나자마자 들어가야 대기 안 걸려ㅠ"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "점검 끝나는 걸 왜 기다려요 내일 들어가면 되잖아요"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "넌 무료라서 몰라"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "무료 아니고 라이트요 39000원 내요"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "네 바꿔 드릴게요"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "역시ㅠㅠ 커피 살게"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "괜찮습니다 주임님"
+      - say:
+          channel: system
+          with: []
+          text: "근무표가 변경되었습니다 · 4월 11일(금) 정해수 11:00–22:00 마감"
+      - say:
+          channel: action
+          with: []
+          text: "해수는 메모장을 연다. 맨 위에 '휴지'가 있다. 지난주에 쓴 거다. 그 밑에 '우유'를 쓴다."
+
+  counter:
+    title: "고객센터"
+    actions:
+      - bg: { id: cs_desk, transition: fade, duration: 700 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "그린마트 상봉점 1층 고객센터. 천장 형광등은 스물네 개인데, 출입구 쪽 하나가 3월부터 깜빡거린다. 시설팀에는 두 번 말했다."
+      - say:
+          channel: system
+          with: []
+          text: "레플라 — 오늘을 한 번 더. 지금 가입하면 첫 달 무료 · 프리미엄 월 129,000원 · 무제한 월 219,000원"
+      - char: { id: 해수, position: left }
+      - char: { id: 경준, position: right }
+      - say:
+          char: 경준
+          with: [해수]
+          text: "형, 저 TV 소리 좀 줄이면 안 돼요? 아침부터 저것만 나와요."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "저거 본사에서 트는 거라 리모컨이 없어."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "그럼 형은 하루에 저거 몇 번 들어요?"
+      - say:
+          char: 해수
+          with: [경준]
+          text: "세어 본 적은 없는데. 한 시간에 네 번."
+      - say:
+          char: 경준.laugh
+          with: [해수]
+          text: "세었네."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "형 진짜 레플라 안 해요? 우리 매장에 안 하는 사람 형이랑 시식 코너 이모님밖에 없어요."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "이모님은 왜 안 하신대?"
+      - say:
+          char: 경준
+          with: [해수]
+          text: "멀미 나신대요."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "나는 멀미는 안 하는데."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "그니까요. 형 같은 사람이 해야 돼요. 거기선 손님한테 고개 안 숙여도 되거든요."
+      - say:
+          char: 해수.service
+          with: [경준]
+          text: "고개는 괜찮아. 목 운동 돼."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "……네."
+
+  coupon:
+    title: "체험권"
+    actions:
+      - char: { id: 지영, position: right }
+      - say:
+          channel: narration
+          with: [지영]
+          text: "열 시 오십팔 분. 민지영 주임이 아이스커피 두 잔을 들고 들어온다. 하나를 해수 앞에 놓는다. 경준이 손을 뻗다가 그만둔다."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "마감 고마워. 그리고 너 오늘 12년 됐지? 인사팀에서 근속 메일 왔더라. 2019년 4월 11일 입사."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "아, 오늘이에요? 몰랐어요."
+      - say:
+          char: 지영.smirk
+          with: [해수]
+          text: "본인이 모르는 게 제일 무섭다. 자, 선물."
+      - sticker: { id: coupon, image: coupon_sticker, x: 62, y: 34, width: "240px", rotate: -4, enter: popIn }
+      - say:
+          char: 지영
+          with: [해수]
+          text: "레플라 7일 체험권. 내 추천 코드로 가입하면 나 한 달 공짜야. 너 위해서 주는 거 아니고."
+      - choice:
+          key: t0_coupon
+          prompt: "체험권 모서리가 커피 컵 물기에 조금 젖었다."
+          char: 해수
+          options:
+            - text: "앞치마 주머니에 넣는다"
+              set: { took_coupon: true }
+              goto: coupon_pocket
+            - text: "\"경준이 주세요. 저는 괜찮아요.\""
+              goto: coupon_refuse
+
+  coupon_pocket:
+    actions:
+      - get: coupon
+      - clearSticker: { id: coupon, leave: fadeOut }
+      - say:
+          char: 해수
+          with: [지영]
+          text: "감사합니다, 주임님. 쓸지는 모르겠는데요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "다들 그렇게 말해. 나도 그랬어."
+      - goto: ticket
+
+  coupon_refuse:
+    actions:
+      - say:
+          char: 경준
+          with: [해수, 지영]
+          text: "저 이미 라이트라 체험권 못 써요. 기존 회원은 안 돼요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "그럼 여기 둔다. 버리든가."
+      - clearSticker: { id: coupon, leave: fadeOut }
+      - say:
+          channel: action
+          with: []
+          text: "지영이 체험권을 계산대 밑 둘째 서랍에 넣는다. 영수증 용지 상자 위. 해수는 그 서랍을 하루에 서른 번쯤 연다."
+      - goto: ticket
+
+  ticket:
+    title: "027번"
+    actions:
+      - sound: chime
+      - say:
+          channel: system
+          with: []
+          text: "띵동 — 027번 고객님, 고객센터로 오세요."
+      - char: { id: 광철, position: right }
+      - say:
+          channel: narration
+          with: [광철]
+          text: "등산 조끼, 두꺼운 안경. 오른손에 영수증, 왼손에 즉석밥 열두 개 묶음. 하나는 비닐이 뜯겨 있다."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "이거 환불."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네, 고객님. 영수증 확인해 드릴게요."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "확인은 뭘 확인해. 어제 여기서 산 거 몰라? 맨날 보면서."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네, 알고 있습니다. 시스템에 찍어야 해서요."
+      - say:
+          channel: record
+          with: []
+          text: "고객 상담 이력 · 오광철 님 · 누적 41건 · 최초 등록 2019.04.11 14:52 · 최초 처리자 정해수"
+      - say:
+          channel: action
+          with: []
+          text: "마흔한 건. 해수는 모니터를 고객 쪽에서 안 보이게 손가락 하나만큼 돌린다."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "하나 먹었는데 맛이 이상해. 나머지 열한 개도 똑같을 거 아니야."
+      - say:
+          char: 해수
+          with: [광철]
+          text: "개봉하신 상품은 원래 환불이 좀 어려우신데요, 고객님…"
+      - say:
+          char: 광철.shout
+          with: [해수]
+          text: "어렵다는 게 된다는 거야, 안 된다는 거야? 말을 똑바로 해! 몇 년째 거기 앉아 있으면서 아직도 말을 그따위로 해?"
+      - say:
+          channel: narration
+          with: []
+          text: "뒤에 줄 선 아주머니가 번호표를 접었다가 다시 편다."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "혼자 사는 사람한테 열두 개씩 묶어 파는 것도 웃기지. 내가 이걸 언제 다 먹어."
+      - choice:
+          key: t0_kwang
+          prompt: "포스기 화면에 '개봉 상품 — 관리자 승인 필요'가 떠 있다."
+          char: 해수
+          options:
+            - text: "\"확인해 드릴게요.\" 뜯은 하나만 빼고 환불한다"
+              goto: kwang_rule
+            - text: "전액 환불한다. 모자란 1,580원은 내 지갑에서 채운다"
+              set: { paid_diff: true }
+              goto: kwang_pay
+            - text: "\"고객님, 뒤에 기다리시는 분이 계셔서요. 목소리만 조금…\""
+              goto: kwang_voice
+
+  kwang_rule:
+    actions:
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "열한 개 환불해 드렸습니다. 카드 영수증 확인해 주세요."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "하나는 내가 먹고 이상하다는데 그걸 빼? 그래, 하나는 내가 먹었지. 다음에 또 오지."
+      - goto: kwang_after
+
+  kwang_pay:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "지갑에서 천 원짜리 한 장, 오백 원짜리 하나, 백 원짜리 하나, 오십 원짜리 하나를 꺼내 포스기 서랍에 넣는다. 십 원짜리가 없어서 삼십 원은 동전 통에서 빌린다."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "진작 이렇게 하면 될 걸."
+      - char: { id: 지영, position: right }
+      - say:
+          char: 지영
+          with: [해수]
+          text: "너 또 그거 했지. 내가 봤어. 그거 다 합치면 너 지금쯤 차 한 대 뽑았어."
+      - goto: kwang_after
+
+  kwang_voice:
+    actions:
+      - say:
+          char: 광철.shout
+          with: [해수]
+          text: "내가 지금 소리 질렀어? 이게 소리 지른 거야? 소리 지르는 게 뭔지 보여 줘?"
+      - say:
+          char: 광철
+          with: [해수]
+          text: "이름 뭐야. …정해수. 기억해 둔다."
+      - say:
+          char: 해수
+          with: [광철]
+          text: "죄송합니다, 고객님. 열한 개 환불해 드릴게요."
+      - goto: kwang_after
+
+  kwang_after:
+    actions:
+      - char: { id: 광철, position: right }
+      - say:
+          channel: narration
+          with: []
+          text: "광철은 영수증을 반으로 접어 트레이에 던지고 간다. 즉석밥 하나는 들고 간다. 뜯은 것."
+      - sticker: { id: pencil, image: pencil_sticker, x: 66, y: 40, width: "300px", rotate: 12, enter: slideUp }
+      - say:
+          channel: action
+          with: []
+          text: "해수는 연필꽂이에서 연필을 하나 뽑아 접수 대장에 '027 / 즉석밥 / 처리 완료'라고 쓴다. 고객센터에는 볼펜이 없다. 손님들이 자꾸 들고 가서, 3년 전부터 연필만 둔다."
+      - say:
+          channel: action
+          when: { var: paid_diff, op: eq, value: true }
+          with: []
+          text: "점심값이 1,580원 줄었다. 오늘은 휴게실 컵라면."
+      - clearSticker: { id: pencil, leave: fadeOut }
+      - goto: lunch
+
+  lunch:
+    title: "휴게실"
+    actions:
+      - bg: { id: breakroom, transition: dissolve, duration: 700 }
+      - char: { id: 지영, position: left }
+      - char: { id: 경준, position: right }
+      - say:
+          channel: narration
+          with: [지영, 경준]
+          camera: wide
+          text: "직원 휴게실. 자판기, 사물함, 벽걸이 TV. TV에서는 아까 그 광고가 나온다. 해수는 전자레인지 앞에서 2분 30초를 기다린다."
+      - say:
+          char: 경준
+          with: [지영]
+          text: "주임님, 상혁 씨 요새 여기서 자요? 아까 물류창고 박스 위에서 자던데요."
+      - say:
+          char: 지영
+          with: [경준]
+          text: "집에서 안 자니까 여기서 자지. 무제한에 확장팩까지 질렀대."
+      - say:
+          char: 경준
+          with: [지영]
+          text: "확장팩이면… 집 넓혀 주는 거요?"
+      - say:
+          char: 지영
+          with: [경준]
+          text: "넌 몰라도 돼."
+      - say:
+          char: 경준
+          with: [지영]
+          text: "왜요."
+      - say:
+          char: 지영.smirk
+          with: [경준]
+          text: "그냥 몰라도 돼. 밥 먹어."
+      - char: { id: 상혁, position: center }
+      - say:
+          char: 상혁.grin
+          with: [지영, 경준]
+          text: "뭐야. 내 얘기 했지. 들어오는데 조용해지더라."
+      - say:
+          char: 지영
+          with: [상혁]
+          text: "상혁 씨 얼굴 얘기 했어. 사람 얼굴이 아니야."
+      - say:
+          char: 상혁
+          with: [지영]
+          text: "주임님은 어제 몇 시에 로그아웃했는데요."
+      - say:
+          char: 지영
+          with: [상혁]
+          text: "……밥 먹어."
+      - char: { id: 해수, position: left }
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "야, 해수. 집에 우편 오면 내 건 건드리지 마. 내가 뜯을게."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "응. 원래 안 뜯어."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "알아. 그냥 말하는 거야."
+      - say:
+          char: 상혁
+          when: { var: took_coupon, op: eq, value: true }
+          with: [해수]
+          text: "주임님이 체험권 줬다며. 해 봐. 거기는 다 맞춰 줘. 내가 무슨 말을 해도."
+      - say:
+          char: 상혁
+          when: { var: took_coupon, op: eq, value: false }
+          with: [해수]
+          text: "체험권 안 받았다며. 바보야. 거기는 다 맞춰 줘. 내가 무슨 말을 해도."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "누가?"
+      - say:
+          char: 상혁.hollow
+          with: [해수]
+          text: "…있어. 걔는 내 번호 차단 안 해."
+      - say:
+          channel: narration
+          with: []
+          text: "상혁은 컵라면 국물까지 마시고 일어난다. 점심시간은 아직 이십 분 남았다."
+
+  home:
+    title: "우편함"
+    actions:
+      - bg: { id: home_hall, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "밤 열 시 사십 분. 현관 센서등이 한 박자 늦게 켜진다. 상혁의 방문 아래로 파란 빛이 새어 나온다. 안에서 낮은 목소리가 들리다가 웃음소리가 난다. 상혁 혼자."
+      - sticker: { id: bill, image: bill_sticker, x: 64, y: 36, width: "280px", rotate: 3, enter: slideDown }
+      - say:
+          channel: record
+          with: []
+          text: "변상혁 님 · 레플라 이용요금 안내 · 무제한 219,000원 + 프라이빗 확장팩 12개월 선결제 2,280,000원 · 미납 1회"
+      - say:
+          channel: action
+          with: []
+          text: "봉투 창으로 금액이 다 보인다. 신발장 위에 같은 봉투가 하나 더 있다. 지난달 것. 뜯지 않았다."
+      - choice:
+          key: t0_mail
+          prompt: "봉투 두 개."
+          char: 해수
+          options:
+            - text: "상혁이 방문 밑으로 밀어 넣는다"
+              goto: mail_door
+            - text: "\"상혁아, 우편 왔어.\" 문을 두 번 두드린다"
+              set: { knocked: true }
+              add: { sh_care: 1 }
+              goto: mail_knock
+
+  mail_door:
+    actions:
+      - clearSticker: { id: bill, leave: fadeOut }
+      - say:
+          channel: action
+          with: []
+          text: "봉투가 문틈에 반쯤 걸린다. 해수는 무릎을 꿇고 손가락으로 끝까지 민다. 안쪽 목소리가 잠깐 멈췄다가 다시 이어진다."
+      - goto: room
+
+  mail_knock:
+    actions:
+      - clearSticker: { id: bill, leave: fadeOut }
+      - say:
+          char: 상혁
+          with: []
+          delivery: angry
+          text: "놓고 가."
+      - say:
+          char: 상혁
+          with: []
+          delivery: whisper
+          text: "…아, 해수야? 고마워. 거기 놔 줘. 내일 볼게."
+      - say:
+          channel: narration
+          with: []
+          text: "그 뒤로 방 안에서는 다른 목소리가 한 번 더 들린다. 여자 목소리 같다. 상혁의 방에는 스피커가 없다."
+      - goto: room
+
+  room:
+    actions:
+      - bg: { id: haesu_room, transition: dissolve, duration: 600 }
+      - say:
+          channel: action
+          with: []
+          text: "앞치마를 의자에 걸고, 알람을 9시 반에 맞춘다."
+      - say:
+          channel: thought
+          with: []
+          text: "휴지. 우유. 또 안 샀다."

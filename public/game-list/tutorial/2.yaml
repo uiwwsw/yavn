@@ -1,0 +1,595 @@
+chapterTitle: "C-14"
+
+script:
+  - scene: news
+  - scene: bathroom
+  - scene: tape
+  - scene: interview
+  - scene: interview_rest
+  - scene: tamper
+  - scene: changed
+  - scene: rumor
+  - scene: new_lock
+
+scenes:
+  news:
+    title: "단톡방"
+    actions:
+      - bg: { id: haesu_room, transition: cut }
+      - music: bleed
+      - say:
+          channel: system
+          with: []
+          text: "상봉점 고객센터 (3) · 4월 18일 금요일 오전 7:41"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "형들 뉴스 봤어요??? 우리 지하주차장"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "경찰차 네 대 와 있어요 저 지금 버스정류장인데 다 보여요"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "오픈 11시로 미룬대 본사 공지 옴"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "즉석밥 아저씨래요"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "확실하지도 않은 거 단톡에 쓰지 마"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "죄송합니다"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "근데 맞대. 보안팀 김 기사님이 봤대. 지하 주차장"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          erase: true
+          text: "어디쯤이요"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "네 알겠습니다 11시까지 가겠습니다"
+
+  bathroom:
+    title: "칫솔"
+    actions:
+      - bg: { id: home_hall, transition: fade, duration: 700 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "상혁의 방문이 반쯤 열려 있다. 처음 있는 일이다. 침대는 비어 있고, 모니터만 켜져 있다."
+      - say:
+          channel: action
+          with: []
+          text: "세면대 컵에 칫솔이 세 개 꽂혀 있다. 이 집에 사는 사람은 둘이다. 컵 옆에는 검은 머리끈 하나. 머리카락이 한 올 감겨 있다. 길다."
+      - char: { id: 해수, position: left }
+      - char: { id: 상혁, position: right }
+      - say:
+          channel: narration
+          with: [해수, 상혁]
+          text: "7시 58분. 현관문이 열리고 상혁이 들어온다. 어제 입은 회색 후드 그대로다. 손에 아무것도 없다."
+      - say:
+          char: 상혁.grin
+          with: [해수]
+          text: "아, 깼어?"
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "어디 갔다 와?"
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "편의점."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "아 그거, 머리끈. 걔 거야. 놓고 갔네."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "누구?"
+      - say:
+          char: 상혁.grin
+          with: [해수]
+          text: "…아. 너는 모르지. 됐어."
+      - choice:
+          key: t2_sh
+          prompt: "상혁이 머리끈을 집어 손목에 낀다."
+          char: 해수
+          options:
+            - text: "모른 척하고 신발을 신는다"
+              goto: sh_shoes
+            - text: "\"너 어젯밤에 어디 있었어?\""
+              set: { sh_night: true }
+              goto: sh_where
+            - text: "\"오늘 하루만 하지 마. 그거.\""
+              add: { sh_care: 1, honest: 1 }
+              goto: sh_stop
+
+  sh_shoes:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "운동화 끈이 풀려 있다. 해수는 쪼그려 앉아 두 번 묶는다. 등 뒤에서 상혁의 방문이 닫힌다."
+      - goto: tape
+
+  sh_where:
+    actions:
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "집. 계속 집."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "방에 없던데. 새벽에."
+      - say:
+          char: 상혁.hollow
+          with: [해수]
+          text: "…있었어. 걔랑. 차에 있었나. 기억이 섞여, 요새."
+      - goto: tape
+
+  sh_stop:
+    actions:
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "너도 하잖아."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "응. 나도 오늘은 안 할게."
+      - say:
+          char: 상혁.hollow
+          with: [해수]
+          text: "…생각해 볼게. 진짜로. 생각은 해 볼게."
+      - goto: tape
+
+  tape:
+    title: "노란 테이프"
+    actions:
+      - bg: { id: parking_real, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "10시 40분. 지하 2층으로 내려가는 계단참에 노란 테이프가 쳐져 있다. 아래는 파란 가림막으로 막혀서 기둥 번호가 보이지 않는다. 직원들은 계단참에 모여 서서 휴대폰으로 뉴스를 본다."
+      - char: { id: 경준, position: left }
+      - char: { id: 은숙, position: right }
+      - say:
+          char: 경준
+          with: []
+          delivery: whisper
+          text: "형. 아저씨 차 맨날 여기 세웠잖아요. 엘리베이터 가까운 데."
+      - say:
+          char: 은숙
+          with: [경준]
+          text: "실례합니다. 고객센터 분 계세요? 정해수 씨."
+      - say:
+          char: 경준
+          with: []
+          delivery: whisper
+          text: "…형 이름을 왜 알아요?"
+
+  interview:
+    title: "진술 녹화실"
+    actions:
+      - bg: { id: police_room, transition: fade, duration: 900 }
+      - say:
+          channel: record
+          with: []
+          text: "진술 녹화 · 2031.04.18 14:02 · 중랑경찰서 · 참고인 정해수(31) · 조사관 차은숙 경위"
+      - char: { id: 해수, position: left }
+      - char: { id: 은숙, position: right }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "물 드릴까요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "아, 괜찮습니다. 감사합니다."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그냥 드릴게요. 다들 중간에 달라고 해서."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "오광철 씨 아시죠."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "네. 저희 고객님이세요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "이셨죠."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "…죄송합니다."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "제가 사과받을 일은 아니고요. 어제 몇 시에 퇴근하셨어요?"
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "열 시 십 분이요. 마감 정산하고 나왔습니다."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그다음은."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "집에 가서 잤습니다."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "피해자분이 어디서 발견됐는지는 들으셨어요?"
+      - choice:
+          key: t2_where
+          prompt: "은숙 앞의 녹음기에 빨간 불이 켜져 있다."
+          char: 해수
+          options:
+            - text: "\"지하 주차장이라고만 들었습니다.\""
+              goto: where_safe
+            - text: "\"C-14 기둥 쪽… 아닌가요?\""
+              gameOver:
+                title: "아무도 말하지 않은 번호"
+                message: "C-14는 아직 현장 보고서에만 있던 기둥 번호였다. 단톡방에도, 계단참에도 없었다. 차은숙 경위는 녹화를 멈추지 않았다. 그 번호를 어디서 봤는지 떠올려 보자."
+                recoverToChoice: t2_where
+            - text: "\"단톡방을 안 봐서요. 잘 모릅니다.\""
+              add: { doubt: 1 }
+              goto: where_lie
+
+  where_safe:
+    actions:
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "네. 지하 2층이에요."
+      - goto: interview_rest
+
+  where_lie:
+    actions:
+      - say:
+          char: 은숙.sharp
+          with: [해수]
+          text: "단톡방 사진 경준 씨가 보여 줬어요. 정해수 씨 메시지에 읽음 표시 다 없어져 있던데."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "…지하 주차장이라고는 봤습니다. 죄송합니다."
+      - goto: interview_rest
+
+  interview_rest:
+    actions:
+      - say:
+          channel: record
+          with: []
+          text: "현장 · 그린마트 상봉점 B2 C-14 기둥 옆 · 발견 05:10 (주차 관리원) · 흉기: 연필 1자루, 끝에 그린마트 로고"
+      - sticker: { id: pencil, image: pencil_sticker, x: 64, y: 36, width: "300px", rotate: -18, enter: fadeIn }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "이 연필. 고객센터에 있는 거 맞죠."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "네. 연필꽂이에 있는 거랑 같아요. 스무 자루 둬요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "어제 마감 때 몇 자루였어요?"
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "스무 자루요. 마감할 때 세거든요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "오늘 아침에는 열아홉 자루였대요. 민지영 주임님이 세 봤어요. 제가 부탁해서."
+      - clearSticker: { id: pencil, leave: fadeOut }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "하나 더. 오광철 씨가 지난 일주일 동안 112에 세 번 전화했어요. 밤마다 누가 소리를 지른다고. 혼자 사는 집에서. 출동하면 아무도 없고."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그리고 그저께 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요. 아무것도 안 사고. 귀를 자꾸 누르면서."
+      - say:
+          channel: record
+          with: []
+          text: "피해자 휴대폰 메모 · 4/17 13:02 · 고객센터 그 친구한테 사과할 것"
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그 친구가 정해수 씨예요?"
+      - say:
+          char: 해수.shaken
+          with: [은숙]
+          text: "…저희 고객센터에 저랑 주임님밖에 없어서요."
+      - sticker: { id: complaint, image: complaint_sticker, x: 64, y: 32, width: "260px", rotate: 2, enter: fadeIn }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그 전날에는 정해수 씨 이름으로 민원을 넣으셨고. 고객의 소리. 이거 원본 저희가 가져가요."
+      - clearSticker: { id: complaint, leave: fadeOut }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "또 연락드릴게요. 휴대폰 꺼 두지 마세요. 물 안 드셨네."
+
+  tamper:
+    title: "튜토리얼 4/5"
+    actions:
+      - bg: { id: haesu_room, transition: fade, duration: 800 }
+      - say:
+          channel: action
+          with: []
+          text: "밤 열한 시 반. 밴드는 책상 위에 엎어져 있다. 해수는 그걸 한참 보다가, 귀 뒤에 붙인다."
+      - bg: { id: sim_desk, transition: wipeRight, duration: 900 }
+      - music: tutorial
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 4/5 — 바꿔 보세요."
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "선으로 된 고객센터. 연필꽂이에는 연필이 스무 자루. 접수 대장 위에 고객의 소리 용지. 창구 위 CCTV 모니터에 지하 2층 C구역이 떠 있다. 여기서는 그 카메라가 고장 나 있지 않다."
+      - goto: tamper_pick
+
+  tamper_pick:
+    actions:
+      - choice:
+          key: t2_tamper
+          presentation: explore
+          prompt: "바꿔 보세요."
+          with: []
+          camera: wide
+          options:
+            - text: "고객의 소리 용지"
+              at: { x: 30, y: 60 }
+              when: { var: t_form, op: eq, value: false }
+              set: { t_form: true }
+              add: { tampered: 1 }
+              goto: tamper_form
+            - text: "연필꽂이"
+              at: { x: 70, y: 58 }
+              when: { var: t_pencil, op: eq, value: false }
+              set: { t_pencil: true }
+              add: { tampered: 1 }
+              goto: tamper_pencil
+            - text: "CCTV 모니터"
+              at: { x: 52, y: 22 }
+              when: { var: t_cctv, op: eq, value: false }
+              set: { t_cctv: true }
+              add: { tampered: 1 }
+              goto: tamper_cctv
+            - text: "아무것도 건드리지 않고 로그아웃한다"
+              when: { var: tampered, op: eq, value: 0 }
+              add: { honest: 1 }
+              goto: no_tamper
+            - text: "로그아웃한다"
+              when: { var: tampered, op: gt, value: 0 }
+              goto: tamper_done
+
+  tamper_form:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "주머니에서 연필을 꺼내 뒤집는다. 끝의 지우개로 이름 칸을 문지른다."
+      - say:
+          channel: record
+          with: []
+          erase: true
+          text: "대상 직원: 정해수"
+      - say:
+          channel: system
+          with: []
+          text: "변경 사항이 저장되었습니다."
+      - goto: tamper_pick
+
+  tamper_pencil:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "연필을 하나씩 뽑아 끝의 초록 로고를 엄지로 문지른다. 로고가 지우개 가루처럼 일어나서 떨어진다. 스무 자루. 뽑은 자리마다 로고 없는 연필이 다시 꽂혀 있다."
+      - say:
+          channel: system
+          with: []
+          text: "변경 사항이 저장되었습니다."
+      - goto: tamper_pick
+
+  tamper_cctv:
+    actions:
+      - sticker: { id: cctv, image: cctv_sticker, x: 64, y: 30, width: "320px", enter: wipeCenterX }
+      - say:
+          channel: record
+          with: []
+          text: "B2-C 카메라 · 4/18 01:40–02:20 · 등장 인물 2명"
+      - say:
+          channel: record
+          with: []
+          erase: true
+          text: "01:58 · C-14 · 인물 2명 접근"
+      - say:
+          channel: system
+          with: []
+          text: "구간을 다시 저장했습니다 · 등장 인물 0명"
+      - clearSticker: { id: cctv, leave: fadeOut }
+      - goto: tamper_pick
+
+  no_tamper:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "해수는 접수 대장 위에 손바닥을 올려놓기만 한다. 선으로 된 종이가 따뜻하다. 손을 떼고, 귀 뒤의 밴드를 뗀다."
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 4/5는 건너뛸 수 없습니다. 다음 접속 시 다시 시작합니다."
+      - goto: changed
+
+  tamper_done:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "튜토리얼 4/5 완료. 잘하셨습니다."
+      - goto: changed
+
+  changed:
+    title: "바뀐 것"
+    actions:
+      - bg: { id: cs_desk, transition: fade, duration: 800 }
+      - music: bleed
+      - char: { id: 해수, position: left }
+      - char: { id: 은숙, position: right }
+      - say:
+          channel: narration
+          with: [은숙]
+          text: "4월 19일 오후. 은숙이 고객센터 창구에 번호표 없이 선다. 손에 서류 봉투."
+      - say:
+          char: 은숙
+          when: { var: t_form, op: eq, value: true }
+          with: [해수]
+          text: "접수증 원본을 다시 봤는데요. 대상 직원 칸이 비어 있어요. 제가 어제 찍은 사진에도 비어 있고. 찍을 때는 분명히 이름이 있었거든요."
+      - say:
+          char: 은숙
+          when: { var: t_pencil, op: eq, value: true }
+          with: [해수]
+          text: "흉기 연필, 감식에서 로고가 없대요. 그린마트 거 아니래요. 제가 이 눈으로 봤는데."
+      - say:
+          char: 은숙
+          when: { var: t_cctv, op: eq, value: true }
+          with: [해수]
+          text: "C구역 카메라 3월부터 고장이었잖아요. 근데 그날 새벽 1시 40분부터 40분짜리 영상이 생겼어요. 아무도 안 나와요. 차 한 대만 서 있고."
+      - say:
+          char: 은숙.sharp
+          when: { var: tampered, op: gt, value: 0 }
+          with: [해수]
+          text: "기록이 바뀌는 건 봤어요. 사람이 바꾸는 거. 사진이 바뀌는 건 처음 봐요."
+      - say:
+          char: 은숙
+          when: { var: tampered, op: eq, value: 0 }
+          with: [해수]
+          text: "접수증은 그대로예요. 대상 직원 정해수. 연필도 그대로, 로고도 그대로. 정해수 씨는 계속 제 목록 맨 위에 있어요."
+      - say:
+          char: 은숙
+          when: { var: tampered, op: eq, value: 0 }
+          with: [해수]
+          text: "근데 정해수 씨 아파트 엘리베이터 CCTV에는 그날 밤 정해수 씨가 한 번도 안 나와요. 들어간 것만 있고."
+      - say:
+          char: 해수.blank
+          with: [은숙]
+          text: "다시 한번 확인해 보시겠어요?"
+      - say:
+          channel: narration
+          with: [은숙]
+          text: "은숙은 대답하지 않고 해수를 본다. 그러다 봉투를 겨드랑이에 끼고, 번호표 기계 버튼을 한 번 누르고 간다. 종이가 나온다. 052번."
+
+  rumor:
+    title: "3층"
+    actions:
+      - bg: { id: breakroom, transition: dissolve, duration: 600 }
+      - char: { id: 지영, position: left, emotion: worried }
+      - char: { id: 경준, position: right }
+      - say:
+          char: 경준
+          with: [지영]
+          delivery: whisper
+          text: "상혁 씨 어제 3층에서 일 났대요."
+      - say:
+          char: 지영
+          with: [경준]
+          text: "쉿."
+      - say:
+          char: 경준
+          with: [지영]
+          delivery: whisper
+          text: "화장품 코너 손님을 따라갔대요. 주차장까지. 이름 부르면서. 아는 사람이라고."
+      - say:
+          char: 지영.worried
+          with: [경준]
+          text: "손님은 처음 보는 사람이래. 신고 들어갔어. 상혁 씨 오늘부터 안 나와. 무기한."
+      - char: { id: 해수, position: left }
+      - say:
+          char: 지영
+          with: [해수]
+          text: "해수야. 너네 집에서 걔 괜찮아?"
+      - say:
+          char: 해수
+          with: [지영]
+          text: "방에 있어요. 문 잠그고."
+      - say:
+          char: 해수
+          when: { var: sh_night, op: eq, value: true }
+          with: [지영]
+          text: "그저께 밤에는 방에 없었어요. 차에 있었대요."
+      - say:
+          char: 지영.worried
+          with: [해수]
+          text: "너도 얼굴이 그래. 둘 다 그래."
+
+  new_lock:
+    title: "도어락"
+    actions:
+      - bg: { id: home_hall, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "상혁의 방문에 도어락이 새로 달려 있다. 상자는 현관에 접혀 있다. 숫자판 1, 2, 7, 0에만 손때가 묻어 있다."
+      - say:
+          char: 상혁
+          with: []
+          delivery: whisper
+          text: "해수야? 해수 맞지."
+      - say:
+          char: 상혁
+          with: []
+          delivery: whisper
+          text: "걔가 나 모른대. 여기서는 나를 모른대. 거기서는 아는데."
+      - say:
+          channel: narration
+          with: []
+          text: "문 안에서 웃음소리가 한 번 나고, 그다음엔 조용하다. 해수는 문 앞에 생수 두 병을 놓고 자기 방으로 들어간다."

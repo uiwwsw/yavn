@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>출입 카드</title><g stroke-linejoin="round" stroke-linecap="round"><path d="M 200 30 C 170 60 170 100 200 120 C 230 100 230 60 200 30" fill="none" stroke="#2c7bd9" stroke-width="10"/>
+<rect x="186" y="110" width="28" height="30" rx="4" fill="#c7ccc9" stroke="#20302c" stroke-width="3"/>
+<g transform="rotate(5 200 250)">
+<rect x="90" y="140" width="220" height="230" rx="14" fill="#ffffff" stroke="#20302c" stroke-width="4"/>
+<rect x="90" y="140" width="220" height="50" rx="14" fill="#2f6bff" stroke="#20302c" stroke-width="4"/>
+<path d="M 90 176 L 310 176 L 310 190 L 90 190 Z" fill="#2f6bff"/>
+<text x="200" y="174" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="22" font-weight="800" text-anchor="middle" fill="#ffffff" >REPLA R&amp;D</text>
+<rect x="112" y="208" width="70" height="86" fill="#b9c3cf" stroke="#20302c" stroke-width="2"/>
+<path d="M 147 222 C 132 222 128 248 147 256 C 166 248 162 222 147 222 Z M 122 294 C 124 268 170 268 172 294 Z" fill="#7f8b99"/>
+<text x="196" y="228" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="20" font-weight="800" text-anchor="start" fill="#20302c" >기태민</text>
+<text x="196" y="254" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" font-weight="600" text-anchor="start" fill="#20302c" >개발 1팀</text>
+<text x="196" y="280" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" font-weight="800" text-anchor="start" fill="#e8463c" >B1 서버실</text>
+<rect x="112" y="314" width="176" height="36" fill="#20302c"/>
+<path d="M 120 320 L 120 344 M 128 320 L 128 344 M 140 320 L 140 344 M 146 320 L 146 344 M 158 320 L 158 344 M 170 320 L 170 344 M 176 320 L 176 344 M 190 320 L 190 344 M 200 320 L 200 344 M 214 320 L 214 344 M 222 320 L 222 344 M 236 320 L 236 344 M 250 320 L 250 344 M 262 320 L 262 344 M 278 320 L 278 344" stroke="#ffffff" stroke-width="3"/>
+</g></g></svg>
