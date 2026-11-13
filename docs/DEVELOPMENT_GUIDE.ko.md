@@ -6,6 +6,15 @@
 
 이 문서는 YAML V3 기준의 제작/유지보수 가이드입니다.
 
+## 2026-11-13 변경 기록 — 설치형 웹앱(PWA)과 오프라인 플레이
+
+- **설치:** 빌드할 때 `scripts/pwa.mjs`(Vite 플러그인, 의존성 없음)가 `manifest.webmanifest`(`야븐 YAVN`/`야븐`, standalone, 테마 `#183e36`, 배경 `#f7f5ee`)와 favicon 표식으로 그린 PNG 아이콘(192·512·maskable 512·apple-touch 180)을 `dist`에 씁니다. `index.html`의 `<!-- yavn:pwa -->` 블록에 manifest·apple 태그가 있어 게임별 SEO 페이지에도 그대로 들어갑니다.
+- **서비스 워커:** `src/pwa/sw.ts`를 같은 플러그인이 `dist/sw.js` 한 파일로 묶습니다. 캐시 버전은 빌드 커밋(`0.2.0-abc1234`)이고, 앱 셸(`/`, Live2D를 뺀 해시 청크·폰트·효과음, 아이콘)을 미리 받습니다. 요청별 규칙은 `src/pwa/swStrategy.ts`에 모여 있습니다. 페이지 요청은 네트워크 우선(3.5초)·실패 시 그 게임 페이지나 셸, `/version.json`은 항상 네트워크(오프라인이면 그냥 실패해 업데이트 확인을 건너뜀), `/game-list/index.json`과 게임 `*.yaml`·`*.json`은 네트워크 우선·캐시 대체, 게임 그림·소리는 게임별 캐시(`yavn-game-<id>`)에서 먼저 주고 뒤에서 갱신합니다. 캐시에서 주는 음원은 Range 요청에 206으로 답합니다.
+- **새 버전 반영:** 새 워커는 스스로 활성화하지 않습니다. `/version.json`이 새 빌드를 알리거나 새 워커가 설치를 마치면 기존 `UpdateBanner` 하나만 뜹니다. `지금 반영`은 자동 저장을 마친 뒤 대기 중인 워커에 `SKIP_WAITING`을 보내고, 제어권이 넘어오면(`controllerchange`, 최대 4초) 새로고침합니다. 이전 빌드의 셸·런타임 캐시는 새 워커가 활성화될 때 지웁니다. 개발 서버에서는 워커를 등록하지 않고 남아 있던 워커를 해제합니다.
+- **오프라인 저장:** 빌드가 게임마다 `game-list/<id>/offline.json`(파일 경로·크기·해시, 전체 해시)을 만듭니다. 서재의 `오프라인 저장`은 이 목록을 4개씩 받아 게임 캐시에 넣고 마지막에 저장 표식을 남깁니다. 전체 해시가 바뀌면 `업데이트 있음`이 뜨고 바뀐 파일만 다시 받습니다. 저장 공간이 모자라면 안내 문구를 보여 줍니다. 20MB를 넘는 게임은 저장을 제공하지 않습니다.
+- **작품 `version`을 꼭 올려 주세요:** 게임 내용을 바꾸면 `config.yaml`의 `version`도 올립니다. 오프라인 캐시는 파일 해시로 바뀐 걸 알아채지만, 플레이 중인 사람에게 `이 작품 내용이 바뀌었어요` 안내와 저장 버전 비교는 `version`을 기준으로 합니다. 버전이 그대로면 오프라인으로 저장한 사람은 바뀐 줄 모르고 예전 내용을 계속 플레이할 수 있습니다.
+- `vercel.json`: `sw.js`·`manifest.webmanifest`·`offline.json`에 `Cache-Control: no-cache`, `sw.js`에 `Service-Worker-Allowed: /`, manifest에 `application/manifest+json`을 붙였습니다.
+
 ## 2026-11-13 변경 기록 — 버전 표시, 새 배포 알림, 저장 개편, 죽음 뒤 복귀
 
 - **버전 표시:** 빌드할 때 `package.json` 버전(현재 0.2.0), 짧은 커밋(`VERCEL_GIT_COMMIT_SHA` → `git rev-parse --short HEAD` → `dev`), 빌드 시각을 `__YAVN_BUILD__`로 번들에 넣고 같은 값을 `dist/version.json`(`{ build, commit, builtAt }`)으로 내보냅니다(`scripts/build-identity.mjs`). 개발 서버도 `/version.json`을 응답합니다. 시작 화면과 시스템 탭에 `앱 v… · 커밋 · 작품 v…`를, HUD에 작은 버전 표식을 둡니다.
@@ -127,6 +136,7 @@ showcase:
 - URL 게임 실행 호환을 위해 `public/game-list/**` 전체는 공개 경로로 유지합니다.
 - `public` 루트 허용 파일은 `favicon.svg`, `robots.txt`, `sitemap.xml`입니다.
 - 위 경로 외 파일은 `pnpm run check:public`에서 실패 처리됩니다.
+- PWA 파일(`manifest.webmanifest`, `sw.js`, `icons/*.png`, `game-list/<id>/offline.json`)은 빌드 결과물에만 생성되므로 `public`에 추가하지 않습니다.
 - 게임 런타임 비필수 파일(문서/라이선스/아카이브)은 저장소 루트 `assets/`로 이동해 관리합니다.
 
 ## 2) YAML V3 핵심 구조

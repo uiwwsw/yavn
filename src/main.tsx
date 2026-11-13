@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { initializePromptLayout } from './promptLayout';
+import { registerServiceWorker } from './pwa/register';
 import './styles.css';
 import './launcher.css';
 import './titleScene.css';
@@ -11,5 +12,7 @@ import './gameInterface.css';
 import './immersiveStory.css';
 
 initializePromptLayout();
+// Production only; in dev this unregisters any worker left from a preview build.
+void registerServiceWorker();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
