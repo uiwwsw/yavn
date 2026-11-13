@@ -1,0 +1,141 @@
+chapterTitle: "극한"
+
+script:
+  - scene: nothing_left
+  - scene: rooftop
+
+scenes:
+  nothing_left:
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "5막 · 극한"
+      - bg: { id: dawn_room, transition: fade, duration: 900 }
+      - music: static
+      - say:
+          channel: record
+          with: []
+          text: "인사 통보: 근무 태도 및 사내 분위기 저해. 권고사직. 원룸 계약 해지 예정. 팀장 박준성: 연락 두절."
+      - char: { id: 도윤, position: center }
+      - say:
+          channel: action
+          char: 도윤.hollow
+          with: []
+          text: "거울. 목을 본다. 피부를 본다. 손톱 밑까지 본다."
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: whisper
+          text: "아니야. 아직 아냐."
+      - say:
+          char: 도윤.panic
+          with: []
+          text: "새로 시작하면 돼. 다 지워. 새로운 삶."
+
+  rooftop:
+    actions:
+      - bg: { id: rooftop, transition: fade, duration: 1200 }
+      - music: wind
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "옥상. 도시 바람. 도윤은 물탱크에 등을 기대고 미끄러져 앉는다. 숨이 무너진다."
+      - say:
+          char: 도윤.panic
+          with: []
+          delivery: shout
+          text: "새로 시작해야 돼. 다 지워야 돼."
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: sad
+          text: "새로운 삶… 새로운 삶…"
+      - say:
+          char: 의사
+          with: []
+          text: "새로운 삶이 시작될 거예요. 걱정 마세요."
+      - branch:
+          cases:
+            - when:
+                all:
+                  - { var: went_to_clinic, op: eq, value: true }
+                  - { var: cruelty, op: lte, value: 2 }
+              goto: end_waiting
+            - when: { var: cruelty, op: gte, value: 5 }
+              goto: end_erased_name
+          default: end_new_life
+
+  end_new_life:
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "과거"
+      - bg: { id: surgery_reveal, transition: fade, duration: 1400 }
+      - music: cold_room
+      - char: { id: 하린, position: center, emotion: sleep }
+      - say:
+          char: 하린.sleep
+          with: []
+          channel: action
+          text: "수술대 위의 그녀가 눈을 감는다."
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "도시의 소음. 자동차. 멀리서 웃음. 세계는 아무 일도 없다는 듯 돌아간다."
+      - say:
+          channel: thought
+          with: []
+          text: "그는 늘 그랬다. 들킬 것 같으면 지웠다. 위험하면 새로 시작했다. 눈을 감고."
+      - ending: new_life
+
+  end_waiting:
+    actions:
+      - say:
+          channel: thought
+          with: []
+          text: "목소리가 다정해서, 하마터면 따라갈 뻔했다."
+      - say:
+          channel: action
+          with: []
+          text: "주머니 속에서 눅눅한 종이가 손에 잡힌다. 대기 번호 47. 결과를 들으러 가는 날은 내일이다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: sad
+          text: "…내일까지만. 내일까지는 안 지울게."
+      - bg: { id: clinic_hall, transition: fade, duration: 1000 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "다음 날. 전광판의 숫자가 바뀐다. 47. 도윤이 일어선다."
+      - ending: waiting_room
+
+  end_erased_name:
+    actions:
+      - bg: { id: office_night, transition: fade, duration: 1000 }
+      - music: static
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "며칠 뒤. 회사 조직도에서 박준성의 이름이 사라진다. 누구도 이유를 묻지 않는다."
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[단톡] 근데 그 소문 처음에 누가 냈더라?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[단톡] 몰라 ㅋㅋ 이제 상관없잖아"
+      - say:
+          channel: thought
+          with: []
+          text: "아무도 날 탓하지 않는다. 벌은 오지 않는다. 그래서 내가 한 말이, 영원히 내 안에만 남는다."
+      - ending: erased_name

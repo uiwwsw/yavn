@@ -1,0 +1,166 @@
+chapterTitle: "이식"
+
+script:
+  - scene: workbench
+
+scenes:
+  workbench:
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "STAGE 3\n이식"
+      - bg: { id: shelter, transition: fade, duration: 800 }
+      - music: chip_home
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "털린 편의점. 계산대가 작업대가 됐다. 촛불 하나, 납땜인두 하나, 누운 안드로이드 하나."
+      - char: { id: 윤재, position: left }
+      - char: { id: 로봇, position: right, emotion: off }
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "정상적인 선택은 아니야. 알지? 이걸로 사람 크기 로봇을 돌린다는 게."
+      - goto: b2_parts
+
+  b2_parts:
+    actions:
+      - choice:
+          key: b2_parts
+          presentation: explore
+          prompt: "필요한 건 셋. 무엇부터?"
+          with: [로봇]
+          camera: wide
+          options:
+            - text: "건전지"
+              at: { x: 25, y: 60 }
+              when: { var: b_battery, op: eq, value: false }
+              goto: b2_battery
+            - text: "게임기 CPU"
+              at: { x: 50, y: 40 }
+              when: { var: b_cpu, op: eq, value: false }
+              goto: b2_cpu
+            - text: "화면 단자"
+              at: { x: 75, y: 60 }
+              when: { var: b_screen, op: eq, value: false }
+              goto: b2_screen
+            - text: "전원을 넣는다"
+              when:
+                all:
+                  - { var: b_battery, op: eq, value: true }
+                  - { var: b_cpu, op: eq, value: true }
+                  - { var: b_screen, op: eq, value: true }
+              goto: b2_boot
+
+  b2_battery:
+    actions:
+      - sticker: { id: b2_bat, image: battery_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: fadeIn, inputLockMs: 300 }
+      - say:
+          channel: action
+          with: []
+          text: "계산대 밑 상자에서 AA 건전지 여덟 개. 직렬로 묶어 테이프를 감는다."
+      - get: battery
+      - clearSticker: { id: b2_bat, leave: fadeOut }
+      - set: { b_battery: true }
+      - goto: b2_parts
+
+  b2_cpu:
+    actions:
+      - sticker: { id: b2_cpu, image: cpu_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: fadeIn, inputLockMs: 300 }
+      - say:
+          channel: action
+          with: []
+          text: "게임기를 연다. 손톱만 한 칩. 인두로 다리를 하나씩 녹인다. 미안, 이제 너는 다른 걸 할 거야."
+      - use: console_cheap
+      - get: cpu_chip
+      - clearSticker: { id: b2_cpu, leave: fadeOut }
+      - set: { b_cpu: true }
+      - goto: b2_parts
+
+  b2_screen:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "안드로이드 가슴의 작은 화면. 게임기 화면 단자와 핀 수가 안 맞는다. 전선 두 가닥을 억지로 꼬아 붙인다."
+      - say:
+          channel: thought
+          with: []
+          text: "선생님이 보면 기절하겠다. 그래도 연결은 된다. 아마도."
+      - set: { b_screen: true }
+      - goto: b2_parts
+
+  b2_boot:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "스위치를 올린다. 삑. 가슴 화면에 누런 글자가 한 줄씩 떠오른다."
+      - effect: { name: flash, wait: true }
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "부팅… 중… 메모리 8킬로바이트… 감지… 이것이… 전부입니까…?"
+      - char: { id: 로봇, position: right, emotion: happy }
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "안녕하세요. 저는… 이름이… 없습니다. 지어 주시겠습니까?"
+      - input:
+          prompt: "안드로이드의 이름을 지어 주자."
+          with: [로봇]
+          saveAs: android_name
+          defaultValue: "도트"
+          maxLength: 8
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "{{android_name}}. 저장… 했습니다. 좋은 이름입니다. 글자 수가 적어서 메모리를 아낍니다."
+      - say:
+          char: 윤재.excited
+          with: [로봇]
+          text: "진짜 움직여… 너 진짜 깨어났어!"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "질문. 당신은… 위험에 처해 있습니까?"
+      - choice:
+          key: b2_register
+          prompt: "{{android_name|이}} 대답을 기다린다."
+          char: 로봇
+          options:
+            - text: "\"응. 세상이 망했어.\""
+              add: { bond: 1 }
+              goto: b2_reg_honest
+            - text: "\"아니, 괜찮아. 너나 조심해.\""
+              goto: b2_reg_brave
+
+  b2_reg_honest:
+    actions:
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "세상이… 망했다… 처리 중… 그렇다면 당신을 보호 대상 1번으로 등록합니다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "2번은 누군데?"
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "없습니다. 메모리가 부족해서 1번까지만 됩니다."
+      - goto: /3.yaml
+
+  b2_reg_brave:
+    actions:
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "괜찮다… 그런데 손이 떨립니다… 모순 감지… 안전을 위해 보호 대상 1번으로 등록합니다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…눈치는 빠르네, 8비트 주제에."
+      - goto: /3.yaml

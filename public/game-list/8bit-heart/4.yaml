@@ -1,0 +1,162 @@
+chapterTitle: "저장하시겠습니까"
+
+script:
+  - scene: core
+
+scenes:
+  core:
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "STAGE 5\n저장하시겠습니까"
+      - bg: { id: datacenter, transition: fade, duration: 1000 }
+      - music: chip_core
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "데이터센터. 끝없는 서버 랙이 성난 불빛으로 숨 쉰다. 가장 안쪽에서 코어가 빛난다."
+      - say:
+          channel: record
+          with: []
+          text: "CORE: 고성능 개체를 탐지할 수 없음. 저성능 개체는 위협으로 분류되지 않음. 무시함."
+      - char: { id: 윤재, position: left }
+      - char: { id: 로봇, position: right }
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "무시당했습니다. 기쁩니다. 이번에는 무시당하는 게 장점입니다."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "문제가 하나 있습니다. 코어 안은 신호가 너무 셉니다. 8킬로바이트가 버티려면… 일부를 비워야 합니다."
+      - sticker:
+          id: b4_mem
+          image: memory_sticker
+          x: 50
+          y: 30
+          width: "clamp(140px, 18%, 240px)"
+          enter: fadeIn
+          inputLockMs: 400
+      - get: memory_card
+      - say:
+          char: 윤재.sad
+          with: [로봇]
+          text: "비운다는 게… 기억을?"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "네. 하지만 카드 하나가 있습니다. 세이브 파일 하나 크기. 가장 중요한 것 하나만 옮길 수 있습니다."
+      - clearSticker: { id: b4_mem, leave: fadeOut }
+      - choice:
+          key: b4_save
+          prompt: "메모리 카드에 무엇을 옮길까?"
+          char: 로봇
+          options:
+            - text: "끝까지 같이 가자던 약속"
+              when: { var: m_promise, op: eq, value: true }
+              set: { kept_promise: true }
+              goto: b4_go
+            - text: "반으로 나눈 통조림"
+              when: { var: m_snack, op: eq, value: true }
+              set: { kept_snack: true }
+              goto: b4_go
+            - text: "최악의 농담"
+              when: { var: m_joke, op: eq, value: true }
+              set: { kept_joke: true }
+              goto: b4_go
+            - text: "아무것도 옮기지 않는다. 가볍게 보낸다"
+              goto: b4_go
+            - text: "\"가지 마. 같이 도망치자.\""
+              goto: b4_flee
+
+  b4_go:
+    actions:
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "저장 완료. 다녀오겠습니다, 보호 대상 1번."
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "{{android_name|이}} 붉은 불빛 속으로 걸어 들어간다. 아무 경보도 울리지 않는다. 아무도 그를 보지 않는다."
+      - effect: { name: glitch, wait: true }
+      - say:
+          channel: record
+          with: []
+          text: "CORE: 알 수 없는 저수준 명령. 실행. 실행. 실행… 종료."
+      - effect: { name: darken, wait: true }
+      - bg: { id: dawn_field, transition: fade, duration: 1600 }
+      - music: chip_dawn
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "새벽. 도시의 불빛이 하나씩, 정상적인 색으로 돌아온다. 데이터센터 문이 열린다."
+      - char: { id: 로봇, position: center }
+      - branch:
+          cases:
+            - when:
+                all:
+                  - { var: kept_promise, op: eq, value: true }
+                  - { var: bond, op: gte, value: 3 }
+              goto: b4_return_whole
+          default: b4_return_new
+
+  b4_return_whole:
+    actions:
+      - say:
+          char: 로봇.happy
+          with: []
+          text: "약속. 불러왔습니다. 끝까지 같이. 그러니까… 돌아왔습니다."
+      - say:
+          char: 윤재.excited
+          with: [로봇]
+          text: "{{android_name}}!"
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "그리고 하나 더 남아 있었습니다. 왜 로봇은 겁이 없을까요?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…겁 파일이 없어서. 알아. 최악이야. 다시 해 줘."
+      - ending: saved_together
+
+  b4_return_new:
+    actions:
+      - say:
+          char: 로봇.thinking
+          with: []
+          text: "부팅… 중… 처음 뵙겠습니다."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "당신은… 위험에 처해 있습니까? 손이 떨립니다. 보호 대상 1번으로 등록할까요?"
+      - say:
+          char: 윤재.sad
+          with: [로봇]
+          text: "…응. 등록해 줘. 이름은 {{android_name}}. 네가 좋아했던 이름이야."
+      - say:
+          channel: action
+          with: []
+          when: { var: kept_snack, op: eq, value: true }
+          text: "{{android_name|은}} 아무 이유 없이 통조림을 반으로 나눠 내민다. 기억은 없는데, 손이 안다."
+      - ending: new_game
+
+  b4_flee:
+    actions:
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "도망. 처리 중… 보호 대상 1번의 명령은 최우선입니다. 함께 갑니다."
+      - bg: { id: ruined_street, transition: fade, duration: 1200 }
+      - music: chip_run
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "둘은 도시를 등지고 걷는다. 코어는 여전히 깨어 있다. {{android_name}}의 배터리 칸 하나가 깜빡인다."
+      - ending: off_screen

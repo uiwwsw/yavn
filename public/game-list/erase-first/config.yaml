@@ -1,0 +1,67 @@
+title: "ERASE: 먼저 지운 사람"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "들킬까 봐 먼저 공격한 남자. 상대는 사라졌고, 벌은 없다. 대신 그는 스스로 무너진다. ERASE의 더 어두운 판, 5장 심리 드라마."
+  keywords:
+    - "심리 드라마"
+    - "비주얼노벨"
+    - "반전"
+    - "현대극"
+  image: "/game-list/erase/assets/bg/title.svg"
+  imageAlt: "밤의 도시와 반쯤 지워진 사진이 떠 있는 휴대폰 화면"
+textSpeed: 32
+autoSave: true
+clickToInstant: true
+ui:
+  template: cinematic-noir
+legalNotices:
+  - id: content-warning
+    title: "내용 안내"
+    text: "이 작품에는 성적 긴장(묘사 없음), HIV에 대한 불안, 자기 파괴적 생각과 옥상 장면(결과·방법 묘사 없음)이 나옵니다. 힘든 마음이 들면 자살예방 상담전화 109(24시간)에 연락할 수 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+startScreen:
+  enabled: true
+  music: root:/game-list/erase/assets/music/cold-room.wav
+  image: root:/game-list/erase/assets/bg/title.svg
+  imagePosition: "60% 50%"
+  mobileImagePosition: "72% 50%"
+  showTitle: true
+  titleColor: "#e8eef2"
+  startButtonText: "먼저 지운다"
+  buttonPosition: bottom-left
+  eyebrow: "성적 긴장 · HIV 불안 · 자기 파괴적 생각이 나옵니다"
+  subtitle: "그는 늘 그랬다. 들킬 것 같으면, 지워 버린다."
+  scene:
+    layout: split
+    motion: drift
+    duration: 30000
+    parallax: 10
+    particles: dust
+    intensity: 0.35
+    fog: true
+    light: breathe
+    accent: "#3fd0c9"
+endings:
+  new_life:
+    title: "새로운 삶"
+    message: "수술대 위의 하린이 눈을 감는다. 그리고 도시는 아무 일도 없다는 듯 돌아간다."
+    epilogue: "새로운 삶이 시작될 거예요. 걱정 마세요. — 힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 연락할 수 있습니다."
+    background: surgery_reveal
+    music: cold_room
+    tone: tragic
+  waiting_room:
+    title: "검사실 앞"
+    message: "대기 번호가 바뀐다. 도윤은 일어선다. 결과는 아직 모른다."
+    epilogue: "지우는 대신 기다리기로 한 첫날. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+    background: clinic_hall
+    music: wind
+    tone: hopeful
+  erased_name:
+    title: "지워진 이름"
+    message: "회사 조직도에서 박준성의 이름이 사라졌다. 아무도 도윤을 탓하지 않았다. 그게 가장 무서웠다."
+    epilogue: "벌은 없었다. 남은 건 자기가 한 말뿐이다. 109(자살예방 상담전화)는 24시간 열려 있습니다."
+    background: office_night
+    music: static
+    tone: mystery
+defaultEnding: new_life

@@ -1,0 +1,148 @@
+assets:
+  backgrounds:
+    title: assets/bg/title.svg
+    surgery: assets/bg/surgery.svg
+    surgery_reveal: assets/bg/surgery_reveal.svg
+    photo_studio: assets/bg/photo_studio.svg
+    club: assets/bg/club.svg
+    dawn_room: assets/bg/dawn_room.svg
+    office: assets/bg/office.svg
+    office_night: assets/bg/office_night.svg
+    classroom: assets/bg/classroom.svg
+    harin_room: assets/bg/harin_room.svg
+    rooftop: assets/bg/rooftop.svg
+    junseong_house: assets/bg/junseong_house.svg
+    science_room: assets/bg/science_room.svg
+    clinic_hall: assets/bg/clinic_hall.svg
+    invitation_sticker: assets/items/invitation.svg
+    child_photo_sticker: assets/items/child_photo.svg
+    pharmacy_bag_sticker: assets/items/pharmacy_bag.svg
+    butterfly_sticker: assets/items/pinned_butterfly.svg
+    ticket_sticker: assets/items/test_ticket.svg
+    phone_erased_sticker: assets/items/phone_erased.svg
+  characters:
+    도윤:
+      name: "한도윤"
+      placement: prompt-top
+      base: assets/char/doyun.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        smile: assets/char/doyun-smile.svg
+        panic: assets/char/doyun-panic.svg
+        hollow: assets/char/doyun-hollow.svg
+    지수:
+      name: "이지수"
+      placement: prompt-top
+      base: assets/char/jisu.svg
+      facing: left
+      defaultDelivery: calm
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        warm: assets/char/jisu-warm.svg
+        cold: assets/char/jisu-cold.svg
+    준성:
+      name: "박준성"
+      placement: prompt-top
+      base: assets/char/junseong.svg
+      facing: left
+      defaultDelivery: calm
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        smirk: assets/char/junseong-smirk.svg
+        tired: assets/char/junseong-tired.svg
+    하린:
+      name: "유하린"
+      placement: prompt-top
+      base: assets/char/harin.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        blank: assets/char/harin-blank.svg
+        cry: assets/char/harin-cry.svg
+        sleep: assets/char/harin-sleep.svg
+    민재:
+      name: "서민재"
+      placement: prompt-top
+      base: assets/char/minjae.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        laugh: assets/char/minjae-laugh.svg
+    아진:
+      name: "정아진"
+      placement: prompt-top
+      base: assets/char/ajin.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        awkward: assets/char/ajin-awkward.svg
+    의사:
+      name: "의사"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: whisper
+  music:
+    cold_room: assets/music/cold-room.wav
+    neon: assets/music/neon.wav
+    static: assets/music/static.wav
+    wind: assets/music/wind.wav
+
+state:
+  deleted: 0
+  told_jisu: 0
+  kept_photo: false
+  cruelty: 0
+  went_to_clinic: false
+  e0_messages: false
+  e0_photos: false
+  e0_location: false
+  e2_search: false
+  e2_gallery: false
+
+inventory:
+  invitation:
+    name: "청첩장 시안"
+    description: "지수가 고른 서체로 찍은 시안. 둘의 이름이 나란히 있다. 완성까지 한 달."
+    image: assets/items/invitation.svg
+    category: "남은 것"
+    order: 10
+  child_photo:
+    name: "어린 아이 사진"
+    description: "놀이터에서 웃고 있는 아이. 왜 이 사진만은 손이 멈추는지, 도윤도 모른다."
+    image: assets/items/child_photo.svg
+    category: "남은 것"
+    order: 20
+  pharmacy_bag:
+    name: "약국 봉투"
+    description: "준성의 집 탁자 위. 매일 같은 시간에 먹는 약. 그는 그렇게 살아가고 있었다."
+    image: assets/items/pharmacy_bag.svg
+    category: "남은 것"
+    order: 30
+  test_ticket:
+    name: "대기 번호표"
+    description: "보건소 익명 검사 대기 번호. 결과는 아직 모른다."
+    image: assets/items/test_ticket.svg
+    category: "남은 것"
+    order: 40

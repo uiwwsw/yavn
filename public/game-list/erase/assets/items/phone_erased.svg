@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>지워진 대화</title>
+<defs><clipPath id="scr"><path d="M 136 52 L 264 52 C 274 52 280 58 280 68 L 280 332 C 280 342 274 348 264 348 L 136 348 C 126 348 120 342 120 332 L 120 68 C 120 58 126 52 136 52 Z"/></clipPath></defs>
+<g stroke-linecap="round" stroke-linejoin="round" transform="rotate(5 200 200)">
+<path d="M 132 30 L 268 30 C 288 30 300 42 300 62 L 300 338 C 300 358 288 370 268 370 L 132 370 C 112 370 100 358 100 338 L 100 62 C 100 42 112 30 132 30 Z" fill="#1c212b" stroke="#1b1f2b" stroke-width="2.6"/>
+<path d="M 300 104 L 304 104 L 304 140 L 300 140 M 100 96 L 96 96 L 96 116 L 100 116" fill="#2a3442" stroke="#1b1f2b" stroke-width="1.6"/>
+<g clip-path="url(#scr)">
+<path d="M 110 40 L 290 40 L 290 360 L 110 360 Z" fill="#0f1420"/>
+<path d="M 110 40 L 290 40 L 290 82 L 110 82 Z" fill="#18202e"/>
+<circle cx="140" cy="68" r="8" fill="#2a3442"/>
+<path d="M 156 66 L 196 66" stroke="#5c6776" stroke-width="3" fill="none"/>
+<path d="M 130 96 L 206 96 C 212 96 214 100 214 104 L 214 118 C 214 122 212 126 206 126 L 136 126 L 128 132 L 130 104 C 130 100 128 96 130 96 Z" fill="#2a3442"/>
+<path d="M 140 106 L 196 106 M 140 116 L 176 116" stroke="#8a95a3" stroke-width="2.2" fill="none"/>
+<path d="M 196 140 L 262 140 C 268 140 270 144 270 148 L 270 170 C 270 176 268 178 262 178 L 196 178 C 190 178 188 174 188 170 L 188 148 C 188 144 190 140 196 140 Z" fill="none" stroke="#3fd0c9" stroke-width="1.6" stroke-dasharray="5 4"/>
+<path d="M 196 146 L 222 146 L 222 158 L 196 158 Z M 236 160 L 262 160 L 262 172 L 236 172 Z" fill="#3fd0c9" opacity=".22"/>
+<path d="M 252 146 L 262 146 L 262 154 L 252 154 Z" fill="#3fd0c9" opacity=".5"/>
+<path d="M 130 192 L 214 192 L 214 222 L 130 222 Z" fill="none" stroke="#5c6776" stroke-width="1.6" stroke-dasharray="5 4"/>
+<path d="M 136 198 L 150 198 L 150 208 L 136 208 Z M 196 210 L 210 210 L 210 218 L 196 218 Z" fill="#8a95a3" opacity=".35"/>
+<path d="M 206 236 L 262 236 C 268 236 270 240 270 244 L 270 258 C 270 262 268 266 262 266 L 214 266 C 208 266 206 262 206 258 Z" fill="#2fa9a4"/>
+<path d="M 216 246 L 258 246 M 230 256 L 258 256" stroke="#0f1420" stroke-width="2.2" opacity=".55" fill="none"/>
+<path d="M 160 280 L 270 280 L 270 318 L 160 318 Z" fill="none" stroke="#3fd0c9" stroke-width="1.6" stroke-dasharray="5 4"/>
+<path d="M 166 286 L 186 286 L 186 298 L 166 298 Z M 236 300 L 262 300 L 262 312 L 236 312 Z" fill="#3fd0c9" opacity=".22"/>
+<path d="M 200 288 L 208 288 L 208 296 L 200 296 Z" fill="#e0483e" opacity=".7"/>
+<path d="M 110 326 L 290 326 L 290 360 L 110 360 Z" fill="#18202e"/>
+<path d="M 126 334 L 244 334 C 250 334 252 338 252 342 L 252 342 L 126 342 Z" fill="#2a3442"/>
+<path d="M 120 52 L 230 52 L 120 200 Z" fill="#ffffff" opacity=".04"/>
+</g>
+<path d="M 102 70 C 102 50 112 34 132 32" stroke="#3fd0c9" stroke-width="2" opacity=".5" fill="none"/>
+</g></svg>

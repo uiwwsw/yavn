@@ -1,0 +1,27 @@
+languages: [ko]
+summary: "AI 재난으로 모든 칩이 미쳐 버린 날, 멀쩡한 건 싸구려 레트로 게임기 하나. 소년은 그 CPU로 고장 난 안드로이드를 깨운다. 느리고 엉뚱한, 세상에서 가장 저사양인 친구와의 생존기. 5장, 결말 3종."
+thumbnail: "assets/bg/title.svg"
+tags:
+  - sci-fi
+  - post-apocalypse
+  - heartwarming
+  - complete
+  - pixel-art
+tagLabels:
+  sci-fi: SF
+  post-apocalypse: 재난 이후
+  heartwarming: 따뜻한
+  complete: 완결
+  pixel-art: 픽셀 아트
+showcase:
+  label: "8BIT HEART · 5 CHAPTERS"
+  backgroundColor: "#1d2b53"
+  image:
+    positionX: 62
+    positionY: 50
+    scale: 1
+    offsetX: 0
+    offsetY: 0
+translations:
+  en:
+    summary: "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits — a survival story with three endings."

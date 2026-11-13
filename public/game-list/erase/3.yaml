@@ -1,0 +1,186 @@
+chapterTitle: "ERASE"
+
+script:
+  - scene: rooftop
+  - scene: reveal
+
+scenes:
+  rooftop:
+    title: "옥상"
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "현재\n한도윤 · 29"
+      - bg: { id: rooftop, transition: fade, duration: 1200 }
+      - music: wind
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "바람이 센 밤. 도윤은 난간에서 한참 떨어진 물탱크 옆에 서 있다. 도시는 아무 일도 없다는 듯 밝다."
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: whisper
+          text: "다 지우면… 아무도 몰라."
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: whisper
+          text: "지수도 몰라."
+      - say:
+          char: 의사
+          with: []
+          text: "눈 뜨면… 새로 시작하는 거예요."
+      - say:
+          channel: thought
+          with: []
+          text: "이 목소리를 안다. 언제 들었는지 모르는데, 안다."
+
+  reveal:
+    title: "수술대"
+    actions:
+      - bg: { id: surgery_reveal, transition: fade, duration: 1400 }
+      - music: cold_room
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "수술실. 처음 그날. 시트가 천천히 걷힌다."
+      - char: { id: 하린, position: center, emotion: sleep }
+      - say:
+          char: 하린.sleep
+          with: []
+          channel: action
+          text: "수술대 위의 얼굴. 열여덟의 유하린."
+      - say:
+          char: 의사
+          with: []
+          text: "다 지워 드릴게요. 이름도, 얼굴도, 기억도. 걱정 마세요."
+      - say:
+          channel: card
+          with: []
+          text: "열여덟의 하린은 ERASE를 받았다.\n눈을 뜬 사람의 이름은, 한도윤이었다."
+      - bg: { id: rooftop, transition: fade, duration: 900 }
+      - music: wind
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤.panic
+          with: []
+          text: "…나는, 지운 적이 있구나. 나 자체를."
+      - say:
+          channel: thought
+          with: []
+          text: "들킬 것 같으면 지웠다. 위험하면 새로 시작했다. 눈을 감고. 처음부터 그랬다."
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 동의서를 지참해 주세요."
+      - choice:
+          key: e3_final
+          prompt: "엄지가 화면 위에 있다."
+          with: []
+          options:
+            - text: "다 지운다. 이번에도"
+              goto: end_erase
+            - text: "남겨 둔 아이 사진을 연다"
+              when: { var: kept_photo, op: eq, value: true }
+              goto: end_photo
+            - text: "지수의 마지막 메시지를 연다"
+              when: { var: told_jisu, op: eq, value: 2 }
+              goto: end_unfinished
+
+  end_erase:
+    actions:
+      - say:
+          channel: action
+          with: []
+          erase: true
+          text: "연락처. 메시지. 사진. 계정. 마지막 남은 것까지, 하나씩. 화면이 가벼워진다."
+      - add: { deleted: 10 }
+      - say:
+          char: 의사
+          with: []
+          text: "새로운 삶이 시작될 거예요."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "자동차 소리. 멀리서 웃음. 도시는 아무 일도 없었다는 듯 돌아간다."
+      - ending: erase_loop
+
+  end_photo:
+    actions:
+      - sticker:
+          id: e3_photo
+          image: child_photo_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 600
+      - say:
+          channel: narration
+          with: []
+          text: "놀이터의 아이. 이제야 안다. 이 아이는 하린이다. 지우기 전의, 아무것도 지우지 않던."
+      - say:
+          char: 도윤
+          with: []
+          delivery: sad
+          text: "너만은… 남겨 둘게."
+      - clearSticker: { id: e3_photo, leave: fadeOut }
+      - say:
+          channel: action
+          with: []
+          text: "예약 문자를 지운다. 대신 다른 번호를 찾는다. 보건소 익명 검사, 내일 아침 아홉 시."
+      - bg: { id: clinic_hall, transition: fade, duration: 1000 }
+      - sticker:
+          id: e3_ticket
+          image: ticket_sticker
+          x: 50
+          y: 32
+          width: "clamp(150px, 20%, 260px)"
+          enter: fadeIn
+          inputLockMs: 400
+      - get: test_ticket
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "대기 번호 47. 결과는 아직 모른다. 그래도 도윤은 이 번호를 지우지 않는다."
+      - clearSticker: { id: e3_ticket, leave: fadeOut }
+      - ending: kept_photo
+
+  end_unfinished:
+    actions:
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "검사 결과랑 상관없어. 거짓말한 시간이 길었던 게 아파. 반지는 두고 갈게."
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "그래도 이번엔 네 입으로 들어서, 고마워."
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤
+          with: []
+          delivery: sad
+          text: "…응."
+      - say:
+          channel: thought
+          with: []
+          text: "완성은 없다. 그래도 이 메시지는 지우지 않는다. 처음으로, 남은 걸 견뎌 본다."
+      - say:
+          channel: action
+          with: []
+          text: "예약 확정 문자 위에서 손가락을 뗀다. 계단을 내려간다."
+      - ending: unfinished

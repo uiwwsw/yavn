@@ -1570,6 +1570,9 @@ export default function App() {
     dialogHasText,
     dialogCameraTargetId,
     dialogChannel,
+    dialogSide,
+    dialogErase,
+    dialogTyping,
     dialogDelivery,
     dialogUiHidden,
     skipReadActive,
@@ -1608,6 +1611,9 @@ export default function App() {
     dialogHasText: Boolean(state.dialog.fullText),
     dialogCameraTargetId: state.dialog.cameraTargetId,
     dialogChannel: state.dialog.channel,
+    dialogSide: state.dialog.side,
+    dialogErase: state.dialog.erase,
+    dialogTyping: state.dialog.typing,
     dialogDelivery: state.dialog.delivery,
     dialogUiHidden: state.dialogUiHidden,
     skipReadActive: state.skipReadActive,
@@ -4436,6 +4442,8 @@ export default function App() {
     system: t("시스템"),
     thought: t("속마음"),
     action: undefined,
+    message: t("메시지"),
+    card: undefined,
   }[dialogChannel];
 
   return (
@@ -5282,7 +5290,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box channel-${dialogChannel} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && choiceGate.presentation === 'explore' ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && choiceGate.presentation === 'explore' ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">

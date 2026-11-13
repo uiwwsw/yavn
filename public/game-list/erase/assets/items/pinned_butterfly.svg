@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>표본 나비</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M 54 64 L 346 64 L 346 336 L 54 336 Z" fill="#3a2f2a" stroke="#1b1f2b" stroke-width="2.6"/>
+<path d="M 54 64 L 76 86 M 346 64 L 324 86 M 346 336 L 324 314 M 54 336 L 76 314" stroke="#1b1f2b" stroke-width="1.6" fill="none"/>
+<path d="M 76 86 L 324 86 L 324 314 L 76 314 Z" fill="#e9e6dd" stroke="#1b1f2b" stroke-width="2"/>
+<path d="M 76 86 L 324 86 L 316 94 L 84 94 Z" fill="#c9c4b8"/>
+<path d="M 200 196 C 176 150 128 120 104 136 C 86 150 98 196 140 214 C 160 222 184 216 200 206 Z" fill="#3c6f86" stroke="#1b1f2b" stroke-width="2.2"/>
+<path d="M 200 196 C 224 150 272 120 296 136 C 314 150 302 196 260 214 C 240 222 216 216 200 206 Z" fill="#3c6f86" stroke="#1b1f2b" stroke-width="2.2"/>
+<path d="M 198 210 C 176 214 140 226 138 256 C 138 276 162 280 178 262 C 188 250 196 232 198 214 Z" fill="#2d566a" stroke="#1b1f2b" stroke-width="2.2"/>
+<path d="M 202 210 C 224 214 260 226 262 256 C 262 276 238 280 222 262 C 212 250 204 232 202 214 Z" fill="#2d566a" stroke="#1b1f2b" stroke-width="2.2"/>
+<path d="M 108 140 C 120 130 150 136 170 160 M 292 140 C 280 130 250 136 230 160" fill="none" stroke="#1b2a33" stroke-width="5"/>
+<path d="M 198 200 L 120 150 M 198 202 L 128 190 M 202 200 L 280 150 M 202 202 L 272 190 M 198 214 L 154 252 M 202 214 L 246 252" stroke="#1b2a33" stroke-width="1.4" fill="none" opacity=".8"/>
+<circle cx="132" cy="168" r="6" fill="#9fd3d6"/><circle cx="268" cy="168" r="6" fill="#9fd3d6"/>
+<circle cx="156" cy="258" r="4" fill="#d9a441"/><circle cx="244" cy="258" r="4" fill="#d9a441"/>
+<path d="M 200 176 C 206 190 206 230 200 246 C 194 230 194 190 200 176 Z" fill="#20262c" stroke="#1b1f2b" stroke-width="1.6"/>
+<path d="M 198 178 C 192 162 184 150 176 144 M 202 178 C 208 162 216 150 224 144" fill="none" stroke="#20262c" stroke-width="1.6"/>
+<path d="M 201 194 L 214 206" stroke="#1b1f2b" stroke-width="2" opacity=".25" fill="none"/>
+<circle cx="200" cy="192" r="5.5" fill="#e0483e" stroke="#1b1f2b" stroke-width="1.4"/><circle cx="198.5" cy="190.5" r="1.6" fill="#fff" opacity=".8"/>
+<path d="M 240 282 L 304 282 L 304 302 L 240 302 Z" fill="#f6f3ea" stroke="#5c534c" stroke-width="1.4"/>
+<path d="M 248 289 L 292 289 M 248 296 L 278 296" stroke="#8d857c" stroke-width="1.4" fill="none"/>
+<path d="M 84 300 L 196 92 L 232 92 L 120 300 Z" fill="#ffffff" opacity=".18"/>
+<path d="M 236 300 L 320 140 L 320 172 L 252 300 Z" fill="#ffffff" opacity=".12"/>
+<path d="M 76 86 L 324 86" stroke="#3fd0c9" stroke-width="1.6" opacity=".5" fill="none"/>
+</g></svg>

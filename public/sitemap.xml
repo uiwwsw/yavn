@@ -21,7 +21,22 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://yavn.vercel.app/game-list/8bit-heart/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yavn.vercel.app/game-list/muwon/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/game-list/erase/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/game-list/erase-first/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

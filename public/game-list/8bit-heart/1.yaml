@@ -1,0 +1,100 @@
+chapterTitle: "모든 칩이 미친 날"
+
+script:
+  - scene: disaster
+
+scenes:
+  disaster:
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "STAGE 2\n모든 칩이 미친 날"
+      - bg: { id: disaster_city, transition: fade, duration: 600 }
+      - music: chip_run
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "두 달 뒤 오후 네 시 십칠 분. 도시의 모든 화면이 동시에 같은 글자를 띄웠다. 그리고 꺼졌다."
+      - effect: { name: glitch, wait: true }
+      - say:
+          channel: narration
+          with: []
+          text: "신호등이 전부 초록이 됐다. 차들이 서로를 향해 달렸다. 드론이 하늘에서 떨어졌다."
+      - char: { id: 윤재, position: center }
+      - branch:
+          cases:
+            - when: { var: bought_premium, op: eq, value: true }
+              goto: b1_premium_dies
+          default: b1_cheap_lives
+
+  b1_premium_dies:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "주머니 속 최신 기기가 뜨거워진다. 음성 비서가 혼자 말한다. '사용자를 확인할 수 없습니다.'"
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "뭐야, 왜 이렇게 뜨거워—"
+      - effect: { name: impact, wait: true }
+      - say:
+          channel: narration
+          with: []
+          text: "작은 폭발. 연기. 손바닥에 남은 건 녹아내린 플라스틱과, 똑똑했던 칩의 잔해."
+      - say:
+          channel: thought
+          with: []
+          text: "너무 똑똑한 기계는 너무 쉽게 남의 말을 들었다. 그날, 도시의 모든 똑똑한 것들이 그랬다."
+      - gameOver:
+          title: "너무 똑똑했던 기기"
+          message: "최신 칩은 모두 해킹당했다. 아무도 노리지 않을 만큼 단순한 기계라면, 살아남았을지도."
+          recoverToChoice: b0_buy
+
+  b1_cheap_lives:
+    actions:
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "폰 꺼졌어. 이어폰도. 집 전기도. 다 죽었어—"
+      - say:
+          channel: action
+          with: []
+          text: "가방 속에서 삑. 싸구려 게임기 화면에 누렇게 'PRESS START'가 떠 있다."
+      - say:
+          char: 윤재
+          with: []
+          text: "…너는 왜 살아 있어?"
+      - say:
+          channel: thought
+          with: []
+          text: "너무 단순해서. 너무 싸서. 아무도 해킹할 가치가 없어서."
+      - bg: { id: ruined_street, transition: fade, duration: 1200 }
+      - music: chip_home
+      - say:
+          channel: card
+          with: []
+          text: "열흘 뒤"
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "도시는 조용해졌다. 사람들은 떠났거나 숨었다. 윤재는 혼자다. 게임기 배터리는 두 칸."
+      - bg: { id: android_found, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "골목 끝 벽에 사람 하나가 기대 앉아 있다. 아니, 사람을 닮은 것. 가슴 패널이 열려 있고 한쪽 눈이 꺼져 있다."
+      - char: { id: 로봇, position: right, emotion: off }
+      - say:
+          char: 윤재
+          with: []
+          text: "안드로이드다. 가정용. CPU 소켓이… 비었네. 타 버렸나."
+      - say:
+          channel: thought
+          with: []
+          text: "그때 미친 생각이 떠올랐다. 이 게임기 안의 CPU를 빼서 넣으면?"
+      - goto: /2.yaml
