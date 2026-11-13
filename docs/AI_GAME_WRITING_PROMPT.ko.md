@@ -88,6 +88,7 @@
 - 모든 장면이 같은 틀(카드 → 배경 → 내레이션 → 대사 → 선택 → 암전)로 시작하지 않게 한다.
   대화 한가운데서 시작하기, 메시지만으로 된 장면, 대사 한 줄로 끊기 등을 섞는다.
 - 다투거나 다그치거나 놀라는 순간에는 move로 몸이 움직이게 한다(장마다 2~5번, 남발 금지).
+- 끄덕임·한숨·떨림처럼 감정이 몸에 드러나는 줄에는 say.motion 또는 emote를 붙인다(대사 서너 줄에 한 번 정도).
 
 ━━━━━━━━ 엔진 규칙 (틀리면 안 열린다) ━━━━━━━━
 config.yaml
@@ -104,7 +105,8 @@ base.yaml
   assets.characters:
     <이름>: { name: "표시 이름", base: assets/char/x.svg, placement: prompt-top,
              defaultFraming: portrait, framings: { portrait: { scale: 1, cropBottom: 0.3 }, full: { scale: 1 } },
-             emotions: { smile: assets/char/x-smile.svg } }
+             emotions: { smile: assets/char/x-smile.svg },
+             emotionMotions: { smile: nod } }   # 선택: 그 표정으로 바뀔 때 자동 몸짓
   state: { 변수: 기본값 }   # 쓰는 변수는 전부 여기 선언 (평면 맵)
 inventory:   # base.yaml 최상위
   <아이템id>: { name, description, image: assets/items/x.svg, category, order }   # 설명에는 {{변수}} 못 씀
@@ -127,6 +129,11 @@ inventory:   # base.yaml 최상위
   - move: { id: 인물, toward: 다른인물|camera, style: approach|lunge|retreat|flinch|exit|reset, wait: true? }
       approach 다가섬 / lunge 확 덤빔 / retreat 물러섬 / flinch 움찔 / exit 화면 밖으로 퇴장 / reset 제자리
       두 인물 모두 char로 무대에 올라와 있어야 함. 자기 자신을 향할 수 없음
+  - emote: { id: 인물, motion: 몸짓, repeat: 1~3?, wait: true? }   # 제자리 몸짓. 대사에는 say: { char, motion: 몸짓, text }
+      nod 끄덕 / shake 도리도리 / tremble 떨림 / shiver 오싹 / sigh 한숨 / slump 축 처짐(유지) / perk 번쩍
+      hop 폴짝 / bounce 들뜸 / laugh 웃음 / sob 흐느낌 / gasp 헉 / startle 깜짝 / recoil 몸 젖힘
+      lean_in 몸 기울임 / bow 꾸벅 / sway 휘청 / stomp 쿵 / puff 씩씩 / freeze 얼어붙음 / headtilt 갸웃 / droop 고개 떨굼(유지)
+      인물은 char로 무대에 있어야 함. say/choice/input의 motion은 char(화자)가 있어야 함. 유지 자세는 move reset으로 풂
   - choice:
       key: 고유키   # 결말·복귀가 참조
       prompt: "질문"
@@ -197,6 +204,9 @@ inventory:   # base.yaml 최상위
 다투기, 다그치기, 고백, 위협, 놀람, 웃긴 순간을 찾아 move 액션을 넣어라.
 다그칠 때 approach, 폭발할 때 lunge, 몰릴 때 retreat, 반전에 flinch, 정면으로 섬뜩할 때 toward: camera,
 떠날 때 exit, 긴장이 풀리면 reset. 장마다 2~5번, 두 인물이 모두 char로 무대에 있을 때만.
+자리를 옮길 일은 없지만 감정이 몸에 드러나는 줄에는 say에 motion을 붙여라(동의 nod, 거절 shake, 체념 sigh,
+기쁨 hop, 놀람 startle·gasp, 두려움 tremble, 슬픔 droop·sob, 화 puff·stomp, 의아 headtilt). 대사 서너 줄에 한 번 정도,
+같은 몸짓을 연달아 쓰지 말고, 대사가 이미 말한 감정을 또 강조하는 대신 말과 다른 속마음을 드러낼 때 아껴 써라.
 ```
 
 ---

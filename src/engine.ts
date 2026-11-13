@@ -7,6 +7,7 @@ import type JSZip from 'jszip';
 import { beginStickerLeave } from './assetTransition';
 import { normalizeCharacterEnter } from './characterEntrance';
 import { resolveCharacterFraming } from './characterFraming';
+import { CHARACTER_MOTIONS, clampMotionRepeat, resolveMotionDuration, type CharacterMotion } from './characterEmotes';
 import { resolveAutoCharacterPosition, resolveDialogueVisibleCharacterIds } from './characterLayout';
 import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { waitForVisibleStaticImages } from './imageReady';
@@ -316,6 +317,9 @@ let preloadedAssetUrls = new Set<string>();
 let stickerRenderKeySeed = 0;
 const clearStickerTimers = new Map<string, number>();
 const flinchTimers = new Map<string, number>();
+/** Ends each character's body-language motion: one-shots clear, holds settle into their end pose. */
+const motionTimers = new Map<string, { timer: number; finish: () => void }>();
+let suppressResumedLineMotion = false;
 let runtimeMode: RuntimeMode;
 let storySessionRevision = 0;
 let urlGameRootBase = '';
@@ -1166,6 +1170,12 @@ function clearTimers() {
     storyClock.clear(timer);
   }
   flinchTimers.clear();
+  // Finish motions now so a remounted actor never replays a stale one.
+  for (const { timer, finish } of [...motionTimers.values()]) {
+    storyClock.clear(timer);
+    finish();
+  }
+  motionTimers.clear();
 }
 
 function clearObjectUrls() {
@@ -1853,6 +1863,7 @@ function applyCharacterMove(move: CharacterMoveDirective): number {
   }
   if (style === 'reset') {
     store.setCharacterStance(move.id, undefined);
+    releaseCharacterMotion(move.id);
     return MOVE_DURATIONS.reset;
   }
   const moverPosition = findCharacterPosition(move.id);
@@ -1892,6 +1903,66 @@ function applyCharacterMove(move: CharacterMoveDirective): number {
     style,
   });
   return MOVE_DURATIONS[style];
+}
+
+function releaseCharacterMotion(id: string) {
+  const pending = motionTimers.get(id);
+  if (pending) {
+    storyClock.clear(pending.timer);
+    motionTimers.delete(id);
+  }
+  useVNStore.getState().setCharacterMotion(id, undefined);
+}
+
+/** Plays a body-language preset on a staged character and returns how long it runs. */
+export function applyCharacterMotion(id: string, motion: CharacterMotion, repeat = 1): number {
+  if (!findCharacterPosition(id)) return 0;
+  const pending = motionTimers.get(id);
+  if (pending) {
+    storyClock.clear(pending.timer);
+    motionTimers.delete(id);
+  }
+  const plays = clampMotionRepeat(repeat);
+  const duration = resolveMotionDuration(motion, plays);
+  const hold = CHARACTER_MOTIONS[motion].hold === true;
+  useVNStore.getState().setCharacterMotion(id, { motion, repeat: hold ? 1 : plays });
+  const finish = () => {
+    motionTimers.delete(id);
+    const current = useVNStore.getState().characterMotions[id];
+    if (current?.motion !== motion) return;
+    if (hold) useVNStore.getState().setCharacterMotion(id, { motion, repeat: 1, settled: true });
+    else useVNStore.getState().setCharacterMotion(id, undefined);
+  };
+  motionTimers.set(id, { timer: storyClock.set(finish, duration), finish });
+  return duration;
+}
+
+/**
+ * Line-start body language: an explicit `motion` moves the speaker; otherwise a character's
+ * `emotionMotions` entry fires when this line switches them into that emotion.
+ */
+function playLineMotions(
+  game: GameData,
+  speakerId: string | undefined,
+  motion: CharacterMotion | undefined,
+  refs: Array<{ id: string; emotion?: string }>,
+  previousEmotions: Map<string, string | undefined>,
+) {
+  if (suppressResumedLineMotion) {
+    suppressResumedLineMotion = false;
+    return;
+  }
+  if (speakerId && motion) applyCharacterMotion(speakerId, motion);
+  for (const ref of refs) {
+    if (!ref.emotion || (motion && ref.id === speakerId)) continue;
+    if (previousEmotions.get(ref.id) === ref.emotion) continue;
+    const implied = game.assets.characters[ref.id]?.emotionMotions?.[ref.emotion];
+    if (implied) applyCharacterMotion(ref.id, implied);
+  }
+}
+
+function snapshotEmotions(refs: Array<{ id: string }>): Map<string, string | undefined> {
+  return new Map(refs.map((ref) => [ref.id, getVisibleCharacterEmotion(ref.id)]));
 }
 
 function clearStickerWithLeave(id: string, leave?: StickerLeaveEffect | StickerLeaveOptions): void {
@@ -4137,6 +4208,8 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress, fallbac
     const nextChapter = preparedChapters[chapterIndex + 1];
 
     const resumed = Boolean(resume && (canResumeHere || resumeAtChapterStart));
+    // A loaded save re-presents its line; body language already happened before the save.
+    suppressResumedLineMotion = Boolean(resume && canResumeHere);
     runToNextPause();
     if (activeChapterIndex !== chapterIndex) {
       return resumed;
@@ -4711,8 +4784,10 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     if (presentation.speakerId) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
+      const previousEmotions = snapshotEmotions(presentation.emotionRefs);
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.choice.framing);
+      playLineMotions(game, presentation.speakerId, action.choice.motion, presentation.emotionRefs, previousEmotions);
     }
     applyCameraDirective(action.choice.camera, presentation.speakerId);
     useVNStore.getState().setDialog({
@@ -4806,6 +4881,25 @@ function runToNextPause(loopGuard = 0) {
     return;
   }
 
+  if ('emote' in action) {
+    suppressResumedLineMotion = false;
+    const duration = applyCharacterMotion(action.emote.id, action.emote.motion, action.emote.repeat);
+    // Skipping read lines never stalls on body language.
+    if (action.emote.wait && duration > 0 && !useVNStore.getState().skipReadActive) {
+      useVNStore.getState().setBusy(true);
+      waitTimer = storyClock.set(() => {
+        waitTimer = undefined;
+        useVNStore.getState().setBusy(false);
+        incrementCursor();
+        runToNextPause(loopGuard + 1);
+      }, duration);
+      return;
+    }
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
   if ('wait' in action) {
     useVNStore.getState().setBusy(true);
     waitTimer = storyClock.set(() => {
@@ -4847,8 +4941,10 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
     if (presentation.speakerId) {
       useVNStore.getState().promoteSpeaker(presentation.speakerId);
+      const previousEmotions = snapshotEmotions(presentation.emotionRefs);
       syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
       syncCharacterFraming(game, presentation.speakerId, action.input.framing);
+      playLineMotions(game, presentation.speakerId, action.input.motion, presentation.emotionRefs, previousEmotions);
     }
     applyCameraDirective(action.input.camera, presentation.speakerId);
     useVNStore.getState().setDialog({
@@ -4920,9 +5016,11 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().clearChoiceGate();
     useVNStore.getState().promoteSpeaker(spokenSpeakerId);
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
+    const previousEmotions = snapshotEmotions(presentation.emotionRefs);
     syncCharacterEmotions(game, state.baseUrl, presentation.emotionRefs);
     syncCharacterFraming(game, presentation.speakerId, action.say.framing);
     applyCameraDirective(action.say.camera, presentation.speakerId);
+    playLineMotions(game, presentation.speakerId, action.say.motion, presentation.emotionRefs, previousEmotions);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',

@@ -1,4 +1,7 @@
 import type { UiTemplateId } from './uiTemplates';
+import type { CharacterMotion } from './characterEmotes';
+
+export type { CharacterMotion } from './characterEmotes';
 
 export type { UiTemplateId } from './uiTemplates';
 
@@ -84,6 +87,8 @@ export type CharacterAssetDefinition = {
   calibration?: CharacterCalibration;
   /** Display name for the speaker label; may contain {{variable}} placeholders. Defaults to the id. */
   name?: string;
+  /** Emotion → body-language motion played when a line switches the character to that emotion. */
+  emotionMotions?: Record<string, CharacterMotion>;
 };
 
 export type CharacterFramingState = {
@@ -207,6 +212,8 @@ export type SayAction = {
     /** Erase the line on screen once it has been read (message, record, thought, …). */
     erase?: boolean;
     autoAdvance?: number;
+    /** Body-language motion the speaker plays as the line starts. */
+    motion?: CharacterMotion;
   };
 };
 
@@ -281,6 +288,7 @@ export type InputAction = {
     routes: InputRoute[];
     maxLength?: number;
     defaultValue?: string;
+    motion?: CharacterMotion;
   };
 };
 
@@ -326,6 +334,7 @@ export type ChoiceAction = {
     forgiveMessage?: string;
     timeoutMs?: number;
     timeoutOptionIndex?: number;
+    motion?: CharacterMotion;
     options: ChoiceOption[];
   };
 };
@@ -382,6 +391,7 @@ export type Action =
   | GameOverAction
   | { wait: number }
   | { move: CharacterMoveDirective }
+  | { emote: CharacterEmoteDirective }
   | { place: string }
   | { effect: string | ScreenEffectOptions }
   | { goto: string };
@@ -549,6 +559,25 @@ export type CharacterStance = {
   scale: number;
   style: CharacterMoveStyle;
   revision: number;
+};
+
+/** Body language: a short in-place motion (nod, sigh, tremble …) on a staged character. */
+export type CharacterEmoteDirective = {
+  id: string;
+  motion: CharacterMotion;
+  /** 1–3 plays; ignored by motions that hold their end pose. */
+  repeat?: number;
+  /** Hold the next action until the motion ends. */
+  wait?: boolean;
+};
+
+/** The motion a character is playing (or holding). `revision` replays the same motion. */
+export type CharacterMotionState = {
+  motion: CharacterMotion;
+  repeat: number;
+  revision: number;
+  /** A holding motion has finished: show its end pose without animating again. */
+  settled?: boolean;
 };
 
 /** Short time/place caption shown in the HUD; it fades on its own and never waits for input. */
