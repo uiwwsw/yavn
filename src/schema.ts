@@ -111,6 +111,7 @@ const stickerEnterEffectSchema = z.enum([
   'rotateIn',
 ]);
 const characterEnterEffectSchema = stickerEnterEffectSchema;
+export const characterMoveStyleSchema = z.enum(['approach', 'lunge', 'retreat', 'flinch', 'exit', 'reset']);
 const characterEnterSchema = z.union([
   characterEnterEffectSchema,
   z
@@ -278,6 +279,15 @@ const actionBodySchema = z.union([
   z.object({ ending: z.string().min(1) }),
   z.object({ gameOver: gameOverSchema }),
   z.object({ wait: z.number().nonnegative() }),
+  z.object({
+    move: z.object({
+      id: z.string().min(1),
+      style: characterMoveStyleSchema.optional(),
+      toward: z.string().min(1).optional(),
+      wait: z.boolean().optional(),
+    }).strict(),
+  }).strict(),
+  z.object({ place: z.string().trim().min(1).max(60) }).strict(),
   z.object({
     effect: z.union([
       screenEffectNameSchema,

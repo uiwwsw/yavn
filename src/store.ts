@@ -6,6 +6,8 @@ import type {
   AttackPresentation,
   BackgroundPresentation,
   CharacterSlot,
+  CharacterStance,
+  PlaceCaption,
   ChoiceGateState,
   DialogueChannel,
   DialogueDelivery,
@@ -58,6 +60,8 @@ type VNState = {
   background?: string;
   backgroundPresentation: BackgroundPresentation;
   attack?: AttackPresentation;
+  characterStances: Record<string, CharacterStance>;
+  placeCaption?: PlaceCaption;
   stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
   speakerOrder: string[];
@@ -88,6 +92,8 @@ type VNState = {
   setCursor: (sceneId: string, actionIndex: number) => void;
   setBackground: (url: string, presentation?: Omit<BackgroundPresentation, 'revision'>) => void;
   setAttack: (attack?: AttackPresentation) => void;
+  setCharacterStance: (id: string, stance?: Omit<CharacterStance, 'revision'>) => void;
+  setPlaceCaption: (text?: string) => void;
   setSticker: (sticker: StickerSlot) => void;
   clearSticker: (id: string) => void;
   clearAllStickers: () => void;
@@ -219,6 +225,7 @@ export const useVNStore = create<VNState>((set) => ({
   currentSceneId: '',
   actionIndex: 0,
   stickers: {},
+  characterStances: {},
   characters: {},
   speakerOrder: [],
   visibleCharacterIds: [],
@@ -272,6 +279,8 @@ export const useVNStore = create<VNState>((set) => ({
       resolvedEndingId: state.resolvedEndingId,
       gameOver: undefined,
       attack: undefined,
+      characterStances: {},
+      placeCaption: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,
@@ -283,6 +292,19 @@ export const useVNStore = create<VNState>((set) => ({
     backgroundPresentation: { ...presentation, revision: state.backgroundPresentation.revision + 1 },
   })),
   setAttack: (attack) => set({ attack }),
+  setCharacterStance: (id, stance) => set((state) => {
+    if (!stance) {
+      if (!state.characterStances[id]) return state;
+      const next = { ...state.characterStances };
+      delete next[id];
+      return { characterStances: next };
+    }
+    const revision = (state.characterStances[id]?.revision ?? 0) + 1;
+    return { characterStances: { ...state.characterStances, [id]: { ...stance, revision } } };
+  }),
+  setPlaceCaption: (text) => set((state) => ({
+    placeCaption: text ? { text, revision: (state.placeCaption?.revision ?? 0) + 1 } : undefined,
+  })),
   setSticker: (sticker) =>
     set((state) => {
       const next = reconcileSticker(state.stickers[sticker.id], sticker);
@@ -434,6 +456,8 @@ export const useVNStore = create<VNState>((set) => ({
       resolvedEndingId: undefined,
       gameOver: undefined,
       attack: undefined,
+      characterStances: {},
+      placeCaption: undefined,
       effect: undefined,
       busy: false,
       waitingInput: false,

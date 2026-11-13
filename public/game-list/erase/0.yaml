@@ -11,10 +11,18 @@ scenes:
       - bg: { id: surgery, transition: fade, duration: 1200 }
       - music: cold_room
       - say:
-          channel: narration
+          char: 의사
           with: []
           camera: wide
-          text: "수술대 위에 누군가 누워 있다. 시트가 얼굴까지 덮여 있고, 손목에 감긴 이름표는 뒤집혀 있다."
+          text: "마지막으로 한 번 더 읽어 드릴게요. 규정이라서요."
+      - say:
+          channel: record
+          with: []
+          text: "ERASE 시술 동의서\n1. 본 시술은 지난 삶의 기억과 이름, 얼굴을 지우고 새 신원으로 깨어나게 합니다.\n2. 지운 기억은 어떤 방법으로도 복구되지 않습니다.\n3. 본인이 정리하지 않은 휴대전화 기록(사진·메시지)은 그대로 남습니다."
+      - say:
+          char: 의사
+          with: []
+          text: "서명 확인했어요. 이름표는 뒤집어 둘게요. 깨어나실 때 헷갈리시지 않게."
       - say:
           char: 의사
           with: []
@@ -32,14 +40,6 @@ scenes:
           with: []
           text: "ERASE"
       - say:
-          channel: narration
-          with: []
-          text: "ERASE는 사람의 기억을 지우는 시술이다. 지난 삶의 기억과 이름, 얼굴까지 지우고 나면, 깨어난 사람은 다른 이름으로 새 삶을 산다. 동의서에 서명하면 누구나 받을 수 있고, 한번 지운 것은 되돌릴 수 없다."
-      - say:
-          channel: narration
-          with: []
-          text: "이 이야기는 두 사람을 번갈아 따라간다. 결혼을 한 달 앞둔 스물아홉 살 회사원 한도윤의 지금, 그리고 열여덟 살 고등학생 유하린의 이야기. 두 사람이 어떤 관계인지는 아직 알 수 없다."
-      - say:
           channel: card
           with: []
           text: "현재\n한도윤 · 29 · 결혼 한 달 전"
@@ -49,11 +49,7 @@ scenes:
     actions:
       - bg: { id: photo_studio, transition: cut }
       - music: neon
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "한도윤은 영업2팀 대리다. 한 달 뒤 토요일, 이지수와 결혼한다. 오늘은 청첩장에 넣을 사진을 찍는 날이다."
+      - place: "금요일 오후 · 청첩장 사진 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say:
@@ -73,17 +69,18 @@ scenes:
           with: [지수]
           text: "…그날은 비 왔잖아."
       - say:
-          channel: action
-          with: [지수, 도윤]
-          text: "작가가 렌즈 너머에서 신랑님 턱 조금만, 하고 손짓한다. 도윤은 턱을 너무 많이 내린다."
+          char: 지수
+          with: [도윤]
+          text: "작가님이 신랑님 턱 조금만 당기래. 조금만."
       - say:
           char: 지수.warm
           with: [도윤]
           text: "아니 그렇게 말고. 이리 와 봐. 넥타이도 돌아갔어."
+      - move: { id: 지수, toward: 도윤, style: approach }
       - say:
-          channel: action
-          with: [지수, 도윤]
-          text: "지수가 매듭을 풀었다가 다시 맨다. 작가가 기다리는 동안 두 번 더 고친다."
+          char: 지수
+          with: [도윤]
+          text: "가만있어 봐. 한 번만 더. …아니 한 번만 더."
       - say:
           char: 지수
           with: [도윤]
@@ -150,14 +147,11 @@ scenes:
 
   e0_studio_avoid:
     actions:
-      - say:
-          channel: action
-          with: [지수, 도윤]
-          text: "도윤이 지수 귀 뒤로 머리카락을 넘겨 준다. 작가가 오, 좋아요 그거, 하며 연달아 셔터를 누른다."
+      - move: { id: 도윤, toward: 지수, style: approach }
       - say:
           char: 지수.warm
           with: [도윤]
-          text: "뭐야. 대답을 해야지."
+          text: "뭐야. 작가님 지금 셔터 엄청 누르신다. 대답을 해야지."
       - say:
           char: 도윤.smile
           with: [지수]
@@ -167,6 +161,8 @@ scenes:
   e0_flash:
     actions:
       - effect: { name: flash, wait: true }
+      - move: { id: 지수, style: reset }
+      - move: { id: 도윤, style: reset }
       - sticker:
           id: e0_invite
           image: invitation_sticker
@@ -180,9 +176,9 @@ scenes:
           with: [지수]
           text: "그 앞에 거 저 눈 감았어요. 그건 지워 주세요."
       - say:
-          channel: narration
-          with: []
-          text: "모니터에 방금 찍힌 컷이 뜬다. 작가가 이거 그대로 시안 들어가도 되겠다고 하자, 지수가 처음으로 크게 웃는다. 식까지는 한 달이 남았다."
+          char: 지수.warm
+          with: [도윤]
+          text: "이거 그대로 시안 들어가도 되겠대. 봐 봐, 너 이번엔 눈 떴어."
       - get: invitation
       - clearSticker: { id: e0_invite, leave: fadeOut }
       - goto: e0_club
@@ -190,10 +186,6 @@ scenes:
   e0_club:
     title: "클럽"
     actions:
-      - say:
-          channel: narration
-          with: []
-          text: "그날 밤, 도윤은 대학 동기 민석의 생일 모임에 나갔다. 지수는 먼저 집에 들어가 있다."
       - say:
           channel: message
           side: me
@@ -207,16 +199,15 @@ scenes:
           with: []
           text: "ㅇㅋ 대리 불러 운전 절대 xx"
       - bg: { id: club, transition: cut }
+      - place: "금요일 밤 12:40 · 클럽"
       - say:
-          channel: narration
+          channel: message
+          side: me
+          char: 도윤
           with: []
-          camera: wide
-          text: "열두 시 사십 분. 민석이는 화장실에 간 지 이십 분째고, 도윤은 테이블에 혼자 남아 지수의 마지막 메시지를 다시 연다."
+          text: "민석아 화장실에서 자냐"
+      - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
-      - say:
-          channel: action
-          with: [준성]
-          text: "옆 테이블에 있던 남자가 몸을 기울인다. 서른 초반쯤, 처음 보는 얼굴이다."
       - say:
           char: 준성
           with: [도윤]
@@ -225,6 +216,7 @@ scenes:
           char: 도윤
           with: [준성]
           text: "네?"
+      - move: { id: 준성, toward: 도윤, style: approach }
       - say:
           char: 준성
           with: [도윤]
@@ -265,7 +257,7 @@ scenes:
           text: "와. 축하해요. 그럼 축하주는 내가 살게요. 모르는 사람이 사는 게 제일 부담 없잖아요."
       - choice:
           key: e0_junseong
-          prompt: "준성이 잔 두 개를 들고 서 있다. 하나는 이미 도윤 쪽으로 기울어 있다."
+          prompt: "잔 두 개 중 하나가 이미 이쪽으로 기울어 있다."
           char: 준성
           options:
             - text: "잔을 받는다. \"한 잔만이요.\""
@@ -288,9 +280,9 @@ scenes:
           with: [도윤]
           text: "이십 분 동안 그냥 서 있게요?"
       - say:
-          channel: action
-          with: [준성]
-          text: "도윤은 대리 앱을 내렸다가, 잠깐 뒤에 호출 취소를 누른다."
+          channel: system
+          with: []
+          text: "대리운전 호출을 취소하시겠습니까?\n기사님이 배정되기 전입니다."
       - goto: e0_night
 
   e0_night:
@@ -315,11 +307,12 @@ scenes:
     actions:
       - bg: { id: dawn_room, transition: fade, duration: 1600 }
       - music: static
+      - place: "토요일 새벽 5:10 · 처음 보는 방"
       - say:
           channel: narration
           with: []
           camera: wide
-          text: "토요일 새벽 다섯 시 십 분. 처음 보는 방이다. 어젯밤 클럽에서 잔을 건넨 그 남자의 집. 창밖은 아직 파랗고, 남자는 침대 반대편에서 등을 돌린 채 자고 있다."
+          text: "클럽에서 잔을 건넨 남자가 침대 반대편에서 등을 돌린 채 자고 있다."
       - say:
           channel: thought
           with: []
@@ -331,7 +324,7 @@ scenes:
       - choice:
           key: e0_erase
           presentation: explore
-          prompt: "밝기를 끝까지 낮추고 휴대폰을 연다. 어젯밤 흔적을 하나씩 지운다."
+          prompt: "밝기를 끝까지 낮추고 휴대폰을 연다."
           with: []
           camera: wide
           options:
@@ -371,9 +364,9 @@ scenes:
           erase: true
           text: "아무거나요"
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "대화방을 나가고, 번호를 차단한다."
+          text: "대화방에서 나갔습니다.\n이 번호를 차단했습니다."
       - add: { deleted: 2 }
       - set: { e0_messages: true }
       - goto: e0_erase
@@ -381,9 +374,13 @@ scenes:
   e0_erase_photos:
     actions:
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "흔들린 사진이 네 장 있다. 세 장은 천장이고 한 장에만 손이 찍혔다. 네 장 다 길게 눌러 지우고, 최근 삭제된 항목에 들어가서 한 번 더 지운다."
+          text: "사진 4장을 삭제하시겠습니까?"
+      - say:
+          channel: system
+          with: []
+          text: "최근 삭제된 항목 · 4장 영구 삭제\n이 작업은 되돌릴 수 없습니다."
       - add: { deleted: 1 }
       - set: { e0_photos: true }
       - goto: e0_erase
@@ -422,17 +419,13 @@ scenes:
           char: 도윤
           with: []
           text: "민석이네서 뻗었어 미안ㅠ 지금 감"
-      - say:
-          channel: action
-          with: []
-          text: "현관문이 아주 천천히 닫힌다. 걸쇠가 걸리는 소리까지 손으로 막는다."
       - wait: 1200
-      - char: { id: 준성, position: center }
+      - char: { id: 준성, position: center, emotion: tired }
+      - move: { id: 준성, toward: camera, style: approach }
       - say:
-          channel: action
-          char: 준성.tired
+          channel: system
           with: []
-          text: "준성이 눈을 뜬다. 감고만 있던 눈이다. 베개 옆에서 휴대폰을 집어, 어젯밤 받은 번호에 이름을 붙인다."
+          text: "새 연락처 저장 · 어젯밤 받은 번호\n이름:"
       - say:
           char: 준성
           with: []

@@ -39,6 +39,8 @@ import type {
   AttackDirective,
   CameraDirective,
   CharacterSlot,
+  CharacterMoveDirective,
+  CharacterMoveStyle,
   CharAction,
   CharacterEnterEffect,
   CharacterEnterOptions,
@@ -293,6 +295,7 @@ let objectUrls: string[] = [];
 let preloadedAssetUrls = new Set<string>();
 let stickerRenderKeySeed = 0;
 const clearStickerTimers = new Map<string, number>();
+const flinchTimers = new Map<string, number>();
 let runtimeMode: RuntimeMode;
 let storySessionRevision = 0;
 let urlGameRootBase = '';
@@ -1112,6 +1115,10 @@ function clearTimers() {
     window.clearTimeout(timer);
   }
   clearStickerTimers.clear();
+  for (const timer of flinchTimers.values()) {
+    storyClock.clear(timer);
+  }
+  flinchTimers.clear();
 }
 
 function clearObjectUrls() {
@@ -1755,6 +1762,89 @@ function cancelStickerClearTimer(id: string) {
     window.clearTimeout(timer);
     clearStickerTimers.delete(id);
   }
+}
+
+const STAGE_ORDER: Record<Position, number> = { left: 0, center: 1, right: 2 };
+// Distances are in container width (cqw) and are a multiplier on the character's own scale.
+const MOVE_SHAPES: Record<Exclude<CharacterMoveStyle, 'reset' | 'flinch' | 'exit'>, { x: number; scale: number; cameraScale: number }> = {
+  approach: { x: 8, scale: 1.05, cameraScale: 1.12 },
+  lunge: { x: 13, scale: 1.09, cameraScale: 1.2 },
+  retreat: { x: -7, scale: 0.96, cameraScale: 0.9 },
+};
+export const MOVE_DURATIONS: Record<CharacterMoveStyle, number> = {
+  approach: 720,
+  lunge: 260,
+  retreat: 620,
+  flinch: 280,
+  exit: 760,
+  reset: 520,
+};
+
+function findCharacterPosition(id: string): Position | undefined {
+  const characters = useVNStore.getState().characters;
+  return (Object.keys(characters) as Position[]).find((position) => characters[position]?.id === id);
+}
+
+/** -1 = screen left, 1 = screen right, 0 = straight at the camera. */
+function resolveMoveDirection(moverPosition: Position, toward?: string): number {
+  if (toward === 'camera') return 0;
+  const targetPosition = toward ? findCharacterPosition(toward) : undefined;
+  if (targetPosition && targetPosition !== moverPosition) {
+    return Math.sign(STAGE_ORDER[targetPosition] - STAGE_ORDER[moverPosition]);
+  }
+  return Math.sign(STAGE_ORDER.center - STAGE_ORDER[moverPosition]);
+}
+
+/** Applies stage blocking and returns how long the motion takes to land. */
+function applyCharacterMove(move: CharacterMoveDirective): number {
+  const style = move.style ?? 'approach';
+  const store = useVNStore.getState();
+  const pending = flinchTimers.get(move.id);
+  if (pending) {
+    storyClock.clear(pending);
+    flinchTimers.delete(move.id);
+  }
+  if (style === 'reset') {
+    store.setCharacterStance(move.id, undefined);
+    return MOVE_DURATIONS.reset;
+  }
+  const moverPosition = findCharacterPosition(move.id);
+  if (!moverPosition) return 0;
+  const direction = resolveMoveDirection(moverPosition, move.toward);
+  if (style === 'flinch') {
+    const previous = store.characterStances[move.id];
+    const awayFrom = direction === 0 ? 0 : -direction;
+    store.setCharacterStance(move.id, {
+      x: (previous?.x ?? 0) + awayFrom * 2.4,
+      scale: (previous?.scale ?? 1) * 0.97,
+      style: 'flinch',
+    });
+    const timer = storyClock.set(() => {
+      flinchTimers.delete(move.id);
+      if (previous) {
+        useVNStore.getState().setCharacterStance(move.id, { x: previous.x, scale: previous.scale, style: previous.style });
+      } else {
+        useVNStore.getState().setCharacterStance(move.id, undefined);
+      }
+    }, 160);
+    flinchTimers.set(move.id, timer);
+    return MOVE_DURATIONS.flinch;
+  }
+  if (style === 'exit') {
+    // Walk off the nearest edge, away from whoever they are leaving.
+    const away = move.toward && direction !== 0
+      ? -direction
+      : moverPosition === 'left' ? -1 : moverPosition === 'right' ? 1 : direction === 0 ? 1 : -direction;
+    store.setCharacterStance(move.id, { x: away * 60, scale: 1, style: 'exit' });
+    return MOVE_DURATIONS.exit;
+  }
+  const shape = MOVE_SHAPES[style];
+  store.setCharacterStance(move.id, {
+    x: direction === 0 ? 0 : shape.x * direction,
+    scale: direction === 0 ? shape.cameraScale : shape.scale,
+    style,
+  });
+  return MOVE_DURATIONS[style];
 }
 
 function clearStickerWithLeave(id: string, leave?: StickerLeaveEffect | StickerLeaveOptions): void {
@@ -4528,6 +4618,31 @@ function runToNextPause(loopGuard = 0) {
 
   if ('gameOver' in action) {
     triggerGameOver(action.gameOver);
+    return;
+  }
+
+  if ('place' in action) {
+    const text = interpolateText(action.place, useVNStore.getState().routeVars);
+    useVNStore.getState().setPlaceCaption(text);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+
+  if ('move' in action) {
+    const duration = applyCharacterMove(action.move);
+    if (action.move.wait && duration > 0) {
+      useVNStore.getState().setBusy(true);
+      waitTimer = storyClock.set(() => {
+        waitTimer = undefined;
+        useVNStore.getState().setBusy(false);
+        incrementCursor();
+        runToNextPause(loopGuard + 1);
+      }, duration);
+      return;
+    }
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
     return;
   }
 

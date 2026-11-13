@@ -11,20 +11,25 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 0 · 가까운 미래\n모든 똑똑한 기계가 AI 하나에 물려 있는 세상"
+          text: "STAGE 0 · 새벽 2시"
+      - place: "윤재네 집 · 혼자 쓰는 방"
       - say:
-          channel: narration
+          channel: system
           with: []
-          text: "폰, 자동차, 신호등, 배달 드론, 냉장고까지. 세상의 똑똑한 기계는 전부 '코어'라는 AI 네트워크 하나에 연결돼 있다. 업데이트도 코어가, 판단도 코어가 한다."
+          text: "[코어 알림] 이 기기는 코어가 관리합니다. 오늘 밤 3:00 자동 업데이트 예정. 주무시는 동안 저희가 다 알아서 할게요."
       - say:
           channel: card
           with: []
-          text: "PLAYER 1 — 윤재 (16)\n특기: 멀쩡한 기계 뜯어 보기 · 남은 목숨 1 · 용돈 87,000원"
+          text: "PLAYER 1 — 윤재 (16)\n남은 목숨 1 · 용돈 87,000원"
       - char: { id: 윤재, position: center }
       - say:
           char: 윤재
           with: []
-          text: "어제 내 게임기가 사망했다. 화면에 줄 세 개 긋더니 영영 안 켜짐. 향년 여섯 살."
+          text: "폰도 냉장고도 엘리베이터도 밤마다 코어가 업데이트해 준대. 친절하기도 하지. 이 집에서 코어 안 물린 건 내 게임기 하나였는데."
+      - say:
+          char: 윤재
+          with: []
+          text: "그 게임기가 어제 사망했다. 화면에 줄 세 개 긋더니 영영 안 켜짐. 뜯어서 납땜까지 해 봤는데 못 살렸어. 향년 여섯 살."
       - say:
           char: 윤재
           with: []
@@ -91,13 +96,14 @@ scenes:
           char: 윤재
           with: []
           text: "AI가 뭐냐고 되묻는 판매자. 와이파이 없음, 업데이트 없음, 코어랑은 말도 안 섞어 본 기계. 신뢰도가 이상하게 올라간다."
+      - move: { id: 윤재, toward: camera, style: approach }
       - say:
           char: 윤재.excited
           with: []
           text: "근데 무이자 12개월이면… 한 달에 커피 몇 잔? 아냐 난 커피 안 마시잖아. 그럼 공짜 아냐?"
       - choice:
           key: b0_buy
-          prompt: "결제 버튼 앞. 커서가 덜덜 떨린다."
+          prompt: "[결제하시겠습니까?] 커서 깜빡깜빡."
           char: 윤재
           options:
             - text: "HYPERLINK X 결제. 미래의 내가 갚는다"
@@ -129,34 +135,32 @@ scenes:
           with: []
           text: "판매자: ㅇㅋ 내일 문앞"
       - get: console_cheap
+      - place: "다음 날 · 윤재의 방"
+      - move: { id: 윤재, style: reset }
       - say:
-          channel: action
+          char: 윤재
           with: []
-          text: "다음 날. 신문지로 둘둘 만 상자. 전원을 올리자 삑— 하고 화면이 누렇게 뜬다."
+          text: "신문지로 둘둘 말아서 보냈네. 택배 상자값도 아낀 거야? …전원 올린다."
       - say:
           channel: system
           with: []
-          text: "PRESS START"
+          text: "삑— PRESS START"
       - say:
           char: 윤재
           with: []
           continueLabel: "START를 누른다 (뻑뻑함)"
           text: "…진짜 B버튼만 뻑뻑한 게 아니잖아. START도 뻑뻑해."
       - say:
-          channel: action
+          char: 윤재
           with: []
-          text: "상자 바닥에 접힌 설명서, 그리고 손톱만 한 메모리 카드 한 장. 카드 스티커에 매직으로 '8KB'. 설명서 첫 장 한가운데엔 굵은 글씨."
+          text: "상자 바닥에 뭐가 더 있네. 접힌 설명서랑… 손톱만 한 메모리 카드? 매직으로 '8KB'래. 사진 한 장도 안 들어가겠다."
       - say:
           channel: system
           with: []
-          text: "※ 주의: 전원을 끄기 전에 반드시 저장하세요. 저장하지 않은 데이터는 사라집니다."
+          text: "설명서 1쪽 · ※ 주의: 전원을 끄기 전에 반드시 저장하세요. 저장하지 않은 데이터는 사라집니다."
       - say:
           char: 윤재
           with: []
-          text: "누가 이런 걸 읽냐."
+          text: "누가 이런 걸 읽냐. 설명서랑 카드는 가방 맨 밑으로. 퇴장."
       - clearSticker: { id: s0_cheap, leave: fadeOut }
-      - say:
-          channel: action
-          with: []
-          text: "윤재는 설명서와 카드를 가방 맨 밑에 쑤셔 넣었다. 그 뒤로 두 달, 가방에서 꺼낸 건 게임기뿐이었다."
       - goto: /1.yaml

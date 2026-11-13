@@ -1547,11 +1547,11 @@ textarea,
   opacity: 1;
   /* Position/framing glide independently; facing flips snap without tweening through a squeezed pose. */
   translate:
-    calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x))
+    calc(var(--char-anchor-x) + var(--char-offset-x) + var(--char-framing-x) + var(--char-calibration-x) + var(--char-stance-x, 0cqw))
     calc(var(--char-framing-y) + var(--char-calibration-y));
   transform: scaleX(var(--char-facing-scale-x));
   transform-origin: 50% 100%;
-  scale: var(--char-scale);
+  scale: calc(var(--char-scale) * var(--char-stance-scale, 1));
   visibility: visible;
   transition:
     translate var(--character-position-duration) var(--character-position-easing) var(--character-position-delay),
@@ -6101,5 +6101,84 @@ textarea,
   .app[data-hud-idle='true'] .hud,
   .app[data-hud-idle='true'] .dialog-controls {
     transition: none;
+  }
+}
+
+
+/* Stage blocking (`move` action). Each style sets how the stance offset travels. */
+.char.stance-approach {
+  --character-position-duration: 720ms;
+  --character-position-easing: cubic-bezier(0.33, 0.1, 0.25, 1);
+  --character-scale-duration: 720ms;
+  --character-scale-easing: cubic-bezier(0.33, 0.1, 0.25, 1);
+}
+
+.char.stance-lunge {
+  --character-position-duration: 260ms;
+  --character-position-easing: cubic-bezier(0.2, 1.45, 0.4, 1);
+  --character-scale-duration: 260ms;
+  --character-scale-easing: cubic-bezier(0.2, 1.45, 0.4, 1);
+}
+
+.char.stance-retreat {
+  --character-position-duration: 620ms;
+  --character-position-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --character-scale-duration: 620ms;
+  --character-scale-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.char.stance-exit {
+  --character-position-duration: 760ms;
+  --character-position-easing: cubic-bezier(0.5, 0, 0.75, 0);
+}
+
+.char.stance-flinch {
+  --character-position-duration: 110ms;
+  --character-position-easing: cubic-bezier(0.1, 0.9, 0.2, 1);
+  --character-scale-duration: 110ms;
+  --character-scale-easing: cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char.stance-approach,
+  .char.stance-lunge,
+  .char.stance-retreat,
+  .char.stance-exit,
+  .char.stance-flinch {
+    --character-position-duration: 0ms;
+    --character-scale-duration: 0ms;
+  }
+}
+
+/* Time/place caption (`place` action): a quiet slate under the chapter counter. */
+.place-caption {
+  margin-top: 6px;
+  max-width: min(320px, 60cqw);
+  color: #fffffff2;
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.7), 0 0 12px rgb(0 0 0 / 0.45);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  white-space: pre-line;
+  opacity: 0;
+  animation: place-caption 4200ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  pointer-events: none;
+}
+
+@keyframes place-caption {
+  0% { opacity: 0; translate: 0 -4px; }
+  10% { opacity: 1; translate: 0 0; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .place-caption {
+    animation: place-caption-static 4200ms linear both;
+  }
+  @keyframes place-caption-static {
+    0%, 85% { opacity: 1; }
+    100% { opacity: 0; }
   }
 }

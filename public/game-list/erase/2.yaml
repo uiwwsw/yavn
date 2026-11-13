@@ -14,10 +14,7 @@ scenes:
           text: "현재\n한도윤 · 29 · 결혼 3주 전"
       - bg: { id: couple_home, transition: fade, duration: 900 }
       - music: static
-      - say:
-          channel: narration
-          with: []
-          text: "토요일 오전, 집. 지수는 웨딩홀 상담에 먼저 나갔고, 도윤은 식탁에 노트북을 펴 놓고 있다."
+      - place: "토요일 오전 · 도윤과 지수의 집"
       - say:
           channel: message
           side: them
@@ -88,10 +85,6 @@ scenes:
   e2_dig_sns:
     actions:
       - say:
-          channel: action
-          with: []
-          text: "준성의 인스타그램은 공개 계정이다. 게시물이 많지 않아 맨 처음까지 금방 내려간다."
-      - say:
           channel: message
           side: them
           char: 준성
@@ -110,17 +103,22 @@ scenes:
           with: []
           text: "2023.11.30 · 반년 연속 굿. 선생님이 하이파이브 해줌"
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "하트를 누를 뻔한다. 도윤은 손가락을 화면에서 떼고, 방문 기록을 지운다."
+          erase: true
+          text: "최근 검색 · 박준성 — 삭제됨"
       - goto: dig
 
   e2_dig_hospital:
     actions:
       - say:
-          channel: action
+          channel: record
           with: []
-          text: "목요일 회의 때 테이블에 화면이 위로 놓인 팀장 폰이 한 번 켜졌었다. '감염내과 정기 진료 안내'. 옆자리 송과장도 고개를 돌렸었다. 도윤은 그 문구를 메모장에 그대로 적고, 메모 제목을 '장보기'로 바꾼다."
+          text: "새 메모\n목 회의 · 팀장님 폰(화면 위로 놓여 있었음)\n'감염내과 정기 진료 안내'\n송과장님도 봄"
+      - say:
+          channel: system
+          with: []
+          text: "메모 제목을 '장보기'(으)로 변경했습니다."
       - goto: dig
 
   e2_dig_leak:
@@ -168,11 +166,7 @@ scenes:
     title: "엘리베이터"
     actions:
       - bg: { id: office_night, transition: cut }
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "월요일 밤 아홉 시 넘어, 회사 엘리베이터 앞. 둘뿐이다. 13층에서 1층까지는 생각보다 길다."
+      - place: "월요일 21:10 · 회사 엘리베이터 13층"
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say:
@@ -187,6 +181,7 @@ scenes:
           char: 준성.smirk
           with: [도윤]
           text: "이런 경우엔 축의금 얼마 해야 돼요? 인터넷에 안 나오던데."
+      - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤
           with: [준성]
@@ -213,6 +208,7 @@ scenes:
 
   e2_threat_said:
     actions:
+      - move: { id: 도윤, toward: 준성, style: lunge, wait: true }
       - say:
           char: 도윤
           with: [준성]
@@ -226,17 +222,22 @@ scenes:
           with: [도윤]
           text: "그날은 형이라고 안 했잖아요."
       - say:
+          channel: system
+          with: []
+          text: "1층입니다. 문이 열립니다."
+      - say:
           channel: action
-          with: [준성, 도윤]
-          text: "1층. 문이 열리자 준성이 먼저 내린다. 돌아보지 않는다."
+          with: [도윤]
+          text: "준성이 돌아보지 않고 먼저 내린다."
+      - move: { id: 도윤, style: reset }
       - goto: e2_absent
 
   e2_threat_silent:
     actions:
       - say:
-          channel: action
-          with: [준성, 도윤]
-          text: "4, 3, 2. 문이 열린다. 준성이 열림 버튼을 누른 채 기다린다."
+          channel: system
+          with: []
+          text: "1층입니다. 문이 열립니다."
       - say:
           char: 준성
           with: [도윤]
@@ -245,22 +246,19 @@ scenes:
           char: 도윤
           with: [준성]
           text: "…수고하셨습니다."
+      - move: { id: 도윤, style: reset }
       - goto: e2_absent
 
   e2_absent:
     title: "결근"
     actions:
       - bg: { id: office, transition: fade, duration: 900 }
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "결혼을 두 주 앞둔 월요일, 준성이 출근하지 않았다. 화요일에도, 수요일에도. 모니터 옆 화분은 사흘째 아무도 물을 주지 않았다."
+      - place: "수요일 오후 · 영업2팀"
       - say:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 송과장: 팀장님 오늘도 안 나오심?"
+          text: "[영업2팀] 송과장: 팀장님 오늘도 안 나오심? 월화수 사흘째네"
       - say:
           channel: message
           side: them
@@ -271,6 +269,11 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 오대리: 기한 없는 병가도 있어요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 근데 팀장님 화분 누가 물 좀 줘요 다 말라가요"
       - say:
           channel: message
           side: them
@@ -343,17 +346,10 @@ scenes:
     actions:
       - bg: { id: classroom, transition: cut }
       - music: cold_room
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "며칠 뒤, 방과 후. 하린은 사물함에 두고 간 체육복을 가지러 계단을 두 칸씩 올라왔다. 뒷문이 한 뼘 열려 있다."
+      - place: "며칠 뒤 방과 후 · 3학년 교실 뒷문"
       - char: { id: 민재, position: left }
       - char: { id: 아진, position: right }
-      - say:
-          channel: action
-          with: [민재, 아진]
-          text: "문틈으로 빈 교실이 보인다. 민재와 아진이 책상 하나에 나란히 앉아 있다. 민재가 아진의 손가락을 하나씩 만지작거린다."
+      - move: { id: 민재, toward: 아진, style: approach }
       - say:
           char: 아진.awkward
           with: [민재]
@@ -371,6 +367,7 @@ scenes:
           char: 민재
           with: [아진]
           text: "넌 알아?"
+      - move: { id: 아진, toward: 민재, style: retreat }
       - say:
           char: 아진.awkward
           with: [민재]
@@ -382,13 +379,10 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "하린은 문고리에서 손을 뗀다. 복도 끝까지, 실내화를 끌지 않고 걷는다."
+          text: "하린은 문고리에서 손을 떼고, 실내화 소리가 나지 않게 복도를 걸어 나간다."
       - add: { deleted: 1 }
       - bg: { id: harin_room, transition: fade, duration: 900 }
-      - say:
-          channel: narration
-          with: []
-          text: "그날 밤, 하린의 방."
+      - place: "그날 밤 · 하린의 방"
       - say:
           channel: message
           side: them

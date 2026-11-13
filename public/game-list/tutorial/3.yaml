@@ -31,6 +31,7 @@ scenes:
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
           text: "증거가 자꾸 바뀌어서 남은 걸로 다시 봤어요. 주차 정산 기록. 그날 새벽 B2에 차 세워 둔 직원이 하나 있어요. 변상혁 씨. 같이 사시죠."
+      - move: { id: 은숙, toward: 해수, style: approach }
       - say:
           char: 은숙.sharp
           when: { var: tampered, op: gt, value: 0 }
@@ -80,10 +81,7 @@ scenes:
           char: 해수
           with: [은숙]
           text: "레플라에서요. 튜토리얼 3단계에서. 연필로 찔렀습니다. 지하 2층, C-14 옆에서요."
-      - say:
-          channel: narration
-          with: [은숙]
-          text: "은숙은 한참 말이 없다. 그러다 볼펜 뚜껑을 다시 연다."
+      - move: { id: 은숙, toward: 해수, style: retreat }
       - say:
           char: 은숙
           with: [해수]
@@ -125,10 +123,12 @@ scenes:
           char: 은숙
           with: [해수]
           text: "웃는 소리로는 알리바이가 안 돼요. 그래도 적을게요."
+      - move: { id: 해수, toward: 은숙, style: flinch }
       - goto: interview_end
 
   interview_end:
     actions:
+      - move: { id: 은숙, style: reset }
       - say:
           char: 은숙
           with: [해수]
@@ -142,19 +142,16 @@ scenes:
     title: "주소"
     actions:
       - bg: { id: cs_desk, transition: cut }
-      - say:
-          channel: narration
-          with: []
-          text: "그날 오후 고객센터. 번호표 없이 온 남자 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
+      - place: "4월 21일 오후 · 고객센터"
       - char: { id: 해수, position: left, emotion: service }
+      - say:
+          channel: action
+          with: []
+          text: "번호표 없이 온 남자 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
       - say:
           char: 해수.service
           with: []
           text: "번호표 뽑고 기다리세요, 고객님."
-      - say:
-          channel: narration
-          with: []
-          text: "손님이 번호표 기계 쪽으로 간다. 해수는 그 사이에 단톡방 대신 지영에게 따로 문자를 보낸다."
       - say:
           channel: message
           side: me
@@ -208,13 +205,10 @@ scenes:
     title: "그린고시원"
     actions:
       - bg: { id: goshiwon, transition: fade, duration: 900 }
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "그날 밤 아홉 시, 망우동 그린고시원 3층. 이름이 마트랑 같아서 해수는 간판을 두 번 본다. 문마다 슬리퍼가 한 켤레씩. 304호 앞에는 컵라면 용기가 무릎 높이로 쌓여 있다."
+      - place: "밤 9:00 · 망우동 그린고시원 304호"
       - char: { id: 태민, position: right }
       - char: { id: 해수, position: left }
+      - move: { id: 태민, toward: 해수, style: retreat }
       - say:
           char: 태민
           with: [해수]
@@ -256,14 +250,15 @@ scenes:
       - say:
           char: 태민.afraid
           with: [해수]
-          text: "……들어와요. 신발은 신고."
+          text: "……들어와요. 신발은 신고. 컵라면 용기는 밟지 말고."
+      - move: { id: 태민, style: reset }
 
   room:
     actions:
       - choice:
           key: t3_room
           presentation: explore
-          prompt: "방은 한 평 반. 모니터가 세 대인데 두 대는 꺼져 있다. 태민은 침대에 앉고, 해수는 서 있다."
+          prompt: "모니터 세 대 중 한 대만 켜져 있다."
           with: [태민]
           camera: wide
           options:
@@ -345,10 +340,11 @@ scenes:
           char: 태민
           with: [해수]
           text: "근데 지난주에 누가 큰 걸 했어요. 처음으로."
+      - move: { id: 태민, toward: 해수, style: retreat }
       - say:
-          channel: narration
-          with: [태민]
-          text: "태민은 해수 얼굴이 아니라 오른손을 보고 말한다."
+          char: 태민.afraid
+          with: [해수]
+          text: "그 오른손, 주머니에 좀 넣어 줄래요. 그냥요."
       - say:
           char: 해수
           with: [태민]
@@ -371,13 +367,14 @@ scenes:
           text: "몰라요. 아무도 거기까지 안 갔으니까."
       - get: keycard
       - say:
-          channel: action
-          with: []
-          text: "태민이 출입 카드를 해수 앞치마 쪽으로 던진다. 해수는 놓치고, 바닥에서 줍는다."
+          char: 태민
+          with: [해수]
+          text: "받아요. …아, 놓쳤네. 바닥에 있어요."
       - say:
           char: 태민.afraid
           with: [해수]
           text: "가져가요. 나는 못 가요. 무서워서."
+      - move: { id: 태민, style: reset }
       - say:
           char: 태민
           with: [해수]
@@ -387,16 +384,16 @@ scenes:
     title: "1, 2, 7, 0"
     actions:
       - bg: { id: home_hall, transition: fade, duration: 900 }
+      - place: "4월 22일 밤 11:00 · 집"
       - say:
-          channel: narration
+          char: 해수
           with: []
-          camera: wide
-          text: "4월 22일 밤 열한 시. 상혁의 방문 앞에 배달 봉지 세 개가 그대로 있다. 생수 두 병도. 사흘째다. 문 안에서 뭔가 계속 말하는 소리가 난다. 상혁 목소리 하나뿐이다."
+          text: "상혁아. 배달 봉지 세 개, 사흘째 그대로야. 물도."
       - say:
-          channel: action
+          channel: record
           when: { var: tampered, op: gt, value: 0 }
           with: []
-          text: "도어락 옆 문틈에 명함이 한 장 끼워져 있다. 중랑경찰서 강력팀 경위 차은숙. 뒷면에 볼펜으로 '4/21 15:40 방문, 응답 없음'."
+          text: "문틈에 낀 명함 · 중랑경찰서 강력팀 경위 차은숙 · 뒷면 볼펜 메모: 4/21 15:40 방문, 응답 없음"
       - say:
           char: 상혁
           with: []
@@ -433,9 +430,9 @@ scenes:
   door_mom:
     actions:
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "신호가 여덟 번 가고 끊긴다. 해수는 문자를 쓴다."
+          text: "상혁 어머니 · 연결되지 않았습니다"
       - say:
           channel: message
           side: me
@@ -482,10 +479,6 @@ scenes:
 
   leave:
     actions:
-      - say:
-          channel: action
-          with: []
-          text: "앞치마를 벗어 의자에 건다. 출입 카드는 지갑에 넣는다. 교통카드 옆에."
       - say:
           channel: thought
           with: []
