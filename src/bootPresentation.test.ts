@@ -11,7 +11,7 @@ describe('initial boot presentation', () => {
       bootMode: 'gameList',
       gameBootPending: true,
     });
-    expect(resolveInitialBootPresentation('/game-list/conan-demo/')).toEqual({
+    expect(resolveInitialBootPresentation('/game-list/mystery-demo/')).toEqual({
       bootMode: 'gameList',
       gameBootPending: true,
     });

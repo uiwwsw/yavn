@@ -29,7 +29,7 @@ describe('character stage layout', () => {
   it('places exactly two visible characters in stable left and right halves', () => {
     expect(resolveCharacterStageLayout([
       { id: '란', position: 'left' },
-      { id: '코고로', position: 'right' },
+      { id: '아저씨', position: 'right' },
     ])).toEqual({
       mode: 'duo',
       duoSideByPosition: {
@@ -38,13 +38,13 @@ describe('character stage layout', () => {
       },
       characterIdByPosition: {
         left: '란',
-        right: '코고로',
+        right: '아저씨',
       },
     });
 
     expect(resolveCharacterStageLayout([
-      { id: '코고로', position: 'right' },
-      { id: '코난', position: 'center' },
+      { id: '아저씨', position: 'right' },
+      { id: '탐정', position: 'center' },
     ])).toEqual({
       mode: 'duo',
       duoSideByPosition: {
@@ -52,15 +52,15 @@ describe('character stage layout', () => {
         right: 'right',
       },
       characterIdByPosition: {
-        center: '코난',
-        right: '코고로',
+        center: '탐정',
+        right: '아저씨',
       },
     });
   });
 
   it('uses slot order instead of speaker order so characters never swap sides', () => {
     expect(resolveCharacterStageLayout([
-      { id: '코난', position: 'center' },
+      { id: '탐정', position: 'center' },
       { id: '란', position: 'left' },
     ])).toEqual({
       mode: 'duo',
@@ -70,25 +70,25 @@ describe('character stage layout', () => {
       },
       characterIdByPosition: {
         left: '란',
-        center: '코난',
+        center: '탐정',
       },
     });
   });
 
   it('recenters a surviving character instead of leaving a solo actor on a duo edge', () => {
     const duoLayout = resolveCharacterStageLayout([
-      { id: '코난', position: 'center' },
-      { id: '코고로', position: 'right' },
+      { id: '탐정', position: 'center' },
+      { id: '아저씨', position: 'right' },
     ]);
 
     const soloLayout = resolveCharacterStageLayout([
-      { id: '코고로', position: 'right' },
+      { id: '아저씨', position: 'right' },
     ], duoLayout);
     expect(soloLayout).toEqual({
       mode: 'default',
       duoSideByPosition: {},
       characterIdByPosition: {
-        right: '코고로',
+        right: '아저씨',
       },
     });
     expect(resolveCharacterStagePlacement('right', soloLayout)).toEqual({
@@ -99,49 +99,49 @@ describe('character stage layout', () => {
 
   it('does not inherit a duo half when the actor is replaced or changes slots', () => {
     const duoLayout = resolveCharacterStageLayout([
-      { id: '코난', position: 'center' },
-      { id: '코고로', position: 'right' },
+      { id: '탐정', position: 'center' },
+      { id: '아저씨', position: 'right' },
     ]);
 
     expect(resolveCharacterStageLayout([
       { id: '란', position: 'right' },
     ], duoLayout).mode).toBe('default');
     expect(resolveCharacterStageLayout([
-      { id: '코고로', position: 'center' },
+      { id: '아저씨', position: 'center' },
     ], duoLayout).mode).toBe('default');
   });
 
   it('clears the remembered duo placement after the stage becomes empty', () => {
     const duoLayout = resolveCharacterStageLayout([
-      { id: '코난', position: 'center' },
-      { id: '코고로', position: 'right' },
+      { id: '탐정', position: 'center' },
+      { id: '아저씨', position: 'right' },
     ]);
     const emptyLayout = resolveCharacterStageLayout([], duoLayout);
 
     expect(emptyLayout.mode).toBe('default');
     expect(resolveCharacterStageLayout([
-      { id: '코고로', position: 'right' },
+      { id: '아저씨', position: 'right' },
     ], emptyLayout).mode).toBe('default');
   });
 
   it('uses a dedicated trio layout and records the visible solo actor', () => {
     expect(resolveCharacterStageLayout([]).mode).toBe('default');
     expect(resolveCharacterStageLayout([
-      { id: '코난', position: 'center' },
+      { id: '탐정', position: 'center' },
     ])).toMatchObject({
       mode: 'default',
-      characterIdByPosition: { center: '코난' },
+      characterIdByPosition: { center: '탐정' },
     });
     expect(resolveCharacterStageLayout([
       { id: '란', position: 'left' },
-      { id: '코난', position: 'center' },
-      { id: '코고로', position: 'right' },
+      { id: '탐정', position: 'center' },
+      { id: '아저씨', position: 'right' },
     ])).toMatchObject({
       mode: 'trio',
       characterIdByPosition: {
         left: '란',
-        center: '코난',
-        right: '코고로',
+        center: '탐정',
+        right: '아저씨',
       },
     });
   });

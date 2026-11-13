@@ -18,39 +18,39 @@ describe('launcher carousel', () => {
   });
 
   it('builds clean, shareable query links without mutating the URL hash', () => {
-    expect(buildLauncherDemoSharePath('/', '', 'conan demo')).toBe('/?demo=conan+demo');
+    expect(buildLauncherDemoSharePath('/', '', 'mystery demo')).toBe('/?demo=mystery+demo');
     expect(buildLauncherDemoSharePath('/', '?lang=ko&demo=old', 'deokman')).toBe('/?lang=ko&demo=deokman');
     expect(clearLauncherDemoSharePath('/', '?lang=ko&demo=deokman')).toBe('/?lang=ko');
     expect(clearLauncherDemoSharePath('/', '?demo=deokman')).toBe('/');
-    expect(parseLauncherDemoQuery('?demo=conan%20demo')).toBe('conan demo');
+    expect(parseLauncherDemoQuery('?demo=mystery%20demo')).toBe('mystery demo');
     expect(parseLauncherDemoQuery('?other=value')).toBeNull();
   });
 
   it('keeps parsing legacy demo hashes for one-time migration', () => {
-    expect(parseLauncherDemoHash('#demo=conan%20demo')).toBe('conan demo');
+    expect(parseLauncherDemoHash('#demo=mystery%20demo')).toBe('mystery demo');
     expect(parseLauncherDemoHash('#other=value')).toBeNull();
   });
 
   it('normalizes invalid queries and migrates only valid legacy selections', () => {
-    const gameIds = ['deokman', 'conan'];
+    const gameIds = ['deokman', 'mystery'];
     expect(normalizeLauncherDemoLocationPath('/', '?demo=missing&lang=ko', '#library', gameIds))
       .toBe('/?lang=ko#library');
-    expect(normalizeLauncherDemoLocationPath('/', '?demo=missing&lang=ko', '#demo=conan', gameIds))
-      .toBe('/?lang=ko&demo=conan');
-    expect(normalizeLauncherDemoLocationPath('/', '?demo=deokman', '#demo=conan', gameIds))
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=missing&lang=ko', '#demo=mystery', gameIds))
+      .toBe('/?lang=ko&demo=mystery');
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=deokman', '#demo=mystery', gameIds))
       .toBe('/?demo=deokman');
     expect(normalizeLauncherDemoLocationPath('/', '?demo=', '', gameIds)).toBe('/');
     expect(normalizeLauncherDemoLocationPath('/', '', '#demo=missing', gameIds)).toBe('/');
-    expect(normalizeLauncherDemoLocationPath('/', '?demo=conan', '', gameIds)).toBeNull();
+    expect(normalizeLauncherDemoLocationPath('/', '?demo=mystery', '', gameIds)).toBeNull();
     expect(normalizeLauncherDemoLocationPath('/', '', '#library', gameIds)).toBeNull();
   });
 
   it('resolves explicit, current, and first-game selections without restoring a prior visit', () => {
-    const gameIds = ['deokman', 'conan', 'live2dtest'];
-    expect(resolveInitialCarouselGameId(gameIds, 'conan', '?demo=deokman', '')).toBe('deokman');
-    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=conan', '#demo=deokman')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, null, '', '#demo=conan')).toBe('conan');
-    expect(resolveInitialCarouselGameId(gameIds, 'conan', '', '')).toBe('conan');
+    const gameIds = ['deokman', 'mystery', 'live2dtest'];
+    expect(resolveInitialCarouselGameId(gameIds, 'mystery', '?demo=deokman', '')).toBe('deokman');
+    expect(resolveInitialCarouselGameId(gameIds, null, '?demo=mystery', '#demo=deokman')).toBe('mystery');
+    expect(resolveInitialCarouselGameId(gameIds, null, '', '#demo=mystery')).toBe('mystery');
+    expect(resolveInitialCarouselGameId(gameIds, 'mystery', '', '')).toBe('mystery');
     expect(resolveInitialCarouselGameId(gameIds, null, '', '')).toBe('deokman');
     expect(resolveInitialCarouselGameId(gameIds, null, '?demo=missing', '')).toBe('deokman');
     expect(resolveInitialCarouselGameId([], null, '', '')).toBeNull();

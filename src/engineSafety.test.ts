@@ -145,9 +145,9 @@ const characterPlacementGame: GameData = {
   assets: {
     backgrounds: {},
     characters: {
-      코난: {
-        base: '/characters/conan.webp',
-        emotions: { serious: '/characters/conan-serious.webp' },
+      탐정: {
+        base: '/characters/mystery.webp',
+        emotions: { serious: '/characters/mystery-serious.webp' },
         placement: 'prompt-top',
       },
       덕만: { base: '/characters/deokman.webp' },
@@ -159,9 +159,9 @@ const characterPlacementGame: GameData = {
   scenes: {
     intro: {
       actions: [
-        { char: { id: '코난', position: 'left', emotion: 'serious' } },
+        { char: { id: '탐정', position: 'left', emotion: 'serious' } },
         { char: { id: '덕만', position: 'right' } },
-        { say: { char: '코난', with: ['덕만'], text: 'Two source styles share one stage.' } },
+        { say: { char: '탐정', with: ['덕만'], text: 'Two source styles share one stage.' } },
       ],
     },
   },
@@ -289,7 +289,7 @@ describe('engine runtime safety', () => {
 
   it('uses thought ownership without marking it as spoken dialogue', () => {
     useVNStore.getState().setGame({ ...characterPlacementGame, scenes: { intro: { actions: [
-      { say: { char: '코난', channel: 'thought', with: [], text: 'I should listen first.' } },
+      { say: { char: '탐정', channel: 'thought', with: [], text: 'I should listen first.' } },
     ] } } }, '/');
     handleAdvance();
     expect(useVNStore.getState().dialog).toMatchObject({ channel: 'thought', speakerId: undefined });

@@ -4,7 +4,7 @@ import type { RouteHistoryEntry, StoryLogEntry } from './types';
 
 const dialogue = (index: number): StoryLogEntry => ({
   kind: 'dialogue',
-  speaker: '코난',
+  speaker: '탐정',
   text: `대사 ${index}`,
   chapterPath: 'routes/hub/1.yaml',
   sceneId: 'hub',

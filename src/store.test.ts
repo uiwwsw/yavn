@@ -23,31 +23,31 @@ describe('character slots', () => {
 
   it('moves a character instead of leaving the same id in two positions', () => {
     const ran = imageCharacter('란');
-    const conan = imageCharacter('코난');
+    const mystery = imageCharacter('탐정');
     const store = useVNStore.getState();
 
     store.setCharacter('center', ran);
-    store.setCharacter('right', conan);
+    store.setCharacter('right', mystery);
     store.setCharacter('left', ran);
-    store.setCharacter('center', conan);
+    store.setCharacter('center', mystery);
 
     expect(useVNStore.getState().characters).toEqual({
       left: ran,
-      center: conan,
+      center: mystery,
     });
   });
 
   it('keeps different characters in their authored slots', () => {
     const ran = imageCharacter('란');
-    const conan = imageCharacter('코난');
+    const mystery = imageCharacter('탐정');
     const store = useVNStore.getState();
 
     store.setCharacter('left', ran);
-    store.setCharacter('right', conan);
+    store.setCharacter('right', mystery);
 
     expect(useVNStore.getState().characters).toEqual({
       left: ran,
-      right: conan,
+      right: mystery,
     });
   });
 
@@ -63,25 +63,25 @@ describe('character slots', () => {
   });
 
   it('updates a staged character when only its asset placement changes', () => {
-    const conan = imageCharacter('코난');
+    const mystery = imageCharacter('탐정');
     const store = useVNStore.getState();
 
-    store.setCharacter('center', conan);
+    store.setCharacter('center', mystery);
     const firstCharacters = useVNStore.getState().characters;
-    store.setCharacter('center', { ...conan, placement: 'prompt-top' });
+    store.setCharacter('center', { ...mystery, placement: 'prompt-top' });
 
     expect(useVNStore.getState().characters).not.toBe(firstCharacters);
     expect(useVNStore.getState().characters.center?.placement).toBe('prompt-top');
   });
 
   it('updates a staged character when only its next entrance transition changes', () => {
-    const conan = imageCharacter('코난');
+    const mystery = imageCharacter('탐정');
     const store = useVNStore.getState();
 
-    store.setCharacter('center', conan);
+    store.setCharacter('center', mystery);
     const firstCharacters = useVNStore.getState().characters;
     store.setCharacter('center', {
-      ...conan,
+      ...mystery,
       enterEffect: 'slideLeft',
       enterLayout: 'cut',
       enterDuration: 420,
