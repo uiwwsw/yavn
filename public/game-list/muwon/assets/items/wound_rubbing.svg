@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(-3 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56 56 L344 50 L348 348 L60 352 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M60 336 L348 332 L348 348 L60 352 Z" fill="#d9ccb0"/>
+    <!-- rubbed ink area -->
+    <path d="M86 112 C120 86 220 82 268 100 C300 116 296 170 288 214 C280 270 236 306 170 304 C110 300 82 262 80 210 C78 160 70 130 86 112 Z" fill="#4a4540"/>
+    <path d="M110 120 C150 100 220 98 256 112 C276 140 276 200 266 240 C246 282 196 292 150 286 C110 276 96 240 98 200 C98 160 96 138 110 120 Z" fill="#2c2825"/>
+    <!-- dabbing texture -->
+    <g fill="#5e5852">
+      <circle cx="120" cy="150" r="5"/><circle cx="240" cy="130" r="4"/><circle cx="250" cy="250" r="6"/><circle cx="130" cy="260" r="4"/>
+      <circle cx="180" cy="120" r="3"/><circle cx="110" cy="210" r="4"/><circle cx="262" cy="190" r="3"/>
+    </g>
+    <g stroke="#4a4540" stroke-width="2">
+      <path d="M78 140 l-8 -4 M290 120 l8 -6 M84 272 l-8 6 M282 270 l8 4 M200 312 l0 8"/>
+    </g>
+    <!-- the cut: unrubbed paper groove from upper-right to lower-left -->
+    <path d="M238 128 Q236 126 240 130 L136 262 Q132 268 128 262 Q178 196 238 128 Z" fill="#efe6d2"/>
+    <path d="M236 126 L130 262" stroke="#efe6d2" stroke-width="9"/><path d="M226 140 L144 246" stroke="#efe6d2" stroke-width="14"/>
+    <path d="M232 138 L138 258" stroke="#d9ccb0" stroke-width="3"/>
+    <!-- ruler: one chi -->
+    <path d="M300 140 L300 250" stroke="#b8432b" stroke-width="3"/>
+    <path d="M290 140 L310 140 M290 250 L310 250 M295 168 L305 168 M295 195 L305 195 M295 222 L305 222" stroke="#b8432b" stroke-width="3"/>
+    <g font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="24" font-weight="700" fill="#1d1a17" text-anchor="middle"><text x="326" y="192">한</text><text x="326" y="220">치</text></g>
+    <!-- arrow showing the stroke direction -->
+    
+    <!-- brush note at bottom -->
+    <path d="M90 326 c10 -3 20 3 30 0 c10 -3 18 3 28 0 M168 326 c8 -3 16 3 24 0" fill="none" stroke="#1d1a17" stroke-width="3"/>
+  </g>
+</svg>

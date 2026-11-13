@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(-8 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wooden handle -->
+    <path d="M250 120 L276 116 L300 352 L272 356 Z" fill="#b88a4a" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M266 124 L276 122 L298 346 L286 348 Z" fill="#8f6833"/>
+    <g stroke="#6e4f26" stroke-width="2"><path d="M258 160 l4 40 M262 230 l4 36 M270 296 l2 30"/></g>
+    <!-- iron ferrule with nail -->
+    <path d="M244 96 L280 92 L284 128 L248 132 Z" fill="#6b6f74" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M246 108 l36 -4 M247 120 l36 -4" stroke="#1d1a17" stroke-width="2"/>
+    <!-- wide blade, sweeping left and curving down -->
+    <path d="M250 96 C220 70 150 62 96 78 C66 88 48 108 44 138 C64 118 92 112 124 112 C170 112 214 118 252 130 Z" fill="#9ba1a8" stroke="#1d1a17" stroke-width="3"/>
+    <!-- honed cutting edge (lower side) -->
+    <path d="M44 138 C64 118 92 112 124 112 C170 112 214 118 252 130 L252 118 C214 106 170 100 124 100 C92 100 66 108 50 124 Z" fill="#d3d7db"/>
+    <path d="M90 104 C130 96 180 100 220 108" fill="none" stroke="#f4f4f2" stroke-width="2.5"/>
+    <!-- forge hatching on blade back -->
+    <g stroke="#6b6f74" stroke-width="2"><path d="M110 76 l4 10 M140 70 l2 10 M170 68 l0 10 M200 72 l-2 10 M226 80 l-4 10"/></g>
+    <!-- tag string -->
+    <path d="M284 220 C250 226 222 230 206 246" fill="none" stroke="#1d1a17" stroke-width="2.5"/>
+    <!-- paper tag -->
+    <g transform="rotate(-10 170 270)">
+      <path d="M128 236 L212 236 L212 306 L128 306 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+      <path d="M128 296 L212 296 L212 306 L128 306 Z" fill="#d9ccb0"/>
+      <circle cx="200" cy="246" r="4" fill="none" stroke="#1d1a17" stroke-width="2"/>
+      <text x="170" y="282" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="30" font-weight="700" fill="#1d1a17" text-anchor="middle">두 치</text>
+      <path d="M142 250 h40" stroke="#b8432b" stroke-width="3"/>
+    </g>
+  </g>
+</svg>

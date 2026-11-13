@@ -1,0 +1,351 @@
+chapterTitle: "서빙고의 얼음"
+
+script:
+  - scene: ice_vault
+  - scene: c4_body
+
+scenes:
+  ice_vault:
+    title: "얼음 사이"
+    actions:
+      - bg: { id: seobinggo, transition: fade, duration: 900 }
+      - music: night_well
+      - say:
+          channel: record
+          text: "구월 스무닷새 밤. 한강 변 서빙고. 한성부 서리 윤길, 얼음 더미 사이에서 발견."
+      - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "입김이 하얗다. 짚 아래 얼음 덩이가 층층이 쌓였고, 왼쪽 더미 하나가 비스듬히 기울었다."
+      - char: { id: 도원, position: left }
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 도원.troubled
+          with: [막쇠]
+          text: "얼음지기 말로는 오늘 저녁에 발견했다 하오. 몸이 돌처럼 굳었소. 죽은 지 오래요."
+      - say:
+          char: 막쇠
+          when: { var: makssoe_hurt, op: eq, value: true }
+          with: [도원]
+          text: "다리 끌고 왔수. 이건 내 눈으로 봐야 해서. 아가씨, 몸부터 봐요."
+      - say:
+          char: 막쇠
+          when: { var: makssoe_hurt, op: eq, value: false }
+          with: [도원]
+          text: "얼음 곳간에서 굳은 송장은 속여요. 굳은 게 죽은 시각을 다 말해 주진 않거든."
+      - goto: c4_body
+
+  c4_body:
+    actions:
+      - bg: { id: sihyeongdo, transition: dissolve, duration: 620 }
+      - music: inquest
+      - choice:
+          key: c4_body
+          presentation: explore
+          prompt: "서리 윤길. 스물넷. 무엇이 맞지 않는가?"
+          with: []
+          camera: wide
+          options:
+            - text: "등과 엉덩이의 시반"
+              at: { x: 68, y: 50 }
+              when: { var: c4_lividity, op: eq, value: false }
+              goto: c4_lividity_scene
+            - text: "굳은 팔다리"
+              at: { x: 30, y: 92 }
+              when: { var: c4_stiff, op: eq, value: false }
+              goto: c4_stiff_scene
+            - text: "소매 속"
+              at: { x: 70, y: 92 }
+              when: { var: register_page, op: eq, value: false }
+              goto: c4_sleeve_scene
+            - text: "본 것을 정리한다"
+              when:
+                all:
+                  - { var: c4_lividity, op: eq, value: true }
+                  - { var: c4_stiff, op: eq, value: true }
+                  - { var: register_page, op: eq, value: true }
+              goto: c4_reason
+
+  c4_lividity_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "몸을 모로 돌린다. 등에 핏빛 얼룩이 연하게 번져 있다. 손가락으로 누르자 하얗게 빠진다."
+      - say:
+          char: 막쇠
+          text: "시반이 아직 눌리면 빠진다? 그럼 죽은 지 한나절이 안 된 거요."
+      - set: { c4_lividity: true }
+      - goto: c4_body
+
+  c4_stiff_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "팔꿈치를 굽히려 해도 꿈쩍 않는다. 살갗이 얼음처럼 차다. 겉이 언 것이다."
+      - say:
+          channel: thought
+          with: []
+          text: "굳은 게 아니라 얼었다. 얼리면 오래 죽은 몸처럼 보인다."
+      - set: { c4_stiff: true }
+      - goto: c4_body
+
+  c4_sleeve_scene:
+    actions:
+      - sticker:
+          id: c4_page
+          image: register_page_sticker
+          x: 50
+          y: 32
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "소매 안쪽에 접힌 종이. 우리 시장을 옮겨 적은 장이다. 한 이름에 붉은 동그라미."
+      - say:
+          channel: thought
+          with: []
+          text: "시장을 빌려 간 사람의 이름. '전의감 의관 한명재.'"
+      - get: register_page
+      - clearSticker: { id: c4_page, leave: fadeOut }
+      - goto: c4_body
+
+  c4_reason:
+    actions:
+      - bg: { id: seobinggo, transition: dissolve, duration: 620 }
+      - char: { id: 도원, position: left }
+      - say:
+          char: 서연.think
+          with: [도원]
+          text: "윤길은 오늘 낮에 죽었습니다. 범인이 얼음에 묻어 며칠 된 송장처럼 만들었어요."
+      - say:
+          char: 도원.troubled
+          text: "그럼 범인은 오늘 낮에 이 곳간에 들어왔다는 말이군. 얼음 출납을 보면…"
+      - goto: c4_storeroom
+
+  c4_storeroom:
+    actions:
+      - choice:
+          key: c4_storeroom
+          presentation: explore
+          prompt: "곳간 안. 얼음지기의 물건들."
+          with: []
+          camera: wide
+          options:
+            - text: "출납부"
+              at: { x: 66, y: 40 }
+              when: { var: c4_ledger, op: eq, value: false }
+              goto: c4_ledger_scene
+            - text: "짚 아래 상자"
+              at: { x: 34, y: 62 }
+              when: { var: c4_box, op: eq, value: false }
+              goto: c4_box_scene
+            - text: "막쇠를 찾는다"
+              when:
+                all:
+                  - { var: c4_ledger, op: eq, value: true }
+                  - { var: c4_box, op: eq, value: true }
+              goto: c4_missing
+
+  c4_ledger_scene:
+    actions:
+      - sticker:
+          id: c4_ledger
+          image: ice_ledger_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "오늘 날짜 아래 '얼음 열 덩이 반출, 약재 보관용'. 받은 사람 이름 대신 붉은 도장."
+      - get: ice_ledger
+      - clearSticker: { id: c4_ledger, leave: fadeOut }
+      - set: { c4_ledger: true }
+      - goto: c4_storeroom
+
+  c4_box_scene:
+    actions:
+      - sticker:
+          id: c4_pill
+          image: fake_pill_sticker
+          x: 40
+          y: 32
+          width: "clamp(150px, 20%, 260px)"
+          enter: fadeIn
+      - sticker:
+          id: c4_seal
+          image: seal_mark_sticker
+          x: 62
+          y: 32
+          width: "clamp(140px, 18%, 240px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "짚 아래 나무 상자. 감청 주머니가 빼곡하다. 환약 하나를 쪼갠다. 속이 하얀 석회다."
+      - say:
+          channel: action
+          with: []
+          text: "상자 뚜껑의 도장. 출납부의 도장과 같다. 오른쪽 아래 모서리가 깨진 것까지."
+      - get: fake_pill
+      - get: seal_mark
+      - clearSticker: { id: c4_pill, leave: fadeOut }
+      - clearSticker: { id: c4_seal, leave: fadeOut }
+      - set: { c4_box: true }
+      - goto: c4_storeroom
+
+  c4_missing:
+    title: "곳간 안쪽"
+    actions:
+      - music: pressure
+      - say:
+          channel: thought
+          with: []
+          text: "막쇠가 없다. 아까 안쪽 더미를 보러 간다고 했다."
+      - say:
+          channel: action
+          with: []
+          text: "등불을 들고 안쪽으로 간다. 기울어진 얼음 더미 너머에서 무언가 끌리는 소리."
+      - say:
+          char: 막쇠.hurt
+          text: "아가씨… 오지 마! 왼손에 칼—"
+      - attack:
+          attacker: 곰보
+          target: player
+          from: left
+          style: slash
+          strength: heavy
+          anticipation: 700
+          caption: "기울어진 얼음 더미 그늘에서 복면이 튀어나온다. 왼손에 짧은 칼."
+      - choice:
+          key: c4_ambush
+          prompt: "복면이 다시 칼을 든다!"
+          char: 곰보
+          timeoutMs: 7000
+          timeoutOptionIndex: 2
+          options:
+            - text: "기울어진 얼음 더미를 밀어 넘어뜨린다"
+              goto: c4_push_ice
+            - text: "막쇠를 부르며 곧장 안쪽으로 뛴다"
+              goto: c4_run_in
+            - text: "등불을 던지고 물러선다"
+              goto: c4_throw_lantern
+
+  c4_run_in:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "막쇠 쪽으로 뛴다. 복면은 비켜서지 않는다. 왼손이 낮게 들어온다."
+      - effect: { name: impact, wait: true }
+      - say:
+          channel: narration
+          text: "얼음 바닥에 등불이 굴렀다. 불빛이 꺼지기 전에 본 것은 자기 저고리에 번지는 검은 얼룩이었다."
+      - say:
+          channel: thought
+          with: []
+          text: "더미가 기울어 있었는데. 그걸 쓸 생각을 못 했다."
+      - say:
+          channel: narration
+          text: "이튿날 서빙고에서 두 사람이 더 나왔다. 시장에는 '실족'이라 적혔다."
+      - gameOver:
+          title: "얼음 곳간의 어둠"
+          message: "맨몸으로 칼 앞에 뛰어들었다. 곳간에는 이미 기울어진 얼음 더미가 있었다."
+          recoverToChoice: c4_ambush
+
+  c4_push_ice:
+    actions:
+      - effect: { name: shake, wait: true }
+      - say:
+          channel: action
+          with: []
+          text: "어깨로 더미를 민다. 얼음 덩이들이 굴러 복면과 나 사이로 쏟아진다."
+      - say:
+          channel: narration
+          text: "복면은 얼음에 정강이를 맞고 비틀거리다 뒷문으로 달아났다. 왼손의 칼이 바닥에 떨어졌다."
+      - branch:
+          cases:
+            - when: { var: makssoe_hurt, op: eq, value: true }
+              goto: c4_too_late
+          default: c4_saved
+
+  c4_throw_lantern:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "등불을 복면 얼굴로 던진다. 짚에 불이 붙는다. 복면이 물러선다. 나도 물러선다."
+      - say:
+          channel: narration
+          text: "불길이 짚을 타고 안쪽으로 번졌다. 복면은 그 틈에 사라졌다."
+      - say:
+          channel: narration
+          text: "불을 끄고 안쪽에 닿았을 때, 막쇠는 얼음에 등을 기댄 채 눈을 감고 있었다."
+      - set: { makssoe_alive: false }
+      - goto: c4_farewell
+
+  c4_too_late:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "막쇠에게 달려간다. 다친 다리 때문에 피하지 못했다. 옆구리가 젖어 있다."
+      - say:
+          char: 막쇠.hurt
+          text: "다리만 안 다쳤어도… 하, 궤짝 건진 값이네. 아가씨 잘못 아니유."
+      - set: { makssoe_alive: false }
+      - goto: c4_farewell
+
+  c4_farewell:
+    actions:
+      - say:
+          char: 막쇠.hurt
+          text: "아가씨 책… 한글이라 다행이오. 나 같은 놈도 읽을 수 있게."
+      - say:
+          char: 막쇠.hurt
+          text: "다음 송장은… 아가씨가 먼저 읽어 줘요. 남이 글 써 놓기 전에."
+      - say:
+          channel: narration
+          text: "오작인의 시신은 관에서 거두지 않는다. 서연은 그 밤 시장 한 장을 따로 썼다."
+      - goto: c4_seal_owner
+
+  c4_saved:
+    actions:
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 막쇠.hurt
+          text: "아이고, 늙은이 얼음에 묻힐 뻔했네. 아가씨 어깨 하나는 장정이오."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "피 나요. 가만있어요. 지혈부터 해요."
+      - say:
+          char: 막쇠.grin
+          text: "그놈 왼손잡이요. 칼을 왼손으로 쥐고 덤볐어. 약방 영감 목 그은 놈이 그놈이야."
+      - goto: c4_seal_owner
+
+  c4_seal_owner:
+    title: "깨진 도장"
+    actions:
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 800 }
+      - music: inquest
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원.stern
+          text: "출납부와 상자의 도장을 전의감 인부와 대 보았소. 의관 한명재의 사인이오."
+      - say:
+          char: 도원.troubled
+          text: "형조에 고발하겠소. 다만 한명재는 의녀와 오작인의 말은 증언이 아니라 할 거요."
+      - say:
+          char: 서연.resolve
+          with: [도원]
+          text: "말이 아니라 몸이 남긴 걸 내놓겠습니다. 분이, 박씨, 윤길. 셋 다요."
+      - goto: /4.yaml

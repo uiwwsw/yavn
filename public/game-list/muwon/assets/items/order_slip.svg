@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(6 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- narrow slip, end flaps folded back -->
+    <path d="M38 140 L84 134 L86 266 L42 270 Z" fill="#d9ccb0" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M84 134 L316 132 L314 268 L86 266 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M316 132 L362 138 L358 266 L314 268 Z" fill="#d9ccb0" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M92 138 L94 262 M308 136 L306 264" stroke="#d9ccb0" stroke-width="4"/>
+    <!-- hatching on flaps -->
+    <g stroke="#b29f78" stroke-width="2">
+      <path d="M50 160 l20 -10 M50 200 l26 -14 M52 240 l26 -14 M326 160 l22 -12 M326 200 l24 -14 M326 240 l22 -12"/>
+    </g>
+    <!-- stitch where it was sewn into the pouch lining -->
+    <path d="M62 150 l0 14 M62 180 l0 14 M62 210 l0 14 M62 240 l0 14" stroke="#1f3552" stroke-width="3"/>
+    <!-- grain -->
+    <g stroke="#b9a983" stroke-width="1.2" opacity="0.6">
+      <path d="M110 250 l12 0 M150 150 l10 1 M200 254 l14 -1 M250 150 l9 0 M280 250 l12 1"/>
+    </g>
+    <!-- brush line above -->
+    <path d="M110 168 c10 -4 20 4 30 0 c10 -4 18 3 28 0 M196 168 c10 -3 18 3 28 0" fill="none" stroke="#1d1a17" stroke-width="3"/>
+    <!-- readable text -->
+    <text x="200" y="215" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="25" font-weight="700" fill="#1d1a17" text-anchor="middle">감청 주머니 삼백</text>
+    <path d="M112 244 c12 -3 22 3 34 0 c10 -3 16 3 26 0" fill="none" stroke="#1d1a17" stroke-width="3"/>
+    <!-- small red mark -->
+    <g transform="rotate(-6 282 244)">
+      <rect x="270" y="232" width="24" height="24" fill="#b8432b"/>
+      <path d="M276 238 h12 v12 h-12 z" fill="none" stroke="#efe6d2" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

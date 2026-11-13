@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(-3 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- cover edges beneath -->
+    <path d="M34 92 L200 100 L366 92 L370 318 L200 330 L30 318 Z" fill="#2e4a62" stroke="#1d1a17" stroke-width="3"/>
+    <!-- left page -->
+    <path d="M44 84 Q120 76 198 96 L200 318 Q120 300 46 308 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <!-- right page -->
+    <path d="M202 96 Q280 76 356 84 L354 308 Q280 300 200 318 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <!-- gutter shade -->
+    <path d="M176 92 Q190 94 198 96 L200 318 Q190 312 178 308 Z" fill="#d9ccb0"/>
+    <path d="M222 92 Q210 94 202 96 L200 318 Q210 312 222 308 Z" fill="#d9ccb0"/>
+    <!-- stitched binding at spine -->
+    <g stroke="#1d1a17" stroke-width="2.5">
+      <path d="M200 100 L200 318"/>
+      <path d="M194 128 h12 M194 170 h12 M194 212 h12 M194 254 h12 M194 296 h12"/>
+    </g>
+    <!-- column rules -->
+    <g stroke="#b8432b" stroke-width="1.5" opacity="0.6">
+      <path d="M72 96 L72 300 M100 92 L100 300 M128 90 L128 302 M156 92 L156 304"/>
+      <path d="M244 92 L244 304 M272 90 L272 302 M300 92 L300 300 M328 96 L328 300"/>
+    </g>
+    <!-- brush entries, vertical -->
+    <g fill="none" stroke="#1d1a17" stroke-width="3">
+      <path d="M86 110 c-3 10 3 16 0 26 c-3 10 3 18 0 28 M86 200 c3 10 -3 16 0 26"/>
+      <path d="M114 106 c-3 12 3 18 0 30 c-3 10 3 16 0 26 M114 196 c3 10 -3 18 0 28 c3 10 -2 16 0 24"/>
+      <path d="M142 106 c-3 10 3 18 0 28 M142 160 c3 10 -3 16 0 26"/>
+      <path d="M170 110 c-3 10 3 16 0 26 c-3 12 3 18 0 30"/>
+      <path d="M230 108 c-3 10 3 16 0 26 c-3 12 3 18 0 30 M230 200 c3 10 -3 16 0 26"/>
+      <path d="M286 104 c-3 10 3 16 0 26 c-3 10 3 18 0 28"/>
+      <path d="M314 104 c-3 12 3 18 0 30 M314 160 c3 10 -3 16 0 26 c3 10 -3 16 0 28"/>
+      <path d="M342 108 c-3 10 3 16 0 26"/>
+    </g>
+    <!-- marked line: the night withdrawal -->
+    <path d="M258 102 c-3 12 3 18 0 30 c-3 10 3 16 0 26 c-3 12 3 18 0 30" fill="none" stroke="#1d1a17" stroke-width="3.5"/>
+    <g transform="rotate(8 258 236)">
+      <rect x="240" y="216" width="36" height="40" fill="#b8432b" stroke="#8e3220" stroke-width="2"/>
+      <rect x="245" y="221" width="26" height="30" fill="none" stroke="#efe6d2" stroke-width="2"/>
+      <path d="M251 228 h14 M258 228 v16 M251 244 h14" stroke="#efe6d2" stroke-width="2"/>
+    </g>
+    <!-- paper grain -->
+    <g stroke="#b9a983" stroke-width="1.2" opacity="0.6">
+      <path d="M60 280 l10 0 M130 290 l12 1 M250 290 l12 0 M330 280 l10 1 M60 150 l8 0"/>
+    </g>
+  </g>
+</svg>

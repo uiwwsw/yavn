@@ -71,7 +71,7 @@ chapterTitle: "이야기의 시작"
 #       defaultDelivery: deduction # 평상시 리듬, say.delivery/표정이 우선
 #       calibration: { scale: 1.06, y: -2, spacing: 0.95 } # spacing은 PC 다인 구도의 최대 간격 보정
 #   sfx:
-#     alarm: root:/game-list/deokman/assets/sfx/thunder.wav
+#     alarm: root:/game-list/my-game/assets/sfx/thunder.wav
 # config.yaml endings example (background/music reference asset IDs):
 # endings:
 #   dawn:

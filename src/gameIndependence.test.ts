@@ -17,6 +17,8 @@ const forbiddenSampleRules = [
   { pattern: /\bconan\b/i, label: 'sample game id: conan' },
   { pattern: /\bconan-demo\b/i, label: 'sample game id: conan-demo' },
   { pattern: /\blive2dtest\b/i, label: 'sample game id: live2dtest' },
+  { pattern: /\bmuwon\b/i, label: 'sample game id: muwon' },
+  { pattern: /서연|막쇠|한명재/, label: 'sample character name' },
   { pattern: /코난|코고로|미란/, label: 'sample character name' },
   { pattern: /\bengine-showcase\b/i, label: 'sample tag: engine-showcase' },
   { pattern: /\bis-live2d\b/i, label: 'sample-specific CSS class: is-live2d' },

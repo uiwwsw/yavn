@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(-4 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- folded hanji: two leaves -->
+    <path d="M60 50 L200 46 L202 352 L64 356 Z" fill="#d9ccb0" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M200 46 L340 52 L336 354 L202 352 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M200 46 L202 352" stroke="#1d1a17" stroke-width="2"/>
+    <path d="M206 50 L208 350" stroke="#c4b594" stroke-width="3"/>
+    <!-- paper grain -->
+    <g stroke="#b9a983" stroke-width="1.2" opacity="0.6">
+      <path d="M80 90 l14 1 M120 140 l10 -1 M90 210 l16 0 M150 260 l12 1 M100 320 l14 -1 M160 100 l10 1 M76 280 l9 0"/>
+      <path d="M230 300 l14 1 M300 320 l12 0 M320 110 l10 1 M250 70 l12 -1 M310 250 l9 1"/>
+    </g>
+    <!-- title -->
+    <text x="130" y="88" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="30" font-weight="700" fill="#1d1a17" text-anchor="middle">시장</text>
+    <path d="M100 100 L160 99" stroke="#1d1a17" stroke-width="2"/>
+    <!-- body outline sketch -->
+    <g fill="none" stroke="#1d1a17" stroke-width="2.5">
+      <circle cx="131" cy="135" r="15"/>
+      <path d="M124 150 L123 160 M138 150 L139 160"/>
+      <path d="M123 160 C104 162 98 172 96 186 L90 240 M139 160 C158 162 164 172 166 186 L172 240"/>
+      <path d="M104 186 L108 252 L116 320 M158 186 L154 252 L146 320"/>
+      <path d="M108 252 L131 256 L154 252 M131 256 L130 320"/>
+    </g>
+    <!-- marks: neck & fingernail -->
+    <path d="M122 156 L140 156" stroke="#b8432b" stroke-width="3"/>
+    <circle cx="90" cy="243" r="5" fill="none" stroke="#b8432b" stroke-width="2.5"/>
+    <!-- brush notes in columns -->
+    <g fill="none" stroke="#1d1a17" stroke-width="3">
+      <path d="M312 80 c-3 10 4 16 0 26 c-4 10 3 18 -1 30 M312 150 c3 8 -3 14 1 24"/>
+      <path d="M284 80 c-3 12 4 18 0 30 c-3 10 3 16 0 28 c-3 10 2 20 -1 32 M284 186 c3 10 -3 16 0 28"/>
+      <path d="M256 80 c-3 10 3 18 0 28 c-3 12 4 18 0 30 M256 152 c3 8 -2 14 1 22 c3 10 -3 16 0 26"/>
+      <path d="M228 80 c-3 12 3 16 0 28 c-3 10 3 18 0 26"/>
+    </g>
+    <path d="M296 230 l-3 10 M300 238 l6 4" stroke="#1d1a17" stroke-width="2.5"/>
+    <!-- red seal -->
+    <g transform="rotate(5 290 300)">
+      <rect x="262" y="272" width="56" height="56" fill="#b8432b" stroke="#8e3220" stroke-width="2"/>
+      <rect x="268" y="278" width="44" height="44" fill="none" stroke="#efe6d2" stroke-width="2.5"/>
+      <path d="M276 288 h12 v10 h-12 z M294 286 v26 M300 290 h8 M300 300 h8 M276 306 h14 M282 300 v16" fill="none" stroke="#efe6d2" stroke-width="2.5"/>
+      <path d="M266 324 l6 -3 M312 276 l3 6" stroke="#efe6d2" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

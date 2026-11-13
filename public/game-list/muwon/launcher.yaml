@@ -1,0 +1,30 @@
+languages: [ko]
+summary: "1792년 한성, 혜민서 의녀가 한글 검시 지침서로 억울한 죽음을 읽는다. 시신 그림표를 직접 살피고 옛 검시법으로 실험해, 고문으로 받아 낸 자백을 증거로 뒤집는 5장 검시 추리극. 결말 4종."
+thumbnail: "assets/bg/title.svg"
+tags:
+  - historical-fiction
+  - joseon
+  - mystery
+  - complete
+  - investigation
+  - consequential-choices
+tagLabels:
+  historical-fiction: 역사극
+  joseon: 조선
+  mystery: 추리
+  complete: 완결
+  investigation: 직접 조사
+  consequential-choices: 무거운 선택
+showcase:
+  label: "COMPLETE · 5 CHAPTERS"
+  backgroundColor: "#141c26"
+  image:
+    positionX: 62
+    positionY: 50
+    scale: 1
+    offsetX: 0
+    offsetY: 0
+
+translations:
+  en:
+    summary: "Hanseong, 1792. A royal clinic maid reads the dead with a newly translated forensic manual. Examine body charts, run historical forensic tests and overturn a confession beaten out of an innocent man. Five chapters, four endings."

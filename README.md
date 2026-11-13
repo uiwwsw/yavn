@@ -35,10 +35,6 @@ scenes:
       - say: {text: 종이에서 내 이름을 찾았다.}
 ```
 
-## 선덕여왕 대사·서술 개정 (2026-10-13)
-
-12개 장의 대사, 서술, 선택 질문, 사망·엔딩 문구 723곳을 다시 편집했습니다. 궁중의 공식 말투와 가까운 사람 사이의 말을 구분하고, 덕만의 감각과 상대의 반응으로 장면을 이어 갑니다. 기존 선택 키·문구·액션 주소·능력치·엔딩 조건과 저장 버전은 유지합니다. 참고 자료와 인물별 기준은 [보이스 가이드](public/game-list/deokman/CHARACTER_VOICE.ko.md)에 기록했습니다.
-
 ## Quick Start
 
 ```bash
@@ -57,7 +53,7 @@ pnpm dev
 ## 플레이 편의
 
 - **읽은 대사 건너뛰기**: 대화창의 `건너뛰기`를 켜면 이 게임에서 이미 읽은 대사를 빠르게 넘깁니다. 처음 보는 대사, 선택지, 입력, 영상, 게임오버, 엔딩에서 자동으로 멈춥니다. 읽은 기록은 게임별로 브라우저에 남아 새 회차와 되돌리기 이후에도 유지됩니다.
-- **빠른 첫 장면**: 챕터를 열 때 시작 장면과 그 장면에서 두 단계 안에 이어지는 장면의 그림만 기다리고, 나머지 그림은 장면이 시작된 뒤 계속 받습니다. 덕만 1장 기준으로 시작 전에 기다리는 그림이 23개에서 5개로 줄었습니다.
+- **빠른 첫 장면**: 챕터를 열 때 시작 장면과 그 장면에서 두 단계 안에 이어지는 장면의 그림만 기다리고, 나머지 그림은 장면이 시작된 뒤 계속 받습니다.
 - **조사 장면 안내**: 배경 위 조사 지점이 있는 선택에서는 `화면에서 살펴볼 곳을 누르세요`를 표시하고, 목록형 선택지 번호는 실제로 보이는 순서대로 매깁니다.
 - **읽기 쉬운 글자**: 게임 화면·시작 화면·이야기 지도의 글자는 12px 이상으로 표시하고, 설정 화면 소제목은 한국어로 보여 줍니다.
 - **이용 통계 선택**: 동의 창은 시작 화면 위에 표시하고, 게임 중에는 떠 있는 `이용 통계` 버튼이 대화창을 가리지 않도록 숨깁니다. 선택은 `저장 · 설정 → 권리·출처 → 이용 통계 설정`에서 바꿀 수 있습니다.
@@ -107,7 +103,7 @@ endings:
     tone: hopeful
 ```
 
-공격의 실제 결과는 `set`/`branch`/`gameOver`로 작성합니다. 세부 옵션과 저장·접근성 동작은 [개발 가이드](docs/DEVELOPMENT_GUIDE.ko.md#9-0-장면-전환과-공격-연출)를 참고하세요. 덕만 V10.4는 이 연출을 12개 장의 장소 전환, 칠숙의 공격 장면 다섯 곳, 11개 결말에 적용합니다. 2026-09-08 작품별 보강은 기존 액션 위치와 작성 버전을 유지하므로 V10.4 저장을 계속 사용할 수 있습니다.
+공격의 실제 결과는 `set`/`branch`/`gameOver`로 작성합니다. 세부 옵션과 저장·접근성 동작은 [개발 가이드](docs/DEVELOPMENT_GUIDE.ko.md#9-0-장면-전환과-공격-연출)를 참고하세요.
 
 ## 품질과 구조
 
@@ -643,8 +639,8 @@ scenes:
 ```yaml
 assets:
   characters:
-    deokman:
-      base: assets/char/deokman.webp
+    heroine:
+      base: assets/char/heroine.webp
       placement: stage-bottom # 생략 시 기본값
       facing: left # 원본이 바라보는 방향: left | right | front
       calibration: { scale: 1.06, x: 0, y: -2, spacing: 0.98 }
@@ -658,7 +654,7 @@ scenes:
   audience:
     actions:
       - camera: wide
-      - char: { id: deokman, position: left, enter: popIn }
+      - char: { id: heroine, position: left, enter: popIn }
       - char:
           id: king
           position: right
@@ -669,7 +665,7 @@ scenes:
             easing: cubic-bezier(0.2, 0.72, 0.24, 1)
             delay: 80
       - say:
-          char: deokman
+          char: heroine
           camera: medium
           text: "전하께 드릴 말씀이 있습니다."
       - camera:
@@ -678,7 +674,7 @@ scenes:
           transition: pan
           duration: 460
       - choice:
-          char: deokman
+          char: heroine
           camera: close
           prompt: "왕이 잔을 든다. 지금 막을까?"
           options:
@@ -694,15 +690,15 @@ scenes:
 scenes:
   conversation: # layout: auto가 기본
     actions:
-      - char: { id: deokman }
+      - char: { id: heroine }
       - char: { id: king, position: auto }
-      - say: { char: deokman, with: [king], text: "둘이 이야기하지요." }
-      - say: { char: deokman, with: [], text: "생각할 시간이 필요해." } # 중앙으로 이동
+      - say: { char: heroine, with: [king], text: "둘이 이야기하지요." }
+      - say: { char: heroine, with: [], text: "생각할 시간이 필요해." } # 중앙으로 이동
   doorway:
     layout: fixed
     actions:
-      - char: { id: deokman, position: left }
-      - say: { char: deokman, with: [], text: "문을 비워 두어라." } # 왼쪽 유지
+      - char: { id: heroine, position: left }
+      - say: { char: heroine, with: [], text: "문을 비워 두어라." } # 왼쪽 유지
 ```
 
 - 객체형 `target`은 `group | speaker | 캐릭터ID`, `transition`은 `cut | push | pan`, `duration`은 `0..3000ms`입니다. 생략 시 숏에 맞는 대상과 `0/520/380ms` 기본 전환을 사용합니다. 명시적 대상이 있는 `close`는 기본 `pan`, 축약형 `close`는 수평 구도를 유지한 `push`를 사용합니다.
@@ -1078,18 +1074,14 @@ scenes:
 
 `startScreen.eyebrow`(최대 120자), `subtitle`(최대 300자)로 제목 위아래 문구를 지정합니다. `showTitle: false`는 문구 블록 전체를 숨깁니다. `buttonPosition`과 `titleColor`는 계속 사용할 수 있습니다. 모든 자동 배경 움직임을 끄려면 `scene: { motion: none, parallax: 0, particles: none, fog: false, light: none }`을 사용하고 영상과 레이어 모션도 생략합니다.
 
-## 덕만 완결판
+## 무원 — 한성 검안록
 
-- 2026-09-09 개편: 기존 실패 분기 32곳을 관찰·조사·정책의 후속 장면으로 바꿨습니다. 2장 인장, 4장 장부, 8장 모란패, 11장 전령 매듭을 나란히 비교하며, 틀려도 재조사할 수 있습니다. 네 조사와 공개 통치가 히든 엔딩으로 회수됩니다. 11개 결말은 모두 1장부터 실제 선택으로 도달하는 경로를 검증합니다. 기존 장면 ID·액션 위치·선택 키와 저장 식별자는 유지합니다. 덕만의 기본 인물 배치는 `prompt-top`으로 맞췄습니다.
-
-- `/game-list/deokman/`은 **선덕여왕: 죽은 공주의 왕관**의 12챕터 완결판입니다. 어린 공주의 생존(기), 통치와 외교의 대가(승), 자매의 독살 음모와 즉위(전), 반란과 마지막 기록(결)을 잇습니다. 저장 식별 버전 `10.4.0`은 유지합니다.
-- 주요 선택 36개와 증거 비교 4개, 공간 조사 5개를 포함해 총 45개 선택·151개 보기를 제공합니다. 관찰 실수는 다시 확인할 수 있고 정책은 신뢰·민심·군권의 대가를 치르며 계속됩니다. 물리적 위험에 무리하게 뛰어드는 44개 실패는 최소 네 번의 대사·서술·기록 뒤 복구 가능한 게임오버로 이어집니다.
-- `dialogue/narration/record/thought/action` 채널, `say.when`과 `choice.options[].when`, 외부 챕터 `goto`, 누적 상태 `branch`를 실제 장편 흐름에서 사용합니다. 몰입을 깨는 `system` 화자는 본편에 사용하지 않습니다.
-- 2026-09-11 구도 개선: 덕만 10명에 전신/대화용 상반신 프리셋을 추가했습니다. 성인은 하단 40%, 어린 덕만은 32%를 크롭해 얼굴 크기를 약 1.5~1.7배 키우고 PC·모바일 인물 간격을 줄였습니다. 머리 여백과 이미지·DOM 재사용을 유지하며 새 자동 배치를 적용합니다. 원화 교체나 저장 초기화는 필요하지 않습니다.
-- 2026-09-08 연출 마이그레이션: 12개 챕터의 반복 `close` 223개·`reaction` 20개를 `medium` 대화 구도로 정리하고, 대상을 지정한 클로즈업과 공간 설명용 `wide`는 유지했습니다. 4개 과장된 등장은 짧은 페이드로 조정했습니다. 액션 수·장면 ID·이야기/분기/저장 인덱스는 그대로이며 추리 샘플·Live2D 테스트는 새 엔진 기본 연출을 자동 적용받습니다.
-- 2026-09-08 작품별 보강: 궁 안의 긴장, 국경의 이동, 열린 하늘을 위한 자체 합성 배경음 세 곡을 타이틀·12개 장·11개 엔딩에 배치했습니다. 3장 칠숙의 협공은 칼이 다가오는 내레이션→전용 공격 컷→사망 기록으로 이어집니다. 기존 액션 위치와 작성 버전을 유지해 진행 중인 저장을 이어갈 수 있습니다. 음원은 외부 샘플 없이 `scripts/generate-deokman-score.py`로 재생성할 수 있습니다.
-- 시작 화면은 불타는 궁궐 배경과 독립된 덕만 캐릭터 레이어에 불티·안개·호흡 조명·시차를 합성합니다. 모바일 인물 위치와 크기는 `scene.layers[].mobile`로 따로 조정하며 시작 시 커튼 전환으로 본편을 엽니다. 런처 대표 이미지는 기존 키아트를 유지합니다. 어린 덕만 3표정과 성인 시기 10개 원화는 동일한 얼굴 계보·전신 구도를 유지한 고해상도 RGBA PNG입니다. 2장의 국경 장터에는 해진 유랑복, 3장 귀환부터 9장 즉위 전에는 공주복, 즉위 장면과 10~12장에는 금제 관식이 있는 왕복을 사용하며, 시녀 잠입 선택은 무장식 시녀복으로 바뀝니다. 복제 모란패와 천명의 잔을 포함한 12개 증거물은 배경 없는 SVG 오브젝트입니다.
-- 전체 12장 구조, 선택·엔딩 규칙, 아트 제작 규격과 구현 현황은 [`docs/DEOKMAN_GAME_BIBLE.ko.md`](docs/DEOKMAN_GAME_BIBLE.ko.md)에, 실제 대사 수정 규칙은 [`public/game-list/deokman/CHARACTER_VOICE.ko.md`](public/game-list/deokman/CHARACTER_VOICE.ko.md)에 고정했습니다.
+- `/game-list/muwon/`은 1792년 한성을 배경으로 한 5장 검시 추리극입니다. 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서로 세 죽음을 하나로 잇고, 고문으로 받아 낸 자백을 증거로 뒤집습니다. 등장인물과 사건은 모두 창작이며 시대 배경과 『무원록』의 검시 방법만 빌려 왔습니다.
+- 사건마다 `조사 → 실험 → 추리 → 대면` 리듬을 따릅니다. 시신 그림표(시형도)와 현장을 `choice.presentation: explore`로 직접 살피고, 술지게미로 숨은 멍 드러내기·콧속 그을음·닭에게 밥 먹여 독 확인·상처 폭 대조 같은 옛 검시법을 장면 안에서 해 봅니다.
+- 3장 대질과 5장 재판에서는 증언에 맞는 증거를 소지품에서 골라 제시합니다. 틀린 증거는 신뢰를 깎고, 신뢰가 바닥나면 판이 넘어갑니다. 실패는 항상 선택 직전에 단서를 먼저 보여 준 뒤에만 일어나며 원인 선택으로 바로 돌아갈 수 있습니다.
+- 막쇠를 먼저 구했는지(2장), 덕구를 살렸는지(3장), 거래를 받아들였는지(3장), 재판에서 몇 개의 증거를 맞혔는지(5장)에 따라 결말 4종(무원·늦은 무원·덮인 장부·침묵의 값)이 갈립니다.
+- 배경 11장, 인물 8명(표정 포함 19장), 증거물 12종은 모두 이 저장소에서 직접 그린 SVG입니다. 배경음 4곡은 외부 샘플 없이 `scripts/generate-muwon-score.py`로 합성합니다.
+- 기획·인물·장 구성·결말 조건·미술 규격은 [`docs/MUWON_GAME_BIBLE.ko.md`](docs/MUWON_GAME_BIBLE.ko.md)에 있고, 결말 연결·실패 복귀·에셋 존재는 `src/muwonGame.test.ts`가 검사합니다.
 
 ## 렌 Live2D 대화 데모
 
@@ -1098,10 +1090,10 @@ scenes:
 
 ## 샘플
 
-- `public/game-list/deokman/config.yaml`
-- `public/game-list/deokman/base.yaml`
-- `public/game-list/deokman/launcher.yaml`
-- `public/game-list/deokman/0.yaml`–`11.yaml`
+- `public/game-list/muwon/config.yaml`
+- `public/game-list/muwon/base.yaml`
+- `public/game-list/muwon/launcher.yaml`
+- `public/game-list/muwon/0.yaml`–`4.yaml`
 - `public/game-list/live2dtest/config.yaml`
 - `public/game-list/live2dtest/base.yaml`
 - `public/game-list/live2dtest/launcher.yaml`
@@ -1224,4 +1216,3 @@ Public launcher/game HTML keeps its useful search/no-JavaScript content, but inc
 
 서재에서 제목·태그·작가·언어를 함께 검색할 수 있습니다. 공백으로 나눈 검색어를 모두 포함하는 작품을 찾으며 전각 문자도 지원합니다.
 
-덕만 첫 장을 영어로 플레이할 수 있습니다. 서재에서 게임 지원 언어를 English로 고르면 영어 도입부가 표시됩니다. 영어판은 첫 장까지만 제공하며 한국어 완결판과 별도 진행으로 저장됩니다. [대사·번역 기준](docs/DRAMA_LOCALIZATION.md)을 참고하세요.

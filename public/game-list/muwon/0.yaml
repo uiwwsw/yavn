@@ -1,0 +1,349 @@
+chapterTitle: "우물 속 신부"
+
+script:
+  - scene: night_call
+  - scene: chart_intro
+
+scenes:
+  night_call:
+    title: "혼례 전날 밤"
+    actions:
+      - bg: { id: well_night, transition: fade, duration: 900 }
+      - music: night_well
+      - say:
+          channel: record
+          text: "정조 십육년 구월 스무하루. 한성 남부 훈도방 우물. 여인 하나 익사로 신고됨."
+      - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "등불이 우물 돌 위에서 흔들린다. 거적 아래로 젖은 치맛자락이 삐져나와 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "혜민서에서 불려 온 건 나 하나. 여자 시신이니 의녀가 봐야 한다는 이유다."
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 막쇠
+          text: "아가씨가 의녀유? 젊네. 토하지 말고, 손은 내가 시키는 데만 대요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "토는 안 합니다. 그리고 이건 읽고 왔어요."
+      - say:
+          channel: action
+          with: [막쇠]
+          text: "품에서 책을 꺼낸다. 한문 옆에 한글이 빼곡한 『무원록 언해』. 막쇠가 눈을 가늘게 뜬다."
+      - say:
+          char: 막쇠.grin
+          text: "그 책이 한글로 나왔다더니 진짜네. 나 같은 놈은 그림만 봤는데."
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원.stern
+          with: [막쇠]
+          text: "한성부 판관 김도원이오. 마을 사람들 말로는 신부가 혼례가 겁나 몸을 던졌다더군."
+      - say:
+          char: 도원.stern
+          text: "오늘 밤 안에 초검을 마치고 시장을 올리겠소. 의녀는 여자 몸만 확인해 주면 되오."
+      - say:
+          channel: thought
+          with: [도원]
+          text: "'확인만'. 그 말은 이미 결론을 써 놓았다는 뜻이다."
+      - say:
+          char: 서연
+          with: [도원, 막쇠]
+          text: "나리. 몸을 먼저 보고 쓰겠습니다. 머리부터 발끝까지요."
+      - say:
+          channel: action
+          with: []
+          continueLabel: "거적을 걷는다"
+          text: "막쇠가 거적 끝을 잡고 나를 본다. 고개를 끄덕인다."
+
+  chart_intro:
+    title: "시형도"
+    actions:
+      - bg: { id: sihyeongdo, transition: dissolve, duration: 720 }
+      - music: inquest
+      - say:
+          channel: record
+          text: "시장 첫 장. 몸 앞면을 그린 시형도에 본 것을 하나씩 적는다."
+      - say:
+          char: 막쇠
+          text: "물에서 건진 송장은 세 군데부터 봐요. 입이랑 코, 손톱, 목."
+      - goto: c1_examine
+
+  c1_examine:
+    title: "분이의 몸"
+    actions:
+      - choice:
+          key: c1_examine
+          presentation: explore
+          prompt: "분이. 열아홉. 어디부터 볼까?"
+          with: []
+          camera: wide
+          options:
+            - text: "입과 코"
+              at: { x: 62, y: 9 }
+              when: { var: c1_mouth, op: eq, value: false }
+              goto: c1_mouth_scene
+            - text: "손톱"
+              at: { x: 30, y: 92 }
+              when: { var: c1_nails, op: eq, value: false }
+              goto: c1_nails_scene
+            - text: "목"
+              at: { x: 66, y: 22 }
+              when: { var: c1_neck, op: eq, value: false }
+              goto: c1_neck_scene
+            - text: "본 것을 정리한다"
+              when:
+                all:
+                  - { var: c1_mouth, op: eq, value: true }
+                  - { var: c1_nails, op: eq, value: true }
+                  - { var: c1_neck, op: eq, value: true }
+              goto: c1_reasoning
+
+  c1_mouth_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "입술을 벌리고 콧구멍을 들여다본다. 물기뿐이다. 거품 한 점 없다."
+      - say:
+          char: 막쇠
+          text: "산 채로 빠지면 숨을 들이켜. 그럼 입이랑 코에 흰 거품이 몽글몽글 올라와요."
+      - say:
+          char: 서연.think
+          with: [막쇠]
+          text: "책에도 그렇게 적혀 있어요. 거품이 없으면, 물에 들어가기 전에 숨이 멎었다."
+      - set: { c1_mouth: true }
+      - goto: c1_examine
+
+  c1_nails_scene:
+    actions:
+      - sticker:
+          id: c1_thread
+          image: thread_sticker
+          x: 50
+          y: 34
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "오른손 손톱 두 개가 뿌리까지 부러졌다. 그 밑에 짙은 남빛 실오라기가 박혀 있다."
+      - say:
+          char: 막쇠
+          with: []
+          text: "할퀸 거요. 누구 살을 긁었으면, 그놈 손등이나 팔에 자국이 남았을 거고."
+      - say:
+          channel: thought
+          with: []
+          text: "물에서 몇 시진을 있었는데 실이 안 빠졌다. 그만큼 세게 움켜쥐었다."
+      - get: blue_thread
+      - clearSticker: { id: c1_thread, leave: fadeOut }
+      - set: { c1_nails: true }
+      - goto: c1_examine
+
+  c1_neck_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "목을 살핀다. 희다. 물에 불은 살결 말고는 아무 자국도 없다."
+      - say:
+          channel: thought
+          with: []
+          text: "언해 서른두 장. 멍이 숨었으면 술지게미와 초를 덮고 한 식경을 기다린다."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "막쇠 아저씨. 주막에서 지게미 한 바가지랑 초를 얻어 올 수 있어요?"
+      - say:
+          char: 막쇠.grin
+          text: "송장 닦을 술을 달라면 주모가 기겁하겠구먼. 다녀오리다."
+      - say:
+          channel: action
+          with: []
+          continueLabel: "지게미를 덮고 기다린다"
+          text: "젖은 천 위로 시큼한 지게미를 고루 펴 바른다. 등불 심지를 한 번 자른다."
+      - effect: { name: inkstamp, wait: true }
+      - say:
+          channel: action
+          with: []
+          text: "천을 걷는다. 목 양쪽에 검붉은 자국 네 개가 떠올라 있다. 손가락 모양이다."
+      - say:
+          char: 막쇠
+          text: "엄지가 앞에 있네. 마주 보고 조른 거요."
+      - get: first_sijang
+      - set: { c1_neck: true }
+      - goto: c1_examine
+
+  c1_reasoning:
+    title: "죽음의 까닭"
+    actions:
+      - bg: { id: well_night, transition: dissolve, duration: 620 }
+      - music: night_well
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원.stern
+          text: "다 보았소? 그럼 말해 보시오. 이 여인은 어찌 죽었소."
+      - choice:
+          key: c1_cause
+          prompt: "분이의 죽음을 시장에 어떻게 적을까?"
+          char: 도원
+          options:
+            - text: "발을 헛디뎌 빠져 죽었다"
+              goto: c1_cause_wrong_fall
+            - text: "목이 졸린 뒤 우물에 던져졌다"
+              goto: c1_cause_right
+            - text: "스스로 몸을 던졌다"
+              goto: c1_cause_wrong_self
+
+  c1_cause_wrong_fall:
+    actions:
+      - say:
+          char: 막쇠
+          text: "헛디뎠으면 물을 먹었겠지. 입에 거품이 있었수, 아가씨?"
+      - say:
+          channel: thought
+          text: "없었다. 다시 생각하자."
+      - goto: c1_reasoning
+
+  c1_cause_wrong_self:
+    actions:
+      - say:
+          char: 도원
+          text: "그럼 목의 손자국은 누가 낸 것이오? 제 손으로는 저리 못 조르오."
+      - say:
+          channel: thought
+          text: "판관이 먼저 알아챘다. 다시."
+      - goto: c1_reasoning
+
+  c1_cause_right:
+    actions:
+      - add: { trust_dowon: 1 }
+      - say:
+          char: 서연.resolve
+          with: [도원]
+          text: "입과 코에 거품이 없습니다. 목에는 손자국이 있고요. 죽인 뒤 던졌습니다."
+      - say:
+          char: 도원.troubled
+          text: "…자진으로 올리면 오늘 밤 일이 끝났을 텐데."
+      - say:
+          char: 도원
+          text: "그렇게 쓰겠소. 살인이면 범인이 있어야 하오."
+      - goto: c1_brother
+
+  c1_brother:
+    title: "오라비"
+    actions:
+      - char: { id: 강치수, position: right }
+      - say:
+          char: 강치수.angry
+          with: [도원]
+          text: "포도청 포교 강치수요. 범인은 이미 잡았소. 죽은 년 오라비요."
+      - say:
+          char: 강치수
+          text: "노름빚 때문에 혼수 비단을 팔자 했다가 저녁에 대판 싸웠다지. 동네가 다 들었소."
+      - say:
+          channel: narration
+          text: "포졸 둘이 사내 하나를 끌고 온다. 짚신 한 짝이 벗겨져 있다. 사내는 소매로 눈가를 문지른다."
+      - say:
+          channel: thought
+          with: [강치수]
+          text: "소매가 걷힌 팔뚝이 하얗다. 손등도 깨끗하다. 긁힌 자국이 하나도 없다."
+      - say:
+          char: 강치수.angry
+          text: "판관 나리, 이놈 곤장 열 대면 다 불 거요. 데려가겠소."
+      - choice:
+          key: c1_accuse
+          prompt: "포교가 오라비를 끌고 가려 한다."
+          char: 강치수
+          options:
+            - text: "오라비의 손을 보여 달라고 한다"
+              goto: c1_show_hands
+            - text: "오라비를 포도청에 넘긴다"
+              goto: c1_bad_brother
+            - text: "실의 출처부터 쫓겠다고 한다"
+              goto: c1_follow_thread
+
+  c1_bad_brother:
+    actions:
+      - bg: { id: jail, transition: fade, duration: 800 }
+      - music: pressure
+      - say:
+          channel: narration
+          text: "이튿날 아침, 오라비는 곤장 열두 대 끝에 누이를 죽였다고 말했다."
+      - say:
+          channel: narration
+          text: "그 손등에는 끝까지 긁힌 자국이 없었다. 그걸 물어본 사람도 없었다."
+      - say:
+          channel: record
+          text: "포도청 공초. 훈도방 김가, 누이 분이를 목 졸라 우물에 던졌다고 자복함."
+      - say:
+          channel: thought
+          with: []
+          text: "분이 손톱 밑의 실은 이 사람 옷에서 나온 게 아니었다."
+      - gameOver:
+          title: "곤장 아래의 자백"
+          message: "손톱 밑 실과 깨끗한 손등이 맞지 않았다. 범인을 정하기 전에 증거가 가리키는 쪽을 보자."
+          recoverToChoice: c1_accuse
+
+  c1_show_hands:
+    actions:
+      - add: { trust_dowon: 1 }
+      - say:
+          char: 서연
+          with: [강치수, 도원]
+          text: "포교 나리. 저 사람 손을 앞으로 내밀게 해 주세요."
+      - say:
+          channel: action
+          with: [강치수]
+          text: "사내가 떨리는 손을 내민다. 손등, 손목, 팔뚝까지. 생채기 하나 없다."
+      - say:
+          char: 서연.resolve
+          text: "분이는 손톱이 부러질 만큼 범인을 할퀴었습니다. 이 손은 아닙니다."
+      - say:
+          char: 강치수.angry
+          text: "…계집이 시장 한 장 들고 포도청 일을 가르치려 드네."
+      - say:
+          char: 도원.stern
+          with: [강치수]
+          text: "가르친 게 아니라 보여 준 것이오. 포교. 오늘은 풀어 주시오."
+      - set: { c1_brother: true }
+      - goto: c1_follow_thread
+
+  c1_follow_thread:
+    title: "남빛 실"
+    actions:
+      - say:
+          char: 강치수.angry
+          text: "좋소. 판관 나리 고집대로 하시오. 사흘 안에 범인 못 내놓으면 이놈 다시 데려가오."
+      - sticker:
+          id: c1_thread_end
+          image: thread_sticker
+          x: 50
+          y: 34
+          width: "clamp(150px, 20%, 280px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          char: 막쇠
+          with: [도원]
+          text: "그 실 좀 봅시다. …이 남빛은 아무나 못 내. 쪽을 세 번 넘게 먹인 감청이오."
+      - say:
+          char: 막쇠
+          text: "육의전 비단전. 그중에서도 여금이네 가게만 이 색을 팔아요."
+      - say:
+          char: 도원
+          text: "분이가 그 가게 침모였다지. 주인이 자기 침모의 손톱 밑에 있었다?"
+      - say:
+          channel: thought
+          with: []
+          text: "아니면 그 가게 물건을 가진 누군가가. 내일은 육의전이다."
+      - clearSticker: { id: c1_thread_end, leave: fadeOut }
+      - say:
+          channel: record
+          text: "초검 시장. 사인 교살 후 투수(投水). 범인 미상. 검안 의녀 서연, 오작인 막쇠 입회."
+      - goto: /1.yaml

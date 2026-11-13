@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(5 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- paper scrap -->
+    <path d="M52 64 L340 52 L352 120 L342 200 L350 340 L60 348 L48 270 L58 180 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M60 348 L48 270 L58 180 L52 64 L70 64 L76 180 L68 270 L76 346 Z" fill="#d9ccb0"/>
+    <g stroke="#b9a983" stroke-width="1.2" opacity="0.6">
+      <path d="M90 90 l12 0 M280 80 l10 1 M300 320 l12 0 M100 320 l10 -1 M320 200 l9 0 M90 200 l10 1"/>
+    </g>
+    <!-- seal impression: red ground, characters reversed out (baekmun) -->
+    <g transform="rotate(-4 200 200)">
+      <rect x="104" y="104" width="192" height="192" rx="6" fill="#b8432b"/>
+      <rect x="116" y="116" width="168" height="168" fill="none" stroke="#efe6d2" stroke-width="5"/>
+      <path d="M200 118 L200 282" stroke="#efe6d2" stroke-width="3"/>
+      <g font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="70" font-weight="700" fill="#efe6d2" text-anchor="middle">
+        <text x="242" y="192">전</text>
+        <text x="242" y="270">의</text>
+        <text x="158" y="192">감</text>
+        <text x="158" y="270">인</text>
+      </g>
+      <!-- uneven ink take: paper showing through -->
+      <g fill="#efe6d2">
+        <circle cx="112" cy="140" r="3"/><circle cx="290" cy="250" r="4"/><circle cx="270" cy="110" r="2.5"/>
+        <circle cx="130" cy="290" r="3"/><path d="M104 220 l6 -2 l-2 10 z"/><path d="M296 160 l-6 4 l6 6 z"/>
+      </g>
+      <!-- ink pooling edge -->
+      <path d="M106 296 L180 298 M296 108 L298 170" stroke="#8e3220" stroke-width="3"/>
+    </g>
+    <!-- faint offset from a second press -->
+    <path d="M300 302 L304 112" stroke="#b8432b" stroke-width="2" opacity="0.45"/>
+  </g>
+</svg>

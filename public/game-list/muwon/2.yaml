@@ -1,0 +1,397 @@
+chapterTitle: "곤장 아래 자백"
+
+script:
+  - scene: jail_visit
+  - scene: c3_look
+
+scenes:
+  jail_visit:
+    title: "포도청 옥"
+    actions:
+      - bg: { id: jail, transition: fade, duration: 800 }
+      - music: pressure
+      - say:
+          channel: record
+          text: "구월 스무사흘. 포도청 남옥. 방화 살인 죄인 덕구, 처결 사흘 전."
+      - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "창살 너머 짚더미 위에 사내가 모로 누워 있다. 바지 엉덩이 쪽이 검붉게 굳었다."
+      - char: { id: 덕구, position: left }
+      - say:
+          char: 덕구.scared
+          text: "제, 제가 했어요. 했다니까요. 그러니까 이제 그만 때려요…"
+      - say:
+          char: 서연
+          with: [덕구]
+          text: "때리러 온 게 아니에요. 의녀예요. 엉덩이부터 보여 줘요. 약 발라 줄게요."
+      - say:
+          channel: action
+          with: [덕구]
+          text: "고약을 펴 바르는 동안 덕구는 오른손으로 창살을 꽉 쥐고 있다. 손바닥에 굳은살이 두껍다."
+      - char: { id: 강치수, position: right }
+      - say:
+          char: 강치수.angry
+          with: [덕구]
+          text: "의녀가 죄인 엉덩이까지 돌보나. 판관 나리 끈이 길기도 하지."
+      - say:
+          char: 강치수
+          text: "자백은 받았소. 흉기도 찾았소. 사흘 뒤면 끝날 일이오."
+      - goto: c3_look
+
+  c3_look:
+    actions:
+      - choice:
+          key: c3_look
+          presentation: explore
+          prompt: "포교가 지켜본다. 무엇을 확인할까?"
+          with: [강치수, 덕구]
+          options:
+            - text: "흉기라는 낫"
+              at: { x: 30, y: 55 }
+              when: { var: c3_sickle, op: eq, value: false }
+              goto: c3_sickle_scene
+            - text: "덕구의 손"
+              at: { x: 70, y: 45 }
+              when: { var: c3_hand, op: eq, value: false }
+              goto: c3_hand_scene
+            - text: "포교와 이야기한다"
+              when:
+                all:
+                  - { var: c3_sickle, op: eq, value: true }
+                  - { var: c3_hand, op: eq, value: true }
+              goto: c3_offer
+
+  c3_sickle_scene:
+    actions:
+      - sticker:
+          id: c3_sickle
+          image: sickle_sticker
+          x: 50
+          y: 34
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "형틀 옆에 세워 둔 낫. 날이 넓고 두껍다. 대 보니 두 치가 넘는다."
+      - say:
+          channel: thought
+          with: []
+          text: "박씨 목의 상처 탁본은 폭이 한 치였다. 이 날로는 그 금이 나오지 않는다."
+      - get: deokgu_sickle
+      - clearSticker: { id: c3_sickle, leave: fadeOut }
+      - set: { c3_sickle: true }
+      - goto: c3_look
+
+  c3_hand_scene:
+    actions:
+      - say:
+          char: 서연
+          with: [덕구]
+          text: "덕구 씨. 이 물동이 좀 들어 봐요. 아무 손으로나."
+      - say:
+          channel: action
+          with: [덕구]
+          text: "덕구는 망설임 없이 오른손으로 동이를 든다. 왼손은 엉거주춤 허공에 떠 있다."
+      - say:
+          char: 덕구.scared
+          text: "왼손은 어릴 때 짐수레에 깔려서… 숟가락도 겨우 들어요."
+      - say:
+          channel: thought
+          with: []
+          text: "상처는 오른쪽 위에서 왼쪽 아래로. 마주 선 사람이 그었다면 왼손이다."
+      - set: { c3_hand: true }
+      - goto: c3_look
+
+  c3_offer:
+    title: "포교의 셈"
+    actions:
+      - say:
+          char: 강치수
+          with: [덕구]
+          text: "다 봤소? 그럼 내 말도 들어 보시오. 의녀 혼자 들을 말이오."
+      - say:
+          channel: action
+          with: [강치수]
+          text: "강치수가 옥문 밖 그늘로 나를 데려간다. 목소리를 낮춘다."
+      - say:
+          char: 강치수
+          text: "약방 일은 화재로 닫고, 짐꾼은 증좌 부족으로 풀어 주지. 둘 다 사는 길이오."
+      - say:
+          char: 강치수
+          text: "대신 감청 주머니 얘기는 여기서 끝내시오. 그 끝에 누가 있는지 의녀는 모르오."
+      - say:
+          channel: thought
+          with: []
+          text: "그는 주머니를 안다. 내가 아직 아무 데서도 말하지 않은 주머니를."
+      - choice:
+          key: c3_deal
+          prompt: "덕구는 살고, 사건은 닫힌다."
+          char: 강치수
+          options:
+            - text: "거래를 받아들인다"
+              set: { struck_deal: true }
+              goto: c3_silence
+            - text: "거절하고 판관 앞에서 따지자고 한다"
+              goto: c3_confront_intro
+
+  c3_silence:
+    actions:
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 800 }
+      - music: night_well
+      - say:
+          channel: narration
+          text: "이튿날 덕구는 풀려났다. 박씨 약방은 실화로, 분이는 범인 미상으로 시장이 닫혔다."
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 막쇠
+          text: "아가씨. 살린 건 살린 거요. 근데 그 주머니, 오늘도 장에 나왔습디다."
+      - say:
+          channel: thought
+          with: [막쇠]
+          text: "삼백 개 중 몇 개가 누구 아이 입에 들어갔을까. 나는 세지 않기로 했다."
+      - ending: price_of_silence
+
+  c3_confront_intro:
+    title: "대질"
+    actions:
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - char: { id: 도원, position: center }
+      - char: { id: 강치수, position: right }
+      - say:
+          char: 도원.stern
+          with: [강치수]
+          text: "포교와 의녀의 말이 다르다니 여기서 대질하겠소. 덕구의 목숨이 걸렸소."
+      - say:
+          char: 도원
+          text: "의녀. 내 앞에서는 증좌로만 말하시오. 증좌 없는 고발은 무고죄요. 알겠소?"
+      - say:
+          channel: record
+          text: "대질 규칙. 포교의 말에 맞는 증좌를 내놓는다. 엉뚱한 것을 내밀 때마다 믿음을 잃는다."
+      - set: { credibility: 3 }
+      - goto: c3_r1
+
+  c3_r1:
+    actions:
+      - say:
+          char: 강치수.angry
+          with: [도원]
+          text: "덕구가 그 낫으로 영감 목을 그었소. 흉기와 자복이 다 있는데 뭘 더 바라오?"
+      - choice:
+          key: c3_r1
+          prompt: "낫으로 그었다는 말과 맞지 않는 증좌는?"
+          char: 강치수
+          options:
+            - text: "상처 탁본 — 폭이 한 치"
+              when: { var: wound_rubbing, op: eq, value: true }
+              goto: c3_r1_right
+            - text: "은비녀 — 검게 변하지 않았다"
+              goto: c3_r1_wrong
+            - text: "감청 실 — 비단전 물건"
+              goto: c3_r1_wrong
+            - text: "주머니 주문서 — 삼백 개"
+              goto: c3_r1_wrong
+
+  c3_r1_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 강치수
+          text: "그게 낫이랑 무슨 상관이오? 판관 나리, 의녀가 장난을 칩니다."
+      - say:
+          char: 도원.troubled
+          text: "…의녀. 낫 이야기를 하고 있소."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: c3_collapse
+          default: c3_r1
+
+  c3_r1_right:
+    actions:
+      - sticker:
+          id: c3_rub
+          image: wound_rubbing_sticker
+          x: 35
+          y: 32
+          width: "clamp(150px, 20%, 260px)"
+          enter: fadeIn
+      - sticker:
+          id: c3_sk
+          image: sickle_sticker
+          x: 65
+          y: 32
+          width: "clamp(150px, 20%, 260px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          char: 서연.resolve
+          with: [도원, 강치수]
+          text: "상처 폭이 한 치입니다. 이 낫은 두 치가 넘어요. 이 날로는 저 금이 안 나옵니다."
+      - clearSticker: { id: c3_rub, leave: fadeOut }
+      - clearSticker: { id: c3_sk, leave: fadeOut }
+      - say:
+          char: 강치수.angry
+          text: "칼은 버렸겠지. 그럼 불은? 덕구가 약방 뒤에 있었소. 불 질러 놓고 지켜본 거요."
+      - goto: c3_r2
+
+  c3_r2:
+    actions:
+      - choice:
+          key: c3_r2
+          prompt: "불 속에서 죽었다는 말과 맞지 않는 증좌는?"
+          char: 강치수
+          options:
+            - text: "감청 실 — 비단전 물건"
+              goto: c3_r2_wrong
+            - text: "덕구의 낫 — 날 폭 두 치"
+              goto: c3_r2_wrong
+            - text: "닭 실험 기록 — 불 전에 독"
+              when: { var: poison_note, op: eq, value: true }
+              goto: c3_r2_right
+            - text: "분이의 시장 — 목의 손자국"
+              goto: c3_r2_wrong
+
+  c3_r2_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 강치수
+          text: "엉뚱한 소리. 불 얘기를 하랬더니."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: c3_collapse
+          default: c3_r2
+
+  c3_r2_right:
+    actions:
+      - say:
+          char: 서연.resolve
+          with: [도원, 강치수]
+          text: "박씨 콧속에는 그을음이 없었습니다. 입에 물렸던 밥을 먹은 닭이 죽었고요."
+      - say:
+          char: 서연
+          text: "불이 나기 전에 독으로 죽었습니다. 짐꾼이 무슨 수로 약방 주인에게 독을 먹입니까."
+      - say:
+          char: 강치수.angry
+          text: "…그래도 자복을 했소! 제 입으로 했다고 했소. 그걸 뒤집을 셈이오?"
+      - say:
+          char: 도원.stern
+          with: [강치수]
+          text: "의녀. 마지막이오. 자복을 뒤집으려면 증좌가 필요하오. 포교를 탓하는 말은 증좌가 아니오."
+      - goto: c3_r3
+
+  c3_r3:
+    actions:
+      - choice:
+          key: c3_r3
+          prompt: "자백을 뒤집을 마지막 한 가지는?"
+          char: 강치수
+          options:
+            - text: "포교가 범인과 한패라고 외친다"
+              goto: c3_accuse_chisu
+            - text: "덕구는 왼손을 못 쓴다 — 상처는 왼손잡이의 것"
+              when: { var: c3_hand, op: eq, value: true }
+              goto: c3_r3_right
+            - text: "은비녀 — 검게 변하지 않았다"
+              goto: c3_r3_wrong
+
+  c3_r3_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 도원.troubled
+          text: "그건 아까 말한 독 이야기와 부딪히오. 의녀, 정신 차리시오."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: c3_collapse
+          default: c3_r3
+
+  c3_accuse_chisu:
+    actions:
+      - say:
+          char: 서연.shock
+          with: [강치수, 도원]
+          text: "포교 나리는 주머니를 알고 있었습니다! 범인과 한패예요!"
+      - say:
+          char: 강치수.angry
+          text: "들으셨소, 판관 나리. 증좌 하나 없이 관원을 살인 공범으로 몰았소."
+      - say:
+          char: 도원.troubled
+          text: "…무고는 무고요. 내가 경고했소."
+      - say:
+          channel: narration
+          text: "그날 밤 서연은 포도청 여옥에 갇혔다. 덕구의 처결은 예정대로 사흘 뒤였다."
+      - gameOver:
+          title: "증좌 없는 고발"
+          message: "도원은 증좌로만 말하라고 했다. 자백을 뒤집을 것은 덕구의 몸에 있었다."
+          recoverToChoice: c3_r3
+
+  c3_collapse:
+    actions:
+      - say:
+          char: 도원.troubled
+          text: "그만하시오. 의녀의 말은 더 들을 수 없소. 자복대로 처결하겠소."
+      - say:
+          channel: narration
+          text: "사흘 뒤 새남터. 덕구는 마지막까지 오른손으로 짚신 끈을 매만졌다."
+      - say:
+          channel: thought
+          with: []
+          text: "증좌는 다 내 품에 있었다. 꺼내는 순서를 틀렸을 뿐이다."
+      - set: { deokgu_saved: false }
+      - goto: c3_after
+
+  c3_r3_right:
+    actions:
+      - say:
+          char: 서연.resolve
+          with: [도원, 강치수]
+          text: "덕구는 왼손으로 숟가락도 겨우 듭니다. 방금 나리들 앞에서 물동이도 오른손으로 들었고요."
+      - say:
+          char: 서연
+          text: "상처는 오른쪽 위에서 왼쪽 아래. 마주 선 왼손잡이가 그은 겁니다."
+      - say:
+          channel: action
+          with: [도원]
+          text: "도원이 탁본을 들어 덕구의 왼손 옆에 댄다. 오래 본다."
+      - say:
+          char: 도원.stern
+          text: "자복은 곤장 아래서 받은 것이니 믿지 않겠소. 덕구를 풀어 주시오."
+      - say:
+          char: 강치수.angry
+          text: "…판관 나리가 후회하실 거요."
+      - add: { trust_dowon: 1 }
+      - set: { deokgu_saved: true }
+      - char: { id: 덕구, position: left }
+      - say:
+          char: 덕구
+          with: [도원]
+          text: "의녀님… 이 은혜는… 짐이라면 평생 져 드릴게요."
+      - goto: c3_after
+
+  c3_after:
+    title: "사라진 서리"
+    actions:
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - music: night_well
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원.troubled
+          text: "의녀. 이상한 일이 있소. 검안 기록을 옮겨 적던 서리 윤길이 이틀째 안 나오오."
+      - say:
+          char: 도원
+          text: "윤길이 어제 내게 물었소. 전의감 사람이 왜 우리 시장을 빌려 갔냐고."
+      - say:
+          channel: thought
+          with: [도원]
+          text: "전의감. 임금의 약을 짓는 관청. 청심원을 만드는 곳."
+      - say:
+          channel: narration
+          text: "그날 밤, 서빙고지기가 한성부 문을 두드렸다. 얼음 사이에서 사람이 나왔다고."
+      - goto: /3.yaml

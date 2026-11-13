@@ -70,11 +70,9 @@ Added English launcher/engine controls, verified game-language declarations, lan
 
 Use `translations.en.summary` in launcher.yaml for an English catalog summary. This is editorial metadata and does not imply the story supports English.
 
-## English openings and character performance
+## Main story: Muwon (2026-11-13)
 
-The library includes a separate English opening edition for Deokman chapter one. Filter by English to find them. English-only stories open with English controls, including from the Korean library. Both end at the translated boundary and keep separate saves from the Korean full stories.
-
-Exact Korean-to-English text mappings live in `content/localizations`. Generated chapters retain scene IDs, choice logic, rewards, portraits and delivery cues. See the [dialogue and localization guide](DRAMA_LOCALIZATION.md) for scope and editing rules. No additional YAML syntax is required.
+The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-list/muwon/`), a five-chapter forensic mystery set in 1792 Hanseong. Characters and cases are original; only the period and historical inquest methods are borrowed. Art is hand-authored SVG and the score is synthesized by `scripts/generate-muwon-score.py`. The Deokman story, its English opening edition and the English prologue generator were removed. It is currently Korean only.
 
 ## Player conveniences (2026-11-13)
 
