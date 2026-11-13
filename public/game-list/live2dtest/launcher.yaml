@@ -5,6 +5,10 @@ tags:
   - live2d
   - interaction
   - smoke-test
+tagLabels:
+  live2d: Live2D
+  interaction: 상호작용
+  smoke-test: 기능 시연
 showcase:
   label: "LIVE2D DEMO"
   backgroundColor: "#171b24"

@@ -163,6 +163,7 @@ import type {
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties } from 'react';
 
+const HUD_IDLE_DELAY_MS = 4000;
 const Live2DCharacter = lazy(() =>
   import('./Live2DCharacter').then((module) => ({ default: module.Live2DCharacter })),
 );
@@ -378,6 +379,7 @@ type GameListManifestEntry = {
   summaryEn?: string;
   thumbnail?: string;
   tags: string[];
+  tagLabels?: Record<string, string>;
   languages: string[];
   showcase?: LauncherShowcase;
   legalNotices: LegalNotice[];
@@ -882,12 +884,32 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
     summaryEn: normalizeText(value.summaryEn),
     thumbnail: normalizeText(value.thumbnail),
     tags: normalizeTags(value.tags),
+    tagLabels: normalizeTagLabels(value.tagLabels),
     languages: normalizeGameLanguages(value.languages),
     showcase: normalizeLauncherShowcase(value.showcase),
     legalNotices: normalizeLegalNotices(value.legalNotices),
     chapterCount: normalizeChapterCount(value.chapterCount),
     seo,
   };
+}
+
+function normalizeTagLabels(value: unknown): Record<string, string> | undefined {
+  if (!isObjectRecord(value)) return undefined;
+  const labels = Object.fromEntries(
+    Object.entries(value)
+      .map(([tag, label]) => [tag, normalizeText(label)] as const)
+      .filter((pair): pair is readonly [string, string] => Boolean(pair[1])),
+  );
+  return Object.keys(labels).length ? labels : undefined;
+}
+
+// Tags are stable IDs such as "political-thriller". Korean screens use the game's own label when it
+// provides one; otherwise both languages read the ID as words ("Political thriller").
+export function launcherTagLabel(tag: string, labels: Record<string, string> | undefined, uiLanguage: string): string {
+  const own = uiLanguage === 'en' ? undefined : labels?.[tag];
+  if (own) return own;
+  const words = tag.replace(/[-_]+/g, ' ').trim();
+  return /^[a-z0-9 ]+$/.test(words) ? words.charAt(0).toUpperCase() + words.slice(1) : tag;
 }
 
 function parseGameListManifest(raw: unknown): GameListManifest {
@@ -1650,6 +1672,28 @@ export default function App() {
   const [storyMapOpen, setStoryMapOpen] = useState(false);
   const usageScreen = settingsOpen ? ({log:'history',inventory:'inventory',system:'settings'} as const)[caseFileTab] : storyMapOpen ? 'story_map' : endingCreditsOpen ? 'ending' : startGate ? 'game_start' : game ? (isFinished ? 'ending' : 'play') : (uiLanguage === 'en' ? 'launcher_en' : 'launcher');
   const lastUsageScreen = useRef(uiLanguage === 'en' ? 'launcher_en' : 'launcher');
+  // While a story is playing, the HUD and dialogue controls recede after a short stillness so the
+  // scene fills the screen. Any pointer, touch or key brings them straight back.
+  const [hudIdle, setHudIdle] = useState(false);
+  const hudIdleActive = usageScreen === 'play';
+  useEffect(() => {
+    if (!hudIdleActive) {
+      setHudIdle(false);
+      return;
+    }
+    let timer = window.setTimeout(() => setHudIdle(true), HUD_IDLE_DELAY_MS);
+    const wake = () => {
+      setHudIdle(false);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setHudIdle(true), HUD_IDLE_DELAY_MS);
+    };
+    const events = ['pointermove', 'pointerdown', 'keydown', 'wheel', 'focusin'] as const;
+    for (const name of events) window.addEventListener(name, wake, { passive: true });
+    return () => {
+      window.clearTimeout(timer);
+      for (const name of events) window.removeEventListener(name, wake);
+    };
+  }, [hudIdleActive]);
   useEffect(() => {
     const sync = () => { if (lastUsageScreen.current !== usageScreen && window.movvUsage) { window.movvUsage.screen(usageScreen); lastUsageScreen.current = usageScreen; } };
     sync(); window.addEventListener('movv-usage-ready', sync);
@@ -2116,6 +2160,11 @@ export default function App() {
     }
   }, [game]);
 
+  const launcherTagLabels = useMemo(
+    () => Object.assign({}, ...gameList.map((entry) => entry.tagLabels ?? {})) as Record<string, string>,
+    [gameList],
+  );
+
   const allLauncherTags = useMemo(() => {
     const tagCounts = new Map<string, number>();
     for (const entry of gameList) {
@@ -2169,6 +2218,7 @@ export default function App() {
         entry.summary ?? '',
         entry.summaryEn ?? '',
         entry.tags.join(' '),
+        Object.values(entry.tagLabels ?? {}).join(' '),
         entry.languages.map(code => `${code} ${languageLabel(code)}`).join(' '),
       ], normalizedSearchTerm);
     });
@@ -3947,7 +3997,7 @@ export default function App() {
 
                             <div className="inspector-tag-row">
                               {entryTags.map((tag) => (
-                                <span key={`inspect-${entry.id}-${tag}`}>{tag}</span>
+                                <span key={`inspect-${entry.id}-${tag}`}>{launcherTagLabel(tag, entry.tagLabels, uiLanguage)}</span>
                               ))}
                             </div>
 
@@ -4140,7 +4190,7 @@ export default function App() {
                     aria-pressed={activeTag === tag}
                     onClick={() => setActiveTag(tag)}
                   >
-                    {tag}
+                    {launcherTagLabel(tag, launcherTagLabels, uiLanguage)}
                   </button>
                 ))}
                 {allLauncherTags.length > DEFAULT_VISIBLE_LAUNCHER_TAGS && (
@@ -4207,7 +4257,7 @@ export default function App() {
                           <span className="workspace-cover-play" aria-hidden="true">{t("이야기 시작 ↗")}</span>
                         </span>
                         <span className="workspace-game-body">
-                          <span className="workspace-game-category">{entry.tags.slice(0, 2).join(' / ') || 'VISUAL NOVEL'}</span>
+                          <span className="workspace-game-category">{entry.tags.slice(0, 2).map((tag) => launcherTagLabel(tag, entry.tagLabels, uiLanguage)).join(' / ') || 'VISUAL NOVEL'}</span>
                           <span className="workspace-game-header">
                             <strong>{entry.name}</strong>
                           </span>
@@ -4361,6 +4411,7 @@ export default function App() {
       className="app"
       data-ui-template={uiTemplate}
       data-motion-tempo={motionTempo}
+      data-hud-idle={hudIdle ? 'true' : undefined}
       onClick={() => {
         if (videoCutscene.active) {
           revealVideoSkipGuide();

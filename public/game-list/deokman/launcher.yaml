@@ -8,6 +8,13 @@ tags:
   - character-drama
   - political-thriller
   - consequential-choices
+tagLabels:
+  historical-fiction: 역사극
+  silla: 신라
+  complete: 완결
+  character-drama: 인물 드라마
+  political-thriller: 정치 스릴러
+  consequential-choices: 무거운 선택
 showcase:
   label: "COMPLETE · 12 CHAPTERS"
   backgroundColor: "#181722"

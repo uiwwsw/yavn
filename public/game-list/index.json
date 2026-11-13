@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T00:13:07.567Z",
+  "generatedAt": "2026-11-13T00:45:08.219Z",
   "games": [
     {
       "id": "deokman",
@@ -19,6 +19,14 @@
         "political-thriller",
         "consequential-choices"
       ],
+      "tagLabels": {
+        "historical-fiction": "역사극",
+        "silla": "신라",
+        "complete": "완결",
+        "character-drama": "인물 드라마",
+        "political-thriller": "정치 스릴러",
+        "consequential-choices": "무거운 선택"
+      },
       "languages": [
         "ko"
       ],
@@ -71,6 +79,12 @@
         "historical-fiction",
         "character-drama"
       ],
+      "tagLabels": {
+        "english": "영어판",
+        "opening-chapter": "첫 장",
+        "historical-fiction": "역사극",
+        "character-drama": "인물 드라마"
+      },
       "languages": [
         "en"
       ],
@@ -106,6 +120,11 @@
         "interaction",
         "smoke-test"
       ],
+      "tagLabels": {
+        "live2d": "Live2D",
+        "interaction": "상호작용",
+        "smoke-test": "기능 시연"
+      },
       "languages": [
         "ko"
       ],

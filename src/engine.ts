@@ -5228,6 +5228,22 @@ function createZipChapter(pathKey: string, yamlEntry: JSZip.JSZipObject): Prepar
   };
 }
 
+// Numbered chapters are probed a window at a time instead of one request after another,
+// so a twelve-chapter game no longer waits for twelve sequential round trips before it starts.
+const CHAPTER_PROBE_WINDOW = 8;
+async function findConsecutiveChapterNumbers(first: number): Promise<number[]> {
+  const found: number[] = [];
+  for (let start = first; start < MAX_CHAPTERS; start += CHAPTER_PROBE_WINDOW) {
+    const window = Array.from({ length: Math.min(CHAPTER_PROBE_WINDOW, MAX_CHAPTERS - start) }, (_, index) => start + index);
+    const exists = await Promise.all(window.map((chapterNo) => hasYamlByPathKey(`${chapterNo}.yaml`)));
+    for (let index = 0; index < window.length; index += 1) {
+      if (!exists[index]) return found;
+      found.push(window[index]);
+    }
+  }
+  return found;
+}
+
 export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}) {
   resetSession();
 
@@ -5255,24 +5271,16 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
 
     if (hasZero) {
       chapters.push(createUrlChapter(zeroUrl, '0.yaml', normalizeChapterPathKey('0.yaml')));
-      for (let chapterNo = 1; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
+      for (const chapterNo of await findConsecutiveChapterNumbers(1)) {
         const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-        const exists = await hasYamlByPathKey(`${chapterNo}.yaml`);
-        if (!exists) {
-          break;
-        }
         chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
       }
     } else {
       const hasOne = await hasYamlByPathKey('1.yaml');
       if (hasOne) {
         chapters.push(createUrlChapter(oneUrl, '1.yaml', normalizeChapterPathKey('1.yaml')));
-        for (let chapterNo = 2; chapterNo < MAX_CHAPTERS; chapterNo += 1) {
+        for (const chapterNo of await findConsecutiveChapterNumbers(2)) {
           const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-          const exists = await hasYamlByPathKey(`${chapterNo}.yaml`);
-          if (!exists) {
-            break;
-          }
           chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
         }
       }
