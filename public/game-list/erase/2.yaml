@@ -1,272 +1,384 @@
-chapterTitle: "흔적"
+chapterTitle: "소문"
 
 script:
-  - scene: gone
-  - scene: search
+  - scene: count
+  - scene: dig
 
 scenes:
-  gone:
-    title: "결근"
+  count:
+    title: "청첩장 수량"
     actions:
       - say:
           channel: card
           with: []
           text: "현재\n한도윤 · 29"
-      - bg: { id: office, transition: fade, duration: 800 }
+      - bg: { id: dawn_room, transition: fade, duration: 900 }
       - music: static
       - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "청첩장 수량 오늘까지 말해줘야 돼"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "150?"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "회사는 몇 명인데"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "팀만 하면 열둘"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "새 팀장님도 드려? 인사는 해야지"
+      - say:
+          channel: system
+          with: []
+          text: "읽음"
+      - wait: 1400
+
+  dig:
+    actions:
+      - choice:
+          key: e2_dig
+          prompt: "노트북 검색창에 이름 세 글자를 친다."
+          with: []
+          options:
+            - text: "노트북을 덮고 지수한테 \"150장\"이라고 보낸다"
+              goto: e2_elevator
+            - text: "인스타를 맨 처음 게시물까지 내려 본다"
+              when: { var: e2_sns, op: eq, value: false }
+              add: { cruelty: 1 }
+              set: { e2_sns: true }
+              goto: e2_dig_sns
+            - text: "회의 때 팀장님 폰에 뜬 알림을 메모장에 적는다"
+              when: { var: e2_hospital, op: eq, value: false }
+              add: { cruelty: 1 }
+              set: { e2_hospital: true }
+              goto: e2_dig_hospital
+            - text: "단톡방에 \"팀장님 전 회사에서 왜 나왔는지 아는 사람?\""
+              when: { var: e2_leaked, op: eq, value: false }
+              add: { cruelty: 2 }
+              set: { e2_leaked: true }
+              goto: e2_dig_leak
+
+  e2_dig_sns:
+    actions:
+      - say:
+          channel: message
+          side: them
+          char: 준성
+          with: []
+          text: "2019.08.02 · 이사 끝. 화분 셋, 사람 하나"
+      - say:
+          channel: message
+          side: them
+          char: 준성
+          with: []
+          text: "2021.03.14 · 오늘도 약 잘 챙겨 먹은 나 칭찬해🙂"
+      - say:
+          channel: message
+          side: them
+          char: 준성
+          with: []
+          text: "2023.11.30 · 반년 연속 굿. 선생님이 하이파이브 해줌"
+      - say:
+          channel: action
+          with: []
+          text: "하트를 누를 뻔한다. 도윤은 손가락을 화면에서 떼고, 방문 기록을 지운다."
+      - goto: dig
+
+  e2_dig_hospital:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "지난주 회의 때 테이블에 엎어 둔 팀장 폰이 한 번 켜졌었다. '감염내과 정기 진료 안내'. 도윤은 그 문구를 메모장에 그대로 적고, 메모 제목을 '장보기'로 바꾼다."
+      - goto: dig
+
+  e2_dig_leak:
+    actions:
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "근데 팀장님 전 회사에서 왜 나왔는지 아는 사람?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 왜요??"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 뭐 들은 거 있어?"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          erase: true
+          text: "아니 그냥 좀 이상한 얘기를 들어서"
+      - say:
+          channel: system
+          with: []
+          text: "삭제된 메시지입니다 · 읽은 사람 3"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 뭔데뭔데ㅔ 왜 지움"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 내일 점심때 얘기해ㅋㅋ"
+      - goto: dig
+
+  e2_elevator:
+    title: "엘리베이터"
+    actions:
+      - bg: { id: office_night, transition: cut }
+      - say:
           channel: narration
           with: []
           camera: wide
-          text: "준성의 자리가 사흘째 비어 있다. 모니터에 붙은 포스트잇이 바람에 들린다."
+          text: "다음 날 밤 아홉 시 넘어, 엘리베이터 앞. 둘뿐이다. 13층에서 1층까지는 생각보다 길다."
+      - char: { id: 도윤, position: left }
+      - char: { id: 준성, position: right }
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "결혼식 토요일이죠. 송과장님한테 들었어요."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "네."
+      - say:
+          char: 준성.smirk
+          with: [도윤]
+          text: "이런 경우엔 축의금 얼마 해야 돼요? 인터넷에 안 나오던데."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "……"
+      - say:
+          char: 준성.tired
+          with: [도윤]
+          text: "…재미없었네요. 미안해요."
+      - say:
+          char: 준성
+          when: { var: e2_leaked, op: eq, value: true }
+          with: [도윤]
+          text: "요즘 점심시간에 내 얘기 많이 하더라고요. 탕비실 벽이 얇아요."
+      - choice:
+          key: e2_threat
+          prompt: "층수 표시가 7을 지난다."
+          char: 도윤
+          options:
+            - text: "층수 표시만 본다"
+              goto: e2_threat_silent
+            - text: "\"형도 조심해요. 세상 좁아요.\""
+              add: { cruelty: 2 }
+              goto: e2_threat_said
+
+  e2_threat_said:
+    actions:
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "형도 조심해요. 세상 좁아요."
+      - say:
+          char: 준성.tired
+          with: [도윤]
+          text: "…형?"
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "그날은 형이라고 안 했잖아요."
+      - say:
+          channel: action
+          with: [준성, 도윤]
+          text: "1층. 문이 열리자 준성이 먼저 내린다. 돌아보지 않는다."
+      - goto: e2_absent
+
+  e2_threat_silent:
+    actions:
+      - say:
+          channel: action
+          with: [준성, 도윤]
+          text: "4, 3, 2. 문이 열린다. 준성이 열림 버튼을 누른 채 기다린다."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "먼저 가요."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "…수고하셨습니다."
+      - goto: e2_absent
+
+  e2_absent:
+    title: "결근"
+    actions:
+      - bg: { id: office, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "다음 주 월요일부터 준성의 자리가 빈다. 화분 하나가 모니터 옆에서 사흘째 물을 못 마셨다."
       - say:
           channel: message
           side: them
           with: []
-          text: "[단톡] 팀장님 돌아가셨대… 병이었대. 그 병 있잖아"
+          text: "[영업2팀] 송과장: 팀장님 오늘도 안 나오심?"
       - say:
           channel: message
           side: them
           with: []
-          text: "[단톡] 헐 그럼 도윤 대리는? ㅋㅋ 아 이건 아닌가"
+          text: "[영업2팀] 윤주임: 병가래요 인사팀 언니가 그러는데 기한 없대"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 기한 없는 병가도 있어요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 근데 그 병 있잖아… 아 아니다"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 헐 그럼 같이 밥 먹은 사람들 괜찮은 거임?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 밥 먹는 걸로는 안 옮아요 오대리님ㅋㅋ 검색 좀 하세요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 아 그래도 찝찝하잖아요"
+      - say:
+          channel: message
+          side: them
+          when: { var: e2_leaked, op: eq, value: true }
+          with: []
+          text: "[영업2팀] 윤주임: 근데 이거 처음에 도윤대리님이 꺼낸 얘기 아니에요?"
+      - say:
+          channel: message
+          side: them
+          when: { var: e2_leaked, op: eq, value: true }
+          with: []
+          text: "[영업2팀] 송과장: 아냐 나 딴 데서도 들었어"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 도윤대리는 좀 알지 않아? 제일 많이 붙어 있었잖아"
       - char: { id: 도윤, position: center }
       - say:
-          char: 도윤.panic
-          with: []
-          text: "…아니야."
-      - say:
-          channel: thought
-          with: []
-          text: "확인된 건 하나도 없다. 소문만 있다. 그런데 소문이 제일 빠르다."
-
-  search:
-    actions:
-      - bg: { id: office_night, transition: fade, duration: 800 }
-      - choice:
-          key: e2_search
-          presentation: explore
-          prompt: "모두 퇴근했다. 무엇을 열까?"
-          with: []
-          camera: wide
-          options:
-            - text: "검색창"
-              at: { x: 35, y: 40 }
-              when: { var: e2_search, op: eq, value: false }
-              goto: e2_search_scene
-            - text: "사진첩"
-              at: { x: 68, y: 50 }
-              when: { var: e2_gallery, op: eq, value: false }
-              goto: e2_gallery_scene
-            - text: "집으로 간다"
-              when:
-                all:
-                  - { var: e2_search, op: eq, value: true }
-                  - { var: e2_gallery, op: eq, value: true }
-              goto: e2_jisu
-
-  e2_search_scene:
-    actions:
-      - say:
           channel: message
           side: me
-          with: []
-          erase: true
-          text: "HIV 증상 언제부터"
-      - say:
-          channel: message
-          side: me
-          with: []
-          erase: true
-          text: "HIV 검사 익명 가능"
-      - say:
-          channel: message
-          side: me
-          with: []
-          erase: true
-          text: "검색 기록 완전 삭제 방법"
-      - say:
-          channel: thought
-          with: []
-          text: "찾고, 지우고, 다시 찾는다. 손가락이 떨려서 오타가 난다. 오타도 지운다."
-      - add: { deleted: 3 }
-      - set: { e2_search: true }
-      - goto: search
-
-  e2_gallery_scene:
-    actions:
-      - sticker:
-          id: e2_photo
-          image: child_photo_sticker
-          x: 50
-          y: 32
-          width: "clamp(170px, 24%, 320px)"
-          enter: fadeIn
-          inputLockMs: 400
-      - say:
-          channel: narration
-          with: []
-          text: "사진첩 맨 아래. 놀이터에서 웃고 있는 어린 아이. 언제 저장했는지 기억나지 않는다."
-      - say:
-          channel: thought
-          with: []
-          text: "이건… 지우면 안 되는 것 같다. 왜인지는 모르겠다."
-      - choice:
-          key: e2_photo
-          prompt: "엄지가 '삭제' 위에서 멈춘다."
-          with: []
-          options:
-            - text: "남겨 둔다"
-              set: { kept_photo: true }
-              goto: e2_photo_keep
-            - text: "지운다"
-              goto: e2_photo_delete
-
-  e2_photo_keep:
-    actions:
-      - get: child_photo
-      - clearSticker: { id: e2_photo, leave: fadeOut }
-      - say:
-          channel: action
-          with: []
-          text: "도윤은 사진첩을 닫는다. 지우지 않은 것이 하나 생겼다. 이상하게 숨이 쉬어진다."
-      - set: { e2_gallery: true }
-      - goto: search
-
-  e2_photo_delete:
-    actions:
-      - clearSticker: { id: e2_photo, leave: fadeOut }
-      - say:
-          channel: action
-          with: []
-          erase: true
-          text: "아이의 웃음이 회색 사각형으로 바뀐다. 최근 삭제 항목. 영구 삭제."
-      - add: { deleted: 1 }
-      - set: { e2_gallery: true }
-      - goto: search
-
-  e2_jisu:
-    title: "지수"
-    actions:
-      - bg: { id: dawn_room, transition: fade, duration: 800 }
-      - music: cold_room
-      - char: { id: 지수, position: left }
-      - char: { id: 도윤, position: right }
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "요즘 왜 이렇게 멀어? 밥 먹을 때도 폰만 보고. 화면은 꼭 엎어 두고."
-      - say:
-          char: 지수.cold
-          with: [도윤]
-          text: "말했잖아. 숨기는 거 싫다고. 한 번만 물을게. 무슨 일 있어?"
-      - choice:
-          key: e2_jisu
-          prompt: "지수가 휴대폰을 가리킨다."
-          char: 지수
-          options:
-            - text: "\"일이 많아서.\" 웃는다"
-              goto: e2_jisu_lie
-            - text: "\"…회사에 일이 좀 있어. 나도 아직 정리가 안 됐어.\" 일부만 말한다"
-              set: { told_jisu: 1 }
-              goto: e2_jisu_part
-            - text: "\"다 말할게. 듣고 나서 정해.\" 전부 말한다"
-              set: { told_jisu: 2 }
-              goto: e2_jisu_all
-
-  e2_jisu_lie:
-    actions:
-      - say:
-          char: 도윤.smile
-          with: [지수]
-          text: "일이 많아서 그래. 결혼 준비까지 겹쳐서."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "…그래. 그렇다고 해 둘게."
-      - say:
-          channel: thought
-          with: [지수]
-          text: "지수가 알면 끝이야. 완성되기 직전인데."
-      - goto: e2_harin
-
-  e2_jisu_part:
-    actions:
-      - say:
           char: 도윤
-          with: [지수]
-          text: "회사에 일이 좀 있어. 나랑 엮인 소문. 나도 아직 정리가 안 됐어."
+          with: []
+          erase: true
+          text: "저도 그날 이후로는 연락을"
       - say:
-          char: 지수
-          with: [도윤]
-          text: "정리되면 말해 줘. 꼭 네 입으로. 남한테 듣는 건 못 견뎌."
-      - say:
-          channel: thought
-          with: [지수]
-          text: "처음으로 지우지 않고 남긴 문장. 반만큼이지만."
-      - goto: e2_harin
-
-  e2_jisu_all:
-    actions:
-      - say:
-          char: 도윤.hollow
-          with: [지수]
-          text: "클럽에서 만난 사람이 있었어. 남자야. 그 사람이 우리 팀장으로 왔고… 지금 없어졌어."
-      - say:
-          channel: action
-          with: [지수]
-          text: "지수는 한참 동안 아무 말도 하지 않는다. 손톱으로 반지를 돌린다."
-      - say:
-          char: 지수.cold
-          with: [도윤]
-          text: "검사는 받았어?"
-      - say:
+          channel: message
+          side: me
           char: 도윤
-          with: [지수]
-          text: "…아니."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "받아. 그건 날 위해서가 아니라 너를 위해서야. 나머지는… 나도 생각할 시간이 필요해."
-      - goto: e2_harin
-
-  e2_harin:
-    actions:
+          with: []
+          text: "저도 몰라요"
       - say:
           channel: card
           with: []
           text: "과거\n유하린 · 18"
-      - bg: { id: classroom, transition: fade, duration: 800 }
+      - goto: e2_harin
+
+  e2_harin:
+    title: "체육복"
+    actions:
+      - bg: { id: classroom, transition: cut }
+      - music: cold_room
       - say:
           channel: narration
           with: []
           camera: wide
-          text: "방과 후 빈 교실. 하린은 두고 간 체육복을 찾으러 돌아왔다. 문틈으로 두 사람이 보인다."
+          text: "방과 후. 하린은 사물함에 두고 간 체육복을 가지러 계단을 두 칸씩 올라왔다. 뒷문이 한 뼘 열려 있다."
       - char: { id: 민재, position: left }
       - char: { id: 아진, position: right }
       - say:
           char: 아진.awkward
           with: [민재]
           delivery: whisper
-          text: "하린이한테는… 언제 말할 거야?"
+          text: "오늘 하린이한테 말하려고 했는데… 못 했어."
       - say:
           char: 민재
           with: [아진]
-          text: "걔는 괜찮을걸. 원래 아무 데도 관심 없잖아."
-      - char: { id: 하린, position: center }
+          text: "뭘 말해. 걔 신경 안 쓸걸. 원래 아무 데도 관심 없잖아."
       - say:
-          char: 하린.cry
-          with: []
+          char: 아진
+          with: [민재]
+          text: "너는 걔를 몰라."
+      - say:
+          char: 민재
+          with: [아진]
+          text: "넌 알아?"
+      - say:
+          char: 아진.awkward
+          with: [민재]
+          text: "……"
+      - say:
           channel: thought
-          text: "들어가면 끝난다. 안 들어가면… 아무 일도 없었던 거다."
-      - say:
-          char: 하린
           with: []
-          delivery: whisper
-          text: "내가 조용하면… 완벽해 보여."
+          text: "체육복 내일 가져가면 됨. 내일 해도 됨. 지금 아니어도 됨"
       - say:
           channel: action
           with: []
-          erase: true
-          text: "하린은 발소리를 죽이고 돌아선다. 방금 본 것을, 보지 않은 것으로 만든다."
+          text: "하린은 문고리에서 손을 뗀다. 복도 끝까지, 실내화를 끌지 않고 걷는다."
       - add: { deleted: 1 }
+      - bg: { id: harin_room, transition: fade, duration: 900 }
+      - say:
+          channel: message
+          side: them
+          char: 아진
+          with: []
+          text: "하린아 오늘 왜 먼저 갔어"
+      - say:
+          channel: message
+          side: me
+          char: 하린
+          with: []
+          text: "아 나 배아파서ㅋㅋ 급식 그 카레 뭔가 이상했음"
+      - say:
+          channel: message
+          side: them
+          char: 아진
+          with: []
+          text: "할 얘기 있었는데"
+      - say:
+          channel: message
+          side: me
+          char: 하린
+          with: []
+          text: "낼 해 낼!! 나 잔다 굿밤"
       - goto: /3.yaml

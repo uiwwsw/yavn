@@ -6,7 +6,7 @@ import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipRead
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { useVNStore } from './store';
 
-// ERASE, ERASE: 먼저 지운 사람 and 8비트 심장 are built from the owner's stories. These tests pin
+// ERASE and 8비트 심장 are built from the owner's stories. These tests pin
 // their structure (schema, assets, endings, fair failures) and play each one to every ending
 // through the real engine. Background transitions are served in their non-waiting short form
 // because there is no renderer here to report that a dissolve finished.
@@ -27,8 +27,7 @@ const collectKey = (value: unknown, key: string, result: unknown[] = []): unknow
 };
 
 const games = [
-  { id: 'erase', chapters: 4, endings: ['erase_loop', 'kept_photo', 'unfinished'] },
-  { id: 'erase-first', chapters: 5, endings: ['erased_name', 'new_life', 'waiting_room'] },
+  { id: 'erase', chapters: 5, endings: ['erase_loop', 'erased_name', 'kept_photo', 'unfinished'] },
   { id: '8bit-heart', chapters: 5, endings: ['new_game', 'off_screen', 'saved_together'] },
 ];
 
@@ -141,10 +140,22 @@ describe('owner story playthroughs', () => {
     await vi.advanceTimersByTimeAsync(3000);
   }
 
+  const eraseAll = "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다";
   it.each([
-    ['erase_loop', { e3_final: '다 지운다. 이번에도' }],
-    ['kept_photo', { e2_photo: '남겨 둔다', e2_jisu: '"…회사에 일이 좀 있어. 나도 아직 정리가 안 됐어." 일부만 말한다', e3_final: '남겨 둔 아이 사진을 연다' }],
-    ['unfinished', { e2_jisu: '"다 말할게. 듣고 나서 정해." 전부 말한다', e3_final: '지수의 마지막 메시지를 연다' }],
+    ['erase_loop', { e3_final: eraseAll }],
+    ['erased_name', {
+      e1_rumor: '"그런 농담 하지 마요. 팀장님 좀 이상한 사람 같던데"',
+      e2_dig: ['단톡방에 "팀장님 전 회사에서 왜 나왔는지 아는 사람?"', '노트북을 덮고 지수한테 "150장"이라고 보낸다'],
+      e2_threat: '"형도 조심해요. 세상 좁아요."',
+      e3_final: eraseAll,
+    }],
+    ['kept_photo', {
+      e2_photo: '엄지를 떼고 사진첩을 닫는다',
+      e3_clinic: '번호표 버튼을 누른다',
+      e2_jisu: '"회사에 나랑 엮인 소문이 좀 있어. 정리되면 말할게."',
+      e3_final: '사진첩 맨 아래, 놀이터 사진을 연다',
+    }],
+    ['unfinished', { e2_jisu: '"다 말할게. 듣고 나서 네가 정해."', e3_final: '지수한테 온 메시지 네 개를 연다' }],
   ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
     await start('erase');
     const state = await play(route);
@@ -152,34 +163,17 @@ describe('owner story playthroughs', () => {
     expect(state.resolvedEndingId).toBe(ending);
   }, 60000);
 
-  const quiet: Route = { f0_public: '"오늘 처음 봤어요." 웃으며 넘긴다', f1_dig: '노트북을 덮는다', f1_threat: '아무 말 없이 문이 열리길 기다린다' };
-  it.each([
-    ['waiting_room', { ...quiet, f3_clinic: '번호표를 뽑는다' }],
-    ['new_life', { ...quiet, f3_clinic: '돌아선다. 들키는 게 더 무섭다' }],
-    ['erased_name', {
-      f0_public: '"형, 농담이죠." 선을 긋는다',
-      f1_dig: ['준성의 SNS를 처음부터 끝까지 뒤진다', '병원 예약 문자가 보였던 걸 떠올리며 추측한다', '단톡방에 은근히 흘린다', '노트북을 덮는다'],
-      f1_threat: '"형도 조심하세요. 세상 좁아요."',
-      f3_clinic: '돌아선다. 들키는 게 더 무섭다',
-    }],
-  ] as Array<[string, Route]>)('ERASE: 먼저 지운 사람 reaches %s', async (ending, route) => {
-    await start('erase-first');
-    const state = await play(route);
-    expect(state.gameOver).toBeUndefined();
-    expect(state.resolvedEndingId).toBe(ending);
-  }, 60000);
-
   const loyal: Route = {
-    b0_buy: '싸구려 레트로 게임기를 산다',
-    b2_register: '"응. 세상이 망했어."',
-    b3_snack: '"너는 안 먹잖아." 웃으며 받는다',
-    b3_drone: '{{android_name}} 뒤에 숨는다',
-    b3_promise: '"같이 가. 약속해. 끝까지 같이." 손가락을 건다',
+    b0_buy: '"아저씨, B버튼 뻑뻑한 거 그거 주세요."',
+    b2_register: '"응. 세상 망했어. 너랑 나 빼고 다."',
+    b3_snack: '"3.5는 무슨." 반쪽까지 집어 먹는다',
+    b3_drone: '{{android_name}} 등 뒤에 납작 붙는다',
+    b3_promise: '손가락을 건다. "혼자는 무슨. 끝까지 2P로 가."',
   };
   it.each([
-    ['saved_together', { ...loyal, b4_save: '끝까지 같이 가자던 약속' }],
-    ['new_game', { ...loyal, b4_save: '아무것도 옮기지 않는다. 가볍게 보낸다' }],
-    ['off_screen', { ...loyal, b4_save: '"가지 마. 같이 도망치자."' }],
+    ['saved_together', { ...loyal, b4_save: '새끼손가락 약속 — "끝까지 2P로"' }],
+    ['new_game', { ...loyal, b4_save: '빈 슬롯으로 둔다. 가볍게 다녀오라고' }],
+    ['off_screen', { ...loyal, b4_save: '"안 해. 저장 안 해. 그냥 튀자."' }],
   ] as Array<[string, Route]>)('8비트 심장 reaches %s', async (ending, route) => {
     await start('8bit-heart');
     const state = await play(route, '비트');
@@ -190,7 +184,7 @@ describe('owner story playthroughs', () => {
 
   it('8비트 심장 fails recoverably when the smart console is bought', async () => {
     await start('8bit-heart');
-    const state = await play({ b0_buy: '최신 휴대용 기기를 산다' });
+    const state = await play({ b0_buy: 'HYPERLINK X 결제. 미래의 내가 갚는다' });
     expect(state.gameOver?.title).toBe('너무 똑똑했던 기기');
   }, 60000);
 });

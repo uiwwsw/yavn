@@ -6,84 +6,155 @@ script:
 scenes:
   journey:
     actions:
-      - say:
-          channel: card
-          with: []
-          text: "STAGE 4\n8비트의 눈"
-      - bg: { id: ruined_street, transition: fade, duration: 800 }
+      - bg: { id: ruined_street, transition: wipeLeft, duration: 500 }
       - music: chip_run
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right }
       - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "둘은 식량과 물을 찾아 도시를 떠돈다. {{android_name|은}} 한 걸음마다 '처리 중'이라고 중얼거린다."
-      - say:
-          char: 로봇.happy
+          char: 로봇
           with: [윤재]
-          text: "발견. 음식입니다. 유통기한 2031년. 미래의 음식입니다. 맛있을 것 같습니다."
+          text: "경고. 설명서 3쪽. '게임은 하루 한 시간만.' 우리 다섯 시간째 걷는 중."
       - say:
           char: 윤재
           with: [로봇]
-          text: "그거 그냥 통조림이야. 그리고 유통기한은 미래가 아니라 그때까지 먹으라는 뜻이고."
+          text: "이거 게임 아니야."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "그럼 뭐야?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…생존. 아니 됐어, 게임이라고 치자. 그게 덜 우울해."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "근데 너는 안 무섭냐? 저 동네 차들 아직도 혼자 돌아다니던데."
+      - say:
+          channel: action
+          with: []
+          text: "{{android_name|이}} 대답 대신 무너진 마트 진열대 밑으로 쑥 들어간다."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "보물상자 발견! 복숭아 통조림. 유통기한 2031년. 와. 미래에서 온 음식."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "미래에서 온 게 아니라 그때까지 먹으라는 거야. 너 진짜 설명서만 읽고 세상 배웠구나."
+      - say:
+          channel: action
+          with: []
+          text: "{{android_name|은}} 손가락으로 뚜껑을 딴다. 복숭아 일곱 조각. 한참 노려보더니, 한 조각을 정확히 반으로 가른다."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "3.5, 3.5. 오차 0. 반 나누기는 내 특기. 원래 2인 대전 화면 나누던 칩이라."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…너 못 먹잖아."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "응. 그래도 나눔. 나눠야 반이 생기니까."
       - choice:
           key: b3_snack
-          prompt: "{{android_name|이}} 통조림을 반으로 나눠 내민다."
+          prompt: "{{android_name|이}} 3.5조각을 뚜껑에 줄 세워 내민다."
           char: 로봇
           options:
-            - text: "\"너는 안 먹잖아.\" 웃으며 받는다"
+            - text: "\"3.5는 무슨.\" 반쪽까지 집어 먹는다"
               add: { bond: 1 }
               set: { m_snack: true }
               goto: b3_snack_take
-            - text: "\"아껴 둬. 나중에.\" 가방에 넣는다"
+            - text: "\"넣어 둬. 내일 먹게.\" 뚜껑을 닫는다"
               goto: b3_snack_save
 
   b3_snack_take:
     actions:
       - say:
-          char: 로봇.thinking
-          with: [윤재]
-          text: "저는 먹지 않습니다. 하지만 반으로 나누면… 당신이 웃습니다. 그래서 나눴습니다."
-      - say:
-          channel: thought
+          char: 윤재
           with: [로봇]
-          text: "세상에서 제일 쓸모없는 친절. 그런데 그게 오늘 먹은 것 중에 제일 배불렀다."
-      - goto: b3_drone
+          text: "…달다. 열흘 만에 단 거다. 젠장. 맛있네."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "그럼 내 몫도 반납."
+      - say:
+          channel: action
+          with: []
+          text: "{{android_name|은}} 자기 몫 3.5조각을 한 조각씩 윤재 앞으로 민다. 마지막 반쪽은 특히 조심스럽게."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그럴 거면 처음부터 다 주지 그랬냐."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그럼 반이 없잖아."
+      - goto: b3_lag
 
   b3_snack_save:
     actions:
       - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "내일. 알았어. 알람 기능은 없음. 대신 내일 될 때까지 계속 생각하고 있을게. 내일. 내일. 내일."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "소리 내서 생각하지 마."
+      - goto: b3_lag
+
+  b3_lag:
+    actions:
+      - say:
           char: 로봇
           with: [윤재]
-          text: "나중. 저장했습니다. 나중이 오면 알려 드리겠습니다."
+          text: "아까 질문 대답. 무서운 거, 잘 모름. 대신 배터리 칸 줄어드는 건 좀 싫어."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그 질문 한 지 십 분 지났어. 너 핑 몇이냐."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "생각은 빨리 함. 말이 늦게 도착함."
       - goto: b3_drone
 
   b3_drone:
     actions:
-      - bg: { id: drone_alley, transition: fade, duration: 700 }
+      - bg: { id: drone_alley, transition: cut }
       - music: chip_core
       - say:
-          channel: narration
+          channel: card
           with: []
-          camera: wide
-          text: "골목 끝에서 붉은 눈이 깜빡인다. 정찰 드론. 탐조등이 벽을 핥으며 다가온다."
+          text: "WORLD 1-2\n보스 아님. 근데 보스처럼 생김."
       - char: { id: 드론, position: center }
+      - effect: { name: alarm, wait: true }
+      - say:
+          channel: action
+          with: []
+          text: "골목 끝에서 붉은 눈 하나가 켜진다. 탐조등이 벽을 핥으며 다가온다."
+      - say:
+          char: 윤재.scared
+          with: [로봇, 드론]
+          text: "정찰 드론. 쟤 패턴 나 알아. 세 번 훑고 네 번째에 쏴."
       - say:
           char: 로봇.thinking
-          with: [윤재]
-          text: "분석… 저 기계는 똑똑합니다. 저는 멍청합니다. 그러니까… 저를 못 볼 수도 있습니다."
+          with: [윤재, 드론]
+          text: "분석. 저건 똑똑해. 나는 멍청해. 그러니까 결론은— 결론 로딩 중— 결론 로ㄷ—"
       - choice:
           key: b3_drone
-          prompt: "탐조등이 세 걸음 앞까지 왔다!"
+          prompt: "탐조등이 두 번째로 훑는다! 결론 기다릴 시간 없음!"
           char: 드론
           timeoutMs: 8000
           timeoutOptionIndex: 1
           options:
-            - text: "{{android_name}} 뒤에 숨는다"
+            - text: "{{android_name}} 등 뒤에 납작 붙는다"
               add: { bond: 1 }
               goto: b3_hide
-            - text: "골목 반대쪽으로 뛴다"
+            - text: "냅다 반대쪽으로 튄다"
               goto: b3_run
 
   b3_hide:
@@ -91,15 +162,27 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "윤재는 {{android_name}}의 등 뒤에 몸을 구긴다. 탐조등이 둘을 지나간다. 한 번 멈춘다. 그리고 지나간다."
+          text: "윤재가 {{android_name}}의 등에 이마를 박고 몸을 구긴다. 빛이 둘 위에 멈춘다."
       - say:
-          char: 로봇.happy
+          channel: record
+          with: []
+          text: "SCAN: 물체 1 — 분류: 가전제품(폐기 대상). 위협 아님. 다음."
+      - say:
+          channel: action
+          with: []
+          text: "빛이 지나간다. 드론이 고개를 돌려 골목 밖으로 날아간다."
+      - say:
+          char: 로봇.glitch
           with: [윤재]
-          text: "역시. 저는 너무 구식이라 저 기계의 목록에 없습니다. 투명 인간과 비슷합니다."
+          text: "…폐기 대상? 나 지금 쓰레기라고 들은 거야? 기분 나쁨 감지. 기분이라는 게 있는 줄 몰랐음."
       - say:
           char: 윤재.excited
           with: [로봇]
-          text: "…너, 그 말은 엄청난 거야. 그 AI가 못 보는 건 너뿐이라는 거잖아."
+          text: "야, 야. 화내지 마. 이거 엄청난 거야. 쟤네 눈엔 네가 안 보여. 너무 구려서."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "…칭찬 맞지? 응. 칭찬으로 저장."
       - goto: b3_promise
 
   b3_run:
@@ -107,75 +190,135 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "윤재가 뛴다. 탐조등이 그를 붙잡는다. 경보음. 드론이 고개를 돌린다."
+          text: "윤재가 뛴다. 세 걸음 만에 빛이 등을 붙잡는다. 경보음이 골목을 찢는다."
+      - effect: { name: shake, wait: true }
       - say:
           char: 로봇.glitch
-          with: [윤재]
-          text: "보호 대상 1번… 위험… 위험…!"
+          with: [윤재, 드론]
+          text: "보호 대상 1번 위험. 위험. ERR 0x01 — 1번은 하나뿐임 — 대체 불가 —"
       - say:
-          channel: narration
+          channel: action
           with: []
-          text: "{{android_name|이}} 두 팔을 벌리고 탐조등 앞을 막아선다. 드론은 그를 보지 못한다. 하지만 그 뒤의 빛 그림자가 사라진다."
+          text: "{{android_name|이}} 빛 한가운데로 걸어 들어가 두 팔을 쫙 벌린다. 윤재의 그림자가 통째로 가려진다."
+      - say:
+          channel: record
+          with: []
+          text: "SCAN: 대상 소실. 앞에 물체 1 — 분류: 가전제품(폐기 대상). 다음."
       - say:
           char: 윤재.scared
           with: [로봇]
-          text: "너… 안 보이는 거야? 저 드론한테?"
+          text: "…쟤 너를 못 보는 거야? 바로 앞에 서 있는데?"
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "못 봄. 그리고 방금 나 쓰레기라고 함. 둘 다 처리 중."
       - goto: b3_promise
 
   b3_promise:
     actions:
-      - bg: { id: shelter, transition: fade, duration: 800 }
+      - bg: { id: shelter, transition: fade, duration: 700 }
       - music: chip_home
       - say:
-          channel: narration
+          channel: action
           with: []
-          camera: wide
-          text: "그날 밤 은신처. 촛불 아래 {{android_name|이}} 배터리 칸을 세고 있다."
+          text: "편의점으로 돌아온 밤. 촛불 옆에서 {{android_name|이}} 자기 배터리 칸을 손가락으로 센다. 세 번째 세는 중이다."
       - say:
           char: 로봇
           with: [윤재]
-          text: "질문. 저 기계들을 만든 큰 것이… 어딘가에 있습니까?"
+          text: "질문. 저 드론들 조종하는 큰 거. 어디 있어?"
       - say:
           char: 윤재
           with: [로봇]
-          text: "데이터센터. 도시 북쪽. 거기 코어가 아직 깨어 있대. 근데 거긴 아무도 못 들어가."
+          text: "북쪽 데이터센터. 코어가 거기서 다 돌린대. 근데 들어간 사람은 다 못 나왔어."
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "아무도… 아닙니다. 저는 들어갈 수 있습니다. 저는 목록에 없으니까."
+          text: "사람은. 나는 가전제품(폐기 대상)."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그 말 마음에 들었냐? 계속 쓰네."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "분위기 무거움 감지. 농담 기능 실행. 똑똑."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…누구세요."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "……"
+      - say:
+          char: 로봇.glitch
+          with: [윤재]
+          text: "……까먹었어."
+      - say:
+          char: 윤재.excited
+          with: [로봇]
+          text: "푸흡— 아 뭐야, 아 진짜 뭐야. 농담을 하다가 까먹는 게 어딨어."
+      - set: { m_joke: true }
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "웃음 감지! 이 농담 대성공. …근데 펀치라인이 뭐였는지는 끝까지 모름."
+      - say:
+          channel: thought
+          with: []
+          text: "열흘 만에 처음 웃었다. 그것도 고물한테 졌다. 1패."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "내가 혼자 갈게. 거기. 나는 목록에 없으니까."
+      - say:
+          channel: action
+          with: []
+          text: "{{android_name|이}} 새끼손가락을 내민다. 어디서 배운 건지 모를 동작이다."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "이거 맞아? 설명서엔 없는데. 사람들이 중요한 거 정할 때 이렇게 하는 거 봤어."
       - choice:
           key: b3_promise
-          prompt: "{{android_name|이}} 새끼손가락을 내민다. 어디서 배웠는지 모를 동작이다."
+          prompt: "새끼손가락이 촛불 앞에서 미세하게 떨린다. 모터 소리다."
           char: 로봇
           options:
-            - text: "\"같이 가. 약속해. 끝까지 같이.\" 손가락을 건다"
+            - text: "손가락을 건다. \"혼자는 무슨. 끝까지 2P로 가.\""
               add: { bond: 1 }
               set: { m_promise: true }
               goto: b3_pinky
-            - text: "\"…생각해 볼게.\" 촛불을 끈다"
+            - text: "\"…자. 내일 얘기해.\" 촛불을 분다"
               goto: b3_think
 
   b3_pinky:
     actions:
       - say:
-          char: 로봇.happy
-          with: [윤재]
-          text: "약속. 저장했습니다. 한번 저장한 약속은… 전원이 꺼져도 지킵니다."
+          char: 윤재
+          with: [로봇]
+          text: "어기면 바늘 천 개 삼키는 거다."
       - say:
-          char: 로봇.happy
+          char: 로봇.thinking
           with: [윤재]
-          text: "추가 저장. 오늘의 농담: 왜 로봇은 겁이 없을까요? 정답: 겁 파일이 없어서."
+          text: "바늘 천 개. 재고 확인… 0개. 그럼 어길 수가 없음. 완벽한 약속."
       - say:
           char: 윤재
           with: [로봇]
-          text: "…진짜 최악이다. 저장해 둬. 나중에 또 해 줘."
-      - set: { m_joke: true }
+          text: "그런 뜻 아니거든."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "끝까지 2P. 전원 꺼져도 유효. 이건 설명서보다 위에 적어 둘게."
       - goto: /4.yaml
 
   b3_think:
     actions:
       - say:
+          channel: action
+          with: []
+          text: "촛불이 꺼진다. 어둠 속에서 새끼손가락은 한참 그대로 떠 있다가, 천천히 내려간다."
+      - say:
           char: 로봇
           with: [윤재]
-          text: "생각 중. 저도 생각 중입니다. 우리는 둘 다 느립니다."
+          text: "내일. 메모함. …내일 할 일 칸이 점점 길어진다."
       - goto: /4.yaml

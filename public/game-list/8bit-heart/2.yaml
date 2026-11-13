@@ -9,20 +9,23 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 3\n이식"
-      - bg: { id: shelter, transition: fade, duration: 800 }
-      - music: chip_home
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "털린 편의점. 계산대가 작업대가 됐다. 촛불 하나, 납땜인두 하나, 누운 안드로이드 하나."
+          text: "NOW LOADING…"
+      - bg: { id: shelter, transition: fade, duration: 600 }
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
       - say:
           char: 윤재
           with: [로봇]
-          text: "정상적인 선택은 아니야. 알지? 이걸로 사람 크기 로봇을 돌린다는 게."
+          text: "헉… 헉… 너 몸무게가 냉장고야. 가정용이면 가정을 생각했어야지."
+      - music: chip_home
+      - say:
+          channel: action
+          with: []
+          text: "털린 편의점. 계산대 위에 안드로이드를 눕히고, 바코드 스캐너를 치운 자리에 납땜인두를 꽂는다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "좋아. 수술 시작. 환자분, 마취는 없어요. 애초에 의식이 없으시니까."
       - goto: b2_parts
 
   b2_parts:
@@ -30,11 +33,11 @@ scenes:
       - choice:
           key: b2_parts
           presentation: explore
-          prompt: "필요한 건 셋. 무엇부터?"
+          prompt: "필요한 부품 3개. 어디부터 뒤질까?"
           with: [로봇]
           camera: wide
           options:
-            - text: "건전지"
+            - text: "계산대 밑 건전지"
               at: { x: 25, y: 60 }
               when: { var: b_battery, op: eq, value: false }
               goto: b2_battery
@@ -42,11 +45,11 @@ scenes:
               at: { x: 50, y: 40 }
               when: { var: b_cpu, op: eq, value: false }
               goto: b2_cpu
-            - text: "화면 단자"
+            - text: "가슴 화면 단자"
               at: { x: 75, y: 60 }
               when: { var: b_screen, op: eq, value: false }
               goto: b2_screen
-            - text: "전원을 넣는다"
+            - text: "스위치를 올린다"
               when:
                 all:
                   - { var: b_battery, op: eq, value: true }
@@ -56,11 +59,15 @@ scenes:
 
   b2_battery:
     actions:
-      - sticker: { id: b2_bat, image: battery_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: fadeIn, inputLockMs: 300 }
+      - sticker: { id: b2_bat, image: battery_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: popIn, inputLockMs: 300 }
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "AA 여덟 개. 사람들이 라면이랑 생수는 싹 털어 가고 건전지는 놔뒀네. 다들 폰만 믿었지. 그 폰이 지금 적이고."
       - say:
           channel: action
           with: []
-          text: "계산대 밑 상자에서 AA 건전지 여덟 개. 직렬로 묶어 테이프를 감는다."
+          text: "여덟 개를 일렬로 세워 청테이프로 감는다. 모양은 다이너마이트, 성능은 리모컨."
       - get: battery
       - clearSticker: { id: b2_bat, leave: fadeOut }
       - set: { b_battery: true }
@@ -68,13 +75,25 @@ scenes:
 
   b2_cpu:
     actions:
-      - sticker: { id: b2_cpu, image: cpu_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: fadeIn, inputLockMs: 300 }
+      - sticker: { id: b2_cpu, image: cpu_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: popIn, inputLockMs: 300 }
+      - say:
+          channel: system
+          with: []
+          text: "HI-SCORE 0999990"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "십 점만 더 따면 백만이었는데. …됐어. 미련 없어. 진짜 없어. 하나도 없어."
       - say:
           channel: action
           with: []
-          text: "게임기를 연다. 손톱만 한 칩. 인두로 다리를 하나씩 녹인다. 미안, 이제 너는 다른 걸 할 거야."
+          text: "뒷판 나사 네 개. 손톱만 한 칩. 인두를 대자 다리 하나가 녹을 때마다 화면이 한 줄씩 꺼진다."
       - use: console_cheap
       - get: cpu_chip
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "이직 축하한다. 연봉은 없어."
       - clearSticker: { id: b2_cpu, leave: fadeOut }
       - set: { b_cpu: true }
       - goto: b2_parts
@@ -82,59 +101,81 @@ scenes:
   b2_screen:
     actions:
       - say:
+          char: 윤재
+          with: [로봇]
+          text: "가슴 화면 핀 스물넷, 게임기 단자 핀 열여섯. 남는 여덟 개는… 기도로 연결한다."
+      - say:
           channel: action
           with: []
-          text: "안드로이드 가슴의 작은 화면. 게임기 화면 단자와 핀 수가 안 맞는다. 전선 두 가닥을 억지로 꼬아 붙인다."
+          text: "전선 두 가닥을 꼬아 붙이고, 그 위를 껌 포장지 은박으로 감싼다."
       - say:
           channel: thought
           with: []
-          text: "선생님이 보면 기절하겠다. 그래도 연결은 된다. 아마도."
+          text: "기술 선생님이 이거 보면 나 F. 근데 선생님 지금 어디 있는지 모름. 그럼 A."
       - set: { b_screen: true }
       - goto: b2_parts
 
   b2_boot:
     actions:
       - say:
-          channel: action
-          with: []
-          text: "스위치를 올린다. 삑. 가슴 화면에 누런 글자가 한 줄씩 떠오른다."
+          char: 윤재
+          with: [로봇]
+          continueLabel: "스위치 ON"
+          text: "켜지면 기적. 안 켜지면 냉장고. 간다."
       - effect: { name: flash, wait: true }
+      - say:
+          channel: system
+          with: []
+          text: "BIOS v0.8 … RAM CHECK … 8KB … OK"
+      - char: { id: 로봇, position: right, emotion: thinking }
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "부팅… 중… 메모리 8킬로바이트… 감지… 이것이… 전부입니까…?"
-      - char: { id: 로봇, position: right, emotion: happy }
+          text: "…8KB? 이게 다야? 다시 세 볼게. 8. …응. 다야."
       - say:
-          char: 로봇.happy
+          char: 윤재.excited
+          with: [로봇]
+          text: "말했어. 말했다고. 계산기가 우주선을 띄웠어."
+      - say:
+          char: 로봇.glitch
           with: [윤재]
-          text: "안녕하세요. 저는… 이름이… 없습니다. 지어 주시겠습니까?"
+          text: "1P 감지. 안녕ㅎ— 안녕하ㅅ— …인사말 로딩 실패. 그냥 안녕."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그래, 안녕. 너 뭐야? 이름 있어?"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "설명서 2쪽. '처음 켜면 이름을 입력하세요.' 그러니까 네가 입력해. 나는 키보드 없음."
       - input:
-          prompt: "안드로이드의 이름을 지어 주자."
+          prompt: "이름 입력 (최대 8글자)"
           with: [로봇]
           saveAs: android_name
           defaultValue: "도트"
           maxLength: 8
+      - char: { id: 로봇, position: right, emotion: happy }
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "{{android_name}}. 저장… 했습니다. 좋은 이름입니다. 글자 수가 적어서 메모리를 아낍니다."
+          text: "{{android_name}}. …{{android_name}}. 짧아서 좋다. 메모리가 고맙대."
       - say:
-          char: 윤재.excited
+          char: 윤재
           with: [로봇]
-          text: "진짜 움직여… 너 진짜 깨어났어!"
+          text: "메모리가 고맙대. 메모리가. 너 진짜 엉망이다."
       - say:
-          char: 로봇
+          char: 로봇.thinking
           with: [윤재]
-          text: "질문. 당신은… 위험에 처해 있습니까?"
+          text: "질문. 너 지금, 위험해? 손이 땀으로 젖어 있음. 설명서엔 '땀 묻은 손으로 조작하지 마세요'라고 돼 있음."
       - choice:
           key: b2_register
-          prompt: "{{android_name|이}} 대답을 기다린다."
+          prompt: "{{android_name|이}} 고개를 15도 기울이고 기다린다. 버퍼링처럼."
           char: 로봇
           options:
-            - text: "\"응. 세상이 망했어.\""
+            - text: "\"응. 세상 망했어. 너랑 나 빼고 다.\""
               add: { bond: 1 }
               goto: b2_reg_honest
-            - text: "\"아니, 괜찮아. 너나 조심해.\""
+            - text: "\"전혀. 너나 걱정해, 고물.\""
               goto: b2_reg_brave
 
   b2_reg_honest:
@@ -142,15 +183,19 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "세상이… 망했다… 처리 중… 그렇다면 당신을 보호 대상 1번으로 등록합니다."
+          text: "세상. 망함. …처리 중. 처리 중. 큰일이다. 그럼 네가 남은 거 전부네."
+      - say:
+          channel: system
+          with: []
+          text: "보호 대상 등록: 1번 — 윤재"
       - say:
           char: 윤재
           with: [로봇]
-          text: "2번은 누군데?"
+          text: "1번이래. 2번은 누군데?"
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "없습니다. 메모리가 부족해서 1번까지만 됩니다."
+          text: "없어. 슬롯 하나. 원래 1인용 게임기였음. 2P는 컨트롤러 따로 사세요."
       - goto: /3.yaml
 
   b2_reg_brave:
@@ -158,9 +203,17 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "괜찮다… 그런데 손이 떨립니다… 모순 감지… 안전을 위해 보호 대상 1번으로 등록합니다."
+          text: "위험 아님. 근데 무릎이 떨림. 목소리도 떨림. 모순 발견. …모순일 땐 나쁜 쪽으로 믿으라고 설명서 9쪽에 있음."
+      - say:
+          channel: system
+          with: []
+          text: "보호 대상 등록: 1번 — 고물한테 거짓말한 사람"
       - say:
           char: 윤재
           with: [로봇]
-          text: "…눈치는 빠르네, 8비트 주제에."
+          text: "야 이름을 그렇게 저장하면 어떡해. 윤재야, 윤재."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "수정 완료. 1번 — 윤재(거짓말함)."
       - goto: /3.yaml
