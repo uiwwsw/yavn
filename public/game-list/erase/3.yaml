@@ -12,10 +12,7 @@ scenes:
           channel: card
           with: []
           text: "현재\n한도윤 · 29 · 결혼 열흘 전"
-      - say:
-          channel: narration
-          with: []
-          text: "준성이 나오지 않은 지 사흘째인 수요일 저녁. 퇴근길에 송과장에게서 개인 톡이 온다."
+      - place: "수요일 저녁 · 퇴근길"
       - say:
           channel: message
           side: them
@@ -43,12 +40,18 @@ scenes:
     actions:
       - bg: { id: junseong_house, transition: fade, duration: 1100 }
       - music: cold_room
+      - place: "수요일 밤 · 오피스텔 9층 복도 끝"
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤.panic
+          with: []
+          delivery: whisper
+          text: "…여기였어?"
       - say:
           channel: narration
           with: []
           camera: wide
-          text: "준성의 오피스텔, 9층 복도 끝. 그날 새벽 신발을 손에 들고 나온 문이다. 현관문이 한 뼘쯤 열려 있다. 문 옆 창틀의 화분 둘은 잎 끝이 말라 있다. 초인종을 두 번 누르고, 한 번 더 누르고, 그다음엔 그냥 서 있었다. 안쪽 바닥에 블라인드 그림자가 줄줄이 누워 있다."
-      - char: { id: 도윤, position: center }
+          text: "초인종을 세 번 눌러도 대답이 없는데, 현관문은 한 뼘쯤 열려 있다."
       - say:
           char: 도윤
           with: []
@@ -100,9 +103,9 @@ scenes:
           enter: fadeIn
           inputLockMs: 400
       - say:
-          channel: narration
+          channel: record
           with: []
-          text: "약국 봉투 겉면에 볼펜으로 '밤 10시'라고 적혀 있다. 한 달 치에서 절반쯤 남았다. 봉투 입구는 집게로 단단히 집혀 있다."
+          text: "조제약 봉투 · 1일 1회 · 30일분\n(볼펜) 밤 10시\n남은 약 15정"
       - get: pharmacy_bag
       - clearSticker: { id: e3_bag, leave: fadeOut }
       - set: { e3_bag: true }
@@ -113,24 +116,16 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "감염내과 외래 기록 · HIV 치료 중\n혈중 바이러스: 미검출 (2023년부터 유지)"
-      - say:
-          channel: narration
-          with: []
-          text: "미검출 줄에만 형광펜이 그어져 있다. 그 옆 여백에 연필로 작게, 굿."
+          text: "감염내과 외래 기록 · HIV 치료 중\n혈중 바이러스: 미검출 (2023년부터 유지)\n(미검출 줄에 형광펜. 여백에 연필로) 굿"
       - set: { e3_papers: true }
       - goto: e3_room
 
   e3_note_scene:
     actions:
       - say:
-          channel: narration
+          channel: record
           with: []
-          text: "냉장고 문의 달력. 날마다 작은 체크 표시가 있고, 지난 목요일 칸에는 '오늘 약 먹었음ㅋ'. 그다음 칸부터는 아무것도 없다."
-      - say:
-          channel: narration
-          with: []
-          text: "다음 주 토요일 칸에만 글씨가 하나 더 있다. '한대리 결혼식 — 축의금?'"
+          text: "냉장고 달력\n지난 목 ✓ 오늘 약 먹었음ㅋ\n금 · 토 · 일 · 월 · 화 · 수 (빈칸)\n다음 주 토 · 한대리 결혼식 — 축의금?"
       - set: { e3_note: true }
       - goto: e3_room
 
@@ -139,7 +134,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "서류 봉투를 우편함에 밀어 넣는다. 현관문은 처음처럼 한 뼘 열어 둔다. 손잡이는 소매로 감싸 잡았다."
+          text: "도윤은 소매로 손잡이를 감싸 쥐고, 현관문을 처음처럼 한 뼘 열어 둔다."
       - say:
           channel: message
           side: them
@@ -162,10 +157,11 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
+      - place: "수요일 23:40 · 빈 사무실"
       - choice:
           key: e2_search
           presentation: explore
-          prompt: "그날 밤, 도윤은 집에 가는 대신 빈 사무실로 돌아왔다. 불은 반만 켜 둔다."
+          prompt: "집 대신 여기로 왔다. 불은 반만 켜 둔다."
           with: []
           camera: wide
           options:
@@ -227,9 +223,9 @@ scenes:
           enter: fadeIn
           inputLockMs: 400
       - say:
-          channel: narration
+          channel: system
           with: []
-          text: "그날 밤 사진이 정말 다 지워졌는지 확인하려고 사진첩을 끝까지 내렸다. 2016년보다 더 아래에 사진이 딱 한 장 있다. 놀이터 미끄럼틀 위에서 웃느라 눈이 없어진 아이. 날짜 정보가 비어 있다."
+          text: "최근 항목 · 맨 아래로 이동\n2016년 3월 — 사진 1,204장\n그 아래 1장 · 날짜 정보 없음"
       - choice:
           key: e2_photo
           prompt: "엄지가 휴지통 아이콘 위에 있다."
@@ -248,7 +244,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "사진첩을 닫는다. 다시 연다. 맨 아래까지 내려서 그대로 있는지 보고, 닫는다."
+          text: "사진첩을 닫았다가 다시 열어, 맨 아래에 그대로 있는지 보고 닫는다."
       - set: { e2_gallery: true }
       - goto: search
 
@@ -256,10 +252,10 @@ scenes:
     actions:
       - clearSticker: { id: e2_photo, leave: fadeOut }
       - say:
-          channel: action
+          channel: system
           with: []
           erase: true
-          text: "회색 사각형이 잠깐 자리를 지키다가, 그것도 없어진다."
+          text: "최근 삭제된 항목 · 1장 영구 삭제\n이 작업은 되돌릴 수 없습니다."
       - add: { deleted: 1 }
       - set: { e2_gallery: true }
       - goto: search
@@ -269,11 +265,11 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1000 }
       - music: cold_room
+      - place: "목요일 9:00 · 보건소"
       - say:
-          channel: narration
+          channel: system
           with: []
-          camera: wide
-          text: "다음 날 목요일 아침, 회사에는 하루 연차를 냈다. 보건소는 아홉 시에 연다. 도윤은 여덟 시 사십 분부터 맞은편 편의점에서 삼각김밥 포장을 반쯤 뜯어 놓고 있었다."
+          text: "근태 · 연차 1일 승인 (한도윤)"
       - say:
           channel: message
           side: them
@@ -282,9 +278,9 @@ scenes:
           text: "오늘 드레스 2차 피팅 3시!! 늦으면 진짜 죽음"
       - char: { id: 도윤, position: center }
       - say:
-          channel: narration
+          channel: record
           with: []
-          text: "번호표 기계 위에 안내문이 붙어 있다. 익명 검사는 이름 대신 번호로 불러 드립니다."
+          text: "안내 · HIV 익명 검사는 이름 대신 번호로 불러 드립니다. 무료."
       - choice:
           key: e3_clinic
           prompt: "기계까지 세 걸음. 대기석에 두 사람이 앉아 있다."
@@ -308,22 +304,31 @@ scenes:
           inputLockMs: 400
       - get: test_ticket
       - say:
-          channel: narration
+          channel: system
           with: []
-          text: "47번. 전광판은 32번이다. 채혈은 생각보다 금방 끝났고, 간호사가 결과는 일주일 뒤에 직접 오셔야 한다고 말하자 도윤은 네, 네, 하고 두 번 대답했다."
+          text: "대기 번호 47 · 현재 호출 32"
+      - say:
+          channel: record
+          with: []
+          text: "채혈 완료 · 결과는 7일 뒤 본인이 직접 방문해 확인합니다."
+      - say:
+          char: 도윤
+          with: []
+          text: "네, 네."
       - clearSticker: { id: e3_ticket, leave: fadeOut }
       - say:
           channel: action
           with: []
-          text: "번호표는 지갑 카드 칸 맨 안쪽에 넣는다. 영수증 뒤에."
+          text: "도윤은 번호표를 지갑 카드 칸 맨 안쪽, 영수증 뒤에 넣는다."
       - goto: e3_harin
 
   e3_turn:
     actions:
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "자동문이 열렸다 닫힌다. 길을 건너자마자 도윤은 지도 앱을 열어 '보건소' 검색 기록부터 지운다."
+          erase: true
+          text: "지도 · 최근 검색 '보건소' — 삭제됨"
       - add: { deleted: 1 }
       - goto: e3_harin
 
@@ -334,11 +339,7 @@ scenes:
           with: []
           text: "과거\n유하린 · 18"
       - bg: { id: science_room, transition: cut }
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "며칠 뒤, 과학실. 생물 수행평가로 곤충 표본을 만드는 시간이다. 하린과 아진은 같은 조다."
+      - place: "며칠 뒤 · 과학실, 생물 수행평가"
       - char: { id: 하린, position: center, emotion: blank }
       - char: { id: 아진, position: right }
       - sticker:
@@ -350,21 +351,19 @@ scenes:
           enter: fadeIn
           inputLockMs: 400
       - say:
-          channel: action
-          with: [아진]
-          text: "하린이 배추흰나비 날개를 핀셋으로 편다. 핀 하나, 둘. 아진은 실험대 건너편에서 그걸 보고만 있다."
-      - say:
           char: 아진
           with: [하린]
-          text: "그거 수행평가 그냥 사진으로 내도 된대."
+          text: "하린아, 나비 그거 핀 안 꽂아도 돼. 수행평가 그냥 사진으로 내도 된대."
       - say:
           char: 하린.blank
           with: [아진]
           text: "이게 더 쉬워. 가만히 있으니까."
+      - move: { id: 아진, toward: 하린, style: approach }
       - say:
           char: 아진.awkward
           with: [하린]
           text: "…그날 뒷문 앞에 너 있었지. 문이 움직였어."
+      - move: { id: 하린, toward: 아진, style: flinch }
       - say:
           char: 하린
           with: [아진]
@@ -377,12 +376,10 @@ scenes:
           char: 하린
           with: [아진]
           text: "내가 왜?ㅋㅋ 나 원래 그런 거 관심 없잖아. 너네 잘 어울려. 진짜로."
+      - move: { id: 아진, style: reset }
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
       - bg: { id: harin_room, transition: fade, duration: 900 }
-      - say:
-          channel: narration
-          with: []
-          text: "그날 밤, 하린의 방. 아진에게서 사진 한 장이 온다."
+      - place: "그날 밤 · 하린의 방"
       - say:
           channel: message
           side: them
@@ -418,9 +415,9 @@ scenes:
           with: []
           text: "읽음"
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "하린은 답장하지 않는다. 사진을 길게 눌러, 저장을 누른다."
+          text: "사진을 저장했습니다."
       - goto: e2_jisu
 
   e2_jisu:
@@ -432,10 +429,7 @@ scenes:
           text: "현재\n한도윤 · 29 · 결혼 아흐레 전"
       - bg: { id: couple_home, transition: cut }
       - music: static
-      - say:
-          channel: narration
-          with: []
-          text: "같은 날 밤, 집. 지수가 식탁에 결혼 준비 목록을 펼쳐 놓고 기다리고 있다."
+      - place: "목요일 밤 · 도윤과 지수의 집"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say:
@@ -462,10 +456,12 @@ scenes:
           char: 도윤
           with: [지수]
           text: "회사에 일이 갑자기—"
+      - move: { id: 지수, toward: 도윤, style: approach }
       - say:
           char: 지수
           with: [도윤]
           text: "회사에 전화했어. 송과장님이 너 오늘 연차래."
+      - move: { id: 도윤, toward: 지수, style: retreat }
       - say:
           char: 지수
           with: [도윤]
@@ -514,10 +510,7 @@ scenes:
           char: 지수
           with: [도윤]
           text: "그냥. 물어봤어."
-      - say:
-          channel: action
-          with: [지수, 도윤]
-          text: "지수가 휴대폰을 다시 뒤집는다. 아무것도 오지 않은 화면을 오래 본다."
+      - move: { id: 지수, toward: 도윤, style: retreat }
       - goto: /4.yaml
 
   e2_jisu_part:
@@ -530,6 +523,7 @@ scenes:
           char: 지수
           with: [도윤]
           text: "소문 있는 건 알아."
+      - move: { id: 도윤, toward: 지수, style: flinch }
       - say:
           char: 도윤.panic
           with: [지수]
@@ -557,7 +551,7 @@ scenes:
       - say:
           channel: action
           with: [지수, 도윤]
-          text: "지수는 반지를 손가락 마디까지 뺐다가 다시 끼운다. 두 번."
+          text: "지수는 반지를 손가락 마디까지 뺐다가 다시 끼운다."
       - say:
           char: 지수.cold
           with: [도윤]

@@ -9,10 +9,7 @@ scenes:
   new_leader:
     title: "새 팀장"
     actions:
-      - say:
-          channel: narration
-          with: []
-          text: "그다음 월요일 아침. 출근길 지하철에서 도윤의 팀 단톡방이 울린다."
+      - place: "월요일 아침 · 출근길 지하철"
       - say:
           channel: message
           side: them
@@ -36,10 +33,7 @@ scenes:
           text: "ㅋㅋ"
       - bg: { id: office, transition: cut }
       - music: neon
-      - say:
-          channel: action
-          with: []
-          text: "아홉 시 이십 분. 책상 전화가 울린다. 내선이다."
+      - place: "월요일 9:20 · 영업2팀"
       - char: { id: 도윤, position: left }
       - say:
           char: 도윤
@@ -51,9 +45,10 @@ scenes:
           with: [도윤]
           text: "아, 이 번호 맞네요."
       - say:
-          channel: action
-          with: [준성, 도윤]
-          text: "수화기에서 들리는 목소리가 등 뒤에서도 똑같이 들린다. 파티션 너머, 수화기를 든 남자가 도윤을 보고 있다. 금요일 밤 클럽에서 잔을 건넨, 그 남자다."
+          char: 준성
+          with: [도윤]
+          text: "고개 들어 봐요. 파티션 너머. 여기요."
+      - move: { id: 도윤, toward: 준성, style: flinch }
       - say:
           char: 준성
           with: [도윤]
@@ -67,34 +62,41 @@ scenes:
           with: [도윤]
           text: "처음 뵙겠습니다."
       - say:
-          channel: narration
-          with: [준성, 도윤]
-          text: "옆자리 윤주임이 의자를 밀고 나오며, 두 분 인사가 토씨 하나 안 틀리고 똑같다고, 혹시 같은 군대 나오셨냐고 끼어든다."
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 두 분 인사 토씨 하나 안 틀리고 똑같으심ㅋㅋ 같은 군대 나오셨나"
       - say:
           char: 준성.smirk
           with: [도윤]
           text: "그러게요. 우리 같은 군대잖아요. 그쵸, 한대리님?"
+      - move: { id: 준성, toward: 도윤, style: approach }
       - say:
           channel: action
           with: [준성, 도윤]
-          text: "준성이 한쪽 눈을 감았다 뜬다. 다들 웃는다. 도윤도 웃는다. 한 박자 늦게."
+          text: "준성이 도윤에게만 보이게 한쪽 눈을 찡긋한다."
+      - say:
+          char: 도윤.smile
+          with: [준성]
+          text: "…하하. 그러게요."
+      - move: { id: 준성, style: reset }
 
   overtime:
     title: "야근"
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "그 주 목요일, 아홉 시 반. 층에 남은 건 둘이다. 복사기가 혼자 절전 모드로 들어간다."
+      - place: "목요일 21:30 · 빈 사무실"
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say:
-          channel: action
+          char: 도윤
           with: [준성]
-          text: "준성은 모니터 옆에 집에서 가져온 화분을 놓고, 종이컵으로 물을 조금씩 붓고 있다."
+          text: "그 화분, 집에서 가져오신 거예요?"
+      - say:
+          char: 준성.smirk
+          with: [도윤]
+          text: "네. 사무실 공기가 별로라서요. 얘가 나보다 예민해요. 종이컵으로 반 컵, 그 이상 주면 삐져요."
       - say:
           char: 도윤
           with: [준성]
@@ -103,6 +105,7 @@ scenes:
           char: 준성
           with: [도윤]
           text: "네. 앉아요."
+      - move: { id: 도윤, toward: 준성, style: approach }
       - say:
           char: 도윤
           with: [준성]
@@ -111,6 +114,7 @@ scenes:
           char: 준성
           with: [도윤]
           text: "무슨 날이요?"
+      - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤.panic
           with: [준성]
@@ -119,6 +123,7 @@ scenes:
           char: 준성.tired
           with: [도윤]
           text: "농담이에요. 난 말할 생각 없어요."
+      - move: { id: 도윤, style: reset }
       - say:
           char: 준성
           with: [도윤]
@@ -143,10 +148,7 @@ scenes:
   rumor:
     title: "소문"
     actions:
-      - say:
-          channel: narration
-          with: []
-          text: "다음 날 저녁, 퇴근길. 팀장이 온 지 닷새째다. 단톡방이 또 시끄럽다."
+      - place: "금요일 저녁 · 퇴근길"
       - say:
           channel: message
           side: them
@@ -253,10 +255,11 @@ scenes:
   e1_home:
     actions:
       - bg: { id: couple_home, transition: fade, duration: 900 }
+      - place: "금요일 밤 · 도윤과 지수의 집"
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "그날 밤, 도윤과 지수가 같이 사는 집. 지수가 씻는 동안, 도윤은 단톡방을 위로 올리며 자기 이름이 나온 말풍선만 골라 '나에게서 삭제'를 누른다."
+          text: "나에게서 삭제 · 내 화면에서만 사라지며 다른 참여자에게는 그대로 보입니다."
       - say:
           channel: message
           side: them
@@ -267,7 +270,7 @@ scenes:
       - say:
           char: 지수
           with: []
-          text: "도윤아, 드레스 잔금 넣었어. 영수증 또 보냈으니까 그것도 지우지 마!"
+          text: "도윤아! 나 씻는다. 드레스 잔금 넣었어. 영수증 또 보냈으니까 그것도 지우지 마!"
       - say:
           char: 도윤
           with: []
@@ -283,11 +286,7 @@ scenes:
     actions:
       - bg: { id: classroom, transition: cut }
       - music: cold_room
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "어느 고등학교, 점심시간의 교실. 유하린 옆에는 남자친구 서민재와, 제일 친한 친구 정아진이 앉아 있다."
+      - place: "점심시간 · 3학년 교실"
       - char: { id: 민재, position: left }
       - char: { id: 하린, position: center }
       - char: { id: 아진, position: right }
@@ -296,13 +295,13 @@ scenes:
           with: [하린, 아진]
           text: "아니 그니까 걔가 식판을 엎었는데, 지가 안 엎었대. 국이 바닥에 다 있는데."
       - say:
-          channel: action
-          with: [하린, 민재]
-          text: "민재는 말하면서 하린 식판의 콩자반을 자기 쪽으로 옮겨 간다. 쳐다보지도 않고. 하린이 콩 못 먹는 걸 아는 손이다."
-      - say:
           char: 아진
           with: [하린, 민재]
-          text: "미쳤나 봐 진짜."
+          text: "미쳤나 봐 진짜. 근데 서민재, 너 여친 콩자반은 왜 니가 먹어."
+      - say:
+          char: 민재
+          with: [하린, 아진]
+          text: "얘 콩 못 먹잖아. 아무튼 걔가—"
       - say:
           char: 하린
           with: [민재, 아진]
@@ -355,10 +354,11 @@ scenes:
           char: 아진.awkward
           with: [하린, 민재]
           text: "…응."
+      - move: { id: 민재, toward: 아진, style: approach }
       - say:
-          channel: action
-          with: [하린, 민재, 아진]
-          text: "아진이 이어폰을 자기 귀에 다시 꽂는다. 남은 한쪽은 민재가 가져간다."
+          char: 민재
+          with: [하린, 아진]
+          text: "그럼 그거 나 줘."
       - goto: e1_harin_night
 
   e1_harin_ask:
@@ -376,18 +376,15 @@ scenes:
           with: [민재, 아진]
           text: "아 맞다. 그랬지. ㅋㅋ 내가 그랬다."
       - say:
-          channel: action
-          with: [하린, 민재, 아진]
-          text: "아진이 따라 웃다가, 혼자 너무 오래 웃는다."
+          char: 아진.awkward
+          with: [하린, 민재]
+          text: "아하하… 아 웃겨. 하린이 진짜 웃겨. 하하…"
       - goto: e1_harin_night
 
   e1_harin_night:
     actions:
       - bg: { id: harin_room, transition: fade, duration: 900 }
-      - say:
-          channel: narration
-          with: []
-          text: "그날 밤, 하린의 방. 민재가 인스타 스토리를 올리자마자 알림이 뜬다."
+      - place: "그날 밤 · 하린의 방"
       - say:
           channel: message
           side: them
@@ -407,9 +404,9 @@ scenes:
           erase: true
           text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "하린은 스토리를 캡처한다. 세 장. 확대해서 보고, 다시 보고, 세 장 다 지운다. 최근 삭제된 항목까지 들어가서."
+          text: "스크린샷 3장 · 최근 삭제된 항목에서 영구 삭제"
       - add: { deleted: 3 }
       - say:
           channel: message

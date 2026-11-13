@@ -1766,7 +1766,7 @@ function cancelStickerClearTimer(id: string) {
 
 const STAGE_ORDER: Record<Position, number> = { left: 0, center: 1, right: 2 };
 // Distances are in container width (cqw) and are a multiplier on the character's own scale.
-const MOVE_SHAPES: Record<Exclude<CharacterMoveStyle, 'reset' | 'flinch'>, { x: number; scale: number; cameraScale: number }> = {
+const MOVE_SHAPES: Record<Exclude<CharacterMoveStyle, 'reset' | 'flinch' | 'exit'>, { x: number; scale: number; cameraScale: number }> = {
   approach: { x: 8, scale: 1.05, cameraScale: 1.12 },
   lunge: { x: 13, scale: 1.09, cameraScale: 1.2 },
   retreat: { x: -7, scale: 0.96, cameraScale: 0.9 },
@@ -1776,6 +1776,7 @@ export const MOVE_DURATIONS: Record<CharacterMoveStyle, number> = {
   lunge: 260,
   retreat: 620,
   flinch: 280,
+  exit: 760,
   reset: 520,
 };
 
@@ -1828,6 +1829,14 @@ function applyCharacterMove(move: CharacterMoveDirective): number {
     }, 160);
     flinchTimers.set(move.id, timer);
     return MOVE_DURATIONS.flinch;
+  }
+  if (style === 'exit') {
+    // Walk off the nearest edge, away from whoever they are leaving.
+    const away = move.toward && direction !== 0
+      ? -direction
+      : moverPosition === 'left' ? -1 : moverPosition === 'right' ? 1 : direction === 0 ? 1 : -direction;
+    store.setCharacterStance(move.id, { x: away * 60, scale: 1, style: 'exit' });
+    return MOVE_DURATIONS.exit;
   }
   const shape = MOVE_SHAPES[style];
   store.setCharacterStance(move.id, {

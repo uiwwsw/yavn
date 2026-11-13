@@ -1349,17 +1349,18 @@ scenes:
 - move: { id: 지수, toward: 도윤, style: lunge, wait: true } # 확 덤빔. 도착한 뒤 다음 액션
 - move: { id: 도윤, toward: 지수, style: flinch }            # 움찔했다 제자리
 - move: { id: 지수, style: reset }                          # 원래 자리로
+- move: { id: 도윤, toward: 지수, style: exit }              # 지수에게서 등을 돌려 화면 밖으로 퇴장
 - move: { id: 도윤, toward: camera, style: approach }       # 화면 쪽으로 다가옴(확대)
 ```
 
 | 필드 | 값 | 동작 |
 | --- | --- | --- |
 | `id` | 무대에 있는 인물 ID | 움직일 인물 |
-| `style` | `approach`(기본) · `lunge` · `retreat` · `flinch` · `reset` | 다가섬 720ms · 덤빔 260ms(살짝 넘쳤다 멈춤) · 물러섬 620ms · 움찔(제자리 복귀) · 원위치 |
+| `style` | `approach`(기본) · `lunge` · `retreat` · `flinch` · `exit` · `reset` | 다가섬 720ms · 덤빔 260ms(살짝 넘쳤다 멈춤) · 물러섬 620ms · 움찔(제자리 복귀) · 퇴장(가까운 화면 밖으로 760ms) · 원위치 |
 | `toward` | 다른 인물 ID 또는 `camera` | 방향 기준. 생략하면 무대 가운데 쪽. `camera`는 좌우 이동 없이 커지거나(다가옴) 작아짐(물러섬) |
 | `wait` | `true` / 기본 `false` | `true`면 동작이 끝난 뒤 다음 액션 실행 |
 
-- 방향은 두 인물의 현재 자리(left/center/right)로 자동 계산합니다. 위치는 `reset`이나 다음 장 전까지 유지됩니다.
+- 방향은 두 인물의 현재 자리(left/center/right)로 자동 계산합니다. 대사의 `with`에서 빠진 인물은 원래대로 화면에서 사라지므로, `exit`은 걸어 나가는 동작이 필요할 때만 씁니다. 위치는 `reset`이나 다음 장 전까지 유지됩니다.
 - `prefers-reduced-motion`에서는 이동이 즉시 끝납니다. 저장 복원 때는 동선을 다시 재생하지 않습니다.
 - `place`는 60자 이하, `{{변수}}` 치환을 지원합니다. 장면이 바뀌는 첫머리에 한 줄이면 충분하고, 같은 정보를 내레이션으로 반복하지 않습니다.
 

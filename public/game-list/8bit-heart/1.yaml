@@ -12,15 +12,13 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 1 · 두 달 뒤\n학원 가는 길, 버스 정류장"
+          text: "STAGE 1 · 두 달 뒤"
+      - place: "학원 가는 길 · 버스 정류장"
       - say:
           char: 윤재
           with: []
           text: "학원까지 세 정거장. 그 안에 이 판 깬다."
-      - say:
-          channel: card
-          with: []
-          text: "오후 4:17"
+      - place: "오후 4:17"
       - say:
           channel: system
           with: []
@@ -36,10 +34,11 @@ scenes:
       - effect: { name: glitch, wait: true }
       - music: chip_run
       - say:
-          channel: action
+          char: 윤재.scared
           with: []
-          text: "신호등이 전부 초록으로 바뀐다. 버스가 정류장을 지나쳐 그대로 가속한다. 하늘에서 배달 드론이 우수수 떨어진다."
+          text: "신호등 왜 다 초록이야? 버스! 버스 왜 안 서? 야, 위에— 드론 떨어진다!"
       - effect: { name: shake, wait: true }
+      - move: { id: 윤재, toward: camera, style: flinch }
       - say:
           channel: system
           with: []
@@ -85,9 +84,9 @@ scenes:
           with: []
           text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기 연기 남. 다 죽었어, 다—"
       - say:
-          channel: action
+          char: 윤재
           with: []
-          text: "손안에서 삑. 게임기 화면이 그대로다. 깨던 판의 보스가 멍하니 서 있다."
+          text: "…삑? 손에서 삑 소리 났어. 게임기 화면이 살아 있네. 깨던 판 보스가 멍하니 서 있어."
       - say:
           channel: system
           with: []
@@ -107,10 +106,7 @@ scenes:
           channel: card
           with: []
           text: "CONTINUE? — 10일 후"
-      - say:
-          channel: narration
-          with: []
-          text: "그날 이후 도시는 기계들 차지가 됐다. 사람들은 걸어서 빠져나갔거나 어딘가 숨었다. 윤재는 털린 편의점 하나를 기지로 삼아 버티는 중이다."
+      - place: "털린 편의점 앞 · 윤재의 기지"
       - say:
           char: 윤재
           with: []
@@ -140,24 +136,23 @@ scenes:
           with: []
           text: "그리고 나는 지금 혼잣말로 상태창을 읊고 있다. 정상이다. 완전 정상."
       - bg: { id: android_found, transition: fade, duration: 700 }
-      - say:
-          channel: action
-          with: []
-          text: "컵라면을 찾아 들어간 아파트 뒷골목."
+      - place: "아파트 뒷골목 · 컵라면 수색 중"
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
+      - move: { id: 윤재, toward: 로봇, style: retreat }
       - say:
           char: 윤재.scared
           with: [로봇]
           text: "으악. …아, 사람 아니네. 깜짝이야. 사람이었으면 더 깜짝이었겠지만."
+      - move: { id: 윤재, toward: 로봇, style: approach }
       - say:
           char: 윤재
           with: [로봇]
           text: "어이. 살아 있냐? …아니 넌 원래 안 살아 있지. 켜져 있냐?"
       - say:
-          channel: action
-          with: []
-          text: "가정용 안드로이드. 벽에 기대 앉은 채 한쪽 눈이 꺼져 있다. 가슴 패널을 열자, 타 버린 CPU 소켓이 텅 비어 있다."
+          char: 윤재
+          with: [로봇]
+          text: "가정용이네. 광고에서 빨래 개던 그 모델. 가슴 패널 좀 열어 볼게, 실례. …CPU 소켓이 텅 비었어. 까맣게 탔고."
       - say:
           char: 윤재
           with: [로봇]
@@ -165,7 +160,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "윤재는 소켓을 본다. 손에 든 게임기를 본다. 다시 소켓을 본다."
+          text: "윤재의 눈이 빈 소켓과 손에 든 게임기 사이를 두 번 오간다."
       - say:
           char: 윤재
           with: [로봇]

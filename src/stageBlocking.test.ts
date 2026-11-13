@@ -37,6 +37,8 @@ scenes:
       - move: { id: b, style: reset }
       - move: { id: a, toward: camera }
       - say: { char: a, with: [b], text: "카메라로." }
+      - move: { id: b, toward: a, style: exit }
+      - say: { char: a, text: "나갔다." }
       - ending: done
 `,
 };
@@ -127,6 +129,12 @@ describe('stage blocking playback', () => {
     expect(state.dialog.fullText).toBe('카메라로.');
     expect(state.characterStances.b).toBeUndefined();
     expect(state.characterStances.a).toMatchObject({ style: 'approach', x: 0, scale: 1.12 });
+
+    await next();
+    state = useVNStore.getState();
+    expect(state.dialog.fullText).toBe('나갔다.');
+    // b (right) leaves a (left): off the right edge.
+    expect(state.characterStances.b).toMatchObject({ style: 'exit', x: 60 });
 
     await next();
     expect(useVNStore.getState().resolvedEndingId).toBe('done');

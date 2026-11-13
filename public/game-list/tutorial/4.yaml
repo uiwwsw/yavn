@@ -9,21 +9,13 @@ scenes:
   building:
     title: "가산동"
     actions:
-      - say:
-          channel: card
-          with: []
-          text: "4월 23일 새벽 2시 50분\n가산동"
       - bg: { id: server_building, transition: fade, duration: 1100 }
+      - place: "4월 23일 새벽 2:50 · 가산동 옛 레플라 사옥"
       - music: server
       - say:
-          channel: narration
+          channel: system
           with: []
-          camera: wide
-          text: "레플라를 만든 회사가 쓰던 옛 사옥이다. 해수는 막차로 와서 두 시간 넘게 건물 앞에 서 있었다. 8층짜리 건물. 1층 유리문에 임대 문의 전단이 세 겹으로 붙어 있다. 간판 자리에 레플라 로고 모양으로 먼지 안 낀 자국이 남아 있다."
-      - say:
-          channel: action
-          with: []
-          text: "옆 비상계단 문에 카드를 대자 삑 소리가 난다. 건물에 전기가 안 들어온다고 했는데, 초록 불이 켜진다."
+          text: "레플라 가산 R&D · B1 서버실 · 기태민 · 출입 승인"
           continueLabel: "지하 1층으로 내려간다"
 
   room:
@@ -58,9 +50,9 @@ scenes:
   see_plug:
     actions:
       - say:
-          channel: narration
+          channel: record
           with: []
-          text: "본체 전원선이 벽 콘센트에 꽂혀 있다. 콘센트 옆 차단기 스위치는 전부 내려가 있다. 그 위에 스티커."
+          text: "분전반 · 전 회로 OFF · 본체 전원선: 벽 콘센트에 연결됨"
       - say:
           channel: record
           with: []
@@ -70,19 +62,17 @@ scenes:
 
   see_drawer:
     actions:
+      - sticker: { id: pencil, image: pencil_sticker, x: 62, y: 40, width: "300px", rotate: 8, enter: fadeIn }
       - say:
-          channel: narration
+          char: 해수
           with: []
-          text: "서랍 안에 연필 한 자루. 끝에 초록 로고. 심은 뾰족하다. 쓴 적이 없는 것처럼."
+          text: "저희 연필이네요. 심이 그대로예요. 한 번도 안 깎은 거."
       - say:
-          channel: narration
+          char: 해수
           when: { var: t_pencil, op: eq, value: true }
           with: []
-          text: "로고는 엄지로 문지른 것처럼 반쯤 일어나 있다."
-      - say:
-          channel: action
-          with: []
-          text: "해수는 서랍을 닫는다. 앞치마는 집 의자에 걸어 두고 왔다."
+          text: "로고가 반쯤 지워져 있네요. 제가 문지른 자리만큼."
+      - clearSticker: { id: pencil, leave: fadeOut }
       - set: { seen_drawer: true }
       - goto: room
 
@@ -132,10 +122,6 @@ scenes:
           with: []
           text: "USER 0001 · 2031.04.18 23:47 · 튜토리얼 4/5 · 진행 중"
       - say:
-          channel: narration
-          with: []
-          text: "스크롤을 맨 위로 올린다. 첫 줄."
-      - say:
           channel: record
           with: []
           text: "USER 0001 · 2019.04.11 14:52"
@@ -162,22 +148,24 @@ scenes:
           with: []
           text: "튜토리얼 5/5 — 선택하세요."
       - say:
-          channel: narration
+          channel: message
+          side: them
+          char: 엄마
           when: { var: called_mom, op: eq, value: true }
           with: []
-          text: "휴대폰에 문자가 와 있다. 상혁 어머니. '첫차 표 끊었어. 5시 10분.'"
+          text: "첫차 표 끊었어 5시 10분"
       - say:
-          channel: narration
+          channel: system
           with: []
-          text: "벽에는 전원선이 꽂혀 있다. 태민은 이 PC를 끄면 두 쪽이 따로 간다고 했다. 그쪽에 있는 백십만 명이 다시는 못 건너온다고."
+          text: "현재 연결 · USER 0001 – USER 1104331 · 서버 0대 · 전원: 이 PC"
       - say:
-          channel: narration
+          channel: system
           when: { var: honest, op: gte, value: 3 }
           with: []
-          text: "모니터 구석에 작은 창이 하나 떠 있다. '세션 종료 — 사용자 번호를 입력하세요.' 한 사람만 끄는 창이다."
+          text: "세션 종료 — 한 사용자의 연결만 끊습니다. 사용자 번호를 입력하세요."
       - choice:
           key: t4_end
-          prompt: "전원을 뽑으면 레플라 전체가 끊긴다. 두고 나가면 모든 게 그대로 간다. 모니터 오른쪽 위에 넘기기 버튼은 없다."
+          prompt: "전원을 뽑으면 레플라 전체가 끊긴다. 두고 나가면 모든 게 그대로 간다. 모니터 오른쪽 위에 넘기기 버튼이 없다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -193,11 +181,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "전원선을 잡아당긴다. 생각보다 쉽게 빠진다."
-      - say:
-          channel: narration
-          with: []
-          text: "팬 소리가 멎는다. 모니터는 꺼지지 않는다."
+          text: "팬 소리가 멎었는데 모니터는 그대로 켜져 있다."
       - say:
           channel: record
           with: []
@@ -208,26 +192,25 @@ scenes:
           text: "USER 0001 · 해당 없음 · 이 세션은 서버를 사용하지 않습니다"
       - bg: { id: home_hall, transition: fade, duration: 1200 }
       - music: bleed
+      - place: "아침 7:00 · 집 복도"
+      - char: { id: 해수, position: left }
       - char: { id: 상혁, position: right, emotion: hollow }
-      - say:
-          channel: narration
-          with: [상혁]
-          camera: wide
-          text: "아침 일곱 시. 상혁의 방문이 열려 있다. 상혁은 복도 바닥에 앉아 밴드를 손에 쥐고 있다. 머리끈은 손목에 그대로다."
+      - move: { id: 상혁, toward: 해수, style: lunge }
       - say:
           char: 상혁.hollow
-          with: []
+          with: [해수]
           text: "로그인이 안 돼. 계정이 없대. 걔도 없대. 해수야, 걔가 없대."
+      - move: { id: 상혁, style: reset }
       - say:
           char: 상혁
           when: { var: called_mom, op: eq, value: true }
           with: []
           text: "엄마 왔어. 지금 약국 갔어. 너가 불렀어?"
       - say:
-          channel: narration
+          char: 해수
           when: { var: called_mom, op: eq, value: false }
           with: [상혁]
-          text: "해수는 상혁 옆에 앉는다. 상혁은 오늘 출근이 아니다. 해수는 오픈이다. 9시 반까지."
+          text: "나 오늘 오픈이야. 9시 반. 그 전까지 여기 앉아 있을게."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - say:
           channel: message
@@ -240,10 +223,6 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 001번 고객님, 고객센터로 오세요. · 5월 2일"
-      - say:
-          channel: narration
-          with: []
-          text: "남자 손님이 영수증을 트레이에 내려친다. 휴대폰 케이스. 산 지 한 달."
       - char: { id: 해수, position: left, emotion: service }
       - say:
           char: 해수.service
@@ -252,7 +231,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 연필꽂이에서 연필을 하나 뽑는다. 스무 자루. 뽑은 자리에 같은 연필이 다시 꽂혀 있다."
+          text: "연필꽂이에서 연필을 하나 뽑자 빈자리에 같은 연필이 다시 꽂혀 있다."
       - say:
           channel: system
           with: []
@@ -264,13 +243,10 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "모니터 전원 버튼을 누른다. 화면이 꺼진다. 팬은 계속 돈다. 해수는 카드를 찍고 나와서, 첫차를 기다린다."
+          text: "모니터 화면이 꺼진 뒤에도 팬은 계속 돈다."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
+      - place: "같은 날 오전 9:30 · 고객센터"
       - music: tutorial
-      - say:
-          channel: narration
-          with: []
-          text: "같은 날 오전 9시 반, 그린마트 상봉점 고객센터. 해수는 오픈 근무에 늦지 않았다."
       - char: { id: 지영, position: right }
       - char: { id: 해수, position: left, emotion: service }
       - say:
@@ -343,9 +319,9 @@ scenes:
           with: []
           text: "튜토리얼을 찾을 수 없습니다."
       - say:
-          channel: narration
+          channel: action
           with: []
-          text: "모니터가 꺼진다. 팬도 멎는다. 차단기는 처음부터 내려가 있었다. 지하 1층이 이제야 조용하다."
+          text: "모니터와 팬이 함께 꺼진다."
       - bg: { id: police_room, transition: fade, duration: 1200 }
       - music: fluoro
       - char: { id: 해수, position: left }
@@ -380,21 +356,37 @@ scenes:
           with: [은숙]
           text: "2019년 4월 11일이요. 오후 두 시 오십이 분. 첫 출근 날이었어요. 그 고객님이 처음 오셨어요."
       - say:
-          channel: narration
+          char: 은숙
+          with: [해수]
+          text: "이천십구 년, 사 월, 십일 일. 십사 시 오십이 분. …적었어요."
+      - move: { id: 은숙, toward: 해수, style: approach }
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "물. 이번엔 드세요."
+      - say:
+          char: 해수
           with: [은숙]
-          text: "은숙은 녹음기를 끄지 않는다. 볼펜을 들고, 한 글자씩 적는다. 다 적고 나서 물을 해수 쪽으로 민다. 해수는 이번엔 마신다."
+          text: "네. 감사합니다."
+      - move: { id: 은숙, style: reset }
       - bg: { id: cs_desk, transition: fade, duration: 1200 }
       - say:
           channel: record
           with: []
           text: "피해자 휴대폰 메모 · 4/17 13:02 · 고객센터 그 친구한테 사과할 것"
+      - place: "그날 오후 · 고객센터"
+      - char: { id: 지영, position: right }
       - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "그날 오후, 고객센터 연필꽂이가 치워진다. 줄 달린 볼펜 두 자루가 창구에 묶인다. 해수가 팀장에게 부탁했다."
+          char: 지영
+          with: [해수]
+          text: "연필꽂이 치웠네? 볼펜은 줄까지 달아 놓고."
       - say:
-          channel: action
+          char: 해수
+          with: [지영]
+          text: "네. 팀장님께 부탁드렸어요. 이제 안 가져가실 거예요."
+      - sound: chime
+      - say:
+          channel: system
           with: []
-          text: "번호표 표시판에 027이 뜬다. 해수는 고개를 든다."
+          text: "띵동 — 027번 고객님, 고객센터로 오세요."
       - ending: session_closed

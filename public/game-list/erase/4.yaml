@@ -10,11 +10,7 @@ scenes:
     actions:
       - bg: { id: rooftop, transition: fade, duration: 1400 }
       - music: wind
-      - say:
-          channel: narration
-          with: []
-          camera: wide
-          text: "결혼식 닷새 전, 월요일 점심시간. 회사 옥상 흡연 구역의 물탱크 옆. 도윤은 등을 물탱크에 붙이고 앉아 있다. 담배는 없다."
+      - place: "월요일 점심 · 회사 옥상"
       - char: { id: 도윤, position: center, emotion: hollow }
       - say:
           channel: message
@@ -42,9 +38,9 @@ scenes:
           with: []
           text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00. 신분증과 동의서를 지참해 주세요."
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "어젯밤 새벽 세 시에, 도윤이 직접 넣은 예약이다."
+          text: "예약 신청 · 일요일 오전 3:02 · 신청자 본인"
       - say:
           channel: thought
           with: []
@@ -69,10 +65,6 @@ scenes:
           with: []
           text: "과거\n유하린 · 18"
       - say:
-          channel: narration
-          with: []
-          text: "이야기의 맨 처음, 그 수술실이다."
-      - say:
           char: 의사
           with: []
           text: "확신하세요? 한번 지우면 돌아올 수 없어요."
@@ -93,18 +85,21 @@ scenes:
       - bg: { id: surgery_reveal, transition: fade, duration: 1600 }
       - char: { id: 하린, position: center, emotion: sleep }
       - say:
-          channel: action
-          char: 하린.sleep
+          char: 의사
           with: []
-          text: "시트가 걷힌다. 뒤집혀 있던 이름표가 바로 놓인다. 유하린, 18세."
+          text: "이름표는 뒤집어 둘게요. 깨어나실 때 헷갈리시지 않게."
+      - say:
+          channel: record
+          with: []
+          text: "환자 이름표 · 유하린 · 18세"
       - say:
           char: 의사
           with: []
           text: "걱정 마세요. 눈 뜨면… 새로 시작해요."
       - say:
-          channel: card
+          channel: record
           with: []
-          text: "열여덟의 하린은 ERASE를 받았다.\n눈을 뜬 사람의 이름은 한도윤이었다."
+          text: "ERASE 시술 기록 · 2016\n시술 전 · 유하린 (18)\n새 신원 · 한도윤"
       - say:
           channel: card
           with: []
@@ -112,11 +107,11 @@ scenes:
       - bg: { id: rooftop, transition: cut }
       - music: wind
       - char: { id: 도윤, position: center, emotion: panic }
+      - move: { id: 도윤, toward: camera, style: flinch }
       - say:
-          channel: action
-          char: 도윤.panic
+          channel: system
           with: []
-          text: "도윤은 휴대폰을 떨어뜨렸다가 줍는다. 액정 모서리가 깨졌다. 예약 문자는 그대로 떠 있다."
+          text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00."
       - choice:
           key: e3_final
           prompt: "예약 문자 아래, 답장 칸에서 커서가 깜박인다."
@@ -138,10 +133,10 @@ scenes:
           with: []
           text: "모든 콘텐츠 및 설정 지우기\n사진, 메시지, 계정 및 기타 데이터가 모두 삭제됩니다."
       - say:
-          channel: action
+          channel: system
           with: []
           erase: true
-          text: "진행 막대가 다 차는 데 사 분이 걸린다. 그동안 단톡방 알림이 두 번 울렸다가 멈춘다."
+          text: "지우는 중… 약 4분 남음"
       - add: { deleted: 10 }
       - branch:
           cases:
@@ -154,11 +149,12 @@ scenes:
       - bg: { id: surgery_reveal, transition: fade, duration: 1400 }
       - music: cold_room
       - char: { id: 하린, position: center, emotion: sleep }
+      - place: "화요일 오전 10:00 · ERASE 클리닉"
       - say:
-          channel: narration
+          char: 의사
           with: []
           camera: wide
-          text: "다음 날 오전 열 시, ERASE 클리닉. 열한 해 전 하린이 누웠던 것과 같은 수술대에, 이번에는 도윤이 눕는다."
+          text: "한도윤 님. 서명 확인했어요. 이름표는 뒤집어 둘게요."
       - say:
           char: 의사
           with: []
@@ -169,21 +165,21 @@ scenes:
           text: "눈 뜨면… 새로 시작해요."
       - effect: { name: darken, wait: true }
       - say:
-          channel: narration
+          channel: message
+          side: them
           with: []
-          camera: wide
-          text: "창밖에서 버스가 정류장을 지나간다. 누가 크게 웃는다. 금요일 회식은 고깃집으로 정해졌다."
+          text: "[영업2팀] 송과장: 금요일 고깃집 확정. 도윤대리 답 없어서 그냥 정함ㅋㅋ"
       - ending: erase_loop
 
   end_erased_name:
     actions:
       - bg: { id: office_night, transition: fade, duration: 1200 }
       - music: static
+      - place: "3주 뒤 · 영업2팀"
       - say:
-          channel: narration
+          channel: record
           with: []
-          camera: wide
-          text: "삼 주 뒤. 인트라넷 조직도의 영업2팀 칸에서 '박준성'이 '공석'으로 바뀐다. 같은 주에 '한도윤' 칸도 비었다. 둘 다 사유는 적혀 있지 않다."
+          text: "인트라넷 조직도 · 영업2팀\n팀장 · (공석)\n대리 · (공석)\n변경 사유 · 없음"
       - say:
           channel: message
           side: them
@@ -217,10 +213,6 @@ scenes:
           enter: fadeIn
           inputLockMs: 600
       - say:
-          channel: narration
-          with: []
-          text: "놀이터 미끄럼틀. 일곱 살쯤. 웃느라 눈이 없다. 아진이 지우지 말라고 보냈던, 그 사진이다."
-      - say:
           char: 도윤
           with: []
           delivery: whisper
@@ -253,15 +245,15 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1200 }
       - music: wind
+      - place: "사흘 뒤 목요일 · 보건소"
       - say:
-          channel: action
+          channel: system
           with: []
-          text: "지갑 카드 칸 맨 안쪽, 영수증 뒤에서 눅눅해진 번호표를 꺼낸다. 47번."
+          text: "결과 상담 · 47번 고객님, 2번 상담실로 오세요."
       - say:
-          channel: narration
+          char: 도윤
           with: []
-          camera: wide
-          text: "사흘 뒤 목요일, 보건소. 검사 결과를 들으러 온 날이다. 전광판이 46에서 47로 바뀐다. 도윤이 일어선다."
+          text: "…네. 저요."
       - ending: kept_photo
 
   end_photo_ticket:
@@ -277,11 +269,11 @@ scenes:
           enter: fadeIn
           inputLockMs: 400
       - get: test_ticket
+      - place: "다음 날 오전 9:00 · 보건소"
       - say:
-          channel: narration
+          channel: system
           with: []
-          camera: wide
-          text: "다음 날 아침 아홉 시, 보건소. 이번에는 편의점에 들르지 않았다. 47번. 도윤은 대기석 맨 앞줄에 앉는다."
+          text: "대기 번호 47 · 현재 호출 46"
       - clearSticker: { id: e4_ticket, leave: fadeOut }
       - ending: kept_photo
 
@@ -327,5 +319,5 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 예약 문자에 답장하지 않는다. 지우지도 않는다. 휴대폰을 주머니에 넣고, 계단으로 내려간다."
+          text: "도윤은 예약 문자를 지우지 않은 채 휴대폰을 주머니에 넣는다."
       - ending: unfinished

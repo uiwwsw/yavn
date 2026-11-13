@@ -111,7 +111,7 @@ const stickerEnterEffectSchema = z.enum([
   'rotateIn',
 ]);
 const characterEnterEffectSchema = stickerEnterEffectSchema;
-export const characterMoveStyleSchema = z.enum(['approach', 'lunge', 'retreat', 'flinch', 'reset']);
+export const characterMoveStyleSchema = z.enum(['approach', 'lunge', 'retreat', 'flinch', 'exit', 'reset']);
 const characterEnterSchema = z.union([
   characterEnterEffectSchema,
   z

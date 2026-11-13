@@ -530,7 +530,7 @@ export type GameData = {
   scenes: Record<string, Scene>;
 };
 
-export type CharacterMoveStyle = 'approach' | 'lunge' | 'retreat' | 'flinch' | 'reset';
+export type CharacterMoveStyle = 'approach' | 'lunge' | 'retreat' | 'flinch' | 'exit' | 'reset';
 
 /** Stage blocking: one character closes in on, lunges at or backs away from another (or the camera). */
 export type CharacterMoveDirective = {
