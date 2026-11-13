@@ -4245,6 +4245,14 @@ textarea,
     --char-anchor-x: var(--char-mobile-anchor-x, var(--char-desktop-anchor-x, 50cqw));
   }
 
+  /* Half-body art is sized from the free height, which on a phone makes it wider than the
+     slice of screen its anchor sits in, so the outer shoulder fell off the edge. Cap each
+     actor at twice the distance to its nearest edge: object-fit scales the art down inside
+     that box instead of cropping it, and a centred solo actor keeps the full width. */
+  .char-layer .char-image {
+    max-width: calc(2 * min(var(--char-anchor-x), 100cqw - var(--char-anchor-x)));
+  }
+
   .choice-gate-option,
   .input-gate-field,
   .input-gate-submit {
