@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T02:53:10.123Z",
+  "generatedAt": "2026-11-13T03:27:17.411Z",
   "games": [
     {
       "id": "muwon",
@@ -60,7 +60,7 @@
           "investigation",
           "consequential-choices"
         ],
-        "image": "/game-list/muwon/assets/bg/title.svg",
+        "image": "/game-list/muwon/assets/share/og.png",
         "imageAlt": "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
       }
     },
