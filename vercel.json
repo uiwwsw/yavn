@@ -28,6 +28,86 @@
   ],
   "redirects": [
     {
+      "source": "/game-list/deokman",
+      "destination": "/game-list/muwon/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/deokman/:path*",
+      "destination": "/game-list/muwon/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/deokman-v8-preview",
+      "destination": "/game-list/muwon/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/deokman-v8-preview/:path*",
+      "destination": "/game-list/muwon/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/english-deokman",
+      "destination": "/game-list/muwon/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/english-deokman/:path*",
+      "destination": "/game-list/muwon/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/erase-first",
+      "destination": "/game-list/erase/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/erase-first/:path*",
+      "destination": "/game-list/erase/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/conan",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/conan/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/conan-demo",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/conan-demo/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/conan-midnight-alibi",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/conan-midnight-alibi/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/english-conan",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/english-conan/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/en",
       "destination": "/en/",
       "permanent": true
