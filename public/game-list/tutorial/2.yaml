@@ -48,6 +48,24 @@ scenes:
           side: them
           char: 경준
           with: []
+          text: "주임님 그럼 저 11시까지 가면 돼요? 지금 버스 안인데"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "내려서 집에 갔다 와 두 정거장이잖아"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "집에 가면 다시 못 나와요 저는"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
           text: "즉석밥 아저씨래요"
       - say:
           channel: message
@@ -95,11 +113,35 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
+          text: "너 어제 밥 안 먹었지. 냄비 그대로야."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "먹었어. 씻어 놓은 거야."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "물이 그대로 있어."
+      - say:
+          char: 상혁.grin
+          with: [해수]
+          text: "너는 아침부터 냄비를 왜 봐."
+      - say:
+          char: 해수
+          with: [상혁]
           text: "어디 갔다 와?"
       - say:
           char: 상혁
           with: [해수]
           text: "편의점."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "뭐 샀는데."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "…생각해 보니까 살 게 없더라고."
       - say:
           char: 해수
           with: [상혁]
@@ -600,6 +642,22 @@ scenes:
           when: { var: sh_night, op: eq, value: true }
           with: [지영]
           text: "그저께 밤에는 방에 없었어요. 차에 있었대요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "밥은 먹고 다녀?"
+      - say:
+          char: 해수
+          with: [지영]
+          text: "네. 먹었어요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "뭐 먹었는데."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "…있는 거 먹었어요."
       - say:
           char: 지영.worried
           motion: headtilt

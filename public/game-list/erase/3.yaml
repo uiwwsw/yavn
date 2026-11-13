@@ -17,12 +17,23 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "송과장: 도윤대리 팀장님 댁 그 근처지?"
+          text: "송과장: 잘됐다 도윤대리 팀장님 댁 그 근처지?"
       - say:
           channel: message
           side: them
           with: []
           text: "송과장: 휴직 서류 우편함에만 넣어주면 돼 인사팀이 급하대 ㅠ"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "연락은 아예 안 되세요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "송과장: 전화는 꺼져있고 메일만 한번 왔어 쉬겠다고"
       - say:
           channel: message
           side: them
@@ -34,6 +45,54 @@ scenes:
           char: 도윤
           with: []
           text: "네 넣고 연락드릴게요"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "오늘 몇시에 와? 반찬 데워놨어"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "회사 심부름 하나만 하고"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "이 시간에 무슨 심부름"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "ㅇㅋ 내일 피팅 3시인 거 알지"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "달력에 넣었어 알림도 켜놨어 네 폰에"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "언제 내 폰을"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "아침에 충전하면서ㅋㅋ 비번은 안 쳤어 얼굴로 열었어"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "자는 사람 얼굴 들이대면 열리더라 그거 좀 무섭더라"
 
   house:
     title: "준성의 집"
@@ -118,6 +177,11 @@ scenes:
           channel: record
           with: []
           text: "감염내과 외래 기록 · HIV 치료 중\n혈중 바이러스: 미검출 (2023년부터 유지)\n(미검출 줄에 형광펜. 여백에 연필로) 굿"
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "이게 무슨 뜻인지도 모르면서 내가 뭘 한 거야."
       - set: { e3_papers: true }
       - goto: e3_room
 
@@ -159,6 +223,48 @@ scenes:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
       - place: "수요일 23:40 · 빈 사무실"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "안 와?"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "회사 다시 들어왔어 자료가 여기 있어서"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "뭐 먹었는데"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "김밥"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "오이 빼달라 했어?"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "너 혼자 먹으면서도 빼달라 하더라"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "전기장판 켜놓고 잘게 네 쪽도 켜놔"
       - choice:
           key: e2_search
           presentation: explore
@@ -190,9 +296,9 @@ scenes:
           text: "hiv 잠복기"
       - say:
           channel: message
-          side: me
+          side: them
           with: []
-          text: "hiv 초기증상 목 림프절 붓기"
+          text: "질병관리청 · 꾸준한 치료로 혈중 바이러스가 미검출로 유지되면 성관계를 통해 전파되지 않습니다."
       - say:
           channel: message
           side: me
@@ -318,6 +424,10 @@ scenes:
           motion: nod
           with: []
           text: "네, 네."
+      - say:
+          char: 도윤
+          with: []
+          text: "…이름은 진짜 아무 데도 안 남는 거죠?"
       - clearSticker: { id: e3_ticket, leave: fadeOut }
       - say:
           channel: action
@@ -361,6 +471,19 @@ scenes:
           char: 하린.blank
           with: [아진]
           text: "이게 더 쉬워. 가만히 있으니까."
+      - say:
+          char: 아진
+          with: [하린]
+          text: "너 오늘 급식도 안 먹었잖아. 돈까스 나오면 제일 먼저 뛰어가는 애가."
+      - say:
+          char: 하린.blank
+          with: [아진]
+          text: "그것도 옛날 얘기지."
+      - say:
+          char: 아진
+          motion: headtilt
+          with: [하린]
+          text: "지난주잖아."
       - move: { id: 아진, toward: 하린, style: approach }
       - say:
           char: 아진.awkward
@@ -374,12 +497,40 @@ scenes:
       - say:
           char: 아진
           with: [하린]
+          text: "그날 카레 안 나왔어. 그날 닭볶음탕이었어."
+      - say:
+          char: 하린
+          with: [아진]
+          text: "…그랬나."
+      - say:
+          char: 아진
+          with: [하린]
           text: "하린아. 너 화내도 돼."
       - say:
           char: 하린
           motion: laugh
           with: [아진]
-          text: "내가 왜?ㅋㅋ 나 원래 그런 거 관심 없잖아. 너네 잘 어울려. 진짜로."
+          text: "내가 왜?ㅋㅋ 나 원래 그런 거 관심 없잖아."
+      - say:
+          char: 하린
+          with: [아진]
+          text: "너네 잘 어울려. 진짜로."
+      - say:
+          char: 아진.awkward
+          with: [하린]
+          text: "그 말 하지 마. 그 말 할 때 네 목소리 이상해."
+      - say:
+          char: 하린
+          with: [아진]
+          text: "목소리가 뭐."
+      - say:
+          char: 아진
+          with: [하린]
+          text: "네 목소리 아니야. 남 목소리야."
+      - say:
+          char: 하린.blank
+          with: [아진]
+          text: "…핀 좀 줘. 날개 쪽."
       - emote: { id: 하린, motion: droop, wait: true }
       - move: { id: 아진, style: reset }
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
@@ -414,6 +565,12 @@ scenes:
           side: them
           char: 아진
           with: []
+          text: "눈 없어질때까지 웃는 거 아직도 똑같아"
+      - say:
+          channel: message
+          side: them
+          char: 아진
+          with: []
           text: "너 저장해 둬. 지우지 말고"
       - say:
           channel: system
@@ -440,7 +597,19 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "사회는 민석 씨가 봐 주기로 했고, 축가는 빼자. 우리 둘 다 아는 사람 중에 노래 되는 사람이 없어."
+          text: "왔어? 신발 돌려놔. 그래야 아침에 안 넘어져."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…어."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "사회는 민석 씨가 봐 주기로 했고, 축가는 빼자."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "우리 둘 다 아는 사람 중에 노래 되는 사람이 없어."
       - say:
           char: 도윤
           motion: nod
@@ -454,6 +623,47 @@ scenes:
           char: 도윤
           with: [지수]
           text: "응."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "'응'이 두 번째야. 뭐가 좋은지 하나만 골라 봐."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…네가 고르는 게 나아."
+      - say:
+          char: 지수
+          motion: sigh
+          with: [도윤]
+          text: "내가 고르면 나중에 네 쪽에서 왜 그걸 했냐 소리 나와."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "내 쪽이 어딨어."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "…그러네. 미안."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "잔금은 식 사흘 전까지. 이백삼십 남았어."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "내 쪽에서 백삼십 낼게. 백은 네가."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "…근데 전기장판은 켜 놨더라. 내 쪽만."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "나올 때 켜 놓고 나왔어. 네가 발 시리다고 해서."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "…그러니까 더 화가 나."
       - say:
           char: 지수
           motion: headtilt
@@ -474,11 +684,19 @@ scenes:
           motion: sigh
           with: [도윤]
           text: "네 폰 비번 알아. 내 생일인 거. 안 열었어. 우리 엄마처럼은 안 해."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "아침에 네 얼굴로 알림 켜 준 사람이 비번 몰라서 안 열었겠어?"
       - emote: { id: 도윤, motion: freeze }
       - say:
           char: 지수.cold
           with: [도윤]
           text: "어디 있었어?"
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "밤에 자다가 깨서 네 쪽 보면 화면 불빛이 있어. 두 번 봤어. 안 물어봤고."
       - say:
           char: 지수.cold
           motion: puff
@@ -523,6 +741,14 @@ scenes:
           char: 지수
           with: [도윤]
           text: "그냥. 물어봤어."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "너 영수증 좋아하잖아. 계약금도 보관하라고 했더니 사진까지 찍어 놨더라."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "알았어. 밥이나 먹자. 반찬 두 번 데웠어."
       - move: { id: 지수, toward: 도윤, style: retreat }
       - goto: /4.yaml
 
@@ -531,7 +757,11 @@ scenes:
       - say:
           char: 도윤
           with: [지수]
-          text: "회사에 나랑 엮인 소문이 좀 있어. 팀장님 일이랑. 나도 아직 정리가 안 돼서… 정리되면 말할게. 진짜로."
+          text: "회사에 나랑 엮인 소문이 좀 있어. 팀장님 일이랑."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "나도 아직 정리가 안 돼서… 정리되면 말할게. 진짜로."
       - say:
           char: 지수
           with: [도윤]
@@ -544,7 +774,19 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "송과장님. 아까 전화했을 때 팀장님 일로 회사가 좀 시끄럽다고 하시더라. 무슨 일인지는 너한테 들을 거야."
+          text: "송과장님. 아까 전화했을 때 팀장님 일로 회사가 좀 시끄럽다고 하시더라."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "무슨 일인지는 안 물어봤어. 너한테 들을 거니까."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…왜 안 물어봤어."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "남한테 내 사람 얘기 듣는 거, 그거 우리 집에서 제일 싫었던 거야."
       - say:
           char: 지수
           motion: nod
@@ -561,11 +803,31 @@ scenes:
       - say:
           char: 도윤.hollow
           with: [지수]
-          text: "그 사람이 우리 팀장으로 왔고, 지금은 연락이 안 돼. 회사에선 그 사람 병 얘기가 돌고. 오늘은… 보건소에 갔었어."
+          text: "그 사람이 우리 팀장으로 왔어. 월요일 아침에."
+      - say:
+          char: 도윤.hollow
+          with: [지수]
+          text: "지금은 연락이 안 돼. 회사에선 그 사람 병 얘기가 돌고."
+      - say:
+          char: 도윤.hollow
+          with: [지수]
+          text: "오늘은… 보건소에 갔었어."
       - say:
           channel: action
           with: [지수, 도윤]
           text: "지수는 반지를 손가락 마디까지 뺐다가 다시 끼운다."
+      - say:
+          char: 지수.cold
+          with: [도윤]
+          text: "며칠 됐어. 그날부터 오늘까지."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…스무 날."
+      - say:
+          char: 지수.cold
+          with: [도윤]
+          text: "그걸 세고 있었구나."
       - say:
           char: 지수.cold
           with: [도윤]
@@ -587,11 +849,39 @@ scenes:
           text: "내일 다시 가. 나 때문에 말고."
       - say:
           char: 지수
+          with: [도윤]
+          text: "그 팀장님은. 그 사람은 지금 괜찮은 거야?"
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…몰라."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "모르는 게 아니라 안 찾아본 거겠지."
+      - say:
+          char: 지수
           motion: sigh
           with: [도윤]
           text: "식장은 내일 내가 전화해 볼게. 미룰 수 있는지. 계약금이 어떻게 되는지도."
       - say:
+          char: 도윤
+          with: [지수]
+          text: "…너 왜 그런 것까지 챙겨 줘."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "아직 정리가 안 돼서 그래. 미워하는 것도 순서가 있어."
+      - say:
           char: 지수
           with: [도윤]
           text: "오늘은 내가 소파에서 잘게."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "내가 나갈게."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "나가지 마. 나가면 또 지울 거잖아."
       - goto: /4.yaml

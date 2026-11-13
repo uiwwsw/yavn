@@ -15,6 +15,67 @@ scenes:
       - bg: { id: couple_home, transition: fade, duration: 900 }
       - music: static
       - place: "토요일 오전 · 도윤과 지수의 집"
+      - char: { id: 지수, position: left }
+      - char: { id: 도윤, position: right }
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "일어났어? 커피 내려놨어. 식었겠다."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "근데 양말은 왜 하나만 벗어 놓고 자. 이게 제일 이해가 안 돼."
+      - say:
+          char: 도윤.smile
+          with: [지수]
+          text: "그게 이해가 되면 나랑 결혼 안 했겠지."
+      - say:
+          char: 지수
+          motion: puff
+          with: [도윤]
+          text: "말은 잘해. 설거지는 안 하고."
+      - say:
+          char: 도윤
+          motion: perk
+          with: [지수]
+          text: "어제 했어. 새벽에."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "프라이팬 빼고 했지. 프라이팬은 불려 놨다 그럴 거지."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…불려 놨어."
+      - say:
+          char: 지수
+          motion: sigh
+          with: [도윤]
+          text: "이틀째 불어 있어. 그 정도면 수영하는 거야."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "나 이따 두 시에 상담 가. 청첩장 수량 오늘까지 말해 줘야 돼."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "같이 갈까."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "…지금 말해?"
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "가면 안 돼?"
+      - say:
+          char: 지수.warm
+          with: [도윤]
+          text: "되지. 되는데 너 두 시에 자고 있을걸."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "자면 깨우지도 않을 거야. 혼자 갔다 올게. 수량만 정해."
       - say:
           channel: message
           side: them
@@ -33,6 +94,12 @@ scenes:
           char: 도윤
           with: []
           text: "150?"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "물음표 좀 빼 결정을 해"
       - say:
           channel: message
           side: them
@@ -172,6 +239,43 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
+          text: "같이 타요. 문 잡아 줘서 고마워요."
+      - say:
+          char: 도윤
+          motion: bow
+          with: [준성]
+          text: "…네."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "오늘 프린터 또 걸렸던데요. 복도 끝에 사람들 줄 서 있더라고요."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "3번 트레이 쓰시면 돼요. 아무도 안 쓰는 트레이예요."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "내일 보고 자료 다 됐어요?"
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "네. 메일 보내 뒀어요."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "봤어요. 숫자 두 개만 다시 봐 줘요. 3페이지 하단."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "…네."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "틀렸다는 건 아니고, 내가 이해가 안 돼서요."
+      - say:
+          char: 준성
+          with: [도윤]
           text: "결혼식 토요일이죠. 송과장님한테 들었어요."
       - say:
           char: 도윤
@@ -181,7 +285,7 @@ scenes:
           char: 준성.smirk
           motion: headtilt
           with: [도윤]
-          text: "이런 경우엔 축의금 얼마 해야 돼요? 인터넷에 안 나오던데."
+          text: "이런 경우엔 얼마 해야 돼요? 인터넷에 안 나오던데."
       - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤
@@ -225,6 +329,19 @@ scenes:
           with: [도윤]
           text: "그날은 형이라고 안 했잖아요."
       - say:
+          char: 준성
+          with: [도윤]
+          text: "그날은 아무것도 안 불렀죠. 이름도 안 물어봤고."
+      - say:
+          char: 도윤
+          motion: tremble
+          with: [준성]
+          text: "……"
+      - say:
+          char: 준성.tired
+          with: [도윤]
+          text: "내일 3페이지 숫자, 그것만 고쳐 주면 돼요."
+      - say:
           channel: system
           with: []
           text: "1층입니다. 문이 열립니다."
@@ -238,6 +355,18 @@ scenes:
 
   e2_threat_silent:
     actions:
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "집이 어느 쪽이에요? 나 요 앞 오피스텔인데."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "…그 근처요."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "그럼 거의 이웃이네요. 세상 좁다."
       - say:
           channel: system
           with: []
@@ -279,6 +408,11 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 근데 팀장님 화분 누가 물 좀 줘요 다 말라가요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 그거 종이컵으로 반 컵만 주라고 하셨는데"
       - say:
           channel: message
           side: them
@@ -342,6 +476,11 @@ scenes:
           with: []
           text: "저도 몰라요"
       - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 화분은 제가 줄게요"
+      - say:
           channel: card
           with: []
           text: "과거\n유하린 · 18"
@@ -352,9 +491,74 @@ scenes:
     actions:
       - bg: { id: classroom, transition: cut }
       - music: cold_room
-      - place: "며칠 뒤 방과 후 · 3학년 교실 뒷문"
+      - place: "며칠 뒤 청소시간 · 3학년 교실"
       - char: { id: 민재, position: left }
+      - char: { id: 하린, position: center }
       - char: { id: 아진, position: right }
+      - say:
+          char: 하린
+          motion: bounce
+          with: [민재, 아진]
+          text: "야 오늘 야자 째자. 진짜로. 나 오늘 진짜 못 하겠어."
+      - say:
+          char: 하린
+          motion: laugh
+          with: [민재, 아진]
+          text: "아 몰라 안 할래. 야 우리 떡볶이 먹으러 가자. 그 집 7시에 닫아."
+      - say:
+          char: 하린
+          with: [민재, 아진]
+          text: "내가 쏠게. 아니다 내가 반 쏠게. 나 지금 사천 원 있어."
+      - say:
+          char: 아진
+          motion: laugh
+          with: [하린, 민재]
+          text: "사천 원으로 뭘 반을 쏴ㅋㅋ"
+      - say:
+          char: 하린
+          with: [아진, 민재]
+          text: "국물은 공짜잖아. 국물만 네 그릇 시키면 돼."
+      - say:
+          char: 민재
+          with: [하린, 아진]
+          text: "나 오늘 안 돼. 좀 있다 가야 돼."
+      - say:
+          char: 하린
+          motion: perk
+          with: [민재, 아진]
+          text: "어디? 학원?"
+      - say:
+          char: 민재
+          with: [하린, 아진]
+          text: "그냥 뭐 좀."
+      - say:
+          char: 하린
+          motion: laugh
+          with: [민재, 아진]
+          text: "뭐 좀이 뭔데ㅋㅋ 서민재 요즘 진짜 수상해."
+      - say:
+          char: 아진.awkward
+          with: [하린, 민재]
+          text: "하린아 너 체육복 사물함에 있어. 아까 봤어."
+      - say:
+          char: 하린
+          with: [아진, 민재]
+          text: "아 맞다. 내일 체육이지. 아 귀찮아. 그냥 두고 갈까."
+      - say:
+          char: 아진
+          with: [하린, 민재]
+          text: "두고 가면 또 빌리러 다니잖아."
+      - say:
+          char: 하린
+          motion: laugh
+          with: [아진, 민재]
+          text: "아 됐어 나 먼저 간다. 둘이 청소 마저 해."
+      - say:
+          char: 하린
+          with: [아진, 민재]
+          text: "아진아 떡볶이는 내일. 내일은 진짜 가는 거다?"
+      - move: { id: 하린, toward: camera, style: retreat }
+      - place: "십 분 뒤 · 3학년 교실 뒷문"
       - move: { id: 민재, toward: 아진, style: approach }
       - say:
           char: 아진.awkward
@@ -374,6 +578,10 @@ scenes:
           motion: headtilt
           with: [아진]
           text: "넌 알아?"
+      - say:
+          char: 아진.awkward
+          with: [민재]
+          text: "…알지. 초등학교 때부터 봤는데."
       - move: { id: 아진, toward: 민재, style: retreat }
       - say:
           char: 아진.awkward
@@ -415,4 +623,10 @@ scenes:
           char: 하린
           with: []
           text: "낼 해 낼!! 나 잔다 굿밤"
+      - say:
+          channel: message
+          side: me
+          char: 하린
+          with: []
+          text: "아 체육복 못 가져왔다 ㅋㅋㅋ 낼 빌려줘"
       - goto: /3.yaml

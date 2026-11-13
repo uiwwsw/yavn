@@ -209,9 +209,19 @@ scenes:
           text: "엄마 왔어. 지금 약국 갔어. 너가 불렀어?"
       - say:
           char: 해수
+          when: { var: called_mom, op: eq, value: true }
+          with: [상혁]
+          text: "응. 어머님 오시면 두부 좀 꺼내 드려."
+      - say:
+          char: 해수
           when: { var: called_mom, op: eq, value: false }
           with: [상혁]
           text: "나 오늘 오픈이야. 9시 반. 그 전까지 여기 앉아 있을게."
+      - say:
+          char: 해수
+          when: { var: called_mom, op: eq, value: false }
+          with: [상혁]
+          text: "밥은 해 놨어. 네 차례였는데 내가 했어."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - say:
           channel: message
@@ -261,6 +271,19 @@ scenes:
           motion: nod
           with: [지영]
           text: "네, 주임님. 푹 잤습니다."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "커피 사 올까."
+      - say:
+          char: 해수.service
+          with: [지영]
+          text: "괜찮습니다."
+      - say:
+          char: 지영
+          motion: sigh
+          with: [해수]
+          text: "…그래. 너는 늘 괜찮지."
       - say:
           channel: message
           side: them

@@ -28,6 +28,32 @@ scenes:
       - char: { id: 광철, position: right }
       - say:
           char: 광철
+          with: [해수]
+          text: "비 온다더니 안 오네."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [광철]
+          text: "저녁에 온다고 들었습니다, 고객님."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "자네 저녁까지 있어?"
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네. 오늘은 열 시까지 합니다."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "나는 밤에는 안 나와. 돌아와도 불이 꺼져 있으니까."
+      - say:
+          char: 광철
+          motion: stomp
+          with: [해수]
+          text: "…그래서 낮에 오는데, 낮에 오면 이런 소리나 듣고."
+      - say:
+          char: 광철
           motion: stomp
           with: [해수]
           text: "고객의 소리 용지 줘. 아니, 두 장."
@@ -127,9 +153,47 @@ scenes:
       - say:
           char: 지영
           with: [해수]
+          text: "팀장님이 너한테 뭐라셨어?"
+      - say:
+          char: 해수
+          with: [지영]
+          text: "다음부터는 처음부터 숙이라고 하셨어요."
+      - say:
+          char: 지영
+          motion: sigh
+          with: [해수]
+          text: "그 양반은 창구에 한 번을 안 앉아 봤어."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "앉으시면 금방 아실 거예요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "그 말 좀 그만해. 너 그거 열두 해째야."
+      - say:
+          char: 지영
+          with: [해수]
           text: "이거 마셔. 자판기가 두 개 뱉었어."
       - say:
           char: 해수
+          with: [지영]
+          text: "…두 개 뱉은 거 맞아요?"
+      - say:
+          char: 지영
+          with: [해수]
+          text: "맞아."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "지난번에도 두 개 뱉었어요. 그 자판기."
+      - say:
+          char: 지영.smirk
+          with: [해수]
+          text: "고장 났나 보지."
+      - say:
+          char: 해수
+          motion: bow
           with: [지영]
           text: "…감사합니다."
       - say:
@@ -414,6 +478,24 @@ scenes:
           with: []
           text: "너도 하는구나ㅋㅋ 내 코드 썼지?"
       - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "형 어디까지 갔어요? 저 2단계에서 넘겼는데"
+      - say:
+          channel: message
+          side: them
+          char: 경준
+          with: []
+          text: "그거 할 말 하라는 거 너무 부끄럽지 않아요?"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "넌 할 말이 없어서 못 한 거겠지"
+      - say:
           channel: record
           with: []
           text: "접속 기록 · 4/15 23:40–04:44 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 23회"
@@ -441,6 +523,16 @@ scenes:
           char: 해수.service
           with: []
           text: "…죄송합니다. 새 걸로 교환해 드릴게요."
+      - say:
+          char: 경준
+          motion: lean_in
+          with: [해수]
+          delivery: whisper
+          text: "형, 저 지금 처음 들었어요. 형이 손님한테 그렇게 말하는 거."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "나도 처음이야."
       - emote: { id: 해수, motion: bow, wait: true }
       - say:
           channel: record
@@ -484,6 +576,52 @@ scenes:
           with: [해수]
           text: "있어. 체험판이라 그런가. 아 몰라."
       - say:
+          char: 상혁
+          with: [해수]
+          text: "야, 우리 고3 때 독서실 기억나냐. 너 맨날 이 시간까지 앉아 있었잖아."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "너는 자러 왔었고."
+      - say:
+          char: 상혁.grin
+          motion: laugh
+          with: [해수]
+          text: "나는 분위기 때문에 간 거야. 공부하는 분위기."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "그 얘기 백 번째야."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "백 번 할 만하니까 하지."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "라면 끓일까."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "…아니. 들어갈 거야."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "두부 왔어. 어머니가 보내신 거. 냉장고 둘째 칸."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "전화는 했어?"
+      - say:
+          char: 상혁
+          motion: sigh
+          with: [해수]
+          text: "할게. 주말에."
+      - say:
           char: 해수
           with: [상혁]
           text: "물은 왜 두 병이야?"
@@ -516,6 +654,35 @@ scenes:
       - say:
           char: 광철.lost
           with: [해수]
+          text: "오늘은 아무것도 안 샀어."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "네, 고객님."
+      - say:
+          char: 광철.lost
+          with: [해수]
+          text: "장 볼 게 없어. 냉장고에 지난주 거 아직 있어."
+      - say:
+          char: 광철.lost
+          with: [해수]
+          text: "근데 집에 있으면 하루가 안 가. 여기 오면 한 시간은 가거든."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "오늘 날이 좋아서 그런가 손님이 많으세요."
+      - say:
+          char: 광철.lost
+          with: [해수]
+          text: "아까부터 저기 서 있었어. 한 시간쯤."
+      - say:
+          char: 광철.lost
+          motion: droop
+          with: [해수]
+          text: "자네가 사람들한테 말하는 거 보고 있었어. 똑같이 말하더라, 다 똑같이."
+      - say:
+          char: 광철.lost
+          with: [해수]
           text: "…자네. 여기 오래 있었지."
       - say:
           char: 해수
@@ -543,6 +710,23 @@ scenes:
           char: 광철
           with: [해수]
           text: "그 즉석밥. 먹을 만하더라. 남은 거."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "…그러셨어요."
+      - say:
+          char: 광철
+          with: [해수]
+          text: "환불 안 했으면 열한 개 다 먹었을 텐데. 괜히 들고 왔어."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "다시 사시면 됩니다, 고객님."
+      - say:
+          char: 광철
+          motion: droop
+          with: [해수]
+          text: "…그러면 되지. 그러면 되는데."
       - say:
           char: 광철
           motion: bow
