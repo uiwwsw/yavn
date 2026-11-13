@@ -25,26 +25,42 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "폰도 냉장고도 엘리베이터도 밤마다 코어가 업데이트해 준대. 친절하기도 하지. 이 집에서 코어 안 물린 건 내 게임기 하나였는데."
+          text: "안 켜져. 아니 진짜 안 켜져. 어제는 줄이라도 세 개 떴는데 오늘은 아예 깜깜해."
+      - say:
+          char: 윤재
+          with: []
+          text: "건전지 뺐다 끼웠어. 단자 닦았어. 후— 불었어. 옛날 사람들이 불면 된다잖아."
+      - say:
+          char: 윤재
+          with: []
+          text: "뜯어도 봤어. 나 납땜 할 줄 알아. 안에 부푼 콘덴서 두 개 갈았거든? 그래도 안 돼."
       - say:
           char: 윤재
           motion: sigh
           with: []
-          text: "그 게임기가 어제 사망했다. 화면에 줄 세 개 긋더니 영영 안 켜짐. 뜯어서 납땜까지 해 봤는데 못 살렸어. 향년 여섯 살."
+          text: "메인보드가 간 거야. 메인보드 가면 끝이야. 그건 나도 못 살려."
       - say:
           char: 윤재
           motion: droop
           with: []
-          text: "열 살 생일에 엄마가 사 준 거였다. 엄마는 그다음 해에 나갔고, 게임기는 남았다. 둘 중엔 게임기가 오래 버텼네."
+          text: "여섯 살이었어. 열 살 생일에 엄마가 사 준 거라서 딱 여섯 살."
       - say:
           char: 윤재
           with: []
-          text: "아빠는 지방 현장 숙소. 이번엔 석 달짜리. 그러니까 이 집에서 나랑 말 섞던 건 걔 하나였다는 얘기."
+          text: "엄마는 그다음 해에 나갔어. 게임기는 남았었는데. 이제 그것도 갔고."
+      - say:
+          char: 윤재
+          with: []
+          text: "아빠한테 말해? 지방 현장 숙소에 석 달 가 있는 사람한테 게임기 죽었다고?"
+      - say:
+          char: 윤재
+          with: []
+          text: "그 나이에 아직도 게임기냐, 할 거야. 백 퍼센트. 안 해, 전화."
       - say:
           char: 윤재
           motion: perk
           with: []
-          text: "그래서 새벽 두 시에 중고 장터 앱 뒤지는 중. 후임 면접이다. 이거 내 인생 최대 보스전이다."
+          text: "그래서 중고 장터. 새벽 두 시. 이 시간이 제일 싸게 나와. 다들 자니까."
       - sticker:
           id: s0_premium
           image: console_premium_sticker
@@ -57,10 +73,23 @@ scenes:
           with: []
           text: "[광고] HYPERLINK X — 당신보다 먼저 당신을 이해하는 기기. 코어 상시 연결 AI 비서. 자동 업데이트. 클라우드 세이브. 지금 결제하면 12개월 무이자."
       - say:
+          char: 윤재.excited
+          motion: gasp
+          with: []
+          text: "어? 어어? 이거 하이퍼링크 X잖아. 우리 반에 세 명 있어. 쉬는 시간마다 꺼내."
+      - say:
           char: 윤재
           motion: shiver
           with: []
-          text: "나보다 먼저 날 이해한대. 무섭다. 갖고 싶다. 무섭다."
+          text: "근데 나보다 먼저 날 이해한다는 건 무슨 소리야. 좀 무섭잖아. 무서운데 갖고 싶어."
+      - say:
+          char: 윤재
+          with: []
+          text: "십이 개월 무이자면… 한 달에 얼마지. 계산기 켜야 되나. 아 생각보다 싸다?"
+      - say:
+          char: 윤재
+          with: []
+          text: "커피 몇 잔 값이래. 나 커피 안 마셔. 그럼 공짜 아냐? 공짜 아닌 건 아는데."
       - say:
           channel: system
           with: []
@@ -68,7 +97,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "사소한 버그래. 버그가 사소한지는 버그가 정하는 거 아닌가."
+          text: "사소한 버그래. 사소하면 기사를 왜 써."
       - sticker:
           id: s0_cheap
           image: console_cheap_sticker
@@ -78,9 +107,27 @@ scenes:
           enter: popIn
           inputLockMs: 400
       - say:
+          char: 윤재.excited
+          motion: perk
+          with: []
+          text: "어 잠깐만. 잠깐만잠깐만. 이거 봐 이거. 삼만 이천 원?"
+      - say:
           char: 윤재
           with: []
-          text: "그리고 이쪽. 중고 장터 최저가. 사진이 이불 위에서 찍혔어. 판매자 평점 별 두 개 반."
+          text: "이 모델 지금 시세가 사만에서 사만 오천이야. 내가 두 달째 보고 있어서 알아."
+      - say:
+          char: 윤재
+          with: []
+          text: "사진 봐. 이불 위에서 찍었어. 각도도 비뚤어. 어른이 찍은 거야 이거."
+      - say:
+          char: 윤재
+          with: []
+          text: "아 몰라 삼만 이천 원이잖아. 말이라도 걸어 봐. 떨지 마. 떨면 호구 되는 거야."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "안녕하세요 혹시 아직 있나요"
       - say:
           channel: message
           side: me
@@ -92,20 +139,166 @@ scenes:
           with: []
           text: "판매자: AI가 뭐요"
       - say:
+          char: 윤재.excited
+          motion: bounce
+          with: []
+          text: "와. 와와와. 'AI가 뭐요'래. 이 아저씨 코어랑 말도 안 섞어 본 사람이야."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "아니에요 없는 게 좋아요"
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "버튼은 어때요? A랑 B 둘 다 눌러 보셨어요?"
+      - say:
           channel: message
           side: them
           with: []
-          text: "판매자: B버튼 좀 뻑뻑함. 설명서 있음. 건전지 넣어 드림. 네고 사절"
+          text: "판매자: B버튼 좀 뻑뻑함"
       - say:
           char: 윤재
           motion: nod
           with: []
-          text: "AI가 뭐냐고 되묻는 판매자. 와이파이 없음, 업데이트 없음, 코어랑은 말도 안 섞어 본 기계. 신뢰도가 이상하게 올라간다."
+          text: "나왔다. B버튼. 이 모델은 B가 제일 먼저 죽어. 안에 고무 돔이 삭아서 그래."
+      - say:
+          char: 윤재
+          with: []
+          text: "근데 그거 내가 고쳐. 돔만 갈면 돼. 천 원이면 사. 호일 조각 끼워도 되고."
+      - say:
+          char: 윤재
+          motion: shake
+          with: []
+          text: "…근데 이걸 말하면 안 되지. 입 닫아. 입 닫으라고."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "버튼 뻑뻑하면 게임을 못 하는데요..."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "그거 수리비 되게 비싸요 부품도 단종이고"
+      - say:
+          char: 윤재
+          motion: sway
+          with: []
+          text: "거짓말 아니야. 비쌀 수도 있잖아. 비싼 데 가면 비싸. 진짜로."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "그래서 혹시 네고 좀 될까요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 네고 사절"
+      - say:
+          char: 윤재
+          motion: perk
+          with: []
+          text: "한 번 더 가 본다. 세 번까지는 괜찮아. 네 번째부터 차단당해. 경험에서 나온 거야."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "2만 7천에 바로 입금 가능해요 지금 당장요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 3만 2천"
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "3만에 해주시면 오늘 밤에 바로 보낼게요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 3만 2천. 신문지에 싸서 보내서 택배비도 내가 냄"
+      - say:
+          char: 윤재.excited
+          motion: hop
+          with: []
+          text: "그럼 실질 이만 팔천이잖아. 내가 이겼네. 아무도 안 졌는데 내가 이겼어."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "건전지는요? 넣어주시나요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 넣어 드림"
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "설명서도 있어요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 있음"
+      - say:
+          char: 윤재
+          with: []
+          text: "설명서 있대. 그거 나 안 읽어. 근데 있는 거랑 없는 거랑 시세가 달라."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "세이브 되는 것도 확인하셨어요? 껐다 켜서 남아 있는지요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 안 해봄"
+      - say:
+          char: 윤재
+          motion: puff
+          with: []
+          text: "안 해 봤대. 제일 중요한 걸 안 해 봤대. 아저씨."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "택배 언제 와요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "판매자: 내일 문앞"
+      - say:
+          char: 윤재
+          with: []
+          text: "내일. 내일이래. 아 근데 이거 사면 이번 달 진짜 끝이야."
+      - say:
+          char: 윤재
+          with: []
+          text: "팔만 칠천에서 삼만 이천 빼면 오만 오천. 한 달에 오만 오천으로 살아야 돼."
+      - say:
+          char: 윤재
+          motion: nod
+          with: []
+          text: "가능해. 급식 먹으면 되잖아. 학원 끝나고 편의점 안 들르면 되고. 가능해."
       - move: { id: 윤재, toward: camera, style: approach }
       - say:
           char: 윤재.excited
           with: []
-          text: "근데 무이자 12개월이면… 한 달에 커피 몇 잔? 아냐 난 커피 안 마시잖아. 그럼 공짜 아냐?"
+          text: "아 근데 하이퍼링크 X 저거 화면 좀 봐. 저게 요즘 화면이지."
+      - say:
+          char: 윤재
+          motion: sway
+          with: []
+          text: "결제 버튼 위에 손가락 올려놓은 지 삼십 분 됐어. 삼십 분."
       - choice:
           key: b0_buy
           prompt: "[결제하시겠습니까?] 커서 깜빡깜빡."
@@ -122,14 +315,18 @@ scenes:
     actions:
       - clearSticker: { id: s0_cheap, leave: wipeLeft }
       - say:
+          char: 윤재.excited
+          motion: bounce
+          with: []
+          text: "눌렀다. 눌렀어. 아 미쳤다 나 진짜 눌렀어. 열두 달. 열두 달이야."
+      - say:
           channel: system
           with: []
           text: "결제 완료! 안녕하세요, 윤재 님. 저는 이제 윤재 님에 대해 모든 걸 알게 될 거예요 :)"
       - say:
           char: 윤재.excited
-          motion: bounce
           with: []
-          text: "이모티콘까지 쓰네. 좋아, 친하게 지내자."
+          text: "이모티콘까지 쓰네. 웃는 얼굴. 좋아, 친하게 지내자. 나 친구 잘 사귄다?"
       - clearSticker: { id: s0_premium, leave: fadeOut }
       - goto: /1.yaml
 
@@ -138,20 +335,41 @@ scenes:
       - clearSticker: { id: s0_premium, leave: wipeRight }
       - say:
           channel: message
+          side: me
+          with: []
+          text: "보냈습니다! 3만 2천원요 확인 부탁드려요"
+      - say:
+          channel: message
           side: them
           with: []
           text: "판매자: ㅇㅋ 내일 문앞"
+      - say:
+          char: 윤재.excited
+          motion: bounce
+          with: []
+          text: "샀다. 샀어. 아 샀다고. 잔액 오만 오천 원. 안 봐. 잔액 안 볼 거야."
       - get: console_cheap
       - place: "다음 날 · 윤재의 방"
       - move: { id: 윤재, style: reset }
       - say:
-          char: 윤재
+          char: 윤재.excited
+          motion: hop
           with: []
-          text: "신문지로 둘둘 말아서 보냈네. 택배 상자값도 아낀 거야? …전원 올린다."
+          text: "왔다! 왔어. 신문지. 진짜 신문지로 둘둘 말아서 왔어. 상자값도 아낀 거야?"
+      - say:
+          char: 윤재
+          motion: lean_in
+          with: []
+          text: "…근데 완충은 잘 돼 있네. 신문지 세 겹에 테이프 꼼꼼하고. 아저씨 양심은 있구나."
       - say:
           channel: system
           with: []
           text: "삑— PRESS START"
+      - say:
+          char: 윤재.excited
+          motion: gasp
+          with: []
+          text: "켜졌다!!! 켜졌어! 화면도 깨끗해. 세로줄 하나 없어. 아저씨 양심 있네!"
       - say:
           char: 윤재
           motion: puff
@@ -160,9 +378,26 @@ scenes:
           text: "…진짜 B버튼만 뻑뻑한 게 아니잖아. START도 뻑뻑해."
       - say:
           char: 윤재
+          with: []
+          text: "아 뭐 이 정도야. 눌리긴 눌리잖아. 돔 갈면 돼. 나중에. 나중에 갈 거야."
+      - say:
+          char: 윤재
+          with: []
+          text: "세이브 확인. 이게 제일 중요해. 한 판 하고, 끄고, 다시 켜고…"
+      - say:
+          char: 윤재.excited
+          motion: bounce
+          with: []
+          text: "된다! 된다고! 아저씨 안 해 봤다면서요! 되는 거 확인도 안 하고 파셨어요!"
+      - say:
+          char: 윤재
           motion: lean_in
           with: []
-          text: "상자 바닥에 뭐가 더 있네. 접힌 설명서랑… 손톱만 한 메모리 카드? 매직으로 '8KB'래. 사진 한 장도 안 들어가겠다."
+          text: "어? 상자… 아니 신문지 바닥에 뭐 더 있네. 접힌 설명서랑…"
+      - say:
+          char: 윤재
+          with: []
+          text: "손톱만 한 거. 메모리 카드? 매직으로 '8KB'라고 써 놨어. 삐뚤빼뚤하게."
       - say:
           channel: system
           with: []
@@ -171,6 +406,10 @@ scenes:
           char: 윤재
           motion: shake
           with: []
-          text: "누가 이런 걸 읽냐. 설명서랑 카드는 가방 맨 밑으로. 퇴장."
+          text: "누가 이런 걸 읽냐. 설명서는 회로도 볼 때나 펴는 거야. 맨 뒷장."
+      - say:
+          char: 윤재
+          with: []
+          text: "설명서랑 카드는 가방 맨 밑으로. 퇴장. 자, 이제 백만 점 찍으러 간다."
       - clearSticker: { id: s0_cheap, leave: fadeOut }
       - goto: /1.yaml

@@ -26,7 +26,27 @@ scenes:
           channel: message
           side: them
           with: []
+          text: "[영업2팀] 윤주임: 1이요 저번에 횟집 가서 다들 배고프다 했잖아요"
+      - say:
+          channel: message
+          side: them
+          with: []
           text: "[영업2팀] 윤주임: 도윤대리님 결혼 축하 겸이니까 도윤대리님이 고르세요ㅋㅋ"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 청첩장 아직 못 받았는데 저만 못 받았나요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 화분은 결국 제가 매일 주고 있습니다 반 컵씩"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 팀장님 오시면 보여드려야 되는데 …오시긴 하시겠죠?"
       - say:
           channel: system
           when: { var: told_jisu, op: eq, value: 2 }
@@ -55,6 +75,11 @@ scenes:
           with: []
           delivery: whisper
           text: "…이거 어디서 들었더라."
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: whisper
+          text: "…상담 때 들은 건가. 아직 상담도 안 받았는데."
 
   reveal:
     title: "수술대"
@@ -84,6 +109,29 @@ scenes:
           with: []
           delivery: whisper
           text: "네. 다요."
+      - say:
+          char: 의사
+          with: []
+          text: "3번 항목, 읽으셨죠. 본인이 정리하지 않은 건 그대로 남아요."
+      - say:
+          char: 하린
+          with: []
+          delivery: whisper
+          text: "다 지웠어요. 아침에 다."
+      - say:
+          char: 하린
+          with: []
+          delivery: whisper
+          text: "…한 장 빼고요."
+      - say:
+          char: 의사
+          with: []
+          text: "그 한 장은요?"
+      - say:
+          char: 하린
+          with: []
+          delivery: whisper
+          text: "그건 그냥 두세요. 날짜도 안 적혀 있어요."
       - bg: { id: surgery_reveal, transition: fade, duration: 1600 }
       - char: { id: 하린, position: center, emotion: sleep }
       - say:
@@ -160,6 +208,10 @@ scenes:
       - say:
           char: 의사
           with: []
+          text: "정리는 다 하고 오셨죠. 다들 그러시는데 꼭 한 개씩은 남아요."
+      - say:
+          char: 의사
+          with: []
           text: "숨 한 번 크게 쉬세요. 네. 잘하셨어요."
       - say:
           char: 의사
@@ -202,6 +254,16 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 커피 사오지 말래"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 화분은 누가 치웠어요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 오대리: 자리 정리하면서 같이 버린 거 아닐까요"
       - ending: erased_name
 
   end_photo:
@@ -220,6 +282,11 @@ scenes:
           with: []
           delivery: whisper
           text: "…안녕."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "눈 없어질 때까지 웃네."
       - clearSticker: { id: e4_photo, leave: fadeOut }
       - say:
           channel: message
@@ -278,6 +345,11 @@ scenes:
           channel: system
           with: []
           text: "대기 번호 47 · 현재 호출 46"
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…한 번호 남았네."
       - clearSticker: { id: e4_ticket, leave: fadeOut }
       - ending: kept_photo
 
@@ -320,6 +392,24 @@ scenes:
           char: 도윤
           with: []
           text: "응. 계좌 보내줘"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "전기장판 코드는 뽑고 나왔어"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "어"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "빨래는 걷어놨어 네 것도"
       - say:
           channel: action
           with: []

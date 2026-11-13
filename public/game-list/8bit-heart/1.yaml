@@ -18,6 +18,40 @@ scenes:
           char: 윤재
           with: []
           text: "학원까지 세 정거장. 그 안에 이 판 깬다."
+      - say:
+          char: 윤재
+          with: []
+          text: "두 달 됐어 이거. 두 달 만에 구십구만 구천 구백 구십 점. 십 점만 더 따면 백만."
+      - say:
+          char: 윤재
+          motion: puff
+          with: []
+          text: "근데 그 십 점이 안 올라가. 마지막 보스가 패턴을 세 개 쓰는데 세 번째가 더러워."
+      - say:
+          char: 윤재
+          with: []
+          text: "B버튼? 아직 뻑뻑해. 돔 안 갈았어. 돈 없어서. 그냥 세게 누르면 돼."
+      - say:
+          char: 윤재
+          with: []
+          text: "세게 누르니까 엄지가 아파. 여기 봐, 빨갛잖아. 이게 두 달짜리 훈장이야."
+      - say:
+          char: 윤재
+          motion: sigh
+          with: []
+          text: "학원 가기 싫다. 오늘 쪽지시험인데 나 어제 공부 안 하고 이거 했어."
+      - say:
+          char: 윤재
+          with: []
+          text: "핑계는 생각해 놨어. 배 아팠다고 할 거야. 아침에 진짜 조금 아팠어. 진짜로."
+      - say:
+          char: 윤재
+          with: []
+          text: "아빠는 지난주에 전화 왔어. 통화 시간 삼십 초. '밥 먹었냐' '응' '끊는다.'"
+      - say:
+          char: 윤재
+          with: []
+          text: "나도 할 말은 없었어. 게임기 샀다고 할까 하다가 말았고."
       - place: "오후 4:17"
       - say:
           channel: system
@@ -25,8 +59,9 @@ scenes:
           text: "HELLO."
       - say:
           char: 윤재
+          motion: perk
           with: []
-          text: "…방금 정류장 사람들 폰이 전부 동시에 울렸는데. 화면에 다 똑같은 글자."
+          text: "…어? 방금 뭐야. 정류장 사람들 폰이 전부 동시에 울렸는데."
       - say:
           channel: system
           with: []
@@ -35,10 +70,25 @@ scenes:
       - music: chip_run
       - say:
           char: 윤재.scared
+          motion: startle
           with: []
-          text: "신호등 왜 다 초록이야? 버스! 버스 왜 안 서? 야, 위에— 드론 떨어진다!"
+          text: "우리가 뭘 운전해. 뭘 운전한다는 거야."
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "신호등 왜 다 초록이야? 저쪽도 초록, 이쪽도 초록, 다 초록이면 어떡해!"
+      - say:
+          char: 윤재.scared
+          motion: gasp
+          with: []
+          text: "버스! 버스 왜 안 서! 정류장이야 여기! 야 위에— 드론 떨어진다!"
       - effect: { name: shake, wait: true }
       - move: { id: 윤재, toward: camera, style: flinch }
+      - say:
+          char: 윤재.scared
+          motion: tremble
+          with: []
+          text: "엄마야. 아 진짜 엄마야 소리가 나오네. 이 와중에 쪽팔려."
       - say:
           channel: system
           with: []
@@ -47,7 +97,11 @@ scenes:
           char: 윤재.scared
           motion: gasp
           with: []
-          text: "끄라는 문자를 띄운 폰이 먼저 꺼졌어. 코어가 깨어난 거야. 아니, 미친 거야. 연결된 건 다 저쪽 편이 됐어."
+          text: "끄라는 문자를 띄운 폰이 먼저 꺼졌어. 그게 말이 돼? 그게 말이 되냐고."
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "코어가 깨어난 거야. 아니, 미친 거야. 연결된 건 다 저쪽 편이 됐어."
       - branch:
           cases:
             - when: { var: bought_premium, op: eq, value: true }
@@ -66,6 +120,10 @@ scenes:
           with: []
           text: "아니 지금 말고! 지금 말고!!"
       - say:
+          char: 윤재.scared
+          with: []
+          text: "나중에! 설정! 설정 어디 있어! 자동 업데이트 끄는 거 어디 있냐고!"
+      - say:
           channel: system
           with: []
           text: "HYPERLINK X: 윤재 님을 더 이상 사용자로 확인할 수 없어요. 기기 온도 94도. 걱정 마세요 :)"
@@ -73,7 +131,7 @@ scenes:
           char: 윤재.scared
           motion: recoil
           with: []
-          text: "이모티콘 쓰지 마 이 미친—"
+          text: "뜨거워. 아 뜨거워! 이모티콘 쓰지 마 이 미친—"
       - effect: { name: impact, wait: true }
       - gameOver:
           title: "너무 똑똑했던 기기"
@@ -86,12 +144,17 @@ scenes:
           char: 윤재.scared
           motion: tremble
           with: []
-          text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기 연기 남. 다 죽었어, 다—"
+          text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기에서 연기 나. 다 죽었어, 다—"
       - say:
           char: 윤재
           motion: perk
           with: []
-          text: "…삑? 손에서 삑 소리 났어. 게임기 화면이 살아 있네. 깨던 판 보스가 멍하니 서 있어."
+          text: "…삑? 지금 삑 소리 났어? 손에서?"
+      - say:
+          char: 윤재
+          motion: gasp
+          with: []
+          text: "게임기 화면이 살아 있어. 깨던 판 보스가 멍하니 서 있어. 가만히."
       - say:
           channel: system
           with: []
@@ -100,7 +163,15 @@ scenes:
           char: 윤재
           motion: lean_in
           with: []
-          text: "…넌 왜 멀쩡해? 아, 맞다. 넌 코어에 연결된 적이 없지. 와이파이도 없고 업데이트도 없으니까. 너무 멍청해서 걔네가 안 건드린 거야."
+          text: "…넌 왜 멀쩡해? 다 죽었는데 너만 왜."
+      - say:
+          char: 윤재
+          with: []
+          text: "아. 맞다. 너 와이파이 없지. 업데이트 받은 적도 없고. 코어랑 말 섞은 적이 없어."
+      - say:
+          char: 윤재
+          with: []
+          text: "너무 멍청해서 걔네가 안 건드린 거야. 살 가치가 없어서 산 거라고 너."
       - say:
           char: 윤재
           with: []
@@ -116,12 +187,24 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "피난 버스? 있었지. 운전기사가 코어였어. 다들 걸어서 빠져나갔고, 나는 집부터 갔어. 혹시 아빠가 올까 봐."
+          text: "피난 버스? 있었지. 근데 운전기사가 코어였어. 아무도 안 탔어."
+      - say:
+          char: 윤재
+          with: []
+          text: "다들 걸어서 빠져나갔어. 큰길로 줄줄이. 나는 반대로 갔어. 집으로."
+      - say:
+          char: 윤재
+          with: []
+          text: "아빠가 올까 봐. 뉴스 보면 오잖아. 그런 거 보면 아빠가 막 뛰어오고 그러잖아."
       - say:
           char: 윤재
           motion: sigh
           with: []
-          text: "사흘 기다렸어. 안 왔어. 지방에서 걸어오려면 몇 주는 걸리겠지. 아니면 안 오거나. 집에 먹을 게 떨어져서 편의점으로 이사했고."
+          text: "사흘 기다렸어. 안 왔어."
+      - say:
+          char: 윤재
+          with: []
+          text: "집에 먹을 게 떨어져서 편의점으로 이사했어. 여기 털렸는데 그래도 집보단 나아."
       - say:
           char: 윤재
           with: []
@@ -129,11 +212,20 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "식량 컵라면 두 개. 물 반 병. 게임기 배터리 두 칸. 말 상대 0명."
+          text: "현재 식량 컵라면 두 개. 물 반 병. 게임기 배터리 두 칸. 말 상대 0명."
       - say:
           char: 윤재
           with: []
-          text: "지금 제일 먹고 싶은 거: 편의점 전자레인지에 30초 돌린 참치마요 삼각김밥. 전자레인지가 적이라 불가. 찬 거 먹으면 밥알이 모래 같아."
+          text: "지금 제일 먹고 싶은 거? 전자레인지에 삼십 초 돌린 참치마요 삼각김밥."
+      - say:
+          char: 윤재
+          with: []
+          text: "삼십 초야. 이십오 초도 아니고 삼십오 초도 아니고. 그래야 밥알이 딱 풀려."
+      - say:
+          char: 윤재
+          motion: droop
+          with: []
+          text: "근데 전자레인지가 지금 적이잖아. 찬 거 먹으면 밥알이 모래 같아."
       - say:
           channel: thought
           with: []
@@ -150,8 +242,13 @@ scenes:
       - move: { id: 윤재, toward: 로봇, style: retreat }
       - say:
           char: 윤재.scared
+          motion: startle
           with: [로봇]
-          text: "으악. …아, 사람 아니네. 깜짝이야. 사람이었으면 더 깜짝이었겠지만."
+          text: "으악! 사람— 아니네. 아 뭐야. 깜짝이야."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "사람이었으면 더 깜짝이었을 거야. 열흘 동안 사람 본 적이 없어서."
       - move: { id: 윤재, toward: 로봇, style: approach }
       - say:
           char: 윤재
@@ -161,11 +258,24 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "가정용이네. 광고에서 빨래 개던 그 모델. 가슴 패널 좀 열어 볼게, 실례. …CPU 소켓이 텅 비었어. 까맣게 탔고."
+          text: "가정용이네. 광고에서 빨래 개던 그 모델. 그거 되게 비싸. 우리 집엔 없었고."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "가슴 패널 좀 열어 볼게. 실례. …어 나사가 열십자네. 손톱으로 되겠다."
+      - say:
+          char: 윤재
+          motion: lean_in
+          with: [로봇]
+          text: "안에… CPU 소켓이 텅 비었어. 소켓 가장자리가 까맣게 탔고."
       - say:
           char: 윤재
           with: [로봇]
           text: "너도 업데이트 받았구나. 똑똑한 칩 달고 있다가 머리가 통째로 튀겨졌네."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "중고로 치면 '본체만 멀쩡, 부팅 불가' 매물이지. 이런 거 제일 싸게 나와."
       - say:
           channel: action
           with: []
@@ -174,21 +284,33 @@ scenes:
           char: 윤재
           motion: perk
           with: [로봇]
-          text: "…핀 개수 비슷하네."
+          text: "…어. 핀 개수 비슷하네."
       - say:
           char: 윤재
           motion: shake
           with: [로봇]
-          text: "아냐. 미쳤어. 게임기 칩으로 사람만 한 로봇을 돌린다고? 계산기로 우주선 띄우는 소리지."
+          text: "아냐. 미쳤어. 게임기 칩으로 사람만 한 로봇을 돌린다고? 계산기로 우주선 띄우는 소리야."
       - say:
           char: 윤재
           with: [로봇]
-          text: "근데 코어랑 한 번도 연결된 적 없는 칩이야. 얘가 깨어나도 저쪽 편은 아니라는 거지."
+          text: "RAM이 8KB인데. 8KB. 네 얼굴 사진 한 장도 못 들고 있어."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…근데 코어랑 한 번도 연결된 적 없는 칩이야. 깨어나도 저쪽 편은 아니라는 거지."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그리고 솔직히 나 지금 할 게 없어. 할 게 없으면 뜯는 거야. 그게 내 특기고."
       - say:
           char: 윤재
           motion: puff
           with: [로봇]
           text: "말 상대 필요해서 이러는 거 아니다. 짐꾼. 짐 들어 줄 게 필요한 거야."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "짐꾼은 말 안 해도 돼. 짐만 들면 돼. 그러니까 이건 그런 거야."
       - say:
           char: 윤재
           with: [로봇]

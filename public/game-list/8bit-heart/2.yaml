@@ -19,11 +19,23 @@ scenes:
           motion: puff
           with: [로봇]
           text: "헉… 헉… 너 몸무게가 냉장고야. 가정용이면 가정을 생각했어야지."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "골목에서 여기까지 이백 미터야. 이백 미터를 두 시간 걸렸어. 두 시간."
       - music: chip_home
       - say:
           char: 윤재
           with: [로봇]
-          text: "바코드 스캐너, 비켜. 오늘부터 이 계산대는 수술대다. 인두는 집에서 챙겨 온 가스 인두. 부탄 한 통이면 돌아가니까 코어도 못 건드려."
+          text: "바코드 스캐너, 비켜. 오늘부터 이 계산대는 수술대다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "인두는 집에서 챙겨 온 가스 인두. 콘센트 안 꽂아도 돼. 부탄 한 통이면 돌아가."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…아빠가 사 준 거야 이거. 중학교 때. 그거 하나는 잘 사 줬어."
       - say:
           char: 윤재
           with: [로봇]
@@ -31,7 +43,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "계획은 간단해. 전원은 건전지로, 머리는 게임기 CPU로, 말은 네 가슴 화면으로. 셋 다 붙이면 깨어난다. 아마. 기도하면."
+          text: "계획은 간단해. 전원은 건전지로, 머리는 게임기 CPU로, 말은 네 가슴 화면으로."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "셋 다 붙이면 깨어나. 아마. 한 번도 안 해 봤지만 원리는 그래."
       - goto: b2_parts
 
   b2_parts:
@@ -69,11 +85,25 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "AA 여덟 개. 사람들이 라면이랑 생수는 싹 털어 가고 건전지는 놔뒀네. 다들 폰만 믿었지. 그 폰이 지금 적이고."
+          text: "계산대 밑. 여기 사람들이 손 안 넣어 봤을 거야. 라면 선반만 봤겠지."
+      - say:
+          char: 윤재.excited
+          motion: hop
+          with: [로봇]
+          text: "있다! AA 여덟 개. 묶음으로 통째로 있어. 대박."
       - say:
           char: 윤재
           with: [로봇]
-          text: "일렬로 세워서 청테이프 칭칭. 완성. 모양은 다이너마이트, 성능은 리모컨."
+          text: "사람들이 라면이랑 생수는 싹 털어 가고 건전지는 놔뒀네. 다들 폰만 믿었지."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그 폰이 지금 적이잖아. 건전지가 이겼어. 건전지는 생각을 안 하니까."
+      - say:
+          char: 윤재
+          motion: nod
+          with: [로봇]
+          text: "완성. 모양은 다이너마이트, 성능은 리모컨. 이걸로 너를 깨울 거야."
       - get: battery
       - clearSticker: { id: b2_bat, leave: fadeOut }
       - set: { b_battery: true }
@@ -83,6 +113,10 @@ scenes:
     actions:
       - sticker: { id: b2_cpu, image: cpu_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: popIn, inputLockMs: 300 }
       - say:
+          char: 윤재
+          with: [로봇]
+          text: "마지막으로 한 판만 켜 볼게. 딱 한 판만. 세이브 확인도 할 겸."
+      - say:
           channel: system
           with: []
           text: "HI-SCORE 0999990"
@@ -90,12 +124,16 @@ scenes:
           char: 윤재
           motion: slump
           with: [로봇]
-          text: "십 점만 더 따면 백만이었는데. …됐어. 미련 없어. 진짜 없어. 하나도 없어."
+          text: "…십 점. 십 점만 더 따면 백만이었어."
       - say:
           char: 윤재
           motion: sigh
           with: [로봇]
-          text: "회로도가 설명서 맨 뒷장에 있다고? …설명서 안 읽는다는 원칙, 오늘 한정 해제. 나사 네 개만 풀면 돼."
+          text: "…됐어. 미련 없어. 진짜 없어. 하나도 없어."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "회로도가 설명서 맨 뒷장에 있댔지. 설명서 안 읽는다는 원칙, 오늘 한정 해제."
       - say:
           channel: action
           with: []
@@ -105,7 +143,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "이직 축하한다. 연봉은 없어."
+          text: "…빠졌다. 안 부러졌어. 다리 마흔 개 다 멀쩡해."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "이직 축하한다. 연봉은 없어. 복지는 청테이프고."
       - clearSticker: { id: b2_cpu, leave: fadeOut }
       - set: { b_cpu: true }
       - goto: b2_parts
@@ -115,11 +157,16 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "가슴 화면 핀 스물넷, 게임기 단자 핀 열여섯. 남는 여덟 개는… 기도로 연결한다."
+          text: "말하는 거. 이게 제일 어려워. 스피커는 탔고, 남은 건 가슴 화면이야."
+      - say:
+          char: 윤재
+          motion: lean_in
+          with: [로봇]
+          text: "가슴 화면 핀이 스물넷. 게임기 단자는 열여섯. 여덟 개가 남아."
       - say:
           char: 윤재
           with: [로봇]
-          text: "전선 두 가닥 꼬아 붙이고, 그 위에 껌 포장지 은박 둘둘. 이게 공학이다."
+          text: "전선 두 가닥 꼬아 붙이고, 그 위에 껌 포장지 은박 둘둘. 절연이랑 차폐 한 번에."
       - say:
           channel: thought
           with: []
@@ -141,6 +188,11 @@ scenes:
           with: []
           text: "BIOS v0.8 … RAM CHECK … 8KB … OK"
       - say:
+          char: 윤재.excited
+          motion: gasp
+          with: [로봇]
+          text: "글자 떴어! 가슴에! 글자 떴다고!"
+      - say:
           channel: system
           with: []
           text: "본체 ROM 확인: 보행 · 운반 · 보호 대상 지키기"
@@ -149,6 +201,11 @@ scenes:
           channel: system
           with: []
           text: "외부 문서 감지: 게임기 설명서 (12쪽, 표지 포함) … 읽기 완료 0.3초"
+      - say:
+          char: 윤재
+          motion: perk
+          with: [로봇]
+          text: "잠깐 뭐? 설명서? 아 내가 옆에 놔뒀지. 야 그거 읽지 마. 그거 읽지 말라고."
       - move: { id: 윤재, toward: 로봇, style: flinch }
       - say:
           char: 로봇.thinking
@@ -157,7 +214,7 @@ scenes:
           text: "…8KB? 이게 다임? 다시 셈. 8. …응. 다임."
       - say:
           char: 윤재.excited
-          motion: gasp
+          motion: bounce
           with: [로봇]
           text: "말했어. 말했다고. 계산기가 우주선을 띄웠어."
       - say:
@@ -168,7 +225,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그래, 안녕. 원래 머리는 다 탔을 텐데, 말은 어디서 배웠냐. …설명서? 방금 그거? 그게 네 국어 교과서야?"
+          text: "그래, 안녕. …안녕이라고 했어 얘가. 안녕이라고 했어."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "원래 머리는 다 탔을 텐데 말은 어디서 배웠냐. …설명서? 방금 그거?"
       - say:
           char: 로봇
           motion: perk
@@ -176,14 +237,58 @@ scenes:
           text: "학습 자료 1건. 게임기 설명서 12쪽. 표지 그림 포함. 이게 세상 전부 아님?"
       - say:
           char: 윤재
+          motion: shake
+          with: [로봇]
+          text: "아니야. 전부 아니야. 그거 열두 쪽이야. 세상은 그거보다 커."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "너 지금 서 있는 데가 편의점이야. 이런 게 길마다 하나씩 있어."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "편의점. 기록함. 설명서에 없는 단어 1번. 뜻은?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "뜻은… 돈 주면 물건 주는 데. 근데 지금은 돈 안 줘도 줘. 아무도 없어서."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "돈. 설명서에 없는 단어 2번. 뜻은?"
+      - say:
+          char: 윤재
           motion: sigh
           with: [로봇]
-          text: "망했다. …아무튼. 너 이름 있어?"
+          text: "돈은… 아 이걸 어떻게 설명해. 종이야. 종이인데 다들 그게 중요한 척하는 거야."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "종이가 중요한 척. 저장 완료. …이상한 세상임."
+      - say:
+          char: 윤재
+          motion: laugh
+          with: [로봇]
+          text: "그건 맞아. 그건 진짜 맞아."
+      - say:
+          char: 윤재
+          motion: sigh
+          with: [로봇]
+          text: "망했다. 설명서로 세상 배운 애가 됐어. …아무튼. 너 이름 있어?"
+      - say:
+          char: 로봇
+          motion: headtilt
+          with: [윤재]
+          text: "이름. 검색 중… 본체 ROM엔 모델 번호만 있음. 열한 자리. 읽어 줄까?"
       - say:
           char: 로봇
           motion: bow
           with: [윤재]
           text: "설명서 2쪽. '처음 켜면 이름을 입력하세요.' 그러니까 네가 입력해. 나는 키보드 없음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "최대 8글자. 8글자 넘으면 안 들어감. 메모리가 작아서."
       - input:
           prompt: "이름 입력 (최대 8글자)"
           with: [로봇]
@@ -196,14 +301,41 @@ scenes:
           motion: bounce
           with: [윤재]
           text: "{{android_name}}. …{{android_name}}. 짧아서 좋다. 메모리가 고맙대."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "메모리가 고맙대. 메모리가. 너 진짜 엉망이다."
       - move: { id: 로봇, toward: 윤재, style: lunge }
       - move: { id: 윤재, toward: 로봇, style: retreat }
       - say:
           char: 윤재
+          motion: recoil
           with: [로봇]
-          text: "메모리가 고맙대. 메모리가. 너 진짜 엉망이다. …그리고 너무 가까워. 한 칸 뒤로."
+          text: "어어 왜 와. 너무 가까워. 한 칸 뒤로. 한 칸."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "한 칸. 몇 센티임?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "한 칸은 한 칸이야. 그냥… 이만큼. 팔 길이만큼."
       - move: { id: 로봇, style: reset }
       - move: { id: 윤재, style: reset }
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "네 팔임 내 팔임? 길이 다름."
+      - say:
+          char: 윤재
+          motion: puff
+          with: [로봇]
+          text: "…내 팔. 내 팔로 해. 앞으로 한 칸은 내 팔이야. 규칙 하나 생겼다."
+      - say:
+          char: 로봇.happy
+          motion: nod
+          with: [윤재]
+          text: "규칙 1. 한 칸 = 1번의 팔. 저장. 이거 설명서에 없는 거라 내가 만든 칸에 넣음."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - say:
           char: 로봇.thinking
@@ -227,7 +359,19 @@ scenes:
           char: 로봇.thinking
           motion: freeze
           with: [윤재]
-          text: "세상. 망함. …처리 중. 처리 중. 큰일이다. 그럼 네가 남은 거 전부네."
+          text: "세상. 망함. …처리 중. 처리 중."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문. 망했다는 건, 고장이랑 같음? 고장은 고치면 되는데."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "고장이랑 비슷한데 너무 커서 못 고치는 거. 그런 걸 망했다고 해."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "크면 못 고침. …큰일이다. 그럼 네가 남은 거 전부네."
       - say:
           channel: system
           with: []
@@ -235,12 +379,21 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "1번이래. 2번은 누군데?"
+          text: "어 방금 뭐 떴는데. 1번이래. 2번은 누군데?"
       - say:
           char: 로봇.happy
           motion: hop
           with: [윤재]
           text: "없어. 슬롯 하나. 설명서 11쪽. '2P는 컨트롤러를 따로 구입하세요.'"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "돈 필요함. 돈은 종이. 종이는 중요한 척. 지금 재고 0."
+      - say:
+          char: 윤재
+          motion: laugh
+          with: [로봇]
+          text: "야 그걸 그렇게 이어 붙이면 어떡해."
       - goto: /3.yaml
 
   b2_reg_brave:
@@ -249,7 +402,23 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "위험 아님. 근데 무릎이 떨림. 목소리도 떨림. 모순 발견. …설명서 9쪽. '떨림이나 이상한 소리가 나면 즉시 사용을 멈추세요.' 그러니까 위험임."
+          text: "위험 아님. 기록함. …대기. 재측정 중."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "무릎이 떨림. 목소리도 떨림. 입력이랑 측정값이 다름. 모순 발견."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "추워서 그래. 밤이잖아. 여기 문 다 깨져서 바람 들어와."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "실내 온도 18도. 춥다의 기준은 모름. 근데 손은 땀. 추운데 땀?"
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "설명서 9쪽. '떨림이나 이상한 소리가 나면 즉시 사용을 멈추세요.' 그러니까 위험임."
       - say:
           channel: system
           with: []
@@ -258,10 +427,27 @@ scenes:
           char: 윤재
           motion: stomp
           with: [로봇]
-          text: "야 이름을 그렇게 저장하면 어떡해. 윤재야, 윤재."
+          text: "야! 이름을 그렇게 저장하면 어떡해. 윤재야, 윤재. 두 글자!"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "'고물'은 네가 나한테 쓴 단어임. 좋은 뜻임?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…어. 좋은 뜻이야. 오래돼서 믿음직하다는 뜻. 진짜야."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "'진짜' 한 번. 아직 한 번임. 두 번 되면 다시 보겠음."
       - move: { id: 로봇, toward: 윤재, style: flinch }
       - say:
           char: 로봇.happy
           with: [윤재]
           text: "수정 완료. 1번 — 윤재(거짓말함)."
+      - say:
+          char: 윤재
+          motion: slump
+          with: [로봇]
+          text: "괄호를 왜 남겨."
       - goto: /3.yaml

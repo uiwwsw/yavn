@@ -207,6 +207,30 @@ scenes:
           char: 지영
           with: []
           text: "해수야"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "내가 체험권 준 거 때문이면 그거 내가 미안해"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "아니에요 주임님"
+      - say:
+          channel: message
+          side: them
+          char: 지영
+          with: []
+          text: "그럼 내일 마감 바꿔 줘 그걸로 갚아"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "네 바꿔 드릴게요"
 
   corridor:
     title: "그린고시원"
@@ -405,6 +429,18 @@ scenes:
           char: 해수
           with: []
           text: "상혁아. 배달 봉지 세 개, 사흘째 그대로야. 물도."
+      - say:
+          char: 해수
+          with: []
+          text: "오늘 화요일이라 내 차례야. 네 것도 해 놨어."
+      - say:
+          char: 해수
+          with: []
+          text: "식어도 괜찮으니까 나중에 데워 먹어."
+      - say:
+          char: 해수
+          with: []
+          text: "문은 좀 열어."
       - say:
           channel: record
           when: { var: tampered, op: gt, value: 0 }
