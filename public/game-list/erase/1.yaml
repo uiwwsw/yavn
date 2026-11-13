@@ -10,6 +10,10 @@ scenes:
     title: "새 팀장"
     actions:
       - say:
+          channel: narration
+          with: []
+          text: "그다음 월요일 아침. 출근길 지하철에서 도윤의 팀 단톡방이 울린다."
+      - say:
           channel: message
           side: them
           with: []
@@ -49,11 +53,11 @@ scenes:
       - say:
           channel: action
           with: [준성, 도윤]
-          text: "수화기에서 들리는 목소리가 등 뒤에서도 똑같이 들린다. 파티션 너머, 수화기를 든 남자가 도윤을 보고 있다."
+          text: "수화기에서 들리는 목소리가 등 뒤에서도 똑같이 들린다. 파티션 너머, 수화기를 든 남자가 도윤을 보고 있다. 금요일 밤 클럽에서 잔을 건넨, 그 남자다."
       - say:
           char: 준성
           with: [도윤]
-          text: "내선표 보고 하나씩 걸어 보는 중이었어요. 박준성입니다. 오늘부터 같이 일해요."
+          text: "내선표 보고 하나씩 걸어 보는 중이었어요. 박준성입니다. 오늘부터 이 팀 맡게 됐어요."
       - say:
           char: 도윤.panic
           with: [준성]
@@ -132,6 +136,10 @@ scenes:
     title: "소문"
     actions:
       - say:
+          channel: narration
+          with: []
+          text: "다음 날 저녁, 퇴근길. 팀장이 온 지 닷새째다. 단톡방이 또 시끄럽다."
+      - say:
           channel: message
           side: them
           with: []
@@ -153,7 +161,7 @@ scenes:
           text: "[영업2팀] 윤주임: @한도윤 해명하세요"
       - choice:
           key: e1_rumor
-          prompt: "입력 중… 표시가 떴다 사라지기를 세 번."
+          prompt: "팀원들이 해명을 기다린다. 입력 중… 표시가 떴다 사라지기를 세 번."
           with: []
           options:
             - text: "\"ㅋㅋ 군대 어디냐고 나도 물어봄\""
@@ -240,7 +248,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "그날 밤. 지수가 씻는 동안, 도윤은 단톡방을 위로 올리며 자기 이름이 나온 말풍선만 골라 '나에게서 삭제'를 누른다."
+          text: "그날 밤, 도윤과 지수가 같이 사는 집. 지수가 씻는 동안, 도윤은 단톡방을 위로 올리며 자기 이름이 나온 말풍선만 골라 '나에게서 삭제'를 누른다."
       - say:
           channel: message
           side: them
@@ -267,6 +275,11 @@ scenes:
     actions:
       - bg: { id: classroom, transition: cut }
       - music: cold_room
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "어느 고등학교, 점심시간의 교실. 유하린 옆에는 남자친구 서민재와, 제일 친한 친구 정아진이 앉아 있다."
       - char: { id: 민재, position: left }
       - char: { id: 하린, position: center }
       - char: { id: 아진, position: right }
@@ -359,6 +372,10 @@ scenes:
   e1_harin_night:
     actions:
       - bg: { id: harin_room, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          text: "그날 밤, 하린의 방. 민재가 인스타 스토리를 올리자마자 알림이 뜬다."
       - say:
           channel: message
           side: them

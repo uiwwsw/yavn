@@ -11,9 +11,13 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29"
+          text: "현재\n한도윤 · 29 · 결혼 3주 전"
       - bg: { id: dawn_room, transition: fade, duration: 900 }
       - music: static
+      - say:
+          channel: narration
+          with: []
+          text: "토요일 오전, 집. 지수는 웨딩홀 상담에 먼저 나갔고, 도윤은 식탁에 노트북을 펴 놓고 있다."
       - say:
           channel: message
           side: them
@@ -54,7 +58,7 @@ scenes:
     actions:
       - choice:
           key: e2_dig
-          prompt: "노트북 검색창에 이름 세 글자를 친다."
+          prompt: "노트북 검색창에 '박준성' 세 글자를 친다."
           with: []
           options:
             - text: "노트북을 덮고 지수한테 \"150장\"이라고 보낸다"
@@ -77,6 +81,10 @@ scenes:
 
   e2_dig_sns:
     actions:
+      - say:
+          channel: action
+          with: []
+          text: "준성의 인스타그램은 공개 계정이다. 게시물이 많지 않아 맨 처음까지 금방 내려간다."
       - say:
           channel: message
           side: them
@@ -106,7 +114,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "지난주 회의 때 테이블에 엎어 둔 팀장 폰이 한 번 켜졌었다. '감염내과 정기 진료 안내'. 도윤은 그 문구를 메모장에 그대로 적고, 메모 제목을 '장보기'로 바꾼다."
+          text: "목요일 회의 때 테이블에 엎어 둔 팀장 폰이 한 번 켜졌었다. '감염내과 정기 진료 안내'. 도윤은 그 문구를 메모장에 그대로 적고, 메모 제목을 '장보기'로 바꾼다."
       - goto: dig
 
   e2_dig_leak:
@@ -158,7 +166,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "다음 날 밤 아홉 시 넘어, 엘리베이터 앞. 둘뿐이다. 13층에서 1층까지는 생각보다 길다."
+          text: "월요일 밤 아홉 시 넘어, 회사 엘리베이터 앞. 둘뿐이다. 13층에서 1층까지는 생각보다 길다."
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say:
@@ -241,7 +249,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "다음 주 월요일부터 준성의 자리가 빈다. 화분 하나가 모니터 옆에서 사흘째 물을 못 마셨다."
+          text: "결혼을 두 주 앞둔 월요일, 준성이 출근하지 않았다. 화요일에도, 수요일에도. 모니터 옆 화분은 사흘째 아무도 물을 주지 않았다."
       - say:
           channel: message
           side: them
@@ -323,14 +331,18 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "방과 후. 하린은 사물함에 두고 간 체육복을 가지러 계단을 두 칸씩 올라왔다. 뒷문이 한 뼘 열려 있다."
+          text: "며칠 뒤, 방과 후. 하린은 사물함에 두고 간 체육복을 가지러 계단을 두 칸씩 올라왔다. 뒷문이 한 뼘 열려 있다."
       - char: { id: 민재, position: left }
       - char: { id: 아진, position: right }
+      - say:
+          channel: action
+          with: [민재, 아진]
+          text: "문틈으로 빈 교실이 보인다. 민재와 아진이 책상 하나에 나란히 앉아 있다. 민재가 아진의 손가락을 하나씩 만지작거린다."
       - say:
           char: 아진.awkward
           with: [민재]
           delivery: whisper
-          text: "오늘 하린이한테 말하려고 했는데… 못 했어."
+          text: "오늘 하린이한테 말하려고 했는데… 우리 얘기. 못 했어."
       - say:
           char: 민재
           with: [아진]
@@ -357,6 +369,10 @@ scenes:
           text: "하린은 문고리에서 손을 뗀다. 복도 끝까지, 실내화를 끌지 않고 걷는다."
       - add: { deleted: 1 }
       - bg: { id: harin_room, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          text: "그날 밤, 하린의 방."
       - say:
           channel: message
           side: them

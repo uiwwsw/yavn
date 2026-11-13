@@ -11,6 +11,10 @@ scenes:
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right }
       - say:
+          channel: card
+          with: []
+          text: "FINAL STAGE · 나흘 뒤\n북쪽 데이터센터, 코어 본체 앞"
+      - say:
           char: 윤재
           with: [로봇]
           text: "최종 던전 입구. BGM 바뀐 거 들리냐."
@@ -31,6 +35,10 @@ scenes:
           with: [로봇]
           text: "너 산 지 일주일이잖아."
       - say:
+          char: 윤재
+          with: [로봇]
+          text: "그리고 나는 제거 대상이래. 문밖까진 손이 안 닿나 봐. 나는 여기서 한 발짝도 안 들어간다."
+      - say:
           channel: action
           with: []
           text: "문 너머, 서버 랙이 끝없이 늘어서 붉게 숨을 쉰다. {{android_name|이}} 문턱에 한 발을 올렸다가, 지지직 소리와 함께 도로 뺀다."
@@ -42,7 +50,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "솔직하게 말할게. 안에 들어가면 나, 거의 다 지워져."
+          text: "솔직하게 말할게. 안은 코어 신호가 너무 세. 내 RAM 8KB가 버티질 못해. 들어가면 나, 거의 다 지워져."
       - say:
           char: 윤재.sad
           with: [로봇]
@@ -63,7 +71,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…게임기 상자에 이거 들어 있었어. 메모리 카드. 버리려다 귀찮아서 안 버린 거."
+          text: "…게임기 상자에 이거 들어 있었어. 메모리 카드. 두 달째 가방 앞주머니. 버리려다 귀찮아서 안 버린 거."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -71,11 +79,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
+          text: "카드는 따로 꽂는 거라 안에서 안 지워짐. 내 머리가 하얘져도 나와서 이걸 읽으면 돼. 근데 들어가는 건 딱 하나. 나머지는 코어가 다 먹음."
+      - say:
+          char: 로봇
+          with: [윤재]
           text: "설명서 1쪽. '전원을 끄기 전에 반드시 저장하세요.' 네가 안 읽은 거. 나는 읽었어."
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
-          prompt: "SAVE SLOT 1 — 무엇을 저장하시겠습니까?"
+          prompt: "SAVE SLOT 1 — 무엇을 저장하시겠습니까? (카드에 남는 건 하나. 나머지는 코어 안에서 지워집니다.)"
           char: 로봇
           options:
             - text: "새끼손가락 약속 — \"끝까지 2P로\""
@@ -138,7 +150,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "새벽. 멀리 신호등이 빨강, 노랑, 초록 순서대로 깜빡이기 시작한다. 제대로 된 순서로."
+          text: "새벽. 윤재는 문 앞에서 밤을 샜다. 멀리 신호등이 빨강, 노랑, 초록 순서대로 깜빡이기 시작한다. 제대로 된 순서로. 코어가 리셋됐다."
       - say:
           channel: action
           with: []
@@ -174,7 +186,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "약속 카드가 붙잡아 줬어. 끝까지 2P. 바늘 재고는 여전히 0개. 그리고 나머지도 다 있어. 쓰레기 소리 들은 것까지."
+          text: "약속 카드가 붙잡아 줬어. 끝까지 2P. 바늘 재고는 여전히 0개. 근데 약속 하나 꺼내니까 거기 엮인 게 줄줄이 딸려 나옴. 나머지도 다 있어. 쓰레기 소리 들은 것까지."
       - say:
           char: 로봇.thinking
           with: [윤재]

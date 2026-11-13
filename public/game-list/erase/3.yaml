@@ -11,7 +11,11 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29"
+          text: "현재\n한도윤 · 29 · 결혼 열흘 전"
+      - say:
+          channel: narration
+          with: []
+          text: "준성이 나오지 않은 지 사흘째인 수요일 저녁. 퇴근길에 송과장에게서 개인 톡이 온다."
       - say:
           channel: message
           side: them
@@ -43,7 +47,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "현관문이 한 뼘쯤 열려 있다. 초인종을 두 번 누르고, 한 번 더 누르고, 그다음엔 그냥 서 있었다. 안쪽 바닥에 블라인드 그림자가 줄줄이 누워 있다."
+          text: "준성의 오피스텔, 9층 복도 끝. 현관문이 한 뼘쯤 열려 있다. 초인종을 두 번 누르고, 한 번 더 누르고, 그다음엔 그냥 서 있었다. 안쪽 바닥에 블라인드 그림자가 줄줄이 누워 있다."
       - char: { id: 도윤, position: center }
       - say:
           char: 도윤
@@ -161,7 +165,7 @@ scenes:
       - choice:
           key: e2_search
           presentation: explore
-          prompt: "집에 가는 대신 사무실로 돌아왔다. 불은 반만 켜 둔다."
+          prompt: "그날 밤, 도윤은 집에 가는 대신 빈 사무실로 돌아왔다. 불은 반만 켜 둔다."
           with: []
           camera: wide
           options:
@@ -269,7 +273,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "보건소는 아홉 시에 연다. 도윤은 여덟 시 사십 분부터 맞은편 편의점에서 삼각김밥 포장을 반쯤 뜯어 놓고 있었다."
+          text: "다음 날 목요일 아침, 회사에는 오전 반차를 냈다. 보건소는 아홉 시에 연다. 도윤은 여덟 시 사십 분부터 맞은편 편의점에서 삼각김밥 포장을 반쯤 뜯어 놓고 있었다."
       - say:
           channel: message
           side: them
@@ -330,6 +334,11 @@ scenes:
           with: []
           text: "과거\n유하린 · 18"
       - bg: { id: science_room, transition: cut }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "며칠 뒤, 과학실. 생물 수행평가로 곤충 표본을 만드는 시간이다. 하린과 아진은 같은 조다."
       - char: { id: 하린, position: center, emotion: blank }
       - char: { id: 아진, position: right }
       - sticker:
@@ -370,6 +379,10 @@ scenes:
           text: "내가 왜?ㅋㅋ 나 원래 그런 거 관심 없잖아. 너네 잘 어울려. 진짜로."
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
       - bg: { id: harin_room, transition: fade, duration: 900 }
+      - say:
+          channel: narration
+          with: []
+          text: "그날 밤, 하린의 방. 아진에게서 사진 한 장이 온다."
       - say:
           channel: message
           side: them
@@ -412,9 +425,13 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29"
+          text: "현재\n한도윤 · 29 · 결혼 아흐레 전"
       - bg: { id: dawn_room, transition: cut }
       - music: static
+      - say:
+          channel: narration
+          with: []
+          text: "보건소에 간 그날 밤, 집. 지수가 식탁에 결혼 준비 목록을 펼쳐 놓고 기다리고 있다."
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say:

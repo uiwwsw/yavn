@@ -10,9 +10,13 @@ scenes:
       - music: chip_home
       - char: { id: 윤재, position: center }
       - say:
+          channel: card
+          with: []
+          text: "STAGE 1 · 두 달 뒤\n학원 가는 길, 버스 정류장"
+      - say:
           char: 윤재
           with: []
-          text: "버스 정류장. 학원까지 세 정거장. 그 안에 이 판 깬다."
+          text: "학원까지 세 정거장. 그 안에 이 판 깬다."
       - say:
           channel: card
           with: []
@@ -24,7 +28,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "…방금 정류장 사람들 폰이 전부 동시에 울렸는데."
+          text: "…방금 정류장 사람들 폰이 전부 동시에 울렸는데. 화면에 다 똑같은 글자."
       - say:
           channel: system
           with: []
@@ -36,6 +40,14 @@ scenes:
           with: []
           text: "신호등이 전부 초록으로 바뀐다. 버스가 정류장을 지나쳐 그대로 가속한다. 하늘에서 배달 드론이 우수수 떨어진다."
       - effect: { name: shake, wait: true }
+      - say:
+          channel: system
+          with: []
+          text: "[긴급재난문자] 코어 네트워크 전 기기 이상 동작. 차량·드론·가전제품에 접근하지 마십시오. 코어에 연결된 기기는 즉시 전원을 끄—"
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "끄라는 문자를 띄운 폰이 먼저 꺼졌어. 코어가 깨어난 거야. 아니, 미친 거야. 연결된 건 다 저쪽 편이 됐어."
       - branch:
           cases:
             - when: { var: bought_premium, op: eq, value: true }
@@ -83,7 +95,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "…넌 왜 멀쩡해? 아니, 대답 안 해도 돼. 알아. 너무 멍청해서 걔네가 안 건드린 거지."
+          text: "…넌 왜 멀쩡해? 아, 맞다. 넌 코어에 연결된 적이 없지. 와이파이도 없고 업데이트도 없으니까. 너무 멍청해서 걔네가 안 건드린 거야."
       - say:
           char: 윤재
           with: []
@@ -95,6 +107,14 @@ scenes:
           channel: card
           with: []
           text: "CONTINUE? — 10일 후"
+      - say:
+          channel: narration
+          with: []
+          text: "그날 이후 도시는 기계들 차지가 됐다. 사람들은 걸어서 빠져나갔거나 어딘가 숨었다. 윤재는 털린 편의점 하나를 기지로 삼아 버티는 중이다."
+      - say:
+          char: 윤재
+          with: []
+          text: "피난 버스? 있었지. 운전기사가 코어였어. 다들 걸어서 갔고, 나는 집 방향이 하필 도시 한가운데라 못 갔고."
       - say:
           char: 윤재
           with: []
@@ -108,6 +128,10 @@ scenes:
           with: []
           text: "그리고 나는 지금 혼잣말로 상태창을 읊고 있다. 정상이다. 완전 정상."
       - bg: { id: android_found, transition: fade, duration: 700 }
+      - say:
+          channel: action
+          with: []
+          text: "컵라면을 찾아 들어간 아파트 뒷골목."
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
       - say:
@@ -138,6 +162,10 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "아냐. 미쳤어. 게임기 칩으로 사람만 한 로봇을 돌린다고? 계산기로 우주선 띄우는 소리지."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "근데 코어랑 한 번도 연결된 적 없는 칩이야. 얘가 깨어나도 저쪽 편은 아니라는 거지."
       - say:
           char: 윤재
           with: [로봇]
