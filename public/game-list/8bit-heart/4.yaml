@@ -19,6 +19,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "최종 던전 입구. BGM 바뀐 거 들리냐."
+      - emote: { id: 윤재, motion: shiver }
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -29,10 +30,12 @@ scenes:
           text: "CORE: 접근 개체 2. 개체 A — 인간, 제거 대상. 개체 B — 분류 불가. 연산 능력 미달. 무시."
       - say:
           char: 로봇.happy
+          motion: hop
           with: [윤재]
           text: "무시당했다. 살면서 무시당해서 기쁜 거 처음."
       - say:
           char: 윤재
+          motion: sigh
           with: [로봇]
           text: "살면서래. 너 깨어난 지 일주일이야."
       - say:
@@ -56,6 +59,7 @@ scenes:
           text: "솔직하게 말할게. 안은 코어 신호가 너무 세. 내 RAM 8KB가 버티질 못해. 들어가면 나, 거의 다 지워져."
       - say:
           char: 윤재.sad
+          motion: sway
           with: [로봇]
           text: "…거의가 얼마만큼인데."
       - move: { id: 윤재, toward: 로봇, style: approach }
@@ -88,6 +92,7 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "설명서 1쪽. '전원을 끄기 전에 반드시 저장하세요.' 네가 안 읽은 거. 나는 읽었어."
+      - emote: { id: 윤재, motion: nod, repeat: 2 }
       - say:
           char: 윤재
           with: [로봇]
@@ -96,6 +101,7 @@ scenes:
           char: 로봇.thinking
           with: [윤재]
           text: "'진짜' 두 번. 저장된 칸이랑 같음. 거짓말."
+      - emote: { id: 윤재, motion: droop }
       - say:
           char: 로봇
           with: [윤재]
@@ -136,10 +142,12 @@ scenes:
           text: "카드 꽂음. 네가 껌 은박 감아 놓은 자리에 딱 맞음. 배터리 한 칸 씀."
       - say:
           char: 로봇.happy
+          motion: bow
           with: [윤재]
           text: "저장 끝. 다녀올게, 윤재."
       - say:
           char: 윤재.sad
+          motion: recoil
           with: [로봇]
           text: "…이름은 왜 지금 불러. 1번이라며."
       - say:
@@ -149,6 +157,7 @@ scenes:
       - move: { id: 윤재, toward: 로봇, style: lunge }
       - say:
           char: 로봇.thinking
+          motion: freeze
           with: [윤재]
           text: "처리 중…"
       - move: { id: 로봇, toward: camera, style: retreat, wait: true }
@@ -177,10 +186,12 @@ scenes:
       - place: "새벽 · 데이터센터 문 앞"
       - say:
           char: 윤재
+          motion: gasp
           with: []
           text: "…신호등. 빨강, 노랑, 초록. 순서대로 깜빡여. 리셋됐다. 걔가 해냈어."
       - say:
           char: 윤재.scared
+          motion: lean_in
           with: []
           text: "문 열린다. …뭐가 나와. 엄청 느리게. 한 박자씩 늦게 걷는 거."
       - char: { id: 로봇, position: right, emotion: thinking }
@@ -206,15 +217,18 @@ scenes:
           text: "…누구세요."
       - say:
           char: 로봇.happy
+          motion: hop
           with: [윤재]
           text: "보호 대상 1번 담당. 아까 질문 대답 도착. 응. 돌아왔어."
       - say:
           char: 윤재.excited
+          motion: sob
           with: [로봇]
           text: "늦어. 핑 진짜 최악이야. 너 진짜— {{android_name}}, 너 진짜…"
       - move: { id: 윤재, toward: 로봇, style: lunge }
       - say:
           char: 윤재
+          motion: nod
           with: [로봇]
           text: "…고마워. 한 번만 말한다. 저장하든가."
       - say:
@@ -223,8 +237,10 @@ scenes:
           text: "약속 카드가 붙잡아 줬어. 끝까지 2P. 바늘 재고는 여전히 0개. 근데 약속 하나 꺼내니까 거기 엮인 게 줄줄이 딸려 나옴. 나머지도 다 있어. 쓰레기 소리 들은 것까지."
       - say:
           char: 로봇.thinking
+          motion: lean_in
           with: [윤재]
           text: "아, 그리고 안에서 펀치라인 생각났어. 말해 줄까?"
+      - emote: { id: 윤재, motion: shake, repeat: 2 }
       - say:
           char: 윤재
           with: [로봇]
@@ -239,12 +255,15 @@ scenes:
           channel: system
           with: []
           text: "BIOS v0.8 … RAM CHECK … 8KB … OK"
+      - emote: { id: 윤재, motion: slump }
       - say:
           char: 로봇
+          motion: tremble
           with: [윤재]
           text: "1P 감지. 안녕ㅎ— 안녕하ㅅ— …인사말 로딩 실패. 그냥 안녕. 손이 젖어 있음. 설명서엔 '땀 묻은 손으로 조작하지 마세요'라고 돼 있음."
       - say:
           char: 로봇
+          motion: headtilt
           with: [윤재]
           when: { var: kept_promise, op: eq, value: true }
           text: "이상함. 다 비었는데 명령이 하나 남아 있음. '끝까지 2P.' 끝이 어딘지는 안 적혀 있어. 너 알아?"
@@ -265,6 +284,7 @@ scenes:
           text: "…반쪽 맞아. 그거 네 몫이었어."
       - say:
           char: 로봇.thinking
+          motion: headtilt
           with: [윤재]
           when: { var: kept_joke, op: eq, value: true }
           text: "똑똑. …어. 이 다음이 뭐였지. 이거 다음이 있는 말이야?"
@@ -280,14 +300,17 @@ scenes:
       - move: { id: 윤재, toward: 로봇, style: approach }
       - say:
           char: 윤재.sad
+          motion: nod
           with: [로봇]
           text: "응. 엄청. 그러니까 1번으로 등록해. 이름은 윤재. 넌 {{android_name}}. 네가 좋아했어, 그 이름."
       - say:
           char: 로봇.happy
+          motion: bounce
           with: [윤재]
           text: "{{android_name}}. 짧아서 좋다. 메모리가 고맙대."
       - say:
           char: 윤재.sad
+          motion: laugh
           with: [로봇]
           text: "…그 말 저번에도 했어, 이 고물아."
       - ending: new_game
@@ -296,6 +319,7 @@ scenes:
     actions:
       - say:
           char: 로봇.thinking
+          motion: bow
           with: [윤재]
           text: "튐. 처리 중… 1번 명령이 최우선. 그리고 설명서에도 있음. '어려우면 나중에 다시 도전하세요.'"
       - say:
@@ -307,10 +331,12 @@ scenes:
       - place: "남쪽으로 가는 큰길"
       - say:
           char: 윤재
+          motion: laugh
           with: [로봇]
           text: "뒤돌아보지 마. 저 빨간 불 아직 숨 쉬고 있어. 세이브 없이 튀는 거, 생각보다 상쾌하네."
       - say:
           char: 로봇
+          motion: hop
           with: [윤재]
           text: "배터리 한 칸 남음. 근데 지금 꽤 좋음. 이유는 분석 안 할래. 아까우니까."
       - ending: off_screen

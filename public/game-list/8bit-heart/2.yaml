@@ -16,6 +16,7 @@ scenes:
       - char: { id: 로봇, position: right, emotion: off }
       - say:
           char: 윤재
+          motion: puff
           with: [로봇]
           text: "헉… 헉… 너 몸무게가 냉장고야. 가정용이면 가정을 생각했어야지."
       - music: chip_home
@@ -87,10 +88,12 @@ scenes:
           text: "HI-SCORE 0999990"
       - say:
           char: 윤재
+          motion: slump
           with: [로봇]
           text: "십 점만 더 따면 백만이었는데. …됐어. 미련 없어. 진짜 없어. 하나도 없어."
       - say:
           char: 윤재
+          motion: sigh
           with: [로봇]
           text: "회로도가 설명서 맨 뒷장에 있다고? …설명서 안 읽는다는 원칙, 오늘 한정 해제. 나사 네 개만 풀면 돼."
       - say:
@@ -128,6 +131,7 @@ scenes:
     actions:
       - say:
           char: 윤재
+          motion: stomp
           with: [로봇]
           continueLabel: "스위치 ON"
           text: "켜지면 기적. 안 켜지면 냉장고. 간다."
@@ -148,10 +152,12 @@ scenes:
       - move: { id: 윤재, toward: 로봇, style: flinch }
       - say:
           char: 로봇.thinking
+          motion: headtilt
           with: [윤재]
           text: "…8KB? 이게 다임? 다시 셈. 8. …응. 다임."
       - say:
           char: 윤재.excited
+          motion: gasp
           with: [로봇]
           text: "말했어. 말했다고. 계산기가 우주선을 띄웠어."
       - say:
@@ -165,14 +171,17 @@ scenes:
           text: "그래, 안녕. 원래 머리는 다 탔을 텐데, 말은 어디서 배웠냐. …설명서? 방금 그거? 그게 네 국어 교과서야?"
       - say:
           char: 로봇
+          motion: perk
           with: [윤재]
           text: "학습 자료 1건. 게임기 설명서 12쪽. 표지 그림 포함. 이게 세상 전부 아님?"
       - say:
           char: 윤재
+          motion: sigh
           with: [로봇]
           text: "망했다. …아무튼. 너 이름 있어?"
       - say:
           char: 로봇
+          motion: bow
           with: [윤재]
           text: "설명서 2쪽. '처음 켜면 이름을 입력하세요.' 그러니까 네가 입력해. 나는 키보드 없음."
       - input:
@@ -184,6 +193,7 @@ scenes:
       - char: { id: 로봇, position: right, emotion: happy }
       - say:
           char: 로봇.happy
+          motion: bounce
           with: [윤재]
           text: "{{android_name}}. …{{android_name}}. 짧아서 좋다. 메모리가 고맙대."
       - move: { id: 로봇, toward: 윤재, style: lunge }
@@ -203,6 +213,7 @@ scenes:
           key: b2_register
           prompt: "가슴 화면: [응답 대기 중…] 고개 기울기 15도."
           char: 로봇
+          motion: headtilt
           options:
             - text: "\"응. 세상 망했어. 너랑 나 빼고 다.\""
               add: { bond: 1 }
@@ -214,6 +225,7 @@ scenes:
     actions:
       - say:
           char: 로봇.thinking
+          motion: freeze
           with: [윤재]
           text: "세상. 망함. …처리 중. 처리 중. 큰일이다. 그럼 네가 남은 거 전부네."
       - say:
@@ -226,12 +238,14 @@ scenes:
           text: "1번이래. 2번은 누군데?"
       - say:
           char: 로봇.happy
+          motion: hop
           with: [윤재]
           text: "없어. 슬롯 하나. 설명서 11쪽. '2P는 컨트롤러를 따로 구입하세요.'"
       - goto: /3.yaml
 
   b2_reg_brave:
     actions:
+      - emote: { id: 윤재, motion: tremble }
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -242,6 +256,7 @@ scenes:
           text: "보호 대상 등록: 1번 — 고물한테 거짓말한 사람"
       - say:
           char: 윤재
+          motion: stomp
           with: [로봇]
           text: "야 이름을 그렇게 저장하면 어떡해. 윤재야, 윤재."
       - move: { id: 로봇, toward: 윤재, style: flinch }

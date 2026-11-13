@@ -179,11 +179,13 @@ scenes:
           text: "네."
       - say:
           char: 준성.smirk
+          motion: headtilt
           with: [도윤]
           text: "이런 경우엔 축의금 얼마 해야 돼요? 인터넷에 안 나오던데."
       - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤
+          motion: tremble
           with: [준성]
           text: "……"
       - say:
@@ -215,6 +217,7 @@ scenes:
           text: "형도 조심해요. 세상 좁아요."
       - say:
           char: 준성.tired
+          motion: headtilt
           with: [도윤]
           text: "…형?"
       - say:
@@ -225,6 +228,7 @@ scenes:
           channel: system
           with: []
           text: "1층입니다. 문이 열립니다."
+      - emote: { id: 도윤, motion: droop }
       - say:
           channel: action
           with: [도윤]
@@ -244,6 +248,7 @@ scenes:
           text: "먼저 가요."
       - say:
           char: 도윤
+          motion: bow
           with: [준성]
           text: "…수고하셨습니다."
       - move: { id: 도윤, style: reset }
@@ -329,6 +334,7 @@ scenes:
           with: []
           erase: true
           text: "저도 그날 이후로는 연락을"
+      - emote: { id: 도윤, motion: droop }
       - say:
           channel: message
           side: me
@@ -365,11 +371,13 @@ scenes:
           text: "너는 걔를 몰라."
       - say:
           char: 민재
+          motion: headtilt
           with: [아진]
           text: "넌 알아?"
       - move: { id: 아진, toward: 민재, style: retreat }
       - say:
           char: 아진.awkward
+          motion: droop
           with: [민재]
           text: "……"
       - say:

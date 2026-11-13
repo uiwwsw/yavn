@@ -51,6 +51,7 @@ scenes:
       - move: { id: 도윤, toward: 준성, style: flinch }
       - say:
           char: 준성
+          motion: bow
           with: [도윤]
           text: "내선표 보고 하나씩 걸어 보는 중이었어요. 박준성입니다. 오늘부터 이 팀 맡게 됐어요."
       - say:
@@ -68,15 +69,18 @@ scenes:
           text: "[영업2팀] 윤주임: 두 분 인사 토씨 하나 안 틀리고 똑같으심ㅋㅋ 같은 군대 나오셨나"
       - say:
           char: 준성.smirk
+          motion: laugh
           with: [도윤]
           text: "그러게요. 우리 같은 군대잖아요. 그쵸, 한대리님?"
       - move: { id: 준성, toward: 도윤, style: approach }
+      - emote: { id: 도윤, motion: recoil }
       - say:
           channel: action
           with: [준성, 도윤]
           text: "준성이 도윤에게만 보이게 한쪽 눈을 찡긋한다."
       - say:
           char: 도윤.smile
+          motion: laugh
           with: [준성]
           text: "…하하. 그러게요."
       - move: { id: 준성, style: reset }
@@ -95,6 +99,7 @@ scenes:
           text: "그 화분, 집에서 가져오신 거예요?"
       - say:
           char: 준성.smirk
+          motion: laugh
           with: [도윤]
           text: "네. 사무실 공기가 별로라서요. 얘가 나보다 예민해요. 종이컵으로 반 컵, 그 이상 주면 삐져요."
       - say:
@@ -112,6 +117,7 @@ scenes:
           text: "그날… 그거요. 없던 걸로 하죠. 괜히 말 나오면 서로 좋을 거 없잖아요."
       - say:
           char: 준성
+          motion: headtilt
           with: [도윤]
           text: "무슨 날이요?"
       - move: { id: 도윤, toward: 준성, style: retreat }
@@ -130,6 +136,7 @@ scenes:
           text: "근데 내 번호는 왜 차단했어요? 회사 일로 연락할 수도 있는데."
       - say:
           char: 도윤
+          motion: droop
           with: [준성]
           text: "…풀어 놓을게요."
       - say:
@@ -138,8 +145,10 @@ scenes:
           text: "안 풀어도 돼요. 내선 있으니까."
       - say:
           char: 준성.tired
+          motion: nod
           with: [도윤]
           text: "나 이번 회사는 오래 다니고 싶어요. 그러니까 우리 그냥 일해요."
+      - emote: { id: 도윤, motion: bow }
       - say:
           char: 준성
           with: [도윤]
@@ -273,6 +282,7 @@ scenes:
           text: "도윤아! 나 씻는다. 드레스 잔금 넣었어. 영수증 또 보냈으니까 그것도 지우지 마!"
       - say:
           char: 도윤
+          motion: nod
           with: []
           text: "어. 안 지워."
       - say:
@@ -304,6 +314,7 @@ scenes:
           text: "얘 콩 못 먹잖아. 아무튼 걔가—"
       - say:
           char: 하린
+          motion: perk
           with: [민재, 아진]
           text: "나 그거 봤어. 근데 걔 아니었어, 옆에 있던 애가 팔꿈치로—"
       - say:
@@ -316,6 +327,7 @@ scenes:
           text: "어, 듣다가 잠들었어. 좋아서 잠든 거야. 진짜로."
       - say:
           char: 하린
+          motion: bounce
           with: [민재, 아진]
           text: "무슨 노래?"
       - say:
@@ -324,6 +336,7 @@ scenes:
           text: "아, 너 이런 거 안 듣잖아."
       - say:
           char: 하린
+          motion: laugh
           with: [민재, 아진]
           text: "…그치. 안 듣지."
       - say:
@@ -332,6 +345,7 @@ scenes:
           text: "나한텐 안 보냈네ㅋㅋ 아냐 괜찮아 어차피 안 들음 진짜로 안 들음"
       - say:
           char: 아진.awkward
+          motion: lean_in
           with: [하린, 민재]
           text: "하린아, 너도 들어 볼래? 한쪽."
       - choice:
@@ -348,13 +362,16 @@ scenes:
     actions:
       - say:
           char: 하린
+          motion: shake
           with: [민재, 아진]
           text: "됐어 됐어. 나 그런 거 관심 없다니까. 둘이 들어."
       - say:
           char: 아진.awkward
+          motion: nod
           with: [하린, 민재]
           text: "…응."
       - move: { id: 민재, toward: 아진, style: approach }
+      - emote: { id: 하린, motion: freeze }
       - say:
           char: 민재
           with: [하린, 아진]
@@ -365,6 +382,7 @@ scenes:
     actions:
       - say:
           char: 하린
+          motion: bounce
           with: [민재, 아진]
           text: "근데 민재야, 나한텐 왜 안 보냈어? 웃겨서 물어보는 거야."
       - say:
@@ -373,10 +391,13 @@ scenes:
           text: "너 관심 없다며. 맨날 그러잖아."
       - say:
           char: 하린
+          motion: laugh
           with: [민재, 아진]
           text: "아 맞다. 그랬지. ㅋㅋ 내가 그랬다."
+      - emote: { id: 하린, motion: droop }
       - say:
           char: 아진.awkward
+          motion: laugh
           with: [하린, 민재]
           text: "아하하… 아 웃겨. 하린이 진짜 웃겨. 하하…"
       - goto: e1_harin_night

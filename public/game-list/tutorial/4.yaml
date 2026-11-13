@@ -198,6 +198,7 @@ scenes:
       - move: { id: 상혁, toward: 해수, style: lunge }
       - say:
           char: 상혁.hollow
+          motion: sway
           with: [해수]
           text: "로그인이 안 돼. 계정이 없대. 걔도 없대. 해수야, 걔가 없대."
       - move: { id: 상혁, style: reset }
@@ -226,6 +227,7 @@ scenes:
       - char: { id: 해수, position: left, emotion: service }
       - say:
           char: 해수.service
+          motion: bow
           with: []
           text: "네, 고객님. 확인해 드릴게요."
       - say:
@@ -251,10 +253,12 @@ scenes:
       - char: { id: 해수, position: left, emotion: service }
       - say:
           char: 지영
+          motion: headtilt
           with: [해수]
           text: "너 얼굴 좋다? 잠 좀 잤나 봐."
       - say:
           char: 해수.service
+          motion: nod
           with: [지영]
           text: "네, 주임님. 푹 잤습니다."
       - say:
@@ -284,6 +288,7 @@ scenes:
           text: "띵동 — 061번 고객님, 고객센터로 오세요."
       - say:
           char: 해수.service
+          motion: bow
           with: []
           text: "네, 고객님. 확인해 드릴게요."
       - say:
@@ -332,6 +337,7 @@ scenes:
           text: "진술 녹화 · 2031.04.23 09:05 · 중랑경찰서 · 정해수(31) · 자진 출석"
       - say:
           char: 해수
+          motion: droop
           with: [은숙]
           text: "제가 했습니다."
       - say:
@@ -345,10 +351,12 @@ scenes:
           text: "증거가 없어요. 정해수 씨는 그날 집에 있었어요. 그게 제가 가진 전부예요."
       - say:
           char: 해수
+          motion: bow
           with: [은숙]
           text: "그래도 적어 주세요. 처음 날짜도요."
       - say:
           char: 은숙
+          motion: headtilt
           with: [해수]
           text: "처음이요? 그게 언젠데요."
       - say:
@@ -357,6 +365,7 @@ scenes:
           text: "2019년 4월 11일이요. 오후 두 시 오십이 분. 첫 출근 날이었어요. 그 고객님이 처음 오셨어요."
       - say:
           char: 은숙
+          motion: nod
           with: [해수]
           text: "이천십구 년, 사 월, 십일 일. 십사 시 오십이 분. …적었어요."
       - move: { id: 은숙, toward: 해수, style: approach }
@@ -366,6 +375,7 @@ scenes:
           text: "물. 이번엔 드세요."
       - say:
           char: 해수
+          motion: sigh
           with: [은숙]
           text: "네. 감사합니다."
       - move: { id: 은숙, style: reset }
@@ -378,6 +388,7 @@ scenes:
       - char: { id: 지영, position: right }
       - say:
           char: 지영
+          motion: headtilt
           with: [해수]
           text: "연필꽂이 치웠네? 볼펜은 줄까지 달아 놓고."
       - say:

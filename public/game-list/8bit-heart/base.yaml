@@ -25,6 +25,8 @@ assets:
         excited: assets/char/yunjae-excited.svg
         scared: assets/char/yunjae-scared.svg
         sad: assets/char/yunjae-sad.svg
+      emotionMotions:
+        scared: startle
     로봇:
       name: "{{android_name}}"
       placement: prompt-top
@@ -36,6 +38,8 @@ assets:
         happy: assets/char/android-happy.svg
         thinking: assets/char/android-thinking.svg
         glitch: assets/char/android-glitch.svg
+      emotionMotions:
+        glitch: tremble
     드론:
       name: "정찰 드론"
       placement: prompt-top

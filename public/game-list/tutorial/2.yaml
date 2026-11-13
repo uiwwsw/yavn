@@ -106,6 +106,7 @@ scenes:
           text: "아무것도 안 샀네. …세면대 컵에 칫솔이 세 개야. 방문은 열려 있고."
       - say:
           char: 상혁
+          motion: laugh
           with: [해수]
           text: "아, 머리끈도 봤어? 걔 거야. 놓고 갔네."
       - say:
@@ -166,6 +167,7 @@ scenes:
           text: "너도 하잖아."
       - say:
           char: 해수
+          motion: nod
           with: [상혁]
           text: "응. 나도 오늘은 안 할게."
       - say:
@@ -184,6 +186,7 @@ scenes:
       - char: { id: 은숙, position: right }
       - say:
           char: 경준
+          motion: lean_in
           with: [해수]
           delivery: whisper
           text: "형. 가림막 때문에 아래가 하나도 안 보여요. 아저씨 차 맨날 여기 세웠잖아요. 엘리베이터 가까운 데."
@@ -193,6 +196,7 @@ scenes:
           text: "실례합니다. 중랑경찰서 차은숙 경위입니다. 고객센터 분 계세요? 정해수 씨."
       - say:
           char: 경준
+          motion: startle
           with: []
           delivery: whisper
           text: "…형 이름을 왜 알아요?"
@@ -201,6 +205,7 @@ scenes:
           char: 은숙
           with: [해수]
           text: "피해자분 일로 몇 가지 여쭤볼게요. 참고인으로요. 서까지 같이 가 주시겠어요?"
+      - emote: { id: 해수, motion: nod, wait: true }
       - say:
           char: 경준
           with: []
@@ -223,6 +228,7 @@ scenes:
           text: "물 드릴까요."
       - say:
           char: 해수
+          motion: bow
           with: [은숙]
           text: "아, 괜찮습니다. 감사합니다."
       - say:
@@ -243,10 +249,12 @@ scenes:
           text: "이셨죠."
       - say:
           char: 해수
+          motion: bow
           with: [은숙]
           text: "…죄송합니다."
       - say:
           char: 은숙
+          motion: headtilt
           with: [해수]
           text: "제가 사과받을 일은 아니고요. 어제 몇 시에 퇴근하셨어요?"
       - say:
@@ -286,6 +294,7 @@ scenes:
     actions:
       - say:
           char: 은숙
+          motion: nod
           with: [해수]
           text: "네. 지하 2층이에요."
       - goto: interview_rest
@@ -298,6 +307,7 @@ scenes:
           text: "단톡방은 경준 씨가 보여 줬어요. 정해수 씨가 아침에 '11시까지 가겠습니다' 답장했던데요. 지하 주차장 얘기 바로 밑에."
       - say:
           char: 해수
+          motion: droop
           with: [은숙]
           text: "…지하 주차장이라고는 봤습니다. 죄송합니다."
       - goto: interview_rest
@@ -330,6 +340,7 @@ scenes:
           char: 은숙
           with: [해수]
           text: "오늘 아침에는 열아홉 자루였대요. 민지영 주임님이 세 봤어요. 제가 부탁해서."
+      - emote: { id: 해수, motion: shiver }
       - clearSticker: { id: pencil, leave: fadeOut }
       - say:
           char: 은숙
@@ -464,6 +475,7 @@ scenes:
     actions:
       - say:
           char: 해수
+          motion: bow
           with: []
           text: "괜찮습니다. 그대로 둘게요."
       - say:
@@ -490,6 +502,7 @@ scenes:
       - place: "4월 19일 오후 · 고객센터"
       - say:
           char: 해수.service
+          motion: bow
           with: [은숙]
           text: "고객님, 번호표를 먼저…"
       - say:
@@ -529,6 +542,7 @@ scenes:
           text: "근데 정해수 씨 빌라 현관 CCTV에는 그날 밤 정해수 씨가 한 번도 안 나와요. 들어간 것만 있고."
       - say:
           char: 해수.blank
+          motion: nod
           with: [은숙]
           text: "다시 한번 확인해 보시겠어요?"
       - move: { id: 은숙, style: reset }
@@ -542,6 +556,7 @@ scenes:
           with: [해수]
           text: "뽑았어요. 다음엔 이걸로 올게요."
 
+      - emote: { id: 해수, motion: bow, wait: true }
   rumor:
     title: "3층"
     actions:
@@ -551,6 +566,7 @@ scenes:
       - move: { id: 경준, toward: 지영, style: approach }
       - say:
           char: 경준
+          motion: lean_in
           with: [지영]
           delivery: whisper
           text: "상혁 씨 어제 3층에서 일 났대요."
@@ -560,11 +576,13 @@ scenes:
           text: "쉿."
       - say:
           char: 경준
+          motion: bounce
           with: [지영]
           delivery: whisper
           text: "화장품 코너 손님을 따라갔대요. 주차장까지. 이름 부르면서. 아는 사람이라고."
       - say:
           char: 지영.worried
+          motion: sigh
           with: [경준]
           text: "손님은 처음 보는 사람이래. 신고 들어갔어. 상혁 씨 오늘부터 안 나와. 무기한."
       - move: { id: 경준, style: reset }
@@ -584,6 +602,7 @@ scenes:
           text: "그저께 밤에는 방에 없었어요. 차에 있었대요."
       - say:
           char: 지영.worried
+          motion: headtilt
           with: [해수]
           text: "너도 얼굴이 그래. 둘 다 그래."
 

@@ -51,6 +51,7 @@ scenes:
           key: t3_tell
           prompt: "녹음기 빨간 불. 은숙이 볼펜 뚜껑을 닫는다."
           char: 해수
+          motion: freeze
           options:
             - text: "\"모르겠습니다. 죄송합니다.\""
               goto: tell_nothing
@@ -67,18 +68,21 @@ scenes:
     actions:
       - say:
           char: 해수
+          motion: bow
           with: [은숙]
           text: "모르겠습니다. 죄송합니다."
       - say:
           char: 은숙
           with: [해수]
           text: "정해수 씨 오늘만 죄송하다고 일곱 번 했어요. 세 봤어요."
+      - emote: { id: 해수, motion: bow }
       - goto: interview_end
 
   tell_truth:
     actions:
       - say:
           char: 해수
+          motion: nod
           with: [은숙]
           text: "레플라에서요. 튜토리얼 3단계에서. 연필로 찔렀습니다. 지하 2층, C-14 옆에서요."
       - move: { id: 은숙, toward: 해수, style: retreat }
@@ -96,6 +100,7 @@ scenes:
           text: "저는 술 안 마셔요."
       - say:
           char: 은숙
+          motion: nod
           with: [해수]
           text: "알아요. 술 냄새가 안 나요."
       - say:
@@ -121,6 +126,7 @@ scenes:
           text: "민지영 주임님 얘기는 다르던데요. 정해수 씨가 그날 밤 변상혁 씨 방에 없었다고 했다고. 차에 있었다고."
       - say:
           char: 은숙
+          motion: headtilt
           with: [해수]
           text: "웃는 소리로는 알리바이가 안 돼요. 그래도 적을게요."
       - move: { id: 해수, toward: 은숙, style: flinch }
@@ -150,6 +156,7 @@ scenes:
           text: "번호표 없이 온 남자 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
       - say:
           char: 해수.service
+          motion: lean_in
           with: []
           text: "번호표 뽑고 기다리세요, 고객님."
       - say:
@@ -215,10 +222,12 @@ scenes:
           text: "경찰이에요?"
       - say:
           char: 해수
+          motion: bow
           with: [태민]
           text: "아니요. 그린마트 상봉점 고객센터에서 일합니다."
       - say:
           char: 태민
+          motion: sway
           with: [해수]
           text: "…그걸 왜 말해요."
       - say:
@@ -235,6 +244,7 @@ scenes:
           text: "네?"
       - say:
           char: 태민
+          motion: laugh
           with: [해수]
           text: "튜토리얼. 여기 오는 사람은 다 그거 물어보러 와요. 근데 다 2단계야. 소리 한번 지르고 무서워서 와."
       - say:
@@ -285,6 +295,7 @@ scenes:
           text: "레플라 동시 접속자 · 2029.11.03 서버 전원 전부 차단 · 이후 1,104,331명 (변동 없음)"
       - say:
           char: 태민
+          motion: sway
           with: [해수]
           text: "서버 마흔두 대. 회계팀이 비용 줄이라고 해서 절반만 끄려고 했어요. 절반 껐는데 숫자가 안 떨어져. 그래서 다 껐어요. 안 떨어져. 지금까지."
       - set: { seen_graph: true }
@@ -326,6 +337,7 @@ scenes:
           text: "그거 끄면 어떻게 돼요?"
       - say:
           char: 태민
+          motion: slump
           with: [해수]
           text: "그쪽은 그쪽대로 가고, 이쪽은 이쪽대로 가요. 못 건너가. 그쪽에 애인 있는 사람, 그쪽에 집 산 사람, 그쪽에 죽은 엄마 살려 놓은 사람. 다 못 가요. 백십만 명."
       - say:
@@ -334,10 +346,12 @@ scenes:
           text: "건너가요? 그쪽에서 한 게, 이쪽으로요?"
       - say:
           char: 태민.afraid
+          motion: shiver
           with: [해수]
           text: "처음엔 작은 거. 컵 위치. 문 잠근 거. 그쪽에서 누가 소리를 지르면 이쪽에서 누가 그 소리를 들어요. 귀에서. 그건 몇 년 됐어요."
       - say:
           char: 태민
+          motion: lean_in
           with: [해수]
           text: "근데 지난주에 누가 큰 걸 했어요. 처음으로."
       - move: { id: 태민, toward: 해수, style: retreat }
@@ -351,6 +365,7 @@ scenes:
           text: "튜토리얼은 누가 만들었어요?"
       - say:
           char: 태민.laugh
+          motion: laugh
           with: [해수]
           text: "아무도요. 첫 빌드 켜니까 이미 있었어요. 1/5부터 5/5까지. 문구까지 그대로. 우리는 글씨체만 바꿨어. 넘기기 버튼도 우리가 단 거고."
       - say:
@@ -377,6 +392,7 @@ scenes:
       - move: { id: 태민, style: reset }
       - say:
           char: 태민
+          motion: perk
           with: [해수]
           text: "…그린마트 직원 할인 돼요? 컵라면. 박스로."
 
