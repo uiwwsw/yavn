@@ -11,7 +11,7 @@ seo:
     - "역사 비주얼노벨"
     - "추리 게임"
     - "선택형 이야기"
-  image: "assets/bg/title.svg"
+  image: "assets/share/og.png"
   imageAlt: "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
 textSpeed: 30
 autoSave: true
