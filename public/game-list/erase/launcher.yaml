@@ -1,0 +1,27 @@
+languages: [ko]
+summary: "결혼을 앞둔 도윤과 늘 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 성적 긴장·HIV 불안·자기 파괴적 생각이 나오는 4장 심리 드라마."
+thumbnail: "assets/bg/title.svg"
+tags:
+  - psychological-drama
+  - modern
+  - twist
+  - complete
+  - mature
+tagLabels:
+  psychological-drama: 심리 드라마
+  modern: 현대극
+  twist: 반전
+  complete: 완결
+  mature: 성인 주제
+showcase:
+  label: "ERASE · 4 CHAPTERS"
+  backgroundColor: "#0f1420"
+  image:
+    positionX: 65
+    positionY: 50
+    scale: 1
+    offsetX: 0
+    offsetY: 0
+translations:
+  en:
+    summary: "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A four-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts."

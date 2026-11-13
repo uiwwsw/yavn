@@ -1,0 +1,89 @@
+assets:
+  backgrounds:
+    title: assets/bg/title.svg
+    bedroom: assets/bg/bedroom.svg
+    disaster_city: assets/bg/disaster_city.svg
+    ruined_street: assets/bg/ruined_street.svg
+    android_found: assets/bg/android_found.svg
+    shelter: assets/bg/shelter.svg
+    drone_alley: assets/bg/drone_alley.svg
+    datacenter: assets/bg/datacenter.svg
+    dawn_field: assets/bg/dawn_field.svg
+    console_cheap_sticker: assets/items/console_cheap.svg
+    console_premium_sticker: assets/items/console_premium.svg
+    cpu_sticker: assets/items/cpu_chip.svg
+    iron_sticker: assets/items/soldering_iron.svg
+    battery_sticker: assets/items/battery.svg
+    memory_sticker: assets/items/memory_card.svg
+  characters:
+    윤재:
+      placement: prompt-top
+      base: assets/char/yunjae.svg
+      facing: left
+      defaultDelivery: neutral
+      emotions:
+        excited: assets/char/yunjae-excited.svg
+        scared: assets/char/yunjae-scared.svg
+        sad: assets/char/yunjae-sad.svg
+    로봇:
+      name: "{{android_name}}"
+      placement: prompt-top
+      base: assets/char/android.svg
+      facing: left
+      defaultDelivery: calm
+      emotions:
+        off: assets/char/android-off.svg
+        happy: assets/char/android-happy.svg
+        thinking: assets/char/android-thinking.svg
+        glitch: assets/char/android-glitch.svg
+    드론:
+      name: "정찰 드론"
+      placement: prompt-top
+      base: assets/char/drone.svg
+      facing: left
+  music:
+    chip_home: assets/music/chip-home.wav
+    chip_run: assets/music/chip-run.wav
+    chip_core: assets/music/chip-core.wav
+    chip_dawn: assets/music/chip-dawn.wav
+
+state:
+  android_name: "도트"
+  bought_premium: false
+  bond: 0
+  memories: 0
+  m_snack: false
+  m_promise: false
+  m_joke: false
+  kept_promise: false
+  kept_snack: false
+  kept_joke: false
+  b_battery: false
+  b_cpu: false
+  b_screen: false
+
+inventory:
+  console_cheap:
+    name: "싸구려 레트로 게임기"
+    description: "버튼이 덜컥거리고 화면은 작다. 그래서 아무도 해킹하지 않았다."
+    image: assets/items/console_cheap.svg
+    category: "부품"
+    order: 10
+  cpu_chip:
+    name: "8비트 CPU"
+    description: "게임기에서 떼어 낸 심장. 지금은 안드로이드의 머리 안에 있다."
+    image: assets/items/cpu_chip.svg
+    category: "부품"
+    order: 20
+  battery:
+    name: "건전지 묶음"
+    description: "AA 건전지 여덟 개. 편의점 계산대 밑에서 찾았다."
+    image: assets/items/battery.svg
+    category: "부품"
+    order: 30
+  memory_card:
+    name: "8KB 메모리 카드"
+    description: "세이브 파일 하나 겨우 들어가는 크기. 둘의 기억이 여기 들어 있다."
+    image: assets/items/memory_card.svg
+    category: "부품"
+    order: 40

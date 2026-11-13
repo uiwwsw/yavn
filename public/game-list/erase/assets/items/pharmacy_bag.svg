@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>약국 봉투</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M 112 112 L 288 112 L 300 352 L 100 352 Z" fill="#eef1f2" stroke="#1b1f2b" stroke-width="2.6"/>
+<path d="M 270 112 L 288 112 L 300 352 L 284 352 Z" fill="#cfd6db"/>
+<path d="M 100 352 L 120 336 L 280 336 L 300 352" fill="none" stroke="#a9b2b9" stroke-width="1.6"/>
+<path d="M 111 128 L 289 128 L 290 142 L 110 142 Z" fill="#c9d0d6"/>
+<path d="M 106 72 L 294 72 L 290 128 L 110 128 Z" fill="#f6f8f8" stroke="#1b1f2b" stroke-width="2.6"/>
+<path d="M 110 128 C 160 134 240 134 290 128" fill="none" stroke="#a9b2b9" stroke-width="1.6"/>
+<path d="M 128 74 L 132 70 M 150 74 L 154 70 M 172 74 L 176 70 M 194 74 L 198 70 M 216 74 L 220 70 M 238 74 L 242 70 M 260 74 L 264 70" stroke="#9aa3aa" stroke-width="1.4" fill="none"/>
+<path d="M 106 72 L 294 72" stroke="#3fd0c9" stroke-width="2" opacity=".55" fill="none"/>
+<path d="M 178 150 L 222 150 M 170 166 L 230 166" stroke="#9aa3aa" stroke-width="2" fill="none"/>
+<g transform="rotate(-7 220 250)">
+<path d="M 168 176 L 262 176 L 262 316 L 254 308 L 246 316 L 238 308 L 230 316 L 222 308 L 214 316 L 206 308 L 198 316 L 190 308 L 182 316 L 174 308 L 168 316 Z" fill="#fbfbf7" stroke="#1b1f2b" stroke-width="2"/>
+<path d="M 168 226 L 262 226" stroke="#c9cdd0" stroke-width="1.4" fill="none"/>
+<path d="M 180 192 L 230 192 M 180 204 L 214 204 M 180 240 L 248 240 M 180 252 L 236 252 M 180 264 L 248 264 M 180 276 L 222 276" stroke="#8d949b" stroke-width="2" fill="none"/>
+<path d="M 220 292 L 250 292" stroke="#3a4250" stroke-width="3" fill="none"/>
+<path d="M 204 170 L 204 186 M 226 170 L 226 186" stroke="#7d868e" stroke-width="2.4" fill="none"/>
+<path d="M 202 172 L 228 172" stroke="#7d868e" stroke-width="2" fill="none"/>
+</g>
+</g></svg>

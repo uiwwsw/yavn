@@ -40,7 +40,7 @@ export type DialogueDelivery =
   | 'shout'
   | 'sad'
   | 'deduction';
-export type DialogueChannel = 'dialogue' | 'narration' | 'record' | 'system' | 'thought' | 'action';
+export type DialogueChannel = 'dialogue' | 'narration' | 'record' | 'system' | 'thought' | 'action' | 'message' | 'card';
 
 export type CharacterFramingPreset = {
   scale: number;
@@ -202,6 +202,10 @@ export type SayAction = {
     promptHeight?: number;
     wait?: number;
     unskippable?: boolean;
+    /** message channel: which side of the chat the bubble sits on. */
+    side?: 'me' | 'them';
+    /** Erase the line on screen once it has been read (message, record, thought, …). */
+    erase?: boolean;
     autoAdvance?: number;
   };
 };

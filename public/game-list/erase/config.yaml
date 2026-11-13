@@ -1,0 +1,67 @@
+title: "ERASE"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "결혼을 앞둔 회사원 도윤과, 언제나 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 기억을 지우는 시술 ERASE를 둘러싼 4장 심리 드라마."
+  keywords:
+    - "심리 드라마"
+    - "비주얼노벨"
+    - "반전"
+    - "현대극"
+  image: "assets/bg/title.svg"
+  imageAlt: "밤의 도시와 반쯤 지워진 사진이 떠 있는 휴대폰 화면"
+textSpeed: 32
+autoSave: true
+clickToInstant: true
+ui:
+  template: cinematic-noir
+legalNotices:
+  - id: content-warning
+    title: "내용 안내"
+    text: "이 작품에는 성적 긴장(묘사 없음), HIV에 대한 불안, 자기 파괴적 생각과 옥상 장면(결과·방법 묘사 없음)이 나옵니다. 힘든 마음이 들면 자살예방 상담전화 109(24시간)에 연락할 수 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+startScreen:
+  enabled: true
+  music: assets/music/cold-room.wav
+  image: assets/bg/title.svg
+  imagePosition: "60% 50%"
+  mobileImagePosition: "72% 50%"
+  showTitle: true
+  titleColor: "#e8eef2"
+  startButtonText: "눈을 뜬다"
+  buttonPosition: bottom-left
+  eyebrow: "성적 긴장 · HIV 불안 · 자기 파괴적 생각이 나옵니다"
+  subtitle: "남기지만 않으면, 아무 일도 아니야."
+  scene:
+    layout: split
+    motion: drift
+    duration: 30000
+    parallax: 10
+    particles: dust
+    intensity: 0.35
+    fog: true
+    light: breathe
+    accent: "#3fd0c9"
+endings:
+  erase_loop:
+    title: "ERASE"
+    message: "수술대 위의 얼굴은 열여덟의 하린이었다. 그리고 그녀는, 다시 도윤이 된다."
+    epilogue: "눈 뜨면… 새로 시작해요. 힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 연락할 수 있습니다."
+    background: surgery_reveal
+    music: cold_room
+    tone: tragic
+  kept_photo:
+    title: "남겨진 사진"
+    message: "도윤은 동의서 대신 보건소 번호표를 쥐었다. 사진 속 아이는 여전히 웃고 있다."
+    epilogue: "지우지 않은 하루가 하나 생겼다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+    background: clinic_hall
+    music: wind
+    tone: hopeful
+  unfinished:
+    title: "완성되지 않은 사람"
+    message: "지수는 반지를 탁자에 두고 나갔다. 도윤은 그 장면을 지우지 않았다."
+    epilogue: "완성은 없었다. 대신 처음으로, 숨긴 것이 없는 밤이었다. 109(자살예방 상담전화)는 24시간 열려 있습니다."
+    background: office_night
+    music: wind
+    tone: mystery
+defaultEnding: erase_loop

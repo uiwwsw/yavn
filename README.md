@@ -1086,6 +1086,21 @@ scenes:
 - 배경 11장, 인물 8명(표정 포함 19장), 증거물 12종은 모두 이 저장소에서 직접 그린 SVG입니다. 배경음 4곡은 외부 샘플 없이 `scripts/generate-muwon-score.py`로 합성합니다.
 - 기획·인물·장 구성·결말 조건·미술 규격은 [`docs/MUWON_GAME_BIBLE.ko.md`](docs/MUWON_GAME_BIBLE.ko.md)에 있고, 결말 연결·실패 복귀·에셋 존재는 `src/muwonGame.test.ts`가 검사합니다.
 
+## ERASE · ERASE: 먼저 지운 사람
+
+- `/game-list/erase/`(4장)와 `/game-list/erase-first/`(5장)는 같은 인물로 만든 두 편의 심리 드라마입니다. 결혼을 앞둔 회사원 도윤과 열여덟 하린, 지우면 끝난다고 믿는 두 사람의 이야기가 기억·정체성을 지우는 가상의 시술 ERASE 앞에서 만납니다. 두 번째 판은 도윤이 먼저 상대를 협박하는 더 어두운 구성입니다.
+- 성적 긴장(묘사 없음), HIV에 대한 불안, 자기 파괴적 생각과 옥상 장면(결과·방법 묘사 없음)이 나옵니다. 시작 화면과 법적 고지에 내용 안내를, 엔딩에 자살예방 상담전화 109와 보건소 익명 HIV 검사 안내를 둡니다. HIV는 벌로 쓰지 않고, 상대의 부재는 응징으로 그리지 않습니다.
+- 전체 화면 자막 카드(`say.channel: card`)로 현재·과거를 오가고, 휴대폰 메시지 채널(`say.channel: message`)과 지워지는 연출(`say.erase`)로 흔적을 지우는 손맛을 만듭니다. 그림은 두 편이 `erase/assets`를 함께 씁니다.
+- 기획: [`docs/ERASE_GAME_BIBLE.ko.md`](docs/ERASE_GAME_BIBLE.ko.md)
+
+## 8비트 심장
+
+- `/game-list/8bit-heart/`(5장)는 AI 재난으로 모든 칩이 미쳐 버린 날, 유일하게 멀쩡한 싸구려 레트로 게임기의 CPU로 고장 난 안드로이드를 깨우는 소년의 생존기입니다. 처음에 비싼 기기를 사면 재난 날 그 기기가 폭주합니다. 안드로이드 이름은 플레이어가 짓고, 마지막에는 8KB 메모리 카드에 어떤 기억을 남길지 고릅니다.
+- 그림은 16색 픽셀 아트 SVG, 음악은 사각파 칩튠입니다.
+- 기획: [`docs/8BIT_HEART_GAME_BIBLE.ko.md`](docs/8BIT_HEART_GAME_BIBLE.ko.md)
+
+배경음 8곡은 외부 샘플 없이 `scripts/generate-story-scores.py`로 합성합니다. 세 작품의 구조와 모든 결말은 `src/userStories.test.ts`가 실제 엔진으로 끝까지 플레이해 확인합니다.
+
 ## 렌 Live2D 대화 데모
 
 - `/game-list/live2dtest/`에서 표정 인사, 손끝을 따라오는 시선, 가까워지는 카메라와 작별을 선택할 수 있습니다. 각 체험에서 처음 대화로 돌아가거나 엔딩으로 마무리합니다.

@@ -1,0 +1,132 @@
+chapterTitle: "붕괴"
+
+script:
+  - scene: absent
+  - scene: house_enter
+
+scenes:
+  absent:
+    actions:
+      - say:
+          channel: card
+          with: []
+          text: "3막 · 붕괴"
+      - bg: { id: office, transition: fade, duration: 800 }
+      - music: static
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "준성이 출근하지 않는다. 하루, 이틀, 나흘. 메신저 상태는 '자리 비움'에서 멈췄다."
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤
+          with: []
+          text: "됐어. 끝났어."
+      - say:
+          channel: thought
+          with: []
+          text: "안도는 반나절도 못 갔다. 끝난 게 아니라, 모르게 된 거다. 모르는 건 더 무섭다."
+      - say:
+          channel: action
+          with: []
+          text: "인사팀 주소록에서 준성의 주소를 본다. 퇴근길, 지하철을 거꾸로 탄다."
+
+  house_enter:
+    actions:
+      - bg: { id: junseong_house, transition: fade, duration: 1000 }
+      - music: cold_room
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "문이 조금 열려 있다. 부르는 소리에 대답이 없다. 어수선한 방에 햇빛이 블라인드 모양으로 누워 있다."
+      - goto: f2_look
+
+  f2_look:
+    actions:
+      - choice:
+          key: f2_look
+          presentation: explore
+          prompt: "아무도 없다. 무엇을 보게 될까?"
+          with: []
+          camera: wide
+          options:
+            - text: "약 봉투"
+              at: { x: 40, y: 60 }
+              when: { var: f2_bag, op: eq, value: false }
+              goto: f2_bag_scene
+            - text: "병원 서류"
+              at: { x: 62, y: 55 }
+              when: { var: f2_papers, op: eq, value: false }
+              goto: f2_papers_scene
+            - text: "달력"
+              at: { x: 75, y: 25 }
+              when: { var: f2_note, op: eq, value: false }
+              goto: f2_note_scene
+            - text: "방을 나선다"
+              when:
+                all:
+                  - { var: f2_bag, op: eq, value: true }
+                  - { var: f2_papers, op: eq, value: true }
+                  - { var: f2_note, op: eq, value: true }
+              goto: f2_leave
+
+  f2_bag_scene:
+    actions:
+      - sticker:
+          id: f2_bag
+          image: pharmacy_bag_sticker
+          x: 50
+          y: 32
+          width: "clamp(150px, 20%, 260px)"
+          enter: fadeIn
+          inputLockMs: 400
+      - say:
+          channel: narration
+          with: []
+          text: "약국 봉투. 한 달 치 처방. 복약 시간: 매일 밤 10시. 봉투가 반쯤 비었다."
+      - get: pharmacy_bag
+      - clearSticker: { id: f2_bag, leave: fadeOut }
+      - set: { f2_bag: true }
+      - goto: f2_look
+
+  f2_papers_scene:
+    actions:
+      - say:
+          channel: narration
+          with: []
+          text: "감염내과 진료 기록. HIV 치료 중. 바이러스 '미검출' 칸에 형광펜이 그어져 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "그는 이미 이렇게 살아가고 있었다. 약을 먹고, 진료를 받고, 출근을 하고. 아무에게도 벌이 아니었다."
+      - set: { f2_papers: true }
+      - goto: f2_look
+
+  f2_note_scene:
+    actions:
+      - say:
+          channel: narration
+          with: []
+          text: "달력에 붙은 메모. '오늘 약 먹었음.' 그 아래 날짜 하나에 동그라미. 메모는 그날에서 끝난다."
+      - set: { f2_note: true }
+      - goto: f2_look
+
+  f2_leave:
+    actions:
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤.panic
+          with: []
+          text: "…형?"
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "대답은 없다. 준성은 없다. 떠난 건지, 어딘가에 있는 건지, 아무것도 확정되지 않는다."
+      - say:
+          channel: thought
+          with: []
+          text: "내가 한 말이 이 방까지 왔을까. 모른다. 모르는 채로 살아야 한다."
+      - goto: /3.yaml

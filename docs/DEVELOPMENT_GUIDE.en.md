@@ -85,3 +85,8 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 - An `input` without `correct` is free text; `saveAs` is required, with optional `defaultValue` and `maxLength` (default 12).
 - `{{var}}` placeholders fill dialogue, prompts, options, character `name`, game-over and ending text from state. `{{var|은}}` attaches the Korean particle that agrees with the value's final sound.
 - Settings offers three manual save slots, and library cards show a resumable save and found endings.
+
+## Caption cards, phone messages and three new stories (2026-11-13)
+
+- `say.channel: card` shows a full-screen caption card (time jumps, title drops, blackouts); `say.channel: message` renders a phone chat bubble with `say.side: me | them`; `say.erase: true` strikes and wipes a line after it is shown.
+- New games built from the owner's stories: ERASE (4 chapters), ERASE: First to Erase (5 chapters) and 8-bit Heart (5 chapters). The ERASE pair carries content notes (sexual tension without description, HIV anxiety, self-destructive thoughts) with crisis-line and anonymous testing information.

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>청첩장</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<g transform="rotate(8 200 200)">
+<path d="M 92 120 L 312 120 L 312 330 L 92 330 Z" fill="#d9d2c4" stroke="#1b1f2b" stroke-width="2.4"/>
+<path d="M 92 120 L 202 214 L 312 120" fill="none" stroke="#1b1f2b" stroke-width="2" opacity=".6"/>
+<path d="M 92 330 L 182 246 M 312 330 L 222 246" fill="none" stroke="#a89f90" stroke-width="1.6"/>
+</g>
+<g transform="rotate(-5 200 200)">
+<path d="M 108 58 L 290 58 L 290 346 L 108 346 Z" fill="#f2ede3" stroke="#1b1f2b" stroke-width="2.6"/>
+<path d="M 118 68 L 280 68 L 280 336 L 118 336 Z" fill="none" stroke="#c4a35c" stroke-width="1.4"/>
+<path d="M 132 84 L 266 84 L 266 214 L 132 214 Z" fill="#9aa9b4" stroke="#1b1f2b" stroke-width="2"/>
+<path d="M 132 172 C 170 160 220 162 266 176 L 266 214 L 132 214 Z" fill="#7e8f9b"/>
+<circle cx="236" cy="112" r="14" fill="#e8eef2" opacity=".55"/>
+<path d="M 166 214 C 164 190 170 174 184 168 C 176 162 172 152 174 142 C 176 128 190 122 200 128 C 210 134 210 152 202 162 C 214 168 220 186 218 214 Z" fill="#2a3442"/>
+<path d="M 206 214 C 206 194 212 180 224 174 C 216 166 214 154 218 144 C 222 134 236 132 242 142 C 248 152 244 166 236 172 C 250 178 256 196 256 214 Z" fill="#1f2734"/>
+<path d="M 214 150 C 222 140 236 140 242 150 C 244 160 248 168 252 172" fill="none" stroke="#1f2734" stroke-width="5"/>
+<path d="M 154 236 L 244 236" stroke="#5a5f6a" stroke-width="3" fill="none"/>
+<path d="M 170 254 L 228 254" stroke="#8b8f98" stroke-width="2" fill="none"/>
+<circle cx="199" cy="272" r="4" fill="none" stroke="#c4a35c" stroke-width="1.6"/>
+<path d="M 146 292 L 252 292 M 158 306 L 240 306 M 172 320 L 226 320" stroke="#a3a7ae" stroke-width="1.8" fill="none"/>
+<path d="M 108 58 L 290 58" stroke="#3fd0c9" stroke-width="2" opacity=".6" fill="none"/>
+</g></g></svg>

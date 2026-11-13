@@ -1,0 +1,122 @@
+chapterTitle: "과열과 은폐"
+
+script:
+  - scene: open
+  - scene: club
+
+scenes:
+  open:
+    actions:
+      - bg: { id: surgery, transition: fade, duration: 1200 }
+      - music: cold_room
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "수술대. 시트 아래 누군가 숨을 고른다. 얼굴은 보이지 않는다."
+      - say:
+          char: 의사
+          with: []
+          text: "새로운 삶이 시작될 거예요. 걱정 마세요."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: card
+          with: []
+          text: "ERASE\n먼저 지운 사람"
+      - say:
+          channel: card
+          with: []
+          text: "1막 · 과열과 은폐"
+
+  club:
+    actions:
+      - bg: { id: club, transition: fade, duration: 800 }
+      - music: neon
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "클럽. 조명이 바뀔 때마다 얼굴들이 지워졌다 다시 그려진다."
+      - say:
+          channel: narration
+          with: []
+          text: "한 여자가 도윤의 넥타이를 손가락에 감는다. 숨이 닿는 거리. 그녀가 원한다는 건 누구라도 안다."
+      - char: { id: 도윤, position: center }
+      - say:
+          char: 도윤.smile
+          with: []
+          text: "난 다 좋아해."
+      - say:
+          channel: thought
+          with: []
+          text: "거짓말은 아니다. 다만 전부도 아니다. 전부를 말하면 안 된다."
+      - say:
+          channel: narration
+          with: []
+          text: "그녀가 화장실에 간 사이, 바 끝에서 한 남자가 잔을 든다. 도윤은 그쪽으로 걸어간다."
+      - char: { id: 준성, position: right }
+      - say:
+          char: 준성.smirk
+          with: [도윤]
+          text: "아까 그 여자분은요?"
+      - say:
+          char: 도윤.smile
+          with: [준성]
+          text: "그쪽이 더 재밌어 보여서."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: card
+          with: []
+          text: "2차"
+      - bg: { id: club, transition: fade, duration: 700 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "새벽, 다시 클럽 앞. 아는 얼굴 몇이 담배를 피우고 있다. 그중 하나가 준성과 도윤을 번갈아 본다."
+      - say:
+          channel: narration
+          with: []
+          text: "누가 웃으며 묻는다. 둘이 언제부터 그렇게 친했어?"
+      - choice:
+          key: f0_public
+          prompt: "모두가 도윤의 대답을 본다."
+          with: [준성]
+          options:
+            - text: "\"형, 농담이죠.\" 선을 긋는다"
+              add: { cruelty: 1 }
+              goto: f0_line
+            - text: "\"오늘 처음 봤어요.\" 웃으며 넘긴다"
+              goto: f0_laugh
+
+  f0_line:
+    actions:
+      - say:
+          char: 도윤.smile
+          with: [준성]
+          text: "형, 농담이죠. 저 그런 쪽 아닌 거 알잖아요."
+      - say:
+          char: 준성.tired
+          with: [도윤]
+          text: "…그래요. 농담이에요."
+      - say:
+          channel: thought
+          with: [준성]
+          text: "그는 남자를 좋아한다. 그 사실만큼은 절대로 노출되면 안 된다. 취향이 아니라 이미지의 문제다."
+      - goto: /1.yaml
+
+  f0_laugh:
+    actions:
+      - say:
+          char: 도윤.smile
+          with: [준성]
+          text: "오늘 처음 봤어요. 술 취한 사람끼리 친한 척한 거죠."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "처음 본 사이치고는 많이 웃었네요."
+      - say:
+          channel: thought
+          with: [준성]
+          text: "아무도 모르게. 그게 오늘 밤의 유일한 규칙이었다."
+      - goto: /1.yaml

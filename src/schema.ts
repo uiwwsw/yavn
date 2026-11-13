@@ -15,7 +15,7 @@ export const dialogueDeliverySchema = z.enum([
   'sad',
   'deduction',
 ]);
-export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system', 'thought', 'action']);
+export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system', 'thought', 'action', 'message', 'card']);
 
 export const cameraShotSchema = z.enum(['wide', 'medium', 'close', 'reaction']);
 export const cameraTransitionSchema = z.enum(['cut', 'push', 'pan']);
@@ -313,6 +313,8 @@ const actionBodySchema = z.union([
       promptHeight: promptHeightSchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
       unskippable: z.boolean().optional(),
+      side: z.enum(['me', 'them']).optional(),
+      erase: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
     }).refine(say => !(say.continueLabel && say.autoAdvance), {
       message: 'An explicit player action cannot auto-advance',

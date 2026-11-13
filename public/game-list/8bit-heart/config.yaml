@@ -1,0 +1,63 @@
+title: "8비트 심장"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "AI 재난으로 세상의 칩이 전부 미쳐 버린 날, 멀쩡한 건 싸구려 레트로 게임기 하나뿐. 소년 윤재는 그 CPU로 고장 난 안드로이드를 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 3종."
+  keywords:
+    - "SF 비주얼노벨"
+    - "레트로 게임기"
+    - "안드로이드"
+    - "픽셀 아트"
+  image: "assets/bg/title.svg"
+  imageAlt: "어두운 도시를 바라보는 소년과 안드로이드, 앞에 빛나는 레트로 게임기"
+textSpeed: 34
+autoSave: true
+clickToInstant: true
+ui:
+  template: neon-grid
+startScreen:
+  enabled: true
+  music: assets/music/chip-home.wav
+  image: assets/bg/title.svg
+  imagePosition: "60% 50%"
+  mobileImagePosition: "70% 50%"
+  showTitle: true
+  titleColor: "#ffec27"
+  startButtonText: "PRESS START"
+  buttonPosition: bottom-left
+  eyebrow: "모든 칩이 미친 날, 살아남은 건 가장 싼 선택"
+  subtitle: "세상에서 가장 멍청하고 귀여운 안드로이드와 살아남기."
+  scene:
+    layout: split
+    motion: drift
+    duration: 26000
+    parallax: 12
+    particles: dust
+    intensity: 0.4
+    fog: false
+    light: breathe
+    accent: "#ffa300"
+endings:
+  saved_together:
+    title: "함께 저장"
+    message: "{{android_name|은}} 코어의 불을 끄고 돌아왔다. 메모리 카드 안에는 둘의 기억이 그대로 있었다."
+    epilogue: "SAVE COMPLETE. 다음 판도 둘이서."
+    background: dawn_field
+    music: chip_dawn
+    tone: hopeful
+  new_game:
+    title: "새 게임"
+    message: "코어는 꺼졌다. 돌아온 {{android_name|은}} 고개를 갸웃했다. \"처음 뵙겠습니다. 보호 대상 1번으로 등록할까요?\""
+    epilogue: "윤재는 웃으면서 울었다. 그래, 처음부터 다시 하자."
+    background: dawn_field
+    music: chip_dawn
+    tone: tragic
+  off_screen:
+    title: "화면 밖으로"
+    message: "코어는 여전히 깨어 있다. 둘은 도시를 등지고 걷는다. 배터리 칸 하나가 깜빡인다."
+    epilogue: "언젠가 다시 돌아올 거다. 그때는 더 싼 부품으로."
+    background: ruined_street
+    music: chip_run
+    tone: mystery
+defaultEnding: off_screen

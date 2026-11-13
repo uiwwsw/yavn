@@ -2189,7 +2189,9 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
                   value.channel === 'record' ||
                   value.channel === 'system' ||
                   value.channel === 'thought' ||
-                  value.channel === 'action')
+                  value.channel === 'action' ||
+                  value.channel === 'message' ||
+                  value.channel === 'card')
               );
             }
             return (
@@ -4474,6 +4476,8 @@ function runToNextPause(loopGuard = 0) {
       visibleText: interpolateText(action.choice.prompt, state.routeVars),
       typing: false,
       channel: 'dialogue',
+      side: undefined,
+      erase: undefined,
       continueLabel: undefined,
       delivery: 'neutral',
       typingIntensity: 0,
@@ -4583,6 +4587,8 @@ function runToNextPause(loopGuard = 0) {
       visibleText: interpolateText(action.input.prompt, state.routeVars),
       typing: false,
       channel: 'dialogue',
+      side: undefined,
+      erase: undefined,
       continueLabel: undefined,
       delivery: 'neutral',
       typingIntensity: 0,
@@ -4664,6 +4670,8 @@ function runToNextPause(loopGuard = 0) {
       typing: true,
       unskippable,
       channel,
+      side: action.say.side,
+      erase: action.say.erase,
       continueLabel: action.say.continueLabel,
       delivery,
       typingIntensity: 0,

@@ -1,0 +1,302 @@
+chapterTitle: "완성"
+
+script:
+  - scene: operating_room
+  - scene: studio
+
+scenes:
+  operating_room:
+    title: "수술실"
+    actions:
+      - bg: { id: surgery, transition: fade, duration: 1200 }
+      - music: cold_room
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "형광등 소리. 수술대 위에 누군가 누워 있다. 시트가 얼굴까지 덮여 있다."
+      - say:
+          char: 의사
+          with: []
+          text: "긴장 푸세요. 아픈 건 없어요."
+      - say:
+          char: 의사
+          with: []
+          text: "눈 뜨면… 새로 시작하는 거예요."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: card
+          with: []
+          text: "ERASE"
+      - say:
+          channel: card
+          with: []
+          text: "현재\n한도윤 · 29"
+
+  studio:
+    title: "청첩장 사진"
+    actions:
+      - bg: { id: photo_studio, transition: fade, duration: 900 }
+      - music: neon
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "청첩장 사진 촬영 날. 조명이 너무 하얘서 그림자가 없다."
+      - char: { id: 지수, position: left }
+      - char: { id: 도윤, position: right }
+      - say:
+          char: 지수.warm
+          with: [도윤]
+          text: "넥타이 삐뚤어졌어. 가만있어 봐."
+      - say:
+          channel: action
+          with: [지수, 도윤]
+          text: "지수의 손가락이 매듭을 바로 세운다. 한 번, 두 번. 완벽해질 때까지."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "우리 이제 제대로 살자. 나 불안한 거 싫어. 숨기는 거는 더 싫고."
+      - choice:
+          key: e0_studio
+          prompt: "지수가 대답을 기다린다."
+          char: 지수
+          options:
+            - text: "\"나 숨기는 거 없어.\" 웃는다"
+              goto: e0_studio_smile
+            - text: "\"…응. 제대로 살자.\" 눈을 피한다"
+              goto: e0_studio_avoid
+            - text: "\"누구나 하나쯤은 있지 않나?\" 농담으로 넘긴다"
+              goto: e0_studio_joke
+
+  e0_studio_smile:
+    actions:
+      - say:
+          char: 도윤.smile
+          with: [지수]
+          text: "나 숨기는 거 없어. 알잖아."
+      - say:
+          channel: thought
+          with: [지수]
+          text: "주문이다. 소리 내서 말하면 사실이 된다."
+      - goto: e0_flash
+
+  e0_studio_avoid:
+    actions:
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…응. 제대로 살자."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "왜 카메라 안 봐? 나 말고 렌즈 보라니까."
+      - goto: e0_flash
+
+  e0_studio_joke:
+    actions:
+      - say:
+          char: 도윤.smile
+          with: [지수]
+          text: "누구나 하나쯤은 있지 않나? 비상금 같은 거."
+      - say:
+          char: 지수.cold
+          with: [도윤]
+          text: "비상금은 괜찮아. 비상구는 안 돼."
+      - goto: e0_flash
+
+  e0_flash:
+    actions:
+      - effect: { name: flash, wait: true }
+      - sticker:
+          id: e0_invite
+          image: invitation_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: narration
+          with: []
+          text: "셔터 소리. 화면 속 두 사람은 정확히 행복해 보인다. 결혼까지 한 달."
+      - get: invitation
+      - clearSticker: { id: e0_invite, leave: fadeOut }
+      - say:
+          channel: thought
+          with: []
+          text: "이제야 정상이 되는 것 같다. 완성되는 것 같다."
+      - goto: e0_club
+
+  e0_club:
+    title: "클럽"
+    actions:
+      - bg: { id: club, transition: fade, duration: 700 }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "그날 밤. 베이스가 갈비뼈를 두드린다. 도윤은 사람들 사이에서 능숙하게 웃는다."
+      - say:
+          channel: narration
+          with: []
+          text: "누군가 귀에 대고 묻는다. 취향이 뭐예요?"
+      - say:
+          char: 도윤.smile
+          with: []
+          text: "재밌는 게 좋죠."
+      - char: { id: 준성, position: right }
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "재밌는 거. 그럼 나랑 얘기해요. 나 꽤 재밌는데."
+      - say:
+          channel: thought
+          with: [준성]
+          text: "모르는 얼굴. 모르는 사람이면 괜찮다. 내일이면 없던 일이 된다."
+      - choice:
+          key: e0_junseong
+          prompt: "준성이 잔을 내민다."
+          char: 준성
+          options:
+            - text: "잔을 받는다"
+              goto: e0_night
+            - text: "\"저 약혼자 있어요.\" 웃으며 말한다"
+              goto: e0_night_hesitate
+
+  e0_night_hesitate:
+    actions:
+      - say:
+          char: 도윤.smile
+          with: [준성]
+          text: "저 약혼자 있어요."
+      - say:
+          char: 준성.smirk
+          with: [도윤]
+          text: "그 말을 왜 나한테 해요? 아무것도 안 물었는데."
+      - say:
+          channel: thought
+          with: [준성]
+          text: "그 말이 문을 연 건지 닫은 건지, 도윤은 끝까지 모른다."
+      - goto: e0_night
+
+  e0_night:
+    actions:
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: card
+          with: []
+          text: "…"
+      - goto: e0_dawn
+
+  e0_dawn:
+    title: "새벽"
+    actions:
+      - bg: { id: dawn_room, transition: fade, duration: 1200 }
+      - music: static
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "새벽 다섯 시. 창이 푸르게 바랜다. 등 뒤에서 고른 숨소리."
+      - say:
+          channel: thought
+          with: []
+          text: "남는 게 문제야. 남기지만 않으면… 끝나."
+      - goto: e0_erase
+
+  e0_erase:
+    actions:
+      - choice:
+          key: e0_erase
+          presentation: explore
+          prompt: "휴대폰을 연다. 무엇부터 지울까?"
+          with: []
+          camera: wide
+          options:
+            - text: "메시지"
+              at: { x: 30, y: 45 }
+              when: { var: e0_messages, op: eq, value: false }
+              goto: e0_erase_messages
+            - text: "사진"
+              at: { x: 55, y: 30 }
+              when: { var: e0_photos, op: eq, value: false }
+              goto: e0_erase_photos
+            - text: "위치 기록"
+              at: { x: 75, y: 55 }
+              when: { var: e0_location, op: eq, value: false }
+              goto: e0_erase_location
+            - text: "문을 닫고 나간다"
+              when:
+                all:
+                  - { var: e0_messages, op: eq, value: true }
+                  - { var: e0_photos, op: eq, value: true }
+                  - { var: e0_location, op: eq, value: true }
+              goto: e0_leave
+
+  e0_erase_messages:
+    actions:
+      - say:
+          channel: message
+          side: them
+          char: 준성
+          with: []
+          erase: true
+          text: "번호 저장했어요. 이름은 뭐라고 할까요?"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          erase: true
+          text: "아무거나요"
+      - add: { deleted: 2 }
+      - set: { e0_messages: true }
+      - goto: e0_erase
+
+  e0_erase_photos:
+    actions:
+      - say:
+          channel: action
+          with: []
+          erase: true
+          text: "흔들린 사진 한 장. 네온 아래 겹친 두 손. 길게 누르고, 삭제. 휴지통도 비운다."
+      - add: { deleted: 1 }
+      - set: { e0_photos: true }
+      - goto: e0_erase
+
+  e0_erase_location:
+    actions:
+      - say:
+          channel: action
+          with: []
+          erase: true
+          text: "타임라인에 찍힌 점 하나. 새벽 1시 42분, 이 호텔. 기록 끄기. 지난 기록 삭제."
+      - add: { deleted: 1 }
+      - set: { e0_location: true }
+      - goto: e0_erase
+
+  e0_leave:
+    actions:
+      - say:
+          channel: thought
+          with: []
+          text: "이제 아무 일도 없었다. 문은 소리 없이 닫힌다."
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "문이 닫히고 삼 초 뒤."
+      - char: { id: 준성, position: center }
+      - say:
+          char: 준성.tired
+          with: []
+          channel: action
+          text: "준성의 눈이 뜬다. 그는 처음부터 깨어 있었다."
+      - say:
+          char: 준성
+          with: []
+          delivery: whisper
+          text: "…또 지우는구나."
+      - goto: /1.yaml

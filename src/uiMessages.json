@@ -329,5 +329,6 @@
   "덮어쓰기": "Overwrite",
   "저장": "Save",
   "불러오기": "Load",
-  "이어서 읽을 수 있음": "Continue available"
+  "이어서 읽을 수 있음": "Continue available",
+  "메시지": "Message"
 }

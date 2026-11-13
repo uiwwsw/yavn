@@ -34,6 +34,8 @@ type DialogState = {
   typing: boolean;
   unskippable: boolean;
   channel: DialogueChannel;
+  side?: 'me' | 'them';
+  erase?: boolean;
   continueLabel?: string;
   delivery: DialogueDelivery;
   typingIntensity: number;
