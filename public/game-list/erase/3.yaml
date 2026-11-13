@@ -873,6 +873,30 @@ scenes:
           with: [도윤]
           text: "아직 정리가 안 돼서 그래. 미워하는 것도 순서가 있어."
       - say:
+          char: 도윤
+          with: [지수]
+          text: "지수야."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "응."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "나 네가 화내는 게 차라리 나아. 지금 이게 제일 너 같아서."
+      - say:
+          char: 지수.cold
+          with: [도윤]
+          text: "그 말 하지 마."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "그 말 들으면 내가 또 네 편 들게 되잖아."
+      - say:
+          char: 도윤.hollow
+          with: [지수]
+          text: "……."
+      - say:
           char: 지수
           with: [도윤]
           text: "오늘은 내가 소파에서 잘게."

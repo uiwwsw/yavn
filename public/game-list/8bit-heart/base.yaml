@@ -46,6 +46,8 @@ assets:
       base: assets/char/assistant.svg
       facing: front
       defaultDelivery: calm
+      # A ceiling unit, not a person: shrink it so the whole device reads at phone width.
+      calibration: { scale: 0.55 }
       emotions:
         ad: assets/char/assistant-ad.svg
         glitch: assets/char/assistant-glitch.svg

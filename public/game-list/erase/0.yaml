@@ -152,6 +152,50 @@ scenes:
           with: [도윤]
           text: "안 버려. 먹을 거야. 맛없는데 먹을 거야."
       - say:
+          char: 도윤
+          with: [지수]
+          text: "너 어제 몇 시에 잤어."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "왜."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "눈 밑이 어제랑 달라."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "…네 시."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "뭐 했는데."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "좌석표. 이모랑 큰어머니를 떼어 놔야 돼서."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "그거 내가 한다고 했잖아."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "네가 하면 둘이 붙어."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "…붙으면 어때서."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "작년 추석에 한 번 붙었어. 그 뒤로 우리 집은 명절이 두 개야."
+      - say:
+          char: 도윤.smile
+          with: [지수]
+          text: "…아. 그 명절."
+      - say:
           char: 지수
           with: [도윤]
           text: "자, 이제 일 얘기. 식대가 일 인당 68,000원이고, 보증 인원이 200명이래."
@@ -217,6 +261,52 @@ scenes:
           with: [도윤]
           text: "알아. 그래서 안 끊어."
       - say:
+          char: 도윤
+          with: [지수]
+          text: "어머니 무릎은 좀 어떠셔."
+      - say:
+          char: 지수
+          motion: freeze
+          with: [도윤]
+          text: "…그건 왜 물어봐."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "지난번에 계단에서 두 번 쉬셨잖아."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "…그걸 봤어?"
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "봤지."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "주사 맞으셨대. 한 달 뒤에 또 맞아야 하고."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "식장 엘리베이터 있는 데로 고른 거, 그래서 그런 거지."
+      - say:
+          char: 지수
+          motion: freeze
+          with: [도윤]
+          text: "……."
+      - say:
+          char: 지수.warm
+          with: [도윤]
+          text: "너 가끔 그러지 마. 사람 헷갈리게."
+      - say:
+          char: 도윤.smile
+          with: [지수]
+          text: "뭘 헷갈려."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "몰라."
+      - say:
           char: 지수
           with: [도윤]
           text: "…그리고 혼주석 얘기 또 하시더라."
@@ -272,6 +362,31 @@ scenes:
           char: 지수
           with: [도윤]
           text: "나한텐 났어."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "너도 내 양말 짝 안 맞춰 놓잖아."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "네 양말이 다 비슷하게 생겼잖아."
+      - say:
+          char: 도윤
+          with: [지수]
+          text: "다르거든. 세 종류야."
+      - say:
+          char: 지수
+          motion: headtilt
+          with: [도윤]
+          text: "…세 종류야?"
+      - say:
+          char: 도윤.smile
+          with: [지수]
+          text: "응. 네가 모르는 거야."
+      - say:
+          char: 지수
+          with: [도윤]
+          text: "……알았어. 이제 볼게."
       - say:
           char: 도윤
           motion: nod

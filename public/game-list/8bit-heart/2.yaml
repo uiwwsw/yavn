@@ -271,6 +271,37 @@ scenes:
           with: [로봇]
           text: "그건 맞아. 그건 진짜 맞아."
       - say:
+          char: 로봇
+          motion: headtilt
+          with: [윤재]
+          text: "모르는 건 어디서 찾음?"
+      - say:
+          char: 윤재
+          motion: freeze
+          with: [로봇]
+          text: "…못 찾아. 이제 아무 데서도 못 찾아."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그럼 누가 알려 줌?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "내가."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "믿어도 됨?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "아니."
+      - say:
+          char: 로봇
+          motion: nod
+          with: [윤재]
+          text: "기록함."
+      - say:
           char: 윤재
           motion: sigh
           with: [로봇]
