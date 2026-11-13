@@ -445,6 +445,29 @@ type StartGateState =
   };
 
 const ENDING_PROGRESS_STORAGE_PREFIX = 'vn-ending-progress:';
+// Items the player has opened at least once; anything owned but not here is shown as new.
+const INVENTORY_INSPECTED_STORAGE_PREFIX = 'vn-inventory-inspected:';
+// Reading size is a player preference, not a per-game setting.
+const TEXT_SCALE_STORAGE_KEY = 'vn-ui-text-scale';
+const TEXT_SCALE_VALUES = ['base', 'large', 'larger'] as const;
+type TextScale = (typeof TEXT_SCALE_VALUES)[number];
+function readTextScale(): TextScale {
+  try {
+    const stored = localStorage.getItem(TEXT_SCALE_STORAGE_KEY);
+    return TEXT_SCALE_VALUES.includes(stored as TextScale) ? (stored as TextScale) : 'base';
+  } catch {
+    return 'base';
+  }
+}
+function readInspectedInventory(title: string | undefined): Set<string> {
+  if (!title) return new Set();
+  try {
+    const parsed: unknown = JSON.parse(localStorage.getItem(`${INVENTORY_INSPECTED_STORAGE_PREFIX}${title}`) ?? '[]');
+    return new Set(Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
 const START_GATE_SESSION_PREFIX = 'vn-start-gate-session:';
 const ALL_TAG_FILTER = '__all';
 const DEFAULT_VISIBLE_LAUNCHER_TAGS = 8;
@@ -1670,6 +1693,11 @@ export default function App() {
   const [caseFileTab, setCaseFileTab] = useState<'log' | 'inventory' | 'system'>('log');
   const [selectedInventoryItemId, setSelectedInventoryItemId] = useState<string | null>(null);
   const [inventoryDetailOpen, setInventoryDetailOpen] = useState(false);
+  const [inspectedInventoryIds, setInspectedInventoryIds] = useState<ReadonlySet<string>>(() => new Set());
+  const [textScale, setTextScale] = useState<TextScale>(readTextScale);
+  const [systemReducedMotion, setSystemReducedMotion] = useState(
+    () => typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches),
+  );
   const [inventoryView, setInventoryView] = useState<InventoryViewPreference>(() => getInventoryUiSettings().view);
   const [inventorySort, setInventorySort] = useState<InventorySortPreference>(() => getInventoryUiSettings().sort);
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>(() => getInventoryUiSettings().category);
@@ -2598,7 +2626,47 @@ export default function App() {
     inventorySort,
   ]);
   const selectedInventoryEntry = inventoryVisibleEntries.find((entry) => entry.id === selectedInventoryItemId) ?? null;
+  const inspectableInventoryEntries = inventoryVisibleEntries.filter((entry) => entry.owned);
+  const selectedInventoryPosition = selectedInventoryEntry
+    ? inspectableInventoryEntries.findIndex((entry) => entry.id === selectedInventoryEntry.id)
+    : -1;
+  const newInventoryCount = inventoryCatalogEntries.filter(
+    (entry) => entry.owned && !inspectedInventoryIds.has(entry.id),
+  ).length;
+  useEffect(() => {
+    setInspectedInventoryIds(readInspectedInventory(game?.meta.title));
+  }, [game?.meta.title]);
+  useEffect(() => {
+    const title = game?.meta.title;
+    if (!inventoryDetailOpen || !selectedInventoryItemId || !title) return;
+    setInspectedInventoryIds((previous) => {
+      if (previous.has(selectedInventoryItemId)) return previous;
+      const next = new Set(previous).add(selectedInventoryItemId);
+      try {
+        localStorage.setItem(`${INVENTORY_INSPECTED_STORAGE_PREFIX}${title}`, JSON.stringify([...next]));
+      } catch {
+        // Storage can be full or blocked; the new marker then clears for this session only.
+      }
+      return next;
+    });
+  }, [game?.meta.title, inventoryDetailOpen, selectedInventoryItemId]);
+  useEffect(() => {
+    try {
+      localStorage.setItem(TEXT_SCALE_STORAGE_KEY, textScale);
+    } catch {
+      // Keep the in-memory choice when storage is unavailable.
+    }
+  }, [textScale]);
+  useEffect(() => {
+    const query = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (!query) return;
+    const update = () => setSystemReducedMotion(query.matches);
+    query.addEventListener?.('change', update);
+    return () => query.removeEventListener?.('change', update);
+  }, []);
   const inventoryFiltersActive = normalizedInventorySearchTerm.length > 0 || inventoryCategoryFilter.length > 0;
+  // Search and sorting only earn their space once the list is long enough to need them.
+  const showInventoryTools = inventoryViewEntries.length > 6 || inventoryFiltersActive;
   const inventoryGridEmptyMessage = useMemo(() => {
     if (inventoryCatalogEntries.length === 0) {
       return t("이 게임에는 등록된 단서가 없습니다.");
@@ -4461,6 +4529,7 @@ export default function App() {
       data-story-paused={Boolean(startGate) || chapterCurtainVisible || settingsOpen || storyMapOpen || documentHidden}
       className="app"
       data-ui-template={uiTemplate}
+      data-text-scale={textScale === 'base' ? undefined : textScale}
       data-motion-tempo={motionTempo}
       data-hud-idle={hudIdle ? 'true' : undefined}
       onClick={() => {
@@ -4638,8 +4707,9 @@ export default function App() {
         <div className="hud-meta-group">
           <div className="meta">{game?.meta.title ?? t("게임 불러오는 중")}</div>
           {chapterTotal > 1 && (
-            <div className="hud-chapter-progress">
-              <span>CHAPTER {String(chapterIndex).padStart(2, '0')}</span><span className="hud-chapter-divider" />{String(chapterTotal).padStart(2, '0')}
+            <div className="hud-chapter-progress" aria-label={uiLanguage === 'en' ? `Chapter ${chapterIndex} of ${chapterTotal}` : `전체 ${chapterTotal}장 중 ${chapterIndex}장`}>
+              <span aria-hidden="true">{uiLanguage === 'en' ? `Chapter ${chapterIndex}` : `${chapterIndex}장`}</span>
+              <span className="hud-chapter-total" aria-hidden="true">/ {chapterTotal}</span>
             </div>
           )}
           {placeCaption && (
@@ -4647,16 +4717,21 @@ export default function App() {
           )}
         </div>
         <div className="hud-right">
-          <button type="button" className="hud-action-button hud-map-button" aria-label={t("이야기 지도 열기")}
-            onClick={(event) => { event.stopPropagation(); setStoryMapOpen(true); }}>
-            <span aria-hidden="true">◇</span><span className="hud-action-label">{t("이야기 지도")}</span>
-          </button>
           {uploading && <div className="hint">{t("ZIP 불러오는 중")}</div>}
           <button
             type="button"
+            className="hud-action-button hud-map-button"
+            aria-label={t("이야기 지도 열기")}
+            title={t("이야기 지도")}
+            onClick={(event) => { event.stopPropagation(); setStoryMapOpen(true); }}
+          >
+            <GameIcon name="map" /><span className="hud-action-label">{t("지도")}</span>
+          </button>
+          <button
+            type="button"
             className="hud-action-button hud-log-button"
-            aria-label={uiLanguage === 'en' ? `Open case log (${storyLog.length})` : `케이스 로그 열기 (${storyLog.length})`}
-            title={t("케이스 로그")}
+            aria-label={uiLanguage === 'en' ? `Open story log (${storyLog.length})` : `이야기 기록 열기 (${storyLog.length})`}
+            title={t("이야기 기록")}
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -4666,17 +4741,14 @@ export default function App() {
             }}
           >
             <GameIcon name="log" /><span className="hud-action-label">{t("기록")}</span>
-            {storyLog.length > 0 && (
-              <span className="hud-action-count" aria-hidden="true">
-                {storyLog.length}
-              </span>
-            )}
           </button>
           <button
             type="button"
-            className="hud-action-button hud-inventory-button"
-            aria-label={uiLanguage === 'en' ? `Open inventory (${ownedInventoryCount}/${totalInventoryCount})` : `인벤토리 열기 (${ownedInventoryCount}/${totalInventoryCount})`}
-            title={t("인벤토리")}
+            className={`hud-action-button hud-inventory-button${newInventoryCount > 0 ? ' has-new' : ''}`}
+            aria-label={uiLanguage === 'en'
+              ? `Open inventory (${ownedInventoryCount}/${totalInventoryCount}${newInventoryCount > 0 ? `, ${newInventoryCount} new` : ''})`
+              : `소지품 열기 (${ownedInventoryCount}/${totalInventoryCount}${newInventoryCount > 0 ? `, 새로 얻은 단서 ${newInventoryCount}개` : ''})`}
+            title={t("소지품")}
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -4691,12 +4763,13 @@ export default function App() {
                 {ownedInventoryCount}/{totalInventoryCount}
               </span>
             )}
+            {newInventoryCount > 0 && <span className="hud-new-dot" aria-hidden="true" />}
           </button>
           <button
             type="button"
             className="hud-action-button hud-save-button"
-            aria-label={t("시스템 열기")}
-            title={t("저장 및 설정")}
+            aria-label={t("저장과 설정 열기")}
+            title={t("저장과 설정")}
             onClick={(event) => {
               event.stopPropagation();
               settingsTriggerRef.current = event.currentTarget;
@@ -4726,121 +4799,134 @@ export default function App() {
             onKeyDown={trapGameDialogFocus}
             role="dialog"
             aria-modal="true"
-            aria-label={t("케이스 파일")}
+            aria-label={t("게임 메뉴")}
             onClick={(event) => event.stopPropagation()}
           >
             <header className="settings-modal-header">
               <div className="settings-modal-heading">
-                <p>{t("잠시 멈춤")} <span>· {game?.meta.title}</span></p>
                 <h2>{caseFileTab === 'log' ? t("이야기 기록") : caseFileTab === 'inventory' ? t("소지품") : t("저장과 설정")}</h2>
+                <p>{game?.meta.title}</p>
               </div>
               <button
                 type="button"
                 className="settings-close-button"
                 autoFocus
-                aria-label={t("케이스 파일 닫기")}
+                aria-label={t("메뉴 닫고 이야기로 돌아가기")}
                 title={t("닫기")}
                 onClick={() => closeSettingsModal()}
               >
                 <GameIcon name="close" />
               </button>
             </header>
-            <div className="case-file-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label={t("케이스 파일 보기")}>
-              <button
-                type="button"
-                role="tab"
-                className={`case-file-tab ${caseFileTab === 'log' ? 'is-active' : ''}`}
-                aria-selected={caseFileTab === 'log'}
-                id="game-menu-tab-log"
-                aria-controls="game-menu-panel-log"
-                tabIndex={caseFileTab === 'log' ? 0 : -1}
-                onClick={() => {
-                  setInventoryDetailOpen(false);
-                  setCaseFileTab('log');
-                }}
-              >
-                <GameIcon name="log" /><span className="case-file-tab-label">{t("기록")}</span>
-                <span className="case-file-tab-count">{storyLog.length}</span>
-              </button>
-              <button
-                type="button"
-                role="tab"
-                className={`case-file-tab ${caseFileTab === 'inventory' ? 'is-active' : ''}`}
-                aria-selected={caseFileTab === 'inventory'}
-                id="game-menu-tab-inventory"
-                aria-controls="game-menu-panel-inventory"
-                tabIndex={caseFileTab === 'inventory' ? 0 : -1}
-                onClick={() => setCaseFileTab('inventory')}
-              >
-                <GameIcon name="bag" /><span className="case-file-tab-label">{t("소지품")}</span>
-                <span className="case-file-tab-count">{ownedInventoryCount}/{totalInventoryCount}</span>
-              </button>
-              <button
-                type="button"
-                role="tab"
-                className={`case-file-tab ${caseFileTab === 'system' ? 'is-active' : ''}`}
-                aria-selected={caseFileTab === 'system'}
-                id="game-menu-tab-system"
-                aria-controls="game-menu-panel-system"
-                tabIndex={caseFileTab === 'system' ? 0 : -1}
-                onClick={() => {
-                  setInventoryDetailOpen(false);
-                  setSaveNotice('');
-                  refreshSaveSlots();
-                  setCaseFileTab('system');
-                }}
-              >
-                <GameIcon name="menu" /><span className="case-file-tab-label">{t("저장 · 설정")}</span>
-                <span className="menu-tab-caption" aria-hidden="true">{t("환경설정")}</span>
-              </button>
-            </div>
+            <nav className="case-file-rail" aria-label={t("메뉴")}>
+              <div className="case-file-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label={t("메뉴 보기")}>
+                <button
+                  type="button"
+                  role="tab"
+                  className={`case-file-tab ${caseFileTab === 'log' ? 'is-active' : ''}`}
+                  aria-selected={caseFileTab === 'log'}
+                  id="game-menu-tab-log"
+                  aria-controls="game-menu-panel-log"
+                  tabIndex={caseFileTab === 'log' ? 0 : -1}
+                  onClick={() => {
+                    setInventoryDetailOpen(false);
+                    setCaseFileTab('log');
+                  }}
+                >
+                  <GameIcon name="log" /><span className="case-file-tab-label">{t("기록")}</span>
+                  <span className="case-file-tab-count">{storyLog.length}</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  className={`case-file-tab ${caseFileTab === 'inventory' ? 'is-active' : ''}`}
+                  aria-selected={caseFileTab === 'inventory'}
+                  id="game-menu-tab-inventory"
+                  aria-controls="game-menu-panel-inventory"
+                  tabIndex={caseFileTab === 'inventory' ? 0 : -1}
+                  onClick={() => setCaseFileTab('inventory')}
+                >
+                  <GameIcon name="bag" /><span className="case-file-tab-label">{t("소지품")}</span>
+                  <span className={`case-file-tab-count${newInventoryCount > 0 ? ' has-new' : ''}`}>
+                    {newInventoryCount > 0
+                      ? (uiLanguage === 'en' ? `${newInventoryCount} new` : `새 ${newInventoryCount}`)
+                      : `${ownedInventoryCount}/${totalInventoryCount}`}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  className={`case-file-tab ${caseFileTab === 'system' ? 'is-active' : ''}`}
+                  aria-selected={caseFileTab === 'system'}
+                  id="game-menu-tab-system"
+                  aria-controls="game-menu-panel-system"
+                  tabIndex={caseFileTab === 'system' ? 0 : -1}
+                  onClick={() => {
+                    setInventoryDetailOpen(false);
+                    setSaveNotice('');
+                    refreshSaveSlots();
+                    setCaseFileTab('system');
+                  }}
+                >
+                  <GameIcon name="menu" /><span className="case-file-tab-label">{t("설정")}</span>
+                </button>
+              </div>
+              <p className="case-file-rail-note"><kbd>Esc</kbd>{t("이야기로 돌아가기")}</p>
+            </nav>
             {caseFileTab === 'log' ? (
               <div key="log" className="settings-modal-body story-log-body" role="tabpanel" id="game-menu-panel-log" aria-labelledby="game-menu-tab-log">
-                <div className="story-log-summary">
-                  <span>{t("최근 기록")}</span>
-                  <b>{storyLog.length}{t("개의 기록")}</b>
-                </div>
+                <p className="story-log-summary">
+                  {uiLanguage === 'en' ? `${storyLog.length} lines, newest first` : `최근 것부터 ${storyLog.length}줄`}
+                </p>
                 {storyLog.length === 0 ? (
                   <p className="story-log-empty">{t("대화를 시작하면 사건 기록이 여기에 쌓입니다.")}</p>
                 ) : (
                   <ol className="story-log-list" tabIndex={0} aria-label={t("스토리 기록")}>
-                    {[...storyLog].reverse().map((entry, index) => (
-                      <li
-                        key={`${entry.kind}-${entry.chapterPath ?? 'legacy'}-${entry.sceneId}-${entry.actionIndex}-${storyLog.length - index}`}
-                        className={`story-log-entry story-log-entry-${entry.kind}`}
-                      >
-                        {entry.kind === 'dialogue' ? (
-                          <>
-                            <span className="story-log-kind">
-                              {entry.channel === 'thought' ? `${entry.speaker ? entry.speaker + ' · ' : ''}속마음` : entry.channel === 'action' ? t("행동") : entry.speaker ?? (
-                                entry.channel === 'record'
-                                  ? t("기록")
-                                  : entry.channel === 'system'
-                                    ? t("시스템")
-                                    : t("서술")
-                              )}
-                            </span>
+                    {[...storyLog].reverse().map((entry, index, newestFirst) => {
+                      const channel = entry.kind === 'dialogue' ? entry.channel ?? 'dialogue' : entry.kind;
+                      const speakerLabel = entry.kind !== 'dialogue'
+                        ? (entry.kind === 'choice' ? t("내 선택") : t("내 답"))
+                        : entry.channel === 'thought'
+                          ? (entry.speaker ? `${entry.speaker}${uiLanguage === 'en' ? ' (thinking)' : '의 속마음'}` : t("속마음"))
+                          : entry.channel === 'action'
+                            ? t("행동")
+                            : entry.channel === 'record'
+                              ? entry.speaker ?? t("기록")
+                              : entry.channel === 'system'
+                                ? entry.speaker ?? t("시스템")
+                                : entry.speaker;
+                      // Lines in a row from the same speaker show the name once, like a script.
+                      const newer = newestFirst[index - 1];
+                      const continued = Boolean(speakerLabel) && entry.kind === 'dialogue' && newer?.kind === 'dialogue'
+                        && newer.speaker === entry.speaker && (newer.channel ?? 'dialogue') === channel;
+                      return (
+                        <li
+                          key={`${entry.kind}-${entry.chapterPath ?? 'legacy'}-${entry.sceneId}-${entry.actionIndex}-${storyLog.length - index}`}
+                          className={`story-log-entry story-log-entry-${entry.kind}${speakerLabel ? '' : ' is-unattributed'}${continued ? ' is-continued' : ''}`}
+                          data-channel={channel}
+                        >
+                          {speakerLabel && <span className="story-log-kind">{speakerLabel}</span>}
+                          {entry.kind === 'dialogue' ? (
                             <p>{entry.text}</p>
-                          </>
-                        ) : (
-                          <>
-                            <span className="story-log-kind">{entry.kind === 'choice' ? 'CHOICE' : 'INPUT'}</span>
-                            <p>{entry.prompt}</p>
-                            <strong>{entry.value}</strong>
-                          </>
-                        )}
-                      </li>
-                    ))}
+                          ) : (
+                            <div className="story-log-decision">
+                              <p>{entry.prompt}</p>
+                              <strong>{entry.value}</strong>
+                            </div>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ol>
                 )}
               </div>
             ) : caseFileTab === 'inventory' ? (
             <div
               key="inventory" role="tabpanel" id="game-menu-panel-inventory" aria-labelledby="game-menu-tab-inventory"
-              className={`settings-modal-body settings-inventory-body ${inventoryViewEntries.length > 0 ? 'has-tools' : ''}`}
+              className={`settings-modal-body settings-inventory-body ${showInventoryTools ? 'has-tools' : ''}`}
             >
               <div className="inventory-collection-header">
-                <div className="inventory-view-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label={t("인벤토리 보기")}>
+                <div className="inventory-view-tabs" onKeyDown={navigateGameTabs} role="tablist" aria-label={t("소지품 보기")}>
                   <button
                     type="button"
                     role="tab"
@@ -4872,13 +4958,13 @@ export default function App() {
                 </div>
                 <div className="inventory-overview" aria-label={uiLanguage === 'en' ? `Collected clues ${ownedInventoryCount}/${totalInventoryCount}` : `단서 수집 ${ownedInventoryCount}/${totalInventoryCount}`}>
                   <div>
-                    <span>{t("수집 현황")}</span>
+                    <span>{t("모은 단서")}</span>
                     <b>{ownedInventoryCount}<small> / {totalInventoryCount}</small></b>
                   </div>
                   <progress value={ownedInventoryCount} max={Math.max(totalInventoryCount, 1)} />
                 </div>
               </div>
-              {inventoryViewEntries.length > 0 && (
+              {showInventoryTools && (
                 <div className="inventory-tools">
                   <label className="inventory-search-field">
                     <span className="inventory-tool-label">{t("검색")}</span>
@@ -4886,11 +4972,11 @@ export default function App() {
                       type="search"
                       value={inventorySearchTerm}
                       onChange={(event) => setInventorySearchTerm(event.target.value)}
-                      placeholder={t("단서 이름 검색")}
+                      placeholder={t("단서 이름")}
                     />
                   </label>
                   <label className="inventory-select-field">
-                    <span className="inventory-tool-label">{t("카테고리")}</span>
+                    <span className="inventory-tool-label">{t("분류")}</span>
                     <select
                       value={inventoryCategoryFilter}
                       onChange={(event) => setInventoryCategoryFilter(event.target.value)}
@@ -4918,7 +5004,7 @@ export default function App() {
               <div className="inventory-grid-scroll">
                 {inventoryVisibleEntries.length === 0 ? (
                   <div className="inventory-grid-empty">
-                    <span className="inventory-empty-icon" aria-hidden="true" />
+                    <span className="inventory-empty-icon" aria-hidden="true"><GameIcon name="bag" /></span>
                     <strong>{inventoryGridEmptyMessage}</strong>
                     <p>
                       {inventoryViewEntries.length === 0 && inventoryCatalogEntries.length > 0
@@ -4940,41 +5026,52 @@ export default function App() {
                     ) : null}
                   </div>
                 ) : (
-                  <div className="inventory-grid" role="list" aria-label={t("인벤토리 그리드")}>
-                    {inventoryVisibleEntries.map((entry, index) => (
-                      <button
-                        key={entry.id}
-                        type="button"
-                        role="listitem"
-                        className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}`}
-                        onClick={(event) => {
-                          inventoryDetailTriggerRef.current = event.currentTarget;
-                          if (!entry.owned) {
-                            return;
-                          }
-                          setSelectedInventoryItemId(entry.id);
-                          setInventoryDetailOpen(true);
-                        }}
-                        disabled={!entry.owned}
-                        aria-haspopup={entry.owned ? 'dialog' : undefined}
-                        aria-label={`${entry.owned ? entry.name : t("미발견 단서")} ${entry.owned ? t("획득됨") : t("미획득")}`}
-                      >
-                        <span className="inventory-slot-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-                        {inventoryView === 'catalog' && entry.owned && <span className="inventory-slot-owned-badge">{t("획득")}</span>}
-                        {entry.owned && entry.imageUrl ? (
-                          <img src={entry.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-                        ) : (
-                          <span
-                            className={`inventory-slot-fallback ${entry.owned ? 'is-placeholder' : 'is-locked-placeholder'}`}
-                            aria-hidden="true"
-                          >
-                            <span className="inventory-slot-fallback-icon" />
-                            {entry.owned && <span>{t("소지품")}</span>}
+                  <div className="inventory-grid" role="list" aria-label={t("소지품 목록")}>
+                    {inventoryVisibleEntries.map((entry, index) => {
+                      const isNew = entry.owned && !inspectedInventoryIds.has(entry.id);
+                      return (
+                        <button
+                          key={entry.id}
+                          type="button"
+                          role="listitem"
+                          className={`inventory-slot ${entry.id === selectedInventoryItemId ? 'is-selected' : ''} ${entry.owned ? '' : 'is-locked'}${isNew ? ' is-new' : ''}`}
+                          onClick={(event) => {
+                            inventoryDetailTriggerRef.current = event.currentTarget;
+                            if (!entry.owned) {
+                              return;
+                            }
+                            setSelectedInventoryItemId(entry.id);
+                            setInventoryDetailOpen(true);
+                          }}
+                          disabled={!entry.owned}
+                          aria-haspopup={entry.owned ? 'dialog' : undefined}
+                          aria-label={`${entry.owned ? entry.name : t("미발견 단서")} ${entry.owned ? t("획득됨") : t("미획득")}${isNew ? `, ${t("새로 얻음")}` : ''}`}
+                        >
+                          <span className="inventory-slot-art">
+                            {entry.owned && entry.imageUrl ? (
+                              <img src={entry.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                            ) : (
+                              <span
+                                className={`inventory-slot-fallback ${entry.owned ? 'is-placeholder' : 'is-locked-placeholder'}`}
+                                aria-hidden="true"
+                              >
+                                <span className="inventory-slot-fallback-icon" />
+                              </span>
+                            )}
                           </span>
-                        )}
-                        <span className="inventory-slot-name">{entry.owned ? entry.name : t("미발견 단서")}</span>
-                      </button>
-                    ))}
+                          <span className="inventory-slot-tag">
+                            <span className="inventory-slot-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                            <span className="inventory-slot-name">{entry.owned ? entry.name : t("미발견 단서")}</span>
+                            {entry.owned && <span className="inventory-slot-category">{entry.category}</span>}
+                          </span>
+                          {isNew ? (
+                            <span className="inventory-slot-new" aria-hidden="true">{t("새로 얻음")}</span>
+                          ) : inventoryView === 'catalog' && entry.owned ? (
+                            <span className="inventory-slot-owned-badge" aria-hidden="true">{t("획득")}</span>
+                          ) : null}
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -5080,87 +5177,89 @@ export default function App() {
                     />
                   </section>
 
-                  <section className="save-system-section player-experience-section">
+                  <section className="save-system-section player-experience-section" aria-labelledby="player-settings-title">
                     <span className="save-section-index" aria-hidden="true">04</span>
                     <header>
                       <div>
-                        <small>{t("플레이 설정")}</small>
-                        <h3>{t("플레이 감각")}</h3>
+                        <h3 id="player-settings-title">{t("플레이 설정")}</h3>
                       </div>
-                      <span>{t("게임별로 자동 저장")}</span>
+                      <span>{t("이 게임에만 적용돼요")}</span>
                     </header>
-                    <div className="player-experience-grid">
-                      <label className="player-setting-control">
-                        <span>
-                          <b>{t("텍스트 속도")}</b>
-                          <small>{t("대사 출력 배속")}</small>
-                        </span>
-                        <select
-                          value={playerExperience.textSpeedRate}
-                          onChange={(event) => updatePlayerExperience({
-                            textSpeedRate: Number(event.target.value) as TextSpeedRate,
-                          })}
-                        >
-                          <option value={0.75}>{t("차분하게 · 0.75×")}</option>
-                          <option value={1}>{t("기본 · 1×")}</option>
-                          <option value={1.5}>{t("빠르게 · 1.5×")}</option>
-                          <option value={2}>{t("매우 빠르게 · 2×")}</option>
-                        </select>
-                      </label>
-                      <label className="player-setting-control is-switch">
-                        <span>
-                          <b>{t("자동 진행")}</b>
-                          <small>{t("선택지와 입력에서는 정지")}</small>
-                        </span>
-                        <span className="settings-switch">
-                          <input
-                            type="checkbox"
-                            checked={playerExperience.autoPlayEnabled}
-                            onChange={(event) => updatePlayerExperience({ autoPlayEnabled: event.target.checked })}
-                          />
-                          <span aria-hidden="true" />
-                        </span>
-                      </label>
-                      <label className="player-setting-control">
-                        <span>
-                          <b>{t("자동 진행 간격")}</b>
-                          <small>{t("타이핑 완료 후 대기")}</small>
-                        </span>
-                        <select
-                          value={playerExperience.autoPlayDelayMs}
-                          disabled={!playerExperience.autoPlayEnabled}
-                          onChange={(event) => updatePlayerExperience({
-                            autoPlayDelayMs: Number(event.target.value) as AutoPlayDelay,
-                          })}
-                        >
-                          <option value={800}>{t("짧게 · 0.8초")}</option>
-                          <option value={1400}>{t("기본 · 1.4초")}</option>
-                          <option value={2200}>{t("여유롭게 · 2.2초")}</option>
-                        </select>
-                      </label>
-                      <label className="player-setting-control">
-                        <span>
-                          <b>{t("화면 효과")}</b>
-                          <small>{t("움직임과 광량 강도")}</small>
-                        </span>
-                        <select
-                          value={playerExperience.effectLevel}
-                          onChange={(event) => updatePlayerExperience({
-                            effectLevel: event.target.value as PlayerEffectLevel,
-                          })}
-                        >
-                          <option value="full">{t("풍부하게")}</option>
-                          <option value="reduced">{t("부드럽게")}</option>
-                          <option value="minimal">{t("최소화")}</option>
-                        </select>
-                      </label>
-                      <div className="player-setting-control player-volume-control">
-                        <span>
-                          <b>{t("배경음악")}</b>
-                          <small>{Math.round(playerExperience.bgmVolume * 100)}%</small>
-                        </span>
-                        <div>
+                    <div className="player-settings">
+                      <fieldset className="player-setting-group">
+                        <legend>{t("텍스트 속도")}</legend>
+                        <div className="player-segmented" data-count="4">
+                          {([
+                            [0.75, t("차분하게"), '0.75×'],
+                            [1, t("기본"), '1×'],
+                            [1.5, t("빠르게"), '1.5×'],
+                            [2, t("매우 빠르게"), '2×'],
+                          ] as const).map(([value, label, detail]) => (
+                            <label key={value} className="player-segment">
+                              <input
+                                type="radio"
+                                name="player-text-speed"
+                                value={value}
+                                checked={playerExperience.textSpeedRate === value}
+                                onChange={() => updatePlayerExperience({ textSpeedRate: value as TextSpeedRate })}
+                              />
+                              <span>{label}</span>
+                              <small>{detail}</small>
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+
+                      <fieldset className="player-setting-group">
+                        <legend>{t("자동 진행")}</legend>
+                        <label className="player-setting-row">
+                          <span>
+                            <b>{t("대사를 자동으로 넘기기")}</b>
+                            <small>{t("선택지와 입력에서는 멈춥니다")}</small>
+                          </span>
                           <span className="settings-switch">
+                            <input
+                              type="checkbox"
+                              checked={playerExperience.autoPlayEnabled}
+                              onChange={(event) => updatePlayerExperience({ autoPlayEnabled: event.target.checked })}
+                            />
+                            <span aria-hidden="true" />
+                          </span>
+                        </label>
+                        <div className="player-setting-row is-stacked" aria-disabled={!playerExperience.autoPlayEnabled}>
+                          <span id="player-autoplay-delay-label">
+                            <b>{t("다음 대사까지 기다리는 시간")}</b>
+                          </span>
+                          <div className="player-segmented" data-count="3" role="radiogroup" aria-labelledby="player-autoplay-delay-label">
+                            {([
+                              [800, t("짧게"), t("0.8초")],
+                              [1400, t("기본"), t("1.4초")],
+                              [2200, t("여유롭게"), t("2.2초")],
+                            ] as const).map(([value, label, detail]) => (
+                              <label key={value} className="player-segment">
+                                <input
+                                  type="radio"
+                                  name="player-autoplay-delay"
+                                  value={value}
+                                  disabled={!playerExperience.autoPlayEnabled}
+                                  checked={playerExperience.autoPlayDelayMs === value}
+                                  onChange={() => updatePlayerExperience({ autoPlayDelayMs: value as AutoPlayDelay })}
+                                />
+                                <span>{label}</span>
+                                <small>{detail}</small>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </fieldset>
+
+                      <fieldset className="player-setting-group">
+                        <legend>{t("소리")}</legend>
+                        <div className="player-setting-row player-volume-control">
+                          <span>
+                            <b id="player-bgm-label">{t("배경음악")}</b>
+                          </span>
+                          <label className="settings-switch">
                             <input
                               type="checkbox"
                               checked={bgmEnabled}
@@ -5168,7 +5267,7 @@ export default function App() {
                               onChange={(event) => onToggleBgmDisabled(!event.target.checked)}
                             />
                             <span aria-hidden="true" />
-                          </span>
+                          </label>
                           <input
                             type="range"
                             min="0"
@@ -5179,23 +5278,80 @@ export default function App() {
                             disabled={!bgmEnabled}
                             onChange={(event) => updatePlayerExperience({ bgmVolume: Number(event.target.value) })}
                           />
+                          <output aria-hidden="true">{bgmEnabled ? `${Math.round(playerExperience.bgmVolume * 100)}%` : t("꺼짐")}</output>
                         </div>
-                      </div>
-                      <label className="player-setting-control player-volume-control">
-                        <span>
-                          <b>{t("효과음")}</b>
-                          <small>{Math.round(playerExperience.sfxVolume * 100)}%</small>
-                        </span>
-                        <input
-                          type="range"
-                          min="0"
-                          max="1"
-                          step="0.05"
-                          value={playerExperience.sfxVolume}
-                          aria-label={t("효과음 음량")}
-                          onChange={(event) => updatePlayerExperience({ sfxVolume: Number(event.target.value) })}
-                        />
-                      </label>
+                        <label className="player-setting-row player-volume-control">
+                          <span>
+                            <b>{t("효과음")}</b>
+                          </span>
+                          <span aria-hidden="true" />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={playerExperience.sfxVolume}
+                            aria-label={t("효과음 음량")}
+                            onChange={(event) => updatePlayerExperience({ sfxVolume: Number(event.target.value) })}
+                          />
+                          <output aria-hidden="true">{Math.round(playerExperience.sfxVolume * 100)}%</output>
+                        </label>
+                      </fieldset>
+
+                      <fieldset className="player-setting-group">
+                        <legend>{t("화면과 움직임")}</legend>
+                        <div className="player-segmented" data-count="3">
+                          {([
+                            ['full', t("풍부하게"), t("연출 그대로")],
+                            ['reduced', t("부드럽게"), t("흔들림 약하게")],
+                            ['minimal', t("최소화"), t("움직임 거의 없이")],
+                          ] as const).map(([value, label, detail]) => (
+                            <label key={value} className="player-segment">
+                              <input
+                                type="radio"
+                                name="player-effect-level"
+                                value={value}
+                                checked={playerExperience.effectLevel === value}
+                                onChange={() => updatePlayerExperience({ effectLevel: value as PlayerEffectLevel })}
+                              />
+                              <span>{label}</span>
+                              <small>{detail}</small>
+                            </label>
+                          ))}
+                        </div>
+                        {systemReducedMotion && (
+                          <p className="player-setting-note">{t("기기에서 동작 줄이기가 켜져 있어 움직임을 줄여 보여 줍니다.")}</p>
+                        )}
+                      </fieldset>
+
+                      <fieldset className="player-setting-group">
+                        <legend>{t("접근성")}</legend>
+                        <div className="player-setting-row is-stacked">
+                          <span id="player-text-scale-label">
+                            <b>{t("글자 크기")}</b>
+                            <small>{t("대사창과 기록, 소지품 설명에 적용돼요. 모든 게임에 같이 적용됩니다.")}</small>
+                          </span>
+                          <div className="player-segmented" data-count="3" role="radiogroup" aria-labelledby="player-text-scale-label">
+                            {([
+                              ['base', t("기본")],
+                              ['large', t("크게")],
+                              ['larger', t("더 크게")],
+                            ] as const).map(([value, label]) => (
+                              <label key={value} className={`player-segment player-text-scale-${value}`}>
+                                <input
+                                  type="radio"
+                                  name="player-text-scale"
+                                  value={value}
+                                  checked={textScale === value}
+                                  onChange={() => setTextScale(value)}
+                                />
+                                <span>{label}</span>
+                                <small aria-hidden="true">가</small>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </fieldset>
                     </div>
                   </section>
 
@@ -5251,11 +5407,18 @@ export default function App() {
                   className="inventory-detail-modal"
                   onKeyDown={trapGameDialogFocus}
                   role="dialog"
-                  aria-label={t("아이템 상세 정보")}
+                  aria-labelledby="inventory-detail-title"
                   onClick={(event) => event.stopPropagation()}
                 >
                   <header className="inventory-detail-modal-header">
-                    <h3>{selectedInventoryEntry.owned ? selectedInventoryEntry.name : t("미확인 아이템")}</h3>
+                    <p className="inventory-detail-owned is-owned">
+                      {selectedInventoryEntry.owned ? selectedInventoryEntry.category : t("아직 획득하지 못함")}
+                    </p>
+                    {selectedInventoryPosition >= 0 && inspectableInventoryEntries.length > 1 && (
+                      <p className="inventory-detail-position">
+                        {selectedInventoryPosition + 1}<span> / {inspectableInventoryEntries.length}</span>
+                      </p>
+                    )}
                     <button
                       type="button"
                       className="settings-close-button"
@@ -5273,25 +5436,45 @@ export default function App() {
                     {selectedInventoryEntry.owned ? (
                       <>
                         {selectedInventoryEntry.imageUrl && (
-                          <img
-                            src={selectedInventoryEntry.imageUrl}
-                            alt={`${selectedInventoryEntry.name} ${t("아이템 이미지")}`}
-                            loading="lazy"
-                            decoding="async"
-                          />
+                          <figure className="inventory-detail-art">
+                            <img
+                              src={selectedInventoryEntry.imageUrl}
+                              alt={`${selectedInventoryEntry.name} ${t("아이템 이미지")}`}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </figure>
                         )}
                         <div className="inventory-detail-copy">
-                          <p className="inventory-detail-owned is-owned">{selectedInventoryEntry.category}{t("· 획득")}</p>
+                          <h3 id="inventory-detail-title">{selectedInventoryEntry.name}</h3>
                           <p>{selectedInventoryEntry.description ?? t("아이템 설명이 없습니다.")}</p>
                         </div>
                       </>
                     ) : (
-                      <>
-                        <p className="inventory-detail-owned is-missing">{t("아직 획득하지 못함")}</p>
+                      <div className="inventory-detail-copy">
+                        <h3 id="inventory-detail-title">{t("미확인 아이템")}</h3>
                         <p>{t("아직 획득하지 못한 아이템입니다.")}</p>
-                      </>
+                      </div>
                     )}
                   </div>
+                  {inspectableInventoryEntries.length > 1 && selectedInventoryPosition >= 0 && (
+                    <footer className="inventory-detail-pager">
+                      <button
+                        type="button"
+                        disabled={selectedInventoryPosition === 0}
+                        onClick={() => setSelectedInventoryItemId(inspectableInventoryEntries[selectedInventoryPosition - 1]?.id ?? null)}
+                      >
+                        <GameIcon name="prev" /><span>{t("이전 단서")}</span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={selectedInventoryPosition >= inspectableInventoryEntries.length - 1}
+                        onClick={() => setSelectedInventoryItemId(inspectableInventoryEntries[selectedInventoryPosition + 1]?.id ?? null)}
+                      >
+                        <span>{t("다음 단서")}</span><GameIcon name="next" />
+                      </button>
+                    </footer>
+                  )}
                 </section>
               </div>
             )}
@@ -5653,6 +5836,7 @@ export default function App() {
       </div>
     </div>
     {storyMapOpen && <Suspense fallback={null}><StoryMap
+      uiTemplate={uiTemplate}
       outcome={gameOver?.title ?? (isFinished ? endingTitle : undefined)} ending={isFinished}
       onClose={() => setStoryMapOpen(false)}
       onReplayed={() => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(undefined); refreshSaveSlots(); }}
