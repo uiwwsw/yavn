@@ -48,7 +48,9 @@ const SHOT_SCALE: Record<CameraShot, number> = {
 // authored shot hierarchy while softening repeated medium/close cuts so the
 // subject does not appear to pulse in size on mobile.
 const MOBILE_SHOT_SCALE: Record<CameraShot, number> = {
-  wide: 1.12,
+  // A wide shot shows the whole stage, so on a phone it adds no zoom of its own: zooming
+  // one here pushed the outer actor of a pair past the screen edge.
+  wide: 1,
   medium: 1.58,
   close: 1.74,
   reaction: 1.66,

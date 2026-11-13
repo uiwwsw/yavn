@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   buildImageCharacterRenderKey,
@@ -305,4 +307,16 @@ describe('automatic and fixed compositions', () => {
     expect(resolveMobileCharacterStageAnchor('left', layout, 0.8)).toBe('calc(50cqw - 20cqw)');
     expect(resolveMobileCharacterCameraPanX('left', layout, 0.8)).toBe('calc(50cqw - calc(50cqw - 20cqw))');
   });
+});
+
+describe('phone framing keeps whole actors on screen', () => {
+  const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
+
+  it('caps each actor at the screen it is anchored to', () => {
+    // Half-body art is sized from free height, so on a phone it grew wider than its half of
+    // the screen and the outer shoulder fell off the edge.
+    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer \.char-image \{[\s\S]*?max-width: calc\(2 \* min\(var\(--char-anchor-x\), 100cqw - var\(--char-anchor-x\)\)\);/);
+    expect(styles).toContain('object-fit: contain');
+  });
+
 });
