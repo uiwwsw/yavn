@@ -22,7 +22,7 @@ ui:
 
 ```yaml
 - say:
-    char: 덕만
+    char: 서연
     text: "이 장면만 조금 더 높은 프롬프트를 사용합니다."
     promptHeight: 220
 ```

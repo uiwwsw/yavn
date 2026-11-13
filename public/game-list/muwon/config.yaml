@@ -1,0 +1,72 @@
+title: "무원 — 한성 검안록"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "1792년 한성, 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서로 억울한 죽음을 밝히는 5장 검시 추리 비주얼노벨. 시신 그림표를 직접 살피고, 옛 검시법으로 실험하고, 증거로 고문 자백을 뒤집으세요. 결말 4종."
+  keywords:
+    - "조선 추리"
+    - "검시"
+    - "무원록"
+    - "역사 비주얼노벨"
+    - "추리 게임"
+    - "선택형 이야기"
+  image: "assets/bg/title.svg"
+  imageAlt: "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
+textSpeed: 30
+autoSave: true
+clickToInstant: true
+ui:
+  template: paper-stage
+startScreen:
+  enabled: true
+  music: assets/music/night-well.wav
+  image: assets/bg/title.svg
+  imagePosition: "50% 50%"
+  mobileImagePosition: "70% 50%"
+  showTitle: true
+  titleColor: "#f0d9a8"
+  startButtonText: "검안 시작"
+  buttonPosition: bottom-left
+  eyebrow: "1792 · 한성 · 검시 추리극"
+  subtitle: "죽은 자는 말이 없다. 대신 몸이 남긴 것을 읽는다."
+  scene:
+    layout: split
+    motion: drift
+    duration: 26000
+    parallax: 12
+    particles: dust
+    intensity: 0.5
+    fog: true
+    light: breathe
+    accent: "#f0b65a"
+endings:
+  muwon:
+    title: "무원(無冤)"
+    message: "한명재는 형조의 판결을 받았다. 덕구는 짐을 다시 졌고, 막쇠는 처음으로 관아 대청 아래가 아닌 마루 끝에 앉았다."
+    epilogue: "그해 겨울부터 한성부 검안에는 의녀 한 사람의 이름이 함께 적혔다."
+    background: dawn_gate
+    music: dawn
+    tone: hopeful
+  late_muwon:
+    title: "늦은 무원"
+    message: "진실은 판결문에 남았다. 다만 그 판결을 함께 듣지 못한 이름이 있다."
+    epilogue: "서연은 시장 맨 아래 칸을 비워 두었다. 다음 검안에서 그 이름을 먼저 적기 위해."
+    background: dawn_gate
+    music: dawn
+    tone: tragic
+  covered_ledger:
+    title: "덮인 장부"
+    message: "증거가 모자랐다. 한명재는 웃으며 형조를 나섰고, 서연은 혜민서 명부에서 지워졌다."
+    epilogue: "막쇠가 남긴 메모 한 장. '장부는 하나가 아니다.'"
+    background: alley_night
+    music: night_well
+    tone: mystery
+  price_of_silence:
+    title: "침묵의 값"
+    message: "덕구는 살았고 사건은 닫혔다. 가짜 청심원은 다음 장날에도 팔렸다."
+    epilogue: "서연은 그 뒤로 감청 주머니를 볼 때마다 걸음을 멈췄다."
+    background: hyeminseo
+    music: night_well
+    tone: tragic
+defaultEnding: covered_ledger

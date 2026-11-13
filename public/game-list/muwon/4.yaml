@@ -1,0 +1,510 @@
+chapterTitle: "무원"
+
+script:
+  - scene: trial_open
+  - scene: standing
+
+scenes:
+  trial_open:
+    title: "형조 대청"
+    actions:
+      - bg: { id: hyeongjo_hall, transition: fade, duration: 900 }
+      - music: pressure
+      - set: { credibility: 3, truth: 0 }
+      - say:
+          channel: record
+          text: "시월 초하루. 형조 대청. 피고 전의감 의관 한명재. 고발인 한성부 판관 김도원."
+      - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "대청 아래 마당에 무릎을 꿇은 사람은 없다. 피고는 대청 끝에 단정히 앉아 있다."
+      - char: { id: 한명재, position: right }
+      - say:
+          char: 한명재
+          text: "판관께서 고발하셨다니 따르지요. 다만 한 가지만 여쭙겠습니다."
+      - say:
+          char: 한명재.cold
+          text: "이 고발의 근거가 의녀와 오작인의 손에서 나왔다지요. 그들이 증언할 자격이 있습니까?"
+      - goto: standing
+
+  standing:
+    actions:
+      - char: { id: 도원, position: left }
+      - branch:
+          cases:
+            - when: { var: trust_dowon, op: gte, value: 2 }
+              goto: standing_vouched
+          default: standing_doubted
+
+  standing_vouched:
+    actions:
+      - say:
+          char: 도원.stern
+          with: [한명재]
+          text: "검안은 내가 초검관으로 했소. 의녀가 본 것은 내 눈으로 다 확인했소. 내 이름으로 증언하겠소."
+      - say:
+          channel: thought
+          with: [도원]
+          text: "우물가에서 '확인만' 하라던 사람이다."
+      - goto: round1
+
+  standing_doubted:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 도원.troubled
+          with: [한명재]
+          text: "…의녀의 검안이 틀린 적은 없었소. 그 이상은 장담하지 못하겠소."
+      - say:
+          char: 한명재
+          text: "판관께서도 확신이 없으시군요. 그럼 의녀의 말은 반만 듣지요."
+      - say:
+          channel: record
+          text: "증언 자격 의심. 처음부터 믿음 하나를 잃고 시작한다."
+      - goto: round1
+
+  round1:
+    title: "첫째 죽음"
+    actions:
+      - say:
+          char: 한명재
+          text: "비단전 침모 분이. 혼례가 두려워 스스로 우물에 들었다 들었습니다. 저와 무슨 상관입니까."
+      - choice:
+          key: t1
+          prompt: "분이가 스스로 들어가지 않았다는 증좌는?"
+          char: 한명재
+          options:
+            - text: "분이의 시장 — 거품 없음, 목의 손자국"
+              goto: round1_right
+            - text: "은비녀 — 검게 변하지 않았다"
+              goto: round1_wrong
+            - text: "얼음 출납부 — 열 덩이 반출"
+              goto: round1_wrong
+
+  round1_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 한명재.cold
+          text: "은비녀요? 얼음이요? 우물 이야기를 하고 있습니다만."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: trial_collapse
+          default: round1_retry
+
+  round1_retry:
+    actions:
+      - choice:
+          key: t1_retry
+          prompt: "다시. 우물의 분이를 말해 줄 증좌는?"
+          char: 한명재
+          options:
+            - text: "분이의 시장 — 거품 없음, 목의 손자국"
+              goto: round1_right
+            - text: "주머니 주문서 — 감청 주머니 삼백"
+              goto: round1_lost
+
+  round1_lost:
+    actions:
+      - say:
+          char: 한명재
+          text: "주문서는 장사 문서지요. 사람이 어찌 죽었는지는 말해 주지 않습니다."
+      - say:
+          channel: thought
+          with: [한명재]
+          text: "분이의 몸에서 본 것을 먼저 내놓았어야 했다."
+      - goto: round2
+
+  round1_right:
+    actions:
+      - add: { truth: 1 }
+      - sticker:
+          id: t_sijang
+          image: sijang_sticker
+          x: 50
+          y: 30
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          char: 서연.resolve
+          with: [한명재, 도원]
+          text: "입과 코에 거품이 없었습니다. 숨이 멎은 뒤 물에 들어갔다는 뜻입니다."
+      - say:
+          char: 서연
+          text: "지게미를 덮자 목에 손자국 넷이 떠올랐습니다. 엄지가 앞. 마주 보고 조른 겁니다."
+      - clearSticker: { id: t_sijang, leave: fadeOut }
+      - say:
+          char: 한명재
+          text: "누가 졸랐든, 그게 왜 저입니까."
+      - goto: round2
+
+  round2:
+    title: "감청 주머니"
+    actions:
+      - say:
+          char: 한명재
+          text: "분이 손톱 밑에 감청 실이 있었다지요. 육의전 물건은 한성 사람 누구나 삽니다."
+      - choice:
+          key: t2
+          prompt: "그 주머니를 산 사람을 가리킬 증좌는?"
+          char: 한명재
+          options:
+            - text: "상처 탁본 — 폭 한 치"
+              goto: round2_wrong
+            - text: "주머니 주문서 — 붉은 표식"
+              goto: round2_right
+            - text: "덕구의 낫 — 날 폭 두 치"
+              goto: round2_wrong
+
+  round2_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 한명재.cold
+          text: "의녀께서 주머니와 칼을 헷갈리시는군요."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: trial_collapse
+          default: round2_retry
+
+  round2_retry:
+    actions:
+      - choice:
+          key: t2_retry
+          prompt: "다시. 주머니를 주문한 집은?"
+          char: 한명재
+          options:
+            - text: "주머니 주문서 — 붉은 표식"
+              goto: round2_right
+            - text: "가짜 청심원 — 속이 석회"
+              goto: round2_lost
+
+  round2_lost:
+    actions:
+      - say:
+          char: 한명재
+          text: "약이 가짜라 해도 누가 주문했는지는 모르지 않습니까."
+      - goto: round3
+
+  round2_right:
+    actions:
+      - add: { truth: 1 }
+      - sticker:
+          id: t_slip
+          image: order_slip_sticker
+          x: 50
+          y: 30
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          char: 서연.resolve
+          with: [한명재]
+          text: "분이가 옷섶에 꿰매 둔 주문서입니다. 감청 주머니 삼백. 주문한 집 자리에 붉은 표식."
+      - char: { id: 여금, position: center }
+      - say:
+          char: 여금
+          when: { var: trust_yeogeum, op: gte, value: 1 }
+          with: [한명재]
+          text: "비단전 행수 여금입니다. 그 표식은 전의감 약고 문에 걸린 것과 같아요. 제가 직접 납품했어요."
+      - say:
+          char: 여금.wary
+          when: { var: trust_yeogeum, op: lte, value: 0 }
+          with: [한명재]
+          text: "…주문은 받았어요. 누구 집인지는, 말하지 않겠어요. 나도 살아야 하니까."
+      - say:
+          char: 서연
+          when: { var: trust_yeogeum, op: lte, value: 0 }
+          with: [한명재]
+          text: "이 표식, 전의감 약고 문에 걸린 것과 같습니다. 판관 나리가 오늘 아침 확인했습니다."
+      - clearSticker: { id: t_slip, leave: fadeOut }
+      - say:
+          char: 한명재.cold
+          text: "전의감에는 의관이 열이 넘습니다. 그중 왜 저입니까."
+      - goto: round3
+
+  round3:
+    title: "둘째 죽음"
+    actions:
+      - say:
+          char: 한명재
+          text: "박 약방은 불이 나 죽었지요. 짐꾼이 불을 질렀다 자복도 했고요. 저와는 무관합니다."
+      - choice:
+          key: t3
+          prompt: "박씨가 불에 죽지 않았다는 증좌는?"
+          char: 한명재
+          options:
+            - text: "감청 실 — 비단전 물건"
+              goto: round3_wrong
+            - text: "윤길의 베껴 쓴 장 — 붉은 동그라미"
+              goto: round3_wrong
+            - text: "닭 실험 기록 — 불 전에 독"
+              goto: round3_right
+
+  round3_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 한명재.cold
+          text: "그건 불과 아무 상관이 없군요."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: trial_collapse
+          default: round3_retry
+
+  round3_retry:
+    actions:
+      - choice:
+          key: t3_retry
+          prompt: "다시. 박씨는 어떻게 죽었나?"
+          char: 한명재
+          options:
+            - text: "닭 실험 기록 — 불 전에 독"
+              goto: round3_right
+            - text: "탄 장부 조각 — 청심원 삼백 환"
+              goto: round3_lost
+
+  round3_lost:
+    actions:
+      - say:
+          char: 한명재
+          text: "장부에 '한' 자 하나. 한성에 한씨가 몇이나 되는지 아십니까."
+      - goto: round4
+
+  round3_right:
+    actions:
+      - add: { truth: 1 }
+      - say:
+          char: 서연.resolve
+          with: [한명재]
+          text: "박씨 콧속엔 그을음이 없었습니다. 입에 물렸던 밥을 먹은 닭이 반 식경 만에 죽었고요."
+      - say:
+          char: 서연
+          text: "은비녀를 속이는 독입니다. 그런 독을 아는 사람은 짐꾼이 아니라 약을 다루는 사람이죠."
+      - say:
+          char: 덕구
+          when: { var: deokgu_saved, op: eq, value: true }
+          with: [한명재]
+          text: "저, 저는 독이 뭔지도 몰라요! 낫으로 풀만 벴어요!"
+      - say:
+          channel: thought
+          when: { var: deokgu_saved, op: eq, value: false }
+          with: [한명재]
+          text: "덕구가 이 말을 들었어야 했다."
+      - goto: round4
+
+  round4:
+    title: "셋째 죽음"
+    actions:
+      - say:
+          char: 한명재.cold
+          text: "서리 윤길은 얼음 곳간에 혼자 갔다지요. 출납부에 제 이름이 있습니까? 없을 겁니다."
+      - choice:
+          key: t4
+          prompt: "이름 대신 무엇이 그를 가리키는가?"
+          char: 한명재
+          timeoutMs: 15000
+          timeoutOptionIndex: 0
+          options:
+            - text: "분이의 시장 — 목의 손자국"
+              goto: round4_wrong
+            - text: "전의감 도장 — 깨진 모서리"
+              goto: round4_right
+            - text: "은비녀 — 검게 변하지 않았다"
+              goto: round4_wrong
+
+  round4_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 한명재.cold
+          text: "의녀께서 지치셨나 봅니다. 증좌가 다 뒤섞이는군요."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: trial_collapse
+          default: round4_retry
+
+  round4_retry:
+    actions:
+      - choice:
+          key: t4_retry
+          prompt: "마지막. 출납부의 붉은 도장은 누구의 것인가?"
+          char: 한명재
+          options:
+            - text: "전의감 도장 — 깨진 모서리"
+              goto: round4_right
+            - text: "얼음 출납부 — 열 덩이 반출"
+              goto: round4_lost
+
+  round4_lost:
+    actions:
+      - say:
+          char: 한명재
+          text: "얼음 열 덩이. 약재를 차게 두는 데 쓰지요. 전의감은 늘 얼음을 씁니다."
+      - goto: final_link
+
+  round4_right:
+    actions:
+      - add: { truth: 1 }
+      - sticker:
+          id: t_seal
+          image: seal_mark_sticker
+          x: 38
+          y: 30
+          width: "clamp(140px, 18%, 240px)"
+          enter: fadeIn
+      - sticker:
+          id: t_ice
+          image: ice_ledger_sticker
+          x: 64
+          y: 30
+          width: "clamp(160px, 22%, 280px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          char: 서연.resolve
+          with: [한명재, 도원]
+          text: "출납부의 도장, 가짜 청심원 상자의 도장. 둘 다 오른쪽 아래 모서리가 깨졌습니다."
+      - say:
+          char: 도원.stern
+          with: [한명재]
+          text: "전의감 인부와 대 보았소. 그렇게 깨진 사인은 하나뿐이오. 의관 한명재."
+      - clearSticker: { id: t_seal, leave: fadeOut }
+      - clearSticker: { id: t_ice, leave: fadeOut }
+      - say:
+          char: 막쇠.grin
+          when: { var: makssoe_alive, op: eq, value: true }
+          with: [한명재]
+          text: "그리고 의관 나리 하인 말이오. 왼손에 붕대 감았던데. 얼음에 정강이 깨진 자리도 아물었수?"
+      - goto: final_link
+
+  final_link:
+    title: "세 죽음을 잇는 사람"
+    actions:
+      - say:
+          channel: record
+          text: "분이는 주머니를 꿰맸다. 박씨는 약재를 팔았다. 윤길은 시장을 베꼈다."
+      - choice:
+          key: t_final
+          prompt: "세 사람이 모두 알아 버린 한 사람은?"
+          with: [한명재, 도원]
+          options:
+            - text: "포교 강치수"
+              forgiveOnce: true
+              forgiveMessage: "강치수는 사건을 덮었을 뿐이다. 주머니를 주문하지도, 약을 짓지도 않았다."
+              goto: final_wrong
+            - text: "의관 한명재"
+              goto: final_right
+            - text: "행수 여금"
+              forgiveOnce: true
+              forgiveMessage: "여금은 주머니를 팔았을 뿐이다. 안에 무엇이 들었는지 몰랐다."
+              goto: final_wrong
+
+  final_wrong:
+    actions:
+      - add: { credibility: -1 }
+      - say:
+          char: 한명재
+          text: "보십시오. 의녀는 처음부터 범인을 정해 두지 않았습니다. 아무나 고르는 겁니다."
+      - branch:
+          cases:
+            - when: { var: credibility, op: lte, value: 0 }
+              goto: trial_collapse
+          default: final_link
+
+  final_right:
+    actions:
+      - say:
+          char: 서연.resolve
+          with: [한명재]
+          text: "전의감 약재로 석회 환을 빚고, 감청 주머니에 담아 진짜 청심원으로 팔았습니다."
+      - say:
+          char: 서연
+          text: "주머니를 꿰맨 분이, 약재 출납을 본 박씨, 빌려 간 시장을 캐물은 윤길. 셋 다 입을 닫게 했어요."
+      - say:
+          char: 한명재.cold
+          text: "…그 약을 산 사람들은 다 나았다고 했습니다. 믿는 것도 약이지요."
+      - say:
+          char: 서연.shock
+          text: "나은 사람만 다시 사러 오니까요. 못 나은 아이는 다시 오지 않아요."
+      - branch:
+          cases:
+            - when: { var: truth, op: lte, value: 3 }
+              goto: verdict_weak
+          default: verdict_strong
+
+  verdict_weak:
+    actions:
+      - say:
+          channel: narration
+          text: "형조 참의는 오래 문서를 넘겼다. 증좌는 서로 이어지는 듯하다가 군데군데 끊겼다."
+      - say:
+          char: 한명재
+          text: "의녀의 짐작이 길군요. 짐작으로 의관을 벌할 수는 없지요."
+      - goto: trial_collapse
+
+  trial_collapse:
+    actions:
+      - say:
+          channel: record
+          text: "형조 판결. 증좌 불충분. 피고 한명재 방면. 의녀 서연은 혜민서에서 내친다."
+      - say:
+          channel: thought
+          with: []
+          text: "증좌는 있었다. 내가 내미는 순서가 그를 이기지 못했다."
+      - ending: covered_ledger
+
+  verdict_strong:
+    actions:
+      - effect: { name: inkstamp, wait: true }
+      - say:
+          channel: record
+          text: "형조 판결. 피고 한명재, 가짜 약 제조와 살인 세 건. 전의감 약고를 봉하고 남은 주머니를 거둔다."
+      - music: dawn
+      - bg: { id: dawn_gate, transition: fade, duration: 1200 }
+      - branch:
+          cases:
+            - when:
+                all:
+                  - { var: deokgu_saved, op: eq, value: true }
+                  - { var: makssoe_alive, op: eq, value: true }
+              goto: epilogue_full
+          default: epilogue_late
+
+  epilogue_full:
+    actions:
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 막쇠.grin
+          text: "아가씨. 오늘 판결문에 내 이름도 들어갔다우. 오작인 막쇠 입회. 처음이오."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "다음 시장에는 아저씨 이름을 먼저 쓸게요. 제일 먼저 본 사람이니까."
+      - say:
+          channel: narration
+          text: "성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맸다."
+      - ending: muwon
+
+  epilogue_late:
+    actions:
+      - say:
+          channel: thought
+          when: { var: makssoe_alive, op: eq, value: false }
+          with: []
+          text: "판결문에 오작인 막쇠의 이름은 없다. 죽은 사람은 입회할 수 없으니까."
+      - say:
+          channel: thought
+          when: { var: deokgu_saved, op: eq, value: false }
+          with: []
+          text: "덕구의 낫은 아직 형조 창고에 있다. 찾아갈 사람이 없다."
+      - say:
+          channel: narration
+          text: "성문이 열렸다. 서연은 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
+      - ending: late_muwon

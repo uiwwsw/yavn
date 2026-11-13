@@ -1,0 +1,217 @@
+assets:
+  backgrounds:
+    title: assets/bg/title.svg
+    well_night: assets/bg/well_night.svg
+    hanseongbu_yard: assets/bg/hanseongbu_yard.svg
+    sihyeongdo: assets/bg/sihyeongdo.svg
+    apothecary_burnt: assets/bg/apothecary_burnt.svg
+    hyeminseo: assets/bg/hyeminseo.svg
+    jail: assets/bg/jail.svg
+    seobinggo: assets/bg/seobinggo.svg
+    hyeongjo_hall: assets/bg/hyeongjo_hall.svg
+    alley_night: assets/bg/alley_night.svg
+    dawn_gate: assets/bg/dawn_gate.svg
+    thread_sticker: assets/items/thread.svg
+    sijang_sticker: assets/items/sijang.svg
+    order_slip_sticker: assets/items/order_slip.svg
+    ledger_burnt_sticker: assets/items/ledger_burnt.svg
+    silver_pin_sticker: assets/items/silver_pin.svg
+    poison_note_sticker: assets/items/poison_note.svg
+    wound_rubbing_sticker: assets/items/wound_rubbing.svg
+    sickle_sticker: assets/items/sickle.svg
+    ice_ledger_sticker: assets/items/ice_ledger.svg
+    fake_pill_sticker: assets/items/fake_pill.svg
+    seal_mark_sticker: assets/items/seal_mark.svg
+    register_page_sticker: assets/items/register_page.svg
+  characters:
+    서연:
+      placement: prompt-top
+      base: assets/char/seoyeon.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: calm
+      emotions:
+        think: assets/char/seoyeon-think.svg
+        shock: assets/char/seoyeon-shock.svg
+        resolve: assets/char/seoyeon-resolve.svg
+    도원:
+      placement: prompt-top
+      base: assets/char/dowon.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: neutral
+      emotions:
+        stern: assets/char/dowon-stern.svg
+        troubled: assets/char/dowon-troubled.svg
+    막쇠:
+      placement: prompt-top
+      base: assets/char/makssoe.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: calm
+      emotions:
+        grin: assets/char/makssoe-grin.svg
+        hurt: assets/char/makssoe-hurt.svg
+    강치수:
+      placement: prompt-top
+      base: assets/char/chisu.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: angry
+      emotions:
+        angry: assets/char/chisu-angry.svg
+    여금:
+      placement: prompt-top
+      base: assets/char/yeogeum.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: calm
+      emotions:
+        wary: assets/char/yeogeum-wary.svg
+    한명재:
+      placement: prompt-top
+      base: assets/char/myeongjae.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: calm
+      emotions:
+        cold: assets/char/myeongjae-cold.svg
+    덕구:
+      placement: prompt-top
+      base: assets/char/deokgu.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      defaultDelivery: nervous
+      emotions:
+        scared: assets/char/deokgu-scared.svg
+    곰보:
+      placement: prompt-top
+      base: assets/char/gombo.svg
+      facing: left
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+  music:
+    night_well: assets/music/night-well.wav
+    inquest: assets/music/inquest.wav
+    pressure: assets/music/pressure.wav
+    dawn: assets/music/dawn.wav
+
+state:
+  trust_dowon: 0
+  trust_yeogeum: 0
+  credibility: 3
+  truth: 0
+  makssoe_hurt: false
+  makssoe_alive: true
+  deokgu_saved: false
+  struck_deal: false
+  c1_mouth: false
+  c1_nails: false
+  c1_neck: false
+  c1_brother: false
+  c2_nose: false
+  c2_hands: false
+  c3_wound: false
+  c3_sickle: false
+  c3_hand: false
+  c4_lividity: false
+  c4_stiff: false
+  c4_ledger: false
+  c4_box: false
+
+inventory:
+  blue_thread:
+    name: "감청 실"
+    description: "분이의 손톱 밑에서 나온 짙은 감청색 비단 실. 육의전 비단전에서만 이 색을 낸다."
+    image: assets/items/thread.svg
+    category: "증거"
+    order: 10
+  first_sijang:
+    name: "분이의 시장"
+    description: "입과 코에 거품이 없고, 술지게미를 덮자 목에 손자국이 떠올랐다. 죽은 뒤 우물에 던져졌다."
+    image: assets/items/sijang.svg
+    category: "검안 기록"
+    order: 20
+  order_slip:
+    name: "주머니 주문서"
+    description: "분이가 옷 안섶에 꿰매 둔 종이. '감청 주머니 삼백'과 주문한 집의 붉은 표식."
+    image: assets/items/order_slip.svg
+    category: "증거"
+    order: 30
+  burnt_ledger:
+    name: "탄 장부 조각"
+    description: "약방 궤짝에서 건진 장부 한 장. '청심원 삼백 환 — 한'까지만 남았다."
+    image: assets/items/ledger_burnt.svg
+    category: "증거"
+    order: 40
+  silver_pin:
+    name: "은비녀"
+    description: "약방 주인의 입에 넣었다 뺐지만 검게 변하지 않았다. 은비녀로 잡히지 않는 독도 있다."
+    image: assets/items/silver_pin.svg
+    category: "검안 도구"
+    order: 50
+  poison_note:
+    name: "닭 실험 기록"
+    description: "약방 주인의 입에 물렸던 밥을 먹은 닭이 반 식경 만에 쓰러졌다. 독살이다."
+    image: assets/items/poison_note.svg
+    category: "검안 기록"
+    order: 60
+  wound_rubbing:
+    name: "상처 탁본"
+    description: "약방 주인 목의 칼자국을 종이에 떠 둔 것. 오른쪽 위에서 왼쪽 아래로, 폭은 한 치."
+    image: assets/items/wound_rubbing.svg
+    category: "검안 기록"
+    order: 70
+  deokgu_sickle:
+    name: "덕구의 낫"
+    description: "포도청이 흉기라 내놓은 낫. 날 폭이 두 치다."
+    image: assets/items/sickle.svg
+    category: "증거"
+    order: 80
+  ice_ledger:
+    name: "얼음 출납부"
+    description: "서빙고의 출납부. 윤길이 사라진 밤, 얼음 열 덩이가 반출되었고 전의감 도장이 찍혀 있다."
+    image: assets/items/ice_ledger.svg
+    category: "증거"
+    order: 90
+  fake_pill:
+    name: "가짜 청심원"
+    description: "감청 주머니에 든 환약. 쪼개 보니 속이 흰 석회다."
+    image: assets/items/fake_pill.svg
+    category: "증거"
+    order: 100
+  seal_mark:
+    name: "전의감 도장"
+    description: "얼음 출납부와 청심원 상자에 같은 도장이 찍혀 있다. 모서리 한쪽이 깨진 자국까지 같다."
+    image: assets/items/seal_mark.svg
+    category: "증거"
+    order: 110
+  register_page:
+    name: "윤길의 베껴 쓴 장"
+    description: "서리 윤길이 검안 기록을 옮겨 적은 장. 한 이름에 붉은 동그라미가 쳐져 있다."
+    image: assets/items/register_page.svg
+    category: "증거"
+    order: 120

@@ -24,4 +24,4 @@ Start with [sample.yaml](sample.yaml) and complete game packages in `public/game
 
 See [CONTRIBUTING](CONTRIBUTING.en.md) for setup, collaboration, validation and PR review. Follow [Add a game](docs/ADDING_A_GAME.en.md) for a runnable starter and catalog submission. ZIP upload runs locally; public listing requires review, merge and deployment.
 
-An English opening edition of Deokman chapter one is available in the library. Select English in the game-language filter. These editions end at the translated chapter boundary and keep separate progress from the Korean full stories. See the [dialogue and localization guide](docs/DRAMA_LOCALIZATION.md).
+The library's main story, *Muwon*, is a five-chapter forensic mystery set in Hanseong in 1792. Its characters and cases are original; only the period setting and the historical inquest methods are borrowed. It is currently available in Korean.

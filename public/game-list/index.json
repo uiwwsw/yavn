@@ -1,109 +1,67 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T00:45:08.219Z",
+  "generatedAt": "2026-11-13T02:53:10.123Z",
   "games": [
     {
-      "id": "deokman",
-      "name": "선덕여왕: 죽은 공주의 왕관",
-      "path": "/game-list/deokman/",
+      "id": "muwon",
+      "name": "무원 — 한성 검안록",
+      "path": "/game-list/muwon/",
       "author": "uiwwsw",
-      "version": "10.4.0",
-      "summary": "오늘 밤 죽는다고, 내 이름 옆에 적혀 있다. 12종의 증거를 모으고 네 번의 비교 조사로 음모를 쫓는 12장 정치극. 가족과 백성 사이에서 내린 선택은 11개의 결말로 이어진다.",
-      "summaryEn": "A twelve-chapter political drama. Investigate twelve types of evidence and four comparisons, then choose between family and the people across eleven endings.",
-      "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
+      "version": "1.0.0",
+      "summary": "1792년 한성, 혜민서 의녀가 한글 검시 지침서로 억울한 죽음을 읽는다. 시신 그림표를 직접 살피고 옛 검시법으로 실험해, 고문으로 받아 낸 자백을 증거로 뒤집는 5장 검시 추리극. 결말 4종.",
+      "summaryEn": "Hanseong, 1792. A royal clinic maid reads the dead with a newly translated forensic manual. Examine body charts, run historical forensic tests and overturn a confession beaten out of an innocent man. Five chapters, four endings.",
+      "thumbnail": "/game-list/muwon/assets/bg/title.svg",
       "tags": [
         "historical-fiction",
-        "silla",
+        "joseon",
+        "mystery",
         "complete",
-        "character-drama",
-        "political-thriller",
+        "investigation",
         "consequential-choices"
       ],
       "tagLabels": {
         "historical-fiction": "역사극",
-        "silla": "신라",
+        "joseon": "조선",
+        "mystery": "추리",
         "complete": "완결",
-        "character-drama": "인물 드라마",
-        "political-thriller": "정치 스릴러",
+        "investigation": "직접 조사",
         "consequential-choices": "무거운 선택"
       },
       "languages": [
         "ko"
       ],
       "showcase": {
-        "label": "COMPLETE · 12 CHAPTERS",
-        "backgroundColor": "#181722",
+        "label": "COMPLETE · 5 CHAPTERS",
+        "backgroundColor": "#141c26",
         "image": {
-          "positionX": 54,
-          "positionY": 45,
-          "scale": 1.03,
+          "positionX": 62,
+          "positionY": 50,
+          "scale": 1,
           "offsetX": 0,
           "offsetY": 0
         }
       },
       "legalNotices": [],
-      "chapterCount": 12,
+      "chapterCount": 5,
       "seo": {
-        "title": "선덕여왕: 죽은 공주의 왕관",
-        "description": "죽었다고 기록된 공주가 여왕이 되기까지. 12장의 정치극에서 증거 12종을 모으고 네 번의 비교 조사로 음모를 밝히세요. 백성·군대·가족 사이의 선택이 11개의 결말로 돌아옵니다.",
+        "title": "무원 — 한성 검안록",
+        "description": "1792년 한성, 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서로 억울한 죽음을 밝히는 5장 검시 추리 비주얼노벨. 시신 그림표를 직접 살피고, 옛 검시법으로 실험하고, 증거로 고문 자백을 뒤집으세요. 결말 4종.",
         "keywords": [
-          "선덕여왕",
-          "덕만",
-          "신라",
+          "조선 추리",
+          "검시",
+          "무원록",
           "역사 비주얼노벨",
-          "선택형 드라마",
-          "완결 게임",
+          "추리 게임",
+          "선택형 이야기",
           "historical-fiction",
-          "silla",
+          "joseon",
+          "mystery",
           "complete",
-          "character-drama",
-          "political-thriller",
+          "investigation",
           "consequential-choices"
         ],
-        "image": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
-        "imageAlt": "금지된 사망 기록을 든 덕만 뒤로 불타는 신라 별궁과 검은 별이 보이는 밤"
-      }
-    },
-    {
-      "id": "english-deokman",
-      "name": "Deokman: The Princess Written Dead",
-      "path": "/game-list/english-deokman/",
-      "author": "uiwwsw",
-      "version": "1.0.0",
-      "summary": "English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.",
-      "summaryEn": "English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.",
-      "thumbnail": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
-      "tags": [
-        "english",
-        "opening-chapter",
-        "historical-fiction",
-        "character-drama"
-      ],
-      "tagLabels": {
-        "english": "영어판",
-        "opening-chapter": "첫 장",
-        "historical-fiction": "역사극",
-        "character-drama": "인물 드라마"
-      },
-      "languages": [
-        "en"
-      ],
-      "legalNotices": [],
-      "chapterCount": 1,
-      "seo": {
-        "title": "Deokman: The Princess Written Dead",
-        "description": "English chapter one only. Someone has recorded her death before nightfall. Read the evidence, face her father and escape the burning palace with Sohwa.",
-        "keywords": [
-          "English visual novel",
-          "opening chapter",
-          "Silla historical drama",
-          "english",
-          "opening-chapter",
-          "historical-fiction",
-          "character-drama"
-        ],
-        "image": "/game-list/deokman/assets/bg/title-deokman-v8-fire-v1.webp",
-        "imageAlt": "A princess outside a burning palace"
+        "image": "/game-list/muwon/assets/bg/title.svg",
+        "imageAlt": "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
       }
     },
     {
@@ -171,37 +129,30 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 선덕여왕: 죽은 공주의 왕관, Deokman: The Princess Written Dead, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 무원 — 한성 검안록, Live2D 테스트: 렌 수다.",
     "keywords": [
-      "선덕여왕: 죽은 공주의 왕관",
-      "Deokman: The Princess Written Dead",
+      "무원 — 한성 검안록",
       "Live2D 테스트: 렌 수다",
       "historical-fiction",
-      "silla",
+      "joseon",
+      "mystery",
       "complete",
-      "character-drama",
-      "political-thriller",
+      "investigation",
       "consequential-choices",
-      "english",
-      "opening-chapter",
       "live2d",
       "interaction",
       "smoke-test",
-      "선덕여왕",
-      "덕만",
-      "신라",
+      "조선 추리",
+      "검시",
+      "무원록",
       "역사 비주얼노벨",
-      "선택형 드라마",
-      "완결 게임",
-      "English visual novel",
-      "opening chapter",
-      "Silla historical drama"
+      "추리 게임",
+      "선택형 이야기"
     ],
     "gameTitles": [
-      "선덕여왕: 죽은 공주의 왕관",
-      "Deokman: The Princess Written Dead",
+      "무원 — 한성 검안록",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 3
+    "gameCount": 2
   }
 }

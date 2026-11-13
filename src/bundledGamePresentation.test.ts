@@ -69,7 +69,7 @@ describe('bundled game presentation', () => {
   );
 
   it('gives the main game complete ending presentations and playable local scores', () => {
-    for (const game of ['deokman']) {
+    for (const game of ['muwon']) {
       const config = record(load(source(game, 'config.yaml')));
       const assets = record(load(source(game, 'base.yaml'))).assets;
       for (const ending of Object.values(config.endings).map(record)) {
@@ -82,9 +82,9 @@ describe('bundled game presentation', () => {
         expect(existsSync(local), local).toBe(true);
       }
     }
-    const music = record(load(source('deokman', 'base.yaml'))).assets.music;
-    for (let chapter = 0; chapter < 12; chapter += 1) {
-      const data = record(load(source('deokman', `${chapter}.yaml`)));
+    const music = record(load(source('muwon', 'base.yaml'))).assets.music;
+    for (let chapter = 0; chapter < 5; chapter += 1) {
+      const data = record(load(source('muwon', `${chapter}.yaml`)));
       const actions = Object.values(data.scenes).flatMap((scene) => record(scene).actions);
       const cues = actions.filter((action) => action.music).map((action) => action.music);
       expect(cues.length, `chapter ${chapter + 1}`).toBeGreaterThan(0);

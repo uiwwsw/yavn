@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(-38 210 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- shaft -->
+    <path d="M86 192 L330 196 Q360 200 372 200 Q360 202 330 206 L86 210 Z" fill="#c9cdd2" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M90 204 L330 202 Q356 201 366 200" fill="none" stroke="#959ba3" stroke-width="3"/>
+    <path d="M110 196 L300 198" stroke="#ffffff" stroke-width="2.5"/>
+    <!-- collar rings -->
+    <rect x="84" y="186" width="14" height="30" rx="3" fill="#b8bec5" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M91 190 v22" stroke="#959ba3" stroke-width="2"/>
+    <!-- plum-blossom head (maejam) -->
+    <g transform="translate(62 201) scale(1.35)">
+      <g fill="#c9cdd2" stroke="#1d1a17" stroke-width="3">
+        <circle cx="0" cy="-22" r="14"/><circle cx="21" cy="-7" r="14"/><circle cx="13" cy="18" r="14"/>
+        <circle cx="-13" cy="18" r="14"/><circle cx="-21" cy="-7" r="14"/>
+      </g>
+      <g fill="#959ba3">
+        <path d="M-4 -12 a14 14 0 0 0 8 0 l-2 -2 z"/>
+        <circle cx="12" cy="24" r="6"/><circle cx="-14" cy="24" r="6"/>
+      </g>
+      <circle cx="0" cy="0" r="10" fill="#b8bec5" stroke="#1d1a17" stroke-width="3"/>
+      <g stroke="#1d1a17" stroke-width="2">
+        <path d="M0 -10 v-6 M9 -3 l6 -2 M6 8 l4 5 M-6 8 l-4 5 M-9 -3 l-6 -2"/>
+      </g>
+      <path d="M-6 -28 q6 -4 10 0 M14 -14 q6 0 8 6" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+    </g>
+    <!-- engraved hatch on shaft near head -->
+    <g stroke="#7e858e" stroke-width="1.6">
+      <path d="M112 194 l-4 14 M122 194 l-4 14 M132 195 l-4 14"/>
+    </g>
+  </g>
+</svg>

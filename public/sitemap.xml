@@ -21,12 +21,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yavn.vercel.app/game-list/deokman/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://yavn.vercel.app/game-list/english-deokman/</loc>
+    <loc>https://yavn.vercel.app/game-list/muwon/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

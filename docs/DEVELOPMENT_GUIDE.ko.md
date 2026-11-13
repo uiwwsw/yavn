@@ -370,7 +370,7 @@ scenes:
 - 같은 ID에서 생략한 `x/y/width/height/anchorX/anchorY/rotate/opacity/zIndex`는 현재 값을 이어받습니다. 전부 같은 선언은 상태를 갱신하지 않고 `inputLockMs`도 다시 걸지 않습니다. 새 아이템이나 실제 변경에는 작성된 잠금을 적용합니다. `width/height: auto`로 크기 지정을 해제할 수 있습니다.
 - `clearSticker`가 실제로 제거한 뒤 다시 표시하면 새 물건 수명으로 입장합니다. 퇴장 중 같은 ID를 다시 지정하면 제거 예약을 취소하고 기존 인스턴스를 사용합니다. 퇴장 효과 중에도 마지막 안전 배치를 유지합니다.
 - 같은 `char.id`의 표정과 좌우 위치 변경은 기존 배우 DOM을 유지합니다. 렌더 배열도 위치 순으로 다시 정렬하지 않아, 두 배우가 자리를 바꿀 때 DOM 이동으로 CSS 전환이 끊기지 않습니다. 표정은 디코딩 후 겹쳐 전환하고 월드 좌표는 별도로 보간합니다. 명시적 `enter.layout: cut`과 모션 감소 설정은 즉시 배치 동작을 유지합니다.
-- 기존 YAML·저장 형식은 그대로 사용합니다. 덕만 첫 방의 족보처럼 여러 대사에 걸쳐 같은 아이템을 보여 주는 장면은 데이터 수정 없이 개선을 적용받습니다.
+- 기존 YAML·저장 형식은 그대로 사용합니다. 여러 대사에 걸쳐 같은 아이템을 보여 주는 장면은 데이터 수정 없이 개선을 적용받습니다.
 
 ```yaml
 # assets.backgrounds에 closed_register / open_register를 선언한 장면
@@ -457,17 +457,17 @@ scenes:
   conversation:
     # layout: auto # 기본값
     actions:
-      - char: { id: deokman } # position: auto와 동일
+      - char: { id: heroine } # position: auto와 동일
       - char: { id: king, position: auto }
       - char: { id: yushin, position: auto }
-      - say: { char: deokman, text: "모두 모였군요." }
-      - say: { char: deokman, with: [king], text: "둘이 이야기하지요." } # 두 명을 좌우로
-      - say: { char: deokman, with: [], text: "생각할 시간이 필요해." } # 한 명을 중앙으로
+      - say: { char: heroine, text: "모두 모였군요." }
+      - say: { char: heroine, with: [king], text: "둘이 이야기하지요." } # 두 명을 좌우로
+      - say: { char: heroine, with: [], text: "생각할 시간이 필요해." } # 한 명을 중앙으로
   doorway:
     layout: fixed # 이 장면에서만 카메라 이전의 좌·중·우 기준을 고정
     actions:
-      - char: { id: deokman, position: left }
-      - say: { char: deokman, with: [], text: "오른쪽 문을 비워 두어라." }
+      - char: { id: heroine, position: left }
+      - say: { char: heroine, with: [], text: "오른쪽 문을 비워 두어라." }
 ```
 
 슬롯은 최대 세 개이며 숨은 배우도 등록을 유지합니다. 모두 차 있을 때 새 ID를 `auto`로 추가하면 기존 배우를 임의로 지우지 않고 작성 오류를 표시합니다. 그 경우 교체할 `position`을 명시합니다. `scene.layout`의 `auto/fixed`는 **구도 정책**, 아래 `char.enter.layout`의 `push/cut`은 **입장 시 자리 이동 방식**입니다. 저장 복원도 같은 자동 슬롯 배정과 현재 장면의 정책을 사용합니다.
@@ -477,15 +477,15 @@ scenes:
 ```yaml
 assets:
   characters:
-    deokman:
-      base: assets/char/deokman.webp
+    heroine:
+      base: assets/char/heroine.webp
       placement: prompt-top
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.4 }
         full: { scale: 1 }
       calibration: { spacing: 0.8 }
-# 대화에는 기본 portrait, 전신을 볼 지점에는 say: { char: deokman, framing: full, ... }
+# 대화에는 기본 portrait, 전신을 볼 지점에는 say: { char: heroine, framing: full, ... }
 ```
 
 크롭을 바꿔도 바깥 배치 박스와 이미지 요소는 유지하고 내부 그림의 `transform` 확대율만 360ms로 전환합니다. 그림 높이를 매 프레임 변경하지 않아 반복 레이아웃·래스터 작업을 줄이며, 위쪽 중앙 기준 확대와 하단 클립으로 기존 크기·머리 여백을 유지합니다. 표정 디졸브와 입장 효과를 다시 시작하지 않습니다. `cropBottom` 범위는 `0..0.65`, 생략 시 0이며 모션 감소 환경에서는 보간을 생략합니다.
@@ -905,8 +905,8 @@ endings:
 ```yaml
 assets:
   characters:
-    deokman:
-      base: assets/char/deokman.webp
+    heroine:
+      base: assets/char/heroine.webp
       facing: left
       calibration: { scale: 1.06, x: 0, y: -2, spacing: 0.98 }
     king:
@@ -919,10 +919,10 @@ scenes:
     actions:
       - bg: throne_hall
       - camera: wide
-      - char: { id: deokman, position: left }
+      - char: { id: heroine, position: left }
       - char: { id: king, position: right }
       - say:
-          char: deokman
+          char: heroine
           with: [king]
           camera: medium
           text: "전하께 드릴 말씀이 있습니다."
@@ -933,7 +933,7 @@ scenes:
           duration: 460
       - say:
           char: king
-          with: [deokman]
+          with: [heroine]
           camera: close
           text: "계속 말해 보아라."
 ```
@@ -968,8 +968,8 @@ scenes:
 ```yaml
 assets:
   characters:
-    deokman:
-      base: assets/char/deokman.webp
+    heroine:
+      base: assets/char/heroine.webp
       facing: left
       defaultFraming: full
       framings:
@@ -980,13 +980,13 @@ assets:
 scenes:
   audience:
     actions:
-      - char: { id: deokman, position: center, framing: full }
+      - char: { id: heroine, position: center, framing: full }
       - say:
-          char: deokman
+          char: heroine
           framing: bust
           text: "전하께 드릴 말씀이 있습니다."
       - choice:
-          char: deokman
+          char: heroine
           framing: closeup
           prompt: "왕이 잔을 든다. 지금 막을까?"
           options:
@@ -1035,7 +1035,7 @@ scenes:
 - 실제 지연은 대략 `1000 / (CPS × delivery 배율 × 감정 흔들림)`이고 글자당 16~900ms로 제한되며, 공백은 일반 글자의 62% 시간을 사용합니다.
 - 속도 배율은 `neutral 1.00`, `calm 0.90`, `nervous 1.02`, `angry 1.20`, `whisper 0.76`, `shout 1.34`, `sad 0.70`, `deduction 0.94`입니다.
 - 말줄임표 추가 호흡은 같은 순서로 `280/330/480/210/420/170/560/360ms`이며 쉼표와 문장 끝에도 프로필별 호흡이 붙습니다.
-- 캐릭터 선언의 `defaultDelivery`는 해당 인물의 평상시 리듬입니다. 예: `assets.characters.덕만.defaultDelivery: deduction`.
+- 캐릭터 선언의 `defaultDelivery`는 해당 인물의 평상시 리듬입니다. 예: `assets.characters.서연.defaultDelivery: calm`.
 - 우선순위는 `say.delivery` 명시값 -> `say.char`의 표정 -> 현재 표시 중인 화자의 표정 -> 캐릭터 `defaultDelivery` -> `neutral`입니다.
 - 기본 자동 연결은 `serious/think -> deduction`, `angry -> angry`, `nervous/worried/scared -> nervous`, `surprised -> shout`, `proud/calm -> calm`입니다.
 - 쉼표, 마침표, 물음표, 느낌표, 말줄임표, 줄바꿈 뒤에 감정별 정지가 자동 추가됩니다.
@@ -1124,8 +1124,8 @@ scenes:
 - `at`는 `presentation: explore`에서만 허용합니다. 작성된 옵션 중 하나 이상은 좌표가 있어야 합니다. `when`으로 모든 선택을 숨기지 않도록 돌아가기나 다음 행동을 남겨 둡니다.
 - 버튼은 화면 안으로 제한하고 44px 이상의 터치 영역과 안쪽 포커스 테두리를 유지합니다. 여러 버튼의 상호 겹침까지 자동 배치하지는 않으므로 짧은 이름과 충분히 떨어진 좌표를 사용하고 모바일 세로·가로에서 확인합니다. 권장 대상 수는 한 화면에 두 개입니다.
 - 관찰 장면은 `say`로 물리적 사실을 보여 준 뒤 `set`으로 확인 플래그를 기록하고 같은 조사 선택으로 돌아옵니다. 두 물건을 모두 본 뒤 `when`으로 추론을 엽니다. 반복해서 볼 수 있는 장면에는 `add` 보상을 두지 않습니다.
-- 조사 상태와 선택 이력은 기존 `routeVars/routeHistory`로 저장합니다. 새 저장 형식이나 별도 인벤토리는 없습니다. 구형 저장에 없는 플래그는 `base.yaml.state`의 기본값으로 채웁니다. 덕만 기존 장면 ID·액션 개수·게임 버전은 유지하며, 첫 조사를 지난 저장에서는 1장 다시 시작으로 새 도입부를 볼 수 있습니다.
-- 덕만은 첫 방과 네 증거상에 이 흐름을 사용하고, 추리 샘플 초반은 관찰·속마음·밤의 행동 버튼을 사용합니다. 다른 작품은 새 속성을 작성하지 않아도 기존 동작을 유지합니다.
+- 조사 상태와 선택 이력은 기존 `routeVars/routeHistory`로 저장합니다. 새 저장 형식이나 별도 인벤토리는 없습니다. 구형 저장에 없는 플래그는 `base.yaml.state`의 기본값으로 채웁니다.
+- 무원은 시신 그림표(시형도)와 사건 현장 조사에 이 흐름을 사용합니다. 다른 작품은 새 속성을 작성하지 않아도 기존 동작을 유지합니다.
 
 ### 9-4-2) `say.when` 조건부 대사
 
@@ -1376,7 +1376,7 @@ public/game-list/my-story/
     sfx/
 ```
 
-장편 역사극의 채널·조건부 대사/선택·누적 상태·다중 실패/엔딩 샘플은 `public/game-list/deokman/`을 참고합니다. 12개 챕터에서 `dialogue/narration/record/thought/action`, `say.when`, `choice.options[].when`, 외부 챕터 `goto`, 누적 상태 `branch`, 장면형 `gameOver`, 다중 `ending`을 함께 사용합니다.
+추리극의 채널·조건부 대사/선택·누적 상태·증거 제시·다중 실패/엔딩 샘플은 `public/game-list/muwon/`을 참고합니다. 5개 챕터에서 `dialogue/narration/record/thought/action`, `say.when`, `choice.options[].when`, 외부 챕터 `goto`, 누적 상태 `branch`, 장면형 `gameOver`, 다중 `ending`을 함께 사용합니다.
 
 ## 12) 제작 흐름 권장
 
@@ -1391,9 +1391,8 @@ public/game-list/my-story/
 
 - `README.md`
 - `docs/YAML_STORY_TO_DSL_PROMPT.ko.md`
-- `docs/DEOKMAN_GAME_BIBLE.ko.md`
-- `public/game-list/deokman/CHARACTER_VOICE.ko.md`
-- 역사극 분기 샘플: `public/game-list/deokman/*.yaml`
+- `docs/MUWON_GAME_BIBLE.ko.md`
+- 추리극 분기 샘플: `public/game-list/muwon/*.yaml`
 - DSL 축약 샘플: `sample.yaml`
 
 ### 비주얼노벨 연출 마이그레이션 (2026-09-08)
@@ -1406,6 +1405,7 @@ public/game-list/my-story/
 
 ## 14) 문서 변경 로그
 
+- 2026-11-13: 대표 게임을 덕만에서 5장 검시 추리극 「무원 — 한성 검안록」(`public/game-list/muwon/`)으로 교체했습니다. 덕만 12장과 영어 도입부, 영어 번역 생성 스크립트(`generate-english-prologues.mjs`)와 대응표를 제거했습니다. 무원의 그림은 직접 그린 SVG, 음악은 `scripts/generate-muwon-score.py` 합성음입니다. 엔진 DSL은 바뀌지 않습니다.
 - 2026-11-13: 몰입 개선. 플레이 중 4초 동안 입력이 없으면 상단 HUD와 AUTO·건너뛰기·숨기기 버튼이 흐려지고, 마우스·터치·키 입력에 바로 돌아옵니다(모션 감소 설정에서는 전환 없이 바뀜). URL 게임의 번호 챕터는 8개씩 묶어 동시에 확인해 12장 게임의 시작 전 순차 요청이 13번에서 2번으로 줄었습니다. `launcher.yaml.tagLabels`(선택)로 한국어 화면의 태그 이름을 정하고, 이름이 없으면 태그 ID를 단어로 풀어 표시합니다. 게임 에셋(`/game-list/*/assets/*`)은 하루 동안 브라우저 캐시를 사용합니다. 덕만 1장 첫 장면은 대사에 맞게 잠긴 방 배경으로 시작하고, 아버지의 처소로 옮길 때 모란 정원으로 전환합니다. 저장 형식은 바뀌지 않습니다.
 - 2026-11-13: 읽은 대사 `건너뛰기`를 추가하고, 챕터 로딩이 시작 장면 주변 에셋만 기다리도록 바꿨습니다(덕만 1장 23→5개). 조사 장면 안내와 보이는 순서대로의 선택지 번호, 게임 화면 12px 최소 글자 크기, 설정 화면 한국어 소제목, 이용 통계 동의 창 위치를 정리했습니다. DSL·게임 데이터·저장 형식은 바뀌지 않습니다.
 - 2026-11-12: YAML 파서(`parser.ts`·`js-yaml`·`zod`)와 이야기 지도 화면을 메인 번들에서 분리했습니다. 파서는 게임을 열 때 YAML 요청과 함께 동적 로딩하고, 이야기 지도는 처음 열 때 JS·CSS를 받습니다. 메인 JS가 `583.67 kB`(`182.07 kB` gzip)에서 `440.60 kB`(`142.57 kB` gzip)로 줄었고 런처는 파서를 받지 않습니다. DSL·게임 데이터·저장 형식은 바뀌지 않습니다.
@@ -1658,15 +1658,3 @@ public/game-list/my-story/
 ### 변경 기록
 
 - 서재의 복수 검색어·전각 문자 검색을 지원합니다.
-- 덕만 첫 장의 대사를 다듬었습니다. 장면 ID, 단서, 조건과 분기는 유지합니다.
-
-## 영어 도입부와 감정 연출
-
-덕만 첫 장은 한국어 완결판과 별도의 영어 작품으로 제공됩니다. 서재의 게임 지원 언어 필터에서 English를 선택하면 찾을 수 있습니다. 영어 전용 작품은 한국어 서재에서도 영어 조작 UI로 열립니다. 번역 범위 마지막에는 안내와 함께 종료되며 한국어 다음 장으로 이동하지 않습니다.
-
-한국어 대사와 영어 번역은 `content/localizations`의 대응표로 관리합니다. 장면·선택지·조건·보상은 공유하고 표정과 말투 연출도 유지합니다. 자세한 기준과 각 작품의 범위는 [대사·번역 가이드](DRAMA_LOCALIZATION.md)를 참고하세요.
-
-### 변경 기록
-
-- 기다림과 미안함, 부모와 아이 사이의 거리, 소화와 덕만의 신뢰를 대사와 반응으로 연결합니다.
-- 기존 YAML 문법으로 두 영어 도입부와 번역 범위 종료 화면을 제공합니다.

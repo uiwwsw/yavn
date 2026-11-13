@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(4 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58 88 L340 80 L346 316 L64 324 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M58 88 L64 324 L80 322 L74 90 Z" fill="#d9ccb0"/>
+    <g stroke="#b9a983" stroke-width="1.2" opacity="0.6">
+      <path d="M100 110 l12 0 M200 106 l10 1 M300 120 l12 -1 M110 300 l12 0 M250 300 l10 1 M320 220 l9 0"/>
+    </g>
+    <!-- rice ball -->
+    <path d="M108 222 Q120 162 140 158 Q160 162 172 222 Q140 236 108 222 Z" fill="#fbf7ec" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M114 214 Q140 226 166 214 L170 222 Q140 236 110 222 Z" fill="#d9ccb0"/>
+    <g fill="#1d1a17"><circle cx="132" cy="190" r="2"/><circle cx="146" cy="200" r="2"/><circle cx="138" cy="176" r="2"/><circle cx="152" cy="184" r="2"/></g>
+    <text x="140" y="268" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="22" fill="#1d1a17" text-anchor="middle">밥</text>
+    <!-- arrow -->
+    <path d="M186 200 C206 190 222 190 238 198 M228 188 l12 10 l-14 6" fill="none" stroke="#1d1a17" stroke-width="3"/>
+    <!-- fallen chicken, on its side, feet up -->
+    <g>
+      <ellipse cx="290" cy="222" rx="40" ry="24" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+      <path d="M262 232 Q290 248 322 232 Q296 240 266 230 Z" fill="#d9ccb0"/>
+      <path d="M326 214 C340 196 352 196 356 200 C346 204 340 210 336 216 C350 212 358 216 360 222 C348 222 338 224 330 228 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+      <circle cx="248" cy="226" r="14" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+      <path d="M244 240 q-4 6 2 10 q-6 2 -2 8 q6 -2 6 -8" fill="#b8432b" stroke="#1d1a17" stroke-width="2"/>
+      <path d="M236 222 l-12 2 l10 6" fill="#b88a4a" stroke="#1d1a17" stroke-width="2.5"/>
+      <path d="M244 220 l6 6 M250 220 l-6 6" stroke="#1d1a17" stroke-width="2"/>
+      <path d="M280 200 l-4 -22 M276 178 l-6 -4 M276 178 l0 -8 M276 178 l6 -4 M298 200 l2 -22 M300 178 l-6 -4 M300 178 l2 -8 M300 178 l8 -2" fill="none" stroke="#b88a4a" stroke-width="3"/>
+      <path d="M270 212 C282 230 304 230 314 214 C300 222 284 222 270 212 Z" fill="#b88a4a" stroke="#1d1a17" stroke-width="2.5"/>
+    </g>
+    <text x="290" y="282" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="22" fill="#1d1a17" text-anchor="middle">닭</text>
+    <!-- red check -->
+    <path d="M262 132 l20 22 l42 -48" fill="none" stroke="#b8432b" stroke-width="7"/>
+    <path d="M94 124 c10 -3 20 3 30 0 c10 -3 18 3 28 0" fill="none" stroke="#1d1a17" stroke-width="3"/>
+  </g>
+</svg>

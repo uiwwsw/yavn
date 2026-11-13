@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <g transform="rotate(-5 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- page with a torn left edge -->
+    <path d="M70 58 L62 82 L76 104 L60 130 L72 156 L58 184 L74 210 L60 238 L72 262 L58 290 L70 316 L64 342 L338 348 L344 52 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
+    <!-- torn fibre fringe -->
+    <path d="M70 58 L62 82 L76 104 L60 130 L72 156 L58 184 L74 210 L60 238 L72 262 L58 290 L70 316 L64 342 L80 342 L84 316 L74 290 L86 262 L76 238 L88 210 L74 184 L86 156 L76 130 L90 104 L78 82 L84 58 Z" fill="#d9ccb0"/>
+    <g stroke="#b9a983" stroke-width="1.5"><path d="M60 130 l-8 2 M58 184 l-8 -2 M58 290 l-8 2 M62 82 l-8 -4"/></g>
+    <!-- frame rule -->
+    <path d="M100 76 L322 72 L324 328 L100 330 Z" fill="none" stroke="#b8432b" stroke-width="2" opacity="0.6"/>
+    <!-- hurried brush columns, read right to left -->
+    <g fill="none" stroke="#1d1a17" stroke-width="3.5">
+      <path d="M302 90 c-4 14 4 20 -1 34 c-4 12 4 20 -1 32 M300 170 c4 12 -4 18 0 30 c-5 14 3 22 -2 36 M299 252 c4 10 -4 20 0 32"/>
+      <path d="M272 88 c-5 16 4 22 -2 36 c-3 12 4 18 -2 30 M268 172 l2 22 M270 210 c4 12 -4 20 0 36 c-4 12 2 18 -2 30"/>
+      <path d="M242 92 c-4 12 4 22 -2 34 M238 140 c4 14 -4 20 0 34 c-4 16 3 22 -2 38 M236 232 c4 10 -3 18 0 28"/>
+      <path d="M180 92 c-5 14 4 20 -2 36 c-4 12 4 18 -1 30 M176 176 c4 12 -4 22 0 34 c-4 12 3 18 -2 32"/>
+      <path d="M150 90 c-4 14 4 22 -2 36 M146 140 l2 24 M147 176 c4 12 -4 18 0 30 c-4 14 3 22 -2 36 c-3 12 3 20 0 30"/>
+      <path d="M120 96 c-4 12 4 20 -2 32 c-3 12 3 18 -1 28"/>
+    </g>
+    <!-- hasty dots and ticks -->
+    <g stroke="#1d1a17" stroke-width="3"><path d="M286 132 l4 4 M256 200 l5 3 M164 250 l4 4 M226 300 l6 2"/></g>
+    <!-- the circled name -->
+    <path d="M210 112 c-4 12 4 18 -1 30 M210 150 c3 10 -3 16 0 26" fill="none" stroke="#1d1a17" stroke-width="4"/>
+    <path d="M212 96 C232 98 234 148 228 186 C224 204 196 204 192 186 C186 150 188 98 208 96 C214 95 222 98 224 104" fill="none" stroke="#b8432b" stroke-width="4.5"/>
+    <!-- ink blot from haste -->
+    <path d="M270 300 c6 -6 14 -2 14 6 c0 8 -10 10 -14 4 c-4 -2 -4 -6 0 -10 z" fill="#1d1a17"/>
+    <circle cx="290" cy="296" r="2.5" fill="#1d1a17"/>
+    <!-- grain -->
+    <g stroke="#b9a983" stroke-width="1.2" opacity="0.6">
+      <path d="M110 310 l12 0 M160 316 l10 1 M300 76 l10 0 M200 80 l12 1 M320 200 l9 0"/>
+    </g>
+  </g>
+</svg>

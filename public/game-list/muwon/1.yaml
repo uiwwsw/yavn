@@ -1,0 +1,420 @@
+chapterTitle: "타 버린 약방"
+
+script:
+  - scene: silk_merchant
+  - scene: c2_meet
+
+scenes:
+  silk_merchant:
+    title: "비단전 행수"
+    actions:
+      - bg: { id: hyeminseo, transition: fade, duration: 800 }
+      - music: inquest
+      - say:
+          channel: record
+          text: "이튿날 진시. 혜민서 약재실."
+      - say:
+          channel: thought
+          with: []
+          camera: wide
+          text: "육의전에 가기도 전에 그쪽이 먼저 왔다. 분이의 시신을 내 달라고."
+      - char: { id: 여금, position: left }
+      - say:
+          char: 여금.wary
+          text: "비단전 행수 여금이에요. 분이는 내 가게 침모였어요. 장례는 내가 치르겠어요."
+      - say:
+          char: 서연
+          with: [여금]
+          text: "검안이 끝나지 않았습니다. 분이는 목이 졸린 뒤에 우물에 던져졌어요."
+      - say:
+          channel: action
+          with: [여금]
+          text: "여금의 손이 장옷 끈을 쥔다. 손등은 깨끗하다. 손톱은 짧게 다듬었다."
+      - goto: c2_meet
+
+  c2_meet:
+    actions:
+      - choice:
+          key: c2_yeogeum
+          prompt: "여금에게 무엇을 먼저 꺼낼까?"
+          char: 여금
+          options:
+            - text: "손톱 밑에서 나온 감청 실을 보여 준다"
+              goto: c2_show_thread
+            - text: "분이와 다툰 적이 있는지 따진다"
+              goto: c2_press
+
+  c2_show_thread:
+    actions:
+      - add: { trust_yeogeum: 1 }
+      - sticker:
+          id: c2_thread
+          image: thread_sticker
+          x: 50
+          y: 34
+          width: "clamp(150px, 20%, 280px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          char: 여금.wary
+          text: "…우리 감청이네요. 이 실로 짠 건 주머니뿐이에요. 약 넣는 작은 주머니."
+      - say:
+          char: 여금
+          text: "지난달에 삼백 개를 한꺼번에 주문받았어요. 분이가 혼자 다 꿰맸고요."
+      - say:
+          char: 여금
+          text: "분이가 그러더군요. 주문한 집 사람들이 주머니 안을 절대 못 보게 한다고."
+      - clearSticker: { id: c2_thread, leave: fadeOut }
+      - say:
+          channel: action
+          with: [여금]
+          text: "여금이 소매에서 접힌 종이를 꺼낸다. 귀퉁이에 실밥이 붙어 있다."
+      - say:
+          char: 여금
+          text: "분이 저고리 안섶에 꿰매져 있던 거예요. 염할 때 찾았어요. 나는 이게 무서워요."
+      - get: order_slip
+      - goto: c2_fire_alarm
+
+  c2_press:
+    actions:
+      - say:
+          char: 여금.wary
+          text: "다퉜냐고요? 의녀가 포교 흉내를 내네요. 내 가게 아이를 내가 왜 죽여요."
+      - say:
+          char: 여금.wary
+          text: "할 말 없어요. 장례 날짜나 알려 줘요."
+      - say:
+          channel: action
+          with: []
+          text: "여금이 나간 자리에 실밥 하나가 떨어져 있다. 분이의 저고리를 다시 펼친다."
+      - say:
+          channel: action
+          with: []
+          text: "안섶 바느질이 한 군데만 촘촘하다. 뜯어내자 접힌 종이가 나온다."
+      - get: order_slip
+      - goto: c2_fire_alarm
+
+  c2_fire_alarm:
+    title: "불"
+    actions:
+      - sticker:
+          id: c2_slip
+          image: order_slip_sticker
+          x: 50
+          y: 30
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "'감청 주머니 삼백.' 그 아래 주문한 집 자리에 붉은 표식 하나. 글자가 아니라 그림이다."
+      - clearSticker: { id: c2_slip, leave: fadeOut }
+      - say:
+          channel: narration
+          text: "그때 담 너머에서 종이 울렸다. 불이야. 혜민서 옆 박씨 약방 쪽이었다."
+      - effect: { name: embers, wait: true }
+      - bg: { id: apothecary_burnt, transition: fade, duration: 700 }
+      - music: pressure
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 막쇠
+          text: "아가씨! 안에 사람이 있다는데, 박 약방 영감이 안 나왔대!"
+      - say:
+          channel: action
+          with: [막쇠]
+          text: "연기 사이로 쓰러진 사람의 발이 보인다. 그 옆에 쇠 장식 궤짝이 하나. 대들보가 신음한다."
+      - say:
+          channel: thought
+          with: []
+          text: "영감은 움직이지 않는다. 막쇠는 벌써 영감을 업으려고 들어간다. 궤짝은 장부다."
+      - choice:
+          key: c2_rescue
+          prompt: "대들보가 내려앉는다. 무엇을 먼저 잡을까?"
+          with: [막쇠]
+          timeoutMs: 8000
+          timeoutOptionIndex: 0
+          options:
+            - text: "장부 궤짝을 끌어낸다"
+              set: { makssoe_hurt: true }
+              goto: c2_chest
+            - text: "막쇠의 허리띠를 잡아 끌어낸다"
+              goto: c2_pull_makssoe
+
+  c2_chest:
+    actions:
+      - effect: { name: shake, wait: true }
+      - say:
+          channel: action
+          with: []
+          text: "궤짝 고리를 잡고 뒤로 넘어진다. 등 뒤에서 대들보가 떨어지는 소리."
+      - say:
+          char: 막쇠.hurt
+          text: "끄윽… 다리. 다리에 걸렸어."
+      - say:
+          channel: narration
+          text: "이웃들이 대들보를 들어 올렸을 때 막쇠의 왼 다리는 이상한 쪽으로 꺾여 있었다."
+      - say:
+          char: 막쇠.hurt
+          text: "궤짝 건졌으면 됐수. 영감은… 어차피 늦었소. 숨을 안 쉬었어."
+      - goto: c2_after_fire
+
+  c2_pull_makssoe:
+    actions:
+      - effect: { name: shake, wait: true }
+      - say:
+          channel: action
+          with: []
+          text: "허리띠를 잡아당긴다. 막쇠가 영감을 업은 채 넘어진다. 그 자리에 대들보가 떨어진다."
+      - say:
+          char: 막쇠
+          text: "휴. 아가씨 힘 좋네. 근데 궤짝이…"
+      - say:
+          channel: narration
+          text: "불이 꺼진 뒤 궤짝은 숯덩이였다. 안에서 건진 것은 반쯤 탄 종이 한 장."
+      - goto: c2_after_fire
+
+  c2_after_fire:
+    title: "불 속의 시신"
+    actions:
+      - sticker:
+          id: c2_ledger
+          image: ledger_burnt_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "그을린 장부 한 장. '청심원 삼백 환 — 한'. 그 뒤는 타서 없다."
+      - say:
+          channel: thought
+          with: []
+          text: "삼백. 주머니도 삼백이었다."
+      - get: burnt_ledger
+      - clearSticker: { id: c2_ledger, leave: fadeOut }
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원.troubled
+          text: "약방 주인이 불을 끄려다 연기에 질식했다고들 하오. 이것도 시장을 쓰시겠소?"
+      - say:
+          char: 서연.resolve
+          with: [도원]
+          text: "쓰겠습니다. 불이 사람을 죽였는지, 죽은 사람이 불에 탔는지는 몸이 압니다."
+      - bg: { id: sihyeongdo, transition: dissolve, duration: 620 }
+      - music: inquest
+      - goto: c2_examine
+
+  c2_examine:
+    title: "박씨의 몸"
+    actions:
+      - choice:
+          key: c2_examine
+          presentation: explore
+          prompt: "약방 주인 박씨. 예순둘."
+          with: []
+          camera: wide
+          options:
+            - text: "콧속"
+              at: { x: 62, y: 9 }
+              when: { var: c2_nose, op: eq, value: false }
+              goto: c2_nose_scene
+            - text: "손과 팔"
+              at: { x: 30, y: 92 }
+              when: { var: c2_hands, op: eq, value: false }
+              goto: c2_hands_scene
+            - text: "목의 상처"
+              at: { x: 66, y: 22 }
+              when: { var: c3_wound, op: eq, value: false }
+              goto: c2_wound_scene
+            - text: "본 것을 정리한다"
+              when:
+                all:
+                  - { var: c2_nose, op: eq, value: true }
+                  - { var: c2_hands, op: eq, value: true }
+                  - { var: c3_wound, op: eq, value: true }
+              goto: c2_poison
+
+  c2_nose_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "젖은 종이 심지를 콧속에 넣었다 뺀다. 하얗다. 그을음이 묻어나지 않는다."
+      - say:
+          char: 막쇠
+          text: "불 속에서 숨을 쉬었으면 콧구멍이 시커메. 목구멍까지."
+      - say:
+          char: 서연.think
+          text: "불이 나기 전에 이미 숨을 안 쉬었다는 거네요."
+      - set: { c2_nose: true }
+      - goto: c2_examine
+
+  c2_hands_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "두 손이 가지런하다. 불을 막으려 한 화상도, 문을 두드린 멍도 없다."
+      - say:
+          channel: thought
+          text: "불을 끄려다 죽은 사람의 손이 이렇게 얌전할 리 없다."
+      - set: { c2_hands: true }
+      - goto: c2_examine
+
+  c2_wound_scene:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "목 왼쪽에 얕게 그은 자국. 살이 오므라들지 않았고 피도 거의 맺히지 않았다."
+      - say:
+          char: 막쇠
+          text: "산 사람을 그으면 살이 말려들고 피가 엉겨. 이건 죽은 담에 그은 거요. 강도 흉내."
+      - say:
+          char: 막쇠
+          text: "종이 대고 먹 문질러 떠 둡시다. 칼날 폭이 나와요."
+      - sticker:
+          id: c2_rubbing
+          image: wound_rubbing_sticker
+          x: 50
+          y: 32
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "먹이 묻지 않은 하얀 금 하나. 오른쪽 위에서 왼쪽 아래로. 폭은 딱 한 치."
+      - get: wound_rubbing
+      - clearSticker: { id: c2_rubbing, leave: fadeOut }
+      - set: { c3_wound: true }
+      - goto: c2_examine
+
+  c2_poison:
+    title: "은비녀"
+    actions:
+      - sticker:
+          id: c2_pin
+          image: silver_pin_sticker
+          x: 50
+          y: 32
+          width: "clamp(140px, 18%, 240px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "은비녀를 혀 밑에 넣고 한참 뒤 뺀다. 은빛 그대로다. 검게 변하지 않았다."
+      - get: silver_pin
+      - clearSticker: { id: c2_pin, leave: fadeOut }
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원
+          with: [막쇠]
+          text: "독이 아니라는 뜻이오? 그럼 불 전에 왜 숨이 멎었단 말이오."
+      - say:
+          char: 막쇠
+          text: "은비녀가 다 아는 건 아니유. 은을 안 건드리는 독도 있어요."
+      - choice:
+          key: c2_poison
+          prompt: "은비녀는 깨끗하다. 어떻게 할까?"
+          with: [도원, 막쇠]
+          options:
+            - text: "독은 아니다. 늙어 숨이 멎은 것으로 적는다"
+              forgiveOnce: true
+              forgiveMessage: "막쇠가 고개를 젓는다. '숨이 멎은 송장 목을 누가 그어요?'"
+              goto: c2_bad_close
+            - text: "입에 밥을 물렸다가 닭에게 먹여 본다"
+              goto: c2_chicken
+
+  c2_bad_close:
+    actions:
+      - say:
+          channel: record
+          text: "초검 시장. 박씨, 노환으로 숨이 멎은 뒤 화재로 시신이 손상됨. 범죄 흔적 없음."
+      - say:
+          channel: narration
+          text: "시장이 올라가자 포도청은 방화범만 찾았다. 짐꾼 하나가 잡혀 왔다."
+      - say:
+          channel: narration
+          text: "약방 주인의 목에 난 상처는 아무도 설명하지 않았다."
+      - say:
+          channel: thought
+          with: []
+          text: "은비녀 하나로 문을 닫았다. 그 문 뒤에 있던 걸 보지도 않고."
+      - gameOver:
+          title: "닫힌 검안"
+          message: "은비녀로 잡히지 않는 독도 있었다. 『무원록』에는 다른 시험법이 있다."
+          recoverToChoice: c2_poison
+
+  c2_chicken:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "찬밥 한 덩이를 망자 입에 물렸다가 두 식경 뒤 꺼낸다. 마당의 닭에게 던진다."
+      - say:
+          char: 막쇠.grin
+          text: "이 방법은 옛 어른들이 쓰던 거요. 책에 진짜 있수?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "있어요. 서른아홉 장. 닭 그림까지 있어요."
+      - wait: 900
+      - effect: { name: darken, wait: true }
+      - say:
+          channel: narration
+          text: "반 식경도 안 되어 닭이 비틀거렸다. 날개를 한 번 퍼덕이고, 쓰러졌다."
+      - sticker:
+          id: c2_note
+          image: poison_note_sticker
+          x: 50
+          y: 32
+          width: "clamp(150px, 20%, 280px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - get: poison_note
+      - clearSticker: { id: c2_note, leave: fadeOut }
+      - add: { trust_dowon: 1 }
+      - say:
+          char: 도원.stern
+          text: "…독을 먹이고, 목을 긋고, 불을 질렀다. 강도 짓으로 보이게."
+      - say:
+          char: 서연.think
+          with: [도원]
+          text: "그리고 장부 궤짝째 태우려 했어요. 분이가 꿰맨 주문서도 삼백, 장부도 삼백."
+      - goto: c2_arrest
+
+  c2_arrest:
+    title: "잡혀 온 짐꾼"
+    actions:
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - music: pressure
+      - say:
+          channel: narration
+          text: "해 질 녘 한성부 마당. 포졸이 달려와 판관에게 무언가 아뢰었다."
+      - char: { id: 도원, position: left }
+      - say:
+          char: 도원.troubled
+          text: "포도청이 방화 살인범을 잡았다 하오. 짐꾼 덕구. 낫을 들고 약방 뒤에 있었다고."
+      - say:
+          char: 도원.troubled
+          text: "…이미 곤장 열 대에 자복했다는군."
+      - say:
+          channel: thought
+          with: [도원]
+          text: "열 대. 분이 오라비가 받을 뻔한 것과 같은 수다."
+      - say:
+          char: 막쇠
+          when: { var: makssoe_hurt, op: eq, value: true }
+          with: [도원]
+          text: "다리만 성했으면 포도청 담이라도 넘을 텐데. 아가씨, 내 몫까지 가요."
+      - say:
+          char: 막쇠
+          when: { var: makssoe_hurt, op: eq, value: false }
+          with: [도원]
+          text: "포도청 옥에 넣으면 사흘 안에 끝장이오. 가 봅시다, 아가씨."
+      - goto: /2.yaml
