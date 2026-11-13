@@ -11,7 +11,7 @@ const source = (game: string, file: string) => readFileSync(resolve(root, game, 
 const record = (value: unknown): Record<string, any> => value as Record<string, any>;
 
 describe('bundled game presentation', () => {
-  it.each([['conan-demo', '0.yaml'], ['live2dtest', '1.yaml']])(
+  it.each([['live2dtest', '1.yaml']])(
     '%s stages every speaking actor along both choices and returning demo loops', (game, file) => {
       const config = parseConfigYaml(source(game, 'config.yaml'), `${game}/config.yaml`);
       const base = parseBaseYaml(source(game, 'base.yaml'), `${game}/base.yaml`);
@@ -68,8 +68,8 @@ describe('bundled game presentation', () => {
     },
   );
 
-  it('gives both main games complete ending presentations and playable local scores', () => {
-    for (const game of ['conan', 'deokman']) {
+  it('gives the main game complete ending presentations and playable local scores', () => {
+    for (const game of ['deokman']) {
       const config = record(load(source(game, 'config.yaml')));
       const assets = record(load(source(game, 'base.yaml'))).assets;
       for (const ending of Object.values(config.endings).map(record)) {

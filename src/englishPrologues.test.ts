@@ -18,7 +18,7 @@ function choices(document: Tree) {
     options: action.choice.options.map(({ text, ...logic }: any) => logic),
   }])));
 }
-describe.each(['conan', 'deokman'])('English opening: %s', game => {
+describe.each(['deokman'])('English opening: %s', game => {
   const id = `english-${game}`;
   it('parses and resolves with the original art, named speakers and all English reading text', () => {
     const config = parseConfigYaml(source(id, 'config.yaml'), `${id}/config.yaml`);

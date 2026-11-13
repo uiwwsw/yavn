@@ -161,13 +161,13 @@ endings:
   "generatedAt": "2026-02-27T02:15:30.805Z",
   "games": [
     {
-      "id": "conan",
-      "name": "명탐정 코난 외전: 폭우의 2번 찻잔",
-      "path": "/game-list/conan/",
+      "id": "my-story",
+      "name": "비 오는 료칸의 찻잔",
+      "path": "/game-list/my-story/",
       "author": "uiwwsw",
-      "version": "10.8.0",
-      "summary": "기념품과 탁구 삼세판을 즐긴 뒤 2번 찻잔과 사라진 1분을 추적하는 캐릭터 중심 추리 에피소드",
-      "thumbnail": "/game-list/conan/assets/bg/title_storm-v2.avif",
+      "version": "1.0.0",
+      "summary": "폭우에 고립된 료칸에서 사라진 1분을 추적하는 분기형 추리 에피소드",
+      "thumbnail": "/game-list/my-story/assets/bg/title.webp",
       "tags": ["detective", "sample"],
       "showcase": {
         "label": "FEATURED DEMO",
@@ -179,18 +179,18 @@ endings:
       },
       "legalNotices": [
         {
-          "id": "detective-conan-noncommercial-fan-demo",
-          "title": "비공식·비상업적 팬 데모",
-          "text": "이 작품은 엔진 기능 검증용 비공식·비상업적 팬 데모이며 공식 작품이 아닙니다.",
-          "copyright": "관련 명칭·캐릭터와 원작 요소의 권리는 각 권리자에게 있습니다."
+          "id": "sample-asset-credit",
+          "title": "에셋 출처",
+          "text": "배경 음악은 작가가 직접 합성한 음원입니다.",
+          "copyright": "© 작가"
         }
       ],
       "chapterCount": 10,
       "seo": {
-        "title": "명탐정 코난 외전: 폭우의 2번 찻잔",
+        "title": "비 오는 료칸의 찻잔",
         "description": "폭우에 고립된 료칸에서 벌어지는 분기형 추리 비주얼노벨",
-        "keywords": ["명탐정 코난", "추리 게임", "비주얼노벨"],
-        "image": "/game-list/conan/assets/bg/case_board.avif",
+        "keywords": ["추리 게임", "비주얼노벨"],
+        "image": "/game-list/my-story/assets/bg/case_board.avif",
         "imageAlt": "다실 사건 단서 보드"
       }
     }
@@ -198,8 +198,8 @@ endings:
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
     "description": "야븐엔진(YAVN)에서 플레이 가능한 게임 목록",
-    "keywords": ["명탐정 코난 외전: 폭우의 2번 찻잔", "detective", "sample"],
-    "gameTitles": ["명탐정 코난 외전: 폭우의 2번 찻잔"],
+    "keywords": ["비 오는 료칸의 찻잔", "detective", "sample"],
+    "gameTitles": ["비 오는 료칸의 찻잔"],
     "gameCount": 1
   }
 }
@@ -346,12 +346,12 @@ assets:
   backgrounds:
     hall: assets/bg/hall.png
   characters:
-    conan:
-      base: assets/char/conan/base.webp
+    detective:
+      base: assets/char/detective/base.webp
       placement: prompt-top # 반신형 원화를 프롬프트 상단에 정렬
       calibration: { scale: 1.04, y: -1 }
       emotions:
-        serious: assets/char/conan/serious.webp
+        serious: assets/char/detective/serious.webp
   music:
     mystery: assets/music/mystery.wav
   sfx:
@@ -387,10 +387,10 @@ scenes:
       - bg: hall
       - camera: wide
       - char:
-          id: conan
+          id: detective
           position: center
       - say:
-          char: conan
+          char: detective
           camera: medium
           text: "시작"
 ```
@@ -820,7 +820,7 @@ scenes:
 ```yaml
 - say:
     when: { var: clue_note, op: eq, value: true }
-    char: 코난.think
+    char: 탐정.think
     text: "아까 찾은 메모와 이 시간이 맞아."
 ```
 
@@ -835,7 +835,7 @@ scenes:
 
 ```yaml
 - say:
-    char: 코난.serious
+    char: 탐정.serious
     text: "<speed=26>어이...</speed> <speed=54>그건 함정이야.</speed> <speed=90>지금 당장 멈춰!</speed>"
 ```
 
@@ -850,7 +850,7 @@ scenes:
 
 ```yaml
 - say:
-    char: 코난.serious
+    char: 탐정.serious
     text: "멈춰. 지금은 섣불리 움직이면 안 돼."
     wait: 900
 ```
@@ -865,7 +865,7 @@ scenes:
 
 ```yaml
 - say:
-    char: 코난.serious
+    char: 탐정.serious
     text: "이 말만은 끝까지 들어 줘."
     unskippable: true
 ```
@@ -882,7 +882,7 @@ scenes:
 
 ```yaml
 - say:
-    char: 코난.serious
+    char: 탐정.serious
     text: "남은 시간 7초."
     autoAdvance: 2000
 ```
@@ -1084,27 +1084,10 @@ scenes:
 - 주요 선택 36개와 증거 비교 4개, 공간 조사 5개를 포함해 총 45개 선택·151개 보기를 제공합니다. 관찰 실수는 다시 확인할 수 있고 정책은 신뢰·민심·군권의 대가를 치르며 계속됩니다. 물리적 위험에 무리하게 뛰어드는 44개 실패는 최소 네 번의 대사·서술·기록 뒤 복구 가능한 게임오버로 이어집니다.
 - `dialogue/narration/record/thought/action` 채널, `say.when`과 `choice.options[].when`, 외부 챕터 `goto`, 누적 상태 `branch`를 실제 장편 흐름에서 사용합니다. 몰입을 깨는 `system` 화자는 본편에 사용하지 않습니다.
 - 2026-09-11 구도 개선: 덕만 10명에 전신/대화용 상반신 프리셋을 추가했습니다. 성인은 하단 40%, 어린 덕만은 32%를 크롭해 얼굴 크기를 약 1.5~1.7배 키우고 PC·모바일 인물 간격을 줄였습니다. 머리 여백과 이미지·DOM 재사용을 유지하며 새 자동 배치를 적용합니다. 원화 교체나 저장 초기화는 필요하지 않습니다.
-- 2026-09-08 연출 마이그레이션: 12개 챕터의 반복 `close` 223개·`reaction` 20개를 `medium` 대화 구도로 정리하고, 대상을 지정한 클로즈업과 공간 설명용 `wide`는 유지했습니다. 4개 과장된 등장은 짧은 페이드로 조정했습니다. 액션 수·장면 ID·이야기/분기/저장 인덱스는 그대로이며 코난·코난 데모·Live2D 테스트는 새 엔진 기본 연출을 자동 적용받습니다.
+- 2026-09-08 연출 마이그레이션: 12개 챕터의 반복 `close` 223개·`reaction` 20개를 `medium` 대화 구도로 정리하고, 대상을 지정한 클로즈업과 공간 설명용 `wide`는 유지했습니다. 4개 과장된 등장은 짧은 페이드로 조정했습니다. 액션 수·장면 ID·이야기/분기/저장 인덱스는 그대로이며 추리 샘플·Live2D 테스트는 새 엔진 기본 연출을 자동 적용받습니다.
 - 2026-09-08 작품별 보강: 궁 안의 긴장, 국경의 이동, 열린 하늘을 위한 자체 합성 배경음 세 곡을 타이틀·12개 장·11개 엔딩에 배치했습니다. 3장 칠숙의 협공은 칼이 다가오는 내레이션→전용 공격 컷→사망 기록으로 이어집니다. 기존 액션 위치와 작성 버전을 유지해 진행 중인 저장을 이어갈 수 있습니다. 음원은 외부 샘플 없이 `scripts/generate-deokman-score.py`로 재생성할 수 있습니다.
 - 시작 화면은 불타는 궁궐 배경과 독립된 덕만 캐릭터 레이어에 불티·안개·호흡 조명·시차를 합성합니다. 모바일 인물 위치와 크기는 `scene.layers[].mobile`로 따로 조정하며 시작 시 커튼 전환으로 본편을 엽니다. 런처 대표 이미지는 기존 키아트를 유지합니다. 어린 덕만 3표정과 성인 시기 10개 원화는 동일한 얼굴 계보·전신 구도를 유지한 고해상도 RGBA PNG입니다. 2장의 국경 장터에는 해진 유랑복, 3장 귀환부터 9장 즉위 전에는 공주복, 즉위 장면과 10~12장에는 금제 관식이 있는 왕복을 사용하며, 시녀 잠입 선택은 무장식 시녀복으로 바뀝니다. 복제 모란패와 천명의 잔을 포함한 12개 증거물은 배경 없는 SVG 오브젝트입니다.
 - 전체 12장 구조, 선택·엔딩 규칙, 아트 제작 규격과 구현 현황은 [`docs/DEOKMAN_GAME_BIBLE.ko.md`](docs/DEOKMAN_GAME_BIBLE.ko.md)에, 실제 대사 수정 규칙은 [`public/game-list/deokman/CHARACTER_VOICE.ko.md`](public/game-list/deokman/CHARACTER_VOICE.ko.md)에 고정했습니다.
-
-## Conan 샘플 분기 구조
-
-- `/game-list/conan/` V10.8은 네 사람을 한 번씩 만나는 것과 필요한 증거를 실제로 확보하는 것을 분리합니다. 네 탐문을 마쳐도 핵심 흔적이 비어 있으면 조사 라운지로 돌아가 놓친 대사와 증거를 다시 확인할 수 있습니다.
-- `0.yaml`은 가족 여행과 탁구 선택, `1.yaml`은 88도 시음 순서와 차 이름 선택, `2.yaml`은 4인 갈등과 사건 발생, `3.yaml`은 초동 정리/재구성 파트입니다.
-- 가장 짧은 선택 경로도 사건 전 약 8분을 유지하며, 시음 순서와 차 이름을 기억한 선택은 사건 직전 관찰·추리 수치로 회수됩니다.
-- `routes/hub/1.yaml`은 조사 라운지이며, `세이지/레이코/켄지/하루오 유품` 4개 라인을 자유 선택할 수 있습니다.
-- 각 라인(`routes/<line>/1.yaml`)은 1회 재도전 구조로 핵심 단서를 잠그고 라운지로 복귀합니다. 놓친 증거는 라인별 후속 대면으로 회수할 수 있습니다.
-- 라운지에서 조기 정리 회의로 이동할 수 있고, 방문 수에 따라 `deduction_score`/`final_confidence` 패널티가 적용됩니다.
-- 결말은 `conclusion/1.yaml`로 합류하며, 잠자는 코고로 추리 쇼 + 최종 지목/재지목 1회 흐름을 유지합니다. `say.when`은 실제로 찾은 증거만 회상하게 하고, TRUE END는 두 번 난 뚜껑 소리의 미끼와 켄지가 들은 거래 거절까지 연결해야 열립니다.
-- 장소 이동은 디졸브, 밤·후일담은 느린 페이드로 구분합니다. 공간을 보여 주는 `wide`, 대화·선택의 `medium`, 증언·자백의 대상 지정 `close`를 사용하며 반복 화면 확대·기울임을 캐릭터 카메라로 교체했습니다. 추리·자백에서는 코고로의 차분한 원화를 사용하고 가족 후일담에서는 웃는 표정을 되돌립니다. 세 결말은 각각 배경·음악·분위기·후일담을 갖습니다. 장면 ID·선택 결과·액션 인덱스·작성 버전은 유지합니다.
-
-## Conan 60초 엔진 쇼케이스
-
-- `/game-list/conan-demo/`는 입력 없이 완주 가능한 트레일러형 독립 게임입니다. 대사 자동 진행·대기·선택의 작성 시간 예산은 약 `60.15초`이며 타이핑 완료와 장면 준비에 따라 실제 재생 시간은 더 길어질 수 있습니다.
-- 자동 대사, 7초 제한 선택, 공유 에셋, 스티커 HUD와 방향성 카메라를 한 챕터에 압축했습니다. 용의자 몽타주는 인물을 따라가고 제어실에서는 코난·란·코고로를 복귀시켜 대사만 남는 구간을 없앴습니다. 반신형 이미지는 본편과 같은 `prompt-top` 배치를 사용합니다.
-- 모바일 세로 화면에서 타이틀, 선택 게이트, 엔딩까지 넘침 없이 재생되도록 구성했습니다.
 
 ## 렌 Live2D 대화 데모
 
@@ -1117,22 +1100,6 @@ scenes:
 - `public/game-list/deokman/base.yaml`
 - `public/game-list/deokman/launcher.yaml`
 - `public/game-list/deokman/0.yaml`–`11.yaml`
-- `public/game-list/conan-demo/config.yaml`
-- `public/game-list/conan-demo/base.yaml`
-- `public/game-list/conan-demo/0.yaml`
-- `public/game-list/conan/config.yaml`
-- `public/game-list/conan/base.yaml`
-- `public/game-list/conan/launcher.yaml`
-- `public/game-list/conan/routes/base.yaml`
-- `public/game-list/conan/0.yaml`
-- `public/game-list/conan/1.yaml`
-- `public/game-list/conan/2.yaml`
-- `public/game-list/conan/routes/hub/1.yaml`
-- `public/game-list/conan/routes/seiji/1.yaml`
-- `public/game-list/conan/routes/reiko/1.yaml`
-- `public/game-list/conan/routes/kenji/1.yaml`
-- `public/game-list/conan/routes/haruo/1.yaml`
-- `public/game-list/conan/conclusion/1.yaml`
 - `public/game-list/live2dtest/config.yaml`
 - `public/game-list/live2dtest/base.yaml`
 - `public/game-list/live2dtest/launcher.yaml`
@@ -1197,7 +1164,6 @@ scenes:
 - 챕터 로딩은 현재 챕터가 실제로 참조하는 시각 에셋만 첫 장면 순서대로 제한 병렬 프리로드하고, 전송뿐 아니라 이미지 디코딩 완료까지 확인합니다. 첫 장면을 DOM에 반영한 뒤에도 실제 배경·정적 캐릭터와 Live2D가 준비됐는지 다시 확인한 다음 로딩을 닫으므로, 로딩 직후 캐릭터가 뒤늦게 나타나지 않습니다. 플레이 중 `bg`가 바뀌면 새 이미지를 숨김 레이어에서 먼저 로드·디코드하고 기존 배경을 유지한 채 기본 620ms 동안 겹쳐 전환합니다. 객체형 `bg`는 암전·방향 와이프·컷과 전환 완료 대기를 지원합니다. 빠르게 연속된 이전 요청의 완료는 무시하고, 새 에셋이 실패하면 직전 배경을 보존합니다. 프리로드·타이틀·캐릭터·배경·스티커·공격 컷인·엔딩은 공통 이미지 풀의 디코딩된 `<img>`를 빌려 재사용합니다. 같은 출처의 URL은 바이트도 공유하며, 동시에 여러 위치에 그릴 때만 별도 요소를 사용합니다. 디코딩 이미지 96MiB(픽셀 추정치), 원본 바이트 64MiB, 80개 리소스를 정리 기준으로 삼고 사용 중인 요소를 보호하면서 오래된 미사용 데이터부터 해제합니다. 디코딩 이미지만 해제했다면 다음 표시 때 보관한 바이트로 준비하며, 바이트까지 해제한 리소스는 다시 요청할 수 있습니다. 오디오/비디오는 브라우저 스트리밍을 유지합니다. 데이터 절약/2G에서는 동시성을 낮추고 다음 챕터 예열을 생략하며, 일반 환경도 첫 장면 상호작용과 경쟁하지 않도록 브라우저 유휴 시간에 다음 챕터의 같은 출처 이미지 바이트만 예열하고, 실제 챕터 진입 때 디코딩합니다.
 - 챕터 로딩 중에는 다이얼로그 박스를 `opacity: 0`으로 숨기고, 실제 단계/진행률을 표시한 뒤 로딩 해제 시 페이드 인으로 전환합니다.
 - 대사 기본 높이는 `170px`, 입력 기본 높이는 `220px`입니다. 선택지는 PC에서 2~4개일 때 2열, 그 외와 모바일에서는 1열의 행 수에 따라 높이를 계산하고 제한시간 표시 공간을 더합니다. 최대 4행까지 계산하며 화면의 안전 높이를 넘는 내용만 내부 스크롤합니다. 게임의 `ui.promptHeight`와 액션별 `promptHeight`는 자동 높이보다 우선합니다. 타이핑 도중에는 바깥 높이를 바꾸지 않습니다. 자동 확장한 선택지·입력 패널은 `prompt-top` 인물을 위로 밀지 않고 기존 읽기 기준선을 유지하며, 명시한 작성자 높이는 캐릭터 기준선에도 반영합니다.
-- Conan 샘플의 배경은 AVIF, 투명 캐릭터는 WebP를 사용해 대표 이미지 묶음을 31.98MiB에서 2.14MiB로 축소했습니다.
 - 다이얼로그 박스 우측 상단(박스 외부 컨트롤 레이어)에는 `숨기기` 버튼이 표시되며, 수동으로 접으면 우측 하단에 작은 `대화창 열기` 버튼이 표시됩니다.
 - 다이얼로그를 수동으로 숨긴 상태에서는 클릭/`Enter`/`Space` 진행 입력을 잠가 실수로 대사가 넘어가지 않게 합니다.
 - 시스템 숨김(챕터 로딩/게임 미로딩/컷신) 중에는 캐릭터/스티커 레이어 하단 inset 기준을 유지해, 첫 다이얼로그 표시 때 레이어 높이 점프를 방지합니다.
@@ -1230,7 +1196,6 @@ scenes:
 - Live2D 로딩 전에 `moc3`/첫 텍스처를 선검사하고, 장시간 로딩 정체 시 상태 코드(`state`)와 텍스처 카운트 진단 메시지를 표시합니다.
 - `src/assets/third-party/live2d/*` 및 `public/game-list/live2dtest/assets/char/ren_pro_ko/*`는 Live2D 별도 라이선스 적용 자산입니다. 렌 포스터 샘플의 공식 필수 고지를 `config.yaml.legalNotices`에 넣어 런처·시작·설정·엔딩에 노출합니다.
 - YAVN은 ZIP으로 임의 Live2D 모델을 받을 수 있으므로 배포 형태에 따라 Live2D의 “확장 가능한 애플리케이션” 심사·계약 대상일 수 있습니다. 공개 전에 공식 SDK 라이선스 조건을 확인해야 합니다.
-- `public/game-list/conan`과 `conan-demo`는 비공식·비상업적 팬 데모임을 같은 공통 고지 설정으로 표시합니다. 다만 비상업 표시는 권리자 허락을 대신하지 않으므로, 공개 배포를 계속하려면 권리를 확인하고 허락을 받거나 오리지널 자산으로 교체해야 합니다.
 - 전체 라이선스/배포 고지는 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), Live2D 원문/재배포 참고 파일은 `assets/licenses/live2d/`, SUITE OFL 전문은 `assets/licenses/fonts/LICENSE`에 보관합니다.
 - 비디오 컷신 재생 중 탭 전환/브라우저 포커스 이탈 후 복귀하면 자동으로 재생 복구를 시도합니다. (`visibilitychange`, `focus`, `pageshow`)
 - `HOLD TO SKIP` 게이지는 누름 해제 후 재시작 시 0%부터 즉시 동기화되어 숫자 표시와 동일하게 진행됩니다.
@@ -1257,4 +1222,4 @@ Public launcher/game HTML keeps its useful search/no-JavaScript content, but inc
 
 서재에서 제목·태그·작가·언어를 함께 검색할 수 있습니다. 공백으로 나눈 검색어를 모두 포함하는 작품을 찾으며 전각 문자도 지원합니다.
 
-덕만 첫 장과 코난 여행 도입부를 영어로 플레이할 수 있습니다. 서재에서 게임 지원 언어를 English로 고르면 영어 도입부 두 편이 표시됩니다. 각 영어판은 첫 장까지만 제공하며 한국어 완결판과 별도 진행으로 저장됩니다. [대사·번역 기준](docs/DRAMA_LOCALIZATION.md)을 참고하세요.
+덕만 첫 장을 영어로 플레이할 수 있습니다. 서재에서 게임 지원 언어를 English로 고르면 영어 도입부가 표시됩니다. 영어판은 첫 장까지만 제공하며 한국어 완결판과 별도 진행으로 저장됩니다. [대사·번역 기준](docs/DRAMA_LOCALIZATION.md)을 참고하세요.

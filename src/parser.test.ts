@@ -151,7 +151,7 @@ script:
 scenes:
   entrance:
     actions:
-      - char: { id: Conan, position: center, enter: popIn }
+      - char: { id: Detective, position: center, enter: popIn }
       - char:
           id: Ran
           position: right
@@ -189,7 +189,7 @@ script: [{ scene: entrance }]
 scenes:
   entrance:
     actions:
-      - char: { id: Conan, position: center, enter: teleport }
+      - char: { id: Detective, position: center, enter: teleport }
 `,
       '0.yaml',
     );
@@ -200,7 +200,7 @@ scenes:
   entrance:
     actions:
       - char:
-          id: Conan
+          id: Detective
           position: center
           enter: { effect: fadeIn, duration: 3001 }
 `,
@@ -712,14 +712,14 @@ scenes:
       `
 assets:
   backgrounds:
-    shared: root:/game-list/conan/assets/bg/case_board.avif
+    shared: root:/game-list/mystery/assets/bg/case_board.avif
 `,
       'base.yaml',
     );
 
     expect(parsed.error).toBeUndefined();
     expect(parsed.data?.data.assets?.backgrounds?.shared).toBe(
-      'root:/game-list/conan/assets/bg/case_board.avif',
+      'root:/game-list/mystery/assets/bg/case_board.avif',
     );
   });
 });

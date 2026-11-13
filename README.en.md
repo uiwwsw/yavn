@@ -24,4 +24,4 @@ Start with [sample.yaml](sample.yaml) and complete game packages in `public/game
 
 See [CONTRIBUTING](CONTRIBUTING.en.md) for setup, collaboration, validation and PR review. Follow [Add a game](docs/ADDING_A_GAME.en.md) for a runnable starter and catalog submission. ZIP upload runs locally; public listing requires review, merge and deployment.
 
-Two English opening editions are available in the library: Deokman chapter one and Conan’s travel prologue. Select English in the game-language filter. These editions end at the translated chapter boundary and keep separate progress from the Korean full stories. See the [dialogue and localization guide](docs/DRAMA_LOCALIZATION.md).
+An English opening edition of Deokman chapter one is available in the library. Select English in the game-language filter. These editions end at the translated chapter boundary and keep separate progress from the Korean full stories. See the [dialogue and localization guide](docs/DRAMA_LOCALIZATION.md).
