@@ -221,7 +221,7 @@ export function collectOfflinePacks(publicDir, { maxBytes = OFFLINE_MAX_BYTES } 
 
 // ---------------------------------------------------------------- service worker
 
-const PRECACHE_EXTENSIONS = /\.(?:js|css|woff2?|wav|mp3|ogg|svg|png|webp|jpe?g)$/i;
+const PRECACHE_EXTENSIONS = /\.(?:js|css|woff2?|wav|flac|mp3|ogg|svg|png|webp|jpe?g)$/i;
 // Only live2dtest needs the Live2D runtime; it is cached when a Live2D game first loads it.
 const PRECACHE_EXCLUDE = /live2d|cubism/i;
 

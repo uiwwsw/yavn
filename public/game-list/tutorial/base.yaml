@@ -128,10 +128,10 @@ assets:
       base: assets/char/voice.svg
       facing: left
   music:
-    fluoro: assets/music/fluoro.wav
-    tutorial: assets/music/tutorial.wav
-    bleed: assets/music/bleed.wav
-    server: assets/music/server.wav
+    fluoro: assets/music/fluoro.flac
+    tutorial: assets/music/tutorial.flac
+    bleed: assets/music/bleed.flac
+    server: assets/music/server.flac
   sfx:
     chime: assets/sfx/chime.wav
     snap: assets/sfx/snap.wav

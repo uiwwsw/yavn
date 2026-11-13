@@ -3514,6 +3514,7 @@ function detectMimeType(path: string): string | undefined {
   if (lower.endsWith('.webp')) return 'image/webp';
   if (lower.endsWith('.gif')) return 'image/gif';
   if (lower.endsWith('.wav')) return 'audio/wav';
+  if (lower.endsWith('.flac')) return 'audio/flac';
   if (lower.endsWith('.mp3')) return 'audio/mpeg';
   if (lower.endsWith('.ogg')) return 'audio/ogg';
   if (lower.endsWith('.mp4')) return 'video/mp4';

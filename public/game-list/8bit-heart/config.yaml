@@ -18,7 +18,7 @@ ui:
   template: neon-grid
 startScreen:
   enabled: true
-  music: assets/music/chip-home.wav
+  music: assets/music/chip-home.flac
   image: assets/bg/title.svg
   imagePosition: "60% 50%"
   mobileImagePosition: "70% 50%"

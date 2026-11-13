@@ -122,10 +122,10 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
   music:
-    night_well: assets/music/night-well.wav
-    inquest: assets/music/inquest.wav
-    pressure: assets/music/pressure.wav
-    dawn: assets/music/dawn.wav
+    night_well: assets/music/night-well.flac
+    inquest: assets/music/inquest.flac
+    pressure: assets/music/pressure.flac
+    dawn: assets/music/dawn.flac
 
 state:
   player_name: "서연"

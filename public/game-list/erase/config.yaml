@@ -22,7 +22,7 @@ legalNotices:
     text: "이 작품에는 성적 긴장(묘사 없음), HIV에 대한 불안, 자기 파괴적 생각과 옥상 장면(결과·방법 묘사 없음)이 나옵니다. 힘든 마음이 들면 자살예방 상담전화 109(24시간)에 연락할 수 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
 startScreen:
   enabled: true
-  music: assets/music/cold-room.wav
+  music: assets/music/cold-room.flac
   image: assets/bg/title.svg
   imagePosition: "60% 50%"
   mobileImagePosition: "72% 50%"

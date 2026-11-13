@@ -22,7 +22,7 @@ legalNotices:
     text: "이 작품에는 고객의 폭언, 살인 사건과 죽음, 경찰 조사, 중독과 집착(성적 묘사 없음)이 나옵니다. 폭력 장면은 화면 밖에서 소리로만 처리합니다."
 startScreen:
   enabled: true
-  music: assets/music/fluoro.wav
+  music: assets/music/fluoro.flac
   image: assets/bg/title.svg
   imagePosition: "50% 50%"
   mobileImagePosition: "62% 50%"

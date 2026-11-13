@@ -112,10 +112,10 @@ assets:
       facing: left
       defaultDelivery: whisper
   music:
-    cold_room: assets/music/cold-room.wav
-    neon: assets/music/neon.wav
-    static: assets/music/static.wav
-    wind: assets/music/wind.wav
+    cold_room: assets/music/cold-room.flac
+    neon: assets/music/neon.flac
+    static: assets/music/static.flac
+    wind: assets/music/wind.flac
 
 state:
   deleted: 0
