@@ -30,7 +30,7 @@ scenes:
           side: them
           char: 경준
           with: []
-          text: "형들 뉴스 봤어요??? 우리 지하주차장"
+          text: "주임님 형 뉴스 봤어요??? 우리 지하주차장"
       - say:
           channel: message
           side: them
@@ -207,6 +207,11 @@ scenes:
           char: 은숙
           with: [해수]
           text: "피해자분 일로 몇 가지 여쭤볼게요. 참고인으로요. 서까지 같이 가 주시겠어요?"
+      - say:
+          char: 경준
+          with: []
+          delivery: whisper
+          text: "형, 앞치마 주세요. 제가 사물함에 넣어 놓을게요. 주임님한테는 형 화장실 갔다고 할게요."
 
   interview:
     title: "진술 녹화실"
@@ -295,7 +300,7 @@ scenes:
       - say:
           char: 은숙.sharp
           with: [해수]
-          text: "단톡방 사진 경준 씨가 보여 줬어요. 정해수 씨 메시지에 읽음 표시 다 없어져 있던데."
+          text: "단톡방은 경준 씨가 보여 줬어요. 정해수 씨가 아침에 '11시까지 가겠습니다' 답장했던데요. 지하 주차장 얘기 바로 밑에."
       - say:
           char: 해수
           with: [은숙]
@@ -529,7 +534,7 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "근데 정해수 씨 아파트 엘리베이터 CCTV에는 그날 밤 정해수 씨가 한 번도 안 나와요. 들어간 것만 있고."
+          text: "근데 정해수 씨 빌라 현관 CCTV에는 그날 밤 정해수 씨가 한 번도 안 나와요. 들어간 것만 있고."
       - say:
           char: 해수.blank
           with: [은숙]
@@ -605,3 +610,7 @@ scenes:
           channel: narration
           with: []
           text: "문 안에서 웃음소리가 한 번 나고, 그다음엔 조용하다. 해수는 문 앞에 생수 두 병을 놓고 자기 방으로 들어간다."
+      - say:
+          channel: thought
+          with: []
+          text: "생수는 샀다. 휴지는 또 못 샀다."

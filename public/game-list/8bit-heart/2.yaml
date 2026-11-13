@@ -21,7 +21,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "털린 편의점. 계산대 위에 안드로이드를 눕히고, 바코드 스캐너를 치운 자리에 납땜인두를 꽂는다."
+          text: "털린 편의점. 계산대 위에 안드로이드를 눕히고, 바코드 스캐너를 치운 자리에 집에서 챙겨 온 가스 인두를 세운다. 부탄 한 통이면 돌아가는 거라 코어랑은 상관없다."
       - say:
           char: 윤재
           with: [로봇]
@@ -131,6 +131,10 @@ scenes:
           channel: system
           with: []
           text: "BIOS v0.8 … RAM CHECK … 8KB … OK"
+      - say:
+          channel: system
+          with: []
+          text: "본체 ROM 확인: 보행 · 운반 · 보호 대상 지키기"
       - char: { id: 로봇, position: right, emotion: thinking }
       - say:
           channel: action
@@ -139,7 +143,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "…8KB? 이게 다야? 다시 세 볼게. 8. …응. 다야."
+          text: "…8KB? 이게 다임? 다시 셈. 8. …응. 다임."
       - say:
           char: 윤재.excited
           with: [로봇]
@@ -155,7 +159,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "학습 자료 1건. 게임기 설명서 12쪽. 이게 세상 전부 아니야?"
+          text: "학습 자료 1건. 게임기 설명서 12쪽. 표지 그림 포함. 이게 세상 전부 아님?"
       - say:
           char: 윤재
           with: [로봇]
@@ -211,7 +215,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "없어. 슬롯 하나. 원래 1인용 게임기였음. 2P는 컨트롤러 따로 사세요."
+          text: "없어. 슬롯 하나. 설명서 11쪽. '2P는 컨트롤러를 따로 구입하세요.'"
       - goto: /3.yaml
 
   b2_reg_brave:
@@ -219,7 +223,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "위험 아님. 근데 무릎이 떨림. 목소리도 떨림. 모순 발견. …모순일 땐 나쁜 쪽으로 믿으라고 설명서 9쪽에 있음."
+          text: "위험 아님. 근데 무릎이 떨림. 목소리도 떨림. 모순 발견. …설명서 9쪽. '떨림이나 이상한 소리가 나면 즉시 사용을 멈추세요.' 그러니까 위험임."
       - say:
           channel: system
           with: []
