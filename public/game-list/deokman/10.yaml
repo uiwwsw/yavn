@@ -22,12 +22,12 @@ scenes:
           char: 춘추.nervous
           camera: medium
           with: [덕만]
-          text: "북쪽 전령길을 비담이 막았습니다. 권한을 잃은 가문들이 그 깃발 아래 모였습니다."
+          text: "북쪽 전령길이 막혔습니다. 군영 셋이 북을 칩니다. 궁문을 지킬 병력은 반도 안 남았습니다."
       - say:
           char: 덕만
           camera: medium
           with: [춘추]
-          text: "봉화가 꺼지자마자 떨어졌어. 군량이 끊긴 날에. 춘추야, 떨어진 곳부터 찾아라."
+          text: "봉화 꺼진 날 별이 떨어진다. 공교롭지. 춘추야, 떨어진 데부터 찾자."
       - say:
           when: { var: used_false_omen, op: eq, value: true }
           channel: narration
@@ -86,7 +86,7 @@ scenes:
           text: "두 군영은 북을 멈췄습니다. 나머지 하나는 전령을 돌려보냈습니다."
       - say:
           char: 덕만.queen
-          text: "그쪽에도 표를 보내라. 두 곳이 멈춘 것을 알면 들을지 모른다."
+          text: "남은 한 곳에도 표를 보내라. 옆 군영이 멈춘 걸 알게."
       - say:
           char: 춘추.nervous
           camera: medium
@@ -113,7 +113,7 @@ scenes:
       - char: { id: 춘추, position: right, emotion: nervous }
       - say:
           char: 덕만.queen_angry
-          text: "궁 지붕에 불을 올려라. 내가 살아 있음을 보게 하라. 더 높이!"
+          text: "지붕에 불을 올려라. 나 여기 있다고. 더 높이!"
       - say:
           channel: narration
           text: "장터에서 환호가 났다. 성 밖의 궁수들도 고개를 들었다. 어둠 속 여러 지붕 가운데 하나가 또렷해졌다."
@@ -125,7 +125,7 @@ scenes:
       - say:
           char: 덕만.queen_sad
           camera: medium
-          text: "내가 올리라 했다. 다들 내려가라. 불부터 끄지 말고, 사람부터!"
+          text: "내가 올리라 했다. 다들 내려가! 불은 두고!"
       - gameOver:
           title: "운명 — 더 큰 거짓 별"
           message: "기와 밑으로 불화살이 박혔다. 덕만이 올린 불과 반란군이 쏜 불이 한데 붙었다. 지붕이 내려앉았다. 덕만이 죽은 뒤에도 불은 한동안 꺼지지 않았다."
@@ -155,7 +155,7 @@ scenes:
           char: 덕만.queen_sad
           camera: medium
           with: [춘추]
-          text: "내가 열어 준 길이다. 암호도 군량도 의심하지 말라 했어. 내 말이 그들을 보냈다."
+          text: "…알겠지. 그 길, 내가 비담한테 내준 거니까."
       - clearSticker: { id: c11_letter, leave: fadeOut }
       - goto: answer_bidam
 
@@ -170,7 +170,7 @@ scenes:
           camera: "medium"
           with:
             - "덕만"
-          text: "답장을 기다리는 동안은 공격하지 않겠답니다. 약속하실 수 있는 말만 쓰십시오."
+          text: "답장을 기다리는 동안은 치지 않겠답니다. 저쪽 병사들도 이 편지를 압니다. 말을 골라 쓰십시오."
       - choice:
           key: "c11_bidam_answer"
           prompt: "비담에게 보낼 종이를 편다. 첫 줄이 나오지 않는다."
@@ -204,7 +204,7 @@ scenes:
     actions:
       - say:
           char: 덕만
-          text: "너를 믿었다. 너무 많은 일을 네 손에만 맡겼다. 그것은 내 허물이다. 돌아와라. 네가 저지른 죄도 내 앞에서 답하라."
+          text: "너한테 너무 많이 맡겼다. 그건 내 잘못이다. 돌아와서, 네 죄는 내 앞에서 답해라."
       - say:
           channel: action
           text: "북이 멈췄다는 전갈이 온다. 반나절뿐이다. 창밖으로 아이 업은 여인이 지나간다. 나는 답장에 남은 먹을 말리며 그 걸음을 센다."
@@ -225,7 +225,7 @@ scenes:
           char: 덕만.queen_sad
           camera: medium
           with: [유신]
-          text: "비웃게 하려던 건 아니었다고… 직접 말하겠다. 비켜라."
+          text: "비웃으라고 붙인 게 아니다. 그 물, 내가 받겠다. 저들도 보게."
       - say:
           channel: narration
           text: "항복병이 내민 물에서 쓴맛이 났다. 덕만은 잔을 뱉듯 내려놓았다. 병사는 무릎 꿇은 채 고개를 들지 않았다."
@@ -326,7 +326,7 @@ scenes:
           camera: "medium"
           with:
             - "유신"
-          text: "내가 길을 끊어 이리 됐다. 죽을 쑤어라. 돌아갈 사람에게 죄부터 묻지 마라."
+          text: "죽부터 쑤어라. 솥은 내가 걸겠다."
       - say:
           char: "유신.angry"
           camera: "medium"
@@ -340,7 +340,7 @@ scenes:
           people_support: -4
       - say:
           channel: thought
-          text: "칼을 덜 썼다고 말하려 했다. 노인이 빈 솥을 도로 메는 것을 보고 입을 다문다."
+          text: "노인이 빈 솥을 도로 등에 멘다. 솥 바닥에는 눌은 자국도 없다."
       - goto: "bidam_captured"
 
   bidam_captured:
@@ -362,7 +362,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [비담]
-          text: "내일 직접 말해라. 네가 기다렸다는 내 대답도 그 자리에서 하겠다."
+          text: "내일 사람들 앞에서 똑같이 말해. 내 대답은 거기서 하지."
       - say:
           channel: thought
           text: "비담이 끌려간 뒤에도 문턱의 손자국이 남아 있다. 나는 사망 기록을 꺼내 놓는다. 이번에는 산 사람의 말을 끝까지 듣겠다."
@@ -380,7 +380,7 @@ scenes:
       - char: { id: 덕만, position: left, emotion: queen_angry }
       - say:
           char: 덕만.queen_angry
-          text: "민가로 번진다. 뒤로 물려라. 앞만 치지 말고, 불길부터 갈라!"
+          text: "민가로 번진다! 뒤로 물려! 불길부터 갈라!"
       - say:
           char: 유신.angry
           text: "돌아갈 길이 없습니다! 창을 놓았던 자들도 다시 듭니다!"
@@ -471,7 +471,7 @@ scenes:
           kite_verified: true
       - say:
           char: "덕만"
-          text: "비담의 전령 매듭이야. 그 길로 연이 왔구나. 다만 묶은 손이 누구인지는 더 물어야 해."
+          text: "비담 전령들 매듭이네. …누가 묶었는지는 아직 몰라."
       - goto: "evidence_kite_return"
 
 

@@ -249,11 +249,11 @@ scenes:
           camera: medium
           with:
             - 어린 덕만
-          text: "…그래. 네 이름으로 부고를 만든 자가 있다. 살아 있는 너를 두고."
+          text: "…그래. 누가 네 부고를 먼저 썼다. 그 붉은 것, 맨손으로 만지지 마라."
       - say:
           channel: record
           delivery: deduction
-          text: '왕실 족보 — 둘째 공주 덕만. 사망: 오늘 밤. 왕명에 따라 즉시 화장.'
+          text: '왕실 족보 — 인장 아래 붉은 물이 번져 뒷장까지 스밈. 오른쪽 아래 모서리 빔.'
       - clearSticker:
           id: death_register_answer
           leave: fadeOut
@@ -367,7 +367,7 @@ scenes:
           char: 어린 덕만
           camera: medium
           with: [진평왕]
-          text: "그림인데요. 냄새를 맡아 볼 수도 없잖아요."
+          text: "그림인데요. 냄새는 못 맡아요. …차 마셔도 돼요? 목말라요."
       - say:
           char: 진평왕.sad
           camera: medium

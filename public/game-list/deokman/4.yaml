@@ -16,17 +16,17 @@ scenes:
       - char: { id: 당 사신, position: right }
       - say:
           channel: action
-          text: "사신이 장부를 밀어내고 모란도를 편다. 불타던 방에서 아버지가 펼쳤던 꽃이다. 나는 무릎 위에 손을 내려 떨리는 손가락을 누른다."
+          text: "사신이 장부를 밀어내고 모란도를 편다. 아버지가 펼쳤던 그 꽃이다. 내 잔에만 술이 다시 채워진다. 귀족들은 잔에 입도 대지 않는다."
       - say:
           char: 당 사신
           camera: medium
           with: [덕만]
-          text: "황제께서 사위를 골라 보내시겠다 하십니다. 곡식과 군사도 혼수로 딸릴 터이지요."
+          text: "황제께서 사위를 보내신답니다. 마다하시면 동해의 군선이 대신 오겠지요."
       - say:
           char: 덕만
           camera: medium
           with: [당 사신]
-          text: "혼수를 그리 후히 주시니, 신라에서 내놓을 것도 적지는 않겠군요."
+          text: "군선까지 혼수로 보내시니, 신라도 답례를 오래 고민해야겠군요."
       - choice:
           key: c5_first_reply
           prompt: "사신이 모란도를 내 쪽으로 한 치 더 민다."
@@ -76,7 +76,7 @@ scenes:
           text: "잔을 받으시기에 뜻이 통한 줄 알았습니다. 여기 계신 분들도 그리 보셨겠지요."
       - say:
           channel: narration
-          text: "배석한 귀족들은 덕만의 눈을 피했다. 잔을 내려놓으려는데 손가락이 듣지 않았다. 목을 타고 내려간 것이 차갑게 남아 있었다."
+          text: "배석한 귀족들은 덕만의 눈을 피했다. 다시 채워진 잔을 내려놓으려는데 손가락이 듣지 않았다. 목을 타고 내려간 것이 차갑게 남아 있었다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -107,7 +107,7 @@ scenes:
           text: "더는 읽을 것이 없군요. 오늘 이 자리에 누가 있었는지만 적어 가겠습니다."
       - say:
           channel: narration
-          text: "사신이 나가자 귀족들이 문 앞에 섰다. 조금 전까지 눈을 피하던 이들이 덕만을 똑바로 보았다. 누구를 내주면 군선이 돌아갈지 이미 정한 얼굴이었다."
+          text: "사신이 나가자 귀족들이 문 앞에 섰다. 조금 전까지 눈을 피하던 이들이 덕만을 똑바로 보았다. 하나가 사신이 놓고 간 붓을 집어 들었다."
       - effect: { name: darken, wait: true }
       - say:
           channel: record
@@ -205,7 +205,7 @@ scenes:
           nobles_support: -1
       - say:
           channel: thought
-          text: "이번 겨울은 넘겼다. 그 말이 자꾸 걸린다. 내년 겨울에도 저 사람에게 고개를 숙여야 할까."
+          text: "군량 수레 바퀴에 당의 표식이 찍혀 있다. 내년 날짜 칸은 아직 비었다."
       - goto: "banquet_test"
 
   secret_trade:
@@ -241,7 +241,7 @@ scenes:
           evidence: 1
       - say:
           channel: thought
-          text: "편지 몇 장에 사람들의 한 해를 넘겼다. 항구에서 나를 맞을 얼굴들을 아직 보지도 못했는데."
+          text: "무역권 문서의 먹이 마른다. 맨 아래 항구 이름 하나가 번져 있다."
       - goto: "banquet_test"
 
   banquet_test:
@@ -249,7 +249,7 @@ scenes:
       - char: { id: 당 사신, position: right }
       - say:
           channel: action
-          text: "사신이 낮은 방석을 가리킨다. 자신의 의자는 그대로다. 나는 방석을 보다가 그 뒤에 선 기록관을 본다. 붓이 들려 있다."
+          text: "사신이 낮은 방석을 가리킨다. 제 의자는 그대로다. 그 뒤 기록관이 붓을 들고 섰다. 사신은 장갑 낀 손으로만 족자 끈을 만진다."
       - choice:
           key: c5_protocol
           prompt: "내가 무릎 꿇는 순간을 적으려는 붓이 기다린다."
