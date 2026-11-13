@@ -51,13 +51,13 @@ endings:
   late_muwon:
     title: "늦은 무원"
     message: "진실은 판결문에 남았다. 다만 그 판결을 함께 듣지 못한 이름이 있다."
-    epilogue: "서연은 시장 맨 아래 칸을 비워 두었다. 다음 검안에서 그 이름을 먼저 적기 위해."
+    epilogue: "{{player_name|은}} 시장 맨 아래 칸을 비워 두었다. 다음 검안에서 그 이름을 먼저 적기 위해."
     background: dawn_gate
     music: dawn
     tone: tragic
   covered_ledger:
     title: "덮인 장부"
-    message: "증거가 모자랐다. 한명재는 웃으며 형조를 나섰고, 서연은 혜민서 명부에서 지워졌다."
+    message: "증거가 모자랐다. 한명재는 웃으며 형조를 나섰고, {{player_name|은}} 혜민서 명부에서 지워졌다."
     epilogue: "막쇠가 남긴 메모 한 장. '장부는 하나가 아니다.'"
     background: alley_night
     music: night_well
@@ -65,7 +65,7 @@ endings:
   price_of_silence:
     title: "침묵의 값"
     message: "덕구는 살았고 사건은 닫혔다. 가짜 청심원은 다음 장날에도 팔렸다."
-    epilogue: "서연은 그 뒤로 감청 주머니를 볼 때마다 걸음을 멈췄다."
+    epilogue: "{{player_name|은}} 그 뒤로 감청 주머니를 볼 때마다 걸음을 멈췄다."
     background: hyeminseo
     music: night_well
     tone: tragic

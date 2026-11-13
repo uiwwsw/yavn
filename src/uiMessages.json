@@ -325,5 +325,9 @@
   "엔진": "POWERED BY",
   "화면에서 살펴볼 곳을 누르세요": "Tap a marked spot in the scene to look closer",
   "건너뛰기": "Skip",
-  "읽은 대사를 빠르게 넘기고 처음 보는 대사나 선택지에서 멈춥니다": "Fast-forward lines you have read; stops at new lines and choices"
+  "읽은 대사를 빠르게 넘기고 처음 보는 대사나 선택지에서 멈춥니다": "Fast-forward lines you have read; stops at new lines and choices",
+  "덮어쓰기": "Overwrite",
+  "저장": "Save",
+  "불러오기": "Load",
+  "이어서 읽을 수 있음": "Continue available"
 }

@@ -314,7 +314,7 @@ scenes:
           text: "다음 송장은… 아가씨가 먼저 읽어 줘요. 남이 글 써 놓기 전에."
       - say:
           channel: narration
-          text: "오작인의 시신은 관에서 거두지 않는다. 서연은 그 밤 시장 한 장을 따로 썼다."
+          text: "오작인의 시신은 관에서 거두지 않는다. {{player_name|은}} 그 밤 시장 한 장을 따로 썼다."
       - goto: c4_seal_owner
 
   c4_saved:

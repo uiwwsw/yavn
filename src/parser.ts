@@ -3,6 +3,7 @@ import { backgroundId } from './cinematic';
 import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
 import { baseLayerSchema, chapterSchema, configSchema, gameSchema } from './schema';
+import { collectTextVariables } from './textVariables';
 import type { Action, CameraDirective, ConditionNode, GameData, RouteVarValue, VNError } from './types';
 
 type ConfigYamlData = {
@@ -285,6 +286,8 @@ function actionAlwaysTransfersControl(action: Action): boolean {
     return action.choice.options.every((option) => Boolean(option.goto || option.gameOver));
   }
   if ('input' in action) {
+    // Free text input accepts any value, so it never transfers control by itself.
+    if (action.input.correct === undefined) return false;
     const correct = action.input.correct.trim();
     const correctRoute = action.input.routes.find((route) => route.equals.trim() === correct);
     return Boolean(correctRoute?.goto) && action.input.routes.every((route) => Boolean(route.goto));
@@ -462,6 +465,7 @@ function canonicalizeLayerAssets(
       ...(charDef.defaultFraming ? { defaultFraming: charDef.defaultFraming } : {}),
       ...(Object.keys(framings).length > 0 ? { framings } : {}),
       ...(charDef.calibration ? { calibration: { ...charDef.calibration } } : {}),
+      ...(charDef.name ? { name: charDef.name } : {}),
     };
   }
 
@@ -1069,8 +1073,36 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       }
     }
 
+    // {{variable}} placeholders must name declared state so a typo is caught at load time.
+    const unknownPlaceholder = (text: string | undefined) =>
+      collectTextVariables(text).find((key) => !hasOwn(defaults, key));
+    for (const [characterId, character] of Object.entries(data.assets.characters)) {
+      const missing = unknownPlaceholder(character.name);
+      if (missing) {
+        return { error: { message: `character '${characterId}' name uses unknown variable '{{${missing}}}'` } };
+      }
+    }
+    for (const [endingId, ending] of Object.entries(data.endings ?? {})) {
+      const missing = unknownPlaceholder(ending.title) ?? unknownPlaceholder(ending.message) ?? unknownPlaceholder(ending.epilogue);
+      if (missing) {
+        return { error: { message: `ending '${endingId}' uses unknown variable '{{${missing}}}'` } };
+      }
+    }
     for (const [sceneId, scene] of Object.entries(data.scenes)) {
       for (const [actionIndex, action] of scene.actions.entries()) {
+        const texts = 'say' in action ? [action.say.text]
+          : 'choice' in action ? [action.choice.prompt, ...action.choice.options.map((option) => option.text),
+            ...action.choice.options.flatMap((option) => [option.gameOver?.title, option.gameOver?.message])]
+            : 'input' in action ? [action.input.prompt, action.input.defaultValue]
+              : 'gameOver' in action ? [action.gameOver.title, action.gameOver.message] : [];
+        for (const text of texts) {
+          const missing = unknownPlaceholder(text);
+          if (missing) {
+            return {
+              error: { message: `scene '${sceneId}' action ${actionIndex} uses unknown variable '{{${missing}}}'` },
+            };
+          }
+        }
         if ('goto' in action) {
           const gotoError = validateGotoReference(sceneId, 'goto', action.goto, data.scenes);
           if (gotoError) {

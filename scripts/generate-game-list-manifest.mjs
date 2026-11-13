@@ -316,6 +316,7 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
     showcase: normalizeLauncherShowcase(launcher?.showcase),
     legalNotices: normalizeLegalNotices(config?.legalNotices),
     chapterCount: chapterYamlPaths.length,
+    endingCount: config?.endings && typeof config.endings === 'object' ? Object.keys(config.endings).length : 0,
     seo: {
       title: resolvedName,
       description: normalizeText(seo?.description) ?? normalizeText(launcher?.summary),
@@ -400,6 +401,7 @@ async function collectGameFolders() {
       showcase: metadata.showcase,
       legalNotices: metadata.legalNotices,
       chapterCount: metadata.chapterCount,
+      ...(metadata.endingCount > 0 ? { endingCount: metadata.endingCount } : {}),
       seo: metadata.seo,
     });
   }

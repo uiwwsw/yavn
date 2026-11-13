@@ -25,6 +25,7 @@ assets:
     register_page_sticker: assets/items/register_page.svg
   characters:
     서연:
+      name: "{{player_name}}"
       placement: prompt-top
       base: assets/char/seoyeon.svg
       facing: left
@@ -120,6 +121,7 @@ assets:
     dawn: assets/music/dawn.wav
 
 state:
+  player_name: "서연"
   trust_dowon: 0
   trust_yeogeum: 0
   credibility: 3

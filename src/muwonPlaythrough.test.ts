@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
+import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption, submitInputAnswer } from './engine';
 import { useVNStore } from './store';
 // The engine imports the YAML parser lazily. Load it up front so the first game load
 // does not wait on real module transformation while fake timers are advanced.
@@ -47,7 +47,9 @@ async function play(route: Route, maxSteps = 3000) {
     const state = useVNStore.getState();
     if (state.error) throw new Error(`engine error: ${state.error.message}`);
     if (state.isFinished || state.gameOver) break;
-    if (state.choiceGate.active && !state.busy) {
+    if (state.inputGate.active && !state.busy) {
+      submitInputAnswer(route.__name ?? '');
+    } else if (state.choiceGate.active && !state.busy) {
       const key = state.choiceGate.key ?? '';
       const options = state.choiceGate.options;
       const wanted = route[key];
@@ -100,13 +102,15 @@ describe('무원 full playthrough', () => {
     const { state, picked } = await play(best);
     expect(state.gameOver, picked.join('\n')).toBeUndefined();
     expect(state.isFinished).toBe(true);
-    expect(state.routeVars).toMatchObject({ truth: 4, deokgu_saved: true, makssoe_alive: true });
+    expect(state.routeVars).toMatchObject({ truth: 4, deokgu_saved: true, makssoe_alive: true, player_name: '서연' });
     expect(state.resolvedEndingId).toBe('muwon');
   }, 60000);
 
   it('reaches the late ending when Makssoe was hurt saving the ledger', async () => {
     await start();
-    const { state } = await play({ ...best, c2_rescue: '장부 궤짝을 끌어낸다' });
+    const { state } = await play({ ...best, __name: '하나', c2_rescue: '장부 궤짝을 끌어낸다' });
+    expect(state.routeVars.player_name).toBe('하나');
+    expect(state.storyLog.some((entry) => 'text' in entry && entry.text.includes('하나는 품에서'))).toBe(true);
     expect(state.routeVars).toMatchObject({ truth: 4, makssoe_hurt: true, makssoe_alive: false });
     expect(state.resolvedEndingId).toBe('late_muwon');
   }, 60000);

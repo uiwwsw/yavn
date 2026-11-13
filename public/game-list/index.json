@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T03:27:17.411Z",
+  "generatedAt": "2026-11-13T03:50:01.484Z",
   "games": [
     {
       "id": "muwon",
@@ -43,6 +43,7 @@
       },
       "legalNotices": [],
       "chapterCount": 5,
+      "endingCount": 4,
       "seo": {
         "title": "무원 — 한성 검안록",
         "description": "1792년 한성, 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서로 억울한 죽음을 밝히는 5장 검시 추리 비주얼노벨. 시신 그림표를 직접 살피고, 옛 검시법으로 실험하고, 증거로 고문 자백을 뒤집으세요. 결말 4종.",
@@ -115,6 +116,7 @@
         }
       ],
       "chapterCount": 1,
+      "endingCount": 1,
       "seo": {
         "title": "Live2D 테스트: 렌 수다",
         "description": "렌과 대화하며 표정, 손끝을 따라오는 시선, 가까워지는 카메라를 직접 체험하는 Live2D 인터랙션 데모.",

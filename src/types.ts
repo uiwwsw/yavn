@@ -82,6 +82,8 @@ export type CharacterAssetDefinition = {
   defaultFraming?: string;
   framings?: Record<string, CharacterFramingPreset>;
   calibration?: CharacterCalibration;
+  /** Display name for the speaker label; may contain {{variable}} placeholders. Defaults to the id. */
+  name?: string;
 };
 
 export type CharacterFramingState = {
@@ -268,10 +270,13 @@ export type InputAction = {
     framing?: string;
     camera?: CameraDirective;
     promptHeight?: number;
-    correct: string;
+    /** Omit for free text input (for example a player name); then saveAs is required. */
+    correct?: string;
     errors: string[];
     saveAs?: string;
     routes: InputRoute[];
+    maxLength?: number;
+    defaultValue?: string;
   };
 };
 
@@ -571,7 +576,9 @@ export type VideoCutsceneState = {
 export type InputGateState = {
   active: boolean;
   prompt: string;
-  correct: string;
+  correct?: string;
+  maxLength?: number;
+  defaultValue?: string;
   errors: string[];
   attemptCount: number;
   saveAs?: string;

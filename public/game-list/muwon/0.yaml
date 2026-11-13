@@ -1,10 +1,30 @@
 chapterTitle: "우물 속 신부"
 
 script:
+  - scene: name_entry
   - scene: night_call
   - scene: chart_intro
 
 scenes:
+  name_entry:
+    title: "의녀 명부"
+    actions:
+      - bg: { id: hyeminseo, transition: fade, duration: 800 }
+      - say:
+          channel: record
+          with: []
+          camera: wide
+          text: "혜민서 의녀 명부. 올가을 새로 이름을 올린 의녀가 하나 있다."
+      - input:
+          prompt: "명부에 적힌 당신의 이름은?"
+          with: []
+          saveAs: player_name
+          defaultValue: "서연"
+          maxLength: 6
+      - say:
+          channel: thought
+          with: []
+          text: "{{player_name}}. 먹이 마르기도 전에 문이 열렸다. 우물에 사람이 빠졌다고."
   night_call:
     title: "혼례 전날 밤"
     actions:
@@ -345,5 +365,5 @@ scenes:
       - clearSticker: { id: c1_thread_end, leave: fadeOut }
       - say:
           channel: record
-          text: "초검 시장. 사인 교살 후 투수(投水). 범인 미상. 검안 의녀 서연, 오작인 막쇠 입회."
+          text: "초검 시장. 사인 교살 후 투수(投水). 범인 미상. 검안 의녀 {{player_name}}, 오작인 막쇠 입회."
       - goto: /1.yaml

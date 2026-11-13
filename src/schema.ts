@@ -60,10 +60,14 @@ const inputActionSchema = z.object({
   framing: z.string().min(1).optional(),
   camera: cameraDirectiveSchema.optional(),
   promptHeight: promptHeightSchema.optional(),
-  correct: z.string().min(1),
+  correct: z.string().min(1).optional(),
   errors: z.array(z.string().min(1)).min(1).optional(),
   saveAs: z.string().min(1).optional(),
   routes: z.array(inputRouteSchema).optional(),
+  maxLength: z.number().int().min(1).max(40).optional(),
+  defaultValue: z.string().trim().min(1).max(40).optional(),
+}).refine((input) => input.correct !== undefined || input.saveAs !== undefined, {
+  message: 'input.saveAs is required when input.correct is omitted (free text input)',
 });
 
 const gameOverSchema = z
@@ -209,9 +213,13 @@ const actionBodySchema = z.union([
       camera: input.camera,
       promptHeight: input.promptHeight,
       correct: input.correct,
-      errors: input.errors && input.errors.length > 0 ? input.errors : ['정답이 아닙니다.'],
+      errors: input.errors && input.errors.length > 0
+        ? input.errors
+        : [input.correct === undefined ? '값을 입력해 주세요.' : '정답이 아닙니다.'],
       saveAs: input.saveAs,
       routes: input.routes ?? [],
+      maxLength: input.maxLength,
+      defaultValue: input.defaultValue,
     })),
   }),
   z.object({ set: stateSetMapSchema }),
@@ -548,6 +556,7 @@ const characterAssetsSchema = z.record(
       defaultFraming: z.string().min(1).optional(),
       framings: z.record(characterFramingPresetSchema).optional(),
       calibration: characterCalibrationSchema.optional(),
+      name: z.string().trim().min(1).max(40).optional(),
     })
     .strict(),
 );
