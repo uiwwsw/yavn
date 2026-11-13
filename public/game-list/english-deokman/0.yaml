@@ -253,11 +253,11 @@ scenes:
           camera: medium
           with:
             - Young Deokman
-          text: ...Yes. Someone has written a notice of your death. While you are standing here alive.
+          text: ...Yes. Someone wrote your death notice first. That red mark—don't touch it with your bare hands.
       - say:
           channel: record
           delivery: deduction
-          text: "Royal genealogy. Second Princess Deokman. Died: tonight. Immediate cremation by royal command."
+          text: Royal genealogy. Red stain under the seal, soaked through to the back. Lower right corner missing.
       - clearSticker:
           id: death_register_answer
           leave: fadeOut
@@ -399,7 +399,7 @@ scenes:
           camera: medium
           with:
             - King Jinpyeong
-          text: It's a painting. I can't even smell it.
+          text: It's a painting. I can't smell it. ...Can I drink the tea? I'm thirsty.
       - say:
           char: King Jinpyeong.sad
           camera: medium

@@ -27,7 +27,7 @@ scenes:
           char: 유신.angry
           camera: medium
           with: [덕만]
-          text: "독입니다. 의원은 남쪽입니다. 자객은 제가 보낼 테니 공주님을 옮기십시오!"
+          text: "독입니다. 의원은 남쪽 장터입니다. 지붕은 쫓지 마십시오. 일부러 소리를 냅니다!"
       - choice:
           key: c8_first_response
           prompt: "언니의 숨이 짧아진다. 지붕 위 발소리는 멀어진다."
@@ -154,13 +154,13 @@ scenes:
       - say:
           camera: wide
           channel: thought
-          text: "언니가 쓰러진 것은 어제다. 자백문은 접힌 자리가 닳아 있다. 서명한 군관의 이름을 다시 읽는다. 장례를 치른 사람이다."
+          text: "언니가 쓰러진 것은 어제다. 그런데 회의장에 돈 자백문에는 내가 언니에게 독을 탔다고 적혔다. 서명한 군관은 지난달 장례를 치른 사람이다."
       - say:
           char: "춘추.nervous"
           camera: "medium"
           with:
             - "덕만"
-          text: "어머니께서 직접 말씀하셔야 합니다. …걸으실 수는 있습니까? 제가 모시겠습니다."
+          text: "어머니께서 직접 말씀하셔야 합니다. 방 앞 의원이 처음 보는 얼굴입니다. 걸으실 수 있겠습니까?"
       - choice:
           key: "c8_public_story"
           prompt: "춘추가 닫힌 방문과 내 손의 종이를 번갈아 본다."
@@ -273,7 +273,7 @@ scenes:
       - say:
           camera: medium
           char: 천명.sad
-          text: "궁에 남아도, 떠나도 말은 나오겠지. 덕만아. 이번에는 내가 갈 곳을 정하마."
+          text: "짐은 싸 뒀어. 어디로 갈지는… 네가 말해 줘. 이번엔 네 말 들을게."
       - choice:
           key: c8_cheonmyeong_fate
           prompt: "언니가 제 짐을 싸 놓았다. 나는 문 앞에 서 있다."
@@ -335,7 +335,7 @@ scenes:
           cheonmyeong_trust: -2
       - say:
           channel: thought
-          text: "언니는 살아 있다. 그 말로 안심하려 하면, 창에서 거두던 손이 떠오른다."
+          text: "복도를 나서다 돌아본다. 작은 창으로 손이 나왔다가 들어간다."
       - goto: "abandoned_end"
 
   abandoned_end:

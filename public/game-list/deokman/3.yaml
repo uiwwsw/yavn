@@ -84,7 +84,7 @@ scenes:
           evidence: -1
       - say:
           channel: thought
-          text: "노파는 끝내 이름을 말하지 않았다. 타 버린 장부에도 이름이 있었을 텐데. 남은 것이라도 가져가야 한다."
+          text: "노파가 지팡이 끝으로 진흙에 무언가 쓰다가 발로 문지른다. 나는 타다 남은 장을 소매에 넣는다."
       - goto: "hidden_warehouse"
 
   surround_warehouse:
@@ -115,7 +115,7 @@ scenes:
           people_support: -2
       - say:
           channel: thought
-          text: "말에서 내려야 했는데. 무슨 말을 할지 몰라 그대로 지나왔다. 문 닫히는 소리가 아직 들린다."
+          text: "닫힌 문 앞에 짚신 한 짝이 엎어져 있다. 내 말은 그 옆을 밟고 지나간다."
       - goto: "hidden_warehouse"
 
   hidden_warehouse:
@@ -233,12 +233,12 @@ scenes:
           text: "세 집 몫은 남겨 둬. 위치를 적어 줘. 내가 가져갈게."
       - say:
           channel: "narration"
-          text: "마지막 세 집에 닿았을 때 죽은 식어 있었다. 덕만이 그릇을 내밀자 노파는 두 손으로 받았다. 고맙다는 말이 듣기 어려웠다."
+          text: "마지막 세 집에 닿았을 때 죽은 식어 있었다. 덕만이 그릇을 내밀자 노파는 두 손으로 받았다. 숟가락은 들지 않았다."
       - add:
           people_support: -1
       - say:
           channel: thought
-          text: "명부대로 다 줬다는 말을 믿을 뻔했다. 문 앞에 오지 못하는 사람은 어떻게 이름을 알릴까."
+          text: "명부를 다시 펼친다. 이 집 이름은 어디에도 없다."
       - goto: "convoy_attack"
 
   grain_bargain:
@@ -274,7 +274,7 @@ scenes:
           bidam_trust: 1
       - say:
           channel: thought
-          text: "고개를 숙일 사람은 나인데. 자물쇠 열쇠가 손바닥을 누른다. 지금이라도 꺼낼 수 있다. 그런데 손이 펴지지 않는다."
+          text: "자물쇠 열쇠가 손바닥을 누른다. 노파는 아직 고개를 들지 않는다."
       - goto: "convoy_attack"
 
   convoy_attack:
@@ -285,7 +285,7 @@ scenes:
       - say:
           camera: wide
           channel: action
-          text: "앞길에 바위가 굴러떨어진다. 돌아보자 뒤에서도 돌이 튄다. 절벽 위의 횃불들이 장부를 실은 수레 쪽으로 모인다."
+          text: "앞뒤로 바위가 굴러떨어진다. 터진 자루에서 기름 냄새가 올라온다. 절벽 위 횃불들이 장부를 실은 수레 쪽으로만 모인다."
       - say:
           char: 유신.angry
           camera: medium
@@ -337,7 +337,7 @@ scenes:
           text: "내가 앞만 보면 네가 불러 세워. 듣기 싫어해도 꼭 그래 줘."
       - say:
           channel: thought
-          text: "자루 안쪽에서 당의 낙인이 나온다. 사흘 뒤 연회에 들고 갈 것이 늘었다. 사신이 이 자루를 알아볼까."
+          text: "자루 안쪽에서 당의 낙인이 나온다. 손톱으로 긁어도 지워지지 않는다."
           with: []
           camera: wide
           continueLabel: 그을린 장부를 들고 연회장으로 간다
@@ -345,7 +345,7 @@ scenes:
           char: 덕만
           camera: medium
           with: [유신]
-          text: "이 쌀을 팔아 산 칼이었구나. 연회에 가져가자. 사신 앞에서 펼쳐야겠어."
+          text: "유신, 이 자루 하나 빼 둬. 사흘 뒤 연회에 당 사신이 와."
       - goto: /4.yaml
 
   bad_grain_wall:
