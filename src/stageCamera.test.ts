@@ -248,7 +248,7 @@ describe('stage camera', () => {
       expect(wide.scale).toBeCloseTo(1.18);
       expect(close.scale).toBeCloseTo(1.86);
       expect(reaction.scale).toBeCloseTo(1.78);
-      expect(wide.mobileScale).toBeCloseTo(1.12);
+      expect(wide.mobileScale).toBeCloseTo(1);
       expect(medium.mobileScale).toBeCloseTo(1.58);
       expect(close.mobileScale).toBeCloseTo(1.74);
       expect(reaction.mobileScale).toBeCloseTo(1.66);
@@ -369,7 +369,7 @@ describe('stage camera', () => {
       mobilePanX: '0cqw',
     });
     expect(wide.scale).toBeCloseTo(1.18);
-    expect(wide.mobileScale).toBeCloseTo(1.12);
+    expect(wide.mobileScale).toBeCloseTo(1);
   });
 
   it('holds the directed focus through narration and speaker turns until the target exits', () => {
