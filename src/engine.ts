@@ -15,7 +15,8 @@ import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from '.
 import { resolveCharacterCalibration, resolveStageCameraState } from './stageCamera';
 import { useVNStore } from './store';
 import type { ParsedBaseYaml, ParsedChapterYaml, ParsedConfigYaml } from './parser';
-import { collectChapterAssetPaths } from './preload';
+import { collectChapterAssetPaths, collectStartupAssetPaths } from './preload';
+import { ReadHistory, readLineKey } from './readHistory';
 import {
   DEFAULT_RUNTIME_GAME_SETTINGS,
   migrateRuntimeGameSettings,
@@ -725,8 +726,10 @@ function persistRuntimeGameSettings(key: string = currentAutosaveKey): void {
 
 function setAutosaveScopeKey(key: string): void {
   clearPlayerAutoAdvance();
+  setSkipReadActive(false);
   currentDialogueHasAuthoredAutoAdvance = false;
   currentAutosaveKey = key;
+  readHistory.load(`${key}:read-lines`);
   loadRuntimeGameSettingsFromStorage(key);
   loadChoiceRecoveryTrail();
   loadStoryJourney();
@@ -877,6 +880,53 @@ function clearPlayerAutoAdvance(): void {
 }
 
 let playerAutoPlayPaused = false;
+
+// Skip read text: fast-forwards dialogue the player has already seen in this game and stops
+// at the first unread line, a choice, an input, a video, a game over or the ending.
+const readHistory = new ReadHistory();
+let currentLineUnread = false;
+let skipReadTimer: ReturnType<typeof setTimeout> | undefined;
+const SKIP_READ_STEP_MS = 70;
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('pagehide', () => readHistory.flush());
+}
+
+export function setSkipReadActive(active: boolean): void {
+  if (skipReadTimer !== undefined) {
+    clearTimeout(skipReadTimer);
+    skipReadTimer = undefined;
+  }
+  useVNStore.getState().setSkipReadActive(active);
+  if (active) {
+    skipReadTimer = setTimeout(skipReadTick, 0);
+  }
+}
+
+function skipReadTick(): void {
+  skipReadTimer = undefined;
+  const state = useVNStore.getState();
+  if (!state.skipReadActive) {
+    return;
+  }
+  if (
+    !state.game ||
+    state.error ||
+    state.isFinished ||
+    state.gameOver ||
+    state.inputGate.active ||
+    state.choiceGate.active ||
+    state.videoCutscene.active ||
+    (state.waitingInput && currentLineUnread)
+  ) {
+    setSkipReadActive(false);
+    return;
+  }
+  if (state.waitingInput && !presentationCovered && !state.chapterLoading && !state.busy && !state.dialogUiHidden) {
+    handleAdvance(true);
+  }
+  skipReadTimer = setTimeout(skipReadTick, SKIP_READ_STEP_MS);
+}
 
 export function setPlayerAutoPlayPaused(paused: boolean): void {
   playerAutoPlayPaused = paused;
@@ -3229,8 +3279,13 @@ async function preloadChapterAssets(
   game: GameData,
   chapterLabel: string,
   reportProgress = true,
+  startupPaths?: string[],
 ) {
-  const initialPaths = collectChapterAssetPaths(game);
+  // With startupPaths, only those assets block the loading screen. The rest of the chapter
+  // keeps loading in the background so a large chapter no longer delays its first scene.
+  const initialPaths = startupPaths
+    ? [...new Set([...startupPaths, ...collectChapterAssetPaths(game)])]
+    : collectChapterAssetPaths(game);
   const live2DRuntimePromise = initialPaths.some((path) => isLive2DModelJsonAsset(path))
     ? warmLive2DRuntime()
     : undefined;
@@ -3330,6 +3385,9 @@ async function preloadChapterAssets(
   for (const path of initialPaths) {
     enqueue(path);
   }
+  const blockingCount = startupPaths
+    ? Math.min(queue.length, new Set(startupPaths.map((path) => makePreloadQueueKey(path.trim())).filter(Boolean)).size)
+    : Number.POSITIVE_INFINITY;
 
   const connection = (
     navigator as Navigator & {
@@ -3340,27 +3398,62 @@ async function preloadChapterAssets(
   const concurrency = Math.min(queue.length, constrainedNetwork ? 2 : navigator.hardwareConcurrency <= 4 ? 3 : 4);
   let cursor = 0;
 
+  let resolveBlocking: () => void = () => undefined;
+  let rejectBlocking: (error: unknown) => void = () => undefined;
+  const blockingDone = new Promise<void>((resolve, reject) => {
+    resolveBlocking = resolve;
+    rejectBlocking = reject;
+  });
+  let blockingProcessed = 0;
+  const markBlockingProcessed = () => {
+    blockingProcessed += 1;
+    if (blockingProcessed >= blockingCount) {
+      resolveBlocking();
+    }
+  };
+  if (blockingCount === 0) {
+    resolveBlocking();
+  }
+
   const worker = async () => {
     while (cursor < queue.length) {
-      const path = queue[cursor];
+      const index = cursor;
+      const path = queue[index];
       cursor += 1;
-      await preloadSingle(path);
+      const blocking = index < blockingCount;
+      try {
+        await preloadSingle(path);
+      } catch (error) {
+        if (blocking || !startupPaths) {
+          throw error;
+        }
+        // Background assets load again on demand when a later scene needs them.
+        continue;
+      }
       processed += 1;
-      const stepProgress = queue.length > 0 ? processed / queue.length : 1;
+      const total = Number.isFinite(blockingCount) ? blockingCount : queue.length;
+      const done = Number.isFinite(blockingCount) ? blockingProcessed + (blocking ? 1 : 0) : processed;
+      const stepProgress = total > 0 ? Math.min(1, done / total) : 1;
       progress = Math.max(progress, stepProgress);
       const visibleProgress = Math.min(0.96, 0.08 + progress * 0.88);
-      if (reportProgress) {
+      if (reportProgress && (blocking || !startupPaths)) {
         useVNStore
           .getState()
-          .setChapterLoading(true, visibleProgress, `${chapterLabel} assets ${processed}/${queue.length}`);
+          .setChapterLoading(true, visibleProgress, `${chapterLabel} assets ${done}/${total}`);
+      }
+      if (blocking) {
+        markBlockingProcessed();
       }
     }
   };
 
-  await Promise.all([
-    Promise.all(Array.from({ length: concurrency }, () => worker())),
-    live2DRuntimePromise ?? Promise.resolve(),
-  ]);
+  const workers = Promise.all(Array.from({ length: concurrency }, () => worker()));
+  if (!startupPaths) {
+    await Promise.all([workers, live2DRuntimePromise ?? Promise.resolve()]);
+    return;
+  }
+  workers.then(resolveBlocking, rejectBlocking);
+  await Promise.all([blockingDone, live2DRuntimePromise ?? Promise.resolve()]);
 }
 
 function canWarmNextChapterAssets(): boolean {
@@ -3717,7 +3810,14 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     useVNStore.getState().setChapterLoading(true, 0.04, `${chapterLabel} data`);
     const game = await ensureChapterGame(chapter);
     useVNStore.getState().setUiTemplate(game.ui?.template ?? DEFAULT_UI_TEMPLATE);
-    await preloadChapterAssets(chapter, game, chapterLabel);
+    const startupResume = resume && game.scenes[resume.sceneId] ? resume : undefined;
+    await preloadChapterAssets(
+      chapter,
+      game,
+      chapterLabel,
+      true,
+      collectStartupAssetPaths(game, startupResume?.sceneId, startupResume?.actionIndex ?? 0),
+    );
     const elapsed = performance.now() - loadStartedAt;
     const minimumLoadingMs = chapterIndex === 0 ? INITIAL_CHAPTER_MIN_LOADING_MS : NEXT_CHAPTER_MIN_LOADING_MS;
     await waitMs(minimumLoadingMs - elapsed);
@@ -4485,6 +4585,9 @@ function runToNextPause(loopGuard = 0) {
     }
     clearPlayerAutoAdvance();
     currentDialogueHasAuthoredAutoAdvance = autoAdvanceMs > 0;
+    currentLineUnread = !readHistory.markRead(
+      readLineKey(getCurrentChapterPathKey(), state.currentSceneId, state.actionIndex),
+    );
     const presentation = resolveSayPresentation(
       action.say.char,
       action.say.with,
@@ -5388,6 +5491,7 @@ export function handleAdvance(confirmAction = false) {
     if (state.dialog.continueLabel && (!confirmAction || state.dialog.typing)) return;
     clearPlayerAutoAdvance();
     currentDialogueHasAuthoredAutoAdvance = false;
+    currentLineUnread = false;
     useVNStore.getState().setWaitingInput(false);
     if (autoAdvanceTimer) {
       storyClock.clear(autoAdvanceTimer);
