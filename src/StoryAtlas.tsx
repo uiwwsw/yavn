@@ -1,12 +1,12 @@
 import { t, uiLanguage } from './uiLanguage';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { getStoryMap, replayStoryMapNode } from './engine';
+import { getChoiceRecoverySummary, getStoryMap, loadChoiceRecovery, replayStoryMapNode, type ChoiceRecoverySummary } from './engine';
 import { describeStoryRoute, layoutStoryMap, routeStoryMapEdges, visibleStoryChapter, type StoryMapData } from './storyMap';
 import { trapGameDialogFocus } from './gameInterface';
 import './storyMap.css';
 
 const kindLabel = { scene: t("이야기"), choice: t("갈림길"), input: t("단서"), death: t("멈춘 운명"), ending: t("결말") };
-type Props = { onClose: () => void; onReplayed: () => void; onRecords: () => void; outcome?: string; ending?: boolean };
+type Props = { onClose: () => void; onReplayed: (failedChoice?: ChoiceRecoverySummary['failedChoice']) => void; onRecords: () => void; outcome?: string; ending?: boolean };
 export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Props) {
   const [data, setData] = useState<StoryMapData>();
   const [error, setError] = useState('');
@@ -33,9 +33,11 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
     getStoryMap().then(result => {
       if (cancelled) return;
       setData(result);
-      const current = result.chapters.find(c => c.nodes.some(n => n.id === result.current && n.chapter === c.path));
+      // After a death, open on the choice that caused it rather than on the death itself.
+      const focus = result.recovery ?? result.current;
+      const current = result.chapters.find(c => c.nodes.some(n => n.id === focus && n.chapter === c.path));
       setChapterPath(current?.path ?? result.chapters[0]?.path ?? '');
-      setSelectedId(result.current ?? '');
+      setSelectedId(focus ?? '');
     }).catch(() => { if (!cancelled) setError(t("이야기 지도를 불러오지 못했습니다. 다시 시도해 주세요.")); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
@@ -79,7 +81,13 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
     if (!selected || busy) return;
     setBusy(true); setNotice(t("이 지점의 이야기를 펼치는 중…"));
     try {
-      if (await replayStoryMapNode(selected.id)) onReplayed();
+      if (selected.id === data?.recovery) {
+        // Same path as the game-over panel: the recovery point restores the pre-choice state
+        // and marks the option that led to the death.
+        const failedChoice = getChoiceRecoverySummary().failedChoice;
+        if (await loadChoiceRecovery()) onReplayed(failedChoice);
+        else setNotice(t("이 지점의 저장을 복원하지 못했습니다. 다른 지점을 선택해 주세요."));
+      } else if (await replayStoryMapNode(selected.id)) onReplayed();
       else setNotice(t("이 지점의 저장을 복원하지 못했습니다. 다른 지점을 선택해 주세요."));
     } catch { setNotice(t("이야기를 불러오지 못했습니다. 다시 시도해 주세요.")); }
     finally { setBusy(false); }
@@ -146,13 +154,15 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
                     {positioned.map(node => {
                       const unlocked = seen.has(node.id);
                       const current = node.id === data?.current;
+                      const cause = node.id === data?.recovery;
                       return <button type="button" key={node.id} className={`story-atlas-node ${unlocked ? 'is-unlocked' : 'is-locked'} ${current ? 'is-current' : ''} ${node.id === selectedId ? 'is-selected' : ''}`}
                         style={{ left: node.x, top: node.y }} disabled={!unlocked} aria-pressed={node.id === selectedId}
-                        aria-label={unlocked ? `${kindLabel[node.kind]}: ${node.title}${current ? t(", 현재 위치") : ''}` : t("아직 펼치지 않은 이야기")}
+                        aria-label={unlocked ? `${kindLabel[node.kind]}: ${node.title}${current ? t(", 현재 위치") : ''}${cause ? t(", 죽음의 원인이 된 선택") : ''}` : t("아직 펼치지 않은 이야기")}
                         onClick={() => { if (node.chapter !== chapterPath) setChapterPath(node.chapter); setSelectedId(node.id); setNotice(''); }}>
                         <div className="story-atlas-node-art">{node.image && <img src={node.image} alt="" loading="lazy" />}
                           {node.portrait && <img className="story-atlas-portrait" src={node.portrait} alt="" loading="lazy" />}
                           <span>{unlocked ? kindLabel[node.kind] : t("미발견")}</span>{current && <b>{t("현재 위치")}</b>}
+                          {cause && <em className="vs-atlas-cause">{t("죽음의 원인")}</em>}
                           {!unlocked && <em aria-hidden="true">◇</em>}</div>
                         <strong>{node.title}</strong>
                       </button>;
@@ -172,14 +182,26 @@ export function StoryMap({ onClose, onReplayed, onRecords, outcome, ending }: Pr
                   <p>{edge.taken || !edge.option ? describeStoryRoute(edge, visible.nodes, visible.edges, chapter?.entry) : t("아직 확인하지 않은 길")}</p>
                   {edge.taken && siblings.filter(e => e.to === edge.to && e.taken).length > 1 && <small>{t("같은 장면에 합류 · 선택에 따른 관계와 소지품은 다를 수 있습니다.")}</small>}
                 </div>)}
-                <p>{data?.visits.find(v => v.id === selected.id)?.replayable ? t("플레이 도중에도 언제든 돌아갈 수 있습니다. 그때의 소지품과 관계로 다시 이어집니다.")
+                <p>{selected.id === data?.recovery ? t("이 선택이 죽음으로 이어졌어요. 선택하기 직전으로 돌아가 다른 길을 골라 보세요.")
+                  : selected.kind === 'death' ? t("멈춘 자리에서는 다시 시작할 수 없어요. 그 앞의 선택으로 돌아가세요.")
+                  : data?.visits.find(v => v.id === selected.id)?.replayable ? t("플레이 도중에도 언제든 돌아갈 수 있습니다. 그때의 소지품과 관계로 다시 이어집니다.")
                   : t("발견한 이야기입니다. 다시 이어갈 수 있는 앞선 장면을 선택해 주세요.")}</p>
-                <button className="story-atlas-replay" disabled={busy || !data?.visits.find(v => v.id === selected.id)?.replayable}
-                  onClick={() => void replay()}>{busy ? t("이야기를 펼치는 중…") : t("이 시점으로 돌아가기")} <span>→</span></button>
+                {selected.kind === 'death' && data?.recovery && selected.id !== data.recovery
+                  ? <button className="story-atlas-replay" disabled={busy} onClick={() => {
+                    const target = data.chapters.find(c => c.nodes.some(n => n.id === data.recovery && n.chapter === c.path));
+                    if (target) setChapterPath(target.path);
+                    setSelectedId(data.recovery!); setNotice('');
+                  }}>{t("원인이 된 선택 보기")} <span>→</span></button>
+                  : <button className="story-atlas-replay" disabled={busy || selected.kind === 'death'
+                    || (selected.id !== data?.recovery && !data?.visits.find(v => v.id === selected.id)?.replayable)}
+                    onClick={() => void replay()}>{busy ? t("이야기를 펼치는 중…") : selected.id === data?.recovery ? t("이 선택 직전으로 돌아가기") : t("이 시점으로 돌아가기")} <span>→</span></button>}
               </div>
             </> : <div className="story-atlas-detail-copy"><small>YOUR STORY</small><h3>{t("어떤 길을 걸어왔나요?")}</h3><p>{t("밝혀진 장면을 선택해 이야기를 돌아보세요. 앞으로 만날 장면은 아직 비밀입니다.")}</p></div>}
             <div className="story-atlas-detail-bottom"><p role="status">{notice}</p>
-              {!data?.persistent && <p>{t("탐색 기록은 현재 세션에만 보관됩니다. 자동 저장과 브라우저 저장 공간을 확인해 주세요.")}</p>}
+              {data?.staleVersion && <p className="vs-atlas-stale">{uiLanguage === 'en'
+                ? `Some paths were recorded in v${data.staleVersion}. Scenes that changed can't be replayed.`
+                : `v${data.staleVersion}에서 걸어온 길도 함께 보여요. 바뀐 장면은 다시 갈 수 없어요.`}</p>}
+              {!data?.persistent && <p>{t("탐색 기록은 현재 세션에만 보관됩니다. 브라우저 저장 공간을 확인해 주세요.")}</p>}
               <button onClick={onRecords} disabled={busy}>{ending ? t("엔딩 기록 · 크레딧") : t("저장과 복구")}</button></div>
           </aside>
         </div>

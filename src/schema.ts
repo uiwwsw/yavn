@@ -629,7 +629,7 @@ export const configSchema = z
     seo: seoConfigSchema.optional(),
     legalNotices: legalNoticesSchema.optional(),
     textSpeed: z.number().positive(),
-    autoSave: z.boolean(),
+    autoSave: z.boolean().optional(),
     clickToInstant: z.boolean(),
     endings: z.record(endingDefinitionSchema).optional(),
     endingRules: z.array(endingRuleSchema).optional(),
@@ -675,7 +675,7 @@ export const gameSchema = z.object({
   }),
   settings: z.object({
     textSpeed: z.number().positive(),
-    autoSave: z.boolean(),
+    autoSave: z.boolean().optional(),
     clickToInstant: z.boolean(),
   }),
   assets: fullAssetsSchema,

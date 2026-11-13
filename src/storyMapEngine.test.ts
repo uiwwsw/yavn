@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getStoryMap, loadGameFromUrl, loadGameFromZip, replayStoryMapNode, restartFromBeginning, setAutoSaveEnabled, setScenePresentationPaused, submitChoiceOption } from './engine';
+import { getStoryMap, loadGameFromUrl, loadGameFromZip, replayStoryMapNode, restartFromBeginning, setScenePresentationPaused, submitChoiceOption } from './engine';
 import { storyEdgeId, storyNodeId, visibleStoryChapter } from './storyMap';
 import { useVNStore } from './store';
 // The engine imports the YAML parser lazily. Load it up front so the first game load
@@ -229,13 +229,6 @@ scenes:
   it('survives storage quota failures without losing in-memory checkpoints', async () => {
     await settle(loadGameFromUrl('http://test/journey/'));
     vi.spyOn(localStorage, 'setItem').mockImplementation(() => { throw new Error('quota'); });
-    submitChoiceOption(0);
-    expect((await getStoryMap()).persistent).toBe(false);
-    expect(await settle(replayStoryMapNode(startId))).toBe(true);
-  });
-  it('keeps session replay usable when automatic saving is disabled', async () => {
-    await settle(loadGameFromUrl('http://test/journey/'));
-    setAutoSaveEnabled(false);
     submitChoiceOption(0);
     expect((await getStoryMap()).persistent).toBe(false);
     expect(await settle(replayStoryMapNode(startId))).toBe(true);

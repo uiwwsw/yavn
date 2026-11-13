@@ -53,8 +53,10 @@ import {
 import {
   completeBackgroundTransition,
   completeVideoCutscene,
+  deleteSaveSlot,
+  describeStoredProgressForGame,
   exportSaveBackup,
-  getAutoSaveEnabled,
+  flushAutosave,
   getBgmEnabled,
   getChoiceRecoverySummary,
   getInventoryUiSettings,
@@ -73,9 +75,8 @@ import {
   resetVideoSkipProgress,
   revealVideoSkipGuide,
   setBgmEnabled,
-  setAutoSaveEnabled,
   setSkipReadActive,
-  hasStoredProgressForGame,
+  readSaveBackup,
   setInventoryUiSettings,
   setPlayerAutoPlayPaused,
   setScenePresentationPaused,
@@ -97,8 +98,14 @@ import type {
   PlayerExperienceSettings,
   SaveSlotKind,
   SaveSlotSummary,
+  StartScreenPreview,
+  StoredProgressStatus,
   TextSpeedRate,
 } from './engine';
+import { SaveSlotMeta, UpdateBanner, VersionGate, VersionLine, VersionStamp, olderVersionMessage } from './VersionSaves';
+import { formatRelativeSaveTime, formatSaveChapter, resolveSlotIntent, type SlotIntent } from './saveMeta';
+import { consumeBootIntent, readGameIdFromPath, setBootIntent, useUpdateWatch } from './updateCheck';
+import './versionSaves.css';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFocusPresentation,
@@ -419,6 +426,8 @@ type StartGateState =
     subtitle?: string;
     scene?: StartSceneConfig;
     showLoadButton: boolean;
+    saveStatus?: StoredProgressStatus;
+    gameVersion?: string;
     legalNotices: LegalNotice[];
   }
   | {
@@ -441,6 +450,8 @@ type StartGateState =
     subtitle?: string;
     scene?: StartSceneConfig;
     showLoadButton: false;
+    saveStatus?: StoredProgressStatus;
+    gameVersion?: string;
     legalNotices: LegalNotice[];
   };
 
@@ -522,29 +533,13 @@ function isObjectRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
-function formatSaveTimestamp(value?: string): string {
-  if (!value) {
-    return t("이전 버전 저장");
-  }
-  const date = new Date(value);
-  if (!Number.isFinite(date.getTime())) {
-    return t("저장 시각 미상");
-  }
-  return new Intl.DateTimeFormat(uiLanguage === 'en' ? 'en-US' : 'ko-KR', {
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
-}
-
 function formatSaveSlotMeta(
-  slot?: Pick<SaveSlotSummary, 'exists' | 'savedAt' | 'chapterIndex'>,
+  slot?: Pick<SaveSlotSummary, 'exists' | 'savedAt' | 'chapterIndex' | 'chapterTitle'>,
 ): string {
   if (!slot?.exists) {
     return t("저장 없음");
   }
-  return `${formatSaveTimestamp(slot.savedAt)} · CH.${(slot.chapterIndex ?? 0) + 1}`;
+  return `${formatSaveChapter(slot)} · ${formatRelativeSaveTime(slot.savedAt)}`;
 }
 
 function normalizeText(value: unknown): string | undefined {
@@ -1009,8 +1004,12 @@ function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined
 // Library cards show what this browser already holds for a game: a resumable save and found endings.
 function readLauncherProgress(entry: GameListManifestEntry): string[] {
   const labels: string[] = [];
-  if (hasStoredProgressForGame(entry.id)) {
+  // Mirrors the loader: the newest save is what 이어하기 opens, so an older-version save says so.
+  const stored = describeStoredProgressForGame(entry.id, entry.version);
+  if (stored.status === 'resume') {
     labels.push(t("이어서 읽을 수 있음"));
+  } else if (stored.status === 'older-version') {
+    labels.push(uiLanguage === 'en' ? `Save from v${stored.slot?.savedVersion}` : `v${stored.slot?.savedVersion} 기록 있음`);
   }
   if (entry.endingCount) {
     let found = 0;
@@ -1675,7 +1674,26 @@ export default function App() {
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>(() => getInventoryUiSettings().category);
   const [inventorySearchTerm, setInventorySearchTerm] = useState('');
   const [bgmEnabled, setBgmEnabledState] = useState(() => getBgmEnabled());
-  const [autoSaveEnabled, setAutoSaveEnabledState] = useState(() => getAutoSaveEnabled());
+  // Save cards ask before overwriting, deleting or opening an older-version save.
+  const [slotIntent, setSlotIntent] = useState<SlotIntent>();
+  // A backup file waits here until the player picks the slot it goes into.
+  const [importDraft, setImportDraft] = useState<{ raw: string; summary: SaveSlotSummary }>();
+  // Direct boot (no start screen) found an older-version save and asks before loading it.
+  const [versionGate, setVersionGate] = useState<{ gameUrl: string; title?: string; status: StoredProgressStatus }>();
+  const [updateBusy, setUpdateBusy] = useState(false);
+  const resumeNotice = useVNStore((state) => state.resumeNotice);
+  const storyWaiting = useVNStore((state) => state.waitingInput);
+  const updateGameId = readGameIdFromPath(window.location.pathname);
+  const updateWatch = useUpdateWatch({ gameId: updateGameId, contentVersion: game?.meta.version });
+  // Never cut into a line while it types: wait for a choice, an input, a finished line or an outcome.
+  const updateNoticeIdle = !game
+    || (!dialogTyping && !chapterLoading && (storyWaiting || choiceGate.active || inputGate.active || Boolean(gameOver) || isFinished));
+  const reloadForUpdate = useCallback((intent: 'fresh' | 'continue') => {
+    setUpdateBusy(true);
+    if (intent === 'continue') flushAutosave();
+    if (updateGameId) setBootIntent(updateGameId, intent);
+    window.location.reload();
+  }, [updateGameId]);
   const [playerExperience, setPlayerExperience] = useState<PlayerExperienceSettings>(
     () => getPlayerExperienceSettings(),
   );
@@ -1892,9 +1910,20 @@ export default function App() {
         const gameUrl = `/game-list/${gameId}/`;
         const sessionKey = resolveStartGateSessionKey(gameId);
         setBootMode('gameList');
+        // A reload the player asked for from the update notice: no start screen, no second question.
+        const bootIntent = consumeBootIntent(gameId);
+        if (bootIntent) {
+          try {
+            await loadGameFromUrl(gameUrl, { resumeFromSave: bootIntent === 'continue' });
+          } finally {
+            if (!cancelled) setGameBootPending(false);
+          }
+          return;
+        }
+        let preview: StartScreenPreview | undefined;
         if (!hasStartGateSessionFlag(sessionKey)) {
           try {
-            const preview = await loadUrlStartScreenPreview(gameUrl);
+            preview = await loadUrlStartScreenPreview(gameUrl);
             if (cancelled) {
               return;
             }
@@ -1919,6 +1948,8 @@ export default function App() {
                 subtitle: preview.startScreen.subtitle,
                 scene: mapStartSceneAssets(preview.startScreen.scene, (path) => resolveStartGateAssetUrl(path, baseUrl) ?? path),
                 showLoadButton: preview.hasLoadableSave,
+                saveStatus: preview.saveStatus,
+                gameVersion: preview.gameVersion,
                 legalNotices: preview.legalNotices,
               });
               return;
@@ -1926,6 +1957,18 @@ export default function App() {
           } catch {
             // Ignore preview failures and continue with direct runtime loading.
           }
+        }
+        // No start screen to explain it, so ask here before resuming an older-version save.
+        try {
+          preview ??= await loadUrlStartScreenPreview(gameUrl);
+        } catch {
+          preview = undefined;
+        }
+        if (cancelled) return;
+        if (preview?.saveStatus.status === 'older-version') {
+          setVersionGate({ gameUrl, title: preview.gameTitle, status: preview.saveStatus });
+          setGameBootPending(false);
+          return;
         }
         try {
           await loadGameFromUrl(gameUrl);
@@ -2163,7 +2206,6 @@ export default function App() {
 
   useEffect(() => {
     setBgmEnabledState(getBgmEnabled());
-    setAutoSaveEnabledState(getAutoSaveEnabled());
     setPlayerExperience(getPlayerExperienceSettings());
     setSaveSlots(getSaveSlotSummaries());
     setSaveNotice('');
@@ -2543,6 +2585,28 @@ export default function App() {
     .sort((a, b) => (Date.parse(b.savedAt ?? '') || 0) - (Date.parse(a.savedAt ?? '') || 0))[0];
   const chapterSaveSlot = saveSlotByKind.get('chapter');
   const choiceRecoveryPoint = getChoiceRecoverySummary();
+  // Backup import, step 2: the player picks which manual slot receives the file.
+  const renderImportPicker = () => importDraft && (
+      <div className="vs-import-picker" role="group" aria-label={t("백업을 넣을 칸")}>
+        <p>{t("백업 기록")}: <SaveSlotMeta slot={importDraft.summary} /></p>
+        {importDraft.summary.versionMismatch && (
+          <p className="vs-older-save-note">{olderVersionMessage(importDraft.summary.savedVersion)}</p>
+        )}
+        <ol>
+          {manualSaveSlots.map((slot, index) => (
+            <li key={slot.slot}>
+              <button type="button" onClick={() => void onConfirmImport(slot.slot as ManualSaveSlot)} disabled={saveBusy}>
+                <b>{uiLanguage === 'en' ? `Into slot ${index + 1}` : `${index + 1}번 칸에 넣기`}</b>
+                <small>{slot.exists
+                  ? (uiLanguage === 'en' ? `Replaces ${formatSaveSlotMeta(slot)}` : `${formatSaveSlotMeta(slot)} 기록을 덮어써요`)
+                  : t("빈 칸")}</small>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <button type="button" onClick={() => { setImportDraft(undefined); setSaveNotice(''); }}>{t("취소")}</button>
+      </div>
+  );
   const seenEndingTitles = seenEndingIdsInCurrentGame
     .map((endingId) => game?.endings?.[endingId]?.title ?? endingId)
     .filter((title, index, arr) => title.length > 0 && arr.indexOf(title) === index);
@@ -3073,21 +3137,22 @@ export default function App() {
     setSaveSlots(getSaveSlotSummaries());
   }, []);
 
-  const onToggleAutoSave = useCallback((enabled: boolean) => {
-    setAutoSaveEnabled(enabled);
-    setAutoSaveEnabledState(enabled);
-    setSaveNotice(enabled ? t("자동 저장을 켰습니다.") : t("자동 저장을 껐습니다. 챕터 시작점은 계속 보호됩니다."));
-    setSaveSlots(getSaveSlotSummaries());
-  }, []);
-
   const onManualSave = useCallback((slot: ManualSaveSlot = 'manual') => {
+    setSlotIntent(undefined);
     const result = saveCurrentProgress(slot);
-    setSaveNotice(result.exists ? t("현재 진행을 수동 저장했습니다.") : t("현재 장면에서는 저장할 수 없습니다."));
+    setSaveNotice(result.exists ? t("지금 장면을 저장했어요.") : t("이 장면에서는 저장할 수 없어요."));
+    refreshSaveSlots();
+  }, [refreshSaveSlots]);
+
+  const onDeleteSave = useCallback((slot: ManualSaveSlot) => {
+    setSlotIntent(undefined);
+    setSaveNotice(deleteSaveSlot(slot) ? t("저장을 지웠어요.") : t("저장을 지우지 못했어요."));
     refreshSaveSlots();
   }, [refreshSaveSlots]);
 
   const onLoadSave = useCallback(
     async (slot: SaveSlotKind | 'latest') => {
+      setSlotIntent(undefined);
       setSaveBusy(true);
       setSaveNotice(t("저장 데이터를 불러오는 중입니다."));
       try {
@@ -3150,6 +3215,20 @@ export default function App() {
     }
   }, [closeSettingsModal, refreshSaveSlots]);
 
+  // Game over: go straight back to the choice that caused it (its recoverToChoice target,
+  // else the latest choice), with the state from before that choice.
+  const onReturnToCausingChoice = useCallback(async () => {
+    if (getChoiceRecoverySummary().exists) {
+      await onLoadLastChoice();
+      return;
+    }
+    if (getSaveSlotSummaries().find((slot) => slot.slot === 'chapter')?.exists) {
+      await onRestartChapter();
+      return;
+    }
+    await onLoadSave('auto');
+  }, [onLoadLastChoice, onLoadSave, onRestartChapter]);
+
   const onExportSave = useCallback(() => {
     const backup = exportSaveBackup();
     if (!backup) {
@@ -3166,6 +3245,7 @@ export default function App() {
     refreshSaveSlots();
   }, [refreshSaveSlots]);
 
+  // Step 1: read and check the file. Nothing is written until the player picks a slot.
   const onImportSave = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -3173,14 +3253,32 @@ export default function App() {
       if (!file) {
         return;
       }
+      try {
+        const raw = await file.text();
+        setImportDraft({ raw, summary: readSaveBackup(raw) });
+        setSaveNotice(t("백업을 넣을 칸을 골라 주세요."));
+      } catch (error) {
+        setImportDraft(undefined);
+        setSaveNotice(error instanceof Error ? error.message : t("저장 파일을 불러오지 못했습니다."));
+      }
+    },
+    [],
+  );
+
+  // Step 2: write the backup into the chosen slot, then open it.
+  const onConfirmImport = useCallback(
+    async (slot: ManualSaveSlot) => {
+      if (!importDraft) return;
       setSaveBusy(true);
       try {
-        importSaveBackup(await file.text());
+        importSaveBackup(importDraft.raw, slot);
+        setImportDraft(undefined);
         refreshSaveSlots();
-        const loaded = await loadSaveSlot('manual');
+        const loaded = await loadSaveSlot(slot);
         setSaveNotice(loaded ? t("백업 저장을 불러왔습니다.") : t("백업을 저장했지만 현재 장면을 열지 못했습니다."));
         if (loaded) {
           setRecoveredFailedChoice(undefined);
+          setGameOverRecoveryOpen(false);
           closeSettingsModal(false);
         }
       } catch (error) {
@@ -3189,7 +3287,7 @@ export default function App() {
         setSaveBusy(false);
       }
     },
-    [closeSettingsModal, refreshSaveSlots],
+    [closeSettingsModal, importDraft, refreshSaveSlots],
   );
 
   useEffect(() => {
@@ -3776,6 +3874,8 @@ export default function App() {
               subtitle: preview.startScreen.subtitle,
               scene: mapStartSceneAssets(preview.startScreen.scene, (path) => resolveStartGateAssetUrl(path, baseUrl) ?? path),
               showLoadButton: preview.hasLoadableSave,
+              saveStatus: preview.saveStatus,
+              gameVersion: preview.gameVersion,
               legalNotices: preview.legalNotices,
             });
             return;
@@ -3894,10 +3994,22 @@ export default function App() {
                 className="start-gate-button start-gate-button-load"
                 onClick={() => void onStartGateLaunch(true)}
                 disabled={startGateLaunching}
+                aria-describedby={startGate.saveStatus?.slot ? 'vs-start-save' : undefined}
               >
-                <span className="start-gate-button-label">{DEFAULT_LOAD_BUTTON_TEXT}</span>
+                <span className="start-gate-button-label">
+                  {startGate.saveStatus?.status === 'older-version' ? t("그래도 이어하기") : DEFAULT_LOAD_BUTTON_TEXT}
+                </span>
                 <span className="start-gate-button-mark" aria-hidden="true">↗</span>
               </button>
+            )}
+            {startGate.showLoadButton && startGate.saveStatus?.slot && (
+              // What 이어하기 opens: the newest of auto, manual and chapter saves.
+              <div className="vs-start-save" id="vs-start-save">
+                {startGate.saveStatus.status === 'older-version' && (
+                  <p className="vs-older-save-note" role="note">{olderVersionMessage(startGate.saveStatus.slot.savedVersion)}</p>
+                )}
+                <SaveSlotMeta slot={startGate.saveStatus.slot} />
+              </div>
             )}
             <p className="start-gate-hint">{startGate.musicUrl && !startGateAudioPlaying ? t("화면을 눌러 음악과 함께 시작하세요") : t("당신의 선택을 기다리고 있습니다")}</p>
             {startGateError && <div className="start-gate-load-error" role="alert">
@@ -3906,6 +4018,7 @@ export default function App() {
           </div>
           <LegalNoticeList notices={startGate.legalNotices} className="start-gate-legal-notices" />
         </div>
+        <VersionLine className="vs-version-line vs-version-start" contentVersion={startGate.gameVersion} />
         <div className="start-scene-controls">
           <a href="/" aria-label={t("게임 목록으로")}>{t("← 게임 목록")}</a>
           <div>
@@ -3926,6 +4039,23 @@ export default function App() {
       </div>
     );
     if (!startGateLaunching || !game) return <>{null}{startGateView}</>;
+  }
+
+  if (versionGate && !game) {
+    const openGame = async (resumeFromSave: boolean) => {
+      const gate = versionGate;
+      setVersionGate(undefined);
+      setGameBootPending(true);
+      try {
+        await loadGameFromUrl(gate.gameUrl, { resumeFromSave });
+      } finally {
+        setGameBootPending(false);
+      }
+    };
+    return (
+      <VersionGate title={versionGate.title} slot={versionGate.status.slot} currentVersion={versionGate.status.currentVersion}
+        onRestart={() => void openGame(false)} onContinue={() => void openGame(true)} />
+    );
   }
 
   if (shouldShowGameRouteBoot(gameBootPending, Boolean(game))) {
@@ -4645,6 +4775,7 @@ export default function App() {
           {placeCaption && (
             <div className="place-caption" key={placeCaption.revision} role="status">{placeCaption.text}</div>
           )}
+          <VersionStamp contentVersion={game?.meta.version} />
         </div>
         <div className="hud-right">
           <button type="button" className="hud-action-button hud-map-button" aria-label={t("이야기 지도 열기")}
@@ -4981,30 +5112,32 @@ export default function App() {
             </div>
             ) : (
               <div key="system" className="settings-modal-body save-system-body" role="tabpanel" id="game-menu-panel-system" aria-labelledby="game-menu-tab-system">
-                <div className={`save-protection-hero ${autoSaveEnabled ? 'is-active' : 'is-paused'}`}>
+                <div className="save-protection-hero is-active">
                   <GameIcon name="bookmark" className="save-protection-symbol" />
-                  <div className="save-auto-status">
+                  <div className="save-auto-status vs-auto-slot">
                     <span>
-                      <small>{t("진행 기록")}</small>
-                      <b>{autoSaveEnabled ? t("이야기를 자동으로 기억합니다") : t("자동 저장이 꺼져 있습니다")}</b>
+                      <small>{t("자동 저장")}</small>
+                      <b>{t("한 장면 넘길 때마다 저장돼요")}</b>
                     </span>
-                    <strong>{formatSaveSlotMeta(autoRecoverySlot)}</strong>
+                    <SaveSlotMeta slot={autoRecoverySlot} emptyLabel={t("아직 저장된 장면이 없어요")} />
                   </div>
-                  <label className="save-autosave-row">
-                    <span>
-                      <b>{t("자동 저장")}</b>
-                      <small>{t("선택 전 진행을 보관")}</small>
-                    </span>
-                    <span className="settings-switch">
-                      <input
-                        type="checkbox"
-                        checked={autoSaveEnabled}
-                        onChange={(event) => onToggleAutoSave(event.target.checked)}
-                        disabled={saveBusy}
-                      />
-                      <span aria-hidden="true" />
-                    </span>
-                  </label>
+                  <button
+                    type="button"
+                    className="save-auto-load"
+                    onClick={() => {
+                      const intent = resolveSlotIntent('load', 'auto', autoRecoverySlot);
+                      if (intent) setSlotIntent(intent); else void onLoadSave('auto');
+                    }}
+                    disabled={!autoRecoverySlot?.exists || saveBusy}
+                    aria-label={t("자동 저장 불러오기")}
+                  >{t("불러오기")}</button>
+                  {slotIntent?.slot === 'auto' && slotIntent.kind === 'load-old' && (
+                    <div className="vs-slot-confirm" role="alertdialog" aria-label={t("이전 버전 저장 불러오기")}>
+                      <p>{olderVersionMessage(autoRecoverySlot?.savedVersion)}</p>
+                      <button type="button" className="is-primary" onClick={() => void onLoadSave('auto')} disabled={saveBusy}>{t("그래도 불러오기")}</button>
+                      <button type="button" onClick={() => setSlotIntent(undefined)}>{t("취소")}</button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="save-system-grid">
@@ -5017,27 +5150,61 @@ export default function App() {
                       </div>
                     </header>
                     <ol className="manual-save-slots">
-                      {manualSaveSlots.map((slot, index) => (
-                        <li key={slot.slot} className={slot.exists ? 'has-save' : undefined}>
-                          <span className="manual-save-slot-label">
-                            <b>{uiLanguage === 'en' ? `Slot ${index + 1}` : `${index + 1}번 칸`}</b>
-                            <small>{formatSaveSlotMeta(slot)}</small>
-                          </span>
-                          <button
-                            type="button"
-                            className="is-primary"
-                            onClick={() => onManualSave(slot.slot as ManualSaveSlot)}
-                            disabled={saveBusy || Boolean(gameOver)}
-                            aria-label={uiLanguage === 'en' ? `Save to slot ${index + 1}` : `${index + 1}번 칸에 저장`}
-                          >{slot.exists ? t("덮어쓰기") : t("저장")}</button>
-                          <button
-                            type="button"
-                            onClick={() => void onLoadSave(slot.slot)}
-                            disabled={!slot.exists || saveBusy}
-                            aria-label={uiLanguage === 'en' ? `Load slot ${index + 1}` : `${index + 1}번 칸 불러오기`}
-                          >{t("불러오기")}</button>
-                        </li>
-                      ))}
+                      {manualSaveSlots.map((slot, index) => {
+                        const slotName = uiLanguage === 'en' ? `Slot ${index + 1}` : `${index + 1}번 칸`;
+                        const intent = slotIntent?.slot === slot.slot ? slotIntent : undefined;
+                        return (
+                          <li key={slot.slot} className={slot.exists ? 'has-save' : undefined}>
+                            <span className="manual-save-slot-label">
+                              <b>{slotName}</b>
+                              <SaveSlotMeta slot={slot} />
+                            </span>
+                            <button
+                              type="button"
+                              className="is-primary"
+                              onClick={() => {
+                                const next = resolveSlotIntent('save', slot.slot, slot);
+                                if (next) setSlotIntent(next); else onManualSave(slot.slot as ManualSaveSlot);
+                              }}
+                              disabled={saveBusy || Boolean(gameOver)}
+                              aria-label={uiLanguage === 'en' ? `Save to slot ${index + 1}` : `${index + 1}번 칸에 저장`}
+                            >{slot.exists ? t("덮어쓰기") : t("저장")}</button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const next = resolveSlotIntent('load', slot.slot, slot);
+                                if (next) setSlotIntent(next); else void onLoadSave(slot.slot);
+                              }}
+                              disabled={!slot.exists || saveBusy}
+                              aria-label={uiLanguage === 'en' ? `Load slot ${index + 1}` : `${index + 1}번 칸 불러오기`}
+                            >{t("불러오기")}</button>
+                            <button
+                              type="button"
+                              className="vs-slot-delete"
+                              onClick={() => setSlotIntent(resolveSlotIntent('delete', slot.slot, slot))}
+                              disabled={!slot.exists || saveBusy}
+                              aria-label={uiLanguage === 'en' ? `Delete slot ${index + 1}` : `${index + 1}번 칸 지우기`}
+                            >{t("지우기")}</button>
+                            {intent && (
+                              <div className="vs-slot-confirm" role="alertdialog" aria-label={slotName}>
+                                {intent.kind === 'overwrite' && <>
+                                  <p>{uiLanguage === 'en' ? `Replace slot ${index + 1} with this scene?` : `${slotName}에 있던 기록을 지금 장면으로 바꿀까요?`}</p>
+                                  <button type="button" className="is-primary" onClick={() => onManualSave(slot.slot as ManualSaveSlot)}>{t("덮어쓰기")}</button>
+                                </>}
+                                {intent.kind === 'delete' && <>
+                                  <p>{uiLanguage === 'en' ? `Delete slot ${index + 1}? This can't be undone.` : `${slotName} 기록을 지울까요? 되돌릴 수 없어요.`}</p>
+                                  <button type="button" className="is-primary" onClick={() => onDeleteSave(slot.slot as ManualSaveSlot)}>{t("지우기")}</button>
+                                </>}
+                                {intent.kind === 'load-old' && <>
+                                  <p>{olderVersionMessage(slot.savedVersion)}</p>
+                                  <button type="button" className="is-primary" onClick={() => void onLoadSave(slot.slot)} disabled={saveBusy}>{t("그래도 불러오기")}</button>
+                                </>}
+                                <button type="button" onClick={() => setSlotIntent(undefined)}>{t("취소")}</button>
+                              </div>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ol>
                   </section>
 
@@ -5056,6 +5223,7 @@ export default function App() {
                       onClick={() => void onRestartChapter()}
                       disabled={!chapterSaveSlot?.exists || saveBusy}
                     >{t("챕터 처음으로 돌아가기")}</button>
+                    <p className="vs-checkpoint-hint">{t("선택지마다 그 직전으로 돌아갈 수 있어요. 이야기 지도에서 고르세요.")}</p>
                   </section>
 
                   <section className="save-system-section" data-save-kind="backup">
@@ -5078,6 +5246,7 @@ export default function App() {
                       onChange={(event) => void onImportSave(event)}
                       hidden
                     />
+                    {renderImportPicker()}
                   </section>
 
                   <section className="save-system-section player-experience-section">
@@ -5240,6 +5409,7 @@ export default function App() {
                 <p className="save-system-status" role="status" aria-live="polite">
                   {saveNotice || t("저장 데이터는 이 브라우저에 보관됩니다.")}
                 </p>
+                <VersionLine contentVersion={game?.meta.version} />
               </div>
             )}
             {caseFileTab === 'inventory' && inventoryDetailOpen && selectedInventoryEntry && (
@@ -5471,7 +5641,17 @@ export default function App() {
       {gameOver && !chapterLoading && !gameOverRecoveryOpen && !storyMapOpen && (
         <OutcomePrelude kind="gameOver" title={gameOver.title ? fillText(gameOver.title) : 'GAME OVER'}
           message={gameOver.message ? fillText(gameOver.message) : t("이곳에서 이야기가 멈췄습니다.")}
-          onContinue={() => setStoryMapOpen(true)} />
+          onContinue={() => void onReturnToCausingChoice()}
+          continueDisabled={saveBusy}
+          continueLabel={choiceRecoveryPoint.exists ? t("마지막 선택으로 돌아가기") : chapterSaveSlot?.exists ? t("이 장의 처음으로") : t("마지막 저장으로")}
+          continueDetail={choiceRecoveryPoint.failedChoice?.value
+            ? (uiLanguage === 'en' ? `You chose “${choiceRecoveryPoint.failedChoice.value}”` : `“${choiceRecoveryPoint.failedChoice.value}”를 고른 순간`)
+            : undefined}
+          footnote={choiceRecoveryPoint.exists ? t("선택 직전 상태 그대로 돌아갑니다. 다른 길을 골라 보세요.") : undefined}
+          secondary={<>
+            <button type="button" onClick={() => setStoryMapOpen(true)} disabled={saveBusy}>{t("이야기 지도")}</button>
+            <button type="button" onClick={() => setGameOverRecoveryOpen(true)} disabled={saveBusy}>{t("다른 저장에서 이어하기")}</button>
+          </>} />
       )}
       {isFinished && !endingCreditsOpen && !storyMapOpen && (
         <OutcomePrelude kind="ending" title={endingTitle} message={endingMessage}
@@ -5497,10 +5677,10 @@ export default function App() {
             <div className="game-over-primary-actions">
               <button
                 type="button"
-                onClick={() => void (choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto'))}
-                disabled={(!choiceRecoveryPoint.exists && !autoRecoverySlot?.exists) || saveBusy}
+                onClick={() => void onReturnToCausingChoice()}
+                disabled={(!choiceRecoveryPoint.exists && !autoRecoverySlot?.exists && !chapterSaveSlot?.exists) || saveBusy}
               >
-                <span>{choiceRecoveryPoint.exists ? t("죽음의 원인 선택으로") : t("자동 복구점으로")}</span>
+                <span>{choiceRecoveryPoint.exists ? t("마지막 선택으로 돌아가기") : t("자동 저장으로")}</span>
                 <small>{formatSaveSlotMeta(choiceRecoveryPoint.exists ? choiceRecoveryPoint : autoRecoverySlot)}</small>
               </button>
               <button
@@ -5534,6 +5714,7 @@ export default function App() {
               onChange={(event) => void onImportSave(event)}
               hidden
             />
+            {renderImportPicker()}
             <p className="game-over-status" role="status" aria-live="polite">
               {saveBusy ? t("복구 중...") : saveNotice}
             </p>
@@ -5655,9 +5836,21 @@ export default function App() {
     {storyMapOpen && <Suspense fallback={null}><StoryMap
       outcome={gameOver?.title ?? (isFinished ? endingTitle : undefined)} ending={isFinished}
       onClose={() => setStoryMapOpen(false)}
-      onReplayed={() => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(undefined); refreshSaveSlots(); }}
+      onReplayed={(failedChoice) => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(failedChoice); refreshSaveSlots(); }}
       onRecords={() => { setStoryMapOpen(false); if (gameOver) setGameOverRecoveryOpen(true);
         else if (isFinished) setEndingCreditsOpen(true); else { setCaseFileTab('system'); setSettingsOpen(true); } }} /></Suspense>}
+    <UpdateBanner buildChanged={updateWatch.buildChanged} contentChange={updateWatch.contentChange}
+      idle={updateNoticeIdle && !startGate} inGame={Boolean(game)} busy={updateBusy}
+      onReloadNow={() => reloadForUpdate('continue')}
+      onRestartNewVersion={() => reloadForUpdate('fresh')}
+      onContinueNewVersion={() => reloadForUpdate('continue')}
+      onDismissBuild={updateWatch.dismissBuild} onDismissContent={updateWatch.dismissContent} />
+    {resumeNotice && game && !chapterLoading && (
+      <div className="vs-resume-notice" role="status" onClick={(event) => event.stopPropagation()}>
+        <p>{t(resumeNotice)}</p>
+        <button type="button" onClick={() => useVNStore.getState().setResumeNotice(undefined)}>{t("확인")}</button>
+      </div>
+    )}
     {startGateView}
     </>
   );
