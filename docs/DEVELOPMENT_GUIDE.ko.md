@@ -1581,6 +1581,7 @@ public/game-list/my-story/
 ## 14) 문서 변경 로그
 
 - 2026-11-13: 인물 몸짓 프리셋 22종(`emote` 액션, `say`·`choice`·`input`의 `motion`, 인물별 `emotionMotions`)을 추가했습니다(9-4-5). 기존 YAML·저장은 그대로 동작합니다.
+- 2026-11-13: 내린 작품의 주소를 살려 두도록 `vercel.json`에 301 리다이렉트를 넣고, 그 밖의 없는 주소를 위한 `404.html`(`scripts/generate-not-found.mjs`)을 빌드에 추가했습니다. 작품을 내릴 때는 `/game-list/<id>`와 `/game-list/<id>/:path*` 두 줄을 리다이렉트에 추가하고, 대체작이 있으면 그 작품으로, 없으면 `/`로 보냅니다. 검색 결과에 남은 주소가 빈 404로 끝나지 않게 하려는 것입니다.
 - 2026-11-13: 인물 동선 `move`(approach·lunge·retreat·flinch·reset)와 시간·장소 표시 `place`를 추가했습니다.
 - 2026-11-13: `say.channel`에 `card`(전체 화면 자막 카드)와 `message`(휴대폰 말풍선, `say.side`)를 추가하고 `say.erase` 지우기 연출을 넣었습니다. 사용자 원작 「ERASE」, 「8비트 심장」, 「튜토리얼」을 추가했습니다.
 - 2026-11-13: 정답 없는 자유 입력(`input` without `correct`), `{{변수}}`·`{{변수|조사}}` 치환과 인물 `name`, 수동 저장 칸 3개, 서재 카드의 이어 읽기·결말 발견 표시를 추가했습니다. 무원은 시작할 때 주인공 이름을 받습니다. 기존 YAML·저장은 그대로 동작합니다.
