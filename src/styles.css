@@ -3723,7 +3723,8 @@ textarea,
   pointer-events: auto;
 }
 
-.dialog-auto-button.is-active {
+.dialog-auto-button.is-active,
+.dialog-skip-button.is-active {
   border-color: color-mix(in srgb, var(--ui-speaker-color) 74%, transparent);
   color: var(--ui-speaker-color);
   background: color-mix(in srgb, var(--ui-speaker-color) 14%, var(--ui-choice-bg));

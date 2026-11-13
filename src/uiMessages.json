@@ -211,6 +211,7 @@
   "이 게임이 선언한 별도 법적 고지는 없습니다.": "This game declares no additional legal notices.",
   "YAVN 라이선스 문서": "YAVN license document",
   "YAVN 제3자 고지": "YAVN third-party notices",
+  "이용 통계 설정": "Usage statistics settings",
   "SUITE 글꼴 라이선스": "SUITE font license",
   "Live2D Framework 조건": "Live2D Framework terms",
   "Live2D 재배포 파일": "Live2D redistributable files",
@@ -310,5 +311,19 @@
   "앞선 지점으로 돌아감": "Returns to an earlier point",
   "다음 지점으로 진행": "Continues to the next point",
   "죽음": "Death",
-  ", 죽음의 원인 선택, 게임 오버 경로": ", decisive choice, game-over path"
+  ", 죽음의 원인 선택, 게임 오버 경로": ", decisive choice, game-over path",
+  "잠시 멈춤": "PAUSED",
+  "수집 현황": "COLLECTION PROGRESS",
+  "진행 기록": "YOUR PROGRESS",
+  "직접 저장": "PLAYER SLOT",
+  "체크포인트": "CHECKPOINT",
+  "데이터 옮기기": "PORTABLE DATA",
+  "플레이 설정": "PLAYER EXPERIENCE",
+  "권리·출처": "RIGHTS & ATTRIBUTION",
+  "엔딩 수집": "ENDING PROGRESS",
+  "만든 사람": "CREATED BY",
+  "엔진": "POWERED BY",
+  "화면에서 살펴볼 곳을 누르세요": "Tap a marked spot in the scene to look closer",
+  "건너뛰기": "Skip",
+  "읽은 대사를 빠르게 넘기고 처음 보는 대사나 선택지에서 멈춥니다": "Fast-forward lines you have read; stops at new lines and choices"
 }

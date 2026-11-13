@@ -75,3 +75,9 @@ Use `translations.en.summary` in launcher.yaml for an English catalog summary. T
 The library includes separate English opening editions for Deokman chapter one and Conan’s travel prologue. Filter by English to find them. English-only stories open with English controls, including from the Korean library. Both end at the translated boundary and keep separate saves from the Korean full stories.
 
 Exact Korean-to-English text mappings live in `content/localizations`. Generated chapters retain scene IDs, choice logic, rewards, portraits and delivery cues. See the [dialogue and localization guide](DRAMA_LOCALIZATION.md) for scope and editing rules. No additional YAML syntax is required.
+
+## Player conveniences (2026-11-13)
+
+- **Skip read text**: the dialogue box's Skip button fast-forwards lines already read in this game and stops at unread lines, choices, inputs, videos, game overs and endings. Read history is kept per game in the browser.
+- **Faster first scene**: chapter loading waits only for assets of the start scene and scenes up to two jumps away; the rest keep loading after the scene starts.
+- Exploration choices show a hint, listed options are numbered in visible order, in-game text is at least 12px, and the usage-statistics prompt no longer hides behind the title screen or covers the dialogue box.

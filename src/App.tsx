@@ -73,6 +73,7 @@ import {
   revealVideoSkipGuide,
   setBgmEnabled,
   setAutoSaveEnabled,
+  setSkipReadActive,
   setInventoryUiSettings,
   setPlayerAutoPlayPaused,
   setScenePresentationPaused,
@@ -1481,7 +1482,26 @@ const StickerView = memo(function StickerView({
   );
 });
 
+// The shared usage-analytics widget floats a preference button that would cover the dialogue
+// box during play. The game hides it with CSS and reopens the same choice from settings.
+function useUsageChoiceControl() {
+  const [available, setAvailable] = useState(
+    () => typeof document !== 'undefined' && Boolean(document.getElementById('movv-usage-choice')),
+  );
+  useEffect(() => {
+    const sync = () => setAvailable(Boolean(document.getElementById('movv-usage-choice')));
+    sync();
+    window.addEventListener('movv-usage-ready', sync);
+    return () => window.removeEventListener('movv-usage-ready', sync);
+  }, []);
+  const open = useCallback(() => {
+    document.querySelector<HTMLButtonElement>('#movv-usage-choice .usage-preference')?.click();
+  }, []);
+  return { available, open };
+}
+
 export default function App() {
+  const usageChoice = useUsageChoiceControl();
   useEffect(() => { document.documentElement.lang = uiLanguage; }, []);
   const {
     baseUrl,
@@ -1501,6 +1521,7 @@ export default function App() {
     dialogChannel,
     dialogDelivery,
     dialogUiHidden,
+    skipReadActive,
     effect,
     error,
     busy,
@@ -1538,6 +1559,7 @@ export default function App() {
     dialogChannel: state.dialog.channel,
     dialogDelivery: state.dialog.delivery,
     dialogUiHidden: state.dialogUiHidden,
+    skipReadActive: state.skipReadActive,
     effect: state.effect,
     error: state.error,
     busy: state.busy,
@@ -4258,7 +4280,12 @@ export default function App() {
     );
   }
 
-  const renderChoiceOption = (option: typeof choiceGate.options[number], index: number, spatial = false) => {
+  const renderChoiceOption = (
+    option: typeof choiceGate.options[number],
+    index: number,
+    spatial = false,
+    displayNumber = index + 1,
+  ) => {
     const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
     const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
     const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
@@ -4299,7 +4326,7 @@ export default function App() {
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
-            {String(index + 1).padStart(2, '0')}
+            {String(displayNumber).padStart(2, '0')}
           </span>
           <span className="choice-gate-option-text">{option.text}</span>
           <GameIcon name="arrow" className="choice-gate-option-mark" />
@@ -4494,7 +4521,7 @@ export default function App() {
             onPointerLeave={onVideoPointerUp}
           >
             <div className="video-skip-guide-head">
-              <span className="video-skip-guide-title">HOLD TO SKIP</span>
+              <span className="video-skip-guide-title">{t("길게 눌러 건너뛰기")}</span>
               <b>{Math.floor(videoCutscene.skipProgress * 100)}%</b>
             </div>
             <p className="video-skip-guide-desc">{t("길게 눌러 건너뛰기")}</p>
@@ -4599,7 +4626,7 @@ export default function App() {
           >
             <header className="settings-modal-header">
               <div className="settings-modal-heading">
-                <p>PAUSED <span>· {game?.meta.title}</span></p>
+                <p>{t("잠시 멈춤")} <span>· {game?.meta.title}</span></p>
                 <h2>{caseFileTab === 'log' ? t("이야기 기록") : caseFileTab === 'inventory' ? t("소지품") : t("저장과 설정")}</h2>
               </div>
               <button
@@ -4740,7 +4767,7 @@ export default function App() {
                 </div>
                 <div className="inventory-overview" aria-label={uiLanguage === 'en' ? `Collected clues ${ownedInventoryCount}/${totalInventoryCount}` : `단서 수집 ${ownedInventoryCount}/${totalInventoryCount}`}>
                   <div>
-                    <span>COLLECTION PROGRESS</span>
+                    <span>{t("수집 현황")}</span>
                     <b>{ownedInventoryCount}<small> / {totalInventoryCount}</small></b>
                   </div>
                   <progress value={ownedInventoryCount} max={Math.max(totalInventoryCount, 1)} />
@@ -4853,7 +4880,7 @@ export default function App() {
                   <GameIcon name="bookmark" className="save-protection-symbol" />
                   <div className="save-auto-status">
                     <span>
-                      <small>YOUR PROGRESS</small>
+                      <small>{t("진행 기록")}</small>
                       <b>{autoSaveEnabled ? t("이야기를 자동으로 기억합니다") : t("자동 저장이 꺼져 있습니다")}</b>
                     </span>
                     <strong>{formatSaveSlotMeta(autoRecoverySlot)}</strong>
@@ -4880,7 +4907,7 @@ export default function App() {
                     <span className="save-section-index" aria-hidden="true">01</span>
                     <header>
                       <div>
-                        <small>PLAYER SLOT</small>
+                        <small>{t("직접 저장")}</small>
                         <h3>{t("수동 저장")}</h3>
                       </div>
                       <span>{formatSaveSlotMeta(manualSaveSlot)}</span>
@@ -4899,7 +4926,7 @@ export default function App() {
                     <span className="save-section-index" aria-hidden="true">02</span>
                     <header>
                       <div>
-                        <small>CHECKPOINT</small>
+                        <small>{t("체크포인트")}</small>
                         <h3>{t("챕터 시작점")}</h3>
                       </div>
                       <span>{formatSaveSlotMeta(chapterSaveSlot)}</span>
@@ -4916,7 +4943,7 @@ export default function App() {
                     <span className="save-section-index" aria-hidden="true">03</span>
                     <header>
                       <div>
-                        <small>PORTABLE DATA</small>
+                        <small>{t("데이터 옮기기")}</small>
                         <h3>{t("백업 파일")}</h3>
                       </div>
                       <span>{t("기기 이동용")}</span>
@@ -4938,7 +4965,7 @@ export default function App() {
                     <span className="save-section-index" aria-hidden="true">04</span>
                     <header>
                       <div>
-                        <small>PLAYER EXPERIENCE</small>
+                        <small>{t("플레이 설정")}</small>
                         <h3>{t("플레이 감각")}</h3>
                       </div>
                       <span>{t("게임별로 자동 저장")}</span>
@@ -5057,7 +5084,7 @@ export default function App() {
                     <span className="save-section-index" aria-hidden="true">05</span>
                     <header>
                       <div>
-                        <small>RIGHTS &amp; ATTRIBUTION</small>
+                        <small>{t("권리·출처")}</small>
                         <h3>{t("법적 고지")}</h3>
                       </div>
                       <span>{gameLegalNotices.length > 0 ? uiLanguage === 'en' ? `${gameLegalNotices.length} notices` : `${gameLegalNotices.length}건` : t("게임별 고지 없음")}</span>
@@ -5073,6 +5100,9 @@ export default function App() {
                       <a href={easyCl2dNoticeUrl} target="_blank" rel="noreferrer">easy-cl2d NOTICE</a>
                       <a href={easyCl2dLicenseUrl} target="_blank" rel="noreferrer">{t("Live2D Framework 조건")}</a>
                       <a href={live2dRedistributableFilesUrl} target="_blank" rel="noreferrer">{t("Live2D 재배포 파일")}</a>
+                      {usageChoice.available && (
+                        <button type="button" className="legal-notice-usage" onClick={usageChoice.open}>{t("이용 통계 설정")}</button>
+                      )}
                     </nav>
                   </section>
                 </div>
@@ -5172,6 +5202,19 @@ export default function App() {
             </button>
             <button
               type="button"
+              className={`dialog-toggle-button dialog-skip-button${skipReadActive ? ' is-active' : ''}`}
+              aria-pressed={skipReadActive}
+              title={t("읽은 대사를 빠르게 넘기고 처음 보는 대사나 선택지에서 멈춥니다")}
+              onClick={(event) => {
+                event.stopPropagation();
+                queuedManualAdvanceAtRef.current = null;
+                setSkipReadActive(!skipReadActive);
+              }}
+            >
+              <GameIcon name="skip" /><span>{t("건너뛰기")}</span>
+            </button>
+            <button
+              type="button"
               className="dialog-toggle-button"
               onClick={(event) => {
                 event.stopPropagation();
@@ -5254,12 +5297,19 @@ export default function App() {
                   </div>
                 </div>
               )}
+              {choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
+                <p className="choice-gate-explore-hint">{t("화면에서 살펴볼 곳을 누르세요")}</p>
+              )}
               <div
                 className="choice-gate-options"
                 data-choice-count={choiceGate.options.filter(option => choiceGate.presentation !== 'explore' || !option.at).length}
               >
-                {choiceGate.options.map((option, index) =>
-                  choiceGate.presentation === 'explore' && option.at ? null : renderChoiceOption(option, index))}
+                {/* Number listed options by their visible position: spatial targets and options
+                    already explored are not in this list, so original indexes would skip numbers. */}
+                {choiceGate.options
+                  .map((option, index) => ({ option, index }))
+                  .filter(({ option }) => !(choiceGate.presentation === 'explore' && option.at))
+                  .map(({ option, index }, position) => renderChoiceOption(option, index, false, position + 1))}
               </div>
             </div>
           )}
@@ -5385,7 +5435,7 @@ export default function App() {
                   <p className="ending-credits-message">{endingMessage}</p>
                   {totalEndingCount > 0 && (
                     <section className="ending-credits-section ending-progress-card">
-                      <h3>ENDING PROGRESS</h3>
+                      <h3>{t("엔딩 수집")}</h3>
                       <p className="ending-progress-value">
                         {seenEndingCount}/{totalEndingCount} ({endingCompletionPercent}%) ·{' '}
                         {endingCollectionDone ? t("게임 완료") : t("진행 중")}
@@ -5400,7 +5450,7 @@ export default function App() {
                   )}
 
                   <section className="ending-credits-section">
-                    <h3>CREATED BY</h3>
+                    <h3>{t("만든 사람")}</h3>
                     {hasAuthorCredit ? (
                       <>
                         {authorCredit.name && <p className="ending-credits-line ending-credits-name">{authorCredit.name}</p>}
@@ -5424,13 +5474,13 @@ export default function App() {
 
                   {gameLegalNotices.length > 0 && (
                     <section className="ending-credits-section ending-legal-notices">
-                      <h3>LEGAL NOTICES</h3>
+                      <h3>{t("법적 고지")}</h3>
                       <LegalNoticeList notices={gameLegalNotices} />
                     </section>
                   )}
 
                   <section className="ending-credits-section">
-                    <h3>POWERED BY</h3>
+                    <h3>{t("엔진")}</h3>
                     <p className="ending-credits-line ending-credits-name">YAVN (야븐)</p>
                     <p className="ending-credits-line">Type your story. Play your novel.</p>
                     <p className="ending-credits-line">
