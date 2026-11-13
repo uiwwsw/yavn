@@ -10,7 +10,7 @@ Make choice-driven browser games with YAML scenes, dialogue, branching choices, 
 - Visual novel presentation, character direction, music and cinematic effects.
 - Story RPG progression through choices, state and inventory.
 - Chapter story maps, discovered paths and replay checkpoints.
-- Local autosave, manual saves and portable save backups.
+- Always-on autosave, three manual slots with scene previews, portable save backups, and a notice when a new version is deployed.
 - Korean and English launcher/engine controls; catalog language labels, search and filters.
 - Browser demos with per-game public search pages and language metadata.
 

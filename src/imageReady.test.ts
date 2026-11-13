@@ -3,6 +3,7 @@ import {
   isImageSourceReady,
   markImageSourceReady,
   waitForImageReady,
+  waitForImageReadyWhenVisible,
 } from './imageReady';
 
 class FakeImage extends EventTarget {
@@ -95,5 +96,32 @@ describe('waitForImageReady', () => {
     const manuallyPreparedSource = '/test-assets/manually-prepared-character.webp';
     markImageSourceReady(manuallyPreparedSource);
     expect(isImageSourceReady(manuallyPreparedSource)).toBe(true);
+  });
+});
+
+describe('waitForImageReadyWhenVisible', () => {
+  it('does not report a timeout that happened while the tab was hidden; it retries once visible', async () => {
+    const image = new FakeImage();
+    image.src = '/hidden-tab.png';
+    image.decode.mockResolvedValue();
+    let hidden = true;
+    const whenVisible = vi.fn(async () => {
+      hidden = false;
+      image.complete = true;
+      image.naturalWidth = 1600;
+      setTimeout(() => image.dispatchEvent(new Event('load')), 0);
+    });
+    const status = await waitForImageReadyWhenVisible(image as unknown as HTMLImageElement, 20, () => hidden, whenVisible);
+    expect(whenVisible).toHaveBeenCalledOnce();
+    expect(status).toBe('ready');
+  });
+
+  it('still reports a timeout while the tab is visible', async () => {
+    const image = new FakeImage();
+    image.src = '/never.png';
+    const whenVisible = vi.fn(async () => {});
+    const status = await waitForImageReadyWhenVisible(image as unknown as HTMLImageElement, 20, () => false, whenVisible);
+    expect(status).toBe('timeout');
+    expect(whenVisible).not.toHaveBeenCalled();
   });
 });

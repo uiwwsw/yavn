@@ -12,6 +12,10 @@ export type StoryMapVisit = { id: string; replayable: boolean };
 export type StoryMapData = {
   chapters: StoryMapChapter[]; visits: StoryMapVisit[]; travelled: string[];
   choices?: Record<string, string[]>; current?: string; persistent: boolean;
+  /** After a death: the choice node that caused it, where the player can try again. */
+  recovery?: string;
+  /** Some exploration was recorded while an older authored version was live. */
+  staleVersion?: string;
 };
 export const storyNodeId = (chapter: string, scene: string, action: number) => JSON.stringify([chapter, scene, action]);
 export const storyEdgeId = (from: string, to: string) => JSON.stringify([from, to]);

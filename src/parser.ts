@@ -13,7 +13,7 @@ type ConfigYamlData = {
   seo?: GameData['meta']['seo'];
   legalNotices?: GameData['meta']['legalNotices'];
   textSpeed: number;
-  autoSave: boolean;
+  autoSave?: boolean;
   clickToInstant: boolean;
   endings?: GameData['endings'];
   endingRules?: GameData['endingRules'];

@@ -1,14 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   exportSaveBackup,
-  getAutoSaveEnabled,
   getChoiceRecoverySummary,
   getSaveSlotSummaries,
   importSaveBackup,
   loadUrlStartScreenPreview,
   restorePresentationToCursor,
   saveCurrentProgress,
-  setAutoSaveEnabled,
   submitChoiceOption,
 } from './engine';
 import { useVNStore } from './store';
@@ -312,47 +310,22 @@ describe('save system', () => {
     expect(useVNStore.getState().background).toBe('/bg/saved-room.webp');
   });
 
-  it('persists the player autosave override and saves immediately when enabled', () => {
-    setAutoSaveEnabled(false);
-    expect(getAutoSaveEnabled()).toBe(false);
-
-    setAutoSaveEnabled(true);
-
-    expect(getAutoSaveEnabled()).toBe(true);
-    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'auto')?.exists).toBe(true);
-  });
-
-  it('keeps disabled-autosave choice recovery in memory without leaving a stale persistent point', () => {
-    localStorage.setItem(
-      'vn-engine-autosave:choice-recovery',
-      JSON.stringify({
-        gameTitle: 'Save Test',
-        chapterIndex: 0,
-        sceneId: 'intro',
-        actionIndex: 9,
-      }),
-    );
-    setAutoSaveEnabled(false);
-
-    expect(localStorage.getItem('vn-engine-autosave:choice-recovery')).toBeNull();
-
-    useVNStore.getState().setCursor('intro', 3);
+  it('always autosaves on cursor moves and ignores an old disabled-autosave setting', () => {
+    localStorage.setItem('vn-engine-settings:vn-engine-autosave', JSON.stringify({ autoSaveEnabled: false }));
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().setChoiceGate({
       active: true,
-      key: 'session-only',
+      key: 'always-on',
       prompt: 'Choose',
       options: [{ text: 'Continue' }],
     });
     submitChoiceOption(0);
 
-    expect(getChoiceRecoverySummary()).toMatchObject({
-      exists: true,
+    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'auto')?.exists).toBe(true);
+    expect(JSON.parse(localStorage.getItem('vn-engine-autosave:choice-recovery') ?? '{}')).toMatchObject({
       sceneId: 'intro',
-      actionIndex: 3,
+      actionIndex: 0,
     });
-    expect(getChoiceRecoverySummary().failedChoice).toBeUndefined();
-    expect(localStorage.getItem('vn-engine-autosave:choice-recovery')).toBeNull();
   });
 
   it('rejects a backup from a different game', () => {
@@ -369,7 +342,7 @@ describe('save system', () => {
     expect(() => importSaveBackup(foreign)).toThrow('현재 게임과 일치');
   });
 
-  it('rejects a backup from a different authored game version', () => {
+  it('accepts a backup from an older authored version and flags it', () => {
     const stale = JSON.stringify({
       engine: 'YAVN',
       progress: {
@@ -381,10 +354,13 @@ describe('save system', () => {
       },
     });
 
-    expect(() => importSaveBackup(stale)).toThrow('현재 게임과 일치');
+    const imported = importSaveBackup(stale, 'manual3');
+    expect(imported).toMatchObject({ slot: 'manual3', exists: true, versionMismatch: true, savedVersion: '0.9.0' });
+    expect(localStorage.getItem('vn-engine-autosave:manual-3')).not.toBeNull();
+    expect(localStorage.getItem('vn-engine-autosave:manual')).toBeNull();
   });
 
-  it('does not expose a stale-version browser slot as loadable', () => {
+  it('shows a stale-version browser slot flagged instead of hiding it', () => {
     localStorage.setItem('vn-engine-autosave:manual', JSON.stringify({
       gameTitle: 'Save Test',
       gameVersion: '0.9.0',
@@ -393,10 +369,14 @@ describe('save system', () => {
       actionIndex: 0,
     }));
 
-    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')?.exists).toBe(false);
+    expect(getSaveSlotSummaries().find((slot) => slot.slot === 'manual')).toMatchObject({
+      exists: true,
+      versionMismatch: true,
+      savedVersion: '0.9.0',
+    });
   });
 
-  it('bypasses HTTP caches for YAML previews and hides stale-version saves', async () => {
+  it('bypasses HTTP caches for YAML previews and reports stale-version saves', async () => {
     const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
     const originalFetch = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
     Object.defineProperty(globalThis, 'window', {
@@ -428,7 +408,8 @@ describe('save system', () => {
     try {
       const preview = await loadUrlStartScreenPreview('/game-list/save-test/');
 
-      expect(preview.hasLoadableSave).toBe(false);
+      expect(preview.hasLoadableSave).toBe(true);
+      expect(preview.saveStatus).toMatchObject({ status: 'older-version', currentVersion: '1.0.0', slot: { savedVersion: '0.9.0' } });
       expect(fetchMock).toHaveBeenCalledWith(
         'https://example.test/game-list/save-test/config.yaml',
         { cache: 'no-store' },
@@ -441,11 +422,7 @@ describe('save system', () => {
     }
   });
 
-  it('enters game over without overwriting the last valid autosave', () => {
-    setAutoSaveEnabled(true);
-    const savedBeforeFailure = JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}') as {
-      actionIndex?: number;
-    };
+  it('points the autosave at the causing choice after a direct death', () => {
     useVNStore.getState().setCursor('intro', 7);
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().setChoiceGate({
@@ -466,7 +443,12 @@ describe('save system', () => {
     expect(useVNStore.getState().gameOver).toEqual({ title: 'Failed', message: 'Load a save.' });
     expect(useVNStore.getState().isFinished).toBe(false);
     expect(useVNStore.getState().routeVars.failed).toBe(true);
-    expect(JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}')).toMatchObject(savedBeforeFailure);
+    // 이어하기 after a death opens the choice again, with the pre-choice variables.
+    expect(JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}')).toMatchObject({
+      sceneId: 'intro',
+      actionIndex: 7,
+      routeVars: {},
+    });
     expect(getChoiceRecoverySummary()).toMatchObject({
       exists: true,
       sceneId: 'intro',

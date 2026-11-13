@@ -80,6 +80,8 @@ type VNState = {
   storyLog: StoryLogEntry[];
   resolvedEndingId?: string;
   gameOver?: GameOverDefinition;
+  /** Set when a save could not resume at its exact spot (an older story version). */
+  resumeNotice?: string;
   inventory: Record<string, boolean>;
   busy: boolean;
   waitingInput: boolean;
@@ -124,6 +126,7 @@ type VNState = {
   clearStoryLog: () => void;
   setResolvedEndingId: (endingId?: string) => void;
   setGameOver: (gameOver?: GameOverDefinition) => void;
+  setResumeNotice: (notice?: string) => void;
   setBusy: (busy: boolean) => void;
   setWaitingInput: (waiting: boolean) => void;
   setFinished: (finished: boolean) => void;
@@ -302,6 +305,7 @@ export const useVNStore = create<VNState>((set) => ({
     const revision = (state.characterStances[id]?.revision ?? 0) + 1;
     return { characterStances: { ...state.characterStances, [id]: { ...stance, revision } } };
   }),
+  setResumeNotice: (resumeNotice) => set({ resumeNotice }),
   setPlaceCaption: (text) => set((state) => ({
     placeCaption: text ? { text, revision: (state.placeCaption?.revision ?? 0) + 1 } : undefined,
   })),
@@ -466,5 +470,6 @@ export const useVNStore = create<VNState>((set) => ({
       chapterLoadingProgress: 0,
       chapterLoadingMessage: undefined,
       uiTemplate: DEFAULT_UI_TEMPLATE,
+      resumeNotice: undefined,
     })),
 }));

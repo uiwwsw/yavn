@@ -9,18 +9,26 @@ const localizedApp = readSource('./App.tsx');
 const appSource = localizedApp.replace(/([\w-]+)=\{t\("([^"]+)"\)\}/g, '$1="$2"').replace(/\{t\("([^"]+)"\)\}/g, '$1').replace(/t\("([^"]+)"\)/g, "'$1'");
 const engineSource = readSource('./engine.ts');
 const styles = readSource('./styles.css');
+// The in-game menu (HUD, log, bag, play settings) is styled only in gameInterface.css.
+const interfaceStyles = readSource('./gameInterface.css');
 
 describe('save and game over recovery UI', () => {
   it('separates background autosave recovery from explicit save actions', () => {
     expect(appSource).toContain('<p className="game-over-kicker">다시 이어갈 이야기</p>');
-    expect(appSource).toContain("choiceRecoveryPoint.exists ? onLoadLastChoice() : onLoadSave('auto')");
+    // Game over goes straight back to the causing choice, from the prelude and the panel.
+    expect(appSource).toContain('onContinue={() => void onReturnToCausingChoice()}');
+    expect(appSource).toContain('onClick={() => void onReturnToCausingChoice()}');
+    expect(appSource).toContain("'마지막 선택으로 돌아가기'");
     // Three manual slots: each loads itself, and the game-over shortcut loads the newest one.
     expect(appSource).toContain('onClick={() => void onLoadSave(slot.slot)}');
     expect(appSource).toContain('onClick={() => manualSaveSlot && void onLoadSave(manualSaveSlot.slot)}');
     expect(appSource).toContain('onClick={() => void onRestartChapter()}');
-    expect(appSource).toContain('onChange={(event) => onToggleAutoSave(event.target.checked)}');
+    // Autosave is always on: no toggle, but the auto slot can be loaded explicitly.
+    expect(appSource).not.toContain('onToggleAutoSave');
+    expect(appSource).not.toContain('setAutoSaveEnabled');
+    expect(appSource).toContain("void onLoadSave('auto')");
     expect(appSource).toContain('onChange={(event) => void onImportSave(event)}');
-    expect(appSource).toContain('<small>선택 전 진행을 보관</small>');
+    expect(appSource).toContain('onClick={() => void onConfirmImport(slot.slot as ManualSaveSlot)}');
     expect(appSource).not.toContain("onClick={() => void onLoadSave('latest')}");
     expect(appSource).not.toContain("(['auto', 'manual', 'chapter'] as const)");
     expect(engineSource).toContain("const CHOICE_RECOVERY_SUFFIX = ':choice-recovery'");
@@ -37,7 +45,7 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain('setRecoveredFailedChoice(recoveryPoint.failedChoice)');
     expect(appSource).toContain("' choice-gate-option-previous-game-over'");
     expect(appSource).toContain('<b>원인 선택</b>');
-    expect(appSource).toContain('죽음의 원인 선택으로');
+    expect(appSource).toContain('“${choiceRecoveryPoint.failedChoice.value}”를 고른 순간');
     expect(appSource).toContain('<div className="game-over-cause" aria-label="결과를 만든 선택">');
     expect(appSource).toContain('{choiceRecoveryPoint.failedChoice.value}');
     expect(appSource).toContain('<em>GAME OVER</em>');
@@ -68,11 +76,11 @@ describe('save and game over recovery UI', () => {
     expect(appSource).not.toContain('inventory-detail-actions');
     expect(appSource).toContain('className="inventory-collection-header"');
     expect(appSource).toContain('className="inventory-slot-index"');
-    expect(styles).toMatch(/@media \(max-width: 340px\)[\s\S]*?\.inventory-grid\s*\{[\s\S]*?repeat\(2,/);
-    expect(styles).toMatch(
+    expect(interfaceStyles).toMatch(/@media \(max-width: 340px\)[\s\S]*?\.inventory-grid\s*\{[\s\S]*?repeat\(2,/);
+    expect(interfaceStyles).toMatch(
       /\.inventory-search-field input::placeholder\s*\{[\s\S]*?color: var\(--ui-input-placeholder\);/,
     );
-    expect(styles).toMatch(
+    expect(interfaceStyles).toMatch(
       /\.settings-inventory-body\.has-tools\s*\{[\s\S]*?grid-template-rows: auto auto minmax\(0, 1fr\);/,
     );
   });
@@ -120,7 +128,7 @@ describe('save and game over recovery UI', () => {
 
   it('isolates ZIP saves and retains the chapter checkpoint as a resume fallback', () => {
     expect(engineSource).toContain('vn-engine-autosave:zip:');
-    expect(engineSource).toContain("source: 'chapter'");
+    expect(engineSource).toContain("latest.slot === 'chapter' ? 'chapter'");
     expect(engineSource).toContain("saveProgress(game.script[0].scene, 0, 'chapter')");
     expect(engineSource).toContain("import type JSZip from 'jszip'");
     expect(engineSource).toContain("await import('jszip')");

@@ -88,7 +88,7 @@ describe('asset transition presentation', () => {
     expect(appSource).toContain('<BackgroundTransition\n        source={background}');
     expect(appSource).toContain('durationMs={backgroundTransitionTiming.duration}');
     expect(appSource).toContain('easing={backgroundTransitionEasing}');
-    expect(backgroundTransitionSource).toContain('waitForImageReady(image, BACKGROUND_READY_TIMEOUT_MS)');
+    expect(backgroundTransitionSource).toContain('waitForImageReadyWhenVisible(image, BACKGROUND_READY_TIMEOUT_MS)');
     expect(backgroundTransitionSource).toContain('latestSourceRef.current !== source');
     expect(backgroundTransitionSource).toContain("reducedMotion || !presentation.previous || kind === 'cut' ? 0 : durationMs + 40");
     expect(backgroundTransitionSource).toContain("'--background-crossfade-duration': `${durationMs}ms`");

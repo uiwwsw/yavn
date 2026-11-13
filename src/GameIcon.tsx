@@ -11,6 +11,9 @@ const paths = {
   eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Zm7 0a3 3 0 1 0 6 0 3 3 0 0 0-6 0',
   arrow: 'M4 12h15m-6-6 6 6-6 6',
   bookmark: 'M6 3h12v18l-6-4-6 4V3Z',
+  map: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14',
+  prev: 'm15 5-7 7 7 7',
+  next: 'm9 5 7 7-7 7',
 } as const;
 
 export function GameIcon({ name, className = '', style }: { name: keyof typeof paths; className?: string; style?: CSSProperties }) {
