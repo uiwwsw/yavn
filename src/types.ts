@@ -504,7 +504,8 @@ export type GameData = {
   };
   settings: {
     textSpeed: number;
-    autoSave: boolean;
+    /** Deprecated: autosave is always on. Still accepted so older configs parse. */
+    autoSave?: boolean;
     clickToInstant: boolean;
   };
   assets: {

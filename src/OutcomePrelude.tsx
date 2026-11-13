@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { ResourceImage } from './ResourceImage';
 
 export function trapOutcomeFocus(event: KeyboardEvent<HTMLElement>): void {
@@ -23,10 +23,17 @@ type Props = {
   background?: string;
   tone?: 'hopeful' | 'tragic' | 'mystery';
   onContinue: () => void;
+  /** Overrides the primary button label (game over: return to the causing choice). */
+  continueLabel?: string;
+  continueDetail?: string;
+  continueDisabled?: boolean;
+  footnote?: string;
+  /** Extra actions under the primary button. */
+  secondary?: ReactNode;
 };
 
 /** The final scene stays underneath this reveal; reading pace belongs to the player. */
-export function OutcomePrelude({ kind, title, message, epilogue, background, tone, onContinue }: Props) {
+export function OutcomePrelude({ kind, title, message, epilogue, background, tone, onContinue, continueLabel, continueDetail, continueDisabled, footnote, secondary }: Props) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => { buttonRef.current?.focus({ preventScroll: true }); }, []);
   return (
@@ -42,10 +49,12 @@ export function OutcomePrelude({ kind, title, message, epilogue, background, ton
         <h2 id="outcome-title">{title}</h2>
         <p id="outcome-message" className="outcome-message">{message}</p>
         {epilogue && <p className="outcome-epilogue">{epilogue}</p>}
-        <button type="button" className="outcome-continue" ref={buttonRef} onClick={onContinue}>
-          이야기 지도 펼치기<span aria-hidden="true"> →</span>
+        <button type="button" className="outcome-continue" ref={buttonRef} onClick={onContinue} disabled={continueDisabled}>
+          {continueLabel ?? '이야기 지도 펼치기'}<span aria-hidden="true"> →</span>
+          {continueDetail && <small className="vs-outcome-detail">{continueDetail}</small>}
         </button>
-        <p className="outcome-footnote">{kind === 'gameOver' ? '지나온 선택에서 이야기를 다시 이어갈 수 있습니다.' : '이 결말은 당신의 선택으로 완성되었습니다.'}</p>
+        {secondary && <div className="vs-outcome-actions">{secondary}</div>}
+        <p className="outcome-footnote">{footnote ?? (kind === 'gameOver' ? '지나온 선택에서 이야기를 다시 이어갈 수 있습니다.' : '이 결말은 당신의 선택으로 완성되었습니다.')}</p>
       </div>
     </section>
   );

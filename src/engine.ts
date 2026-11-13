@@ -1,4 +1,4 @@
-import { buildStoryChapter, isMapStop, storyNodeId, storyEdgeId, type StoryMapData } from './storyMap';
+import { buildStoryChapter, isMapStop, storyNodeId, storyEdgeId, type StoryMapData, type StoryMapNode } from './storyMap';
 import { PresentationClock } from './presentationClock';
 import { collectStartSceneAssets, mapStartSceneAssets } from './startScene';
 import { CINEMATIC_SOUNDS } from './cinematicAudio';
@@ -189,6 +189,8 @@ type SaveProgress = {
   gameVersion?: string;
   chapterIndex: number;
   chapterPath?: string;
+  /** Display-only; older saves lack it and the UI falls back to the chapter number. */
+  chapterTitle?: string;
   sceneId: string;
   actionIndex: number;
   backgroundAssetId?: string;
@@ -211,7 +213,22 @@ export type SaveSlotSummary = {
   savedAt?: string;
   chapterIndex?: number;
   chapterPath?: string;
+  chapterTitle?: string;
   sceneId?: string;
+  /** Last dialogue line at the saved point and who said it. */
+  speaker?: string;
+  line?: string;
+  /** Authored game version recorded in the save. */
+  savedVersion?: string;
+  /** The save was written by a different authored version of this game. */
+  versionMismatch?: boolean;
+};
+
+/** What 이어하기 would load right now, before the game starts. */
+export type StoredProgressStatus = {
+  status: 'none' | 'resume' | 'older-version';
+  slot?: SaveSlotSummary;
+  currentVersion?: string;
 };
 
 export type ChoiceRecoverySummary = Omit<SaveSlotSummary, 'slot'> & {
@@ -230,6 +247,7 @@ export type SaveBackup = {
 };
 
 export type LoadGameOptions = {
+  /** false starts from the beginning. Otherwise the newest save resumes, older versions included. */
   resumeFromSave?: boolean;
 };
 
@@ -240,6 +258,8 @@ export type StartScreenPreview = {
   legalNotices: NonNullable<GameData['meta']['legalNotices']>;
   uiTemplate: UiTemplateId;
   hasLoadableSave: boolean;
+  gameVersion?: string;
+  saveStatus: StoredProgressStatus;
 };
 
 type PreparedChapter = {
@@ -317,7 +337,8 @@ let choiceRecoveryTrail: ChoiceRecoveryCheckpoint[] = [];
 // Exploration survives rewinds and new playthroughs; replay uses the state from that visit.
 let storyJourney: { points: Record<string, SaveProgress>; seen: string[]; travelled: string[]; choices: Record<string, string[]>; current?: string } =
   { points: {}, seen: [], travelled: [], choices: {} };
-let storyJourneyIdentity: { title: string; version?: string } | undefined;
+// previousVersion marks a map recorded (at least partly) by an older authored version.
+let storyJourneyIdentity: { title: string; version?: string; previousVersion?: string } | undefined;
 let storyJourneyPersistent = true;
 let previousStoryNode: string | undefined;
 function loadStoryJourney() {
@@ -349,14 +370,20 @@ function loadStoryJourney() {
 function validateStoryJourneyIdentity() {
   const game = useVNStore.getState().game;
   if (!game) return;
-  if (storyJourneyIdentity && (storyJourneyIdentity.title !== game.meta.title || storyJourneyIdentity.version !== game.meta.version)) {
+  if (storyJourneyIdentity && storyJourneyIdentity.title !== game.meta.title) {
     storyJourney = { points: {}, seen: [], travelled: [], choices: {} };
     previousStoryNode = undefined;
+    storyJourneyIdentity = undefined;
   }
-  storyJourneyIdentity = { title: game.meta.title, version: game.meta.version };
+  // A new authored version keeps the exploration. Old checkpoints stay visible and are
+  // replayable only where their cursor still exists in the current YAML.
+  const previousVersion = storyJourneyIdentity && normalizeGameVersion(storyJourneyIdentity.version) !== normalizeGameVersion(game.meta.version)
+    ? storyJourneyIdentity.version ?? storyJourneyIdentity.previousVersion
+    : storyJourneyIdentity?.previousVersion;
+  storyJourneyIdentity = { title: game.meta.title, version: game.meta.version,
+    ...(previousVersion && previousVersion !== game.meta.version ? { previousVersion } : {}) };
 }
 function persistStoryJourney() {
-  if (!getAutoSaveEnabled()) { storyJourneyPersistent = false; return; }
   try {
     const logs: StoryLogEntry[] = [];
     const routes: RouteHistoryEntry[] = [];
@@ -390,9 +417,12 @@ function recordStoryMapStop(suffix?: string) {
     if (!storyJourney.travelled.includes(edge)) storyJourney.travelled.push(edge);
   }
   if (!storyJourney.seen.includes(id)) storyJourney.seen.push(id);
-  if (!suffix) {
+  // A death is a place you saw, never a place to resume: replaying it only dies again.
+  if (!suffix && !(action && 'gameOver' in action)) {
     const progress = createSaveProgress(state.currentSceneId, state.actionIndex);
     storyJourney.points[id] = { ...progress, resolvedEndingId: undefined };
+  } else {
+    delete storyJourney.points[id];
   }
   previousStoryNode = id;
   storyJourney.current = id;
@@ -610,9 +640,24 @@ export async function getStoryMap(): Promise<StoryMapData> {
     const selected = storyJourney.choices[id] ?? [];
     if (!selected.includes(entry.value)) { storyJourney.choices[id] = [...selected, entry.value]; migrated = true; }
   }
+  // After a death the way back is the choice that caused it, with its pre-choice state.
+  let recoveryId: string | undefined;
+  if (state.gameOver) {
+    const recovery = getChoiceRecoveryProgress();
+    const recoveryPath = recovery?.chapterPath ?? (recovery ? chapters[recovery.chapterIndex]?.pathKey : undefined);
+    if (recovery && recoveryPath) {
+      const id = storyNodeId(recoveryPath, recovery.sceneId, recovery.actionIndex);
+      if (knownNodes.has(id)) {
+        recoveryId = id;
+        if (!storyJourney.points[id]) { storyJourney.points[id] = { ...recovery, resolvedEndingId: undefined }; migrated = true; }
+        if (!seen.has(id)) { seen.add(id); storyJourney.seen.push(id); migrated = true; }
+      }
+    }
+  }
   if (migrated) persistStoryJourney();
-  const validPoints = Object.entries(storyJourney.points).filter(([, save]) => validateSaveForCurrentGame(save));
-  const replayable = new Set(validPoints.map(([id]) => id));
+  const nodeKinds = new Map(result.flatMap(c => c.nodes.map(n => [n.id, n.kind] as const)));
+  const replayable = new Set(Object.entries(storyJourney.points)
+    .filter(([id, save]) => isStoryPointReplayable(id, save, nodeKinds.get(id))).map(([id]) => id));
   const currentPath = getCurrentChapterPathKey();
   const currentChapter = result.find(c => c.path === currentPath);
   const currentNode = currentChapter?.nodes.filter(n => n.chapter === currentPath && n.scene === state.currentSceneId && n.action <= state.actionIndex && !n.id.includes(':death:'))
@@ -635,12 +680,39 @@ export async function getStoryMap(): Promise<StoryMapData> {
     }
   }
   return { chapters: result, visits: [...seen].map(id => ({ id, replayable: replayable.has(id) })),
-    travelled: [...storyJourney.travelled], choices: storyJourney.choices, current, persistent: storyJourneyPersistent };
+    travelled: [...storyJourney.travelled], choices: storyJourney.choices, current, persistent: storyJourneyPersistent,
+    ...(recoveryId ? { recovery: recoveryId } : {}),
+    ...(storyJourneyIdentity?.previousVersion ? { staleVersion: storyJourneyIdentity.previousVersion } : {}) };
+}
+
+function parseStoryNodeId(id: string): { chapter: string; scene: string; action: number } | undefined {
+  try {
+    const value = JSON.parse(id) as unknown;
+    if (Array.isArray(value) && typeof value[0] === 'string' && typeof value[1] === 'string' && Number.isInteger(value[2])) {
+      return { chapter: value[0], scene: value[1], action: value[2] as number };
+    }
+  } catch { /* death ids carry a suffix and are never replayable */ }
+  return undefined;
+}
+
+/**
+ * Deaths are never replayable. A checkpoint from an older authored version is allowed
+ * only where the same cursor still exists and is not a game over in the current YAML.
+ */
+function isStoryPointReplayable(id: string, save: SaveProgress, kind?: StoryMapNode['kind']): boolean {
+  if (kind === 'death' || id.includes(':death:')) return false;
+  if (!isSameGameSave(save)) return false;
+  const cursor = parseStoryNodeId(id);
+  const game = cursor ? storyChapterCatalogue.get(cursor.chapter)?.game : undefined;
+  const action = cursor && game ? game.scenes[cursor.scene]?.actions[cursor.action] : undefined;
+  if (action && 'gameOver' in action) return false;
+  if (validateSaveForCurrentGame(save)) return true;
+  return Boolean(cursor && game?.scenes[cursor.scene] && cursor.action < game.scenes[cursor.scene].actions.length);
 }
 
 export async function replayStoryMapNode(id: string): Promise<boolean> {
   const progress = storyJourney.points[id];
-  if (!progress || !validateSaveForCurrentGame(progress)) return false;
+  if (!progress || !isStoryPointReplayable(id, progress)) return false;
   previousStoryNode = undefined;
   // Exact snapshots prevent inventory or relationship values leaking from the future.
   return restoreSaveProgress(progress);
@@ -747,19 +819,17 @@ export function getBgmEnabled(): boolean {
   return runtimeGameSettings.bgmEnabled;
 }
 
-/** Whether this browser holds a resumable save for a library game (autosave or any manual slot). */
-export function hasStoredProgressForGame(gameId: string): boolean {
-  const base = `${GAME_AUTOSAVE_KEY_PREFIX}${gameId}`;
-  try {
-    return [base, `${base}${MANUAL_SAVE_SUFFIX}`, `${base}${MANUAL_SAVE_SUFFIX}-2`, `${base}${MANUAL_SAVE_SUFFIX}-3`]
-      .some((key) => Boolean(localStorage.getItem(key)));
-  } catch {
-    return false;
-  }
+/**
+ * What 이어하기 would load for a library game, using the same rule as the loader:
+ * the newest of auto, manual 1–3 and chapter. The launcher badge reads this.
+ */
+export function describeStoredProgressForGame(gameId: string, currentVersion?: string, title?: string): StoredProgressStatus {
+  return describeStoredProgress(`${GAME_AUTOSAVE_KEY_PREFIX}${gameId}`, { title, version: currentVersion });
 }
 
-export function getAutoSaveEnabled(): boolean {
-  return runtimeGameSettings.autoSaveEnabled ?? useVNStore.getState().game?.settings.autoSave ?? true;
+/** Whether this browser holds a resumable save for a library game. */
+export function hasStoredProgressForGame(gameId: string): boolean {
+  return describeStoredProgressForGame(gameId).status !== 'none';
 }
 
 export function getPlayerExperienceSettings(): PlayerExperienceSettings {
@@ -799,29 +869,6 @@ export function setPlayerExperienceSettings(patch: Partial<PlayerExperienceSetti
     }
   } else if ('autoPlayDelayMs' in patch && runtimeGameSettings.autoPlayEnabled) {
     schedulePlayerAutoAdvance();
-  }
-}
-
-export function setAutoSaveEnabled(enabled: boolean): void {
-  runtimeGameSettings = {
-    ...runtimeGameSettings,
-    autoSaveEnabled: enabled,
-  };
-  persistRuntimeGameSettings();
-  if (!enabled) {
-    try {
-      localStorage.removeItem(resolveChoiceRecoveryKey());
-      localStorage.removeItem(resolveChoiceRecoveryTrailKey());
-    } catch {
-      // Keep the in-memory recovery point available for the current session.
-    }
-  } else if (pendingChoiceRecovery) {
-    saveProgressToKey(resolveChoiceRecoveryKey(), pendingChoiceRecovery);
-    persistChoiceRecoveryTrail();
-  }
-  const state = useVNStore.getState();
-  if (enabled && state.game && !state.gameOver && !state.chapterLoading) {
-    saveProgress(state.currentSceneId, state.actionIndex);
   }
 }
 
@@ -2183,8 +2230,40 @@ function clearChoiceRecoveryPoint(): void {
 
 function setChoiceRecoveryPoint(progress: SaveProgress): void {
   pendingChoiceRecovery = progress;
-  if (getAutoSaveEnabled()) {
-    saveProgressToKey(resolveChoiceRecoveryKey(), progress);
+  saveProgressToKey(resolveChoiceRecoveryKey(), progress);
+}
+
+/** Same timeline: `prefix` was recorded on the way to `save`. */
+function isRouteHistoryPrefix(prefix: RouteHistoryEntry[], history: RouteHistoryEntry[]): boolean {
+  if (prefix.length > history.length) return false;
+  return prefix.every((entry, index) => {
+    const other = history[index];
+    return entry.kind === other.kind && entry.key === other.key && entry.value === other.value
+      && entry.sceneId === other.sceneId && entry.actionIndex === other.actionIndex;
+  });
+}
+
+/**
+ * Restoring (a slot, a map node, the last choice) keeps the choice trail that led to the
+ * restored point and drops only checkpoints recorded after it. Clearing the whole trail
+ * would leave a later death with nowhere to return to.
+ */
+function trimChoiceRecoveryTrail(save: SaveProgress): void {
+  const depth = save.routeHistory.length;
+  choiceRecoveryTrail = choiceRecoveryTrail.filter((checkpoint) =>
+    checkpoint.progress.routeHistory.length <= depth
+    && isRouteHistoryPrefix(checkpoint.progress.routeHistory, save.routeHistory));
+  persistChoiceRecoveryTrail();
+  const latest = choiceRecoveryTrail[choiceRecoveryTrail.length - 1]?.progress;
+  if (latest) {
+    setChoiceRecoveryPoint(latest);
+    return;
+  }
+  pendingChoiceRecovery = undefined;
+  try {
+    localStorage.removeItem(resolveChoiceRecoveryKey());
+  } catch {
+    // Storage is optional; the trail in memory is already trimmed.
   }
 }
 
@@ -2198,6 +2277,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       savedAt?: unknown;
       gameTitle?: unknown;
       gameVersion?: unknown;
+      chapterTitle?: unknown;
       sceneId?: string;
       actionIndex?: number;
       chapterPath?: unknown;
@@ -2313,6 +2393,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       savedAt: typeof parsed.savedAt === 'string' ? parsed.savedAt : undefined,
       gameTitle: typeof parsed.gameTitle === 'string' ? parsed.gameTitle : undefined,
       gameVersion: typeof parsed.gameVersion === 'string' ? parsed.gameVersion : undefined,
+      ...(typeof parsed.chapterTitle === 'string' && parsed.chapterTitle.trim() ? { chapterTitle: parsed.chapterTitle } : {}),
       chapterIndex:
         typeof parsed.chapterIndex === 'number' &&
         Number.isInteger(parsed.chapterIndex) &&
@@ -2343,9 +2424,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
 
 function loadChoiceRecoveryTrail(): void {
   choiceRecoveryTrail = [];
-  if (!getAutoSaveEnabled()) {
-    return;
-  }
+  pendingChoiceRecovery = undefined;
   try {
     const raw = localStorage.getItem(resolveChoiceRecoveryTrailKey());
     const parsed = raw ? (JSON.parse(raw) as unknown) : undefined;
@@ -2369,9 +2448,6 @@ function loadChoiceRecoveryTrail(): void {
 }
 
 function persistChoiceRecoveryTrail(): void {
-  if (!getAutoSaveEnabled()) {
-    return;
-  }
   try {
     localStorage.setItem(resolveChoiceRecoveryTrailKey(), JSON.stringify(choiceRecoveryTrail));
   } catch {
@@ -2442,9 +2518,75 @@ function isSaveCompatibleWithGameIdentity(save: SaveProgress, identity: GameSave
   return !savedVersion || !currentVersion || savedVersion === currentVersion;
 }
 
-function hasLoadableProgressByKey(key: string, identity?: GameSaveIdentity): boolean {
-  const progress = loadProgressByKey(key);
-  return Boolean(progress && (!identity || isSaveCompatibleWithGameIdentity(progress, identity)));
+/** Same game (title), any authored version. Older versions are loadable after the player is told. */
+function isSameGameAsIdentity(save: SaveProgress, identity: Partial<GameSaveIdentity>): boolean {
+  return !save.gameTitle || !identity.title || save.gameTitle === identity.title;
+}
+
+function isSameGameSave(save: SaveProgress): boolean {
+  const game = useVNStore.getState().game;
+  return Boolean(game) && isSameGameAsIdentity(save, { title: game!.meta.title });
+}
+
+function isVersionMismatch(save: SaveProgress, version: string | undefined): boolean {
+  const saved = normalizeGameVersion(save.gameVersion);
+  const current = normalizeGameVersion(version);
+  return Boolean(saved && current && saved !== current);
+}
+
+const RESUME_SLOTS = ['auto', ...MANUAL_SAVE_SLOTS, 'chapter'] as const;
+
+function resolveSaveSlotKeyFor(scopeKey: string, slot: SaveSlotKind): string {
+  if (slot === 'manual') return `${scopeKey}${MANUAL_SAVE_SUFFIX}`;
+  if (slot === 'manual2' || slot === 'manual3') return `${scopeKey}${MANUAL_SAVE_SUFFIX}-${slot.slice(-1)}`;
+  if (slot === 'chapter') return `${scopeKey}${CHAPTER_SAVE_SUFFIX}`;
+  return scopeKey;
+}
+
+function savedAtTime(save: SaveProgress): number {
+  const parsed = Date.parse(save.savedAt ?? '');
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/**
+ * The single rule for 이어하기: the newest save of this game among auto, manual 1–3 and
+ * chapter, by savedAt. Ties go to the auto slot, which is written on every step.
+ */
+function findLatestProgress(scopeKey: string, identity: Partial<GameSaveIdentity>): { slot: SaveSlotKind; save: SaveProgress } | undefined {
+  let best: { slot: SaveSlotKind; save: SaveProgress } | undefined;
+  for (const slot of RESUME_SLOTS) {
+    const save = loadProgressByKey(resolveSaveSlotKeyFor(scopeKey, slot));
+    if (!save || !isSameGameAsIdentity(save, identity)) continue;
+    if (!best || savedAtTime(save) > savedAtTime(best.save)) best = { slot, save };
+  }
+  return best;
+}
+
+function summarizeSave(slot: SaveSlotKind, save: SaveProgress, currentVersion?: string): SaveSlotSummary {
+  const lastLine = [...save.storyLog].reverse().find((entry) => entry.kind === 'dialogue');
+  return {
+    slot,
+    exists: true,
+    savedAt: save.savedAt,
+    chapterIndex: save.chapterIndex,
+    chapterPath: save.chapterPath,
+    ...(save.chapterTitle ? { chapterTitle: save.chapterTitle } : {}),
+    sceneId: save.sceneId,
+    ...(lastLine?.kind === 'dialogue' ? { line: lastLine.text, ...(lastLine.speaker ? { speaker: lastLine.speaker } : {}) } : {}),
+    ...(save.gameVersion ? { savedVersion: save.gameVersion } : {}),
+    ...(isVersionMismatch(save, currentVersion) ? { versionMismatch: true } : {}),
+  };
+}
+
+function describeStoredProgress(scopeKey: string, identity: Partial<GameSaveIdentity>): StoredProgressStatus {
+  const latest = findLatestProgress(scopeKey, identity)
+    ?? (() => {
+      const legacy = scopeKey !== LEGACY_AUTOSAVE_KEY && identity.title ? loadProgressByKey(LEGACY_AUTOSAVE_KEY) : undefined;
+      return legacy && legacy.gameTitle === identity.title ? { slot: 'auto' as const, save: legacy } : undefined;
+    })();
+  if (!latest) return { status: 'none', currentVersion: identity.version };
+  const slot = summarizeSave(latest.slot, latest.save, identity.version);
+  return { status: slot.versionMismatch ? 'older-version' : 'resume', slot, currentVersion: identity.version };
 }
 
 function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress {
@@ -2461,6 +2603,7 @@ function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress 
     gameVersion: state.game?.meta.version,
     chapterIndex: activeChapterIndex,
     chapterPath: getCurrentChapterPathKey(),
+    ...(state.game?.chapterTitle ? { chapterTitle: state.game.chapterTitle } : {}),
     sceneId,
     actionIndex,
     backgroundAssetId,
@@ -2480,25 +2623,19 @@ function saveProgress(sceneId: string, actionIndex: number, slot: SaveSlotKind =
 
 export function getSaveSlotSummaries(): SaveSlotSummary[] {
   const game = useVNStore.getState().game;
-  return (['auto', ...MANUAL_SAVE_SLOTS, 'chapter'] as const).map((slot) => {
-    const loaded = loadProgressByKey(resolveSaveSlotKey(slot));
-    const save = loaded && (!game || isSaveCompatibleWithGameIdentity(loaded, {
-      title: game.meta.title,
-      version: game.meta.version,
-    }))
-      ? loaded
-      : undefined;
-    return save
-      ? {
-          slot,
-          exists: true,
-          savedAt: save.savedAt,
-          chapterIndex: save.chapterIndex,
-          chapterPath: save.chapterPath,
-          sceneId: save.sceneId,
-        }
+  return RESUME_SLOTS.map((slot) => {
+    const save = loadProgressByKey(resolveSaveSlotKey(slot));
+    // A different game's data never shows. An older version of this game does, flagged.
+    return save && (!game || isSameGameAsIdentity(save, { title: game.meta.title }))
+      ? summarizeSave(slot, save, game?.meta.version)
       : { slot, exists: false };
   });
+}
+
+/** What 이어하기 loads for the game that is open now. */
+export function getStoredProgressStatus(): StoredProgressStatus {
+  const game = useVNStore.getState().game;
+  return describeStoredProgress(currentAutosaveKey, { title: game?.meta.title, version: game?.meta.version });
 }
 
 export function saveCurrentProgress(slot: ManualSaveSlot = 'manual'): SaveSlotSummary {
@@ -2506,19 +2643,30 @@ export function saveCurrentProgress(slot: ManualSaveSlot = 'manual'): SaveSlotSu
   if (!state.game || state.chapterLoading || state.gameOver || state.busy) {
     return { slot, exists: false };
   }
-  const save = saveProgress(state.currentSceneId, state.actionIndex, slot);
+  saveProgress(state.currentSceneId, state.actionIndex, slot);
   const persisted = loadProgressByKey(resolveSaveSlotKey(slot));
   if (!persisted) {
     return { slot, exists: false };
   }
-  return {
-    slot,
-    exists: true,
-    savedAt: save.savedAt,
-    chapterIndex: save.chapterIndex,
-    chapterPath: save.chapterPath,
-    sceneId: save.sceneId,
-  };
+  return summarizeSave(slot, persisted, state.game.meta.version);
+}
+
+/** Players manage the three manual slots; auto and chapter are owned by the engine. */
+export function deleteSaveSlot(slot: ManualSaveSlot): boolean {
+  try {
+    localStorage.removeItem(resolveSaveSlotKey(slot));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Write the current cursor to the auto slot now (before a reload the player asked for). */
+export function flushAutosave(): boolean {
+  const state = useVNStore.getState();
+  if (!state.game || state.chapterLoading || state.gameOver) return false;
+  saveProgress(state.currentSceneId, state.actionIndex);
+  return true;
 }
 
 function validateSaveForCurrentGame(save: SaveProgress): boolean {
@@ -2533,42 +2681,30 @@ function validateSaveForCurrentGame(save: SaveProgress): boolean {
 }
 
 function getChoiceRecoveryProgress(): SaveProgress | undefined {
-  const recovery =
-    pendingChoiceRecovery ??
-    (getAutoSaveEnabled() ? loadProgressByKey(resolveChoiceRecoveryKey()) : undefined);
+  const recovery = pendingChoiceRecovery ?? loadProgressByKey(resolveChoiceRecoveryKey());
   return recovery && validateSaveForCurrentGame(recovery) ? recovery : undefined;
 }
 
 export function getChoiceRecoverySummary(): ChoiceRecoverySummary {
   const recovery = getChoiceRecoveryProgress();
-  return recovery
-    ? {
-        exists: true,
-        savedAt: recovery.savedAt,
-        chapterIndex: recovery.chapterIndex,
-        chapterPath: recovery.chapterPath,
-        sceneId: recovery.sceneId,
-        actionIndex: recovery.actionIndex,
-        failedChoice: recovery.choiceAttempt?.ledToGameOver
-          ? {
-              key: recovery.choiceAttempt.key,
-              value: recovery.choiceAttempt.value,
-              optionIndex: recovery.choiceAttempt.optionIndex,
-            }
-          : undefined,
-      }
-    : { exists: false };
+  if (!recovery) return { exists: false };
+  const { slot: _slot, ...summary } = summarizeSave('auto', recovery, useVNStore.getState().game?.meta.version);
+  return {
+    ...summary,
+    actionIndex: recovery.actionIndex,
+    failedChoice: recovery.choiceAttempt?.ledToGameOver
+      ? {
+          key: recovery.choiceAttempt.key,
+          value: recovery.choiceAttempt.value,
+          optionIndex: recovery.choiceAttempt.optionIndex,
+        }
+      : undefined,
+  };
 }
 
 function getLatestSaveProgress(): SaveProgress | undefined {
-  const savedAtTime = (save: SaveProgress): number => {
-    const parsed = Date.parse(save.savedAt ?? '');
-    return Number.isFinite(parsed) ? parsed : 0;
-  };
-  const candidates = ([...MANUAL_SAVE_SLOTS, 'auto'] as const)
-    .map((slot) => loadProgressByKey(resolveSaveSlotKey(slot)))
-    .filter((save): save is SaveProgress => Boolean(save) && validateSaveForCurrentGame(save as SaveProgress));
-  return candidates.sort((a, b) => savedAtTime(b) - savedAtTime(a))[0];
+  const game = useVNStore.getState().game;
+  return game ? findLatestProgress(currentAutosaveKey, { title: game.meta.title })?.save : undefined;
 }
 
 export function exportSaveBackup(): SaveBackup | undefined {
@@ -2576,7 +2712,8 @@ export function exportSaveBackup(): SaveBackup | undefined {
   if (!state.game || state.chapterLoading || state.gameOver) {
     return undefined;
   }
-  const progress = saveProgress(state.currentSceneId, state.actionIndex, 'manual');
+  // Exporting must not touch the player's slots.
+  const progress = createSaveProgress(state.currentSceneId, state.actionIndex);
   const safeTitle = state.game.meta.title.replace(/[^0-9A-Za-z가-힣_-]+/g, '-').replace(/^-+|-+$/g, '') || 'yavn-save';
   return {
     filename: `${safeTitle}-${new Date().toISOString().slice(0, 10)}.yavn-save.json`,
@@ -2593,7 +2730,13 @@ export function exportSaveBackup(): SaveBackup | undefined {
   };
 }
 
-export function importSaveBackup(raw: string): SaveSlotSummary {
+/** Validate a backup file without writing it, so the player can pick a slot first. */
+export function readSaveBackup(raw: string): SaveSlotSummary {
+  const save = parseSaveBackup(raw);
+  return summarizeSave('manual', save, useVNStore.getState().game?.meta.version);
+}
+
+function parseSaveBackup(raw: string): SaveProgress {
   let envelope: unknown;
   try {
     envelope = JSON.parse(raw);
@@ -2619,56 +2762,45 @@ export function importSaveBackup(raw: string): SaveSlotSummary {
     throw new Error('이 엔진보다 새로운 버전의 저장 파일입니다. YAVN을 업데이트해 주세요.');
   }
   const save = parseSaveProgress(JSON.stringify(record.progress));
-  if (!save || !validateSaveForCurrentGame(save)) {
+  // An older authored version of the same game is accepted and flagged like any old save.
+  if (!save || !isSameGameSave(save)) {
     throw new Error('현재 게임과 일치하는 저장 데이터가 아닙니다.');
   }
+  return save;
+}
+
+export function importSaveBackup(raw: string, slot: ManualSaveSlot = 'manual'): SaveSlotSummary {
+  const save = parseSaveBackup(raw);
   const imported = {
     ...save,
     schemaVersion: SAVE_PROGRESS_SCHEMA_VERSION,
     savedAt: new Date().toISOString(),
   };
-  if (!saveProgressToKey(resolveSaveSlotKey('manual'), imported)) {
+  if (!saveProgressToKey(resolveSaveSlotKey(slot), imported)) {
     throw new Error('브라우저 저장 공간에 기록하지 못했습니다. 저장 공간 설정을 확인해 주세요.');
   }
-  return {
-    slot: 'manual',
-    exists: true,
-    savedAt: imported.savedAt,
-    chapterIndex: imported.chapterIndex,
-    chapterPath: imported.chapterPath,
-    sceneId: imported.sceneId,
-  };
+  return summarizeSave(slot, imported, useVNStore.getState().game?.meta.version);
 }
 
-function loadProgress(identity?: GameSaveIdentity): SaveProgressLoadResult {
-  const compatible = (save: SaveProgress | undefined): SaveProgress | undefined =>
-    save && (!identity || isSaveCompatibleWithGameIdentity(save, identity)) ? save : undefined;
-  const scoped = compatible(loadProgressByKey(currentAutosaveKey));
-  const manual = compatible(loadProgressByKey(resolveSaveSlotKey('manual')));
-  if (scoped || manual) {
-    const scopedTime = scoped?.savedAt ? Date.parse(scoped.savedAt) : 0;
-    const manualTime = manual?.savedAt ? Date.parse(manual.savedAt) : 0;
-    const useManual = Boolean(manual) && (!scoped || manualTime > scopedTime);
-    return {
-      save: useManual ? manual : scoped,
-      source: useManual ? 'manual' : 'scoped',
-    };
-  }
+type LoadedProgress = SaveProgressLoadResult & { versionMismatch?: boolean };
 
-  const chapter = compatible(loadProgressByKey(resolveSaveSlotKey('chapter')));
-  if (chapter) {
+function loadProgress(identity?: GameSaveIdentity): LoadedProgress {
+  const latest = findLatestProgress(currentAutosaveKey, identity ?? {});
+  if (latest) {
     return {
-      save: chapter,
-      source: 'chapter',
+      save: latest.save,
+      source: latest.slot === 'auto' ? 'scoped' : latest.slot === 'chapter' ? 'chapter' : 'manual',
+      versionMismatch: isVersionMismatch(latest.save, identity?.version),
     };
   }
 
   if (currentAutosaveKey !== LEGACY_AUTOSAVE_KEY) {
-    const legacy = compatible(loadProgressByKey(LEGACY_AUTOSAVE_KEY));
-    if (legacy) {
+    const legacy = loadProgressByKey(LEGACY_AUTOSAVE_KEY);
+    if (legacy && (!identity || isSameGameAsIdentity(legacy, identity))) {
       return {
         save: legacy,
         source: 'legacy',
+        versionMismatch: isVersionMismatch(legacy, identity?.version),
       };
     }
   }
@@ -2799,19 +2931,25 @@ export function stopActiveBgm(): void {
   playMusic(undefined);
 }
 
+/**
+ * Autosave is always on and follows the cursor, except onto a game over: the auto slot
+ * must never point at a death, or 이어하기 would reload straight into it.
+ */
+function autosaveAt(sceneId: string, actionIndex: number) {
+  const action = useVNStore.getState().game?.scenes[sceneId]?.actions[actionIndex];
+  if (action && 'gameOver' in action) return;
+  saveProgress(sceneId, actionIndex);
+}
+
 function incrementCursor() {
   const state = useVNStore.getState();
   useVNStore.getState().setCursor(state.currentSceneId, state.actionIndex + 1);
-  if (getAutoSaveEnabled()) {
-    saveProgress(state.currentSceneId, state.actionIndex + 1);
-  }
+  autosaveAt(state.currentSceneId, state.actionIndex + 1);
 }
 
 function setCursor(sceneId: string, actionIndex: number) {
   useVNStore.getState().setCursor(sceneId, actionIndex);
-  if (getAutoSaveEnabled()) {
-    saveProgress(sceneId, actionIndex);
-  }
+  autosaveAt(sceneId, actionIndex);
 }
 
 function typeDialog(
@@ -3095,12 +3233,10 @@ function finishStory(endingId?: string): void {
   useVNStore.getState().clearChoiceGate();
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   const state = useVNStore.getState();
-  if (getAutoSaveEnabled()) {
-    saveProgress(state.currentSceneId, state.actionIndex);
-  }
+  saveProgress(state.currentSceneId, state.actionIndex);
 }
 
-function triggerGameOver(gameOver: GameOverDefinition, restoreAutosaveFromChoice = true): void {
+function triggerGameOver(gameOver: GameOverDefinition): void {
   clearTimers();
   useVNStore.getState().setBusy(false);
   // Let the last note fall away under the outcome reveal.
@@ -3116,18 +3252,14 @@ function triggerGameOver(gameOver: GameOverDefinition, restoreAutosaveFromChoice
   }
   playSound(CINEMATIC_SOUNDS.defeat);
   let recovery = getChoiceRecoveryForGameOver(gameOver);
-  if (recovery?.choiceAttempt && !recovery.choiceAttempt.ledToGameOver) {
-    recovery = {
-      ...recovery,
-      choiceAttempt: {
-        ...recovery.choiceAttempt,
-        ledToGameOver: true,
-      },
-    };
+  if (recovery) {
+    if (recovery.choiceAttempt && !recovery.choiceAttempt.ledToGameOver) {
+      recovery = { ...recovery, choiceAttempt: { ...recovery.choiceAttempt, ledToGameOver: true } };
+    }
+    // The causing choice (recoverToChoice target or the latest one) becomes the way back,
+    // and the auto slot points there so 이어하기 never lands on the death.
     setChoiceRecoveryPoint(recovery);
-  }
-  if (restoreAutosaveFromChoice && getAutoSaveEnabled() && recovery) {
-    saveProgressToKey(resolveSaveSlotKey('auto'), recovery);
+    saveProgressToKey(resolveSaveSlotKey('auto'), { ...recovery, savedAt: new Date().toISOString() });
   }
   useVNStore.getState().setGameOver({
     title: gameOver.title?.trim() || 'GAME OVER',
@@ -3911,7 +4043,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
   playMusic(musicUrl);
 }
 
-async function startChapter(chapterIndex: number, resume?: SaveProgress): Promise<boolean> {
+async function startChapter(chapterIndex: number, resume?: SaveProgress, fallbackToChapterStart = false): Promise<boolean> {
   const chapter = preparedChapters[chapterIndex];
   if (!chapter) {
     useVNStore.getState().setError({ message: `Chapter not found: ${chapterIndex}` });
@@ -3949,18 +4081,39 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
 
     const currentPathKey = chapter.pathKey;
     const resumeScene = resume ? game.scenes[resume.sceneId] : undefined;
-    const canResumeHere =
-      !!resume &&
-      isSaveCompatibleWithGameIdentity(resume, {
-        title: game.meta.title,
-        version: game.meta.version,
-      }) &&
-      !!resumeScene &&
-      resume.actionIndex <= resumeScene.actions.length &&
+    // Older authored versions of the same game may resume; the player was told first.
+    const sameGame = !!resume && isSameGameAsIdentity(resume, { title: game.meta.title });
+    const pathMatches = !!resume &&
       ((!!resume.chapterPath && normalizeChapterPathKey(resume.chapterPath) === currentPathKey) ||
         (!resume.chapterPath && resume.chapterIndex === chapterIndex));
+    const resumeAction = resumeScene?.actions[resume?.actionIndex ?? 0];
+    const canResumeHere =
+      sameGame &&
+      pathMatches &&
+      !!resumeScene &&
+      resume!.actionIndex <= resumeScene.actions.length &&
+      // A save never resumes onto a game over.
+      !(resumeAction && 'gameOver' in resumeAction);
+    // The saved scene or action no longer exists: keep what the player earned
+    // (variables, items, history) and start the saved chapter from its beginning.
+    const resumeAtChapterStart = !canResumeHere && sameGame && (pathMatches || fallbackToChapterStart);
 
-    if (resume && canResumeHere) {
+    if (resume && resumeAtChapterStart) {
+      useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, {}, resume.routeVars));
+      useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, {}, resume.inventory));
+      useVNStore.getState().clearRouteHistory();
+      for (const entry of resume.routeHistory) {
+        useVNStore.getState().pushRouteHistory(entry);
+      }
+      useVNStore.getState().clearStoryLog();
+      for (const entry of resume.storyLog) {
+        useVNStore.getState().pushStoryLog(entry);
+      }
+      useVNStore.getState().setResolvedEndingId(undefined);
+      useVNStore.getState().setResumeNotice('저장한 장면을 이 버전에서 찾지 못해 이 장의 처음부터 이어갑니다. 소지품과 관계는 그대로예요.');
+      saveProgress(game.script[0].scene, 0, 'chapter');
+      saveProgress(game.script[0].scene, 0);
+    } else if (resume && canResumeHere) {
       useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, {}, resume.routeVars));
       useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, {}, resume.inventory));
       useVNStore.getState().clearRouteHistory();
@@ -3978,13 +4131,15 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       useVNStore.getState().setRouteVars(mergeRouteVarsWithDefaults(defaults, currentRouteVars));
       useVNStore.getState().setInventory(mergeInventoryWithDefaults(inventoryDefaults, currentInventory));
       saveProgress(game.script[0].scene, 0, 'chapter');
+      autosaveAt(game.script[0].scene, 0);
     }
 
     const nextChapter = preparedChapters[chapterIndex + 1];
 
+    const resumed = Boolean(resume && (canResumeHere || resumeAtChapterStart));
     runToNextPause();
     if (activeChapterIndex !== chapterIndex) {
-      return Boolean(resume && canResumeHere);
+      return resumed;
     }
 
     await waitNextFrame();
@@ -3993,7 +4148,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
       waitForVisibleLive2DReady(chapterLabel),
     ]);
     if (activeChapterIndex !== chapterIndex) {
-      return Boolean(resume && canResumeHere);
+      return resumed;
     }
 
     useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} ready`);
@@ -4003,7 +4158,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
     if (nextChapter && canWarmNextChapterAssets()) {
       scheduleNextChapterWarm(nextChapter, chapterIndex);
     }
-    return Boolean(resume && canResumeHere);
+    return resumed;
   } catch (error) {
     useVNStore.getState().setChapterLoading(false, 0);
     useVNStore.getState().setError({ message: error instanceof Error ? error.message : 'Failed to start chapter' });
@@ -4011,7 +4166,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress): Promis
   }
 }
 
-async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0, resume?: SaveProgress): Promise<boolean> {
+async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0, resume?: SaveProgress, fallbackToChapterStart = false): Promise<boolean> {
   preparedChapters = chapters;
   chapters.forEach((chapter, index) => {
     storyChapterCatalogue.set(chapter.pathKey, chapter);
@@ -4020,40 +4175,44 @@ async function startPreparedChapters(chapters: PreparedChapter[], startIndex = 0
   useVNStore.getState().setChapterMeta(Math.min(startIndex + 1, chapters.length), chapters.length);
 
   if (resume && startIndex >= 0 && startIndex < chapters.length) {
-    return startChapter(startIndex, resume);
+    return startChapter(startIndex, resume, fallbackToChapterStart);
   }
 
   return startChapter(Math.max(0, Math.min(startIndex, chapters.length - 1)));
 }
 
-async function restoreSaveProgress(save: SaveProgress): Promise<boolean> {
-  if (!validateSaveForCurrentGame(save)) {
-    return false;
+/**
+ * Start the chapter a save belongs to. When an older authored version saved into a chapter
+ * that no longer exists, start the nearest chapter at its beginning with the save's state.
+ */
+async function startPreparedChaptersFromSave(chapters: PreparedChapter[], save: SaveProgress): Promise<boolean> {
+  if (save.chapterPath) {
+    const preparedIndex = resolveChapterPathIndex(chapters.map((chapter) => chapter.pathKey), save.chapterPath);
+    if (preparedIndex >= 0) return startPreparedChapters(chapters, preparedIndex, save);
+    const sequence = await resolveSequenceFromChapterPath(save.chapterPath);
+    if (sequence) return startPreparedChapters(sequence.chapters, sequence.startIndex, save);
+  } else if (save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
+    return startPreparedChapters(chapters, save.chapterIndex, save);
   }
-
-  const normalizedPath = save.chapterPath ? normalizeChapterPathKey(save.chapterPath) : undefined;
-  const preparedIndex = normalizedPath
-    ? resolveChapterPathIndex(preparedChapters.map((chapter) => chapter.pathKey), normalizedPath)
-    : save.chapterIndex;
-  if (preparedIndex >= 0 && preparedIndex < preparedChapters.length) {
-    prepareForSaveRestore();
-    return startChapter(preparedIndex, save);
-  }
-  if (normalizedPath) {
-    const resolved = await resolveSequenceFromChapterPath(normalizedPath);
-    if (resolved) {
-      prepareForSaveRestore();
-      return startPreparedChapters(resolved.chapters, resolved.startIndex, save);
-    }
-  }
-  return false;
+  if (chapters.length === 0) return false;
+  const nearest = Math.max(0, Math.min(save.chapterIndex, chapters.length - 1));
+  return startPreparedChapters(chapters, nearest, save, true);
 }
 
-function prepareForSaveRestore(): void {
+async function restoreSaveProgress(save: SaveProgress): Promise<boolean> {
+  if (!isSameGameSave(save)) {
+    return false;
+  }
+  prepareForSaveRestore(save);
+  return startPreparedChaptersFromSave(preparedChapters, save);
+}
+
+function prepareForSaveRestore(save: SaveProgress): void {
   previousStoryNode = undefined;
   storyJourney.current = undefined;
   clearTimers();
-  clearChoiceRecoveryPoint();
+  trimChoiceRecoveryTrail(save);
+  useVNStore.getState().setResumeNotice(undefined);
   useVNStore.getState().setGameOver(undefined);
   useVNStore.getState().setFinished(false);
   useVNStore.getState().setWaitingInput(false);
@@ -4934,20 +5093,17 @@ export async function loadUrlStartScreenPreview(url: string): Promise<StartScree
     title: parsedConfig.gameTitle,
     version: parsedConfig.gameVersion,
   };
-  const hasLoadableSave =
-    hasLoadableProgressByKey(autosaveKey, identity) ||
-    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}`, identity) ||
-    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}-2`, identity) ||
-    hasLoadableProgressByKey(`${autosaveKey}${MANUAL_SAVE_SUFFIX}-3`, identity) ||
-    hasLoadableProgressByKey(`${autosaveKey}${CHAPTER_SAVE_SUFFIX}`, identity) ||
-    hasLoadableProgressByKey(LEGACY_AUTOSAVE_KEY, identity);
+  // Same rule as the loader, so the button describes exactly what it will open.
+  const saveStatus = describeStoredProgress(autosaveKey, identity);
   return {
+    gameVersion: parsedConfig.gameVersion,
+    saveStatus,
     gameTitle: parsedConfig.gameTitle,
     startScreen,
     seo: parsedConfig.seo,
     legalNotices: parsedConfig.legalNotices,
     uiTemplate: parsedConfig.uiTemplate,
-    hasLoadableSave,
+    hasLoadableSave: saveStatus.status !== 'none',
   };
 }
 
@@ -4970,6 +5126,8 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
       legalNotices: parsedConfig.legalNotices,
       uiTemplate: parsedConfig.uiTemplate,
       hasLoadableSave: false,
+      gameVersion: parsedConfig.gameVersion,
+      saveStatus: { status: 'none' },
     };
   }
   const isResolvableLocalAsset = (path?: string): path is string =>
@@ -5017,6 +5175,8 @@ export async function loadZipStartScreenPreview(file: File): Promise<StartScreen
     legalNotices: parsedConfig.legalNotices,
     uiTemplate: parsedConfig.uiTemplate,
     hasLoadableSave: false,
+    gameVersion: parsedConfig.gameVersion,
+    saveStatus: { status: 'none' },
   };
 }
 
@@ -5463,33 +5623,15 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
       }
     }
 
+    // 이어하기 resumes the newest save (auto, manual 1–3, chapter). An older authored
+    // version is still resumed: the start screen told the player before this call.
     const loadedProgress = resumeFromSave
       ? loadProgress(gameIdentity)
       : { source: 'none' as const, save: undefined };
-    if (loadedProgress.source !== 'scoped' && loadedProgress.source !== 'none') {
-      clearChoiceRecoveryPoint();
-    }
     const save = loadedProgress.save;
-    if (save?.chapterPath) {
-      const preparedIndex = resolveChapterPathIndex(
-        chapters.map((chapter) => chapter.pathKey),
-        save.chapterPath,
-      );
-      if (preparedIndex >= 0) {
-        const resumed = await startPreparedChapters(chapters, preparedIndex, save);
-        migrateLegacyProgressIfNeeded(loadedProgress.source, save, resumed);
-        return;
-      }
-      const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
-      if (resumeSequence) {
-        const resumed = await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
-        migrateLegacyProgressIfNeeded(loadedProgress.source, save, resumed);
-        return;
-      }
-    }
-
-    if (save && !save.chapterPath && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
-      const resumed = await startPreparedChapters(chapters, save.chapterIndex, save);
+    if (save) {
+      trimChoiceRecoveryTrail(save);
+      const resumed = await startPreparedChaptersFromSave(chapters, save);
       migrateLegacyProgressIfNeeded(loadedProgress.source, save, resumed);
       return;
     }
@@ -5581,27 +5723,10 @@ export async function loadGameFromZip(file: File, options: LoadGameOptions = {})
     const loadedProgress = resumeFromSave
       ? loadProgress(gameIdentity)
       : { source: 'none' as const, save: undefined };
-    if (loadedProgress.source !== 'scoped' && loadedProgress.source !== 'none') {
-      clearChoiceRecoveryPoint();
-    }
     const save = loadedProgress.save;
-    if (save?.chapterPath) {
-      const preparedIndex = resolveChapterPathIndex(
-        chapters.map((chapter) => chapter.pathKey),
-        save.chapterPath,
-      );
-      if (preparedIndex >= 0) {
-        await startPreparedChapters(chapters, preparedIndex, save);
-        return;
-      }
-      const resumeSequence = await resolveSequenceFromChapterPath(save.chapterPath);
-      if (resumeSequence) {
-        await startPreparedChapters(resumeSequence.chapters, resumeSequence.startIndex, save);
-        return;
-      }
-    }
-    if (save && !save.chapterPath && save.chapterIndex >= 0 && save.chapterIndex < chapters.length) {
-      await startPreparedChapters(chapters, save.chapterIndex, save);
+    if (save) {
+      trimChoiceRecoveryTrail(save);
+      await startPreparedChaptersFromSave(chapters, save);
       return;
     }
 
@@ -5812,7 +5937,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
     const authoredAction = state.game?.scenes[state.currentSceneId]?.actions[state.actionIndex];
     const authoredIndex = authoredAction && 'choice' in authoredAction ? authoredAction.choice.options.indexOf(selected) : optionIndex;
     recordStoryMapStop(`:death:${authoredIndex}`);
-    triggerGameOver(selected.gameOver, false);
+    triggerGameOver(selected.gameOver);
     return;
   }
   if (selected.goto) {
