@@ -1,6 +1,6 @@
 # 스토리 텍스트 → YAVN YAML V3 변환 프롬프트
 
-아래 프롬프트를 LLM에 넣으면, YAML V3 구조(`config.yaml` + `base.yaml` + 챕터 YAML)로 초안을 만들 수 있습니다.
+아래 프롬프트를 LLM에 넣으면, YAML V3 구조(`config.yaml` + `base.yaml` + 챕터 YAML)로 초안을 만들 수 있습니다. 이미 쓴 원고를 옮기기만 할 때 씁니다. 시놉시스에서 기획·집필까지 맡길 때는 [`AI_GAME_WRITING_PROMPT.ko.md`](AI_GAME_WRITING_PROMPT.ko.md)를 쓰세요.
 
 ## 추천 사용법
 
@@ -31,7 +31,7 @@
 - 헤더 다음에는 해당 파일의 YAML 본문만 출력
 
 [YAML V3 계약]
-- config.yaml: title, author, version, textSpeed, autoSave, clickToInstant, endings?, endingRules?, defaultEnding?
+- config.yaml: title, author, version, textSpeed, clickToInstant, endings?, endingRules?, defaultEnding? (자동저장은 항상 켜져 있어 설정하지 않음)
 - base.yaml: assets?, state?
 - 챕터 YAML: script, scenes 필수 / assets?, state? 선택
 - state는 평면 맵으로 작성 (`state.defaults` 래퍼 금지)
@@ -54,7 +54,7 @@
 - say.char / say.with는 assets.characters의 키 또는 character.emotion 형식
 - char.enter는 문자열 효과 또는 { effect, layout, duration, easing, delay } 형식. layout은 cut|push
 - set/add/branch/input.saveAs/endingRules에서 쓰는 변수는 state에 선언
-- effect는 shake, flash, zoom, blur, darken, pulse, tilt만 사용
+- effect는 shake, flash, zoom, blur, darken, pulse, tilt, glitch, alarm만 사용
 
 [캐릭터 등장 연출]
 - 갑자기 나타나는 컷: char.enter: { effect: popIn, layout: cut, duration: 180 }
@@ -105,7 +105,6 @@ title: "게임 제목"
 author: "작성자"
 version: "1.0"
 textSpeed: 38
-autoSave: true
 clickToInstant: true
 endings:
   true_end:

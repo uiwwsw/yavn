@@ -1473,6 +1473,7 @@ public/game-list/my-story/
 
 - `README.md`
 - `docs/YAML_STORY_TO_DSL_PROMPT.ko.md`
+- `docs/AI_GAME_WRITING_PROMPT.ko.md` (시놉시스 → 기획 → 제작 → 다듬기, AI에게 게임을 맡길 때)
 - `docs/MUWON_GAME_BIBLE.ko.md`
 - 추리극 분기 샘플: `public/game-list/muwon/*.yaml`
 - DSL 축약 샘플: `sample.yaml`
