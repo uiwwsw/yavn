@@ -718,7 +718,7 @@ scenes:
             - text: 종이의 내 이름
               at:
                 x: 50
-                "y": 30
+                "y": 45
               when:
                 not:
                   var: opening_name_read

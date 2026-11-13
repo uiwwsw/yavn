@@ -865,7 +865,7 @@ scenes:
             - text: My name on the paper
               at:
                 x: 50
-                "y": 30
+                "y": 45
               when:
                 not:
                   var: opening_name_read
