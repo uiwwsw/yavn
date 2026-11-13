@@ -124,3 +124,18 @@ export function initializePromptLayout(): () => void {
   compact?.addEventListener('change', syncPromptHeight);
   return () => { unsubscribe(); compact?.removeEventListener('change', syncPromptHeight); };
 }
+
+/**
+ * Where the dialogue box should be scrolled after a text update.
+ *
+ * A line longer than the box types on out of sight, so while it is typing we follow it down
+ * and keep the newest words in view. A new line starts at the top so it reads from the
+ * beginning, and a line the reader completed with a click is left where it is, so its opening
+ * stays visible and they can scroll at their own pace.
+ */
+export function resolveDialogueScroll(
+  { lineChanged, typing }: { lineChanged: boolean; typing: boolean },
+): 'top' | 'bottom' | 'keep' {
+  if (lineChanged) return 'top';
+  return typing ? 'bottom' : 'keep';
+}

@@ -29,7 +29,7 @@ import { GameIcon } from './GameIcon';
 import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
-import { resolvePromptActorInset } from './promptLayout';
+import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
@@ -325,6 +325,7 @@ const DialogueActionButton = memo(function DialogueActionButton() {
 const DialogueText = memo(function DialogueText() {
   const {
     visibleText,
+    fullText,
     typing,
     channel,
     delivery,
@@ -332,6 +333,7 @@ const DialogueText = memo(function DialogueText() {
     typingPulse,
   } = useVNStore(useShallow((state) => ({
     visibleText: state.dialog.visibleText,
+    fullText: state.dialog.fullText,
     typing: state.dialog.typing,
     channel: state.dialog.channel,
     delivery: state.dialog.delivery,
@@ -339,6 +341,23 @@ const DialogueText = memo(function DialogueText() {
     typingPulse: state.dialog.typingPulse,
   })));
   const visibleDialogue = splitLastGrapheme(typing ? visibleText : '');
+  const textRef = useRef<HTMLDivElement>(null);
+
+  // A line longer than the dialogue box would type on out of sight, so follow it down while it
+  // types and keep the newest words visible. Each new line starts back at the top. A line the
+  // reader completed with a click is left at the top instead, so they still see its beginning.
+  // Jumps are instant: smooth scrolling cannot keep up with character-by-character typing.
+  const lineStartRef = useRef<string>();
+  useLayoutEffect(() => {
+    const scroller = textRef.current?.closest<HTMLElement>('.dialog-content-scroll');
+    if (!scroller) return;
+    const lineChanged = lineStartRef.current !== fullText;
+    lineStartRef.current = fullText;
+    const target = resolveDialogueScroll({ lineChanged, typing });
+    if (target === 'top') scroller.scrollTop = 0;
+    else if (target === 'bottom') scroller.scrollTop = scroller.scrollHeight;
+  }, [fullText, visibleText, typing]);
+
   const className = [
     'text',
     `channel-${channel}`,
@@ -350,6 +369,7 @@ const DialogueText = memo(function DialogueText() {
 
   return (
     <div
+      ref={textRef}
       className={className}
       style={{ '--typing-intensity': typingIntensity } as CSSProperties}
     >

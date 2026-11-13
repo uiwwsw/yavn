@@ -8,6 +8,7 @@ import {
   resolveInteractivePromptHeight,
   resolvePromptActorInset,
   resolvePromptActionHeight,
+  resolveDialogueScroll,
 } from './promptLayout';
 import type { Action, GameData } from './types';
 
@@ -140,5 +141,27 @@ describe('interactive prompt sizing', () => {
     expect(resolvePromptActorInset(304, 280, 170)).toBe(194);
     expect(resolvePromptActorInset(304, 280, 280)).toBe(304);
     expect(resolvePromptActorInset(134, 110, 170)).toBe(134);
+  });
+});
+
+describe('long dialogue stays readable', () => {
+  it('follows a line down while it types so the newest words stay in view', () => {
+    expect(resolveDialogueScroll({ lineChanged: false, typing: true })).toBe('bottom');
+  });
+
+  it('starts every new line at its beginning', () => {
+    expect(resolveDialogueScroll({ lineChanged: true, typing: true })).toBe('top');
+    expect(resolveDialogueScroll({ lineChanged: true, typing: false })).toBe('top');
+  });
+
+  it('leaves a finished line where the reader left it', () => {
+    // Clicking to finish a long line should not throw away its opening.
+    expect(resolveDialogueScroll({ lineChanged: false, typing: false })).toBe('keep');
+  });
+
+  it('keeps the dialogue box scrollable and drives it from the typing text', () => {
+    expect(promptStyles).toMatch(/\.dialog-content-scroll \{[\s\S]*?overflow-y: auto;/);
+    expect(appSource).toContain("closest<HTMLElement>('.dialog-content-scroll')");
+    expect(appSource).toContain('resolveDialogueScroll({ lineChanged, typing })');
   });
 });
