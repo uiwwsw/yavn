@@ -749,6 +749,9 @@ assets:
 - `char`
 - `say`
 - `wait`
+- `move` (인물 동선, 9-4-4)
+- `emote` (인물 몸짓 프리셋, 9-4-5)
+- `place` (시간·장소 표시, 9-4-4)
 - `effect`
 - `goto`
 - `video`
@@ -1384,6 +1387,85 @@ scenes:
 - `prefers-reduced-motion`에서는 이동이 즉시 끝납니다. 저장 복원 때는 동선을 다시 재생하지 않습니다.
 - `place`는 60자 이하, `{{변수}}` 치환을 지원합니다. 장면이 바뀌는 첫머리에 한 줄이면 충분하고, 같은 정보를 내레이션으로 반복하지 않습니다.
 
+### 9-4-5) 인물 몸짓(`emote`·`motion`) — 감정을 움직임으로
+
+끄덕임, 한숨, 떨림처럼 감정이 몸에 드러나는 짧은 움직임을 프리셋 이름 하나로 붙입니다. 자리를 옮기는 `move`와 달리 몸짓은 제자리에서 끝납니다. 두 가지는 함께 써도 서로 덮어쓰지 않습니다.
+
+```yaml
+# 1) 단독 액션: 무대에 있는 인물이 바로 움직임
+- emote: { id: 지수, motion: sigh }                  # 한숨. 다음 액션은 바로 실행
+- emote: { id: 지수, motion: laugh, repeat: 2 }      # 두 번 반복(1–3)
+- emote: { id: 도윤, motion: startle, wait: true }   # 끝날 때까지 기다렸다가 다음 액션
+
+# 2) 대사에 붙이기: 대사가 시작될 때 말하는 인물(char)이 움직임
+- say: { char: 지수.sad, motion: sigh, text: "됐어. 그만하자." }
+- choice: { char: 도윤, motion: headtilt, prompt: "뭐라고 할까?", options: [...] }
+- input: { char: 하린, motion: lean_in, prompt: "비밀번호는?", correct: "0412" }
+```
+
+| 필드 | 값 | 동작 |
+| --- | --- | --- |
+| `id` | 무대에 있는 인물 ID | 움직일 인물. 무대에 없으면 아무 일도 하지 않음 |
+| `motion` | 아래 표의 프리셋 ID | 재생할 몸짓 |
+| `repeat` | `1`–`3`, 기본 `1` | 반복 횟수. `slump`·`droop`은 반복하지 않음 |
+| `wait` | `true` / 기본 `false` | `true`면 몸짓이 끝난 뒤 다음 액션 실행(길이 × `repeat`) |
+
+`say`·`choice`·`input`의 `motion`은 그 액션의 `char`(화자)에게만 적용되며 `char` 없이 쓰면 검증 오류입니다. 같은 몸짓을 연달아 요청해도 매번 처음부터 다시 재생합니다.
+
+| ID | 한국어 이름 | 언제 쓰나 | 길이 |
+| --- | --- | --- | --- |
+| `nod` | 끄덕임 | 동의, 수긍, "응" | 560ms |
+| `shake` | 도리도리 | 부정, 거절, "아니야" | 720ms |
+| `tremble` | 떨림 | 공포, 분노를 참음, 추위 | 960ms |
+| `shiver` | 오싹 | 소름, 불길한 예감 | 620ms |
+| `sigh` | 한숨 | 체념, 피로, 안도(들이쉬었다 내려앉음) | 1500ms |
+| `slump` | 축 처짐 | 낙담, 기운이 빠짐. **끝 자세 유지** | 900ms |
+| `perk` | 번쩍 | 관심, 깨달음, 이름이 불림 | 460ms |
+| `hop` | 폴짝 | 기쁨, 신남 | 560ms |
+| `bounce` | 들뜸 | 설렘, 신나서 통통 두 번 | 880ms |
+| `laugh` | 웃음 | 소리 내 웃음(어깨 들썩) | 900ms |
+| `sob` | 흐느낌 | 울음을 삼킴 | 1400ms |
+| `gasp` | 헉 | 숨을 들이켜고 굳음, 놀람 직후 | 760ms |
+| `startle` | 깜짝 | 갑작스러운 소리·말에 몸이 튐 | 560ms |
+| `recoil` | 몸 젖힘 | 거부감, 뒤로 물러서는 반응 | 760ms |
+| `lean_in` | 몸 기울임 | 다가가 속삭임, 추궁, 관심 | 1200ms |
+| `bow` | 꾸벅 | 인사, 사과 | 1100ms |
+| `sway` | 휘청 | 어지러움, 충격, 취함 | 1400ms |
+| `stomp` | 쿵 | 발 구르기, 짜증, 결심 | 560ms |
+| `puff` | 씩씩 | 화나서 숨을 몰아쉼 | 1000ms |
+| `freeze` | 얼어붙음 | 움찔한 뒤 그대로 굳음 | 900ms |
+| `headtilt` | 갸웃 | 의아함, 모르겠다는 표정 | 1200ms |
+| `droop` | 고개 떨굼 | 수치, 죄책감, 슬픔. **끝 자세 유지** | 820ms |
+
+- **끝 자세 유지:** `slump`와 `droop`은 끝난 자세 그대로 머뭅니다. 다음 몸짓이 오거나 `move: { id, style: reset }`을 만나면 풀립니다. `reset`으로 풀면 천천히 펴지고, 다른 몸짓으로 바로 이으면 원래 자세에서 새 몸짓이 시작합니다. 다음 장에서는 항상 풀린 상태로 시작합니다.
+- **방향:** `recoil`·`lean_in`·`bow`·`startle`처럼 앞뒤가 있는 몸짓은 원화의 `facing`을 기준으로 앞쪽을 정합니다. 무대에서 좌우 반전된 인물도 상대 쪽으로 기울입니다. `facing`이 없거나 `front`면 앞뒤 대신 크기 변화로만 표현합니다.
+- **반신·전신:** 움직임은 보이는 인물 상자 크기에 비례합니다. `cropBottom`으로 잘린 반신은 아래 경계가 고정된 채 위아래로 움직이고, 잘리지 않은 원화(전신이나 아래 끝이 보이는 반신)는 위로 뜨는 대신 살짝 늘어나 발밑·몸 아래에 빈틈이 생기지 않습니다.
+- **함께 쓰기:** 몸짓은 인물 안쪽 레이어만 움직이므로 `move` 위치, 크기·구도(`framing`), 좌우 반전, 등장 연출, `attack` 연출과 겹쳐도 됩니다.
+- **모션 감소:** `prefers-reduced-motion`에서는 움직이지 않고 투명도만 한 번 짧게 깜빡입니다. 유지 자세도 적용하지 않습니다.
+- **저장·건너뛰기:** 저장을 불러올 때는 그 이전 몸짓과 불러온 줄의 `motion`을 다시 재생하지 않습니다(유지 자세도 복원하지 않습니다). 읽은 대사 건너뛰기 중에는 `wait: true`도 기다리지 않습니다. 로딩 화면이 덮이는 등 이야기 시간이 멈춘 동안에는 몸짓과 `wait` 시간이 함께 멈춥니다.
+
+#### 감정에 몸짓 묶기(`emotionMotions`, 선택)
+
+`base.yaml`의 인물에 `emotionMotions`를 적으면, 대사가 그 인물을 해당 표정으로 **바꿀 때** 몸짓이 자동으로 나옵니다. 선언하지 않으면 아무 몸짓도 붙지 않습니다.
+
+```yaml
+characters:
+  도윤:
+    base: assets/char/doyun.svg
+    emotions:
+      panic: assets/char/doyun-panic.svg
+      smile: assets/char/doyun-smile.svg
+    emotionMotions:
+      panic: tremble
+      smile: nod
+```
+
+- `say`·`choice`·`input`의 `char`와 `with`에 적힌 표정 모두에 적용됩니다. 이미 그 표정인 인물이 같은 표정으로 다시 나오면 반복하지 않습니다.
+- 그 줄에 `motion`이 있으면 화자에게는 `motion`이 우선합니다.
+- 키는 `emotions`에 선언한 표정 이름이어야 합니다.
+
+검증 오류 예: `unknown motion 'dance' (use one of: nod, shake, …)`, `scene 's' emote uses missing character 'ghost'`, `scene 's' say.motion 'nod' needs say.char`, `character '도윤' emotionMotions uses missing emotion 'angry'`.
+
 ### 9-11) 자유 입력과 `{{변수}}` 치환 (플레이어 이름)
 
 ```yaml
@@ -1498,6 +1580,7 @@ public/game-list/my-story/
 
 ## 14) 문서 변경 로그
 
+- 2026-11-13: 인물 몸짓 프리셋 22종(`emote` 액션, `say`·`choice`·`input`의 `motion`, 인물별 `emotionMotions`)을 추가했습니다(9-4-5). 기존 YAML·저장은 그대로 동작합니다.
 - 2026-11-13: 내린 작품의 주소를 살려 두도록 `vercel.json`에 301 리다이렉트를 넣고, 그 밖의 없는 주소를 위한 `404.html`(`scripts/generate-not-found.mjs`)을 빌드에 추가했습니다. 작품을 내릴 때는 `/game-list/<id>`와 `/game-list/<id>/:path*` 두 줄을 리다이렉트에 추가하고, 대체작이 있으면 그 작품으로, 없으면 `/`로 보냅니다. 검색 결과에 남은 주소가 빈 404로 끝나지 않게 하려는 것입니다.
 - 2026-11-13: 인물 동선 `move`(approach·lunge·retreat·flinch·reset)와 시간·장소 표시 `place`를 추가했습니다.
 - 2026-11-13: `say.channel`에 `card`(전체 화면 자막 카드)와 `message`(휴대폰 말풍선, `say.side`)를 추가하고 `say.erase` 지우기 연출을 넣었습니다. 사용자 원작 「ERASE」, 「8비트 심장」, 「튜토리얼」을 추가했습니다.

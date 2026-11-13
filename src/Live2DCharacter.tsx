@@ -1,4 +1,5 @@
 import { CharacterPresence } from './CharacterPresence';
+import { CharacterEmote, type CharacterEmoteProps } from './CharacterEmote';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { createModelView, startup, Ticker } from 'easy-cl2d';
@@ -598,9 +599,10 @@ type Props = {
   visible: boolean;
   className?: string;
   style?: CSSProperties;
+  emote?: CharacterEmoteProps;
 };
 
-export function Live2DCharacter({ slot, position, trackingKey, active, visible, className, style }: Props) {
+export function Live2DCharacter({ slot, position, trackingKey, active, visible, className, style, emote }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<Live2DViewModel>();
   const tickerRef = useRef<Ticker>();
@@ -825,7 +827,9 @@ export function Live2DCharacter({ slot, position, trackingKey, active, visible, 
       style={style}
     >
       <CharacterPresence visible={visible} ready={readySource === slot.source || Boolean(error)} effect={slot.enterEffect}>
-        <div ref={mountRef} className="char-live2d-mount" />
+        <CharacterEmote {...emote}>
+          <div ref={mountRef} className="char-live2d-mount" />
+        </CharacterEmote>
       </CharacterPresence>
       {error && <div className="char-live2d-error">{error}</div>}
     </div>

@@ -51,6 +51,7 @@ scenes:
           text: "눈 뜨면… 새로 시작해요."
       - say:
           char: 도윤.hollow
+          motion: shiver
           with: []
           delivery: whisper
           text: "…이거 어디서 들었더라."
@@ -79,6 +80,7 @@ scenes:
           text: "이름도, 얼굴도, 기억도요. 친구분들 번호도 다."
       - say:
           char: 하린
+          motion: nod
           with: []
           delivery: whisper
           text: "네. 다요."
@@ -214,6 +216,7 @@ scenes:
           inputLockMs: 600
       - say:
           char: 도윤
+          motion: sob
           with: []
           delivery: whisper
           text: "…안녕."
@@ -252,6 +255,7 @@ scenes:
           text: "결과 상담 · 47번 고객님, 2번 상담실로 오세요."
       - say:
           char: 도윤
+          motion: perk
           with: []
           text: "…네. 저요."
       - ending: kept_photo

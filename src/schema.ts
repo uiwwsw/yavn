@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { UI_TEMPLATE_IDS } from './uiTemplates';
+import { CHARACTER_MOTION_IDS, MAX_MOTION_REPEAT } from './characterEmotes';
 
 export const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]);
 export const stateSetMapSchema = z.record(routeVarValueSchema);
@@ -16,6 +17,8 @@ export const dialogueDeliverySchema = z.enum([
   'deduction',
 ]);
 export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system', 'thought', 'action', 'message', 'card']);
+
+export const characterMotionSchema = z.enum(CHARACTER_MOTION_IDS);
 
 export const cameraShotSchema = z.enum(['wide', 'medium', 'close', 'reaction']);
 export const cameraTransitionSchema = z.enum(['cut', 'push', 'pan']);
@@ -66,6 +69,7 @@ const inputActionSchema = z.object({
   routes: z.array(inputRouteSchema).optional(),
   maxLength: z.number().int().min(1).max(40).optional(),
   defaultValue: z.string().trim().min(1).max(40).optional(),
+  motion: characterMotionSchema.optional(),
 }).refine((input) => input.correct !== undefined || input.saveAs !== undefined, {
   message: 'input.saveAs is required when input.correct is omitted (free text input)',
 });
@@ -221,6 +225,7 @@ const actionBodySchema = z.union([
       routes: input.routes ?? [],
       maxLength: input.maxLength,
       defaultValue: input.defaultValue,
+      motion: input.motion,
     })),
   }),
   z.object({ set: stateSetMapSchema }),
@@ -242,6 +247,7 @@ const actionBodySchema = z.union([
         forgiveMessage: z.string().min(1).optional(),
         timeoutMs: z.number().int().min(1000).max(60000).optional(),
         timeoutOptionIndex: z.number().int().nonnegative().optional(),
+        motion: characterMotionSchema.optional(),
         options: z.array(choiceOptionSchema).min(1),
       })
       .superRefine((choice, ctx) => {
@@ -287,6 +293,14 @@ const actionBodySchema = z.union([
       wait: z.boolean().optional(),
     }).strict(),
   }).strict(),
+  z.object({
+    emote: z.object({
+      id: z.string().min(1),
+      motion: characterMotionSchema,
+      repeat: z.number().int().min(1).max(MAX_MOTION_REPEAT).optional(),
+      wait: z.boolean().optional(),
+    }).strict(),
+  }).strict(),
   z.object({ place: z.string().trim().min(1).max(60) }).strict(),
   z.object({
     effect: z.union([
@@ -326,6 +340,7 @@ const actionBodySchema = z.union([
       side: z.enum(['me', 'them']).optional(),
       erase: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
+      motion: characterMotionSchema.optional(),
     }).refine(say => !(say.continueLabel && say.autoAdvance), {
       message: 'An explicit player action cannot auto-advance',
       path: ['continueLabel'],
@@ -342,6 +357,19 @@ export const actionSchema = z
         code: z.ZodIssueCode.custom,
         message: `each action must declare exactly one action key (received: ${keys.join(', ') || 'none'})`,
       });
+    }
+    // Name the bad motion instead of the union's generic "Invalid input".
+    const key = keys[0];
+    const body = action[key];
+    if (keys.length === 1 && ['emote', 'say', 'choice', 'input'].includes(key) && body && typeof body === 'object') {
+      const motion = (body as Record<string, unknown>).motion;
+      if ((motion !== undefined || key === 'emote') && !(CHARACTER_MOTION_IDS as readonly unknown[]).includes(motion)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key, 'motion'],
+          message: `unknown motion '${String(motion)}' (use one of: ${CHARACTER_MOTION_IDS.join(', ')})`,
+        });
+      }
     }
   })
   .pipe(actionBodySchema);
@@ -569,6 +597,7 @@ const characterAssetsSchema = z.record(
       framings: z.record(characterFramingPresetSchema).optional(),
       calibration: characterCalibrationSchema.optional(),
       name: z.string().trim().min(1).max(40).optional(),
+      emotionMotions: z.record(characterMotionSchema).optional(),
     })
     .strict(),
 );

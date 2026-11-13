@@ -34,6 +34,7 @@ import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
 import './characterPresentation.css';
+import './characterEmotes.css';
 import { SceneCurtain, useSceneCurtain } from './SceneCurtain';
 import { collectStartSceneAssets, DEFAULT_START_SCENE, mapStartSceneAssets } from './startScene';
 import { OutcomePrelude, trapOutcomeFocus } from './OutcomePrelude';
@@ -1619,6 +1620,7 @@ export default function App() {
     gameOver,
     uiTemplate,
     characterStances,
+    characterMotions,
     placeCaption,
     setDialogUiHidden,
   } = useVNStore(useShallow((state) => ({
@@ -1662,6 +1664,7 @@ export default function App() {
     gameOver: state.gameOver,
     uiTemplate: state.uiTemplate,
     characterStances: state.characterStances,
+    characterMotions: state.characterMotions,
     placeCaption: state.placeCaption,
     setDialogUiHidden: state.setDialogUiHidden,
   })));
@@ -3721,6 +3724,15 @@ export default function App() {
     const combatRole = attack?.attacker === slot.id ? 'attacker' : attack?.target === slot.id ? 'target' : undefined;
     const combatClass = combatRole && attack ? `combat-${combatRole} combat-${attack.phase}` : '';
     const stance = characterStances[slot.id];
+    const motionState = characterMotions[slot.id];
+    // In the art's own frame (before the facing flip): which way is "toward the other person".
+    const emote = {
+      motion: motionState?.motion,
+      motionRepeat: motionState?.repeat,
+      motionRevision: motionState?.revision,
+      motionSettled: motionState?.settled,
+      motionForward: slot.facing === 'left' ? -1 : slot.facing === 'right' ? 1 : 0,
+    };
     const charStyle = {
       '--char-stance-x': `${stance?.x ?? 0}cqw`,
       '--char-stance-scale': stance?.scale ?? 1,
@@ -3770,6 +3782,7 @@ export default function App() {
             className={[combatClass, focusPresentation.depthClass, isSpeaking ? 'is-speaking' : '', duoClass, `char-placement-${renderPlacement}`, visibilityClass, entryClass].filter(Boolean).join(' ')}
             style={charStyle}
             visible={rendererActive}
+            emote={emote}
           />
         </Suspense>
       );
@@ -3792,6 +3805,7 @@ export default function App() {
         style={charStyle}
         visible={rendererActive}
         enterEffect={slot.enterEffect}
+        {...emote}
       />
     );
   };

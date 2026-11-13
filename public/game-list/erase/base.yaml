@@ -36,6 +36,9 @@ assets:
         smile: assets/char/doyun-smile.svg
         panic: assets/char/doyun-panic.svg
         hollow: assets/char/doyun-hollow.svg
+      emotionMotions:
+        panic: freeze
+        hollow: droop
     지수:
       name: "이지수"
       placement: prompt-top
@@ -62,6 +65,8 @@ assets:
       emotions:
         smirk: assets/char/junseong-smirk.svg
         tired: assets/char/junseong-tired.svg
+      emotionMotions:
+        tired: sigh
     하린:
       name: "유하린"
       placement: prompt-top
@@ -87,6 +92,8 @@ assets:
         full: { scale: 1 }
       emotions:
         laugh: assets/char/minjae-laugh.svg
+      emotionMotions:
+        laugh: laugh
     아진:
       name: "정아진"
       placement: prompt-top

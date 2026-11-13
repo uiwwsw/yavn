@@ -1,12 +1,13 @@
 import { memo, useEffect, useRef, useState, type CSSProperties, type HTMLAttributes } from 'react';
 import { waitForImageReady } from './imageReady';
 import { CharacterPresence } from './CharacterPresence';
+import { CharacterEmote, type CharacterEmoteProps } from './CharacterEmote';
 import { ResourceImage } from './ResourceImage';
 import { PORTRAIT_DISSOLVE_MS, finishPortrait, portraitSources, presentPortrait, type PortraitFrame, type PortraitTransition } from './portraitTransition';
 import type { CharacterEnterEffect } from './types';
 
 const CHARACTER_IMAGE_READY_TIMEOUT_MS = 12000;
-type Props = HTMLAttributes<HTMLDivElement> & {
+type Props = HTMLAttributes<HTMLDivElement> & CharacterEmoteProps & {
   source: string; alt: string; visible: boolean; enterEffect: CharacterEnterEffect;
   cropBottom?: number;
   fetchpriority?: 'high' | 'low' | 'auto'; loading?: 'eager' | 'lazy'; decoding?: 'async' | 'sync' | 'auto';
@@ -14,7 +15,8 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 
 /** Decoded DOM frames, one active dissolve and one latest request. No source-swap flash. */
 export const StageImageCharacter = memo(function StageImageCharacter({
-  source, alt, visible, enterEffect, cropBottom = 0, className = '', style, fetchpriority, loading, decoding, ...props
+  source, alt, visible, enterEffect, cropBottom = 0, className = '', style, fetchpriority, loading, decoding,
+  motion, motionRepeat, motionRevision, motionSettled, motionForward, ...props
 }: Props) {
   const images = useRef(new Map<string, HTMLImageElement>());
   const [presentation, setPresentation] = useState<PortraitTransition>({});
@@ -60,6 +62,8 @@ export const StageImageCharacter = memo(function StageImageCharacter({
       data-image-state={!presentation.current ? 'pending' : presentation.current.source !== source ? 'holding' : 'ready'}>
       <CharacterPresence visible={visible} ready={Boolean(presentation.current)} effect={enterEffect}>
         <div className="character-portrait" data-dissolving={Boolean(presentation.previous)} data-cropped={cropBottom > 0}>
+          <CharacterEmote motion={motion} motionRepeat={motionRepeat} motionRevision={motionRevision}
+            motionSettled={motionSettled} motionForward={motionForward}>
           {portraitSources(presentation, source).map((url) => {
             const role = url === presentation.current?.source ? 'current' : url === presentation.previous?.source ? 'previous' : 'pending';
             return <ResourceImage key={url} ref={element => { if (element) images.current.set(url, element); else images.current.delete(url); }}
@@ -68,6 +72,7 @@ export const StageImageCharacter = memo(function StageImageCharacter({
               loading={loading} decoding={decoding} {...{ fetchpriority }} draggable={false}
               onAnimationEnd={(event) => { if (role === 'current' && event.animationName === 'portraitReveal') finish(url); }} />;
           })}
+          </CharacterEmote>
         </div>
       </CharacterPresence>
     </div>

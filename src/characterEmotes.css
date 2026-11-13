@@ -1,0 +1,217 @@
+/* Body language ("emote"). Only the inner `.character-emote` layer moves:
+   `.char` keeps translate/scale (blocking, framing), its transform (facing, combat),
+   `.character-entrance` keeps arrivals and `.character-presence` keeps speaker emphasis.
+   Distances are % of the visible portrait box, so a cropped bust and a full body
+   move by the same share of what the player sees. `--emote-forward` is the art's own
+   gaze direction (-1 left, 1 right, 0 front); the outer facing flip mirrors it for free. */
+.character-emote {
+  /* 1: the bottom edge is a crop line, so the art may rise. 0: the art's own bottom edge
+     shows (an uncropped bust or feet), so a rise becomes a stretch and never opens a gap. */
+  --emote-lift: 1;
+  /* Tilts swing an uncropped bottom edge, so anchored art leans less. */
+  --emote-tilt: 1;
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  /* A held pose (slump, droop) eases back when it is released. */
+  transition: transform 420ms cubic-bezier(.2,.7,.3,1);
+}
+/* The portrait clip (characterPresentation.css) leaves top headroom for lifts; the bottom crop line stays fixed. */
+
+.character-portrait[data-cropped='false'] > .character-emote { --emote-lift: 0; --emote-tilt: .6; }
+
+.character-emote[data-motion] {
+  animation-duration: var(--emote-duration);
+  animation-iteration-count: var(--emote-repeat, 1);
+  animation-timing-function: cubic-bezier(.37,0,.32,1);
+  animation-fill-mode: none;
+}
+.character-emote[data-motion-hold='true'] { animation-fill-mode: forwards; }
+/* A finished hold (or one restored on a remount) shows its end pose without moving again. */
+.character-emote[data-motion-settled='true'] { animation-duration: 0s; animation-delay: 0s; }
+
+.character-emote[data-motion='nod'] { animation-name: emoteNod; }
+.character-emote[data-motion='shake'] { animation-name: emoteShake; }
+.character-emote[data-motion='tremble'] { animation-name: emoteTremble; animation-timing-function: linear; }
+.character-emote[data-motion='shiver'] { animation-name: emoteShiver; animation-timing-function: linear; }
+.character-emote[data-motion='sigh'] { animation-name: emoteSigh; }
+.character-emote[data-motion='slump'] { animation-name: emoteSlump; animation-timing-function: cubic-bezier(.45,0,.25,1); }
+.character-emote[data-motion='perk'] { animation-name: emotePerk; animation-timing-function: cubic-bezier(.2,.8,.3,1); }
+.character-emote[data-motion='hop'] { animation-name: emoteHop; animation-timing-function: cubic-bezier(.3,0,.3,1); }
+.character-emote[data-motion='bounce'] { animation-name: emoteBounce; animation-timing-function: cubic-bezier(.3,0,.3,1); }
+.character-emote[data-motion='laugh'] { animation-name: emoteLaugh; animation-timing-function: ease-in-out; }
+.character-emote[data-motion='sob'] { animation-name: emoteSob; animation-timing-function: ease-in-out; }
+.character-emote[data-motion='gasp'] { animation-name: emoteGasp; animation-timing-function: cubic-bezier(.2,.8,.3,1); }
+.character-emote[data-motion='startle'] { animation-name: emoteStartle; animation-timing-function: cubic-bezier(.2,.8,.3,1); }
+.character-emote[data-motion='recoil'] { animation-name: emoteRecoil; animation-timing-function: cubic-bezier(.2,.8,.3,1); }
+.character-emote[data-motion='lean_in'] { animation-name: emoteLeanIn; }
+.character-emote[data-motion='bow'] { animation-name: emoteBow; }
+.character-emote[data-motion='sway'] { animation-name: emoteSway; animation-timing-function: ease-in-out; }
+.character-emote[data-motion='stomp'] { animation-name: emoteStomp; animation-timing-function: cubic-bezier(.5,0,.5,1); }
+.character-emote[data-motion='puff'] { animation-name: emotePuff; animation-timing-function: ease-in-out; }
+.character-emote[data-motion='freeze'] { animation-name: emoteFreeze; animation-timing-function: linear; }
+.character-emote[data-motion='headtilt'] { animation-name: emoteHeadtilt; }
+.character-emote[data-motion='droop'] { animation-name: emoteDroop; animation-timing-function: cubic-bezier(.45,0,.25,1); }
+
+.app[data-story-paused='true'] .character-emote,
+.has-settings-modal .character-emote { animation-play-state: paused !important; }
+
+@keyframes emoteNod {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  34% { transform: translate(0%, 2.6%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * 1deg))) scale(1, 1); }
+  66% { transform: translate(0%, calc(var(--emote-lift) * -.4%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .002))); }
+}
+@keyframes emoteShake {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  14% { transform: translate(-3.2%, 0%) rotate(calc(var(--emote-tilt) * (-1.4deg))) scale(1, 1); }
+  36% { transform: translate(3.2%, 0%) rotate(calc(var(--emote-tilt) * (1.4deg))) scale(1, 1); }
+  58% { transform: translate(-2%, 0%) rotate(calc(var(--emote-tilt) * (-.9deg))) scale(1, 1); }
+  80% { transform: translate(.8%, 0%) rotate(calc(var(--emote-tilt) * (.35deg))) scale(1, 1); }
+}
+@keyframes emoteTremble {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  6% { transform: translate(1.3%, 0%) rotate(0deg) scale(1, 1); }
+  12% { transform: translate(-1.2%, .2%) rotate(0deg) scale(1, 1); }
+  18% { transform: translate(1.2%, 0%) rotate(0deg) scale(1, 1); }
+  24% { transform: translate(-1.3%, 0%) rotate(0deg) scale(1, 1); }
+  30% { transform: translate(1.2%, .2%) rotate(0deg) scale(1, 1); }
+  36% { transform: translate(-1.2%, 0%) rotate(0deg) scale(1, 1); }
+  42% { transform: translate(1.25%, 0%) rotate(0deg) scale(1, 1); }
+  48% { transform: translate(-1.1%, .2%) rotate(0deg) scale(1, 1); }
+  54% { transform: translate(1.05%, 0%) rotate(0deg) scale(1, 1); }
+  60% { transform: translate(-.95%, 0%) rotate(0deg) scale(1, 1); }
+  66% { transform: translate(.8%, .2%) rotate(0deg) scale(1, 1); }
+  72% { transform: translate(-.65%, 0%) rotate(0deg) scale(1, 1); }
+  80% { transform: translate(.45%, 0%) rotate(0deg) scale(1, 1); }
+  88% { transform: translate(-.25%, .2%) rotate(0deg) scale(1, 1); }
+}
+@keyframes emoteShiver {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  10% { transform: translate(0%, calc(var(--emote-lift) * -1.2%)) rotate(0deg) scale(1, calc(1.008 * (1 + (1 - var(--emote-lift)) * .006))); }
+  20% { transform: translate(-1.4%, calc(var(--emote-lift) * -.9%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0045))); }
+  30% { transform: translate(1.4%, calc(var(--emote-lift) * -.7%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0035))); }
+  40% { transform: translate(-1.1%, calc(var(--emote-lift) * -.5%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0025))); }
+  50% { transform: translate(.9%, calc(var(--emote-lift) * -.35%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0017))); }
+  62% { transform: translate(-.5%, 0%) rotate(0deg) scale(1, 1); }
+  76% { transform: translate(.2%, 0%) rotate(0deg) scale(1, 1); }
+}
+@keyframes emoteSigh {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  32% { transform: translate(0%, calc(var(--emote-lift) * -1.6%)) rotate(0deg) scale(1.008, calc(1.008 * (1 + (1 - var(--emote-lift)) * .008))); }
+  44% { transform: translate(0%, calc(var(--emote-lift) * -1.7%)) rotate(0deg) scale(1.008, calc(1.008 * (1 + (1 - var(--emote-lift)) * .0085))); }
+  76% { transform: translate(0%, 2%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * .8deg))) scale(.994, .994); }
+}
+@keyframes emoteSlump {
+  0% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  100% { transform: translate(0%, 3.6%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * 1.4deg))) scale(.985, .985); }
+}
+@keyframes emotePerk {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  32% { transform: translate(0%, calc(var(--emote-lift) * -3.2%)) rotate(0deg) scale(1.008, calc(1.008 * (1 + (1 - var(--emote-lift)) * .016))); }
+  64% { transform: translate(0%, .5%) rotate(0deg) scale(1, 1); }
+}
+@keyframes emoteHop {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  16% { transform: translate(0%, 1%) rotate(0deg) scale(1, .98); }
+  46% { transform: translate(0%, calc(var(--emote-lift) * -7.5%)) rotate(0deg) scale(1, calc(1.01 * (1 + (1 - var(--emote-lift)) * .0375))); }
+  76% { transform: translate(0%, .8%) rotate(0deg) scale(1, .985); }
+}
+@keyframes emoteBounce {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  22% { transform: translate(0%, calc(var(--emote-lift) * -4.2%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .021))); }
+  40% { transform: translate(0%, .5%) rotate(0deg) scale(1, .99); }
+  50% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  72% { transform: translate(0%, calc(var(--emote-lift) * -3%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .015))); }
+  90% { transform: translate(0%, .3%) rotate(0deg) scale(1, .994); }
+}
+@keyframes emoteLaugh {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  12% { transform: translate(0%, calc(var(--emote-lift) * -1.5%)) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * -.7deg))) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0075))); }
+  24% { transform: translate(0%, .25%) rotate(0deg) scale(1, 1); }
+  37% { transform: translate(0%, calc(var(--emote-lift) * -1.35%)) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * -.6deg))) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0068))); }
+  50% { transform: translate(0%, .25%) rotate(0deg) scale(1, 1); }
+  63% { transform: translate(0%, calc(var(--emote-lift) * -1%)) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * -.4deg))) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .005))); }
+  76% { transform: translate(0%, .15%) rotate(0deg) scale(1, 1); }
+  88% { transform: translate(0%, calc(var(--emote-lift) * -.4%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .002))); }
+}
+@keyframes emoteSob {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  9% { transform: translate(0%, 1%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * .7deg))) scale(1, .994); }
+  17% { transform: translate(0%, .3%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * .5deg))) scale(1, 1); }
+  30% { transform: translate(0%, 1.3%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * .9deg))) scale(1, .992); }
+  38% { transform: translate(0%, .5%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * .7deg))) scale(1, 1); }
+  53% { transform: translate(0%, 1.6%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * 1deg))) scale(1, .99); }
+  64% { transform: translate(0%, .8%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * .8deg))) scale(1, 1); }
+}
+@keyframes emoteGasp {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  16% { transform: translate(0%, calc(var(--emote-lift) * -2.6%)) rotate(0deg) scale(1.012, calc(1.012 * (1 + (1 - var(--emote-lift)) * .013))); }
+  78% { transform: translate(0%, calc(var(--emote-lift) * -2.3%)) rotate(0deg) scale(1.01, calc(1.01 * (1 + (1 - var(--emote-lift)) * .0115))); }
+}
+@keyframes emoteStartle {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  14% { transform: translate(calc(var(--emote-forward) * -2.4%), calc(var(--emote-lift) * -4.5%)) rotate(0deg) scale(.982, calc(.982 * (1 + (1 - var(--emote-lift)) * .0225))); }
+  40% { transform: translate(calc(var(--emote-forward) * -1.2%), calc(var(--emote-lift) * -1.4%)) rotate(0deg) scale(.99, calc(.99 * (1 + (1 - var(--emote-lift)) * .007))); }
+}
+@keyframes emoteRecoil {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  22% { transform: translate(calc(var(--emote-forward) * -3.2%), calc(var(--emote-lift) * -.6%)) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * -3deg))) scale(.97, calc(.97 * (1 + (1 - var(--emote-lift)) * .003))); }
+  58% { transform: translate(calc(var(--emote-forward) * -2.7%), calc(var(--emote-lift) * -.5%)) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * -2.5deg))) scale(.974, calc(.974 * (1 + (1 - var(--emote-lift)) * .0025))); }
+}
+@keyframes emoteLeanIn {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  30%, 70% { transform: translate(calc(var(--emote-forward) * 3%), .6%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * 2.6deg))) scale(1.03, 1.03); }
+}
+@keyframes emoteBow {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  34%, 62% { transform: translate(0%, 5%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * 3deg))) scale(.98, .98); }
+}
+@keyframes emoteSway {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  20% { transform: translate(-1.8%, 0%) rotate(calc(var(--emote-tilt) * (-2.6deg))) scale(1, 1); }
+  46% { transform: translate(1.5%, 0%) rotate(calc(var(--emote-tilt) * (2deg))) scale(1, 1); }
+  70% { transform: translate(-.8%, 0%) rotate(calc(var(--emote-tilt) * (-1.1deg))) scale(1, 1); }
+  88% { transform: translate(0%, 0%) rotate(calc(var(--emote-tilt) * (.35deg))) scale(1, 1); }
+}
+@keyframes emoteStomp {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  30% { transform: translate(0%, calc(var(--emote-lift) * -2.6%)) rotate(0deg) scale(1, calc(1.01 * (1 + (1 - var(--emote-lift)) * .013))); }
+  44% { transform: translate(0%, 1.2%) rotate(0deg) scale(1, .972); }
+  62% { transform: translate(0%, calc(var(--emote-lift) * -.3%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0015))); }
+}
+@keyframes emotePuff {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  24% { transform: translate(0%, calc(var(--emote-lift) * -.8%)) rotate(0deg) scale(1.035, calc(1.02 * (1 + (1 - var(--emote-lift)) * .004))); }
+  44% { transform: translate(0%, calc(var(--emote-lift) * -.2%)) rotate(0deg) scale(1.008, calc(1.008 * (1 + (1 - var(--emote-lift)) * .001))); }
+  68% { transform: translate(0%, calc(var(--emote-lift) * -.8%)) rotate(0deg) scale(1.032, calc(1.018 * (1 + (1 - var(--emote-lift)) * .004))); }
+}
+@keyframes emoteFreeze {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  5% { transform: translate(1.6%, calc(var(--emote-lift) * -.7%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0035))); }
+  10% { transform: translate(-1.6%, calc(var(--emote-lift) * -.7%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0035))); }
+  15% { transform: translate(1%, calc(var(--emote-lift) * -.7%)) rotate(0deg) scale(1, calc(1 * (1 + (1 - var(--emote-lift)) * .0035))); }
+  20%, 84% { transform: translate(0%, calc(var(--emote-lift) * -.7%)) rotate(0deg) scale(.996, calc(.996 * (1 + (1 - var(--emote-lift)) * .0035))); }
+}
+@keyframes emoteHeadtilt {
+  0%, 100% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  30%, 72% { transform: translate(1%, 0%) rotate(calc(var(--emote-tilt) * (-3deg))) scale(1, 1); }
+}
+@keyframes emoteDroop {
+  0% { transform: translate(0%, 0%) rotate(0deg) scale(1, 1); }
+  100% { transform: translate(0%, 2.6%) rotate(calc(var(--emote-tilt) * (var(--emote-forward) * 1.8deg))) scale(.992, .992); }
+}
+
+@keyframes emoteReducedPulse {
+  0%, 100% { opacity: 1; }
+  45% { opacity: .82; }
+}
+
+/* Reduced motion: no movement and no held pose; a one-shot only blinks its opacity once. */
+@media (prefers-reduced-motion: reduce) {
+  .character-emote { transition: none; transform: none !important; }
+  .character-emote[data-motion] {
+    animation: emoteReducedPulse 320ms ease-out 1 !important;
+  }
+  .character-emote[data-motion-hold='true'],
+  .character-emote[data-motion-settled='true'] { animation: none !important; }
+}

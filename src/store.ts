@@ -7,6 +7,7 @@ import type {
   BackgroundPresentation,
   CharacterSlot,
   CharacterStance,
+  CharacterMotionState,
   PlaceCaption,
   ChoiceGateState,
   DialogueChannel,
@@ -61,6 +62,7 @@ type VNState = {
   backgroundPresentation: BackgroundPresentation;
   attack?: AttackPresentation;
   characterStances: Record<string, CharacterStance>;
+  characterMotions: Record<string, CharacterMotionState>;
   placeCaption?: PlaceCaption;
   stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
@@ -95,6 +97,7 @@ type VNState = {
   setBackground: (url: string, presentation?: Omit<BackgroundPresentation, 'revision'>) => void;
   setAttack: (attack?: AttackPresentation) => void;
   setCharacterStance: (id: string, stance?: Omit<CharacterStance, 'revision'>) => void;
+  setCharacterMotion: (id: string, motion?: Omit<CharacterMotionState, 'revision'>) => void;
   setPlaceCaption: (text?: string) => void;
   setSticker: (sticker: StickerSlot) => void;
   clearSticker: (id: string) => void;
@@ -215,6 +218,9 @@ const initialChoiceGate: ChoiceGateState = {
   options: [],
 };
 
+// Monotonic across characters and clears, so a re-requested motion never reuses a key.
+let characterMotionRevision = 0;
+
 export const useVNStore = create<VNState>((set) => ({
   backgroundPresentation: DEFAULT_BACKGROUND_PRESENTATION,
   baseUrl: '/',
@@ -229,6 +235,7 @@ export const useVNStore = create<VNState>((set) => ({
   actionIndex: 0,
   stickers: {},
   characterStances: {},
+  characterMotions: {},
   characters: {},
   speakerOrder: [],
   visibleCharacterIds: [],
@@ -283,6 +290,7 @@ export const useVNStore = create<VNState>((set) => ({
       gameOver: undefined,
       attack: undefined,
       characterStances: {},
+      characterMotions: {},
       placeCaption: undefined,
       effect: undefined,
       busy: false,
@@ -304,6 +312,18 @@ export const useVNStore = create<VNState>((set) => ({
     }
     const revision = (state.characterStances[id]?.revision ?? 0) + 1;
     return { characterStances: { ...state.characterStances, [id]: { ...stance, revision } } };
+  }),
+  setCharacterMotion: (id, motion) => set((state) => {
+    if (!motion) {
+      if (!state.characterMotions[id]) return state;
+      const next = { ...state.characterMotions };
+      delete next[id];
+      return { characterMotions: next };
+    }
+    const previous = state.characterMotions[id];
+    // Settling a hold keeps its revision; every new request gets a fresh one so it replays.
+    const revision = motion.settled && previous?.motion === motion.motion ? previous.revision : ++characterMotionRevision;
+    return { characterMotions: { ...state.characterMotions, [id]: { ...motion, revision } } };
   }),
   setResumeNotice: (resumeNotice) => set({ resumeNotice }),
   setPlaceCaption: (text) => set((state) => ({
@@ -461,6 +481,7 @@ export const useVNStore = create<VNState>((set) => ({
       gameOver: undefined,
       attack: undefined,
       characterStances: {},
+      characterMotions: {},
       placeCaption: undefined,
       effect: undefined,
       busy: false,

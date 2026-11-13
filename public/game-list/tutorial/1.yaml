@@ -28,6 +28,7 @@ scenes:
       - char: { id: 광철, position: right }
       - say:
           char: 광철
+          motion: stomp
           with: [해수]
           text: "고객의 소리 용지 줘. 아니, 두 장."
       - say:
@@ -44,6 +45,7 @@ scenes:
           text: "연필 줘. 볼펜도 없는 데서. …다 썼어. 뒤에 줄 선 사람들도 다 들어."
       - say:
           char: 광철
+          motion: lean_in
           with: [해수]
           text: "직원 태도 불량. 개봉 상품 핑계로 고객을 무시함. 말투가 비아냥거림. 대상 직원, 정. 해. 수."
       - move: { id: 광철, toward: 해수, style: lunge }
@@ -66,8 +68,10 @@ scenes:
     actions:
       - say:
           char: 해수
+          motion: bow
           with: [광철]
           text: "죄송합니다, 고객님. 제가 말씀을 잘못 드렸습니다."
+      - emote: { id: 해수, motion: bow, wait: true }
       - say:
           char: 광철
           with: [해수]
@@ -78,6 +82,7 @@ scenes:
     actions:
       - say:
           char: 광철.shout
+          motion: stomp
           with: [해수]
           text: "여기까지? 여기까지라고 했어? 점장 불러. 지금 당장."
       - goto: snap
@@ -111,6 +116,7 @@ scenes:
           text: "괜찮습니다."
       - say:
           char: 지영
+          motion: sigh
           with: [해수]
           text: "괜찮냐고 안 물어봤어."
       - say:
@@ -136,6 +142,7 @@ scenes:
           text: "주임님은 거기서 뭐 하세요?"
       - say:
           char: 지영.smirk
+          motion: headtilt
           with: [해수]
           text: "나? 거기선 내가 손님이야."
       - say:
@@ -145,6 +152,7 @@ scenes:
       - char: { id: 경준, position: right }
       - say:
           char: 경준
+          motion: bounce
           with: [지영, 해수]
           text: "주임님 거기서 환불 진짜 많이 하세요. 저 봤어요."
       - say:
@@ -153,6 +161,7 @@ scenes:
           text: "넌 왜 우리 매장에 들어와 있는데."
       - say:
           char: 경준
+          motion: droop
           with: [지영]
           text: "…구경이요."
       - say:
@@ -198,6 +207,7 @@ scenes:
       - char: { id: 해수, position: center }
       - say:
           char: 해수
+          motion: headtilt
           with: []
           text: "아, 저 처음인데요."
       - say:
@@ -206,6 +216,7 @@ scenes:
           text: "튜토리얼을 이어서 진행합니다."
       - say:
           char: 해수
+          motion: bow
           with: []
           text: "네. 감사합니다."
       - say:
@@ -262,6 +273,7 @@ scenes:
       - get: pencil
       - say:
           char: 해수
+          motion: nod
           with: []
           text: "열여덟, 열아홉, 스무 자루. 맞네요."
       - say:
@@ -270,6 +282,7 @@ scenes:
           text: "한 자루를 뽑자 빈자리에 같은 연필이 다시 꽂혀 있다."
       - say:
           char: 해수.service
+          motion: bow
           with: []
           text: "그럼 이건 제가 가져갈게요."
       - set: { look_pencil: true }
@@ -285,6 +298,7 @@ scenes:
       - move: { id: 광철, toward: camera, style: approach }
       - say:
           char: 광철.wire
+          motion: nod
           with: [해수]
           text: "이거 환불."
       - choice:
@@ -307,6 +321,7 @@ scenes:
     actions:
       - say:
           char: 해수.service
+          motion: bow
           with: [광철]
           text: "네, 고객님. 영수증 확인해 드릴게요."
       - say:
@@ -315,6 +330,7 @@ scenes:
           text: "다시 해 보세요."
       - say:
           char: 광철.wire
+          motion: nod
           with: [해수]
           text: "이거 환불."
       - move: { id: 광철, style: reset }
@@ -324,6 +340,7 @@ scenes:
     actions:
       - say:
           char: 해수
+          motion: tremble
           with: [광철]
           delivery: shout
           text: "소리 지르지 마세요. 소리 지르지 마시라고요!"
@@ -333,6 +350,7 @@ scenes:
     actions:
       - say:
           char: 해수
+          motion: lean_in
           with: [광철]
           delivery: shout
           text: "혼자 다 드시지도 못하는 걸 왜 사세요! 맨날 와서, 맨날!"
@@ -344,10 +362,12 @@ scenes:
       - move: { id: 광철, toward: camera, style: approach }
       - say:
           char: 광철.wire
+          motion: nod
           with: [해수]
           text: "이거 환불."
       - say:
           char: 해수
+          motion: stomp
           with: [광철]
           delivery: shout
           text: "안 된다고요!"
@@ -402,15 +422,18 @@ scenes:
       - char: { id: 해수, position: left }
       - say:
           char: 해수.service
+          motion: bow
           with: []
           text: "우산 손잡이가 빠졌다고요. 네, 확인해 드릴게요."
       - say:
           char: 해수.blank
+          motion: nod
           with: []
           text: "나사 자리가 새 거네요. 근데 이건 고객님이 빼신 거잖아요."
       - char: { id: 경준, position: right }
       - say:
           char: 경준
+          motion: gasp
           with: [해수]
           delivery: whisper
           text: "…형?"
@@ -418,6 +441,7 @@ scenes:
           char: 해수.service
           with: []
           text: "…죄송합니다. 새 걸로 교환해 드릴게요."
+      - emote: { id: 해수, motion: bow, wait: true }
       - say:
           channel: record
           with: []
@@ -448,6 +472,7 @@ scenes:
           text: "튜토리얼 2단계."
       - say:
           char: 상혁.grin
+          motion: laugh
           with: [해수]
           text: "튜토리얼? 야, 그걸 왜 해. 넘기기 눌러. 오른쪽 위에 있잖아. 다들 넘겨."
       - say:
@@ -464,6 +489,7 @@ scenes:
           text: "물은 왜 두 병이야?"
       - say:
           char: 상혁.grin
+          motion: lean_in
           with: [해수]
           text: "목말라서. 너 귀 뒤 빨간 거나 가려. 정해수가 밴드 자국이라니, 고등학교 애들이 알면 운다."
       - say:
@@ -484,6 +510,7 @@ scenes:
       - char: { id: 광철, position: right, emotion: lost }
       - say:
           char: 해수.service
+          motion: bow
           with: [광철]
           text: "오광철 고객님. 오늘은 영수증 없으세요? 무엇을 확인해 드릴까요."
       - say:
@@ -492,10 +519,12 @@ scenes:
           text: "…자네. 여기 오래 있었지."
       - say:
           char: 해수
+          motion: nod
           with: [광철]
           text: "네. 12년 됐습니다."
       - say:
           char: 광철.lost
+          motion: shiver
           with: [해수]
           text: "요 며칠, 밤마다 누가 나한테 소리를 질러. 집에서. 나 혼자 사는데. 경찰도 불렀는데 아무도 없대."
       - move: { id: 광철, toward: 해수, style: approach }
@@ -503,9 +532,11 @@ scenes:
           char: 광철.lost
           with: [해수]
           text: "그 연필 좀 내려놓고 들어 봐. 그 목소리가 어디서 들은 목소리 같아서."
+      - emote: { id: 해수, motion: freeze }
       - move: { id: 광철, toward: 해수, style: retreat }
       - say:
           char: 광철.lost
+          motion: droop
           with: [해수]
           text: "아니야. 됐어."
       - say:
@@ -514,12 +545,14 @@ scenes:
           text: "그 즉석밥. 먹을 만하더라. 남은 거."
       - say:
           char: 광철
+          motion: bow
           with: [해수]
           text: "이거. 마셔. …수고하고."
       - move: { id: 광철, style: reset }
       - char: { id: 경준, position: right }
       - say:
           char: 경준
+          motion: bounce
           with: [해수]
           text: "형, 저 아저씨 오늘 왜 저래요? 박카스 주고, 귀는 계속 누르고, 저한테 수고하라고 했어요. 존댓말로 대답할 뻔했잖아요."
       - say:
@@ -528,6 +561,7 @@ scenes:
           text: "존댓말로 대답해야지."
       - say:
           char: 경준
+          motion: perk
           with: [해수]
           text: "아, 그러네요."
 
@@ -560,6 +594,7 @@ scenes:
       - char: { id: 광철, position: right, emotion: wire }
       - say:
           char: 광철.wire
+          motion: nod
           with: [해수]
           text: "번호표 뽑고 기다려."
       - say:
@@ -592,6 +627,7 @@ scenes:
           text: "튜토리얼 3/5를 완료하지 않았습니다. 처음부터 다시 진행합니다."
       - say:
           char: 광철.wire
+          motion: nod
           with: []
           text: "번호표 뽑고 기다려."
       - choice:

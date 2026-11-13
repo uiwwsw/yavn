@@ -54,6 +54,7 @@ scenes:
           text: "초인종을 세 번 눌러도 대답이 없는데, 현관문은 한 뼘쯤 열려 있다."
       - say:
           char: 도윤
+          motion: lean_in
           with: []
           text: "팀장님?"
       - say:
@@ -285,6 +286,7 @@ scenes:
           key: e3_clinic
           prompt: "기계까지 세 걸음. 대기석에 두 사람이 앉아 있다."
           char: 도윤
+          motion: shiver
           options:
             - text: "번호표 버튼을 누른다"
               set: { went_to_clinic: true }
@@ -313,6 +315,7 @@ scenes:
           text: "채혈 완료 · 결과는 7일 뒤 본인이 직접 방문해 확인합니다."
       - say:
           char: 도윤
+          motion: nod
           with: []
           text: "네, 네."
       - clearSticker: { id: e3_ticket, leave: fadeOut }
@@ -374,8 +377,10 @@ scenes:
           text: "하린아. 너 화내도 돼."
       - say:
           char: 하린
+          motion: laugh
           with: [아진]
           text: "내가 왜?ㅋㅋ 나 원래 그런 거 관심 없잖아. 너네 잘 어울려. 진짜로."
+      - emote: { id: 하린, motion: droop, wait: true }
       - move: { id: 아진, style: reset }
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
       - bg: { id: harin_room, transition: fade, duration: 900 }
@@ -438,6 +443,7 @@ scenes:
           text: "사회는 민석 씨가 봐 주기로 했고, 축가는 빼자. 우리 둘 다 아는 사람 중에 노래 되는 사람이 없어."
       - say:
           char: 도윤
+          motion: nod
           with: [지수]
           text: "응."
       - say:
@@ -450,6 +456,7 @@ scenes:
           text: "응."
       - say:
           char: 지수
+          motion: headtilt
           with: [도윤]
           text: "오늘 피팅은 왜 안 왔어?"
       - say:
@@ -464,14 +471,17 @@ scenes:
       - move: { id: 도윤, toward: 지수, style: retreat }
       - say:
           char: 지수
+          motion: sigh
           with: [도윤]
           text: "네 폰 비번 알아. 내 생일인 거. 안 열었어. 우리 엄마처럼은 안 해."
+      - emote: { id: 도윤, motion: freeze }
       - say:
           char: 지수.cold
           with: [도윤]
           text: "어디 있었어?"
       - say:
           char: 지수.cold
+          motion: puff
           with: [도윤]
           text: "사진 찍던 날 말했지. 지금은 화 안 낸다고. 그때가 지금이야. 아직은."
       - choice:
@@ -492,6 +502,7 @@ scenes:
     actions:
       - say:
           char: 도윤.smile
+          motion: laugh
           with: [지수]
           text: "은행. 대출 서류 하나 빠졌다고 해서. 말하면 너 또 신경 쓸까 봐."
       - say:
@@ -500,10 +511,12 @@ scenes:
           text: "…그래."
       - say:
           char: 지수
+          motion: lean_in
           with: [도윤]
           text: "영수증 같은 건 있어?"
       - say:
           char: 도윤
+          motion: perk
           with: [지수]
           text: "어? 그런 걸 왜 받아."
       - say:
@@ -534,6 +547,7 @@ scenes:
           text: "송과장님. 아까 전화했을 때 팀장님 일로 회사가 좀 시끄럽다고 하시더라. 무슨 일인지는 너한테 들을 거야."
       - say:
           char: 지수
+          motion: nod
           with: [도윤]
           text: "식 전까지 기다릴게. 토요일까지. 네 입으로."
       - goto: /4.yaml
@@ -573,6 +587,7 @@ scenes:
           text: "내일 다시 가. 나 때문에 말고."
       - say:
           char: 지수
+          motion: sigh
           with: [도윤]
           text: "식장은 내일 내가 전화해 볼게. 미룰 수 있는지. 계약금이 어떻게 되는지도."
       - say:

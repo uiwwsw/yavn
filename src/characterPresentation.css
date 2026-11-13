@@ -34,7 +34,7 @@
 .character-art { position: absolute; bottom: 0; left: 50%; height: 100%; width: auto; max-width: none; object-fit: contain; transform: translateX(-50%); pointer-events: none; }
 /* Frame the upper body at the same safe headroom; only the authored lower
    canvas is cropped. Side silhouettes and focus outlines remain unclipped. */
-.character-portrait { clip-path: inset(-2px -100vmax 0); }
+.character-portrait { clip-path: inset(-10% -100vmax 0); } /* top headroom: emote lifts */
 .character-portrait .character-art {
   top: 0; bottom: auto;
   /* Keep intrinsic geometry stable: crop zoom must not lay out and rasterize

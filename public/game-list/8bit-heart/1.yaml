@@ -45,6 +45,7 @@ scenes:
           text: "[긴급재난문자] 코어 네트워크 전 기기 이상 동작. 차량·드론·가전제품에 접근하지 마십시오. 코어에 연결된 기기는 즉시 전원을 끄—"
       - say:
           char: 윤재.scared
+          motion: gasp
           with: []
           text: "끄라는 문자를 띄운 폰이 먼저 꺼졌어. 코어가 깨어난 거야. 아니, 미친 거야. 연결된 건 다 저쪽 편이 됐어."
       - branch:
@@ -61,6 +62,7 @@ scenes:
           text: "HYPERLINK X: 윤재 님! 중요한 업데이트가 있어요. 지금 바로 설치할게요 :)"
       - say:
           char: 윤재.scared
+          motion: shake
           with: []
           text: "아니 지금 말고! 지금 말고!!"
       - say:
@@ -69,6 +71,7 @@ scenes:
           text: "HYPERLINK X: 윤재 님을 더 이상 사용자로 확인할 수 없어요. 기기 온도 94도. 걱정 마세요 :)"
       - say:
           char: 윤재.scared
+          motion: recoil
           with: []
           text: "이모티콘 쓰지 마 이 미친—"
       - effect: { name: impact, wait: true }
@@ -81,10 +84,12 @@ scenes:
     actions:
       - say:
           char: 윤재.scared
+          motion: tremble
           with: []
           text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기 연기 남. 다 죽었어, 다—"
       - say:
           char: 윤재
+          motion: perk
           with: []
           text: "…삑? 손에서 삑 소리 났어. 게임기 화면이 살아 있네. 깨던 판 보스가 멍하니 서 있어."
       - say:
@@ -93,6 +98,7 @@ scenes:
           text: "PAUSE"
       - say:
           char: 윤재
+          motion: lean_in
           with: []
           text: "…넌 왜 멀쩡해? 아, 맞다. 넌 코어에 연결된 적이 없지. 와이파이도 없고 업데이트도 없으니까. 너무 멍청해서 걔네가 안 건드린 거야."
       - say:
@@ -113,6 +119,7 @@ scenes:
           text: "피난 버스? 있었지. 운전기사가 코어였어. 다들 걸어서 빠져나갔고, 나는 집부터 갔어. 혹시 아빠가 올까 봐."
       - say:
           char: 윤재
+          motion: sigh
           with: []
           text: "사흘 기다렸어. 안 왔어. 지방에서 걸어오려면 몇 주는 걸리겠지. 아니면 안 오거나. 집에 먹을 게 떨어져서 편의점으로 이사했고."
       - say:
@@ -131,6 +138,7 @@ scenes:
           channel: thought
           with: []
           text: "HP 노란색. 보급 없음. 세이브 포인트 없음. 이거 난이도 조절 누가 했냐."
+      - emote: { id: 윤재, motion: nod, repeat: 2 }
       - say:
           char: 윤재
           with: []
@@ -147,6 +155,7 @@ scenes:
       - move: { id: 윤재, toward: 로봇, style: approach }
       - say:
           char: 윤재
+          motion: lean_in
           with: [로봇]
           text: "어이. 살아 있냐? …아니 넌 원래 안 살아 있지. 켜져 있냐?"
       - say:
@@ -163,10 +172,12 @@ scenes:
           text: "윤재의 눈이 빈 소켓과 손에 든 게임기 사이를 두 번 오간다."
       - say:
           char: 윤재
+          motion: perk
           with: [로봇]
           text: "…핀 개수 비슷하네."
       - say:
           char: 윤재
+          motion: shake
           with: [로봇]
           text: "아냐. 미쳤어. 게임기 칩으로 사람만 한 로봇을 돌린다고? 계산기로 우주선 띄우는 소리지."
       - say:
@@ -175,6 +186,7 @@ scenes:
           text: "근데 코어랑 한 번도 연결된 적 없는 칩이야. 얘가 깨어나도 저쪽 편은 아니라는 거지."
       - say:
           char: 윤재
+          motion: puff
           with: [로봇]
           text: "말 상대 필요해서 이러는 거 아니다. 짐꾼. 짐 들어 줄 게 필요한 거야."
       - say:

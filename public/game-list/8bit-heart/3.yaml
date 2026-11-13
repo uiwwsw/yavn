@@ -20,10 +20,12 @@ scenes:
           text: "경고. 설명서 3쪽. '게임은 하루 한 시간만.' 우리 다섯 시간째 걷는 중."
       - say:
           char: 윤재
+          motion: sigh
           with: [로봇]
           text: "이거 게임 아니야."
       - say:
           char: 로봇.thinking
+          motion: headtilt
           with: [윤재]
           text: "그럼 뭐야?"
       - say:
@@ -44,10 +46,12 @@ scenes:
           text: "나는 안 잠. 대기 모드에선 안 움직임. …설명서 7쪽. '추운 곳에서는 건전지가 빨리 닳습니다.' 너 그거 읽었구나."
       - say:
           char: 윤재
+          motion: puff
           with: [로봇]
           text: "안 읽었어. 진짜. 진짜 안 읽었어."
       - say:
           char: 로봇.happy
+          motion: bounce
           with: [윤재]
           text: "'진짜' 두 번. 땀 젖은 손이랑 같은 칸에 저장. 위험 신호 칸."
       - say:
@@ -64,6 +68,7 @@ scenes:
           text: "그럼 나머지 셋은?"
       - say:
           char: 윤재
+          motion: droop
           with: [로봇]
           text: "하나는 나갔고, 하나는 지방에 있고, 하나는 원래 없어. 모델 쓴 거야. …근데 너는 안 무섭냐? 저 동네 차들 아직도 혼자 돌아다니던데."
       - say:
@@ -72,10 +77,12 @@ scenes:
           text: "마트 발견. 셔터 반쯤 열림. 탐색 개시."
       - say:
           char: 윤재
+          motion: lean_in
           with: [로봇]
           text: "똑똑. 계세요? …없지. 당연히 없지."
       - say:
           char: 로봇.thinking
+          motion: headtilt
           with: [윤재]
           text: "질문. 없는 거 알면서 왜 두드림?"
       - say:
@@ -86,6 +93,7 @@ scenes:
           char: 윤재.scared
           with: [로봇]
           text: "야, 야! 기어 들어가지 마! 진열대 다 무너져 있다고! …안 들리냐? 들리면서 무시하는 거지?"
+      - emote: { id: 로봇, motion: hop, repeat: 2 }
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -96,10 +104,12 @@ scenes:
           text: "미래에서 온 게 아니라 그때까지 먹으라는 거야. 너 진짜 설명서만 읽고 세상 배웠구나."
       - say:
           char: 로봇.thinking
+          motion: sway
           with: [윤재]
           text: "뚜껑, 손가락으로 땀. 조각 일곱 개. 일곱은 둘로 안 나뉨. …재계산. 하나를 반으로 자름."
       - say:
           char: 로봇.happy
+          motion: bounce
           with: [윤재]
           text: "3.5, 3.5. 오차 0. 반 나누기는 내 특기. 원래 2P 대전 화면 나누던 칩이라. 드디어 쓸모 있음."
       - say:
@@ -129,6 +139,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "…달다. 그날 이후 처음 먹는 단 거다. 젠장. 맛있네."
+      - emote: { id: 로봇, motion: nod, repeat: 3 }
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -145,12 +156,14 @@ scenes:
 
   b3_snack_save:
     actions:
+      - emote: { id: 로봇, motion: nod, repeat: 3 }
       - say:
           char: 로봇.thinking
           with: [윤재]
           text: "내일. 알았어. 알람 기능은 없음. 대신 내일 될 때까지 계속 생각하고 있을게. 내일. 내일. 내일."
       - say:
           char: 윤재
+          motion: puff
           with: [로봇]
           text: "소리 내서 생각하지 마."
       - goto: b3_lag
@@ -193,6 +206,7 @@ scenes:
           text: "정찰 드론. 코어가 사람 찾으라고 띄운 거야. 쟤 패턴 나 알아. 세 번 훑고 네 번째에 쏴."
       - say:
           char: 로봇.thinking
+          motion: freeze
           with: [윤재, 드론]
           text: "분석. 저건 똑똑해. 나는 멍청해. 그러니까 결론은— 결론 로딩 중— 결론 로ㄷ—"
       - move: { id: 로봇, toward: 드론, style: flinch }
@@ -200,6 +214,7 @@ scenes:
           key: b3_drone
           prompt: "SCAN 2회차 시작! 결론 기다릴 시간 없음!"
           char: 드론
+          motion: lean_in
           timeoutMs: 8000
           timeoutOptionIndex: 1
           options:
@@ -223,6 +238,7 @@ scenes:
       - move: { id: 드론, toward: camera, style: retreat }
       - say:
           char: 로봇.glitch
+          motion: stomp
           with: [윤재]
           text: "…폐기 대상? 나 지금 쓰레기라고 들은 거야? 기분 나쁨 감지. 기분이라는 게 있는 줄 몰랐음."
       - say:
@@ -232,6 +248,7 @@ scenes:
       - move: { id: 윤재, style: reset }
       - say:
           char: 로봇.happy
+          motion: hop
           with: [윤재]
           text: "…칭찬 맞지? 구린 게 쓸모 있다는 거지? 응. 칭찬으로 저장."
       - goto: b3_promise
@@ -259,6 +276,7 @@ scenes:
           text: "SCAN: 대상 소실. 앞에 물체 1 — 분류: 가전제품(폐기 대상). 다음."
       - say:
           char: 윤재.scared
+          motion: gasp
           with: [로봇]
           text: "…쟤 너를 못 보는 거야? 바로 앞에 서 있는데?"
       - move: { id: 드론, toward: camera, style: retreat }
@@ -266,6 +284,7 @@ scenes:
       - move: { id: 윤재, style: reset }
       - say:
           char: 로봇.thinking
+          motion: headtilt
           with: [윤재]
           text: "못 봄. 그리고 방금 나 쓰레기라고 함. 둘 다 처리 중."
       - goto: b3_promise
@@ -277,6 +296,7 @@ scenes:
       - place: "그날 밤 · 편의점 기지, 촛불 하나"
       - say:
           char: 윤재
+          motion: sigh
           with: [로봇]
           text: "배터리 칸 그만 세. 그거 세 번째야. 센다고 안 늘어."
       - say:
@@ -309,17 +329,21 @@ scenes:
           text: "…누구세요."
       - say:
           char: 로봇.thinking
+          motion: headtilt
           with: [윤재]
           text: "……"
       - say:
           char: 로봇.glitch
+          motion: freeze
           with: [윤재]
           text: "……까먹었어."
+      - emote: { id: 윤재, motion: laugh, repeat: 2 }
       - say:
           char: 윤재.excited
           with: [로봇]
           text: "푸흡— 아 뭐야, 아 진짜 뭐야. 문 두드려 놓고 용건을 까먹는 게 어딨어."
       - set: { m_joke: true }
+      - emote: { id: 로봇, motion: bounce, repeat: 2 }
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -349,6 +373,7 @@ scenes:
           key: b3_promise
           prompt: "\"새끼손가락 대기 중. 위이잉 소리는 모터임. 떨림 아님.\""
           char: 로봇
+          motion: tremble
           options:
             - text: "손가락을 건다. \"혼자는 무슨. 끝까지 2P로 가.\""
               add: { bond: 1 }
@@ -365,14 +390,17 @@ scenes:
           text: "어기면 바늘 천 개 삼키는 거다."
       - say:
           char: 로봇.thinking
+          motion: nod
           with: [윤재]
           text: "바늘 천 개. 재고 확인… 0개. 그럼 어길 수가 없음. 완벽한 약속."
       - say:
           char: 윤재
+          motion: laugh
           with: [로봇]
           text: "그런 뜻 아니거든."
       - say:
           char: 로봇.happy
+          motion: bow
           with: [윤재]
           text: "끝까지 2P. 전원 꺼져도 유효. 이건 설명서보다 위에 적어 둘게."
       - goto: /4.yaml
@@ -383,6 +411,7 @@ scenes:
       - move: { id: 로봇, style: reset }
       - say:
           char: 로봇
+          motion: droop
           with: [윤재]
           text: "내일. 메모함. …내일 할 일 칸이 점점 길어진다."
       - goto: /4.yaml

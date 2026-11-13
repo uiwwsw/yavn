@@ -35,6 +35,8 @@ assets:
         service: assets/char/haesu-service.svg
         blank: assets/char/haesu-blank.svg
         shaken: assets/char/haesu-shaken.svg
+      emotionMotions:
+        shaken: freeze
     상혁:
       name: "변상혁"
       placement: prompt-top
@@ -48,6 +50,8 @@ assets:
       emotions:
         grin: assets/char/sanghyuk-grin.svg
         hollow: assets/char/sanghyuk-hollow.svg
+      emotionMotions:
+        hollow: droop
     지영:
       name: "민지영"
       placement: prompt-top
@@ -73,6 +77,8 @@ assets:
         full: { scale: 1 }
       emotions:
         laugh: assets/char/gyeongjun-laugh.svg
+      emotionMotions:
+        laugh: laugh
     광철:
       name: "오광철"
       placement: prompt-top
@@ -87,6 +93,8 @@ assets:
         shout: assets/char/gwangcheol-shout.svg
         lost: assets/char/gwangcheol-lost.svg
         wire: assets/char/gwangcheol-wire.svg
+      emotionMotions:
+        shout: puff
     은숙:
       name: "차은숙"
       placement: prompt-top
@@ -112,6 +120,8 @@ assets:
       emotions:
         laugh: assets/char/taemin-laugh.svg
         afraid: assets/char/taemin-afraid.svg
+      emotionMotions:
+        afraid: tremble
     엄마:
       name: "상혁 어머니"
       placement: prompt-top

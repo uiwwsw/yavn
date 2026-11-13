@@ -466,6 +466,8 @@ function canonicalizeLayerAssets(
       ...(Object.keys(framings).length > 0 ? { framings } : {}),
       ...(charDef.calibration ? { calibration: { ...charDef.calibration } } : {}),
       ...(charDef.name ? { name: charDef.name } : {}),
+      ...(charDef.emotionMotions && Object.keys(charDef.emotionMotions).length > 0
+        ? { emotionMotions: { ...charDef.emotionMotions } } : {}),
     };
   }
 
@@ -1077,6 +1079,11 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
     const unknownPlaceholder = (text: string | undefined) =>
       collectTextVariables(text).find((key) => !hasOwn(defaults, key));
     for (const [characterId, character] of Object.entries(data.assets.characters)) {
+      for (const emotion of Object.keys(character.emotionMotions ?? {})) {
+        if (!character.emotions?.[emotion]) {
+          return { error: { message: `character '${characterId}' emotionMotions uses missing emotion '${emotion}'` } };
+        }
+      }
       const missing = unknownPlaceholder(character.name);
       if (missing) {
         return { error: { message: `character '${characterId}' name uses unknown variable '{{${missing}}}'` } };
@@ -1124,6 +1131,18 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
           }
           if (action.move.toward === action.move.id) {
             return { error: { message: `scene '${sceneId}' move target must differ from '${action.move.id}'` } };
+          }
+        }
+        if ('emote' in action && !data.assets.characters[action.emote.id]) {
+          return { error: { message: `scene '${sceneId}' emote uses missing character '${action.emote.id}'` } };
+        }
+        {
+          // Inline body language plays on the speaker, so a line without one has nobody to move.
+          const inline = 'say' in action ? { key: 'say', char: action.say.char, motion: action.say.motion }
+            : 'choice' in action ? { key: 'choice', char: action.choice.char, motion: action.choice.motion }
+              : 'input' in action ? { key: 'input', char: action.input.char, motion: action.input.motion } : undefined;
+          if (inline?.motion && !inline.char) {
+            return { error: { message: `scene '${sceneId}' ${inline.key}.motion '${inline.motion}' needs ${inline.key}.char` } };
           }
         }
         if ('attack' in action) {
