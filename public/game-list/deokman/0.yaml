@@ -7,7 +7,7 @@ scenes:
   opening_record:
     title: "먼저 쓰인 사망 기록"
     actions:
-      - bg: { id: peony_court, transition: dissolve, duration: 720 }
+      - bg: { id: locked_room, transition: dissolve, duration: 720 }
       - music: sealed_court
       - sticker:
           id: opening_death_register
@@ -65,6 +65,7 @@ scenes:
 
   peony_arrives:
     actions:
+      - bg: { id: peony_court, transition: dissolve, duration: 900 }
       - say:
           channel: action
           text: "등 뒤에서 빗장이 떨어진다. 아버지는 모란 족자를 펴신다. 차가 식는데도 마시라는 말씀이 없다."
@@ -716,8 +717,8 @@ scenes:
           options:
             - text: 종이의 내 이름
               at:
-                x: 28
-                "y": 40
+                x: 50
+                "y": 30
               when:
                 not:
                   var: opening_name_read
@@ -726,8 +727,8 @@ scenes:
               goto: first_read_name
             - text: 닫힌 문
               at:
-                x: 74
-                "y": 68
+                x: 75
+                "y": 50
               when:
                 not:
                   var: opening_door_heard
@@ -775,7 +776,7 @@ scenes:
     title: "내 이름 옆의 두 글자"
     actions:
       - bg:
-          id: peony_court
+          id: locked_room
           transition: dissolve
           duration: 720
       - music: sealed_court

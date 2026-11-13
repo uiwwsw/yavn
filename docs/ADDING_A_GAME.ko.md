@@ -39,12 +39,13 @@ summary: "편지 한 장에서 시작하는 짧은 선택형 이야기."
 thumbnail: "assets/cover.jpg" # 파일을 추가한 경우에만 지정
 # 위 thumbnail 줄은 이미지가 없으면 생략합니다.
 tags: [short-story, mystery]
+tagLabels: { short-story: 단편, mystery: 미스터리 } # 선택: 한국어 화면에 보일 태그 이름
 translations:
   en:
     summary: "A Korean-language mystery that begins with a letter."
 ```
 
-`languages`에는 실제로 플레이할 수 있는 이야기 언어만 적습니다. 영어 소개나 영어 엔진 UI만으로 `[ko, en]`을 선언하지 않습니다. `translations.en.summary`는 영어 목록 소개만 바꿉니다. `thumbnail`이 없으면 `config.yaml.startScreen.image`로 대체되며 둘 다 없으면 런처 기본 표현을 사용합니다. 선택 필드 `showcase`는 쇼케이스 라벨·배경색·이미지 구도를 조절합니다.
+`languages`에는 실제로 플레이할 수 있는 이야기 언어만 적습니다. 영어 소개나 영어 엔진 UI만으로 `[ko, en]`을 선언하지 않습니다. `translations.en.summary`는 영어 목록 소개만 바꿉니다. `thumbnail`이 없으면 `config.yaml.startScreen.image`로 대체되며 둘 다 없으면 런처 기본 표현을 사용합니다. 선택 필드 `tagLabels`는 태그 ID를 그대로 두고 한국어 화면에서 보일 이름만 정합니다. 영어 화면과 이름이 없는 태그는 ID를 단어로 풀어 `Political thriller`처럼 보여 줍니다. 선택 필드 `showcase`는 쇼케이스 라벨·배경색·이미지 구도를 조절합니다.
 
 검색·공유용 `seo.description`, `seo.keywords`, `seo.image`, `seo.imageAlt`는 `config.yaml`에서 지정합니다. 대표 공유 이미지는 JPEG/PNG를 권장하며 화면 에셋과 분리할 수 있습니다. 파일이 실제로 존재하고 공개해도 되는지 확인합니다. 자세한 필드와 범위는 [런처 메타데이터](DEVELOPMENT_GUIDE.ko.md#1-1-런처-게임-목록-메타-manifest-v5)를 참고하세요.
 

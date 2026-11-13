@@ -62,7 +62,7 @@ for (const d of definitions) {
   }
   const cast = ['어린 덕만', '진평왕', '소화', '칠숙'];
   base.assets.characters = Object.fromEntries(Object.entries(base.assets.characters).filter(([id]) => cast.includes(id)));
-  const launcher = { languages: ['en'], summary: d.summary, translations: { en: { summary: d.summary } }, thumbnail: `/game-list/${d.game}/${d.image}`, tags: ['english', 'opening-chapter', 'historical-fiction', 'character-drama'] };
+  const launcher = { languages: ['en'], summary: d.summary, translations: { en: { summary: d.summary } }, thumbnail: `/game-list/${d.game}/${d.image}`, tags: ['english', 'opening-chapter', 'historical-fiction', 'character-drama'], tagLabels: { english: '영어판', 'opening-chapter': '첫 장', 'historical-fiction': '역사극', 'character-drama': '인물 드라마' } };
   await mkdir(target, { recursive: true });
   for (const [file, value] of Object.entries({ '0.yaml': closeBoundary(chapter), 'base.yaml': base, 'config.yaml': config, 'launcher.yaml': launcher })) {
     await writeFile(`${target}/${file}`, dump(rebase(value, d.game), { lineWidth: -1, noRefs: true, quotingType: '"' }));

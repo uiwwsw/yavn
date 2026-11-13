@@ -6084,3 +6084,22 @@ textarea,
     transition: none !important;
   }
 }
+
+/* Quiet HUD: during play, chrome recedes after a few still seconds and returns on any input. */
+.hud,
+.dialog-controls {
+  transition: opacity 420ms ease;
+}
+.app[data-hud-idle='true'] .hud,
+.app[data-hud-idle='true'] .dialog-controls {
+  opacity: 0.14;
+  transition-duration: 1200ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hud,
+  .dialog-controls,
+  .app[data-hud-idle='true'] .hud,
+  .app[data-hud-idle='true'] .dialog-controls {
+    transition: none;
+  }
+}

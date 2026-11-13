@@ -223,6 +223,8 @@ thumbnail: "assets/bg/cover.png"
 tags:
   - detective
   - live2d
+tagLabels: # 선택: 한국어 화면의 태그 이름
+  detective: 추리
 showcase:
   label: "FEATURED DEMO"
   backgroundColor: "#171b24"

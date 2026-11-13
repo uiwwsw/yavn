@@ -49,6 +49,21 @@ const normalizeText = (value) => {
 
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 
+// Optional per-game display names for tags, e.g. { silla: 신라 }. Tags themselves stay stable IDs.
+const normalizeTagLabels = (value, tags) => {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+  const labels = {};
+  for (const tag of tags) {
+    const label = normalizeText(value[tag]);
+    if (label) {
+      labels[tag] = label;
+    }
+  }
+  return Object.keys(labels).length ? labels : undefined;
+};
+
 const normalizeTagList = (value) => {
   if (!Array.isArray(value)) {
     return [];
@@ -296,6 +311,7 @@ async function resolveGameMetadata(gameDirPath, gameId, chapterYamlPaths) {
     summaryEn: normalizeText(launcher?.translations?.en?.summary),
     thumbnail: toGameAssetPath(gameId, launcherThumbnail ?? startScreenImage),
     tags: normalizeTagList(launcher?.tags),
+    tagLabels: normalizeTagLabels(launcher?.tagLabels, normalizeTagList(launcher?.tags)),
     languages: normalizeTagList(launcher?.languages).filter(code => /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(code)),
     showcase: normalizeLauncherShowcase(launcher?.showcase),
     legalNotices: normalizeLegalNotices(config?.legalNotices),
@@ -379,6 +395,7 @@ async function collectGameFolders() {
       summaryEn: metadata.summaryEn,
       thumbnail: metadata.thumbnail,
       tags: metadata.tags,
+      ...(metadata.tagLabels ? { tagLabels: metadata.tagLabels } : {}),
       languages: metadata.languages,
       showcase: metadata.showcase,
       legalNotices: metadata.legalNotices,
