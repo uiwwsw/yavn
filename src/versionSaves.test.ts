@@ -78,6 +78,8 @@ beforeEach(() => {
   vi.stubGlobal('Audio', class { volume = 0; play() { return Promise.resolve(); } pause() {} addEventListener() {} });
   vi.stubGlobal('fetch', vi.fn(async (url: string) => {
     const path = new URL(url).pathname.split('/').pop()!;
+    // Character art is preloaded in the background; answer it so no rejection outlives a test.
+    if (/\.(png|svg|webp)$/.test(path)) return new Response(new Uint8Array([137, 80, 78, 71]), { status: 200 });
     return new Response(files[path] ?? '', { status: files[path] ? 200 : 404, headers: { 'content-type': 'text/yaml' } });
   }));
   setScenePresentationPaused(false);
