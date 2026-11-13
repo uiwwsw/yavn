@@ -6,7 +6,7 @@ import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipRead
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { useVNStore } from './store';
 
-// ERASE and 8비트 심장 are built from the owner's stories. These tests pin
+// ERASE, 8비트 심장 and 튜토리얼 are built from the owner's stories. These tests pin
 // their structure (schema, assets, endings, fair failures) and play each one to every ending
 // through the real engine. Background transitions are served in their non-waiting short form
 // because there is no renderer here to report that a dissolve finished.
@@ -28,6 +28,7 @@ const collectKey = (value: unknown, key: string, result: unknown[] = []): unknow
 
 const games = [
   { id: 'erase', chapters: 5, endings: ['erase_loop', 'erased_name', 'kept_photo', 'unfinished'] },
+  { id: 'tutorial', chapters: 5, endings: ['disconnected', 'session_closed', 'still_online'] },
   { id: '8bit-heart', chapters: 5, endings: ['new_game', 'off_screen', 'saved_together'] },
 ];
 
@@ -186,5 +187,30 @@ describe('owner story playthroughs', () => {
     await start('8bit-heart');
     const state = await play({ b0_buy: 'HYPERLINK X 결제. 미래의 내가 갚는다' });
     expect(state.gameOver?.title).toBe('너무 똑똑했던 기기');
+  }, 60000);
+
+  it.each([
+    ['disconnected', { t4_end: '전원선을 뽑는다' }, ''],
+    ['still_online', { t4_end: '모니터를 끄고 나간다. 내일 오픈 근무다' }, ''],
+    ['session_closed', {
+      t1_pencil: '연필을 내려놓는다',
+      t1_pencil_again: '귀 뒤의 밴드를 뗀다',
+      t2_sh: '"오늘 하루만 하지 마. 그거."',
+      t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
+      t3_tell: '"레플라에서 찔렀습니다." 그대로 말한다',
+      t3_door: '상혁이 어머니께 전화한다',
+      t4_end: '세션 종료 창을 연다',
+    }, '0001'],
+  ] as Array<[string, Route, string]>)('튜토리얼 reaches %s', async (ending, route, typed) => {
+    await start('tutorial');
+    const state = await play(route, typed);
+    expect(state.gameOver).toBeUndefined();
+    expect(state.resolvedEndingId).toBe(ending);
+  }, 60000);
+
+  it('튜토리얼 fails recoverably when he names a pillar only the simulation showed', async () => {
+    await start('tutorial');
+    const state = await play({ t2_where: '"C-14 기둥 쪽… 아닌가요?"' });
+    expect(state.gameOver?.title).toBe('아무도 말하지 않은 번호');
   }, 60000);
 });

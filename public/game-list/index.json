@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T04:42:57.690Z",
+  "generatedAt": "2026-11-13T05:08:23.673Z",
   "games": [
     {
       "id": "8bit-heart",
@@ -121,6 +121,70 @@
         ],
         "image": "/game-list/muwon/assets/share/og.png",
         "imageAlt": "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
+      }
+    },
+    {
+      "id": "tutorial",
+      "name": "튜토리얼",
+      "path": "/game-list/tutorial/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "현실 복제 시뮬레이션 레플라가 모두의 취미가 된 근미래. 마트 고객센터 12년 차 정해수는 체험판 튜토리얼에서 처음으로 화를 내고, 다음 날 같은 장소에서 진짜 사건이 일어난다. 폭언·살인 사건·중독이 나오는 5장 SF 미스터리.",
+      "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
+      "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
+      "tags": [
+        "sci-fi",
+        "mystery",
+        "modern",
+        "twist",
+        "complete"
+      ],
+      "tagLabels": {
+        "sci-fi": "SF",
+        "mystery": "미스터리",
+        "modern": "근미래",
+        "twist": "반전",
+        "complete": "완결"
+      },
+      "languages": [
+        "ko"
+      ],
+      "showcase": {
+        "label": "TUTORIAL · 5 CHAPTERS",
+        "backgroundColor": "#e4efe9",
+        "image": {
+          "positionX": 50,
+          "positionY": 50,
+          "scale": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "legalNotices": [
+        {
+          "id": "content-warning",
+          "title": "내용 안내",
+          "text": "이 작품에는 고객의 폭언, 살인 사건과 죽음, 경찰 조사, 중독과 집착(성적 묘사 없음)이 나옵니다. 폭력 장면은 화면 밖에서 소리로만 처리합니다."
+        }
+      ],
+      "chapterCount": 5,
+      "endingCount": 3,
+      "seo": {
+        "title": "튜토리얼",
+        "description": "현실을 그대로 복제한 시뮬레이션 서비스 레플라. 12년째 마트 고객센터에서 고개를 숙여 온 정해수는 체험판 튜토리얼에서 처음으로 화를 낸다. 다음 날 지하 주차장에서 진짜 시신이 발견된다. 5장 SF 미스터리, 결말 3종.",
+        "keywords": [
+          "SF 미스터리",
+          "비주얼노벨",
+          "시뮬레이션",
+          "반전",
+          "sci-fi",
+          "mystery",
+          "modern",
+          "twist",
+          "complete"
+        ],
+        "image": "/game-list/tutorial/assets/bg/title.svg",
+        "imageAlt": "형광등 아래 마트 고객센터 창구가 오른쪽으로 갈수록 선만 남은 와이어프레임으로 바뀌는 그림"
       }
     },
     {
@@ -253,10 +317,11 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 8비트 심장, 무원 — 한성 검안록, ERASE, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 8비트 심장, 무원 — 한성 검안록, 튜토리얼, ERASE, Live2D 테스트: 렌 수다.",
     "keywords": [
       "8비트 심장",
       "무원 — 한성 검안록",
+      "튜토리얼",
       "ERASE",
       "Live2D 테스트: 렌 수다",
       "sci-fi",
@@ -269,9 +334,9 @@
       "mystery",
       "investigation",
       "consequential-choices",
-      "psychological-drama",
       "modern",
       "twist",
+      "psychological-drama",
       "mature",
       "live2d",
       "interaction",
@@ -286,17 +351,20 @@
       "역사 비주얼노벨",
       "추리 게임",
       "선택형 이야기",
-      "심리 드라마",
+      "SF 미스터리",
       "비주얼노벨",
+      "시뮬레이션",
       "반전",
+      "심리 드라마",
       "현대극"
     ],
     "gameTitles": [
       "8비트 심장",
       "무원 — 한성 검안록",
+      "튜토리얼",
       "ERASE",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 4
+    "gameCount": 5
   }
 }

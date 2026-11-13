@@ -1,0 +1,67 @@
+title: "튜토리얼"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "현실을 그대로 복제한 시뮬레이션 서비스 레플라. 12년째 마트 고객센터에서 고개를 숙여 온 정해수는 체험판 튜토리얼에서 처음으로 화를 낸다. 다음 날 지하 주차장에서 진짜 시신이 발견된다. 5장 SF 미스터리, 결말 3종."
+  keywords:
+    - "SF 미스터리"
+    - "비주얼노벨"
+    - "시뮬레이션"
+    - "반전"
+  image: "assets/bg/title.svg"
+  imageAlt: "형광등 아래 마트 고객센터 창구가 오른쪽으로 갈수록 선만 남은 와이어프레임으로 바뀌는 그림"
+textSpeed: 34
+autoSave: true
+clickToInstant: true
+ui:
+  template: paper-stage
+legalNotices:
+  - id: content-warning
+    title: "내용 안내"
+    text: "이 작품에는 고객의 폭언, 살인 사건과 죽음, 경찰 조사, 중독과 집착(성적 묘사 없음)이 나옵니다. 폭력 장면은 화면 밖에서 소리로만 처리합니다."
+startScreen:
+  enabled: true
+  music: assets/music/fluoro.wav
+  image: assets/bg/title.svg
+  imagePosition: "50% 50%"
+  mobileImagePosition: "62% 50%"
+  showTitle: true
+  titleColor: "#f2fbf5"
+  startButtonText: "튜토리얼 시작"
+  buttonPosition: bottom-left
+  eyebrow: "폭언 · 살인 사건 · 중독이 나옵니다"
+  subtitle: "튜토리얼 1/5 — 주위를 둘러보세요."
+  scene:
+    layout: split
+    motion: drift
+    duration: 28000
+    parallax: 8
+    particles: none
+    intensity: 0.3
+    fog: false
+    light: breathe
+    accent: "#2f6bff"
+endings:
+  disconnected:
+    title: "연결 해제"
+    message: "USER 0002부터 USER 1104331까지 연결 해제. USER 0001 — 해당 없음."
+    epilogue: "그린마트 상봉점 고객센터 연필꽂이에는 오늘도 연필이 스무 자루 꽂혀 있다."
+    background: cs_desk_bleed
+    music: bleed
+    tone: tragic
+  still_online:
+    title: "접속 유지"
+    message: "새 사용자 USER 1104332 · 튜토리얼 안내자 USER 0001 · 최초 접속 2019.04.11 14:52"
+    epilogue: "오늘도 레플라 신규 가입자는 튜토리얼 1/5부터 시작한다. 넘기기 버튼은 오른쪽 위에 있다."
+    background: cs_desk_bleed
+    music: tutorial
+    tone: mystery
+  session_closed:
+    title: "세션 종료"
+    message: "USER 0001 · 2019.04.11 14:52 접속 · 2031.04.23 03:20 종료."
+    epilogue: "진술서는 어느 서류철에도 맞지 않아서, 차은숙 경위의 책상 서랍에 들어갔다."
+    background: cs_desk
+    music: fluoro
+    tone: hopeful
+defaultEnding: disconnected

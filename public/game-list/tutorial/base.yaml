@@ -1,0 +1,180 @@
+assets:
+  backgrounds:
+    title: assets/bg/title.svg
+    cs_desk: assets/bg/cs_desk.svg
+    cs_desk_bleed: assets/bg/cs_desk_bleed.svg
+    breakroom: assets/bg/breakroom.svg
+    home_hall: assets/bg/home_hall.svg
+    haesu_room: assets/bg/haesu_room.svg
+    sim_void: assets/bg/sim_void.svg
+    sim_desk: assets/bg/sim_desk.svg
+    sim_parking: assets/bg/sim_parking.svg
+    parking_real: assets/bg/parking_real.svg
+    police_room: assets/bg/police_room.svg
+    goshiwon: assets/bg/goshiwon.svg
+    server_building: assets/bg/server_building.svg
+    server_room: assets/bg/server_room.svg
+    pencil_sticker: assets/items/pencil.svg
+    complaint_sticker: assets/items/complaint.svg
+    coupon_sticker: assets/items/coupon.svg
+    bill_sticker: assets/items/bill.svg
+    keycard_sticker: assets/items/keycard.svg
+    cctv_sticker: assets/items/cctv.svg
+  characters:
+    해수:
+      name: "정해수"
+      placement: prompt-top
+      base: assets/char/haesu.svg
+      facing: left
+      defaultDelivery: calm
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        service: assets/char/haesu-service.svg
+        blank: assets/char/haesu-blank.svg
+        shaken: assets/char/haesu-shaken.svg
+    상혁:
+      name: "변상혁"
+      placement: prompt-top
+      base: assets/char/sanghyuk.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        grin: assets/char/sanghyuk-grin.svg
+        hollow: assets/char/sanghyuk-hollow.svg
+    지영:
+      name: "민지영"
+      placement: prompt-top
+      base: assets/char/jiyoung.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        smirk: assets/char/jiyoung-smirk.svg
+        worried: assets/char/jiyoung-worried.svg
+    경준:
+      name: "배경준"
+      placement: prompt-top
+      base: assets/char/gyeongjun.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        laugh: assets/char/gyeongjun-laugh.svg
+    광철:
+      name: "오광철"
+      placement: prompt-top
+      base: assets/char/gwangcheol.svg
+      facing: left
+      defaultDelivery: angry
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        shout: assets/char/gwangcheol-shout.svg
+        lost: assets/char/gwangcheol-lost.svg
+        wire: assets/char/gwangcheol-wire.svg
+    은숙:
+      name: "차은숙"
+      placement: prompt-top
+      base: assets/char/eunsook.svg
+      facing: left
+      defaultDelivery: calm
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        sharp: assets/char/eunsook-sharp.svg
+    태민:
+      name: "기태민"
+      placement: prompt-top
+      base: assets/char/taemin.svg
+      facing: left
+      defaultDelivery: nervous
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        laugh: assets/char/taemin-laugh.svg
+        afraid: assets/char/taemin-afraid.svg
+    엄마:
+      name: "상혁 어머니"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+  music:
+    fluoro: assets/music/fluoro.wav
+    tutorial: assets/music/tutorial.wav
+    bleed: assets/music/bleed.wav
+    server: assets/music/server.wav
+  sfx:
+    chime: assets/sfx/chime.wav
+    snap: assets/sfx/snap.wav
+
+state:
+  took_coupon: false
+  paid_diff: false
+  knocked: false
+  bowed: false
+  tried_polite: false
+  rage: 0
+  hesitated: false
+  logged_out: false
+  look_ticket: false
+  look_pencil: false
+  sh_night: false
+  sh_care: 0
+  doubt: 0
+  tampered: 0
+  t_form: false
+  t_pencil: false
+  t_cctv: false
+  told_truth: false
+  called_mom: false
+  honest: 0
+  seen_graph: false
+  seen_card: false
+  seen_log: false
+  seen_plug: false
+  seen_drawer: false
+
+inventory:
+  coupon:
+    name: "레플라 7일 체험권"
+    description: "민지영 주임의 추천 코드가 찍힌 체험권. 뒷면에 '가입 시 추천인 1개월 무료'."
+    image: assets/items/coupon.svg
+    category: "주머니"
+    order: 10
+  pencil:
+    name: "그린마트 연필"
+    description: "고객센터 연필꽂이의 HB 연필. 볼펜은 손님들이 가져가서 연필만 둔다. 끝에 초록 로고."
+    image: assets/items/pencil.svg
+    category: "주머니"
+    order: 20
+  complaint:
+    name: "고객의 소리 접수증 사본"
+    description: "2031.04.12 15:07 접수. 대상 직원 칸에 정해수. 글씨를 세게 눌러 써서 뒷장까지 자국이 났다."
+    image: assets/items/complaint.svg
+    category: "서류"
+    order: 30
+  keycard:
+    name: "출입 카드"
+    description: "레플라 가산 R&D · B1 서버실 · 기태민. 회사는 없어졌는데 문은 아직 열린다."
+    image: assets/items/keycard.svg
+    category: "서류"
+    order: 40

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>그린마트 연필</title><g stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-35 200 200)">
+<path d="M 40 178 L 300 178 L 300 222 L 40 222 Z" fill="#f2c14e" stroke="#20302c" stroke-width="4"/>
+<path d="M 40 192 L 300 192 M 40 208 L 300 208" stroke="#d9a536" stroke-width="3"/>
+<path d="M 300 178 L 356 200 L 300 222 Z" fill="#f1dcc0" stroke="#20302c" stroke-width="4"/>
+<path d="M 338 193 L 356 200 L 338 207 Z" fill="#2a2a2a"/>
+<path d="M 18 178 L 40 178 L 40 222 L 18 222 Z" fill="#e8a3a0" stroke="#20302c" stroke-width="4"/>
+<path d="M 40 174 L 70 174 L 70 226 L 40 226 Z" fill="#c7ccc9" stroke="#20302c" stroke-width="4"/>
+<rect x="120" y="186" width="96" height="28" rx="3" fill="#1f9d55"/>
+<text x="168" y="207" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" font-weight="800" text-anchor="middle" fill="#ffffff" >GREEN MART</text>
+<text x="260" y="208" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="16" font-weight="800" text-anchor="middle" fill="#20302c" >HB</text>
+</g></g></svg>
