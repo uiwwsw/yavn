@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { yavnBuildIdentity } from './scripts/build-identity.mjs';
+import { resolveBuildIdentity, yavnBuildIdentity } from './scripts/build-identity.mjs';
+import { yavnPwa } from './scripts/pwa.mjs';
+
+const identity = resolveBuildIdentity();
 
 export default defineConfig({
-  plugins: [react(), yavnBuildIdentity()],
+  plugins: [react(), yavnBuildIdentity(identity), yavnPwa({ identity })],
 });

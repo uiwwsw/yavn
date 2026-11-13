@@ -501,3 +501,32 @@
 /* Progress this browser holds for a game: resumable save and found endings. */
 .launcher-feature-meta > .launcher-progress { color: #e9d9a8; }
 .workspace-game-meta .launcher-progress { display: inline-block; margin-left: 8px; padding: 1px 7px; border: 1px solid #c9d2c0; border-radius: 999px; color: #3f5a3c; font-weight: 600; }
+
+/* Offline: a calm strip while the site cannot be reached, and per-game offline saves. */
+.launcher-offline-note { display: flex; align-items: center; gap: 10px; width: min(1600px, 100%); margin: 0 auto; padding: 10px var(--launcher-gutter); border-bottom: 1px solid var(--launcher-line); color: var(--launcher-muted); font-size: 13px; }
+.launcher-offline-note > span { width: 7px; height: 7px; flex: 0 0 auto; border: 1.5px solid currentColor; border-radius: 50%; }
+.launcher-offline-pack { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; width: 100%; margin-top: 18px !important; font-size: 12px; color: #c0cec3; }
+.launcher-offline-pack.is-muted { color: #9fb2a5; }
+.launcher-offline-status { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; font-variant-numeric: tabular-nums; }
+.launcher-offline-status > i { width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 50%; }
+.launcher-offline-pack.is-saved .launcher-offline-status, .launcher-offline-pack.is-outdated .launcher-offline-status { color: #edf0da; }
+.launcher-offline-pack.is-saved .launcher-offline-status > i { background: currentColor; }
+.launcher-offline-pack.is-outdated .launcher-offline-status > i { border-color: #e9d9a8; background: #e9d9a8; }
+.launcher-offline-progress { position: relative; flex: 1 1 120px; max-width: 220px; height: 3px; overflow: hidden; background: #ffffff26; border-radius: 3px; }
+.launcher-offline-progress > i { position: absolute; inset: 0; background: #edf0da; transform-origin: left center; transition: transform 160ms linear; }
+.launcher-offline-action { min-height: 32px; padding: 0; border: 0; border-bottom: 1px solid #719083; background: transparent; color: #d2ddd0; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.launcher-offline-action:hover:not(:disabled) { color: #fff; border-color: #fff; }
+.launcher-offline-action:disabled { opacity: .45; cursor: default; }
+.launcher-offline-action.is-quiet { font-weight: 500; color: #a9bcae; border-bottom-color: transparent; }
+.launcher-offline-error { flex-basis: 100%; margin: 0 !important; color: #e7c0a0; line-height: 1.6; }
+.launcher-command-primary.is-unavailable { background: transparent; color: #a9bcae !important; border: 1px solid #ffffff30; cursor: default; }
+.workspace-game-offline { display: inline-block; margin-top: 10px; font-size: 12px; color: #3f5a3c; }
+.workspace-game-offline.is-unavailable { color: var(--launcher-muted); }
+.workspace-game-card.is-offline-unavailable .workspace-game-select { cursor: default; }
+.workspace-game-card.is-offline-unavailable .workspace-game-cover img { filter: grayscale(1); opacity: .55; }
+.workspace-game-card.is-offline-unavailable .workspace-game-header strong,
+.workspace-game-card.is-offline-unavailable .workspace-game-summary { color: var(--launcher-muted); }
+.workspace-game-card.is-offline-unavailable .workspace-cover-play,
+.workspace-game-card.is-offline-unavailable .workspace-game-launch { display: none; }
+.workspace-game-card.is-offline-unavailable .workspace-game-select:hover .workspace-game-cover img { transform: none; }
+@media (prefers-reduced-motion: reduce) { .launcher-offline-progress > i { transition: none; } }

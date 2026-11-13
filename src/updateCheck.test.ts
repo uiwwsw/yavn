@@ -70,3 +70,39 @@ describe('save slot meta', () => {
     expect(resolveSlotIntent('load', 'auto', old)).toEqual({ kind: 'load-old', slot: 'auto' });
   });
 });
+
+describe('one build prompt for version.json and the service worker', () => {
+  it('shows the banner for a newer deployment or a waiting worker, keyed so it can be dismissed', async () => {
+    const { resolveBuildPrompt } = await import('./updateCheck');
+    const remote = { ...current, commit: 'def5678' };
+    expect(resolveBuildPrompt({ buildChanged: true, remoteBuild: remote }, false)).toEqual({ show: true, key: '0.2.0+def5678' });
+    expect(resolveBuildPrompt({ buildChanged: true, remoteBuild: remote }, true)).toEqual({ show: true, key: '0.2.0+def5678' });
+    expect(resolveBuildPrompt({ buildChanged: false }, true)).toEqual({ show: true, key: 'service-worker' });
+    expect(resolveBuildPrompt({ buildChanged: false }, false)).toEqual({ show: false });
+  });
+
+  it('keeps the previous answer when version.json cannot be reached offline', async () => {
+    const { nextUpdateState } = await import('./updateCheck');
+    const remote = { ...current, commit: 'def5678' };
+    const shown = nextUpdateState({ buildChanged: false }, remote, undefined, current);
+    expect(shown).toEqual({ buildChanged: true, remoteBuild: remote, contentChange: undefined });
+    expect(nextUpdateState(shown, undefined, undefined, current)).toEqual(shown);
+    expect(nextUpdateState({ buildChanged: false }, undefined, undefined, current)).toEqual({ buildChanged: false, contentChange: undefined });
+    expect(nextUpdateState(shown, { ...current }, undefined, current)).toEqual({ buildChanged: false, remoteBuild: undefined, contentChange: undefined });
+  });
+
+  it('reloads after handing over to the new worker, even when there is none', async () => {
+    const { reloadIntoNewBuild } = await import('./updateCheck');
+    let reloaded = 0;
+    await reloadIntoNewBuild(() => { reloaded += 1; });
+    expect(reloaded).toBe(1);
+  });
+
+  it('registers the worker only for production builds on secure origins', async () => {
+    const { canUseServiceWorker } = await import('./pwa/register');
+    expect(canUseServiceWorker({ isProd: true, secure: true, supported: true })).toBe(true);
+    expect(canUseServiceWorker({ isProd: false, secure: true, supported: true })).toBe(false);
+    expect(canUseServiceWorker({ isProd: true, secure: false, supported: true })).toBe(false);
+    expect(canUseServiceWorker({ isProd: true, secure: true, supported: false })).toBe(false);
+  });
+});

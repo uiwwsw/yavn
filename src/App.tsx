@@ -104,7 +104,10 @@ import type {
 } from './engine';
 import { SaveSlotMeta, UpdateBanner, VersionGate, VersionLine, VersionStamp, olderVersionMessage } from './VersionSaves';
 import { formatRelativeSaveTime, formatSaveChapter, resolveSlotIntent, type SlotIntent } from './saveMeta';
-import { consumeBootIntent, readGameIdFromPath, setBootIntent, useUpdateWatch } from './updateCheck';
+import { consumeBootIntent, readGameIdFromPath, reloadIntoNewBuild, setBootIntent, useUpdateWatch } from './updateCheck';
+import { canOpenGame } from './pwa/offlinePacks';
+import { OfflineNote, OfflinePackControl, offlineCopy } from './pwa/OfflineControls';
+import { useOfflinePacks, useReachable } from './pwa/useOffline';
 import {
   buildImageCharacterRenderKey,
   resolveCharacterFocusPresentation,
@@ -1712,6 +1715,10 @@ export default function App() {
   const storyWaiting = useVNStore((state) => state.waitingInput);
   const updateGameId = readGameIdFromPath(window.location.pathname);
   const updateWatch = useUpdateWatch({ gameId: updateGameId, contentVersion: game?.meta.version });
+  // Offline: the launcher reads which games are saved and greys out the rest.
+  const siteReachable = useReachable();
+  const launcherGameIds = useMemo(() => (bootMode === 'launcher' ? gameList.map((entry) => entry.id) : []), [bootMode, gameList]);
+  const offlinePacks = useOfflinePacks(launcherGameIds, siteReachable);
   // Never cut into a line while it types: wait for a choice, an input, a finished line or an outcome.
   const updateNoticeIdle = !game
     || (!dialogTyping && !chapterLoading && (storyWaiting || choiceGate.active || inputGate.active || Boolean(gameOver) || isFinished));
@@ -1719,7 +1726,8 @@ export default function App() {
     setUpdateBusy(true);
     if (intent === 'continue') flushAutosave();
     if (updateGameId) setBootIntent(updateGameId, intent);
-    window.location.reload();
+    // A waiting service worker takes over first, so the reload boots the new build.
+    void reloadIntoNewBuild();
   }, [updateGameId]);
   const [playerExperience, setPlayerExperience] = useState<PlayerExperienceSettings>(
     () => getPlayerExperienceSettings(),
@@ -4161,6 +4169,7 @@ export default function App() {
             </label>
           </nav>
         </header>
+        {!siteReachable && <OfflineNote />}
 
         <main className="launcher-console">
           <section className="launcher-intro" aria-labelledby="launcher-intro-title">
@@ -4204,6 +4213,8 @@ export default function App() {
                         ? uiLanguage === 'en' ? `${entry.chapterCount} chapters` : `${entry.chapterCount}개 챕터`
                         : t("챕터 정보 없음");
                     const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
+                    const offlineState = offlinePacks.states[entry.id];
+                    const openable = !offlineState || canOpenGame(offlineState.status, siteReachable);
                     return (
                       <article
                         key={`showcase-${entry.id}`}
@@ -4251,13 +4262,29 @@ export default function App() {
                               {readLauncherProgress(entry).map((label) => <span key={label} className="launcher-progress">{label}</span>)}
                             </p>
 
-                            <div className="inspector-actions">
-                              <a
-                                className="launcher-command launcher-command-primary"
-                                href={gameHref(entry.path, entry.languages)}
+                            {offlineState && (
+                              <OfflinePackControl
+                                state={offlineState}
+                                reachable={siteReachable}
                                 tabIndex={isSelected ? undefined : -1}
-                              >{t("이야기 시작하기")}<span aria-hidden="true">↗</span>
-                              </a>
+                                onSave={() => void offlinePacks.save(entry.id)}
+                                onRemove={() => void offlinePacks.remove(entry.id)}
+                              />
+                            )}
+
+                            <div className="inspector-actions">
+                              {openable ? (
+                                <a
+                                  className="launcher-command launcher-command-primary"
+                                  href={gameHref(entry.path, entry.languages)}
+                                  tabIndex={isSelected ? undefined : -1}
+                                >{t("이야기 시작하기")}<span aria-hidden="true">↗</span>
+                                </a>
+                              ) : (
+                                <span className="launcher-command launcher-command-primary is-unavailable" aria-disabled="true">
+                                  {offlineCopy.unavailable}
+                                </span>
+                              )}
                               <a
                                 className="launcher-command launcher-command-source"
                                 href={buildGameSourceUrl(repositoryUrl, entry.id)}
@@ -4482,15 +4509,19 @@ export default function App() {
                     typeof entry.chapterCount === 'number'
                       ? uiLanguage === 'en' ? `${entry.chapterCount} chapters` : `${entry.chapterCount}개 챕터`
                       : t("챕터 정보 없음");
+                  const offlineState = offlinePacks.states[entry.id];
+                  const openable = !offlineState || canOpenGame(offlineState.status, siteReachable);
+                  const savedOffline = offlineState?.status === 'saved' || offlineState?.status === 'outdated';
                   return (
                     <article
                       key={entry.id}
-                      className="workspace-game-card"
+                      className={`workspace-game-card${openable ? '' : ' is-offline-unavailable'}`}
                     >
                       <a
                         className="workspace-game-select"
-                        href={gameHref(entry.path, entry.languages)}
-                        aria-label={`${entry.name} ${t("플레이")}`}
+                        href={openable ? gameHref(entry.path, entry.languages) : undefined}
+                        aria-disabled={openable ? undefined : true}
+                        aria-label={openable ? `${entry.name} ${t("플레이")}` : `${entry.name} · ${offlineCopy.unavailable}`}
                       >
                         <span className="workspace-game-cover">
                           {entry.thumbnail ? (
@@ -4515,6 +4546,8 @@ export default function App() {
                             {entry.author ?? 'UNKNOWN'} · {chapterLabel}
                             {readLauncherProgress(entry).map((label) => <b key={label} className="launcher-progress">{label}</b>)}
                           </span>
+                          {!openable && <span className="workspace-game-offline is-unavailable">{offlineCopy.unavailable}</span>}
+                          {openable && savedOffline && <span className="workspace-game-offline">{offlineCopy.saved}</span>}
                         </span>
                         <span className="workspace-game-launch" aria-hidden="true">
                           ↗
