@@ -36,6 +36,14 @@ scenes:
           with: []
           when: { var: v1, op: eq, value: free }
           text: "좌판 밑에 보따리 하나가 싸여 있다. 흥남에서 내려온 날부터 풀어 본 적이 없다."
+      - say:
+          channel: thought
+          with: []
+          text: "배에 오를 때 손에 들렸던 것이 그대로다. 안에 뭐가 있는지 나도 다 모른다."
+      - say:
+          channel: thought
+          with: []
+          text: "풀면 눌러앉는 것 같아서 안 풀었다. 이태가 지났다."
       - char: { id: 영호, position: center }
       - say: { char: 영호, with: [순임], motion: hop, text: "엄마! 할머이 또 부두 나갔어. 아버지 온다고." }
       - say: { char: 순임, with: [영호], text: "오늘은 배 들어오는 날이 아닌데." }
@@ -107,6 +115,9 @@ scenes:
       - say: { char: 시어머니, with: [순임], text: "흥남서 배 탈 적에 내가 그랬지비. 부산 부두서 기다린다고. 자리 뜨면 못 찾는다." }
       - say: { char: 순임, with: [시어머니], text: "영호 애비는 그 말 못 들었어요. 그때 벌써 줄이 끊겼잖아요." }
       - say: { char: 시어머니, with: [순임], motion: shake, text: "들었다. 내 아들은 내 목소리 듣는다." }
+      - say: { channel: action, with: [], text: "어머이 고무신 뒤축이 닳아 한쪽으로 기울었다. 부두까지 걸어서 사십 분이다." }
+      - say: { char: 순임, with: [시어머니], text: "어머이. 그 배에 사람이 만 명이었어요. 줄이 끊긴 게 어머이 탓이 아니에요." }
+      - say: { char: 시어머니, with: [순임], text: "탓을 하자는 게 아니다. 서 있자는 거다. 서 있는 건 아무나 한다." }
       - say: { char: 순임, with: [시어머니], text: "어머이, 저 서울에 점방 자리 알아보고 있어요. 봄에 다 같이 올라가요." }
       - say: { char: 시어머니, with: [순임], text: "가라. 내 안 간다. 영호 양말이나 기워 놓고 자라." }
       - goto: fire
@@ -122,6 +133,12 @@ scenes:
       - say: { char: 영호, with: [순임], delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
       - say: { char: 순임, with: [영호], text: "가지 마. 손 놓지 마. 물건은 됐어." }
       - say: { channel: action, with: [], text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
+      - say: { channel: action, with: [], text: "사람들이 지게에 천막을 지고 반대로 달린다. 물통을 든 사람보다 짐을 든 사람이 많다." }
+      - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다. 비어 있는 손으로 뭘 해야 하는지 모르겠다." }
+      - say: { char: 영호, with: [순임], delivery: shout, text: "엄마, 보따리! 좌판 밑에!" }
+      - say: { char: 순임, with: [영호], text: "두고 와. 손 놓지 마." }
+      - say: { channel: thought, with: [], text: "이태를 안 풀었던 것이 그 밤에 없어졌다. 안에 뭐가 있었는지는 끝까지 모른다." }
+      - say: { channel: record, with: [], text: "부산 국제시장. 단기 4286년 1월 30일 밤 화재. 점포 수천 호 소실. 사망 및 행방불명 다수." }
       - bg: { id: busan_shack, transition: fade, duration: 1000 }
       - place: "사흘 뒤 · 판잣집"
       - say:
@@ -144,6 +161,9 @@ scenes:
           with: [영호]
           when: { var: l2_told, op: eq, value: false }
           text: "…날짜, 금액, 이름 석 자. 다 받았는데."
+      - say: { channel: action, with: [], text: "좌판 자리에는 쇠 파이프 네 개만 남았다. 그 자리에 이미 다른 천막이 쳐져 있다." }
+      - say: { char: 순임, with: [영호], text: "…저기 우리 자리였는데." }
+      - say: { char: 영호, with: [순임], text: "아줌마가 어제부터 저기 섰대. 먼저 선 사람이 임자래." }
       - say: { char: 영호, with: [순임], text: "엄마, 벽보 봤어? 영등포 방직공장에서 사람 뽑는대. 기숙사도 준대." }
       - say: { char: 순임, with: [영호], text: "네가 그걸 읽었어?" }
       - say: { char: 영호, with: [순임], motion: perk, text: "'방' 자하고 '공' 자 읽었어. 나머진 옆집 형이." }
@@ -218,6 +238,10 @@ scenes:
       - say: { channel: record, with: [청년영호], text: "회신. 귀하가 문의한 영주동 산 3번지 일대 가옥은 1953년 11월 화재로 전소됨. 문의하신 분은 이재민 명부에 없음." }
       - say: { char: 순임, with: [청년영호], text: "…명부에 없으면, 어디 간 거니." }
       - say: { char: 청년영호, with: [순임], motion: droop, text: "몰라요. 부두 노무자 사무실에도 편지 넣어 볼게요. 열네 번째지만." }
+      - say: { char: 순임, with: [청년영호], text: "답장은 한 통 왔지. 그 한 통이 이거고." }
+      - say: { char: 청년영호, with: [순임], text: "열다섯 번째도 쓸게요. 종이값은 제가 벌어요." }
+      - say: { channel: action, with: [], text: "순임이 숨을 들이켜다 기침을 한다. 기침이 길다. 손으로 입을 막고 손을 보지 않는다." }
+      - say: { channel: thought, with: [], text: "방직공장 솜먼지가 십사 년이다. 기숙사 준다는 벽보를 읽은 사람은 영호였다." }
       - say:
           char: 순임
           with: [청년영호]

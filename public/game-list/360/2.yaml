@@ -12,6 +12,8 @@ scenes:
       - place: "1988년 구월 십칠일 · 혜화동 대학병원 6인실"
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
+      - say: { channel: action, with: [], text: "복도 쪽 벽에 텔레비전이 하나 걸려 있다. 여섯 침대 중 다섯이 그쪽으로 고개를 돌렸다." }
+      - say: { channel: action, with: [], text: "운동장이 비었다. 사람이 하나 들어온다. 아이다. 굴렁쇠를 굴리면서 가운데로 간다." }
       - say: { char: 수경, with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 봐. 혼자 저 넓은 데를 굴리고 간다." }
       - say: { char: 민재, with: [수경], text: "누나, 소리 좀 줄여요. 옆에 할아버지 주무세요." }
       - say: { char: 수경, with: [민재], text: "할아버지 보청기 뺐어. 내가 봤어. 너 몇 살이라 그랬지?" }
@@ -29,6 +31,10 @@ scenes:
           with: []
           when: { var: v2, op: eq, value: stay }
           text: "침대 난간에 엄마 목도리가 묶여 있다. 내가 묶었다. 엄마가 꼭 다시 오라고."
+      - say: { char: 민재, with: [수경], text: "저 애는 왜 혼자 들어가요." }
+      - say: { char: 수경, with: [민재], text: "몰라. 근데 십만 명이 쳐다보는데 혼자 들어가잖아. 그게 되는 애가 있는 거야." }
+      - say: { channel: action, with: [], text: "아이가 운동장 가운데에 선다. 굴렁쇠가 넘어지지 않고 혼자 조금 더 굴러간다." }
+      - say: { channel: thought, with: [], text: "다섯 침대가 다 조용해졌다. 보청기를 뺐다는 할아버지도 그쪽을 본다." }
       - say: { char: 수경, with: [민재], text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃을 쏜대. 한강에서 보면 다 보인다더라." }
       - say: { char: 민재, with: [수경], text: "여기서 한강이 어떻게 보여요." }
       - say: { char: 수경, with: [민재], text: "안 보이지. 그러니까 가야지." }
@@ -43,7 +49,14 @@ scenes:
       - say: { char: 엄마, with: [민재], text: "민재야, 갈치 조렸다. 가시 다 발랐어. 선생님 회진 도셨니?" }
       - say: { char: 민재, with: [엄마], text: "아까요. 엄마 가게는." }
       - say: { char: 엄마, with: [민재], text: "경매 끝나고 바로 왔지. 열 시에 열면 돼. 선생님이 뭐라셔?" }
+      - say: { channel: action, with: [], text: "엄마가 보온 도시락 뚜껑을 연다. 안쪽에 물방울이 가득하다. 갈치 가시가 접시 한쪽에 따로 모여 있다." }
+      - say: { channel: thought, with: [], text: "가시를 다 발라 오면 먹는 데 오 분이면 된다. 바르는 데는 새벽에 한 시간이 걸린다." }
+      - say: { char: 민재, with: [엄마], text: "엄마, 나 가시 발라 먹을 수 있어요." }
+      - say: { char: 엄마, with: [민재], text: "할 줄 아는 거 알아. 손이 부으니까 하는 거야." }
       - say: { channel: record, with: [엄마], text: "혈액검사 9월 25일. 백혈구 수치 재상승. 2차 항암 일정 조정 요함." }
+      - say: { channel: action, with: [], text: "차트는 침대 발치에 걸려 있다. 글씨가 거꾸로 보이는데 숫자는 거꾸로도 읽힌다." }
+      - say: { channel: thought, with: [], text: "지난주 숫자를 외워 뒀다. 이번 주 숫자가 더 크다. 큰 게 나쁜 거라는 건 저번에 배웠다." }
+      - say: { channel: thought, with: [], text: "엄마는 '조정'이라는 글자를 못 봤다. 봤으면 서 있는 자리가 달랐을 것이다." }
       - goto: open_choice
 
   open_choice:
@@ -100,6 +113,11 @@ scenes:
       - say: { char: 수경, with: [민재], delivery: whisper, text: "간호사 교대가 열 시 반이야. 십 분이면 정문이고. 택시비는 내가 있어." }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "들키면요." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "들키면 혼나지. 그게 다야. 여기서 혼나는 것보다 무서운 걸 우리가 얼마나 많이 했는데." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "비상계단으로 가면 당직 안 지나. 3층에서 2층은 불이 안 켜져 있어. 두 번 가 봤어." }
+      - say: { char: 민재, with: [수경], delivery: whisper, text: "두 번 갔는데 왜 또 가요." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "두 번 다 밤에 그냥 앉아만 있다 왔어. 오늘은 쏘는 날이잖아." }
+      - say: { channel: action, with: [], text: "건너편 침대에서 할아버지가 몸을 돌린다. 보청기는 침대 옆 컵에 들어 있다." }
+      - say: { channel: thought, with: [], text: "할아버지는 아무것도 못 듣는다. 그런데 눈은 뜨고 있다." }
       - goto: out_choice
 
   out_choice:
@@ -139,6 +157,9 @@ scenes:
       - clearSticker: { id: sketch, leave: fadeOut }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "점이네요, 진짜." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "멀리서 보면 다 점이야. 너도 왔으면 점 두 개였을 텐데." }
+      - say: { channel: action, with: [], text: "약봉지를 받아 베개 밑에 넣는다. 접힌 자리가 손에 걸린다." }
+      - say: { char: 민재, with: [수경], delivery: whisper, text: "…누나. 다리는 언제 걸어요." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "퇴원하면. 너도 와. 양쪽 끝에서 시작해서 가운데서 만나는 거야." }
       - goto: october
 
   out_go:
@@ -157,6 +178,10 @@ scenes:
       - say: { char: 수경, with: [민재], text: "나 퇴원하면 저 다리 걸어서 건널 거야. 이쪽 끝에서 저쪽 끝까지." }
       - say: { char: 민재, with: [수경], text: "그게 소원이에요?" }
       - say: { char: 수경, with: [민재], text: "소원은 아껴야지. 그건 계획이야." }
+      - say: { channel: action, with: [], text: "둔치에 사람이 빽빽하다. 아무도 환자복을 쳐다보지 않는다. 다 위를 보고 있다." }
+      - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
+      - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
+      - say: { channel: thought, with: [], text: "열한 시 사십 분. 여섯 시까지는 여섯 시간 이십 분 남았다. 계산을 하고 있다." }
       - bg: { id: ward, transition: fade, duration: 1000 }
       - goto: october
 
@@ -168,6 +193,10 @@ scenes:
       - char: { id: 엄마, position: right }
       - say: { char: 민재, with: [엄마], text: "엄마, 수경 누나 침대 시트 왜 걷었어요. 무균실 갔다가 온다 그랬는데." }
       - say: { char: 엄마, with: [민재], motion: droop, text: "…어제 새벽에. 수경이 어머니가 네 거라고 이걸 주고 가셨어." }
+      - say: { channel: action, with: [], text: "시트가 걷힌 침대는 매트리스 비닐이 그대로 보인다. 간호사가 아직 새 시트를 안 깔았다." }
+      - say: { char: 민재, with: [엄마], text: "무균실 갔다가 온다고 했어요. 저한테 그렇게 말했어요." }
+      - say: { char: 엄마, with: [민재], text: "…그렇게 말하고 가는 거야, 다들." }
+      - say: { channel: thought, with: [], text: "이 누나가 나한테 뭘 바라는지를 끝까지 못 알아냈다. 바라는 게 없었던 것 같다." }
       - say:
           channel: action
           with: [엄마]
@@ -178,6 +207,9 @@ scenes:
           with: [엄마]
           when: { var: l3_went, op: eq, value: false }
           text: "약봉지 묶음이다. 불꽃 그림 뒤로 열 장쯤, 전부 이 병실 창밖이다."
+      - say: { channel: action, with: [], text: "열 장이 다 같은 창이다. 나무 한 그루, 주차장 선 세 개, 건너편 건물의 창문 열두 개." }
+      - say: { channel: thought, with: [], text: "같은 자리에서 열 번을 그렸다. 두 번째 입원이라 그릴 게 그것뿐이었다." }
+      - say: { channel: thought, with: [], text: "맨 뒷장에 다리가 있다. 그건 창밖이 아니다. 창밖에서는 저 다리가 안 보인다." }
       - move: { id: 엄마, toward: 민재, style: reset }
       - place: "십일월 이십구일"
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
