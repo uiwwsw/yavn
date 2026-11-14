@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>협탁 녹음기</title><g stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-6 200 200)">
+<rect x="104" y="56" width="192" height="292" rx="18" fill="#1d232c" stroke="#0a0e14" stroke-width="5"/>
+<rect x="126" y="80" width="148" height="76" rx="6" fill="#132135" stroke="#0a0e14" stroke-width="3"/>
+<text x="258" y="132" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="30" font-weight="800" text-anchor="end" fill="#2f6bff">119</text>
+<text x="140" y="112" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" fill="#4a6fae">REC</text>
+<circle cx="200" cy="200" r="16" fill="#d64b3c" stroke="#0a0e14" stroke-width="3"/>
+<circle cx="152" cy="252" r="22" fill="#2b3545" stroke="#0a0e14" stroke-width="3"/>
+<circle cx="248" cy="252" r="22" fill="#2b3545" stroke="#0a0e14" stroke-width="3"/>
+<path d="M 145 244 L 162 252 L 145 260 Z" fill="#8fa0b8"/>
+<rect x="241" y="245" width="5" height="15" fill="#8fa0b8"/><rect x="251" y="245" width="5" height="15" fill="#8fa0b8"/>
+<path d="M 136 306 L 264 306 M 136 322 L 264 322" stroke="#39445a" stroke-width="7"/>
+</g></g></svg>

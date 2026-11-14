@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>원본 로그 출력물</title><g stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(3 200 200)">
+<rect x="60" y="48" width="280" height="310" rx="4" fill="#f7f8f5" stroke="#1b2330" stroke-width="4"/>
+<path d="M 60 80 L 340 80" stroke="#1b2330" stroke-width="3"/>
+<text x="78" y="72" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" fill="#5a6b80">RAW / UNSCALED</text>
+<text x="80" y="134" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" fill="#5a6b80">사랑</text>
+<text x="322" y="134" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="27" font-weight="800" text-anchor="end" fill="#1b2330">20002</text>
+<text x="80" y="190" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" fill="#5a6b80">슬픔</text>
+<text x="322" y="190" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="27" font-weight="800" text-anchor="end" fill="#1b2330">30001</text>
+<text x="80" y="246" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" fill="#5a6b80">죄책감</text>
+<text x="322" y="246" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="27" font-weight="800" text-anchor="end" fill="#1b2330">10001</text>
+<path d="M 78 272 L 322 272" stroke="#c7ccc9" stroke-width="3"/>
+<text x="80" y="310" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="16" fill="#5a6b80">환산 후</text>
+<text x="322" y="316" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="30" font-weight="800" text-anchor="end" fill="#d64b3c">2 / 1 / 1</text>
+</g></g></svg>

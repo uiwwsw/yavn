@@ -1,0 +1,78 @@
+title: "오버플로"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "감정을 숫자로 재는 에모스가 채용·결혼·형량까지 정하는 2033년 한국. 모든 수치가 1로 나오는 이의신청 대행업자 문지완은, 수치가 너무 낮아 불기소된 살인사건을 맡는다. 5장 SF 미스터리, 결말 4종."
+  keywords:
+    - "SF 미스터리"
+    - "비주얼노벨"
+    - "감정 측정"
+    - "법정 추리"
+    - "반전"
+  image: "assets/bg/title.svg"
+  imageAlt: "선으로만 그린 얼굴 옆에 숫자 1이 서 있고, 오른쪽은 수많은 숫자가 벽처럼 쌓인 그림"
+textSpeed: 32
+autoSave: true
+clickToInstant: true
+ui:
+  template: cinematic-noir
+legalNotices:
+  - id: content-warning
+    title: "내용 안내"
+    text: "이 작품에는 말기 암 환자의 고통, 조력 죽음과 살인, 자살 충동에 대한 언급, 수치에 따른 차별과 해고가 나옵니다. 죽음은 화면 밖에서 다루고, 방법은 묘사하지 않습니다."
+  - id: fiction
+    title: "허구 안내"
+    text: "에모스와 한신뉴로, 작중의 모든 법령·판례·수치는 지어낸 것입니다. 실제 기업·제도·사건과 관계가 없습니다."
+startScreen:
+  enabled: true
+  music: assets/music/quant.flac
+  image: assets/bg/title.svg
+  imagePosition: "50% 50%"
+  mobileImagePosition: "30% 50%"
+  showTitle: true
+  titleColor: "#e8eef9"
+  startButtonText: "측정 시작"
+  buttonPosition: bottom-left
+  eyebrow: "조력 죽음 · 차별 · 살인 사건이 나옵니다"
+  subtitle: "에모스 판독 · 문지완 — 사랑 1 · 연민 1 · 슬픔 1"
+  scene:
+    layout: split
+    motion: drift
+    duration: 30000
+    parallax: 10
+    particles: none
+    intensity: 0.4
+    fog: false
+    light: breathe
+    accent: "#2f6bff"
+endings:
+  broadcast:
+    title: "공개"
+    message: "에모스 서비스 전면 중단 · 2033.04.02 22:41 · 제휴사 2,140곳 판정 효력 정지"
+    epilogue: "다음 날 아침 횡단보도에서 한 사람이 쓰러졌고, 사람들이 휴대폰을 들었다가 내렸다. 화면에 숫자가 없었다."
+    background: crosswalk
+    music: street
+    tone: mystery
+  one_file:
+    title: "한 사람분"
+    message: "서울북부지법 2033고합211 · 피고인 배동식 · 원본 로그 1건 증거 채택"
+    epilogue: "그 법정에서 숫자는 딱 한 사람 몫만 흔들렸다. 나머지 수십만 건의 서류는 그대로 남았다."
+    background: police_desk
+    music: lowscore
+    tone: tragic
+  sealed:
+    title: "재측정 완료"
+    message: "문지완 · 재측정 결과 · 사랑 46 · 연민 51 · 슬픔 44 · 정상 범위"
+    epilogue: "성일빌딩 2층 사무소는 그달에 문을 닫았다. 지완은 손해사정사로 복직했다."
+    background: hansin_room
+    music: standard
+    tone: tragic
+  appeal:
+    title: "이의신청"
+    message: "에모스 재측정 집단 이의신청 · 접수 318,402건 · 심사 예정일 미정"
+    epilogue: "서류는 한 장씩 들어갔다. 심사는 아직 시작되지 않았고, 접수증은 매일 늘고 있다."
+    background: office
+    music: quant
+    tone: hopeful
+defaultEnding: appeal
