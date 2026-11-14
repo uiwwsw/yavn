@@ -268,8 +268,8 @@ scenes:
           channel: narration
           when: { var: v0, op: eq, value: kin }
           text: "두 줌으로 사흘을 버텼다. 나흘째에 나갔다."
-      - say: { channel: narration, text: "숫자가 안 잡히던 쪽이 이것이다. 몇 해를 살았는지는 끝까지 안 나오고, 이 말만 나온다." }
-      - say: { channel: narration, text: "이쪽을 쥐었으면 그다음 쉰여섯 해가 달랐을 것이다. 쥐지 않았다." }
+      - say: { channel: narration, text: "숫자가 안 잡히던 쪽이 이거다. 몇 해를 살았는지는 끝까지 안 나오고, 이 말만 나온다." }
+      - say: { channel: narration, text: "이쪽을 쥐었으면 그다음 쉰여섯 해가 달랐다. 쥐지 않았다." }
       - say: { channel: narration, text: "달랐을 것이라는 말도 지금 처음 해 본다. 그때는 둘 중에 하나였고, 쥔 쪽만 따라갔다." }
       - goto: last_count
 
@@ -323,7 +323,7 @@ scenes:
       - say: { channel: narration, text: "가져간 숫자를 또 쓰면 같은 점이 두 번이다." }
       - say: { channel: narration, text: "유 선생님은 그게 없다고 했다. 360도 어디에도 없다고." }
       - say: { channel: narration, text: "확인한 사람은 없다. 확인하려면 두 번 살고 두 번 다 기억해야 한다." }
-      - say: { channel: narration, text: "여기 있는 사람이 그걸 할 수 있다." }
+      - say: { channel: narration, text: "그걸 할 수 있는 사람이 지금 여기 하나 있다." }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
       - goto: last_choice
 
@@ -397,7 +397,7 @@ scenes:
     actions:
       - say: { channel: narration, text: "빠져나가는 중에 하나가 걸린다. 형광펜 줄이다." }
       - say: { channel: narration, text: "셋이 서로 모르는 사이인데 셋 다 돌아봤다는 줄. 차 피디가 그 자리에서 몸을 기울였던 줄." }
-      - say: { channel: narration, text: "기억하는 사람만 돌아봤다면, 안 돌아본 사람은 기억을 못 하는 것이다. 그 말을 내가 했다." }
+      - say: { channel: narration, text: "기억하는 사람만 돌아봤다면, 안 돌아본 사람은 기억을 못 한다. 그 말을 내가 했다." }
       - choice:
           key: l5_look
           prompt: "그 말이 맞는지는 돌아봐야 안다."
@@ -413,7 +413,7 @@ scenes:
       - say: { channel: narration, text: "돌아본다. 답장 칸의 커서가 아직 깜박이고 있다." }
       - say: { channel: narration, text: "빠져나가던 것들이 멈춘다. 편집실은 3층이었다. 엄마 김치통은 초록색이었다." }
       - say: { channel: narration, text: "목록도 멈춘다. 041.2. 118.5. 076.3. 164.8. 그리고 다섯째." }
-      - say: { channel: narration, text: "쥔 것이 하나가 아니다. 두 손으로 들 것이 아니라 세어서 들 것이다." }
+      - say: { channel: narration, text: "쥔 것이 하나가 아니다. 세어 보니 다섯이다." }
       - say: { channel: narration, text: "다섯 개를 센 채로 밝은 쪽에 닿는다." }
       - effect: { name: flash, wait: true }
       - ending: returner

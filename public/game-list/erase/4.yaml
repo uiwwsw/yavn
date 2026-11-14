@@ -110,7 +110,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 예약 문자를 길게 누른다. 삭제가 아니라 상단의 발신자 이름을 누른다."
+          text: "도윤은 예약 문자를 길게 누른다. 삭제를 누르려다 손가락이 위로 올라가서 발신자 이름을 누른다."
       - say:
           channel: system
           with: []
@@ -172,7 +172,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 지갑을 꺼내 신분증을 본다. 클리닉이 내일 가져오라고 한 것이다."
+          text: "도윤은 지갑을 꺼내 신분증을 본다. 내일 가져오라고 한 물건이다."
       - say:
           channel: record
           with: []
@@ -269,7 +269,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "날짜가 없다. 날짜 정보를 지우면 사진은 남는다. 그것만 남게 할 수 있다."
+          text: "날짜가 없다. 날짜만 지우면 사진은 그대로 남는다."
       - say:
           char: 도윤.panic
           with: []
@@ -632,7 +632,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_hospital, op: eq, value: true }
-          text: "제목을 장보기로 바꿔 놓은 메모. 바꿀 생각을 할 만큼은 알았다는 뜻이다."
+          text: "제목을 장보기로 바꿔 놓은 메모. 바꿀 생각을 했으니 알고는 있었다."
       - say:
           channel: record
           when: { var: e2_sns, op: eq, value: true }
@@ -653,7 +653,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e3_bag, op: eq, value: true }
-          text: "봉투에 볼펜으로 밤 열 시. 남은 약 열다섯 정. 반은 먹었고 반은 남았다는 뜻이다."
+          text: "봉투에 볼펜으로 밤 열 시. 남은 약 열다섯 정. 반은 먹고 반이 남았다."
       - say:
           channel: thought
           when: { var: e3_note, op: eq, value: true }
