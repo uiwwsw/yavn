@@ -1,0 +1,268 @@
+chapterTitle: "녹취"
+
+script:
+  - scene: edit_room
+
+scenes:
+  edit_room:
+    title: "편집실"
+    actions:
+      - bg: { id: edit_room, transition: fade, duration: 900 }
+      - music: now
+      - place: "2026년 삼월 · 상암동 편집실"
+      - char: { id: 지안, position: left }
+      - char: { id: 차피디, position: right }
+      - say:
+          char: 차피디
+          when: { var: v3, op: eq, value: live }
+          text: "지안 씨, 방금 또 비상구 표시등 봤죠. 여기 3층이에요. 뛰어내려도 발목만 나가."
+      - say:
+          char: 지안
+          with: [차피디]
+          when: { var: v3, op: eq, value: live }
+          text: "습관이에요. 어느 방이든 들어가면 그것부터 봐요. 왜 그런지는 저도 몰라요."
+      - say:
+          char: 차피디
+          motion: laugh
+          when: { var: v3, op: eq, value: live }
+          text: "보험은 몇 개예요? 아니, 말하지 마요. 다섯 개 넘으면 내가 무서워."
+      - say:
+          char: 차피디
+          when: { var: v3, op: eq, value: dare }
+          text: "지안 씨 이력서 다시 봤는데, 2년 넘게 다닌 데가 없네. 여기가 다섯 번째?"
+      - say:
+          char: 지안
+          with: [차피디]
+          when: { var: v3, op: eq, value: dare }
+          text: "해 봐야 알잖아요, 아닌지. 안 해 보고 넘어가는 게 안 돼요. 어려서부터요."
+      - say:
+          char: 차피디
+          motion: laugh
+          when: { var: v3, op: eq, value: dare }
+          text: "전세금 빼서 카페 한 것도 해 봐서 안 거고? 아니다, 대답하지 마요."
+      - say: { char: 차피디, text: "자, 일. 다큐 3부작 「기억하는 사람들」. 전에 살았던 걸 기억한다는 사람들 인터뷰." }
+      - say: { char: 차피디, text: "제보가 석 달에 사백 건이에요. 십 년 전에는 한 해에 두 건 왔대. 선배들 말로는." }
+      - say: { char: 지안, with: [차피디], text: "늘어난 거예요, 말하기 시작한 거예요?" }
+      - say: { char: 차피디, motion: headtilt, text: "그걸 알면 내가 논문을 쓰지 방송을 하겠어요? 일단 이 세 개부터 풀어 줘요." }
+      - say: { channel: record, with: [], text: "녹취 07. 유정림(71, 전 수학 교사). \"어두웠어요, 한참. 그러다 한쪽이 덜 어둡더라고. 그리로 갔지.\"" }
+      - sticker: { id: globe, image: globe_sticker, x: 50, y: 30, width: "clamp(170px, 22%, 310px)", enter: fadeIn, inputLockMs: 300 }
+      - say: { channel: record, with: [], text: "\"들고 갈 수 있는 게 하나였어요. 나는 그걸 각도라고 불러. 지구본에 점 하나 찍는 거지.\"" }
+      - say: { channel: record, with: [], text: "\"옆 사람하고 0.001도 차이일 수도 있어요. 그래도 같은 점은 없어. 360도 어디에도.\"" }
+      - clearSticker: { id: globe, leave: fadeOut }
+      - say: { channel: record, with: [], text: "\"가다가 돌아봤어요. 교탁에 두고 온 출석부가 생각나서. 그 순간이 아직 생생해.\"" }
+      - say: { channel: record, with: [], text: "녹취 12. 박다온(8). \"깜깜했어. 근데 안 무서웠어. 그러다 슝 갔어. 가다가 뒤 봤어. 강아지 있나 하고.\"" }
+      - say: { channel: record, with: [], text: "녹취 19. 오문호(68). \"빨라져요, 생각할수록. 나는 딴 걸 쥘 걸 그랬나 싶어서 돌아봤소.\"" }
+      - goto: mark_choice
+
+  mark_choice:
+    actions:
+      - choice:
+          key: l4_mark
+          prompt: "세 녹취에 겹치는 말이 있다. 형광펜 뚜껑을 연다."
+          options:
+            - text: "'어두웠다'에 줄을 긋는다."
+              goto: mark_dark
+            - text: "'하나만 들고 간다'에 줄을 긋는다."
+              goto: mark_one
+            - text: "'가다가 돌아봤다'에 줄을 긋는다."
+              set: { looked_back: true }
+              goto: mark_back
+
+  mark_dark:
+    actions:
+      - say: { char: 차피디, text: "어두웠다는 건 다 하는 말이에요. 죽으면 깜깜하다, 그건 유치원생도 지어내요." }
+      - goto: archive
+
+  mark_one:
+    actions:
+      - say: { char: 차피디, text: "하나만 들고 간다. 음, 자막으로는 좋네. 근데 유 선생님 책 읽고 따라 한 걸 수도 있어서." }
+      - goto: archive
+
+  mark_back:
+    actions:
+      - say: { char: 차피디, motion: lean_in, text: "…어. 진짜네. 선생님도, 애도, 오 사장님도. 셋이 서로 모르는 사이인데." }
+      - say: { char: 지안, with: [차피디], text: "기억하는 사람들만 돌아봤다면, 안 돌아본 사람은 기억을 못 하는 거고요." }
+      - say: { char: 차피디, text: "사백 건 다 뒤져 봐요. 이거 2부 제목 나왔다." }
+      - goto: archive
+
+  archive:
+    actions:
+      - place: "같은 주 금요일 · 자료실"
+      - say: { channel: record, with: [], text: "1931년 경성 모 의원 진료부. 환자 김○○(34). \"전에 살았다고 주장. 캄캄한 데서 뒤를 보았다는 말을 되풀이.\" 처치: 격리." }
+      - say: { char: 지안, with: [차피디], text: "피디님, 옛날에도 있었어요. 1931년. 방송국에 제보한 게 아니라 병동에 있었을 뿐이에요." }
+      - say: { char: 차피디, text: "그럼 안 늘어난 건가? 아니지, 그때 한 명 찾은 걸로는 몰라. 숫자가 없잖아." }
+      - say: { char: 지안, with: [차피디], text: "네. 모르는 거죠." }
+      - say: { channel: message, side: them, with: [], text: "엄마: 지안아 주말에 오니? 김치 담갔다. 통 가져와라" }
+      - say: { channel: action, with: [], text: "읽음 표시만 남긴다. 답은 인터뷰 다녀와서 하기로 한다." }
+      - goto: munho_home
+
+  munho_home:
+    title: "파주"
+    actions:
+      - bg: { id: interview_room, transition: fade, duration: 900 }
+      - place: "사월 · 파주 오문호 씨 자택"
+      - char: { id: 지안, position: left }
+      - char: { id: 문호, position: right }
+      - say: { char: 문호, text: "나는 전에 금광 덕대였소. 운산. 광부 서른을 부렸지. 마흔하나에 갱이 내려앉았고." }
+      - say: { char: 문호, text: "거기서 쥐고 온 게 하나요. 자식은 글을 가르쳤어야 했다. 그래서 내가 이 생에서 어땠겠소." }
+      - say: { char: 지안, with: [문호], text: "아드님 공부를 많이 시키셨겠네요." }
+      - say: { char: 문호, motion: sigh, text: "시켰지. 의사 만들었소. 그 애가 나하고 말을 안 한 지 십이 년이오. 명절에도." }
+      - say: { char: 지안, with: [문호], text: "…그건 녹취에 넣을까요, 뺄까요?" }
+      - say: { char: 문호.lean, text: "넣으시오. 그리고 아가씨. 내가 사람을 보면 대강 보여요. 전에 어떻게 살았는지." }
+      - move: { id: 문호, toward: 지안, style: approach }
+      - say:
+          char: 문호.lean
+          when: { var: v3, op: eq, value: live }
+          text: "아가씨는 물에서 죽었소. 젊어서. 그래서 조심이 많지. 들어오면서 창문 잠금부터 봤잖소."
+      - say:
+          char: 문호.lean
+          when: { var: v3, op: eq, value: dare }
+          text: "아가씨는 갇혀 살았소. 평생 한 집에서. 그래서 한 군데 못 붙어 있지. 엉덩이가 벌써 들렸잖소."
+      - goto: munho_choice
+
+  munho_choice:
+    actions:
+      - choice:
+          key: l4_munho
+          prompt: "문호 씨가 내 손등을 두드린다. 한 치도 의심이 없는 얼굴이다."
+          char: 문호
+          with: [문호]
+          options:
+            - text: "\"그건 선생님이 모르시는 일이에요.\""
+              set: { l4_refuted: true }
+              goto: munho_refute
+            - text: "녹음기를 끄지 않고 듣고만 있는다."
+              goto: munho_listen
+
+  munho_refute:
+    actions:
+      - say: { char: 지안, with: [문호], text: "그건 선생님이 모르시는 일이에요. 저도 모르고요." }
+      - move: { id: 문호, toward: 지안, style: retreat }
+      - say: { char: 문호, with: [지안], text: "…내 기억은 진짜요. 갱목 부러지는 소리까지 나요." }
+      - say: { char: 지안, with: [문호], text: "선생님 기억은요. 제 건 선생님 기억이 아니잖아요." }
+      - goto: munho_yuna
+
+  munho_listen:
+    actions:
+      - say: { char: 문호.lean, with: [지안], text: "그러니 살던 대로 사시오. 타고난 걸 거스르면 탈이 나. 내가 그걸 알려 주는 거요." }
+      - say: { channel: action, with: [], text: "녹음기 불빛이 빨갛다. 고개를 끄덕이지도 젓지도 않는다." }
+      - goto: munho_yuna
+
+  munho_yuna:
+    actions:
+      - move: { id: 문호, toward: 지안, style: reset }
+      - say: { char: 문호, with: [지안], text: "지난번에 온 조연출, 유나라고 했나. 그 아가씨한테도 일러 줬소. 전에 무당이었다고." }
+      - say: { char: 지안, with: [문호], text: "유나 씨 지난주에 사표 냈어요." }
+      - say: { char: 문호, with: [지안], motion: nod, text: "잘했지. 제 길 찾아간 거요." }
+      - say: { channel: message, side: them, with: [], text: "엄마: 김치 쉰다. 엄마가 택배로 부칠까" }
+      - goto: contract
+
+  contract:
+    title: "동의서"
+    actions:
+      - bg: { id: edit_room, transition: fade, duration: 900 }
+      - place: "오월 · 편집실"
+      - char: { id: 지안, position: left }
+      - char: { id: 차피디, position: right }
+      - say: { char: 차피디, text: "2부 예고는 오 사장님으로 가요. '당신의 전생을 읽어 드립니다.' 시청자 사연도 받고." }
+      - say: { char: 지안, with: [차피디], text: "그분은 남의 걸 기억하는 게 아니에요. 자기 것만 기억해요. 나머진 짐작이고요." }
+      - say: { char: 차피디, text: "알아요. 근데 숫자가 나와. 그리고 이거, 지안 씨 정규직 계약서. 본부장 결재 났어요." }
+      - say: { char: 차피디, text: "뒤에 붙은 건 녹취 원본 양도 동의서. 서명하면 원본은 회사 자산이에요. 편집권도." }
+      - goto: sign_choice
+
+  sign_choice:
+    actions:
+      - choice:
+          key: l4_sign
+          prompt: "계약서 위에 펜이 놓여 있다. 뚜껑은 차 피디가 열어 두었다."
+          char: 차피디
+          with: [차피디]
+          options:
+            - text: "서명한다. 원본은 방송국이 갖는다."
+              goto: sign_try
+            - text: "서명하지 않는다. 증언자들을 한 명씩 다시 찾아간다."
+              goto: leave_try
+
+  sign_try:
+    actions:
+      - branch:
+          cases:
+            - when: { var: v3, op: eq, value: dare }
+              goto: sign_cannot_stay
+          default: sign_yes
+
+  leave_try:
+    actions:
+      - branch:
+          cases:
+            - when: { var: v3, op: eq, value: live }
+              goto: sign_cannot_leave
+          default: sign_no
+
+  sign_cannot_leave:
+    actions:
+      - say: { channel: action, with: [차피디], text: "일어서려고 했다. 손은 펜을 쥐고 있다." }
+      - say: { channel: thought, with: [], text: "월세 자동이체가 25일. 실손보험이 27일. 숫자가 먼저 온다." }
+      - goto: sign_yes
+
+  sign_cannot_stay:
+    actions:
+      - say: { channel: action, with: [차피디], text: "펜을 들었다. 어느새 가방끈이 어깨에 걸려 있다." }
+      - say: { channel: thought, with: [], text: "앉아서 이름 석 자만 쓰면 되는데. 매번 문 쪽으로 몸이 먼저 간다." }
+      - goto: sign_no
+
+  sign_yes:
+    actions:
+      - set: { l4_signed: true }
+      - say: { char: 지안, with: [차피디], text: "여기 하고, 여기요?" }
+      - say: { char: 차피디, with: [지안], motion: nod, text: "간인도. 축하해요. 4대 보험 되는 삶에 온 걸." }
+      - place: "그해 구월"
+      - say: { channel: system, with: [], text: "「기억하는 사람들」 2부 시청률 6.8%. 클립 조회수 310만. 댓글 4만 2천." }
+      - say: { channel: record, with: [], text: "시청자 게시판. \"다온이네 학교 아는데 애들이 걔 전생충이라고 부름\" (추천 912)" }
+      - say: { channel: message, side: them, with: [], text: "엄마: 방송 봤다. 네 이름 맨 끝에 지나가더라. 전화 좀 받아라" }
+      - say: { channel: action, with: [], text: "편집실이다. 3부 마감이 내일이다. 전화는 진동으로 돌려 둔다." }
+      - goto: late
+
+  sign_no:
+    actions:
+      - say: { char: 지안, with: [차피디], text: "죄송해요. 원본은 제가 받은 거라서요. 그분들이 저한테 말한 거지, 회사한테 한 게 아니에요." }
+      - say: { char: 차피디, with: [지안], motion: sigh, text: "지안 씨. 이거 놓치면 다음은 없어요. 여섯 번째 회사 찾을 거예요?" }
+      - say: { char: 지안, with: [차피디], text: "유 선생님부터 다시 뵙고 올게요." }
+      - place: "이듬해 가을"
+      - say: { channel: system, with: [], text: "『돌아본 사람들』 초판 1,500부. 6개월 판매 412부." }
+      - say: { channel: record, with: [], text: "독자 엽서. \"우리 애가 다섯 살 때 하던 말이 이 책에 있었습니다. 병원에 안 데려가도 되겠지요.\" 박다온 어머니." }
+      - say: { channel: message, side: them, with: [], text: "엄마: 책 샀다. 서점에 한 권 있더라. 밥은 먹고 다니니. 보증금은 엄마가 좀 보탤게" }
+      - say: { channel: action, with: [], text: "고시원 책상이다. 다음 증언자가 목포에 있다. 답은 다녀와서 하기로 한다." }
+      - goto: late
+
+  late:
+    title: "십이월"
+    actions:
+      - say: { channel: card, with: [], text: "2071년 십이월\n서울" }
+      - bg: { id: window_dawn, transition: fade, duration: 1200 }
+      - place: "2071년 십이월 · 요양 병동"
+      - say:
+          channel: system
+          with: []
+          when: { var: l4_signed, op: eq, value: true }
+          text: "돌봄 단말: 서지안 님(79). 등록 보호자 없음. 최근 면회 2068년 4월."
+      - say:
+          channel: system
+          with: []
+          when: { var: l4_signed, op: eq, value: false }
+          text: "돌봄 단말: 서지안 님(79). 면회 예약 1건. 박다온(53), 오후 두 시."
+      - say:
+          channel: action
+          with: []
+          when: { var: l4_signed, op: eq, value: true }
+          text: "서랍에 보험 증권이 열한 장 있다. 수령인 칸은 전부 비어 있다."
+      - say:
+          channel: action
+          with: []
+          when: { var: l4_signed, op: eq, value: false }
+          text: "서랍에 통장이 하나 있다. 잔액은 장례비에 조금 못 미친다."
+      - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
+      - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 지우지 않았다. 답장 칸에 커서가 깜박인다." }
+      - bg: { id: void, transition: fade, duration: 2600 }
+      - music: void
+      - goto: /4.yaml

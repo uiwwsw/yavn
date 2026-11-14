@@ -1,0 +1,161 @@
+assets:
+  backgrounds:
+    title: assets/bg/title.svg
+    void: assets/bg/void.svg
+    void_light: assets/bg/void_light.svg
+    jemulpo_yard: assets/bg/jemulpo_yard.svg
+    jemulpo_room: assets/bg/jemulpo_room.svg
+    busan_market: assets/bg/busan_market.svg
+    market_fire: assets/bg/market_fire.svg
+    busan_shack: assets/bg/busan_shack.svg
+    seoul_room: assets/bg/seoul_room.svg
+    ward: assets/bg/ward.svg
+    hangang_night: assets/bg/hangang_night.svg
+    edit_room: assets/bg/edit_room.svg
+    interview_room: assets/bg/interview_room.svg
+    window_dawn: assets/bg/window_dawn.svg
+    key_sticker: assets/items/key.svg
+    receipt_sticker: assets/items/receipt.svg
+    sketch_sticker: assets/items/sketch.svg
+    globe_sticker: assets/items/globe.svg
+  characters:
+    만석:
+      name: "만석"
+      placement: prompt-top
+      base: assets/char/self.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    순임:
+      name: "순임"
+      placement: prompt-top
+      base: assets/char/self.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    민재:
+      name: "민재"
+      placement: prompt-top
+      base: assets/char/self.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    지안:
+      name: "지안"
+      placement: prompt-top
+      base: assets/char/self.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    끝순:
+      name: "끝순"
+      placement: prompt-top
+      base: assets/char/kkeutsun.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+      emotions:
+        sick: assets/char/kkeutsun-sick.svg
+    봉구:
+      name: "서기 봉구"
+      placement: prompt-top
+      base: assets/char/bonggu.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    시어머니:
+      name: "시어머니"
+      placement: prompt-top
+      base: assets/char/mother-in-law.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    영호:
+      name: "영호"
+      placement: prompt-top
+      base: assets/char/yeongho.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    청년영호:
+      name: "영호"
+      placement: prompt-top
+      base: assets/char/yeongho-grown.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    기호:
+      name: "통역 기호"
+      placement: prompt-top
+      base: assets/char/giho.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    수경:
+      name: "수경"
+      placement: prompt-top
+      base: assets/char/sugyeong.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    엄마:
+      name: "엄마"
+      placement: prompt-top
+      base: assets/char/mom.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    차피디:
+      name: "차윤희 피디"
+      placement: prompt-top
+      base: assets/char/cha.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    문호:
+      name: "오문호"
+      placement: prompt-top
+      base: assets/char/munho.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+      emotions:
+        lean: assets/char/munho-lean.svg
+  music:
+    void: assets/music/void.flac
+    port: assets/music/port.flac
+    market: assets/music/market.flac
+    ward: assets/music/ward.flac
+    now: assets/music/now.flac
+    birth: assets/music/birth.flac
+
+state:
+  v0: ""
+  v1: ""
+  v2: ""
+  v3: ""
+  v4: ""
+  deg_last: ""
+  l1_gave: false
+  l1_end: ""
+  l2_told: false
+  l2_asked: false
+  l3_said: false
+  l3_went: false
+  l4_refuted: false
+  l4_signed: false
+  looked_back: false

@@ -1,0 +1,75 @@
+title: "360"
+author:
+  name: "uiwwsw"
+version: "1.0.0"
+seo:
+  description: "죽은 뒤의 어둠에서 삶 전체를 기억하고, 그중 하나만 쥐고 나아간다. 1894년 제물포, 1952년 부산, 1988년 서울, 2026년 편집실. 기억 없이 이어지는 다섯 삶을 사는 5장 비주얼노벨. 결말 4종."
+  keywords:
+    - "환생 비주얼노벨"
+    - "철학 SF"
+    - "선택형 이야기"
+    - "시대극"
+    - "미스터리"
+  image: "assets/bg/title.svg"
+  imageAlt: "검은 바탕에 흩어진 점들이 구를 이루고, 그중 한 점만 밝게 빛나는 그림"
+textSpeed: 32
+autoSave: true
+clickToInstant: true
+ui:
+  template: cinematic-noir
+legalNotices:
+  - id: content-warning
+    title: "내용 안내"
+    text: "이 작품에는 죽음과 임종, 굶주림, 전쟁 피란과 화재, 청소년의 투병이 나옵니다. 장면은 과정이나 신체를 자세히 그리지 않습니다."
+startScreen:
+  enabled: true
+  music: assets/music/void.flac
+  image: assets/bg/title.svg
+  imagePosition: "50% 50%"
+  mobileImagePosition: "64% 50%"
+  showTitle: true
+  titleColor: "#e9e4d8"
+  startButtonText: "눈을 뜬다"
+  buttonPosition: bottom-left
+  eyebrow: "죽음 · 굶주림 · 투병이 나옵니다"
+  subtitle: "기억은 두고 간다. 하나만 쥐고."
+  scene:
+    layout: split
+    motion: drift
+    duration: 34000
+    parallax: 6
+    particles: dust
+    intensity: 0.25
+    fog: false
+    light: breathe
+    accent: "#e8c98a"
+endings:
+  onward:
+    title: "한 점"
+    message: "{{deg_last}}°. 어느 해 어느 나라인지는 고를 수 없었다."
+    epilogue: "갓난아이가 운다. 받아 든 사람이 아직 이름을 정하지 못했다."
+    background: window_dawn
+    music: birth
+    tone: hopeful
+  circle:
+    title: "한 바퀴"
+    message: "{{deg_last}}°. 독이 비었던 그 겨울에도 같은 자리를 가리켰다. 다섯 번을 살고 같은 점이다."
+    epilogue: "갓난아이는 그 겨울을 모른다. 젖을 물고, 주먹을 쥔다."
+    background: window_dawn
+    music: birth
+    tone: mystery
+  returner:
+    title: "돌아본 사람"
+    message: "여섯 살 되던 해, 아이가 저녁을 먹다 말했다. \"엄마, 나 전에 편집실에서 일했어.\""
+    epilogue: "엄마는 웃으면서 휴대폰 녹음 버튼을 눌렀다. 그해 제보는 구백 건을 넘었다."
+    background: window_dawn
+    music: now
+    tone: mystery
+  still:
+    title: "머무름"
+    message: "나아가지 않았다. 덜 어두운 쪽은 여전히 저기 있다."
+    epilogue: "어둠은 넓고, 서두르는 것은 아무것도 없다."
+    background: void
+    music: void
+    tone: mystery
+defaultEnding: onward

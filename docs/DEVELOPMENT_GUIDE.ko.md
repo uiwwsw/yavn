@@ -1580,6 +1580,7 @@ public/game-list/my-story/
 
 ## 14) 문서 변경 로그
 
+- 2026-11-14: 5장 작품 「360」(`public/game-list/360/`)을 추가했습니다. 주인공을 그리지 않는 무대, 이전 장의 선택이 다음 장의 선택 하나를 막는 구조(`branch`로 가르는 `*_try` 장면), 게임 오버 없는 결말 4종의 예시입니다. 그림은 `scripts/generate-360-art.py`, 음악은 `scripts/generate-360-score.py`가 만듭니다. 엔진 DSL은 바뀌지 않습니다.
 - 2026-11-13: 인물 몸짓 프리셋 22종(`emote` 액션, `say`·`choice`·`input`의 `motion`, 인물별 `emotionMotions`)을 추가했습니다(9-4-5). 기존 YAML·저장은 그대로 동작합니다.
 - 2026-11-13: 내린 작품의 주소를 살려 두도록 `vercel.json`에 301 리다이렉트를 넣고, 그 밖의 없는 주소를 위한 `404.html`(`scripts/generate-not-found.mjs`)을 빌드에 추가했습니다. 작품을 내릴 때는 `/game-list/<id>`와 `/game-list/<id>/:path*` 두 줄을 리다이렉트에 추가하고, 대체작이 있으면 그 작품으로, 없으면 `/`로 보냅니다. 검색 결과에 남은 주소가 빈 404로 끝나지 않게 하려는 것입니다.
 - 2026-11-13: 인물 동선 `move`(approach·lunge·retreat·flinch·reset)와 시간·장소 표시 `place`를 추가했습니다.

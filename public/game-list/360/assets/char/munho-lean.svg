@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>오문호</title>
+<path d="M286 310 Q274 250 304 220 L316 360 Q296 350 286 310Z" fill="#bdbab3"/>
+<path d="M514 310 Q526 250 496 220 L484 360 Q504 350 514 310Z" fill="#bdbab3"/>
+<rect x="356" y="386" width="88" height="110" fill="#d9b792"/>
+<ellipse cx="400" cy="300" rx="102" ry="122" fill="#d9b792"/>
+<path d="M312 230 Q400 182 488 230 Q400 204 312 230Z" fill="#c9a882"/>
+<path d="M340 458 C250 466 124 522 98 672 L84 1000 L716 1000 L702 672 C676 522 550 466 460 458Z" fill="#6d2f33"/>
+<path d="M344 452 L400 648 L456 452 L436 446 L400 568 L364 446Z" fill="#e9e4d8"/>
+<path d="M340 452 L290 498 L384 788 L400 648Z" fill="#7c383c"/>
+<path d="M460 452 L510 498 L416 788 L400 648Z" fill="#7c383c"/>
+<circle cx="400" cy="818" r="9" fill="#c9a25a"/>
+<circle cx="400" cy="888" r="9" fill="#c9a25a"/>
+<circle cx="400" cy="958" r="9" fill="#c9a25a"/>
+<circle cx="400" cy="1028" r="9" fill="#c9a25a"/>
+<path d="M352 478 Q360 628 372 698 M448 478 Q440 628 428 698" fill="none" stroke="#2c2724" stroke-width="3"/>
+<rect x="356" y="694" width="38" height="26" fill="none" stroke="#2c2724" stroke-width="5" rx="8"/>
+<rect x="406" y="694" width="38" height="26" fill="none" stroke="#2c2724" stroke-width="5" rx="8"/>
+<path d="M560 760 Q640 640 650 520 L700 524 Q706 660 640 800Z" fill="#6d2f33"/>
+<path d="M640 530 Q636 470 664 450 Q700 440 712 480 L708 530Z" fill="#d9b792"/>
+<path d="M672 456 L682 360 Q694 350 702 362 L700 462Z" fill="#d9b792"/>
+</svg>
