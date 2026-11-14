@@ -15,6 +15,7 @@ legalNotices:
 textSpeed: 40
 autoSave: true
 clickToInstant: true
+chapters: 1
 ui:
   template: neon-grid
 startScreen:

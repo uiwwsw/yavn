@@ -15,6 +15,7 @@ seo:
 textSpeed: 32
 autoSave: true
 clickToInstant: true
+chapters: 5
 ui:
   template: cinematic-noir
 legalNotices:

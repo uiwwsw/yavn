@@ -5,6 +5,7 @@ import { CINEMATIC_SOUNDS } from './cinematicAudio';
 import { backgroundId, normalizeAttack, normalizeBackground } from './cinematic';
 import type JSZip from 'jszip';
 import { beginStickerLeave } from './assetTransition';
+import { resolveDeclaredChapterNumbers } from './chapterDiscovery';
 import { normalizeCharacterEnter } from './characterEntrance';
 import { resolveCharacterFraming } from './characterFraming';
 import { CHARACTER_MOTIONS, clampMotionRepeat, resolveMotionDuration, type CharacterMotion } from './characterEmotes';
@@ -506,6 +507,7 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
       const presentation = resolveSayPresentation(action.say.char, action.say.with, []);
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker: presentation.speakerName, channel: resolveDialogueChannel(action.say.channel, presentation.speakerId),
+        ...(action.say.side ? { side: action.say.side } : {}),
         text: parseInlineSpeed(interpolateText(action.say.text, vars)).text });
     }
     if ('choice' in action || 'input' in action) {
@@ -5027,6 +5029,7 @@ function runToNextPause(loopGuard = 0) {
       kind: 'dialogue',
       speaker: presentation.speakerName,
       channel,
+      ...(channel === 'message' ? { side: action.say.side ?? 'them' } : {}),
       text: parsed.text,
       chapterPath: getCurrentChapterPathKey(),
       sceneId: state.currentSceneId,
@@ -5683,20 +5686,31 @@ export async function loadGameFromUrl(url: string, options: LoadGameOptions = {}
     const zeroUrl = new URL('0.yaml', baseUrl).toString();
     const oneUrl = new URL('1.yaml', baseUrl).toString();
     const hasZero = await hasYamlByPathKey('0.yaml');
+    const declaredChapters = config.data.chapters;
+    const pushChapterNumber = (chapterNo: number) => {
+      const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
+      chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
+    };
 
     if (hasZero) {
       chapters.push(createUrlChapter(zeroUrl, '0.yaml', normalizeChapterPathKey('0.yaml')));
-      for (const chapterNo of await findConsecutiveChapterNumbers(1)) {
-        const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-        chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
+      if (declaredChapters) {
+        for (const chapterNo of resolveDeclaredChapterNumbers({ declaredCount: declaredChapters, startsAtZero: true }).slice(1)) {
+          pushChapterNumber(chapterNo);
+        }
+      } else {
+        for (const chapterNo of await findConsecutiveChapterNumbers(1)) pushChapterNumber(chapterNo);
       }
     } else {
       const hasOne = await hasYamlByPathKey('1.yaml');
       if (hasOne) {
         chapters.push(createUrlChapter(oneUrl, '1.yaml', normalizeChapterPathKey('1.yaml')));
-        for (const chapterNo of await findConsecutiveChapterNumbers(2)) {
-          const chapterUrl = new URL(`${chapterNo}.yaml`, baseUrl).toString();
-          chapters.push(createUrlChapter(chapterUrl, `${chapterNo}.yaml`, normalizeChapterPathKey(`${chapterNo}.yaml`)));
+        if (declaredChapters) {
+          for (const chapterNo of resolveDeclaredChapterNumbers({ declaredCount: declaredChapters, startsAtZero: false }).slice(1)) {
+            pushChapterNumber(chapterNo);
+          }
+        } else {
+          for (const chapterNo of await findConsecutiveChapterNumbers(2)) pushChapterNumber(chapterNo);
         }
       }
     }

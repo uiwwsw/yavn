@@ -15,6 +15,7 @@ type ConfigYamlData = {
   textSpeed: number;
   autoSave?: boolean;
   clickToInstant: boolean;
+  chapters?: number;
   endings?: GameData['endings'];
   endingRules?: GameData['endingRules'];
   defaultEnding?: GameData['defaultEnding'];
@@ -78,6 +79,7 @@ const CONFIG_ONLY_KEYS = [
   'textSpeed',
   'autoSave',
   'clickToInstant',
+  'chapters',
   'endings',
   'endingRules',
   'defaultEnding',

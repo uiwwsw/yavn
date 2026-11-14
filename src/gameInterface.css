@@ -719,6 +719,21 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .dialog-box.channel-message .text { max-width: min(560px, 82%); padding: 12px 16px; border-radius: 18px 18px 18px 4px; background: #e9edf1; color: #11161b; font-size: 16px; line-height: 1.5; text-align: left; }
 .app .dialog-box.channel-message.side-me .text { border-radius: 18px 18px 4px 18px; background: #3fd0c9; color: #062022; }
 
+/* The bubbles already sent. The live line is drawn by .text below them so it can still type. */
+.app .phone-thread { display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0 0 6px; padding: 0; list-style: none; }
+.app .phone-thread-bubble { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; max-width: min(560px, 82%); }
+.app .phone-thread-bubble.side-me { align-self: flex-end; align-items: flex-end; }
+.app .phone-thread-speaker { color: #c9d4dc; font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.app .phone-thread-text {
+  padding: 12px 16px; border-radius: 18px 18px 18px 4px;
+  background: color-mix(in srgb, #e9edf1 84%, transparent); color: #11161b;
+  font-size: calc(16px * var(--game-text-scale)); line-height: 1.5; text-align: left; white-space: pre-line;
+}
+.app .phone-thread-bubble.side-me .phone-thread-text { border-radius: 18px 18px 4px 18px; background: color-mix(in srgb, #3fd0c9 84%, transparent); color: #062022; }
+/* The oldest bubbles fade so the eye lands on the newest without the thread looking cropped. */
+.app .phone-thread-bubble:nth-last-child(n + 5) .phone-thread-text { opacity: .72; }
+.app .phone-thread-bubble:nth-last-child(n + 8) .phone-thread-text { opacity: .5; }
+
 /* say.erase: once the line is fully shown it is struck and wiped away, block by block. */
 .app .dialog-box.is-erasing .text { animation: dialog-erase 1100ms steps(9, end) 260ms forwards; text-decoration: line-through; text-decoration-thickness: 2px; }
 @keyframes dialog-erase {
@@ -727,4 +742,28 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .app .dialog-box.is-erasing .text { animation: none; opacity: .4; }
+}
+
+/* A phone conversation on a phone: the thread needs the height to read as a thread, so the
+   box leaves its corner and takes the stage. The scene stays faintly visible behind it. */
+@media (max-width: 768px) {
+  .app .stage-content-frame .dialog-box.channel-message {
+    position: absolute; inset: 0; z-index: 55;
+    width: auto; max-width: none; height: auto; max-height: none; min-height: 0;
+    margin: 0; padding: 64px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+    transform: none; translate: none;
+    border: 0; border-radius: 0;
+    background: color-mix(in srgb, #0b1016 90%, transparent);
+    backdrop-filter: blur(14px);
+    box-shadow: none;
+  }
+  .app .stage-content-frame .dialog-box.channel-message::before { display: none; }
+  .app .dialog-box.channel-message .dialog-content-scroll {
+    height: 100%; max-height: none; padding-top: 0; padding-right: 2px;
+    justify-content: flex-end; gap: 8px;
+  }
+  .app .dialog-box.channel-message .phone-thread-bubble,
+  .app .dialog-box.channel-message .text { max-width: 86%; }
+  .app .dialog-box.channel-message .dialog-channel-label { position: absolute; top: 22px; left: 16px; }
+  .app .dialog-box.channel-message .dialog-controls { top: 16px; right: 16px; }
 }

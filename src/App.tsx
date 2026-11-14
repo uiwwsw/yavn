@@ -30,6 +30,7 @@ import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
 import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
+import { selectPhoneThread } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
@@ -348,12 +349,14 @@ const DialogueText = memo(function DialogueText() {
   // reader completed with a click is left at the top instead, so they still see its beginning.
   // Jumps are instant: smooth scrolling cannot keep up with character-by-character typing.
   const lineStartRef = useRef<string>();
+  const threadRef = useRef(false);
   useLayoutEffect(() => {
     const scroller = textRef.current?.closest<HTMLElement>('.dialog-content-scroll');
     if (!scroller) return;
     const lineChanged = lineStartRef.current !== fullText;
     lineStartRef.current = fullText;
-    const target = resolveDialogueScroll({ lineChanged, typing });
+    threadRef.current = Boolean(scroller.querySelector('.phone-thread'));
+    const target = resolveDialogueScroll({ lineChanged, typing, thread: threadRef.current });
     if (target === 'top') scroller.scrollTop = 0;
     else if (target === 'bottom') scroller.scrollTop = scroller.scrollHeight;
   }, [fullText, visibleText, typing]);
@@ -1688,6 +1691,12 @@ export default function App() {
     placeCaption: state.placeCaption,
     setDialogUiHidden: state.setDialogUiHidden,
   })));
+  // A phone conversation reads as a conversation only if the lines before it are still there.
+  const phoneThread = useMemo(
+    () => (dialogChannel === 'message' ? selectPhoneThread(storyLog) : []),
+    [dialogChannel, storyLog],
+  );
+
   const [bootMode, setBootMode] = useState<BootMode>(
     () => resolveInitialBootPresentation(window.location.pathname).bootMode,
   );
@@ -5765,6 +5774,16 @@ export default function App() {
           </div>
         )}
         <div className="dialog-content-scroll">
+          {phoneThread.length > 0 && (
+            <ol className="phone-thread">
+              {phoneThread.map((bubble) => (
+                <li key={bubble.key} className={`phone-thread-bubble side-${bubble.side}`}>
+                  {bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
+                  <span className="phone-thread-text">{bubble.text}</span>
+                </li>
+              ))}
+            </ol>
+          )}
           {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
           {dialogSpeaker && (
             <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>

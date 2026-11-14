@@ -154,6 +154,11 @@ describe('long dialogue stays readable', () => {
     expect(resolveDialogueScroll({ lineChanged: true, typing: false })).toBe('top');
   });
 
+  it('drops a new phone bubble at the bottom so the thread above it stays put', () => {
+    expect(resolveDialogueScroll({ lineChanged: true, typing: true, thread: true })).toBe('bottom');
+    expect(resolveDialogueScroll({ lineChanged: true, typing: false, thread: true })).toBe('bottom');
+  });
+
   it('leaves a finished line where the reader left it', () => {
     // Clicking to finish a long line should not throw away its opening.
     expect(resolveDialogueScroll({ lineChanged: false, typing: false })).toBe('keep');
@@ -162,6 +167,6 @@ describe('long dialogue stays readable', () => {
   it('keeps the dialogue box scrollable and drives it from the typing text', () => {
     expect(promptStyles).toMatch(/\.dialog-content-scroll \{[\s\S]*?overflow-y: auto;/);
     expect(appSource).toContain("closest<HTMLElement>('.dialog-content-scroll')");
-    expect(appSource).toContain('resolveDialogueScroll({ lineChanged, typing })');
+    expect(appSource).toContain('resolveDialogueScroll({ lineChanged, typing, thread: threadRef.current })');
   });
 });

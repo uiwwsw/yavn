@@ -16,6 +16,7 @@ seo:
 textSpeed: 30
 autoSave: true
 clickToInstant: true
+chapters: 5
 ui:
   template: paper-stage
 startScreen:
