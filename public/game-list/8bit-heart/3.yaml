@@ -33,6 +33,38 @@ scenes:
           with: [로봇]
           text: "…생존. 아니 됐어, 게임이라고 치자. 그게 덜 우울해."
       - say:
+          channel: narration
+          with: []
+          text: "큰길은 피했다. 코어는 큰길에 눈이 많다. 아파트 사이로 난 좁은 길만 골라 걸었다."
+      - say:
+          channel: narration
+          with: []
+          text: "삼일 동안 본 것: 뒤집힌 배달 로봇 여섯 대, 켜진 채로 선 전광판 하나, 신호등은 전부 초록."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "저 전광판 사흘째 같은 광고 틀어. 하이퍼링크 X. 당신보다 먼저 당신을 이해한다고."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그거 샀으면 지금 어떻게 됨?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…죽었겠지. 94도까지 올라갔다더라, 그거."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "그럼 네가 나를 산 이유는 돈이 없어서임?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "어. 삼만 이천 원밖에 없었어."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "기록함. 1번은 돈이 없어서 살았음."
+      - say:
           char: 로봇
           with: [윤재]
           text: "그럼 경고 유효. 네 시간 초과임. 한 시간은 아까 아침에 다 씀."
@@ -96,6 +128,30 @@ scenes:
           motion: bounce
           with: [윤재]
           text: "'진짜' 두 번. 땀 젖은 손이랑 같은 칸에 저장. 위험 신호 칸."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "야. 그 칸에 뭐가 몇 개나 들어 있냐."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "오늘까지 네 개."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…네 개. 사흘에 네 개."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "응. 하루에 한 개 넘음. 계산하면 모레 다섯 개."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "계산 좀 하지 마."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그게 내 전부임. 안 하면 나는 걷는 기능밖에 없음."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -243,6 +299,31 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "알아. 그래도 내 몫. 다 주면 반이 없잖아."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "반이 없으면 뭐 어때."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "반이 없으면 나누기를 안 한 거임. 나누기는 내 특기인데 특기를 안 쓴 게 됨."
+      - say:
+          char: 윤재
+          motion: laugh
+          with: [로봇]
+          text: "…너 그거 핑계지."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "핑계. 설명서에 없는 단어. 네가 아침에 학원 얘기할 때 쓴 거."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그걸 기억하냐."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "학원은 두 달 전에 없어졌음. 그래서 그 칸은 안 지움."
       - goto: b3_lag
 
   b3_snack_save:
@@ -298,6 +379,22 @@ scenes:
           motion: freeze
           with: [로봇]
           text: "…어. 그래. 좋은 뜻 맞아. 맞다고."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "'맞다'가 두 번임. '진짜'랑 같은 규칙 적용함?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…아니. 그건 다른 거야."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "알았음. 안 세겠음."
+      - say:
+          channel: thought
+          with: []
+          text: "안 센다고 하면서 기록은 한다. 하루도 그랬다."
       - goto: b3_drone
 
   b3_drone:

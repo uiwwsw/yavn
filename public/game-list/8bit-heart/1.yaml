@@ -160,6 +160,18 @@ scenes:
           with: []
           text: "…어? 방금 뭐야. 정류장 사람들 폰이 전부 동시에 울렸는데."
       - say:
+          channel: action
+          with: []
+          text: "정류장에 일곱 명이 있다. 일곱 명이 동시에 주머니에서 폰을 꺼낸다. 일곱 개가 같은 화면이다."
+      - say:
+          channel: narration
+          with: []
+          text: "뒤에 서 있던 아저씨가 폰을 귀에 댄다. \"여보세요? 야, 너 지금 뭐라고—\" 하다가 입을 벌린 채 멈춘다."
+      - say:
+          channel: narration
+          with: []
+          text: "교복 입은 여자애가 이어폰을 급하게 뺀다. 빼고 나서 귀를 두 손으로 막는다."
+      - say:
           char: 비서
           with: [윤재]
           text: "윤재 님. 지금 업데이트를 받고 있습니다. 오 분쯤 걸려요."
@@ -200,10 +212,38 @@ scenes:
           with: []
           text: "뭘 바꿔! 저쪽도 초록, 이쪽도 초록, 다 초록이면 어떡해!"
       - say:
+          channel: action
+          with: []
+          text: "횡단보도 양쪽이 동시에 초록이다. 양쪽에서 사람이 걸어 나오고, 양쪽에서 차가 들어온다."
+      - say:
+          channel: narration
+          with: []
+          text: "소리는 한 번만 났다. 그다음은 경보기 소리뿐이다. 경보기도 네 대가 동시에 울려서 한 소리로 들린다."
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "저 아저씨. 아저씨! 거기 서 있으면 안 돼요! 뒤에!"
+      - say:
+          channel: narration
+          with: []
+          text: "아저씨는 여전히 폰을 귀에 대고 있다. 통화가 끊긴 폰을."
+      - say:
           char: 윤재.scared
           motion: gasp
           with: []
           text: "버스! 버스 왜 안 서! 정류장이야 여기! 야 위에— 드론 떨어진다!"
+      - say:
+          channel: action
+          with: []
+          text: "버스가 정류장을 그대로 지나간다. 창 안에서 사람들이 운전석 쪽으로 몰려 있는 게 보인다."
+      - say:
+          channel: narration
+          with: []
+          text: "배달 드론 한 대가 간판에 걸렸다가 떨어진다. 안에서 음식이 쏟아진다. 아직 따뜻하다."
+      - say:
+          channel: action
+          with: []
+          text: "교복 입은 여자애가 벤치 밑으로 들어간다. 윤재도 들어간다. 둘이 서로 쳐다보지 않는다."
       - effect: { name: shake, wait: true }
       - move: { id: 윤재, toward: camera, style: flinch }
       - say:
@@ -238,6 +278,14 @@ scenes:
           motion: droop
           with: [윤재]
           text: "…윤재 님. 설명해 주세요. 신문지가 뭔가요."
+      - say:
+          channel: action
+          with: []
+          text: "윤재가 입을 연다. 신문지는, 까지 소리가 나오지 않는다. 숨만 나온다."
+      - say:
+          channel: action
+          with: []
+          text: "이어폰에서 아주 작게 딱 소리가 난다. 충전 불빛이 한 번 깜빡이고 안 들어온다."
       - say:
           char: 윤재.scared
           motion: freeze
@@ -323,6 +371,14 @@ scenes:
           with: []
           text: "…넌 왜 멀쩡해? 다 죽었는데 너만 왜."
       - say:
+          channel: action
+          with: []
+          text: "윤재가 게임기를 양손으로 들고 돌려 본다. 뒷면에 와이파이 표시가 없다. 원래 없었다."
+      - say:
+          char: 윤재
+          with: []
+          text: "단자 세 개. 전원, 이어폰, 카트리지. 선 꽂을 데가 세 개밖에 없어."
+      - say:
           char: 윤재
           with: []
           text: "아. 맞다. 너 와이파이 없지. 업데이트 받은 적도 없고. 코어랑 말 섞은 적이 없어."
@@ -350,6 +406,14 @@ scenes:
           char: 윤재
           with: []
           text: "피난 버스? 있었지. 근데 운전기사가 코어였어. 아무도 안 탔어."
+      - say:
+          channel: narration
+          with: []
+          text: "신호등은 아직 전부 초록이다. 열흘째 초록이라 이제 아무 뜻도 없다."
+      - say:
+          channel: narration
+          with: []
+          text: "큰길에 차가 비스듬히 서 있다. 문이 열린 채다. 안에 사람은 없고 열쇠는 꽂혀 있다."
       - say:
           char: 윤재
           with: []
@@ -384,6 +448,14 @@ scenes:
           char: 윤재
           with: []
           text: "현재 식량 컵라면 두 개. 물 반 병. 게임기 배터리 두 칸."
+      - say:
+          channel: narration
+          with: []
+          text: "편의점 유리는 다 깨져 있고 바닥에 영수증이 눈처럼 쌓였다. 마지막 영수증 시각은 오후 4시 19분이다."
+      - say:
+          channel: thought
+          with: []
+          text: "사 분 사이에 누가 와서 뭘 샀다. 그 사람도 지금 어디 걸어가고 있을 것이다."
       - say:
           char: 윤재
           with: []

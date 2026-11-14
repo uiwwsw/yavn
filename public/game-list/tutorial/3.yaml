@@ -199,6 +199,18 @@ scenes:
           char: 은숙
           with: [해수]
           text: "아무도 안 들어 줘요. 저도 안 들었고. 그냥 생각나서요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "…그 사람은 뭐라고 하는데요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "서버를 다 껐는데 숫자가 안 줄었다고요. 그 말만 사 년째 해요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "저는 그 말이 무슨 뜻인지 몰라요. 모르는 말은 조서에 안 적어요."
 
   forum:
     title: "주소"
@@ -215,6 +227,31 @@ scenes:
           motion: lean_in
           with: []
           text: "번호표 뽑고 기다리세요, 고객님."
+      - say:
+          channel: action
+          with: []
+          text: "손님은 번호표 기계를 보고 다시 창구를 본다. 팔꿈치를 안 내린다."
+      - say:
+          char: 해수.service
+          with: []
+          text: "제가 뽑아 드릴까요? 052번이세요. 지금 대기 0명이라 바로 부릅니다."
+      - say:
+          channel: action
+          with: []
+          text: "띵동 소리가 나고, 해수가 같은 손님을 같은 자리에서 다시 맞는다."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: []
+          text: "052번 고객님. 영수증 확인해 드릴게요."
+      - say:
+          channel: thought
+          with: []
+          text: "이 절차를 건너뛰면 그날치 접수 건수가 안 맞는다. 안 맞으면 월말에 내가 설명해야 한다."
+      - say:
+          channel: action
+          with: []
+          text: "오른손으로 영수증을 받고, 왼손으로 앞치마 주머니의 휴대폰을 꺼낸다. 손이 각자 움직인다."
       - say:
           channel: message
           side: me
@@ -353,6 +390,38 @@ scenes:
           channel: action
           with: []
           text: "방은 내 방보다 좁다. 창이 없고, 벽 한 면이 종이로 덮여 있다."
+      - say:
+          channel: action
+          with: []
+          text: "종이는 전부 인쇄물이다. 같은 표를 날짜만 바꿔서 뽑은 것이다. 맨 아래 줄만 형광펜이 그어져 있다."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "이거 다 같은 거 아니에요?"
+      - say:
+          char: 태민
+          with: [해수]
+          text: "같아요. 그게 이상한 거예요. 이 년 반 동안 같으면 안 되는데 같아요."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "매주 월요일에 뽑아요. 다른 날 뽑으면 안 돼요. 같은 조건이어야 하니까."
+      - say:
+          channel: thought
+          with: []
+          text: "백서른 장쯤 된다. 이 사람은 이 년 반 동안 월요일마다 이걸 했다."
+      - say:
+          char: 해수
+          with: [태민]
+          text: "회사는 없어졌다고 하셨잖아요. 그럼 이거 누구한테 보여 주려고요."
+      - say:
+          char: 태민
+          with: [해수]
+          text: "…경찰서요. 처음엔 보여 줬어요. 지금은 안 받아 줘요."
+      - say:
+          char: 태민.afraid
+          with: [해수]
+          text: "그래서 그냥 뽑아요. 안 뽑으면 그다음 주에 숫자가 바뀌었을까 봐."
       - move: { id: 태민, style: reset }
 
   room:
@@ -649,6 +718,38 @@ scenes:
           char: 상혁
           with: []
           text: "…거기 뭐 있다고."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "레플라 처음 만든 데야. 지금은 빈 건물이고."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "…거기 가면 걔 찾을 수 있어?"
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "모르겠어."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "모르겠으면 왜 가."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "…여기 앉아 있으면 아무것도 안 바뀌어서."
+      - say:
+          channel: action
+          with: []
+          text: "문 안에서 한참 아무 소리도 없다. 그러다 도어락 숫자판에 불이 한 번 들어온다."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "…해수야. 1270 바꿨어. 너는 알아도 돼."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "안 바꿨어. 바꿀 숫자가 생각 안 나서."
       - goto: leave
 
   door_mom:
@@ -699,6 +800,48 @@ scenes:
           char: 해수
           with: []
           text: "1270이요. 현관은 0411이에요"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "0411은 뭐야 그거"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "제 입사일이에요 외우기 쉬워서요"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "그걸 비번으로 쓰니"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "해수야 너도 좀 쉬어라 너는 우리 애도 아닌데 왜 네가"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "미안해 지금 말 잘못했다"
+      - say:
+          channel: message
+          side: me
+          char: 해수
+          with: []
+          text: "괜찮습니다"
+      - say:
+          channel: message
+          side: them
+          char: 엄마
+          with: []
+          text: "괜찮다고 하지 말고"
       - goto: leave
 
   leave:
