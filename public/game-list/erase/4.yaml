@@ -2,7 +2,6 @@ chapterTitle: "ERASE"
 
 script:
   - scene: rooftop
-  - scene: reveal
 
 scenes:
   rooftop:
@@ -80,16 +79,394 @@ scenes:
           with: []
           delivery: whisper
           text: "…상담 때 들은 건가. 아직 상담도 안 받았는데."
+      - goto: mismatch
+
+  mismatch:
+    title: "안 맞는 것"
+    actions:
+      - say:
+          char: 도윤.hollow
+          with: []
+          delivery: whisper
+          text: "일요일 새벽 세 시 이 분."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "그 시간에 나 뭐 했지."
+      - say:
+          channel: thought
+          with: []
+          text: "토요일에 지수랑 식장 2차 보고, 들어와서 누웠고, 일어나서 일요일 저녁에 넥타이 다렸고."
+      - say:
+          channel: thought
+          with: []
+          text: "새벽 세 시가 없다. 없는 게 아니라 안 떠오른다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…술도 안 마셨는데."
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 예약 문자를 길게 누른다. 삭제가 아니라 상단의 발신자 이름을 누른다."
+      - say:
+          channel: system
+          with: []
+          text: "ERASE 클리닉 · 고객 조회\n본인 인증 완료 (한도윤)"
+      - say:
+          channel: system
+          with: []
+          text: "회원 가입 · 2016. 3.\n상담 이력 · 2건"
+      - say:
+          char: 도윤.panic
+          motion: startle
+          with: []
+          delivery: whisper
+          text: "두 건?"
+      - goto: mismatch_dig
+
+  mismatch_dig:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "1건 · 2016. 3. · 완료\n2건 · 내일 오전 10:00 · 예정"
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "2016년 삼월에 나는 고3이었어. 열여덟."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "열여덟이 여기 뭘 상담하러 와."
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 사진첩을 연다. 아래로 끌어내리는 손가락이 멈추지 않는다."
+      - say:
+          channel: system
+          with: []
+          text: "최근 항목 · 맨 아래로 이동\n2016년 3월 — 사진 1,204장"
+      - say:
+          channel: action
+          when: { var: e2_gallery, op: eq, value: true }
+          with: []
+          text: "목요일 밤에도 여기까지 내려왔다. 그때는 사진 한 장만 보고 닫았다."
+      - say:
+          channel: thought
+          with: []
+          text: "그 아래가 없다. 여덟 달 전 사진도, 열 살 사진도, 초등학교 졸업식도."
+      - say:
+          channel: thought
+          with: []
+          text: "천이백네 장이 그 한 달에 몰려 있고, 그 한 달이 제일 오래된 달이다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "폰을 바꿨으니까. 옮기다 날린 거야. 그럴 수 있어."
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 지갑을 꺼내 신분증을 본다. 클리닉이 내일 가져오라고 한 것이다."
+      - say:
+          channel: record
+          with: []
+          text: "주민등록증 · 한도윤\n발급 · 2016. 3. 28."
+      - say:
+          channel: thought
+          with: []
+          text: "열여덟에 받았으니 맞는 날짜다. 다들 그 나이에 받는다."
+      - say:
+          channel: thought
+          with: []
+          text: "그런데 그 전의 것이 하나도 없다. 사진도, 계정도, 번호도."
+      - say:
+          channel: system
+          with: []
+          text: "계정 관리 · 가입일\n메일 2016. 3. / 메신저 2016. 3. / 지도 2016. 3. / 사진 2016. 3."
+      - say:
+          char: 도윤.panic
+          with: []
+          delivery: whisper
+          text: "일곱 개 다야."
+      - goto: mismatch_two
+
+  mismatch_two:
+    actions:
+      - say:
+          channel: action
+          when: { var: e2_search, op: eq, value: true }
+          with: []
+          text: "검색 기록은 깨끗하다. 목요일 밤에 복구 안 되게 지웠다. 그 전에도 그랬고, 그 전에도 그랬다."
+      - say:
+          channel: thought
+          when: { var: e2_search, op: eq, value: true }
+          text: "나는 이걸 누구한테 배웠지."
+      - say:
+          channel: action
+          when: { var: e2_search, op: eq, value: false }
+          with: []
+          text: "검색 기록이 남아 있다. hiv 잠복기. 보건소 익명검사 몇시. 지우지 않은 것이 이것뿐이다."
+      - say:
+          channel: thought
+          when: { var: e2_search, op: eq, value: false }
+          text: "지우는 게 손에 붙어 있는데 이것만 놔뒀다. 왜 이것만."
+      - say:
+          channel: thought
+          with: []
+          text: "클리닉 문자에 '정리'라는 말이 있었다. 동의서 3번 항목."
+      - say:
+          channel: record
+          with: []
+          text: "ERASE 동의서 제3항\n본인이 직접 정리하지 않은 기록은 시술 후에도 그대로 남습니다. 클리닉은 외부 기록을 삭제하지 않습니다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "본인이 정리하지 않은 건 그대로 남는다."
+      - say:
+          channel: thought
+          with: []
+          text: "그럼 남은 걸 찾으면 된다. 누가 정리하다 빠뜨린 것."
+      - goto: mismatch_photo
+
+  mismatch_photo:
+    actions:
+      - branch:
+          cases:
+            - when: { var: kept_photo, op: eq, value: true }
+              goto: mismatch_photo_kept
+          default: mismatch_photo_gone
+
+  mismatch_photo_kept:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "2016년 3월 아래 · 1장\n날짜 정보 없음"
+      - say:
+          channel: action
+          with: []
+          text: "목요일 밤에 엄지를 떼고 닫은 한 장이다. 아직 있다."
+      - sticker:
+          id: e4_photo
+          image: child_photo_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 600
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "미끄럼틀에서 웃느라 눈이 없어진 애. 사촌 동생인가 했는데."
+      - say:
+          channel: thought
+          with: []
+          text: "날짜가 없다. 날짜 정보를 지우면 사진은 남는다. 그것만 남게 할 수 있다."
+      - say:
+          char: 도윤.panic
+          with: []
+          delivery: whisper
+          text: "누가 이걸 일부러 남겼어."
+      - clearSticker: { id: e4_photo, leave: fadeOut }
+      - goto: mismatch_name
+
+  mismatch_photo_gone:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "2016년 3월 아래 · 항목 없음"
+      - say:
+          channel: action
+          with: []
+          text: "한 장 있었다. 목요일 밤에 휴지통까지 비웠다."
+      - say:
+          channel: thought
+          with: []
+          text: "미끄럼틀에서 웃느라 눈이 없어진 애였다. 사촌 동생인가 했다."
+      - say:
+          channel: thought
+          with: []
+          text: "날짜가 없는 사진이었다. 왜 날짜가 없었는지는 이제 못 본다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…비울 때 손이 한 번 멈췄는데."
+      - goto: mismatch_name
+
+  mismatch_name:
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 검색창에 자기 이름을 친다. 이름이 아니라 그 앞에 뭐가 있었는지를 찾는 사람처럼."
+      - say:
+          channel: message
+          side: me
+          with: []
+          text: "한도윤 2016"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "검색 결과 없음"
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…없을 수가 없잖아. 고3이었는데."
+      - say:
+          channel: thought
+          with: []
+          text: "졸업 사진. 반 단체 사진. 체육대회. 누가 올린 것 하나라도."
+      - say:
+          channel: thought
+          with: []
+          text: "내가 정리한 게 아니면 남아 있어야 한다. 3번 항목이 그렇게 돼 있다."
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 손가락을 멈춘다. 찾는 방향이 틀렸다는 것을 알아차린 얼굴이다."
+      - say:
+          char: 도윤.panic
+          motion: shiver
+          with: []
+          delivery: whisper
+          text: "이름이 틀렸구나."
+      - say:
+          channel: thought
+          with: []
+          text: "그 반에 한도윤은 없었다. 2016년 삼월에 교실에 앉아 있던 애는 다른 이름이었다."
+      - say:
+          channel: thought
+          with: []
+          text: "그 애 이름을 지금 모른다. 지운 사람이 나니까."
+      - say:
+          channel: action
+          with: []
+          text: "옥상 바람이 셔츠 안으로 들어온다. 도윤은 난간을 잡는다. 손이 미끄러워서 한 번 다시 잡는다."
+      - effect: { name: darken, wait: true }
+      - goto: harin_morning
+
+  harin_morning:
+    title: "2016년 삼월"
+    actions:
+      - bg: { id: harin_room, transition: cut }
+      - music: static
+      - say:
+          channel: card
+          with: []
+          text: "과거\n유하린 · 18"
+      - place: "토요일 새벽 5:10 · 하린의 방"
+      - char: { id: 하린, position: center, emotion: blank }
+      - say:
+          channel: narration
+          with: []
+          camera: wide
+          text: "교복이 의자에 걸려 있다. 가방은 싸여 있지 않다. 월요일에 들고 갈 데가 없다."
+      - say:
+          channel: thought
+          with: []
+          text: "메시지. 사진. 위치. 오늘 안에 다."
+      - say:
+          channel: action
+          with: []
+          text: "밝기를 끝까지 낮춘다. 누가 볼 사람도 없는데 끝까지 낮춘다."
+      - say:
+          channel: message
+          side: them
+          char: 아진
+          with: []
+          text: "하린아 전화 좀 받아"
+      - say:
+          channel: message
+          side: them
+          char: 아진
+          with: []
+          text: "내가 그날 문 봤다고 한 거 애들한테 말 안 했어 진짜 안 했어"
+      - say:
+          channel: message
+          side: them
+          char: 민재
+          with: []
+          text: "니가 한 거 아니면 아니라고 한 번만 더 말해줘 그러면 나 믿어"
+      - say:
+          channel: message
+          side: me
+          char: 하린
+          with: []
+          erase: true
+          text: "나 아니야"
+      - say:
+          channel: system
+          with: []
+          text: "대화방에서 나갔습니다.\n이 번호를 차단했습니다."
+      - say:
+          channel: system
+          with: []
+          text: "사진 1,204장을 백업하시겠습니까?\n아니오 — 이 기기에만 보관됩니다."
+      - say:
+          char: 하린.blank
+          with: []
+          delivery: whisper
+          text: "…이건 가져갈 거야."
+      - say:
+          channel: action
+          with: []
+          text: "하린은 사진첩을 끝까지 내려간다. 맨 아래 한 장에서 멈춘다."
+      - sticker:
+          id: e4_slide
+          image: child_photo_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 600
+      - say:
+          channel: system
+          with: []
+          text: "사진 정보 · 2003. 7. 12. · 중랑구\n날짜 및 위치 정보를 삭제하시겠습니까?"
+      - say:
+          char: 하린.blank
+          with: []
+          delivery: whisper
+          text: "네."
+      - say:
+          channel: system
+          with: []
+          text: "날짜 정보가 삭제되었습니다. 사진은 그대로 보관됩니다."
+      - say:
+          char: 하린
+          motion: nod
+          with: []
+          delivery: whisper
+          text: "이건 날짜 없으면 그냥 애기 사진이야. 아무나 될 수 있어."
+      - clearSticker: { id: e4_slide, leave: fadeOut }
+      - say:
+          channel: system
+          with: []
+          text: "타임라인 · 지난 기록 전체 삭제\n이 작업은 되돌릴 수 없습니다."
+      - say:
+          channel: action
+          with: []
+          text: "하린은 교복 이름표를 실밥째 뜯어 봉투에 넣는다. 봉투는 책상 서랍에 둔다. 가져가지 않는다."
+      - goto: reveal
 
   reveal:
     title: "수술대"
     actions:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
-      - say:
-          channel: card
-          with: []
-          text: "과거\n유하린 · 18"
+      - char: { id: 하린, position: center }
       - say:
           char: 의사
           with: []
@@ -112,12 +489,34 @@ scenes:
       - say:
           char: 의사
           with: []
+          text: "미성년자는 보호자 동의가 필요한데, 서류는 들어왔어요. 한 번 더 물어볼게요. 누가 시킨 거 아니죠."
+      - say:
+          char: 하린
+          with: []
+          delivery: whisper
+          text: "아니에요. 제가 신청했어요. 새벽에요."
+      - say:
+          char: 의사
+          with: []
           text: "3번 항목, 읽으셨죠. 본인이 정리하지 않은 건 그대로 남아요."
       - say:
           char: 하린
           with: []
           delivery: whisper
           text: "다 지웠어요. 아침에 다."
+      - say:
+          char: 의사
+          with: []
+          text: "학교는요. 반 애들 사진첩에 있는 건 저희가 못 건드려요."
+      - say:
+          char: 하린.cry
+          with: []
+          delivery: whisper
+          text: "거기엔 제가 안 나와요. 작년부터 단체 사진 뒤에 섰어요."
+      - say:
+          char: 의사
+          with: []
+          text: "…네."
       - say:
           char: 하린
           with: []
@@ -132,6 +531,16 @@ scenes:
           with: []
           delivery: whisper
           text: "그건 그냥 두세요. 날짜도 안 적혀 있어요."
+      - say:
+          char: 의사
+          with: []
+          text: "그러면 뭔지도 모르고 계속 들고 다니실 텐데요."
+      - say:
+          char: 하린
+          motion: nod
+          with: []
+          delivery: whisper
+          text: "그래도 괜찮아요. 하나는 있어야 돼요."
       - bg: { id: surgery_reveal, transition: fade, duration: 1600 }
       - char: { id: 하린, position: center, emotion: sleep }
       - say:
@@ -159,6 +568,160 @@ scenes:
       - char: { id: 도윤, position: center, emotion: panic }
       - move: { id: 도윤, toward: camera, style: flinch }
       - say:
+          char: 도윤.panic
+          with: []
+          delivery: whisper
+          text: "유하린."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…누구지. 아는 이름인데 얼굴이 안 나와."
+      - say:
+          channel: thought
+          with: []
+          text: "돈까스. 4교시 체육. 폰에 기록해 놨어, 증거가 있어야 되잖아."
+      - say:
+          channel: thought
+          with: []
+          text: "어디서 나온 말인지 모르는 말이 머릿속에서 혼자 돈다. 내 말투가 아니다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "열여덟이 지운 게 뭔지 알겠는데, 왜 지웠는지는 안 남겼네."
+      - goto: junseong
+
+  junseong:
+    title: "화분"
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "옥상 문이 한 번 덜컹한다. 아무도 올라오지 않는다. 점심시간이 십 분 남았다."
+      - say:
+          channel: thought
+          with: []
+          text: "열여덟한테 무슨 일이 있었는지는 이제 못 안다. 지난주에 있었던 일은 안다."
+      - say:
+          channel: record
+          when: { var: e2_leaked, op: eq, value: true }
+          with: []
+          text: "단톡방 · 삭제된 메시지입니다 · 읽은 사람 3\n(원문) 근데 팀장님 전 회사에서 왜 나왔는지 아는 사람?"
+      - say:
+          channel: thought
+          when: { var: e2_leaked, op: eq, value: true }
+          text: "지웠는데 셋이 읽었다. 지운 뒤에 소문은 더 잘 돈다. 출처가 없어지니까."
+      - say:
+          channel: thought
+          when: { var: e2_leaked, op: eq, value: true }
+          text: "열여덟은 그걸 당한 쪽이었고, 나는 한 쪽이다. 같은 손으로 지웠다."
+      - say:
+          channel: thought
+          when: { var: e2_leaked, op: eq, value: false }
+          text: "단톡방에 쓰려다 지운 문장이 하나 있었다. 보내지는 않았다."
+      - say:
+          channel: thought
+          when: { var: e2_leaked, op: eq, value: false }
+          text: "안 보낸 게 잘한 일이라고 하기엔, 지우려고 집까지 찾아갔다."
+      - say:
+          channel: record
+          when: { var: e2_hospital, op: eq, value: true }
+          with: []
+          text: "메모 '장보기'\n목 회의 · 팀장님 폰(화면 위로 놓여 있었음)\n'감염내과 정기 진료 안내'\n송과장님도 봄"
+      - say:
+          channel: thought
+          when: { var: e2_hospital, op: eq, value: true }
+          text: "제목을 장보기로 바꿔 놓은 메모. 바꿀 생각을 할 만큼은 알았다는 뜻이다."
+      - say:
+          channel: record
+          when: { var: e2_sns, op: eq, value: true }
+          with: []
+          text: "2021.03.14 · 오늘도 약 잘 챙겨 먹은 나 칭찬해🙂\n2023.11.30 · 반년 연속 굿. 선생님이 하이파이브 해줌"
+      - say:
+          channel: thought
+          when: { var: e2_sns, op: eq, value: true }
+          text: "칠 년을 공개로 써 둔 사람이다. 숨긴 사람이 아니다. 숨긴 건 나다."
+      - say:
+          channel: thought
+          when: { var: e3_papers, op: eq, value: true }
+          text: "외래 기록 미검출 줄에 형광펜이 그어져 있었다. 여백에 연필로 굿."
+      - say:
+          channel: thought
+          when: { var: e3_papers, op: eq, value: true }
+          text: "그 줄을 자기 손으로 그은 사람 집에 내가 신발을 벗고 들어갔다."
+      - say:
+          channel: thought
+          when: { var: e3_bag, op: eq, value: true }
+          text: "봉투에 볼펜으로 밤 열 시. 남은 약 열다섯 정. 반은 먹었고 반은 남았다는 뜻이다."
+      - say:
+          channel: thought
+          when: { var: e3_note, op: eq, value: true }
+          text: "냉장고 달력에는 다음 주 토요일이 적혀 있었다. 한대리 결혼식 — 축의금?"
+      - say:
+          channel: thought
+          when: { var: e3_note, op: eq, value: true }
+          text: "그 사람은 내 결혼식에 올 돈을 세고 있었다. 나는 그 집에서 그걸 읽고 나왔다."
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 화분 잎 두 개 났어요 사진 찍어뒀습니다"
+      - say:
+          channel: thought
+          with: []
+          text: "윤주임은 아무것도 모르고 반 컵씩 준다. 모르는 사람이 제일 오래 남는다."
+      - say:
+          channel: thought
+          with: []
+          text: "열여덟 때 아진이가 그랬다. 하린아, 너 화내도 돼."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…그 말 들은 기억은 없는데 문장은 그대로 있네."
+      - goto: final_turn
+
+  final_turn:
+    actions:
+      - say:
+          channel: thought
+          with: []
+          text: "내일 열 시에 가면 두 번째다. 두 번째는 더 쉽다고 할 것이다. 이번엔 정리할 게 뭔지도 아니까."
+      - say:
+          channel: thought
+          when: { var: deleted, op: gte, value: 6 }
+          text: "이번 주에 지운 것만 세어 봐도 손가락이 넘는다. 손에 완전히 붙었다."
+      - say:
+          channel: thought
+          when: { var: went_to_clinic, op: eq, value: true }
+          text: "지갑 안쪽, 영수증 뒤에 번호표가 있다. 사십칠 번. 결과는 목요일에 본인이 직접 받으러 가야 한다."
+      - say:
+          channel: thought
+          when: { var: went_to_clinic, op: eq, value: true }
+          text: "본인이 직접. 내일 열 시에 지우면 사십칠 번은 아무것도 아닌 종이가 된다."
+      - say:
+          channel: thought
+          when: { var: went_to_clinic, op: eq, value: false }
+          text: "목요일에 번호표 버튼까지 세 걸음에서 돌아섰다. 아직 아무 결과도 없다. 받을 것도 없다."
+      - say:
+          channel: thought
+          when: { var: told_jisu, op: eq, value: 2 }
+          text: "지수에게는 다 말했다. 읽지 않은 메시지가 네 개 있다."
+      - say:
+          channel: thought
+          when: { var: told_jisu, op: eq, value: 1 }
+          text: "지수에게는 반만 말했다. 반만 말한 것은 지운 것과 비슷한 자리에 쌓인다."
+      - say:
+          channel: thought
+          when: { var: told_jisu, op: eq, value: 0 }
+          text: "지수에게는 말하지 않았다. 식장 2차까지 보고 왔다."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "열여덟은 하나는 남겨야 한다고 했어."
+      - say:
           channel: system
           with: []
           text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00."
@@ -183,10 +746,18 @@ scenes:
           with: []
           text: "모든 콘텐츠 및 설정 지우기\n사진, 메시지, 계정 및 기타 데이터가 모두 삭제됩니다."
       - say:
+          channel: action
+          with: []
+          text: "도윤은 '지우기'를 누르기 전에 사진첩을 한 번 더 연다. 맨 아래를 확인하는 손놀림이 익숙하다."
+      - say:
           channel: system
           with: []
           erase: true
           text: "지우는 중… 약 4분 남음"
+      - say:
+          channel: action
+          with: []
+          text: "사 분 동안 옥상에 서 있는다. 바람이 셔츠를 한 방향으로만 누른다."
       - add: { deleted: 10 }
       - branch:
           cases:
@@ -210,6 +781,24 @@ scenes:
           with: []
           text: "정리는 다 하고 오셨죠. 다들 그러시는데 꼭 한 개씩은 남아요."
       - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…선생님. 저 전에 여기 온 적 있어요?"
+      - say:
+          char: 의사
+          with: []
+          text: "기록은 저희가 안 봐요. 보면 안 되는 걸로 돼 있어요."
+      - say:
+          char: 의사
+          with: []
+          text: "그리고 그걸 물어보시는 분이 생각보다 많아요."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…많다고요."
+      - say:
           char: 의사
           with: []
           text: "숨 한 번 크게 쉬세요. 네. 잘하셨어요."
@@ -219,10 +808,24 @@ scenes:
           text: "눈 뜨면… 새로 시작해요."
       - effect: { name: darken, wait: true }
       - say:
+          channel: record
+          with: []
+          text: "ERASE 시술 기록 · 2027\n시술 전 · 한도윤 (29)\n새 신원 · (발급 대기)"
+      - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 금요일 고깃집 확정. 도윤대리 답 없어서 그냥 정함ㅋㅋ"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 도윤대리님도 안 오시는 거예요?"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 화분 두 개 됐어요. 하나는 제 자리로 옮길게요"
       - ending: erase_loop
 
   end_erased_name:
@@ -264,6 +867,29 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 오대리: 자리 정리하면서 같이 버린 거 아닐까요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 제가 반 컵씩 주던 건데요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 그런 건 원래 주인이 치우는 거야"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 주인이 둘 다 없는데요"
+      - say:
+          channel: action
+          with: []
+          text: "그 뒤로 단톡방은 한동안 조용하다. 다음 메시지는 새 팀장 환영 점심 투표다."
+      - say:
+          channel: record
+          with: []
+          text: "고객의 소리 · 접수 0건\n감사 요청 · 없음\n기록 보존 기간 · 1년"
       - ending: erased_name
 
   end_photo:
@@ -287,6 +913,24 @@ scenes:
           with: []
           delivery: whisper
           text: "눈 없어질 때까지 웃네."
+      - say:
+          channel: thought
+          with: []
+          text: "열여덟이 날짜를 지우면서 하나는 있어야 된다고 했다. 뭔지 몰라도 들고 다니라고."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "…들고 다녔어. 십일 년 동안 사촌 동생인가 하면서."
+      - say:
+          char: 도윤
+          with: []
+          delivery: whisper
+          text: "이제 아는 사람이 나 하나야. 내가 지우면 아무도 없어."
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 사진을 즐겨찾기에 넣는다. 그리고 다시 빼고, 그냥 그 자리에 둔다."
       - clearSticker: { id: e4_photo, leave: fadeOut }
       - say:
           channel: message
@@ -305,6 +949,19 @@ scenes:
           char: 도윤
           with: []
           text: "2"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[ERASE 클리닉] 기타 사유를 입력해 주세요. (선택)"
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 입력 칸을 한참 보다가 비워 둔 채로 보낸다."
+      - say:
+          channel: system
+          with: []
+          text: "예약이 취소되었습니다. 상담 이력 · 1건"
       - branch:
           cases:
             - when: { var: went_to_clinic, op: eq, value: true }
@@ -317,6 +974,10 @@ scenes:
       - music: wind
       - place: "사흘 뒤 목요일 · 보건소"
       - say:
+          channel: action
+          with: []
+          text: "지갑 카드 칸 맨 안쪽, 영수증 뒤에서 번호표를 꺼낸다. 접힌 자리가 하얗다."
+      - say:
           channel: system
           with: []
           text: "결과 상담 · 47번 고객님, 2번 상담실로 오세요."
@@ -325,6 +986,14 @@ scenes:
           motion: perk
           with: []
           text: "…네. 저요."
+      - say:
+          channel: action
+          with: []
+          text: "일어서면서 이름을 말할 준비를 한다. 여기서는 이름을 묻지 않는다."
+      - say:
+          channel: thought
+          with: []
+          text: "결과가 뭐든 이번에는 들고 나온다. 지우는 건 내일부터 안 하기로 한다."
       - ending: kept_photo
 
   end_photo_ticket:
@@ -342,6 +1011,10 @@ scenes:
       - get: test_ticket
       - place: "다음 날 오전 9:00 · 보건소"
       - say:
+          channel: action
+          with: []
+          text: "목요일에는 세 걸음 앞에서 돌아섰다. 오늘은 버튼을 누르고 앉는다."
+      - say:
           channel: system
           with: []
           text: "대기 번호 47 · 현재 호출 46"
@@ -350,6 +1023,10 @@ scenes:
           with: []
           delivery: whisper
           text: "…한 번호 남았네."
+      - say:
+          channel: action
+          with: []
+          text: "옆자리 사람이 먼저 불려 들어간다. 도윤은 번호표를 접지 않고 손에 들고 있는다."
       - clearSticker: { id: e4_ticket, leave: fadeOut }
       - ending: kept_photo
 
@@ -410,6 +1087,40 @@ scenes:
           char: 지수
           with: []
           text: "빨래는 걷어놨어 네 것도"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "지수야"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "나 열여덟 때 얘기 하나 해도 돼"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "지금?"
+      - say:
+          channel: message
+          side: me
+          char: 도윤
+          with: []
+          text: "지금 아니면 또 혼자 들고 있을 것 같아서"
+      - say:
+          channel: message
+          side: them
+          char: 지수
+          with: []
+          text: "…해"
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 입력 중 표시를 띄워 놓고 한참 아무것도 치지 않는다. 열여덟의 이름부터 쓴다."
       - say:
           channel: action
           with: []
