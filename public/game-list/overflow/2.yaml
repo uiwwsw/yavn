@@ -310,7 +310,7 @@ scenes:
       - say:
           char: 지완
           with: [세라]
-          text: "여덟 번 해 봤어. 전부 반려됐고."
+          text: "여덟 번 해 봤어. 일곱 번 반려됐고."
       - say:
           char: 세라.joke
           with: [지완]
