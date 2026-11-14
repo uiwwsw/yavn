@@ -1349,10 +1349,11 @@ textarea,
    The shared max-shot budget keeps wide/medium/close meaningful and stable.
    The reading inset survives automatic choice growth and manual dialog hiding. */
 .char-layer-prompt-top .char {
-  --prompt-character-height: min(52cqh, max(0px, calc(
+  --prompt-character-stage-height: min(52cqh, max(0px, calc(
     (100cqh - var(--prompt-top-fit-inset, var(--prompt-top-dialog-inset)) - var(--character-headroom))
     / var(--prompt-camera-render-fit-scale) / max(1, var(--char-scale))
   )));
+  --prompt-character-height: var(--prompt-character-stage-height);
 }
 
 .char-layer-prompt-top .char-image {
@@ -4245,12 +4246,35 @@ textarea,
     --char-anchor-x: var(--char-mobile-anchor-x, var(--char-desktop-anchor-x, 50cqw));
   }
 
-  /* Half-body art is sized from the free height, which on a phone makes it wider than the
-     slice of screen its anchor sits in, so the outer shoulder fell off the edge. Cap each
-     actor at twice the distance to its nearest edge: object-fit scales the art down inside
-     that box instead of cropping it, and a centred solo actor keeps the full width. */
-  .char-layer .char-image {
-    max-width: calc(2 * min(var(--char-anchor-x), 100cqw - var(--char-anchor-x)));
+  /* Half-body art is sized from the free height, so on a phone it comes out far wider than
+     the slice of screen its anchor sits in: the outer shoulder fell off the edge, and in a
+     two-shot the boxes overlapped so much that the actor drawn first disappeared behind the
+     second. Capping the wrapper did nothing — the portrait is an absolutely positioned image
+     with max-width: none, zoomed again by the crop transform — so bound the height instead,
+     which is what the width is derived from.
+
+     Drawn width is height x source ratio / visible fraction, so the height that exactly fills
+     an actor's slot is slot x visible fraction / ratio. A centred solo actor still gets the
+     whole stage, since its slot is the full width. */
+  .char-layer .char {
+    /* Twice the distance to the nearest edge is the right slot for one actor and for a pair,
+       but it hands a trio's centre actor the whole stage, where it covered the two beside it.
+       A share of the stage per head bounds that without needing to know the neighbours. */
+    --char-actor-slot: min(
+      calc(2 * min(var(--char-anchor-x), 100cqw - var(--char-anchor-x))),
+      calc(100cqw / var(--char-cast-size, 1))
+    );
+    --char-actor-width-budget: calc(
+      var(--char-actor-slot)
+      * var(--character-visible-fraction, 1) / var(--character-source-ratio, 1)
+      / var(--stage-camera-render-scale, 1)
+    );
+  }
+  .char-layer.char-layout-duo .char { --char-cast-size: 2; }
+  .char-layer.char-layout-trio .char { --char-cast-size: 3; }
+  .char-layer .char-image { --char-image-height: min(52cqh, var(--char-actor-width-budget)); }
+  .char-layer-prompt-top .char-image {
+    --char-image-height: min(var(--prompt-character-stage-height), var(--char-actor-width-budget));
   }
 
   .choice-gate-option,

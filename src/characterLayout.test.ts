@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { drawnActorWidth, resolveActorHeight } from './characterFit';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
@@ -312,11 +313,68 @@ describe('automatic and fixed compositions', () => {
 describe('phone framing keeps whole actors on screen', () => {
   const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
 
-  it('caps each actor at the screen it is anchored to', () => {
-    // Half-body art is sized from free height, so on a phone it grew wider than its half of
-    // the screen and the outer shoulder fell off the edge.
-    expect(styles).toMatch(/@media \(max-width: 768px\)[\s\S]*?\.char-layer \.char-image \{[\s\S]*?max-width: calc\(2 \* min\(var\(--char-anchor-x\), 100cqw - var\(--char-anchor-x\)\)\);/);
+  it('bounds the actor height by its slot, which is what the width is derived from', () => {
+    // Capping the wrapper's max-width did nothing: the portrait is absolutely positioned with
+    // max-width: none and is zoomed again by the crop transform, so it overflowed anyway.
+    expect(styles).toMatch(
+      /@media \(max-width: 768px\)[\s\S]*?--char-actor-slot: min\(\s*calc\(2 \* min\(var\(--char-anchor-x\), 100cqw - var\(--char-anchor-x\)\)\),\s*calc\(100cqw \/ var\(--char-cast-size, 1\)\)\s*\);/,
+    );
+    expect(styles).toMatch(
+      /--char-actor-width-budget: calc\(\s*var\(--char-actor-slot\)\s*\* var\(--character-visible-fraction, 1\) \/ var\(--character-source-ratio, 1\)\s*\/ var\(--stage-camera-render-scale, 1\)\s*\);/,
+    );
+    expect(styles).toContain('.char-layer.char-layout-trio .char { --char-cast-size: 3; }');
+    // Both placements, because a game that never sets `placement` still lays out at the bottom.
+    expect(styles).toContain('--char-image-height: min(52cqh, var(--char-actor-width-budget));');
+    expect(styles).toMatch(
+      /--char-image-height: min\(var\(--prompt-character-stage-height\), var\(--char-actor-width-budget\)\);/,
+    );
     expect(styles).toContain('object-fit: contain');
+  });
+
+  it('keeps a phone two-shot inside the screen and off each other', () => {
+    // The numbers the engine actually produced for 360 at 375px: 800x1000 art, cropBottom 0.3,
+    // a duo anchored a quarter in from each edge. The left actor used to be drawn from -235 to
+    // 313 and vanished behind the right one.
+    const stageWidth = 375;
+    // With company on stage a phone no longer zooms, so the shot scale is 1 here.
+    const art = { sourceRatio: 0.8, visibleFraction: 0.7, cameraScale: 1 };
+    const stageHeight = 488;
+
+    const spans = [0.25, 0.75].map((fraction) => {
+      const anchorX = stageWidth * fraction;
+      const height = resolveActorHeight({ stageHeight, anchorX, stageWidth, castSize: 2, ...art });
+      const width = drawnActorWidth({ height, ...art });
+      return { left: anchorX - width / 2, right: anchorX + width / 2 };
+    });
+
+    expect(spans[0].left).toBeGreaterThanOrEqual(0);
+    expect(spans[1].right).toBeLessThanOrEqual(stageWidth);
+    expect(spans[0].right).toBeLessThanOrEqual(spans[1].left);
+  });
+
+  it('does not hand a trio centre the whole stage', () => {
+    // Twice the distance to the nearest edge is the full width for a centred anchor, so the
+    // middle of three used to be drawn across both of the others and hide them.
+    const art = { sourceRatio: 0.8, visibleFraction: 0.7, cameraScale: 1 };
+    const centre = resolveActorHeight({
+      stageHeight: 488, anchorX: 187.5, stageWidth: 375, castSize: 3, ...art,
+    });
+    const outer = resolveActorHeight({
+      stageHeight: 488, anchorX: 93.75, stageWidth: 375, castSize: 3, ...art,
+    });
+
+    expect(drawnActorWidth({ height: centre, ...art })).toBeCloseTo(125, 5);
+    expect(centre).toBe(outer);
+  });
+
+  it('gives a centred solo actor the whole width rather than the whole height', () => {
+    // Drawn at the free stage height it would be 558px wide on a 375px screen, so it loses
+    // height here too — but it ends up filling the screen exactly instead of running past it.
+    const art = { sourceRatio: 0.8, visibleFraction: 0.7, cameraScale: 1 };
+    const height = resolveActorHeight({ stageHeight: 488, anchorX: 187.5, stageWidth: 375, ...art });
+
+    expect(drawnActorWidth({ height, ...art })).toBeCloseTo(375, 5);
+    expect(height).toBeLessThan(488);
   });
 
 });
