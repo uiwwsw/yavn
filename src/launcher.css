@@ -184,7 +184,12 @@
 .launcher-command-ghost:hover, .launcher-command-source:hover { color: #fff !important; border-color: #fff; }
 .launcher-share-status { min-height: 16px; margin-top: 6px !important; color: #e7c0a0; font-size: 12px; }
 .launcher-feature-legal-notices { width: 100%; margin-top: 14px; color: #b8c9bb; }
-.launcher-feature-legal-notices .legal-notice { margin: 0; padding: 11px 0 0; border: 0; border-top: 1px solid #ffffff28; background: transparent; }
+/* A content warning is the same object here as it is in the game and on the title screen,
+   and it carries the app's left rule everywhere else. The rule separating it from the
+   actions above belongs to the section, not to each notice. */
+.launcher-feature-legal-notices { border-top: 1px solid #ffffff28; padding-top: 14px; }
+.launcher-feature-legal-notices .legal-notice { margin: 0; padding: 0 0 0 10px; border: 0; border-left: 2px solid currentColor; background: transparent; }
+.launcher-feature-legal-notices .legal-notice + .legal-notice { margin-top: 10px; }
 .launcher-feature-legal-notices .legal-notice h4 { margin: 0 0 4px; color: #d6cbb0; font-size: 12px; font-weight: 700; }
 .launcher-feature-legal-notices .legal-notice p { color: #b6c7bb; font-size: 12px; line-height: 1.6; }
 .launcher-feature-legal-notices .legal-notice :is(a, small) { color: #d8d9bc; font-size: 12px; }
@@ -361,7 +366,9 @@
   .launcher-feature-summary { font-size: 13px; margin-top: 13px !important; }
   .launcher-command-primary { width: auto; }
   .launcher-feature .inspector-actions { margin-top: 20px; gap: 12px 18px; }
-  .launcher-feature-legal-notices { margin-top: auto; padding-top: 12px; }
+  /* Stacked, the copy column is taller than its content, so pushing the notice to the
+     bottom left it marooned under a hundred pixels of nothing. It follows the actions. */
+  .launcher-feature-legal-notices { margin-top: 22px; padding-top: 12px; }
   .launcher-carousel-controls { padding: 12px 20px; gap: 12px; }
   .launcher-carousel-pagination { gap: 10px; }
   .launcher-carousel-pagination b { display: none; }
