@@ -291,7 +291,7 @@ scenes:
               - { var: m_joke, op: eq, value: false }
           text: "아님. 빈 칸은 지울 것도 없음. 들어갈 때는 그게 유리함."
       - say: { char: 윤재, with: [로봇], text: "…하나만 고르라고. 하나만." }
-      - say: { char: 로봇, with: [윤재], text: "고르는 건 1P가 함. 규칙 2번." }
+      - say: { char: 로봇, with: [윤재], text: "고르는 건 1P가 함. 그건 안 바뀌는 칸에 있음." }
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
