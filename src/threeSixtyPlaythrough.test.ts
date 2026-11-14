@@ -37,10 +37,18 @@ const SIGN = '서명한다. 원본은 방송국이 갖는다.';
 const WALK = '서명하지 않는다. 증언자들을 한 명씩 다시 찾아간다.';
 const BESIDE = '곁에 있었어야 했다.';
 
+// The store keeps only the last MAX_STORY_LOG_ENTRIES lines, and a full run of 360 says more
+// than that, so the lines from the early lives are gone by the time an ending resolves. Collect
+// every line as it is shown instead; that is also closer to what the player saw.
 async function play(route: Route, maxSteps = 4000) {
   const picked: string[] = [];
+  const shown: string[] = [];
+  const collect = (state: ReturnType<typeof useVNStore.getState>) => {
+    for (const entry of state.storyLog) if ('text' in entry && !shown.includes(entry.text)) shown.push(entry.text);
+  };
   for (let step = 0; step < maxSteps; step += 1) {
     const state = useVNStore.getState();
+    collect(state);
     if (state.error) throw new Error(`engine error: ${state.error.message}`);
     if (state.isFinished || state.gameOver) break;
     if (state.choiceGate.active && !state.busy) {
@@ -57,11 +65,11 @@ async function play(route: Route, maxSteps = 4000) {
     }
     await vi.advanceTimersByTimeAsync(400);
   }
-  return { state: useVNStore.getState(), picked };
+  collect(useVNStore.getState());
+  return { state: useVNStore.getState(), picked, shown };
 }
 
-const heard = (state: ReturnType<typeof useVNStore.getState>, fragment: string): boolean =>
-  state.storyLog.some((entry) => 'text' in entry && entry.text.includes(fragment));
+const heard = (shown: string[], fragment: string): boolean => shown.some((text) => text.includes(fragment));
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -96,7 +104,7 @@ async function start() {
 describe('360 full playthrough', () => {
   it('refuses the choice each inherited direction cannot make, and remembers when it looks back', async () => {
     await start();
-    const { state, picked } = await play({
+    const { state, picked, shown } = await play({
       v0: '독이 비지 않았더라면.',
       l1_rice: OPEN,
       l1_leave: GO,
@@ -110,16 +118,24 @@ describe('360 full playthrough', () => {
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '"그건 선생님이 모르시는 일이에요."',
       l4_sign: SIGN,
+      l5_leftover: '제일 처음 놓고 온 것을 본다.',
       v4: BESIDE,
       l5_look: '돌아본다.',
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
+    // The fifth dark leaks the earlier lives back as unattributed testimony — the thing this life
+    // spent its working years transcribing — and the editor recognises it by the detail nobody
+    // would invent, then counts the years the four voices add up to.
+    expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
+    expect(heard(shown, '백아흔여섯 해')).toBe(true);
+    // It can also look at the thing it put down in the first dark, which has no year attached.
+    expect(heard(shown, '223.7. 그날 나가지 않았더라면')).toBe(true);
     // The hoarder cannot open the storehouse, the one who says everything cannot ask for a receipt,
     // the one who stays cannot take the jacket, and the one who dares cannot sit down and sign.
-    expect(heard(state, '손목이 돌아가지 않는다')).toBe(true);
-    expect(heard(state, '나온 말은 그게 아니다')).toBe(true);
-    expect(heard(state, '손은 침대 난간을 잡고 있다')).toBe(true);
-    expect(heard(state, '가방끈이 어깨에 걸려 있다')).toBe(true);
+    expect(heard(shown, '손목이 돌아가지 않는다')).toBe(true);
+    expect(heard(shown, '나온 말은 그게 아니다')).toBe(true);
+    expect(heard(shown, '손은 침대 난간을 잡고 있다')).toBe(true);
+    expect(heard(shown, '가방끈이 어깨에 걸려 있다')).toBe(true);
     expect(state.routeVars).toMatchObject({
       v0: 'hold', l1_gave: false, l1_end: 'gone', v1: 'say', l2_told: true, l2_asked: true,
       v2: 'stay', l3_said: true, l3_went: false, v3: 'dare', l4_signed: false, l4_refuted: true, looked_back: true,
@@ -129,7 +145,7 @@ describe('360 full playthrough', () => {
 
   it('comes full circle when the last thing held is the first thing held', async () => {
     await start();
-    const { state, picked } = await play({
+    const { state, picked, shown } = await play({
       v0: '그날 나가지 않았더라면.',
       l1_rice: OPEN,
       l1_leave: GO,
@@ -143,13 +159,19 @@ describe('360 full playthrough', () => {
       l4_mark: "'어두웠다'에 줄을 긋는다.",
       l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
       l4_sign: WALK,
+      l5_leftover: '제일 나중에 놓고 온 것을 본다.',
       v4: BESIDE,
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
-    expect(heard(state, '발이 넘어가지 않는다')).toBe(true);
-    expect(heard(state, '보따리는 벌써 어깨에 있고')).toBe(true);
-    expect(heard(state, '입이 닫힌다')).toBe(true);
-    expect(heard(state, '손은 펜을 쥐고 있다')).toBe(true);
+    // Before the last choice the stake is stated: the maths teacher said no point repeats in 360
+    // degrees, and this is the one place where that can be tested. Closing the circle says so.
+    expect(heard(shown, '같은 점은 없어. 360도 어디에도')).toBe(true);
+    expect(heard(shown, '목록에 이미 있는 숫자다')).toBe(true);
+    expect(heard(shown, '같은 점이 두 번이다')).toBe(true);
+    expect(heard(shown, '발이 넘어가지 않는다')).toBe(true);
+    expect(heard(shown, '보따리는 벌써 어깨에 있고')).toBe(true);
+    expect(heard(shown, '입이 닫힌다')).toBe(true);
+    expect(heard(shown, '손은 펜을 쥐고 있다')).toBe(true);
     expect(state.routeVars).toMatchObject({
       v0: 'kin', l1_gave: true, l1_end: 'poor', v1: 'free', l2_told: false, l2_asked: false,
       v2: 'guard', l3_said: false, l3_went: true, v3: 'live', l4_signed: true, looked_back: false,
@@ -174,6 +196,7 @@ describe('360 full playthrough', () => {
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
       l4_sign: SIGN,
+      l5_leftover: '보지 않는다.',
       v4: BESIDE,
       l5_look: '그대로 간다.',
     });

@@ -154,14 +154,6 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "묻지도 않았는데."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "죄송합니다."
-      - say:
-          char: 윤재
-          with: [비서]
           text: "엄마는 그다음 해에 나갔어. 게임기는 남았었는데. 이제 그것도 갔고."
       - say:
           char: 비서
@@ -201,14 +193,6 @@ scenes:
           motion: puff
           with: [비서]
           text: "지방 현장 숙소에 석 달 가 있는 사람한테 게임기 죽었다고 전화해? 뭐라고 하는데."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "제가 대신 말씀드릴까요?"
-      - say:
-          char: 윤재
-          with: [비서]
-          text: "더 싫어."
       - say:
           char: 윤재
           with: [비서]
@@ -297,27 +281,6 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "광고에서는 커피 몇 잔 값이라고 합니다."
-      - say:
-          char: 윤재
-          with: [비서]
-          text: "나 커피 안 마셔."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "그럼 공짜입니다."
-      - say:
-          char: 윤재
-          motion: headtilt
-          with: [비서]
-          text: "…너 진짜 농담 기능 없는 거 맞아?"
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "없습니다."
-      - say:
-          char: 비서
-          with: [윤재]
           text: "속보가 떴어요. 읽어 드릴까요?"
       - say:
           char: 윤재
@@ -378,14 +341,6 @@ scenes:
           motion: headtilt
           with: [윤재]
           text: "어떤 매물요?"
-      - say:
-          char: 윤재
-          with: [비서]
-          text: "…아 맞다. 너 화면도 못 보지."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "읽어 주시면 압니다."
       - say:
           char: 윤재
           with: [비서]

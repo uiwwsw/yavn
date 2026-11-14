@@ -36,6 +36,38 @@ scenes:
           channel: action
           with: [여금]
           text: "여금의 손이 장옷 끈을 쥔다. 손등은 깨끗하다. 손톱은 짧게 다듬었다."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "…목이 졸렸다고요."
+      - say:
+          char: 서연
+          with: [여금]
+          text: "네."
+      - say:
+          char: 여금
+          with: [서연]
+          text: "그 애 혼례가 보름 뒤였어요. 내가 혼수까지 봐 줬고요."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "그래서 동네에서는 그 애가 겁이 나서 우물에 들어갔다고 하던데."
+      - say:
+          char: 서연
+          with: [여금]
+          text: "스스로 들어가면 거품이 입에 찹니다. 분이는 없었습니다."
+      - say:
+          channel: action
+          with: []
+          text: "여금이 장옷 끈을 놓는다. 한참 아무 말도 하지 않는다."
+      - say:
+          char: 여금
+          with: [서연]
+          text: "…그 말, 아까 포교한테도 했어요?"
+      - say:
+          char: 서연
+          with: [여금]
+          text: "했습니다. 적어 가지는 않았습니다."
       - goto: c2_meet
 
   c2_meet:
@@ -143,6 +175,18 @@ scenes:
           channel: thought
           with: []
           text: "영감은 움직이지 않는다. 막쇠는 벌써 영감을 업으려고 들어간다. 궤짝은 장부다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아가씨는 들어오지 마요! 연기가 아래로 깔렸어!"
+      - say:
+          channel: action
+          with: []
+          text: "문틀이 뜨겁다. 서까래에서 흙이 떨어진다. 영감 발밑으로 불이 번지는 쪽은 궤짝 쪽이다."
+      - say:
+          channel: thought
+          with: []
+          text: "둘 다 못 끌어낸다. 숨을 쉬었으면 막쇠가 업고 나온다. 안 쉬었으면 궤짝이 남는 전부다."
       - choice:
           key: c2_rescue
           prompt: "대들보가 내려앉는다. 무엇을 먼저 잡을까?"
@@ -414,6 +458,26 @@ scenes:
           char: 서연.think
           with: [도원]
           text: "그리고 장부 궤짝째 태우려 했어요. 분이가 꿰맨 주문서도 삼백, 장부도 삼백."
+      - say:
+          char: 도원.stern
+          with: [서연]
+          text: "삼백이 같다고 같은 삼백이라 할 수는 없소."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "네. 그래서 장부에 남은 '한' 자를 찾아야 합니다."
+      - say:
+          char: 막쇠.grin
+          with: [서연, 도원]
+          text: "아가씨. 닭값은 누가 물어 주우? 그거 옆집 닭이오."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "…제 삯에서 드릴게요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "농이오. 내가 물지. 사십 년 만에 책에 있는 걸 해 봤으니 그 값은 내가 내요."
       - goto: c2_arrest
 
   c2_arrest:
@@ -434,6 +498,22 @@ scenes:
           char: 도원.troubled
           with: [서연]
           text: "…이미 곤장 열 대에 자복했다는군."
+      - say:
+          char: 서연.shock
+          with: [도원]
+          text: "열 대요? 오늘 잡혀서 오늘 자복입니까."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "그렇다 하오. 포교 강치수가 올린 거요."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "나리. 박씨 목의 상처는 포도청에 안 올라갔습니까."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "…내 시장은 아직 서랍에 있소. 포도청이 먼저 끝냈소."
       - say:
           channel: thought
           with: [도원]

@@ -9,7 +9,6 @@ scenes:
     actions:
       - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "움집에 불을 끄고 누운 밤이 이랬다. 다만 여기에는 지붕이 없다." }
       - music: void
       - say: { channel: narration, text: "눈을 떴다." }
       - say: { channel: narration, text: "떴는데 달라진 것이 없다." }

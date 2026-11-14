@@ -145,6 +145,7 @@ state:
   took_case: false
   showed_score: false
   trust: 0
+  ev_found: 0
   ev_drawing: false
   ev_calendar: false
   ev_pills: false

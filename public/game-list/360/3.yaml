@@ -98,6 +98,12 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "네. 모르는 거죠." }
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 주말에 오니? 김치 담갔다. 통 가져와라" }
       - say: { channel: action, with: [], text: "읽음 표시만 남긴다. 답은 인터뷰 다녀와서 하기로 한다." }
+      - say: { char: 차피디, with: [지안], text: "그 1931년 환자, 그 뒤로 어떻게 됐는지는 있어요?" }
+      - say: { char: 지안, with: [차피디], text: "진료부가 거기서 끊겨요. 그 병원이 1945년에 없어졌어요." }
+      - say: { char: 차피디, with: [지안], motion: sigh, text: "그럼 못 쓰지. 끝을 모르는 건 방송에 못 올려요." }
+      - say: { char: 지안, with: [차피디], text: "끝을 알면 쓰실 거예요?" }
+      - say: { char: 차피디, with: [지안], text: "…아니. 끝이 안 좋으면 더 못 쓰지." }
+      - say: { channel: thought, with: [], text: "격리. 처치 칸에 두 글자였다. 사백 건 중에 처치 칸이 있는 건 그 한 건뿐이다." }
       - goto: munho_home
 
   munho_home:
@@ -124,6 +130,17 @@ scenes:
           with: [지안]
           when: { var: v3, op: eq, value: dare }
           text: "아가씨는 갇혀 살았소. 평생 한 집에서. 그래서 한 군데 못 붙어 있지. 엉덩이가 벌써 들렸잖소."
+      - say: { char: 지안, with: [문호], text: "선생님. 그걸 어떻게 아세요." }
+      - say: { char: 문호, with: [지안], text: "보면 알지. 나는 내 것도 봤으니까." }
+      - say: { char: 문호, with: [지안], text: "운산 그 소리를 지금도 들어요. 갱목은 부러질 때 한 번에 안 부러져. 세 번에 나눠서 부러지지." }
+      - say: { char: 문호, with: [지안], text: "그런 건 지어낼 수가 없소. 들은 사람만 아는 거라." }
+      - say: { channel: thought, with: [], text: "녹취 19번이다. 돌아봤다고 한 세 사람 중 하나. 이 사람 건 지어낸 게 아니다." }
+      - say: { char: 지안, with: [문호], text: "선생님 건 저도 진짜라고 믿어요. 녹취를 세 번 들었어요." }
+      - say: { char: 문호, motion: nod, with: [지안], text: "그렇지. 그러니 남의 것도 봐 주는 거요. 나만 알고 있으면 아까우니까." }
+      - say: { char: 지안, with: [문호], text: "…선생님 것을 아는 게, 남의 것도 아는 거랑 같은 건가요." }
+      - say: { char: 문호, with: [지안], text: "같지. 한 번 본 사람이 두 번 보는 게 뭐가 어렵겠소." }
+      - say: { channel: thought, with: [], text: "본 사람이라서 지어낼 수 있다. 본 적 없는 사람은 뭘 지어내야 하는지도 모른다." }
+      - say: { channel: action, with: [], text: "거실 벽에 액자가 하나 걸려 있다. 사진이 아니라 지도다. 운산 쪽은 접혀서 보이지 않는다." }
       - goto: munho_choice
 
   munho_choice:
@@ -160,6 +177,13 @@ scenes:
       - say: { char: 문호, with: [지안], text: "지난번에 온 조연출, 유나라고 했나. 그 아가씨한테도 일러 줬소. 전에 무당이었다고." }
       - say: { char: 지안, with: [문호], text: "유나 씨 지난주에 사표 냈어요." }
       - say: { char: 문호, with: [지안], motion: nod, text: "잘했지. 제 길 찾아간 거요." }
+      - say: { char: 지안, with: [문호], text: "선생님. 유나 씨는 피디 되려고 사 년 준비했어요." }
+      - say: { char: 문호, with: [지안], text: "그러니 안 됐지. 안 될 길을 사 년 간 거요. 내가 일찍 말해 준 거지." }
+      - say: { char: 지안, with: [문호], text: "안 될 거라고 누가 정했어요." }
+      - say: { char: 문호.lean, with: [지안], text: "아가씨. 그렇게 따지는 것도 타고난 거요." }
+      - say: { channel: thought, with: [], text: "아드님이 십이 년 말을 안 한다고 했다. 그 얘기는 녹취에 넣으라고 했다." }
+      - say: { channel: thought, with: [], text: "자기 것은 넣으라고 하고, 남의 것은 정해 준다. 그 차이를 본인은 못 본다." }
+      - say: { channel: action, with: [], text: "녹음기 남은 시간이 사십일 분으로 떠 있다." }
       - say: { channel: message, side: them, with: [], text: "엄마: 김치 쉰다. 엄마가 택배로 부칠까" }
       - goto: contract
 
@@ -174,6 +198,13 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "그분은 남의 걸 기억하는 게 아니에요. 자기 것만 기억해요. 나머진 짐작이고요." }
       - say: { char: 차피디, with: [지안], text: "알아요. 근데 숫자가 나와. 그리고 이거, 지안 씨 정규직 계약서. 본부장 결재 났어요." }
       - say: { char: 차피디, with: [지안], text: "뒤에 붙은 건 녹취 원본 양도 동의서. 서명하면 원본은 회사 자산이에요. 편집권도." }
+      - say: { char: 지안, with: [차피디], text: "원본을 왜 가져가세요. 방송은 이미 나갔는데요." }
+      - say: { char: 차피디, with: [지안], text: "2부가 터졌으니까 재방, 클립, 해외 판권. 그때마다 원본 들고 있는 사람이 따로 있으면 일이 안 돼요." }
+      - say: { char: 차피디, with: [지안], text: "솔직히 말하면, 지안 씨가 그거 들고 나가면 회사가 못 막아요. 그래서 지금 받는 거예요." }
+      - say: { char: 지안, with: [차피디], text: "…솔직하게 말해 주셔서 감사해요." }
+      - say: { char: 차피디, with: [지안], motion: sigh, text: "나도 여기서 십사 년이에요. 솔직한 거밖에 줄 게 없어요." }
+      - say: { channel: action, with: [], text: "계약서 넷째 장 아래에 간인 칸이 작게 여섯 개 있다. 차 피디가 손가락으로 그 자리를 짚어 둔다." }
+      - say: { channel: thought, with: [], text: "유정림. 박다온. 오문호. 사백 건이 다 저 종이 뒤로 들어간다." }
       - goto: sign_choice
 
   sign_choice:
@@ -257,11 +288,17 @@ scenes:
           with: []
           when: { var: l4_signed, op: eq, value: false }
           text: "돌봄 단말: 서지안 님(79). 면회 예약 1건. 박다온(53), 오후 두 시."
+      - say: { channel: thought, with: [], text: "여덟 살에 깜깜한 데서 강아지를 찾았다던 아이다. 학교에서 전생충이라고 불렸던 아이다." }
+      - say: { channel: action, with: [], text: "다온은 올 때마다 책을 한 권 가져온다. 초판 천오백 부 중에 아직 집에 쌓여 있는 것이다." }
+      - say: { channel: thought, with: [], text: "이름만 써 달라고 한다. 손이 떨려서 못 쓰겠다고 하면 그러면 날짜만 쓰라고 한다." }
       - say:
           channel: action
           with: []
           when: { var: l4_signed, op: eq, value: true }
           text: "서랍에 보험 증권이 열한 장 있다. 수령인 칸은 전부 비어 있다."
+      - say: { channel: thought, with: [], text: "스물아홉에 하나 들고, 그 뒤로 해마다 하나씩 늘었다. 늘릴 때마다 수령인 칸은 비워 뒀다." }
+      - say: { channel: thought, with: [], text: "쓸 이름이 없었던 게 아니다. 쓰면 전화를 해야 해서 안 썼다." }
+      - say: { channel: action, with: [], text: "면회 기록은 2068년 4월에서 끊겨 있다. 그때 온 사람이 마지막이었다." }
       - say:
           channel: action
           with: []
@@ -269,6 +306,9 @@ scenes:
           text: "서랍에 통장이 하나 있다. 잔액은 장례비에 조금 못 미친다."
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
       - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 지우지 않았다. 답장 칸에 커서가 깜박인다." }
+      - say: { channel: thought, with: [], text: "통은 가져가지 않았다. 김치는 쉬었을 것이다. 쉰 김치는 찌개를 하면 된다고 엄마가 말했다." }
+      - say: { channel: thought, with: [], text: "지금 쓰면 어디로 가는지 모른다. 안 쓰면 어디로도 안 간다." }
+      - say: { channel: action, with: [], text: "커서는 밤새 깜박인다. 손은 이불 위에 있다." }
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void
       - goto: /4.yaml

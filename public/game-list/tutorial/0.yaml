@@ -55,42 +55,6 @@ scenes:
       - say:
           channel: message
           side: them
-          char: 경준
-          with: []
-          text: "점검 끝나는 걸 왜 기다려요 내일 들어가면 되잖아요"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "넌 무료라서 몰라"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "무료 아니고 라이트요 39,000원 내요"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "라이트는 점검 끝나면 대기 한 시간이야 프리미엄은 바로 들어가"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "그럼 저도 프리미엄 할래요"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "월 십이만 구천 원"
-      - say:
-          channel: message
-          side: them
           char: 지영
           with: []
           text: "해수는 어차피 퇴근하고 할 것도 없잖아 레플라도 안 하고"
@@ -112,12 +76,6 @@ scenes:
           char: 지영
           with: []
           text: "봐 괜찮대"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "괜찮다는 말을 왜 주임님이 해요"
       - say:
           channel: message
           side: me
@@ -161,24 +119,6 @@ scenes:
           with: []
           text: "저도요"
       - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "넌 11시부터 10시까지 설 수 있어?"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "저 학교 가요"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "그럼 조용히 해"
-      - say:
           channel: system
           with: []
           text: "근무표가 변경되었습니다 · 4월 11일(금) 정해수 11:00–22:00 마감"
@@ -206,69 +146,6 @@ scenes:
           char: 해수
           with: [경준]
           text: "저거 본사에서 트는 거라 리모컨이 없어."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "그럼 저 형광등은요? 3월부터 깜빡거리잖아요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "시설팀에 두 번 말했어."
-      - say:
-          char: 경준
-          motion: perk
-          with: [해수]
-          text: "두 번이요? 저 같으면 안 고쳐 주면 그냥 나사를 풀어 버리겠는데."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "3년 전에 풀어 봤어. 그때는 당일에 왔어."
-      - say:
-          char: 경준.laugh
-          with: [해수]
-          text: "형이요? 그럼 또 풀면 되겠네요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "한 번 쓰면 끝인 방법이야. 두 번 하면 내가 한 줄 알지."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "아, 형. 어제 두유 재고 누가 정리했어요? 유통기한이 거꾸로 꽂혀 있던데."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "내가 일부러 그렇게 한 거야. 가까운 날짜를 앞에 둬야 먼저 나가잖아."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "아, 뒤에서 꺼내 가는 손님들."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "그분들은 팔이 기셔."
-      - say:
-          char: 경준.laugh
-          with: [해수]
-          text: "형 그거 뒷담이죠."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "팔이 기신 건 사실이잖아."
-      - say:
-          char: 경준
-          motion: lean_in
-          with: [해수]
-          text: "그리고 팀장님은 왜 맨날 형한테만 창구 맡겨요? 주임님 자리 비면 형이 두 사람 몫 하잖아요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "주임님이 바쁘시니까. 나는 앉아 있잖아."
-      - say:
-          char: 경준
-          motion: droop
-          with: [해수]
-          text: "앉아서 욕먹는 게 제일 힘든 거예요. 저희 누나가 콜센터 하거든요."
       - say:
           char: 경준
           motion: perk
@@ -315,21 +192,9 @@ scenes:
           with: [해수]
           text: "형 진짜 레플라 안 해요? 우리 매장에 안 하는 사람 형이랑 시식 코너 이모님밖에 없어요."
       - say:
-          char: 해수
-          with: [경준]
-          text: "이모님은 왜 안 하신대?"
-      - say:
           char: 경준
           with: [해수]
-          text: "멀미 나신대요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "나는 멀미는 안 하는데."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "그니까요. 형 같은 사람이 해야 돼요. 거기선 손님한테 고개 안 숙여도 되거든요."
+          text: "형 같은 사람이 해야 돼요. 거기선 손님한테 고개 안 숙여도 되거든요."
       - say:
           char: 해수.service
           motion: bow
@@ -359,28 +224,6 @@ scenes:
           with: [경준]
           text: "넌 마감 안 바꿔 줬잖아."
       - say:
-          char: 경준
-          motion: droop
-          with: [지영]
-          text: "단톡에서는 안 사 주신다더니 두 잔 들고 오셨잖아요."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "하나는 내 거야."
-      - say:
-          char: 경준
-          with: [지영]
-          text: "주임님 저 지금 상처받았어요."
-      - say:
-          char: 지영.smirk
-          with: [경준]
-          text: "빨대 줄게. 두 개 나왔어."
-      - say:
-          char: 경준
-          motion: droop
-          with: [지영]
-          text: "빨대를 어디다 꽂아요."
-      - say:
           char: 지영
           with: [해수]
           text: "마감 고마워. 그리고 너 오늘 12년 됐지? 인사팀에서 근속 메일 왔더라. 2019년 4월 11일 입사."
@@ -388,19 +231,6 @@ scenes:
           char: 해수
           with: [지영]
           text: "아, 오늘이에요? 몰랐어요."
-      - say:
-          char: 경준
-          motion: bounce
-          with: [해수]
-          text: "12년이면 제 나이 절반 넘어요."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "너 스물둘이잖아."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "…그러네."
       - say:
           char: 해수
           with: [경준]

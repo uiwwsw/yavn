@@ -37,12 +37,90 @@ scenes:
           char: 한명재.cold
           with: [서연]
           text: "그들이 형조 대청에서 증언할 자격이 있습니까?"
+      - say:
+          channel: action
+          with: []
+          text: "대청 왼쪽 끝에 막쇠가 서 있다. 오작인은 마루에 올라오지 못해 신을 벗은 채 흙마당에 발을 두고 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "의녀는 의관에게 말을 올리지 못한다. 판관을 통해서 올려야 한다. 그 규칙을 저 사람이 제일 잘 안다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "오해는 마십시오. 저는 의녀를 아랫사람으로 보지 않습니다. 저도 사람을 살리는 일을 합니다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "다만 살린 수를 세자면, 저는 세기 어려울 만큼 많고 의녀는 아직 시작도 안 했지요."
+      - say:
+          char: 서연.resolve
+          with: [한명재]
+          text: "죽은 수는 세기 쉽습니다. 셋입니다."
+      - say:
+          char: 한명재
+          motion: laugh
+          with: [서연]
+          text: "…참의 나리. 들으셨습니까. 열여덟이 셋을 세었다고 합니다."
+      - say:
+          channel: record
+          text: "서연이 품에서 꺼낸 것: 언해 한 권. 베껴 쓴 신주무원록 초본. 접힌 자리가 새까맣다."
+      - say:
+          channel: thought
+          with: []
+          text: "스승이 남긴 책이다. 빈칸이 많아서 내가 채운 자리가 더 많다. 오늘 쓸 자리는 다 접어 뒀다."
       - goto: standing
 
   standing:
     actions:
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
+      - branch:
+          cases:
+            - when: { var: struck_deal, op: eq, value: true }
+              goto: standing_deal
+          default: standing_trust
+
+  standing_deal:
+    actions:
+      - char: { id: 강치수, position: right }
+      - say:
+          char: 한명재
+          with: [서연, 강치수]
+          text: "참의 나리. 이 사건은 이미 닫혔습니다. 포교의 입회로요."
+      - say:
+          char: 강치수.angry
+          with: [서연, 한명재]
+          text: "…박 약방은 실화로, 분이는 범인 미상으로 시장을 닫았습니다. 의녀도 그 자리에 있었습니다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "의녀께서 그날 고개를 끄덕이셨지요. 짐꾼 하나를 살리는 값으로요."
+      - say:
+          channel: thought
+          with: []
+          text: "덕구는 살았다. 주머니 삼백 개는 그 뒤로도 장에 나왔다. 둘 다 내가 한 일이다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "그날은 제가 덮었습니다. 오늘은 제가 엽니다. 덮은 사람이 열면 안 되는 법이 있습니까."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "법은 없지요. 다만 두 번 말이 다른 사람의 말을 어느 쪽으로 세어야 할지는 참의 나리께서 정하실 겁니다."
+      - add: { credibility: -1 }
+      - say:
+          channel: record
+          text: "증언 일관성 의심. 믿음 하나를 먼저 내려놓고 시작한다."
+      - say:
+          char: 막쇠.grin
+          when: { var: makssoe_alive, op: eq, value: true }
+          with: [서연]
+          text: "아가씨. 두 번 말이 다른 건 나도 수없이 했수. 나중 말이 맞으면 그게 맞는 거요."
+      - goto: standing_trust
+
+  standing_trust:
+    actions:
       - branch:
           cases:
             - when: { var: trust_dowon, op: gte, value: 2 }
@@ -252,6 +330,41 @@ scenes:
     title: "둘째 죽음"
     actions:
       - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "한명재가 처음으로 자리를 고쳐 앉는다. 소매를 한 번 쓸어내린다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "의녀께 묻겠습니다. 그 책, 누가 주셨습니까."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "혜민서 의녀 박씨가 주셨습니다. 재작년에 돌아가셨습니다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "그분 손에서 아이가 둘 죽었습니다. 기록에 있습니다. 그 손이 베낀 책으로 저를 헤아리시는군요."
+      - say:
+          char: 서연.shock
+          with: [한명재]
+          text: "…그 두 아이는 업혀 왔을 때 이미 숨이 얕았습니다. 기록 다음 장에 적혀 있습니다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "다음 장까지 읽으셨군요. 그러면 제 기록도 다음 장까지 읽어 주시지요."
+      - say:
+          char: 도원.troubled
+          when: { var: trust_dowon, op: lte, value: 1 }
+          with: [서연, 한명재]
+          text: "…의관. 말이 사람 쪽으로 가고 있소. 증좌로 돌아갑시다."
+      - say:
+          char: 도원.stern
+          when: { var: trust_dowon, op: gte, value: 2 }
+          with: [서연, 한명재]
+          text: "의관. 그 책은 내가 빌려 읽었소. 빈칸을 채운 글씨가 누구 것이든 적힌 것은 맞았소."
+      - say:
           char: 한명재
           with: [서연]
           text: "박 약방은 불이 나 죽었지요. 짐꾼이 불을 질렀다 자복도 했고요. 저와는 무관합니다."
@@ -416,8 +529,45 @@ scenes:
     title: "세 죽음을 잇는 사람"
     actions:
       - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "참의가 붓을 내려놓는다. 대청이 조용해진 것은 오늘 처음이다."
+      - say:
+          char: 서연.resolve
+          with: [한명재, 도원]
+          text: "셋은 서로 모르는 사이입니다. 한 사람은 바느질을, 한 사람은 약을, 한 사람은 글씨를 했습니다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "셋이 만난 데가 한 군데도 없습니다. 장도, 집도, 관아도 다릅니다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "그런데 셋이 같은 것을 하나씩 손에 쥐었습니다."
+      - say:
           channel: record
           text: "분이는 주머니를 꿰맸다. 박씨는 약재를 팔았다. 윤길은 시장을 베꼈다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "주머니를 꿰맨 사람은 그 안에 들어갈 것의 수를 압니다. 삼백입니다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "약재를 판 사람은 그 삼백을 빚을 재료가 어디서 나갔는지 압니다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "시장을 베낀 사람은 그 둘이 어떻게 죽었는지를 글자로 봤습니다."
+      - say:
+          char: 서연.resolve
+          with: [한명재]
+          text: "셋은 한 사람을 알았습니다. 서로는 몰랐고요. 그래서 한 사람씩 지워졌습니다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "말이 좋군요. 이름을 대십시오. 말로는 아무도 벌하지 못합니다."
       - choice:
           key: t_final
           prompt: "세 사람이 모두 알아 버린 한 사람은?"
@@ -475,6 +625,10 @@ scenes:
           channel: narration
           text: "형조 참의는 오래 문서를 넘겼다. 증좌는 서로 이어지는 듯하다가 군데군데 끊겼다."
       - say:
+          channel: thought
+          with: []
+          text: "내놓지 못한 자리가 어디였는지 안다. 몸에서 본 것을 뒤로 미룬 자리다."
+      - say:
           char: 한명재
           with: [서연]
           text: "의녀의 짐작이 길군요. 짐작으로 의관을 벌할 수는 없지요."
@@ -486,9 +640,29 @@ scenes:
           channel: record
           text: "형조 판결. 증좌 불충분. 피고 한명재 방면. 의녀 {{player_name|은}} 혜민서에서 내친다."
       - say:
+          channel: action
+          with: []
+          text: "한명재가 일어나 옷깃을 바로 한다. 나가면서 서연 앞에 한 번 선다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "의녀. 다음에는 몸에서 본 것부터 내십시오. 그것만은 아무도 못 바꿉니다."
+      - say:
+          channel: thought
+          with: []
+          text: "가르침까지 받았다. 틀린 말이 아니라서 더 받기 싫었다."
+      - say:
+          char: 막쇠.grin
+          when: { var: makssoe_alive, op: eq, value: true }
+          with: [서연]
+          text: "아가씨. 시장은 남수. 글자는 안 타고 안 썩어요. 올해 안 되면 내년에 내밉시다."
+      - say:
           channel: thought
           with: []
           text: "증좌는 있었다. 내가 내미는 순서가 그를 이기지 못했다."
+      - say:
+          channel: record
+          text: "그해 겨울, 감청 주머니는 장에서 값이 두 배가 되었다. 사는 사람이 줄지 않았다."
       - ending: covered_ledger
 
   verdict_strong:
@@ -497,6 +671,29 @@ scenes:
       - say:
           channel: record
           text: "형조 판결. 피고 한명재, 가짜 약 제조와 살인 세 건. 전의감 약고를 봉하고 남은 주머니를 거둔다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "…삼백 중에 거둘 수 있는 게 몇이나 될 것 같습니까."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "거둔 수를 셀 겁니다. 못 거둔 수도 같이 적을 겁니다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "적어서 무엇을 하시려고요."
+      - say:
+          char: 서연.resolve
+          with: [한명재]
+          text: "다음에 또 삼백이 나올 때, 그 사람이 처음이 아니라는 걸 증좌로 쓰겠습니다."
+      - say:
+          channel: record
+          text: "신주무원록 서. 억울함이 없게 하라. 원(冤)이 없게 하라."
+      - say:
+          channel: thought
+          with: []
+          text: "무원. 스승이 맨 앞장에 두 번 적어 둔 말이다. 왜 두 번인지 오늘 알았다."
       - music: dawn
       - bg: { id: dawn_gate, transition: fade, duration: 1200 }
       - branch:
@@ -522,6 +719,21 @@ scenes:
       - say:
           channel: narration
           text: "성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맸다."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "아저씨. 저 언해 빈칸에 오늘 것부터 적을게요. 거품 없는 익사부터요."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "그거 내가 제일 먼저 말했수. 지게미 덮으란 것도 내가 했고."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "네. 그래서 아저씨 이름이 먼저예요."
+      - say:
+          channel: narration
+          text: "책 맨 뒷장에 빈칸이 아직 많다. 오늘 채운 줄은 네 줄이다."
       - ending: muwon
 
   epilogue_late:
@@ -539,4 +751,15 @@ scenes:
       - say:
           channel: narration
           text: "성문이 열렸다. {{player_name|은}} 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
+      - say:
+          channel: thought
+          with: []
+          text: "오늘 채울 줄은 네 줄이다. 그 네 줄을 처음 말해 준 사람 이름을 쓸 자리가 비어 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "비워 둔다. 지우는 것보다 비워 두는 편이 나중에 읽는 사람에게 낫다."
+      - say:
+          channel: narration
+          text: "빈칸 옆에 한 줄을 적었다. 억울함이 없게 하라."
       - ending: late_muwon
