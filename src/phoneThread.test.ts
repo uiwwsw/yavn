@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { selectPhoneThread } from './phoneThread';
+import { leadsRun, selectPhoneThread } from './phoneThread';
 import type { StoryLogEntry } from './types';
 
 const message = (
@@ -78,5 +78,56 @@ describe('selectPhoneThread', () => {
   it('returns nothing when the live line opens the conversation', () => {
     expect(selectPhoneThread([spoken('…', 1), message('안녕하세요 혹시 아직 있나요', 'me', 2)])).toEqual([]);
     expect(selectPhoneThread([])).toEqual([]);
+  });
+});
+
+describe('naming a run of messages', () => {
+  it('names the first of a run and leaves the rest of it unnamed', () => {
+    const thread = selectPhoneThread([
+      message('바꿔 줄 수 있어?', 'them', 0, '지영'),
+      message('7시에 끝나', 'them', 1, '지영'),
+      message('저번 주에도 그러셨잖아요', 'them', 2, '경준'),
+      message('걔는 안 바꿔 줬어', 'them', 3, '지영'),
+      message('live', 'them', 4, '지영'),
+    ]);
+    expect(thread.map((bubble) => [bubble.speaker, bubble.leadsRun])).toEqual([
+      ['지영', true],
+      ['지영', false],
+      ['경준', true],
+      ['지영', true],
+    ]);
+  });
+
+  it('starts a new run when the side changes, even for the same name', () => {
+    const thread = selectPhoneThread([
+      message('하나', 'them', 0, '지영'),
+      message('둘', 'me', 1, '지영'),
+      message('live', 'them', 2, '지영'),
+    ]);
+    expect(thread.map((bubble) => bubble.leadsRun)).toEqual([true, true]);
+  });
+
+  it('treats unattributed messages as one run, not as a string of strangers', () => {
+    const thread = selectPhoneThread([
+      message('하나', 'them', 0),
+      message('둘', 'them', 1),
+      message('live', 'them', 2),
+    ]);
+    expect(thread.map((bubble) => bubble.leadsRun)).toEqual([true, false]);
+  });
+});
+
+describe('leadsRun', () => {
+  it('opens a run when nothing came before', () => {
+    expect(leadsRun(undefined, { speaker: '지영', side: 'them' })).toBe(true);
+  });
+
+  it('continues a run for the same person on the same side', () => {
+    expect(leadsRun({ speaker: '지영', side: 'them' }, { speaker: '지영', side: 'them' })).toBe(false);
+  });
+
+  it('defaults a missing side to the other end, so it is not mistaken for your own', () => {
+    expect(leadsRun({ speaker: '지영' }, { speaker: '지영', side: 'them' })).toBe(false);
+    expect(leadsRun({ speaker: '지영' }, { speaker: '지영', side: 'me' })).toBe(true);
   });
 });

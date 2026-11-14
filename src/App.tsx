@@ -30,7 +30,7 @@ import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
 import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
-import { selectPhoneContact, selectPhoneThread } from './phoneThread';
+import { leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
@@ -1716,6 +1716,9 @@ export default function App() {
       : undefined),
     [dialogChannel, phoneThread, dialogSide, dialogSpeaker],
   );
+  // Outside a phone scene the name tag always shows; inside one it follows the thread's rule.
+  const phoneLiveLeadsRun = dialogChannel !== 'message'
+    || leadsRun(phoneThread[phoneThread.length - 1], { speaker: dialogSpeaker, side: dialogSide });
 
   const [bootMode, setBootMode] = useState<BootMode>(
     () => resolveInitialBootPresentation(window.location.pathname).bootMode,
@@ -5810,14 +5813,16 @@ export default function App() {
             <ol className="phone-thread">
               {phoneThread.map((bubble) => (
                 <li key={bubble.key} className={`phone-thread-bubble side-${bubble.side}`}>
-                  {bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
+                  {bubble.leadsRun && bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
                   <span className="phone-thread-text">{bubble.text}</span>
                 </li>
               ))}
             </ol>
           )}
-          {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
-          {dialogSpeaker && (
+          {/* Name tag first so it always reads on the left; a channel label moves to the right.
+              On the phone the live line is the last bubble of a thread, so it is named only
+              when it opens a run, exactly like the bubbles above it. */}
+          {dialogSpeaker && phoneLiveLeadsRun && (
             <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
           )}
           {dialogueChannelLabel && (

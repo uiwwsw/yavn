@@ -5,7 +5,25 @@ export type PhoneThreadBubble = {
   speaker?: string;
   text: string;
   side: 'me' | 'them';
+  /** True when this bubble opens a run, which is the only place the sender is named. */
+  leadsRun: boolean;
 };
+
+/** The part of a message that decides who is talking: used for runs and for the header. */
+export type PhoneSender = { speaker?: string; side?: 'me' | 'them' };
+
+/**
+ * Whether a message opens a new run.
+ *
+ * Someone sending three messages in a row is one person talking, and a messaging app names
+ * them once. Repeating the name over every bubble is how a transcript reads, not a thread.
+ */
+export function leadsRun(previous: PhoneSender | undefined, current: PhoneSender): boolean {
+  if (!previous) {
+    return true;
+  }
+  return (previous.side ?? 'them') !== (current.side ?? 'them') || previous.speaker !== current.speaker;
+}
 
 /**
  * How far back a thread is drawn. Enough that a phone scene reads as a conversation,
@@ -35,10 +53,14 @@ export function selectPhoneThread(
       ...(entry.speaker ? { speaker: entry.speaker } : {}),
       text: entry.text,
       side: entry.side ?? 'them',
+      leadsRun: true,
     });
   }
 
-  return bubbles.reverse();
+  bubbles.reverse();
+  // Walking forward is the only way to know what came before a bubble; the loop above runs
+  // backwards from the live line, and the oldest bubble it reaches opens a run by definition.
+  return bubbles.map((bubble, index) => ({ ...bubble, leadsRun: leadsRun(bubbles[index - 1], bubble) }));
 }
 
 export type PhoneContact = { name: string; group: boolean };
@@ -51,14 +73,14 @@ export type PhoneContact = { name: string; group: boolean };
  * says who is in it and the names stay on the bubbles, where they tell you who is talking.
  */
 export function selectPhoneContact(
-  bubbles: PhoneThreadBubble[],
-  live?: { speaker?: string; side?: 'me' | 'them' },
+  bubbles: readonly PhoneSender[],
+  live?: PhoneSender,
 ): PhoneContact | undefined {
   const names: string[] = [];
   const add = (name?: string) => {
     if (name && !names.includes(name)) names.push(name);
   };
-  for (const bubble of bubbles) if (bubble.side === 'them') add(bubble.speaker);
+  for (const bubble of bubbles) if ((bubble.side ?? 'them') === 'them') add(bubble.speaker);
   if (live && live.side !== 'me') add(live.speaker);
   if (names.length === 0) return undefined;
   if (names.length === 1) return { name: names[0], group: false };

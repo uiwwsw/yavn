@@ -841,6 +841,18 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .dialog-box.channel-message.side-me .dialog-content-scroll { align-items: flex-end; }
 .app .dialog-box.channel-message .dialog-channel-label { align-self: flex-start; color: color-mix(in srgb, var(--phone-them-ink) 45%, transparent); }
 .app .dialog-box.channel-message .speaker { color: color-mix(in srgb, var(--phone-them-ink) 62%, transparent); font-size: 12px; font-weight: 650; }
+/* In a handset the name belongs to its own bubble. The normal dialogue box pins the name tag
+   to its top-left corner with position:absolute, which left the live line's name stranded at
+   the top of the phone screen while the bubble it named sat at the bottom — and the bottom
+   bubble, alone in the thread, stood without a name over it. */
+.app .dialog-box.channel-message .dialog-content-scroll > .speaker {
+  position: static;
+  align-self: flex-start;
+  /* The column's 6px gap would set the name twice as far from its bubble as the thread sets
+     its own (3px), so the last message would sit lower than every message above it. */
+  margin: 0 0 -3px;
+}
+.app .dialog-box.channel-message.side-me .dialog-content-scroll > .speaker { align-self: flex-end; }
 
 /* The live line is a bubble like any other: one line of text is one line tall. */
 .app .dialog-box.channel-message .text {
@@ -874,7 +886,9 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .dialog-box.channel-message.side-me .speaker { display: none; }
 
 /* The bubbles already sent. The live line is drawn by .text below them so it can still type. */
-.app .phone-thread { display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0 0 6px; padding: 0; list-style: none; }
+/* No bottom margin: the scroll column already puts 6px between items, and the extra 6px
+   here opened a wider gap before the live bubble than between any two bubbles above it. */
+.app .phone-thread { display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0; padding: 0; list-style: none; }
 .app .phone-thread-bubble { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; max-width: 82%; }
 .app .phone-thread-bubble.side-me { align-self: flex-end; align-items: flex-end; }
 .app .phone-thread-speaker { color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent); font-size: 12px; font-weight: 650; }
