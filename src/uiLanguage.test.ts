@@ -14,7 +14,7 @@ describe('declared game languages', () => {
 });
 
 it('opens English-only stories with English controls from the Korean library', () => {
- expect(gameHref('/game-list/story/', ['en'])).toBe('/game-list/story/?ui=en');
+ expect(gameHref('/game-list/story/', ['en'])).toBe('/en/game-list/story/');
  expect(gameHref('/game-list/story/', ['ko'])).toBe('/game-list/story/');
 });
 
@@ -22,5 +22,7 @@ it('uses a story page declared language while honoring explicit UI selection', (
  expect(resolveUiLanguage('/game-list/story/', '', 'en')).toBe('en');
  expect(resolveUiLanguage('/game-list/story/', '?ui=ko', 'en')).toBe('ko');
  expect(resolveUiLanguage('/en/', '', 'ko')).toBe('en');
+ expect(resolveUiLanguage('/en/game-list/story/', '', 'ko')).toBe('en');
+ expect(resolveUiLanguage('/en/create/', '', 'ko')).toBe('en');
  expect(resolveUiLanguage('/', '', 'ko')).toBe('ko');
 });

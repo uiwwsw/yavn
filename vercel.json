@@ -25,6 +25,14 @@
       "destination": "/en/index.html"
     },
     {
+      "source": "/en/game-list/:gameId([^/.]+)",
+      "destination": "/en/game-list/:gameId/index.html"
+    },
+    {
+      "source": "/en/game-list/:gameId([^/.]+)/",
+      "destination": "/en/game-list/:gameId/index.html"
+    },
+    {
       "source": "/game-list/:gameId([^/.]+)",
       "destination": "/game-list/:gameId/index.html"
     },

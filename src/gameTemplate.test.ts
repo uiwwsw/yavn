@@ -40,6 +40,7 @@ describe('contributor game starter', () => {
       mkdirSync(join(root, 'public/game-list'), { recursive: true });
       cpSync(template, join(root, 'public/game-list/my-story'), { recursive: true });
       execFileSync(process.execPath, [resolve('scripts/generate-game-list-manifest.mjs')], { cwd: root });
+      execFileSync(process.execPath, [resolve('scripts/generate-sitemap.mjs')], { cwd: root });
       const manifest = JSON.parse(readFileSync(join(root, 'public/game-list/index.json'), 'utf8'));
       expect(manifest.games).toHaveLength(1);
       expect(manifest.games[0]).toMatchObject({

@@ -112,8 +112,13 @@ export function resolveGameSeo(game, options = {}) {
     normalizeText(game?.summary) ??
     (english ? `Play ${title} in your browser.` : `${title}을(를) 브라우저에서 플레이하세요.`);
   const descriptionEn = normalizeText(game?.seo?.descriptionEn) ?? normalizeText(game?.summaryEn);
-  const canonicalPath = normalizeText(game?.path) ?? `/game-list/${encodeURIComponent(id)}/`;
-  const canonicalUrl = resolveAbsoluteUrl(canonicalPath, siteOrigin, `/game-list/${encodeURIComponent(id)}/`);
+  // The same game is served under two addresses, one per interface language. They are
+  // alternates of each other, so each page names both and the pair shares a story.
+  const interfaceLanguage = options.interfaceLanguage === 'en' ? 'en' : 'ko';
+  const fallbackPath = `/game-list/${encodeURIComponent(id)}/`;
+  const koUrl = resolveAbsoluteUrl(normalizeText(game?.path) ?? fallbackPath, siteOrigin, fallbackPath);
+  const enUrl = `${siteOrigin}/en${new URL(koUrl).pathname}`;
+  const canonicalUrl = interfaceLanguage === 'en' ? enUrl : koUrl;
   const imageUrl = resolveAbsoluteUrl(
     game?.seo?.image ?? game?.thumbnail,
     siteOrigin,
@@ -126,9 +131,13 @@ export function resolveGameSeo(game, options = {}) {
   return {
     id,
     title,
-    description,
+    interfaceLanguage,
+    description: interfaceLanguage === 'en' ? descriptionEn ?? description : description,
+    descriptionKo: description,
     descriptionEn,
     canonicalUrl,
+    koUrl,
+    enUrl,
     imageUrl,
     imageAlt,
     keywords,
@@ -138,7 +147,7 @@ export function resolveGameSeo(game, options = {}) {
       '@context': 'https://schema.org',
       '@type': 'VideoGame',
       name: title,
-      description,
+      description: interfaceLanguage === 'en' ? descriptionEn ?? description : description,
       url: canonicalUrl,
       image: imageUrl,
       ...(Array.isArray(game?.languages) && game.languages.length ? { inLanguage: game.languages } : {}),
@@ -181,13 +190,16 @@ export function buildGameSeoBlock(game, options = {}) {
     <meta name="application-name" content="${escapeHtml(seo.title)}" />
     <meta name="robots" content="${isStory(game) ? 'index,follow,max-image-preview:large' : 'noindex,follow'}" />
     <link rel="canonical" href="${escapeHtml(seo.canonicalUrl)}" />
+    <link rel="alternate" hreflang="ko" href="${escapeHtml(seo.koUrl)}" />
+    <link rel="alternate" hreflang="en" href="${escapeHtml(seo.enUrl)}" />
+    <link rel="alternate" hreflang="x-default" href="${escapeHtml(seo.enUrl)}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${escapeHtml(seo.canonicalUrl)}" />
     <meta property="og:site_name" content="야븐엔진 (YAVN)" />
     <meta property="og:title" content="${escapeHtml(seo.title)}" />
     <meta property="og:description" content="${escapeHtml(seo.description)}" />
-    ${Array.isArray(game?.languages) && game.languages.length ? `<meta property="og:locale" content="${escapeHtml(({ko:'ko_KR',en:'en_US',ja:'ja_JP',zh:'zh_CN'})[game.languages[0]] ?? game.languages[0].replace('-', '_'))}" />` : ''}
-    ${seo.descriptionEn ? '<meta property="og:locale:alternate" content="en_US" />' : ''}
+    <meta property="og:locale" content="${seo.interfaceLanguage === 'en' ? 'en_US' : 'ko_KR'}" />
+    <meta property="og:locale:alternate" content="${seo.interfaceLanguage === 'en' ? 'ko_KR' : 'en_US'}" />
     <meta property="og:image" content="${escapeHtml(seo.imageUrl)}" />
     <meta property="og:image:secure_url" content="${escapeHtml(seo.imageUrl)}" />${imageTypeTag}
     <meta property="og:image:alt" content="${escapeHtml(seo.imageAlt)}" />
@@ -206,25 +218,40 @@ ${escapeJsonForHtml(seo.jsonLd)
     <!-- yavn:seo:end -->`;
 }
 
+const LANGUAGE_NAMES = { ko: '한국어 · Korean', en: 'English', ja: '日本語 · Japanese', zh: '中文 · Chinese' };
+
 export function renderGameSeoHtml(templateHtml, game, options = {}) {
   if (!SEO_BLOCK_PATTERN.test(templateHtml)) {
     throw new Error('Built index.html is missing the YAVN SEO marker block.');
   }
-  const pageLanguage = game.languages?.[0] ?? 'ko';
-  const description = normalizeText(game?.summary) ?? normalizeText(game?.seo?.description) ?? '';
-  // The story is in its own language, but the page is read by both audiences, so the shell a
-  // crawler and a first-time visitor see carries the English summary too when one exists.
-  const descriptionEn = pageLanguage.startsWith('en') ? undefined : normalizeText(game?.summaryEn);
-  // A raw "ko" means nothing to either audience; the launcher and the home shell both spell
-  // the language out in both scripts, so this does too.
-  const LANGUAGE_NAMES = { ko: '한국어 · Korean', en: 'English', ja: '日本語 · Japanese', zh: '中文 · Chinese' };
+  const english = options.interfaceLanguage === 'en';
+  const id = assertSafeGameId(game?.id);
+  const contentPath = normalizeText(game?.path) ?? `/game-list/${encodeURIComponent(id)}/`;
+  // The interface language, not the story's. A Korean story read in English is still Korean,
+  // which is why the summary in the other language keeps its own lang attribute below.
+  const pageLanguage = english ? 'en' : game.languages?.[0] ?? 'ko';
+  const summaryKo = normalizeText(game?.summary) ?? normalizeText(game?.seo?.description) ?? '';
+  const summaryEn = normalizeText(game?.summaryEn);
   const languages = (Array.isArray(game?.languages) ? game.languages : [])
     .map((code) => LANGUAGE_NAMES[code] ?? code)
     .join(', ');
-  const shell = `<main><a href="/">YAVN</a><h1>${escapeHtml(game.name ?? game.id)}</h1><p>${escapeHtml(description)}</p>${
-    descriptionEn ? `<p lang="en">${escapeHtml(descriptionEn)}</p>` : ''
-  }<p>지원 언어 / Game languages: ${escapeHtml(languages || 'Not specified')}</p></main>`;
-  return styleStartupHtml(templateHtml.replace(/<html lang="[^"]*">/, `<html lang="${escapeHtml(pageLanguage)}">`).replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options)).replace('<div id="root"></div>', `<div id="root">${shell}</div>`), options.fontUrl);
+
+  const lead = english ? summaryEn ?? summaryKo : summaryKo;
+  const secondary = english ? (summaryEn ? summaryKo : undefined) : summaryEn;
+  const secondaryLang = english ? 'ko' : 'en';
+  const shell = `<main><a href="${english ? '/en/' : '/'}">YAVN</a><h1>${escapeHtml(game.name ?? id)}</h1><p>${escapeHtml(lead)}</p>${
+    secondary ? `<p lang="${secondaryLang}">${escapeHtml(secondary)}</p>` : ''
+  }<p>${english ? 'Game languages' : '지원 언어 / Game languages'}: ${escapeHtml(languages || 'Not specified')}</p><p><a href="${
+    english ? escapeHtml(contentPath) : `/en${escapeHtml(contentPath)}`
+  }" lang="${english ? 'ko' : 'en'}">${english ? '한국어' : 'English'}</a></p></main>`;
+
+  return styleStartupHtml(
+    templateHtml
+      .replace(/<html lang="[^"]*">/, `<html lang="${escapeHtml(pageLanguage)}">`)
+      .replace(SEO_BLOCK_PATTERN, buildGameSeoBlock(game, options))
+      .replace('<div id="root"></div>', `<div id="root">${shell}</div>`),
+    options.fontUrl,
+  );
 }
 
 export async function generateGameSeoPages(options = {}) {
@@ -244,17 +271,22 @@ export async function generateGameSeoPages(options = {}) {
 
   for (const game of games) {
     const id = assertSafeGameId(game?.id);
-    const outputDir = path.join(distDir, 'game-list', id);
-    await mkdir(outputDir, { recursive: true });
-    await writeFile(
-      path.join(outputDir, 'index.html'),
-      renderGameSeoHtml(templateHtml, game, { siteOrigin }),
-      'utf8',
-    );
+    for (const interfaceLanguage of ['ko', 'en']) {
+      const outputDir =
+        interfaceLanguage === 'en'
+          ? path.join(distDir, 'en', 'game-list', id)
+          : path.join(distDir, 'game-list', id);
+      await mkdir(outputDir, { recursive: true });
+      await writeFile(
+        path.join(outputDir, 'index.html'),
+        renderGameSeoHtml(templateHtml, game, { siteOrigin, interfaceLanguage }),
+        'utf8',
+      );
+    }
   }
 
   return {
-    outputCount: games.length,
+    outputCount: games.length * 2,
     siteOrigin,
   };
 }

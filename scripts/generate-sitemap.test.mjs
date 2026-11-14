@@ -39,4 +39,9 @@ describe('renderSitemap', () => {
     expect(xml).toContain('<loc>https://example.test/game-list/360/</loc>');
     expect(xml).not.toContain('live2dtest');
   });
+
+  it('lists each story in both interface languages, paired', () => {
+    expect(xml).toContain('<loc>https://example.test/en/game-list/360/</loc>');
+    expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.test/en/game-list/360/"/>');
+  });
 });

@@ -1,3 +1,4 @@
+import { parseGameRoute } from './gameRoute';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BUILD_INFO, type BuildIdentity } from './buildInfo';
 import { applyServiceWorkerUpdate, checkServiceWorkerUpdate, hasWaitingServiceWorker, onServiceWorkerWaiting } from './pwa/register';
@@ -30,8 +31,7 @@ export function detectContentVersionChange(
 }
 
 export function readGameIdFromPath(pathname: string): string | undefined {
-  const match = pathname.match(/^\/game-list\/([^/]+)\/?$/);
-  return match ? decodeURIComponent(match[1]) : undefined;
+  return parseGameRoute(pathname)?.id;
 }
 
 export function findListedGameVersion(manifest: unknown, gameId: string): string | undefined {

@@ -1,3 +1,5 @@
+import { parseGameRoute } from './gameRoute';
+
 export type BootMode = 'launcher' | 'gameList' | 'uploaded';
 
 export type InitialBootPresentation = {
@@ -6,11 +8,7 @@ export type InitialBootPresentation = {
 };
 
 export function parseGameIdFromPath(pathValue: string): string | undefined {
-  const match = pathValue.match(/^\/game-list\/([^/]+)\/?$/);
-  if (!match) {
-    return undefined;
-  }
-  return decodeURIComponent(match[1]);
+  return parseGameRoute(pathValue)?.id;
 }
 
 export function resolveInitialBootPresentation(pathValue: string): InitialBootPresentation {

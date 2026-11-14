@@ -35,31 +35,97 @@
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/360/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/360/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/360/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/360/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/en/game-list/360/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/360/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/360/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/360/"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/8bit-heart/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/8bit-heart/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/8bit-heart/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/8bit-heart/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/en/game-list/8bit-heart/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/8bit-heart/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/8bit-heart/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/8bit-heart/"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/muwon/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/muwon/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/muwon/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/muwon/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/en/game-list/muwon/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/muwon/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/muwon/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/muwon/"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/overflow/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/overflow/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/overflow/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/overflow/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/en/game-list/overflow/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/overflow/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/overflow/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/overflow/"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/tutorial/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/tutorial/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/tutorial/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/tutorial/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/en/game-list/tutorial/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/tutorial/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/tutorial/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/tutorial/"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yavn.vercel.app/game-list/erase/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/erase/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/erase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/erase/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yavn.vercel.app/en/game-list/erase/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/erase/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/erase/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/erase/"/>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

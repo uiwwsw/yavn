@@ -1,5 +1,5 @@
 import { matchesStorySearch } from './storySearch';
-import { t, uiLanguage, languageLabel, normalizeGameLanguages, gameHref } from './uiLanguage';
+import { t, uiLanguage, languageLabel, libraryHref, normalizeGameLanguages, gameHref } from './uiLanguage';
 import {
   ChangeEvent,
   KeyboardEvent as ReactKeyboardEvent,
@@ -134,6 +134,7 @@ import {
   shouldShowGameRouteBoot,
   type BootMode,
 } from './bootPresentation';
+import { gameContentPath, parseGameRoute } from './gameRoute';
 import {
   buildLauncherShowcaseStyle,
   normalizeLauncherShowcase,
@@ -927,7 +928,7 @@ function normalizeGameListEntry(value: unknown, index: number): GameListManifest
   const rawPath = normalizeText(value.path);
   const rawId = normalizeText(value.id);
   const id = rawId ?? (rawPath ? parseGameIdFromPath(rawPath) : undefined) ?? `game-${index + 1}`;
-  const path = rawPath ?? `/game-list/${encodeURIComponent(id)}/`;
+  const path = rawPath ?? gameContentPath(id);
   const name = normalizeText(value.name) ?? id;
   const seo = normalizeGameListSeoEntry(value.seo, name);
   return {
@@ -975,6 +976,9 @@ function parseGameListManifest(raw: unknown): GameListManifest {
   }
   const games = Array.isArray(raw.games)
     ? raw.games
+      // An unlisted entry is a fixture, not a work: it ships, it opens by its own address,
+      // and the update check still finds its version here, but the library does not offer it.
+      .filter((entry) => !(isObjectRecord(entry) && entry.unlisted === true))
       .map((entry, index) => normalizeGameListEntry(entry, index))
       .filter((entry): entry is GameListManifestEntry => Boolean(entry))
     : [];
@@ -1049,8 +1053,8 @@ function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined
   if (!normalizedTitle) {
     return undefined;
   }
-  const gameListMatch = window.location.pathname.match(/^\/game-list\/([^/]+)\/?$/);
-  const gameKey = gameListMatch ? decodeURIComponent(gameListMatch[1]) : normalizedTitle;
+  // Keyed by the game, so endings found on one language's address are found on the other's.
+  const gameKey = parseGameRoute(window.location.pathname)?.id ?? normalizedTitle;
   if (!gameKey) {
     return undefined;
   }
@@ -1147,11 +1151,12 @@ function LegalNoticeList({
     <div className={['legal-notice-list', className].filter(Boolean).join(' ')} aria-label={t("법적 고지")}>
       {notices.map((notice) => (
         <section className="legal-notice" key={notice.id}>
-          <h4>{notice.title}</h4>
+          {/* The heading is a label, not the notice: translate the ones we know, leave the rest. */}
+          <h4>{t(notice.title)}</h4>
           <p>{notice.text}</p>
           {notice.copyright && <small>{notice.copyright}</small>}
           {notice.links && notice.links.length > 0 && (
-            <nav aria-label={`${notice.title} ${t("관련 링크")}`}>
+            <nav aria-label={`${t(notice.title)} ${t("관련 링크")}`}>
               {notice.links.map((link, index) => (
                 <a
                   href={link.href}
@@ -1160,7 +1165,7 @@ function LegalNoticeList({
                   tabIndex={linkTabIndex}
                   key={`${notice.id}-${link.href}-${index}`}
                 >
-                  {link.label}
+                  {t(link.label)}
                 </a>
               ))}
             </nav>
@@ -1986,10 +1991,10 @@ export default function App() {
 
     const initializeBoot = async () => {
       const pathname = window.location.pathname;
-      const gameListMatch = pathname.match(/^\/game-list\/([^/]+)\/?$/);
-      if (gameListMatch) {
-        const gameId = decodeURIComponent(gameListMatch[1]);
-        const gameUrl = `/game-list/${gameId}/`;
+      const gameRoute = parseGameRoute(pathname);
+      if (gameRoute) {
+        const gameId = gameRoute.id;
+        const gameUrl = gameContentPath(gameId);
         const sessionKey = resolveStartGateSessionKey(gameId);
         setBootMode('gameList');
         // A reload the player asked for from the update notice: no start screen, no second question.
@@ -3979,7 +3984,7 @@ export default function App() {
       try {
         if (startScreenReturnGameId) {
           const sessionKey = resolveStartGateSessionKey(startScreenReturnGameId);
-          const gameUrl = `/game-list/${startScreenReturnGameId}/`;
+          const gameUrl = gameContentPath(startScreenReturnGameId);
           try {
             sessionStorage.removeItem(sessionKey);
           } catch {
@@ -4153,7 +4158,7 @@ export default function App() {
         </div>
         <VersionLine className="vs-version-line vs-version-start" contentVersion={startGate.gameVersion} />
         <div className="start-scene-controls">
-          <a href="/" aria-label={t("게임 목록으로")}>{t("← 게임 목록")}</a>
+          <a href={libraryHref()} aria-label={t("게임 목록으로")}>{t("← 게임 목록")}</a>
           <div>
             {startGate.musicUrl && <button type="button" aria-pressed={startGateAudioPlaying}
               disabled={startGateLaunching} onPointerDown={(event) => event.stopPropagation()}
@@ -4204,7 +4209,7 @@ export default function App() {
       <div className="launcher">
         <a className="launcher-skip-link" href="#launcher-library-title">{t("게임 목록으로 건너뛰기")}</a>
         <header className="launcher-topbar">
-          <a className="launcher-brand" href={uiLanguage === 'en' ? '/en/' : '/'} aria-label={t("YAVN 홈")}>
+          <a className="launcher-brand" href={libraryHref()} aria-label={t("YAVN 홈")}>
             <YavnLogo />
             <span>{t("이야기가 플레이가 되는 곳")}</span>
           </a>
@@ -4650,7 +4655,7 @@ export default function App() {
 
         <footer className="launcher-footer">
           <div className="launcher-footer-brand">
-            <a href={uiLanguage === 'en' ? '/en/' : '/'} aria-label={t("YAVN 홈")}><YavnLogo /></a>
+            <a href={libraryHref()} aria-label={t("YAVN 홈")}><YavnLogo /></a>
             <p>Type your story. Play your novel.<br /><span>{t("당신의 선택이, 하나의 이야기가 되도록.")}</span></p>
           </div>
           <nav aria-label={t("프로젝트 및 법적 고지")}>

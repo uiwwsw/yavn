@@ -124,11 +124,24 @@ describe('game-specific SEO page generation', () => {
       'utf8',
     );
 
+    const generatedEn = await readFile(
+      path.join(distDir, 'en', 'game-list', fixtureGame.id, 'index.html'),
+      'utf8',
+    );
+
+    // One page per interface language, each naming the pair.
     expect(result).toEqual({
-      outputCount: 1,
+      outputCount: 2,
       siteOrigin: 'https://example.com',
     });
     expect(generated).toContain('<title>폭우의 2번 찻잔</title>');
     expect(generated).toContain('<script type="module" src="/assets/app.js"></script>');
+    expect(generated).toContain('<link rel="canonical" href="https://example.com/game-list/fixture-game/" />');
+    expect(generatedEn).toContain('<html lang="en">');
+    expect(generatedEn).toContain('<link rel="canonical" href="https://example.com/en/game-list/fixture-game/" />');
+    for (const page of [generated, generatedEn]) {
+      expect(page).toContain('<link rel="alternate" hreflang="ko" href="https://example.com/game-list/fixture-game/" />');
+      expect(page).toContain('<link rel="alternate" hreflang="en" href="https://example.com/en/game-list/fixture-game/" />');
+    }
   });
 });

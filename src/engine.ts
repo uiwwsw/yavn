@@ -1,3 +1,4 @@
+import { parseGameRoute } from './gameRoute';
 import { buildStoryChapter, isMapStop, storyNodeId, storyEdgeId, type StoryMapData, type StoryMapNode } from './storyMap';
 import { PresentationClock } from './presentationClock';
 import { collectStartSceneAssets, mapStartSceneAssets } from './startScene';
@@ -744,9 +745,10 @@ function resolveBaseUrlFromInputUrl(url: string): string {
 function resolveAutosaveKeyForUrl(baseUrl: string): string {
   try {
     const parsed = new URL(baseUrl, window.location.origin);
-    const gameListMatch = parsed.pathname.match(/^\/game-list\/([^/]+)\/?$/);
-    if (gameListMatch) {
-      return `${GAME_AUTOSAVE_KEY_PREFIX}${decodeURIComponent(gameListMatch[1])}`;
+    // Keyed by the game, not by the address, so the English route shares one save with the Korean one.
+    const route = parseGameRoute(parsed.pathname);
+    if (route) {
+      return `${GAME_AUTOSAVE_KEY_PREFIX}${route.id}`;
     }
     const normalizedPath = parsed.pathname.replace(/\/+$/, '') || '/';
     return `${PATH_AUTOSAVE_KEY_PREFIX}${encodeURIComponent(normalizedPath)}`;
