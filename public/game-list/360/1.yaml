@@ -12,9 +12,9 @@ scenes:
       - place: "1952년 십이월 · 부산 국제시장"
       - char: { id: 순임, position: left }
       - char: { id: 기호, position: right }
-      - say: { char: 기호, text: "럭키 스트라이크 두 보루, 스팸 열 통. 오늘은 초콜릿도 있소." }
+      - say: { char: 기호, with: [순임], text: "럭키 스트라이크 두 보루, 스팸 열 통. 오늘은 초콜릿도 있소." }
       - say: { char: 순임, with: [기호], text: "초콜릿은 됐어요. 애 이 썩어요." }
-      - say: { char: 기호, motion: laugh, text: "영호 주라는 게 아니라 팔라는 거요, 아주머니. 장사를 이태 하고도 그러네." }
+      - say: { char: 기호, with: [순임], motion: laugh, text: "영호 주라는 게 아니라 팔라는 거요, 아주머니. 장사를 이태 하고도 그러네." }
       - say:
           char: 순임
           with: [기호]
@@ -22,6 +22,7 @@ scenes:
           text: "최 통역은 웃을 때 왼쪽 눈이 먼저 감겨요. 그게 보기 좋아요."
       - say:
           char: 기호
+          with: [순임]
           motion: startle
           when: { var: v1, op: eq, value: say }
           text: "…그런 말을 물건 받다 말고 하오? 옆 좌판에서 다 듣는데."
@@ -36,7 +37,7 @@ scenes:
           when: { var: v1, op: eq, value: free }
           text: "좌판 밑에 보따리 하나가 싸여 있다. 흥남에서 내려온 날부터 풀어 본 적이 없다."
       - char: { id: 영호, position: center }
-      - say: { char: 영호, motion: hop, text: "엄마! 할머이 또 부두 나갔어. 아버지 온다고." }
+      - say: { char: 영호, with: [순임], motion: hop, text: "엄마! 할머이 또 부두 나갔어. 아버지 온다고." }
       - say: { char: 순임, with: [영호], text: "오늘은 배 들어오는 날이 아닌데." }
       - say: { char: 영호, with: [순임], text: "날마다 들어온대. 할머이가 그랬어. 나 초콜릿 하나만." }
       - say: { char: 기호, with: [영호, 순임], text: "옜다. 이건 아저씨가 주는 거다. 엄마한텐 비밀이고." }
@@ -101,13 +102,13 @@ scenes:
       - place: "그날 밤 · 영주동 판잣집"
       - char: { id: 순임, position: left }
       - char: { id: 시어머니, position: right }
-      - say: { char: 시어머니, text: "오늘도 안 왔다." }
+      - say: { char: 시어머니, with: [순임], text: "오늘도 안 왔다." }
       - say: { char: 순임, with: [시어머니], text: "어머이, 날이 찬데 부두에 종일 서 계시면 어떡해요. 무릎도 안 좋으면서." }
-      - say: { char: 시어머니, text: "흥남서 배 탈 적에 내가 그랬지비. 부산 부두서 기다린다고. 자리 뜨면 못 찾는다." }
+      - say: { char: 시어머니, with: [순임], text: "흥남서 배 탈 적에 내가 그랬지비. 부산 부두서 기다린다고. 자리 뜨면 못 찾는다." }
       - say: { char: 순임, with: [시어머니], text: "영호 애비는 그 말 못 들었어요. 그때 벌써 줄이 끊겼잖아요." }
-      - say: { char: 시어머니, motion: shake, text: "들었다. 내 아들은 내 목소리 듣는다." }
+      - say: { char: 시어머니, with: [순임], motion: shake, text: "들었다. 내 아들은 내 목소리 듣는다." }
       - say: { char: 순임, with: [시어머니], text: "어머이, 저 서울에 점방 자리 알아보고 있어요. 봄에 다 같이 올라가요." }
-      - say: { char: 시어머니, text: "가라. 내는 안 간다. 영호 양말이나 기워 놓고 자라." }
+      - say: { char: 시어머니, with: [순임], text: "가라. 내 안 간다. 영호 양말이나 기워 놓고 자라." }
       - goto: fire
 
   fire:
@@ -118,17 +119,19 @@ scenes:
       - effect: alarm
       - char: { id: 순임, position: left }
       - char: { id: 영호, position: right }
-      - say: { char: 영호, delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
+      - say: { char: 영호, with: [순임], delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
       - say: { char: 순임, with: [영호], text: "가지 마. 손 놓지 마. 물건은 됐어." }
       - say: { channel: action, with: [], text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
       - bg: { id: busan_shack, transition: fade, duration: 1000 }
       - place: "사흘 뒤 · 판잣집"
       - say:
           char: 영호
+          with: [순임]
           when: { var: l2_told, op: eq, value: true }
           text: "엄마, 통역 아저씨 서울 갔대. 양키시장 아줌마들이 그러는데 돈 맡긴 사람이 셋 더 있대."
       - say:
           char: 영호
+          with: [순임]
           when: { var: l2_told, op: eq, value: false }
           text: "엄마, 부대 정문 아저씨가 그러는데 통역 중에 최기호라는 사람은 없대. 도장도 가짜래."
       - say:
@@ -141,9 +144,9 @@ scenes:
           with: [영호]
           when: { var: l2_told, op: eq, value: false }
           text: "…날짜, 금액, 이름 석 자. 다 받았는데."
-      - say: { char: 영호, text: "엄마, 벽보 봤어? 영등포 방직공장에서 사람 뽑는대. 기숙사도 준대." }
+      - say: { char: 영호, with: [순임], text: "엄마, 벽보 봤어? 영등포 방직공장에서 사람 뽑는대. 기숙사도 준대." }
       - say: { char: 순임, with: [영호], text: "네가 그걸 읽었어?" }
-      - say: { char: 영호, motion: perk, text: "'방' 자하고 '공' 자 읽었어. 나머진 옆집 형이." }
+      - say: { char: 영호, with: [순임], motion: perk, text: "'방' 자하고 '공' 자 읽었어. 나머진 옆집 형이." }
       - goto: mother_choice_intro
 
   mother_choice_intro:
@@ -209,12 +212,12 @@ scenes:
       - place: "1967년 삼월 · 영등포 셋방"
       - char: { id: 순임, position: left }
       - char: { id: 청년영호, position: right }
-      - say: { char: 청년영호, text: "엄마, 약 드세요. 공장 의무실 선생이 솜먼지 십사 년이면 폐가 남아나질 않는대." }
+      - say: { char: 청년영호, with: [순임], text: "엄마, 약 드세요. 공장 의무실 선생이 솜먼지 십사 년이면 폐가 남아나질 않는대." }
       - say: { char: 순임, with: [청년영호], text: "너는 수업 안 가고 왜 여기 있니. 등록금이 얼만데." }
-      - say: { char: 청년영호, text: "오늘 휴강이에요. 그리고 이거. 부산 영주동 동사무소에서 답장 왔어요." }
+      - say: { char: 청년영호, with: [순임], text: "오늘 휴강이에요. 그리고 이거. 부산 영주동 동사무소에서 답장 왔어요." }
       - say: { channel: record, with: [청년영호], text: "회신. 귀하가 문의한 영주동 산 3번지 일대 가옥은 1953년 11월 화재로 전소됨. 문의하신 분은 이재민 명부에 없음." }
       - say: { char: 순임, with: [청년영호], text: "…명부에 없으면, 어디 간 거니." }
-      - say: { char: 청년영호, motion: droop, text: "몰라요. 부두 노무자 사무실에도 편지 넣어 볼게요. 열네 번째지만." }
+      - say: { char: 청년영호, with: [순임], motion: droop, text: "몰라요. 부두 노무자 사무실에도 편지 넣어 볼게요. 열네 번째지만." }
       - say:
           char: 순임
           with: [청년영호]
@@ -225,7 +228,7 @@ scenes:
           with: [청년영호]
           when: { var: l2_asked, op: eq, value: false }
           text: "그날 새벽에 어머이가 목도리 얘기를 했어. 나는 대답을 안 하고 나왔다."
-      - say: { char: 청년영호, text: "엄마, 뭐 드시고 싶은 거 없어요? 월급날이에요." }
+      - say: { char: 청년영호, with: [순임], text: "엄마, 뭐 드시고 싶은 거 없어요? 월급날이에요." }
       - say: { char: 순임, with: [청년영호], text: "가자미식해. …서울엔 없지. 됐다. 창문이나 좀 열어라." }
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void

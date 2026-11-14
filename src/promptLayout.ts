@@ -134,8 +134,10 @@ export function initializePromptLayout(): () => void {
  * stays visible and they can scroll at their own pace.
  */
 export function resolveDialogueScroll(
-  { lineChanged, typing }: { lineChanged: boolean; typing: boolean },
+  { lineChanged, typing, thread = false }: { lineChanged: boolean; typing: boolean; thread?: boolean },
 ): 'top' | 'bottom' | 'keep' {
-  if (lineChanged) return 'top';
+  // A phone thread grows downwards like a real messenger, so a new bubble belongs at the
+  // bottom with the ones before it still above; everywhere else a new line reads from its start.
+  if (lineChanged) return thread ? 'bottom' : 'top';
   return typing ? 'bottom' : 'keep';
 }

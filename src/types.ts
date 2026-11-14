@@ -674,6 +674,8 @@ export type StoryLogEntry =
       kind: 'dialogue';
       speaker?: string;
       channel?: DialogueChannel;
+      /** message channel only: which side of the thread this bubble sat on. */
+      side?: 'me' | 'them';
       text: string;
       chapterPath?: string;
       sceneId: string;
