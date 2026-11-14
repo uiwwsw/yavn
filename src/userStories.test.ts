@@ -6,7 +6,7 @@ import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipRead
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { useVNStore } from './store';
 
-// ERASE, 8비트 심장 and 튜토리얼 are built from the owner's stories. These tests pin
+// ERASE, 8비트 심장, 튜토리얼 and 오버플로 are built from the owner's stories. These tests pin
 // their structure (schema, assets, endings, fair failures) and play each one to every ending
 // through the real engine. Background transitions are served in their non-waiting short form
 // because there is no renderer here to report that a dissolve finished.
@@ -30,6 +30,7 @@ const games = [
   { id: 'erase', chapters: 5, endings: ['erase_loop', 'erased_name', 'kept_photo', 'unfinished'] },
   { id: 'tutorial', chapters: 5, endings: ['disconnected', 'session_closed', 'still_online'] },
   { id: '8bit-heart', chapters: 5, endings: ['new_game', 'off_screen', 'saved_together'] },
+  { id: 'overflow', chapters: 5, endings: ['appeal', 'broadcast', 'one_file', 'sealed'] },
 ];
 
 const read = (game: string, file: string) => readFileSync(`${publicRoot}game-list/${game}/${file}`, 'utf8');
@@ -212,5 +213,65 @@ describe('owner story playthroughs', () => {
     await start('tutorial');
     const state = await play({ t2_where: '"C-14 기둥 쪽… 아닌가요?"' });
     expect(state.gameOver?.title).toBe('아무도 말하지 않은 번호');
+  }, 60000);
+  // 오버플로's investigation board cycles through whatever is still unexplored, so the route
+  // leaves o1_room unset and the player takes the first option still on offer each time.
+  const overflowBase: Route = {
+    o0_case: '"일당은 없는 거죠?" 봉투를 가져온다',
+    o1_show: '"선생님, 제 것도 보시겠습니까." 화면을 돌린다',
+    o2_sera: '"올려 주는 게 아니라 틀렸다고 쓰는 거야. 쓸게."',
+    o2_deal: '"하나만 묻겠습니다. 배동식 씨도 오버플로입니까."',
+    o3_tell: '노기태에게 전화한다',
+  };
+  it.each([
+    ['broadcast', { ...overflowBase, o4_end: '9시 생방송에 나간다. 내 수치부터 띄운다' }],
+    ['one_file', { ...overflowBase, o4_end: '배동식 씨 원본만 검찰에 낸다' }],
+    ['sealed', {
+      ...overflowBase,
+      o0_case: '"경위님, 저 이거 하면 뭐가 남습니까."',
+      o0_case_again: '"7페이지까지만 보겠습니다."',
+      o1_show: '수첩에 날짜만 적는다',
+      o2_sera: '"다른 사무소 소개해 줄게. 내가 쓰면 네가 손해야."',
+      o2_deal: '"할머니 건은 따로 합니다." 종이를 밀어 놓는다',
+      o3_tell: '가방에 넣고 집으로 간다',
+      o4_end: '합의서에 날짜를 적어 보낸다',
+    }],
+    ['appeal', {
+      ...overflowBase,
+      o0_case: '"한 번만 보고 돌려 드릴게요."',
+      o1_show: '"이십 년이면 대단한 겁니다."',
+      o2_sera: '"그 서류 누가 요구했어? 병원이야, 시어머니야?"',
+      o3_tell: '세라에게 먼저 말한다',
+      o4_end: '이의신청서를 쓴다. 이번엔 내 것 말고 전부',
+    }],
+  ] as Array<[string, Route]>)('오버플로 reaches %s', async (ending, route) => {
+    await start('overflow');
+    const state = await play(route);
+    expect(state.gameOver).toBeUndefined();
+    expect(state.resolvedEndingId).toBe(ending);
+  }, 60000);
+
+  it('오버플로 fails recoverably when he signs the confidentiality deal', async () => {
+    await start('overflow');
+    const state = await play({ ...overflowBase, o2_deal: '서명한다' });
+    expect(state.gameOver?.title).toBe('서류 한 장');
+  }, 60000);
+
+  it('오버플로 fails recoverably when he uses the account that is not his', async () => {
+    await start('overflow');
+    const state = await play({ ...overflowBase, o4_end: '한수경의 계정으로 자정 전에 내부망에 들어간다' });
+    expect(state.gameOver?.title).toBe('남의 계정');
+  }, 60000);
+
+  it('오버플로 refuses the case first and still gets there through the second ask', async () => {
+    await start('overflow');
+    const state = await play({
+      ...overflowBase,
+      o0_case: '"경위님, 저 이거 하면 뭐가 남습니까."',
+      o0_case_again: '"안 합니다. 이의신청서나 쓸게요."',
+      o4_end: '배동식 씨 원본만 검찰에 낸다',
+    });
+    expect(state.gameOver).toBeUndefined();
+    expect(state.resolvedEndingId).toBe('one_file');
   }, 60000);
 });

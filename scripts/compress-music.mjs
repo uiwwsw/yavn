@@ -42,10 +42,13 @@ if (wavs.length === 0) {
 }
 
 try {
+  // `afconvert --help` prints usage and exits non-zero, so only a missing binary counts here.
   execFileSync('afconvert', ['--help'], { stdio: 'ignore' });
-} catch {
-  console.error('[compress-music] `afconvert` is missing. It ships with macOS; run this on a Mac.');
-  process.exit(1);
+} catch (error) {
+  if (error?.code === 'ENOENT') {
+    console.error('[compress-music] `afconvert` is missing. It ships with macOS; run this on a Mac.');
+    process.exit(1);
+  }
 }
 
 let before = 0;

@@ -1,0 +1,868 @@
+chapterTitle: "도시락"
+
+script:
+  - scene: arrive
+  - scene: hayul_talk
+  - scene: talk
+  - scene: room
+  - scene: after_room
+  - scene: leave
+
+scenes:
+  arrive:
+    title: "장위동"
+    actions:
+      - bg: { id: dongsik_house, transition: fade, duration: 700 }
+      - place: "2033년 3월 21일 화요일 오전 9시 20분 · 장위동"
+      - music: lowscore
+      - char: { id: 동식, position: right }
+      - char: { id: 지완, position: left }
+      - say:
+          char: 동식
+          with: [지완]
+          text: "삼거리에서 내리셨어요?"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "네."
+      - say:
+          char: 동식
+          motion: nod
+          with: [지완]
+          text: "잘하셨어요. 종점에서 내리면 길을 두 번 건너요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "선생님이 몰던 노선이라고 들었습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "예. 그 차는 왼쪽 깜빡이가 소리가 좀 커요. 아직 그래요?"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "모르겠습니다. 안 들었어요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "들으셨을 텐데. 뒷자리에 앉으면 잘 들립니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "앉으세요. 바닥이 차요. 방석 드릴게요."
+      - char: { id: 하율, position: center }
+      - say:
+          char: 하율
+          with: [동식, 지완]
+          text: "할아버지, 양말 어딨어."
+      - say:
+          char: 동식
+          with: [하율]
+          text: "서랍 두 번째."
+      - say:
+          char: 하율
+          with: [동식]
+          text: "거기 없어."
+      - say:
+          char: 동식
+          with: [하율]
+          text: "두 번째 봤어?"
+      - say:
+          char: 하율
+          with: [동식]
+          text: "봤다니까. 세 번째도 봤어."
+      - say:
+          char: 동식
+          with: [하율]
+          text: "그럼 첫 번째 봐."
+      - say:
+          char: 하율
+          motion: perk
+          with: [동식]
+          text: "아, 있다."
+      - say:
+          char: 동식
+          with: [하율]
+          text: "맨날 그래."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "아저씨 누구예요?"
+      - say:
+          char: 지완
+          with: [하율]
+          text: "할아버지 서류 보는 사람."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "경찰이에요?"
+      - say:
+          char: 지완
+          with: [하율]
+          text: "아니."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "경찰 아저씨는 세 명 왔었는데 한 명은 수염 났었어요."
+      - say:
+          char: 동식
+          with: [하율]
+          text: "하율아. 늦었다."
+      - say:
+          char: 하율
+          with: [동식]
+          text: "오늘 1교시 체육인데 비 와서 안 해."
+      - say:
+          char: 동식
+          with: [하율]
+          text: "그래도 간다."
+      - say:
+          char: 하율
+          motion: puff
+          with: [동식]
+          text: "알았어."
+
+  hayul_talk:
+    actions:
+      - move: { id: 동식, style: exit, wait: true }
+      - say:
+          char: 하율
+          with: [지완]
+          text: "아저씨, 할아버지 혼내러 온 거예요?"
+      - say:
+          char: 지완
+          with: [하율]
+          text: "아니야. 물어볼 게 있어서."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "저는 아는 거 별로 없는데."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "안 물어봐도 돼."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "근데 저 수학 단원평가 98점 맞았어요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "잘했네."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "하나 틀렸어요. 근데 그거 문제가 이상했어요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "뭐가 이상했는데."
+      - say:
+          char: 하율
+          motion: lean_in
+          with: [지완]
+          text: "사과 열 개를 세 명이 나눠 가지래요. 근데 안 나눠지잖아요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "남는 걸 쓰라고 한 거 아니야?"
+      - say:
+          char: 하율
+          with: [지완]
+          text: "저는 그래서 '한 개는 못 줘요'라고 썼는데 틀렸대요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "…그건 틀린 거 아닌데."
+      - say:
+          char: 하율.grin
+          with: [지완]
+          text: "그쵸? 아저씨 선생님한테 말해 줘요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "그건 내 담당이 아니야."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "아저씨 담당은 뭔데요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "숫자가 틀렸다고 써 주는 거."
+      - say:
+          char: 하율.grin
+          with: [지완]
+          text: "그럼 맞잖아요!"
+      - say:
+          char: 하율
+          with: [지완]
+          text: "저 2층 방에서 할머니랑 잤어요. 할머니 아플 때."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "그랬어."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "할머니가 밤에 계속 깼어요. 그러면 할아버지가 와요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "할아버지가 뭐 하셨는데."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "그냥 앉아 있었어요. 아무 말도 안 하고."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "근데 할머니가 맨날 할아버지한테 뭐 해 달라고 했어요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "뭘."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "몰라요. 비밀이래요. 저한테 말하지 말래요."
+      - set: { met_hayul: true }
+      - say:
+          char: 하율
+          with: [지완]
+          text: "아저씨, 저 가요. 할아버지한테 우산 가져갔다고 해 주세요."
+      - say:
+          char: 지완
+          with: [하율]
+          text: "그래."
+      - say:
+          char: 하율
+          with: [지완]
+          text: "진짜 말해 줘야 돼요. 안 그러면 할아버지가 우산 찾아요."
+      - move: { id: 하율, style: exit, wait: true }
+
+  talk:
+    actions:
+      - char: { id: 동식, position: right }
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그 애가 말이 많아요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "우산 가져갔답니다."
+      - say:
+          char: 동식
+          motion: nod
+          with: [지완]
+          text: "…예. 고맙습니다."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "선생님, 3월 7일 얘기를 좀 하겠습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그날 비가 안 왔어요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "네."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "삼월에 비가 안 오면 바람이 셉니다. 창문을 못 열어요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "그날 몇 시에 들어오셨습니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "안 나갔어요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "하루 종일요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "이 년 동안 거의 안 나갔습니다. 약 타러 갈 때만."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "2031년 3월 21일에 회사를 그만두셨습니다. 진단 다음 날입니다."
+      - say:
+          char: 동식.far
+          with: [지완]
+          text: "…그걸 적어 놨어요?"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "고용보험 기록에 남습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "퇴직금이 2,180만 원 나왔어요. 그걸로 병원비를 냈습니다."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "모자랐을 텐데요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "모자랐지요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "선생님, 불편하실 겁니다. 그래도 보여 드리겠습니다."
+      - sound: read
+      - say:
+          channel: record
+          with: []
+          text: "배동식 정서 판독 이력 · 배우자 애착 2 · 2033.03.07 22:10 기준 슬픔 1 · 분노 3 · 죄책감 0"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "검찰이 이걸 보고 기소를 포기했습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "…예."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "이 숫자 보신 적 있으십니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "조사받을 때 책상에 깔려 있더라고요. 거꾸로 봤습니다."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "뭐라고 생각하셨습니까."
+      - say:
+          char: 동식
+          motion: sigh
+          with: [지완]
+          text: "…그 사람들이 나를 그렇게 봤구나 했지요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "억울하지 않으셨습니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "억울하다고 하면 숫자가 올라갑니까."
+      - say:
+          char: 지완.tight
+          with: [동식]
+          text: "…안 올라갑니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그러면 됐습니다."
+      - move: { id: 동식, toward: 지완, style: retreat }
+      - say:
+          char: 동식
+          with: [지완]
+          text: "위에 방을 보시겠어요. 그 사람 방입니다."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "봐도 되겠습니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "경찰도 봤어요. 치우지도 못 했습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "나는 여기 있을게요. 거기 올라가면 숨이 잘 안 쉬어집니다."
+
+  room:
+    title: "2층 방"
+    actions:
+      - bg: { id: heenam_room, transition: dissolve, duration: 800 }
+      - place: "같은 집 2층 · 오희남의 방"
+      - goto: room_look
+
+  room_look:
+    actions:
+      - choice:
+          key: o1_room
+          presentation: explore
+          prompt: "방을 본다."
+          with: []
+          camera: wide
+          options:
+            - text: "벽에 붙은 그림"
+              at: { x: 17, y: 26 }
+              when: { var: ev_drawing, op: eq, value: false }
+              goto: ev_drawing_scene
+            - text: "벽걸이 달력"
+              at: { x: 62, y: 24 }
+              when: { var: ev_calendar, op: eq, value: false }
+              goto: ev_calendar_scene
+            - text: "쌓아 둔 약봉지"
+              at: { x: 21, y: 58 }
+              when: { var: ev_pills, op: eq, value: false }
+              goto: ev_pills_scene
+            - text: "협탁에 놓인 녹음기"
+              at: { x: 24, y: 75 }
+              when: { var: ev_recorder, op: eq, value: false }
+              goto: ev_recorder_scene
+            - text: "창가에 놓인 도시락통"
+              at: { x: 82, y: 83 }
+              when: { var: ev_lunchbox, op: eq, value: false }
+              goto: ev_lunchbox_scene
+            - text: "본 것을 정리하고 내려간다"
+              when:
+                all:
+                  - { var: ev_drawing, op: eq, value: true }
+                  - { var: ev_calendar, op: eq, value: true }
+                  - { var: ev_pills, op: eq, value: true }
+                  - { var: ev_recorder, op: eq, value: true }
+                  - { var: ev_lunchbox, op: eq, value: true }
+              goto: after_room
+
+  ev_drawing_scene:
+    actions:
+      - set: { ev_drawing: true }
+      - say:
+          channel: action
+          with: []
+          text: "도화지 넉 장이 테이프로 붙어 있다. 색연필."
+      - say:
+          channel: record
+          with: []
+          text: "그림 · 침대에 누운 사람, 옆에 앉은 사람, 창문 하나. 오른쪽 아래에 '하율 3학년 1반'"
+      - say:
+          channel: record
+          with: []
+          text: "그림 뒷면 연필 글씨 · '할머니 오늘은 세 번만 아팠다'"
+      - goto: room_look
+
+  ev_calendar_scene:
+    actions:
+      - set: { ev_calendar: true }
+      - say:
+          channel: record
+          with: []
+          text: "벽걸이 달력 2033년 3월 · 날짜 칸마다 볼펜 숫자 하나씩. 1일 4 · 2일 5 · 3일 6 · 4일 6 · 5일 8 · 6일 9"
+      - say:
+          channel: record
+          with: []
+          text: "7일 칸에만 숫자 대신 가위표. 8일 이후는 전부 비어 있다."
+      - say:
+          channel: action
+          with: []
+          text: "2월 장을 넘겨 본다. 같은 자리에 같은 글씨로 숫자가 적혀 있다."
+      - say:
+          channel: record
+          with: []
+          text: "2월 · 28일까지 숫자 평균 6.4. 1월 평균 5.1. 작년 12월 평균 4.2."
+      - goto: room_look
+
+  ev_pills_scene:
+    actions:
+      - set: { ev_pills: true }
+      - get: pill_bag
+      - sticker: { id: pills, image: pill_sticker, x: 78, y: 48, width: "clamp(150px, 20%, 250px)", enter: scaleIn }
+      - say:
+          channel: record
+          with: []
+          text: "진통제 봉지 · 1일 3회 · 날짜별로 접혀서 고무줄로 묶여 있다. 가장 위가 2033.03.06"
+      - say:
+          channel: record
+          with: []
+          text: "03.06 봉지 안에 약이 그대로 들어 있다. 03.05 봉지는 비어 있다."
+      - clearSticker: { id: pills, leave: fadeOut }
+      - say:
+          channel: action
+          with: []
+          text: "봉지를 접은 자국이 일정하다. 세로로 두 번, 가로로 한 번. 아이 손이다."
+      - goto: room_look
+
+  ev_recorder_scene:
+    actions:
+      - set: { ev_recorder: true }
+      - get: recorder
+      - sticker: { id: rec, image: recorder_sticker, x: 76, y: 50, width: "clamp(140px, 18%, 230px)", enter: fadeIn }
+      - say:
+          channel: record
+          with: []
+          text: "녹음기 · 병원 완화의료팀 대여품 · 저장 119건 · 001 2031.05.14 · 119 2033.03.06 21:48"
+      - say:
+          channel: action
+          with: []
+          text: "001을 누른다."
+      - char: { id: 희남, position: center }
+      - say:
+          char: 희남
+          with: []
+          delivery: whisper
+          text: "오늘은… 괜찮아. 밥도 먹었고."
+      - say:
+          char: 희남
+          with: []
+          delivery: whisper
+          text: "하율이 왔다 갔어. 색연필 사 줘."
+      - say:
+          char: 희남
+          with: []
+          delivery: whisper
+          text: "24색 말고 12색. 큰 건 무거워."
+      - say:
+          channel: action
+          with: []
+          text: "다음 파일로 넘기려다 멈춘다."
+      - say:
+          channel: system
+          with: []
+          text: "재생 정지 · 119건 중 1건 재생 · 남은 배터리 11%"
+      - clearSticker: { id: rec, leave: fadeOut }
+      - move: { id: 희남, style: exit, wait: true }
+      - goto: room_look
+
+  ev_lunchbox_scene:
+    actions:
+      - set: { ev_lunchbox: true }
+      - get: lunchbox
+      - sticker: { id: box, image: lunchbox_sticker, x: 76, y: 52, width: "clamp(150px, 20%, 250px)", enter: slideUp }
+      - say:
+          channel: record
+          with: []
+          text: "2단 반찬통 · 뚜껑 안쪽에 유성펜 날짜 수십 줄. 가장 아래가 2013.04.02, 가장 위가 2033.03.07"
+      - say:
+          channel: action
+          with: []
+          text: "통을 연다. 비어 있다. 씻어서 엎어 놨다."
+      - say:
+          channel: record
+          with: []
+          text: "날짜 사이사이 다른 글씨 · '김치 안 됨' · '죽만' · '반만' · '안 드심' · 마지막 줄 옆에는 아무 말도 없다"
+      - clearSticker: { id: box, leave: fadeOut }
+      - goto: room_look
+
+  after_room:
+    actions:
+      - bg: { id: dongsik_house, transition: fade, duration: 600 }
+      - char: { id: 동식, position: right }
+      - char: { id: 지완, position: left }
+      - say:
+          char: 지완
+          with: [동식]
+          text: "달력에 숫자를 적으셨더군요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그 사람이 적었어요. 아픈 정도를 적으라고 병원에서 그러더라고요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "10이 제일 아픈 겁니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "예. 처음엔 2, 3이었어요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "3월 6일이 9입니다."
+      - say:
+          char: 동식.shut
+          with: [지완]
+          text: "…"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "선생님."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그날은 10이었어요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "달력엔 9라고."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "10은 안 적는다고 했어요. 적으면 끝인 것 같다고."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "…"
+      - say:
+          char: 동식
+          with: [지완]
+          text: "도시락통 보셨지요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "네."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "차고지에 전자레인지가 하나예요. 열두 명이 씁니다."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "그래서요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그래서 식어도 되는 반찬만 쌌어요. 그 사람이 그걸 다 알아서."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "이십 년을요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그게 뭐 대단한 겁니까. 밥 싸는 건데."
+      - choice:
+          key: o1_show
+          prompt: "자기 판독 화면을 켤지 정한다."
+          char: 지완
+          with: [동식]
+          options:
+            - text: "\"선생님, 제 것도 보시겠습니까.\" 화면을 돌린다"
+              goto: show_mine
+              set: { showed_score: true }
+            - text: "\"이십 년이면 대단한 겁니다.\""
+              goto: say_twenty
+            - text: "수첩에 날짜만 적는다"
+              goto: just_note
+
+  show_mine:
+    actions:
+      - sound: read
+      - say:
+          channel: system
+          with: []
+          text: "에모스 현장 판독 · 문지완 — 사랑 1 · 연민 1 · 슬픔 1 · 분노 1 · 불안 1"
+      - say:
+          char: 동식
+          motion: headtilt
+          with: [지완]
+          text: "이게 선생님 겁니까."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "네. 7년째 똑같습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "고장 난 거 아니에요?"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "여덟 번 신청했습니다. 여덟 번 다 기계는 정상이라고 왔습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "…그럼 선생님은요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "저는 결함이라고 합니다. 서류에 그렇게 씁니다."
+      - move: { id: 동식, toward: 지완, style: approach }
+      - say:
+          char: 동식
+          with: [지완]
+          text: "앉으세요. 차 한 잔 드리겠습니다."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "괜찮습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "괜찮다고 하시면 안 드립니다. 내가 그런 사람이에요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "…그럼 주십시오."
+      - add: { trust: 2 }
+      - goto: wrap_room
+
+  say_twenty:
+    actions:
+      - say:
+          char: 동식
+          with: [지완]
+          text: "대단하긴요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "제가 쓴 서류 중에 그런 사람이 없었습니다."
+      - say:
+          char: 동식
+          motion: shake
+          with: [지완]
+          text: "다들 해요. 말을 안 해서 그렇지."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "말을 안 하면 숫자로만 남습니다. 선생님 숫자는 2입니다."
+      - say:
+          char: 동식.far
+          with: [지완]
+          text: "…2요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "애착 2. 그게 선생님 이십 년입니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "그러면 2가 맞는 거겠지요."
+      - add: { trust: 1 }
+      - goto: wrap_room
+
+  just_note:
+    actions:
+      - sound: click
+      - say:
+          channel: action
+          with: []
+          text: "수첩 여백에 날짜를 적는다. 2031.03.21 · 2033.03.06 · 2033.03.07"
+      - say:
+          char: 동식
+          with: [지완]
+          text: "뭘 적으세요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "날짜요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "날짜만 적으면 아무것도 모르실 텐데."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "날짜가 제일 안 바뀝니다."
+      - say:
+          char: 동식
+          motion: headtilt
+          with: [지완]
+          text: "…그건 그래요."
+      - goto: wrap_room
+
+  wrap_room:
+    actions:
+      - say:
+          char: 지완
+          with: [동식]
+          text: "선생님. 녹음기에 119개가 있습니다."
+      - say:
+          char: 동식.shut
+          with: [지완]
+          text: "…"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "들어 보셨습니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "하나도 안 들었어요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "왜요."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "다 아는 소리라서요."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "제가 들어도 되겠습니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "…경찰도 가져갔다가 돌려줬어요. 쓸 게 없다고."
+      - say:
+          char: 지완
+          with: [동식]
+          text: "쓸 게 없다는 건 들었다는 뜻이 아닙니다."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "가져가세요. 배터리 다 되면 그냥 두시고요."
+      - goto: leave
+
+  leave:
+    title: "내려가는 길"
+    actions:
+      - bg: { id: street_rain, transition: dissolve, duration: 800 }
+      - place: "같은 날 오후 1시 · 장위삼거리"
+      - music: quant
+      - say:
+          channel: system
+          with: []
+          text: "부재중 전화 2 · 발신번호 02-6100-XXXX"
+      - say:
+          channel: system
+          with: []
+          text: "메시지 · 오후 12:58"
+      - say:
+          channel: message
+          side: them
+          char: 수경
+          with: []
+          text: "한신뉴로 표준화팀 한수경입니다. 문지완 선생님 맞으십니까."
+      - say:
+          channel: message
+          side: them
+          char: 수경
+          with: []
+          text: "오늘 오전 장위동 주택에서 저희 서비스 판독 이력을 제3자에게 열람시키셨습니다."
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "본인에게 보여 드린 건데요"
+      - say:
+          channel: message
+          side: them
+          char: 수경
+          with: []
+          text: "배동식 씨 본인이 아니라 선생님 단말에서 조회된 이력을 보여 주셨습니다. 그건 다릅니다."
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "제 단말이 왜 그쪽에 뜹니까"
+      - say:
+          channel: message
+          side: them
+          char: 수경
+          with: []
+          text: "이의신청을 여덟 번 하시면 뜹니다."
+      - say:
+          channel: message
+          side: them
+          char: 수경
+          with: []
+          text: "내일 오후 3시에 가산 사옥으로 와 주십시오. 1층에서 방문증 받으시면 됩니다."
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "안 가면요"
+      - say:
+          channel: message
+          side: them
+          char: 수경
+          with: []
+          text: "오실 겁니다. 선생님 여덟 번째 신청서 지금 제 책상에 있습니다."
+      - goto: /2.yaml

@@ -36,6 +36,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://yavn.vercel.app/game-list/overflow/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yavn.vercel.app/game-list/tutorial/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

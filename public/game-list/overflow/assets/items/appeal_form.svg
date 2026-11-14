@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>에모스 재측정 이의신청서</title><g stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-4 200 200)">
+<rect x="74" y="42" width="252" height="320" rx="6" fill="#f4f6f9" stroke="#1b2330" stroke-width="4"/>
+<rect x="74" y="42" width="252" height="48" rx="6" fill="#2f6bff"/>
+<text x="200" y="74" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="20" font-weight="800" text-anchor="middle" fill="#ffffff">재측정 이의신청</text>
+<path d="M 98 116 L 302 116 M 98 142 L 302 142 M 98 168 L 268 168" stroke="#9aa7b8" stroke-width="4"/>
+<rect x="98" y="192" width="204" height="86" rx="4" fill="#ffffff" stroke="#1b2330" stroke-width="3"/>
+<text x="112" y="222" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" fill="#5a6b80">판정 지수</text>
+<text x="288" y="262" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="42" font-weight="800" text-anchor="end" fill="#1b2330">1</text>
+<path d="M 98 302 L 302 302 M 98 326 L 240 326" stroke="#9aa7b8" stroke-width="4"/>
+<path d="M 236 318 L 268 336 L 318 288" fill="none" stroke="#d64b3c" stroke-width="7"/>
+</g></g></svg>
