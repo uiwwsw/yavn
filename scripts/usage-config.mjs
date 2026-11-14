@@ -31,6 +31,11 @@ export const usageConfig = {
       "name": "game_start"
     },
     {
+      "match": "^/en/game-list/[^/]+/?$",
+      "path": "/en/game-list/:game/",
+      "name": "game_start_en"
+    },
+    {
       "match": "^$",
       "path": "/screens/play",
       "name": "play"

@@ -1,37 +1,17 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { isStory } from './story-catalog.mjs';
 import { load as parseYaml } from 'js-yaml';
 
 const workspaceRoot = process.cwd();
 const publicDir = path.join(workspaceRoot, 'public');
 const gameListDir = path.join(workspaceRoot, 'public', 'game-list');
 const outputPath = path.join(gameListDir, 'index.json');
-const sitemapPath = path.join(publicDir, 'sitemap.xml');
 
 const MANIFEST_SCHEMA_VERSION = 5;
 const MAX_LAUNCHER_SEO_TITLE_PREVIEW = 8;
 const DEFAULT_LAUNCHER_SEO_DESCRIPTION =
   '야븐엔진(YAVN)에서 플레이 가능한 비주얼노벨 게임 목록입니다.';
-const DEFAULT_SITE_ORIGIN = 'https://yavn.vercel.app';
-
-function normalizeSiteOrigin(value) {
-  const normalized = normalizeText(value) ?? DEFAULT_SITE_ORIGIN;
-  return normalized.replace(/\/+$/, '');
-}
-
-function escapeXml(value) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
-}
-
-function toAbsoluteSiteUrl(origin, pathValue) {
-  return `${origin}${pathValue.startsWith('/') ? pathValue : `/${pathValue}`}`;
-}
-
 const toTitle = (slug) =>
   slug
     .split(/[-_\s]+/)
@@ -349,29 +329,6 @@ function buildLauncherSeoSummary(games) {
   };
 }
 
-function buildSitemapXml(games, siteOrigin) {
-  const rootUrl = toAbsoluteSiteUrl(siteOrigin, '/');
-  const gameUrls = mergeUniqueTextList(games.map((game) => game.path)).map((gamePath) =>
-    toAbsoluteSiteUrl(siteOrigin, gamePath),
-  );
-  const entries = [
-    { loc: `${siteOrigin}/en/`, changefreq: 'weekly', priority: '1.0' },
-    { loc: `${siteOrigin}/create/`, changefreq: 'monthly', priority: '0.7' },
-    { loc: `${siteOrigin}/en/create/`, changefreq: 'monthly', priority: '0.7' },
-    { loc: rootUrl, changefreq: 'weekly', priority: '1.0' },
-    ...gameUrls.map((loc) => ({ loc, changefreq: 'weekly', priority: '0.8' })),
-  ];
-
-  const body = entries
-    .map(
-      (entry) =>
-        `  <url>\n    <loc>${escapeXml(entry.loc)}</loc>\n    <changefreq>${entry.changefreq}</changefreq>\n    <priority>${entry.priority}</priority>\n  </url>`,
-    )
-    .join('\n');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
-}
-
 async function collectGameFolders() {
   await mkdir(gameListDir, { recursive: true });
   const entries = await readdir(gameListDir, { withFileTypes: true });
@@ -390,6 +347,9 @@ async function collectGameFolders() {
       id: folder.name,
       name: metadata.name,
       path: `/game-list/${encodeURIComponent(folder.name)}/`,
+      // A fixture still ships and still opens by its own address; it is simply not one of
+      // the works the library offers. story-catalog.mjs is where that is decided.
+      ...(isStory({ id: folder.name }) ? {} : { unlisted: true }),
       author: metadata.author,
       version: metadata.version,
       summary: metadata.summary,
@@ -417,10 +377,5 @@ const manifest = {
   games,
   seo: buildLauncherSeoSummary(games),
 };
-const siteOrigin = normalizeSiteOrigin(process.env.SITE_ORIGIN ?? process.env.SITEMAP_ORIGIN);
-const sitemapXml = buildSitemapXml(games, siteOrigin);
-
 await writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
-await writeFile(sitemapPath, sitemapXml, 'utf8');
 console.log(`Generated ${outputPath} with ${games.length} game(s).`);
-console.log(`Generated ${sitemapPath} with ${games.length + 4} url(s).`);

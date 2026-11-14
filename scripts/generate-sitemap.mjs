@@ -5,7 +5,7 @@
  * Two things the hand-maintained file got wrong and this one cannot:
  *  - live2dtest is a rendering fixture, not a story (see story-catalog.mjs), and the 404 page
  *    already excludes it from the library links; it has no business in a sitemap either.
- *  - /, /en/, /create/ and /en/create/ are translations of each other. Listing them as four
+ *  - every page here exists in two interface languages — /x/ and /en/x/ — and listing them as
  *    unrelated addresses asks search engines to pick a winner. The xhtml:link alternates say
  *    which page is which language, matching the hreflang tags in each page's head.
  *
@@ -44,12 +44,8 @@ export function renderSitemap({ games = [], origin = DEFAULT_ORIGIN } = {}) {
   const sections = [
     translatedPair({ origin, ko: '/', en: '/en/', changefreq: 'weekly', priority: '1.0' }),
     translatedPair({ origin, ko: '/create/', en: '/en/create/', changefreq: 'monthly', priority: '0.7' }),
-    ...games.map(
-      (game) => `  <url>
-    <loc>${esc(origin + game.path)}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`,
+    ...games.map((game) =>
+      translatedPair({ origin, ko: game.path, en: `/en${game.path}`, changefreq: 'weekly', priority: '0.8' }),
     ),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>

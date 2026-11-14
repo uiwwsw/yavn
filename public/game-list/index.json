@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-14T09:26:14.620Z",
+  "generatedAt": "2026-11-14T10:28:37.320Z",
   "games": [
     {
       "id": "360",
@@ -393,6 +393,7 @@
       "id": "live2dtest",
       "name": "Live2D 테스트: 렌 수다",
       "path": "/game-list/live2dtest/",
+      "unlisted": true,
       "author": "uiwwsw",
       "version": "1.0.0",
       "summary": "렌과 대화하며 표정, 손끝을 따라오는 시선, 가까워지는 카메라를 직접 체험하는 Live2D 인터랙션 데모.",

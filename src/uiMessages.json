@@ -405,5 +405,10 @@
   "취소": "Cancel",
   "탐색 기록은 현재 세션에만 보관됩니다. 브라우저 저장 공간을 확인해 주세요.": "Exploration is kept for this session only. Check your browser storage.",
   "한 장면 넘길 때마다 저장돼요": "Saves every time you move on",
-  "저장한 장면을 이 버전에서 찾지 못해 이 장의 처음부터 이어갑니다. 소지품과 관계는 그대로예요.": "Your saved scene isn't in this version, so you continue from the start of the chapter. Items and relationships are kept."
+  "저장한 장면을 이 버전에서 찾지 못해 이 장의 처음부터 이어갑니다. 소지품과 관계는 그대로예요.": "Your saved scene isn't in this version, so you continue from the start of the chapter. Items and relationships are kept.",
+  "내용 안내": "Content notice",
+  "샘플 데이터 이용 조건": "Sample data terms",
+  "Live2D 공식 샘플 데이터": "Official Live2D sample data",
+  "허구 안내": "A note on fiction",
+  "Live2D 샘플 데이터 — 렌 포스터": "Live2D sample data — Ren Poster"
 }
