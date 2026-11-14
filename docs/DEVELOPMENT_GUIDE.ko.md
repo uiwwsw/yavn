@@ -1567,6 +1567,7 @@ public/game-list/my-story/
 - `docs/YAML_STORY_TO_DSL_PROMPT.ko.md`
 - `docs/AI_GAME_WRITING_PROMPT.ko.md` (시놉시스 → 기획 → 제작 → 다듬기, AI에게 게임을 맡길 때)
 - `docs/MUWON_GAME_BIBLE.ko.md`
+- `docs/OVERFLOW_GAME_BIBLE.ko.md`
 - 추리극 분기 샘플: `public/game-list/muwon/*.yaml`
 - DSL 축약 샘플: `sample.yaml`
 
@@ -1579,6 +1580,8 @@ public/game-list/my-story/
 기존 작품의 대사마다 반복된 `camera: close/reaction`은 대화 시작의 `medium`으로 정리하고, 중요한 순간에만 명시 대상 컷을 남깁니다. `with`로 노출 인원이 바뀌면 기본 자동 구도가 적용됩니다. 예전처럼 빈자리를 유지할 장면에만 `layout: fixed`를 추가하고, 나레이션에서 확대를 풀려면 `camera: medium`을 지정합니다. 예전 전신 구도가 필요한 게임은 첫 장면에 `camera: wide`를 명시합니다. 덕만의 2026-09-09 콘텐츠 개편은 기존 scene/action 주소를 보존하고 새 조사 장면을 추가합니다. 인물 기본 배치는 `base.yaml`의 `placement: prompt-top`으로 맞춥니다. 이전 저장도 열리며, 이미 지나간 새 수집 구간은 해당 장을 다시 시작해 볼 수 있습니다. Live2D는 공통 화자·모바일 UI 개선을 자동 적용받습니다.
 
 ## 14) 문서 변경 로그
+
+- 2026-11-14: 5장 작품 「오버플로」(`public/game-list/overflow/`)를 추가했습니다. `narration` 채널 없이 대사·`record`·`system`·`message`로만 설명을 내보내는 조사극의 예시입니다. 1장은 `choice.presentation: explore`로 다섯 곳을 직접 뒤지고, 결말 4종과 복구 가능한 실패 2종이 있습니다. 음악은 `scripts/generate-overflow-score.py`로 합성한 24초 루프 5곡이며 `scripts/compress-music.mjs`로 FLAC으로 내보냅니다. 엔진 DSL은 바뀌지 않습니다.
 
 - 2026-11-14: 5장 작품 「360」(`public/game-list/360/`)을 추가했습니다. 주인공을 그리지 않는 무대, 이전 장의 선택이 다음 장의 선택 하나를 막는 구조(`branch`로 가르는 `*_try` 장면), 게임 오버 없는 결말 4종의 예시입니다. 그림은 `scripts/generate-360-art.py`, 음악은 `scripts/generate-360-score.py`가 만듭니다. 엔진 DSL은 바뀌지 않습니다.
 - 2026-11-13: 인물 몸짓 프리셋 22종(`emote` 액션, `say`·`choice`·`input`의 `motion`, 인물별 `emotionMotions`)을 추가했습니다(9-4-5). 기존 YAML·저장은 그대로 동작합니다.
