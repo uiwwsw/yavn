@@ -8,6 +8,7 @@
  */
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
+import { selectStories } from './story-catalog.mjs';
 
 const ORIGIN = 'https://yavn.vercel.app';
 const esc = (text) => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
@@ -24,7 +25,7 @@ async function readFontUrl(distDir) {
 async function readPlayableGames(distDir) {
   try {
     const { games = [] } = JSON.parse(await readFile(`${distDir}/game-list/index.json`, 'utf8'));
-    return games.filter((game) => game.path && game.name && game.id !== 'live2dtest');
+    return selectStories(games);
   } catch {
     return [];
   }
@@ -79,7 +80,7 @@ ${games.length ? `  <h2>지금 읽을 수 있는 작품</h2>
   <ul>
 ${games.map((game) => `    <li><a href="${esc(game.path)}">${esc(game.name)}${game.summary ? `<span>${esc(game.summary)}</span>` : ''}</a></li>`).join('\n')}
   </ul>` : ''}
-  <p class="en">This page no longer exists. <a href="/en/">Go to the library</a>.</p>
+  <p class="en" lang="en">This page no longer exists. <a href="/en/">Go to the library</a>.</p>
 </main>
 </body>
 </html>
