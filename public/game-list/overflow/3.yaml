@@ -390,6 +390,79 @@ scenes:
           char: 지완
           with: [동식]
           text: "…"
+      # 지완이 내놓을 수 있는 것은 1장에서 실제로 본 것뿐이다.
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_calendar, op: eq, value: true }
+          text: "달력을 봤습니다. 날짜마다 숫자가 하나씩 있더군요. 작년 십이월이 4.2, 삼월 육일이 9였습니다."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_calendar, op: eq, value: true }
+          text: "본인이 적었어요. 물어보면 늘 괜찮다고 해서, 적으라고 했습니다."
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_pills, op: eq, value: true }
+          text: "육일 약봉지가 안 뜯겨 있었습니다. 오일 건 비었고요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_pills, op: eq, value: true }
+          text: "그날부터 안 넘어갔어요. 물도요."
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_recorder, op: eq, value: true }
+          text: "녹음기도 있었습니다. 백열아홉 개 중에 하나만 들었습니다. 색연필 얘기였어요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_recorder, op: eq, value: true }
+          text: "12색요. 큰 건 무겁다고."
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_drawing, op: eq, value: true }
+          text: "하율이 그림이 벽에 붙어 있었습니다. 뒷면에 세 번만 아팠다고 써 놨더군요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_drawing, op: eq, value: true }
+          text: "그날은 세 번이었던 모양입니다. 좋은 날이었어요."
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_lunchbox, op: eq, value: true }
+          text: "반찬통 뚜껑 안쪽, 마지막 줄이 3월 7일이었습니다. 그날도 싸셨더군요."
+      - say:
+          char: 동식
+          motion: freeze
+          with: [지완]
+          when: { var: ev_lunchbox, op: eq, value: true }
+          text: "…그건 왜 봤습니까."
+      # 빈손이면 꺼낼 것이 없고, 꺼낼 것이 없으면 이 사람은 입을 열 이유가 없다.
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_found, op: eq, value: 0 }
+          text: "선생님. 저는 그 집에서 아무것도 안 봤습니다. 서류만 들고 왔어요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_found, op: eq, value: 0 }
+          text: "그럼 나한테 뭘 물으시는 겁니까."
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_found, op: eq, value: 0 }
+          text: "…그 사람 이야기를요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_found, op: gte, value: 3 }
+          text: "집에 오래 계셨네요. 다들 십 분이면 나갑디다."
       - say:
           char: 동식
           with: [지완]
@@ -428,6 +501,16 @@ scenes:
           char: 동식
           with: [지완]
           text: "압니다."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: trust, op: gte, value: 2 }
+          text: "선생님이니까 합니다. 지난번에 선생님 것부터 보여 주셨잖아요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: trust, op: eq, value: 0 }
+          text: "…이 말을 왜 선생님한테 하는지는 모르겠습니다."
       - say:
           char: 동식
           with: [지완]

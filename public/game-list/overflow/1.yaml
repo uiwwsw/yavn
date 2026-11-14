@@ -430,6 +430,7 @@ scenes:
   ev_drawing_scene:
     actions:
       - set: { ev_drawing: true }
+      - add: { ev_found: 1 }
       - say:
           channel: action
           with: []
@@ -447,6 +448,7 @@ scenes:
   ev_calendar_scene:
     actions:
       - set: { ev_calendar: true }
+      - add: { ev_found: 1 }
       - say:
           channel: record
           with: []
@@ -468,6 +470,7 @@ scenes:
   ev_pills_scene:
     actions:
       - set: { ev_pills: true }
+      - add: { ev_found: 1 }
       - get: pill_bag
       - sticker: { id: pills, image: pill_sticker, x: 78, y: 48, width: "clamp(150px, 20%, 250px)", enter: scaleIn }
       - say:
@@ -488,6 +491,7 @@ scenes:
   ev_recorder_scene:
     actions:
       - set: { ev_recorder: true }
+      - add: { ev_found: 1 }
       - get: recorder
       - sticker: { id: rec, image: recorder_sticker, x: 76, y: 50, width: "clamp(140px, 18%, 230px)", enter: fadeIn }
       - say:
@@ -529,6 +533,7 @@ scenes:
   ev_lunchbox_scene:
     actions:
       - set: { ev_lunchbox: true }
+      - add: { ev_found: 1 }
       - get: lunchbox
       - sticker: { id: box, image: lunchbox_sticker, x: 76, y: 52, width: "clamp(150px, 20%, 250px)", enter: slideUp }
       - say:
