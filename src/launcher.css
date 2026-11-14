@@ -429,12 +429,19 @@
   .launcher-art-caption > span { font-size: 12px; }
   .launcher-art-caption b { font-size: 12px; }
   .launcher-carousel-controls { min-height: 70px; padding: 10px 16px; gap: 7px; }
-  .launcher-carousel-dots button { width: 23px; flex-basis: 23px; }
+  /* Seven dashes plus the counter filled the row exactly, so the last dash ran into the
+     "01 / 07". Narrower dots leave the gap that separates the two. */
+  .launcher-carousel-dots button { width: 19px; flex-basis: 19px; }
   .launcher-carousel-pagination small { font-size: 12px; letter-spacing: .04em; }
   .launcher-library-heading { gap: 10px; }
   .launcher-library-heading h2 { font-size: 26px; }
   .launcher-library-heading .launcher-eyebrow { font-size: 12px; }
-  .launcher-library-count { max-width: 48px; }
+  /* "07 / 07 STORIES" capped at 48px broke into three stacked lines beside the heading.
+     It is a tally, so it stays on one line; lift it onto the eyebrow's row, which is the
+     only line short enough to share, and let the heading keep the full width below. */
+  .launcher-library-heading { display: block; position: relative; }
+  .launcher-library-heading .launcher-eyebrow { padding-right: 120px; }
+  .launcher-library-count { position: absolute; top: 0; right: 0; max-width: none; white-space: nowrap; }
   .workspace-grid { grid-template-columns: 1fr; gap: 30px; }
   .workspace-game-select { padding-bottom: 20px; }
   .workspace-game-cover { aspect-ratio: 16 / 10; }
