@@ -1,7 +1,72 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-13T05:08:23.673Z",
+  "generatedAt": "2026-11-14T02:40:41.098Z",
   "games": [
+    {
+      "id": "360",
+      "name": "360",
+      "path": "/game-list/360/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고, 그중 하나만 쥐고 나아간다. 다음 사람은 까닭도 모른 채 그 하나대로 산다. 1894년 제물포부터 2026년 편집실까지 다섯 삶을 잇는 5장, 결말 4종.",
+      "summaryEn": "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives from Jemulpo in 1894 to an editing room in 2026. A Korean-language story in five chapters with four endings.",
+      "thumbnail": "/game-list/360/assets/bg/title.svg",
+      "tags": [
+        "philosophical-sf",
+        "reincarnation",
+        "period-drama",
+        "mystery",
+        "complete"
+      ],
+      "tagLabels": {
+        "philosophical-sf": "철학 SF",
+        "reincarnation": "환생",
+        "period-drama": "시대극",
+        "mystery": "미스터리",
+        "complete": "완결"
+      },
+      "languages": [
+        "ko"
+      ],
+      "showcase": {
+        "label": "360 · 5 CHAPTERS",
+        "backgroundColor": "#07080b",
+        "image": {
+          "positionX": 60,
+          "positionY": 50,
+          "scale": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "legalNotices": [
+        {
+          "id": "content-warning",
+          "title": "내용 안내",
+          "text": "이 작품에는 죽음과 임종, 굶주림, 전쟁 피란과 화재, 청소년의 투병이 나옵니다. 장면은 과정이나 신체를 자세히 그리지 않습니다."
+        }
+      ],
+      "chapterCount": 5,
+      "endingCount": 4,
+      "seo": {
+        "title": "360",
+        "description": "죽은 뒤의 어둠에서 삶 전체를 기억하고, 그중 하나만 쥐고 나아간다. 1894년 제물포, 1952년 부산, 1988년 서울, 2026년 편집실. 기억 없이 이어지는 다섯 삶을 사는 5장 비주얼노벨. 결말 4종.",
+        "keywords": [
+          "환생 비주얼노벨",
+          "철학 SF",
+          "선택형 이야기",
+          "시대극",
+          "미스터리",
+          "philosophical-sf",
+          "reincarnation",
+          "period-drama",
+          "mystery",
+          "complete"
+        ],
+        "image": "/game-list/360/assets/bg/title.svg",
+        "imageAlt": "검은 바탕에 흩어진 점들이 구를 이루고, 그중 한 점만 밝게 빛나는 그림"
+      }
+    },
     {
       "id": "8bit-heart",
       "name": "8비트 심장",
@@ -317,21 +382,25 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 8비트 심장, 무원 — 한성 검안록, 튜토리얼, ERASE, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록, 튜토리얼, ERASE, Live2D 테스트: 렌 수다.",
     "keywords": [
+      "360",
       "8비트 심장",
       "무원 — 한성 검안록",
       "튜토리얼",
       "ERASE",
       "Live2D 테스트: 렌 수다",
+      "philosophical-sf",
+      "reincarnation",
+      "period-drama",
+      "mystery",
+      "complete",
       "sci-fi",
       "post-apocalypse",
       "heartwarming",
-      "complete",
       "pixel-art",
       "historical-fiction",
       "joseon",
-      "mystery",
       "investigation",
       "consequential-choices",
       "modern",
@@ -341,6 +410,11 @@
       "live2d",
       "interaction",
       "smoke-test",
+      "환생 비주얼노벨",
+      "철학 SF",
+      "선택형 이야기",
+      "시대극",
+      "미스터리",
       "SF 비주얼노벨",
       "레트로 게임기",
       "안드로이드",
@@ -350,7 +424,6 @@
       "무원록",
       "역사 비주얼노벨",
       "추리 게임",
-      "선택형 이야기",
       "SF 미스터리",
       "비주얼노벨",
       "시뮬레이션",
@@ -359,12 +432,13 @@
       "현대극"
     ],
     "gameTitles": [
+      "360",
       "8비트 심장",
       "무원 — 한성 검안록",
       "튜토리얼",
       "ERASE",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 5
+    "gameCount": 6
   }
 }

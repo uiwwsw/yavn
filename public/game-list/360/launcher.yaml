@@ -1,0 +1,28 @@
+languages: [ko]
+summary: "죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고, 그중 하나만 쥐고 나아간다. 다음 사람은 까닭도 모른 채 그 하나대로 산다. 1894년 제물포부터 2026년 편집실까지 다섯 삶을 잇는 5장, 결말 4종."
+thumbnail: "assets/bg/title.svg"
+tags:
+  - philosophical-sf
+  - reincarnation
+  - period-drama
+  - mystery
+  - complete
+tagLabels:
+  philosophical-sf: 철학 SF
+  reincarnation: 환생
+  period-drama: 시대극
+  mystery: 미스터리
+  complete: 완결
+showcase:
+  label: "360 · 5 CHAPTERS"
+  backgroundColor: "#07080b"
+  image:
+    positionX: 60
+    positionY: 50
+    scale: 1
+    offsetX: 0
+    offsetY: 0
+
+translations:
+  en:
+    summary: "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives from Jemulpo in 1894 to an editing room in 2026. A Korean-language story in five chapters with four endings."

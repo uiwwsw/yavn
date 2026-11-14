@@ -1,0 +1,289 @@
+chapterTitle: "부두"
+
+script:
+  - scene: stall
+
+scenes:
+  stall:
+    title: "좌판"
+    actions:
+      - bg: { id: busan_market, transition: fade, duration: 900 }
+      - music: market
+      - place: "1952년 십이월 · 부산 국제시장"
+      - char: { id: 순임, position: left }
+      - char: { id: 기호, position: right }
+      - say: { char: 기호, text: "럭키 스트라이크 두 보루, 스팸 열 통. 오늘은 초콜릿도 있소." }
+      - say: { char: 순임, with: [기호], text: "초콜릿은 됐어요. 애 이 썩어요." }
+      - say: { char: 기호, motion: laugh, text: "영호 주라는 게 아니라 팔라는 거요, 아주머니. 장사를 이태 하고도 그러네." }
+      - say:
+          char: 순임
+          with: [기호]
+          when: { var: v1, op: eq, value: say }
+          text: "최 통역은 웃을 때 왼쪽 눈이 먼저 감겨요. 그게 보기 좋아요."
+      - say:
+          char: 기호
+          motion: startle
+          when: { var: v1, op: eq, value: say }
+          text: "…그런 말을 물건 받다 말고 하오? 옆 좌판에서 다 듣는데."
+      - say:
+          channel: thought
+          with: []
+          when: { var: v1, op: eq, value: say }
+          text: "또 그랬다. 속에 든 말이 목까지 오면 삼켜지지가 않는다. 어려서부터 그랬다."
+      - say:
+          channel: action
+          with: []
+          when: { var: v1, op: eq, value: free }
+          text: "좌판 밑에 보따리 하나가 싸여 있다. 흥남에서 내려온 날부터 풀어 본 적이 없다."
+      - char: { id: 영호, position: center }
+      - say: { char: 영호, motion: hop, text: "엄마! 할머이 또 부두 나갔어. 아버지 온다고." }
+      - say: { char: 순임, with: [영호], text: "오늘은 배 들어오는 날이 아닌데." }
+      - say: { char: 영호, with: [순임], text: "날마다 들어온대. 할머이가 그랬어. 나 초콜릿 하나만." }
+      - say: { char: 기호, with: [영호, 순임], text: "옜다. 이건 아저씨가 주는 거다. 엄마한텐 비밀이고." }
+      - say: { char: 순임, with: [기호], text: "제 앞에서 주면서 무슨 비밀이에요." }
+      - say: { char: 기호, with: [순임], text: "그건 그렇고. 서울이 수복된 지가 언젠데 여기서 좌판을 하오. 명동에 점방 자리가 났어." }
+      - say: { char: 기호, with: [순임], text: "보증금이 삼백만 원. 도강증은 내가 부대에서 떼 오지. 아주머니 계 탄 게 삼백오십이라며." }
+      - say: { char: 기호, with: [순임], text: "같이 갑시다. 내가 물건 대고, 아주머니가 팔고." }
+      - goto: heart_choice
+
+  heart_choice:
+    actions:
+      - choice:
+          key: l2_heart
+          prompt: "기호가 좌판에 팔꿈치를 대고 웃는다. 왼쪽 눈이 먼저 감긴다."
+          char: 기호
+          with: [기호]
+          options:
+            - text: "돈 얘기만 한다. 삼백오십만 원, 영수증에 도장까지 받는다."
+              goto: heart_try
+            - text: "돈보다 먼저 묻는다. 같이 가자는 게 점방인지, 나인지."
+              goto: heart_told
+
+  heart_try:
+    actions:
+      - branch:
+          cases:
+            - when: { var: v1, op: eq, value: say }
+              goto: heart_cannot
+          default: heart_receipt
+
+  heart_cannot:
+    actions:
+      - say: { channel: action, with: [], text: "영수증, 하고 입을 뗐다. 나온 말은 그게 아니다." }
+      - goto: heart_told
+
+  heart_told:
+    actions:
+      - set: { l2_told: true }
+      - say: { char: 순임, with: [기호], text: "나는 최 통역이 좋아요. 그래서 묻는 거예요. 같이 가자는 게 점방이에요, 나예요?" }
+      - move: { id: 기호, toward: 순임, style: retreat }
+      - say: { char: 기호, with: [순임], text: "…둘 다면 안 되오?" }
+      - say: { char: 순임, with: [기호], text: "돼요. 둘 다면 돼요." }
+      - say: { channel: action, with: [], text: "전대를 풀어 건넸다. 세어 보라는 말도 하지 않았다." }
+      - move: { id: 기호, toward: 순임, style: reset }
+      - goto: shack
+
+  heart_receipt:
+    actions:
+      - say: { char: 순임, with: [기호], text: "영수증 써 주세요. 받은 날짜, 금액, 이름 석 자. 도장도요." }
+      - say: { char: 기호, with: [순임], motion: laugh, text: "아주머니 무섭네. 함흥 사람은 다 이렇소?" }
+      - sticker: { id: receipt, image: receipt_sticker, x: 50, y: 32, width: "clamp(160px, 22%, 300px)", enter: fadeIn, inputLockMs: 300 }
+      - say: { channel: record, with: [], text: "영수증. 일금 삼백오십만 원정. 단기 4285년 12월 9일. 영수인 최기호 (인)" }
+      - clearSticker: { id: receipt, leave: fadeOut }
+      - say: { char: 순임, with: [기호], text: "됐어요. 도강증은 언제 돼요?" }
+      - say: { char: 기호, with: [순임], text: "정월 안에. 믿으시오." }
+      - goto: shack
+
+  shack:
+    title: "영주동"
+    actions:
+      - bg: { id: busan_shack, transition: fade, duration: 900 }
+      - place: "그날 밤 · 영주동 판잣집"
+      - char: { id: 순임, position: left }
+      - char: { id: 시어머니, position: right }
+      - say: { char: 시어머니, text: "오늘도 안 왔다." }
+      - say: { char: 순임, with: [시어머니], text: "어머이, 날이 찬데 부두에 종일 서 계시면 어떡해요. 무릎도 안 좋으면서." }
+      - say: { char: 시어머니, text: "흥남서 배 탈 적에 내가 그랬지비. 부산 부두서 기다린다고. 자리 뜨면 못 찾는다." }
+      - say: { char: 순임, with: [시어머니], text: "영호 애비는 그 말 못 들었어요. 그때 벌써 줄이 끊겼잖아요." }
+      - say: { char: 시어머니, motion: shake, text: "들었다. 내 아들은 내 목소리 듣는다." }
+      - say: { char: 순임, with: [시어머니], text: "어머이, 저 서울에 점방 자리 알아보고 있어요. 봄에 다 같이 올라가요." }
+      - say: { char: 시어머니, text: "가라. 내는 안 간다. 영호 양말이나 기워 놓고 자라." }
+      - goto: fire
+
+  fire:
+    title: "정월 그믐"
+    actions:
+      - bg: { id: market_fire, transition: fade, duration: 700 }
+      - place: "1953년 일월 삼십일 밤 · 국제시장"
+      - effect: alarm
+      - char: { id: 순임, position: left }
+      - char: { id: 영호, position: right }
+      - say: { char: 영호, delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
+      - say: { char: 순임, with: [영호], text: "가지 마. 손 놓지 마. 물건은 됐어." }
+      - say: { channel: action, with: [], text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
+      - bg: { id: busan_shack, transition: fade, duration: 1000 }
+      - place: "사흘 뒤 · 판잣집"
+      - say:
+          char: 영호
+          when: { var: l2_told, op: eq, value: true }
+          text: "엄마, 통역 아저씨 서울 갔대. 양키시장 아줌마들이 그러는데 돈 맡긴 사람이 셋 더 있대."
+      - say:
+          char: 영호
+          when: { var: l2_told, op: eq, value: false }
+          text: "엄마, 부대 정문 아저씨가 그러는데 통역 중에 최기호라는 사람은 없대. 도장도 가짜래."
+      - say:
+          char: 순임
+          with: [영호]
+          when: { var: l2_told, op: eq, value: true }
+          text: "…왼쪽 눈이 먼저 감기는 사람이었는데."
+      - say:
+          char: 순임
+          with: [영호]
+          when: { var: l2_told, op: eq, value: false }
+          text: "…날짜, 금액, 이름 석 자. 다 받았는데."
+      - say: { char: 영호, text: "엄마, 벽보 봤어? 영등포 방직공장에서 사람 뽑는대. 기숙사도 준대." }
+      - say: { char: 순임, with: [영호], text: "네가 그걸 읽었어?" }
+      - say: { char: 영호, motion: perk, text: "'방' 자하고 '공' 자 읽었어. 나머진 옆집 형이." }
+      - goto: mother_choice_intro
+
+  mother_choice_intro:
+    actions:
+      - place: "이월 · 새벽 네 시"
+      - char: { id: 순임, position: left }
+      - char: { id: 시어머니, position: right }
+      - say: { channel: action, with: [시어머니], text: "어머이는 벽을 보고 누워 있다. 자는 숨소리가 아니다." }
+      - goto: mother_choice
+
+  mother_choice:
+    actions:
+      - choice:
+          key: l2_mother
+          prompt: "기차는 다섯 시다. 영호는 신을 신고 문간에 서 있다."
+          with: [시어머니]
+          options:
+            - text: "어머이를 일으킨다. 업고라도 같이 간다고 한다."
+              goto: mother_try
+            - text: "머리맡에 쌀 한 말 값을 놓고 나온다."
+              goto: mother_leave
+
+  mother_try:
+    actions:
+      - branch:
+          cases:
+            - when: { var: v1, op: eq, value: free }
+              goto: mother_cannot
+          default: mother_ask
+
+  mother_cannot:
+    actions:
+      - say: { channel: action, with: [시어머니], text: "어머이, 하고 불렀다. 보따리는 벌써 어깨에 있고 영호 손을 쥐고 있다." }
+      - say: { channel: thought, with: [], text: "이 보따리는 언제 다시 쌌나. 싼 기억이 없다." }
+      - goto: mother_leave
+
+  mother_ask:
+    actions:
+      - set: { l2_asked: true }
+      - say: { char: 순임, with: [시어머니], text: "어머이, 일어나요. 같이 가요. 영호 애비 오면 부두 사람들이 서울 갔다고 일러 줄 거예요." }
+      - say: { char: 시어머니, with: [순임], text: "그 사람들이 내 아들 얼굴을 아나." }
+      - say: { char: 순임, with: [시어머니], text: "제가 업을게요. 저 어머이 없으면 영호 못 키워요. 무서워요." }
+      - say: { char: 시어머니, with: [순임], motion: sigh, text: "…이거 가져가라. 내 가락지다. 팔아서 영호 학교 보내라." }
+      - say: { char: 시어머니, with: [순임], text: "가라. 기차 놓친다." }
+      - goto: train
+
+  mother_leave:
+    actions:
+      - say: { channel: action, with: [시어머니], text: "지전을 접어 베개 밑에 밀어 넣는다. 어머이는 돌아눕지 않는다." }
+      - say: { char: 시어머니, with: [순임], text: "…영호 목도리 해 줘라." }
+      - goto: train
+
+  train:
+    actions:
+      - say: { channel: action, with: [], text: "문이 등 뒤에서 닫힌다. 언덕을 내려오는 동안 영호는 한 번도 뒤를 보지 않았다." }
+      - say: { channel: card, with: [], text: "1967년 삼월\n서울 영등포" }
+      - goto: seoul
+
+  seoul:
+    title: "영등포"
+    actions:
+      - bg: { id: seoul_room, transition: fade, duration: 1000 }
+      - place: "1967년 삼월 · 영등포 셋방"
+      - char: { id: 순임, position: left }
+      - char: { id: 청년영호, position: right }
+      - say: { char: 청년영호, text: "엄마, 약 드세요. 공장 의무실 선생이 솜먼지 십사 년이면 폐가 남아나질 않는대." }
+      - say: { char: 순임, with: [청년영호], text: "너는 수업 안 가고 왜 여기 있니. 등록금이 얼만데." }
+      - say: { char: 청년영호, text: "오늘 휴강이에요. 그리고 이거. 부산 영주동 동사무소에서 답장 왔어요." }
+      - say: { channel: record, with: [청년영호], text: "회신. 귀하가 문의한 영주동 산 3번지 일대 가옥은 1953년 11월 화재로 전소됨. 문의하신 분은 이재민 명부에 없음." }
+      - say: { char: 순임, with: [청년영호], text: "…명부에 없으면, 어디 간 거니." }
+      - say: { char: 청년영호, motion: droop, text: "몰라요. 부두 노무자 사무실에도 편지 넣어 볼게요. 열네 번째지만." }
+      - say:
+          char: 순임
+          with: [청년영호]
+          when: { var: l2_asked, op: eq, value: true }
+          text: "가락지는 팔지 말 걸 그랬다. 네 중학교 입학금이 그거였어."
+      - say:
+          char: 순임
+          with: [청년영호]
+          when: { var: l2_asked, op: eq, value: false }
+          text: "그날 새벽에 어머이가 목도리 얘기를 했어. 나는 대답을 안 하고 나왔다."
+      - say: { char: 청년영호, text: "엄마, 뭐 드시고 싶은 거 없어요? 월급날이에요." }
+      - say: { char: 순임, with: [청년영호], text: "가자미식해. …서울엔 없지. 됐다. 창문이나 좀 열어라." }
+      - bg: { id: void, transition: fade, duration: 2600 }
+      - music: void
+      - goto: void_two
+
+  void_two:
+    title: "암흑"
+    actions:
+      - say: { channel: narration, text: "암흑." }
+      - say: { channel: narration, text: "기차 창밖으로 본 밤이 이랬다. 다만 여기에는 창이 없고, 선로도 없다." }
+      - say:
+          channel: narration
+          when: { var: l2_told, op: eq, value: true }
+          text: "마흔넷 해가 전부 떠오른다. 세어 보지도 않고 건넨 전대. 왼쪽 눈."
+      - say:
+          channel: narration
+          when: { var: l2_told, op: eq, value: false }
+          text: "마흔넷 해가 전부 떠오른다. 날짜, 금액, 가짜 도장."
+      - say: { channel: narration, text: "부두에 등을 보이고 선 어머이. 열네 통의 편지. 답장은 한 통." }
+      - bg: { id: void_light, transition: dissolve, duration: 2400 }
+      - goto: void_two_choice
+
+  void_two_choice:
+    actions:
+      - choice:
+          key: v2
+          prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
+          options:
+            - text: "아무도 믿지 말았어야 했다."
+              set: { v2: guard, deg_last: "076.3" }
+              goto: void_two_go
+            - text: "떠나지 말았어야 했다."
+              set: { v2: stay, deg_last: "251.0" }
+              goto: void_two_go
+            - text: "쥐지 않는다."
+              goto: void_two_stop
+
+  void_two_stop:
+    actions:
+      - choice:
+          key: v2_stop
+          prompt: "남은 것이 정말 없는가."
+          options:
+            - text: "없다. 여기 있는다."
+              goto: void_two_still
+            - text: "…하나 있다."
+              goto: void_two_choice
+
+  void_two_still:
+    actions:
+      - bg: { id: void, transition: dissolve, duration: 1800 }
+      - ending: still
+
+  void_two_go:
+    actions:
+      - place: "{{deg_last}}°"
+      - say: { channel: narration, text: "기울어진다. 빨라진다. 생각을 놓을 틈이 없다." }
+      - say: { channel: narration, text: "부두 이름이 빠져나간다. 가자미식해 맛이 빠져나간다." }
+      - effect: { name: flash, wait: true }
+      - say: { channel: card, with: [], text: "1988년 구월\n서울" }
+      - goto: /2.yaml

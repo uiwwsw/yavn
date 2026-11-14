@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>엄마</title>
+<circle cx="310" cy="210" r="62" fill="#2a221d"/>
+<circle cx="360" cy="150" r="66" fill="#2a221d"/>
+<circle cx="440" cy="150" r="66" fill="#2a221d"/>
+<circle cx="492" cy="210" r="62" fill="#2a221d"/>
+<circle cx="300" cy="290" r="52" fill="#2a221d"/>
+<circle cx="502" cy="290" r="52" fill="#2a221d"/>
+<circle cx="400" cy="130" r="60" fill="#2a221d"/>
+<rect x="356" y="348" width="88" height="110" fill="#e2c4a0"/>
+<ellipse cx="400" cy="262" rx="104" ry="124" fill="#e2c4a0"/>
+<circle cx="336" cy="176" r="44" fill="#2a221d"/>
+<circle cx="400" cy="158" r="48" fill="#2a221d"/>
+<circle cx="464" cy="176" r="44" fill="#2a221d"/>
+<path d="M340 420 C250 428 150 490 124 640 L110 1000 L690 1000 L676 640 C650 490 550 428 460 420Z" fill="#9c6a5c"/>
+<path d="M346 416 Q400 470 454 416 L446 440 Q400 500 354 440Z" fill="#b98476"/>
+<path d="M300 520 L500 520 L560 1000 L240 1000Z" fill="#2f4a44"/>
+<path d="M316 520 Q330 440 366 420 L380 428 Q350 450 340 520Z" fill="#2f4a44"/>
+<path d="M484 520 Q470 440 434 420 L420 428 Q450 450 460 520Z" fill="#2f4a44"/>
+<rect x="330" y="700" width="140" height="110" fill="#27403a"/>
+<path d="M250 640 Q300 600 340 660" fill="none" stroke="#3d6058" stroke-width="5"/>
+</svg>

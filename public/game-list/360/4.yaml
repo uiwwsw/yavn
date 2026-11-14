@@ -1,0 +1,128 @@
+chapterTitle: "360"
+
+script:
+  - scene: last_dark
+
+scenes:
+  last_dark:
+    title: "암흑"
+    actions:
+      - bg: { id: void, transition: cut }
+      - music: void
+      - say: { channel: narration, text: "암흑." }
+      - say: { channel: narration, text: "끝이 닿지 않는다. 편집실 모니터를 다 끈 밤을 천 번 이어 붙여도 모자란다." }
+      - say: { channel: narration, text: "일흔아홉 해가 전부 떠오른다." }
+      - say:
+          channel: narration
+          when: { var: l4_signed, op: eq, value: true }
+          text: "간인 찍힌 동의서. 6.8퍼센트. 여덟 살 아이한테 붙은 별명."
+      - say:
+          channel: narration
+          when: { var: l4_signed, op: eq, value: false }
+          text: "사백열두 부. 목포행 버스. 엽서 한 장."
+      - say:
+          channel: narration
+          when: { var: l4_refuted, op: eq, value: true }
+          text: "파주 거실에서 한 말. 그건 선생님이 모르시는 일이에요."
+      - say: { channel: narration, text: "김치통. 끝내 누르지 않은 전송 버튼." }
+      - say:
+          channel: narration
+          when: { var: looked_back, op: eq, value: true }
+          text: "형광펜으로 그은 줄 하나. 가다가 돌아봤다."
+      - bg: { id: void_light, transition: dissolve, duration: 2400 }
+      - goto: last_choice
+
+  last_choice:
+    actions:
+      - choice:
+          key: v4
+          prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
+          options:
+            - text: "곁에 있었어야 했다."
+              set: { v4: kin, deg_last: "223.7" }
+              goto: last_go
+            - text: "원본을 내 손에 쥐고 있었어야 했다."
+              when: { var: l4_signed, op: eq, value: true }
+              set: { v4: hold, deg_last: "041.2" }
+              goto: last_go
+            - text: "뭐라도 쥐고 있었어야 했다."
+              when: { var: l4_signed, op: eq, value: false }
+              set: { v4: hold, deg_last: "041.2" }
+              goto: last_go
+            - text: "쥐지 않는다."
+              goto: last_stop
+
+  last_stop:
+    actions:
+      - choice:
+          key: v4_stop
+          prompt: "남은 것이 정말 없는가."
+          options:
+            - text: "없다. 여기 있는다."
+              goto: last_still
+            - text: "…하나 있다."
+              goto: last_choice
+
+  last_still:
+    actions:
+      - bg: { id: void, transition: dissolve, duration: 1800 }
+      - ending: still
+
+  last_go:
+    actions:
+      - place: "{{deg_last}}°"
+      - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - say: { channel: narration, text: "편집실 층수가 빠져나간다. 보험 증권 장수가, 책 제목이 빠져나간다." }
+      - branch:
+          cases:
+            - when: { var: looked_back, op: eq, value: true }
+              goto: look_choice
+          default: last_arrive
+
+  look_choice:
+    actions:
+      - choice:
+          key: l5_look
+          prompt: "아직 남아 있는 것이 있다. 형광펜 줄. 가다가 돌아봤다."
+          options:
+            - text: "돌아본다."
+              goto: look_back
+            - text: "그대로 간다."
+              goto: last_arrive
+
+  look_back:
+    actions:
+      - effect: { name: glitch, wait: true }
+      - say: { channel: narration, text: "돌아본다. 답장 칸의 커서가 아직 깜박이고 있다." }
+      - say: { channel: narration, text: "빠져나가던 것들이 멈춘다. 편집실은 3층이었다. 엄마 김치통은 초록색이었다." }
+      - say: { channel: narration, text: "쥔 것이 하나가 아니다. 그런 채로 밝은 쪽에 닿는다." }
+      - effect: { name: flash, wait: true }
+      - ending: returner
+
+  last_arrive:
+    actions:
+      - say: { channel: narration, text: "엄마라는 말이 마지막으로 빠져나간다. 쥔 것 하나만 남는다." }
+      - effect: { name: flash, wait: true }
+      - branch:
+          cases:
+            - when:
+                all:
+                  - { var: v0, op: eq, value: hold }
+                  - { var: v4, op: eq, value: hold }
+              goto: end_circle
+            - when:
+                all:
+                  - { var: v0, op: eq, value: kin }
+                  - { var: v4, op: eq, value: kin }
+              goto: end_circle
+          default: end_onward
+
+  end_circle:
+    actions:
+      - bg: { id: window_dawn, transition: fade, duration: 1600 }
+      - ending: circle
+
+  end_onward:
+    actions:
+      - bg: { id: window_dawn, transition: fade, duration: 1600 }
+      - ending: onward

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>기호</title>
+<path d="M290 250 Q280 124 404 118 Q524 126 512 250 L500 220 Q470 150 360 164 Q310 180 290 250Z" fill="#15120f"/>
+<rect x="356" y="348" width="88" height="110" fill="#dcbd97"/>
+<ellipse cx="400" cy="262" rx="104" ry="124" fill="#dcbd97"/>
+<path d="M296 248 Q300 140 410 136 Q512 146 506 244 Q486 176 396 172 Q330 184 296 248Z" fill="#15120f"/>
+<path d="M330 168 Q400 140 480 170" fill="none" stroke="#4b4640" stroke-width="3"/>
+<path d="M340 420 C250 428 132 490 106 640 L92 1000 L708 1000 L694 640 C668 490 550 428 460 420Z" fill="#5b6140"/>
+<path d="M330 414 L250 470 L330 560 L400 470Z" fill="#6b7250"/>
+<path d="M470 414 L550 470 L470 560 L400 470Z" fill="#6b7250"/>
+<path d="M352 420 Q400 470 448 420 L440 520 Q400 560 360 520Z" fill="#b9482f"/>
+<rect x="394" y="540" width="12" height="460" fill="#4c5236"/>
+<rect x="220" y="700" width="110" height="120" fill="#515737"/>
+<path d="M220 700 L330 700 L330 734 L275 750 L220 734Z" fill="#6b7250"/>
+<circle cx="275" cy="730" r="7" fill="#9a9d78"/>
+<rect x="470" y="700" width="110" height="120" fill="#515737"/>
+<path d="M470 700 L580 700 L580 734 L525 750 L470 734Z" fill="#6b7250"/>
+<circle cx="525" cy="730" r="7" fill="#9a9d78"/>
+<rect x="238" y="688" width="60" height="16" fill="#e9e2cf"/>
+</svg>
