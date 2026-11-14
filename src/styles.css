@@ -4257,12 +4257,21 @@ textarea,
      an actor's slot is slot x visible fraction / ratio. A centred solo actor still gets the
      whole stage, since its slot is the full width. */
   .char-layer .char {
+    /* Twice the distance to the nearest edge is the right slot for one actor and for a pair,
+       but it hands a trio's centre actor the whole stage, where it covered the two beside it.
+       A share of the stage per head bounds that without needing to know the neighbours. */
+    --char-actor-slot: min(
+      calc(2 * min(var(--char-anchor-x), 100cqw - var(--char-anchor-x))),
+      calc(100cqw / var(--char-cast-size, 1))
+    );
     --char-actor-width-budget: calc(
-      2 * min(var(--char-anchor-x), 100cqw - var(--char-anchor-x))
+      var(--char-actor-slot)
       * var(--character-visible-fraction, 1) / var(--character-source-ratio, 1)
       / var(--stage-camera-render-scale, 1)
     );
   }
+  .char-layer.char-layout-duo .char { --char-cast-size: 2; }
+  .char-layer.char-layout-trio .char { --char-cast-size: 3; }
   .char-layer .char-image { --char-image-height: min(52cqh, var(--char-actor-width-budget)); }
   .char-layer-prompt-top .char-image {
     --char-image-height: min(var(--prompt-character-stage-height), var(--char-actor-width-budget));

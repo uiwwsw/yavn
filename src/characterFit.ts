@@ -24,8 +24,17 @@ export function drawnActorWidth({
  * The slice of screen an actor may fill: twice the distance from its anchor to the nearest
  * edge, so a pair divides the screen between them and a centred solo actor keeps all of it.
  */
-export function actorSlotWidth({ anchorX, stageWidth }: { anchorX: number; stageWidth: number }): number {
-  return 2 * Math.min(anchorX, stageWidth - anchorX);
+export function actorSlotWidth({
+  anchorX,
+  stageWidth,
+  castSize = 1,
+}: {
+  anchorX: number;
+  stageWidth: number;
+  /** How many actors share the stage; the centre of a trio must not be handed all of it. */
+  castSize?: number;
+}): number {
+  return Math.min(2 * Math.min(anchorX, stageWidth - anchorX), stageWidth / castSize);
 }
 
 /**
@@ -40,6 +49,7 @@ export function resolveActorHeight({
   sourceRatio,
   visibleFraction,
   cameraScale = 1,
+  castSize = 1,
 }: {
   stageHeight: number;
   anchorX: number;
@@ -48,7 +58,8 @@ export function resolveActorHeight({
   visibleFraction: number;
   /** The shot's zoom. Actors are laid out in stage space and the camera scales the result. */
   cameraScale?: number;
+  castSize?: number;
 }): number {
-  const slot = actorSlotWidth({ anchorX, stageWidth });
+  const slot = actorSlotWidth({ anchorX, stageWidth, castSize });
   return Math.min(stageHeight, (slot * visibleFraction) / sourceRatio / cameraScale);
 }

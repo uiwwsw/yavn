@@ -317,8 +317,12 @@ describe('phone framing keeps whole actors on screen', () => {
     // Capping the wrapper's max-width did nothing: the portrait is absolutely positioned with
     // max-width: none and is zoomed again by the crop transform, so it overflowed anyway.
     expect(styles).toMatch(
-      /@media \(max-width: 768px\)[\s\S]*?--char-actor-width-budget: calc\(\s*2 \* min\(var\(--char-anchor-x\), 100cqw - var\(--char-anchor-x\)\)\s*\* var\(--character-visible-fraction, 1\) \/ var\(--character-source-ratio, 1\)\s*\/ var\(--stage-camera-render-scale, 1\)\s*\);/,
+      /@media \(max-width: 768px\)[\s\S]*?--char-actor-slot: min\(\s*calc\(2 \* min\(var\(--char-anchor-x\), 100cqw - var\(--char-anchor-x\)\)\),\s*calc\(100cqw \/ var\(--char-cast-size, 1\)\)\s*\);/,
     );
+    expect(styles).toMatch(
+      /--char-actor-width-budget: calc\(\s*var\(--char-actor-slot\)\s*\* var\(--character-visible-fraction, 1\) \/ var\(--character-source-ratio, 1\)\s*\/ var\(--stage-camera-render-scale, 1\)\s*\);/,
+    );
+    expect(styles).toContain('.char-layer.char-layout-trio .char { --char-cast-size: 3; }');
     // Both placements, because a game that never sets `placement` still lays out at the bottom.
     expect(styles).toContain('--char-image-height: min(52cqh, var(--char-actor-width-budget));');
     expect(styles).toMatch(
@@ -332,14 +336,13 @@ describe('phone framing keeps whole actors on screen', () => {
     // a duo anchored a quarter in from each edge. The left actor used to be drawn from -235 to
     // 313 and vanished behind the right one.
     const stageWidth = 375;
-    // 1.58 is the medium shot a two-hander plays at: actors lay out in stage space and the
-    // camera scales the result, so a budget that ignores it overflows by exactly that factor.
-    const art = { sourceRatio: 0.8, visibleFraction: 0.7, cameraScale: 1.58 };
+    // With company on stage a phone no longer zooms, so the shot scale is 1 here.
+    const art = { sourceRatio: 0.8, visibleFraction: 0.7, cameraScale: 1 };
     const stageHeight = 488;
 
     const spans = [0.25, 0.75].map((fraction) => {
       const anchorX = stageWidth * fraction;
-      const height = resolveActorHeight({ stageHeight, anchorX, stageWidth, ...art });
+      const height = resolveActorHeight({ stageHeight, anchorX, stageWidth, castSize: 2, ...art });
       const width = drawnActorWidth({ height, ...art });
       return { left: anchorX - width / 2, right: anchorX + width / 2 };
     });
@@ -347,6 +350,21 @@ describe('phone framing keeps whole actors on screen', () => {
     expect(spans[0].left).toBeGreaterThanOrEqual(0);
     expect(spans[1].right).toBeLessThanOrEqual(stageWidth);
     expect(spans[0].right).toBeLessThanOrEqual(spans[1].left);
+  });
+
+  it('does not hand a trio centre the whole stage', () => {
+    // Twice the distance to the nearest edge is the full width for a centred anchor, so the
+    // middle of three used to be drawn across both of the others and hide them.
+    const art = { sourceRatio: 0.8, visibleFraction: 0.7, cameraScale: 1 };
+    const centre = resolveActorHeight({
+      stageHeight: 488, anchorX: 187.5, stageWidth: 375, castSize: 3, ...art,
+    });
+    const outer = resolveActorHeight({
+      stageHeight: 488, anchorX: 93.75, stageWidth: 375, castSize: 3, ...art,
+    });
+
+    expect(drawnActorWidth({ height: centre, ...art })).toBeCloseTo(125, 5);
+    expect(centre).toBe(outer);
   });
 
   it('gives a centred solo actor the whole width rather than the whole height', () => {
