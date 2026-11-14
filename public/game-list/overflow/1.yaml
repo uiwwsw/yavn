@@ -13,7 +13,7 @@ scenes:
     title: "장위동"
     actions:
       - bg: { id: dongsik_house, transition: fade, duration: 700 }
-      - place: "2033년 3월 21일 화요일 오전 9시 20분 · 장위동"
+      - place: "2033년 3월 21일 월요일 오전 9시 20분 · 장위동"
       - music: lowscore
       - char: { id: 동식, position: right }
       - char: { id: 지완, position: left }

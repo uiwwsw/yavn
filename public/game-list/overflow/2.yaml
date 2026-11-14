@@ -14,7 +14,7 @@ scenes:
     title: "의뢰인"
     actions:
       - bg: { id: office, transition: fade, duration: 600 }
-      - place: "2033년 3월 22일 수요일 오전 10시 · 사무소"
+      - place: "2033년 3월 22일 화요일 오전 10시 · 사무소"
       - music: quant
       - char: { id: 도겸, position: right }
       - char: { id: 지완, position: left }

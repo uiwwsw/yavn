@@ -13,7 +13,7 @@ scenes:
     title: "성일빌딩 2층"
     actions:
       - bg: { id: office, transition: cut }
-      - place: "2033년 3월 20일 월요일 · 상계동"
+      - place: "2033년 3월 20일 일요일 · 상계동"
       - music: quant
       - say:
           channel: system
