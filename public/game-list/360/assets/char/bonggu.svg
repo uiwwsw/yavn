@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>봉구</title>
+<ellipse cx="400" cy="118" rx="34" ry="46" fill="#1d1815"/>
+<rect x="384" y="150" width="32" height="30" fill="#1d1815"/>
+<rect x="356" y="348" width="88" height="110" fill="#d9b78f"/>
+<ellipse cx="400" cy="262" rx="104" ry="124" fill="#d9b78f"/>
+<path d="M296 240 Q300 150 400 142 Q500 150 504 240 Q400 200 296 240Z" fill="#1d1815"/>
+<path d="M294 232 Q400 196 506 232 L506 258 Q400 224 294 258Z" fill="#35302b"/>
+<path d="M340 420 C250 428 138 490 112 640 L98 1000 L702 1000 L688 640 C662 490 550 428 460 420Z" fill="#dcd7c8"/>
+<path d="M334 416 L394 570 L430 570 L466 416 L444 410 L408 524 L356 410Z" fill="#f3efe2"/>
+<path d="M356 410 L408 524 L444 410 L408 460Z" fill="#d9b78f"/>
+<path d="M250 470 Q230 700 236 1000 L330 1000 Q322 720 350 452Z" fill="#4a5360"/>
+<path d="M550 470 Q570 700 564 1000 L470 1000 Q478 720 450 452Z" fill="#4a5360"/>
+<path d="M120 700 L300 664 L330 900 L150 936Z" fill="#6a4a2c"/>
+<path d="M138 716 L286 686 L290 706 L142 736Z" fill="#e6dcc0"/>
+</svg>

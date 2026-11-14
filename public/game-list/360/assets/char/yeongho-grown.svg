@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>영호</title>
+<path d="M292 250 Q286 130 410 126 Q520 134 510 250 Q470 180 380 176 Q330 190 292 250Z" fill="#1b1917"/>
+<rect x="356" y="348" width="88" height="110" fill="#e0c19a"/>
+<ellipse cx="400" cy="262" rx="98" ry="120" fill="#e0c19a"/>
+<path d="M300 246 Q310 150 420 150 Q506 160 502 240 Q450 190 372 196 Q330 206 300 246Z" fill="#1b1917"/>
+<path d="M340 420 C250 428 164 490 138 640 L124 1000 L676 1000 L662 640 C636 490 550 428 460 420Z" fill="#2f3b4a"/>
+<path d="M340 420 L400 520 L460 420 L440 412 L400 470 L360 412Z" fill="#f1eee4"/>
+<path d="M352 416 L400 500 L448 416" fill="none" stroke="#d9d4c5" stroke-width="3"/>
+<rect x="250" y="660" width="110" height="150" fill="#26303d"/>
+<path d="M262 640 L350 630 L356 672 L268 682Z" fill="#f1ead8"/>
+</svg>

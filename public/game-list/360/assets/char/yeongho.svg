@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>영호</title>
+<ellipse cx="400" cy="430" rx="122" ry="134" fill="#2a2420"/>
+<rect x="356" y="538" width="88" height="110" fill="#e0c19a"/>
+<ellipse cx="400" cy="452" rx="116" ry="126" fill="#e0c19a"/>
+<path d="M286 430 Q292 330 400 322 Q508 330 514 430 Q460 372 400 366 Q340 372 286 430Z" fill="#2a2420"/>
+<path d="M340 636 C250 644 150 696 124 846 L110 1000 L690 1000 L676 846 C650 696 550 644 460 636Z" fill="#5d6444"/>
+<path d="M330 632 L400 740 L470 632 L500 660 L400 800 L300 660Z" fill="#4a5036"/>
+<rect x="392" y="760" width="16" height="240" fill="#4a5036"/>
+<circle cx="400" cy="800" r="9" fill="#8d8f6a"/>
+<circle cx="400" cy="880" r="9" fill="#8d8f6a"/>
+<circle cx="400" cy="960" r="9" fill="#8d8f6a"/>
+<rect x="190" y="860" width="120" height="34" fill="#737a55"/>
+<rect x="490" y="860" width="120" height="34" fill="#737a55"/>
+</svg>

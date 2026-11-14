@@ -1,0 +1,256 @@
+chapterTitle: "6인실"
+
+script:
+  - scene: opening_day
+
+scenes:
+  opening_day:
+    title: "굴렁쇠"
+    actions:
+      - bg: { id: ward, transition: fade, duration: 900 }
+      - music: ward
+      - place: "1988년 구월 십칠일 · 혜화동 대학병원 6인실"
+      - char: { id: 민재, position: left }
+      - char: { id: 수경, position: right }
+      - say: { char: 수경, motion: lean_in, text: "야, 굴렁쇠다. 쟤 봐. 혼자 저 넓은 데를 굴리고 간다." }
+      - say: { char: 민재, with: [수경], text: "누나, 소리 좀 줄여요. 옆에 할아버지 주무세요." }
+      - say: { char: 수경, text: "할아버지 보청기 뺐어. 내가 봤어. 너 몇 살이라 그랬지?" }
+      - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
+      - say: { char: 수경, text: "난 스물하나. 미대 2학년 하다 말았어. 두 번째 입원. 넌 처음이지? 티 나." }
+      - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
+      - say: { char: 수경, motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져. 내가 줄넘기도 해 봤어." }
+      - say:
+          channel: thought
+          with: []
+          when: { var: v2, op: eq, value: guard }
+          text: "이 누나는 왜 나한테 잘해 주지. 뭘 바라는 건지 먼저 알아야 한다. 늘 그게 먼저다."
+      - say:
+          channel: action
+          with: []
+          when: { var: v2, op: eq, value: stay }
+          text: "침대 난간에 엄마 목도리가 묶여 있다. 내가 묶었다. 엄마가 꼭 다시 오라고."
+      - say: { char: 수경, text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃을 쏜대. 한강에서 보면 다 보인다더라." }
+      - say: { char: 민재, with: [수경], text: "여기서 한강이 어떻게 보여요." }
+      - say: { char: 수경, text: "안 보이지. 그러니까 가야지." }
+      - goto: mom_visit
+
+  mom_visit:
+    title: "수치"
+    actions:
+      - place: "구월 이십육일 · 아침 여섯 시"
+      - char: { id: 민재, position: left }
+      - char: { id: 엄마, position: right }
+      - say: { char: 엄마, with: [민재], text: "민재야, 갈치 조렸다. 가시 다 발랐어. 선생님 회진 도셨니?" }
+      - say: { char: 민재, with: [엄마], text: "아까요. 엄마 가게는." }
+      - say: { char: 엄마, with: [민재], text: "경매 끝나고 바로 왔지. 열 시에 열면 돼. 선생님이 뭐라셔?" }
+      - say: { channel: record, with: [엄마], text: "혈액검사 9월 25일. 백혈구 수치 재상승. 2차 항암 일정 조정 요함." }
+      - goto: open_choice
+
+  open_choice:
+    actions:
+      - choice:
+          key: l3_open
+          prompt: "엄마 손에서 비린내가 난다. 앞치마도 못 벗고 왔다."
+          char: 엄마
+          with: [엄마]
+          options:
+            - text: "\"엄마, 나 무서워.\""
+              goto: open_try
+            - text: "\"괜찮대요. 가게 가 보세요.\""
+              goto: open_fine
+
+  open_try:
+    actions:
+      - branch:
+          cases:
+            - when: { var: v2, op: eq, value: guard }
+              goto: open_cannot
+          default: open_said
+
+  open_cannot:
+    actions:
+      - say: { channel: action, with: [엄마], text: "무, 까지 나왔다. 입이 닫힌다." }
+      - say: { channel: thought, with: [], text: "엄마 얼굴을 살피고 있다. 이 말을 줘도 되는 사람인지. 엄마한테까지 이런다." }
+      - goto: open_fine
+
+  open_fine:
+    actions:
+      - say: { char: 민재, with: [엄마], text: "괜찮대요. 수치가 좀 왔다 갔다 한대요. 가게 가 보세요." }
+      - say: { char: 엄마, with: [민재], motion: nod, text: "그래? 그럼 다행이고. 갈치 식기 전에 먹어. 내일은 고등어 가져올게." }
+      - say: { channel: action, with: [], text: "엄마가 문 앞에서 한 번 돌아본다. 나는 숟가락을 든다." }
+      - goto: closing_night
+
+  open_said:
+    actions:
+      - set: { l3_said: true }
+      - say: { char: 민재, with: [엄마], text: "엄마, 나 무서워. 수치가 다시 올랐대." }
+      - move: { id: 엄마, toward: 민재, style: approach }
+      - say: { char: 엄마, with: [민재], text: "…그래. 무섭지. 엄마도 어제 선생님 방에서 듣고 계단에서 한참 앉아 있었어." }
+      - say: { char: 민재, with: [엄마], text: "가게는요." }
+      - say: { char: 엄마, with: [민재], text: "옆집 건어물 아줌마가 봐 준댔어. 오늘은 여기 있을게. 갈치 먹어. 가시 다 발랐어." }
+      - move: { id: 엄마, toward: 민재, style: reset }
+      - goto: closing_night
+
+  closing_night:
+    title: "폐막식"
+    actions:
+      - place: "시월 이일 · 밤 열 시 이십 분"
+      - char: { id: 민재, position: left }
+      - char: { id: 수경, position: right }
+      - say: { char: 수경, delivery: whisper, text: "간호사 교대가 열 시 반이야. 십 분이면 정문이고. 택시비는 내가 있어." }
+      - say: { char: 민재, with: [수경], delivery: whisper, text: "들키면요." }
+      - say: { char: 수경, delivery: whisper, text: "들키면 혼나지. 그게 다야. 여기서 혼나는 것보다 무서운 걸 우리가 얼마나 많이 했는데." }
+      - goto: out_choice
+
+  out_choice:
+    actions:
+      - choice:
+          key: l3_out
+          prompt: "수경 누나가 환자복 위에 잠바를 걸친다. 내 잠바도 들고 있다."
+          char: 수경
+          with: [수경]
+          options:
+            - text: "잠바를 받는다."
+              goto: out_try
+            - text: "\"누나 혼자 가요. 엄마가 여섯 시에 와요.\""
+              goto: out_stay
+
+  out_try:
+    actions:
+      - branch:
+          cases:
+            - when: { var: v2, op: eq, value: stay }
+              goto: out_cannot
+          default: out_go
+
+  out_cannot:
+    actions:
+      - say: { channel: action, with: [수경], text: "손을 뻗었다. 손은 침대 난간을 잡고 있다. 목도리 묶인 자리다." }
+      - say: { channel: thought, with: [], text: "아침에 엄마가 왔는데 침대가 비어 있으면. 그 생각에서 한 발도 못 나간다." }
+      - goto: out_stay
+
+  out_stay:
+    actions:
+      - say: { char: 민재, with: [수경], text: "누나 혼자 가요. 엄마가 여섯 시에 오는데, 내가 없으면 안 돼요." }
+      - say: { char: 수경, with: [민재], text: "알았어. 사진 찍어 올게. …아, 카메라 없다. 그려 올게." }
+      - say: { channel: action, with: [], text: "새벽 세 시에 슬리퍼 소리가 돌아왔다. 누나한테서 강바람 냄새가 났다." }
+      - sticker: { id: sketch, image: sketch_sticker, x: 50, y: 32, width: "clamp(160px, 22%, 300px)", enter: fadeIn, inputLockMs: 300 }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "약봉지밖에 종이가 없더라. 이게 제일 큰 거. 이건 다리. 이 점이 나." }
+      - clearSticker: { id: sketch, leave: fadeOut }
+      - say: { char: 민재, with: [수경], delivery: whisper, text: "점이네요, 진짜." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "멀리서 보면 다 점이야. 너도 왔으면 점 두 개였을 텐데." }
+      - goto: october
+
+  out_go:
+    actions:
+      - set: { l3_went: true }
+      - bg: { id: hangang_night, transition: fade, duration: 1000 }
+      - place: "밤 열한 시 · 동호대교 아래 둔치"
+      - char: { id: 민재, position: left }
+      - char: { id: 수경, position: right }
+      - effect: flash
+      - say: { char: 수경, motion: hop, text: "터졌다! 봐, 봐, 저 초록색. 저게 다 세금이야." }
+      - say: { char: 민재, with: [수경], text: "누나 뛰지 마요. 링거 자국 터져요." }
+      - say: { char: 수경, text: "넌 불꽃을 안 보고 사람들을 보네. 아까부터." }
+      - say: { char: 민재, with: [수경], text: "…누가 신고할까 봐요. 환자복 바지잖아요." }
+      - say: { char: 수경, motion: laugh, text: "아무도 안 봐. 다 위를 보잖아. 오늘은 위만 봐도 되는 날이야." }
+      - say: { char: 수경, text: "나 퇴원하면 저 다리 걸어서 건널 거야. 이쪽 끝에서 저쪽 끝까지." }
+      - say: { char: 민재, with: [수경], text: "그게 소원이에요?" }
+      - say: { char: 수경, text: "소원은 아껴야지. 그건 계획이야." }
+      - bg: { id: ward, transition: fade, duration: 1000 }
+      - goto: october
+
+  october:
+    title: "빈 침대"
+    actions:
+      - place: "시월 이십일일 · 6인실"
+      - char: { id: 민재, position: left }
+      - char: { id: 엄마, position: right }
+      - say: { char: 민재, with: [엄마], text: "엄마, 수경 누나 침대 시트 왜 걷었어요. 무균실 갔다가 온다 그랬는데." }
+      - say: { char: 엄마, with: [민재], motion: droop, text: "…어제 새벽에. 수경이 어머니가 네 거라고 이걸 주고 가셨어." }
+      - say:
+          channel: action
+          with: [엄마]
+          when: { var: l3_went, op: eq, value: true }
+          text: "약봉지다. 뒷면에 다리가 그려져 있고, 그 위에 점이 두 개 찍혀 있다."
+      - say:
+          channel: action
+          with: [엄마]
+          when: { var: l3_went, op: eq, value: false }
+          text: "약봉지 묶음이다. 불꽃 그림 뒤로 열 장쯤, 전부 이 병실 창밖이다."
+      - move: { id: 엄마, toward: 민재, style: reset }
+      - place: "십일월 이십구일"
+      - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
+      - say: { char: 민재, with: [엄마], text: "떡볶이. 대학로에 누나가 맨날 말하던 집." }
+      - say: { char: 엄마, with: [민재], text: "나으면 가자. 엄마가 사 줄게. 순대도." }
+      - say:
+          char: 민재
+          with: [엄마]
+          when: { var: l3_said, op: eq, value: true }
+          text: "엄마, 나 아직 무서워. 근데 엄마 있으니까 좀 덜해."
+      - say:
+          char: 민재
+          with: [엄마]
+          when: { var: l3_said, op: eq, value: false }
+          text: "…네. 엄마 가게 늦겠다."
+      - bg: { id: void, transition: fade, duration: 2600 }
+      - music: void
+      - goto: void_three
+
+  void_three:
+    title: "암흑"
+    actions:
+      - say: { channel: narration, text: "암흑." }
+      - say: { channel: narration, text: "병실 불을 끈 밤보다 훨씬 넓다. 복도 불빛도, 기계 소리도 없다." }
+      - say: { channel: narration, text: "열일곱 해가 전부 떠오른다. 금방 끝난다." }
+      - say: { channel: narration, text: "갈치 가시. 천장 얼룩. 굴렁쇠. 가 본 데가 몇 군데 없다." }
+      - say:
+          channel: narration
+          when: { var: l3_went, op: eq, value: true }
+          text: "초록색 불꽃. 그날 밤 나는 위를 몇 번 못 봤다."
+      - say:
+          channel: narration
+          when: { var: l3_went, op: eq, value: false }
+          text: "약봉지에 찍힌 점 하나. 두 개가 될 수 있었다."
+      - bg: { id: void_light, transition: dissolve, duration: 2400 }
+      - goto: void_three_choice
+
+  void_three_choice:
+    actions:
+      - choice:
+          key: v3
+          prompt: "한쪽이 덜 어둡다. 쥘 것이 몇 개 없다."
+          options:
+            - text: "더 살고 싶었다."
+              set: { v3: live, deg_last: "164.8" }
+              goto: void_three_go
+            - text: "한 번은 해 볼걸."
+              set: { v3: dare, deg_last: "339.4" }
+              goto: void_three_go
+            - text: "쥐지 않는다."
+              goto: void_three_stop
+
+  void_three_stop:
+    actions:
+      - choice:
+          key: v3_stop
+          prompt: "남은 것이 정말 없는가."
+          options:
+            - text: "없다. 여기 있는다."
+              goto: void_three_still
+            - text: "…하나 있다."
+              goto: void_three_choice
+
+  void_three_still:
+    actions:
+      - bg: { id: void, transition: dissolve, duration: 1800 }
+      - ending: still
+
+  void_three_go:
+    actions:
+      - place: "{{deg_last}}°"
+      - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - say: { channel: narration, text: "병원 이름이 빠져나간다. 누나 이름이 빠져나간다. 엄마 손 냄새가 마지막이다." }
+      - effect: { name: flash, wait: true }
+      - say: { channel: card, with: [], text: "2026년 삼월\n서울" }
+      - goto: /3.yaml

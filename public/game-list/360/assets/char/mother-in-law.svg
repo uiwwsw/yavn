@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>시어머니</title>
+<ellipse cx="400" cy="392" rx="70" ry="46" fill="#9c9a95"/>
+<rect x="356" y="386" width="88" height="110" fill="#d8bd9b"/>
+<ellipse cx="400" cy="300" rx="98" ry="116" fill="#d8bd9b"/>
+<path d="M304 290 Q306 196 400 186 Q494 196 496 290 Q460 232 400 214 Q340 232 304 290Z" fill="#9c9a95"/>
+<line x1="400" y1="188" x2="400" y2="224" stroke="#d8bd9b" stroke-width="3" stroke-linecap="round"/>
+<path d="M340 452 C250 460 186 542 160 692 L146 1000 L654 1000 L640 692 C614 542 550 460 460 452Z" fill="#3d4046"/>
+<path d="M334 448 L394 602 L430 602 L466 448 L444 442 L408 556 L356 442Z" fill="#e9e4d6"/>
+<path d="M356 442 L408 556 L444 442 L408 492Z" fill="#d8bd9b"/>
+<path d="M330 470 Q170 520 110 760 L130 1000 L330 1000 Q300 720 380 520Z" fill="#6a5a52"/>
+<path d="M470 470 Q630 520 690 760 L670 1000 L470 1000 Q500 720 420 520Z" fill="#6a5a52"/>
+<line x1="150" y1="640" x2="320" y2="620" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="650" y1="640" x2="480" y2="620" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="156" y1="680" x2="317" y2="660" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="644" y1="680" x2="483" y2="660" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="162" y1="720" x2="314" y2="700" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="638" y1="720" x2="486" y2="700" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="168" y1="760" x2="311" y2="740" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="632" y1="760" x2="489" y2="740" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="174" y1="800" x2="308" y2="780" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="626" y1="800" x2="492" y2="780" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="180" y1="840" x2="305" y2="820" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="620" y1="840" x2="495" y2="820" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="186" y1="880" x2="302" y2="860" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="614" y1="880" x2="498" y2="860" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="192" y1="920" x2="299" y2="900" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="608" y1="920" x2="501" y2="900" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="198" y1="960" x2="296" y2="940" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+<line x1="602" y1="960" x2="504" y2="940" stroke="#584a43" stroke-width="3" stroke-linecap="round"/>
+</svg>
