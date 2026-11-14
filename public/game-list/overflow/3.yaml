@@ -12,7 +12,7 @@ scenes:
     title: "119개"
     actions:
       - bg: { id: office_night, transition: cut }
-      - place: "2033년 3월 23일 목요일 새벽 4시 10분 · 사무소"
+      - place: "2033년 3월 23일 수요일 새벽 4시 10분 · 사무소"
       - music: lowscore
       - sticker: { id: rec, image: recorder_sticker, x: 80, y: 46, width: "clamp(130px, 17%, 210px)", enter: fadeIn }
       - say:
@@ -523,7 +523,7 @@ scenes:
     title: "원본"
     actions:
       - bg: { id: cafe, transition: fade, duration: 700 }
-      - place: "2033년 3월 24일 금요일 오후 7시 · 가산디지털단지"
+      - place: "2033년 3월 24일 목요일 오후 7시 · 가산디지털단지"
       - music: standard
       - char: { id: 수경, position: right }
       - char: { id: 지완, position: left }

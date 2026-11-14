@@ -11,7 +11,7 @@ scenes:
     title: "월요일"
     actions:
       - bg: { id: office, transition: fade, duration: 700 }
-      - place: "2033년 3월 27일 월요일 오전 9시 · 사무소"
+      - place: "2033년 3월 28일 월요일 오전 9시 · 사무소"
       - music: quant
       - char: { id: 도겸, position: right }
       - char: { id: 지완, position: left }
@@ -141,7 +141,7 @@ scenes:
           char: 기태
           when: { var: told_gitae, op: eq, value: true }
           with: []
-          text: "지완아 어제 서류 올렸어 부장이 세 번 물어봤다"
+          text: "지완아 금요일에 서류 올렸어 부장이 세 번 물어봤다"
       - say:
           channel: message
           side: them
@@ -388,7 +388,7 @@ scenes:
     title: "카페"
     actions:
       - bg: { id: cafe, transition: dissolve, duration: 800 }
-      - place: "2033년 3월 29일 수요일 오후 2시 · 상계동"
+      - place: "2033년 3월 29일 화요일 오후 2시 · 상계동"
       - music: lowscore
       - char: { id: 세라, position: right }
       - char: { id: 지완, position: left }
