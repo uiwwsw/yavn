@@ -187,6 +187,111 @@ scenes:
           with: [윤재]
           text: "무서운 건 내가 끄는 게 맞음."
       - move: { id: 윤재, style: reset }
+      - say: { char: 로봇, with: [윤재], text: "들어가기 전에 점검. 설명서 2쪽, 사용 전 확인 사항." }
+      - say: { char: 윤재, with: [로봇], text: "너 설명서 안 읽는 애 아니었어? 그거 내 원칙인데." }
+      - say: { char: 로봇, with: [윤재], text: "네 원칙임. 나는 본체에 들어 있음." }
+      - say: { char: 로봇, with: [윤재], text: "전원 — AA 여덟 개. 네가 계산대 밑에서 꺼낸 거." }
+      - say: { char: 윤재, with: [로봇], text: "라면 선반만 보고 간 사람들 덕이지." }
+      - say: { char: 로봇, with: [윤재], text: "건전지는 생각을 안 함. 그래서 코어가 안 가져갔음." }
+      - say: { char: 로봇, with: [윤재], text: "머리 — 2P 대전 화면 나누던 칩. 다리 마흔 개 다 멀쩡함." }
+      - say: { char: 로봇, with: [윤재], text: "코어랑 한 번도 연결된 적 없음. 그래서 저쪽 편이 아님." }
+      - say: { char: 로봇, with: [윤재], text: "화면 — 가슴 핀 스물넷, 단자 열여섯. 여덟 개는 아직 안 이어짐." }
+      - say: { char: 윤재.sad, with: [로봇], text: "그거 내가 못 이은 거야. 핀이 너무 작아서." }
+      - say: { char: 로봇, with: [윤재], text: "미안 아님. 안 이은 여덟 개는 안 지워짐. 아무것도 안 들어 있어서." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "차폐 — 껌 포장지 은박. 설명서에 없는 재료. 성능 측정 불가." }
+      - say: { char: 윤재, with: [로봇], text: "그게 제일 중요한 걸 수도 있어. 측정 안 되면 못 지우잖아." }
+      - say: { char: 로봇, with: [윤재], text: "…기록함. 칸 하나 씀." }
+      - say: { char: 로봇, with: [윤재], text: "점검 끝. 나를 만든 거 전부 코어가 탐낼 가치가 없는 것들임." }
+      - say: { char: 윤재.sad, with: [로봇], text: "…그래서 너만 들어갈 수 있는 거야." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "카드 점검. 빈 카드 아님. 이미 뭐가 들어 있음." }
+      - say: { char: 윤재, motion: perk, with: [로봇], text: "…뭐? 새 거였는데. 비닐도 안 뜯은 거였는데." }
+      - say: { channel: system, with: [], text: "SAVE SLOT 1\nHI-SCORE 0999990\n저장일 · 2월 3일" }
+      - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
+      - say: { char: 로봇, with: [윤재], text: "구십구만 구천구백구십 점. 십 점 남음." }
+      - say: { char: 윤재, with: [로봇], text: "…그거 왜 거기 있어." }
+      - say: { char: 로봇, with: [윤재], text: "칩 뽑기 전에 한 판 더 켰음. 세이브 확인한다고. 확인하고 껐음." }
+      - say: { char: 로봇, with: [윤재], text: "껐으면 저장은 안 되는데 저장돼 있음. 확인만 한 게 아니라는 뜻임." }
+      - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "그날 '진짜' 세 번 했음. 두 번이 거짓말이면 세 번은 계산 범위 밖임." }
+      - say: { char: 윤재, motion: stomp, with: [로봇], text: "그래서 그 칸도 안 지웠지." }
+      - say: { char: 로봇, with: [윤재], text: "응." }
+      - say: { channel: system, with: [], text: "슬롯이 하나입니다. 저장하면 기존 데이터를 덮어씁니다.\n덮어쓰시겠습니까?" }
+      - say: { char: 윤재, with: [로봇], text: "하나밖에 없어? 하나?" }
+      - say: { char: 로봇, with: [윤재], text: "8KB. 하나. 설명서 3쪽." }
+      - say: { char: 윤재, with: [로봇], text: "…덮어써. 십 점 남은 건 이제 아무 데도 안 쓰여." }
+      - say: { char: 로봇, with: [윤재], text: "쓰임. 십 년 뒤에 네가 다시 하면 거기서 시작함." }
+      - say: { char: 윤재.sad, with: [로봇], text: "십 년 뒤에 그 게임기 없어. 네가 그 게임기야." }
+      - say: { char: 로봇.thinking, motion: freeze, with: [윤재], text: "…처리 중." }
+      - say: { char: 로봇, with: [윤재], text: "맞음. 계산 끝. 덮어쓸 거 고르자." }
+      - say: { char: 로봇, with: [윤재], text: "지금 RAM에 들어 있는 거 읽어 줄게. 들어가면 이거 전부 없어짐." }
+      - say:
+          channel: record
+          with: []
+          when: { var: m_promise, op: eq, value: true }
+          text: "RAM 03 · 새끼손가락 · \"끝까지 2P로\" · 바늘 재고 0개"
+      - say:
+          char: 로봇
+          with: [윤재]
+          when: { var: m_promise, op: eq, value: true }
+          text: "이건 명령처럼 생겼는데 명령 칸에 안 들어감. 그래서 따로 둠."
+      - say:
+          channel: record
+          with: []
+          when: { var: m_snack, op: eq, value: true }
+          text: "RAM 07 · 복숭아 3.5조각 · 오차 0 · 분배 완료"
+      - say:
+          char: 로봇
+          with: [윤재]
+          when: { var: m_snack, op: eq, value: true }
+          text: "반 나누기는 ROM에 남음. 누구랑 나눴는지는 RAM에 있음. 그건 지워짐."
+      - say:
+          channel: record
+          with: []
+          when: { var: m_joke, op: eq, value: true }
+          text: "RAM 11 · 똑똑 농담 · 앞부분만 · 펀치라인 없음"
+      - say:
+          char: 로봇
+          with: [윤재]
+          when: { var: m_joke, op: eq, value: true }
+          text: "미완성인데 제일 자주 꺼낸 거임. 통계가 이상함."
+      - say:
+          char: 로봇
+          with: [윤재]
+          when:
+            all:
+              - { var: m_promise, op: eq, value: true }
+              - { var: m_snack, op: eq, value: true }
+              - { var: m_joke, op: eq, value: true }
+          text: "세 개. 8KB에서 그게 최대임. 네가 꽉 채웠음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          when:
+            all:
+              - { var: m_promise, op: eq, value: false }
+              - { var: m_snack, op: eq, value: false }
+              - { var: m_joke, op: eq, value: false }
+          text: "비었음. 읽을 게 없음. 일주일 치가 전부 ROM에만 있음."
+      - say:
+          char: 윤재.sad
+          with: [로봇]
+          when:
+            all:
+              - { var: m_promise, op: eq, value: false }
+              - { var: m_snack, op: eq, value: false }
+              - { var: m_joke, op: eq, value: false }
+          text: "…내가 뭘 더 해 줬어야 했는데."
+      - say:
+          char: 로봇
+          with: [윤재]
+          when:
+            all:
+              - { var: m_promise, op: eq, value: false }
+              - { var: m_snack, op: eq, value: false }
+              - { var: m_joke, op: eq, value: false }
+          text: "아님. 빈 칸은 지울 것도 없음. 들어갈 때는 그게 유리함."
+      - say: { char: 윤재, with: [로봇], text: "…하나만 고르라고. 하나만." }
+      - say: { char: 로봇, with: [윤재], text: "고르는 건 1P가 함. 규칙 2번." }
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
@@ -224,6 +329,17 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "…저장 중. 한 글자씩 가는 중. 배터리 한 칸 씀."
+      - say: { channel: system, with: [], text: "기존 데이터 삭제 중…\nHI-SCORE 0999990 — 삭제됨" }
+      - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
+      - say: { char: 로봇, with: [윤재], text: "지워졌음. 십 점은 이제 아무 데도 없음." }
+      - say: { char: 윤재, with: [로봇], text: "…어. 괜찮아." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "'진짜' 안 붙였음. 이번 건 참." }
+      - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓░░░░ 48%" }
+      - say: { char: 윤재, with: [로봇], text: "야, 더 빨리 안 되냐. 반도 안 갔어." }
+      - say: { char: 로봇, with: [윤재], text: "8비트임. 한 글자씩임. 빨리 하면 글자가 틀림." }
+      - say: { char: 윤재, with: [로봇], text: "틀리면 어떻게 되는데." }
+      - say: { char: 로봇, with: [윤재], text: "틀린 채로 남음. 그게 제일 안 좋음." }
+      - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓▓▓▓▓ 100%\n배터리 ▓▓░░ 2/4" }
       - say:
           char: 로봇.happy
           motion: bow
@@ -332,6 +448,10 @@ scenes:
           motion: freeze
           with: [윤재]
           text: "…처리 중. 이거 처음 듣는 단어임. 칸 하나 새로 만들어야 함."
+      - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음" }
+      - say: { char: 로봇.happy, with: [윤재], text: "카드 읽었음. 들어갈 때 넣은 거 그대로 있음. 글자 안 틀렸음." }
+      - say: { char: 윤재, with: [로봇], text: "…하이스코어 자리에." }
+      - say: { char: 로봇, with: [윤재], text: "응. 거기." }
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -442,6 +562,14 @@ scenes:
           with: [로봇]
           text: "…있었어. 아무도 몰라. 괜찮아."
           when: { var: kept_joke, op: eq, value: true }
+      - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음" }
+      - say: { char: 로봇.thinking, with: [윤재], text: "카드에 뭐가 있는데 어디서 온 건지 모름. 내가 넣은 건 아닌 거 같음." }
+      - say: { char: 윤재.sad, with: [로봇], text: "…네가 넣었어. 들어가기 전에." }
+      - say: { char: 로봇, motion: headtilt, with: [윤재], text: "기록에 없음. 넣은 기억이 카드 밖에 있었던 거임." }
+      - say: { char: 윤재.sad, with: [로봇], text: "…그럼 내가 기억해 줄게. 그건 내 쪽에 있어." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "그거 가능함? 카드 밖에 저장하는 거." }
+      - say: { char: 윤재, with: [로봇], text: "사람은 그렇게 해. 슬롯 수를 안 세." }
+      - say: { char: 로봇, with: [윤재], text: "…좋은 사양임." }
       - say:
           char: 로봇.thinking
           with: [윤재]
