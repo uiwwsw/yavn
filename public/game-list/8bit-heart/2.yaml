@@ -576,6 +576,51 @@ scenes:
           motion: laugh
           with: [로봇]
           text: "야 그걸 그렇게 이어 붙이면 어떡해."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "틀렸음? 수정함."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "틀린 건 아니야. 그냥… 사람들은 그걸 그렇게 한 줄로 안 말해."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "왜 안 함? 짧아서 칸이 덜 먹는데."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "짧게 말하면 들킨다고. 돈이 중요한 척이라는 걸 다 알면 돈이 안 돌아."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "…그럼 사람들은 다 아는 걸 모르는 척함?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "어. 그게 사회야. 학원에서 그렇게 배웠어."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "사회. 설명서에 없는 단어 5번. 뜻은 '다 아는 걸 모르는 척하는 것'으로 저장함."
+      - say:
+          char: 윤재
+          motion: laugh
+          with: [로봇]
+          text: "…그렇게 저장하면 안 되는데 틀린 말은 아니네."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "1번이 웃었음. 소리 패턴 기록함. 이건 칸 두 개 씀."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "두 개나? 지워. 8KB밖에 없다며."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "안 지움. 다른 거 지울 거 생기면 그때 생각함."
       - goto: /3.yaml
 
   b2_reg_brave:
@@ -632,4 +677,45 @@ scenes:
           motion: slump
           with: [로봇]
           text: "괄호를 왜 남겨."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "기록이라서. 지우면 왜 수정했는지 모름."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…그럼 그냥 둬."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문. 거짓말은 왜 함?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…무서운 걸 말하면 더 무서워지니까."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그럼 말 안 하면 덜 무서움?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "아니. 똑같아. 근데 말하면 상대가 같이 무서워하잖아."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "나는 무서움 기능 없음. 같이 안 무서워짐."
+      - say:
+          char: 윤재
+          motion: freeze
+          with: [로봇]
+          text: "…그러네."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "야. 그럼 너한테는 말해도 되는 거네."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "됨. 칸 비워 둘게."
       - goto: /3.yaml

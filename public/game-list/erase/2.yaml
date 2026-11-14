@@ -417,6 +417,18 @@ scenes:
           motion: bow
           with: [준성]
           text: "…수고하셨습니다."
+      - say:
+          channel: action
+          with: []
+          text: "준성이 먼저 내린다. 도윤은 문이 닫힐 때까지 버튼 앞에 서 있다가 다시 1층을 누른다."
+      - say:
+          channel: system
+          with: []
+          text: "1층입니다. 문이 열립니다."
+      - say:
+          channel: thought
+          with: []
+          text: "같은 층에서 두 번 열렸다. 내린 사람은 한 명이다."
       - move: { id: 도윤, style: reset }
       - goto: e2_absent
 
@@ -517,6 +529,33 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 화분은 제가 줄게요"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 반 컵씩이요 오대리님 말대로"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 송과장: 그런 거 왜 네가 해"
+      - say:
+          channel: message
+          side: them
+          with: []
+          text: "[영업2팀] 윤주임: 제 자리에서 제일 가까워서요"
+      - say:
+          channel: action
+          with: []
+          text: "도윤은 단톡방 알림을 끈다. 끄고 나서 열어서 다시 읽는다."
+      - say:
+          channel: thought
+          with: []
+          text: "전 회사 얘기를 처음 꺼낸 사람 자리에 내 이름이 들어가 있다. 지운 메시지인데 윤주임은 기억한다."
+      - say:
+          channel: thought
+          with: []
+          text: "지우면 없어지는 게 아니라 읽은 사람 쪽에 남는다. 그 생각을 전에도 한 적이 있다."
       - say:
           channel: card
           with: []

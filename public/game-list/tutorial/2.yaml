@@ -159,6 +159,30 @@ scenes:
           char: 상혁.grin
           with: [해수]
           text: "…아. 너는 모르지. 됐어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "칫솔 세 개 중에 두 개가 안 젖어 있어."
+      - say:
+          char: 상혁.grin
+          with: [해수]
+          text: "안 쓴 거지. 새 거 꺼내 놨어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "너 칫솔 새로 산 적 없잖아. 내가 사 와."
+      - say:
+          char: 상혁
+          with: [해수]
+          text: "…그럼 걔가 사 왔나 보지."
+      - say:
+          channel: thought
+          with: []
+          text: "세면대 아래 쓰레기통에 칫솔 포장이 없다. 영수증도 없다."
+      - say:
+          channel: thought
+          with: []
+          text: "두 개는 어디서 왔는지 모르겠고, 하나는 삼 년째 내가 쓰던 거다."
       - choice:
           key: t2_sh
           prompt: "상혁이 머리끈을 집어 손목에 낀다."
@@ -253,6 +277,42 @@ scenes:
           with: []
           delivery: whisper
           text: "형, 앞치마 주세요. 제가 사물함에 넣어 놓을게요. 주임님한테는 형 화장실 갔다고 할게요."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "화장실은 안 돼. 주임님이 찾으면 거짓말이 길어져."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "경찰서 갔다고 해. 참고인이라고. 그게 짧아."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "…그렇게 말하면 애들이 딴 생각 할 텐데요."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "할 거면 하라고 해. 거짓말이 더 오래 가."
+      - say:
+          channel: action
+          with: []
+          text: "해수가 앞치마를 벗어 접는다. 접는 자리가 늘 같아서 선이 났다."
+      - say:
+          char: 은숙
+          with: [해수, 경준]
+          text: "정해수 씨. 사십 분쯤 걸려요. 차는 저쪽에 세워 뒀어요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "…B2로는 안 내려가도 되는 거죠."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "오늘은 안 내려가요."
+      - say:
+          channel: thought
+          with: []
+          text: "가림막이 계단참 아래를 가리고 있다. 그래도 공기가 올라온다. 지하 주차장 냄새는 늘 같다."
 
   interview:
     title: "진술 녹화실"
@@ -382,6 +442,38 @@ scenes:
           char: 은숙
           with: [해수]
           text: "오늘 아침에는 열아홉 자루였대요. 민지영 주임님이 세 봤어요. 제가 부탁해서."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "…그럼 하나가 없네요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "네. 하나가 없고, 그 하나가 피해자분 몸에 있었어요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "마감할 때 세신다고 하셨죠. 왜 세세요?"
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "손님들이 가져가셔서요. 스무 자루 맞춰 놓는 게 제 업무예요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "열두 해 동안 매일요?"
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "네."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그럼 어제 스무 자루였다는 건 정해수 씨밖에 아는 사람이 없어요."
+      - say:
+          channel: thought
+          with: []
+          text: "그 말이 맞다. 세는 사람이 하나면 증인도 하나다."
       - emote: { id: 해수, motion: shiver }
       - clearSticker: { id: pencil, leave: fadeOut }
       - say:
@@ -431,6 +523,38 @@ scenes:
           channel: system
           with: []
           text: "레플라 안의 물건은 바꾼 대로 자동 저장됩니다."
+      - say:
+          channel: action
+          with: []
+          text: "녹화실이다. 낮에 은숙이 가져간 것들이 여기에는 그대로 있다. 가져간 것도 여기에는 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "밴드를 붙이고 앉은 지 사 분 됐다. 들어올 때마다 손이 먼저 창구 높이를 찾는다."
+      - say:
+          char: 해수
+          with: []
+          text: "…이게 왜 여기 있어."
+      - say:
+          channel: system
+          with: []
+          text: "오늘 근무 중 취급한 물품이 이 방에 배치됩니다. 사용자 편의 기능입니다."
+      - say:
+          channel: thought
+          with: []
+          text: "편의 기능. 내가 만진 걸 다 가져다 놓는 걸 편의라고 한다."
+      - say:
+          channel: thought
+          with: []
+          text: "3단계 때 세 걸음이었다. 여기서는 손을 뻗으면 닿는다."
+      - say:
+          channel: action
+          with: []
+          text: "용지를 들어 본다. 종이 무게가 난다. 손끝에 종이 섬유가 걸린다."
+      - say:
+          channel: thought
+          with: []
+          text: "여기서 바꾸면 저기서도 바뀐다는 건 아직 모른다. 3단계 때도 몰랐다."
       - goto: tamper_pick
 
   tamper_pick:
@@ -471,6 +595,10 @@ scenes:
   tamper_form:
     actions:
       - say:
+          channel: action
+          with: []
+          text: "대상 직원 칸에 손가락을 댄다. 글자가 지워지는 게 아니라 종이에서 빠져나간다."
+      - say:
           channel: record
           with: []
           erase: true
@@ -479,6 +607,10 @@ scenes:
           channel: system
           with: []
           text: "변경 사항이 저장되었습니다."
+      - say:
+          channel: thought
+          with: []
+          text: "이름 넉 자가 없어지는 데 한 호흡도 안 걸린다. 손으로 쓸 때는 사 초 걸린다."
       - goto: tamper_pick
 
   tamper_pencil:
@@ -488,6 +620,14 @@ scenes:
           with: []
           erase: true
           text: "그린마트 연필 20 · 초록 로고"
+      - say:
+          channel: action
+          with: []
+          text: "연필 스무 자루 중 하나를 집어 로고를 엄지로 문지른다. 세 번 문지르자 초록이 없어진다."
+      - say:
+          channel: thought
+          with: []
+          text: "열두 해 동안 이 로고를 하루에 스무 번씩 봤다. 지우는 데 세 번이면 된다."
       - say:
           channel: system
           with: []
@@ -506,6 +646,14 @@ scenes:
           with: []
           erase: true
           text: "01:58 · C-14 · 인물 2명 접근"
+      - say:
+          channel: action
+          with: []
+          text: "화면을 두 번 밀어 구간을 잡는다. 둘 중 하나는 걸음이 느리다. 그 걸음을 안다."
+      - say:
+          channel: thought
+          with: []
+          text: "보지 않는 게 낫다. 그런데 보고 나서 지워야 지워진다."
       - say:
           channel: system
           with: []
@@ -572,6 +720,18 @@ scenes:
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
           text: "기록이 바뀌는 건 봤어요. 사람이 바꾸는 거. 사진이 바뀌는 건 처음 봐요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "제 휴대폰에 있던 사진이에요. 제 손에 있던 거요."
+      - say:
+          char: 해수.service
+          with: [은숙]
+          text: "…저는 그런 건 잘 몰라서요, 고객님."
+      - say:
+          char: 은숙.sharp
+          with: [해수]
+          text: "고객님 아니에요. 아까도 말했어요."
       - say:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
@@ -642,6 +802,22 @@ scenes:
           when: { var: sh_night, op: eq, value: true }
           with: [지영]
           text: "그저께 밤에는 방에 없었어요. 차에 있었대요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "그 손님 이름을 불렀다는 게 제일 무서워. 처음 보는 사람 이름을."
+      - say:
+          char: 지영.worried
+          with: [해수]
+          text: "레플라에서 아는 사람이었다는 거야. 걔한테는 아는 사람인 거고."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "…그쪽에서 아는 사람은 이쪽에서 모르는 사람이에요."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "그걸 걔가 구분할 수 있으면 집에서 안 나오지는 않을 거야."
       - say:
           char: 지영
           with: [해수]
