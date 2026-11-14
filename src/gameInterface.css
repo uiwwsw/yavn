@@ -711,28 +711,182 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .dialog-box.channel-card .text { max-width: 22em; color: #e8eef2; font-size: clamp(22px, 3.6vw, 44px); font-weight: 600; letter-spacing: .06em; line-height: 1.45; text-align: center; white-space: pre-line; }
 
 /* Phone chat bubble (say.channel: message, say.side: me | them). */
-.app .dialog-box.channel-message { border-color: transparent; background: color-mix(in srgb, #0d1117 72%, transparent); box-shadow: none; }
-.app .dialog-box.channel-message .dialog-content-scroll { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+/* A phone scene gets the phone. The dialogue box leaves its corner, becomes a handset in
+   the middle of the stage, and the scene stays visible but dim behind it — the screen is
+   the only lit thing. The outgoing bubble takes the game's own accent, so each story's
+   phone is that story's phone rather than one house style. */
+.app .dialog-box.channel-message {
+  --phone-shell: #070a0d;
+  --phone-screen: #11161c;
+  --phone-them: #222a33;
+  --phone-them-ink: #e6ecf2;
+  --phone-mine: var(--ui-speaker-color, #3fd0c9);
+  --phone-rail: color-mix(in srgb, var(--phone-them-ink) 14%, transparent);
+
+  position: absolute;
+  left: 50%;
+  right: auto;
+  top: 50%;
+  bottom: auto;
+  /* .app .dialog-box carries its own transform for the bottom-corner layout; clear it or the
+     handset is shifted half its width off centre. */
+  transform: none;
+  translate: -50% -50%;
+  z-index: 55;
+  width: min(410px, 92cqw);
+  height: min(740px, 86cqh);
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color-mix(in srgb, var(--phone-them-ink) 16%, transparent);
+  border-radius: 34px;
+  background: var(--phone-shell);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 36px 80px rgba(0, 0, 0, 0.62),
+    0 0 90px color-mix(in srgb, var(--phone-mine) 12%, transparent);
+  backdrop-filter: none;
+  overflow: hidden;
+}
+
+/* The scene is still there. Dim, not blurred into nothing. */
+.app .dialog-box.channel-message::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(4, 6, 9, 0.56);
+  pointer-events: none;
+}
+
+.app .phone-chrome-top {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--phone-rail);
+  background: var(--phone-screen);
+}
+
+.app .phone-chrome-back {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-left: 1.5px solid color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
+  border-bottom: 1.5px solid color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
+  rotate: 45deg;
+}
+
+.app .phone-chrome-contact {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--phone-them-ink);
+  font-family: var(--ui-body-font);
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.app .phone-chrome-bottom {
+  order: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--phone-rail);
+  background: var(--phone-screen);
+}
+
+.app .phone-chrome-field {
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--phone-them-ink) 8%, transparent);
+  padding: 9px 14px;
+  color: color-mix(in srgb, var(--phone-them-ink) 42%, transparent);
+  font-family: var(--ui-body-font);
+  font-size: 13px;
+}
+
+.app .phone-chrome-send {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--phone-mine) 30%, transparent);
+}
+
+.app .dialog-box.channel-message .dialog-content-scroll {
+  order: 2;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 14px 14px 10px;
+  background: var(--phone-screen);
+  overflow-y: auto;
+}
+
 .app .dialog-box.channel-message.side-me .dialog-content-scroll { align-items: flex-end; }
-.app .dialog-box.channel-message .dialog-channel-label { color: #9fb3c0; }
-.app .dialog-box.channel-message .speaker { color: #c9d4dc; font-size: 13px; }
-.app .dialog-box.channel-message .text { max-width: min(560px, 82%); padding: 12px 16px; border-radius: 18px 18px 18px 4px; background: #e9edf1; color: #11161b; font-size: 16px; line-height: 1.5; text-align: left; }
-.app .dialog-box.channel-message.side-me .text { border-radius: 18px 18px 4px 18px; background: #3fd0c9; color: #062022; }
+.app .dialog-box.channel-message .dialog-channel-label { align-self: flex-start; color: color-mix(in srgb, var(--phone-them-ink) 45%, transparent); }
+.app .dialog-box.channel-message .speaker { color: color-mix(in srgb, var(--phone-them-ink) 62%, transparent); font-size: 12px; font-weight: 650; }
+
+/* The live line is a bubble like any other: one line of text is one line tall. */
+.app .dialog-box.channel-message .text {
+  width: auto;
+  max-width: 82%;
+  min-height: 0;
+  padding: 9px 13px;
+  border-radius: 16px 16px 16px 5px;
+  background: var(--phone-them);
+  color: var(--phone-them-ink);
+  font-size: calc(15px * var(--game-text-scale));
+  line-height: 1.45;
+  text-align: left;
+}
+
+.app .dialog-box.channel-message.side-me .text {
+  border-radius: 16px 16px 5px 16px;
+  background: var(--phone-mine);
+  color: color-mix(in srgb, #04070a 88%, var(--phone-mine));
+}
+
+/* The stage controls belong to the stage, not to the handset: they sit above it. */
+.app .dialog-box.channel-message .dialog-controls { top: auto; bottom: calc(100% + 10px); right: 0; transform: none; }
+.app .dialog-box.channel-message .dialog-channel-label { display: none; }
+
+/* A one-to-one thread is already named in the header; repeating it on every bubble is
+   something only a mock-up does. In a group the names stay, except on your own messages. */
+.app .dialog-box.channel-message:not(.phone-group) .phone-thread-speaker,
+.app .dialog-box.channel-message:not(.phone-group) .speaker,
+.app .dialog-box.channel-message .phone-thread-bubble.side-me .phone-thread-speaker,
+.app .dialog-box.channel-message.side-me .speaker { display: none; }
 
 /* The bubbles already sent. The live line is drawn by .text below them so it can still type. */
 .app .phone-thread { display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0 0 6px; padding: 0; list-style: none; }
-.app .phone-thread-bubble { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; max-width: min(560px, 82%); }
+.app .phone-thread-bubble { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; max-width: 82%; }
 .app .phone-thread-bubble.side-me { align-self: flex-end; align-items: flex-end; }
-.app .phone-thread-speaker { color: #c9d4dc; font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.app .phone-thread-speaker { color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent); font-size: 12px; font-weight: 650; }
 .app .phone-thread-text {
-  padding: 12px 16px; border-radius: 18px 18px 18px 4px;
-  background: color-mix(in srgb, #e9edf1 84%, transparent); color: #11161b;
-  font-size: calc(16px * var(--game-text-scale)); line-height: 1.5; text-align: left; white-space: pre-line;
+  padding: 9px 13px; border-radius: 16px 16px 16px 5px;
+  background: var(--phone-them); color: var(--phone-them-ink);
+  font-size: calc(15px * var(--game-text-scale)); line-height: 1.45; text-align: left; white-space: pre-line;
 }
-.app .phone-thread-bubble.side-me .phone-thread-text { border-radius: 18px 18px 4px 18px; background: color-mix(in srgb, #3fd0c9 84%, transparent); color: #062022; }
-/* The oldest bubbles fade so the eye lands on the newest without the thread looking cropped. */
-.app .phone-thread-bubble:nth-last-child(n + 5) .phone-thread-text { opacity: .72; }
-.app .phone-thread-bubble:nth-last-child(n + 8) .phone-thread-text { opacity: .5; }
+.app .phone-thread-bubble.side-me .phone-thread-text { border-radius: 16px 16px 5px 16px; background: var(--phone-mine); color: color-mix(in srgb, #04070a 88%, var(--phone-mine)); }
+/* Older bubbles recede so the eye lands on the newest without the thread looking cropped. */
+.app .phone-thread-bubble:nth-last-child(n + 6) .phone-thread-text { opacity: .74; }
+.app .phone-thread-bubble:nth-last-child(n + 9) .phone-thread-text { opacity: .52; }
 
 /* say.erase: once the line is fully shown it is struck and wiped away, block by block. */
 .app .dialog-box.is-erasing .text { animation: dialog-erase 1100ms steps(9, end) 260ms forwards; text-decoration: line-through; text-decoration-thickness: 2px; }
@@ -744,26 +898,21 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   .app .dialog-box.is-erasing .text { animation: none; opacity: .4; }
 }
 
-/* A phone conversation on a phone: the thread needs the height to read as a thread, so the
-   box leaves its corner and takes the stage. The scene stays faintly visible behind it. */
+/* On a phone there is no point drawing a phone inside a phone: the handset takes the
+   screen, keeping only enough inset to read as a device sitting on the scene. */
 @media (max-width: 768px) {
   .app .stage-content-frame .dialog-box.channel-message {
-    position: absolute; inset: 0; z-index: 55;
-    width: auto; max-width: none; height: auto; max-height: none; min-height: 0;
-    margin: 0; padding: 64px 16px calc(18px + env(safe-area-inset-bottom, 0px));
-    transform: none; translate: none;
-    border: 0; border-radius: 0;
-    background: color-mix(in srgb, #0b1016 90%, transparent);
-    backdrop-filter: blur(14px);
-    box-shadow: none;
+    left: max(10px, env(safe-area-inset-left, 0px));
+    right: max(10px, env(safe-area-inset-right, 0px));
+    top: max(10px, env(safe-area-inset-top, 0px));
+    bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    transform: none;
+    translate: none;
+    width: auto;
+    height: auto;
+    border-radius: 26px;
   }
   .app .stage-content-frame .dialog-box.channel-message::before { display: none; }
-  .app .dialog-box.channel-message .dialog-content-scroll {
-    height: 100%; max-height: none; padding-top: 0; padding-right: 2px;
-    justify-content: flex-end; gap: 8px;
-  }
   .app .dialog-box.channel-message .phone-thread-bubble,
-  .app .dialog-box.channel-message .text { max-width: 86%; }
-  .app .dialog-box.channel-message .dialog-channel-label { position: absolute; top: 22px; left: 16px; }
-  .app .dialog-box.channel-message .dialog-controls { top: 16px; right: 16px; }
+  .app .dialog-box.channel-message .text { max-width: 84%; }
 }
