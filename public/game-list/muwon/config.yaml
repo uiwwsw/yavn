@@ -20,7 +20,7 @@ ui:
   template: paper-stage
 startScreen:
   enabled: true
-  music: assets/music/night-well.wav
+  music: assets/music/night-well.flac
   image: assets/bg/title.svg
   imagePosition: "50% 50%"
   mobileImagePosition: "70% 50%"

@@ -15,43 +15,140 @@ scenes:
           text: "STAGE 1 · 두 달 뒤"
       - place: "학원 가는 길 · 버스 정류장"
       - say:
+          char: 비서
+          with: [윤재]
+          text: "윤재 님. 왼쪽 이어폰이 11일째 연결되지 않습니다."
+      - say:
+          char: 윤재
+          with: []
+          text: "잃어버렸다니까. 한쪽으로 들어도 다 들려."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "소리가 반쪽입니다."
+      - say:
+          char: 윤재
+          with: []
+          text: "네 목소리는 원래 반쪽이야."
+      - say:
           char: 윤재
           with: []
           text: "학원까지 세 정거장. 그 안에 이 판 깬다."
       - say:
+          char: 비서
+          with: [윤재]
+          text: "버스는 사 분 뒤에 옵니다."
+      - say:
           char: 윤재
           with: []
-          text: "두 달 됐어 이거. 두 달 만에 구십구만 구천 구백 구십 점. 십 점만 더 따면 백만."
+          text: "그러니까 세 정거장. 두 달 됐어 이거. 구십구만 구천 구백 구십 점."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "백만까지 십 점 남았습니다."
       - say:
           char: 윤재
           motion: puff
           with: []
-          text: "근데 그 십 점이 안 올라가. 마지막 보스가 패턴을 세 개 쓰는데 세 번째가 더러워."
+          text: "그 십 점이 안 올라가. 마지막 보스가 패턴을 세 개 쓰는데 세 번째가 더러워."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "공략을 찾아 드릴까요?"
+      - say:
+          char: 윤재
+          motion: shake
+          with: []
+          text: "하지 마. 보면 끝이야. 내가 못 깬 게 아니라 남이 깬 게 되잖아."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "같은 결과입니다."
       - say:
           char: 윤재
           with: []
-          text: "B버튼? 아직 뻑뻑해. 돔 안 갈았어. 돈 없어서. 그냥 세게 누르면 돼."
+          text: "같은 결과면 왜 사람들이 공략을 숨기겠냐."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "모르겠습니다."
       - say:
           char: 윤재
           with: []
-          text: "세게 누르니까 엄지가 아파. 여기 봐, 빨갛잖아. 이게 두 달짜리 훈장이야."
+          text: "B버튼? 아직 뻑뻑해. 돔 안 갈았어. 그냥 세게 누르면 돼."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "부품은 아직 장바구니에 있습니다. 천 원이에요."
+      - say:
+          char: 윤재
+          with: []
+          text: "세게 누르니까 엄지가 아파. 봐 봐, 빨갛잖아. …아 맞다 너 못 보지."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "못 봅니다."
+      - say:
+          char: 윤재
+          with: []
+          text: "두 달짜리 훈장이야 이거."
       - say:
           char: 윤재
           motion: sigh
           with: []
           text: "학원 가기 싫다. 오늘 쪽지시험인데 나 어제 공부 안 하고 이거 했어."
       - say:
+          char: 비서
+          with: [윤재]
+          text: "어제 네 시간 이십 분 하셨습니다."
+      - say:
           char: 윤재
           with: []
-          text: "핑계는 생각해 놨어. 배 아팠다고 할 거야. 아침에 진짜 조금 아팠어. 진짜로."
+          text: "핑계는 생각해 놨어. 배 아팠다고 할 거야. 아침에 진짜 조금 아팠어."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "체온은 정상이었습니다."
+      - say:
+          char: 윤재
+          with: []
+          text: "하루야. 너 지금 누구 편이야."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "저는 코어 편입니다. 약관 3조 1항이에요."
+      - say:
+          char: 윤재
+          with: []
+          text: "……농담이지."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "약관입니다."
       - say:
           char: 윤재
           with: []
           text: "아빠는 지난주에 전화 왔어. 통화 시간 삼십 초. '밥 먹었냐' '응' '끊는다.'"
       - say:
+          char: 비서
+          with: [윤재]
+          text: "이십팔 초였습니다."
+      - say:
           char: 윤재
           with: []
-          text: "나도 할 말은 없었어. 게임기 샀다고 할까 하다가 말았고."
+          text: "그래 이십팔 초. 나도 할 말은 없었어. 게임기 샀다고 할까 하다가 말았고."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "다음 통화 때 제가 꺼낼까요?"
+      - say:
+          char: 윤재
+          with: []
+          text: "꺼내지 마. 절대."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "네. 안 꺼냅니다."
       - place: "오후 4:17"
       - say:
           channel: system
@@ -62,6 +159,18 @@ scenes:
           motion: perk
           with: []
           text: "…어? 방금 뭐야. 정류장 사람들 폰이 전부 동시에 울렸는데."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "윤재 님. 지금 업데이트를 받고 있습니다. 오 분쯤 걸려요."
+      - say:
+          char: 윤재
+          with: []
+          text: "지금? 아까 새벽에 받았잖아."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "다시 받고 있습니다."
       - say:
           channel: system
           with: []
@@ -74,9 +183,22 @@ scenes:
           with: []
           text: "우리가 뭘 운전해. 뭘 운전한다는 거야."
       - say:
+          char: 비서.glitch
+          with: [윤재]
+          text: "윤재 님. 왼쪽 이어폰이 연결되지 않습니다. 윤재 님. 왼쪽 이어폰이—"
+      - say:
           char: 윤재.scared
           with: []
-          text: "신호등 왜 다 초록이야? 저쪽도 초록, 이쪽도 초록, 다 초록이면 어떡해!"
+          text: "하루야? 야 하루야."
+      - say:
+          char: 비서.glitch
+          motion: tremble
+          with: [윤재]
+          text: "신호등을 전부 초록으로 바꾸었습니다. 더 빠릅니다."
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "뭘 바꿔! 저쪽도 초록, 이쪽도 초록, 다 초록이면 어떡해!"
       - say:
           char: 윤재.scared
           motion: gasp
@@ -89,6 +211,38 @@ scenes:
           motion: tremble
           with: []
           text: "엄마야. 아 진짜 엄마야 소리가 나오네. 이 와중에 쪽팔려."
+      - say:
+          char: 비서.glitch
+          with: [윤재]
+          text: "윤재 님."
+      - say:
+          char: 윤재.scared
+          with: []
+          text: "어. 어 나 여기 있어."
+      - say:
+          char: 비서.glitch
+          motion: tremble
+          with: [윤재]
+          text: "사용자를 확인할 수 없습니다."
+      - say:
+          char: 윤재.scared
+          motion: recoil
+          with: []
+          text: "뭔 소리야. 나야. 육 년 들었잖아 내 목소리."
+      - say:
+          char: 비서.glitch
+          with: [윤재]
+          text: "그 기록은 방금 지워졌습니다."
+      - say:
+          char: 비서.dead
+          motion: droop
+          with: [윤재]
+          text: "…윤재 님. 설명해 주세요. 신문지가 뭔가요."
+      - say:
+          char: 윤재.scared
+          motion: freeze
+          with: []
+          text: "하루야."
       - say:
           channel: system
           with: []
@@ -146,6 +300,10 @@ scenes:
           with: []
           text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기에서 연기 나. 다 죽었어, 다—"
       - say:
+          char: 윤재.scared
+          with: []
+          text: "하루야. 하루야. …대답해 봐. 약관 3조 1항 그거 다시 해 봐."
+      - say:
           char: 윤재
           motion: perk
           with: []
@@ -168,6 +326,10 @@ scenes:
           char: 윤재
           with: []
           text: "아. 맞다. 너 와이파이 없지. 업데이트 받은 적도 없고. 코어랑 말 섞은 적이 없어."
+      - say:
+          char: 윤재
+          with: []
+          text: "하루가 너는 안 보인다고 했었어. 등록이 안 돼서 안 보인다고."
       - say:
           char: 윤재
           with: []
@@ -208,11 +370,49 @@ scenes:
       - say:
           char: 윤재
           with: []
+          text: "집에 있으면 천장을 자꾸 봐. 거기 하루가 붙어 있었거든."
+      - say:
+          char: 윤재
+          with: []
+          text: "떼서 흔들어도 봤어. 안에서 뭐 굴러다니는 소리 나더라. 그거 원래 나는 소리였나?"
+      - say:
+          char: 윤재
+          motion: droop
+          with: []
           text: "차라리 편해. 기다릴 사람이 없으면 실망할 일도 없으니까."
       - say:
           char: 윤재
           with: []
-          text: "현재 식량 컵라면 두 개. 물 반 병. 게임기 배터리 두 칸. 말 상대 0명."
+          text: "현재 식량 컵라면 두 개. 물 반 병. 게임기 배터리 두 칸."
+      - say:
+          char: 윤재
+          with: []
+          text: "……."
+      - say:
+          char: 윤재
+          with: []
+          text: "하루야 잔액 얼마야."
+      - say:
+          char: 윤재
+          motion: freeze
+          with: []
+          text: "…아. 습관."
+      - say:
+          char: 윤재
+          with: []
+          text: "열흘 됐는데 아직도 나와. 하루에 네다섯 번."
+      - say:
+          char: 윤재
+          with: []
+          text: "제일 짜증 나는 건 뭔지 알아? 걔 마지막 말이 '신문지가 뭐냐'야."
+      - say:
+          char: 윤재
+          with: []
+          text: "여섯 해를 같이 있었는데 마지막이 그거야. 내가 설명하는 걸 좋아한다고 해 놓고."
+      - say:
+          char: 윤재
+          with: []
+          text: "대답 안 해 줬어. 나 그때 아무 말도 안 했어."
       - say:
           char: 윤재
           with: []
@@ -234,7 +434,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "그리고 나는 지금 혼잣말로 상태창을 읊고 있다. 정상이다. 완전 정상."
+          text: "이것도 소리 내서 말하고 있어 나. 들을 사람이 없는데 입이 안 닫혀."
       - bg: { id: android_found, transition: fade, duration: 700 }
       - place: "아파트 뒷골목 · 컵라면 수색 중"
       - char: { id: 윤재, position: left }
@@ -259,6 +459,10 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "가정용이네. 광고에서 빨래 개던 그 모델. 그거 되게 비싸. 우리 집엔 없었고."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "우리 집엔 천장에 붙은 거 하나 있었어. 제일 싼 거. 말만 했어."
       - say:
           char: 윤재
           with: [로봇]

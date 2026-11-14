@@ -40,16 +40,31 @@ assets:
         glitch: assets/char/android-glitch.svg
       emotionMotions:
         glitch: tremble
+    비서:
+      name: "하루"
+      placement: prompt-top
+      base: assets/char/assistant.svg
+      facing: front
+      defaultDelivery: calm
+      # A ceiling unit, not a person: shrink it so the whole device reads at phone width.
+      calibration: { scale: 0.55 }
+      emotions:
+        ad: assets/char/assistant-ad.svg
+        glitch: assets/char/assistant-glitch.svg
+        dead: assets/char/assistant-dead.svg
+      emotionMotions:
+        glitch: tremble
+        dead: droop
     드론:
       name: "정찰 드론"
       placement: prompt-top
       base: assets/char/drone.svg
       facing: left
   music:
-    chip_home: assets/music/chip-home.wav
-    chip_run: assets/music/chip-run.wav
-    chip_core: assets/music/chip-core.wav
-    chip_dawn: assets/music/chip-dawn.wav
+    chip_home: assets/music/chip-home.flac
+    chip_run: assets/music/chip-run.flac
+    chip_core: assets/music/chip-core.flac
+    chip_dawn: assets/music/chip-dawn.flac
 
 state:
   android_name: "도트"

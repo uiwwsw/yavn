@@ -9,6 +9,7 @@
   },
   "scripts": {
     "check:public": "node scripts/check-public-allowlist.mjs",
+    "music:compress": "node scripts/compress-music.mjs",
     "predev": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
     "dev": "vite",
     "prebuild": "node scripts/generate-game-list-manifest.mjs && node scripts/check-public-allowlist.mjs",
