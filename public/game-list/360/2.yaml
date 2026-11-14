@@ -12,13 +12,13 @@ scenes:
       - place: "1988년 구월 십칠일 · 혜화동 대학병원 6인실"
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, motion: lean_in, text: "야, 굴렁쇠다. 쟤 봐. 혼자 저 넓은 데를 굴리고 간다." }
+      - say: { char: 수경, with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 봐. 혼자 저 넓은 데를 굴리고 간다." }
       - say: { char: 민재, with: [수경], text: "누나, 소리 좀 줄여요. 옆에 할아버지 주무세요." }
-      - say: { char: 수경, text: "할아버지 보청기 뺐어. 내가 봤어. 너 몇 살이라 그랬지?" }
+      - say: { char: 수경, with: [민재], text: "할아버지 보청기 뺐어. 내가 봤어. 너 몇 살이라 그랬지?" }
       - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
-      - say: { char: 수경, text: "난 스물하나. 미대 2학년 하다 말았어. 두 번째 입원. 넌 처음이지? 티 나." }
+      - say: { char: 수경, with: [민재], text: "난 스물하나. 미대 2학년 하다 말았어. 두 번째 입원. 넌 처음이지? 티 나." }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
-      - say: { char: 수경, motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져. 내가 줄넘기도 해 봤어." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져. 내가 줄넘기도 해 봤어." }
       - say:
           channel: thought
           with: []
@@ -29,9 +29,9 @@ scenes:
           with: []
           when: { var: v2, op: eq, value: stay }
           text: "침대 난간에 엄마 목도리가 묶여 있다. 내가 묶었다. 엄마가 꼭 다시 오라고."
-      - say: { char: 수경, text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃을 쏜대. 한강에서 보면 다 보인다더라." }
+      - say: { char: 수경, with: [민재], text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃을 쏜대. 한강에서 보면 다 보인다더라." }
       - say: { char: 민재, with: [수경], text: "여기서 한강이 어떻게 보여요." }
-      - say: { char: 수경, text: "안 보이지. 그러니까 가야지." }
+      - say: { char: 수경, with: [민재], text: "안 보이지. 그러니까 가야지." }
       - goto: mom_visit
 
   mom_visit:
@@ -97,9 +97,9 @@ scenes:
       - place: "시월 이일 · 밤 열 시 이십 분"
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, delivery: whisper, text: "간호사 교대가 열 시 반이야. 십 분이면 정문이고. 택시비는 내가 있어." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "간호사 교대가 열 시 반이야. 십 분이면 정문이고. 택시비는 내가 있어." }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "들키면요." }
-      - say: { char: 수경, delivery: whisper, text: "들키면 혼나지. 그게 다야. 여기서 혼나는 것보다 무서운 걸 우리가 얼마나 많이 했는데." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "들키면 혼나지. 그게 다야. 여기서 혼나는 것보다 무서운 걸 우리가 얼마나 많이 했는데." }
       - goto: out_choice
 
   out_choice:
@@ -149,14 +149,14 @@ scenes:
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
       - effect: flash
-      - say: { char: 수경, motion: hop, text: "터졌다! 봐, 봐, 저 초록색. 저게 다 세금이야." }
+      - say: { char: 수경, with: [민재], motion: hop, text: "터졌다! 봐, 봐, 저 초록색. 저게 다 세금이야." }
       - say: { char: 민재, with: [수경], text: "누나 뛰지 마요. 링거 자국 터져요." }
-      - say: { char: 수경, text: "넌 불꽃을 안 보고 사람들을 보네. 아까부터." }
+      - say: { char: 수경, with: [민재], text: "넌 불꽃을 안 보고 사람들을 보네. 아까부터." }
       - say: { char: 민재, with: [수경], text: "…누가 신고할까 봐요. 환자복 바지잖아요." }
-      - say: { char: 수경, motion: laugh, text: "아무도 안 봐. 다 위를 보잖아. 오늘은 위만 봐도 되는 날이야." }
-      - say: { char: 수경, text: "나 퇴원하면 저 다리 걸어서 건널 거야. 이쪽 끝에서 저쪽 끝까지." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "아무도 안 봐. 다 위를 보잖아. 오늘은 위만 봐도 되는 날이야." }
+      - say: { char: 수경, with: [민재], text: "나 퇴원하면 저 다리 걸어서 건널 거야. 이쪽 끝에서 저쪽 끝까지." }
       - say: { char: 민재, with: [수경], text: "그게 소원이에요?" }
-      - say: { char: 수경, text: "소원은 아껴야지. 그건 계획이야." }
+      - say: { char: 수경, with: [민재], text: "소원은 아껴야지. 그건 계획이야." }
       - bg: { id: ward, transition: fade, duration: 1000 }
       - goto: october
 
