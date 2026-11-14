@@ -259,7 +259,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "편의점. 기록함. 설명서에 없는 단어 1번. 뜻은?"
+          text: "편의점. 설명서에 없는 말인데. 그게 뭐야?"
       - say:
           char: 윤재
           with: [로봇]
@@ -267,7 +267,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "돈. 설명서에 없는 단어 2번. 뜻은?"
+          text: "돈."
       - say:
           char: 윤재
           motion: sigh
@@ -312,7 +312,7 @@ scenes:
           char: 로봇
           motion: nod
           with: [윤재]
-          text: "기록함."
+          text: "…어."
       - say:
           char: 윤재
           motion: sigh
@@ -329,7 +329,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "비서. 설명서에 없는 단어 3번. 뜻은?"
+          text: "비서. 그건 또 뭐야?"
       - say:
           char: 윤재
           with: [로봇]
@@ -354,7 +354,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "…기록함. 규칙 아님. 그냥 칸에 넣음."
+          text: "…어. 규칙은 아니고. 그냥 둘게."
       - say:
           char: 윤재
           with: [로봇]
@@ -427,7 +427,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "무섭다. 설명서에 없는 단어 4번. 뜻은?"
+          text: "무섭다."
       - say:
           char: 윤재
           with: [로봇]
@@ -435,7 +435,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "저장함. 1번이 자는 동안 얼굴 보지 않기. 번호는 안 붙임. 이유 칸이 비어서."
+          text: "1번이 자는 동안 얼굴 보지 않기. 번호는 안 붙임. 왜인지를 모르니까."
       - say:
           char: 윤재
           with: [로봇]
@@ -492,7 +492,7 @@ scenes:
           char: 로봇.thinking
           motion: freeze
           with: [윤재]
-          text: "세상. 망함. …처리 중. 처리 중."
+          text: "세상. 망함. …잠깐만."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -603,7 +603,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "사회. 설명서에 없는 단어 5번. 뜻은 '다 아는 걸 모르는 척하는 것'으로 저장함."
+          text: "사회. …다 아는 걸 모르는 척하는 것. 그렇게 적어 둘게."
       - say:
           char: 윤재
           motion: laugh
@@ -612,7 +612,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "1번이 웃었음. 소리 패턴 기록함. 이건 칸 두 개 씀."
+          text: "방금 소리. 그거 칸 두 개 먹는데 그냥 둘래."
       - say:
           char: 윤재
           with: [로봇]
@@ -629,7 +629,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "위험 아님. 기록함. …대기. 재측정 중."
+          text: "위험 아님. …아니다. 다시 볼게."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -666,7 +666,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "'진짜' 한 번. 아직 한 번임. 두 번 되면 다시 보겠음."
+          text: "'진짜' 한 번. 한 번은 봐줄게."
       - move: { id: 로봇, toward: 윤재, style: flinch }
       - say:
           char: 로봇.happy

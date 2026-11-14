@@ -63,7 +63,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "기록함. 1번은 돈이 없어서 살았음."
+          text: "1번은 돈이 없어서 살았음. 그건 적어 둬야겠다."
       - say:
           char: 로봇
           with: [윤재]
@@ -92,7 +92,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "헌법. 설명서에 없는 단어. 뜻은 '안 바뀌는 칸' 으로 저장함."
+          text: "헌법. 안 바뀌는 칸. 그렇게 알아들을게."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -127,7 +127,7 @@ scenes:
           char: 로봇.happy
           motion: bounce
           with: [윤재]
-          text: "'진짜' 두 번. 땀 젖은 손이랑 같은 칸에 저장. 위험 신호 칸."
+          text: "'진짜' 두 번. 아까 손이랑 같은 칸에 넣는다."
       - say:
           char: 윤재
           with: [로봇]
@@ -315,7 +315,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "핑계. 설명서에 없는 단어. 네가 아침에 학원 얘기할 때 쓴 거."
+          text: "핑계. 아침에 학원 얘기할 때 네가 쓴 말."
       - say:
           char: 윤재
           with: [로봇]
@@ -537,7 +537,7 @@ scenes:
           char: 로봇.thinking
           motion: headtilt
           with: [윤재]
-          text: "못 봄. 그리고 방금 나 쓰레기라고 함. 둘 다 처리 중."
+          text: "못 봄. 그리고 방금 나 쓰레기라고 했어. 둘 다 생각 중."
       - goto: b3_promise
 
   b3_promise:

@@ -40,3 +40,27 @@ export function selectPhoneThread(
 
   return bubbles.reverse();
 }
+
+export type PhoneContact = { name: string; group: boolean };
+
+/**
+ * Who the phone screen is talking to.
+ *
+ * One correspondent names the header, and then repeating that name over every bubble is
+ * something only a mock-up does. Several correspondents mean a group thread, so the header
+ * says who is in it and the names stay on the bubbles, where they tell you who is talking.
+ */
+export function selectPhoneContact(
+  bubbles: PhoneThreadBubble[],
+  live?: { speaker?: string; side?: 'me' | 'them' },
+): PhoneContact | undefined {
+  const names: string[] = [];
+  const add = (name?: string) => {
+    if (name && !names.includes(name)) names.push(name);
+  };
+  for (const bubble of bubbles) if (bubble.side === 'them') add(bubble.speaker);
+  if (live && live.side !== 'me') add(live.speaker);
+  if (names.length === 0) return undefined;
+  if (names.length === 1) return { name: names[0], group: false };
+  return { name: `${names[0]} 외 ${names.length - 1}`, group: true };
+}

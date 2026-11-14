@@ -30,7 +30,7 @@ import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
 import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
-import { selectPhoneThread } from './phoneThread';
+import { selectPhoneContact, selectPhoneThread } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
@@ -359,6 +359,13 @@ const DialogueText = memo(function DialogueText() {
     const target = resolveDialogueScroll({ lineChanged, typing, thread: threadRef.current });
     if (target === 'top') scroller.scrollTop = 0;
     else if (target === 'bottom') scroller.scrollTop = scroller.scrollHeight;
+    // A bubble that grows as it types changes the scroll height after this effect has run,
+    // so the newest line can end up a few pixels under the fold. Settle it on the next frame.
+    if (target !== 'top' && threadRef.current) {
+      const settle = requestAnimationFrame(() => { scroller.scrollTop = scroller.scrollHeight; });
+      return () => cancelAnimationFrame(settle);
+    }
+    return undefined;
   }, [fullText, visibleText, typing]);
 
   const className = [
@@ -1695,6 +1702,14 @@ export default function App() {
   const phoneThread = useMemo(
     () => (dialogChannel === 'message' ? selectPhoneThread(storyLog) : []),
     [dialogChannel, storyLog],
+  );
+  // Whose phone screen this is: the last person who wrote in, so the header names the
+  // other end of the conversation rather than whoever happens to be speaking right now.
+  const phoneContact = useMemo(
+    () => (dialogChannel === 'message'
+      ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide })
+      : undefined),
+    [dialogChannel, phoneThread, dialogSide, dialogSpeaker],
   );
 
   const [bootMode, setBootMode] = useState<BootMode>(
@@ -5730,7 +5745,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && choiceGate.presentation === 'explore' ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && choiceGate.presentation === 'explore' ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -5772,6 +5787,18 @@ export default function App() {
               <GameIcon name="eye" /><span>{t("숨기기")}</span>
             </button>
           </div>
+        )}
+        {dialogChannel === 'message' && (
+          <>
+            <div className="phone-chrome-top">
+              <span className="phone-chrome-back" aria-hidden="true" />
+              <span className="phone-chrome-contact">{phoneContact?.name ?? t("메시지")}</span>
+            </div>
+            <div className="phone-chrome-bottom" aria-hidden="true">
+              <span className="phone-chrome-field">{t("메시지 입력")}</span>
+              <span className="phone-chrome-send" />
+            </div>
+          </>
         )}
         <div className="dialog-content-scroll">
           {phoneThread.length > 0 && (
