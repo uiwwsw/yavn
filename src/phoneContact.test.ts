@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { selectPhoneContact, type PhoneThreadBubble } from './phoneThread';
+import { selectPhoneContact, type PhoneSender } from './phoneThread';
 
-const them = (speaker: string, text = '…'): PhoneThreadBubble => ({ key: speaker + text, speaker, text, side: 'them' });
-const me = (text = '…'): PhoneThreadBubble => ({ key: 'me' + text, text, side: 'me' });
+const them = (speaker: string): PhoneSender => ({ speaker, side: 'them' });
+const me = (): PhoneSender => ({ side: 'me' });
 
 describe('selectPhoneContact', () => {
   it('names the screen after the one person writing in', () => {
@@ -23,6 +23,6 @@ describe('selectPhoneContact', () => {
   });
 
   it('leaves the header unnamed when nobody is attributed', () => {
-    expect(selectPhoneContact([{ key: 'a', text: '번호 없음', side: 'them' }])).toBeUndefined();
+    expect(selectPhoneContact([{ side: 'them' }])).toBeUndefined();
   });
 });
