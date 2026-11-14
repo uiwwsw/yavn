@@ -660,6 +660,8 @@ export const configSchema = z
     textSpeed: z.number().positive(),
     autoSave: z.boolean().optional(),
     clickToInstant: z.boolean(),
+    /** How many numbered chapter files the game ships; stated so the loader never probes past the end. */
+    chapters: z.number().int().positive().optional(),
     endings: z.record(endingDefinitionSchema).optional(),
     endingRules: z.array(endingRuleSchema).optional(),
     defaultEnding: z.string().min(1).optional(),
