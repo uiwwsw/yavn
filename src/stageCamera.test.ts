@@ -62,7 +62,8 @@ describe('stage camera', () => {
     expect(medium).toMatchObject({
       shot: 'medium',
       scale: 1.62,
-      mobileScale: 1.58,
+      // A phone holds a trio only at the composed width; see the cast-size test below.
+      mobileScale: 1,
       panX: '0cqw',
       mobilePanX: '0cqw',
       originY: 86,
@@ -79,7 +80,7 @@ describe('stage camera', () => {
     expect(close).toMatchObject({
       shot: 'close',
       scale: 1.86,
-      mobileScale: 1.74,
+      mobileScale: 1,
       panX: 'calc(0px - min(27.5cqw, 286px))',
       mobilePanX: 'calc(50cqw - calc(50cqw + 27.5cqw))',
       originY: 86,
@@ -168,7 +169,9 @@ describe('stage camera', () => {
     );
     expect(duoMedium).toMatchObject({
       scale: 1.62,
-      mobileScale: 1.58,
+      // Same portrait and crop as the solo shot above — only the phone's zoom differs, because
+      // zooming a pair walks the outer actor off a 375px screen.
+      mobileScale: 1,
       panX: '0cqw',
       mobilePanX: '0cqw',
       originY: 86,
@@ -183,8 +186,9 @@ describe('stage camera', () => {
     );
     expect(duoClose).toMatchObject({
       scale: 1.86,
-      mobileScale: 1.74,
+      mobileScale: 1,
       panX: 'min(25cqw, 260px)',
+      // The phone still pans to the speaker; it just does not zoom past the other actor.
       mobilePanX: '25cqw',
     });
 
@@ -242,6 +246,7 @@ describe('stage camera', () => {
         layout,
       );
 
+      // Desktop keeps one profile whatever the cast size.
       expect(medium.scale).toBe(1.62);
       expect(medium.originY).toBe(86);
       expect(medium.mobileOriginY).toBe(82);
@@ -249,9 +254,19 @@ describe('stage camera', () => {
       expect(close.scale).toBeCloseTo(1.86);
       expect(reaction.scale).toBeCloseTo(1.78);
       expect(wide.mobileScale).toBeCloseTo(1);
-      expect(medium.mobileScale).toBeCloseTo(1.58);
-      expect(close.mobileScale).toBeCloseTo(1.74);
-      expect(reaction.mobileScale).toBeCloseTo(1.66);
+
+      if (count === 1) {
+        // Alone on a phone there is nobody to push out of frame, so the push-in stands.
+        expect(medium.mobileScale).toBeCloseTo(1.58);
+        expect(close.mobileScale).toBeCloseTo(1.74);
+        expect(reaction.mobileScale).toBeCloseTo(1.66);
+      } else {
+        // With company, zooming spreads the anchors wider than the screen and the outer actor
+        // leaves it, so a phone holds the composed stage instead.
+        expect(medium.mobileScale).toBe(1);
+        expect(close.mobileScale).toBe(1);
+        expect(reaction.mobileScale).toBe(1);
+      }
     }
   });
 
@@ -329,7 +344,7 @@ describe('stage camera', () => {
     expect(untargetedClose).toMatchObject({
       shot: 'close',
       scale: 1.86,
-      mobileScale: 1.74,
+      mobileScale: 1,
       panX: '0cqw',
       mobileOriginY: 82,
     });

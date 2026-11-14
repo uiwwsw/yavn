@@ -1,0 +1,739 @@
+chapterTitle: "1"
+
+script:
+  - scene: desk
+  - scene: mine
+  - scene: brief
+  - scene: kitae
+  - scene: after
+  - scene: call
+
+scenes:
+  desk:
+    title: "성일빌딩 2층"
+    actions:
+      - bg: { id: office, transition: cut }
+      - place: "2033년 3월 20일 월요일 · 상계동"
+      - music: quant
+      - say:
+          channel: system
+          with: []
+          text: "에모스 EMOS — 당신의 마음에 눈금을. 채용·결혼·보험·양육 제휴 2,140개사 · 오늘 측정 4,870만 건"
+      - say:
+          channel: system
+          with: []
+          text: "오늘의 전국 평균 · 불안 38 · 피로 51 · 호감 44 · 분노 29"
+      - char: { id: 도겸, position: right }
+      - char: { id: 지완, position: left }
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "소장님, 김옥분 할머니 거 또 반려됐어요. 세 번째."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "사유."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "'측정 당시 피검자 상태 이상 없음'. 그 한 줄이 끝이에요. 열두 장 냈는데."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "할머니 측정하신 날이 영감님 기일이야. 그 얘기 세 번째 장에 썼지."
+      - say:
+          char: 도겸
+          motion: sigh
+          with: [지완]
+          text: "썼죠. 근데 걔들은 세 번째 장을 안 봐요. 첫 장에 숫자만 봐요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "네 번째 쓰자."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "할머니 돈이 없어요. 세 번째도 서류비만 받았잖아요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "복사비 1,800원. 그건 할머니가 내셨어."
+      - say:
+          char: 도겸
+          motion: headtilt
+          with: [지완]
+          text: "소장님, 그래서 이번 달 우리 매출이 얼만지 아세요?"
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "들어온 건 네 건. 68,000원씩 세 건이고 한 건은 서류비."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "204,000원이요. 월세가 55만이고요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "4월에 보험사 단체 건 들어와."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "그 얘기 2월에도 하셨어요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "2월엔 3월에 들어온다고 했지. 지금 4월 얘기를 하는 거고."
+      - say:
+          char: 도겸.wide
+          with: [지완]
+          text: "와. 그걸 또 정확하게."
+      - say:
+          channel: system
+          with: []
+          text: "에모스 현장 판독 · 임도겸 — 피로 54 · 짜증 31 · 호감 62"
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "아 저 호감 62 나왔네요. 소장님한테 호감 62래요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "삼각김밥 사 준 날이라 그래."
+      - say:
+          char: 도겸
+          motion: laugh
+          with: [지완]
+          text: "두 개요. 두 개 사 주셨어요. 하나는 참치마요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "다음 주부터 하나야."
+
+  mine:
+    actions:
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "도겸아, 내 거 서식 좀 띄워 봐. 2-나 서식."
+      - say:
+          char: 도겸
+          motion: headtilt
+          with: [지완]
+          text: "소장님 거요? 또요?"
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "여덟 번째."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "일곱 번째 반려 통지 온 게 이 주 전인데요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "삼 주 전이야. 2월 27일."
+      - get: appeal_form
+      - sticker: { id: form, image: form_sticker, x: 76, y: 52, width: "clamp(150px, 20%, 260px)", enter: fadeIn }
+      - say:
+          channel: record
+          with: []
+          text: "에모스 재측정 이의신청서 · 신청인 문지완(1999년생) · 사유란: 전 항목 동일값 1 반복 출력"
+      - say:
+          channel: record
+          with: []
+          text: "판정 이력 · 사랑 1 · 연민 1 · 슬픔 1 · 분노 1 · 불안 1 · 기쁨 1 — 2026년 최초 측정 이래 변동 없음"
+      - clearSticker: { id: form, leave: fadeOut }
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "이거 볼 때마다 기분이 이상해요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "뭐가."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "저는 아까 호감 62 나왔잖아요. 소장님은 저 보고도 1이라는 거잖아요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "기계가 그렇게 적은 거야."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "기계가 그렇게 적으면 그런 거라고 다들 그러잖아요."
+      - say:
+          char: 지완.tight
+          with: [도겸]
+          text: "다들 그러지."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "아, 저 그런 뜻 아니고요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "알아. 사유란 받아 적어."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "네."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "'측정 범위 밖의 값이 범위 안으로 접혀 들어왔을 가능성.' 그대로 써."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "이거 작년에도 쓰셨어요. 이 문장."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "맞아."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "작년엔 뭐라고 왔는지 기억하세요?"
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "'측정 원리상 그런 경우는 없음.' 열두 글자."
+      - sound: click
+      - say:
+          char: 도겸
+          motion: sigh
+          with: [지완]
+          text: "그럼 올해도 똑같이 오겠네요."
+
+  brief:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "속보 · 노원 주부 사망 사건, 검찰 불기소 처분 · 2033.03.19"
+      - say:
+          char: 도겸.wide
+          with: [지완]
+          text: "어, 소장님. 그 노원 사건 불기소 떴어요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "어느 거."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "지난주에 집에서 부인 죽은 채로 발견됐다는 거요. 남편이 신고한."
+      - say:
+          channel: system
+          with: []
+          text: "검찰은 피의자의 범행 시각 정서 판독값이 정서적 범행가능성 심사 기준에 크게 못 미친다고 밝혔다."
+      - say:
+          channel: system
+          with: []
+          text: "범행 추정 시각 판독 · 분노 3 · 증오 1 · 공격충동 2 · 죄책감 0 (기준 분노 34 이상)"
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "분노 3이요. 이거 저 아침에 지하철에서 발 밟혔을 때보다 낮아요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "네가 그때 몇이었는데."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "19요. 기억해요. 캡처도 해 놨어요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "죄책감 0."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "네, 그건 좀 소름이죠. 0이면 아예 없는 거잖아요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "아니면 세는 자리가 모자란 거고."
+      - say:
+          char: 도겸
+          motion: headtilt
+          with: [지완]
+          text: "네?"
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "아니야. 기사 어디서 났어."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "다 났어요. 댓글에선 그냥 아내가 혼자 죽은 거라고."
+      - say:
+          char: 지완.tight
+          with: [도겸]
+          text: "그럼 왜 기소를 검토했대."
+
+  kitae:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "성일빌딩 2층 · 방문 1 · 오후 2:40"
+      - char: { id: 기태, position: center }
+      - say:
+          char: 기태
+          with: [지완, 도겸]
+          text: "문지완."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "노 경위님."
+      - say:
+          char: 기태.grumble
+          with: [지완]
+          text: "경위님은 무슨. 커피 있냐. 믹스로."
+      - say:
+          char: 도겸
+          with: [기태]
+          text: "저희 믹스 없는데요. 원두밖에."
+      - say:
+          char: 기태
+          with: [도겸]
+          text: "원두는 왜 먹냐 쓰기만 하지. 됐어, 물 줘."
+      - say:
+          char: 도겸
+          with: [기태]
+          text: "네."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "사무실 좁다. 작년에 왔을 땐 안 이랬는데."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "작년엔 3층이었어요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "아 2층으로 내려왔구나. 그럼 월세도 내려왔겠네."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "네."
+      - say:
+          char: 기태
+          motion: sigh
+          with: [지완]
+          text: "…그래. 내가 말을 참 잘해."
+      - move: { id: 기태, toward: 지완, style: approach }
+      - say:
+          char: 기태
+          with: [지완]
+          text: "노원 거 봤지."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "오전에 기사로요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "그거 내가 썼어. 수사보고서. 쓰는 데 삼 주 걸렸다."
+      - say:
+          char: 도겸
+          with: [기태]
+          text: "그걸 검찰이 안 봤다는 거예요?"
+      - say:
+          char: 기태
+          with: [도겸]
+          text: "봤지. 보고 밑에다가 판독표를 깔더라. 그럼 끝이야."
+      - say:
+          channel: record
+          with: []
+          text: "수사보고(사망사건) · 2033.03.07 22:10 노원구 장위동 주택 2층 · 오희남(59) 사망 · 신고자 배동식(63·배우자)"
+      - say:
+          channel: record
+          with: []
+          text: "부검 결과 질식사. 베개에 의한 외력 가능성 배제 불가. 외부 침입 흔적 없음. 당일 출입 기록 배동식 1인."
+      - say:
+          channel: record
+          with: []
+          text: "처분 의견 · 정서적 범행가능성 심사 결과 기준 미달. 기소 유예가 아니라 불기소. 2033.03.19"
+      - say:
+          char: 지완
+          with: [기태]
+          text: "외부 침입 없음, 출입 기록 한 사람. 그런데 불기소요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "응. 그 양반 수치가 사람 죽일 수 있는 수치가 아니래."
+      - say:
+          char: 도겸
+          with: [기태]
+          text: "그럼 그냥 돌아가신 거 아니에요? 아프셨다면서요."
+      - say:
+          char: 기태
+          with: [도겸]
+          text: "그럼 왜 베개 솜이 그렇게 눌려 있냐."
+      - say:
+          char: 도겸
+          motion: freeze
+          with: [기태]
+          text: "…아."
+      - move: { id: 기태, style: reset }
+      - say:
+          char: 기태
+          with: [지완]
+          text: "지완아. 나 다음 달에 전출이야. 이거 서랍에 넣고 가면 영영 서랍이야."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "저는 수사권이 없어요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "너는 이의신청을 하잖아. 수치가 틀렸다고."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "그건 낮게 나와서 손해 본 사람 거고요."
+      - say:
+          char: 기태
+          motion: lean_in
+          with: [지완]
+          text: "이번엔 낮게 나와서 이득 본 사람이야. 방향만 반대지 같은 거 아니냐."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "…"
+      - say:
+          char: 기태
+          with: [지완]
+          text: "그 영감 20년을 버스 몰았어. 147번. 부인 암 걸리고 바로 그만뒀고."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "그 집 냉장고에 도시락통이 있더라. 초록색. 뚜껑에 날짜가 쭉."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "그게 왜 보고서에 없어요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "있어. 7페이지. 거기까지 안 본 거지."
+      - choice:
+          key: o0_case
+          prompt: "서류를 받는다."
+          char: 지완
+          with: [기태]
+          options:
+            - text: "\"일당은 없는 거죠?\" 봉투를 가져온다"
+              goto: take
+              set: { took_case: true }
+            - text: "\"경위님, 저 이거 하면 뭐가 남습니까.\""
+              goto: push
+            - text: "\"한 번만 보고 돌려 드릴게요.\""
+              goto: hedge
+              set: { took_case: true }
+
+  take:
+    actions:
+      - say:
+          char: 기태.grumble
+          with: [지완]
+          text: "없지. 있으면 내가 했게."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "복사비는 받을게요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "얼만데."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "7페이지까지만 보면 1,400원이요."
+      - say:
+          char: 기태
+          motion: laugh
+          with: [지완]
+          text: "이 새끼 농담하는 거 보니까 할 생각이네."
+      - goto: close
+
+  push:
+    actions:
+      - say:
+          char: 기태
+          with: [지완]
+          text: "뭐가 남긴. 아무것도 안 남아."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "그럼 왜 저한테 오셨어요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "…너는 그 숫자 보고 이상하다고 할 사람이니까."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "제가 1이라서요."
+      - say:
+          char: 기태.grumble
+          with: [지완]
+          text: "아이, 참. 그렇게 말하면 내가 나쁜 놈 되잖아."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "나쁜 놈은 아니고 맞는 말이에요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "그래서 할 거야 말 거야."
+      - choice:
+          key: o0_case_again
+          prompt: "다시 묻는다."
+          char: 기태
+          with: [지완]
+          options:
+            - text: "\"7페이지까지만 보겠습니다.\""
+              goto: close
+              set: { took_case: true }
+            - text: "\"안 합니다. 이의신청서나 쓸게요.\""
+              goto: refuse
+
+  hedge:
+    actions:
+      - say:
+          char: 기태
+          with: [지완]
+          text: "돌려주긴 뭘 돌려줘. 그거 사본이야."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "사본을 왜 들고 다니세요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "원본을 들고 다니면 그게 유출이고, 사본을 들고 다니면 이건 뭐 그냥 종이지."
+      - say:
+          char: 지완
+          with: [기태]
+          text: "그 논리 어디서 배우셨어요."
+      - say:
+          char: 기태.grumble
+          with: [지완]
+          text: "이십 년 배웠어."
+      - goto: close
+
+  refuse:
+    actions:
+      - say:
+          char: 기태
+          with: [지완]
+          text: "그래. 알았다."
+      - move: { id: 기태, toward: 지완, style: retreat }
+      - say:
+          char: 기태
+          with: [지완]
+          text: "근데 하나만 보고 가라."
+      - say:
+          channel: record
+          with: []
+          text: "참고인 진술 요지 · 이웃 3인 공통 · '그 양반 이십 년을 도시락 싸서 나갔어요.'"
+      - say:
+          channel: record
+          with: []
+          text: "배동식 정서 판독 이력 · 배우자 애착 2 · 배우자 사망 당일 슬픔 1 · 최근 2년 평균 2.1"
+      - say:
+          char: 기태
+          with: [지완]
+          text: "이십 년 도시락 싼 놈이 부인 죽은 날 슬픔 1이야."
+      - say:
+          char: 지완.break
+          with: [기태]
+          text: "…그거 다시 보여 주세요."
+      - say:
+          char: 기태
+          with: [지완]
+          text: "봐라. 안 바쁘면 천천히 봐."
+      - set: { took_case: true }
+      - goto: close
+
+  close:
+    actions:
+      - say:
+          char: 기태
+          with: [지완, 도겸]
+          text: "나 간다. 물 고맙다."
+      - say:
+          char: 도겸
+          with: [기태]
+          text: "안 드셨는데요."
+      - say:
+          char: 기태
+          with: [도겸]
+          text: "고맙다고 했지 마셨다고 했냐."
+      - move: { id: 기태, style: exit, wait: true }
+      - goto: after
+
+  after:
+    title: "그날 밤"
+    actions:
+      - bg: { id: office_night, transition: dissolve, duration: 700 }
+      - place: "같은 날 오후 11시 10분 · 사무소"
+      - music: lowscore
+      - char: { id: 지완, position: left }
+      - char: { id: 도겸, position: right }
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "소장님 저 막차요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "가. 내일 늦게 와도 돼."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "그 말 하시면 꼭 아침에 전화하시더라."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "안 해."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "…저 근데요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "응."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "저희 형이 작년에 면접 열한 번 떨어졌거든요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "들었어."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "성실성 31 나와서요. 실제로는 형이 저보다 백 배 성실한데."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "알아."
+      - say:
+          char: 도겸
+          with: [지완]
+          text: "그래서 이 사건 이상하다고 하신 거 저도 좀… 그냥, 알겠더라고요."
+      - say:
+          char: 지완
+          with: [도겸]
+          text: "들어가."
+      - say:
+          char: 도겸
+          motion: nod
+          with: [지완]
+          text: "네. 전화 하지 마세요."
+      - move: { id: 도겸, style: exit, wait: true }
+      - say:
+          channel: record
+          with: []
+          text: "수사보고 7페이지 · 주방 냉장고 상단 · 반찬통 1(초록, 2단) · 뚜껑 내측 유성펜 날짜 다수 · 최종 기재 2033.03.07"
+      - say:
+          channel: record
+          with: []
+          text: "오희남 진료 요약 · 2031.03 췌장암 4기 진단 · 2032.09 이후 완화의료 전환 · 통증 조절 실패 기록 11건"
+      - say:
+          channel: record
+          with: []
+          text: "배동식 고용 이력 · 2013~2031 서울 OO운수 147번 · 2031.03.21 자진 퇴사 · 사유란 '가정'"
+      - say:
+          channel: thought
+          with: []
+          text: "진단 다음 날 그만뒀다."
+
+  call:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "메시지 · 2033년 3월 20일 오후 11:42"
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "배동식 선생님 번호 맞으실까요"
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "노원경찰서 일로 서류 보는 사람입니다 경찰은 아닙니다"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "예"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "맞습니다"
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "내일 오전에 잠깐 뵐 수 있을까요"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "오시면 됩니다"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "147번 타고 장위삼거리에서 내리십시오 종점까지 가면 돌아와야 합니다"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "종점에서 내리는 사람이 꼭 있어요 그러면 길을 건너야 해서 오래 걸립니다"
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "네 장위삼거리에서 내리겠습니다"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "9시 넘어 오십시오 그 전엔 애가 있습니다"
+      - say:
+          channel: message
+          side: me
+          char: 지완
+          with: []
+          text: "애요"
+      - say:
+          channel: message
+          side: them
+          char: 동식
+          with: []
+          text: "손녀입니다 학교 보내고 나면 됩니다"
+      - goto: /1.yaml

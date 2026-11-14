@@ -1,0 +1,193 @@
+assets:
+  backgrounds:
+    title: assets/bg/title.svg
+    office: assets/bg/office.svg
+    office_night: assets/bg/office_night.svg
+    dongsik_house: assets/bg/dongsik_house.svg
+    heenam_room: assets/bg/heenam_room.svg
+    hansin_lobby: assets/bg/hansin_lobby.svg
+    hansin_room: assets/bg/hansin_room.svg
+    police_desk: assets/bg/police_desk.svg
+    cafe: assets/bg/cafe.svg
+    street_rain: assets/bg/street_rain.svg
+    studio: assets/bg/studio.svg
+    server_floor: assets/bg/server_floor.svg
+    crosswalk: assets/bg/crosswalk.svg
+    form_sticker: assets/items/appeal_form.svg
+    lunchbox_sticker: assets/items/lunchbox.svg
+    recorder_sticker: assets/items/recorder.svg
+    raw_sticker: assets/items/raw_print.svg
+    pill_sticker: assets/items/pill_bag.svg
+  characters:
+    지완:
+      name: "문지완"
+      placement: prompt-top
+      base: assets/char/jiwan.svg
+      facing: left
+      defaultDelivery: calm
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        tight: assets/char/jiwan-tight.svg
+        break: assets/char/jiwan-break.svg
+      emotionMotions:
+        break: freeze
+    도겸:
+      name: "임도겸"
+      placement: prompt-top
+      base: assets/char/dogyeom.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        wide: assets/char/dogyeom-wide.svg
+      emotionMotions:
+        wide: startle
+    기태:
+      name: "노기태"
+      placement: prompt-top
+      base: assets/char/gitae.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        grumble: assets/char/gitae-grumble.svg
+      emotionMotions:
+        grumble: sigh
+    동식:
+      name: "배동식"
+      placement: prompt-top
+      base: assets/char/dongsik.svg
+      facing: left
+      defaultDelivery: calm
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        far: assets/char/dongsik-far.svg
+        shut: assets/char/dongsik-shut.svg
+      emotionMotions:
+        shut: droop
+    하율:
+      name: "배하율"
+      placement: prompt-top
+      base: assets/char/hayul.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        grin: assets/char/hayul-grin.svg
+      emotionMotions:
+        grin: hop
+    수경:
+      name: "한수경"
+      placement: prompt-top
+      base: assets/char/sukyung.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        edge: assets/char/sukyung-edge.svg
+        tired: assets/char/sukyung-tired.svg
+      emotionMotions:
+        edge: lean_in
+    세라:
+      name: "윤세라"
+      placement: prompt-top
+      base: assets/char/sera.svg
+      facing: left
+      defaultDelivery: neutral
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+      emotions:
+        joke: assets/char/sera-joke.svg
+        drop: assets/char/sera-drop.svg
+      emotionMotions:
+        drop: droop
+    희남:
+      name: "오희남 (녹음)"
+      placement: prompt-top
+      base: assets/char/heenam.svg
+      facing: left
+      defaultDelivery: whisper
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+        full: { scale: 1 }
+  music:
+    quant: assets/music/quant.flac
+    lowscore: assets/music/lowscore.flac
+    standard: assets/music/standard.flac
+    overflow: assets/music/overflow.flac
+    street: assets/music/street.flac
+  sfx:
+    read: assets/sfx/read.wav
+    click: assets/sfx/click.wav
+
+state:
+  took_case: false
+  showed_score: false
+  trust: 0
+  ev_drawing: false
+  ev_calendar: false
+  ev_pills: false
+  ev_recorder: false
+  ev_lunchbox: false
+  met_hayul: false
+  sera_case: false
+  met_sukyung: false
+  heard_overflow: false
+  has_raw: false
+  told_gitae: false
+  deal: false
+  sera_knows: false
+  confession: false
+
+inventory:
+  appeal_form:
+    name: "재측정 이의신청서"
+    description: "문지완 본인 건. 2033년 3월 20일 접수, 여덟 번째. 판정 지수 칸에 1이 세 개."
+    image: assets/items/appeal_form.svg
+    category: "서류"
+    order: 10
+  lunchbox:
+    name: "초록색 도시락통"
+    description: "뚜껑 안쪽에 유성펜으로 날짜. 마지막 줄이 3월 7일이다. 배동식이 20년을 쓴 통."
+    image: assets/items/lunchbox.svg
+    category: "증거"
+    order: 20
+  recorder:
+    name: "협탁 녹음기"
+    description: "오희남의 병실용 녹음기. 파일 119개. 1번은 2031년 5월, 마지막은 2033년 3월 6일."
+    image: assets/items/recorder.svg
+    category: "증거"
+    order: 30
+  pill_bag:
+    name: "날짜가 적힌 약봉지"
+    description: "하율이 접어서 모아 둔 진통제 봉지. 마지막 봉지에 2033. 03. 06. 그날 치가 남아 있다."
+    image: assets/items/pill_bag.svg
+    category: "증거"
+    order: 40
+  raw_print:
+    name: "원본 로그 출력물"
+    description: "환산 전 값. 사랑 20002, 슬픔 30001, 죄책감 10001. 같은 줄의 환산 후 값은 2, 1, 1이다."
+    image: assets/items/raw_print.svg
+    category: "증거"
+    order: 50

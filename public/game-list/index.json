@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-14T02:40:41.098Z",
+  "generatedAt": "2026-11-14T02:50:34.437Z",
   "games": [
     {
       "id": "360",
@@ -186,6 +186,79 @@
         ],
         "image": "/game-list/muwon/assets/share/og.png",
         "imageAlt": "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
+      }
+    },
+    {
+      "id": "overflow",
+      "name": "오버플로",
+      "path": "/game-list/overflow/",
+      "author": "uiwwsw",
+      "version": "1.0.0",
+      "summary": "감정을 숫자로 재는 에모스가 채용·결혼·형량까지 정하는 2033년 한국. 모든 수치가 1로 나오는 이의신청 대행업자가, 수치가 너무 낮아 불기소된 살인사건을 맡는다. 증거를 직접 뒤지는 5장 SF 미스터리. 결말 4종.",
+      "summaryEn": "By 2033 every hire, marriage and sentence in Korea runs on EMOS, a service that puts a number on what you feel. A man whose every reading comes back as 1 takes on a murder the prosecution dropped because the suspect's anger was too low to kill. Five chapters, four endings.",
+      "thumbnail": "/game-list/overflow/assets/bg/title.svg",
+      "tags": [
+        "sci-fi",
+        "mystery",
+        "modern",
+        "investigation",
+        "twist",
+        "complete"
+      ],
+      "tagLabels": {
+        "sci-fi": "SF",
+        "mystery": "미스터리",
+        "modern": "근미래",
+        "investigation": "직접 조사",
+        "twist": "반전",
+        "complete": "완결"
+      },
+      "languages": [
+        "ko"
+      ],
+      "showcase": {
+        "label": "OVERFLOW · 5 CHAPTERS",
+        "backgroundColor": "#0c111a",
+        "image": {
+          "positionX": 30,
+          "positionY": 50,
+          "scale": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "legalNotices": [
+        {
+          "id": "content-warning",
+          "title": "내용 안내",
+          "text": "이 작품에는 말기 암 환자의 고통, 조력 죽음과 살인, 자살 충동에 대한 언급, 수치에 따른 차별과 해고가 나옵니다. 죽음은 화면 밖에서 다루고, 방법은 묘사하지 않습니다."
+        },
+        {
+          "id": "fiction",
+          "title": "허구 안내",
+          "text": "에모스와 한신뉴로, 작중의 모든 법령·판례·수치는 지어낸 것입니다. 실제 기업·제도·사건과 관계가 없습니다."
+        }
+      ],
+      "chapterCount": 5,
+      "endingCount": 4,
+      "seo": {
+        "title": "오버플로",
+        "description": "감정을 숫자로 재는 에모스가 채용·결혼·형량까지 정하는 2033년 한국. 모든 수치가 1로 나오는 이의신청 대행업자 문지완은, 수치가 너무 낮아 불기소된 살인사건을 맡는다. 5장 SF 미스터리, 결말 4종.",
+        "keywords": [
+          "SF 미스터리",
+          "비주얼노벨",
+          "감정 측정",
+          "법정 추리",
+          "반전",
+          "sci-fi",
+          "mystery",
+          "modern",
+          "investigation",
+          "twist",
+          "complete"
+        ],
+        "image": "/game-list/overflow/assets/bg/title.svg",
+        "imageAlt": "선으로만 그린 얼굴 옆에 숫자 1이 서 있고, 오른쪽은 수많은 숫자가 벽처럼 쌓인 그림"
       }
     },
     {
@@ -382,11 +455,12 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록, 튜토리얼, ERASE, Live2D 테스트: 렌 수다.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록, 오버플로, 튜토리얼, ERASE, Live2D 테스트: 렌 수다.",
     "keywords": [
       "360",
       "8비트 심장",
       "무원 — 한성 검안록",
+      "오버플로",
       "튜토리얼",
       "ERASE",
       "Live2D 테스트: 렌 수다",
@@ -426,8 +500,10 @@
       "추리 게임",
       "SF 미스터리",
       "비주얼노벨",
-      "시뮬레이션",
+      "감정 측정",
+      "법정 추리",
       "반전",
+      "시뮬레이션",
       "심리 드라마",
       "현대극"
     ],
@@ -435,10 +511,11 @@
       "360",
       "8비트 심장",
       "무원 — 한성 검안록",
+      "오버플로",
       "튜토리얼",
       "ERASE",
       "Live2D 테스트: 렌 수다"
     ],
-    "gameCount": 6
+    "gameCount": 7
   }
 }

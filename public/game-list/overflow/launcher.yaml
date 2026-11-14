@@ -1,0 +1,29 @@
+languages: [ko]
+summary: "감정을 숫자로 재는 에모스가 채용·결혼·형량까지 정하는 2033년 한국. 모든 수치가 1로 나오는 이의신청 대행업자가, 수치가 너무 낮아 불기소된 살인사건을 맡는다. 증거를 직접 뒤지는 5장 SF 미스터리. 결말 4종."
+thumbnail: "assets/bg/title.svg"
+tags:
+  - sci-fi
+  - mystery
+  - modern
+  - investigation
+  - twist
+  - complete
+tagLabels:
+  sci-fi: SF
+  mystery: 미스터리
+  modern: 근미래
+  investigation: 직접 조사
+  twist: 반전
+  complete: 완결
+showcase:
+  label: "OVERFLOW · 5 CHAPTERS"
+  backgroundColor: "#0c111a"
+  image:
+    positionX: 30
+    positionY: 50
+    scale: 1
+    offsetX: 0
+    offsetY: 0
+translations:
+  en:
+    summary: "By 2033 every hire, marriage and sentence in Korea runs on EMOS, a service that puts a number on what you feel. A man whose every reading comes back as 1 takes on a murder the prosecution dropped because the suspect's anger was too low to kill. Five chapters, four endings."

@@ -98,6 +98,12 @@ function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): numb
 
 function resolveMobileShotScale(shot: CameraShot, visibleCharacterCount: number): number {
   if (visibleCharacterCount <= 0) return 1;
+  // A phone is about one actor wide. Zooming spreads the anchors apart faster than the screen
+  // grows, so in a two- or three-shot the outer actor walked off the edge — or was covered by
+  // the one drawn after it, which is how a lead could be on stage and invisible. Pairs and
+  // trios therefore keep the stage as composed; a lone actor still gets the authored push-in,
+  // where there is nobody to lose. The desktop profile is untouched.
+  if (visibleCharacterCount > 1) return 1;
   return MOBILE_SHOT_SCALE[shot];
 }
 

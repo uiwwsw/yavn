@@ -9,7 +9,7 @@ scenes:
     actions:
       - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "끊임없는 공허함." }
+      - say: { channel: narration, text: "움집에 불을 끄고 누운 밤이 이랬다. 다만 여기에는 지붕이 없다." }
       - music: void
       - say: { channel: narration, text: "눈을 떴다." }
       - say: { channel: narration, text: "떴는데 달라진 것이 없다." }
@@ -73,10 +73,10 @@ scenes:
       - place: "1894년 유월 · 제물포 객주 마당"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
-      - say: { char: 봉구, text: "주인어른, 포구에 왜선이 또 들어왔습니다. 오늘만 넉 척째예요." }
-      - say: { char: 봉구, text: "쌀이 열흘 새 닷 냥에서 아홉 냥이 됐습니다. 저자에선 내일 열두 냥 간답니다." }
+      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 왜선이 또 들어왔습니다. 오늘만 넉 척째예요." }
+      - say: { char: 봉구, with: [만석], text: "쌀이 열흘 새 닷 냥에서 아홉 냥이 됐습니다. 저자에선 내일 열두 냥 간답니다." }
       - say: { char: 만석, with: [봉구], text: "곳간에 몇 섬이냐." }
-      - say: { char: 봉구, motion: sigh, text: "삼백 하고 열두 섬이요. 어젯밤에도 세셨잖습니까. 그저께 밤에도요." }
+      - say: { char: 봉구, with: [만석], motion: sigh, text: "삼백 하고 열두 섬이요. 어젯밤에도 세셨잖습니까. 그저께 밤에도요." }
       - say:
           channel: action
           when: { var: v0, op: eq, value: hold }
@@ -86,11 +86,11 @@ scenes:
           when: { var: v0, op: eq, value: kin }
           text: "안채에서 기침 소리가 난다. 주판알이 손에서 미끄러진다."
       - char: { id: 끝순, position: center }
-      - say: { char: 끝순, text: "아버지, 진지 드세요. 봉구 오라버니 것도 퍼 왔어요." }
+      - say: { char: 끝순, with: [만석], text: "아버지, 진지 드세요. 봉구 오라버니 것도 퍼 왔어요." }
       - say: { char: 만석, with: [끝순, 봉구], text: "기침이 왜 그 모양이냐." }
-      - say: { char: 끝순, text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }
-      - say: { char: 봉구, text: "열여섯 먹은 처자가 총 멘 것들을 구경해?" }
-      - say: { char: 끝순, motion: laugh, text: "총은 안 무섭던데요. 말이 무섭지. 말이 그렇게 큰 줄 몰랐어요." }
+      - say: { char: 끝순, with: [만석], text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }
+      - say: { char: 봉구, with: [만석], text: "열여섯 먹은 처자가 총 멘 것들을 구경해?" }
+      - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 안 무섭던데요. 말이 무섭지. 말이 그렇게 큰 줄 몰랐어요." }
       - say: { char: 봉구, with: [만석], text: "그리고 주인어른. 대문 밖에 덕이 어멈이 와 있습니다. 화도진 사람들 열댓하고요." }
       - say: { char: 봉구, with: [만석], text: "쌀을 외상으로 달랍니다. 가을에 갚는다고요. 저자 쌀집은 죄다 문을 걸었답니다." }
       - goto: rice_choice
@@ -134,7 +134,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "안다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석, 봉구], text: "덕이네는 애가 넷이에요, 오라버니. 닷 되면 나흘인데." }
-      - say: { char: 봉구, with: [끝순], text: "그래서 엿 되 주자고? 네가 서기 해라, 그럼." }
+      - say: { char: 봉구, with: [끝순, 만석], text: "그래서 엿 되 주자고? 네가 서기 해라, 그럼." }
       - say: { channel: action, with: [], text: "해 질 때까지 되질을 했다. 곳간에서 스무 섬이 나갔다." }
       - goto: fever
 
