@@ -443,7 +443,7 @@ scenes:
           char: 윤재
           motion: droop
           with: []
-          text: "차라리 편해. 기다릴 사람이 없으면 실망할 일도 없으니까."
+          text: "…이제 안 기다려. 그게 편해. 아무튼 편해."
       - say:
           char: 윤재
           with: []

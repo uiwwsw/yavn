@@ -167,7 +167,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "'진짜' 두 번. 저장된 칸이랑 같음. 거짓말."
+          text: "…그 '진짜'가 두 번이야. 그 칸에 넣을게."
       - say:
           char: 윤재
           motion: stomp
@@ -200,7 +200,7 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "미안 아님. 안 이은 여덟 개는 안 지워짐. 아무것도 안 들어 있어서." }
       - say: { char: 로봇.thinking, with: [윤재], text: "차폐 — 껌 포장지 은박. 설명서에 없는 재료. 성능 측정 불가." }
       - say: { char: 윤재, with: [로봇], text: "그게 제일 중요한 걸 수도 있어. 측정 안 되면 못 지우잖아." }
-      - say: { char: 로봇, with: [윤재], text: "…기록함. 칸 하나 씀." }
+      - say: { char: 로봇, with: [윤재], text: "…그건 적어 둘게." }
       - say: { char: 로봇, with: [윤재], text: "점검 끝. 나를 만든 거 전부 코어가 탐낼 가치가 없는 것들임." }
       - say: { char: 윤재.sad, with: [로봇], text: "…그래서 너만 들어갈 수 있는 거야." }
       - say: { char: 로봇.thinking, with: [윤재], text: "카드 점검. 빈 카드 아님. 이미 뭐가 들어 있음." }
@@ -447,7 +447,7 @@ scenes:
           char: 로봇.thinking
           motion: freeze
           with: [윤재]
-          text: "…처리 중. 이거 처음 듣는 단어임. 칸 하나 새로 만들어야 함."
+          text: "…그 말은 처음 들어. 넣을 칸이 없어서 하나 만들어야 돼."
       - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음" }
       - say: { char: 로봇.happy, with: [윤재], text: "카드 읽었음. 들어갈 때 넣은 거 그대로 있음. 글자 안 틀렸음." }
       - say: { char: 윤재, with: [로봇], text: "…하이스코어 자리에." }
@@ -643,7 +643,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "참치마요. 설명서에 없는 단어. 뜻은?"
+          text: "참치마요. 그건 또 뭔데."
       - say:
           char: 윤재
           motion: laugh
