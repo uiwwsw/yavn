@@ -267,13 +267,15 @@ scenes:
 
   sign_cannot_leave:
     actions:
-      - say: { channel: action, with: [차피디], text: "일어서려고 했다. 손은 펜을 쥐고 있다." }
+      - wait: 1100
+      - say: { channel: action, with: [차피디], text: "일어서려고 했다. 손은 펜을 쥐고 있다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "월세 자동이체가 25일. 실손보험이 27일. 숫자가 먼저 온다." }
       - goto: sign_yes
 
   sign_cannot_stay:
     actions:
-      - say: { channel: action, with: [차피디], text: "펜을 들었다. 어느새 가방끈이 어깨에 걸려 있다." }
+      - wait: 1100
+      - say: { channel: action, with: [차피디], text: "펜을 들었다. 어느새 가방끈이 어깨에 걸려 있다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "앉아서 이름 석 자만 쓰면 되는데. 매번 문 쪽으로 몸이 먼저 간다." }
       - goto: sign_no
 
@@ -334,7 +336,7 @@ scenes:
           when: { var: l4_signed, op: eq, value: false }
           text: "서랍에 통장이 하나 있다. 잔액은 장례비에 조금 못 미친다."
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
-      - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 지우지 않았다. 답장 칸에 커서가 깜박인다." }
+      - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 지우지 않았다. 답장 칸에 커서가 깜박인다.", wait: 1100 }
       - say: { channel: thought, with: [], text: "통은 가져가지 않았다. 김치는 쉬었을 것이다. 쉰 김치는 찌개를 하면 된다고 엄마가 말했다." }
       - say: { channel: thought, with: [], text: "지금 쓰면 어디로 가는지 모른다. 안 쓰면 어디로도 안 간다." }
       - say: { channel: action, with: [], text: "커서는 밤새 깜박인다. 손은 이불 위에 있다." }

@@ -371,7 +371,7 @@ scenes:
     actions:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
       - bg: { id: void, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say:
@@ -388,7 +388,7 @@ scenes:
               - { var: v0, op: eq, value: kin }
               - { var: v4, op: eq, value: kin }
           text: "223.7. 목록에 이미 있는 숫자다. 넷 중 첫째 칸과 같다."
-      - say: { channel: narration, text: "편집실 층수가 빠져나간다. 보험 증권 장수가, 책 제목이 빠져나간다." }
+      - say: { channel: narration, text: "편집실 층수가 빠져나간다. 보험 증권 장수가, 책 제목이 빠져나간다.", autoAdvance: 2366 }
       - say: { channel: narration, text: "되물을 수 있었던 것들이 먼저 나간다. 궤짝 오른쪽. 연필심. 다리 밑 바람 방향." }
       - branch:
           cases:

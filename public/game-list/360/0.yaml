@@ -139,17 +139,17 @@ scenes:
     actions:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "그것 하나를 쥐자 덜 어두운 쪽으로 기울어진다." }
-      - say: { channel: narration, text: "쥔 것 말고는 손에 걸리는 게 없다. 셋이나 찾아 놨는데 하나만 따라온다." }
+      - say: { channel: narration, text: "그것 하나를 쥐자 덜 어두운 쪽으로 기울어진다.", autoAdvance: 2232 }
+      - say: { channel: narration, text: "쥔 것 말고는 손에 걸리는 게 없다. 셋이나 찾아 놨는데 하나만 따라온다.", autoAdvance: 2462 }
       - bg: { id: void, transition: wipeLeft, duration: 380 }
-      - say: { channel: narration, text: "처음에는 느리다. 그 생각을 할수록 빨라진다." }
+      - say: { channel: narration, text: "처음에는 느리다. 그 생각을 할수록 빨라진다.", autoAdvance: 1720 }
       - bg: { id: void_light, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
-      - say: { channel: narration, text: "재가 지나간다. 독이 지나간다. 얼음 얇던 가운데가 지나간다." }
+      - say: { channel: narration, text: "재가 지나간다. 독이 지나간다. 얼음 얇던 가운데가 지나간다.", autoAdvance: 1828 }
       - bg: { id: void, transition: wipeLeft, duration: 260 }
-      - say: { channel: narration, text: "강 건너 마을의 이름이 먼저 빠져나간다. 그다음은 아이의 이름이다." }
+      - say: { channel: narration, text: "강 건너 마을의 이름이 먼저 빠져나간다. 그다음은 아이의 이름이다.", autoAdvance: 1784 }
       - effect: { name: zoom, wait: true }
-      - say: { channel: narration, text: "서른 해가 빠져나간다. 겨울이 빠져나간다. 빠져나간 자리가 아프지도 않다." }
+      - say: { channel: narration, text: "서른 해가 빠져나간다. 겨울이 빠져나간다. 빠져나간 자리가 아프지도 않다.", autoAdvance: 1812 }
       - say: { channel: narration, text: "끝에 쥔 것 하나만 남는다. 그게 무슨 말이었는지도 곧 잊는다." }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1894년 유월\n제물포" }
@@ -209,7 +209,8 @@ scenes:
   rice_cannot:
     actions:
       - sticker: { id: key, image: key_sticker, x: 50, y: 32, width: "clamp(150px, 20%, 280px)", enter: fadeIn, inputLockMs: 300 }
-      - say: { channel: action, with: [], text: "열쇠를 자물쇠에 댄다. 손목이 돌아가지 않는다." }
+      - wait: 1100
+      - say: { channel: action, with: [], text: "열쇠를 자물쇠에 댄다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "빈 독 바닥을 긁는 소리가 난 것 같다. 우리 집에 빈 독은 없다." }
       - clearSticker: { id: key, leave: fadeOut }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "주인어른? 여시는 겁니까, 마시는 겁니까." }
@@ -288,7 +289,8 @@ scenes:
 
   leave_cannot:
     actions:
-      - say: { channel: action, with: [], text: "짚신을 신고 문지방에 선다. 발이 넘어가지 않는다." }
+      - wait: 1100
+      - say: { channel: action, with: [], text: "짚신을 신고 문지방에 선다. 발이 넘어가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: action, with: [], text: "등 뒤에서 기침 소리가 난다. 돌아본다. 호롱불은 켜져 있다." }
       - say: { channel: thought, with: [], text: "켜져 있는 걸 보고도 숨이 안 쉬어진다. 불이 꺼진 방을 본 적은 없는데." }
       - say: { char: 만석, with: [봉구], text: "봉구야. 네가 가라. 수결은 네가 해라." }
@@ -393,7 +395,8 @@ scenes:
           when: { var: l1_end, op: eq, value: poor }
           text: "네 탓이 아니다. 너는 객주 차렸으면 됐다. 문 닫지 마라."
       - say: { char: 봉구, with: [만석], text: "뭐 드시고 싶은 건 없습니까." }
-      - say: { char: 만석, with: [봉구], text: "…됐다. 불이나 끄지 마라." }
+      - wait: 800
+      - say: { char: 만석, with: [봉구], text: "…됐다. 불이나 끄지 마라.", wait: 900 }
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void
       - goto: void_one
@@ -457,7 +460,7 @@ scenes:
     actions:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
       - bg: { id: void, transition: wipeLeft, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "포구 이름이 먼저 빠져나간다. 그다음은 허리춤에 있던 것의 무게." }
