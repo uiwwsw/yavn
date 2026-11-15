@@ -151,48 +151,39 @@ scenes:
     title: "각도"
     actions:
       - say: { channel: narration, text: "목소리들이 각자 멈춘 자리를 말했다. 자리마다 숫자가 하나씩 붙어 있었다." }
-      - say: { channel: narration, text: "겨울만 나오는 쪽에도 붙어 있다. 숫자는 그쪽이 제일 먼저다." }
       - say:
           channel: record
-          when: { var: v0, op: eq, value: hold }
-          text: "041.2"
-      - say:
-          channel: record
-          when: { var: v0, op: eq, value: kin }
-          text: "223.7"
-      - say:
-          channel: record
-          when: { var: v1, op: eq, value: say }
+          when: { var: t_say, op: eq, value: true }
           text: "118.5"
       - say:
           channel: record
-          when: { var: v1, op: eq, value: free }
+          when: { var: t_free, op: eq, value: true }
           text: "307.9"
       - say:
           channel: record
-          when: { var: v2, op: eq, value: guard }
+          when: { var: t_guard, op: eq, value: true }
           text: "076.3"
       - say:
           channel: record
-          when: { var: v2, op: eq, value: stay }
+          when: { var: t_stay, op: eq, value: true }
           text: "251.0"
       - say:
           channel: record
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "164.8"
       - say:
           channel: record
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "339.4"
-      - say: { channel: narration, text: "소수점 한 자리까지 있다. 넷 다 다르다." }
+      - say: { channel: narration, text: "소수점 한 자리까지 있다. 셋 다 다르다." }
       - say: { channel: narration, text: "이 숫자를 나는 안다. 작년 삼월에 자막으로 쓰자고 한 숫자다." }
       - say: { channel: record, text: "녹취 07. 유정림(71, 전 수학 교사). \"나는 그걸 각도라고 불러. 지구본에 점 하나 찍는 거지.\"" }
       - say: { channel: record, text: "\"옆 사람하고 0.001도 차이일 수도 있어요. 그래도 같은 점은 없어. 360도 어디에도.\"" }
       - say: { channel: narration, text: "유 선생님은 수학을 사십 년 가르쳤다. 그 말을 할 때 손가락으로 지구본을 한 바퀴 돌렸다." }
       - say: { channel: narration, text: "차 피디가 좋아했다. 2부 제목으로 쓰자고 했다. 같은 점은 없다." }
       - say: { channel: narration, text: "나는 그때 그 말을 확인하지 못했다. 한 사람이 두 번 쓴 숫자를 본 적이 없으니까." }
-      - say: { channel: narration, text: "지금 넷을 본다. 넷 다 한 사람 것이다." }
-      - say: { channel: narration, text: "넷 다 다르다. 유 선생님 말이 맞았다." }
+      - say: { channel: narration, text: "지금 셋을 본다. 셋 다 한 사람 것이다." }
+      - say: { channel: narration, text: "셋 다 다르다. 유 선생님 말이 맞았다." }
       - say: { channel: narration, text: "여기까지가 확인이다." }
       - goto: leftovers
 
@@ -203,37 +194,29 @@ scenes:
       - say: { channel: narration, text: "가져가지 않은 쪽은 아직 여기 있다. 어두운 쪽에." }
       - say:
           channel: record
-          when: { var: v0, op: eq, value: hold }
-          text: "223.7 — 그날 나가지 않았더라면."
-      - say:
-          channel: record
-          when: { var: v0, op: eq, value: kin }
-          text: "041.2 — 독이 비지 않았더라면."
-      - say:
-          channel: record
-          when: { var: v1, op: eq, value: say }
+          when: { var: t_say, op: eq, value: true }
           text: "307.9 — 어디에도 매이지 말았어야 했다."
       - say:
           channel: record
-          when: { var: v1, op: eq, value: free }
+          when: { var: t_free, op: eq, value: true }
           text: "118.5 — 말을 했어야 했다."
       - say:
           channel: record
-          when: { var: v2, op: eq, value: guard }
+          when: { var: t_guard, op: eq, value: true }
           text: "251.0 — 떠나지 말았어야 했다."
       - say:
           channel: record
-          when: { var: v2, op: eq, value: stay }
+          when: { var: t_stay, op: eq, value: true }
           text: "076.3 — 아무도 믿지 말았어야 했다."
       - say:
           channel: record
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "339.4 — 한 번은 해 볼걸."
       - say:
           channel: record
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "164.8 — 더 살고 싶었다."
-      - say: { channel: narration, text: "네 번 다 두 개 중에 하나였다. 네 번 다 하나를 놓고 왔다." }
+      - say: { channel: narration, text: "세 번 다 두 개 중에 하나였다. 세 번 다 하나를 놓고 왔다." }
       - say: { channel: narration, text: "놓고 온 쪽은 그대로다. 식지도 않았다." }
       - goto: leftover_look
 
@@ -243,9 +226,9 @@ scenes:
           key: l5_leftover
           prompt: "놓고 온 것 중 하나는 아직 손이 닿는다."
           options:
-            - text: "제일 처음 놓고 온 것을 본다."
+            - text: "쉰여섯 해가 두고 간 것을 본다."
               goto: leftover_first
-            - text: "제일 나중에 놓고 온 것을 본다."
+            - text: "열일곱 해가 두고 간 것을 본다."
               goto: leftover_last
             - text: "보지 않는다."
               goto: last_count
@@ -254,22 +237,21 @@ scenes:
     actions:
       - say:
           channel: narration
-          when: { var: v0, op: eq, value: hold }
-          text: "223.7. 그날 나가지 않았더라면. 아이를 덮어 두고 강 건너로 간 밤이다."
+          when: { var: t_say, op: eq, value: true }
+          text: "307.9. 어디에도 매이지 말았어야 했다. 포구 밖으로 나가 본 것이 평생 한 번이던 쪽이다."
       - say:
           channel: narration
-          when: { var: v0, op: eq, value: hold }
-          text: "곡식을 꾸러 간 것이었다. 돌아왔을 때 불은 꺼져 있었다."
+          when: { var: t_say, op: eq, value: true }
+          text: "곳간이 거기 있어서 나도 거기 있었다. 그 말을 쉰여섯 해 동안 한 번도 소리 내 보지 않았다."
       - say:
           channel: narration
-          when: { var: v0, op: eq, value: kin }
-          text: "041.2. 독이 비지 않았더라면. 좁쌀 두 줌이 바닥에 깔려 있던 겨울이다."
+          when: { var: t_free, op: eq, value: true }
+          text: "118.5. 말을 했어야 했다. 엿 얘기 말고는 한 적이 없던 쪽이다."
       - say:
           channel: narration
-          when: { var: v0, op: eq, value: kin }
-          text: "두 줌으로 사흘을 버텼다. 나흘째에 나갔다."
-      - say: { channel: narration, text: "숫자가 안 잡히던 쪽이 이거다. 몇 해를 살았는지는 끝까지 안 나오고, 이 말만 나온다." }
-      - say: { channel: narration, text: "이쪽을 쥐었으면 그다음 쉰여섯 해가 달랐다. 쥐지 않았다." }
+          when: { var: t_free, op: eq, value: true }
+          text: "고맙다고도 미안하다고도 한 적이 없다. 깨 붙은 엿만 두 번 사다 줬다."
+      - say: { channel: narration, text: "이쪽을 쥐었으면 그다음 삶이 달랐다. 쥐지 않았다." }
       - say: { channel: narration, text: "달랐을 것이라는 말도 지금 처음 해 본다. 그때는 둘 중에 하나였고, 쥔 쪽만 따라갔다." }
       - goto: last_count
 
@@ -277,19 +259,19 @@ scenes:
     actions:
       - say:
           channel: narration
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "339.4. 한 번은 해 볼걸. 열일곱에서 끝난 쪽이 두고 간 말이다."
       - say:
           channel: narration
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "더 살고 싶다는 쪽을 쥐었다. 쥐었더니 일흔아홉까지 왔다. 어느 방에 들어가도 비상구를 먼저 봤다."
       - say:
           channel: narration
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "164.8. 더 살고 싶었다. 열일곱에서 끝난 쪽이 두고 간 말이다."
       - say:
           channel: narration
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "한 번은 해 보는 쪽을 쥐었다. 쥐었더니 2년 넘게 다닌 데가 없었다. 전세금을 빼서 카페를 했다."
       - say: { channel: narration, text: "일흔아홉 해를 그 하나로 썼다. 쓰고 나니 쥐었던 쪽이 뭐였는지는 기억에 없다." }
       - say: { channel: narration, text: "결과만 몸에 남았다. 비상구 표시등을 먼저 보는 습관 같은 것으로." }
@@ -299,7 +281,7 @@ scenes:
     actions:
       - say: { channel: narration, text: "다섯 번째다." }
       - say: { channel: narration, text: "다섯 번째라는 말을 쓰려면 앞의 넷을 세어야 하는데, 세어졌다." }
-      - say: { channel: narration, text: "지금까지 네 번은 여기에 서서 몰랐다. 모르고 하나를 쥐고 갔다." }
+      - say: { channel: narration, text: "앞의 네 번 중 세 번은 모르고 하나를 쥐고 갔다. 맨 처음 한 번은 쥘 줄도 몰랐다." }
       - say: { channel: narration, text: "이번에는 숫자를 안다." }
       - say: { channel: narration, text: "다섯 번째 숫자는 아직 비어 있다." }
       - goto: stake
@@ -337,15 +319,15 @@ scenes:
           prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
           options:
             - text: "곁에 있었어야 했다."
-              set: { v4: kin, deg_last: "223.7" }
+              set: { t_kin: true, deg_last: "223.7" }
               goto: last_go
             - text: "원본을 내 손에 쥐고 있었어야 했다."
               when: { var: l4_signed, op: eq, value: true }
-              set: { v4: hold, deg_last: "041.2" }
+              set: { t_hold: true, deg_last: "041.2" }
               goto: last_go
             - text: "뭐라도 쥐고 있었어야 했다."
               when: { var: l4_signed, op: eq, value: false }
-              set: { v4: hold, deg_last: "041.2" }
+              set: { t_hold: true, deg_last: "041.2" }
               goto: last_go
             - text: "쥐지 않는다."
               goto: last_stop
@@ -377,27 +359,9 @@ scenes:
       - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
       - bg: { id: void_near, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
-      - say:
-          channel: narration
-          when:
-            all:
-              - { var: v0, op: eq, value: hold }
-              - { var: v4, op: eq, value: hold }
-          text: "041.2. 목록에 이미 있는 숫자다. 넷 중 첫째 칸과 같다."
-      - say:
-          channel: narration
-          when:
-            all:
-              - { var: v0, op: eq, value: kin }
-              - { var: v4, op: eq, value: kin }
-          text: "223.7. 목록에 이미 있는 숫자다. 넷 중 첫째 칸과 같다."
       - say: { channel: narration, text: "편집실 층수가 빠져나간다. 보험 증권 장수가, 책 제목이 빠져나간다.", autoAdvance: 2366 }
       - say: { channel: narration, text: "되물을 수 있었던 것들이 먼저 나간다. 궤짝 오른쪽. 연필심. 다리 밑 바람 방향." }
-      - branch:
-          cases:
-            - when: { var: looked_back, op: eq, value: true }
-              goto: look_choice
-          default: last_arrive
+      - goto: winter_in
 
   look_choice:
     actions:
@@ -424,6 +388,143 @@ scenes:
       - effect: { name: flash, wait: true }
       - ending: returner
 
+  # 넷째를 쥐고 기울어지는 중에, 한 번도 재판한 적 없는 것이 하나 더 온다.
+  winter_in:
+    actions:
+      - say: { channel: narration, text: "빠져나가다 멎는다." }
+      - wait: 900
+      - say: { channel: narration, text: "하나가 더 온다." }
+      - say: { channel: narration, text: "넷이 전부인 줄 알았다. 목록도 넷까지였다." }
+      - bg: { id: void_light, transition: dissolve, duration: 2600 }
+      - say: { channel: narration, text: "이건 숫자가 안 붙어 있다. 붙일 줄 몰랐을 때 지나간 것이다." }
+      - say: { channel: narration, text: "떠오르는 것은 겨울이다. 내가 살았던 겨울." }
+      - say: { channel: card, with: [], text: "그 겨울\n1809년 · 조선" }
+      - goto: winter_remember
+
+  # 기억은 한 번에 오지 않는다. 더듬어 찾은 것만 돌아오고, 셋이 모이면 나머지가 저절로 온다.
+  winter_remember:
+    actions:
+      - choice:
+          key: w_remember
+          presentation: explore
+          prompt: "어두운 데가 고르지 않다. 덜 어두운 쪽에서 뭔가 온다."
+          options:
+            - text: "냄새"
+              at: { x: 31, y: 68 }
+              when: { var: m_ash, op: eq, value: false }
+              goto: mem_ash
+            - text: "소리"
+              at: { x: 72, y: 41 }
+              when: { var: m_jar, op: eq, value: false }
+              goto: mem_jar
+            - text: "추위"
+              at: { x: 49, y: 22 }
+              when: { var: m_river, op: eq, value: false }
+              goto: mem_river
+            - text: "울음"
+              at: { x: 18, y: 36 }
+              when: { var: m_found, op: gte, value: 3 }
+              goto: mem_child
+
+  mem_ash:
+    actions:
+      - set: { m_ash: true }
+      - add: { m_found: 1 }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "탄 냄새다. 불을 피웠던 자리에서 나는 냄새." }
+      - say: { channel: narration, text: "흙을 파고 들어가 살던 집이었다. 바닥에 재가 식어 있었다." }
+      - say: { channel: narration, text: "불씨를 묻어 두고 나가는 게 그 겨울의 규칙이었다. 묻어 뒀는데도 식었다." }
+      - goto: winter_remember
+
+  mem_jar:
+    actions:
+      - set: { m_jar: true }
+      - add: { m_found: 1 }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "긁는 소리다. 항아리 바닥을 긁으면 그 소리가 났다." }
+      - say: { channel: narration, text: "좁쌀이 두 줌 남아 있었다. 두 줌으로 며칠을 세는 버릇이 있었다." }
+      - say: { channel: narration, text: "세는 날짜가 자꾸 줄었다. 그래서 하루에 몇 번씩 긁어 봤다." }
+      - goto: winter_remember
+
+  mem_river:
+    actions:
+      - set: { m_river: true }
+      - add: { m_found: 1 }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "찬 것이 발목까지 올라온다. 강이다." }
+      - say: { channel: narration, text: "건너편에 곡식을 꾸어 줄 사람이 있다고 했다. 내가 본 게 아니고 전해 들은 말이었다." }
+      - say: { channel: narration, text: "얼음이 가운데만 얇았다. 가는 데 반나절, 오는 데 반나절로 잡았다." }
+      - goto: winter_remember
+
+  mem_child:
+    actions:
+      - effect: { name: focus, wait: true }
+      - say: { channel: narration, text: "셋이 모이자 나머지가 따라온다. 이건 찾은 게 아니라 와 버린 것이다." }
+      - wait: 700
+      - say: { channel: narration, text: "아이가 있었다. 사흘째 울지 않았다." }
+      - say: { channel: narration, text: "울지 않는 걸 괜찮다고 쳤다." }
+      - say: { channel: narration, text: "덮어 두고 나갔다. 돌아왔을 때 불은 꺼져 있었다." }
+      - effect: { name: pulse, wait: true }
+      - say: { channel: narration, text: "그 뒤로 서른 해를 더 살았다. 하루도 빠짐없이 기억난다." }
+      - goto: winter_churn
+
+  # 서른 해 동안 되씹은 것들이 한꺼번에 올라온다. 쥘 수 있는 것은 그중 하나뿐이다.
+  winter_churn:
+    actions:
+      - say: { channel: narration, text: "화가 난다. 낼 데가 없는데 난다. 낼 데가 없어서 더 난다." }
+      - say: { channel: narration, text: "그날 강을 안 건넜더라면." }
+      - say: { channel: narration, text: "건너더라도 해 지기 전에 돌아왔더라면." }
+      - say: { channel: narration, text: "건너편에 사람이 있다는 말을, 전해 들은 그 말을 믿지 말았어야 했다." }
+      - say: { channel: narration, text: "가을에 반 섬만 더 들여놨더라면. 한 섬도 아니고 반 섬만." }
+      - say: { channel: narration, text: "애를 업고 갔더라면. 업고는 못 건넌다고 누가 그랬더라. 그 말도 전해 들은 말이다." }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "되씹을수록 하나가 굵어지고 나머지가 가늘어진다." }
+      - bg: { id: void_near, transition: dissolve, duration: 3200 }
+      - wait: 800
+      - say: { channel: narration, text: "그 사이에 뒤의 것이 또 가까워졌다." }
+      - say: { channel: narration, text: "점이 이제 점으로 보이지 않는다. 하나하나가 넓다." }
+      - goto: winter_choice
+
+  winter_choice:
+    actions:
+      - choice:
+          key: v_end
+          prompt: "서른 해 동안 되씹은 것이 있다. 그때는 쥘 줄을 몰랐다."
+          options:
+            - text: "독이 비지 않았더라면."
+              set: { v_end: hold, deg_last: "041.2" }
+              goto: winter_go
+            - text: "그날 나가지 않았더라면."
+              set: { v_end: kin, deg_last: "223.7" }
+              goto: winter_go
+            - text: "쥐지 않는다."
+              goto: last_stop
+
+  winter_go:
+    actions:
+      - place: "{{deg_last}}°"
+      - effect: { name: tilt, wait: true }
+      - say:
+          channel: narration
+          when:
+            all:
+              - { var: t_hold, op: eq, value: true }
+              - { var: v_end, op: eq, value: hold }
+          text: "041.2. 목록에 이미 있는 숫자다. 방금 적은 칸과 같다."
+      - say:
+          channel: narration
+          when:
+            all:
+              - { var: t_kin, op: eq, value: true }
+              - { var: v_end, op: eq, value: kin }
+          text: "223.7. 목록에 이미 있는 숫자다. 방금 적은 칸과 같다."
+      - effect: { name: speedlines, wait: true }
+      - branch:
+          cases:
+            - when: { var: looked_back, op: eq, value: true }
+              goto: look_choice
+          default: last_arrive
+
   last_arrive:
     actions:
       - say: { channel: narration, text: "숫자가 빠져나간다. 넷까지 적어 둔 목록이 빠져나간다." }
@@ -434,13 +535,13 @@ scenes:
           cases:
             - when:
                 all:
-                  - { var: v0, op: eq, value: hold }
-                  - { var: v4, op: eq, value: hold }
+                  - { var: t_hold, op: eq, value: true }
+                  - { var: v_end, op: eq, value: hold }
               goto: end_circle
             - when:
                 all:
-                  - { var: v0, op: eq, value: kin }
-                  - { var: v4, op: eq, value: kin }
+                  - { var: t_kin, op: eq, value: true }
+                  - { var: v_end, op: eq, value: kin }
               goto: end_circle
           default: end_onward
 

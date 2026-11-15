@@ -145,15 +145,30 @@ assets:
     birth: assets/music/birth.flac
 
 state:
+  # 1809년 겨울. 마지막 별에서만 더듬는다.
   m_ash: false
   m_jar: false
   m_river: false
   m_found: 0
-  v0: ""
-  v1: ""
-  v2: ""
-  v3: ""
-  v4: ""
+  # 어느 삶을 이미 살았는가. 산 별은 꺼진다.
+  lived_1894: false
+  lived_1952: false
+  lived_1988: false
+  lived_2026: false
+  lives_done: 0
+  # 쌓인 금기. 한 삶을 살고 쥔 것이 다음 삶에서 못 하는 일이 된다.
+  # 쌍은 넷이고, 한 쌍에서 한쪽만 켜진다.
+  t_hold: false
+  t_kin: false
+  t_say: false
+  t_free: false
+  t_guard: false
+  t_stay: false
+  t_live: false
+  t_dare: false
+  # 처음 쥔 것과 끝에 쥔 것. 둘이 같으면 한 바퀴다.
+  v_first: ""
+  v_end: ""
   deg_last: ""
   l1_gave: false
   l1_end: ""
