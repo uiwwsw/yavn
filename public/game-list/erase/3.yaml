@@ -107,6 +107,21 @@ scenes:
           delivery: whisper
           text: "…여기였어?"
       - say:
+          channel: system
+          when: { var: e0_location, op: eq, value: false }
+          with: []
+          text: "타임라인 · 이 주소\n3월 21일 오전 1:42 — 4시간 12분 머무름"
+      - say:
+          char: 도윤.panic
+          when: { var: e0_location, op: eq, value: false }
+          with: []
+          delivery: whisper
+          text: "…폰이 먼저 알아봤네."
+      - say:
+          channel: thought
+          when: { var: e0_location, op: eq, value: true }
+          text: "기억만 있다. 그 밤에 여기 있었다는 걸 아는 건 나하고 저 안에 있는 사람뿐이다."
+      - say:
           channel: narration
           with: []
           camera: wide

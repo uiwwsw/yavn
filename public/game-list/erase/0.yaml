@@ -749,11 +749,6 @@ scenes:
               when: { var: e0_location, op: eq, value: false }
               goto: e0_erase_location
             - text: "신발을 손에 들고 나간다"
-              when:
-                all:
-                  - { var: e0_messages, op: eq, value: true }
-                  - { var: e0_photos, op: eq, value: true }
-                  - { var: e0_location, op: eq, value: true }
               goto: e0_leave
 
   e0_erase_messages:
@@ -809,6 +804,26 @@ scenes:
 
   e0_leave:
     actions:
+      - say:
+          channel: thought
+          when:
+            all:
+              - { var: e0_messages, op: eq, value: true }
+              - { var: e0_photos, op: eq, value: true }
+              - { var: e0_location, op: eq, value: true }
+          text: "메시지. 사진. 위치. 다 했다. 다섯 시 사십 분."
+      - say:
+          channel: thought
+          when: { var: e0_messages, op: eq, value: false }
+          text: "대화방은 그대로 둔다. 저장도 안 한 번호다. 이름이 없으면 아무것도 아니다."
+      - say:
+          channel: thought
+          when: { var: e0_photos, op: eq, value: false }
+          text: "사진 네 장은 그대로 둔다. 어두워서 뭐가 찍혔는지도 모르겠다."
+      - say:
+          channel: thought
+          when: { var: e0_location, op: eq, value: false }
+          text: "위치 기록은 그대로 둔다. 그걸 누가 열어 본다고."
       - say:
           channel: message
           side: them

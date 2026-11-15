@@ -53,6 +53,15 @@ scenes:
           char: 준성
           with: [도윤]
           text: "고개 들어 봐요. 파티션 너머. 여기요."
+      - say:
+          channel: system
+          when: { var: e0_messages, op: eq, value: false }
+          with: []
+          text: "대화 · 저장되지 않은 번호\n마지막 메시지 · 3월 21일 오전 1:58"
+      - say:
+          channel: thought
+          when: { var: e0_messages, op: eq, value: false }
+          text: "토요일 새벽에 안 지운 그 방이다. 뒤 네 자리가 지금 울리는 번호와 같다."
       - move: { id: 도윤, toward: 준성, style: flinch }
       - say:
           char: 준성
@@ -605,6 +614,81 @@ scenes:
           with: []
           text: "ㅋㅋㅋ이거 완전 너잖아 @정아진"
       - say:
+          channel: action
+          with: []
+          text: "하린은 밝기를 끝까지 낮춘다. 불은 이미 꺼져 있다."
+      - say:
+          channel: message
+          side: me
+          char: 하린
+          with: []
+          text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
+      - goto: h1_type
+
+  h1_type:
+    actions:
+      - choice:
+          key: h1_send
+          prompt: "커서가 깜박인다. 보내기까지 엄지 한 번."
+          with: []
+          options:
+            - text: "보낸다"
+              set: { h1_sent: true }
+              goto: h1_sent
+            - text: "한 글자씩 지운다"
+              add: { deleted: 1 }
+              goto: h1_erased
+            - text: "\"야 근데 둘이 요즘\"까지 더 쓴다"
+              goto: h1_more
+
+  h1_sent:
+    actions:
+      - say:
+          channel: system
+          with: []
+          text: "읽음 2"
+      - say:
+          channel: action
+          with: []
+          text: "읽음 표시가 2로 바뀌는 데 사 초 걸렸다. 그다음은 아무것도 오지 않는다."
+      - say:
+          channel: thought
+          with: []
+          text: "일 분. 이 분. 타자 치는 표시도 안 뜬다."
+      - say:
+          channel: message
+          side: them
+          char: 민재
+          with: []
+          text: "ㅇㅇ"
+      - say:
+          channel: thought
+          with: []
+          text: "스물한 글자 보내고 두 글자 받았다. 보낸 게 아직 거기 있다. 지금 지우면 더 이상해진다."
+      - goto: h1_shots
+
+  h1_erased:
+    actions:
+      - say:
+          channel: message
+          side: me
+          char: 하린
+          with: []
+          erase: true
+          text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
+      - say:
+          channel: action
+          with: []
+          text: "한 글자씩 지운다. 지우개 키를 스물한 번 누른다. 한 번에 다 지우는 법을 알면서도 그렇게 한다."
+      - say:
+          channel: thought
+          with: []
+          text: "안 쓴 거랑 쓰고 지운 거랑 화면에는 똑같이 남는다. 똑같으면 안 쓴 거다."
+      - goto: h1_shots
+
+  h1_more:
+    actions:
+      - say:
           channel: message
           side: me
           char: 하린
@@ -618,6 +702,19 @@ scenes:
           with: []
           erase: true
           text: "야 근데 둘이 요즘"
+      - say:
+          channel: action
+          with: []
+          text: "뒤에 붙인 여덟 글자를 먼저 지우고, 앞의 스물한 글자를 지운다. 순서가 반대였다."
+      - add: { deleted: 2 }
+      - say:
+          channel: thought
+          with: []
+          text: "물어볼 뻔했다. 물어보면 아는 게 되고, 아는 게 되면 끼워 달라는 게 된다."
+      - goto: h1_shots
+
+  h1_shots:
+    actions:
       - say:
           channel: system
           with: []
