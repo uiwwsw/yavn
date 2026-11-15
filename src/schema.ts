@@ -16,6 +16,16 @@ export const dialogueDeliverySchema = z.enum([
   'sad',
   'deduction',
 ]);
+/** A photo or clip on a message line: the path alone, or the path with its details. */
+export const phoneMediaSchema = z.union([
+  z.string().trim().min(1),
+  z.object({
+    src: z.string().trim().min(1),
+    kind: z.enum(['image', 'video']).optional(),
+    alt: z.string().trim().min(1).max(160).optional(),
+  }).strict(),
+]);
+
 export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system', 'thought', 'action', 'message', 'card']);
 
 export const characterMotionSchema = z.enum(CHARACTER_MOTION_IDS);
@@ -332,18 +342,22 @@ const actionBodySchema = z.union([
       channel: dialogueChannelSchema.optional(),
       continueLabel: z.string().trim().min(1).max(60).optional(),
       when: conditionSchema.optional(),
-      text: z.string(),
+      text: z.string().optional(),
       delivery: dialogueDeliverySchema.optional(),
       promptHeight: promptHeightSchema.optional(),
       wait: z.number().int().nonnegative().max(60000).optional(),
       unskippable: z.boolean().optional(),
       side: z.enum(['me', 'them']).optional(),
+      media: phoneMediaSchema.optional(),
       erase: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
       motion: characterMotionSchema.optional(),
     }).refine(say => !(say.continueLabel && say.autoAdvance), {
       message: 'An explicit player action cannot auto-advance',
       path: ['continueLabel'],
+    }).refine(say => say.text !== undefined || say.media !== undefined, {
+      message: 'a say needs text, unless it sends media',
+      path: ['text'],
     }),
   }),
 ]);

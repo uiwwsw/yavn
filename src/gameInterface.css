@@ -766,7 +766,7 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 18px 18px 12px;
   border-bottom: 1px solid var(--phone-rail);
   background: var(--phone-screen);
@@ -780,6 +780,12 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   border-bottom: 1.5px solid color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
   rotate: 45deg;
 }
+
+/* The people on the other end, the way a messenger prints them: one face in a one-to-one
+   thread, and in a group the faces overlapped into a single mark beside the name. */
+.app .phone-chrome-faces { flex: 0 0 auto; display: flex; }
+.app .phone-chrome-faces .phone-avatar { width: 24px; height: 24px; }
+.app .phone-chrome-faces.is-group .phone-avatar + .phone-avatar { margin-left: -9px; box-shadow: 0 0 0 1.5px var(--phone-screen); }
 
 .app .phone-chrome-contact {
   min-width: 0;
@@ -823,6 +829,13 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   background: color-mix(in srgb, var(--phone-mine) 30%, transparent);
 }
 
+/* The thread itself.
+   The conventions below are Instagram's, followed on purpose rather than invented: a run of
+   messages from one person is one block with one profile picture and one name, the bubbles
+   inside a run have their facing corners tightened, emoji sent on their own lose the bubble
+   and are drawn large, and a photo or a clip is the message rather than something inside a
+   bubble. Nothing here styles a message by who is in the room — a group thread and a
+   one-to-one thread differ only in whether the names are worth printing. */
 .app .dialog-box.channel-message .dialog-content-scroll {
   order: 2;
   flex: 1 1 auto;
@@ -830,77 +843,156 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   max-height: none;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: 14px 14px 10px;
+  align-items: stretch;
+  gap: 0;
+  padding: 14px 12px 10px;
   background: var(--phone-screen);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
-.app .dialog-box.channel-message.side-me .dialog-content-scroll { align-items: flex-end; }
+/* A short conversation sits at the bottom of the screen and grows upward. `justify-content:
+   flex-end` does that, but once the thread outgrows the screen it pushes the oldest messages
+   out past the top edge, where no scrollbar reaches them. An auto margin on the first item
+   does the same job and gives way the moment there is something to scroll. */
+.app .dialog-box.channel-message .dialog-content-scroll > :first-child { margin-top: auto; }
+
+/* A bubble is as tall as the words in it and never as tall as the space left over. Flex items
+   shrink by default, so without this the newest message was squeezed to half its height — its
+   padding crushed and its text spilling out — the moment the thread filled the screen. */
+.app .dialog-box.channel-message .dialog-content-scroll > * { flex: 0 0 auto; }
+
+/* Anything that is not part of the conversation — a choice, an answer field — stands clear
+   of the last message instead of butting against it. */
+.app .dialog-box.channel-message .dialog-content-scroll > :not(.phone-thread, .phone-live) { margin-top: 10px; }
+
 .app .dialog-box.channel-message .dialog-channel-label { align-self: flex-start; color: color-mix(in srgb, var(--phone-them-ink) 45%, transparent); }
-.app .dialog-box.channel-message .speaker { color: color-mix(in srgb, var(--phone-them-ink) 62%, transparent); font-size: 12px; font-weight: 650; }
-/* In a handset the name belongs to its own bubble. The normal dialogue box pins the name tag
-   to its top-left corner with position:absolute, which left the live line's name stranded at
-   the top of the phone screen while the bubble it named sat at the bottom — and the bottom
-   bubble, alone in the thread, stood without a name over it. */
-.app .dialog-box.channel-message .dialog-content-scroll > .speaker {
-  position: static;
-  align-self: flex-start;
-  /* The column's 6px gap would set the name twice as far from its bubble as the thread sets
-     its own (3px), so the last message would sit lower than every message above it. */
-  margin: 0 0 -3px;
-}
-.app .dialog-box.channel-message.side-me .dialog-content-scroll > .speaker { align-self: flex-end; }
 
-/* The live line is a bubble like any other: one line of text is one line tall. */
+.app .phone-thread { display: flex; flex-direction: column; width: 100%; margin: 0; padding: 0; list-style: none; }
+
+/* One message: the profile picture, then the message itself. The picture's column is held
+   open on every incoming message, shown or not, so a run stays in one line down the screen. */
+.app .phone-thread-bubble {
+  --phone-corner-lead: 7px;
+  --phone-corner-end: 7px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  max-width: 88%;
+  margin-top: 10px;
+}
+/* Two messages from the same person are closer to each other than to anyone else's. */
+.app .phone-thread-bubble:not(.leads-run) { margin-top: 2px; }
+.app .phone-thread > .phone-thread-bubble:first-child { margin-top: 0; }
+.app .phone-thread-bubble.leads-run { --phone-corner-lead: 18px; }
+.app .phone-thread-bubble.ends-run { --phone-corner-end: 18px; }
+.app .phone-thread-bubble.side-me { align-self: flex-end; flex-direction: row-reverse; }
+.app .phone-thread-body { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
+.app .phone-thread-bubble.side-me .phone-thread-body { align-items: flex-end; }
+
+/* The picture belongs to the run, and a messenger hangs it at the bottom of one: beside the
+   last thing the person said, not the first. */
+.app .phone-avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--phone-them-ink) 15%, transparent);
+  color: color-mix(in srgb, var(--phone-them-ink) 62%, transparent);
+  font-family: var(--ui-body-font);
+  font-size: 11px;
+  font-weight: 700;
+}
+.app .phone-avatar::before { content: attr(data-initial); }
+/* A standing sprite cropped through its middle is a torso, so the circle is cut from the
+   top of the art, where the face is. */
+.app .phone-avatar-art { position: absolute; inset: 0; background-size: cover; background-position: top center; }
+.app .phone-thread-bubble:not(.ends-run) > .phone-avatar { visibility: hidden; }
+
+.app .phone-thread-speaker { color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent); font-size: 12px; font-weight: 650; padding-inline: 4px; }
+
+.app .phone-thread-bubble :is(.phone-thread-text, .text, .phone-media) {
+  border-radius: var(--phone-corner-lead) 18px 18px var(--phone-corner-end);
+}
+.app .phone-thread-bubble.side-me :is(.phone-thread-text, .text, .phone-media) {
+  border-radius: 18px var(--phone-corner-lead) var(--phone-corner-end) 18px;
+}
+
+.app .phone-thread-text,
 .app .dialog-box.channel-message .text {
   width: auto;
-  max-width: 82%;
+  max-width: 100%;
   min-height: 0;
-  padding: 9px 13px;
-  border-radius: 16px 16px 16px 5px;
+  margin: 0;
+  padding: 8px 13px;
   background: var(--phone-them);
   color: var(--phone-them-ink);
+  font-family: var(--ui-body-font), 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   font-size: calc(15px * var(--game-text-scale));
   line-height: 1.45;
   text-align: left;
+  white-space: pre-line;
 }
-
-.app .dialog-box.channel-message.side-me .text {
-  border-radius: 16px 16px 5px 16px;
+.app .phone-thread-bubble.side-me :is(.phone-thread-text, .text) {
   background: var(--phone-mine);
   color: color-mix(in srgb, #04070a 88%, var(--phone-mine));
 }
 
-/* The stage controls belong to the stage, not to the handset: they sit above it. */
-.app .dialog-box.channel-message .dialog-controls { top: auto; bottom: calc(100% + 10px); right: 0; transform: none; }
-.app .dialog-box.channel-message .dialog-channel-label { display: none; }
+/* The live line is the newest message and is built from the ordinary dialogue markup, so its
+   name tag has to be talked out of the corner the dialogue box pins it to. */
+.app .dialog-box.channel-message .phone-live .speaker {
+  position: static;
+  margin: 0;
+  color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
+  font-size: 12px;
+  font-weight: 650;
+  padding-inline: 4px;
+}
+
+/* A photo is the message. No bubble around it, no padding inside it. */
+/* An attachment is one width, the way a messenger sizes them, and the picture fills it: a
+   frame left to find its own width paints a strip of empty backdrop beside anything whose
+   proportions do not match. Anything far taller than it is wide is cropped rather than
+   allowed to take over the screen. */
+.app .phone-media { position: relative; display: block; width: 240px; max-width: 100%; overflow: hidden; line-height: 0; background: color-mix(in srgb, var(--phone-them-ink) 10%, transparent); }
+.app .phone-media :is(img, video) { display: block; width: 100%; height: auto; max-height: 260px; object-fit: cover; }
+.app .phone-media-clip video { background: #04070a; }
+.app .phone-media-length {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(4, 6, 9, 0.64);
+  color: #f2f6fa;
+  font-family: var(--ui-body-font);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
 
 /* A one-to-one thread is already named in the header; repeating it on every bubble is
    something only a mock-up does. In a group the names stay, except on your own messages. */
 .app .dialog-box.channel-message:not(.phone-group) .phone-thread-speaker,
-.app .dialog-box.channel-message:not(.phone-group) .speaker,
+.app .dialog-box.channel-message:not(.phone-group) .phone-live .speaker,
 .app .dialog-box.channel-message .phone-thread-bubble.side-me .phone-thread-speaker,
-.app .dialog-box.channel-message.side-me .speaker { display: none; }
+.app .dialog-box.channel-message .phone-live.side-me .speaker { display: none; }
 
-/* The bubbles already sent. The live line is drawn by .text below them so it can still type. */
-/* No bottom margin: the scroll column already puts 6px between items, and the extra 6px
-   here opened a wider gap before the live bubble than between any two bubbles above it. */
-.app .phone-thread { display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0; padding: 0; list-style: none; }
-.app .phone-thread-bubble { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; max-width: 82%; }
-.app .phone-thread-bubble.side-me { align-self: flex-end; align-items: flex-end; }
-.app .phone-thread-speaker { color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent); font-size: 12px; font-weight: 650; }
-.app .phone-thread-text {
-  padding: 9px 13px; border-radius: 16px 16px 16px 5px;
-  background: var(--phone-them); color: var(--phone-them-ink);
-  font-size: calc(15px * var(--game-text-scale)); line-height: 1.45; text-align: left; white-space: pre-line;
+/* Emoji sent on their own are the message, so they lose the bubble and are drawn at the size
+   a reaction is read at. Four or more are a sentence again, and stay in a bubble. */
+.app .dialog-box.channel-message .phone-thread-bubble.is-emoji :is(.phone-thread-text, .text) {
+  padding: 1px 2px;
+  background: none;
+  border-radius: 0;
+  color: var(--phone-them-ink);
+  font-size: calc(38px * var(--game-text-scale));
+  line-height: 1.2;
 }
-.app .phone-thread-bubble.side-me .phone-thread-text { border-radius: 16px 16px 5px 16px; background: var(--phone-mine); color: color-mix(in srgb, #04070a 88%, var(--phone-mine)); }
-/* Older bubbles recede so the eye lands on the newest without the thread looking cropped. */
-.app .phone-thread-bubble:nth-last-child(n + 6) .phone-thread-text { opacity: .74; }
-.app .phone-thread-bubble:nth-last-child(n + 9) .phone-thread-text { opacity: .52; }
 
 /* say.erase: once the line is fully shown it is struck and wiped away, block by block. */
 .app .dialog-box.is-erasing .text { animation: dialog-erase 1100ms steps(9, end) 260ms forwards; text-decoration: line-through; text-decoration-thickness: 2px; }
@@ -927,6 +1019,7 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
     border-radius: 26px;
   }
   .app .stage-content-frame .dialog-box.channel-message::before { display: none; }
-  .app .dialog-box.channel-message .phone-thread-bubble,
-  .app .dialog-box.channel-message .text { max-width: 84%; }
+  .app .dialog-box.channel-message .phone-thread-bubble { max-width: 90%; }
+  .app .dialog-box.channel-message .phone-media { width: 220px; }
+  .app .dialog-box.channel-message .phone-media :is(img, video) { max-height: 220px; }
 }

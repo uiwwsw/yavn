@@ -88,5 +88,6 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 
 ## Caption cards, phone messages and three new stories (2026-11-13)
 
-- `say.channel: card` shows a full-screen caption card (time jumps, title drops, blackouts); `say.channel: message` renders a phone chat bubble with `say.side: me | them`; `say.erase: true` strikes and wipes a line after it is shown.
+- `say.channel: card` shows a full-screen caption card (time jumps, title drops, blackouts); `say.channel: message` renders a phone messenger screen with `say.side: me | them`; `say.erase: true` strikes and wipes a line after it is shown.
+- A phone thread follows messenger conventions: consecutive messages from one person group into a run named once, with one profile picture beside the run's last bubble and tightened corners between the bubbles. `say.media` sends a photo or a clip — a path on its own, or `{ src, kind, alt }` — which is drawn without a bubble, and lets `say.text` be left out entirely. A message of up to three emoji is drawn large and bubble-less.
 - New games built from the owner's stories: ERASE (4 chapters), ERASE: First to Erase (5 chapters) and 8-bit Heart (5 chapters). The ERASE pair carries content notes (sexual tension without description, HIV anxiety, self-destructive thoughts) with crisis-line and anonymous testing information.

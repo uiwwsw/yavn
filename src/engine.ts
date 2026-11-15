@@ -56,6 +56,8 @@ import type {
   Position,
   RouteHistoryEntry,
   RouteVarValue,
+  PhoneMedia,
+  PhoneMediaSource,
   StoryLogEntry,
   StateAddMap,
   StateSetMap,
@@ -509,7 +511,7 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker: presentation.speakerName, channel: resolveDialogueChannel(action.say.channel, presentation.speakerId),
         ...(action.say.side ? { side: action.say.side } : {}),
-        text: parseInlineSpeed(interpolateText(action.say.text, vars)).text });
+        text: parseInlineSpeed(interpolateText(action.say.text ?? '', vars)).text });
     }
     if ('choice' in action || 'input' in action) {
       const entry = history[historyIndex];
@@ -1446,6 +1448,33 @@ function resolveAssetWithOverrides(baseUrl: string, path: string, overrides: Rec
 
 function resolveAsset(baseUrl: string, path: string): string {
   return resolveAssetWithOverrides(baseUrl, path, useVNStore.getState().assetOverrides);
+}
+
+/** Extensions a browser will play in a <video> element; everything else is a picture. */
+const VIDEO_FILE = /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i;
+
+/** A message's attachment, with its path turned into a URL the view can use directly. */
+function resolveMessageMedia(baseUrl: string, media: PhoneMediaSource | undefined): PhoneMedia | undefined {
+  if (!media) return undefined;
+  const source = typeof media === 'string' ? { src: media } : media;
+  if (!source.src.trim()) return undefined;
+  return {
+    src: resolveAsset(baseUrl, source.src),
+    kind: source.kind ?? (VIDEO_FILE.test(source.src) ? 'video' : 'image'),
+    ...(source.alt ? { alt: source.alt } : {}),
+  };
+}
+
+/**
+ * The profile picture beside someone's messages.
+ *
+ * A messenger shows one picture per person, so this is the character's base art and not the
+ * emotion they happen to wear in this line — a face that changed with every message would
+ * read as a different person each time.
+ */
+function resolveMessageAvatar(game: GameData, baseUrl: string, speakerId?: string): string | undefined {
+  const base = speakerId ? game.assets.characters[speakerId]?.base : undefined;
+  return base ? resolveAsset(baseUrl, base) : undefined;
 }
 
 function isJsonAsset(path: string): boolean {
@@ -4078,7 +4107,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
           chapter.pathKey,
           sceneId,
           actionIndex,
-          parseInlineSpeed(interpolateText(action.say.text, { ...restoreVars, ...resume.routeVars })).text,
+          parseInlineSpeed(interpolateText(action.say.text ?? '', { ...restoreVars, ...resume.routeVars })).text,
         );
         if (!conditionMatchesReplayState && !wasPresentedBeforeSave) {
           actionIndex += 1;
@@ -4979,7 +5008,7 @@ function runToNextPause(loopGuard = 0) {
       runToNextPause(loopGuard + 1);
       return;
     }
-    const parsed = parseInlineSpeed(interpolateText(action.say.text, state.routeVars));
+    const parsed = parseInlineSpeed(interpolateText(action.say.text ?? '', state.routeVars));
     const textSpeedRate = runtimeGameSettings.textSpeedRate;
     const textSpeed = Math.max(1, game.settings.textSpeed * textSpeedRate);
     const speedSegments = textSpeedRate === 1
@@ -5026,12 +5055,20 @@ function runToNextPause(loopGuard = 0) {
     syncCharacterFraming(game, presentation.speakerId, action.say.framing);
     applyCameraDirective(action.say.camera, presentation.speakerId);
     playLineMotions(game, presentation.speakerId, action.say.motion, presentation.emotionRefs, previousEmotions);
+    const phoneAvatar = channel === 'message'
+      ? resolveMessageAvatar(game, state.baseUrl, presentation.speakerId)
+      : undefined;
+    const phoneMedia = channel === 'message'
+      ? resolveMessageMedia(state.baseUrl, action.say.media)
+      : undefined;
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',
       speaker: presentation.speakerName,
       channel,
       ...(channel === 'message' ? { side: action.say.side ?? 'them' } : {}),
+      ...(phoneAvatar ? { avatar: phoneAvatar } : {}),
+      ...(phoneMedia ? { media: phoneMedia } : {}),
       text: parsed.text,
       chapterPath: getCurrentChapterPathKey(),
       sceneId: state.currentSceneId,
@@ -5050,6 +5087,8 @@ function runToNextPause(loopGuard = 0) {
       unskippable,
       channel,
       side: action.say.side,
+      avatar: phoneAvatar,
+      media: phoneMedia,
       erase: action.say.erase,
       continueLabel: action.say.continueLabel,
       delivery,

@@ -178,6 +178,11 @@ const resolvePauseAfter = (
   return 0;
 };
 
+/** How many glyphs a reader sees: a flag or a family counts once, not as its code points. */
+export function countGraphemes(text: string): number {
+  return getGraphemeSegments(text).length;
+}
+
 export function parseInlineSpeed(text: string): { text: string; segments: InlineSpeedSegment[] } {
   const pattern = /<speed=(\d+)>([\s\S]*?)<\/speed>/gi;
   const matches = Array.from(text.matchAll(pattern));
