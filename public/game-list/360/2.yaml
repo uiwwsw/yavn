@@ -82,7 +82,8 @@ scenes:
 
   open_cannot:
     actions:
-      - say: { channel: action, with: [엄마], text: "무, 까지 나왔다. 입이 닫힌다." }
+      - wait: 1100
+      - say: { channel: action, with: [엄마], text: "무, 까지 나왔다. 입이 닫힌다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "엄마 얼굴을 살피고 있다. 이 말을 줘도 되는 사람인지. 엄마한테까지 이런다." }
       - goto: open_fine
 
@@ -143,7 +144,8 @@ scenes:
 
   out_cannot:
     actions:
-      - say: { channel: action, with: [수경], text: "손을 뻗었다. 손은 침대 난간을 잡고 있다. 목도리 묶인 자리다." }
+      - wait: 1100
+      - say: { channel: action, with: [수경], text: "손을 뻗었다. 손은 침대 난간을 잡고 있다. 목도리 묶인 자리다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "아침에 엄마가 왔는데 침대가 비어 있으면. 그 생각에서 한 발도 못 나간다." }
       - goto: out_stay
 
@@ -215,6 +217,7 @@ scenes:
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
       - say: { char: 민재, with: [엄마], text: "떡볶이. 대학로에 누나가 맨날 말하던 집." }
       - say: { char: 엄마, with: [민재], text: "나으면 가자. 엄마가 사 줄게. 순대도." }
+      - wait: 800
       - say:
           char: 민재
           with: [엄마]
@@ -282,7 +285,7 @@ scenes:
     actions:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
       - bg: { id: void, transition: wipeLeft, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "병원 이름이 빠져나간다. 누나 이름이 빠져나간다. 엄마 손 냄새가 마지막이다." }
