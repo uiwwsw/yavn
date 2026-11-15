@@ -11,7 +11,7 @@ scenes:
       - music: void
       - say: { channel: narration, text: "암흑." }
       - say: { channel: narration, text: "끝이 닿지 않는다. 편집실 모니터를 다 끈 밤을 천 번 이어 붙여도 모자란다." }
-      - say: { channel: narration, text: "소리를 기다린다. 오지 않는다. 기다린 시간을 잴 것도 없다." }
+      - say: { channel: narration, text: "소리를 기다린다. 오지 않는다." }
       - say: { channel: narration, text: "일흔아홉 해가 전부 떠오른다." }
       - say:
           channel: narration
