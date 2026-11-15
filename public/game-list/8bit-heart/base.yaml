@@ -69,6 +69,10 @@ assets:
 state:
   android_name: "도트"
   bought_premium: false
+  answered_haru: false
+  saw_ceiling: false
+  saw_box: false
+  saw_dad: false
   bond: 0
   memories: 0
   m_snack: false
