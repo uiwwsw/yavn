@@ -107,7 +107,7 @@
 
 - `took_case`: 0장에서 사건을 맡았는지. `o0_case`에서 거절하면 기태가 한 번 더 묻고(`o0_case_again`), 거기서도 거절하면 도시락 진술과 슬픔 1을 보여 준 뒤 참이 된다. 어느 길로도 사건은 시작된다.
 - `trust`: 동식의 신뢰. 1장 `show_mine`(+2) / `say_twenty`(+1), 2장 `ask_dongsik`(+1).
-- `ev_drawing`·`ev_calendar`·`ev_pills`·`ev_recorder`·`ev_lunchbox`: 1장 `explore` 다섯 곳. 다섯 개가 모두 참이어야 내려간다.
+- `ev_drawing`·`ev_calendar`·`ev_pills`·`ev_recorder`·`ev_lunchbox`: 1장 `explore` 다섯 곳. 몇 개를 보든 언제든 내려갈 수 있고, 본 것만 가지고 간다. `ev_found`(0~5)가 그 개수다. 1장 `after_room`의 달력·도시락통 문답, 3장 장위동의 자백 앞 대조가 전부 여기에 걸린다. 빈손이면 동식이 "그럼 나한테 뭘 물으시는 겁니까"라고 묻고, 셋 이상이면 "집에 오래 계셨네요"라고 한다. 녹음기만은 예외다 — 협탁을 지나쳤으면 `wrap_room`에서 동식이 직접 꺼내 와 건넨다. 3장의 119건이 거기 달려 있다.
 - `met_hayul`, `showed_score`, `sera_case`, `met_sukyung`, `heard_overflow`, `has_raw`, `confession`: 장면 진행 표시.
 - `told_gitae`, `sera_knows`: 3장 `o3_tell`. 4장 기태의 문자와 재수사 통지 아래 한 줄(`told_gitae`가 거짓이면 "현재 기록상 유일한 증거는 문지완 소지 출력물 1부")이 달라진다.
 - `deal`: 선언만 해 두고 쓰지 않는다. 합의 서명은 분기가 아니라 실패다.

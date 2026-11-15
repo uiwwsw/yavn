@@ -418,13 +418,10 @@ scenes:
               when: { var: ev_lunchbox, op: eq, value: false }
               goto: ev_lunchbox_scene
             - text: "본 것을 정리하고 내려간다"
-              when:
-                all:
-                  - { var: ev_drawing, op: eq, value: true }
-                  - { var: ev_calendar, op: eq, value: true }
-                  - { var: ev_pills, op: eq, value: true }
-                  - { var: ev_recorder, op: eq, value: true }
-                  - { var: ev_lunchbox, op: eq, value: true }
+              when: { var: ev_found, op: gte, value: 5 }
+              goto: after_room
+            - text: "그만 보고 내려간다"
+              when: { var: ev_found, op: lt, value: 5 }
               goto: after_room
 
   ev_drawing_scene:
@@ -557,44 +554,69 @@ scenes:
       - char: { id: 동식, position: right }
       - char: { id: 지완, position: left }
       - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_found, op: lt, value: 3 }
+          text: "다 보셨습니까. 빠르시네요."
+      - say:
           char: 지완
           with: [동식]
+          when: { var: ev_found, op: lt, value: 3 }
+          text: "…방은 방이니까요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_found, op: lt, value: 3 }
+          text: "예. 방이지요."
+      - say:
+          char: 지완
+          with: [동식]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "달력에 숫자를 적으셨더군요."
       - say:
           char: 동식
           with: [지완]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "그 사람이 적었어요. 아픈 정도를 적으라고 병원에서 그러더라고요."
       - say:
           char: 지완
           with: [동식]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "10이 제일 아픈 겁니까."
       - say:
           char: 동식
           with: [지완]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "예. 처음엔 2, 3이었어요."
       - say:
           char: 지완
           with: [동식]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "3월 6일이 9입니다."
       - say:
           char: 동식.shut
           with: [지완]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "…"
       - say:
           char: 지완
           with: [동식]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "선생님."
       - say:
           char: 동식
           with: [지완]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "그날은 10이었어요."
       - say:
           char: 지완
           with: [동식]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "달력엔 9라고."
       - say:
           char: 동식
           with: [지완]
+          when: { var: ev_calendar, op: eq, value: true }
           text: "10은 안 적는다고 했어요. 적으면 끝인 것 같다고."
       - say:
           char: 지완
@@ -603,7 +625,13 @@ scenes:
       - say:
           char: 동식
           with: [지완]
+          when: { var: ev_lunchbox, op: eq, value: true }
           text: "도시락통 보셨지요."
+      - say:
+          char: 동식
+          with: [지완]
+          when: { var: ev_lunchbox, op: eq, value: false }
+          text: "창가에 반찬통 있지요. 그건 안 보셨구나."
       - say:
           char: 지완
           with: [동식]
@@ -759,6 +787,40 @@ scenes:
       - goto: wrap_room
 
   wrap_room:
+    actions:
+      # 협탁의 녹음기를 지나쳤으면 동식이 직접 꺼내 온다. 이 집에서 그것만은 받아 나간다.
+      - branch:
+          cases:
+            - when: { var: ev_recorder, op: eq, value: false }
+              goto: recorder_handed
+          default: wrap_room_talk
+
+  recorder_handed:
+    actions:
+      - say:
+          char: 동식
+          with: [지완]
+          text: "…잠깐만요. 2층에 하나 더 있습니다."
+      - say:
+          channel: action
+          with: []
+          text: "동식이 협탁에서 녹음기를 가지고 내려온다. 손수건으로 한 번 닦아서 내민다."
+      - get: recorder
+      - say:
+          channel: record
+          with: []
+          text: "녹음기 · 병원 완화의료팀 대여품 · 저장 119건 · 001 2031.05.14 · 119 2033.03.06 21:48"
+      - say:
+          char: 지완
+          with: [동식]
+          text: "이건 왜 주십니까."
+      - say:
+          char: 동식
+          with: [지완]
+          text: "안 보고 가시길래요."
+      - goto: wrap_room_talk
+
+  wrap_room_talk:
     actions:
       - say:
           char: 지완
