@@ -130,8 +130,12 @@ scenes:
       - char: { id: 지완, position: left }
       - say:
           channel: thought
-          with: []
+          when: { var: ev_calendar, op: eq, value: true }
           text: "달력 7일 칸을 다시 봐야 한다."
+      - say:
+          channel: thought
+          when: { var: ev_calendar, op: eq, value: false }
+          text: "장위동에 다시 가야 한다. 3월 7일."
       - say:
           channel: system
           with: []
