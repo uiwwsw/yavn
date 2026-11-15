@@ -126,6 +126,46 @@ assets:
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
+    의사:
+      name: "의사"
+      placement: prompt-top
+      base: assets/char/doctor.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    복례:
+      name: "복례"
+      placement: prompt-top
+      base: assets/char/bongnye.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    다온:
+      name: "다온"
+      placement: prompt-top
+      base: assets/char/daon.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    어른다온:
+      name: "다온"
+      placement: prompt-top
+      base: assets/char/daon-grown.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
+    다온엄마:
+      name: "다온 엄마"
+      placement: prompt-top
+      base: assets/char/daon-mother.svg
+      facing: front
+      defaultFraming: portrait
+      framings:
+        portrait: { scale: 1, cropBottom: 0.3 }
     문호:
       name: "오문호"
       placement: prompt-top

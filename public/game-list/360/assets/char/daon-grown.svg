@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>다온 (어른)</title>
+<ellipse cx="400" cy="418" rx="120" ry="130" fill="#4a4038"/>
+<rect x="362" y="530" width="76" height="98" fill="#e2c0a0"/>
+<ellipse cx="400" cy="442" rx="112" ry="122" fill="#e2c0a0"/>
+<path d="M288 428 Q294 328 400 320 Q506 328 512 428 Q458 364 400 358 Q342 364 288 428Z" fill="#4a4038"/>
+<path d="M284 436 Q276 520 294 574 L326 562 Q310 512 314 442Z" fill="#4a4038"/>
+<path d="M516 436 Q524 520 506 574 L474 562 Q490 512 486 442Z" fill="#4a4038"/>
+<path d="M332 622 C244 636 156 690 134 836 L122 1000 L678 1000 L666 836 C644 690 556 636 468 622Z" fill="#5c6b74"/>
+<path d="M332 622 L400 724 L468 622 L400 622Z" fill="#e9e4da"/>
+<rect x="330" y="788" width="140" height="104" rx="6" fill="#c9b08a"/>
+<rect x="330" y="788" width="20" height="104" fill="#a98f6b"/>
+<rect x="366" y="820" width="78" height="8" fill="#8d7855"/>
+<rect x="366" y="842" width="56" height="8" fill="#8d7855"/>
+</svg>

@@ -219,19 +219,34 @@ scenes:
       - place: "시월 구일 · 6인실"
       - move: { id: 수경, style: reset }
       - char: { id: 민재, position: left }
-      - say: { channel: action, with: [], text: "병실 문이 조금 열려 있다. 복도에서 나는 엄마 목소리가 작은데 잘 들린다." }
+      - say: { channel: action, with: [], text: "병실 문이 한 뼘 열려 있다. 그 틈으로 복도가 보인다." }
+      - char: { id: 엄마, position: left }
+      - char: { id: 의사, position: right }
       - say: { channel: record, with: [], text: "동종 골수이식 시행 동의서. 공여자 적합 검사 결과 동봉. 예상 비용 금 팔백만 원정." }
-      - say: { channel: action, with: [], text: "\"선생님, 팔백이면… 저희 가게를 넘겨도 사백입니다.\"" }
-      - say: { channel: action, with: [], text: "\"어머님, 성공률을 먼저 들으셔야 합니다. 이 경우 삼십에서 사십 퍼센트입니다.\"" }
+      - say: { char: 엄마, with: [의사], text: "선생님." }
+      - say: { char: 엄마, with: [의사], text: "팔백이면… 저희 가게를 넘겨도 사백입니다." }
+      - say: { char: 의사, with: [엄마], text: "어머님. 성공률을 먼저 들으셔야 합니다." }
+      - say: { char: 의사, with: [엄마], text: "이 경우 삼십에서 사십 퍼센트입니다." }
       - wait: 900
-      - say: { channel: action, with: [], text: "\"…안 하면요.\"" }
-      - say: { channel: action, with: [], text: "\"그건 제가 말씀드릴 수 없습니다. 다만 지금 수치로는 길게 보기 어렵습니다.\"" }
+      - say: { char: 엄마, with: [의사], motion: droop, text: "…" }
+      - say: { char: 엄마, with: [의사], text: "안 하면요." }
+      - say: { char: 의사, with: [엄마], text: "그건 제가 말씀드릴 수 없습니다." }
+      - say: { char: 의사, with: [엄마], text: "다만 지금 수치로는 길게 보기 어렵습니다." }
+      - wait: 700
+      - say: { char: 엄마, with: [의사], text: "사백은 오늘이라도 됩니다." }
+      - say: { char: 엄마, with: [의사], text: "나머지는… 좀 기다려 주시면 안 될까요." }
+      - say: { char: 의사, with: [엄마], text: "그건 원무과에 말씀하셔야 합니다." }
+      - say: { char: 엄마, with: [의사], text: "네." }
+      - say: { char: 엄마, with: [의사], text: "네, 알겠습니다." }
+      - move: { id: 의사, style: exit }
+      - say: { channel: action, with: [엄마], text: "엄마는 그 자리에 그대로 서 있다. 한참 서 있다." }
       - wait: 1100
       - say: { channel: thought, with: [], text: "삼십에서 사십이면 열에 서넛이다. 그건 내가 센다." }
       - say: { channel: thought, with: [], text: "팔백에서 사백을 빼면 사백이다. 그것도 센다." }
       - say: { channel: thought, with: [], text: "둘을 같이 놓고 세는 건 안 된다. 그건 배운 적이 없다." }
+      - char: { id: 민재, position: left }
       - char: { id: 엄마, position: right }
-      - say: { channel: action, with: [], text: "엄마가 들어온다. 앞치마를 벗고 온 건 처음이다." }
+      - say: { channel: action, with: [민재, 엄마], text: "엄마가 병실로 들어온다. 앞치마를 벗고 온 건 처음이다." }
       - say: { char: 엄마, with: [민재], text: "민재야. 엄마가 선생님이랑 얘기했는데." }
       - say: { char: 민재, with: [엄마], text: "…들었어요." }
       - say: { char: 엄마, with: [민재], motion: droop, text: "문이 열려 있었니. 아이고." }

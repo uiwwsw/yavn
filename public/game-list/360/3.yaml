@@ -119,21 +119,37 @@ scenes:
       - place: "삼월 말 · 구산동 다온이네"
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "여덟 살짜리 녹취는 보호자 동의를 다시 받아야 한다. 그래서 집으로 갔다." }
-      - say: { channel: action, with: [], text: "아이가 식탁에서 색연필을 쥐고 있다. 나를 한참 본다." }
-      - say: { channel: action, with: [], text: "\"아줌마, 어디서 봤는데.\"" }
-      - say: { char: 지안, with: [], text: "방송국에서 봤지. 저번에 녹음할 때." }
-      - say: { channel: action, with: [], text: "\"그거 말고.\"" }
+      - char: { id: 다온, position: right }
+      - char: { id: 다온엄마, position: center }
+      - say: { channel: action, with: [다온, 다온엄마], text: "아이가 식탁에서 색연필을 쥐고 있다." }
+      - say: { char: 다온엄마, with: [지안, 다온], text: "다온아, 인사해야지." }
+      - say: { channel: action, with: [지안, 다온], text: "아이가 색연필을 놓지 않은 채 나를 한참 본다." }
+      - say: { char: 다온, with: [지안], text: "아줌마, 어디서 봤는데." }
+      - say: { char: 지안, with: [다온], text: "방송국에서 봤지. 저번에 녹음할 때." }
+      - say: { char: 다온, with: [지안], text: "그거 말고." }
       - wait: 900
-      - say: { channel: action, with: [], text: "아이 엄마가 웃는다. \"얘가 아무한테나 그래요. 선생님도 그러시죠?\"" }
-      - say: { char: 지안, with: [], text: "…네. 저도 가끔요." }
-      - say: { channel: action, with: [], text: "아이가 웃는다. 웃을 때 왼쪽 눈이 먼저 감긴다." }
+      - say: { char: 다온엄마, with: [지안, 다온], motion: laugh, text: "얘가 아무한테나 그래요." }
+      - say: { char: 다온엄마, with: [지안, 다온], text: "선생님도 그러시죠?" }
+      - say: { char: 지안, with: [다온엄마], text: "…네. 저도 가끔요." }
+      - say: { char: 다온, with: [지안], motion: laugh, text: "거봐." }
+      - say: { channel: action, with: [지안, 다온], text: "아이가 웃는다. 웃을 때 왼쪽 눈이 먼저 감긴다." }
       - say: { channel: thought, with: [], text: "사백 건을 풀면서 이런 건 적지 않았다. 적을 칸이 없다." }
-      - say: { channel: action, with: [], text: "\"아줌마. 나 그때 뒤 봤다고 했잖아. 뒤에 뭐 있었는지 알아?\"" }
-      - say: { char: 지안, with: [], text: "강아지 찾는다고 했잖아." }
-      - say: { channel: action, with: [], text: "\"그건 엄마한테 한 말이고.\"" }
+      - say: { char: 다온엄마, with: [지안], text: "저는 주방에 있을게요. 커피 드실래요?" }
+      - say: { char: 지안, with: [다온엄마], text: "아, 괜찮습니다." }
+      - move: { id: 다온엄마, style: exit }
+      - say: { char: 다온, with: [지안], text: "아줌마." }
+      - say: { char: 다온, with: [지안], text: "나 그때 뒤 봤다고 했잖아." }
+      - say: { char: 다온, with: [지안], text: "뒤에 뭐 있었는지 알아?" }
+      - say: { char: 지안, with: [다온], text: "강아지 찾는다고 했잖아." }
+      - say: { char: 다온, with: [지안], text: "그건 엄마한테 한 말이고." }
       - wait: 1100
-      - say: { channel: action, with: [], text: "\"사람 있었어. 근데 얼굴은 안 보여. 맨날 거기 서 있어.\"" }
+      - say: { char: 다온, with: [지안], text: "사람 있었어." }
+      - say: { char: 다온, with: [지안], text: "근데 얼굴은 안 보여. 맨날 거기 서 있어." }
+      - say: { char: 지안, with: [다온], text: "…맨날?" }
+      - say: { char: 다온, with: [지안], text: "응. 내가 뒤 볼 때마다." }
+      - say: { char: 다온, with: [지안], text: "아줌마도 봤어?" }
       - say: { channel: thought, with: [], text: "여덟 살이 지어내기엔 재미가 없는 얘기다. 지어내면 더 센 걸 지어낸다." }
+      - say: { char: 지안, with: [다온], text: "…아니. 못 봤어." }
       - say: { channel: action, with: [], text: "녹음기를 켜지 않았다. 켤 생각을 못 했다." }
       - goto: munho_home
 
@@ -255,18 +271,18 @@ scenes:
       - say: { channel: message, side: them, with: [], text: "엄마: 왔네. 밥은 먹었니" }
       - say: { channel: action, with: [], text: "수화기 너머로 들리는데, 왜 메시지처럼 들리는지 모르겠다." }
       - say: { char: 지안, with: [], text: "먹었어요. 엄마는." }
-      - say: { channel: action, with: [], text: "\"여기선 때 되면 주니까. 너는 때를 안 맞추잖아.\"" }
+      - say: { channel: message, side: them, with: [], text: "엄마: 여기선 때 되면 주니까. 너는 때를 안 맞추잖아" }
       - say: { channel: action, with: [], text: "07:12. 07:11." }
-      - say: { channel: action, with: [], text: "\"그 방송은 언제 나오니.\"" }
+      - say: { channel: message, side: them, with: [], text: "엄마: 그 방송은 언제 나오니" }
       - say: { char: 지안, with: [], text: "구월이요. 2부까지 해서요." }
-      - say: { channel: action, with: [], text: "\"그럼 그때 또 오겠네.\"" }
+      - say: { channel: message, side: them, with: [], text: "엄마: 그럼 그때 또 오겠네" }
       - say: { channel: thought, with: [], text: "그때까지는 안 온다는 말로 들린다. 엄마는 그렇게 말한 적이 없다." }
       - say: { channel: action, with: [], text: "03:40. 할 말을 아껴 뒀는데 어디에 아껴 뒀는지 모르겠다." }
       - say: { char: 지안, with: [], text: "엄마." }
-      - say: { channel: action, with: [], text: "\"응.\"" }
+      - say: { channel: message, side: them, with: [], text: "엄마: 응" }
       - wait: 1100
       - say: { char: 지안, with: [], text: "…다음 주에 올게요." }
-      - say: { channel: action, with: [], text: "\"그래. 밥 먹고 다녀.\"" }
+      - say: { channel: message, side: them, with: [], text: "엄마: 그래. 밥 먹고 다녀" }
       - say: { channel: action, with: [], text: "엄마가 먼저 수화기를 내려놓는다. 00:00까지 안 기다린다." }
       - say: { channel: thought, with: [], text: "먼저 내려놓는 쪽이 덜 미안하다는 걸 엄마가 어디서 배웠을까." }
       - goto: pattern
@@ -411,8 +427,17 @@ scenes:
           when: { var: l4_signed, op: eq, value: false }
           text: "돌봄 단말: 서지안 님(79). 면회 예약 1건. 박다온(53), 오후 두 시."
       - say: { channel: thought, with: [], text: "여덟 살에 깜깜한 데서 강아지를 찾았다던 아이다. 학교에서 전생충이라고 불렸던 아이다." }
-      - say: { channel: action, with: [], text: "다온은 올 때마다 책을 한 권 가져온다. 초판 천오백 부 중에 아직 집에 쌓여 있는 것이다." }
-      - say: { channel: thought, with: [], text: "이름만 써 달라고 한다. 손이 떨려서 못 쓰겠다고 하면 그러면 날짜만 쓰라고 한다." }
+      - char: { id: 어른다온, position: right }
+      - say: { channel: action, with: [어른다온], text: "올 때마다 책을 한 권 가져온다. 초판 천오백 부 중에 아직 제 집에 쌓여 있는 것이다." }
+      - say: { char: 어른다온, with: [], text: "선생님. 이거 하나만 더요." }
+      - say: { char: 어른다온, with: [], text: "이름만요. 이름만 쓰시면 돼요." }
+      - say: { channel: action, with: [어른다온], text: "손이 떨려서 글씨가 안 된다고 했다." }
+      - say: { char: 어른다온, with: [], text: "그럼 날짜만 쓰세요." }
+      - say: { char: 어른다온, with: [], text: "날짜도 선생님 글씨잖아요." }
+      - wait: 900
+      - say: { char: 어른다온, with: [], text: "다음 달에 또 올게요." }
+      - say: { channel: action, with: [어른다온], text: "같은 말을 사 년째 한다. 사 년째 온다." }
+      - move: { id: 어른다온, style: exit }
       - say:
           channel: action
           with: []

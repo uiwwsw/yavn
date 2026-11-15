@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<title>복례</title>
+<ellipse cx="400" cy="420" rx="116" ry="126" fill="#3a2f28"/>
+<rect x="362" y="530" width="76" height="96" fill="#dcb892"/>
+<ellipse cx="400" cy="444" rx="108" ry="118" fill="#dcb892"/>
+<path d="M292 430 Q298 334 400 326 Q502 334 508 430 Q456 368 400 362 Q344 368 292 430Z" fill="#3a2f28"/>
+<path d="M286 372 Q400 300 514 372 L520 414 Q400 350 280 414Z" fill="#cfc6b4"/>
+<path d="M280 414 Q268 470 284 512 L318 500 Q302 466 306 418Z" fill="#cfc6b4"/>
+<path d="M332 620 C244 634 158 690 136 838 L124 1000 L676 1000 L664 838 C642 690 556 634 468 620Z" fill="#a8a08c"/>
+<path d="M332 620 L400 736 L468 620 L400 620Z" fill="#efe9dc"/>
+<path d="M310 628 C296 700 292 790 300 1000 L352 1000 C342 800 348 700 360 632Z" fill="#8f8876"/>
+<path d="M490 628 C504 700 508 790 500 1000 L448 1000 C458 800 452 700 440 632Z" fill="#8f8876"/>
+<rect x="196" y="852" width="408" height="26" fill="#6f6a5c"/>
+</svg>
