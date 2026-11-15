@@ -65,8 +65,12 @@ scenes:
           prompt: "세 녹취에 겹치는 말이 있다. 형광펜 뚜껑을 연다."
           options:
             - text: "'어두웠다'에 줄을 긋는다."
+              forgiveOnce: true
+              forgiveMessage: "차 피디가 종이를 도로 민다. \"어두웠다는 건 다 하는 말이에요. 다시 봐요.\""
               goto: mark_dark
             - text: "'하나만 들고 간다'에 줄을 긋는다."
+              forgiveOnce: true
+              forgiveMessage: "차 피디가 한 줄 읽고 멈춘다. \"유 선생님 책 읽고 따라 한 걸 수도 있어요. 셋 다 되는 걸로 찾아봐요.\""
               goto: mark_one
             - text: "'가다가 돌아봤다'에 줄을 긋는다."
               set: { looked_back: true }
@@ -132,6 +136,31 @@ scenes:
           text: "아가씨는 갇혀 살았소. 평생 한 집에서. 그래서 한 군데 못 붙어 있지. 엉덩이가 벌써 들렸잖소."
       - say: { char: 지안, with: [문호], text: "선생님. 그걸 어떻게 아세요." }
       - say: { char: 문호, with: [지안], text: "보면 알지. 나는 내 것도 봤으니까." }
+      - say:
+          char: 지안
+          with: [문호]
+          when: { var: looked_back, op: eq, value: true }
+          text: "선생님. 녹취에 '돌아봤다'고 하셨어요. 그건 왜 돌아보셨어요."
+      - say:
+          char: 문호
+          with: [지안]
+          when: { var: looked_back, op: eq, value: true }
+          text: "…쥔 걸 바꾸고 싶어서. 가다가 그 생각이 들었소."
+      - say:
+          char: 지안
+          with: [문호]
+          when: { var: looked_back, op: eq, value: true }
+          text: "바꾸셨어요?"
+      - say:
+          char: 문호
+          with: [지안]
+          when: { var: looked_back, op: eq, value: true }
+          text: "못 바꿨지. 돌아봤을 뿐이오. 그래서 기억이 남은 거고."
+      - say:
+          channel: thought
+          with: []
+          when: { var: looked_back, op: eq, value: true }
+          text: "사백 건을 다 풀면 사백 명이 같은 말을 할 것이다. 돌아본 사람만 여기 앉아 있다."
       - say: { char: 문호, with: [지안], text: "운산 그 소리를 지금도 들어요. 갱목은 부러질 때 한 번에 안 부러져. 세 번에 나눠서 부러지지." }
       - say: { char: 문호, with: [지안], text: "그런 건 지어낼 수가 없소. 들은 사람만 아는 거라." }
       - say: { channel: thought, with: [], text: "녹취 19번이다. 돌아봤다고 한 세 사람 중 하나. 이 사람 건 지어낸 게 아니다." }
