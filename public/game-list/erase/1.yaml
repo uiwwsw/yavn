@@ -15,16 +15,19 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 오대리: 새 팀장님 오늘 오신대요"
+          autoAdvance: 1600
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 9시반 B회의실. 커피 사오지 말래 팀장님이 쏘신대"
+          autoAdvance: 2080
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 오 첫날부터 점수 따시네ㅋㅋ"
+          autoAdvance: 1664
       - say:
           channel: message
           side: me
@@ -36,6 +39,7 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 도윤대리님 또 ㅋㅋ만 치심"
+          autoAdvance: 1632
       - bg: { id: office, transition: cut }
       - music: neon
       - place: "월요일 9:20 · 영업2팀"
@@ -81,6 +85,7 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 두 분 인사 토씨 하나 안 틀리고 똑같으심ㅋㅋ 같은 군대 나오셨나"
+          autoAdvance: 2336
       - say:
           char: 준성.smirk
           motion: laugh
@@ -248,26 +253,31 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 팀장님 오전에 병원 다녀오셨대 회의 미뤄진 거 그거 때문"
+          autoAdvance: 2176
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 팀장님 오늘도 도윤대리님만 찾으심ㅋㅋㅋ"
+          autoAdvance: 1856
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 둘이 진짜 아는 사이 아님? 군대ㅋㅋ"
+          autoAdvance: 1824
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 아 그 윙크ㅋㅋㅋㅋ 나 소름돋았잖아"
+          autoAdvance: 1792
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: @한도윤 해명하세요"
+          autoAdvance: 1504
       - choice:
           key: e1_rumor
           prompt: "팀원들이 해명을 기다린다. 입력 중… 표시가 떴다 사라지기를 세 번."
@@ -294,6 +304,7 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: ㅋㅋㅋㅋ그래서요"
+          autoAdvance: 1440
       - say:
           channel: message
           side: me
@@ -305,6 +316,7 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 내일 점심 뭐 먹냐"
+          autoAdvance: 1504
       - goto: e1_home
 
   e1_deny:
@@ -320,21 +332,25 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 오…"
+          autoAdvance: 1248
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 이상한 게 뭔데요??"
+          autoAdvance: 1536
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 뭐 들은 거 있구나?"
+          autoAdvance: 1536
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 도윤대리님 읽씹ㅋㅋ 궁금하게 해놓고"
+          autoAdvance: 1792
       - goto: e1_home
 
   e1_ignore:
@@ -344,16 +360,19 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 오대리: 읽고 튀셨다"
+          autoAdvance: 1376
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 냅둬 결혼 준비 바쁘대"
+          autoAdvance: 1568
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 그럼 더 수상한데ㅋㅋ"
+          autoAdvance: 1536
       - goto: e1_home
 
   e1_home:
@@ -369,7 +388,9 @@ scenes:
           side: them
           with: []
           erase: true
+          wait: 700
           text: "[영업2팀] 송과장: 둘이 진짜 아는 사이 아님? 군대ㅋㅋ"
+          autoAdvance: 1824
       - add: { deleted: 1 }
       - say:
           char: 지수
@@ -675,6 +696,7 @@ scenes:
           char: 하린
           with: []
           erase: true
+          wait: 700
           text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
       - say:
           channel: action
@@ -694,6 +716,7 @@ scenes:
           char: 하린
           with: []
           erase: true
+          wait: 700
           text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
       - say:
           channel: message
@@ -701,6 +724,7 @@ scenes:
           char: 하린
           with: []
           erase: true
+          wait: 700
           text: "야 근데 둘이 요즘"
       - say:
           channel: action
@@ -719,6 +743,7 @@ scenes:
           channel: system
           with: []
           text: "스크린샷 3장 · 최근 삭제된 항목에서 영구 삭제"
+          wait: 800
       - add: { deleted: 3 }
       - say:
           channel: message

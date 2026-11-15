@@ -329,6 +329,7 @@ scenes:
           side: me
           with: []
           erase: true
+          wait: 700
           text: "크롬 검색기록 완전삭제 복구안되게"
       - add: { deleted: 3 }
       - set: { e2_search: true }
@@ -378,6 +379,7 @@ scenes:
           with: []
           erase: true
           text: "최근 삭제된 항목 · 1장 영구 삭제\n이 작업은 되돌릴 수 없습니다."
+          wait: 1100
       - add: { deleted: 1 }
       - set: { e2_gallery: true }
       - goto: search
@@ -456,6 +458,7 @@ scenes:
           channel: system
           with: []
           erase: true
+          wait: 700
           text: "지도 · 최근 검색 '보건소' — 삭제됨"
       - add: { deleted: 1 }
       - goto: e3_harin

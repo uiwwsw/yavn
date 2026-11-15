@@ -765,11 +765,13 @@ scenes:
           char: 도윤
           with: []
           erase: true
+          wait: 700
           text: "아무거나요"
       - say:
           channel: system
           with: []
           text: "대화방에서 나갔습니다.\n이 번호를 차단했습니다."
+          wait: 900
       - add: { deleted: 2 }
       - set: { e0_messages: true }
       - goto: e0_erase
@@ -784,6 +786,7 @@ scenes:
           channel: system
           with: []
           text: "최근 삭제된 항목 · 4장 영구 삭제\n이 작업은 되돌릴 수 없습니다."
+          wait: 1100
       - add: { deleted: 1 }
       - set: { e0_photos: true }
       - goto: e0_erase
@@ -798,6 +801,7 @@ scenes:
           channel: system
           with: []
           text: "지난 기록 전체 삭제 — 이 작업은 되돌릴 수 없습니다."
+          wait: 1100
       - add: { deleted: 1 }
       - set: { e0_location: true }
       - goto: e0_erase

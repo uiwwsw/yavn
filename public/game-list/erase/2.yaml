@@ -210,6 +210,7 @@ scenes:
           channel: system
           with: []
           erase: true
+          wait: 700
           text: "최근 검색 · 박준성 — 삭제됨"
       - goto: dig
 
@@ -238,17 +239,20 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 왜요??"
+          autoAdvance: 1312
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 뭐 들은 거 있어?"
+          autoAdvance: 1504
       - say:
           channel: message
           side: me
           char: 도윤
           with: []
           erase: true
+          wait: 700
           text: "아니 그냥 좀 이상한 얘기를 들어서"
       - say:
           channel: system
@@ -259,11 +263,13 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 오대리: 뭔데뭔데ㅔ 왜 지움"
+          autoAdvance: 1504
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 월요일 점심때 얘기해ㅋㅋ"
+          autoAdvance: 1600
       - goto: dig
 
   e2_elevator:
@@ -442,73 +448,87 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 팀장님 오늘도 안 나오심? 월화수 사흘째네"
+          autoAdvance: 1920
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 병가래요 인사팀 언니가 그러는데 기한 없대"
+          autoAdvance: 1920
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 기한 없는 병가도 있어요?"
+          autoAdvance: 1632
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 근데 팀장님 화분 누가 물 좀 줘요 다 말라가요"
+          autoAdvance: 2016
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 그거 종이컵으로 반 컵만 주라고 하셨는데"
+          autoAdvance: 1888
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 근데 그 병 있잖아… 아 아니다"
+          autoAdvance: 1728
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 뭔데요 그 병"
+          autoAdvance: 1408
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 회의 때 팀장님 폰에 감염내과 어쩌고 뜨는 거 봤어 나만 본 거 아님"
+          autoAdvance: 2400
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 헐 그럼 같이 밥 먹은 사람들 괜찮은 거임?"
+          autoAdvance: 1952
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 밥 먹는 걸로는 안 옮아요 오대리님ㅋㅋ 검색 좀 하세요"
+          autoAdvance: 2144
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 아 그래도 찝찝하잖아요"
+          autoAdvance: 1568
       - say:
           channel: message
           side: them
           when: { var: e2_leaked, op: eq, value: true }
           with: []
           text: "[영업2팀] 윤주임: 근데 전 회사 얘기는 처음에 도윤대리님이 꺼낸 거 아니에요?"
+          autoAdvance: 2240
       - say:
           channel: message
           side: them
           when: { var: e2_leaked, op: eq, value: true }
           with: []
           text: "[영업2팀] 송과장: 그건 그거고"
+          autoAdvance: 1376
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 도윤대리는 좀 알지 않아? 제일 많이 붙어 있었잖아"
+          autoAdvance: 2080
       - char: { id: 도윤, position: center }
       - say:
           channel: message
@@ -516,6 +536,7 @@ scenes:
           char: 도윤
           with: []
           erase: true
+          wait: 700
           text: "저도 그날 이후로는 연락을"
       - emote: { id: 도윤, motion: droop }
       - say:
@@ -529,21 +550,25 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 화분은 제가 줄게요"
+          autoAdvance: 1504
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 반 컵씩이요 오대리님 말대로"
+          autoAdvance: 1664
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 그런 거 왜 네가 해"
+          autoAdvance: 1536
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 제 자리에서 제일 가까워서요"
+          autoAdvance: 1664
       - say:
           channel: action
           with: []
