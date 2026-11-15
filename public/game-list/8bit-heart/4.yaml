@@ -183,6 +183,26 @@ scenes:
           with: [윤재]
           text: "그래도 갈 거야. 1번이 거짓말할 땐 1번이 무서운 거라서."
       - say:
+          char: 윤재
+          when: { var: answered_haru, op: eq, value: true }
+          with: [로봇]
+          text: "…야. 들어가서 모르는 거 생기면 그냥 나와. 내가 알려 줄게."
+      - say:
+          char: 로봇.thinking
+          when: { var: answered_haru, op: eq, value: true }
+          with: [윤재]
+          text: "믿어도 됨? 저번엔 아니라고 했음."
+      - say:
+          char: 윤재
+          when: { var: answered_haru, op: eq, value: true }
+          with: [로봇]
+          text: "…이번엔 어."
+      - say:
+          char: 윤재
+          when: { var: answered_haru, op: eq, value: false }
+          with: [로봇]
+          text: "…모르는 거 생기면 그냥 지나가. 대답 못 하는 것도 있어."
+      - say:
           char: 로봇
           with: [윤재]
           text: "무서운 건 내가 끄는 게 맞음."
