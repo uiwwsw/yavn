@@ -500,16 +500,19 @@ scenes:
           with: []
           text: "001을 누른다."
       - char: { id: 희남, position: center }
+      - wait: 220
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "오늘은… 괜찮아. 밥도 먹었고."
+      - wait: 220
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "하율이 왔다 갔어. 색연필 사 줘."
+      - wait: 220
       - say:
           char: 희남
           with: []
@@ -878,6 +881,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오후 12:58"
+          autoAdvance: 1348
       - say:
           channel: message
           side: them
