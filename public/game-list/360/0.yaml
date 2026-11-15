@@ -12,13 +12,94 @@ scenes:
       - music: void
       - say: { channel: narration, text: "눈을 떴다." }
       - say: { channel: narration, text: "떴는데 달라진 것이 없다." }
+      - say: { channel: narration, text: "감아 본다. 감은 것과 뜬 것이 같다. 그래서 다시 떴는지 아닌지 모르겠다." }
       - say: { channel: narration, text: "멀다. 어느 쪽으로도 끝이 닿지 않는다. 먼 것 너머가 또 멀다." }
       - say: { channel: narration, text: "소리를 기다린다. 오지 않는다. 기다린 시간을 잴 것도 없다." }
-      - say: { channel: narration, text: "그러다 겨울 하나가 떠오른다. 내가 살았던 겨울이다." }
-      - say: { channel: narration, text: "움집 바닥에 재가 식어 있었다. 독 밑바닥에는 좁쌀 두 줌." }
-      - say: { channel: narration, text: "아이는 사흘째 울지 않았다. 나는 아이를 덮어 두고 강 건너로 갔다. 곡식을 꾸러." }
-      - say: { channel: narration, text: "돌아왔을 때 불은 꺼져 있었다." }
+      - say: { channel: narration, text: "여기가 어디냐고 묻고 싶은데, 물을 데가 없다." }
+      - effect: { name: blur, wait: true }
+      - say: { channel: narration, text: "그러다 겨울 하나가 걸린다. 내가 살았던 겨울인데, 통째로는 오지 않는다." }
+      - say: { channel: narration, text: "조각조각 어딘가 걸려 있다. 어두운 데가 고르지 않다." }
+      - goto: dark_remember
+
+  # 기억은 한 번에 오지 않는다. 더듬어 찾은 것만 돌아오고, 하나 돌아올 때마다 공간이 기운다.
+  dark_remember:
+    actions:
+      - choice:
+          key: v0_remember
+          presentation: explore
+          prompt: "덜 어두운 데가 몇 군데 있다. 손이 없는데 뻗어진다."
+          options:
+            - text: "발치"
+              at: { x: 31, y: 68 }
+              when: { var: m_ash, op: eq, value: false }
+              goto: mem_ash
+            - text: "등 뒤"
+              at: { x: 72, y: 41 }
+              when: { var: m_jar, op: eq, value: false }
+              goto: mem_jar
+            - text: "먼 데"
+              at: { x: 49, y: 22 }
+              when: { var: m_river, op: eq, value: false }
+              goto: mem_river
+            - text: "덮어 둔 것"
+              at: { x: 18, y: 36 }
+              when: { var: m_found, op: gte, value: 3 }
+              goto: mem_child
+
+  mem_ash:
+    actions:
+      - set: { m_ash: true }
+      - add: { m_found: 1 }
+      - bg: { id: void_light, transition: wipeLeft, duration: 420 }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "재다. 움집 바닥에 재가 식어 있었다. 손가락으로 헤쳐 보면 속까지 찼다." }
+      - say: { channel: narration, text: "불씨를 묻어 두고 나가는 게 그 겨울의 규칙이었다. 묻어 뒀는데도 식었다." }
+      - bg: { id: void, transition: wipeRight, duration: 420 }
+      - goto: dark_remember
+
+  mem_jar:
+    actions:
+      - set: { m_jar: true }
+      - add: { m_found: 1 }
+      - bg: { id: void_light, transition: wipeRight, duration: 420 }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "독이다. 밑바닥에 좁쌀 두 줌. 긁으면 소리가 났다. 그 소리를 하루에 몇 번씩 냈다." }
+      - say: { channel: narration, text: "두 줌으로 며칠을 세는 버릇이 있었다. 세는 날짜가 자꾸 줄었다." }
+      - bg: { id: void, transition: wipeLeft, duration: 420 }
+      - goto: dark_remember
+
+  mem_river:
+    actions:
+      - set: { m_river: true }
+      - add: { m_found: 1 }
+      - bg: { id: void_light, transition: wipeLeft, duration: 420 }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "강이다. 건너편에 곡식을 꾸어 줄 사람이 있다고 했다. 전해 들은 말이었다." }
+      - say: { channel: narration, text: "얼음이 가운데만 얇았다. 가는 데 반나절, 오는 데 반나절로 잡았다." }
+      - bg: { id: void, transition: wipeRight, duration: 420 }
+      - goto: dark_remember
+
+  mem_child:
+    actions:
+      - effect: { name: focus, wait: true }
+      - say: { channel: narration, text: "셋이 한자리에 모이자 나머지가 따라온다. 이건 찾은 게 아니라 와 버린 것이다." }
+      - say: { channel: narration, text: "아이는 사흘째 울지 않았다. 울지 않는 걸 괜찮다고 쳤다." }
+      - say: { channel: narration, text: "덮어 두고 나갔다. 돌아왔을 때 불은 꺼져 있었다." }
+      - effect: { name: pulse, wait: true }
       - say: { channel: narration, text: "그 뒤로 서른 해를 더 살았다. 하루도 빠짐없이 기억난다." }
+      - goto: dark_churn
+
+  # 서른 해 동안 되씹은 것들이 한꺼번에 올라온다. 쥘 수 있는 것은 그중 둘뿐이다.
+  dark_churn:
+    actions:
+      - say: { channel: narration, text: "화가 난다. 낼 데가 없는데 난다. 낼 데가 없어서 더 난다." }
+      - say: { channel: narration, text: "그날 강을 안 건넜더라면." }
+      - say: { channel: narration, text: "건너더라도 해 지기 전에 돌아왔더라면." }
+      - say: { channel: narration, text: "건너편에 사람이 있다는 말을, 전해 들은 그 말을 믿지 말았어야 했다." }
+      - say: { channel: narration, text: "가을에 반 섬만 더 들여놨더라면. 한 섬도 아니고 반 섬만." }
+      - say: { channel: narration, text: "애를 업고 갔더라면. 업고는 못 건넌다고 누가 그랬더라. 그 말도 전해 들은 말이다." }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "되씹을수록 하나가 굵어지고 나머지가 가늘어진다. 굵어진 쪽으로 몸이 없는 채로 기운다." }
       - bg: { id: void_light, transition: dissolve, duration: 2400 }
       - say: { channel: narration, text: "한쪽이 조금 덜 어둡다. 아까부터 그랬는지는 모르겠다." }
       - goto: dark_choice
@@ -57,9 +138,19 @@ scenes:
   dark_go:
     actions:
       - place: "{{deg_last}}°"
+      - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그것 하나를 쥐자 덜 어두운 쪽으로 기울어진다." }
+      - say: { channel: narration, text: "쥔 것 말고는 손에 걸리는 게 없다. 셋이나 찾아 놨는데 하나만 따라온다." }
+      - bg: { id: void, transition: wipeLeft, duration: 380 }
       - say: { channel: narration, text: "처음에는 느리다. 그 생각을 할수록 빨라진다." }
+      - bg: { id: void_light, transition: wipeRight, duration: 320 }
+      - effect: { name: speedlines, wait: true }
+      - say: { channel: narration, text: "재가 지나간다. 독이 지나간다. 얼음 얇던 가운데가 지나간다." }
+      - bg: { id: void, transition: wipeLeft, duration: 260 }
       - say: { channel: narration, text: "강 건너 마을의 이름이 먼저 빠져나간다. 그다음은 아이의 이름이다." }
+      - effect: { name: zoom, wait: true }
+      - say: { channel: narration, text: "서른 해가 빠져나간다. 겨울이 빠져나간다. 빠져나간 자리가 아프지도 않다." }
+      - say: { channel: narration, text: "끝에 쥔 것 하나만 남는다. 그게 무슨 말이었는지도 곧 잊는다." }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1894년 유월\n제물포" }
       - goto: yard
@@ -365,7 +456,10 @@ scenes:
   void_one_go:
     actions:
       - place: "{{deg_last}}°"
+      - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - bg: { id: void, transition: wipeLeft, duration: 320 }
+      - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "포구 이름이 먼저 빠져나간다. 그다음은 허리춤에 있던 것의 무게." }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1952년 십이월\n부산" }

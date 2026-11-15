@@ -281,7 +281,10 @@ scenes:
   void_three_go:
     actions:
       - place: "{{deg_last}}°"
+      - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - bg: { id: void, transition: wipeLeft, duration: 320 }
+      - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "병원 이름이 빠져나간다. 누나 이름이 빠져나간다. 엄마 손 냄새가 마지막이다." }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "2026년 삼월\n서울" }

@@ -144,6 +144,10 @@ assets:
     birth: assets/music/birth.flac
 
 state:
+  m_ash: false
+  m_jar: false
+  m_river: false
+  m_found: 0
   v0: ""
   v1: ""
   v2: ""

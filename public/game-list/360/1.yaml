@@ -309,7 +309,10 @@ scenes:
   void_two_go:
     actions:
       - place: "{{deg_last}}°"
+      - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다. 생각을 놓을 틈이 없다." }
+      - bg: { id: void, transition: wipeRight, duration: 320 }
+      - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "부두 이름이 빠져나간다. 가자미식해 맛이 빠져나간다." }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1988년 구월\n서울" }
