@@ -16,36 +16,43 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 금요일 회식 투표 1.고깃집 2.횟집"
+          autoAdvance: 1824
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 2"
+          autoAdvance: 1216
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 1이요 저번에 횟집 가서 다들 배고프다 했잖아요"
+          autoAdvance: 2016
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 도윤대리님 결혼 축하 겸이니까 도윤대리님이 고르세요ㅋㅋ"
+          autoAdvance: 2144
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 청첩장 아직 못 받았는데 저만 못 받았나요"
+          autoAdvance: 1920
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 화분은 결국 제가 매일 주고 있습니다 반 컵씩"
+          autoAdvance: 1984
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 팀장님 오시면 보여드려야 되는데 …오시긴 하시겠죠?"
+          autoAdvance: 2080
       - say:
           channel: system
           when: { var: told_jisu, op: eq, value: 2 }
@@ -451,11 +458,13 @@ scenes:
           char: 하린
           with: []
           erase: true
+          wait: 700
           text: "나 아니야"
       - say:
           channel: system
           with: []
           text: "대화방에서 나갔습니다.\n이 번호를 차단했습니다."
+          wait: 900
       - say:
           channel: system
           with: []
@@ -501,6 +510,7 @@ scenes:
           channel: system
           with: []
           text: "타임라인 · 지난 기록 전체 삭제\n이 작업은 되돌릴 수 없습니다."
+          wait: 1100
       - say:
           channel: action
           with: []
@@ -713,6 +723,7 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 화분 잎 두 개 났어요 사진 찍어뒀습니다"
+          autoAdvance: 1888
       - say:
           channel: thought
           with: []
@@ -800,6 +811,7 @@ scenes:
           with: []
           erase: true
           text: "지우는 중… 약 4분 남음"
+          wait: 1400
       - say:
           channel: action
           with: []
@@ -862,16 +874,19 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 송과장: 금요일 고깃집 확정. 도윤대리 답 없어서 그냥 정함ㅋㅋ"
+          autoAdvance: 2144
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 도윤대리님도 안 오시는 거예요?"
+          autoAdvance: 1728
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 화분 두 개 됐어요. 하나는 제 자리로 옮길게요"
+          autoAdvance: 2016
       - ending: erase_loop
 
   end_erased_name:
@@ -888,46 +903,55 @@ scenes:
           side: them
           with: []
           text: "[영업2팀] 윤주임: 근데 그 소문 처음에 누가 냈더라"
+          autoAdvance: 1760
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 몰라ㅋㅋ 이제 상관없잖아"
+          autoAdvance: 1600
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 새 팀장님 다음 주 월요일 오신대요"
+          autoAdvance: 1792
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 커피 사오지 말래"
+          autoAdvance: 1472
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 화분은 누가 치웠어요"
+          autoAdvance: 1536
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 오대리: 자리 정리하면서 같이 버린 거 아닐까요"
+          autoAdvance: 1856
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 제가 반 컵씩 주던 건데요"
+          autoAdvance: 1632
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 송과장: 그런 건 원래 주인이 치우는 거야"
+          autoAdvance: 1760
       - say:
           channel: message
           side: them
           with: []
           text: "[영업2팀] 윤주임: 주인이 둘 다 없는데요"
+          autoAdvance: 1568
       - say:
           channel: action
           with: []
@@ -1108,6 +1132,7 @@ scenes:
           char: 도윤
           with: []
           erase: true
+          wait: 700
           text: "미안 내가 다 지울게 처음부터"
       - say:
           channel: message
