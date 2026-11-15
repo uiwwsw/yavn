@@ -69,6 +69,15 @@ describe('in-game UI themes and surfaces', () => {
     expect(interfaceStyles).toMatch(/\.story-log-entry\[data-channel='message'\] > p \{[^}]*border-radius: 16px 16px 16px 4px/);
   });
 
+  it('leaves the focus ring room on both sides of the scrolling column', () => {
+    // The ring is 2px drawn 2px out, and overflow clips at the padding box, so a column with
+    // a gutter on one side only cut the ring off whatever sat against the other edge.
+    const column = interfaceStyles.match(/\.app \.dialog-content-scroll \{([^}]*)\}/)?.[1] ?? '';
+    expect(column).toContain('padding-inline: 5px');
+    expect(column).not.toMatch(/padding-(left|right):/);
+    expect(interfaceStyles).toMatch(/:focus-visible \{ outline: 2px solid var\(--game-focus\); outline-offset: 2px; \}/);
+  });
+
   it('turns off menu motion for reduced-motion players', () => {
     expect(interfaceStyles).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.app :is\(\.settings-modal,[^}]*animation: none;/);
   });
