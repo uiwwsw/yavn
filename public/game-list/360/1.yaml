@@ -1,15 +1,29 @@
 chapterTitle: "부두"
 
 script:
-  - scene: stall
+  - scene: roster
 
 scenes:
-  stall:
-    title: "좌판"
+  # 한 자리에 둘이 서 있었다. 규칙은 쓰여 있었고, 나는 규칙대로 들어갔다.
+  roster:
+    title: "명부"
     actions:
       - bg: { id: busan_market, transition: fade, duration: 900 }
       - music: market
       - place: "1952년 십이월 · 부산 국제시장"
+      - say: { channel: action, with: [], text: "국제시장 좌판은 상인회 명부로 난다. 3열 17번 한 자리에 대기가 둘이었다." }
+      - say: { channel: record, with: [], text: "대기 명부. 3열 17번. 김순임(29). 박복례(41)." }
+      - say: { channel: action, with: [], text: "자릿세를 먼저 낸 쪽이 들어간다. 그게 규칙이고, 규칙은 벽에 붙어 있다." }
+      - say: { channel: action, with: [], text: "계를 탄 것이 지난달이다. 나는 낼 수 있었고 복례 아주머니는 못 냈다." }
+      - say: { channel: action, with: [], text: "\"복례 아주머니, 저, 그게…\"" }
+      - say: { channel: action, with: [], text: "\"됐소. 먼저 낸 사람이 임자지. 나는 길목에서 하오.\"" }
+      - say: { channel: action, with: [], text: "복례 아주머니는 아이가 둘이다. 길목은 천막을 못 친다." }
+      - say: { channel: thought, with: [], text: "미안하다는 말을 하려다 말았다. 하면 자리를 내놔야 할 것 같아서." }
+      - goto: stall
+
+  stall:
+    title: "좌판"
+    actions:
       - char: { id: 순임, position: left }
       - char: { id: 기호, position: right }
       - say: { char: 기호, with: [순임], text: "럭키 스트라이크 두 보루, 스팸 열 통. 오늘은 초콜릿도 있소." }
@@ -19,7 +33,7 @@ scenes:
           char: 순임
           with: [기호]
           when: { var: t_say, op: eq, value: true }
-          text: "최 통역은 웃을 때 왼쪽 눈이 먼저 감겨요. 그게 보기 좋아요."
+          text: "최 통역은 말끝을 안 흘려요. 또렷하게 끝까지 해요. 그게 보기 좋아요."
       - say:
           char: 기호
           with: [순임]
@@ -46,6 +60,7 @@ scenes:
           text: "풀면 눌러앉는 것 같아서 안 풀었다. 이태가 지났다."
       - char: { id: 영호, position: center }
       - say: { char: 영호, with: [순임], motion: hop, text: "엄마! 할머이 또 부두 나갔어. 아버지 온다고." }
+      - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데 나는 본 기억이 없다." }
       - say: { char: 순임, with: [영호], text: "오늘은 배 들어오는 날이 아닌데." }
       - say: { char: 영호, with: [순임], text: "날마다 들어온대. 할머이가 그랬어. 나 초콜릿 하나만." }
       - say: { char: 기호, with: [영호, 순임], text: "옜다. 이건 아저씨가 주는 거다. 엄마한텐 비밀이고." }
@@ -59,7 +74,7 @@ scenes:
     actions:
       - choice:
           key: l2_heart
-          prompt: "기호가 좌판에 팔꿈치를 대고 웃는다. 왼쪽 눈이 먼저 감긴다."
+          prompt: "기호가 좌판에 팔꿈치를 대고 웃는다."
           char: 기호
           with: [기호]
           options:
@@ -135,7 +150,14 @@ scenes:
       - say: { char: 순임, with: [영호], text: "가지 마. 손 놓지 마. 물건은 됐어." }
       - say: { channel: action, with: [], text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
       - say: { channel: action, with: [], text: "사람들이 지게에 천막을 지고 반대로 달린다. 물통을 든 사람보다 짐을 든 사람이 많다." }
-      - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다. 비어 있는 손으로 뭘 해야 하는지 모르겠다." }
+      - say: { channel: action, with: [], text: "길목 쪽에서 아이 울음이 난다. 복례 아주머니 천막이 거기다." }
+      - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다." }
+      - wait: 900
+      - say: { channel: thought, with: [], text: "비어 있는 손으로 뭘 해야 하는지 알면서 모르는 척한다." }
+      - say: { channel: action, with: [], text: "옆 좌판 최 씨가 물수건을 머리에 쓰고 들어갔다. 쉰이 넘은 사람이다." }
+      - wait: 1100
+      - say: { channel: action, with: [], text: "아이 둘은 나왔다. 최 씨는 안 나왔다." }
+      - say: { channel: thought, with: [], text: "쥔 손이 하나고 비었던 손이 하나다. 둘 다 그대로다." }
       - say: { char: 영호, with: [순임], delivery: shout, text: "엄마, 보따리! 좌판 밑에!" }
       - say: { char: 순임, with: [영호], text: "두고 와. 손 놓지 마." }
       - say: { channel: thought, with: [], text: "이태를 안 풀었던 것이 그 밤에 없어졌다. 안에 뭐가 있었는지는 끝까지 모른다." }
@@ -156,7 +178,7 @@ scenes:
           char: 순임
           with: [영호]
           when: { var: l2_told, op: eq, value: true }
-          text: "…왼쪽 눈이 먼저 감기는 사람이었는데."
+          text: "…말끝을 또렷하게 하는 사람이었는데."
       - say:
           char: 순임
           with: [영호]
@@ -165,6 +187,7 @@ scenes:
       - say: { channel: action, with: [], text: "좌판 자리에는 쇠 파이프 네 개만 남았다. 그 자리에 이미 다른 천막이 쳐져 있다." }
       - say: { char: 순임, with: [영호], text: "…저기 우리 자리였는데." }
       - say: { char: 영호, with: [순임], text: "아줌마가 어제부터 저기 섰대. 먼저 선 사람이 임자래." }
+      - say: { channel: thought, with: [], text: "그 말을 두 달 전에 들었다. 그때는 내가 임자였다." }
       - say: { char: 영호, with: [순임], text: "엄마, 벽보 봤어? 영등포 방직공장에서 사람 뽑는대. 기숙사도 준대." }
       - say: { char: 순임, with: [영호], text: "네가 그걸 읽었어?" }
       - say: { char: 영호, with: [순임], motion: perk, text: "'방' 자하고 '공' 자 읽었어. 나머진 옆집 형이." }
@@ -261,6 +284,7 @@ scenes:
       - music: void
       - goto: void_two
 
+  # 두 번째 재판. 이번에는 돌아왔다는 것만 알고, 어디로 돌아왔는지는 모른다.
   void_two:
     title: "암흑"
     actions:
@@ -269,15 +293,25 @@ scenes:
       - say:
           channel: narration
           when: { var: l2_told, op: eq, value: true }
-          text: "마흔넷 해가 전부 떠오른다. 세어 보지도 않고 건넨 전대. 왼쪽 눈."
+          text: "마흔넷 해가 전부 떠오른다. 세어 보지도 않고 건넨 전대. 또렷하던 말끝."
       - say:
           channel: narration
           when: { var: l2_told, op: eq, value: false }
           text: "마흔넷 해가 전부 떠오른다. 날짜, 금액, 가짜 도장."
       - say: { channel: narration, text: "부두에 등을 보이고 선 어머이. 열네 통의 편지. 답장은 한 통." }
-      - say: { channel: narration, text: "뒤가 밝다. 처음이 아닌 것 같다는 느낌만 있다." }
+      - wait: 700
+      - say: { channel: narration, text: "묻는 소리가 난다. 전에도 이랬던 것 같은데, 전이 언제인지는 모른다." }
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "3열 17번에 서는 사람이 꼭 나였어야 했나." }
+      - say: { channel: narration, text: "복례 아주머니한테 미안하다고 한마디만 했더라면." }
+      - say: { channel: narration, text: "그 밤에 비어 있던 손으로 뭘 했더라면." }
+      - say: { channel: narration, text: "최 씨가 물수건을 쓰기 전에 내가 한 발만 떼었더라면." }
+      - say: { channel: narration, text: "어머이한테 같이 가자고 한 번 더 말했더라면. 기차는 다섯 시였고." }
+      - wait: 900
+      - say: { channel: narration, text: "대답할 차례다. 마흔넷 해를 다 뒤져도 변명 하나가 안 나온다." }
+      - say: { channel: narration, text: "묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다." }
       - bg: { id: void_light, transition: dissolve, duration: 3200 }
-      - say: { channel: narration, text: "점들이 가까워지는 속도가 아는 속도다. 아는 기억은 없는데 속도만 안다." }
+      - say: { channel: narration, text: "끝내려면 하나를 쥐어야 한다. 쥐면 나머지는 놓는 것이다." }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - goto: void_two_choice
 
