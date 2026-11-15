@@ -43,6 +43,18 @@ describe('dialogue presentation channels', () => {
     expect(layout).not.toContain('.dialog-channel-label + .speaker');
   });
 
+  it('leaves the channel label off the phone, where the handset already says it', () => {
+    // The label is positioned out of the column's flow. Rendered on the phone it showed up
+    // over the thread, and while the thread was still empty it was the first child the
+    // column would have pushed its contents off, stranding the first message at the top.
+    expect(appSource).toContain("dialogueChannelLabel && dialogChannel !== 'message'");
+    const interfaceStyles = readFileSync(fileURLToPath(new URL('./gameInterface.css', import.meta.url)), 'utf8');
+    expect(interfaceStyles).not.toContain('.channel-message .dialog-channel-label');
+    expect(interfaceStyles).toMatch(
+      /\.dialog-content-scroll > :is\(\.phone-thread, \.phone-live\) \{ margin-top: auto; \}/,
+    );
+  });
+
   it('keeps every prose channel on a dedicated high-contrast surface', () => {
     expect(styles).toContain('--ui-narration-bg:');
     expect(styles).toContain('--ui-record-bg:');

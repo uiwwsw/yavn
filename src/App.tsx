@@ -5911,7 +5911,10 @@ export default function App() {
           {dialogChannel !== 'message' && dialogSpeaker && (
             <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
           )}
-          {dialogueChannelLabel && (
+          {/* The handset says what channel this is, so the phone needs no label — and a label
+              pinned out of flow at the top of the thread was both visible and, while the
+              thread was still empty, the first child the column pushed its contents off. */}
+          {dialogueChannelLabel && dialogChannel !== 'message' && (
             <div className="dialog-channel-label">{dialogueChannelLabel}</div>
           )}
           {dialogChannel === 'message' ? (
