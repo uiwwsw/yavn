@@ -370,7 +370,10 @@ scenes:
   last_go:
     actions:
       - place: "{{deg_last}}°"
+      - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다." }
+      - bg: { id: void, transition: wipeRight, duration: 320 }
+      - effect: { name: speedlines, wait: true }
       - say:
           channel: narration
           when:

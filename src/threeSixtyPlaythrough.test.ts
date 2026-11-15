@@ -56,7 +56,10 @@ async function play(route: Route, maxSteps = 4000) {
       const options = state.choiceGate.options;
       const wanted = route[key];
       if (wanted === undefined) throw new Error(`no route for ${key}: ${options.map((o) => o.text).join(' | ')}`);
-      const index = options.findIndex((option) => option.text === wanted);
+      let index = options.findIndex((option) => option.text === wanted);
+      // The first dark hands back the winter one piece at a time; its menu repeats until the
+      // pieces are found. Take whatever is still there until the route's option shows up.
+      if (index < 0 && state.choiceGate.presentation === 'explore') index = 0;
       if (index < 0) throw new Error(`option "${wanted}" not offered at ${key}: ${options.map((o) => o.text).join(' | ')}`);
       picked.push(`${key}=${options[index].text}`);
       submitChoiceOption(index, true);
@@ -105,6 +108,7 @@ describe('360 full playthrough', () => {
   it('refuses the choice each inherited direction cannot make, and remembers when it looks back', async () => {
     await start();
     const { state, picked, shown } = await play({
+      v0_remember: '덮어 둔 것',
       v0: '독이 비지 않았더라면.',
       l1_rice: OPEN,
       l1_leave: GO,
@@ -123,6 +127,18 @@ describe('360 full playthrough', () => {
       l5_look: '돌아본다.',
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
+    // The first dark does not hand the winter over. It asks where it hurts, three times, and the
+    // part nobody wants to reach for only opens once the other three are back.
+    expect(heard(shown, '여기가 어디냐고 묻고 싶은데, 물을 데가 없다')).toBe(true);
+    expect(heard(shown, '재가 식어 있었다')).toBe(true);
+    expect(heard(shown, '밑바닥에 좁쌀 두 줌')).toBe(true);
+    expect(heard(shown, '얼음이 가운데만 얇았다')).toBe(true);
+    expect(heard(shown, '이건 찾은 게 아니라 와 버린 것이다')).toBe(true);
+    expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
+    // Then thirty years of it come up at once, and only one of them can be carried.
+    expect(heard(shown, '낼 데가 없는데 난다')).toBe(true);
+    expect(heard(shown, '전해 들은 그 말을 믿지 말았어야 했다')).toBe(true);
+    expect(heard(shown, '셋이나 찾아 놨는데 하나만 따라온다')).toBe(true);
     // The fifth dark leaks the earlier lives back as unattributed testimony — the thing this life
     // spent its working years transcribing — and the editor recognises it by the detail nobody
     // would invent, then counts the years the four voices add up to.
@@ -146,6 +162,7 @@ describe('360 full playthrough', () => {
   it('comes full circle when the last thing held is the first thing held', async () => {
     await start();
     const { state, picked, shown } = await play({
+      v0_remember: '덮어 둔 것',
       v0: '그날 나가지 않았더라면.',
       l1_rice: OPEN,
       l1_leave: GO,
@@ -183,6 +200,7 @@ describe('360 full playthrough', () => {
   it('goes on to a different point when the last life regrets something else', async () => {
     await start();
     const { state } = await play({
+      v0_remember: '덮어 둔 것',
       v0: '독이 비지 않았더라면.',
       l1_rice: SHUT,
       l1_leave: STAY,
@@ -207,6 +225,7 @@ describe('360 full playthrough', () => {
   it('lets a life stay in the dark, after asking once more', async () => {
     await start();
     const { state, picked } = await play({
+      v0_remember: '덮어 둔 것',
       v0: '독이 비지 않았더라면.',
       l1_rice: SHUT,
       l1_leave: GO,
