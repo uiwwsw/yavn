@@ -77,15 +77,18 @@ scenes:
       - say:
           channel: record
           when: { var: l2_told, op: eq, value: true }
-          text: "\"웃을 때 왼쪽 눈이 먼저 감기는 사람이었다. 네 근 값을 적어 쥐여 주었다.\""
+          text: "\"그 사람 웃는 걸 좋아했다. 좋다고 말해 버렸고, 세어 보지도 않고 건넸다.\""
       - say:
           channel: record
           when: { var: l2_told, op: eq, value: false }
-          text: "\"웃을 때 왼쪽 눈이 먼저 감기는 사람이었다. 네 근 값은 외상으로 두었다.\""
+          text: "\"날짜와 금액과 이름 석 자를 받아 뒀다. 도장이 가짜였다.\""
       - say:
           channel: record
           when: { var: l2_asked, op: eq, value: true }
           text: "\"새벽 네 시에 어머니를 깨웠다. 기차는 다섯 시였다.\""
+      - say:
+          channel: record
+          text: "\"불에 들어간 건 내가 아니고 옆 좌판 사람이었다. 아이 둘은 나왔다.\""
       - say:
           channel: record
           when: { var: l2_asked, op: eq, value: false }

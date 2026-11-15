@@ -160,6 +160,14 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '맡은 쌀에 손대면 그날로 끝이다')).toBe(true);
     expect(heard(shown, '여든 먹어도 엿은 엿이죠')).toBe(true);
     expect(heard(shown, '종이가 눅눅하다')).toBe(true);
+    // The market stall was one seat with two people waiting for it, and the fire asks what the
+    // free hand is for. Somebody else answers that question.
+    expect(heard(shown, '먼저 낸 사람이 임자지')).toBe(true);
+    expect(heard(shown, '비어 있는 손으로 뭘 해야 하는지 알면서 모르는 척한다')).toBe(true);
+    expect(heard(shown, '아이 둘은 나왔다. 최 씨는 안 나왔다')).toBe(true);
+    expect(heard(shown, '그때는 내가 임자였다')).toBe(true);
+    // The habit belongs to one soul across all five lives, and in this one it is the son's.
+    expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
       l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,
