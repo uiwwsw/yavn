@@ -54,7 +54,7 @@ endings:
     tone: hopeful
   circle:
     title: "한 바퀴"
-    message: "{{deg_last}}°. 독이 비었던 그 겨울에도 같은 자리를 가리켰다. 다섯 번을 살고 같은 점이다."
+    message: "{{deg_last}}°. 일흔아홉 해가 가리킨 자리와 같다. 다섯 번을 살고 같은 점이다."
     epilogue: "갓난아이는 그 겨울을 모른다. 젖을 물고, 주먹을 쥔다."
     background: window_dawn
     music: birth

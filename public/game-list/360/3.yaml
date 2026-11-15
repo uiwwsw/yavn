@@ -108,6 +108,31 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "끝을 알면 쓰실 거예요?" }
       - say: { char: 차피디, with: [지안], text: "…아니. 끝이 안 좋으면 더 못 쓰지." }
       - say: { channel: thought, with: [], text: "격리. 처치 칸에 두 글자였다. 사백 건 중에 처치 칸이 있는 건 그 한 건뿐이다." }
+      - goto: daon
+
+  # 네 번째 얼굴. 이번에는 저쪽이 먼저 알아본다.
+  daon:
+    title: "녹취 12"
+    actions:
+      - place: "삼월 말 · 구산동 다온이네"
+      - char: { id: 지안, position: left }
+      - say: { channel: action, with: [], text: "여덟 살짜리 녹취는 보호자 동의를 다시 받아야 한다. 그래서 집으로 갔다." }
+      - say: { channel: action, with: [], text: "아이가 식탁에서 색연필을 쥐고 있다. 나를 한참 본다." }
+      - say: { channel: action, with: [], text: "\"아줌마, 어디서 봤는데.\"" }
+      - say: { char: 지안, with: [], text: "방송국에서 봤지. 저번에 녹음할 때." }
+      - say: { channel: action, with: [], text: "\"그거 말고.\"" }
+      - wait: 900
+      - say: { channel: action, with: [], text: "아이 엄마가 웃는다. \"얘가 아무한테나 그래요. 선생님도 그러시죠?\"" }
+      - say: { char: 지안, with: [], text: "…네. 저도 가끔요." }
+      - say: { channel: action, with: [], text: "아이가 웃는다. 웃을 때 왼쪽 눈이 먼저 감긴다." }
+      - say: { channel: thought, with: [], text: "사백 건을 풀면서 이런 건 적지 않았다. 적을 칸이 없다." }
+      - say: { channel: action, with: [], text: "\"아줌마. 나 그때 뒤 봤다고 했잖아. 뒤에 뭐 있었는지 알아?\"" }
+      - say: { char: 지안, with: [], text: "강아지 찾는다고 했잖아." }
+      - say: { channel: action, with: [], text: "\"그건 엄마한테 한 말이고.\"" }
+      - wait: 1100
+      - say: { channel: action, with: [], text: "\"사람 있었어. 근데 얼굴은 안 보여. 맨날 거기 서 있어.\"" }
+      - say: { channel: thought, with: [], text: "여덟 살이 지어내기엔 재미가 없는 얘기다. 지어내면 더 센 걸 지어낸다." }
+      - say: { channel: action, with: [], text: "녹음기를 켜지 않았다. 켤 생각을 못 했다." }
       - goto: munho_home
 
   munho_home:
