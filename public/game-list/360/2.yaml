@@ -24,12 +24,12 @@ scenes:
       - say:
           channel: thought
           with: []
-          when: { var: v2, op: eq, value: guard }
+          when: { var: t_guard, op: eq, value: true }
           text: "이 누나는 왜 나한테 잘해 주지. 뭘 바라는 건지 먼저 알아야 한다. 늘 그게 먼저다."
       - say:
           channel: action
           with: []
-          when: { var: v2, op: eq, value: stay }
+          when: { var: t_stay, op: eq, value: true }
           text: "침대 난간에 엄마 목도리가 묶여 있다. 내가 묶었다. 엄마가 꼭 다시 오라고."
       - say: { char: 민재, with: [수경], text: "저 애는 왜 혼자 들어가요." }
       - say: { char: 수경, with: [민재], text: "몰라. 근데 십만 명이 쳐다보는데 혼자 들어가잖아. 그게 되는 애가 있는 거야." }
@@ -76,7 +76,7 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: v2, op: eq, value: guard }
+            - when: { var: t_guard, op: eq, value: true }
               goto: open_cannot
           default: open_said
 
@@ -138,7 +138,7 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: v2, op: eq, value: stay }
+            - when: { var: t_stay, op: eq, value: true }
               goto: out_cannot
           default: out_go
 
@@ -260,10 +260,10 @@ scenes:
           prompt: "한쪽이 덜 어둡다. 쥘 것이 몇 개 없다."
           options:
             - text: "더 살고 싶었다."
-              set: { v3: live, deg_last: "164.8" }
+              set: { t_live: true, deg_last: "164.8" }
               goto: void_three_go
             - text: "한 번은 해 볼걸."
-              set: { v3: dare, deg_last: "339.4" }
+              set: { t_dare: true, deg_last: "339.4" }
               goto: void_three_go
             - text: "쥐지 않는다."
               goto: void_three_stop
@@ -292,6 +292,5 @@ scenes:
       - bg: { id: void_near, transition: wipeLeft, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "병원 이름이 빠져나간다. 누나 이름이 빠져나간다. 엄마 손 냄새가 마지막이다." }
-      - effect: { name: flash, wait: true }
-      - say: { channel: card, with: [], text: "2026년 삼월\n서울" }
-      - goto: /3.yaml
+      - bg: { id: void, transition: dissolve, duration: 1800 }
+      - goto: /0.yaml

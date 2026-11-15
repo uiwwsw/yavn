@@ -15,34 +15,34 @@ scenes:
       - say:
           char: 차피디
           with: [지안]
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "지안 씨, 방금 또 비상구 표시등 봤죠. 여기 3층이에요. 뛰어내려도 발목만 나가."
       - say:
           char: 지안
           with: [차피디]
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "습관이에요. 어느 방이든 들어가면 그것부터 봐요. 왜 그런지는 저도 몰라요."
       - say:
           char: 차피디
           with: [지안]
           motion: laugh
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "보험은 몇 개예요? 아니, 말하지 마요. 다섯 개 넘으면 내가 무서워."
       - say:
           char: 차피디
           with: [지안]
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "지안 씨 이력서 다시 봤는데, 2년 넘게 다닌 데가 없네. 여기가 다섯 번째?"
       - say:
           char: 지안
           with: [차피디]
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "해 봐야 알잖아요, 아닌지. 안 해 보고 넘어가는 게 안 돼요. 어려서부터요."
       - say:
           char: 차피디
           with: [지안]
           motion: laugh
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "전세금 빼서 카페 한 것도 해 봐서 안 거고? 아니다, 대답하지 마요."
       - say: { char: 차피디, with: [지안], text: "자, 일. 다큐 3부작 「기억하는 사람들」. 전에 살았던 걸 기억한다는 사람들 인터뷰." }
       - say: { char: 차피디, with: [지안], text: "제보가 석 달에 사백 건이에요. 십 년 전에는 한 해에 두 건 왔대. 선배들 말로는." }
@@ -127,12 +127,12 @@ scenes:
       - say:
           char: 문호.lean
           with: [지안]
-          when: { var: v3, op: eq, value: live }
+          when: { var: t_live, op: eq, value: true }
           text: "아가씨는 물에서 죽었소. 젊어서. 그래서 조심이 많지. 들어오면서 창문 잠금부터 봤잖소."
       - say:
           char: 문호.lean
           with: [지안]
-          when: { var: v3, op: eq, value: dare }
+          when: { var: t_dare, op: eq, value: true }
           text: "아가씨는 갇혀 살았소. 평생 한 집에서. 그래서 한 군데 못 붙어 있지. 엉덩이가 벌써 들렸잖소."
       - say: { char: 지안, with: [문호], text: "선생님. 그걸 어떻게 아세요." }
       - say: { char: 문호, with: [지안], text: "보면 알지. 나는 내 것도 봤으니까." }
@@ -253,7 +253,7 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: v3, op: eq, value: dare }
+            - when: { var: t_dare, op: eq, value: true }
               goto: sign_cannot_stay
           default: sign_yes
 
@@ -261,7 +261,7 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: v3, op: eq, value: live }
+            - when: { var: t_live, op: eq, value: true }
               goto: sign_cannot_leave
           default: sign_no
 

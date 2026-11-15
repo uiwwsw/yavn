@@ -32,15 +32,17 @@ const baseYaml = readYaml('base.yaml');
 const assets = asRecord(baseYaml.assets);
 
 // The four directions a life can be handed, and the one choice in that life each of them takes away.
-const inheritedLocks: Array<{ chapter: number; state: string; value: string; choice: string }> = [
-  { chapter: 0, state: 'v0', value: 'hold', choice: 'l1_rice' },
-  { chapter: 0, state: 'v0', value: 'kin', choice: 'l1_leave' },
-  { chapter: 1, state: 'v1', value: 'say', choice: 'l2_heart' },
-  { chapter: 1, state: 'v1', value: 'free', choice: 'l2_mother' },
-  { chapter: 2, state: 'v2', value: 'guard', choice: 'l3_open' },
-  { chapter: 2, state: 'v2', value: 'stay', choice: 'l3_out' },
-  { chapter: 3, state: 'v3', value: 'live', choice: 'l4_sign' },
-  { chapter: 3, state: 'v3', value: 'dare', choice: 'l4_sign' },
+// One life's answer is the next life's locked door. The pairs are a ring: the storehouse is
+// shut by what the editing room held, and the editing room is shut by what the ward held.
+const inheritedLocks: Array<{ chapter: number; state: string; value: boolean; choice: string }> = [
+  { chapter: 0, state: 't_hold', value: true, choice: 'l1_rice' },
+  { chapter: 0, state: 't_kin', value: true, choice: 'l1_leave' },
+  { chapter: 1, state: 't_say', value: true, choice: 'l2_heart' },
+  { chapter: 1, state: 't_free', value: true, choice: 'l2_mother' },
+  { chapter: 2, state: 't_guard', value: true, choice: 'l3_open' },
+  { chapter: 2, state: 't_stay', value: true, choice: 'l3_out' },
+  { chapter: 3, state: 't_live', value: true, choice: 'l4_sign' },
+  { chapter: 3, state: 't_dare', value: true, choice: 'l4_sign' },
 ];
 
 describe('360', () => {

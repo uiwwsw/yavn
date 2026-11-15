@@ -36,6 +36,12 @@ const JACKET = '잠바를 받는다.';
 const SIGN = '서명한다. 원본은 방송국이 갖는다.';
 const WALK = '서명하지 않는다. 증언자들을 한 명씩 다시 찾아간다.';
 const BESIDE = '곁에 있었어야 했다.';
+// Which star the dark is asked for first. Once a life is lived its star goes out, so a route
+// names only its opening and the explore menu hands back whatever is left after that.
+const STAR_1894 = '엿을 기다린 아이';
+const STAR_1988 = '새벽마다 오던 사람';
+const WINTER_JAR = '독이 비지 않았더라면.';
+const WINTER_OUT = '그날 나가지 않았더라면.';
 
 // The store keeps only the last MAX_STORY_LOG_ENTRIES lines, and a full run of 360 says more
 // than that, so the lines from the early lives are gone by the time an ending resolves. Collect
@@ -105,11 +111,10 @@ async function start() {
 }
 
 describe('360 full playthrough', () => {
-  it('refuses the choice each inherited direction cannot make, and remembers when it looks back', async () => {
+  it('runs the chain in the order the dark is asked for, and looks back at the end', async () => {
     await start();
     const { state, picked, shown } = await play({
-      v0_remember: '덮어 둔 것',
-      v0: '독이 비지 않았더라면.',
+      star: STAR_1894,
       l1_rice: OPEN,
       l1_leave: GO,
       v1: '말을 했어야 했다.',
@@ -122,63 +127,51 @@ describe('360 full playthrough', () => {
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '"그건 선생님이 모르시는 일이에요."',
       l4_sign: SIGN,
-      l5_leftover: '제일 처음 놓고 온 것을 본다.',
+      l5_leftover: '쉰여섯 해가 두고 간 것을 본다.',
       v4: BESIDE,
+      w_remember: '울음',
+      v_end: WINTER_OUT,
       l5_look: '돌아본다.',
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
-    // The first dark opens with no feeling in it: the dark, then one thing surfacing with no name
-    // on it yet, and only then the field of points coming closer from behind.
-    expect(heard(shown, '끊임없는 공허함')).toBe(true);
-    expect(heard(shown, '무엇이 떠오르는지는 모른다. 떠오른다는 것만 안다')).toBe(true);
-    expect(heard(shown, '점이다. 하나가 아니다')).toBe(true);
-    expect(heard(shown, '가까워지고 있다')).toBe(true);
-    // The winter is dated before the player is asked to reach into it, so no era word is a riddle.
-    expect(heard(shown, '1809년')).toBe(true);
-    // The dark does not hand the winter over. It asks where it hurts, three times, and the
-    // part nobody wants to reach for only opens once the other three are back.
-    expect(heard(shown, '바닥에 재가 식어 있었다')).toBe(true);
-    expect(heard(shown, '좁쌀이 두 줌 남아 있었다')).toBe(true);
-    expect(heard(shown, '얼음이 가운데만 얇았다')).toBe(true);
-    expect(heard(shown, '이건 찾은 게 아니라 와 버린 것이다')).toBe(true);
-    expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
-    // Every later dark is the same approach one step nearer, and only the player can see that.
-    expect(heard(shown, '전에도 이랬던 것 같은데, 전이 언제인지는 모른다')).toBe(true);
-    expect(heard(shown, '다섯 번째다. 센 사람은 나뿐이다')).toBe(true);
-    // Then thirty years of it come up at once, and only one of them can be carried.
-    expect(heard(shown, '낼 데가 없는데 난다')).toBe(true);
-    expect(heard(shown, '전해 들은 그 말을 믿지 말았어야 했다')).toBe(true);
-    expect(heard(shown, '셋이나 찾아 놨는데 하나만 따라온다')).toBe(true);
-    // The fifth dark leaks the earlier lives back as unattributed testimony — the thing this life
-    // spent its working years transcribing — and the editor recognises it by the detail nobody
-    // would invent, then counts the years the four voices add up to.
-    expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
-    expect(heard(shown, '백아흔여섯 해')).toBe(true);
-    // It can also look at the thing it put down in the first dark, which has no year attached.
-    expect(heard(shown, '223.7. 그날 나가지 않았더라면')).toBe(true);
-    // The hoarder cannot open the storehouse, the one who says everything cannot ask for a receipt,
-    // the one who stays cannot take the jacket, and the one who dares cannot sit down and sign.
-    expect(heard(shown, '손목이 돌아가지 않는다')).toBe(true);
+    // The dark opens on a feeling, not on information, and the first thing the player does is
+    // say who they miss without being told who that is.
+    expect(heard(shown, '끝에는 뭐가 있을까')).toBe(true);
+    expect(heard(shown, '사무치게 그립다')).toBe(true);
+    expect(heard(shown, '아, 누군가 보고 싶다')).toBe(true);
+    // The first life is free: nothing has been handed down to it yet.
+    expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다')).toBe(true);
+    // Each dark is a trial with nobody else in it.
+    expect(heard(shown, '어디서 나는지 찾다가 그만둔다. 내 안에서 난다')).toBe(true);
+    expect(heard(shown, '묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다')).toBe(true);
+    // What one life holds is what the next life cannot do, and it never knows why.
     expect(heard(shown, '나온 말은 그게 아니다')).toBe(true);
     expect(heard(shown, '손은 침대 난간을 잡고 있다')).toBe(true);
     expect(heard(shown, '가방끈이 어깨에 걸려 있다')).toBe(true);
+    // The fifth dark hears the earlier lives back as testimony, then one more thing arrives:
+    // the winter that was never judged, because the first time around it could not be.
+    expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
+    expect(heard(shown, '같은 점은 없어. 360도 어디에도')).toBe(true);
+    expect(heard(shown, '하나가 더 온다')).toBe(true);
+    expect(heard(shown, '1809년')).toBe(true);
+    expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
     expect(state.routeVars).toMatchObject({
-      v0: 'hold', l1_gave: false, l1_end: 'gone', v1: 'say', l2_told: true, l2_asked: true,
-      v2: 'stay', l3_said: true, l3_went: false, v3: 'dare', l4_signed: false, l4_refuted: true, looked_back: true,
+      lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
+      l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,
+      t_kin: true, v_end: 'kin', deg_last: '223.7',
     });
     expect(state.resolvedEndingId).toBe('returner');
   }, 120000);
 
-  it('comes full circle when the last thing held is the first thing held', async () => {
+  it('comes full circle when the winter is given the same answer as the life before it', async () => {
     await start();
     const { state, picked, shown } = await play({
-      v0_remember: '덮어 둔 것',
-      v0: '그날 나가지 않았더라면.',
-      l1_rice: OPEN,
-      l1_leave: GO,
+      star: STAR_1894,
+      l1_rice: SHUT,
+      l1_leave: STAY,
       v1: '어디에도 매이지 말았어야 했다.',
-      l2_heart: RECEIPT,
-      l2_mother: CARRY,
+      l2_heart: CONFESS,
+      l2_mother: SLIP_OUT,
       v2: '아무도 믿지 말았어야 했다.',
       l3_open: AFRAID,
       l3_out: JACKET,
@@ -186,57 +179,55 @@ describe('360 full playthrough', () => {
       l4_mark: "'어두웠다'에 줄을 긋는다.",
       l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
       l4_sign: WALK,
-      l5_leftover: '제일 나중에 놓고 온 것을 본다.',
+      l5_leftover: '열일곱 해가 두고 간 것을 본다.',
       v4: BESIDE,
+      w_remember: '울음',
+      v_end: WINTER_OUT,
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
-    // Before the last choice the stake is stated: the maths teacher said no point repeats in 360
-    // degrees, and this is the one place where that can be tested. Closing the circle says so.
-    expect(heard(shown, '같은 점은 없어. 360도 어디에도')).toBe(true);
+    // Shutting the gate is what the daughter defends him for, out at the gate, where he hears it.
+    expect(heard(shown, '우리 아버지 그런 사람 아니에요')).toBe(true);
     expect(heard(shown, '목록에 이미 있는 숫자다')).toBe(true);
     expect(heard(shown, '같은 점이 두 번이다')).toBe(true);
-    expect(heard(shown, '발이 넘어가지 않는다')).toBe(true);
-    expect(heard(shown, '보따리는 벌써 어깨에 있고')).toBe(true);
-    expect(heard(shown, '입이 닫힌다')).toBe(true);
-    expect(heard(shown, '손은 펜을 쥐고 있다')).toBe(true);
-    expect(state.routeVars).toMatchObject({
-      v0: 'kin', l1_gave: true, l1_end: 'poor', v1: 'free', l2_told: false, l2_asked: false,
-      v2: 'guard', l3_said: false, l3_went: true, v3: 'live', l4_signed: true, looked_back: false,
-      v4: 'kin', deg_last: '223.7',
-    });
+    expect(state.routeVars).toMatchObject({ l1_end: 'kept', t_kin: true, v_end: 'kin' });
     expect(state.resolvedEndingId).toBe('circle');
   }, 120000);
 
-  it('goes on to a different point when the last life regrets something else', async () => {
+  it('starts somewhere else when a different star is the one that is missed', async () => {
     await start();
-    const { state } = await play({
-      v0_remember: '덮어 둔 것',
-      v0: '독이 비지 않았더라면.',
+    const { state, picked, shown } = await play({
+      star: STAR_1988,
+      l3_open: '"괜찮대요. 가게 가 보세요."',
+      l3_out: '"누나 혼자 가요. 엄마가 여섯 시에 와요."',
+      v3: '더 살고 싶었다.',
       l1_rice: SHUT,
       l1_leave: STAY,
       v1: '어디에도 매이지 말았어야 했다.',
       l2_heart: CONFESS,
       l2_mother: SLIP_OUT,
       v2: '아무도 믿지 말았어야 했다.',
-      l3_open: '"괜찮대요. 가게 가 보세요."',
-      l3_out: '"누나 혼자 가요. 엄마가 여섯 시에 와요."',
-      v3: '더 살고 싶었다.',
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
       l4_sign: SIGN,
       l5_leftover: '보지 않는다.',
       v4: BESIDE,
+      w_remember: '울음',
+      v_end: WINTER_JAR,
       l5_look: '그대로 간다.',
     });
-    expect(state.routeVars).toMatchObject({ v0: 'hold', l1_end: 'kept', l2_told: true, v4: 'kin', deg_last: '223.7' });
+    expect(state.isFinished, picked.join('\n')).toBe(true);
+    // The ward comes first here, so the storehouse is a later life and the editor is still last:
+    // only that life can hear the other four back.
+    expect(heard(shown, '1988년 구월')).toBe(true);
+    expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
+    expect(state.routeVars).toMatchObject({ lives_done: 4, t_live: true, v_end: 'hold', deg_last: '041.2' });
     expect(state.resolvedEndingId).toBe('onward');
   }, 120000);
 
   it('lets a life stay in the dark, after asking once more', async () => {
     await start();
     const { state, picked } = await play({
-      v0_remember: '덮어 둔 것',
-      v0: '독이 비지 않았더라면.',
+      star: STAR_1894,
       l1_rice: SHUT,
       l1_leave: GO,
       v1: '쥐지 않는다.',
