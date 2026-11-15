@@ -26,8 +26,9 @@ scenes:
           when: { var: l4_refuted, op: eq, value: true }
           text: "파주 거실에서 한 말. 그건 선생님이 모르시는 일이에요."
       - say: { channel: narration, text: "김치통. 끝내 누르지 않은 전송 버튼." }
-      - say: { channel: narration, text: "유리 너머 십 분. 07:12에서 00:00까지, 마흔 몇 번." }
-      - say: { channel: narration, text: "매번 먼저 내려놓는 쪽이 저쪽이었다. 그게 배려라는 걸 그때도 알았다." }
+      - say: { channel: narration, text: "유리 너머 십 분." }
+      - say: { channel: narration, text: "07:12에서 00:00까지. 마흔 몇 번." }
+      - say: { channel: narration, text: "먼저 내려놓는 쪽이 매번 저쪽이었고, 그게 배려라는 걸 그때도 알았으면서 그대로 뒀다." }
       - say:
           channel: narration
           when: { var: looked_back, op: eq, value: true }
@@ -447,7 +448,7 @@ scenes:
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "탄 냄새다. 불을 피웠던 자리에서 나는 냄새." }
       - say: { channel: narration, text: "흙을 파고 들어가 살던 집이었다. 바닥에 재가 식어 있었다." }
-      - say: { channel: narration, text: "불씨를 묻어 두고 나가는 게 그 겨울의 규칙이었다. 묻어 뒀는데도 식었다." }
+      - say: { channel: narration, text: "불씨를 묻어 두고 나갔다. 그게 그 겨울의 규칙이었고, 묻어 뒀는데도 식었다." }
       - goto: winter_remember
 
   mem_jar:
@@ -456,8 +457,8 @@ scenes:
       - add: { m_found: 1 }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "긁는 소리다. 항아리 바닥을 긁으면 그 소리가 났다." }
-      - say: { channel: narration, text: "좁쌀이 두 줌 남아 있었다. 두 줌으로 며칠을 세는 버릇이 있었다." }
-      - say: { channel: narration, text: "세는 날짜가 자꾸 줄었다. 그래서 하루에 몇 번씩 긁어 봤다." }
+      - say: { channel: narration, text: "좁쌀이 두 줌." }
+      - say: { channel: narration, text: "두 줌으로 며칠을 세는 버릇이 있었는데, 세는 날짜가 자꾸 줄어서 자꾸 긁어 봤다." }
       - goto: winter_remember
 
   mem_river:
@@ -467,7 +468,8 @@ scenes:
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "찬 것이 발목까지 올라온다. 강이다." }
       - say: { channel: narration, text: "건너편에 곡식을 꾸어 줄 사람이 있다고 했다. 내가 본 게 아니고 전해 들은 말이었다." }
-      - say: { channel: narration, text: "얼음이 가운데만 얇았다. 가는 데 반나절, 오는 데 반나절로 잡았다." }
+      - say: { channel: narration, text: "얼음이 가운데만 얇았다." }
+      - say: { channel: narration, text: "가는 데 반나절, 오는 데 반나절." }
       - goto: winter_remember
 
   mem_child:
