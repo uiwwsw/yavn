@@ -214,6 +214,58 @@ scenes:
       - say: { channel: thought, with: [], text: "자기 것은 넣으라고 하고, 남의 것은 정해 준다. 그 차이를 본인은 못 본다." }
       - say: { channel: action, with: [], text: "녹음기 남은 시간이 사십일 분으로 떠 있다." }
       - say: { channel: message, side: them, with: [], text: "엄마: 김치 쉰다. 엄마가 택배로 부칠까" }
+      - goto: glass
+
+  # 면회는 예약제고 한 번에 십 분이다. 유리 너머로 보고 수화기로 말한다.
+  glass:
+    title: "유리창"
+    actions:
+      - bg: { id: ward, transition: fade, duration: 900 }
+      - place: "사월 · 김포 요양병원"
+      - char: { id: 지안, position: left }
+      - say: { channel: action, with: [], text: "면회는 예약제다. 한 번에 십 분이고, 남은 시간이 벽에 숫자로 떠 있다." }
+      - say: { channel: action, with: [], text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다. 여기서 잘라 준다고 했다." }
+      - say: { channel: message, side: them, with: [], text: "엄마: 왔네. 밥은 먹었니" }
+      - say: { channel: action, with: [], text: "수화기 너머로 들리는데, 왜 메시지처럼 들리는지 모르겠다." }
+      - say: { char: 지안, with: [], text: "먹었어요. 엄마는." }
+      - say: { channel: action, with: [], text: "\"여기선 때 되면 주니까. 너는 때를 안 맞추잖아.\"" }
+      - say: { channel: action, with: [], text: "07:12. 07:11." }
+      - say: { channel: action, with: [], text: "\"그 방송은 언제 나오니.\"" }
+      - say: { char: 지안, with: [], text: "구월이요. 2부까지 해서요." }
+      - say: { channel: action, with: [], text: "\"그럼 그때 또 오겠네.\"" }
+      - say: { channel: thought, with: [], text: "그때까지는 안 온다는 말로 들린다. 엄마는 그렇게 말한 적이 없다." }
+      - say: { channel: action, with: [], text: "03:40. 할 말을 아껴 뒀는데 어디에 아껴 뒀는지 모르겠다." }
+      - say: { char: 지안, with: [], text: "엄마." }
+      - say: { channel: action, with: [], text: "\"응.\"" }
+      - wait: 1100
+      - say: { char: 지안, with: [], text: "…다음 주에 올게요." }
+      - say: { channel: action, with: [], text: "\"그래. 밥 먹고 다녀.\"" }
+      - say: { channel: action, with: [], text: "엄마가 먼저 수화기를 내려놓는다. 00:00까지 안 기다린다. 늘 그런다." }
+      - say: { channel: thought, with: [], text: "먼저 내려놓는 쪽이 덜 미안하다는 걸 엄마가 어디서 배웠을까." }
+      - goto: pattern
+
+  # 남의 녹취에서는 되돌아가는 자리가 세 번이면 보인다. 자기 것은 서른네 해를 들어도 안 보인다.
+  pattern:
+    actions:
+      - bg: { id: edit_room, transition: fade, duration: 900 }
+      - place: "오월 · 편집실"
+      - say: { channel: action, with: [], text: "녹취를 풀 때 하는 일이 하나 있다. 사람이 제 얘기에서 되돌아가는 자리를 찍는 것." }
+      - say: { channel: action, with: [], text: "사백 건을 풀었다. 되돌아가는 자리가 없는 사람은 하나도 없었다." }
+      - say: { channel: thought, with: [], text: "오늘 내 통화를 녹음해서 풀면 어디에 점이 찍힐까." }
+      - wait: 900
+      - say: { channel: thought, with: [], text: "엄마. 응. …다음 주에 올게요." }
+      - say: { channel: thought, with: [], text: "거기다. 열 번 중에 열 번 다 거기서 돌아간다." }
+      - say: { channel: action, with: [], text: "남의 녹취는 세 번 들으면 보인다. 내 것은 서른네 해를 들었는데 안 보인다." }
+      - wait: 700
+      - say: { channel: thought, with: [], text: "말이 안 되면 쓰면 된다. 쓰는 건 내 일이다." }
+      - say: { channel: action, with: [], text: "메시지 창을 열었다." }
+      - say: { channel: message, side: me, with: [], text: "엄마 저 다음 주 말고 이번 주에 갈게요 토요일에" }
+      - say: { channel: action, with: [], text: "커서가 전송 위에 있다." }
+      - wait: 1100
+      - say: { channel: action, with: [], text: "지웠다. 지우는 건 됐다.", wait: 900, unskippable: true }
+      - say: { channel: thought, with: [], text: "쓰는 것도 됐고 지우는 것도 됐다. 안 되는 건 보내는 것 하나다." }
+      - effect: { name: pulse, wait: true }
+      - say: { channel: thought, with: [], text: "하나만 안 되는 게 우연일 수가 있나." }
       - goto: contract
 
   contract:

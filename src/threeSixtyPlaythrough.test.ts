@@ -177,6 +177,11 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '아무한테도 안 했다. 열일곱이 할 수 있는 건 그 정도다')).toBe(true);
     // And it carries into its own trial, which gets one step further than the others.
     expect(heard(shown, '지금 보니 고르는 쪽도 나다')).toBe(true);
+    // The editor can read the turn-back point in four hundred other people and not in herself.
+    expect(heard(shown, '먼저 내려놓는 쪽이 덜 미안하다는 걸')).toBe(true);
+    expect(heard(shown, '거기다. 열 번 중에 열 번 다 거기서 돌아간다')).toBe(true);
+    expect(heard(shown, '쓰는 것도 됐고 지우는 것도 됐다. 안 되는 건 보내는 것 하나다')).toBe(true);
+    expect(heard(shown, '하나만 안 되는 게 우연일 수가 있나')).toBe(true);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
       l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,
