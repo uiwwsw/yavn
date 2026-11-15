@@ -683,6 +683,22 @@ scenes:
           with: [상혁]
           text: "상혁아. 목소리만. 한 마디만 해 봐."
       - say:
+          channel: action
+          when: { var: sh_care, op: gte, value: 2 }
+          with: []
+          text: "문이 손가락 두 마디쯤 열린다. 안은 어둡고 모니터 불빛만 세 줄이다."
+      - say:
+          char: 상혁
+          when: { var: sh_care, op: gte, value: 2 }
+          with: [해수]
+          delivery: whisper
+          text: "…밥 고맙다. 네 차례 아니었잖아. 지난주도 네가 했어."
+      - say:
+          channel: action
+          when: { var: sh_care, op: lt, value: 2 }
+          with: []
+          text: "대답이 없다. 의자가 한 번 더 끌린다."
+      - say:
           channel: record
           when: { var: tampered, op: gt, value: 0 }
           with: []

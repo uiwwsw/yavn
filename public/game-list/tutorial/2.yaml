@@ -481,6 +481,26 @@ scenes:
           with: [해수]
           text: "하나 더. 오광철 씨가 지난 일주일 동안 112에 세 번 전화했어요. 밤마다 누가 소리를 지른다고. 혼자 사는 집에서. 출동하면 아무도 없고."
       - say:
+          channel: record
+          when: { var: rage, op: eq, value: 1 }
+          with: []
+          text: "112 접수 요지 · 4/16 01:52 · 신고자 진술 \"무슨 말인지는 모르겠고 계속 지르기만 한다\""
+      - say:
+          channel: record
+          when: { var: rage, op: gte, value: 2 }
+          with: []
+          text: "112 접수 요지 · 4/16 01:52 · 신고자 진술 \"혼자 다 먹지도 못하면서 왜 사느냐고 한다\""
+      - say:
+          char: 은숙.sharp
+          when: { var: rage, op: gte, value: 2 }
+          with: [해수]
+          text: "접수대에 적힌 말이 좀 구체적이죠. 환청은 보통 이렇게 안 적힙니다."
+      - say:
+          char: 해수.shaken
+          when: { var: rage, op: gte, value: 2 }
+          with: [은숙]
+          text: "…그러네요."
+      - say:
           char: 은숙
           with: [해수]
           text: "그리고 어제 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요. 아무것도 안 사고. 귀를 자꾸 누르면서."
