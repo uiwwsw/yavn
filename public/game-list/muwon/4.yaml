@@ -18,7 +18,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "대청 아래 마당에 무릎을 꿇은 사람은 없다. 피고는 대청 끝에 단정히 앉아 있다."
+          text: "마당에 무릎을 꿇은 사람은 없다. 피고는 대청 끝에 단정히 앉아 있다."
       - char: { id: 서연, position: left }
       - char: { id: 한명재, position: right }
       - say:
@@ -40,15 +40,19 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "대청 왼쪽 끝에 막쇠가 서 있다. 오작인은 마루에 올라오지 못해 신을 벗은 채 흙마당에 발을 두고 있다."
+          text: "막쇠는 마루에 올라오지 못한다. 신을 벗은 채 흙마당에 발을 두고 서 있다."
       - say:
           channel: thought
           with: []
-          text: "의녀는 의관에게 말을 올리지 못한다. 판관을 통해서 올려야 한다. 그 규칙을 저 사람이 제일 잘 안다."
+          text: "의녀는 의관에게 말을 올리지 못한다. 판관을 통해야 한다."
       - say:
           char: 한명재
           with: [서연]
-          text: "오해는 마십시오. 저는 의녀를 아랫사람으로 보지 않습니다. 저도 사람을 살리는 일을 합니다."
+          text: "오해는 마십시오. 저는 의녀를 아랫사람으로 보지 않습니다."
+      - say:
+          char: 한명재
+          with: [서연, 도원]
+          text: "저도 사람을 살리는 일을 합니다."
       - say:
           char: 한명재.cold
           with: [서연]
@@ -57,6 +61,10 @@ scenes:
           char: 서연.resolve
           with: [한명재]
           text: "죽은 수는 세기 쉽습니다. 셋입니다."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "허."
       - say:
           char: 한명재
           motion: laugh
@@ -97,13 +105,21 @@ scenes:
           with: [서연]
           text: "의녀께서 그날 고개를 끄덕이셨지요. 짐꾼 하나를 살리는 값으로요."
       - say:
+          char: 강치수
+          with: [서연]
+          text: "…참."
+      - say:
           channel: thought
           with: []
-          text: "덕구는 살았다. 주머니 삼백 개는 그 뒤로도 장에 나왔다. 둘 다 내가 한 일이다."
+          text: "덕구는 살았다. 주머니 삼백 개는 그 뒤로도 장에 나왔다."
       - say:
           char: 서연
           with: [한명재]
-          text: "그날은 제가 덮었습니다. 오늘은 제가 엽니다. 덮은 사람이 열면 안 되는 법이 있습니까."
+          text: "그날은 제가 덮었습니다."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "오늘은 엽니다. 덮은 사람이 열면 안 된다는 법이 있습니까."
       - say:
           char: 한명재
           with: [서연]
@@ -116,7 +132,11 @@ scenes:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
           with: [서연]
-          text: "아가씨. 두 번 말이 다른 건 나도 수없이 했수. 나중 말이 맞으면 그게 맞는 거요."
+          text: "아가씨."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "두 번 말이 다른 건 나도 수없이 했수. 나중 말이 맞으면 그게 맞는 거요."
       - goto: standing_trust
 
   standing_trust:
@@ -132,7 +152,11 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 한명재]
-          text: "검안은 내가 초검관으로 했소. 의녀가 본 것은 내 눈으로 다 확인했소. 내 이름으로 증언하겠소."
+          text: "검안은 내가 초검관으로 했소."
+      - say:
+          char: 도원.stern
+          with: [서연, 한명재]
+          text: "의녀가 본 것은 내 눈으로 다 확인했소. 내 이름으로 증언하겠소."
       - say:
           channel: thought
           with: [도원]
@@ -146,6 +170,10 @@ scenes:
           char: 도원.troubled
           with: [서연, 한명재]
           text: "…의녀의 검안이 틀린 적은 없었소. 그 이상은 장담하지 못하겠소."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "…네."
       - say:
           char: 한명재
           with: [서연, 도원]
@@ -161,7 +189,11 @@ scenes:
       - say:
           char: 한명재
           with: [서연, 한명재]
-          text: "비단전 침모 분이. 혼례가 두려워 스스로 우물에 들었다 들었습니다. 저와 무슨 상관입니까."
+          text: "비단전 침모 분이. 혼례가 두려워 스스로 우물에 들었다 들었습니다."
+      - say:
+          char: 한명재
+          with: [서연, 도원]
+          text: "저와 무슨 상관입니까."
       - choice:
           key: t1
           prompt: "분이가 스스로 들어가지 않았다는 증좌는?"
@@ -228,7 +260,15 @@ scenes:
           text: "입과 코에 거품이 없었습니다. 숨이 멎은 뒤 물에 들어갔다는 뜻입니다."
       - say:
           char: 서연
-          text: "지게미를 덮자 목에 손자국 넷이 떠올랐습니다. 엄지가 앞. 마주 보고 조른 겁니다."
+          text: "지게미를 덮자 목에 손자국 넷이 떠올랐습니다."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "엄지가 앞이었습니다. 마주 보고 조른 겁니다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "그래서요."
       - clearSticker: { id: t_sijang, leave: fadeOut }
       - say:
           char: 한명재
@@ -345,11 +385,19 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "그분 손에서 아이가 둘 죽었습니다. 기록에 있습니다. 그 손이 베낀 책으로 저를 헤아리시는군요."
+          text: "그분 손에서 아이가 둘 죽었습니다. 기록에 있습니다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "그 손이 베낀 책으로 저를 헤아리시는군요."
       - say:
           char: 서연.shock
           with: [한명재]
-          text: "…그 두 아이는 업혀 왔을 때 이미 숨이 얕았습니다. 기록 다음 장에 적혀 있습니다."
+          text: "…그 두 아이는 업혀 왔을 때 이미 숨이 얕았습니다."
+      - say:
+          char: 서연.shock
+          with: [한명재]
+          text: "기록 다음 장에 적혀 있습니다."
       - say:
           char: 한명재
           with: [서연]
@@ -363,11 +411,19 @@ scenes:
           char: 도원.stern
           when: { var: trust_dowon, op: gte, value: 2 }
           with: [서연, 한명재]
-          text: "의관. 그 책은 내가 빌려 읽었소. 빈칸을 채운 글씨가 누구 것이든 적힌 것은 맞았소."
+          text: "의관. 그 책은 내가 빌려 읽었소."
+      - say:
+          char: 도원.stern
+          with: [서연, 한명재]
+          text: "빈칸을 채운 글씨가 누구 것이든 적힌 것은 맞았소."
       - say:
           char: 한명재
           with: [서연]
-          text: "박 약방은 불이 나 죽었지요. 짐꾼이 불을 질렀다 자복도 했고요. 저와는 무관합니다."
+          text: "박 약방은 불이 나 죽었지요. 짐꾼이 불을 질렀다 자복도 했고요."
+      - say:
+          char: 한명재
+          with: [서연, 도원]
+          text: "저와는 무관합니다."
       - choice:
           key: t3
           prompt: "박씨가 불에 죽지 않았다는 증좌는?"
@@ -422,7 +478,11 @@ scenes:
           text: "박씨 콧속엔 그을음이 없었습니다. 입에 물렸던 밥을 먹은 닭이 반 식경 만에 죽었고요."
       - say:
           char: 서연
-          text: "은비녀를 속이는 독입니다. 그런 독을 아는 사람은 짐꾼이 아니라 약을 다루는 사람이죠."
+          text: "은비녀를 속이는 독입니다."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "짐꾼이 아는 독이 아닙니다. 약을 다루는 사람이 아는 독이에요."
       - say:
           char: 덕구
           when: { var: deokgu_saved, op: eq, value: true }
@@ -441,7 +501,11 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "서리 윤길은 얼음 곳간에 혼자 갔다지요. 출납부에 제 이름이 있습니까? 없을 겁니다."
+          text: "서리 윤길은 얼음 곳간에 혼자 갔다지요."
+      - say:
+          char: 한명재.cold
+          with: [서연, 도원]
+          text: "출납부에 제 이름이 있습니까? 없을 겁니다."
       - choice:
           key: t4
           prompt: "이름 대신 무엇이 그를 가리키는가?"
@@ -486,7 +550,11 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "얼음 열 덩이. 약재를 차게 두는 데 쓰지요. 전의감은 늘 얼음을 씁니다."
+          text: "얼음 열 덩이. 약재를 차게 두는 데 쓰지요."
+      - say:
+          char: 한명재
+          with: [서연, 도원]
+          text: "전의감은 늘 얼음을 씁니다."
       - goto: final_link
 
   round4_right:
@@ -515,14 +583,26 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 한명재]
-          text: "전의감 인부와 대 보았소. 그렇게 깨진 사인은 하나뿐이오. 의관 한명재."
+          text: "전의감 인부와 대 보았소."
+      - say:
+          char: 도원.stern
+          with: [한명재]
+          text: "그렇게 깨진 사인은 하나뿐이오. 의관 한명재."
+      - say:
+          char: 막쇠.grin
+          with: [서연, 도원]
+          text: "어이구."
       - clearSticker: { id: t_seal, leave: fadeOut }
       - clearSticker: { id: t_ice, leave: fadeOut }
       - say:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
           with: [한명재]
-          text: "그리고 의관 나리 하인 말이오. 왼손에 붕대 감았던데. 얼음에 정강이 깨진 자리도 아물었수?"
+          text: "그리고 의관 나리 하인 말이오."
+      - say:
+          char: 막쇠.grin
+          with: [서연, 한명재]
+          text: "왼손에 붕대 감았던데. 얼음에 정강이 깨진 자리도 아물었수?"
       - goto: final_link
 
   final_link:
@@ -536,15 +616,27 @@ scenes:
       - say:
           char: 서연.resolve
           with: [한명재, 도원]
-          text: "셋은 서로 모르는 사이입니다. 한 사람은 바느질을, 한 사람은 약을, 한 사람은 글씨를 했습니다."
+          text: "셋은 서로 모르는 사이입니다."
+      - say:
+          char: 서연.resolve
+          with: [한명재, 도원]
+          text: "한 사람은 바느질을, 한 사람은 약을, 한 사람은 글씨를 했습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "셋이 만난 데가 한 군데도 없습니다. 장도, 집도, 관아도 다릅니다."
+          text: "셋이 만난 데가 한 군데도 없습니다."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "장도, 집도, 관아도 다릅니다."
       - say:
           char: 서연
           with: [한명재]
           text: "그런데 셋이 같은 것을 하나씩 손에 쥐었습니다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "…뭐요."
       - say:
           channel: record
           text: "분이는 주머니를 꿰맸다. 박씨는 약재를 팔았다. 윤길은 시장을 베꼈다."
@@ -563,7 +655,11 @@ scenes:
       - say:
           char: 서연.resolve
           with: [한명재]
-          text: "셋은 한 사람을 알았습니다. 서로는 몰랐고요. 그래서 한 사람씩 지워졌습니다."
+          text: "셋은 한 사람을 알았습니다. 서로는 몰랐고요."
+      - say:
+          char: 서연.resolve
+          with: [한명재, 도원]
+          text: "그래서 한 사람씩 지워졌습니다."
       - say:
           char: 한명재
           with: [서연]
@@ -590,7 +686,11 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "보십시오. 의녀는 처음부터 범인을 정해 두지 않았습니다. 아무나 고르는 겁니다."
+          text: "보십시오."
+      - say:
+          char: 한명재
+          with: [서연, 도원]
+          text: "의녀는 처음부터 범인을 정해 두지 않았습니다. 아무나 고르는 겁니다."
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -605,7 +705,11 @@ scenes:
           text: "전의감 약재로 석회 환을 빚고, 감청 주머니에 담아 진짜 청심원으로 팔았습니다."
       - say:
           char: 서연
-          text: "주머니를 꿰맨 분이, 약재 출납을 본 박씨, 빌려 간 시장을 캐물은 윤길. 셋 다 입을 닫게 했어요."
+          text: "주머니를 꿰맨 분이, 약재 출납을 본 박씨, 빌려 간 시장을 캐물은 윤길."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "셋 다 입을 닫게 했어요."
       - say:
           char: 한명재.cold
           with: [서연]
@@ -623,11 +727,11 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "형조 참의는 오래 문서를 넘겼다. 증좌는 서로 이어지는 듯하다가 군데군데 끊겼다."
+          text: "참의는 오래 문서를 넘겼다. 증좌는 이어지는 듯하다가 군데군데 끊겼다."
       - say:
           channel: thought
           with: []
-          text: "내놓지 못한 자리가 어디였는지 안다. 몸에서 본 것을 뒤로 미룬 자리다."
+          text: "몸에서 본 것을 뒤로 미룬 자리였다."
       - say:
           char: 한명재
           with: [서연]
@@ -655,7 +759,11 @@ scenes:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
           with: [서연]
-          text: "아가씨. 시장은 남수. 글자는 안 타고 안 썩어요. 올해 안 되면 내년에 내밉시다."
+          text: "아가씨. 시장은 남수."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "글자는 안 타고 안 썩어요. 올해 안 되면 내년에 내밉시다."
       - say:
           channel: thought
           with: []
@@ -678,11 +786,19 @@ scenes:
       - say:
           char: 서연
           with: [한명재]
-          text: "거둔 수를 셀 겁니다. 못 거둔 수도 같이 적을 겁니다."
+          text: "거둔 수를 셀 겁니다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "못 거둔 수도 같이 적을 겁니다."
       - say:
           char: 한명재
           with: [서연]
           text: "적어서 무엇을 하시려고요."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "글쎄요."
       - say:
           char: 서연.resolve
           with: [한명재]
