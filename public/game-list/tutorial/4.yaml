@@ -147,12 +147,25 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "저희 연필이네요. 심이 그대로예요. 한 번도 안 깎은 거."
+          text: "저희 연필이네요."
+      - say:
+          char: 해수
+          with: []
+          text: "심이 그대로예요."
+      - say:
+          char: 해수
+          with: []
+          text: "한 번도 안 깎은 거."
       - say:
           char: 해수
           when: { var: t_pencil, op: eq, value: true }
           with: []
-          text: "로고가 반쯤 지워져 있네요. 제가 문지른 자리만큼."
+          text: "로고가 반쯤 지워져 있네요."
+      - say:
+          char: 해수
+          when: { var: t_pencil, op: eq, value: true }
+          with: []
+          text: "제가 문지른 자리만큼."
       - say:
           channel: thought
           when: { var: t_pencil, op: eq, value: true }
@@ -408,7 +421,12 @@ scenes:
           char: 해수.shaken
           motion: recoil
           with: []
-          text: "…아니요. 그건 그냥 둘러본 거예요."
+          text: "…아니요."
+      - say:
+          char: 해수.shaken
+          motion: recoil
+          with: []
+          text: "그건 그냥 둘러본 거예요."
       - say:
           channel: thought
           with: []
@@ -600,12 +618,27 @@ scenes:
           char: 해수
           when: { var: called_mom, op: eq, value: false }
           with: [상혁]
-          text: "나 오늘 오픈이야. 9시 반. 그 전까지 여기 앉아 있을게."
+          text: "나 오늘 오픈이야."
       - say:
           char: 해수
           when: { var: called_mom, op: eq, value: false }
           with: [상혁]
-          text: "밥은 해 놨어. 네 차례였는데 내가 했어."
+          text: "9시 반."
+      - say:
+          char: 해수
+          when: { var: called_mom, op: eq, value: false }
+          with: [상혁]
+          text: "그 전까지 여기 앉아 있을게."
+      - say:
+          char: 해수
+          when: { var: called_mom, op: eq, value: false }
+          with: [상혁]
+          text: "밥은 해 놨어."
+      - say:
+          char: 해수
+          when: { var: called_mom, op: eq, value: false }
+          with: [상혁]
+          text: "네 차례였는데 내가 했어."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - say:
           channel: message
@@ -637,7 +670,12 @@ scenes:
           char: 해수.service
           motion: bow
           with: []
-          text: "네, 고객님. 확인해 드릴게요."
+          text: "네, 고객님."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: []
+          text: "확인해 드릴게요."
       - say:
           channel: action
           with: []
@@ -684,7 +722,12 @@ scenes:
           char: 해수.service
           motion: nod
           with: [지영]
-          text: "네, 주임님. 푹 잤습니다."
+          text: "네, 주임님."
+      - say:
+          char: 해수.service
+          motion: nod
+          with: [지영]
+          text: "푹 잤습니다."
       - say:
           char: 지영
           with: [해수]
@@ -748,7 +791,12 @@ scenes:
           char: 해수.service
           motion: bow
           with: []
-          text: "네, 고객님. 확인해 드릴게요."
+          text: "네, 고객님."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: []
+          text: "확인해 드릴게요."
       - say:
           channel: system
           with: []
@@ -836,11 +884,23 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "증거가 없어요. 정해수 씨는 그날 집에 있었어요. 그게 제가 가진 전부예요."
+          text: "증거가 없어요. 정해수 씨는 그날 집에 있었어요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "그게 제가 가진 전부예요."
       - say:
           char: 해수
           with: [은숙]
-          text: "그날 밤에 가산동 지하에 다녀왔습니다. 출입 기록이 남아 있을 거예요. 기태민 씨 승인으로요."
+          text: "그날 밤에 가산동 지하에 다녀왔습니다."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "출입 기록이 남아 있을 거예요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "기태민 씨 승인으로요."
       - say:
           char: 은숙
           motion: headtilt
@@ -854,7 +914,12 @@ scenes:
           char: 해수
           motion: bow
           with: [은숙]
-          text: "그래도 적어 주세요. 처음 날짜도요."
+          text: "그래도 적어 주세요."
+      - say:
+          char: 해수
+          motion: bow
+          with: [은숙]
+          text: "처음 날짜도요."
       - say:
           char: 은숙
           motion: headtilt
@@ -863,16 +928,37 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "2019년 4월 11일이요. 오후 두 시 오십이 분. 첫 출근 날이었어요. 그 고객님이 처음 오셨어요."
+          text: "2019년 4월 11일이요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "오후 두 시 오십이 분."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "첫 출근 날이었어요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "그 고객님이 처음 오셨어요."
       - say:
           char: 은숙
           motion: nod
           with: [해수]
-          text: "이천십구 년, 사 월, 십일 일. 십사 시 오십이 분. …적었어요."
+          text: "이천십구 년, 사 월, 십일 일."
+      - say:
+          char: 은숙
+          motion: nod
+          with: [해수]
+          text: "십사 시 오십이 분. …적었어요."
       - say:
           char: 해수
           with: [은숙]
-          text: "그 날짜가 제일 중요합니다. 거기서부터 열두 해가 한 줄로 돼 있었어요."
+          text: "그 날짜가 제일 중요합니다."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "거기서부터 열두 해가 한 줄로 돼 있었어요."
       - say:
           char: 은숙.sharp
           with: [해수]
@@ -880,7 +966,15 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "다섯 줄이요. 열두 해가 다섯 줄이었습니다. 그중에 네 줄은 제가 했고요."
+          text: "다섯 줄이요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "열두 해가 다섯 줄이었습니다."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "그중에 네 줄은 제가 했고요."
       - say:
           char: 은숙
           with: [해수]
@@ -888,7 +982,11 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "그건 어제 새벽에 했습니다. 그래서 왔어요."
+          text: "그건 어제 새벽에 했습니다."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "그래서 왔어요."
       - move: { id: 은숙, toward: 해수, style: approach }
       - say:
           char: 은숙
@@ -923,7 +1021,11 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "네. 팀장님께 부탁드렸어요. 이제 안 가져가실 거예요."
+          text: "네. 팀장님께 부탁드렸어요."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "이제 안 가져가실 거예요."
       - say:
           char: 지영
           with: [해수]
@@ -942,5 +1044,9 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "네, 고객님. 잠시만 기다려 주세요."
+          text: "네, 고객님."
+      - say:
+          char: 해수
+          with: []
+          text: "잠시만 기다려 주세요."
       - ending: session_closed

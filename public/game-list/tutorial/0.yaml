@@ -163,7 +163,12 @@ scenes:
           char: 해수.service
           motion: bow
           with: [경준]
-          text: "고객님, 행사 시작 전 구매 건은 차액 환급이 어려우세요. 대신 확인해 드릴게요."
+          text: "고객님, 행사 시작 전 구매 건은 차액 환급이 어려우세요."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [경준]
+          text: "대신 확인해 드릴게요."
       - say:
           char: 경준
           motion: recoil
@@ -184,7 +189,11 @@ scenes:
       - say:
           char: 해수
           with: [경준]
-          text: "세어 본 적은 없는데. 한 시간에 네 번."
+          text: "세어 본 적은 없는데."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "한 시간에 네 번."
       - say:
           char: 경준.laugh
           with: [해수]
@@ -202,7 +211,12 @@ scenes:
           char: 해수.service
           motion: bow
           with: [경준]
-          text: "고개는 괜찮아. 목 운동 돼."
+          text: "고개는 괜찮아."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [경준]
+          text: "목 운동 돼."
       - say:
           char: 경준
           motion: recoil
@@ -233,7 +247,11 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "아, 오늘이에요? 몰랐어요."
+          text: "아, 오늘이에요?"
+      - say:
+          char: 해수
+          with: [지영]
+          text: "몰랐어요."
       - say:
           char: 해수
           with: [경준]
@@ -292,7 +310,12 @@ scenes:
           char: 해수
           motion: bow
           with: [지영]
-          text: "감사합니다, 주임님. 쓸지는 모르겠는데요."
+          text: "감사합니다, 주임님."
+      - say:
+          char: 해수
+          motion: bow
+          with: [지영]
+          text: "쓸지는 모르겠는데요."
       - say:
           char: 지영
           motion: sigh
@@ -410,7 +433,11 @@ scenes:
       - say:
           char: 해수.service
           with: [광철]
-          text: "3월부터요. 시설팀에 말씀드렸습니다."
+          text: "3월부터요."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "시설팀에 말씀드렸습니다."
       - say:
           char: 광철
           with: [해수]
@@ -435,7 +462,11 @@ scenes:
       - say:
           char: 해수.service
           with: [광철]
-          text: "즉석밥 열두 개 묶음이요. 영수증 확인해 드릴게요."
+          text: "즉석밥 열두 개 묶음이요."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "영수증 확인해 드릴게요."
       - say:
           char: 광철
           motion: stomp
@@ -445,7 +476,12 @@ scenes:
           char: 해수.service
           motion: nod
           with: [광철]
-          text: "네, 알고 있습니다. 시스템에 찍어야 해서요."
+          text: "네, 알고 있습니다."
+      - say:
+          char: 해수.service
+          motion: nod
+          with: [광철]
+          text: "시스템에 찍어야 해서요."
       - say:
           channel: record
           with: []
@@ -528,7 +564,12 @@ scenes:
           char: 해수.service
           motion: bow
           with: [광철]
-          text: "열한 개 환불해 드렸습니다. 카드 영수증 확인해 주세요."
+          text: "열한 개 환불해 드렸습니다."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [광철]
+          text: "카드 영수증 확인해 주세요."
       - say:
           char: 광철
           motion: stomp
@@ -569,7 +610,12 @@ scenes:
           char: 해수
           motion: bow
           with: [광철]
-          text: "죄송합니다, 고객님. 열한 개 환불해 드릴게요."
+          text: "죄송합니다, 고객님."
+      - say:
+          char: 해수
+          motion: bow
+          with: [광철]
+          text: "열한 개 환불해 드릴게요."
       - goto: kwang_after
 
   kwang_after:
@@ -587,7 +633,11 @@ scenes:
       - say:
           char: 해수.service
           with: [광철]
-          text: "네, 고객님. 여기 있습니다."
+          text: "네, 고객님."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "여기 있습니다."
       - say:
           char: 광철
           motion: puff
@@ -609,7 +659,11 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "그건 제가 드린 거예요. 차에 싣는데 박스가 터져서요."
+          text: "그건 제가 드린 거예요."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "차에 싣는데 박스가 터져서요."
       - say:
           char: 지영.smirk
           motion: sigh
@@ -861,7 +915,11 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "상혁이도 해요. 내놓는 건 상혁이가 해요."
+          text: "상혁이도 해요."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "내놓는 건 상혁이가 해요."
       - say:
           char: 상혁
           with: [지영]
@@ -874,7 +932,11 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "참, 어머니 전화 오셨어. 어제 저녁에."
+          text: "참, 어머니 전화 오셨어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "어제 저녁에."
       - say:
           char: 상혁
           motion: freeze
@@ -891,7 +953,15 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "두부 보내셨대. 아버님이 콩 거두셨다고. 아이스박스에 넣으셨대."
+          text: "두부 보내셨대."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "아버님이 콩 거두셨다고."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "아이스박스에 넣으셨대."
       - say:
           char: 상혁
           with: [해수]
@@ -924,7 +994,11 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "리모컨은 소파 밑에 있었어. 어제 네가 찾던 거."
+          text: "리모컨은 소파 밑에 있었어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "어제 네가 찾던 거."
       - say:
           char: 상혁
           with: [해수]
@@ -995,7 +1069,11 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "현관 불 켜 놓고 자지 마. 지난달 고지서 많이 나왔어."
+          text: "현관 불 켜 놓고 자지 마."
+      - say:
+          char: 해수
+          with: []
+          text: "지난달 고지서 많이 나왔어."
       - say:
           char: 상혁
           with: []

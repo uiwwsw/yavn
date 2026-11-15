@@ -62,7 +62,11 @@ scenes:
       - say:
           char: 해수.service
           with: [광철]
-          text: "네, 고객님. 어떤 내용이신지 여쭤봐도…"
+          text: "네, 고객님."
+      - say:
+          char: 해수.service
+          with: [광철]
+          text: "어떤 내용이신지 여쭤봐도…"
       - say:
           char: 광철
           with: [해수]
@@ -100,7 +104,12 @@ scenes:
           char: 해수
           motion: bow
           with: [광철]
-          text: "죄송합니다, 고객님. 제가 말씀을 잘못 드렸습니다."
+          text: "죄송합니다, 고객님."
+      - say:
+          char: 해수
+          motion: bow
+          with: [광철]
+          text: "제가 말씀을 잘못 드렸습니다."
       - emote: { id: 해수, motion: bow, wait: true }
       - say:
           char: 광철
@@ -191,7 +200,11 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "지난번에도 두 개 뱉었어요. 그 자판기."
+          text: "지난번에도 두 개 뱉었어요."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "그 자판기."
       - say:
           char: 지영.smirk
           with: [해수]
@@ -337,7 +350,11 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "종이는 안 나오네요. 027번…"
+          text: "종이는 안 나오네요."
+      - say:
+          char: 해수
+          with: []
+          text: "027번…"
       - set: { look_ticket: true }
       - goto: tutorial_one
 
@@ -397,7 +414,12 @@ scenes:
           char: 해수.service
           motion: bow
           with: [광철]
-          text: "네, 고객님. 영수증 확인해 드릴게요."
+          text: "네, 고객님."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [광철]
+          text: "영수증 확인해 드릴게요."
       - say:
           channel: system
           with: []
@@ -518,12 +540,22 @@ scenes:
           char: 해수.service
           motion: bow
           with: []
-          text: "우산 손잡이가 빠졌다고요. 네, 확인해 드릴게요."
+          text: "우산 손잡이가 빠졌다고요."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: []
+          text: "네, 확인해 드릴게요."
       - say:
           char: 해수.blank
           motion: nod
           with: []
-          text: "나사 자리가 새 거네요. 근데 이건 고객님이 빼신 거잖아요."
+          text: "나사 자리가 새 거네요."
+      - say:
+          char: 해수.blank
+          motion: nod
+          with: []
+          text: "근데 이건 고객님이 빼신 거잖아요."
       - char: { id: 경준, position: right }
       - say:
           char: 경준
@@ -534,7 +566,11 @@ scenes:
       - say:
           char: 해수.service
           with: []
-          text: "…죄송합니다. 새 걸로 교환해 드릴게요."
+          text: "…죄송합니다."
+      - say:
+          char: 해수.service
+          with: []
+          text: "새 걸로 교환해 드릴게요."
       - say:
           char: 경준
           motion: lean_in
@@ -619,7 +655,15 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "두부 왔어. 어머니가 보내신 거. 냉장고 둘째 칸."
+          text: "두부 왔어."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "어머니가 보내신 거."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "냉장고 둘째 칸."
       - say:
           char: 상혁
           with: [해수]
@@ -663,7 +707,17 @@ scenes:
           char: 해수.service
           motion: bow
           with: [광철]
-          text: "오광철 고객님. 오늘은 영수증 없으세요? 무엇을 확인해 드릴까요."
+          text: "오광철 고객님."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [광철]
+          text: "오늘은 영수증 없으세요?"
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [광철]
+          text: "무엇을 확인해 드릴까요."
       - say:
           char: 광철.lost
           with: [해수]

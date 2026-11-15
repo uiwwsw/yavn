@@ -114,7 +114,11 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "너 어제 밥 안 먹었지. 냄비 그대로야."
+          text: "너 어제 밥 안 먹었지."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "냄비 그대로야."
       - say:
           char: 상혁
           with: [해수]
@@ -146,7 +150,15 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "아무것도 안 샀네. …세면대 컵에 칫솔이 세 개야. 방문은 열려 있고."
+          text: "아무것도 안 샀네."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "…세면대 컵에 칫솔이 세 개야."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "방문은 열려 있고."
       - say:
           char: 상혁
           motion: laugh
@@ -171,7 +183,11 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "너 칫솔 새로 산 적 없잖아. 내가 사 와."
+          text: "너 칫솔 새로 산 적 없잖아."
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "내가 사 와."
       - say:
           char: 상혁
           with: [해수]
@@ -260,7 +276,11 @@ scenes:
       - say:
           char: 은숙
           with: [경준]
-          text: "실례합니다. 중랑경찰서 차은숙 경위입니다. 고객센터 분 계세요? 정해수 씨."
+          text: "실례합니다. 중랑경찰서 차은숙 경위입니다."
+      - say:
+          char: 은숙
+          with: [경준]
+          text: "고객센터 분 계세요? 정해수 씨."
       - say:
           char: 경준
           motion: startle
@@ -271,7 +291,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "피해자분 일로 몇 가지 여쭤볼게요. 참고인으로요. 서까지 같이 가 주시겠어요?"
+          text: "피해자분 일로 몇 가지 여쭤볼게요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "참고인으로요. 서까지 같이 가 주시겠어요?"
       - emote: { id: 해수, motion: nod, wait: true }
       - say:
           char: 경준
@@ -281,11 +305,23 @@ scenes:
       - say:
           char: 해수
           with: [경준]
-          text: "화장실은 안 돼. 주임님이 찾으면 거짓말이 길어져."
+          text: "화장실은 안 돼."
       - say:
           char: 해수
           with: [경준]
-          text: "경찰서 갔다고 해. 참고인이라고. 그게 짧아."
+          text: "주임님이 찾으면 거짓말이 길어져."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "경찰서 갔다고 해."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "참고인이라고."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "그게 짧아."
       - say:
           char: 경준
           with: [해수]
@@ -293,7 +329,11 @@ scenes:
       - say:
           char: 해수
           with: [경준]
-          text: "할 거면 하라고 해. 거짓말이 더 오래 가."
+          text: "할 거면 하라고 해."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "거짓말이 더 오래 가."
       - say:
           channel: action
           with: []
@@ -301,7 +341,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수, 경준]
-          text: "정해수 씨. 사십 분쯤 걸려요. 차는 저쪽에 세워 뒀어요."
+          text: "정해수 씨. 사십 분쯤 걸려요."
+      - say:
+          char: 은숙
+          with: [해수, 경준]
+          text: "차는 저쪽에 세워 뒀어요."
       - say:
           char: 해수
           with: [은숙]
@@ -333,7 +377,12 @@ scenes:
           char: 해수
           motion: bow
           with: [은숙]
-          text: "아, 괜찮습니다. 감사합니다."
+          text: "아, 괜찮습니다."
+      - say:
+          char: 해수
+          motion: bow
+          with: [은숙]
+          text: "감사합니다."
       - say:
           char: 은숙
           with: [해수]
@@ -363,7 +412,11 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "열 시 십 분이요. 마감 정산하고 나왔습니다."
+          text: "열 시 십 분이요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "마감 정산하고 나왔습니다."
       - say:
           char: 은숙
           with: [해수]
@@ -407,12 +460,25 @@ scenes:
       - say:
           char: 은숙.sharp
           with: [해수]
-          text: "단톡방은 경준 씨가 보여 줬어요. 정해수 씨가 아침에 '11시까지 가겠습니다' 답장했던데요. 지하 주차장 얘기 바로 밑에."
+          text: "단톡방은 경준 씨가 보여 줬어요."
+      - say:
+          char: 은숙.sharp
+          with: [해수]
+          text: "정해수 씨가 아침에 '11시까지 가겠습니다' 답장했던데요."
+      - say:
+          char: 은숙.sharp
+          with: [해수]
+          text: "지하 주차장 얘기 바로 밑에."
       - say:
           char: 해수
           motion: droop
           with: [은숙]
-          text: "…지하 주차장이라고는 봤습니다. 죄송합니다."
+          text: "…지하 주차장이라고는 봤습니다."
+      - say:
+          char: 해수
+          motion: droop
+          with: [은숙]
+          text: "죄송합니다."
       - goto: interview_rest
 
   interview_rest:
@@ -430,7 +496,11 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "네. 연필꽂이에 있는 거랑 같아요. 스무 자루 둬요."
+          text: "네. 연필꽂이에 있는 거랑 같아요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "스무 자루 둬요."
       - say:
           char: 은숙
           with: [해수]
@@ -438,11 +508,19 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "스무 자루요. 마감할 때 세거든요."
+          text: "스무 자루요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "마감할 때 세거든요."
       - say:
           char: 은숙
           with: [해수]
-          text: "오늘 아침에는 열아홉 자루였대요. 민지영 주임님이 세 봤어요. 제가 부탁해서."
+          text: "오늘 아침에는 열아홉 자루였대요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "민지영 주임님이 세 봤어요. 제가 부탁해서."
       - say:
           char: 해수
           with: [은숙]
@@ -458,7 +536,11 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "손님들이 가져가셔서요. 스무 자루 맞춰 놓는 게 제 업무예요."
+          text: "손님들이 가져가셔서요."
+      - say:
+          char: 해수
+          with: [은숙]
+          text: "스무 자루 맞춰 놓는 게 제 업무예요."
       - say:
           char: 은숙
           with: [해수]
@@ -480,7 +562,15 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "하나 더. 오광철 씨가 지난 일주일 동안 112에 세 번 전화했어요. 밤마다 누가 소리를 지른다고. 혼자 사는 집에서. 출동하면 아무도 없고."
+          text: "하나 더. 오광철 씨가 지난 일주일 동안 112에 세 번 전화했어요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "밤마다 누가 소리를 지른다고."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "혼자 사는 집에서. 출동하면 아무도 없고."
       - say:
           channel: record
           when: { var: rage, op: eq, value: 1 }
@@ -504,7 +594,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그리고 어제 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요. 아무것도 안 사고. 귀를 자꾸 누르면서."
+          text: "그리고 어제 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "아무것도 안 사고. 귀를 자꾸 누르면서."
       - say:
           channel: record
           with: []
@@ -522,7 +616,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "지난주 토요일에는 정해수 씨 이름으로 민원을 넣으셨고. 고객의 소리. 이거 원본 저희가 가져가요."
+          text: "지난주 토요일에는 정해수 씨 이름으로 민원을 넣으셨고."
+      - say:
+          char: 은숙
+          with: [해수]
+          text: "고객의 소리. 이거 원본 저희가 가져가요."
       - clearSticker: { id: complaint, leave: fadeOut }
       - say:
           char: 은숙
@@ -688,7 +786,12 @@ scenes:
           char: 해수
           motion: bow
           with: []
-          text: "괜찮습니다. 그대로 둘게요."
+          text: "괜찮습니다."
+      - say:
+          char: 해수
+          motion: bow
+          with: []
+          text: "그대로 둘게요."
       - say:
           channel: system
           with: []
@@ -724,23 +827,63 @@ scenes:
           char: 은숙
           when: { var: t_form, op: eq, value: true }
           with: [해수]
-          text: "접수증 원본을 다시 봤는데요. 대상 직원 칸이 비어 있어요. 제가 어제 찍은 사진에도 비어 있고. 찍을 때는 분명히 이름이 있었거든요."
+          text: "접수증 원본을 다시 봤는데요."
+      - say:
+          char: 은숙
+          when: { var: t_form, op: eq, value: true }
+          with: [해수]
+          text: "대상 직원 칸이 비어 있어요."
+      - say:
+          char: 은숙
+          when: { var: t_form, op: eq, value: true }
+          with: [해수]
+          text: "제가 어제 찍은 사진에도 비어 있고."
+      - say:
+          char: 은숙
+          when: { var: t_form, op: eq, value: true }
+          with: [해수]
+          text: "찍을 때는 분명히 이름이 있었거든요."
       - say:
           char: 은숙
           when: { var: t_pencil, op: eq, value: true }
           with: [해수]
-          text: "흉기 연필, 감식에서 로고가 없대요. 그린마트 거 아니래요. 제가 이 눈으로 봤는데."
+          text: "흉기 연필, 감식에서 로고가 없대요."
+      - say:
+          char: 은숙
+          when: { var: t_pencil, op: eq, value: true }
+          with: [해수]
+          text: "그린마트 거 아니래요."
+      - say:
+          char: 은숙
+          when: { var: t_pencil, op: eq, value: true }
+          with: [해수]
+          text: "제가 이 눈으로 봤는데."
       - say:
           char: 은숙
           when: { var: t_cctv, op: eq, value: true }
           with: [해수]
-          text: "C구역 카메라 3월부터 고장이었잖아요. 근데 그날 새벽 1시 40분부터 40분짜리 영상이 생겼어요. 아무도 안 나와요. 차 한 대만 서 있고."
+          text: "C구역 카메라 3월부터 고장이었잖아요."
+      - say:
+          char: 은숙
+          when: { var: t_cctv, op: eq, value: true }
+          with: [해수]
+          text: "근데 그날 새벽 1시 40분부터 40분짜리 영상이 생겼어요."
+      - say:
+          char: 은숙
+          when: { var: t_cctv, op: eq, value: true }
+          with: [해수]
+          text: "아무도 안 나와요. 차 한 대만 서 있고."
       - move: { id: 은숙, toward: 해수, style: approach }
       - say:
           char: 은숙.sharp
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
-          text: "기록이 바뀌는 건 봤어요. 사람이 바꾸는 거. 사진이 바뀌는 건 처음 봐요."
+          text: "기록이 바뀌는 건 봤어요."
+      - say:
+          char: 은숙.sharp
+          when: { var: tampered, op: gt, value: 0 }
+          with: [해수]
+          text: "사람이 바꾸는 거. 사진이 바뀌는 건 처음 봐요."
       - say:
           char: 은숙
           with: [해수]
@@ -757,7 +900,17 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "접수증은 그대로예요. 대상 직원 정해수. 연필도 그대로, 로고도 그대로. 정해수 씨는 계속 제 목록 맨 위에 있어요."
+          text: "접수증은 그대로예요. 대상 직원 정해수."
+      - say:
+          char: 은숙
+          when: { var: tampered, op: eq, value: 0 }
+          with: [해수]
+          text: "연필도 그대로, 로고도 그대로."
+      - say:
+          char: 은숙
+          when: { var: tampered, op: eq, value: 0 }
+          with: [해수]
+          text: "정해수 씨는 계속 제 목록 맨 위에 있어요."
       - say:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
@@ -817,12 +970,21 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "방에 있어요. 문 잠그고."
+          text: "방에 있어요."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "문 잠그고."
       - say:
           char: 해수
           when: { var: sh_night, op: eq, value: true }
           with: [지영]
-          text: "그저께 밤에는 방에 없었어요. 차에 있었대요."
+          text: "그저께 밤에는 방에 없었어요."
+      - say:
+          char: 해수
+          when: { var: sh_night, op: eq, value: true }
+          with: [지영]
+          text: "차에 있었대요."
       - say:
           char: 지영
           with: [해수]
