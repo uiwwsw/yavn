@@ -647,6 +647,16 @@ scenes:
           text: "뭘 말해. 걔 신경 안 쓸걸. 원래 아무 데도 관심 없잖아."
       - say:
           char: 아진
+          when: { var: h1_sent, op: eq, value: true }
+          with: [민재]
+          text: "관심 없는 애가 지난주에 껴 달라고 했는데."
+      - say:
+          char: 민재
+          when: { var: h1_sent, op: eq, value: true }
+          with: [아진]
+          text: "그거 장난이잖아. ㅋㅋ 붙었던데."
+      - say:
+          char: 아진
           with: [민재]
           text: "너는 걔를 몰라."
       - say:

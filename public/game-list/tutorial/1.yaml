@@ -694,12 +694,27 @@ scenes:
           motion: shiver
           with: [해수]
           text: "요 며칠, 밤마다 누가 나한테 소리를 질러. 집에서. 나 혼자 사는데. 경찰도 불렀는데 아무도 없대."
+      - say:
+          char: 광철.lost
+          when: { var: rage, op: eq, value: 1 }
+          with: [해수]
+          text: "말은 없어. 지르지 말라고만 해. 지르는 사람이 지르지 말라고 하니까 더 이상하지."
+      - say:
+          char: 광철.lost
+          when: { var: rage, op: gte, value: 2 }
+          with: [해수]
+          text: "말도 해. 혼자 다 먹지도 못하면서 왜 사느냐고. 그 소리를 밤새 해."
       - move: { id: 광철, toward: 해수, style: approach }
       - say:
           char: 광철.lost
           with: [해수]
           text: "그 연필 좀 내려놓고 들어 봐. 그 목소리가 어디서 들은 목소리 같아서."
       - emote: { id: 해수, motion: freeze }
+      - say:
+          char: 광철.lost
+          when: { var: rage, op: gte, value: 2 }
+          with: [해수]
+          text: "…그리고 그 말이 맞아. 내가 혼자 다 못 먹어. 그건 맞는 말이야."
       - move: { id: 광철, toward: 해수, style: retreat }
       - say:
           char: 광철.lost

@@ -126,6 +126,7 @@ state:
   e0_messages: false
   e0_photos: false
   e0_location: false
+  h1_sent: false
   e2_search: false
   e2_gallery: false
   e2_sns: false
