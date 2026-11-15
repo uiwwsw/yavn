@@ -330,7 +330,13 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_dare, op: eq, value: true }
+            - when: { var: last_taken, op: eq, value: kin }
+              goto: sign_cannot_stay
+            - when: { var: last_taken, op: eq, value: free }
+              goto: sign_cannot_stay
+            - when: { var: last_taken, op: eq, value: stay }
+              goto: sign_cannot_stay
+            - when: { var: last_taken, op: eq, value: dare }
               goto: sign_cannot_stay
           default: sign_yes
 
@@ -338,7 +344,13 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_live, op: eq, value: true }
+            - when: { var: last_taken, op: eq, value: hold }
+              goto: sign_cannot_leave
+            - when: { var: last_taken, op: eq, value: say }
+              goto: sign_cannot_leave
+            - when: { var: last_taken, op: eq, value: guard }
+              goto: sign_cannot_leave
+            - when: { var: last_taken, op: eq, value: live }
               goto: sign_cannot_leave
           default: sign_no
 

@@ -196,7 +196,13 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_hold, op: eq, value: true }
+            - when: { var: last_taken, op: eq, value: hold }
+              goto: rice_cannot
+            - when: { var: last_taken, op: eq, value: say }
+              goto: rice_cannot
+            - when: { var: last_taken, op: eq, value: guard }
+              goto: rice_cannot
+            - when: { var: last_taken, op: eq, value: live }
               goto: rice_cannot
           default: rice_open
 
@@ -205,7 +211,7 @@ scenes:
       - sticker: { id: key, image: key_sticker, x: 50, y: 32, width: "clamp(150px, 20%, 280px)", enter: fadeIn, inputLockMs: 300 }
       - wait: 1100
       - say: { channel: action, with: [], text: "열쇠를 자물쇠에 댄다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
-      - say: { channel: thought, with: [], text: "쥐고 있어야 한다는 생각이 어디서 오는지 모르겠다. 내 생각 같지가 않다." }
+      - say: { channel: thought, with: [], text: "열면 안 된다는 생각이 어디서 오는지 모르겠다. 내 생각 같지가 않다." }
       - clearSticker: { id: key, leave: fadeOut }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "주인어른? 여시는 겁니까, 마시는 겁니까." }
       - say: { char: 만석, with: [봉구], text: "…대문 닫아라." }
@@ -296,7 +302,13 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_kin, op: eq, value: true }
+            - when: { var: last_taken, op: eq, value: kin }
+              goto: leave_cannot
+            - when: { var: last_taken, op: eq, value: free }
+              goto: leave_cannot
+            - when: { var: last_taken, op: eq, value: stay }
+              goto: leave_cannot
+            - when: { var: last_taken, op: eq, value: dare }
               goto: leave_cannot
           default: go_mapo
 
@@ -306,7 +318,7 @@ scenes:
       - say: { channel: action, with: [], text: "짚신을 신고 문지방에 선다. 발이 넘어가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: action, with: [], text: "등 뒤에서 기침 소리가 난다. 돌아본다. 호롱불은 켜져 있다." }
       - say: { channel: thought, with: [], text: "켜져 있는 걸 보고도 숨이 안 쉬어진다. 불이 꺼진 방을 본 적은 없는데." }
-      - say: { channel: thought, with: [], text: "곁에 있어야 한다는 생각이 어디서 오는지 모르겠다. 내 생각 같지가 않다." }
+      - say: { channel: thought, with: [], text: "가면 안 된다는 생각이 어디서 오는지 모르겠다. 내 생각 같지가 않다." }
       - say: { char: 만석, with: [봉구], text: "봉구야. 네가 가라. 수결은 네가 해라." }
       - goto: stay_home
 
@@ -483,10 +495,10 @@ scenes:
           prompt: "쉰여섯 해에서 쥘 수 있는 것은 하나다."
           options:
             - text: "말을 했어야 했다."
-              set: { t_say: true, deg_last: "118.5" }
+              set: { t_say: true, last_taken: say, deg_last: "118.5" }
               goto: void_one_go
             - text: "어디에도 매이지 말았어야 했다."
-              set: { t_free: true, deg_last: "307.9" }
+              set: { t_free: true, last_taken: free, deg_last: "307.9" }
               goto: void_one_go
             - text: "쥐지 않는다."
               goto: void_one_stop

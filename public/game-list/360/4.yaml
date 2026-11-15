@@ -333,15 +333,15 @@ scenes:
           prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
           options:
             - text: "곁에 있었어야 했다."
-              set: { t_kin: true, deg_last: "223.7" }
+              set: { t_kin: true, last_taken: kin, deg_last: "223.7" }
               goto: last_go
             - text: "원본을 내 손에 쥐고 있었어야 했다."
               when: { var: l4_signed, op: eq, value: true }
-              set: { t_hold: true, deg_last: "041.2" }
+              set: { t_hold: true, last_taken: hold, deg_last: "041.2" }
               goto: last_go
             - text: "뭐라도 쥐고 있었어야 했다."
               when: { var: l4_signed, op: eq, value: false }
-              set: { t_hold: true, deg_last: "041.2" }
+              set: { t_hold: true, last_taken: hold, deg_last: "041.2" }
               goto: last_go
             - text: "쥐지 않는다."
               goto: last_stop

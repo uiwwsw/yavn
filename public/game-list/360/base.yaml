@@ -168,6 +168,7 @@ state:
   t_dare: false
   # 처음 쥔 것과 끝에 쥔 것. 둘이 같으면 한 바퀴다.
   v_first: ""
+  last_taken: ""
   v_end: ""
   deg_last: ""
   l1_gave: false

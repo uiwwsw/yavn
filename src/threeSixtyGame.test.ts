@@ -32,17 +32,20 @@ const baseYaml = readYaml('base.yaml');
 const assets = asRecord(baseYaml.assets);
 
 // The four directions a life can be handed, and the one choice in that life each of them takes away.
-// One life's answer is the next life's locked door. The pairs are a ring: the storehouse is
-// shut by what the editing room held, and the editing room is shut by what the ward held.
-const inheritedLocks: Array<{ chapter: number; state: string; value: boolean; choice: string }> = [
-  { chapter: 0, state: 't_hold', value: true, choice: 'l1_rice' },
-  { chapter: 0, state: 't_kin', value: true, choice: 'l1_leave' },
-  { chapter: 1, state: 't_say', value: true, choice: 'l2_heart' },
-  { chapter: 1, state: 't_free', value: true, choice: 'l2_mother' },
-  { chapter: 2, state: 't_guard', value: true, choice: 'l3_open' },
-  { chapter: 2, state: 't_stay', value: true, choice: 'l3_out' },
-  { chapter: 3, state: 't_live', value: true, choice: 'l4_sign' },
-  { chapter: 3, state: 't_dare', value: true, choice: 'l4_sign' },
+// What a life takes is what the next life cannot do, whichever order the lives are lived in.
+// Each life reads only `last_taken`, so exactly one of its two doors is shut at a time and the
+// other always stays open. The first life of a run has nothing taken yet and is free.
+const HOLDING = ['hold', 'say', 'guard', 'live'];
+const LETTING = ['kin', 'free', 'stay', 'dare'];
+const lifeGates: Array<{ chapter: number; choice: string; shut: string[]; open: string[] }> = [
+  { chapter: 0, choice: 'l1_rice', shut: HOLDING, open: LETTING },
+  { chapter: 0, choice: 'l1_leave', shut: LETTING, open: HOLDING },
+  { chapter: 1, choice: 'l2_heart', shut: HOLDING, open: LETTING },
+  { chapter: 1, choice: 'l2_mother', shut: LETTING, open: HOLDING },
+  { chapter: 2, choice: 'l3_open', shut: HOLDING, open: LETTING },
+  { chapter: 2, choice: 'l3_out', shut: LETTING, open: HOLDING },
+  // The editing room is the one life where both directions lose the same choice, one door each.
+  { chapter: 3, choice: 'l4_sign', shut: [...HOLDING, ...LETTING], open: [] },
 ];
 
 describe('360', () => {
@@ -127,23 +130,28 @@ describe('360', () => {
       expect(collectKey(chapters[index], 'ending').map(String), `${index}.yaml`).toContain('still'));
   });
 
-  it('takes one choice away from each inherited direction and never leaves a choice empty', () => {
-    inheritedLocks.forEach(({ chapter, state, value, choice }) => {
+  it('shuts exactly one door in every life, whichever thing was taken last', () => {
+    const refusedOptions = (chapter: number, choice: string, taken: string): number[] => {
       const scenes = asRecord(chapters[chapter].scenes);
       const found = collectKey(chapters[chapter], 'choice').map(asRecord).find((entry) => entry.key === choice);
       expect(found, choice).toBeTruthy();
       const options = (found!.options as unknown[]).map(asRecord);
       expect(options.length, choice).toBe(2);
-      // An option either goes straight on, or through a `*_try` scene that sends one direction to `*_cannot`.
-      const refused = options.filter((option) => {
+      return options.flatMap((option, index) => {
         const actions = (asRecord(scenes[String(option.goto)]).actions as unknown[] | undefined) ?? [];
         const cases = collectKey(actions, 'cases').flat().map(asRecord);
-        return cases.some((entry) => {
+        const shut = cases.some((entry) => {
           const when = asRecord(entry.when);
-          return when.var === state && when.value === value && String(entry.goto).includes('cannot');
+          return when.var === 'last_taken' && when.value === taken && String(entry.goto).includes('cannot');
         });
+        return shut ? [index] : [];
       });
-      expect(refused.length, `${choice} for ${value}`).toBe(1);
+    };
+    lifeGates.forEach(({ chapter, choice, shut, open }) => {
+      shut.forEach((taken) =>
+        expect(refusedOptions(chapter, choice, taken), `${choice} after ${taken}`).toHaveLength(1));
+      open.forEach((taken) =>
+        expect(refusedOptions(chapter, choice, taken), `${choice} after ${taken}`).toHaveLength(0));
     });
   });
 

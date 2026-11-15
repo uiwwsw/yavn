@@ -80,7 +80,13 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_guard, op: eq, value: true }
+            - when: { var: last_taken, op: eq, value: hold }
+              goto: open_cannot
+            - when: { var: last_taken, op: eq, value: say }
+              goto: open_cannot
+            - when: { var: last_taken, op: eq, value: guard }
+              goto: open_cannot
+            - when: { var: last_taken, op: eq, value: live }
               goto: open_cannot
           default: open_said
 
@@ -143,7 +149,13 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_stay, op: eq, value: true }
+            - when: { var: last_taken, op: eq, value: kin }
+              goto: out_cannot
+            - when: { var: last_taken, op: eq, value: free }
+              goto: out_cannot
+            - when: { var: last_taken, op: eq, value: stay }
+              goto: out_cannot
+            - when: { var: last_taken, op: eq, value: dare }
               goto: out_cannot
           default: out_go
 
@@ -228,11 +240,9 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: t_guard, op: eq, value: true }
-              goto: noticed_body
-            - when: { var: t_stay, op: eq, value: true }
-              goto: noticed_body
-          default: october
+            - when: { var: last_taken, op: eq, value: "" }
+              goto: october
+          default: noticed_body
 
   # 전환점. 여기서 처음으로 인물이 자기한테 적이 있다는 걸 안다.
   noticed_body:
@@ -319,11 +329,9 @@ scenes:
       - say: { channel: narration, text: "묻는 소리가 난다." }
       - branch:
           cases:
-            - when: { var: t_guard, op: eq, value: true }
-              goto: void_three_knew
-            - when: { var: t_stay, op: eq, value: true }
-              goto: void_three_knew
-          default: void_three_charges
+            - when: { var: last_taken, op: eq, value: "" }
+              goto: void_three_charges
+          default: void_three_knew
 
   void_three_knew:
     actions:
@@ -369,10 +377,10 @@ scenes:
           prompt: "한쪽이 덜 어둡다. 쥘 것이 몇 개 없다."
           options:
             - text: "더 살고 싶었다."
-              set: { t_live: true, deg_last: "164.8" }
+              set: { t_live: true, last_taken: live, deg_last: "164.8" }
               goto: void_three_go
             - text: "한 번은 해 볼걸."
-              set: { t_dare: true, deg_last: "339.4" }
+              set: { t_dare: true, last_taken: dare, deg_last: "339.4" }
               goto: void_three_go
             - text: "쥐지 않는다."
               goto: void_three_stop
