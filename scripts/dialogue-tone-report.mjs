@@ -91,6 +91,8 @@ function measure(game) {
   const bubbles = lines.filter((line) => line.kind === 'say' || line.kind === 'choicePrompt');
   const spoken = bubbles.filter(isCharacter);
   const stage = bubbles.filter((line) => /^#(action|narration|thought)/.test(line.speaker));
+  // 서류·화면·문자(#record, #system, #card, #message)는 원래 빽빽하다. 사람 말이 아니므로 뺀다.
+  const voiced = bubbles.filter((line) => isCharacter(line) || /^#(action|narration|thought)/.test(line.speaker));
 
   const bySpeaker = new Map();
   for (const line of spoken) {
@@ -106,14 +108,14 @@ function measure(game) {
   const stageLengths = stage.map((line) => line.text.length);
   const stageMean = stageLengths.length ? mean(stageLengths) : 0;
 
-  const packed = bubbles.filter((line) => sentenceCount(line.text) >= 3);
+  const packed = voiced.filter((line) => sentenceCount(line.text) >= 3);
   const short = spoken.filter((line) => line.text.length <= 8);
   const filler = spoken.filter((line) => FILLER.test(line.text));
 
   return {
     game,
-    totals: { lines: lines.length, bubbles: bubbles.length, spoken: spoken.length, stage: stage.length },
-    packedRatio: bubbles.length ? packed.length / bubbles.length : 0,
+    totals: { lines: lines.length, bubbles: bubbles.length, voiced: voiced.length, spoken: spoken.length, stage: stage.length },
+    packedRatio: voiced.length ? packed.length / voiced.length : 0,
     shortRatio: spoken.length ? short.length / spoken.length : 0,
     fillerRatio: spoken.length ? filler.length / spoken.length : 0,
     humanTrace: spoken.length ? (short.length + filler.length) / spoken.length : 0,
@@ -141,6 +143,7 @@ const pad = (value, width) => String(value).padStart(width);
 function printTable(reports) {
   const rows = [
     ['대사·지문 총수', (r) => pad(r.totals.lines, 6), null],
+    ['말·지문 말풍선', (r) => pad(r.totals.voiced, 6), null],
     ['인물 발화 수', (r) => pad(r.totals.spoken, 6), null],
     ['발화당 평균 글자', (r) => pad(r.bubbleMean.toFixed(1), 6), null],
     ['완결문 3개↑ 말풍선', (r) => pad(pct(r.packedRatio), 5) + flag('packedRatio', r.packedRatio), '15% 이하'],
