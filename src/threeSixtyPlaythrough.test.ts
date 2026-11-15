@@ -136,9 +136,10 @@ describe('360 full playthrough', () => {
     expect(state.isFinished, picked.join('\n')).toBe(true);
     // The dark opens on a feeling, not on information, and the first thing the player does is
     // say who they miss without being told who that is.
-    expect(heard(shown, '끝에는 뭐가 있을까')).toBe(true);
-    expect(heard(shown, '사무치게 그립다')).toBe(true);
-    expect(heard(shown, '아, 누군가 보고 싶다')).toBe(true);
+    expect(heard(shown, '벽이 없다. 바닥도 없다. 없는 것을 세고 있다')).toBe(true);
+    expect(heard(shown, '이 느낌에 이름이 있었다')).toBe(true);
+    expect(heard(shown, '보고 싶다.')).toBe(true);
+    expect(heard(shown, '누가.')).toBe(true);
     // The first life is free: nothing has been handed down to it yet.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다')).toBe(true);
     // Each dark is a trial with nobody else in it.

@@ -260,7 +260,7 @@ scenes:
       - wait: 900
       - say: { channel: thought, with: [], text: "이 얘기를 누구한테 하지." }
       - say: { channel: thought, with: [], text: "엄마한테 하면 엄마가 운다. 선생님한테 하면 약이 하나 는다." }
-      - say: { channel: thought, with: [], text: "수경 누나한테 하면 믿어 줄 것 같다. 그게 제일 무섭다." }
+      - say: { channel: thought, with: [], text: "수경 누나한테 하면 믿어 줄 것 같다. 그래서 더 못 한다." }
       - say: { channel: action, with: [], text: "아무한테도 안 했다. 열일곱이 할 수 있는 건 그 정도다." }
       - goto: october
 
@@ -345,17 +345,18 @@ scenes:
   void_three_charges:
     actions:
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "엄마가 앞치마를 벗고 들어왔을 때 뭐라고든 했더라면." }
-      - say: { channel: narration, text: "가게는 넘기지 말라는 말 말고 다른 말을 했더라면." }
-      - say: { channel: narration, text: "삼십에서 사십이라는 숫자를 엄마랑 같이 세어 봤더라면." }
+      - say: { channel: narration, text: "앞치마를 벗고 들어왔을 때." }
+      - say: { channel: narration, text: "그때 뭐라고든 했더라면." }
+      - say: { channel: narration, text: "가게는 넘기지 말라고 한 게 내가 한 말의 전부다." }
+      - say: { channel: narration, text: "삼십에서 사십. 둘을 같이 세는 법을 끝까지 안 배웠다." }
       - say:
           channel: narration
           when: { var: l3_said, op: eq, value: false }
-          text: "무섭다고 한 번만 말했더라면. 한 번이면 됐을 것 같은데."
+          text: "한 번만 말하면 됐는데. 한 번이면 됐을 것 같은데."
       - say:
           channel: narration
           when: { var: l3_went, op: eq, value: false }
-          text: "그 밤에 잠바를 받았더라면. 점이 두 개였을 텐데."
+          text: "잠바. 받기만 하면 됐는데."
       - say:
           channel: narration
           when: { var: l3_went, op: eq, value: true }

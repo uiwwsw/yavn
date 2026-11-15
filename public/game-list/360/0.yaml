@@ -18,25 +18,35 @@ scenes:
           default: dark_first
 
   # 처음 눈을 뜬 자리. 아직 아무것도 모르고, 아는 것은 그립다는 것뿐이다.
+  # 처음 눈을 뜬 자리. 감정에 이름을 붙이지 않는다. 죽은 쪽은 이름부터 잃는다.
   dark_first:
     actions:
-      - say: { channel: narration, text: "끝에는 뭐가 있을까, 생각해 본 적이 있다." }
+      - say: { channel: narration, text: "암흑." }
       - music: void
-      - say: { channel: narration, text: "지금 그 끝에 있다." }
-      - say: { channel: narration, text: "어둡다. 끊이지 않고 어둡다." }
+      - say: { channel: narration, text: "끊임없는 공허함." }
+      - say: { channel: narration, text: "눈을 떴다." }
+      - say: { channel: narration, text: "떴는데 어둡다." }
+      - say: { channel: narration, text: "감아도 어둡다." }
+      - say: { channel: narration, text: "그래서 떴는지 감았는지 모른다." }
+      - say: { channel: narration, text: "벽이 없다. 바닥도 없다. 없는 것을 세고 있다." }
       - wait: 900
-      - say: { channel: narration, text: "아련하다." }
-      - say: { channel: narration, text: "뭐가 아련한지는 모르겠다. 모르겠는데 가슴 한쪽이 아려 온다." }
+      - say: { channel: narration, text: "어딘가 한 군데가 당긴다." }
+      - say: { channel: narration, text: "어딘지는 모르겠다. 당긴다는 것만 안다." }
       - wait: 1100
-      - say: { channel: narration, text: "사무치게 그립다." }
-      - wait: 700
+      - say: { channel: narration, text: "이 느낌에 이름이 있었다. 살아 있을 때 자주 쓰던 말인데 지금 안 나온다." }
+      - wait: 900
       - effect: { name: starfall, wait: true }
       - bg: { id: void_light, transition: dissolve, duration: 3600 }
-      - say: { channel: narration, text: "별 하나가 반짝인다." }
-      - wait: 600
-      - say: { channel: narration, text: "…아, 누군가 보고 싶다." }
-      - wait: 800
-      - say: { channel: narration, text: "하나가 아니다. 반짝이는 것이 몇 개 더 있다." }
+      - say: { channel: narration, text: "한 군데가 덜 어둡다." }
+      - say: { channel: narration, text: "점이다. 아까부터 있었는지 방금 켜졌는지 모르겠고, 모르겠다고 생각하는 동안에도 있다." }
+      - wait: 1100
+      - say: { channel: narration, text: "보고 싶다." }
+      - wait: 900
+      - say: { channel: narration, text: "누가." }
+      - say: { channel: narration, text: "모르겠다. 보고 싶다는 것만 안다." }
+      - wait: 700
+      - say: { channel: narration, text: "점이 하나 더 켜진다. 또 하나." }
+      - say: { channel: narration, text: "세는 사이에 늘어난다." }
       - goto: stars
 
   # 두 번째부터. 돌아왔다는 것만 알고, 어디로 돌아왔는지는 모른다.
@@ -47,7 +57,7 @@ scenes:
       - say: { channel: narration, text: "방금 산 것이 벌써 흐리다. 쥔 것 하나만 또렷하다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
-      - say: { channel: narration, text: "남은 것이 아직 그립다." }
+      - say: { channel: narration, text: "꺼진 쪽은 이제 안 당긴다. 남은 쪽이 당긴다." }
       - goto: stars
 
   # 고르는 것은 사람이 아니라 그리움의 모양이다. 누군지는 가 봐야 안다.
@@ -56,7 +66,7 @@ scenes:
       - choice:
           key: star
           presentation: explore
-          prompt: "누군지는 모르겠는데, 어떻게 그리운지는 안다."
+          prompt: "누군지는 모르겠고, 어느 쪽이 당기는지만 안다."
           options:
             - text: "엿을 기다린 아이"
               at: { x: 26, y: 63 }
@@ -86,7 +96,7 @@ scenes:
       - say: { channel: narration, text: "그쪽으로 기운다. 처음에는 느리다.", autoAdvance: 1900 }
       - bg: { id: void_near, transition: wipeLeft, duration: 320 }
       - effect: { name: speedlines, wait: true }
-      - say: { channel: narration, text: "그리운 것만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
+      - say: { channel: narration, text: "당긴 쪽만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1894년 유월\n제물포" }
       - goto: yard
@@ -99,7 +109,7 @@ scenes:
       - say: { channel: narration, text: "그쪽으로 기운다. 기울고 나니 빠르다.", autoAdvance: 1900 }
       - bg: { id: void_near, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
-      - say: { channel: narration, text: "그리운 것만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
+      - say: { channel: narration, text: "이름이 먼저 빠져나간다. 그다음이 얼굴이다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1952년 십이월\n부산" }
       - goto: /1.yaml
@@ -112,7 +122,7 @@ scenes:
       - say: { channel: narration, text: "그쪽으로 기운다. 가까웠던 모양이다.", autoAdvance: 1900 }
       - bg: { id: void_near, transition: wipeLeft, duration: 320 }
       - effect: { name: speedlines, wait: true }
-      - say: { channel: narration, text: "그리운 것만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
+      - say: { channel: narration, text: "빠져나갈 것이 생각보다 적다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1988년 구월\n서울" }
       - goto: /2.yaml
@@ -125,7 +135,7 @@ scenes:
       - say: { channel: narration, text: "그쪽으로 기운다. 멀어서 오래 걸린다.", autoAdvance: 1900 }
       - bg: { id: void_near, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
-      - say: { channel: narration, text: "그리운 것만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
+      - say: { channel: narration, text: "세 몫이 한꺼번에 빠져나간다. 오래 걸린다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "2026년 삼월\n서울" }
       - goto: /3.yaml
@@ -476,10 +486,12 @@ scenes:
       - say: { channel: narration, text: "어디서 나는지 찾다가 그만둔다. 내 안에서 난다." }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그날 곳간을 열었더라면." }
-      - say: { channel: narration, text: "열지 않았더라도 까닭을 한 번 말해 줬더라면." }
-      - say: { channel: narration, text: "엿 얘기 말고 다른 얘기를 한 번만 했더라면." }
-      - say: { channel: narration, text: "그 애한테 고맙다고, 미안하다고 한 번만 했더라면." }
-      - say: { channel: narration, text: "포구 밖으로 한 번만 더 나가 봤더라면. 곳간이 거기 있어서 나도 거기 있었다." }
+      - say: { channel: narration, text: "열지 않았더라도, 왜 못 여는지 그 애한테 한 번만 말해 줬더라면." }
+      - say: { channel: narration, text: "엿." }
+      - say: { channel: narration, text: "엿 얘기 말고 다른 얘기를 한 번만." }
+      - say: { channel: narration, text: "고맙다고 했어야 했다." }
+      - say: { channel: narration, text: "미안하다고도." }
+      - say: { channel: narration, text: "포구 밖으로 나가 본 것이 평생 한 번이고, 곳간이 거기 있어서 나도 거기 있었다." }
       - wait: 900
       - say: { channel: narration, text: "대답할 차례다." }
       - say: { channel: narration, text: "쉰여섯 해를 다 뒤져도 변명 하나가 안 나온다." }

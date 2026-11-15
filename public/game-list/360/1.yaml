@@ -314,11 +314,12 @@ scenes:
       - wait: 700
       - say: { channel: narration, text: "묻는 소리가 난다. 전에도 이랬던 것 같은데, 전이 언제인지는 모른다." }
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "3열 17번에 서는 사람이 꼭 나였어야 했나." }
-      - say: { channel: narration, text: "복례 아주머니한테 미안하다고 한마디만 했더라면." }
-      - say: { channel: narration, text: "그 밤에 비어 있던 손으로 뭘 했더라면." }
-      - say: { channel: narration, text: "최 씨가 물수건을 쓰기 전에 내가 한 발만 떼었더라면." }
-      - say: { channel: narration, text: "어머이한테 같이 가자고 한 번 더 말했더라면. 기차는 다섯 시였고." }
+      - say: { channel: narration, text: "3열 17번." }
+      - say: { channel: narration, text: "거기 서는 사람이 꼭 나였어야 했나." }
+      - say: { channel: narration, text: "미안하다고. 한마디." }
+      - say: { channel: narration, text: "그 밤에 비어 있던 손." }
+      - say: { channel: narration, text: "최 씨가 물수건을 쓰기 전에 내가 한 발만 떼었더라면, 아이 둘도 나오고 최 씨도 나왔다." }
+      - say: { channel: narration, text: "어머이한테 한 번 더. 기차는 다섯 시였고." }
       - wait: 900
       - say: { channel: narration, text: "대답할 차례다. 마흔넷 해를 다 뒤져도 변명 하나가 안 나온다." }
       - say: { channel: narration, text: "묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다." }
