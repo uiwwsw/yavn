@@ -23,26 +23,24 @@ scenes:
     actions:
       - say: { channel: narration, text: "암흑." }
       - music: void
-      - say: { channel: narration, text: "끊임없는 공허함." }
       - say: { channel: narration, text: "눈을 떴다." }
       - say: { channel: narration, text: "떴는데 어둡다. 감아도 어둡다." }
-      - say: { channel: narration, text: "그래서 떴는지 감았는지 모른다." }
-      - say: { channel: narration, text: "벽이 없다. 바닥도 없다. 없는 것을 세고 있다." }
+      - say: { channel: narration, text: "손을 뻗어 본다. 벽이 안 닿는다. 바닥도." }
       - wait: 900
       - say: { channel: narration, text: "어딘가 한 군데가 당긴다." }
-      - say: { channel: narration, text: "어딘지는 모르겠다. 당긴다는 것만 안다." }
+      - say: { channel: narration, text: "가슴께다. 당기는 쪽으로 몸이 조금 돈다." }
       - wait: 1100
-      - say: { channel: narration, text: "이 느낌에 이름이 있었다. 살아 있을 때 자주 쓰던 말인데 지금 안 나온다." }
+      - say: { channel: narration, text: "이 느낌에 이름이 있었다. 살아 있을 때 자주 쓰던 말이다." }
       - wait: 900
       - effect: { name: starfall, wait: true }
       - bg: { id: void_light, transition: dissolve, duration: 3600 }
       - say: { channel: narration, text: "한 군데가 덜 어둡다." }
-      - say: { channel: narration, text: "점이다. 아까부터 있었는지 방금 켜졌는지 모르겠고, 모르겠다고 생각하는 동안에도 있다." }
+      - say: { channel: narration, text: "점이다. 하나." }
       - wait: 1100
       - say: { channel: narration, text: "보고 싶다." }
       - wait: 900
       - say: { channel: narration, text: "누가." }
-      - say: { channel: narration, text: "누군지는 떠오르지 않는다. 떠올리려 할수록 더 보고 싶다." }
+      - say: { channel: narration, text: "이름이 안 나온다. 그래도 보고 싶다." }
       - wait: 700
       - say: { channel: narration, text: "점이 하나 더 켜진다. 또 하나." }
       - say: { channel: narration, text: "세는 사이에 늘어난다." }

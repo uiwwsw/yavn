@@ -208,7 +208,7 @@ scenes:
       - say: { channel: action, with: [], text: "둔치에 사람이 빽빽한데 아무도 환자복을 쳐다보지 않는다. 다 위를 보고 있다." }
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
-      - say: { channel: thought, with: [], text: "열한 시 사십 분. 여섯 시까지는 여섯 시간 이십 분 남았다. 계산을 하고 있다." }
+      - say: { channel: thought, with: [], text: "열한 시 사십 분. 여섯 시까지 여섯 시간 이십 분." }
       - bg: { id: ward, transition: fade, duration: 1000 }
       - goto: consent
 

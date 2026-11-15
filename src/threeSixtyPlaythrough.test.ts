@@ -136,7 +136,7 @@ describe('360 full playthrough', () => {
     expect(state.isFinished, picked.join('\n')).toBe(true);
     // The dark opens on a feeling, not on information, and the first thing the player does is
     // say who they miss without being told who that is.
-    expect(heard(shown, '벽이 없다. 바닥도 없다. 없는 것을 세고 있다')).toBe(true);
+    expect(heard(shown, '손을 뻗어 본다. 벽이 안 닿는다. 바닥도.')).toBe(true);
     expect(heard(shown, '이 느낌에 이름이 있었다')).toBe(true);
     expect(heard(shown, '보고 싶다.')).toBe(true);
     expect(heard(shown, '누가.')).toBe(true);
