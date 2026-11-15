@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { leadsRun, selectPhoneThread } from './phoneThread';
+import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneThread } from './phoneThread';
 import type { StoryLogEntry } from './types';
 
 const message = (
@@ -129,5 +129,75 @@ describe('leadsRun', () => {
   it('defaults a missing side to the other end, so it is not mistaken for your own', () => {
     expect(leadsRun({ speaker: '지영' }, { speaker: '지영', side: 'them' })).toBe(false);
     expect(leadsRun({ speaker: '지영' }, { speaker: '지영', side: 'me' })).toBe(true);
+  });
+});
+
+describe('closing a run', () => {
+  it('closes a run when the next message is someone else, and at the live line', () => {
+    const thread = selectPhoneThread([
+      message('하나', 'them', 0, '지영'),
+      message('둘', 'them', 1, '지영'),
+      message('셋', 'them', 2, '경준'),
+      message('live', 'them', 3, '경준'),
+    ]);
+    expect(thread.map((bubble) => bubble.endsRun)).toEqual([false, true, false]);
+  });
+
+  it('closes the thread’s last run when the live line is someone else', () => {
+    const thread = selectPhoneThread([
+      message('하나', 'them', 0, '지영'),
+      message('live', 'me', 1, '해수'),
+    ]);
+    expect(thread.map((bubble) => bubble.endsRun)).toEqual([true]);
+  });
+
+  it('closes every run when there is nothing after the thread at all', () => {
+    const thread = selectPhoneThread([message('하나', 'them', 0, '지영')], { limit: 10 });
+    expect(thread).toEqual([]);
+  });
+});
+
+describe('what a bubble carries', () => {
+  it('keeps the profile picture and the attachment the message was sent with', () => {
+    const photo = { ...message('', 'them', 0, '지영'), avatar: '/char/jiyoung.svg', media: { src: '/photo.png', kind: 'image' as const } };
+    const thread = selectPhoneThread([photo, message('live', 'them', 1, '지영')]);
+    expect(thread[0].avatar).toBe('/char/jiyoung.svg');
+    expect(thread[0].media).toEqual({ src: '/photo.png', kind: 'image' });
+  });
+});
+
+describe('isEmojiOnly', () => {
+  it('is true for a message that is nothing but emoji', () => {
+    expect(isEmojiOnly('🙂')).toBe(true);
+    expect(isEmojiOnly('🔥🔥🔥')).toBe(true);
+    expect(isEmojiOnly('👍🏽')).toBe(true);
+    expect(isEmojiOnly('👩‍👩‍👧 🇰🇷')).toBe(true);
+  });
+
+  it('is false once the emoji are a sentence rather than a reaction', () => {
+    expect(isEmojiOnly('🙂🙂🙂🙂')).toBe(false);
+  });
+
+  it('is false for text, for numbers, and for nothing at all', () => {
+    expect(isEmojiOnly('알겠어 🙂')).toBe(false);
+    // Digits are emoji components, since 1️⃣ is built from one. A year is not an emoji.
+    expect(isEmojiOnly('2031')).toBe(false);
+    expect(isEmojiOnly('#')).toBe(false);
+    expect(isEmojiOnly('   ')).toBe(false);
+    expect(isEmojiOnly('')).toBe(false);
+  });
+});
+
+describe('formatClipLength', () => {
+  it('prints a clip the way a thumbnail does', () => {
+    expect(formatClipLength(7)).toBe('0:07');
+    expect(formatClipLength(62.4)).toBe('1:02');
+    expect(formatClipLength(725)).toBe('12:05');
+  });
+
+  it('prints nothing when the browser has no length to report', () => {
+    expect(formatClipLength(Number.NaN)).toBeUndefined();
+    expect(formatClipLength(0)).toBeUndefined();
+    expect(formatClipLength(Number.POSITIVE_INFINITY)).toBeUndefined();
   });
 });
