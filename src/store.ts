@@ -18,6 +18,7 @@ import type {
   Position,
   RouteHistoryEntry,
   RouteVarValue,
+  PhoneMedia,
   StoryLogEntry,
   StickerSlot,
   StageCameraState,
@@ -38,6 +39,9 @@ type DialogState = {
   unskippable: boolean;
   channel: DialogueChannel;
   side?: 'me' | 'them';
+  /** message channel: the speaker's profile picture and the attachment, already resolved. */
+  avatar?: string;
+  media?: PhoneMedia;
   erase?: boolean;
   continueLabel?: string;
   delivery: DialogueDelivery;
@@ -396,7 +400,12 @@ export const useVNStore = create<VNState>((set) => ({
     dialog: {
       ...state.dialog,
       ...dialog,
-      ...(dialog.fullText === '' ? { channel: 'dialogue' as const, continueLabel: undefined } : {}),
+      // A line with no text is the box being cleared — unless it is carrying a photo, which
+      // on the phone is a message in its own right and must keep its channel to stay in the
+      // thread. Clearing drops the attachment with it, so it cannot outlive its message.
+      ...(dialog.fullText === '' && dialog.media === undefined
+        ? { channel: 'dialogue' as const, continueLabel: undefined, avatar: undefined, media: undefined }
+        : {}),
       // The lock exists only while glyphs are still being revealed.
       ...(dialog.typing === false ? { unskippable: false } : {}),
     },

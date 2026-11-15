@@ -193,6 +193,28 @@ export type ClearStickerTarget =
       leave?: StickerLeaveEffect | StickerLeaveOptions;
     };
 
+/**
+ * A photo or clip sent in a `channel: message` line.
+ *
+ * Authored as `media: assets/photo.png` when the defaults are right, or as a map when the
+ * kind has to be stated or the picture needs a description. Paths are resolved to real URLs
+ * before the line reaches the view, the same way a background or a sticker is.
+ */
+export type PhoneMediaSource =
+  | string
+  | {
+      src: string;
+      /** Inferred from the file extension when it is not stated. */
+      kind?: 'image' | 'video';
+      alt?: string;
+    };
+
+export type PhoneMedia = {
+  src: string;
+  kind: 'image' | 'video';
+  alt?: string;
+};
+
 export type SayAction = {
   say: {
     char?: string;
@@ -202,13 +224,16 @@ export type SayAction = {
     channel?: DialogueChannel;
     continueLabel?: string;
     when?: ConditionNode;
-    text: string;
+    /** Optional only when the line carries `media`: a photo can be sent without a caption. */
+    text?: string;
     delivery?: DialogueDelivery;
     promptHeight?: number;
     wait?: number;
     unskippable?: boolean;
     /** message channel: which side of the chat the bubble sits on. */
     side?: 'me' | 'them';
+    /** message channel: a photo or clip sent with the line, or instead of it. */
+    media?: PhoneMediaSource;
     /** Erase the line on screen once it has been read (message, record, thought, …). */
     erase?: boolean;
     autoAdvance?: number;
@@ -676,6 +701,10 @@ export type StoryLogEntry =
       channel?: DialogueChannel;
       /** message channel only: which side of the thread this bubble sat on. */
       side?: 'me' | 'them';
+      /** message channel only: the speaker's profile picture, already resolved to a URL. */
+      avatar?: string;
+      /** message channel only: the photo or clip this message carried. */
+      media?: PhoneMedia;
       text: string;
       chapterPath?: string;
       sceneId: string;

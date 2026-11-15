@@ -30,7 +30,7 @@ import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
 import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
-import { leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
+import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
@@ -170,6 +170,7 @@ import type {
   CharacterSlot,
   GameSeoMeta,
   LegalNotice,
+  PhoneMedia,
   Position,
   StartButtonPosition,
   StartSceneConfig,
@@ -321,6 +322,69 @@ const DialogueActionButton = memo(function DialogueActionButton() {
       onClick={event => { event.stopPropagation(); handleAdvance(true); }}>
       <span>{label}</span><GameIcon name="arrow" />
     </button>
+  );
+});
+
+/**
+ * The profile picture beside a run of messages.
+ *
+ * Sprites are drawn standing, so a circle cut from the middle of one is a torso. Anchoring
+ * the crop to the top of the art puts the face in the circle, which is what a messenger
+ * shows. A character with no art falls back to their first letter rather than an empty ring.
+ */
+const PhoneAvatar = memo(function PhoneAvatar({ src, name }: { src?: string; name?: string }) {
+  return (
+    <span className="phone-avatar" aria-hidden="true" data-initial={name?.trim().slice(0, 1) ?? ''}>
+      {src && <span className="phone-avatar-art" style={{ backgroundImage: `url(${CSS.escape(src)})` }} />}
+    </span>
+  );
+});
+
+/**
+ * A photo or a clip sent in the thread.
+ *
+ * Attachments have no bubble around them in any messenger worth copying — the picture is
+ * the message. A clip plays silently on a loop the way one does in a feed, and holds still
+ * on its first frame for a reader who has asked for less motion.
+ */
+const PhoneMediaView = memo(function PhoneMediaView({ media }: { media: PhoneMedia }) {
+  const [length, setLength] = useState<string>();
+  const host = useRef<HTMLSpanElement>(null);
+  const stillness = typeof window !== 'undefined'
+    && (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
+  // Typing is what normally pulls the thread down to the newest message, and a photo sent
+  // without a caption has nothing to type. It also arrives with no height until it loads,
+  // so the thread is followed down once the picture knows how tall it is.
+  const followThread = () => {
+    if (!host.current?.closest('.phone-live')) return;
+    const scroller = host.current.closest<HTMLElement>('.dialog-content-scroll');
+    if (scroller) scroller.scrollTop = scroller.scrollHeight;
+  };
+  if (media.kind === 'video') {
+    return (
+      <span className="phone-media phone-media-clip" ref={host}>
+        <video
+          src={media.src}
+          muted
+          loop
+          playsInline
+          autoPlay={!stillness}
+          controls={stillness}
+          preload="metadata"
+          aria-label={media.alt ?? t("동영상")}
+          onLoadedMetadata={(event) => {
+            setLength(formatClipLength(event.currentTarget.duration));
+            followThread();
+          }}
+        />
+        {length && <span className="phone-media-length">{length}</span>}
+      </span>
+    );
+  }
+  return (
+    <span className="phone-media" ref={host}>
+      <ResourceImage src={media.src} alt={media.alt ?? t("사진")} loading="lazy" decoding="async" onReady={followThread} />
+    </span>
   );
 });
 
@@ -1631,6 +1695,9 @@ export default function App() {
     dialogCameraTargetId,
     dialogChannel,
     dialogSide,
+    dialogAvatar,
+    dialogMedia,
+    dialogFullText,
     dialogErase,
     dialogTyping,
     dialogDelivery,
@@ -1675,6 +1742,9 @@ export default function App() {
     dialogCameraTargetId: state.dialog.cameraTargetId,
     dialogChannel: state.dialog.channel,
     dialogSide: state.dialog.side,
+    dialogAvatar: state.dialog.avatar,
+    dialogMedia: state.dialog.media,
+    dialogFullText: state.dialog.fullText,
     dialogErase: state.dialog.erase,
     dialogTyping: state.dialog.typing,
     dialogDelivery: state.dialog.delivery,
@@ -1712,13 +1782,19 @@ export default function App() {
   // other end of the conversation rather than whoever happens to be speaking right now.
   const phoneContact = useMemo(
     () => (dialogChannel === 'message'
-      ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide })
+      ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide, avatar: dialogAvatar })
       : undefined),
-    [dialogChannel, phoneThread, dialogSide, dialogSpeaker],
+    [dialogChannel, phoneThread, dialogSide, dialogSpeaker, dialogAvatar],
   );
   // Outside a phone scene the name tag always shows; inside one it follows the thread's rule.
   const phoneLiveLeadsRun = dialogChannel !== 'message'
     || leadsRun(phoneThread[phoneThread.length - 1], { speaker: dialogSpeaker, side: dialogSide });
+  // The live line is the newest message, so it always closes its run: the profile picture
+  // beside it belongs to it, and the run above hands its picture down to this bubble.
+  const phoneLiveEmojiOnly = useMemo(
+    () => dialogChannel === 'message' && isEmojiOnly(dialogFullText),
+    [dialogChannel, dialogFullText],
+  );
 
   const [bootMode, setBootMode] = useState<BootMode>(
     () => resolveInitialBootPresentation(window.location.pathname).bootMode,
@@ -5800,6 +5876,11 @@ export default function App() {
           <>
             <div className="phone-chrome-top">
               <span className="phone-chrome-back" aria-hidden="true" />
+              {phoneContact && phoneContact.avatars.length > 0 && (
+                <span className={`phone-chrome-faces${phoneContact.group ? ' is-group' : ''}`}>
+                  {phoneContact.avatars.map((avatar) => <PhoneAvatar key={avatar} src={avatar} />)}
+                </span>
+              )}
               <span className="phone-chrome-contact">{phoneContact?.name ?? t("메시지")}</span>
             </div>
             <div className="phone-chrome-bottom" aria-hidden="true">
@@ -5812,23 +5893,46 @@ export default function App() {
           {phoneThread.length > 0 && (
             <ol className="phone-thread">
               {phoneThread.map((bubble) => (
-                <li key={bubble.key} className={`phone-thread-bubble side-${bubble.side}`}>
-                  {bubble.leadsRun && bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
-                  <span className="phone-thread-text">{bubble.text}</span>
+                <li
+                  key={bubble.key}
+                  className={`phone-thread-bubble side-${bubble.side}${bubble.leadsRun ? ' leads-run' : ''}${bubble.endsRun ? ' ends-run' : ''}${bubble.emojiOnly ? ' is-emoji' : ''}`}
+                >
+                  {bubble.side === 'them' && <PhoneAvatar src={bubble.avatar} name={bubble.speaker} />}
+                  <span className="phone-thread-body">
+                    {bubble.leadsRun && bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
+                    {bubble.media && <PhoneMediaView media={bubble.media} />}
+                    {bubble.text && <span className="phone-thread-text">{bubble.text}</span>}
+                  </span>
                 </li>
               ))}
             </ol>
           )}
-          {/* Name tag first so it always reads on the left; a channel label moves to the right.
-              On the phone the live line is the last bubble of a thread, so it is named only
-              when it opens a run, exactly like the bubbles above it. */}
-          {dialogSpeaker && phoneLiveLeadsRun && (
+          {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
+          {dialogChannel !== 'message' && dialogSpeaker && (
             <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
           )}
           {dialogueChannelLabel && (
             <div className="dialog-channel-label">{dialogueChannelLabel}</div>
           )}
-          <DialogueText />
+          {dialogChannel === 'message' ? (
+            // On the phone the line being spoken is simply the newest message, so it is built
+            // like every bubble above it: named only when it opens a run, and given the run's
+            // profile picture because, being the newest, it always closes one.
+            <div
+              className={`phone-thread-bubble phone-live side-${dialogSide ?? 'them'}${phoneLiveLeadsRun ? ' leads-run' : ''} ends-run${phoneLiveEmojiOnly ? ' is-emoji' : ''}`}
+            >
+              {(dialogSide ?? 'them') === 'them' && <PhoneAvatar src={dialogAvatar} name={dialogSpeaker} />}
+              <div className="phone-thread-body">
+                {dialogSpeaker && phoneLiveLeadsRun && (
+                  <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
+                )}
+                {dialogMedia && <PhoneMediaView media={dialogMedia} />}
+                {dialogHasText && <DialogueText />}
+              </div>
+            </div>
+          ) : (
+            <DialogueText />
+          )}
           <DialogueActionButton />
           {inputGate.active && (
             <form

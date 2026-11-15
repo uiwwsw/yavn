@@ -58,6 +58,11 @@ function createAssetCollector(game: GameData) {
       addCharacter(action.char.emotion ? `${action.char.id}.${action.char.emotion}` : action.char.id);
     } else if ('say' in action) {
       addPresentation(action.say.char, action.say.with);
+      // A photo that arrives after its message has been read is a photo nobody sees.
+      // Clips are left out: a video streams, and preloading one would stall the chapter.
+      const media = typeof action.say.media === 'string' ? { src: action.say.media } : action.say.media;
+      const isVideo = media?.kind === 'video' || /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(media?.src ?? '');
+      if (media && !isVideo) addPath(media.src);
     } else if ('choice' in action) {
       addPresentation(action.choice.char, action.choice.with);
     } else if ('input' in action) {
