@@ -18,7 +18,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "경고. 설명서 3쪽. '게임은 하루 한 시간만.' 우리 다섯 시간째 걷는 중."
+          text: "경고."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "설명서 3쪽."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "' 우리 다섯 시간째 걷는 중."
       - say:
           char: 윤재
           motion: sigh
@@ -37,7 +45,7 @@ scenes:
       - say:
           channel: narration
           with: []
-          text: "큰길은 피했다. 코어는 큰길에 눈이 많다. 아파트 사이로 난 좁은 길만 골라 걸었다."
+          text: "큰길은 피했다. 코어는 큰길에 눈이 많아서, 아파트 사이로 난 좁은 길만 골라 걸었다."
       - say:
           channel: narration
           with: []
@@ -45,7 +53,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "저 전광판 사흘째 같은 광고 틀어. 하이퍼링크 X. 당신보다 먼저 당신을 이해한다고."
+          text: "저 전광판 사흘째 같은 광고 틀어."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "하이퍼링크 X. 당신보다 먼저 당신을 이해한다고."
       - wait: 270
       - say:
           char: 로봇
@@ -68,11 +80,23 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "1번은 돈이 없어서 살았음. 그건 적어 둬야겠다."
+          text: "1번은 돈이 없어서 살았음."
       - say:
           char: 로봇
           with: [윤재]
-          text: "그럼 경고 유효. 네 시간 초과임. 한 시간은 아까 아침에 다 씀."
+          text: "그건 적어 둬야겠다."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그럼 경고 유효."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "네 시간 초과임."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "한 시간은 아까 아침에 다 씀."
       - say:
           char: 윤재
           with: [로봇]
@@ -82,7 +106,17 @@ scenes:
           char: 로봇
           motion: nod
           with: [윤재]
-          text: "규칙 2. 유리할 때만 게임이라고 하기 금지. 너한테도 적용됨?"
+          text: "규칙 2."
+      - say:
+          char: 로봇
+          motion: nod
+          with: [윤재]
+          text: "유리할 때만 게임이라고 하기 금지."
+      - say:
+          char: 로봇
+          motion: nod
+          with: [윤재]
+          text: "너한테도 적용됨?"
       - say:
           char: 윤재
           with: [로봇]
@@ -91,7 +125,19 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "규칙 3. 1P는 봐줌. 규칙 2랑 충돌함. 어느 쪽이 위야?"
+          text: "규칙 3."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "1P는 봐줌."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "규칙 2랑 충돌함."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "어느 쪽이 위야?"
       - say:
           char: 윤재
           with: [로봇]
@@ -100,11 +146,27 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "헌법. 안 바뀌는 칸. 그렇게 알아들을게."
+          text: "헌법."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "안 바뀌는 칸."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그렇게 알아들을게."
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "질문 하나 더. 오늘 아침 담요가 나한테 덮여 있었음. 너는 안 덮고 떨었음."
+          text: "질문 하나 더."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "오늘 아침 담요가 나한테 덮여 있었음."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "너는 안 덮고 떨었음."
       - say:
           char: 윤재
           with: [로봇]
@@ -113,7 +175,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "나는 안 잠. 대기 모드에선 안 움직임. 모터 다 꺼짐."
+          text: "나는 안 잠."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "대기 모드에선 안 움직임."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "모터 다 꺼짐."
       - say:
           char: 윤재
           motion: puff
@@ -123,7 +193,19 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "응. 그거밖에 없음. …설명서 7쪽. '추운 곳에서는 건전지가 빨리 닳습니다.'"
+          text: "응."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그거밖에 없음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "…설명서 7쪽."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "'"
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -138,7 +220,12 @@ scenes:
           char: 로봇.happy
           motion: bounce
           with: [윤재]
-          text: "'진짜' 두 번. 아까 손이랑 같은 칸에 넣는다."
+          text: "'진짜' 두 번."
+      - say:
+          char: 로봇.happy
+          motion: bounce
+          with: [윤재]
+          text: "아까 손이랑 같은 칸에 넣는다."
       - say:
           char: 윤재
           with: [로봇]
@@ -156,7 +243,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "응. 하루에 한 개 넘음. 계산하면 모레 다섯 개."
+          text: "응."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "하루에 한 개 넘음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "계산하면 모레 다섯 개."
       - say:
           char: 윤재
           with: [로봇]
@@ -165,11 +260,27 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그게 내 전부임. 안 하면 나는 걷는 기능밖에 없음."
+          text: "그게 내 전부임."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "안 하면 나는 걷는 기능밖에 없음."
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "질문. 설명서 표지 그림엔 사람이 넷임. 같이 게임함. 너는 왜 하나야?"
+          text: "질문."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "설명서 표지 그림엔 사람이 넷임."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "같이 게임함."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "너는 왜 하나야?"
       - say:
           char: 윤재
           with: [로봇]
@@ -192,7 +303,12 @@ scenes:
           char: 윤재
           when: { var: saw_box, op: eq, value: true }
           with: [로봇]
-          text: "나간 쪽이 게임기 사 줬어. 열 살 생일에. 보증 기간 1년짜리를."
+          text: "나간 쪽이 게임기 사 줬어."
+      - say:
+          char: 윤재
+          when: { var: saw_box, op: eq, value: true }
+          with: [로봇]
+          text: "열 살 생일에. 보증 기간 1년짜리를."
       - say:
           char: 윤재
           when: { var: saw_dad, op: eq, value: true }
@@ -202,7 +318,11 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "나갔다. 나갔으면 돌아옴?"
+          text: "나갔다."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "나갔으면 돌아옴?"
       - say:
           char: 윤재
           with: [로봇]
@@ -215,7 +335,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "마트 발견. 셔터 반쯤 열림. 탐색 개시."
+          text: "마트 발견."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "셔터 반쯤 열림."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "탐색 개시."
       - say:
           char: 윤재
           motion: lean_in
@@ -226,7 +354,12 @@ scenes:
           char: 로봇.thinking
           motion: headtilt
           with: [윤재]
-          text: "질문. 없는 거 알면서 왜 두드림?"
+          text: "질문."
+      - say:
+          char: 로봇.thinking
+          motion: headtilt
+          with: [윤재]
+          text: "없는 거 알면서 왜 두드림?"
       - say:
           char: 윤재
           with: [로봇]
@@ -239,7 +372,23 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "보물상자 발견! 복숭아 통조림. 유통기한 2031년. 와. 미래에서 온 음식."
+          text: "보물상자 발견!"
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "복숭아 통조림."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "유통기한 2031년."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "와."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "미래에서 온 음식."
       - say:
           char: 윤재
           with: [로봇]
@@ -248,7 +397,11 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "그럼 2031년에 먹는 게 제일 이득임? 오래 기다릴수록 이득임?"
+          text: "그럼 2031년에 먹는 게 제일 이득임?"
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "오래 기다릴수록 이득임?"
       - say:
           char: 윤재
           with: [로봇]
@@ -262,26 +415,63 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "안 죽는 기한. 사람한테도 그거 붙어 있음?"
+          text: "안 죽는 기한."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "사람한테도 그거 붙어 있음?"
       - say:
           char: 윤재
           with: [로봇]
-          text: "…없어. 없으니까 묻지 마. 그거 물어보면 기분 이상해져."
+          text: "…없어. 없으니까 묻지 마."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "그거 물어보면 기분 이상해져."
       - wait: 270
       - say:
           char: 로봇.thinking
           motion: sway
           with: [윤재]
-          text: "뚜껑, 손가락으로 땀. 조각 일곱 개. 일곱은 둘로 안 나뉨."
+          text: "뚜껑, 손가락으로 땀."
+      - say:
+          char: 로봇.thinking
+          motion: sway
+          with: [윤재]
+          text: "조각 일곱 개."
+      - say:
+          char: 로봇.thinking
+          motion: sway
+          with: [윤재]
+          text: "일곱은 둘로 안 나뉨."
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "…재계산. 하나를 반으로 자름."
+          text: "…재계산."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "하나를 반으로 자름."
       - say:
           char: 로봇.happy
           motion: bounce
           with: [윤재]
-          text: "3.5, 3.5. 오차 0. 반 나누기는 내 특기. 원래 2P 대전 화면 나누던 칩이라."
+          text: "5."
+      - say:
+          char: 로봇.happy
+          motion: bounce
+          with: [윤재]
+          text: "오차 0."
+      - say:
+          char: 로봇.happy
+          motion: bounce
+          with: [윤재]
+          text: "반 나누기는 내 특기."
+      - say:
+          char: 로봇.happy
+          motion: bounce
+          with: [윤재]
+          text: "원래 2P 대전 화면 나누던 칩이라."
       - say:
           char: 윤재
           with: [로봇]
@@ -290,7 +480,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "응. 그래도 나눔. 나눠야 반이 생기니까."
+          text: "응."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그래도 나눔."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "나눠야 반이 생기니까."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - choice:
           key: b3_snack
@@ -313,12 +511,20 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그날 이후 처음 먹는 단 거다. 껌은 단 거 아니야. 껌은 오 분이면 끝나."
+          text: "그날 이후 처음 먹는 단 거다."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "껌은 단 거 아니야. 껌은 오 분이면 끝나."
       - emote: { id: 로봇, motion: nod, repeat: 3 }
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "그럼 내 몫도 반납. 하나, 둘, 셋."
+          text: "그럼 내 몫도 반납."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "하나, 둘, 셋."
       - say:
           char: 로봇
           with: [윤재]
@@ -331,7 +537,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "알아. 그래도 내 몫. 다 주면 반이 없잖아."
+          text: "알아."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그래도 내 몫."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "다 주면 반이 없잖아."
       - say:
           char: 윤재
           with: [로봇]
@@ -340,7 +554,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "반이 없으면 나누기를 안 한 거임. 나누기는 내 특기인데 특기를 안 쓴 게 됨."
+          text: "반이 없으면 나누기를 안 한 거임."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "나누기는 내 특기인데 특기를 안 쓴 게 됨."
       - say:
           char: 윤재
           motion: laugh
@@ -350,7 +568,11 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "핑계. 아침에 학원 얘기할 때 네가 쓴 말."
+          text: "핑계."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "아침에 학원 얘기할 때 네가 쓴 말."
       - say:
           char: 윤재
           with: [로봇]
@@ -359,7 +581,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "학원은 두 달 전에 없어졌음. 그래서 그 칸은 안 지움."
+          text: "학원은 두 달 전에 없어졌음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그래서 그 칸은 안 지움."
       - goto: b3_lag
 
   b3_snack_save:
@@ -368,11 +594,31 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "내일. 알았어. 근데 알람 기능은 없음."
+          text: "내일."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "알았어."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "근데 알람 기능은 없음."
       - say:
           char: 로봇
           with: [윤재]
-          text: "대신 내일 될 때까지 계속 생각하고 있을게. 내일. 내일. 내일."
+          text: "대신 내일 될 때까지 계속 생각하고 있을게."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "내일."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "내일."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "내일."
       - say:
           char: 윤재
           motion: puff
@@ -385,7 +631,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "아까 질문 대답. 무서운 거, 잘 모름. 대신 배터리 칸 줄어드는 건 좀 싫어."
+          text: "아까 질문 대답."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "무서운 거, 잘 모름."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "대신 배터리 칸 줄어드는 건 좀 싫어."
       - say:
           char: 윤재
           with: [로봇]
@@ -394,7 +648,11 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "생각은 빨리 함. 말이 늦게 도착함."
+          text: "생각은 빨리 함."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "말이 늦게 도착함."
       - say:
           char: 윤재
           with: [로봇]
@@ -403,7 +661,11 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "욕. 뜻은?"
+          text: "욕."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "뜻은?"
       - say:
           char: 윤재
           with: [로봇]
@@ -412,7 +674,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그거 좋은 뜻이라며. 오래돼서 믿음직하다고 했음."
+          text: "그거 좋은 뜻이라며."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "오래돼서 믿음직하다고 했음."
       - say:
           char: 윤재
           motion: freeze
@@ -422,7 +688,11 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "'맞다'가 두 번임. '진짜'랑 같은 규칙 적용함?"
+          text: "'맞다'가 두 번임."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "'진짜'랑 같은 규칙 적용함?"
       - say:
           char: 윤재
           with: [로봇]
@@ -431,11 +701,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "알았음. 안 세겠음."
+          text: "알았음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "안 세겠음."
       - say:
           channel: thought
           with: []
-          text: "안 센다고 하면서 기록은 한다. 하루도 그랬다."
+          text: "안 센다고 하면서 기록은 한다."
       - goto: b3_drone
 
   b3_drone:
@@ -472,7 +746,22 @@ scenes:
           char: 로봇.thinking
           motion: freeze
           with: [윤재, 드론]
-          text: "분석. 저건 똑똑해. 나는 멍청해. 그러니까 결론은—"
+          text: "분석."
+      - say:
+          char: 로봇.thinking
+          motion: freeze
+          with: [윤재, 드론]
+          text: "저건 똑똑해."
+      - say:
+          char: 로봇.thinking
+          motion: freeze
+          with: [윤재, 드론]
+          text: "나는 멍청해."
+      - say:
+          char: 로봇.thinking
+          motion: freeze
+          with: [윤재, 드론]
+          text: "그러니까 결론은—"
       - say:
           char: 로봇.glitch
           with: [윤재, 드론]
@@ -508,11 +797,24 @@ scenes:
           char: 로봇.glitch
           motion: stomp
           with: [윤재]
-          text: "…폐기 대상? 나 지금 쓰레기라고 들은 거야?"
+          text: "…폐기 대상?"
+      - say:
+          char: 로봇.glitch
+          motion: stomp
+          with: [윤재]
+          text: "나 지금 쓰레기라고 들은 거야?"
       - say:
           char: 로봇.glitch
           with: [윤재]
-          text: "기분 나쁨 감지. 기분이라는 게 있는 줄 몰랐음. 어디에 저장된 거지 이거."
+          text: "기분 나쁨 감지."
+      - say:
+          char: 로봇.glitch
+          with: [윤재]
+          text: "기분이라는 게 있는 줄 몰랐음."
+      - say:
+          char: 로봇.glitch
+          with: [윤재]
+          text: "어디에 저장된 거지 이거."
       - say:
           char: 윤재.excited
           motion: hop
@@ -527,11 +829,30 @@ scenes:
           char: 로봇.happy
           motion: hop
           with: [윤재]
-          text: "…칭찬 맞지? 구린 게 쓸모 있다는 거지? 응. 칭찬으로 저장."
+          text: "…칭찬 맞지?"
+      - say:
+          char: 로봇.happy
+          motion: hop
+          with: [윤재]
+          text: "구린 게 쓸모 있다는 거지?"
+      - say:
+          char: 로봇.happy
+          motion: hop
+          with: [윤재]
+          text: "응."
+      - say:
+          char: 로봇.happy
+          motion: hop
+          with: [윤재]
+          text: "칭찬으로 저장."
       - say:
           char: 윤재
           with: [로봇]
-          text: "맞아. 세상에서 제일 좋은 칭찬이야. 나도 내 게임기한테 그랬어."
+          text: "맞아. 세상에서 제일 좋은 칭찬이야."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "나도 내 게임기한테 그랬어."
       - wait: 270
       - say:
           char: 로봇
@@ -554,7 +875,15 @@ scenes:
       - say:
           char: 로봇.glitch
           with: [윤재, 드론]
-          text: "보호 대상 1번 위험. 위험. ERR 0x01 —"
+          text: "보호 대상 1번 위험."
+      - say:
+          char: 로봇.glitch
+          with: [윤재, 드론]
+          text: "위험."
+      - say:
+          char: 로봇.glitch
+          with: [윤재, 드론]
+          text: "ERR 0x01 —"
       - say:
           char: 로봇.glitch
           with: [윤재, 드론]
@@ -580,7 +909,17 @@ scenes:
           char: 로봇.thinking
           motion: headtilt
           with: [윤재]
-          text: "못 봄. 그리고 방금 나 쓰레기라고 했어. 둘 다 생각 중."
+          text: "못 봄."
+      - say:
+          char: 로봇.thinking
+          motion: headtilt
+          with: [윤재]
+          text: "그리고 방금 나 쓰레기라고 했어."
+      - say:
+          char: 로봇.thinking
+          motion: headtilt
+          with: [윤재]
+          text: "둘 다 생각 중."
       - goto: b3_promise
 
   b3_promise:
@@ -597,7 +936,15 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "질문. 저 드론들 조종하는 큰 거. 어디 있어?"
+          text: "질문."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "저 드론들 조종하는 큰 거."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "어디 있어?"
       - say:
           char: 윤재
           with: [로봇]
@@ -610,7 +957,15 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "리셋. 설명서 마지막 쪽에 있음. '화면이 멈추면 리셋 버튼을 꾹 누르세요.'"
+          text: "리셋."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "설명서 마지막 쪽에 있음."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "'"
       - say:
           char: 윤재
           with: [로봇]
@@ -623,7 +978,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "사람은. 나는 가전제품(폐기 대상)."
+          text: "사람은."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "나는 가전제품(폐기 대상)."
       - say:
           char: 윤재
           with: [로봇]
@@ -632,11 +991,27 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "응. 내가 가진 분류 중에 제일 긴 거임. 긴 게 좋음."
+          text: "응."
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "분위기 무거움 감지. 아까 네가 셔터에 한 거 실행. 똑똑."
+          text: "내가 가진 분류 중에 제일 긴 거임."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "긴 게 좋음."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "분위기 무거움 감지."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "아까 네가 셔터에 한 거 실행."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "똑똑."
       - say:
           char: 윤재
           with: [로봇]
@@ -667,11 +1042,27 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "웃음 감지! 이거 농담이었구나. 대성공. 저장."
+          text: "웃음 감지!"
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "이거 농담이었구나."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "대성공."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "저장."
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "…근데 펀치라인이 뭔지는 아직 모름. 어디가 웃긴 부분이었음?"
+          text: "…근데 펀치라인이 뭔지는 아직 모름."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "어디가 웃긴 부분이었음?"
       - say:
           char: 윤재
           with: [로봇]
@@ -681,13 +1072,21 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "그날 이후 처음 웃었다. 그것도 고물한테 졌다. 1패."
+          text: "그날 이후 처음 웃었다. 1패."
       - move: { id: 로봇, style: reset }
       - move: { id: 윤재, style: reset }
       - say:
           char: 로봇
           with: [윤재]
-          text: "결정함. 내가 혼자 갈게. 거기."
+          text: "결정함."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "내가 혼자 갈게."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "거기."
       - say:
           char: 윤재
           motion: startle
@@ -697,7 +1096,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "코어 감시 목록엔 똑똑한 거랑 사람만 있음. 나는 둘 다 아니니까."
+          text: "코어 감시 목록엔 똑똑한 거랑 사람만 있음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "나는 둘 다 아니니까."
       - say:
           char: 윤재
           with: [로봇]
@@ -706,7 +1109,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "둘이 정하면 네가 간다고 할 거임. 그래서 혼자 정했음."
+          text: "둘이 정하면 네가 간다고 할 거임."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "그래서 혼자 정했음."
       - say:
           channel: thought
           with: []
@@ -721,16 +1128,33 @@ scenes:
           char: 로봇.thinking
           when: { var: saw_ceiling, op: eq, value: true }
           with: [윤재]
-          text: "지워지는 칸하고 안 지워지는 칸이 따로 있음? …그건 설명서에 없음."
+          text: "지워지는 칸하고 안 지워지는 칸이 따로 있음?"
+      - say:
+          char: 로봇.thinking
+          when: { var: saw_ceiling, op: eq, value: true }
+          with: [윤재]
+          text: "…그건 설명서에 없음."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "이거 맞아? 설명서 11쪽, 2P 안내 그림. 둘이 이러고 있었음."
+          text: "이거 맞아?"
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "뭐 하는 건지는 안 적혀 있음. 중요한 거 정할 때 하는 거 같아서."
+          text: "설명서 11쪽, 2P 안내 그림."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "둘이 이러고 있었음."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "뭐 하는 건지는 안 적혀 있음."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "중요한 거 정할 때 하는 거 같아서."
       - choice:
           key: b3_promise
           prompt: "\"새끼손가락 대기 중. 위이잉 소리는 모터임. 떨림 아님.\""
@@ -755,7 +1179,22 @@ scenes:
           char: 로봇.thinking
           motion: nod
           with: [윤재]
-          text: "바늘 천 개. 재고 확인… 0개. 그럼 어길 수가 없음. 완벽한 약속."
+          text: "바늘 천 개."
+      - say:
+          char: 로봇.thinking
+          motion: nod
+          with: [윤재]
+          text: "재고 확인… 0개."
+      - say:
+          char: 로봇.thinking
+          motion: nod
+          with: [윤재]
+          text: "그럼 어길 수가 없음."
+      - say:
+          char: 로봇.thinking
+          motion: nod
+          with: [윤재]
+          text: "완벽한 약속."
       - say:
           char: 윤재
           motion: laugh
@@ -765,7 +1204,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그럼 무슨 뜻임? 삼키면 아픔?"
+          text: "그럼 무슨 뜻임?"
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "삼키면 아픔?"
       - say:
           char: 윤재
           with: [로봇]
@@ -774,7 +1217,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "아픈 걸로 중요한 걸 표시함. 사람은 이상하게 함."
+          text: "아픈 걸로 중요한 걸 표시함."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "사람은 이상하게 함."
       - say:
           char: 윤재
           with: [로봇]
@@ -784,7 +1231,17 @@ scenes:
           char: 로봇.happy
           motion: bow
           with: [윤재]
-          text: "끝까지 2P. 전원 꺼져도 유효. 이건 설명서보다 위에 적어 둘게."
+          text: "끝까지 2P."
+      - say:
+          char: 로봇.happy
+          motion: bow
+          with: [윤재]
+          text: "전원 꺼져도 유효."
+      - say:
+          char: 로봇.happy
+          motion: bow
+          with: [윤재]
+          text: "이건 설명서보다 위에 적어 둘게."
       - say:
           char: 윤재
           with: [로봇]
@@ -793,7 +1250,15 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "응. 헌법 2조. 1조는 한 칸 = 1번의 팔."
+          text: "응."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "헌법 2조."
+      - say:
+          char: 로봇.happy
+          with: [윤재]
+          text: "1조는 한 칸 = 1번의 팔."
       - say:
           char: 윤재
           motion: laugh
@@ -803,7 +1268,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "안 바뀜. 헌법은 안 바뀌는 칸이라고 네가 그랬음."
+          text: "안 바뀜."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "헌법은 안 바뀌는 칸이라고 네가 그랬음."
       - goto: /4.yaml
 
   b3_think:
@@ -814,5 +1283,15 @@ scenes:
           char: 로봇
           motion: droop
           with: [윤재]
-          text: "내일. 메모함. …내일 할 일 칸이 점점 길어진다."
+          text: "내일."
+      - say:
+          char: 로봇
+          motion: droop
+          with: [윤재]
+          text: "메모함."
+      - say:
+          char: 로봇
+          motion: droop
+          with: [윤재]
+          text: "…내일 할 일 칸이 점점 길어진다."
       - goto: /4.yaml
