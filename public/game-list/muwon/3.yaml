@@ -24,33 +24,57 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연, 막쇠]
-          text: "얼음지기 말로는 오늘 저녁에 발견했다 하오. 몸이 돌처럼 굳었소. 죽은 지 오래요."
+          text: "얼음지기 말로는 오늘 저녁에 발견했다 하오."
+      - say:
+          char: 도원.troubled
+          with: [서연, 막쇠]
+          text: "몸이 돌처럼 굳었소. 죽은 지 오래요."
       - say:
           char: 막쇠
           when: { var: makssoe_hurt, op: eq, value: true }
           with: [서연, 도원]
-          text: "다리 끌고 왔수. 이건 내 눈으로 봐야 해서. 아가씨, 몸부터 봐요."
+          text: "다리 끌고 왔수."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "이건 내 눈으로 봐야 해서. 아가씨, 몸부터 봐요."
       - say:
           char: 막쇠
           when: { var: makssoe_hurt, op: eq, value: false }
           with: [서연, 도원]
-          text: "얼음 곳간에서 굳은 송장은 속여요. 굳은 게 죽은 시각을 다 말해 주진 않거든."
+          text: "얼음 곳간에서 굳은 송장은 속여요."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "굳은 게 죽은 시각을 다 말해 주진 않거든."
       - say:
           char: 서연.think
           with: [도원, 막쇠]
-          text: "나리. 윤길은 한성부 서리입니다. 서빙고에 올 일이 있는 사람입니까."
+          text: "나리."
+      - say:
+          char: 서연.think
+          with: [도원]
+          text: "윤길은 한성부 서리입니다. 서빙고에 올 일이 있는 사람입니까."
       - say:
           char: 도원.troubled
           with: [서연, 막쇠]
-          text: "없소. 얼음 출납은 공조 소관이오. 서리가 여기 와서 볼 문서가 없소."
+          text: "없소."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "얼음 출납은 공조 소관이오. 서리가 여기 와서 볼 문서가 없소."
       - say:
           char: 서연
           with: [도원]
           text: "…올 일이 없는데 와 있네요."
       - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "그렇지."
+      - say:
           channel: thought
           with: []
-          text: "윤길은 내 시장을 베껴 간 사람이다. 베끼면서 뭘 봤는지 물어볼 참이었다. 사흘 늦었다."
+          text: "윤길은 내 시장을 베껴 간 사람이다. 뭘 봤는지 물어볼 참이었는데 사흘 늦었다."
       - say:
           channel: action
           with: []
@@ -58,15 +82,27 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연, 막쇠]
-          text: "얼음지기는 오늘 낮에 사람이 둘 왔다 했소. 하나는 얼음을 받아 갔고, 하나는 안 나갔다 하오."
+          text: "얼음지기는 오늘 낮에 사람이 둘 왔다 했소."
+      - say:
+          char: 도원.troubled
+          with: [서연, 막쇠]
+          text: "하나는 얼음을 받아 갔고, 하나는 안 나갔다 하오."
       - say:
           char: 막쇠
           with: [서연, 도원]
-          text: "안 나간 쪽이 저기 누워 있는 게지. 받아 간 쪽 이름은 들었수?"
+          text: "안 나간 쪽이 저기 누워 있는 게지."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "받아 간 쪽 이름은 들었수?"
       - say:
           char: 도원.troubled
           with: [서연, 막쇠]
           text: "얼음지기는 글을 모르오. 도장을 받았다고만 하오."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "허. 도장만."
       - say:
           channel: thought
           with: []
@@ -74,7 +110,11 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "아가씨. 이 곳간은 겨울에 강 얼음을 떠다 짚에 묻어 두는 데요. 여름까지 안 녹아요."
+          text: "아가씨."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "이 곳간은 겨울에 강 얼음을 떠다 짚에 묻어 두는 데요. 여름까지 안 녹아요."
       - say:
           char: 막쇠
           with: [서연]
@@ -117,23 +157,35 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "몸을 모로 돌린다. 등에 핏빛 얼룩이 연하게 번져 있다. 손가락으로 누르자 하얗게 빠진다."
+          text: "몸을 모로 돌린다. 등에 번진 핏빛 얼룩을 손가락으로 누르자 하얗게 빠진다."
       - say:
           char: 막쇠
           with: [서연]
-          text: "시반이 아직 눌리면 빠진다? 그럼 죽은 지 한나절이 안 된 거요."
+          text: "어? 아직 눌리면 빠지네."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그럼 죽은 지 한나절이 안 된 거요."
       - say:
           char: 서연.think
           with: [막쇠]
           text: "하루 지나면 눌러도 안 빠집니다."
       - say:
+          char: 막쇠
+          with: [서연]
+          text: "음."
+      - say:
           channel: action
           with: []
-          text: "같은 자리를 다시 누르고 손가락을 뗀다. 하얗게 빠진 자리가 천천히 다시 붉어진다."
+          text: "같은 자리를 다시 누르고 뗀다. 하얗게 빠진 자리가 천천히 붉어진다."
       - say:
           char: 서연
           with: [막쇠]
-          text: "열 셀 동안 돌아왔어요. 반나절. 더는 안 됐습니다."
+          text: "열 셀 동안 돌아왔어요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "반나절. 더는 안 됐습니다."
       - say:
           channel: thought
           with: []
@@ -145,7 +197,11 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "얼음 더미 사이에 끼어 있던 건 모로 누운 모양이었수. 그럼 누가 옮긴 거요."
+          text: "끼어 있던 건 모로 누운 모양이었수."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그럼 누가 옮긴 거요."
       - say:
           char: 서연.think
           with: [막쇠]
@@ -158,11 +214,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "팔꿈치를 굽히려 해도 꿈쩍 않는다. 살갗이 얼음처럼 차다. 겉이 언 것이다."
+          text: "팔꿈치를 굽히려 해도 꿈쩍 않고, 살갗이 얼음처럼 차다."
       - say:
           channel: thought
           with: []
-          text: "굳은 게 아니라 얼었다. 얼리면 오래 죽은 몸처럼 보인다."
+          text: "얼었다. 얼리면 오래 죽은 몸처럼 보인다."
       - say:
           char: 서연.think
           with: [막쇠]
@@ -170,19 +226,35 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "턱은… 움직이오. 아래턱이 아직 무르네. 그런데 손목은 돌처럼 굳었어."
+          text: "턱은… 움직이오."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아래턱이 아직 무르네. 그런데 손목은 돌처럼 굳었어."
       - say:
           char: 서연
           with: [막쇠]
           text: "거꾸로예요. 턱이 먼저 굳어야 맞는데."
       - say:
+          char: 막쇠
+          with: [서연]
+          text: "가만."
+      - say:
           channel: action
           with: []
-          text: "손등을 손가락으로 눌러 본다. 자리가 움푹 들어가 그대로 남는다. 살이 아니라 언 것이 들어간 자리다."
+          text: "손등을 눌러 본다. 움푹 들어간 자리가 그대로 남는다."
       - say:
           char: 막쇠
           with: [서연]
-          text: "눌린 자리가 안 돌아오네. 이건 얼린 고기요. 사십 년 봤는데 이건 고기요."
+          text: "눌린 자리가 안 돌아오네."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "이건 얼린 고기요. 사십 년 봤는데 고기요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "…고기요?"
       - say:
           char: 서연.think
           with: [막쇠]
@@ -194,7 +266,11 @@ scenes:
       - say:
           char: 서연
           with: [도원]
-          text: "안 됩니다. 얼음지기는 본 대로 말한 거예요. 그렇게 보이게 해 놓은 사람이 따로 있습니다."
+          text: "안 됩니다. 얼음지기는 본 대로 말한 거예요."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "그렇게 보이게 해 놓은 사람이 따로 있습니다."
       - set: { c4_stiff: true }
       - goto: c4_body
 
@@ -211,7 +287,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "소매 안쪽에 접힌 종이. 우리 시장을 옮겨 적은 장이다. 한 이름에 붉은 동그라미."
+          text: "소매 안쪽에 접힌 종이. 우리 시장을 옮겨 적은 장인데, 한 이름에 붉은 동그라미가 있다."
       - say:
           channel: thought
           with: []
@@ -223,7 +299,11 @@ scenes:
       - say:
           char: 서연.shock
           with: [막쇠]
-          text: "…제 시장이에요. 분이 것. 이걸 품에 넣고 다녔네요."
+          text: "…제 시장이에요. 분이 것."
+      - say:
+          char: 서연.shock
+          with: [막쇠]
+          text: "이걸 품에 넣고 다녔네요."
       - say:
           char: 막쇠
           with: [서연]
@@ -235,11 +315,19 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "분이 죽은 이튿날에 의관이 빌려 갔어요. 적은 사람이 윤길이고요."
+          text: "분이 죽은 이튿날에 의관이 빌려 갔어요."
+      - say:
+          char: 서연.think
+          with: [막쇠]
+          text: "적은 사람이 윤길이고요."
       - say:
           char: 막쇠
           with: [서연]
           text: "적은 놈이 그걸 들고 다녔으면, 적은 다음에 뭘 알아챈 거요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "네."
       - say:
           char: 서연
           with: [막쇠]
@@ -256,11 +344,19 @@ scenes:
       - say:
           char: 서연.think
           with: [도원]
-          text: "윤길은 오늘 낮에 죽었습니다. 범인이 얼음에 묻어 며칠 된 송장처럼 만들었어요."
+          text: "윤길은 오늘 낮에 죽었습니다."
+      - say:
+          char: 서연.think
+          with: [도원]
+          text: "범인이 얼음에 묻어 며칠 된 송장처럼 만들었어요."
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "그럼 범인은 오늘 낮에 이 곳간에 들어왔다는 말이군. 얼음 출납을 보면…"
+          text: "그럼 범인은 오늘 낮에 이 곳간에 들어왔다는 말이군."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "얼음 출납을 보면…"
       - say:
           char: 서연
           with: [도원]
@@ -285,7 +381,11 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연]
-          text: "사흘 된 송장이면 그날은 딴 데 있었다고 하겠군. 얼음으로 날짜를 산 거요."
+          text: "사흘 된 송장이면 그날은 딴 데 있었다고 하겠군."
+      - say:
+          char: 도원.stern
+          with: [서연]
+          text: "흠. 얼음으로 날짜를 산 거요."
       - say:
           char: 서연
           with: [도원]

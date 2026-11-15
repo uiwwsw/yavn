@@ -23,7 +23,11 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "비단전 행수 여금이에요. 분이는 내 가게 침모였어요. 장례는 내가 치르겠어요."
+          text: "비단전 여금이에요."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "분이는 우리 가게 침모였고. 장례는 내가 치러요."
       - say:
           char: 여금.wary
           with: [서연]
@@ -31,15 +35,19 @@ scenes:
       - say:
           char: 서연
           with: [여금]
-          text: "없습니다. 검안이 끝나지 않았어요. 분이는 목이 졸린 뒤에 던져졌습니다."
+          text: "없습니다. 검안이 아직 끝나지 않았고, 분이는 목이 졸린 뒤에 던져졌습니다."
       - say:
           channel: action
           with: [여금]
-          text: "여금의 손이 장옷 끈을 쥔다. 손등은 깨끗하다. 손톱은 짧게 다듬었다."
+          text: "여금의 손이 장옷 끈을 쥔다. 손등은 깨끗하고 손톱은 짧게 다듬었다."
       - say:
           char: 여금.wary
           with: [서연]
           text: "…목이 졸렸다고요."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "…참."
       - say:
           char: 서연
           with: [여금]
@@ -49,6 +57,10 @@ scenes:
           with: [서연]
           text: "그 애 혼례가 보름 뒤였어요. 내가 혼수까지 봐 줬고요."
       - say:
+          char: 서연
+          with: [여금]
+          text: "네."
+      - say:
           char: 여금.wary
           with: [서연]
           text: "그래서 동네에서는 그 애가 겁이 나서 우물에 들어갔다고 하던데."
@@ -56,6 +68,10 @@ scenes:
           char: 서연
           with: [여금]
           text: "스스로 들어가면 거품이 입에 찹니다. 분이는 없었습니다."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "…그게 무슨."
       - say:
           channel: action
           with: []
@@ -97,7 +113,11 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "…우리 감청이네요. 이 실로 짠 건 주머니뿐이에요. 약 넣는 작은 주머니."
+          text: "…우리 감청이네요."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "이 실로 짠 건 주머니뿐이에요. 약 넣는 작은 거."
       - say:
           char: 여금
           with: [서연]
@@ -114,7 +134,11 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "분이 저고리 안섶에 꿰매져 있던 거예요. 염할 때 찾았어요. 나는 이게 무서워요."
+          text: "분이 저고리 안섶에 꿰매져 있던 거예요. 염할 때 찾았어요."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "나는 이게 무서워요."
       - get: order_slip
       - goto: c2_fire_alarm
 
@@ -123,7 +147,11 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "다퉜냐고요? 의녀가 포교 흉내를 내네요. 내 가게 아이를 내가 왜 죽여요."
+          text: "다퉜냐고요?"
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "의녀가 포교 흉내를 내네. 내 가게 아이를 내가 왜 죽여요."
       - say:
           char: 여금.wary
           with: [서연]
@@ -157,7 +185,7 @@ scenes:
       - clearSticker: { id: c2_slip, leave: fadeOut }
       - say:
           channel: narration
-          text: "그때 담 너머에서 종이 울렸다. 불이야. 혜민서 옆 박씨 약방 쪽이었다."
+          text: "그때 담 너머에서 종이 울렸다. 불이야, 하는 소리는 혜민서 옆 박씨 약방 쪽이었다."
       - effect: { name: embers, wait: true }
       - bg: { id: apothecary_burnt, transition: fade, duration: 700 }
       - music: pressure
@@ -170,11 +198,11 @@ scenes:
       - say:
           channel: action
           with: [막쇠]
-          text: "연기 사이로 쓰러진 사람의 발이 보인다. 그 옆에 쇠 장식 궤짝이 하나. 대들보가 신음한다."
+          text: "연기 사이로 쓰러진 사람의 발. 그 옆에 쇠 장식 궤짝이 하나 있고, 대들보가 신음한다."
       - say:
           channel: thought
           with: []
-          text: "영감은 움직이지 않는다. 막쇠는 벌써 영감을 업으려고 들어간다. 궤짝은 장부다."
+          text: "영감은 움직이지 않는다. 막쇠는 벌써 업으려고 들어갔다."
       - say:
           char: 막쇠
           with: [서연]
@@ -182,11 +210,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "문틀이 뜨겁다. 서까래에서 흙이 떨어진다. 영감 발밑으로 불이 번지는 쪽은 궤짝 쪽이다."
+          text: "문틀이 뜨겁다. 서까래에서 흙이 떨어지고, 불은 궤짝 쪽으로 번지고 있다."
       - say:
           channel: thought
           with: []
-          text: "둘 다 못 끌어낸다. 숨을 쉬었으면 막쇠가 업고 나온다. 안 쉬었으면 궤짝이 남는 전부다."
+          text: "둘 다는 못 끌어낸다. 궤짝은 장부다."
       - choice:
           key: c2_rescue
           prompt: "대들보가 내려앉는다. 무엇을 먼저 잡을까?"
@@ -217,7 +245,11 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "궤짝 건졌으면 됐수. 영감은… 어차피 늦었소. 숨을 안 쉬었어."
+          text: "궤짝 건졌으면 됐수."
+      - say:
+          char: 막쇠.hurt
+          with: [서연]
+          text: "영감은… 어차피 늦었소. 숨을 안 쉬었어."
       - goto: c2_after_fire
 
   c2_pull_makssoe:
@@ -226,7 +258,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "허리띠를 잡아당긴다. 막쇠가 영감을 업은 채 넘어진다. 그 자리에 대들보가 떨어진다."
+          text: "허리띠를 잡아당긴다. 막쇠가 영감을 업은 채 넘어진 자리로 대들보가 떨어진다."
       - say:
           char: 막쇠
           with: [서연]
@@ -250,7 +282,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "그을린 장부 한 장. '청심원 삼백 환 — 한'. 그 뒤는 타서 없다."
+          text: "그을린 장부 한 장. '청심원 삼백 환 — 한', 그 뒤는 타서 없다."
       - say:
           channel: thought
           with: []
@@ -266,7 +298,7 @@ scenes:
       - say:
           char: 서연.resolve
           with: [도원]
-          text: "쓰겠습니다. 불이 사람을 죽였는지, 죽은 사람이 불에 탔는지는 몸이 압니다."
+          text: "쓰겠습니다. 불이 먼저였는지는 콧속을 보면 압니다."
       - bg: { id: sihyeongdo, transition: dissolve, duration: 620 }
       - music: inquest
       - goto: c2_examine
@@ -306,7 +338,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "젖은 종이 심지를 콧속에 넣었다 뺀다. 하얗다. 그을음이 묻어나지 않는다."
+          text: "젖은 종이 심지를 콧속에 넣었다 뺀다. 하얗다."
       - say:
           char: 막쇠
           with: [서연]
@@ -323,7 +355,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "두 손이 가지런하다. 불을 막으려 한 화상도, 문을 두드린 멍도 없다."
+          text: "두 손이 가지런하다. 화상도, 문을 두드린 멍도 없다."
       - say:
           channel: thought
           text: "불을 끄려다 죽은 사람의 손이 이렇게 얌전할 리 없다."
@@ -339,11 +371,23 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "산 사람을 그으면 살이 말려들고 피가 엉겨. 이건 죽은 담에 그은 거요. 강도 흉내."
+          text: "산 사람을 그으면 살이 말려들고 피가 엉겨요."
       - say:
           char: 막쇠
           with: [서연]
-          text: "종이 대고 먹 문질러 떠 둡시다. 칼날 폭이 나와요."
+          text: "이건 죽은 담에 그은 거요. 강도 흉내."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "가만. 종이 대고 먹 문질러 떠 둡시다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "칼날 폭이 나와요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "네. 해요."
       - sticker:
           id: c2_rubbing
           image: wound_rubbing_sticker
@@ -355,7 +399,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "먹이 묻지 않은 하얀 금 하나. 오른쪽 위에서 왼쪽 아래로. 폭은 딱 한 치."
+          text: "먹이 묻지 않은 하얀 금 하나. 오른쪽 위에서 왼쪽 아래로 그었고, 폭은 딱 한 치다."
       - get: wound_rubbing
       - clearSticker: { id: c2_rubbing, leave: fadeOut }
       - set: { c3_wound: true }
@@ -375,7 +419,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "은비녀를 혀 밑에 넣고 한참 뒤 뺀다. 은빛 그대로다. 검게 변하지 않았다."
+          text: "은비녀를 혀 밑에 넣고 한참 뒤 뺀다. 은빛 그대로다."
       - get: silver_pin
       - clearSticker: { id: c2_pin, leave: fadeOut }
       - char: { id: 서연, position: left }
@@ -387,7 +431,15 @@ scenes:
       - say:
           char: 막쇠
           with: [서연, 도원]
-          text: "은비녀가 다 아는 건 아니유. 은을 안 건드리는 독도 있어요."
+          text: "은비녀가 다 아는 건 아니유."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "은을 안 건드리는 독도 있어요."
+      - say:
+          char: 도원
+          with: [막쇠]
+          text: "…허."
       - choice:
           key: c2_poison
           prompt: "은비녀는 깨끗하다. 어떻게 할까?"
@@ -425,20 +477,20 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "찬밥 한 덩이를 망자 입에 물렸다가 두 식경 뒤 꺼낸다. 마당의 닭에게 던진다."
+          text: "찬밥 한 덩이를 망자 입에 물렸다가 두 식경 뒤 꺼내, 마당의 닭에게 던진다."
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "이 방법은 옛 어른들이 쓰던 거요. 책에 진짜 있수?"
+          text: "이거 옛 어른들이 쓰던 건데. 책에 진짜 있수?"
       - say:
           char: 서연
           with: [막쇠]
-          text: "있어요. 서른아홉 장. 닭 그림까지 있어요."
+          text: "서른아홉 장에요. 닭 그림까지 있습니다."
       - wait: 900
       - effect: { name: darken, wait: true }
       - say:
           channel: narration
-          text: "반 식경도 안 되어 닭이 비틀거렸다. 날개를 한 번 퍼덕이고, 쓰러졌다."
+          text: "반 식경도 안 되어 닭이 비틀거렸다. 날개를 한 번 퍼덕이고 쓰러졌다."
       - sticker:
           id: c2_note
           image: poison_note_sticker
@@ -461,7 +513,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연]
-          text: "삼백이 같다고 같은 삼백이라 할 수는 없소."
+          text: "수가 같다고 같은 물건이라 할 수는 없소."
       - say:
           char: 서연
           with: [도원]
@@ -477,7 +529,11 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "농이오. 내가 물지. 사십 년 만에 책에 있는 걸 해 봤으니 그 값은 내가 내요."
+          text: "농이오. 내가 물지."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "사십 년 만에 책에 있는 걸 해 봤으니. 그 값은 내가 내요."
       - goto: c2_arrest
 
   c2_arrest:
@@ -493,7 +549,11 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "포도청이 방화 살인범을 잡았다 하오. 짐꾼 덕구. 낫을 들고 약방 뒤에 있었다고."
+          text: "포도청이 방화 살인범을 잡았다 하오."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "짐꾼 덕구. 낫을 들고 약방 뒤에 있었다고."
       - say:
           char: 도원.troubled
           with: [서연]
@@ -502,6 +562,10 @@ scenes:
           char: 서연.shock
           with: [도원]
           text: "열 대요? 오늘 잡혀서 오늘 자복입니까."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "열 대에요?"
       - say:
           char: 도원.troubled
           with: [서연]
@@ -523,7 +587,12 @@ scenes:
           char: 막쇠
           when: { var: makssoe_hurt, op: eq, value: true }
           with: [서연, 도원]
-          text: "다리만 성했으면 포도청 담이라도 넘을 텐데. 아가씨, 내 몫까지 가요."
+          text: "다리만 성했으면 포도청 담이라도 넘을 텐데."
+      - say:
+          char: 막쇠
+          when: { var: makssoe_hurt, op: eq, value: true }
+          with: [서연, 도원]
+          text: "아가씨, 내 몫까지 가요."
       - say:
           char: 막쇠
           when: { var: makssoe_hurt, op: eq, value: false }

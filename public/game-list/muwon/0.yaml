@@ -25,7 +25,11 @@ scenes:
       - say:
           channel: thought
           with: [서연]
-          text: "{{player_name}}. 먹이 마르기도 전에 문이 열렸다. 우물에 사람이 빠졌다고."
+          text: "{{player_name}}."
+      - say:
+          channel: thought
+          with: [서연]
+          text: "먹이 마르기도 전에 문이 열렸다. 우물에 사람이 빠졌다고."
   night_call:
     title: "혼례 전날 밤"
     actions:
@@ -38,7 +42,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "등불이 우물 돌 위에서 흔들린다. 거적 아래로 젖은 치맛자락이 삐져나와 있다."
+          text: "등불이 우물 돌 위에서 흔들리고, 거적 아래로 젖은 치맛자락이 삐져나와 있다."
       - say:
           channel: thought
           with: []
@@ -48,44 +52,92 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "거적은 내가 걷소. 오작인 막쇠요. 아가씨가 혜민서에서 왔다는 의녀유?"
-      - say:
-          char: 서연
-          with: [막쇠]
-          text: "네. 의녀 {{player_name|이라}} 합니다. 여자 시신이라 저를 불렀어요."
+          text: "아이고. 거적은 내가 걷소."
       - say:
           char: 막쇠
           with: [서연]
-          text: "몇이오? 열일곱쯤 됐나. 토하지 말고, 손은 내가 시키는 데만 대요."
+          text: "오작인 막쇠요. …혜민서에서 왔다는 그 의녀유?"
       - say:
           char: 서연
           with: [막쇠]
-          text: "열여덟이에요. 토는 안 합니다. 그리고 이건 읽고 왔어요."
+          text: "네. 의녀 {{player_name|이라}} 합니다."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "여자 시신이라 저를 부르셨다고 들었습니다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "몇이오. 열일곱쯤 됐나."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "토하지 말고."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "손은 내가 시키는 데만 대요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "열여덟입니다."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "토는 안 할 거예요. 그리고 이건 읽고 왔습니다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "뭐요?"
       - say:
           channel: action
           with: []
-          text: "품에서 책을 꺼낸다. 한문 옆에 한글이 빼곡한 『무원록 언해』. 막쇠가 눈을 가늘게 뜬다."
+          text: "품에서 책을 꺼낸다. 한문 옆에 한글이 빼곡한 『무원록 언해』."
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "그 책이 한글로 나왔다더니 진짜네. 나 같은 놈은 그림만 봤는데."
+          text: "허. 그게 한글로 나왔다더니 진짜네."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "난 사십 년을 그림만 봤는데."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "쯧."
       - char: { id: 도원, position: center }
       - say:
           char: 도원.stern
           with: [서연, 막쇠]
-          text: "한성부 판관 김도원이오. 마을 사람들 말로는 신부가 혼례가 겁나 몸을 던졌다더군."
+          text: "한성부 판관 김도원이오."
+      - say:
+          char: 도원.stern
+          with: [서연, 막쇠]
+          text: "마을에서는 신부가 혼례가 겁나 몸을 던졌다더군."
       - say:
           char: 도원.stern
           with: [서연]
-          text: "오늘 밤 안에 초검을 마치고 시장을 올리겠소. 의녀는 여자 몸만 확인해 주면 되오."
+          text: "오늘 밤 안에 초검을 마치고 시장을 올리겠소."
+      - say:
+          char: 도원.stern
+          with: [서연]
+          text: "의녀는 여자 몸만 확인해 주시오."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "…네."
       - say:
           channel: thought
           with: [도원]
-          text: "'확인만'. 그 말은 이미 결론을 써 놓았다는 뜻이다."
+          text: "확인만."
       - say:
           char: 서연
           with: [도원, 막쇠]
-          text: "나리. 몸을 먼저 보고 쓰겠습니다. 머리부터 발끝까지요."
+          text: "나리."
+      - say:
+          char: 서연
+          with: [도원, 막쇠]
+          text: "몸을 먼저 보고 쓰겠습니다. 머리부터 발끝까지요."
       - say:
           channel: action
           with: []
@@ -105,7 +157,15 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "물에서 건진 송장은 세 군데부터 봐요. 입이랑 코, 손톱, 목."
+          text: "자, 봐요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "물에서 건진 송장은 세 군데부터 봐요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "입이랑 코, 손톱, 목."
       - goto: c1_examine
 
   c1_examine:
@@ -114,7 +174,7 @@ scenes:
       - choice:
           key: c1_examine
           presentation: explore
-          prompt: "분이. 열아홉. 어디부터 볼까?"
+          prompt: "열아홉 살 분이. 어디부터 볼까?"
           with: []
           camera: wide
           options:
@@ -143,15 +203,23 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "입술을 벌리고 콧구멍을 들여다본다. 물기뿐이다. 거품 한 점 없다."
+          text: "입술을 벌린다. 콧구멍 안은 물기뿐이고, 거품은 한 점도 없다."
       - say:
           char: 막쇠
           with: [서연]
-          text: "산 채로 빠지면 숨을 들이켜. 그럼 입이랑 코에 흰 거품이 몽글몽글 올라와요."
+          text: "산 채로 빠지면 숨을 들이켜요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그럼 입이고 코고 흰 거품이 몽글몽글 올라와."
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "책에도 그렇게 적혀 있어요. 거품이 없으면, 물에 들어가기 전에 숨이 멎었다."
+          text: "책에도 그렇게 적혀 있어요."
+      - say:
+          char: 서연.think
+          with: [막쇠]
+          text: "거품이 없으면, 물에 들어가기 전에 숨이 멎었다."
       - set: { c1_mouth: true }
       - goto: c1_examine
 
@@ -172,11 +240,15 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "할퀸 거요. 누구 살을 긁었으면, 그놈 손등이나 팔에 자국이 남았을 거고."
+          text: "어. 할퀸 거요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "살을 긁었으면 그놈 손등이나 팔에 자국이 남았을 거고."
       - say:
           channel: thought
           with: []
-          text: "물에서 몇 시진을 있었는데 실이 안 빠졌다. 그만큼 세게 움켜쥐었다."
+          text: "몇 시진을 물에 있었는데 실이 안 빠졌다."
       - get: blue_thread
       - clearSticker: { id: c1_thread, leave: fadeOut }
       - set: { c1_nails: true }
@@ -187,7 +259,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "목을 살핀다. 희다. 물에 불은 살결 말고는 아무 자국도 없다."
+          text: "목을 살핀다. 희고, 물에 불은 살결 말고는 아무 자국도 없다."
       - say:
           channel: thought
           with: []
@@ -199,7 +271,11 @@ scenes:
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "송장 닦을 술을 달라면 주모가 기겁하겠구먼. 다녀오리다."
+          text: "송장 닦을 술을 달라면 주모가 기겁하겠구먼."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "에이. 다녀오리다."
       - say:
           channel: action
           with: []
@@ -209,7 +285,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "천을 걷는다. 목 양쪽에 검붉은 자국 네 개가 떠올라 있다. 손가락 모양이다."
+          text: "천을 걷는다. 목 양쪽에 검붉은 자국 네 개가 손가락 모양으로 떠올라 있다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "허."
       - say:
           char: 막쇠
           with: [서연]
@@ -228,7 +308,11 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연]
-          text: "다 보았소? 그럼 말해 보시오. 이 여인은 어찌 죽었소."
+          text: "다 보았소?"
+      - say:
+          char: 도원.stern
+          with: [서연]
+          text: "말해 보시오. 이 여인은 어찌 죽었소."
       - choice:
           key: c1_cause
           prompt: "분이의 죽음을 시장에 어떻게 적을까?"
@@ -270,11 +354,19 @@ scenes:
       - say:
           char: 서연.resolve
           with: [도원]
-          text: "입과 코에 거품이 없습니다. 목에는 손자국이 있고요. 죽인 뒤 던졌습니다."
+          text: "입과 코에 거품이 없고, 목에는 손자국이 있습니다. 죽인 뒤에 던졌습니다."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "…허."
       - say:
           char: 도원.troubled
           with: [서연]
           text: "…자진으로 올리면 오늘 밤 일이 끝났을 텐데."
+      - say:
+          char: 도원
+          with: [서연]
+          text: "좋소."
       - say:
           char: 도원
           with: [서연]
@@ -289,18 +381,26 @@ scenes:
       - say:
           char: 강치수.angry
           with: [서연, 도원]
-          text: "포도청 포교 강치수요. 범인은 이미 잡았소. 죽은 년 오라비요."
+          text: "포도청 포교 강치수요."
+      - say:
+          char: 강치수.angry
+          with: [서연, 도원]
+          text: "범인은 잡았소. 죽은 년 오라비요."
       - say:
           char: 강치수
           with: [서연, 도원]
-          text: "노름빚 때문에 혼수 비단을 팔자 했다가 저녁에 대판 싸웠다지. 동네가 다 들었소."
+          text: "노름빚 때문에 혼수 비단을 팔자 했다가 저녁에 대판 싸웠다지."
+      - say:
+          char: 강치수
+          with: [서연, 도원]
+          text: "동네가 다 들었소."
       - say:
           channel: narration
-          text: "포졸 둘이 사내 하나를 끌고 온다. 짚신 한 짝이 벗겨져 있다. 사내는 소매로 눈가를 문지른다."
+          text: "포졸 둘이 사내 하나를 끌고 온다. 짚신 한 짝이 벗겨진 채, 사내는 소매로 눈가를 문지르고 있다."
       - say:
           channel: thought
           with: [강치수]
-          text: "소매가 걷힌 팔뚝이 하얗다. 손등도 깨끗하다. 긁힌 자국이 하나도 없다."
+          text: "소매가 걷힌 팔뚝이 하얗다. 손등도 긁힌 자국 하나 없이 깨끗하다."
       - say:
           char: 강치수.angry
           with: [서연, 도원]
@@ -346,15 +446,23 @@ scenes:
       - say:
           char: 서연
           with: [강치수, 도원]
-          text: "포교 나리. 저 사람 손을 앞으로 내밀게 해 주세요."
+          text: "포교 나리."
+      - say:
+          char: 서연
+          with: [강치수, 도원]
+          text: "저 사람 손을 앞으로 내밀게 해 주세요."
       - say:
           channel: action
           with: [강치수]
-          text: "사내가 떨리는 손을 내민다. 손등, 손목, 팔뚝까지. 생채기 하나 없다."
+          text: "사내가 떨리는 손을 내민다. 손등, 손목, 팔뚝까지 생채기 하나 없다."
       - say:
           char: 서연.resolve
           with: [강치수, 도원]
           text: "분이는 손톱이 부러질 만큼 범인을 할퀴었습니다. 이 손은 아닙니다."
+      - say:
+          char: 강치수
+          with: [서연]
+          text: "…뭐."
       - say:
           char: 강치수.angry
           with: [서연, 도원]
@@ -362,7 +470,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 강치수]
-          text: "가르친 게 아니라 보여 준 것이오. 포교. 오늘은 풀어 주시오."
+          text: "보여 준 것이오. 포교, 오늘은 풀어 주시오."
       - set: { c1_brother: true }
       - goto: c1_follow_thread
 
@@ -373,7 +481,11 @@ scenes:
       - say:
           char: 강치수.angry
           with: [서연, 도원]
-          text: "좋소. 판관 나리 고집대로 하시오. 사흘 안에 범인 못 내놓으면 이놈 다시 데려가오."
+          text: "좋소. 나리 고집대로 하시오."
+      - say:
+          char: 강치수.angry
+          with: [서연, 도원]
+          text: "사흘이오. 그 안에 범인 못 내놓으면 이놈 다시 데려가오."
       - sticker:
           id: c1_thread_end
           image: thread_sticker
@@ -386,11 +498,19 @@ scenes:
       - say:
           char: 막쇠
           with: [서연, 도원]
-          text: "그 실 좀 봅시다. …이 남빛은 아무나 못 내. 쪽을 세 번 넘게 먹인 감청이오."
+          text: "가만. 그 실 좀 봅시다."
       - say:
           char: 막쇠
           with: [서연, 도원]
-          text: "육의전 비단전. 그중에서도 여금이네 가게만 이 색을 팔아요."
+          text: "…이 남빛은 아무나 못 내요. 쪽을 세 번 넘게 먹인 감청이오."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "육의전 비단전이오."
+      - say:
+          char: 막쇠
+          with: [서연, 도원]
+          text: "그중에서도 여금이네 가게만 이 색을 팔아요."
       - say:
           char: 도원
           with: [서연, 막쇠]
