@@ -73,6 +73,7 @@ scenes:
           char: 지영
           with: []
           text: "확실하지도 않은 거 단톡에 쓰지 마"
+      - wait: 600
       - say:
           channel: message
           side: them

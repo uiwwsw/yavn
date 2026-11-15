@@ -20,10 +20,12 @@ scenes:
           channel: system
           with: []
           text: "레플라 REPLA — 지금 사는 도시를 하나 더. 거리도, 가게도, 사람도 그대로입니다. 귀 뒤에 밴드를 붙이고 앉으면 바로 그곳입니다."
+          autoAdvance: 3484
       - say:
           channel: system
           with: []
           text: "어제 거기 둔 물건은 오늘도 거기 있습니다. · 라이트 월 39,000원 · 지금 접속 중 1,104,331명"
+          autoAdvance: 2974
       - say:
           channel: system
           with: []
@@ -136,6 +138,7 @@ scenes:
           channel: system
           with: []
           text: "레플라 — 오늘을 한 번 더. 지금 가입하면 첫 달 무료 · 프리미엄 월 129,000원 · 무제한 월 219,000원"
+          autoAdvance: 3144
       - char: { id: 해수, position: left }
       - char: { id: 경준, position: right }
       - say:
@@ -362,6 +365,7 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 027번 고객님, 고객센터로 오세요."
+          wait: 700
       - char: { id: 해수, position: left }
       - char: { id: 지영, position: center }
       - char: { id: 광철, position: right }
@@ -500,6 +504,7 @@ scenes:
           char: 광철.shout
           with: [해수]
           text: "어렵다는 게 된다는 거야, 안 된다는 거야? 말을 똑바로 해! 몇 년째 거기 앉아 있으면서 아직도 말을 그따위로 해?"
+          wait: 800
       - say:
           char: 광철
           with: [해수]
@@ -553,11 +558,13 @@ scenes:
           motion: stomp
           with: [해수]
           text: "내가 지금 소리 질렀어? 이게 소리 지른 거야? 소리 지르는 게 뭔지 보여 줘?"
+          wait: 800
       - say:
           char: 광철
           motion: lean_in
           with: [해수]
           text: "이름 뭐야. …정해수. 기억해 둔다."
+      - wait: 600
       - say:
           char: 해수
           motion: bow
@@ -576,6 +583,7 @@ scenes:
           char: 광철
           with: [해수]
           text: "…봉지 하나 줘. 큰 걸로."
+      - wait: 600
       - say:
           char: 해수.service
           with: [광철]

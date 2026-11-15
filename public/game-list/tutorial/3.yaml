@@ -347,6 +347,7 @@ scenes:
           motion: sway
           with: [해수]
           text: "…그걸 왜 말해요."
+      - wait: 600
       - say:
           char: 해수
           with: [태민]
