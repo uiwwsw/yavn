@@ -33,6 +33,22 @@ scenes:
 `,
 };
 
+/** 작가가 둔 멈춤이 들어간 장. 액션 wait과 say.wait 둘 다 있다. */
+const pacedDocuments: Record<string, string> = {
+  'config.yaml': 'title: Paced\nversion: "1"\ntextSpeed: 30\nautoSave: true\nclickToInstant: true\n',
+  '0.yaml': `script: [{scene: paced}]
+scenes:
+  paced:
+    actions:
+      - say: {text: Before}
+      - wait: 4000
+      - say: {text: After the gap}
+      - say: {text: Held, wait: 4000}
+      - say: {text: Last}
+      - gameOver: {title: Paced}
+`,
+};
+
 async function settle<T>(value: Promise<T> | T, ms = 2500): Promise<T> {
   await vi.advanceTimersByTimeAsync(ms);
   return value;
@@ -61,8 +77,11 @@ beforeEach(() => {
   vi.stubGlobal('cancelAnimationFrame', (timer: number) => clearTimeout(timer));
   vi.stubGlobal('Audio', class { volume = 0; play() { return Promise.resolve(); } pause() {} addEventListener() {} });
   vi.stubGlobal('fetch', vi.fn(async (url: string) => {
-    const path = new URL(url).pathname.split('/').pop()!;
-    return new Response(documents[path] ?? '', { status: documents[path] ? 200 : 404, headers: { 'content-type': 'text/yaml' } });
+    const { pathname } = new URL(url);
+    const file = pathname.split('/').pop()!;
+    const paced = pathname.includes('/paced/');
+    const body = (paced ? pacedDocuments[file] : documents[file]) ?? '';
+    return new Response(body, { status: body ? 200 : 404, headers: { 'content-type': 'text/yaml' } });
   }));
   setScenePresentationPaused(false);
 });
@@ -114,5 +133,29 @@ describe('skip read text', () => {
     await settle(Promise.resolve(), 1500);
     expect(text()).toBe('Right line');
     expect(useVNStore.getState().skipReadActive).toBe(false);
+  });
+});
+
+describe('skip read past authored pauses', () => {
+  it('does not stall on a wait action or a held line', async () => {
+    await settle(loadGameFromUrl('http://test/paced/'));
+    expect(text()).toBe('Before');
+
+    // 건너뛰기는 읽은 줄만 넘긴다. 한 번 읽어 둔다. 멈춤이 끝나기를 기다려야 넘어간다.
+    handleAdvance(true);
+    await settle(Promise.resolve(), 4600);
+    expect(text()).toBe('After the gap');
+    await advance();
+    expect(text()).toBe('Held');
+    await settle(Promise.resolve(), 4600);
+    await advance();
+    expect(text()).toBe('Last');
+
+    await settle(restartFromBeginning());
+    expect(text()).toBe('Before');
+    setSkipReadActive(true);
+    // 멈춤이 합쳐 8초인데, 그보다 짧은 시간 안에 끝까지 간다.
+    await settle(Promise.resolve(), 3000);
+    expect(useVNStore.getState().gameOver).toBeTruthy();
   });
 });

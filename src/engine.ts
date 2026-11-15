@@ -4935,6 +4935,12 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('wait' in action) {
+    // Skipping read lines never stalls on an authored pause, the same as body language above.
+    if (useVNStore.getState().skipReadActive) {
+      incrementCursor();
+      runToNextPause(loopGuard + 1);
+      return;
+    }
     useVNStore.getState().setBusy(true);
     waitTimer = storyClock.set(() => {
       useVNStore.getState().setBusy(false);
@@ -5095,7 +5101,8 @@ function runToNextPause(loopGuard = 0) {
       typingIntensity: 0,
       typingPulse: 0,
     });
-    if (sayWaitMs > 0) {
+    // A line held on screen is held for someone reading it. Skipping read lines goes past it.
+    if (sayWaitMs > 0 && !useVNStore.getState().skipReadActive) {
       useVNStore.getState().setBusy(true);
       waitTimer = storyClock.set(() => {
         waitTimer = undefined;
