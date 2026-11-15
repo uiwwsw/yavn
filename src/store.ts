@@ -10,6 +10,7 @@ import type {
   CharacterMotionState,
   PlaceCaption,
   ChoiceGateState,
+  MoodState,
   DialogueChannel,
   DialogueDelivery,
   GameData,
@@ -78,6 +79,7 @@ type VNState = {
   dialogUiHidden: boolean;
   skipReadActive: boolean;
   effect?: string;
+  mood?: MoodState;
   videoCutscene: VideoCutsceneState;
   inputGate: InputGateState;
   choiceGate: ChoiceGateState;
@@ -115,6 +117,7 @@ type VNState = {
   setDialogUiHidden: (hidden: boolean) => void;
   setSkipReadActive: (active: boolean) => void;
   setEffect: (effect?: string) => void;
+  setMood: (mood?: MoodState) => void;
   setVideoCutscene: (video: Partial<VideoCutsceneState>) => void;
   clearVideoCutscene: () => void;
   setInputGate: (inputGate: Partial<InputGateState>) => void;
@@ -219,6 +222,8 @@ const initialChoiceGate: ChoiceGateState = {
   forgivenOptionIndexes: [],
   timeoutMs: undefined,
   timeoutOptionIndex: undefined,
+  approachSteps: [],
+  mood: undefined,
   options: [],
 };
 
@@ -297,6 +302,7 @@ export const useVNStore = create<VNState>((set) => ({
       characterMotions: {},
       placeCaption: undefined,
       effect: undefined,
+      mood: undefined,
       busy: false,
       waitingInput: false,
       isFinished: false,
@@ -413,6 +419,7 @@ export const useVNStore = create<VNState>((set) => ({
   setDialogUiHidden: (dialogUiHidden) => set({ dialogUiHidden }),
   setSkipReadActive: (skipReadActive) => set({ skipReadActive }),
   setEffect: (effect) => set({ effect }),
+  setMood: (mood) => set({ mood }),
   setVideoCutscene: (video) => set((state) => ({ videoCutscene: { ...state.videoCutscene, ...video } })),
   clearVideoCutscene: () => set({ videoCutscene: initialVideoCutscene }),
   setInputGate: (inputGate) => set((state) => ({ inputGate: { ...state.inputGate, ...inputGate } })),
@@ -493,6 +500,7 @@ export const useVNStore = create<VNState>((set) => ({
       characterMotions: {},
       placeCaption: undefined,
       effect: undefined,
+      mood: undefined,
       busy: false,
       waitingInput: false,
       isFinished: false,

@@ -1704,6 +1704,7 @@ export default function App() {
     dialogUiHidden,
     skipReadActive,
     effect,
+    mood,
     error,
     busy,
     isFinished,
@@ -1751,6 +1752,7 @@ export default function App() {
     dialogUiHidden: state.dialogUiHidden,
     skipReadActive: state.skipReadActive,
     effect: state.effect,
+    mood: state.mood,
     error: state.error,
     busy: state.busy,
     isFinished: state.isFinished,
@@ -2723,6 +2725,7 @@ export default function App() {
   ]);
 
   const effectClass = effect ? `effect-${effect}` : '';
+  const moodClass = mood ? `mood mood-${mood.tone}` : '';
   const authorCredit = normalizeAuthorCredit(game?.meta.author);
   const hasAuthorCredit = Boolean(authorCredit.name) || authorCredit.contacts.length > 0;
   const gameLegalNotices = game?.meta.legalNotices ?? [];
@@ -4757,6 +4760,9 @@ export default function App() {
     spatial = false,
     displayNumber = index + 1,
   ) => {
+    const isApproach = choiceGate.presentation === 'approach' && Boolean(option.at);
+    const approachTotal = option.reveal?.length ?? 0;
+    const approachStep = isApproach ? (choiceGate.approachSteps[index] ?? 0) : 0;
     const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
     const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
     const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
@@ -4764,8 +4770,16 @@ export default function App() {
       <button
         key={`${choiceGate.key}-${option.text}-${index}`}
         type="button"
-        className={`choice-gate-option${spatial ? ' exploration-target' : ''}${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
-        style={spatial && option.at ? { '--target-x': `${option.at.x}%`, '--target-y': `${option.at.y}%` } as CSSProperties : undefined}
+        className={`choice-gate-option${spatial ? ' exploration-target' : ''}${isApproach ? ' approach-target' : ''}${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
+        data-approach-step={isApproach ? String(approachStep) : undefined}
+        data-approach-near={isApproach && approachStep >= approachTotal ? 'true' : undefined}
+        style={spatial && option.at
+          ? ({
+              '--target-x': `${option.at.x}%`,
+              '--target-y': `${option.at.y}%`,
+              ...(isApproach ? { '--approach-step': String(approachStep), '--approach-total': String(approachTotal || 1) } : {}),
+            } as CSSProperties)
+          : undefined}
         ref={(el) => {
           choiceOptionButtonRefs.current[index] = el;
         }}
@@ -4797,7 +4811,7 @@ export default function App() {
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
-            {String(displayNumber).padStart(2, '0')}
+            {isApproach ? '·'.repeat(Math.max(1, approachTotal - approachStep + 1)) : String(displayNumber).padStart(2, '0')}
           </span>
           <span className="choice-gate-option-text">{fillText(option.text)}</span>
           <GameIcon name="arrow" className="choice-gate-option-mark" />
@@ -4852,12 +4866,15 @@ export default function App() {
       }}
     >
       <div
-        className={`effect-viewport ${effectClass}`}
+        className={`effect-viewport ${effectClass} ${moodClass}`.trim()}
         data-attack-phase={attack?.phase}
         data-outcome-active={Boolean(gameOver) || isFinished ? 'true' : 'false'}
         data-effect-active={effect ? 'true' : 'false'}
         data-effect-level={playerExperience.effectLevel}
+        data-mood-level={mood ? String(mood.level) : undefined}
+        data-mood-tremor={mood?.tremor ? 'true' : undefined}
       >
+      {mood && <div className="mood-wash" aria-hidden="true" />}
       <div className="overlay" />
       <BackgroundTransition
         source={background}
@@ -4934,8 +4951,11 @@ export default function App() {
         </div>
       </div>
 
-      {choiceGate.active && choiceGate.presentation === 'explore' && !isDialogHidden && (
-        <div className="exploration-field" role="group" aria-label={t("주변 살펴보기")}
+      {choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && !isDialogHidden && (
+        <div
+          className={`exploration-field${choiceGate.presentation === 'approach' ? ' approach-field' : ''}`}
+          role="group"
+          aria-label={choiceGate.presentation === 'approach' ? t("다가갈 곳") : t("주변 살펴보기")}
           style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>
           {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
         </div>
@@ -5829,7 +5849,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && choiceGate.presentation === 'explore' ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -6001,18 +6021,21 @@ export default function App() {
                   </div>
                 </div>
               )}
+              {choiceGate.presentation === 'approach' && choiceGate.options.some(option => option.at) && (
+                <p className="choice-gate-explore-hint">{t("당기는 쪽을 눌러 다가가세요")}</p>
+              )}
               {choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
                 <p className="choice-gate-explore-hint">{t("화면에서 살펴볼 곳을 누르세요")}</p>
               )}
               <div
                 className="choice-gate-options"
-                data-choice-count={choiceGate.options.filter(option => choiceGate.presentation !== 'explore' || !option.at).length}
+                data-choice-count={choiceGate.options.filter(option => (choiceGate.presentation !== 'explore' && choiceGate.presentation !== 'approach') || !option.at).length}
               >
                 {/* Number listed options by their visible position: spatial targets and options
                     already explored are not in this list, so original indexes would skip numbers. */}
                 {choiceGate.options
                   .map((option, index) => ({ option, index }))
-                  .filter(({ option }) => !(choiceGate.presentation === 'explore' && option.at))
+                  .filter(({ option }) => !((choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && option.at))
                   .map(({ option, index }, position) => renderChoiceOption(option, index, false, position + 1))}
               </div>
             </div>

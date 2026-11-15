@@ -343,13 +343,22 @@ export type ChoiceOption = {
   gameOver?: GameOverDefinition;
   forgiveOnce?: boolean;
   forgiveMessage?: string;
+  /**
+   * `presentation: 'approach'` only. Each line is one step closer: clicking shows the
+   * next line and stays in the choice. The option commits on the click after the last.
+   */
+  reveal?: string[];
+  /** The mood this target raises as it is approached; falls back to the choice's own. */
+  mood?: string;
 };
 
 export type ChoiceAction = {
   choice: {
     key?: string;
-    presentation?: 'dialogue' | 'explore';
+    presentation?: 'dialogue' | 'explore' | 'approach';
     prompt: string;
+    /** `approach` only: the mood tone that builds while the player closes in. */
+    mood?: string;
     char?: string;
     with?: string[];
     framing?: string;
@@ -419,7 +428,28 @@ export type Action =
   | { emote: CharacterEmoteDirective }
   | { place: string }
   | { effect: string | ScreenEffectOptions }
+  | { mood: MoodDirective | 'off' }
   | { goto: string };
+
+/**
+ * A feeling the screen holds, instead of the single flash `effect` gives.
+ * It stays until the next `mood` or `mood: off`, so it can be raised a step at a
+ * time while a scene closes in on something.
+ */
+export type MoodDirective = {
+  /** CSS-safe name of the wash: the game styles `.mood-<tone>` itself. */
+  tone: string;
+  /** 1 (barely there) to 3 (the screen is that colour). Defaults to 1. */
+  level?: number;
+  /** A slow tremor under the whole stage. Off by default. */
+  tremor?: boolean;
+};
+
+export type MoodState = {
+  tone: string;
+  level: number;
+  tremor: boolean;
+};
 
 export type Scene = {
   title?: string;
@@ -674,7 +704,7 @@ export type InputGateState = {
 
 export type ChoiceGateState = {
   active: boolean;
-  presentation: 'dialogue' | 'explore';
+  presentation: 'dialogue' | 'explore' | 'approach';
   key: string;
   prompt: string;
   forgiveOnceDefault: boolean;
@@ -682,6 +712,10 @@ export type ChoiceGateState = {
   forgivenOptionIndexes: number[];
   timeoutMs?: number;
   timeoutOptionIndex?: number;
+  /** `approach` only: how many steps the player has taken toward each option. */
+  approachSteps: number[];
+  /** `approach` only: the tone raised while approaching, unless a target names its own. */
+  mood?: string;
   options: ChoiceOption[];
 };
 

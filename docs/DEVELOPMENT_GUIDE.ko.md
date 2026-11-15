@@ -776,6 +776,60 @@ assets:
 - 모든 프리셋은 기본 `full` 모드에서 짧은 중심 bloom과 가장자리 비네트를 공통 envelope로 합성해 타격점의 광량 변화를 분명하게 만듭니다. 플레이어가 `reduced`를 선택하면 흔들림·확대·흐림 진폭과 overlay 광량을 낮추고, `minimal`은 공간 변형/글리치/blur를 짧은 밝기 cue로 대체하며 overlay 광량을 30% 수준으로 낮춥니다. `effect.wait`의 엔진 시간은 설정과 무관하게 기존 프리셋 값을 유지하므로 플레이어 취향이 작성된 게임 흐름을 바꾸지 않습니다. YAML 프리셋 이름과 문법은 바뀌지 않습니다.
 - `prefers-reduced-motion` 환경에서는 비필수 모션을 비활성화합니다.
 
+### `mood` — 화면에 남는 감정
+
+`effect`는 한 번 번쩍이고 사라집니다. `mood`는 **다음 `mood`가 올 때까지 화면에 남습니다.**
+장면이 무언가에 가까워지는 동안 단계를 한 칸씩 올리는 데 씁니다.
+
+```yaml
+- mood: { tone: ember, level: 1 }
+- say: { channel: narration, text: "그쪽이 노랗다." }
+- mood: { tone: ember, level: 2, tremor: true }
+- say: { channel: narration, text: "노란 것 아래에 흰 것이 쌓여 있다." }
+- mood: { tone: ember, level: 3, tremor: true }
+- mood: off
+```
+
+- `tone`: CSS-safe 이름. `.mood-<tone>` 클래스로 색을 정합니다. 기본 제공은 `ember`(붉은),
+  `cold`(푸른), `pale`(흰), `void`(검은). 작품이 자기 색을 추가할 수 있습니다.
+- `level`: `1`~`3`. 올라갈수록 색이 짙어지고 가장자리가 좁혀 옵니다. 기본 `1`.
+- `tremor`: 배경과 캐릭터만 천천히 흔듭니다. HUD와 대사창은 흔들지 않습니다
+  (`.stage-content-frame`에 `transform`을 걸면 그 안의 고정 위치 요소가 기준을 잃습니다).
+- `mood: off`로 끕니다. 장면·챕터가 바뀌면 함께 풀립니다.
+- 색 레이어는 대사창(`z-index: 6`) **아래**인 `z-index: 5`에 깔려 글자를 덮지 않습니다.
+- 플레이어가 연출 세기를 `reduced`로 두면 색만 옅게 남기고 떨림을 끕니다. `minimal`이면 색도
+  끕니다. `prefers-reduced-motion`에서는 떨림과 전환을 모두 끕니다.
+
+### `presentation: approach` — 다가가는 선택지
+
+`explore`는 한 번 누르면 그 자리에서 끝납니다. `approach`는 **누를 때마다 한 걸음씩**
+가까워지고, `reveal`을 다 쓴 뒤의 한 번이 선택을 확정합니다.
+
+```yaml
+- choice:
+    key: star
+    presentation: approach
+    mood: ember              # 다가가는 동안 올라갈 톤
+    prompt: "어느 쪽이 당기는지만 안다."
+    options:
+      - text: "엿을 기다린 아이"
+        at: { x: 26, y: 63 }
+        reveal:
+          - "그쪽이 노랗다."
+          - "노란 것 아래에 흰 것이 쌓여 있다."
+          - "종이가 눅눅하다. 깨가 붙어 있다."
+        goto: go_1894
+```
+
+- `at`이 있는 선택지만 화면 위의 점으로 그려집니다. `explore`와 같은 좌표계입니다.
+- `reveal`은 최대 6줄. 누를 때마다 한 줄씩 내레이션 채널로 나오고 기록에도 남습니다.
+- 멀리 있는 점은 이름이 흐려서 안 읽힙니다. 가까워질수록 점이 커지고 글자가 또렷해집니다.
+- `mood`는 걸음마다 한 단계씩 오르고, 2단계부터 떨리기 시작합니다. 선택지별로 `mood`를
+  따로 줄 수도 있습니다.
+- 선택이 확정된 뒤에도 톤은 남아 있으므로, 넘어간 장면에서 `mood: off`로 풀어 줍니다.
+- 선택지에 `reveal`을 쓰려면 `presentation: approach`여야 하고, `approach`에는 `reveal`이
+  있는 선택지가 최소 하나 있어야 합니다. 스키마가 검사합니다.
+
 ```yaml
 - effect:
     name: impact

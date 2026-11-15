@@ -9,7 +9,7 @@ const engineSource = readFileSync(fileURLToPath(new URL('./engine.ts', import.me
 describe('screen effect overflow containment', () => {
   it('animates a clipped inner viewport instead of the document-sized app shell', () => {
     expect(appSource).toMatch(/className="app"/);
-    expect(appSource).toMatch(/className=\{`effect-viewport \$\{effectClass\}`\}/);
+    expect(appSource).toMatch(/className=\{`effect-viewport \$\{effectClass\} \$\{moodClass\}`\.trim\(\)\}/);
     expect(appSource).not.toMatch(/className=\{`app \$\{effectClass\}`\}/);
 
     expect(styles).toMatch(

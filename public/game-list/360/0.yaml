@@ -62,20 +62,33 @@ scenes:
     actions:
       - choice:
           key: star
-          presentation: explore
+          presentation: approach
+          mood: ember
           prompt: "누군지는 모르겠고, 어느 쪽이 당기는지만 안다."
           options:
             - text: "엿을 기다린 아이"
               at: { x: 26, y: 63 }
               when: { var: lived_1894, op: eq, value: false }
+              reveal:
+                - "그쪽이 노랗다."
+                - "노란 것 아래에 흰 것이 쌓여 있다. 됫박으로 퍼야 할 만큼."
+                - "종이가 눅눅하다. 깨가 붙어 있다."
               goto: go_1894
             - text: "부두에 두고 온 사람"
               at: { x: 73, y: 47 }
               when: { var: lived_1952, op: eq, value: false }
+              reveal:
+                - "그쪽에서 물 냄새가 난다."
+                - "줄이 서 있다. 줄 끝이 끊겨 있다."
+                - "한 사람이 등을 보이고 서 있다. 돌아보지 않는다."
               goto: go_1952
             - text: "새벽마다 오던 사람"
               at: { x: 46, y: 21 }
               when: { var: lived_1988, op: eq, value: false }
+              reveal:
+                - "그쪽이 희다. 형광등 같은 흼이다."
+                - "손이다. 뭔가를 하나씩 발라내고 있다."
+                - "가시를 한쪽에 모아 놓은 손이다. 아직 따뜻하다."
               goto: go_1988
             - text: "답장을 못 받은 사람"
               at: { x: 81, y: 71 }
@@ -83,6 +96,10 @@ scenes:
                 all:
                   - { var: lived_2026, op: eq, value: false }
                   - { var: lives_done, op: gte, value: 3 }
+              reveal:
+                - "그쪽만 깜박인다."
+                - "글자 한 줄이 떠 있고, 그 아래가 비어 있다."
+                - "커서가 깜박인다. 아무도 치지 않는다."
               goto: go_2026
 
   go_1894:
@@ -96,6 +113,7 @@ scenes:
       - say: { channel: narration, text: "당긴 쪽만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1894년 유월\n제물포" }
+      - mood: off
       - goto: yard
 
   go_1952:
@@ -109,6 +127,7 @@ scenes:
       - say: { channel: narration, text: "이름이 먼저 빠져나간다. 그다음이 얼굴이다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1952년 십이월\n부산" }
+      - mood: off
       - goto: /1.yaml
 
   go_1988:
@@ -122,6 +141,7 @@ scenes:
       - say: { channel: narration, text: "빠져나갈 것이 생각보다 적다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "1988년 구월\n서울" }
+      - mood: off
       - goto: /2.yaml
 
   go_2026:
@@ -135,6 +155,7 @@ scenes:
       - say: { channel: narration, text: "세 몫이 한꺼번에 빠져나간다. 오래 걸린다.", autoAdvance: 1800 }
       - effect: { name: flash, wait: true }
       - say: { channel: card, with: [], text: "2026년 삼월\n서울" }
+      - mood: off
       - goto: /3.yaml
 
   # 어느 어둠에서든 쥐지 않기로 하면 여기로 온다. 게임 오버가 아니다.

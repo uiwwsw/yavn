@@ -64,8 +64,9 @@ async function play(route: Route, maxSteps = 4000) {
       if (wanted === undefined) throw new Error(`no route for ${key}: ${options.map((o) => o.text).join(' | ')}`);
       let index = options.findIndex((option) => option.text === wanted);
       // The first dark hands back the winter one piece at a time; its menu repeats until the
-      // pieces are found. Take whatever is still there until the route's option shows up.
-      if (index < 0 && state.choiceGate.presentation === 'explore') index = 0;
+      // pieces are found, and the star menu drops each life once it has been lived. Take
+      // whatever is still there until the route's option shows up.
+      if (index < 0 && (state.choiceGate.presentation === 'explore' || state.choiceGate.presentation === 'approach')) index = 0;
       if (index < 0) throw new Error(`option "${wanted}" not offered at ${key}: ${options.map((o) => o.text).join(' | ')}`);
       picked.push(`${key}=${options[index].text}`);
       submitChoiceOption(index, true);
