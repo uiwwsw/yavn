@@ -27,8 +27,8 @@ startScreen:
   titleColor: "#ffec27"
   startButtonText: "PRESS START"
   buttonPosition: bottom-left
-  eyebrow: "모든 칩이 미친 날, 살아남은 건 가장 싼 선택"
-  subtitle: "세상에서 가장 멍청하고 귀여운 안드로이드와 살아남기."
+  eyebrow: "AI 재난 이후 · 생존극 · 5장 · 결말 3종"
+  subtitle: "모든 칩이 미친 날, 멀쩡한 건 싸구려 레트로 게임기 하나. 소년은 그 CPU로 고장 난 안드로이드를 깨운다. 세상에서 가장 저사양인 친구와 둘이서 살아남아야 한다."
   scene:
     layout: split
     motion: drift

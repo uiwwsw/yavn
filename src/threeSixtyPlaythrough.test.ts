@@ -127,14 +127,24 @@ describe('360 full playthrough', () => {
       l5_look: '돌아본다.',
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
-    // The first dark does not hand the winter over. It asks where it hurts, three times, and the
+    // The first dark opens with no feeling in it: the dark, then one thing surfacing with no name
+    // on it yet, and only then the field of points coming closer from behind.
+    expect(heard(shown, '끊임없는 공허함')).toBe(true);
+    expect(heard(shown, '무엇이 떠오르는지는 모른다. 떠오른다는 것만 안다')).toBe(true);
+    expect(heard(shown, '점이다. 하나가 아니다')).toBe(true);
+    expect(heard(shown, '가까워지고 있다')).toBe(true);
+    // The winter is dated before the player is asked to reach into it, so no era word is a riddle.
+    expect(heard(shown, '1809년')).toBe(true);
+    // The dark does not hand the winter over. It asks where it hurts, three times, and the
     // part nobody wants to reach for only opens once the other three are back.
-    expect(heard(shown, '여기가 어디냐고 묻고 싶은데, 물을 데가 없다')).toBe(true);
-    expect(heard(shown, '재가 식어 있었다')).toBe(true);
-    expect(heard(shown, '밑바닥에 좁쌀 두 줌')).toBe(true);
+    expect(heard(shown, '바닥에 재가 식어 있었다')).toBe(true);
+    expect(heard(shown, '좁쌀이 두 줌 남아 있었다')).toBe(true);
     expect(heard(shown, '얼음이 가운데만 얇았다')).toBe(true);
     expect(heard(shown, '이건 찾은 게 아니라 와 버린 것이다')).toBe(true);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
+    // Every later dark is the same approach one step nearer, and only the player can see that.
+    expect(heard(shown, '전에도 이랬던 것 같은데, 전이 언제인지는 모른다')).toBe(true);
+    expect(heard(shown, '다섯 번째다. 센 사람은 나뿐이다')).toBe(true);
     // Then thirty years of it come up at once, and only one of them can be carried.
     expect(heard(shown, '낼 데가 없는데 난다')).toBe(true);
     expect(heard(shown, '전해 들은 그 말을 믿지 말았어야 했다')).toBe(true);

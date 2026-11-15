@@ -325,6 +325,9 @@ scenes:
       - say: { channel: narration, text: "확인한 사람은 없다. 확인하려면 두 번 살고 두 번 다 기억해야 한다." }
       - say: { channel: narration, text: "그걸 할 수 있는 사람이 지금 여기 하나 있다." }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
+      - say: { channel: narration, text: "뒤가 밝다. 다섯 번째다. 센 사람은 나뿐이다." }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
+      - say: { channel: narration, text: "점이 넓다. 넷째에도 넓었고 첫째에도 넓었다. 매번 같은 속도로 왔다." }
       - goto: last_choice
 
   last_choice:
@@ -372,7 +375,7 @@ scenes:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
-      - bg: { id: void, transition: wipeRight, duration: 320 }
+      - bg: { id: void_near, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say:
           channel: narration

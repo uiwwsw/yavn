@@ -247,7 +247,10 @@ scenes:
           channel: narration
           when: { var: l3_went, op: eq, value: false }
           text: "약봉지에 찍힌 점 하나. 두 개가 될 수 있었다."
-      - bg: { id: void_light, transition: dissolve, duration: 2400 }
+      - say: { channel: narration, text: "뒤가 밝다. 어디서 본 것 같다. 어디인지는 모른다." }
+      - bg: { id: void_light, transition: dissolve, duration: 3200 }
+      - say: { channel: narration, text: "열일곱 해에는 이런 걸 본 적이 없다. 그런데 처음이 아니다." }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - goto: void_three_choice
 
   void_three_choice:
@@ -286,7 +289,7 @@ scenes:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
-      - bg: { id: void, transition: wipeLeft, duration: 320 }
+      - bg: { id: void_near, transition: wipeLeft, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "병원 이름이 빠져나간다. 누나 이름이 빠져나간다. 엄마 손 냄새가 마지막이다." }
       - effect: { name: flash, wait: true }
