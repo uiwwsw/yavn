@@ -21,6 +21,10 @@ scenes:
       - say: { char: 수경, with: [민재], text: "난 스물하나. 미대 2학년 하다 말았어. 두 번째 입원. 넌 처음이지? 티 나." }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
       - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져. 내가 줄넘기도 해 봤어." }
+      - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다." }
+      - say: { char: 민재, with: [수경], text: "…누나 웃는 거, 어디서 본 것 같아요." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "내가 누구 닮았어? 그런 소리 가끔 들어." }
+      - say: { channel: thought, with: [], text: "그런 게 아니다. 어디서 봤는지 말을 못 하겠다. 본 적이 없으니까." }
       - say:
           channel: thought
           with: []
@@ -84,6 +88,7 @@ scenes:
     actions:
       - wait: 1100
       - say: { channel: action, with: [엄마], text: "무, 까지 나왔다. 입이 닫힌다.", wait: 900, unskippable: true }
+      - say: { channel: action, with: [엄마], text: "다시 해 본다. 숨까지는 들어온다. 거기서 멎는다." }
       - say: { channel: thought, with: [], text: "엄마 얼굴을 살피고 있다. 이 말을 줘도 되는 사람인지. 엄마한테까지 이런다." }
       - goto: open_fine
 
@@ -146,6 +151,7 @@ scenes:
     actions:
       - wait: 1100
       - say: { channel: action, with: [수경], text: "손을 뻗었다. 손은 침대 난간을 잡고 있다. 목도리 묶인 자리다.", wait: 900, unskippable: true }
+      - say: { channel: action, with: [수경], text: "손가락을 하나씩 펴 본다. 펴진다. 놓으라고 하면 다시 쥔다." }
       - say: { channel: thought, with: [], text: "아침에 엄마가 왔는데 침대가 비어 있으면. 그 생각에서 한 발도 못 나간다." }
       - goto: out_stay
 
@@ -162,7 +168,7 @@ scenes:
       - say: { channel: action, with: [], text: "약봉지를 받아 베개 밑에 넣는다. 접힌 자리가 손에 걸린다." }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "…누나. 다리는 언제 걸어요." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "퇴원하면. 너도 와. 양쪽 끝에서 시작해서 가운데서 만나는 거야." }
-      - goto: october
+      - goto: consent
 
   out_go:
     actions:
@@ -185,6 +191,67 @@ scenes:
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
       - say: { channel: thought, with: [], text: "열한 시 사십 분. 여섯 시까지는 여섯 시간 이십 분 남았다. 계산을 하고 있다." }
       - bg: { id: ward, transition: fade, duration: 1000 }
+      - goto: consent
+
+  # 복도의 계산. 열일곱은 두 숫자를 각각은 셀 줄 알지만 같이 놓고는 못 센다.
+  consent:
+    title: "동의서"
+    actions:
+      - place: "시월 구일 · 6인실"
+      - move: { id: 수경, style: reset }
+      - char: { id: 민재, position: left }
+      - say: { channel: action, with: [], text: "병실 문이 조금 열려 있다. 복도에서 엄마 목소리가 난다. 작은데 잘 들린다." }
+      - say: { channel: record, with: [], text: "동종 골수이식 시행 동의서. 공여자 적합 검사 결과 동봉. 예상 비용 금 팔백만 원정." }
+      - say: { channel: action, with: [], text: "\"선생님, 팔백이면… 저희 가게를 넘겨도 사백입니다.\"" }
+      - say: { channel: action, with: [], text: "\"어머님, 성공률을 먼저 들으셔야 합니다. 이 경우 삼십에서 사십 퍼센트입니다.\"" }
+      - wait: 900
+      - say: { channel: action, with: [], text: "\"…안 하면요.\"" }
+      - say: { channel: action, with: [], text: "\"그건 제가 말씀드릴 수 없습니다. 다만 지금 수치로는 길게 보기 어렵습니다.\"" }
+      - wait: 1100
+      - say: { channel: thought, with: [], text: "삼십에서 사십이면 열에 서넛이다. 그건 내가 센다." }
+      - say: { channel: thought, with: [], text: "팔백에서 사백을 빼면 사백이다. 그것도 센다." }
+      - say: { channel: thought, with: [], text: "둘을 같이 놓고 세는 건 안 된다. 그건 배운 적이 없다." }
+      - char: { id: 엄마, position: right }
+      - say: { channel: action, with: [], text: "엄마가 들어온다. 앞치마를 벗고 왔다. 벗고 온 건 처음이다." }
+      - say: { char: 엄마, with: [민재], text: "민재야. 엄마가 선생님이랑 얘기했는데." }
+      - say: { char: 민재, with: [엄마], text: "…들었어요." }
+      - say: { char: 엄마, with: [민재], motion: droop, text: "문이 열려 있었니. 아이고." }
+      - say: { char: 민재, with: [엄마], text: "엄마. 가게는 넘기지 마요." }
+      - say: { char: 엄마, with: [민재], text: "그런 소리 하지 마. 그건 엄마가 정해." }
+      - wait: 900
+      - say: { channel: thought, with: [], text: "나 그거 안 받을래요, 라고 하려다 말았다." }
+      - say: { channel: thought, with: [], text: "이건 입이 안 떨어진 게 아니다. 엄마 얼굴을 봐서 내가 안 한 거다." }
+      - say: { channel: thought, with: [], text: "둘이 다르다는 걸 이제 안다." }
+      - goto: noticed
+
+  noticed:
+    actions:
+      - branch:
+          cases:
+            - when: { var: t_guard, op: eq, value: true }
+              goto: noticed_body
+            - when: { var: t_stay, op: eq, value: true }
+              goto: noticed_body
+          default: october
+
+  # 전환점. 여기서 처음으로 인물이 자기한테 적이 있다는 걸 안다.
+  noticed_body:
+    actions:
+      - place: "같은 날 · 새벽 두 시"
+      - say: { channel: thought, with: [], text: "잠이 안 와서 그걸 생각한다." }
+      - say: { channel: thought, with: [], text: "하려고 했다. 분명히 하려고 했는데 안 됐다." }
+      - say: { channel: action, with: [], text: "오른손을 들어 본다. 올라간다. 내린다. 또 올라간다." }
+      - say: { channel: thought, with: [], text: "지금은 된다. 그때는 안 됐다." }
+      - wait: 1100
+      - say: { channel: thought, with: [], text: "무서운 건 안 됐다는 게 아니다." }
+      - say: { channel: thought, with: [], text: "안 되는 쪽이 하필 내가 제일 하고 싶었던 쪽이라는 거다." }
+      - effect: { name: pulse, wait: true }
+      - say: { channel: thought, with: [], text: "누가 고르는 것 같다. 나 말고." }
+      - wait: 900
+      - say: { channel: thought, with: [], text: "이 얘기를 누구한테 하지." }
+      - say: { channel: thought, with: [], text: "엄마한테 하면 엄마가 운다. 선생님한테 하면 약이 하나 는다." }
+      - say: { channel: thought, with: [], text: "수경 누나한테 하면 믿어 줄 것 같다. 그게 제일 무섭다." }
+      - say: { channel: action, with: [], text: "아무한테도 안 했다. 열일곱이 할 수 있는 건 그 정도다." }
       - goto: october
 
   october:
@@ -232,6 +299,7 @@ scenes:
       - music: void
       - goto: void_three
 
+  # 세 번째 재판. 자각한 삶은 묻는 소리가 어디서 나는지 한 걸음 더 간다.
   void_three:
     title: "암흑"
     actions:
@@ -247,10 +315,51 @@ scenes:
           channel: narration
           when: { var: l3_went, op: eq, value: false }
           text: "약봉지에 찍힌 점 하나. 두 개가 될 수 있었다."
+      - wait: 700
+      - say: { channel: narration, text: "묻는 소리가 난다." }
+      - branch:
+          cases:
+            - when: { var: t_guard, op: eq, value: true }
+              goto: void_three_knew
+            - when: { var: t_stay, op: eq, value: true }
+              goto: void_three_knew
+          default: void_three_charges
+
+  void_three_knew:
+    actions:
+      - say: { channel: narration, text: "이 소리를 안다. 새벽 두 시에 천장 보면서 들은 것과 같다." }
+      - say: { channel: narration, text: "그때는 누가 고르는 것 같았다." }
+      - wait: 900
+      - say: { channel: narration, text: "지금 보니 고르는 쪽도 나다." }
+      - say: { channel: narration, text: "그러면 그때 못 하게 한 것도 나인가. 거기까지는 모르겠다." }
+      - goto: void_three_charges
+
+  void_three_charges:
+    actions:
+      - effect: { name: tilt, wait: true }
+      - say: { channel: narration, text: "엄마가 앞치마를 벗고 들어왔을 때 뭐라고든 했더라면." }
+      - say: { channel: narration, text: "가게는 넘기지 말라는 말 말고 다른 말을 했더라면." }
+      - say: { channel: narration, text: "삼십에서 사십이라는 숫자를 엄마랑 같이 세어 봤더라면." }
+      - say:
+          channel: narration
+          when: { var: l3_said, op: eq, value: false }
+          text: "무섭다고 한 번만 말했더라면. 한 번이면 됐을 것 같은데."
+      - say:
+          channel: narration
+          when: { var: l3_went, op: eq, value: false }
+          text: "그 밤에 잠바를 받았더라면. 점이 두 개였을 텐데."
+      - say:
+          channel: narration
+          when: { var: l3_went, op: eq, value: true }
+          text: "다리를 언제 걷느냐고 묻지 말걸. 누나는 그걸 계획이라고 했는데."
+      - wait: 900
+      - say: { channel: narration, text: "대답할 차례다. 열일곱 해는 금방 뒤진다. 그런데도 변명이 없다." }
+      - say: { channel: narration, text: "묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다." }
       - say: { channel: narration, text: "뒤가 밝다. 어디서 본 것 같다. 어디인지는 모른다." }
       - bg: { id: void_light, transition: dissolve, duration: 3200 }
       - say: { channel: narration, text: "열일곱 해에는 이런 걸 본 적이 없다. 그런데 처음이 아니다." }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
+      - say: { channel: narration, text: "끝내려면 하나를 쥐어야 한다. 쥐면 나머지는 놓는 것이다." }
       - goto: void_three_choice
 
   void_three_choice:

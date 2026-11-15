@@ -117,6 +117,14 @@ scenes:
           channel: record
           when: { var: l3_went, op: eq, value: false }
           text: "\"잠바를 받지 않았다. 창으로 다리 불빛만 봤다. 열한 시에 소등이었다.\""
+      - say:
+          channel: record
+          when: { var: t_guard, op: eq, value: true }
+          text: "\"하려고 했는데 입이 안 떨어졌다. 다시 해 봐도 숨까지만 들어왔다.\""
+      - say:
+          channel: record
+          when: { var: t_stay, op: eq, value: true }
+          text: "\"손을 뻗었는데 손은 난간을 잡고 있었다. 손가락을 펴도 다시 쥐었다.\""
       - say: { channel: narration, text: "열일곱 살 남자아이 목소리다. 6인실에서 녹음한 것처럼 울린다." }
       - say: { channel: narration, text: "셋이 서로 모르는 사이다. 1894년, 1952년, 1988년." }
       - say: { channel: narration, text: "셋 다 비린내를 말한다. 셋 다 몇 리, 몇 시, 몇 근을 말한다." }

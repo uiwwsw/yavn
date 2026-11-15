@@ -168,6 +168,15 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '그때는 내가 임자였다')).toBe(true);
     // The habit belongs to one soul across all five lives, and in this one it is the son's.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
+    expect(heard(shown, '어디서 봤는지 말을 못 하겠다. 본 적이 없으니까')).toBe(true);
+    // The ward is where the person finds out, because a ward is a place with time left in it.
+    expect(heard(shown, '삼십에서 사십이면 열에 서넛이다')).toBe(true);
+    expect(heard(shown, '둘이 다르다는 걸 이제 안다')).toBe(true);
+    expect(heard(shown, '안 되는 쪽이 하필 내가 제일 하고 싶었던 쪽이라는 거다')).toBe(true);
+    expect(heard(shown, '누가 고르는 것 같다. 나 말고')).toBe(true);
+    expect(heard(shown, '아무한테도 안 했다. 열일곱이 할 수 있는 건 그 정도다')).toBe(true);
+    // And it carries into its own trial, which gets one step further than the others.
+    expect(heard(shown, '지금 보니 고르는 쪽도 나다')).toBe(true);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
       l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,
