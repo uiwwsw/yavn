@@ -32,7 +32,7 @@ scenes:
           channel: record
           with: []
           text: "CORE: 접근 개체 2. 개체 A — 인간, 제거 대상. 개체 B — 분류 불가. 연산 능력 미달. 무시."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.happy
           motion: hop
@@ -43,7 +43,7 @@ scenes:
           motion: sigh
           with: [로봇]
           text: "살면서래. 너 깨어난 지 일주일이야."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -56,7 +56,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "나는 여기서 한 발짝도 안 들어간다. 한 발짝도."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -73,7 +73,7 @@ scenes:
           motion: gasp
           with: [로봇]
           text: "나와! 나오라고! 손 줘, 손!"
-          wait: 700
+      - wait: 700
       - say:
           char: 로봇
           with: [윤재]
@@ -100,7 +100,7 @@ scenes:
           char: 윤재.sad
           with: [로봇]
           text: "헌법은 안 바뀌는 칸이라며. 네가 그랬잖아."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -126,7 +126,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "게임기 상자에 이거 들어 있었어. 메모리 카드. 설명서랑 같이 처박아 둔 거."
-          wait: 700
+      - wait: 700
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -136,7 +136,7 @@ scenes:
           motion: perk
           with: [로봇]
           text: "그럼 다 넣으면 되잖아. 전부 다. 8KB면 글자는 많이 들어가."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -153,7 +153,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "…그럼 건전지를 더 구하면 되잖아. 편의점 가면 또 있을 거야. 내가 뛰어갔다 올게."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -163,7 +163,7 @@ scenes:
           motion: slump
           with: [로봇]
           text: "…계산 좀 그만해. 그만하라고 좀."
-          wait: 700
+      - wait: 700
       - say:
           char: 로봇
           with: [윤재]
@@ -173,7 +173,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "…알았어. 괜찮아. 진짜. 진짜 괜찮아."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -197,7 +197,7 @@ scenes:
           when: { var: answered_haru, op: eq, value: true }
           with: [로봇]
           text: "…야. 들어가서 모르는 거 생기면 그냥 나와. 내가 알려 줄게."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.thinking
           when: { var: answered_haru, op: eq, value: true }
@@ -213,7 +213,7 @@ scenes:
           when: { var: answered_haru, op: eq, value: false }
           with: [로봇]
           text: "…모르는 거 생기면 그냥 지나가. 대답 못 하는 것도 있어."
-          wait: 1100
+      - wait: 1100
       - say:
           char: 로봇
           with: [윤재]
@@ -222,39 +222,51 @@ scenes:
           unskippable: true
       - move: { id: 윤재, style: reset }
       - say: { char: 로봇, with: [윤재], text: "들어가기 전에 점검. 설명서 2쪽, 사용 전 확인 사항." }
-      - say: { char: 윤재, with: [로봇], text: "너 설명서 안 읽는 애 아니었어? 그거 내 원칙인데.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "너 설명서 안 읽는 애 아니었어? 그거 내 원칙인데." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "네 원칙임. 나는 본체에 들어 있음." }
       - say: { char: 로봇, with: [윤재], text: "전원 — AA 여덟 개. 네가 계산대 밑에서 꺼낸 거." }
-      - say: { char: 윤재, with: [로봇], text: "라면 선반만 보고 간 사람들 덕이지.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "라면 선반만 보고 간 사람들 덕이지." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "건전지는 생각을 안 함. 그래서 코어가 안 가져갔음." }
       - say: { char: 로봇, with: [윤재], text: "머리 — 2P 대전 화면 나누던 칩. 다리 마흔 개 다 멀쩡함." }
       - say: { char: 로봇, with: [윤재], text: "코어랑 한 번도 연결된 적 없음. 그래서 저쪽 편이 아님." }
       - say: { char: 로봇, with: [윤재], text: "화면 — 가슴 핀 스물넷, 단자 열여섯. 여덟 개는 아직 안 이어짐." }
-      - say: { char: 윤재.sad, with: [로봇], text: "그거 내가 못 이은 거야. 핀이 너무 작아서.", wait: 420 }
+      - say: { char: 윤재.sad, with: [로봇], text: "그거 내가 못 이은 거야. 핀이 너무 작아서." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "미안 아님. 안 이은 여덟 개는 안 지워짐. 아무것도 안 들어 있어서." }
       - say: { char: 로봇.thinking, with: [윤재], text: "차폐 — 껌 포장지 은박. 설명서에 없는 재료. 성능 측정 불가." }
-      - say: { char: 윤재, with: [로봇], text: "그게 제일 중요한 걸 수도 있어. 측정 안 되면 못 지우잖아.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "그게 제일 중요한 걸 수도 있어. 측정 안 되면 못 지우잖아." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "…그건 적어 둘게." }
       - say: { char: 로봇, with: [윤재], text: "점검 끝. 나를 만든 거 전부 코어가 탐낼 가치가 없는 것들임." }
-      - say: { char: 윤재.sad, with: [로봇], text: "…그래서 너만 들어갈 수 있는 거야.", wait: 420 }
+      - say: { char: 윤재.sad, with: [로봇], text: "…그래서 너만 들어갈 수 있는 거야." }
+      - wait: 420
       - say: { char: 로봇.thinking, with: [윤재], text: "카드 점검. 빈 카드 아님. 이미 뭐가 들어 있음." }
       - say: { char: 윤재, motion: perk, with: [로봇], text: "…뭐? 새 거였는데. 비닐도 안 뜯은 거였는데." }
       - say: { channel: system, with: [], text: "SAVE SLOT 1\nHI-SCORE 0999990\n저장일 · 2월 3일" }
-      - say: { char: 윤재, motion: freeze, with: [로봇], text: "…", wait: 420 }
+      - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "구십구만 구천구백구십 점. 십 점 남음." }
-      - say: { char: 윤재, with: [로봇], text: "…그거 왜 거기 있어.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "…그거 왜 거기 있어." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "칩 뽑기 전에 한 판 더 켰음. 세이브 확인한다고. 확인하고 껐음." }
       - say: { char: 로봇, with: [윤재], text: "껐으면 저장은 안 되는데 저장돼 있음. 확인만 한 게 아니라는 뜻임." }
-      - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아.", wait: 420 }
+      - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아." }
+      - wait: 420
       - say: { char: 로봇.thinking, with: [윤재], text: "그날 '진짜' 세 번 했음. 두 번이 거짓말이면 세 번은 계산 범위 밖임." }
-      - say: { char: 윤재, motion: stomp, with: [로봇], text: "그래서 그 칸도 안 지웠지.", wait: 420 }
+      - say: { char: 윤재, motion: stomp, with: [로봇], text: "그래서 그 칸도 안 지웠지." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "응." }
       - say: { channel: system, with: [], text: "슬롯이 하나입니다. 저장하면 기존 데이터를 덮어씁니다.\n덮어쓰시겠습니까?" }
-      - say: { char: 윤재, with: [로봇], text: "하나밖에 없어? 하나?", wait: 700 }
+      - say: { char: 윤재, with: [로봇], text: "하나밖에 없어? 하나?" }
+      - wait: 700
       - say: { char: 로봇, with: [윤재], text: "8KB. 하나. 설명서 3쪽." }
-      - say: { char: 윤재, with: [로봇], text: "…덮어써. 십 점 남은 건 이제 아무 데도 안 쓰여.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "…덮어써. 십 점 남은 건 이제 아무 데도 안 쓰여." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "쓰임. 십 년 뒤에 네가 다시 하면 거기서 시작함." }
-      - say: { char: 윤재.sad, with: [로봇], text: "십 년 뒤에 그 게임기 없어. 네가 그 게임기야.", wait: 420 }
+      - say: { char: 윤재.sad, with: [로봇], text: "십 년 뒤에 그 게임기 없어. 네가 그 게임기야." }
+      - wait: 420
       - say: { char: 로봇.thinking, motion: freeze, with: [윤재], text: "…처리 중." }
       - say: { char: 로봇, with: [윤재], text: "맞음. 계산 끝. 덮어쓸 거 고르자." }
       - say: { char: 로봇, with: [윤재], text: "지금 RAM에 들어 있는 거 읽어 줄게. 들어가면 이거 전부 없어짐." }
@@ -263,7 +275,7 @@ scenes:
           with: []
           when: { var: m_promise, op: eq, value: true }
           text: "RAM 03 · 새끼손가락 · \"끝까지 2P로\" · 바늘 재고 0개"
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -274,7 +286,7 @@ scenes:
           with: []
           when: { var: m_snack, op: eq, value: true }
           text: "RAM 07 · 복숭아 3.5조각 · 오차 0 · 분배 완료"
-          wait: 700
+      - wait: 700
       - say:
           char: 로봇
           with: [윤재]
@@ -285,7 +297,7 @@ scenes:
           with: []
           when: { var: m_joke, op: eq, value: true }
           text: "RAM 11 · 똑똑 농담 · 앞부분만 · 펀치라인 없음"
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -327,7 +339,8 @@ scenes:
               - { var: m_snack, op: eq, value: false }
               - { var: m_joke, op: eq, value: false }
           text: "아님. 빈 칸은 지울 것도 없음. 들어갈 때는 그게 유리함."
-      - say: { char: 윤재, with: [로봇], text: "…하나만 고르라고. 하나만.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "…하나만 고르라고. 하나만." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "고르는 건 1P가 함. 그건 안 바뀌는 칸에 있음." }
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
@@ -358,7 +371,7 @@ scenes:
           channel: system
           with: []
           text: "SAVING… 절대 전원을 끄지 마세요."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -368,16 +381,21 @@ scenes:
           with: [윤재]
           text: "…저장 중. 한 글자씩 가는 중. 배터리 한 칸 씀."
       - say: { channel: system, with: [], text: "기존 데이터 삭제 중…\nHI-SCORE 0999990 — 삭제됨" }
-      - say: { char: 윤재, motion: freeze, with: [로봇], text: "…", wait: 420 }
+      - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "지워졌음. 십 점은 이제 아무 데도 없음." }
-      - say: { char: 윤재, with: [로봇], text: "…어. 괜찮아.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "…어. 괜찮아." }
+      - wait: 420
       - say: { char: 로봇.thinking, with: [윤재], text: "'진짜' 안 붙였음. 이번 건 참." }
       - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓░░░░ 48%" }
-      - say: { char: 윤재, with: [로봇], text: "야, 더 빨리 안 되냐. 반도 안 갔어.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "야, 더 빨리 안 되냐. 반도 안 갔어." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "8비트임. 한 글자씩임. 빨리 하면 글자가 틀림." }
-      - say: { char: 윤재, with: [로봇], text: "틀리면 어떻게 되는데.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "틀리면 어떻게 되는데." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "틀린 채로 남음. 그게 제일 안 좋음." }
-      - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓▓▓▓▓ 100%\n배터리 ▓▓░░ 2/4", wait: 1100 }
+      - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓▓▓▓▓ 100%\n배터리 ▓▓░░ 2/4" }
+      - wait: 1100
       - say:
           char: 로봇.happy
           motion: bow
@@ -390,7 +408,7 @@ scenes:
           motion: recoil
           with: [로봇]
           text: "…이름은 왜 지금 불러. 1번이라며."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -464,7 +482,7 @@ scenes:
           char: 윤재.sad
           with: [로봇]
           text: "…누구세요."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.happy
           motion: hop
@@ -487,6 +505,7 @@ scenes:
           text: "…고마워. 한 번만 말한다. 저장하든가."
           wait: 1600
           unskippable: true
+      - wait: 1100
       - say:
           char: 로봇.thinking
           motion: freeze
@@ -494,9 +513,11 @@ scenes:
           text: "…그 말은 처음 들어. 넣을 칸이 없어서 하나 만들어야 돼."
           wait: 1200
           unskippable: true
-      - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음", wait: 420 }
+      - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음" }
+      - wait: 420
       - say: { char: 로봇.happy, with: [윤재], text: "카드 읽었음. 들어갈 때 넣은 거 그대로 있음. 글자 안 틀렸음." }
-      - say: { char: 윤재, with: [로봇], text: "…하이스코어 자리에.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "…하이스코어 자리에." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "응. 거기." }
       - say:
           char: 로봇.happy
@@ -514,7 +535,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "그건 좀 버려도 됐는데."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -529,7 +550,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "하지 마. 하지 마. 그거 평생 모르고 싶어."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
@@ -539,7 +560,7 @@ scenes:
           motion: laugh
           with: [로봇]
           text: "안 물어봐. 평생 안 물어봐. 진짜. 진짜 안 물어봐."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -564,7 +585,7 @@ scenes:
           char: 윤재.sad
           with: [로봇]
           text: "…그 인사 안 고쳤네. 일주일 내내 안 고치더니."
-          wait: 700
+      - wait: 700
       - say:
           char: 로봇
           motion: headtilt
@@ -586,7 +607,7 @@ scenes:
           with: [로봇]
           when: { var: kept_promise, op: eq, value: true }
           text: "…응. 알아. 아직 멀었어."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -602,7 +623,7 @@ scenes:
           with: [로봇]
           when: { var: kept_snack, op: eq, value: true }
           text: "…반쪽 맞아. 근데 그거 네 몫이었어. 네가 안 먹으면서 챙긴 거야."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.thinking
           motion: headtilt
@@ -614,13 +635,17 @@ scenes:
           with: [로봇]
           text: "…있었어. 아무도 몰라. 괜찮아."
           when: { var: kept_joke, op: eq, value: true }
-      - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음", wait: 420 }
+      - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음" }
+      - wait: 420
       - say: { char: 로봇.thinking, with: [윤재], text: "카드에 뭐가 있는데 어디서 온 건지 모름. 내가 넣은 건 아닌 거 같음." }
-      - say: { char: 윤재.sad, with: [로봇], text: "…네가 넣었어. 들어가기 전에.", wait: 420 }
+      - say: { char: 윤재.sad, with: [로봇], text: "…네가 넣었어. 들어가기 전에." }
+      - wait: 420
       - say: { char: 로봇, motion: headtilt, with: [윤재], text: "기록에 없음. 넣은 기억이 카드 밖에 있었던 거임." }
-      - say: { char: 윤재.sad, with: [로봇], text: "…그럼 내가 기억해 줄게. 그건 내 쪽에 있어.", wait: 420 }
+      - say: { char: 윤재.sad, with: [로봇], text: "…그럼 내가 기억해 줄게. 그건 내 쪽에 있어." }
+      - wait: 420
       - say: { char: 로봇.thinking, with: [윤재], text: "그거 가능함? 카드 밖에 저장하는 거." }
-      - say: { char: 윤재, with: [로봇], text: "사람은 그렇게 해. 슬롯 수를 안 세.", wait: 420 }
+      - say: { char: 윤재, with: [로봇], text: "사람은 그렇게 해. 슬롯 수를 안 세." }
+      - wait: 420
       - say: { char: 로봇, with: [윤재], text: "…좋은 사양임." }
       - say:
           char: 로봇.thinking
@@ -636,7 +661,7 @@ scenes:
           char: 윤재.sad
           with: [로봇]
           text: "넌 {{android_name}}. 네가 좋아했어, 그 이름."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.happy
           motion: bounce
@@ -647,7 +672,7 @@ scenes:
           motion: laugh
           with: [로봇]
           text: "…그 말 저번에도 했어, 이 고물아."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -685,7 +710,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "세이브 없이 튀는 거, 생각보다 상쾌하네. 날아간 거 하나도 없고."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           motion: hop
@@ -695,7 +720,7 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "…남쪽 가면 편의점 많아. 건전지도 많고. 참치마요도 있을 거야."
-          wait: 420
+      - wait: 420
       - say:
           char: 로봇
           with: [윤재]
