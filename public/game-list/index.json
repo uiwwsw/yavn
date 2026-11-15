@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-15T05:20:34.571Z",
+  "generatedAt": "2026-11-15T05:34:13.712Z",
   "games": [
     {
       "id": "360",
@@ -8,8 +8,8 @@
       "path": "/game-list/360/",
       "author": "uiwwsw",
       "version": "1.0.0",
-      "summary": "죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고, 그중 하나만 쥐고 나아간다. 다음 사람은 까닭도 모른 채 그 하나대로 산다. 1894년 제물포부터 2026년 편집실까지 다섯 삶을 잇는 5장, 결말 4종.",
-      "summaryEn": "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives from Jemulpo in 1894 to an editing room in 2026. A Korean-language story in five chapters with four endings.",
+      "summary": "죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고, 그중 하나만 쥐고 나아간다. 다음 사람은 까닭도 모른 채 그 하나대로 산다. 1809년 굶주린 겨울부터 2026년 편집실까지, 다섯 삶을 잇는 5장. 결말 4종.",
+      "summaryEn": "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives, from a starving winter in 1809 to an editing room in 2026. A Korean-language story in five chapters with four endings.",
       "thumbnail": "/game-list/360/assets/bg/title.svg",
       "tags": [
         "philosophical-sf",
@@ -50,7 +50,7 @@
       "endingCount": 4,
       "seo": {
         "title": "360",
-        "description": "죽은 뒤의 어둠에서 삶 전체를 기억하고, 그중 하나만 쥐고 나아간다. 1894년 제물포, 1952년 부산, 1988년 서울, 2026년 편집실. 기억 없이 이어지는 다섯 삶을 사는 5장 비주얼노벨. 결말 4종.",
+        "description": "죽은 뒤의 어둠에서 삶 전체를 기억하고, 그중 하나만 쥐고 나아간다. 1809년 겨울, 1894년 제물포, 1952년 부산, 1988년 서울, 2026년 편집실. 기억 없이 이어지는 다섯 삶을 사는 5장 비주얼노벨. 결말 4종.",
         "keywords": [
           "환생 비주얼노벨",
           "철학 SF",

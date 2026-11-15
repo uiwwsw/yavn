@@ -275,7 +275,10 @@ scenes:
           when: { var: l2_told, op: eq, value: false }
           text: "마흔넷 해가 전부 떠오른다. 날짜, 금액, 가짜 도장."
       - say: { channel: narration, text: "부두에 등을 보이고 선 어머이. 열네 통의 편지. 답장은 한 통." }
-      - bg: { id: void_light, transition: dissolve, duration: 2400 }
+      - say: { channel: narration, text: "뒤가 밝다. 처음이 아닌 것 같다는 느낌만 있다." }
+      - bg: { id: void_light, transition: dissolve, duration: 3200 }
+      - say: { channel: narration, text: "점들이 가까워지는 속도가 아는 속도다. 아는 기억은 없는데 속도만 안다." }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - goto: void_two_choice
 
   void_two_choice:
@@ -314,7 +317,7 @@ scenes:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다. 생각을 놓을 틈이 없다.", autoAdvance: 2232 }
-      - bg: { id: void, transition: wipeRight, duration: 320 }
+      - bg: { id: void_near, transition: wipeRight, duration: 320 }
       - effect: { name: speedlines, wait: true }
       - say: { channel: narration, text: "부두 이름이 빠져나간다. 가자미식해 맛이 빠져나간다." }
       - effect: { name: flash, wait: true }

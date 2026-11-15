@@ -70,7 +70,7 @@ def write(folder, name, body, defs='', width=W, height=H):
 
 # ───────────────────────── the dark ─────────────────────────
 
-def dust(rng, count, toward=None):
+def dust(rng, count, toward=None, reach=26, span=3600, near=150):
     out = []
     for _ in range(count):
         x, y = rng.uniform(0, W), rng.uniform(0, H)
@@ -79,9 +79,9 @@ def dust(rng, count, toward=None):
         if toward:
             dx, dy = toward[0] - x, toward[1] - y
             distance = math.hypot(dx, dy) or 1
-            if distance < 150:
+            if distance < near:
                 continue
-            pull = min(26, 3600 / distance)
+            pull = min(reach, span / distance)
             out.append(line(x, y, x + dx / distance * pull, y + dy / distance * pull, '#d7d9de', size,
                             f' opacity="{opacity * 0.7:.2f}"'))
         else:
@@ -107,6 +107,19 @@ def void_light():
             f'<circle cx="{center[0]}" cy="{center[1]}" r="300" fill="url(#b)"/>']
     body += dust(rng, 240, toward=center)
     write('bg', 'void_light', body, defs)
+
+
+def void_near():
+    """void_light one step on. The glow has grown past the frame and the points streak."""
+    rng = random.Random(363)
+    center = (1230, 285)
+    defs = (glow('a', '#4d5668', [(0, 0.86), (0.5, 0.34), (1, 0)])
+            + glow('b', '#f3d79c', [(0, 0.5), (0.4, 0.15), (1, 0)]))
+    body = [rect(0, 0, W, H, '#07080b'),
+            f'<circle cx="{center[0]}" cy="{center[1]}" r="1450" fill="url(#a)"/>',
+            f'<circle cx="{center[0]}" cy="{center[1]}" r="620" fill="url(#b)"/>']
+    body += dust(rng, 340, toward=center, reach=62, span=11000, near=80)
+    write('bg', 'void_near', body, defs)
 
 
 def title():
@@ -955,7 +968,7 @@ def props():
 
 
 if __name__ == '__main__':
-    void(), void_light(), title()
+    void(), void_light(), void_near(), title()
     jemulpo_yard(), jemulpo_room()
     busan_market(), market_fire(), busan_shack(), seoul_room()
     ward(), hangang_night()

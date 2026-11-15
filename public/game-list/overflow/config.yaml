@@ -35,8 +35,8 @@ startScreen:
   titleColor: "#e8eef9"
   startButtonText: "측정 시작"
   buttonPosition: bottom-left
-  eyebrow: "조력 죽음 · 차별 · 살인 사건이 나옵니다"
-  subtitle: "에모스 판독 · 문지완 — 사랑 1 · 연민 1 · 슬픔 1"
+  eyebrow: "2033 한국 · SF 미스터리 · 5장 · 결말 4종"
+  subtitle: "감정을 숫자로 재는 에모스가 채용과 형량까지 정하는 시대. 모든 수치가 1로 나오는 이의신청 대행업자가, 수치가 너무 낮아 불기소된 살인사건을 맡는다. 증거는 직접 뒤져야 한다."
   scene:
     layout: split
     motion: drift

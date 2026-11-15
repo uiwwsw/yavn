@@ -29,8 +29,8 @@ startScreen:
   titleColor: "#f0d9a8"
   startButtonText: "검안 시작"
   buttonPosition: bottom-left
-  eyebrow: "1792 · 한성 · 검시 추리극"
-  subtitle: "죽은 자는 말이 없다. 대신 몸이 남긴 것을 읽는다."
+  eyebrow: "1792 한성 · 검시 추리극 · 5장 · 결말 4종"
+  subtitle: "죽은 자는 말이 없다. 대신 몸이 남긴 것을 읽는다. 혜민서 의녀가 시신 그림표를 직접 살피고 옛 검시법으로 실험해, 고문으로 받아 낸 자백을 증거로 뒤집는다."
   scene:
     layout: split
     motion: drift

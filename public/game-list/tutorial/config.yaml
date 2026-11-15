@@ -31,8 +31,8 @@ startScreen:
   titleColor: "#f2fbf5"
   startButtonText: "튜토리얼 시작"
   buttonPosition: bottom-left
-  eyebrow: "폭언 · 살인 사건 · 중독이 나옵니다"
-  subtitle: "튜토리얼 1/5 — 주위를 둘러보세요."
+  eyebrow: "근미래 · SF 미스터리 · 5장 · 결말 3종"
+  subtitle: "현실을 복제하는 시뮬레이션이 모두의 취미가 된 시대. 고객센터 12년 차가 체험판 튜토리얼에서 처음으로 화를 내고, 다음 날 같은 자리에서 진짜 사건이 일어난다."
   scene:
     layout: split
     motion: drift

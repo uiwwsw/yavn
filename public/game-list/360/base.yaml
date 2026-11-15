@@ -3,6 +3,7 @@ assets:
     title: assets/bg/title.svg
     void: assets/bg/void.svg
     void_light: assets/bg/void_light.svg
+    void_near: assets/bg/void_near.svg
     jemulpo_yard: assets/bg/jemulpo_yard.svg
     jemulpo_room: assets/bg/jemulpo_room.svg
     busan_market: assets/bg/busan_market.svg
