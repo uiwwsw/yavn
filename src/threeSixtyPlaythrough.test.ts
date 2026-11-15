@@ -237,11 +237,11 @@ describe('360 full playthrough', () => {
       l3_open: '"괜찮대요. 가게 가 보세요."',
       l3_out: '"누나 혼자 가요. 엄마가 여섯 시에 와요."',
       v3: '더 살고 싶었다.',
-      l1_rice: SHUT,
+      l1_rice: OPEN,
       l1_leave: STAY,
       v1: '어디에도 매이지 말았어야 했다.',
       l2_heart: CONFESS,
-      l2_mother: SLIP_OUT,
+      l2_mother: CARRY,
       v2: '아무도 믿지 말았어야 했다.',
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
@@ -257,6 +257,11 @@ describe('360 full playthrough', () => {
     // only that life can hear the other four back.
     expect(heard(shown, '1988년 구월')).toBe(true);
     expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
+    // The ward is free because nothing has been handed down to it yet, and after it the chain
+    // still runs: 더 살고 싶었다 shuts the storehouse, 매이지 말았어야 shuts the train.
+    expect(heard(shown, '손목이 돌아가지 않는다')).toBe(true);
+    expect(heard(shown, '열면 안 된다는 생각이 어디서 오는지 모르겠다')).toBe(true);
+    expect(heard(shown, '보따리는 벌써 어깨에 있고')).toBe(true);
     expect(state.routeVars).toMatchObject({ lives_done: 4, t_live: true, v_end: 'hold', deg_last: '041.2' });
     expect(state.resolvedEndingId).toBe('onward');
   }, 120000);
