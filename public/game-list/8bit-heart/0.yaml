@@ -154,7 +154,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "엄마는 그다음 해에 나갔어. 게임기는 남았었는데. 이제 그것도 갔고."
+          text: "엄마는 그다음 해에 나갔어."
+      - say:
+          char: 윤재
+          with: [비서]
+          text: "게임기는 남았었는데. 이제 그것도 갔고."
       - say:
           char: 비서
           with: [윤재]
@@ -196,7 +200,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "그 나이에 아직도 게임기냐, 할 거야. 백 퍼센트. 안 해, 전화."
+          text: "그 나이에 아직도 게임기냐, 할 거야."
+      - say:
+          char: 윤재
+          with: [비서]
+          text: "백 퍼센트. 안 해, 전화."
       - say:
           char: 윤재
           motion: perk
@@ -357,7 +365,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "사진 봐 봐. 아 못 보지. 이불 위에서 찍었어. 각도도 비뚤어. 어른이 찍은 거야 이거."
+          text: "사진 봐 봐. 아 못 보지."
+      - say:
+          char: 윤재
+          with: [비서]
+          text: "이불 위에서 찍었어. 각도도 비뚤어. 어른이 찍은 거야 이거."
       - say:
           char: 비서
           with: [윤재]
@@ -418,7 +430,12 @@ scenes:
           char: 윤재
           motion: nod
           with: [비서]
-          text: "나왔다. B버튼. 이 모델은 B가 제일 먼저 죽어. 안에 고무 돔이 삭아서 그래."
+          text: "나왔다. B버튼. 이 모델은 B가 제일 먼저 죽어."
+      - say:
+          char: 윤재
+          motion: nod
+          with: [비서]
+          text: "안에 고무 돔이 삭아서 그래."
       - say:
           char: 비서
           with: [윤재]
@@ -552,7 +569,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "설명서 있대. 그거 나 안 읽어. 근데 있는 거랑 없는 거랑 시세가 달라."
+          text: "설명서 있대. 그거 나 안 읽어."
+      - say:
+          char: 윤재
+          with: [비서]
+          text: "근데 있는 거랑 없는 거랑 시세가 달라."
       - say:
           channel: message
           side: me
@@ -816,7 +837,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "세이브 확인. 이게 제일 중요해. 한 판 하고, 끄고, 다시 켜고…"
+          text: "세이브 확인. 이게 제일 중요해."
+      - say:
+          char: 윤재
+          with: [비서]
+          text: "한 판 하고, 끄고, 다시 켜고…"
       - say:
           char: 윤재.excited
           motion: bounce
@@ -830,7 +855,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "손톱만 한 거. 메모리 카드? 매직으로 '8KB'라고 써 놨어. 삐뚤빼뚤하게."
+          text: "손톱만 한 거. 메모리 카드?"
+      - say:
+          char: 윤재
+          with: [비서]
+          text: "매직으로 '8KB'라고 써 놨어. 삐뚤빼뚤하게."
       - say:
           char: 비서
           with: [윤재]
