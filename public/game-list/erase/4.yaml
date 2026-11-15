@@ -233,6 +233,45 @@ scenes:
           channel: thought
           with: []
           text: "그럼 남은 걸 찾으면 된다. 누가 정리하다 빠뜨린 것."
+      - say:
+          channel: system
+          when: { var: e0_messages, op: eq, value: false }
+          with: []
+          text: "대화 · 저장되지 않은 번호 · 2033. 3. 21.\n보관됨"
+      - say:
+          channel: system
+          when: { var: e0_photos, op: eq, value: false }
+          with: []
+          text: "사진 · 2033. 3. 21. 오전 2:06 · 4장\n보관됨"
+      - say:
+          channel: system
+          when: { var: e0_location, op: eq, value: false }
+          with: []
+          text: "타임라인 · 2033. 3. 21. 오전 1:42\n보관됨"
+      - say:
+          channel: thought
+          when:
+            any:
+              - { var: e0_messages, op: eq, value: false }
+              - { var: e0_photos, op: eq, value: false }
+              - { var: e0_location, op: eq, value: false }
+          text: "삼 주 전 것도 안 지운 게 있다. 그건 내가 정리를 덜 한 거고, 그래서 남았다."
+      - say:
+          channel: thought
+          when:
+            all:
+              - { var: e0_messages, op: eq, value: true }
+              - { var: e0_photos, op: eq, value: true }
+              - { var: e0_location, op: eq, value: true }
+          text: "삼 주 전 새벽 것은 하나도 없다. 메시지도 사진도 위치도. 손이 알아서 했다."
+      - say:
+          channel: thought
+          when:
+            all:
+              - { var: e0_messages, op: eq, value: true }
+              - { var: e0_photos, op: eq, value: true }
+              - { var: e0_location, op: eq, value: true }
+          text: "그걸 어디서 배웠는지가 기억에 없다. 배운 적이 없는 사람처럼 한다."
       - goto: mismatch_photo
 
   mismatch_photo:
@@ -399,6 +438,13 @@ scenes:
           char: 민재
           with: []
           text: "니가 한 거 아니면 아니라고 한 번만 더 말해줘 그러면 나 믿어"
+      - say:
+          channel: message
+          side: them
+          char: 아진
+          when: { var: h1_sent, op: eq, value: true }
+          with: []
+          text: "너 그때 껴달라고 한 거 나 계속 생각나 그거 장난 아니었지"
       - say:
           channel: message
           side: me
