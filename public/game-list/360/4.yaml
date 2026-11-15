@@ -26,6 +26,8 @@ scenes:
           when: { var: l4_refuted, op: eq, value: true }
           text: "파주 거실에서 한 말. 그건 선생님이 모르시는 일이에요."
       - say: { channel: narration, text: "김치통. 끝내 누르지 않은 전송 버튼." }
+      - say: { channel: narration, text: "유리 너머 십 분. 07:12에서 00:00까지, 마흔 몇 번." }
+      - say: { channel: narration, text: "매번 먼저 내려놓는 쪽이 저쪽이었다. 그게 배려라는 걸 그때도 알았다." }
       - say:
           channel: narration
           when: { var: looked_back, op: eq, value: true }
@@ -301,6 +303,7 @@ scenes:
     actions:
       - say: { channel: narration, text: "손이 닿는 것이 두 개다. 둘 다 일흔아홉 해에서 나왔다." }
       - say: { channel: narration, text: "하나는 김치통이다. 답장 칸에 커서가 깜박이던 사십오 년이다." }
+      - say: { channel: narration, text: "쓰는 것도 됐고 지우는 것도 됐다. 안 되는 건 보내는 것 하나였다." }
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: true }
