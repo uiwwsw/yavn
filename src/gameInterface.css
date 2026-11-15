@@ -154,7 +154,13 @@
 .app .dialog-box::before { content: ''; position: absolute; left: 32px; top: -1px; width: 52px; height: 2px; background: var(--game-accent); pointer-events: none; }
 .app .dialog-box.channel-record, .app .dialog-box.channel-system { background: var(--game-dialog); box-shadow: 0 24px 80px #0003; }
 .app .dialog-box.has-choice-gate { --dialog-safe-max-height: min(60cqh, calc(100cqh - 80px)); }
-.app .dialog-content-scroll { padding-top: 30px; padding-right: 5px; scrollbar-gutter: auto; scrollbar-width: thin; scrollbar-color: var(--game-line) transparent; }
+/* The column keeps 5px clear on both sides, not just the right.
+   Overflow clips at the padding box, and the focus ring is drawn 4px outside whatever it
+   marks, so an element sitting flush against the left edge — the first choice of a row, the
+   answer field — lost the left side of its ring. The right side was already safe, on the
+   gutter kept there for the scrollbar, which is also what had the column's contents sitting
+   5px off centre. */
+.app .dialog-content-scroll { padding-top: 30px; padding-inline: 5px; scrollbar-gutter: auto; scrollbar-width: thin; scrollbar-color: var(--game-line) transparent; }
 .app .dialog-content-scroll > .speaker { color: var(--game-accent); font-size: 14px; font-weight: 800; letter-spacing: .04em; }
 .app .dialog-channel-label { color: var(--game-accent); font-size: 13px; letter-spacing: .08em; }
 .app .dialog-box .text { color: var(--game-text); font-family: var(--ui-body-font); font-size: calc(18px * var(--game-text-scale)); font-weight: 500; line-height: 1.8; letter-spacing: -.015em; text-shadow: none; }
