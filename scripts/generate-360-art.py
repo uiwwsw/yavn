@@ -89,36 +89,96 @@ def dust(rng, count, toward=None, reach=26, span=3600, near=150):
     return out
 
 
+def star_tile(rng, count, r_lo, r_hi, o_lo, o_hi):
+    """One screen's worth of stars. Drawn twice side by side so the drift can loop seamlessly."""
+    dots = []
+    for _ in range(count):
+        x, y = rng.uniform(0, W), rng.uniform(0, H)
+        r = rng.uniform(r_lo, r_hi)
+        dots.append(circle(x, y, r, '#e8edf8', f' opacity="{rng.uniform(o_lo, o_hi):.2f}"'))
+    return ''.join(dots)
+
+
+def drifting(rng, cls, count, r_lo, r_hi, o_lo, o_hi):
+    tile = star_tile(rng, count, r_lo, r_hi, o_lo, o_hi)
+    return f'<g class="{cls}">{tile}<g transform="translate({W},0)">{tile}</g></g>'
+
+
+# Three depths moving at three speeds is what reads as drifting rather than as a picture of stars.
+DRIFT_CSS = f"""<style>
+@keyframes drift {{ from {{ transform: translateX(0); }} to {{ transform: translateX(-{W}px); }} }}
+@keyframes tw {{ 0%, 100% {{ opacity: 0.35; }} 50% {{ opacity: 1; }} }}
+@keyframes breathe {{ 0%, 100% {{ opacity: 0.72; }} 50% {{ opacity: 1; }} }}
+.far {{ animation: drift 240s linear infinite; }}
+.mid {{ animation: drift 132s linear infinite; }}
+.near {{ animation: drift 74s linear infinite; }}
+.tw1 {{ animation: tw 5.5s ease-in-out infinite; }}
+.tw2 {{ animation: tw 7.2s ease-in-out -2.4s infinite; }}
+.tw3 {{ animation: tw 4.3s ease-in-out -1.1s infinite; }}
+.core {{ animation: breathe 9s ease-in-out infinite; transform-origin: center; }}
+@media (prefers-reduced-motion: reduce) {{
+  .far, .mid, .near, .tw1, .tw2, .tw3, .core {{ animation: none; }}
+}}
+</style>"""
+
+
+def bright(x, y, r, glow_id, cls=''):
+    """A star you can actually see: a halo, a hard white centre and two glare spikes."""
+    k = f' class="{cls}"' if cls else ''
+    return (f'<g{k}><circle cx="{f(x)}" cy="{f(y)}" r="{f(r * 11)}" fill="url(#{glow_id})"/>'
+            + line(x - r * 8, y, x + r * 8, y, '#fff6e2', r * 0.55, ' opacity="0.5"')
+            + line(x, y - r * 8, x, y + r * 8, '#fff6e2', r * 0.55, ' opacity="0.5"')
+            + circle(x, y, r, '#fffaf0') + '</g>')
+
+
 def void():
     rng = random.Random(360)
-    defs = glow('v', '#000', [(0, 0), (0.6, 0), (1, 0.7)])
-    body = [rect(0, 0, W, H, '#07080b')] + dust(rng, 260)
+    defs = glow('v', '#000', [(0, 0), (0.62, 0), (1, 0.72)]) + glow('s', '#cfe0ff', [(0, 0.5), (0.4, 0.1), (1, 0)])
+    body = [rect(0, 0, W, H, '#05060a'), DRIFT_CSS,
+            drifting(rng, 'far', 150, 0.9, 1.5, 0.22, 0.42),
+            drifting(rng, 'mid', 72, 1.5, 2.4, 0.40, 0.70),
+            drifting(rng, 'near', 26, 2.4, 3.6, 0.62, 0.95)]
+    for i, (x, y, r) in enumerate([(318, 214, 2.6), (1142, 648, 2.2), (742, 388, 2.0)]):
+        body.append(bright(x, y, r, 's', f'tw{i + 1}'))
     body.append(f'<rect width="{W}" height="{H}" fill="url(#v)"/>')
     write('bg', 'void', body, defs)
 
 
 def void_light():
+    """One star has come close enough to have a name on it. The field is the same field."""
     rng = random.Random(361)
     center = (1190, 310)
-    defs = (glow('a', '#39404e', [(0, 0.6), (0.5, 0.22), (1, 0)])
-            + glow('b', '#e8c98a', [(0, 0.22), (0.4, 0.07), (1, 0)]))
-    body = [rect(0, 0, W, H, '#07080b'),
-            f'<circle cx="{center[0]}" cy="{center[1]}" r="900" fill="url(#a)"/>',
-            f'<circle cx="{center[0]}" cy="{center[1]}" r="300" fill="url(#b)"/>']
-    body += dust(rng, 240, toward=center)
+    defs = (glow('a', '#3b4557', [(0, 0.62), (0.5, 0.2), (1, 0)])
+            + glow('b', '#f0d49a', [(0, 0.46), (0.38, 0.12), (1, 0)])
+            + glow('s', '#dce9ff', [(0, 0.62), (0.4, 0.12), (1, 0)]))
+    body = [rect(0, 0, W, H, '#05060a'), DRIFT_CSS,
+            f'<circle cx="{center[0]}" cy="{center[1]}" r="820" fill="url(#a)" class="core"/>',
+            drifting(rng, 'far', 160, 0.9, 1.6, 0.26, 0.48),
+            drifting(rng, 'mid', 84, 1.6, 2.6, 0.44, 0.76),
+            drifting(rng, 'near', 30, 2.6, 4.0, 0.66, 1.0),
+            f'<circle cx="{center[0]}" cy="{center[1]}" r="300" fill="url(#b)" class="core"/>',
+            bright(center[0], center[1], 5.2, 's', 'tw2')]
+    for i, (x, y, r) in enumerate([(262, 640, 3.0), (880, 180, 2.6)]):
+        body.append(bright(x, y, r, 's', f'tw{i + 1}'))
     write('bg', 'void_light', body, defs)
 
 
 def void_near():
-    """void_light one step on. The glow has grown past the frame and the points streak."""
+    """Closer again. The points have width now and the field streaks past instead of hanging."""
     rng = random.Random(363)
     center = (1230, 285)
     defs = (glow('a', '#4d5668', [(0, 0.86), (0.5, 0.34), (1, 0)])
-            + glow('b', '#f3d79c', [(0, 0.5), (0.4, 0.15), (1, 0)]))
-    body = [rect(0, 0, W, H, '#07080b'),
-            f'<circle cx="{center[0]}" cy="{center[1]}" r="1450" fill="url(#a)"/>',
-            f'<circle cx="{center[0]}" cy="{center[1]}" r="620" fill="url(#b)"/>']
-    body += dust(rng, 340, toward=center, reach=62, span=11000, near=80)
+            + glow('b', '#f3d79c', [(0, 0.5), (0.4, 0.15), (1, 0)])
+            + glow('s', '#e6f0ff', [(0, 0.7), (0.4, 0.14), (1, 0)]))
+    body = [rect(0, 0, W, H, '#06070c'), DRIFT_CSS,
+            f'<circle cx="{center[0]}" cy="{center[1]}" r="1450" fill="url(#a)" class="core"/>',
+            drifting(rng, 'far', 150, 1.1, 1.9, 0.3, 0.52),
+            drifting(rng, 'mid', 88, 2.0, 3.2, 0.5, 0.82)]
+    streak = ''.join(dust(rng, 150, toward=center, reach=62, span=11000, near=80))
+    body.append(f'<g class="near">{streak}<g transform="translate({W},0)">{streak}</g></g>')
+    body.append(f'<circle cx="{center[0]}" cy="{center[1]}" r="620" fill="url(#b)" class="core"/>')
+    for i, (x, y, r) in enumerate([(300, 700, 4.4), (640, 160, 3.6), (980, 520, 3.0)]):
+        body.append(bright(x, y, r, 's', f'tw{i + 1}'))
     write('bg', 'void_near', body, defs)
 
 

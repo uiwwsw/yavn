@@ -25,8 +25,7 @@ scenes:
       - music: void
       - say: { channel: narration, text: "끊임없는 공허함." }
       - say: { channel: narration, text: "눈을 떴다." }
-      - say: { channel: narration, text: "떴는데 어둡다." }
-      - say: { channel: narration, text: "감아도 어둡다." }
+      - say: { channel: narration, text: "떴는데 어둡다. 감아도 어둡다." }
       - say: { channel: narration, text: "그래서 떴는지 감았는지 모른다." }
       - say: { channel: narration, text: "벽이 없다. 바닥도 없다. 없는 것을 세고 있다." }
       - wait: 900
@@ -43,7 +42,7 @@ scenes:
       - say: { channel: narration, text: "보고 싶다." }
       - wait: 900
       - say: { channel: narration, text: "누가." }
-      - say: { channel: narration, text: "모르겠다. 보고 싶다는 것만 안다." }
+      - say: { channel: narration, text: "누군지는 떠오르지 않는다. 떠올리려 할수록 더 보고 싶다." }
       - wait: 700
       - say: { channel: narration, text: "점이 하나 더 켜진다. 또 하나." }
       - say: { channel: narration, text: "세는 사이에 늘어난다." }
@@ -73,7 +72,7 @@ scenes:
               when: { var: lived_1894, op: eq, value: false }
               goto: go_1894
             - text: "부두에 두고 온 사람"
-              at: { x: 71, y: 38 }
+              at: { x: 73, y: 47 }
               when: { var: lived_1952, op: eq, value: false }
               goto: go_1952
             - text: "새벽마다 오던 사람"
