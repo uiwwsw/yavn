@@ -4813,6 +4813,8 @@ function runToNextPause(loopGuard = 0) {
       forgivenOptionIndexes: [],
       timeoutMs: action.choice.timeoutMs,
       timeoutOptionIndex: visibleTimeoutOptionIndex,
+      approachSteps: visibleOptions.map(() => 0),
+      mood: action.choice.mood,
       options: visibleOptions,
     });
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
@@ -4887,6 +4889,23 @@ function runToNextPause(loopGuard = 0) {
 
   if ('gameOver' in action) {
     triggerGameOver(action.gameOver);
+    return;
+  }
+
+  if ('mood' in action) {
+    // A held feeling, not a flash. It survives lines, waits and choices, and only
+    // the next mood (or `mood: off`) takes it away.
+    if (action.mood === 'off') {
+      useVNStore.getState().setMood(undefined);
+    } else {
+      useVNStore.getState().setMood({
+        tone: action.mood.tone,
+        level: action.mood.level ?? 1,
+        tremor: action.mood.tremor === true,
+      });
+    }
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
     return;
   }
 
@@ -6033,6 +6052,41 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   const selected = state.choiceGate.options[optionIndex];
   if (!selected) {
     return;
+  }
+
+  // 다가가기: 아직 닿지 않았으면 한 걸음만 가고 선택지에 그대로 머문다.
+  if (state.choiceGate.presentation === 'approach' && selected.reveal?.length) {
+    const taken = state.choiceGate.approachSteps[optionIndex] ?? 0;
+    if (taken < selected.reveal.length) {
+      const line = selected.reveal[taken];
+      const steps = [...state.choiceGate.approachSteps];
+      steps[optionIndex] = taken + 1;
+      useVNStore.getState().setChoiceGate({ approachSteps: steps });
+      const tone = selected.mood ?? state.choiceGate.mood;
+      if (tone) {
+        // 가까워질수록 세진다. 마지막 한 걸음 전부터 떨리기 시작한다.
+        const level = Math.min(3, taken + 1);
+        useVNStore.getState().setMood({ tone, level, tremor: level >= 2 });
+      }
+      const text = interpolateText(line, useVNStore.getState().routeVars);
+      useVNStore.getState().setDialog({
+        speaker: undefined,
+        speakerId: undefined,
+        fullText: text,
+        visibleText: text,
+        typing: false,
+        channel: 'narration',
+      });
+      useVNStore.getState().pushStoryLog({
+        kind: 'dialogue',
+        channel: 'narration',
+        text,
+        chapterPath: getCurrentChapterPathKey(),
+        sceneId: state.currentSceneId,
+        actionIndex: state.actionIndex,
+      });
+      return;
+    }
   }
 
   const effectiveForgiveOnce = selected.forgiveOnce ?? state.choiceGate.forgiveOnceDefault;

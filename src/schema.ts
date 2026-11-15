@@ -57,6 +57,13 @@ export const conditionSchema: z.ZodType = z.lazy(() =>
   ]),
 );
 
+const screenEffectNameSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(64)
+  .regex(/^[A-Za-z][A-Za-z0-9_-]*$/, 'effect name must be a CSS-safe identifier');
+
 const promptHeightSchema = z.number().int().min(120).max(600);
 
 const inputRouteSchema = z.object({
@@ -103,6 +110,8 @@ const choiceOptionSchema = z
     gameOver: gameOverSchema.optional(),
     forgiveOnce: z.boolean().optional(),
     forgiveMessage: z.string().min(1).optional(),
+    reveal: z.array(z.string().trim().min(1).max(200)).min(1).max(6).optional(),
+    mood: screenEffectNameSchema.optional(),
   })
   .refine((option) => !(option.goto && option.gameOver), {
     message: 'choice option cannot declare both goto and gameOver',
@@ -156,12 +165,6 @@ const stickerLeaveSchema = z.union([
   }),
 ]);
 
-const screenEffectNameSchema = z
-  .string()
-  .trim()
-  .min(1)
-  .max(64)
-  .regex(/^[A-Za-z][A-Za-z0-9_-]*$/, 'effect name must be a CSS-safe identifier');
 
 const actionBodySchema = z.union([
   z.object({ bg: z.union([z.string().min(1), z.object({
@@ -246,7 +249,8 @@ const actionBodySchema = z.union([
     choice: z
       .object({
         key: z.string().min(1).optional(),
-        presentation: z.enum(['dialogue', 'explore']).optional(),
+        presentation: z.enum(['dialogue', 'explore', 'approach']).optional(),
+        mood: screenEffectNameSchema.optional(),
         prompt: z.string().min(1),
         char: z.string().min(1).optional(),
         with: z.array(z.string().min(1)).optional(),
@@ -261,11 +265,18 @@ const actionBodySchema = z.union([
         options: z.array(choiceOptionSchema).min(1),
       })
       .superRefine((choice, ctx) => {
-        if (choice.presentation !== 'explore' && choice.options.some(option => option.at)) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'Positioned options require presentation: explore' });
+        const spatial = choice.presentation === 'explore' || choice.presentation === 'approach';
+        if (!spatial && choice.options.some(option => option.at)) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'Positioned options require presentation: explore or approach' });
         }
-        if (choice.presentation === 'explore' && !choice.options.some(option => option.at)) {
+        if (spatial && !choice.options.some(option => option.at)) {
           ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Exploration requires at least one positioned option' });
+        }
+        if (choice.presentation !== 'approach' && choice.options.some(option => option.reveal)) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'option.reveal requires presentation: approach' });
+        }
+        if (choice.presentation === 'approach' && !choice.options.some(option => option.reveal)) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Approaching needs at least one option with reveal steps' });
         }
         if (
           choice.timeoutOptionIndex !== undefined &&
@@ -319,6 +330,18 @@ const actionBodySchema = z.union([
         .object({
           name: screenEffectNameSchema,
           wait: z.boolean().optional(),
+        })
+        .strict(),
+    ]),
+  }),
+  z.object({
+    mood: z.union([
+      z.literal('off'),
+      z
+        .object({
+          tone: screenEffectNameSchema,
+          level: z.number().int().min(1).max(3).optional(),
+          tremor: z.boolean().optional(),
         })
         .strict(),
     ]),

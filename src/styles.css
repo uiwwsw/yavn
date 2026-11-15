@@ -4633,3 +4633,94 @@ textarea,
     100% { opacity: 0; }
   }
 }
+
+/* ── mood: 한 번 번쩍이고 마는 effect와 달리, 다음 mood까지 화면에 남는 감정 ── */
+
+.mood-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--mood-wash, transparent);
+  mix-blend-mode: var(--mood-blend, screen);
+  transition: opacity 1200ms ease, background 1200ms ease;
+}
+
+.effect-viewport[data-mood-level='1'] .mood-wash { opacity: var(--mood-a1, 0.1); }
+.effect-viewport[data-mood-level='2'] .mood-wash { opacity: var(--mood-a2, 0.22); }
+.effect-viewport[data-mood-level='3'] .mood-wash { opacity: var(--mood-a3, 0.4); }
+
+/* 단계가 올라갈수록 가장자리가 좁혀 온다. */
+.effect-viewport[data-mood-level='2'] .mood-wash,
+.effect-viewport[data-mood-level='3'] .mood-wash {
+  box-shadow: inset 0 0 calc(12vmin * var(--mood-step, 1)) calc(2vmin * var(--mood-step, 1)) var(--mood-edge, transparent);
+}
+.effect-viewport[data-mood-level='2'] { --mood-step: 1; }
+.effect-viewport[data-mood-level='3'] { --mood-step: 2; }
+
+/* 떨림. 화면이 아니라 무대만 흔든다. 글자는 읽을 수 있어야 한다. */
+.effect-viewport[data-mood-tremor='true'] .bg,
+.effect-viewport[data-mood-tremor='true'] .char {
+  animation: moodTremor 2.4s ease-in-out infinite;
+}
+.effect-viewport[data-mood-tremor='true'][data-mood-level='2'] .bg,
+.effect-viewport[data-mood-tremor='true'][data-mood-level='2'] .char {
+  animation-duration: 1.5s;
+}
+.effect-viewport[data-mood-tremor='true'][data-mood-level='3'] .bg,
+.effect-viewport[data-mood-tremor='true'][data-mood-level='3'] .char {
+  animation-duration: 0.9s;
+}
+
+@keyframes moodTremor {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(calc(-0.14% * var(--mood-step, 1)), calc(0.1% * var(--mood-step, 1)), 0); }
+  45% { transform: translate3d(calc(0.12% * var(--mood-step, 1)), calc(-0.12% * var(--mood-step, 1)), 0); }
+  70% { transform: translate3d(calc(-0.08% * var(--mood-step, 1)), calc(-0.06% * var(--mood-step, 1)), 0); }
+}
+
+/* 색은 작품이 정한다. 아래는 기본으로 깔아 두는 네 가지. */
+.mood-ember {
+  --mood-wash: radial-gradient(ellipse at 50% 58%, rgba(214, 64, 32, 0.92), rgba(120, 16, 8, 0.5) 62%, rgba(40, 4, 2, 0.2) 100%);
+  --mood-edge: rgba(150, 26, 10, 0.55);
+  --mood-blend: screen;
+}
+.mood-cold {
+  --mood-wash: radial-gradient(ellipse at 50% 50%, rgba(60, 120, 190, 0.7), rgba(12, 32, 66, 0.45) 70%);
+  --mood-edge: rgba(18, 44, 86, 0.5);
+}
+.mood-pale {
+  --mood-wash: radial-gradient(ellipse at 50% 46%, rgba(255, 250, 235, 0.85), rgba(210, 205, 195, 0.3) 72%);
+  --mood-edge: rgba(255, 252, 240, 0.35);
+}
+.mood-void {
+  --mood-wash: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.92) 78%);
+  --mood-edge: rgba(0, 0, 0, 0.9);
+  --mood-blend: normal;
+  --mood-a1: 0.3;
+  --mood-a2: 0.55;
+  --mood-a3: 0.82;
+}
+
+/* 연출 세기를 낮춘 플레이어에게는 색만 옅게 남기고 떨림은 끈다. */
+.effect-viewport[data-effect-level='reduced'] .mood-wash { opacity: 0.12 !important; }
+.effect-viewport[data-effect-level='reduced'][data-mood-tremor='true'] .bg,
+.effect-viewport[data-effect-level='reduced'][data-mood-tremor='true'] .char {
+  animation: none !important;
+}
+.effect-viewport[data-effect-level='minimal'] .mood-wash { display: none; }
+.effect-viewport[data-effect-level='minimal'][data-mood-tremor='true'] .bg,
+.effect-viewport[data-effect-level='minimal'][data-mood-tremor='true'] .char {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-wash {
+    transition: none !important;
+  }
+  .effect-viewport[data-mood-tremor='true'] .bg,
+  .effect-viewport[data-mood-tremor='true'] .char {
+    animation: none !important;
+  }
+}
