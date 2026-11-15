@@ -13,33 +13,38 @@ scenes:
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
       - say: { channel: action, with: [], text: "복도 쪽 벽에 텔레비전이 하나 걸려 있다. 여섯 침대 중 다섯이 그쪽으로 고개를 돌렸다." }
-      - say: { channel: action, with: [], text: "운동장이 비었다. 사람이 하나 들어온다. 아이다. 굴렁쇠를 굴리면서 가운데로 간다." }
-      - say: { char: 수경, with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 봐. 혼자 저 넓은 데를 굴리고 간다." }
+      - say: { channel: action, with: [], text: "운동장이 비었다. 사람이 하나 들어온다. 아이다." }
+      - say: { char: 수경, with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 혼자 저 넓은 데를 굴리고 간다." }
       - say: { char: 민재, with: [수경], text: "누나, 소리 좀 줄여요. 옆에 할아버지 주무세요." }
-      - say: { char: 수경, with: [민재], text: "할아버지 보청기 뺐어. 내가 봤어. 너 몇 살이라 그랬지?" }
+      - say: { char: 수경, with: [민재], text: "할아버지 보청기 뺐어, 내가 봤어. 너 몇 살이라 그랬지?" }
       - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
-      - say: { char: 수경, with: [민재], text: "난 스물하나. 미대 2학년 하다 말았어. 두 번째 입원. 넌 처음이지? 티 나." }
+      - say: { char: 수경, with: [민재], text: "어." }
+      - say: { char: 수경, with: [민재], text: "난 스물하나, 미대 2학년 하다 말았어. 두 번째 입원이야. 넌 처음이지? 티 나." }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
-      - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져. 내가 줄넘기도 해 봤어." }
+      - say: { char: 수경, with: [민재], text: "뭐긴 뭐야." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져." }
+      - say: { char: 수경, with: [민재], text: "내가 줄넘기도 해 봤어." }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다." }
       - say: { char: 민재, with: [수경], text: "…누나 웃는 거, 어디서 본 것 같아요." }
+      - say: { char: 수경, with: [민재], text: "뭐?" }
       - say: { char: 수경, with: [민재], motion: laugh, text: "내가 누구 닮았어? 그런 소리 가끔 들어." }
       - say: { channel: thought, with: [], text: "그런 게 아니다. 어디서 봤는지 말을 못 하겠다. 본 적이 없으니까." }
       - say:
           channel: thought
           with: []
           when: { var: t_guard, op: eq, value: true }
-          text: "이 누나는 왜 나한테 잘해 주지. 뭘 바라는 건지 먼저 알아야 한다. 늘 그게 먼저다."
+          text: "이 누나는 왜 나한테 잘해 주지. 뭘 바라는 건지 먼저 알아야 한다."
       - say:
           channel: action
           with: []
           when: { var: t_stay, op: eq, value: true }
-          text: "침대 난간에 엄마 목도리가 묶여 있다. 내가 묶었다. 엄마가 꼭 다시 오라고."
+          text: "침대 난간에 엄마 목도리가 묶여 있다. 꼭 다시 오라고, 내가 묶었다."
       - say: { char: 민재, with: [수경], text: "저 애는 왜 혼자 들어가요." }
-      - say: { char: 수경, with: [민재], text: "몰라. 근데 십만 명이 쳐다보는데 혼자 들어가잖아. 그게 되는 애가 있는 거야." }
+      - say: { char: 수경, with: [민재], text: "몰라. 근데 십만 명이 쳐다보는데 혼자 들어가잖아." }
+      - say: { char: 수경, with: [민재], text: "그게 되는 애가 있는 거야." }
       - say: { channel: action, with: [], text: "아이가 운동장 가운데에 선다. 굴렁쇠가 넘어지지 않고 혼자 조금 더 굴러간다." }
       - say: { channel: thought, with: [], text: "다섯 침대가 다 조용해졌다. 보청기를 뺐다는 할아버지도 그쪽을 본다." }
-      - say: { char: 수경, with: [민재], text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃을 쏜대. 한강에서 보면 다 보인다더라." }
+      - say: { char: 수경, with: [민재], text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃 쏘는 거, 한강에서 보면 다 보인다더라." }
       - say: { char: 민재, with: [수경], text: "여기서 한강이 어떻게 보여요." }
       - say: { char: 수경, with: [민재], text: "안 보이지. 그러니까 가야지." }
       - goto: mom_visit
@@ -50,16 +55,18 @@ scenes:
       - place: "구월 이십육일 · 아침 여섯 시"
       - char: { id: 민재, position: left }
       - char: { id: 엄마, position: right }
-      - say: { char: 엄마, with: [민재], text: "민재야, 갈치 조렸다. 가시 다 발랐어. 선생님 회진 도셨니?" }
+      - say: { char: 엄마, with: [민재], text: "민재야, 갈치 조렸다. 가시 다 발랐어." }
+      - say: { char: 엄마, with: [민재], text: "선생님 회진 도셨니?" }
       - say: { char: 민재, with: [엄마], text: "아까요. 엄마 가게는." }
-      - say: { char: 엄마, with: [민재], text: "경매 끝나고 바로 왔지. 열 시에 열면 돼. 선생님이 뭐라셔?" }
-      - say: { channel: action, with: [], text: "엄마가 보온 도시락 뚜껑을 연다. 안쪽에 물방울이 가득하다. 갈치 가시가 접시 한쪽에 따로 모여 있다." }
+      - say: { char: 엄마, with: [민재], text: "경매 끝나고 바로 왔지. 열 시에 열면 돼." }
+      - say: { char: 엄마, with: [민재], text: "선생님이 뭐라셔?" }
+      - say: { channel: action, with: [], text: "엄마가 보온 도시락 뚜껑을 연다. 안쪽에 물방울이 가득하고, 갈치 가시는 접시 한쪽에 따로 모여 있다." }
       - say: { channel: thought, with: [], text: "가시를 다 발라 오면 먹는 데 오 분이면 된다. 바르는 데는 새벽에 한 시간이 걸린다." }
       - say: { char: 민재, with: [엄마], text: "엄마, 나 가시 발라 먹을 수 있어요." }
       - say: { char: 엄마, with: [민재], text: "할 줄 아는 거 알아. 손이 부으니까 하는 거야." }
       - say: { channel: record, with: [엄마], text: "혈액검사 9월 25일. 백혈구 수치 재상승. 2차 항암 일정 조정 요함." }
       - say: { channel: action, with: [], text: "차트는 침대 발치에 걸려 있다. 글씨가 거꾸로 보이는데 숫자는 거꾸로도 읽힌다." }
-      - say: { channel: thought, with: [], text: "지난주 숫자를 외워 뒀다. 이번 주 숫자가 더 크다. 큰 게 나쁜 거라는 건 저번에 배웠다." }
+      - say: { channel: thought, with: [], text: "지난주 숫자를 외워 뒀다. 이번 주 숫자가 더 크다." }
       - say: { channel: thought, with: [], text: "엄마는 '조정'이라는 글자를 못 봤다. 봤으면 서 있는 자리가 달랐을 것이다." }
       - goto: open_choice
 
@@ -95,7 +102,7 @@ scenes:
       - wait: 1100
       - say: { channel: action, with: [엄마], text: "무, 까지 나왔다. 입이 닫힌다.", wait: 900, unskippable: true }
       - say: { channel: action, with: [엄마], text: "다시 해 본다. 숨까지는 들어온다. 거기서 멎는다." }
-      - say: { channel: thought, with: [], text: "엄마 얼굴을 살피고 있다. 이 말을 줘도 되는 사람인지. 엄마한테까지 이런다." }
+      - say: { channel: thought, with: [], text: "엄마 얼굴을 살피고 있다. 이 말을 줘도 되는 사람인지." }
       - goto: open_fine
 
   open_fine:
@@ -162,8 +169,8 @@ scenes:
   out_cannot:
     actions:
       - wait: 1100
-      - say: { channel: action, with: [수경], text: "손을 뻗었다. 손은 침대 난간을 잡고 있다. 목도리 묶인 자리다.", wait: 900, unskippable: true }
-      - say: { channel: action, with: [수경], text: "손가락을 하나씩 펴 본다. 펴진다. 놓으라고 하면 다시 쥔다." }
+      - say: { channel: action, with: [수경], text: "손을 뻗었다가 보니, 손은 침대 난간을 잡고 있다. 목도리 묶인 자리다.", wait: 900, unskippable: true }
+      - say: { channel: action, with: [수경], text: "손가락을 하나씩 펴 본다. 놓으라고 하면 다시 쥔다." }
       - say: { channel: thought, with: [], text: "아침에 엄마가 왔는데 침대가 비어 있으면. 그 생각에서 한 발도 못 나간다." }
       - goto: out_stay
 
@@ -198,7 +205,7 @@ scenes:
       - say: { char: 수경, with: [민재], text: "나 퇴원하면 저 다리 걸어서 건널 거야. 이쪽 끝에서 저쪽 끝까지." }
       - say: { char: 민재, with: [수경], text: "그게 소원이에요?" }
       - say: { char: 수경, with: [민재], text: "소원은 아껴야지. 그건 계획이야." }
-      - say: { channel: action, with: [], text: "둔치에 사람이 빽빽하다. 아무도 환자복을 쳐다보지 않는다. 다 위를 보고 있다." }
+      - say: { channel: action, with: [], text: "둔치에 사람이 빽빽한데 아무도 환자복을 쳐다보지 않는다. 다 위를 보고 있다." }
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
       - say: { channel: thought, with: [], text: "열한 시 사십 분. 여섯 시까지는 여섯 시간 이십 분 남았다. 계산을 하고 있다." }
@@ -212,7 +219,7 @@ scenes:
       - place: "시월 구일 · 6인실"
       - move: { id: 수경, style: reset }
       - char: { id: 민재, position: left }
-      - say: { channel: action, with: [], text: "병실 문이 조금 열려 있다. 복도에서 엄마 목소리가 난다. 작은데 잘 들린다." }
+      - say: { channel: action, with: [], text: "병실 문이 조금 열려 있다. 복도에서 나는 엄마 목소리가 작은데 잘 들린다." }
       - say: { channel: record, with: [], text: "동종 골수이식 시행 동의서. 공여자 적합 검사 결과 동봉. 예상 비용 금 팔백만 원정." }
       - say: { channel: action, with: [], text: "\"선생님, 팔백이면… 저희 가게를 넘겨도 사백입니다.\"" }
       - say: { channel: action, with: [], text: "\"어머님, 성공률을 먼저 들으셔야 합니다. 이 경우 삼십에서 사십 퍼센트입니다.\"" }
@@ -224,7 +231,7 @@ scenes:
       - say: { channel: thought, with: [], text: "팔백에서 사백을 빼면 사백이다. 그것도 센다." }
       - say: { channel: thought, with: [], text: "둘을 같이 놓고 세는 건 안 된다. 그건 배운 적이 없다." }
       - char: { id: 엄마, position: right }
-      - say: { channel: action, with: [], text: "엄마가 들어온다. 앞치마를 벗고 왔다. 벗고 온 건 처음이다." }
+      - say: { channel: action, with: [], text: "엄마가 들어온다. 앞치마를 벗고 온 건 처음이다." }
       - say: { char: 엄마, with: [민재], text: "민재야. 엄마가 선생님이랑 얘기했는데." }
       - say: { char: 민재, with: [엄마], text: "…들었어요." }
       - say: { char: 엄마, with: [민재], motion: droop, text: "문이 열려 있었니. 아이고." }
@@ -250,7 +257,7 @@ scenes:
       - place: "같은 날 · 새벽 두 시"
       - say: { channel: thought, with: [], text: "잠이 안 와서 그걸 생각한다." }
       - say: { channel: thought, with: [], text: "하려고 했다. 분명히 하려고 했는데 안 됐다." }
-      - say: { channel: action, with: [], text: "오른손을 들어 본다. 올라간다. 내린다. 또 올라간다." }
+      - say: { channel: action, with: [], text: "오른손을 들어 본다. 올라갔다 내려오고, 또 올라간다." }
       - say: { channel: thought, with: [], text: "지금은 된다. 그때는 안 됐다." }
       - wait: 1100
       - say: { channel: thought, with: [], text: "무서운 건 안 됐다는 게 아니다." }
@@ -288,7 +295,7 @@ scenes:
           text: "약봉지 묶음이다. 불꽃 그림 뒤로 열 장쯤, 전부 이 병실 창밖이다."
       - say: { channel: action, with: [], text: "열 장이 다 같은 창이다. 나무 한 그루, 주차장 선 세 개, 건너편 건물의 창문 열두 개." }
       - say: { channel: thought, with: [], text: "같은 자리에서 열 번을 그렸다. 두 번째 입원이라 그릴 게 그것뿐이었다." }
-      - say: { channel: thought, with: [], text: "맨 뒷장에 다리가 있다. 그건 창밖이 아니다. 창밖에서는 저 다리가 안 보인다." }
+      - say: { channel: thought, with: [], text: "맨 뒷장에 다리가 있다. 창밖에서는 저 다리가 안 보인다." }
       - move: { id: 엄마, toward: 민재, style: reset }
       - place: "십일월 이십구일"
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
