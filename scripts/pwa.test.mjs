@@ -33,13 +33,15 @@ async function fixturePublicDir() {
     await mkdir(path.dirname(target), { recursive: true });
     await writeFile(target, content);
   };
-  await write('game-list/index.json', JSON.stringify({ games: [{ id: 'small', version: '1.2.0' }, { id: 'live2dtest', version: '1.0.0' }] }));
+  await write('game-list/index.json', JSON.stringify({ games: [{ id: 'small', version: '1.2.0' }, { id: 'bigdemo', version: '1.0.0' }, { id: 'live2dtest', version: '1.0.0' }] }));
   await write('game-list/small/config.yaml', 'title: small\n');
   await write('game-list/small/0.yaml', 'scenes: []\n');
   await write('game-list/small/assets/bg/a.svg', '<svg/>');
   await write('game-list/small/.DS_Store', 'x');
-  await write('game-list/live2dtest/config.yaml', 'title: big\n');
-  await write('game-list/live2dtest/assets/model.moc3', Buffer.alloc(4096));
+  await write('game-list/bigdemo/config.yaml', 'title: big\n');
+  await write('game-list/bigdemo/assets/model.moc3', Buffer.alloc(4096));
+  // 픽스처는 배포되지 않으므로 오프라인으로 저장할 것도 없다.
+  await write('game-list/live2dtest/config.yaml', 'title: fixture\n');
   await write('game-list/no-config/readme.yaml', 'x');
   return publicDir;
 }
@@ -62,13 +64,14 @@ describe('offline packs', () => {
   it('lists every file of each game with sizes and a content hash, and flags oversize games', async () => {
     const publicDir = await fixturePublicDir();
     const packs = collectOfflinePacks(publicDir, { maxBytes: 1024 });
-    expect(packs.map((pack) => pack.id)).toEqual(['live2dtest', 'small']);
+    // 렌더링 픽스처는 배포되지 않으므로(scripts/prune-fixtures.mjs) 팩도 만들지 않는다.
+    expect(packs.map((pack) => pack.id)).toEqual(['bigdemo', 'small']);
     const small = packs.find((pack) => pack.id === 'small');
     expect(small.version).toBe('1.2.0');
     expect(small.files.map((file) => file.path)).toEqual(['0.yaml', 'assets/bg/a.svg', 'config.yaml']);
     expect(small.bytes).toBe(small.files.reduce((sum, file) => sum + file.bytes, 0));
     expect(small.offerable).toBe(true);
-    expect(packs.find((pack) => pack.id === 'live2dtest').offerable).toBe(false);
+    expect(packs.find((pack) => pack.id === 'bigdemo').offerable).toBe(false);
 
     const before = small.hash;
     await writeFile(path.join(publicDir, 'game-list/small/0.yaml'), 'scenes: [changed]\n');
@@ -92,11 +95,11 @@ describe('service worker config', () => {
   });
 
   it('uses the commit as cache version and lists only offerable game pages as optional', () => {
-    const packs = [{ id: 'small', offerable: true }, { id: 'live2dtest', offerable: false }];
+    const packs = [{ id: 'small', offerable: true }, { id: 'bigdemo', offerable: false }];
     const config = buildServiceWorkerConfig({ identity, bundleFileNames, packs });
     expect(config.version).toBe('0.2.0-abc1234');
     expect(config.optional).toEqual(['/en/', '/game-list/small/']);
-    expect(JSON.stringify(config)).not.toContain('live2dtest');
+    expect(JSON.stringify(config)).not.toContain('bigdemo');
     expect(resolveCacheVersion({ ...identity, commit: 'dev' }, ['/a'])).toMatch(/^0\.2\.0-dev-[0-9a-f]{8}$/);
   });
 
@@ -143,10 +146,10 @@ describe('vite plugin', () => {
     const names = emitted.map((file) => file.fileName);
     expect(names).toEqual(expect.arrayContaining([
       'sw.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
-      'icons/apple-touch-icon.png', 'game-list/small/offline.json', 'game-list/live2dtest/offline.json',
+      'icons/apple-touch-icon.png', 'game-list/small/offline.json', 'game-list/bigdemo/offline.json',
     ]));
     expect(seenConfig.precache.some((url) => /live2d/i.test(url))).toBe(false);
-    expect(seenConfig.optional).not.toContain('/game-list/live2dtest/');
+    expect(seenConfig.optional).not.toContain('/game-list/bigdemo/');
     const pack = JSON.parse(emitted.find((file) => file.fileName === 'game-list/small/offline.json').source);
     expect(pack.files).toHaveLength(3);
   });
