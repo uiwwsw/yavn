@@ -213,10 +213,12 @@ scenes:
           text: "뭘 바꿔! 저쪽도 초록, 이쪽도 초록, 다 초록이면 어떡해!"
       - say:
           channel: action
+          autoAdvance: 2666
           with: []
           text: "횡단보도 양쪽이 동시에 초록이다. 양쪽에서 사람이 걸어 나오고, 양쪽에서 차가 들어온다."
       - say:
           channel: narration
+          autoAdvance: 3338
           with: []
           text: "소리는 한 번만 났다. 그다음은 경보기 소리뿐이다. 경보기도 네 대가 동시에 울려서 한 소리로 들린다."
       - say:
@@ -225,6 +227,7 @@ scenes:
           text: "저 아저씨. 아저씨! 거기 서 있으면 안 돼요! 뒤에!"
       - say:
           channel: narration
+          autoAdvance: 2488
           with: []
           text: "아저씨는 여전히 폰을 귀에 대고 있다. 통화가 끊긴 폰을."
       - say:
@@ -234,14 +237,17 @@ scenes:
           text: "버스! 버스 왜 안 서! 정류장이야 여기! 야 위에— 드론 떨어진다!"
       - say:
           channel: action
+          autoAdvance: 2700
           with: []
           text: "버스가 정류장을 그대로 지나간다. 창 안에서 사람들이 운전석 쪽으로 몰려 있는 게 보인다."
       - say:
           channel: narration
+          autoAdvance: 3032
           with: []
           text: "배달 드론 한 대가 간판에 걸렸다가 떨어진다. 안에서 음식이 쏟아진다. 아직 따뜻하다."
       - say:
           channel: action
+          autoAdvance: 2666
           with: []
           text: "교복 입은 여자애가 벤치 밑으로 들어간다. 윤재도 들어간다. 둘이 서로 쳐다보지 않는다."
       - effect: { name: shake, wait: true }
