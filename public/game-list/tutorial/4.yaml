@@ -630,7 +630,9 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 001번 고객님, 고객센터로 오세요. · 5월 2일"
+          wait: 700
       - char: { id: 해수, position: left, emotion: service }
+      - wait: 600
       - say:
           char: 해수.service
           motion: bow
@@ -740,6 +742,8 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 061번 고객님, 고객센터로 오세요."
+          wait: 700
+      - wait: 600
       - say:
           char: 해수.service
           motion: bow
@@ -933,6 +937,8 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 027번 고객님, 고객센터로 오세요."
+          wait: 700
+      - wait: 600
       - say:
           char: 해수
           with: []
