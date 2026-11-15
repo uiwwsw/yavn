@@ -600,7 +600,7 @@ assets:
 - Cubism Core 또는 모델 리소스 로드 실패 시 캐릭터 레이어에 오류 문구를 표시합니다.
 - Live2D 코어/샘플 모델 자산은 별도 라이선스가 적용되므로, 재배포/상업 이용 시 원본 라이선스 문구와 조건을 반드시 확인합니다.
 - `easy-cl2d`가 포함하는 수정 Cubism Framework의 NOTICE와 Live2D 라이선스 안내 사본은 `assets/licenses/live2d/easy-cl2d-*`에 보존합니다.
-- 렌 포스터 샘플은 `public/game-list/live2dtest/config.yaml.legalNotices`에 Live2D가 요구하는 문구와 공식 이용 조건 링크를 선언합니다. 해당 고지는 런처·시작·설정·엔딩에 표시됩니다.
+- 렌 포스터 샘플은 `public/game-list/live2dtest/config.yaml.legalNotices`에 Live2D가 요구하는 문구와 공식 이용 조건 링크를 선언합니다. 해당 고지는 런처·시작·설정·엔딩에 표시됩니다. 다만 이 샘플은 픽스처라 배포본에 올라가지 않습니다(`scripts/prune-fixtures.mjs`). 배포본이 싣는 Live2D 자산은 런타임 코어뿐이고, 그 고지는 `THIRD_PARTY_NOTICES.md`가 계속 담습니다.
 - YAVN은 ZIP/외부 데이터로 미지정 Live2D 모델을 추가할 수 있어 “확장 가능한 애플리케이션”에 해당할 가능성이 있습니다. 공개 서비스 운영자는 사업자 규모와 무관한 사전 심사·계약 필요 여부를 Live2D에 확인해야 합니다.
 - 종합 고지는 저장소 루트 `THIRD_PARTY_NOTICES.md`, Live2D 참고 파일은 `assets/licenses/live2d/`, SUITE OFL 전문은 `assets/licenses/fonts/LICENSE`에 보관합니다.
 

@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { deflateSync } from 'node:zlib';
+import { isStory } from './story-catalog.mjs';
 
 /**
  * Installable PWA for the YAVN site, without plugin dependencies:
@@ -201,6 +202,8 @@ export function collectOfflinePacks(publicDir, { maxBytes = OFFLINE_MAX_BYTES } 
     if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
     const gameDir = path.join(gameListDir, entry.name);
     if (!existsSync(path.join(gameDir, 'config.yaml'))) continue;
+    // Fixtures do not ship (scripts/prune-fixtures.mjs), so there is nothing to save offline.
+    if (!isStory({ id: entry.name })) continue;
     const files = listFiles(gameDir).map((file) => {
       const absolute = path.join(gameDir, file);
       return { path: file, bytes: statSync(absolute).size, hash: shortHash(readFileSync(absolute)) };
