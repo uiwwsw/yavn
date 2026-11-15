@@ -45,15 +45,49 @@ describe('selectPhoneThread', () => {
     expect(thread.map((bubble) => bubble.text)).toEqual(['a']);
   });
 
-  it('starts a new thread after someone speaks in the room', () => {
+  it('keeps the conversation through someone speaking in the room', () => {
     const thread = selectPhoneThread([
-      message('어제 그거 봤어?', 'them', 1),
+      message('어제 그거 봤어?', 'them', 1, '지영'),
       spoken('밥 먹었냐.', 2),
-      message('지금 어디야', 'them', 3),
-      message('가는 중', 'me', 4),
+      message('지금 어디야', 'them', 3, '지영'),
+      message('가는 중', 'me', 4, '해수'),
     ]);
 
-    expect(thread.map((bubble) => bubble.text)).toEqual(['지금 어디야']);
+    expect(thread.map((bubble) => bubble.text)).toEqual(['어제 그거 봤어?', '지금 어디야']);
+  });
+
+  it('ends the thread when the phone is picked up to write to somebody else', () => {
+    const thread = selectPhoneThread([
+      message('어제 그거 봤어?', 'them', 1, '지영'),
+      spoken('밥 먹었냐.', 2),
+      message('퇴근했니', 'them', 3, '엄마'),
+      message('지금 가요', 'me', 4, '해수'),
+    ]);
+
+    expect(thread.map((bubble) => bubble.text)).toEqual(['퇴근했니']);
+  });
+
+  it('keeps a group thread whole, however late in it someone first wrote', () => {
+    const thread = selectPhoneThread([
+      message('나도 갈래', 'them', 1, '경준'),
+      message('그래', 'them', 2, '지영'),
+      spoken('밖에서 소리가 났다.', 3),
+      message('어디까지 왔어', 'them', 4, '지영'),
+      message('거의 다 왔어', 'them', 5, '경준'),
+    ]);
+
+    expect(thread.map((bubble) => bubble.text)).toEqual(['나도 갈래', '그래', '어디까지 왔어']);
+  });
+
+  it('joins a stretch nobody is named in to whatever it touches', () => {
+    const thread = selectPhoneThread([
+      message('하나', 'them', 1),
+      spoken('조용하다.', 2),
+      message('둘', 'them', 3, '지영'),
+      message('셋', 'them', 4, '지영'),
+    ]);
+
+    expect(thread.map((bubble) => bubble.text)).toEqual(['하나', '둘']);
   });
 
   it('stops at the limit, keeping the newest bubbles', () => {

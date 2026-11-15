@@ -70,44 +70,107 @@ function toSender(entry: StoryLogEntry | undefined): PhoneSender | undefined {
   return { speaker: entry.speaker, side: entry.side ?? 'them' };
 }
 
+type MessageEntry = Extract<StoryLogEntry, { kind: 'dialogue' }>;
+
+/** An unbroken stretch of messages, and who was writing in during it. */
+type MessageRun = { entries: MessageEntry[]; correspondents: Set<string> };
+
+function isMessage(entry: StoryLogEntry): entry is MessageEntry {
+  return entry.kind === 'dialogue' && entry.channel === 'message';
+}
+
+function collectRuns(storyLog: StoryLogEntry[]): MessageRun[] {
+  const runs: MessageRun[] = [];
+  let open: MessageRun | undefined;
+  for (const entry of storyLog) {
+    if (!isMessage(entry)) {
+      open = undefined;
+      continue;
+    }
+    if (!open) {
+      open = { entries: [], correspondents: new Set() };
+      runs.push(open);
+    }
+    open.entries.push(entry);
+    if ((entry.side ?? 'them') !== 'me' && entry.speaker) {
+      open.correspondents.add(entry.speaker);
+    }
+  }
+  return runs;
+}
+
+/**
+ * Whether an earlier stretch of messages belongs to the conversation on screen.
+ *
+ * A phone shows one chat, and a chat is with people, not with a scene: leaving the phone to
+ * look up, to answer someone in the room, to let a moment pass, and coming back is still the
+ * same conversation — so it is still on screen. Picking the phone up to write to somebody
+ * else is not, and that is where the thread ends.
+ *
+ * Shared names decide it, which is what lets a group thread keep its whole cast as the run
+ * is walked back. A stretch nobody is named in belongs to whatever it touches.
+ */
+function sameConversation(correspondents: Set<string>, run: MessageRun): boolean {
+  if (correspondents.size === 0 || run.correspondents.size === 0) {
+    return true;
+  }
+  for (const name of run.correspondents) {
+    if (correspondents.has(name)) return true;
+  }
+  return false;
+}
+
 /**
  * The bubbles that belong above the line being spoken right now.
  *
- * A phone conversation is the unbroken run of `message` lines ending at the live one,
- * so anything else — a narration line, someone speaking in the room — closes the thread
- * and the next phone scene starts empty. The live line itself is left out: the view
- * renders that one separately so it can still type itself out.
+ * The live line itself is left out: the view renders that one separately so it can still
+ * type itself out.
  */
 export function selectPhoneThread(
   storyLog: StoryLogEntry[],
   { limit = PHONE_THREAD_MAX_BUBBLES }: { limit?: number } = {},
 ): PhoneThreadBubble[] {
-  const bubbles: PhoneThreadBubble[] = [];
-
-  for (let index = storyLog.length - 2; index >= 0 && bubbles.length < limit; index -= 1) {
-    const entry = storyLog[index];
-    if (entry.kind !== 'dialogue' || entry.channel !== 'message') break;
-    bubbles.push({
-      key: `${entry.chapterPath ?? ''}#${entry.sceneId}#${entry.actionIndex}`,
-      ...(entry.speaker ? { speaker: entry.speaker } : {}),
-      ...(entry.avatar ? { avatar: entry.avatar } : {}),
-      ...(entry.media ? { media: entry.media } : {}),
-      text: entry.text,
-      side: entry.side ?? 'them',
-      leadsRun: true,
-      endsRun: true,
-      emojiOnly: isEmojiOnly(entry.text),
-    });
+  const live = storyLog[storyLog.length - 1];
+  if (!live || !isMessage(live)) {
+    return [];
   }
 
-  bubbles.reverse();
-  // Walking forward is the only way to know what came before a bubble; the loop above runs
-  // backwards from the live line, and the oldest bubble it reaches opens a run by definition.
-  // The run the thread ends on may carry on into the live line, which is why the last bubble
-  // is measured against that line and not simply called the end of its run.
-  const live = toSender(storyLog[storyLog.length - 1]);
+  const correspondents = new Set<string>();
+  if ((live.side ?? 'them') !== 'me' && live.speaker) {
+    correspondents.add(live.speaker);
+  }
+
+  const entries: MessageEntry[] = [];
+  const runs = collectRuns(storyLog.slice(0, -1));
+  // The stretch the live line is standing in is the live line's own; it is never a different
+  // conversation, however many people turn out to be in it once it is walked back.
+  const before = storyLog[storyLog.length - 2];
+  const ownRun = before && isMessage(before) ? runs.length - 1 : -1;
+  for (let index = runs.length - 1; index >= 0; index -= 1) {
+    const run = runs[index];
+    if (index !== ownRun && !sameConversation(correspondents, run)) break;
+    entries.unshift(...run.entries);
+    for (const name of run.correspondents) correspondents.add(name);
+    if (entries.length >= limit) break;
+  }
+
+  const bubbles: PhoneThreadBubble[] = entries.slice(-limit).map((entry) => ({
+    key: `${entry.chapterPath ?? ''}#${entry.sceneId}#${entry.actionIndex}`,
+    ...(entry.speaker ? { speaker: entry.speaker } : {}),
+    ...(entry.avatar ? { avatar: entry.avatar } : {}),
+    ...(entry.media ? { media: entry.media } : {}),
+    text: entry.text,
+    side: entry.side ?? 'them',
+    leadsRun: true,
+    endsRun: true,
+    emojiOnly: isEmojiOnly(entry.text),
+  }));
+
+  // Naming and corner-tightening follow from what comes next, and the bubble the thread ends
+  // on is followed by the live line rather than by another bubble.
+  const liveSender = toSender(live);
   return bubbles.map((bubble, index) => {
-    const next = bubbles[index + 1] ?? live;
+    const next = bubbles[index + 1] ?? liveSender;
     return {
       ...bubble,
       leadsRun: leadsRun(bubbles[index - 1], bubble),

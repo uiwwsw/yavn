@@ -859,9 +859,16 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 
 /* A short conversation sits at the bottom of the screen and grows upward. `justify-content:
    flex-end` does that, but once the thread outgrows the screen it pushes the oldest messages
-   out past the top edge, where no scrollbar reaches them. An auto margin on the first item
-   does the same job and gives way the moment there is something to scroll. */
-.app .dialog-box.channel-message .dialog-content-scroll > :first-child { margin-top: auto; }
+   out past the top edge, where no scrollbar reaches them. An auto margin above the
+   conversation does the same job and gives way the moment there is something to scroll.
+   It names the two parts of the conversation rather than `:first-child`, because the column
+   also holds things that are not in its flow, and an auto margin on one of those does
+   nothing at all — which left the very first message of a scene stranded at the top until a
+   second one arrived and gave the margin something to push. */
+.app .dialog-box.channel-message .dialog-content-scroll > :is(.phone-thread, .phone-live) { margin-top: auto; }
+/* Once there is a thread above it, the live message is just the next bubble in it. */
+.app .dialog-box.channel-message .dialog-content-scroll > .phone-thread ~ .phone-live { margin-top: 10px; }
+.app .dialog-box.channel-message .dialog-content-scroll > .phone-thread ~ .phone-live:not(.leads-run) { margin-top: 2px; }
 
 /* A bubble is as tall as the words in it and never as tall as the space left over. Flex items
    shrink by default, so without this the newest message was squeezed to half its height — its
@@ -872,7 +879,6 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
    of the last message instead of butting against it. */
 .app .dialog-box.channel-message .dialog-content-scroll > :not(.phone-thread, .phone-live) { margin-top: 10px; }
 
-.app .dialog-box.channel-message .dialog-channel-label { align-self: flex-start; color: color-mix(in srgb, var(--phone-them-ink) 45%, transparent); }
 
 .app .phone-thread { display: flex; flex-direction: column; width: 100%; margin: 0; padding: 0; list-style: none; }
 
