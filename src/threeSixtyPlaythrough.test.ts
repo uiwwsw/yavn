@@ -23,7 +23,7 @@ const serve = (path: string): string | undefined => {
 
 type Route = Record<string, string>;
 
-const OPEN = '곳간을 연다. 한 집에 닷 되씩, 가을에 받는다.';
+const OPEN = '곳간을 연다. 우리 것에서 한 집에 닷 되씩.';
 const SHUT = '문을 닫아건다. 값은 더 오른다.';
 const GO = '마포에 올라간다. 사흘이면 돌아온다.';
 const STAY = '봉구를 대신 보내고 곁에 남는다.';
@@ -155,6 +155,11 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
+    // The storehouse is half somebody else's rice, so refusing is a fact before it is a excuse,
+    // and the taffy is asked for three times: in the yard, in the fever, and at the end.
+    expect(heard(shown, '맡은 쌀에 손대면 그날로 끝이다')).toBe(true);
+    expect(heard(shown, '여든 먹어도 엿은 엿이죠')).toBe(true);
+    expect(heard(shown, '종이가 눅눅하다')).toBe(true);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
       l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,
