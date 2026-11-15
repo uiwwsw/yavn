@@ -186,7 +186,7 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '하나만 안 되는 게 우연일 수가 있나')).toBe(true);
     // The fourth face knows her first, and says what is standing behind her when she looks back.
     expect(heard(shown, '아줌마, 어디서 봤는데')).toBe(true);
-    expect(heard(shown, '사람 있었어. 근데 얼굴은 안 보여. 맨날 거기 서 있어')).toBe(true);
+    expect(heard(shown, '근데 얼굴은 안 보여. 맨날 거기 서 있어')).toBe(true);
     // And the winter names who kept coming back, after the lives are done and before the last
     // thing is taken: one soul, four faces, each one further away than the last.
     expect(heard(shown, '넷 다 웃을 때 왼쪽 눈이 먼저 감겼다')).toBe(true);

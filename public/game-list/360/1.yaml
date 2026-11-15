@@ -14,11 +14,24 @@ scenes:
       - say: { channel: action, with: [], text: "국제시장 좌판은 상인회 명부로 난다. 3열 17번 한 자리에 대기가 둘이었다." }
       - say: { channel: record, with: [], text: "대기 명부. 3열 17번. 김순임(29). 박복례(41)." }
       - say: { channel: action, with: [], text: "자릿세를 먼저 낸 쪽이 들어간다. 그게 규칙이고, 규칙은 벽에 붙어 있다." }
-      - say: { channel: action, with: [], text: "계를 탄 것이 지난달이다. 나는 낼 수 있었고 복례 아주머니는 못 냈다." }
-      - say: { channel: action, with: [], text: "\"복례 아주머니, 저, 그게…\"" }
-      - say: { channel: action, with: [], text: "\"됐소. 먼저 낸 사람이 임자지. 나는 길목에서 하오.\"" }
-      - say: { channel: action, with: [], text: "복례 아주머니는 아이가 둘이다. 길목은 천막을 못 친다." }
-      - say: { channel: thought, with: [], text: "미안하다는 말을 하려다 말았다. 하면 자리를 내놔야 할 것 같아서." }
+      - char: { id: 순임, position: left }
+      - char: { id: 복례, position: right }
+      - say: { char: 복례, with: [순임], text: "순임이 왔구먼." }
+      - say: { char: 복례, with: [순임], text: "냈소?" }
+      - say: { char: 순임, with: [복례], text: "…네." }
+      - say: { char: 복례, with: [순임], text: "잘했지. 계 탔다며." }
+      - say: { channel: thought, with: [복례], text: "계를 탄 것이 지난달이다. 나는 낼 수 있었고 이 사람은 못 냈다." }
+      - say: { char: 순임, with: [복례], text: "복례 아주머니, 저, 그게…" }
+      - say: { char: 복례, with: [순임], text: "됐소." }
+      - say: { char: 복례, with: [순임], text: "먼저 낸 사람이 임자지. 나는 길목에서 하오." }
+      - say: { char: 순임, with: [복례], text: "길목은 천막을 못 치잖아요." }
+      - say: { char: 복례, with: [순임], text: "치면 되지 뭐. 비 오면 걷고." }
+      - say: { channel: thought, with: [복례], text: "저 집은 아이가 둘이다." }
+      - say: { channel: thought, with: [복례], text: "미안하다는 말을 하려다 말았다. 하면 자리를 내놔야 할 것 같아서." }
+      - say: { char: 복례, with: [순임], text: "순임이." }
+      - say: { char: 복례, with: [순임], text: "좋은 자리야. 잘 써." }
+      - move: { id: 복례, style: exit }
+      - say: { channel: action, with: [], text: "짐을 들고 길목 쪽으로 간다. 돌아보지 않는다." }
       - goto: stall
 
   stall:

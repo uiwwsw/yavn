@@ -269,8 +269,10 @@ scenes:
     actions:
       - say: { channel: action, with: [], text: "빗장이 걸린다. 대문 밖이 한동안 조용하다." }
       - say: { channel: action, with: [], text: "조용한 뒤에 그 애 목소리가 났다. 대문 밖이다." }
-      - say: { channel: action, with: [], text: "\"덕이 어머니. 우리 아버지 그런 사람 아니에요. 내일 다시 와 보세요, 네?\"" }
-      - say: { channel: action, with: [], text: "내일도 열지 않을 것이다. 그 애는 그걸 모른다." }
+      - say: { char: 끝순, with: [], text: "덕이 어머니." }
+      - say: { char: 끝순, with: [], text: "우리 아버지 그런 사람 아니에요." }
+      - say: { char: 끝순, with: [], text: "내일 다시 와 보세요, 네?" }
+      - say: { channel: thought, with: [], text: "내일도 열지 않을 것이다. 그 애는 그걸 모른다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지. 덕이가 업혀 왔어요. 여덟 살이." }
       - say: { char: 만석, with: [끝순], text: "곳간 쌀 절반이 남의 것이다. 남의 것을 퍼 주면 그건 도둑질이야." }
