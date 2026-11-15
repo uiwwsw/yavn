@@ -464,18 +464,22 @@ scenes:
           channel: system
           with: []
           text: "방문증 발급 · 문지완 · 방문 사유: 민원 면담 · 체류 가능 시간 60분 · 동행 필요"
+          autoAdvance: 2500
       - say:
           channel: system
           with: []
           text: "에모스 — 서로를 오해하지 않는 사회. 2026년부터 2033년까지, 오해로 인한 분쟁 조정 건수 71% 감소"
+          autoAdvance: 2852
       - say:
           channel: system
           with: []
           text: "게이트 통과 판독 · 문지완 — 긴장 1 · 적대 1 · 협조 1 · 재확인 필요"
+          autoAdvance: 2340
       - say:
           channel: system
           with: []
           text: "게이트 통과 판독 · 재시도 · 문지완 — 긴장 1 · 적대 1 · 협조 1 · 수동 통과 처리됨"
+          autoAdvance: 2628
       - set: { met_sukyung: true }
 
   meeting:

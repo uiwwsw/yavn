@@ -19,10 +19,12 @@ scenes:
           channel: system
           with: []
           text: "에모스 EMOS — 당신의 마음에 눈금을. 채용·결혼·보험·양육 제휴 2,140개사 · 오늘 측정 4,870만 건"
+          autoAdvance: 2916
       - say:
           channel: system
           with: []
           text: "오늘의 전국 평균 · 불안 38 · 피로 51 · 호감 44 · 분노 29"
+          autoAdvance: 2212
       - char: { id: 도겸, position: right }
       - char: { id: 지완, position: left }
       - say:
@@ -212,6 +214,7 @@ scenes:
           channel: system
           with: []
           text: "속보 · 노원 주부 사망 사건, 검찰 불기소 처분 · 2033.03.19"
+          autoAdvance: 2180
       - say:
           char: 도겸.wide
           with: [지완]
@@ -280,6 +283,7 @@ scenes:
           channel: system
           with: []
           text: "성일빌딩 2층 · 방문 1 · 오후 2:40"
+          autoAdvance: 1668
       - char: { id: 기태, position: center }
       - say:
           char: 기태
@@ -664,6 +668,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 2033년 3월 20일 오후 11:42"
+          autoAdvance: 1764
       - say:
           channel: message
           side: me

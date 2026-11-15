@@ -135,6 +135,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오전 9:40"
+          autoAdvance: 1316
       - say:
           channel: message
           side: them
@@ -595,6 +596,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오후 5:52"
+          autoAdvance: 1316
       - say:
           channel: message
           side: them
@@ -635,6 +637,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오후 6:04"
+          autoAdvance: 1316
       - say:
           channel: message
           side: them
@@ -686,6 +689,7 @@ scenes:
           channel: system
           with: []
           text: "생방송 시사 60분 · 4월 2일 · 출연 문지완(에모스 이의신청 대행) · 실시간 접속 118만"
+          autoAdvance: 2628
       - say:
           channel: system
           with: []
@@ -700,6 +704,7 @@ scenes:
           channel: system
           with: []
           text: "실시간 채팅 · 와 진짜 1이네 / 저런 사람이 방송을 나와? / 측정 오류 아님? / 소시오패스 아니냐"
+          autoAdvance: 2756
       - say:
           char: 지완
           with: []
@@ -726,6 +731,7 @@ scenes:
           channel: system
           with: []
           text: "실시간 채팅 · 뭐야 / 저게 뭐야 / 단위가 뭔데 / 조작 아니냐"
+          autoAdvance: 2084
       - say:
           char: 지완
           with: []
@@ -758,10 +764,12 @@ scenes:
           channel: system
           with: []
           text: "실시간 접속 410만 · 채팅 표시 중단 (과부하)"
+          autoAdvance: 1796
       - say:
           channel: system
           with: []
           text: "메시지 · 오후 9:21 · 첨부 1"
+          autoAdvance: 1540
       - say:
           channel: message
           side: them
@@ -795,14 +803,17 @@ scenes:
           channel: system
           with: []
           text: "속보 · 한신뉴로, 에모스 전 서비스 일시 중단 · 2033.04.02 22:41"
+          autoAdvance: 2340
       - say:
           channel: system
           with: []
           text: "속보 · 대법원, 정서적 범행가능성 심사 적용 전면 보류 권고 · 제휴사 2,140곳 판정 효력 정지"
+          autoAdvance: 2692
       - say:
           channel: system
           with: []
           text: "속보 · 서울북부지검, 2033형제4417 포함 재심 청구 접수 준비 · 대상 추정 13만 건"
+          autoAdvance: 2564
       - bg: { id: crosswalk, transition: dissolve, duration: 1200 }
       - place: "2033년 4월 3일 일요일 오전 8시 10분 · 상계동"
       - music: street
@@ -810,6 +821,7 @@ scenes:
           channel: system
           with: []
           text: "서비스 점검 중입니다. 판독을 제공할 수 없습니다."
+          autoAdvance: 1796
       - say:
           channel: action
           with: []
@@ -818,6 +830,7 @@ scenes:
           channel: system
           with: []
           text: "서비스 점검 중입니다. 판독을 제공할 수 없습니다."
+          autoAdvance: 1796
       - say:
           channel: action
           with: []
@@ -1063,6 +1076,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오후 1:40"
+          autoAdvance: 1316
       - say:
           channel: message
           side: them
@@ -1162,14 +1176,17 @@ scenes:
           channel: system
           with: []
           text: "에모스 민원센터 · 금주 재측정 이의신청 접수 11,204건 · 전주 대비 1,840%"
+          autoAdvance: 2436
       - say:
           channel: system
           with: []
           text: "안내 · 동일 서식 대량 접수로 심사 지연이 예상됩니다. 처리기한은 추후 공지합니다."
+          autoAdvance: 2404
       - say:
           channel: system
           with: []
           text: "메시지 · 오후 7:12"
+          autoAdvance: 1316
       - say:
           channel: message
           side: them

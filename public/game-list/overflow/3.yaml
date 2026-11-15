@@ -20,16 +20,19 @@ scenes:
           with: []
           text: "재생 · 014 · 2031.09.02 20:11 · 길이 1분 06초"
       - char: { id: 희남, position: center }
+      - wait: 260
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "오늘은 7이야. 어제는 6이었고."
+      - wait: 260
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "그 사람이 자꾸 죽을 사. 죽을 끓여 놓고 앉아 있어."
+      - wait: 260
       - say:
           char: 희남
           with: []
@@ -39,16 +42,19 @@ scenes:
           channel: system
           with: []
           text: "재생 · 047 · 2032.04.19 02:30 · 길이 24초"
+      - wait: 320
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "…동식 씨."
+      - wait: 320
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "자?"
+      - wait: 320
       - say:
           char: 희남
           with: []
@@ -58,21 +64,25 @@ scenes:
           channel: system
           with: []
           text: "재생 · 083 · 2032.11.30 23:47 · 길이 2분 51초"
+      - wait: 400
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "하율이한테는 말하지 마."
+      - wait: 400
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "그 앤 내가 자는 줄 알아."
+      - wait: 400
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "동식 씨. 한 번만 생각해 봐. 부탁이야."
+      - wait: 400
       - say:
           char: 희남
           with: []
@@ -82,6 +92,7 @@ scenes:
           channel: system
           with: []
           text: "재생 · 118 · 2033.03.05 19:02 · 길이 11초"
+      - wait: 520
       - say:
           char: 희남
           with: []
@@ -91,31 +102,37 @@ scenes:
           channel: system
           with: []
           text: "재생 · 119 · 2033.03.06 21:48 · 길이 3분 09초"
+      - wait: 620
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "오늘은 적지 마."
+      - wait: 620
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "적으면 당신이 매일 그 칸을 보잖아."
+      - wait: 620
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "이 년 동안 같은 말 했어. 몇 번 했는지는 당신이 세."
+      - wait: 900
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "나 이제 숨이 안 쉬어져. 들이쉬는 게 안 돼."
+      - wait: 620
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "…동식 씨. 내일."
+      - wait: 760
       - say:
           char: 희남
           with: []
@@ -140,6 +157,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오전 4:22"
+          autoAdvance: 1316
       - say:
           channel: message
           side: me
@@ -484,6 +502,7 @@ scenes:
           with: [동식]
           text: "…"
       - move: { id: 동식, toward: 지완, style: approach }
+      - wait: 900
       - say:
           char: 동식
           with: [지완]
@@ -493,10 +512,13 @@ scenes:
           char: 지완.break
           with: [동식]
           text: "…"
+      - wait: 800
       - say:
           char: 동식
           with: [지완]
           text: "내가 했습니다."
+          wait: 1000
+          unskippable: true
       - say:
           char: 지완
           with: [동식]
@@ -802,6 +824,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오후 9:11"
+          autoAdvance: 1316
       - say:
           channel: message
           side: them
@@ -859,6 +882,7 @@ scenes:
           channel: system
           with: []
           text: "통화 · 노기태 · 연결됨 · 오후 9:24"
+          autoAdvance: 1668
       - say:
           channel: message
           side: me
@@ -921,6 +945,7 @@ scenes:
           channel: system
           with: []
           text: "통화 · 윤세라 · 연결됨 · 오후 9:26"
+          autoAdvance: 1668
       - say:
           channel: message
           side: me
@@ -993,6 +1018,7 @@ scenes:
           channel: system
           with: []
           text: "메시지 · 오후 11:50"
+          autoAdvance: 1348
       - say:
           channel: message
           side: them
