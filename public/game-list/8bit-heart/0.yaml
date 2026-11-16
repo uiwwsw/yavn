@@ -48,7 +48,8 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "손에 든 거요? 코어에 등록 안 된 물건은 저한테 안 보여요."
+          text: "손은 보여요. 등록 안 된 물건은 확인할 수 없습니다."
+      - say: { char: 윤재, with: [비서], text: "내 손에 들고 있잖아." }
       - say:
           char: 윤재
           with: [비서]
@@ -69,6 +70,8 @@ scenes:
           char: 윤재
           with: [비서]
           text: "뜯어도 봤어. 안에 부푼 콘덴서 두 개 갈았거든? 그래도 안 돼."
+      - say: { char: 비서, with: [윤재], text: "납땜은 어디서 배우셨어요?" }
+      - say: { char: 윤재, with: [비서], text: "영상 보고 했지." }
       - say:
           char: 비서
           with: [윤재]
@@ -456,7 +459,7 @@ scenes:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "그럼 실질 이만 팔천이잖아. 내가 이겼네. 아무도 안 졌는데 내가 이겼어."
+          text: "택배비 빼면 이만 팔천이네. 봤지? 깎았다니까."
       - say:
           char: 비서
           with: [윤재]
@@ -495,6 +498,7 @@ scenes:
           side: them
           with: []
           text: "판매자: 있음"
+      - say: { char: 윤재, with: [비서], text: "있대. 나 설명서는 안 읽는데." }
       - say:
           channel: message
           side: me
@@ -509,7 +513,7 @@ scenes:
           char: 윤재
           motion: puff
           with: [비서]
-          text: "아저씨, 세이브를 안 해 보면 어떡해요."
+          text: "야, 안 해 봤대."
       - say:
           char: 비서
           with: [윤재]
