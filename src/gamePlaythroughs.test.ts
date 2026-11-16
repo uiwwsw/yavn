@@ -199,6 +199,37 @@ describe('8비트 심장', () => {
     expect(current().dialog.fullText).toBe('됐… 아. 줄도 꺼졌어.');
   });
 
+  it('opens with four repair actions and only lights the old screen after tapping it', async () => {
+    await start('8bit-heart');
+    const current = useVNStore.getState;
+    const reach = async (label: string) => {
+      for (let step = 0; step < 40 && current().dialog.continueLabel !== label; step += 1) {
+        handleAdvance(true);
+        await vi.advanceTimersByTimeAsync(200);
+      }
+      expect(current().dialog.continueLabel).toBe(label);
+      handleAdvance();
+      handleAdvance();
+      expect(current().dialog.continueLabel).toBe(label);
+    };
+
+    await reach('전원을 켠다');
+    expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
+    handleAdvance(true);
+    await reach('건전지를 뺐다 끼운다');
+    expect(heard(current().storyLog.flatMap(entry => 'text' in entry ? [entry.text] : []), '최신 펌웨어')).toBe(true);
+    handleAdvance(true);
+    await reach('본체를 툭툭 친다');
+    expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
+    handleAdvance(true);
+    await reach('카트리지에 바람을 분다');
+    expect(current().stickers.s0_broken?.source).toContain('/console_old_line.svg');
+    handleAdvance(true);
+    await vi.advanceTimersByTimeAsync(800);
+    expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
+    expect(current().dialog.fullText).toBe('됐… 아. 줄도 꺼졌어.');
+  });
+
   it('하루의 마지막 질문에 대답하면 4장에서 로봇을 믿는다고 말한다', async () => {
     await start('8bit-heart');
     const run = await play({
@@ -322,6 +353,8 @@ describe('튜토리얼', () => {
       t4_end: '전원선을 뽑는다',
     });
     finished(run);
+    expect(run.picked.slice(0, 2).map(entry => entry.split('=')[0])).toEqual(['t0_kwang', 't0_coupon']);
+    expect(heard(run.shown, '최초 처리자 정해수')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서 왜 사느냐고')).toBe(true);
     expect(heard(run.shown, '그 말이 맞아. 내가 혼자 다 못 먹어')).toBe(true);
     expect(heard(run.shown, '환청은 보통 이렇게 안 적힙니다')).toBe(true);

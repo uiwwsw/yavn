@@ -1,6 +1,7 @@
 chapterTitle: "근무표"
 
 script:
+  - scene: ticket_opening
   - scene: chat
   - scene: counter
   - scene: coupon
@@ -10,11 +11,25 @@ script:
   - scene: room
 
 scenes:
+  ticket_opening:
+    title: "호출 대기"
+    actions:
+      - bg: { id: cs_desk, transition: cut }
+      - music: fluoro
+      - place: "4월 11일 금요일 · 그린마트 상봉점 고객센터"
+      - say:
+          channel: action
+          with: []
+          text: "포스기 옆 호출기에 027이 떠 있다. 해수 앞에는 아직 손님이 없다."
+          continueLabel: "027번을 호출한다"
+      - set: { t0_refund_first: true }
+      - goto: ticket
+
   chat:
     title: "단톡방"
     actions:
       - bg: { id: home_hall, transition: cut }
-      - place: "2031년 4월 11일 금요일 · 상봉동"
+      - place: "같은 날 오전 8:12 · 상봉동"
       - music: fluoro
       - say:
           channel: system
@@ -301,7 +316,7 @@ scenes:
           char: 지영
           with: [해수]
           text: "생각하면 안 하는 거야, 너는."
-      - goto: ticket
+      - goto: after_coupon
 
   coupon_refuse:
     actions:
@@ -333,7 +348,15 @@ scenes:
           motion: sigh
           with: [해수]
           text: "그럼 계산대 밑 둘째 서랍에 둔다. 영수증 상자 위. 너 그 서랍 하루에 서른 번은 열잖아. 버리든가."
-      - goto: ticket
+      - goto: after_coupon
+
+  after_coupon:
+    actions:
+      - branch:
+          cases:
+            - when: { var: t0_refund_first, op: eq, value: true }
+              goto: lunch
+          default: ticket
 
   ticket:
     title: "027번"
@@ -352,91 +375,16 @@ scenes:
           motion: bow
           with: [광철]
           text: "오광철 고객님, 오셨어요."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "오늘 왜 이렇게 추워. 사월인데."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "아침에 바람이 좀 불었어요."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "주차장에 차를 대려는데 엘리베이터 쪽은 맨날 자리가 없어."
+      - say: { char: 광철, with: [해수], text: "나 저 기둥 옆에 못 대서 한 바퀴를 돌았어. 이거 환불해 줘." }
+      - say: { char: 해수.service, with: [광철], text: "즉석밥 열두 개 묶음이요. 영수증 주시겠어요?" }
+      - say: { char: 광철, with: [해수], text: "어제 여기서 산 거 몰라? 맨날 보면서." }
       - say:
           char: 해수.service
           with: [광철]
-          text: "금요일에는 손님이 좀 많으세요."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "나는 거기 아니면 못 세워. 기둥 옆에 늘 대."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "지정 자리는 따로 없어서요, 고객님."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "그건 알아. 그냥 말해 본 거지."
-      - say:
-          char: 광철
-          motion: headtilt
-          with: [해수]
-          text: "저 형광등은 언제부터 저래. 눈이 아파서 못 보겠어."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "3월부터요."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "시설팀에 말씀드렸습니다."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "말만 하면 뭐 해. 나는 집 전구도 내가 갈아. 의자 놓고 올라가서."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "조심하셔야 돼요, 고객님."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "갈 사람이 나밖에 없는데 어떡해."
-      - say:
-          char: 광철
-          motion: puff
-          with: [해수]
-          text: "…아니, 그게 중요한 게 아니고."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "이거 환불."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "즉석밥 열두 개 묶음이요."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "영수증 확인해 드릴게요."
-      - say:
-          char: 광철
-          motion: stomp
-          with: [해수]
-          text: "확인은 뭘 확인해. 어제 여기서 산 거 몰라? 맨날 보면서."
-      - say:
-          char: 해수.service
-          motion: nod
-          with: [광철]
-          text: "네, 알고 있습니다."
-      - say:
-          char: 해수.service
-          motion: nod
-          with: [광철]
-          text: "시스템에 찍어야 해서요."
+          text: "알고 있습니다, 고객님. 포스기에 찍어야 해서요."
+          continueLabel: "영수증을 찍는다"
+      - sound: snap
+      - effect: focus
       - say:
           channel: record
           with: []
@@ -446,7 +394,7 @@ scenes:
           motion: lean_in
           with: [해수, 광철]
           delivery: whisper
-          text: "마흔한 건. 최초 등록 2019년 4월 11일 두 시 오십이 분. …야, 오늘이네. 너 첫날 첫 손님이 이분이야?"
+          text: "2019년 4월 11일. 딱 십이 년 전 오늘이네. 해수야, 너 첫날 첫 손님이 이분이야?"
       - say:
           char: 광철
           with: [지영, 해수]
@@ -641,7 +589,11 @@ scenes:
           with: [해수]
           text: "볼펜 없앤 보람이 있네."
       - clearSticker: { id: pencil, leave: fadeOut }
-      - goto: lunch
+      - branch:
+          cases:
+            - when: { var: t0_refund_first, op: eq, value: true }
+              goto: chat
+          default: lunch
 
   lunch:
     title: "휴게실"
