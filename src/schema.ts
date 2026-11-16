@@ -446,6 +446,7 @@ const uiConfigSchema = z
   .object({
     template: uiTemplateSchema,
     promptHeight: promptHeightSchema.optional(),
+    messagePortrait: z.string().trim().min(1).optional(),
   })
   .strict();
 
@@ -688,11 +689,14 @@ export const runtimeInventorySchema = z.object({
   defaults: z.record(inventoryItemSchema),
 });
 
+const povSchema = z.string().trim().min(1).max(120).optional();
+
 export const configSchema = z
   .object({
     title: z.string().min(1),
     author: z.union([z.string(), authorObjectSchema]).optional(),
     version: z.string().optional(),
+    pov: povSchema,
     seo: seoConfigSchema.optional(),
     legalNotices: legalNoticesSchema.optional(),
     textSpeed: z.number().positive(),
@@ -723,10 +727,12 @@ export const chapterSchema = z
     state: layerStateSchema.optional(),
     inventory: layerInventorySchema.optional(),
     chapterTitle: z.string().trim().min(1).max(100).optional(),
+    pov: povSchema,
     script: z.array(z.object({ scene: z.string() })).min(1),
     scenes: z.record(
       z.object({
         title: z.string().trim().min(1).max(120).optional(),
+        pov: povSchema,
         layout: z.enum(['auto', 'fixed']).optional(),
         actions: z.array(actionSchema),
       }),
@@ -757,10 +763,12 @@ export const gameSchema = z.object({
   endingScreen: endingScreenSchema.optional(),
   ui: uiConfigSchema.optional(),
   chapterTitle: z.string().trim().min(1).max(100).optional(),
+  pov: povSchema,
   script: z.array(z.object({ scene: z.string() })).min(1),
   scenes: z.record(
     z.object({
       title: z.string().trim().min(1).max(120).optional(),
+      pov: povSchema,
       layout: z.enum(['auto', 'fixed']).optional(),
       actions: z.array(actionSchema),
     }),

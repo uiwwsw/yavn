@@ -58,6 +58,7 @@ function createAssetCollector(game: GameData) {
       addCharacter(action.char.emotion ? `${action.char.id}.${action.char.emotion}` : action.char.id);
     } else if ('say' in action) {
       addPresentation(action.say.char, action.say.with);
+      if (action.say.channel === 'message') addPath(game.ui?.messagePortrait);
       // A photo that arrives after its message has been read is a photo nobody sees.
       // Clips are left out: a video streams, and preloading one would stall the chapter.
       const media = typeof action.say.media === 'string' ? { src: action.say.media } : action.say.media;

@@ -20,7 +20,7 @@ import { useVNStore } from './store';
 import type { ParsedBaseYaml, ParsedChapterYaml, ParsedConfigYaml } from './parser';
 import { collectChapterAssetPaths, collectStartupAssetPaths } from './preload';
 import { ReadHistory, readLineKey } from './readHistory';
-import { interpolateText } from './textVariables';
+import { interpolateText, resolvePlayerName } from './textVariables';
 import {
   DEFAULT_RUNTIME_GAME_SETTINGS,
   migrateRuntimeGameSettings,
@@ -511,9 +511,12 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
     if ('get' in action) applyInventoryGetToVars(inventory, action.get);
     if ('use' in action) applyInventoryUseToVars(inventory, action.use);
     if ('say' in action && (!action.say.when || evaluateCondition(action.say.when, vars, inventory))) {
-      const presentation = resolveSayPresentation(action.say.char, action.say.with, []);
+      const speakerId = parseCharacterRef(action.say.char).id;
+      const channel = resolveDialogueChannel(action.say.channel, speakerId);
+      const speaker = speakerId ? interpolateText(game.assets.characters[speakerId]?.name ?? speakerId, vars)
+        : channel === 'thought' ? resolvePlayerName(game, sceneId, vars) : undefined;
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
-        speaker: presentation.speakerName, channel: resolveDialogueChannel(action.say.channel, presentation.speakerId),
+        speaker, channel,
         ...(action.say.side ? { side: action.say.side } : {}),
         text: parseInlineSpeed(interpolateText(action.say.text ?? '', vars)).text });
     }
@@ -5073,6 +5076,8 @@ function runToNextPause(loopGuard = 0) {
       : undefined;
     const channel = resolveDialogueChannel(action.say.channel, presentation.speakerId);
     const spokenSpeakerId = channel === 'thought' || channel === 'action' ? undefined : presentation.speakerId;
+    const speakerName = presentation.speakerName
+      ?? (channel === 'thought' ? resolvePlayerName(game, state.currentSceneId, state.routeVars) : undefined);
     const delivery = resolveDialogueDelivery(
       action.say.delivery,
       speakerEmotion,
@@ -5096,7 +5101,7 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',
-      speaker: presentation.speakerName,
+      speaker: speakerName,
       channel,
       ...(channel === 'message' ? { side: action.say.side ?? 'them' } : {}),
       ...(phoneAvatar ? { avatar: phoneAvatar } : {}),
@@ -5107,7 +5112,7 @@ function runToNextPause(loopGuard = 0) {
       actionIndex: state.actionIndex,
     });
     useVNStore.getState().setDialog({
-      speaker: presentation.speakerName,
+      speaker: speakerName,
       speakerId: spokenSpeakerId,
       cameraTargetId: resolveDialogCameraTargetId(
         action.say.camera,
@@ -5691,6 +5696,9 @@ function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByK
     if (item.image) {
       item.image = replace(item.image);
     }
+  }
+  if (cloned.ui?.messagePortrait) {
+    cloned.ui.messagePortrait = replace(cloned.ui.messagePortrait);
   }
   for (const scene of Object.values(cloned.scenes)) {
     for (const action of scene.actions) {

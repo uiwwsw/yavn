@@ -1,4 +1,5 @@
 chapterTitle: "녹취"
+pov: "지안"
 
 script:
   - scene: edit_room
@@ -9,7 +10,7 @@ scenes:
     actions:
       - bg: { id: edit_room, transition: fade, duration: 900 }
       - music: now
-      - place: "2026년 삼월 · 상암동 편집실"
+      - place: "2026년 3월 · 상암동 편집실 · 지안"
       - char: { id: 지안, position: left }
       - char: { id: 차피디, position: right }
       - say:
@@ -459,10 +460,10 @@ scenes:
           when: { var: l4_signed, op: eq, value: false }
           text: "서랍에 통장이 하나 있다. 잔액은 장례비에 조금 못 미친다."
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
-      - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 답장 칸에 커서가 깜박인다.", wait: 1100 }
+      - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 답장 칸에 커서가 깜박인다.", wait: 1800 }
       - say: { channel: thought, with: [], text: "통은 가져가지 않았다. 쉰 김치는 찌개를 하면 된다고 엄마가 말했었다." }
       - say: { channel: thought, with: [], text: "지금 쓰면 어디로 가는지 모른다. 안 쓰면 어디로도 안 간다." }
-      - say: { channel: action, with: [], text: "커서는 밤새 깜박인다. 손은 이불 위에 있다." }
+      - say: { channel: action, with: [], text: "커서는 밤새 깜박인다. 손은 이불 위에 있다.", wait: 2200 }
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void
       - goto: /4.yaml

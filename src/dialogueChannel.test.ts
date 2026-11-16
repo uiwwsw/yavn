@@ -34,7 +34,7 @@ describe('dialogue presentation channels', () => {
   });
 
   it('keeps the speaker name tag on the left and moves a channel label to the right', () => {
-    const speakerAt = appSource.indexOf('<div className={`speaker delivery-${dialogDelivery}`}>');
+    const speakerAt = appSource.indexOf('<div className={`speaker delivery-${dialogDelivery}`} data-unknown=');
     const labelAt = appSource.indexOf('<div className="dialog-channel-label">');
     expect(speakerAt).toBeGreaterThan(-1);
     expect(labelAt).toBeGreaterThan(speakerAt);

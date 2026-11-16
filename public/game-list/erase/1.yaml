@@ -441,6 +441,7 @@ scenes:
       - goto: e1_harin
 
   e1_harin:
+    pov: "유하린"
     title: "하린"
     actions:
       - bg: { id: classroom, transition: cut }
@@ -574,6 +575,7 @@ scenes:
               goto: e1_harin_ask
 
   e1_harin_smile:
+    pov: "유하린"
     actions:
       - say:
           char: 하린
@@ -598,6 +600,7 @@ scenes:
       - goto: e1_harin_night
 
   e1_harin_ask:
+    pov: "유하린"
     actions:
       - say:
           char: 하린
@@ -627,6 +630,7 @@ scenes:
       - goto: e1_harin_night
 
   e1_harin_night:
+    pov: "유하린"
     actions:
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: "그날 밤 · 하린의 방"
@@ -654,6 +658,7 @@ scenes:
       - goto: h1_type
 
   h1_type:
+    pov: "유하린"
     actions:
       - choice:
           key: h1_send
@@ -671,6 +676,7 @@ scenes:
               goto: h1_more
 
   h1_sent:
+    pov: "유하린"
     actions:
       - say:
           channel: system
@@ -697,6 +703,7 @@ scenes:
       - goto: h1_shots
 
   h1_erased:
+    pov: "유하린"
     actions:
       - say:
           channel: message
@@ -717,6 +724,7 @@ scenes:
       - goto: h1_shots
 
   h1_more:
+    pov: "유하린"
     actions:
       - say:
           channel: message
@@ -746,6 +754,7 @@ scenes:
       - goto: h1_shots
 
   h1_shots:
+    pov: "유하린"
     actions:
       - say:
           channel: system

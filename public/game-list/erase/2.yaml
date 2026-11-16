@@ -584,6 +584,7 @@ scenes:
       - goto: e2_harin
 
   e2_harin:
+    pov: "유하린"
     title: "체육복"
     actions:
       - bg: { id: classroom, transition: cut }

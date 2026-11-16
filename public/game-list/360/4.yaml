@@ -1,4 +1,5 @@
 chapterTitle: "360"
+pov: "지안"
 
 script:
   - scene: last_dark
@@ -378,11 +379,11 @@ scenes:
     actions:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
-      - bg: { id: void_near, transition: dissolve, duration: 900 }
-      - wait: 240
-      - say: { channel: narration, text: "편집실 층수가 빠져나간다. 보험 증권 장수가, 책 제목이 빠져나간다.", autoAdvance: 2366 }
-      - say: { channel: narration, text: "되물을 수 있었던 것들이 먼저 나간다. 궤짝 오른쪽. 연필심. 다리 밑 바람 방향." }
+      - say: { channel: narration, text: "다음 빛을 향해 천천히 움직였다.", wait: 1200 }
+      - bg: { id: void_near, transition: dissolve, duration: 2300 }
+      - wait: 900
+      - say: { channel: narration, text: "편집실이 몇 층이었는지 기억이 나지 않았다.", wait: 1400 }
+      - say: { channel: narration, text: "지금까지 살아온 장면들이 멀어졌다. 그러다 앞에 낯선 풍경이 멈춰 섰다." }
       - goto: winter_in
 
   look_choice:
@@ -412,6 +413,7 @@ scenes:
 
   # 넷째를 쥐고 기울어지는 중에, 한 번도 재판한 적 없는 것이 하나 더 온다.
   winter_in:
+    pov: "???"
     actions:
       - say: { channel: narration, text: "빠져나가다 멎는다." }
       - wait: 900
@@ -420,11 +422,12 @@ scenes:
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "이건 숫자가 안 붙어 있다. 붙일 줄 몰랐을 때 지나간 것이다." }
       - say: { channel: narration, text: "떠오르는 것은 겨울이다. 내가 살았던 겨울." }
-      - say: { channel: card, with: [], text: "그 겨울\n1809년 · 조선" }
+      - say: { channel: card, with: [], text: "1809년 겨울\n조선", wait: 2200 }
       - goto: winter_remember
 
   # 기억은 한 번에 오지 않는다. 더듬어 찾은 것만 돌아오고, 셋이 모이면 나머지가 저절로 온다.
   winter_remember:
+    pov: "???"
     actions:
       - choice:
           key: w_remember
@@ -449,6 +452,7 @@ scenes:
               goto: mem_child
 
   mem_ash:
+    pov: "???"
     actions:
       - set: { m_ash: true }
       - add: { m_found: 1 }
@@ -459,6 +463,7 @@ scenes:
       - goto: winter_remember
 
   mem_jar:
+    pov: "???"
     actions:
       - set: { m_jar: true }
       - add: { m_found: 1 }
@@ -469,6 +474,7 @@ scenes:
       - goto: winter_remember
 
   mem_river:
+    pov: "???"
     actions:
       - set: { m_river: true }
       - add: { m_found: 1 }
@@ -480,6 +486,7 @@ scenes:
       - goto: winter_remember
 
   mem_child:
+    pov: "???"
     actions:
       - effect: { name: focus, wait: true }
       - say: { channel: narration, text: "식은 아궁이 옆에 이불 한 채가 보인다." }
@@ -493,30 +500,32 @@ scenes:
 
   # 다섯 삶에 한 사람만 돌아왔다. 겹친 것은 버릇 하나뿐이다.
   winter_face:
+    pov: "???"
     actions:
       - say: { channel: narration, text: "아이 얼굴이 떠오르지 않는다. 서른 해를 기억했는데 얼굴만 없다." }
-      - wait: 900
-      - say: { channel: narration, text: "대신 네 얼굴이 떠오른다." }
+      - wait: 1400
+      - say: { channel: narration, text: "그러다 낯익은 얼굴들이 하나씩 떠올랐다.", wait: 1400 }
       - say: { channel: narration, text: "여든 먹어도 엿은 엿이라던 열여섯." }
       - say: { channel: narration, text: "할머이 또 부두 나갔다고 뛰어오던 일곱 살." }
       - say: { channel: narration, text: "링거 줄 안 빠진다고 줄넘기까지 해 봤다던 스물하나." }
       - say: { channel: narration, text: "색연필 쥐고 아줌마 어디서 봤는데, 하던 여덟 살." }
-      - wait: 1100
+      - wait: 1800
       - mood: { tone: warm, level: 2 }
       - say: { channel: narration, text: "넷 다 웃을 때 왼쪽 눈이 먼저 감겼다." }
       - say: { channel: narration, text: "딸이었다가, 아들이었다가, 옆 침대였다가, 모르는 사람이었다." }
-      - wait: 1100
-      - say: { channel: narration, text: "덮어 두고 나간 아이다." }
+      - wait: 1800
+      - say: { channel: narration, text: "그 겨울, 이불을 덮어 주고 집에 두고 나간 아이였다.", wait: 2200 }
       - mood: off
       - effect: { name: eclipse, wait: true }
       - say: { channel: narration, text: "따라온 것이 아니다. 먼저 와 있었다. 다섯 번 다." }
-      - wait: 900
+      - wait: 1400
       - say: { channel: narration, text: "맨날 거기 서 있다고 했다. 얼굴은 안 보인다고 했다." }
       - say: { channel: narration, text: "얼굴이 안 보이는 쪽이 나였다." }
       - goto: winter_churn
 
   # 서른 해 동안 되씹은 것들이 한꺼번에 올라온다. 쥘 수 있는 것은 그중 하나뿐이다.
   winter_churn:
+    pov: "???"
     actions:
       - say: { channel: narration, text: "화가 난다. 낼 데가 없는데 난다." }
       - say: { channel: narration, text: "그날 강을 안 건넜더라면." }
@@ -533,6 +542,7 @@ scenes:
       - goto: winter_choice
 
   winter_choice:
+    pov: "???"
     actions:
       - choice:
           key: v_end
@@ -550,6 +560,7 @@ scenes:
               goto: last_stop
 
   winter_go:
+    pov: "???"
     actions:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }

@@ -126,10 +126,23 @@ describe('360 full playthrough', () => {
       'first_light=손을 뻗는다.',
     ]);
     expect(heard(shown, '아무것도 안 보인다.')).toBe(true);
-    expect(heard(shown, '어디선가 웃음소리가 난다.')).toBe(true);
+    expect(heard(shown, '어둠 속에 희미한 빛들이 보였다.')).toBe(true);
     expect(state.choiceGate.key).toBe('star');
     expect(state.choiceGate.options.map((option) => option.text)).toEqual([STAR_1894, STAR_1952, STAR_1988]);
     expect(state.routeVars.lives_done).toBe(0);
+  });
+
+  it('names the next player only after the light and keeps that name for their thoughts', async () => {
+    await start();
+    const { state, shown } = await play({ star: STAR_1952 }, 'l2_heart');
+    const brightness = shown.findIndex(line => line.includes('주변이 서서히 밝아졌다.'));
+    const card = shown.indexOf('1952년 12월\n부산\n내 이름은 순임.');
+    expect(brightness).toBeGreaterThan(-1);
+    expect(card).toBeGreaterThan(brightness);
+    expect(state.game?.pov).toBe('순임');
+    expect(state.storyLog).toContainEqual(expect.objectContaining({
+      kind: 'dialogue', channel: 'thought', speaker: '순임',
+    }));
   });
 
   it('ends the run at the first light when the player stays and offers that choice again', async () => {
@@ -193,9 +206,9 @@ describe('360 full playthrough', () => {
       l5_look: '돌아본다.',
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
-    const firstMemory = shown.indexOf('어디선가 웃음소리가 난다. 아는 사람 같은데 이름이 안 난다.');
+    const firstMemory = shown.indexOf('조금 더 다가가자 어둠 속에 희미한 빛들이 보였다.');
     expect(shown.slice(firstMemory, firstMemory + 2)).toEqual([
-      '어디선가 웃음소리가 난다. 아는 사람 같은데 이름이 안 난다.',
+      '조금 더 다가가자 어둠 속에 희미한 빛들이 보였다.',
       '종이가 눅눅하다. 깨가 붙어 있다.',
     ]);
     // The first life is free: nothing has been handed down to it yet.
@@ -251,7 +264,7 @@ describe('360 full playthrough', () => {
     // thing is taken: one soul, four faces, each one further away than the last.
     expect(heard(shown, '넷 다 웃을 때 왼쪽 눈이 먼저 감겼다')).toBe(true);
     expect(heard(shown, '딸이었다가, 아들이었다가, 옆 침대였다가, 모르는 사람이었다')).toBe(true);
-    expect(heard(shown, '덮어 두고 나간 아이다')).toBe(true);
+    expect(heard(shown, '이불을 덮어 주고 집에 두고 나간 아이였다')).toBe(true);
     expect(heard(shown, '따라온 것이 아니다. 먼저 와 있었다')).toBe(true);
     expect(heard(shown, '얼굴이 안 보이는 쪽이 나였다')).toBe(true);
     expect(state.routeVars).toMatchObject({
@@ -317,7 +330,7 @@ describe('360 full playthrough', () => {
     expect(state.isFinished, picked.join('\n')).toBe(true);
     // The ward comes first here, so the storehouse is a later life and the editor is still last:
     // only that life can hear the other four back.
-    expect(heard(shown, '1988년 구월')).toBe(true);
+    expect(heard(shown, '1988년 9월')).toBe(true);
     expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
     // The ward is free because nothing has been handed down to it yet, and after it the chain
     // still runs: 더 살고 싶었다 shuts the storehouse, 매이지 말았어야 shuts the train.

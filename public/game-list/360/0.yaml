@@ -1,4 +1,5 @@
 chapterTitle: "곳간 열쇠"
+pov: "만석"
 
 script:
   - scene: dark
@@ -17,11 +18,12 @@ scenes:
           default: dark_first
 
   dark_first:
+    pov: "???"
     actions:
       - bg: { id: void_empty, transition: cut }
-      - say: { channel: narration, text: "암흑." }
+      - say: { channel: narration, text: "눈을 떴다.", wait: 650 }
       - music: void
-      - say: { channel: narration, text: "아무것도 안 보인다." }
+      - say: { channel: narration, text: "아무것도 안 보인다. 내 이름도 떠오르지 않는다.", wait: 1100 }
       - choice:
           key: where_am_i
           prompt: "여긴 어디지?"
@@ -31,18 +33,19 @@ scenes:
             - { text: "천국", saveText: "천국인가.", goto: first_light }
 
   first_light:
+    pov: "???"
     actions:
       - choice:
           key: first_light
           presentation: approach
-          prompt: "저 앞에서 별 하나가 반짝인다."
+          prompt: "멀리 작은 빛이 보인다."
           options:
             - text: "손을 뻗는다."
               at: { x: 54, y: 42 }
               mood: pale
               reveal:
-                - "손끝에 닿을 줄 알았는데, 아직 멀다."
-                - "어디선가 웃음소리가 난다. 아는 사람 같은데 이름이 안 난다."
+                - "빛을 향해 조금 다가갔다."
+                - "조금 더 다가가자 어둠 속에 희미한 빛들이 보였다."
               goto: first_memories
             - text: "그대로 있는다."
               gameOver:
@@ -50,29 +53,33 @@ scenes:
                 recoverToChoice: first_light
 
   first_memories:
+    pov: "???"
     actions:
       - mood: off
+      - bg: { id: void_light, transition: dissolve, duration: 1800 }
       - goto: stars
 
   # 두 번째부터. 돌아왔다는 것만 알고, 어디로 돌아왔는지는 모른다.
   dark_again:
+    pov: "???"
     actions:
       - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "여기다. 여기였던 것 같다." }
-      - say: { channel: narration, text: "방금 산 것이 벌써 흐리다. 쥔 것 하나만 또렷하다." }
+      - say: { channel: narration, text: "한 삶을 마치고 처음의 어둠으로 돌아왔다.", wait: 1300 }
+      - say: { channel: narration, text: "방금까지 살던 날들이 희미해졌다. 마지막에 고른 것 하나만 기억난다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
-      - say: { channel: narration, text: "꺼진 쪽은 이제 안 당긴다. 남은 쪽이 당긴다." }
+      - say: { channel: narration, text: "아직 빛나는 쪽에는 어떤 삶이 기다리고 있을까." }
       - goto: stars
 
   # 고르는 것은 사람이 아니라 그리움의 모양이다. 누군지는 가 봐야 안다.
   stars:
+    pov: "???"
     actions:
       - choice:
           key: star
           presentation: approach
-          prompt: "가 볼까."
+          prompt: "빛마다 낯선 풍경이 비친다. 어느 쪽으로 갈까?"
           options:
             - text: "깨 붙은 엿"
               at: { x: 26, y: 63 }
@@ -112,63 +119,68 @@ scenes:
               goto: go_2026
 
   go_1894:
+    pov: "???"
     actions:
       - set: { lived_1894: true }
       - add: { lives_done: 1 }
-      - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "그쪽으로 기운다. 처음에는 느리다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: dissolve, duration: 900 }
-      - wait: 240
-      - say: { channel: narration, text: "당긴 쪽만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
-      - wait: 180
-      - say: { channel: card, with: [], text: "1894년 유월\n제물포" }
+      - bg: { id: void_light, transition: dissolve, duration: 1800 }
+      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
+      - wait: 950
+      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 멀리서 주판알 부딪히는 소리가 났다.", wait: 1400 }
+      - wait: 300
+      - say: { channel: card, with: [], text: "1894년 6월\n제물포\n내 이름은 만석.", wait: 2000 }
       - mood: off
       - goto: yard
 
   go_1952:
+    pov: "???"
     actions:
       - set: { lived_1952: true }
       - add: { lives_done: 1 }
-      - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "그쪽으로 기운다. 기울고 나니 빠르다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: dissolve, duration: 900 }
-      - wait: 240
-      - say: { channel: narration, text: "이름이 먼저 빠져나간다. 그다음이 얼굴이다.", autoAdvance: 1800 }
-      - wait: 180
-      - say: { channel: card, with: [], text: "1952년 십이월\n부산" }
+      - bg: { id: void_light, transition: dissolve, duration: 1800 }
+      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
+      - wait: 950
+      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 바닷바람이 뺨에 닿았다.", wait: 1400 }
+      - wait: 300
+      - say: { channel: card, with: [], text: "1952년 12월\n부산\n내 이름은 순임.", wait: 2000 }
       - mood: off
       - goto: /1.yaml
 
   go_1988:
+    pov: "???"
     actions:
       - set: { lived_1988: true }
       - add: { lives_done: 1 }
-      - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "그쪽으로 기운다. 가까웠던 모양이다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: dissolve, duration: 900 }
-      - wait: 240
-      - say: { channel: narration, text: "빠져나갈 것이 생각보다 적다.", autoAdvance: 1800 }
-      - wait: 180
-      - say: { channel: card, with: [], text: "1988년 구월\n서울" }
+      - bg: { id: void_light, transition: dissolve, duration: 1800 }
+      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
+      - wait: 950
+      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 멀리서 텔레비전 소리가 들렸다.", wait: 1400 }
+      - wait: 300
+      - say: { channel: card, with: [], text: "1988년 9월\n서울\n내 이름은 민재.", wait: 2000 }
       - mood: off
       - goto: /2.yaml
 
   go_2026:
+    pov: "???"
     actions:
       - set: { lived_2026: true }
       - add: { lives_done: 1 }
-      - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "그쪽으로 기운다. 멀어서 오래 걸린다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: dissolve, duration: 900 }
-      - wait: 240
-      - say: { channel: narration, text: "세 몫이 한꺼번에 빠져나간다. 오래 걸린다.", autoAdvance: 1800 }
-      - wait: 180
-      - say: { channel: card, with: [], text: "2026년 삼월\n서울" }
+      - bg: { id: void_light, transition: dissolve, duration: 1800 }
+      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - bg: { id: void_near, transition: dissolve, duration: 2600 }
+      - wait: 950
+      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 모니터 불빛이 책상 위로 번졌다.", wait: 1400 }
+      - wait: 300
+      - say: { channel: card, with: [], text: "2026년 3월\n서울\n내 이름은 지안.", wait: 2000 }
       - mood: off
       - goto: /3.yaml
 
   # 어느 어둠에서든 쥐지 않기로 하면 여기로 온다. 게임 오버가 아니다.
   dark_still:
+    pov: "???"
     actions:
       - bg: { id: void, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "손을 내린다. 저쪽 빛은 그대로다." }
@@ -179,7 +191,7 @@ scenes:
     actions:
       - bg: { id: jemulpo_yard, transition: fade, duration: 900 }
       - music: port
-      - place: "1894년 유월 · 제물포 객주 마당"
+      - place: "1894년 6월 · 제물포 객주 마당 · 만석"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
       - say: { char: 봉구, with: [만석], text: "주인어른, 덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다." }
@@ -516,11 +528,11 @@ scenes:
           with: [봉구]
           text: "너는 객주 차렸으면 됐다."
       - say: { char: 봉구, with: [만석], text: "뭐 드시고 싶은 건 없습니까." }
-      - wait: 800
+      - wait: 1600
       - say: { char: 만석, with: [봉구], text: "…엿." }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "예? 어떤 걸로 사 올까요." }
-      - wait: 700
-      - say: { char: 만석, with: [봉구], text: "…됐다. 불이나 끄지 마라.", wait: 900 }
+      - wait: 1400
+      - say: { char: 만석, with: [봉구], text: "…됐다. 불이나 끄지 마라.", wait: 1900 }
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void
       - goto: void_one
