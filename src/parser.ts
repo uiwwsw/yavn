@@ -11,6 +11,7 @@ type ConfigYamlData = {
   title: string;
   author?: GameData['meta']['author'];
   version?: string;
+  pov?: string;
   seo?: GameData['meta']['seo'];
   legalNotices?: GameData['meta']['legalNotices'];
   textSpeed: number;
@@ -42,6 +43,7 @@ type LayerYamlData = {
 
 type ChapterYamlData = LayerYamlData & {
   chapterTitle?: string;
+  pov?: string;
   script: GameData['script'];
   scenes: GameData['scenes'];
 };
@@ -804,6 +806,7 @@ export function parseChapterYaml(raw: string, sourcePath: string): { data?: Pars
           state: parsed.state,
           inventory: inventoryResult.data,
           chapterTitle: parsed.chapterTitle,
+          pov: parsed.pov,
           script: parsed.script,
           scenes: scenesResult.data ?? parsed.scenes,
         },
@@ -906,6 +909,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
     },
     assets: mergedAssets,
     chapterTitle: input.chapter.data.chapterTitle,
+    pov: input.chapter.data.pov ?? input.config.data.pov,
     script: input.chapter.data.script,
     scenes: input.chapter.data.scenes,
     ...(Object.keys(mergedDefaults).length > 0 ? { state: { defaults: mergedDefaults } } : {}),
@@ -1081,6 +1085,10 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
     // {{variable}} placeholders must name declared state so a typo is caught at load time.
     const unknownPlaceholder = (text: string | undefined) =>
       collectTextVariables(text).find((key) => !hasOwn(defaults, key));
+    const missingPovVariable = unknownPlaceholder(data.pov);
+    if (missingPovVariable) {
+      return { error: { message: `pov uses unknown variable '{{${missingPovVariable}}}'` } };
+    }
     for (const [characterId, character] of Object.entries(data.assets.characters)) {
       for (const emotion of Object.keys(character.emotionMotions ?? {})) {
         if (!character.emotions?.[emotion]) {
@@ -1099,6 +1107,10 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       }
     }
     for (const [sceneId, scene] of Object.entries(data.scenes)) {
+      const missingPovVariable = unknownPlaceholder(scene.pov);
+      if (missingPovVariable) {
+        return { error: { message: `scene '${sceneId}' pov uses unknown variable '{{${missingPovVariable}}}'` } };
+      }
       for (const [actionIndex, action] of scene.actions.entries()) {
         const texts = 'say' in action ? [action.say.text]
           : 'choice' in action ? [action.choice.prompt, ...action.choice.options.map((option) => option.text),

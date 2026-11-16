@@ -33,7 +33,7 @@ import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
 import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
-import { interpolateText } from './textVariables';
+import { interpolateText, resolvePlayerName } from './textVariables';
 import { choiceSaveValue } from './history';
 import './characterPresentation.css';
 import './characterEmotes.css';
@@ -449,6 +449,7 @@ const DialogueText = memo(function DialogueText() {
       className={className}
       style={{ '--typing-intensity': typingIntensity } as CSSProperties}
     >
+      {channel === 'thought' && visibleText && '('}
       {typing ? (
         <>
           {visibleDialogue.head}
@@ -459,6 +460,7 @@ const DialogueText = memo(function DialogueText() {
       ) : (
         visibleText
       )}
+      {channel === 'thought' && visibleText && ')'}
     </div>
   );
 });
@@ -1689,6 +1691,7 @@ export default function App() {
     characters,
     visibleCharacterIds,
     characterLayoutMode,
+    playerName,
     camera,
     dialogSpeaker,
     dialogSpeakerId,
@@ -1737,6 +1740,7 @@ export default function App() {
     characters: state.characters,
     visibleCharacterIds: state.visibleCharacterIds,
     characterLayoutMode: state.game?.scenes[state.currentSceneId]?.layout ?? 'auto',
+    playerName: resolvePlayerName(state.game, state.currentSceneId, state.routeVars),
     camera: state.camera,
     dialogSpeaker: state.dialog.speaker,
     dialogSpeakerId: state.dialog.speakerId,
@@ -1798,6 +1802,9 @@ export default function App() {
     () => dialogChannel === 'message' && isEmojiOnly(dialogFullText),
     [dialogChannel, dialogFullText],
   );
+  const messagePortrait = dialogChannel === 'message'
+    ? resolveRuntimeAssetUrl(game?.ui?.messagePortrait, baseUrl, assetOverrides)
+    : undefined;
 
   const [bootMode, setBootMode] = useState<BootMode>(
     () => resolveInitialBootPresentation(window.location.pathname).bootMode,
@@ -3825,7 +3832,7 @@ export default function App() {
     if (!slot || slot.placement !== renderPlacement) {
       return null;
     }
-    const isCameraVisible = !retiredPlacement && visibleCharacterSet.has(slot.id);
+    const isCameraVisible = !messagePortrait && !retiredPlacement && visibleCharacterSet.has(slot.id);
     const isEntering = isCameraVisible
       && characterEntranceMotionActive
       && enteringCharacterSet.has(slot.id);
@@ -4861,11 +4868,15 @@ export default function App() {
     narration: undefined,
     record: t("기록"),
     system: t("시스템"),
-    thought: t("속마음"),
+    thought: undefined,
     action: undefined,
     message: t("메시지"),
     card: undefined,
   }[dialogChannel];
+  const choicePlayerName = playerName ?? t("나");
+  const readingSpeaker = choiceGate.active
+    ? (hasStageApproach ? undefined : choicePlayerName)
+    : dialogSpeaker ?? (dialogHasText && playerName === '???' && dialogChannel === 'narration' ? playerName : undefined);
 
   return (
     <>
@@ -4916,6 +4927,7 @@ export default function App() {
       <div
         ref={stageContentFrameRef}
         className={`stage-content-frame${settingsOpen ? ' has-settings-modal' : ''}`}
+        data-message-portrait={messagePortrait ? 'true' : undefined}
       >
       <div
         className={`char-layer char-layer-stage-bottom${characterStageLayout.mode === 'default' ? '' : ` char-layout-${characterStageLayout.mode}`}`}
@@ -4969,6 +4981,7 @@ export default function App() {
           </div>
         </div>
       )}
+      {messagePortrait && <img className="message-portrait" src={messagePortrait} alt="" />}
       <div
         className="sticker-layer"
         style={{ '--sticker-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}
@@ -4986,7 +4999,10 @@ export default function App() {
           style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>
           {hasStageApproach ? (
             <>
-              <p className="approach-status" role="status">{approachStatus}</p>
+              <div className="approach-heading">
+                <span className="approach-player" data-unknown={choicePlayerName === '???' || undefined}>{choicePlayerName}</span>
+                <p className="approach-status" role="status">{approachStatus}</p>
+              </div>
               <div className="approach-stars">
                 {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
               </div>
@@ -5250,9 +5266,7 @@ export default function App() {
                       const channel = entry.kind === 'dialogue' ? entry.channel ?? 'dialogue' : entry.kind;
                       const speakerLabel = entry.kind !== 'dialogue'
                         ? (entry.kind === 'choice' ? t("내 선택") : t("내 답"))
-                        : entry.channel === 'thought'
-                          ? (entry.speaker ? `${entry.speaker}${uiLanguage === 'en' ? ' (thinking)' : '의 속마음'}` : t("속마음"))
-                          : entry.channel === 'action'
+                        : entry.channel === 'action'
                             ? t("행동")
                             : entry.channel === 'record'
                               ? entry.speaker ?? t("기록")
@@ -5271,7 +5285,7 @@ export default function App() {
                         >
                           {speakerLabel && <span className="story-log-kind">{speakerLabel}</span>}
                           {entry.kind === 'dialogue' ? (
-                            <p>{entry.text}</p>
+                            <p>{entry.channel === 'thought' ? `(${entry.text})` : entry.text}</p>
                           ) : (
                             <div className="story-log-decision">
                               <p>{entry.prompt}</p>
@@ -5888,6 +5902,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
+        data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasStageApproach || undefined}
         className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
@@ -5967,8 +5982,8 @@ export default function App() {
             </ol>
           )}
           {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
-          {dialogChannel !== 'message' && dialogSpeaker && (
-            <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
+          {dialogChannel !== 'message' && readingSpeaker && (
+            <div className={`speaker delivery-${dialogDelivery}`} data-unknown={readingSpeaker === '???' || undefined}>{readingSpeaker}</div>
           )}
           {/* The handset says what channel this is, so the phone needs no label — and a label
               pinned out of flow at the top of the thread was both visible and, while the

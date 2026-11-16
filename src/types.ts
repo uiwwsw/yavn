@@ -455,6 +455,7 @@ export type MoodState = {
 
 export type Scene = {
   title?: string;
+  pov?: string;
   layout?: CharacterLayoutMode;
   actions: Action[];
 };
@@ -559,6 +560,7 @@ export type EndingScreenConfig = {
 export type UiConfig = {
   template: UiTemplateId;
   promptHeight?: number;
+  messagePortrait?: string;
 };
 
 export type GameData = {
@@ -594,6 +596,7 @@ export type GameData = {
   endingScreen?: EndingScreenConfig;
   ui?: UiConfig;
   chapterTitle?: string;
+  pov?: string;
   script: Array<{ scene: string }>;
   scenes: Record<string, Scene>;
 };

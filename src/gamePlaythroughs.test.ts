@@ -361,39 +361,42 @@ describe('튜토리얼', () => {
 
 describe('오버플로', () => {
   const base: Route = {
-    o0_case: '봉투를 받는다',
+    o0_case: '배동식 씨 연락처를 받는다',
     o1_show: '내 판독 결과를 보여 준다',
-    o2_sera: '세라의 이의신청을 맡는다',
-    o2_deal: '배동식도 오버플로인지 묻는다',
+    o2_deal: '배동식 씨 판독도 잘렸는지 묻는다',
     o3_tell: '노기태에게 전화한다',
-    o4_end: '배동식 씨 원본만 검찰에 낸다',
+    o4_end: '동식 씨와 경찰서에 간다',
   };
 
-  it('빈손으로 내려가면 동식이 녹음기를 직접 건네고 자백 앞이 달라진다', async () => {
+  it('조사를 건너뛰어도 동식이 건넨 녹음을 듣고 두 사람의 말을 수사 기록에 올린다', async () => {
     await start('overflow');
     const run = await play({ ...base, o1_room: '그만 보고 내려간다' });
     finished(run);
-    expect(heard(run.shown, '다 보셨습니까. 빠르시네요')).toBe(true);
-    expect(heard(run.shown, '창가에 반찬통 있지요')).toBe(true);
-    // Chapter 3 lives on those 119 recordings, so the recorder cannot be missed.
-    expect(heard(run.shown, '안 보고 가시길래요')).toBe(true);
-    expect(heard(run.shown, '그럼 나한테 뭘 물으시는 겁니까')).toBe(true);
-    expect(heard(run.shown, '장위동에 다시 가야 한다')).toBe(true);
-    expect(heard(run.shown, '달력에 숫자를 적으셨더군요')).toBe(false);
+    expect(heard(run.shown, '2층에 못 보신 게 있습니다')).toBe(true);
+    expect(heard(run.shown, '그 다음 날, 두 분이 무슨 얘기를 하셨습니까')).toBe(true);
+    expect(heard(run.shown, '7일 달력에')).toBe(false);
+    expect(heard(run.shown, '뚜껑에 한 숟갈이라고')).toBe(false);
+    const beats = ['죄책감 0. 정서 기준 미달', '내 말도 있어야지', '제가 희남이를 죽였습니다',
+      '죄책감: 원본 100 → 표시 0', '보충 진술 조서', '그 다음은 희남이 말로 해 주세요'];
+    const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
+    expect(positions.every((index) => index >= 0)).toBe(true);
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
   });
 
-  it('다섯 개를 다 보면 대조할 것을 들고 자백 앞에 선다', async () => {
+  it('집에서 본 단서는 질문에 쓰고 방송에서는 동식의 자료를 제외한다', async () => {
     await start('overflow');
     const run = await play({
       ...base,
       o1_room: '벽에 붙은 그림||벽걸이 달력||쌓아 둔 약봉지||협탁에 놓인 녹음기||창가에 놓인 도시락통||본 것을 정리하고 내려간다',
+      o4_end: '동식 씨 자료를 내고, 방송에는 내 판독표만 공개한다',
     });
     finished(run);
-    expect(heard(run.shown, '달력에 숫자를 적으셨더군요')).toBe(true);
-    expect(heard(run.shown, '도시락통 보셨지요')).toBe(true);
-    expect(heard(run.shown, '집에 오래 계셨네요')).toBe(true);
-    expect(heard(run.shown, '반찬통 뚜껑 안쪽, 마지막 줄이 3월 7일')).toBe(true);
-    expect(heard(run.shown, '달력 7일 칸을 다시 봐야 한다')).toBe(true);
-    expect(heard(run.shown, '안 보고 가시길래요')).toBe(false);
+    expect(heard(run.shown, '7일 달력에')).toBe(true);
+    expect(heard(run.shown, '뚜껑에 한 숟갈이라고')).toBe(true);
+    expect(heard(run.shown, '2층에 못 보신 게 있습니다')).toBe(false);
+    const broadcast = run.shown.slice(run.shown.findIndex((text) => text.includes('저희가 띄우는 자료는')));
+    expect(heard(broadcast, '원본 101 → 표시 1')).toBe(true);
+    expect(heard(broadcast, '원본 100 → 표시 0')).toBe(false);
+    expect(heard(broadcast, '내 말도 있어야지')).toBe(false);
   });
 });

@@ -110,6 +110,7 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .app .dialog-box.has-exploration { --dialog-safe-max-height: 155px; padding-top: 12px; padding-bottom: 12px; }
   .app .has-exploration .dialog-content-scroll { padding-top: 0; }
+  .app .has-exploration .dialog-content-scroll:has(> .speaker) { padding-top: 24px; }
   .exploration-field { top: 62px; bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 8px); }
   .app .exploration-target { top: clamp(0px, calc(var(--target-y) - 24px), calc(100% - 48px)); padding: 8px 12px; }
 }
@@ -152,6 +153,9 @@
   text-align: center;
   word-break: keep-all;
 }
+
+.approach-heading { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.approach-player { color: #f3ece1; font-size: 14px; font-weight: 800; line-height: 20px; }
 
 .approach-stars {
   position: relative;

@@ -77,6 +77,22 @@ describe('collectChapterAssetPaths', () => {
 });
 
 describe('collectStartupAssetPaths', () => {
+  it('preloads the game’s phone portrait when resuming on a message', () => {
+    const portrait = '/char/a/phone.svg';
+    const messages = {
+      ...game,
+      ui: { template: 'cinematic-noir', messagePortrait: portrait },
+      scenes: {
+        ...game.scenes,
+        branch: { actions: [{ say: { channel: 'message', char: 'B', text: 'Hello' } }] },
+      },
+    } satisfies GameData;
+
+    expect(collectStartupAssetPaths(messages, 'branch')).toEqual(['/char/b/base.png', portrait]);
+    expect(collectStartupAssetPaths(messages)).not.toContain(portrait);
+    expect(collectChapterAssetPaths(messages)).toContain(portrait);
+  });
+
   it('limits a fresh start to the first scripted scene', () => {
     expect(collectStartupAssetPaths(game)).toEqual([
       '/bg/opening.png',

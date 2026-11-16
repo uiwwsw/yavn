@@ -1,3 +1,5 @@
+import type { GameData } from './types';
+
 // `{{variable}}` placeholders let reading text show story state, such as a name the player typed.
 // `{{variable|은}}` also attaches a Korean particle that agrees with the value's final sound
 // (은/는, 이/가, 을/를, 과/와, 으로/로 …), because a typed name may or may not end in a batchim.
@@ -5,6 +7,11 @@
 // the parser rejects placeholders that name undeclared state.
 
 const PLACEHOLDER = /\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:\|\s*([가-힣]+)\s*)?\}\}/g;
+
+export function resolvePlayerName(game: GameData | undefined, sceneId: string, vars: Record<string, unknown>): string | undefined {
+  const name = game?.scenes[sceneId]?.pov ?? game?.pov;
+  return name ? interpolateText(name, vars).trim() || undefined : undefined;
+}
 
 // [after a batchim, after a vowel]
 const PARTICLE_PAIRS: Array<[string, string]> = [

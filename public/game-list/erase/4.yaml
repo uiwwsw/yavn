@@ -404,6 +404,7 @@ scenes:
       - goto: harin_morning
 
   harin_morning:
+    pov: "유하린"
     title: "2016년 삼월"
     actions:
       - bg: { id: harin_room, transition: cut }
@@ -518,6 +519,7 @@ scenes:
       - goto: reveal
 
   reveal:
+    pov: "유하린"
     title: "수술대"
     actions:
       - bg: { id: surgery, transition: cut }
@@ -649,6 +651,7 @@ scenes:
       - goto: junseong
 
   junseong:
+    pov: "유하린"
     title: "화분"
     actions:
       - say:
