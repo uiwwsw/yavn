@@ -59,8 +59,6 @@ type BannerProps = {
   uiTemplate?: string;
   buildChanged: boolean;
   contentChange?: ContentVersionChange;
-  /** Hold the notice while a line is still typing; show it at the next choice or pause. */
-  idle: boolean;
   inGame: boolean;
   busy?: boolean;
   onReloadNow: () => void;
@@ -72,11 +70,12 @@ type BannerProps = {
 
 /** Non-blocking notice. Nothing reloads unless the player presses a button. */
 export function UpdateBanner(props: BannerProps) {
-  const { buildChanged, contentChange, idle, inGame, busy } = props;
-  if (!idle || (!buildChanged && !contentChange)) return null;
+  const { buildChanged, contentChange, inGame, busy } = props;
+  if (!buildChanged && !contentChange) return null;
+  const className = `vs-update-banner${inGame ? ' is-inline' : ''}`;
   if (contentChange && inGame) {
     return (
-      <aside className="vs-update-banner is-content" data-ui-template={props.uiTemplate} role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
+      <aside className={className} data-ui-template={props.uiTemplate} role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
         <p>
           <b>{en ? 'This story has been updated' : '이 작품 내용이 바뀌었어요'}</b>
           <span className="vs-update-versions">v{contentChange.from} → v{contentChange.to}</span>
@@ -92,7 +91,7 @@ export function UpdateBanner(props: BannerProps) {
     );
   }
   return (
-    <aside className="vs-update-banner is-build" data-ui-template={props.uiTemplate} role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
+    <aside className={className} data-ui-template={props.uiTemplate} role="status" aria-live="polite" onClick={(event) => event.stopPropagation()}>
       <p><b>{en ? 'A new version is out. Update now?' : '새 버전이 나왔어요. 지금 반영할까요?'}</b>
         {inGame && <span>{en ? 'You will pick up right where you are.' : '지금 장면에서 그대로 이어집니다.'}</span>}</p>
       <div className="vs-update-actions">

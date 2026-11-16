@@ -19,7 +19,7 @@ showcase:
   label: "OVERFLOW · 5 CHAPTERS"
   backgroundColor: "#0c111a"
   image:
-    positionX: 30
+    positionX: 72
     positionY: 50
     scale: 1
     offsetX: 0

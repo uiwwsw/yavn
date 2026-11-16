@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
 
 describe('typing presentation', () => {
-  it('uses theme-aware emotional glyph colors instead of a global blue deduction glow', () => {
+  it('uses theme-aware delivery colors instead of a global blue deduction glow', () => {
     expect(styles).toContain('text-shadow: var(--ui-deduction-text-shadow);');
     expect(styles).toContain('color: var(--ui-typing-angry-color);');
     expect(styles).toContain('color: var(--ui-typing-shout-color);');
@@ -15,7 +15,8 @@ describe('typing presentation', () => {
     expect(styles).toContain('--ui-typing-angry-color: #8a2f1d;');
     expect(styles).toContain('--ui-typing-shout-color: #6d2c16;');
     expect(styles).toContain('--ui-typing-deduction-color: #704518;');
-    expect(styles).toContain('--ui-typing-deduction-shadow-color: rgba(154, 102, 40, 0.32);');
+    expect(styles).toContain('.dialogue-unrevealed {\n  visibility: hidden;');
+    expect(styles).not.toContain('@keyframes dialogueGlyphIn');
     expect(styles).not.toContain(
       '.text.delivery-deduction {\n  text-shadow: 0 0 12px rgba(116, 211, 255, 0.12);',
     );

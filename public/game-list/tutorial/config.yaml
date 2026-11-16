@@ -11,7 +11,7 @@ seo:
     - "시뮬레이션"
     - "반전"
   image: "assets/bg/title.svg"
-  imageAlt: "형광등 아래 마트 고객센터 창구가 오른쪽으로 갈수록 선만 남은 와이어프레임으로 바뀌는 그림"
+  imageAlt: "마트 고객센터가 오른쪽에서 청색 도면으로 이어지는 그림"
 textSpeed: 34
 autoSave: true
 clickToInstant: true
@@ -27,7 +27,7 @@ startScreen:
   music: assets/music/fluoro.flac
   image: assets/bg/title.svg
   imagePosition: "50% 50%"
-  mobileImagePosition: "62% 50%"
+  mobileImagePosition: "60% 50%"
   showTitle: true
   titleColor: "#f2fbf5"
   startButtonText: "튜토리얼 시작"
@@ -43,7 +43,7 @@ startScreen:
     intensity: 0.3
     fog: false
     light: breathe
-    accent: "#2f6bff"
+    accent: "#7bafcb"
 endings:
   disconnected:
     title: "연결 해제"

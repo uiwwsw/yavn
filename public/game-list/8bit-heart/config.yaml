@@ -11,7 +11,7 @@ seo:
     - "안드로이드"
     - "픽셀 아트"
   image: "assets/bg/title.svg"
-  imageAlt: "어두운 도시를 바라보는 소년과 안드로이드, 앞에 빛나는 레트로 게임기"
+  imageAlt: "정전된 도시 위에 픽셀 하트가 켜진 휴대 게임기"
 textSpeed: 34
 autoSave: true
 clickToInstant: true
@@ -23,7 +23,7 @@ startScreen:
   music: assets/music/chip-home.flac
   image: assets/bg/title.svg
   imagePosition: "60% 50%"
-  mobileImagePosition: "70% 50%"
+  mobileImagePosition: "62% 50%"
   showTitle: true
   titleColor: "#ffec27"
   startButtonText: "PRESS START"
@@ -39,7 +39,7 @@ startScreen:
     intensity: 0.4
     fog: false
     light: breathe
-    accent: "#ffa300"
+    accent: "#f3ab62"
 endings:
   saved_together:
     title: "함께 저장"

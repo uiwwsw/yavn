@@ -694,13 +694,9 @@ textarea,
   --ui-status-color: rgba(255, 241, 212, 0.74);
   --ui-deduction-text-shadow: 0 0 12px rgba(239, 186, 98, 0.16);
   --ui-typing-angry-color: #fff4e7;
-  --ui-typing-angry-shadow-color: rgba(255, 105, 78, 0.72);
   --ui-typing-shout-color: #fffdf5;
-  --ui-typing-shout-primary-shadow-color: rgba(255, 205, 122, 0.88);
-  --ui-typing-shout-secondary-shadow-color: rgba(255, 103, 76, 0.48);
   --ui-typing-sad-shadow-color: rgba(205, 166, 117, 0.3);
   --ui-typing-deduction-color: #ffe7b3;
-  --ui-typing-deduction-shadow-color: rgba(240, 180, 81, 0.6);
   --ui-focus-ring: #ffcf7d;
   --ui-input-border: rgba(250, 232, 192, 0.42);
   --ui-input-bg: rgba(30, 22, 17, 0.72);
@@ -877,13 +873,9 @@ textarea,
   --ui-status-color: rgba(189, 236, 255, 0.8);
   --ui-deduction-text-shadow: 0 0 12px rgba(116, 211, 255, 0.12);
   --ui-typing-angry-color: #fff1f7;
-  --ui-typing-angry-shadow-color: rgba(255, 82, 145, 0.76);
   --ui-typing-shout-color: #effcff;
-  --ui-typing-shout-primary-shadow-color: rgba(113, 245, 255, 0.86);
-  --ui-typing-shout-secondary-shadow-color: rgba(203, 91, 255, 0.5);
   --ui-typing-sad-shadow-color: rgba(128, 173, 215, 0.28);
   --ui-typing-deduction-color: #d8f6ff;
-  --ui-typing-deduction-shadow-color: rgba(91, 214, 255, 0.58);
   --ui-focus-ring: #53f2ff;
   --ui-input-border: rgba(110, 237, 255, 0.56);
   --ui-input-bg: rgba(8, 24, 47, 0.72);
@@ -1055,13 +1047,9 @@ textarea,
   --ui-status-color: rgba(84, 55, 28, 0.78);
   --ui-deduction-text-shadow: none;
   --ui-typing-angry-color: #8a2f1d;
-  --ui-typing-angry-shadow-color: rgba(139, 45, 28, 0.32);
   --ui-typing-shout-color: #6d2c16;
-  --ui-typing-shout-primary-shadow-color: rgba(166, 109, 44, 0.42);
-  --ui-typing-shout-secondary-shadow-color: rgba(142, 54, 31, 0.26);
   --ui-typing-sad-shadow-color: rgba(94, 65, 39, 0.2);
   --ui-typing-deduction-color: #704518;
-  --ui-typing-deduction-shadow-color: rgba(154, 102, 40, 0.32);
   --ui-focus-ring: #8f5d2d;
   --ui-input-border: rgba(128, 90, 44, 0.56);
   --ui-input-bg: rgba(252, 244, 228, 0.84);
@@ -1236,8 +1224,7 @@ textarea,
 }
 
 .stage-content-frame.has-settings-modal .char,
-.stage-content-frame.has-settings-modal .sticker-visual,
-.stage-content-frame.has-settings-modal .typing-glyph {
+.stage-content-frame.has-settings-modal .sticker-visual {
   animation-play-state: paused !important;
 }
 
@@ -2593,35 +2580,13 @@ textarea,
   text-shadow: 0 0 12px rgba(255, 126, 92, 0.32);
 }
 
-.typing-glyph {
-  position: relative;
-  display: inline;
-  animation: dialogueGlyphIn 90ms ease-out both;
-  will-change: opacity, filter, text-shadow;
-}
+.app .dialog-box .text.delivery-angry { color: var(--ui-typing-angry-color); }
+.app .dialog-box .text.delivery-shout { color: var(--ui-typing-shout-color); }
+.app .dialog-box .text.delivery-deduction { color: var(--ui-typing-deduction-color); }
+.speaker.delivery-sad { text-shadow: 0 0 8px var(--ui-typing-sad-shadow-color); }
 
-.text.is-typing.delivery-nervous .typing-glyph {
-  animation: dialogueNervousGlyph 120ms steps(2, end) both;
-}
-
-.text.is-typing.delivery-angry .typing-glyph {
-  animation: dialogueAngryGlyph 95ms ease-out both;
-}
-
-.text.is-typing.delivery-whisper .typing-glyph {
-  animation: dialogueWhisperGlyph 180ms ease-out both;
-}
-
-.text.is-typing.delivery-shout .typing-glyph {
-  animation: dialogueShoutGlyph 120ms ease-out both;
-}
-
-.text.is-typing.delivery-sad .typing-glyph {
-  animation: dialogueSadGlyph 190ms ease-out both;
-}
-
-.text.is-typing.delivery-deduction .typing-glyph {
-  animation: dialogueDeductionGlyph 115ms ease-out both;
+.dialogue-unrevealed {
+  visibility: hidden;
 }
 
 .input-gate-form {
@@ -3954,97 +3919,6 @@ textarea,
   to { transform: scaleX(0); }
 }
 
-@keyframes dialogueGlyphIn {
-  from {
-    opacity: calc(0.72 + var(--typing-intensity) * 0.12);
-    filter: brightness(calc(1 + var(--typing-intensity) * 0.18));
-  }
-  to {
-    opacity: 1;
-    filter: brightness(1);
-  }
-}
-
-@keyframes dialogueNervousGlyph {
-  0% {
-    left: calc(var(--typing-intensity) * -0.7px);
-    top: calc(var(--typing-intensity) * 0.6px);
-    opacity: 0.68;
-  }
-  50% {
-    left: calc(var(--typing-intensity) * 0.7px);
-    top: calc(var(--typing-intensity) * -0.5px);
-  }
-  100% {
-    left: 0;
-    top: 0;
-    opacity: 1;
-  }
-}
-
-@keyframes dialogueAngryGlyph {
-  from {
-    color: var(--ui-typing-angry-color);
-    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 9px) var(--ui-typing-angry-shadow-color);
-    filter: brightness(calc(1.08 + var(--typing-intensity) * 0.22));
-  }
-  to {
-    color: inherit;
-    text-shadow: none;
-    filter: brightness(1);
-  }
-}
-
-@keyframes dialogueWhisperGlyph {
-  from {
-    opacity: 0.28;
-    filter: blur(calc(var(--typing-intensity) * 0.5px));
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes dialogueShoutGlyph {
-  from {
-    color: var(--ui-typing-shout-color);
-    text-shadow:
-      0 0 calc(6px + var(--typing-intensity) * 10px) var(--ui-typing-shout-primary-shadow-color),
-      0 0 calc(12px + var(--typing-intensity) * 14px) var(--ui-typing-shout-secondary-shadow-color);
-    filter: brightness(calc(1.12 + var(--typing-intensity) * 0.28));
-  }
-  to {
-    color: inherit;
-    text-shadow: none;
-    filter: brightness(1);
-  }
-}
-
-@keyframes dialogueSadGlyph {
-  from {
-    top: calc(var(--typing-intensity) * -0.8px);
-    opacity: 0.34;
-    text-shadow: 0 0 9px var(--ui-typing-sad-shadow-color);
-  }
-  to {
-    top: 0;
-    opacity: 1;
-    text-shadow: none;
-  }
-}
-
-@keyframes dialogueDeductionGlyph {
-  from {
-    color: var(--ui-typing-deduction-color);
-    text-shadow: 0 0 calc(5px + var(--typing-intensity) * 7px) var(--ui-typing-deduction-shadow-color);
-  }
-  to {
-    color: inherit;
-    text-shadow: none;
-  }
-}
-
 @keyframes impactFrame {
   0% { transform: translate3d(0, 0, 0) scale(1); }
   20% { transform: translate3d(-7px, 3px, 0) scale(1.025); }
@@ -4533,8 +4407,7 @@ textarea,
   .effect-glitch .sticker-layer,
   .effect-blur .bg,
   .effect-blur .char-layer,
-  .effect-blur .dialog-box,
-  .typing-glyph {
+  .effect-blur .dialog-box {
     animation: none !important;
   }
 

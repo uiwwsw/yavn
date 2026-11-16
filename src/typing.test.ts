@@ -35,7 +35,6 @@ describe('dialogue delivery', () => {
     expect(new Set(nervous.map((step) => step.delayMs)).size).toBeGreaterThan(
       new Set(neutral.map((step) => step.delayMs)).size,
     );
-    expect(nervous.some((step) => step.intensity > 0.54)).toBe(true);
   });
 
   it('keeps inline speed spans while applying the delivery profile', () => {

@@ -1,15 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000"><!-- art direction edition -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c5246"/><stop offset="0.7" stop-color="#4e443b"/><stop offset="1" stop-color="#494037"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6f7675"/><stop offset="0.7" stop-color="#636c6f"/><stop offset="1" stop-color="#5b6264"/></linearGradient></defs>
 <title>다온 (어른)</title>
-<ellipse cx="400" cy="418" rx="120" ry="130" fill="#4a4038"/>
-<rect x="362" y="530" width="76" height="98" fill="#e2c0a0"/>
-<ellipse cx="400" cy="442" rx="112" ry="122" fill="#e2c0a0"/>
-<path d="M288 428 Q294 328 400 320 Q506 328 512 428 Q458 364 400 358 Q342 364 288 428Z" fill="#4a4038"/>
-<path d="M284 436 Q276 520 294 574 L326 562 Q310 512 314 442Z" fill="#4a4038"/>
-<path d="M516 436 Q524 520 506 574 L474 562 Q490 512 486 442Z" fill="#4a4038"/>
-<path d="M332 622 C244 636 156 690 134 836 L122 1000 L678 1000 L666 836 C644 690 556 636 468 622Z" fill="#5c6b74"/>
-<path d="M332 622 L400 724 L468 622 L400 622Z" fill="#e9e4da"/>
-<rect x="330" y="788" width="140" height="104" rx="6" fill="#c9b08a"/>
-<rect x="330" y="788" width="20" height="104" fill="#a98f6b"/>
-<rect x="366" y="820" width="78" height="8" fill="#8d7855"/>
-<rect x="366" y="842" width="56" height="8" fill="#8d7855"/>
+<ellipse cx="400" cy="418" rx="120" ry="130" fill="#4e443b"/>
+<rect x="362" y="530" width="76" height="98" fill="#dbbe9e"/>
+<ellipse cx="400" cy="442" rx="112" ry="122" fill="#dbbe9e"/>
+<path d="M288 428 Q294 328 400 320 Q506 328 512 428 Q458 364 400 358 Q342 364 288 428Z" fill="url(#art-ink-0)"/>
+<path d="M284 436 Q276 520 294 574 L326 562 Q310 512 314 442Z" fill="url(#art-ink-0)"/>
+<path d="M516 436 Q524 520 506 574 L474 562 Q490 512 486 442Z" fill="url(#art-ink-0)"/>
+<path d="M332 622 C244 636 156 690 134 836 L122 1000 L678 1000 L666 836 C644 690 556 636 468 622Z" fill="url(#art-ink-1)"/>
+<path d="M332 622 L400 724 L468 622 L400 622Z" fill="#e6dfd0"/>
+<rect x="330" y="788" width="140" height="104" rx="6" fill="#c5ae8a"/>
+<rect x="330" y="788" width="20" height="104" fill="#a68f6d"/>
+<rect x="366" y="820" width="78" height="8" fill="#8c7959"/>
+<rect x="366" y="842" width="56" height="8" fill="#8c7959"/>
+
 </svg>

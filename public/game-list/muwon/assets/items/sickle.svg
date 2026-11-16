@@ -1,28 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><!-- art direction edition -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#caa265"/><stop offset="0.55" stop-color="#c59959"/><stop offset="0.553" stop-color="#9f7e4d"/><stop offset="1" stop-color="#9f7e4d"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#797a79"/><stop offset="0.55" stop-color="#666b70"/><stop offset="0.553" stop-color="#555a5f"/><stop offset="1" stop-color="#555a5f"/></linearGradient><linearGradient id="art-ink-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9c9e9d"/><stop offset="0.55" stop-color="#8f959b"/><stop offset="0.553" stop-color="#757b81"/><stop offset="1" stop-color="#757b81"/></linearGradient><linearGradient id="art-ink-3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c4c5c1"/><stop offset="0.55" stop-color="#bec2c4"/><stop offset="0.553" stop-color="#999ea1"/><stop offset="1" stop-color="#999ea1"/></linearGradient><linearGradient id="art-ink-4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddd4bb"/><stop offset="0.55" stop-color="#dbd3bd"/><stop offset="0.553" stop-color="#b0ab9b"/><stop offset="1" stop-color="#b0ab9b"/></linearGradient></defs>
   <g transform="rotate(-8 200 200)" stroke-linecap="round" stroke-linejoin="round">
     <!-- wooden handle -->
-    <path d="M250 120 L276 116 L300 352 L272 356 Z" fill="#b88a4a" stroke="#1d1a17" stroke-width="3"/>
-    <path d="M266 124 L276 122 L298 346 L286 348 Z" fill="#8f6833"/>
-    <g stroke="#6e4f26" stroke-width="2"><path d="M258 160 l4 40 M262 230 l4 36 M270 296 l2 30"/></g>
+    <path d="M250 120 L276 116 L300 352 L272 356 Z" fill="url(#art-ink-0)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M266 124 L276 122 L298 346 L286 348 Z" fill="#896133"/>
+    <g stroke="#6f4d28" stroke-width="2"><path d="M258 160 l4 40 M262 230 l4 36 M270 296 l2 30"/></g>
     <!-- iron ferrule with nail -->
-    <path d="M244 96 L280 92 L284 128 L248 132 Z" fill="#6b6f74" stroke="#1d1a17" stroke-width="3"/>
-    <path d="M246 108 l36 -4 M247 120 l36 -4" stroke="#1d1a17" stroke-width="2"/>
+    <path d="M244 96 L280 92 L284 128 L248 132 Z" fill="url(#art-ink-1)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M246 108 l36 -4 M247 120 l36 -4" stroke="#2f221a" stroke-width="2"/>
     <!-- wide blade, sweeping left and curving down -->
-    <path d="M250 96 C220 70 150 62 96 78 C66 88 48 108 44 138 C64 118 92 112 124 112 C170 112 214 118 252 130 Z" fill="#9ba1a8" stroke="#1d1a17" stroke-width="3"/>
+    <path d="M250 96 C220 70 150 62 96 78 C66 88 48 108 44 138 C64 118 92 112 124 112 C170 112 214 118 252 130 Z" fill="url(#art-ink-2)" stroke="#2f221a" stroke-width="3"/>
     <!-- honed cutting edge (lower side) -->
-    <path d="M44 138 C64 118 92 112 124 112 C170 112 214 118 252 130 L252 118 C214 106 170 100 124 100 C92 100 66 108 50 124 Z" fill="#d3d7db"/>
-    <path d="M90 104 C130 96 180 100 220 108" fill="none" stroke="#f4f4f2" stroke-width="2.5"/>
+    <path d="M44 138 C64 118 92 112 124 112 C170 112 214 118 252 130 L252 118 C214 106 170 100 124 100 C92 100 66 108 50 124 Z" fill="url(#art-ink-3)"/>
+    <path d="M90 104 C130 96 180 100 220 108" fill="none" stroke="#dfded6" stroke-width="2.5"/>
     <!-- forge hatching on blade back -->
-    <g stroke="#6b6f74" stroke-width="2"><path d="M110 76 l4 10 M140 70 l2 10 M170 68 l0 10 M200 72 l-2 10 M226 80 l-4 10"/></g>
+    <g stroke="#666b70" stroke-width="2"><path d="M110 76 l4 10 M140 70 l2 10 M170 68 l0 10 M200 72 l-2 10 M226 80 l-4 10"/></g>
     <!-- tag string -->
-    <path d="M284 220 C250 226 222 230 206 246" fill="none" stroke="#1d1a17" stroke-width="2.5"/>
+    <path d="M284 220 C250 226 222 230 206 246" fill="none" stroke="#2f221a" stroke-width="2.5"/>
     <!-- paper tag -->
     <g transform="rotate(-10 170 270)">
-      <path d="M128 236 L212 236 L212 306 L128 306 Z" fill="#efe6d2" stroke="#1d1a17" stroke-width="3"/>
-      <path d="M128 296 L212 296 L212 306 L128 306 Z" fill="#d9ccb0"/>
-      <circle cx="200" cy="246" r="4" fill="none" stroke="#1d1a17" stroke-width="2"/>
-      <text x="170" y="282" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="30" font-weight="700" fill="#1d1a17" text-anchor="middle">두 치</text>
-      <path d="M142 250 h40" stroke="#b8432b" stroke-width="3"/>
+      <path d="M128 236 L212 236 L212 306 L128 306 Z" fill="url(#art-ink-4)" stroke="#2f221a" stroke-width="3"/>
+      <path d="M128 296 L212 296 L212 306 L128 306 Z" fill="#ddc9a4"/>
+      <circle cx="200" cy="246" r="4" fill="none" stroke="#2f221a" stroke-width="2"/>
+      <text x="170" y="282" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="30" font-weight="700" fill="#2f221a" text-anchor="middle">두 치</text>
+      <path d="M142 250 h40" stroke="#c46240" stroke-width="3"/>
     </g>
   </g>
+
 </svg>

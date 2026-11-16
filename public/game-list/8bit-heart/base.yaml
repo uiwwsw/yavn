@@ -1,11 +1,11 @@
 assets:
   backgrounds:
     title: assets/bg/title.svg
-    bedroom: assets/bg/bedroom.webp
+    bedroom: assets/bg/bedroom.svg
     disaster_city: assets/bg/disaster_city.svg
     ruined_street: assets/bg/ruined_street.svg
     android_found: assets/bg/android_found.svg
-    shelter: assets/bg/shelter.webp
+    shelter: assets/bg/shelter.svg
     drone_alley: assets/bg/drone_alley.svg
     datacenter: assets/bg/datacenter.svg
     dawn_field: assets/bg/dawn_field.svg
@@ -20,40 +20,40 @@ assets:
   characters:
     윤재:
       placement: prompt-top
-      base: assets/char/yunjae.webp
+      base: assets/char/yunjae.svg
       facing: left
       defaultDelivery: neutral
       emotions:
-        excited: assets/char/yunjae-excited.webp
-        scared: assets/char/yunjae-scared.webp
-        sad: assets/char/yunjae-sad.webp
+        excited: assets/char/yunjae-excited.svg
+        scared: assets/char/yunjae-scared.svg
+        sad: assets/char/yunjae-sad.svg
       emotionMotions:
         scared: startle
     로봇:
       name: "{{android_name}}"
       placement: prompt-top
-      base: assets/char/android.webp
+      base: assets/char/android.svg
       facing: left
       defaultDelivery: calm
       emotions:
-        off: assets/char/android-off.webp
-        happy: assets/char/android-happy.webp
-        thinking: assets/char/android-thinking.webp
-        glitch: assets/char/android-glitch.webp
+        off: assets/char/android-off.svg
+        happy: assets/char/android-happy.svg
+        thinking: assets/char/android-thinking.svg
+        glitch: assets/char/android-glitch.svg
       emotionMotions:
         glitch: tremble
     비서:
       name: "하루"
       placement: prompt-top
-      base: assets/char/assistant.webp
+      base: assets/char/assistant.svg
       facing: front
       defaultDelivery: calm
       # Keep the ceiling unit above the dialogue controls.
       calibration: { scale: 0.55, y: -28 }
       emotions:
-        ad: assets/char/assistant-ad.webp
-        glitch: assets/char/assistant-glitch.webp
-        dead: assets/char/assistant-dead.webp
+        ad: assets/char/assistant-ad.svg
+        glitch: assets/char/assistant-glitch.svg
+        dead: assets/char/assistant-dead.svg
       emotionMotions:
         glitch: tremble
         dead: droop

@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><title>B2-C 카메라 화면</title><g stroke-linejoin="round" stroke-linecap="round"><rect x="20" y="60" width="360" height="270" rx="10" fill="#2b3135" stroke="#20302c" stroke-width="4"/>
-<rect x="34" y="74" width="332" height="230" fill="#8d9a94"/>
-<path d="M 34 304 L 150 190 L 250 190 L 366 304 Z" fill="#7a8781"/>
-<rect x="210" y="96" width="40" height="150" fill="#b2bcb7" stroke="#5f6b66" stroke-width="2"/>
-<text x="230" y="130" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="13" font-weight="800" text-anchor="middle" fill="#3e4945" >C-14</text>
-<path d="M 118 270 L 130 226 L 186 226 L 200 246 L 200 270 Z" fill="#5f6b66" stroke="#3e4945" stroke-width="2"/>
-<path d="M 34 120 L 366 124 M 34 200 L 366 196 M 34 260 L 366 266" stroke="#ffffff" stroke-width="1.5" opacity="0.25"/>
-<rect x="34" y="74" width="332" height="26" fill="#000000" opacity="0.35"/>
-<text x="44" y="93" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" font-weight="700" text-anchor="start" fill="#ffffff" style="font-family:monospace">B2-C  2031-04-18 01:58:12</text>
-<circle cx="352" cy="88" r="6" fill="#ff3b2f"/>
-<text x="200" y="322" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="13" font-weight="800" text-anchor="middle" fill="#e8e8e8" >REC</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400"><!-- art direction edition -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4e5351"/><stop offset="0.7" stop-color="#383d3e"/><stop offset="1" stop-color="#343b40"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bdc2b7"/><stop offset="0.7" stop-color="#b6bcb2"/><stop offset="1" stop-color="#9aa29e"/></linearGradient><linearGradient id="art-ink-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#798278"/><stop offset="0.7" stop-color="#69726a"/><stop offset="1" stop-color="#5c6664"/></linearGradient></defs><title>B2-C 카메라 화면</title><g stroke-linejoin="round" stroke-linecap="round"><rect x="20" y="60" width="360" height="270" rx="10" fill="url(#art-ink-0)" stroke="#2f3c37" stroke-width="4"/>
+<rect x="34" y="74" width="332" height="230" fill="#949d93"/>
+<path d="M 34 304 L 150 190 L 250 190 L 366 304 Z" fill="#828b82"/>
+<rect x="210" y="96" width="40" height="150" fill="url(#art-ink-1)" stroke="#69726a" stroke-width="2"/>
+<text x="230" y="130" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="13" font-weight="800" text-anchor="middle" fill="#4a534d" >C-14</text>
+<path d="M 118 270 L 130 226 L 186 226 L 200 246 L 200 270 Z" fill="url(#art-ink-2)" stroke="#4a534d" stroke-width="2"/>
+<path d="M 34 120 L 366 124 M 34 200 L 366 196 M 34 260 L 366 266" stroke="#fcfaf0" stroke-width="1.5" opacity="0.25"/>
+<rect x="34" y="74" width="332" height="26" fill="#0e1010" opacity="0.35"/>
+<text x="44" y="93" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="15" font-weight="700" text-anchor="start" fill="#fcfaf0" style="font-family:monospace">B2-C  2031-04-18 01:58:12</text>
+<circle cx="352" cy="88" r="6" fill="#d84f43"/>
+<text x="200" y="322" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="13" font-weight="800" text-anchor="middle" fill="#e7e5dc" >REC</text></g>
+</svg>

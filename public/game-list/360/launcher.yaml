@@ -17,7 +17,7 @@ showcase:
   label: "360 · 5 CHAPTERS"
   backgroundColor: "#07080b"
   image:
-    positionX: 60
+    positionX: 64
     positionY: 50
     scale: 1
     offsetX: 0

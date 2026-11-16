@@ -33,7 +33,7 @@
   --game-hud-line: #ffffff2b;
   --game-backdrop: #070b0ec4;
   --game-focus: var(--game-accent);
-  --game-dialog: linear-gradient(120deg, #151a1ef2, #13181eeb);
+  --game-dialog: linear-gradient(120deg, #151a1e, #13181e);
   --game-text-scale: 1;
   --ui-dialog-border: var(--game-line);
   --ui-dialog-bg: var(--game-dialog);
@@ -82,7 +82,7 @@
   --game-hud-ink: #e3f4ef;
   --game-hud-line: #8fe3cc4d;
   --game-backdrop: #03090cd0;
-  --game-dialog: linear-gradient(120deg, #101d23f5, #12242aec);
+  --game-dialog: linear-gradient(120deg, #101d23, #12242a);
 }
 /* 튜토리얼 and 무원: filed paper. Ink-brown text, a red seal for anything new. */
 :is(.app, .story-atlas)[data-ui-template='paper-stage'] {
@@ -114,7 +114,7 @@
   --game-hud-line: #4a3c2647;
   --game-backdrop: #231a10a6;
   --game-focus: #8c2c22;
-  --game-dialog: linear-gradient(120deg, #f4f0e6f7, #ebe6d9f2);
+  --game-dialog: linear-gradient(120deg, #f4f0e6, #ebe6d9);
 }
 .app[data-text-scale='large'] { --game-text-scale: 1.125; }
 .app[data-text-scale='larger'] { --game-text-scale: 1.25; }
@@ -150,7 +150,7 @@
 .app[data-ui-template='paper-stage'] .hud-chapter-progress { color: var(--game-muted); }
 
 /* A stable reading frame, with the controls attached to its edge. */
-.app .dialog-box { width: min(1080px, calc(100% - 64px)); left: 50%; right: auto; bottom: 24px; transform: translateX(-50%); padding: 23px 32px 22px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-dialog); box-shadow: 0 24px 80px #0003; backdrop-filter: blur(18px); }
+.app .dialog-box { width: min(1080px, calc(100% - 64px)); left: 50%; right: auto; bottom: 24px; transform: translateX(-50%); padding: 23px 32px 22px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-dialog); box-shadow: 0 24px 80px #0003; backdrop-filter: none; }
 .app .dialog-box::before { content: ''; position: absolute; left: 32px; top: -1px; width: 52px; height: 2px; background: var(--game-accent); pointer-events: none; }
 .app .dialog-box.channel-record, .app .dialog-box.channel-system { background: var(--game-dialog); box-shadow: 0 24px 80px #0003; }
 .app .dialog-box.has-choice-gate { --dialog-safe-max-height: min(60cqh, calc(100cqh - 80px)); }
@@ -669,6 +669,7 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 :is(.vs-update-banner, .vs-resume-notice, .vs-version-gate) button:disabled { opacity: .45; cursor: default; }
 /* Below the HUD, so the tools stay reachable while the notice waits. */
 .vs-update-banner { position: fixed; z-index: 1900; top: max(78px, calc(env(safe-area-inset-top) + 70px)); left: 50%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px 16px; width: min(620px, calc(100vw - 24px)); padding: 12px 12px 12px 16px; border: 1px solid var(--game-line-strong); border-left: 3px solid var(--game-accent); border-radius: var(--game-radius-lg); background: var(--game-paper); color: var(--game-text); box-shadow: 0 16px 40px #00000052; transform: translateX(-50%); animation: gameUiFade 200ms ease both; }
+.vs-update-banner.is-inline { position: static; grid-template-columns: minmax(0, 1fr); width: auto; min-width: 0; grid-column: 1 / -1; box-shadow: none; transform: none; animation: none; }
 .vs-update-banner p { display: grid; gap: 2px; margin: 0; font-size: 14px; line-height: 1.5; }
 .vs-update-banner p b { font-weight: 700; }
 .vs-update-banner p span { color: var(--game-muted); font-size: 13px; }

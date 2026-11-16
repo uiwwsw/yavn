@@ -19,7 +19,7 @@ showcase:
   label: "COMPLETE · 5 CHAPTERS"
   backgroundColor: "#141c26"
   image:
-    positionX: 62
+    positionX: 68
     positionY: 50
     scale: 1
     offsetX: 0

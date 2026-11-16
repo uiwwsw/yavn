@@ -36,6 +36,8 @@ VOICES = {
     "pad": Voice((1, .20, .08), .52, .22, .65, .025),
     "pulse": Voice((1, .46, .21, .03, -.05), .008, 1.4, .045),
     "triangle": Voice((1, 0, -.13, 0, .035), .008, .72, .075),
+    "cartridge": Voice((1, .71, .33, 0, -.20, -.24, -.14), .004, 2.1, .028),
+    "counter": Voice((1, 0, -.111, 0, .04, 0, -.020), .004, .85, .052),
 }
 
 
@@ -230,7 +232,48 @@ def percussion(track, left, right, beat):
             mix(left, right, layer_samples(PERCUSSION[key]), round(onset * beat), level, pan)
 
 
-def render_score(track):
+@dataclass(frozen=True)
+class Soundstage:
+    chord_length: float
+    lead_length: float
+    echo: tuple[tuple[float, float, float], ...]
+    stereo: float
+    body: float
+    edge: float
+    foley_room: tuple[float, float]
+
+
+# These settings belong to the world of each game, including its sound effects.
+SOUNDSTAGES = {
+    "360": Soundstage(8.2, 2.1, ((.29, .13, -.24), (.55, .09, .22)), .65, .90, .32, (.071, .09)),
+    "8bit-heart": Soundstage(1.2, .48, (), .42, .91, .92, (0, 0)),
+    "erase": Soundstage(11.0, 1.8, ((.72, .21, -.65), (1.1, .10, .60)), .94, .78, .57, (.038, .09)),
+    "muwon": Soundstage(7.1, 2.7, ((.31, .16, .27), (.79, .11, -.53)), .78, .85, .58, (.126, .17)),
+    "overflow": Soundstage(8.8, 1.6, ((.16, .11, -.34), (.38, .06, .38)), .75, .82, .46, (.047, .060)),
+    "tutorial": Soundstage(7.5, 1.2, ((.34, .13, -.62), (.68, .08, .57)), .98, .72, .68, (.067, .13)),
+}
+
+
+def finish_score(game, left, right):
+    stage = SOUNDSTAGES[game]
+    for channel in (left, right):
+        # Start the filter from the previous lap so this processing stays seamless.
+        low = channel[-1]
+        for sample in channel[-240:]:
+            low += .12 * (sample - low)
+        for i, sample in enumerate(channel):
+            low += .12 * (sample - low)
+            value = low * stage.body + (sample - low) * stage.edge
+            channel[i] = round(value * 440) / 440 if game == "8bit-heart" else value
+    for i, (a, b) in enumerate(zip(left, right)):
+        mid = (a + b) * .5
+        left[i] = mid + stage.stereo * (a - mid)
+        right[i] = mid + stage.stereo * (b - mid)
+    return left, right
+
+
+def render_score(game, track):
+    stage = SOUNDSTAGES[game]
     beat = 60 * RATE / track.bpm
     frames = round(beat * 32)
     left = array("f", [0]) * frames
@@ -248,20 +291,24 @@ def render_score(track):
             right[i] += value + .038 * sin((root + 3) * phase + .34)
         for point, pitch in ((6, 78), (22, 73)):
             mix(left, right, pitched("glass", pitch, round(beat * 5)), round(beat * point), .05, -.12)
-        return left, right
+        return finish_score(game, left, right)
 
+    lead = {"pulse": "cartridge", "triangle": "counter"}[track.lead] if game == "8bit-heart" else track.lead
+    harmony = "counter" if game == "8bit-heart" else track.harmony
     electronic = track.lead in {"pulse", "triangle"} or track.beat == "chip"
     for bar, chord in enumerate(track.chords):
         start = round(bar * 8 * beat)
         for index, offset in enumerate(chord):
-            voice_length = 1.65 if electronic else 9.3
+            voice_length = (stage.chord_length if game == "8bit-heart" or not electronic else 1.65)
             level = .124 if electronic else .092
-            for repeat in (0, 2, 4, 6) if electronic else (0,):
+            pulses = (0, 2.5, 4, 6.5) if game == "8bit-heart" else (0, 2, 4, 6)
+            for repeat in pulses if electronic else (0,):
                 pitch = track.root + offset + (0 if index == 0 else 12)
-                sample = pitched(track.harmony, pitch, round(beat * voice_length))
+                sample = pitched(harmony, pitch, round(beat * voice_length))
                 mix(left, right, sample, start + round(beat * (repeat + index * .075)), level / (1 + index * .11), (index - 1) * .28)
         for repeat in (0, 4):
-            bass = pitched("triangle" if electronic else "sub", track.root + chord[0] - (12 if electronic else 0),
+            bass_voice = "counter" if game == "8bit-heart" else "triangle" if electronic else "sub"
+            bass = pitched(bass_voice, track.root + chord[0] - (12 if electronic else 0),
                            round(beat * (2.25 if electronic else 5.1)))
             mix(left, right, bass, start + round(repeat * beat), .17 if electronic else .095)
         for step, offset in enumerate(track.melody):
@@ -272,16 +319,21 @@ def render_score(track):
             pitch = track.root + track.phrase + offset + (chord[0] if bar % 2 else 0)
             if bar == 2 and step in {0, 8} and track.lead in {"pulse", "glass", "felt"}:
                 pitch += 12
-            duration = (.49 if electronic else 2.5) * (1.25 if step in {0, 8} else 1)
-            played = pitched(track.lead, pitch, round(duration * beat))
+            duration = (.49 if electronic and game != "8bit-heart" else stage.lead_length) * (1.25 if step in {0, 8} else 1)
+            played = pitched(lead, pitch, round(duration * beat))
             gain = (.19 if electronic else .18) * rng.uniform(.78, 1.0)
             balance = rng.uniform(-.18, .18)
             mix(left, right, played, position, gain, balance)
-            if not electronic:
-                mix(left, right, played, position + round(.23 * beat), gain * .22, -.48)
-                mix(left, right, played, position + round(.48 * beat), gain * .12, .58)
+            for delay, amount, pan in stage.echo:
+                mix(left, right, played, position + round(delay * beat), gain * amount, pan)
+            if game == "muwon" and step in {0, 8}:
+                grace = pitched(lead, pitch - 2, round(.46 * beat))
+                mix(left, right, grace, position - round(.21 * beat), gain * .29, -.14)
+            if game == "tutorial" and track.name in {"tutorial", "bleed"} and step % 4 == 0:
+                doubled = pitched("glass", pitch + (12 if track.name == "tutorial" else 11), round(.38 * beat))
+                mix(left, right, doubled, position + round(.06 * beat), gain * .24, .51)
     percussion(track, left, right, beat)
-    return left, right
+    return finish_score(game, left, right)
 
 
 FOLEY = {
@@ -321,13 +373,26 @@ FOLEY = {
 }
 
 
-def render_foley(layers):
-    frames = round((max(layer.offset + layer.duration for layer in layers) + .014) * RATE)
+def render_foley(game, layers):
+    stage = SOUNDSTAGES[game]
+    delay, room_gain = stage.foley_room
+    echo_offset = round(delay * RATE)
+    frames = round((max(layer.offset + layer.duration for layer in layers) + delay + .025) * RATE)
     clip = array("f", [0]) * frames
     for layer in layers:
         onset = round(layer.offset * RATE)
         for i, value in enumerate(layer_samples(layer)):
             clip[onset + i] += value * layer.level
+    dry = clip[:]
+    room = 0
+    low = 0
+    for i, value in enumerate(dry):
+        low += .22 * (value - low)
+        if echo_offset and i >= echo_offset:
+            room += .12 * (dry[i - echo_offset] - room)
+        made = low * stage.body + (value - low) * stage.edge + room * room_gain
+        end = min(1, (frames - i - 1) / (.015 * RATE))
+        clip[i] = end * (round(made * 235) / 235 if game == "8bit-heart" else made)
     return (clip,)
 
 
@@ -358,7 +423,7 @@ def main():
             for track in SCORES[game]:
                 source = staging / "score.wav"
                 compressed = staging / f"{track.name}.flac"
-                write_wav(source, render_score(track), .31, track.level)
+                write_wav(source, render_score(game, track), .31, track.level)
                 run(["ffmpeg", "-v", "error", "-y", "-i", str(source), "-compression_level", "8", str(compressed)], check=True)
                 compressed.replace(assets / "music" / compressed.name)
                 print(f"  {compressed.name}", flush=True)
@@ -366,7 +431,7 @@ def main():
             sfx_dir.mkdir(exist_ok=True)
             for name, layers in FOLEY[game].items():
                 wav = staging / f"{name}.wav"
-                write_wav(wav, render_foley(layers), .36, .105)
+                write_wav(wav, render_foley(game, layers), .36, .105)
                 wav.replace(sfx_dir / wav.name)
                 print(f"  {wav.name}", flush=True)
 

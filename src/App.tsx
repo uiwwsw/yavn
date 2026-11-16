@@ -392,76 +392,55 @@ const PhoneMediaView = memo(function PhoneMediaView({ media }: { media: PhoneMed
 
 const DialogueText = memo(function DialogueText() {
   const {
-    visibleText,
-    fullText,
-    typing,
-    channel,
-    delivery,
-    typingIntensity,
-    typingPulse,
+    visibleText, fullText, typing, channel, delivery, chapterIndex, sceneId, actionIndex,
   } = useVNStore(useShallow((state) => ({
     visibleText: state.dialog.visibleText,
     fullText: state.dialog.fullText,
     typing: state.dialog.typing,
     channel: state.dialog.channel,
     delivery: state.dialog.delivery,
-    typingIntensity: state.dialog.typingIntensity,
-    typingPulse: state.dialog.typingPulse,
+    chapterIndex: state.chapterIndex,
+    sceneId: state.currentSceneId,
+    actionIndex: state.actionIndex,
   })));
-  const visibleDialogue = splitLastGrapheme(typing ? visibleText : '');
   const textRef = useRef<HTMLDivElement>(null);
+  const tailRef = useRef<HTMLSpanElement>(null);
+  const thread = channel === 'message';
+  const thought = channel === 'thought' && Boolean(fullText);
+  const { head, tail } = splitLastGrapheme(visibleText);
+  // Reserve the wrapped height from the first frame. Phone bubbles grow inside their own
+  // fixed-height viewport, so they only need the portion of the message that is visible.
+  const unrevealed = typing && !thread ? fullText.slice(visibleText.length) : '';
+  const lineKey = useMemo(() => ({ chapterIndex, sceneId, actionIndex, fullText }), [chapterIndex, sceneId, actionIndex, fullText]);
+  const lineStartRef = useRef<typeof lineKey>();
 
-  // A line longer than the dialogue box would type on out of sight, so follow it down while it
-  // types and keep the newest words visible. Each new line starts back at the top. A line the
-  // reader completed with a click is left at the top instead, so they still see its beginning.
-  // Jumps are instant: smooth scrolling cannot keep up with character-by-character typing.
-  const lineStartRef = useRef<string>();
-  const threadRef = useRef(false);
   useLayoutEffect(() => {
     const scroller = textRef.current?.closest<HTMLElement>('.dialog-content-scroll');
     if (!scroller) return;
-    const lineChanged = lineStartRef.current !== fullText;
-    lineStartRef.current = fullText;
-    threadRef.current = Boolean(scroller.querySelector('.phone-thread'));
-    const target = resolveDialogueScroll({ lineChanged, typing, thread: threadRef.current });
-    if (target === 'top') scroller.scrollTop = 0;
-    else if (target === 'bottom') scroller.scrollTop = scroller.scrollHeight;
-    // A bubble that grows as it types changes the scroll height after this effect has run,
-    // so the newest line can end up a few pixels under the fold. Settle it on the next frame.
-    if (target !== 'top' && threadRef.current) {
-      const settle = requestAnimationFrame(() => { scroller.scrollTop = scroller.scrollHeight; });
-      return () => cancelAnimationFrame(settle);
+    const lineChanged = lineStartRef.current !== lineKey;
+    lineStartRef.current = lineKey;
+    const target = resolveDialogueScroll({ lineChanged, typing, thread });
+    if (target === 'top') {
+      scroller.scrollTop = 0;
+    } else if (target === 'bottom') {
+      if (thread) {
+        scroller.scrollTop = scroller.scrollHeight;
+      } else if (tailRef.current && scroller.scrollHeight > scroller.clientHeight) {
+        // The hidden suffix has height too. Follow the last readable glyph, so the
+        // reader never scrolls into unrevealed text just because a long line started.
+        const overflow = tailRef.current.getBoundingClientRect().bottom - scroller.getBoundingClientRect().bottom;
+        if (overflow > 0) scroller.scrollTop += Math.ceil(overflow);
+      }
     }
-    return undefined;
-  }, [fullText, visibleText, typing]);
-
-  const className = [
-    'text',
-    `channel-${channel}`,
-    `delivery-${delivery}`,
-    typing ? 'is-typing' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  }, [lineKey, thread, visibleText, typing]);
 
   return (
-    <div
-      ref={textRef}
-      className={className}
-      style={{ '--typing-intensity': typingIntensity } as CSSProperties}
-    >
-      {channel === 'thought' && visibleText && '('}
-      {typing ? (
-        <>
-          {visibleDialogue.head}
-          <span key={typingPulse} className="typing-glyph">
-            {visibleDialogue.tail}
-          </span>
-        </>
-      ) : (
-        visibleText
-      )}
-      {channel === 'thought' && visibleText && ')'}
+    <div ref={textRef} className={`text channel-${channel} delivery-${delivery}`}>
+      {thought && <span className={visibleText ? undefined : 'dialogue-unrevealed'}>(</span>}
+      {head}
+      <span ref={tailRef}>{tail}</span>
+      {unrevealed && <span className="dialogue-unrevealed" aria-hidden="true">{unrevealed}</span>}
+      {thought && <span className={typing ? 'dialogue-unrevealed' : undefined}>)</span>}
     </div>
   );
 });
@@ -1703,8 +1682,7 @@ export default function App() {
     dialogAvatar,
     dialogMedia,
     dialogFullText,
-    dialogErase,
-    dialogTyping,
+    dialogErasing,
     dialogDelivery,
     dialogUiHidden,
     skipReadActive,
@@ -1752,8 +1730,7 @@ export default function App() {
     dialogAvatar: state.dialog.avatar,
     dialogMedia: state.dialog.media,
     dialogFullText: state.dialog.fullText,
-    dialogErase: state.dialog.erase,
-    dialogTyping: state.dialog.typing,
+    dialogErasing: Boolean(state.dialog.erase && !state.dialog.typing),
     dialogDelivery: state.dialog.delivery,
     dialogUiHidden: state.dialogUiHidden,
     skipReadActive: state.skipReadActive,
@@ -1855,23 +1832,28 @@ export default function App() {
   const [versionGate, setVersionGate] = useState<{ gameUrl: string; title?: string; status: StoredProgressStatus; uiTemplate?: UiTemplateId }>();
   const [updateBusy, setUpdateBusy] = useState(false);
   const resumeNotice = useVNStore((state) => state.resumeNotice);
-  const storyWaiting = useVNStore((state) => state.waitingInput);
   const updateGameId = readGameIdFromPath(window.location.pathname);
   const updateWatch = useUpdateWatch({ gameId: updateGameId, contentVersion: game?.meta.version });
   // Offline: the launcher reads which games are saved and greys out the rest.
   const siteReachable = useReachable();
   const launcherGameIds = useMemo(() => (bootMode === 'launcher' ? gameList.map((entry) => entry.id) : []), [bootMode, gameList]);
   const offlinePacks = useOfflinePacks(launcherGameIds, siteReachable);
-  // Never cut into a line while it types: wait for a choice, an input, a finished line or an outcome.
-  const updateNoticeIdle = !game
-    || (!dialogTyping && !chapterLoading && (storyWaiting || choiceGate.active || inputGate.active || Boolean(gameOver) || isFinished));
-  const reloadForUpdate = useCallback((intent: 'fresh' | 'continue') => {
+  const reloadForUpdate = useCallback((intent?: 'fresh' | 'continue') => {
     setUpdateBusy(true);
     if (intent === 'continue') flushAutosave();
-    if (updateGameId) setBootIntent(updateGameId, intent);
+    if (intent && updateGameId) setBootIntent(updateGameId, intent);
     // A waiting service worker takes over first, so the reload boots the new build.
     void reloadIntoNewBuild();
   }, [updateGameId]);
+  const updateBanner = (inGame: boolean, template?: UiTemplateId) => (
+    <UpdateBanner uiTemplate={template} buildChanged={updateWatch.buildChanged}
+      contentChange={inGame ? updateWatch.contentChange : undefined} inGame={inGame} busy={updateBusy}
+      onReloadNow={() => reloadForUpdate(inGame ? 'continue' : undefined)}
+      onRestartNewVersion={() => reloadForUpdate('fresh')}
+      onContinueNewVersion={() => reloadForUpdate('continue')}
+      onDismissBuild={updateWatch.dismissBuild}
+      onDismissContent={() => { updateWatch.dismissContent(); updateWatch.dismissBuild(); }} />
+  );
   const [playerExperience, setPlayerExperience] = useState<PlayerExperienceSettings>(
     () => getPlayerExperienceSettings(),
   );
@@ -2767,7 +2749,7 @@ export default function App() {
     .filter((slot) => slot.exists)
     .sort((a, b) => (Date.parse(b.savedAt ?? '') || 0) - (Date.parse(a.savedAt ?? '') || 0))[0];
   const chapterSaveSlot = saveSlotByKind.get('chapter');
-  const choiceRecoveryPoint = getChoiceRecoverySummary();
+  const choiceRecoveryPoint: ChoiceRecoverySummary = gameOver || isFinished ? getChoiceRecoverySummary() : { exists: false };
   const failedChoiceLabel = choiceRecoveryPoint.failedChoice?.label ?? choiceRecoveryPoint.failedChoice?.value;
   // Backup import, step 2: the player picks which manual slot receives the file.
   const renderImportPicker = () => importDraft && (
@@ -4273,7 +4255,9 @@ export default function App() {
         </div>}
       </div>
     );
-    if (!startGateLaunching || !game) return <>{null}{startGateView}</>;
+    if (!startGateLaunching || !game) {
+      return <>{startGateView}{!startGateLaunching && updateBanner(false, startGate.uiTemplate)}</>;
+    }
   }
 
   if (versionGate && !game) {
@@ -4304,6 +4288,7 @@ export default function App() {
   if (bootMode === 'launcher') {
     return (
       <div className="launcher">
+        {updateBanner(false)}
         <a className="launcher-skip-link" href="#launcher-library-title">{t("게임 목록으로 건너뛰기")}</a>
         <header className="launcher-topbar">
           <a className="launcher-brand" href={libraryHref()} aria-label={t("YAVN 홈")}>
@@ -5491,6 +5476,7 @@ export default function App() {
                 </div>
 
                 <div className="save-system-grid">
+                  {updateBanner(true, uiTemplate)}
                   <section className="save-system-section" data-save-kind="manual">
                     <span className="save-section-index" aria-hidden="true">01</span>
                     <header>
@@ -5909,7 +5895,7 @@ export default function App() {
       <div
         ref={dialogBoxRef}
         data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasStageApproach || undefined}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -6333,12 +6319,6 @@ export default function App() {
       onReplayed={(failedChoice) => { setStoryMapOpen(false); setGameOverRecoveryOpen(false); setEndingCreditsOpen(false); setRecoveredFailedChoice(failedChoice); refreshSaveSlots(); }}
       onRecords={() => { setStoryMapOpen(false); if (gameOver) setGameOverRecoveryOpen(true);
         else if (isFinished) setEndingCreditsOpen(true); else { setCaseFileTab('system'); setSettingsOpen(true); } }} /></Suspense>}
-    <UpdateBanner uiTemplate={game ? uiTemplate : undefined} buildChanged={updateWatch.buildChanged} contentChange={updateWatch.contentChange}
-      idle={updateNoticeIdle && !startGate} inGame={Boolean(game)} busy={updateBusy}
-      onReloadNow={() => reloadForUpdate('continue')}
-      onRestartNewVersion={() => reloadForUpdate('fresh')}
-      onContinueNewVersion={() => reloadForUpdate('continue')}
-      onDismissBuild={updateWatch.dismissBuild} onDismissContent={updateWatch.dismissContent} />
     {resumeNotice && game && !chapterLoading && (
       <div className="vs-resume-notice" data-ui-template={uiTemplate} role="status" onClick={(event) => event.stopPropagation()}>
         <p>{t(resumeNotice)}</p>
