@@ -170,13 +170,13 @@ state:
 inventory:
   coupon:
     name: "레플라 7일 체험권"
-    description: "민지영 주임의 추천 코드가 찍힌 체험권. 뒷면에 '가입 시 추천인 1개월 무료'."
+    description: "민지영 주임의 추천 코드가 찍혀 있다. 뒷면에는 ‘가입 시 추천인 1개월 무료’."
     image: assets/items/coupon.svg
     category: "주머니"
     order: 10
   pencil:
     name: "그린마트 연필"
-    description: "고객센터 연필꽂이의 HB 연필. 볼펜은 손님들이 가져가서 연필만 둔다. 끝에 초록 로고."
+    description: "고객센터 연필꽂이에 있는 HB 연필. 손님들이 볼펜을 가져가고 나서 연필만 두기 시작했다. 끝에 초록색 마트 로고가 찍혀 있다."
     image: assets/items/pencil.svg
     category: "주머니"
     order: 20

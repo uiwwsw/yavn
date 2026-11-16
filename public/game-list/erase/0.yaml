@@ -13,7 +13,7 @@ scenes:
       - say:
           char: 의사
           with: []
-          text: "지금 쓰는 이름하고 얼굴이 바뀝니다. 예전 기억으로 돌아갈 수는 없어요. 여기까지 안내받으셨죠?"
+          text: "지금 쓰는 이름과 얼굴이 바뀝니다. 지금까지의 일도 기억하지 못하게 돼요. 설명 들으셨죠?"
       - say:
           char: 의사
           with: []
@@ -41,8 +41,8 @@ scenes:
       - say: { char: 도윤, with: [지수], text: "그건 작가님이 시킨 거야, 네가 시키는 거야?" }
       - move: { id: 지수, toward: 도윤, style: approach }
       - say: { char: 지수.warm, with: [도윤], text: "내가. 넥타이 삐뚤어졌어. 잠깐만." }
-      - say: { char: 도윤, with: [지수], text: "이거 처음 매 줬을 땐 목 조른다고 뭐라 했는데." }
-      - say: { char: 지수.warm, motion: laugh, with: [도윤], text: "그때 네가 고개 숙여서 내 이마 박았잖아." }
+      - say: { char: 도윤, with: [지수], text: "이거 처음 매 줬을 때 내가 목 조인다고 했잖아." }
+      - say: { char: 지수.warm, motion: laugh, with: [도윤], text: "네가 갑자기 고개 숙여서 우리 이마 부딪혔잖아." }
       - say: { char: 도윤, with: [지수], text: "오늘 끝나고 뭐 먹을래? 너 아침에 커피만 마셨잖아." }
       - say: { char: 지수, with: [도윤], text: "칼국수. 네 거까지 곱빼기 시켜서 좀 뺏어 먹을래." }
       - say: { char: 도윤.smile, with: [지수], text: "그럼 네 걸 곱빼기로 시켜." }
@@ -51,9 +51,9 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "아, 식장 계약금 오늘까지지. 지금 보낼게. 영수증 카톡으로 보내 줄 테니까 저장 좀 해 줘." }
       - say: { char: 도윤, with: [지수], text: "응. 내 몫은 이따 바로 보낼게." }
       - say: { char: 지수, with: [도윤], text: "지난번에도 이따 보낸다더니 내가 다시 물어봤잖아." }
-      - say: { char: 도윤, with: [지수], text: "그땐 월급 들어오는 날까지 통장에 돈이 좀 모자랐어." }
+      - say: { char: 도윤, with: [지수], text: "그땐 월급 들어오기 전이라 통장에 돈이 좀 모자랐어." }
       - say: { char: 지수, with: [도윤], text: "아, 그래서 그랬어? 그냥 말하지. 나는 잊어버린 줄 알았지." }
-      - say: { char: 지수, with: [도윤], text: "이번에도 내가 모르고 있는 거 있어? 돈 얘기면 집에 가서 같이 보면 돼." }
+      - say: { char: 지수, with: [도윤], text: "혹시 또 그런 일 있어? 돈 모자라면 집에 가서 같이 보자." }
       - choice:
           key: e0_studio
           prompt: "작가가 카메라를 내린다. 지수는 아직 도윤의 팔을 잡고 있다."
@@ -144,7 +144,7 @@ scenes:
           motion: bow
           with: [지수]
           sound: shutter
-          text: "그 앞에 거 저 눈 감았어요. 그건 지워 주세요."
+          text: "앞에 찍은 거요. 저 눈 감은 건 지워 주세요."
       - say:
           char: 지수
           motion: sigh
@@ -200,7 +200,7 @@ scenes:
           with: []
           text: "빨래는 내가 걷었다"
       - bg: { id: club, transition: cut }
-      - place: "금요일 밤 12:40 · 클럽"
+      - place: "토요일 오전 0:40 · 클럽"
       - say:
           channel: message
           side: me
@@ -265,16 +265,16 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "근데 그게 대답이 되나요? 누구냐고 물었는데."
+          text: "예비 신부가 보낸 거예요?"
       - say:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "괜찮아요. 여기서는 다들 그래요. 묻는 말에 다른 대답."
+          text: "아, 자꾸 캐묻네요. 그 얘긴 안 해도 돼요."
       - say:
           char: 준성
           with: [도윤]
-          text: "그럼 축하주는 내가 살게요. 모르는 사람이 사는 게 제일 부담 없잖아요."
+          text: "다음 달이면 얼마 안 남았네요. 축하주 한 잔 살게요. 저도 일행이 가서 혼자거든요."
       - say:
           char: 도윤
           with: [준성]
@@ -282,7 +282,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "그러니까요. 내일 되면 서로 기억도 안 나요."
+          text: "이름은 그냥 모르고 마셔요. 오늘 또 볼 것도 아닌데."
       - choice:
           key: e0_junseong
           prompt: "준성이 자기 잔을 들어 올린 채 기다린다."
@@ -322,12 +322,12 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "잔 비었네요. 그만 마셔요. 결혼할 사람이 이러면 안 되지."
+          text: "이제 물 마실래요? 내일 또 일정 있을 텐데."
       - say:
           char: 도윤
           motion: laugh
           with: [준성]
-          text: "방금 따라 주셨잖아요."
+          text: "네. 저 이제 진짜 일어나야 돼요."
       - say:
           channel: message
           side: me
@@ -353,11 +353,11 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "클럽에서 잔을 건넨 남자가 침대 반대편에서 등을 돌린 채 자고 있다."
+          text: "클럽에서 잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다."
       - say:
           channel: thought
           with: []
-          text: "‘ㅇㅇ 물 마시고 자.’ 지수의 톡을 읽고 침대 옆을 더듬는다. 물컵이 두 개다."
+          text: "‘ㅇㅇ 물 마시고 자.’ 지수 톡을 보고 침대 옆을 더듬는다. 물컵이 두 개다."
       - goto: e0_erase
 
   e0_erase:
@@ -449,7 +449,7 @@ scenes:
               - { var: e0_messages, op: eq, value: true }
               - { var: e0_photos, op: eq, value: true }
               - { var: e0_location, op: eq, value: true }
-          text: "폰이 5시 40분을 가리킨다. 잠금 화면을 한 번 더 봤다."
+          text: "폰에 5시 40분이 뜬다. 현관에 나가면 다시 폰을 켜지 말자."
       - say:
           channel: thought
           when: { var: e0_messages, op: eq, value: false }

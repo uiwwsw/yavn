@@ -96,13 +96,13 @@ state:
 inventory:
   console_cheap:
     name: "싸구려 레트로 게임기"
-    description: "버튼이 덜컥거리고 화면은 작다. 그래서 아무도 해킹하지 않았다."
+    description: "버튼은 뻑뻑하고 화면은 작다. 코어에 연결할 수 없는 기종이다."
     image: assets/items/console_cheap.svg
     category: "부품"
     order: 10
   cpu_chip:
     name: "8비트 CPU"
-    description: "게임기에서 떼어 낸 심장. 지금은 안드로이드의 머리 안에 있다."
+    description: "고장 난 로봇에 넣으려고 게임기에서 떼어 낸 칩."
     image: assets/items/cpu_chip.svg
     category: "부품"
     order: 20
@@ -114,7 +114,7 @@ inventory:
     order: 30
   memory_card:
     name: "8KB 메모리 카드"
-    description: "세이브 파일 하나 겨우 들어가는 크기. 둘의 기억이 여기 들어 있다."
+    description: "세이브 파일을 하나만 담을 수 있는 메모리 카드."
     image: assets/items/memory_card.svg
     category: "부품"
     order: 40

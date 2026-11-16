@@ -18,7 +18,7 @@ scenes:
           char: 윤재
           motion: puff
           with: [로봇]
-          text: "헉… 헉… 너 몸무게가 냉장고야. 가정용이면 가정을 생각했어야지."
+          text: "헉… 너 냉장고만큼 무거워. 집에서 쓰는 걸 왜 이렇게 만들어."
       - say:
           char: 윤재
           with: [로봇]
@@ -59,7 +59,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "윤재가 왼쪽 귀에서 이어폰을 뺀다. 충전 불빛이 들어오지 않는다. 열하루째다."
+          text: "윤재가 오른쪽 귀에서 이어폰을 뺀다. 열하루째 표시등이 꺼져 있다."
       - say:
           char: 윤재
           with: []
@@ -67,7 +67,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "빼면 또 안 들어갈 것 같아서."
+          text: "빼 놓으면 또 어디다 뒀는지 잊어버릴 것 같아서."
       - say:
           channel: action
           with: []
@@ -83,7 +83,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "한 번도 안 해 봤지만 원리는 그래."
+          text: "한 번도 안 해 봤는데. …뭐, 켜 보면 알겠지."
       - goto: b2_parts
 
   b2_parts:
@@ -143,7 +143,7 @@ scenes:
           char: 윤재
           motion: nod
           with: [로봇]
-          text: "됐다. 테이프 안 떨어지게 옆구리에 붙여 놓자."
+          text: "됐다. 옆구리에 붙여 놓자. 테이프 떨어지면 말하고."
       - get: battery
       - clearSticker: { id: b2_bat, leave: fadeOut }
       - set: { b_battery: true }
@@ -177,11 +177,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "회로도가 설명서 맨 뒷장에 있댔지. 설명서 안 읽는다는 원칙, 오늘 한정 해제."
+          text: "회로도는 설명서 맨 뒷장에 있댔지. 거기만 볼 거야."
       - say:
           channel: action
           with: []
-          text: "인두가 칩 다리를 하나 녹일 때마다 게임기 화면이 한 줄씩 꺼진다."
+          text: "인두를 대자 납이 녹는다. 화면이 한 차례 깜빡이더니 꺼진다."
       - use: console_cheap
       - get: cpu_chip
       - say:
@@ -214,11 +214,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "전선 두 가닥 꼬아 붙이고, 그 위에 껌 포장지 은박 둘둘. 절연이랑 차폐 한 번에."
+          text: "단자가 안 맞네. 원래 쓰던 케이블은 어디 갔어."
       - say:
           channel: thought
           with: []
-          text: "우리 기술실 테이프는 잡아당겨도 안 찢어졌는데. 이건 왜 이래."
+          text: "기술실 테이프는 이렇게 잘 찢어지지 않았는데. 껌 싸고 남은 은박이라도 써 볼까."
       - set: { b_screen: true }
       - goto: b2_parts
 
@@ -355,7 +355,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "근데 지금은 돈 안 줘도 줘. 아무도 없어서."
+          text: "여기서는 그냥 가져가도 돼. 계산할 사람이 없어."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -437,7 +437,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "네 왼쪽 귀에 있는 거."
+          text: "네 오른쪽 귀에 있는 거."
       - say:
           char: 로봇
           with: [윤재]
@@ -499,11 +499,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "규칙은 아니고."
+          text: "그건 규칙에는 안 넣을게."
       - say:
           char: 로봇
           with: [윤재]
-          text: "그냥 둘게."
+          text: "업데이트는 안 받는 걸로 그냥 기억해 둘게."
       - say:
           char: 윤재
           with: [로봇]
@@ -726,7 +726,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "들어온 건 다 들어옴."
+          text: "켜지기 전에도 그 소리는 들어왔음."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - say:
           char: 로봇.thinking
@@ -803,7 +803,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그럼 네가 남은 거 전부네."
+          text: "내가 처음 본 사람은 너 하나임."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -829,19 +829,19 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그럼 전원이 아니라 안쪽임."
+          text: "충전기 네 개 다 안 되면 이어폰 쪽 문제 같음."
       - say:
           char: 로봇
           with: [윤재]
-          text: "안쪽은 선이 와야 고쳐짐."
+          text: "만드는 데에 물어봐야 함."
       - say:
           char: 로봇
           with: [윤재]
-          text: "선이 적이라 안 옴."
+          text: "근데 연락하려면 코어에 연결해야 함."
       - say:
           char: 윤재
           with: [로봇]
-          text: "…그러니까 못 고치는 거지."
+          text: "또 업데이트가 들어오면 다른 것도 고장 나겠지."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -970,16 +970,16 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "짧게 말하면 들킨다고. 돈이 중요한 척이라는 걸 다 알면 돈이 안 돌아."
+          text: "야, 거기까지 적지 마. 누가 보면 내가 돈 안 내도 된다고 가르친 줄 알겠다."
       - wait: 270
       - say:
           char: 로봇
           with: [윤재]
-          text: "…그럼 사람들은 다 아는 걸 모르는 척함?"
+          text: "…그럼 남들한테는 그렇게 말하면 안 됨?"
       - say:
           char: 윤재
           with: [로봇]
-          text: "어. 그게 사회야. 학원에서 그렇게 배웠어."
+          text: "응. 가게 가면 그냥 얼마냐고 물어봐."
       - wait: 270
       - say:
           char: 로봇
@@ -988,7 +988,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "…다 아는 걸 모르는 척하는 것."
+          text: "…얼마냐고 물어보기."
       - say:
           char: 로봇
           with: [윤재]
@@ -1002,7 +1002,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "방금 소리."
+          text: "방금 웃었음."
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -1069,11 +1069,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "근데 손은 땀."
+          text: "근데 손에는 땀 남."
       - say:
           char: 로봇
           with: [윤재]
-          text: "추운데 땀?"
+          text: "추운데 왜 땀 남?"
       - say:
           char: 로봇.thinking
           with: [윤재]

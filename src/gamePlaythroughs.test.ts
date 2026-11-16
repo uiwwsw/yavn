@@ -191,7 +191,7 @@ describe('8비트 심장', () => {
     await reach('본체를 툭툭 친다');
     expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
     handleAdvance(true);
-    await reach('카트리지에 바람을 분다');
+    await reach('카트리지에 입김을 분다');
     expect(current().stickers.s0_broken?.source).toContain('/console_old_line.svg');
     handleAdvance(true);
     await vi.advanceTimersByTimeAsync(800);
@@ -288,7 +288,7 @@ describe('ERASE', () => {
       e3_room: '약국 봉투||식탁 위 서류||냉장고 달력||서류를 우편함에 넣고 나온다',
       e2_search: '검색창||사진첩||노트북을 덮는다',
       e2_photo: '사진을 완전히 삭제한다',
-      e3_clinic: '병원에서 나간다',
+      e3_clinic: '검사받지 않고 나온다',
       e2_jisu: '은행에 간다고 둘러댄다',
       e3_final: "휴대폰을 초기화한다",
     });
@@ -325,8 +325,8 @@ describe('튜토리얼', () => {
     expect(run.picked.slice(0, 2).map(entry => entry.split('=')[0])).toEqual(['t0_kwang', 't0_coupon']);
     expect(heard(run.shown, '최초 처리자 정해수')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서 왜 사느냐고')).toBe(true);
-    expect(heard(run.shown, '그 말이 맞아. 내가 혼자 다 못 먹어')).toBe(true);
-    expect(heard(run.shown, '환청은 보통 이렇게 안 적힙니다')).toBe(true);
+    expect(heard(run.shown, '틀린 말은 아니더라. 혼자 그걸 다 먹을 수는 없지')).toBe(true);
+    expect(heard(run.shown, '신고할 때 저 말을 그대로 따라 했대요')).toBe(true);
     // 상혁 opens the door a crack for someone who has been looking after him.
     expect(heard(run.shown, '밥 고맙다. 네 차례 아니었잖아')).toBe(true);
   });
@@ -351,7 +351,7 @@ describe('튜토리얼', () => {
       t4_end: '모니터를 끄고 나간다',
     });
     finished(run);
-    expect(heard(run.shown, '지르지 말라고만 해')).toBe(true);
+    expect(heard(run.shown, '나한테 지르지 말라는 거야')).toBe(true);
     expect(heard(run.shown, '무슨 말인지는 모르겠고 계속 지르기만 한다')).toBe(true);
     expect(heard(run.shown, '대답이 없다. 의자가 한 번 더 끌린다')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서')).toBe(false);
@@ -373,7 +373,7 @@ describe('오버플로', () => {
     const beats = [
       '안정 24', '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
       '정서 반응 01 · 무반응 의심', '01 뜬 분을 봤어요', '접수대에 뜬 그 카드, 제가 만든 겁니다',
-      '시험 신호 101 → 표시 01', '아까 접어 두신 이름', '반만 얼리기로 했잖아요',
+      '시험 신호 101 → 표시 01', '아까 접수표에서 가리신 이름', '반만 얼리기로 했잖아요',
       '전화 받았는데 반찬집 아주머니였잖아요', '센서 입력 101 → 표시 01',
       '아버지가 옆에 앉으라 그랬잖아요', '공동 이의신청 접수', '반만 얼렸다',
     ];
@@ -394,7 +394,7 @@ describe('오버플로', () => {
     });
     finished(run);
     expect(heard(run.shown, '지난번 네가 사 온 거 있네')).toBe(true);
-    expect(heard(run.shown, '아까 기록 안 보여주신 거 잘하셨어요')).toBe(true);
+    expect(heard(run.shown, '아까 접수표 안 보여 주셔도 괜찮아요')).toBe(true);
     expect(heard(run.shown, '아침에 전화 못 받았죠')).toBe(true);
     expect(heard(run.shown, '아까 물부터 드렸죠. 겁났어요')).toBe(true);
     expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);

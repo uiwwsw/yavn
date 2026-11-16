@@ -158,19 +158,19 @@ state:
 inventory:
   blue_thread:
     name: "감청 실"
-    description: "분이의 손톱 밑에서 나온 짙은 감청색 비단 실. 육의전 비단전에서만 이 색을 낸다."
+    description: "분이의 손톱 밑에서 나온 짙은 남빛 비단 실. 막쇠는 육의전 여금의 가게에서 보던 색이라 했다."
     image: assets/items/thread.svg
     category: "증거"
     order: 10
   first_sijang:
     name: "분이의 시장"
-    description: "입과 코에 거품이 없고, 술지게미를 덮자 목에 손자국이 떠올랐다. 죽은 뒤 우물에 던져졌다."
+    description: "분이의 시신을 처음 살핀 기록. 입과 코에는 거품이 없었고 목에 손가락 자국이 드러났다."
     image: assets/items/sijang.svg
     category: "검안 기록"
     order: 20
   order_slip:
     name: "주머니 주문서"
-    description: "분이가 옷 안섶에 꿰매 둔 종이. '감청 주머니 삼백'과 주문한 집의 붉은 표식."
+    description: "분이가 저고리 안섶에 꿰매 둔 종이. 감청 주머니 삼백 개라는 글과 주문한 집의 붉은 표식이 있다."
     image: assets/items/order_slip.svg
     category: "증거"
     order: 30
@@ -182,31 +182,31 @@ inventory:
     order: 40
   silver_pin:
     name: "은비녀"
-    description: "약방 주인의 입에 넣었다 뺐지만 검게 변하지 않았다. 은비녀로 잡히지 않는 독도 있다."
+    description: "박씨를 검안할 때 쓴 비녀. 검게 변하지 않았지만 그걸로 독이 없었다고 단정할 수는 없다."
     image: assets/items/silver_pin.svg
     category: "검안 도구"
     order: 50
   poison_note:
     name: "닭 실험 기록"
-    description: "약방 주인의 입에 물렸던 밥을 먹은 닭이 반 식경 만에 쓰러졌다. 독살이다."
+    description: "검시에 쓴 닭이 쓰러진 뒤 남긴 기록. 박씨가 불이 나기 전에 독을 먹었을 가능성을 보여 준다."
     image: assets/items/poison_note.svg
     category: "검안 기록"
     order: 60
   wound_rubbing:
     name: "상처 탁본"
-    description: "약방 주인 목의 칼자국을 종이에 떠 둔 것. 오른쪽 위에서 왼쪽 아래로, 폭은 한 치."
+    description: "박씨 목의 칼자국을 종이에 떠 둔 것. 자국은 오른쪽 위에서 왼쪽 아래로 비스듬하고, 너비는 한 치다."
     image: assets/items/wound_rubbing.svg
     category: "검안 기록"
     order: 70
   deokgu_sickle:
     name: "덕구의 낫"
-    description: "포도청이 흉기라 내놓은 낫. 날 폭이 두 치다."
+    description: "포도청이 흉기라고 내놓은 낫. 날 너비가 두 치를 넘는다."
     image: assets/items/sickle.svg
     category: "증거"
     order: 80
   ice_ledger:
     name: "얼음 출납부"
-    description: "서빙고의 출납부. 윤길이 사라진 밤, 얼음 열 덩이가 반출되었고 전의감 도장이 찍혀 있다."
+    description: "서빙고의 출납부. 윤길이 발견된 날 낮에 ‘약재 보관용’으로 얼음 열 덩이가 나갔고, 전의감 도장이 찍혀 있다."
     image: assets/items/ice_ledger.svg
     category: "증거"
     order: 90
@@ -223,8 +223,8 @@ inventory:
     category: "증거"
     order: 110
   register_page:
-    name: "윤길의 베껴 쓴 장"
-    description: "서리 윤길이 검안 기록을 옮겨 적은 장. 한 이름에 붉은 동그라미가 쳐져 있다."
+    name: "윤길이 베껴 쓴 문서"
+    description: "윤길이 검안 기록을 옮겨 적은 종이. 기록을 빌려 간 사람의 이름에 붉은 동그라미가 쳐져 있다."
     image: assets/items/register_page.svg
     category: "증거"
     order: 120

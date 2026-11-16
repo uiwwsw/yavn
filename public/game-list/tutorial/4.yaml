@@ -19,13 +19,13 @@ scenes:
           side: them
           char: 태민
           with: []
-          text: "들어가셨어요? 저는 안 갑니다. 거기 제 출입증으로 열리는 거 아시면 제가 잘려요"
+          text: "도착하셨어요? 제가 같이 가진 못해요. 카드 찍으면 제 이름이 기록에 남거든요"
       - say:
           channel: message
           side: them
           char: 태민
           with: []
-          text: "엘리베이터 B1만 눌러져요. 나머지 층은 카드 빼놨대요"
+          text: "제 카드로는 지하 1층만 갈 수 있어요"
       - say:
           channel: message
           side: me
@@ -43,11 +43,11 @@ scenes:
           side: them
           char: 태민
           with: []
-          text: "그래프 보셨죠. 0001만 선이 없는 거. 저도 그게 뭔지 몰라서 알려드린 거예요 진짜로"
+          text: "그래프 보셨죠. 0001만 선 밖에 있는 거. 저도 그게 뭔지 아직 몰라요"
       - say:
           channel: thought
           when: { var: seen_graph, op: eq, value: true }
-          text: "사용자 백십만 개가 선으로 이어져 있고 맨 왼쪽 하나만 아무 데도 안 붙어 있었다."
+          text: "그래프에 서버가 끊긴 날이 표시돼 있었다. 맨 왼쪽에만 선에 닿지 않은 점이 있었다."
       - say:
           channel: thought
           when: { var: seen_graph, op: eq, value: false }
@@ -55,11 +55,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "엘리베이터 안에 광고 액자가 비어 있다. 거울 대신 거기에 얼굴이 비친다."
+          text: "엘리베이터의 광고 액자에는 종이 한 장 없다. 텅 빈 액자 유리에 얼굴이 비친다."
       - say:
           channel: thought
           with: []
-          text: "코트 안에 유니폼을 그대로 입고 왔다. 아홉 시 반 오픈이다. 갈아입을 시간은 집에 들러서는 안 나온다."
+          text: "코트 안에 아직 유니폼을 입고 있다. 집에 들러 갈아입으려면 아홉 시 반 오픈에 늦겠다."
       - say:
           channel: system
           with: []
@@ -81,7 +81,7 @@ scenes:
       - choice:
           key: t4_room
           presentation: explore
-          prompt: "빈 랙 마흔두 개. 철골만 남은 선반 사이에 접이식 책상 하나. 모니터 하나, 본체 하나. 팬이 돈다."
+          prompt: "빈 서버 랙이 마흔두 개다. 그 사이 접이식 책상 아래에서 PC의 팬이 돈다."
           with: []
           camera: wide
           options:
@@ -165,11 +165,11 @@ scenes:
           char: 해수
           when: { var: t_pencil, op: eq, value: true }
           with: []
-          text: "제가 문지른 자리만큼."
+          text: "레플라에서 내가 문지른 자리랑 같다."
       - say:
           channel: thought
           when: { var: t_pencil, op: eq, value: true }
-          text: "그날 밤 녹화실에서 스무 자루 중 하나를 문질렀다. 그 하나가 여기 있다. 여기는 그날 밤에 와 본 적이 없다."
+          text: "그날 밤 레플라에서 문지른 게 여기 서랍에 있다. 이 건물엔 오늘 처음 왔다."
       - say:
           channel: thought
           when: { var: t_pencil, op: eq, value: false }
@@ -204,7 +204,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "미등록. 서버 없음. 나머지 백십만 개는 베타 아니면 정식인데 맨 위 하나만 칸이 비어 있다."
+          text: "다른 세션에는 가입 경로가 나오는데 맨 위 0001만 미등록이다."
       - say:
           channel: record
           with: []
@@ -216,7 +216,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "둘째와 셋째는 이 분 차이다. 첫째와는 칠 년 반이다."
+          text: "0002와 0003은 이 분 차이다. 0001은 그보다 칠 년 반이나 앞서 있다."
       - goto: log_steps
 
   log_steps:
@@ -233,7 +233,7 @@ scenes:
           channel: record
           when: { var: look_ticket, op: eq, value: true }
           with: []
-          text: "└ 확인한 항목 · 체험권 (고객 소지품) · 2031.04.12 22:10"
+          text: "└ 확인한 항목 · 번호표 발급기 · 2031.04.12 22:10"
       - say:
           channel: record
           when: { var: look_pencil, op: eq, value: true }
@@ -242,11 +242,11 @@ scenes:
       - say:
           channel: thought
           when: { var: look_ticket, op: eq, value: true }
-          text: "체험권. 깜빡이는 형광등 밑에서 손님 주머니에서 떨어진 걸 봤다. 그걸 봤다고 기록돼 있다."
+          text: "번호표 기계를 본 건 다음 손님을 부르려고 본 것뿐이다. 그것부터 기록됐다."
       - say:
           channel: thought
           when: { var: look_pencil, op: eq, value: true }
-          text: "연필꽂이. 누가 가져가는지 보려고 쳐다봤다. 쳐다본 것까지 기록돼 있다."
+          text: "마감 때 몇 자루 남았나 보려고 본 연필꽂이도 적혀 있다."
       - say:
           channel: record
           with: []
@@ -258,7 +258,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "열두 해를 하루도 안 빼고 하면 사천삼백팔십팔쯤 된다. 하루에 한 번씩 못 한 말이다."
+          text: "거의 열두 해 동안 매일 한 번씩 ‘못 했다’고 적힌 셈이다."
       - say:
           channel: record
           with: []
@@ -307,7 +307,7 @@ scenes:
       - say:
           channel: thought
           when: { var: hesitated, op: eq, value: false }
-          text: "세 걸음이 한 번에 갔다. 중단 줄이 없다."
+          text: "시작과 완료 사이에 중단 기록이 없다. 그날 한 번에 끝냈다."
       - goto: log_steps_two
 
   log_steps_two:
@@ -335,7 +335,7 @@ scenes:
       - say:
           channel: thought
           when: { var: tampered, op: gte, value: 2 }
-          text: "두 개 이상 손댔다. 손댄 걸 손댄 순서까지 적어 뒀다."
+          text: "두 개 이상 손댔다. 뭘 먼저 눌렀는지까지 여기에 남아 있다."
       - say:
           channel: thought
           when: { var: tampered, op: eq, value: 1 }
@@ -391,7 +391,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 다른 창을 연다. 사내 상담 이력이다. 아홉 자를 치자 한 줄이 뜬다."
+          text: "옆 창에서 사내 상담 이력을 열어 오광철을 검색한다. 한 줄이 뜬다."
       - say:
           channel: record
           with: []
@@ -399,11 +399,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "같은 날, 같은 분, 같은 시각이다. 초까지 같다."
+          text: "날짜와 시각이 두 기록에서 일치한다."
       - say:
           channel: thought
           with: []
-          text: "세션이 만들어진 시각이 내가 그 사람을 처음 받은 시각이다."
+          text: "첫날 그 손님을 받은 순간에 이미 접속한 걸로 돼 있다."
       - say:
           char: 해수
           with: []
@@ -430,11 +430,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "2019년부터 스크롤을 내렸는데 내 이름이 붙은 줄은 다섯 개다."
+          text: "첫 출근 날부터 오늘까지 내 이름 아래 남은 항목이 다섯 개다."
       - say:
           channel: thought
           with: []
-          text: "027번을 처음 부르던 날은 검색해도 나오지 않는다."
+          text: "그날 창구에 앉아 처음으로 손님을 기다린 일은 어디에도 없다."
       - say:
           channel: thought
           when: { var: knocked, op: eq, value: true }
@@ -476,7 +476,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 화면 오른쪽 위를 본다. 1/5부터 4/5까지는 거기 넘기기가 있었다."
+          text: "상혁이가 ‘넘기기’가 있다고 했던 화면 오른쪽 위를 본다."
       - say:
           channel: system
           with: []
@@ -502,11 +502,11 @@ scenes:
       - say:
           channel: thought
           when: { var: called_mom, op: eq, value: true }
-          text: "다섯 시 십 분. 여기서 역까지 한 시간. 오픈까지 네 시간 반."
+          text: "다섯 시 십 분 첫차면 내가 돌아와 있을 때 어머님이 오겠네."
       - say:
           channel: thought
           when: { var: called_mom, op: eq, value: false }
-          text: "문 앞에서 번호를 지웠다. 지금 누르면 새벽 세 시에 받을 사람이다."
+          text: "상혁이 방문 앞에서 어머님께 전화하려다 말았다. 지금 전화해도 받으실까."
       - say:
           channel: system
           with: []
@@ -541,7 +541,7 @@ scenes:
       - say:
           channel: thought
           when: { var: honest, op: gte, value: 3 }
-          text: "한 사용자만. 번호를 아는 사용자가 하나 있다."
+          text: "0001. 내 번호라면 알고 있다."
       - say:
           channel: thought
           when: { var: honest, op: lt, value: 3 }
@@ -685,7 +685,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 그걸 두 번 더 해 본다. 두 번 더 꽂혀 있다. 세 번째에는 손님이 기다리고 있어서 그만둔다."
+          text: "해수는 연필을 두 번 더 뽑는다. 그때마다 같은 자리에 연필이 생긴다. 손님이 창구로 오자 그만둔다."
       - say:
           channel: system
           with: []
@@ -777,11 +777,11 @@ scenes:
       - say:
           channel: thought
           when: { var: tampered, op: gt, value: 0 }
-          text: "스무 자루 중에 하나를 문지른 사람은 나다. 영장은 상혁이한테 나왔다."
+          text: "내가 연필을 문지른 뒤 경찰이 찾던 로고가 사라졌다. 상혁이는 오늘 영장이 나왔다."
       - say:
           channel: thought
           with: []
-          text: "새벽에 본 것 중에 여기서 쓸 수 있는 말이 하나도 없다. 팬이 돌았다고 말하면 안 된다."
+          text: "경찰 앞에서 하려던 말을 입으로 꺼내 본다. ‘전기 끊긴 건물에서 팬이 돌았습니다.’ 아무도 믿지 않겠지."
       - sound: chime
       - say:
           channel: system
@@ -834,7 +834,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "USER 0001 · 종료하시겠습니까? 이 사용자에 연결된 안내는 중단됩니다."
+          text: "USER 0001의 연결을 끊으시겠습니까? 이 사용자의 안내도 중단됩니다."
       - say:
           char: 해수
           with: []
@@ -882,7 +882,7 @@ scenes:
           char: 은숙
           when: { var: told_truth, op: eq, value: false }
           with: [해수]
-          text: "지난번에는 집에 있었다고 하셨어요. 오늘은 다르게 말씀하시네요."
+          text: "지난번에는 집에 있었다고 하셨죠. 오늘은 무슨 말씀을 하시려는 거예요?"
       - say:
           char: 은숙
           with: [해수]
@@ -890,11 +890,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그게 제가 가진 전부예요."
+          text: "현관 화면에 그렇게 나와요. 제가 확인한 건 거기까지고요."
       - say:
           char: 해수
           with: [은숙]
-          text: "그날 밤에 가산동 지하에 다녀왔습니다."
+          text: "오늘 새벽에는 가산동 지하에 다녀왔습니다."
       - say:
           char: 해수
           with: [은숙]
@@ -907,7 +907,7 @@ scenes:
           char: 은숙
           motion: headtilt
           with: [해수]
-          text: "그 건물 작년에 전기 끊겼어요. 출입 시스템이 안 돌아가요."
+          text: "그 건물 2029년에 전기를 끊었어요. 출입 시스템도 멈췄고요."
       - say:
           char: 해수
           with: [은숙]
@@ -964,11 +964,11 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "레플라요. 거기 번호가 다섯까지 있어요."
+          text: "레플라 접속 기록이요. 제 번호 밑에 튜토리얼이 다섯 단계까지 있었어요."
       - say:
           char: 해수
           with: [은숙]
-          text: "그중에 네 줄은 제가 했고요."
+          text: "네 번째 줄까진 집에서 열어 봤습니다."
       - say:
           char: 은숙
           with: [해수]
@@ -976,7 +976,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "그건 어제 새벽에 했습니다."
+          text: "마지막 줄은 오늘 새벽에 가산동에서 끝냈습니다."
       - say:
           char: 해수
           with: [은숙]
@@ -1002,7 +1002,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "사 월 십칠 일 오후 한 시 이 분. 그 다음 날 새벽에 3단계가 끝났다."
+          text: "메모는 4월 17일 오후 한 시 이 분. 내가 3단계를 끝낸 건 그다음 날 새벽이었다."
       - say:
           channel: thought
           with: []

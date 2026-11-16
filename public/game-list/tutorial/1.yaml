@@ -47,12 +47,12 @@ scenes:
       - say:
           char: 광철
           with: [해수]
-          text: "나는 밤에는 안 나와. 돌아와도 불이 꺼져 있으니까."
+          text: "밤엔 잘 안 나와. 바깥에 갔다 와도 집에 불 켜 줄 사람이 없으니까."
       - say:
           char: 광철
           motion: stomp
           with: [해수]
-          text: "…그래서 낮에 오는데, 낮에 오면 이런 소리나 듣고."
+          text: "그래서 낮에 오지. 근데 낮에 와서 그런 소리나 듣고."
       - say:
           char: 광철
           motion: stomp
@@ -74,7 +74,7 @@ scenes:
       - say:
           char: 광철
           with: [해수]
-          text: "연필 줘. 볼펜도 없는 데서. …다 썼어. 뒤에 줄 선 사람들도 다 들어."
+          text: "연필 줘. 볼펜도 없어? …뒤에 줄 선 사람들도 좀 들어 봐."
       - say:
           char: 광철
           motion: lean_in
@@ -125,7 +125,7 @@ scenes:
           char: 광철.shout
           motion: stomp
           with: [해수]
-          text: "여기까지? 여기까지라고 했어? 점장 불러. 지금 당장."
+          text: "내 말 안 들려? 여기 책임자 불러. 지금 당장."
           wait: 800
       - goto: snap
 
@@ -186,7 +186,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "그 말 좀 그만해. 너 그거 열두 해째야."
+          text: "너 그 소리 열두 해째야. 안 괜찮을 때도 기어이 괜찮다고 해."
       - say:
           char: 지영
           with: [해수]
@@ -219,7 +219,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "레플라에 우리 매장 있어. 그대로. 형광등 깜빡이는 것까지. 그 아저씨도 있어. 본인은 레플라 같은 거 안 할 텐데, 거기엔 사람이 다 복사돼 있거든. 똑같이 와서 똑같이 해."
+          text: "레플라 가면 우리 매장도 나와. 깜빡이는 형광등까지 똑같아. 그 아저씨도 와서 현실에서 하는 짓 그대로 해."
       - say:
           char: 해수
           with: [지영]
@@ -232,7 +232,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "거기 창구엔 너도 앉아 있어. 내가 뭘 들고 가도 웃으면서 다 해 줘. 여기 너랑 똑같이. 그래서 재미없어서 요샌 경준이 계산대로 가."
+          text: "창구에 네가 앉아 있는데 내가 뭘 들고 가도 다 해 줘. 너한테 떼쓰는 건 재미없어서 요샌 경준이한테 가."
       - char: { id: 경준, position: right }
       - say:
           char: 경준
@@ -263,7 +263,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "레플라 체험용 밴드 · 전자 코너 시연품 · 눕지 말고 앉아서 착용하세요 · 귀 뒤 뼈 위에 붙이세요 · 30초 안에 접속됩니다 · 접속하는 동안 몸은 잠든 상태로 이 자리에 있습니다"
+          text: "레플라 체험용 밴드 · 매장 시연품 · 앉은 상태에서 귀 뒤 뼈 위에 붙이세요. · 접속은 30초 이내, 접속 중에는 잠든 상태가 유지됩니다."
       - say:
           char: 상혁
           with: []
@@ -392,7 +392,7 @@ scenes:
           text: "이거 환불."
       - choice:
           key: t1_say
-          prompt: "선으로 된 즉석밥 열두 개. 하나는 뜯겨 있다."
+          prompt: "윤곽선만 보이는 즉석밥 열두 개. 하나는 포장이 뜯겨 있다."
           char: 해수
           options:
             - text: "영수증을 확인한다"
@@ -552,7 +552,7 @@ scenes:
           char: 해수.blank
           motion: nod
           with: []
-          text: "나사 자리가 새 거네요."
+          text: "손잡이 안쪽에 드라이버 자국이 새로 났는데요."
       - say:
           char: 해수.blank
           motion: nod
@@ -578,11 +578,11 @@ scenes:
           motion: lean_in
           with: [해수]
           delivery: whisper
-          text: "형, 저 지금 처음 들었어요. 형이 손님한테 그렇게 말하는 거."
+          text: "형 방금 그 말, 손님한테 한 거예요?"
       - say:
           char: 해수
           with: [경준]
-          text: "나도 처음이야."
+          text: "…나도 내가 한 말인가 싶어."
       - emote: { id: 해수, motion: bow, wait: true }
       - say:
           channel: record
@@ -687,7 +687,7 @@ scenes:
           char: 상혁.grin
           motion: lean_in
           with: [해수]
-          text: "목말라서. 너 귀 뒤 빨간 거나 가려. 정해수가 밴드 자국이라니, 고등학교 애들이 알면 운다."
+          text: "목말라서. 너 귀 뒤에 자국이나 가려. 고등학교 애들이 보면 네가 그렇게 하지 말라던 밤샘을 다 한다고 웃겠네."
       - say:
           channel: action
           with: []
@@ -740,7 +740,7 @@ scenes:
       - say:
           char: 해수.service
           with: [광철]
-          text: "오늘 날이 좋아서 그런가 손님이 많으세요."
+          text: "오늘은 날이 좋아서 그런지 손님이 많네요."
       - say:
           char: 광철.lost
           with: [해수]
@@ -768,7 +768,7 @@ scenes:
           char: 광철.lost
           when: { var: rage, op: eq, value: 1 }
           with: [해수]
-          text: "말은 없어. 지르지 말라고만 해. 지르는 사람이 지르지 말라고 하니까 더 이상하지."
+          text: "소리만 지르는 줄 알았어. 듣다 보니까 나한테 지르지 말라는 거야. 지르는 사람이."
       - say:
           char: 광철.lost
           when: { var: rage, op: gte, value: 2 }
@@ -784,7 +784,7 @@ scenes:
           char: 광철.lost
           when: { var: rage, op: gte, value: 2 }
           with: [해수]
-          text: "…그리고 그 말이 맞아. 내가 혼자 다 못 먹어. 그건 맞는 말이야."
+          text: "…틀린 말은 아니더라. 혼자 그걸 다 먹을 수는 없지."
       - move: { id: 광철, toward: 해수, style: retreat }
       - say:
           char: 광철.lost
@@ -794,7 +794,7 @@ scenes:
       - say:
           char: 광철
           with: [해수]
-          text: "그 즉석밥. 먹을 만하더라. 남은 거."
+          text: "그 즉석밥 있잖아. 환불 안 받은 건 마저 먹었어. 먹을 만하더라."
       - say:
           char: 해수.service
           with: [광철]
@@ -823,7 +823,7 @@ scenes:
           char: 경준
           motion: bounce
           with: [해수]
-          text: "형, 저 아저씨가 저한테도 수고하래요. 저도 모르게 존댓말 할 뻔했어요."
+          text: "형, 그 아저씨가 저한테도 수고하래요. 얼떨결에 네, 하고 인사할 뻔했어요."
       - say:
           char: 해수
           with: [경준]
@@ -902,7 +902,7 @@ scenes:
           text: "번호표 뽑고 기다려."
       - choice:
           key: t1_pencil_again
-          prompt: "C-14. 또 운전석 문부터 열린다."
+          prompt: "기둥에는 또 C-14. 운전석 문도 아까처럼 열린다."
           with: [광철]
           options:
             - text: "연필을 쥔다"
@@ -960,7 +960,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "손을 펴 보는데 손가락이 연필을 쥘 때처럼 굽어 있다. 오늘 오픈. 9시 반까지."
+          text: "손을 펴려다 멈춘다. 아직 연필을 쥔 것 같다. 오늘은 9시 반까지 출근해야 한다."
       - say:
           channel: action
           with: []

@@ -56,12 +56,12 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "고개 들어 봐요. 파티션 너머. 여기요."
+          text: "고개 들어 봐요. 맞은편 자리요."
       - say:
           channel: system
           when: { var: e0_messages, op: eq, value: false }
           with: []
-          text: "대화 · 저장되지 않은 번호\n마지막 메시지 · 3월 21일 오전 1:58"
+          text: "대화 · 저장되지 않은 번호\n마지막 메시지 · 3월 20일 오전 1:58"
       - say:
           channel: thought
           when: { var: e0_messages, op: eq, value: false }
@@ -71,7 +71,7 @@ scenes:
           char: 준성
           motion: bow
           with: [도윤]
-          text: "내선표 보고 하나씩 걸어 보는 중이었어요. 박준성입니다. 오늘부터 이 팀 맡게 됐어요."
+          text: "사내 연락망에서 번호 보고 걸어 봤어요. 박준성입니다. 오늘부터 이 팀 맡습니다."
       - mood: { tone: dread, level: 1 }
       - say:
           char: 도윤.panic
@@ -97,7 +97,7 @@ scenes:
       - say:
           channel: action
           with: [준성, 도윤]
-          text: "준성이 도윤에게만 보이게 한쪽 눈을 찡긋한다."
+          text: "준성이 도윤 쪽으로 몸을 기울이더니 한쪽 눈을 찡긋한다."
       - say:
           char: 도윤.smile
           motion: laugh
@@ -126,7 +126,7 @@ scenes:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "그런 분이 꼭 한 명 계시죠. 오늘은 저도 껴도 돼요?"
+          text: "김치찌개 좋죠. 오늘 저도 같이 가도 돼요?"
       - say:
           char: 도윤
           motion: bow
@@ -148,7 +148,7 @@ scenes:
       - say:
           char: 도윤
           with: [준성]
-          text: "마감 자료만 돌려놓고 가려고요."
+          text: "마감 자료만 보내고 가려고요."
       - say:
           char: 준성
           motion: sigh
@@ -170,11 +170,11 @@ scenes:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "네. 사무실 공기가 별로라서요. 얘가 나보다 예민해요. 종이컵으로 반 컵, 그 이상 주면 삐져요."
+          text: "네. 물은 종이컵으로 반 컵만 줘요. 지난번에 한 컵 줬더니 잎이 다 처지더라고요."
       - say:
           char: 준성
           with: [도윤]
-          text: "이사할 때 제일 먼저 싼 게 얘예요. 사람보다 짐이 적어서."
+          text: "이사 갈 때도 이거부터 쌌어요. 옷보다 먼저."
       - say:
           char: 도윤
           with: [준성]
@@ -206,16 +206,16 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "근데 내 번호는 왜 차단했어요? 회사 일로 연락할 수도 있는데."
+          text: "회사 일로 연락할 땐 내선으로 할게요."
       - say:
           char: 도윤
           motion: droop
           with: [준성]
-          text: "…풀어 놓을게요."
+          text: "…네. 자리에 보통 있어요."
       - say:
           char: 준성
           with: [도윤]
-          text: "안 풀어도 돼요. 내선 있으니까."
+          text: "알아요. 오늘도 이렇게 남아 있잖아요."
       - say:
           char: 준성
           with: [도윤]
@@ -400,7 +400,7 @@ scenes:
       - say:
           char: 지수
           with: []
-          text: "도윤아, 저녁 뭐 시킬까. 나 지금 손가락이 안 움직여."
+          text: "도윤아, 저녁 뭐 시킬까. 오늘은 나 진짜 밥 못 하겠어."
       - say:
           char: 도윤
           with: []
@@ -408,7 +408,7 @@ scenes:
       - say:
           char: 지수
           with: []
-          text: "아무거나가 제일 어려운 거 알지. 세 개 줄게. 치킨, 국밥, 아니면 그냥 라면."
+          text: "아무거나 말고. 치킨, 국밥, 아니면 그냥 라면?"
       - say:
           char: 도윤
           with: []
@@ -416,7 +416,7 @@ scenes:
       - say:
           char: 지수
           with: []
-          text: "거봐. 있잖아 있어. 아무거나는 없어."
+          text: "국밥 먹고 싶었네. 바로 나오면서 아무거나래."
       - say:
           char: 지수
           with: []
@@ -429,7 +429,7 @@ scenes:
       - say:
           char: 지수
           with: []
-          text: "안 지워가 아니라 '저장했어'라고 말해 줘야 내가 믿지!"
+          text: "지금 저장해 줘. 너 그러고 나중에 또 보내 달라고 하잖아."
       - say:
           char: 도윤
           with: []
@@ -454,12 +454,12 @@ scenes:
           char: 하린
           motion: bounce
           with: [민재, 아진]
-          text: "야야야 오늘 급식 봤어? 돈까스야 돈까스. 근데 또 4교시가 체육이야."
+          text: "야야야 오늘 돈까스였잖아. 근데 4교시에 체육을 넣으면 어떡해."
       - say:
           char: 하린
           motion: bounce
           with: [민재, 아진]
-          text: "그니까!! 돈까스는 무조건 선착순인데 체육은 무조건 늦게 끝나고."
+          text: "체육 늦게 끝나는 날엔 뛰어 내려가도 끝에 작은 것만 남는다니까."
       - say:
           char: 하린
           with: [민재, 아진]
@@ -556,7 +556,7 @@ scenes:
           char: 하린
           motion: shake
           with: [아진, 민재]
-          text: "괜찮아 괜찮아. 나 다른 데 끼면 되지. 나 어디든 잘 껴."
+          text: "괜찮아. 아진아, 2반에 조 안 짠 애 누군지 알아?"
       - say:
           char: 아진.awkward
           motion: lean_in
@@ -626,7 +626,7 @@ scenes:
           char: 하린
           motion: laugh
           with: [민재, 아진]
-          text: "아 종 쳤다. 체육 가자 체육. 나 오늘 진짜 뛸 거야."
+          text: "아 종 친다. 나 먼저 들어간다?"
       - goto: e1_harin_night
 
   e1_harin_night:
@@ -689,7 +689,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "일 분. 이 분. 타자 치는 표시도 안 뜬다."
+          text: "일 분, 이 분. 아무도 답을 안 한다."
       - say:
           channel: message
           side: them
@@ -699,7 +699,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "ㅇ 하나 치다가 지운다. 그냥 답장 안 해도 되겠지."
+          text: "‘ㅇ’ 하나 치다가 지운다. 그래. 봤으면 됐지."
       - goto: h1_shots
 
   h1_erased:

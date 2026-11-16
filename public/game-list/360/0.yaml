@@ -23,7 +23,7 @@ scenes:
       - bg: { id: void_empty, transition: cut }
       - say: { channel: narration, text: "눈을 떴다.", wait: 650 }
       - music: void
-      - say: { channel: narration, text: "눈꺼풀을 한 번 더 움직여 본다. 달라지는 게 없다.", wait: 1100 }
+      - say: { channel: narration, text: "눈을 질끈 감았다가 떠 본다. 여전히 아무것도 보이지 않는다.", wait: 1100 }
       - choice:
           key: where_am_i
           prompt: "여긴 어디지?"
@@ -66,7 +66,7 @@ scenes:
       - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
       - say: { channel: narration, text: "아까와 같은 어둠이다.", wait: 1300 }
-      - say: { channel: narration, text: "방금까지 불리던 이름이 혀끝에서 사라졌다." }
+      - say: { channel: narration, text: "방금까지 대답하던 내 이름이 생각나지 않는다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
       - say: { channel: narration, text: "꺼진 자리에서 시선을 떼자 다른 빛이 보인다." }
@@ -142,7 +142,7 @@ scenes:
       - say: { channel: narration, text: "뺨에 짠 바람이 닿았다.", wait: 1100 }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - wait: 950
-      - say: { channel: narration, text: "기적이 울리자 부두에 서 있던 사람들이 한꺼번에 고개를 들었다.", wait: 1400 }
+      - say: { channel: narration, text: "뱃고동이 울리자 부두 사람들이 한꺼번에 바다 쪽을 봤다.", wait: 1400 }
       - wait: 300
       - say: { channel: card, with: [], text: "1952년 12월\n부산\n내 이름은 순임.", wait: 2000 }
       - mood: off
@@ -172,7 +172,7 @@ scenes:
       - say: { channel: narration, text: "책상 아래에서 컴퓨터 돌아가는 소리가 났다.", wait: 1100 }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - wait: 950
-      - say: { channel: narration, text: "모니터에 멈춰 있는 영상. 창에 비친 내 얼굴이 그 위로 겹쳤다.", wait: 1400 }
+      - say: { channel: narration, text: "모니터 속 영상은 멈춰 있다. 그 뒤 창문에 내 얼굴이 비친다.", wait: 1400 }
       - wait: 300
       - say: { channel: card, with: [], text: "2026년 3월\n서울\n내 이름은 지안.", wait: 2000 }
       - mood: off
@@ -200,7 +200,7 @@ scenes:
           channel: action
           with: []
           when: { var: t_kin, op: eq, value: true }
-          text: "안채에서 기침 소리가 난다. 주판알이 손에서 미끄러진다."
+          text: "안채에서 기침 소리가 난다. 주판알을 밀던 손이 멈춘다."
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지, 진지 드세요. 봉구 오라버니 것도 퍼 왔어요." }
       - say: { char: 끝순, with: [만석], text: "덕이도 왔어요? 지난번에 저한테 조개 한 줌 주고 갔는데." }
@@ -208,7 +208,7 @@ scenes:
       - say: { char: 만석, with: [끝순, 봉구], text: "기침이 왜 그 모양이냐." }
       - say: { char: 끝순, with: [만석], text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }
       - say: { char: 봉구, with: [만석], text: "열여섯 먹은 처자가 총 멘 것들을 구경해?" }
-      - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 안 무섭던데요. 말이 무섭지. 말이 그렇게 큰 줄 몰랐어요." }
+      - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 멀리 있었잖아요. 말은 바로 앞까지 왔어요. 저보다 훨씬 크더라고요." }
       - mood: { tone: warm, level: 2 }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다. 어려서부터 그랬다." }
       - say: { char: 끝순, with: [만석], text: "아버지, 이번에 마포 가시면 엿 사다 주세요. 깨 붙은 거." }
@@ -220,7 +220,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "곳간에 몇 섬이냐." }
       - say: { char: 봉구, with: [만석], motion: sigh, text: "삼백 하고 열두 섬이요. …어젯밤에도 세셨잖습니까. 그저께 밤에도요." }
       - say: { char: 만석, with: [봉구], text: "그중에 우리 것은." }
-      - say: { char: 봉구, with: [만석], text: "백마흔입니다. 나머지는 맡아 둔 거고, 강경 윤 객주 것이 제일 많습니다." }
+      - say: { char: 봉구, with: [만석], text: "백마흔 섬입니다. 나머지는 맡아 둔 거고, 강경 윤 객주 것이 제일 많습니다." }
       - say: { channel: thought, with: [], text: "맡은 쌀에 손대면 그날로 끝이다." }
       - say: { channel: action, with: [], sound: granary_key, text: "허리춤의 곳간 열쇠를 만져 본다. 잘 때도 풀지 않는다." }
       - say:
@@ -264,7 +264,7 @@ scenes:
       - sticker: { id: key, image: key_sticker, x: 50, y: 32, width: "clamp(150px, 20%, 280px)", enter: fadeIn, inputLockMs: 300 }
       - wait: 1100
       - say: { channel: action, with: [], text: "열쇠를 자물쇠에 댄다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
-      - say: { channel: thought, with: [], text: "열어 달라는 소리가 들리는데 손목에 힘이 더 들어간다." }
+      - say: { channel: thought, with: [], text: "열쇠를 돌리려는데 쥔 손에 힘만 더 들어간다. 대문 밖에선 여전히 열어 달라는 소리가 난다." }
       - clearSticker: { id: key, leave: fadeOut }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "주인어른? 여시는 겁니까, 마시는 겁니까." }
       - say: { char: 만석, with: [봉구], text: "…대문 닫아라." }
@@ -275,14 +275,14 @@ scenes:
       - set: { l1_gave: true }
       - say: { char: 만석, with: [봉구], text: "되 가져오너라. 한 집에 닷 되다." }
       - say: { char: 만석, with: [봉구], text: "치부책에 이름 적고." }
-      - say: { char: 봉구, with: [만석], motion: shake, text: "우리 백마흔에서 나갑니다. 맡은 쌀은 손도 못 댑니다." }
+      - say: { char: 봉구, with: [만석], motion: shake, text: "한 집에 닷 되씩이면 우리 쌀도 금방 줄어요. 맡은 쌀은 내줄 수도 없고요." }
       - say: { char: 만석, with: [봉구], text: "안다. 우리 것에서 내라." }
-      - say: { char: 봉구, with: [만석], motion: shake, text: "가을에 못 받습니다. 저 사람들은 가을에도 없어요." }
+      - say: { char: 봉구, with: [만석], motion: shake, text: "저 집들은 가을까지 기다려도 받을 게 없을 겁니다." }
       - say: { char: 만석, with: [봉구], text: "그것도 안다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석, 봉구], text: "덕이네는 애가 넷이에요, 오라버니. 닷 되면 나흘인데." }
       - say: { char: 봉구, with: [끝순, 만석], text: "그래서 엿 되 주자고? 네가 서기 해라, 그럼." }
-      - say: { channel: action, with: [], text: "해 질 때까지 되질을 했다. 우리 백마흔에서 스무 섬이 나갔다." }
+      - say: { channel: action, with: [], text: "해 질 때까지 되로 쌀을 퍼 줬다. 우리 쌀 백마흔 섬 중에 스무 섬이 나갔다." }
       - say: { channel: action, with: [], text: "덕이 어멈이 절을 하려는 걸 그 애가 붙들어 일으켰다." }
       - goto: fever
 
@@ -324,22 +324,22 @@ scenes:
           char: 만석
           with: [봉구]
           when: { var: l1_gave, op: eq, value: true }
-          text: "…한 병 사 와라. 나머지는 쌀 풀리면 채운다."
+          text: "…한 병만 사 와라. 쌀을 내다 팔면 더 사자."
       - say:
           char: 봉구
           with: [만석]
           when: { var: l1_gave, op: eq, value: false }
           text: "예. 궤에서 마흔 냥 꺼내 가겠습니다."
       - say: { char: 봉구, with: [만석], text: "그런데 하나 더 있습니다. 마포 김 주사한테서 기별이 왔어요." }
-      - say: { char: 봉구, with: [만석], text: "삼백 석을 통으로 사겠답니다, 섬에 열닷 냥. 모레까지 직접 와서 수결하시랍니다." }
+      - say: { char: 봉구, with: [만석], text: "삼백 섬을 한꺼번에 사겠답니다. 섬에 열닷 냥. 모레까진 직접 와서 수결하시랍니다." }
       - say: { char: 만석, with: [봉구], text: "삼백이면 우리 것으로는 모자란다." }
       - say: { char: 봉구, with: [만석], text: "맡은 쌀까지 넘기고 윤 객주한테는 값으로 쳐 주면 됩니다. 그게 더 남고요." }
-      - say: { channel: action, with: [], text: "되는 해가 있고 안 되는 해가 있다. 값이 오르는 중이니 올해는 되는 해다." }
+      - say: { channel: action, with: [], text: "지금 쌀을 내줘도 값이 더 오르면 손해다. 하지만 열닷 냥이면 놓치기 아까운 값이다." }
       - say: { char: 만석, with: [봉구], text: "…열닷 냥이면 사천오백 냥이다." }
       - say: { char: 봉구, with: [만석], text: "예. 오가는 데 사흘입니다." }
       - say: { char: 끝순.sick, with: [만석], text: "다녀오세요, 아버지. 저 괜찮아요. 오라버니 있잖아요." }
       - say: { char: 끝순.sick, with: [만석], motion: laugh, text: "올 때 엿 잊지 마시고요. 깨 붙은 걸로." }
-      - say: { channel: action, with: [], text: "웃는데 왼쪽 눈이 안 감긴다. 열이 올라서 그렇다." }
+      - say: { channel: action, with: [], text: "웃는데 왼쪽 눈이 다 감기지 않는다. 이마에 다시 열이 오른다." }
       - goto: leave_choice
 
   leave_choice:
@@ -375,7 +375,7 @@ scenes:
       - wait: 1100
       - say: { channel: action, with: [], text: "짚신을 신고 문지방에 선다. 발이 넘어가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: action, with: [], text: "등 뒤에서 기침 소리가 난다. 돌아보니 호롱불은 켜져 있다." }
-      - say: { channel: thought, with: [], text: "켜져 있는 걸 보고도 숨이 안 쉬어진다. 불이 꺼진 방을 본 적은 없는데." }
+      - say: { channel: thought, with: [], text: "호롱불은 분명 켜져 있는데, 발을 떼려는 순간 숨부터 막힌다." }
       - say: { channel: thought, with: [], text: "봉구는 마루 아래에서 내 짚신만 보고 있다." }
       - say: { char: 만석, with: [봉구], text: "봉구야. 네가 가라. 수결은 네가 해라." }
       - goto: stay_home
@@ -424,7 +424,7 @@ scenes:
 
   stay_home:
     actions:
-      - say: { char: 봉구, with: [만석], text: "서기 수결을 받아 줄 사람이 아닌데요. …가 보기는 하겠습니다." }
+      - say: { char: 봉구, with: [만석], text: "김 주사가 제 수결을 받아 줄까요. …가 보기는 하겠습니다." }
       - say: { channel: action, with: [], text: "사흘 밤 물수건을 갈았다. 나흘째 아침에 그 애가 미음을 달라고 했다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지 수염이 왜 그래요. 꼭 엿장수 같아." }
@@ -440,9 +440,9 @@ scenes:
   after_kept:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 쌀은 곳간에 있다." }
-      - say: { char: 만석, with: [봉구], text: "값은 또 온다." }
-      - say: { channel: action, with: [], text: "값은 다시 오지 않았다. 가을에 햇곡이 풀리자 닷 냥으로 내려앉았다." }
-      - say: { char: 끝순, with: [만석], text: "아버지, 묵은쌀에 바구미 슬어요. 덕이네 좀 주면 안 돼요?" }
+      - say: { char: 만석, with: [봉구], text: "쌀값은 다시 오를 게다." }
+      - say: { channel: action, with: [], text: "가을에 햇곡이 나자 쌀값은 닷 냥으로 떨어졌다." }
+      - say: { char: 끝순, with: [만석], text: "아버지, 묵은쌀에 바구미 생겨요. 덕이네 좀 주면 안 돼요?" }
       - say: { char: 끝순, with: [만석], text: "지금이라도요." }
       - say: { char: 만석, with: [끝순], text: "바구미는 체로 치면 된다." }
       - say: { char: 끝순, with: [만석], text: "덕이 지난겨울에 갔어요." }
@@ -467,7 +467,7 @@ scenes:
       - say: { char: 만석, with: [끝순], text: "…" }
       - say: { char: 끝순, with: [만석], text: "잘한 거예요." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "덕이 지금 열둘이에요. 저번에 장에서 봤는데 키가 저만해요." }
-      - say: { channel: action, with: [], text: "받을 말이 없어서 아무 말도 안 했다. 그 애는 그 뒤로 그 얘기를 안 했다." }
+      - say: { channel: action, with: [], text: "한 대꾸도 못 했다. 그 애도 두 번 다시 그 일을 입에 올리지 않았다." }
       - say: { channel: action, with: [], text: "말릴 돈이 없었다. 아침마다 정미소 문 앞까지 데려다주기를 여섯 해 했다." }
       - say: { channel: action, with: [], text: "스물여섯 되던 겨울에 누웠다. 나는 머리맡에 있었고, 금계랍 살 스무 냥은 없었다." }
       - set: { l1_end: poor }
@@ -488,7 +488,7 @@ scenes:
       - say:
           char: 봉구
           with: [만석]
-          text: "허리에 배깁니다."
+          text: "잘 때도 차고 계시니 허리에 자국이 안 없어지잖습니까."
       - say:
           char: 만석
           with: [봉구]
@@ -512,7 +512,7 @@ scenes:
           char: 만석
           with: [봉구]
           when: { var: l1_end, op: eq, value: kept }
-          text: "애가 아프면 못 오지. 그건 맞다. …그건 그 애가 맞다."
+          text: "애가 아픈데 어찌 오냐. 그 애라면 아이 곁에 있겠지."
       - say:
           char: 봉구
           with: [만석]
@@ -526,7 +526,7 @@ scenes:
       - say:
           char: 만석
           with: [봉구]
-          text: "너는 객주 차렸으면 됐다."
+          text: "네가 객주를 일으켰으니 됐다. 그 집 문이나 잘 열어 둬라."
       - say: { char: 봉구, with: [만석], text: "뭐 드시고 싶은 건 없습니까." }
       - wait: 1600
       - say: { char: 만석, with: [봉구], text: "…엿." }
@@ -543,7 +543,7 @@ scenes:
     actions:
       - bg: { id: void, transition: fade, duration: 1800 }
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "넓다. 포구에서 본 밤바다를 백 번 포개도 여기 한 귀퉁이가 안 된다." }
+      - say: { channel: narration, text: "포구에서 밤바다를 보고 있으면 눈이 어둠에 익었다. 여기는 아무리 있어도 앞이 안 보인다." }
       - say:
           channel: narration
           when: { var: l1_end, op: eq, value: gone }
@@ -551,11 +551,11 @@ scenes:
       - say:
           channel: narration
           when: { var: l1_end, op: eq, value: kept }
-          text: "쉰여섯 해가 전부 떠오른다. 바구미 슨 삼백 섬. 강화에서 한 번도 오지 않은 가마."
+          text: "쉰여섯 해가 전부 떠오른다. 바구미 슨 삼백 섬. 강화로 떠난 뒤 돌아오지 않은 딸."
       - say:
           channel: narration
           when: { var: l1_end, op: eq, value: poor }
-          text: "쉰여섯 해가 전부 떠오른다. 정미소 문 앞. 겨 먼지. 없던 스무 냥."
+          text: "쉰여섯 해가 전부 떠오른다. 정미소 문 앞. 겨 먼지. 끝내 마련하지 못한 스무 냥."
       - wait: 700
       - say: { channel: narration, text: "묻는 소리가 난다." }
       - say: { channel: narration, text: "어디서 나는지 찾다가 그만둔다. 내 안에서 난다." }
@@ -566,7 +566,7 @@ scenes:
       - say: { channel: narration, text: "엿 얘기 말고 다른 얘기를 한 번만." }
       - say: { channel: narration, text: "고맙다고 했어야 했다." }
       - say: { channel: narration, text: "미안하다고도." }
-      - say: { channel: narration, text: "포구 밖으로 나가 본 것이 평생 한 번이고, 곳간이 거기 있어서 나도 거기 있었다." }
+      - say: { channel: narration, text: "평생 포구를 떠난 건 한 번뿐이었다. 곳간을 누구한테도 못 맡겨서." }
       - wait: 900
       - say: { channel: narration, text: "대답할 차례다." }
       - say: { channel: narration, text: "쉰여섯 해를 다 뒤져도 변명 하나가 안 나온다." }
@@ -579,7 +579,7 @@ scenes:
     actions:
       - choice:
           key: v1
-          prompt: "쉰여섯 해에서 쥘 수 있는 것은 하나다."
+          prompt: "쉰여섯 해 동안 남은 후회 중 하나를 가져간다."
           options:
             - text: "하지 못한 말"
               saveText: "말을 했어야 했다."
@@ -611,6 +611,6 @@ scenes:
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그것 하나를 쥐자 묻는 소리가 멎는다.", autoAdvance: 1900 }
       - say: { channel: narration, text: "쉰여섯 해가 접힌다. 쥔 것만 손에 남는다.", autoAdvance: 1800 }
-      - say: { channel: narration, text: "포구 이름이 먼저 빠져나간다. 그다음은 허리춤에 있던 것의 무게." }
+      - say: { channel: narration, text: "포구 이름이 먼저 생각나지 않는다. 허리춤에 열쇠를 찼던 감각도 사라진다." }
       - bg: { id: void, transition: dissolve, duration: 1800 }
       - goto: /0.yaml
