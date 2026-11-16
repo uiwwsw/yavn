@@ -62,10 +62,6 @@ scenes:
           with: [막쇠]
           text: "네. 의녀 {{player_name|이라}} 합니다."
       - say:
-          char: 서연
-          with: [막쇠]
-          text: "여자 시신이라 저를 부르셨다고 들었습니다."
-      - say:
           char: 막쇠
           with: [서연]
           text: "몇이오. 열일곱쯤 됐나."
@@ -86,10 +82,6 @@ scenes:
           with: [막쇠]
           text: "토는 안 할 거예요. 그리고 이건 읽고 왔습니다."
       - say:
-          char: 막쇠
-          with: [서연]
-          text: "뭐요?"
-      - say:
           channel: action
           with: []
           text: "품에서 책을 꺼낸다. 한문 옆에 한글이 빼곡한 『무원록 언해』."
@@ -101,10 +93,6 @@ scenes:
           char: 막쇠
           with: [서연]
           text: "난 사십 년을 그림만 봤는데."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "쯧."
       - char: { id: 도원, position: center }
       - say:
           char: 도원.stern
@@ -124,20 +112,8 @@ scenes:
           text: "의녀는 여자 몸만 확인해 주시오."
       - say:
           char: 서연
-          with: [도원]
-          text: "…네."
-      - say:
-          channel: thought
-          with: [도원]
-          text: "확인만."
-      - say:
-          char: 서연
           with: [도원, 막쇠]
-          text: "나리."
-      - say:
-          char: 서연
-          with: [도원, 막쇠]
-          text: "몸을 먼저 보고 쓰겠습니다. 머리부터 발끝까지요."
+          text: "나리, 머리부터 발끝까지 보고 적겠습니다."
       - say:
           channel: action
           with: []
@@ -154,10 +130,6 @@ scenes:
       - say:
           channel: record
           text: "시장 첫 장. 몸 앞면을 그린 시형도에 본 것을 하나씩 적는다."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "자, 봐요."
       - say:
           char: 막쇠
           with: [서연]
@@ -215,11 +187,7 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "책에도 그렇게 적혀 있어요."
-      - say:
-          char: 서연.think
-          with: [막쇠]
-          text: "거품이 없으면, 물에 들어가기 전에 숨이 멎었다."
+          text: "여긴 거품이 하나도 없어요. 우물에 빠지기 전에 숨이 멎었을 수도 있어요."
       - set: { c1_mouth: true }
       - goto: c1_examine
 
@@ -273,15 +241,11 @@ scenes:
           with: [서연]
           text: "송장 닦을 술을 달라면 주모가 기겁하겠구먼."
       - say:
-          char: 막쇠
-          with: [서연]
-          text: "에이. 다녀오리다."
-      - say:
           channel: action
           with: []
           continueLabel: "지게미를 덮고 기다린다"
           text: "젖은 천 위로 시큼한 지게미를 고루 펴 바른다. 등불 심지를 한 번 자른다."
-      - effect: { name: inkstamp, wait: true }
+      - effect: focus
       - say:
           channel: action
           with: []
@@ -305,10 +269,6 @@ scenes:
       - music: night_well
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
-      - say:
-          char: 도원.stern
-          with: [서연]
-          text: "다 보았소?"
       - say:
           char: 도원.stern
           with: [서연]
