@@ -71,11 +71,11 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "포교도 분이가 목 졸린 걸 알아요?"
+          text: "…그 말, 포교 나리 앞에서도 했어요?"
       - say:
           char: 서연
           with: [여금]
-          text: "했습니다. 적어 가지는 않았습니다."
+          text: "들으셨습니다. 붓은 안 드시더군요."
       - goto: c2_meet
 
   c2_meet:
@@ -130,7 +130,7 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "나는 이게 무서워요."
+          text: "의녀님한테 드렸다는 말은 밖에서 하지 말아요."
       - get: order_slip
       - goto: c2_fire_alarm
 

@@ -621,7 +621,7 @@ scenes:
       - say:
           char: 덕구
           with: [서연, 도원]
-          text: "의녀님, 그 짐은 이리 줘요. 오늘은 제가 들게요."
+          text: "의녀님. 저, 짐 나를 일 있으면 절 불러요. 꼭이요."
       - goto: c3_after
 
   c3_after:

@@ -81,6 +81,7 @@ scenes:
           char: 서연
           with: [막쇠]
           text: "토는 안 할 거예요. 그리고 이건 읽고 왔습니다."
+      - say: { char: 막쇠, with: [서연], text: "뭘 읽어 왔수?" }
       - say:
           channel: action
           with: []
@@ -110,10 +111,11 @@ scenes:
           char: 도원.stern
           with: [서연]
           text: "의녀는 여자 몸만 확인해 주시오."
+      - say: { char: 서연, with: [도원], text: "…네." }
       - say:
           char: 서연
           with: [도원, 막쇠]
-          text: "나리, 머리부터 발끝까지 보고 적겠습니다."
+          text: "나리. 머리부터 발끝까지 보겠습니다. 적는 건 그 뒤에요."
       - say:
           channel: action
           with: []
@@ -187,7 +189,7 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "여긴 거품이 하나도 없어요. 우물에 빠지기 전에 숨이 멎었을 수도 있어요."
+          text: "그럼 숨을 쉬면서 빠졌다고 쓰기엔 이르겠네요."
       - set: { c1_mouth: true }
       - goto: c1_examine
 

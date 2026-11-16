@@ -622,7 +622,7 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "다리만 안 다쳤어도… 하, 궤짝 건진 값이네. 아가씨 잘못 아니유."
+          text: "다리가 말을 안 듣더라고. 궤짝은 건졌지유? 아가씨 잘못 아니유."
       - set: { makssoe_alive: false }
       - goto: c4_farewell
 
