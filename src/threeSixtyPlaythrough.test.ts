@@ -143,6 +143,33 @@ describe('360 full playthrough', () => {
     expect(getChoiceRecoverySummary()?.failedChoice?.key).toBe('first_light');
   });
 
+  it('loses the previous star’s progress, even when it was ready to enter', async () => {
+    await start();
+    await play({}, 'star');
+    const state = useVNStore.getState;
+
+    submitChoiceOption(0);
+    submitChoiceOption(0);
+    expect(state().choiceGate.approachSteps).toEqual([2, 0, 0]);
+
+    submitChoiceOption(1);
+    expect(state().choiceGate.approachSteps).toEqual([0, 1, 0]);
+    expect(state().choiceGate.approachSwitched).toBe(true);
+    expect(state().dialog.fullText).toContain('한쪽 고무신은 뒤축이 다 닳았다.');
+    expect(state().mood).toMatchObject({ tone: 'cold', level: 1 });
+
+    submitChoiceOption(0);
+    expect(state().choiceGate.approachSteps).toEqual([1, 0, 0]);
+    expect(state().dialog.fullText).toBe('종이가 눅눅하다. 깨가 붙어 있다.');
+    expect(state().routeVars.lives_done).toBe(0);
+
+    submitChoiceOption(0);
+    expect(state().choiceGate.approachSwitched).toBe(false);
+    submitChoiceOption(0);
+    expect(state().choiceGate.active).toBe(false);
+    expect(state().routeVars.lives_done).toBe(1);
+  });
+
   it('runs the chain in the order the dark is asked for, and looks back at the end', async () => {
     await start();
     const { state, picked, shown } = await play({

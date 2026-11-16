@@ -2921,7 +2921,8 @@ export default function App() {
         { position: 'center' as const, slot: characters.center },
         { position: 'right' as const, slot: characters.right },
       ] as const
-    ).filter((entry): entry is { position: Position; slot: CharacterSlot } => Boolean(entry.slot)),
+    ).filter((entry): entry is { position: Position; slot: CharacterSlot } =>
+      Boolean(entry.slot && entry.slot.placement !== 'offstage')),
     [characters],
   );
   const enteringCharactersByPosition = useMemo(
@@ -2998,15 +2999,12 @@ export default function App() {
     [layoutCharactersByPosition, characterLayoutMode],
   );
   const visibleCharacterCount = visibleCharactersByPosition.length;
-  const effectiveCameraTargetId = useMemo(
-    () => resolveStageCameraFocusTargetId(
-      camera,
-      presentedVisibleCharacterIds,
-      dialogSpeakerId,
-      dialogCameraTargetId,
-    ),
-    [camera, dialogCameraTargetId, dialogSpeakerId, presentedVisibleCharacterIds],
-  );
+  const effectiveCameraTargetId = useMemo(() => resolveStageCameraFocusTargetId(
+    camera,
+    visibleCharactersByPosition.map(({ slot }) => slot.id),
+    dialogSpeakerId,
+    dialogCameraTargetId,
+  ), [camera, dialogCameraTargetId, dialogSpeakerId, visibleCharactersByPosition]);
   const cameraTargetPosition = useMemo(
     () => layoutCharactersByPosition.find(
       (entry) => entry.slot.id === effectiveCameraTargetId,
@@ -4754,6 +4752,22 @@ export default function App() {
     );
   }
 
+  const hasStageApproach = choiceGate.active && choiceGate.presentation === 'approach'
+    && choiceGate.options.some(option => option.at);
+  const activeApproachIndex = hasStageApproach ? choiceGate.approachSteps.findIndex(step => step > 0) : -1;
+  const activeApproach = choiceGate.options[activeApproachIndex];
+  const canEnterApproach = activeApproach?.reveal
+    && choiceGate.approachSteps[activeApproachIndex] >= activeApproach.reveal.length;
+  const approachStatus = hasRecoveredFailedChoice
+    ? t("빛이 보이던 곳으로 돌아왔다.")
+    : choiceGate.approachSwitched
+      ? t("앞선 기억이 멀어졌다. 첫 단서부터.")
+      : canEnterApproach
+        ? t("같은 별을 눌러 들어가세요")
+        : activeApproach
+          ? t("같은 별을 눌러 더 가까이")
+          : t("다가갈 별을 누르세요");
+
   const renderChoiceOption = (
     option: typeof choiceGate.options[number],
     index: number,
@@ -4764,9 +4778,9 @@ export default function App() {
     const isApproach = choiceGate.presentation === 'approach' && spatial && approachTotal > 0;
     const approachStep = isApproach ? (choiceGate.approachSteps[index] ?? 0) : 0;
     const approachReady = isApproach && approachStep >= approachTotal;
-    const approachAction = approachReady ? t("들어간다") : undefined;
+    const approachAction = approachReady ? t("들어간다") : approachStep > 0 ? t("한 걸음 더") : undefined;
     const optionText = fillText(option.text);
-    const optionLabel = approachAction ? `${approachAction} (${optionText})` : optionText;
+    const optionLabel = approachReady ? `${approachAction} (${optionText})` : optionText;
     const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
     const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
     const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
@@ -4776,6 +4790,7 @@ export default function App() {
         type="button"
         className={`choice-gate-option${spatial ? ' exploration-target' : ''}${isApproach ? ' approach-target' : ''}${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
         data-approach-step={isApproach ? String(approachStep) : undefined}
+        data-approach-active={approachStep > 0 ? 'true' : undefined}
         data-approach-near={approachReady ? 'true' : undefined}
         style={spatial && option.at
           ? ({
@@ -4961,11 +4976,23 @@ export default function App() {
 
       {choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && !isDialogHidden && (
         <div
-          className="exploration-field"
+          className={hasStageApproach ? 'exploration-field approach-field' : 'exploration-field'}
           role="group"
           aria-label={choiceGate.presentation === 'approach' ? t("다가갈 곳") : t("주변 살펴보기")}
           style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>
-          {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
+          {hasStageApproach ? (
+            <>
+              <p className="approach-status" role="status">{approachStatus}</p>
+              <div className="approach-stars">
+                {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
+              </div>
+              {choiceGate.options.some(option => !option.at) && (
+                <div className="approach-actions">
+                  {choiceGate.options.map((option, index) => !option.at ? renderChoiceOption(option, index) : null)}
+                </div>
+              )}
+            </>
+          ) : choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
         </div>
       )}
 
@@ -5857,7 +5884,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErase && !dialogTyping ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -6005,9 +6032,9 @@ export default function App() {
               </button>
             </form>
           )}
-          {choiceGate.active && (
+          {choiceGate.active && (!hasStageApproach || choiceGate.timeoutMs) && (
             <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
-              {hasRecoveredFailedChoice && (
+              {hasRecoveredFailedChoice && !hasStageApproach && (
                 <div className="choice-recovery-hint" role="status">
                   <span aria-hidden="true">!</span>
                   <p><strong>{t("죽음의 원인이 된 선택이 표시되어 있습니다.")}</strong>{t("다른 경로를 선택해 다시 진행할 수 있습니다.")}</p>
@@ -6029,13 +6056,10 @@ export default function App() {
                   </div>
                 </div>
               )}
-              {choiceGate.presentation === 'approach' && choiceGate.options.some(option => option.at) && (
-                <p className="choice-gate-explore-hint">{t("당기는 쪽을 눌러 다가가세요")}</p>
-              )}
               {choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
                 <p className="choice-gate-explore-hint">{t("화면에서 살펴볼 곳을 누르세요")}</p>
               )}
-              <div
+              {!hasStageApproach && <div
                 className="choice-gate-options"
                 data-choice-count={choiceGate.options.filter(option => (choiceGate.presentation !== 'explore' && choiceGate.presentation !== 'approach') || !option.at).length}
               >
@@ -6045,7 +6069,7 @@ export default function App() {
                   .map((option, index) => ({ option, index }))
                   .filter(({ option }) => !((choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && option.at))
                   .map(({ option, index }, position) => renderChoiceOption(option, index, false, position + 1))}
-              </div>
+              </div>}
             </div>
           )}
         </div>

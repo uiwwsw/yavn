@@ -117,10 +117,10 @@ scenes:
       - add: { lives_done: 1 }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그쪽으로 기운다. 처음에는 느리다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: wipeLeft, duration: 320 }
-      - effect: { name: speedlines, wait: true }
+      - bg: { id: void_near, transition: dissolve, duration: 900 }
+      - wait: 240
       - say: { channel: narration, text: "당긴 쪽만 남고 나머지가 빠져나간다.", autoAdvance: 1800 }
-      - effect: { name: flash, wait: true }
+      - wait: 180
       - say: { channel: card, with: [], text: "1894년 유월\n제물포" }
       - mood: off
       - goto: yard
@@ -131,10 +131,10 @@ scenes:
       - add: { lives_done: 1 }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그쪽으로 기운다. 기울고 나니 빠르다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: wipeRight, duration: 320 }
-      - effect: { name: speedlines, wait: true }
+      - bg: { id: void_near, transition: dissolve, duration: 900 }
+      - wait: 240
       - say: { channel: narration, text: "이름이 먼저 빠져나간다. 그다음이 얼굴이다.", autoAdvance: 1800 }
-      - effect: { name: flash, wait: true }
+      - wait: 180
       - say: { channel: card, with: [], text: "1952년 십이월\n부산" }
       - mood: off
       - goto: /1.yaml
@@ -145,10 +145,10 @@ scenes:
       - add: { lives_done: 1 }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그쪽으로 기운다. 가까웠던 모양이다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: wipeLeft, duration: 320 }
-      - effect: { name: speedlines, wait: true }
+      - bg: { id: void_near, transition: dissolve, duration: 900 }
+      - wait: 240
       - say: { channel: narration, text: "빠져나갈 것이 생각보다 적다.", autoAdvance: 1800 }
-      - effect: { name: flash, wait: true }
+      - wait: 180
       - say: { channel: card, with: [], text: "1988년 구월\n서울" }
       - mood: off
       - goto: /2.yaml
@@ -159,10 +159,10 @@ scenes:
       - add: { lives_done: 1 }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "그쪽으로 기운다. 멀어서 오래 걸린다.", autoAdvance: 1900 }
-      - bg: { id: void_near, transition: wipeRight, duration: 320 }
-      - effect: { name: speedlines, wait: true }
+      - bg: { id: void_near, transition: dissolve, duration: 900 }
+      - wait: 240
       - say: { channel: narration, text: "세 몫이 한꺼번에 빠져나간다. 오래 걸린다.", autoAdvance: 1800 }
-      - effect: { name: flash, wait: true }
+      - wait: 180
       - say: { channel: card, with: [], text: "2026년 삼월\n서울" }
       - mood: off
       - goto: /3.yaml

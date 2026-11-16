@@ -89,19 +89,18 @@ describe('approach: a choice you walk toward', () => {
     expect(engineSource).toMatch(
       /presentation === 'approach' && selected\.reveal\?\.length[\s\S]*?if \(taken < selected\.reveal\.length\)[\s\S]*?return;/,
     );
-    // The step must be recorded, or every click would show the same line.
-    expect(engineSource).toMatch(/steps\[optionIndex\] = taken \+ 1;[\s\S]*?setChoiceGate\(\{ approachSteps: steps \}\)/);
+    expect(engineSource).toContain('index === optionIndex ? taken + 1 : 0');
   });
 
-  it('raises the mood a level per step and starts the tremor partway in', () => {
+  it('deepens the colour with each step while keeping the image still', () => {
     expect(engineSource).toMatch(/const level = Math\.min\(3, taken \+ 1\);/);
-    expect(engineSource).toMatch(/setMood\(\{ tone, level, tremor: level >= 2 \}\)/);
+    expect(engineSource).toMatch(/setMood\(\{ tone, level, tremor: false \}\)/);
   });
 
   it('grows each readable target with its own progress and shows when it can be entered', () => {
-    expect(immersive).toMatch(/\.app \.approach-target \{\s*--approach-near: calc\(var\(--approach-step, 0\) \/ var\(--approach-total, 1\)\);/);
-    expect(immersive).toMatch(/\.app \.approach-target::before \{\s*width: calc\(7px \+ 8px \* var\(--approach-near, 0\)\);/);
-    expect(appSource).toContain('const approachAction = approachReady ? t("들어간다") : undefined;');
+    expect(immersive).toContain('--star-size: calc(8px + 6px * var(--approach-near));');
+    expect(immersive).toMatch(/\.approach-target::before \{\s*width: var\(--star-size\);[^}]+animation: none;/);
+    expect(appSource).toContain('const approachAction = approachReady ? t("들어간다") : approachStep > 0 ? t("한 걸음 더") : undefined;');
     expect(appSource).toContain('{approachAction && <span className="approach-confirm-label">{approachAction}</span>}');
   });
 });

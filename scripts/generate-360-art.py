@@ -107,14 +107,14 @@ def drifting(rng, cls, count, r_lo, r_hi, o_lo, o_hi):
 # Three depths moving at three speeds is what reads as drifting rather than as a picture of stars.
 DRIFT_CSS = f"""<style>
 @keyframes drift {{ from {{ transform: translateX(0); }} to {{ transform: translateX(-{W}px); }} }}
-@keyframes tw {{ 0%, 100% {{ opacity: 0.35; }} 50% {{ opacity: 1; }} }}
+@keyframes tw {{ 0%, 100% {{ opacity: 0.74; }} 50% {{ opacity: 0.92; }} }}
 @keyframes breathe {{ 0%, 100% {{ opacity: 0.72; }} 50% {{ opacity: 1; }} }}
 .far {{ animation: drift 240s linear infinite; }}
 .mid {{ animation: drift 132s linear infinite; }}
 .near {{ animation: drift 74s linear infinite; }}
-.tw1 {{ animation: tw 5.5s ease-in-out infinite; }}
-.tw2 {{ animation: tw 7.2s ease-in-out -2.4s infinite; }}
-.tw3 {{ animation: tw 4.3s ease-in-out -1.1s infinite; }}
+.tw1 {{ animation: tw 8s ease-in-out infinite; }}
+.tw2 {{ animation: tw 11s ease-in-out -2.4s infinite; }}
+.tw3 {{ animation: tw 9s ease-in-out -1.1s infinite; }}
 .core {{ animation: breathe 9s ease-in-out infinite; transform-origin: center; }}
 @media (prefers-reduced-motion: reduce) {{
   .far, .mid, .near, .tw1, .tw2, .tw3, .core {{ animation: none; }}
@@ -123,12 +123,10 @@ DRIFT_CSS = f"""<style>
 
 
 def bright(x, y, r, glow_id, cls=''):
-    """A star you can actually see: a halo, a hard white centre and two glare spikes."""
+    """A small warm centre within a diffused halo."""
     k = f' class="{cls}"' if cls else ''
     return (f'<g{k}><circle cx="{f(x)}" cy="{f(y)}" r="{f(r * 11)}" fill="url(#{glow_id})"/>'
-            + line(x - r * 8, y, x + r * 8, y, '#fff6e2', r * 0.55, ' opacity="0.5"')
-            + line(x, y - r * 8, x, y + r * 8, '#fff6e2', r * 0.55, ' opacity="0.5"')
-            + circle(x, y, r, '#fffaf0') + '</g>')
+            + circle(x, y, r, '#f7e7c9') + '</g>')
 
 
 def void():
@@ -164,7 +162,7 @@ def void_light():
 
 
 def void_near():
-    """Closer again. The points have width now and the field streaks past instead of hanging."""
+    """Closer again, with a wider pool of light and soft foreground stars."""
     rng = random.Random(363)
     center = (1230, 285)
     defs = (glow('a', '#4d5668', [(0, 0.86), (0.5, 0.34), (1, 0)])
@@ -173,9 +171,8 @@ def void_near():
     body = [rect(0, 0, W, H, '#06070c'), DRIFT_CSS,
             f'<circle cx="{center[0]}" cy="{center[1]}" r="1450" fill="url(#a)" class="core"/>',
             drifting(rng, 'far', 150, 1.1, 1.9, 0.3, 0.52),
-            drifting(rng, 'mid', 88, 2.0, 3.2, 0.5, 0.82)]
-    streak = ''.join(dust(rng, 150, toward=center, reach=62, span=11000, near=80))
-    body.append(f'<g class="near">{streak}<g transform="translate({W},0)">{streak}</g></g>')
+            drifting(rng, 'mid', 88, 2.0, 3.2, 0.5, 0.82),
+            drifting(rng, 'near', 24, 2.5, 4.2, 0.4, 0.72)]
     body.append(f'<circle cx="{center[0]}" cy="{center[1]}" r="620" fill="url(#b)" class="core"/>')
     for i, (x, y, r) in enumerate([(300, 700, 4.4), (640, 160, 3.6), (980, 520, 3.0)]):
         body.append(bright(x, y, r, 's', f'tw{i + 1}'))

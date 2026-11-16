@@ -117,52 +117,153 @@
   .app .dialog-action-button, .app .exploration-target { transition: none; }
 }
 
-/* Each target receives its own approach progress from the choice gate. */
-.app .approach-target {
-  --approach-near: calc(var(--approach-step, 0) / var(--approach-total, 1));
-  background: none;
-  text-shadow: 0 1px 10px #000000d9;
-  padding: 11px 12px 11px 30px;
-  transition: opacity 420ms ease;
-  opacity: calc(0.86 + 0.14 * var(--approach-near, 0));
+.app .dialog-box.has-stage-approach {
+  height: clamp(86px, 16cqh, 110px);
+  min-height: 0;
+  --dialog-safe-max-height: min(33cqh, 180px);
+  padding: 12px 20px;
 }
+
+.app .has-stage-approach .dialog-content-scroll {
+  padding-top: 0;
+  scrollbar-gutter: auto;
+}
+
+.app .has-stage-approach .dialog-content-scroll:has(> :is(.speaker, .dialog-channel-label)) { padding-top: 24px; }
+.app .has-stage-approach .text { min-height: 0; }
+
+.exploration-field.approach-field {
+  top: max(88px, var(--stage-safe-block-start));
+  bottom: calc(var(--exploration-dialog-inset) + 56px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.approach-status {
+  align-self: center;
+  margin: 0;
+  padding: 3px 10px;
+  color: #e8dac0;
+  background: #090a0dd6;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.approach-stars {
+  position: relative;
+  flex: 1;
+}
+
+.app .approach-stars .approach-target {
+  --approach-near: calc(var(--approach-step, 0) / var(--approach-total, 1));
+  --star-size: calc(8px + 6px * var(--approach-near));
+  width: min(170px, 34cqw);
+  left: clamp(0px, calc(var(--target-x) - min(85px, 17cqw)), calc(100% - min(170px, 34cqw)));
+  top: clamp(0px, calc(var(--target-y) - 44px), calc(100% - 94px));
+  min-height: 92px;
+  max-height: none;
+  overflow: visible;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0;
+  padding: 38px 6px 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #eee4ce;
+  text-align: center;
+  text-shadow: 0 1px 5px #000;
+  transform: none;
+  transition: border-color 250ms ease, background-color 250ms ease, color 250ms ease;
+}
+
+.app .approach-stars .approach-target .choice-gate-option-copy { display: block; width: 100%; }
+.app .approach-stars .approach-target .choice-gate-option-text { line-height: 1.4; word-break: keep-all; }
+.app .approach-stars .approach-target .choice-gate-option-mark { display: none; }
+
+.app .approach-stars .approach-target[data-approach-active='true'] {
+  border-color: #f3d18a6b;
+  background: #0a0b10b8;
+  color: #fff5d9;
+}
+
+.app .approach-stars .approach-target:focus-visible { outline: 2px solid #f3d18a; outline-offset: 2px; }
 
 .app .approach-confirm-label {
   display: block;
-  margin-top: 2px;
-  color: #ffe8ab;
-  font-size: 0.88em;
+  margin-top: 3px;
+  color: #f0d299;
+  font-size: 12px;
 }
 
-.app .approach-target .choice-gate-option-mark {
-  opacity: var(--approach-near, 0);
-  transition: opacity 700ms ease;
-}
-
-.app .approach-target::before {
-  width: calc(7px + 8px * var(--approach-near, 0));
-  height: calc(7px + 8px * var(--approach-near, 0));
-  margin-top: calc(-3.5px - 4px * var(--approach-near, 0));
-  left: calc(9px - 4px * var(--approach-near, 0));
+.app .approach-stars .approach-target::before {
+  width: var(--star-size);
+  height: var(--star-size);
+  margin: 0;
+  top: 21px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff1cd;
   box-shadow:
-    0 0 calc(10px + 22px * var(--approach-near, 0)) calc(2px + 6px * var(--approach-near, 0)) #ffd98ac4,
-    0 0 calc(26px + 60px * var(--approach-near, 0)) calc(7px + 20px * var(--approach-near, 0)) #ffd98a4d;
-  animation-duration: calc(2.6s - 1.5s * var(--approach-near, 0));
-  transition: width 700ms ease, height 700ms ease, box-shadow 700ms ease;
+    0 0 calc(8px + 9px * var(--approach-near)) calc(2px + 2px * var(--approach-near)) #ffda8b8c,
+    0 0 calc(19px + 15px * var(--approach-near)) 5px #ffd98a2b;
+  animation: none;
+  transition: width 450ms ease, height 450ms ease, box-shadow 450ms ease;
 }
 
-.app .approach-target[data-approach-near='true']::before {
-  background: #fff6de;
-  animation-duration: 0.9s;
+.approach-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.app .approach-actions .choice-gate-option {
+  min-height: 44px;
+  width: auto;
+  align-items: center;
+  pointer-events: auto;
+  padding: 8px 14px;
+  color: #e8dac0;
+  background: #10131a;
+  border: 1px solid #e8dac045;
+  border-radius: 6px;
+  transform: none;
+}
+.app .approach-actions .choice-gate-option-copy { display: block; }
+.app .approach-actions .choice-gate-option-copy :is(.choice-gate-option-index, .choice-gate-option-mark) { display: none; }
+
+/* Give adjacent targets separate hit areas on narrow or shallow stages. */
+@media (max-width: 768px), (max-height: 500px) and (orientation: landscape) {
+  .approach-stars {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 8px;
+    align-content: center;
+  }
+  .app .approach-stars .exploration-target {
+    position: relative;
+    inset: auto;
+    width: 100%;
+  }
+  .app .approach-stars .exploration-target:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 184px);
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .exploration-field.approach-field { top: max(62px, var(--stage-safe-block-start)); bottom: calc(var(--exploration-dialog-inset) + 44px); }
+  .approach-stars:has(> :nth-child(3)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .approach-stars:has(> :nth-child(4)) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .app .approach-stars:has(> :nth-child(3)) .exploration-target:last-child:nth-child(odd) { grid-column: auto; }
+  .app .approach-stars .approach-target { min-height: 76px; padding-top: 28px; }
+  .app .approach-stars .approach-target::before { top: 14px; }
+  .app .dialog-box.has-stage-approach { height: clamp(68px, 18cqh, 86px); padding-block: 9px; }
+  .app .has-stage-approach .text { line-height: 1.45; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app .approach-target,
-  .app .approach-target::before,
-  .app .approach-target .choice-gate-option-mark {
-    transition: none;
-  }
-  .app .approach-target::before {
-    animation: none;
-  }
+  .app .approach-stars .approach-target,
+  .app .approach-stars .approach-target::before { transition: none; }
 }

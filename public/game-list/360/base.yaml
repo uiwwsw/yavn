@@ -23,7 +23,7 @@ assets:
   characters:
     만석:
       name: "만석"
-      placement: prompt-top
+      placement: offstage
       base: assets/char/self.svg
       facing: front
       defaultFraming: portrait
@@ -31,7 +31,7 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
     순임:
       name: "순임"
-      placement: prompt-top
+      placement: offstage
       base: assets/char/self.svg
       facing: front
       defaultFraming: portrait
@@ -39,7 +39,7 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
     민재:
       name: "민재"
-      placement: prompt-top
+      placement: offstage
       base: assets/char/self.svg
       facing: front
       defaultFraming: portrait
@@ -47,7 +47,7 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
     지안:
       name: "지안"
-      placement: prompt-top
+      placement: offstage
       base: assets/char/self.svg
       facing: front
       defaultFraming: portrait
