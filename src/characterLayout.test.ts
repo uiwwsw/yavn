@@ -310,7 +310,7 @@ describe('automatic and fixed compositions', () => {
   });
 });
 
-describe('phone framing keeps whole actors on screen', () => {
+describe('phone framing uses bounded actor slots', () => {
   const styles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
 
   it('bounds the actor height by its slot, which is what the width is derived from', () => {
@@ -320,7 +320,7 @@ describe('phone framing keeps whole actors on screen', () => {
       /@media \(max-width: 768px\)[\s\S]*?--char-actor-slot: min\(\s*calc\(2 \* min\(var\(--char-anchor-x\), 100cqw - var\(--char-anchor-x\)\)\),\s*calc\(100cqw \/ var\(--char-cast-size, 1\)\)\s*\);/,
     );
     expect(styles).toMatch(
-      /--char-actor-width-budget: calc\(\s*var\(--char-actor-slot\)\s*\* var\(--character-visible-fraction, 1\) \/ var\(--character-source-ratio, 1\)\s*\/ var\(--stage-camera-render-scale, 1\)\s*\);/,
+      /--char-actor-width-budget: calc\(\s*var\(--char-actor-slot\)\s*\* var\(--character-visible-fraction, 1\) \/ var\(--character-source-ratio, 1\)\s*\/ var\(--stage-camera-render-scale, 1\) \* var\(--char-slot-width-scale, 1\)\s*\);/,
     );
     expect(styles).toContain('.char-layer.char-layout-trio .char { --char-cast-size: 3; }');
     // Both placements, because a game that never sets `placement` still lays out at the bottom.
@@ -331,7 +331,7 @@ describe('phone framing keeps whole actors on screen', () => {
     expect(styles).toContain('object-fit: contain');
   });
 
-  it('keeps a phone two-shot inside the screen and off each other', () => {
+  it('keeps a phone two-shot inside the screen at the base slot width', () => {
     // The numbers the engine actually produced for 360 at 375px: 800x1000 art, cropBottom 0.3,
     // a duo anchored a quarter in from each edge. The left actor used to be drawn from -235 to
     // 313 and vanished behind the right one.
