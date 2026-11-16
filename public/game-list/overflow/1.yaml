@@ -66,14 +66,6 @@ scenes:
       - say:
           char: 동식
           with: [하율]
-          text: "두 번째 봤어?"
-      - say:
-          char: 하율
-          with: [동식]
-          text: "봤다니까. 세 번째도 봤어."
-      - say:
-          char: 동식
-          with: [하율]
           text: "그럼 첫 번째 봐."
       - say:
           char: 하율
@@ -210,6 +202,7 @@ scenes:
           char: 지완
           with: [하율]
           text: "할아버지가 뭐 하셨는데."
+      - mood: { tone: warm, level: 1 }
       - say:
           char: 하율
           with: [지완]
@@ -243,6 +236,7 @@ scenes:
 
   talk:
     actions:
+      - mood: off
       - char: { id: 동식, position: right }
       - say:
           char: 동식

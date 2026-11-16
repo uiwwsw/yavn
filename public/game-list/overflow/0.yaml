@@ -61,11 +61,6 @@ scenes:
           with: [도겸]
           text: "복사비 1,800원. 그건 할머니가 내셨어."
       - say:
-          char: 도겸
-          motion: headtilt
-          with: [지완]
-          text: "소장님, 그래서 이번 달 우리 매출이 얼만지 아세요?"
-      - say:
           char: 지완
           with: [도겸]
           text: "들어온 건 네 건. 68,000원씩 세 건이고 한 건은 서류비."
@@ -84,11 +79,7 @@ scenes:
       - say:
           char: 지완
           with: [도겸]
-          text: "2월엔 3월에 들어온다고 했지. 지금 4월 얘기를 하는 거고."
-      - say:
-          char: 도겸.wide
-          with: [지완]
-          text: "와. 그걸 또 정확하게."
+          text: "그땐 3월이었어."
       - say:
           channel: system
           with: []
@@ -96,7 +87,7 @@ scenes:
       - say:
           char: 도겸
           with: [지완]
-          text: "아 저 호감 62 나왔네요. 소장님한테 호감 62래요."
+          text: "저 소장님한테 호감 62래요."
       - say:
           char: 지완
           with: [도겸]
@@ -130,10 +121,6 @@ scenes:
           char: 도겸
           with: [지완]
           text: "일곱 번째 반려 통지 온 게 이 주 전인데요."
-      - say:
-          char: 지완
-          with: [도겸]
-          text: "삼 주 전이야. 2월 27일."
       - get: appeal_form
       - sticker: { id: form, image: form_sticker, x: 76, y: 52, width: "clamp(150px, 20%, 260px)", enter: fadeIn }
       - say:
@@ -148,14 +135,6 @@ scenes:
       - say:
           char: 도겸
           with: [지완]
-          text: "이거 볼 때마다 기분이 이상해요."
-      - say:
-          char: 지완
-          with: [도겸]
-          text: "뭐가."
-      - say:
-          char: 도겸
-          with: [지완]
           text: "저는 아까 호감 62 나왔잖아요. 소장님은 저 보고도 1이라는 거잖아요."
       - say:
           char: 지완
@@ -165,10 +144,6 @@ scenes:
           char: 도겸
           with: [지완]
           text: "기계가 그렇게 적으면 그런 거라고 다들 그러잖아요."
-      - say:
-          char: 지완.tight
-          with: [도겸]
-          text: "다들 그러지."
       - say:
           char: 도겸
           with: [지완]
@@ -216,14 +191,6 @@ scenes:
           text: "속보 · 노원 주부 사망 사건, 검찰 불기소 처분 · 2033.03.19"
           autoAdvance: 2180
       - say:
-          char: 도겸.wide
-          with: [지완]
-          text: "어, 소장님. 그 노원 사건 불기소 떴어요."
-      - say:
-          char: 지완
-          with: [도겸]
-          text: "어느 거."
-      - say:
           char: 도겸
           with: [지완]
           text: "지난주에 집에서 부인 죽은 채로 발견됐다는 거요. 남편이 신고한."
@@ -231,6 +198,7 @@ scenes:
           channel: system
           with: []
           text: "검찰은 피의자의 범행 시각 정서 판독값이 정서적 범행가능성 심사 기준에 크게 못 미친다고 밝혔다."
+      - mood: { tone: dread, level: 1 }
       - say:
           channel: system
           with: []
@@ -279,6 +247,7 @@ scenes:
 
   kitae:
     actions:
+      - mood: off
       - say:
           channel: system
           with: []

@@ -1128,7 +1128,7 @@ scenes:
       - say:
           char: 지완
           with: [도겸]
-          text: "빠른 게 아니라 한 번이야. 한 번 쓰면 끝이고."
+          text: "방송은 한 번 나가잖아. 이건 다음 달에도 다시 낼 수 있어."
       - say:
           char: 지완
           with: [도겸]
@@ -1158,6 +1158,7 @@ scenes:
           char: 도겸
           with: [지완]
           text: "몇 장 뽑을까요."
+      - mood: { tone: warm, level: 1 }
       - say:
           char: 지완
           with: [도겸]
@@ -1172,6 +1173,7 @@ scenes:
           text: "사 와. 영수증 가져오고."
       - bg: { id: street_rain, transition: dissolve, duration: 1000 }
       - place: "2033년 4월 20일 · 상계동"
+      - mood: off
       - say:
           channel: system
           with: []

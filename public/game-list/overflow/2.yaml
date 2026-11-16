@@ -606,11 +606,11 @@ scenes:
       - say:
           char: 지완
           with: [수경]
-          text: "비교가 안 되는 걸 비교하려고 자를 만들었다는 말씀입니까."
+          text: "그 자에 안 맞는 사람은요?"
       - say:
           char: 수경
           with: [지완]
-          text: "비교가 안 되면 채용을 어떻게 합니까. 보험료를 어떻게 매깁니까."
+          text: "채용팀이랑 보험사는 숫자 한 개를 달라고 합니다."
       - say:
           char: 지완
           with: [수경]
@@ -637,6 +637,7 @@ scenes:
           char: 지완.break
           with: [수경]
           text: "…위에 없다는 게 무슨 뜻입니까."
+      - mood: { tone: dread, level: 1 }
       - say:
           char: 수경
           with: [지완]
@@ -687,6 +688,7 @@ scenes:
 
   offer:
     actions:
+      - mood: off
       - say:
           char: 수경
           with: [지완]
