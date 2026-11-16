@@ -207,10 +207,12 @@ scenes:
           options:
             - text: "모른 척하고 신발을 신는다"
               goto: sh_shoes
-            - text: "\"너 어젯밤에 어디 있었어?\""
+            - text: "어젯밤 어디에 있었는지 묻는다"
+              saveText: "\"너 어젯밤에 어디 있었어?\""
               set: { sh_night: true }
               goto: sh_where
-            - text: "\"오늘 하루만 하지 마. 그거.\""
+            - text: "오늘은 레플라에 접속하지 말라고 한다"
+              saveText: "\"오늘 하루만 하지 마. 그거.\""
               add: { sh_care: 1, honest: 1 }
               goto: sh_stop
 
@@ -435,14 +437,17 @@ scenes:
           prompt: "은숙 앞의 녹음기에 빨간 불이 켜져 있다."
           char: 해수
           options:
-            - text: "\"지하 주차장이라고만 들었습니다.\""
+            - text: "들은 장소만 말한다"
+              saveText: "\"지하 주차장이라고만 들었습니다.\""
               goto: where_safe
-            - text: "\"C-14 기둥 쪽… 아닌가요?\""
+            - text: "C-14라고 말한다"
+              saveText: "\"C-14 기둥 쪽… 아닌가요?\""
               gameOver:
                 title: "아무도 말하지 않은 번호"
                 message: "C-14는 아직 현장 보고서에만 있던 기둥 번호였다. 단톡방에도, 계단참에도 없었다. 차은숙 경위는 녹화를 멈추지 않았다. 그 번호를 어디서 봤는지 떠올려 보자."
                 recoverToChoice: t2_where
-            - text: "\"단톡방을 안 봐서요. 잘 모릅니다.\""
+            - text: "단톡방을 못 봤다고 둘러댄다"
+              saveText: "\"단톡방을 안 봐서요. 잘 모릅니다.\""
               add: { doubt: 1 }
               goto: where_lie
 

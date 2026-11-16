@@ -749,10 +749,12 @@ scenes:
           char: 로봇
           motion: headtilt
           options:
-            - text: "\"응. 세상 망했어. 너랑 나 빼고 다.\""
+            - text: "밖에서 무슨 일이 있었는지 말한다"
+              saveText: "\"응. 세상 망했어. 너랑 나 빼고 다.\""
               add: { bond: 1 }
               goto: b2_reg_honest
-            - text: "\"전혀. 너나 걱정해, 고물.\""
+            - text: "아무 일도 없다고 한다"
+              saveText: "\"전혀. 너나 걱정해, 고물.\""
               goto: b2_reg_brave
 
   b2_reg_honest:

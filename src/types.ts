@@ -335,6 +335,8 @@ export type UseAction = {
 
 export type ChoiceOption = {
   text: string;
+  /** Original option text used as the saved value after a published label changes. */
+  saveText?: string;
   at?: { x: number; y: number };
   when?: ConditionNode;
   set?: StateSetMap;

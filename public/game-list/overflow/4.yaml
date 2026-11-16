@@ -665,15 +665,18 @@ scenes:
           char: 지완
           with: []
           options:
-            - text: "9시 생방송에 나간다. 내 수치부터 띄운다"
+            - text: "9시 생방송에서 내 수치를 공개한다"
+              saveText: "9시 생방송에 나간다. 내 수치부터 띄운다"
               goto: end_broadcast
             - text: "배동식 씨 원본만 검찰에 낸다"
               goto: end_one_file
             - text: "합의서에 날짜를 적어 보낸다"
               goto: end_sealed
-            - text: "이의신청서를 쓴다. 이번엔 내 것 말고 전부"
+            - text: "다른 피해자들의 이의신청서를 쓴다"
+              saveText: "이의신청서를 쓴다. 이번엔 내 것 말고 전부"
               goto: end_appeal
-            - text: "한수경의 계정으로 자정 전에 내부망에 들어간다"
+            - text: "한수경 계정으로 내부망에 접속한다"
+              saveText: "한수경의 계정으로 자정 전에 내부망에 들어간다"
               gameOver:
                 title: "남의 계정"
                 message: "11시 48분에 접속 기록이 남았고, 새벽 2시에 사무소 문이 열렸다. 다음 날 기사 제목에는 원본 로그가 아니라 무단 접속이라는 말이 들어갔다."

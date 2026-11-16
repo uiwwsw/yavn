@@ -558,10 +558,12 @@ scenes:
           char: 윤재
           motion: sway
           options:
-            - text: "HYPERLINK X 결제. 미래의 내가 갚는다"
+            - text: "HYPERLINK X를 산다"
+              saveText: "HYPERLINK X 결제. 미래의 내가 갚는다"
               set: { bought_premium: true }
               goto: b0_premium
-            - text: "\"아저씨, B버튼 뻑뻑한 거 그거 주세요.\""
+            - text: "중고 게임기를 산다"
+              saveText: "\"아저씨, B버튼 뻑뻑한 거 그거 주세요.\""
               goto: b0_cheap
 
   b0_premium:

@@ -354,10 +354,12 @@ scenes:
           prompt: "엄지가 휴지통 아이콘 위에 있다."
           with: []
           options:
-            - text: "엄지를 떼고 사진첩을 닫는다"
+            - text: "사진을 남긴다"
+              saveText: "엄지를 떼고 사진첩을 닫는다"
               set: { kept_photo: true }
               goto: e2_photo_keep
-            - text: "삭제를 누르고 최근 삭제된 항목까지 비운다"
+            - text: "사진을 완전히 삭제한다"
+              saveText: "삭제를 누르고 최근 삭제된 항목까지 비운다"
               goto: e2_photo_delete
 
   e2_photo_keep:
@@ -411,10 +413,12 @@ scenes:
           char: 도윤
           motion: shiver
           options:
-            - text: "번호표 버튼을 누른다"
+            - text: "번호표를 뽑는다"
+              saveText: "번호표 버튼을 누른다"
               set: { went_to_clinic: true }
               goto: e3_ticket
-            - text: "모자를 눌러쓰고 자동문 쪽으로 돌아선다"
+            - text: "병원에서 나간다"
+              saveText: "모자를 눌러쓰고 자동문 쪽으로 돌아선다"
               goto: e3_turn
 
   e3_ticket:
@@ -725,12 +729,15 @@ scenes:
           prompt: "지수가 자기 휴대폰을 화면이 아래로 가게 식탁에 엎는다."
           char: 지수
           options:
-            - text: "\"은행. 대출 서류 하나 빠졌대서.\""
+            - text: "은행에 간다고 둘러댄다"
+              saveText: "\"은행. 대출 서류 하나 빠졌대서.\""
               goto: e2_jisu_lie
-            - text: "\"회사에 나랑 엮인 소문이 좀 있어. 정리되면 말할게.\""
+            - text: "회사 소문만 이야기한다"
+              saveText: "\"회사에 나랑 엮인 소문이 좀 있어. 정리되면 말할게.\""
               set: { told_jisu: 1 }
               goto: e2_jisu_part
-            - text: "\"다 말할게. 듣고 나서 네가 정해.\""
+            - text: "지수에게 전부 말한다"
+              saveText: "\"다 말할게. 듣고 나서 네가 정해.\""
               set: { told_jisu: 2 }
               goto: e2_jisu_all
 

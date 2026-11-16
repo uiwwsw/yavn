@@ -783,12 +783,15 @@ scenes:
           prompt: "예약 문자 아래, 답장 칸에서 커서가 깜박인다."
           with: []
           options:
-            - text: "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다"
+            - text: "휴대폰을 초기화한다"
+              saveText: "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다"
               goto: end_erase
-            - text: "사진첩 맨 아래, 놀이터 사진을 연다"
+            - text: "놀이터 사진을 연다"
+              saveText: "사진첩 맨 아래, 놀이터 사진을 연다"
               when: { var: kept_photo, op: eq, value: true }
               goto: end_photo
-            - text: "지수한테 온 메시지 네 개를 연다"
+            - text: "지수의 메시지를 연다"
+              saveText: "지수한테 온 메시지 네 개를 연다"
               when: { var: told_jisu, op: eq, value: 2 }
               goto: end_unfinished
 

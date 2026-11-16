@@ -551,9 +551,11 @@ scenes:
           timeoutMs: 7000
           timeoutOptionIndex: 2
           options:
-            - text: "기울어진 얼음 더미를 밀어 넘어뜨린다"
+            - text: "얼음 더미를 밀어 넘어뜨린다"
+              saveText: "기울어진 얼음 더미를 밀어 넘어뜨린다"
               goto: c4_push_ice
-            - text: "막쇠를 부르며 곧장 안쪽으로 뛴다"
+            - text: "막쇠를 부르며 안쪽으로 뛴다"
+              saveText: "막쇠를 부르며 곧장 안쪽으로 뛴다"
               goto: c4_run_in
             - text: "등불을 던지고 물러선다"
               goto: c4_throw_lantern

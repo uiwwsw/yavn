@@ -34,6 +34,7 @@ import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhon
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText } from './textVariables';
+import { choiceSaveValue } from './history';
 import './characterPresentation.css';
 import './characterEmotes.css';
 import { SceneCurtain, useSceneCurtain } from './SceneCurtain';
@@ -2754,6 +2755,7 @@ export default function App() {
     .sort((a, b) => (Date.parse(b.savedAt ?? '') || 0) - (Date.parse(a.savedAt ?? '') || 0))[0];
   const chapterSaveSlot = saveSlotByKind.get('chapter');
   const choiceRecoveryPoint = getChoiceRecoverySummary();
+  const failedChoiceLabel = choiceRecoveryPoint.failedChoice?.label ?? choiceRecoveryPoint.failedChoice?.value;
   // Backup import, step 2: the player picks which manual slot receives the file.
   const renderImportPicker = () => importDraft && (
       <div className="vs-import-picker" role="group" aria-label={t("백업을 넣을 칸")}>
@@ -2887,11 +2889,13 @@ export default function App() {
   const recoveredFailedChoiceIndex = choiceGate.active
     && recoveredFailedChoice?.key === choiceGate.key
     ? (() => {
+        const matches = (option: (typeof choiceGate.options)[number]) =>
+          choiceSaveValue(option) === recoveredFailedChoice.value;
         const exactIndex = choiceGate.options.findIndex((option, index) =>
-          index === recoveredFailedChoice.optionIndex && option.text === recoveredFailedChoice.value);
+          index === recoveredFailedChoice.optionIndex && matches(option));
         return exactIndex >= 0
           ? exactIndex
-          : choiceGate.options.findIndex((option) => option.text === recoveredFailedChoice.value);
+          : choiceGate.options.findIndex(matches);
       })()
     : -1;
   const hasRecoveredFailedChoice = recoveredFailedChoiceIndex >= 0;
@@ -6112,8 +6116,8 @@ export default function App() {
           onContinue={() => void onReturnToCausingChoice()}
           continueDisabled={saveBusy}
           continueLabel={choiceRecoveryPoint.exists ? t("마지막 선택으로 돌아가기") : chapterSaveSlot?.exists ? t("이 장의 처음으로") : t("마지막 저장으로")}
-          continueDetail={choiceRecoveryPoint.failedChoice?.value
-            ? (uiLanguage === 'en' ? `You chose “${choiceRecoveryPoint.failedChoice.value}”` : `“${choiceRecoveryPoint.failedChoice.value}”를 고른 순간`)
+          continueDetail={failedChoiceLabel
+            ? (uiLanguage === 'en' ? `You chose “${failedChoiceLabel}”` : `“${failedChoiceLabel}”를 고른 순간`)
             : undefined}
           footnote={choiceRecoveryPoint.exists ? t("선택 직전 상태 그대로 돌아갑니다. 다른 길을 골라 보세요.") : undefined}
           secondary={<>
@@ -6136,10 +6140,10 @@ export default function App() {
             <p className="game-over-message">
               {gameOver.message ? fillText(gameOver.message) : t("선택의 결과로 더는 이야기를 이어갈 수 없습니다.")}
             </p>
-            {choiceRecoveryPoint.failedChoice?.value && (
+            {failedChoiceLabel && (
               <div className="game-over-cause" aria-label={t("결과를 만든 선택")}>
                 <span>{t("결과를 만든 선택")}</span>
-                <strong>{choiceRecoveryPoint.failedChoice.value}</strong>
+                <strong>{failedChoiceLabel}</strong>
               </div>
             )}
             <div className="game-over-primary-actions">

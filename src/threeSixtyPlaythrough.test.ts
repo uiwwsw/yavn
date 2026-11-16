@@ -23,27 +23,27 @@ const serve = (path: string): string | undefined => {
 
 type Route = Record<string, string>;
 
-const OPEN = '곳간을 연다. 우리 것에서 한 집에 닷 되씩.';
-const SHUT = '문을 닫아건다. 값은 더 오른다.';
-const GO = '마포에 올라간다. 사흘이면 돌아온다.';
-const STAY = '봉구를 대신 보내고 곁에 남는다.';
-const RECEIPT = '돈 얘기만 한다. 삼백오십만 원, 영수증에 도장까지 받는다.';
-const CONFESS = '돈보다 먼저 묻는다. 같이 가자는 게 점방인지, 나인지.';
-const CARRY = '어머이를 일으킨다. 업고라도 같이 간다고 한다.';
-const SLIP_OUT = '머리맡에 쌀 한 말 값을 놓고 나온다.';
-const AFRAID = '"엄마, 나 무서워."';
+const OPEN = '곳간을 열고 쌀을 나눈다.';
+const SHUT = '대문을 잠근다.';
+const GO = '마포에 간다.';
+const STAY = '봉구를 보내고 남는다.';
+const RECEIPT = '거래 조건만 이야기한다.';
+const CONFESS = '기호가 함께 가자는 이유를 묻는다.';
+const CARRY = '어머니를 모시고 간다.';
+const SLIP_OUT = '쌀값을 두고 혼자 떠난다.';
+const AFRAID = '엄마에게 무섭다고 말한다.';
 const JACKET = '잠바를 받는다.';
-const SIGN = '서명한다. 원본은 방송국이 갖는다.';
-const WALK = '서명하지 않는다. 증언자들을 한 명씩 다시 찾아간다.';
-const BESIDE = '곁에 있었어야 했다.';
+const SIGN = '서명한다.';
+const WALK = '서명을 거절한다.';
+const BESIDE = '곁에 남지 못한 후회';
 // Which star the dark is asked for first. Once a life is lived its star goes out, so a route
 // names only its opening and the explore menu hands back whatever is left after that.
 const STAR_1894 = '깨 붙은 엿';
 const STAR_1952 = '부두의 고무신';
 const STAR_1988 = '갈치 가시';
-const OPENING: Route = { where_am_i: '모르겠다.', first_light: '손을 뻗는다.' };
-const WINTER_JAR = '독이 비지 않았더라면.';
-const WINTER_OUT = '그날 나가지 않았더라면.';
+const OPENING: Route = { where_am_i: '모르겠음', first_light: '손을 뻗는다.' };
+const WINTER_JAR = '비어 버린 쌀독';
+const WINTER_OUT = '집을 나선 후회';
 
 // The store keeps only the last MAX_STORY_LOG_ENTRIES lines, and a full run of 360 says more
 // than that, so the lines from the early lives are gone by the time an ending resolves. Collect
@@ -117,10 +117,10 @@ async function start() {
 describe('360 full playthrough', () => {
   it('reveals the first three lives only after approaching the first light', async () => {
     await start();
-    const { state, picked, shown } = await play({ where_am_i: '천국인가.' }, 'star');
+    const { state, picked, shown } = await play({ where_am_i: '천국' }, 'star');
 
     expect(picked).toEqual([
-      'where_am_i=천국인가.',
+      'where_am_i=천국',
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
@@ -134,9 +134,9 @@ describe('360 full playthrough', () => {
 
   it('ends the run at the first light when the player stays and offers that choice again', async () => {
     await start();
-    const { state, picked } = await play({ where_am_i: '지옥인가.', first_light: '그대로 있는다.' });
+    const { state, picked } = await play({ where_am_i: '지옥', first_light: '그대로 있는다.' });
 
-    expect(picked).toEqual(['where_am_i=지옥인가.', 'first_light=그대로 있는다.']);
+    expect(picked).toEqual(['where_am_i=지옥', 'first_light=그대로 있는다.']);
     expect(state.gameOver?.message).toBe('한참 뒤, 빛이 꺼졌다.');
     expect(state.resolvedEndingId).toBeUndefined();
     expect(state.routeVars.lives_done).toBe(0);
@@ -176,17 +176,17 @@ describe('360 full playthrough', () => {
       star: STAR_1894,
       l1_rice: OPEN,
       l1_leave: GO,
-      v1: '말을 했어야 했다.',
+      v1: '하지 못한 말',
       l2_heart: RECEIPT,
       l2_mother: CARRY,
-      v2: '떠나지 말았어야 했다.',
+      v2: '떠난 후회',
       l3_open: AFRAID,
       l3_out: JACKET,
-      v3: '한 번은 해 볼걸.',
+      v3: '해 보지 못한 후회',
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
-      l4_munho: '"그건 선생님이 모르시는 일이에요."',
+      l4_munho: '문호의 말에 반박한다.',
       l4_sign: SIGN,
-      l5_leftover: '쉰여섯 해가 두고 간 것을 본다.',
+      l5_leftover: '쉰여섯 해의 기억을 본다.',
       v4: BESIDE,
       w_remember: '울음',
       v_end: WINTER_OUT,
@@ -268,17 +268,17 @@ describe('360 full playthrough', () => {
       star: STAR_1894,
       l1_rice: SHUT,
       l1_leave: STAY,
-      v1: '어디에도 매이지 말았어야 했다.',
+      v1: '자유롭게 살고 싶었던 마음',
       l2_heart: CONFESS,
       l2_mother: SLIP_OUT,
-      v2: '아무도 믿지 말았어야 했다.',
+      v2: '사람을 믿은 후회',
       l3_open: AFRAID,
       l3_out: JACKET,
-      v3: '더 살고 싶었다.',
+      v3: '더 살고 싶었던 마음',
       l4_mark: "'어두웠다'에 줄을 긋는다.",
-      l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
+      l4_munho: '녹음하며 듣는다.',
       l4_sign: WALK,
-      l5_leftover: '열일곱 해가 두고 간 것을 본다.',
+      l5_leftover: '열일곱 해의 기억을 본다.',
       v4: BESIDE,
       w_remember: '울음',
       v_end: WINTER_OUT,
@@ -296,17 +296,17 @@ describe('360 full playthrough', () => {
     await start();
     const { state, picked, shown } = await play({
       star: STAR_1988,
-      l3_open: '"괜찮대요. 가게 가 보세요."',
-      l3_out: '"누나 혼자 가요. 엄마가 여섯 시에 와요."',
-      v3: '더 살고 싶었다.',
+      l3_open: '엄마를 가게로 돌려보낸다.',
+      l3_out: '병실에 남는다.',
+      v3: '더 살고 싶었던 마음',
       l1_rice: OPEN,
       l1_leave: STAY,
-      v1: '어디에도 매이지 말았어야 했다.',
+      v1: '자유롭게 살고 싶었던 마음',
       l2_heart: CONFESS,
       l2_mother: CARRY,
-      v2: '아무도 믿지 말았어야 했다.',
+      v2: '사람을 믿은 후회',
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
-      l4_munho: '녹음기를 끄지 않고 듣고만 있는다.',
+      l4_munho: '녹음하며 듣는다.',
       l4_sign: SIGN,
       l5_leftover: '보지 않는다.',
       v4: BESIDE,
@@ -335,9 +335,9 @@ describe('360 full playthrough', () => {
       l1_rice: SHUT,
       l1_leave: GO,
       v1: '쥐지 않는다.',
-      v1_stop: '없다. 여기 있는다.',
+      v1_stop: '여기 남는다.',
     });
-    expect(picked).toContain('v1_stop=없다. 여기 있는다.');
+    expect(picked).toContain('v1_stop=여기 남는다.');
     expect(state.resolvedEndingId).toBe('still');
   }, 120000);
 });
