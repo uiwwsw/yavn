@@ -24,8 +24,8 @@ scenes:
           sound: consent_pen
           text: "의사가 동의서 맨 아래에 펜을 놓는다. 내 이름이 인쇄돼 있다."
           continueLabel: "시술에 동의한다"
-      - say: { char: 의사, with: [], text: "확인했어요. 이름표는 뒤집어 둘게요." }
-      - say: { char: 의사, with: [], text: "등이 차가울 거예요. 이제 눈 감으세요." }
+      - bg: { id: consent_turn, transition: cut }
+      - say: { char: 의사, with: [], text: "서명 확인했어요. 이름표는 뒤집어 둘게요. 등이 차가울 거예요. 이제 눈 감으세요." }
       - bg: { id: eyes_closed, transition: dissolve, duration: 640 }
       - wait: 180
 
@@ -365,7 +365,7 @@ scenes:
       - choice:
           key: e0_erase
           presentation: explore
-          prompt: "밝기를 끝까지 낮추고 휴대폰을 연다."
+          prompt: "화면 밝기를 낮춘다. 돌아가기 전에 뭘 지울까?"
           with: []
           camera: wide
           options:

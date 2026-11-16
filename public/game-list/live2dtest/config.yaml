@@ -37,7 +37,7 @@ startScreen:
 endings:
   until_next_time:
     title: "다음 인사까지"
-    message: "표정과 시선, 조금 가까워진 거리. 짧은 대화가 끝나고 렌은 편안한 자세로 돌아갔습니다."
+    message: "렌은 편안한 얼굴로 작별 인사를 건넸습니다."
     epilogue: "다시 찾아오면, 첫 인사는 당신의 몫입니다."
     tone: hopeful
 defaultEnding: until_next_time

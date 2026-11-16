@@ -350,7 +350,7 @@ scenes:
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "카드 점검. 빈 카드 아님. 이미 뭐가 들어 있음." }
       - say: { char: 윤재, motion: perk, with: [로봇], text: "…뭐? 나 그거 쓰지도 않았는데." }
-      - say: { channel: system, with: [], text: "SAVE SLOT 1\nHI-SCORE 0999990\n저장일 · 2월 3일" }
+      - say: { channel: system, with: [], text: "SAVE SLOT 1\nHI-SCORE 0999990" }
       - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "구십구만 구천구백구십 점. 십 점 남음." }
@@ -500,7 +500,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "SAVING… 절대 전원을 끄지 마세요."
+          text: "메모리 카드 준비 중… 전원을 끄지 마세요."
       - wait: 270
       - say:
           char: 로봇
@@ -513,11 +513,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "…저장 중."
+          text: "…슬롯 확인 중."
       - say:
           char: 로봇
           with: [윤재]
-          text: "한 글자씩 옮기는 중."
+          text: "먼저 기존 기록을 지울게."
       - say:
           char: 로봇
           with: [윤재]
@@ -529,20 +529,37 @@ scenes:
       - say: { char: 윤재, with: [로봇], text: "…어. 괜찮아." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "'진짜' 안 붙였음. 이번엔 믿을게." }
-      - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓░░░░ 48%" }
+      - say: { channel: system, with: [], text: "카드 처리 중 ▓▓▓▓░░░░ 48%" }
       - say: { char: 윤재, with: [로봇], text: "야, 더 빨리 안 되냐. 반도 안 갔어." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "8비트임. 한 글자씩임. 빨리 하면 글자가 틀림." }
+      - say: { char: 로봇, with: [윤재], text: "기록 칸을 하나씩 확인 중임. 잠깐만." }
       - say: { char: 윤재, with: [로봇], text: "틀리면 어떻게 되는데." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "틀린 채로 남음. 그게 제일 안 좋음." }
-      - say: { channel: system, with: [], text: "쓰는 중 ▓▓▓▓▓▓▓▓ 100%\n배터리 ▓▓░░ 2/4" }
+      - say:
+          channel: system
+          with: []
+          when:
+            any:
+              - { var: kept_promise, op: eq, value: true }
+              - { var: kept_snack, op: eq, value: true }
+              - { var: kept_joke, op: eq, value: true }
+          text: "기억 1건 저장 완료 ▓▓▓▓▓▓▓▓ 100%\n배터리 ▓▓░░ 2/4"
+      - say:
+          channel: system
+          with: []
+          when:
+            all:
+              - { var: kept_promise, op: eq, value: false }
+              - { var: kept_snack, op: eq, value: false }
+              - { var: kept_joke, op: eq, value: false }
+          text: "슬롯 비어 있음 · 카드 준비 완료\n배터리 ▓▓░░ 2/4"
       - wait: 720
       - say:
           char: 로봇.happy
           motion: bow
           with: [윤재]
-          text: "저장 끝. 다녀올게, 윤재."
+          text: "다 됐어. 다녀올게, 윤재."
           wait: 1170
           unskippable: true
       - say:

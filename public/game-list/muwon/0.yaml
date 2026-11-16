@@ -18,7 +18,7 @@ scenes:
           text: "한밤중에 한성부에서 사람이 왔다. 우물에서 건진 여인을 살펴 달라고 했다. 우물가에 닿으니 등잔 아래 거적이 보인다."
           continueLabel: "거적을 걷는다"
       - effect: focus
-      - sticker: { id: first_thread, image: thread_sticker, x: 50, y: 34, width: "clamp(160px, 22%, 280px)", enter: fadeIn }
+      - sticker: { id: first_thread, image: well_hand_sticker, x: 50, y: 36, width: "clamp(260px, 40%, 520px)", enter: fadeIn }
       - say:
           channel: action
           with: []
@@ -208,16 +208,16 @@ scenes:
     actions:
       - sticker:
           id: c1_thread
-          image: thread_sticker
+          image: well_hand_sticker
           x: 50
-          y: 34
-          width: "clamp(160px, 22%, 300px)"
+          y: 36
+          width: "clamp(260px, 40%, 520px)"
           enter: fadeIn
           inputLockMs: 300
       - say:
           channel: action
           with: []
-          text: "등잔을 낮춰 오른손을 본다. 실이 낀 손톱과 그 옆 손톱이 뿌리 가까이 부러져 있다."
+          text: "등잔을 낮춰 오른손을 본다. 실이 낀 손톱과 그 옆 손톱 끝이 깨져 있다."
       - say:
           char: 막쇠
           with: [서연]
@@ -445,7 +445,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 강치수]
-          text: "의녀가 손부터 보자고 한 것이오. 포교, 오늘은 놓아주시오."
+          text: "의녀가 손을 보자고 한 까닭을 나도 알겠소."
       - set: { c1_brother: true }
       - goto: c1_follow_thread
 
@@ -454,9 +454,9 @@ scenes:
     actions:
       - char: { id: 서연, position: left }
       - say:
-          char: 강치수.angry
-          with: [서연, 도원]
-          text: "좋소. 나리 고집대로 하시오."
+          char: 도원.stern
+          with: [서연, 강치수]
+          text: "실이 어디서 나왔는지 먼저 알아보겠소. 포교, 오늘은 그 사내를 놓아주시오."
       - say:
           char: 강치수.angry
           with: [서연, 도원]

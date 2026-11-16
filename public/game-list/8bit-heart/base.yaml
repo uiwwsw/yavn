@@ -17,6 +17,7 @@ assets:
     iron_sticker: assets/items/soldering_iron.svg
     battery_sticker: assets/items/battery.svg
     memory_sticker: assets/items/memory_card.svg
+    pinky_promise_sticker: assets/items/pinky_promise.svg
   characters:
     윤재:
       placement: prompt-top

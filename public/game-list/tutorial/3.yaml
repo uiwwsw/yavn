@@ -671,15 +671,16 @@ scenes:
 
   see_card:
     actions:
-      - sticker: { id: keycard, image: keycard_sticker, x: 64, y: 34, width: "260px", rotate: 6, enter: popIn }
       - say:
           char: 태민
           with: [해수]
-          text: "그 카드 아직 돼요. 회사는 없어졌는데 출입 시스템은 돌아가더라고요. 가산동 지하 1층이에요."
+          text: "개발 초기에 만든 출입증이에요. 한번 뒤집어 보세요."
+          continueLabel: "출입증을 뒤집어 본다"
+      - sticker: { id: keycard, image: user_0001_card_sticker, x: 64, y: 34, width: "280px", rotate: 4, enter: popIn }
       - say:
           channel: action
           with: []
-          text: "출입증 사진 칸이 비어 있다. 이름 칸에는 글자가 아니라 번호가 찍혀 있다."
+          text: "뒤집어 보니 사진 칸이 비어 있다. 오른쪽에 사용자 번호만 찍혀 있다."
       - say:
           channel: record
           with: []
@@ -695,7 +696,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "인사팀이 두 번 찾아봤대요."
+          text: "가산동 서버실에 있던 거예요. 제 카드는 아직 거기서 먹혀요."
       - clearSticker: { id: keycard, leave: fadeOut }
       - set: { seen_card: true }
       - goto: room
@@ -895,11 +896,12 @@ scenes:
           char: 태민
           with: [해수]
           text: "몰라요. 아무도 거기까지 안 갔으니까."
-      - get: keycard
       - say:
           char: 태민
           with: [해수]
-          text: "받아요. …아, 놓쳤네. 바닥에 있어요."
+          text: "이건 제 출입증이에요. 받으세요. …아, 바닥에 떨어졌네요."
+          continueLabel: "태민의 출입증을 줍는다"
+      - get: keycard
       - say:
           char: 태민.afraid
           with: [해수]

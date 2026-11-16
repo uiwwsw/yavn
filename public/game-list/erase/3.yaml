@@ -143,7 +143,7 @@ scenes:
       - choice:
           key: e3_room
           presentation: explore
-          prompt: "대답이 없다. 신발을 벗고 한 걸음 들어간다."
+          prompt: "대답이 없다. 도윤은 문간에서 휴직 서류 봉투를 쥔 채 방 안을 본다."
           with: []
           camera: wide
           options:
@@ -214,7 +214,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 나가면서 현관문을 처음처럼 한 뼘만 열어 둔다."
+          text: "도윤은 현관문을 처음처럼 한 뼘 열어 둔 채 휴직 서류를 우편함에 넣는다."
       - say:
           channel: message
           side: them
@@ -437,14 +437,13 @@ scenes:
           with: []
           text: "대기 번호 47 · 현재 호출 32"
       - say:
+          channel: action
+          with: []
+          text: "47번이 깜빡이고 안에서 부른다. 자리에서 일어난다. 채혈을 마친 뒤 팔 안쪽에 솜을 대고 소매를 내린다."
+      - say:
           channel: record
           with: []
           text: "채혈 완료 · 결과는 7일 뒤 본인이 직접 방문해 확인합니다."
-      - say:
-          char: 도윤
-          motion: nod
-          with: []
-          text: "네, 네."
       - say:
           char: 도윤
           with: []

@@ -177,7 +177,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "회로도는 설명서 맨 뒷장에 있댔지. 거기만 볼 거야."
+          text: "설명서 맨 뒷장만 보자. 이 칩을 떼면, 게임기는 이제 진짜 못 켜."
       - say:
           channel: action
           with: []

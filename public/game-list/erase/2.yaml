@@ -165,7 +165,7 @@ scenes:
     actions:
       - choice:
           key: e2_dig
-          prompt: "노트북 검색창에 '박준성' 세 글자를 친다."
+          prompt: "지수에게 답장하는 대신 노트북 검색창에 ‘박준성’을 쳤다."
           with: []
           options:
             - text: "검색을 그만두고 지수에게 답장한다"

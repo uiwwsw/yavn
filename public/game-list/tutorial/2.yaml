@@ -721,12 +721,12 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "‘대상 직원’ 칸을 문지르니 글자가 종이에서 벗겨진다."
+          text: "‘대상 직원’ 칸에서 내 이름을 문지르니 검은 글씨가 종이에서 벗겨진다."
       - say:
           channel: record
           with: []
           erase: true
-          text: "대상 직원: 정해수"
+          text: "정해수"
       - say:
           channel: system
           with: []
@@ -778,6 +778,7 @@ scenes:
           channel: thought
           with: []
           text: "재생 막대를 옮기자 같은 차 문이 한 번 더 열린다."
+          continueLabel: "두 사람이 나온 구간을 비운다"
       - say:
           channel: system
           with: []

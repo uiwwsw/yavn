@@ -231,7 +231,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "궤짝 고리를 잡아당기다 뒤로 넘어진다. 바로 뒤에서 대들보가 떨어진다."
+          text: "궤짝을 문턱 밖으로 끌어내다가 함께 넘어진다. 바로 뒤에서 대들보가 떨어진다."
       - say:
           char: 막쇠.hurt
           with: [서연]
@@ -263,7 +263,7 @@ scenes:
           text: "아가씨, 이제 내 허리띠 놔도 돼요."
       - say:
           channel: narration
-          text: "나는 허리띠에서 손을 뗐다. 불을 끄고 나서 궤짝을 열어 보니 장부 한 장만 반쯤 남았다."
+          text: "불이 잦아든 뒤에야 궤짝을 꺼냈다. 뚜껑을 열어 보니 그을린 장부 한 장이 남아 있었다."
       - goto: c2_after_fire
 
   c2_after_fire:

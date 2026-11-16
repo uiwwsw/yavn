@@ -368,7 +368,7 @@ scenes:
       - say:
           char: 서연
           with: [도원]
-          text: "얼음을 받아 갔습니다. 약재 보관용으로요."
+          text: "얼음을 가져간 사람이 윤길을 옮겼는지부터 알아봐야겠어요."
       - say:
           char: 도원
           with: [서연]
@@ -377,7 +377,7 @@ scenes:
           char: 서연
           motion: nod
           with: [도원]
-          text: "네. 그리고 저녁에 여기 끼워 뒀습니다."
+          text: "그럴 수 있습니다. 시반을 보면 한동안 다른 곳에 눕혀 뒀으니까요."
       - say:
           char: 도원.stern
           with: [서연]
@@ -395,9 +395,9 @@ scenes:
           with: [서연]
           text: "형조에선 얼음을 가져간 사람이 왜 윤길을 죽였다고 보느냐고 물을 거요."
       - say:
-          char: 서연.resolve
-          with: [도원]
-          text: "목에 난 손자국부터 쓰겠습니다. 얼음 얘기는 그다음에 하지요."
+          channel: action
+          with: []
+          text: "도원이 얼음지기를 만나러 나간다. 막쇠는 얼음 더미 안쪽을 살피겠다며 등잔을 들고 간다."
       - goto: c4_storeroom
 
   c4_storeroom:
@@ -487,7 +487,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상자 뚜껑의 도장. 출납부의 도장과 같다. 오른쪽 아래 모서리가 깨진 것까지."
+          text: "상자 뚜껑에 붉은 도장이 찍혀 있다. 오른쪽 아래 모서리만 깨진 듯 비어 있다."
       - say:
           channel: action
           with: []
@@ -566,7 +566,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "막쇠 쪽으로 뛴다. 복면은 비켜서지 않는다. 왼손이 낮게 들어온다."
+          text: "막쇠 아저씨! 부르며 달려가는데 복면을 쓴 자가 가로막는다."
       - effect: { name: damage, wait: true }
       - say:
           channel: narration

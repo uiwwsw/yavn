@@ -30,7 +30,7 @@ const STAY = '봉구를 보내고 남는다.';
 const RECEIPT = '거래 조건만 이야기한다.';
 const CONFESS = '기호가 함께 가자는 이유를 묻는다.';
 const CARRY = '어머니를 모시고 간다.';
-const SLIP_OUT = '쌀값을 두고 혼자 떠난다.';
+const SLIP_OUT = '쌀값을 두고 영호와 떠난다.';
 const AFRAID = '엄마에게 무섭다고 말한다.';
 const JACKET = '잠바를 받는다.';
 const SIGN = '서명한다.';
@@ -145,6 +145,16 @@ describe('360 full playthrough', () => {
     }));
   });
 
+  it('finds two dots on the medicine packet after going to see the fireworks together', async () => {
+    await start();
+    const { state, shown } = await play({ star: STAR_1988, l3_open: AFRAID, l3_out: JACKET }, 'v3');
+
+    expect(state.choiceGate.key).toBe('v3');
+    expect(state.routeVars.l3_went).toBe(true);
+    expect(heard(shown, '점 두 개가 나란히 찍혀 있다')).toBe(true);
+    expect(heard(shown, '그날 누나가 그려 온 불꽃이다')).toBe(false);
+  });
+
   it('ends the run at the first light when the player stays and offers that choice again', async () => {
     await start();
     const { state, picked } = await play({ where_am_i: '지옥', first_light: '그대로 있는다.' });
@@ -218,11 +228,18 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '끝순아, 하고 불러 봤다')).toBe(true);
     // What one life holds is what the next life cannot do, and it never knows why.
     expect(heard(shown, '입을 열자 다른 말이 나왔다')).toBe(true);
-    expect(heard(shown, '손은 침대 난간을 잡고 있다')).toBe(true);
+    expect(heard(shown, '정신을 차려 보니 침대 난간을 쥐고 있다')).toBe(true);
+    expect(heard(shown, '그날 누나가 그려 온 불꽃이다')).toBe(true);
+    expect(heard(shown, '점 두 개가 나란히 찍혀 있다')).toBe(false);
     expect(heard(shown, '가방끈이 어깨에 걸려 있다')).toBe(true);
+    expect(heard(shown, '박다온(53), 오후 두 시')).toBe(true);
+    expect(heard(shown, '그때 온 사람이 마지막이었다')).toBe(false);
     // The fifth dark hears the earlier lives back as testimony, then one more thing arrives:
     // the winter that was never judged, because the first time around it could not be.
-    expect(heard(shown, '바구미는 체로 치면 된다')).toBe(true);
+    expect(heard(shown, '여든 먹어도 엿은 엿이라더라')).toBe(true);
+    expect(heard(shown, '바구미 슨 삼백 섬을 그해 가을까지')).toBe(false);
+    expect(heard(shown, '사천삼백여든 냥이다')).toBe(true);
+    expect(heard(shown, '그날 곳간을 열었더라면')).toBe(false);
     expect(heard(shown, '같은 점은 없어. 360도 어디에도')).toBe(true);
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
@@ -254,6 +271,9 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '지금 보니 고르는 쪽도 나다')).toBe(true);
     // The editor can read the turn-back point in four hundred other people and not in herself.
     expect(heard(shown, '엄마 쪽 수화기가 제자리에 돌아가 있다')).toBe(true);
+    const visit = state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'glass');
+    expect(visit.filter((entry) => entry.speaker === '엄마' && entry.channel === 'dialogue')).toHaveLength(6);
+    expect(visit.some((entry) => entry.channel === 'message')).toBe(false);
     expect(heard(shown, '거기다. 열 번 중에 열 번 다 거기서 돌아간다')).toBe(true);
     expect(heard(shown, '전송에 손을 대자 손가락이 굳는다')).toBe(true);
     expect(heard(shown, '‘토요일에’까지는 남겨 둔다')).toBe(true);
@@ -295,14 +315,22 @@ describe('360 full playthrough', () => {
       v4: BESIDE,
       w_remember: '울음',
       v_end: WINTER_OUT,
-    });
-    expect(state.isFinished, picked.join('\n')).toBe(true);
+    }, 'v_end');
+    expect(state.choiceGate.key).toBe('v_end');
+    const stopped = await play({ v_end: '쥐지 않는다.' }, 'v_end_stop');
+    expect(stopped.state.choiceGate.key).toBe('v_end_stop');
+    const retried = await play({ v_end_stop: '다시 고른다.' }, 'v_end');
+    expect(retried.state.choiceGate.key).toBe('v_end');
+    const winter = await play({ v_end: WINTER_OUT });
+    expect(winter.state.isFinished, [...picked, ...winter.picked].join('\n')).toBe(true);
     // Shutting the gate is what the daughter defends him for, out at the gate, where he hears it.
     expect(heard(shown, '우리 아버지 그런 사람 아니에요')).toBe(true);
-    expect(heard(shown, '목록에 이미 있는 숫자다')).toBe(true);
-    expect(heard(shown, '같은 점이 두 번이다')).toBe(true);
-    expect(state.routeVars).toMatchObject({ l1_end: 'kept', t_kin: true, v_end: 'kin' });
-    expect(state.resolvedEndingId).toBe('circle');
+    expect(heard(shown, '그때 온 사람이 마지막이었다')).toBe(true);
+    expect(heard(shown, '박다온(53), 오후 두 시')).toBe(false);
+    expect(heard(winter.shown, '목록에 이미 있는 숫자다')).toBe(true);
+    expect(heard(winter.shown, '같은 점이 두 번이다')).toBe(true);
+    expect(winter.state.routeVars).toMatchObject({ l1_end: 'kept', t_kin: true, v_end: 'kin' });
+    expect(winter.state.resolvedEndingId).toBe('circle');
   }, 120000);
 
   it('starts somewhere else when a different star is the one that is missed', async () => {

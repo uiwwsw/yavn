@@ -332,10 +332,12 @@ scenes:
           text: "예. 궤에서 마흔 냥 꺼내 가겠습니다."
       - say: { char: 봉구, with: [만석], text: "그런데 하나 더 있습니다. 마포 김 주사한테서 기별이 왔어요." }
       - say: { char: 봉구, with: [만석], text: "삼백 섬을 한꺼번에 사겠답니다. 섬에 열닷 냥. 모레까진 직접 와서 수결하시랍니다." }
+      - say: { char: 봉구, with: [만석], when: { var: l1_gave, op: eq, value: true }, text: "여덟 섬이 모자란다고 알렸더니 그만큼은 마포서 따로 구한다더군요." }
       - say: { char: 만석, with: [봉구], text: "삼백이면 우리 것으로는 모자란다." }
       - say: { char: 봉구, with: [만석], text: "맡은 쌀까지 넘기고 윤 객주한테는 값으로 쳐 주면 됩니다. 그게 더 남고요." }
       - say: { channel: action, with: [], text: "지금 쌀을 내줘도 값이 더 오르면 손해다. 하지만 열닷 냥이면 놓치기 아까운 값이다." }
-      - say: { char: 만석, with: [봉구], text: "…열닷 냥이면 사천오백 냥이다." }
+      - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: false }, text: "…열닷 냥이면 사천오백 냥이다." }
+      - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: true }, text: "…이백아흔두 섬이면 사천삼백여든 냥이다." }
       - say: { char: 봉구, with: [만석], text: "예. 오가는 데 사흘입니다." }
       - say: { char: 끝순.sick, with: [만석], text: "다녀오세요, 아버지. 저 괜찮아요. 오라버니 있잖아요." }
       - say: { char: 끝순.sick, with: [만석], motion: laugh, text: "올 때 엿 잊지 마시고요. 깨 붙은 걸로." }
@@ -388,7 +390,8 @@ scenes:
       - place: "사흘 뒤 저녁 · 객주 마당"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
-      - say: { char: 만석, with: [봉구], text: "수결했다. 사천오백 냥이다." }
+      - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: false }, text: "수결했다. 사천오백 냥이다." }
+      - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: true }, text: "수결했다. 사천삼백여든 냥이다." }
       - say: { char: 만석, with: [봉구], text: "엿도 사 왔다." }
       - say: { channel: action, with: [], text: "봉구가 대문 안쪽에 서 있다. 저녁인데 마당에 불이 안 켜져 있다." }
       - say: { char: 만석, with: [봉구], text: "…너는 왜 마당에 나와 섰느냐." }
@@ -401,7 +404,7 @@ scenes:
           char: 봉구
           with: [만석]
           when: { var: l1_gave, op: eq, value: true }
-          text: "한 병이라 사흘 치였습니다. 나흘째 아침에 열이 다시 올랐습니다."
+          text: "약이 한 병뿐이었습니다. 어제 새벽에는 물수건을 갈아도 열이 안 내렸습니다."
       - say:
           char: 봉구
           with: [만석]
@@ -488,6 +491,7 @@ scenes:
       - say:
           char: 봉구
           with: [만석]
+          when: { var: l1_end, op: eq, value: gone }
           text: "잘 때도 차고 계시니 허리에 자국이 안 없어지잖습니까."
       - say:
           char: 만석
@@ -497,6 +501,7 @@ scenes:
       - say:
           char: 만석
           with: [봉구]
+          when: { var: l1_end, op: eq, value: gone }
           text: "버려라."
       - say:
           char: 봉구
@@ -546,8 +551,18 @@ scenes:
       - say: { channel: narration, text: "포구에서 밤바다를 보고 있으면 눈이 어둠에 익었다. 여기는 아무리 있어도 앞이 안 보인다." }
       - say:
           channel: narration
-          when: { var: l1_end, op: eq, value: gone }
+          when:
+            all:
+              - { var: l1_end, op: eq, value: gone }
+              - { var: l1_gave, op: eq, value: false }
           text: "쉰여섯 해가 전부 떠오른다. 사천오백 냥. 깨 붙은 엿. 진지 드셨느냐는 말."
+      - say:
+          channel: narration
+          when:
+            all:
+              - { var: l1_end, op: eq, value: gone }
+              - { var: l1_gave, op: eq, value: true }
+          text: "쉰여섯 해가 전부 떠오른다. 사천삼백여든 냥. 깨 붙은 엿. 진지 드셨느냐는 말."
       - say:
           channel: narration
           when: { var: l1_end, op: eq, value: kept }
@@ -560,13 +575,13 @@ scenes:
       - say: { channel: narration, text: "묻는 소리가 난다." }
       - say: { channel: narration, text: "어디서 나는지 찾다가 그만둔다. 내 안에서 난다." }
       - effect: { name: tilt, wait: true }
-      - say: { channel: narration, text: "그날 곳간을 열었더라면." }
-      - say: { channel: narration, text: "열지 않았더라도, 왜 못 여는지 그 애한테 한 번만 말해 줬더라면." }
+      - say: { channel: narration, when: { var: l1_gave, op: eq, value: false }, text: "그날 곳간을 열었더라면." }
+      - say: { channel: narration, when: { var: l1_gave, op: eq, value: false }, text: "열지 않을 거라면 그 까닭을 그 애한테 한 번이라도 말해 줄걸." }
       - say: { channel: narration, text: "엿." }
       - say: { channel: narration, text: "엿 얘기 말고 다른 얘기를 한 번만." }
       - say: { channel: narration, text: "고맙다고 했어야 했다." }
       - say: { channel: narration, text: "미안하다고도." }
-      - say: { channel: narration, text: "평생 포구를 떠난 건 한 번뿐이었다. 곳간을 누구한테도 못 맡겨서." }
+      - say: { channel: narration, when: { var: l1_end, op: eq, value: gone }, text: "포구를 비운 사흘 동안, 곳간에 둔 쌀부터 걱정했다." }
       - wait: 900
       - say: { channel: narration, text: "대답할 차례다." }
       - say: { channel: narration, text: "쉰여섯 해를 다 뒤져도 변명 하나가 안 나온다." }

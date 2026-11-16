@@ -28,7 +28,7 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right, emotion: far }
       - say: { channel: action, with: [], text: "지완이 문턱에서 멈춘다. 아버지가 먼저 눈을 맞추더니 양말이 벗겨진 발을 내놓고 침대 밑을 가리킨다." }
-      - say: { char: 지완, with: [동식], text: "그냥 벗어 놔요. 따뜻한 거 가져올게요." }
+      - say: { char: 지완, with: [동식], text: "거기 떨어졌어요? 제가 주울게요. 누워 있어요." }
       - say: { char: 동식, with: [지완], text: "…국." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: true }, text: "반만 얼리기로 했잖아요. 일요일에 제가 가면 그때 끓여요." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: false }, text: "아침에 전화 못 받았죠. 작은 통은 찾으셨어요?" }
@@ -63,8 +63,10 @@ scenes:
     actions:
       - say: { channel: action, with: [], text: "간호사가 시간을 더 주겠다며 문 옆으로 물러난다. 지완의 렌즈가 짧게 진동한다." }
       - sound: read
-      - say: { channel: record, with: [], text: "에모스 · 보호자 재확인\n정서 반응 01 · 무반응 의심" }
-      - say: { channel: action, with: [], text: "지완은 경고창을 닫고 아버지 발에 양말을 신긴다. 뒤꿈치까지 덮이도록 두 번 당긴다." }
+      - say: { channel: record, with: [], continueLabel: "경고창을 닫는다", text: "에모스 · 보호자 재확인\n정서 반응 01 · 무반응 의심" }
+      - say: { channel: action, with: [], continueLabel: "양말을 주워 신긴다", text: "침대 바퀴 앞에 양말이 떨어져 있다. 아버지가 뒤꿈치를 살짝 든다." }
+      - bg: ward_sock
+      - say: { channel: action, with: [], text: "몸을 숙여 양말을 줍는다. 뒤꿈치가 다 덮이도록 한 번 더 당기자 발가락이 꼼지락거린다." }
       - bg: hospital_stairs
       - place: "면회 뒤 · 월계병원 동쪽 계단"
       - char: { id: 지완, position: left }

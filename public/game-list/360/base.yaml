@@ -12,6 +12,8 @@ assets:
     busan_shack: assets/bg/busan_shack.svg
     seoul_room: assets/bg/seoul_room.svg
     ward: assets/bg/ward.svg
+    ward_packet: assets/bg/ward_packet.webp
+    glass_visit: assets/bg/glass_visit.svg
     hangang_night: assets/bg/hangang_night.svg
     edit_room: assets/bg/edit_room.svg
     interview_room: assets/bg/interview_room.svg
@@ -19,8 +21,13 @@ assets:
     key_sticker: assets/items/key.svg
     receipt_sticker: assets/items/receipt.svg
     sketch_sticker: assets/items/sketch.svg
+    sketch_two_sticker: assets/items/sketch_two.svg
     globe_sticker: assets/items/globe.svg
   characters:
+    지안어머니:
+      name: "엄마"
+      placement: offstage
+      base: assets/char/self.svg
     만석:
       name: "만석"
       placement: offstage
@@ -221,6 +228,8 @@ state:
   l2_asked: false
   l3_said: false
   l3_went: false
+  l3_open_blocked: false
+  l3_out_blocked: false
   l4_refuted: false
   l4_signed: false
   looked_back: false

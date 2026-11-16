@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 192" width="320" height="192" shape-rendering="crispEdges">
+  <title>새끼손가락을 건 윤재와 로봇</title>
+  <defs>
+    <clipPath id="frame">
+      <path d="M14 8h292v6h6v164h-6v6H14v-6H8V14h6z"/>
+    </clipPath>
+  </defs>
+  <path d="M15 11h293v7h7v165h-7v6H15v-6H6V18h9z" fill="#100e19" opacity=".7"/>
+  <g clip-path="url(#frame)">
+    <path fill="#1b192e" d="M0 0h320v192H0z"/>
+    <path fill="#262235" d="M0 30h320v8H0zM0 53h320v4H0z"/>
+    <path fill="#433044" d="M0 103h320v89H0z"/>
+    <path fill="#51384a" d="M0 113h320v17H0zM0 155h320v14H0z"/>
+    <path fill="#654251" d="M0 141h320v3H0zM0 177h320v7H0zM172 152h148v3H172z"/>
+    <path fill="#3a2a40" d="M0 161h75v2H0zM211 161h109v2H211zM0 185h320v7H0z"/>
+    <!-- Candlelight and the cold edge of the table -->
+    <path d="M252 37h38v6h9v47h-12v14h-53V88h-15V56h14v-9h19z" fill="#e6a15d" opacity=".12"/>
+    <path d="M279 43h5v7h4v11h-4v4h-8v-6h-4V52h7z" fill="#ee9759"/>
+    <path d="M279 51h5v13h-6v-5h1z" fill="#fff4bd"/>
+    <path d="M271 65h16v27h-16z" fill="#ae7657"/>
+    <path d="M271 65h11v24h-11z" fill="#e0b183"/>
+    <path d="M266 92h28v6h-28z" fill="#986359"/>
+    <path d="M0 136h98v4H0zM203 150h98v4h-98z" fill="#251e2e" opacity=".5"/>
+    <!-- 윤재의 소매와 쥔 손 -->
+    <path d="M0 113h29v-6h38v-6h23v-6h26v8h12v24h-8v12H98v8H69v6H31v6H0z" fill="#190f21"/>
+    <path d="M0 119h30v-6h42v-6h21v-7h20v28h-15v9H67v7H31v8H0z" fill="#c26049"/>
+    <path d="M0 119h31v-6h45v-6h16v6H73v6H38v6H0z" fill="#f69b62"/>
+    <path d="M0 142h40v-6h36v-8h19v9H69v7H31v8H0z" fill="#8a3e44"/>
+    <path d="M94 108h13v-9h11V86h11v-7h19v4h12v7h10v11h-8v10h-13v16h-15v7h-20v7H99z" fill="#271b27"/>
+    <path d="M100 111h12v-10h11V88h11v-5h13v5h10v6h8v5h-9v8h-13v16h-12v7h-19v5h-9z" fill="#d48460"/>
+    <path d="M115 112h10V96h12v-6h12v6h9v5h-16v6h-9v9h-18z" fill="#f0a87a"/>
+    <path d="M108 123h10v-5h13v-5h12v8h-13v7h-18v4h-8z" fill="#a95754"/>
+    <path d="M127 88h10v5h-8v9h-5V94h3zM139 98h11v5h-12z" fill="#a15a50"/>
+    <!-- 로봇의 손목, 장갑판, 마디가 드러난 새끼손가락 -->
+    <path d="M320 110h-29v-5h-20v-8h-19v-8h-21v7h-13v30h9v13h25v9h22v7h21v5h25z" fill="#191724"/>
+    <path d="M320 116h-31v-5h-24v-8h-20v-8h-12v34h20v8h23v8h23v5h21z" fill="#70708b"/>
+    <path d="M320 116h-32v-5h-23v-8h-19v6h18v8h25v5h31z" fill="#b3b0bf"/>
+    <path d="M320 141h-23v-6h-20v-7h-21v9h20v8h24v5h20z" fill="#48445d"/>
+    <path d="M240 126h-31v-8h-15v-13h-10V92h6V80h14v-6h18v4h18v7h14v20h-8v14h-6z" fill="#1a1826"/>
+    <path d="M242 121h-30v-9h-12v-12h-10V94h6V84h11v-5h12v4h19v6h11v13h-8v12h-8v7z" fill="#aaa8b5"/>
+    <path d="M209 82h11v5h16v6h-18v-5h-9zM197 91h11v7h-11zM204 104h23v8h-16v-4h-7z" fill="#dbd2c7"/>
+    <path d="M204 99h12v5h-12zM220 90h5v10h-5zM232 94h14v4h-14zM225 115h14v5h-14z" fill="#56516c"/>
+    <path d="M202 109h-14v-5h-11v-6h-13V84h5v-8h14v6h-8v9h9v5h12v5h6z" fill="#282333"/>
+    <path d="M198 105h-10v-6h-10v-5h-10v-9h5v-5h6v3h-6v9h11v6h11v4h3z" fill="#b5b1ba"/>
+    <path d="M174 90h7v4h-7zM186 100h5v4h-5z" fill="#71677f"/>
+    <!-- 서로 걸린 마디 -->
+    <path d="M141 105h11v-9h10v-13h5v-8h13v8h-7v10h-5v10h-10v10h-17z" fill="#2e1a29"/>
+    <path d="M144 104h12v-8h10V83h5v-5h6v4h-7v12h-5v9h-9v7h-12z" fill="#f2a775"/>
+    <path d="M159 99h6v5h-6zM170 80h6v4h-6z" fill="#ffcc95"/>
+  </g>
+  <path d="M14 8h292v6h6v164h-6v6H14v-6H8V14h6z" fill="none" stroke="#927168" stroke-width="2"/>
+  <path d="M16 13h288M13 16v160M16 179h288M307 16v160" fill="none" stroke="#262031" stroke-width="2"/>
+</svg>
