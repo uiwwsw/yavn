@@ -1,23 +1,42 @@
 chapterTitle: "우물 속 신부"
 
 script:
+  - scene: well_opening
   - scene: name_entry
   - scene: night_call
   - scene: chart_intro
 
 scenes:
-  name_entry:
-    title: "의녀 명부"
+  well_opening:
+    title: "우물가"
     actions:
-      - bg: { id: hyeminseo, transition: fade, duration: 800 }
+      - bg: { id: well_night, transition: cut }
+      - music: night_well
+      - say:
+          channel: action
+          with: []
+          text: "우물가에 젖은 거적이 놓여 있다. 막쇠가 등불을 들어 준다."
+          continueLabel: "거적을 걷는다"
+      - effect: focus
+      - sticker: { id: first_thread, image: thread_sticker, x: 50, y: 34, width: "clamp(160px, 22%, 280px)", enter: fadeIn }
+      - say:
+          channel: action
+          with: []
+          text: "거적 끝이 손끝에 걸려 들린다. 손톱 아래 짙은 남빛 실 한 올이 박혀 있다."
+      - clearSticker: { id: first_thread, leave: fadeOut }
+
+  name_entry:
+    title: "초검 기록"
+    actions:
+      - bg: { id: well_night, transition: cut }
       - say:
           channel: record
           with: []
           camera: wide
-          text: "혜민서 의녀 명부. 올가을 새로 이름을 올린 의녀가 하나 있다."
+          text: "신고에는 익사라고 적혀 있다. 본 것을 따로 적을 종이를 편다."
       - char: { id: 서연, position: left }
       - input:
-          prompt: "열여덟. 명부에 적을 당신의 이름은?"
+          prompt: "초검 기록에 적을 의녀의 이름은?"
           with: [서연]
           saveAs: player_name
           defaultValue: "서연"
@@ -25,11 +44,11 @@ scenes:
       - say:
           channel: thought
           with: [서연]
-          text: "{{player_name}}."
+          text: "살핀 이, 혜민서 의녀 {{player_name}}."
       - say:
           channel: thought
           with: [서연]
-          text: "먹이 마르기도 전에 문이 열렸다. 우물에 사람이 빠졌다고."
+          text: "실이 어디서 묻었는지는 아직 비워 둔다."
   night_call:
     title: "혼례 전날 밤"
     actions:
@@ -52,7 +71,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "아이고. 거적은 내가 걷소."
+          text: "거적은 그만큼만 걷어 둬요. 바람 불면 등잔부터 꺼져."
       - say:
           char: 막쇠
           with: [서연]
@@ -119,8 +138,8 @@ scenes:
       - say:
           channel: action
           with: []
-          continueLabel: "거적을 걷는다"
-          text: "막쇠가 거적 끝을 잡고 나를 본다. 고개를 끄덕인다."
+          continueLabel: "시형도를 펼친다"
+          text: "막쇠가 등불을 낮춘다. 종이 위에 몸 앞면을 그려 둔 자리가 있다."
 
   chart_intro:
     title: "시형도"
@@ -206,7 +225,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "오른손 손톱 두 개가 뿌리까지 부러졌다. 그 밑에 짙은 남빛 실오라기가 박혀 있다."
+          text: "등불을 더 낮춘다. 실은 오른손이다. 그 아래 손톱 두 개가 뿌리까지 부러져 있다."
       - say:
           char: 막쇠
           with: [서연]
