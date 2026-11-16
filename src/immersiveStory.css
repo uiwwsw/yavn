@@ -117,34 +117,21 @@
   .app .dialog-action-button, .app .exploration-target { transition: none; }
 }
 
-/* ── 다가가기 ───────────────────────────────────────────────────────────────
-   살펴보기는 한 번 누르면 끝나지만, 다가가기는 누를 때마다 한 걸음씩 가까워진다.
-   멀 때는 점 하나뿐이고 이름도 거의 안 읽힌다. 가까워질수록 점이 커지고 글자가
-   드러난다. 거리는 --approach-step / --approach-total 로 들어온다. */
-
-.approach-field {
-  /* 어둠 속이라 글자 상자가 있으면 안 된다. 점만 떠 있어야 한다. */
-  --approach-near: calc(var(--approach-step, 0) / max(var(--approach-total, 1), 1));
-}
-
+/* Each target receives its own approach progress from the choice gate. */
 .app .approach-target {
+  --approach-near: calc(var(--approach-step, 0) / var(--approach-total, 1));
   background: none;
   text-shadow: 0 1px 10px #000000d9;
   padding: 11px 12px 11px 30px;
-  transition: opacity 700ms ease, transform 700ms ease;
-  opacity: calc(0.42 + 0.58 * var(--approach-near, 0));
+  transition: opacity 420ms ease;
+  opacity: calc(0.86 + 0.14 * var(--approach-near, 0));
 }
 
-.app .approach-target .choice-gate-option-text {
-  /* 멀리 있는 건 이름을 모른다. */
-  filter: blur(calc(2.4px * (1 - var(--approach-near, 0))));
-  letter-spacing: calc(0.12em * (1 - var(--approach-near, 0)));
-  transition: filter 700ms ease, letter-spacing 700ms ease;
-}
-
-.app .approach-target .choice-gate-option-index {
-  opacity: 0.5;
-  letter-spacing: 0.22em;
+.app .approach-confirm-label {
+  display: block;
+  margin-top: 2px;
+  color: #ffe8ab;
+  font-size: 0.88em;
 }
 
 .app .approach-target .choice-gate-option-mark {
@@ -153,10 +140,10 @@
 }
 
 .app .approach-target::before {
-  width: calc(7px + 13px * var(--approach-near, 0));
-  height: calc(7px + 13px * var(--approach-near, 0));
-  margin-top: calc(-4px - 6.5px * var(--approach-near, 0));
-  left: calc(9px - 3px * var(--approach-near, 0));
+  width: calc(7px + 8px * var(--approach-near, 0));
+  height: calc(7px + 8px * var(--approach-near, 0));
+  margin-top: calc(-3.5px - 4px * var(--approach-near, 0));
+  left: calc(9px - 4px * var(--approach-near, 0));
   box-shadow:
     0 0 calc(10px + 22px * var(--approach-near, 0)) calc(2px + 6px * var(--approach-near, 0)) #ffd98ac4,
     0 0 calc(26px + 60px * var(--approach-near, 0)) calc(7px + 20px * var(--approach-near, 0)) #ffd98a4d;
@@ -164,10 +151,6 @@
   transition: width 700ms ease, height 700ms ease, box-shadow 700ms ease;
 }
 
-/* 닿기 직전. 여기서 한 번 더 누르면 결정된다. */
-.app .approach-target[data-approach-near='true'] {
-  opacity: 1;
-}
 .app .approach-target[data-approach-near='true']::before {
   background: #fff6de;
   animation-duration: 0.9s;
@@ -176,14 +159,10 @@
 @media (prefers-reduced-motion: reduce) {
   .app .approach-target,
   .app .approach-target::before,
-  .app .approach-target .choice-gate-option-text,
   .app .approach-target .choice-gate-option-mark {
     transition: none;
   }
   .app .approach-target::before {
     animation: none;
-  }
-  .app .approach-target .choice-gate-option-text {
-    filter: none;
   }
 }

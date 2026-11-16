@@ -20,35 +20,31 @@ scenes:
           with: []
           text: "재생 · 014 · 2031.09.02 20:11 · 길이 1분 06초"
       - char: { id: 희남, position: center }
-      - wait: 260
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "오늘은 7이야. 어제는 6이었고."
+      - say:
+          char: 희남
+          with: []
+          delivery: whisper
+          text: "오늘도 죽이야. 식었다고 다시 데웠어."
       - wait: 260
       - say:
           char: 희남
           with: []
           delivery: whisper
-          text: "그 사람이 자꾸 죽을 사. 죽을 끓여 놓고 앉아 있어."
-      - wait: 260
-      - say:
-          char: 희남
-          with: []
-          delivery: whisper
-          text: "먹기 싫다고 하면 그냥 앉아 있어. 말을 안 해."
+          text: "나 안 먹는다니까 숟가락만 옆에 놔."
       - say:
           channel: system
           with: []
           text: "재생 · 047 · 2032.04.19 02:30 · 길이 24초"
-      - wait: 320
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "…동식 씨."
-      - wait: 320
       - say:
           char: 희남
           with: []
@@ -64,13 +60,11 @@ scenes:
           channel: system
           with: []
           text: "재생 · 083 · 2032.11.30 23:47 · 길이 2분 51초"
-      - wait: 400
       - say:
           char: 희남
           with: []
           delivery: whisper
           text: "하율이한테는 말하지 마."
-      - wait: 400
       - say:
           char: 희남
           with: []
@@ -103,6 +97,7 @@ scenes:
           with: []
           text: "재생 · 119 · 2033.03.06 21:48 · 길이 3분 09초"
       - wait: 620
+      - mood: { tone: grief, level: 2 }
       - say:
           char: 희남
           with: []
@@ -138,6 +133,7 @@ scenes:
           with: []
           delivery: whisper
           text: "내일 해 줘."
+      - mood: off
       - say:
           channel: system
           with: []
@@ -659,16 +655,12 @@ scenes:
       - say:
           char: 지완
           with: [수경]
-          text: "그 사람이 자백했습니다."
+          text: "어제 아침에 제 앞에서 자백했습니다."
       - say:
           char: 수경
           motion: freeze
           with: [지완]
           text: "…"
-      - say:
-          char: 지완
-          with: [수경]
-          text: "어제 아침에요. 저한테."
       - say:
           char: 수경
           with: [지완]
@@ -692,7 +684,7 @@ scenes:
       - say:
           char: 지완
           with: [수경]
-          text: "저도 아닙니다. 그 사람 지금 유죄입니다."
+          text: "저도 아닙니다. 그 사람 다시 조사해야죠."
       - say:
           char: 수경
           with: [지완]
@@ -700,7 +692,7 @@ scenes:
       - say:
           char: 지완
           with: [수경]
-          text: "유죄인 이유가 서류에 안 적힙니다. 그게 제 일입니다."
+          text: "이번에는 판독표부터 바로잡아야 합니다."
       - say:
           char: 수경.tired
           with: [지완]
@@ -718,6 +710,7 @@ scenes:
       - set: { has_raw: true }
       - sticker: { id: raw, image: raw_sticker, x: 76, y: 48, width: "clamp(150px, 20%, 250px)", enter: wipeCenterY }
       - effect: glitch
+      - mood: { tone: dread, level: 2 }
       - say:
           channel: record
           with: []
@@ -733,15 +726,7 @@ scenes:
       - say:
           char: 수경
           with: [지완]
-          text: "10001에서 하위 두 자리면 01입니다. 앞의 0은 안 찍히고요."
-      - say:
-          char: 지완.break
-          with: [수경]
-          text: "…그래서 0입니까."
-      - say:
-          char: 수경
-          with: [지완]
-          text: "네. 그래서 0입니다."
+          text: "회사에서 남긴 건 01입니다. 보도자료에 0을 누가 썼는지는 저도 몰라요."
       - clearSticker: { id: raw, leave: fadeOut }
       - say:
           char: 지완
@@ -799,6 +784,7 @@ scenes:
           char: 지완
           with: [수경]
           text: "…"
+      - mood: off
       - say:
           char: 수경.tired
           with: [지완]

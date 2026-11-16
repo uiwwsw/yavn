@@ -23,10 +23,11 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "설명서 3쪽."
+      - say: { char: 로봇, with: [윤재], text: "'게임은 하루 한 시간만.'" }
       - say:
           char: 로봇
           with: [윤재]
-          text: "' 우리 다섯 시간째 걷는 중."
+          text: "우리 다섯 시간째 걷는 중."
       - say:
           char: 윤재
           motion: sigh
@@ -205,7 +206,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "'"
+          text: "'추운 곳에서는 건전지가 빨리 닳습니다.'"
       - say:
           char: 로봇.happy
           with: [윤재]
@@ -871,7 +872,7 @@ scenes:
           channel: record
           with: []
           text: "SCAN: 인간 1 감지. 추적 개시."
-      - effect: { name: shake, wait: true }
+      - effect: rumble
       - say:
           char: 로봇.glitch
           with: [윤재, 드론]
@@ -965,7 +966,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "'"
+          text: "'화면이 멈추면 리셋 버튼을 꾹 누르세요.'"
       - say:
           char: 윤재
           with: [로봇]

@@ -833,7 +833,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "몰라요. 거기선 다 진짜예요. 진짜니까 모르죠."
+          text: "모를걸요. 나도 처음엔 컵 내려놓은 자리를 잘못 본 줄 알았어요."
       - say:
           char: 해수
           with: [태민]
@@ -953,6 +953,7 @@ scenes:
           when: { var: sh_care, op: gte, value: 2 }
           with: []
           text: "문이 손가락 두 마디쯤 열린다. 안은 어둡고 모니터 불빛만 세 줄이다."
+      - effect: heal
       - say:
           char: 상혁
           when: { var: sh_care, op: gte, value: 2 }

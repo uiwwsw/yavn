@@ -640,7 +640,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "어디서 나온 말인지 모르는 말이 머릿속에서 혼자 돈다. 내 말투가 아니다."
+          text: "체육 끝나기 전에 내려가야 돼. 돈까스 다 나가기 전에."
       - say:
           char: 도윤
           with: []
@@ -667,11 +667,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: true }
-          text: "지웠는데 셋이 읽었다. 지운 뒤에 소문은 더 잘 돈다. 출처가 없어지니까."
-      - say:
-          channel: thought
-          when: { var: e2_leaked, op: eq, value: true }
-          text: "열여덟은 그걸 당한 쪽이었고, 나는 한 쪽이다. 같은 손으로 지웠다."
+          text: "지우고 나니까 셋 중에 누가 읽었는지도 못 본다."
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: false }
@@ -760,7 +756,7 @@ scenes:
       - say:
           channel: thought
           when: { var: went_to_clinic, op: eq, value: false }
-          text: "목요일에 번호표 버튼까지 세 걸음에서 돌아섰다. 아직 아무 결과도 없다. 받을 것도 없다."
+          text: "목요일에 기계 앞에서 돌아섰다. 지갑 속엔 번호표 들어갈 칸만 비어 있다."
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 2 }
@@ -1028,6 +1024,7 @@ scenes:
           channel: action
           with: []
           text: "도윤은 입력 칸을 한참 보다가 비워 둔 채로 보낸다."
+      - effect: heal
       - say:
           channel: system
           with: []

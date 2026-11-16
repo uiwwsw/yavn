@@ -89,6 +89,8 @@ scenes:
           char: 로봇.glitch
           with: [윤재]
           text: "MEMORY OVERFLOW — 신호 너무 셈 — 8KB로는 못 버팀 —"
+      - effect: damage
+      - mood: { tone: dread, level: 2 }
       - say:
           char: 윤재.scared
           motion: gasp
@@ -180,6 +182,7 @@ scenes:
           char: 로봇.thinking
           with: [윤재]
           text: "세이브 슬롯 하나."
+      - mood: off
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -249,10 +252,11 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "설명서 1쪽."
+      - say: { char: 로봇, with: [윤재], text: "'전원을 끄기 전에 반드시 저장하세요.'" }
       - say:
           char: 로봇
           with: [윤재]
-          text: "' 네가 안 읽은 거."
+          text: "네가 안 읽은 거."
       - emote: { id: 윤재, motion: nod, repeat: 2 }
       - say:
           char: 윤재
@@ -645,6 +649,7 @@ scenes:
           motion: hop
           with: [윤재]
           text: "응."
+      - mood: { tone: warm, level: 2 }
       - say:
           char: 로봇.happy
           motion: hop
@@ -672,7 +677,7 @@ scenes:
           char: 로봇.thinking
           motion: freeze
           with: [윤재]
-          text: "…그 말은 처음 들어. 넣을 칸이 없어서 하나 만들어야 돼."
+          text: "잠깐. 한 칸 비움."
           wait: 780
           unskippable: true
       - say: { channel: system, with: [], text: "메모리 카드 읽기\nSAVE SLOT 1 · 데이터 있음" }
@@ -696,11 +701,12 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "근데 약속 하나 꺼내니까 거기 엮인 게 줄줄이 딸려 나옴."
+          text: "약속을 읽으니까 그날 네 손이 먼저 기억남."
       - say:
           char: 로봇
           with: [윤재]
           text: "나머지도 다 있어."
+      - mood: off
       - say:
           char: 로봇
           with: [윤재]
@@ -814,7 +820,7 @@ scenes:
           motion: headtilt
           with: [윤재]
           when: { var: kept_promise, op: eq, value: true }
-          text: "'"
+          text: "'끝까지 2P.'"
       - say:
           char: 로봇
           with: [윤재]
@@ -980,7 +986,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "'"
+          text: "'어려우면 나중에 다시 도전하세요.'"
       - say:
           char: 윤재
           with: [로봇]

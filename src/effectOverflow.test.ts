@@ -46,4 +46,16 @@ describe('screen effect overflow containment', () => {
     expect(styles).toContain(".effect-viewport[data-effect-level='minimal'][data-effect-active='true']");
     expect(engineSource).toContain('const duration = EFFECT_DURATIONS[effectName] ?? 350;');
   });
+
+  it('keeps full-viewport recoil out of the reduced motion settings', () => {
+    expect(styles).toMatch(/\.effect-viewport\[data-effect-level='reduced'\]:is\(\.effect-rumble, \.effect-damage\)\s*\{\s*animation: none;/);
+    expect(styles).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.effect-shake,\s*\.effect-rumble,\s*\.effect-damage,[\s\S]*?animation: none !important;/);
+  });
+
+  it('paints damage and healing below the dialogue and controls', () => {
+    const overlayZ = /\.effect-damage::after,\s*\.effect-heal::after \{[\s\S]*?z-index: (\d+);/.exec(styles);
+    const stageZ = /^\.stage-content-frame \{[\s\S]*?z-index: (\d+);/m.exec(styles);
+    expect(overlayZ && stageZ).toBeTruthy();
+    expect(Number(overlayZ![1])).toBeLessThan(Number(stageZ![1]));
+  });
 });

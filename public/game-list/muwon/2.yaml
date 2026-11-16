@@ -617,10 +617,11 @@ scenes:
       - add: { trust_dowon: 1 }
       - set: { deokgu_saved: true }
       - char: { id: 덕구, position: right }
+      - effect: heal
       - say:
           char: 덕구
           with: [서연, 도원]
-          text: "의녀님… 이 은혜는… 짐이라면 평생 져 드릴게요."
+          text: "의녀님. 저, 짐 나를 일 있으면 절 불러요. 꼭이요."
       - goto: c3_after
 
   c3_after:

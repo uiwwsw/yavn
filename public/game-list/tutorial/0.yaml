@@ -53,12 +53,6 @@ scenes:
           side: them
           char: 지영
           with: []
-          text: "저번 주는 윤 주임한테 물어봤고 걔는 안 바꿔 줬어"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
           text: "해수는 어차피 퇴근하고 할 것도 없잖아 레플라도 안 하고"
       - say:
           channel: message
@@ -74,12 +68,6 @@ scenes:
           text: "오전인데 괜찮습니다"
       - say:
           channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "봐 괜찮대"
-      - say:
-          channel: message
           side: me
           char: 해수
           with: []
@@ -90,18 +78,8 @@ scenes:
           char: 지영
           with: []
           text: "역시ㅠㅠ 커피 살게"
-      - say:
-          channel: message
-          side: me
-          char: 해수
-          with: []
-          text: "괜찮습니다 주임님"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "괜찮다고 하면 진짜 안 사는 수가 있어"
+      - say: { char: 해수, channel: message, side: me, text: "괜찮습니다 주임님" }
+      - say: { char: 지영, channel: message, side: them, text: "괜찮으면 안 사도 돼?" }
       - say:
           channel: message
           side: me
@@ -244,32 +222,8 @@ scenes:
           char: 지영
           with: [해수]
           text: "마감 고마워. 그리고 너 오늘 12년 됐지? 인사팀에서 근속 메일 왔더라. 2019년 4월 11일 입사."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "아, 오늘이에요?"
-      - say:
-          char: 해수
-          with: [지영]
-          text: "몰랐어요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "네가 들어왔을 때 내가 벌써 10년 차였어."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "그거 자랑이에요, 슬픈 얘기예요?"
-      - say:
-          char: 해수
-          with: [경준]
-          text: "자랑은 아니지."
-      - say:
-          char: 지영.smirk
-          motion: headtilt
-          with: [해수]
-          text: "본인이 모르는 게 제일 무섭다. 자, 선물."
       - sticker: { id: coupon, image: coupon_sticker, x: 62, y: 34, width: "240px", rotate: -4, enter: popIn }
+      - say: { char: 해수, with: [지영], text: "오늘이었어요?" }
       - say:
           char: 지영
           with: [해수]
@@ -536,6 +490,7 @@ scenes:
           with: [광철]
           text: "개봉하신 상품은 원래 환불이 좀 어려우신데요, 고객님…"
       - move: { id: 광철, toward: 해수, style: lunge }
+      - effect: rumble
       - say:
           char: 광철.shout
           with: [해수]
@@ -810,49 +765,20 @@ scenes:
       - say:
           char: 상혁
           with: [해수]
-          text: "야, 너 어제 밥 안 했지."
+          text: "야, 어제 밥 어디 뒀어."
       - say:
           char: 해수
           with: [상혁]
-          text: "네 차례였어."
-      - say:
-          char: 상혁
-          motion: headtilt
-          with: [해수]
-          text: "내 차례였어?"
+          text: "냉장고 두 번째 칸."
       - say:
           char: 해수
           with: [상혁]
-          text: "월, 수, 금 네 차례야. 3년째."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "어제 목요일이잖아."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "어제 수요일이었어."
+          text: "오늘은 네 차례야. 금요일."
       - say:
           char: 상혁
           motion: slump
           with: [해수]
           text: "…아."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "그럼 오늘 내가 두 번 하면 되겠네."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "오늘 금요일이라 어차피 네 차례야."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "너 그거 머릿속에서 어떻게 세고 있냐."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "안 세. 그냥 알지."
       - say:
           char: 경준
           motion: bounce
@@ -865,7 +791,7 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "2학년 때도 같은 반이었어."
+          text: "2학년 때도 맨날 붙어 있었잖아."
       - say:
           char: 상혁
           with: [해수]

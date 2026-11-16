@@ -45,10 +45,6 @@ scenes:
           with: [서연]
           text: "…목이 졸렸다고요."
       - say:
-          char: 여금.wary
-          with: [서연]
-          text: "…참."
-      - say:
           char: 서연
           with: [여금]
           text: "네."
@@ -69,21 +65,17 @@ scenes:
           with: [여금]
           text: "스스로 들어가면 거품이 입에 찹니다. 분이는 없었습니다."
       - say:
-          char: 여금.wary
-          with: [서연]
-          text: "…그게 무슨."
-      - say:
           channel: action
           with: []
           text: "여금이 장옷 끈을 놓는다. 한참 아무 말도 하지 않는다."
       - say:
           char: 여금
           with: [서연]
-          text: "…그 말, 아까 포교한테도 했어요?"
+          text: "…그 말, 포교 나리 앞에서도 했어요?"
       - say:
           char: 서연
           with: [여금]
-          text: "했습니다. 적어 가지는 않았습니다."
+          text: "들으셨습니다. 붓은 안 드시더군요."
       - goto: c2_meet
 
   c2_meet:
@@ -138,7 +130,7 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "나는 이게 무서워요."
+          text: "의녀님한테 드렸다는 말은 밖에서 하지 말아요."
       - get: order_slip
       - goto: c2_fire_alarm
 
@@ -183,6 +175,7 @@ scenes:
           with: []
           text: "'감청 주머니 삼백.' 그 아래 주문한 집 자리에 붉은 표식 하나. 글자가 아니라 그림이다."
       - clearSticker: { id: c2_slip, leave: fadeOut }
+      - mood: { tone: dread, level: 1 }
       - say:
           channel: narration
           text: "그때 담 너머에서 종이 울렸다. 불이야, 하는 소리는 혜민서 옆 박씨 약방 쪽이었다."
@@ -230,7 +223,8 @@ scenes:
 
   c2_chest:
     actions:
-      - effect: { name: shake, wait: true }
+      - effect: rumble
+      - mood: off
       - say:
           channel: action
           with: []
@@ -254,7 +248,8 @@ scenes:
 
   c2_pull_makssoe:
     actions:
-      - effect: { name: shake, wait: true }
+      - effect: rumble
+      - mood: off
       - say:
           channel: action
           with: []

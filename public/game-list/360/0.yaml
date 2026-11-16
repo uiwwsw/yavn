@@ -8,7 +8,6 @@ scenes:
   dark:
     title: "암흑"
     actions:
-      - bg: { id: void, transition: cut }
       - branch:
           cases:
             - when: { var: lives_done, op: gte, value: 4 }
@@ -17,38 +16,48 @@ scenes:
               goto: dark_again
           default: dark_first
 
-  # 처음 눈을 뜬 자리. 아직 아무것도 모르고, 아는 것은 그립다는 것뿐이다.
-  # 처음 눈을 뜬 자리. 감정에 이름을 붙이지 않는다. 죽은 쪽은 이름부터 잃는다.
   dark_first:
     actions:
+      - bg: { id: void_empty, transition: cut }
       - say: { channel: narration, text: "암흑." }
       - music: void
-      - say: { channel: narration, text: "눈을 떴다." }
-      - say: { channel: narration, text: "떴는데 어둡다. 감아도 어둡다." }
-      - say: { channel: narration, text: "손을 뻗어 본다. 벽이 안 닿는다. 바닥도." }
-      - wait: 900
-      - say: { channel: narration, text: "어딘가 한 군데가 당긴다." }
-      - say: { channel: narration, text: "가슴께다. 당기는 쪽으로 몸이 조금 돈다." }
-      - wait: 1100
-      - say: { channel: narration, text: "이 느낌에 이름이 있었다. 살아 있을 때 자주 쓰던 말이다." }
-      - wait: 900
-      - effect: { name: starfall, wait: true }
-      - bg: { id: void_light, transition: dissolve, duration: 3600 }
-      - say: { channel: narration, text: "한 군데가 덜 어둡다." }
-      - say: { channel: narration, text: "점이다. 하나." }
-      - wait: 1100
-      - say: { channel: narration, text: "보고 싶다." }
-      - wait: 900
-      - say: { channel: narration, text: "누가." }
-      - say: { channel: narration, text: "이름이 안 나온다. 그래도 보고 싶다." }
-      - wait: 700
-      - say: { channel: narration, text: "점이 하나 더 켜진다. 또 하나." }
-      - say: { channel: narration, text: "세는 사이에 늘어난다." }
+      - say: { channel: narration, text: "아무것도 안 보인다." }
+      - choice:
+          key: where_am_i
+          prompt: "여긴 어디지?"
+          options:
+            - { text: "모르겠다.", goto: first_light }
+            - { text: "지옥인가.", goto: first_light }
+            - { text: "천국인가.", goto: first_light }
+
+  first_light:
+    actions:
+      - choice:
+          key: first_light
+          presentation: approach
+          prompt: "저 앞에서 별 하나가 반짝인다."
+          options:
+            - text: "손을 뻗는다."
+              at: { x: 54, y: 42 }
+              mood: pale
+              reveal:
+                - "손끝에 닿을 줄 알았는데, 아직 멀다."
+                - "어디선가 웃음소리가 난다. 아는 사람 같은데 이름이 안 난다."
+              goto: first_memories
+            - text: "그대로 있는다."
+              gameOver:
+                message: "한참 뒤, 빛이 꺼졌다."
+                recoverToChoice: first_light
+
+  first_memories:
+    actions:
+      - mood: off
       - goto: stars
 
   # 두 번째부터. 돌아왔다는 것만 알고, 어디로 돌아왔는지는 모른다.
   dark_again:
     actions:
+      - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
       - say: { channel: narration, text: "여기다. 여기였던 것 같다." }
       - say: { channel: narration, text: "방금 산 것이 벌써 흐리다. 쥔 것 하나만 또렷하다." }
@@ -63,32 +72,31 @@ scenes:
       - choice:
           key: star
           presentation: approach
-          mood: ember
-          prompt: "누군지는 모르겠고, 어느 쪽이 당기는지만 안다."
+          prompt: "가 볼까."
           options:
-            - text: "엿을 기다린 아이"
+            - text: "깨 붙은 엿"
               at: { x: 26, y: 63 }
               when: { var: lived_1894, op: eq, value: false }
+              mood: ember
               reveal:
-                - "그쪽이 노랗다."
-                - "노란 것 아래에 흰 것이 쌓여 있다. 됫박으로 퍼야 할 만큼."
                 - "종이가 눅눅하다. 깨가 붙어 있다."
+                - '"아버지, 깨 붙은 걸로요."'
               goto: go_1894
-            - text: "부두에 두고 온 사람"
+            - text: "부두의 고무신"
               at: { x: 73, y: 47 }
               when: { var: lived_1952, op: eq, value: false }
+              mood: cold
               reveal:
-                - "그쪽에서 물 냄새가 난다."
-                - "줄이 서 있다. 줄 끝이 끊겨 있다."
-                - "한 사람이 등을 보이고 서 있다. 돌아보지 않는다."
+                - "바람에 치맛자락이 들린다. 한쪽 고무신은 뒤축이 다 닳았다."
+                - "배에서 마지막 사람이 내린다. 부두에 선 여자는 자리를 안 뜬다."
               goto: go_1952
-            - text: "새벽마다 오던 사람"
+            - text: "갈치 가시"
               at: { x: 46, y: 21 }
               when: { var: lived_1988, op: eq, value: false }
+              mood: pale
               reveal:
-                - "그쪽이 희다. 형광등 같은 흼이다."
-                - "손이다. 뭔가를 하나씩 발라내고 있다."
-                - "가시를 한쪽에 모아 놓은 손이다. 아직 따뜻하다."
+                - "도시락 뚜껑 안쪽에 물방울이 맺혀 있다."
+                - "뚜껑을 여는 손에서 비린내가 난다. 접시 한쪽에 가시가 수북하다."
               goto: go_1988
             - text: "답장을 못 받은 사람"
               at: { x: 81, y: 71 }
@@ -96,6 +104,7 @@ scenes:
                 all:
                   - { var: lived_2026, op: eq, value: false }
                   - { var: lives_done, op: gte, value: 3 }
+              mood: pale
               reveal:
                 - "그쪽만 깜박인다."
                 - "글자 한 줄이 떠 있고, 그 아래가 비어 있다."
@@ -162,7 +171,7 @@ scenes:
   dark_still:
     actions:
       - bg: { id: void, transition: dissolve, duration: 2600 }
-      - say: { channel: narration, text: "반짝이던 것이 반짝인 채로 있다. 서두르는 것은 아무것도 없다." }
+      - say: { channel: narration, text: "손을 내린다. 저쪽 빛은 그대로다." }
       - ending: still
 
   yard:
@@ -173,21 +182,8 @@ scenes:
       - place: "1894년 유월 · 제물포 객주 마당"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
-      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 왜선이 또 들어왔습니다. 오늘만 넉 척째예요." }
-      - say: { char: 봉구, with: [만석], text: "쌀이 열흘 새 닷 냥에서 아홉 냥이 됐습니다. 저자에선 내일 열두 냥 간답니다." }
-      - say: { char: 만석, with: [봉구], text: "곳간에 몇 섬이냐." }
-      - say: { char: 만석, with: [봉구], text: "허." }
-      - say: { char: 봉구, with: [만석], motion: sigh, text: "삼백 하고 열두 섬이요. …어젯밤에도 세셨잖습니까." }
-      - say: { char: 봉구, with: [만석], text: "그저께 밤에도요." }
-      - say: { char: 만석, with: [봉구], text: "그중에 우리 것은." }
-      - say: { char: 봉구, with: [만석], text: "백마흔입니다. 나머지는 맡아 둔 거고, 강경 윤 객주 것이 제일 많습니다." }
-      - say: { channel: action, with: [], text: "객주는 남의 쌀을 맡아 주고 구문을 받는 집이다. 맡은 쌀에 손대면 그날로 끝이다." }
-      - say: { channel: action, with: [], text: "허리춤의 곳간 열쇠를 만져 본다. 잘 때도 풀지 않는다." }
-      - say:
-          channel: action
-          with: []
-          when: { var: t_hold, op: eq, value: true }
-          text: "만지면 손가락이 저절로 오그라든다. 언제부터 그랬는지는 모른다."
+      - say: { char: 봉구, with: [만석], text: "주인어른, 덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다." }
+      - say: { char: 봉구, with: [만석], text: "쌀을 외상으로 달랍니다. 가을에 갚는다고요. 저자 쌀집은 죄다 문을 걸었답니다." }
       - say:
           channel: action
           with: []
@@ -195,20 +191,31 @@ scenes:
           text: "안채에서 기침 소리가 난다. 주판알이 손에서 미끄러진다."
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지, 진지 드세요. 봉구 오라버니 것도 퍼 왔어요." }
-      - say: { char: 만석, with: [끝순, 봉구], text: "…그래." }
+      - say: { char: 끝순, with: [만석], text: "덕이도 왔어요? 지난번에 저한테 조개 한 줌 주고 갔는데." }
+      - say: { char: 봉구, with: [끝순], text: "왔지. 여덟 살 먹은 게 어미 등에 업혀 왔더라." }
       - say: { char: 만석, with: [끝순, 봉구], text: "기침이 왜 그 모양이냐." }
       - say: { char: 끝순, with: [만석], text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }
       - say: { char: 봉구, with: [만석], text: "열여섯 먹은 처자가 총 멘 것들을 구경해?" }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 안 무섭던데요. 말이 무섭지. 말이 그렇게 큰 줄 몰랐어요." }
+      - mood: { tone: warm, level: 2 }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다. 어려서부터 그랬다." }
       - say: { char: 끝순, with: [만석], text: "아버지, 이번에 마포 가시면 엿 사다 주세요. 깨 붙은 거." }
       - say: { char: 만석, with: [끝순], text: "열여섯이나 먹은 게 아직도 엿 타령이냐." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "여든 먹어도 엿은 엿이죠." }
-      - say: { char: 봉구, with: [만석], text: "아, 그리고 주인어른. 대문 밖에 덕이 어멈이 화도진 사람들 열댓하고 와 있습니다." }
-      - say: { char: 봉구, with: [만석], text: "쌀을 외상으로 달랍니다. 가을에 갚는다고요." }
-      - say: { char: 봉구, with: [만석], text: "저자 쌀집은 죄다 문을 걸었답니다." }
-      - say: { char: 끝순, with: [만석], text: "덕이도 왔어요? 걔 저번에 저한테 조개 한 줌 줬는데." }
-      - say: { char: 봉구, with: [끝순], text: "업혀 왔더라. 여덟 살이 업혀 오면 그건 걸을 힘이 없는 거다." }
+      - mood: off
+      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 왜선이 또 들어왔습니다. 오늘만 넉 척째예요." }
+      - say: { char: 봉구, with: [만석], text: "쌀이 열흘 새 닷 냥에서 아홉 냥이 됐습니다. 저자에선 내일 열두 냥 간답니다." }
+      - say: { char: 만석, with: [봉구], text: "곳간에 몇 섬이냐." }
+      - say: { char: 봉구, with: [만석], motion: sigh, text: "삼백 하고 열두 섬이요. …어젯밤에도 세셨잖습니까. 그저께 밤에도요." }
+      - say: { char: 만석, with: [봉구], text: "그중에 우리 것은." }
+      - say: { char: 봉구, with: [만석], text: "백마흔입니다. 나머지는 맡아 둔 거고, 강경 윤 객주 것이 제일 많습니다." }
+      - say: { channel: thought, with: [], text: "맡은 쌀에 손대면 그날로 끝이다." }
+      - say: { channel: action, with: [], text: "허리춤의 곳간 열쇠를 만져 본다. 잘 때도 풀지 않는다." }
+      - say:
+          channel: action
+          with: []
+          when: { var: t_hold, op: eq, value: true }
+          text: "만지면 손가락이 저절로 오그라든다. 언제부터 그랬는지는 모른다."
       - goto: rice_choice
 
   rice_choice:
@@ -370,6 +377,7 @@ scenes:
       - say: { channel: action, with: [], text: "봉구가 대문 안쪽에 서 있다. 저녁인데 마당에 불이 안 켜져 있다." }
       - say: { char: 만석, with: [봉구], text: "…너는 왜 마당에 나와 섰느냐." }
       - say: { char: 봉구, with: [만석], motion: droop, text: "어제 새벽입니다." }
+      - mood: { tone: grief, level: 2 }
       - wait: 1100
       - say: { channel: action, with: [], text: "엿 봉지가 손에 있다. 사흘을 들고 다녀서 종이가 눅눅하다.", wait: 900, unskippable: true }
       - say: { char: 봉구, with: [만석], text: "약은 사다 먹였습니다." }
@@ -394,6 +402,7 @@ scenes:
       - say: { char: 봉구, with: [만석], motion: droop, text: "아버지 진지 드셨느냐고요. 두 번 다 그것만 물었습니다." }
       - wait: 900
       - say: { channel: action, with: [], text: "엿 봉지를 궤짝에 넣었다. 그 궤짝은 그 뒤로 열지 않았다." }
+      - mood: off
       - set: { l1_end: gone }
       - goto: old_age
 

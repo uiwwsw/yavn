@@ -612,7 +612,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "참의가 붓을 내려놓는다. 대청이 조용해진 것은 오늘 처음이다."
+          text: "참의가 붓을 내려놓는다. 옆에 앉은 서리도 손을 멈춘다."
       - say:
           char: 서연.resolve
           with: [한명재, 도원]
@@ -621,25 +621,6 @@ scenes:
           char: 서연.resolve
           with: [한명재, 도원]
           text: "한 사람은 바느질을, 한 사람은 약을, 한 사람은 글씨를 했습니다."
-      - say:
-          char: 서연
-          with: [한명재]
-          text: "셋이 만난 데가 한 군데도 없습니다."
-      - say:
-          char: 서연
-          with: [한명재, 도원]
-          text: "장도, 집도, 관아도 다릅니다."
-      - say:
-          char: 서연
-          with: [한명재]
-          text: "그런데 셋이 같은 것을 하나씩 손에 쥐었습니다."
-      - say:
-          char: 한명재.cold
-          with: [서연]
-          text: "…뭐요."
-      - say:
-          channel: record
-          text: "분이는 주머니를 꿰맸다. 박씨는 약재를 팔았다. 윤길은 시장을 베꼈다."
       - say:
           char: 서연
           with: [한명재]
@@ -653,17 +634,9 @@ scenes:
           with: [한명재]
           text: "시장을 베낀 사람은 그 둘이 어떻게 죽었는지를 글자로 봤습니다."
       - say:
-          char: 서연.resolve
-          with: [한명재]
-          text: "셋은 한 사람을 알았습니다. 서로는 몰랐고요."
-      - say:
-          char: 서연.resolve
-          with: [한명재, 도원]
-          text: "그래서 한 사람씩 지워졌습니다."
-      - say:
           char: 한명재
           with: [서연]
-          text: "말이 좋군요. 이름을 대십시오. 말로는 아무도 벌하지 못합니다."
+          text: "세 사람이 같은 이를 알았다 하셨지요. 성함을 말씀해 주시겠습니까."
       - choice:
           key: t_final
           prompt: "세 사람이 모두 알아 버린 한 사람은?"
@@ -716,7 +689,7 @@ scenes:
           text: "…그 약을 산 사람들은 다 나았다고 했습니다. 믿는 것도 약이지요."
       - say:
           char: 서연.shock
-          text: "나은 사람만 다시 사러 오니까요. 못 나은 아이는 다시 오지 않아요."
+          text: "다시 약을 사러 온 사람들 말씀입니까? 제가 본 아이들은 못 왔습니다."
       - branch:
           cases:
             - when: { var: truth, op: lte, value: 3 }
@@ -803,6 +776,7 @@ scenes:
           char: 서연.resolve
           with: [한명재]
           text: "다음에 또 삼백이 나올 때, 그 사람이 처음이 아니라는 걸 증좌로 쓰겠습니다."
+      - mood: { tone: warm, level: 1 }
       - say:
           channel: record
           text: "신주무원록 서. 억울함이 없게 하라. 원(冤)이 없게 하라."
@@ -823,6 +797,7 @@ scenes:
 
   epilogue_full:
     actions:
+      - mood: off
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
@@ -854,6 +829,7 @@ scenes:
 
   epilogue_late:
     actions:
+      - mood: off
       - say:
           channel: thought
           when: { var: makssoe_alive, op: eq, value: false }

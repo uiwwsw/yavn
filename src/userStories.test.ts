@@ -77,6 +77,22 @@ describe.each(games)('$id structure', ({ id, chapters, endings }) => {
   });
 });
 
+it('keeps the android’s manual and promise quotations intact', () => {
+  const robotLines = [2, 3, 4].flatMap((chapter) =>
+    collectKey(load(read('8bit-heart', `${chapter}.yaml`)), 'say')
+      .map(asRecord)
+      .filter(({ char }) => typeof char === 'string' && char.split('.')[0] === '로봇')
+      .map(({ text }) => String(text)));
+  expect(robotLines.filter((line) => (line.match(/'/g)?.length ?? 0) % 2)).toEqual([]);
+  expect(robotLines).toEqual(expect.arrayContaining([
+    "'처음 켜면 이름을 입력하세요.'",
+    "'2P는 컨트롤러를 따로 구입하세요.'",
+    "'추운 곳에서는 건전지가 빨리 닳습니다.'",
+    "'전원을 끄기 전에 반드시 저장하세요.'",
+    "'끝까지 2P.'",
+  ]));
+});
+
 type Route = Record<string, string | string[]>;
 
 async function play(route: Route, name = '') {

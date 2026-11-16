@@ -230,7 +230,7 @@ scenes:
           with: [로봇]
           continueLabel: "스위치 ON"
           text: "켜지면 기적. 안 켜지면 냉장고. 간다."
-      - effect: { name: flash, wait: true }
+      - effect: heal
       - say:
           channel: system
           with: []
@@ -239,7 +239,7 @@ scenes:
           char: 윤재.excited
           motion: gasp
           with: [로봇]
-          text: "글자 떴어! 가슴에! 글자 떴다고!"
+          text: "떴다. 가슴에 글자 떴어!"
       - say:
           channel: system
           with: []
@@ -265,26 +265,13 @@ scenes:
           motion: headtilt
           with: [윤재]
           text: "…8KB?"
-      - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "이게 다임?"
+      - say: { char: 로봇.thinking, with: [윤재], text: "이게 다임?" }
       - say:
           char: 로봇.thinking
           motion: headtilt
           with: [윤재]
           text: "다시 셈."
-      - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "8."
-      - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "…응."
+      - say: { char: 로봇.thinking, with: [윤재], text: "8." }
       - say:
           char: 로봇.thinking
           motion: headtilt
@@ -312,7 +299,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그래, 안녕. …안녕이라고 했어 얘가. 안녕이라고 했어."
+          text: "어. 안녕."
       - say:
           char: 윤재
           with: [로봇]
@@ -546,11 +533,12 @@ scenes:
           motion: bow
           with: [윤재]
           text: "설명서 2쪽."
+      - say: { char: 로봇, with: [윤재], text: "'처음 켜면 이름을 입력하세요.'" }
       - say:
           char: 로봇
           motion: bow
           with: [윤재]
-          text: "' 그러니까 네가 입력해."
+          text: "그러니까 네가 입력해."
       - say:
           char: 로봇
           motion: bow
@@ -895,10 +883,11 @@ scenes:
           char: 로봇.happy
           with: [윤재]
           text: "설명서 7쪽에 농담 하나 있음."
+      - say: { char: 로봇, with: [윤재], text: "'본 제품은 꿈을 이뤄 주지 않습니다.'" }
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "' 그거 보고 배움."
+          text: "그거 보고 배움."
       - say:
           char: 윤재
           with: [로봇]
@@ -931,7 +920,7 @@ scenes:
           char: 로봇.happy
           motion: hop
           with: [윤재]
-          text: "'"
+          text: "'2P는 컨트롤러를 따로 구입하세요.'"
       - say:
           char: 로봇
           with: [윤재]
@@ -1005,7 +994,7 @@ scenes:
           char: 윤재
           motion: laugh
           with: [로봇]
-          text: "…그렇게 저장하면 안 되는데 틀린 말은 아니네."
+          text: "야, 내가 가르쳤다곤 하지 마."
       - wait: 270
       - say:
           char: 로봇.happy
@@ -1086,10 +1075,11 @@ scenes:
           char: 로봇.thinking
           with: [윤재]
           text: "설명서 9쪽."
+      - say: { char: 로봇, with: [윤재], text: "'떨림이나 이상한 소리가 나면 즉시 사용을 멈추세요.'" }
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "' 그러니까 위험임."
+          text: "그러니까 위험임."
       - say:
           channel: system
           with: []

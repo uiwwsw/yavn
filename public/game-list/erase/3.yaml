@@ -544,7 +544,7 @@ scenes:
       - say:
           char: 아진
           with: [하린]
-          text: "네 목소리 아니야. 남 목소리야."
+          text: "너 아까도 웃는데 입만 웃었어."
       - say:
           char: 하린.blank
           with: [아진]
@@ -834,6 +834,7 @@ scenes:
           channel: action
           with: [지수, 도윤]
           text: "지수는 반지를 손가락 마디까지 뺐다가 다시 끼운다."
+      - mood: { tone: grief, level: 1 }
       - say:
           char: 지수.cold
           with: [도윤]
@@ -889,7 +890,7 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "아직 정리가 안 돼서 그래. 미워하는 것도 순서가 있어."
+          text: "그쪽에 내 번호밖에 없어. 너한텐 전화 안 올 거야."
       - say:
           char: 도윤
           with: [지수]
@@ -922,6 +923,7 @@ scenes:
           char: 도윤
           with: [지수]
           text: "내가 나갈게."
+      - mood: off
       - say:
           char: 지수
           with: [도윤]

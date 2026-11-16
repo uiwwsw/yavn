@@ -281,13 +281,9 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "사용자 확인 중"
-          autoAdvance: 1600
-      - say:
-          channel: system
-          with: []
           text: "다시 오신 걸 환영합니다, 정해수 님."
       - char: { id: 해수, position: center }
+      - mood: { tone: dread, level: 1 }
       - say:
           char: 해수
           motion: headtilt
@@ -380,6 +376,7 @@ scenes:
 
   tutorial_two:
     actions:
+      - mood: off
       - say:
           channel: system
           with: []
@@ -821,7 +818,7 @@ scenes:
           char: 경준
           motion: bounce
           with: [해수]
-          text: "형, 저 아저씨 오늘 왜 저래요? 박카스 주고, 귀는 계속 누르고, 저한테 수고하라고 했어요. 존댓말로 대답할 뻔했잖아요."
+          text: "형, 저 아저씨가 저한테도 수고하래요. 저도 모르게 존댓말 할 뻔했어요."
       - say:
           char: 해수
           with: [경준]
@@ -918,6 +915,7 @@ scenes:
           text: "해수는 밴드를 책상에 엎어 놓고 불을 끈 채 눕는다."
       - place: "새벽 1:50"
       - bg: { id: sim_parking, transition: cut }
+      - mood: { tone: dread, level: 2 }
       - say:
           channel: system
           with: []
@@ -942,6 +940,7 @@ scenes:
           channel: system
           with: []
           text: "튜토리얼 3/5 완료. 잘하셨습니다."
+      - mood: off
       - say:
           channel: system
           with: []

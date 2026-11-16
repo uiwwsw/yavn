@@ -954,23 +954,15 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "그 날짜가 제일 중요합니다."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "거기서부터 열두 해가 한 줄로 돼 있었어요."
+          text: "일한 건 열두 해인데 화면엔 다섯 줄이었어요."
       - say:
           char: 은숙.sharp
           with: [해수]
-          text: "한 줄로 돼 있었다는 게 무슨 말이에요."
+          text: "화면이요? 접수 화면 말씀인가요?"
       - say:
           char: 해수
           with: [은숙]
-          text: "다섯 줄이요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "열두 해가 다섯 줄이었습니다."
+          text: "레플라요. 거기 번호가 다섯까지 있어요."
       - say:
           char: 해수
           with: [은숙]
@@ -988,6 +980,7 @@ scenes:
           with: [은숙]
           text: "그래서 왔어요."
       - move: { id: 은숙, toward: 해수, style: approach }
+      - mood: { tone: warm, level: 1 }
       - say:
           char: 은숙
           with: [해수]
@@ -999,6 +992,7 @@ scenes:
           text: "네. 감사합니다."
       - move: { id: 은숙, style: reset }
       - bg: { id: cs_desk, transition: fade, duration: 1200 }
+      - mood: off
       - say:
           channel: record
           with: []

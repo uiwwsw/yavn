@@ -564,7 +564,7 @@ scenes:
           channel: action
           with: []
           text: "막쇠 쪽으로 뛴다. 복면은 비켜서지 않는다. 왼손이 낮게 들어온다."
-      - effect: { name: impact, wait: true }
+      - effect: { name: damage, wait: true }
       - say:
           channel: narration
           text: "얼음 바닥에 등불이 굴렀다. 불빛이 꺼지기 전에 본 것은 자기 저고리에 번지는 검은 얼룩이었다."
@@ -582,7 +582,7 @@ scenes:
 
   c4_push_ice:
     actions:
-      - effect: { name: shake, wait: true }
+      - effect: rumble
       - say:
           channel: action
           with: []
@@ -622,7 +622,7 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "다리만 안 다쳤어도… 하, 궤짝 건진 값이네. 아가씨 잘못 아니유."
+          text: "다리가 말을 안 듣더라고. 궤짝은 건졌지유? 아가씨 잘못 아니유."
       - set: { makssoe_alive: false }
       - goto: c4_farewell
 
@@ -630,6 +630,7 @@ scenes:
     actions:
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
+      - mood: { tone: grief, level: 2 }
       - say:
           char: 막쇠.hurt
           with: [서연]
@@ -707,6 +708,7 @@ scenes:
       - music: inquest
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
+      - mood: off
       - say:
           char: 도원.stern
           with: [서연]
