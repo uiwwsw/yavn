@@ -62,3 +62,14 @@
     max-height: var(--dialog-safe-max-height);
   }
 }
+
+/* Give a lone choice or continue button room to fit with its prompt. The
+   stage height still caps the panel so unusually long text can scroll. */
+.dialog-box:where(:not(.channel-card, .channel-message)):has(
+  > .dialog-content-scroll > .dialog-action-button,
+  > .dialog-content-scroll > .choice-gate > .choice-gate-options[data-choice-count='1']
+) {
+  height: auto;
+  min-height: min(var(--yavn-prompt-height, 170px), var(--dialog-safe-max-height));
+  contain: layout;
+}
