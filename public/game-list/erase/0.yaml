@@ -30,10 +30,6 @@ scenes:
       - say:
           char: 의사
           with: []
-          text: "숫자 세실 필요 없어요. 그냥 계시면 돼요."
-      - say:
-          char: 의사
-          with: []
           text: "눈 뜨면… 새로 시작해요."
       - say:
           channel: card
@@ -86,10 +82,6 @@ scenes:
           char: 도윤
           with: [지수]
           text: "이게 편한데."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "편한 거랑 사진 잘 나오는 건 다른 거야."
       - move: { id: 지수, toward: 도윤, style: approach }
       - say:
           char: 지수
@@ -99,16 +91,6 @@ scenes:
           char: 도윤
           with: [지수]
           text: "앉아만 있었는데."
-      - say:
-          char: 지수.warm
-          motion: laugh
-          with: [도윤]
-          text: "앉아만 있었겠지. 의자에 녹았겠지."
-      - say:
-          char: 도윤.smile
-          motion: laugh
-          with: [지수]
-          text: "녹았대."
       - say:
           char: 도윤
           with: [지수]
@@ -123,10 +105,6 @@ scenes:
           with: [지수]
           text: "한 끼 굶는다고 안 달라져."
       - say:
-          char: 지수
-          with: [도윤]
-          text: "달라져. 숫자로 달라져. 너는 숫자를 안 보니까 그런 소리 하지."
-      - say:
           char: 도윤
           with: [지수]
           text: "네 가방 앞주머니 봐 봐."
@@ -137,7 +115,8 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "안 똑같아. 이건 단맛이 나잖아."
+          text: "이건 달잖아."
+      - mood: { tone: warm, level: 1 }
       - say:
           char: 지수.warm
           with: [도윤]
@@ -150,7 +129,8 @@ scenes:
           char: 지수
           motion: puff
           with: [도윤]
-          text: "안 버려. 먹을 거야. 맛없는데 먹을 거야."
+          text: "너도 하나 먹어. 단 거 싫다니까."
+      - mood: off
       - say:
           char: 도윤
           with: [지수]
@@ -200,10 +180,6 @@ scenes:
           with: [도윤]
           text: "자, 이제 일 얘기. 식대가 일 인당 68,000원이고, 보증 인원이 200명이래."
       - say:
-          char: 지수
-          with: [도윤]
-          text: "200명 못 채우면 남는 자리 값은 그냥 내는 거고."
-      - say:
           char: 도윤.smile
           motion: perk
           with: [지수]
@@ -218,10 +194,6 @@ scenes:
           with: [지수]
           text: "…그날은 비 왔잖아."
       - say:
-          char: 지수
-          with: [도윤]
-          text: "나왔다. 비."
-      - say:
           char: 지수.warm
           motion: laugh
           with: [도윤]
@@ -235,10 +207,6 @@ scenes:
           char: 지수.warm
           with: [도윤]
           text: "아니 그렇게 말고. 이리 와 봐. 넥타이도 돌아갔어."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "가만있어 봐. 한 번만 더. …아니 한 번만 더."
       - say:
           char: 지수
           with: [도윤]
@@ -323,15 +291,7 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "고맙다는 말은 설거지로 해. 이번 주 네 차례야."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "내 차례 아닌데. 지난주에 내가 했잖아."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "지난주에 내가 바꿔 줬지. 네가 늦는다고."
+          text: "저녁에 네가 설거지해. 그걸로 됐어."
       - say:
           char: 도윤
           motion: droop
@@ -340,62 +300,12 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "거봐. 또 까먹었어."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "그리고 빨래. 넣는 것까지만 하지 말고 걷기도 좀 해."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "건조기 돌려놨잖아."
-      - say:
-          char: 지수
-          motion: puff
-          with: [도윤]
-          text: "돌려놓고 이틀을 뒀잖아. 그럼 다시 돌려야 돼."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "냄새 안 나던데."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "나한텐 났어."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "너도 내 양말 짝 안 맞춰 놓잖아."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "네 양말이 다 비슷하게 생겼잖아."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "다르거든. 세 종류야."
-      - say:
-          char: 지수
-          motion: headtilt
-          with: [도윤]
-          text: "…세 종류야?"
-      - say:
-          char: 도윤.smile
-          with: [지수]
-          text: "응. 네가 모르는 거야."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "……알았어. 이제 볼게."
+          text: "빨래 좀 걷어. 이틀째 건조기에 있어."
       - say:
           char: 도윤
           motion: nod
           with: [지수]
           text: "…오늘 가서 걷을게."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "그 말도 세 번째야."
       - say:
           char: 지수
           with: [도윤]

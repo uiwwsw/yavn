@@ -667,11 +667,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: true }
-          text: "지웠는데 셋이 읽었다. 지운 뒤에 소문은 더 잘 돈다. 출처가 없어지니까."
-      - say:
-          channel: thought
-          when: { var: e2_leaked, op: eq, value: true }
-          text: "열여덟은 그걸 당한 쪽이었고, 나는 한 쪽이다. 같은 손으로 지웠다."
+          text: "지우고 나니까 셋 중에 누가 읽었는지도 못 본다."
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: false }
@@ -1028,6 +1024,7 @@ scenes:
           channel: action
           with: []
           text: "도윤은 입력 칸을 한참 보다가 비워 둔 채로 보낸다."
+      - effect: heal
       - say:
           channel: system
           with: []

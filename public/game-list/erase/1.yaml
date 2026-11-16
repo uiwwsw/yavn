@@ -72,6 +72,7 @@ scenes:
           motion: bow
           with: [도윤]
           text: "내선표 보고 하나씩 걸어 보는 중이었어요. 박준성입니다. 오늘부터 이 팀 맡게 됐어요."
+      - mood: { tone: dread, level: 1 }
       - say:
           char: 도윤.panic
           with: [준성]
@@ -103,6 +104,7 @@ scenes:
           with: [준성]
           text: "…하하. 그러게요."
       - move: { id: 준성, style: reset }
+      - mood: off
       - say:
           char: 준성
           motion: headtilt
@@ -229,7 +231,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "근데 그것도 안 물어볼게요. 사람마다 나가는 방식이 있는 거니까."
+          text: "신발은 다음엔 그냥 신어요. 옆집 비어 있어서 안 들려요."
       - say:
           char: 준성.tired
           motion: nod
