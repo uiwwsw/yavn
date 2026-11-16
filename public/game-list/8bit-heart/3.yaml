@@ -489,7 +489,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "나눠야 반이 생기니까."
+          text: "자. 떨어진다."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - choice:
           key: b3_snack
@@ -712,7 +712,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "안 센다고 하면서 기록은 한다."
+          text: "가슴 화면에 ‘맞다’가 떴다가 금방 꺼진다."
       - goto: b3_drone
 
   b3_drone:
@@ -722,7 +722,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "WORLD 1-2 · 돌아가는 골목\n보스 아님. 근데 보스처럼 생김."
+          text: "WORLD 1-2 · 돌아가는 골목\n상공에 드론 1기"
       - char: { id: 드론, position: center }
       - move: { id: 로봇, style: reset }
       - effect: { name: alarm, wait: true }
@@ -772,7 +772,7 @@ scenes:
       - move: { id: 로봇, toward: 드론, style: flinch }
       - choice:
           key: b3_drone
-          prompt: "SCAN 2회차 시작! 결론 기다릴 시간 없음!"
+          prompt: "드론이 골목 쪽으로 다시 돌아선다."
           char: 드론
           motion: lean_in
           timeoutMs: 8000
@@ -1077,7 +1077,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "그날 이후 처음 웃었다. 1패."
+          text: "그날 이후 처음 웃었다. 셔터 밖으로 윙 소리가 지나가자 입을 다물었다."
       - move: { id: 로봇, style: reset }
       - move: { id: 윤재, style: reset }
       - say:
@@ -1096,7 +1096,7 @@ scenes:
           char: 윤재
           motion: startle
           with: [로봇]
-          text: "뭐? 야. 야, 무슨 소리야 갑자기."
+          text: "방금 겨우 같이 돌아왔잖아. …뭐 하러 또 나가."
       - wait: 270
       - say:
           char: 로봇
@@ -1162,7 +1162,7 @@ scenes:
           text: "중요한 거 정할 때 하는 거 같아서."
       - choice:
           key: b3_promise
-          prompt: "\"새끼손가락 대기 중. 위이잉 소리는 모터임. 떨림 아님.\""
+          prompt: "로봇이 새끼손가락을 내민다. 작은 모터 소리가 난다."
           char: 로봇
           motion: tremble
           options:

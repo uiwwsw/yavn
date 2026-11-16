@@ -73,7 +73,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "문을 열자 더운 바람이 나온다. 전기가 끊긴 건물에서 나올 수 있는 바람이 아니다."
+          text: "문틈으로 더운 바람이 발목에 닿는다. 로비는 입김이 날 만큼 추웠다."
       - goto: room_look
 
   room_look:
@@ -109,7 +109,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "본체 전원선이 벽 콘센트에 꽂혀 있다. 멀티탭도 아니고 비상 전원도 아니다. 벽이다."
+          text: "전원선 끝이 벽 콘센트에 꽂혀 있다. 불이 들어온 다른 기기는 없다."
       - say:
           channel: record
           with: []
@@ -133,7 +133,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "고객센터에서 제일 많이 하는 말이 이거다. 이러면 안 되는 거예요, 고객님. 그런데 되고 있으면 되는 거다."
+          text: "포스기가 죽으면 저런 소리부터 멎는다. 여기선 팬이 더 빨리 돈다."
       - set: { seen_plug: true }
       - goto: room_look
 
@@ -303,7 +303,7 @@ scenes:
       - say:
           channel: thought
           when: { var: hesitated, op: eq, value: true }
-          text: "사십일 초. 내려놓고 세 걸음 물러났다가 다시 갔다. 그 사십일 초를 초 단위로 세어 놨다."
+          text: "사십일 초. 숫자를 읽자 손바닥에 다시 그 연필이 닿는 것 같다."
       - say:
           channel: thought
           when: { var: hesitated, op: eq, value: false }
@@ -412,7 +412,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "말하고 나서 주위를 둘러본다. 대답할 사람이 없는데 둘러본다."
+          text: "‘제가’라는 말이 서버 랙 사이에서 한 번 더 울린다."
       - say:
           channel: system
           with: []
@@ -430,11 +430,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "열두 해 동안 한 것이 전부 저 다섯 줄 안에 들어간다. 고시원 방값도, 근무표도, 상혁이 방문도 거기 없다."
+          text: "2019년부터 스크롤을 내렸는데 내 이름이 붙은 줄은 다섯 개다."
       - say:
           channel: thought
           with: []
-          text: "거기 없는 건 안 한 걸로 돼 있나. 아니면 셀 필요가 없는 걸로 돼 있나."
+          text: "027번을 처음 부르던 날은 검색해도 나오지 않는다."
       - say:
           channel: thought
           when: { var: knocked, op: eq, value: true }
@@ -450,7 +450,7 @@ scenes:
       - say:
           channel: thought
           when: { var: sh_care, op: gte, value: 3 }
-          text: "남은 것은 선 하나다. 백십만 개 중에 나만 선이 없는데, 선 없는 쪽으로 사람이 몇 명 붙어 있다."
+          text: "상혁이 문 앞에 물 두 병 둔 건 어디에 적어야 하지."
       - set: { seen_log: true }
       - goto: room_look
 
@@ -460,7 +460,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "접이식 의자가 하나뿐이다. 앉으면 모니터 높이가 정확히 눈높이에 온다. 누군가 이 키에 맞춰 놓았다."
+          text: "접이식 의자를 펴고 앉는다. 모니터 받침을 고칠 필요가 없다."
       - say:
           channel: system
           with: []
@@ -484,7 +484,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "USER 0003은 이 분 만에 넘겼다. 나는 넘기기가 있던 네 개를 열두 해에 걸쳐 눌렀다."
+          text: "0003 옆에는 ‘튜토리얼 넘기기’라고 써 있었다."
       - say:
           channel: message
           side: them
@@ -514,7 +514,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "서버가 없는데 백십만 명이 들어와 있다. 그럼 어디에 들어와 있는 건가."
+          text: "창 오른쪽 아래 숫자가 매장 TV 광고에 나오던 것과 같다."
       - say:
           char: 해수
           with: []
@@ -524,7 +524,7 @@ scenes:
           channel: action
           with: []
           sound: fan_wake
-          text: "팬 소리가 한 번 커진다. 해수는 그 소리가 자기 숨에 맞춰 커졌다는 걸 알아차린다."
+          text: "해수가 숨을 삼키자 팬 소리가 잠깐 낮아진다."
       - say:
           channel: thought
           when: { var: seen_card, op: eq, value: true }
@@ -532,7 +532,7 @@ scenes:
       - say:
           channel: thought
           when: { var: seen_card, op: eq, value: true }
-          text: "그때는 불량 카드인가 했다. 사진 칸이 비어 있는 게 아니라 넣을 사진이 없는 것이었다."
+          text: "사진이 들어갈 자리에 형광등만 반사되고 있었다."
       - say:
           channel: system
           when: { var: honest, op: gte, value: 3 }
@@ -545,10 +545,10 @@ scenes:
       - say:
           channel: thought
           when: { var: honest, op: lt, value: 3 }
-          text: "창이 두 개다. 전원선과 전원 버튼. 그 사이에 아무것도 없다."
+          text: "해수는 전원선을 따라가 벽 콘센트를 본다. 모니터 아래에는 작은 전원 버튼이 있다."
       - choice:
           key: t4_end
-          prompt: "전원을 뽑으면 레플라 전체가 끊긴다. 두고 나가면 모든 게 그대로 간다. 모니터 오른쪽 위에 넘기기 버튼이 없다."
+          prompt: "전원선을 뽑으면 레플라 접속이 끊긴다. 모니터만 끄면 연결은 유지된다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -806,7 +806,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "안내자. 내가 뭘 안내하는지는 안 적혀 있다."
+          text: "목에 안내자 명찰이 걸려 있다. 이름 칸은 비어 있다."
       - say:
           channel: system
           with: []

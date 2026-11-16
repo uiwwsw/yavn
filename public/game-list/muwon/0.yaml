@@ -15,7 +15,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "우물가에 젖은 거적이 놓여 있다. 막쇠가 등불을 들어 준다."
+          text: "한성부에서 밤중에 의녀를 불렀다. 우물에서 여인을 건졌다고 했다. 따라와 보니 등잔 아래 거적 하나가 놓여 있다."
           continueLabel: "거적을 걷는다"
       - effect: focus
       - sticker: { id: first_thread, image: thread_sticker, x: 50, y: 34, width: "clamp(160px, 22%, 280px)", enter: fadeIn }
@@ -23,11 +23,11 @@ scenes:
           channel: action
           with: []
           sound: well_rope
-          text: "거적 끝이 손끝에 걸려 들린다. 손톱 아래 짙은 남빛 실 한 올이 박혀 있다."
+          text: "거적을 들추자 젖은 손이 드러난다. 손톱 밑에 남빛 실 한 올이 끼어 있다."
       - clearSticker: { id: first_thread, leave: fadeOut }
 
   name_entry:
-    title: "초검 기록"
+    title: "우물가의 신고서"
     actions:
       - bg: { id: well_night, transition: cut }
       - say:
@@ -35,73 +35,63 @@ scenes:
           with: []
           camera: wide
           sound: paper
-          text: "신고에는 익사라고 적혀 있다. 본 것을 따로 적을 종이를 편다."
+          text: "정조 십육년 구월 스무하루. 한성 남부 훈도방. 분이, 열아홉. 익사로 신고됨."
       - char: { id: 서연, position: left }
-      - input:
-          prompt: "초검 기록에 적을 의녀의 이름은?"
-          with: [서연]
-          saveAs: player_name
-          defaultValue: "서연"
-          maxLength: 6
       - say:
           channel: thought
           with: [서연]
-          text: "살핀 이, 혜민서 의녀 {{player_name}}."
+          text: "혜민서 의녀가 된 지 한 달이다. 밤중에 불려 나온 건 오늘이 처음이다."
       - say:
-          channel: thought
+          channel: action
           with: [서연]
-          text: "실이 어디서 묻었는지는 아직 비워 둔다."
+          text: "신고서 옆에 초검 기록을 펼친다. 죽은 까닭을 적는 칸에 붓을 대려다 멈춘다."
+      - wait: 250
   night_call:
     title: "혼례 전날 밤"
     actions:
       - bg: { id: well_night, transition: fade, duration: 900 }
       - music: night_well
-      - say:
-          channel: record
-          text: "정조 십육년 구월 스무하루. 한성 남부 훈도방 우물. 여인 하나 익사로 신고됨."
+      - place: "한성 남부 훈도방 · 혼례 전날 밤"
       - say:
           channel: action
           with: []
           camera: wide
-          text: "등불이 우물 돌 위에서 흔들리고, 거적 아래로 젖은 치맛자락이 삐져나와 있다."
-      - say:
-          channel: thought
-          with: []
-          text: "명부에 이름을 올린 지 한 달. 한밤중에 불려 나온 건 처음이다."
+          text: "담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 대답하는 소리는 들리지 않는다."
+      - wait: 250
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠
           with: [서연]
-          text: "거적은 그만큼만 걷어 둬요. 바람 불면 등잔부터 꺼져."
+          text: "거적은 잠깐 덮어 둬요. 판관 나리 오시면 다시 걷을 거요."
       - say:
           char: 막쇠
           with: [서연]
-          text: "오작인 막쇠요. …혜민서에서 왔다는 그 의녀유?"
+          text: "오작인 막쇠요. 의녀 오시면 같이 살피랬수."
       - say:
           char: 서연
           with: [막쇠]
-          text: "네. 의녀 {{player_name|이라}} 합니다."
+          text: "혜민서 의녀 {{player_name|이라}} 합니다."
       - say:
           char: 막쇠
           with: [서연]
           text: "몇이오. 열일곱쯤 됐나."
       - say:
-          char: 막쇠
-          with: [서연]
-          text: "토하지 말고."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "손은 내가 시키는 데만 대요."
-      - say:
           char: 서연
           with: [막쇠]
           text: "열여덟입니다."
       - say:
+          char: 막쇠
+          with: [서연]
+          text: "속이 안 좋으면 담 밖으로 나가요. 우물 안엔 말고."
+      - say:
           char: 서연
           with: [막쇠]
-          text: "토는 안 할 거예요. 그리고 이건 읽고 왔습니다."
+          text: "괜찮습니다. 등잔은 여기 두셔도 돼요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "우물에 빠진 사람을 어떻게 살피는지는 읽어 뒀어요."
       - say: { char: 막쇠, with: [서연], text: "뭘 읽어 왔수?" }
       - say:
           channel: action
@@ -127,21 +117,21 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연]
-          text: "오늘 밤 안에 초검을 마치고 시장을 올리겠소."
+          text: "날이 밝기 전에 검안 기록, 시장을 올려야 하오."
       - say:
           char: 도원.stern
           with: [서연]
-          text: "의녀는 여자 몸만 확인해 주시오."
+          text: "의녀는 몸만 확인해 주시오. 죽은 까닭은 내가 적겠소."
       - say: { char: 서연, with: [도원], text: "…네." }
       - say:
           char: 서연
           with: [도원, 막쇠]
-          text: "나리. 머리부터 발끝까지 보겠습니다. 적는 건 그 뒤에요."
+          text: "나리, 손톱 밑에 남빛 실이 있습니다. 다른 데도 마저 살핀 뒤 말씀드리겠습니다."
       - say:
           channel: action
           with: []
           continueLabel: "시형도를 펼친다"
-          text: "막쇠가 등불을 낮춘다. 종이 위에 몸 앞면을 그려 둔 자리가 있다."
+          text: "막쇠가 등잔을 낮춘다. 몸의 본을 그려 둔 종이를 꺼낸다."
 
   chart_intro:
     title: "시형도"
@@ -152,7 +142,7 @@ scenes:
       - char: { id: 막쇠, position: right }
       - say:
           channel: record
-          text: "시장 첫 장. 몸 앞면을 그린 시형도에 본 것을 하나씩 적는다."
+          text: "시형도. 몸 그림에 살핀 자리와 거기서 본 것을 적는다."
       - say:
           char: 막쇠
           with: [서연]
@@ -250,7 +240,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "목을 살핀다. 희고, 물에 불은 살결 말고는 아무 자국도 없다."
+          text: "목을 돌려 등잔 가까이 댄다. 물에 불은 살에 겉으로 드러난 자국은 없다."
       - say:
           channel: thought
           with: []
@@ -412,7 +402,7 @@ scenes:
           text: "이튿날 아침, 오라비는 곤장 열두 대 끝에 누이를 죽였다고 말했다."
       - say:
           channel: narration
-          text: "그 손등에는 끝까지 긁힌 자국이 없었다. 그걸 물어본 사람도 없었다."
+          text: "손등에 긁힌 자국이 있는지 공초에는 한 줄도 없었다."
       - say:
           channel: record
           text: "포도청 공초. 훈도방 김가, 누이 분이를 목 졸라 우물에 던졌다고 자복함."
@@ -499,7 +489,7 @@ scenes:
       - say:
           char: 도원
           with: [서연, 막쇠]
-          text: "분이가 그 가게 침모였다지. 주인이 자기 침모의 손톱 밑에 있었다?"
+          text: "비단전 침모라 했지요. 그 집에서 이 실을 쓰는 사람부터 만나 보시오."
       - say:
           channel: thought
           with: []

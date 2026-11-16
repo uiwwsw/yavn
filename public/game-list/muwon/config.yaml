@@ -31,7 +31,7 @@ startScreen:
   startButtonText: "검안 시작"
   buttonPosition: bottom-left
   eyebrow: "1792 한성 · 검시 추리극 · 5장 · 결말 4종"
-  subtitle: "죽은 자는 말이 없다. 대신 몸이 남긴 것을 읽는다. 혜민서 의녀가 시신 그림표를 직접 살피고 옛 검시법으로 실험해, 고문으로 받아 낸 자백을 증거로 뒤집는다."
+  subtitle: "혼례를 앞둔 분이가 우물에서 건져졌다. 신고서에는 벌써 익사라고 적혀 있다."
   scene:
     layout: split
     motion: drift

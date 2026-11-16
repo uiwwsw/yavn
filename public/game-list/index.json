@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-16T07:13:55.831Z",
+  "generatedAt": "2026-11-16T12:23:59.230Z",
   "games": [
     {
       "id": "360",
@@ -8,7 +8,7 @@
       "path": "/game-list/360/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고, 그중 하나만 쥐고 나아간다. 다음 사람은 까닭도 모른 채 그 하나대로 산다. 1809년 굶주린 겨울부터 2026년 편집실까지, 다섯 삶을 잇는 5장. 결말 4종.",
+      "summary": "죽고 나니 평생 잊고 살던 일까지 돌아온다. 그중 하나를 쥐고 가면 다음 생에는 기억 대신 버릇이 남는다. 1809년 겨울에서 2026년의 편집실까지 이어지는 다섯 번의 삶. 5장, 결말 4종.",
       "summaryEn": "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives, from a starving winter in 1809 to an editing room in 2026. A Korean-language story in five chapters with four endings.",
       "thumbnail": "/game-list/360/assets/bg/title.svg",
       "tags": [
@@ -73,7 +73,7 @@
       "path": "/game-list/8bit-heart/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "AI 재난으로 모든 칩이 미쳐 버린 날, 멀쩡한 건 싸구려 레트로 게임기 하나. 소년은 그 CPU로 고장 난 안드로이드를 깨운다. 느리고 엉뚱한, 세상에서 가장 저사양인 친구와의 생존기. 5장, 결말 3종.",
+      "summary": "도시의 기계들이 한날한시에 오작동을 일으킨다. 윤재 손에 남은 건 중고 장터에서 3만 2천 원에 산 게임기. 그 칩으로 깨운 로봇은 엉뚱한 대답을 꼭 한 박자 늦게 한다. 5장, 결말 3종.",
       "summaryEn": "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits — a survival story with three endings.",
       "thumbnail": "/game-list/8bit-heart/assets/bg/title.svg",
       "tags": [
@@ -131,7 +131,7 @@
       "path": "/game-list/muwon/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "1792년 한성, 혜민서 의녀가 한글 검시 지침서로 억울한 죽음을 읽는다. 시신 그림표를 직접 살피고 옛 검시법으로 실험해, 고문으로 받아 낸 자백을 증거로 뒤집는 5장 검시 추리극. 결말 4종.",
+      "summary": "1792년 한성. 혼례를 앞둔 분이가 우물에서 발견된다. 다들 익사라지만 손톱 밑에는 남빛 실이 끼어 있다. 혜민서 의녀가 되어 시신을 살피고, 관아에서 증거를 내놓는 검시 추리극. 5장, 결말 4종.",
       "summaryEn": "Hanseong, 1792. A royal clinic maid reads the dead with a newly translated forensic manual. Examine body charts, run historical forensic tests and overturn a confession beaten out of an innocent man. Five chapters, four endings.",
       "thumbnail": "/game-list/muwon/assets/bg/title.svg",
       "tags": [
@@ -194,7 +194,7 @@
       "path": "/game-list/overflow/",
       "author": "uiwwsw",
       "version": "3.0.0",
-      "summary": "감정을 읽는 AI 렌즈가 일상이 된 2033년 서울. 쓰러진 아버지를 찾아간 문지완은 반응이 너무 낮다는 이유로 병실 문 앞에 멈춘다. 렌즈를 만든 한수경은 건너편에서 그 숫자를 보고 있었다. 5장 SF 미스터리, 결말 4종.",
+      "summary": "쓰러진 아버지가 안에서 아들을 부른다. 지완의 감정을 읽은 렌즈에는 01. 병원은 그 숫자를 보고 문을 열어 주지 않는다. 2033년 서울, 같은 01을 본 사람이 한 명 더 있다. 5장, 결말 4종.",
       "summaryEn": "In 2033 Seoul, AI lenses read emotions. When Jiwan comes to see his father in the hospital, the lens flags him as unresponsive and he is made to wait outside the ward. Across the hall, the engineer who built the lens sees his score. A sci-fi mystery in five chapters with four endings.",
       "thumbnail": "/game-list/overflow/assets/bg/title.svg",
       "tags": [
@@ -267,7 +267,7 @@
       "path": "/game-list/tutorial/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "현실 복제 시뮬레이션 레플라가 모두의 취미가 된 근미래. 마트 고객센터 12년 차 정해수는 체험판 튜토리얼에서 처음으로 화를 내고, 다음 날 같은 장소에서 진짜 사건이 일어난다. 폭언·살인 사건·중독이 나오는 5장 SF 미스터리.",
+      "summary": "손님 앞에서 큰소리 한 번 낸 적 없는 고객센터 직원 정해수. 마트에서 받은 레플라 체험권으로 들어가 보니, 가상 매장에서도 027번 손님이 부른다. 5장 SF 미스터리, 결말 3종.",
       "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
       "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
       "tags": [
@@ -331,7 +331,7 @@
       "path": "/game-list/erase/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "결혼을 앞둔 도윤과 늘 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 성적 긴장·HIV 불안·자기 파괴적 생각이 나오는 5장 심리 드라마.",
+      "summary": "웨딩 사진을 찍은 다음 날 새벽, 도윤은 휴대폰에서 어젯밤 흔적을 하나씩 지운다. 오래전 하린도 자기 이름을 지우기 전에 같은 일을 했다. 기억을 없애는 시술을 둘러싼 5장 심리 드라마. 결말 4종.",
       "summaryEn": "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A five-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",
       "tags": [

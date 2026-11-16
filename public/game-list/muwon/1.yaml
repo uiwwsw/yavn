@@ -175,7 +175,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "'감청 주머니 삼백.' 그 아래 주문한 집 자리에 붉은 표식 하나. 글자가 아니라 그림이다."
+          text: "‘감청 주머니 삼백.’ 주문한 집 이름이 들어갈 자리에 붉은 그림이 찍혀 있다."
       - clearSticker: { id: c2_slip, leave: fadeOut }
       - mood: { tone: dread, level: 1 }
       - say:
@@ -209,7 +209,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "둘 다는 못 끌어낸다. 궤짝은 장부다."
+          text: "막쇠가 영감을 업고 두 걸음도 못 옮겼다. 궤짝에는 장부가 들었을지도 모른다."
       - choice:
           key: c2_rescue
           prompt: "대들보가 내려앉는다. 무엇을 먼저 잡을까?"
@@ -238,15 +238,15 @@ scenes:
           text: "끄윽… 다리. 다리에 걸렸어."
       - say:
           channel: narration
-          text: "이웃들이 대들보를 들어 올렸을 때 막쇠의 왼 다리는 이상한 쪽으로 꺾여 있었다."
+          text: "이웃들이 대들보를 들어 올렸다. 막쇠는 왼발에 힘을 주려다 주저앉았다."
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "궤짝 건졌으면 됐수."
+          text: "아가씨, 그 고리 놓으세요. 다 나왔수."
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "영감은… 어차피 늦었소. 숨을 안 쉬었어."
+          text: "영감은 업을 때부터 숨이 없었소. 아, 내 다리 좀 받쳐 줘요."
       - goto: c2_after_fire
 
   c2_pull_makssoe:
@@ -260,10 +260,10 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "휴. 아가씨 힘 좋네. 근데 궤짝이…"
+          text: "아가씨, 이제 놔도 돼요. 내 허리띠 들고 가겠네."
       - say:
           channel: narration
-          text: "불이 꺼진 뒤 궤짝은 숯덩이였다. 안에서 건진 것은 반쯤 탄 종이 한 장."
+          text: "나는 허리띠에서 손을 뗐다. 불을 끄고 나서 궤짝을 열어 보니 장부 한 장만 반쯤 남았다."
       - goto: c2_after_fire
 
   c2_after_fire:
@@ -356,7 +356,7 @@ scenes:
           text: "두 손이 가지런하다. 화상도, 문을 두드린 멍도 없다."
       - say:
           channel: thought
-          text: "불을 끄려다 죽은 사람의 손이 이렇게 얌전할 리 없다."
+          text: "불을 끄려 했다면, 이 손으로 뭘 붙잡았을까."
       - set: { c2_hands: true }
       - goto: c2_examine
 
@@ -466,7 +466,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "은비녀 하나로 문을 닫았다. 그 문 뒤에 있던 걸 보지도 않고."
+          text: "목의 상처를 적은 종이 위로 비녀를 내려놓았다."
       - gameOver:
           title: "닫힌 검안"
           message: "은비녀로 잡히지 않는 독도 있었다. 『무원록』에는 다른 시험법이 있다."

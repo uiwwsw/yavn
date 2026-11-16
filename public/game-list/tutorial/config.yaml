@@ -33,7 +33,7 @@ startScreen:
   startButtonText: "튜토리얼 시작"
   buttonPosition: bottom-left
   eyebrow: "근미래 · SF 미스터리 · 5장 · 결말 3종"
-  subtitle: "현실을 복제하는 시뮬레이션이 모두의 취미가 된 시대. 고객센터 12년 차가 체험판 튜토리얼에서 처음으로 화를 내고, 다음 날 같은 자리에서 진짜 사건이 일어난다."
+  subtitle: "퇴근하고 체험판을 켰다. 고객센터였다. 낮에 보던 번호표 호출기에 027이 떠 있었다."
   scene:
     layout: split
     motion: drift

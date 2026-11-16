@@ -357,7 +357,7 @@ scenes:
       - say: { char: 윤재, with: [로봇], text: "…그거 왜 거기 있어." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "칩 뽑기 전에 한 판 더 켰음. 세이브 확인한다고. 확인하고 껐음." }
-      - say: { char: 로봇, with: [윤재], text: "껐으면 저장은 안 되는데 저장돼 있음. 확인만 한 게 아니라는 뜻임." }
+      - say: { char: 로봇, with: [윤재], text: "저장 버튼 누른 기록도 있음." }
       - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "그날 '진짜' 세 번 했음. 두 번이 거짓말이면 세 번은 계산 범위 밖임." }
@@ -471,7 +471,7 @@ scenes:
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
-          prompt: "SAVE SLOT 1 — 무엇을 저장하시겠습니까? (배터리로 옮길 수 있는 건 하나. 나머지는 코어 안에서 지워집니다.)"
+          prompt: "SAVE SLOT 1\n기억 하나를 배터리에 옮길 수 있습니다. 나머지는 코어 안에서 지워집니다."
           char: 로봇
           options:
             - text: "새끼손가락 약속"
@@ -605,17 +605,16 @@ scenes:
           char: 윤재
           motion: gasp
           with: []
-          text: "…신호등. 빨강, 노랑, 초록."
+          text: "새벽까지 문 앞에 쪼그려 앉아 있었더니 무릎이 안 펴져. …야, 아직 안 끝났냐."
       - say:
           char: 윤재
           motion: gasp
           with: []
-          text: "순서대로 깜빡여. 리셋됐다."
+          text: "어. 저기 신호등. 빨강이 들어오네. 계속 초록이었는데."
       - say:
-          char: 윤재.scared
-          motion: lean_in
+          channel: action
           with: []
-          text: "문 열린다. …뭐가 나와. 엄청 느리게. 한 박자씩 늦게 걷는 거."
+          text: "문이 열린다. 발을 끄는 소리가 난다. 다음 발소리까지가 길다."
       - char: { id: 로봇, position: right, emotion: thinking }
       - move: { id: 로봇, toward: 윤재, style: approach, wait: true }
       - branch:
@@ -968,7 +967,7 @@ scenes:
       - say:
           char: 윤재.sad
           with: [로봇]
-          text: "…어. 좋은 뜻이야. 오래돼서 믿음직하다는 뜻. 진짜야."
+          text: "…응. 좋은 뜻이야. 너한테 또 가르칠 줄은 몰랐네."
       - ending: new_game
 
   b4_flee:

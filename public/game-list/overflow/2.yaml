@@ -27,16 +27,16 @@ scenes:
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right, emotion: far }
-      - say: { channel: action, with: [], text: "아버지는 양말을 한 짝만 신고 있다. 지완이 이불 아래를 더듬자 아버지가 침대 밑을 가리킨다." }
+      - say: { channel: action, with: [], text: "지완이 문턱에서 멈춘다. 아버지가 먼저 눈을 맞춘다. 양말 없는 발을 내밀어 침대 밑을 가리킨다." }
       - say: { char: 지완, with: [동식], text: "그냥 벗어 놔요. 따뜻한 거 가져올게요." }
       - say: { char: 동식, with: [지완], text: "…국." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: true }, text: "반만 얼리기로 했잖아요. 일요일에 제가 가면 그때 끓여요." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: false }, text: "아침에 전화 못 받았죠. 작은 통은 찾으셨어요?" }
-      - say: { channel: action, with: [], sound: bed_rail, text: "아버지가 입술을 몇 번 달싹이다 만다. 검지로 침대 난간을 세 번 두드린다. 지완은 처음 두 번에 맞춰 세다가 마지막이 늦게 와서 다시 센다." }
+      - say: { channel: action, with: [], sound: bed_rail, text: "아버지가 난간을 두 번 두드린다. 지완이 쳐다본 뒤에 세 번째 소리가 난다." }
       - say: { char: 동식, with: [지완], text: "…겁났냐." }
       - choice:
           key: o2_father
-          prompt: "아버지가 지완의 얼굴을 본다."
+          prompt: "대답하려던 지완의 눈이 침대 옆 물컵에 간다."
           with: [동식]
           options:
             - text: "겁났다고 말한다"
@@ -47,7 +47,7 @@ scenes:
   tell_father:
     actions:
       - set: { told_father: true }
-      - say: { char: 지완.break, with: [동식], text: "네. 아까 저한테 전화한 게 아버지가 아니어서요." }
+      - say: { char: 지완.break, with: [동식], text: "네. 전화 받았는데 반찬집 아주머니였잖아요." }
       - say: { channel: action, with: [], text: "아버지가 손을 뻗는다. 침대 옆 의자를 손끝으로 가리킨다." }
       - say: { char: 동식, with: [지완], text: "앉아." }
       - goto: measure
@@ -75,7 +75,7 @@ scenes:
       - sticker: { id: diagnosis, image: raw_sticker, x: 50, y: 36, width: "clamp(140px, 23%, 270px)", enter: fadeIn }
       - say: { channel: record, with: [], text: "20:14:09 · 판독 카드와 진단 기록 일치\n센서 입력 101 → 표시 01\n카드 판정: 무반응 의심" }
       - clearSticker: { id: diagnosis, leave: fadeOut }
-      - say: { char: 지완, with: [수경], text: "지금 저 숫자로 제가 무서워한 걸 증명할 수 있어요?" }
-      - say: { char: 수경, with: [지완], text: "이건 앞에 1이 사라졌다는 것만 보여줘요. 병원에 겁났다고 쓰고 싶으면 그건 직접 쓰셔야 돼요." }
-      - say: { channel: action, with: [], text: "수경이 파일을 보내고 휴대폰을 뒤집는다. 떨리는 건 기계가 아니라, 그 아래에 깔린 수경의 손이다." }
+      - say: { char: 지완, with: [수경], text: "그럼 이걸로 제가 겁났던 것도 설명돼요?" }
+      - say: { char: 수경, with: [지완], text: "앞자리 하나가 빠졌다는 것까지요. 겁났다는 말은 지완 씨가 쓰셔야 해요." }
+      - say: { channel: action, with: [], text: "수경이 파일을 보낸다. 휴대폰을 주머니에 넣고도 손이 밖에서 한참 떨린다." }
       - goto: /3.yaml

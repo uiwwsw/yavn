@@ -59,7 +59,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "안 괜찮아요. 아프면 아프다고 해요."
+          text: "잠깐 쉴게요. 내가 손 떼면 숨부터 쉬어요."
       - say:
           char: 덕구.scared
           with: [서연]
@@ -71,11 +71,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "스무 대쯤이다. 열다섯 대가 넘으면 사람은 묻는 말에 다 그렇다고 한다고, 언해 셋째 장에 적혀 있다."
+          text: "약 묻은 손을 거두니 덕구가 한참 뒤에야 숨을 내쉰다."
       - say:
           char: 서연
           with: [덕구]
-          text: "덕구 씨. 뭘 했다고 했어요?"
+          text: "덕구 씨. 그날 포교가 처음에 뭐라고 물었어요?"
       - say:
           char: 덕구.scared
           with: [서연]
@@ -192,7 +192,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "강치수는 대답하지 않는다. 낫을 세워 두었던 자리를 발로 한 번 쓸고 자리를 옮긴다."
+          text: "강치수가 발끝으로 낫 아래 짚을 헤집는다. 입은 열지 않는다."
       - get: deokgu_sickle
       - clearSticker: { id: c3_sickle, leave: fadeOut }
       - set: { c3_sickle: true }
@@ -313,10 +313,10 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "젖니 얘기까지 꺼냈다."
+          text: "옥 안에서 덕구가 몸을 뒤척인다. 이 말을 저 사람에게 들려줘도 될까."
       - choice:
           key: c3_deal
-          prompt: "덕구는 살고, 사건은 닫힌다."
+          prompt: "덕구를 풀어 주는 대신, 더 캐묻지 말라고 한다."
           char: 강치수
           with: [서연, 강치수]
           options:
@@ -351,7 +351,7 @@ scenes:
       - say:
           channel: thought
           with: [막쇠]
-          text: "삼백 개 중 몇 개가 누구 아이 입에 들어갔을까. 나는 세지 않기로 했다."
+          text: "장터에 갔더니 감청 주머니가 약방 처마에 걸려 있었다."
       - ending: price_of_silence
 
   c3_confront_intro:
@@ -375,7 +375,7 @@ scenes:
           text: "증좌 없는 고발은 무고죄요. 알겠소?"
       - say:
           channel: record
-          text: "대질 규칙. 포교의 말에 맞는 증좌를 내놓고, 엉뚱한 것을 내밀 때마다 믿음을 잃는다."
+          text: "포교의 말이 틀렸음을 보일 증좌를 고른다. 맞지 않는 증좌를 내밀면 판관의 믿음을 잃는다."
       - set: { credibility: 3 }
       - goto: c3_r1
 
@@ -475,7 +475,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "어느 옥에서나 한다는 말을 판관 앞에서 했다. 그게 오늘 처음 생긴 틈이다."
+          text: "도원의 손이 붓 쪽으로 가지 않았다. 아직 포교를 보고 있다."
       - goto: c3_r2
 
   c3_r2:
@@ -592,7 +592,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "증좌는 다 내 품에 있었다. 꺼내는 순서를 틀렸을 뿐이다."
+          text: "짚신 끈을 맨 손을 봤다. 옥에서 본 그대로였다."
       - set: { deokgu_saved: false }
       - goto: c3_after
 
@@ -625,7 +625,7 @@ scenes:
       - say:
           char: 덕구
           with: [서연, 도원]
-          text: "의녀님. 저, 짐 나를 일 있으면 절 불러요. 꼭이요."
+          text: "지금 나가도 됩니까? …지게는 어디 가서 받으면 돼요?"
       - goto: c3_after
 
   c3_after:

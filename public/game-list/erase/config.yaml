@@ -33,7 +33,7 @@ startScreen:
   startButtonText: "눈을 뜬다"
   buttonPosition: bottom-left
   eyebrow: "심리 드라마 · 5장 · 결말 4종"
-  subtitle: "결혼을 앞둔 도윤과, 늘 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다."
+  subtitle: "“휴대전화는 돌려 드려요.” 의사가 수술대 옆에 선다. “사진이랑 문자는 그대로 남습니다.”"
   scene:
     layout: split
     motion: drift
@@ -48,28 +48,28 @@ endings:
   erase_loop:
     title: "ERASE"
     message: "수술대 위의 얼굴은 열여덟의 하린이었다. 하린은 도윤이 되었고, 도윤은 다시 누군가가 된다."
-    epilogue: "눈 뜨면… 새로 시작해요. 힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 연락할 수 있습니다."
+    epilogue: "의사가 뒤집어 둔 이름표를 가져간다. 다음 환자의 이름을 부른다.\n\n도움이 필요할 때\n힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 연락할 수 있습니다."
     background: surgery_reveal
     music: cold_room
     tone: tragic
   erased_name:
     title: "지워진 이름"
     message: "조직도에서 두 이름이 지워졌다. 소문을 누가 처음 냈는지는 아무도 기억하지 않는다."
-    epilogue: "아무도 도윤을 탓하지 않았다. 준성이 어디 있는지도 끝내 알려지지 않았다. 109(자살예방 상담전화)는 24시간 열려 있습니다."
+    epilogue: "준성이 어디 있는지는 끝내 알려지지 않았다. 창가에 남은 화분에는 새 잎이 났다.\n\n도움이 필요할 때\n109(자살예방 상담전화)는 24시간 열려 있습니다."
     background: office_night
     music: static
     tone: mystery
   kept_photo:
     title: "남겨진 사진"
     message: "도윤은 동의서 대신 보건소 번호표를 쥐었다. 사진 속 아이는 여전히 웃느라 눈이 없다."
-    epilogue: "결과는 아직 모른다. 지우지 않은 채로 기다리는 첫날이다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있고, 꾸준히 치료하면 일상생활이 가능합니다."
+    epilogue: "번호가 불린다. 도윤은 번호표를 쥔 채 상담실 문을 연다.\n\n검사와 치료 안내\nHIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있고, 꾸준히 치료하면 일상생활이 가능합니다."
     background: clinic_hall
     music: wind
     tone: hopeful
   unfinished:
     title: "완성되지 않은 사람"
     message: "지수는 반지를 신발장 위에 두고 갔다. 도윤은 그 메시지들을 지우지 않았다."
-    epilogue: "결혼식은 없었다. 대신 숨긴 것이 없는 밤이 하루 생겼다. 109(자살예방 상담전화)는 24시간 열려 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+    epilogue: "신발장 위 반지 옆에 지수가 두고 간 열쇠가 있었다. 도윤은 불을 켜고 다시 식탁에 앉았다.\n\n도움이 필요할 때\n109(자살예방 상담전화)는 24시간 열려 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
     background: rooftop
     music: wind
     tone: mystery

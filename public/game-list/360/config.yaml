@@ -33,7 +33,7 @@ startScreen:
   startButtonText: "눈을 뜬다"
   buttonPosition: bottom-left
   eyebrow: "1809 – 2026 · 철학 SF · 5장 · 결말 4종"
-  subtitle: "죽은 뒤의 어둠에서 방금 끝난 삶을 통째로 기억한다. 후회 가운데 하나만 쥐고 갈 수 있고, 다음 사람은 까닭도 모른 채 그 하나대로 산다. 쥔 것은 그 사람이 할 수 없는 선택이 된다."
+  subtitle: "눈을 떴다. 어둠 속에서 방금 끝난 삶이 처음부터 떠오른다. 다음으로 가져갈 수 있는 것은 하나뿐이다."
   scene:
     layout: split
     motion: drift

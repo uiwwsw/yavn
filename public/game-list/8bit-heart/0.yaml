@@ -551,10 +551,10 @@ scenes:
           char: 윤재
           motion: sway
           with: [비서]
-          text: "결제 버튼 위에 손가락 올려놓은 지 삼십 분 됐어. 삼십 분."
+          text: "하루야, 화면 꺼 봐. …아니, 다시 켜 봐."
       - choice:
           key: b0_buy
-          prompt: "[결제하시겠습니까?] 커서 깜빡깜빡."
+          prompt: "결제 확인 창이 아직 열려 있다."
           char: 윤재
           motion: sway
           options:
@@ -619,7 +619,7 @@ scenes:
           char: 윤재.excited
           motion: bounce
           with: [비서]
-          text: "샀다. 샀어. 아 샀다고. 잔액 오만 오천 원. 안 봐. 잔액 안 볼 거야."
+          text: "샀어. 야, 앱 닫아 줘. 잔액은 읽지 말고."
       - say:
           char: 비서
           with: [윤재]
@@ -641,7 +641,7 @@ scenes:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "왔다! 왔어. 신문지. 진짜 신문지로 둘둘 말아서 왔어. 상자값도 아낀 거야?"
+          text: "왔다! 아 진짜 신문지네. 상자도 없어?"
       - say:
           char: 비서
           with: [윤재]

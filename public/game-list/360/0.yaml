@@ -23,7 +23,7 @@ scenes:
       - bg: { id: void_empty, transition: cut }
       - say: { channel: narration, text: "눈을 떴다.", wait: 650 }
       - music: void
-      - say: { channel: narration, text: "아무것도 안 보인다. 내 이름도 떠오르지 않는다.", wait: 1100 }
+      - say: { channel: narration, text: "눈꺼풀을 한 번 더 움직여 본다. 달라지는 게 없다.", wait: 1100 }
       - choice:
           key: where_am_i
           prompt: "여긴 어디지?"
@@ -65,11 +65,11 @@ scenes:
     actions:
       - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "한 삶을 마치고 처음의 어둠으로 돌아왔다.", wait: 1300 }
-      - say: { channel: narration, text: "방금까지 살던 날들이 희미해졌다. 마지막에 고른 것 하나만 기억난다." }
+      - say: { channel: narration, text: "아까와 같은 어둠이다.", wait: 1300 }
+      - say: { channel: narration, text: "방금까지 불리던 이름이 혀끝에서 사라졌다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
-      - say: { channel: narration, text: "아직 빛나는 쪽에는 어떤 삶이 기다리고 있을까." }
+      - say: { channel: narration, text: "꺼진 자리에서 시선을 떼자 다른 빛이 보인다." }
       - goto: stars
 
   # 고르는 것은 사람이 아니라 그리움의 모양이다. 누군지는 가 봐야 안다.
@@ -124,10 +124,10 @@ scenes:
       - set: { lived_1894: true }
       - add: { lives_done: 1 }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
-      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - say: { channel: narration, text: "먼저 주판알 소리가 들렸다.", wait: 1100 }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - wait: 950
-      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 멀리서 주판알 부딪히는 소리가 났다.", wait: 1400 }
+      - say: { channel: narration, text: "선창에 매 놓은 배의 돛대가 하나씩 드러났다.", wait: 1400 }
       - wait: 300
       - say: { channel: card, with: [], text: "1894년 6월\n제물포\n내 이름은 만석.", wait: 2000 }
       - mood: off
@@ -139,10 +139,10 @@ scenes:
       - set: { lived_1952: true }
       - add: { lives_done: 1 }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
-      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - say: { channel: narration, text: "뺨에 짠 바람이 닿았다.", wait: 1100 }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - wait: 950
-      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 바닷바람이 뺨에 닿았다.", wait: 1400 }
+      - say: { channel: narration, text: "기적이 울리자 부두에 서 있던 사람들이 한꺼번에 고개를 들었다.", wait: 1400 }
       - wait: 300
       - say: { channel: card, with: [], text: "1952년 12월\n부산\n내 이름은 순임.", wait: 2000 }
       - mood: off
@@ -154,10 +154,10 @@ scenes:
       - set: { lived_1988: true }
       - add: { lives_done: 1 }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
-      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - say: { channel: narration, text: "텔레비전 소리가 들렸다.", wait: 1100 }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - wait: 950
-      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 멀리서 텔레비전 소리가 들렸다.", wait: 1400 }
+      - say: { channel: narration, text: "푸른 화면 불빛이 침대 여섯 개 위로 번졌다.", wait: 1400 }
       - wait: 300
       - say: { channel: card, with: [], text: "1988년 9월\n서울\n내 이름은 민재.", wait: 2000 }
       - mood: off
@@ -169,10 +169,10 @@ scenes:
       - set: { lived_2026: true }
       - add: { lives_done: 1 }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
-      - say: { channel: narration, text: "빛이 있는 쪽으로 조금씩 다가갔다.", wait: 1100 }
+      - say: { channel: narration, text: "책상 아래에서 컴퓨터 돌아가는 소리가 났다.", wait: 1100 }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - wait: 950
-      - say: { channel: narration, text: "주변이 서서히 밝아졌다. 모니터 불빛이 책상 위로 번졌다.", wait: 1400 }
+      - say: { channel: narration, text: "모니터에 멈춰 있는 영상. 창에 비친 내 얼굴이 그 위로 겹쳤다.", wait: 1400 }
       - wait: 300
       - say: { channel: card, with: [], text: "2026년 3월\n서울\n내 이름은 지안.", wait: 2000 }
       - mood: off
@@ -264,7 +264,7 @@ scenes:
       - sticker: { id: key, image: key_sticker, x: 50, y: 32, width: "clamp(150px, 20%, 280px)", enter: fadeIn, inputLockMs: 300 }
       - wait: 1100
       - say: { channel: action, with: [], text: "열쇠를 자물쇠에 댄다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
-      - say: { channel: thought, with: [], text: "열면 안 된다는 생각이 어디서 오는지 모르겠다. 내 생각 같지가 않다." }
+      - say: { channel: thought, with: [], text: "열어 달라는 소리가 들리는데 손목에 힘이 더 들어간다." }
       - clearSticker: { id: key, leave: fadeOut }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "주인어른? 여시는 겁니까, 마시는 겁니까." }
       - say: { char: 만석, with: [봉구], text: "…대문 닫아라." }
@@ -289,7 +289,7 @@ scenes:
   rice_shut:
     actions:
       - say: { channel: action, with: [], text: "빗장이 걸린다. 대문 밖이 한동안 조용하다." }
-      - say: { channel: action, with: [], text: "조용한 뒤에 그 애 목소리가 났다. 대문 밖이다." }
+      - say: { channel: action, with: [], text: "대문 안에서 끝순이가 훌쩍이는 소리가 들렸다." }
       - say: { char: 끝순, with: [], text: "덕이 어머니." }
       - say: { char: 끝순, with: [], text: "우리 아버지 그런 사람 아니에요." }
       - say: { char: 끝순, with: [], text: "내일 다시 와 보세요, 네?" }
@@ -376,7 +376,7 @@ scenes:
       - say: { channel: action, with: [], text: "짚신을 신고 문지방에 선다. 발이 넘어가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: action, with: [], text: "등 뒤에서 기침 소리가 난다. 돌아보니 호롱불은 켜져 있다." }
       - say: { channel: thought, with: [], text: "켜져 있는 걸 보고도 숨이 안 쉬어진다. 불이 꺼진 방을 본 적은 없는데." }
-      - say: { channel: thought, with: [], text: "가면 안 된다는 생각이 어디서 오는지 모르겠다. 내 생각 같지가 않다." }
+      - say: { channel: thought, with: [], text: "봉구는 마루 아래에서 내 짚신만 보고 있다." }
       - say: { char: 만석, with: [봉구], text: "봉구야. 네가 가라. 수결은 네가 해라." }
       - goto: stay_home
 
@@ -447,7 +447,7 @@ scenes:
       - say: { char: 만석, with: [끝순], text: "바구미는 체로 치면 된다." }
       - say: { char: 끝순, with: [만석], text: "덕이 지난겨울에 갔어요." }
       - wait: 900
-      - say: { channel: action, with: [], text: "그 애는 그 말만 하고 부엌으로 갔다. 나는 체를 가져오라고 했다." }
+      - say: { channel: action, with: [], text: "체를 가져오라 했더니 그 애가 부엌 문을 닫고 나갔다. 저녁에 들인 진지는 다 식어 있었다." }
       - say: { channel: action, with: [], text: "끝순이는 스물에 강화로 시집을 갔다. 혼수는 넉넉히 넣었다." }
       - say: { channel: action, with: [], text: "그 애는 친정에 오지 않았다. 열여섯 해 동안 한 번도." }
       - set: { l1_end: kept }
@@ -570,9 +570,9 @@ scenes:
       - wait: 900
       - say: { channel: narration, text: "대답할 차례다." }
       - say: { channel: narration, text: "쉰여섯 해를 다 뒤져도 변명 하나가 안 나온다." }
-      - say: { channel: narration, text: "묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다." }
+      - say: { channel: narration, text: "끝순아, 하고 불러 봤다. 이번엔 대답이 없다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
-      - say: { channel: narration, text: "끝내려면 하나를 쥐어야 한다. 쥐면 나머지는 놓는 것이다." }
+      - say: { channel: narration, text: "가져갈 수 있는 것은 하나다. 나머지는 여기 두고 간다." }
       - goto: void_one_choice
 
   void_one_choice:

@@ -359,7 +359,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "가림막이 계단참 아래를 가리고 있다. 그래도 공기가 올라온다. 지하 주차장 냄새는 늘 같다."
+          text: "가림막 밑으로 찬 바람이 올라온다. 젖은 콘크리트 냄새가 난다."
 
   interview:
     title: "진술 녹화실"
@@ -444,7 +444,7 @@ scenes:
               saveText: "\"C-14 기둥 쪽… 아닌가요?\""
               gameOver:
                 title: "아무도 말하지 않은 번호"
-                message: "C-14는 아직 현장 보고서에만 있던 기둥 번호였다. 단톡방에도, 계단참에도 없었다. 차은숙 경위는 녹화를 멈추지 않았다. 그 번호를 어디서 봤는지 떠올려 보자."
+                message: "“C-14라고 하셨어요?” 은숙이 묻는다. 그 번호는 현장 보고서에만 있었다."
                 recoverToChoice: t2_where
             - text: "단톡방을 못 봤다고 둘러댄다"
               saveText: "\"단톡방을 안 봐서요. 잘 모릅니다.\""
@@ -650,11 +650,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "녹화실이다. 낮에 은숙이 가져간 것들이 여기에는 그대로 있다. 가져간 것도 여기에는 있다."
+          text: "녹화실 책상에 낮에 은숙이 가져간 접수증이 놓여 있다. 접었다 편 자국까지 같다."
       - say:
           channel: thought
           with: []
-          text: "밴드를 붙이고 앉은 지 사 분 됐다. 들어올 때마다 손이 먼저 창구 높이를 찾는다."
+          text: "눈만 감으면 그 차 문이 열렸다. 한 번만 다시 보고 끄려고 밴드를 붙였다."
       - say:
           char: 해수
           with: []
@@ -666,7 +666,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "편의 기능. 내가 만진 걸 다 가져다 놓는 걸 편의라고 한다."
+          text: "접수증 위에 놓인 연필을 보고 나도 모르게 손을 등 뒤로 뺐다."
       - say:
           channel: thought
           with: []
@@ -674,11 +674,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "용지를 들어 본다. 종이 무게가 난다. 손끝에 종이 섬유가 걸린다."
+          text: "용지 귀퉁이가 손끝에 걸린다. 힘을 주자 종이에 자국이 났다."
       - say:
           channel: thought
           with: []
-          text: "여기서 바꾸면 저기서도 바뀐다는 건 아직 모른다. 3단계 때도 몰랐다."
+          text: "창구에서 받은 용지를 쥘 때도 이랬다."
       - goto: tamper_pick
 
   tamper_pick:
@@ -721,7 +721,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "대상 직원 칸에 손가락을 댄다. 글자가 지워지는 게 아니라 종이에서 빠져나간다."
+          text: "대상 직원 칸에 손가락을 댄다. 인쇄된 글자가 종이에서 들린다."
       - say:
           channel: record
           with: []
@@ -734,7 +734,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "이름 넉 자가 없어지는 데 한 호흡도 안 걸린다. 손으로 쓸 때는 사 초 걸린다."
+          text: "손을 떼자 칸이 비었다. 사원증에는 아직 정해수라고 적혀 있다."
       - goto: tamper_pick
 
   tamper_pencil:
@@ -751,7 +751,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "열두 해 동안 이 로고를 하루에 스무 번씩 봤다. 지우는 데 세 번이면 된다."
+          text: "주머니에 넣으려다 그만둔다. 로고가 있어야 우리 연필인 줄 알 텐데."
       - say:
           channel: system
           with: []
@@ -777,7 +777,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "보지 않는 게 낫다. 그런데 보고 나서 지워야 지워진다."
+          text: "재생 막대를 옮기자 같은 차 문이 한 번 더 열린다."
       - say:
           channel: system
           with: []

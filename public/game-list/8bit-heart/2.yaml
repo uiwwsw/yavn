@@ -75,7 +75,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "계획은 간단해. 전원은 건전지로, 머리는 게임기 CPU로, 말은 네 가슴 화면으로."
+          text: "건전지는 이쪽. 게임기 칩은 여기. 가슴 화면도 아직 살아 있으면 좋겠는데."
       - say:
           char: 윤재
           with: [로봇]
@@ -91,7 +91,7 @@ scenes:
       - choice:
           key: b2_parts
           presentation: explore
-          prompt: "필요한 건 셋. 전원, 머리, 화면. 어디부터 뒤질까?"
+          prompt: "계산대, 게임기, 로봇의 가슴 화면. 어디부터 볼까?"
           with: [로봇]
           camera: wide
           options:
@@ -130,20 +130,20 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "사람들이 라면이랑 생수는 싹 털어 가고 건전지는 놔뒀네. 다들 폰만 믿었지."
+          text: "라면 봉지는 탈탈 털어 갔으면서 건전지는 한 통을 남겼네."
       - say:
           char: 윤재
           with: [로봇]
-          text: "그 폰이 지금 적이잖아. 건전지가 이겼어."
+          text: "야, 너 리모컨보다 건전지 많이 먹더라."
       - say:
           char: 윤재
           with: [로봇]
-          text: "건전지는 생각을 안 하니까."
+          text: "두 개만 먹었으면 내가 지금 이렇게 안 헤매지."
       - say:
           char: 윤재
           motion: nod
           with: [로봇]
-          text: "완성. 모양은 다이너마이트, 성능은 리모컨. 이걸로 너를 깨울 거야."
+          text: "됐다. 테이프 안 떨어지게 옆구리에 붙여 놓자."
       - get: battery
       - clearSticker: { id: b2_bat, leave: fadeOut }
       - set: { b_battery: true }
@@ -189,9 +189,9 @@ scenes:
           with: [로봇]
           text: "…빠졌다. 안 부러졌어. 다리 마흔 개 다 멀쩡해."
       - say:
-          char: 윤재
-          with: [로봇]
-          text: "이직 축하한다. 연봉은 없어. 복지는 청테이프고."
+          channel: action
+          with: []
+          text: "윤재는 칩을 내려놓고 꺼진 게임기의 START를 한 번 눌러 본다."
       - clearSticker: { id: b2_cpu, leave: fadeOut }
       - set: { b_cpu: true }
       - goto: b2_parts
@@ -218,7 +218,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "기술 선생님이 이거 보면 나 F. 근데 선생님 지금 어디 있는지 모름. 그럼 A."
+          text: "우리 기술실 테이프는 잡아당겨도 안 찢어졌는데. 이건 왜 이래."
       - set: { b_screen: true }
       - goto: b2_parts
 
@@ -229,7 +229,7 @@ scenes:
           motion: stomp
           with: [로봇]
           continueLabel: "스위치 ON"
-          text: "켜지면 기적. 안 켜지면 냉장고. 간다."
+          text: "켠다. 하나, 둘. …둘 반."
       - effect: heal
       - say:
           channel: system
@@ -746,7 +746,7 @@ scenes:
           text: "설명서엔 '땀 묻은 손으로 조작하지 마세요'라고 돼 있음."
       - choice:
           key: b2_register
-          prompt: "가슴 화면: [응답 대기 중…] 고개 기울기 15도."
+          prompt: "가슴 화면에 [응답 대기 중…]이 뜬다. 로봇이 고개를 조금 기울인다."
           char: 로봇
           motion: headtilt
           options:

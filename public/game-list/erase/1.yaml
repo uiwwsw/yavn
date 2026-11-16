@@ -282,7 +282,7 @@ scenes:
           autoAdvance: 1504
       - choice:
           key: e1_rumor
-          prompt: "팀원들이 해명을 기다린다. 입력 중… 표시가 떴다 사라지기를 세 번."
+          prompt: "‘입력 중’이 뜬다. 사라졌다가 다시 뜬다."
           with: []
           options:
             - text: "농담에 맞장구친다"
@@ -606,7 +606,7 @@ scenes:
           char: 하린
           motion: bounce
           with: [민재, 아진]
-          text: "근데 민재야, 나한텐 왜 안 보냈어? 웃겨서 물어보는 거야."
+          text: "민재야, 너 아진이한테 보낸 거 나도 좀 봐도 돼?"
       - say:
           char: 민재
           with: [하린, 아진]
@@ -662,7 +662,7 @@ scenes:
     actions:
       - choice:
           key: h1_send
-          prompt: "커서가 깜박인다. 보내기까지 엄지 한 번."
+          prompt: "하린은 문장을 다시 읽는다. 맨 끝에 ‘ㅋㅋ’를 붙일까."
           with: []
           options:
             - text: "보낸다"
@@ -685,7 +685,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "읽음 표시가 2로 바뀌는 데 사 초 걸렸다. 그다음은 아무것도 오지 않는다."
+          text: "읽음 숫자가 바뀐다. 이름 옆에는 아무 표시도 뜨지 않는다."
       - say:
           channel: thought
           with: []
@@ -699,7 +699,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "스물한 글자 보내고 두 글자 받았다. 보낸 게 아직 거기 있다. 지금 지우면 더 이상해진다."
+          text: "ㅇ 하나 치다가 지운다. 그냥 답장 안 해도 되겠지."
       - goto: h1_shots
 
   h1_erased:
@@ -716,7 +716,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "한 글자씩 지운다. 지우개 키를 스물한 번 누른다. 한 번에 다 지우는 법을 알면서도 그렇게 한다."
+          text: "뒤에서부터 한 글자씩 지운다. ‘나도’에서 잠깐 멈춘다."
       - say:
           channel: thought
           with: []
@@ -745,7 +745,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "뒤에 붙인 열 글자를 먼저 지우고, 앞의 스물한 글자를 지운다."
+          text: "뒤에 쓴 말을 먼저 지운다. 그러고도 한참 ‘나도 껴줘’가 남아 있다."
       - add: { deleted: 2 }
       - say:
           channel: thought
