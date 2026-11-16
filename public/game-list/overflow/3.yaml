@@ -29,13 +29,13 @@ scenes:
           char: 희남
           with: []
           delivery: whisper
-          text: "그 사람이 자꾸 죽을 사. 죽을 끓여 놓고 앉아 있어."
+          text: "오늘도 죽이야. 식었다고 다시 데웠어."
       - wait: 260
       - say:
           char: 희남
           with: []
           delivery: whisper
-          text: "안 먹는다니까 숟가락만 옆에 놔."
+          text: "나 안 먹는다니까 숟가락만 옆에 놔."
       - say:
           channel: system
           with: []
@@ -684,7 +684,7 @@ scenes:
       - say:
           char: 지완
           with: [수경]
-          text: "저도 아닙니다. 그 사람 지금 유죄입니다."
+          text: "저도 아닙니다. 그 사람 다시 조사해야죠."
       - say:
           char: 수경
           with: [지완]
@@ -692,7 +692,7 @@ scenes:
       - say:
           char: 지완
           with: [수경]
-          text: "유죄인 이유가 서류에 안 적힙니다. 그게 제 일입니다."
+          text: "이번에는 판독표부터 바로잡아야 합니다."
       - say:
           char: 수경.tired
           with: [지완]
@@ -726,7 +726,7 @@ scenes:
       - say:
           char: 수경
           with: [지완]
-          text: "검찰 양식에서 01을 못 읽어서 비웠어요. 보도자료엔 빈칸이 0으로 나갔고요."
+          text: "회사에서 남긴 건 01입니다. 보도자료에 0을 누가 썼는지는 저도 몰라요."
       - clearSticker: { id: raw, leave: fadeOut }
       - say:
           char: 지완

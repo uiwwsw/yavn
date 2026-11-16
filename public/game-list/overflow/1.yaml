@@ -62,7 +62,7 @@ scenes:
       - say:
           char: 하율
           with: [동식]
-          text: "거기 없어."
+          text: "두 번째도 세 번째도 봤어. 없어."
       - say:
           char: 동식
           with: [하율]

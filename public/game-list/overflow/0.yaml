@@ -60,6 +60,7 @@ scenes:
           char: 지완
           with: [도겸]
           text: "복사비 1,800원. 그건 할머니가 내셨어."
+      - say: { char: 도겸, with: [지완], text: "소장님, 월세는요?" }
       - say:
           char: 지완
           with: [도겸]
@@ -123,6 +124,7 @@ scenes:
           text: "일곱 번째 반려 통지 온 게 이 주 전인데요."
       - get: appeal_form
       - sticker: { id: form, image: form_sticker, x: 76, y: 52, width: "clamp(150px, 20%, 260px)", enter: fadeIn }
+      - say: { char: 지완, with: [도겸], text: "2월 27일. 삼 주 전이야." }
       - say:
           channel: record
           with: []
@@ -193,7 +195,7 @@ scenes:
       - say:
           char: 도겸
           with: [지완]
-          text: "지난주에 집에서 부인 죽은 채로 발견됐다는 거요. 남편이 신고한."
+          text: "저번 주 그 건이요. 남편이 직접 신고했던 거."
       - say:
           channel: system
           with: []
