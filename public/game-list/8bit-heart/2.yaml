@@ -230,7 +230,7 @@ scenes:
           with: [로봇]
           continueLabel: "스위치 ON"
           text: "켜지면 기적. 안 켜지면 냉장고. 간다."
-      - effect: { name: flash, wait: true }
+      - effect: heal
       - say:
           channel: system
           with: []
@@ -239,7 +239,7 @@ scenes:
           char: 윤재.excited
           motion: gasp
           with: [로봇]
-          text: "글자 떴어! 가슴에! 글자 떴다고!"
+          text: "떴다. 가슴에 글자 떴어!"
       - say:
           channel: system
           with: []
@@ -269,22 +269,7 @@ scenes:
           char: 로봇.thinking
           motion: headtilt
           with: [윤재]
-          text: "이게 다임?"
-      - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "다시 셈."
-      - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "8."
-      - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "…응."
+          text: "다시 셈. 8."
       - say:
           char: 로봇.thinking
           motion: headtilt
@@ -312,7 +297,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그래, 안녕. …안녕이라고 했어 얘가. 안녕이라고 했어."
+          text: "그래, 안녕. …나 들었어."
       - say:
           char: 윤재
           with: [로봇]

@@ -871,7 +871,7 @@ scenes:
           channel: record
           with: []
           text: "SCAN: 인간 1 감지. 추적 개시."
-      - effect: { name: shake, wait: true }
+      - effect: rumble
       - say:
           char: 로봇.glitch
           with: [윤재, 드론]
