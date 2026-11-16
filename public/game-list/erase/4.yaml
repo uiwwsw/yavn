@@ -209,7 +209,7 @@ scenes:
           channel: action
           when: { var: e2_search, op: eq, value: true }
           with: []
-          text: "검색 기록은 깨끗하다. 목요일 밤에 복구 안 되게 지웠다. 그 전에도 그랬고, 그 전에도 그랬다."
+          text: "검색 기록을 열자 ‘표시할 항목 없음’만 뜬다."
       - say:
           channel: thought
           when: { var: e2_search, op: eq, value: true }
@@ -278,7 +278,7 @@ scenes:
               - { var: e0_messages, op: eq, value: true }
               - { var: e0_photos, op: eq, value: true }
               - { var: e0_location, op: eq, value: true }
-          text: "그걸 어디서 배웠는지가 기억에 없다. 배운 적이 없는 사람처럼 한다."
+          text: "삭제 화면을 닫기 전에 날짜 칸을 또 봤다. 방금도 본 곳이다."
       - goto: mismatch_photo
 
   mismatch_photo:
@@ -395,7 +395,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "그 애 이름을 지금 모른다. 지운 사람이 나니까."
+          text: "일단 이름부터 쳐 보려다가 손을 뗐다. 성도 이름도 떠오르지 않는다."
       - say:
           channel: action
           with: []
@@ -419,7 +419,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "교복이 의자에 걸려 있다. 가방은 싸여 있지 않다. 월요일에 들고 갈 데가 없다."
+          text: "교복은 의자 등받이에 걸어 두었다. 월요일 시간표대로 싼 가방은 발치에 그대로 있다."
       - say:
           channel: thought
           with: []
@@ -537,7 +537,7 @@ scenes:
       - say:
           char: 의사
           with: []
-          text: "이름도, 얼굴도, 기억도요. 친구분들 번호도 다."
+          text: "연락처랑 사진은 저희 쪽에서 지우지 않아요. 그건 휴대폰에 남아요."
       - say:
           char: 하린
           motion: nod
@@ -561,7 +561,7 @@ scenes:
           char: 하린
           with: []
           delivery: whisper
-          text: "다 지웠어요. 아침에 다."
+          text: "사진은 다 봤어요. 아침에 다 지웠어요."
       - say:
           char: 의사
           with: []
@@ -648,7 +648,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "열여덟이 지운 게 뭔지 알겠는데, 왜 지웠는지는 안 남겼네."
+          text: "…하린. 그때 내가 쓰던 이름이구나."
       - goto: junseong
 
   junseong:
@@ -662,7 +662,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "열여덟한테 무슨 일이 있었는지는 이제 못 안다. 지난주에 있었던 일은 안다."
+          text: "‘유하린’을 한 번 더 입에 올려 보려는데 휴대폰이 울린다. 영업2팀 단톡방이다."
       - say:
           channel: record
           when: { var: e2_leaked, op: eq, value: true }
@@ -688,7 +688,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_hospital, op: eq, value: true }
-          text: "제목을 장보기로 바꿔 놓은 메모. 바꿀 생각을 했으니 알고는 있었다."
+          text: "장보기. 그날 사야 할 건 메모에 한 줄도 없었다."
       - say:
           channel: record
           when: { var: e2_sns, op: eq, value: true }
@@ -697,7 +697,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_sns, op: eq, value: true }
-          text: "칠 년을 공개로 써 둔 사람이다. 숨긴 건 나다."
+          text: "날짜를 한참 내리다 보니 화분 살 때 올린 사진이 나온다."
       - say:
           channel: thought
           when: { var: e3_papers, op: eq, value: true }
@@ -705,11 +705,11 @@ scenes:
       - say:
           channel: thought
           when: { var: e3_papers, op: eq, value: true }
-          text: "그 줄을 자기 손으로 그은 사람 집에 내가 신발을 벗고 들어갔다."
+          text: "밑줄 옆에 ‘굿’ 한 글자. 그게 준성 씨 글씨였다."
       - say:
           channel: thought
           when: { var: e3_bag, op: eq, value: true }
-          text: "봉투에 볼펜으로 밤 열 시. 남은 약 열다섯 정. 반은 먹고 반이 남았다."
+          text: "약 봉투에 볼펜으로 밤 열 시. 숫자 0만 유독 진했다."
       - say:
           channel: thought
           when: { var: e3_note, op: eq, value: true }
@@ -717,7 +717,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e3_note, op: eq, value: true }
-          text: "그 사람은 내 결혼식에 올 돈을 세고 있었다. 나는 그 집에서 그걸 읽고 나왔다."
+          text: "축의금 옆 물음표에 잉크가 한 방울 고여 있었다."
       - say:
           channel: message
           side: them
@@ -736,7 +736,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "…그 말 들은 기억은 없는데 문장은 그대로 있네."
+          text: "아진아. …입으로 하니까 이름은 나오네."
       - goto: final_turn
 
   final_turn:
@@ -748,7 +748,7 @@ scenes:
       - say:
           channel: thought
           when: { var: deleted, op: gte, value: 6 }
-          text: "이번 주에 지운 것만 세어 봐도 손가락이 넘는다. 손에 완전히 붙었다."
+          text: "설정에서 초기화 버튼이 어디 있는지 화면을 안 보고도 찾는다."
       - say:
           channel: thought
           when: { var: went_to_clinic, op: eq, value: true }
@@ -756,7 +756,7 @@ scenes:
       - say:
           channel: thought
           when: { var: went_to_clinic, op: eq, value: true }
-          text: "본인이 직접. 내일 열 시에 지우면 사십칠 번은 아무것도 아닌 종이가 된다."
+          text: "본인이 직접. 이름 대신 번호만 부른다고 했는데 그 번호는 내가 알아야 한다."
       - say:
           channel: thought
           when: { var: went_to_clinic, op: eq, value: false }
@@ -768,7 +768,7 @@ scenes:
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 1 }
-          text: "지수에게는 반만 말했다. 나머지 반은 지운 것들 옆에 있다."
+          text: "지수한테서 ‘토요일 전에’로 시작하는 톡이 와 있다."
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 0 }
@@ -1067,7 +1067,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "결과가 뭐든 이번에는 들고 나온다. 지우는 건 내일부터 안 하기로 한다."
+          text: "번호표를 접으려다 편다. 상담실 문은 열려 있다."
       - ending: kept_photo
 
   end_photo_ticket:
@@ -1129,7 +1129,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "화난 거 맞아. 근데 네가 그걸 혼자 몇 주씩 들고 있었다는 게 더 화나. 그래도 이번엔 네가 말했잖아. 그건 알아둬"
+          text: "나 아직 화났어. 그날 네가 먼저 말해 준 거랑은 별개야. 답장 안 해도 돼."
       - say:
           channel: message
           side: me
@@ -1185,7 +1185,7 @@ scenes:
           side: me
           char: 도윤
           with: []
-          text: "지금 아니면 또 혼자 들고 있을 것 같아서"
+          text: "응. 지금은 말할 수 있을 것 같아."
       - say:
           channel: message
           side: them
@@ -1195,7 +1195,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 입력 중 표시를 띄워 놓고 한참 아무것도 치지 않는다. 열여덟의 이름부터 쓴다."
+          text: "첫 줄에 ‘하린’이라고 쓴다. 자동 완성에 다른 이름이 뜨지만 그냥 둔다."
       - say:
           channel: action
           with: []

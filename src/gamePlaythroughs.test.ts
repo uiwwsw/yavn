@@ -239,7 +239,7 @@ describe('8비트 심장', () => {
     });
     finished(run);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(true);
-    expect(heard(run.shown, '뒤는 안 봐')).toBe(true);
+    expect(heard(run.shown, '…셋. 가자.')).toBe(true);
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
     expect(heard(run.shown, '나간 쪽이 게임기 사 줬어')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
@@ -266,7 +266,7 @@ describe('ERASE', () => {
       e3_final: '놀이터 사진을 연다',
     });
     finished(run);
-    expect(heard(run.shown, '대화방은 그대로 둔다')).toBe(true);
+    expect(heard(run.shown, '번호를 저장하지 않으면 연락처에서는 안 뜬다')).toBe(true);
     expect(heard(run.shown, '뒤 네 자리가 지금 울리는 번호와 같다')).toBe(true);
     expect(heard(run.shown, '폰이 먼저 알아봤네')).toBe(true);
     expect(heard(run.shown, '내가 정리를 덜 한 거고')).toBe(true);
@@ -294,8 +294,8 @@ describe('ERASE', () => {
     });
     finished(run);
     expect(heard(run.shown, '손이 알아서 했다')).toBe(true);
-    expect(heard(run.shown, '배운 적이 없는 사람처럼 한다')).toBe(true);
-    expect(heard(run.shown, '한 번에 다 지우는 법을 알면서도')).toBe(true);
+    expect(heard(run.shown, '방금도 본 곳이다')).toBe(true);
+    expect(heard(run.shown, '‘나도’에서 잠깐 멈춘다')).toBe(true);
     expect(heard(run.shown, '뒤 네 자리가 지금 울리는 번호와 같다')).toBe(false);
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(false);
   });
@@ -372,9 +372,9 @@ describe('오버플로', () => {
     finished(run);
     const beats = [
       '안정 24', '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
-      '정서 반응 01 · 무반응 의심', '01 뜬 분을 봤어요', '판독 카드 만든 사람이에요',
+      '정서 반응 01 · 무반응 의심', '01 뜬 분을 봤어요', '접수대에 뜬 그 카드, 제가 만든 겁니다',
       '시험 신호 101 → 표시 01', '아까 접어 두신 이름', '반만 얼리기로 했잖아요',
-      '아까 저한테 전화한 게 아버지가 아니어서요', '센서 입력 101 → 표시 01',
+      '전화 받았는데 반찬집 아주머니였잖아요', '센서 입력 101 → 표시 01',
       '아버지가 옆에 앉으라 그랬잖아요', '공동 이의신청 접수', '반만 얼렸다',
     ];
     const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
@@ -398,7 +398,7 @@ describe('오버플로', () => {
     expect(heard(run.shown, '아침에 전화 못 받았죠')).toBe(true);
     expect(heard(run.shown, '아까 물부터 드렸죠. 겁났어요')).toBe(true);
     expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);
-    expect(heard(run.shown, '아까 저한테 전화한 게 아버지가 아니어서요')).toBe(false);
+    expect(heard(run.shown, '전화 받았는데 반찬집 아주머니였잖아요')).toBe(false);
     const broadcast = run.shown.slice(run.shown.findIndex((text) => text.includes('제 이름이랑 제 판독')));
     expect(heard(broadcast, '센서 입력 101 / 렌즈 표시 01')).toBe(true);
     expect(heard(broadcast, '308호')).toBe(false);

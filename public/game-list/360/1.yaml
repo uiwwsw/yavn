@@ -231,14 +231,14 @@ scenes:
       - place: "이월 · 새벽 네 시"
       - char: { id: 순임, position: left }
       - char: { id: 시어머니, position: right }
-      - say: { channel: action, with: [시어머니], text: "어머이는 벽을 보고 누워 있다. 자는 숨소리가 아니다." }
+      - say: { channel: action, with: [시어머니], text: "어머이는 보따리를 싸는 동안 눈을 감고 있었다. 방문을 여는 소리가 나자 벽 쪽으로 돌아누웠다." }
       - goto: mother_choice
 
   mother_choice:
     actions:
       - choice:
           key: l2_mother
-          prompt: "기차는 다섯 시다. 영호는 신을 신고 문간에 서 있다."
+          prompt: "서울 가는 기차는 다섯 시다. 영호는 신을 신고 문간에 서 있다."
           with: [시어머니]
           options:
             - text: "어머니를 모시고 간다."
@@ -334,7 +334,7 @@ scenes:
     title: "암흑"
     actions:
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "기차 창밖으로 본 밤이 이랬다. 다만 여기에는 창이 없고, 선로도 없다." }
+      - say: { channel: narration, text: "막차 유리창에 비치던 내 얼굴이 생각난다." }
       - say:
           channel: narration
           when: { var: l2_told, op: eq, value: true }
@@ -354,10 +354,10 @@ scenes:
       - say: { channel: narration, text: "최 씨가 물수건을 쓰기 전에 내가 한 발만 떼었더라면, 아이 둘도 나오고 최 씨도 나왔다." }
       - say: { channel: narration, text: "어머이한테 한 번 더. 기차는 다섯 시였고." }
       - wait: 900
-      - say: { channel: narration, text: "대답할 차례다. 마흔넷 해를 다 뒤져도 변명 하나가 안 나온다." }
-      - say: { channel: narration, text: "묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다." }
+      - say: { channel: narration, text: "어머이, 영호가 목도리 잊지 않고 둘렀어요." }
+      - say: { channel: narration, text: "동사무소에서 온 편지는 마지막까지 서랍에 두었다." }
       - bg: { id: void_light, transition: dissolve, duration: 3200 }
-      - say: { channel: narration, text: "끝내려면 하나를 쥐어야 한다. 쥐면 나머지는 놓는 것이다." }
+      - say: { channel: narration, text: "전대의 매듭과 어머이 손이 동시에 떠오른다." }
       - bg: { id: void_near, transition: dissolve, duration: 2600 }
       - goto: void_two_choice
 
@@ -365,7 +365,7 @@ scenes:
     actions:
       - choice:
           key: v2
-          prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
+          prompt: "전대를 건넨 날. 어머이를 두고 온 날."
           options:
             - text: "사람을 믿은 후회"
               saveText: "아무도 믿지 말았어야 했다."

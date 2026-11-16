@@ -13,7 +13,7 @@ scenes:
       - say:
           char: 의사
           with: []
-          text: "이 이름으로 살아온 기억은 지워집니다. 얼굴도 바뀌고요. 지운 기억은 복구할 수 없어요."
+          text: "지금 쓰는 이름하고 얼굴이 바뀝니다. 예전 기억으로 돌아갈 수는 없어요. 여기까지 안내받으셨죠?"
       - say:
           char: 의사
           with: []
@@ -37,7 +37,7 @@ scenes:
       - place: "현재 · 결혼 한 달 전 · 청첩장 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
-      - say: { char: 지수, with: [도윤], text: "턱 조금만 당겨 봐. 응, 거기." }
+      - say: { char: 지수, with: [도윤], text: "눈 떠. 아직 안 찍었어. 턱 좀 당겨 봐. 응, 거기." }
       - say: { char: 도윤, with: [지수], text: "그건 작가님이 시킨 거야, 네가 시키는 거야?" }
       - move: { id: 지수, toward: 도윤, style: approach }
       - say: { char: 지수.warm, with: [도윤], text: "내가. 넥타이 삐뚤어졌어. 잠깐만." }
@@ -56,7 +56,7 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "이번에도 내가 모르고 있는 거 있어? 돈 얘기면 집에 가서 같이 보면 돼." }
       - choice:
           key: e0_studio
-          prompt: "작가가 셔터에 손가락을 올리고 기다린다."
+          prompt: "작가가 카메라를 내린다. 지수는 아직 도윤의 팔을 잡고 있다."
           char: 지수
           options:
             - text: "숨기는 게 없다고 한다"
@@ -157,7 +157,7 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "아무도 안 봐. 너만 봐."
+          text: "나중에 앨범 받으면 나 저 사진부터 볼 건데."
       - say:
           char: 지수.warm
           motion: lean_in
@@ -285,7 +285,7 @@ scenes:
           text: "그러니까요. 내일 되면 서로 기억도 안 나요."
       - choice:
           key: e0_junseong
-          prompt: "잔 두 개 중 하나가 이미 이쪽으로 기울어 있다."
+          prompt: "준성이 자기 잔을 들어 올린 채 기다린다."
           char: 준성
           options:
             - text: "잔을 받는다"
@@ -357,7 +357,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "메시지. 사진. 위치. 카드 내역은 월요일에."
+          text: "‘ㅇㅇ 물 마시고 자.’ 지수의 톡을 읽고 침대 옆을 더듬는다. 물컵이 두 개다."
       - goto: e0_erase
 
   e0_erase:
@@ -449,11 +449,11 @@ scenes:
               - { var: e0_messages, op: eq, value: true }
               - { var: e0_photos, op: eq, value: true }
               - { var: e0_location, op: eq, value: true }
-          text: "메시지. 사진. 위치. 다 했다. 다섯 시 사십 분."
+          text: "폰이 5시 40분을 가리킨다. 잠금 화면을 한 번 더 봤다."
       - say:
           channel: thought
           when: { var: e0_messages, op: eq, value: false }
-          text: "대화방은 그대로 둔다. 저장도 안 한 번호다. 이름이 없으면 아무것도 아니다."
+          text: "번호를 저장하지 않으면 연락처에서는 안 뜬다. 그냥 나가자."
       - say:
           channel: thought
           when: { var: e0_photos, op: eq, value: false }

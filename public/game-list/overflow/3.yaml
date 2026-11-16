@@ -27,7 +27,7 @@ scenes:
       - char: { id: 수경, position: center }
       - char: { id: 지완, position: left }
       - say: { char: 세라, with: [지완, 수경], text: "병실 쪽으론 들어가지 마세요. 저기 의자에 잠깐 앉아 계세요. 누가 찾으면 저한테 먼저 오라고 할게요." }
-      - say: { char: 지완, with: [세라], text: "간호사님, 아까 제가 들어오지 못한 거요. 이거 보실래요? 같은 판독인데 여기 숫자가 다릅니다." }
+      - say: { char: 지완, with: [세라], text: "아까 여기서 기다렸던 지완인데요. 이 두 줄 좀 봐 주세요. 같은 시각에 찍힌 거예요." }
       - say: { channel: action, with: [], text: "세라가 면회표에 볼펜으로 찍었던 작은 동그라미를 손톱으로 긁는다." }
       - say: { char: 세라, with: [지완], text: "교대 전에 01 뜬 분이 한 분 더 있었어요. 한참 기다리다 애 데리러 가야 한다고 돌아가셨어요." }
       - say: { char: 수경, with: [세라], text: "그분 기록은 열지 마세요. 같은 오류인지 지금은 몰라요." }
@@ -40,12 +40,12 @@ scenes:
     actions:
       - say: { char: 지완, with: [수경], text: "아까 계단까지 찾아온 사람들, 저한테도 옵니까?" }
       - say: { char: 수경, with: [지완], text: "가면 저한테 오라고 하세요. 이 카드 병원에 넣을 때 검수란에 제가 사인했어요." }
-      - say: { char: 수경, with: [지완], text: "역에서 일 줄었다고 병원에도 빨리 깔자고 했어요. 병원에서 숫자 보고 사람을 돌려보낼 줄까지는… 그런 칸이 있는 건 봤어요." }
+      - say: { char: 수경, with: [지완], text: "역에서 사고 줄었다고 병원에도 빨리 넣자고 했어요. 제가 면회 제한 칸도 봤고요." }
       - say: { char: 지완, with: [수경], text: "왜 그때는 그냥 두셨어요?" }
       - say: { char: 수경, with: [지완], text: "제가 손 들면 또 한 달 늦어진대서요. 회의에서 제 차례 넘기니까 그날 바로 끝나더라고요." }
       - say: { channel: action, with: [], text: "수경이 접수표 뒷면에 두 수치가 같은 판독에서 나온 과정을 적고 이름을 쓴다. 가운데 글자에서 볼펜이 한 번 끊긴다." }
-      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서랑 같이 내시면 돼요. 날짜도 나란히 보이게요." }
-      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "제가 처음에 올린 것도 여기 둘게요. 고쳐 달라고 한 날짜랑 오늘 날짜가 같이 있어야 해요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서도 같이 내주세요. 제 서명이 있는 쪽이요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "언제 고쳐 달랬는지, 다른 데 가서 찾게 하고 싶지 않아요." }
       - get: report
       - say: { char: 세라, with: [지완], text: "아버님 다시 찾으세요. 잠깐 들어갔다 나오세요. 이건 제가 맡아 둘게요." }
       - goto: father_again
@@ -59,12 +59,12 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right }
       - say: { char: 동식, with: [지완], text: "밖에서… 오래 있었냐." }
-      - say: { char: 지완, with: [동식], text: "네. 예전에 학교에서도 그랬잖아요. 제가 울면 한 번 더 재라고 하고. 오늘은 제가 안 운다고 못 들어갔어요." }
+      - say: { char: 지완, with: [동식], text: "네. 학교에서도 밖에 오래 세워 놨잖아요. 울면 한 번 더 재고. 오늘은 안 운다고 못 들어갔어요." }
       - say: { char: 동식, with: [지완], text: "그땐 네 선생한테… 네가 겁먹었다고 했다. 화낸 거 아니라고. 선생은 표 다시 보더라." }
       - say: { channel: action, with: [], text: "아버지가 한 번에 더 말하려다 입을 다문다. 지완은 물병을 옮겨 놓고 기다린다." }
       - say: { char: 동식, with: [지완], text: "집에선 울어도 된다고 했어야 했는데." }
       - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "오늘은 제가 겁났다고 했더니 아버지가 옆에 앉으라 그랬잖아요." }
-      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 물부터 드렸죠. 겁났어요. 여기까지 올 때는 병원 이름도 두 번 잘못 말했어요." }
-      - say: { char: 동식, with: [지완], text: "나도." }
+      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 물부터 드렸죠. 겁났어요. 택시에서 병원 이름을 두 번이나 잘못 말했어요." }
+      - say: { char: 동식, with: [지완], text: "나도… 겁나더라. 문 열릴 때마다 쳐다봤다." }
       - say: { channel: action, with: [], text: "지완이 침대 난간 아래로 손을 내린다. 아버지가 검지를 움직여 지완의 손등을 한 번 두드린다." }
       - goto: /4.yaml

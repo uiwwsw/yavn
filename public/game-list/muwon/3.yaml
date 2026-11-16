@@ -218,7 +218,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "얼었다. 얼리면 오래 죽은 몸처럼 보인다."
+          text: "옷자락부터 딱딱하게 얼어 있다. 팔만 굳은 게 아니다."
       - say:
           char: 서연.think
           with: [막쇠]
@@ -295,7 +295,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "종이는 네 번 접혀 있고 접힌 자리가 닳았다. 여러 번 펴 본 종이다."
+          text: "네 번 접힌 자리가 희게 닳았다."
       - say:
           char: 서연.shock
           with: [막쇠]
@@ -331,7 +331,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "알아챘으면 물어봤겠죠. 누구한테 물어봤을까요."
+          text: "그럼 윤길이 이걸 들고 찾아간 데가 있겠네요."
       - get: register_page
       - clearSticker: { id: c4_page, leave: fadeOut }
       - goto: c4_body
@@ -397,7 +397,7 @@ scenes:
       - say:
           char: 서연.resolve
           with: [도원]
-          text: "날짜를 속인 건 얼음이고, 목을 조른 건 손입니다. 따로 적습니다."
+          text: "목에 난 손자국부터 쓰겠습니다. 얼음 얘기는 그다음에 하지요."
       - goto: c4_storeroom
 
   c4_storeroom:
@@ -445,7 +445,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "달마다 열 덩이. 오늘이 처음이 아니다."
+          text: "한 번 더 넘긴다. 지난여름에도 같은 도장이다."
       - say:
           char: 서연.think
           with: [도원]
@@ -507,7 +507,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "맛이 없으니 아이도 뱉지 않는다. 사 간 사람은 약이 순하다고 했을 것이다."
+          text: "쓴맛을 싫어하던 아이도 이 환은 삼켰겠지."
       - say:
           channel: thought
           with: []
@@ -625,7 +625,7 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "다리가 말을 안 듣더라고. 궤짝은 건졌지유? 아가씨 잘못 아니유."
+          text: "아가씨. 다리는 건드리지 말고, 여기 잠깐 앉아 봐요."
       - set: { makssoe_alive: false }
       - goto: c4_farewell
 
@@ -637,27 +637,27 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "아가씨 책… 한글이라 다행이오. 나 같은 놈도 읽겠더라고."
+          text: "그 책 있잖소. 처음엔 닭 그림만 봤수. 나중엔 그 밑에 글도 읽어 봤고."
       - say:
           char: 서연.shock
           with: [막쇠]
-          text: "말 하지 마세요. 손 떼지 말고 누르고 계세요."
+          text: "책은 여기 있어요. 나중에 같이 읽어요. 지금은 가만 계세요."
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "…사십 년을 송장만 봤는데, 내 차례는 영 안 익숙하네."
+          text: "아가씨. 내 말 좀 들어 봐요. 그때 우물가에서도 먼저 봤잖소."
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "다음 송장은… 아가씨가 먼저 읽어 줘요. 남이 글 써 놓기 전에."
+          text: "다음에도 그렇게 해요. 먼저 보고 나중에 적어요."
       - say:
           char: 서연
           with: [막쇠]
-          text: "…네."
+          text: "…듣고 있어요."
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "대답 빨리 하네. 그거 좋수."
+          text: "그래. 처음보다 목소리가 커졌수."
       - say:
           channel: narration
           text: "오작인의 시신은 관에서 거두지 않는다. {{player_name|은}} 그 밤 시장 한 장을 따로 썼다."
@@ -667,7 +667,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "이름 말고는 적을 게 없었다. 나이도 몰랐다. 사십 년을 같이 일한 사람도 없었다."
+          text: "나이 모름. 붓을 들고도 그 두 글자를 고칠 수가 없다."
       - goto: c4_seal_owner
 
   c4_saved:
@@ -701,7 +701,7 @@ scenes:
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "복면은 심부름꾼이오. 심부름꾼한테 칼 쥐여 보내는 사람이 윗사람이지."
+          text: "저놈 혼자 약고 문을 열고 다녔을 리는 없수."
       - goto: c4_seal_owner
 
   c4_seal_owner:

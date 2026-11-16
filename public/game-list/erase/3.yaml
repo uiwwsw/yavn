@@ -92,7 +92,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "자는 사람 얼굴 들이대면 열리더라 그거 좀 무섭더라"
+          text: "그런데 너 자는 얼굴 앞에 댔더니 그냥 열리더라. 그건 좀 그렇지 않아?"
 
   house:
     title: "준성의 집"
@@ -196,7 +196,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "이게 무슨 뜻인지도 모르면서 내가 뭘 한 거야."
+          text: "…기록에는 그렇게 써 있었구나."
       - set: { e3_papers: true }
       - goto: e3_room
 
@@ -283,7 +283,7 @@ scenes:
       - choice:
           key: e2_search
           presentation: explore
-          prompt: "집 대신 여기로 왔다. 불은 반만 켜 둔다."
+          prompt: "자기 자리 쪽 불만 켠다. 빈 사무실에서 지수한테 또 톡이 온다."
           with: []
           camera: wide
           options:
@@ -669,7 +669,7 @@ scenes:
       - say:
           char: 도윤
           with: [지수]
-          text: "나도 아직 정리가 안 돼서… 정리되면 말할게. 진짜로."
+          text: "미안. 오늘은 어디부터 말해야 될지 모르겠어."
       - say:
           char: 지수
           with: [도윤]
@@ -699,7 +699,7 @@ scenes:
           char: 지수
           motion: nod
           with: [도윤]
-          text: "토요일에 피팅 오기 전에 얘기해. 나 아무것도 모르고 또 거기 가고 싶지 않아."
+          text: "토요일 피팅 전에 얘기해 줘. 안 그러면 나 혼자 갈래."
       - goto: /4.yaml
 
   e2_jisu_all:

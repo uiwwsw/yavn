@@ -381,7 +381,7 @@ scenes:
       - say:
           char: 서연
           with: [한명재]
-          text: "혜민서 의녀 박씨가 주셨습니다. 재작년에 돌아가셨습니다."
+          text: "혜민서에 계셨던 박 의녀님입니다. 재작년에 돌아가셨어요."
       - say:
           char: 한명재.cold
           with: [서연]
@@ -492,7 +492,7 @@ scenes:
           channel: thought
           when: { var: deokgu_saved, op: eq, value: false }
           with: [한명재]
-          text: "덕구가 이 말을 들었어야 했다."
+          text: "덕구가 무릎 위에 올린 오른손을 꽉 쥔다."
       - goto: round4
 
   round4:
@@ -616,23 +616,23 @@ scenes:
       - say:
           char: 서연.resolve
           with: [한명재, 도원]
-          text: "셋은 서로 모르는 사이입니다."
+          text: "분이와 박씨, 윤길이 마주친 적은 없습니다."
       - say:
           char: 서연.resolve
           with: [한명재, 도원]
-          text: "한 사람은 바느질을, 한 사람은 약을, 한 사람은 글씨를 했습니다."
+          text: "그래도 세 사람 물건을 한 상에 놓으면 겹치는 게 있습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "주머니를 꿰맨 사람은 그 안에 들어갈 것의 수를 압니다. 삼백입니다."
+          text: "분이가 꿰맨 주머니는 삼백 개입니다. 주문서에 남아 있습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "약재를 판 사람은 그 삼백을 빚을 재료가 어디서 나갔는지 압니다."
+          text: "박씨 장부에는 청심원 삼백 환이 적혀 있습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "시장을 베낀 사람은 그 둘이 어떻게 죽었는지를 글자로 봤습니다."
+          text: "윤길은 두 사람의 시장을 베껴 쓰고 그걸 빌려 간 사람을 따로 적었습니다."
       - say:
           char: 한명재
           with: [서연]
@@ -663,7 +663,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연, 도원]
-          text: "의녀는 처음부터 범인을 정해 두지 않았습니다. 아무나 고르는 겁니다."
+          text: "참의 나리, 방금 의녀께서 지목한 이름도 적어 두시지요."
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -700,7 +700,7 @@ scenes:
     actions:
       - say:
           channel: narration
-          text: "참의는 오래 문서를 넘겼다. 증좌는 이어지는 듯하다가 군데군데 끊겼다."
+          text: "참의는 같은 장으로 몇 번이나 돌아갔다. 그때마다 옆자리 서리가 고개를 저었다."
       - say:
           channel: thought
           with: []
@@ -783,7 +783,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "무원. 스승이 맨 앞장에 두 번 적어 둔 말이다. 왜 두 번인지 오늘 알았다."
+          text: "스승은 ‘원’ 자를 한 번 더 적었다. 먹이 번져 종이 뒷면에까지 자국이 있다."
       - music: dawn
       - bg: { id: dawn_gate, transition: fade, duration: 1200 }
       - branch:
@@ -813,7 +813,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "아저씨. 저 언해 빈칸에 오늘 것부터 적을게요. 거품 없는 익사부터요."
+          text: "아저씨. 책 빈칸에 분이부터 적으려고요. 우물에서 건졌을 때 입과 코에 거품이 없었다고."
       - say:
           char: 막쇠.grin
           with: [서연]
@@ -834,7 +834,7 @@ scenes:
           channel: thought
           when: { var: makssoe_alive, op: eq, value: false }
           with: []
-          text: "판결문에 오작인 막쇠의 이름은 없다. 죽은 사람은 입회할 수 없으니까."
+          text: "판결문에 막쇠의 이름이 없다. 우물가에서 등잔을 든 사람부터 쓰고 싶었다."
       - say:
           channel: thought
           when: { var: deokgu_saved, op: eq, value: false }
@@ -846,11 +846,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "오늘 채울 줄은 네 줄이다. 그 네 줄을 처음 말해 준 사람 이름을 쓸 자리가 비어 있다."
+          text: "네 줄을 적고 붓을 멈췄다. 문이 열리면 같이 나가고 싶었던 사람이 생각났다."
       - say:
           channel: thought
           with: []
-          text: "비워 둔다. 지우는 것보다 비워 두는 편이 나중에 읽는 사람에게 낫다."
+          text: "붓에 묻은 먹을 벼루 가장자리에 훑었다."
       - say:
           channel: narration
           text: "빈칸 옆에 한 줄을 적었다. 억울함이 없게 하라."

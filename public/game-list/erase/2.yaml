@@ -339,7 +339,7 @@ scenes:
           text: "오늘 점심시간에 내 얘기 많이 하던데요. 탕비실 벽이 얇아요."
       - choice:
           key: e2_threat
-          prompt: "층수 표시가 7을 지난다."
+          prompt: "7층 표시를 지나자 귀가 먹먹해진다."
           char: 도윤
           options:
             - text: "아무 말도 하지 않는다"
@@ -429,7 +429,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "같은 층에서 두 번 열렸다. 내린 사람은 한 명이다."
+          text: "문이 다시 닫힐 때까지 손이 버튼에서 안 떨어졌다."
       - move: { id: 도윤, style: reset }
       - goto: e2_absent
 
@@ -572,11 +572,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "전 회사 얘기를 처음 꺼낸 사람 자리에 내 이름이 들어가 있다. 지운 메시지인데 윤주임은 기억한다."
+          text: "윤주임이 전 회사 얘기를 꺼내며 내 이름을 붙였다. 그 메시지는 내 화면에서만 지워졌다."
       - say:
           channel: thought
           with: []
-          text: "윤주임한테 따로 톡을 쓰려다 그만둔다. 뭐라고 보냈는지 물어볼 순 없다."
+          text: "윤주임에게 ‘뭐라고 했어요?’까지 썼다가 전부 지운다."
       - say:
           channel: card
           with: []

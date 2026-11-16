@@ -125,7 +125,7 @@ describe('360 full playthrough', () => {
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
     ]);
-    expect(heard(shown, '아무것도 안 보인다.')).toBe(true);
+    expect(heard(shown, '눈꺼풀을 한 번 더 움직여 본다.')).toBe(true);
     expect(heard(shown, '어둠 속에 희미한 빛들이 보였다.')).toBe(true);
     expect(state.choiceGate.key).toBe('star');
     expect(state.choiceGate.options.map((option) => option.text)).toEqual([STAR_1894, STAR_1952, STAR_1988]);
@@ -135,10 +135,10 @@ describe('360 full playthrough', () => {
   it('names the next player only after the light and keeps that name for their thoughts', async () => {
     await start();
     const { state, shown } = await play({ star: STAR_1952 }, 'l2_heart');
-    const brightness = shown.findIndex(line => line.includes('주변이 서서히 밝아졌다.'));
+    const arrival = shown.findIndex(line => line.includes('부두에 서 있던 사람들이 한꺼번에 고개를 들었다.'));
     const card = shown.indexOf('1952년 12월\n부산\n내 이름은 순임.');
-    expect(brightness).toBeGreaterThan(-1);
-    expect(card).toBeGreaterThan(brightness);
+    expect(arrival).toBeGreaterThan(-1);
+    expect(card).toBeGreaterThan(arrival);
     expect(state.game?.pov).toBe('순임');
     expect(state.storyLog).toContainEqual(expect.objectContaining({
       kind: 'dialogue', channel: 'thought', speaker: '순임',
@@ -213,9 +213,9 @@ describe('360 full playthrough', () => {
     ]);
     // The first life is free: nothing has been handed down to it yet.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다')).toBe(true);
-    // Each dark is a trial with nobody else in it.
+    // The first dark answers in Mansuk's own voice and returns him to his daughter.
     expect(heard(shown, '어디서 나는지 찾다가 그만둔다. 내 안에서 난다')).toBe(true);
-    expect(heard(shown, '묻는 쪽과 답하는 쪽이 같아서 끝나지 않는다')).toBe(true);
+    expect(heard(shown, '끝순아, 하고 불러 봤다')).toBe(true);
     // What one life holds is what the next life cannot do, and it never knows why.
     expect(heard(shown, '나온 말은 그게 아니다')).toBe(true);
     expect(heard(shown, '손은 침대 난간을 잡고 있다')).toBe(true);
@@ -245,18 +245,18 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
     expect(heard(shown, '어디서 봤는지 말을 못 하겠다. 본 적이 없으니까')).toBe(true);
     // The ward is where the person finds out, because a ward is a place with time left in it.
-    expect(heard(shown, '삼십에서 사십이면 열에 서넛이다')).toBe(true);
-    expect(heard(shown, '둘이 다르다는 걸 이제 안다')).toBe(true);
-    expect(heard(shown, '안 되는 쪽이 하필 내가 제일 하고 싶었던 쪽이라는 거다')).toBe(true);
+    expect(heard(shown, '삼십에서 사십. 우리 반 마흔 명이면 열둘에서 열여섯')).toBe(true);
+    expect(heard(shown, '이번엔 내가 입을 다물었다')).toBe(true);
+    expect(heard(shown, '그날은 뻗으려는 손이 내 손 같지가 않았다')).toBe(true);
     expect(heard(shown, '누가 고르는 것 같다. 나 말고')).toBe(true);
-    expect(heard(shown, '아무한테도 안 했다. 열일곱이 할 수 있는 건 그 정도다')).toBe(true);
+    expect(heard(shown, '문 쪽을 보다가 이불을 턱 밑까지 끌어 올렸다')).toBe(true);
     // And it carries into its own trial, which gets one step further than the others.
     expect(heard(shown, '지금 보니 고르는 쪽도 나다')).toBe(true);
     // The editor can read the turn-back point in four hundred other people and not in herself.
-    expect(heard(shown, '먼저 내려놓는 쪽이 덜 미안하다는 걸')).toBe(true);
+    expect(heard(shown, '엄마 쪽 수화기가 제자리에 돌아가 있다')).toBe(true);
     expect(heard(shown, '거기다. 열 번 중에 열 번 다 거기서 돌아간다')).toBe(true);
-    expect(heard(shown, '쓰는 것도 됐고 지우는 것도 됐다. 안 되는 건 보내는 것 하나다')).toBe(true);
-    expect(heard(shown, '하나만 안 되는 게 우연일 수가 있나')).toBe(true);
+    expect(heard(shown, '전송에 손을 대자 손가락이 굳는다')).toBe(true);
+    expect(heard(shown, '‘토요일에’까지는 남겨 둔다')).toBe(true);
     // The fourth face knows her first, and says what is standing behind her when she looks back.
     expect(heard(shown, '아줌마, 어디서 봤는데')).toBe(true);
     expect(heard(shown, '근데 얼굴은 안 보여. 맨날 거기 서 있어')).toBe(true);
@@ -335,7 +335,7 @@ describe('360 full playthrough', () => {
     // The ward is free because nothing has been handed down to it yet, and after it the chain
     // still runs: 더 살고 싶었다 shuts the storehouse, 매이지 말았어야 shuts the train.
     expect(heard(shown, '손목이 돌아가지 않는다')).toBe(true);
-    expect(heard(shown, '열면 안 된다는 생각이 어디서 오는지 모르겠다')).toBe(true);
+    expect(heard(shown, '열어 달라는 소리가 들리는데 손목에 힘이 더 들어간다')).toBe(true);
     expect(heard(shown, '보따리는 벌써 어깨에 있고')).toBe(true);
     expect(state.routeVars).toMatchObject({ lives_done: 4, t_live: true, v_end: 'hold', deg_last: '041.2' });
     expect(state.resolvedEndingId).toBe('onward');

@@ -312,7 +312,7 @@ scenes:
       - choice:
           key: t1_look
           presentation: explore
-          prompt: "출입구 쪽 형광등 하나가 깜빡인다. 여기서도."
+          prompt: "출입구 쪽 형광등이 두 번 깜빡이고 잠잠해진다. 매장에서도 꼭 저 박자였다."
           with: []
           camera: wide
           options:
@@ -691,7 +691,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상혁의 방문이 닫히고, 잠기는 소리가 두 번 난다."
+          text: "상혁이 문을 닫는다. 도어락에서 잠기는 소리가 나고, 안에서 손잡이를 한 번 더 당긴다."
 
   quiet_customer:
     title: "044번"
@@ -873,7 +873,7 @@ scenes:
           text: "손에 쥔 물건 · 그린마트 연필 1"
       - choice:
           key: t1_pencil
-          prompt: "C-14. 광철과의 거리는 세 걸음."
+          prompt: "기둥에 C-14. 광철이 차 문을 잡고 서 있다."
           with: [광철]
           timeoutMs: 9000
           timeoutOptionIndex: 0
@@ -902,7 +902,7 @@ scenes:
           text: "번호표 뽑고 기다려."
       - choice:
           key: t1_pencil_again
-          prompt: "C-14. 운전석 문이 다시 열린다. 거리는 세 걸음."
+          prompt: "C-14. 또 운전석 문부터 열린다."
           with: [광철]
           options:
             - text: "연필을 쥔다"
@@ -960,7 +960,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "오늘 오픈. 9시 반까지."
+          text: "손을 펴 보는데 손가락이 연필을 쥘 때처럼 굽어 있다. 오늘 오픈. 9시 반까지."
       - say:
           channel: action
           with: []

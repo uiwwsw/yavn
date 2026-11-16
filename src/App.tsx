@@ -4228,7 +4228,9 @@ export default function App() {
                 <SaveSlotMeta slot={startGate.saveStatus.slot} />
               </div>
             )}
-            <p className="start-gate-hint">{startGate.musicUrl && !startGateAudioPlaying ? t("화면을 눌러 음악과 함께 시작하세요") : t("당신의 선택을 기다리고 있습니다")}</p>
+            {bgmEnabled && startGate.musicUrl && !startGateAudioPlaying ? (
+              <p className="start-gate-hint">{t("화면을 눌러 음악과 함께 시작하세요")}</p>
+            ) : null}
             {startGateError && <div className="start-gate-load-error" role="alert">
               <strong>{t("이야기를 열지 못했습니다.")}</strong><p>{startGateError}</p><span>{t("시작 버튼을 눌러 다시 시도할 수 있습니다.")}</span>
             </div>}
@@ -4242,8 +4244,15 @@ export default function App() {
             {startGate.musicUrl && <button type="button" aria-pressed={startGateAudioPlaying}
               disabled={startGateLaunching} onPointerDown={(event) => event.stopPropagation()}
               onClick={() => {
-                if (startGateAudioPlaying) { setBgmEnabled(false); setBgmEnabledState(false); }
-                else { setBgmEnabled(true); setBgmEnabledState(true); tryPlayStartGateMusic(); }
+                if (startGateAudioPlaying) {
+                  stopStartGateMusic();
+                  setBgmEnabled(false);
+                  setBgmEnabledState(false);
+                } else {
+                  setBgmEnabled(true);
+                  setBgmEnabledState(true);
+                  tryPlayStartGateMusic();
+                }
               }}>{startGateAudioPlaying ? t("♫ 소리 켜짐") : t("♪ 소리 켜기")}</button>}
           </div>
         </div>

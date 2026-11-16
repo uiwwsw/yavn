@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "포스기 옆 호출기에 027이 떠 있다. 해수 앞에는 아직 손님이 없다."
+          text: "호출기에 027이 뜬다. 손님이 오기도 전에 해수는 허리를 조금 숙인다."
           continueLabel: "027번을 호출한다"
       - set: { t0_refund_first: true }
       - goto: ticket
@@ -29,12 +29,12 @@ scenes:
     title: "단톡방"
     actions:
       - bg: { id: home_hall, transition: cut }
-      - place: "같은 날 오전 8:12 · 상봉동"
+      - place: "그날 아침 8:12 · 출근 전"
       - music: fluoro
       - say:
           channel: system
           with: []
-          text: "레플라 REPLA — 지금 사는 도시를 하나 더. 거리도, 가게도, 사람도 그대로입니다. 귀 뒤에 밴드를 붙이고 앉으면 바로 그곳입니다."
+          text: "레플라 REPLA · 우리 동네에서 바로 시작하세요. 밴드를 착용하면 지금 계신 곳과 같은 장소에 접속합니다."
           autoAdvance: 3484
       - say:
           channel: system
@@ -130,7 +130,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "레플라 — 오늘을 한 번 더. 지금 가입하면 첫 달 무료 · 프리미엄 월 129,000원 · 무제한 월 219,000원"
+          text: "레플라 — 퇴근 후에도 쓰던 자리에 그대로. 첫 달 무료 · 프리미엄 월 129,000원 · 무제한 월 219,000원"
           autoAdvance: 3144
       - char: { id: 해수, position: left }
       - char: { id: 경준, position: right }
@@ -347,7 +347,7 @@ scenes:
           char: 지영
           motion: sigh
           with: [해수]
-          text: "그럼 계산대 밑 둘째 서랍에 둔다. 영수증 상자 위. 너 그 서랍 하루에 서른 번은 열잖아. 버리든가."
+          text: "둘째 서랍에 둘게. 네가 내일 영수증 꺼내다가 버려."
       - goto: after_coupon
 
   after_coupon:
@@ -495,7 +495,7 @@ scenes:
           char: 지영
           motion: sigh
           with: [해수]
-          text: "너 또 지갑 열었지. 1,580원. 10원짜리 없어서 동전 통에서 30원 빌린 것까지 봤어. 그거 다 합치면 너 지금쯤 차 한 대 뽑았어."
+          text: "너 또 지갑 열었지. 1,580원. 모자라니까 동전 통에서 삼십 원 꺼내고. 내 앞에서 서랍을 그렇게 살살 닫으면 내가 몰라?"
       - goto: kwang_after
 
   kwang_voice:
@@ -957,7 +957,7 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "지난달 고지서 많이 나왔어."
+          text: "고지서 신발장에 놓는다. 지난달 것도 있어."
       - say:
           char: 상혁
           with: []

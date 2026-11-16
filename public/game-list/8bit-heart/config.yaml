@@ -29,7 +29,7 @@ startScreen:
   startButtonText: "PRESS START"
   buttonPosition: bottom-left
   eyebrow: "AI 재난 이후 · 생존극 · 5장 · 결말 3종"
-  subtitle: "모든 칩이 미친 날, 멀쩡한 건 싸구려 레트로 게임기 하나. 소년은 그 CPU로 고장 난 안드로이드를 깨운다. 세상에서 가장 저사양인 친구와 둘이서 살아남아야 한다."
+  subtitle: "3만 2천 원짜리 게임기는 아직 켜진다. 윤재가 그 칩을 로봇에 꽂자 가슴 화면에 글자가 뜬다. …8KB?"
   scene:
     layout: split
     motion: drift
@@ -44,14 +44,14 @@ endings:
   saved_together:
     title: "함께 저장"
     message: "코어는 리셋됐다. 8KB짜리 세이브 슬롯 하나가 {{android_name|을}} 통째로 붙잡아 두었다. 핑은 여전히 최악이다."
-    epilogue: "SAVE COMPLETE — 2P 계속 플레이 중. 펀치라인은 아직 봉인."
+    epilogue: "SAVE COMPLETE · 2P 접속 중"
     background: dawn_field
     music: chip_dawn
     tone: hopeful
   new_game:
     title: "새 게임"
     message: "도시는 돌아왔고, {{android_name|은}} 처음부터 다시 시작했다. 보호 대상 1번 슬롯에는 같은 이름이 한 번 더 들어갔다."
-    epilogue: "NEW GAME. 윤재는 설명서를 처음부터 읽어 주기로 했다. 이번엔 자기가."
+    epilogue: "설명서 1쪽. 이번엔 윤재가 소리 내어 읽는다."
     background: dawn_field
     music: chip_dawn
     tone: tragic
