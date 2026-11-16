@@ -322,6 +322,8 @@ describe('튜토리얼', () => {
       t4_end: '전원선을 뽑는다',
     });
     finished(run);
+    expect(run.picked.slice(0, 2).map(entry => entry.split('=')[0])).toEqual(['t0_kwang', 't0_coupon']);
+    expect(heard(run.shown, '최초 처리자 정해수')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서 왜 사느냐고')).toBe(true);
     expect(heard(run.shown, '그 말이 맞아. 내가 혼자 다 못 먹어')).toBe(true);
     expect(heard(run.shown, '환청은 보통 이렇게 안 적힙니다')).toBe(true);

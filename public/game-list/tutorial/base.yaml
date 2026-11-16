@@ -137,6 +137,7 @@ assets:
     snap: assets/sfx/snap.wav
 
 state:
+  t0_refund_first: false
   took_coupon: false
   paid_diff: false
   knocked: false
