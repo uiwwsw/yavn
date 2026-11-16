@@ -1,15 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000"><!-- art direction edition -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cb7259"/><stop offset="0.7" stop-color="#c76750"/><stop offset="1" stop-color="#b25e49"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b05e48"/><stop offset="0.7" stop-color="#aa513d"/><stop offset="1" stop-color="#994b39"/></linearGradient></defs>
 <title>다온</title>
-<ellipse cx="400" cy="424" rx="134" ry="140" fill="#1f1a18"/>
-<rect x="358" y="544" width="84" height="104" fill="#e8c7a4"/>
-<ellipse cx="400" cy="450" rx="122" ry="130" fill="#e8c7a4"/>
-<path d="M278 438 Q284 322 400 312 Q516 322 522 438 Q470 368 400 362 Q330 368 278 438Z" fill="#1f1a18"/>
-<path d="M268 452 Q262 540 278 596 L312 586 Q296 526 300 456Z" fill="#1f1a18"/>
-<path d="M532 452 Q538 540 522 596 L488 586 Q504 526 500 456Z" fill="#1f1a18"/>
-<path d="M336 640 C240 652 148 706 126 852 L114 1000 L686 1000 L674 852 C652 706 560 652 464 640Z" fill="#d8614a"/>
-<path d="M336 640 L400 726 L464 640 L492 664 L400 772 L308 664Z" fill="#b84a36"/>
-<rect x="150" y="878" width="104" height="36" rx="18" fill="#b84a36"/>
-<rect x="546" y="878" width="104" height="36" rx="18" fill="#b84a36"/>
-<rect x="352" y="846" width="96" height="14" rx="7" fill="#f0e2cf"/>
-<rect x="352" y="876" width="60" height="14" rx="7" fill="#f0e2cf"/>
+<ellipse cx="400" cy="424" rx="134" ry="140" fill="#26201d"/>
+<rect x="358" y="544" width="84" height="104" fill="#e1c4a2"/>
+<ellipse cx="400" cy="450" rx="122" ry="130" fill="#e1c4a2"/>
+<path d="M278 438 Q284 322 400 312 Q516 322 522 438 Q470 368 400 362 Q330 368 278 438Z" fill="#26201d"/>
+<path d="M268 452 Q262 540 278 596 L312 586 Q296 526 300 456Z" fill="#26201d"/>
+<path d="M532 452 Q538 540 522 596 L488 586 Q504 526 500 456Z" fill="#26201d"/>
+<path d="M336 640 C240 652 148 706 126 852 L114 1000 L686 1000 L674 852 C652 706 560 652 464 640Z" fill="url(#art-ink-0)"/>
+<path d="M336 640 L400 726 L464 640 L492 664 L400 772 L308 664Z" fill="url(#art-ink-1)"/>
+<rect x="150" y="878" width="104" height="36" rx="18" fill="#aa513d"/>
+<rect x="546" y="878" width="104" height="36" rx="18" fill="#aa513d"/>
+<rect x="352" y="846" width="96" height="14" rx="7" fill="#ebdec7"/>
+<rect x="352" y="876" width="60" height="14" rx="7" fill="#ebdec7"/>
+
 </svg>

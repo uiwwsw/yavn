@@ -17,7 +17,7 @@ showcase:
   label: "ERASE · 5 CHAPTERS"
   backgroundColor: "#0f1420"
   image:
-    positionX: 65
+    positionX: 72
     positionY: 50
     scale: 1
     offsetX: 0

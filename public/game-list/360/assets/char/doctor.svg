@@ -1,17 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000"><!-- art direction edition -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a4a7a4"/><stop offset="0.7" stop-color="#9da1a2"/><stop offset="1" stop-color="#8e9090"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ded9ca"/><stop offset="0.7" stop-color="#ded9ca"/><stop offset="1" stop-color="#ded9ca"/></linearGradient></defs>
 <title>의사</title>
-<ellipse cx="400" cy="416" rx="114" ry="124" fill="#2f2a26"/>
-<rect x="362" y="528" width="76" height="98" fill="#e0c2a4"/>
-<ellipse cx="400" cy="440" rx="106" ry="118" fill="#e0c2a4"/>
-<path d="M294 424 Q300 330 400 322 Q500 330 506 424 Q452 366 400 360 Q348 366 294 424Z" fill="#2f2a26"/>
-<path d="M330 620 C242 634 156 688 134 836 L122 1000 L678 1000 L666 836 C644 688 558 634 470 620Z" fill="#f2f1ec"/>
-<path d="M352 622 L400 702 L448 622 L400 622Z" fill="#9aa3ab"/>
-<path d="M352 622 L330 620 C318 700 316 850 322 1000 L372 1000 C362 840 358 706 372 640Z" fill="#dedcd4"/>
-<path d="M448 622 L470 620 C482 700 484 850 478 1000 L428 1000 C438 840 442 706 428 640Z" fill="#dedcd4"/>
-<path d="M372 640 Q400 700 428 640" stroke="#6f7a84" stroke-width="12" fill="none"/>
-<path d="M372 640 Q346 760 362 830" stroke="#6f7a84" stroke-width="12" fill="none"/>
-<path d="M428 640 Q454 760 438 830" stroke="#6f7a84" stroke-width="12" fill="none"/>
-<circle cx="362" cy="846" r="20" fill="#6f7a84"/>
-<circle cx="438" cy="846" r="20" fill="#6f7a84"/>
-<rect x="498" y="700" width="78" height="26" rx="4" fill="#cfd4d8"/>
+<ellipse cx="400" cy="416" rx="114" ry="124" fill="#352f2a"/>
+<rect x="362" y="528" width="76" height="98" fill="#dac0a1"/>
+<ellipse cx="400" cy="440" rx="106" ry="118" fill="#dac0a1"/>
+<path d="M294 424 Q300 330 400 322 Q500 330 506 424 Q452 366 400 360 Q348 366 294 424Z" fill="#352f2a"/>
+<path d="M330 620 C242 634 156 688 134 836 L122 1000 L678 1000 L666 836 C644 688 558 634 470 620Z" fill="#efebdf"/>
+<path d="M352 622 L400 702 L448 622 L400 622Z" fill="url(#art-ink-0)"/>
+<path d="M352 622 L330 620 C318 700 316 850 322 1000 L372 1000 C362 840 358 706 372 640Z" fill="url(#art-ink-1)"/>
+<path d="M448 622 L470 620 C482 700 484 850 478 1000 L428 1000 C438 840 442 706 428 640Z" fill="url(#art-ink-1)"/>
+<path d="M372 640 Q400 700 428 640" stroke="#747b7e" stroke-width="12" fill="none"/>
+<path d="M372 640 Q346 760 362 830" stroke="#747b7e" stroke-width="12" fill="none"/>
+<path d="M428 640 Q454 760 438 830" stroke="#747b7e" stroke-width="12" fill="none"/>
+<circle cx="362" cy="846" r="20" fill="#747b7e"/>
+<circle cx="438" cy="846" r="20" fill="#747b7e"/>
+<rect x="498" y="700" width="78" height="26" rx="4" fill="#cfd0cc"/>
+
 </svg>

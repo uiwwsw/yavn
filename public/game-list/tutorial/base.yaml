@@ -5,13 +5,13 @@ assets:
     cs_desk_bleed: assets/bg/cs_desk_bleed.svg
     breakroom: assets/bg/breakroom.svg
     home_hall: assets/bg/home_hall.svg
-    haesu_room: assets/bg/haesu_room.webp
+    haesu_room: assets/bg/haesu_room.svg
     sim_void: assets/bg/sim_void.svg
     sim_desk: assets/bg/sim_desk.svg
     sim_parking: assets/bg/sim_parking.svg
     parking_real: assets/bg/parking_real.svg
     police_room: assets/bg/police_room.svg
-    goshiwon: assets/bg/goshiwon.webp
+    goshiwon: assets/bg/goshiwon.svg
     server_building: assets/bg/server_building.svg
     server_room: assets/bg/server_room.svg
     pencil_sticker: assets/items/pencil.svg
@@ -24,7 +24,7 @@ assets:
     해수:
       name: "정해수"
       placement: prompt-top
-      base: assets/char/haesu.webp
+      base: assets/char/haesu.svg
       facing: front
       defaultDelivery: calm
       defaultFraming: portrait
@@ -32,9 +32,9 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        service: assets/char/haesu-service.webp
-        blank: assets/char/haesu-blank.webp
-        shaken: assets/char/haesu-shaken.webp
+        service: assets/char/haesu-service.svg
+        blank: assets/char/haesu-blank.svg
+        shaken: assets/char/haesu-shaken.svg
       emotionMotions:
         shaken: freeze
     상혁:
@@ -110,7 +110,7 @@ assets:
     태민:
       name: "기태민"
       placement: prompt-top
-      base: assets/char/taemin.webp
+      base: assets/char/taemin.svg
       facing: left
       calibration: { x: -16 }
       defaultDelivery: nervous
@@ -119,8 +119,8 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        laugh: assets/char/taemin-laugh.webp
-        afraid: assets/char/taemin-afraid.webp
+        laugh: assets/char/taemin-laugh.svg
+        afraid: assets/char/taemin-afraid.svg
       emotionMotions:
         afraid: tremble
     엄마:

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-16T06:04:45.633Z",
+  "generatedAt": "2026-11-16T07:13:55.831Z",
   "games": [
     {
       "id": "360",
       "name": "360",
       "path": "/game-list/360/",
       "author": "uiwwsw",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "summary": "죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고, 그중 하나만 쥐고 나아간다. 다음 사람은 까닭도 모른 채 그 하나대로 산다. 1809년 굶주린 겨울부터 2026년 편집실까지, 다섯 삶을 잇는 5장. 결말 4종.",
       "summaryEn": "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives, from a starving winter in 1809 to an editing room in 2026. A Korean-language story in five chapters with four endings.",
       "thumbnail": "/game-list/360/assets/bg/title.svg",
@@ -32,7 +32,7 @@
         "label": "360 · 5 CHAPTERS",
         "backgroundColor": "#07080b",
         "image": {
-          "positionX": 60,
+          "positionX": 64,
           "positionY": 50,
           "scale": 1,
           "offsetX": 0,
@@ -64,7 +64,7 @@
           "complete"
         ],
         "image": "/game-list/360/assets/bg/title.svg",
-        "imageAlt": "검은 바탕에 흩어진 점들이 구를 이루고, 그중 한 점만 밝게 빛나는 그림"
+        "imageAlt": "밤에 다섯 조각의 종이가 구체를 이루고, 궤도에 별 하나가 빛나는 그림"
       }
     },
     {
@@ -72,7 +72,7 @@
       "name": "8비트 심장",
       "path": "/game-list/8bit-heart/",
       "author": "uiwwsw",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "summary": "AI 재난으로 모든 칩이 미쳐 버린 날, 멀쩡한 건 싸구려 레트로 게임기 하나. 소년은 그 CPU로 고장 난 안드로이드를 깨운다. 느리고 엉뚱한, 세상에서 가장 저사양인 친구와의 생존기. 5장, 결말 3종.",
       "summaryEn": "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits — a survival story with three endings.",
       "thumbnail": "/game-list/8bit-heart/assets/bg/title.svg",
@@ -122,7 +122,7 @@
           "pixel-art"
         ],
         "image": "/game-list/8bit-heart/assets/bg/title.svg",
-        "imageAlt": "어두운 도시를 바라보는 소년과 안드로이드, 앞에 빛나는 레트로 게임기"
+        "imageAlt": "정전된 도시 위에 픽셀 하트가 켜진 휴대 게임기"
       }
     },
     {
@@ -130,7 +130,7 @@
       "name": "무원 — 한성 검안록",
       "path": "/game-list/muwon/",
       "author": "uiwwsw",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "summary": "1792년 한성, 혜민서 의녀가 한글 검시 지침서로 억울한 죽음을 읽는다. 시신 그림표를 직접 살피고 옛 검시법으로 실험해, 고문으로 받아 낸 자백을 증거로 뒤집는 5장 검시 추리극. 결말 4종.",
       "summaryEn": "Hanseong, 1792. A royal clinic maid reads the dead with a newly translated forensic manual. Examine body charts, run historical forensic tests and overturn a confession beaten out of an innocent man. Five chapters, four endings.",
       "thumbnail": "/game-list/muwon/assets/bg/title.svg",
@@ -157,7 +157,7 @@
         "label": "COMPLETE · 5 CHAPTERS",
         "backgroundColor": "#141c26",
         "image": {
-          "positionX": 62,
+          "positionX": 68,
           "positionY": 50,
           "scale": 1,
           "offsetX": 0,
@@ -185,7 +185,7 @@
           "consequential-choices"
         ],
         "image": "/game-list/muwon/assets/share/og.png",
-        "imageAlt": "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
+        "imageAlt": "목판화처럼 겹친 기와지붕 아래 등잔과 실이 걸린 우물"
       }
     },
     {
@@ -220,7 +220,7 @@
         "label": "OVERFLOW · 5 CHAPTERS",
         "backgroundColor": "#0c111a",
         "image": {
-          "positionX": 30,
+          "positionX": 72,
           "positionY": 50,
           "scale": 1,
           "offsetX": 0,
@@ -258,7 +258,7 @@
           "complete"
         ],
         "image": "/game-list/overflow/assets/bg/title.svg",
-        "imageAlt": "선으로만 그린 얼굴 옆에 숫자 1이 서 있고, 오른쪽은 수많은 숫자가 벽처럼 쌓인 그림"
+        "imageAlt": "병동 자동문과 황갈색 숫자 01이 빛나는 판독기"
       }
     },
     {
@@ -266,7 +266,7 @@
       "name": "튜토리얼",
       "path": "/game-list/tutorial/",
       "author": "uiwwsw",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "summary": "현실 복제 시뮬레이션 레플라가 모두의 취미가 된 근미래. 마트 고객센터 12년 차 정해수는 체험판 튜토리얼에서 처음으로 화를 내고, 다음 날 같은 장소에서 진짜 사건이 일어난다. 폭언·살인 사건·중독이 나오는 5장 SF 미스터리.",
       "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
       "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
@@ -291,7 +291,7 @@
         "label": "TUTORIAL · 5 CHAPTERS",
         "backgroundColor": "#e4efe9",
         "image": {
-          "positionX": 50,
+          "positionX": 60,
           "positionY": 50,
           "scale": 1,
           "offsetX": 0,
@@ -322,7 +322,7 @@
           "complete"
         ],
         "image": "/game-list/tutorial/assets/bg/title.svg",
-        "imageAlt": "형광등 아래 마트 고객센터 창구가 오른쪽으로 갈수록 선만 남은 와이어프레임으로 바뀌는 그림"
+        "imageAlt": "마트 고객센터가 오른쪽에서 청색 도면으로 이어지는 그림"
       }
     },
     {
@@ -330,7 +330,7 @@
       "name": "ERASE",
       "path": "/game-list/erase/",
       "author": "uiwwsw",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "summary": "결혼을 앞둔 도윤과 늘 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 성적 긴장·HIV 불안·자기 파괴적 생각이 나오는 5장 심리 드라마.",
       "summaryEn": "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A five-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",
@@ -355,7 +355,7 @@
         "label": "ERASE · 5 CHAPTERS",
         "backgroundColor": "#0f1420",
         "image": {
-          "positionX": 65,
+          "positionX": 72,
           "positionY": 50,
           "scale": 1,
           "offsetX": 0,
@@ -386,7 +386,7 @@
           "mature"
         ],
         "image": "/game-list/erase/assets/bg/title.svg",
-        "imageAlt": "밤의 도시와 반쯤 지워진 사진이 떠 있는 휴대폰 화면"
+        "imageAlt": "겹친 인화 사진 두 장과 오려 낸 얼굴의 빈자리"
       }
     },
     {

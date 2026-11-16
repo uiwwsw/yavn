@@ -1,32 +1,32 @@
 assets:
   backgrounds:
-    office: assets/bg/office.webp
-    office_night: assets/bg/office_night.webp
-    dongsik_house: assets/bg/dongsik_house.webp
-    ward_bed: assets/bg/ward_bed.webp
-    ward_entry: assets/bg/ward_entry.webp
-    cafe: assets/bg/cafe.webp
-    hospital_stairs: assets/bg/hospital_stairs.webp
-    studio: assets/bg/studio.webp
-    wolgye_station: assets/bg/wolgye_station.webp
+    office: assets/bg/office.svg
+    office_night: assets/bg/office_night.svg
+    dongsik_house: assets/bg/dongsik_house.svg
+    ward_bed: assets/bg/ward_bed.svg
+    ward_entry: assets/bg/ward_entry.svg
+    cafe: assets/bg/cafe.svg
+    hospital_stairs: assets/bg/hospital_stairs.svg
+    studio: assets/bg/studio.svg
+    wolgye_station: assets/bg/wolgye_station.svg
     raw_sticker: assets/items/raw_print.svg
   characters:
     지완:
       name: "문지완"
       placement: prompt-top
-      base: assets/char/jiwan.webp
+      base: assets/char/jiwan.svg
       facing: left
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        tight: assets/char/jiwan-tight.webp
-        break: assets/char/jiwan-break.webp
+        tight: assets/char/jiwan-tight.svg
+        break: assets/char/jiwan-break.svg
     도겸:
       name: "임도겸"
       placement: prompt-top
-      base: assets/char/dogyeom.webp
+      base: assets/char/dogyeom.svg
       facing: left
       defaultFraming: portrait
       framings:
@@ -34,38 +34,38 @@ assets:
     동식:
       name: "문동식"
       placement: prompt-top
-      base: assets/char/dongsik.webp
+      base: assets/char/dongsik.svg
       facing: left
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
       emotions:
-        far: assets/char/dongsik-far.webp
+        far: assets/char/dongsik-far.svg
     동식_연락처:
       name: "아버지"
       placement: offstage
-      base: assets/char/dongsik.webp
+      base: assets/char/dongsik.svg
     수경:
       name: "한수경"
       placement: prompt-top
-      base: assets/char/sukyung.webp
+      base: assets/char/sukyung.svg
       facing: left
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
       emotions:
-        tired: assets/char/sukyung-tired.webp
+        tired: assets/char/sukyung-tired.svg
     목격자:
       name: "???"
       placement: prompt-top
-      base: assets/char/sukyung-tired.webp
+      base: assets/char/sukyung-tired.svg
       facing: left
       framings:
         distant: { scale: 0.66, cropBottom: 0.26, y: -7 }
     세라:
       name: "윤세라"
       placement: prompt-top
-      base: assets/char/sera.webp
+      base: assets/char/sera.svg
       facing: left
       defaultFraming: portrait
       framings:

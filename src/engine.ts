@@ -3086,7 +3086,6 @@ function typeDialog(
     useVNStore.getState().setDialog({
       typing: false,
       visibleText: '',
-      typingIntensity: 0,
     });
     onDone();
     return;
@@ -3098,8 +3097,6 @@ function typeDialog(
     typing: true,
     visibleText: '',
     delivery,
-    typingIntensity: 0,
-    typingPulse: 0,
   });
   const stepTyping = (frameTimestamp: number) => {
     typeFrame = undefined;
@@ -3118,13 +3115,10 @@ function typeDialog(
       return;
     }
 
-    const currentPulse = useVNStore.getState().dialog.typingPulse;
     if (stepIndex >= plan.length) {
       useVNStore.getState().setDialog({
         typing: false,
         visibleText: text,
-        typingIntensity: 0,
-        typingPulse: currentPulse + 1,
       });
       onDone();
       return;
@@ -3132,8 +3126,6 @@ function typeDialog(
 
     useVNStore.getState().setDialog({
       visibleText: latestDueStep.visibleText,
-      typingIntensity: latestDueStep.intensity,
-      typingPulse: currentPulse + 1,
     });
     typeFrame = window.requestAnimationFrame(stepTyping);
   };
@@ -4851,8 +4843,6 @@ function runToNextPause(loopGuard = 0) {
       erase: undefined,
       continueLabel: undefined,
       delivery: 'neutral',
-      typingIntensity: 0,
-      typingPulse: 0,
     });
     if (action.choice.timeoutMs) {
       choiceTimer = storyClock.set(() => {
@@ -5031,8 +5021,6 @@ function runToNextPause(loopGuard = 0) {
       erase: undefined,
       continueLabel: undefined,
       delivery: 'neutral',
-      typingIntensity: 0,
-      typingPulse: 0,
     });
     return;
   }
@@ -5132,8 +5120,6 @@ function runToNextPause(loopGuard = 0) {
       erase: action.say.erase,
       continueLabel: action.say.continueLabel,
       delivery,
-      typingIntensity: 0,
-      typingPulse: 0,
     });
     // A line held on screen is held for someone reading it. Skipping read lines goes past it.
     if (sayWaitMs > 0 && !useVNStore.getState().skipReadActive) {
@@ -5970,7 +5956,6 @@ export function handleAdvance(confirmAction = false) {
       useVNStore.getState().setDialog({
         typing: false,
         visibleText: state.dialog.fullText,
-        typingIntensity: 0,
       });
       schedulePlayerAutoAdvance();
       return;

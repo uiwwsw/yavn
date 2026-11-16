@@ -11,7 +11,7 @@ seo:
     - "반전"
     - "현대극"
   image: "assets/bg/title.svg"
-  imageAlt: "밤의 도시와 반쯤 지워진 사진이 떠 있는 휴대폰 화면"
+  imageAlt: "겹친 인화 사진 두 장과 오려 낸 얼굴의 빈자리"
 textSpeed: 32
 autoSave: true
 clickToInstant: true
@@ -43,7 +43,7 @@ startScreen:
     intensity: 0.35
     fog: true
     light: breathe
-    accent: "#3fd0c9"
+    accent: "#b05b67"
 endings:
   erase_loop:
     title: "ERASE"

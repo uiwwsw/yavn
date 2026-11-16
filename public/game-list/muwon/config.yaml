@@ -13,7 +13,7 @@ seo:
     - "추리 게임"
     - "선택형 이야기"
   image: "assets/share/og.png"
-  imageAlt: "밤의 한성 지붕 너머 등불 하나가 걸린 우물"
+  imageAlt: "목판화처럼 겹친 기와지붕 아래 등잔과 실이 걸린 우물"
 textSpeed: 30
 autoSave: true
 clickToInstant: true
@@ -25,7 +25,7 @@ startScreen:
   music: assets/music/night-well.flac
   image: assets/bg/title.svg
   imagePosition: "50% 50%"
-  mobileImagePosition: "70% 50%"
+  mobileImagePosition: "77% 50%"
   showTitle: true
   titleColor: "#f0d9a8"
   startButtonText: "검안 시작"
@@ -41,7 +41,7 @@ startScreen:
     intensity: 0.5
     fog: true
     light: breathe
-    accent: "#f0b65a"
+    accent: "#bf8156"
 endings:
   muwon:
     title: "무원(無冤)"

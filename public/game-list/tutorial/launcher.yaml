@@ -17,7 +17,7 @@ showcase:
   label: "TUTORIAL · 5 CHAPTERS"
   backgroundColor: "#e4efe9"
   image:
-    positionX: 50
+    positionX: 60
     positionY: 50
     scale: 1
     offsetX: 0

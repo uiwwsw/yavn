@@ -46,8 +46,6 @@ type DialogState = {
   erase?: boolean;
   continueLabel?: string;
   delivery: DialogueDelivery;
-  typingIntensity: number;
-  typingPulse: number;
 };
 
 type VNState = {
@@ -153,8 +151,6 @@ const initialDialog: DialogState = {
   unskippable: false,
   channel: 'dialogue',
   delivery: 'neutral',
-  typingIntensity: 0,
-  typingPulse: 0,
 };
 
 function haveSameOrderedIds(left: readonly string[], right: readonly string[]): boolean {

@@ -11,7 +11,7 @@ seo:
     - "시대극"
     - "미스터리"
   image: "assets/bg/title.svg"
-  imageAlt: "검은 바탕에 흩어진 점들이 구를 이루고, 그중 한 점만 밝게 빛나는 그림"
+  imageAlt: "밤에 다섯 조각의 종이가 구체를 이루고, 궤도에 별 하나가 빛나는 그림"
 textSpeed: 32
 autoSave: true
 clickToInstant: true
@@ -43,7 +43,7 @@ startScreen:
     intensity: 0.25
     fog: false
     light: breathe
-    accent: "#e8c98a"
+    accent: "#c79c58"
 endings:
   onward:
     title: "한 점"

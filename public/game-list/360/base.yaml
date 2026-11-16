@@ -5,9 +5,9 @@ assets:
     void: assets/bg/void.svg
     void_light: assets/bg/void_light.svg
     void_near: assets/bg/void_near.svg
-    jemulpo_yard: assets/bg/jemulpo_yard.webp
+    jemulpo_yard: assets/bg/jemulpo_yard.svg
     jemulpo_room: assets/bg/jemulpo_room.svg
-    busan_market: assets/bg/busan_market.webp
+    busan_market: assets/bg/busan_market.svg
     market_fire: assets/bg/market_fire.svg
     busan_shack: assets/bg/busan_shack.svg
     seoul_room: assets/bg/seoul_room.svg
@@ -56,17 +56,17 @@ assets:
     끝순:
       name: "끝순"
       placement: prompt-top
-      base: assets/char/kkeutsun.webp
+      base: assets/char/kkeutsun.svg
       facing: front
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
       emotions:
-        sick: assets/char/kkeutsun-sick.webp
+        sick: assets/char/kkeutsun-sick.svg
     봉구:
       name: "서기 봉구"
       placement: prompt-top
-      base: assets/char/bonggu.webp
+      base: assets/char/bonggu.svg
       facing: front
       defaultFraming: portrait
       framings:
@@ -82,7 +82,7 @@ assets:
     영호:
       name: "영호"
       placement: prompt-top
-      base: assets/char/yeongho.webp
+      base: assets/char/yeongho.svg
       facing: front
       defaultFraming: portrait
       framings:
@@ -98,7 +98,7 @@ assets:
     기호:
       name: "통역 기호"
       placement: prompt-top
-      base: assets/char/giho.webp
+      base: assets/char/giho.svg
       facing: front
       defaultFraming: portrait
       framings:
@@ -138,7 +138,7 @@ assets:
     복례:
       name: "복례"
       placement: prompt-top
-      base: assets/char/bongnye.webp
+      base: assets/char/bongnye.svg
       facing: front
       defaultFraming: portrait
       framings:

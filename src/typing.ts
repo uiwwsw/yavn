@@ -9,14 +9,12 @@ export type InlineSpeedSegment = {
 export type TypingStep = {
   visibleText: string;
   delayMs: number;
-  intensity: number;
   grapheme: string;
 };
 
 type TypingProfile = {
   speedMultiplier: number;
   jitter: number;
-  intensity: number;
   commaPauseMs: number;
   sentencePauseMs: number;
   ellipsisPauseMs: number;
@@ -30,7 +28,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   neutral: {
     speedMultiplier: 1,
     jitter: 0.02,
-    intensity: 0.12,
     commaPauseMs: 80,
     sentencePauseMs: 150,
     ellipsisPauseMs: 280,
@@ -39,7 +36,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   calm: {
     speedMultiplier: 0.9,
     jitter: 0.03,
-    intensity: 0.1,
     commaPauseMs: 110,
     sentencePauseMs: 190,
     ellipsisPauseMs: 330,
@@ -48,7 +44,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   nervous: {
     speedMultiplier: 1.02,
     jitter: 0.3,
-    intensity: 0.54,
     commaPauseMs: 115,
     sentencePauseMs: 210,
     ellipsisPauseMs: 480,
@@ -57,7 +52,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   angry: {
     speedMultiplier: 1.2,
     jitter: 0.12,
-    intensity: 0.78,
     commaPauseMs: 55,
     sentencePauseMs: 105,
     ellipsisPauseMs: 210,
@@ -66,7 +60,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   whisper: {
     speedMultiplier: 0.76,
     jitter: 0.08,
-    intensity: 0.18,
     commaPauseMs: 125,
     sentencePauseMs: 220,
     ellipsisPauseMs: 420,
@@ -75,7 +68,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   shout: {
     speedMultiplier: 1.34,
     jitter: 0.1,
-    intensity: 1,
     commaPauseMs: 40,
     sentencePauseMs: 80,
     ellipsisPauseMs: 170,
@@ -84,7 +76,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   sad: {
     speedMultiplier: 0.7,
     jitter: 0.1,
-    intensity: 0.24,
     commaPauseMs: 145,
     sentencePauseMs: 260,
     ellipsisPauseMs: 560,
@@ -93,7 +84,6 @@ const DELIVERY_PROFILES: Record<DialogueDelivery, TypingProfile> = {
   deduction: {
     speedMultiplier: 0.94,
     jitter: 0,
-    intensity: 0.42,
     commaPauseMs: 105,
     sentencePauseMs: 205,
     ellipsisPauseMs: 360,
@@ -248,12 +238,10 @@ export function buildTypingPlan(options: {
       900,
       Math.max(16, Math.round((1000 / cps) * whitespaceFactor + punctuationPause)),
     );
-    const intensityWave = delivery === 'nervous' ? Math.abs(wave) * 0.24 : Math.max(0, wave) * 0.08;
 
     return {
       visibleText: text.slice(0, entry.end),
       delayMs,
-      intensity: Math.min(1, profile.intensity + intensityWave),
       grapheme: entry.grapheme,
     };
   });

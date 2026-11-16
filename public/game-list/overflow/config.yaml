@@ -12,14 +12,14 @@ seo:
     - "AI 렌즈"
     - "반전"
   image: "assets/bg/title.svg"
-  imageAlt: "선으로만 그린 얼굴 옆에 숫자 1이 서 있고, 오른쪽은 수많은 숫자가 벽처럼 쌓인 그림"
+  imageAlt: "병동 자동문과 황갈색 숫자 01이 빛나는 판독기"
 textSpeed: 32
 autoSave: true
 clickToInstant: true
 chapters: 5
 ui:
   template: cinematic-noir
-  messagePortrait: assets/char/jiwan-phone.webp
+  messagePortrait: assets/char/jiwan-phone.svg
 legalNotices:
   - id: content-warning
     title: "내용 안내"
@@ -32,7 +32,7 @@ startScreen:
   music: assets/music/quant.flac
   image: assets/bg/title.svg
   imagePosition: "50% 50%"
-  mobileImagePosition: "30% 50%"
+  mobileImagePosition: "84% 50%"
   showTitle: true
   titleColor: "#e8eef9"
   startButtonText: "측정 시작"
@@ -48,7 +48,7 @@ startScreen:
     intensity: 0.4
     fog: false
     light: breathe
-    accent: "#2f6bff"
+    accent: "#d7ae76"
 endings:
   broadcast:
     title: "공개"

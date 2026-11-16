@@ -167,6 +167,6 @@ describe('long dialogue stays readable', () => {
   it('keeps the dialogue box scrollable and drives it from the typing text', () => {
     expect(promptStyles).toMatch(/\.dialog-content-scroll \{[\s\S]*?overflow-y: auto;/);
     expect(appSource).toContain("closest<HTMLElement>('.dialog-content-scroll')");
-    expect(appSource).toContain('resolveDialogueScroll({ lineChanged, typing, thread: threadRef.current })');
+    expect(appSource).toContain('resolveDialogueScroll({ lineChanged, typing, thread })');
   });
 });

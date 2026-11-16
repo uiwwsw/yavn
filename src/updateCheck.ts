@@ -1,5 +1,5 @@
 import { parseGameRoute } from './gameRoute';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BUILD_INFO, type BuildIdentity } from './buildInfo';
 import { applyServiceWorkerUpdate, checkServiceWorkerUpdate, hasWaitingServiceWorker, onServiceWorkerWaiting } from './pwa/register';
 
@@ -44,8 +44,8 @@ export function findListedGameVersion(manifest: unknown, gameId: string): string
   return typeof entry?.version === 'string' ? entry.version : undefined;
 }
 
-async function fetchJson(url: string): Promise<unknown> {
-  const response = await fetch(url, { cache: 'no-store' });
+async function fetchJson(url: string, signal: AbortSignal): Promise<unknown> {
+  const response = await fetch(url, { cache: 'no-store', signal });
   if (!response.ok) throw new Error(`${response.status}`);
   return response.json();
 }
@@ -121,34 +121,39 @@ export function useUpdateWatch(options: { gameId?: string; contentVersion?: stri
   const [state, setState] = useState<UpdateWatchState>({ buildChanged: false });
   const [swWaiting, setSwWaiting] = useState(() => hasWaitingServiceWorker());
   const [dismissed, setDismissed] = useState<{ build?: string; content?: string }>({});
-  const inFlight = useRef(false);
-
   useEffect(() => onServiceWorkerWaiting(setSwWaiting), []);
 
-  const check = useCallback(async () => {
-    if (inFlight.current) return;
-    inFlight.current = true;
-    try {
-      const [remoteBuild, manifest] = await Promise.all([
-        fetchJson('/version.json').catch(() => undefined),
-        gameId && contentVersion ? fetchJson('/game-list/index.json').catch(() => undefined) : Promise.resolve(undefined),
-      ]);
-      const contentChange = gameId ? detectContentVersionChange(contentVersion, findListedGameVersion(manifest, gameId)) : undefined;
-      // A newer deployment means a newer sw.js too; let the browser start installing it now.
-      if (hasNewBuild(BUILD_INFO, remoteBuild)) checkServiceWorkerUpdate();
-      setState((previous) => nextUpdateState(previous, remoteBuild, contentChange));
-    } finally {
-      inFlight.current = false;
-    }
-  }, [gameId, contentVersion]);
-
   useEffect(() => {
-    if (!enabled || typeof window === 'undefined') return;
-    const timer = window.setInterval(() => void check(), UPDATE_POLL_INTERVAL_MS);
+    if (!enabled) return;
+    const controller = new AbortController();
+    const { signal } = controller;
+    let inFlight = false;
+    const check = async () => {
+      if (inFlight || signal.aborted) return;
+      inFlight = true;
+      try {
+        const [remoteBuild, manifest] = await Promise.all([
+          fetchJson('/version.json', signal).catch(() => undefined),
+          gameId && contentVersion ? fetchJson('/game-list/index.json', signal).catch(() => undefined) : undefined,
+        ]);
+        if (signal.aborted) return;
+        const contentChange = gameId ? detectContentVersionChange(contentVersion, findListedGameVersion(manifest, gameId)) : undefined;
+        if (hasNewBuild(BUILD_INFO, remoteBuild)) checkServiceWorkerUpdate();
+        setState((previous) => nextUpdateState(previous, remoteBuild, contentChange));
+      } finally {
+        inFlight = false;
+      }
+    };
     const onVisibility = () => { if (document.visibilityState === 'visible') void check(); };
+    void check();
+    const timer = window.setInterval(check, UPDATE_POLL_INTERVAL_MS);
     document.addEventListener('visibilitychange', onVisibility);
-    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', onVisibility); };
-  }, [enabled, check]);
+    return () => {
+      controller.abort();
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [enabled, gameId, contentVersion]);
 
   const prompt = resolveBuildPrompt(state, swWaiting);
   const contentKey = state.contentChange ? `${state.contentChange.from}>${state.contentChange.to}` : undefined;
@@ -157,6 +162,5 @@ export function useUpdateWatch(options: { gameId?: string; contentVersion?: stri
     contentChange: contentKey && contentKey !== dismissed.content ? state.contentChange : undefined,
     dismissBuild: () => setDismissed((value) => ({ ...value, build: prompt.key })),
     dismissContent: () => setDismissed((value) => ({ ...value, content: contentKey })),
-    check,
   };
 }
