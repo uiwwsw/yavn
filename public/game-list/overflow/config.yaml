@@ -2,14 +2,14 @@ title: "오버플로"
 pov: "문지완"
 author:
   name: "uiwwsw"
-version: "2.0.0"
+version: "3.0.0"
 seo:
-  description: "“제 아내가 죽었습니다. 제가 했습니다.” 검찰은 죄책감 0점을 근거로 남편의 말을 믿지 않는다. 7년째 모든 감정에 1점을 받은 문지완은 그 진술을 다시 기록에 올리기로 한다. 5장 SF 미스터리, 결말 4종."
+  description: "감정을 읽는 AI 렌즈가 일상이 된 2033년 서울. 쓰러진 아버지를 찾아간 문지완은 무반응 의심 판정을 받고 병실 앞에서 멈춘다. 렌즈를 만든 한수경은 건너편에서 그의 숫자를 보고 있었다. 5장 SF 미스터리, 결말 4종."
   keywords:
     - "SF 미스터리"
     - "비주얼노벨"
     - "감정 측정"
-    - "법정 추리"
+    - "AI 렌즈"
     - "반전"
   image: "assets/bg/title.svg"
   imageAlt: "선으로만 그린 얼굴 옆에 숫자 1이 서 있고, 오른쪽은 수많은 숫자가 벽처럼 쌓인 그림"
@@ -19,11 +19,11 @@ clickToInstant: true
 chapters: 5
 ui:
   template: cinematic-noir
-  messagePortrait: assets/char/jiwan-phone.svg
+  messagePortrait: assets/char/jiwan-phone.webp
 legalNotices:
   - id: content-warning
     title: "내용 안내"
-    text: "이 작품에는 말기 환자의 고통, 죽음을 도와 달라는 부탁과 살인, 수치에 따른 차별이 나옵니다. 죽음은 화면 밖에서 다룹니다."
+    text: "이 작품에는 가족의 응급 입원, 정서 반응 수치에 따른 차별, 직장 내 압박이 나옵니다."
   - id: fiction
     title: "허구 안내"
     text: "에모스와 한신뉴로, 작중의 모든 법령·판례·수치는 지어낸 것입니다. 실제 기업·제도·사건과 관계가 없습니다."
@@ -38,7 +38,7 @@ startScreen:
   startButtonText: "측정 시작"
   buttonPosition: bottom-left
   eyebrow: "2033 한국 · SF 미스터리 · 5장 · 결말 4종"
-  subtitle: "“제 아내가 죽었습니다. 제가 했습니다.” 죄책감 0점이라는 이유로 기록에서 빠진 진술. 7년째 모든 감정에 1점을 받은 문지완이 그 말을 다시 받아 적는다."
+  subtitle: "쓰러진 아버지를 보러 갔다. 병실 앞에서 렌즈가 내게 띄운 숫자는 01이었다."
   scene:
     layout: split
     motion: drift
@@ -52,30 +52,30 @@ startScreen:
 endings:
   broadcast:
     title: "공개"
-    message: "에모스 판독 절차 독립 감사 착수"
-    epilogue: "방송에서 공개된 이름은 문지완 하나였다. 오희남의 목소리는 수사 기록에만 들어갔다."
+    message: "병원 면회 판독에 대한 외부 조사 착수"
+    epilogue: "지완은 월요일 새벽에 제시간에 출근했다. 도겸은 아무 말 없이 지완 몫의 작업 장갑을 꺼내 두었다."
     background: studio
     music: street
     tone: mystery
   one_file:
-    title: "한 사람분"
-    message: "오희남 사망 사건 · 불기소 처분 재검토"
-    epilogue: "동식은 조서를 처음부터 읽었다. 다른 사건의 판독표는 아직 그대로였다."
-    background: police_desk
+    title: "정정 이력"
+    message: "문지완의 무반응 의심 기록 정정"
+    epilogue: "세라는 정정 전 기록도 지완에게 한 부 뽑아 주었다. 지완은 두 장을 같은 주머니에 넣었다."
+    background: ward_entry
     music: lowscore
     tone: tragic
   sealed:
-    title: "재측정 완료"
-    message: "문지완 · 고객 상담 업무 제한 해제"
-    epilogue: "김옥분의 상담은 시작됐다. 동식의 진술은 지완이 돌려준 종이 한 장에 남았다."
-    background: hansin_room
+    title: "출입 허용"
+    message: "문지완의 면회 제한 해제"
+    epilogue: "지완은 밀린 물을 갖다 드리고 오전 내내 병실에 있었다."
+    background: ward_bed
     music: standard
     tone: tragic
   appeal:
     title: "이의신청"
     message: "에모스 공동 이의신청 접수 · 심사일 미정"
-    epilogue: "다음 날에도 도겸은 사무소 문을 열었다. 빈 신청서를 뽑아 두고, 쓰러 온 사람에게 의자를 내줬다."
-    background: office
+    epilogue: "월요일에 병동은 접수대에 빈 서식을 더 놓았다. 두 사람이 낸 신청의 답은 아직 오지 않았다."
+    background: dongsik_house
     music: quant
     tone: hopeful
 defaultEnding: appeal

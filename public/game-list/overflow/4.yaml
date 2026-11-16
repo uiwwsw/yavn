@@ -1,141 +1,94 @@
-chapterTitle: "사유란"
+chapterTitle: "다음 사람"
 
 script:
-  - scene: hayul_comes
-  - scene: sera_application
-  - scene: final
+  - scene: morning_desk
 
 scenes:
-  hayul_comes:
-    title: "돌려받을 것"
+  morning_desk:
+    title: "다음 날 아침"
     actions:
-      - bg: office
-      - place: "3월 24일 오후 · 상계동 이의신청 사무소"
+      - bg: ward_entry
+      - place: "다음 날 · 월계병원 면회 접수"
       - music: quant
       - char: { id: 지완, position: left }
-      - char: { id: 동식, position: right }
-      - char: { id: 하율, position: center }
-      - say: { char: 하율, with: [지완, 동식], text: "아저씨, 할머니 녹음기에 저 받아쓰기 하는 것도 있는데요. ‘웬일이야’ 하는 거 지우면 안 돼요. 그거만 백 점이에요." }
-      - say: { char: 지완, with: [하율], text: "안 지웠어. 할아버지한테 다 돌려드릴게." }
-      - say: { char: 하율, with: [동식], text: "할아버지 오늘은 밥 해? 어제도 할머니 거까지 퍼 놨잖아." }
-      - say: { char: 동식, with: [하율], text: "오늘은 두 그릇만 하자. 먼저 내려가서 물통에 물 좀 받아 줄래." }
-      - move: { id: 하율, style: exit, wait: true }
-      - say: { char: 동식, with: [지완], text: "신문에는 아무 말도 안 할 겁니다. 그래도 경찰에서 부르면 가겠습니다. 어제 말씀드린 그대로입니다." }
-      - say: { char: 지완, with: [동식], text: "녹음 원본은 여기 있습니다. 경찰에 낼 건 아까 같이 고른 파일 사본 한 개고요." }
-      - say: { char: 동식, with: [지완], text: "예. 그러면 됐습니다." }
-
-  sera_application:
-    title: "내 말 그대로"
-    actions:
-      - char: { id: 세라, position: right }
-      - say: { char: 세라, with: [지완], when: { var: sera_knows, op: eq, value: true }, text: "어제 문자한 거. 신청서 나도 읽어 보고 싶다고 했잖아." }
-      - say: { char: 세라, with: [지완], when: { var: sera_knows, op: eq, value: false }, text: "그때 신청서 써 준다고 했지. 대신 내기 전에 나한테도 한 번 읽어 줘." }
-      - say: { char: 세라, with: [지완], text: "‘출산하면 아이를 안아 보고 싶습니다. 병원에서 제 얘기를 직접 듣고 결정해 주십시오.’ 응. 이대로 낼래." }
-      - say: { char: 지완, with: [세라], text: "회사에서 내 점수 다시 내주겠대. 내가 제일 먼저 여기 가져와서 너한테 보여 주고 싶었거든." }
-      - say: { char: 세라, with: [지완], text: "그날 나한테 뭐라고 하고 싶었는데?" }
-      - say: { char: 지완.tight, with: [세라], text: "다음 주에 보자고. 그다음 주에도 보고 싶다고. 네가 묻지도 않은 1 얘기만 했어." }
-      - say: { char: 세라, with: [지완], text: "그 말이었구나." }
-      - say: { channel: action, with: [], text: "세라는 지완이 써 준 사유란을 한 번 더 읽는다. 자기 이름을 쓰고 그 밑에 날짜를 적는다." }
-      - say: { char: 세라, with: [지완], text: "나 말고도 산후 병동 때문에 이런 거 받은 사람이 있어. 양식 가져가도 돼? 내 얘기는 빼고, 자기 얘기를 쓰게." }
-
-  final:
-    title: "아홉 시 전"
-    actions:
-      - bg: office_night
-      - place: "그날 저녁 · 상계동 이의신청 사무소"
-      - char: { id: 지완, position: left }
-      - char: { id: 도겸, position: right }
-      - say: { char: 도겸, with: [지완], text: "지역 뉴스에 판독 오류 얘기만 해 봤어요. 아무 이름도 안 줬고요." }
-      - say: { char: 도겸, with: [지완], text: "소장님이 직접 나오시면 아홉 시에 본인 판독표 하나만 보여 줘도 된대요." }
-      - say: { char: 도겸, with: [지완], text: "회사에서도 전화 왔는데요. 합의하면 소장님 정정서랑 열두 분 심사는 내일 바로 나온대요. 월세 독촉장 옆에 뒀어요." }
-      - say: { channel: message, side: them, char: 기태, with: [], when: { var: told_gitae, op: eq, value: true }, text: "아까 말한 대로 나 노원서에 있다. 접수 창구에 네 이름 남겨 뒀어." }
-      - say: { channel: message, side: them, char: 기태, with: [], when: { var: told_gitae, op: eq, value: false }, text: "동식 씨한테 다시 진술하겠다고 전화 왔다. 자료 있으면 동식 씨랑 노원서로 와." }
-      - say: { char: 도겸, with: [지완], text: "세라 씨가 양식 열 장만 뽑아 달래요. 다른 분들한테도 내 보자고 할 거면, 제가 내일 와서 도울게요." }
+      - char: { id: 수경, position: right }
+      - say: { channel: record, with: [], text: "에모스 고객 조치 안내 · 문지완 님\n본인 면회 표지 즉시 해제 가능. 개별 처리에 동의하면 이번 건은 종결됩니다." }
+      - say: { char: 수경, with: [지완], text: "저기 동그라미 치는 칸 보이죠. 거기 하나 하면 오늘부터 혼자 들어갈 수 있대요." }
+      - say: { char: 지완, with: [수경], text: "그럼 어제 늦어서 간 사람은요?" }
+      - say: { char: 수경, with: [지완], text: "그분은 아직 다음 칸에 있어요." }
+      - say: { channel: action, with: [], text: "접수대에는 네 살쯤 된 아이가 발뒤꿈치를 들어 데스크 위를 본다. 함께 온 여자가 손을 잡은 채, 어제 자기 이름을 적어 둔 종이가 아직 있느냐고 묻는다." }
+      - say: { char: 수경, with: [지완], text: "병원에만 자료를 내면 지완 씨 기록부터 다시 볼 거예요. 공개하면 병원 밖에서도 알게 되겠죠. 제 설명은 어느 쪽이든 제 이름으로 붙일게요." }
+      - say: { char: 지완, with: [수경], text: "아버지 병실 얘기는 빼요. 제가 겪은 판정이랑 제가 낸 기록이면 돼요." }
       - choice:
           key: o4_end
-          prompt: "지완은 아홉 시 전에 무엇을 할까?"
-          char: 지완
-          with: [도겸]
+          prompt: "지완은 면회표와 수경의 확인서를 책상 위에 놓는다."
+          with: [수경]
           options:
-            - text: "동식 씨 자료를 내고, 방송에는 내 판독표만 공개한다"
-              goto: end_broadcast
-            - text: "동식 씨와 경찰서에 간다"
-              goto: end_one_file
-            - text: "자료를 반납하고 개별 심사를 받는다"
-              goto: end_sealed
-            - text: "동식 씨 자료를 내고, 함께 이의신청할 사람들을 모은다"
-              goto: end_appeal
-            - text: "희남 씨 녹음을 방송국에 보낸다"
-              gameOver:
-                title: "허락받지 않은 말"
-                message: "녹음은 예고편에 들어갔다. 하율은 동네 친구가 보여 준 화면에서 할머니 목소리를 들었다. 동식은 지완에게 녹음을 더 쓰지 말아 달라고 했다."
-                recoverToChoice: o4_end
+            - text: "내 판독과 수경의 설명을 공개한다"
+              goto: broadcast_end
+            - text: "내 기록의 정정을 신청한다"
+              goto: one_file_end
+            - text: "면회 제한 해제를 받고 끝낸다"
+              goto: sealed_end
+            - text: "기다린 사람들과 함께 이의를 낸다"
+              goto: appeal_end
 
-  end_broadcast:
-    title: "내 이름만"
+  broadcast_end:
+    title: "자료를 보내는 날"
     actions:
       - bg: studio
-      - place: "3월 24일 오후 9시 · 지역 뉴스 생방송"
-      - music: overflow
-      - char: { id: 지완, position: center }
-      - say: { channel: record, with: [], text: "노원경찰서 · 배동식 진술 및 증거 접수 완료. 녹음 사본, 판독 원본, 환산 담당자 확인서." }
-      - say: { channel: system, with: [], text: "진행자 · “저희가 띄우는 자료는 오늘 출연하신 문지완 씨 본인 자료입니다.”" }
-      - sound: read
-      - effect: glitch
-      - say: { channel: record, with: [], text: "문지완 · 연민\n같은 시각, 같은 센서 · 원본 101 → 표시 1" }
-      - say: { channel: system, with: [], text: "진행자 · “그러면 원래는 연민이 101점인 거군요?”" }
-      - say: { char: 지완, with: [], text: "101은 센서 값입니다. 그걸 1로 인쇄해서 제 상담 업무를 뺏었어요. 오늘은 왜 그랬는지 저한테 설명해 달라고 왔습니다." }
-      - say: { channel: system, with: [], text: "다음 날 · 한신뉴로에 독립 감사 착수. 제휴 기관에는 신규 자동 판정 보류 권고. 기존 판정은 별도 재검토." }
-      - say: { channel: message, side: them, char: 동식, with: [], text: "오늘은 제가 한 말 읽어 주고 맞느냐고 물었습니다 두 번이나 확인했습니다" }
+      - place: "사흘 뒤 · 지역 뉴스"
+      - char: { id: 수경, position: right }
+      - say: { channel: action, with: [], text: "기자가 자막 밑에 아버지 병동 이름을 넣어도 되느냐고 묻는다. 지완은 시작하기로 했던 자리 옆에 앉아 고개를 젓는다." }
+      - say: { char: 지완, with: [], text: "제 이름이랑 제 판독은 내보내세요. 같이 계신 분들 이름은 빼 주시고요." }
+      - say: { channel: record, with: [], text: "문지완 · 본인 공개 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
+      - say: { char: 수경, with: [], text: "제가 이 카드를 검수했습니다. 이 화면은 101을 받은 줄도 01을 받은 줄도 똑같이 내보냅니다." }
+      - say: { channel: message, side: them, char: 도겸, with: [], text: "팀장님이 그거 지완 씨냐고 물어봤어요. 아직 답 안 했어요" }
+      - say: { channel: message, side: me, char: 지완, with: [], text: "맞다고 해요. 월요일은 제가 새벽조입니다" }
       - ending: broadcast
 
-  end_one_file:
-    title: "첫 줄"
+  one_file_end:
+    title: "정정 이력"
     actions:
-      - bg: police_desk
-      - place: "3월 24일 저녁 · 노원경찰서"
-      - music: lowscore
-      - char: { id: 지완, position: left }
-      - char: { id: 동식, position: right }
-      - char: { id: 기태, position: center }
-      - say: { char: 기태, with: [동식, 지완], text: "판독 원본하고 확인서 받았습니다. 녹음은 제출 목록에 따로 적고요. 이제 배 선생님 말부터 적겠습니다." }
-      - say: { char: 동식, with: [기태], text: "다 끝나면 제가 처음부터 읽어 봐도 됩니까?" }
-      - say: { char: 기태, with: [동식], text: "예. 틀리면 그 자리에서 고쳐 달라고 하십시오." }
-      - say: { channel: record, with: [], text: "보충 진술 조서 · 진술인 배동식\n“3월 7일에 오희남이 죽었습니다. 제가 했습니다.”" }
-      - say: { char: 동식, with: [기태], text: "그 다음은 희남이 말로 해 주세요. 그 사람이 남긴 말이 있습니다." }
-      - say: { channel: action, with: [], text: "기태가 한 줄을 띄운다. 지완이 녹음 사본을 건넨다." }
-      - ending: one_file
-
-  end_sealed:
-    title: "정정서"
-    actions:
-      - bg: hansin_room
-      - place: "3월 25일 오전 · 한신뉴로 본사"
-      - music: standard
-      - char: { id: 지완, position: left }
-      - char: { id: 수경, position: right }
-      - say: { channel: record, with: [], text: "자료 반납 확인 · 배동식 판독 원본 및 환산 담당자 확인서. 의뢰 12건 별도 심사." }
-      - say: { char: 수경, with: [지완], text: "김옥분 님은 유족 상담 지원 대상이 됐습니다. 오늘 중으로 연락 갈 겁니다." }
-      - say: { channel: record, with: [], text: "문지완 · 직무 적합 판정 정정\n고객 상담 업무 제한 해제." }
-      - say: { char: 수경, with: [지완], text: "이걸 전에 계시던 회사에 내시면 됩니다." }
-      - say: { channel: message, side: them, char: 동식, with: [], text: "혼자 경찰서 다녀왔습니다 판독표가 그대로라서 전에 한 답만 들었습니다" }
-      - say: { channel: message, side: them, char: 동식, with: [], text: "그날 적으신 제 말 한 장만 주실 수 있습니까 집에 두려고요" }
-      - say: { channel: action, with: [], text: "지완은 정정서를 봉투에 넣는다. 동식에게 보낼 말을 세 줄 적었다가 지운다. 서랍에서 그날 받아 적은 종이를 꺼낸다." }
-      - ending: sealed
-
-  end_appeal:
-    title: "접수 도장"
-    actions:
-      - bg: office
-      - place: "4월 7일 · 상계동 이의신청 사무소"
-      - music: street
+      - bg: ward_entry
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { channel: record, with: [], text: "배동식 사건 · 진술, 녹음 사본 및 판독 원본 제출. 불기소 처분 재검토 개시." }
-      - say: { char: 세라, with: [지완], text: "산후 병동 분들이 가져왔어. 다섯 분 중 세 분은 같이 심사해 달라고 쓰셨고, 두 분은 병원에만 낸대." }
-      - say: { char: 지완, with: [세라], text: "두 분 건 사본 남기지 말고 돌려 드려. 여기 낼 사람은 사유란도 본인이 쓴 그대로 넣고." }
-      - say: { char: 세라, with: [지완], text: "너도 한 장 다시 써. 여덟 번째까지 냈다며." }
-      - say: { channel: record, with: [], text: "문지완 · 아홉 번째 이의신청\n사유: 고객 상담에서 배제될 때 제 설명을 듣는 절차가 없었습니다. 이번에는 제 말을 직접 들어 주십시오." }
-      - say: { channel: action, with: [], text: "지완은 자기 신청서를 맨 밑에 놓는다. 맨 위에 있는 김옥분의 종이는 세 장이다. 두 번째 장 귀퉁이가 접혀 있다." }
-      - say: { char: 지완, with: [세라], text: "어르신이 두 번째 장부터 꼭 읽어 달래. 접수하러 가서 내가 말할게." }
+      - say: { char: 지완, with: [세라], text: "면회 제한만 풀지 말고요. 처음에 무슨 이유로 막혔는지도 남겨 주세요. 제가 안 오겠다고 한 걸로 기록되면 안 돼요." }
+      - say: { char: 세라, with: [지완], text: "그건 제가 봤으니까 쓸 수 있어요. 오후부터 밤까지 대기했다고." }
+      - say: { channel: record, with: [], text: "문지완 · 면회 판독 이의 인용\n당일 무반응 표지 철회 · 입력값 누락 및 직원 재확인 첨부" }
+      - say: { channel: action, with: [], text: "자동문이 열리고 지완이 병실로 간다. 접수대에선 누군가 오늘은 렌즈를 꼈는데 왜 동행이 필요하냐고 묻는다." }
+      - ending: one_file
+
+  sealed_end:
+    title: "출입 허용"
+    actions:
+      - bg: ward_entry
+      - char: { id: 지완, position: left }
+      - say: { channel: action, with: [], text: "서명하고 나니 전산 화면이 먼저 바뀌었다. 새 면회증에 ‘동행’이라는 두 글자가 없었다." }
+      - bg: ward_bed
+      - char: { id: 동식, position: right }
+      - say: { char: 동식, with: [지완], text: "오늘은 문이 바로 열리더냐." }
+      - say: { char: 지완, with: [동식], text: "네. 제 건 처리됐대요." }
+      - say: { channel: action, with: [], text: "아버지는 오후에 마실 물을 하나 더 놔 달라고 한다. 지완이 복도로 나왔다가, 어제 앉았던 의자에 여전히 누가 앉아 있는 걸 본다." }
+      - ending: sealed
+
+  appeal_end:
+    title: "이름 두 줄"
+    actions:
+      - bg: ward_entry
+      - char: { id: 지완, position: left }
+      - char: { id: 세라, position: right }
+      - say: { char: 지완, with: [세라], text: "어제 기다리신 분한테 지금 물어봐도 될까요? 같이 내고 싶으면 한 장 더 달라고요." }
+      - say: { channel: action, with: [], text: "세라가 휠체어 높이에 맞춰 놓은 책상의 빈 의자를 당긴다. 여자는 아이 외투 지퍼를 끝까지 올려 주고 앉는다." }
+      - say: { channel: action, with: [], text: "지완이 서류를 밀어 준다. 여자가 이유란 밑에 이름을 쓰려다가 먼저 자기 종이를 읽어 봐도 되냐고 묻는다." }
+      - say: { char: 지완, with: [세라], text: "그럼요. 여기 있을게요." }
+      - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 제한 전 직원 확인. 당사자에게 판독 근거 제공.\n검토 중 · 서명 2건" }
+      - bg: dongsik_house
+      - place: "일요일 · 아버지 집"
+      - char: { id: 동식, position: right }
+      - char: { id: 지완, position: left }
+      - say: { channel: action, with: [], text: "냉동실에 작은 통 하나가 비스듬히 들어 있다. 뚜껑 아래로 국물이 한 줄 얼어붙었다. 아버지가 통을 빼서 지완 앞에 놓는다." }
+      - say: { char: 동식, with: [지완], text: "반만 얼렸다." }
+      - say: { char: 지완, with: [동식], text: "남은 반은요?" }
+      - say: { char: 동식, with: [지완], text: "냄비에 있지. 데워 먹어." }
       - ending: appeal

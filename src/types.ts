@@ -224,6 +224,8 @@ export type SayAction = {
     channel?: DialogueChannel;
     continueLabel?: string;
     when?: ConditionNode;
+    /** Plays an asset from sfx once when this line appears. */
+    sound?: string;
     /** Optional only when the line carries `media`: a photo can be sent without a caption. */
     text?: string;
     delivery?: DialogueDelivery;

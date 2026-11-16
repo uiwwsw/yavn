@@ -5064,6 +5064,9 @@ function runToNextPause(loopGuard = 0) {
     currentLineUnread = !readHistory.markRead(
       readLineKey(getCurrentChapterPathKey(), state.currentSceneId, state.actionIndex),
     );
+    if (action.say.sound && (!state.skipReadActive || currentLineUnread)) {
+      playSound(resolveAsset(state.baseUrl, game.assets.sfx[action.say.sound]));
+    }
     const presentation = resolveSayPresentation(
       action.say.char,
       action.say.with,

@@ -1,13 +1,13 @@
 assets:
   backgrounds:
     title: assets/bg/title.svg
-    well_night: assets/bg/well_night.svg
+    well_night: assets/bg/well_night.webp
     hanseongbu_yard: assets/bg/hanseongbu_yard.svg
     sihyeongdo: assets/bg/sihyeongdo.svg
     apothecary_burnt: assets/bg/apothecary_burnt.svg
     hyeminseo: assets/bg/hyeminseo.svg
     jail: assets/bg/jail.svg
-    seobinggo: assets/bg/seobinggo.svg
+    seobinggo: assets/bg/seobinggo.webp
     hyeongjo_hall: assets/bg/hyeongjo_hall.svg
     alley_night: assets/bg/alley_night.svg
     dawn_gate: assets/bg/dawn_gate.svg
@@ -27,7 +27,7 @@ assets:
     서연:
       name: "의녀 {{player_name}}"
       placement: prompt-top
-      base: assets/char/seoyeon.svg
+      base: assets/char/seoyeon.webp
       facing: front
       defaultFraming: portrait
       framings:
@@ -35,13 +35,13 @@ assets:
         full: { scale: 1 }
       defaultDelivery: calm
       emotions:
-        think: assets/char/seoyeon-think.svg
-        shock: assets/char/seoyeon-shock.svg
-        resolve: assets/char/seoyeon-resolve.svg
+        think: assets/char/seoyeon-think.webp
+        shock: assets/char/seoyeon-shock.webp
+        resolve: assets/char/seoyeon-resolve.webp
     도원:
       name: "판관 김도원"
       placement: prompt-top
-      base: assets/char/dowon.svg
+      base: assets/char/dowon.webp
       facing: front
       defaultFraming: portrait
       framings:
@@ -49,12 +49,12 @@ assets:
         full: { scale: 1 }
       defaultDelivery: neutral
       emotions:
-        stern: assets/char/dowon-stern.svg
-        troubled: assets/char/dowon-troubled.svg
+        stern: assets/char/dowon-stern.webp
+        troubled: assets/char/dowon-troubled.webp
     막쇠:
       name: "오작인 막쇠"
       placement: prompt-top
-      base: assets/char/makssoe.svg
+      base: assets/char/makssoe.webp
       facing: front
       defaultFraming: portrait
       framings:
@@ -62,8 +62,8 @@ assets:
         full: { scale: 1 }
       defaultDelivery: calm
       emotions:
-        grin: assets/char/makssoe-grin.svg
-        hurt: assets/char/makssoe-hurt.svg
+        grin: assets/char/makssoe-grin.webp
+        hurt: assets/char/makssoe-hurt.webp
     강치수:
       name: "포교 강치수"
       placement: prompt-top
@@ -126,6 +126,10 @@ assets:
     inquest: assets/music/inquest.flac
     pressure: assets/music/pressure.flac
     dawn: assets/music/dawn.flac
+  sfx:
+    well_rope: assets/sfx/well_rope.wav
+    paper: assets/sfx/paper.wav
+    ice_movement: assets/sfx/ice_movement.wav
 
 state:
   player_name: "서연"

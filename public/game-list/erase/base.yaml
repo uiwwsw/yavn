@@ -1,10 +1,10 @@
 assets:
   backgrounds:
     title: assets/bg/title.svg
-    surgery: assets/bg/surgery.svg
+    surgery: assets/bg/surgery.webp
     eyes_closed: assets/bg/eyes_closed.svg
-    surgery_reveal: assets/bg/surgery_reveal.svg
-    photo_studio: assets/bg/photo_studio.svg
+    surgery_reveal: assets/bg/surgery_reveal.webp
+    photo_studio: assets/bg/photo_studio.webp
     club: assets/bg/club.svg
     dawn_room: assets/bg/dawn_room.svg
     couple_home: assets/bg/couple_home.svg
@@ -26,7 +26,7 @@ assets:
     도윤:
       name: "한도윤"
       placement: prompt-top
-      base: assets/char/doyun.svg
+      base: assets/char/doyun.webp
       facing: left
       defaultDelivery: neutral
       defaultFraming: portrait
@@ -34,16 +34,16 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        smile: assets/char/doyun-smile.svg
-        panic: assets/char/doyun-panic.svg
-        hollow: assets/char/doyun-hollow.svg
+        smile: assets/char/doyun-smile.webp
+        panic: assets/char/doyun-panic.webp
+        hollow: assets/char/doyun-hollow.webp
       emotionMotions:
         panic: freeze
         hollow: droop
     지수:
       name: "이지수"
       placement: prompt-top
-      base: assets/char/jisu.svg
+      base: assets/char/jisu.webp
       facing: left
       defaultDelivery: calm
       defaultFraming: portrait
@@ -51,8 +51,8 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        warm: assets/char/jisu-warm.svg
-        cold: assets/char/jisu-cold.svg
+        warm: assets/char/jisu-warm.webp
+        cold: assets/char/jisu-cold.webp
     준성:
       name: "박준성"
       placement: prompt-top
@@ -71,7 +71,7 @@ assets:
     하린:
       name: "유하린"
       placement: prompt-top
-      base: assets/char/harin.svg
+      base: assets/char/harin.webp
       facing: left
       defaultDelivery: neutral
       defaultFraming: portrait
@@ -79,9 +79,9 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        blank: assets/char/harin-blank.svg
-        cry: assets/char/harin-cry.svg
-        sleep: assets/char/harin-sleep.svg
+        blank: assets/char/harin-blank.webp
+        cry: assets/char/harin-cry.webp
+        sleep: assets/char/harin-sleep.webp
     민재:
       name: "서민재"
       placement: prompt-top
@@ -115,8 +115,13 @@ assets:
   music:
     cold_room: assets/music/cold-room.flac
     neon: assets/music/neon.flac
+    studio: assets/music/studio.flac
     static: assets/music/static.flac
     wind: assets/music/wind.flac
+  sfx:
+    shutter: assets/sfx/shutter.wav
+    consent_pen: assets/sfx/consent_pen.wav
+    monitor: assets/sfx/monitor.wav
 
 state:
   deleted: 0

@@ -608,6 +608,7 @@ scenes:
       - say:
           channel: record
           with: []
+          sound: monitor
           text: "환자 이름표 · 유하린 · 18세"
       - say:
           char: 의사

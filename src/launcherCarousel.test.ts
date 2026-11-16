@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   buildLauncherDemoSharePath,
   clearLauncherDemoSharePath,
@@ -6,10 +6,25 @@ import {
   parseLauncherDemoHash,
   parseLauncherDemoQuery,
   resolveInitialCarouselGameId,
+  shuffleCarouselGames,
   wrapCarouselIndex,
 } from './launcherCarousel';
 
 describe('launcher carousel', () => {
+  it('shuffles the spotlight without reordering the library or overriding a shared demo', () => {
+    const gameIds = ['360', '8bit-heart', 'muwon'];
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0);
+    try {
+      const carouselGameIds = shuffleCarouselGames(gameIds);
+      expect(carouselGameIds).toEqual(['8bit-heart', 'muwon', '360']);
+      expect(gameIds).toEqual(['360', '8bit-heart', 'muwon']);
+      expect(resolveInitialCarouselGameId(carouselGameIds, null, '', '')).toBe('8bit-heart');
+      expect(resolveInitialCarouselGameId(carouselGameIds, null, '?demo=360', '')).toBe('360');
+    } finally {
+      random.mockRestore();
+    }
+  });
+
   it('wraps previous and next navigation at both ends', () => {
     expect(wrapCarouselIndex(-1, 3)).toBe(2);
     expect(wrapCarouselIndex(3, 3)).toBe(0);

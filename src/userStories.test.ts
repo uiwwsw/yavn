@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { load } from 'js-yaml';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getChoiceRecoverySummary, handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption, submitInputAnswer } from './engine';
+import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption, submitInputAnswer } from './engine';
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { useVNStore } from './store';
 
@@ -231,49 +231,15 @@ describe('owner story playthroughs', () => {
     const state = await play({ t2_where: 'C-14라고 말한다' });
     expect(state.gameOver?.title).toBe('아무도 말하지 않은 번호');
   }, 60000);
-  // 오버플로's investigation board cycles through whatever is still unexplored, so the route
-  // leaves o1_room unset and the player takes the first option still on offer each time.
-  const overflowBase: Route = {
-    o0_case: '배동식 씨 연락처를 받는다',
-    o1_show: '내 판독 결과를 보여 준다',
-    o2_deal: '배동식 씨 판독도 잘렸는지 묻는다',
-    o3_tell: '노기태에게 전화한다',
-  };
   it.each([
-    ['broadcast', { ...overflowBase, o4_end: '동식 씨 자료를 내고, 방송에는 내 판독표만 공개한다' }],
-    ['one_file', { ...overflowBase, o4_end: '동식 씨와 경찰서에 간다' }],
-    ['sealed', {
-      ...overflowBase,
-      o0_case: '신고 녹취부터 다시 듣는다',
-      o1_show: '오늘 적은 것을 읽어 준다',
-      o2_deal: '지금 답하지 않겠다고 한다',
-      o4_end: '자료를 반납하고 개별 심사를 받는다',
-    }],
-    ['appeal', {
-      ...overflowBase,
-      o0_case: '신고 녹취부터 다시 듣는다',
-      o1_show: '희남 씨부터 이야기해 달라고 한다',
-      o3_tell: '세라에게 먼저 말한다',
-      o4_end: '동식 씨 자료를 내고, 함께 이의신청할 사람들을 모은다',
-    }],
-  ] as Array<[string, Route]>)('오버플로 reaches %s', async (ending, route) => {
+    ['broadcast', '내 판독과 수경의 설명을 공개한다'],
+    ['one_file', '내 기록의 정정을 신청한다'],
+    ['sealed', '면회 제한 해제를 받고 끝낸다'],
+    ['appeal', '기다린 사람들과 함께 이의를 낸다'],
+  ])('오버플로 reaches %s', async (ending, option) => {
     await start('overflow');
-    const state = await play(route);
+    const state = await play({ o4_end: option });
     expect(state.gameOver).toBeUndefined();
     expect(state.resolvedEndingId).toBe(ending);
-  }, 60000);
-
-  it('오버플로 lets Jiwan reconsider signing before hearing the recording', async () => {
-    await start('overflow');
-    const state = await play({ ...overflowBase, o2_deal: '서명한다' });
-    expect(state.gameOver?.title).toBe('서류 한 장');
-    expect(getChoiceRecoverySummary().failedChoice?.key).toBe('o2_deal');
-  }, 60000);
-
-  it('오버플로 lets Jiwan reconsider sharing the recording without consent', async () => {
-    await start('overflow');
-    const state = await play({ ...overflowBase, o4_end: '희남 씨 녹음을 방송국에 보낸다' });
-    expect(state.gameOver?.title).toBe('허락받지 않은 말');
-    expect(getChoiceRecoverySummary().failedChoice?.key).toBe('o4_end');
   }, 60000);
 });

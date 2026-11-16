@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-16T05:03:35.539Z",
+  "generatedAt": "2026-11-16T06:04:45.633Z",
   "games": [
     {
       "id": "360",
@@ -193,9 +193,9 @@
       "name": "오버플로",
       "path": "/game-list/overflow/",
       "author": "uiwwsw",
-      "version": "2.0.0",
-      "summary": "아내가 죽자 남편은 자신이 했다고 신고한다. 검찰은 죄책감 0점을 근거로 그의 말을 믿지 않는다. 7년째 모든 감정에 1점을 받은 문지완은 그 진술을 다시 기록에 올리기로 한다. 5장 SF 미스터리, 결말 4종.",
-      "summaryEn": "After his wife dies, a man tells police he killed her. Prosecutors dismiss his confession because EMOS scored his guilt at zero. Jiwan, whose own feelings have all scored a 1 for seven years, sets out to put the man's words back on the record. A sci-fi mystery in five chapters with four endings.",
+      "version": "3.0.0",
+      "summary": "감정을 읽는 AI 렌즈가 일상이 된 2033년 서울. 쓰러진 아버지를 찾아간 문지완은 반응이 너무 낮다는 이유로 병실 문 앞에 멈춘다. 렌즈를 만든 한수경은 건너편에서 그 숫자를 보고 있었다. 5장 SF 미스터리, 결말 4종.",
+      "summaryEn": "In 2033 Seoul, AI lenses read emotions. When Jiwan comes to see his father in the hospital, the lens flags him as unresponsive and he is made to wait outside the ward. Across the hall, the engineer who built the lens sees his score. A sci-fi mystery in five chapters with four endings.",
       "thumbnail": "/game-list/overflow/assets/bg/title.svg",
       "tags": [
         "sci-fi",
@@ -231,7 +231,7 @@
         {
           "id": "content-warning",
           "title": "내용 안내",
-          "text": "이 작품에는 말기 환자의 고통, 죽음을 도와 달라는 부탁과 살인, 수치에 따른 차별이 나옵니다. 죽음은 화면 밖에서 다룹니다."
+          "text": "이 작품에는 가족의 응급 입원, 정서 반응 수치에 따른 차별, 직장 내 압박이 나옵니다."
         },
         {
           "id": "fiction",
@@ -243,12 +243,12 @@
       "endingCount": 4,
       "seo": {
         "title": "오버플로",
-        "description": "“제 아내가 죽었습니다. 제가 했습니다.” 검찰은 죄책감 0점을 근거로 남편의 말을 믿지 않는다. 7년째 모든 감정에 1점을 받은 문지완은 그 진술을 다시 기록에 올리기로 한다. 5장 SF 미스터리, 결말 4종.",
+        "description": "감정을 읽는 AI 렌즈가 일상이 된 2033년 서울. 쓰러진 아버지를 찾아간 문지완은 무반응 의심 판정을 받고 병실 앞에서 멈춘다. 렌즈를 만든 한수경은 건너편에서 그의 숫자를 보고 있었다. 5장 SF 미스터리, 결말 4종.",
         "keywords": [
           "SF 미스터리",
           "비주얼노벨",
           "감정 측정",
-          "법정 추리",
+          "AI 렌즈",
           "반전",
           "sci-fi",
           "mystery",
@@ -502,7 +502,7 @@
       "SF 미스터리",
       "비주얼노벨",
       "감정 측정",
-      "법정 추리",
+      "AI 렌즈",
       "반전",
       "시뮬레이션",
       "심리 드라마",

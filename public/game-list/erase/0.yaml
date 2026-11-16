@@ -21,6 +21,7 @@ scenes:
       - say:
           channel: action
           with: []
+          sound: consent_pen
           text: "의사가 동의서 맨 아래에 펜을 놓는다. 내 이름이 인쇄돼 있다."
           continueLabel: "시술에 동의한다"
       - say: { char: 의사, with: [], text: "확인했어요. 이름표는 뒤집어 둘게요." }
@@ -32,7 +33,7 @@ scenes:
     title: "청첩장 사진"
     actions:
       - bg: { id: photo_studio, transition: fade, duration: 520 }
-      - music: neon
+      - music: studio
       - place: "현재 · 결혼 한 달 전 · 청첩장 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
@@ -142,6 +143,7 @@ scenes:
           char: 도윤
           motion: bow
           with: [지수]
+          sound: shutter
           text: "그 앞에 거 저 눈 감았어요. 그건 지워 주세요."
       - say:
           char: 지수

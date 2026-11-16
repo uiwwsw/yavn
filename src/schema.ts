@@ -366,6 +366,7 @@ const actionBodySchema = z.union([
       channel: dialogueChannelSchema.optional(),
       continueLabel: z.string().trim().min(1).max(60).optional(),
       when: conditionSchema.optional(),
+      sound: z.string().trim().min(1).optional(),
       text: z.string().optional(),
       delivery: dialogueDeliverySchema.optional(),
       promptHeight: promptHeightSchema.optional(),

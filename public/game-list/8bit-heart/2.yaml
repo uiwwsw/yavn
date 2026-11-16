@@ -234,6 +234,7 @@ scenes:
       - say:
           channel: system
           with: []
+          sound: boot
           text: "BIOS v0.8 … RAM CHECK … 8KB … OK"
       - say:
           char: 윤재.excited

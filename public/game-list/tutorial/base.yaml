@@ -5,13 +5,13 @@ assets:
     cs_desk_bleed: assets/bg/cs_desk_bleed.svg
     breakroom: assets/bg/breakroom.svg
     home_hall: assets/bg/home_hall.svg
-    haesu_room: assets/bg/haesu_room.svg
+    haesu_room: assets/bg/haesu_room.webp
     sim_void: assets/bg/sim_void.svg
     sim_desk: assets/bg/sim_desk.svg
     sim_parking: assets/bg/sim_parking.svg
     parking_real: assets/bg/parking_real.svg
     police_room: assets/bg/police_room.svg
-    goshiwon: assets/bg/goshiwon.svg
+    goshiwon: assets/bg/goshiwon.webp
     server_building: assets/bg/server_building.svg
     server_room: assets/bg/server_room.svg
     pencil_sticker: assets/items/pencil.svg
@@ -24,7 +24,7 @@ assets:
     해수:
       name: "정해수"
       placement: prompt-top
-      base: assets/char/haesu.svg
+      base: assets/char/haesu.webp
       facing: front
       defaultDelivery: calm
       defaultFraming: portrait
@@ -32,9 +32,9 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        service: assets/char/haesu-service.svg
-        blank: assets/char/haesu-blank.svg
-        shaken: assets/char/haesu-shaken.svg
+        service: assets/char/haesu-service.webp
+        blank: assets/char/haesu-blank.webp
+        shaken: assets/char/haesu-shaken.webp
       emotionMotions:
         shaken: freeze
     상혁:
@@ -110,16 +110,17 @@ assets:
     태민:
       name: "기태민"
       placement: prompt-top
-      base: assets/char/taemin.svg
+      base: assets/char/taemin.webp
       facing: left
+      calibration: { x: -16 }
       defaultDelivery: nervous
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        laugh: assets/char/taemin-laugh.svg
-        afraid: assets/char/taemin-afraid.svg
+        laugh: assets/char/taemin-laugh.webp
+        afraid: assets/char/taemin-afraid.webp
       emotionMotions:
         afraid: tremble
     엄마:
@@ -135,6 +136,8 @@ assets:
   sfx:
     chime: assets/sfx/chime.wav
     snap: assets/sfx/snap.wav
+    door_knock: assets/sfx/door_knock.wav
+    fan_wake: assets/sfx/fan_wake.wav
 
 state:
   t0_refund_first: false

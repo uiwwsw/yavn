@@ -1,11 +1,11 @@
 assets:
   backgrounds:
     title: assets/bg/title.svg
-    bedroom: assets/bg/bedroom.svg
+    bedroom: assets/bg/bedroom.webp
     disaster_city: assets/bg/disaster_city.svg
     ruined_street: assets/bg/ruined_street.svg
     android_found: assets/bg/android_found.svg
-    shelter: assets/bg/shelter.svg
+    shelter: assets/bg/shelter.webp
     drone_alley: assets/bg/drone_alley.svg
     datacenter: assets/bg/datacenter.svg
     dawn_field: assets/bg/dawn_field.svg
@@ -20,40 +20,40 @@ assets:
   characters:
     윤재:
       placement: prompt-top
-      base: assets/char/yunjae.svg
+      base: assets/char/yunjae.webp
       facing: left
       defaultDelivery: neutral
       emotions:
-        excited: assets/char/yunjae-excited.svg
-        scared: assets/char/yunjae-scared.svg
-        sad: assets/char/yunjae-sad.svg
+        excited: assets/char/yunjae-excited.webp
+        scared: assets/char/yunjae-scared.webp
+        sad: assets/char/yunjae-sad.webp
       emotionMotions:
         scared: startle
     로봇:
       name: "{{android_name}}"
       placement: prompt-top
-      base: assets/char/android.svg
+      base: assets/char/android.webp
       facing: left
       defaultDelivery: calm
       emotions:
-        off: assets/char/android-off.svg
-        happy: assets/char/android-happy.svg
-        thinking: assets/char/android-thinking.svg
-        glitch: assets/char/android-glitch.svg
+        off: assets/char/android-off.webp
+        happy: assets/char/android-happy.webp
+        thinking: assets/char/android-thinking.webp
+        glitch: assets/char/android-glitch.webp
       emotionMotions:
         glitch: tremble
     비서:
       name: "하루"
       placement: prompt-top
-      base: assets/char/assistant.svg
+      base: assets/char/assistant.webp
       facing: front
       defaultDelivery: calm
-      # A ceiling unit, not a person: shrink it so the whole device reads at phone width.
-      calibration: { scale: 0.55 }
+      # Keep the ceiling unit above the dialogue controls.
+      calibration: { scale: 0.55, y: -28 }
       emotions:
-        ad: assets/char/assistant-ad.svg
-        glitch: assets/char/assistant-glitch.svg
-        dead: assets/char/assistant-dead.svg
+        ad: assets/char/assistant-ad.webp
+        glitch: assets/char/assistant-glitch.webp
+        dead: assets/char/assistant-dead.webp
       emotionMotions:
         glitch: tremble
         dead: droop
@@ -72,6 +72,7 @@ assets:
     repair_battery: assets/sfx/repair_battery.wav
     repair_tap: assets/sfx/repair_tap.wav
     repair_breath: assets/sfx/repair_breath.wav
+    boot: assets/sfx/boot.wav
 
 state:
   android_name: "도트"

@@ -530,6 +530,7 @@ scenes:
       - say:
           channel: action
           with: []
+          sound: ice_movement
           text: "등불을 들고 안쪽으로 간다. 기울어진 얼음 더미 너머에서 무언가 끌리는 소리."
       - say:
           char: 막쇠.hurt
