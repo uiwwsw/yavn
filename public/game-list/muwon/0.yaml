@@ -392,11 +392,13 @@ scenes:
           char: 강치수
           with: [서연, 도원, 강치수]
           options:
-            - text: "오라비의 손을 보여 달라고 한다"
+            - text: "오라비의 손을 확인한다"
+              saveText: "오라비의 손을 보여 달라고 한다"
               goto: c1_show_hands
             - text: "오라비를 포도청에 넘긴다"
               goto: c1_bad_brother
-            - text: "실의 출처부터 쫓겠다고 한다"
+            - text: "실의 출처를 조사한다"
+              saveText: "실의 출처부터 쫓겠다고 한다"
               goto: c1_follow_thread
 
   c1_bad_brother:

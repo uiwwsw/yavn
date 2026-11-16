@@ -86,9 +86,11 @@ scenes:
           char: 여금
           with: [서연, 여금]
           options:
-            - text: "손톱 밑에서 나온 감청 실을 보여 준다"
+            - text: "감청 실을 보여 준다"
+              saveText: "손톱 밑에서 나온 감청 실을 보여 준다"
               goto: c2_show_thread
-            - text: "분이와 다툰 적이 있는지 따진다"
+            - text: "분이와 다퉜는지 묻는다"
+              saveText: "분이와 다툰 적이 있는지 따진다"
               goto: c2_press
 
   c2_show_thread:
@@ -218,7 +220,8 @@ scenes:
             - text: "장부 궤짝을 끌어낸다"
               set: { makssoe_hurt: true }
               goto: c2_chest
-            - text: "막쇠의 허리띠를 잡아 끌어낸다"
+            - text: "막쇠를 끌어낸다"
+              saveText: "막쇠의 허리띠를 잡아 끌어낸다"
               goto: c2_pull_makssoe
 
   c2_chest:
@@ -440,11 +443,13 @@ scenes:
           prompt: "은비녀는 깨끗하다. 어떻게 할까?"
           with: [서연, 도원, 막쇠]
           options:
-            - text: "독은 아니다. 늙어 숨이 멎은 것으로 적는다"
+            - text: "노환으로 기록한다"
+              saveText: "독은 아니다. 늙어 숨이 멎은 것으로 적는다"
               forgiveOnce: true
               forgiveMessage: "막쇠가 고개를 젓는다. '숨이 멎은 송장 목을 누가 그어요?'"
               goto: c2_bad_close
-            - text: "입에 밥을 물렸다가 닭에게 먹여 본다"
+            - text: "닭에게 밥을 먹여 독을 확인한다"
+              saveText: "입에 밥을 물렸다가 닭에게 먹여 본다"
               goto: c2_chicken
 
   c2_bad_close:

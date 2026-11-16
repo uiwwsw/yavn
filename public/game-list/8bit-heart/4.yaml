@@ -474,7 +474,8 @@ scenes:
           prompt: "SAVE SLOT 1 — 무엇을 저장하시겠습니까? (배터리로 옮길 수 있는 건 하나. 나머지는 코어 안에서 지워집니다.)"
           char: 로봇
           options:
-            - text: "새끼손가락 약속 — \"끝까지 2P로\""
+            - text: "새끼손가락 약속"
+              saveText: "새끼손가락 약속 — \"끝까지 2P로\""
               when: { var: m_promise, op: eq, value: true }
               set: { kept_promise: true }
               goto: b4_go
@@ -482,13 +483,16 @@ scenes:
               when: { var: m_snack, op: eq, value: true }
               set: { kept_snack: true }
               goto: b4_go
-            - text: "펀치라인 까먹은 똑똑 농담"
+            - text: "똑똑 농담"
+              saveText: "펀치라인 까먹은 똑똑 농담"
               when: { var: m_joke, op: eq, value: true }
               set: { kept_joke: true }
               goto: b4_go
-            - text: "빈 슬롯으로 둔다. 가볍게 다녀오라고"
+            - text: "슬롯을 비워 둔다"
+              saveText: "빈 슬롯으로 둔다. 가볍게 다녀오라고"
               goto: b4_go
-            - text: "\"안 해. 저장 안 해. 그냥 튀자.\""
+            - text: "저장을 그만두고 도망친다"
+              saveText: "\"안 해. 저장 안 해. 그냥 튀자.\""
               goto: b4_flee
 
   b4_go:

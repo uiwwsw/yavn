@@ -4,6 +4,7 @@ import { load, YAMLException } from 'js-yaml';
 import { ZodError } from 'zod';
 import { baseLayerSchema, chapterSchema, configSchema, gameSchema } from './schema';
 import { collectTextVariables } from './textVariables';
+import { choiceSaveValue } from './history';
 import type { Action, CameraDirective, ConditionNode, GameData, RouteVarValue, VNError } from './types';
 
 type ConfigYamlData = {
@@ -1354,6 +1355,7 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
 
         if ('choice' in action) {
           const optionTexts = new Set<string>();
+          const savedValues = new Set<string>();
           for (const [optionIndex, option] of action.choice.options.entries()) {
             const normalizedText = option.text.trim();
             if (optionTexts.has(normalizedText)) {
@@ -1364,6 +1366,15 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
               };
             }
             optionTexts.add(normalizedText);
+            const savedValue = choiceSaveValue(option);
+            if (savedValues.has(savedValue)) {
+              return {
+                error: {
+                  message: `scene '${sceneId}' has duplicate saved choice value '${savedValue}' in actions[${actionIndex}]`,
+                },
+              };
+            }
+            savedValues.add(savedValue);
             if (option.when) {
               const error = validateCondition(
                 sceneId,

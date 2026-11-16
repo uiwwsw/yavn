@@ -312,10 +312,12 @@ scenes:
           timeoutMs: 8000
           timeoutOptionIndex: 2
           options:
-            - text: "\"종이야. 글자 찍힌 종이. 세 겹으로 싸면 안 깨져.\""
+            - text: "신문지가 뭔지 설명한다"
+              saveText: "\"종이야. 글자 찍힌 종이. 세 겹으로 싸면 안 깨져.\""
               set: { answered_haru: true }
               goto: b1_told
-            - text: "\"그게 지금 중요해?! 나 봐! 나 여기 있어!\""
+            - text: "하루를 부른다"
+              saveText: "\"그게 지금 중요해?! 나 봐! 나 여기 있어!\""
               goto: b1_shout
             - text: "입을 연다"
               goto: b1_mute
@@ -554,7 +556,8 @@ scenes:
               at: { x: 53, y: 76 }
               when: { var: saw_box, op: eq, value: false }
               goto: b1_look_box
-            - text: "켜진 채로 둔 모니터"
+            - text: "켜진 모니터"
+              saveText: "켜진 채로 둔 모니터"
               at: { x: 76, y: 42 }
               when: { var: saw_dad, op: eq, value: false }
               goto: b1_look_monitor

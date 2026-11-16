@@ -1,4 +1,8 @@
-import type { RouteHistoryEntry, StoryLogEntry } from './types';
+import type { ChoiceOption, RouteHistoryEntry, StoryLogEntry } from './types';
+
+export function choiceSaveValue(option: ChoiceOption): string {
+  return option.saveText ?? option.text;
+}
 
 export const MAX_STORY_LOG_ENTRIES = 300;
 

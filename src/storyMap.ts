@@ -6,7 +6,7 @@ export type StoryMapNode = {
   kind: 'scene' | 'choice' | 'input' | 'death' | 'ending';
   title: string; image?: string; portrait?: string;
 };
-export type StoryMapEdge = { from: string; to: string; label?: string; option?: number };
+export type StoryMapEdge = { from: string; to: string; label?: string; option?: number; saveText?: string };
 export type StoryMapChapter = { path: string; number: number; title?: string; entry?: string; nodes: StoryMapNode[]; edges: StoryMapEdge[]; error?: string };
 export type StoryMapVisit = { id: string; replayable: boolean };
 export type StoryMapData = {
@@ -65,7 +65,7 @@ export function buildStoryChapter(game: GameData, path: string, number: number, 
       const continuation = stops[s + 1] !== undefined ? storyNodeId(path, scene, stops[s + 1])
         : nextScene ? storyNodeId(path, nextScene, 0) : nextChapter ? `chapter:${nextChapter}` : undefined;
       let continues = true;
-      const add = (to: string | undefined, label?: string, option?: number) => { if (to) edges.push({ from: id, to, label, ...(option === undefined ? {} : { option }) }); };
+      const add = (to: string | undefined) => { if (to) edges.push({ from: id, to, label: undefined }); };
       for (const a of slice) {
         if ('goto' in a) { add(target(a.goto)); continues = false; break; }
         if ('gameOver' in a || 'ending' in a) { continues = false; break; }
@@ -76,12 +76,17 @@ export function buildStoryChapter(game: GameData, path: string, number: number, 
         if ('input' in a) a.input.routes?.forEach(r => { if (r.goto) add(target(r.goto)); });
         if ('choice' in a) {
           a.choice.options.forEach((option, index) => {
+            let destination = option.goto ? target(option.goto) : continuation;
             if (option.gameOver) {
               const deathId = `${id}:death:${index}`;
               nodes.push({ id: deathId, chapter: path, scene, action: start, kind: 'death',
                 title: option.gameOver.title ?? '멈춘 이야기', image: background ? resolve(background) : undefined });
-              add(deathId, option.text, index + 1);
-            } else add(option.goto ? target(option.goto) : continuation, option.text, index + 1);
+              destination = deathId;
+            }
+            if (destination) edges.push({
+              from: id, to: destination, label: option.text, option: index + 1,
+              ...(option.saveText === undefined ? {} : { saveText: option.saveText }),
+            });
           });
           continues = false; break;
         }
@@ -97,8 +102,11 @@ export function visibleStoryChapter(chapter: StoryMapChapter, visits: StoryMapVi
   const taken = new Set(travelled);
   const nodes = chapter.nodes.filter(n => seen.has(n.id)).map(n => ({ ...n, unlocked: true }));
   const ids = new Set(nodes.map(n => n.id));
-  const edges = chapter.edges.filter(e => ids.has(e.from) && ids.has(e.to)
-    && taken.has(storyEdgeId(e.from, e.to)) && (!e.label || choices[e.from]?.includes(e.label)))
+  const edges = chapter.edges.filter(e => {
+    const savedValue = e.saveText ?? e.label;
+    return ids.has(e.from) && ids.has(e.to) && taken.has(storyEdgeId(e.from, e.to))
+      && (savedValue === undefined || choices[e.from]?.includes(savedValue));
+  })
     .map(e => ({ ...e, taken: true }));
   return { nodes, edges };
 }

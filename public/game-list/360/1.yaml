@@ -98,9 +98,11 @@ scenes:
           char: 기호
           with: [기호]
           options:
-            - text: "돈 얘기만 한다. 삼백오십만 원, 영수증에 도장까지 받는다."
+            - text: "거래 조건만 이야기한다."
+              saveText: "돈 얘기만 한다. 삼백오십만 원, 영수증에 도장까지 받는다."
               goto: heart_try
-            - text: "돈보다 먼저 묻는다. 같이 가자는 게 점방인지, 나인지."
+            - text: "기호가 함께 가자는 이유를 묻는다."
+              saveText: "돈보다 먼저 묻는다. 같이 가자는 게 점방인지, 나인지."
               goto: heart_told
 
   heart_try:
@@ -238,9 +240,11 @@ scenes:
           prompt: "기차는 다섯 시다. 영호는 신을 신고 문간에 서 있다."
           with: [시어머니]
           options:
-            - text: "어머이를 일으킨다. 업고라도 같이 간다고 한다."
+            - text: "어머니를 모시고 간다."
+              saveText: "어머이를 일으킨다. 업고라도 같이 간다고 한다."
               goto: mother_try
-            - text: "머리맡에 쌀 한 말 값을 놓고 나온다."
+            - text: "쌀값을 두고 혼자 떠난다."
+              saveText: "머리맡에 쌀 한 말 값을 놓고 나온다."
               goto: mother_leave
 
   mother_try:
@@ -362,10 +366,12 @@ scenes:
           key: v2
           prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
           options:
-            - text: "아무도 믿지 말았어야 했다."
+            - text: "사람을 믿은 후회"
+              saveText: "아무도 믿지 말았어야 했다."
               set: { t_guard: true, last_taken: guard, deg_last: "076.3" }
               goto: void_two_go
-            - text: "떠나지 말았어야 했다."
+            - text: "떠난 후회"
+              saveText: "떠나지 말았어야 했다."
               set: { t_stay: true, last_taken: stay, deg_last: "251.0" }
               goto: void_two_go
             - text: "쥐지 않는다."
@@ -377,9 +383,11 @@ scenes:
           key: v2_stop
           prompt: "남은 것이 정말 없는가."
           options:
-            - text: "없다. 여기 있는다."
+            - text: "여기 남는다."
+              saveText: "없다. 여기 있는다."
               goto: void_two_still
-            - text: "…하나 있다."
+            - text: "다시 고른다."
+              saveText: "…하나 있다."
               goto: void_two_choice
 
   void_two_still:

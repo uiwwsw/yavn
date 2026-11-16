@@ -552,7 +552,8 @@ scenes:
           options:
             - text: "전원선을 뽑는다"
               goto: end_cut
-            - text: "모니터를 끄고 나간다. 내일 오픈 근무다"
+            - text: "모니터를 끄고 나간다"
+              saveText: "모니터를 끄고 나간다. 내일 오픈 근무다"
               goto: end_stay
             - text: "세션 종료 창을 연다"
               when: { var: honest, op: gte, value: 3 }

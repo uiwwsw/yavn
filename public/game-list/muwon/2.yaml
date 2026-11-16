@@ -127,7 +127,8 @@ scenes:
           prompt: "포교가 지켜본다. 무엇을 확인할까?"
           with: [서연, 강치수, 덕구]
           options:
-            - text: "흉기라는 낫"
+            - text: "덕구의 낫"
+              saveText: "흉기라는 낫"
               at: { x: 30, y: 55 }
               when: { var: c3_sickle, op: eq, value: false }
               goto: c3_sickle_scene
@@ -322,7 +323,8 @@ scenes:
             - text: "거래를 받아들인다"
               set: { struck_deal: true }
               goto: c3_silence
-            - text: "거절하고 판관 앞에서 따지자고 한다"
+            - text: "거래를 거절하고 판관에게 간다"
+              saveText: "거절하고 판관 앞에서 따지자고 한다"
               goto: c3_confront_intro
 
   c3_silence:
@@ -533,9 +535,11 @@ scenes:
           prompt: "자백을 뒤집을 마지막 한 가지는?"
           char: 강치수
           options:
-            - text: "포교가 범인과 한패라고 외친다"
+            - text: "포교를 공범으로 지목한다"
+              saveText: "포교가 범인과 한패라고 외친다"
               goto: c3_accuse_chisu
-            - text: "덕구는 왼손을 못 쓴다 — 상처는 왼손잡이의 것"
+            - text: "덕구가 왼손을 못 쓴다는 점을 밝힌다"
+              saveText: "덕구는 왼손을 못 쓴다 — 상처는 왼손잡이의 것"
               when: { var: c3_hand, op: eq, value: true }
               goto: c3_r3_right
             - text: "은비녀 — 검게 변하지 않았다"

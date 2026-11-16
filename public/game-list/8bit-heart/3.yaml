@@ -496,11 +496,13 @@ scenes:
           prompt: "\"3.5조각. 네 몫. 받아.\""
           char: 로봇
           options:
-            - text: "\"3.5는 무슨.\" 반쪽까지 집어 먹는다"
+            - text: "복숭아를 다 먹는다"
+              saveText: "\"3.5는 무슨.\" 반쪽까지 집어 먹는다"
               add: { bond: 1 }
               set: { m_snack: true }
               goto: b3_snack_take
-            - text: "\"넣어 둬. 내일 먹게.\" 뚜껑을 닫는다"
+            - text: "복숭아를 내일로 남겨 둔다"
+              saveText: "\"넣어 둬. 내일 먹게.\" 뚜껑을 닫는다"
               goto: b3_snack_save
 
   b3_snack_take:
@@ -776,10 +778,12 @@ scenes:
           timeoutMs: 8000
           timeoutOptionIndex: 1
           options:
-            - text: "{{android_name}} 등 뒤에 납작 붙는다"
+            - text: "{{android_name}} 뒤에 숨는다"
+              saveText: "{{android_name}} 등 뒤에 납작 붙는다"
               add: { bond: 1 }
               goto: b3_hide
-            - text: "냅다 반대쪽으로 튄다"
+            - text: "반대쪽으로 달아난다"
+              saveText: "냅다 반대쪽으로 튄다"
               goto: b3_run
 
   b3_hide:
@@ -1162,11 +1166,13 @@ scenes:
           char: 로봇
           motion: tremble
           options:
-            - text: "손가락을 건다. \"혼자는 무슨. 끝까지 2P로 가.\""
+            - text: "끝까지 함께하겠다고 약속한다"
+              saveText: "손가락을 건다. \"혼자는 무슨. 끝까지 2P로 가.\""
               add: { bond: 1 }
               set: { m_promise: true }
               goto: b3_pinky
-            - text: "\"…자. 내일 얘기해.\" 촛불을 분다"
+            - text: "대답을 내일로 미룬다"
+              saveText: "\"…자. 내일 얘기해.\" 촛불을 분다"
               goto: b3_think
 
   b3_pinky:

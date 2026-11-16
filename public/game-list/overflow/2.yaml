@@ -293,12 +293,15 @@ scenes:
           char: 지완
           with: [세라]
           options:
-            - text: "\"올려 주는 게 아니라 틀렸다고 쓰는 거야. 쓸게.\""
+            - text: "세라의 이의신청을 맡는다"
+              saveText: "\"올려 주는 게 아니라 틀렸다고 쓰는 거야. 쓸게.\""
               goto: sera_yes
               set: { sera_case: true }
-            - text: "\"다른 사무소 소개해 줄게. 내가 쓰면 네가 손해야.\""
+            - text: "다른 사무소를 소개한다"
+              saveText: "\"다른 사무소 소개해 줄게. 내가 쓰면 네가 손해야.\""
               goto: sera_no
-            - text: "\"그 서류 누가 요구했어? 병원이야, 시어머니야?\""
+            - text: "누가 서류를 요구했는지 묻는다"
+              saveText: "\"그 서류 누가 요구했어? 병원이야, 시어머니야?\""
               goto: sera_who
 
   sera_yes:
@@ -751,9 +754,11 @@ scenes:
           char: 수경
           with: [지완]
           options:
-            - text: "\"할머니 건은 따로 합니다.\" 종이를 밀어 놓는다"
+            - text: "할머니 사건을 합의에서 뺀다"
+              saveText: "\"할머니 건은 따로 합니다.\" 종이를 밀어 놓는다"
               goto: refuse_deal
-            - text: "\"하나만 묻겠습니다. 배동식 씨도 오버플로입니까.\""
+            - text: "배동식도 오버플로인지 묻는다"
+              saveText: "\"하나만 묻겠습니다. 배동식 씨도 오버플로입니까.\""
               goto: ask_dongsik
             - text: "서명한다"
               gameOver:

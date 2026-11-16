@@ -78,9 +78,11 @@ scenes:
           char: 엄마
           with: [엄마]
           options:
-            - text: "\"엄마, 나 무서워.\""
+            - text: "엄마에게 무섭다고 말한다."
+              saveText: "\"엄마, 나 무서워.\""
               goto: open_try
-            - text: "\"괜찮대요. 가게 가 보세요.\""
+            - text: "엄마를 가게로 돌려보낸다."
+              saveText: "\"괜찮대요. 가게 가 보세요.\""
               goto: open_fine
 
   open_try:
@@ -150,7 +152,8 @@ scenes:
           options:
             - text: "잠바를 받는다."
               goto: out_try
-            - text: "\"누나 혼자 가요. 엄마가 여섯 시에 와요.\""
+            - text: "병실에 남는다."
+              saveText: "\"누나 혼자 가요. 엄마가 여섯 시에 와요.\""
               goto: out_stay
 
   out_try:
@@ -400,10 +403,12 @@ scenes:
           key: v3
           prompt: "한쪽이 덜 어둡다. 쥘 것이 몇 개 없다."
           options:
-            - text: "더 살고 싶었다."
+            - text: "더 살고 싶었던 마음"
+              saveText: "더 살고 싶었다."
               set: { t_live: true, last_taken: live, deg_last: "164.8" }
               goto: void_three_go
-            - text: "한 번은 해 볼걸."
+            - text: "해 보지 못한 후회"
+              saveText: "한 번은 해 볼걸."
               set: { t_dare: true, last_taken: dare, deg_last: "339.4" }
               goto: void_three_go
             - text: "쥐지 않는다."
@@ -415,9 +420,11 @@ scenes:
           key: v3_stop
           prompt: "남은 것이 정말 없는가."
           options:
-            - text: "없다. 여기 있는다."
+            - text: "여기 남는다."
+              saveText: "없다. 여기 있는다."
               goto: void_three_still
-            - text: "…하나 있다."
+            - text: "다시 고른다."
+              saveText: "…하나 있다."
               goto: void_three_choice
 
   void_three_still:
