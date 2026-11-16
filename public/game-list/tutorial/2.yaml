@@ -884,10 +884,11 @@ scenes:
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
           text: "사람이 바꾸는 거. 사진이 바뀌는 건 처음 봐요."
+      - mood: { tone: dread, level: 1 }
       - say:
           char: 은숙
           with: [해수]
-          text: "제 휴대폰에 있던 사진이에요. 제 손에 있던 거요."
+          text: "제 폰에 있는 사진이라고요."
       - say:
           char: 해수.service
           with: [은숙]
@@ -927,6 +928,7 @@ scenes:
           channel: system
           with: []
           text: "번호표 · 052번 · 대기 0명"
+      - mood: off
       - say:
           char: 은숙
           with: [해수]
