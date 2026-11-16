@@ -9,6 +9,8 @@ assets:
     drone_alley: assets/bg/drone_alley.svg
     datacenter: assets/bg/datacenter.svg
     dawn_field: assets/bg/dawn_field.svg
+    console_old_sticker: assets/items/console_old.svg
+    console_old_line_sticker: assets/items/console_old_line.svg
     console_cheap_sticker: assets/items/console_cheap.svg
     console_premium_sticker: assets/items/console_premium.svg
     cpu_sticker: assets/items/cpu_chip.svg
@@ -65,6 +67,11 @@ assets:
     chip_run: assets/music/chip-run.flac
     chip_core: assets/music/chip-core.flac
     chip_dawn: assets/music/chip-dawn.flac
+  sfx:
+    repair_switch: assets/sfx/repair_switch.wav
+    repair_battery: assets/sfx/repair_battery.wav
+    repair_tap: assets/sfx/repair_tap.wav
+    repair_breath: assets/sfx/repair_breath.wav
 
 state:
   android_name: "도트"
