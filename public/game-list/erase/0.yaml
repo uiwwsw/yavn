@@ -8,44 +8,32 @@ scenes:
   operating_room:
     title: "수술실"
     actions:
-      - bg: { id: surgery, transition: fade, duration: 1200 }
+      - bg: { id: surgery, transition: cut }
       - music: cold_room
       - say:
           char: 의사
           with: []
-          camera: wide
-          text: "마지막으로 한 번 더 읽어 드릴게요. 규정이라서요."
-      - say:
-          channel: record
-          with: []
-          text: "ERASE 시술 동의서\n1. 본 시술은 지난 삶의 기억과 이름, 얼굴을 지우고 새 신원으로 깨어나게 합니다.\n2. 지운 기억은 어떤 방법으로도 복구되지 않습니다.\n3. 본인이 정리하지 않은 휴대전화 기록(사진·메시지)은 그대로 남습니다."
+          text: "이 이름으로 살아온 기억은 지워집니다. 얼굴도 바뀌고요. 지운 기억은 복구할 수 없어요."
       - say:
           char: 의사
           with: []
-          text: "서명 확인했어요. 이름표는 뒤집어 둘게요. 깨어나실 때 헷갈리시지 않게."
+          text: "휴대전화는 돌려 드려요. 사진이랑 문자는 그대로 남습니다."
       - say:
-          char: 의사
+          channel: action
           with: []
-          text: "숨 한 번 크게 쉬세요. 네. 잘하셨어요."
-      - say:
-          char: 의사
-          with: []
-          text: "눈 뜨면… 새로 시작해요."
-      - say:
-          channel: card
-          with: []
-          text: "ERASE"
-      - say:
-          channel: card
-          with: []
-          text: "현재\n한도윤 · 29 · 결혼 한 달 전"
+          text: "의사가 동의서 맨 아래에 펜을 놓는다. 내 이름이 인쇄돼 있다."
+          continueLabel: "시술에 동의한다"
+      - say: { char: 의사, with: [], text: "확인했어요. 이름표는 뒤집어 둘게요." }
+      - say: { char: 의사, with: [], text: "등이 차가울 거예요. 이제 눈 감으세요." }
+      - bg: { id: eyes_closed, transition: dissolve, duration: 640 }
+      - wait: 180
 
   studio:
     title: "청첩장 사진"
     actions:
-      - bg: { id: photo_studio, transition: cut }
+      - bg: { id: photo_studio, transition: fade, duration: 520 }
       - music: neon
-      - place: "금요일 오후 · 청첩장 사진 촬영"
+      - place: "현재 · 결혼 한 달 전 · 청첩장 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say:
