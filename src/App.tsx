@@ -127,6 +127,7 @@ import {
   parseLauncherDemoHash,
   parseLauncherDemoQuery,
   resolveInitialCarouselGameId,
+  shuffleCarouselGames,
   wrapCarouselIndex,
 } from './launcherCarousel';
 import {
@@ -1813,6 +1814,7 @@ export default function App() {
     () => resolveInitialBootPresentation(window.location.pathname).gameBootPending,
   );
   const [gameList, setGameList] = useState<GameListManifestEntry[]>([]);
+  const [carouselGames, setCarouselGames] = useState<GameListManifestEntry[]>([]);
   const [gameListLoading, setGameListLoading] = useState(false);
   const [gameListError, setGameListError] = useState<string | null>(null);
   const [manifestSeo, setManifestSeo] = useState<GameListManifestSeo | null>(null);
@@ -2033,7 +2035,10 @@ export default function App() {
       if (requestId !== gameListRequestIdRef.current) {
         return;
       }
+      const shuffledGames = shuffleCarouselGames(parsed.games);
+      const carouselGameIds = shuffledGames.map((entry) => entry.id);
       setGameList(parsed.games);
+      setCarouselGames(shuffledGames);
       setManifestSeo(parsed.seo ?? null);
       setGameListError(null);
       setGameListLoading(false);
@@ -2042,14 +2047,14 @@ export default function App() {
         window.location.pathname,
         window.location.search,
         window.location.hash,
-        parsed.games.map((entry) => entry.id),
+        carouselGameIds,
       );
       if (normalizedLocationPath) {
         window.history.replaceState(window.history.state, '', normalizedLocationPath);
       }
       setSelectedGameId((prev) =>
         resolveInitialCarouselGameId(
-          parsed.games.map((entry) => entry.id),
+          carouselGameIds,
           prev,
           window.location.search,
           window.location.hash,
@@ -2060,6 +2065,7 @@ export default function App() {
         return;
       }
       setGameList([]);
+      setCarouselGames([]);
       setManifestSeo(null);
       setSelectedGameId(null);
       launcherCarouselPositionedRef.current = false;
@@ -2482,11 +2488,11 @@ export default function App() {
   }, [activeTag, activeLanguage, gameList, normalizedSearchTerm]);
 
   const selectedGame =
-    gameList.find((entry) => entry.id === selectedGameId) ??
-    gameList[0] ??
+    carouselGames.find((entry) => entry.id === selectedGameId) ??
+    carouselGames[0] ??
     null;
   const selectedGameIndex = selectedGame
-    ? gameList.findIndex((entry) => entry.id === selectedGame.id)
+    ? carouselGames.findIndex((entry) => entry.id === selectedGame.id)
     : -1;
 
   useEffect(() => {
@@ -2534,7 +2540,7 @@ export default function App() {
   }, [selectedGame]);
 
   const moveLauncherCarouselToIndex = useCallback((requestedIndex: number, jump = false) => {
-    const nextIndex = wrapCarouselIndex(requestedIndex, gameList.length);
+    const nextIndex = wrapCarouselIndex(requestedIndex, carouselGames.length);
     if (nextIndex < 0 || !launcherCarouselApi) {
       return;
     }
@@ -2544,9 +2550,9 @@ export default function App() {
     launcherCarouselApi.scrollTo(nextIndex, jumpImmediately);
     // An instant jump has no running animation to emit a settle event.
     if (jumpImmediately) {
-      setSelectedGameId(gameList[nextIndex]?.id ?? null);
+      setSelectedGameId(carouselGames[nextIndex]?.id ?? null);
     }
-  }, [clearLauncherDeepLinkFromAddress, gameList, launcherCarouselApi]);
+  }, [clearLauncherDeepLinkFromAddress, carouselGames, launcherCarouselApi]);
 
   const moveLauncherCarousel = useCallback((direction: -1 | 1) => {
     if (!launcherCarouselApi) {
@@ -2560,9 +2566,9 @@ export default function App() {
       launcherCarouselApi.scrollNext(jumpImmediately);
     }
     if (jumpImmediately) {
-      setSelectedGameId(gameList[launcherCarouselApi.selectedScrollSnap()]?.id ?? null);
+      setSelectedGameId(carouselGames[launcherCarouselApi.selectedScrollSnap()]?.id ?? null);
     }
-  }, [clearLauncherDeepLinkFromAddress, gameList, launcherCarouselApi]);
+  }, [clearLauncherDeepLinkFromAddress, carouselGames, launcherCarouselApi]);
 
   const preserveLauncherControlFocus = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -2584,17 +2590,17 @@ export default function App() {
       moveLauncherCarouselToIndex(0);
     } else if (event.key === 'End') {
       event.preventDefault();
-      moveLauncherCarouselToIndex(gameList.length - 1);
+      moveLauncherCarouselToIndex(carouselGames.length - 1);
     }
-  }, [gameList.length, moveLauncherCarousel, moveLauncherCarouselToIndex]);
+  }, [carouselGames.length, moveLauncherCarousel, moveLauncherCarouselToIndex]);
 
   useEffect(() => {
     if (!launcherCarouselApi) {
       return;
     }
     const commitSettledSnap = () => {
-      const selectedIndex = wrapCarouselIndex(launcherCarouselApi.selectedScrollSnap(), gameList.length);
-      const nextGameId = selectedIndex >= 0 ? gameList[selectedIndex]?.id : undefined;
+      const selectedIndex = wrapCarouselIndex(launcherCarouselApi.selectedScrollSnap(), carouselGames.length);
+      const nextGameId = selectedIndex >= 0 ? carouselGames[selectedIndex]?.id : undefined;
       if (nextGameId) {
         setSelectedGameId((currentGameId) => currentGameId === nextGameId ? currentGameId : nextGameId);
       }
@@ -2603,7 +2609,7 @@ export default function App() {
     return () => {
       launcherCarouselApi.off('settle', commitSettledSnap);
     };
-  }, [gameList, launcherCarouselApi]);
+  }, [carouselGames, launcherCarouselApi]);
 
   useLayoutEffect(() => {
     if (
@@ -2622,7 +2628,7 @@ export default function App() {
       launcherCarouselPositionedRef.current = true;
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [bootMode, gameList.length, launcherCarouselApi, selectedGameIndex]);
+  }, [bootMode, carouselGames, launcherCarouselApi, selectedGameIndex]);
 
   useEffect(() => {
     return () => {
@@ -4341,7 +4347,7 @@ export default function App() {
             <span><b>01</b> SPOTLIGHT</span>
             <span>{t("지금 펼쳐볼 이야기")}</span>
           </div>
-          {gameList.length > 0 ? (
+          {carouselGames.length > 0 ? (
             <section className="launcher-showcase" aria-label={t("플레이 가능한 데모")}>
               <div
                 ref={launcherCarouselRef}
@@ -4359,7 +4365,7 @@ export default function App() {
                 }}
               >
                 <div className="launcher-carousel-track">
-                  {gameList.map((entry, index) => {
+                  {carouselGames.map((entry, index) => {
                     const isSelected = selectedGame?.id === entry.id;
                     const entryTags = entry.tags;
                     const chapterLabel =
@@ -4375,7 +4381,7 @@ export default function App() {
                         className={`launcher-feature ${isSelected ? 'is-selected' : ''}${entry.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
                         role="group"
                         aria-roledescription="slide"
-                        aria-label={`${index + 1} / ${gameList.length}: ${entry.name}`}
+                        aria-label={`${index + 1} / ${carouselGames.length}: ${entry.name}`}
                         aria-hidden={!isSelected}
                       >
                         <div className="launcher-feature-media" style={showcaseStyle}>
@@ -4484,14 +4490,14 @@ export default function App() {
                   aria-label={t("이전 데모")}
                   onPointerDown={preserveLauncherControlFocus}
                   onClick={() => moveLauncherCarousel(-1)}
-                  disabled={gameList.length < 2}
+                  disabled={carouselGames.length < 2}
                 >
                   <span aria-hidden="true">←</span>
                 </button>
 
                 <div className="launcher-carousel-pagination">
                   <div className="launcher-carousel-dots" role="group" aria-label={t("데모 선택")}>
-                    {gameList.map((entry, index) => {
+                    {carouselGames.map((entry, index) => {
                       const isSelected = selectedGame?.id === entry.id;
                       return (
                         <button
@@ -4512,7 +4518,7 @@ export default function App() {
                     <small>
                       {String(Math.max(1, selectedGameIndex + 1)).padStart(2, '0')}
                       {' / '}
-                      {String(Math.max(1, gameList.length)).padStart(2, '0')}
+                      {String(Math.max(1, carouselGames.length)).padStart(2, '0')}
                     </small>
                   </span>
                 </div>
@@ -4523,7 +4529,7 @@ export default function App() {
                   aria-label={t("다음 데모")}
                   onPointerDown={preserveLauncherControlFocus}
                   onClick={() => moveLauncherCarousel(1)}
-                  disabled={gameList.length < 2}
+                  disabled={carouselGames.length < 2}
                 >
                   <span aria-hidden="true">→</span>
                 </button>

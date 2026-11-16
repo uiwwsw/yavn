@@ -1,3 +1,12 @@
+export function shuffleCarouselGames<T>(games: readonly T[]): T[] {
+  const shuffled = [...games];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
 export function wrapCarouselIndex(index: number, itemCount: number): number {
   if (!Number.isFinite(itemCount) || itemCount <= 0) {
     return -1;
