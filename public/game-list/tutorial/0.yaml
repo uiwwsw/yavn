@@ -972,6 +972,7 @@ scenes:
           char: 상혁
           with: []
           delivery: angry
+          sound: door_knock
           text: "놓고 가."
       - say:
           char: 상혁

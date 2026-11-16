@@ -1,78 +1,81 @@
-chapterTitle: "앞자리가 없는 사람들"
+chapterTitle: "세 번 두드리면"
 
 script:
-  - scene: sera_comes
-  - scene: meeting
+  - scene: consent
 
 scenes:
-  sera_comes:
-    title: "이름이 비어 있는 칸"
+  consent:
+    title: "연결"
     actions:
-      - bg: office
-      - place: "3월 22일 오전 · 상계동 이의신청 사무소"
-      - music: quant
-      - char: { id: 지완, position: left }
-      - char: { id: 세라, position: right }
-      - say: { char: 세라, with: [지완], text: "여기 예약할 때 소장 이름 안 뜨더라. 떴으면… 아니, 떴어도 왔겠다. 이 동네에 하는 데가 너밖에 없대." }
-      - say: { char: 지완, with: [세라], text: "무슨 서류야?" }
-      - say: { channel: record, with: [], text: "윤세라 · 산전 심사\n애착 29. 기준 미달. 출산 뒤 모자 동실 제한 권고." }
-      - say: { char: 세라, with: [지완], text: "아기 이름 아직 못 정했어. 그 칸은 비어 있는데, 나랑 같은 방 못 쓴다는 칸은 벌써 채워 놨더라." }
-      - say: { char: 지완, with: [세라], text: "재측정 신청부터 넣자. 점수 올라가면 병원에 다시 낼 수 있어." }
-      - say: { char: 세라, with: [지완], text: "우리가 헤어질 때도 너 그랬어. 사랑이 1이면 내가 널 잘못 안 거래. 난 너한테 어떻게 지내고 싶냐고 물었는데." }
-      - say: { char: 지완, with: [세라], text: "그날 네가 다시 재 보자고 했지. 내가 싫다고 했고." }
-      - say: { char: 세라, with: [지완], text: "그래. 점수가 틀렸으면 좋겠는데, 오늘은 그게 맞아도 애를 안아 보고 싶어. 그건 어디다 써?" }
-      - say: { char: 지완, with: [세라], text: "사유란. 네 말 그대로 적자." }
-
-  meeting:
-    title: "두 칸"
-    actions:
-      - bg: hansin_room
-      - place: "3월 22일 오후 · 가산동 한신뉴로 본사"
-      - music: standard
+      - bg: hospital_stairs
+      - place: "월계병원 동쪽 계단"
+      - music: street
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, with: [지완], text: "일곱 번은 창구에서 걸렀습니다. 이번 건 제가 받았고요. 또 1이 나오는지 여기서 한 번만 봅시다. 측정에 동의하십니까?" }
-      - say: { char: 지완, with: [수경], text: "네. 이번에는 둘 다 보고 싶습니다. 기계가 읽은 것하고, 제게 준 것." }
-      - sound: read
-      - effect: glitch
-      - say: { channel: record, with: [], text: "동일 판독 · 문지완 · 연민\n센서 원본 101 → 판독표 01" }
-      - say: { char: 지완, with: [수경], text: "어느 쪽이 제 연민입니까?" }
-      - say: { char: 수경, with: [지완], text: "101은 센서가 잡은 신호의 크기입니다. 연민은 그 옆에 저희가 붙인 이름이고요." }
-      - say: { char: 수경, with: [지완], text: "배포할 때 표에 숫자 두 칸만 줬어요. 99까진 그대로 나갑니다. 100부터는 앞자리를 버리죠. 이걸 내부에선 오버플로라고 합니다." }
-      - say: { char: 지완, with: [수경], text: "그럼 화면에 0이 뜨면, 진짜 0인지 100이 잘린 건지 모르는 거네요." }
-      - say: { char: 수경, with: [지완], text: "네. 5년 전에 고치자고 올렸습니다. 법원하고 병원까지 같은 표를 쓰기 시작한 뒤였어요. 보류됐고, 저도 더 안 올렸습니다." }
-      - say: { char: 지완, with: [수경], text: "제 판독은 7년 치입니다. 몇 번이나 잘못됐는지 봐야겠습니다." }
-      - say: { char: 수경, with: [지완], text: "그 전에 회사 제안부터 보셔야 합니다." }
-      - say: { channel: record, with: [], text: "개별 구제 합의서 · 문지완의 판정 및 사무소 의뢰 건 12건을 별도 심사한다. 내부 자료는 반납하며 외부에 알리지 않는다." }
+      - say: { char: 수경, with: [지완], when: { var: shared_slip, op: eq, value: true }, text: "아까 접어 두신 이름, 여기에도 안 들어가요. 저장은 이쪽에 해 둘게요. 종이든 파일이든 전부 드리고요." }
+      - say: { char: 수경, with: [지완], when: { var: shared_slip, op: eq, value: false }, text: "아까 기록 안 보여주신 거 잘하셨어요. 여기선 렌즈 연결 허용만 누르시면 돼요. 저장한 건 전부 드릴게요." }
+      - say: { char: 지완, with: [수경], text: "제 것만 보세요. 병실 가서 아버지 쪽은 재지 말고요." }
+      - say: { char: 수경, with: [지완], text: "네. 카메라도 꺼 둘게요. 면회 끝나고 내려오시면 따라가겠습니다." }
+      - say: { channel: record, with: [], continueLabel: "내 렌즈 연결 허용", text: "에모스 · 근거리 진단 연결\n대상: 문지완의 렌즈\n기록: 센서 입력과 표시값 · 영상 및 음성 끔" }
+      - goto: visit
+
+  visit:
+    title: "병실"
+    actions:
+      - bg: ward_bed
+      - place: "20시 10분 · 신경과 308호"
+      - music: lowscore
+      - char: { id: 지완, position: left }
+      - char: { id: 동식, position: right, emotion: far }
+      - say: { channel: action, with: [], text: "아버지는 양말을 한 짝만 신고 있다. 지완이 이불 아래를 더듬자 아버지가 침대 밑을 가리킨다." }
+      - say: { char: 지완, with: [동식], text: "그냥 벗어 놔요. 따뜻한 거 가져올게요." }
+      - say: { char: 동식, with: [지완], text: "…국." }
+      - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: true }, text: "반만 얼리기로 했잖아요. 일요일에 제가 가면 그때 끓여요." }
+      - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: false }, text: "아침에 전화 못 받았죠. 작은 통은 찾으셨어요?" }
+      - say: { channel: action, with: [], sound: bed_rail, text: "아버지가 입술을 몇 번 달싹이다 만다. 검지로 침대 난간을 세 번 두드린다. 지완은 처음 두 번에 맞춰 세다가 마지막이 늦게 와서 다시 센다." }
+      - say: { char: 동식, with: [지완], text: "…겁났냐." }
       - choice:
-          key: o2_deal
-          prompt: "회사 제안에 어떻게 답할까?"
-          char: 지완
-          with: [수경]
+          key: o2_father
+          prompt: "아버지가 지완의 얼굴을 본다."
+          with: [동식]
           options:
-            - text: "지금 답하지 않겠다고 한다"
-              goto: refuse_deal
-            - text: "배동식 씨 판독도 잘렸는지 묻는다"
-              goto: ask_dongsik
-            - text: "서명한다"
-              gameOver:
-                title: "서류 한 장"
-                message: "사무소 의뢰 열두 건은 별도 심사에 들어갔다. 지완은 판독 자료를 반납했다. 동식이 들으라고 준 녹음기는 재생하지 않은 채 돌려보냈다."
-                recoverToChoice: o2_deal
+            - text: "겁났다고 말한다"
+              goto: tell_father
+            - text: "물부터 건넨다"
+              goto: bring_water
 
-  refuse_deal:
+  tell_father:
     actions:
-      - say: { char: 지완, with: [수경], text: "이분들하고 의논도 안 했습니다. 지금은 답 못 드립니다." }
-      - goto: deal_end
+      - set: { told_father: true }
+      - say: { char: 지완.break, with: [동식], text: "네. 아까 저한테 전화한 게 아버지가 아니어서요." }
+      - say: { channel: action, with: [], text: "아버지가 손을 뻗는다. 침대 옆 의자를 손끝으로 가리킨다." }
+      - say: { char: 동식, with: [지완], text: "앉아." }
+      - goto: measure
 
-  ask_dongsik:
+  bring_water:
     actions:
-      - say: { char: 지완, with: [수경], text: "노원 사건, 배동식 씨 죄책감이 0이었습니다. 그것도 잘렸습니까?" }
-      - say: { char: 수경, with: [지완], text: "저한테 물으시면 회사에서 모른다고 답합니다. 본인에게 원본 제공 동의를 받아 오세요." }
-      - goto: deal_end
+      - say: { channel: action, with: [], text: "지완이 빨대를 꺼내 반대쪽을 구부린다. 아버지는 물을 한 모금 마시고 그제야 침대 난간에서 손을 뗀다." }
+      - say: { char: 지완, with: [동식], text: "안 가요. 물만 놓고 여기 앉을게요." }
+      - goto: measure
 
-  deal_end:
+  measure:
+    title: "앞자리"
     actions:
-      - say: { char: 수경, with: [지완], text: "문 소장님, 아까 결과는 본인 자료니까 가져가셔도 됩니다. 다른 사람 것은 서면 동의가 있어야 드릴 수 있고요." }
-      - say: { channel: action, with: [], text: "지완은 자기 판독표만 접어 넣는다. 가방 안에서 녹음기 모서리가 손등에 걸린다." }
+      - say: { channel: action, with: [], text: "간호사가 시간을 더 주겠다며 문 옆으로 물러난다. 지완의 렌즈가 짧게 진동한다." }
+      - sound: read
+      - say: { channel: record, with: [], text: "에모스 · 보호자 재확인\n정서 반응 01 · 무반응 의심" }
+      - say: { channel: action, with: [], text: "지완은 경고창을 내린다. 아버지 발에 양말을 신기고, 뒤축을 두 번 잡아당긴다." }
+      - bg: hospital_stairs
+      - place: "면회 뒤 · 월계병원 동쪽 계단"
+      - char: { id: 지완, position: left }
+      - char: { id: 수경, position: right }
+      - say: { char: 수경, with: [지완], text: "같은 시각이에요. 왼쪽이 렌즈에서 온 거고 오른쪽이 화면에 나온 거예요." }
+      - effect: glitch
+      - get: raw_print
+      - sticker: { id: diagnosis, image: raw_sticker, x: 50, y: 36, width: "clamp(140px, 23%, 270px)", enter: fadeIn }
+      - say: { channel: record, with: [], text: "20:14:09 · 판독 카드와 진단 기록 일치\n센서 입력 101 → 표시 01\n카드 판정: 무반응 의심" }
+      - clearSticker: { id: diagnosis, leave: fadeOut }
+      - say: { char: 지완, with: [수경], text: "지금 저 숫자로 제가 무서워한 걸 증명할 수 있어요?" }
+      - say: { char: 수경, with: [지완], text: "이건 앞에 1이 사라졌다는 것만 보여줘요. 병원에 겁났다고 쓰고 싶으면 그건 직접 쓰셔야 돼요." }
+      - say: { channel: action, with: [], text: "수경이 파일을 보내고 휴대폰을 뒤집는다. 떨리는 건 기계가 아니라, 그 아래에 깔린 수경의 손이다." }
       - goto: /3.yaml

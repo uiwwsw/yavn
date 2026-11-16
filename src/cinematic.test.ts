@@ -210,6 +210,27 @@ describe('cinematic execution and cancellation', () => {
     expect(sounds.every((sound) => sound.pause.mock.calls.length > 0)).toBe(true);
   });
 
+  it('plays a line cue once when the line is shown and skips cues on hidden lines', () => {
+    const played = vi.fn();
+    vi.stubGlobal('Audio', class {
+      volume = 0;
+      pause() {}
+      constructor(private url: string) {}
+      play() { played(this.url, this.volume); return Promise.resolve(); }
+    });
+    setPlayerExperienceSettings({ sfxVolume: 0.4 });
+    start([
+      { say: { text: 'Hidden', sound: 'blade', when: { var: 'show', op: 'eq', value: true } } },
+      { say: { text: 'The floor creaks.', sound: 'blade' } },
+      { say: { text: 'A second line.' } },
+    ]);
+    expect(useVNStore.getState().dialog.fullText).toBe('The floor creaks.');
+    expect(played).toHaveBeenCalledExactlyOnceWith('blade.wav', 0.4);
+    handleAdvance(true);
+    handleAdvance(true);
+    expect(played).toHaveBeenCalledTimes(1);
+  });
+
   it('keeps BGM volume valid when the first frame timestamp predates fade setup', async () => {
     const frames: FrameRequestCallback[] = [];
     const volumes: number[] = [];
@@ -264,6 +285,7 @@ describe('cinematic authoring contract', () => {
     expect(resolve({ attack: { attacker: 'guard', target: 'hero', sound: 'blade' } },
       { background: 'night', music: 'finale', epilogue: 'The door stayed open.', tone: 'hopeful' }).error).toBeUndefined();
     expect(resolve({ bg: { id: 'night', transition: 'wipeRight', wait: false } }).error).toBeUndefined();
+    expect(resolve({ say: { text: 'The floor creaks.', sound: 'blade' } }).error).toBeUndefined();
   });
   it.each([
     { attack: { attacker: 'missing' } },
@@ -272,6 +294,7 @@ describe('cinematic authoring contract', () => {
     { attack: { attacker: 'guard', sound: 'missing' } },
     { attack: { attacker: 'guard', image: 'missing' } },
     { attack: { attacker: 'guard', anticipation: -1 } },
+    { say: { text: 'Missing cue.', sound: 'missing' } },
     { bg: { id: 'missing' } },
     { bg: { id: 'hall', duration: 99999 } },
   ] satisfies Action[])('rejects invalid cinematic input %j', (action) => {

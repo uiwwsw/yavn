@@ -1,158 +1,103 @@
-chapterTitle: "오희남의 방"
+chapterTitle: "같은 01"
 
 script:
-  - scene: arrive
-  - scene: room
+  - scene: introduction
 
 scenes:
-  arrive:
-    title: "두 사람 몫"
+  introduction:
+    title: "카페 문 앞"
     actions:
-      - bg: dongsik_house
-      - place: "3월 21일 · 장위동"
+      - bg: cafe
+      - place: "월계병원 1층 · 폐점 직전"
       - music: lowscore
       - char: { id: 지완, position: left }
-      - char: { id: 동식, position: right }
-      - say: { channel: action, with: [], text: "동식이 찻잔을 세 개 꺼낸다. 하나를 찬장에 도로 넣는다." }
-      - say: { char: 동식, with: [지완], text: "경찰서에서는 제가 죄책감이 없다더군요. 그다음엔 제 말을 안 적었고요." }
-      - say: { char: 지완, with: [동식], text: "신고하실 때 하신 말씀부터 여쭤봐도 됩니까?" }
-      - say: { char: 동식, with: [지완], text: "잠깐만요. 애 신발 소리 아닙니까." }
-      - char: { id: 하율, position: center }
-      - say: { char: 하율, with: [동식, 지완], text: "할아버지, 받아쓰기 공책 어딨어? 할머니 방에 두고 온 것 같아." }
-      - say: { char: 동식, with: [하율], text: "가방 앞주머니. 내가 넣어 놨어. 내려가면 물통도 챙기고." }
-      - say: { char: 하율, with: [지완], text: "아저씨도 할머니 자꾸 자는 거 물어보러 왔어요? 잘 때는 안 아프니까 깨우지 말랬는데." }
-      - move: { id: 하율, style: exit, wait: true }
-      - say: { char: 동식, with: [지완], text: "애 앞에선 아직 못 하겠습니다. 방부터 좀 봐 주십시오. 제가 한 말만 듣고 가면 또 반쪽이니까요." }
+      - char: { id: 수경, position: right }
+      - say: { char: 수경, with: [지완], text: "저기요. 접수대에서 01 뜨셨죠? 혹시 오늘 처음 보신 거예요?" }
+      - say: { char: 지완, with: [수경], text: "아까 그 옆에 계셨죠. 병원 사람이세요?" }
+      - say: { char: 수경, with: [지완], text: "한수경입니다. 에모스 첫 버전 출시할 때 제가 개발 책임자였어요. 그 판독 카드 만든 사람이에요." }
+      - say: { char: 지완, with: [수경], text: "그럼 위에 전화해서 저 들여보내 주세요. 지금 그것만 되면 돼요." }
+      - say: { char: 수경, with: [지완], text: "전화할 데가 없어졌어요. 대신 그 카드부터 확인해 봐도 돼요? 오늘 기록. 성함이랑 병원 번호는 가리셔도 돼요." }
+      - choice:
+          key: o1_trust
+          prompt: "수경이 접수 기록을 보여 달라고 한다."
+          with: [수경]
+          options:
+            - text: "이름을 가리고 기록을 보여준다"
+              goto: show_record
+            - text: "수경의 자료부터 보여달라고 한다"
+              goto: ask_report
 
-  room:
-    title: "협탁과 창가"
+  show_record:
     actions:
-      - bg: heenam_room
-      - place: "같은 집 2층 · 오희남의 방"
-      - goto: room_look
+      - set: { shared_slip: true }
+      - say: { channel: action, with: [], text: "지완이 접수표 맨 윗줄을 접는다. 수경은 표를 자기 쪽으로 끌어당기지 않고 거꾸로 읽는다." }
+      - say: { char: 수경, with: [지완], text: "숫자 밑에 버전 있어요. 네, 이거예요. 아주 반가운데, 그러면 안 되는 자리인 것도 알아요." }
+      - goto: investigation
 
-  room_look:
+  ask_report:
+    actions:
+      - say: { char: 지완, with: [수경], text: "제가 뭘 주기 전에, 그쪽이 뭘 갖고 있는지 보고 싶어요." }
+      - say: { char: 수경, with: [지완], text: "맞아요. 제가 순서 거꾸로 했네요. 여기요." }
+      - goto: investigation
+
+  investigation:
+    title: "테이블 위의 자료"
+    actions:
+      - say: { channel: action, with: [], text: "수경이 시험 출력물과 접힌 종이를 꺼낸다. 카페 직원이 옆자리 의자를 테이블 위에 올린다." }
+      - goto: desk
+
+  desk:
     actions:
       - choice:
-          key: o1_room
-          presentation: explore
-          prompt: "무엇을 살펴볼까?"
-          with: []
-          camera: wide
+          key: o1_desk
+          prompt: "수경이 가져온 자료를 살펴본다."
+          with: [수경]
           options:
-            - text: "벽에 붙은 그림"
-              at: { x: 17, y: 26 }
-              when: { var: ev_drawing, op: eq, value: false }
-              goto: ev_drawing_scene
-            - text: "벽걸이 달력"
-              at: { x: 62, y: 24 }
-              when: { var: ev_calendar, op: eq, value: false }
-              goto: ev_calendar_scene
-            - text: "쌓아 둔 약봉지"
-              at: { x: 21, y: 58 }
-              when: { var: ev_pills, op: eq, value: false }
-              goto: ev_pills_scene
-            - text: "협탁에 놓인 녹음기"
-              at: { x: 24, y: 75 }
-              when: { var: ev_recorder, op: eq, value: false }
-              goto: ev_recorder_scene
-            - text: "창가에 놓인 도시락통"
-              at: { x: 82, y: 83 }
-              when: { var: ev_lunchbox, op: eq, value: false }
-              goto: ev_lunchbox_scene
-            - text: "본 것을 정리하고 내려간다"
-              when: { var: ev_found, op: gte, value: 5 }
-              goto: after_room
-            - text: "그만 보고 내려간다"
-              when: { var: ev_found, op: lt, value: 5 }
-              goto: after_room
+            - text: "시험 출력물을 읽는다"
+              when: { var: read_trial, op: eq, value: false }
+              goto: trial
+            - text: "결함 보고서를 읽는다"
+              when: { var: read_report, op: eq, value: false }
+              goto: report
+            - text: "병동에서 연락이 왔는지 확인한다"
+              when: { var: checked_phone, op: eq, value: false }
+              goto: check_phone
+            - text: "내 렌즈에서 무엇을 확인할지 묻는다"
+              when: { var: read_trial, op: eq, value: true }
+              goto: ask_test
 
-  ev_drawing_scene:
+  trial:
     actions:
-      - set: { ev_drawing: true }
-      - add: { ev_found: 1 }
-      - say: { channel: record, with: [], text: "하율의 그림. 침대에 누운 희남이 색연필을 들고 있다. 말풍선에 ‘나 보라색 남겨 줘.’" }
-      - goto: room_look
+      - set: { read_trial: true }
+      - sound: read
+      - say: { channel: record, with: [], text: "출시 전 시험 · 동일 버전의 판독 카드\n시험 신호 001 → 표시 01\n시험 신호 099 → 표시 99\n시험 신호 101 → 표시 01" }
+      - say: { char: 수경, with: [지완], text: "백 넘어가면 맨 앞자리가 빠져요. 그래서 01이 둘이에요. 조금 들어온 01하고, 너무 많이 들어온 01." }
+      - say: { char: 지완, with: [수경], text: "저는 어느 쪽인데요?" }
+      - say: { char: 수경, with: [지완], text: "모르죠. 이건 시험기에 숫자 넣은 거라서. 실제로 사람한테서 같이 찍힌 두 칸이 있어야 해요." }
+      - goto: desk
 
-  ev_calendar_scene:
+  report:
     actions:
-      - set: { ev_calendar: true }
-      - add: { ev_found: 1 }
-      - say: { channel: record, with: [], text: "달력 · 동식의 글씨로 ‘통증, 10점 만점’. 3월 4일 6, 5일 8, 6일 9. 7일 칸엔 숫자 대신 ‘희남이랑 얘기할 것’." }
-      - goto: room_look
+      - set: { read_report: true }
+      - say: { channel: record, with: [], text: "한신뉴로 결함 보고서 · 작성자 한수경\n판독 카드가 다른 입력에 같은 값을 표시함. 병원 배포 중지 요청.\n처리 결과 · 현장 재현 자료 부족. 배포 유지." }
+      - say: { char: 지완, with: [수경], text: "해고 통지에도 저렇게 써 있어요?" }
+      - say: { char: 수경, with: [지완], text: "거기엔 승인되지 않은 자료를 들고 나갔다고 돼 있어요. 이건 제 서명이 있는 쪽만 복사한 거예요. 이쪽은 넘겨 보셔도 돼요." }
+      - goto: desk
 
-  ev_pills_scene:
+  check_phone:
     actions:
-      - set: { ev_pills: true }
-      - add: { ev_found: 1 }
-      - get: pill_bag
-      - sticker: { id: pills, image: pill_sticker, x: 78, y: 48, width: "clamp(150px, 20%, 250px)", enter: scaleIn }
-      - say: { channel: record, with: [], text: "약봉지 뒷면에 희남의 글씨. ‘약 바꾸고도 밤에는 아픔. 다음 진료 때 내가 말할 것.’" }
-      - clearSticker: { id: pills, leave: fadeOut }
-      - goto: room_look
+      - set: { checked_phone: true }
+      - say: { channel: message, side: them, with: [], text: "월계병원 신경과입니다. 담당 간호사 복귀 후 20시 10분에 동행 면회 가능합니다." }
+      - say: { channel: message, side: them, char: 동식_연락처, with: [], when: { var: picked_up, op: eq, value: false }, text: "음성 메시지 · 오전 7시 45분\n지완아, 작은 통 찾았다. 지난번 네가 사 온 거 있네." }
+      - say: { channel: thought, with: [], when: { var: picked_up, op: eq, value: true }, text: "일요일 점심 지나서 간다 그랬지. 그 전에 배고프면 어떡하지." }
+      - goto: desk
 
-  ev_recorder_scene:
+  ask_test:
+    title: "다음 판독"
     actions:
-      - set: { ev_recorder: true }
-      - add: { ev_found: 1 }
-      - sticker: { id: rec, image: recorder_sticker, x: 76, y: 50, width: "clamp(140px, 18%, 230px)", enter: fadeIn }
-      - say: { channel: record, with: [], text: "녹음기 · 119건. 처음엔 다음 진료 때 전할 말을 남겼다. 파일 이름은 전부 희남이 직접 붙였다." }
-      - clearSticker: { id: rec, leave: fadeOut }
-      - goto: room_look
-
-  ev_lunchbox_scene:
-    actions:
-      - set: { ev_lunchbox: true }
-      - add: { ev_found: 1 }
-      - get: lunchbox
-      - sticker: { id: box, image: lunchbox_sticker, x: 76, y: 52, width: "clamp(150px, 20%, 250px)", enter: slideUp }
-      - say: { channel: record, with: [], text: "도시락통 뚜껑. ‘김치 빼기’, ‘죽 반만’, ‘달걀 노른자만’. 맨 아래, ‘3월 7일 · 한 숟갈’." }
-      - clearSticker: { id: box, leave: fadeOut }
-      - goto: room_look
-
-  after_room:
-    title: "가져가도 되는 것"
-    actions:
-      - bg: dongsik_house
-      - char: { id: 지완, position: left }
-      - char: { id: 동식, position: right }
-      - choice:
-          key: o1_show
-          prompt: "동식이 입을 열기를 기다린다."
-          char: 지완
-          with: [동식]
-          options:
-            - text: "내 판독 결과를 보여 준다"
-              goto: show_mine
-            - text: "희남 씨부터 이야기해 달라고 한다"
-              goto: say_twenty
-            - text: "오늘 적은 것을 읽어 준다"
-              goto: just_note
-
-  show_mine:
-    actions:
-      - say: { char: 지완, with: [동식], text: "저도 판독표가 있습니다. 누굴 만나든 사랑이 1이래요. 그걸 처음 믿은 사람이 저였습니다." }
-      - say: { char: 동식, with: [지완], text: "그걸 믿고 나면, 나중에 아니라고 말하기가 참 어렵지요." }
-      - goto: wrap_room
-
-  say_twenty:
-    actions:
-      - say: { char: 지완, with: [동식], text: "희남 씨는 어떤 분이셨어요?" }
-      - say: { char: 동식, with: [지완], text: "내가 147번 기사였는데요. 막차에서 내릴 사람 없으면 걔가 내렸습니다. ‘손님 내려요’ 하는 소리라도 들으라고." }
-      - goto: wrap_room
-
-  just_note:
-    actions:
-      - say: { char: 지완, with: [동식], text: "오희남 씨, 3월 7일에 돌아가셨습니다. 배동식 씨가 그날 직접 신고하셨고요. 아직 여기까지만 적었습니다." }
-      - say: { char: 동식, with: [지완], text: "예. 거기까진 맞습니다." }
-      - goto: wrap_room
-
-  wrap_room:
-    actions:
-      - say: { char: 동식, with: [지완], when: { var: ev_recorder, op: eq, value: true }, text: "협탁에 그거 보셨죠. 가져가십시오. 내 말보다 먼저 들을 게 있어요." }
-      - say: { char: 동식, with: [지완], when: { var: ev_recorder, op: eq, value: false }, text: "잠깐만요. 2층에 못 보신 게 있습니다. 제가 가져오지요." }
-      - say: { channel: action, with: [], text: "동식이 녹음기를 손수건에 싸서 내민다." }
-      - get: recorder
-      - say: { char: 동식, with: [지완], text: "희남이가 마지막 파일은 지우지 말랬습니다. 들으시고 다시 오세요. 애 없는 시간에요." }
-      - say: { channel: message, side: them, char: 수경, with: [], text: "한신뉴로 한수경입니다. 문지완 님 재측정 신청을 받았습니다. 7년치가 전부 1이라고 쓰셨죠. 내일 본사로 오실 수 있을까요?" }
+      - say: { char: 수경, with: [지완], text: "아까 건 접수대에 01만 남았어요. 다시 찍을 때 제가 네트워크 끈 검사용 단말기를 연결하면, 렌즈가 버리기 전 숫자도 남길 수 있어요." }
+      - say: { char: 지완, with: [수경], text: "제가 뭘 해야 돼요? 아까처럼 놀라야 되나." }
+      - say: { char: 수경, with: [지완], text: "그냥 병동에 들어가세요. 다시 안 나올 수도 있어요. 그러면 오늘은 거기까지고요." }
+      - say: { channel: action, with: [], text: "수경의 전화가 짧게 진동한다. 그녀는 화면을 보고 병원 쪽 유리문으로 눈을 돌린다." }
+      - say: { char: 수경, with: [지완], text: "연결하는 건 옆 계단에서 해야겠어요. 정문에 서 있는 두 사람, 낮에 집 앞에도 있었거든요." }
       - goto: /2.yaml

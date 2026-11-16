@@ -180,7 +180,7 @@ scenes:
       - char: { id: 영호, position: right }
       - say: { char: 영호, with: [순임], delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
       - say: { char: 순임, with: [영호], text: "가지 마. 손 놓지 마. 물건은 됐어." }
-      - say: { channel: action, with: [], text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
+      - say: { channel: action, with: [], sound: market_fire, text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
       - say: { channel: action, with: [], text: "천막을 얹은 지게가 길을 막는다. 물통 든 사람이 그 사이를 비집고 뛴다." }
       - say: { channel: action, with: [], text: "길목 쪽에서 아이 울음이 난다. 복례 아주머니 천막이 거기다." }
       - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다." }

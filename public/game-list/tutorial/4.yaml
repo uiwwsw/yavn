@@ -523,6 +523,7 @@ scenes:
       - say:
           channel: action
           with: []
+          sound: fan_wake
           text: "팬 소리가 한 번 커진다. 해수는 그 소리가 자기 숨에 맞춰 커졌다는 걸 알아차린다."
       - say:
           channel: thought

@@ -1,90 +1,70 @@
-chapterTitle: "동식이 한 말"
+chapterTitle: "사유란"
 
 script:
-  - scene: tapes
-  - scene: confront
-  - scene: raw
+  - scene: stairwell
 
 scenes:
-  tapes:
-    title: "마지막 파일"
+  stairwell:
+    title: "내려오는 사람들"
     actions:
-      - bg: office_night
-      - place: "3월 22일 밤 · 상계동 이의신청 사무소"
-      - music: lowscore
-      - char: { id: 지완, position: left }
-      - say: { channel: record, with: [], text: "녹음 001 · 2031년 5월 14일" }
-      - char: { id: 희남, position: right }
-      - say: { char: 희남, with: [], text: "하율이 색연필 사 줘. 24색 말고 12색. 큰 건 걔 가방에 안 들어가." }
-      - say: { channel: record, with: [], text: "녹음 119 · 2033년 3월 6일" }
-      - say: { char: 희남, with: [], text: "병원에 물어봤어. 오늘 밤에 해 줄 수 있는 건 다 했대." }
-      - say: { char: 희남, with: [], text: "동식아. 내가 전에도 부탁했지. 이제 좀 그만 아프게 해 줘." }
-      - say: { char: 희남, with: [], text: "듣고는 있어? 지난번처럼 나가 있지 말고." }
-      - say: { char: 동식, with: [], text: "여기 있어." }
-      - say: { char: 희남, with: [], text: "이거 지우지 마. 나중에 네 말만 듣고 뭐라고 할 거 아니야. 내 말도 있어야지." }
-      - move: { id: 희남, style: exit, wait: true }
-      - say: { channel: action, with: [], text: "재생이 멈춘다. 지완은 판독표를 뒤집고 그 뒷면에 두 사람의 말을 옮겨 적는다." }
-
-  confront:
-    title: "말 한 문장씩"
-    actions:
-      - bg: dongsik_house
-      - place: "3월 23일 아침 · 장위동"
-      - char: { id: 지완, position: left }
-      - char: { id: 동식, position: right }
-      - say: { char: 지완, with: [동식], when: { var: ev_calendar, op: eq, value: true }, text: "7일 달력에 ‘희남이랑 얘기할 것’이라고 쓰셨죠. 녹음 다음 날 무슨 얘기를 하셨습니까?" }
-      - say: { char: 지완, with: [동식], when: { var: ev_calendar, op: eq, value: false }, text: "마지막 파일을 들었습니다. 그 다음 날, 두 분이 무슨 얘기를 하셨습니까?" }
-      - say: { char: 동식, with: [지완], when: { var: ev_lunchbox, op: eq, value: true }, text: "뚜껑에 한 숟갈이라고 적힌 거 보셨죠. 저녁에 죽 한 숟갈 먹고, 더는 안 먹겠다고 했습니다." }
-      - say: { char: 동식, with: [지완], when: { var: ev_lunchbox, op: eq, value: false }, text: "저녁에 죽을 좀 쒔습니다. 한 숟갈 먹고, 더는 안 먹겠다고 했어요." }
-      - say: { char: 동식, with: [지완], text: "또 부탁하더군요. 전날까지는 안 된다고 했습니다. 그날은 알았다고 했고요." }
-      - say: { char: 지완, with: [동식], text: "오희남 씨가 돌아가신 일. 직접 하신 겁니까?" }
-      - say: { char: 동식.far, with: [지완], text: "예. 제가 희남이를 죽였습니다." }
-      - say: { char: 동식, with: [지완], text: "그만 아팠으면 좋겠다고 생각했습니다. 내가 그만 보고 싶었던 건지도 모르겠고요." }
-      - say: { char: 동식, with: [지완], text: "신고하고 나서도 그 말 했습니다. 조서 첫 줄에 있는 줄 알았는데, 집에 와서 보니 제 입으로 한 말은 없더군요." }
-      - say: { char: 지완, with: [동식], text: "이걸 다시 내면 조사받으실 겁니다. 희남 씨가 부탁했다는 말로 끝나지 않을 수도 있어요." }
-      - say: { char: 동식, with: [지완], text: "압니다. 제 건 제가 대답할 테니, 그 사람 말을 제 입으로 대신 하게는 하지 마십시오." }
-      - say: { char: 지완, with: [동식], text: "경찰하고 검찰에만 녹음을 낼 수 있게 동의받겠습니다. 판독 원본도 같이 요청하고요." }
-      - say: { char: 동식, with: [지완], text: "예. 수사하는 데까지만요. 밖에선 하율이도 들을 수 있으니까." }
-
-  raw:
-    title: "같은 날, 같은 검사"
-    actions:
-      - bg: cafe
-      - place: "3월 23일 저녁 · 장위삼거리"
-      - music: overflow
+      - bg: hospital_stairs
+      - place: "같은 날 · 병원 동쪽 계단"
+      - music: street
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, with: [지완], text: "배동식 씨가 동의한 범위로 출력했습니다. 기존 판독표부터 옆에 두세요." }
-      - get: raw_print
-      - sticker: { id: raw, image: raw_sticker, x: 78, y: 48, width: "clamp(150px, 20%, 250px)", enter: fadeIn }
-      - effect: glitch
-      - say: { channel: record, with: [], text: "배동식 · 3월 7일 사건 판독\n분노: 원본 103 → 표시 3\n죄책감: 원본 100 → 표시 0" }
-      - clearSticker: { id: raw, leave: fadeOut }
-      - say: { char: 수경, with: [지완], text: "100이라고 실제로 죄책감이 더 컸다는 말은 못 합니다. 제가 증언할 수 있는 건 0이 출력된 이유까지예요." }
-      - say: { char: 지완, with: [수경], text: "그것부터 써 주세요. 이걸 가지고 기태 경위한테 가서, 동식 씨가 한 말을 다시 받으라고 할 겁니다." }
-      - say: { char: 수경, with: [지완], text: "제 이름 쓰세요. 환산표 제가 만들었습니다." }
-      - say: { char: 수경, with: [지완], text: "회사에도 반출 기록이 남았습니다. 내일 아홉 시까지 자료를 돌려주면 합의는 살아 있답니다." }
-      - choice:
-          key: o3_tell
-          prompt: "오늘 밤 누구에게 먼저 연락할까?"
-          char: 지완
-          with: [수경]
-          options:
-            - text: "노기태에게 전화한다"
-              goto: tell_gitae
-            - text: "세라에게 먼저 말한다"
-              goto: tell_sera
+      - say: { channel: action, with: [], text: "위에서 출입문이 열린다. 누가 ‘한수경 책임님, 잠깐만요’ 하고 부른다. 수경은 휴대폰을 주머니에 넣고 한 계단을 내려간다." }
+      - say: { char: 지완, with: [수경], text: "이쪽으로요. 제 출입증 아직 됩니다." }
+      - say: { channel: action, with: [], text: "지완이 면회증을 댄다. 문이 닫히기 직전에 종이컵을 든 윤세라 간호사가 두 사람을 보고 발로 문을 받친다." }
+      - goto: staff_desk
 
-  tell_gitae:
+  staff_desk:
+    title: "교대 시간"
     actions:
-      - set: { told_gitae: true }
-      - say: { channel: message, side: me, char: 지완, with: [], text: "동식 씨 진술 다시 받으실 수 있겠어요? 불기소에 쓰인 판독표에 오류가 있습니다." }
-      - say: { channel: message, side: them, char: 기태, with: [], text: "내 근무 아니어도 내일 저녁엔 있을게. 원본하고 진술 가지고 와." }
-      - goto: /4.yaml
+      - bg: office_night
+      - place: "신경과 간호사실 옆"
+      - music: quant
+      - char: { id: 세라, position: right }
+      - char: { id: 수경, position: center }
+      - char: { id: 지완, position: left }
+      - say: { char: 세라, with: [지완, 수경], text: "병실 쪽으론 들어가지 마세요. 저기 의자에 잠깐 앉아 계세요. 누가 찾으면 저한테 먼저 오라고 할게요." }
+      - say: { char: 지완, with: [세라], text: "간호사님, 아까 제가 들어오지 못한 거요. 이거 보실래요? 같은 판독인데 여기 숫자가 다릅니다." }
+      - say: { channel: action, with: [], text: "세라가 면회표에 볼펜으로 찍었던 작은 동그라미를 손톱으로 긁는다." }
+      - say: { char: 세라, with: [지완], text: "교대 전에 01 뜬 분이 한 분 더 있었어요. 한참 기다리다 애 데리러 가야 한다고 돌아가셨어요." }
+      - say: { char: 수경, with: [세라], text: "그분 기록은 열지 마세요. 같은 오류인지 지금은 몰라요." }
+      - say: { char: 세라, with: [수경], text: "기록 말고 전화번호는 있어요. 이의가 있으면 내일 와서 쓰시라고 안내할 수는 있어요." }
+      - say: { char: 세라, with: [지완], text: "지완 씨 접수표에는 제가 직접 본 걸 추가할게요. 간호사가 들어오라고 하기 전까지 문 앞에 계셨다고. 다른 건 본인이 쓰셔야 해요." }
+      - goto: sign
 
-  tell_sera:
+  sign:
+    title: "수경의 이름"
     actions:
-      - set: { sera_knows: true }
-      - say: { channel: message, side: me, char: 지완, with: [], text: "회사에서 점수가 잘못 나오는 경우가 있다는 걸 확인했어. 네 건은 아직 몰라. 신청서에 네가 한 말은 적어 뒀어." }
-      - say: { channel: message, side: them, char: 세라, with: [], text: "내일 먼저 내 눈으로 읽어 볼래. 아직 내지는 마." }
+      - say: { char: 지완, with: [수경], text: "아까 계단까지 찾아온 사람들, 저한테도 옵니까?" }
+      - say: { char: 수경, with: [지완], text: "가면 저한테 오라고 하세요. 이 카드 병원에 넣을 때 검수란에 제가 사인했어요." }
+      - say: { char: 수경, with: [지완], text: "역에서 일 줄었다고 병원에도 빨리 깔자고 했어요. 병원에서 숫자 보고 사람을 돌려보낼 줄까지는… 그런 칸이 있는 건 봤어요." }
+      - say: { char: 지완, with: [수경], text: "왜 그때는 그냥 두셨어요?" }
+      - say: { char: 수경, with: [지완], text: "제가 손 들면 또 한 달 늦어진대서요. 회의에서 제 차례 넘기니까 그날 바로 끝나더라고요." }
+      - say: { channel: action, with: [], text: "수경이 접수표 뒷면에 두 수치가 같은 판독에서 나온 과정을 적고 이름을 쓴다. 가운데 글자에서 볼펜이 한 번 끊긴다." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서랑 같이 내시면 돼요. 날짜도 나란히 보이게요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "제가 처음에 올린 것도 여기 둘게요. 고쳐 달라고 한 날짜랑 오늘 날짜가 같이 있어야 해요." }
+      - get: report
+      - say: { char: 세라, with: [지완], text: "아버님 다시 찾으세요. 잠깐 들어갔다 나오세요. 이건 제가 맡아 둘게요." }
+      - goto: father_again
+
+  father_again:
+    title: "아까 대답"
+    actions:
+      - bg: ward_bed
+      - place: "같은 날 밤 · 308호"
+      - music: lowscore
+      - char: { id: 지완, position: left }
+      - char: { id: 동식, position: right }
+      - say: { char: 동식, with: [지완], text: "밖에서… 오래 있었냐." }
+      - say: { char: 지완, with: [동식], text: "네. 예전에 학교에서도 그랬잖아요. 제가 울면 한 번 더 재라고 하고. 오늘은 제가 안 운다고 못 들어갔어요." }
+      - say: { char: 동식, with: [지완], text: "그땐 네 선생한테… 네가 겁먹었다고 했다. 화낸 거 아니라고. 선생은 표 다시 보더라." }
+      - say: { channel: action, with: [], text: "아버지가 한 번에 더 말하려다 입을 다문다. 지완은 물병을 옮겨 놓고 기다린다." }
+      - say: { char: 동식, with: [지완], text: "집에선 울어도 된다고 했어야 했는데." }
+      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "오늘은 제가 겁났다고 했더니 아버지가 옆에 앉으라 그랬잖아요." }
+      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 물부터 드렸죠. 겁났어요. 여기까지 올 때는 병원 이름도 두 번 잘못 말했어요." }
+      - say: { char: 동식, with: [지완], text: "나도." }
+      - say: { channel: action, with: [], text: "지완이 침대 난간 아래로 손을 내린다. 아버지가 검지를 움직여 지완의 손등을 한 번 두드린다." }
       - goto: /4.yaml

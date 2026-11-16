@@ -22,6 +22,7 @@ scenes:
       - say:
           channel: action
           with: []
+          sound: well_rope
           text: "거적 끝이 손끝에 걸려 들린다. 손톱 아래 짙은 남빛 실 한 올이 박혀 있다."
       - clearSticker: { id: first_thread, leave: fadeOut }
 
@@ -33,6 +34,7 @@ scenes:
           channel: record
           with: []
           camera: wide
+          sound: paper
           text: "신고에는 익사라고 적혀 있다. 본 것을 따로 적을 종이를 편다."
       - char: { id: 서연, position: left }
       - input:

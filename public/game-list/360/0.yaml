@@ -222,7 +222,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "그중에 우리 것은." }
       - say: { char: 봉구, with: [만석], text: "백마흔입니다. 나머지는 맡아 둔 거고, 강경 윤 객주 것이 제일 많습니다." }
       - say: { channel: thought, with: [], text: "맡은 쌀에 손대면 그날로 끝이다." }
-      - say: { channel: action, with: [], text: "허리춤의 곳간 열쇠를 만져 본다. 잘 때도 풀지 않는다." }
+      - say: { channel: action, with: [], sound: granary_key, text: "허리춤의 곳간 열쇠를 만져 본다. 잘 때도 풀지 않는다." }
       - say:
           channel: action
           with: []

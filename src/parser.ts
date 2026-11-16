@@ -1194,10 +1194,11 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
-        if ('sound' in action && !data.assets.sfx[action.sound]) {
+        const sound = 'sound' in action ? action.sound : 'say' in action ? action.say.sound : undefined;
+        if (sound && !data.assets.sfx[sound]) {
           return {
             error: {
-              message: `scene '${sceneId}' uses missing sfx '${action.sound}'`,
+              message: `scene '${sceneId}' uses missing sfx '${sound}'`,
             },
           };
         }
