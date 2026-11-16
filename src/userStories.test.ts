@@ -58,6 +58,7 @@ describe.each(games)('$id structure', ({ id, chapters, endings }) => {
     const paths = [
       ...Object.values(asRecord(assets.backgrounds)),
       ...Object.values(asRecord(assets.music)),
+      ...Object.values(asRecord(assets.sfx)),
       ...collectKey(assets.characters, 'base'),
       ...collectKey(assets.characters, 'emotions').flatMap((entry) => Object.values(asRecord(entry))),
       ...collectKey(baseDoc.inventory, 'image'),

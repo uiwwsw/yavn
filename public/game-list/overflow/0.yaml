@@ -1,6 +1,7 @@
 chapterTitle: "1"
 
 script:
+  - scene: first_reading
   - scene: desk
   - scene: mine
   - scene: brief
@@ -9,6 +10,27 @@ script:
   - scene: call
 
 scenes:
+  first_reading:
+    title: "책상 위 판독기"
+    actions:
+      - bg: { id: office, transition: cut }
+      - place: "2033년 3월 20일 일요일 · 상계동"
+      - music: quant
+      - char: { id: 도겸, position: right }
+      - char: { id: 지완, position: left }
+      - say: { channel: record, with: [], text: "에모스 현장 판독 · 임도겸\n피로 54　짜증 31　호감 62" }
+      - say: { char: 도겸, with: [지완], text: "소장님, 제 거 떴어요. 소장님도 재 봐요." }
+      - say:
+          channel: action
+          with: []
+          text: "도겸이 판독기를 책상 모서리로 밀어 준다."
+          continueLabel: "판독기를 내 쪽으로 돌린다"
+      - sound: read
+      - effect: focus
+      - say: { channel: record, with: [], text: "에모스 현장 판독 · 문지완\n사랑 1　연민 1　슬픔 1\n분노 1　불안 1　기쁨 1" }
+      - say: { char: 도겸, with: [지완], text: "아까 제 건 숫자가 다 달랐는데요." }
+      - say: { char: 지완, with: [도겸], text: "내 건 원래 저래. 옥분 어르신 거 답 왔어?" }
+
   desk:
     title: "성일빌딩 2층"
     actions:
@@ -82,13 +104,13 @@ scenes:
           with: [도겸]
           text: "그땐 3월이었어."
       - say:
-          channel: system
+          channel: action
           with: []
-          text: "에모스 현장 판독 · 임도겸 — 피로 54 · 짜증 31 · 호감 62"
+          text: "도겸이 판독표 두 장을 반려 통지서 옆에 내려놓는다."
       - say:
           char: 도겸
           with: [지완]
-          text: "저 소장님한테 호감 62래요."
+          text: "제 거 여기 보세요. 호감 62, 이거 다 소장님 점수예요."
       - say:
           char: 지완
           with: [도겸]

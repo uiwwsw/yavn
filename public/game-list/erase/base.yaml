@@ -2,6 +2,7 @@ assets:
   backgrounds:
     title: assets/bg/title.svg
     surgery: assets/bg/surgery.svg
+    eyes_closed: assets/bg/eyes_closed.svg
     surgery_reveal: assets/bg/surgery_reveal.svg
     photo_studio: assets/bg/photo_studio.svg
     club: assets/bg/club.svg
