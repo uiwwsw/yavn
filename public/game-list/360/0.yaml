@@ -88,7 +88,7 @@ scenes:
               mood: cold
               reveal:
                 - "바람에 치맛자락이 들린다. 한쪽 고무신은 뒤축이 다 닳았다."
-                - "배는 벌써 비었는데, 어머이는 아직 내리는 쪽을 보고 있다."
+                - "배에서 마지막 사람이 내린다. 부두에 선 여자는 자리를 안 뜬다."
               goto: go_1952
             - text: "갈치 가시"
               at: { x: 46, y: 21 }
@@ -171,7 +171,7 @@ scenes:
   dark_still:
     actions:
       - bg: { id: void, transition: dissolve, duration: 2600 }
-      - say: { channel: narration, text: "반짝이던 것이 반짝인 채로 있다. 서두르는 것은 아무것도 없다." }
+      - say: { channel: narration, text: "손을 내린다. 저쪽 빛은 그대로다." }
       - ending: still
 
   yard:
@@ -182,7 +182,7 @@ scenes:
       - place: "1894년 유월 · 제물포 객주 마당"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
-      - say: { char: 봉구, with: [만석], text: "주인어른, 덕이 어멈이 대문 앞에 와 있습니다. 화도진에서 열댓이 같이 왔고요." }
+      - say: { char: 봉구, with: [만석], text: "주인어른, 덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다." }
       - say: { char: 봉구, with: [만석], text: "쌀을 외상으로 달랍니다. 가을에 갚는다고요. 저자 쌀집은 죄다 문을 걸었답니다." }
       - say:
           channel: action
@@ -191,7 +191,7 @@ scenes:
           text: "안채에서 기침 소리가 난다. 주판알이 손에서 미끄러진다."
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지, 진지 드세요. 봉구 오라버니 것도 퍼 왔어요." }
-      - say: { char: 끝순, with: [만석], text: "덕이도 왔어요? 걔 저번에 저한테 조개 한 줌 줬는데." }
+      - say: { char: 끝순, with: [만석], text: "덕이도 왔어요? 지난번에 저한테 조개 한 줌 주고 갔는데." }
       - say: { char: 봉구, with: [끝순], text: "왔지. 여덟 살 먹은 게 어미 등에 업혀 왔더라." }
       - say: { char: 만석, with: [끝순, 봉구], text: "기침이 왜 그 모양이냐." }
       - say: { char: 끝순, with: [만석], text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }

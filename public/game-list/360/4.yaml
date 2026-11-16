@@ -475,7 +475,7 @@ scenes:
   mem_child:
     actions:
       - effect: { name: focus, wait: true }
-      - say: { channel: narration, text: "셋이 모이자 나머지가 따라온다. 이건 찾은 게 아니라 와 버린 것이다." }
+      - say: { channel: narration, text: "식은 아궁이 옆에 이불 한 채가 보인다." }
       - wait: 700
       - say: { channel: narration, text: "아이가 있었다. 사흘째 울지 않았다." }
       - say: { channel: narration, text: "울지 않는 걸 괜찮다고 쳤다." }
@@ -498,7 +498,6 @@ scenes:
       - mood: { tone: warm, level: 2 }
       - say: { channel: narration, text: "넷 다 웃을 때 왼쪽 눈이 먼저 감겼다." }
       - say: { channel: narration, text: "딸이었다가, 아들이었다가, 옆 침대였다가, 모르는 사람이었다." }
-      - say: { channel: narration, text: "갈수록 멀어졌다. 멀어지는 쪽이 매번 저쪽이었다." }
       - wait: 1100
       - say: { channel: narration, text: "덮어 두고 나간 아이다." }
       - mood: off

@@ -160,7 +160,7 @@ scenes:
       - say: { char: 시어머니, with: [순임], motion: shake, text: "들었다. 내 아들은 내 목소리 듣는다." }
       - say: { channel: action, with: [], text: "어머이 고무신 뒤축이 닳아 한쪽으로 기울었다. 부두까지 걸어서 사십 분이다." }
       - say: { char: 순임, with: [시어머니], text: "어머이. 그 배에 사람이 만 명이었어요. 줄이 끊긴 게 어머이 탓이 아니에요." }
-      - say: { char: 시어머니, with: [순임], text: "탓을 하자는 게 아니다. 서 있자는 거지." }
+      - say: { char: 시어머니, with: [순임], text: "내가 거기 서 있어야 걔가 찾지." }
       - say: { char: 순임, with: [시어머니], text: "어머이, 저 서울에 점방 자리 알아보고 있어요. 봄에 다 같이 올라가요." }
       - say: { char: 시어머니, with: [순임], text: "가라. 영호 양말이나 기워 놓고 자라." }
       - say: { char: 시어머니, with: [순임], text: "내 안 간다." }
@@ -178,7 +178,7 @@ scenes:
       - say: { char: 영호, with: [순임], delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
       - say: { char: 순임, with: [영호], text: "가지 마. 손 놓지 마. 물건은 됐어." }
       - say: { channel: action, with: [], text: "바람이 바다 쪽에서 분다. 불은 날이 샐 때까지 시장을 건너갔다." }
-      - say: { channel: action, with: [], text: "사람들이 지게에 천막을 지고 반대로 달린다. 물통을 든 사람보다 짐을 든 사람이 많다." }
+      - say: { channel: action, with: [], text: "천막을 얹은 지게가 길을 막는다. 물통 든 사람이 그 사이를 비집고 뛴다." }
       - say: { channel: action, with: [], text: "길목 쪽에서 아이 울음이 난다. 복례 아주머니 천막이 거기다." }
       - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다." }
       - wait: 900
