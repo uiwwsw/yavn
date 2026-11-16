@@ -1349,7 +1349,7 @@ textarea,
    The shared max-shot budget keeps wide/medium/close meaningful and stable.
    The reading inset survives automatic choice growth and manual dialog hiding. */
 .char-layer-prompt-top .char {
-  --prompt-character-stage-height: min(52cqh, max(0px, calc(
+  --prompt-character-stage-height: min(var(--portrait-height-limit, 52cqh), max(0px, calc(
     (100cqh - var(--prompt-top-fit-inset, var(--prompt-top-dialog-inset)) - var(--character-headroom))
     / var(--prompt-camera-render-fit-scale) / max(1, var(--char-scale))
   )));
@@ -4486,6 +4486,11 @@ textarea,
     width: 100cqw;
     height: 100cqh;
     --character-headroom: max(88px, calc(env(safe-area-inset-top, 0px) + 80px));
+  }
+
+  .char-layer[data-character-count='1'] .char { --portrait-height-limit: 60cqh; }
+  .char-layer-stage-bottom[data-character-count='1'] .char-image {
+    --char-image-height: min(var(--portrait-height-limit), var(--char-actor-width-budget));
   }
 }
 

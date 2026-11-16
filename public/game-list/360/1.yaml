@@ -392,8 +392,8 @@ scenes:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다. 생각을 놓을 틈이 없다.", autoAdvance: 2232 }
-      - bg: { id: void_near, transition: wipeRight, duration: 320 }
-      - effect: { name: speedlines, wait: true }
+      - bg: { id: void_near, transition: dissolve, duration: 900 }
+      - wait: 240
       - say: { channel: narration, text: "부두 이름이 빠져나간다. 가자미식해 맛이 빠져나간다." }
       - bg: { id: void, transition: dissolve, duration: 1800 }
       - goto: /0.yaml

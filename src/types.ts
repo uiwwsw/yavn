@@ -8,7 +8,7 @@ export type { UiTemplateId } from './uiTemplates';
 export type Position = 'left' | 'center' | 'right';
 export type CharacterLayoutMode = 'auto' | 'fixed';
 export type CharacterFacing = 'left' | 'right' | 'front';
-export type CharacterPlacement = 'stage-bottom' | 'prompt-top';
+export type CharacterPlacement = 'stage-bottom' | 'prompt-top' | 'offstage';
 export type CharacterEnterEffect =
   | 'none'
   | 'fadeIn'
@@ -712,8 +712,9 @@ export type ChoiceGateState = {
   forgivenOptionIndexes: number[];
   timeoutMs?: number;
   timeoutOptionIndex?: number;
-  /** `approach` only: how many steps the player has taken toward each option. */
+  /** `approach` only: progress is zero for every option except the current target. */
   approachSteps: number[];
+  approachSwitched?: boolean;
   /** `approach` only: the tone raised while approaching, unless a target names its own. */
   mood?: string;
   options: ChoiceOption[];

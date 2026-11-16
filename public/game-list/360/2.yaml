@@ -197,7 +197,7 @@ scenes:
       - place: "밤 열한 시 · 동호대교 아래 둔치"
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
-      - effect: flash
+      - effect: moonveil
       - say: { char: 수경, with: [민재], motion: hop, text: "터졌다! 봐, 봐, 저 초록색. 저게 다 세금이야." }
       - say: { char: 민재, with: [수경], text: "누나 뛰지 마요. 링거 자국 터져요." }
       - say: { char: 수경, with: [민재], text: "넌 불꽃을 안 보고 사람들을 보네. 아까부터." }
@@ -430,8 +430,8 @@ scenes:
       - place: "{{deg_last}}°"
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기울어진다. 빨라진다.", autoAdvance: 1784 }
-      - bg: { id: void_near, transition: wipeLeft, duration: 320 }
-      - effect: { name: speedlines, wait: true }
+      - bg: { id: void_near, transition: dissolve, duration: 900 }
+      - wait: 240
       - say: { channel: narration, text: "병원 이름이 빠져나간다. 누나 이름이 빠져나간다. 엄마 손 냄새가 마지막이다." }
       - bg: { id: void, transition: dissolve, duration: 1800 }
       - goto: /0.yaml

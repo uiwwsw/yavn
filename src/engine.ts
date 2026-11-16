@@ -4817,6 +4817,7 @@ function runToNextPause(loopGuard = 0) {
       timeoutMs: action.choice.timeoutMs,
       timeoutOptionIndex: visibleTimeoutOptionIndex,
       approachSteps: visibleOptions.map(() => 0),
+      approachSwitched: false,
       mood: action.choice.mood,
       options: visibleOptions,
     });
@@ -6062,14 +6063,19 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
     const taken = state.choiceGate.approachSteps[optionIndex] ?? 0;
     if (taken < selected.reveal.length) {
       const line = selected.reveal[taken];
-      const steps = [...state.choiceGate.approachSteps];
-      steps[optionIndex] = taken + 1;
-      useVNStore.getState().setChoiceGate({ approachSteps: steps });
+      const previousTarget = state.choiceGate.approachSteps.findIndex(step => step > 0);
+      const steps = state.choiceGate.options.map((_, index) => index === optionIndex ? taken + 1 : 0);
+      useVNStore.getState().setChoiceGate({
+        approachSteps: steps,
+        approachSwitched: previousTarget >= 0 && previousTarget !== optionIndex,
+      });
       const tone = selected.mood ?? state.choiceGate.mood;
       if (tone) {
-        // 가까워질수록 세진다. 마지막 한 걸음 전부터 떨리기 시작한다.
         const level = Math.min(3, taken + 1);
-        useVNStore.getState().setMood({ tone, level, tremor: level >= 2 });
+        useVNStore.getState().setMood({ tone, level, tremor: false });
+      } else if (previousTarget >= 0) {
+        const previousTone = state.choiceGate.options[previousTarget]?.mood ?? state.choiceGate.mood;
+        if (previousTone) useVNStore.getState().setMood(undefined);
       }
       const text = interpolateText(line, useVNStore.getState().routeVars);
       useVNStore.getState().setDialog({
