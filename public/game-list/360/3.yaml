@@ -143,13 +143,16 @@ scenes:
       - say: { char: 지안, with: [다온], text: "강아지 찾는다고 했잖아." }
       - say: { char: 다온, with: [지안], text: "그건 엄마한테 한 말이고." }
       - wait: 1100
+      - mood: { tone: dread, level: 1 }
       - say: { char: 다온, with: [지안], text: "사람 있었어." }
+      - mood: { tone: dread, level: 2 }
       - say: { char: 다온, with: [지안], text: "근데 얼굴은 안 보여. 맨날 거기 서 있어." }
       - say: { char: 지안, with: [다온], text: "…맨날?" }
       - say: { char: 다온, with: [지안], text: "응. 내가 뒤 볼 때마다." }
       - say: { char: 다온, with: [지안], text: "아줌마도 봤어?" }
       - say: { channel: thought, with: [], text: "여덟 살이 지어내기엔 재미가 없는 얘기다. 지어내면 더 센 걸 지어낸다." }
       - say: { char: 지안, with: [다온], text: "…아니. 못 봤어." }
+      - mood: off
       - say: { channel: action, with: [], text: "녹음기를 켜지 않았다. 켤 생각을 못 했다." }
       - goto: munho_home
 

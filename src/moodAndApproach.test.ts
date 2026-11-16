@@ -59,9 +59,9 @@ describe('mood: a feeling the screen holds', () => {
 
   it('stays under the dialogue box so the colour never sits on the words', () => {
     const washZ = /\.mood-wash \{[\s\S]*?z-index: (\d+);/.exec(styles);
-    const dialogZ = /^\.dialog-box \{[\s\S]*?z-index: (\d+);/m.exec(styles);
-    expect(washZ && dialogZ).toBeTruthy();
-    expect(Number(washZ![1])).toBeLessThan(Number(dialogZ![1]));
+    const stageZ = /^\.stage-content-frame \{[\s\S]*?z-index: (\d+);/m.exec(styles);
+    expect(washZ && stageZ).toBeTruthy();
+    expect(Number(washZ![1])).toBeLessThan(Number(stageZ![1]));
   });
 });
 
@@ -98,9 +98,10 @@ describe('approach: a choice you walk toward', () => {
     expect(engineSource).toMatch(/setMood\(\{ tone, level, tremor: level >= 2 \}\)/);
   });
 
-  it('keeps the far targets unreadable and lets them resolve as the player closes in', () => {
-    expect(immersive).toMatch(/\.app \.approach-target \.choice-gate-option-text \{[\s\S]*?filter: blur\(calc\(2\.4px \* \(1 - var\(--approach-near, 0\)\)\)\);/);
-    expect(immersive).toMatch(/\.app \.approach-target::before \{[\s\S]*?width: calc\(7px \+ 13px \* var\(--approach-near, 0\)\);/);
-    expect(appSource).toContain("data-approach-near={isApproach && approachStep >= approachTotal ? 'true' : undefined}");
+  it('grows each readable target with its own progress and shows when it can be entered', () => {
+    expect(immersive).toMatch(/\.app \.approach-target \{\s*--approach-near: calc\(var\(--approach-step, 0\) \/ var\(--approach-total, 1\)\);/);
+    expect(immersive).toMatch(/\.app \.approach-target::before \{\s*width: calc\(7px \+ 8px \* var\(--approach-near, 0\)\);/);
+    expect(appSource).toContain('const approachAction = approachReady ? t("들어간다") : undefined;');
+    expect(appSource).toContain('{approachAction && <span className="approach-confirm-label">{approachAction}</span>}');
   });
 });

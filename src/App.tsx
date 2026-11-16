@@ -4760,9 +4760,13 @@ export default function App() {
     spatial = false,
     displayNumber = index + 1,
   ) => {
-    const isApproach = choiceGate.presentation === 'approach' && Boolean(option.at);
     const approachTotal = option.reveal?.length ?? 0;
+    const isApproach = choiceGate.presentation === 'approach' && spatial && approachTotal > 0;
     const approachStep = isApproach ? (choiceGate.approachSteps[index] ?? 0) : 0;
+    const approachReady = isApproach && approachStep >= approachTotal;
+    const approachAction = approachReady ? t("들어간다") : undefined;
+    const optionText = fillText(option.text);
+    const optionLabel = approachAction ? `${approachAction} (${optionText})` : optionText;
     const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
     const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
     const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
@@ -4772,12 +4776,12 @@ export default function App() {
         type="button"
         className={`choice-gate-option${spatial ? ' exploration-target' : ''}${isApproach ? ' approach-target' : ''}${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
         data-approach-step={isApproach ? String(approachStep) : undefined}
-        data-approach-near={isApproach && approachStep >= approachTotal ? 'true' : undefined}
+        data-approach-near={approachReady ? 'true' : undefined}
         style={spatial && option.at
           ? ({
               '--target-x': `${option.at.x}%`,
               '--target-y': `${option.at.y}%`,
-              ...(isApproach ? { '--approach-step': String(approachStep), '--approach-total': String(approachTotal || 1) } : {}),
+              ...(isApproach ? { '--approach-step': String(approachStep), '--approach-total': String(approachTotal) } : {}),
             } as CSSProperties)
           : undefined}
         ref={(el) => {
@@ -4790,6 +4794,7 @@ export default function App() {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
             event.stopPropagation();
+            if (isApproach && event.repeat) return;
             if (hasRecoveredFailedChoice) {
               setRecoveredFailedChoice(undefined);
             }
@@ -4807,13 +4812,16 @@ export default function App() {
           submitChoiceOption(index);
         }}
         disabled={busy}
-        aria-label={`${fillText(option.text)}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
+        aria-label={`${optionLabel}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
             {isApproach ? '·'.repeat(Math.max(1, approachTotal - approachStep + 1)) : String(displayNumber).padStart(2, '0')}
           </span>
-          <span className="choice-gate-option-text">{fillText(option.text)}</span>
+          <span className="choice-gate-option-text">
+            {optionText}
+            {approachAction && <span className="approach-confirm-label">{approachAction}</span>}
+          </span>
           <GameIcon name="arrow" className="choice-gate-option-mark" />
         </span>
         <span className="choice-gate-option-badges">
@@ -4874,7 +4882,6 @@ export default function App() {
         data-mood-level={mood ? String(mood.level) : undefined}
         data-mood-tremor={mood?.tremor ? 'true' : undefined}
       >
-      {mood && <div className="mood-wash" aria-hidden="true" />}
       <div className="overlay" />
       <BackgroundTransition
         source={background}
@@ -4885,6 +4892,7 @@ export default function App() {
         onComplete={completeBackgroundTransition}
       />
       <CinematicLayer attack={attack} />
+      {mood && <div className="mood-wash" aria-hidden="true" />}
 
       <div
         ref={stageContentFrameRef}
@@ -4953,7 +4961,7 @@ export default function App() {
 
       {choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && !isDialogHidden && (
         <div
-          className={`exploration-field${choiceGate.presentation === 'approach' ? ' approach-field' : ''}`}
+          className="exploration-field"
           role="group"
           aria-label={choiceGate.presentation === 'approach' ? t("다가갈 곳") : t("주변 살펴보기")}
           style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
+import { getChoiceRecoverySummary, handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
 import { useVNStore } from './store';
 // The engine imports the YAML parser lazily. Load it up front so the first game load
 // does not wait on real module transformation while fake timers are advanced.
@@ -38,29 +38,32 @@ const WALK = '서명하지 않는다. 증언자들을 한 명씩 다시 찾아�
 const BESIDE = '곁에 있었어야 했다.';
 // Which star the dark is asked for first. Once a life is lived its star goes out, so a route
 // names only its opening and the explore menu hands back whatever is left after that.
-const STAR_1894 = '엿을 기다린 아이';
-const STAR_1988 = '새벽마다 오던 사람';
+const STAR_1894 = '깨 붙은 엿';
+const STAR_1952 = '부두의 고무신';
+const STAR_1988 = '갈치 가시';
+const OPENING: Route = { where_am_i: '모르겠다.', first_light: '손을 뻗는다.' };
 const WINTER_JAR = '독이 비지 않았더라면.';
 const WINTER_OUT = '그날 나가지 않았더라면.';
 
 // The store keeps only the last MAX_STORY_LOG_ENTRIES lines, and a full run of 360 says more
 // than that, so the lines from the early lives are gone by the time an ending resolves. Collect
 // every line as it is shown instead; that is also closer to what the player saw.
-async function play(route: Route, maxSteps = 4000) {
+async function play(route: Route, stopAtChoice?: string) {
   const picked: string[] = [];
   const shown: string[] = [];
   const collect = (state: ReturnType<typeof useVNStore.getState>) => {
     for (const entry of state.storyLog) if ('text' in entry && !shown.includes(entry.text)) shown.push(entry.text);
   };
-  for (let step = 0; step < maxSteps; step += 1) {
+  for (let step = 0; step < 4000; step += 1) {
     const state = useVNStore.getState();
     collect(state);
     if (state.error) throw new Error(`engine error: ${state.error.message}`);
     if (state.isFinished || state.gameOver) break;
     if (state.choiceGate.active && !state.busy) {
       const key = state.choiceGate.key ?? '';
+      if (key && key === stopAtChoice) break;
       const options = state.choiceGate.options;
-      const wanted = route[key];
+      const wanted = route[key] ?? OPENING[key];
       if (wanted === undefined) throw new Error(`no route for ${key}: ${options.map((o) => o.text).join(' | ')}`);
       let index = options.findIndex((option) => option.text === wanted);
       // The first dark hands back the winter one piece at a time; its menu repeats until the
@@ -112,6 +115,34 @@ async function start() {
 }
 
 describe('360 full playthrough', () => {
+  it('reveals the first three lives only after approaching the first light', async () => {
+    await start();
+    const { state, picked, shown } = await play({ where_am_i: '천국인가.' }, 'star');
+
+    expect(picked).toEqual([
+      'where_am_i=천국인가.',
+      'first_light=손을 뻗는다.',
+      'first_light=손을 뻗는다.',
+      'first_light=손을 뻗는다.',
+    ]);
+    expect(heard(shown, '아무것도 안 보인다.')).toBe(true);
+    expect(heard(shown, '어디선가 웃음소리가 난다.')).toBe(true);
+    expect(state.choiceGate.key).toBe('star');
+    expect(state.choiceGate.options.map((option) => option.text)).toEqual([STAR_1894, STAR_1952, STAR_1988]);
+    expect(state.routeVars.lives_done).toBe(0);
+  });
+
+  it('ends the run at the first light when the player stays and offers that choice again', async () => {
+    await start();
+    const { state, picked } = await play({ where_am_i: '지옥인가.', first_light: '그대로 있는다.' });
+
+    expect(picked).toEqual(['where_am_i=지옥인가.', 'first_light=그대로 있는다.']);
+    expect(state.gameOver?.message).toBe('한참 뒤, 빛이 꺼졌다.');
+    expect(state.resolvedEndingId).toBeUndefined();
+    expect(state.routeVars.lives_done).toBe(0);
+    expect(getChoiceRecoverySummary()?.failedChoice?.key).toBe('first_light');
+  });
+
   it('runs the chain in the order the dark is asked for, and looks back at the end', async () => {
     await start();
     const { state, picked, shown } = await play({
@@ -135,12 +166,11 @@ describe('360 full playthrough', () => {
       l5_look: '돌아본다.',
     });
     expect(state.isFinished, picked.join('\n')).toBe(true);
-    // The dark opens on a feeling, not on information, and the first thing the player does is
-    // say who they miss without being told who that is.
-    expect(heard(shown, '손을 뻗어 본다. 벽이 안 닿는다. 바닥도.')).toBe(true);
-    expect(heard(shown, '이 느낌에 이름이 있었다')).toBe(true);
-    expect(heard(shown, '보고 싶다.')).toBe(true);
-    expect(heard(shown, '누가.')).toBe(true);
+    const firstMemory = shown.indexOf('어디선가 웃음소리가 난다. 아는 사람 같은데 이름이 안 난다.');
+    expect(shown.slice(firstMemory, firstMemory + 2)).toEqual([
+      '어디선가 웃음소리가 난다. 아는 사람 같은데 이름이 안 난다.',
+      '종이가 눅눅하다. 깨가 붙어 있다.',
+    ]);
     // The first life is free: nothing has been handed down to it yet.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다')).toBe(true);
     // Each dark is a trial with nobody else in it.
@@ -157,9 +187,12 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
-    // The storehouse is half somebody else's rice, so refusing is a fact before it is a excuse,
-    // and the taffy is asked for three times: in the yard, in the fever, and at the end.
+    // The yard introduces Deok-i before the price of rice. The taffy comes back in the fever
+    // and at the end.
     expect(heard(shown, '맡은 쌀에 손대면 그날로 끝이다')).toBe(true);
+    const deokArrival = shown.findIndex((text) => text.includes('어미 등에 업혀 왔더라'));
+    expect(deokArrival).toBeGreaterThan(-1);
+    expect(deokArrival).toBeLessThan(shown.findIndex((text) => text.includes('쌀이 열흘 새')));
     expect(heard(shown, '여든 먹어도 엿은 엿이죠')).toBe(true);
     expect(heard(shown, '종이가 눅눅하다')).toBe(true);
     // The market stall was one seat with two people waiting for it, and the fire asks what the

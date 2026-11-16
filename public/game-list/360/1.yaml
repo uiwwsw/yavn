@@ -171,7 +171,8 @@ scenes:
     actions:
       - bg: { id: market_fire, transition: fade, duration: 700 }
       - place: "1953년 일월 삼십일 밤 · 국제시장"
-      - effect: alarm
+      - effect: rumble
+      - mood: { tone: dread, level: 2 }
       - char: { id: 순임, position: left }
       - char: { id: 영호, position: right }
       - say: { char: 영호, with: [순임], delivery: shout, motion: tremble, text: "엄마, 저기 우리 좌판 쪽이야! 천막이 다 붙었어!" }
@@ -190,6 +191,7 @@ scenes:
       - say: { char: 순임, with: [영호], text: "두고 와. 손 놓지 마." }
       - say: { channel: thought, with: [], text: "이태를 안 풀었던 것이 그 밤에 없어졌다. 안에 뭐가 있었는지는 끝까지 모른다." }
       - say: { channel: record, with: [], text: "부산 국제시장. 단기 4286년 1월 30일 밤 화재. 점포 수천 호 소실. 사망 및 행방불명 다수." }
+      - mood: off
       - bg: { id: busan_shack, transition: fade, duration: 1000 }
       - place: "사흘 뒤 · 판잣집"
       - say:

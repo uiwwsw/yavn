@@ -119,6 +119,7 @@ scenes:
       - move: { id: 엄마, toward: 민재, style: approach }
       - say: { char: 엄마, with: [민재], text: "…그래. 무섭지. 엄마도 어제 선생님 방에서 듣고 계단에서 한참 앉아 있었어." }
       - say: { char: 민재, with: [엄마], text: "가게는요." }
+      - effect: heal
       - say: { char: 엄마, with: [민재], text: "옆집 건어물 아줌마가 봐 준댔어. 오늘은 여기 있을게. 갈치 먹어. 가시 다 발랐어." }
       - move: { id: 엄마, toward: 민재, style: reset }
       - goto: closing_night

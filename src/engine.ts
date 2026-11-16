@@ -114,6 +114,9 @@ const YOUTUBE_PLAYER_HOST_ID = 'vn-youtube-player-host';
 const DEFAULT_VIDEO_HOLD_TO_SKIP_MS = 800;
 const EFFECT_DURATIONS: Record<string, number> = {
   shake: 280,
+  rumble: 720,
+  damage: 520,
+  heal: 1100,
   flash: 350,
   zoom: 420,
   blur: 420,

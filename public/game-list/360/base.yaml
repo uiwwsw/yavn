@@ -1,6 +1,7 @@
 assets:
   backgrounds:
     title: assets/bg/title.svg
+    void_empty: assets/bg/void_empty.svg
     void: assets/bg/void.svg
     void_light: assets/bg/void_light.svg
     void_near: assets/bg/void_near.svg

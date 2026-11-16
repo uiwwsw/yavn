@@ -3436,6 +3436,36 @@ textarea,
   animation: shake 0.28s ease;
 }
 
+.effect-rumble {
+  animation: rumbleFrame 0.72s ease-out;
+}
+
+.effect-damage {
+  animation: damageRecoil 0.32s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.effect-damage::after,
+.effect-heal::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.effect-damage::after {
+  background: radial-gradient(ellipse at 50% 47%, transparent 38%, #83182a38 69%, #981535c2 100%);
+  animation: damageVignette 0.52s ease-out both;
+}
+
+.effect-heal::after {
+  background:
+    radial-gradient(ellipse at 50% 86%, #c8f8d962, transparent 58%),
+    linear-gradient(0deg, #66d4a74a, transparent 62%);
+  mix-blend-mode: screen;
+  animation: healBloom 1.1s ease-in-out both;
+}
+
 .effect-flash::after {
   content: '';
   position: absolute;
@@ -3599,6 +3629,10 @@ textarea,
 .effect-viewport[data-effect-level='reduced'].effect-tilt,
 .effect-viewport[data-effect-level='reduced'].effect-impact {
   animation: effectReducedNudge 0.32s ease-out;
+}
+
+.effect-viewport[data-effect-level='reduced']:is(.effect-rumble, .effect-damage) {
+  animation: none;
 }
 
 .effect-viewport[data-effect-level='reduced'].effect-zoom,
@@ -3849,6 +3883,34 @@ textarea,
   60% { transform: translateX(-6px); }
   80% { transform: translateX(6px); }
   100% { transform: translateX(0); }
+}
+
+@keyframes rumbleFrame {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  12% { transform: translate3d(-6px, 8px, 0); }
+  25% { transform: translate3d(7px, -4px, 0); }
+  40% { transform: translate3d(-5px, 4px, 0); }
+  56% { transform: translate3d(4px, -2px, 0); }
+  73% { transform: translate3d(-2px, 2px, 0); }
+  86% { transform: translate3d(1px, -1px, 0); }
+}
+
+@keyframes damageRecoil {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  24% { transform: translate3d(-7px, 3px, 0) scale(1.025); }
+  54% { transform: translate3d(2px, -1px, 0) scale(1.008); }
+}
+
+@keyframes damageVignette {
+  0% { opacity: 0.94; }
+  40% { opacity: 0.64; }
+  100% { opacity: 0; }
+}
+
+@keyframes healBloom {
+  0% { opacity: 0; transform: translateY(7%); }
+  42% { opacity: 0.86; }
+  100% { opacity: 0; transform: translateY(0); }
 }
 
 @keyframes flash {
@@ -4455,6 +4517,8 @@ textarea,
   .launcher-console,
   .workspace-game-card,
   .effect-shake,
+  .effect-rumble,
+  .effect-damage,
   .effect-zoom,
   .effect-pulse,
   .effect-tilt,
@@ -4518,6 +4582,12 @@ textarea,
   .effect-inkstamp::after {
     animation: none !important;
     opacity: 0 !important;
+  }
+
+  .effect-damage::after,
+  .effect-heal::after {
+    animation: none !important;
+    opacity: 0.28;
   }
 
   .launcher-command,
@@ -4639,7 +4709,7 @@ textarea,
 .mood-wash {
   position: absolute;
   inset: 0;
-  z-index: 5;
+  z-index: 2;
   pointer-events: none;
   opacity: 0;
   background: var(--mood-wash, transparent);
@@ -4650,6 +4720,10 @@ textarea,
 .effect-viewport[data-mood-level='1'] .mood-wash { opacity: var(--mood-a1, 0.1); }
 .effect-viewport[data-mood-level='2'] .mood-wash { opacity: var(--mood-a2, 0.22); }
 .effect-viewport[data-mood-level='3'] .mood-wash { opacity: var(--mood-a3, 0.4); }
+
+@starting-style {
+  .effect-viewport[data-mood-level] .mood-wash { opacity: 0; }
+}
 
 /* 단계가 올라갈수록 가장자리가 좁혀 온다. */
 .effect-viewport[data-mood-level='2'] .mood-wash,
@@ -4680,7 +4754,7 @@ textarea,
   70% { transform: translate3d(calc(-0.08% * var(--mood-step, 1)), calc(-0.06% * var(--mood-step, 1)), 0); }
 }
 
-/* 색은 작품이 정한다. 아래는 기본으로 깔아 두는 네 가지. */
+/* 기본 색조. 작품은 mood 이름으로 장면에 필요한 색을 선택한다. */
 .mood-ember {
   --mood-wash: radial-gradient(ellipse at 50% 58%, rgba(214, 64, 32, 0.92), rgba(120, 16, 8, 0.5) 62%, rgba(40, 4, 2, 0.2) 100%);
   --mood-edge: rgba(150, 26, 10, 0.55);
@@ -4701,6 +4775,29 @@ textarea,
   --mood-a1: 0.3;
   --mood-a2: 0.55;
   --mood-a3: 0.82;
+}
+
+.mood-warm {
+  --mood-wash: radial-gradient(ellipse at 50% 40%, #ffd58dd4, #b86b3a4d 66%, transparent);
+  --mood-edge: #b86b3a3d;
+}
+
+.mood-dread {
+  --mood-wash: radial-gradient(ellipse at 50% 44%, transparent 21%, #2f304d9e 68%, #101220f2);
+  --mood-blend: normal;
+  --mood-edge: #141524ad;
+  --mood-a1: 0.23;
+  --mood-a2: 0.46;
+  --mood-a3: 0.68;
+}
+
+.mood-grief {
+  --mood-wash: radial-gradient(ellipse at 50% 53%, #737e8f70, #171d2be6 96%);
+  --mood-blend: normal;
+  --mood-edge: #161b2866;
+  --mood-a1: 0.22;
+  --mood-a2: 0.42;
+  --mood-a3: 0.58;
 }
 
 /* 연출 세기를 낮춘 플레이어에게는 색만 옅게 남기고 떨림은 끈다. */
