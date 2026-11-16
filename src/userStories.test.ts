@@ -159,22 +159,22 @@ describe('owner story playthroughs', () => {
     await vi.advanceTimersByTimeAsync(3000);
   }
 
-  const eraseAll = "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다";
+  const eraseAll = "휴대폰을 초기화한다";
   it.each([
     ['erase_loop', { e3_final: eraseAll }],
     ['erased_name', {
-      e1_rumor: '"그런 농담 하지 마요. 팀장님 좀 이상한 사람 같던데"',
-      e2_dig: ['단톡방에 "팀장님 전 회사에서 왜 나왔는지 아는 사람?"', '노트북을 덮고 지수한테 "150장"이라고 보낸다'],
-      e2_threat: '"형도 조심해요. 세상 좁아요."',
+      e1_rumor: '농담을 그만하라고 한다',
+      e2_dig: ['단톡방에 준성의 퇴사 이유를 묻는다', '검색을 그만두고 지수에게 답장한다'],
+      e2_threat: '준성에게 경고한다',
       e3_final: eraseAll,
     }],
     ['kept_photo', {
-      e2_photo: '엄지를 떼고 사진첩을 닫는다',
-      e3_clinic: '번호표 버튼을 누른다',
-      e2_jisu: '"회사에 나랑 엮인 소문이 좀 있어. 정리되면 말할게."',
-      e3_final: '사진첩 맨 아래, 놀이터 사진을 연다',
+      e2_photo: '사진을 남긴다',
+      e3_clinic: '번호표를 뽑는다',
+      e2_jisu: '회사 소문만 이야기한다',
+      e3_final: '놀이터 사진을 연다',
     }],
-    ['unfinished', { e2_jisu: '"다 말할게. 듣고 나서 네가 정해."', e3_final: '지수한테 온 메시지 네 개를 연다' }],
+    ['unfinished', { e2_jisu: '지수에게 전부 말한다', e3_final: '지수의 메시지를 연다' }],
   ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
     await start('erase');
     const state = await play(route);
@@ -183,16 +183,16 @@ describe('owner story playthroughs', () => {
   }, 60000);
 
   const loyal: Route = {
-    b0_buy: '"아저씨, B버튼 뻑뻑한 거 그거 주세요."',
-    b2_register: '"응. 세상 망했어. 너랑 나 빼고 다."',
-    b3_snack: '"3.5는 무슨." 반쪽까지 집어 먹는다',
-    b3_drone: '{{android_name}} 등 뒤에 납작 붙는다',
-    b3_promise: '손가락을 건다. "혼자는 무슨. 끝까지 2P로 가."',
+    b0_buy: '중고 게임기를 산다',
+    b2_register: '밖에서 무슨 일이 있었는지 말한다',
+    b3_snack: '복숭아를 다 먹는다',
+    b3_drone: '{{android_name}} 뒤에 숨는다',
+    b3_promise: '끝까지 함께하겠다고 약속한다',
   };
   it.each([
-    ['saved_together', { ...loyal, b4_save: '새끼손가락 약속 — "끝까지 2P로"' }],
-    ['new_game', { ...loyal, b4_save: '빈 슬롯으로 둔다. 가볍게 다녀오라고' }],
-    ['off_screen', { ...loyal, b4_save: '"안 해. 저장 안 해. 그냥 튀자."' }],
+    ['saved_together', { ...loyal, b4_save: '새끼손가락 약속' }],
+    ['new_game', { ...loyal, b4_save: '슬롯을 비워 둔다' }],
+    ['off_screen', { ...loyal, b4_save: '저장을 그만두고 도망친다' }],
   ] as Array<[string, Route]>)('8비트 심장 reaches %s', async (ending, route) => {
     await start('8bit-heart');
     const state = await play(route, '비트');
@@ -203,19 +203,19 @@ describe('owner story playthroughs', () => {
 
   it('8비트 심장 fails recoverably when the smart console is bought', async () => {
     await start('8bit-heart');
-    const state = await play({ b0_buy: 'HYPERLINK X 결제. 미래의 내가 갚는다' });
+    const state = await play({ b0_buy: 'HYPERLINK X를 산다' });
     expect(state.gameOver?.title).toBe('너무 똑똑했던 기기');
   }, 60000);
 
   it.each([
     ['disconnected', { t4_end: '전원선을 뽑는다' }, ''],
-    ['still_online', { t4_end: '모니터를 끄고 나간다. 내일 오픈 근무다' }, ''],
+    ['still_online', { t4_end: '모니터를 끄고 나간다' }, ''],
     ['session_closed', {
       t1_pencil: '연필을 내려놓는다',
       t1_pencil_again: '귀 뒤의 밴드를 뗀다',
-      t2_sh: '"오늘 하루만 하지 마. 그거."',
+      t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
       t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
-      t3_tell: '"레플라에서 찔렀습니다." 그대로 말한다',
+      t3_tell: '레플라에서 한 일을 털어놓는다',
       t3_door: '상혁이 어머니께 전화한다',
       t4_end: '세션 종료 창을 연다',
     }, '0001'],
@@ -228,38 +228,38 @@ describe('owner story playthroughs', () => {
 
   it('튜토리얼 fails recoverably when he names a pillar only the simulation showed', async () => {
     await start('tutorial');
-    const state = await play({ t2_where: '"C-14 기둥 쪽… 아닌가요?"' });
+    const state = await play({ t2_where: 'C-14라고 말한다' });
     expect(state.gameOver?.title).toBe('아무도 말하지 않은 번호');
   }, 60000);
   // 오버플로's investigation board cycles through whatever is still unexplored, so the route
   // leaves o1_room unset and the player takes the first option still on offer each time.
   const overflowBase: Route = {
-    o0_case: '"일당은 없는 거죠?" 봉투를 가져온다',
-    o1_show: '"선생님, 제 것도 보시겠습니까." 화면을 돌린다',
-    o2_sera: '"올려 주는 게 아니라 틀렸다고 쓰는 거야. 쓸게."',
-    o2_deal: '"하나만 묻겠습니다. 배동식 씨도 오버플로입니까."',
+    o0_case: '봉투를 받는다',
+    o1_show: '내 판독 결과를 보여 준다',
+    o2_sera: '세라의 이의신청을 맡는다',
+    o2_deal: '배동식도 오버플로인지 묻는다',
     o3_tell: '노기태에게 전화한다',
   };
   it.each([
-    ['broadcast', { ...overflowBase, o4_end: '9시 생방송에 나간다. 내 수치부터 띄운다' }],
+    ['broadcast', { ...overflowBase, o4_end: '9시 생방송에서 내 수치를 공개한다' }],
     ['one_file', { ...overflowBase, o4_end: '배동식 씨 원본만 검찰에 낸다' }],
     ['sealed', {
       ...overflowBase,
-      o0_case: '"경위님, 저 이거 하면 뭐가 남습니까."',
-      o0_case_again: '"7페이지까지만 보겠습니다."',
-      o1_show: '수첩에 날짜만 적는다',
-      o2_sera: '"다른 사무소 소개해 줄게. 내가 쓰면 네가 손해야."',
-      o2_deal: '"할머니 건은 따로 합니다." 종이를 밀어 놓는다',
+      o0_case: '사건을 맡을 조건을 묻는다',
+      o0_case_again: '7페이지까지만 읽는다',
+      o1_show: '수첩에 날짜를 적는다',
+      o2_sera: '다른 사무소를 소개한다',
+      o2_deal: '할머니 사건을 합의에서 뺀다',
       o3_tell: '가방에 넣고 집으로 간다',
       o4_end: '합의서에 날짜를 적어 보낸다',
     }],
     ['appeal', {
       ...overflowBase,
-      o0_case: '"한 번만 보고 돌려 드릴게요."',
-      o1_show: '"이십 년이면 대단한 겁니다."',
-      o2_sera: '"그 서류 누가 요구했어? 병원이야, 시어머니야?"',
+      o0_case: '서류만 한 번 본다',
+      o1_show: '20년간 버틴 일을 인정해 준다',
+      o2_sera: '누가 서류를 요구했는지 묻는다',
       o3_tell: '세라에게 먼저 말한다',
-      o4_end: '이의신청서를 쓴다. 이번엔 내 것 말고 전부',
+      o4_end: '다른 피해자들의 이의신청서를 쓴다',
     }],
   ] as Array<[string, Route]>)('오버플로 reaches %s', async (ending, route) => {
     await start('overflow');
@@ -276,7 +276,7 @@ describe('owner story playthroughs', () => {
 
   it('오버플로 fails recoverably when he uses the account that is not his', async () => {
     await start('overflow');
-    const state = await play({ ...overflowBase, o4_end: '한수경의 계정으로 자정 전에 내부망에 들어간다' });
+    const state = await play({ ...overflowBase, o4_end: '한수경 계정으로 내부망에 접속한다' });
     expect(state.gameOver?.title).toBe('남의 계정');
   }, 60000);
 
@@ -284,8 +284,8 @@ describe('owner story playthroughs', () => {
     await start('overflow');
     const state = await play({
       ...overflowBase,
-      o0_case: '"경위님, 저 이거 하면 뭐가 남습니까."',
-      o0_case_again: '"안 합니다. 이의신청서나 쓸게요."',
+      o0_case: '사건을 맡을 조건을 묻는다',
+      o0_case_again: '사건을 거절한다',
       o4_end: '배동식 씨 원본만 검찰에 낸다',
     });
     expect(state.gameOver).toBeUndefined();

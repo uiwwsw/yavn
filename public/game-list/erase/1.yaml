@@ -285,12 +285,15 @@ scenes:
           prompt: "팀원들이 해명을 기다린다. 입력 중… 표시가 떴다 사라지기를 세 번."
           with: []
           options:
-            - text: "\"ㅋㅋ 군대 어디냐고 나도 물어봄\""
+            - text: "농담에 맞장구친다"
+              saveText: "\"ㅋㅋ 군대 어디냐고 나도 물어봄\""
               goto: e1_laugh
-            - text: "\"그런 농담 하지 마요. 팀장님 좀 이상한 사람 같던데\""
+            - text: "농담을 그만하라고 한다"
+              saveText: "\"그런 농담 하지 마요. 팀장님 좀 이상한 사람 같던데\""
               add: { cruelty: 1 }
               goto: e1_deny
-            - text: "읽기만 하고 폰을 엎어 둔다"
+            - text: "답장하지 않는다"
+              saveText: "읽기만 하고 폰을 엎어 둔다"
               goto: e1_ignore
 
   e1_laugh:
@@ -563,9 +566,11 @@ scenes:
           prompt: "아진이 이어폰 한쪽을 내민다."
           char: 아진
           options:
-            - text: "손사래를 친다. \"됐어 됐어, 둘이 들어.\""
+            - text: "이어폰을 받지 않는다"
+              saveText: "손사래를 친다. \"됐어 됐어, 둘이 들어.\""
               goto: e1_harin_smile
-            - text: "웃으면서 묻는다. \"근데 민재야, 나한텐 왜 안 보냈어?\""
+            - text: "민재에게 왜 안 보냈는지 묻는다"
+              saveText: "웃으면서 묻는다. \"근데 민재야, 나한텐 왜 안 보냈어?\""
               goto: e1_harin_ask
 
   e1_harin_smile:
@@ -661,7 +666,8 @@ scenes:
             - text: "한 글자씩 지운다"
               add: { deleted: 1 }
               goto: h1_erased
-            - text: "\"야 근데 둘이 요즘\"까지 더 쓴다"
+            - text: "두 사람 사이를 묻는 말을 덧붙인다"
+              saveText: "\"야 근데 둘이 요즘\"까지 더 쓴다"
               goto: h1_more
 
   h1_sent:

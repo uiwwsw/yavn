@@ -403,12 +403,15 @@ scenes:
           char: 지완
           with: [기태]
           options:
-            - text: "\"일당은 없는 거죠?\" 봉투를 가져온다"
+            - text: "봉투를 받는다"
+              saveText: "\"일당은 없는 거죠?\" 봉투를 가져온다"
               goto: take
               set: { took_case: true }
-            - text: "\"경위님, 저 이거 하면 뭐가 남습니까.\""
+            - text: "사건을 맡을 조건을 묻는다"
+              saveText: "\"경위님, 저 이거 하면 뭐가 남습니까.\""
               goto: push
-            - text: "\"한 번만 보고 돌려 드릴게요.\""
+            - text: "서류만 한 번 본다"
+              saveText: "\"한 번만 보고 돌려 드릴게요.\""
               goto: hedge
               set: { took_case: true }
 
@@ -473,10 +476,12 @@ scenes:
           char: 기태
           with: [지완]
           options:
-            - text: "\"7페이지까지만 보겠습니다.\""
+            - text: "7페이지까지만 읽는다"
+              saveText: "\"7페이지까지만 보겠습니다.\""
               goto: close
               set: { took_case: true }
-            - text: "\"안 합니다. 이의신청서나 쓸게요.\""
+            - text: "사건을 거절한다"
+              saveText: "\"안 합니다. 이의신청서나 쓸게요.\""
               goto: refuse
 
   hedge:

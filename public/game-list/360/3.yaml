@@ -226,10 +226,12 @@ scenes:
           char: 문호
           with: [문호]
           options:
-            - text: "\"그건 선생님이 모르시는 일이에요.\""
+            - text: "문호의 말에 반박한다."
+              saveText: "\"그건 선생님이 모르시는 일이에요.\""
               set: { l4_refuted: true }
               goto: munho_refute
-            - text: "녹음기를 끄지 않고 듣고만 있는다."
+            - text: "녹음하며 듣는다."
+              saveText: "녹음기를 끄지 않고 듣고만 있는다."
               goto: munho_listen
 
   munho_refute:
@@ -342,9 +344,11 @@ scenes:
           char: 차피디
           with: [차피디]
           options:
-            - text: "서명한다. 원본은 방송국이 갖는다."
+            - text: "서명한다."
+              saveText: "서명한다. 원본은 방송국이 갖는다."
               goto: sign_try
-            - text: "서명하지 않는다. 증언자들을 한 명씩 다시 찾아간다."
+            - text: "서명을 거절한다."
+              saveText: "서명하지 않는다. 증언자들을 한 명씩 다시 찾아간다."
               goto: leave_try
 
   sign_try:

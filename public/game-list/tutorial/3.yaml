@@ -149,13 +149,16 @@ scenes:
           char: 해수
           motion: freeze
           options:
-            - text: "\"모르겠습니다. 죄송합니다.\""
+            - text: "모른다고 답한다"
+              saveText: "\"모르겠습니다. 죄송합니다.\""
               goto: tell_nothing
-            - text: "\"레플라에서 찔렀습니다.\" 그대로 말한다"
+            - text: "레플라에서 한 일을 털어놓는다"
+              saveText: "\"레플라에서 찔렀습니다.\" 그대로 말한다"
               set: { told_truth: true }
               add: { honest: 1 }
               goto: tell_truth
-            - text: "\"상혁이는 아니에요. 그날 방에 있었어요.\""
+            - text: "상혁이 방에 있었다고 말한다"
+              saveText: "\"상혁이는 아니에요. 그날 방에 있었어요.\""
               when: { var: tampered, op: gt, value: 0 }
               add: { sh_care: 1 }
               goto: tell_cover
@@ -590,7 +593,8 @@ scenes:
               at: { x: 66, y: 62 }
               when: { var: seen_card, op: eq, value: false }
               goto: see_card
-            - text: "\"이게 어떻게 돌아가는 건데요.\""
+            - text: "레플라가 어떻게 작동하는지 묻는다"
+              saveText: "\"이게 어떻게 돌아가는 건데요.\""
               when:
                 all:
                   - { var: seen_graph, op: eq, value: true }
@@ -980,7 +984,8 @@ scenes:
           prompt: "도어락 숫자판에 손때 묻은 1, 2, 7, 0."
           char: 해수
           options:
-            - text: "\"상혁아, 나 잠깐 어디 좀 다녀올게.\""
+            - text: "상혁에게 외출을 알린다"
+              saveText: "\"상혁아, 나 잠깐 어디 좀 다녀올게.\""
               goto: door_leave
             - text: "상혁이 어머니께 전화한다"
               set: { called_mom: true }

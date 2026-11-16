@@ -11,7 +11,7 @@ import { normalizeCharacterEnter } from './characterEntrance';
 import { resolveCharacterFraming } from './characterFraming';
 import { CHARACTER_MOTIONS, clampMotionRepeat, resolveMotionDuration, type CharacterMotion } from './characterEmotes';
 import { resolveAutoCharacterPosition, resolveDialogueVisibleCharacterIds } from './characterLayout';
-import { MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
+import { choiceSaveValue, MAX_STORY_LOG_ENTRIES, selectRouteHistoryForChapter } from './history';
 import { waitForVisibleStaticImages } from './imageReady';
 import { imageResources } from './imageResources';
 import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from './live2dLoadTracker';
@@ -186,6 +186,7 @@ type InventoryOwnedMap = Record<string, boolean>;
 type ChoiceAttempt = {
   key: string;
   value: string;
+  label?: string;
   optionIndex: number;
   ledToGameOver: boolean;
 };
@@ -523,11 +524,11 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
         || (entry.chapterPath && normalizeChapterPathKey(entry.chapterPath) !== path)) return {};
       let target: string | undefined;
       if ('choice' in action) {
-        const option = action.choice.options.find(option => option.text === entry.value
+        const option = action.choice.options.find(option => choiceSaveValue(option) === entry.value
           && (!option.when || evaluateCondition(option.when, vars, inventory)));
         if (!option) return {};
         applySetToVars(vars, option.set); applyAddToVars(vars, option.add);
-        appendLog({ ...entry, kind: 'choice', prompt: action.choice.prompt });
+        appendLog({ ...entry, kind: 'choice', value: option.text, prompt: action.choice.prompt });
         historyIndex++;
         if (option.gameOver) {
           walked.push(storyNodeId(path, sceneId, actionIndex) + `:death:${action.choice.options.indexOf(option)}`);
@@ -2491,6 +2492,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       ? {
           key: (rawChoiceAttempt as ChoiceAttempt).key,
           value: (rawChoiceAttempt as ChoiceAttempt).value,
+          label: typeof (rawChoiceAttempt as ChoiceAttempt).label === 'string' ? (rawChoiceAttempt as ChoiceAttempt).label : undefined,
           optionIndex: (rawChoiceAttempt as ChoiceAttempt).optionIndex,
           ledToGameOver: (rawChoiceAttempt as Partial<ChoiceAttempt>).ledToGameOver === true,
         }
@@ -2803,6 +2805,7 @@ export function getChoiceRecoverySummary(): ChoiceRecoverySummary {
       ? {
           key: recovery.choiceAttempt.key,
           value: recovery.choiceAttempt.value,
+          label: recovery.choiceAttempt.label,
           optionIndex: recovery.choiceAttempt.optionIndex,
         }
       : undefined,
@@ -4011,7 +4014,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
       applyCameraDirective(action.choice.camera, presentation.speakerId);
       const history = historyByCursor.get(`${sceneId}:${actionIndex}`);
       if (history?.kind === 'choice') {
-        const selected = action.choice.options.find((option) => option.text === history.value);
+        const selected = action.choice.options.find((option) => choiceSaveValue(option) === history.value);
         if (selected) {
           applySetToVars(restoreVars, selected.set);
           applyAddToVars(restoreVars, selected.add);
@@ -6122,16 +6125,18 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   }
 
   const mapPath = getCurrentChapterPathKey();
+  const savedValue = choiceSaveValue(selected);
   if (mapPath) {
     const mapId = storyNodeId(mapPath, state.currentSceneId, state.actionIndex);
     const choices = storyJourney.choices[mapId] ?? [];
-    if (!choices.includes(selected.text)) storyJourney.choices[mapId] = [...choices, selected.text];
+    if (!choices.includes(savedValue)) storyJourney.choices[mapId] = [...choices, savedValue];
   }
   recordChoiceRecoveryPoint({
     ...createSaveProgress(state.currentSceneId, state.actionIndex),
     choiceAttempt: {
       key: state.choiceGate.key,
-      value: selected.text,
+      value: savedValue,
+      ...(selected.saveText === undefined ? {} : { label: selected.text }),
       optionIndex,
       ledToGameOver: false,
     },
@@ -6139,7 +6144,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   useVNStore.getState().pushRouteHistory({
     kind: 'choice',
     key: state.choiceGate.key,
-    value: selected.text,
+    value: savedValue,
     chapterPath: getCurrentChapterPathKey(),
     sceneId: state.currentSceneId,
     actionIndex: state.actionIndex,

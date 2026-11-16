@@ -91,10 +91,12 @@ scenes:
           prompt: "줄이 고객센터 밖 카트 보관대까지 늘어났다."
           char: 해수
           options:
-            - text: "고개를 숙인다. 한 번 더 숙인다"
+            - text: "고개를 숙인다"
+              saveText: "고개를 숙인다. 한 번 더 숙인다"
               set: { bowed: true }
               goto: bow_down
-            - text: "\"죄송합니다. 여기까지만 하겠습니다, 고객님.\""
+            - text: "응대를 그만둔다"
+              saveText: "\"죄송합니다. 여기까지만 하겠습니다, 고객님.\""
               goto: bow_stop
 
   bow_down:
@@ -393,14 +395,17 @@ scenes:
           prompt: "선으로 된 즉석밥 열두 개. 하나는 뜯겨 있다."
           char: 해수
           options:
-            - text: "\"네, 고객님. 영수증 확인해 드릴게요.\""
+            - text: "영수증을 확인한다"
+              saveText: "\"네, 고객님. 영수증 확인해 드릴게요.\""
               when: { var: tried_polite, op: eq, value: false }
               set: { tried_polite: true }
               goto: say_polite
-            - text: "\"소리 지르지 마세요.\""
+            - text: "소리 지르지 말라고 한다"
+              saveText: "\"소리 지르지 마세요.\""
               add: { rage: 1 }
               goto: say_loud
-            - text: "\"혼자 다 드시지도 못하는 걸 왜 사세요.\""
+            - text: "왜 그렇게 많이 사냐고 쏘아붙인다"
+              saveText: "\"혼자 다 드시지도 못하는 걸 왜 사세요.\""
               add: { rage: 2 }
               goto: say_cruel
 

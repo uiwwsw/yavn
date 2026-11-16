@@ -348,11 +348,14 @@ scenes:
           prompt: "작가가 셔터에 손가락을 올리고 기다린다."
           char: 지수
           options:
-            - text: "렌즈를 보면서 \"없어. 진짜 없어.\""
+            - text: "숨기는 게 없다고 한다"
+              saveText: "렌즈를 보면서 \"없어. 진짜 없어.\""
               goto: e0_studio_smile
-            - text: "\"…카드값 좀 밀린 거?\""
+            - text: "카드값 이야기로 넘긴다"
+              saveText: "\"…카드값 좀 밀린 거?\""
               goto: e0_studio_joke
-            - text: "대답 대신 지수 머리카락을 귀 뒤로 넘겨 준다"
+            - text: "대답을 피한다"
+              saveText: "대답 대신 지수 머리카락을 귀 뒤로 넘겨 준다"
               goto: e0_studio_avoid
 
   e0_studio_smile:
@@ -573,9 +576,11 @@ scenes:
           prompt: "잔 두 개 중 하나가 이미 이쪽으로 기울어 있다."
           char: 준성
           options:
-            - text: "잔을 받는다. \"한 잔만이요.\""
+            - text: "잔을 받는다"
+              saveText: "잔을 받는다. \"한 잔만이요.\""
               goto: e0_night
-            - text: "폰 화면을 흔들어 보인다. \"저 대리 불러 놨어요.\""
+            - text: "대리를 불렀다고 한다"
+              saveText: "폰 화면을 흔들어 보인다. \"저 대리 불러 놨어요.\""
               goto: e0_night_hesitate
 
   e0_night_hesitate:
@@ -664,7 +669,8 @@ scenes:
               at: { x: 75, y: 55 }
               when: { var: e0_location, op: eq, value: false }
               goto: e0_erase_location
-            - text: "신발을 손에 들고 나간다"
+            - text: "방을 나간다"
+              saveText: "신발을 손에 들고 나간다"
               goto: e0_leave
 
   e0_erase_messages:

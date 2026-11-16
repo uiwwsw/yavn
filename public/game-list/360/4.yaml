@@ -240,9 +240,11 @@ scenes:
           key: l5_leftover
           prompt: "놓고 온 것 중 하나는 아직 손이 닿는다."
           options:
-            - text: "쉰여섯 해가 두고 간 것을 본다."
+            - text: "쉰여섯 해의 기억을 본다."
+              saveText: "쉰여섯 해가 두고 간 것을 본다."
               goto: leftover_first
-            - text: "열일곱 해가 두고 간 것을 본다."
+            - text: "열일곱 해의 기억을 본다."
+              saveText: "열일곱 해가 두고 간 것을 본다."
               goto: leftover_last
             - text: "보지 않는다."
               goto: last_count
@@ -333,14 +335,17 @@ scenes:
           key: v4
           prompt: "한쪽이 덜 어둡다. 쥘 수 있는 것은 하나다."
           options:
-            - text: "곁에 있었어야 했다."
+            - text: "곁에 남지 못한 후회"
+              saveText: "곁에 있었어야 했다."
               set: { t_kin: true, last_taken: kin, deg_last: "223.7" }
               goto: last_go
-            - text: "원본을 내 손에 쥐고 있었어야 했다."
+            - text: "원본을 놓친 후회"
+              saveText: "원본을 내 손에 쥐고 있었어야 했다."
               when: { var: l4_signed, op: eq, value: true }
               set: { t_hold: true, last_taken: hold, deg_last: "041.2" }
               goto: last_go
-            - text: "뭐라도 쥐고 있었어야 했다."
+            - text: "아무것도 남기지 못한 후회"
+              saveText: "뭐라도 쥐고 있었어야 했다."
               when: { var: l4_signed, op: eq, value: false }
               set: { t_hold: true, last_taken: hold, deg_last: "041.2" }
               goto: last_go
@@ -355,9 +360,11 @@ scenes:
           key: v4_stop
           prompt: "남은 것이 정말 없는가."
           options:
-            - text: "없다. 여기 있는다."
+            - text: "여기 남는다."
+              saveText: "없다. 여기 있는다."
               goto: last_still
-            - text: "…하나 있다."
+            - text: "다시 고른다."
+              saveText: "…하나 있다."
               goto: last_choice
 
   last_still:
@@ -531,10 +538,12 @@ scenes:
           key: v_end
           prompt: "서른 해 동안 되씹은 것이 있다. 그때는 쥘 줄을 몰랐다."
           options:
-            - text: "독이 비지 않았더라면."
+            - text: "비어 버린 쌀독"
+              saveText: "독이 비지 않았더라면."
               set: { v_end: hold, deg_last: "041.2" }
               goto: winter_go
-            - text: "그날 나가지 않았더라면."
+            - text: "집을 나선 후회"
+              saveText: "그날 나가지 않았더라면."
               set: { v_end: kin, deg_last: "223.7" }
               goto: winter_go
             - text: "쥐지 않는다."

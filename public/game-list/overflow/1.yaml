@@ -659,12 +659,15 @@ scenes:
           char: 지완
           with: [동식]
           options:
-            - text: "\"선생님, 제 것도 보시겠습니까.\" 화면을 돌린다"
+            - text: "내 판독 결과를 보여 준다"
+              saveText: "\"선생님, 제 것도 보시겠습니까.\" 화면을 돌린다"
               goto: show_mine
               set: { showed_score: true }
-            - text: "\"이십 년이면 대단한 겁니다.\""
+            - text: "20년간 버틴 일을 인정해 준다"
+              saveText: "\"이십 년이면 대단한 겁니다.\""
               goto: say_twenty
-            - text: "수첩에 날짜만 적는다"
+            - text: "수첩에 날짜를 적는다"
+              saveText: "수첩에 날짜만 적는다"
               goto: just_note
 
   show_mine:

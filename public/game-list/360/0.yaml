@@ -26,9 +26,9 @@ scenes:
           key: where_am_i
           prompt: "여긴 어디지?"
           options:
-            - { text: "모르겠다.", goto: first_light }
-            - { text: "지옥인가.", goto: first_light }
-            - { text: "천국인가.", goto: first_light }
+            - { text: "모르겠음", saveText: "모르겠다.", goto: first_light }
+            - { text: "지옥", saveText: "지옥인가.", goto: first_light }
+            - { text: "천국", saveText: "천국인가.", goto: first_light }
 
   first_light:
     actions:
@@ -226,9 +226,11 @@ scenes:
           char: 봉구
           with: [봉구]
           options:
-            - text: "곳간을 연다. 우리 것에서 한 집에 닷 되씩."
+            - text: "곳간을 열고 쌀을 나눈다."
+              saveText: "곳간을 연다. 우리 것에서 한 집에 닷 되씩."
               goto: rice_try
-            - text: "문을 닫아건다. 값은 더 오른다."
+            - text: "대문을 잠근다."
+              saveText: "문을 닫아건다. 값은 더 오른다."
               goto: rice_shut
 
   rice_try:
@@ -279,7 +281,7 @@ scenes:
       - say: { char: 끝순, with: [], text: "덕이 어머니." }
       - say: { char: 끝순, with: [], text: "우리 아버지 그런 사람 아니에요." }
       - say: { char: 끝순, with: [], text: "내일 다시 와 보세요, 네?" }
-      - say: { channel: thought, with: [], text: "내일도 열지 않을 것이다. 그 애는 그걸 모른다." }
+      - say: { channel: thought, with: [], text: "쌀값이 더 오를 때까지는 열지 않을 작정이었다. 그 애는 그걸 몰랐다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지. 덕이가 업혀 왔어요. 여덟 살이." }
       - say: { char: 만석, with: [끝순], text: "곳간 쌀 절반이 남의 것이다. 남의 것을 퍼 주면 그건 도둑질이야." }
@@ -335,9 +337,11 @@ scenes:
           prompt: "이마가 불덩이다. 마포까지는 팔십 리."
           with: [끝순]
           options:
-            - text: "마포에 올라간다. 사흘이면 돌아온다."
+            - text: "마포에 간다."
+              saveText: "마포에 올라간다. 사흘이면 돌아온다."
               goto: leave_try
-            - text: "봉구를 대신 보내고 곁에 남는다."
+            - text: "봉구를 보내고 남는다."
+              saveText: "봉구를 대신 보내고 곁에 남는다."
               goto: stay_home
 
   leave_try:
@@ -565,10 +569,12 @@ scenes:
           key: v1
           prompt: "쉰여섯 해에서 쥘 수 있는 것은 하나다."
           options:
-            - text: "말을 했어야 했다."
+            - text: "하지 못한 말"
+              saveText: "말을 했어야 했다."
               set: { t_say: true, last_taken: say, deg_last: "118.5" }
               goto: void_one_go
-            - text: "어디에도 매이지 말았어야 했다."
+            - text: "자유롭게 살고 싶었던 마음"
+              saveText: "어디에도 매이지 말았어야 했다."
               set: { t_free: true, last_taken: free, deg_last: "307.9" }
               goto: void_one_go
             - text: "쥐지 않는다."
@@ -580,9 +586,11 @@ scenes:
           key: v1_stop
           prompt: "남은 것이 정말 없는가."
           options:
-            - text: "없다. 여기 있는다."
+            - text: "여기 남는다."
+              saveText: "없다. 여기 있는다."
               goto: dark_still
-            - text: "…하나 있다."
+            - text: "다시 고른다."
+              saveText: "…하나 있다."
               goto: void_one_choice
 
   void_one_go:

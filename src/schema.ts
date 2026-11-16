@@ -102,6 +102,7 @@ const gameOverSchema = z
 const choiceOptionSchema = z
   .object({
     text: z.string().min(1),
+    saveText: z.string().min(1).optional(),
     at: z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).strict().optional(),
     when: conditionSchema.optional(),
     set: stateSetMapSchema.optional(),

@@ -45,9 +45,10 @@ describe('save and game over recovery UI', () => {
     expect(appSource).toContain('setRecoveredFailedChoice(recoveryPoint.failedChoice)');
     expect(appSource).toContain("' choice-gate-option-previous-game-over'");
     expect(appSource).toContain('<b>원인 선택</b>');
-    expect(appSource).toContain('“${choiceRecoveryPoint.failedChoice.value}”를 고른 순간');
+    expect(appSource).toContain('choiceSaveValue(option) === recoveredFailedChoice.value');
+    expect(appSource).toContain('“${failedChoiceLabel}”를 고른 순간');
     expect(appSource).toContain('<div className="game-over-cause" aria-label="결과를 만든 선택">');
-    expect(appSource).toContain('{choiceRecoveryPoint.failedChoice.value}');
+    expect(appSource).toContain('{failedChoiceLabel}');
     expect(appSource).toContain('<em>GAME OVER</em>');
     expect(appSource).toContain('choiceOptionButtonRefs.current[focusIndex]?.focus');
     expect(appSource).toContain('index !== recoveredFailedChoiceIndex');
