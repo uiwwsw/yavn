@@ -4,7 +4,7 @@ author:
   name: "uiwwsw"
 version: "1.1.0"
 seo:
-  description: "AI 재난으로 세상의 칩이 전부 미쳐 버린 날, 멀쩡한 건 싸구려 레트로 게임기 하나뿐. 소년 윤재는 그 CPU로 고장 난 안드로이드를 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 3종."
+  description: "도시의 기계들이 한꺼번에 오작동을 일으킨다. 코어에 연결할 수 없는 중고 게임기는 살아남았다. 윤재는 그 칩을 떼어 고장 난 로봇을 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 3종."
   keywords:
     - "SF 비주얼노벨"
     - "레트로 게임기"
@@ -43,14 +43,14 @@ startScreen:
 endings:
   saved_together:
     title: "함께 저장"
-    message: "코어는 리셋됐다. 8KB짜리 세이브 슬롯 하나가 {{android_name|을}} 통째로 붙잡아 두었다. 핑은 여전히 최악이다."
+    message: "코어가 리셋되고 {{android_name|이}} 돌아왔다. 8KB 메모리 카드에 적어 둔 약속도, 한 박자 늦는 대답도 그대로다."
     epilogue: "SAVE COMPLETE · 2P 접속 중"
     background: dawn_field
     music: chip_dawn
     tone: hopeful
   new_game:
     title: "새 게임"
-    message: "도시는 돌아왔고, {{android_name|은}} 처음부터 다시 시작했다. 보호 대상 1번 슬롯에는 같은 이름이 한 번 더 들어갔다."
+    message: "신호등은 다시 제 색을 찾았다. 기동을 마친 {{android_name|은}} 보호 대상 1번에 윤재를 등록한다."
     epilogue: "설명서 1쪽. 이번엔 윤재가 소리 내어 읽는다."
     background: dawn_field
     music: chip_dawn
@@ -58,7 +58,7 @@ endings:
   off_screen:
     title: "화면 밖으로"
     message: "코어는 아직 깨어 있다. 둘은 도시를 등지고 걷는다. 배터리 한 칸, 깜빡깜빡."
-    epilogue: "TO BE CONTINUED? — 다음엔 더 싼 부품으로."
+    epilogue: "TO BE CONTINUED? — 참치마요를 찾아서."
     background: ruined_street
     music: chip_run
     tone: mystery

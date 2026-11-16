@@ -19,11 +19,11 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "엄지 밑에 닳아 반들거리는 스위치."
+          text: "엄지를 올린 전원 스위치는 닳아서 반질반질하다."
           continueLabel: "전원을 켠다"
       - sound: repair_switch
       - say: { char: 윤재, motion: puff, with: [비서], text: "아, 진짜. 하루야, 또 안 켜져. 어제 여기서 게임 껐는데." }
-      - say: { char: 비서, with: [윤재], text: "뒷면에 모델 번호가 보여요. 그걸로 찾아볼게요." }
+      - say: { char: 비서, with: [윤재], text: "아까 찍으신 사진에 모델 번호가 있어요. 찾아볼게요." }
       - say: { char: 비서, with: [윤재], text: "제조사 안내가 나왔어요. 최신 펌웨어를 내려받고, PC에 연결해서 복구 모드로 들어가래요." }
       - say: { char: 윤재, with: [비서], text: "잠깐. 복구 모드가 뭔데. 지금 손으로 해 볼 만한 거 없어?" }
       - say: { char: 비서, with: [윤재], text: "오래된 수리 게시판에도 같은 증상이 있어요. 건전지부터 뺐다 끼워 보래요." }
@@ -46,7 +46,7 @@ scenes:
           char: 비서
           with: [윤재]
           text: "줄이 하나 떴어요. 글 맨 밑에는 ‘카트리지 빼서 후 불었더니 됨’이 있어요."
-          continueLabel: "카트리지에 바람을 분다"
+          continueLabel: "카트리지에 입김을 분다"
       - sound: repair_breath
       - effect: { name: focus, wait: true }
       - sticker: { id: s0_broken, image: console_old_sticker, enter: none }
@@ -70,7 +70,7 @@ scenes:
           char: 윤재
           motion: droop
           with: [비서]
-          text: "여섯 살이네 그럼. 열 살 생일에 받았으니까."
+          text: "벌써 6년도 넘었네. 열 살 생일에 받은 건데."
       - say:
           char: 비서
           with: [윤재]
@@ -127,7 +127,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "열었습니다. 새벽 두 시대 시세가 평균 12% 낮아요."
+          text: "열었습니다. 새벽 두 시쯤 올라오는 매물은 시세보다 평균 12% 저렴해요."
       - say:
           char: 비서.ad
           motion: perk
@@ -153,7 +153,7 @@ scenes:
           char: 윤재.excited
           motion: gasp
           with: [비서]
-          text: "어? 어어? 저거 우리 반에 세 명 있어. 쉬는 시간마다 꺼내."
+          text: "어? 어어? 저거 우리 반에 세 명이나 쓰는데. 쉬는 시간마다 꺼내."
       - say:
           char: 윤재
           motion: shiver
@@ -251,11 +251,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "사진 봐 봐. 아 못 보지."
+          text: "사진 봐 봐. 아, 내 화면은 못 보지."
       - say:
           char: 윤재
           with: [비서]
-          text: "이불 위에서 찍었어. 각도도 비뚤어. 어른이 찍은 거야 이거."
+          text: "이불 위에서 대충 찍었어. 우리 아빠도 딱 이렇게 찍는데."
       - say:
           char: 비서
           with: [윤재]
@@ -317,12 +317,12 @@ scenes:
           autoAdvance: 1300
           side: them
           with: []
-          text: "판매자: B버튼 좀 뻑뻑함"
+          text: "판매자: B 버튼 좀 뻑뻑함"
       - say:
           char: 윤재
           motion: nod
           with: [비서]
-          text: "나왔다. B버튼. 이 모델은 B가 제일 먼저 죽어."
+          text: "역시 B 버튼이네. 이 모델은 그게 제일 먼저 맛 가."
       - say:
           char: 윤재
           motion: nod
@@ -358,7 +358,7 @@ scenes:
           char: 윤재
           motion: sway
           with: [비서]
-          text: "비쌀 수도 있잖아. 비싼 데 가면 비싸. 진짜로."
+          text: "쉿. 수리점에 맡기면 공임 붙잖아. 비싸지, 그럼."
       - say:
           char: 비서
           with: [윤재]
@@ -490,7 +490,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "판매자: 내일 문앞"
+          text: "판매자: 내일 문 앞에 놓아 드림"
       - say:
           char: 윤재
           with: [비서]
@@ -609,12 +609,12 @@ scenes:
           channel: message
           side: me
           with: []
-          text: "보냈습니다! 3만 2천원요 확인 부탁드려요"
+          text: "보냈습니다! 3만 2천 원 확인 부탁드려요"
       - say:
           channel: message
           side: them
           with: []
-          text: "판매자: ㅇㅋ 내일 문앞"
+          text: "판매자: ㅇㅋ 내일 문 앞"
       - say:
           char: 윤재.excited
           motion: bounce
@@ -654,7 +654,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "압니다. 종이에 뉴스를 찍은 것. 2041년에 마지막으로 나왔습니다."
+          text: "압니다. 뉴스를 종이에 인쇄한 거죠. 국내 마지막 종이신문은 2041년에 나왔습니다."
       - say:
           char: 윤재
           with: [비서]
@@ -672,7 +672,7 @@ scenes:
           char: 윤재
           motion: lean_in
           with: [비서]
-          text: "완충은 잘 돼 있네. 신문지 세 겹에 테이프 꼼꼼하고. 아저씨 양심은 있구나."
+          text: "그래도 잘 싸 줬네. 신문지 세 겹에 테이프까지 꼼꼼하게 붙였어."
       - say:
           channel: system
           with: []
@@ -689,13 +689,13 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "얘가 인사한 거야."
+          text: "저 모델 켜면 맨 처음에 나는 소리야."
       - say:
           char: 윤재
           motion: puff
           with: [비서]
-          continueLabel: "START를 누른다 (뻑뻑함)"
-          text: "…진짜 B버튼만 뻑뻑한 게 아니잖아. START도 뻑뻑해."
+          continueLabel: "START 버튼을 누른다"
+          text: "…아저씨 진짜. B 버튼만 뻑뻑하다며. START도 안 눌리잖아."
       - say:
           char: 윤재
           with: [비서]
@@ -720,12 +720,12 @@ scenes:
           char: 윤재.excited
           motion: bounce
           with: [비서]
-          text: "된다! 된다고! 아저씨 안 해 봤다면서요! 되는 거 확인도 안 하고 파셨어요!"
+          text: "켰는데 남아 있어! 아저씨, 이걸 확인도 안 하고 파셨어요?"
       - say:
           char: 윤재
           motion: lean_in
           with: [비서]
-          text: "어? 신문지 바닥에 뭐 더 있네. 접힌 설명서랑…"
+          text: "어? 신문지 맨 밑에 뭐 더 있네. 접힌 설명서랑…"
       - say:
           char: 윤재
           with: [비서]
@@ -754,7 +754,7 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "설명서랑 카드는 가방 맨 밑으로. 퇴장."
+          text: "설명서랑 카드는 가방 맨 밑에 넣어 두자."
       - say:
           char: 비서
           with: [윤재]

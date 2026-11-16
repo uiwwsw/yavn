@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-16T12:23:59.230Z",
+  "generatedAt": "2026-11-16T13:12:05.734Z",
   "games": [
     {
       "id": "360",
@@ -43,14 +43,14 @@
         {
           "id": "content-warning",
           "title": "내용 안내",
-          "text": "이 작품에는 죽음과 임종, 굶주림, 전쟁 피란과 화재, 청소년의 투병이 나옵니다. 장면은 과정이나 신체를 자세히 그리지 않습니다."
+          "text": "죽음과 임종, 굶주림, 전쟁 중 피란, 화재, 청소년의 투병을 다룹니다. 신체와 사건의 경과는 자세히 묘사하지 않습니다."
         }
       ],
       "chapterCount": 5,
       "endingCount": 4,
       "seo": {
         "title": "360",
-        "description": "죽은 뒤의 어둠에서 삶 전체를 기억하고, 그중 하나만 쥐고 나아간다. 1809년 겨울, 1894년 제물포, 1952년 부산, 1988년 서울, 2026년 편집실. 기억 없이 이어지는 다섯 삶을 사는 5장 비주얼노벨. 결말 4종.",
+        "description": "1809년 조선에서 2026년 서울까지. 죽은 뒤에야 한꺼번에 떠오르는 기억 속에서 후회 하나를 골라 다음 삶으로 가져간다. 다섯 삶을 다룬 비주얼노벨. 5장, 결말 4종.",
         "keywords": [
           "환생 비주얼노벨",
           "철학 SF",
@@ -73,7 +73,7 @@
       "path": "/game-list/8bit-heart/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "도시의 기계들이 한날한시에 오작동을 일으킨다. 윤재 손에 남은 건 중고 장터에서 3만 2천 원에 산 게임기. 그 칩으로 깨운 로봇은 엉뚱한 대답을 꼭 한 박자 늦게 한다. 5장, 결말 3종.",
+      "summary": "도시의 기계들이 일제히 멈추거나 멋대로 움직인다. 윤재 손에 남은 건 중고 장터에서 3만 2천 원에 산 게임기. 그 칩으로 깨운 로봇은 뭐든 한 박자 늦게 대답한다. 5장, 결말 3종.",
       "summaryEn": "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits — a survival story with three endings.",
       "thumbnail": "/game-list/8bit-heart/assets/bg/title.svg",
       "tags": [
@@ -109,7 +109,7 @@
       "endingCount": 3,
       "seo": {
         "title": "8비트 심장",
-        "description": "AI 재난으로 세상의 칩이 전부 미쳐 버린 날, 멀쩡한 건 싸구려 레트로 게임기 하나뿐. 소년 윤재는 그 CPU로 고장 난 안드로이드를 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 3종.",
+        "description": "도시의 기계들이 한꺼번에 오작동을 일으킨다. 코어에 연결할 수 없는 중고 게임기는 살아남았다. 윤재는 그 칩을 떼어 고장 난 로봇을 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 3종.",
         "keywords": [
           "SF 비주얼노벨",
           "레트로 게임기",
@@ -131,7 +131,7 @@
       "path": "/game-list/muwon/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "1792년 한성. 혼례를 앞둔 분이가 우물에서 발견된다. 다들 익사라지만 손톱 밑에는 남빛 실이 끼어 있다. 혜민서 의녀가 되어 시신을 살피고, 관아에서 증거를 내놓는 검시 추리극. 5장, 결말 4종.",
+      "summary": "1792년 한성. 혼례 전날 밤, 분이가 우물에서 건져진다. 혜민서 의녀 서연은 분이의 손톱 밑에서 남빛 실 한 올을 발견한다. 시신과 문서에 남은 흔적을 살피고 관아에서 증거를 내놓는 검시 추리극. 5장, 결말 네 가지.",
       "summaryEn": "Hanseong, 1792. A royal clinic maid reads the dead with a newly translated forensic manual. Examine body charts, run historical forensic tests and overturn a confession beaten out of an innocent man. Five chapters, four endings.",
       "thumbnail": "/game-list/muwon/assets/bg/title.svg",
       "tags": [
@@ -169,7 +169,7 @@
       "endingCount": 4,
       "seo": {
         "title": "무원 — 한성 검안록",
-        "description": "1792년 한성, 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서로 억울한 죽음을 밝히는 5장 검시 추리 비주얼노벨. 시신 그림표를 직접 살피고, 옛 검시법으로 실험하고, 증거로 고문 자백을 뒤집으세요. 결말 4종.",
+        "description": "1792년 한성. 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서를 따라 세 죽음의 까닭을 좇습니다. 시형도에서 시신의 흔적을 살피고, 찾아낸 증거로 포도청의 자백을 뒤집는 5장 추리극입니다. 결말은 네 가지입니다.",
         "keywords": [
           "조선 추리",
           "검시",
@@ -185,7 +185,7 @@
           "consequential-choices"
         ],
         "image": "/game-list/muwon/assets/share/og.png",
-        "imageAlt": "목판화처럼 겹친 기와지붕 아래 등잔과 실이 걸린 우물"
+        "imageAlt": "기와지붕과 등잔이 보이는 밤의 우물가"
       }
     },
     {
@@ -194,7 +194,7 @@
       "path": "/game-list/overflow/",
       "author": "uiwwsw",
       "version": "3.0.0",
-      "summary": "쓰러진 아버지가 안에서 아들을 부른다. 지완의 감정을 읽은 렌즈에는 01. 병원은 그 숫자를 보고 문을 열어 주지 않는다. 2033년 서울, 같은 01을 본 사람이 한 명 더 있다. 5장, 결말 4종.",
+      "summary": "쓰러진 아버지를 보러 온 지완. 감정을 읽는 렌즈에 01이 뜨자 병원은 혼자 들어갈 수 없다고 한다. 2033년 서울, 건너편 의자에 앉은 한수경도 그 숫자를 봤다. 5장, 결말 4종.",
       "summaryEn": "In 2033 Seoul, AI lenses read emotions. When Jiwan comes to see his father in the hospital, the lens flags him as unresponsive and he is made to wait outside the ward. Across the hall, the engineer who built the lens sees his score. A sci-fi mystery in five chapters with four endings.",
       "thumbnail": "/game-list/overflow/assets/bg/title.svg",
       "tags": [
@@ -267,7 +267,7 @@
       "path": "/game-list/tutorial/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "손님 앞에서 큰소리 한 번 낸 적 없는 고객센터 직원 정해수. 마트에서 받은 레플라 체험권으로 들어가 보니, 가상 매장에서도 027번 손님이 부른다. 5장 SF 미스터리, 결말 3종.",
+      "summary": "마트 고객센터에서 12년째 일하는 정해수는 레플라 체험권을 받는다. 현실과 똑같이 생긴 가상 매장에서도 호출기에 027번이 뜬다. 5장 SF 미스터리, 결말 3종.",
       "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
       "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
       "tags": [
@@ -309,7 +309,7 @@
       "endingCount": 3,
       "seo": {
         "title": "튜토리얼",
-        "description": "현실을 그대로 복제한 시뮬레이션 서비스 레플라. 12년째 마트 고객센터에서 고개를 숙여 온 정해수는 체험판 튜토리얼에서 처음으로 화를 낸다. 다음 날 지하 주차장에서 진짜 시신이 발견된다. 5장 SF 미스터리, 결말 3종.",
+        "description": "마트 고객센터에서 12년째 일하는 정해수가 현실을 복제한 레플라에 접속한다. 체험판에서 손님에게 처음으로 화를 낸 뒤, 가상 매장에서 한 말과 행동이 현실로 새어 나오기 시작한다. 5장 SF 미스터리, 결말 3종.",
         "keywords": [
           "SF 미스터리",
           "비주얼노벨",
@@ -331,7 +331,7 @@
       "path": "/game-list/erase/",
       "author": "uiwwsw",
       "version": "1.1.0",
-      "summary": "웨딩 사진을 찍은 다음 날 새벽, 도윤은 휴대폰에서 어젯밤 흔적을 하나씩 지운다. 오래전 하린도 자기 이름을 지우기 전에 같은 일을 했다. 기억을 없애는 시술을 둘러싼 5장 심리 드라마. 결말 4종.",
+      "summary": "청첩장 사진을 찍은 다음 날 새벽, 도윤은 낯선 방에서 깨어 휴대폰에 남은 흔적을 지운다. 오래전 하린도 기억을 지우는 시술을 앞두고 같은 일을 했다. 5장 심리 드라마, 결말 4종.",
       "summaryEn": "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A five-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",
       "tags": [
@@ -373,7 +373,7 @@
       "endingCount": 4,
       "seo": {
         "title": "ERASE",
-        "description": "결혼을 앞둔 회사원 도윤과, 언제나 밝아 보이는 열여덟 하린. 지우면 끝난다고 믿는 두 사람의 이야기가 수술대 위에서 만난다. 기억을 지우는 시술 ERASE를 둘러싼 5장 심리 드라마.",
+        "description": "결혼을 앞둔 도윤은 낯선 방에서 깬 뒤 휴대폰에 남은 어젯밤의 흔적을 지운다. 오래전 하린도 지우고 싶은 일이 있었다. 기억을 지우는 시술 ERASE를 둘러싼 5장 심리 드라마.",
         "keywords": [
           "심리 드라마",
           "비주얼노벨",

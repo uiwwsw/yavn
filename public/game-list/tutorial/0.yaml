@@ -29,12 +29,12 @@ scenes:
     title: "단톡방"
     actions:
       - bg: { id: home_hall, transition: cut }
-      - place: "그날 아침 8:12 · 출근 전"
+      - place: "그날 오전 8:12 · 단톡방"
       - music: fluoro
       - say:
           channel: system
           with: []
-          text: "레플라 REPLA · 우리 동네에서 바로 시작하세요. 밴드를 착용하면 지금 계신 곳과 같은 장소에 접속합니다."
+          text: "레플라 REPLA · 밴드를 착용해 보세요. 레플라 안에도 지금 계신 곳이 똑같이 마련돼 있습니다."
           autoAdvance: 3484
       - say:
           channel: system
@@ -156,7 +156,7 @@ scenes:
           char: 해수.service
           motion: bow
           with: [경준]
-          text: "고객님, 행사 시작 전 구매 건은 차액 환급이 어려우세요."
+          text: "고객님, 행사 전에 사신 상품은 차액을 돌려드리기 어렵습니다."
       - say:
           char: 해수.service
           motion: bow
@@ -166,7 +166,7 @@ scenes:
           char: 경준
           motion: recoil
           with: [해수]
-          text: "……형 지금 진짜 목소리 나왔어요."
+          text: "방금 진짜 손님한테 하는 목소리 나왔어요."
       - say:
           char: 해수
           with: [경준]
@@ -204,7 +204,7 @@ scenes:
           char: 해수.service
           motion: bow
           with: [경준]
-          text: "고개는 괜찮아."
+          text: "숙이는 거야 뭐."
       - say:
           char: 해수.service
           motion: bow
@@ -236,17 +236,17 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "마감 고마워. 그리고 너 오늘 12년 됐지? 인사팀에서 근속 메일 왔더라. 2019년 4월 11일 입사."
+          text: "마감 고마워. 너 여기 온 지 딱 12년이더라. 인사팀 메일에 써 있었어. 2019년 4월 11일 입사."
       - sticker: { id: coupon, image: coupon_sticker, x: 62, y: 34, width: "240px", rotate: -4, enter: popIn }
       - say: { char: 해수, with: [지영], text: "오늘이었어요?" }
       - say:
           char: 지영
           with: [해수]
-          text: "레플라 7일 체험권. 내 추천 코드로 가입하면 나 한 달 공짜야. 너 위해서 주는 거 아니고."
+          text: "레플라 7일 체험권이야. 내 추천 코드로 가입하면 나도 한 달 공짜라서."
       - say:
           char: 경준
           with: [지영]
-          text: "주임님 이번 달에 몇 명째예요, 추천."
+          text: "이번 달에 몇 명 추천했어요, 주임님?"
       - say:
           char: 지영
           with: [경준]
@@ -259,7 +259,7 @@ scenes:
       - say:
           char: 지영
           with: [경준]
-          text: "알고 썼으면 안 줬지."
+          text: "알았으면 네가 안 써 줬겠지."
       - choice:
           key: t0_coupon
           prompt: "체험권 모서리가 커피 컵 물기에 조금 젖었다."
@@ -307,7 +307,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "할 거면 오늘 해. 7일짜리라 하루 지나면 하루 날아가."
+          text: "할 거면 오늘 해. 너 미뤄 두면 까먹잖아."
       - say:
           char: 해수
           with: [지영]
@@ -437,7 +437,7 @@ scenes:
       - say:
           char: 해수
           with: [광철]
-          text: "개봉하신 상품은 원래 환불이 좀 어려우신데요, 고객님…"
+          text: "개봉하신 건 바로 환불해 드리기 어려운데요, 고객님…"
       - move: { id: 광철, toward: 해수, style: lunge }
       - effect: rumble
       - say:
@@ -481,7 +481,7 @@ scenes:
           char: 광철
           motion: stomp
           with: [해수]
-          text: "하나는 내가 먹고 이상하다는데 그걸 빼? 그래, 하나는 내가 먹었지. 다음에 또 오지."
+          text: "맛이 이상하니까 가져왔지. 뜯었으니 돈 못 준다는 게 말이 돼? …됐어. 나 내일 또 올 거야."
       - goto: kwang_after
 
   kwang_pay:
@@ -558,11 +558,11 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "연필 세 봐. 저 아저씨 볼펜 둘 때는 올 때마다 하나씩 들고 갔잖아."
+          text: "연필 세 봐. 볼펜 꽂아 놨을 땐 저 아저씨가 올 때마다 하나씩 가져갔잖아."
       - say:
           char: 지영
           with: [해수]
-          text: "저번 달엔 테이프도 들고 갔어. 창구 테이프."
+          text: "지난달엔 창구에 있던 테이프도 가져갔어."
       - say:
           char: 해수
           with: [지영]
@@ -579,7 +579,7 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "박스는 박스대로 터진 거니까요."
+          text: "박스 터진 채로 차에 실으실 순 없잖아요."
       - say:
           char: 해수
           with: [지영]
@@ -668,7 +668,7 @@ scenes:
       - say:
           char: 지영
           with: [상혁]
-          text: "상혁 씨 얼굴 얘기 했어. 사람 얼굴이 아니야."
+          text: "상혁 씨 얼굴 얘기 했어. 눈 밑이 시커멓더라."
       - say:
           char: 상혁
           motion: laugh
@@ -856,7 +856,7 @@ scenes:
           char: 상혁
           motion: headtilt
           with: [해수]
-          text: "근데 너 왜 우리 엄마랑 나보다 통화를 오래 해."
+          text: "근데 넌 왜 나보다 우리 엄마랑 통화를 더 오래 해?"
       - say:
           char: 해수
           with: [상혁]
@@ -898,12 +898,12 @@ scenes:
           char: 상혁
           when: { var: took_coupon, op: eq, value: true }
           with: [해수]
-          text: "주임님이 체험권 줬다며. 해 봐. 거기는 다 맞춰 줘. 내가 무슨 말을 해도."
+          text: "주임님한테 체험권 받았다며. 해 봐. 거긴 무슨 말을 해도 내 편 들어 주더라."
       - say:
           char: 상혁
           when: { var: took_coupon, op: eq, value: false }
           with: [해수]
-          text: "체험권 안 받았다며. 바보야. 거기는 다 맞춰 줘. 내가 무슨 말을 해도."
+          text: "체험권 왜 안 받았어? 거긴 무슨 말을 해도 내 편 들어 주더라."
       - say:
           char: 해수
           motion: headtilt
@@ -1000,7 +1000,7 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "냄비에 물 올려 놓을게. 라면."
+          text: "라면 물 올려놓을게."
       - say:
           char: 상혁
           with: []

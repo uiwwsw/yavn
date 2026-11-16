@@ -12,12 +12,12 @@ scenes:
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { channel: record, with: [], text: "에모스 고객 조치 안내 · 문지완 님\n본인 면회 표지 즉시 해제 가능. 개별 처리에 동의하면 이번 건은 종결됩니다." }
+      - say: { channel: record, with: [], text: "에모스 · 문지완 님 면회 제한 해제 안내\n‘개별 처리’에 동의하면 문지완 님의 면회 제한만 해제하고 이의를 종결합니다." }
       - say: { char: 수경, with: [지완], text: "여기 ‘개별 처리 동의’. 거기 표시하면 오늘부터 혼자 들어갈 수 있대요." }
-      - say: { char: 지완, with: [수경], text: "그럼 어제 늦어서 간 사람은요?" }
+      - say: { char: 지완, with: [수경], text: "그럼 어제 아이 데리러 먼저 가신 분은요?" }
       - say: { char: 수경, with: [지완], text: "그분 접수표에는 아직 동행이라고 찍혀 있어요." }
-      - say: { channel: action, with: [], text: "접수대에는 네 살쯤 된 아이가 발뒤꿈치를 들어 데스크 위를 본다. 함께 온 여자가 손을 잡은 채, 어제 자기 이름을 적어 둔 종이가 아직 있느냐고 묻는다." }
-      - say: { char: 수경, with: [지완], text: "병원에만 자료를 내면 지완 씨 기록부터 다시 볼 거예요. 공개하면 병원 밖에서도 알게 되겠죠. 제 설명은 어느 쪽이든 제 이름으로 붙일게요." }
+      - say: { channel: action, with: [], text: "아이가 까치발을 하고 접수대 위를 들여다본다. 아이 손을 잡은 여자가 어제 이름을 적어 둔 종이가 있느냐고 묻는다." }
+      - say: { char: 수경, with: [지완], text: "병원에만 내면 지완 씨 기록부터 다시 봐 줄 거예요. 공개하면 다른 환자들도 이유를 알 테고요. 어느 쪽이든 제 이름으로 설명을 붙일게요." }
       - say: { char: 지완, with: [수경], text: "아버지 병실 얘기는 빼요. 제가 겪은 판정이랑 제가 낸 기록이면 돼요." }
       - choice:
           key: o4_end
@@ -39,8 +39,8 @@ scenes:
       - bg: studio
       - place: "사흘 뒤 · 지역 뉴스"
       - char: { id: 수경, position: right }
-      - say: { channel: action, with: [], text: "기자가 자막 밑에 아버지 병동 이름을 넣어도 되느냐고 묻는다. 지완은 시작하기로 했던 자리 옆에 앉아 고개를 젓는다." }
-      - say: { char: 지완, with: [], text: "제 이름이랑 제 판독은 내보내세요. 같이 계신 분들 이름은 빼 주시고요." }
+      - say: { channel: action, with: [], text: "기자가 자막에 아버지 병동을 넣어도 되느냐고 묻는다. 지완은 카메라 앞 의자에 앉아 고개를 젓는다." }
+      - say: { char: 지완, with: [], text: "제 이름이랑 제 판독 결과는 내보내세요. 같은 병실에 계신 분들 이름은 빼 주시고요." }
       - say: { channel: record, with: [], text: "문지완 · 본인 공개 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
       - say: { char: 수경, with: [], text: "제가 검수한 카드예요. 001을 받아도 01, 101을 받아도 01이 뜹니다." }
       - say: { channel: message, side: them, char: 도겸, with: [], text: "팀장님이 그거 지완 씨냐고 물어봤어요. 아직 답 안 했어요" }
@@ -55,8 +55,8 @@ scenes:
       - char: { id: 세라, position: right }
       - say: { char: 지완, with: [세라], text: "제한은 풀어 주세요. 근데 아예 면회를 안 온 것처럼 정리하면 안 돼요. 제가 거기 있었거든요." }
       - say: { char: 세라, with: [지완], text: "그건 제가 봤으니까 쓸 수 있어요. 오후부터 밤까지 대기했다고." }
-      - say: { channel: record, with: [], text: "문지완 · 면회 판독 이의 인용\n당일 무반응 표지 철회 · 입력값 누락 및 직원 재확인 첨부" }
-      - say: { channel: action, with: [], text: "자동문이 열리고 지완이 병실로 간다. 접수대에선 누군가 오늘은 렌즈를 꼈는데 왜 동행이 필요하냐고 묻는다." }
+      - say: { channel: record, with: [], text: "문지완 · 면회 제한 이의 신청 인용\n‘무반응 의심’ 판정 철회 · 화면에 표시되지 않은 앞자리와 직원 확인 내용 첨부" }
+      - say: { channel: action, with: [], text: "문이 열리고 지완은 병실에 들어간다. 접수대에서는 다른 보호자가 왜 혼자 들어갈 수 없느냐고 묻는다." }
       - ending: one_file
 
   sealed_end:
@@ -69,7 +69,7 @@ scenes:
       - char: { id: 동식, position: right }
       - say: { char: 동식, with: [지완], text: "오늘은 문이 바로 열리더냐." }
       - say: { char: 지완, with: [동식], text: "네. 제 건 처리됐대요." }
-      - say: { channel: action, with: [], text: "아버지 물을 더 가지러 나왔다. 어제 앉았던 의자에 누가 면회표를 접으며 앉아 있다." }
+      - say: { channel: action, with: [], text: "아버지 드릴 물을 더 가지러 나왔다. 어제 내가 앉았던 의자에서 누가 면회표를 접고 있다." }
       - ending: sealed
 
   appeal_end:
@@ -78,9 +78,9 @@ scenes:
       - bg: ward_entry
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { char: 지완, with: [세라], text: "어제 기다리신 분한테 지금 물어봐도 될까요? 같이 내고 싶으면 한 장 더 달라고요." }
+      - say: { char: 지완, with: [세라], text: "어제 기다리셨던 분한테 같이 신청할지 물어봐도 돼요? 한다고 하시면 빈 서식 한 장만 더 주세요." }
       - say: { channel: action, with: [], text: "세라가 휠체어 높이에 맞춰 놓은 책상의 빈 의자를 당긴다. 여자는 아이 외투 지퍼를 끝까지 올려 주고 앉는다." }
-      - say: { channel: action, with: [], text: "지완이 서류를 밀어 준다. 여자가 이유란 밑에 이름을 쓰려다가 먼저 자기 종이를 읽어 봐도 되냐고 묻는다." }
+      - say: { channel: action, with: [], text: "지완이 신청서를 건네자 여자는 자기 접수 기록을 먼저 볼 수 있느냐고 묻는다. 이름은 아직 적지 않았다." }
       - say: { char: 지완, with: [세라], text: "그럼요. 여기 있을게요." }
       - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 제한 전 직원 확인. 당사자에게 판독 근거 제공.\n검토 중 · 서명 2건" }
       - bg: dongsik_house

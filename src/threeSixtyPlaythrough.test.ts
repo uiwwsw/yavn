@@ -125,7 +125,7 @@ describe('360 full playthrough', () => {
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
     ]);
-    expect(heard(shown, '눈꺼풀을 한 번 더 움직여 본다.')).toBe(true);
+    expect(heard(shown, '눈을 질끈 감았다가 떠 본다.')).toBe(true);
     expect(heard(shown, '어둠 속에 희미한 빛들이 보였다.')).toBe(true);
     expect(state.choiceGate.key).toBe('star');
     expect(state.choiceGate.options.map((option) => option.text)).toEqual([STAR_1894, STAR_1952, STAR_1988]);
@@ -135,7 +135,7 @@ describe('360 full playthrough', () => {
   it('names the next player only after the light and keeps that name for their thoughts', async () => {
     await start();
     const { state, shown } = await play({ star: STAR_1952 }, 'l2_heart');
-    const arrival = shown.findIndex(line => line.includes('부두에 서 있던 사람들이 한꺼번에 고개를 들었다.'));
+    const arrival = shown.findIndex(line => line.includes('부두 사람들이 한꺼번에 바다 쪽을 봤다.'));
     const card = shown.indexOf('1952년 12월\n부산\n내 이름은 순임.');
     expect(arrival).toBeGreaterThan(-1);
     expect(card).toBeGreaterThan(arrival);
@@ -217,7 +217,7 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '어디서 나는지 찾다가 그만둔다. 내 안에서 난다')).toBe(true);
     expect(heard(shown, '끝순아, 하고 불러 봤다')).toBe(true);
     // What one life holds is what the next life cannot do, and it never knows why.
-    expect(heard(shown, '나온 말은 그게 아니다')).toBe(true);
+    expect(heard(shown, '입을 열자 다른 말이 나왔다')).toBe(true);
     expect(heard(shown, '손은 침대 난간을 잡고 있다')).toBe(true);
     expect(heard(shown, '가방끈이 어깨에 걸려 있다')).toBe(true);
     // The fifth dark hears the earlier lives back as testimony, then one more thing arrives:
@@ -243,7 +243,7 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '그때는 내가 임자였다')).toBe(true);
     // The habit belongs to one soul across all five lives, and in this one it is the son's.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
-    expect(heard(shown, '어디서 봤는지 말을 못 하겠다. 본 적이 없으니까')).toBe(true);
+    expect(heard(shown, '본 기억은 없는데 저렇게 웃는 얼굴을 전에도 기다린 것 같다')).toBe(true);
     // The ward is where the person finds out, because a ward is a place with time left in it.
     expect(heard(shown, '삼십에서 사십. 우리 반 마흔 명이면 열둘에서 열여섯')).toBe(true);
     expect(heard(shown, '이번엔 내가 입을 다물었다')).toBe(true);
@@ -335,7 +335,7 @@ describe('360 full playthrough', () => {
     // The ward is free because nothing has been handed down to it yet, and after it the chain
     // still runs: 더 살고 싶었다 shuts the storehouse, 매이지 말았어야 shuts the train.
     expect(heard(shown, '손목이 돌아가지 않는다')).toBe(true);
-    expect(heard(shown, '열어 달라는 소리가 들리는데 손목에 힘이 더 들어간다')).toBe(true);
+    expect(heard(shown, '열쇠를 돌리려는데 쥔 손에 힘만 더 들어간다')).toBe(true);
     expect(heard(shown, '보따리는 벌써 어깨에 있고')).toBe(true);
     expect(state.routeVars).toMatchObject({ lives_done: 4, t_live: true, v_end: 'hold', deg_last: '041.2' });
     expect(state.resolvedEndingId).toBe('onward');

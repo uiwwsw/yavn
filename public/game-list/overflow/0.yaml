@@ -10,13 +10,13 @@ scenes:
       - bg: wolgye_station
       - place: "2033년 10월 · 월계역"
       - music: quant
-      - say: { channel: action, with: [], text: "개찰구 앞에서 여자가 앞사람의 어깨를 두드린다. 렌즈 너머로 두 사람의 판독표가 나란히 뜬다." }
+      - say: { channel: action, with: [], text: "개찰구 앞에서 여자가 앞사람 어깨를 두드린다. 지완의 렌즈에 두 사람의 판독표가 나란히 뜬다." }
       - say: { channel: record, with: [], text: "에모스 렌즈 · 통행 안전 모드\n안정 24　│　안정 31" }
       - say: { channel: action, with: [], text: "앞사람이 돌아본다. 여자가 바닥에서 주운 장갑을 건네고, 둘의 숫자가 잠깐 오른다." }
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
-      - say: { char: 도겸, with: [지완], text: "지완 씨, 나 오늘 렌즈 안 꼈어요. 팀장 기분 좀 봐 줘요. 어제 야간 바꿔 달랬더니 답이 없어서." }
-      - say: { char: 지완, with: [도겸], text: "직접 물어봐요. 지난번엔 안경에 김 서려서 그런 거였잖아요." }
+      - say: { char: 도겸, with: [지완], text: "지완 씨, 나 오늘 렌즈 안 꼈어요. 팀장님 기분 좀 봐 줘요. 어제 야간 근무 바꿔 달랬는데 답이 없어요." }
+      - say: { char: 지완, with: [도겸], text: "직접 물어봐요. 지난번에도 안경에 김이 서려서 인상 쓴 것뿐이었잖아요." }
       - say: { char: 도겸, with: [지완], text: "물어보기 싫어서 지완 씨한테 부탁한 건데." }
       - say: { channel: action, with: [], sound: call, text: "아버지한테 전화가 온다. 시간을 보니 오늘도 7시 42분이다." }
       - choice:
@@ -52,14 +52,14 @@ scenes:
       - bg: wolgye_station
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
-      - say: { channel: action, with: [], text: "개찰구 건너편에서 금속이 바닥을 긁는다. 한 남자가 출입문 사이에 낀 휠체어 손잡이를 잡아당긴다." }
+      - say: { channel: action, with: [], text: "개찰구 저편에서 금속이 바닥을 긁는 소리가 난다. 한 남자가 개찰문에 낀 휠체어를 잡아당긴다." }
       - say: { channel: record, with: [], text: "역사 안전 경보\n흥분 94 · 직원 호출" }
-      - say: { channel: action, with: [], text: "역무원 둘이 달려온다. 남자가 손잡이에서 손을 뗀다. 그 뒤에 앉아 있던 노인이 팔을 뻗는다." }
-      - say: { char: 도겸, with: [지완], text: "저분 뭐라고 했어요? 아버지 내려 달라고 한 거예요?" }
-      - say: { channel: action, with: [], text: "도겸이 반 걸음 나선다. 바닥의 노란 선 위에서 렌즈가 한 번 더 진동한다. 도겸은 신발을 뒤로 뺀다." }
+      - say: { channel: action, with: [], text: "역무원 둘이 달려온다. 남자가 손잡이에서 손을 떼자 휠체어에 앉은 노인이 그에게 팔을 뻗는다." }
+      - say: { char: 도겸, with: [지완], text: "휠체어 좀 빼 달라고 한 거 아니에요?" }
+      - say: { channel: action, with: [], text: "도겸이 반 걸음 나선다. 지완의 렌즈가 다시 진동한다. 도겸은 노란 선을 보고 발을 거둔다." }
       - say: { channel: record, with: [], text: "월계역 대합실 전광판\n안전 모드 도입 후 역사 내 폭행 신고 18건 → 7건\n같은 기간 전년 대비 · 서울교통공사" }
       - say: { char: 도겸, with: [지완], text: "지난겨울에도 여기서 알림 떴잖아요. 역무원이 사람 하나 붙잡았던 거. 엄마는 그 뒤로 꼭 이 역으로 다녀요." }
-      - say: { channel: action, with: [], text: "직원이 비상 통로를 열어 휠체어를 빼 준다. 남자는 호출 기록이 회사로 가느냐고 묻는다. 노인이 안 들리게 목소리를 낮춘다." }
+      - say: { channel: action, with: [], text: "역무원이 비상 통로로 휠체어를 빼 준다. 남자가 노인에게 들리지 않게 묻는다. 호출 기록도 회사로 갑니까." }
       - say: { channel: action, with: [], text: "줄이 다시 움직인다. 사람들은 개찰구를 다 지나고 나서야 옆 사람에게 방금 일을 얘기한다." }
       - goto: father_lesson
 
@@ -71,8 +71,8 @@ scenes:
       - music: lowscore
       - char: { id: 동식, position: right }
       - say: { channel: record, with: [], text: "문지완 · 안전 면담 확인\n경보 3회 · 현장 실습 배정 보류" }
-      - say: { channel: action, with: [], text: "아버지는 현관에 걸어 둔 교복에서 구겨진 확인서를 꺼낸다. 구석에 발도 안 넣어 본 작업화가 한 켤레 놓여 있다." }
-      - say: { char: 동식, with: [], text: "지완아. 밖에선 네가 화난 거, 겁난 거, 그런 거 다 버려야 돼. 알겠지?" }
+      - say: { channel: action, with: [], text: "아버지가 현관에 걸린 교복 주머니에서 구겨진 확인서를 꺼낸다. 그 아래엔 한 번도 신지 않은 작업화가 있다." }
+      - say: { char: 동식, with: [], text: "지완아. 밖에선 화나거나 겁나도 티 내지 마라. 또 학교에서 부르면 실습 못 나가." }
       - say: { char: 동식, with: [], text: "말하기 전에 문부터 봐. 나갈 수 있으면 나가고. 못 나가면 셋 세고." }
       - say: { char: 지완, with: [동식], text: "아버지는 어디 가요? 이 시간에." }
       - say: { char: 동식, with: [], text: "학교. 내일 실습 나가야 될 거 아냐. 가방 싸 놔." }
@@ -87,7 +87,7 @@ scenes:
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
-      - say: { char: 도겸, with: [지완], text: "지완 씨 휴대폰. 아까부터 내 쪽에서 울려요." }
+      - say: { char: 도겸, with: [지완], text: "지완 씨, 휴대폰 여기 있어요. 아까부터 계속 울렸어요." }
       - say: { channel: action, with: [], text: "아버지 번호다. 받자 반찬집 아주머니가 지완의 이름을 부른다." }
       - say: { char: 동식_연락처, channel: message, side: them, with: [], text: "지완 씨? 아버지가 가게 앞에서 쓰러졌어요. 구급차 탔어요. 월계병원으로 오세요." }
       - say: { channel: thought, with: [], text: "문이 어디 있지." }
@@ -101,14 +101,14 @@ scenes:
       - place: "월계병원 · 신경과 병동 면회 접수"
       - music: lowscore
       - char: { id: 지완, position: left }
-      - say: { channel: action, with: [], text: "간호사가 “아들 오면 목소리부터 들려 드리려고 했어요” 하고 접수창을 연다." }
+      - say: { channel: action, with: [], text: "간호사가 접수창을 열고 말한다. “아드님 오시면 목소리부터 들려 드리려고 했어요.”" }
       - say: { char: 지완, with: [], text: "저 들어가면 알아보실 거예요. 아들입니다." }
       - say: { channel: action, with: [], sound: ward_door, text: "접수대 옆 자동문이 반쯤 열리다 멎는다. 간호사가 단말기를 지완 쪽으로 돌렸다가 다시 자기 앞으로 잡아당긴다." }
       - sound: read
       - say: { channel: record, with: [], text: "에모스 · 보호자 면회 확인\n정서 반응 01 · 무반응 의심\n직원 동행 면회만 가능" }
-      - say: { channel: action, with: [], text: "린넨 카트를 밀던 직원이 단말기와 지완 얼굴을 번갈아 본다." }
+      - say: { channel: action, with: [], text: "시트가 든 카트를 밀던 직원이 단말기와 지완의 얼굴을 번갈아 본다." }
       - say: { char: 지완, with: [], text: "지금 이름 부르는 소리가 났는데요. 한 번만 가 보면 안 돼요?" }
-      - say: { channel: action, with: [], text: "교대조가 오면 자기가 같이 들어가겠다고 했다. 지완은 문 앞에서 숨을 들이켜고 셋까지 센다." }
+      - say: { channel: action, with: [], text: "교대할 간호사가 오면 자기가 같이 들어가 주겠다고 한다. 지완은 문 앞에서 셋까지 센다." }
       - get: appeal_form
       - goto: across_the_hall
 
@@ -123,7 +123,7 @@ scenes:
       - say: { channel: action, with: [목격자], camera: wide, text: "접수대 건너편에 앉은 여자가 가방을 무릎에 올린다. 코트 주머니의 출입증은 한신뉴로 로고가 안으로 가도록 뒤집혀 있다." }
       - say: { channel: record, with: [], text: "받은 메시지\n결함 보고서 쓴 계정까지 정지됐어요. 인사팀에서 해고 통지 보냈고요. 보안팀 두 명이 출입구에 있어요." }
       - say: { channel: record, with: [], text: "보낸 메시지\n01 뜬 분을 봤어요. 접수대에서." }
-      - say: { channel: record, with: [], text: "받은 메시지\n그 수치 하나로는 재현인지 모른다고 했잖아요. 사람 잘못 짚으면 그냥 돌려보내요. 제발." }
-      - say: { channel: action, with: [], text: "여자가 가방에서 접힌 종이를 반쯤 꺼낸다. 이름이 빠진 판독 세 줄 아래, 자기가 쓴 ‘재현 대상 미확보’에 볼펜 자국이 겹쳐 있다." }
+      - say: { channel: record, with: [], text: "받은 메시지\n01만 봐서는 같은 오류인지 몰라요. 당사자가 원하지 않으면 붙잡지 마세요. 제발." }
+      - say: { channel: action, with: [], text: "여자가 가방에서 접힌 종이를 꺼낸다. 이름을 지운 판독 기록 밑에 ‘현장에서 다시 확인하지 못함’이라고 적혀 있다." }
       - say: { channel: action, with: [지완, 목격자], camera: wide, text: "남자는 문이 열릴 때마다 일어난다. 네 번째에도 자기 차례가 아니다. 여자는 종이를 넣고 그가 일어나는 쪽을 본다." }
       - goto: /1.yaml

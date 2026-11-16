@@ -85,14 +85,14 @@ scenes:
           side: them
           char: 지영
           with: []
-          text: "근데 맞대. 보안팀 김 기사님이 봤대. 지하 주차장"
+          text: "근데 맞대. 지하 주차장 내려갔던 보안팀 김 기사님이 봤대"
       - say:
           channel: message
           side: me
           char: 해수
           with: []
           erase: true
-          text: "어디쯤이요"
+          text: "주차장 어디쯤이요"
       - say:
           channel: message
           side: me
@@ -122,11 +122,11 @@ scenes:
       - say:
           char: 상혁
           with: [해수]
-          text: "먹었어. 씻어 놓은 거야."
+          text: "먹었어. 냄비 씻어 둔 거야."
       - say:
           char: 해수
           with: [상혁]
-          text: "물이 그대로 있어."
+          text: "어제 라면 끓이려고 받아 둔 물이 그대로야."
       - say:
           char: 상혁.grin
           with: [해수]
@@ -175,7 +175,7 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "칫솔 세 개 중에 두 개가 안 젖어 있어."
+          text: "물기 있는 건 내 것뿐이야."
       - say:
           char: 상혁.grin
           with: [해수]
@@ -229,7 +229,7 @@ scenes:
       - say:
           char: 상혁
           with: [해수]
-          text: "집. 계속 집."
+          text: "집에 있었어. 계속."
       - move: { id: 해수, toward: 상혁, style: approach }
       - say:
           char: 해수
@@ -239,7 +239,7 @@ scenes:
       - say:
           char: 상혁.hollow
           with: [해수]
-          text: "…있었어. 걔랑. 차에 있었나. 기억이 섞여, 요새."
+          text: "…걔랑 있었어. 차에 있었나. 요샌 자꾸 헷갈려."
       - move: { id: 해수, style: reset }
       - move: { id: 상혁, style: reset }
       - goto: tape
@@ -297,7 +297,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "참고인으로요. 서까지 같이 가 주시겠어요?"
+          text: "참고인 조사예요. 경찰서까지 같이 가 주시겠어요?"
       - emote: { id: 해수, motion: nod, wait: true }
       - say:
           char: 경준
@@ -323,7 +323,7 @@ scenes:
       - say:
           char: 해수
           with: [경준]
-          text: "그게 짧아."
+          text: "그렇게만 말해."
       - say:
           char: 경준
           with: [해수]
@@ -331,11 +331,11 @@ scenes:
       - say:
           char: 해수
           with: [경준]
-          text: "할 거면 하라고 해."
+          text: "그냥 들은 대로 말해 줘."
       - say:
           char: 해수
           with: [경준]
-          text: "거짓말이 더 오래 가."
+          text: "내가 돌아와서 다시 설명할게."
       - say:
           channel: action
           with: []
@@ -400,7 +400,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "이셨죠."
+          text: "고객이셨죠. 어제도 마트에 들르셨고요."
       - say:
           char: 해수
           motion: bow
@@ -410,7 +410,7 @@ scenes:
           char: 은숙
           motion: headtilt
           with: [해수]
-          text: "제가 사과받을 일은 아니고요. 어제 몇 시에 퇴근하셨어요?"
+          text: "됐어요. 어제 몇 시에 퇴근하셨어요?"
       - say:
           char: 해수
           with: [은숙]
@@ -491,7 +491,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "현장 · 그린마트 상봉점 B2 C-14 기둥 옆 · 사망 추정 4/18 01:30–02:30 · 발견 05:10 (주차 관리원) · 흉기: 연필 1자루, 끝에 그린마트 로고"
+          text: "그린마트 상봉점 지하 2층 C-14 기둥 옆 · 사망 추정 4/18 01:30–02:30 · 발견 05:10 (주차 관리원) · 흉기: 그린마트 로고가 찍힌 연필 1자루"
       - move: { id: 은숙, style: reset }
       - sticker: { id: pencil, image: pencil_sticker, x: 64, y: 36, width: "300px", rotate: -18, enter: fadeIn }
       - say:
@@ -533,7 +533,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "네. 하나가 없고, 그 하나가 피해자분 몸에 있었어요."
+          text: "한 자루가 부족해요. 피해자분한테서 나온 연필이 같은 종류고요."
       - say:
           char: 은숙
           with: [해수]
@@ -557,11 +557,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그럼 어제 스무 자루였다는 건 정해수 씨밖에 아는 사람이 없어요."
+          text: "그러면 어제 스무 자루였다는 걸 확인하신 분은 해수 씨뿐이네요."
       - say:
           channel: thought
           with: []
-          text: "그 말이 맞다. 세는 사람이 하나면 증인도 하나다."
+          text: "마감표에는 연필 자루 수를 적지 않는다. 세는 모습을 본 사람도 없다."
       - emote: { id: 해수, motion: shiver }
       - clearSticker: { id: pencil, leave: fadeOut }
       - say:
@@ -590,7 +590,7 @@ scenes:
           char: 은숙.sharp
           when: { var: rage, op: gte, value: 2 }
           with: [해수]
-          text: "접수대에 적힌 말이 좀 구체적이죠. 환청은 보통 이렇게 안 적힙니다."
+          text: "신고할 때 저 말을 그대로 따라 했대요. 해수 씨는 어디서 들어 본 적 없으세요?"
       - say:
           char: 해수.shaken
           when: { var: rage, op: gte, value: 2 }
@@ -616,16 +616,16 @@ scenes:
       - say:
           char: 해수.shaken
           with: [은숙]
-          text: "…저희 고객센터에 저랑 주임님밖에 없어서요."
+          text: "…어제는 제가 그 시간에 창구에 앉아 있었어요."
       - sticker: { id: complaint, image: complaint_sticker, x: 64, y: 32, width: "260px", rotate: 2, enter: fadeIn }
       - say:
           char: 은숙
           with: [해수]
-          text: "지난주 토요일에는 정해수 씨 이름으로 민원을 넣으셨고."
+          text: "지난 토요일에 낸 민원에도 정해수 씨 이름을 쓰셨더라고요."
       - say:
           char: 은숙
           with: [해수]
-          text: "고객의 소리. 이거 원본 저희가 가져가요."
+          text: "‘고객의 소리’ 원본은 가져갈게요."
       - clearSticker: { id: complaint, leave: fadeOut }
       - say:
           char: 은숙
@@ -646,7 +646,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "레플라 안의 물건은 바꾼 대로 자동 저장됩니다."
+          text: "물건을 바꾸면 변경 사항이 자동으로 저장됩니다."
       - say:
           channel: action
           with: []
@@ -686,7 +686,7 @@ scenes:
       - choice:
           key: t2_tamper
           presentation: explore
-          prompt: "고객의 소리 용지, 스무 자루 연필, B2-C 카메라 화면. 오늘 녹화실에서 나온 것들이다."
+          prompt: "낮에 본 고객의 소리 용지, 연필꽂이, 주차장 CCTV 화면이 그대로다."
           with: []
           camera: wide
           options:
@@ -721,7 +721,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "대상 직원 칸에 손가락을 댄다. 인쇄된 글자가 종이에서 들린다."
+          text: "‘대상 직원’ 칸을 문지르니 글자가 종이에서 벗겨진다."
       - say:
           channel: record
           with: []
@@ -751,7 +751,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "주머니에 넣으려다 그만둔다. 로고가 있어야 우리 연필인 줄 알 텐데."
+          text: "로고가 지워지니 한 자루를 골라 바꿔 놔도 내 눈에 안 띌 것 같다."
       - say:
           channel: system
           with: []
@@ -773,7 +773,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "화면을 두 번 밀어 구간을 잡는다. 둘 중 하나는 걸음이 느리다. 그 걸음을 안다."
+          text: "재생 막대를 옮겨 두 사람이 다가오는 구간을 고른다. 한 사람의 걷는 모습이 낯익다."
       - say:
           channel: thought
           with: []
@@ -852,7 +852,7 @@ scenes:
           char: 은숙
           when: { var: t_pencil, op: eq, value: true }
           with: [해수]
-          text: "흉기 연필, 감식에서 로고가 없대요."
+          text: "감식 결과가 나왔는데요. 흉기에서 로고가 안 보인대요."
       - say:
           char: 은숙
           when: { var: t_pencil, op: eq, value: true }
@@ -883,12 +883,12 @@ scenes:
           char: 은숙.sharp
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
-          text: "기록이 바뀌는 건 봤어요."
+          text: "전산 기록이면 누가 수정했을 수도 있죠."
       - say:
           char: 은숙.sharp
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
-          text: "사람이 바꾸는 거. 사진이 바뀌는 건 처음 봐요."
+          text: "근데 제 휴대폰에 있는 사진까지 바뀌었어요."
       - mood: { tone: dread, level: 1 }
       - say:
           char: 은숙
@@ -916,12 +916,12 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "정해수 씨는 계속 제 목록 맨 위에 있어요."
+          text: "오광철 씨가 죽기 전날 이 창구에 한 시간이나 서 있었어요. 해수 씨를 찾아왔고요."
       - say:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "근데 정해수 씨 빌라 현관 CCTV에는 그날 밤 정해수 씨가 한 번도 안 나와요. 들어간 것만 있고."
+          text: "빌라 현관 CCTV를 보면 그날 밤 집에 들어간 뒤 아침까지 안 나왔어요."
       - say:
           char: 해수.blank
           motion: nod
@@ -952,7 +952,7 @@ scenes:
           motion: lean_in
           with: [지영]
           delivery: whisper
-          text: "상혁 씨 어제 3층에서 일 났대요."
+          text: "어제 상혁 씨 때문에 3층에서 일 났대요."
       - say:
           char: 지영
           with: [경준]
@@ -967,13 +967,13 @@ scenes:
           char: 지영.worried
           motion: sigh
           with: [경준]
-          text: "손님은 처음 보는 사람이래. 신고 들어갔어. 상혁 씨 오늘부터 안 나와. 무기한."
+          text: "손님은 상혁 씨를 처음 본대. 신고도 들어왔고. 일단 출근하지 말랬어."
       - move: { id: 경준, style: reset }
       - char: { id: 해수, position: center }
       - say:
           char: 지영
           with: [해수]
-          text: "해수야. 너네 집에서 걔 괜찮아?"
+          text: "해수야. 집에서 상혁이 어떻게 지내?"
       - say:
           char: 해수
           with: [지영]
@@ -995,19 +995,19 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "그 손님 이름을 불렀다는 게 제일 무서워. 처음 보는 사람 이름을."
+          text: "이름까지 불렀다잖아. 손님은 모르는데 상혁 씨는 아는 이름이었던 거야."
       - say:
           char: 지영.worried
           with: [해수]
-          text: "레플라에서 아는 사람이었다는 거야. 걔한테는 아는 사람인 거고."
+          text: "레플라에서 만났다고 생각하나 봐."
       - say:
           char: 해수
           with: [지영]
-          text: "…그쪽에서 아는 사람은 이쪽에서 모르는 사람이에요."
+          text: "…거기서 만난 사람이 여기서도 자기 알아볼 줄 알았나 봐요."
       - say:
           char: 지영
           with: [해수]
-          text: "그걸 걔가 구분할 수 있으면 집에서 안 나오지는 않을 거야."
+          text: "아직도 그 손님한테 왜 자기를 모른다고 하느냐고 따진대."
       - say:
           char: 지영
           with: [해수]
@@ -1028,7 +1028,7 @@ scenes:
           char: 지영.worried
           motion: headtilt
           with: [해수]
-          text: "너도 얼굴이 그래. 둘 다 그래."
+          text: "너도 요새 얼굴이 안 좋아. 잠은 자?"
 
   new_lock:
     title: "도어락"
@@ -1037,7 +1037,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상혁의 방문에 새 도어락이 달려 있다. 숫자판 1, 2, 7, 0에만 손때가 묻어 있다."
+          text: "상혁의 방문에 새 도어락이 달려 있다. 숫자 1, 2, 7, 0 자리만 손때가 묻어 있다."
       - say:
           char: 상혁
           with: []

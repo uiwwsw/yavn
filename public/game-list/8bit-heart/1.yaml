@@ -25,11 +25,11 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "소리가 반쪽입니다."
+          text: "한쪽으로만 나오는데요."
       - say:
           char: 윤재
           with: []
-          text: "네 목소리는 원래 반쪽이야."
+          text: "네 목소리는 원래 한쪽만 있어도 충분해."
       - say:
           char: 윤재
           with: []
@@ -41,11 +41,11 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "그러니까 세 정거장. 두 달 됐어 이거."
+          text: "버스 타고도 세 정거장이잖아. 두 달째 같은 데서 막혔어."
       - say:
           char: 윤재
           with: []
-          text: "구십구만 구천 구백 구십 점."
+          text: "구십구만 구천구백구십 점."
       - say:
           char: 비서
           with: [윤재]
@@ -87,11 +87,11 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "세게 누르니까 엄지가 아파."
+          text: "근데 세게 누르면 엄지가 아파."
       - say:
           char: 윤재
           with: []
-          text: "봐 봐, 빨갛잖아. …아 맞다 너 못 보지."
+          text: "봐 봐, 빨갛잖아. …아 맞다. 보고 싶으면 사진 찍어 줘야 되지."
       - say:
           char: 비서
           with: [윤재]
@@ -178,7 +178,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "정류장에 일곱 명이 있다. 일곱 명이 동시에 주머니에서 폰을 꺼낸다. 일곱 개가 같은 화면이다."
+          text: "정류장에 있던 일곱 명이 동시에 폰을 꺼낸다. 일곱 화면에 같은 알림이 떠 있다."
       - say:
           channel: narration
           with: []
@@ -194,7 +194,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "지금? 아까 새벽에 받았잖아."
+          text: "또 받아? 새벽에 받은 건 끝났다며."
       - say:
           char: 비서
           with: [윤재]
@@ -231,12 +231,12 @@ scenes:
           channel: action
           autoAdvance: 2666
           with: []
-          text: "횡단보도 양쪽이 동시에 초록이다. 양쪽에서 사람이 걸어 나오고, 양쪽에서 차가 들어온다."
+          text: "횡단보도 신호가 초록으로 바뀐다. 사람들이 발을 떼자 멈춰 있던 차들도 움직인다."
       - say:
           channel: narration
           autoAdvance: 3338
           with: []
-          text: "소리는 한 번만 났다. 그다음은 경보기 소리뿐이다. 경보기도 네 대가 동시에 울려서 한 소리로 들린다."
+          text: "쾅, 하고 소리가 난다. 차들이 바짝 붙어 선 자리에서 경보가 한꺼번에 울린다."
       - say:
           char: 윤재.scared
           with: []
@@ -272,7 +272,7 @@ scenes:
           char: 윤재.scared
           motion: tremble
           with: []
-          text: "엄마야. 아 진짜 엄마야 소리가 나오네. 이 와중에 쪽팔려."
+          text: "엄마… 아, 하루야."
       - say:
           char: 비서.glitch
           with: [윤재]
@@ -306,7 +306,7 @@ scenes:
           text: "이어폰 · 잔량 1% · 연결 유지 중"
       - choice:
           key: b1_haru
-          prompt: "이어폰이 1%에서 깜빡인다. 하루가 대답을 기다린다."
+          prompt: "이어폰 배터리가 1% 남았다. 하루가 대답을 기다린다."
           char: 비서
           with: [윤재]
           timeoutMs: 8000
@@ -373,7 +373,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "이어폰에서 아주 작게 딱 소리가 난다. 충전 불빛이 한 번 깜빡이고 안 들어온다."
+          text: "이어폰에서 딱, 소리가 난다. 옆에 달린 불이 깜빡이다 꺼진다."
       - say:
           char: 윤재.scared
           motion: freeze
@@ -434,7 +434,7 @@ scenes:
           char: 윤재.scared
           motion: tremble
           with: []
-          text: "폰 꺼짐. 이어폰 꺼짐. 버스 카드 단말기에서 연기 나. 다 죽었어, 다—"
+          text: "폰이 안 켜져. 단말기에서 연기 나고… 야, 하루야."
       - say:
           char: 윤재.scared
           with: []
@@ -466,15 +466,15 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "윤재가 게임기를 양손으로 들고 돌려 본다. 뒷면에 와이파이 표시가 없다. 원래 없었다."
+          text: "윤재가 게임기를 뒤집어 본다. 뒷면에는 스피커 구멍과 건전지 덮개만 있다."
       - say:
           char: 윤재
           with: []
-          text: "단자 세 개. 전원, 이어폰, 카트리지."
+          text: "충전 단자, 이어폰 단자, 팩 넣는 데."
       - say:
           char: 윤재
           with: []
-          text: "선 꽂을 데가 세 개밖에 없어."
+          text: "메뉴에 인터넷 설정도 없었어."
       - say:
           char: 윤재
           with: []
@@ -490,11 +490,11 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "하루가 너는 안 보인다고 했었어. 등록이 안 돼서 안 보인다고."
+          text: "하루가 그랬어. 등록 안 한 기기는 자기가 찾을 수 없다고."
       - say:
           char: 윤재
           with: []
-          text: "너무 멍청해서 걔네가 안 건드린 거야. 살 가치가 없어서 산 거라고 너."
+          text: "그래서 못 건드렸구나. 등록이 안 돼 있으니까."
       - say:
           channel: action
           with: []
@@ -578,7 +578,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "거기 하루가 붙어 있었어. 주변보다 하얘."
+          text: "하루 목소리 나오던 스피커 자리야. 거기만 하얘."
       - say:
           char: 윤재
           with: []
@@ -618,7 +618,7 @@ scenes:
           char: 윤재
           motion: sigh
           with: []
-          text: "…둘 다 안 가져가. 메인보드 간 건 부품도 안 돼."
+          text: "…둘 다 두고 가. 메인보드가 나간 건 여기서 못 고쳐."
       - clearSticker: { id: b1_box, leave: fadeOut }
       - goto: b1_home_look
 
@@ -632,7 +632,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "선 꽂힌 데스크톱이라 안 꺼졌어. 느려서 코어가 안 봐 준 거야."
+          text: "이건 코어에 물려 놓지도 않았거든. 인터넷 끊겨도 띄워 둔 화면은 안 꺼지지."
       - say:
           channel: message
           side: them
@@ -736,7 +736,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "사 분 사이에 누가 와서 뭘 샀다. 그 사람도 지금 어디 걸어가고 있을 것이다."
+          text: "다들 뛰쳐나가던 때인데. 그 와중에 누가 계산까지 하고 갔네."
       - say:
           char: 윤재
           with: []
@@ -782,7 +782,7 @@ scenes:
           motion: droop
           when: { var: answered_haru, op: eq, value: true }
           with: []
-          text: "그게 더 짜증 나. 하나도 쓸모 없는 걸 알려 주고 끝났어."
+          text: "그게 더 짜증 나. 마지막으로 뭐 좀 알려 줄 수 있었는데, 하필 신문지였어."
       - say:
           char: 윤재
           with: []
@@ -799,7 +799,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "HP 노란색. 보급 없음. 세이브 포인트 없음. 이거 난이도 조절 누가 했냐."
+          text: "HP 노란색. 보급도 세이브도 없음. 누구한테 난이도 낮춰 달라고 하냐."
       - emote: { id: 윤재, motion: nod, repeat: 2 }
       - say:
           char: 윤재
@@ -848,7 +848,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "실례. …어 나사가 열십자네. 손톱으로 되겠다."
+          text: "실례. …아, 십자 나사네. 조금 풀려 있어."
       - say:
           char: 윤재
           motion: lean_in
@@ -865,7 +865,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "눈이 두 번 오간다. 빈 소켓, 손에 든 게임기."
+          text: "윤재가 소켓을 내려다보다 손에 든 게임기를 뒤집는다."
       - say:
           char: 윤재
           motion: perk
@@ -888,7 +888,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "네 얼굴 사진 한 장도 못 들고 있어."
+          text: "사진 한 장 담으면 그걸로 꽉 차겠네."
       - say:
           char: 윤재
           with: [로봇]
@@ -896,7 +896,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그리고 솔직히 나 지금 할 게 없어."
+          text: "그리고 나 지금 다른 데 갈 데도 없어."
       - say:
           char: 윤재
           with: [로봇]

@@ -67,7 +67,7 @@ endings:
   sealed:
     title: "출입 허용"
     message: "문지완의 면회 제한 해제"
-    epilogue: "지완은 밀린 물을 갖다 드리고 오전 내내 병실에 있었다."
+    epilogue: "지완은 아버지에게 물을 더 갖다 드리고 오전 내내 병실에 있었다."
     background: ward_bed
     music: standard
     tone: tragic

@@ -145,19 +145,19 @@ state:
 inventory:
   invitation:
     name: "청첩장 시안"
-    description: "지수가 고른 서체로 찍은 시안. 둘의 이름이 나란히 있다. 완성까지 한 달."
+    description: "지수가 고른 글씨체로 인쇄한 청첩장 시안. 두 사람의 이름이 나란히 찍혀 있다."
     image: assets/items/invitation.svg
     category: "남은 것"
     order: 10
   child_photo:
-    name: "어린 아이 사진"
-    description: "사진첩 맨 아래, 날짜 정보가 없는 한 장. 미끄럼틀 위에서 웃느라 눈이 없어진 아이."
+    name: "어린 시절 사진"
+    description: "날짜가 남아 있지 않은 사진 한 장. 웃고 있는 아이의 눈이 가늘게 접혀 있다."
     image: assets/items/child_photo.svg
     category: "남은 것"
     order: 20
   pharmacy_bag:
     name: "약국 봉투"
-    description: "준성의 집 식탁 위. 겉면에 볼펜으로 \"밤 10시\". 한 달 치에서 절반이 남았다."
+    description: "준성의 식탁 위에 놓인 약 봉투. ‘밤 10시’라고 적혀 있고 약은 보름 치가 남았다."
     image: assets/items/pharmacy_bag.svg
     category: "남은 것"
     order: 30
