@@ -222,6 +222,8 @@ describe('8비트 심장', () => {
     // Chapter 2 asked "믿어도 됨?" and got "아니." Chapter 4 answers it the other way.
     expect(heard(run.shown, '이번엔 어')).toBe(true);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(false);
+    expect(heard(run.shown, '기억 1건 저장 완료')).toBe(true);
+    expect(heard(run.shown, '슬롯 비어 있음')).toBe(false);
   });
 
   it('아무 말도 못 하고 집도 안 보면 그 자리들이 비어 있다', async () => {
@@ -243,6 +245,8 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
     expect(heard(run.shown, '나간 쪽이 게임기 사 줬어')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
+    expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
+    expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
   });
 });
 
@@ -311,7 +315,7 @@ describe('튜토리얼', () => {
       t1_bow: '고개를 숙인다',
       t1_look: '번호표 기계||연필꽂이||다음 단계로',
       t1_say: '왜 그렇게 많이 사냐고 쏘아붙인다',
-      t1_pencil: '연필을 쥔다',
+      t1_pencil: '연필을 든 채 다가간다',
       t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
       t2_where: '들은 장소만 말한다',
       t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
@@ -340,7 +344,7 @@ describe('튜토리얼', () => {
       t1_bow: '응대를 그만둔다',
       t1_look: '번호표 기계||연필꽂이||다음 단계로',
       t1_say: '소리 지르지 말라고 한다',
-      t1_pencil: '연필을 쥔다',
+      t1_pencil: '연필을 든 채 다가간다',
       t2_sh: '모른 척하고 신발을 신는다',
       t2_where: '단톡방을 못 봤다고 둘러댄다',
       t2_tamper: '고객의 소리 용지||연필꽂이||CCTV 모니터||로그아웃한다',
@@ -374,13 +378,20 @@ describe('오버플로', () => {
       '안정 24', '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
       '정서 반응 01 · 무반응 의심', '01 뜬 분을 봤어요', '접수대에 뜬 그 카드, 제가 만든 겁니다',
       '시험 신호 101 → 표시 01', '아까 접수표에서 가리신 이름', '반만 얼리기로 했잖아요',
-      '전화 받았는데 반찬집 아주머니였잖아요', '센서 입력 101 → 표시 01',
+      '전화 받았는데 반찬집 아주머니였잖아요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
       '아버지가 옆에 앉으라 그랬잖아요', '공동 이의신청 접수', '반만 얼렸다',
     ];
     const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
     expect(beats.filter((_, index) => positions[index] < 0)).toEqual([]);
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(heard(run.shown, '아까 물부터 드렸죠')).toBe(false);
+    const call = run.state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'take_call');
+    expect(call.filter((entry) => entry.channel === 'dialogue').map((entry) => entry.speaker))
+      .toEqual(['아버지', '문지완', '아버지', '문지완']);
+    expect(call.some((entry) => entry.channel === 'message')).toBe(false);
+    expect(run.state.storyLog).toContainEqual(expect.objectContaining({
+      sceneId: 'shift', channel: 'action', text: expect.stringContaining('수화기 너머에서 반찬집 아주머니'),
+    }));
   });
 
   it('통화를 미루면 음성 메시지가 남고 아버지에게 건네는 대답도 늦어진다', async () => {
@@ -399,6 +410,12 @@ describe('오버플로', () => {
     expect(heard(run.shown, '아까 물부터 드렸죠. 겁났어요')).toBe(true);
     expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);
     expect(heard(run.shown, '전화 받았는데 반찬집 아주머니였잖아요')).toBe(false);
+    const messages = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
+      .filter((entry) => entry.sceneId === 'text_back' && entry.channel === 'message');
+    expect(messages.map((entry) => entry.side)).toEqual(['me', 'them', 'me']);
+    expect(run.state.storyLog).toContainEqual(expect.objectContaining({
+      sceneId: 'check_phone', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
+    }));
     const broadcast = run.shown.slice(run.shown.findIndex((text) => text.includes('제 이름이랑 제 판독')));
     expect(heard(broadcast, '센서 입력 101 / 렌즈 표시 01')).toBe(true);
     expect(heard(broadcast, '308호')).toBe(false);

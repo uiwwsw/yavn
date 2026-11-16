@@ -88,7 +88,8 @@ scenes:
     actions:
       - set: { checked_phone: true }
       - say: { channel: message, side: them, with: [], text: "월계병원 신경과입니다. 담당 간호사 복귀 후 20시 10분에 동행 면회 가능합니다." }
-      - say: { channel: message, side: them, char: 동식_연락처, with: [], when: { var: picked_up, op: eq, value: false }, text: "음성 메시지 · 오전 7시 45분\n지완아, 작은 통 찾았다. 지난번 네가 사 온 거 있네." }
+      - say: { channel: action, with: [], when: { var: picked_up, op: eq, value: false }, continueLabel: "음성 메시지를 듣는다", text: "병원 문자 아래에 아버지가 오전 7시 45분에 남긴 음성 메시지가 있다." }
+      - say: { char: 동식_연락처, channel: dialogue, with: [], when: { var: picked_up, op: eq, value: false }, text: "지완아, 작은 통 찾았다. 지난번 네가 사 온 거 있네." }
       - say: { channel: thought, with: [], when: { var: picked_up, op: eq, value: true }, text: "국은 반만 얼린다 그랬는데. 냄비에 남았겠네." }
       - goto: desk
 

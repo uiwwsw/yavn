@@ -554,7 +554,7 @@ scenes:
           text: "하루야, 화면 꺼 봐. …아니, 다시 켜 봐."
       - choice:
           key: b0_buy
-          prompt: "결제 확인 창이 아직 열려 있다."
+          prompt: "중고는 지금 값을 치를 수 있다. 하이퍼링크 X를 사면 열두 달 동안 갚아야 한다."
           char: 윤재
           motion: sway
           options:

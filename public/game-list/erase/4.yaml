@@ -784,7 +784,7 @@ scenes:
           text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00."
       - choice:
           key: e3_final
-          prompt: "예약 문자 아래, 답장 칸에서 커서가 깜박인다."
+          prompt: "예약 알림을 닫자 화면에 설정, 사진첩, 메시지 아이콘이 나타난다."
           with: []
           options:
             - text: "휴대폰을 초기화한다"

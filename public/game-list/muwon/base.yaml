@@ -11,6 +11,7 @@ assets:
     hyeongjo_hall: assets/bg/hyeongjo_hall.svg
     alley_night: assets/bg/alley_night.svg
     dawn_gate: assets/bg/dawn_gate.svg
+    well_hand_sticker: assets/items/well_hand.svg
     thread_sticker: assets/items/thread.svg
     sijang_sticker: assets/items/sijang.svg
     order_slip_sticker: assets/items/order_slip.svg

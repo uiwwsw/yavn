@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <title>서명한 동의서 위에 환자 이름표를 뒤집는 손</title>
+  <defs>
+    <linearGradient id="steel" x1=".2" y1="0" x2=".8" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#657477"/>
+      <stop offset=".45" stop-color="#465258"/>
+      <stop offset="1" stop-color="#283038"/>
+    </linearGradient>
+    <radialGradient id="light" cx=".52" cy=".32" r=".66">
+      <stop stop-color="#c7d3c6" stop-opacity=".28"/>
+      <stop offset=".64" stop-color="#2c343b" stop-opacity="0"/>
+      <stop offset="1" stop-color="#141820" stop-opacity=".73"/>
+    </radialGradient>
+    <linearGradient id="page" x1=".1" y1="0" x2="1" y2=".94" gradientUnits="objectBoundingBox">
+      <stop stop-color="#e2dfd1"/>
+      <stop offset=".61" stop-color="#bfc4bb"/>
+      <stop offset="1" stop-color="#859595"/>
+    </linearGradient>
+    <linearGradient id="latex" x1="0" y1="0" x2=".58" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#dce7da"/>
+      <stop offset=".53" stop-color="#a5b9b4"/>
+      <stop offset="1" stop-color="#627c80"/>
+    </linearGradient>
+    <linearGradient id="label-back" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#e4ddcb"/>
+      <stop offset="1" stop-color="#adaea0"/>
+    </linearGradient>
+    <linearGradient id="sleeve" x1="0" y1="1" x2=".6" y2="0" gradientUnits="objectBoundingBox">
+      <stop stop-color="#587c80"/>
+      <stop offset="1" stop-color="#3a535e"/>
+    </linearGradient>
+    <pattern id="brushed" width="41" height="23" patternUnits="userSpaceOnUse">
+      <path d="M0 7h41M5 13h31M19 20h16" fill="none" stroke="#d0d7ce" stroke-opacity=".06"/>
+    </pattern>
+    <pattern id="paper-grain" width="12" height="11" patternUnits="userSpaceOnUse">
+      <path d="M2 1h2m2 4h4m-7 4h3" fill="none" stroke="#666c66" stroke-opacity=".12" stroke-width=".7"/>
+    </pattern>
+  </defs>
+  <path fill="#202934" d="M0 0h1600v900H0z"/>
+  <path fill="url(#steel)" d="M0 0h1600v798L0 883z"/>
+  <path fill="url(#brushed)" d="M0 0h1600v798L0 883z"/>
+  <path fill="url(#light)" d="M0 0h1600v900H0z"/>
+  <!-- A cold surgical trolley, apron edge and its reflected strip light -->
+  <path d="M5 824l1595-99v73L0 883z" fill="#273139"/>
+  <path d="M0 822l1600-101v9L0 833z" fill="#788c8d" opacity=".65"/>
+  <path d="M0 41L1600 5v12L0 58z" fill="#c4d2c9" opacity=".18"/>
+  <path d="M34 165l349-14m730 516 444-47M81 188l205-9" fill="none" stroke="#c5d1c8" stroke-width="2" opacity=".19"/>
+  <!-- Clipboard and a signed page seen from the patient side -->
+  <path d="M385 164l647-80 208 530-703 147z" fill="#17212b" opacity=".54"/>
+  <path d="M356 145l649-77 212 531-711 143z" fill="#36464c" stroke="#252d37" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M365 149l642-78 201 520-700 141z" fill="#58686b" stroke="#91a0a0" stroke-opacity=".5" stroke-width="4"/>
+  <path d="M391 167l597-75 194 484-654 127z" fill="url(#page)" stroke="#9aa5a0" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M391 167l597-75 194 484-654 127z" fill="url(#paper-grain)"/>
+  <path d="M451 207l488-67m-474 100 492-69m-478 103 498-74m-485 108 503-78m-488 113 508-83m-493 120 515-89m-502 127 519-95" fill="none" stroke="#637779" stroke-width="2.3" stroke-opacity=".5"/>
+  <path d="M561 494l512-95m-504 122 286-55m-271 87 290-55m-276 90 297-58" fill="none" stroke="#667677" stroke-width="2.4" stroke-opacity=".52"/>
+  <path d="M923 456l111-20 45 109-116 23z" fill="none" stroke="#708281" stroke-width="2" opacity=".6"/>
+  <path d="M589 620l185-36m33-6 187-38" fill="none" stroke="#596d70" stroke-width="2.8" stroke-opacity=".8"/>
+  <path d="M815 575c-5-8 36-40 53-36 10 1-21 31-12 30 15-2 43-43 54-43 14 0-15 31-8 33 6 1 30-22 45-21m-124 28c20 4 40-4 62-12" fill="none" stroke="#333c43" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M572 130l19 39 135-17-17-40z" fill="#30393f" stroke="#7e8d8c" stroke-width="3"/>
+  <path d="M595 122l-17-35 115-14 16 35z" fill="#8f9e9c" stroke="#d0d9d2" stroke-width="2.3"/>
+  <path d="M589 116l115-14 13 25-117 15z" fill="#b0bcba" stroke="#899b9b" stroke-width="3"/>
+  <!-- Pen set down by the signature -->
+  <path d="M625 642l304-55" fill="none" stroke="#2a3941" stroke-opacity=".37" stroke-width="16" stroke-linecap="round"/>
+  <path d="M619 634l306-60" fill="none" stroke="#24303a" stroke-width="13" stroke-linecap="round"/>
+  <path d="M624 629l298-56" fill="none" stroke="#627f82" stroke-width="3" stroke-linecap="round"/>
+  <path d="M858 580l5 12 7-1-5-12z" fill="#a6b1ad"/>
+  <path d="M614 631l-15 7 19 1z" fill="#c6ccc3"/>
+  <!-- The card turns face-down; only its blank back catches the light. -->
+  <path d="M666 352l234-77 122 116-241 87z" fill="#313b41" opacity=".6"/>
+  <path d="M659 334l248-58 112 94-266 86z" fill="#7d8276" stroke="#364047" stroke-width="4"/>
+  <path d="M654 327l248-62 105 94-259 81z" fill="url(#label-back)" stroke="#8e9b93" stroke-width="3"/>
+  <path d="M664 326l237-60 98 91" fill="none" stroke="#f0e8d2" stroke-opacity=".63" stroke-width="3"/>
+  <path d="M732 412l171-52" fill="none" stroke="#969d90" stroke-opacity=".37" stroke-width="2.2"/>
+  <!-- A hand rests on the far edge of the tag as the wrist turns. -->
+  <path d="M1600 135l-220 13-190 43-110 37-78 12-56 27-51 2-39 17c-11 6-13 17-6 23 7 8 22 5 38 1l25-7 36-1-38 20-31 11c-13 4-18 16-13 24s19 8 35 3l40-10 59-23 30 1 79-10 73-31 93-6 220 29z" fill="#35434b" opacity=".5"/>
+  <path d="M1600 54l-210 24-147 51-108 58-74 10-48 31-40 11-35 15-42-1-41 16c-17 7-20 20-9 28 7 7 23 3 34 0l36-10 29 1-35 23-35 12c-13 5-17 17-11 24 8 8 22 5 38 0l41-13 50-28 42-3 57-2c30-3 60-20 85-26l137-26 238 13z" fill="url(#latex)" stroke="#475b60" stroke-width="4.4" stroke-linejoin="round"/>
+  <path d="M1599 55l-209 25-147 49-64 37 39 92 152 7 230 6z" fill="url(#sleeve)" stroke="#2a414d" stroke-width="4"/>
+  <path d="M1193 158l47 102m-20-111 46 111m54-130 232-43" fill="none" stroke="#96aeb0" stroke-width="3" opacity=".4"/>
+  <path d="M1169 179c26 26 23 57 48 82m-246-24 36 13 56-15m-111 52 31-14 29-5 44-18m-89 65 49-22 34-4 48-22" fill="none" stroke="#678488" stroke-width="3.5" stroke-linecap="round" opacity=".8"/>
+  <path d="M859 273l40-14 43-1m-62 69 37-13 33-20m73-58 40-20 58-10" fill="none" stroke="#ecf1df" stroke-width="3.5" stroke-linecap="round" opacity=".64"/>
+  <path d="M0 0h1600v900H0z" fill="url(#light)" opacity=".23"/>
+</svg>

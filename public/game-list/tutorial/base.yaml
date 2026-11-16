@@ -18,7 +18,7 @@ assets:
     complaint_sticker: assets/items/complaint.svg
     coupon_sticker: assets/items/coupon.svg
     bill_sticker: assets/items/bill.svg
-    keycard_sticker: assets/items/keycard.svg
+    user_0001_card_sticker: assets/items/user-0001-card.svg
     cctv_sticker: assets/items/cctv.svg
   characters:
     해수:

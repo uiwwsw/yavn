@@ -4,11 +4,13 @@ assets:
     office_night: assets/bg/office_night.svg
     dongsik_house: assets/bg/dongsik_house.svg
     ward_bed: assets/bg/ward_bed.svg
+    ward_sock: assets/bg/ward_sock.webp
     ward_entry: assets/bg/ward_entry.svg
     cafe: assets/bg/cafe.svg
     hospital_stairs: assets/bg/hospital_stairs.svg
     studio: assets/bg/studio.svg
     wolgye_station: assets/bg/wolgye_station.svg
+    station_glove: assets/bg/station_glove.webp
     raw_sticker: assets/items/raw_print.svg
   characters:
     지완:
@@ -23,6 +25,7 @@ assets:
       emotions:
         tight: assets/char/jiwan-tight.svg
         break: assets/char/jiwan-break.svg
+        call: assets/char/jiwan-call.svg
     도겸:
       name: "임도겸"
       placement: prompt-top

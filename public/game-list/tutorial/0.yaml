@@ -955,9 +955,9 @@ scenes:
           with: []
           text: "현관 불 켜 놓고 자지 마."
       - say:
-          char: 해수
+          channel: action
           with: []
-          text: "고지서 신발장에 놓는다. 지난달 것도 있어."
+          text: "해수는 신발장에 있던 지난달 봉투까지 포개어 상혁의 방문 밑으로 밀어 넣는다."
       - say:
           char: 상혁
           with: []
@@ -969,11 +969,10 @@ scenes:
     actions:
       - clearSticker: { id: bill, leave: fadeOut }
       - say:
-          char: 상혁
+          char: 해수
           with: []
-          delivery: angry
           sound: door_knock
-          text: "놓고 가."
+          text: "상혁아, 우편 왔어."
       - say:
           char: 상혁
           with: []

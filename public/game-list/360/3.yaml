@@ -269,26 +269,26 @@ scenes:
   glass:
     title: "유리창"
     actions:
-      - bg: { id: ward, transition: fade, duration: 900 }
+      - bg: { id: glass_visit, transition: fade, duration: 900 }
       - place: "사월 · 김포 요양병원"
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "면회는 예약제다. 한 번에 십 분이고, 남은 시간이 벽에 숫자로 떠 있다." }
-      - say: { channel: action, with: [], text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 왔네. 밥은 먹었니" }
+      - say: { channel: action, with: [], continueLabel: "수화기를 든다", text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다." }
+      - say: { char: 지안어머니, with: [], text: "왔네. 밥은 먹었니?" }
       - say: { channel: action, with: [], text: "유리 너머로 엄마 입이 움직인다. 수화기를 귀에 더 바짝 댄다." }
       - say: { char: 지안, with: [], text: "먹었어요. 엄마는." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 여긴 때 되면 밥 나와. 너는 맨날 끼니 거르잖아" }
+      - say: { char: 지안어머니, with: [], text: "여긴 때 되면 밥 나와. 너는 맨날 끼니 거르잖아." }
       - say: { channel: action, with: [], text: "07:12. 07:11." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 그 방송은 언제 나오니" }
+      - say: { char: 지안어머니, with: [], text: "그 방송은 언제 나오니?" }
       - say: { char: 지안, with: [], text: "9월이요. 2부에 제가 편집한 게 나와요." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 그럼 그때 또 오겠네" }
+      - say: { char: 지안어머니, with: [], text: "그럼 그때 또 오겠네." }
       - say: { channel: thought, with: [], text: "그때까지는 안 온다는 말로 들린다. 엄마는 그렇게 말한 적이 없다." }
       - say: { channel: action, with: [], text: "03:40. 남은 숫자만 쳐다보다가 할 말을 놓쳤다." }
       - say: { char: 지안, with: [], text: "엄마." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 응" }
+      - say: { char: 지안어머니, with: [], text: "응." }
       - wait: 1100
       - say: { char: 지안, with: [], text: "…다음 주에 올게요." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 그래. 밥 먹고 다녀" }
+      - say: { char: 지안어머니, with: [], text: "그래. 밥 먹고 다녀." }
       - say: { channel: action, with: [], text: "엄마가 먼저 수화기를 내려놓는다. 00:00까지 안 기다린다." }
       - say: { channel: thought, with: [], text: "유리 너머 엄마 쪽 수화기가 제자리에 돌아가 있다." }
       - goto: pattern
@@ -424,17 +424,16 @@ scenes:
       - say: { channel: card, with: [], text: "2071년 십이월\n서울" }
       - bg: { id: window_dawn, transition: fade, duration: 1200 }
       - place: "2071년 십이월 · 요양 병동"
-      - say:
-          channel: system
-          with: []
-          when: { var: l4_signed, op: eq, value: true }
-          text: "돌봄 단말: 서지안 님(79). 등록 보호자 없음. 최근 면회 2068년 4월."
-      - say:
-          channel: system
-          with: []
-          when: { var: l4_signed, op: eq, value: false }
-          text: "돌봄 단말: 서지안 님(79). 면회 예약 1건. 박다온(53), 오후 두 시."
-      - say: { channel: thought, with: [], text: "여덟 살 때 어둠 속에서 강아지를 찾았다던 아이다. 그 얘기가 방송에 나간 뒤 학교에서 놀림을 받았다." }
+      - branch:
+          cases:
+            - when: { var: l4_signed, op: eq, value: true }
+              goto: late_alone
+          default: late_visit
+
+  late_visit:
+    actions:
+      - say: { channel: system, with: [], text: "돌봄 단말: 서지안 님(79). 면회 예약 1건. 박다온(53), 오후 두 시." }
+      - say: { channel: thought, with: [], text: "여덟 살 때 어둠 속에서 강아지를 찾았다던 아이다. 어느새 내 나이 절반을 훌쩍 넘겼다." }
       - char: { id: 어른다온, position: right }
       - say: { channel: action, with: [어른다온], text: "올 때마다 초판을 한 권씩 가져온다. 지난번에 물으니 집에 아직 상자로 남아 있댄다." }
       - say: { char: 어른다온, with: [], text: "선생님. 이거 하나만 더요." }
@@ -446,19 +445,20 @@ scenes:
       - say: { char: 어른다온, with: [], text: "다음 달에 또 올게요." }
       - say: { channel: action, with: [어른다온], text: "같은 말을 사 년째 한다. 사 년째 온다." }
       - move: { id: 어른다온, style: exit }
-      - say:
-          channel: action
-          with: []
-          when: { var: l4_signed, op: eq, value: true }
-          text: "서랍에 보험 증권이 열한 장 있다. 수령인 칸은 전부 비어 있다."
+      - say: { channel: action, with: [], text: "서랍에 통장이 하나 있다. 잔액은 장례비에 조금 못 미친다." }
+      - goto: late_message
+
+  late_alone:
+    actions:
+      - say: { channel: system, with: [], text: "돌봄 단말: 서지안 님(79). 등록 보호자 없음. 최근 면회 2068년 4월." }
+      - say: { channel: action, with: [], text: "서랍에 보험 증권이 열한 장 있다. 수령인 칸은 전부 비어 있다." }
       - say: { channel: thought, with: [], text: "스물아홉에 처음 들었다. 몇 해는 꼬박 하나씩 늘렸는데 보험금 받을 사람은 한 번도 안 적었다." }
       - say: { channel: thought, with: [], text: "쓸 이름이 없었던 게 아니다. 쓰면 전화를 해야 해서 안 썼다." }
       - say: { channel: action, with: [], text: "면회 기록은 2068년 4월에서 끊겨 있다. 그때 온 사람이 마지막이었다." }
-      - say:
-          channel: action
-          with: []
-          when: { var: l4_signed, op: eq, value: false }
-          text: "서랍에 통장이 하나 있다. 잔액은 장례비에 조금 못 미친다."
+      - goto: late_message
+
+  late_message:
+    actions:
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
       - say: { channel: action, with: [], text: "사십오 년 된 메시지다. 답장 칸에 커서가 깜박인다.", wait: 1800 }
       - say: { channel: thought, with: [], text: "통은 가져가지 않았다. 쉰 김치는 찌개를 하면 된다고 엄마가 말했었다." }

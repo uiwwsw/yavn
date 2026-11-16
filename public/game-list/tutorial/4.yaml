@@ -528,7 +528,7 @@ scenes:
       - say:
           channel: thought
           when: { var: seen_card, op: eq, value: true }
-          text: "개발실 책상에 있던 출입증. 사진이 비어 있고 이름 칸에 USER 0001만 적혀 있었다."
+          text: "태민이 뒤집어 보여 준 출입증. 사진 칸은 비어 있고 USER 0001만 적혀 있었다."
       - say:
           channel: thought
           when: { var: seen_card, op: eq, value: true }
@@ -548,7 +548,7 @@ scenes:
           text: "해수는 전원선을 따라가 벽 콘센트를 본다. 모니터 아래에는 작은 전원 버튼이 있다."
       - choice:
           key: t4_end
-          prompt: "전원선을 뽑으면 레플라 접속이 끊긴다. 모니터만 끄면 연결은 유지된다."
+          prompt: "태민 말대로라면 전원선을 뽑는 순간 레플라에 들어갈 수 없게 된다. 모니터를 꺼도 본체는 켜져 있다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -565,7 +565,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "선을 잡으니 따뜻하다. 당기는 데 생각보다 힘이 든다."
+          text: "플러그가 뻑뻑하게 빠진다. 잡고 있던 선은 아직 따뜻하다."
       - say:
           channel: action
           with: []
@@ -777,7 +777,7 @@ scenes:
       - say:
           channel: thought
           when: { var: tampered, op: gt, value: 0 }
-          text: "내가 연필을 문지른 뒤 경찰이 찾던 로고가 사라졌다. 상혁이는 오늘 영장이 나왔다."
+          text: "그날 레플라에서 수사 자료에 손댄 건 나다. 영장이 나온 건 상혁이다."
       - say:
           channel: thought
           with: []
@@ -844,6 +844,7 @@ scenes:
           channel: system
           with: []
           text: "다른 사용자의 연결은 유지됩니다."
+          continueLabel: "0001번 세션을 종료한다"
       - say:
           channel: record
           with: []

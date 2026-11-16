@@ -325,9 +325,9 @@ scenes:
   b1_told:
     actions:
       - say:
-          channel: action
+          char: 윤재.scared
           with: []
-          text: "‘신문지는’ 하고 나니 목이 메었다. 윤재는 혀로 입술을 적셨다."
+          text: "글자 찍힌 얇은 종이야. 있잖아, 아저씨가 게임기를 그걸로 세 겹 싸 줬어. …하루야."
       - say:
           char: 비서.dead
           with: [윤재]

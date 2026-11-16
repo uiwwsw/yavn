@@ -264,6 +264,7 @@ scenes:
           channel: record
           with: []
           text: "레플라 체험용 밴드 · 매장 시연품 · 앉은 상태에서 귀 뒤 뼈 위에 붙이세요. · 접속은 30초 이내, 접속 중에는 잠든 상태가 유지됩니다."
+          continueLabel: "밴드를 붙인다"
       - say:
           char: 상혁
           with: []
@@ -878,7 +879,8 @@ scenes:
           timeoutMs: 9000
           timeoutOptionIndex: 0
           options:
-            - text: "연필을 쥔다"
+            - text: "연필을 든 채 다가간다"
+              saveText: "연필을 쥔다"
               goto: stab
             - text: "연필을 내려놓는다"
               set: { hesitated: true }
@@ -905,7 +907,8 @@ scenes:
           prompt: "기둥에는 또 C-14. 운전석 문도 아까처럼 열린다."
           with: [광철]
           options:
-            - text: "연필을 쥔다"
+            - text: "연필을 든 채 다가간다"
+              saveText: "연필을 쥔다"
               goto: stab
             - text: "귀 뒤의 밴드를 뗀다"
               set: { logged_out: true }
@@ -949,7 +952,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "다음 단계는 내일 열립니다."
+          text: "다음 접속 때 4단계를 시작합니다."
       - goto: morning
 
   morning:

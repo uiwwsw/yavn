@@ -1177,11 +1177,18 @@ scenes:
 
   b3_pinky:
     actions:
+      - sticker:
+          id: b3_pinky_promise
+          image: pinky_promise_sticker
+          x: 50
+          y: 32
+          width: "clamp(200px, 32%, 410px)"
+          enter: fadeIn
+          inputLockMs: 300
       - say:
           char: 윤재
           with: [로봇]
-          text: "어기면 바늘 천 개 삼키는 거다."
-      - wait: 460
+          text: "이렇게 걸면 돼. 어기면 바늘 천 개 삼키는 거다."
       - say:
           char: 로봇.thinking
           motion: nod
@@ -1207,7 +1214,7 @@ scenes:
           motion: laugh
           with: [로봇]
           text: "그런 뜻 아니거든."
-      - wait: 270
+      - clearSticker: { id: b3_pinky_promise, leave: fadeOut }
       - say:
           char: 로봇
           with: [윤재]

@@ -21,7 +21,7 @@ const serve = (path: string): string | undefined => {
   }
 };
 
-type Route = Record<string, string>;
+type Route = Record<string, string | string[]>;
 
 const best: Route = {
   c1_cause: '목이 졸린 뒤 우물에 던져졌다',
@@ -43,15 +43,18 @@ const best: Route = {
 
 async function play(route: Route, maxSteps = 3000) {
   const picked: string[] = [];
+  const seen = new Set<string>();
   for (let step = 0; step < maxSteps; step += 1) {
     const state = useVNStore.getState();
     if (state.error) throw new Error(`engine error: ${state.error.message}`);
     if (state.isFinished || state.gameOver) break;
     expect(state.inputGate.active).toBe(false);
+    if (state.dialog.fullText) seen.add(state.dialog.fullText);
     if (state.choiceGate.active && !state.busy) {
       const key = state.choiceGate.key ?? '';
       const options = state.choiceGate.options;
-      const wanted = route[key];
+      const plan = route[key];
+      const wanted = Array.isArray(plan) ? plan.find((text) => options.some((option) => option.text === text)) : plan;
       // Investigation boards cycle through unexplored targets; take the first that is shown.
       const index = wanted === undefined ? 0 : options.findIndex((option) => option.text === wanted);
       if (index < 0) throw new Error(`option "${wanted}" not offered at ${key}: ${options.map((o) => o.text).join(' | ')}`);
@@ -62,7 +65,7 @@ async function play(route: Route, maxSteps = 3000) {
     }
     await vi.advanceTimersByTimeAsync(400);
   }
-  return { state: useVNStore.getState(), picked };
+  return { state: useVNStore.getState(), picked, seen: Array.from(seen) };
 }
 
 beforeEach(() => {
@@ -111,6 +114,31 @@ describe('무원 full playthrough', () => {
     expect(state.storyLog.some((entry) => 'text' in entry && entry.text.includes('서연은 품에서'))).toBe(true);
     expect(state.routeVars).toMatchObject({ truth: 4, makssoe_hurt: true, makssoe_alive: false });
     expect(state.resolvedEndingId).toBe('late_muwon');
+  }, 60000);
+
+  it('shows the brother being released and only compares the stamps after both have been found', async () => {
+    await start();
+    const { state, picked, seen } = await play({
+      ...best,
+      c1_accuse: '실의 출처를 조사한다',
+      c4_storeroom: ['짚 아래 상자', '출납부', '막쇠를 찾는다'],
+    });
+    expect(state.isFinished).toBe(true);
+    expect(state.routeVars.c1_brother).toBe(false);
+    const release = seen.findIndex((text) => text.includes('그 사내를 놓아주시오'));
+    expect(release).toBeGreaterThanOrEqual(0);
+    expect(seen.findIndex((text) => text.includes('다시 데려가오'))).toBeGreaterThan(release);
+    expect(picked.filter((choice) => choice.startsWith('c4_storeroom='))).toEqual([
+      'c4_storeroom=짚 아래 상자',
+      'c4_storeroom=출납부',
+      'c4_storeroom=막쇠를 찾는다',
+    ]);
+    const chest = seen.findIndex((text) => text.includes('상자 뚜껑에 붉은 도장이 찍혀 있다'));
+    const ledger = seen.findIndex((text) => text.includes('받은 사람 이름 대신 붉은 도장'));
+    const comparison = seen.findIndex((text) => text.includes('출납부와 상자의 도장을'));
+    expect(chest).toBeGreaterThanOrEqual(0);
+    expect(ledger).toBeGreaterThan(chest);
+    expect(comparison).toBeGreaterThan(ledger);
   }, 60000);
 
   it('covers the ledger when the trial collapses', async () => {

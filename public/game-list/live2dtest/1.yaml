@@ -7,12 +7,12 @@ scenes:
       - char:
           id: 렌
           position: center
-          emotion: Idle
+          emotion: exp_01
       - choice:
           key: live2d_drag_test
           camera: medium
-          prompt: "왔구나. 오늘은 뭘 해 볼까?"
-          char: 렌.Idle
+          prompt: "오늘은 렌과 뭘 해 볼까?"
+          char: 렌.exp_01
           options:
             - text: "표정을 본다"
               saveText: "표정으로 인사해 줘"
@@ -30,13 +30,13 @@ scenes:
   expressions:
     actions:
       - say:
-          char: 렌.exp_01
+          char: 렌.exp_02
           camera: medium
-          text: "말로만 인사하면 심심하잖아. 이번에는 얼굴을 잘 봐."
+          text: "그럼 웃는 얼굴로 인사할게. 어서 와."
       - choice:
           key: live2d_expression
-          char: 렌.exp_01
-          prompt: "다른 표정도 보여 줄까?"
+          char: 렌.exp_02
+          prompt: "다른 표정도 볼까?"
           options:
             - text: "다른 표정을 본다"
               saveText: "응, 하나 더"
@@ -49,19 +49,19 @@ scenes:
     actions:
       - say:
           char: 렌.exp_03
-          text: "같은 말도 표정이 바뀌면 다르게 들리지?"
+          text: "이번엔 눈을 감고. 어서 와."
       - say:
           char: 렌.exp_05
-          text: "이번엔 네 차례야. 어떤 얼굴로 듣고 있었어?"
+          text: "이 얼굴로 인사하면 화난 줄 알겠다."
       - goto: ren_live2d_drag_test
 
   follow_pointer:
     actions:
       - choice:
           key: live2d_follow
-          char: 렌.Idle
+          char: 렌.exp_01
           camera: medium
-          prompt: "내 얼굴 위를 누른 채 천천히 움직여 봐. 네 손끝을 따라갈게."
+          prompt: "렌의 얼굴을 누른 채 천천히 움직여 보자."
           options:
             - text: "처음으로 돌아간다"
               saveText: "잘 따라오네. 다시 이야기하자"
@@ -72,11 +72,11 @@ scenes:
       - say:
           char: 렌.exp_02
           camera: { shot: close, target: 렌, transition: push, duration: 680 }
-          text: "이 정도면 목소리를 낮춰도 들리겠지? 눈을 깜빡이는 순간까지 보일 거야."
+          text: "이 정도 거리라면 눈웃음도 잘 보이지?"
       - choice:
           key: live2d_distance
           char: 렌.exp_02
-          prompt: "여기서 잠깐 쉬었다 갈래?"
+          prompt: "조금 물러날까, 아니면 오늘은 여기까지 할까?"
           options:
             - text: "처음으로 돌아간다"
               saveText: "조금 떨어져서 다시 이야기하자"

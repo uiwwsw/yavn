@@ -662,7 +662,7 @@ scenes:
     actions:
       - choice:
           key: h1_send
-          prompt: "하린은 문장을 다시 읽는다. 맨 끝에 ‘ㅋㅋ’를 붙일까."
+          prompt: "하린은 보내기 버튼 위에 손가락을 올린 채 ‘나도 껴줘’를 다시 읽는다."
           with: []
           options:
             - text: "보낸다"

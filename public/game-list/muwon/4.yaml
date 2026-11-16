@@ -514,7 +514,7 @@ scenes:
           text: "출납부에 제 이름이 있습니까? 없을 겁니다."
       - choice:
           key: t4
-          prompt: "윤길이 발견된 날, 누가 얼음을 받아 갔는지 무엇으로 알 수 있을까?"
+          prompt: "얼음을 받아 간 사람이 한명재라는 걸 무엇으로 밝힐까?"
           char: 한명재
           timeoutMs: 15000
           timeoutOptionIndex: 0

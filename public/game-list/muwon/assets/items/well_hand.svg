@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 354" role="img" aria-labelledby="title">
+  <title id="title">거적 아래 드러난 손과 손톱 끝에 걸린 남빛 실</title>
+  <defs>
+    <radialGradient id="stone" cx=".57" cy=".44" r=".61">
+      <stop stop-color="#84694c"/>
+      <stop offset=".68" stop-color="#504338"/>
+      <stop offset="1" stop-color="#33291f"/>
+    </radialGradient>
+    <linearGradient id="skin" x1=".3" y1="0" x2=".73" y2="1">
+      <stop stop-color="#dfc6a2"/>
+      <stop offset=".48" stop-color="#c7ac8c"/>
+      <stop offset="1" stop-color="#9a7b65"/>
+    </linearGradient>
+    <linearGradient id="straw" x1="0" y1="0" x2=".64" y2="1">
+      <stop stop-color="#ad8b55"/>
+      <stop offset="1" stop-color="#6f5131"/>
+    </linearGradient>
+    <pattern id="weave" width="25" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-17)">
+      <path d="M0 3H25M0 12H25" fill="none" stroke="#dcbb79" stroke-width="1.5" opacity=".53"/>
+      <path d="M4 0v7m0 4v7M13 5v9M22 0v7m0 4v7" fill="none" stroke="#49321f" stroke-width="2" opacity=".45"/>
+    </pattern>
+    <path id="field" d="M18 35Q87 17 161 28T299 17Q426 10 613 31L622 62L614 82L626 290L610 321Q526 334 444 327T310 337Q154 333 26 321L20 294L27 276L15 91Z"/>
+    <path id="mat" d="M20 36Q101 17 171 27L224 36Q244 88 218 121Q206 145 179 157L177 182Q157 211 172 245Q175 269 162 278L148 318Q87 330 25 317L20 294L26 276L15 91Z"/>
+    <clipPath id="edge"><use href="#field"/></clipPath>
+  </defs>
+  <use href="#field" transform="translate(4 5)" fill="#191510" opacity=".55"/>
+  <use href="#field" fill="url(#stone)" stroke="#2f221a" stroke-width="4"/>
+  <g clip-path="url(#edge)" stroke-linecap="round" stroke-linejoin="round">
+    <g fill="none" stroke="#b99869" opacity=".49">
+      <path d="M159 47Q237 72 317 46T463 46Q539 71 626 46M241 71Q256 105 230 124M465 57Q476 88 458 107" stroke-width="2.6"/>
+      <path d="M417 288Q488 266 551 281T659 274M401 286Q422 309 415 337M554 280Q566 303 560 324" stroke-width="2.3"/>
+      <path d="m277 105 25-7m18-15 15-1m53 16 22-5m121 15 20-5m23 123 19-6m-51 18 10-2m-277 70 29-1m45 13 28-8" stroke-width="1.55"/>
+    </g>
+    <path d="M122 192Q225 149 308 155Q346 137 405 117Q458 107 510 127L548 167L530 219L496 252Q476 283 420 281Q397 313 348 306Q295 267 234 283L144 296Z" fill="#292119" opacity=".54" transform="translate(2 13)"/>
+    <path d="M115 183Q163 181 191 163Q231 144 277 148L362 124L457 111Q482 107 493 121Q501 134 481 143L394 163L486 147Q514 142 531 154Q542 165 529 178L503 185L407 200L475 186Q504 181 518 192Q529 205 515 214L488 220L404 232L446 226Q476 224 486 235Q495 249 480 258L455 263L369 270Q354 272 345 276L368 287Q386 299 380 313Q375 326 358 324L312 310Q291 304 270 280Q244 275 226 277L127 281Z" fill="url(#skin)" stroke="#392a22" stroke-width="4"/>
+    <path d="M172 260Q237 253 273 263Q296 268 318 292Q335 304 358 309L381 312Q375 325 359 324L311 310Q289 304 270 280Q246 275 226 277L162 280Z" fill="#967761" opacity=".76"/>
+    <path d="M181 159Q240 143 277 148L362 124L457 111Q473 109 484 114Q435 120 398 132L296 159Q252 171 219 180Z" fill="#f0d2a9" opacity=".64"/>
+    <g fill="none">
+      <path d="M291 168q32 3 45 0m-29 24q36 1 66-5m-66 30q41 2 64-3m-68 25q35 2 56-2m-46 37q15-9 32-10" stroke="#8e6e59" stroke-width="2" opacity=".62"/>
+      <path d="M383 141q8 4 11 9m4-1q2 4 1 8m5 20q8 4 9 10m4-6 2 5m-16 24q8 3 10 10m-21 23q9 3 12 9M271 236q9 2 19 10" stroke="#765944" stroke-width="1.6" opacity=".69"/>
+    </g>
+    <g fill="#dac0a7" stroke="#765844" stroke-width="1.8">
+      <path d="M460 117Q476 113 484 118L478 121L483 126Q474 133 463 132Z"/>
+      <path d="M500 155Q516 150 526 155L520 161L527 167Q525 174 504 176Z"/>
+      <path d="M487 192Q503 188 512 193Q516 202 507 209L490 212Z"/>
+      <path d="M457 233Q471 230 479 235Q482 245 472 250L460 252Z"/>
+      <path d="M352 298Q367 300 376 307Q375 317 365 319L348 315Z"/>
+    </g>
+    <path d="M521 164Q538 163 548 173Q562 183 576 171Q587 162 595 171Q600 178 594 183" fill="none" stroke="#252720" stroke-width="7.5"/>
+    <path d="M521 164Q538 163 548 173Q562 183 576 171Q587 162 595 171Q600 178 594 183" fill="none" stroke="#395974" stroke-width="4.7"/>
+    <path d="M532 166Q543 167 552 176Q561 181 570 175m19 9 10-4m-4 1 4 8" fill="none" stroke="#789bb2" stroke-width="1.8"/>
+    <g fill="#d8c7a1" opacity=".73">
+      <path d="M316 184q-5 7-2 9t5-4zM360 219q-5 7-2 9t5-4zM247 254q-5 6-2 9t5-4z"/>
+      <path d="M436 274q-7 8-2 11t7-4zM535 194q-4 6-2 8t4-4z"/>
+    </g>
+    <use href="#mat" x="6" y="7" fill="#35281e" opacity=".69"/>
+    <use href="#mat" fill="url(#straw)" stroke="#43311f" stroke-width="3.5"/>
+    <use href="#mat" fill="url(#weave)"/>
+    <path d="M184 38Q226 84 193 123Q179 139 155 145Q154 179 139 196Q149 226 144 248Q135 283 111 319" fill="none" stroke="#4b351f" stroke-width="19" opacity=".47"/>
+    <path d="M190 38Q229 82 200 124Q188 140 169 149Q165 181 149 196Q159 226 152 249Q139 293 119 321" fill="none" stroke="#ca9d59" stroke-width="4.5"/>
+    <g fill="none" stroke="#bd9563" stroke-width="2.1">
+      <path d="m177 174 32-8m-37 27 29 1m-31 18 24 11m-24 8 18 17m-21 0 15 25m-23 8 19 14"/>
+    </g>
+  </g>
+</svg>
