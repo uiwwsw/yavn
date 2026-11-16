@@ -78,6 +78,8 @@ scenes:
           char: 지영
           with: []
           text: "역시ㅠㅠ 커피 살게"
+      - say: { char: 해수, channel: message, side: me, text: "괜찮습니다 주임님" }
+      - say: { char: 지영, channel: message, side: them, text: "괜찮으면 안 사도 돼?" }
       - say:
           channel: message
           side: me
@@ -221,6 +223,7 @@ scenes:
           with: [해수]
           text: "마감 고마워. 그리고 너 오늘 12년 됐지? 인사팀에서 근속 메일 왔더라. 2019년 4월 11일 입사."
       - sticker: { id: coupon, image: coupon_sticker, x: 62, y: 34, width: "240px", rotate: -4, enter: popIn }
+      - say: { char: 해수, with: [지영], text: "오늘이었어요?" }
       - say:
           char: 지영
           with: [해수]
@@ -762,15 +765,15 @@ scenes:
       - say:
           char: 상혁
           with: [해수]
-          text: "야, 너 어제 밥 안 했지."
+          text: "야, 어제 밥 어디 뒀어."
       - say:
           char: 해수
           with: [상혁]
-          text: "네 차례였어."
+          text: "냉장고 두 번째 칸."
       - say:
           char: 해수
           with: [상혁]
-          text: "수요일에 내가 했잖아. 한 번씩 하기로 한 거."
+          text: "오늘은 네 차례야. 금요일."
       - say:
           char: 상혁
           motion: slump
@@ -788,7 +791,7 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "2학년 때도 같은 반이었어."
+          text: "2학년 때도 맨날 붙어 있었잖아."
       - say:
           char: 상혁
           with: [해수]

@@ -888,7 +888,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "제 폰에 있는 사진이라고요."
+          text: "제 폰으로 찍었어요. 어제 녹화실에서."
       - say:
           char: 해수.service
           with: [은숙]

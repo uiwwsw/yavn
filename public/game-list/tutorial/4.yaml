@@ -954,15 +954,15 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "그날이 첫 줄이었어요."
+          text: "일한 건 열두 해인데 화면엔 다섯 줄이었어요."
       - say:
           char: 은숙.sharp
           with: [해수]
-          text: "그럼 몇 줄인데요."
+          text: "화면이요? 접수 화면 말씀인가요?"
       - say:
           char: 해수
           with: [은숙]
-          text: "다섯이요."
+          text: "레플라요. 거기 번호가 다섯까지 있어요."
       - say:
           char: 해수
           with: [은숙]
