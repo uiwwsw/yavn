@@ -570,7 +570,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "지우면 없어지는 게 아니라 읽은 사람 쪽에 남는다. 그 생각을 전에도 한 적이 있다."
+          text: "윤주임한테 따로 톡을 쓰려다 그만둔다. 뭐라고 보냈는지 물어볼 순 없다."
       - say:
           channel: card
           with: []

@@ -129,7 +129,7 @@ scenes:
           char: 지수
           motion: puff
           with: [도윤]
-          text: "너도 하나 먹어. 단 거 싫다니까."
+          text: "안 버려. 먹을 거야. 맛없는데 먹을 거야."
       - mood: off
       - say:
           char: 도윤
@@ -179,6 +179,7 @@ scenes:
           char: 지수
           with: [도윤]
           text: "자, 이제 일 얘기. 식대가 일 인당 68,000원이고, 보증 인원이 200명이래."
+      - say: { char: 지수, with: [도윤], text: "백오십 와도 이백 명 값 내는 거야." }
       - say:
           char: 도윤.smile
           motion: perk
@@ -207,6 +208,7 @@ scenes:
           char: 지수.warm
           with: [도윤]
           text: "아니 그렇게 말고. 이리 와 봐. 넥타이도 돌아갔어."
+      - say: { char: 지수.warm, with: [도윤], text: "가만있어 봐. 한 번만 더. …아니 한 번만 더." }
       - say:
           char: 지수
           with: [도윤]
@@ -291,16 +293,20 @@ scenes:
       - say:
           char: 지수
           with: [도윤]
-          text: "저녁에 네가 설거지해. 그걸로 됐어."
+          text: "고맙다는 말은 설거지로 해. 이번 주 네 차례야."
       - say:
           char: 도윤
           motion: droop
           with: [지수]
-          text: "…아."
+          text: "지난주에 내가 했잖아."
+      - say: { char: 지수, with: [도윤], text: "지난주에 내가 바꿔 줬지. 네가 늦는다고." }
       - say:
           char: 지수
           with: [도윤]
           text: "빨래 좀 걷어. 이틀째 건조기에 있어."
+      - say: { char: 도윤, with: [지수], text: "너도 내 양말 짝 안 맞춰 놓잖아." }
+      - say: { char: 지수, with: [도윤], text: "다 똑같이 까맣잖아." }
+      - say: { char: 도윤, with: [지수], text: "셋 다 다른 거야." }
       - say:
           char: 도윤
           motion: nod

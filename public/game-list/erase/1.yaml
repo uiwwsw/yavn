@@ -231,7 +231,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "신발은 다음엔 그냥 신어요. 옆집 비어 있어서 안 들려요."
+          text: "현관문 닫히는 소리 났어요. 그냥 누워 있었어요."
       - say:
           char: 준성.tired
           motion: nod
@@ -613,7 +613,7 @@ scenes:
           char: 아진.awkward
           motion: laugh
           with: [하린, 민재]
-          text: "아하하… 아 웃겨. 하린이 진짜 웃겨. 하하…"
+          text: "아… 내가 너한테도 보내 줄게. 지금 보낼까?"
       - say:
           char: 하린
           motion: laugh
@@ -707,7 +707,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "안 쓴 거랑 쓰고 지운 거랑 화면에는 똑같이 남는다. 똑같으면 안 쓴 거다."
+          text: "보낸 거 아님. 아무도 못 봤어."
       - goto: h1_shots
 
   h1_more:
@@ -731,12 +731,12 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "뒤에 붙인 여덟 글자를 먼저 지우고, 앞의 스물한 글자를 지운다. 순서가 반대였다."
+          text: "뒤에 붙인 열 글자를 먼저 지우고, 앞의 스물한 글자를 지운다."
       - add: { deleted: 2 }
       - say:
           channel: thought
           with: []
-          text: "물어볼 뻔했다. 물어보면 아는 게 되고, 아는 게 되면 끼워 달라는 게 된다."
+          text: "그거 물어보면 걔들이 나 빼놓은 얘기까지 해야 되잖아."
       - goto: h1_shots
 
   h1_shots:
