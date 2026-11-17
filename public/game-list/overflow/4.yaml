@@ -87,8 +87,8 @@ scenes:
       - place: "아버지 퇴원 뒤, 일요일 · 아버지 집"
       - char: { id: 동식, position: right }
       - char: { id: 지완, position: left }
-      - say: { channel: action, with: [], text: "냉동실에 작은 통 하나가 비스듬히 들어 있다. 뚜껑 아래로 국물이 한 줄 얼어붙었다. 아버지가 통을 빼서 지완 앞에 놓는다." }
-      - say: { char: 동식, with: [지완], text: "반만 얼렸다." }
+      - say: { channel: action, with: [], text: "아버지가 냉동실에서 작은 통 하나를 꺼내 지완 앞에 놓는다." }
+      - say: { char: 동식, with: [지완], wait: 800, text: "반만 얼렸다." }
       - say: { char: 지완, with: [동식], text: "남은 반은요?" }
       - say: { char: 동식, with: [지완], text: "냄비에 있지. 데워 먹어." }
       - ending: appeal

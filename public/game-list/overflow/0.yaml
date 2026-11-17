@@ -37,7 +37,7 @@ scenes:
       - char: { id: 지완, position: left }
       - say: { char: 지완, with: [지완], text: "여보세요, 아버지." }
       - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "야, 국 냄비째 얼려도 되냐?" }
-      - say: { char: 지완, channel: dialogue, with: [지완], text: "그거 꽝꽝 얼면 안 빠져요. 작은 통에 나눠요." }
+      - say: { char: 지완, channel: dialogue, with: [지완], text: "작은 통에 나눠요. 냄비째 얼면 안 빠져요." }
       - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "넌 일요일에 안 오냐?" }
       - say: { char: 지완, channel: dialogue, with: [지완], text: "점심 지나서요. 반만 얼려요." }
       - wait: 0
@@ -61,11 +61,11 @@ scenes:
       - say: { channel: record, with: [], text: "역사 안전 경보\n흥분 94 · 직원 호출" }
       - say: { channel: action, with: [], text: "역무원 둘이 달려온다. 남자가 손잡이에서 손을 떼자 휠체어에 앉은 노인이 그에게 팔을 뻗는다." }
       - say: { char: 도겸, with: [지완], text: "휠체어 좀 빼 달라고 한 거 아니에요?" }
-      - say: { channel: action, with: [], text: "도겸이 반 걸음 나선다. 지완의 렌즈가 다시 진동한다. 도겸은 노란 선을 보고 발을 거둔다." }
+      - say: { channel: action, with: [], text: "렌즈가 다시 울린다. 도겸은 노란 선 앞에서 멈춘다." }
       - say: { channel: record, with: [], text: "월계역 대합실 전광판\n안전 모드 도입 후 역사 내 폭행 신고 18건 → 7건\n같은 기간 전년 대비 · 서울교통공사" }
       - say: { char: 도겸, with: [지완], text: "지난겨울에도 여기서 알림 떴잖아요. 역무원이 사람 하나 붙잡았던 거. 엄마는 그 뒤로 꼭 이 역으로 다녀요." }
       - say: { channel: action, with: [], text: "역무원이 비상 통로로 휠체어를 빼 준다. 남자가 노인에게 들리지 않게 묻는다. 호출 기록도 회사로 갑니까." }
-      - say: { channel: action, with: [], text: "줄이 다시 움직인다. 호출 기록도 회사로 가냐는 말이 남는다. 내 경보 기록이 학교로 갔던 날에도, 나는 누가 그걸 먼저 봤는지 몰랐다." }
+      - say: { channel: thought, with: [], text: "내 경보 기록도 예고 없이 학교로 갔었다." }
       - goto: father_lesson
 
   father_lesson:
@@ -92,10 +92,10 @@ scenes:
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
-      - say: { channel: action, with: [지완, 도겸], sound: call, text: "아버지에게 다시 전화가 온다." }
-      - wait: 0
-      - say: { channel: action, with: [지완], text: "아버지 목소리가 아니다. 반찬집 아주머니다. “아버지가 쓰러졌어요. 월계병원으로 오세요.”" }
-      - say: { channel: thought, with: [지완], text: "문이 어디 있지." }
+      - say: { channel: action, with: [지완, 도겸], sound: call, text: "휴대폰에 다시 ‘아버지’가 뜬다." }
+      - say: { char: 지완, with: [지완], text: "네, 아버지?" }
+      - say: { channel: dialogue, speakerName: "반찬집 아주머니 (통화)", with: [지완], text: "지완 씨, 반찬집이에요. 아버지가 쓰러졌어요. 월계병원으로 오세요." }
+      - say: { channel: thought, with: [지완], wait: 800, text: "문이 어디 있지." }
       - say: { char: 도겸, with: [지완], text: "지완 씨. 출입증 뒷주머니. 내가 택시 부를게요." }
       - goto: admission
 
@@ -108,9 +108,9 @@ scenes:
       - char: { id: 지완, position: left }
       - say: { channel: action, with: [], text: "간호사가 접수창을 열고 말한다. “아드님 오시면 목소리부터 들려 드리려고 했어요.”" }
       - say: { char: 지완, with: [], text: "저 들어가면 알아보실 거예요. 아들입니다." }
-      - say: { channel: action, with: [], sound: ward_door, text: "접수대 옆 자동문이 반쯤 열리다 멎는다. 간호사가 단말기를 지완 쪽으로 돌렸다가 다시 자기 앞으로 잡아당긴다." }
+      - say: { channel: action, with: [], sound: ward_door, text: "접수대 옆 자동문이 반쯤 열리다 멎는다." }
       - sound: read
-      - say: { channel: record, with: [], text: "에모스 · 보호자 면회 확인\n정서 반응 01 · 무반응 의심\n직원 동행 면회만 가능" }
+      - say: { channel: record, with: [], wait: 850, text: "에모스 · 보호자 면회 확인\n정서 반응 01 · 무반응 의심\n직원 동행 면회만 가능" }
       - say: { channel: action, with: [], text: "시트가 든 카트를 밀던 직원이 단말기와 지완의 얼굴을 번갈아 본다." }
       - say: { char: 지완, with: [], text: "지금 이름 부르는 소리가 났는데요. 한 번만 가 보면 안 돼요?" }
       - say: { channel: action, with: [], text: "교대할 간호사를 기다리라는 말에 지완은 문 앞에서 셋을 센다. 건너편에 아침에 장갑을 주워 준 여자가 앉아 있다." }

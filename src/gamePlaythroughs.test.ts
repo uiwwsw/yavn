@@ -452,9 +452,9 @@ describe('오버플로', () => {
     expect(call.filter((entry) => entry.channel === 'dialogue').map((entry) => entry.speaker))
       .toEqual(['문지완', '아버지 (통화)', '문지완', '아버지 (통화)', '문지완']);
     expect(call.some((entry) => entry.channel === 'message')).toBe(false);
-    expect(run.state.storyLog).toContainEqual(expect.objectContaining({
-      sceneId: 'shift', channel: 'action', text: expect.stringContaining('아버지 목소리가 아니다. 반찬집 아주머니다.'),
-    }));
+    const secondCall = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
+      .filter((entry) => entry.sceneId === 'shift' && entry.channel === 'dialogue');
+    expect(secondCall.slice(0, 2).map((entry) => entry.speaker)).toEqual(['문지완', '반찬집 아주머니 (통화)']);
   });
 
   it('통화를 미루면 음성 메시지가 남고 아버지에게 건네는 대답도 늦어진다', async () => {
