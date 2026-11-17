@@ -298,7 +298,7 @@ describe('ERASE', () => {
   ])('sends the selected text and receives its matching reply in Jisu’s chat (%s)', async (sent, reply) => {
     await start('erase');
     const route = { e0_studio: '오늘 보낼 수 있다고 한다', e0_jisu_text: sent };
-    const { state } = await play(route, state => state.currentSceneId === 'e0_club_arrival');
+    const { state } = await play(route, state => state.placeCaption?.text === '토요일 00:40 · 클럽');
     const messages = state.storyLog.flatMap(entry =>
       entry.kind === 'dialogue' && entry.channel === 'message' && entry.thread === '지수'
         ? [{ side: entry.side, text: entry.text, avatar: entry.avatar }]

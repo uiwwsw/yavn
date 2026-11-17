@@ -96,7 +96,7 @@ scenes:
       - goto: e0_club
 
   e0_club:
-    title: "민석의 연락"
+    title: "클럽"
     actions:
       - bg: { id: couple_home, transition: fade, duration: 570 }
       - place: { text: "그날 밤 · 도윤과 지수의 집", presentation: center }
@@ -115,7 +115,6 @@ scenes:
           char: 도윤
           with: []
           text: "아직 유부남 아님ㅋㅋ 지금 갈게"
-      - say: { channel: action, with: [도윤], text: "도윤은 현관에서 지수의 채팅방을 열려다 멈춘다." }
       - choice:
           key: e0_jisu_text
           prompt: "아, 잠깐. 지수한텐 뭐라고 하지?"
@@ -123,45 +122,31 @@ scenes:
           with: [도윤]
           options:
             - text: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
-              goto: e0_jisu_text_club
+              set:
+                e0_jisu_message: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
+                e0_jisu_reply: "클럽? ㅇㅋ 술 마시면 대리 불러"
             - text: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
-              goto: e0_jisu_text_brief
+              set:
+                e0_jisu_message: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
+                e0_jisu_reply: "ㅇㅋ 들어올 때 깨우진 마 ㅋㅋ"
             - text: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
-              goto: e0_jisu_text_late
-
-  e0_jisu_text_club:
-    actions:
+              set:
+                e0_jisu_message: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
+                e0_jisu_reply: "ㅇㅋ 늦으면 나 먼저 잘게. 운전은 하지 말고"
       - say:
           channel: message
           thread: 지수
           side: me
           char: 도윤
           with: []
-          text: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
+          text: "{{e0_jisu_message}}"
       - say:
           channel: message
           thread: 지수
           side: them
           char: 지수
           with: []
-          text: "클럽? ㅇㅋ 술 마시면 대리 불러"
-      - goto: e0_club_arrival
-
-  e0_jisu_text_brief:
-    actions:
-      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "민석이 잠깐 보자네. 12시 전엔 들어갈게" }
-      - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "ㅇㅋ 들어올 때 깨우진 마 ㅋㅋ" }
-      - goto: e0_club_arrival
-
-  e0_jisu_text_late:
-    actions:
-      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게" }
-      - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "ㅇㅋ 늦으면 나 먼저 잘게. 운전은 하지 말고" }
-      - goto: e0_club_arrival
-
-  e0_club_arrival:
-    title: "클럽"
-    actions:
+          text: "{{e0_jisu_reply}}"
       - bg: { id: club, transition: cut }
       - music: neon
       - place: { text: "토요일 00:40 · 클럽", presentation: center }
