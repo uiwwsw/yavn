@@ -583,6 +583,7 @@ scenes:
           enter: fadeIn
           inputLockMs: 300
       - char: { id: 도원, position: center }
+      - effect: focus
       - say:
           char: 서연.resolve
           with: [한명재, 도원]

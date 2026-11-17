@@ -110,7 +110,9 @@ scenes:
       - say: { char: 지완, with: [], text: "네. 제 목소리는 아실 거예요." }
       - say: { channel: action, with: [], sound: ward_door, text: "접수대 옆 자동문이 반쯤 열리다 멎는다." }
       - sound: read
+      - sticker: { id: o0_appeal, image: appeal_form_sticker, x: 50, y: 32, width: "clamp(150px, 24%, 280px)", enter: fadeIn }
       - say: { channel: record, with: [], wait: 850, text: "에모스 · 보호자 면회 확인\n정서 반응 01 · 무반응 의심\n직원 동행 면회만 가능" }
+      - clearSticker: { id: o0_appeal, leave: fadeOut }
       - say: { channel: action, with: [], text: "시트가 든 카트를 밀던 직원이 단말기와 지완의 얼굴을 번갈아 본다." }
       - say: { char: 지완, with: [], text: "잠깐만요. 안에서 제 이름 부른 거 같은데, 못 들어가요?" }
       - say: { channel: action, with: [], text: "교대할 간호사가 올 때까지 기다리라고 한다. 지완이 속으로 셋을 세는데, 건너편에 아침에 장갑을 주워 준 여자가 앉아 있다." }

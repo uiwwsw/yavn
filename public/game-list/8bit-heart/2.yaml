@@ -39,32 +39,15 @@ scenes:
 
   b2_parts:
     actions:
-      - choice:
-          key: b2_parts
-          presentation: explore
-          prompt: "계산대, 게임기, 로봇의 가슴 화면. 어디부터 볼까?"
-          with: [로봇]
-          camera: wide
-          options:
-            - text: "계산대 밑 건전지"
-              at: { x: 25, y: 60 }
-              when: { var: b_battery, op: eq, value: false }
+      - branch:
+          cases:
+            - when: { var: b_battery, op: eq, value: false }
               goto: b2_battery
-            - text: "게임기 CPU"
-              at: { x: 50, y: 40 }
-              when: { var: b_cpu, op: eq, value: false }
+            - when: { var: b_cpu, op: eq, value: false }
               goto: b2_cpu
-            - text: "가슴 화면 단자"
-              at: { x: 75, y: 60 }
-              when: { var: b_screen, op: eq, value: false }
+            - when: { var: b_screen, op: eq, value: false }
               goto: b2_screen
-            - text: "스위치를 올린다"
-              when:
-                all:
-                  - { var: b_battery, op: eq, value: true }
-                  - { var: b_cpu, op: eq, value: true }
-                  - { var: b_screen, op: eq, value: true }
-              goto: b2_boot
+          default: b2_boot
 
   b2_battery:
     actions:
@@ -123,7 +106,6 @@ scenes:
           char: 윤재
           motion: stomp
           with: [로봇]
-          continueLabel: "스위치 ON"
           text: "켠다. 하나, 둘. …둘 반."
       - effect: heal
       - say:

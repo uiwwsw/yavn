@@ -3483,6 +3483,7 @@ textarea,
 .effect-crown::after,
 .effect-eclipse::after,
 .effect-starfall::after,
+.effect-fireworks::after,
 .effect-inkstamp::after {
   content: '';
   position: absolute;
@@ -3574,6 +3575,19 @@ textarea,
   background-repeat: no-repeat;
   mix-blend-mode: screen;
   animation: starfallSweep 1.2s cubic-bezier(0.12, 0.68, 0.18, 1);
+}
+
+.effect-fireworks::after {
+  inset: 25% auto auto 62%;
+  width: clamp(110px, 34vmin, 270px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #e7ffda 0 3%, #afffa2 4%, transparent 15%),
+    repeating-conic-gradient(from 4deg, transparent 0 13deg, #a4ff91 14deg, transparent 15deg 22deg);
+  mask-image: radial-gradient(circle, #000 0 5%, transparent 15% 23%, #000 41%, transparent 67%);
+  mix-blend-mode: screen;
+  animation: fireworksBurst 1.1s ease-out both;
 }
 
 .effect-inkstamp::after {
@@ -3995,6 +4009,13 @@ textarea,
   0% { opacity: 0; transform: translate(-8%, -12%); filter: blur(2px); }
   24% { opacity: 0.96; }
   100% { opacity: 0; transform: translate(18%, 22%); filter: blur(0); }
+}
+
+@keyframes fireworksBurst {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.18); }
+  20% { opacity: .85; }
+  66% { opacity: .38; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.15); }
 }
 
 @keyframes inkStamp {
@@ -4462,6 +4483,7 @@ textarea,
   .effect-crown::after,
   .effect-eclipse::after,
   .effect-starfall::after,
+  .effect-fireworks::after,
   .effect-inkstamp::after {
     animation: none !important;
     opacity: 0 !important;

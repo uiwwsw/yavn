@@ -452,21 +452,17 @@ scenes:
     actions:
       - choice:
           key: b1_home
-          presentation: explore
           prompt: "가방은 현관에 두었다. 나가기 전에 집 안을 한 번 더 볼 수 있다."
           camera: wide
           options:
             - text: "침대"
-              at: { x: 16, y: 82 }
               when: { var: saw_ceiling, op: eq, value: false }
               goto: b1_look_bed
             - text: "책상 위"
-              at: { x: 53, y: 76 }
               when: { var: saw_box, op: eq, value: false }
               goto: b1_look_box
             - text: "켜진 모니터"
               saveText: "켜진 채로 둔 모니터"
-              at: { x: 76, y: 42 }
               when: { var: saw_dad, op: eq, value: false }
               goto: b1_look_monitor
             - text: "가방을 메고 나간다"
@@ -678,8 +674,7 @@ scenes:
           with: [로봇]
           text: "아니, 부르면 좀 돌아봐라. 그 정도는 되지?"
       - say:
-          char: 윤재
+          channel: action
           with: [로봇]
-          continueLabel: "로봇의 발목을 잡고 끈다"
-          text: "…무겁기만 해 봐라."
+          text: "윤재가 로봇의 발목을 잡고 골목 밖으로 끌고 간다."
       - goto: /2.yaml

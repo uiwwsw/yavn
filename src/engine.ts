@@ -133,6 +133,7 @@ const EFFECT_DURATIONS: Record<string, number> = {
   crown: 1200,
   eclipse: 1400,
   starfall: 1200,
+  fireworks: 1100,
   inkstamp: 720,
 };
 const DEFAULT_STICKER_ENTER_EFFECT: StickerEnterEffect = 'fadeIn';

@@ -19,8 +19,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "어제까지 쓰던 윤재의 휴대용 게임기가 먹통이다."
-          continueLabel: "전원을 켠다"
+          text: "윤재가 전원 버튼을 눌렀다. 어제까지 잘 켜지던 화면이 오늘은 그대로다."
       - sound: repair_switch
       - say: { char: 윤재, motion: puff, with: [비서], text: "아, 진짜. 하루야, 또 안 켜져. 어제 여기서 게임 껐는데." }
       - say: { char: 비서, with: [윤재], text: "사진에 모델 번호가 찍혔어요. 그걸로 찾아볼게요." }
@@ -30,15 +29,13 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "뒷덮개 틈에 손톱을 건다."
-          continueLabel: "건전지를 뺐다 끼운다"
+          text: "윤재가 뒷덮개를 열어 건전지를 뺐다 끼운다."
       - sound: repair_battery
       - effect: tilt
       - say:
           char: 비서
           with: [윤재]
           text: "아직 꺼져 있어요. 다음 댓글은 옆을 두 번 두드려 보래요. “살살”이래요."
-          continueLabel: "본체를 툭툭 친다"
       - sound: repair_tap
       - effect: shake
       - sticker: { id: s0_broken, image: console_old_line_sticker, enter: none }
@@ -46,7 +43,6 @@ scenes:
           char: 비서
           with: [윤재]
           text: "줄이 하나 떴어요. 글 맨 밑에는 ‘카트리지 빼서 후 불었더니 됨’이 있어요."
-          continueLabel: "카트리지에 입김을 분다"
       - sound: repair_breath
       - effect: { name: focus, wait: true }
       - sticker: { id: s0_broken, image: console_old_sticker, enter: none }
@@ -620,10 +616,7 @@ scenes:
           motion: bounce
           with: [비서]
           text: "샀어. 야, 앱 닫아 줘. 잔액은 읽지 말고."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "55,000원입니다."
+      - wait: 0
       - clearSticker: { id: s0_cheap, leave: fadeOut }
       - wait: 0
       - say:
@@ -659,11 +652,7 @@ scenes:
           char: 비서
           with: [윤재]
           text: "윤재 님이 설명하는 걸 좋아하셔서요."
-      - say:
-          char: 윤재
-          motion: freeze
-          with: [비서]
-          text: "……."
+      - sticker: { id: s0_boot, image: console_cheap_sticker, x: 50, y: 35, width: "clamp(160px, 42%, 280px)", enter: fadeIn }
       - say:
           char: 윤재
           motion: lean_in
@@ -678,19 +667,15 @@ scenes:
           motion: gasp
           with: [비서]
           text: "켜졌다!!! 켜졌어! 화면도 깨끗해. 세로줄 하나 없어!"
+      - clearSticker: { id: s0_boot, leave: fadeOut }
       - say:
-          char: 비서
-          with: [윤재]
-          text: "무슨 소리였나요? 지금 난 소리요."
-      - say:
-          char: 윤재
-          with: [비서]
-          text: "저 모델 켜면 맨 처음에 나는 소리야."
+          channel: thought
+          with: []
+          text: "켜질 때 나는 소리. 오랜만이다."
       - say:
           char: 윤재
           motion: puff
           with: [비서]
-          continueLabel: "START 버튼을 누른다"
           text: "…아저씨 진짜. B 버튼만 뻑뻑하다며. START도 안 눌리잖아."
       - say:
           char: 윤재
@@ -775,7 +760,6 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          continueLabel: "불을 끈다"
           text: "잘 자라 너도."
       - say:
           char: 비서

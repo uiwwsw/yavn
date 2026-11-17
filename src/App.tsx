@@ -33,7 +33,7 @@ import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
 import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
-import { interpolateText, resolvePlayerName } from './textVariables';
+import { interpolateText, resolvePlayerCharacterId, resolvePlayerName } from './textVariables';
 import { choiceSaveValue } from './history';
 import './characterPresentation.css';
 import './characterEmotes.css';
@@ -1810,6 +1810,10 @@ export default function App() {
   const messagePortrait = dialogChannel === 'message'
     ? resolveRuntimeAssetUrl(game?.ui?.messagePortrait, baseUrl, assetOverrides)
     : undefined;
+  const playerCharacterId = useMemo(
+    () => resolvePlayerCharacterId(game, playerName, routeVars),
+    [game, playerName, routeVars],
+  );
 
   const [bootMode, setBootMode] = useState<BootMode>(
     () => resolveInitialBootPresentation(window.location.pathname).bootMode,
@@ -4915,6 +4919,16 @@ export default function App() {
   const readingSpeaker = choiceGate.active
     ? (hasStageApproach ? undefined : choicePlayerName)
     : dialogSpeaker ?? (dialogHasText && playerName === '???' && dialogChannel === 'narration' ? playerName : undefined);
+  const hasPlayerOnStage = !messagePortrait && visibleCharactersByPosition.some(({ slot }) =>
+    slot.id === playerCharacterId
+    && (slot.placement === 'stage-bottom' || (slot.placement === 'prompt-top' && promptTopBaselineReady)),
+  );
+  const showPlayerBadge = game && !hasPlayerOnStage && !startGate && !chapterCurtainVisible
+    && !videoCutscene.active && !isFinished && !gameOver && dialogChannel !== 'card';
+  const playerAsset = showPlayerBadge && playerCharacterId ? game.assets.characters[playerCharacterId]?.base : undefined;
+  const playerPortrait = playerAsset && !/\.json(?:[?#]|$)/i.test(playerAsset)
+    ? resolveRuntimeAssetUrl(playerAsset, baseUrl, assetOverrides)
+    : undefined;
 
   return (
     <>
@@ -5150,6 +5164,12 @@ export default function App() {
             <div className="hud-chapter-progress" aria-label={uiLanguage === 'en' ? `Chapter ${chapterIndex} of ${chapterTotal}` : `전체 ${chapterTotal}장 중 ${chapterIndex}장`}>
               <span aria-hidden="true">{uiLanguage === 'en' ? `Chapter ${chapterIndex}` : `${chapterIndex}장`}</span>
               <span className="hud-chapter-total" aria-hidden="true">/ {chapterTotal}</span>
+            </div>
+          )}
+          {showPlayerBadge && (
+            <div className="hud-pov">
+              <PhoneAvatar src={playerPortrait} name={playerPortrait ? undefined : '?'} />
+              <span className="hud-pov-name">{playerName ? `${t("나")} · ${playerName}` : choicePlayerName}</span>
             </div>
           )}
           {placeCaption && (
