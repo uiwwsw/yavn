@@ -215,6 +215,13 @@
   }
 }
 
+@media (max-height: 500px) and (orientation: landscape) {
+  .exploration-field:not(.approach-field, .investigation-field) {
+    top: max(108px, var(--stage-safe-block-start));
+    bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 22px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .app .dialog-action-button, .app .exploration-target { transition: none; }
 }
