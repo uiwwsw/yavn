@@ -610,7 +610,7 @@ scenes:
           text: "불길이 짚을 타고 안쪽으로 번졌다. 복면은 그 틈에 사라졌다."
       - say:
           channel: narration
-          text: "불을 끄고 안쪽에 닿았을 때, 막쇠는 얼음에 등을 기댄 채 눈을 감고 있었다."
+          text: "불길을 잡고 돌아오니 막쇠가 얼음에 기대 있었다. 왼쪽 옆구리를 누른 손 사이로 피가 흘렀다."
       - set: { makssoe_alive: false }
       - goto: c4_farewell
 

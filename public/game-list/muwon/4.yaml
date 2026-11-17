@@ -9,6 +9,7 @@ scenes:
     title: "형조 대청"
     actions:
       - bg: { id: hyeongjo_hall, transition: fade, duration: 900 }
+      - place: "10월 1일 · 형조 대청"
       - music: pressure
       - set: { credibility: 3, truth: 0 }
       - say:

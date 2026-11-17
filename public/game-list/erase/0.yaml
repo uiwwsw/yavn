@@ -48,7 +48,7 @@ scenes:
       - say: { char: 도윤.smile, with: [지수], text: "네가 곱빼기 먹어. 한 입인 적이 없잖아." }
       - say: { char: 지수, with: [도윤], text: "그러면 다 먹어야 되잖아." }
       - say: { channel: action, with: [지수, 도윤], text: "촬영 조명이 꺼진 틈에 지수가 휴대폰을 꺼낸다. 화면에 식장 계좌가 떠 있다." }
-      - say: { char: 지수, with: [도윤], text: "아, 식장 계약금. 오늘까지다. 내가 보낼게. 이체 내역 카톡으로 주면 저장해 둬." }
+      - say: { char: 지수, with: [도윤], text: "아, 식장 계약금 오늘까지다. 내가 먼저 보낼게. 카톡으로 이체 내역 보내 줄 테니까 저장해 둬." }
       - say: { char: 도윤, with: [지수], text: "응. 내 몫은 이따 바로 보낼게." }
       - say: { char: 지수, with: [도윤], text: "지난번에도 이따 보낸다 그러고 내가 또 물어봤잖아." }
       - say: { char: 도윤, with: [지수], text: "그땐 월급 들어오기 전이라 돈이 좀 모자랐어." }
@@ -335,7 +335,7 @@ scenes:
           char: 준성
           speakerName: "낯선 남자"
           with: [도윤]
-          text: "이제 물 마실래요? 내일 또 일정 있을 텐데."
+          text: "물 좀 마실래요? 아침에 일정 있으면 지금 그만 마시는 게 낫겠어요."
       - say:
           char: 도윤
           motion: laugh

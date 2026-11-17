@@ -16,6 +16,11 @@ scenes:
           text: "FINAL STAGE\n식량 원정에서 돌아온 지 4일"
       - place: "북쪽 데이터센터 · 코어실 입구"
       - say:
+          char: 로봇
+          with: [윤재]
+          when: { var: m_snack, op: eq, value: false }
+          text: "가방 가벼움. 아껴 둔 복숭아도 다음 날 아침에 다 먹었고."
+      - say:
           char: 윤재
           with: [로봇]
           text: "네가 말한 드론 신호가 여기서 나오는 거지? 최종 던전 입구. BGM 바뀐 거 들리냐."

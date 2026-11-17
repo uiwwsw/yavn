@@ -64,8 +64,9 @@ scenes:
     actions:
       - bg: ward_entry
       - char: { id: 지완, position: left }
-      - say: { channel: action, with: [], text: "서명하자 새 면회증이 나온다. ‘동행’ 칸이 비어 있다." }
-      - bg: ward_bed
+      - say: { channel: action, with: [], sound: ward_door, text: "새 면회증의 ‘동행’ 칸은 비어 있다. 문에 대자 녹색 불이 켜진다." }
+      - bg: { id: ward_bed, transition: dissolve, duration: 420 }
+      - place: "같은 날 아침 · 신경과 308호"
       - char: { id: 동식, position: right }
       - say: { char: 동식, with: [지완], text: "오늘은 문이 바로 열리디?" }
       - say: { char: 지완, with: [동식], text: "네. 이제 그냥 들어오면 된대요." }
@@ -82,6 +83,7 @@ scenes:
       - say: { channel: action, with: [], text: "세라가 의자를 빼 준다. 여자는 아이 외투 지퍼를 올려 주고 앉는다." }
       - say: { channel: action, with: [], text: "신청서를 건네자 여자가 묻는다. “제가 어제 접수된 것부터 볼 수 있어요?”" }
       - say: { char: 지완, with: [세라], text: "네. 보고 오세요. 저 여기 있을게요." }
+      - say: { channel: action, with: [], text: "잠시 뒤, 접수표를 보고 돌아온 여자가 빈칸에 이름을 쓴다. “제 것도 같이 내 주세요.”" }
       - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 제한 전 직원 확인. 당사자에게 판독 근거 제공.\n검토 중 · 서명 2건" }
       - bg: { id: dongsik_house, transition: fade, duration: 800 }
       - place: "아버지 퇴원 뒤, 일요일 · 아버지 집"

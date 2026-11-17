@@ -848,12 +848,13 @@ scenes:
           text: "전산 기록이면 누가 수정했을 수도 있죠."
       - say:
           char: 은숙.sharp
-          when: { var: tampered, op: gt, value: 0 }
+          when: { var: t_form, op: eq, value: true }
           with: [해수]
           text: "근데 제 휴대폰에 있는 사진까지 바뀌었어요."
       - mood: { tone: dread, level: 1 }
       - say:
           char: 은숙
+          when: { var: t_form, op: eq, value: true }
           with: [해수]
           text: "제 폰으로 찍었어요. 어제 녹화실에서."
       - say:

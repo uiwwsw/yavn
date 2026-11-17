@@ -170,6 +170,23 @@ const finished = (run: Run): void => {
 describe('8비트 심장', () => {
   const CHEAP = '중고 게임기를 산다';
 
+  it('shows the overnight cut before the secondhand console is picked up', async () => {
+    await start('8bit-heart');
+    const route = { b0_buy: CHEAP };
+    const night = await play(route, state => state.dialog.fullText === '55,000원입니다.');
+    expect(night.state.inventory.console_cheap).toBeFalsy();
+
+    const morning = await play(route, state => state.dialog.fullText === '다음 날 아침');
+    expect(morning.state.dialog.channel).toBe('card');
+    expect(morning.state.inventory.console_cheap).toBeFalsy();
+
+    const notice = await play(route, state => state.dialog.fullText.includes('현관에 뭔가 놓였습니다'));
+    expect(notice.state.inventory.console_cheap).toBeFalsy();
+
+    const unpacked = await play(route, state => state.dialog.fullText === '신문지가 뭔가요?');
+    expect(unpacked.state.inventory.console_cheap).toBe(true);
+  });
+
   it('opens with four repair actions and only lights the old screen after tapping it', async () => {
     await start('8bit-heart');
     const current = useVNStore.getState;
@@ -209,7 +226,7 @@ describe('8비트 심장', () => {
       b1_home: '침대||책상 위||켜진 모니터||가방을 메고 나간다',
       b2_parts: '계산대 밑 건전지||게임기 CPU||가슴 화면 단자||스위치를 올린다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
-      b3_snack: '복숭아를 다 먹는다',
+      b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '끝까지 함께하겠다고 약속한다',
       b4_save: '새끼손가락 약속',
@@ -249,6 +266,7 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '이번엔 어')).toBe(false);
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
+    expect(heard(run.shown, '아껴 둔 복숭아도 다음 날 아침에 다 먹었고')).toBe(true);
   });
 });
 
@@ -337,6 +355,7 @@ describe('튜토리얼', () => {
     expect(heard(run.shown, '혼자 다 먹지도 못하면서 왜 사느냐고')).toBe(true);
     expect(heard(run.shown, '틀린 말은 아니더라. 혼자 그걸 다 먹을 수는 없지')).toBe(true);
     expect(heard(run.shown, '신고할 때 저 말을 그대로 따라 했대요')).toBe(true);
+    expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(false);
     // 상혁 opens the door a crack for someone who has been looking after him.
     expect(heard(run.shown, '밥 고맙다. 네 차례 아니었잖아')).toBe(true);
   });
@@ -391,6 +410,7 @@ describe('튜토리얼', () => {
     finished(run);
     expect(heard(run.shown, '나한테 지르지 말라는 거야')).toBe(true);
     expect(heard(run.shown, '무슨 말인지는 모르겠고 계속 지르기만 한다')).toBe(true);
+    expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(true);
     expect(heard(run.shown, '대답이 없다. 의자가 한 번 더 끌린다')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서')).toBe(false);
     expect(heard(run.shown, '밥 고맙다')).toBe(false);
@@ -436,9 +456,9 @@ describe('오버플로', () => {
       '정서 반응 01 · 무반응 의심', '아침에 장갑을 주워 준 여자가 앉아 있다',
       '월계역에서 장갑 떨어뜨린 사람', '01 뜬 분을 봤어요', '아침에 뵀죠?',
       '한수경이에요. 접수대에 뜬 그 화면, 제가 만들었어요.',
-      '시험 신호 101 → 표시 01', '여기도 이름은 안 넣을게요', '반만 얼리기로 했잖아요',
+      '시험 신호 101 → 표시 01', '저장하는 파일엔 이름을 안 넣을게요', '반만 얼리기로 했잖아요',
       '반찬집 아주머니 목소리가 나와서요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
-      '아까는 옆에 앉으라고 하셨잖아요', '공동 이의신청 접수', '반만 얼렸다',
+      '아까는 옆에 앉으라고 하셨잖아요', '제 것도 같이 내 주세요', '공동 이의신청 접수', '반만 얼렸다',
     ];
     const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
     expect(beats.filter((_, index) => positions[index] < 0)).toEqual([]);

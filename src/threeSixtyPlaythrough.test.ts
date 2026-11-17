@@ -155,6 +155,27 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '그날 누나가 그려 온 불꽃이다')).toBe(false);
   });
 
+  it('does not remember a blocked movement when Minjae chose to stay in the ward', async () => {
+    await start();
+    const { state, shown } = await play({
+      star: STAR_1894,
+      l1_rice: SHUT,
+      l1_leave: STAY,
+      v1: '자유롭게 살고 싶었던 마음',
+      l2_heart: CONFESS,
+      l2_mother: SLIP_OUT,
+      v2: '사람을 믿은 후회',
+      l3_open: '엄마를 가게로 돌려보낸다.',
+      l3_out: '병실에 남는다.',
+    }, 'v3');
+
+    expect(state.choiceGate.key).toBe('v3');
+    expect(state.routeVars.l3_out_blocked).toBe(false);
+    expect(heard(shown, '엄마가 동의서를 들고 서 있던 게 생각난다')).toBe(true);
+    expect(heard(shown, '그날 난간을 쥔 손은 아무리 힘을 줘도 펴지지 않았다')).toBe(false);
+    expect(heard(shown, '그날 누나가 그려 온 불꽃이다')).toBe(true);
+  });
+
   it('ends the run at the first light when the player stays and offers that choice again', async () => {
     await start();
     const { state, picked } = await play({ where_am_i: '지옥', first_light: '그대로 있는다.' });

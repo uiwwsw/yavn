@@ -1074,6 +1074,12 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1200 }
       - music: wind
+      - place: "다음 날 오전 9:00 · 보건소"
+      - say:
+          channel: action
+          with: []
+          continueLabel: "번호표를 뽑는다"
+          text: "목요일엔 이 기계 앞에서 돌아섰다. 오늘은 버튼 앞에 선다."
       - sticker:
           id: e4_ticket
           image: ticket_sticker
@@ -1083,11 +1089,10 @@ scenes:
           enter: fadeIn
           inputLockMs: 400
       - get: test_ticket
-      - place: "다음 날 오전 9:00 · 보건소"
       - say:
           channel: action
           with: []
-          text: "목요일에는 세 걸음 앞에서 돌아섰다. 오늘은 버튼을 누르고 앉는다."
+          text: "47번이 찍힌 종이를 뽑아 들고 대기석에 앉는다."
       - say:
           channel: system
           with: []

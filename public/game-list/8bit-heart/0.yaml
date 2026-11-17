@@ -403,7 +403,7 @@ scenes:
           autoAdvance: 1550
           side: me
           with: []
-          text: "3만에 해주시면 오늘 밤에 바로 보낼게요"
+          text: "3만 원에 해주시면 지금 바로 입금할게요"
       - say:
           channel: message
           autoAdvance: 2000
@@ -485,7 +485,7 @@ scenes:
           channel: message
           side: me
           with: []
-          text: "택배 언제 와요?"
+          text: "언제 받을 수 있어요?"
       - say:
           channel: message
           side: them
@@ -624,13 +624,13 @@ scenes:
           char: 비서
           with: [윤재]
           text: "55,000원입니다."
+      - clearSticker: { id: s0_cheap, leave: fadeOut }
+      - effect: { name: darken, wait: true }
       - say:
-          char: 윤재
-          motion: stomp
-          with: [비서]
-          text: "안 본다고 했잖아!"
-      - get: console_cheap
-      - place: "다음 날 · 윤재의 방"
+          channel: card
+          with: []
+          text: "다음 날 아침"
+          autoAdvance: 1300
       - move: { id: 윤재, style: reset }
       - say:
           char: 비서
@@ -641,20 +641,16 @@ scenes:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "왔다! 들고 들어올게. …아 진짜 신문지로만 쌌네. 상자도 없어?"
+          text: "왔다! …진짜 신문지로만 쌌네. 상자는 없고."
+      - get: console_cheap
       - say:
           char: 비서
           with: [윤재]
           text: "신문지가 뭔가요?"
       - say:
-          char: 윤재
-          motion: headtilt
-          with: [비서]
-          text: "…너 진짜 몰라?"
-      - say:
           char: 비서
           with: [윤재]
-          text: "압니다. 뉴스를 종이에 인쇄한 거죠. 국내 마지막 종이신문은 2041년에 나왔습니다."
+          text: "사실 알아요. 국내 마지막 종이신문은 2041년에 나왔죠."
       - say:
           char: 윤재
           with: [비서]

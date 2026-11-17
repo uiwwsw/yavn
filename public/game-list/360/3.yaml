@@ -118,6 +118,7 @@ scenes:
     title: "녹취 12"
     actions:
       - bg: { id: interview_room, transition: fade, duration: 900 }
+      - place: "3월 말 · 구산동 다온이네"
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "3월 말, 구산동. 녹취 사용 동의를 다시 받으러 다온이네 초인종을 눌렀다. 어머니가 현관에서 맞아 주셨다." }
       - char: { id: 다온, position: right }
@@ -160,6 +161,7 @@ scenes:
   munho_home:
     title: "파주"
     actions:
+      - effect: { name: darken, wait: true }
       - bg: { id: interview_room, transition: fade, duration: 900 }
       - place: "4월 · 파주 오문호 씨 자택"
       - char: { id: 지안, position: left }

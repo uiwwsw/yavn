@@ -618,6 +618,7 @@ scenes:
           text: "밥은 해 놨어. 네 것도."
       - wait: 0
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
+      - place: "5월 2일 · 그린마트 고객센터"
       - say:
           channel: message
           side: them
@@ -640,7 +641,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "5월 2일 · 그린마트 고객센터\n띵동 — 001번 고객님, 고객센터로 오세요."
+          text: "띵동 — 001번 고객님, 고객센터로 오세요."
           wait: 700
       - char: { id: 해수, position: left, emotion: service }
       - wait: 0
@@ -913,6 +914,7 @@ scenes:
       - move: { id: 은숙, style: reset }
       - bg: { id: cs_desk, transition: fade, duration: 1200 }
       - mood: off
+      - place: "그날 오후 · 고객센터"
       - say:
           channel: record
           with: []
@@ -926,7 +928,6 @@ scenes:
           channel: thought
           with: []
           text: "하루 먼저 봤으면 달랐을 거라고는 못 하겠다. 봤어도 접수증을 써 드렸을 것 같다."
-      - place: "그날 오후 · 고객센터"
       - char: { id: 지영, position: right }
       - say:
           char: 지영

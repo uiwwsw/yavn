@@ -496,7 +496,7 @@ scenes:
           prompt: "\"3.5조각. 네 몫. 받아.\""
           char: 로봇
           options:
-            - text: "복숭아를 다 먹는다"
+            - text: "내 몫의 복숭아를 다 먹는다"
               saveText: "\"3.5는 무슨.\" 반쪽까지 집어 먹는다"
               add: { bond: 1 }
               set: { m_snack: true }

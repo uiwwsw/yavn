@@ -78,20 +78,23 @@ scenes:
           text: "모르겠습니다."
       - say:
           char: 윤재
+          when: { var: bought_premium, op: eq, value: false }
           with: []
           text: "B버튼? 아직 뻑뻑해. 돔 안 갈았어. 그냥 세게 누르면 돼."
       - say:
           char: 비서
+          when: { var: bought_premium, op: eq, value: false }
           with: [윤재]
           text: "부품은 아직 장바구니에 있습니다. 1,000원이에요."
       - say:
           char: 윤재
+          when: { var: bought_premium, op: eq, value: false }
           with: []
           text: "근데 세게 누르면 엄지가 아파."
       - say:
           char: 윤재
           with: []
-          text: "봐 봐, 빨갛잖아. …아 맞다. 보고 싶으면 사진 찍어 줘야 되지."
+          text: "엄지 빨간 거 봐. …아 맞다. 사진 찍어 줘야 보지."
       - say:
           char: 비서
           with: [윤재]
@@ -326,17 +329,25 @@ scenes:
     actions:
       - say:
           char: 윤재.scared
+          when: { var: bought_premium, op: eq, value: false }
           with: []
           text: "글자 찍힌 얇은 종이야. 있잖아, 아저씨가 게임기를 그걸로 세 겹 싸 줬어. …하루야."
       - say:
           char: 비서.dead
+          when: { var: bought_premium, op: eq, value: false }
           with: [윤재]
           text: "…세 겹. 기록했습니다."
       - say:
           char: 윤재.scared
           motion: lean_in
+          when: { var: bought_premium, op: eq, value: false }
           with: []
           text: "테이프도 꼼꼼했어. 그것도 적어. 아저씨 양심 있다고 적어."
+      - say:
+          char: 윤재.scared
+          when: { var: bought_premium, op: eq, value: true }
+          with: []
+          text: "뉴스를 종이에 찍은 거야. 한 장씩 넘겨서 읽는 거. …하루야, 들려?"
       - say:
           char: 비서.dead
           with: [윤재]
@@ -511,7 +522,7 @@ scenes:
           channel: card
           with: []
           text: "CONTINUE?\n재난 3일 뒤"
-      - place: "윤재네 집 · 재난 3일째 아침"
+      - place: "윤재네 집 · 재난 사흘 뒤 아침"
       - char: { id: 윤재, position: center }
       - say:
           char: 윤재
@@ -758,7 +769,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "제일 짜증 나는 건 뭔지 알아? 걔 마지막 말이 '신문지가 뭐냐'야."
+          text: "제일 짜증 나는 건 뭔지 알아? 걔가 마지막으로 물어본 게 '신문지가 뭐냐'야."
       - say:
           char: 윤재
           with: []

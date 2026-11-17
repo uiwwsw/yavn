@@ -846,7 +846,7 @@ scenes:
     title: "1, 2, 7, 0"
     actions:
       - bg: { id: home_hall, transition: fade, duration: 900 }
-      - place: "4월 22일 밤 11:00 · 집"
+      - place: "다음 날 마감 뒤 · 4월 22일 밤 11:00 · 집"
       - say:
           char: 해수
           with: []
