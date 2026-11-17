@@ -36,9 +36,9 @@ scenes:
   phone_reply:
     actions:
       - set: { picked_up: false }
-      - say: { char: 지완, channel: message, side: me, with: [], text: "출근 중이에요 이따 전화할게요" }
-      - say: { char: 동식_연락처, channel: message, side: them, with: [], text: "네 거 국 빼 놨다. 냄비째 얼려도 되냐" }
-      - say: { char: 지완, channel: message, side: me, with: [], text: "반만 얼려요 작은 통에. 일요일에 갈게요" }
+      - say: { char: 지완, channel: message, thread: 아버지, side: me, with: [], text: "출근 중이에요 이따 전화할게요" }
+      - say: { char: 동식_연락처, channel: message, thread: 아버지, side: them, with: [], text: "네 거 국 빼 놨다. 냄비째 얼려도 되냐" }
+      - say: { char: 지완, channel: message, thread: 아버지, side: me, with: [], text: "반만 얼려요 작은 통에. 일요일에 갈게요" }
       - goto: dropped_glove
 
   dropped_glove:
@@ -64,7 +64,7 @@ scenes:
     actions:
       - say: { char: 도겸, with: [지완], text: "저래도 역무원 불러 주는 건 좋아요. 지난겨울엔 우리 엄마 밀친 사람 잡았거든요." }
       - say: { char: 지완, with: [도겸], text: "예. 저분도 얘기 좀 듣고 보내 줬으면 좋겠네요." }
-      - say: { channel: action, with: [], text: "남자가 역무원에게 이름을 불러 준다. 지완도 학생 때 렌즈 경보가 세 번 울려 실습 배정에서 빠진 적이 있다. 그날 아버지가 지완을 데리러 학교에 왔다." }
+      - say: { channel: action, with: [], text: "남자가 역무원에게 이름을 불러 준다. 지완은 학교 복도에서 아버지를 기다리던 날을 떠올린다. 그날도 처음엔 선생님이 지완에게 이름만 물었다." }
       - goto: warehouse_call
 
   warehouse_call:
@@ -110,5 +110,5 @@ scenes:
       - say: { channel: action, with: [지완, 수경], camera: wide, text: "지완이 면회표를 들고 돌아서자 건너편 의자에서 아침에 장갑을 주워 준 여자가 일어난다." }
       - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "월계역에서 뵀죠? 방금 01 때문에 문이 안 열린 거예요?" }
       - say: { char: 지완, with: [수경], text: "네. 제가 뭘 더 해야 들어갈 수 있는지 모르겠어요." }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "아침에 병원 길 물었잖아요. 저 표시가 환자 보호자한테도 뜨는지 확인하러 왔어요. 면회 기다리시는 동안 잠깐 얘기할 수 있을까요?" }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "아침에 길 물어본 것도 이 일 때문이었어요. 저 화면을 만든 팀에서 일해요. 면회 기다리시는 동안 잠깐 얘기할 수 있을까요?" }
       - goto: /1.yaml

@@ -92,7 +92,7 @@ scenes:
     title: "고객센터"
     actions:
       - bg: { id: cs_desk, transition: fade, duration: 700 }
-      - place: { text: "027번 호출 전 · 그린마트 상봉점 고객센터", presentation: center }
+      - place: { text: "그날 오전, 027번 호출 전 · 그린마트 고객센터", presentation: center }
       - wait: 0
       - char: { id: 해수, position: left }
       - char: { id: 경준, position: right }
@@ -165,7 +165,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "마감 고마워. 너 여기 온 지 딱 12년이더라. 인사팀 메일에 써 있었어. 2019년 4월 11일 입사."
+          text: "오늘 마감 바꿔 줘서 고마워. 아, 인사팀 메일 봤어? 너 여기 온 지 오늘로 딱 12년이래."
       - sticker: { id: coupon, image: coupon_sticker, x: 62, y: 34, width: "240px", rotate: -4, enter: popIn }
       - say: { char: 해수, with: [지영], text: "오늘이었어요?" }
       - say:

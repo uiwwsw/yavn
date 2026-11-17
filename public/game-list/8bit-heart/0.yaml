@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 0 · 2063년 새벽 2시\n윤재의 방"
+          text: "STAGE 0 · 2063년 밤 11시\n윤재의 방"
       - place: "윤재의 방"
       - char: { id: 윤재, position: left }
       - char: { id: 비서, position: right }
@@ -457,7 +457,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "판매자: 아침에 그쪽 지나가요 문 앞에 놓을게요"
+          text: "판매자: 내일 아침 그쪽 지나가요 문 앞에 놓을게요"
       - say:
           char: 윤재
           with: [비서]
@@ -574,7 +574,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "판매자: ㅇㅋ 내일 문 앞"
+          text: "판매자: 확인했어요 내일 아침에 둘게요"
       - say:
           char: 윤재.excited
           motion: bounce
@@ -724,10 +724,10 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "잘 자라 너도."
+          text: "오늘은 한 판만 더 할게. 하루야, 밤 열한 시에 알려 줘."
       - say:
           char: 비서
           with: [윤재]
-          text: "저는 안 잡니다. 세 시에 업데이트가 있어서요."
+          text: "네. 그리고 정기 업데이트는 평소처럼 새벽 세 시에 할게요."
       - clearSticker: { id: s0_cheap, leave: fadeOut }
       - goto: /1.yaml

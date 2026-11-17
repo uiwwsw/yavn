@@ -365,7 +365,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…안 해. 업데이트 받고 죽었어. 열하루 됐어."
+          text: "…안 해. 그날 오후에 긴급 업데이트 받고 꺼졌어. 오늘로 열흘 됐어."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -708,7 +708,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…모르겠어. 열하루 생각했는데 아직 몰라."
+          text: "…열흘 내내 생각했는데 아직도 모르겠어."
       - wait: 270
       - say:
           char: 로봇

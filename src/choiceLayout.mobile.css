@@ -3,7 +3,8 @@
 @media (max-width: 768px) {
   .choice-gate-options[data-choice-count='2'],
   .choice-gate-options[data-choice-count='3'],
-  .choice-gate-options[data-choice-count='4'] {
+  .choice-gate-options[data-choice-count='4'],
+  .choice-gate-options[data-choice-count='5'] {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 

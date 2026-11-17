@@ -176,6 +176,8 @@ describe('8비트 심장', () => {
     const route = { b0_buy: CHEAP };
     const night = await play(route, state => state.dialog.fullText.includes('잔액은 읽지 말고.'));
     expect(night.state.inventory.console_cheap).toBeFalsy();
+    expect(heard(night.shown, '2063년 밤 11시')).toBe(true);
+    expect(heard(night.shown, '내일 아침에 둘게요')).toBe(true);
 
     const morning = await play(route, state => state.effect === 'darken' || state.dialog.fullText === '다음 날 아침');
     expect(morning.state.dialog.fullText).toBe('다음 날 아침');
@@ -260,6 +262,9 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
     expect(heard(run.shown, '나간 쪽이 게임기 사 줬어')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
+    const warning = run.shown.findIndex(text => text.includes('재가동하려면 최고 점수를 지워야 한다'));
+    expect(warning).toBeGreaterThan(-1);
+    expect(run.shown.findIndex(text => text.includes('HI-SCORE 0999990 — 삭제됨'))).toBeGreaterThan(warning);
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
     expect(heard(run.shown, '아껴 둔 복숭아도 다음 날 아침에 다 먹었고')).toBe(true);
@@ -425,9 +430,18 @@ describe('튜토리얼', () => {
 
   it('cuts the local fan and screen on confirmation and restores a dark, quiet save', async () => {
     await start('tutorial');
-    const route = { ...honestRoute, t4_end: '세션 종료 창을 연다', __input: '0001' };
+    const route = {
+      ...honestRoute,
+      t1_pencil: '연필을 내려놓는다',
+      t1_pencil_again: '귀 뒤의 밴드를 뗀다',
+      t4_end: '세션 종료 창을 연다',
+      __input: '0001',
+    };
     const before = await play(route, state => state.dialog.continueLabel === '0001번 세션을 종료한다');
     expect(before.state.currentSceneId).toBe('end_close');
+    expect(heard(before.shown, '바닥에 닿는다')).toBe(true);
+    expect(heard(before.shown, '자동 접속되었습니다')).toBe(true);
+    expect(heard(before.shown, '번호표 발급기 · 2031.04.13 00:56')).toBe(true);
     expect(before.state.currentMusic).toContain('/fan_idle.flac');
     expect(before.state.background).toContain('/server_room.svg');
 
@@ -571,6 +585,10 @@ describe('오버플로', () => {
     const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
       .filter(entry => entry.sceneId === 'phone_reply');
     expect(messages.map(entry => entry.side)).toEqual(['me', 'them', 'me']);
+    expect(messages.map(entry => entry.thread)).toEqual(['아버지', '아버지', '아버지']);
+    expect(run.state.storyLog).toContainEqual(expect.objectContaining({
+      sceneId: 'hospital_message', thread: '월계병원',
+    }));
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
       sceneId: 'hospital_message', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
     }));
@@ -578,6 +596,23 @@ describe('오버플로', () => {
     expect(consent).toBeGreaterThan(-1);
     expect(heard(run.shown.slice(consent), '센서 입력 101 / 렌즈 표시 01')).toBe(true);
     expect(heard(run.shown.slice(consent), '308호')).toBe(false);
+  });
+
+  it('shows the old slip next to a withdrawn verdict without inventing a first reading', async () => {
+    await start('overflow');
+    const run = await play({
+      o0_call: '전화를 받는다',
+      o1_trust: '이름을 가리고 기록을 보여준다',
+      o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
+      o2_father: '겁났다고 말한다',
+      o4_end: '내 기록의 정정을 신청한다',
+    });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe('one_file');
+    const oldSlip = run.shown.findIndex(text => text.includes('결과지를 나란히 놓는다'));
+    expect(oldSlip).toBeGreaterThan(-1);
+    expect(run.shown[oldSlip + 1]).toContain('‘무반응 의심’ 판정 철회');
+    expect(run.shown[oldSlip + 1]).not.toContain('101');
   });
 
   it('starts a saved 3.0 chapter at its new opening and preserves prior decisions and evidence', async () => {

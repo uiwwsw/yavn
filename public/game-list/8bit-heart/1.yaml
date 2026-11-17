@@ -160,7 +160,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "윤재 님. 지금 업데이트를 받고 있습니다. 오 분쯤 걸려요."
+          text: "윤재 님. 코어에서 긴급 업데이트를 보내고 있어요. 오 분쯤 걸려요."
       - say:
           char: 윤재
           with: []
@@ -168,7 +168,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "다시 받고 있습니다."
+          text: "윤재 님, 이건 미룰 수 없어요."
       - say:
           channel: system
           with: []
@@ -550,7 +550,7 @@ scenes:
           text: "큰길에 차가 비스듬히 서 있다. 문이 열린 채로 안에 사람은 없고, 열쇠만 꽂혀 있다."
       - say: { channel: action, with: [], text: "큰길을 피해 골목으로 갔다. 셔터가 반쯤 열린 편의점에서 멈췄다." }
       - say: { channel: action, with: [], text: "지금은 계산대 뒤에 종이 상자를 펴고 잔다." }
-      - say: { channel: thought, with: [], text: "아빠는 이제 안 기다릴 거다." }
+      - say: { channel: thought, with: [], text: "떠날 때 현관에 ‘편의점’이라고 써 붙였다. 아빠가 집에 오면 보겠지." }
       - say: { channel: thought, with: [], text: "컵라면 두 개, 물 반 병. 게임기 배터리는 두 칸." }
       - wait: 0
       - say:
