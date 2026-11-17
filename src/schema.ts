@@ -251,6 +251,7 @@ const actionBodySchema = z.union([
       .object({
         key: z.string().min(1).optional(),
         presentation: z.enum(['dialogue', 'explore', 'approach']).optional(),
+        investigation: z.object({ width: z.number().positive(), height: z.number().positive() }).optional(),
         mood: screenEffectNameSchema.optional(),
         prompt: z.string().min(1),
         char: z.string().min(1).optional(),
@@ -267,6 +268,9 @@ const actionBodySchema = z.union([
       })
       .superRefine((choice, ctx) => {
         const spatial = choice.presentation === 'explore' || choice.presentation === 'approach';
+        if (choice.investigation && choice.presentation !== 'explore') {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['investigation'], message: 'Investigation requires presentation: explore' });
+        }
         if (!spatial && choice.options.some(option => option.at)) {
           ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'Positioned options require presentation: explore or approach' });
         }

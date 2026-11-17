@@ -107,6 +107,66 @@
 .app .exploration-target .choice-gate-option-badges:empty { display: none; }
 .app .has-exploration .choice-gate { margin-top: 8px; }
 .app .has-exploration .choice-gate-options { grid-template-columns: 1fr; }
+.investigation-field {
+  inset: 0;
+  --investigation-image-width: max(100vw, calc(100dvh * var(--investigation-aspect)));
+  --investigation-image-height: max(100dvh, calc(100vw * var(--investigation-inverse-aspect)));
+}
+.app .investigation-marker {
+  position: absolute;
+  left: clamp(22px, calc(50% + var(--target-offset-x) * var(--investigation-image-width)), calc(100% - 22px));
+  top: calc(50% + var(--target-offset-y) * var(--investigation-image-height));
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.app .investigation-marker > span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #fff2d5;
+  border-radius: 50%;
+  color: #fff2d5;
+  background: #3b3027;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 1px 5px #0007;
+}
+.app .investigation-marker:hover > span { color: #392c21; background: #fff2d5; }
+.app .investigation-marker.is-checked { pointer-events: none; }
+.app .investigation-marker.is-checked > span { color: #382e24; background: #e8dec9; }
+.app .dialog-box[data-investigation='true'] { padding-block: 12px; height: min(220px, var(--dialog-safe-max-height)); }
+.app [data-investigation='true'] .choice-gate { margin-top: 4px; }
+.app [data-investigation='true'] .choice-gate-options:empty { display: none; }
+.app [data-investigation='true'] .choice-gate-options[data-choice-count='1'] .choice-gate-option-copy { grid-template-columns: minmax(0, 1fr) auto; }
+.app [data-investigation='true'] .choice-gate-options[data-choice-count='1'] .choice-gate-option-index { display: none; }
+.investigation-options { display: flex; flex-wrap: wrap; gap: 6px; }
+.app .investigation-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 4px 9px;
+  border: 1px solid #ecd6a26b;
+  border-radius: 3px;
+  background: #16292b;
+  color: #f4f0e4;
+  font: inherit;
+  font-size: 13px;
+}
+.app button.investigation-option:hover { background: #274043; border-color: #ecd6a2; }
+.investigation-option > span { color: #ecd6a2; font-weight: 800; }
+.app .investigation-option.is-checked { color: #e1dbc9; background: transparent; }
+.investigation-option small { color: #c1c7c0; font-size: 12px; }
 @media (max-height: 500px) and (orientation: landscape) {
   .app .dialog-box.has-exploration { --dialog-safe-max-height: 155px; padding-top: 12px; padding-bottom: 12px; }
   .app .has-exploration .dialog-content-scroll { padding-top: 0; }

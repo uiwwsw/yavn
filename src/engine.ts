@@ -4807,6 +4807,10 @@ function runToNextPause(loopGuard = 0) {
     useVNStore.getState().setChoiceGate({
       active: true,
       presentation: action.choice.presentation ?? 'dialogue',
+      investigation: action.choice.investigation && {
+        ...action.choice.investigation,
+        targets: action.choice.options.filter(option => option.at),
+      },
       key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
       prompt: interpolateText(action.choice.prompt, state.routeVars),
       forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,
@@ -4955,7 +4959,7 @@ function runToNextPause(loopGuard = 0) {
 
   if ('wait' in action) {
     // Skipping read lines never stalls on an authored pause, the same as body language above.
-    if (useVNStore.getState().skipReadActive) {
+    if (action.wait === 0 || useVNStore.getState().skipReadActive) {
       incrementCursor();
       runToNextPause(loopGuard + 1);
       return;
