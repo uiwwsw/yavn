@@ -13,7 +13,7 @@ scenes:
       - say:
           char: 의사
           with: []
-          text: "지금 쓰는 이름과 얼굴이 바뀝니다. 지금까지의 일도 기억하지 못하게 돼요. 설명 들으셨죠?"
+          text: "이 시술을 받으면 지금 쓰는 이름과 얼굴이 바뀝니다. 지금까지의 기억도 사라집니다."
       - say:
           char: 의사
           with: []
@@ -37,7 +37,7 @@ scenes:
       - place: "결혼식 1개월 전 · 청첩장 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
-      - say: { char: 지수, with: [도윤], text: "눈 떠. 아직 안 찍었어. 턱 좀 당겨 봐. 응, 거기." }
+      - say: { char: 지수, with: [도윤], text: "도윤아, 눈 떠. 나 좀 봐." }
       - say: { char: 도윤, with: [지수], text: "그건 작가님이 시킨 거야, 네가 시키는 거야?" }
       - move: { id: 지수, toward: 도윤, style: approach }
       - say: { char: 지수.warm, with: [도윤], text: "내가. 넥타이 삐뚤어졌어. 잠깐만." }

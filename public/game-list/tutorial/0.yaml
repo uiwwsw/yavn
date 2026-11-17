@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "호출기에 027이 뜬다. 손님이 오기도 전에 해수는 허리를 조금 숙인다."
+          text: "고객센터 직원 정해수. 번호표 027번 손님을 부를 차례다."
           continueLabel: "027번을 호출한다"
       - set: { t0_refund_first: true }
       - goto: ticket
@@ -34,13 +34,9 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "레플라 REPLA · 밴드를 착용해 보세요. 레플라 안에도 지금 계신 곳이 똑같이 마련돼 있습니다."
-          autoAdvance: 3484
-      - say:
-          channel: system
-          with: []
-          text: "어제 거기 둔 물건은 오늘도 거기 있습니다. · 라이트 월 39,000원 · 지금 접속 중 1,104,331명"
-          autoAdvance: 2974
+          text: "레플라 REPLA · 밴드 하나로 현실과 똑같은 공간에 접속하세요.\n지금 접속 중 1,104,331명"
+          autoAdvance: 2400
+      - wait: 0
       - say:
           channel: system
           with: []
@@ -68,55 +64,25 @@ scenes:
           side: them
           char: 지영
           with: []
-          text: "해수는 어차피 퇴근하고 할 것도 없잖아 레플라도 안 하고"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "형 오늘 오전 아니에요? 아까 창고에서 봤는데요"
+          text: "해수는 퇴근하고 레플라 안 하잖아. 오늘만 바꿔 줘"
+      - wait: 0
+      - wait: 0
       - say:
           channel: message
           side: me
           char: 해수
           with: []
-          text: "오전인데 괜찮습니다"
-      - say:
-          channel: message
-          side: me
-          char: 해수
-          with: []
-          text: "네 바꿔 드릴게요"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "역시ㅠㅠ 커피 살게"
-      - say: { char: 해수, channel: message, side: me, text: "괜찮습니다 주임님" }
-      - say: { char: 지영, channel: message, side: them, text: "괜찮으면 안 사도 돼?" }
-      - say:
-          channel: message
-          side: me
-          char: 해수
-          with: []
-          text: "그럼 아이스로 부탁드립니다"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "ㅋㅋㅋㅋㅋ"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "저도요"
+          text: "네 바꿔 드릴게요. 커피는 아이스로 부탁드립니다"
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           channel: system
           with: []
-          text: "근무표가 변경되었습니다 · 4월 11일(금) 정해수 11:00–22:00 마감"
+          text: "근무표 변경 · 정해수 11:00–22:00 마감"
       - say:
           channel: record
           with: []
@@ -127,21 +93,14 @@ scenes:
     actions:
       - bg: { id: cs_desk, transition: fade, duration: 700 }
       - place: "같은 날 오전 · 그린마트 상봉점 1층 고객센터"
-      - say:
-          channel: system
-          with: []
-          text: "레플라 — 퇴근 후에도 쓰던 자리에 그대로. 첫 달 무료 · 프리미엄 월 129,000원 · 무제한 월 219,000원"
-          autoAdvance: 3144
+      - wait: 0
       - char: { id: 해수, position: left }
       - char: { id: 경준, position: right }
       - say:
           char: 경준
           with: [해수]
-          text: "형, 저 TV 소리 좀 줄이면 안 돼요? 아침부터 저것만 나와요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "저거 본사에서 트는 거라 리모컨이 없어."
+          text: "형, TV에서 레플라 광고만 나오네요. 저랑 손님 연습 한번 해 봐요."
+      - wait: 0
       - say:
           char: 경준
           motion: perk
@@ -157,40 +116,18 @@ scenes:
           motion: bow
           with: [경준]
           text: "고객님, 행사 전에 사신 상품은 차액을 돌려드리기 어렵습니다."
-      - say:
-          char: 해수.service
-          motion: bow
-          with: [경준]
-          text: "대신 확인해 드릴게요."
+      - wait: 0
       - say:
           char: 경준
           motion: recoil
           with: [해수]
           text: "방금 진짜 손님한테 하는 목소리 나왔어요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "그게 편해."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "무섭다고요, 그게."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "형은 하루에 저 광고 몇 번 들어요?"
-      - say:
-          char: 해수
-          with: [경준]
-          text: "세어 본 적은 없는데."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "한 시간에 네 번."
-      - say:
-          char: 경준.laugh
-          with: [해수]
-          text: "세었네."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 경준
           motion: bounce
@@ -200,21 +137,13 @@ scenes:
           char: 경준
           with: [해수]
           text: "형 같은 사람이 해야 돼요. 거기선 손님한테 고개 안 숙여도 되거든요."
+      - wait: 0
       - say:
           char: 해수.service
           motion: bow
           with: [경준]
-          text: "숙이는 거야 뭐."
-      - say:
-          char: 해수.service
-          motion: bow
-          with: [경준]
-          text: "목 운동 돼."
-      - say:
-          char: 경준
-          motion: recoil
-          with: [해수]
-          text: "……네."
+          text: "숙이는 거야 뭐. 목 운동 돼."
+      - wait: 0
 
   coupon:
     title: "체험권"
@@ -366,7 +295,7 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 027번 고객님, 고객센터로 오세요."
-          wait: 700
+          wait: 420
       - char: { id: 해수, position: left }
       - char: { id: 지영, position: center }
       - char: { id: 광철, position: right }
@@ -375,13 +304,13 @@ scenes:
           motion: bow
           with: [광철]
           text: "오광철 고객님, 오셨어요."
-      - say: { char: 광철, with: [해수], text: "나 저 기둥 옆에 못 대서 한 바퀴를 돌았어. 이거 환불해 줘." }
+      - say: { char: 광철, with: [해수], text: "이거 환불해 줘. 어제 여기서 산 거 알지?" }
       - say: { char: 해수.service, with: [광철], text: "즉석밥 열두 개 묶음이요. 영수증 주시겠어요?" }
-      - say: { char: 광철, with: [해수], text: "어제 여기서 산 거 몰라? 맨날 보면서." }
+      - wait: 0
       - say:
           char: 해수.service
           with: [광철]
-          text: "알고 있습니다, 고객님. 포스기에 찍어야 해서요."
+          text: "환불하려면 영수증을 찍어야 해서요."
           continueLabel: "영수증을 찍는다"
       - sound: snap
       - effect: focus
@@ -399,52 +328,32 @@ scenes:
           char: 광철
           with: [지영, 해수]
           text: "남의 기록을 왜 소리 내서 읽어."
-      - say:
-          char: 광철
-          with: [지영]
-          text: "마흔한 번 왔으면 뭐. 장 보러 온 걸 왜 세."
-      - say:
-          char: 지영
-          with: [광철]
-          text: "장 보신 건 안 세요, 고객님. 상담만 세는 거예요."
-      - say:
-          char: 광철
-          motion: droop
-          with: [지영]
-          text: "…그럼 더 나쁘네."
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 광철
           with: [해수]
-          text: "하나 먹었는데 맛이 이상해. 나머지 열한 개도 똑같을 거 아니야."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "어떻게 이상하셨어요?"
-      - say:
-          char: 광철
-          with: [해수]
-          text: "냄새가 나. 쉰 냄새는 아니고. 물 냄새 같은 게."
+          text: "하나 뜯었는데 물 냄새가 나. 나머지도 환불해 줘."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수.service
           motion: nod
           with: [광철]
           text: "제조일자부터 확인해 드릴게요."
-      - say:
-          char: 광철
-          motion: stomp
-          with: [해수]
-          text: "확인, 확인. 확인밖에 할 줄 몰라?"
+      - wait: 0
       - say:
           char: 해수
           with: [광철]
-          text: "개봉하신 건 바로 환불해 드리기 어려운데요, 고객님…"
+          text: "개봉하신 하나는 바로 환불해 드리기 어려운데요…"
       - move: { id: 광철, toward: 해수, style: lunge }
       - effect: rumble
       - say:
           char: 광철.shout
           with: [해수]
-          text: "어렵다는 게 된다는 거야, 안 된다는 거야? 말을 똑바로 해! 몇 년째 거기 앉아 있으면서 아직도 말을 그따위로 해?"
-          wait: 800
+          text: "된다는 거야, 안 된다는 거야? 몇 년째 거기 앉아 있으면서 말을 그따위로 해?"
+          wait: 0
       - say:
           char: 광철
           with: [해수]
@@ -535,21 +444,11 @@ scenes:
       - say:
           char: 광철
           with: [해수]
-          text: "…봉지 하나 줘. 큰 걸로."
-      - wait: 600
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "네, 고객님."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "여기 있습니다."
-      - say:
-          char: 광철
-          motion: puff
-          with: [해수]
-          text: "얼마야. 공짜로 받는 거 아니야, 나는."
+          text: "큰 봉지 하나 줘. …얼마야. 공짜로 받는 거 아니야."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - sticker: { id: pencil, image: pencil_sticker, x: 66, y: 40, width: "300px", rotate: 12, enter: slideUp }
       - say:
           channel: record
@@ -559,35 +458,23 @@ scenes:
           char: 지영
           with: [해수]
           text: "연필 세 봐. 볼펜 꽂아 놨을 땐 저 아저씨가 올 때마다 하나씩 가져갔잖아."
-      - say:
-          char: 지영
-          with: [해수]
-          text: "지난달엔 창구에 있던 테이프도 가져갔어."
+      - wait: 0
       - say:
           char: 해수
           with: [지영]
-          text: "그건 제가 드린 거예요."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "차에 싣는데 박스가 터져서요."
+          text: "테이프는 제가 드린 거예요. 차에 싣다가 박스가 터졌거든요."
+      - wait: 0
       - say:
           char: 지영.smirk
           motion: sigh
           with: [해수]
-          text: "너 진짜. 그 아저씨가 너한테 소리 지른 게 오늘로 몇 번째인데."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "박스 터진 채로 차에 실으실 순 없잖아요."
+          text: "너 그 아저씨한테 소리 듣고도 그렇게까지 해 줘?"
+      - wait: 0
       - say:
           char: 해수
           with: [지영]
           text: "스무 자루 다 있어요."
-      - say:
-          char: 지영
-          with: [해수]
-          text: "볼펜 없앤 보람이 있네."
+      - wait: 0
       - clearSticker: { id: pencil, leave: fadeOut }
       - branch:
           cases:
@@ -605,36 +492,20 @@ scenes:
           char: 경준
           motion: perk
           with: [지영]
-          text: "주임님, 점심 교대하러 왔는데 전자레인지 순번표 또 누가 지웠어요. 제가 아침에 써 놨는데."
+          text: "주임님, 점심 교대요. 제가 붙인 전자레인지 순번표 또 없어졌어요."
       - say:
           char: 지영
           with: [경준]
           text: "그거 쓰는 사람이 너밖에 없어서 그래."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 경준
           with: [지영]
-          text: "순번이 있어야 공평하죠."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "네 명 쓰는 데 순번이 왜 필요해."
-      - say:
-          char: 경준
-          with: [지영]
-          text: "다섯 명이요. 시식 코너 이모님도 쓰세요."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "이모님은 1번이야. 영원히."
-      - say:
-          char: 경준
-          motion: nod
-          with: [지영]
-          text: "…납득이 되는 게 더 짜증 나요."
-      - say:
-          char: 경준
-          with: [지영]
-          text: "주임님, 상혁 씨 요새 여기서 자요? 아까 물류창고 박스 위에서 자던데요."
+          text: "근데 상혁 씨 요새 창고에서 자요? 아까 박스 위에서 자던데요."
       - say:
           char: 지영
           with: [경준]
@@ -644,19 +515,9 @@ scenes:
           motion: bounce
           with: [지영]
           text: "확장팩이면… 집 넓혀 주는 거요? 형이랑 같이 사니까 형은 알겠네."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "해수가 그런 거 말하는 거 봤어? 넌 몰라도 돼."
-      - say:
-          char: 경준
-          motion: perk
-          with: [지영]
-          text: "왜요."
-      - say:
-          char: 지영.smirk
-          with: [경준]
-          text: "그냥 몰라도 돼. 밥 먹어."
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - char: { id: 상혁, position: center }
       - move: { id: 상혁, toward: 경준, style: approach }
       - emote: { id: 경준, motion: startle }
@@ -679,28 +540,11 @@ scenes:
           motion: sigh
           with: [상혁]
           text: "……밥 먹어."
-      - say:
-          char: 경준
-          motion: gasp
-          with: [상혁]
-          text: "상혁 씨 그거 반칙이에요."
-      - say:
-          char: 상혁
-          with: [경준]
-          text: "뭐가."
-      - say:
-          char: 경준
-          with: [상혁]
-          text: "주임님한테 그렇게 말할 수 있는 사람 상혁 씨밖에 없잖아요."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "해 봐. 다음 달 근무표 내가 짜."
-      - say:
-          char: 경준
-          motion: recoil
-          with: [지영]
-          text: "안 할래요."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - move: { id: 상혁, style: reset }
       - say:
           char: 지영
@@ -730,11 +574,7 @@ scenes:
           char: 해수
           with: [상혁]
           text: "오늘은 네 차례야. 금요일."
-      - say:
-          char: 상혁
-          motion: slump
-          with: [해수]
-          text: "…아."
+      - wait: 0
       - say:
           char: 경준
           motion: bounce
@@ -743,124 +583,68 @@ scenes:
       - say:
           char: 상혁
           with: [경준]
-          text: "고등학교 때부터 붙어 다녔어. 3학년 때 같은 반."
+          text: "고등학교 3학년 때부터 붙어 다녔어."
       - say:
           char: 해수
           with: [상혁]
-          text: "2학년 때도 맨날 붙어 있었잖아."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "2학년 때는 네가 옆 반이었지."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "7반. 너 6반."
-      - say:
-          char: 상혁
-          motion: sigh
-          with: [해수]
-          text: "…그래. 비슷하잖아."
-      - say:
-          char: 경준
-          with: [해수]
-          text: "형은 그런 걸 왜 다 기억해요?"
+          text: "2학년 때부터잖아. 넌 6반, 나는 7반."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 상혁.grin
           with: [경준]
-          text: "쟤는 숫자만 기억해. 사람 얼굴은 못 외워."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "얼굴도 기억해."
-      - say:
-          char: 상혁
-          motion: lean_in
-          with: [해수]
-          text: "내 생일 언제야."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "11월 9일."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "…그것도 숫자잖아."
+          text: "쟤는 괜히 저런 걸 다 기억해. 내 생일도 아직 외워."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 지영
           with: [상혁]
-          text: "분리수거는 누가 해?"
+          text: "그래. 같이 산다며. 분리수거는 누가 해?"
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 상혁
           with: [지영]
-          text: "쟤가."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "상혁이도 해요."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "내놓는 건 상혁이가 해요."
-      - say:
-          char: 상혁
-          with: [지영]
-          text: "내가 내놓고 쟤가 묶어."
+          text: "쟤가 묶어 놓으면 내가 내놔요."
       - say:
           char: 지영
           motion: sigh
           with: [상혁]
           text: "그게 쟤가 다 하는 거야, 상혁 씨."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "참, 어머니 전화 오셨어."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "어제 저녁에."
+      - wait: 0
+      - wait: 0
       - say:
           char: 상혁
           motion: freeze
           with: [해수]
-          text: "…뭐래."
+          text: "…우리 엄마한테 또 전화 왔어?"
       - say:
           char: 해수
           with: [상혁]
-          text: "네가 전화를 안 받는다고."
+          text: "응. 네가 전화를 안 받는대."
+      - wait: 0
+      - say:
+          char: 해수
+          with: [상혁]
+          text: "아버님이 거둔 콩으로 두부 만들어서 보내셨대."
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 상혁
           with: [해수]
-          text: "바빴어."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "두부 보내셨대."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "아버님이 콩 거두셨다고."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "아이스박스에 넣으셨대."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "두부를 왜 택배로 보내."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "…알았어. 내가 전화할게."
+          text: "알았어. 내가 전화할게."
       - say:
           char: 상혁
           motion: headtilt
           with: [해수]
           text: "근데 넌 왜 나보다 우리 엄마랑 통화를 더 오래 해?"
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "어머님이 길게 하셔."
+      - wait: 0
       - say:
           char: 상혁
           with: [해수]
@@ -869,31 +653,12 @@ scenes:
           char: 해수
           with: [상혁]
           text: "응. 원래 안 뜯어."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "알아. 그냥 말하는 거야."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "리모컨은 소파 밑에 있었어."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "어제 네가 찾던 거."
-      - say:
-          char: 상혁
-          with: [해수]
-          text: "거기를 왜 봐."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "늘 거기 있잖아."
-      - say:
-          char: 상혁
-          motion: sigh
-          with: [해수]
-          text: "…고맙다."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 상혁
           when: { var: took_coupon, op: eq, value: true }
@@ -913,6 +678,7 @@ scenes:
           char: 상혁.hollow
           with: [해수]
           text: "…있어. 걔는 내 번호 차단 안 해."
+          wait: 800
 
   home:
     title: "우편함"
@@ -924,6 +690,7 @@ scenes:
           with: []
           delivery: whisper
           text: "…응. 나도. 아니, 진짜로. 너밖에 없어."
+          wait: 750
       - sticker: { id: bill, image: bill_sticker, x: 64, y: 36, width: "280px", rotate: 3, enter: slideDown }
       - say:
           channel: record

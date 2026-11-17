@@ -24,7 +24,7 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 031번 고객님, 고객센터로 오세요. · 4월 12일 토요일 오후 3:04"
-          wait: 700
+          wait: 400
       - char: { id: 해수, position: left }
       - char: { id: 광철, position: right }
       - say:
@@ -80,6 +80,7 @@ scenes:
           motion: lean_in
           with: [해수]
           text: "직원 태도 불량. 개봉 상품 핑계로 고객을 무시함. 말투가 비아냥거림. 대상 직원, 정. 해. 수."
+          wait: 750
       - move: { id: 광철, toward: 해수, style: lunge }
       - say:
           char: 광철.shout
@@ -280,11 +281,12 @@ scenes:
           channel: system
           with: []
           text: "레플라 체험판에 연결합니다."
-          autoAdvance: 1410
+          autoAdvance: 750
       - say:
           channel: system
           with: []
           text: "다시 오신 걸 환영합니다, 정해수 님."
+          wait: 900
       - char: { id: 해수, position: center }
       - mood: { tone: dread, level: 1 }
       - say:
@@ -292,11 +294,7 @@ scenes:
           motion: headtilt
           with: []
           text: "아, 저 처음인데요."
-      - say:
-          channel: system
-          with: []
-          text: "튜토리얼을 이어서 진행합니다."
-          autoAdvance: 1444
+      - wait: 0
       - say:
           char: 해수
           motion: bow
@@ -305,7 +303,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "튜토리얼 1/5 — 주위를 둘러보세요."
+          text: "이어서 진행합니다 · 튜토리얼 1/5 — 주위를 둘러보세요."
 
   tutorial_one:
     actions:
@@ -474,13 +472,13 @@ scenes:
           channel: system
           with: []
           text: "잘하셨습니다. 튜토리얼 2/5 완료."
-          autoAdvance: 1580
+          autoAdvance: 900
       - move: { id: 광철, style: reset }
       - say:
           channel: system
           with: []
           text: "체험 시간 00:42:17 사용 · 체험판은 7일 동안 14시간까지 이용할 수 있습니다"
-          autoAdvance: 2532
+          autoAdvance: 1200
       - goto: sessions
 
   sessions:
@@ -508,30 +506,15 @@ scenes:
           char: 해수
           with: []
           text: "아 졸아서요 죄송합니다"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "너도 하는구나ㅋㅋ 내 코드 썼지?"
+      - wait: 0
       - say:
           channel: message
           side: them
           char: 경준
           with: []
-          text: "형 어디까지 갔어요? 저 2단계에서 넘겼는데"
-      - say:
-          channel: message
-          side: them
-          char: 경준
-          with: []
-          text: "그거 할 말 하라는 거 너무 부끄럽지 않아요?"
-      - say:
-          channel: message
-          side: them
-          char: 지영
-          with: []
-          text: "넌 할 말이 없어서 못 한 거겠지"
+          text: "형 어디까지 갔어요? 저는 2단계가 부끄러워서 넘겼어요."
+      - wait: 0
+      - wait: 0
       - say:
           channel: record
           with: []
@@ -544,21 +527,13 @@ scenes:
           motion: bow
           with: []
           text: "우산 손잡이가 빠졌다고요."
-      - say:
-          char: 해수.service
-          motion: bow
-          with: []
-          text: "네, 확인해 드릴게요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수.blank
           motion: nod
           with: []
-          text: "손잡이 안쪽에 드라이버 자국이 새로 났는데요."
-      - say:
-          char: 해수.blank
-          motion: nod
-          with: []
-          text: "근데 이건 고객님이 빼신 거잖아요."
+          text: "손잡이 안쪽에 새 자국이 났는데요. 이건 고객님이 빼신 거잖아요."
       - char: { id: 경준, position: right }
       - say:
           char: 경준
@@ -566,14 +541,11 @@ scenes:
           with: [해수]
           delivery: whisper
           text: "…형?"
+      - wait: 0
       - say:
           char: 해수.service
           with: []
-          text: "…죄송합니다."
-      - say:
-          char: 해수.service
-          with: []
-          text: "새 걸로 교환해 드릴게요."
+          text: "…죄송합니다. 새 걸로 교환해 드릴게요."
       - say:
           char: 경준
           motion: lean_in
@@ -716,11 +688,7 @@ scenes:
           motion: bow
           with: [광철]
           text: "오늘은 영수증 없으세요?"
-      - say:
-          char: 해수.service
-          motion: bow
-          with: [광철]
-          text: "무엇을 확인해 드릴까요."
+      - wait: 0
       - say:
           char: 광철.lost
           with: [해수]
@@ -738,23 +706,14 @@ scenes:
           char: 광철.lost
           with: [해수]
           text: "근데 집에 있으면 하루가 안 가. 여기 오면 한 시간은 가거든."
-      - say:
-          char: 해수.service
-          with: [광철]
-          text: "오늘은 날이 좋아서 그런지 손님이 많네요."
-      - say:
-          char: 광철.lost
-          with: [해수]
-          text: "아까부터 저기 서 있었어. 한 시간쯤."
+      - wait: 0
+      - wait: 0
       - say:
           char: 광철.lost
           motion: droop
           with: [해수]
-          text: "자네가 사람들한테 말하는 거 보고 있었어. 똑같이 말하더라, 다 똑같이."
-      - say:
-          char: 광철.lost
-          with: [해수]
-          text: "…자네. 여기 오래 있었지."
+          text: "저기서 한 시간쯤 봤어. 자네는 누구한테나 똑같이 말하더라. 여기 오래 있었지?"
+      - wait: 0
       - say:
           char: 해수
           motion: nod
@@ -765,6 +724,7 @@ scenes:
           motion: shiver
           with: [해수]
           text: "요 며칠, 밤마다 누가 나한테 소리를 질러. 집에서. 나 혼자 사는데. 경찰도 불렀는데 아무도 없대."
+          wait: 950
       - say:
           char: 광철.lost
           when: { var: rage, op: eq, value: 1 }
@@ -800,24 +760,18 @@ scenes:
           char: 해수.service
           with: [광철]
           text: "…그러셨어요."
-      - say:
-          char: 광철
-          with: [해수]
-          text: "환불 안 했으면 열한 개 다 먹었을 텐데. 괜히 들고 왔어."
+      - wait: 0
       - say:
           char: 해수.service
           with: [광철]
           text: "다시 사시면 됩니다, 고객님."
-      - say:
-          char: 광철
-          motion: droop
-          with: [해수]
-          text: "…그러면 되지. 그러면 되는데."
+      - wait: 0
       - say:
           char: 광철
           motion: bow
           with: [해수]
           text: "이거. 마셔. …수고하고."
+          wait: 700
       - move: { id: 광철, style: reset }
       - char: { id: 경준, position: right }
       - say:
@@ -920,7 +874,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "새벽 1시 50분. 해수는 밴드를 책상에 엎어 놓는다. 방의 불을 끄고 누울 때도 밴드는 여전히 책상 위에 있다."
+          text: "새벽 1시 50분. 해수는 밴드를 책상에 둔 채 불을 끈다."
       - bg: { id: sim_parking, transition: cut }
       - place: "레플라 · B2 주차장 C-14"
       - mood: { tone: dread, level: 2 }
@@ -928,7 +882,7 @@ scenes:
           channel: system
           with: []
           text: "자동 접속되었습니다. 튜토리얼 3/5를 이어서 진행합니다.\n손에 쥔 물건 · 그린마트 연필 1"
-          autoAdvance: 2736
+          autoAdvance: 1500
       - goto: stab
 
   stab:
@@ -943,16 +897,13 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 028번 고객님, 고객센터로 오세요."
-          wait: 1400
+          wait: 1050
       - say:
           channel: system
           with: []
-          text: "튜토리얼 3/5 완료. 잘하셨습니다."
+          text: "튜토리얼 3/5 완료. 다음 접속 때 4단계를 시작합니다."
       - mood: off
-      - say:
-          channel: system
-          with: []
-          text: "다음 접속 때 4단계를 시작합니다."
+      - wait: 0
       - goto: morning
 
   morning:

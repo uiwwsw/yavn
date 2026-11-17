@@ -15,7 +15,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "한밤중에 한성부에서 사람이 왔다. 우물에서 건진 여인을 살펴 달라고 했다. 우물가에 닿으니 등잔 아래 거적이 보인다."
+          text: "한밤중, 의녀인 나를 우물가로 불렀다. 우물에서 건진 여인이 거적 아래 있다."
           continueLabel: "거적을 걷는다"
       - effect: focus
       - sticker: { id: first_thread, image: well_hand_sticker, x: 50, y: 36, width: "clamp(260px, 40%, 520px)", enter: fadeIn }

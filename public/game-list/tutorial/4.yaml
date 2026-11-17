@@ -239,26 +239,17 @@ scenes:
           when: { var: look_pencil, op: eq, value: true }
           with: []
           text: "└ 확인한 항목 · 연필꽂이 (비품) · 2031.04.12 22:10"
-      - say:
-          channel: thought
-          when: { var: look_ticket, op: eq, value: true }
-          text: "번호표 기계를 본 건 다음 손님을 부르려고 본 것뿐이다. 그것부터 기록됐다."
-      - say:
-          channel: thought
-          when: { var: look_pencil, op: eq, value: true }
-          text: "마감 때 몇 자루 남았나 보려고 본 연필꽂이도 적혀 있다."
+      - wait: 0
+      - wait: 0
       - say:
           channel: record
           with: []
           text: "USER 0001 · 튜토리얼 2/5 · 하고 싶었던 말을 해 보세요 · 미완료 4,388회"
-      - say:
-          char: 해수.blank
-          with: []
-          text: "사천삼백팔십팔."
+      - wait: 0
       - say:
           channel: thought
           with: []
-          text: "거의 12년 동안 매일 한 번씩 ‘못 했다’고 적힌 셈이다."
+          text: "12년 동안 하루에 한 번꼴로 ‘못 했다’고 적혀 있다."
       - say:
           channel: record
           with: []
@@ -290,6 +281,7 @@ scenes:
           channel: record
           with: []
           text: "USER 0001 · 2031.04.18 01:58 · 튜토리얼 3/5 · 완료 · 대상: 오광철"
+          wait: 850
       - say:
           channel: record
           when: { var: hesitated, op: eq, value: true }
@@ -396,10 +388,7 @@ scenes:
           channel: record
           with: []
           text: "고객 상담 이력 · 오광철 님 · 최초 등록 2019.04.11 14:52 · 최초 처리자 정해수"
-      - say:
-          channel: thought
-          with: []
-          text: "날짜와 시각이 두 기록에서 일치한다."
+      - wait: 0
       - say:
           channel: thought
           with: []
@@ -409,6 +398,7 @@ scenes:
           with: []
           delivery: whisper
           text: "…제가 0001이네요."
+          wait: 1100
       - say:
           channel: action
           with: []
@@ -435,6 +425,7 @@ scenes:
           channel: thought
           with: []
           text: "그날 창구에 앉아 처음으로 손님을 기다린 일은 어디에도 없다."
+          wait: 700
       - say:
           channel: thought
           when: { var: knocked, op: eq, value: true }
@@ -465,18 +456,13 @@ scenes:
           channel: system
           with: []
           text: "다시 오신 걸 환영합니다, 정해수 님."
-      - say:
-          char: 해수.blank
-          with: []
-          text: "…다시요."
+          wait: 850
+      - wait: 0
       - say:
           channel: system
           with: []
           text: "튜토리얼 5/5 — 선택하세요."
-      - say:
-          channel: action
-          with: []
-          text: "상혁이가 ‘넘기기’가 있다고 했던 화면 오른쪽 위를 본다."
+      - wait: 0
       - say:
           channel: system
           with: []
@@ -511,10 +497,11 @@ scenes:
           channel: system
           with: []
           text: "현재 연결 · USER 0001 – USER 1104331 · 서버 0대 · 전원: 이 PC"
+          wait: 850
       - say:
           channel: thought
           with: []
-          text: "창 오른쪽 아래 숫자가 매장 TV 광고에 나오던 것과 같다."
+          text: "접속자 수가 레플라 광고에서 본 숫자 그대로다."
       - say:
           char: 해수
           with: []
@@ -578,6 +565,7 @@ scenes:
           channel: record
           with: []
           text: "USER 0001 · 해당 없음 · 이 세션은 서버를 사용하지 않습니다"
+          wait: 850
       - say:
           char: 해수.shaken
           with: []
@@ -620,27 +608,15 @@ scenes:
           char: 해수
           when: { var: called_mom, op: eq, value: false }
           with: [상혁]
-          text: "나 오늘 오픈이야."
+          text: "9시 반에 문 열기 전까지 여기 앉아 있을게."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           when: { var: called_mom, op: eq, value: false }
           with: [상혁]
-          text: "9시 반."
-      - say:
-          char: 해수
-          when: { var: called_mom, op: eq, value: false }
-          with: [상혁]
-          text: "그 전까지 여기 앉아 있을게."
-      - say:
-          char: 해수
-          when: { var: called_mom, op: eq, value: false }
-          with: [상혁]
-          text: "밥은 해 놨어."
-      - say:
-          char: 해수
-          when: { var: called_mom, op: eq, value: false }
-          with: [상혁]
-          text: "네 차례였는데 내가 했어."
+          text: "밥은 해 놨어. 네 것도."
+      - wait: 0
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - say:
           channel: message
@@ -667,29 +643,23 @@ scenes:
           text: "5월 2일 · 그린마트 고객센터\n띵동 — 001번 고객님, 고객센터로 오세요."
           wait: 700
       - char: { id: 해수, position: left, emotion: service }
-      - wait: 600
+      - wait: 0
       - say:
           char: 해수.service
           motion: bow
           with: []
           text: "네, 고객님."
-      - say:
-          char: 해수.service
-          motion: bow
-          with: []
-          text: "확인해 드릴게요."
+      - wait: 0
       - say:
           channel: action
           with: []
-          text: "연필꽂이에서 연필을 하나 뽑자 빈자리에 같은 연필이 다시 꽂혀 있다."
-      - say:
-          channel: action
-          with: []
-          text: "해수는 연필을 두 번 더 뽑는다. 그때마다 같은 자리에 연필이 생긴다. 손님이 창구로 오자 그만둔다."
+          text: "연필을 뽑자 빈자리에 같은 연필이 생긴다. 두 번 더 뽑아도 같다."
+      - wait: 0
       - say:
           channel: system
           with: []
           text: "튜토리얼 2/5 — 하고 싶었던 말을 해 보세요."
+          wait: 950
       - ending: disconnected
 
   end_stay:
@@ -702,14 +672,8 @@ scenes:
           channel: action
           with: []
           text: "모니터 화면이 꺼진 뒤에도 팬은 계속 돈다."
-      - say:
-          channel: thought
-          with: []
-          text: "문을 닫고 나오면서 손잡이를 한 번 당겨 본다. 잠겼다. 들어올 때는 밀면 열렸다."
-      - say:
-          channel: thought
-          with: []
-          text: "오픈까지 여섯 시간이다. 집에 들러서 유니폼을 갈아입을 수 있다."
+      - wait: 0
+      - wait: 0
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - place: "같은 날 오전 9:30 · 고객센터"
       - music: tutorial
@@ -720,11 +684,7 @@ scenes:
           motion: headtilt
           with: [해수]
           text: "너 얼굴 좋다? 잠 좀 잤나 봐."
-      - say:
-          char: 해수.service
-          motion: nod
-          with: [지영]
-          text: "네, 주임님."
+      - wait: 0
       - say:
           char: 해수.service
           motion: nod
@@ -788,25 +748,23 @@ scenes:
           with: []
           text: "띵동 — 061번 고객님, 고객센터로 오세요."
           wait: 700
-      - wait: 600
+      - wait: 0
       - say:
           char: 해수.service
           motion: bow
           with: []
           text: "네, 고객님."
-      - say:
-          char: 해수.service
-          motion: bow
-          with: []
-          text: "확인해 드릴게요."
+      - wait: 0
       - say:
           channel: system
           with: []
           text: "새 사용자가 튜토리얼을 시작했습니다 · USER 1104332 · 안내자: USER 0001"
+          wait: 950
       - say:
           channel: thought
           with: []
           text: "목에 안내자 명찰이 걸려 있다. 이름 칸은 비어 있다."
+          wait: 800
       - say:
           channel: system
           with: []
@@ -849,6 +807,7 @@ scenes:
           with: []
           sound: fan_stop
           text: "모니터가 꺼진다. 팬이 느려지다 멎는다. 4월 새벽의 지하는 춥다."
+          wait: 1000
       - say:
           channel: record
           with: []
@@ -879,42 +838,26 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "증거가 없어요. 정해수 씨는 그날 집에 있었어요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "현관 화면에 그렇게 나와요. 제가 확인한 건 거기까지고요."
+          text: "현관 CCTV에는 정해수 씨가 그날 집에 있었다고 나와요."
+      - wait: 0
       - say:
           char: 해수
           with: [은숙]
-          text: "오늘 새벽에는 가산동 지하에 다녀왔습니다."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "출입 기록이 남아 있을 거예요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "기태민 씨 승인으로요."
+          text: "오늘 새벽엔 기태민 씨 승인으로 가산동 지하에 갔습니다. 출입 기록이 남아 있을 거예요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 은숙
           motion: headtilt
           with: [해수]
           text: "그 건물 2029년에 전기를 끊었어요. 출입 시스템도 멈췄고요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "…네. 그럴 거예요."
+      - wait: 0
       - say:
           char: 해수
           motion: bow
           with: [은숙]
-          text: "그래도 적어 주세요."
-      - say:
-          char: 해수
-          motion: bow
-          with: [은숙]
-          text: "처음 날짜도요."
+          text: "그래도 적어 주세요. 처음 날짜도요."
+      - wait: 0
       - say:
           char: 은숙
           motion: headtilt
@@ -923,45 +866,29 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "2019년 4월 11일이요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "오후 2시 52분."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "첫 출근 날이었어요."
+          text: "2019년 4월 11일 오후 2시 52분. 첫 출근 날이었어요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           with: [은숙]
           text: "그 고객님이 처음 오셨어요."
+      - wait: 0
       - say:
           char: 은숙
           motion: nod
           with: [해수]
-          text: "2019년… 4월 11일."
-      - say:
-          char: 은숙
-          motion: nod
-          with: [해수]
-          text: "14시 52분. …적었어요."
+          text: "2019년 4월 11일 14시 52분. …적었어요."
       - say:
           char: 해수
           with: [은숙]
-          text: "12년을 일했는데 화면엔 다섯 줄이었어요."
-      - say:
-          char: 은숙.sharp
-          with: [해수]
-          text: "화면이요? 접수 화면 말씀인가요?"
+          text: "레플라 접속 기록을 봤어요. 12년을 일했는데 제 이름 아래 다섯 줄이 전부였어요."
+      - wait: 0
       - say:
           char: 해수
           with: [은숙]
-          text: "레플라 접속 기록이요. 제 번호 밑에 튜토리얼이 다섯 단계까지 있었어요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "네 번째 줄까진 집에서 열어 봤습니다."
+          text: "현실에서 했던 일도 튜토리얼 단계로 적혀 있었습니다."
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -970,16 +897,14 @@ scenes:
           char: 해수
           with: [은숙]
           text: "마지막 줄은 오늘 새벽에 가산동에서 끝냈습니다."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "그래서 왔어요."
+      - wait: 0
       - move: { id: 은숙, toward: 해수, style: approach }
       - mood: { tone: warm, level: 1 }
       - say:
           char: 은숙
           with: [해수]
           text: "물. 이번엔 드세요."
+          wait: 750
       - say:
           char: 해수
           motion: sigh
@@ -992,6 +917,7 @@ scenes:
           channel: record
           with: []
           text: "피해자 휴대폰 메모 · 4/17 13:02 · 고객센터 그 친구한테 사과할 것"
+          wait: 900
       - say:
           channel: thought
           with: []
@@ -1011,10 +937,7 @@ scenes:
           char: 해수
           with: [지영]
           text: "네. 팀장님께 부탁드렸어요."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "이제 안 가져가실 거예요."
+      - wait: 0
       - say:
           char: 지영
           with: [해수]
@@ -1029,13 +952,11 @@ scenes:
           with: []
           text: "띵동 — 027번 고객님, 고객센터로 오세요."
           wait: 700
-      - wait: 600
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           with: []
-          text: "네, 고객님."
-      - say:
-          char: 해수
-          with: []
-          text: "잠시만 기다려 주세요."
+          text: "네, 고객님. 잠시만 기다려 주세요."
+          wait: 800
       - ending: session_closed

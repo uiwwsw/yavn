@@ -4,13 +4,13 @@ assets:
     office_night: assets/bg/office_night.svg
     dongsik_house: assets/bg/dongsik_house.svg
     ward_bed: assets/bg/ward_bed.svg
-    ward_sock: assets/bg/ward_sock.webp
+    ward_sock: assets/bg/ward_sock.svg
     ward_entry: assets/bg/ward_entry.svg
     cafe: assets/bg/cafe.svg
     hospital_stairs: assets/bg/hospital_stairs.svg
     studio: assets/bg/studio.svg
     wolgye_station: assets/bg/wolgye_station.svg
-    station_glove: assets/bg/station_glove.webp
+    station_glove: assets/bg/station_glove.svg
     raw_sticker: assets/items/raw_print.svg
   characters:
     지완:

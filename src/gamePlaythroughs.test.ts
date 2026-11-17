@@ -353,6 +353,7 @@ describe('튜토리얼', () => {
     expect(after.state.background).toContain('/server_room_off.svg');
     expect(after.state.currentMusic).toBeUndefined();
 
+    await vi.advanceTimersByTimeAsync(1000);
     expect(saveCurrentProgress().exists).toBe(true);
     const loaded = loadSaveSlot('manual');
     await vi.advanceTimersByTimeAsync(3000);
@@ -397,6 +398,28 @@ describe('튜토리얼', () => {
 });
 
 describe('오버플로', () => {
+  it('keeps Jiwan on stage with the same portrait when he answers the call', async () => {
+    await start('overflow');
+    const waking = useVNStore.getState();
+    const portrait = waking.characters.left?.source;
+    expect(waking.dialog.fullText).toContain('출근하던 문지완이 월계역 개찰구 앞에서');
+    expect(portrait).toMatch(/\/jiwan\.svg$/);
+    expect(waking.visibleCharacterIds).toEqual(['지완']);
+
+    const answers = { o0_call: '전화를 받는다' };
+    const incoming = await play(answers, state => state.choiceGate.key === 'o0_call');
+    expect(incoming.state.characters.left?.source).toBe(portrait);
+    const answer = await play(answers, state => state.currentSceneId === 'take_call');
+    expect(answer.state.dialog.fullText).toBe('여보세요, 아버지.');
+    expect(answer.state.dialog.speaker).toBe('문지완');
+    expect(answer.state.characters.left?.source).toBe(portrait);
+    const speaking = await play(answers, state => state.dialog.fullText.startsWith('야, 국 냄비째'));
+    expect(speaking.state.dialog.speaker).toBe('아버지 (통화)');
+    expect(speaking.state.characters.left?.source).toBe(portrait);
+    expect(speaking.state.visibleCharacterIds).toContain('지완');
+    expect(speaking.state.currentSceneId).toBe('take_call');
+  });
+
   it('무반응 판정 뒤 여자가 지완을 발견하고, 병실에서만 실제 입력값을 확인한다', async () => {
     await start('overflow');
     const run = await play({
@@ -408,9 +431,11 @@ describe('오버플로', () => {
     });
     finished(run);
     const beats = [
-      '안정 24', '장갑을 건네자', '옆 줄에서 같은 근무조 도겸이', '지완 씨. 나 오늘 렌즈 안 꼈어요',
+      '출근하던 문지완이 월계역', '안경 쓴 여자 · 안정 31', '장갑 떨어뜨리셨어요.', '같은 근무조 도겸이',
       '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
-      '정서 반응 01 · 무반응 의심', '01 뜬 분을 봤어요', '접수대에 뜬 그 카드, 제가 만든 겁니다',
+      '정서 반응 01 · 무반응 의심', '아침에 장갑을 주워 준 여자가 앉아 있다',
+      '월계역에서 장갑을 주워 줬던 남자다', '01 뜬 분을 봤어요', '아침에 제 장갑 주워 주셨죠?',
+      '접수대에 뜬 그 카드, 제가 만든 겁니다',
       '시험 신호 101 → 표시 01', '아까 접수표에서 가리신 이름', '반만 얼리기로 했잖아요',
       '전화 받았는데 반찬집 아주머니였잖아요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
       '아버지가 옆에 앉으라 그랬잖아요', '공동 이의신청 접수', '반만 얼렸다',
@@ -422,15 +447,15 @@ describe('오버플로', () => {
     const introduction = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
       .filter((entry) => entry.sceneId === 'introduction');
     expect(introduction.slice(0, 5).map((entry) => entry.speaker))
-      .toEqual(['낯선 여자', '문지완', '낯선 여자', '문지완', '한수경']);
+      .toEqual(['안경 쓴 여자', '문지완', '안경 쓴 여자', '문지완', '한수경']);
     expect(introduction[2]?.text).toContain('한수경이에요');
     const call = run.state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'take_call');
     expect(call.filter((entry) => entry.channel === 'dialogue').map((entry) => entry.speaker))
-      .toEqual(['아버지', '문지완', '아버지', '문지완']);
+      .toEqual(['문지완', '아버지 (통화)', '문지완', '아버지 (통화)', '문지완']);
     expect(call.some((entry) => entry.channel === 'message')).toBe(false);
-    expect(run.state.storyLog).toContainEqual(expect.objectContaining({
-      sceneId: 'shift', channel: 'action', text: expect.stringContaining('아버지 목소리가 아니다. 반찬집 아주머니다.'),
-    }));
+    const secondCall = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
+      .filter((entry) => entry.sceneId === 'shift' && entry.channel === 'dialogue');
+    expect(secondCall.slice(0, 2).map((entry) => entry.speaker)).toEqual(['문지완', '반찬집 아주머니 (통화)']);
   });
 
   it('통화를 미루면 음성 메시지가 남고 아버지에게 건네는 대답도 늦어진다', async () => {
