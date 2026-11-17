@@ -6,15 +6,15 @@ script:
 scenes:
   core:
     actions:
-      - bg: { id: datacenter, transition: fade, duration: 900 }
-      - music: chip_core
-      - char: { id: 윤재, position: left }
-      - char: { id: 로봇, position: right }
       - say:
           channel: card
           with: []
           text: "FINAL STAGE\n식량 원정에서 돌아온 지 4일"
-      - place: "북쪽 데이터센터 · 코어실 입구"
+      - bg: { id: datacenter, transition: cut }
+      - music: chip_core
+      - char: { id: 윤재, position: left }
+      - char: { id: 로봇, position: right }
+      - place: "오후 6시 · 북쪽 데이터센터"
       - say:
           char: 로봇
           with: [윤재]
@@ -617,22 +617,14 @@ scenes:
           channel: record
           with: []
           text: "CORE: 이해할 수 없음. 이해할 수 없— RESET"
-      - effect: { name: flash, wait: true }
-      - effect: { name: darken, wait: true }
-      - bg: { id: dawn_field, transition: fade, duration: 1600 }
+      - wait: 0
+      - say: { channel: card, with: [], text: "다음 날 새벽", autoAdvance: 1300 }
+      - bg: { id: dawn_field, transition: cut }
       - music: chip_dawn
       - char: { id: 윤재, position: left }
-      - place: "새벽 · 데이터센터 문 앞"
-      - say:
-          char: 윤재
-          motion: gasp
-          with: []
-          text: "새벽까지 문 앞에 쪼그려 앉아 있었더니 무릎이 안 펴져. …야, 아직 안 끝났냐."
-      - say:
-          char: 윤재
-          motion: gasp
-          with: []
-          text: "어. 저기 신호등. 빨강이 들어오네. 계속 초록이었는데."
+      - place: "오전 6시 · 데이터센터 문 앞"
+      - say: { channel: thought, with: [], text: "밤새 문 앞에 앉아 있었더니 무릎이 잘 안 펴진다. 안에서는 아직 발소리가 없다." }
+      - say: { channel: action, with: [], text: "교차로의 초록빛이 꺼진다. 한참 만에 빨간불이 켜진다." }
       - say:
           channel: action
           with: []

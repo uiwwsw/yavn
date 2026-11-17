@@ -12,7 +12,7 @@ scenes:
           channel: card
           with: []
           text: "현재\n한도윤 · 29세 · 결혼 3주 전"
-      - bg: { id: couple_home, transition: fade, duration: 900 }
+      - bg: { id: couple_home, transition: cut }
       - music: static
       - place: "토요일 오전 · 도윤과 지수의 집"
       - char: { id: 지수, position: left }

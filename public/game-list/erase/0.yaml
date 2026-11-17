@@ -353,7 +353,7 @@ scenes:
           char: 지수
           with: []
           text: "ㅇㅇ 물 마시고 자"
-      - effect: { name: darken, wait: true }
+      - wait: 0
       - goto: e0_dawn
 
   e0_dawn:

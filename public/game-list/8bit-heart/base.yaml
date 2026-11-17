@@ -2,6 +2,8 @@ assets:
   backgrounds:
     title: assets/bg/title.svg
     bedroom: assets/bg/bedroom.svg
+    bus_stop: assets/bg/bus_stop.svg
+    bus_stop_panic: assets/bg/bus_stop_panic.svg
     disaster_city: assets/bg/disaster_city.svg
     ruined_street: assets/bg/ruined_street.svg
     android_found: assets/bg/android_found.svg

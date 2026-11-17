@@ -763,6 +763,28 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .dialog-box.channel-card .dialog-channel-label { display: none; }
 .app .dialog-box.channel-card .dialog-content-scroll { display: grid; place-items: center; width: 100%; max-height: none; overflow: visible; }
 .app .dialog-box.channel-card .text { max-width: 22em; color: #e8eef2; font-size: clamp(22px, 3.6vw, 44px); font-weight: 600; letter-spacing: .06em; line-height: 1.45; text-align: center; white-space: pre-line; }
+.app .dialog-box.channel-card::before { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .app .effect-viewport:not([data-effect-level='minimal']) .stage-content-frame .dialog-box.channel-card {
+    --scene-card-cover-duration: 280ms;
+    animation: scene-card-cover var(--scene-card-cover-duration) ease-out both;
+  }
+
+  .app .effect-viewport:not([data-effect-level='minimal']) .dialog-box.channel-card > :is(.dialog-content-scroll, .dialog-next) {
+    animation: scene-card-caption 160ms ease-out var(--scene-card-cover-duration) both;
+  }
+
+  @keyframes scene-card-cover {
+    from { background-color: transparent; }
+    to { background-color: #05070b; }
+  }
+
+  @keyframes scene-card-caption {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
 
 /* Phone chat bubble (say.channel: message, say.side: me | them). */
 /* A phone scene gets the phone. The dialogue box leaves its corner, becomes a handset in

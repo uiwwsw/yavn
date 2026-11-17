@@ -8,7 +8,7 @@ scenes:
   edit_room:
     title: "편집실"
     actions:
-      - bg: { id: edit_room, transition: fade, duration: 900 }
+      - bg: { id: edit_room, transition: cut }
       - music: now
       - place: "2026년 3월 · 상암동 편집실 · 지안"
       - char: { id: 지안, position: left }
@@ -161,8 +161,8 @@ scenes:
   munho_home:
     title: "파주"
     actions:
-      - effect: { name: darken, wait: true }
-      - bg: { id: interview_room, transition: fade, duration: 900 }
+      - say: { channel: card, with: [], text: "4월 · 파주", autoAdvance: 1400 }
+      - bg: { id: interview_room, transition: cut }
       - place: "4월 · 파주 오문호 씨 자택"
       - char: { id: 지안, position: left }
       - char: { id: 문호, position: right }
@@ -424,7 +424,7 @@ scenes:
     title: "12월"
     actions:
       - say: { channel: card, with: [], text: "2071년 12월\n서울" }
-      - bg: { id: window_dawn, transition: fade, duration: 1200 }
+      - bg: { id: window_dawn, transition: cut }
       - place: "2071년 12월 · 요양 병동"
       - branch:
           cases:

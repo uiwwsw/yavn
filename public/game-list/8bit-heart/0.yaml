@@ -199,7 +199,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "받습니다. 오늘 새벽 세 시요."
+          text: "받습니다. 정기 업데이트는 보통 새벽 세 시에 해요."
       - say:
           char: 윤재
           motion: shake
@@ -625,7 +625,7 @@ scenes:
           with: [윤재]
           text: "55,000원입니다."
       - clearSticker: { id: s0_cheap, leave: fadeOut }
-      - effect: { name: darken, wait: true }
+      - wait: 0
       - say:
           channel: card
           with: []

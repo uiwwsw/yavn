@@ -10,4 +10,5 @@
 | 오버플로 | `assets/char/jiwan-call-tight.svg` | 기존 `jiwan-tight.svg`의 얼굴과 복장 위에 `jiwan-call.svg`의 팔과 휴대폰 레이어를 얹었습니다. 벨소리는 기존 `assets/sfx/call.wav`를 재사용합니다. |
 | ERASE | `assets/items/gallery_photo.svg`, `assets/items/gallery_empty.svg` | 새 사진첩 틀의 같은 위치에 기존 `assets/items/child_photo.svg` 또는 빈 자리를 표시합니다. |
 | 8비트 심장 | `assets/char/assistant-off.svg`, `assets/sfx/disconnect.wav` | 기존 `assets/char/assistant-dead.svg`의 표시등 색을 바꿨습니다. 연결 종료음은 파형을 합성했습니다. |
+| 8비트 심장 | `assets/bg/bus_stop.svg`, `assets/bg/bus_stop_panic.svg` | 기존 도트 배경의 격자 단위와 팔레트를 따라 같은 정류장과 교차로를 그렸습니다. 평상시 컷과 사고 컷은 정류장 구조와 신호등 위치를 공유합니다. |
 | 튜토리얼 | `assets/bg/server_room_off.svg`, `assets/music/fan_idle.flac`, `assets/sfx/fan_stop.wav` | 기존 `assets/bg/server_room.svg`의 모니터와 표시등을 어둡게 했습니다. 작동 중인 팬과 멎는 팬은 파형을 합성했습니다. |

@@ -176,7 +176,8 @@ describe('8비트 심장', () => {
     const night = await play(route, state => state.dialog.fullText === '55,000원입니다.');
     expect(night.state.inventory.console_cheap).toBeFalsy();
 
-    const morning = await play(route, state => state.dialog.fullText === '다음 날 아침');
+    const morning = await play(route, state => state.effect === 'darken' || state.dialog.fullText === '다음 날 아침');
+    expect(morning.state.dialog.fullText).toBe('다음 날 아침');
     expect(morning.state.dialog.channel).toBe('card');
     expect(morning.state.inventory.console_cheap).toBeFalsy();
 

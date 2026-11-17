@@ -189,7 +189,7 @@ scenes:
   yard:
     title: "객주 마당"
     actions:
-      - bg: { id: jemulpo_yard, transition: fade, duration: 900 }
+      - bg: { id: jemulpo_yard, transition: cut }
       - music: port
       - place: "1894년 6월 · 제물포 객주 마당 · 만석"
       - char: { id: 만석, position: left }

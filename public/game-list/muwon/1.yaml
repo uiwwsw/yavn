@@ -488,8 +488,8 @@ scenes:
           char: 서연
           with: [막쇠]
           text: "서른아홉 장에요. 닭 그림까지 있습니다."
-      - wait: 900
-      - effect: { name: darken, wait: true }
+      - wait: 0
+      - say: { channel: card, with: [], text: "잠시 뒤", autoAdvance: 1300 }
       - say:
           channel: narration
           text: "반 식경도 안 되어 닭이 비틀거렸다. 날개를 한 번 퍼덕이고 쓰러졌다."
