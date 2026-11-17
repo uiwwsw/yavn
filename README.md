@@ -483,6 +483,7 @@ scenes:
 - `sound`
 - `char`
 - `say`
+  - 이름을 알기 전의 대사는 `speakerName: "낯선 여자"`처럼 이름표를 지정합니다. 자기소개 다음 대사부터 생략하면 캐릭터 이름을 표시합니다. 실행 예시는 [오버플로 1장](public/game-list/overflow/1.yaml)의 `introduction`을 참고하세요.
 - `wait`
 - `effect`
 - `goto`

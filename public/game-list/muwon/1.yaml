@@ -23,6 +23,7 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
+          speakerName: "비단전에서 온 여자"
           text: "비단전 여금이에요."
       - say:
           char: 여금.wary
@@ -533,7 +534,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "사십 년 일하면서 책에 적힌 대로 해 본 건 처음이오. 이 정도는 내가 내야지."
+          text: "40년 일하면서 책에 적힌 대로 해 본 건 처음이오. 이 정도는 내가 내야지."
       - goto: c2_arrest
 
   c2_arrest:

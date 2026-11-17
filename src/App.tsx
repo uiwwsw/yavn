@@ -3949,12 +3949,12 @@ export default function App() {
         className={className}
         cropBottom={slot.framing.cropBottom}
         source={slot.source}
-        alt={slot.id}
+        alt=""
         data-character-id={slot.id}
         data-stage-position={position}
         data-character-placement={slot.placement}
         data-character-framing={slot.framing.name}
-        aria-hidden={!rendererActive}
+        aria-hidden
         loading="eager"
         decoding="async"
         style={charStyle}

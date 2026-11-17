@@ -74,7 +74,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "안 보여요. 정해수 씨는 그날 밤 열한 시에 들어가서 아침 여섯 시 사십에 나왔어요."
+          text: "안 보여요. 정해수 씨는 그날 밤 11시에 들어가서 다음 날 오전 6시 40분에 나왔어요."
       - say:
           char: 해수
           with: [은숙]
@@ -321,7 +321,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "번호표 없이 온 남자 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
+          text: "조사실에서 들은 기태민 이름을 잊기 전에 물어보려고 휴대폰을 꺼낸다. 그때 번호표 없이 온 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
       - say:
           char: 해수.service
           motion: lean_in
@@ -442,24 +442,26 @@ scenes:
     title: "그린고시원"
     actions:
       - bg: { id: goshiwon, transition: fade, duration: 900 }
-      - place: "밤 9:00 · 망우동 그린고시원 304호"
+      - place: "4월 21일 밤 9:00 · 망우동 그린고시원 304호"
       - char: { id: 태민, position: right }
       - char: { id: 해수, position: left }
       - move: { id: 태민, toward: 해수, style: retreat }
       - say:
           char: 태민
+          speakerName: "문 안의 남자"
           with: [해수]
           text: "경찰이에요?"
       - say:
           char: 해수
           motion: bow
           with: [태민]
-          text: "아니요. 그린마트 상봉점 고객센터에서 일합니다."
+          text: "아니요. 그린마트 상봉점 고객센터에서 일합니다. 기태민 씨 맞으세요?"
       - say:
           char: 태민
+          speakerName: "문 안의 남자"
           motion: sway
           with: [해수]
-          text: "…그걸 왜 말해요."
+          text: "…기태민 맞는데, 마트에서 왜 왔어요?"
       - wait: 600
       - say:
           char: 해수
@@ -468,7 +470,7 @@ scenes:
       - say:
           char: 해수
           with: [태민]
-          text: "어디서 왔냐고 물으시는 줄 알고요."
+          text: "회사에서 보낸 건 아니에요. 제가 물어볼 게 있어서요."
       - say:
           char: 태민
           with: [해수]
@@ -537,7 +539,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "일 년 반 동안 숫자가 그대로예요. 말이 안 되잖아요."
+          text: "1년 반 동안 숫자가 그대로예요. 말이 안 되잖아요."
       - say:
           char: 태민
           with: [해수]
@@ -581,7 +583,7 @@ scenes:
       - choice:
           key: t3_room
           presentation: explore
-          prompt: "모니터 세 대 중 한 대만 켜져 있다."
+          prompt: "태민이 문을 더 열어 준다. 문턱을 넘으니 모니터 세 대 중 한 대만 켜져 있다."
           with: [태민]
           camera: wide
           options:
@@ -633,7 +635,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "일 년 반 동안 숫자가 그대로예요."
+          text: "1년 반 동안 숫자가 그대로예요."
       - say:
           char: 해수
           with: [태민]
@@ -1147,11 +1149,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "막차가 열두 시 십이 분이다. 가면 돌아올 차가 없다."
+          text: "막차는 0시 12분이다. 가면 돌아올 차가 없다."
       - say:
           channel: thought
           with: []
-          text: "내일 오픈이 아홉 시 반이다. 첫차는 다섯 시 반."
+          text: "내일 문 여는 건 오전 9시 30분. 7호선 첫차는 오전 5시 30분."
       - say:
           channel: thought
           with: []

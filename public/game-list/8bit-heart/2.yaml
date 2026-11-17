@@ -9,24 +9,24 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "NOW LOADING…"
+          text: "NOW LOADING…\n그날 밤 · 편의점 기지"
       - bg: { id: shelter, transition: fade, duration: 600 }
-      - place: "같은 날 밤 · 털린 편의점"
+      - place: "그날 밤 · 편의점 안, 계산대"
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
       - say:
           char: 윤재
           motion: puff
           with: [로봇]
-          text: "헉… 너 냉장고만큼 무거워. 집에서 쓰는 걸 왜 이렇게 만들어."
+          text: "헉… 골목에선 잠깐 들면 될 줄 알았는데, 계산대까지 끌고 오니까 손이 안 펴져. 너 냉장고만큼 무거워."
       - say:
           char: 윤재
           with: [로봇]
-          text: "골목에서 여기까지 이백 미터야."
+          text: "골목에서 여기까지 200m야."
       - say:
           char: 윤재
           with: [로봇]
-          text: "이백 미터를 두 시간 걸렸어. 두 시간."
+          text: "200m 오는 데 두 시간이나 걸렸어. 두 시간."
       - music: chip_home
       - say:
           char: 윤재
@@ -263,18 +263,21 @@ scenes:
       - move: { id: 윤재, toward: 로봇, style: flinch }
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "…8KB?"
-      - say: { char: 로봇.thinking, with: [윤재], text: "이게 다임?" }
+      - say: { char: 로봇.thinking, speakerName: "안드로이드", with: [윤재], text: "이게 다임?" }
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "다시 셈."
-      - say: { char: 로봇.thinking, with: [윤재], text: "8." }
+      - say: { char: 로봇.thinking, speakerName: "안드로이드", with: [윤재], text: "8." }
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "다임."
@@ -286,14 +289,17 @@ scenes:
       - wait: 460
       - say:
           char: 로봇.glitch
+          speakerName: "안드로이드"
           with: [윤재]
           text: "1P 감지."
       - say:
           char: 로봇.glitch
+          speakerName: "안드로이드"
           with: [윤재]
           text: "안녕ㅎ— 안녕하ㅅ— …인사말 로딩 실패."
       - say:
           char: 로봇.glitch
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그냥 안녕."
       - move: { id: 로봇, toward: 윤재, style: flinch }
@@ -308,21 +314,25 @@ scenes:
       - wait: 460
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: perk
           with: [윤재]
           text: "학습 자료 1건."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: perk
           with: [윤재]
           text: "게임기 설명서 12쪽."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: perk
           with: [윤재]
           text: "표지 그림 포함."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: perk
           with: [윤재]
           text: "이게 세상 전부 아님?"
@@ -338,14 +348,17 @@ scenes:
       - wait: 460
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "편의점."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "설명서에 없는 말인데."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그게 뭐야?"
       - say:
@@ -359,6 +372,7 @@ scenes:
       - wait: 270
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           with: [윤재]
           text: "돈."
       - say:
@@ -374,14 +388,17 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "종이가 중요한 척."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "저장 완료."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "…이상한 세상임."
       - say:
@@ -392,6 +409,7 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "모르는 건 어디서 찾음?"
@@ -403,6 +421,7 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그럼 누가 알려 줌?"
       - say:
@@ -412,6 +431,7 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "믿어도 됨?"
       - say:
@@ -421,6 +441,7 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: nod
           with: [윤재]
           text: "…어."
@@ -432,14 +453,17 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "질문."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "네 오른쪽 귀에 있는 거."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그것도 나랑 같은 거임?"
       - say:
@@ -449,10 +473,12 @@ scenes:
       - wait: 270
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           with: [윤재]
           text: "비서."
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그건 또 뭐야?"
       - say:
@@ -466,6 +492,7 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "지금은 대답 안 함?"
       - say:
@@ -475,10 +502,12 @@ scenes:
       - wait: 270
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           with: [윤재]
           text: "업데이트."
       - say:
           char: 로봇.thinking
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그거 나도 받음?"
       - say:
@@ -494,14 +523,17 @@ scenes:
       - wait: 270
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "…어."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "그건 규칙에는 안 넣을게."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "업데이트는 안 받는 걸로 그냥 기억해 둘게."
       - say:
@@ -511,50 +543,60 @@ scenes:
       - wait: 460
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "이름."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "검색 중… 본체 ROM엔 모델 번호만 있음."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
-          text: "열한 자리."
+          text: "11자리."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
           text: "읽어 줄까?"
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: bow
           with: [윤재]
           text: "설명서 2쪽."
-      - say: { char: 로봇, with: [윤재], text: "'처음 켜면 이름을 입력하세요.'" }
+      - say: { char: 로봇, speakerName: "안드로이드", with: [윤재], text: "'처음 켜면 이름을 입력하세요.'" }
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: bow
           with: [윤재]
           text: "그러니까 네가 입력해."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           motion: bow
           with: [윤재]
           text: "나는 키보드 없음."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "최대 8글자."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "8글자 넘으면 안 들어감."
       - say:
           char: 로봇
+          speakerName: "안드로이드"
           with: [윤재]
           text: "메모리가 작아서."
       - input:

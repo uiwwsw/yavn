@@ -236,7 +236,7 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '그때 온 사람이 마지막이었다')).toBe(false);
     // The fifth dark hears the earlier lives back as testimony, then one more thing arrives:
     // the winter that was never judged, because the first time around it could not be.
-    expect(heard(shown, '여든 먹어도 엿은 엿이라더라')).toBe(true);
+    expect(shown).toContain('"여든 먹어도 엿은 엿이죠."');
     expect(heard(shown, '바구미 슨 삼백 섬을 그해 가을까지')).toBe(false);
     expect(heard(shown, '사천삼백여든 냥이다')).toBe(true);
     expect(heard(shown, '그날 곳간을 열었더라면')).toBe(false);

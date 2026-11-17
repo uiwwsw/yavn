@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "속보 · 오전 7:30 · 서울 중랑구 대형마트 지하주차장서 50대 남성 숨진 채 발견 · 새벽 5시 10분 주차 관리원 신고 · 경찰 타살 가능성 수사"
+          text: "속보 · 4월 18일 오전 7:30 · 서울 중랑구 대형마트 지하주차장서 50대 남성 숨진 채 발견 · 새벽 5시 10분 주차 관리원 신고 · 경찰 타살 가능성 수사"
       - say:
           channel: system
           with: []
@@ -199,7 +199,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "두 개는 어디서 왔는지 모르겠고, 하나는 삼 년째 내가 쓰던 거다."
+          text: "두 개는 어디서 왔는지 모르겠고, 하나는 3년째 내가 쓰던 거다."
       - choice:
           key: t2_sh
           prompt: "상혁이 머리끈을 집어 손목에 낀다."
@@ -414,7 +414,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "열 시 십 분이요."
+          text: "10시 10분이요."
       - say:
           char: 해수
           with: [은숙]
@@ -549,7 +549,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "열두 해 동안 매일요?"
+          text: "12년 동안 매일요?"
       - say:
           char: 해수
           with: [은숙]
@@ -642,7 +642,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "튜토리얼 4/5 — 바꿔 보세요."
+          text: "레플라 · 모의 녹화실\n튜토리얼 4/5 — 바꿔 보세요."
       - say:
           channel: system
           with: []
@@ -654,7 +654,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "눈만 감으면 그 차 문이 열렸다. 한 번만 다시 보고 끄려고 밴드를 붙였다."
+          text: "경찰서에서 돌아온 뒤에도 눈만 감으면 그 차 문이 열렸다. 아까 밴드를 붙일 땐 주차장만 다시 보고 끌 생각이었다."
       - say:
           char: 해수
           with: []
@@ -819,7 +819,7 @@ scenes:
       - music: bleed
       - char: { id: 해수, position: left }
       - char: { id: 은숙, position: right }
-      - place: "4월 19일 오후 · 고객센터"
+      - place: "다음 날, 4월 19일 오후 · 그린마트 고객센터"
       - say:
           char: 해수.service
           motion: bow
@@ -1038,7 +1038,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상혁의 방문에 새 도어락이 달려 있다. 숫자 1, 2, 7, 0 자리만 손때가 묻어 있다."
+          text: "그날 밤 집에 돌아오니 상혁의 방문에 새 도어락이 달려 있다. 숫자 1, 2, 7, 0 자리만 손때가 묻어 있다."
       - say:
           char: 상혁
           with: []

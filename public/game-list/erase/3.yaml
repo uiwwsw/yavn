@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29 · 결혼 열흘 전"
+          text: "현재\n한도윤 · 29세 · 결혼 10일 전"
       - place: "수요일 저녁 · 퇴근길"
       - say:
           channel: message
@@ -237,45 +237,73 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
-      - place: "수요일 23:40 · 빈 사무실"
+      - place: "그날 밤 23:40 · 회사, 빈 사무실"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "안 와?"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: me
           char: 도윤
           with: []
           text: "회사 다시 들어왔어 자료가 여기 있어서"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "뭐 먹었는데"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: me
           char: 도윤
           with: []
           text: "김밥"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "오이는 뺐어?"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "너 혼자 먹을 때도 꼭 빼달라 하잖아"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
@@ -283,7 +311,7 @@ scenes:
       - choice:
           key: e2_search
           presentation: explore
-          prompt: "자기 자리 쪽 불만 켠다. 빈 사무실에서 지수한테 또 톡이 온다."
+          prompt: "지수의 메시지 창을 내린다. 노트북의 검색창과 사진첩이 보인다."
           with: []
           camera: wide
           options:
@@ -473,7 +501,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "과거\n유하린 · 18"
+          text: "11년 전\n유하린 · 18세"
       - bg: { id: science_room, transition: cut }
       - place: "며칠 뒤 · 과학실, 생물 수행평가"
       - char: { id: 하린, position: center, emotion: blank }
@@ -611,7 +639,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29 · 결혼 아흐레 전"
+          text: "현재\n한도윤 · 29세 · 결혼 9일 전"
       - bg: { id: couple_home, transition: cut }
       - music: static
       - place: "목요일 밤 · 도윤과 지수의 집"

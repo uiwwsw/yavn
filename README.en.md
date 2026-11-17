@@ -25,4 +25,6 @@ Start with [sample.yaml](sample.yaml) and complete game packages in `public/game
 
 See [CONTRIBUTING](CONTRIBUTING.en.md) for setup, collaboration, validation and PR review. Follow [Add a game](docs/ADDING_A_GAME.en.md) for a runnable starter and catalog submission. ZIP upload runs locally; public listing requires review, merge and deployment.
 
+Use [the scene continuity guidelines](docs/DEVELOPMENT_GUIDE.en.md#scene-continuity) when staging a cut, moving between times or places, or introducing a character.
+
 The library's main story, *Muwon*, is a five-chapter forensic mystery set in Hanseong in 1792. Its characters and cases are original; only the period setting and the historical inquest methods are borrowed. It is currently available in Korean.

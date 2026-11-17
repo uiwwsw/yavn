@@ -13,7 +13,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 3 · 사흘 뒤\n식량 원정. 편의점 재고: 0"
+          text: "STAGE 3 · 안드로이드를 고친 지 3일\n식량 원정. 편의점 재고: 0"
       - wait: 460
       - say:
           char: 로봇
@@ -76,7 +76,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "비싼 거 살 돈은 없었어. 게임기는 삼만 이천 원이었고."
+          text: "비싼 거 살 돈은 없었어. 게임기는 32,000원이었고."
       - wait: 270
       - say:
           char: 로봇
@@ -646,7 +646,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그 질문 한 지 십 분 지났어. 너 핑 몇이냐."
+          text: "그 질문 한 지 10분 지났어. 너 핑 몇이냐."
       - wait: 270
       - say:
           char: 로봇.happy
@@ -712,7 +712,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "가슴 화면에 ‘맞다’가 떴다가 금방 꺼진다."
+          text: "가슴 화면의 ‘맞다’가 꺼진다. 돌아가는 골목에 들어서자, 벽을 훑고 지나가는 불빛과 함께 모터 소리가 가까워진다."
       - goto: b3_drone
 
   b3_drone:
@@ -735,7 +735,7 @@ scenes:
           char: 윤재.scared
           motion: gasp
           with: [로봇, 드론]
-          text: "엎드려. 엎드리라고. 말하지 말고."
+          text: "저 불빛 지나갈 때까지 엎드려. 말하지 말고."
       - say:
           char: 윤재.scared
           with: [로봇, 드론]
@@ -931,7 +931,7 @@ scenes:
     actions:
       - bg: { id: shelter, transition: fade, duration: 700 }
       - music: chip_home
-      - place: "그날 밤 · 편의점 기지, 촛불 하나"
+      - place: "식량 원정에서 돌아온 밤 · 편의점 기지"
       - say:
           char: 윤재
           motion: sigh

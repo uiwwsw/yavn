@@ -74,7 +74,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "여섯 해 두 달 삼 일입니다."
+          text: "6년 2개월 3일입니다."
       - mood: { tone: grief, level: 1 }
       - say:
           char: 윤재
@@ -108,7 +108,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "통화 시간 평균 사십일 초예요."
+          text: "통화 시간 평균 41초예요."
       - say:
           char: 윤재
           motion: puff
@@ -171,11 +171,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "십이 개월 무이자면 한 달에 얼마야."
+          text: "12개월 무이자면 한 달에 얼마야."
       - say:
           char: 비서
           with: [윤재]
-          text: "십만 칠천오백 원입니다."
+          text: "107,500원입니다."
       - say:
           char: 윤재
           with: [비서]
@@ -229,7 +229,7 @@ scenes:
           char: 윤재.excited
           motion: perk
           with: [비서]
-          text: "어 잠깐만. 잠깐만잠깐만. 이거 봐 이거. 삼만 이천 원?"
+          text: "어 잠깐만. 잠깐만잠깐만. 이거 봐 이거. 32,000원?"
       - say:
           char: 비서
           motion: headtilt
@@ -238,11 +238,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "휴대용 게임기, 와이파이 없음, 앱 없음, 계정 없음. 삼만 이천 원."
+          text: "휴대용 게임기, 와이파이 없음, 앱 없음, 계정 없음. 32,000원."
       - say:
           char: 비서
           with: [윤재]
-          text: "코어 권장 거래가는 사만 사천 원입니다."
+          text: "코어 권장 거래가는 44,000원입니다."
       - say:
           char: 윤재
           motion: bounce
@@ -331,7 +331,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "고무 돔 교체 부품은 천 원입니다. 주문해 드릴까요?"
+          text: "고무 돔 교체 부품은 1,000원입니다. 주문해 드릴까요?"
       - say:
           char: 윤재
           motion: startle
@@ -353,7 +353,7 @@ scenes:
           side: me
           with: []
           text: "그거 수리비 되게 비싸요 부품도 단종이고"
-      - say: { char: 비서, with: [윤재], text: "아까 천 원이라고 말씀드렸는데요." }
+      - say: { char: 비서, with: [윤재], text: "아까 1,000원이라고 말씀드렸는데요." }
       - say:
           char: 윤재
           motion: sway
@@ -498,15 +498,15 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "팔만 칠천 원입니다. 결제하면 오만 오천 원 남습니다."
+          text: "87,000원입니다. 결제하면 55,000원 남습니다."
       - say:
           char: 윤재
           with: [비서]
-          text: "한 달 오만 오천으로 살 수 있지. 가능해."
+          text: "한 달 55,000원으로 살 수 있지. 가능해."
       - say:
           char: 비서
           with: [윤재]
-          text: "지난달 윤재 님 지출은 십일만 사천 원입니다."
+          text: "지난달 윤재 님 지출은 114,000원입니다."
       - say:
           char: 윤재
           with: [비서]
@@ -514,7 +514,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "편의점은 지난달 열아홉 번 가셨습니다."
+          text: "편의점은 지난달 19번 가셨습니다."
       - say:
           char: 윤재
           motion: startle
@@ -609,7 +609,7 @@ scenes:
           channel: message
           side: me
           with: []
-          text: "보냈습니다! 3만 2천 원 확인 부탁드려요"
+          text: "보냈습니다! 32,000원 확인 부탁드려요"
       - say:
           channel: message
           side: them
@@ -623,7 +623,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "오만 오천 원입니다."
+          text: "55,000원입니다."
       - say:
           char: 윤재
           motion: stomp
@@ -636,12 +636,12 @@ scenes:
           char: 비서
           motion: perk
           with: [윤재]
-          text: "현관에 뭔가 놓였습니다. 사백이십 그램. 등록되지 않은 물체예요."
+          text: "현관에 뭔가 놓였습니다. 420g. 등록되지 않은 물체예요."
       - say:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "왔다! 아 진짜 신문지네. 상자도 없어?"
+          text: "왔다! 들고 들어올게. …아 진짜 신문지로만 쌌네. 상자도 없어?"
       - say:
           char: 비서
           with: [윤재]
@@ -703,11 +703,11 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "천 원입니다."
+          text: "1,000원입니다."
       - say:
           char: 윤재
           with: [비서]
-          text: "그 천 원이 없어. 너 때문은 아니고."
+          text: "그 1,000원이 없어. 너 때문은 아니고."
       - say:
           char: 윤재
           with: [비서]

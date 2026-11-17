@@ -365,6 +365,7 @@ const actionBodySchema = z.union([
   z.object({
     say: z.object({
       char: z.string().optional(),
+      speakerName: z.string().trim().min(1).max(80).optional(),
       with: z.array(z.string().min(1)).optional(),
       framing: z.string().min(1).optional(),
       camera: cameraDirectiveSchema.optional(),

@@ -12,7 +12,7 @@ scenes:
       - music: night_well
       - say:
           channel: record
-          text: "구월 스무닷새 밤. 한강 변 서빙고. 한성부 서리 윤길, 얼음 더미 사이에서 발견."
+          text: "9월 25일 밤. 한강 변 서빙고. 한성부 서리 윤길, 얼음 더미 사이에서 발견."
       - say:
           channel: action
           with: []
@@ -344,7 +344,7 @@ scenes:
       - say:
           char: 서연.think
           with: [도원]
-          text: "윤길이 죽은 건 오늘 낮으로 보입니다."
+          text: "서빙고에서 방금 살핀 몸을 다시 보십시오. 윤길이 죽은 건 오늘 낮으로 보입니다."
       - say:
           char: 서연.think
           with: [도원]
@@ -715,7 +715,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연]
-          text: "출납부와 상자의 도장을 전의감 도장 장부와 대 보았소. 한명재에게 내준 것이오."
+          text: "서빙고에서 가져온 출납부와 상자의 도장을 여기 한성부에서 전의감 장부와 대 보았소. 한명재에게 내준 도장이오."
       - say:
           char: 도원.troubled
           with: [서연]

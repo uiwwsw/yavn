@@ -218,6 +218,8 @@ export type PhoneMedia = {
 export type SayAction = {
   say: {
     char?: string;
+    /** Name shown for this line, independent of the actor's model and emotions. */
+    speakerName?: string;
     with?: string[];
     framing?: string;
     camera?: CameraDirective;

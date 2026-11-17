@@ -95,7 +95,7 @@ scenes:
           char: 도윤.hollow
           with: []
           delivery: whisper
-          text: "일요일 새벽 세 시 이 분."
+          text: "일요일 새벽 3시 2분."
       - say:
           char: 도윤
           with: []
@@ -144,7 +144,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "2016년 삼월에 나는 고3이었어. 열여덟."
+          text: "2016년 3월에 나는 고3이었어. 열여덟."
       - say:
           char: 도윤
           with: []
@@ -170,7 +170,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "가장 오래된 사진이 전부 그해 3월에 몰려 있다. 천이백네 장이 한 달 치라고?"
+          text: "가장 오래된 사진이 전부 그해 3월에 몰려 있다. 1,204장이 한 달 치라고?"
       - say:
           char: 도윤
           with: []
@@ -262,7 +262,7 @@ scenes:
               - { var: e0_messages, op: eq, value: false }
               - { var: e0_photos, op: eq, value: false }
               - { var: e0_location, op: eq, value: false }
-          text: "삼 주 전 것도 안 지운 게 있다. 그건 내가 정리를 덜 한 거고, 그래서 남았다."
+          text: "3주 전 것도 안 지운 게 있다. 그건 내가 정리를 덜 한 거고, 그래서 남았다."
       - say:
           channel: thought
           when:
@@ -270,7 +270,7 @@ scenes:
               - { var: e0_messages, op: eq, value: true }
               - { var: e0_photos, op: eq, value: true }
               - { var: e0_location, op: eq, value: true }
-          text: "삼 주 전 새벽 것은 하나도 없다. 메시지도 사진도 위치도. 손이 알아서 했다."
+          text: "3주 전 새벽 것은 하나도 없다. 메시지도 사진도 위치도. 손이 알아서 했다."
       - say:
           channel: thought
           when:
@@ -391,7 +391,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "그 반에 한도윤은 없었다. 2016년 삼월에 교실에 앉아 있던 애는 다른 이름이었다."
+          text: "그 반에 한도윤은 없었다. 2016년 3월에 교실에 앉아 있던 애는 다른 이름이었다."
       - say:
           channel: thought
           with: []
@@ -405,14 +405,14 @@ scenes:
 
   harin_morning:
     pov: "유하린"
-    title: "2016년 삼월"
+    title: "2016년 3월"
     actions:
       - bg: { id: harin_room, transition: cut }
       - music: static
       - say:
           channel: card
           with: []
-          text: "과거\n유하린 · 18"
+          text: "11년 전\n유하린 · 18세"
       - place: "토요일 새벽 5:10 · 하린의 방"
       - char: { id: 하린, position: center, emotion: blank }
       - say:
@@ -621,7 +621,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29 · 결혼 닷새 전"
+          text: "현재\n한도윤 · 29세 · 결혼 5일 전"
       - bg: { id: rooftop, transition: cut }
       - music: wind
       - char: { id: 도윤, position: center, emotion: panic }
@@ -652,7 +652,7 @@ scenes:
       - goto: junseong
 
   junseong:
-    pov: "유하린"
+    pov: "한도윤"
     title: "화분"
     actions:
       - say:
@@ -662,7 +662,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "‘유하린’을 한 번 더 입에 올려 보려는데 휴대폰이 울린다. 영업2팀 단톡방이다."
+          text: "난간에서 손을 떼고 ‘유하린’을 한 번 더 입에 올리려는데 휴대폰이 울린다. 영업2팀 단톡방이다."
       - say:
           channel: record
           when: { var: e2_leaked, op: eq, value: true }
@@ -744,7 +744,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "내일 열 시에 가면 두 번째다. 벌써 뭘 지워야 할지 순서부터 생각난다."
+          text: "내일 오전 10시에 가면 두 번째다. 벌써 뭘 지워야 할지 순서부터 생각난다."
       - say:
           channel: thought
           when: { var: deleted, op: gte, value: 6 }
@@ -818,7 +818,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "사 분 동안 화면만 보고 섰다. 셔츠 한쪽이 바람에 몸에 붙었다."
+          text: "4분 동안 화면만 보고 섰다. 셔츠 한쪽이 바람에 몸에 붙었다."
       - add: { deleted: 10 }
       - branch:
           cases:
@@ -994,7 +994,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "…들고 다녔어. 십일 년 동안 사촌 동생인가 하면서."
+          text: "…들고 다녔어. 11년 동안 사촌 동생인가 하면서."
       - say:
           char: 도윤
           with: []
@@ -1046,7 +1046,7 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1200 }
       - music: wind
-      - place: "사흘 뒤 목요일 · 보건소"
+      - place: "3일 뒤 목요일 · 보건소"
       - say:
           channel: action
           with: []

@@ -513,8 +513,7 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
     if ('say' in action && (!action.say.when || evaluateCondition(action.say.when, vars, inventory))) {
       const speakerId = parseCharacterRef(action.say.char).id;
       const channel = resolveDialogueChannel(action.say.channel, speakerId);
-      const speaker = speakerId ? interpolateText(game.assets.characters[speakerId]?.name ?? speakerId, vars)
-        : channel === 'thought' ? resolvePlayerName(game, sceneId, vars) : undefined;
+      const speaker = resolveLineSpeakerName(game, sceneId, vars, action.say.speakerName, speakerId, channel);
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker, channel,
         ...(action.say.side ? { side: action.say.side } : {}),
@@ -2149,11 +2148,30 @@ function getStagedCharacterIds(): string[] {
     .filter((id): id is string => Boolean(id));
 }
 
-function resolveSpeakerDisplayName(id: string | undefined): string | undefined {
+function resolveSpeakerDisplayName(
+  id: string | undefined,
+  game: GameData | undefined,
+  vars: Record<string, RouteVarValue>,
+): string | undefined {
   if (!id) return undefined;
-  const state = useVNStore.getState();
-  const name = state.game?.assets.characters[id]?.name;
-  return name ? interpolateText(name, state.routeVars) || id : id;
+  const name = game?.assets.characters[id]?.name;
+  return name ? interpolateText(name, vars) || id : id;
+}
+
+function resolveLineSpeakerName(
+  game: GameData,
+  sceneId: string,
+  vars: Record<string, RouteVarValue>,
+  label: string | undefined,
+  speakerId: string | undefined,
+  channel: DialogueChannel,
+): string | undefined {
+  if (label) {
+    const displayed = interpolateText(label, vars).trim();
+    if (displayed) return displayed;
+  }
+  return resolveSpeakerDisplayName(speakerId, game, vars)
+    ?? (channel === 'thought' ? resolvePlayerName(game, sceneId, vars) : undefined);
 }
 
 function resolveSayPresentation(
@@ -2180,10 +2198,11 @@ function resolveSayPresentation(
     ...(speaker.id ? [{ id: speaker.id, emotion: speaker.emotion }] : []),
     ...withRefs,
   ];
+  const { game, routeVars } = useVNStore.getState();
 
   return {
     speakerId: speaker.id,
-    speakerName: resolveSpeakerDisplayName(speaker.id),
+    speakerName: resolveSpeakerDisplayName(speaker.id, game, routeVars),
     speakerEmotion: speaker.emotion,
     visibleCharacterIds,
     emotionRefs,
@@ -5071,8 +5090,9 @@ function runToNextPause(loopGuard = 0) {
       : undefined;
     const channel = resolveDialogueChannel(action.say.channel, presentation.speakerId);
     const spokenSpeakerId = channel === 'thought' || channel === 'action' ? undefined : presentation.speakerId;
-    const speakerName = presentation.speakerName
-      ?? (channel === 'thought' ? resolvePlayerName(game, state.currentSceneId, state.routeVars) : undefined);
+    const speakerName = resolveLineSpeakerName(
+      game, state.currentSceneId, state.routeVars, action.say.speakerName, presentation.speakerId, channel,
+    );
     const delivery = resolveDialogueDelivery(
       action.say.delivery,
       speakerEmotion,
