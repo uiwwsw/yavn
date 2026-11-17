@@ -536,7 +536,7 @@ scenes:
           text: "해수는 전원선을 따라가 벽 콘센트를 본다. 모니터 아래에는 작은 전원 버튼이 있다."
       - choice:
           key: t4_end
-          prompt: "태민은 서버를 꺼도 끊기지 않는 세션이 하나 있다고 했다. 모니터 버튼을 누르면 화면만 꺼진다. 콘센트의 전원선을 뽑아야 이 서버가 멎는다."
+          prompt: "모니터 아래에 전원 버튼이 있다. 본체의 전원선은 벽 콘센트까지 이어져 있다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -553,11 +553,14 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "플러그가 뻑뻑하게 빠진다. 잡고 있던 선은 아직 따뜻하다."
+          text: "해수가 벽에서 본체 전원선을 뽑는다."
+      - bg: { id: server_room_pc_off, transition: cut }
+      - music: null
       - say:
           channel: action
           with: []
-          text: "팬 소리가 멎었는데 모니터는 그대로 켜져 있다."
+          sound: fan_stop
+          text: "본체의 초록불이 꺼진다. 팬 소리가 멎었는데 모니터는 그대로 켜져 있다."
       - say:
           channel: record
           with: []
@@ -669,13 +672,12 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "전원 버튼을 길게 누른다. 화면이 꺼지는 데 4초 걸린다."
+          text: "해수가 모니터 아래 전원 버튼을 누른다."
+      - bg: { id: server_room_monitor_off, transition: cut }
       - say:
           channel: action
           with: []
-          text: "모니터 화면이 꺼진 뒤에도 팬은 계속 돈다."
-      - wait: 0
-      - wait: 0
+          text: "화면이 꺼진다. 일어서는데 발밑에서 팬이 계속 도는 소리가 들린다."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
       - place: "같은 날 오전 9:30 · 고객센터"
       - music: tutorial

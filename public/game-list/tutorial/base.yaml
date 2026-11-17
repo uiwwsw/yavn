@@ -15,6 +15,8 @@ assets:
     server_building: assets/bg/server_building.svg
     server_room: assets/bg/server_room.svg
     server_room_off: assets/bg/server_room_off.svg
+    server_room_monitor_off: assets/bg/server_room_monitor_off.svg
+    server_room_pc_off: assets/bg/server_room_pc_off.svg
     pencil_sticker: assets/items/pencil.svg
     complaint_sticker: assets/items/complaint.svg
     coupon_sticker: assets/items/coupon.svg

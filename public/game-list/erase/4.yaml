@@ -753,7 +753,7 @@ scenes:
       - say:
           channel: thought
           when: { var: went_to_clinic, op: eq, value: true }
-          text: "지갑 안쪽, 영수증 뒤에 번호표가 있다. 사십칠 번. 결과는 목요일에 본인이 직접 받으러 가야 한다."
+          text: "지갑 안쪽, 영수증 뒤에 47번 번호표가 있다. 결과는 목요일에 직접 받으러 가야 한다."
       - say:
           channel: thought
           when: { var: went_to_clinic, op: eq, value: true }
@@ -809,17 +809,17 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 '지우기'를 누르기 전에 사진첩을 한 번 더 연다. 맨 아래를 확인하는 손놀림이 익숙하다."
+          text: "도윤은 사진첩 맨 아래까지 한 번 더 내려 본다. 설정으로 돌아가 ‘지우기’를 누른다."
       - say:
           channel: system
           with: []
-          erase: true
           text: "지우는 중… 약 4분 남음"
-          wait: 1400
+          wait: 850
       - say:
-          channel: action
+          channel: card
           with: []
-          text: "4분 동안 화면만 보고 섰다. 셔츠 한쪽이 바람에 몸에 붙었다."
+          text: "4분 뒤 · 초기화 완료"
+          autoAdvance: 1250
       - add: { deleted: 10 }
       - branch:
           cases:

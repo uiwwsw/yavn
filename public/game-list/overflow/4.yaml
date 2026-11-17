@@ -43,7 +43,8 @@ scenes:
       - say: { channel: record, with: [], text: "공개 자료 · 문지완 본인 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
       - say: { char: 수경, with: [지완], text: "네, 제가 검수한 버전입니다. 여기 보시면 병원에서 찍은 숫자랑 검사기에서 받은 숫자가 다르죠." }
       - say: { char: 지완, with: [수경], text: "그 01 때문에 저는 밖에서 기다렸어요. 아버지한텐 제가 어디 있는지도 늦게 전해졌고요." }
-      - place: "보도 다음 날"
+      - bg: { id: wolgye_station, transition: fade, duration: 520 }
+      - place: "보도 다음 날 아침 · 월계역"
       - say: { channel: message, side: them, char: 도겸, with: [], text: "팀장님이 뉴스에 지완 씨 맞냐는데요 일단 답 안 했어요" }
       - say: { channel: message, side: me, char: 지완, with: [], text: "저 맞아요. 월요일 새벽조 그대로 간다고 해 주세요" }
       - ending: broadcast
@@ -55,7 +56,8 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
       - say: { char: 지완, with: [세라], text: "어제 제가 몇 시에 왔는지도 적을 수 있어요? 아버지가 제가 늦게 온 줄 아셨어요." }
-      - say: { char: 세라, with: [지완], text: "제가 접수한 시간이 남아 있어요. 같이 넣을게요." }
+      - say: { char: 세라, with: [지완], text: "그날 접수한 시간이 남아 있어요. 같이 넣을게요. 결과 나오면 연락드릴 테니 오늘은 이 면회증으로 들어가세요." }
+      - say: { channel: card, with: [], text: "이틀 뒤", autoAdvance: 1200 }
       - place: "이틀 뒤 · 월계병원 면회 접수"
       - say: { channel: record, with: [], text: "문지완 · 이의 신청 처리 완료\n‘무반응 의심’ 판정 철회\n첨부: 진단 출력물, 당일 접수 시각 및 직원 확인 기록" }
       - say: { char: 지완, with: [세라], text: "처음에 뜬 것도 한 장 주실래요? 둘 다 아버지한테 갖다 드리려고요." }

@@ -175,8 +175,8 @@ scenes:
   out_cannot:
     actions:
       - set: { l3_out_blocked: true }
-      - wait: 1100
-      - say: { channel: action, with: [수경], text: "잠바를 받으려고 손을 뻗는다. 정신을 차려 보니 침대 난간을 쥐고 있다.", wait: 900, unskippable: true }
+      - say: { channel: action, with: [수경], text: "잠바 소매에 손을 뻗는다. 손끝이 천에 닿기 직전에 멈춘다." }
+      - say: { channel: action, with: [수경], text: "정신을 차려 보니 침대 난간을 쥐고 있다.", wait: 550 }
       - say: { channel: action, with: [수경], text: "손가락을 하나씩 펴 보는데 펴자마자 다시 난간을 쥔다." }
       - say: { channel: thought, with: [], text: "아침에 엄마가 왔는데 침대가 비어 있으면. 그 생각에서 한 발도 못 나간다." }
       - goto: out_stay
@@ -185,7 +185,7 @@ scenes:
     actions:
       - say: { char: 민재, with: [수경], text: "누나 혼자 가요. 엄마가 여섯 시에 오는데, 내가 없으면 안 돼요." }
       - say: { char: 수경, with: [민재], text: "알았어. 사진 찍어 올게. …아, 카메라 없다. 그려 올게." }
-      - say: { channel: action, with: [], text: "새벽 세 시쯤 슬리퍼 끄는 소리가 났다. 돌아온 누나의 잠바가 밤공기에 차가웠다." }
+      - say: { channel: card, with: [], text: "새벽 3시 · 6인실", autoAdvance: 1150 }
       - sticker: { id: sketch, image: sketch_sticker, x: 50, y: 32, width: "clamp(160px, 22%, 300px)", enter: fadeIn, inputLockMs: 300 }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "약봉지밖에 종이가 없더라. 이게 제일 큰 거. 이건 다리. 이 점이 나." }
       - clearSticker: { id: sketch, leave: fadeOut }
@@ -199,6 +199,7 @@ scenes:
   out_go:
     actions:
       - set: { l3_went: true }
+      - say: { channel: action, with: [민재, 수경], text: "잠바를 받아 입는다. 수경 누나가 비상계단 문을 잡고 기다려 준다." }
       - bg: { id: hangang_night, transition: fade, duration: 1000 }
       - place: "밤 11시 · 동호대교 아래 둔치"
       - char: { id: 민재, position: left }
