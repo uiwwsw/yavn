@@ -305,7 +305,7 @@ scenes:
           with: [광철]
           text: "오광철 고객님, 오셨어요."
       - say: { char: 광철, with: [해수], text: "이거 환불해 줘. 어제 여기서 산 거 알지?" }
-      - say: { char: 해수.service, with: [광철], text: "즉석밥 열두 개 묶음이요. 영수증 주시겠어요?" }
+      - say: { char: 해수.service, with: [광철], text: "이거 열두 개들이죠. 영수증 좀 주시겠어요?" }
       - wait: 0
       - say:
           char: 해수.service
@@ -323,7 +323,7 @@ scenes:
           motion: lean_in
           with: [해수, 광철]
           delivery: whisper
-          text: "2019년 4월 11일. 딱 12년 전 오늘이네. 해수야, 너 첫날 첫 손님이 이분이야?"
+          text: "4월 11일. 오늘이네. 딱 12년 전이야. 해수야, 첫날 받은 손님이 이분이었어?"
       - say:
           char: 광철
           with: [지영, 해수]
@@ -352,7 +352,7 @@ scenes:
       - say:
           char: 광철.shout
           with: [해수]
-          text: "된다는 거야, 안 된다는 거야? 몇 년째 거기 앉아 있으면서 말을 그따위로 해?"
+          text: "그래서 된다는 거야, 안 된다는 거야? 여기 몇 년을 앉아서 아직 말을 그렇게 해?"
           wait: 0
       - say:
           char: 광철

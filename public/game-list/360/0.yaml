@@ -208,7 +208,7 @@ scenes:
       - say: { char: 만석, with: [끝순, 봉구], text: "기침이 왜 그 모양이냐." }
       - say: { char: 끝순, with: [만석], text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }
       - say: { char: 봉구, with: [만석], text: "열여섯 먹은 처자가 총 멘 것들을 구경해?" }
-      - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 멀리 있었잖아요. 말은 바로 앞까지 왔어요. 저보다 훨씬 크더라고요." }
+      - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 멀리 있었어요. 말이 코앞까지 왔는데, 고개를 한참 들어야 눈이 보이더라고요." }
       - mood: { tone: warm, level: 2 }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다. 어려서부터 그랬다." }
       - say: { char: 끝순, with: [만석], text: "아버지, 이번에 마포 가시면 엿 사다 주세요. 깨 붙은 거." }

@@ -1129,7 +1129,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "나 아직 화났어. 그래도 네가 먼저 말해 줘서 다행이야. 오늘은 답장 안 해도 돼"
+          text: "나 아직 화났어 먼저 말해준 건 고마워 오늘은 답 안 해도 돼"
       - say:
           channel: message
           side: me
@@ -1185,7 +1185,7 @@ scenes:
           side: me
           char: 도윤
           with: []
-          text: "응. 지금은 말할 수 있을 것 같아."
+          text: "응. 지금 할래."
       - say:
           channel: message
           side: them

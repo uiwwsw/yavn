@@ -69,7 +69,7 @@ scenes:
           char: 막쇠
           speakerName: "오작인"
           with: [서연]
-          text: "난 오작인 막쇠요. 판관 나리 오실 때까진 거적을 덮어 둡시다."
+          text: "오작인 막쇠요. 판관 나리 오실 때까진 거적 덮어 두시오."
       - say:
           char: 서연
           with: [막쇠]
@@ -84,7 +84,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "등잔은 여기 두세요. 물에서 건진 사람을 어떻게 살피는지는 읽어 뒀어요."
+          text: "등잔 좀 이리 주십시오. 검안할 차례는 읽어 왔습니다."
       - wait: 0
       - say:
           channel: action
@@ -94,7 +94,7 @@ scenes:
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "정말 한글이네. 난 40년을 그림만 봤는데."
+          text: "참말로 한글이네. 난 마흔 해를 그림만 보고 했는데."
       - char: { id: 도원, position: center }
       - say:
           channel: action
@@ -105,17 +105,17 @@ scenes:
           char: 도원.stern
           speakerName: "한성부 판관"
           with: [서연, 막쇠]
-          text: "한성부 판관 김도원이오. 마을에선 분이가 혼례를 겁내 우물에 몸을 던졌다더군."
+          text: "한성부 판관 김도원이오. 동네 사람들은 분이가 혼례가 두려워 우물에 뛰어들었다 하오."
       - wait: 0
       - say:
           char: 도원.stern
           with: [서연]
-          text: "날이 밝기 전에 검안 기록을 올려야 하오. 의녀는 몸만 확인해 주시오. 죽은 까닭은 내가 적겠소."
+          text: "날 밝기 전에 기록을 올려야 하오. 몸을 보고 알려 주시오. 사인은 내가 쓰겠소."
       - wait: 0
       - say:
           char: 서연
           with: [도원, 막쇠]
-          text: "나리, 손톱 밑에 남빛 실이 있습니다. 다른 데도 살핀 뒤에 죽은 까닭을 적으시지요."
+          text: "나리, 손톱 밑에 남빛 실이 있습니다. 이 실이 어찌 들어갔는지부터 보시지요."
       - say:
           channel: action
           with: []
@@ -136,7 +136,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "물에서 건진 송장은 세 군데부터 봐요. 입이랑 코, 손톱, 목."
+          text: "물에서 건졌으면 입하고 코부터 봐요. 그다음 손톱, 그리고 목."
       - goto: c1_examine
 
   c1_examine:

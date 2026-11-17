@@ -423,7 +423,7 @@ scenes:
           char: 로봇
           with: [윤재]
           when: { var: m_joke, op: eq, value: true }
-          text: "끝맺는 말도 없는데 이걸 제일 자주 꺼냈음."
+          text: "끝에 아무 말도 안 들어 있는데, 조회 횟수는 이게 1등임."
       - say:
           char: 로봇
           with: [윤재]
@@ -437,7 +437,7 @@ scenes:
               - { var: m_promise, op: eq, value: true }
               - { var: m_snack, op: eq, value: true }
               - { var: m_joke, op: eq, value: true }
-          text: "세 개. 8KB에서 그게 최대임. 네가 꽉 채웠음."
+          text: "8KB에 세 개가 겨우 들어감. 전부 네 거임."
       - say:
           char: 로봇
           with: [윤재]
@@ -467,7 +467,7 @@ scenes:
           text: "저장 안 해도 들어갈 수는 있음."
       - say: { char: 윤재, with: [로봇], text: "…하나만 고르라고. 하나만." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "고르는 건 1P가 함. 그건 안 바뀌는 칸에 있음." }
+      - say: { char: 로봇, with: [윤재], text: "고르는 건 1P. 그건 ROM에 있어서 못 지움." }
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
