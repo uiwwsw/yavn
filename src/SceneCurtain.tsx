@@ -1,4 +1,7 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, type CSSProperties } from 'react';
+import { useVNStore } from './store';
+
+const SCENE_REVEAL_MS = 260;
 
 /** Retain the loading cover while the decoded stage is revealed. */
 export function useSceneCurtain(active: boolean): boolean {
@@ -6,19 +9,21 @@ export function useSceneCurtain(active: boolean): boolean {
   useLayoutEffect(() => {
     if (active) { setRetained(true); return; }
     if (!retained) return;
-    const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 440;
+    const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : SCENE_REVEAL_MS;
     const timer = window.setTimeout(() => setRetained(false), duration);
     return () => window.clearTimeout(timer);
   }, [active, retained]);
   return active || retained;
 }
 
-export function SceneCurtain({ loading, progress, chapter, title }: {
-  loading: boolean; progress: number; chapter: number; title?: string;
+export function SceneCurtain({ loading, chapter, title }: {
+  loading: boolean; chapter: number; title?: string;
 }) {
+  const progress = useVNStore(state => state.chapterLoadingProgress);
   const percent = Math.floor(Math.max(0, Math.min(1, progress)) * 100);
   return (
-    <div className={`chapter-loading scene-curtain${loading ? '' : ' is-revealing'}`} role="status" aria-live="polite">
+    <div className={`chapter-loading scene-curtain${loading ? '' : ' is-revealing'}`} role="status" aria-live="polite"
+      style={{ '--scene-reveal-duration': `${SCENE_REVEAL_MS}ms` } as CSSProperties}>
       <div className="scene-curtain-center">
         <span className="scene-curtain-ornament" aria-hidden="true">◇</span>
         <p>CHAPTER {String(Math.max(1, chapter)).padStart(2, '0')}</p>

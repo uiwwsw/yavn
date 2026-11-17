@@ -120,15 +120,20 @@ export class ImageResourceCache {
   private trim(): void {
     const entries = [...this.resources.values()];
     let decoded = entries.reduce((sum, entry) => sum + entry.instances.reduce((n, i) => n + i.bytes, 0), 0);
-    const idle = entries.flatMap(entry => entry.instances.filter(i => !i.leased && i.bytes > 0 && entry.users === 0).map(instance => ({ entry, instance })))
-      .sort((a, b) => a.instance.used - b.instance.used);
-    for (const { entry, instance } of idle) {
-      if (decoded <= this.limits.decodedBytes) break;
-      entry.instances = entry.instances.filter(i => i !== instance);
-      instance.image.removeAttribute('src');
-      decoded -= instance.bytes;
+    if (decoded > this.limits.decodedBytes) {
+      const idle = entries.flatMap(entry => entry.instances
+        .filter(instance => !instance.leased && instance.bytes > 0 && entry.users === 0)
+        .map(instance => ({ entry, instance })))
+        .sort((a, b) => a.instance.used - b.instance.used);
+      for (const { entry, instance } of idle) {
+        entry.instances = entry.instances.filter(i => i !== instance);
+        instance.image.removeAttribute('src');
+        decoded -= instance.bytes;
+        if (decoded <= this.limits.decodedBytes) break;
+      }
     }
     let encoded = entries.reduce((sum, entry) => sum + entry.encodedBytes, 0);
+    if (encoded <= this.limits.encodedBytes && entries.length <= this.limits.entries) return;
     for (const entry of entries.sort((a, b) => a.used - b.used)) {
       if (encoded <= this.limits.encodedBytes && this.resources.size <= this.limits.entries) break;
       if (entry.users > 0) continue;

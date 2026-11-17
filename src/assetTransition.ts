@@ -33,10 +33,10 @@ export function commitPreparedBackground(
   };
 }
 
-export function finishBackgroundTransition(
-  state: BackgroundTransitionState,
+export function finishBackgroundTransition<T extends BackgroundTransitionState>(
+  state: T,
   source: string,
-): BackgroundTransitionState {
+): T {
   if (state.current !== source || state.previous === undefined) {
     return state;
   }

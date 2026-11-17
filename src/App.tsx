@@ -351,6 +351,16 @@ const DialogueNextButton = memo(function DialogueNextButton({ onAdvance }: { onA
   );
 });
 
+const StartSceneProgress = memo(function StartSceneProgress() {
+  const progress = useVNStore(state => state.chapterLoadingProgress);
+  return (
+    <div role="progressbar" aria-label={t("게임 준비")} aria-valuemin={0} aria-valuemax={100}
+      aria-valuenow={Math.floor(progress * 100)}>
+      <i style={{ transform: `scaleX(${Math.max(.04, progress)})` }} />
+    </div>
+  );
+});
+
 /**
  * The profile picture beside a run of messages.
  *
@@ -1720,7 +1730,6 @@ export default function App() {
     isFinished,
     game,
     chapterLoading,
-    chapterLoadingProgress,
     chapterLoadingMessage,
     videoCutscene,
     inputGate,
@@ -1768,7 +1777,6 @@ export default function App() {
     isFinished: state.isFinished,
     game: state.game,
     chapterLoading: state.chapterLoading,
-    chapterLoadingProgress: state.chapterLoadingProgress,
     chapterLoadingMessage: state.chapterLoadingMessage,
     videoCutscene: state.videoCutscene,
     inputGate: state.inputGate,
@@ -3786,15 +3794,16 @@ export default function App() {
     // System overlays keep the last measured inset so actors do not jump when the
     // dialog fades back in. A manual hide intentionally releases the baseline.
     if (dialogUiHidden) {
-      setStickerSafeInset((prev) => (prev === 0 ? prev : 0));
+      setStickerSafeInset(0);
       setCharacterPromptInset(0);
       return;
     }
     const nextInset = Math.max(0, Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop));
-    setStickerSafeInset((prev) => (prev === nextInset ? prev : nextInset));
+    const dialogHeight = dialogEl.offsetHeight;
     const readingHeight = Number.parseFloat(getComputedStyle(document.documentElement)
-      .getPropertyValue('--yavn-character-prompt-height')) || dialogEl.offsetHeight;
-    const readingInset = resolvePromptActorInset(nextInset, dialogEl.offsetHeight, readingHeight);
+      .getPropertyValue('--yavn-character-prompt-height')) || dialogHeight;
+    const readingInset = resolvePromptActorInset(nextInset, dialogHeight, readingHeight);
+    setStickerSafeInset(nextInset);
     setCharacterPromptInset(readingInset);
     // Hiding the dialog releases its baseline, but must not enlarge the portrait.
     setCharacterPromptFitInset(readingInset);
@@ -3802,31 +3811,21 @@ export default function App() {
 
   useLayoutEffect(() => {
     updateStickerSafeInset();
-    const raf1 = window.requestAnimationFrame(updateStickerSafeInset);
-    const raf2 = window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(updateStickerSafeInset);
-    });
     const stageFrameEl = stageContentFrameRef.current;
     const dialogEl = dialogBoxRef.current;
     window.addEventListener('resize', updateStickerSafeInset);
     if (!stageFrameEl || !dialogEl || typeof ResizeObserver === 'undefined') {
-      return () => {
-        window.cancelAnimationFrame(raf1);
-        window.cancelAnimationFrame(raf2);
-        window.removeEventListener('resize', updateStickerSafeInset);
-      };
+      return () => window.removeEventListener('resize', updateStickerSafeInset);
     }
 
     const observer = new ResizeObserver(updateStickerSafeInset);
     observer.observe(stageFrameEl);
     observer.observe(dialogEl);
     return () => {
-      window.cancelAnimationFrame(raf1);
-      window.cancelAnimationFrame(raf2);
       observer.disconnect();
       window.removeEventListener('resize', updateStickerSafeInset);
     };
-  }, [bootMode, choiceGate, inputGate, isDialogHidden, updateStickerSafeInset]);
+  }, [bootMode, choiceGate.active, inputGate.active, isDialogHidden, updateStickerSafeInset]);
 
   const currentCast = useMemo(() => stagedCharactersByPosition.map(({ position, slot }) => ({
     position, slot, visible: visibleCharacterSet.has(slot.id),
@@ -4292,8 +4291,7 @@ export default function App() {
         <div className="start-scene-cover" aria-hidden="true"><i /><i /></div>
         {startGateLaunching && <div className="start-scene-loading" role="status" aria-live="polite">
           <span>{startGateRevealing ? t("이야기가 시작됩니다") : t("첫 장면을 여는 중")}</span>
-          <div role="progressbar" aria-label={t("게임 준비")} aria-valuemin={0} aria-valuemax={100}
-            aria-valuenow={Math.floor(chapterLoadingProgress * 100)}><i style={{ transform: `scaleX(${Math.max(.04, chapterLoadingProgress)})` }} /></div>
+          <StartSceneProgress />
         </div>}
       </div>
     );
@@ -6233,7 +6231,7 @@ export default function App() {
       )}
 
       {chapterCurtainVisible && !startGate && (
-        <SceneCurtain loading={chapterLoading} progress={chapterLoadingProgress} chapter={chapterIndex} title={game?.meta.title} />
+        <SceneCurtain loading={chapterLoading} chapter={chapterIndex} title={game?.meta.title} />
       )}
 
       {gameOver && !chapterLoading && !gameOverRecoveryOpen && !storyMapOpen && (
