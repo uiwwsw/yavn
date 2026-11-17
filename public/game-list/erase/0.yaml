@@ -34,7 +34,7 @@ scenes:
     actions:
       - bg: { id: photo_studio, transition: fade, duration: 520 }
       - music: studio
-      - place: "현재 · 결혼 한 달 전 · 청첩장 촬영"
+      - place: "결혼식 한 달 전 · 청첩장 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say: { char: 지수, with: [도윤], text: "눈 떠. 아직 안 찍었어. 턱 좀 당겨 봐. 응, 거기." }

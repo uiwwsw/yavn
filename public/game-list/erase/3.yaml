@@ -339,10 +339,10 @@ scenes:
     actions:
       - sticker:
           id: e2_photo
-          image: child_photo_sticker
+          image: gallery_photo_sticker
           x: 50
           y: 32
-          width: "clamp(170px, 24%, 320px)"
+          width: "clamp(230px, 32%, 380px)"
           enter: fadeIn
           inputLockMs: 400
       - say:
@@ -365,25 +365,26 @@ scenes:
   e2_photo_keep:
     actions:
       - get: child_photo
-      - clearSticker: { id: e2_photo, leave: fadeOut }
+      - wait: 0
       - say:
           channel: action
           with: []
-          text: "사진첩을 닫았다가 다시 연다. 사진 한 장이 맨 아래 그대로 있다."
+          text: "엄지를 뗀다. 사진 모서리를 한 번 더 보고서야 화면을 닫는다."
       - set: { e2_gallery: true }
+      - clearSticker: { id: e2_photo, leave: fadeOut }
       - goto: search
 
   e2_photo_delete:
     actions:
-      - clearSticker: { id: e2_photo, leave: fadeOut }
+      - sticker: { id: e2_photo, image: gallery_empty_sticker, enter: none }
       - say:
           channel: system
           with: []
-          erase: true
           text: "최근 삭제된 항목 · 1장 영구 삭제\n이 작업은 되돌릴 수 없습니다."
           wait: 1100
       - add: { deleted: 1 }
       - set: { e2_gallery: true }
+      - clearSticker: { id: e2_photo, leave: fadeOut }
       - goto: search
 
   e3_clinic_scene:
