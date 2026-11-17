@@ -6,11 +6,13 @@ import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } 
 import { useVNStore } from './store';
 
 // `move` (characters closing in on / lunging at / backing away from each other) and
-// `place` (a time/place caption that never waits for input).
+// `place` (a time/place caption in the HUD or between scenes).
 
 const documents: Record<string, string> = {
   'config.yaml': 'title: Blocking\nversion: "1"\ntextSpeed: 30\nautoSave: false\nclickToInstant: true\nendings:\n  done:\n    title: 끝\n',
   'base.yaml': `assets:
+  backgrounds:
+    office: office.png
   characters:
     a:
       base: a.png
@@ -39,6 +41,17 @@ scenes:
       - say: { char: a, with: [b], text: "카메라로." }
       - move: { id: b, toward: a, style: exit }
       - say: { char: a, text: "나갔다." }
+      - ending: done
+`,
+  'captions.yaml': `script: [{scene: start}]
+scenes:
+  start:
+    actions:
+      - say: { channel: message, text: "집에서 보낸 문자." }
+      - bg: { id: office, transition: cut, wait: false, place: "월요일 아침 · 회사" }
+      - say: { channel: message, text: "회사에서 온 문자." }
+      - place: { text: "그날 밤 · {{who}}네 집", presentation: center }
+      - say: { text: "다시 집." }
       - ending: done
 `,
 };
@@ -84,7 +97,8 @@ describe('stage blocking playback', () => {
     vi.stubGlobal('cancelAnimationFrame', (timer: number) => clearTimeout(timer));
     vi.stubGlobal('Audio', class { volume = 0; play() { return Promise.resolve(); } pause() {} addEventListener() {} });
     vi.stubGlobal('fetch', vi.fn(async (url: string) => {
-      const path = new URL(url).pathname.split('/').pop()!;
+      const pathname = new URL(url).pathname;
+      const path = pathname === '/captions/0.yaml' ? 'captions.yaml' : pathname.split('/').pop()!;
       if (path.endsWith('.png')) return new Response(new Uint8Array([137, 80, 78, 71]), { status: 200 });
       return new Response(documents[path] ?? '', { status: documents[path] ? 200 : 404 });
     }));
@@ -102,6 +116,32 @@ describe('stage blocking playback', () => {
     handleAdvance(true);
     await vi.advanceTimersByTimeAsync(800);
   };
+
+  it('shows centered locations between messages and pauses their timer under covered playback', async () => {
+    void loadGameFromUrl('http://test/captions/');
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(useVNStore.getState().dialog.fullText).toBe('집에서 보낸 문자.');
+
+    await next();
+    expect(useVNStore.getState()).toMatchObject({
+      background: 'http://test/captions/office.png',
+      placeCaption: { text: '월요일 아침 · 회사', centered: true },
+      dialog: { fullText: '' },
+    });
+
+    setScenePresentationPaused(true);
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(useVNStore.getState().placeCaption?.centered).toBe(true);
+    setScenePresentationPaused(false);
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(useVNStore.getState().placeCaption).toBeUndefined();
+    expect(useVNStore.getState().dialog.fullText).toBe('회사에서 온 문자.');
+
+    await next();
+    expect(useVNStore.getState().placeCaption).toMatchObject({ text: '그날 밤 · 지수네 집', centered: true });
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(useVNStore.getState().dialog.fullText).toBe('다시 집.');
+  });
 
   it('moves characters toward and away from each other and shows the place caption', async () => {
     void loadGameFromUrl('http://test/blocking/');

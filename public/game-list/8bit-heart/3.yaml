@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 3 · 안드로이드를 고친 지 3일\n식량 원정. 편의점 재고: 0"
+          text: "STAGE 3 · 안드로이드를 고친 지 3일\n식량 원정 · 폐허가 된 시내\n편의점 재고: 0"
       - bg: { id: ruined_street, transition: cut }
       - music: chip_run
       - char: { id: 윤재, position: left }
@@ -931,7 +931,7 @@ scenes:
     actions:
       - bg: { id: shelter, transition: fade, duration: 700 }
       - music: chip_home
-      - place: "식량 원정에서 돌아온 밤 · 편의점 기지"
+      - place: { text: "식량 원정에서 돌아온 밤 · 편의점 기지", presentation: center }
       - say:
           char: 윤재
           motion: sigh

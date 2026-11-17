@@ -71,7 +71,7 @@ scenes:
     title: "아버지 번호"
     actions:
       - bg: { id: office, transition: fade, duration: 520 }
-      - place: "그날 오후 · 물류센터 사무실"
+      - place: { text: "그날 오후 · 물류센터 사무실", presentation: center }
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
@@ -87,7 +87,7 @@ scenes:
     title: "병실 문 앞"
     actions:
       - bg: { id: ward_entry, transition: fade, duration: 500 }
-      - place: "그날 저녁 · 월계병원 신경과"
+      - place: { text: "그날 저녁 · 월계병원 신경과", presentation: center }
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }

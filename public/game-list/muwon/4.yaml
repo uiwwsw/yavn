@@ -9,7 +9,7 @@ scenes:
     title: "형조 대청"
     actions:
       - bg: { id: hyeongjo_hall, transition: fade, duration: 900 }
-      - place: "10월 1일 · 형조 대청"
+      - place: { text: "10월 1일 · 형조 대청", presentation: center }
       - music: pressure
       - set: { credibility: 3, truth: 0 }
       - say:
@@ -796,7 +796,7 @@ scenes:
           with: []
           text: "스승은 ‘원’ 자를 한 번 더 적었다. 먹이 번져 종이 뒷면에까지 자국이 있다."
       - music: dawn
-      - bg: { id: dawn_gate, transition: fade, duration: 1200 }
+      - bg: { id: dawn_gate, transition: fade, duration: 1200, place: "새벽 · 관아 문 앞" }
       - branch:
           cases:
             - when:

@@ -9,7 +9,7 @@ scenes:
     title: "비단전 행수"
     actions:
       - bg: { id: hyeminseo, transition: fade, duration: 800 }
-      - place: "이튿날 아침 · 한성 혜민서"
+      - place: { text: "이튿날 아침 · 한성 혜민서", presentation: center }
       - music: inquest
       - say:
           channel: record
@@ -184,7 +184,7 @@ scenes:
           channel: narration
           text: "담 너머로 종소리가 들렸다. 혜민서 옆 박씨 약방에서 불이 났다고 누가 외쳤다."
       - effect: { name: embers, wait: true }
-      - bg: { id: apothecary_burnt, transition: fade, duration: 700 }
+      - bg: { id: apothecary_burnt, transition: fade, duration: 700, place: "혜민서 옆 박씨 약방" }
       - music: pressure
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
@@ -541,7 +541,7 @@ scenes:
   c2_arrest:
     title: "잡혀 온 짐꾼"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "해 질 녘 · 한성부 마당" }
       - music: pressure
       - say:
           channel: narration

@@ -153,7 +153,7 @@ scenes:
     title: "영주동"
     actions:
       - bg: { id: busan_shack, transition: fade, duration: 900 }
-      - place: "그날 밤 · 영주동 판잣집"
+      - place: { text: "그날 밤 · 영주동 판잣집", presentation: center }
       - char: { id: 순임, position: left }
       - char: { id: 시어머니, position: right }
       - say: { char: 시어머니, with: [순임], text: "오늘도 안 왔다." }
@@ -173,7 +173,7 @@ scenes:
     title: "1월 30일 밤"
     actions:
       - bg: { id: market_fire, transition: fade, duration: 700 }
-      - place: "1953년 1월 30일 밤 · 국제시장"
+      - place: { text: "1953년 1월 30일 밤 · 국제시장", presentation: center }
       - effect: rumble
       - mood: { tone: dread, level: 2 }
       - char: { id: 순임, position: left }
@@ -196,7 +196,7 @@ scenes:
       - say: { channel: record, with: [], text: "부산 국제시장. 단기 4286년 1월 30일 밤 화재. 점포 수천 호 소실. 사망 및 행방불명 다수." }
       - mood: off
       - bg: { id: busan_shack, transition: fade, duration: 1000 }
-      - place: "3일 뒤 · 판잣집"
+      - place: { text: "3일 뒤 · 판잣집", presentation: center }
       - say:
           char: 영호
           with: [순임]

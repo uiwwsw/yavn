@@ -387,7 +387,7 @@ scenes:
 
   c1_bad_brother:
     actions:
-      - bg: { id: jail, transition: fade, duration: 800 }
+      - bg: { id: jail, transition: fade, duration: 800, place: "이튿날 아침 · 포도청 옥" }
       - music: pressure
       - say:
           channel: narration

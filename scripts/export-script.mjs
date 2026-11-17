@@ -47,8 +47,11 @@ function renderAction(action, out, indent = '') {
       out.push(`${indent}-- 입력: ${value.prompt}`);
       for (const e of value.errors ?? []) out.push(`${indent}   (틀림: ${e})`);
       break;
+    case 'bg':
+      if (typeof value === 'object' && value.place) out.push(`${indent}[때·곳] ${value.place}`);
+      break;
     case 'place':
-      out.push(`${indent}[때·곳] ${value}`);
+      out.push(`${indent}[때·곳] ${typeof value === 'string' ? value : value.text}`);
       break;
     case 'goto':
       out.push(`${indent}→→ ${value}`);

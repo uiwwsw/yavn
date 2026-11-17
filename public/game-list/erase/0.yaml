@@ -99,7 +99,7 @@ scenes:
     title: "클럽"
     actions:
       - bg: { id: couple_home, transition: fade, duration: 570 }
-      - place: "그날 밤 · 도윤과 지수의 집"
+      - place: { text: "그날 밤 · 도윤과 지수의 집", presentation: center }
       - say: { channel: action, with: [도윤], text: "도윤이 넥타이를 풀 때 휴대폰이 울린다. 민석이다." }
       - say:
           channel: message
@@ -131,7 +131,7 @@ scenes:
           with: []
           text: "빨래는 내가 걷었다"
       - bg: { id: club, transition: cut }
-      - place: "토요일 00:40 · 클럽"
+      - place: { text: "토요일 00:40 · 클럽", presentation: center }
       - say:
           channel: message
           side: me
@@ -222,7 +222,7 @@ scenes:
     actions:
       - bg: { id: dawn_room, transition: fade, duration: 1600 }
       - music: static
-      - place: "토요일 새벽 5:10 · 처음 보는 방"
+      - place: { text: "토요일 새벽 5:10 · 처음 보는 방", presentation: center }
       - say:
           channel: narration
           with: []

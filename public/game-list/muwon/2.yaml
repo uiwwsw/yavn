@@ -9,7 +9,7 @@ scenes:
     title: "포도청 옥"
     actions:
       - bg: { id: jail, transition: fade, duration: 800 }
-      - place: "9월 23일 · 포도청 남옥"
+      - place: { text: "9월 23일 · 포도청 남옥", presentation: center }
       - music: pressure
       - say:
           channel: record
@@ -330,7 +330,7 @@ scenes:
 
   c3_silence:
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 800 }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 800, place: "이튿날 · 한성부 마당" }
       - music: night_well
       - say:
           channel: narration
@@ -358,7 +358,7 @@ scenes:
   c3_confront_intro:
     title: "대질"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "한성부 마당" }
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - char: { id: 강치수, position: right }

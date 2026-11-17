@@ -8,7 +8,7 @@ scenes:
     title: "교대 기록"
     actions:
       - bg: { id: office_night, transition: fade, duration: 360 }
-      - place: "그날 밤 · 신경과 간호사실"
+      - place: { text: "그날 밤 · 신경과 간호사실", presentation: center }
       - music: quant
       - char: { id: 세라, position: right }
       - char: { id: 수경, position: center }

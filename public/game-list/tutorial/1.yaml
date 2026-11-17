@@ -17,7 +17,7 @@ scenes:
   complaint:
     title: "031번"
     actions:
-      - bg: { id: cs_desk, transition: fade, duration: 700 }
+      - bg: { id: cs_desk, transition: fade, duration: 700, place: "4월 12일 오후 · 그린마트 고객센터" }
       - music: fluoro
       - sound: chime
       - say:
@@ -259,7 +259,7 @@ scenes:
     title: "밴드"
     actions:
       - bg: { id: haesu_room, transition: fade, duration: 900 }
-      - place: "4월 13일 0:49 · 해수의 방"
+      - place: { text: "4월 13일 0:49 · 해수의 방", presentation: center }
       - get: coupon
       - say:
           channel: record
@@ -307,7 +307,7 @@ scenes:
 
   tutorial_one:
     actions:
-      - bg: { id: sim_desk, transition: wipeRight, duration: 900 }
+      - bg: { id: sim_desk, transition: wipeRight, duration: 900, place: "레플라 · 그린마트 고객센터" }
       - choice:
           key: t1_look
           presentation: explore
@@ -520,7 +520,7 @@ scenes:
           with: []
           text: "접속 기록 · 4/15 23:40–04:44 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 23회"
       - bg: { id: cs_desk, transition: cut }
-      - place: "4월 16일 오후 · 고객센터"
+      - place: { text: "4월 16일 오후 · 고객센터", presentation: center }
       - char: { id: 해수, position: left }
       - say:
           char: 해수.service
@@ -568,7 +568,7 @@ scenes:
       - bg: { id: home_hall, transition: fade, duration: 700 }
       - char: { id: 해수, position: left }
       - char: { id: 상혁, position: right }
-      - place: "4월 17일 새벽 4:22 · 집 복도"
+      - place: { text: "4월 17일 새벽 4:22 · 집 복도", presentation: center }
       - say:
           char: 상혁.grin
           with: [해수]
@@ -669,7 +669,7 @@ scenes:
   quiet_customer:
     title: "044번"
     actions:
-      - bg: { id: cs_desk, transition: fade, duration: 600 }
+      - bg: { id: cs_desk, transition: fade, duration: 600, place: "4월 17일 오전 · 그린마트 고객센터" }
       - sound: chime
       - say:
           channel: system
@@ -793,7 +793,7 @@ scenes:
     title: "튜토리얼 3/5"
     actions:
       - bg: { id: haesu_room, transition: fade, duration: 800 }
-      - place: "4월 18일 새벽 1:32 · 해수의 방"
+      - place: { text: "4월 18일 새벽 1:32 · 해수의 방", presentation: center }
       - say:
           channel: system
           with: []
@@ -804,7 +804,7 @@ scenes:
           with: []
           text: "완료하지 않은 튜토리얼이 있습니다. 튜토리얼은 무료입니다."
           continueLabel: "네, 이어서 할게요"
-      - bg: { id: sim_parking, transition: wipeRight, duration: 900 }
+      - bg: { id: sim_parking, transition: wipeRight, duration: 900, place: "레플라 · 그린마트 지하 주차장" }
       - music: tutorial
       - say:
           channel: system
@@ -876,7 +876,7 @@ scenes:
           with: []
           text: "새벽 1시 50분. 해수는 밴드를 책상에 둔 채 불을 끈다."
       - bg: { id: sim_parking, transition: cut }
-      - place: "레플라 · B2 주차장 C-14"
+      - place: { text: "레플라 · B2 주차장 C-14", presentation: center }
       - mood: { tone: dread, level: 2 }
       - say:
           channel: system
@@ -910,7 +910,7 @@ scenes:
     actions:
       - bg: { id: haesu_room, transition: fade, duration: 1200 }
       - music: fluoro
-      - place: "4월 18일 04:12 · 해수의 방"
+      - place: { text: "4월 18일 04:12 · 해수의 방", presentation: center }
       - say:
           channel: thought
           with: []

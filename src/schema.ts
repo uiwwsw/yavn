@@ -167,12 +167,15 @@ const stickerLeaveSchema = z.union([
 ]);
 
 
+const placeTextSchema = z.string().trim().min(1).max(60);
+
 const actionBodySchema = z.union([
   z.object({ bg: z.union([z.string().min(1), z.object({
     id: z.string().min(1),
     transition: z.enum(['dissolve', 'fade', 'wipeLeft', 'wipeRight', 'cut']).optional(),
     duration: z.number().int().min(0).max(5000).optional(),
     wait: z.boolean().optional(),
+    place: placeTextSchema.optional(),
   }).strict()]) }),
   z.object({ attack: z.object({
     attacker: z.string().min(1),
@@ -328,7 +331,10 @@ const actionBodySchema = z.union([
       wait: z.boolean().optional(),
     }).strict(),
   }).strict(),
-  z.object({ place: z.string().trim().min(1).max(60) }).strict(),
+  z.object({ place: z.union([
+    placeTextSchema,
+    z.object({ text: placeTextSchema, presentation: z.literal('center') }).strict(),
+  ]) }).strict(),
   z.object({
     effect: z.union([
       screenEffectNameSchema,

@@ -307,7 +307,7 @@ scenes:
     title: "학질"
     actions:
       - bg: { id: jemulpo_room, transition: fade, duration: 900 }
-      - place: "10일 뒤 · 안채"
+      - place: { text: "10일 뒤 · 안채", presentation: center }
       - move: { id: 끝순, style: reset }
       - char: { id: 만석, position: left }
       - char: { id: 끝순, position: center, emotion: sick }
@@ -462,7 +462,7 @@ scenes:
       - say: { channel: action, with: [], text: "가을에 외상을 갚은 집은 두 집이었다. 햇곡이 풀리자 쌀값은 닷 냥이 됐다." }
       - say: { channel: action, with: [], text: "맡은 쌀을 제 날짜에 못 내줬다. 강경 윤 객주가 사람을 보냈다." }
       - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 쌀을 풀어 준 지 4년이 지난 여름에도 식구는 포구 뒷골목 셋방에 있었다." }
-      - bg: { id: jemulpo_room, transition: fade, duration: 900 }
+      - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "쌀을 풀고 4년 뒤 여름 · 제물포 뒷골목 셋방" }
       - say: { char: 끝순, with: [만석], text: "아버지, 저 내일부터 왜인 정미소 나가요. 쌀에서 뉘 고르는 일인데 하루 열두 전이래요." }
       - say: { char: 만석, with: [끝순], text: "거긴 겨 먼지가 눈처럼 날린다더라. 네 기침에 거길 어찌 가." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "그럼 아버지가 벌어 오시든가요. …농이에요. 방세가 석 달 밀렸어요." }

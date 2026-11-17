@@ -8,7 +8,7 @@ scenes:
   ice_vault:
     title: "얼음 사이"
     actions:
-      - bg: { id: seobinggo, transition: fade, duration: 900 }
+      - bg: { id: seobinggo, transition: fade, duration: 900, place: "9월 25일 밤 · 한강 변 서빙고" }
       - music: night_well
       - say:
           channel: record
@@ -707,7 +707,7 @@ scenes:
   c4_seal_owner:
     title: "깨진 도장"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 800 }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 800, place: "한성부 마당" }
       - music: inquest
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }

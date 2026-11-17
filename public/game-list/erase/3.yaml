@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29세 · 결혼 10일 전"
+          text: "현재 · 결혼 10일 전\n영업2팀 사무실"
       - bg: { id: office, transition: cut }
       - place: "수요일 저녁 · 퇴근 직전"
       - char: { id: 도윤, position: left }
@@ -59,7 +59,7 @@ scenes:
     actions:
       - bg: { id: junseong_house, transition: fade, duration: 1100 }
       - music: cold_room
-      - place: "수요일 밤 · 오피스텔 9층 복도 끝"
+      - place: { text: "수요일 밤 · 오피스텔 9층 복도 끝", presentation: center }
       - char: { id: 도윤, position: center }
       - say:
           char: 도윤.panic
@@ -197,7 +197,7 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
-      - place: "그날 밤 11시 40분 · 빈 사무실"
+      - place: { text: "그날 밤 11시 40분 · 빈 사무실", presentation: center }
       - say: { channel: action, with: [도윤], text: "도윤은 준성의 이름을 사내 기록에서 찾아보려고 회사로 돌아온다. 노트북을 켜자 휴대폰에 지수가 남긴 톡이 보인다." }
       - say:
           channel: message
@@ -381,7 +381,7 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1000 }
       - music: cold_room
-      - place: "목요일 9:00 · 보건소"
+      - place: { text: "목요일 9:00 · 보건소", presentation: center }
       - say:
           channel: system
           with: []
@@ -547,7 +547,7 @@ scenes:
       - move: { id: 아진, style: reset }
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
       - bg: { id: harin_room, transition: fade, duration: 900 }
-      - place: "그날 밤 · 하린의 방"
+      - place: { text: "그날 밤 · 하린의 방", presentation: center }
       - say: { channel: action, with: [하린], text: "하린이 책상에 앉아 교복 소매를 걷는다. 아진이한테 사진 한 장이 온다." }
       - say:
           channel: message
@@ -594,7 +594,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29세 · 결혼 9일 전"
+          text: "현재 · 결혼 9일 전\n도윤과 지수의 집"
       - bg: { id: couple_home, transition: cut }
       - music: static
       - place: "목요일 밤 · 도윤과 지수의 집"
