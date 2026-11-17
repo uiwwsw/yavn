@@ -36,7 +36,9 @@ describe('selectPhoneThread', () => {
     const check = { ...message('화장실에서 자냐', 'me', 4, '도윤'), thread: '민석' };
 
     expect(selectPhoneThread([invite, leaving])).toEqual([]);
-    expect(selectPhoneContact([], leaving, leaving.thread)?.name).toBe('지수');
+    expect(selectPhoneContact([], leaving, leaving.thread, 'jisu.svg')).toEqual({
+      name: '지수', group: false, avatars: ['jisu.svg'],
+    });
     expect(selectPhoneThread([invite, leaving, reply, check]).map(bubble => bubble.text)).toEqual(['클럽 올래?']);
     expect(selectPhoneThread([invite, leaving, reply]).map(bubble => bubble.text)).toEqual(['잠깐 나갔다 올게']);
   });

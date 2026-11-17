@@ -78,6 +78,8 @@ export type StageCameraState = {
 
 export type CharacterAssetDefinition = {
   base: string;
+  /** Optional portrait used in the phone, independent of the character's stage art. */
+  avatar?: string;
   emotions?: Record<string, string>;
   facing?: CharacterFacing;
   placement?: CharacterPlacement;

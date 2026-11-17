@@ -203,6 +203,7 @@ export function selectPhoneContact(
   bubbles: readonly (PhoneSender & { avatar?: string })[],
   live?: PhoneSender & { avatar?: string },
   thread?: string,
+  threadAvatar?: string,
 ): PhoneContact | undefined {
   const names: string[] = [];
   const avatars = new Map<string, string>();
@@ -216,7 +217,9 @@ export function selectPhoneContact(
   if (live && live.side !== 'me') add(live);
   if (names.length === 0 && !thread) return undefined;
   const faces = names.map((name) => avatars.get(name)).filter((avatar): avatar is string => Boolean(avatar));
-  if (names.length <= 1) return { name: thread ?? names[0], group: false, avatars: faces };
+  if (names.length <= 1) {
+    return { name: thread ?? names[0], group: false, avatars: faces.length || !threadAvatar ? faces : [threadAvatar] };
+  }
   return { name: thread ?? `${names[0]} 외 ${names.length - 1}`, group: true, avatars: faces.slice(0, 3) };
 }
 
