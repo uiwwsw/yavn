@@ -353,6 +353,7 @@ describe('튜토리얼', () => {
     expect(after.state.background).toContain('/server_room_off.svg');
     expect(after.state.currentMusic).toBeUndefined();
 
+    await vi.advanceTimersByTimeAsync(1000);
     expect(saveCurrentProgress().exists).toBe(true);
     const loaded = loadSaveSlot('manual');
     await vi.advanceTimersByTimeAsync(3000);

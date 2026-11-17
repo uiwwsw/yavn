@@ -67,10 +67,7 @@ scenes:
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
           text: "빌라 현관 CCTV를 세 번 돌려 봤어요. 세 번 다 안 나와요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "빨리 감아도 보고 한 장씩 넘겨도 봤어요. 나가는 모습이 찍혔나 해서요."
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -86,15 +83,9 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그런데 연필이든 접수증이든 자꾸 해수 씨 이름이 나와요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "접수증 필체. 비품 연필."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "피해자가 죽기 전날 고객센터 앞에 한 시간 서 있던 것."
+          text: "그런데 연필이든 접수증이든 자꾸 해수 씨 이름이 나와요. 피해자는 죽기 전날에도 해수 씨를 찾아갔고요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -102,15 +93,9 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "접수증을 써 드렸습니다."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "세 번 다시 썼습니다."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "고객님이 글씨가 작다고 하셔서요."
+          text: "글씨가 작다고 하셔서 접수증을 세 번 썼습니다."
+      - wait: 0
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -123,26 +108,18 @@ scenes:
           char: 해수
           with: [은숙]
           text: "두 번째는 버렸는데요."
-      - say:
-          char: 은숙.sharp
-          with: [해수]
-          text: "네. 저도 그게 이상해요."
+          wait: 800
+      - wait: 0
       - say:
           channel: action
           with: []
           text: "은숙이 볼펜으로 책상을 한 번 두드린다. 종이에는 아직 아무것도 안 적혀 있다."
+      - wait: 0
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
-          text: "정해수 씨 말씀대로라면 저희는 그 종이를 갖고 있을 수가 없어요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "버리신 건 확실하죠?"
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "제가 가져온 이 접수증은 어디서 나온 걸까요."
+          text: "버린 종이를 제가 어떻게 갖고 있는 걸까요."
       - choice:
           key: t3_tell
           prompt: "녹음기 빨간 불. 은숙이 볼펜 뚜껑을 닫는다."
@@ -706,54 +683,36 @@ scenes:
   dev_talk:
     title: "서버 없이"
     actions:
+      - wait: 0
       - say:
           char: 태민
           with: [해수]
-          text: "서버를 끄면 화면이 비어야 되잖아요."
+          text: "서버를 다 끄고 들어가 봤어요. 두고 나온 컵이 그대로더라고요. 김이 나던 물은 미지근해졌고요."
+      - wait: 0
       - say:
           char: 태민
           with: [해수]
-          text: "다 끄고 레플라에 다시 들어가 봤어요. 아까 두고 나온 컵이 책상 위에 그대로 있었어요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "나올 땐 김이 났거든요. 돌아가서 만져 보니 미지근했어요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "물이 식는 것까지 서버에서 계산하던 건데요. 서버가 없는데도 식었어요."
+          text: "물이 식는 것까지 서버가 계산했어요. 서버가 없는데도 식은 거예요."
       - say:
           char: 해수
           with: [태민]
           text: "그럼 서버는요?"
+      - wait: 0
       - say:
           char: 태민
           with: [해수]
-          text: "처음 접속할 땐 서버를 거쳐야 했어요."
+          text: "이제 통로 하나만 남았어요. 가산동 지하에 PC 한 대."
+      - wait: 0
       - say:
           char: 태민
           with: [해수]
-          text: "이제는 접속하는 통로 하나만 남았고요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "가산동 지하에 PC 한 대."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "레플라를 처음 돌려 본 컴퓨터예요. 그게 아직 양쪽을 연결하고 있어요."
+          text: "레플라를 처음 돌린 컴퓨터예요. 아직 양쪽을 연결하고 있어요."
       - say:
           char: 태민.afraid
           with: [해수]
-          text: "그 건물 2029년에 전기 끊겼어요."
-      - say:
-          char: 태민.afraid
-          with: [해수]
-          text: "한전에 전화해서 확인했어요."
-      - say:
-          char: 태민.afraid
-          with: [해수]
-          text: "세 번. 근데 모니터가 켜져 있어."
+          text: "그 건물은 2029년에 전기를 끊었어요. 확인까지 했는데 모니터가 켜져 있어요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           with: [태민]
@@ -767,20 +726,13 @@ scenes:
           char: 태민
           motion: slump
           with: [해수]
-          text: "내가 아는 분은 매일 밤 돌아가신 어머니 집에 가요. 그럼 그날부터 못 가는 거죠."
-      - say:
-          char: 태민
-          motion: slump
-          with: [해수]
-          text: "다 못 가요. 백십만 명."
+          text: "백십만 명이 못 들어가요. 매일 밤 돌아가신 어머니 집에 가는 분도 있어요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           with: [태민]
-          text: "그럼 거기서 여기로 올 수도 있어요?"
-      - say:
-          char: 해수
-          with: [태민]
-          text: "…거기서 한 일이 여기서도 일어나냐고요."
+          text: "그럼 거기서 한 일이 여기서도 일어나요?"
       - say:
           char: 태민.afraid
           motion: shiver
@@ -790,37 +742,25 @@ scenes:
           char: 태민.afraid
           motion: shiver
           with: [해수]
-          text: "거기서 잠근 문이 여기서도 잠겨 있거나, 여기까지 소리가 들리기도 하고요."
-      - say:
-          char: 태민.afraid
-          motion: shiver
-          with: [해수]
-          text: "밤중에 없는 사람이 말하는 것처럼 들려요. 그건 몇 년 됐어요."
+          text: "거기서 잠근 문이 여기서도 잠겨요. 거기서 한 말이 현실에서 들린 지도 몇 년 됐고요."
+      - wait: 0
       - say:
           char: 태민
           motion: lean_in
           with: [해수]
           text: "지난주에는 처음으로 일이 크게 났고요."
-      - say:
-          char: 해수
-          with: [태민]
-          text: "…큰 거요."
+      - wait: 0
       - say:
           char: 태민.afraid
           with: [해수]
           text: "사람이 죽었어요. 이쪽에서."
+          wait: 850
       - say:
           char: 태민.afraid
           with: [해수]
           text: "그날 접속 기록에 뉴스에 나온 마트가 찍혀 있더라고요. 지하 2층, C-14까지요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "그 뒤로 잠들기 전에 기록을 몇 번이고 다시 열어 봐요."
-      - say:
-          char: 해수
-          with: [태민]
-          text: "그거 어떻게 아세요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 태민
           with: [해수]
@@ -833,6 +773,7 @@ scenes:
           channel: thought
           with: []
           text: "주차장이었다. 지하 2층, C-14. 세 걸음이었다."
+          wait: 850
       - say:
           char: 해수
           with: [태민]
@@ -862,17 +803,9 @@ scenes:
           char: 태민.laugh
           motion: laugh
           with: [해수]
-          text: "아무도요. 첫 빌드 켜니까 이미 있었어요."
-      - say:
-          char: 태민.laugh
-          motion: laugh
-          with: [해수]
-          text: "1/5부터 5/5까지."
-      - say:
-          char: 태민.laugh
-          motion: laugh
-          with: [해수]
-          text: "문구까지 그대로. 우리는 글씨체만 바꿨어."
+          text: "아무도요. 첫 빌드를 켰을 때 1단계부터 5단계까지 문구도 그대로 있었어요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 태민.laugh
           motion: laugh
@@ -881,15 +814,9 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "근데 어떤 사람한테는 그 버튼이 안 떠요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "버그 리포트에 딱 한 건 있었어요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "사용자 번호가 이상하게 찍혀서 다들 테스트 계정인 줄 알았고."
+          text: "딱 한 사람한테 그 버튼이 안 떴어요. 테스트 계정인 줄 알았죠."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           with: [태민]
@@ -927,15 +854,9 @@ scenes:
       - say:
           char: 해수
           with: []
-          text: "오늘 화요일이라 내 차례야."
-      - say:
-          char: 해수
-          with: []
-          text: "네 것도 해 놨어."
-      - say:
-          char: 해수
-          with: []
-          text: "식어도 괜찮으니까 나중에 데워 먹어."
+          text: "오늘 내 차례야. 네 밥도 해 놨어."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           with: []
@@ -944,6 +865,7 @@ scenes:
           channel: action
           with: []
           text: "문 안쪽에서 의자가 끌리는 소리가 난다. 그게 전부다. 문은 안 열린다."
+          wait: 900
       - say:
           channel: thought
           with: []
@@ -952,10 +874,7 @@ scenes:
           char: 해수
           with: [상혁]
           text: "상혁아. 목소리만."
-      - say:
-          char: 해수
-          with: [상혁]
-          text: "한 마디만 해 봐."
+      - wait: 0
       - say:
           channel: action
           when: { var: sh_care, op: gte, value: 2 }
@@ -1142,19 +1061,13 @@ scenes:
 
   leave:
     actions:
+      - wait: 0
       - say:
           channel: thought
           with: []
-          text: "상봉에서 7호선을 타면 가산디지털단지까지 한 번에 간다."
+          text: "가산까지 가는 7호선 막차가 0시 12분이다. 돌아올 차는 없다."
+      - wait: 0
       - say:
           channel: thought
           with: []
-          text: "막차는 0시 12분이다. 가면 돌아올 차가 없다."
-      - say:
-          channel: thought
-          with: []
-          text: "내일 문 여는 건 오전 9시 30분. 7호선 첫차는 오전 5시 30분."
-      - say:
-          channel: thought
-          with: []
-          text: "막차부터 타자. 내일 지영 주임님보다 먼저 가면 된다."
+          text: "지금 가자. 첫차로 돌아오면 내일 9시 반 오픈에 맞출 수 있다."

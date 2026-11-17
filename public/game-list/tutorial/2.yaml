@@ -492,6 +492,7 @@ scenes:
           channel: record
           with: []
           text: "그린마트 상봉점 지하 2층 C-14 기둥 옆 · 사망 추정 4/18 01:30–02:30 · 발견 05:10 (주차 관리원) · 흉기: 그린마트 로고가 찍힌 연필 1자루"
+          wait: 950
       - move: { id: 은숙, style: reset }
       - sticker: { id: pencil, image: pencil_sticker, x: 64, y: 36, width: "300px", rotate: -18, enter: fadeIn }
       - say:
@@ -502,10 +503,7 @@ scenes:
           char: 해수
           with: [은숙]
           text: "네. 연필꽂이에 있는 거랑 같아요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "스무 자루 둬요."
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -513,27 +511,15 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "스무 자루요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "마감할 때 세거든요."
+          text: "스무 자루요. 마감할 때 제가 세요."
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
-          text: "오늘 아침에는 열아홉 자루였대요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "민지영 주임님이 세 봤어요. 제가 부탁해서."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "…그럼 하나가 없네요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "한 자루가 부족해요. 피해자분한테서 나온 연필이 같은 종류고요."
+          text: "지영 주임이 오늘 아침엔 열아홉 자루였대요."
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -541,19 +527,10 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "손님들이 가져가셔서요."
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "스무 자루 맞춰 놓는 게 제 업무예요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "12년 동안 매일요?"
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "네."
+          text: "손님들이 가져가셔서요. 12년 동안 마감 때마다 스무 자루 맞춰 놨어요."
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 은숙
           with: [해수]
@@ -567,15 +544,9 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "하나 더. 오광철 씨가 지난 일주일 동안 112에 세 번 전화했어요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "밤마다 누가 소리를 지른다고."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "혼자 사는 집에서. 출동하면 아무도 없고."
+          text: "오광철 씨가 밤마다 집에서 소리가 난다고 112에 세 번 전화했어요. 출동하면 아무도 없었고요."
+      - wait: 0
+      - wait: 0
       - say:
           channel: record
           when: { var: rage, op: eq, value: 1 }
@@ -599,15 +570,13 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그리고 어제 낮에 이 마트 고객센터 앞에 한 시간 서 있었대요."
-      - say:
-          char: 은숙
-          with: [해수]
-          text: "아무것도 안 사고. 귀를 자꾸 누르면서."
+          text: "어제 낮엔 아무것도 안 사고 고객센터 앞에 한 시간 서 있었대요."
+      - wait: 0
       - say:
           channel: record
           with: []
           text: "피해자 휴대폰 메모 · 4/17 13:02 · 고객센터 그 친구한테 사과할 것"
+          wait: 950
       - say:
           char: 은숙
           with: [해수]
@@ -642,19 +611,17 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "레플라 · 모의 녹화실\n튜토리얼 4/5 — 바꿔 보세요."
-      - say:
-          channel: system
-          with: []
-          text: "물건을 바꾸면 변경 사항이 자동으로 저장됩니다."
+          text: "레플라 · 모의 녹화실 / 튜토리얼 4/5 — 바꾸면 자동으로 저장됩니다."
+      - wait: 0
       - say:
           channel: action
           with: []
           text: "녹화실 책상에 낮에 은숙이 가져간 접수증이 놓여 있다. 접었다 편 자국까지 같다."
+          wait: 800
       - say:
           channel: thought
           with: []
-          text: "경찰서에서 돌아온 뒤에도 눈만 감으면 그 차 문이 열렸다. 아까 밴드를 붙일 땐 주차장만 다시 보고 끌 생각이었다."
+          text: "그 차 문이 자꾸 떠올랐다. 주차장만 다시 보고 끌 생각이었는데."
       - say:
           char: 해수
           with: []
@@ -667,18 +634,9 @@ scenes:
           channel: thought
           with: []
           text: "접수증 위에 놓인 연필을 보고 나도 모르게 손을 등 뒤로 뺐다."
-      - say:
-          channel: thought
-          with: []
-          text: "3단계 때 세 걸음이었다. 여기서는 손을 뻗으면 닿는다."
-      - say:
-          channel: action
-          with: []
-          text: "용지 귀퉁이가 손끝에 걸린다. 힘을 주자 종이에 자국이 났다."
-      - say:
-          channel: thought
-          with: []
-          text: "창구에서 받은 용지를 쥘 때도 이랬다."
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - goto: tamper_pick
 
   tamper_pick:
@@ -849,6 +807,7 @@ scenes:
           when: { var: t_form, op: eq, value: true }
           with: [해수]
           text: "찍을 때는 분명히 이름이 있었거든요."
+          wait: 800
       - say:
           char: 은숙
           when: { var: t_pencil, op: eq, value: true }
@@ -864,6 +823,7 @@ scenes:
           when: { var: t_pencil, op: eq, value: true }
           with: [해수]
           text: "제가 이 눈으로 봤는데."
+          wait: 800
       - say:
           char: 은숙
           when: { var: t_cctv, op: eq, value: true }
@@ -879,6 +839,7 @@ scenes:
           when: { var: t_cctv, op: eq, value: true }
           with: [해수]
           text: "아무도 안 나와요. 차 한 대만 서 있고."
+          wait: 800
       - move: { id: 은숙, toward: 해수, style: approach }
       - say:
           char: 은숙.sharp
