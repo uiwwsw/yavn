@@ -12,6 +12,7 @@ assets:
     alley_night: assets/bg/alley_night.svg
     dawn_gate: assets/bg/dawn_gate.svg
     well_hand_sticker: assets/items/well_hand.svg
+    neck_traces_sticker: assets/items/neck_traces.svg
     thread_sticker: assets/items/thread.svg
     sijang_sticker: assets/items/sijang.svg
     order_slip_sticker: assets/items/order_slip.svg
@@ -165,7 +166,7 @@ inventory:
     order: 10
   first_sijang:
     name: "분이의 시장"
-    description: "분이의 시신을 처음 살핀 기록. 입과 코에는 거품이 없었고 목에 손가락 자국이 드러났다."
+    description: "입과 코에 물기가 있음. 거품 없음. 목 앞쪽에 엄지 자국, 양옆에 손가락 자국."
     image: assets/items/sijang.svg
     category: "검안 기록"
     order: 20

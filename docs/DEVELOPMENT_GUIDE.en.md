@@ -32,6 +32,8 @@ For a complete runnable package, copy `examples/game-template/` as described in 
 
 - Use named scenes and choices to create branches, merges and endings. Preserve stable action/choice identifiers when updating an existing published game, because saved progress refers to them.
 - State and inventory can control story progression. Item acquisition and use are distinct from arbitrary game state.
+- In an `explore` choice, set `investigation: { width: 1600, height: 900 }` to match the source background dimensions. Positioned options use percentages of that image and appear as numbered markers and list buttons. Use a `when` condition for each remaining target, since unavailable targets count as checked. See [the Muwon inquest](../public/game-list/muwon/0.yaml).
+- Set `choice.evidence` to a declared inventory ID to let players review an owned item's description without making a choice. Write `music: null` to stop the active background music. A later music action starts a new track. See [the server shutdown scene](../public/game-list/tutorial/4.yaml).
 - Characters, backgrounds, music, sound effects and video belong in the declared assets. Respect asset licenses and game-specific legal notices.
 - Start-screen image positioning supports desktop and mobile focal points. Live2D and cinematic effects are optional; verify fallback and mobile behavior.
 - Test all branches and ending conditions. Save/load, automatic checkpoints, manual saves and exported save backups are separate controls.

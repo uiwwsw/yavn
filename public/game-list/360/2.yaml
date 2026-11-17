@@ -330,11 +330,11 @@ scenes:
 
   october_after_packet:
     actions:
-      - clearSticker: { id: sketch, leave: fadeOut }
+      - move: { id: 엄마, toward: 민재, style: reset }
       - say: { channel: action, with: [], text: "다리를 그린 봉지를 무릎 위에 놓는다. 펜이 지나간 자리가 조금 패였다." }
       - say: { channel: thought, with: [], text: "누나는 이 좁은 종이에 다리 끝까지 다 그렸다." }
       - say: { channel: action, with: [], text: "다리 위의 점 하나를 엄지로 문질러 본다. 잉크는 번지지 않는다." }
-      - move: { id: 엄마, toward: 민재, style: reset }
+      - clearSticker: { id: sketch, leave: fadeOut }
       - place: "십일월 이십구일"
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
       - say: { char: 민재, with: [엄마], text: "떡볶이. 대학로에 누나가 맨날 말하던 집." }

@@ -177,6 +177,7 @@ scenes:
   # investigate_* 장면은 기존 분기로 합류하므로 추가 상태 선언이 필요 없습니다.
   immersive_entry:
     actions:
+      - music: null # 발소리에 집중하는 동안 이전 장면의 배경 음악을 멈춥니다.
       - say:
           channel: thought
           with: []
@@ -214,6 +215,7 @@ scenes:
     actions:
       - choice:
           key: sample_safety_choice
+          evidence: clue_note # 이미 획득한 경로에서만 메모를 펼쳐 볼 수 있습니다.
           prompt: "붉은 경보등이 켜졌다. 어느 스위치를 누를까?"
           options:
             - text: "전원을 차단한다"

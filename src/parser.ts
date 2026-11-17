@@ -1187,11 +1187,16 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
-        if ('music' in action && !data.assets.music[action.music]) {
+        if ('music' in action && action.music !== null && !data.assets.music[action.music]) {
           return {
             error: {
               message: `scene '${sceneId}' uses missing music '${action.music}'`,
             },
+          };
+        }
+        if ('choice' in action && action.choice.evidence && !data.inventory?.defaults[action.choice.evidence]) {
+          return {
+            error: { message: `scene '${sceneId}' uses missing choice evidence '${action.choice.evidence}'` },
           };
         }
         const sound = 'sound' in action ? action.sound : 'say' in action ? action.say.sound : undefined;

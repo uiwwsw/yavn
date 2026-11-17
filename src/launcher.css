@@ -70,14 +70,15 @@
   gap: 8px;
   border-radius: 4px;
   padding: 10px 17px;
-  color: #fffdf5;
-  background: var(--launcher-dark);
+  color: var(--launcher-dark);
+  background: transparent;
+  border: 1px solid var(--launcher-line);
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
 }
 .launcher-upload > span:first-child { font-size: 20px; line-height: 1; }
-.launcher-upload:hover { background: #2c554b; }
+.launcher-upload:hover { background: #e9ede2; }
 .launcher-upload input {
   position: absolute;
   inset: 0;
@@ -89,7 +90,7 @@
 .launcher-upload.is-loading { opacity: .6; }
 .launcher-upload input:disabled { cursor: wait; }
 .launcher-console { width: min(1600px, 100%); padding: 0 var(--launcher-gutter) 88px; margin: 0 auto; }
-.launcher-intro { padding: 56px 0 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 36px; }
+.launcher-intro { padding: 46px 0 34px; display: flex; align-items: flex-end; justify-content: space-between; gap: 36px; }
 .launcher-eyebrow { font-size: 12px; letter-spacing: .13em; font-weight: 800; line-height: 1.4; }
 .launcher-intro .launcher-eyebrow { display: flex; align-items: center; gap: 8px; color: var(--launcher-muted); }
 .launcher-eyebrow > span { height: 6px; width: 6px; background: var(--launcher-accent); border-radius: 50%; }
@@ -153,11 +154,12 @@
 .launcher-feature-fallback { display: grid; place-items: center; height: 100%; min-height: 220px; font-size: 64px; letter-spacing: -.06em; opacity: .6; }
 .launcher-feature-copy { grid-column: 1; grid-row: 1; padding: 36px 38px 28px; }
 .launcher-feature-copy > * { min-width: 0; max-width: 100%; }
-.launcher-feature-content { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 100%; }
+.launcher-feature-content { display: flex; flex-direction: column; align-items: flex-start; min-height: 100%; }
 .launcher-feature-kicker { display: flex; align-items: center; gap: 12px; width: 100%; color: #ebbc98; font-size: 12px; letter-spacing: .07em; font-weight: 700; overflow-wrap: anywhere; }
-.launcher-feature-kicker span { margin-left: auto; color: #b0c4b9; white-space: nowrap; letter-spacing: 0; font-size: 12px; }
 .launcher-feature-copy h2 { font-size: clamp(30px, 2.8vw, 42px); line-height: 1.26; letter-spacing: -.04em; margin-top: 23px; font-weight: 800; }
 .launcher-feature-summary { margin-top: 18px !important; font-size: 14px; line-height: 1.85; color: #c4d1c5; word-break: keep-all; overflow-wrap: anywhere; }
+.launcher-feature-play { margin-top: 16px; }
+.launcher-feature-version { color: #b0c4b9; font-size: 12px; }
 .launcher-feature .inspector-tag-row {
   align-self: stretch;
   max-width: 100%;
@@ -403,31 +405,29 @@
 
 @media (max-width: 540px) {
   .launcher { --launcher-gutter: 20px; }
+  .launcher-topbar { min-height: 64px; padding-block: 10px; }
   .launcher-nav { gap: 14px; }
-  .launcher-nav-guide span { display: none; }
+  .launcher-nav .launcher-nav-guide { display: none; }
   .launcher-brand .yavn-logo { width: 109px; height: 29px; }
   .launcher-upload { padding: 9px 11px; }
   .launcher-upload > span:first-child { font-size: 17px; }
-  .launcher-intro { display: block; padding: 34px 0 28px; }
-  .launcher-intro h1 { font-size: clamp(43px, 10vw, 54px); margin-top: 15px; }
-  .launcher-intro-note { max-width: none; margin-top: 22px; }
-  .launcher-intro-note > p { font-size: 13px; line-height: 1.8; }
-  .launcher-intro-note > a { display: inline-flex; gap: 32px; padding-bottom: 6px; margin-top: 15px; }
-  .launcher-browser-note { display: inline; font-size: 12px; margin-left: 14px; }
-  .launcher-section-label { font-size: 12px; padding: 13px 0; }
-  .launcher-feature { grid-template-rows: 235px 1fr; }
-  .launcher-feature-copy { padding: 24px 23px 22px; }
-  .launcher-feature-copy h2 { font-size: 29px; line-height: 1.3; }
-  .launcher-feature-kicker { font-size: 12px; }
-  .launcher-feature-kicker span { font-size: 12px; }
+  .launcher-intro { display: block; padding: 22px 0 20px; }
+  .launcher-intro h1 { font-size: clamp(35px, 9.5vw, 46px); margin-top: 0; }
+  .launcher-intro-note { max-width: none; margin-top: 12px; }
+  .launcher-intro :is(.launcher-eyebrow, .launcher-intro-note > p, .launcher-browser-note) { display: none; }
+  .launcher-intro-note > a { display: inline-flex; gap: 24px; padding-bottom: 4px; margin-top: 0; min-height: 44px; }
+  .launcher-section-label { font-size: 12px; padding: 8px 0; }
+  .launcher-feature { grid-template-rows: 124px 1fr; }
+  .launcher-feature-copy { padding: 14px 20px 20px; }
+  .launcher-feature-copy h2 { font-size: 27px; line-height: 1.3; margin-top: 8px; }
+  .launcher-feature-summary { margin-top: 9px !important; line-height: 1.6; }
+  .launcher-feature-play { margin-top: 12px; }
+  .launcher-feature-kicker { display: none; }
   .launcher-feature .inspector-actions { gap: 10px 20px; }
-  .launcher-command-primary { width: 100%; justify-content: space-between; min-height: 48px; }
+  .launcher-command-primary { width: 100%; justify-content: space-between; min-height: 48px; padding-block: 8px; }
   .launcher-command-ghost, .launcher-command-source { min-height: 44px; }
   .launcher-feature .inspector-tag-row { margin-top: 14px; }
-  .launcher-art-caption { padding: 9px 12px; bottom: 14px; right: 14px; }
-  .launcher-art-caption .yavn-logo { width: 20px; height: 24px; }
-  .launcher-art-caption > span { font-size: 12px; }
-  .launcher-art-caption b { font-size: 12px; }
+  .launcher-art-caption { display: none; }
   .launcher-carousel-controls { min-height: 70px; padding: 10px 16px; gap: 7px; }
   /* Seven dashes plus the counter filled the row exactly, so the last dash ran into the
      "01 / 07". Narrower dots leave the gap that separates the two. */
@@ -477,9 +477,6 @@
   .launcher-brand .yavn-logo { width: 92px; }
   .launcher-nav { gap: 10px; font-size: 12px; }
   .launcher-upload { padding: 8px 9px; gap: 4px; }
-  .launcher-intro h1 { font-size: 41px; }
-  .launcher-browser-note { display: block; margin: 10px 0 0; }
-  .launcher-feature-copy { padding: 23px 20px; }
   .launcher-feature-copy h2 { font-size: 26px; }
   .launcher-carousel-controls { padding: 10px 12px; gap: 2px; }
   .launcher-carousel-pagination { gap: 5px; }
@@ -497,7 +494,8 @@
 .launcher-language-filter { display:flex; gap:8px; align-items:center; font-size:13px; color:var(--launcher-ink); }
 .launcher-language-filter select { min-height:44px; max-width:100%; border:1px solid #c9d2c5; background:#fdfbf7; padding:8px; border-radius:5px; }
 .launcher-game-languages { display:block; font-size:12px; line-height:1.6; color:#52634f; margin:8px 0; }
-@media(max-width:768px) { .launcher-topbar { flex-wrap:wrap; } .launcher-language-switch { margin-left:auto; } .launcher-library-controls { flex-wrap:wrap; } }
+@media(min-width:541px) and (max-width:768px) { .launcher-topbar { flex-wrap:wrap; } }
+@media(max-width:768px) { .launcher-language-switch { margin-left:auto; } .launcher-library-controls { flex-wrap:wrap; } }
 
 /* Keep story descriptions legible on dark spotlights and narrow screens. */
 .launcher-feature-copy .launcher-game-languages{color:#d2dfca}

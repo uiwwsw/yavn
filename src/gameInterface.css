@@ -165,6 +165,48 @@
    5px off centre. */
 .app .dialog-content-scroll { padding-top: 30px; padding-inline: 5px; scrollbar-gutter: auto; scrollbar-width: thin; scrollbar-color: var(--game-line) transparent; }
 .app .dialog-content-scroll > .speaker { color: var(--game-accent); font-size: 14px; font-weight: 800; letter-spacing: .04em; }
+.app .dialog-box:not(.channel-message, .channel-card):has(> .dialog-next) {
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: min(calc(var(--yavn-prompt-height, 170px) + 24px), var(--dialog-safe-max-height));
+  padding-bottom: 8px;
+}
+.app .dialog-next {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--game-muted);
+  font-size: 13px;
+}
+.app .dialog-next button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-inline-start: auto;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--game-radius);
+  background: transparent;
+  color: var(--game-text);
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+.app .dialog-next button:hover:not([aria-disabled='true']) { background: var(--game-soft); border-color: var(--game-line-strong); }
+.app .dialog-next button[data-typing='true'] { color: var(--game-muted); }
+.app .dialog-next button[aria-disabled='true'] { cursor: default; }
+.app .dialog-next .game-icon { width: 16px; height: 16px; }
+.app .channel-card > .dialog-next { position: absolute; right: 24px; bottom: max(16px, env(safe-area-inset-bottom)); --game-text: #e8eef2; --game-muted: #b3bfce; }
+.app .channel-message > .dialog-next {
+  order: 3;
+  padding: 2px 12px max(6px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--phone-rail);
+  background: var(--phone-screen);
+  --game-text: var(--phone-them-ink);
+  --game-muted: #a5afbc;
+}
+.app .channel-message:has(> .dialog-next) > .phone-chrome-bottom { display: none; }
 .app .dialog-content-scroll > .speaker[data-unknown='true'],
 .app .approach-player[data-unknown='true'] { padding-inline: 9px; border-radius: 3px; background: #090b11; color: #f3ece1; }
 .app .dialog-channel-label { color: var(--game-accent); font-size: 13px; letter-spacing: .08em; }

@@ -360,6 +360,9 @@ export type ChoiceAction = {
   choice: {
     key?: string;
     presentation?: 'dialogue' | 'explore' | 'approach';
+    /** Place numbered targets over a cover-fitted background and list checked targets below. */
+    investigation?: { width: number; height: number };
+    evidence?: string;
     prompt: string;
     /** `approach` only: the mood tone that builds while the player closes in. */
     mood?: string;
@@ -412,7 +415,7 @@ export type Action =
   | { attack: AttackDirective }
   | StickerAction
   | { clearSticker: ClearStickerTarget }
-  | { music: string }
+  | { music: string | null }
   | { sound: string }
   | CameraAction
   | CharAction
@@ -712,6 +715,8 @@ export type InputGateState = {
 export type ChoiceGateState = {
   active: boolean;
   presentation: 'dialogue' | 'explore' | 'approach';
+  investigation?: { width: number; height: number; targets: ChoiceOption[] };
+  evidence?: string;
   key: string;
   prompt: string;
   forgiveOnceDefault: boolean;

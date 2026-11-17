@@ -372,12 +372,13 @@ scenes:
     actions:
       - say:
           channel: action
-          with: []
-          text: "이어폰에서 딱, 소리가 난다. 옆에 달린 불이 깜빡이다 꺼진다."
+          with: [비서.off]
+          sound: disconnect
+          text: "이어폰 표시등이 꺼진다."
       - say:
           char: 윤재.scared
           motion: freeze
-          with: []
+          with: [비서.off]
           text: "하루야."
       - say:
           channel: system

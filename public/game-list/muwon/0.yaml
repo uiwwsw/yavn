@@ -60,73 +60,53 @@ scenes:
       - wait: 250
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
+      # Zero-length pauses keep published save positions after adjacent dialogue is combined.
+      - wait: 0
       - say:
           char: 막쇠
           with: [서연]
-          text: "거적은 잠깐 덮어 둬요. 판관 나리 오시면 다시 걷을 거요."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "난 오작인 막쇠요. 의녀가 오면 같이 보라더군."
+          text: "난 오작인 막쇠요. 판관 나리 오실 때까진 거적을 덮어 둡시다."
       - say:
           char: 서연
           with: [막쇠]
           text: "혜민서 의녀 {{player_name|이라}} 합니다."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "나이가 어찌 되우? 열일곱쯤 됐나."
-      - say:
-          char: 서연
-          with: [막쇠]
-          text: "열여덟입니다."
+      - wait: 0
+      - wait: 0
       - say:
           char: 막쇠
           with: [서연]
           text: "속이 안 좋으면 담 밖으로 나가요. 우물 안엔 말고."
+      - wait: 0
       - say:
           char: 서연
           with: [막쇠]
-          text: "괜찮습니다. 등잔은 여기 두셔도 돼요."
-      - say:
-          char: 서연
-          with: [막쇠]
-          text: "우물에 빠진 사람을 어떻게 살피는지는 읽어 뒀어요."
-      - say: { char: 막쇠, with: [서연], text: "뭘 읽어 왔수?" }
+          text: "등잔은 여기 두세요. 물에서 건진 사람을 어떻게 살피는지는 읽어 뒀어요."
+      - wait: 0
       - say:
           channel: action
           with: []
-          text: "품에서 책을 꺼낸다. 한문 옆에 한글이 빼곡한 『무원록 언해』."
+          text: "품에서 『무원록 언해』를 꺼낸다. 등잔 아래 한문 옆의 한글이 드러난다."
+      - wait: 0
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "허. 그게 한글로 나왔다더니 진짜네."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "난 사십 년을 그림만 봤는데."
+          text: "정말 한글이네. 난 사십 년을 그림만 봤는데."
       - char: { id: 도원, position: center }
+      - wait: 0
       - say:
           char: 도원.stern
           with: [서연, 막쇠]
-          text: "한성부 판관 김도원이오."
-      - say:
-          char: 도원.stern
-          with: [서연, 막쇠]
-          text: "마을 사람들은 분이가 혼례를 겁내 우물에 몸을 던졌다고 하더군."
+          text: "한성부 판관 김도원이오. 마을에선 분이가 혼례를 겁내 우물에 몸을 던졌다더군."
+      - wait: 0
       - say:
           char: 도원.stern
           with: [서연]
-          text: "날이 밝기 전에 시장을 올려야 하오. 시신을 살핀 기록 말이오."
-      - say:
-          char: 도원.stern
-          with: [서연]
-          text: "의녀는 몸만 확인해 주시오. 죽은 까닭은 내가 적겠소."
-      - say: { char: 서연, with: [도원], text: "…네." }
+          text: "날이 밝기 전에 검안 기록을 올려야 하오. 의녀는 몸만 확인해 주시오. 죽은 까닭은 내가 적겠소."
+      - wait: 0
       - say:
           char: 서연
           with: [도원, 막쇠]
-          text: "나리, 손톱 밑에 남빛 실이 있습니다. 다른 데도 마저 살핀 뒤 말씀드리겠습니다."
+          text: "나리, 손톱 밑에 남빛 실이 있습니다. 다른 데도 살핀 뒤에 죽은 까닭을 적으시지요."
       - say:
           channel: action
           with: []
@@ -143,14 +123,11 @@ scenes:
       - say:
           channel: record
           text: "몸을 그린 이 종이가 시형도다. 살핀 곳에 본 것을 적는다."
+      - wait: 0
       - say:
           char: 막쇠
           with: [서연]
-          text: "물에서 건진 송장은 우선 세 군데부터 봐요."
-      - say:
-          char: 막쇠
-          with: [서연]
-          text: "입이랑 코, 손톱, 목."
+          text: "물에서 건진 송장은 세 군데부터 봐요. 입이랑 코, 손톱, 목."
       - goto: c1_examine
 
   c1_examine:
@@ -159,20 +136,21 @@ scenes:
       - choice:
           key: c1_examine
           presentation: explore
+          investigation: { width: 1600, height: 900 }
           prompt: "열아홉 살 분이. 어디부터 볼까?"
           with: []
           camera: wide
           options:
             - text: "입과 코"
-              at: { x: 62, y: 9 }
+              at: { x: 49.4, y: 17.6 }
               when: { var: c1_mouth, op: eq, value: false }
               goto: c1_mouth_scene
             - text: "손톱"
-              at: { x: 30, y: 92 }
+              at: { x: 38.5, y: 62.2 }
               when: { var: c1_nails, op: eq, value: false }
               goto: c1_nails_scene
             - text: "목"
-              at: { x: 66, y: 22 }
+              at: { x: 51.5, y: 22.7 }
               when: { var: c1_neck, op: eq, value: false }
               goto: c1_neck_scene
             - text: "본 것을 정리한다"
@@ -184,6 +162,7 @@ scenes:
               goto: c1_reasoning
 
   c1_mouth_scene:
+    title: "입과 코"
     actions:
       - say:
           channel: action
@@ -205,6 +184,7 @@ scenes:
       - goto: c1_examine
 
   c1_nails_scene:
+    title: "남빛 실"
     actions:
       - sticker:
           id: c1_thread
@@ -236,6 +216,7 @@ scenes:
       - goto: c1_examine
 
   c1_neck_scene:
+    title: "목의 흔적"
     actions:
       - say:
           channel: action
@@ -258,7 +239,7 @@ scenes:
           with: []
           continueLabel: "지게미를 덮고 기다린다"
           text: "젖은 천 위로 시큼한 지게미를 고루 펴 바른다. 등불 심지를 한 번 자른다."
-      - effect: focus
+      - sticker: { id: neck_traces, image: neck_traces_sticker, x: 50, y: 32, width: "clamp(200px, 26%, 320px)", enter: fadeIn }
       - say:
           channel: action
           with: []
@@ -273,6 +254,7 @@ scenes:
           text: "엄지가 앞에 있네. 마주 보고 조른 거요."
       - get: first_sijang
       - set: { c1_neck: true }
+      - clearSticker: { id: neck_traces, leave: fadeOut }
       - goto: c1_examine
 
   c1_reasoning:
@@ -288,6 +270,7 @@ scenes:
           text: "말해 보시오. 이 여인은 어찌 죽었소."
       - choice:
           key: c1_cause
+          evidence: first_sijang
           prompt: "분이의 죽음을 시장에 어떻게 적을까?"
           char: 도원
           with: [서연, 도원]

@@ -327,6 +327,30 @@ const DialogueActionButton = memo(function DialogueActionButton() {
   );
 });
 
+const DialogueNextButton = memo(function DialogueNextButton({ onAdvance }: { onAdvance: () => void }) {
+  const { visible, typing, locked, showHint } = useVNStore(useShallow(state => ({
+    visible: state.waitingInput && !state.dialog.continueLabel && !state.choiceGate.active && !state.inputGate.active,
+    typing: state.dialog.typing,
+    locked: state.busy || (state.dialog.typing && state.dialog.unskippable),
+    showHint: state.storyLog.length <= 2 && state.dialog.channel !== 'card' && state.dialog.channel !== 'message',
+  })));
+  if (!visible) return null;
+  return (
+    <div className="dialog-next">
+      {showHint && <span>{t("대화창을 눌러도 진행돼요")}</span>}
+      <button type="button" data-typing={typing || undefined} aria-disabled={locked || undefined}
+        onClick={event => {
+          event.stopPropagation();
+          if (locked) return;
+          unlockAudioFromGesture();
+          onAdvance();
+        }}>
+        {t("다음")}<GameIcon name="arrow" />
+      </button>
+    </div>
+  );
+});
+
 /**
  * The profile picture beside a run of messages.
  *
@@ -1109,11 +1133,14 @@ function resolveEndingProgressStorageKey(gameTitle?: string): string | undefined
 }
 
 // Library cards show what this browser already holds for a game: a resumable save and found endings.
-function readLauncherProgress(entry: GameListManifestEntry): string[] {
+function readLauncherProgress(
+  entry: GameListManifestEntry,
+  stored: ReturnType<typeof describeStoredProgressForGame>,
+  showResumeLabel = true,
+): string[] {
   const labels: string[] = [];
   // Mirrors the loader: the newest save is what 이어하기 opens, so an older-version save says so.
-  const stored = describeStoredProgressForGame(entry.id, entry.version);
-  if (stored.status === 'resume') {
+  if (stored.status === 'resume' && showResumeLabel) {
     labels.push(t("이어서 읽을 수 있음"));
   } else if (stored.status === 'older-version') {
     labels.push(uiLanguage === 'en' ? `Save from v${stored.slot?.savedVersion}` : `v${stored.slot?.savedVersion} 기록 있음`);
@@ -1238,7 +1265,7 @@ function useAdvanceByKey(advanceLocked: boolean, onAdvance: () => void) {
           tag === 'button' ||
           tag === 'select' ||
           tag === 'a' ||
-          target.closest('button, a, input, textarea, select, [role="button"], [role="link"]')
+          target.closest('button, a, input, textarea, select, summary, [role="button"], [role="link"]')
         ) {
           return;
         }
@@ -4165,6 +4192,32 @@ export default function App() {
         ? { '--start-gate-mobile-image-position': startGate.mobileImagePosition }
         : {}),
     } as CSSProperties;
+    const preferResume = startGate.showLoadButton && startGate.saveStatus?.status === 'resume';
+    const newStoryButton = (
+      <button
+        type="button"
+        className={`start-gate-button start-gate-button-${preferResume ? 'load' : 'start'}`}
+        onClick={() => void onStartGateLaunch(false)}
+        disabled={startGateLaunching}
+      >
+        <span className="start-gate-button-label">{startGate.startButtonText || DEFAULT_START_BUTTON_TEXT}</span>
+        <span className="start-gate-button-mark" aria-hidden="true">→</span>
+      </button>
+    );
+    const resumeButton = startGate.showLoadButton ? (
+      <button
+        type="button"
+        className={`start-gate-button start-gate-button-${preferResume ? 'start' : 'load'}`}
+        onClick={() => void onStartGateLaunch(true)}
+        disabled={startGateLaunching}
+        aria-describedby={startGate.saveStatus?.slot ? 'vs-start-save' : undefined}
+      >
+        <span className="start-gate-button-label">
+          {startGate.saveStatus?.status === 'older-version' ? t("그래도 이어하기") : DEFAULT_LOAD_BUTTON_TEXT}
+        </span>
+        <span className="start-gate-button-mark" aria-hidden="true">↗</span>
+      </button>
+    ) : null;
     startGateView = (
       <div
         className={`start-gate is-scene${startGateLaunching ? ' is-launching' : ''}${startGateRevealing ? ' is-revealing' : ''}${startGate.legalNotices.length > 0 ? ' has-legal-notices' : ''}`}
@@ -4194,31 +4247,7 @@ export default function App() {
             </div>
           )}
           <div className={actionClass}>
-            <button
-              type="button"
-              className="start-gate-button start-gate-button-start"
-              onClick={() => void onStartGateLaunch(false)}
-              disabled={startGateLaunching}
-            >
-              <span className="start-gate-button-label">
-                {startGate.startButtonText || DEFAULT_START_BUTTON_TEXT}
-              </span>
-              <span className="start-gate-button-mark" aria-hidden="true">→</span>
-            </button>
-            {startGate.showLoadButton && (
-              <button
-                type="button"
-                className="start-gate-button start-gate-button-load"
-                onClick={() => void onStartGateLaunch(true)}
-                disabled={startGateLaunching}
-                aria-describedby={startGate.saveStatus?.slot ? 'vs-start-save' : undefined}
-              >
-                <span className="start-gate-button-label">
-                  {startGate.saveStatus?.status === 'older-version' ? t("그래도 이어하기") : DEFAULT_LOAD_BUTTON_TEXT}
-                </span>
-                <span className="start-gate-button-mark" aria-hidden="true">↗</span>
-              </button>
-            )}
+            {preferResume ? <>{resumeButton}{newStoryButton}</> : <>{newStoryButton}{resumeButton}</>}
             {startGate.showLoadButton && startGate.saveStatus?.slot && (
               // What 이어하기 opens: the newest of auto, manual and chapter saves.
               <div className="vs-start-save" id="vs-start-save">
@@ -4369,6 +4398,7 @@ export default function App() {
                     const showcaseStyle = buildLauncherShowcaseStyle(entry.showcase) as CSSProperties | undefined;
                     const offlineState = offlinePacks.states[entry.id];
                     const openable = !offlineState || canOpenGame(offlineState.status, siteReachable);
+                    const storedProgress = describeStoredProgressForGame(entry.id, entry.version);
                     return (
                       <article
                         key={`showcase-${entry.id}`}
@@ -4399,10 +4429,20 @@ export default function App() {
                           <div className="launcher-feature-content">
                             <p className="launcher-feature-kicker">
                               {entry.showcase?.label ?? 'INTERACTIVE STORY'}
-                              <span>v{entry.version ?? '-'}</span>
                             </p>
                             <h2 id={`launcher-feature-title-${entry.id}`}>{entry.name}</h2>
                             <p className="launcher-feature-summary">{(uiLanguage === 'en' ? entry.summaryEn ?? entry.summary : entry.summary) ?? DEFAULT_LAUNCHER_SUMMARY}</p>
+                            {openable ? (
+                              <a className="launcher-command launcher-command-primary launcher-feature-play"
+                                href={gameHref(entry.path, entry.languages)}
+                                tabIndex={isSelected ? undefined : -1}>
+                                {storedProgress.status === 'resume' ? t("이어서 읽기") : t("이야기 시작하기")}<span aria-hidden="true">↗</span>
+                              </a>
+                            ) : (
+                              <span className="launcher-command launcher-command-primary launcher-feature-play is-unavailable" aria-disabled="true">
+                                {offlineCopy.unavailable}
+                              </span>
+                            )}
 
                             <div className="inspector-tag-row">
                               {entryTags.map((tag) => (
@@ -4413,7 +4453,7 @@ export default function App() {
                             <p className="launcher-game-languages">{uiLanguage === 'en' ? 'Game language: ' : '지원 언어: '}{entry.languages.length ? entry.languages.map(languageLabel).join(', ') : (uiLanguage === 'en' ? 'Not specified' : '미등록')}</p>
                             <p className="launcher-feature-meta">
                               <span>by {entry.author ?? 'YAVN creator'}</span><span>{chapterLabel}</span>
-                              {readLauncherProgress(entry).map((label) => <span key={label} className="launcher-progress">{label}</span>)}
+                              {readLauncherProgress(entry, storedProgress, false).map((label) => <span key={label} className="launcher-progress">{label}</span>)}
                             </p>
 
                             {offlineState && (
@@ -4427,18 +4467,6 @@ export default function App() {
                             )}
 
                             <div className="inspector-actions">
-                              {openable ? (
-                                <a
-                                  className="launcher-command launcher-command-primary"
-                                  href={gameHref(entry.path, entry.languages)}
-                                  tabIndex={isSelected ? undefined : -1}
-                                >{t("이야기 시작하기")}<span aria-hidden="true">↗</span>
-                                </a>
-                              ) : (
-                                <span className="launcher-command launcher-command-primary is-unavailable" aria-disabled="true">
-                                  {offlineCopy.unavailable}
-                                </span>
-                              )}
                               <a
                                 className="launcher-command launcher-command-source"
                                 href={buildGameSourceUrl(repositoryUrl, entry.id)}
@@ -4454,6 +4482,7 @@ export default function App() {
                               >
                                 {launcherShareNotice ? t("링크 복사됨") : t("선택 링크 복사")}
                               </button>
+                              {entry.version && <span className="launcher-feature-version">v{entry.version}</span>}
                             </div>
                             <p
                               className="launcher-share-status"
@@ -4666,6 +4695,8 @@ export default function App() {
                   const offlineState = offlinePacks.states[entry.id];
                   const openable = !offlineState || canOpenGame(offlineState.status, siteReachable);
                   const savedOffline = offlineState?.status === 'saved' || offlineState?.status === 'outdated';
+                  const storedProgress = describeStoredProgressForGame(entry.id, entry.version);
+                  const hasResume = storedProgress.status === 'resume';
                   return (
                     <article
                       key={entry.id}
@@ -4675,7 +4706,7 @@ export default function App() {
                         className="workspace-game-select"
                         href={openable ? gameHref(entry.path, entry.languages) : undefined}
                         aria-disabled={openable ? undefined : true}
-                        aria-label={openable ? `${entry.name} ${t("플레이")}` : `${entry.name} · ${offlineCopy.unavailable}`}
+                        aria-label={openable ? `${entry.name} ${hasResume ? t("이어서 읽기") : t("플레이")}` : `${entry.name} · ${offlineCopy.unavailable}`}
                       >
                         <span className="workspace-game-cover">
                           {entry.thumbnail ? (
@@ -4684,7 +4715,7 @@ export default function App() {
                             <span className="workspace-game-cover-fallback">YAVN</span>
                           )}
                           <span className="workspace-cover-number">{String(buildNumber).padStart(2, '0')}</span>
-                          <span className="workspace-cover-play" aria-hidden="true">{t("이야기 시작 ↗")}</span>
+                          <span className="workspace-cover-play" aria-hidden="true">{hasResume ? `${t("이어서 읽기")} ↗` : t("이야기 시작 ↗")}</span>
                         </span>
                         <span className="workspace-game-body">
                           <span className="workspace-game-category">{entry.tags.slice(0, 2).map((tag) => launcherTagLabel(tag, entry.tagLabels, uiLanguage)).join(' / ') || 'VISUAL NOVEL'}</span>
@@ -4698,7 +4729,7 @@ export default function App() {
                           <span className="launcher-game-languages">{uiLanguage === 'en' ? 'Game language: ' : '지원 언어: '}{entry.languages.length ? entry.languages.map(languageLabel).join(', ') : (uiLanguage === 'en' ? 'Not specified' : '미등록')}</span>
                           <span className="workspace-game-meta">
                             {entry.author ?? 'UNKNOWN'} · {chapterLabel}
-                            {readLauncherProgress(entry).map((label) => <b key={label} className="launcher-progress">{label}</b>)}
+                            {readLauncherProgress(entry, storedProgress).map((label) => <b key={label} className="launcher-progress">{label}</b>)}
                           </span>
                           {!openable && <span className="workspace-game-offline is-unavailable">{offlineCopy.unavailable}</span>}
                           {openable && savedOffline && <span className="workspace-game-offline">{offlineCopy.saved}</span>}
@@ -4765,6 +4796,16 @@ export default function App() {
 
   const hasStageApproach = choiceGate.active && choiceGate.presentation === 'approach'
     && choiceGate.options.some(option => option.at);
+  const investigation = choiceGate.active ? choiceGate.investigation : undefined;
+  const choiceEvidence = choiceGate.active && choiceGate.evidence
+    ? inventoryCatalogEntries.find(entry => entry.id === choiceGate.evidence && entry.owned)
+    : undefined;
+  const investigationTargets = investigation?.targets.map((option, position) => ({
+    option,
+    number: position + 1,
+    index: choiceGate.options.indexOf(option),
+  }));
+  const checkedTargets = investigationTargets?.filter(target => target.index === -1).length ?? 0;
   const activeApproachIndex = hasStageApproach ? choiceGate.approachSteps.findIndex(step => step > 0) : -1;
   const activeApproach = choiceGate.options[activeApproachIndex];
   const canEnterApproach = activeApproach?.reveal
@@ -4778,6 +4819,12 @@ export default function App() {
         : activeApproach
           ? t("같은 별을 눌러 더 가까이")
           : t("다가갈 별을 누르세요");
+
+  const chooseOption = (index: number) => {
+    if (busy) return;
+    if (hasRecoveredFailedChoice) setRecoveredFailedChoice(undefined);
+    submitChoiceOption(index);
+  };
 
   const renderChoiceOption = (
     option: typeof choiceGate.options[number],
@@ -4821,21 +4868,12 @@ export default function App() {
             event.preventDefault();
             event.stopPropagation();
             if (isApproach && event.repeat) return;
-            if (hasRecoveredFailedChoice) {
-              setRecoveredFailedChoice(undefined);
-            }
-            submitChoiceOption(index);
+            chooseOption(index);
           }
         }}
         onClick={(event) => {
           event.stopPropagation();
-          if (busy) {
-            return;
-          }
-          if (hasRecoveredFailedChoice) {
-            setRecoveredFailedChoice(undefined);
-          }
-          submitChoiceOption(index);
+          chooseOption(index);
         }}
         disabled={busy}
         aria-label={`${optionLabel}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
@@ -4993,10 +5031,16 @@ export default function App() {
 
       {choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && !isDialogHidden && (
         <div
-          className={hasStageApproach ? 'exploration-field approach-field' : 'exploration-field'}
+          className={hasStageApproach ? 'exploration-field approach-field' : investigation ? 'exploration-field investigation-field' : 'exploration-field'}
           role="group"
           aria-label={choiceGate.presentation === 'approach' ? t("다가갈 곳") : t("주변 살펴보기")}
-          style={{ '--exploration-dialog-inset': `${stickerSafeInset}px` } as CSSProperties}>
+          style={{
+            '--exploration-dialog-inset': `${stickerSafeInset}px`,
+            ...(investigation && {
+              '--investigation-aspect': investigation.width / investigation.height,
+              '--investigation-inverse-aspect': investigation.height / investigation.width,
+            }),
+          } as CSSProperties}>
           {hasStageApproach ? (
             <>
               <div className="approach-heading">
@@ -5012,7 +5056,24 @@ export default function App() {
                 </div>
               )}
             </>
-          ) : choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
+          ) : investigationTargets ? investigationTargets.map(({ option, number, index }) => {
+            const checked = index === -1;
+            const markerStyle = {
+              '--target-offset-x': option.at!.x / 100 - .5,
+              '--target-offset-y': option.at!.y / 100 - .5,
+            } as CSSProperties;
+            return checked ? (
+              <span key={number} className="investigation-marker is-checked" style={markerStyle} aria-hidden="true">
+                <span>✓</span>
+              </span>
+            ) : (
+              <button key={number} type="button" className="investigation-marker" style={markerStyle} disabled={busy}
+                aria-label={uiLanguage === 'en' ? `Inspect ${number}: ${fillText(option.text)}` : `${number}번 조사: ${fillText(option.text)}`}
+                onClick={event => { event.stopPropagation(); chooseOption(index); }}>
+                <span aria-hidden="true">{number}</span>
+              </button>
+            );
+          }) : choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
         </div>
       )}
 
@@ -5904,6 +5965,7 @@ export default function App() {
       <div
         ref={dialogBoxRef}
         data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasStageApproach || undefined}
+        data-investigation={investigation ? 'true' : undefined}
         className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
@@ -6076,8 +6138,33 @@ export default function App() {
                   </div>
                 </div>
               )}
-              {choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
+              {investigationTargets ? (
+                <>
+                  <p className="choice-gate-explore-hint" role="status">
+                    {t("조사")} {checkedTargets}/{investigationTargets.length}
+                  </p>
+                  <div className="investigation-options" role="group" aria-label={t("조사 지점")}>
+                    {investigationTargets.map(({ option, number, index }) => index < 0 ? (
+                      <span key={number} className="investigation-option is-checked">
+                        <span aria-hidden="true">✓</span>{fillText(option.text)}<small>{t("확인함")}</small>
+                      </span>
+                    ) : (
+                      <button key={number} type="button" className="investigation-option" disabled={busy}
+                        ref={element => { choiceOptionButtonRefs.current[index] = element; }}
+                        onClick={() => chooseOption(index)}>
+                        <span aria-hidden="true">{number}</span>{fillText(option.text)}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
                 <p className="choice-gate-explore-hint">{t("화면에서 살펴볼 곳을 누르세요")}</p>
+              )}
+              {choiceEvidence?.description && (
+                <details className="choice-evidence" key={choiceGate.key}>
+                  <summary>{choiceEvidence.name} · {t("다시 보기")}</summary>
+                  <p>{choiceEvidence.description}</p>
+                </details>
               )}
               {!hasStageApproach && <div
                 className="choice-gate-options"
@@ -6093,6 +6180,9 @@ export default function App() {
             </div>
           )}
         </div>
+        {!isDialogHidden && !playbackCovered && !settingsOpen && !error && (
+          <DialogueNextButton onAdvance={handleManualAdvance} />
+        )}
       </div>
 
       {showDialogRestoreButton && (

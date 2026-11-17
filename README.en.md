@@ -9,6 +9,7 @@ Make choice-driven browser games with YAML scenes, dialogue, branching choices, 
 - YAML V3 with separate global config, shared assets and chapters.
 - Visual novel presentation, character direction, music and cinematic effects.
 - Story RPG progression through choices, state and inventory.
+- Numbered investigation targets, evidence review within choices, and explicit music stops. See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#narrative-and-presentation) for YAML examples.
 - Chapter story maps, discovered paths and replay checkpoints.
 - Always-on autosave, three manual slots with scene previews, portable save backups, and a notice when a new version is deployed.
 - Korean and English launcher/engine controls; catalog language labels, search and filters.

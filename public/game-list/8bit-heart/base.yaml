@@ -55,6 +55,7 @@ assets:
         ad: assets/char/assistant-ad.svg
         glitch: assets/char/assistant-glitch.svg
         dead: assets/char/assistant-dead.svg
+        off: assets/char/assistant-off.svg
       emotionMotions:
         glitch: tremble
         dead: droop
@@ -73,6 +74,7 @@ assets:
     repair_battery: assets/sfx/repair_battery.wav
     repair_tap: assets/sfx/repair_tap.wav
     repair_breath: assets/sfx/repair_breath.wav
+    disconnect: assets/sfx/disconnect.wav
     boot: assets/sfx/boot.wav
 
 state:

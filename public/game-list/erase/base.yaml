@@ -19,6 +19,8 @@ assets:
     clinic_hall: assets/bg/clinic_hall.svg
     invitation_sticker: assets/items/invitation.svg
     child_photo_sticker: assets/items/child_photo.svg
+    gallery_photo_sticker: assets/items/gallery_photo.svg
+    gallery_empty_sticker: assets/items/gallery_empty.svg
     pharmacy_bag_sticker: assets/items/pharmacy_bag.svg
     butterfly_sticker: assets/items/pinned_butterfly.svg
     ticket_sticker: assets/items/test_ticket.svg
