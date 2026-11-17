@@ -12,14 +12,14 @@ scenes:
           channel: card
           with: []
           text: "STAGE 0 · 2063년 · 새벽 2시"
-      - place: "윤재네 집 · 혼자 쓰는 방"
+      - place: "윤재의 방"
       - char: { id: 윤재, position: left }
       - char: { id: 비서, position: right }
       - sticker: { id: s0_broken, image: console_old_sticker, x: 50, y: 37, width: "clamp(160px, 48%, 280px)", enter: fadeIn }
       - say:
           channel: action
           with: []
-          text: "엄지를 올린 전원 스위치는 닳아서 반질반질하다."
+          text: "어제까지 쓰던 윤재의 휴대용 게임기가 먹통이다."
           continueLabel: "전원을 켠다"
       - sound: repair_switch
       - say: { char: 윤재, motion: puff, with: [비서], text: "아, 진짜. 하루야, 또 안 켜져. 어제 여기서 게임 껐는데." }

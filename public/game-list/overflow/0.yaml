@@ -13,7 +13,7 @@ scenes:
       - char: { id: 지완, position: left }
       - say: { channel: action, with: [지완], camera: wide, text: "출근하던 문지완이 월계역 개찰구 앞에서 장갑을 떨어뜨린다." }
       - bg: station_glove
-      - say: { channel: record, with: [], text: "에모스 렌즈 · 통행 안전 모드\n문지완 · 안정 24\n안경 쓴 여자 · 안정 31" }
+      - say: { channel: record, with: [], text: "에모스 렌즈 · 감정 판독\n문지완 · 안정 24\n안경 쓴 여자 · 안정 31" }
       - bg: { id: wolgye_station, transition: dissolve, duration: 240 }
       - char: { id: 수경, position: right }
       - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "장갑 떨어뜨리셨어요." }
@@ -23,7 +23,7 @@ scenes:
       - sound: call
       - choice:
           key: o0_call
-          prompt: "오전 7:42 · 아버지에게 전화가 온다."
+          prompt: "오전 7:42 · 지완의 휴대폰에 ‘아버지’가 뜬다."
           with: [지완]
           options:
             - text: "전화를 받는다"
@@ -35,7 +35,7 @@ scenes:
     actions:
       - set: { picked_up: true }
       - char: { id: 지완, position: left }
-      - wait: 0
+      - say: { char: 지완, with: [지완], text: "여보세요, 아버지." }
       - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "야, 국 냄비째 얼려도 되냐?" }
       - say: { char: 지완, channel: dialogue, with: [지완], text: "그거 꽝꽝 얼면 안 빠져요. 작은 통에 나눠요." }
       - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "넌 일요일에 안 오냐?" }

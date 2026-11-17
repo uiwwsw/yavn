@@ -125,7 +125,7 @@ describe('360 full playthrough', () => {
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
     ]);
-    expect(heard(shown, '눈을 질끈 감았다가 떠 본다.')).toBe(true);
+    expect(heard(shown, '숨을 쉬어 보는데, 내 숨소리도 들리지 않는다.')).toBe(true);
     expect(heard(shown, '어둠 속에 희미한 빛들이 보였다.')).toBe(true);
     expect(state.choiceGate.key).toBe('star');
     expect(state.choiceGate.options.map((option) => option.text)).toEqual([STAR_1894, STAR_1952, STAR_1988]);

@@ -21,9 +21,9 @@ scenes:
     pov: "???"
     actions:
       - bg: { id: void_empty, transition: cut }
-      - say: { channel: narration, text: "눈을 떴다.", wait: 650 }
+      - say: { channel: narration, text: "눈을 떴다. 앞이 보이지 않는다.", wait: 650 }
       - music: void
-      - say: { channel: narration, text: "눈을 질끈 감았다가 떠 본다. 여전히 아무것도 보이지 않는다.", wait: 1100 }
+      - say: { channel: narration, text: "숨을 쉬어 보는데, 내 숨소리도 들리지 않는다.", wait: 650 }
       - choice:
           key: where_am_i
           prompt: "여긴 어디지?"

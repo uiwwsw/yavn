@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "호출기에 027이 뜬다. 손님이 오기도 전에 해수는 허리를 조금 숙인다."
+          text: "고객센터 직원 정해수. 번호표 027번 손님을 부를 차례다."
           continueLabel: "027번을 호출한다"
       - set: { t0_refund_first: true }
       - goto: ticket
@@ -34,13 +34,9 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "레플라 REPLA · 밴드를 착용해 보세요. 레플라 안에도 지금 계신 곳이 똑같이 마련돼 있습니다."
-          autoAdvance: 3484
-      - say:
-          channel: system
-          with: []
-          text: "어제 거기 둔 물건은 오늘도 거기 있습니다. · 라이트 월 39,000원 · 지금 접속 중 1,104,331명"
-          autoAdvance: 2974
+          text: "레플라 REPLA · 밴드 하나로 현실과 똑같은 공간에 접속하세요.\n지금 접속 중 1,104,331명"
+          autoAdvance: 2400
+      - wait: 0
       - say:
           channel: system
           with: []

@@ -408,6 +408,10 @@ describe('오버플로', () => {
     const answers = { o0_call: '전화를 받는다' };
     const incoming = await play(answers, state => state.choiceGate.key === 'o0_call');
     expect(incoming.state.characters.left?.source).toBe(portrait);
+    const answer = await play(answers, state => state.currentSceneId === 'take_call');
+    expect(answer.state.dialog.fullText).toBe('여보세요, 아버지.');
+    expect(answer.state.dialog.speaker).toBe('문지완');
+    expect(answer.state.characters.left?.source).toBe(portrait);
     const speaking = await play(answers, state => state.dialog.fullText.startsWith('야, 국 냄비째'));
     expect(speaking.state.dialog.speaker).toBe('아버지 (통화)');
     expect(speaking.state.characters.left?.source).toBe(portrait);
@@ -446,7 +450,7 @@ describe('오버플로', () => {
     expect(introduction[2]?.text).toContain('한수경이에요');
     const call = run.state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'take_call');
     expect(call.filter((entry) => entry.channel === 'dialogue').map((entry) => entry.speaker))
-      .toEqual(['아버지 (통화)', '문지완', '아버지 (통화)', '문지완']);
+      .toEqual(['문지완', '아버지 (통화)', '문지완', '아버지 (통화)', '문지완']);
     expect(call.some((entry) => entry.channel === 'message')).toBe(false);
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
       sceneId: 'shift', channel: 'action', text: expect.stringContaining('아버지 목소리가 아니다. 반찬집 아주머니다.'),
