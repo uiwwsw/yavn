@@ -306,6 +306,15 @@ describe('ERASE', () => {
       e3_final: '놀이터 사진을 연다',
     });
     finished(run);
+    const clubConversation = run.shown.filter(line =>
+      /담배 하나만 빌릴 수 있어요|그쪽도 몇 번 보셨나 보네요|저 다음 달에 결혼해요|빈 잔 하나 더 있는데/.test(line));
+    expect(clubConversation).toEqual([
+      '저기, 담배 하나만 빌릴 수 있어요?',
+      '그쪽도 몇 번 보셨나 보네요.',
+      '저 다음 달에 결혼해요.',
+      '그래요. 빈 잔 하나 더 있는데, 따라 드릴까요?',
+    ]);
+    expect(run.shown).not.toContain('둘 다 웃고 있네.');
     expect(heard(run.shown, '번호를 저장하지 않으면 연락처에서는 안 뜬다')).toBe(true);
     expect(heard(run.shown, '전화가 온 번호도 같은 번호였다')).toBe(true);
     expect(heard(run.shown, '폰이 먼저 알아봤네')).toBe(true);
@@ -335,6 +344,10 @@ describe('ERASE', () => {
       e3_final: "휴대폰을 초기화한다",
     });
     finished(run);
+    expect(run.shown.indexOf('둘 다 웃고 있네.')).toBeGreaterThan(
+      run.shown.indexOf('흔들린 사진 세 장을 넘긴다. 마지막 한 장에서 멈춘다.'),
+    );
+    expect(run.state.routeVars.e0_photos).toBe(true);
     expect(heard(run.shown, '손이 알아서 했다')).toBe(true);
     expect(heard(run.shown, '방금도 본 곳이다')).toBe(true);
     expect(heard(run.shown, '‘나도’에서 잠깐 멈춘다')).toBe(true);
