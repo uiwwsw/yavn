@@ -18,6 +18,7 @@ assets:
     science_room: assets/bg/science_room.svg
     clinic_hall: assets/bg/clinic_hall.svg
     invitation_sticker: assets/items/invitation.svg
+    club_photo_sticker: assets/items/club_photo.webp
     child_photo_sticker: assets/items/child_photo.svg
     gallery_photo_sticker: assets/items/gallery_photo.svg
     gallery_empty_sticker: assets/items/gallery_empty.svg
