@@ -49,10 +49,10 @@ scenes:
           with: []
           text: "네 넣고 연락드릴게요"
       - say: { channel: action, with: [도윤], text: "서류를 챙기고 내려가는 길에 지수에게서도 연락이 온다." }
-      - say: { channel: message, side: them, char: 지수, with: [], text: "몇 시에 와? 네 좋아하는 반찬 데워놨어" }
-      - say: { channel: message, side: me, char: 도윤, with: [], text: "서류 하나 전해주고 갈게. 먼저 먹어" }
-      - say: { channel: message, side: them, char: 지수, with: [], text: "응. 그래도 너무 늦지는 마. 내일 세 시에 옷 보러 같이 가는 거 알지" }
-      - say: { channel: message, side: me, char: 도윤, with: [], text: "알지. 달력에 넣었어" }
+      - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "몇 시에 와? 네 좋아하는 반찬 데워놨어" }
+      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "서류 하나 전해주고 갈게. 먼저 먹어" }
+      - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "응. 그래도 너무 늦지는 마. 내일 세 시에 옷 보러 같이 가는 거 알지" }
+      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "알지. 달력에 넣었어" }
 
   house:
     title: "준성의 집"
@@ -201,6 +201,7 @@ scenes:
       - say: { channel: action, with: [도윤], text: "도윤은 준성의 이름을 사내 기록에서 찾아보려고 회사로 돌아온다. 노트북을 켜자 휴대폰에 지수가 남긴 톡이 보인다." }
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -211,6 +212,7 @@ scenes:
           text: "안 와?"
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -221,6 +223,7 @@ scenes:
           text: "회사 다시 들어왔어 자료가 여기 있어서"
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -231,6 +234,7 @@ scenes:
           text: "뭐 먹었는데"
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -241,6 +245,7 @@ scenes:
           text: "김밥"
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -251,6 +256,7 @@ scenes:
           text: "오이는 뺐어?"
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -261,6 +267,7 @@ scenes:
           text: "너 혼자 먹을 때도 꼭 빼달라 하잖아"
       - say:
           channel: message
+          thread: 지수
           when:
             all:
               - { var: e2_search, op: eq, value: false }
@@ -388,6 +395,7 @@ scenes:
           text: "근태 · 연차 1일 승인 (한도윤)"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []

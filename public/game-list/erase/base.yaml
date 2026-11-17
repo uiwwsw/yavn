@@ -48,6 +48,7 @@ assets:
       name: "이지수"
       placement: prompt-top
       base: assets/char/jisu.svg
+      avatar: assets/char/jisu-profile.svg
       facing: left
       defaultDelivery: calm
       defaultFraming: portrait

@@ -267,6 +267,10 @@ describe('8비트 심장', () => {
 });
 
 describe('ERASE', () => {
+  const directText = '민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게';
+  const briefText = '민석이 잠깐 보자네. 12시 전엔 들어갈게';
+  const lateText = '민석이 생일이래. 나갔다 올게. 늦으면 톡할게';
+
   it('withholds the player portrait until the studio scene', async () => {
     await start('erase');
     const opening = useVNStore.getState();
@@ -287,10 +291,29 @@ describe('ERASE', () => {
     expect(resolvePlayerCharacterId(state.game, revealed, state.routeVars)).toBe('도윤');
   });
 
+  it.each([
+    [directText, '클럽? ㅇㅋ 술 마시면 대리 불러'],
+    [briefText, 'ㅇㅋ 들어올 때 깨우진 마 ㅋㅋ'],
+    [lateText, 'ㅇㅋ 늦으면 나 먼저 잘게. 운전은 하지 말고'],
+  ])('sends the selected text and receives its matching reply in Jisu’s chat (%s)', async (sent, reply) => {
+    await start('erase');
+    const route = { e0_studio: '오늘 보낼 수 있다고 한다', e0_jisu_text: sent };
+    const { state } = await play(route, state => state.currentSceneId === 'e0_club_arrival');
+    const messages = state.storyLog.flatMap(entry =>
+      entry.kind === 'dialogue' && entry.channel === 'message' && entry.thread === '지수'
+        ? [{ side: entry.side, text: entry.text, avatar: entry.avatar }]
+        : []);
+    expect(messages).toMatchObject([
+      { side: 'me', text: sent },
+      { side: 'them', text: reply, avatar: expect.stringContaining('/jisu-profile.svg') },
+    ]);
+  });
+
   it('새벽에 아무것도 안 지우면 남은 것이 1·3·4장에서 돌아온다', async () => {
     await start('erase');
     const run = await play({
       e0_studio: '오늘 보낼 수 있다고 한다',
+      e0_jisu_text: directText,
       e0_junseong: '잔을 받는다',
       e0_erase: '방을 나간다',
       e1_rumor: '농담에 맞장구친다',
@@ -329,6 +352,7 @@ describe('ERASE', () => {
     await start('erase');
     const run = await play({
       e0_studio: '이번 달 카드값을 말한다',
+      e0_jisu_text: lateText,
       e0_junseong: '대리를 불렀다고 한다',
       e0_erase: '메시지||사진||위치 기록||방을 나간다',
       e1_rumor: '답장하지 않는다',
