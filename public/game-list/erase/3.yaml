@@ -12,7 +12,10 @@ scenes:
           channel: card
           with: []
           text: "현재\n한도윤 · 29세 · 결혼 10일 전"
-      - place: "수요일 저녁 · 퇴근길"
+      - bg: { id: office, transition: cut }
+      - place: "수요일 저녁 · 퇴근 직전"
+      - char: { id: 도윤, position: left }
+      - say: { channel: action, with: [도윤], text: "가방을 드는데 송과장한테 톡이 온다. 책상 위에 준성 앞으로 온 서류가 놓여 있다." }
       - say:
           channel: message
           side: them
@@ -45,54 +48,11 @@ scenes:
           char: 도윤
           with: []
           text: "네 넣고 연락드릴게요"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "오늘 몇시에 와? 반찬 데워놨어"
-      - say:
-          channel: message
-          side: me
-          char: 도윤
-          with: []
-          text: "회사 심부름 하나만 하고"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "이 시간에 무슨 심부름"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "ㅇㅋ 내일 피팅 3시인 거 알지"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "달력에 넣었어 알림도 켜놨어 네 폰에"
-      - say:
-          channel: message
-          side: me
-          char: 도윤
-          with: []
-          text: "언제 내 폰을"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "아침에 충전하다가 달력에 넣었지ㅋㅋ 비번은 안 눌렀어"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "너 잘 때 폰을 얼굴에 갖다 대니까 그냥 열려서 좀 놀랐어"
+      - say: { channel: action, with: [도윤], text: "서류를 챙기고 내려가는 길에 지수에게서도 연락이 온다." }
+      - say: { channel: message, side: them, char: 지수, with: [], text: "몇 시에 와? 네 좋아하는 반찬 데워놨어" }
+      - say: { channel: message, side: me, char: 도윤, with: [], text: "서류 하나 전해주고 갈게. 먼저 먹어" }
+      - say: { channel: message, side: them, char: 지수, with: [], text: "응. 그래도 너무 늦지는 마. 내일 세 시에 옷 보러 같이 가는 거 알지" }
+      - say: { channel: message, side: me, char: 도윤, with: [], text: "알지. 달력에 넣었어" }
 
   house:
     title: "준성의 집"
@@ -237,7 +197,8 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
-      - place: "그날 밤 23:40 · 회사, 빈 사무실"
+      - place: "그날 밤 11시 40분 · 빈 사무실"
+      - say: { channel: action, with: [도윤], text: "도윤은 준성의 이름을 사내 기록에서 찾아보려고 회사로 돌아온다. 노트북을 켜자 휴대폰에 지수가 남긴 톡이 보인다." }
       - say:
           channel: message
           when:
@@ -587,12 +548,8 @@ scenes:
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: "그날 밤 · 하린의 방"
-      - say:
-          channel: message
-          side: them
-          char: 아진
-          with: []
-          text: "[사진]"
+      - say: { channel: action, with: [하린], text: "하린이 책상에 앉아 교복 소매를 걷는다. 아진이한테 사진 한 장이 온다." }
+      - sticker: { id: e3_playground, image: child_photo_sticker, x: 50, y: 44, width: "clamp(170px, 30%, 320px)", enter: fadeIn }
       - say:
           channel: message
           side: them
@@ -631,6 +588,7 @@ scenes:
           channel: system
           with: []
           text: "사진을 저장했습니다."
+      - clearSticker: { id: e3_playground, leave: fadeOut }
       - goto: e2_jisu
 
   e2_jisu:
@@ -645,9 +603,9 @@ scenes:
       - place: "목요일 밤 · 도윤과 지수의 집"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
-      - say: { char: 지수, with: [도윤], text: "왔어? 밥은?" }
-      - say: { char: 도윤, with: [지수], text: "아직. 너는?" }
-      - say: { char: 지수, with: [도윤], text: "기다렸어. 오늘 피팅 끝나고 같이 먹기로 했잖아." }
+      - say: { char: 지수, with: [도윤], text: "왔어? 얼굴 좀 봐. 어디 아파?" }
+      - say: { char: 도윤, with: [지수], text: "아니. 밥 안 먹고 기다렸어?" }
+      - say: { char: 지수, with: [도윤], text: "응. 옷 보고 나서 같이 먹기로 했잖아." }
       - say: { char: 도윤, with: [지수], text: "미안. 회사에 일이 갑자기 생겨서." }
       - say: { char: 지수, with: [도윤], text: "회사에 전화했어. 송과장님이 너 오늘 연차랬어." }
       - move: { id: 도윤, toward: 지수, style: retreat }
@@ -732,13 +690,13 @@ scenes:
 
   e2_jisu_all:
     actions:
-      - say: { char: 도윤.hollow, with: [지수], text: "우리 사진 찍은 날 있잖아. 그날 밤에 클럽에서 만난 사람이랑 잤어." }
+      - say: { char: 도윤.hollow, with: [지수], text: "우리 사진 찍은 날 있잖아. 그날 밤에 클럽에서 만난 사람이랑 잤어.", wait: 650 }
       - say: { char: 지수.cold, with: [도윤], text: "그날? 너 열두 시 전에 들어온다고 한 날?" }
       - say: { char: 도윤, with: [지수], text: "…응. 그 사람이 준성 씨야. 우리 팀장님." }
       - say: { char: 지수.cold, with: [도윤], text: "그 뒤에도 만났어?" }
       - say: { char: 도윤, with: [지수], text: "회사 밖에서는 안 만났어. 요즘은 회사에도 안 나와. 연락도 안 돼." }
       - say: { char: 도윤.hollow, with: [지수], text: "회사에서 그 사람 병 얘기가 돌고 있어. 오늘은 그것 때문에 보건소에 갔어." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수는 숟가락을 들었다가 내려놓는다." }
+      - say: { channel: action, with: [지수, 도윤], text: "지수는 도윤 쪽으로 밀어 두었던 밥그릇에서 손을 뗀다." }
       - mood: { tone: grief, level: 1 }
       - say: { char: 지수.cold, with: [도윤], text: "검사는 받았어?" }
       - say:
@@ -758,10 +716,10 @@ scenes:
           text: "그럼 다시 가. 오늘처럼 돌아오지 말고."
       - say: { char: 지수, with: [도윤], text: "식장 보러 다니면서, 사람들한테 청첩장 줄 얘기까지 하면서 나한텐 언제 말하려고 했어?" }
       - say: { char: 도윤.hollow, with: [지수], text: "네가 식장 얘기하면 나도 그냥 그 얘기만 했어. 그날 얘기 꺼냈다가 네가 어떻게 볼지 무서웠어." }
-      - say: { char: 지수, with: [도윤], text: "나는 네가 결혼하기 싫어진 줄 알고 오늘 드레스 입다가 물어볼 뻔했어. 전화만 받았어도." }
+      - say: { char: 지수, with: [도윤], text: "오늘 혼자 드레스 입고 기다리면서, 네가 오면 그냥 손부터 잡아야겠다 그랬어.", wait: 550 }
       - say: { char: 도윤, with: [지수], text: "미안해." }
       - say: { char: 지수, with: [도윤], text: "토요일 피팅은 가지 마. 내일 식장에도 전화할 거야. 식을 미룰 수 있는지부터 물어볼게." }
       - say: { char: 도윤, with: [지수], text: "내가 전화할게." }
-      - say: { char: 지수, with: [도윤], text: "계약은 내 이름으로 했어. 내가 전화할게. 너 잠깐 방에 가 있어 줄래?" }
+      - say: { char: 지수, with: [도윤], text: "내가 할게. 부탁이야. 오늘은 방에 들어가 있어." }
       - mood: off
       - goto: /4.yaml

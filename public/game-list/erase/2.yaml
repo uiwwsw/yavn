@@ -17,102 +17,15 @@ scenes:
       - place: "토요일 오전 · 도윤과 지수의 집"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "일어났어? 커피 내려놨어. 식었겠다."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "근데 양말은 왜 하나만 벗어 놓고 자. 이게 제일 이해가 안 돼."
-      - say:
-          char: 도윤.smile
-          with: [지수]
-          text: "그걸 이해했으면 나랑 결혼하기로 안 했지."
-      - say:
-          char: 지수
-          motion: puff
-          with: [도윤]
-          text: "말은 잘해. 설거지는 안 하고."
-      - say:
-          char: 도윤
-          motion: perk
-          with: [지수]
-          text: "어제 했어. 새벽에."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "프라이팬 빼고 했지. 프라이팬은 불려 놨다 그럴 거지."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "…불려 놨어."
-      - say:
-          char: 지수
-          motion: sigh
-          with: [도윤]
-          text: "이틀째 불리는 중이래. 그 정도면 그냥 물에 담가 둔 거야."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "오늘도 그 실장님 만나?"
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "응. 왜?"
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "지난번에 네가 상담하러 들어갔을 때 나한테만 깎아 준대서."
-      - say:
-          char: 지수
-          motion: headtilt
-          with: [도윤]
-          text: "…나 들어가고 나서 그런 말을 했어?"
-      - say:
-          char: 도윤.smile
-          with: [지수]
-          text: "응. 내가 결제할 줄 알았나 봐."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "그런 건 바로 말해 주지."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "그러면 너 실장님한테 따질 거잖아."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "…따져야지. 내 이름으로 계약하는데."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "미안. 네가 다 정해 놓고 나온 것 같아서."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "나 이따 두 시에 상담 가. 청첩장 수량 오늘까지 말해 줘야 돼."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "같이 갈까."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "지금 와서?"
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "가면 안 돼?"
-      - say:
-          char: 지수.warm
-          with: [도윤]
-          text: "되지. 되는데 너 두 시에 자고 있을걸."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "자면 깨우지도 않을 거야. 혼자 갔다 올게. 수량만 정해."
+      - say: { char: 지수.warm, with: [도윤], text: "네 컵 씻어 놨어. 커피 아직 따뜻해." }
+      - say: { char: 도윤, with: [지수], text: "너 오늘 또 식장 가? 두 시랬지?" }
+      - say: { char: 지수, with: [도윤], text: "응. 두 시. 청첩장 몇 장 할지도 정해야 돼." }
+      - say: { char: 도윤, with: [지수], text: "같이 갈까. 지난번에 실장님이 너 들어가니까 나한테만 값을 깎아 주더라. 이번엔 둘이 같이 듣자." }
+      - say: { char: 지수, with: [도윤], text: "그런 건 그날 얘기해 주지. …그래, 네가 옆에 있으면 나도 덜 긴장해." }
+      - say: { char: 도윤.smile, with: [지수], text: "네가 긴장해? 상담하는 동안 내가 네 손 계속 잡고 있었는데." }
+      - say: { char: 지수.warm, with: [도윤], text: "응. 손 놨으면 나 그날 그냥 나왔을걸." }
+      - place: "같은 날 오후 · 도윤과 지수의 집"
+      - say: { channel: action, with: [도윤], text: "지수가 현관에서 한 번 더 불렀는데도 도윤은 노트북을 닫지 못했다. 식장에 도착한 지수에게서 톡이 온다." }
       - say:
           channel: message
           side: them
@@ -170,7 +83,7 @@ scenes:
           options:
             - text: "검색을 그만두고 지수에게 답장한다"
               saveText: "노트북을 덮고 지수한테 \"150장\"이라고 보낸다"
-              goto: e2_elevator
+              goto: e2_answer_jisu
             - text: "준성의 첫 인스타 게시물을 찾는다"
               saveText: "인스타를 맨 처음 게시물까지 내려 본다"
               when: { var: e2_sns, op: eq, value: false }
@@ -189,6 +102,11 @@ scenes:
               add: { cruelty: 2 }
               set: { e2_leaked: true }
               goto: e2_dig_leak
+
+  e2_answer_jisu:
+    actions:
+      - say: { channel: message, side: me, char: 도윤, with: [], text: "150장으로 해 줘. 팀장님 건 내가 물어볼게. 오늘 못 간 거 미안해" }
+      - goto: e2_elevator
 
   e2_dig_sns:
     actions:
@@ -439,6 +357,7 @@ scenes:
       - mood: off
       - bg: { id: office, transition: fade, duration: 900 }
       - place: "수요일 오후 · 영업2팀"
+      - say: { channel: action, with: [도윤], text: "준성의 자리가 오늘도 비어 있다. 회사 단톡에 알림이 뜬다." }
       - say:
           channel: message
           side: them
@@ -707,6 +626,7 @@ scenes:
       - add: { deleted: 1 }
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: "그날 밤 · 하린의 방"
+      - say: { channel: action, with: [], text: "하린이 가방을 내려놓자 아진에게서 톡이 온다." }
       - say:
           channel: message
           side: them
