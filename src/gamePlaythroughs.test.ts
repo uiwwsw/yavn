@@ -514,7 +514,8 @@ describe('오버플로', () => {
     expect(heard(run.shown, '아까 물부터 드렸죠. 사실 겁났어요')).toBe(true);
     expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);
     expect(heard(run.shown, '반찬집 아주머니 목소리가 나와서요')).toBe(false);
-    const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue' && entry.sceneId === 'phone_reply');
+    const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
+      .filter(entry => entry.sceneId === 'phone_reply');
     expect(messages.map(entry => entry.side)).toEqual(['me', 'them', 'me']);
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
       sceneId: 'hospital_message', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
