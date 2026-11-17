@@ -47,7 +47,8 @@ scenes:
 scenes:
   start:
     actions:
-      - say: { channel: message, text: "집에서 보낸 문자." }
+      - char: { id: a, position: left }
+      - say: { channel: message, char: a, with: [], text: "집에서 보낸 문자." }
       - bg: { id: office, transition: cut, wait: false, place: "월요일 아침 · 회사" }
       - say: { channel: message, text: "회사에서 온 문자." }
       - place: { text: "그날 밤 · {{who}}네 집", presentation: center }
@@ -121,12 +122,14 @@ describe('stage blocking playback', () => {
     void loadGameFromUrl('http://test/captions/');
     await vi.advanceTimersByTimeAsync(3000);
     expect(useVNStore.getState().dialog.fullText).toBe('집에서 보낸 문자.');
+    expect(useVNStore.getState().visibleCharacterIds).toEqual(['a']);
 
     await next();
     expect(useVNStore.getState()).toMatchObject({
       background: 'http://test/captions/office.png',
       placeCaption: { text: '월요일 아침 · 회사', centered: true },
       dialog: { fullText: '' },
+      visibleCharacterIds: [],
     });
 
     setScenePresentationPaused(true);
