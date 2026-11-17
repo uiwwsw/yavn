@@ -63,11 +63,15 @@ beforeEach(() => {
 afterEach(() => { setScenePresentationPaused(false); vi.clearAllTimers(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 describe('persistent story map replay', () => {
   it('enables earlier scenes for a living player resuming a pre-map save across chapters', async () => {
-    fixtureDocuments['0.yaml'] = documents['0.yaml'].replace(
-      'text: Live, goto: safe', 'text: Leave, saveText: Live, goto: safe');
+    fixtureDocuments['base.yaml'] += 'assets: {characters: {visitor: {base: visitor.png, name: Alice}}}\n';
+    fixtureDocuments['visitor.png'] = 'visitor';
+    fixtureDocuments['0.yaml'] = documents['0.yaml']
+      .replace('text: Live, goto: safe', 'text: Leave, saveText: Live, goto: safe')
+      .replace('- get: seal', '- get: seal\n      - say: {char: visitor, speakerName: Stranger, text: Keep the seal.}');
+    const safeDecisionId = storyNodeId('./0.yaml', 'safe', 2);
     const history = [
       { kind: 'choice', key: 'start:0', value: 'Live', chapterPath: './0.yaml', sceneId: 'start', actionIndex: 0 },
-      { kind: 'choice', key: 'safe:1', value: 'Next', chapterPath: './0.yaml', sceneId: 'safe', actionIndex: 1 },
+      { kind: 'choice', key: 'safe:2', value: 'Next', chapterPath: './0.yaml', sceneId: 'safe', actionIndex: 2 },
     ];
     localStorage.setItem('vn-engine-autosave:path:%2Fjourney', JSON.stringify({
       gameTitle: 'Journey', gameVersion: '1', chapterIndex: 1, chapterPath: './1.yaml', sceneId: 'next', actionIndex: 0,
@@ -85,6 +89,10 @@ describe('persistent story map replay', () => {
     expect(map.visits.some(v => v.id.endsWith(':death:0') || v.id.endsWith(':death:1'))).toBe(false);
     const visible = visibleStoryChapter(map.chapters[0], map.visits, map.travelled, map.choices);
     expect(visible.edges).toContainEqual(expect.objectContaining({ from: startId, label: 'Leave' }));
+    expect(await settle(replayStoryMapNode(safeDecisionId))).toBe(true);
+    expect(useVNStore.getState().storyLog).toContainEqual(expect.objectContaining({
+      kind: 'dialogue', text: 'Keep the seal.', speaker: 'Stranger',
+    }));
     expect(await settle(replayStoryMapNode(startId))).toBe(true);
     expect(useVNStore.getState()).toMatchObject({ currentSceneId: 'start', gameOver: undefined,
       routeVars: { trust: 0, hidden: false }, inventory: { seal: false }, routeHistory: [], choiceGate: { active: true } });
@@ -92,7 +100,8 @@ describe('persistent story map replay', () => {
     setScenePresentationPaused(false);
     submitChoiceOption(1);
     expect(useVNStore.getState().routeHistory.at(-1)?.value).toBe('Live');
-    expect(useVNStore.getState().storyLog.at(-1)).toMatchObject({ kind: 'choice', value: 'Leave' });
+    expect(useVNStore.getState().storyLog).toContainEqual(expect.objectContaining({ kind: 'choice', value: 'Leave' }));
+    expect(useVNStore.getState().dialog).toMatchObject({ speaker: 'Stranger', speakerId: 'visitor' });
   });
   it('reconstructs a living mid-dialogue save before its first decision without a checkpoint', async () => {
     fixtureDocuments['0.yaml'] = `script: [{scene: start}]
