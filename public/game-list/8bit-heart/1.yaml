@@ -419,7 +419,7 @@ scenes:
       - wait: 0
       - wait: 0
       - wait: 0
-      - say: { channel: thought, with: [], text: "등록 안 한 기기는 못 찾는다고 하루가 그랬다." }
+      - say: { channel: thought, with: [], text: "인식시키려면 어댑터부터 사라고 했지. 안 사길 잘했다." }
       - wait: 0
       - say:
           channel: action
@@ -504,15 +504,15 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "모니터는 사흘 전부터 켜져 있다. 두 달 전에 열어 둔 중고 장터 화면 그대로다."
-      - say: { channel: thought, with: [], text: "인터넷이 끊겨도 켜 둔 화면은 남아 있다. 코어에 연결한 적도 없고." }
+          text: "책상에 둔 수리용 단말을 켠다. 내려받아 둔 중고 장터 거래 내역이 뜬다."
+      - say: { channel: thought, with: [], text: "중고 물건 사면 판매자 글까지 통째로 받아 뒀다. 고장 났을 때 보려고." }
       - say:
           channel: message
           side: them
           with: []
           text: "판매자: AI가 뭐요"
       - say: { channel: thought, with: [], text: "AI가 뭐냐고 묻던 아저씨. 지금은 괜찮을까." }
-      - say: { channel: action, with: [], text: "구매 내역 아래 마지막 통화 기록을 찾는다." }
+      - say: { channel: action, with: [], text: "거래 내역을 닫고 예전 게임기의 보증서 사진을 꺼낸다." }
       - say:
           channel: record
           with: []
@@ -622,11 +622,11 @@ scenes:
           char: 윤재
           motion: lean_in
           with: [로봇]
-          text: "안에… CPU 소켓이 텅 비었어. 소켓 가장자리가 까맣게 탔고."
+          text: "안에… CPU가 소켓에서 반쯤 튀어나왔어. 핀이 까맣게 탔네."
       - say:
           char: 윤재
           with: [로봇]
-          text: "너도 업데이트 받았구나. 똑똑한 칩 달고 있다가 머리가 통째로 튀겨졌네."
+          text: "너도 업데이트 받았구나. 이건 빼야겠네. 소켓은 아직 쓸 수 있겠다."
       - say:
           char: 윤재
           with: [로봇]

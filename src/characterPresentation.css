@@ -11,8 +11,7 @@
     transform 340ms cubic-bezier(.2,.72,.24,1);
 }
 .character-presence[data-visible='true'] { opacity: 1; }
-/* Full size is the fitted maximum: speaker emphasis cannot push a head offscreen. */
-.character-actor.is-speaking .character-presence { transform: scale(1); }
+.character-actor.is-speaking .character-presence { transform: scale(var(--character-speaker-scale, 1)); }
 .character-portrait { isolation: isolate; }
 .character-portrait[data-dissolving='true'] .character-art { mix-blend-mode: plus-lighter; }
 .character-entrance { transform-origin: 50% 100%; }

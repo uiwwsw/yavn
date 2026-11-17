@@ -893,25 +893,17 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 18px 18px 12px;
+  gap: 10px;
+  min-height: 54px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--phone-rail);
   background: var(--phone-screen);
-}
-
-.app .phone-chrome-back {
-  width: 9px;
-  height: 9px;
-  flex: 0 0 auto;
-  border-left: 1.5px solid color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
-  border-bottom: 1.5px solid color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
-  rotate: 45deg;
 }
 
 /* The people on the other end, the way a messenger prints them: one face in a one-to-one
    thread, and in a group the faces overlapped into a single mark beside the name. */
 .app .phone-chrome-faces { flex: 0 0 auto; display: flex; }
-.app .phone-chrome-faces .phone-avatar { width: 24px; height: 24px; }
+.app .phone-chrome-faces .phone-avatar { width: 28px; height: 28px; }
 .app .phone-chrome-faces.is-group .phone-avatar + .phone-avatar { margin-left: -9px; box-shadow: 0 0 0 1.5px var(--phone-screen); }
 
 .app .phone-chrome-contact {
@@ -1040,13 +1032,20 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   font-size: 11px;
   font-weight: 700;
 }
-.app .phone-avatar::before { content: attr(data-initial); }
+.app .phone-avatar-spacer { flex: 0 0 26px; }
 /* A standing sprite cropped through its middle is a torso, so the circle is cut from the
    top of the art, where the face is. */
-.app .phone-avatar-art { position: absolute; inset: 0; background-size: cover; background-position: top center; }
-.app .phone-thread-bubble:not(.ends-run) > .phone-avatar { visibility: hidden; }
+.app .phone-avatar-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 
-.app .phone-thread-speaker { color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent); font-size: 12px; font-weight: 650; padding-inline: 4px; }
+.app .phone-thread-speaker {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: color-mix(in srgb, var(--phone-them-ink) 70%, transparent);
+  font-family: var(--ui-body-font);
+  font-size: 12px;
+  font-weight: 650;
+  padding-inline: 4px;
+}
 
 .app .phone-thread-bubble :is(.phone-thread-text, .text, .phone-media) {
   border-radius: var(--phone-corner-lead) 18px 18px var(--phone-corner-end);
@@ -1075,17 +1074,6 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   color: color-mix(in srgb, #04070a 88%, var(--phone-mine));
 }
 
-/* The live line is the newest message and is built from the ordinary dialogue markup, so its
-   name tag has to be talked out of the corner the dialogue box pins it to. */
-.app .dialog-box.channel-message .phone-live .speaker {
-  position: static;
-  margin: 0;
-  color: color-mix(in srgb, var(--phone-them-ink) 55%, transparent);
-  font-size: 12px;
-  font-weight: 650;
-  padding-inline: 4px;
-}
-
 /* A photo is the message. No bubble around it, no padding inside it. */
 /* An attachment is one width, the way a messenger sizes them, and the picture fills it: a
    frame left to find its own width paints a strip of empty backdrop beside anything whose
@@ -1108,13 +1096,6 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
 }
-
-/* A one-to-one thread is already named in the header; repeating it on every bubble is
-   something only a mock-up does. In a group the names stay, except on your own messages. */
-.app .dialog-box.channel-message:not(.phone-group) .phone-thread-speaker,
-.app .dialog-box.channel-message:not(.phone-group) .phone-live .speaker,
-.app .dialog-box.channel-message .phone-thread-bubble.side-me .phone-thread-speaker,
-.app .dialog-box.channel-message .phone-live.side-me .speaker { display: none; }
 
 /* Emoji sent on their own are the message, so they lose the bubble and are drawn at the size
    a reaction is read at. Four or more are a sentence again, and stay in a bubble. */

@@ -518,7 +518,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "접속 기록 · 4/15 23:40–04:44 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 23회"
+          text: "접속 기록 · 4/15 23:40–4/16 04:44 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 23회"
       - bg: { id: cs_desk, transition: cut }
       - place: { text: "4월 16일 오후 · 고객센터", presentation: center }
       - char: { id: 해수, position: left }
@@ -560,7 +560,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "접속 기록 · 4/16 23:58–04:20 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 31회"
+          text: "접속 기록 · 4/16 23:58–4/17 04:20 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 31회"
 
   hallway:
     title: "새벽 네 시"
@@ -874,7 +874,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "새벽 1시 50분. 해수는 밴드를 책상에 둔 채 불을 끈다."
+          text: "해수는 밴드를 책상에 내려놓는다. 밴드가 닿던 자리를 누르는데 방 형광등이 두 번 깜빡인다."
       - bg: { id: sim_parking, transition: cut }
       - place: { text: "레플라 · B2 주차장 C-14", presentation: center }
       - mood: { tone: dread, level: 2 }
@@ -882,7 +882,7 @@ scenes:
           channel: system
           with: []
           text: "자동 접속되었습니다. 튜토리얼 3/5를 이어서 진행합니다.\n손에 쥔 물건 · 그린마트 연필 1"
-          autoAdvance: 1500
+          wait: 650
       - goto: stab
 
   stab:
@@ -897,7 +897,7 @@ scenes:
           channel: system
           with: []
           text: "띵동 — 028번 고객님, 고객센터로 오세요."
-          wait: 1050
+          wait: 700
       - say:
           channel: system
           with: []
@@ -914,7 +914,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "손을 펴려다 멈춘다. 아직 연필을 쥔 것 같다. 오늘은 9시 반까지 출근해야 한다."
+          text: "눈을 뜨고 손을 편다. 연필은 없는데 손바닥은 아프다. 마지막에 차 문 앞에서 내가 한 일이 기억난다."
       - say:
           channel: action
           with: []

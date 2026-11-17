@@ -110,7 +110,7 @@ scenes:
       - say: { char: 차피디, with: [지안], motion: sigh, text: "그럼 못 쓰지. 끝을 모르는 건 방송에 못 올려요." }
       - say: { char: 지안, with: [차피디], text: "끝을 알면 쓰실 거예요?" }
       - say: { char: 차피디, with: [지안], text: "…아니. 끝이 안 좋으면 더 못 쓰지." }
-      - say: { channel: thought, with: [], text: "처치 칸을 한 번 더 들여다본다. ‘격리’ 밑에 더 적힌 말은 없었다." }
+      - say: { channel: thought, with: [], text: "처치 칸을 들여다보는 사이, 엄마 문자 알림이 화면에서 사라졌다." }
       - goto: daon
 
   # 네 번째 얼굴. 이번에는 저쪽이 먼저 알아본다.
@@ -283,9 +283,9 @@ scenes:
       - say: { channel: action, with: [], text: "07:12. 07:11." }
       - say: { char: 지안어머니, with: [], text: "그 방송은 언제 나오니?" }
       - say: { char: 지안, with: [], text: "9월이요. 2부에 제가 편집한 게 나와요." }
-      - say: { char: 지안어머니, with: [], text: "그럼 그때 또 오겠네." }
+      - say: { char: 지안어머니, with: [], text: "그럼 방송 나오면 또 같이 보겠네." }
       - say: { channel: thought, with: [], text: "그때까지는 안 온다는 말로 들린다. 엄마는 그렇게 말한 적이 없다." }
-      - say: { channel: action, with: [], text: "03:40. 남은 숫자만 쳐다보다가 할 말을 놓쳤다." }
+      - say: { channel: action, with: [], text: "03:40. ‘그때까지 어떻게 기다려요’ 하고 웃어넘길까 하다가 시계만 봤다." }
       - say: { char: 지안, with: [], text: "엄마." }
       - say: { char: 지안어머니, with: [], text: "응." }
       - wait: 1100
@@ -302,10 +302,10 @@ scenes:
       - place: { text: "5월 · 편집실", presentation: center }
       - say: { channel: action, with: [], text: "사람이 같은 얘기로 자꾸 돌아오는 대목에 표시한다. 녹취를 풀 때 하는 일이다." }
       - say: { channel: action, with: [], text: "400건을 열어 봤다. 한 군데도 표시 안 한 파일은 없다." }
-      - say: { channel: thought, with: [], text: "다음 녹취를 열었는데 재생을 누르기 전에 엄마 말이 떠올랐다. 그럼 그때 또 오겠네." }
+      - say: { channel: thought, with: [], text: "다음 녹취를 열었는데 재생을 누르기 전에 엄마 목소리가 들리는 것 같았다. 방송 나오면 또 같이 보겠네." }
       - wait: 900
       - say: { channel: thought, with: [], text: "엄마. 응. …다음 주에 올게요." }
-      - say: { channel: thought, with: [], text: "거기다. 열 번 중에 열 번 다 거기서 돌아간다." }
+      - say: { channel: thought, with: [], text: "거기다. 다음 주로 미루는 말은 금방 나온다." }
       - say: { channel: action, with: [], text: "녹취라면 거기에 표시했을 텐데. 내 말은 끊어 들을 수가 없다." }
       - wait: 700
       - say: { channel: thought, with: [], text: "말이 안 되면 쓰면 된다. 쓰는 건 내 일이다." }

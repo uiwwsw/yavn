@@ -11,6 +11,15 @@ export function appendStoryLogEntry(history: StoryLogEntry[], entry: StoryLogEnt
   if (latest && JSON.stringify(latest) === JSON.stringify(entry)) {
     return history;
   }
+  // Re-presenting a saved message can fill in its sender ID or refresh its portrait.
+  if (latest?.kind === 'dialogue' && entry.kind === 'dialogue'
+    && latest.channel === 'message' && entry.channel === 'message'
+    && latest.chapterPath === entry.chapterPath && latest.sceneId === entry.sceneId
+    && latest.actionIndex === entry.actionIndex && latest.thread === entry.thread
+    && (latest.side ?? 'them') === (entry.side ?? 'them') && latest.speaker === entry.speaker
+    && latest.text === entry.text) {
+    return [...history.slice(0, -1), entry];
+  }
 
   const next = [...history, entry];
   return next.length > MAX_STORY_LOG_ENTRIES ? next.slice(-MAX_STORY_LOG_ENTRIES) : next;

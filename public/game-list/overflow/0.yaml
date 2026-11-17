@@ -110,5 +110,5 @@ scenes:
       - say: { channel: action, with: [지완, 수경], camera: wide, text: "지완이 면회표를 들고 돌아서자 건너편 의자에서 아침에 장갑을 주워 준 여자가 일어난다." }
       - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "월계역에서 뵀죠? 방금 01 때문에 문이 안 열린 거예요?" }
       - say: { char: 지완, with: [수경], text: "네. 제가 뭘 더 해야 들어갈 수 있는지 모르겠어요." }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저도 그 숫자 때문에 여기 왔어요. 저기 카페에서 잠깐 얘기할 수 있을까요?" }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "아침에 병원 길 물었잖아요. 저 표시가 환자 보호자한테도 뜨는지 확인하러 왔어요. 면회 기다리시는 동안 잠깐 얘기할 수 있을까요?" }
       - goto: /1.yaml

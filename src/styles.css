@@ -4388,9 +4388,28 @@ textarea,
     --char-slot-width-scale: 1.24;
   }
 
+  /* Give the trio up to half the stage width per portrait. The existing anchors
+     keep faces apart while the shoulders can overlap. */
+  .char-layer.char-layout-trio .char-image {
+    --char-slot-width-scale: 1.5;
+  }
+
+  .char-layer-prompt-top.char-layout-trio .char-image {
+    --char-image-height: min(
+      calc(var(--prompt-character-stage-height) / var(--character-speaker-scale, 1)),
+      var(--char-actor-width-budget)
+    );
+  }
+
   .char-layer[data-character-count='1'] .char { --portrait-height-limit: 60cqh; }
   .char-layer-stage-bottom[data-character-count='1'] .char-image {
     --char-image-height: min(var(--portrait-height-limit), var(--char-actor-width-budget));
+  }
+}
+
+@media (max-width: 768px) and (orientation: portrait) and (prefers-reduced-motion: no-preference) {
+  .effect-viewport[data-effect-level='full'] .char-layer.char-layout-trio .char-image {
+    --character-speaker-scale: 1.1;
   }
 }
 

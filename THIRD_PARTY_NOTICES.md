@@ -22,21 +22,6 @@ Cubism Core는 YAVN 자체 라이선스의 적용 대상이 아닙니다. 사업
 - 보존한 패키지 고지: `assets/licenses/live2d/easy-cl2d-NOTICE.md`
 - 보존한 패키지 라이선스 안내: `assets/licenses/live2d/easy-cl2d-LICENSE.live2d.md`
 
-## 3. Live2D 샘플 모델 — 렌 포스터
-
-- 대상: `public/game-list/live2dtest/assets/char/ren_pro_ko/`
-- 저작물: Live2D 공식 샘플 데이터 `렌 포스터`
-- 권리자: © Live2D Inc.
-- 적용 조건: [Live2D 샘플 데이터 이용 조건](https://www.live2d.com/eula/live2d-sample-model-terms_ko.html)
-- 공식 배포 페이지: [Live2D 샘플 데이터](https://www.live2d.com/ko/learn/sample/)
-- 동봉 원문: `public/game-list/live2dtest/assets/char/ren_pro_ko/ReadMe.txt`
-
-샘플 데이터 이용 조건에 따라 다음 문구를 게임의 런처, 시작 화면, 설정과 엔딩 크레딧에 표시합니다.
-
-> 본 작품의 캐릭터에는 주식회사 Live2D가 정하는 약관에 따라 주식회사 Live2D의 저작물인 샘플 데이터가 이용되었습니다. 본 작품은 제작자의 완전한 자기 재량으로 제작되었습니다.
-
-일반 사용자 및 소규모 사업자의 이용 범위와 중·대규모 사업자의 제한은 공식 이용 조건을 따릅니다. 이 저장소의 고지만으로 상업 이용이나 재배포가 허가되는 것은 아닙니다.
-
 ### 확장 가능한 애플리케이션 주의
 
 YAVN은 ZIP이나 외부 데이터로 임의의 Live2D 모델을 불러올 수 있으므로, 배포 방식에 따라 Live2D가 정의하는 “확장 가능한 애플리케이션”에 해당할 가능성이 있습니다. 해당 유형은 사업자 규모와 무관하게 사전 심사·계약이 필요할 수 있습니다.
@@ -46,11 +31,11 @@ YAVN은 ZIP이나 외부 데이터로 임의의 Live2D 모델을 불러올 수 �
 
 공개 서비스에서 사용자 제공 모델 로딩을 활성화하기 전에는 Live2D에 배포 형태를 설명하고 필요한 계약 여부를 확인해야 합니다.
 
-## 4. 명탐정 코난 팬 데모 공개 중단
+## 3. 명탐정 코난 팬 데모 공개 중단
 
 2026-11-13부터 `conan`, `conan-demo`, `english-conan` 팬 데모와 그 이미지·음원·번역 원고를 공개 배포와 저장소 최신본에서 제외했습니다. 권리자의 이용허락을 받지 않은 원작 명칭·캐릭터·이미지·음원은 앞으로도 배포 산출물에 포함하지 않습니다.
 
-## 5. SUITE 글꼴
+## 4. SUITE 글꼴
 
 - 대상: YAVN UI에서 사용하는 SUITE 글꼴 파일
 - 저작권: Copyright (c) 2023, SUNN (http://sun.fo/suite)

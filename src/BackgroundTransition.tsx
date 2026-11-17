@@ -56,8 +56,10 @@ export const BackgroundTransition = memo(function BackgroundTransition({
       return;
     }
     if (presentation.current === source) {
-      // Returning to a still-painted source can supersede an undecoded request.
-      if (presentation.requestRevision !== requestRevision) completionRef.current?.(requestRevision);
+      // A newer request for the same painted source shares its in-flight transition.
+      if (!presentation.previous && presentation.requestRevision !== requestRevision) {
+        completionRef.current?.(requestRevision);
+      }
       return;
     }
 
@@ -76,6 +78,10 @@ export const BackgroundTransition = memo(function BackgroundTransition({
         completionRef.current?.(requestRevision, false);
         return;
       }
+      // Keep the opaque base of the active transition until it settles. The
+      // pending image can decode in parallel and only the latest request is promoted.
+      const immediate = kind === 'cut' || durationMs === 0;
+      if (presentation.previous && !immediate) return;
       // Let the hidden pending layer establish opacity: 0 before promoting the
       // same keyed DOM node. This makes cached images transition consistently.
       commitFrame = window.requestAnimationFrame(() => {
@@ -84,7 +90,7 @@ export const BackgroundTransition = memo(function BackgroundTransition({
           const next = commitPreparedBackground(previous, source);
           return {
             ...next,
-            previous: kind === 'cut' ? undefined : next.previous,
+            previous: immediate ? undefined : next.previous,
             durationMs,
             easing,
             kind,
@@ -100,7 +106,7 @@ export const BackgroundTransition = memo(function BackgroundTransition({
         window.cancelAnimationFrame(commitFrame);
       }
     };
-  }, [presentation.current, presentation.requestRevision, source, durationMs, easing, kind, requestRevision]);
+  }, [presentation.current, presentation.previous, presentation.requestRevision, source, durationMs, easing, kind, requestRevision]);
 
   useEffect(() => {
     const currentSource = presentation.current;

@@ -43,7 +43,7 @@ scenes:
           side: them
           char: 태민
           with: []
-          text: "그래프 보셨죠. 0001만 선 밖에 있는 거. 저도 그게 뭔지 아직 몰라요"
+          text: "그래프에서 선 밖에 있던 세션 번호가 0001이에요. PC가 켜져 있으면 그 번호부터 확인해 봐요"
       - say:
           channel: thought
           when: { var: seen_graph, op: eq, value: true }
@@ -51,7 +51,7 @@ scenes:
       - say:
           channel: thought
           when: { var: seen_graph, op: eq, value: false }
-          text: "그래프는 안 봤다. 모니터 세 대 중 켜져 있던 한 대만 보고 나왔다."
+          text: "태민 씨가 선 밖에 점이 하나 있다고 했다. 이 컴퓨터에도 그 번호가 뜨는지 보자."
       - say:
           channel: action
           with: []
@@ -125,7 +125,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 콘센트에서 플러그를 반쯤 뽑아 본다. 팬 소리가 그대로다. 다시 끝까지 밀어 넣는다."
+          text: "팬 소리가 날 때마다 전원선이 아주 조금 떨린다. 벽에 붙인 점검표에는 ‘전기 끊김’이라고 적혀 있다."
       - say:
           char: 해수.blank
           with: []
@@ -216,7 +216,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "0002와 0003은 2분 차이다. 0001은 그보다 7년 반이나 앞서 있다."
+          text: "0002와 0003은 2분 차이다. 0001은 그보다 7년 넘게 앞서 있다."
       - goto: log_steps
 
   log_steps:
@@ -272,7 +272,7 @@ scenes:
       - say:
           channel: thought
           when: { var: tried_polite, op: eq, value: true }
-          text: "그 한 문장이 사천삼백팔십구 번째였다. 집에 가서 손이 떨렸다."
+          text: "영수증을 달라고 했을 때는 다시 하라고 떴다. 그 문장도 실패 횟수에 들어갔나 보다."
       - say:
           channel: thought
           when: { var: rage, op: gte, value: 2 }
@@ -533,10 +533,10 @@ scenes:
       - say:
           channel: thought
           when: { var: honest, op: lt, value: 3 }
-          text: "해수는 전원선을 따라가 벽 콘센트를 본다. 모니터 아래에는 작은 전원 버튼이 있다."
+          text: "본체 전원선을 뽑으면 다들 접속이 끊길 거라고 했다. 모니터 아래 버튼은 화면만 끈다."
       - choice:
           key: t4_end
-          prompt: "모니터 아래에 전원 버튼이 있다. 본체의 전원선은 벽 콘센트까지 이어져 있다."
+          prompt: "본체를 끄면 접속이 끊긴다. 화면만 끄면 팬은 계속 돈다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -724,7 +724,7 @@ scenes:
           char: 은숙
           when: { var: tampered, op: gt, value: 0 }
           with: []
-          text: "차은숙입니다. 변상혁 씨 오늘 영장 나왔어요. 같이 사셔서 알려 드려요."
+          text: "차은숙입니다. 변상혁 씨 다시 조사해야 해서 연락드렸는데 전화를 안 받네요. 집에 계시면 이 번호로 연락 달라고 전해 주세요."
       - say:
           channel: message
           side: them
@@ -741,7 +741,7 @@ scenes:
       - say:
           channel: thought
           when: { var: tampered, op: gt, value: 0 }
-          text: "그날 레플라에서 수사 자료에 손댄 건 나다. 영장이 나온 건 상혁이다."
+          text: "그날 레플라에서 수사 자료에 손댄 건 나다. 전화가 가는 건 상혁에게다."
       - say:
           channel: thought
           with: []
@@ -870,7 +870,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "2019년 4월 11일, 오후 2시 52분이요. 제 첫 출근 날이었어요."
+          text: "2019년 4월 11일이요. 2시 52분에 첫 손님을 받았어요."
       - wait: 0
       - wait: 0
       - say:

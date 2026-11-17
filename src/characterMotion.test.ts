@@ -176,14 +176,16 @@ describe('image character motion', () => {
     expect(appSource).not.toContain('`${stickerAvoidanceKey}::${speakerOrder.join(\',\')}::${promptTopBaselineReady}`');
   });
 
-  it('brings the speaker gently forward without color changes or exceeding the fitted size', () => {
+  it('brings the speaker forward within the fitted space without color changes', () => {
     expect(appSource).toContain("const isSpeaking = rendererActive && presentedSpeakerId === slot.id;");
     expect(appSource).toContain("isSpeaking ? 'is-speaking' : ''");
     expect(appSource).not.toContain('is-breathing');
     expect(styles).not.toContain('characterSpeakerBreathing');
     expect(presentationStyles).not.toContain('brightness(');
     expect(presentationStyles).toContain('transform: scale(.982)');
-    expect(presentationStyles).toContain('.character-actor.is-speaking .character-presence { transform: scale(1); }');
+    expect(presentationStyles).toContain('.character-actor.is-speaking .character-presence { transform: scale(var(--character-speaker-scale, 1)); }');
+    expect(styles).toMatch(/@media \(max-width: 768px\) and \(orientation: portrait\) and \(prefers-reduced-motion: no-preference\) \{\s*\.effect-viewport\[data-effect-level='full'\] \.char-layer\.char-layout-trio \.char-image/);
+    expect(styles).toContain('calc(var(--prompt-character-stage-height) / var(--character-speaker-scale, 1))');
     expect(appSource).toContain('isSpeaking ? 10');
     expect(presentationStyles).toContain('prefers-reduced-motion: reduce');
     expect(presentationStyles).toContain('animation-play-state: paused !important;');
@@ -205,7 +207,7 @@ describe('image character motion', () => {
     expect(appSource).toContain("'--char-desktop-anchor-x': placement.anchorX");
     expect(appSource).toContain("'--char-mobile-anchor-x': placement.mobileAnchorX");
     expect(styles).toMatch(/\.char-image\s*\{[\s\S]*?--char-image-height: 52cqh;/);
-    expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image/);
+    expect(styles).toMatch(/\.char-layer\.char-layout-trio \.char-image \{\s*--char-slot-width-scale: 1\.5;/);
     expect(styles).toMatch(/\.char-layer \.char\s*\{\s*--char-anchor-x: var\(--char-mobile-anchor-x/);
     expect(styles).not.toContain("char-layout-trio[data-camera-shot='medium']");
     expect(styles).not.toContain('.char-layout-trio .char.is-camera-focus.left');

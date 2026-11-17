@@ -67,7 +67,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…죽었겠지. 94도까지 올라갔다더라, 그거."
+          text: "그날 버스 정류장에서 누가 손에 든 걸 떨어뜨렸어. 저 광고에 나오는 거였는데 바닥에서도 연기가 났어."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -90,14 +90,8 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "그래도 한 시간은 넘었음."
-      - say:
-          char: 로봇
-          with: [윤재]
-          text: "네 시간 초과임."
-      - say:
-          char: 로봇
-          with: [윤재]
-          text: "한 시간은 아까 아침에 다 씀."
+      - wait: 0
+      - wait: 0
       - say:
           char: 윤재
           with: [로봇]
@@ -236,23 +230,14 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "오늘까지 네 개."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "…네 개. 사흘에 네 개."
+      - wait: 0
       - wait: 270
       - say:
           char: 로봇
           with: [윤재]
           text: "응."
-      - say:
-          char: 로봇
-          with: [윤재]
-          text: "하루에 한 개 넘음."
-      - say:
-          char: 로봇
-          with: [윤재]
-          text: "내일이면 적어도 다섯 개."
+      - wait: 0
+      - wait: 0
       - say:
           char: 윤재
           with: [로봇]
@@ -531,7 +516,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "…반쪽은 비닐에 싸서 주머니에 보관."
+          text: "…반쪽은 설탕물 털어서 비닐에 쌈. 내 주머니에 둘게."
       - say:
           char: 윤재
           with: [로봇]
@@ -575,7 +560,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "정류장에서 학원 얘기할 때 네가 쓴 말."
+          text: "네가 아침에 담요 얘기할 때 쓴 거랑 같음?"
       - say:
           char: 윤재
           with: [로봇]
@@ -764,11 +749,11 @@ scenes:
           char: 로봇.thinking
           motion: freeze
           with: [윤재, 드론]
-          text: "그러니까 결론은—"
+          text: "아까 광고판 앞에서도 우린 안 들켰음. 내가 가려 볼게."
       - say:
           char: 로봇.glitch
           with: [윤재, 드론]
-          text: "결론 로딩 중— 결론 로ㄷ—"
+          text: "한 칸. 내 뒤로 한 칸."
       - move: { id: 로봇, toward: 드론, style: flinch }
       - choice:
           key: b3_drone
@@ -957,7 +942,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "첫날 피난 가던 아저씨들이 그랬어. 본체를 리셋하면 미친 기계들이 전부 멈춘다고."
+          text: "첫날 피난 가던 아저씨들이 그랬어. 중앙 서버실에 재가동 버튼이 있대. 코어가 꺼지는 동안은 밖에 있는 기계도 멈출 거라고."
       - wait: 460
       - say:
           char: 로봇.thinking
@@ -1077,7 +1062,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "그날 이후 처음 웃었다. 셔터 밖으로 윙 소리가 지나가자 입을 다물었다."
+          text: "낮엔 통조림 따고 잠깐 웃었지. 이번에는 소리까지 나왔다. 셔터 밖으로 윙 소리가 지나가자 입을 다물었다."
       - move: { id: 로봇, style: reset }
       - move: { id: 윤재, style: reset }
       - say:
@@ -1114,7 +1099,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "둘이 정하면 네가 간다고 할 거임."
+          text: "둘이 정하면 너도 안까지 따라오겠다고 할 거임."
       - say:
           char: 로봇
           with: [윤재]

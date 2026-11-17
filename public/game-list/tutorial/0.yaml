@@ -29,7 +29,7 @@ scenes:
     title: "단톡방"
     actions:
       - bg: { id: home_hall, transition: cut }
-      - place: { text: "027번 호출 전, 같은 날 오전 8:12 · 집", presentation: center }
+      - place: { text: "그날 아침, 출근 전 · 오전 8:12 · 집", presentation: center }
       - music: fluoro
       - say:
           channel: system
@@ -92,14 +92,14 @@ scenes:
     title: "고객센터"
     actions:
       - bg: { id: cs_desk, transition: fade, duration: 700 }
-      - place: { text: "같은 날 오전 · 그린마트 상봉점 1층 고객센터", presentation: center }
+      - place: { text: "027번 호출 전 · 그린마트 상봉점 고객센터", presentation: center }
       - wait: 0
       - char: { id: 해수, position: left }
       - char: { id: 경준, position: right }
       - say:
           char: 경준
           with: [해수]
-          text: "형, TV에서 레플라 광고만 나오네요. 저랑 손님 연습 한번 해 봐요."
+          text: "형, TV 광고에서 레플라에 우리 매장도 나온대요."
       - wait: 0
       - say:
           char: 경준
@@ -136,7 +136,7 @@ scenes:
       - say:
           char: 경준
           with: [해수]
-          text: "형 같은 사람이 해야 돼요. 거기선 손님한테 고개 안 숙여도 되거든요."
+          text: "거기선 우리가 손님으로 들어갈 수도 있어요. 형도 고개 숙이는 거 말고 다른 거 해 봐요."
       - wait: 0
       - say:
           char: 해수.service
@@ -696,7 +696,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "변상혁 님 · 레플라 이용요금 안내 · 4월 청구 409,000원 (무제한 219,000원 + 프라이빗 확장팩 190,000원) · 3월분 미납"
+          text: "봉투 창에 비친 요금 안내 · 변상혁 님 · 4월 청구 409,000원 (무제한 219,000원 + 프라이빗 확장팩 190,000원) · 3월분 미납"
       - choice:
           key: t0_mail
           prompt: "신발장 위에 뜯지 않은 지난달 봉투가 하나 더 있다."

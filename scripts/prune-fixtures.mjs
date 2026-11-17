@@ -1,17 +1,7 @@
 /**
  * Keep rendering fixtures out of the deployed build.
  *
- * live2dtest is the official Live2D sample. It exists so a rendering change can be checked
- * against something authored by the people who wrote the runtime, which means it has to stay
- * in the repository and be servable by `npm run dev`. It does not have to be uploaded on every
- * deployment: it is 6.2MB of textures and motion data, a quarter of the whole build output, and
- * Vercel keeps every deployment until the storage policy collects it.
- *
- * So the fixture ships to the dev server and stops at the build: this removes its files from
- * dist and its entry from the deployed manifest. Nothing under public/ changes, so the fixture
- * is still one `npm run dev` away.
- *
- * Which ids count as fixtures is story-catalog's call, not this script's.
+ * Remove rendering fixtures and their manifest entries from the production output.
  */
 import { readFile, writeFile, rm, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';

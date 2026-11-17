@@ -349,6 +349,9 @@ describe('ERASE', () => {
     expect(run.shown).toContain('나도 봤는데ㅋㅋ 나도 껴줘');
     expect(run.shown).not.toContain('2016년 3월 아래 · 항목 없음');
     expect(run.shown).toContain('청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아.');
+    const invitation = run.shown.findIndex(line => line.startsWith('식탁 한쪽에 사진관에서 고른 청첩장'));
+    expect(invitation).toBeGreaterThan(-1);
+    expect(run.shown.indexOf('오늘 어디 갔어? 회사 말고.')).toBeGreaterThan(invitation);
   });
 
   it('셋 다 지우면 삼 주 전 새벽이 통째로 없다', async () => {
@@ -382,6 +385,8 @@ describe('ERASE', () => {
     expect(run.shown).toContain('2016년 3월 아래 · 항목 없음');
     expect(heard(run.shown, '전화가 온 번호도 같은 번호였다')).toBe(false);
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(false);
+    expect(run.state.resolvedEndingId).toBe('erase_loop');
+    expect(heard(run.shown, '이번에는 펜을 쥔 손이 떨리지 않는다')).toBe(true);
   });
 });
 
@@ -522,14 +527,14 @@ describe('오버플로', () => {
       '방금 01 때문에 문이 안 열린 거예요?',
       '저 한수경이에요',
       '센서 입력 001 → 표시 01',
-      '오늘 그 일로 왔어요',
-      '접수대엔 01만 남아 있어요',
+      '접수표만 봐서는 몰라요',
+      '처음 수치는 되찾을 수 없어요',
       '영상 및 음성: 끔',
       '반만 얼리기로 했잖아요',
       '반찬집 아주머니 목소리가 나와서요',
       '보호자 재확인 · 문지완',
       '센서 입력 101 → 표시 01\n화면 판정',
-      '제 확인으로 내일부터 혼자 들어가실 수 있게 해 드릴게요',
+      '두 번 다 제가 본 대로 적으면 내일부터는 직원 확인으로 들어오실 수 있어요',
       '처음 병원에 설치할 때도 제가 확인란에 사인했어요',
       '아까 옆에 앉으라 하셨을 때요',
       '저도 같이 적어도 돼요?',

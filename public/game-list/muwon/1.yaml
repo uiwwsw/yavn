@@ -77,7 +77,7 @@ scenes:
       - say:
           char: 서연
           with: [여금]
-          text: "포교도 들으셨습니다. 그래도 오라비부터 데려가겠다고 하셨고요."
+          text: "포교도 들으셨습니다. 오늘부터 사흘 안에 다른 범인을 못 찾으면 오라비를 다시 잡아간답니다."
       - goto: c2_meet
 
   c2_meet:
@@ -121,7 +121,7 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "주문한 쪽에서 주머니에 뭘 넣는지는 보여 주지 않았다고 분이가 그러더군요."
+          text: "납품할 때 분이가 검수하러 따라왔어요. 오는 길에 주머니는 다 찼는데 약 냄새가 안 나더라고 하더군요."
       - clearSticker: { id: c2_thread, leave: fadeOut }
       - say:
           channel: action
@@ -177,7 +177,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "‘감청 주머니 삼백.’ 주문한 집 이름이 들어갈 자리에 붉은 그림이 찍혀 있다."
+          text: "‘감청 주머니 삼백.’ 주문한 집 이름 자리에 붉은 표식이 있고, 뒤에는 분이 글씨로 ‘약 냄새 없음. 박씨에게 확인’이라고 적혀 있다."
       - clearSticker: { id: c2_slip, leave: fadeOut }
       - mood: { tone: dread, level: 1 }
       - say:
@@ -515,7 +515,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연]
-          text: "수가 같다고 같은 물건이라 할 수는 없소."
+          text: "분이가 박씨를 찾아가려 했다는 말이군. 그래도 수가 같다는 것만으로 같은 물건이라 할 수는 없소."
       - say:
           char: 서연
           with: [도원]

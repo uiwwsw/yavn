@@ -34,6 +34,12 @@ describe('appendStoryLogEntry', () => {
     expect(history).toHaveLength(3);
   });
 
+  it('refreshes the profile on a restored phone message without adding a second bubble', () => {
+    const old = { ...dialogue(1), channel: 'message' as const };
+    const restored = { ...old, speakerId: '탐정', avatar: '/detective.svg' };
+    expect(appendStoryLogEntry([old], restored)).toEqual([restored]);
+  });
+
   it('keeps only the newest bounded history', () => {
     let history: StoryLogEntry[] = [];
     for (let index = 0; index <= MAX_STORY_LOG_ENTRIES; index += 1) {

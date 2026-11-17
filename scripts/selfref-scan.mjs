@@ -9,7 +9,7 @@ const PAT = {
   '모른다·모르겠다 두 번 이상': /(모른다|모르겠다)[^.?!]*[.?!][^.?!]*(모른다|모르겠다)/,
 };
 
-for (const g of readdirSync(DIR).filter((d) => !d.includes('.') && d !== 'live2dtest')) {
+for (const g of readdirSync(DIR).filter((d) => !d.includes('.'))) {
   const hits = {};
   for (const f of readdirSync(`${DIR}/${g}`).filter((f) => f.endsWith('.yaml')).sort()) {
     const walk = (n) => {

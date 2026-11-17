@@ -756,6 +756,8 @@ export type StoryLogEntry =
       channel?: DialogueChannel;
       /** message channel only: which side of the thread this bubble sat on. */
       side?: 'me' | 'them';
+      /** message channel only: stable character identity when the displayed name changes. */
+      speakerId?: string;
       /** message channel only: the authored chat title. */
       thread?: string;
       /** message channel only: the speaker's profile picture, already resolved to a URL. */

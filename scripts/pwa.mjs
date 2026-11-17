@@ -14,7 +14,7 @@ import { isStory } from './story-catalog.mjs';
 
 export const THEME_COLOR = '#183e36';
 export const BACKGROUND_COLOR = '#f7f5ee';
-/** Games larger than this are not offered for offline saving (live2dtest is ~47MB). */
+/** Games larger than this are not offered for offline saving. */
 export const OFFLINE_MAX_BYTES = 20 * 1024 * 1024;
 export const NAVIGATION_TIMEOUT_MS = 3500;
 
@@ -225,7 +225,7 @@ export function collectOfflinePacks(publicDir, { maxBytes = OFFLINE_MAX_BYTES } 
 // ---------------------------------------------------------------- service worker
 
 const PRECACHE_EXTENSIONS = /\.(?:js|css|woff2?|wav|flac|mp3|ogg|svg|png|webp|jpe?g)$/i;
-// Only live2dtest needs the Live2D runtime; it is cached when a Live2D game first loads it.
+// Cache the Live2D runtime when an imported game first loads it.
 const PRECACHE_EXCLUDE = /live2d|cubism/i;
 
 /** URLs a cold offline start needs: the shell, every app chunk except Live2D, icons. */

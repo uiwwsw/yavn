@@ -153,13 +153,13 @@ scenes:
       - say: { channel: narration, text: "셋 다 내가 답했다." }
       - say: { channel: narration, text: "목소리는 셋인데 그날 본 것은 다 내 눈앞에 있다." }
       - effect: focus
-      - say: { channel: narration, text: "일흔아홉 해가 아니다." }
+      - say: { channel: narration, text: "일흔아홉 해 뒤로 다른 생이 이어진다." }
       - say: { channel: narration, text: "쉰여섯. 마흔넷. 열일곱. 일흔아홉." }
       - say: { channel: narration, text: "다 합하면 196년이다. 각자 살다 죽던 날까지 다 기억난다." }
       - say: { channel: narration, text: "그보다 먼저 살았던 날도 있다." }
-      - say: { channel: narration, text: "그건 몇 해나 살았는지 셀 수 없다. 어느 겨울만 떠오른다." }
-      - say: { channel: narration, text: "움집 바닥에 재가 식어 있었다. 독 밑바닥에는 좁쌀 두 줌." }
-      - say: { channel: narration, text: "아궁이 옆을 발끝으로 건드리면 재 아래 단단한 흙이 닿는다." }
+      - say: { channel: narration, text: "거기 닿으려니 겨울 냄새만 난다." }
+      - say: { channel: narration, text: "한겨울 아궁이에서 나던 식은 재 냄새." }
+      - say: { channel: narration, text: "그 이상은 손이 닿지 않는다." }
       - goto: degrees
 
   degrees:
@@ -198,7 +198,7 @@ scenes:
       - say: { channel: narration, text: "차 피디가 좋아했다. 2부 제목으로 쓰자고 했다. 같은 점은 없다." }
       - say: { channel: narration, text: "그땐 한 사람이 지나온 자리 여러 개를 다 확인해 볼 길이 없었다." }
       - say: { channel: narration, text: "지금 셋을 본다. 셋 다 한 사람 것이다." }
-      - say: { channel: narration, text: "셋 다 다르다. 유 선생님 말이 맞았다." }
+      - say: { channel: narration, text: "세 자리가 서로 다르다. 네 번째도 그럴까?" }
       - say: { channel: narration, text: "내 쪽에는 아직 적을 숫자가 없다." }
       - goto: leftovers
 
@@ -318,7 +318,7 @@ scenes:
           text: "다른 하나는 녹취 원본이다. 내 손에 뒀지만, 책은 412부밖에 팔리지 않았다."
       - say: { channel: narration, text: "김치통 쪽으로 기울면 223.7이다." }
       - say: { channel: narration, text: "원본 쪽으로 기울면 041.2다." }
-      - say: { channel: narration, text: "앞에서 본 세 숫자에는 없는 자리다." }
+      - say: { channel: narration, text: "앞에 적힌 세 수 옆에 놓아 본다. 둘 다 겹치는 자리가 없다." }
       - say: { channel: narration, text: "이 중 하나를 고르면 이번 삶에서 가져갈 숫자가 생긴다." }
       - say: { channel: narration, text: "예전에 고른 자리와 겹치면 같은 점이 두 번 찍힌 셈이다." }
       - say: { channel: narration, text: "유 선생님은 그게 없다고 했다. 360도 어디에도 없다고." }
@@ -418,7 +418,7 @@ scenes:
       - say: { channel: narration, text: "편집실 기억은 멀어졌는데, 손끝에 차가운 기운이 남는다." }
       - wait: 900
       - say: { channel: narration, text: "하나가 더 온다." }
-      - say: { channel: narration, text: "넷이 전부인 줄 알았다. 목록도 넷까지였다." }
+      - say: { channel: narration, text: "아까 냄새만 났던 겨울이다. 이번엔 가 본 길이 생각난다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "이때는 아무것도 가져가는 법을 몰랐다. 그래서 그 겨울에는 숫자가 없다." }
       - say: { channel: narration, text: "떠오르는 것은 겨울이다. 내가 살았던 겨울." }
@@ -531,7 +531,7 @@ scenes:
       - say: { channel: narration, text: "그날 강을 안 건넜더라면." }
       - say: { channel: narration, text: "건너더라도 해 지기 전에 돌아왔더라면." }
       - say: { channel: narration, text: "건너편에 사람이 있다는 말을, 전해 들은 그 말을 믿지 말았어야 했다." }
-      - say: { channel: narration, text: "가을에 반 섬만 더 들여놨더라면. 한 섬도 아니고 반 섬만." }
+      - say: { channel: narration, text: "가을에 좁쌀 반 섬만 더 들여놨더라면 아침에 눈 뜨자마자 강으로 가진 않았을 것이다." }
       - say: { channel: narration, text: "애를 업고 갈까 했었다. 함께 얼음 위에 올랐다가 빠지면 어쩌냐고, 내가 그렇게 생각했다." }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, text: "기억을 더듬을수록 아이를 이불 속에 두고 문을 닫던 순간으로 돌아간다." }

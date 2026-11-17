@@ -191,7 +191,7 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "카드는 RAM이랑 따로라서 안에서 안 지워짐."
+          text: "카드에 쓰고 나면 뺄 수 있음. 코어에 들어갈 동안 읽기 전용으로 잠가 둘게."
       - say:
           char: 윤재.excited
           motion: perk
@@ -218,10 +218,7 @@ scenes:
           char: 로봇
           with: [윤재]
           text: "옮길 수 있는 건 딱 하나."
-      - say:
-          char: 로봇
-          with: [윤재]
-          text: "하나."
+      - wait: 0
       - say:
           char: 로봇
           with: [윤재]
@@ -339,22 +336,22 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "전원 — AA 여덟 개. 네가 계산대 밑에서 꺼낸 거." }
       - say: { char: 윤재, with: [로봇], text: "라면 선반만 보고 간 사람들 덕이지." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "다른 건 다 가져갔는데 건전지는 계산대 밑에 남아 있었음." }
-      - say: { char: 로봇, with: [윤재], text: "머리 — 2P 대전 화면 나누던 칩. 다리 마흔 개 다 멀쩡함." }
-      - say: { char: 로봇, with: [윤재], text: "코어랑 한 번도 연결된 적 없음. 그래서 저쪽 편이 아님." }
+      - say: { char: 로봇, with: [윤재], text: "문 안에서 전원이 끊기면 여기까지 못 돌아옴. 두 칸은 남겨 둘게." }
+      - wait: 0
+      - wait: 0
       - say: { char: 로봇, with: [윤재], text: "화면 — 가슴 핀 스물넷, 단자 열여섯. 여덟 개는 아직 안 이어짐." }
       - say: { char: 윤재.sad, with: [로봇], text: "그거 내가 못 이은 거야. 핀이 너무 작아서." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "지금 글자 다 나옴. 나한테는 이만큼이면 됨." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "차폐 — 껌 포장지 은박. 설명서에 없는 재료. 성능 측정 불가." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "은박지 차폐도 아직 붙어 있음. 문 안에서 떨어지면 다시 눌러 볼게." }
       - say: { char: 윤재, with: [로봇], text: "그거 감아 놓고 나서 재부팅되다가 안 끊기더라." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "…그건 적어 둘게." }
-      - say: { char: 로봇, with: [윤재], text: "점검 끝. 코어가 알아볼 만한 부품은 없음." }
+      - wait: 0
+      - wait: 0
       - say: { char: 윤재.sad, with: [로봇], text: "…그래서 너만 들어갈 수 있는 거야." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "카드 점검. 빈 카드 아님. 이미 뭐가 들어 있음." }
-      - say: { char: 윤재, motion: perk, with: [로봇], text: "…뭐? 나 그거 쓰지도 않았는데." }
+      - say: { char: 윤재, motion: perk, with: [로봇], text: "…그거 아직 읽혀? 전원 끄기 직전에 눌러서 안 된 줄 알았는데." }
       - say: { channel: system, with: [], text: "SAVE SLOT 1\nHI-SCORE 0999990" }
       - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
       - wait: 270
@@ -612,11 +609,11 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "CORE: 알 수 없는 입력 — '설명서 마지막 쪽. 화면이 멈추면 리셋 버튼을 꾹 누르세요.'"
+          text: "CORE: 현장 재가동 버튼 눌림. 1초… 2초…"
       - say:
           channel: record
           with: []
-          text: "CORE: 이해할 수 없음. 이해할 수 없— RESET"
+          text: "CORE: 3초. 재가동 중… 연결된 기기 정지."
       - wait: 0
       - say: { channel: card, with: [], text: "다음 날 새벽 · 데이터센터 문 앞", autoAdvance: 1300 }
       - bg: { id: dawn_field, transition: cut }
@@ -722,7 +719,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "나머지도 다 있어."
+          text: "전부 지워진 줄 알았는데 카드에 적힌 말을 읽으니까 안 열리던 기록도 하나씩 열려."
       - mood: off
       - say:
           char: 로봇
@@ -808,7 +805,7 @@ scenes:
       - say:
           char: 윤재.sad
           with: [로봇]
-          text: "…이 말도 그대로네. 일주일 내내 이랬는데."
+          text: "…이 말도 그대로네. 처음 켰을 때도 이랬는데."
       - wait: 460
       - say:
           char: 로봇
@@ -914,7 +911,7 @@ scenes:
           with: [로봇]
           text: "…있었지. 우리 둘 다 끝말은 몰랐어."
           when: { var: kept_joke, op: eq, value: true }
-      - say: { channel: system, with: [], text: "메모리 카드 읽는 중…" }
+      - say: { channel: system, with: [], text: "메모리 카드 읽기 완료" }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "카드 꽂혀 있음. 누가 꽂았는지는 모름." }
       - say: { char: 윤재.sad, with: [로봇], text: "…네가 꽂았어. 들어가기 전에." }

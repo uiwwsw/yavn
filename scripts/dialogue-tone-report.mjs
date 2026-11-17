@@ -14,7 +14,6 @@ import path from 'node:path';
 import { load as parseYaml } from 'js-yaml';
 
 const GAME_LIST_DIR = path.join(process.cwd(), 'public', 'game-list');
-const SKIPPED_GAMES = new Set(['live2dtest']);
 
 // docs/DIALOGUE_AI_TONE.ko.md가 정한 기준선. 넘기면 그 줄을 읽어 보라는 뜻이다.
 // 짧은 발화와 군말은 어느 한쪽으로 몰려도 괜찮으므로 둘을 합친 값만 본다.
@@ -30,7 +29,7 @@ const FILLER = /(^|[\s"'“”…,.!?])(어|음|아|야|자|뭐|좀|막|참|허|
 
 function listGames() {
   return readdirSync(GAME_LIST_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && !SKIPPED_GAMES.has(entry.name))
+    .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
 }

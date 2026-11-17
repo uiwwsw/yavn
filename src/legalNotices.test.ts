@@ -23,23 +23,18 @@ describe('data-driven legal notices', () => {
     expect(app).not.toContain('live2d-ren-poster');
   });
 
-  it('ships the exact Live2D attribution as game data and no fan-demo IP', () => {
-    const live2dConfig = parseConfigYaml(
-      readSource('public/game-list/live2dtest/config.yaml'),
-      'public/game-list/live2dtest/config.yaml',
+  it('ships story notices as game data and excludes former demos', () => {
+    const config = parseConfigYaml(
+      readSource('public/game-list/overflow/config.yaml'),
+      'public/game-list/overflow/config.yaml',
     );
 
-    expect(live2dConfig.error).toBeUndefined();
-    expect(live2dConfig.data?.data.legalNotices?.[0]).toMatchObject({
-      id: 'live2d-ren-poster',
-      copyright: '© Live2D Inc.',
-      text:
-        '본 작품의 캐릭터에는 주식회사 Live2D가 정하는 약관에 따라 주식회사 Live2D의 저작물인 샘플 데이터가 이용되었습니다. 본 작품은 제작자의 완전한 자기 재량으로 제작되었습니다.',
-    });
-    for (const game of ['conan', 'conan-demo', 'english-conan']) {
+    expect(config.error).toBeUndefined();
+    expect(config.data?.data.legalNotices?.map(notice => notice.id)).toEqual(['content-warning', 'fiction']);
+    for (const game of ['conan', 'conan-demo', 'english-conan', 'live2dtest']) {
       expect(existsSync(resolve(process.cwd(), 'public/game-list', game)), game).toBe(false);
     }
-    expect(readSource('public/game-list/index.json')).not.toMatch(/conan|코난/i);
+    expect(readSource('public/game-list/index.json')).not.toMatch(/conan|코난|live2dtest/i);
   });
 
   it('keeps authoritative third-party terms and the fan-demo withdrawal in the distribution notice', () => {

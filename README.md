@@ -1010,12 +1010,12 @@ scenes:
 
 ```yaml
 - choice:
-    prompt: "이리저리 클릭 드래그해보며 Live2D 테스트해보세요."
-    char: 렌.Idle
+    prompt: "무엇을 물어볼까요?"
+    char: 안내자.idle
     camera: medium
     options:
-      - text: "테스트 끝"
-        goto: ren_live2d_drag_test
+      - text: "다음 방으로 간다"
+        goto: next_room
 ```
 
 동작:
@@ -1158,22 +1158,12 @@ scenes:
 
 배경음 8곡은 외부 샘플 없이 `scripts/generate-story-scores.py`로 합성합니다. ERASE·튜토리얼·8비트 심장·오버플로 네 작품의 구조와 모든 결말은 `src/userStories.test.ts`가 실제 엔진으로 끝까지 플레이해 확인합니다.
 
-## 렌 Live2D 대화 데모
-
-- `/game-list/live2dtest/`에서 표정 인사, 손끝을 따라오는 시선, 가까워지는 카메라와 작별을 선택할 수 있습니다. 각 체험에서 처음 대화로 돌아가거나 엔딩으로 마무리합니다.
-- 이 데모는 렌더링을 공식 Live2D 샘플과 맞춰 보기 위한 픽스처라 **배포본에는 올라가지 않습니다**. `npm run dev`로 띄운 개발 서버에서만 열립니다. `scripts/prune-fixtures.mjs`가 빌드 뒤에 `dist/`와 배포 매니페스트에서 빼고, 서비스 워커도 오프라인 팩을 만들지 않습니다. 어느 id가 픽스처인지는 `scripts/story-catalog.mjs` 한 곳에서 정합니다.
-- 표정·카메라를 바꿔도 같은 모델 인스턴스를 사용합니다. 첫 장면 ID와 선택 위치, 작성 버전은 그대로 두고 체험용 장면만 추가했습니다.
-
 ## 샘플
 
 - `public/game-list/muwon/config.yaml`
 - `public/game-list/muwon/base.yaml`
 - `public/game-list/muwon/launcher.yaml`
 - `public/game-list/muwon/0.yaml`–`4.yaml`
-- `public/game-list/live2dtest/config.yaml`
-- `public/game-list/live2dtest/base.yaml`
-- `public/game-list/live2dtest/launcher.yaml`
-- `public/game-list/live2dtest/1.yaml`
 - `sample.yaml`
 
 ## 개발 메모
@@ -1264,7 +1254,7 @@ scenes:
 - Live2D 로더는 URL 게임에서 모델 디렉터리 기준 상대 참조를 우선 사용하고, ZIP(blob) 로딩에서는 blob 참조를 상대 키로 재작성해 텍스처/모션 경로를 안정화합니다.
 - 챕터 프리로드는 `model3.json` 내부 참조(`Moc/Physics/Pose/UserData/DisplayInfo/Textures/Expressions/Motions`)까지 확장해 Live2D 본 로딩 지연을 줄입니다.
 - Live2D 로딩 전에 `moc3`/첫 텍스처를 선검사하고, 장시간 로딩 정체 시 상태 코드(`state`)와 텍스처 카운트 진단 메시지를 표시합니다.
-- `src/assets/third-party/live2d/*` 및 `public/game-list/live2dtest/assets/char/ren_pro_ko/*`는 Live2D 별도 라이선스 적용 자산입니다. 렌 포스터 샘플의 공식 필수 고지를 `config.yaml.legalNotices`에 넣어 런처·시작·설정·엔딩에 노출합니다.
+- `src/assets/third-party/live2d/*`에는 Live2D 별도 라이선스가 적용됩니다. 가져온 모델의 고지 문구는 게임의 `config.yaml.legalNotices`에 설정할 수 있습니다.
 - YAVN은 ZIP으로 임의 Live2D 모델을 받을 수 있으므로 배포 형태에 따라 Live2D의 “확장 가능한 애플리케이션” 심사·계약 대상일 수 있습니다. 공개 전에 공식 SDK 라이선스 조건을 확인해야 합니다.
 - 전체 라이선스/배포 고지는 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), Live2D 원문/재배포 참고 파일은 `assets/licenses/live2d/`, SUITE OFL 전문은 `assets/licenses/fonts/LICENSE`에 보관합니다.
 - 비디오 컷신 재생 중 탭 전환/브라우저 포커스 이탈 후 복귀하면 자동으로 재생 복구를 시도합니다. (`visibilitychange`, `focus`, `pageshow`)

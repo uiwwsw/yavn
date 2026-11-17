@@ -30,7 +30,7 @@ import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
 import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
-import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
+import { formatClipLength, isEmojiOnly, leadsRun, phoneAvatarPath, phoneBubbleProfile, selectPhoneContact, selectPhoneConversation } from './phoneThread';
 import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText, resolvePlayerCharacterId, resolvePlayerName } from './textVariables';
@@ -369,9 +369,12 @@ const StartSceneProgress = memo(function StartSceneProgress() {
  * shows. A character with no art falls back to their first letter rather than an empty ring.
  */
 const PhoneAvatar = memo(function PhoneAvatar({ src, name }: { src?: string; name?: string }) {
+  const [failedSrc, setFailedSrc] = useState<string>();
   return (
-    <span className="phone-avatar" aria-hidden="true" data-initial={name?.trim().slice(0, 1) ?? ''}>
-      {src && <span className="phone-avatar-art" style={{ backgroundImage: `url(${CSS.escape(src)})` }} />}
+    <span className="phone-avatar" aria-hidden="true">
+      {src && src !== failedSrc
+        ? <img className="phone-avatar-art" src={src} alt="" onError={() => setFailedSrc(src)} />
+        : (Array.from(name?.trim() ?? '')[0] ?? '?')}
     </span>
   );
 });
@@ -1303,6 +1306,7 @@ type LockedStickerFit = StickerFit & {
 
 const STICKER_LAYOUT_QUIET_MS = 72;
 const STICKER_OBSTACLE_SAMPLE_MS = 48;
+const STICKER_MAX_OBSTACLE_SAMPLES = 7;
 const STICKER_CHARACTER_LAYOUT_SETTLE_MS = 420;
 const STICKER_RESIZE_QUIET_MS = 140;
 
@@ -1367,7 +1371,7 @@ const StickerView = memo(function StickerView({
     ? `translate(${safeFit.translateX}px, ${safeFit.translateY}px) ${placementTransform} scale(${safeFit.scale})`
     : placementTransform;
 
-  const lockSafeFit = useCallback((recheckLockedFit = false) => {
+  const lockSafeFit = useCallback((recheckLockedFit: boolean, waitForObstacles: boolean) => {
     if ((!recheckLockedFit && layoutLockedRef.current) || !imageReadyRef.current) {
       return layoutLockedRef.current;
     }
@@ -1396,7 +1400,7 @@ const StickerView = memo(function StickerView({
         : [...characterElement.querySelectorAll<HTMLImageElement>('.character-art:not(.portrait-pending)')];
       return imageElements.every((imageElement) => imageElement.complete);
     });
-    if (!characterImagesReady) {
+    if (waitForObstacles && !characterImagesReady) {
       return false;
     }
 
@@ -1407,7 +1411,7 @@ const StickerView = memo(function StickerView({
       })
       .filter((rect) => rect.width > 0 && rect.height > 0);
     if (
-      characterRects.length > 0
+      waitForObstacles && characterRects.length > 0
       && !haveStickerObstacleRectsSettled(previousObstacleRectsRef.current, characterRects)
     ) {
       previousObstacleRectsRef.current = characterRects.map((rect) => ({
@@ -1476,36 +1480,39 @@ const StickerView = memo(function StickerView({
     quietMs = STICKER_LAYOUT_QUIET_MS,
     recheckLockedFit = false,
   ) => {
-    if ((!recheckLockedFit && layoutLockedRef.current) || !imageReadyRef.current) {
+    if (sticker.leaving || (!recheckLockedFit && layoutLockedRef.current) || !imageReadyRef.current) {
       return;
     }
     if (settleTimerRef.current !== null) {
       window.clearTimeout(settleTimerRef.current);
     }
     const earliestDelay = Math.max(0, earliestMeasurementAtRef.current - performance.now());
+    let samples = 0;
     const attemptSafeFit = () => {
       settleTimerRef.current = null;
-      if (lockSafeFit(recheckLockedFit)) {
-        return;
-      }
-      settleTimerRef.current = window.setTimeout(
-        attemptSafeFit,
-        STICKER_OBSTACLE_SAMPLE_MS,
-      );
+      // Looping emotes may never settle. Fit to the latest measurable pose
+      // on the last sample and let future layout changes trigger remeasurement.
+      const waitForObstacles = ++samples < STICKER_MAX_OBSTACLE_SAMPLES;
+      if (lockSafeFit(recheckLockedFit, waitForObstacles) || !waitForObstacles) return;
+      settleTimerRef.current = window.setTimeout(attemptSafeFit, STICKER_OBSTACLE_SAMPLE_MS);
     };
-    settleTimerRef.current = window.setTimeout(() => {
-      attemptSafeFit();
-    }, Math.max(quietMs, earliestDelay));
-  }, [lockSafeFit]);
+    settleTimerRef.current = window.setTimeout(attemptSafeFit, Math.max(quietMs, earliestDelay));
+  }, [lockSafeFit, sticker.leaving]);
 
   useLayoutEffect(() => {
+    if (sticker.leaving) {
+      if (settleTimerRef.current !== null) {
+        window.clearTimeout(settleTimerRef.current);
+        settleTimerRef.current = null;
+      }
+      return;
+    }
     const avoidanceChanged = previousAvoidanceKeyRef.current !== avoidanceKey;
     const placementChanged = previousPlacementKeyRef.current !== placementKey;
     previousPlacementKeyRef.current = placementKey;
     if (placementChanged) forceFitRef.current = true;
     previousAvoidanceKeyRef.current = avoidanceKey;
     if (layoutLockedRef.current) {
-      if (sticker.leaving) return;
       if (avoidanceChanged || placementChanged) {
         // Keep the last painted fit throughout remeasurement. Only the new pose
         // changes; neither visibility nor the entrance animation is restarted.
@@ -1793,25 +1800,26 @@ export default function App() {
     placeCaption: state.placeCaption,
     setDialogUiHidden: state.setDialogUiHidden,
   })));
-  // A phone conversation reads as a conversation only if the lines before it are still there.
-  const phoneThread = useMemo(
-    () => (dialogChannel === 'message' ? selectPhoneThread(storyLog) : []),
-    [dialogChannel, storyLog],
-  );
-  // The chat title stays visible even when the first bubble is outgoing.
-  const livePhoneLine = storyLog.at(-1);
-  const phoneThreadName = livePhoneLine?.kind === 'dialogue' ? livePhoneLine.thread : undefined;
-  const threadCharacter = phoneThreadName ? game?.assets.characters[phoneThreadName] : undefined;
-  const threadPortrait = threadCharacter?.avatar ?? threadCharacter?.base;
-  const threadAvatar = threadPortrait && !/\.json(?:[?#]|$)/i.test(threadPortrait)
-    ? resolveRuntimeAssetUrl(threadPortrait, baseUrl, assetOverrides)
+  const phoneConversation = useMemo(() => {
+    if (dialogChannel !== 'message') return undefined;
+    const line = storyLog.at(-1);
+    const thread = line?.kind === 'dialogue' && line.channel === 'message' ? line.thread : undefined;
+    const threadAvatar = resolveRuntimeAssetUrl(phoneAvatarPath(thread ? game?.assets.characters[thread] : undefined), baseUrl, assetOverrides);
+    return selectPhoneConversation(storyLog, { threadAvatar });
+  }, [dialogChannel, storyLog, game?.assets.characters, baseUrl, assetOverrides]);
+  const phoneThread = phoneConversation?.bubbles;
+  const phoneLiveSender = { speaker: dialogSpeaker, speakerId: dialogSpeakerId, side: dialogSide, avatar: dialogAvatar };
+  const phoneContact = dialogChannel === 'message'
+    ? phoneConversation?.contact ?? selectPhoneContact([phoneLiveSender])
     : undefined;
-  const phoneContact = useMemo(() => dialogChannel === 'message'
-    ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide, avatar: dialogAvatar }, phoneThreadName, threadAvatar)
-    : undefined, [dialogChannel, phoneThread, dialogSide, dialogSpeaker, dialogAvatar, phoneThreadName, threadAvatar]);
-  // Outside a phone scene the name tag always shows; inside one it follows the thread's rule.
-  const phoneLiveLeadsRun = dialogChannel !== 'message'
-    || leadsRun(phoneThread[phoneThread.length - 1], { speaker: dialogSpeaker, side: dialogSide });
+  const phoneParticipants = phoneContact?.participants ?? [];
+  const phoneGroup = phoneParticipants.length > 1;
+  const phoneTitle = !phoneContact ? t("메시지")
+    : phoneGroup && !phoneContact.thread
+      ? (uiLanguage === 'en' ? `${phoneContact.name} + ${phoneParticipants.length - 1}` : `${phoneContact.name} 외 ${phoneParticipants.length - 1}명`)
+      : phoneContact.name;
+  const phoneLiveLeadsRun = leadsRun(phoneThread?.at(-1), phoneLiveSender);
+  const phoneLiveProfile = dialogChannel === 'message' ? phoneBubbleProfile(phoneContact, phoneLiveSender) : undefined;
   // The live line is the newest message, so it always closes its run: the profile picture
   // beside it belongs to it, and the run above hands its picture down to this bubble.
   const phoneLiveEmojiOnly = useMemo(
@@ -5998,7 +6006,7 @@ export default function App() {
         ref={dialogBoxRef}
         data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasStageApproach || undefined}
         data-investigation={investigation ? 'true' : undefined}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}${phoneContact?.group ? ' phone-group' : ''}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -6043,15 +6051,17 @@ export default function App() {
         )}
         {dialogChannel === 'message' && (
           <>
-            <div className="phone-chrome-top">
-              <span className="phone-chrome-back" aria-hidden="true" />
-              {phoneContact && phoneContact.avatars.length > 0 && (
-                <span className={`phone-chrome-faces${phoneContact.group ? ' is-group' : ''}`}>
-                  {phoneContact.avatars.map((avatar) => <PhoneAvatar key={avatar} src={avatar} />)}
+            <header className="phone-chrome-top">
+              {phoneContact && (
+                <span className={`phone-chrome-faces${phoneGroup ? ' is-group' : ''}`}>
+                  {phoneParticipants.slice(0, 3).map((profile) => (
+                    <PhoneAvatar key={profile.speakerId ? `id:${profile.speakerId}` : `name:${profile.speaker}`}
+                      src={profile.avatar} name={profile.speaker} />
+                  ))}
                 </span>
               )}
-              <span className="phone-chrome-contact">{phoneContact?.name ?? t("메시지")}</span>
-            </div>
+              <span className="phone-chrome-contact" title={phoneTitle}>{phoneTitle}</span>
+            </header>
             <div className="phone-chrome-bottom" aria-hidden="true">
               <span className="phone-chrome-field">{t("메시지 입력")}</span>
               <span className="phone-chrome-send" />
@@ -6059,21 +6069,27 @@ export default function App() {
           </>
         )}
         <div className="dialog-content-scroll">
-          {phoneThread.length > 0 && (
+          {phoneThread && phoneThread.length > 0 && (
             <ol className="phone-thread">
-              {phoneThread.map((bubble) => (
-                <li
-                  key={bubble.key}
-                  className={`phone-thread-bubble side-${bubble.side}${bubble.leadsRun ? ' leads-run' : ''}${bubble.endsRun ? ' ends-run' : ''}${bubble.emojiOnly ? ' is-emoji' : ''}`}
-                >
-                  {bubble.side === 'them' && <PhoneAvatar src={bubble.avatar} name={bubble.speaker} />}
-                  <span className="phone-thread-body">
-                    {bubble.leadsRun && bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
-                    {bubble.media && <PhoneMediaView media={bubble.media} />}
-                    {bubble.text && <span className="phone-thread-text">{bubble.text}</span>}
-                  </span>
-                </li>
-              ))}
+              {phoneThread.map((bubble) => {
+                const incoming = bubble.side === 'them';
+                const profile = incoming ? phoneBubbleProfile(phoneContact, bubble) : undefined;
+                return (
+                  <li
+                    key={bubble.key}
+                    className={`phone-thread-bubble side-${bubble.side}${bubble.leadsRun ? ' leads-run' : ''}${bubble.endsRun ? ' ends-run' : ''}${bubble.emojiOnly ? ' is-emoji' : ''}`}
+                  >
+                    {incoming && (bubble.endsRun
+                      ? <PhoneAvatar src={profile?.avatar} name={profile?.speaker} />
+                      : <span className="phone-avatar-spacer" aria-hidden="true" />)}
+                    <span className="phone-thread-body">
+                      {incoming && phoneGroup && bubble.leadsRun && bubble.speaker && <span className="phone-thread-speaker">{bubble.speaker}</span>}
+                      {bubble.media && <PhoneMediaView media={bubble.media} />}
+                      {bubble.text && <span className="phone-thread-text">{bubble.text}</span>}
+                    </span>
+                  </li>
+                );
+              })}
             </ol>
           )}
           {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
@@ -6093,10 +6109,10 @@ export default function App() {
             <div
               className={`phone-thread-bubble phone-live side-${dialogSide ?? 'them'}${phoneLiveLeadsRun ? ' leads-run' : ''} ends-run${phoneLiveEmojiOnly ? ' is-emoji' : ''}`}
             >
-              {(dialogSide ?? 'them') === 'them' && <PhoneAvatar src={dialogAvatar} name={dialogSpeaker} />}
+              {dialogSide !== 'me' && <PhoneAvatar src={phoneLiveProfile?.avatar} name={phoneLiveProfile?.speaker} />}
               <div className="phone-thread-body">
-                {dialogSpeaker && phoneLiveLeadsRun && (
-                  <div className={`speaker delivery-${dialogDelivery}`}>{dialogSpeaker}</div>
+                {dialogSide !== 'me' && phoneGroup && dialogSpeaker && phoneLiveLeadsRun && (
+                  <span className="phone-thread-speaker">{dialogSpeaker}</span>
                 )}
                 {dialogMedia && <PhoneMediaView media={dialogMedia} />}
                 {dialogHasText && <DialogueText />}

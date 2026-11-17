@@ -210,7 +210,7 @@ scenes:
           channel: action
           with: [도윤, 준성]
           text: "남자는 잔을 내려놓는다. 도윤이 다시 보니 호출 화면에는 아직 ‘기사 찾는 중’이라고 쓰여 있다."
-      - say: { channel: action, with: [도윤], text: "아직 기사가 잡히지 않았다. 도윤은 호출을 취소한다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 취소 버튼 위에서 잠깐 멈춘다. 준성이 자리에서 일어나려 하자 고개를 젓고 호출을 취소한다." }
       - say:
           channel: system
           with: []
@@ -229,7 +229,7 @@ scenes:
           motion: laugh
           with: [준성]
           text: "네. 저 이제 진짜 일어나야 돼요."
-      - say: { channel: action, with: [도윤], text: "도윤이 일어서다 다시 주저앉는다. 자정을 훌쩍 넘긴 시간이다. 지수에게 톡을 쓴다." }
+      - say: { channel: action, with: [도윤], text: "도윤이 일어서다 다시 주저앉는다. 지수에게 보낸 외출 문자가 화면에 떠 있다. 도윤은 시각을 보고 나서야 답장 칸을 연다." }
       - say:
           channel: message
           thread: 지수
@@ -257,7 +257,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다. 클럽에서 여기까지 어떻게 왔는지는 기억이 나지 않는다."
+          text: "잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다. 엘리베이터 거울에 비친 두 사람은 생각난다. 몇 층에서 내렸는지, 그 뒤 무슨 말을 했는지는 기억이 나지 않는다."
       - say:
           channel: thought
           with: []
