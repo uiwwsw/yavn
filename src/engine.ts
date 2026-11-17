@@ -3976,7 +3976,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
       continue;
     }
     if ('music' in action) {
-      musicUrl = resolveAsset(chapter.baseUrl, game.assets.music[action.music]);
+      musicUrl = action.music === null ? undefined : resolveAsset(chapter.baseUrl, game.assets.music[action.music]);
       actionIndex += 1;
       continue;
     }
@@ -4649,8 +4649,7 @@ function runToNextPause(loopGuard = 0) {
   }
 
   if ('music' in action) {
-    const path = game.assets.music[action.music];
-    const url = resolveAsset(state.baseUrl, path);
+    const url = action.music === null ? undefined : resolveAsset(state.baseUrl, game.assets.music[action.music]);
     useVNStore.getState().setMusic(url);
     playMusic(url);
     incrementCursor();

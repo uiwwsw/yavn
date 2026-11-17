@@ -415,7 +415,7 @@ export type Action =
   | { attack: AttackDirective }
   | StickerAction
   | { clearSticker: ClearStickerTarget }
-  | { music: string }
+  | { music: string | null }
   | { sound: string }
   | CameraAction
   | CharAction

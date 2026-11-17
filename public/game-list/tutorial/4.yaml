@@ -815,10 +815,7 @@ scenes:
 
   end_close:
     actions:
-      - say:
-          channel: system
-          with: []
-          text: "세션 종료 · 종료할 사용자 번호를 입력하세요."
+      - music: fan_idle
       - say:
           channel: thought
           with: []
@@ -845,22 +842,17 @@ scenes:
           with: []
           text: "다른 사용자의 연결은 유지됩니다."
           continueLabel: "0001번 세션을 종료한다"
-      - say:
-          channel: record
-          with: []
-          text: "USER 0001 · 세션 종료 · 접속 시간 4,394일 12시간 28분"
-      - say:
-          channel: system
-          with: []
-          text: "튜토리얼을 찾을 수 없습니다."
+      - bg: { id: server_room_off, transition: cut }
+      - music: null
       - say:
           channel: action
           with: []
-          text: "모니터와 팬이 함께 꺼진다. 더운 바람이 그친다. 사월 새벽의 지하는 춥다."
+          sound: fan_stop
+          text: "모니터가 꺼진다. 팬이 느려지다 멎는다. 사월 새벽의 지하는 춥다."
       - say:
-          channel: thought
+          channel: record
           with: []
-          text: "둘러보지 않는다. 둘러보라는 사람이 없어졌다."
+          text: "USER 0001 · 세션 종료 · 접속 시간 4,394일 12시간 28분\n튜토리얼을 찾을 수 없습니다."
       - bg: { id: police_room, transition: fade, duration: 1200 }
       - music: fluoro
       - char: { id: 해수, position: left }

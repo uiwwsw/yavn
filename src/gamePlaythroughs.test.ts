@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   handleAdvance,
   loadGameFromUrl,
+  loadSaveSlot,
+  saveCurrentProgress,
   setScenePresentationPaused,
   setSkipReadActive,
   submitChoiceOption,
@@ -48,7 +50,7 @@ type Run = {
   state: ReturnType<typeof useVNStore.getState>;
 };
 
-async function play(route: Route, maxSteps = 9000): Promise<Run> {
+async function play(route: Route, stopAt?: (state: Run['state']) => boolean): Promise<Run> {
   const picked: string[] = [];
   const shown: string[] = [];
   const remaining: Route = { ...route };
@@ -62,11 +64,11 @@ async function play(route: Route, maxSteps = 9000): Promise<Run> {
     if (transient && !shown.includes(transient)) shown.push(transient);
   };
 
-  for (let step = 0; step < maxSteps; step += 1) {
+  for (let step = 0; step < 9000; step += 1) {
     const state = useVNStore.getState();
     collect(state);
     if (state.error) throw new Error(`engine error: ${state.error.message}`);
-    if (state.isFinished || state.gameOver) break;
+    if (state.isFinished || state.gameOver || stopAt?.(state)) break;
 
     if (state.inputGate.active && !state.busy) {
       submitInputAnswer(remaining.__input ?? state.inputGate.defaultValue ?? '');
@@ -306,25 +308,27 @@ describe('ERASE', () => {
 });
 
 describe('튜토리얼', () => {
+  const honestRoute: Route = {
+    t0_coupon: '앞치마 주머니에 넣는다',
+    t0_kwang: '개봉한 상품을 빼고 환불한다',
+    t0_mail: '문을 두드려 우편이 왔다고 알린다',
+    t1_bow: '고개를 숙인다',
+    t1_look: '번호표 기계||연필꽂이||다음 단계로',
+    t1_say: '왜 그렇게 많이 사냐고 쏘아붙인다',
+    t1_pencil: '연필을 든 채 다가간다',
+    t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
+    t2_where: '들은 장소만 말한다',
+    t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
+    t3_tell: '레플라에서 한 일을 털어놓는다',
+    t3_room: '벽에 붙은 그래프||책상 위 출입 카드||레플라가 어떻게 작동하는지 묻는다',
+    t3_door: '상혁이 어머니께 전화한다',
+    t4_room: '모니터||벽 콘센트||책상 서랍||모니터 앞에 앉는다',
+    t4_end: '전원선을 뽑는다',
+  };
+
   it('심한 말을 했으면 광철과 112 기록이 그 말을 돌려준다', async () => {
     await start('tutorial');
-    const run = await play({
-      t0_coupon: '앞치마 주머니에 넣는다',
-      t0_kwang: '개봉한 상품을 빼고 환불한다',
-      t0_mail: '문을 두드려 우편이 왔다고 알린다',
-      t1_bow: '고개를 숙인다',
-      t1_look: '번호표 기계||연필꽂이||다음 단계로',
-      t1_say: '왜 그렇게 많이 사냐고 쏘아붙인다',
-      t1_pencil: '연필을 든 채 다가간다',
-      t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
-      t2_where: '들은 장소만 말한다',
-      t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
-      t3_tell: '레플라에서 한 일을 털어놓는다',
-      t3_room: '벽에 붙은 그래프||책상 위 출입 카드||레플라가 어떻게 작동하는지 묻는다',
-      t3_door: '상혁이 어머니께 전화한다',
-      t4_room: '모니터||벽 콘센트||책상 서랍||모니터 앞에 앉는다',
-      t4_end: '전원선을 뽑는다',
-    });
+    const run = await play(honestRoute);
     finished(run);
     expect(run.picked.slice(0, 2).map(entry => entry.split('=')[0])).toEqual(['t0_kwang', 't0_coupon']);
     expect(heard(run.shown, '최초 처리자 정해수')).toBe(true);
@@ -334,6 +338,33 @@ describe('튜토리얼', () => {
     // 상혁 opens the door a crack for someone who has been looking after him.
     expect(heard(run.shown, '밥 고맙다. 네 차례 아니었잖아')).toBe(true);
   });
+
+  it('cuts the local fan and screen on confirmation and restores a dark, quiet save', async () => {
+    await start('tutorial');
+    const route = { ...honestRoute, t4_end: '세션 종료 창을 연다', __input: '0001' };
+    const before = await play(route, state => state.dialog.continueLabel === '0001번 세션을 종료한다');
+    expect(before.state.currentSceneId).toBe('end_close');
+    expect(before.state.currentMusic).toContain('/fan_idle.flac');
+    expect(before.state.background).toContain('/server_room.svg');
+
+    const after = await play(route, state => state.dialog.fullText.startsWith('모니터가 꺼진다.'));
+    expect(after.state.background).toContain('/server_room_off.svg');
+    expect(after.state.currentMusic).toBeUndefined();
+
+    expect(saveCurrentProgress().exists).toBe(true);
+    const loaded = loadSaveSlot('manual');
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(await loaded).toBe(true);
+    expect(useVNStore.getState()).toMatchObject({
+      background: expect.stringContaining('/server_room_off.svg'),
+      currentMusic: undefined,
+      dialog: { fullText: expect.stringContaining('팬이 느려지다 멎는다.') },
+    });
+
+    const end = await play({});
+    finished(end);
+    expect(heard(end.shown, 'USER 0001 · 세션 종료')).toBe(true);
+  }, 60000);
 
   it('소리만 질렀고 상혁을 안 챙겼으면 돌아오는 것도 그만큼이다', async () => {
     await start('tutorial');

@@ -1187,7 +1187,7 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
-        if ('music' in action && !data.assets.music[action.music]) {
+        if ('music' in action && action.music !== null && !data.assets.music[action.music]) {
           return {
             error: {
               message: `scene '${sceneId}' uses missing music '${action.music}'`,

@@ -214,7 +214,7 @@ const actionBodySchema = z.union([
       }),
     ]),
   }),
-  z.object({ music: z.string() }),
+  z.object({ music: z.string().nullable() }),
   z.object({ sound: z.string() }),
   z.object({ camera: cameraDirectiveSchema }),
   z.object({

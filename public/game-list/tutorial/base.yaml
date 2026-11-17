@@ -14,6 +14,7 @@ assets:
     goshiwon: assets/bg/goshiwon.svg
     server_building: assets/bg/server_building.svg
     server_room: assets/bg/server_room.svg
+    server_room_off: assets/bg/server_room_off.svg
     pencil_sticker: assets/items/pencil.svg
     complaint_sticker: assets/items/complaint.svg
     coupon_sticker: assets/items/coupon.svg
@@ -133,11 +134,13 @@ assets:
     tutorial: assets/music/tutorial.flac
     bleed: assets/music/bleed.flac
     server: assets/music/server.flac
+    fan_idle: assets/music/fan_idle.flac
   sfx:
     chime: assets/sfx/chime.wav
     snap: assets/sfx/snap.wav
     door_knock: assets/sfx/door_knock.wav
     fan_wake: assets/sfx/fan_wake.wav
+    fan_stop: assets/sfx/fan_stop.wav
 
 state:
   t0_refund_first: false
