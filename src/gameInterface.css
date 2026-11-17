@@ -149,6 +149,52 @@
 .app .hud-meta-group { position: relative; }
 .app .hud-meta-group > .place-caption { position: absolute; top: calc(100% + 8px); left: 0; width: max-content; margin: 0; }
 .app[data-ui-template='paper-stage'] .hud-meta-group > .place-caption { padding: 5px 10px; border: 1px solid var(--game-hud-line); border-radius: var(--game-radius-lg); background: var(--game-hud-bg); color: var(--game-hud-ink); text-shadow: none; }
+
+.place-caption-overlay {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  pointer-events: none;
+}
+
+.app[data-place-caption='center'] :is(.dialog-box, .char-layer, .sticker-layer, .message-portrait) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.place-caption-overlay > span {
+  max-width: 28em;
+  padding: .45em .9em;
+  background: rgb(10 13 18 / .83);
+  border-radius: var(--game-radius-lg);
+  color: #fffdf5;
+  font-size: clamp(17px, 2.7vw, 28px);
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .place-caption-overlay > span {
+    animation: place-caption-overlay-in 180ms ease-out both;
+  }
+
+  .app[data-story-paused='true'] .place-caption-overlay > span {
+    animation-play-state: paused;
+  }
+
+  @keyframes place-caption-overlay-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
 /* Paper scenes are often pale, so the title gets the same paper plate as the tools. */
 .app[data-ui-template='paper-stage'] .hud-meta-group { padding: 6px 12px 7px; border: 1px solid var(--game-hud-line); border-radius: var(--game-radius-lg); background: var(--game-hud-bg); color: var(--game-hud-ink); text-shadow: none; backdrop-filter: blur(14px); }
 .app[data-ui-template='paper-stage'] .hud-chapter-progress { color: var(--game-muted); }

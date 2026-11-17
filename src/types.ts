@@ -137,6 +137,7 @@ export type BackgroundDirective = string | {
   transition?: BackgroundTransitionKind;
   duration?: number;
   wait?: boolean;
+  place?: string;
 };
 export type BackgroundPresentation = {
   transition: BackgroundTransitionKind;
@@ -435,7 +436,7 @@ export type Action =
   | { wait: number }
   | { move: CharacterMoveDirective }
   | { emote: CharacterEmoteDirective }
-  | { place: string }
+  | { place: string | { text: string; presentation: 'center' } }
   | { effect: string | ScreenEffectOptions }
   | { mood: MoodDirective | 'off' }
   | { goto: string };
@@ -647,10 +648,11 @@ export type CharacterMotionState = {
   settled?: boolean;
 };
 
-/** Short time/place caption shown in the HUD; it fades on its own and never waits for input. */
+/** A small HUD caption or a brief centered caption between beats. */
 export type PlaceCaption = {
   text: string;
   revision: number;
+  centered: boolean;
 };
 
 export type CharacterSlot = {

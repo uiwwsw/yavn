@@ -2317,7 +2317,7 @@ export default function App() {
 
   const handleManualAdvance = useCallback(() => {
     const current = useVNStore.getState();
-    if (playbackCovered || startGateLaunchLockRef.current || current.attack) {
+    if (playbackCovered || startGateLaunchLockRef.current || current.attack || current.placeCaption?.centered) {
       queuedManualAdvanceAtRef.current = null;
       return;
     }
@@ -4933,6 +4933,7 @@ export default function App() {
     <div
       {...(startGate || storyMapOpen ? { inert: '' } : {})}
       data-story-paused={Boolean(startGate) || chapterCurtainVisible || settingsOpen || storyMapOpen || documentHidden}
+      data-place-caption={placeCaption?.centered ? 'center' : undefined}
       className="app"
       data-ui-template={uiTemplate}
       data-text-scale={textScale === 'base' ? undefined : textScale}
@@ -5155,6 +5156,11 @@ export default function App() {
         </div>
       )}
 
+      {placeCaption?.centered && (
+        <div className="place-caption-overlay" key={placeCaption.revision} role="status">
+          <span>{placeCaption.text}</span>
+        </div>
+      )}
       <div className="hud">
         <div className="hud-meta-group">
           <div className="meta">{game?.meta.title ?? t("게임 불러오는 중")}</div>
@@ -5170,7 +5176,7 @@ export default function App() {
               <span className="hud-pov-name">{playerName ? `${t("나")} · ${playerName}` : choicePlayerName}</span>
             </div>
           )}
-          {placeCaption && (
+          {placeCaption && !placeCaption.centered && (
             <div className="place-caption" key={placeCaption.revision} role="status">{placeCaption.text}</div>
           )}
           <VersionStamp contentVersion={game?.meta.version} />

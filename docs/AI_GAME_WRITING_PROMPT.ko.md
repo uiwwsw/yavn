@@ -129,6 +129,7 @@ inventory:   # base.yaml 최상위
       delivery: calm|nervous|angry|whisper|shout|sad / camera: wide|medium|close
       when: 조건 → 조건이 맞을 때만 나오는 대사
   - place: "언제 · 어디"   # 화면 위 작은 글씨로 떴다 사라짐. 클릭 대기 없음. 60자 이하
+  - place: { text: "그날 밤 · 집", presentation: center } # 이동을 생략한 새 장소. 새 배경 위에 중앙 자막을 띄우고 다음 대사로 자동 진행
   - move: { id: 인물, toward: 다른인물|camera, style: approach|lunge|retreat|flinch|exit|reset, wait: true? }
       approach 다가섬 / lunge 확 덤빔 / retreat 물러섬 / flinch 움찔 / exit 화면 밖으로 퇴장 / reset 제자리
       두 인물 모두 char로 무대에 올라와 있어야 함. 자기 자신을 향할 수 없음

@@ -102,7 +102,7 @@ type VNState = {
   setAttack: (attack?: AttackPresentation) => void;
   setCharacterStance: (id: string, stance?: Omit<CharacterStance, 'revision'>) => void;
   setCharacterMotion: (id: string, motion?: Omit<CharacterMotionState, 'revision'>) => void;
-  setPlaceCaption: (text?: string) => void;
+  setPlaceCaption: (text?: string, centered?: boolean) => void;
   setSticker: (sticker: StickerSlot) => void;
   clearSticker: (id: string) => void;
   clearAllStickers: () => void;
@@ -332,8 +332,8 @@ export const useVNStore = create<VNState>((set) => ({
     return { characterMotions: { ...state.characterMotions, [id]: { ...motion, revision } } };
   }),
   setResumeNotice: (resumeNotice) => set({ resumeNotice }),
-  setPlaceCaption: (text) => set((state) => ({
-    placeCaption: text ? { text, revision: (state.placeCaption?.revision ?? 0) + 1 } : undefined,
+  setPlaceCaption: (text, centered = false) => set((state) => ({
+    placeCaption: text ? { text, centered, revision: (state.placeCaption?.revision ?? 0) + 1 } : undefined,
   })),
   setSticker: (sticker) =>
     set((state) => {

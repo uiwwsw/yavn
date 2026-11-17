@@ -1184,6 +1184,7 @@ function clearScreenEffect() {
 function clearTimers() {
   clearCinematics();
   clearScreenEffect();
+  if (useVNStore.getState().placeCaption?.centered) useVNStore.getState().setPlaceCaption();
   if (waitTimer) {
     storyClock.clear(waitTimer);
     waitTimer = undefined;
@@ -4599,6 +4600,28 @@ function runToNextPause(loopGuard = 0): void {
   }
 }
 
+function showPlaceCaption(text: string, centered: boolean, loopGuard: number): void {
+  const state = useVNStore.getState();
+  const caption = interpolateText(text, state.routeVars);
+  if (!centered || state.skipReadActive) {
+    state.setPlaceCaption(centered ? undefined : caption);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+    return;
+  }
+  state.setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
+  state.setBusy(true);
+  state.setPlaceCaption(caption, true);
+  waitTimer = storyClock.set(() => {
+    waitTimer = undefined;
+    const current = useVNStore.getState();
+    current.setPlaceCaption();
+    current.setBusy(false);
+    incrementCursor();
+    runToNextPause(loopGuard + 1);
+  }, 1500);
+}
+
 function runActionsUntilPause(loopGuard: number): void {
   if (loopGuard > 1000) {
     useVNStore.getState().setError({ message: 'Infinite loop detected in script execution' });
@@ -4643,9 +4666,17 @@ function runActionsUntilPause(loopGuard: number): void {
     const path = game.assets.backgrounds[backgroundId(action.bg)];
     const url = resolveAsset(state.baseUrl, path);
     const options = normalizeBackground(action.bg);
-    if (state.background === url) {
+    const place = typeof action.bg === 'string' ? undefined : action.bg.place;
+    const continueAfterBackground = () => {
+      if (place) {
+        showPlaceCaption(place, true, loopGuard);
+        return;
+      }
       incrementCursor();
       runToNextPause(loopGuard + 1);
+    };
+    if (state.background === url) {
+      continueAfterBackground();
       return;
     }
     useVNStore.getState().setBackground(url, options);
@@ -4664,13 +4695,11 @@ function runActionsUntilPause(loopGuard: number): void {
           useVNStore.getState().setError({ message: `배경을 준비하지 못했습니다: ${backgroundId(action.bg)}` });
           return;
         }
-        incrementCursor();
-        runToNextPause(loopGuard + 1);
+        continueAfterBackground();
       } };
       return;
     }
-    incrementCursor();
-    runToNextPause(loopGuard + 1);
+    continueAfterBackground();
     return;
   }
 
@@ -4981,10 +5010,8 @@ function runActionsUntilPause(loopGuard: number): void {
   }
 
   if ('place' in action) {
-    const text = interpolateText(action.place, useVNStore.getState().routeVars);
-    useVNStore.getState().setPlaceCaption(text);
-    incrementCursor();
-    runToNextPause(loopGuard + 1);
+    if (typeof action.place === 'string') showPlaceCaption(action.place, false, loopGuard);
+    else showPlaceCaption(action.place.text, true, loopGuard);
     return;
   }
 
