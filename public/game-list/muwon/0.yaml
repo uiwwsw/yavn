@@ -239,7 +239,7 @@ scenes:
           with: []
           continueLabel: "지게미를 덮고 기다린다"
           text: "젖은 천 위로 시큼한 지게미를 고루 펴 바른다. 등불 심지를 한 번 자른다."
-      - effect: focus
+      - sticker: { id: neck_traces, image: neck_traces_sticker, x: 50, y: 32, width: "clamp(200px, 26%, 320px)", enter: fadeIn }
       - say:
           channel: action
           with: []
@@ -254,6 +254,7 @@ scenes:
           text: "엄지가 앞에 있네. 마주 보고 조른 거요."
       - get: first_sijang
       - set: { c1_neck: true }
+      - clearSticker: { id: neck_traces, leave: fadeOut }
       - goto: c1_examine
 
   c1_reasoning:
@@ -269,6 +270,7 @@ scenes:
           text: "말해 보시오. 이 여인은 어찌 죽었소."
       - choice:
           key: c1_cause
+          evidence: first_sijang
           prompt: "분이의 죽음을 시장에 어떻게 적을까?"
           char: 도원
           with: [서연, 도원]

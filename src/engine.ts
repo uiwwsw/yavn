@@ -4811,6 +4811,7 @@ function runToNextPause(loopGuard = 0) {
         ...action.choice.investigation,
         targets: action.choice.options.filter(option => option.at),
       },
+      evidence: action.choice.evidence,
       key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
       prompt: interpolateText(action.choice.prompt, state.routeVars),
       forgiveOnceDefault: action.choice.forgiveOnceDefault ?? false,

@@ -1265,7 +1265,7 @@ function useAdvanceByKey(advanceLocked: boolean, onAdvance: () => void) {
           tag === 'button' ||
           tag === 'select' ||
           tag === 'a' ||
-          target.closest('button, a, input, textarea, select, [role="button"], [role="link"]')
+          target.closest('button, a, input, textarea, select, summary, [role="button"], [role="link"]')
         ) {
           return;
         }
@@ -4797,6 +4797,9 @@ export default function App() {
   const hasStageApproach = choiceGate.active && choiceGate.presentation === 'approach'
     && choiceGate.options.some(option => option.at);
   const investigation = choiceGate.active ? choiceGate.investigation : undefined;
+  const choiceEvidence = choiceGate.active && choiceGate.evidence
+    ? inventoryCatalogEntries.find(entry => entry.id === choiceGate.evidence && entry.owned)
+    : undefined;
   const investigationTargets = investigation?.targets.map((option, position) => ({
     option,
     number: position + 1,
@@ -6156,6 +6159,12 @@ export default function App() {
                 </>
               ) : choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
                 <p className="choice-gate-explore-hint">{t("화면에서 살펴볼 곳을 누르세요")}</p>
+              )}
+              {choiceEvidence?.description && (
+                <details className="choice-evidence" key={choiceGate.key}>
+                  <summary>{choiceEvidence.name} · {t("다시 보기")}</summary>
+                  <p>{choiceEvidence.description}</p>
+                </details>
               )}
               {!hasStageApproach && <div
                 className="choice-gate-options"

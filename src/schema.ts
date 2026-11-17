@@ -252,6 +252,7 @@ const actionBodySchema = z.union([
         key: z.string().min(1).optional(),
         presentation: z.enum(['dialogue', 'explore', 'approach']).optional(),
         investigation: z.object({ width: z.number().positive(), height: z.number().positive() }).optional(),
+        evidence: z.string().min(1).optional(),
         mood: screenEffectNameSchema.optional(),
         prompt: z.string().min(1),
         char: z.string().min(1).optional(),

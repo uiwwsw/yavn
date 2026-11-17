@@ -167,6 +167,30 @@
 .investigation-option > span { color: #ecd6a2; font-weight: 800; }
 .app .investigation-option.is-checked { color: #e1dbc9; background: transparent; }
 .investigation-option small { color: #c1c7c0; font-size: 12px; }
+.app .choice-evidence {
+  margin: 0 0 8px;
+  padding-inline: 12px;
+  border: 1px solid var(--game-line-strong);
+  border-radius: var(--game-radius);
+  background: var(--game-soft);
+}
+.app .dialog-box.has-choice-gate:has(.choice-evidence) {
+  height: min(calc(var(--yavn-prompt-height, 170px) + 32px), var(--dialog-safe-max-height));
+}
+.app .dialog-box.has-choice-gate:has(.choice-evidence[open]) {
+  height: min(calc(var(--yavn-prompt-height, 170px) + 80px), var(--dialog-safe-max-height));
+}
+.app .choice-evidence summary {
+  min-height: 44px;
+  padding-block: 10px;
+  color: var(--game-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+}
+.app .choice-evidence summary:focus-visible { outline: 2px solid var(--game-focus); outline-offset: -2px; }
+.app .choice-evidence p { margin: 0 0 12px; color: var(--game-text); font-size: 14px; line-height: 1.6; }
 @media (max-height: 500px) and (orientation: landscape) {
   .app .dialog-box.has-exploration { --dialog-safe-max-height: 155px; padding-top: 12px; padding-bottom: 12px; }
   .app .has-exploration .dialog-content-scroll { padding-top: 0; }

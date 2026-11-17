@@ -1194,6 +1194,11 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
             },
           };
         }
+        if ('choice' in action && action.choice.evidence && !data.inventory?.defaults[action.choice.evidence]) {
+          return {
+            error: { message: `scene '${sceneId}' uses missing choice evidence '${action.choice.evidence}'` },
+          };
+        }
         const sound = 'sound' in action ? action.sound : 'say' in action ? action.say.sound : undefined;
         if (sound && !data.assets.sfx[sound]) {
           return {
