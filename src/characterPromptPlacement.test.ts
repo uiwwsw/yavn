@@ -44,8 +44,8 @@ describe('prompt-top character placement', () => {
   it('anchors the prompt composition to the measured dialog top without an initial jump', () => {
     expect(appSource).toContain('Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop)');
     expect(appSource).toContain('if (dialogUiHidden)');
-    expect(appSource).toContain('}, [dialogUiHidden]);');
-    expect(appSource).toContain('const promptTopBaselineReady = isDialogHidden || stickerSafeInset > 0;');
+    expect(appSource).toContain('}, [dialogChannel, dialogUiHidden]);');
+    expect(appSource).toContain('const promptTopBaselineReady = isDialogHidden || characterPromptFitInset > 0;');
     expect(appSource).toContain("data-baseline-ready={promptTopBaselineReady ? 'true' : 'false'}");
     expect(appSource).toContain('aria-hidden={!promptTopBaselineReady}');
     expect(appSource).toContain("'--prompt-top-dialog-inset': `${characterPromptInset}px`");
@@ -57,6 +57,12 @@ describe('prompt-top character placement', () => {
     );
     expect(styles).toMatch(
       /\.char-layer-prompt-top\[data-baseline-ready='false'\] \.char\s*\{[\s\S]*?animation-play-state: paused;/,
+    );
+  });
+
+  it('keeps the reading baseline while phone or full-screen cards replace the dialog', () => {
+    expect(appSource).toMatch(
+      /setStickerSafeInset\(nextInset\);[\s\S]*?if \(dialogChannel === 'message' \|\| dialogChannel === 'card'\) return;[\s\S]*?setCharacterPromptInset\(readingInset\);/,
     );
   });
 

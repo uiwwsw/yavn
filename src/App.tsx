@@ -3272,7 +3272,7 @@ export default function App() {
   );
   // Manual dialog hiding collapses the prompt baseline through a zero inset, while
   // system overlays retain the last measurement. Suppress only an unmeasured visible dialog.
-  const promptTopBaselineReady = isDialogHidden || stickerSafeInset > 0;
+  const promptTopBaselineReady = isDialogHidden || characterPromptFitInset > 0;
   const cameraMotionDurationMs = cameraTransitionTiming.cameraDelay
     + cameraTransitionTiming.cameraDuration;
   const cameraMotionActive = useTransientMotionWindow(
@@ -3799,15 +3799,18 @@ export default function App() {
       return;
     }
     const nextInset = Math.max(0, Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop));
+    setStickerSafeInset(nextInset);
+    // Phone and full-screen cards can cover the stage, but do not move the
+    // reading prompt's character baseline for the next line.
+    if (dialogChannel === 'message' || dialogChannel === 'card') return;
     const dialogHeight = dialogEl.offsetHeight;
     const readingHeight = Number.parseFloat(getComputedStyle(document.documentElement)
       .getPropertyValue('--yavn-character-prompt-height')) || dialogHeight;
     const readingInset = resolvePromptActorInset(nextInset, dialogHeight, readingHeight);
-    setStickerSafeInset(nextInset);
     setCharacterPromptInset(readingInset);
     // Hiding the dialog releases its baseline, but must not enlarge the portrait.
     setCharacterPromptFitInset(readingInset);
-  }, [dialogUiHidden]);
+  }, [dialogChannel, dialogUiHidden]);
 
   useLayoutEffect(() => {
     updateStickerSafeInset();
