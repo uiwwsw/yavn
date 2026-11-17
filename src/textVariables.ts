@@ -13,6 +13,12 @@ export function resolvePlayerName(game: GameData | undefined, sceneId: string, v
   return name ? interpolateText(name, vars).trim() || undefined : undefined;
 }
 
+export function resolvePlayerCharacterId(game: GameData | undefined, name: string | undefined, vars: Record<string, unknown>): string | undefined {
+  if (!game || !name || name === '???') return undefined;
+  return Object.entries(game.assets.characters)
+    .find(([id, character]) => interpolateText(character.name ?? id, vars).trim() === name)?.[0];
+}
+
 // [after a batchim, after a vowel]
 const PARTICLE_PAIRS: Array<[string, string]> = [
   ['은', '는'], ['이', '가'], ['을', '를'], ['과', '와'], ['아', '야'], ['이여', '여'],

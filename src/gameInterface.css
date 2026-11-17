@@ -129,6 +129,10 @@
 .app .hud { position: absolute; z-index: 5; inset: 24px 28px auto; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; color: #fffdf5; font-size: 14px; }
 .app .hud-meta-group { display: grid; gap: 6px; min-width: 0; max-width: 55%; text-shadow: 0 1px 2px #000c, 0 2px 12px #0009; }
 .app .hud-meta-group .meta { overflow: hidden; font-size: 14px; font-weight: 700; letter-spacing: -.01em; text-overflow: ellipsis; white-space: nowrap; }
+.app .hud-pov { display: flex; align-items: center; gap: 6px; justify-self: start; min-width: 0; max-width: 100%; font-size: 12px; font-weight: 700; }
+.app .hud-pov .phone-avatar { --phone-them-ink: currentColor; border: 1px solid currentColor; background: var(--game-hud-bg, #12171ddd); color: inherit; }
+.app[data-ui-template='neon-grid'] .hud-pov .phone-avatar-art { image-rendering: pixelated; }
+.app .hud-pov-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .app .hud-chapter-progress { display: flex; align-items: center; gap: 4px; width: fit-content; color: #ffffffd9; font-family: var(--game-figure-font); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .app .hud-right { display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--game-hud-line); border-radius: var(--game-radius-lg); background: var(--game-hud-bg); backdrop-filter: blur(14px); }
 .app .hud-right .hint { padding: 0 10px; color: var(--game-hud-ink); font-size: 13px; }
