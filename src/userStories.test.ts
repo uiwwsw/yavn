@@ -185,7 +185,7 @@ describe('owner story playthroughs', () => {
   const loyal: Route = {
     b0_buy: '중고 게임기를 산다',
     b2_register: '밖에서 무슨 일이 있었는지 말한다',
-    b3_snack: '복숭아를 다 먹는다',
+    b3_snack: '내 몫의 복숭아를 다 먹는다',
     b3_drone: '{{android_name}} 뒤에 숨는다',
     b3_promise: '끝까지 함께하겠다고 약속한다',
   };
@@ -205,6 +205,9 @@ describe('owner story playthroughs', () => {
     await start('8bit-heart');
     const state = await play({ b0_buy: 'HYPERLINK X를 산다' });
     expect(state.gameOver?.title).toBe('너무 똑똑했던 기기');
+    const lines = state.storyLog.flatMap(entry => 'text' in entry ? [entry.text] : []);
+    expect(lines.some(text => text.includes('뉴스를 종이에 찍은 거야'))).toBe(true);
+    expect(lines.some(text => /B버튼\? 아직 뻑뻑해|세 겹 싸 줬어/.test(text))).toBe(false);
   }, 60000);
 
   it.each([

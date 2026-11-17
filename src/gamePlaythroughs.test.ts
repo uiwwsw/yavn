@@ -170,6 +170,23 @@ const finished = (run: Run): void => {
 describe('8비트 심장', () => {
   const CHEAP = '중고 게임기를 산다';
 
+  it('shows the overnight cut before the secondhand console is picked up', async () => {
+    await start('8bit-heart');
+    const route = { b0_buy: CHEAP };
+    const night = await play(route, state => state.dialog.fullText === '55,000원입니다.');
+    expect(night.state.inventory.console_cheap).toBeFalsy();
+
+    const morning = await play(route, state => state.dialog.fullText === '다음 날 아침');
+    expect(morning.state.dialog.channel).toBe('card');
+    expect(morning.state.inventory.console_cheap).toBeFalsy();
+
+    const notice = await play(route, state => state.dialog.fullText.includes('현관에 뭔가 놓였습니다'));
+    expect(notice.state.inventory.console_cheap).toBeFalsy();
+
+    const unpacked = await play(route, state => state.dialog.fullText === '신문지가 뭔가요?');
+    expect(unpacked.state.inventory.console_cheap).toBe(true);
+  });
+
   it('opens with four repair actions and only lights the old screen after tapping it', async () => {
     await start('8bit-heart');
     const current = useVNStore.getState;
@@ -209,7 +226,7 @@ describe('8비트 심장', () => {
       b1_home: '침대||책상 위||켜진 모니터||가방을 메고 나간다',
       b2_parts: '계산대 밑 건전지||게임기 CPU||가슴 화면 단자||스위치를 올린다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
-      b3_snack: '복숭아를 다 먹는다',
+      b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '끝까지 함께하겠다고 약속한다',
       b4_save: '새끼손가락 약속',
@@ -249,6 +266,7 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '이번엔 어')).toBe(false);
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
+    expect(heard(run.shown, '아껴 둔 복숭아도 다음 날 아침에 다 먹었고')).toBe(true);
   });
 });
 
