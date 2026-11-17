@@ -198,6 +198,23 @@
   .exploration-field { top: 62px; bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 8px); }
   .app .exploration-target { top: clamp(0px, calc(var(--target-y) - 24px), calc(100% - 48px)); padding: 8px 12px; }
 }
+
+@media (max-width: 900px), (max-height: 500px) and (orientation: landscape) {
+  .exploration-field:not(.approach-field, .investigation-field) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr));
+    gap: 8px;
+    align-content: center;
+  }
+  .app .exploration-field:not(.approach-field, .investigation-field) > .exploration-target {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-height: none;
+    padding-inline: 27px 12px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .app .dialog-action-button, .app .exploration-target { transition: none; }
 }
