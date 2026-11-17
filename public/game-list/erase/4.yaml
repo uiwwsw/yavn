@@ -382,6 +382,7 @@ scenes:
           channel: action
           with: []
           text: "결과는 그대로다. 도윤은 검색창에 적힌 세 글자를 다시 본다."
+      - effect: focus
       - say:
           char: 도윤.panic
           motion: shiver

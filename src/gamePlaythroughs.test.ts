@@ -12,6 +12,7 @@ import {
   submitInputAnswer,
 } from './engine';
 import { useVNStore } from './store';
+import { resolvePlayerCharacterId, resolvePlayerName } from './textVariables';
 // The engine imports the YAML parser lazily. Load it up front so the first game load does not
 // wait on real module transformation while fake timers are advanced.
 import './parser';
@@ -173,13 +174,14 @@ describe('8비트 심장', () => {
   it('shows the overnight cut before the secondhand console is picked up', async () => {
     await start('8bit-heart');
     const route = { b0_buy: CHEAP };
-    const night = await play(route, state => state.dialog.fullText === '55,000원입니다.');
+    const night = await play(route, state => state.dialog.fullText.includes('잔액은 읽지 말고.'));
     expect(night.state.inventory.console_cheap).toBeFalsy();
 
     const morning = await play(route, state => state.effect === 'darken' || state.dialog.fullText === '다음 날 아침');
     expect(morning.state.dialog.fullText).toBe('다음 날 아침');
     expect(morning.state.dialog.channel).toBe('card');
     expect(morning.state.inventory.console_cheap).toBeFalsy();
+    expect(morning.shown).not.toContain('55,000원입니다.');
 
     const notice = await play(route, state => state.dialog.fullText.includes('현관에 뭔가 놓였습니다'));
     expect(notice.state.inventory.console_cheap).toBeFalsy();
@@ -188,35 +190,29 @@ describe('8비트 심장', () => {
     expect(unpacked.state.inventory.console_cheap).toBe(true);
   });
 
-  it('opens with four repair actions and only lights the old screen after tapping it', async () => {
+  it('looks up a shipped protagonist from the viewpoint name', async () => {
     await start('8bit-heart');
-    const current = useVNStore.getState;
-    const reach = async (label: string) => {
-      for (let step = 0; step < 40 && current().dialog.continueLabel !== label; step += 1) {
-        handleAdvance(true);
-        await vi.advanceTimersByTimeAsync(200);
-      }
-      expect(current().dialog.continueLabel).toBe(label);
-      handleAdvance();
-      handleAdvance();
-      expect(current().dialog.continueLabel).toBe(label);
-    };
+    const { game, currentSceneId, routeVars } = useVNStore.getState();
+    const name = resolvePlayerName(game, currentSceneId, routeVars);
+    expect(name).toBe('윤재');
+    expect(resolvePlayerCharacterId(game, name, routeVars)).toBe('윤재');
+  });
 
-    await reach('전원을 켠다');
-    expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
-    handleAdvance(true);
-    await reach('건전지를 뺐다 끼운다');
-    expect(heard(current().storyLog.flatMap(entry => 'text' in entry ? [entry.text] : []), '최신 펌웨어')).toBe(true);
-    handleAdvance(true);
-    await reach('본체를 툭툭 친다');
-    expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
-    handleAdvance(true);
-    await reach('카트리지에 입김을 분다');
-    expect(current().stickers.s0_broken?.source).toContain('/console_old_line.svg');
-    handleAdvance(true);
-    await vi.advanceTimersByTimeAsync(800);
-    expect(current().stickers.s0_broken?.source).toContain('/console_old.svg');
-    expect(current().dialog.fullText).toBe('됐… 아. 줄도 꺼졌어.');
+  it('shows the repair sequence through ordinary text advance', async () => {
+    await start('8bit-heart');
+    const beats = [
+      ['윤재가 전원 버튼을 눌렀다.', 'console_old.svg'],
+      ['윤재가 뒷덮개를 열어 건전지를 뺐다 끼운다.', 'console_old.svg'],
+      ['아직 꺼져 있어요.', 'console_old.svg'],
+      ['줄이 하나 떴어요.', 'console_old_line.svg'],
+      ['됐… 아. 줄도 꺼졌어.', 'console_old.svg'],
+    ];
+    for (const [text, image] of beats) {
+      const { state } = await play({}, state => state.dialog.fullText.startsWith(text));
+      expect(state.dialog.fullText.startsWith(text)).toBe(true);
+      expect(state.dialog.continueLabel).toBeUndefined();
+      expect(state.stickers.s0_broken?.source).toContain('/' + image);
+    }
   });
 
   it('하루의 마지막 질문에 대답하면 4장에서 로봇을 믿는다고 말한다', async () => {
@@ -225,7 +221,6 @@ describe('8비트 심장', () => {
       b0_buy: CHEAP,
       b1_haru: '신문지가 뭔지 설명한다',
       b1_home: '침대||책상 위||켜진 모니터||가방을 메고 나간다',
-      b2_parts: '계산대 밑 건전지||게임기 CPU||가슴 화면 단자||스위치를 올린다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
@@ -233,6 +228,7 @@ describe('8비트 심장', () => {
       b4_save: '새끼손가락 약속',
     });
     finished(run);
+    expect(run.state.routeVars).toMatchObject({ b_battery: true, b_cpu: true, b_screen: true });
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(true);
     expect(heard(run.shown, '걔가 마지막으로 배운 게 신문지 세 겹')).toBe(true);
     // The three things he looked at on the third morning come back in chapter 3.
@@ -252,7 +248,6 @@ describe('8비트 심장', () => {
       b0_buy: CHEAP,
       b1_haru: '입을 연다',
       b1_home: '가방을 메고 나간다',
-      b2_parts: '계산대 밑 건전지||게임기 CPU||가슴 화면 단자||스위치를 올린다',
       b2_register: '아무 일도 없다고 한다',
       b3_snack: '복숭아를 내일로 남겨 둔다',
       b3_drone: '반대쪽으로 달아난다',
@@ -272,6 +267,19 @@ describe('8비트 심장', () => {
 });
 
 describe('ERASE', () => {
+  it('withholds the player portrait until the studio scene', async () => {
+    await start('erase');
+    const opening = useVNStore.getState();
+    const name = resolvePlayerName(opening.game, opening.currentSceneId, opening.routeVars);
+    expect(name).toBe('???');
+    expect(resolvePlayerCharacterId(opening.game, name, opening.routeVars)).toBeUndefined();
+
+    const { state } = await play({}, state => state.currentSceneId === 'studio');
+    const revealed = resolvePlayerName(state.game, state.currentSceneId, state.routeVars);
+    expect(revealed).toBe('한도윤');
+    expect(resolvePlayerCharacterId(state.game, revealed, state.routeVars)).toBe('도윤');
+  });
+
   it('새벽에 아무것도 안 지우면 남은 것이 1·3·4장에서 돌아온다', async () => {
     await start('erase');
     const run = await play({

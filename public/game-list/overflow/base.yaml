@@ -12,6 +12,7 @@ assets:
     wolgye_station: assets/bg/wolgye_station.svg
     station_glove: assets/bg/station_glove.svg
     raw_sticker: assets/items/raw_print.svg
+    appeal_form_sticker: assets/items/appeal_form.svg
   characters:
     지완:
       name: "문지완"

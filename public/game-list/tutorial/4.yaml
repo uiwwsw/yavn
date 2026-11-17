@@ -393,6 +393,7 @@ scenes:
           channel: thought
           with: []
           text: "첫날 그 손님을 받은 순간에 이미 접속한 걸로 돼 있다."
+      - effect: focus
       - say:
           char: 해수
           with: []
