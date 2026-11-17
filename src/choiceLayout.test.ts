@@ -32,13 +32,13 @@ describe('choice dialog containment', () => {
     );
   });
 
-  it('uses a compact count-aware grid for one to four choices', () => {
+  it('uses a compact count-aware grid for one to five choices', () => {
     expect(appSource).toContain("data-choice-count={choiceGate.options.filter(option => (choiceGate.presentation !== 'explore' && choiceGate.presentation !== 'approach') || !option.at).length}");
     expect(styles).toMatch(
-      /\.choice-gate-options\[data-choice-count='2'\],[\s\S]*?\.choice-gate-options\[data-choice-count='3'\],[\s\S]*?\.choice-gate-options\[data-choice-count='4'\]\s*\{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+      /\.choice-gate-options\[data-choice-count='2'\],[\s\S]*?\.choice-gate-options\[data-choice-count='3'\],[\s\S]*?\.choice-gate-options\[data-choice-count='4'\],[\s\S]*?\.choice-gate-options\[data-choice-count='5'\]\s*\{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
     );
     expect(styles).toMatch(
-      /\.choice-gate-options\[data-choice-count='3'\] > \.choice-gate-option:last-child\s*\{[\s\S]*?grid-column: 1 \/ -1;/,
+      /\.choice-gate-options\[data-choice-count='3'\] > \.choice-gate-option:last-child,[\s\S]*?\.choice-gate-options\[data-choice-count='5'\] > \.choice-gate-option:last-child\s*\{[\s\S]*?grid-column: 1 \/ -1;/,
     );
     expect(styles).not.toMatch(
       /\.choice-gate-options\[data-choice-count='1'\][\s\S]*?grid-template-columns: repeat\(2/,
@@ -53,6 +53,6 @@ describe('choice dialog containment', () => {
     expect(appSource).toContain('className="choice-gate-option-mark"');
     expect(styles).toMatch(/\.choice-gate-option:active\s*\{[\s\S]*?transform: scale\(0\.985\);/);
     expect(mobileStyles).toMatch(/\.choice-gate-option\s*\{[\s\S]*?min-height: 58px;[\s\S]*?border-radius: 14px;/);
-    expect(mobileStyles).toMatch(/data-choice-count='4'[\s\S]*?grid-template-columns: minmax\(0, 1fr\) !important;/);
+    expect(mobileStyles).toMatch(/data-choice-count='5'[\s\S]*?grid-template-columns: minmax\(0, 1fr\) !important;/);
   });
 });

@@ -372,7 +372,7 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "8KB. 하나. 설명서 3쪽." }
       - say: { char: 윤재, with: [로봇], text: "…덮어써. 어차피 그 점수로 이어 할 일 없잖아." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "쓰임. 10년 뒤에 네가 다시 하면 거기서 시작함." }
+      - say: { char: 로봇, with: [윤재], text: "10년 뒤에 같은 게임을 해도 저 점수는 네 기록으로 남음." }
       - say: { char: 윤재.sad, with: [로봇], text: "10년 뒤에 그 게임기 없어. 네가 그 게임기야." }
       - wait: 270
       - say: { char: 로봇.thinking, motion: freeze, with: [윤재], text: "…처리 중." }
@@ -473,7 +473,7 @@ scenes:
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
-          prompt: "SAVE SLOT 1\n배터리가 모자라 기억 하나만 카드에 옮길 수 있습니다. 남은 기억은 코어 안에서 지워집니다."
+          prompt: "SAVE SLOT 1\n재가동하려면 최고 점수를 지워야 한다. 기억은 하나만 남길 수 있다."
           char: 로봇
           options:
             - text: "새끼손가락 약속"
@@ -527,7 +527,7 @@ scenes:
       - say: { channel: system, with: [], text: "기존 데이터 삭제 중…\nHI-SCORE 0999990 — 삭제됨" }
       - say: { char: 윤재, motion: freeze, with: [로봇], text: "…" }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "지워졌음. 이제 그 점수로 바로 이어서 못 함." }
+      - say: { char: 로봇, with: [윤재], text: "지워졌음. 이제 최고 점수 칸 비었음." }
       - say: { char: 윤재, with: [로봇], text: "…어. 괜찮아." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "'진짜' 안 붙였음. 이번엔 믿을게." }

@@ -2719,11 +2719,13 @@ textarea,
 
 .choice-gate-options[data-choice-count='2'],
 .choice-gate-options[data-choice-count='3'],
-.choice-gate-options[data-choice-count='4'] {
+.choice-gate-options[data-choice-count='4'],
+.choice-gate-options[data-choice-count='5'] {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.choice-gate-options[data-choice-count='3'] > .choice-gate-option:last-child {
+.choice-gate-options[data-choice-count='3'] > .choice-gate-option:last-child,
+.choice-gate-options[data-choice-count='5'] > .choice-gate-option:last-child {
   grid-column: 1 / -1;
 }
 

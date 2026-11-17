@@ -54,7 +54,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "저 전광판 사흘째 같은 광고 틀어."
+          text: "저 뒤 가게는 셔터를 내렸는데 광고에선 아직 문 열고 있네."
       - say:
           char: 윤재
           with: [로봇]
