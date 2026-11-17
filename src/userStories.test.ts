@@ -163,7 +163,7 @@ describe('owner story playthroughs', () => {
   it.each([
     ['erase_loop', { e3_final: eraseAll }],
     ['erased_name', {
-      e1_rumor: '농담을 그만하라고 한다',
+      e1_rumor: '농담을 끊으려고 준성을 깎아내린다',
       e2_dig: ['단톡방에 준성의 퇴사 이유를 묻는다', '검색을 그만두고 지수에게 답장한다'],
       e2_threat: '준성에게 경고한다',
       e3_final: eraseAll,

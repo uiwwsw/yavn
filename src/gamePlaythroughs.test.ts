@@ -274,7 +274,9 @@ describe('ERASE', () => {
     expect(name).toBe('???');
     expect(resolvePlayerCharacterId(opening.game, name, opening.routeVars)).toBeUndefined();
 
-    const { state } = await play({}, state => state.currentSceneId === 'studio');
+    const { state, shown } = await play({}, state => state.currentSceneId === 'studio');
+    expect(shown).toContain('결혼식 4주 전 · 청첩장 촬영');
+    expect(heard(shown, '휴대전화는 돌려')).toBe(false);
     const revealed = resolvePlayerName(state.game, state.currentSceneId, state.routeVars);
     expect(revealed).toBe('한도윤');
     expect(resolvePlayerCharacterId(state.game, revealed, state.routeVars)).toBe('도윤');
@@ -283,7 +285,7 @@ describe('ERASE', () => {
   it('새벽에 아무것도 안 지우면 남은 것이 1·3·4장에서 돌아온다', async () => {
     await start('erase');
     const run = await play({
-      e0_studio: '숨기는 게 없다고 한다',
+      e0_studio: '오늘 보낼 수 있다고 한다',
       e0_junseong: '잔을 받는다',
       e0_erase: '방을 나간다',
       e1_rumor: '농담에 맞장구친다',
@@ -300,7 +302,7 @@ describe('ERASE', () => {
     });
     finished(run);
     expect(heard(run.shown, '번호를 저장하지 않으면 연락처에서는 안 뜬다')).toBe(true);
-    expect(heard(run.shown, '뒤 네 자리가 지금 울리는 번호와 같다')).toBe(true);
+    expect(heard(run.shown, '전화가 온 번호도 같은 번호였다')).toBe(true);
     expect(heard(run.shown, '폰이 먼저 알아봤네')).toBe(true);
     expect(heard(run.shown, '내가 정리를 덜 한 거고')).toBe(true);
     expect(run.state.storyLog.filter((entry) =>
@@ -312,7 +314,7 @@ describe('ERASE', () => {
   it('셋 다 지우면 삼 주 전 새벽이 통째로 없다', async () => {
     await start('erase');
     const run = await play({
-      e0_studio: '카드값 이야기로 넘긴다',
+      e0_studio: '이번 달 카드값을 말한다',
       e0_junseong: '대리를 불렀다고 한다',
       e0_erase: '메시지||사진||위치 기록||방을 나간다',
       e1_rumor: '답장하지 않는다',
@@ -331,7 +333,7 @@ describe('ERASE', () => {
     expect(heard(run.shown, '손이 알아서 했다')).toBe(true);
     expect(heard(run.shown, '방금도 본 곳이다')).toBe(true);
     expect(heard(run.shown, '‘나도’에서 잠깐 멈춘다')).toBe(true);
-    expect(heard(run.shown, '뒤 네 자리가 지금 울리는 번호와 같다')).toBe(false);
+    expect(heard(run.shown, '전화가 온 번호도 같은 번호였다')).toBe(false);
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(false);
   });
 });
