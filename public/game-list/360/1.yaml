@@ -170,7 +170,7 @@ scenes:
       - goto: fire
 
   fire:
-    title: "정월 그믐"
+    title: "1월 30일 밤"
     actions:
       - bg: { id: market_fire, transition: fade, duration: 700 }
       - place: "1953년 1월 30일 밤 · 국제시장"
@@ -196,7 +196,7 @@ scenes:
       - say: { channel: record, with: [], text: "부산 국제시장. 단기 4286년 1월 30일 밤 화재. 점포 수천 호 소실. 사망 및 행방불명 다수." }
       - mood: off
       - bg: { id: busan_shack, transition: fade, duration: 1000 }
-      - place: "사흘 뒤 · 판잣집"
+      - place: "3일 뒤 · 판잣집"
       - say:
           char: 영호
           with: [순임]
@@ -228,7 +228,7 @@ scenes:
 
   mother_choice_intro:
     actions:
-      - place: "이월 · 새벽 네 시"
+      - place: "2월 · 새벽 4시"
       - char: { id: 순임, position: left }
       - char: { id: 시어머니, position: right }
       - say: { channel: action, with: [시어머니], text: "어머이는 보따리를 싸는 동안 눈을 감고 있었다. 방문을 여는 소리가 나자 벽 쪽으로 돌아누웠다." }
@@ -290,17 +290,17 @@ scenes:
   train:
     actions:
       - say: { channel: action, with: [], text: "판잣집 문이 등 뒤에서 닫힌다. 영호의 손을 잡고 기차역 쪽으로 언덕을 내려간다. 영호는 한 번도 뒤를 보지 않았다." }
-      - say: { channel: card, with: [], text: "1967년 삼월\n서울 영등포" }
+      - say: { channel: card, with: [], text: "1967년 3월\n서울 영등포" }
       - goto: seoul
 
   seoul:
     title: "영등포"
     actions:
       - bg: { id: seoul_room, transition: fade, duration: 1000 }
-      - place: "1967년 삼월 · 영등포 셋방"
+      - place: "1967년 3월 · 영등포 셋방"
       - char: { id: 순임, position: left }
       - char: { id: 청년영호, position: right }
-      - say: { char: 청년영호, with: [순임], text: "엄마, 약 드세요. 공장 의무실에서 솜먼지를 십사 년이나 들이마셨으니 폐가 성할 턱이 없대요." }
+      - say: { char: 청년영호, with: [순임], text: "엄마, 약 드세요. 공장 의무실에서 솜먼지를 14년이나 들이마셨으니 폐가 성할 턱이 없대요." }
       - say: { char: 순임, with: [청년영호], text: "너는 수업 안 가고 왜 여기 있니. 등록금이 얼만데." }
       - say: { char: 청년영호, with: [순임], text: "오늘 휴강이에요. 아, 그리고 이거. 부산 영주동 동사무소에서 답장 왔어요." }
       - say: { channel: record, with: [청년영호], text: "회신. 귀하가 문의한 영주동 산 3번지 일대 가옥은 1953년 11월 화재로 전소됨. 문의하신 분은 이재민 명부에 없음." }

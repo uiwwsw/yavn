@@ -35,7 +35,7 @@ scenes:
           with: []
           camera: wide
           sound: paper
-          text: "정조 십육년 구월 스무하루. 한성 남부 훈도방. 분이, 열아홉. 익사로 신고됨."
+          text: "정조 16년 9월 21일. 한성 남부 훈도방. 분이, 19세. 익사로 신고됨."
       - char: { id: 서연, position: left }
       - say:
           channel: thought
@@ -94,7 +94,7 @@ scenes:
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "정말 한글이네. 난 사십 년을 그림만 봤는데."
+          text: "정말 한글이네. 난 40년을 그림만 봤는데."
       - char: { id: 도원, position: center }
       - say:
           channel: action

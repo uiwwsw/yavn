@@ -13,7 +13,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "일 층 로비에 안내 데스크가 있었던 자리만 바닥 색이 다르다. 유리문은 손으로 밀면 열린다."
+          text: "1층 로비에 안내 데스크가 있었던 자리만 바닥 색이 다르다. 유리문은 손으로 밀면 열린다."
       - say:
           channel: message
           side: them
@@ -59,7 +59,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "코트 안에 아직 유니폼을 입고 있다. 집에 들러 갈아입으려면 아홉 시 반 오픈에 늦겠다."
+          text: "코트 안에 아직 유니폼을 입고 있다. 집에 들러 갈아입으려면 오전 9시 30분 오픈에 늦겠다."
       - say:
           channel: system
           with: []
@@ -121,7 +121,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "일 년 반 전에 끊었다. 그런데 팬이 돈다."
+          text: "1년 반 전에 끊었다. 그런데 팬이 돈다."
       - say:
           channel: action
           with: []
@@ -216,7 +216,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "0002와 0003은 이 분 차이다. 0001은 그보다 칠 년 반이나 앞서 있다."
+          text: "0002와 0003은 2분 차이다. 0001은 그보다 7년 반이나 앞서 있다."
       - goto: log_steps
 
   log_steps:
@@ -258,7 +258,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "거의 열두 해 동안 매일 한 번씩 ‘못 했다’고 적힌 셈이다."
+          text: "거의 12년 동안 매일 한 번씩 ‘못 했다’고 적힌 셈이다."
       - say:
           channel: record
           with: []
@@ -303,7 +303,7 @@ scenes:
       - say:
           channel: thought
           when: { var: hesitated, op: eq, value: true }
-          text: "사십일 초. 숫자를 읽자 손바닥에 다시 그 연필이 닿는 것 같다."
+          text: "41초. 숫자를 읽자 손바닥에 다시 그 연필이 닿는 것 같다."
       - say:
           channel: thought
           when: { var: hesitated, op: eq, value: false }
@@ -502,7 +502,7 @@ scenes:
       - say:
           channel: thought
           when: { var: called_mom, op: eq, value: true }
-          text: "다섯 시 십 분 첫차면 내가 돌아와 있을 때 어머님이 오겠네."
+          text: "5시 10분 첫차면 내가 돌아와 있을 때 어머님이 오겠네."
       - say:
           channel: thought
           when: { var: called_mom, op: eq, value: false }
@@ -697,7 +697,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "전원 버튼을 길게 누른다. 화면이 꺼지는 데 사 초 걸린다."
+          text: "전원 버튼을 길게 누른다. 화면이 꺼지는 데 4초 걸린다."
       - say:
           channel: action
           with: []
@@ -848,7 +848,7 @@ scenes:
           channel: action
           with: []
           sound: fan_stop
-          text: "모니터가 꺼진다. 팬이 느려지다 멎는다. 사월 새벽의 지하는 춥다."
+          text: "모니터가 꺼진다. 팬이 느려지다 멎는다. 4월 새벽의 지하는 춥다."
       - say:
           channel: record
           with: []
@@ -927,7 +927,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "오후 두 시 오십이 분."
+          text: "오후 2시 52분."
       - say:
           char: 해수
           with: [은숙]
@@ -940,16 +940,16 @@ scenes:
           char: 은숙
           motion: nod
           with: [해수]
-          text: "이천십구 년, 사 월, 십일 일."
+          text: "2019년… 4월 11일."
       - say:
           char: 은숙
           motion: nod
           with: [해수]
-          text: "십사 시 오십이 분. …적었어요."
+          text: "14시 52분. …적었어요."
       - say:
           char: 해수
           with: [은숙]
-          text: "일한 건 열두 해인데 화면엔 다섯 줄이었어요."
+          text: "12년을 일했는데 화면엔 다섯 줄이었어요."
       - say:
           char: 은숙.sharp
           with: [해수]
@@ -995,7 +995,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "메모는 4월 17일 오후 한 시 이 분. 내가 3단계를 끝낸 건 그다음 날 새벽이었다."
+          text: "메모는 4월 17일 오후 1시 2분. 내가 3단계를 끝낸 건 그다음 날 새벽이었다."
       - say:
           channel: thought
           with: []

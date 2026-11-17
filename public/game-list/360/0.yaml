@@ -307,7 +307,7 @@ scenes:
     title: "학질"
     actions:
       - bg: { id: jemulpo_room, transition: fade, duration: 900 }
-      - place: "열흘 뒤 · 안채"
+      - place: "10일 뒤 · 안채"
       - move: { id: 끝순, style: reset }
       - char: { id: 만석, position: left }
       - char: { id: 끝순, position: center, emotion: sick }
@@ -387,7 +387,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "약 먹이고, 밤에 물수건 갈아 줘라. 사흘이다." }
       - say: { char: 봉구, with: [만석], motion: nod, text: "예. 다녀오십시오." }
       - bg: { id: jemulpo_yard, transition: fade, duration: 1200 }
-      - place: "사흘 뒤 저녁 · 객주 마당"
+      - place: "3일 뒤 저녁 · 객주 마당"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
       - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: false }, text: "수결했다. 사천오백 냥이다." }
@@ -461,7 +461,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "됐다. 애가 일어났으면 됐다." }
       - say: { channel: action, with: [], text: "가을에 외상을 갚은 집은 두 집이었다. 햇곡이 풀리자 쌀값은 닷 냥이 됐다." }
       - say: { channel: action, with: [], text: "맡은 쌀을 제 날짜에 못 내줬다. 강경 윤 객주가 사람을 보냈다." }
-      - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 포구 뒷골목에 셋방을 얻고 거기서 네 해를 보냈다." }
+      - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 포구 뒷골목 셋방에서 4년을 보냈다." }
       - bg: { id: jemulpo_room, transition: fade, duration: 900 }
       - say: { char: 끝순, with: [만석], text: "아버지, 저 내일부터 왜인 정미소 나가요. 쌀에서 뉘 고르는 일인데 하루 열두 전이래요." }
       - say: { char: 만석, with: [끝순], text: "거긴 겨 먼지가 눈처럼 날린다더라. 네 기침에 거길 어찌 가." }
@@ -477,10 +477,10 @@ scenes:
       - goto: old_age
 
   old_age:
-    title: "시월"
+    title: "10월"
     actions:
       - bg: { id: jemulpo_room, transition: fade, duration: 1200 }
-      - place: "1910년 시월 · 제물포"
+      - place: "1910년 10월 · 제물포"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
       - say:

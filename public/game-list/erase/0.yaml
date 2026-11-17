@@ -34,7 +34,7 @@ scenes:
     actions:
       - bg: { id: photo_studio, transition: fade, duration: 520 }
       - music: studio
-      - place: "결혼식 한 달 전 · 청첩장 촬영"
+      - place: "결혼식 1개월 전 · 청첩장 촬영"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say: { char: 지수, with: [도윤], text: "눈 떠. 아직 안 찍었어. 턱 좀 당겨 봐. 응, 거기." }
@@ -200,7 +200,7 @@ scenes:
           with: []
           text: "빨래는 내가 걷었다"
       - bg: { id: club, transition: cut }
-      - place: "토요일 오전 0:40 · 클럽"
+      - place: "토요일 00:40 · 클럽"
       - say:
           channel: message
           side: me

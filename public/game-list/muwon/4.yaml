@@ -13,7 +13,7 @@ scenes:
       - set: { credibility: 3, truth: 0 }
       - say:
           channel: record
-          text: "시월 초하루. 형조 대청. 피고 전의감 의관 한명재. 고발인 한성부 판관 김도원."
+          text: "10월 1일. 형조 대청. 피고 전의감 의관 한명재. 고발인 한성부 판관 김도원."
       - say:
           channel: action
           with: []

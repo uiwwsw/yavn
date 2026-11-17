@@ -22,11 +22,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "골목에서 여기까지 이백 미터야."
+          text: "골목에서 여기까지 200m야."
       - say:
           char: 윤재
           with: [로봇]
-          text: "이백 미터를 두 시간 걸렸어. 두 시간."
+          text: "200m 오는 데 두 시간이나 걸렸어. 두 시간."
       - music: chip_home
       - say:
           char: 윤재
@@ -558,7 +558,7 @@ scenes:
           speakerName: "안드로이드"
           motion: headtilt
           with: [윤재]
-          text: "열한 자리."
+          text: "11자리."
       - say:
           char: 로봇
           speakerName: "안드로이드"

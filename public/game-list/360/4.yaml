@@ -21,7 +21,7 @@ scenes:
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: false }
-          text: "사백열두 부. 목포행 버스. 엽서 한 장."
+          text: "412부. 목포행 버스. 엽서 한 장."
       - say:
           channel: narration
           when: { var: l4_refuted, op: eq, value: true }
@@ -45,7 +45,7 @@ scenes:
       - say: { channel: narration, text: "누가 그런 말을 했는지 안다. 얼굴도 기억난다." }
       - say: { channel: narration, text: "열여섯 살이었다. 웃을 때 왼쪽 눈이 먼저 감겼다." }
       - say: { channel: narration, text: "낮은 목소리로 내게 가르쳐 주듯 천천히 말한다." }
-      - say: { channel: narration, text: "사백 개 목소리를 귀로 외웠다. 이건 그중에 없다." }
+      - say: { channel: narration, text: "목소리 400개를 귀로 외웠다. 이건 그중에 없다." }
       - goto: leak_two
 
   leak_two:
@@ -155,7 +155,7 @@ scenes:
       - effect: focus
       - say: { channel: narration, text: "일흔아홉 해가 아니다." }
       - say: { channel: narration, text: "쉰여섯. 마흔넷. 열일곱. 일흔아홉." }
-      - say: { channel: narration, text: "합하면 백아흔여섯 해다. 각자 살다 죽던 날까지 다 기억난다." }
+      - say: { channel: narration, text: "다 합하면 196년이다. 각자 살다 죽던 날까지 다 기억난다." }
       - say: { channel: narration, text: "그보다 먼저 살았던 날도 있다." }
       - say: { channel: narration, text: "그건 몇 해나 살았는지 셀 수 없다. 어느 겨울만 떠오른다." }
       - say: { channel: narration, text: "움집 바닥에 재가 식어 있었다. 독 밑바닥에는 좁쌀 두 줌." }
@@ -191,10 +191,10 @@ scenes:
           when: { var: t_dare, op: eq, value: true }
           text: "339.4"
       - say: { channel: narration, text: "소수점 아래 한 자리까지 적힌 숫자 셋. 같은 건 없다." }
-      - say: { channel: narration, text: "방송을 만들던 해 삼월, 이걸 자막으로 쓰자는 얘기가 나왔다." }
+      - say: { channel: narration, text: "방송을 만들던 해 3월, 이걸 자막으로 쓰자는 얘기가 나왔다." }
       - say: { channel: record, text: "녹취 07. 유정림(71, 전 수학 교사). \"나는 그걸 각도라고 불러. 지구본에 점 하나 찍는 거지.\"" }
       - say: { channel: record, text: "\"옆 사람하고 0.001도 차이일 수도 있어요. 그래도 같은 점은 없어. 360도 어디에도.\"" }
-      - say: { channel: narration, text: "유 선생님은 수학을 사십 년 가르쳤다. 그 말을 할 때 손가락으로 지구본을 한 바퀴 돌렸다." }
+      - say: { channel: narration, text: "유 선생님은 수학을 40년 가르쳤다. 그 말을 할 때 손가락으로 지구본을 한 바퀴 돌렸다." }
       - say: { channel: narration, text: "차 피디가 좋아했다. 2부 제목으로 쓰자고 했다. 같은 점은 없다." }
       - say: { channel: narration, text: "그땐 한 사람이 지나온 자리 여러 개를 다 확인해 볼 길이 없었다." }
       - say: { channel: narration, text: "지금 셋을 본다. 셋 다 한 사람 것이다." }
@@ -315,7 +315,7 @@ scenes:
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: false }
-          text: "다른 하나는 녹취 원본이다. 내 손에 뒀지만, 책은 사백열두 부밖에 팔리지 않았다."
+          text: "다른 하나는 녹취 원본이다. 내 손에 뒀지만, 책은 412부밖에 팔리지 않았다."
       - say: { channel: narration, text: "김치통 쪽으로 기울면 223.7이다." }
       - say: { channel: narration, text: "원본 쪽으로 기울면 041.2다." }
       - say: { channel: narration, text: "앞에서 본 세 숫자에는 없는 자리다." }

@@ -74,7 +74,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "안 보여요. 정해수 씨는 그날 밤 열한 시에 들어가서 아침 여섯 시 사십에 나왔어요."
+          text: "안 보여요. 정해수 씨는 그날 밤 11시에 들어가서 다음 날 오전 6시 40분에 나왔어요."
       - say:
           char: 해수
           with: [은숙]
@@ -539,7 +539,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "일 년 반 동안 숫자가 그대로예요. 말이 안 되잖아요."
+          text: "1년 반 동안 숫자가 그대로예요. 말이 안 되잖아요."
       - say:
           char: 태민
           with: [해수]
@@ -635,7 +635,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "일 년 반 동안 숫자가 그대로예요."
+          text: "1년 반 동안 숫자가 그대로예요."
       - say:
           char: 해수
           with: [태민]
@@ -1149,11 +1149,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "막차가 열두 시 십이 분이다. 가면 돌아올 차가 없다."
+          text: "막차는 0시 12분이다. 가면 돌아올 차가 없다."
       - say:
           channel: thought
           with: []
-          text: "내일 오픈이 아홉 시 반이다. 첫차는 다섯 시 반."
+          text: "내일 문 여는 건 오전 9시 30분. 7호선 첫차는 오전 5시 30분."
       - say:
           channel: thought
           with: []

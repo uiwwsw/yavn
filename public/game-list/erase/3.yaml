@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29 · 결혼 열흘 전"
+          text: "현재\n한도윤 · 29세 · 결혼 10일 전"
       - place: "수요일 저녁 · 퇴근길"
       - say:
           channel: message
@@ -473,7 +473,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "열한 해 전\n유하린 · 18"
+          text: "11년 전\n유하린 · 18세"
       - bg: { id: science_room, transition: cut }
       - place: "며칠 뒤 · 과학실, 생물 수행평가"
       - char: { id: 하린, position: center, emotion: blank }
@@ -611,7 +611,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29 · 결혼 아흐레 전"
+          text: "현재\n한도윤 · 29세 · 결혼 9일 전"
       - bg: { id: couple_home, transition: cut }
       - music: static
       - place: "목요일 밤 · 도윤과 지수의 집"

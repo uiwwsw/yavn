@@ -53,7 +53,7 @@ scenes:
   mom_visit:
     title: "수치"
     actions:
-      - place: "구월 이십육일 · 아침 여섯 시"
+      - place: "9월 26일 · 오전 6시"
       - char: { id: 민재, position: left }
       - char: { id: 엄마, position: right }
       - say: { char: 엄마, with: [민재], text: "민재야, 갈치 조렸다. 가시 다 발랐어." }
@@ -131,7 +131,7 @@ scenes:
   closing_night:
     title: "폐막식"
     actions:
-      - place: "시월 이일 · 밤 열 시 이십 분"
+      - place: "10월 2일 · 밤 10시 20분"
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "간호사 교대가 열 시 반이야. 지금 나가면 그 전에 정문까지 갈 수 있어. 택시비는 내가 낼게." }
@@ -200,7 +200,7 @@ scenes:
     actions:
       - set: { l3_went: true }
       - bg: { id: hangang_night, transition: fade, duration: 1000 }
-      - place: "밤 열한 시 · 동호대교 아래 둔치"
+      - place: "밤 11시 · 동호대교 아래 둔치"
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
       - effect: moonveil
@@ -215,7 +215,7 @@ scenes:
       - say: { channel: action, with: [], text: "따라 고개를 들었다. 눈앞에서 초록 불빛이 퍼지고, 한참 뒤에 쿵 소리가 왔다." }
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
-      - say: { channel: thought, with: [], text: "열한 시 사십 분. 여섯 시까지 여섯 시간 이십 분." }
+      - say: { channel: thought, with: [], text: "밤 11시 40분. 아침 6시까지 6시간 20분." }
       - bg: { id: ward, transition: fade, duration: 1000 }
       - goto: consent
 
@@ -229,11 +229,11 @@ scenes:
       - say: { channel: action, with: [], text: "병실 문이 한 뼘 열려 있다. 그 틈으로 복도가 보인다." }
       - char: { id: 엄마, position: left }
       - char: { id: 의사, position: right }
-      - say: { channel: record, with: [], text: "동종 골수이식 시행 동의서. 공여자 적합 검사 결과 동봉. 예상 비용 금 팔백만 원정." }
+      - say: { channel: record, with: [], text: "동종 골수이식 시행 동의서. 공여자 적합 검사 결과 동봉. 예상 비용 800만 원." }
       - say: { char: 엄마, with: [의사], text: "선생님." }
       - say: { char: 엄마, with: [의사], text: "팔백이면… 저희 가게를 넘겨도 사백입니다." }
       - say: { char: 의사, with: [엄마], text: "어머님. 성공률을 먼저 들으셔야 합니다." }
-      - say: { char: 의사, with: [엄마], text: "이 경우 삼십에서 사십 퍼센트입니다." }
+      - say: { char: 의사, with: [엄마], text: "이 경우 성공률은 30~40%입니다." }
       - wait: 900
       - say: { char: 엄마, with: [의사], motion: droop, text: "…" }
       - say: { char: 엄마, with: [의사], text: "안 하면요." }
@@ -276,7 +276,7 @@ scenes:
   # 전환점. 여기서 처음으로 인물이 자기한테 적이 있다는 걸 안다.
   noticed_body:
     actions:
-      - place: "그날 밤을 넘긴 새벽 두 시 · 6인실"
+      - place: "다음 날 새벽 2시 · 6인실"
       - say: { channel: thought, with: [], text: "천장에 복도 불빛이 들어온다. 눈을 감아도 잠이 오지 않는다." }
       - say: { channel: thought, with: [], text: "그날 누나가 내민 잠바 생각을 또 한다. 손을 뻗은 건 맞는데." }
       - say: { channel: action, with: [], text: "오른손을 들어 본다. 올라갔다 내려오고, 또 올라간다." }
@@ -296,7 +296,7 @@ scenes:
   october:
     title: "빈 침대"
     actions:
-      - place: "시월 이십일일 · 6인실"
+      - place: "10월 21일 · 6인실"
       - char: { id: 민재, position: left }
       - char: { id: 엄마, position: right }
       - say: { char: 민재, with: [엄마], text: "엄마, 수경 누나 침대 시트 왜 걷었어요. 무균실 갔다가 온다 그랬는데." }
@@ -335,7 +335,7 @@ scenes:
       - say: { channel: thought, with: [], text: "누나는 이 좁은 종이에 다리 끝까지 다 그렸다." }
       - say: { channel: action, with: [], text: "다리 위의 점 하나를 엄지로 문질러 본다. 잉크는 번지지 않는다." }
       - clearSticker: { id: sketch, leave: fadeOut }
-      - place: "십일월 이십구일"
+      - place: "11월 29일"
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
       - say: { char: 민재, with: [엄마], text: "떡볶이. 대학로에 누나가 맨날 말하던 집." }
       - say: { char: 엄마, with: [민재], text: "나으면 가자. 엄마가 사 줄게. 순대도." }

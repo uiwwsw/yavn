@@ -12,7 +12,7 @@ scenes:
       - music: pressure
       - say:
           channel: record
-          text: "구월 스무사흘. 포도청 남옥. 약방에 불을 지르고 주인을 죽였다는 혐의로 짐꾼 덕구가 갇혀 있다."
+          text: "9월 23일. 포도청 남옥. 약방에 불을 지르고 주인을 죽였다는 혐의로 짐꾼 덕구가 갇혀 있다."
       - say:
           channel: action
           with: []

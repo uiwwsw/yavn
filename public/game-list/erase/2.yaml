@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29 · 결혼 3주 전"
+          text: "현재\n한도윤 · 29세 · 결혼 3주 전"
       - bg: { id: couple_home, transition: fade, duration: 900 }
       - music: static
       - place: "토요일 오전 · 도윤과 지수의 집"
@@ -580,7 +580,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "열한 해 전\n유하린 · 18"
+          text: "11년 전\n유하린 · 18세"
       - goto: e2_harin
 
   e2_harin:
@@ -656,7 +656,7 @@ scenes:
           with: [아진, 민재]
           text: "아진아 떡볶이는 내일. 내일은 진짜 가는 거다?"
       - move: { id: 하린, toward: camera, style: retreat }
-      - place: "십 분 뒤 · 3학년 교실 뒷문"
+      - place: "10분 뒤 · 3학년 교실 뒷문"
       - move: { id: 민재, toward: 아진, style: approach }
       - say:
           char: 아진.awkward

@@ -37,7 +37,7 @@ scenes:
     title: "자료를 보내는 날"
     actions:
       - bg: studio
-      - place: "사흘 뒤 · 지역 뉴스"
+      - place: "3일 뒤 · 지역 뉴스"
       - char: { id: 수경, position: right }
       - say: { channel: action, with: [], text: "기자가 자막에 아버지 병동을 넣어도 되느냐고 묻는다. 지완은 카메라 앞 의자에 앉아 고개를 젓는다." }
       - say: { char: 지완, with: [], text: "제 이름이랑 제 판독 결과는 내보내세요. 같은 병실에 계신 분들 이름은 빼 주시고요." }

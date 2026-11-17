@@ -12,7 +12,7 @@ scenes:
       - music: night_well
       - say:
           channel: record
-          text: "구월 스무닷새 밤. 한강 변 서빙고. 한성부 서리 윤길, 얼음 더미 사이에서 발견."
+          text: "9월 25일 밤. 한강 변 서빙고. 한성부 서리 윤길, 얼음 더미 사이에서 발견."
       - say:
           channel: action
           with: []

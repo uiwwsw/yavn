@@ -13,7 +13,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "FINAL STAGE\n식량 원정에서 돌아온 지 나흘"
+          text: "FINAL STAGE\n식량 원정에서 돌아온 지 4일"
       - place: "북쪽 데이터센터 · 코어 본체 앞"
       - say:
           char: 윤재
@@ -370,8 +370,8 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "8KB. 하나. 설명서 3쪽." }
       - say: { char: 윤재, with: [로봇], text: "…덮어써. 어차피 그 점수로 이어 할 일 없잖아." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "쓰임. 십 년 뒤에 네가 다시 하면 거기서 시작함." }
-      - say: { char: 윤재.sad, with: [로봇], text: "십 년 뒤에 그 게임기 없어. 네가 그 게임기야." }
+      - say: { char: 로봇, with: [윤재], text: "쓰임. 10년 뒤에 네가 다시 하면 거기서 시작함." }
+      - say: { char: 윤재.sad, with: [로봇], text: "10년 뒤에 그 게임기 없어. 네가 그 게임기야." }
       - wait: 270
       - say: { char: 로봇.thinking, motion: freeze, with: [윤재], text: "…처리 중." }
       - say: { char: 로봇, with: [윤재], text: "맞음. 계산 끝. 덮어쓸 거 고르자." }
@@ -1065,5 +1065,5 @@ scenes:
           char: 윤재
           motion: laugh
           with: [로봇]
-          text: "가면서 설명해 줄게. 긴 얘기야. 한 삼십 초 걸려."
+          text: "가면서 설명해 줄게. 긴 얘기야. 한 30초 걸려."
       - ending: off_screen

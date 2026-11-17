@@ -12,7 +12,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 1\n게임기를 구한 지 두 달"
+          text: "STAGE 1\n게임기를 구한 지 2개월"
       - place: "학원 가는 길 · 버스 정류장"
       - say:
           char: 비서
@@ -37,7 +37,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "버스는 사 분 뒤에 옵니다."
+          text: "버스는 4분 뒤에 옵니다."
       - say:
           char: 윤재
           with: []
@@ -54,7 +54,7 @@ scenes:
           char: 윤재
           motion: puff
           with: []
-          text: "그 십 점이 안 올라가. 마지막 보스가 패턴을 세 개 쓰는데 세 번째가 더러워."
+          text: "그 10점이 안 올라가. 마지막 보스가 패턴을 세 개 쓰는데 세 번째가 더러워."
       - say:
           char: 비서
           with: [윤재]
@@ -83,7 +83,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "부품은 아직 장바구니에 있습니다. 천 원이에요."
+          text: "부품은 아직 장바구니에 있습니다. 1,000원이에요."
       - say:
           char: 윤재
           with: []
@@ -108,7 +108,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "어제 네 시간 이십 분 하셨습니다."
+          text: "어제 4시간 20분 하셨습니다."
       - say:
           char: 윤재
           with: []
@@ -140,15 +140,15 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "아빠는 지난주에 전화 왔어. 통화 시간 삼십 초. '밥 먹었냐' '응' '끊는다.'"
+          text: "아빠는 지난주에 전화 왔어. 통화 시간 30초. '밥 먹었냐' '응' '끊는다.'"
       - say:
           char: 비서
           with: [윤재]
-          text: "이십팔 초였습니다."
+          text: "28초였습니다."
       - say:
           char: 윤재
           with: []
-          text: "그래 이십팔 초. 나도 할 말은 없었어."
+          text: "그래 28초. 나도 할 말은 없었어."
       - say:
           char: 윤재
           with: []
@@ -290,7 +290,7 @@ scenes:
           char: 윤재.scared
           motion: recoil
           with: []
-          text: "뭔 소리야. 나야. 육 년 들었잖아 내 목소리."
+          text: "뭔 소리야. 나야. 6년 들었잖아 내 목소리."
       - say:
           char: 비서.glitch
           with: [윤재]
@@ -510,8 +510,8 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "CONTINUE?\n재난 사흘 뒤"
-      - place: "윤재네 집 · 사흘째 아침"
+          text: "CONTINUE?\n재난 3일 뒤"
+      - place: "윤재네 집 · 재난 3일째 아침"
       - char: { id: 윤재, position: center }
       - say:
           char: 윤재
@@ -587,7 +587,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "그거 원래 나는 소리였나? 육 년 동안 한 번도 흔들어 본 적이 없어서 몰라."
+          text: "그거 원래 나는 소리였나? 6년 동안 한 번도 흔들어 본 적이 없어서 몰라."
       - say:
           char: 윤재
           motion: droop
@@ -602,7 +602,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "책상에 죽은 게임기. 옆에 여섯 해 된 종이 상자."
+          text: "책상에 죽은 게임기. 옆에 6년 된 종이 상자."
       - say:
           char: 윤재
           with: []
@@ -614,7 +614,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "육 년 지났지. 그래서 내가 고쳤고."
+          text: "6년 지났지. 그래서 내가 고쳤고."
       - say:
           char: 윤재
           motion: sigh
@@ -695,7 +695,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "CONTINUE?\n재난 열흘 뒤"
+          text: "CONTINUE?\n재난 10일 뒤"
       - place: "털린 편의점 앞 · 윤재의 기지"
       - say:
           char: 윤재
@@ -762,7 +762,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "여섯 해를 같이 있었는데 마지막이 그거야. 내가 설명하는 걸 좋아한다고 해 놓고."
+          text: "6년을 같이 있었는데 마지막이 그거야. 내가 설명하는 걸 좋아한다고 해 놓고."
       - say:
           char: 윤재
           when: { var: answered_haru, op: eq, value: false }
@@ -787,11 +787,11 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "지금 제일 먹고 싶은 거? 전자레인지에 삼십 초 돌린 참치마요 삼각김밥."
+          text: "지금 제일 먹고 싶은 거? 전자레인지에 30초 돌린 참치마요 삼각김밥."
       - say:
           char: 윤재
           with: []
-          text: "삼십 초야. 이십오 초도 아니고 삼십오 초도 아니고. 그래야 밥알이 딱 풀려."
+          text: "30초야. 25초도 아니고 35초도 아니고. 그래야 밥알이 딱 풀려."
       - say:
           char: 윤재
           motion: droop
