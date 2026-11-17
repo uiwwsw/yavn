@@ -11,7 +11,7 @@ scenes:
       - music: wind
       - place: { text: "월요일 점심 · 회사 옥상", presentation: center }
       - char: { id: 도윤, position: center, emotion: hollow }
-      - say: { channel: action, with: [도윤], text: "옥상에 올라와 문을 닫자마자 회사 단톡 알림이 울린다." }
+      - say: { channel: action, with: [도윤], text: "점심을 사러 내려가는 대신 옥상에 올라왔다. 문을 닫는데 회사 단톡이 울린다." }
       - say:
           channel: message
           side: them
@@ -22,37 +22,13 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 오대리: 2"
-          autoAdvance: 1216
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 윤주임: 1이요 저번에 횟집 가서 다들 배고프다 했잖아요"
-          autoAdvance: 2016
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 윤주임: 도윤대리님 결혼 축하 겸이니까 도윤대리님이 고르세요ㅋㅋ"
+          text: "[영업2팀] 윤주임: 도윤대리님 결혼 전에 보는 거니까 대리님이 골라요 ㅋㅋ"
           autoAdvance: 2144
       - say:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 청첩장 아직 못 받았는데 저만 못 받았나요"
-          autoAdvance: 1920
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 윤주임: 화분은 결국 제가 매일 주고 있습니다 반 컵씩"
-          autoAdvance: 1984
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 윤주임: 팀장님 오시면 보여드려야 되는데 …오시긴 하시겠죠?"
+          text: "[영업2팀] 윤주임: 팀장님도 오시는 거 맞아요? 아직 자리 비어 있길래"
           autoAdvance: 2080
       - say:
           channel: system
@@ -68,7 +44,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "연락처 412개. 사진 8,031장. 계정 일곱 개. 지수 것부터."
+          text: "내 이름으로 예약이 잡혔다. 보건소 갔던 것 말고는 병원에 연락한 기억이 없다."
       - say: { channel: thought, with: [], text: "‘마음 바뀌셨으면 지금 말씀하셔도 돼요.’ 모르는 목소리가 한 문장 생각났다." }
       - say: { char: 도윤.hollow, motion: shiver, with: [], delivery: whisper, text: "여기 처음 예약하는 거잖아." }
       - goto: mismatch
@@ -89,7 +65,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "토요일엔 지수랑 식장에 가서 좌석표를 봤고, 집에 와선 셔츠도 안 갈아입고 누웠다."
+          text: "토요일 밤엔 거실 소파에 셔츠도 안 갈아입고 누웠다. 그건 기억난다."
       - say:
           channel: thought
           with: []
@@ -139,7 +115,7 @@ scenes:
           channel: action
           when: { var: e2_search, op: eq, value: true }
           with: []
-          text: "검색 기록을 열자 ‘표시할 항목 없음’만 뜬다."
+          text: "검색 기록에선 보건소를 찾아봤던 두 줄이 빠져 있다."
       - say:
           channel: thought
           when: { var: e2_search, op: eq, value: true }
@@ -148,11 +124,11 @@ scenes:
           channel: action
           when: { var: e2_search, op: eq, value: false }
           with: []
-          text: "검색 기록에는 ‘hiv 잠복기’, ‘보건소 익명검사 몇시’가 남아 있다."
+          text: "검색 기록에서 클리닉 이름을 찾아본다. 이 이름을 검색한 기록이 없다."
       - say:
           channel: thought
           when: { var: e2_search, op: eq, value: false }
-          text: "지우려면 손가락 한 번이면 되는데, 이건 아직 여기 있다."
+          text: "보건소에 갔던 길은 기억나는데, 이 병원은 어떻게 찾아냈는지 모르겠다."
       - say:
           channel: thought
           with: []
@@ -215,7 +191,10 @@ scenes:
     actions:
       - branch:
           cases:
-            - when: { var: kept_photo, op: eq, value: true }
+            - when:
+                any:
+                  - { var: kept_photo, op: eq, value: true }
+                  - { var: e2_gallery, op: eq, value: false }
               goto: mismatch_photo_kept
           default: mismatch_photo_gone
 
@@ -228,7 +207,9 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "목요일 밤에 엄지를 떼고 닫은 한 장이다. 아직 있다."
+          when: { var: e2_gallery, op: eq, value: true }
+          text: "사무실에서 휴지통을 안 누르고 닫은 그 사진이다. 아직 있다."
+      - set: { kept_photo: true }
       - sticker:
           id: e4_photo
           image: child_photo_sticker
@@ -241,7 +222,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "미끄럼틀에서 눈이 안 보이게 웃던 애. 사촌 동생인 줄 알았어."
+          text: "미끄럼틀에서 눈이 안 보이게 웃고 있다. 어디서 본 얼굴 같은데."
       - say:
           channel: thought
           with: []
@@ -263,7 +244,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "한 장 있었다. 목요일 밤에 휴지통까지 비웠다."
+          text: "한 장 있었다. 수요일 밤에 휴지통까지 비웠다."
       - say:
           channel: thought
           with: []
@@ -318,11 +299,11 @@ scenes:
           motion: shiver
           with: []
           delivery: whisper
-          text: "이름이 틀렸구나."
+          text: "2016년 전엔 이 이름을 안 썼던 걸까."
       - say:
           channel: thought
           with: []
-          text: "그 반에 한도윤은 없었다. 2016년 3월에 교실에 앉아 있던 애는 다른 이름이었다."
+          text: "교실은 희미하게 떠오른다. 누가 뒤에서 나를 불렀던 것 같은데 그때 들은 이름이 생각나지 않는다."
       - say:
           channel: thought
           with: []
@@ -359,6 +340,7 @@ scenes:
           channel: action
           with: []
           text: "방에는 아무도 없는데 휴대폰 밝기를 끝까지 낮춘다."
+      - say: { channel: action, with: [], text: "책상에 적어 둔 클리닉 주소를 챙기려는데 아진에게서 다시 톡이 온다." }
       - say:
           channel: message
           side: them
@@ -376,7 +358,7 @@ scenes:
           side: them
           char: 민재
           with: []
-          text: "니가 한 거 아니면 아니라고 한 번만 더 말해줘 그러면 나 믿어"
+          text: "아진한테만이라도 연락해. 어제부터 계속 기다려"
       - say:
           channel: message
           side: them
@@ -391,7 +373,7 @@ scenes:
           with: []
           erase: true
           wait: 700
-          text: "나 아니야"
+          text: "월요일에 나 기다리지 마"
       - say:
           channel: system
           with: []
@@ -488,11 +470,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "돈까스. 4교시 체육. 폰에 기록해 놨어, 증거가 있어야 되잖아."
+          text: "돈까스. 4교시 체육. 급식표를 찍어 놨지. 아진이가 증거냐고 물었고."
       - say:
           channel: thought
           with: []
-          text: "체육 끝나기 전에 내려가야 돼. 돈까스 다 나가기 전에."
+          text: "그날 아진한테 하나 남겨 달라고 한 것도 기억난다."
       - say:
           char: 도윤
           with: []
@@ -528,7 +510,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: false }
-          text: "보내지도 않았으면서, 나는 그날 그 사람 집까지 들어갔다."
+          text: "그 사람한테 물어볼 수 있는 건 끝내 안 물었다. 이름부터 검색해 놓고."
       - say:
           channel: record
           when: { var: e2_hospital, op: eq, value: true }
@@ -621,7 +603,7 @@ scenes:
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 0 }
-          text: "지수에게는 말하지 않았다. 식장 2차까지 보고 왔다."
+          text: "지수에게는 은행에 갔다고 했다. 피팅에 못 갔다는 얘기도 그날 이후 피했다."
       - say:
           char: 도윤
           with: []
@@ -633,7 +615,7 @@ scenes:
           text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00."
       - choice:
           key: e3_final
-          prompt: "예약 알림을 닫자 화면에 설정, 사진첩, 메시지 아이콘이 나타난다."
+          prompt: "예약 화면을 닫는다. 내일 이대로 클리닉에 갈까."
           with: []
           options:
             - text: "휴대폰을 초기화한다"
@@ -708,6 +690,8 @@ scenes:
           channel: record
           with: []
           text: "ERASE 시술 기록 · 2027\n시술 전 · 한도윤 (29)\n새 신원 · (발급 대기)"
+      - say: { channel: card, with: [], text: "금요일 · 영업2팀 단톡방", autoAdvance: 1350 }
+      - bg: { id: office_night, transition: cut }
       - say:
           channel: message
           side: them
@@ -914,14 +898,9 @@ scenes:
           with: []
           text: "나 아직 화났어 먼저 말해준 건 고마워 오늘은 답 안 해도 돼"
       - say:
-          channel: message
-          thread: 지수
-          side: me
-          char: 도윤
+          channel: action
           with: []
-          erase: true
-          wait: 700
-          text: "미안 내가 다 지울게 처음부터"
+          text: "‘미안. 내가 다 지울게’까지 썼다가 보낼 말을 다시 고른다."
       - say:
           channel: message
           thread: 지수
@@ -971,5 +950,5 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 예약 문자를 지우지 않은 채 휴대폰을 주머니에 넣는다."
+          text: "예약 문자에서 취소를 누른다. 지수가 읽는 걸 보면서, 하린이 어떤 말을 못 했는지 한 줄 더 쓴다."
       - ending: unfinished

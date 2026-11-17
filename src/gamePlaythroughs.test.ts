@@ -346,6 +346,9 @@ describe('ERASE', () => {
       entry.kind === 'dialogue' && entry.sceneId === 'search' && entry.text === '안 와?')).toHaveLength(1);
     // 하린 sent the message she usually deletes, so 아진 brings it up eleven years earlier.
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(true);
+    expect(run.shown).toContain('나도 봤는데ㅋㅋ 나도 껴줘');
+    expect(run.shown).not.toContain('2016년 3월 아래 · 항목 없음');
+    expect(run.shown).toContain('청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아.');
   });
 
   it('셋 다 지우면 삼 주 전 새벽이 통째로 없다', async () => {
@@ -364,7 +367,7 @@ describe('ERASE', () => {
       e2_search: '검색창||사진첩||노트북을 덮는다',
       e2_photo: '사진을 완전히 삭제한다',
       e3_clinic: '검사받지 않고 나온다',
-      e2_jisu: '은행에 간다고 둘러댄다',
+      e2_jisu: '은행에 다녀왔다고 둘러댄다',
       e3_final: "휴대폰을 초기화한다",
     });
     finished(run);
@@ -375,6 +378,8 @@ describe('ERASE', () => {
     expect(heard(run.shown, '손이 알아서 했다')).toBe(true);
     expect(heard(run.shown, '방금도 본 곳이다')).toBe(true);
     expect(heard(run.shown, '‘나도’에서 잠깐 멈춘다')).toBe(true);
+    expect(run.shown).not.toContain('나도 봤는데ㅋㅋ 나도 껴줘');
+    expect(run.shown).toContain('2016년 3월 아래 · 항목 없음');
     expect(heard(run.shown, '전화가 온 번호도 같은 번호였다')).toBe(false);
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(false);
   });

@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재 · 결혼 10일 전\n영업2팀 사무실"
+          text: "현재 · 그 수요일 저녁\n영업2팀 사무실"
       - bg: { id: office, transition: cut }
       - place: "수요일 저녁 · 퇴근 직전"
       - char: { id: 도윤, position: left }
@@ -25,7 +25,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "송과장: 휴직 서류 우편함에만 넣어주면 돼 인사팀이 급하대 ㅠ"
+          text: "송과장: 휴직 서류 우편함에만 넣어주면 돼. 주소 보낼게"
       - say:
           channel: message
           side: me
@@ -41,7 +41,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "송과장: 주소 보냄"
+          text: "송과장: [주소] 오피스텔 9층이야"
       - say:
           channel: message
           side: me
@@ -85,7 +85,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "초인종을 세 번 눌러도 대답이 없는데, 현관문은 한 뼘쯤 열려 있다."
+          text: "봉투를 넣고 가려다 현관문이 한 뼘쯤 열려 있는 걸 본다. 초인종을 눌러도 대답이 없다."
       - say:
           char: 도윤
           motion: lean_in
@@ -174,7 +174,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 현관문을 처음처럼 한 뼘 열어 둔 채 휴직 서류를 우편함에 넣는다."
+          text: "안쪽에서 아무 소리도 안 난다. 도윤은 문을 그대로 두고 봉투만 우편함에 넣는다."
       - say:
           channel: message
           side: them
@@ -198,7 +198,7 @@ scenes:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
       - place: { text: "그날 밤 11시 40분 · 빈 사무실", presentation: center }
-      - say: { channel: action, with: [도윤], text: "도윤은 준성의 이름을 사내 기록에서 찾아보려고 회사로 돌아온다. 노트북을 켜자 휴대폰에 지수가 남긴 톡이 보인다." }
+      - say: { channel: action, with: [도윤], text: "준성에게 직접 물어볼 수가 없었다. 도윤은 조용히 보건소를 찾아볼 생각으로 회사에 돌아왔다. 노트북을 켜는데 지수의 톡이 보인다." }
       - say:
           channel: message
           thread: 지수
@@ -275,11 +275,11 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "전기장판 켜놓고 잘게 네 쪽도 켜놔"
+          text: "집에 오면 깨우지 마. 네 쪽 장판도 켜놨어"
       - choice:
           key: e2_search
           presentation: explore
-          prompt: "지수의 메시지 창을 내린다. 노트북의 검색창과 사진첩이 보인다."
+          prompt: "지수는 장판을 켜 두겠다고 했다. 도윤은 보건소를 찾아볼지, 그날 밤 휴대폰에 뭐가 남았는지부터 확인할지 망설인다."
           with: []
           camera: wide
           options:
@@ -301,38 +301,28 @@ scenes:
   e2_search_scene:
     actions:
       - say:
-          channel: message
-          side: me
+          channel: action
           with: []
-          text: "hiv 잠복기"
+          text: "검색창에 ‘hiv 잠복기’를 치고, 이어 ‘보건소 익명검사 몇시’를 검색한다."
       - say:
-          channel: message
-          side: them
+          channel: record
           with: []
           text: "질병관리청 · 꾸준한 치료로 혈중 바이러스가 미검출로 유지되면 성관계를 통해 전파되지 않습니다."
       - say:
-          channel: message
-          side: me
-          with: []
-          text: "보건소 익명검사 몇시"
-      - say:
-          channel: message
-          side: them
+          channel: record
           with: []
           text: "질병관리청 · 노출이 걱정된다면 가까운 보건소에서 익명·무료로 검사받을 수 있습니다. 꾸준히 치료하면 일상생활이 가능합니다."
       - say:
-          channel: message
-          side: me
+          channel: action
           with: []
-          erase: true
-          wait: 700
-          text: "크롬 검색기록 완전삭제 복구안되게"
+          text: "보건소 안내를 한 번 더 읽고 방금 검색한 두 줄을 기록에서 지운다."
       - add: { deleted: 3 }
       - set: { e2_search: true }
       - goto: search
 
   e2_gallery_scene:
     actions:
+      - say: { channel: action, with: [], text: "휴대폰 사진첩에서 그날 밤을 찾다가 오래된 사진까지 내린다. 맨 끝에 날짜 없는 사진 한 장이 걸린다." }
       - sticker:
           id: e2_photo
           image: gallery_photo_sticker
@@ -399,7 +389,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "오늘 드레스 2차 피팅 3시!! 늦으면 진짜 죽음"
+          text: "오늘 3시 피팅이야. 도착하면 연락 줘"
       - char: { id: 도윤, position: center }
       - say:
           channel: record
@@ -626,7 +616,7 @@ scenes:
           prompt: "지수가 식탁 위에 휴대폰을 엎어 놓는다."
           char: 지수
           options:
-            - text: "은행에 간다고 둘러댄다"
+            - text: "은행에 다녀왔다고 둘러댄다"
               saveText: "\"은행. 대출 서류 하나 빠졌대서.\""
               goto: e2_jisu_lie
             - text: "회사 소문만 이야기한다"
@@ -696,11 +686,11 @@ scenes:
   e2_jisu_all:
     actions:
       - say: { char: 도윤.hollow, with: [지수], text: "우리 사진 찍은 날 있잖아. 그날 밤에 클럽에서 만난 사람이랑 잤어.", wait: 650 }
-      - say: { char: 지수.cold, with: [도윤], text: "그날? 너 열두 시 전에 들어온다고 한 날?" }
+      - say: { char: 지수.cold, with: [도윤], text: "청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아." }
       - say: { char: 도윤, with: [지수], text: "…응. 그 사람이 준성 씨야. 우리 팀장님." }
       - say: { char: 지수.cold, with: [도윤], text: "그 뒤에도 만났어?" }
-      - say: { char: 도윤, with: [지수], text: "회사 밖에서는 안 만났어. 요즘은 회사에도 안 나와. 연락도 안 돼." }
-      - say: { char: 도윤.hollow, with: [지수], text: "회사에서 그 사람 병 얘기가 돌고 있어. 오늘은 그것 때문에 보건소에 갔어." }
+      - say: { char: 도윤, with: [지수], text: "그 뒤로는 회사에서만 봤어. 이번 주엔 출근도 안 하고 연락도 안 돼." }
+      - say: { char: 도윤.hollow, with: [지수], text: "회사에서 그 사람 병 얘기가 돌기 시작했어. 겁이 나서 오늘 보건소에 갔어." }
       - say: { channel: action, with: [지수, 도윤], text: "지수는 도윤 쪽으로 밀어 두었던 밥그릇에서 손을 뗀다." }
       - mood: { tone: grief, level: 1 }
       - say: { char: 지수.cold, with: [도윤], text: "검사는 받았어?" }
@@ -721,7 +711,7 @@ scenes:
           text: "그럼 다시 가. 오늘처럼 돌아오지 말고."
       - say: { char: 지수, with: [도윤], text: "식장 보러 다니면서, 사람들한테 청첩장 줄 얘기까지 하면서 나한텐 언제 말하려고 했어?" }
       - say: { char: 도윤.hollow, with: [지수], text: "네가 식장 얘기하면 나도 그냥 그 얘기만 했어. 그날 얘기 꺼냈다가 네가 어떻게 볼지 무서웠어." }
-      - say: { char: 지수, with: [도윤], text: "오늘 혼자 드레스 입고 기다리면서, 네가 오면 그냥 손부터 잡아야겠다 그랬어.", wait: 550 }
+      - say: { char: 지수, with: [도윤], text: "오늘 거울 앞에서 혼자 서 있었어. 네가 들어오면 이제 같이 고를 수 있겠다 싶어서 문만 보고 있었어.", wait: 550 }
       - say: { char: 도윤, with: [지수], text: "미안해." }
       - say: { char: 지수, with: [도윤], text: "토요일 피팅은 가지 마. 내일 식장에도 전화할 거야. 식을 미룰 수 있는지부터 물어볼게." }
       - say: { char: 도윤, with: [지수], text: "내가 전화할게." }
