@@ -355,6 +355,7 @@ describe('튜토리얼', () => {
     expect(heard(run.shown, '혼자 다 먹지도 못하면서 왜 사느냐고')).toBe(true);
     expect(heard(run.shown, '틀린 말은 아니더라. 혼자 그걸 다 먹을 수는 없지')).toBe(true);
     expect(heard(run.shown, '신고할 때 저 말을 그대로 따라 했대요')).toBe(true);
+    expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(false);
     // 상혁 opens the door a crack for someone who has been looking after him.
     expect(heard(run.shown, '밥 고맙다. 네 차례 아니었잖아')).toBe(true);
   });
@@ -409,6 +410,7 @@ describe('튜토리얼', () => {
     finished(run);
     expect(heard(run.shown, '나한테 지르지 말라는 거야')).toBe(true);
     expect(heard(run.shown, '무슨 말인지는 모르겠고 계속 지르기만 한다')).toBe(true);
+    expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(true);
     expect(heard(run.shown, '대답이 없다. 의자가 한 번 더 끌린다')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서')).toBe(false);
     expect(heard(run.shown, '밥 고맙다')).toBe(false);
@@ -454,9 +456,9 @@ describe('오버플로', () => {
       '정서 반응 01 · 무반응 의심', '아침에 장갑을 주워 준 여자가 앉아 있다',
       '월계역에서 장갑 떨어뜨린 사람', '01 뜬 분을 봤어요', '아침에 뵀죠?',
       '한수경이에요. 접수대에 뜬 그 화면, 제가 만들었어요.',
-      '시험 신호 101 → 표시 01', '여기도 이름은 안 넣을게요', '반만 얼리기로 했잖아요',
+      '시험 신호 101 → 표시 01', '저장하는 파일엔 이름을 안 넣을게요', '반만 얼리기로 했잖아요',
       '반찬집 아주머니 목소리가 나와서요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
-      '아까는 옆에 앉으라고 하셨잖아요', '공동 이의신청 접수', '반만 얼렸다',
+      '아까는 옆에 앉으라고 하셨잖아요', '제 것도 같이 내 주세요', '공동 이의신청 접수', '반만 얼렸다',
     ];
     const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
     expect(beats.filter((_, index) => positions[index] < 0)).toEqual([]);

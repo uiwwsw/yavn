@@ -9,6 +9,7 @@ scenes:
     title: "포도청 옥"
     actions:
       - bg: { id: jail, transition: fade, duration: 800 }
+      - place: "9월 23일 · 포도청 남옥"
       - music: pressure
       - say:
           channel: record

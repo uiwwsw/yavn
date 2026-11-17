@@ -9,6 +9,7 @@ scenes:
     title: "비단전 행수"
     actions:
       - bg: { id: hyeminseo, transition: fade, duration: 800 }
+      - place: "이튿날 아침 · 한성 혜민서"
       - music: inquest
       - say:
           channel: record

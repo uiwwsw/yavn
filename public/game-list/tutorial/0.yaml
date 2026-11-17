@@ -486,6 +486,7 @@ scenes:
     title: "휴게실"
     actions:
       - bg: { id: breakroom, transition: dissolve, duration: 700 }
+      - place: "같은 날 점심 · 027번 응대 뒤 · 휴게실"
       - char: { id: 지영, position: left }
       - char: { id: 경준, position: right }
       - say:

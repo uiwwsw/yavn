@@ -336,7 +336,7 @@ scenes:
           char: 준성
           when: { var: e2_leaked, op: eq, value: true }
           with: [도윤]
-          text: "오늘 점심시간에 내 얘기 많이 하던데요. 탕비실 벽이 얇아요."
+          text: "주말에 단톡에 제 얘기 쓰셨다면서요. 오늘도 점심 먹다 말고 다들 그 얘기를 하던데."
       - choice:
           key: e2_threat
           prompt: "7층 표시를 지나자 귀가 먹먹해진다."

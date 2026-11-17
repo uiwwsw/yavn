@@ -191,7 +191,7 @@ scenes:
       - clearSticker: { id: sketch, leave: fadeOut }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "점이네요, 진짜." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "멀리서 보면 다 점이야. 너도 왔으면 점 두 개였을 텐데." }
-      - say: { channel: action, with: [], text: "약봉지를 받아 베개 밑에 넣는다. 접힌 자리가 손에 걸린다." }
+      - say: { channel: action, with: [], text: "잠깐 빌려 본 약봉지를 누나에게 돌려준다. 누나는 더 그릴 자리가 남았는지 뒷면을 본다." }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "…누나. 다리는 언제 걸어요." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "퇴원하면. 너도 와. 양쪽 끝에서 시작해서 가운데서 만나는 거야." }
       - goto: consent
@@ -215,7 +215,7 @@ scenes:
       - say: { channel: action, with: [], text: "따라 고개를 들었다. 눈앞에서 초록 불빛이 퍼지고, 한참 뒤에 쿵 소리가 왔다." }
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
-      - say: { channel: thought, with: [], text: "밤 11시 40분. 아침 6시까지 6시간 20분. 엄마 오기 전에 병실로 돌아가려면 지금 가야 한다." }
+      - say: { channel: thought, with: [], text: "밤 11시 40분. 엄마 오기까지 6시간 20분이나 남았다. 그래도 이제 병실로 돌아가자고 해야겠다." }
       - bg: { id: ward, transition: fade, duration: 1000 }
       - goto: consent
 
@@ -278,12 +278,28 @@ scenes:
     actions:
       - place: "다음 날 새벽 2시 · 6인실"
       - say: { channel: thought, with: [], text: "천장에 복도 불빛이 들어온다. 눈을 감아도 잠이 오지 않는다." }
-      - say: { channel: thought, with: [], text: "그날 누나가 내민 잠바 생각을 또 한다. 손을 뻗은 건 맞는데." }
+      - say: { channel: thought, with: [], when: { var: l3_out_blocked, op: eq, value: true }, text: "그날 누나가 내민 잠바 생각을 또 한다. 손을 뻗은 건 맞는데." }
+      - say:
+          channel: thought
+          with: []
+          when:
+            all:
+              - { var: l3_out_blocked, op: eq, value: false }
+              - { var: l3_open_blocked, op: eq, value: true }
+          text: "갈치를 가져온 날, 엄마한테 무섭다고 하려다가 다른 말이 먼저 나왔었다."
+      - say:
+          channel: thought
+          with: []
+          when:
+            all:
+              - { var: l3_out_blocked, op: eq, value: false }
+              - { var: l3_open_blocked, op: eq, value: false }
+          text: "엄마가 동의서를 들고 서 있던 게 생각난다. 안 받겠다는 말을 삼킨 건 나였다."
       - say: { channel: action, with: [], text: "오른손을 들어 본다. 올라갔다 내려오고, 또 올라간다." }
-      - say: { channel: thought, with: [], text: "지금은 된다. 그때는 안 됐다." }
+      - say: { channel: thought, with: [], when: { var: l3_out_blocked, op: eq, value: true }, text: "지금은 된다. 그때는 안 됐다." }
       - wait: 1100
-      - say: { channel: thought, with: [], text: "지금은 그냥 드는데, 그날 난간을 쥔 손은 아무리 힘을 줘도 펴지지 않았다." }
-      - say: { channel: thought, with: [], text: "그날은 뻗으려는 손이 내 손 같지가 않았다." }
+      - say: { channel: thought, with: [], when: { var: l3_out_blocked, op: eq, value: true }, text: "지금은 그냥 드는데, 그날 난간을 쥔 손은 아무리 힘을 줘도 펴지지 않았다." }
+      - say: { channel: thought, with: [], when: { var: l3_out_blocked, op: eq, value: true }, text: "그날은 뻗으려는 손이 내 손 같지가 않았다." }
       - effect: { name: pulse, wait: true }
       - say: { channel: thought, with: [], text: "누가 고르는 것 같다. 나 말고." }
       - wait: 900
@@ -318,7 +334,7 @@ scenes:
     actions:
       - bg: ward
       - sticker: { id: sketch, image: sketch_two_sticker, x: 50, y: 31, width: "clamp(166px, 25%, 300px)", enter: fadeIn }
-      - say: { channel: action, with: [], text: "다리 위에 점 두 개가 나란히 찍혀 있다. 그날 우리가 서 있던 자리다." }
+      - say: { channel: action, with: [], text: "다리 위에 점 두 개가 나란히 찍혀 있다. 누나가 퇴원하면 걸어서 건너겠다고 했던 다리다." }
       - goto: october_after_packet
 
   packet_alone:
@@ -335,7 +351,8 @@ scenes:
       - say: { channel: thought, with: [], text: "누나는 이 좁은 종이에 다리 끝까지 다 그렸다." }
       - say: { channel: action, with: [], text: "다리 위의 점 하나를 엄지로 문질러 본다. 잉크는 번지지 않는다." }
       - clearSticker: { id: sketch, leave: fadeOut }
-      - place: "11월 29일"
+      - effect: { name: darken, wait: true }
+      - place: "11월 29일 · 같은 병실"
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
       - say: { char: 민재, with: [엄마], text: "떡볶이. 대학로에 누나가 맨날 말하던 집." }
       - say: { char: 엄마, with: [민재], text: "나으면 가자. 엄마가 사 줄게. 순대도." }
@@ -383,10 +400,10 @@ scenes:
   void_three_knew:
     actions:
       - say: { channel: narration, text: "새벽 두 시 병실에서 들었던 내 목소리다." }
-      - say: { channel: narration, text: "그때는 내 손을 누가 대신 움직인다고 생각했다." }
+      - say: { channel: narration, text: "그때는 내 안에서 누가 대신 고른다고 생각했다." }
       - wait: 900
       - say: { channel: narration, text: "지금 보니 고르는 쪽도 나다." }
-      - say: { channel: narration, text: "그러면 그때 못 하게 한 것도 나인가. 거기까지는 모르겠다." }
+      - say: { channel: narration, text: "그럼 다른 쪽을 고르기 어려웠던 것도 나 때문인가. 거기까진 모르겠다." }
       - goto: void_three_charges
 
   void_three_charges:
