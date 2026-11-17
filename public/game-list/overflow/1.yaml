@@ -1,104 +1,102 @@
-chapterTitle: "같은 01"
+chapterTitle: "01이 두 번 나온다"
 
 script:
-  - scene: introduction
+  - scene: cafe_introduction
 
 scenes:
-  introduction:
-    title: "카페 문 앞"
+  cafe_introduction:
+    title: "카페"
     actions:
       - bg: { id: cafe, transition: fade, duration: 480 }
       - place: "잠시 뒤 · 월계병원 1층 카페"
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저기요. 아까 접수대에 01 떴죠?" }
-      - say: { char: 지완, with: [수경], text: "아침에 뵀죠? 여기서 일하세요?" }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "한수경이에요. 접수대에 뜬 그 화면, 제가 만들었어요." }
-      - say: { char: 지완, with: [수경], text: "그럼 간호사한테 전화 한 통만 해 주시면 안 돼요? 저 아버지 좀 보게요." }
-      - say: { char: 수경, with: [지완], text: "저도 이제 거긴 전화 못 해요. 접수표 있어요? 이름은 접어서 가리시고요." }
+      - set: { read_trial: false, read_report: false, checked_phone: false }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저 한수경이에요. 에모스에서 아까 그 점수 보여 주는 화면을 만들었어요." }
+      - say: { char: 지완, with: [수경], text: "문지완입니다. 그럼 아까 그거, 다시 재면 들어갈 수 있어요?" }
+      - say: { char: 수경, with: [지완], text: "문은 병원에서 열어 줘야 해요. 제가 볼 수 있는 건 왜 01이 떴는지예요. 혹시 접수표 받아 오셨어요?" }
       - choice:
           key: o1_trust
-          prompt: "수경이 접수 기록을 보여 달라고 한다."
+          prompt: "수경이 면회표의 이름을 가려도 된다고 말한다."
           with: [수경]
           options:
             - text: "이름을 가리고 기록을 보여준다"
-              goto: show_record
+              goto: share_slip
             - text: "수경의 자료부터 보여달라고 한다"
-              goto: ask_report
+              goto: withhold_slip
 
-  show_record:
+  share_slip:
     actions:
       - set: { shared_slip: true }
-      - say: { channel: action, with: [], text: "지완이 접수표 맨 윗줄을 접는다. 수경은 표를 자기 쪽으로 끌어당기지 않고 거꾸로 읽는다." }
-      - say: { char: 수경, with: [지완], text: "01 밑에 작은 글씨요. 잠깐만. 아직도 이 버전이에요?" }
-      - goto: investigation
+      - say: { channel: action, with: [지완, 수경], text: "지완이 이름이 적힌 부분을 접어 건넨다." }
+      - say: { char: 수경, with: [지완], text: "아, 이 번호. 병원에서 아직도 저희가 시험했던 버전을 쓰네요." }
+      - goto: cafe_documents
 
-  ask_report:
+  withhold_slip:
     actions:
-      - say: { char: 지완, with: [수경], text: "잠깐만요. 뭐 갖고 오신 건지 먼저 보여 주실래요?" }
-      - say: { char: 수경, with: [지완], text: "그러죠. 여기 보세요." }
-      - goto: investigation
+      - set: { shared_slip: false }
+      - say: { char: 지완, with: [수경], text: "죄송한데 그쪽 자료부터 좀 볼게요. 병원에서 받은 건 아버지 것도 적혀 있어서요." }
+      - say: { char: 수경, with: [지완], text: "네. 접수표는 넣으세요. 저희가 시험할 때 뽑아 둔 게 있어요." }
+      - goto: cafe_documents
 
-  investigation:
-    title: "테이블 위의 자료"
+  cafe_documents:
+    title: "시험 출력물"
     actions:
-      - say: { channel: action, with: [], text: "수경이 시험 출력물과 접힌 종이를 꺼낸다. 카페 직원이 옆자리 의자를 테이블 위에 올린다." }
-      - goto: desk
+      - say: { channel: action, with: [지완, 수경], text: "수경이 가방에서 시험 출력물과 회사에 냈던 보고서를 꺼낸다. 출력물의 두 줄에 같은 숫자가 적혀 있다." }
+      - goto: cafe_choices
 
-  desk:
+  cafe_choices:
     actions:
       - choice:
           key: o1_desk
-          prompt: "수경이 가져온 자료를 살펴본다."
+          prompt: "면회 시간까지 아직 조금 남았다."
           with: [수경]
           options:
             - text: "시험 출력물을 읽는다"
               when: { var: read_trial, op: eq, value: false }
-              goto: trial
+              goto: display_test
             - text: "결함 보고서를 읽는다"
               when: { var: read_report, op: eq, value: false }
-              goto: report
+              goto: company_report
             - text: "병동에서 연락이 왔는지 확인한다"
               when: { var: checked_phone, op: eq, value: false }
-              goto: check_phone
+              goto: hospital_message
             - text: "내 렌즈에서 무엇을 확인할지 묻는다"
               when: { var: read_trial, op: eq, value: true }
-              goto: ask_test
+              goto: plan_measurement
 
-  trial:
+  display_test:
     actions:
       - set: { read_trial: true }
-      - sound: read
-      - say: { channel: record, with: [], text: "출시 전 시험 · 동일 버전의 판독 카드\n시험 신호 001 → 표시 01\n시험 신호 099 → 표시 99\n시험 신호 101 → 표시 01" }
-      - say: { char: 수경, with: [지완], text: "맨 앞자리가 잘려요. 여기 101 보이죠? 1을 지우면 위에 거랑 똑같아요." }
-      - say: { char: 지완, with: [수경], text: "그럼 제 거는 1이에요, 101이에요?" }
-      - say: { char: 수경, with: [지완], text: "지금은 몰라요. 다음에 뜰 때 지완 씨 렌즈도 같이 봐야 해요." }
-      - goto: desk
+      - say: { channel: record, with: [], sound: read, text: "에모스 사내 시험 · 병원에 설치된 버전\n센서 입력 001 → 표시 01\n센서 입력 101 → 표시 01" }
+      - say: { char: 수경, with: [지완], text: "1이면 정말 낮은 거예요. 근데 101이 들어와도 앞자리 잘라서 똑같이 01로 띄워요." }
+      - say: { char: 지완, with: [수경], text: "그럼 저는 반응을 너무 세게 했는데 문 앞에서 1점 받은 걸 수도 있어요?" }
+      - say: { char: 수경, with: [지완], text: "그럴 수도 있어요. 저도 오늘 그 일로 왔어요. 회사에선 시험할 때만 저런 숫자가 나온대요. 실제로 면회를 막은 적 있는지 물어보러 온 거예요." }
+      - goto: cafe_choices
 
-  report:
+  company_report:
     actions:
       - set: { read_report: true }
-      - say: { channel: record, with: [], text: "한신뉴로 결함 보고서 · 작성자 한수경\n판독 카드가 다른 입력에 같은 값을 표시함. 병원 배포 중지 요청.\n처리 결과 · 현장 재현 자료 부족. 배포 유지." }
-      - say: { char: 지완, with: [수경], text: "이거 쓰고 잘리신 거예요?" }
-      - say: { char: 수경, with: [지완], text: "허락 없이 자료를 가져갔대요. 제가 쓴 보고서예요. 여기, 제 이름도 있고요." }
-      - goto: desk
+      - say: { channel: record, with: [], text: "한신뉴로 결함 보고서 · 한수경\n세 자리 입력의 앞자리가 화면에서 잘림. 병원 사용 중지 요청.\n회사 답변 · 실제 면회에 영향을 준 사례가 확인되면 재검토." }
+      - say: { char: 지완, with: [수경], text: "회사에서도 알면서 이걸 계속 쓰고 있다고요?" }
+      - say: { char: 수경, with: [지완], text: "두 달 전에 올린 건데 회사에선 병원 일에 손 떼래요. 그래서 여기서 어느 버전 쓰는지만이라도 알아 가려고요." }
+      - goto: cafe_choices
 
-  check_phone:
+  hospital_message:
     actions:
       - set: { checked_phone: true }
-      - say: { channel: message, side: them, with: [], text: "월계병원 신경과입니다. 담당 간호사 복귀 후 20시 10분에 동행 면회 가능합니다." }
-      - say: { channel: action, with: [], when: { var: picked_up, op: eq, value: false }, continueLabel: "음성 메시지를 듣는다", text: "병원 문자 아래에 아버지가 오전 7시 45분에 남긴 음성 메시지가 있다." }
-      - say: { char: 동식_연락처, channel: dialogue, with: [], when: { var: picked_up, op: eq, value: false }, text: "지완아, 작은 통 찾았다. 지난번 네가 사 온 거 있네." }
-      - say: { channel: thought, with: [], when: { var: picked_up, op: eq, value: true }, text: "국은 반만 얼린다 그랬는데. 냄비에 남았겠네." }
-      - goto: desk
+      - say: { channel: message, side: them, with: [], text: "월계병원입니다. 보호자 면회는 저녁 8시 10분에 시작합니다. 접수대에서 기다려 주세요." }
+      - say: { channel: action, with: [], when: { var: picked_up, op: eq, value: false }, text: "병원 문자 바로 밑에 아버지가 아침에 남긴 음성 메시지가 있다. 지완은 휴대폰을 귀에 댄다." }
+      - say: { char: 동식_연락처, channel: dialogue, with: [], when: { var: picked_up, op: eq, value: false }, text: "지완아, 작은 통 찾았다. 지난번 네가 사 온 거 있네. 빈 통 들고 오지 마라." }
+      - say: { channel: thought, with: [], when: { var: picked_up, op: eq, value: true }, text: "아버지한테 저 왔다고 전해 줬을까. 아까 한 번 더 부탁할걸." }
+      - goto: cafe_choices
 
-  ask_test:
-    title: "다음 판독"
+  plan_measurement:
+    title: "면회 전에"
     actions:
-      - say: { char: 수경, with: [지완], text: "아까 건 늦었어요. 접수대엔 01만 남으니까. 다음에 뜨기 전에 검사용 단말기를 붙여 둘 수는 있어요." }
-      - say: { char: 지완, with: [수경], text: "제가 뭐 해야 돼요? 일부러 놀라야 돼요?" }
-      - say: { char: 수경, with: [지완], text: "그냥 아버님 보고 오세요. 경고가 안 뜨면 오늘은 거기까지예요." }
-      - say: { channel: action, with: [], text: "면회 시간인 20시 10분이 가까워졌다. 일어서던 수경이 정문을 보고 멈춘다." }
-      - say: { char: 수경, with: [지완], text: "동쪽 계단으로 와요. 저기 정문에 두 사람 보이죠? 낮에 우리 집 앞에도 왔었어요." }
+      - say: { char: 수경, with: [지완], text: "접수대엔 01만 남아 있어요. 병실에 들어가면 렌즈가 한 번 더 확인하는데, 그때 제 검사기를 연결해 두면 원래 숫자도 남아요." }
+      - say: { char: 지완, with: [수경], text: "그걸 병원에 내면 내일은 제가 혼자 들어갈 수 있을까요? 아버지 며칠 더 계셔야 한대요." }
+      - say: { char: 수경, with: [지완], text: "틀린 숫자를 근거로 막았다는 건 보여 줄 수 있어요. 결정은 병원이 해요. 괜찮으면 면회 전에 계단 쪽에서 붙여 드릴게요." }
+      - say: { channel: action, with: [지완, 수경], text: "접수대 전광판에 면회 시작 안내가 뜬다. 지완이 휴대폰을 챙긴다." }
       - goto: /2.yaml

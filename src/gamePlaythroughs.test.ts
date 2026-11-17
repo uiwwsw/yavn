@@ -427,29 +427,29 @@ describe('튜토리얼', () => {
 });
 
 describe('오버플로', () => {
-  it('keeps Jiwan on stage with the same portrait when he answers the call', async () => {
+  it('starts with Jiwan’s call and keeps the same portrait through the conversation', async () => {
     await start('overflow');
     const waking = useVNStore.getState();
     const portrait = waking.characters.left?.source;
-    expect(waking.dialog.fullText).toContain('월계역 개찰구 앞에서 문지완의 장갑이 떨어진다');
+    expect(waking.dialog.fullText).toContain('아버지에게 전화가 온다');
     expect(portrait).toMatch(/\/jiwan\.svg$/);
     expect(waking.visibleCharacterIds).toEqual(['지완']);
 
     const answers = { o0_call: '전화를 받는다' };
     const incoming = await play(answers, state => state.choiceGate.key === 'o0_call');
     expect(incoming.state.characters.left?.source).toBe(portrait);
-    const answer = await play(answers, state => state.currentSceneId === 'take_call');
+    const answer = await play(answers, state => state.currentSceneId === 'answered_call');
     expect(answer.state.dialog.fullText).toBe('여보세요, 아버지.');
     expect(answer.state.dialog.speaker).toBe('문지완');
-    expect(answer.state.characters.left?.source).toBe(portrait);
     const speaking = await play(answers, state => state.dialog.fullText.startsWith('야, 국 냄비째'));
     expect(speaking.state.dialog.speaker).toBe('아버지 (통화)');
     expect(speaking.state.characters.left?.source).toBe(portrait);
-    expect(speaking.state.visibleCharacterIds).toContain('지완');
-    expect(speaking.state.currentSceneId).toBe('take_call');
+    const cast = Object.values(speaking.state.characters)
+      .filter(slot => slot && slot.placement !== 'offstage' && speaking.state.visibleCharacterIds.includes(slot.id));
+    expect(cast.map(slot => slot?.id)).toEqual(['지완']);
   });
 
-  it('무반응 판정 뒤 여자가 지완을 발견하고, 병실에서만 실제 입력값을 확인한다', async () => {
+  it('takes the first 01 through a second reading, a witnessed complaint and a shared ending', async () => {
     await start('overflow');
     const run = await play({
       o0_call: '전화를 받는다',
@@ -459,35 +459,46 @@ describe('오버플로', () => {
       o4_end: '기다린 사람들과 함께 이의를 낸다',
     });
     finished(run);
+    expect(run.state.resolvedEndingId).toBe('appeal');
     const beats = [
-      '문지완의 장갑이 떨어진다', '안경 쓴 여자 · 안정 31', '저기요. 장갑이요.', '같은 근무조 도겸이',
-      '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
-      '정서 반응 01 · 무반응 의심', '아침에 장갑을 주워 준 여자가 앉아 있다',
-      '월계역에서 장갑 떨어뜨린 사람', '01 뜬 분을 봤어요', '아침에 뵀죠?',
-      '한수경이에요. 접수대에 뜬 그 화면, 제가 만들었어요.',
-      '시험 신호 101 → 표시 01', '저장하는 파일엔 이름을 안 넣을게요', '반만 얼리기로 했잖아요',
-      '반찬집 아주머니 목소리가 나와서요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
-      '아까는 옆에 앉으라고 하셨잖아요', '제 것도 같이 내 주세요', '공동 이의신청 접수', '반만 얼렸다',
+      '아버지에게 전화가 온다',
+      '아버지도 드세요. 제 건 반만 얼려 두고요',
+      '저기요. 장갑 떨어뜨렸어요.',
+      '월계병원 가려면 어느 쪽으로 나가요?',
+      '흥분 94 · 역무원 호출',
+      '가게 앞에서 쓰러지셨어요',
+      '문동식 환자분 아드님이세요?',
+      '보호자 면회 확인 · 문지완',
+      '낮은 점수가 뜨면 혼자 못 들어가게 돼 있어요',
+      '방금 01 때문에 문이 안 열린 거예요?',
+      '저 한수경이에요',
+      '센서 입력 001 → 표시 01',
+      '오늘 그 일로 왔어요',
+      '접수대엔 01만 남아 있어요',
+      '영상 및 음성: 끔',
+      '반만 얼리기로 했잖아요',
+      '반찬집 아주머니 목소리가 나와서요',
+      '보호자 재확인 · 문지완',
+      '센서 입력 101 → 표시 01\n화면 판정',
+      '제 확인으로 내일부터 혼자 들어가실 수 있게 해 드릴게요',
+      '처음 병원에 설치할 때도 제가 확인란에 사인했어요',
+      '아까 옆에 앉으라 하셨을 때요',
+      '저도 같이 적어도 돼요?',
+      '공동 이의신청 접수',
+      '반만 얼렸다. 나머진 냄비에',
     ];
-    const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
+    const positions = beats.map(beat => run.shown.findIndex(text => text.includes(beat)));
     expect(beats.filter((_, index) => positions[index] < 0)).toEqual([]);
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
+
+    const introduction = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
+      .filter(entry => entry.sceneId === 'cafe_introduction');
+    expect(introduction.map(entry => entry.speaker)).toEqual(['안경 쓴 여자', '문지완', '한수경']);
+    expect(introduction[0]?.text).toContain('한수경이에요');
     expect(heard(run.shown, '아까 물부터 드렸죠')).toBe(false);
-    const introduction = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
-      .filter((entry) => entry.sceneId === 'introduction');
-    expect(introduction.slice(0, 5).map((entry) => entry.speaker))
-      .toEqual(['안경 쓴 여자', '문지완', '안경 쓴 여자', '문지완', '한수경']);
-    expect(introduction[2]?.text).toContain('한수경이에요');
-    const call = run.state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'take_call');
-    expect(call.filter((entry) => entry.channel === 'dialogue').map((entry) => entry.speaker))
-      .toEqual(['문지완', '아버지 (통화)', '문지완', '아버지 (통화)', '문지완']);
-    expect(call.some((entry) => entry.channel === 'message')).toBe(false);
-    const secondCall = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
-      .filter((entry) => entry.sceneId === 'shift' && entry.channel === 'dialogue');
-    expect(secondCall.slice(0, 2).map((entry) => entry.speaker)).toEqual(['문지완', '반찬집 아주머니 (통화)']);
   });
 
-  it('통화를 미루면 음성 메시지가 남고 아버지에게 건네는 대답도 늦어진다', async () => {
+  it('connects missed calls and a late admission to the public ending', async () => {
     await start('overflow');
     const run = await play({
       o0_call: '문자로 답한다',
@@ -497,22 +508,43 @@ describe('오버플로', () => {
       o4_end: '내 판독과 수경의 설명을 공개한다',
     });
     finished(run);
-    expect(heard(run.shown, '지난번 네가 사 온 거 있네')).toBe(true);
-    expect(heard(run.shown, '접수표는 됐어요. 렌즈 연결만 눌러 주세요')).toBe(true);
+    expect(run.state.resolvedEndingId).toBe('broadcast');
+    expect(heard(run.shown, '접수표는 안 주셔도 돼요')).toBe(true);
     expect(heard(run.shown, '아침에 전화 못 받았잖아요')).toBe(true);
     expect(heard(run.shown, '아까 물부터 드렸죠. 사실 겁났어요')).toBe(true);
     expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);
     expect(heard(run.shown, '반찬집 아주머니 목소리가 나와서요')).toBe(false);
-    const messages = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
-      .filter((entry) => entry.sceneId === 'text_back' && entry.channel === 'message');
-    expect(messages.map((entry) => entry.side)).toEqual(['me', 'them', 'me']);
+    const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue' && entry.sceneId === 'phone_reply');
+    expect(messages.map(entry => entry.side)).toEqual(['me', 'them', 'me']);
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
-      sceneId: 'check_phone', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
+      sceneId: 'hospital_message', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
     }));
-    const broadcastIndex = run.shown.findIndex((text) => text.includes('제 이름은 쓰세요. 병실은 빼 주시고요.'));
-    expect(broadcastIndex).toBeGreaterThan(-1);
-    const broadcast = run.shown.slice(broadcastIndex);
-    expect(heard(broadcast, '센서 입력 101 / 렌즈 표시 01')).toBe(true);
-    expect(heard(broadcast, '308호')).toBe(false);
+    const consent = run.shown.findIndex(text => text.includes('제 이름하고 제 기록은 공개할게요'));
+    expect(consent).toBeGreaterThan(-1);
+    expect(heard(run.shown.slice(consent), '센서 입력 101 / 렌즈 표시 01')).toBe(true);
+    expect(heard(run.shown.slice(consent), '308호')).toBe(false);
+  });
+
+  it('starts a saved 3.0 chapter at its new opening and preserves prior decisions and evidence', async () => {
+    localStorage.setItem('vn-engine-autosave:game:overflow', JSON.stringify({
+      gameTitle: '오버플로',
+      gameVersion: '3.0.0',
+      savedAt: new Date().toISOString(),
+      chapterIndex: 2,
+      chapterPath: './2.yaml',
+      sceneId: 'measure',
+      actionIndex: 12,
+      routeVars: { picked_up: true, shared_slip: true },
+      inventory: { appeal_form: true },
+      routeHistory: [],
+      storyLog: [],
+    }));
+    await start('overflow');
+    expect(useVNStore.getState()).toMatchObject({
+      currentSceneId: 'pair_lens',
+      chapterIndex: 3,
+      routeVars: { picked_up: true, shared_slip: true },
+      inventory: { appeal_form: true },
+    });
   });
 });
