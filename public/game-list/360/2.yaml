@@ -8,7 +8,7 @@ scenes:
   opening_day:
     title: "굴렁쇠"
     actions:
-      - bg: { id: ward, transition: fade, duration: 900 }
+      - bg: { id: ward, transition: cut }
       - music: ward
       - place: "1988년 9월 17일 · 혜화동 대학병원 6인실 · 민재"
       - char: { id: 민재, position: left }
@@ -351,7 +351,7 @@ scenes:
       - say: { channel: thought, with: [], text: "누나는 이 좁은 종이에 다리 끝까지 다 그렸다." }
       - say: { channel: action, with: [], text: "다리 위의 점 하나를 엄지로 문질러 본다. 잉크는 번지지 않는다." }
       - clearSticker: { id: sketch, leave: fadeOut }
-      - effect: { name: darken, wait: true }
+      - say: { channel: card, with: [], text: "11월 29일", autoAdvance: 1400 }
       - place: "11월 29일 · 같은 병실"
       - say: { char: 엄마, with: [민재], text: "민재야, 뭐 먹고 싶은 거 없어? 선생님이 오늘은 아무거나 된대." }
       - say: { char: 민재, with: [엄마], text: "떡볶이. 대학로에 누나가 맨날 말하던 집." }

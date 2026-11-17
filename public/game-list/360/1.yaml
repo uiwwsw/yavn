@@ -9,7 +9,7 @@ scenes:
   roster:
     title: "명부"
     actions:
-      - bg: { id: busan_market, transition: fade, duration: 900 }
+      - bg: { id: busan_market, transition: cut }
       - music: market
       - place: "1952년 12월 · 부산 국제시장 · 순임"
       - say: { channel: action, with: [], text: "국제시장에서는 상인회에 이름을 올려야 좌판을 펼 수 있다. 3열 17번을 기다리는 사람은 둘이었다." }
@@ -296,7 +296,7 @@ scenes:
   seoul:
     title: "영등포"
     actions:
-      - bg: { id: seoul_room, transition: fade, duration: 1000 }
+      - bg: { id: seoul_room, transition: cut }
       - place: "1967년 3월 · 영등포 셋방"
       - char: { id: 순임, position: left }
       - char: { id: 청년영호, position: right }

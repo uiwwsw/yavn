@@ -625,7 +625,7 @@ scenes:
           with: [윤재]
           text: "55,000원입니다."
       - clearSticker: { id: s0_cheap, leave: fadeOut }
-      - effect: { name: darken, wait: true }
+      - wait: 0
       - say:
           channel: card
           with: []
