@@ -549,7 +549,6 @@ scenes:
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: "그날 밤 · 하린의 방"
       - say: { channel: action, with: [하린], text: "하린이 책상에 앉아 교복 소매를 걷는다. 아진이한테 사진 한 장이 온다." }
-      - sticker: { id: e3_playground, image: child_photo_sticker, x: 50, y: 44, width: "clamp(170px, 30%, 320px)", enter: fadeIn }
       - say:
           channel: message
           side: them
@@ -580,10 +579,8 @@ scenes:
           char: 아진
           with: []
           text: "너 저장해 둬. 지우지 말고"
-      - say:
-          channel: system
-          with: []
-          text: "읽음"
+      - sticker: { id: e3_playground, image: child_photo_sticker, x: 50, y: 44, width: "clamp(170px, 30%, 320px)", enter: fadeIn }
+      - say: { channel: action, with: [], text: "하린이 사진을 크게 띄운다." }
       - say:
           channel: system
           with: []
