@@ -591,30 +591,35 @@ scenes:
       - say: { channel: action, with: [], text: "하린이 가방을 내려놓자 아진에게서 톡이 온다." }
       - say:
           channel: message
+          thread: 아진
           side: them
-          char: 아진
+          speakerName: 정아진
           with: []
           text: "하린아 오늘 왜 먼저 갔어"
       - say:
           channel: message
+          thread: 아진
           side: me
           char: 하린
           with: []
           text: "아 나 배아파서ㅋㅋ 급식 그 카레 뭔가 이상했음"
       - say:
           channel: message
+          thread: 아진
           side: them
-          char: 아진
+          speakerName: 정아진
           with: []
           text: "할 얘기 있었는데"
       - say:
           channel: message
+          thread: 아진
           side: me
           char: 하린
           with: []
           text: "낼 해 낼!! 나 잔다 굿밤"
       - say:
           channel: message
+          thread: 아진
           side: me
           char: 하린
           with: []

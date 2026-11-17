@@ -549,32 +549,37 @@ scenes:
       - say: { channel: action, with: [하린], text: "하린이 책상에 앉아 교복 소매를 걷는다. 아진이한테 사진 한 장이 온다." }
       - say:
           channel: message
+          thread: 아진
           side: them
-          char: 아진
+          speakerName: 정아진
           with: []
           text: "이거 너 일곱살때 놀이터ㅋㅋ 엄마 폰 정리하다 나옴"
       - say:
           channel: message
+          thread: 아진
           side: me
           char: 하린
           with: []
           text: "아 지워 제발 얼굴 왜저럼"
       - say:
           channel: message
+          thread: 아진
           side: them
-          char: 아진
+          speakerName: 정아진
           with: []
           text: "싫어 이때 너 엄청 웃잖아"
       - say:
           channel: message
+          thread: 아진
           side: them
-          char: 아진
+          speakerName: 정아진
           with: []
           text: "눈 없어질때까지 웃는 거 아직도 똑같아"
       - say:
           channel: message
+          thread: 아진
           side: them
-          char: 아진
+          speakerName: 정아진
           with: []
           text: "너 저장해 둬. 지우지 말고"
       - sticker: { id: e3_playground, image: child_photo_sticker, x: 50, y: 44, width: "clamp(170px, 30%, 320px)", enter: fadeIn }

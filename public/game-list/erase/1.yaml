@@ -500,8 +500,8 @@ scenes:
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: { text: "그날 밤 · 하린의 방", presentation: center }
       - say: { channel: action, with: [], text: "불을 끄고 누웠는데 셋이 쓰는 단톡이 울린다. 민재가 그 노래를 다시 올려 놨다." }
-      - say: { channel: message, thread: 셋이 쓰는 방, side: them, char: 민재, with: [], text: "이거 1분 20초부터 들어봐 @아진" }
-      - say: { channel: message, thread: 셋이 쓰는 방, side: them, char: 아진, with: [], text: "아 아까 이어폰 뺀 데부터네ㅋㅋ" }
+      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "이거 1분 20초부터 들어봐 @아진" }
+      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 정아진, with: [], text: "아 아까 이어폰 뺀 데부터네ㅋㅋ" }
       - say: { channel: action, with: [], text: "하린은 답장 칸에 ‘나도 봤는데ㅋㅋ 나도 껴줘’라고 써 본다." }
       - goto: h1_type
 
@@ -528,7 +528,7 @@ scenes:
     actions:
       - say: { channel: message, thread: 셋이 쓰는 방, side: me, char: 하린, with: [], text: "나도 봤는데ㅋㅋ 나도 껴줘" }
       - say: { channel: action, with: [], text: "말풍선 옆 숫자가 사라지는데 한동안 답이 없다." }
-      - say: { channel: message, thread: 셋이 쓰는 방, side: them, char: 민재, with: [], text: "ㅇㅇ" }
+      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "ㅇㅇ" }
       - goto: h1_shots
 
   h1_erased:
@@ -553,7 +553,7 @@ scenes:
       - say: { channel: system, with: [], text: "스크린샷 3장 · 최근 삭제된 항목에서 영구 삭제", wait: 600 }
       - add: { deleted: 3 }
       - say: { channel: action, with: [], text: "화면을 끄려는데 아진이 개인 톡을 보낸다." }
-      - say: { channel: message, thread: 아진, side: them, char: 아진, with: [], text: "하린아 오늘 생윤 조 그거 미안" }
+      - say: { channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "하린아 오늘 생윤 조 그거 미안" }
       - say: { channel: message, thread: 아진, side: me, char: 하린, with: [], text: "뭐가 미안해 ㅋㅋ 나 혼자 하는 게 편해" }
-      - say: { channel: message, thread: 아진, side: them, char: 아진, with: [], text: "낼 나랑 잠깐 얘기할래? 둘이서" }
+      - say: { channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "낼 나랑 잠깐 얘기할래? 둘이서" }
       - goto: /2.yaml
