@@ -7,14 +7,14 @@ scenes:
   introduction:
     title: "카페 문 앞"
     actions:
-      - bg: cafe
-      - place: "월계병원 1층 · 폐점 직전"
+      - bg: { id: cafe, transition: fade, duration: 480 }
+      - place: "잠시 뒤 · 월계병원 1층 카페"
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, with: [지완], text: "저기요. 아까 접수대에 01 떴죠? 전에도 그런 적 있으세요?" }
-      - say: { char: 지완, with: [수경], text: "아까 그 옆에 계셨죠. 병원 사람이세요?" }
-      - say: { char: 수경, with: [지완], text: "한수경이에요. 접수대에 뜬 그 카드, 제가 만든 겁니다." }
+      - say: { char: 수경, speakerName: "낯선 여자", with: [지완], text: "저기요. 아까 접수대 건너편에 앉아 있었어요. 01 뜬 거 봤는데, 전에도 그런 적 있으세요?" }
+      - say: { char: 지완, with: [수경], text: "물 받으러 내려온 건데… 병원 사람이세요?" }
+      - say: { char: 수경, speakerName: "낯선 여자", with: [지완], text: "한수경이에요. 접수대에 뜬 그 카드, 제가 만든 겁니다." }
       - say: { char: 지완, with: [수경], text: "그럼 위에 전화해서 저 들여보내 주세요. 지금 그것만 되면 돼요." }
       - say: { char: 수경, with: [지완], text: "저도 이제 거기 전화 못 해요. …접수표 갖고 계세요? 이름 가리고 보여 주세요." }
       - choice:

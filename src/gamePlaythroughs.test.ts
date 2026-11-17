@@ -406,7 +406,8 @@ describe('오버플로', () => {
     });
     finished(run);
     const beats = [
-      '안정 24', '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
+      '안정 24', '장갑을 건네자', '옆 줄에서 같은 근무조 도겸이', '지완 씨. 나 오늘 렌즈 안 꼈어요',
+      '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
       '정서 반응 01 · 무반응 의심', '01 뜬 분을 봤어요', '접수대에 뜬 그 카드, 제가 만든 겁니다',
       '시험 신호 101 → 표시 01', '아까 접수표에서 가리신 이름', '반만 얼리기로 했잖아요',
       '전화 받았는데 반찬집 아주머니였잖아요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
@@ -416,6 +417,11 @@ describe('오버플로', () => {
     expect(beats.filter((_, index) => positions[index] < 0)).toEqual([]);
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(heard(run.shown, '아까 물부터 드렸죠')).toBe(false);
+    const introduction = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
+      .filter((entry) => entry.sceneId === 'introduction');
+    expect(introduction.slice(0, 5).map((entry) => entry.speaker))
+      .toEqual(['낯선 여자', '문지완', '낯선 여자', '문지완', '한수경']);
+    expect(introduction[2]?.text).toContain('한수경이에요');
     const call = run.state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'take_call');
     expect(call.filter((entry) => entry.channel === 'dialogue').map((entry) => entry.speaker))
       .toEqual(['아버지', '문지완', '아버지', '문지완']);

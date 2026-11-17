@@ -15,11 +15,11 @@ scenes:
       - char: { id: 수경, position: right }
       - say: { channel: action, with: [], text: "복도 쪽 벽에 텔레비전이 걸려 있다. 우리 병실 환자 여섯 중 다섯이 그쪽을 본다." }
       - say: { channel: action, with: [], text: "운동장 한가운데 아이가 선다. 어른들이 그 애 쪽을 보고 있다." }
-      - say: { char: 수경, with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 혼자 저 넓은 데를 굴리고 간다." }
+      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 혼자 저 넓은 데를 굴리고 간다." }
       - say: { char: 민재, with: [수경], text: "누나, 소리 좀 줄여요. 옆에 할아버지 주무세요." }
-      - say: { char: 수경, with: [민재], text: "할아버지 보청기 뺐어, 내가 봤어. 너 몇 살이라 그랬지?" }
+      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "할아버지 보청기 뺐어, 내가 봤어. 너 몇 살이라 그랬지?" }
       - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
-      - say: { char: 수경, with: [민재], text: "어." }
+      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "난 수경이야. 그냥 누나라 불러." }
       - say: { char: 수경, with: [민재], text: "난 스물하나. 미대 다니다 휴학했어. 너 입원 처음이지? 딱 보면 알아." }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
       - say: { char: 수경, with: [민재], text: "뭐긴 뭐야." }
@@ -223,7 +223,7 @@ scenes:
   consent:
     title: "동의서"
     actions:
-      - place: "시월 구일 · 6인실"
+      - place: "10월 9일 · 혜화동 대학병원 6인실"
       - move: { id: 수경, style: reset }
       - char: { id: 민재, position: left }
       - say: { channel: action, with: [], text: "병실 문이 한 뼘 열려 있다. 그 틈으로 복도가 보인다." }
@@ -276,7 +276,7 @@ scenes:
   # 전환점. 여기서 처음으로 인물이 자기한테 적이 있다는 걸 안다.
   noticed_body:
     actions:
-      - place: "같은 날 · 새벽 두 시"
+      - place: "그날 밤을 넘긴 새벽 두 시 · 6인실"
       - say: { channel: thought, with: [], text: "천장에 복도 불빛이 들어온다. 눈을 감아도 잠이 오지 않는다." }
       - say: { channel: thought, with: [], text: "그날 누나가 내민 잠바 생각을 또 한다. 손을 뻗은 건 맞는데." }
       - say: { channel: action, with: [], text: "오른손을 들어 본다. 올라갔다 내려오고, 또 올라간다." }

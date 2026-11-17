@@ -588,7 +588,7 @@ scenes:
           text: "튜토리얼 5/5 · 완료 · 다음 안내 대상 배정 중"
       - bg: { id: home_hall, transition: fade, duration: 1200 }
       - music: bleed
-      - place: "아침 7:00 · 집 복도"
+      - place: "4월 23일 아침 7:00 · 집 복도"
       - char: { id: 해수, position: left }
       - char: { id: 상혁, position: right, emotion: hollow }
       - move: { id: 상혁, toward: 해수, style: lunge }

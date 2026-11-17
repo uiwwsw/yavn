@@ -237,7 +237,7 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
-      - place: "수요일 23:40 · 빈 사무실"
+      - place: "그날 밤 23:40 · 회사, 빈 사무실"
       - say:
           channel: message
           side: them
@@ -473,7 +473,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "과거\n유하린 · 18"
+          text: "열한 해 전\n유하린 · 18"
       - bg: { id: science_room, transition: cut }
       - place: "며칠 뒤 · 과학실, 생물 수행평가"
       - char: { id: 하린, position: center, emotion: blank }

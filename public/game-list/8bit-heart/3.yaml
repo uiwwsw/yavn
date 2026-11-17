@@ -13,7 +13,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 3 · 사흘 뒤\n식량 원정. 편의점 재고: 0"
+          text: "STAGE 3 · 안드로이드를 고친 지 사흘\n식량 원정. 편의점 재고: 0"
       - wait: 460
       - say:
           char: 로봇
@@ -931,7 +931,7 @@ scenes:
     actions:
       - bg: { id: shelter, transition: fade, duration: 700 }
       - music: chip_home
-      - place: "그날 밤 · 편의점 기지, 촛불 하나"
+      - place: "식량 원정에서 돌아온 밤 · 편의점 기지"
       - say:
           char: 윤재
           motion: sigh

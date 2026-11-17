@@ -29,7 +29,7 @@ scenes:
     title: "단톡방"
     actions:
       - bg: { id: home_hall, transition: cut }
-      - place: "그날 오전 8:12 · 단톡방"
+      - place: "같은 날 오전 8:12 · 027번을 부르기 전, 단톡방"
       - music: fluoro
       - say:
           channel: system
@@ -126,7 +126,7 @@ scenes:
     title: "고객센터"
     actions:
       - bg: { id: cs_desk, transition: fade, duration: 700 }
-      - place: "그린마트 상봉점 · 1층 고객센터"
+      - place: "같은 날 오전 · 그린마트 상봉점 1층 고객센터"
       - say:
           channel: system
           with: []
@@ -1031,7 +1031,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "알람 · 오전 9:30"
+          text: "다음 날 출근 알람 · 4월 12일 오전 9:30"
       - say:
           channel: thought
           with: []

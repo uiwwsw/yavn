@@ -18,7 +18,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "피고는 대청 끝에 자리를 받고 앉아 있다. 버선 앞코에 흙 한 점 묻지 않았다."
+          text: "도원이 보낸 고발장이 대청 한가운데 놓여 있다. 피고는 그 너머 자리에 앉았다. 버선 앞코에 흙 한 점 묻지 않았다."
       - char: { id: 서연, position: left }
       - char: { id: 한명재, position: right }
       - say:

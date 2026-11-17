@@ -855,7 +855,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "튜토리얼 3/5 — 손에 쥔 물건을 사용해 보세요."
+          text: "레플라 · 모의 주차장\n튜토리얼 3/5 — 손에 쥔 물건을 사용해 보세요."
       - goto: parking
 
   parking:
@@ -921,7 +921,7 @@ scenes:
           channel: action
           with: []
           text: "해수는 밴드를 책상에 엎어 놓고 불을 끈 채 눕는다."
-      - place: "새벽 1:50"
+      - place: "4월 18일 새벽 1:50 · 해수의 방"
       - bg: { id: sim_parking, transition: cut }
       - mood: { tone: dread, level: 2 }
       - say:

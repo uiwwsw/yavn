@@ -88,6 +88,12 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 - `{{var}}` placeholders fill dialogue, prompts, options, character `name`, game-over and ending text from state. `{{var|은}}` attaches the Korean particle that agrees with the value's final sound.
 - Settings offers three manual save slots, and library cards show a resumable save and found endings.
 
+## Scene continuity
+
+- Carry a prop, sound, movement, or eyeline across a cut within the same event. Use a wide shot to establish where people are before moving in for dialogue.
+- Give the previous scene a beat to land when time, place, or viewpoint changes. Use `place` or a caption card for established time and location. When two viewpoints share a moment, let the new viewpoint pick up the same action.
+- Set `say.speakerName` to “Unknown woman” or another label the viewpoint character could use. Keep it on the line that reveals the name, then omit it on later lines to use the character's name. The alias also appears in messages and the story log. [Playable example in Overflow, chapter 1](../public/game-list/overflow/1.yaml)
+
 ## Caption cards, phone messages and three new stories (2026-11-13)
 
 - `say.channel: card` shows a full-screen caption card (time jumps, title drops, blackouts); `say.channel: message` renders a phone messenger screen with `say.side: me | them`; `say.erase: true` strikes and wipes a line after it is shown.

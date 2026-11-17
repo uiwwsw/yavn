@@ -8,7 +8,7 @@ scenes:
     title: "다음 날 아침"
     actions:
       - bg: ward_entry
-      - place: "다음 날 · 월계병원 면회 접수"
+      - place: "다음 날 아침 · 월계병원 면회 접수"
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }

@@ -99,7 +99,7 @@ scenes:
   archive:
     actions:
       - place: "같은 주 금요일 · 자료실"
-      - say: { channel: record, with: [], text: "1931년 경성 모 의원 진료부. 환자 김○○(34). \"전에 살았다고 주장. 캄캄한 데서 뒤를 보았다는 말을 되풀이.\" 처치: 격리." }
+      - say: { channel: record, with: [], text: "자료실에서 꺼낸 1931년 경성 모 의원 진료부. 환자 김○○(34). \"전에 살았다고 주장. 캄캄한 데서 뒤를 보았다는 말을 되풀이.\" 처치: 격리." }
       - say: { char: 지안, with: [차피디], text: "피디님, 1931년 진료부에도 같은 얘기가 있어요. 이 사람은 방송국 대신 병원에 갔네요." }
       - say: { char: 차피디, with: [지안], text: "그럼 안 늘어난 건가? 아니지, 그때 한 명 찾은 걸로는 몰라. 숫자가 없잖아." }
       - say: { char: 지안, with: [차피디], text: "네. 모르는 거죠." }
@@ -117,9 +117,9 @@ scenes:
   daon:
     title: "녹취 12"
     actions:
-      - place: "삼월 말 · 구산동 다온이네"
+      - bg: { id: interview_room, transition: fade, duration: 900 }
       - char: { id: 지안, position: left }
-      - say: { channel: action, with: [], text: "다온이 녹취를 방송에 쓰려면 보호자 동의를 다시 받아야 한다. 어머니가 집으로 오라고 했다." }
+      - say: { channel: action, with: [], text: "3월 말, 구산동. 녹취 사용 동의를 다시 받으러 다온이네 초인종을 눌렀다. 어머니가 현관에서 맞아 주셨다." }
       - char: { id: 다온, position: right }
       - char: { id: 다온엄마, position: center }
       - say: { channel: action, with: [다온, 다온엄마], text: "아이가 식탁에서 색연필을 쥐고 있다." }
@@ -411,7 +411,7 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "죄송해요. 원본은 제가 받은 거라서요. 그분들이 저한테 말한 거지, 회사한테 한 게 아니에요." }
       - say: { char: 차피디, with: [지안], motion: sigh, text: "지안 씨. 이거 놓치면 다음은 없어요. 여섯 번째 회사 찾을 거예요?" }
       - say: { char: 지안, with: [차피디], text: "유 선생님부터 다시 뵙고 올게요." }
-      - place: "이듬해 가을"
+      - say: { channel: card, with: [], text: "이듬해 가을\n고시원 책상" }
       - say: { channel: system, with: [], text: "『돌아본 사람들』 초판 1,500부. 6개월 판매 412부." }
       - say: { channel: record, with: [], text: "독자 엽서. \"우리 애가 다섯 살 때 하던 말이 이 책에 있었습니다. 병원에 안 데려가도 되겠지요.\" 박다온 어머니." }
       - say: { channel: message, side: them, with: [], text: "엄마: 책 샀다. 서점에 한 권 있더라. 밥은 먹고 다니니. 보증금은 엄마가 좀 보탤게" }

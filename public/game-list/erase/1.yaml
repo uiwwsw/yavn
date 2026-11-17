@@ -40,7 +40,7 @@ scenes:
           with: []
           text: "[영업2팀] 윤주임: 도윤대리님 또 ㅋㅋ만 치심"
           autoAdvance: 1632
-      - bg: { id: office, transition: cut }
+      - bg: { id: office, transition: fade, duration: 500 }
       - music: neon
       - place: "월요일 9:20 · 영업2팀"
       - char: { id: 도윤, position: left }
@@ -50,11 +50,13 @@ scenes:
           text: "네, 영업2팀 한도윤입니다."
       - char: { id: 준성, position: right }
       - say:
-          char: 준성
+          channel: dialogue
+          speakerName: "전화 속 남자"
           with: [도윤]
           text: "아, 이 번호 맞네요."
       - say:
-          char: 준성
+          channel: dialogue
+          speakerName: "전화 속 남자"
           with: [도윤]
           text: "고개 들어 봐요. 맞은편 자리요."
       - say:
@@ -69,6 +71,7 @@ scenes:
       - move: { id: 도윤, toward: 준성, style: flinch }
       - say:
           char: 준성
+          speakerName: "새 팀장"
           motion: bow
           with: [도윤]
           text: "사내 연락망에서 번호 보고 걸어 봤어요. 박준성입니다. 오늘부터 이 팀 맡습니다."

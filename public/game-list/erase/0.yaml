@@ -211,6 +211,7 @@ scenes:
       - char: { id: 준성, position: right }
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           motion: lean_in
           with: [도윤]
           text: "라이터 있어요?"
@@ -222,6 +223,7 @@ scenes:
       - move: { id: 준성, toward: 도윤, style: approach }
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           delivery: shout
           text: "라이터요!"
@@ -233,6 +235,7 @@ scenes:
           text: "안 피워요!"
       - say:
           char: 준성.smirk
+          speakerName: "낯선 남자"
           motion: laugh
           with: [도윤]
           text: "나도요. 그냥 말 걸어 본 거예요."
@@ -242,6 +245,7 @@ scenes:
           text: "…아, 네."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           motion: headtilt
           with: [도윤]
           text: "아까부터 폰만 보던데. 누가 답장 안 해요?"
@@ -251,6 +255,7 @@ scenes:
           text: "아뇨, 했어요. 대리 부르래요."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           text: "착하네. 누가요?"
       - say:
@@ -259,20 +264,24 @@ scenes:
           text: "…다음 달에 결혼해요."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           motion: perk
           with: [도윤]
           text: "와. 축하해요."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           text: "예비 신부가 보낸 거예요?"
       - say:
           char: 준성.smirk
+          speakerName: "낯선 남자"
           motion: laugh
           with: [도윤]
           text: "아, 자꾸 캐묻네요. 그 얘긴 안 해도 돼요."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           text: "다음 달이면 얼마 안 남았네요. 축하주 한 잔 살게요. 저도 일행이 가서 혼자거든요."
       - say:
@@ -281,11 +290,12 @@ scenes:
           text: "이름도 모르는데요."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           text: "이름은 그냥 모르고 마셔요. 오늘 또 볼 것도 아닌데."
       - choice:
           key: e0_junseong
-          prompt: "준성이 자기 잔을 들어 올린 채 기다린다."
+          prompt: "남자가 자기 잔을 들어 올린 채 기다린다."
           char: 준성
           options:
             - text: "잔을 받는다"
@@ -304,10 +314,12 @@ scenes:
           text: "저 진짜 가야 돼요. 대리 불러 놨어요."
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           text: "금요일 이 시간에요? 이십 분은 걸릴걸요."
       - say:
           char: 준성.smirk
+          speakerName: "낯선 남자"
           motion: lean_in
           with: [도윤]
           text: "이십 분 동안 그냥 서 있게요?"
@@ -321,6 +333,7 @@ scenes:
     actions:
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: [도윤]
           text: "이제 물 마실래요? 내일 또 일정 있을 텐데."
       - say:
@@ -353,7 +366,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "클럽에서 잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다."
+          text: "잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다. 클럽에서 여기까지 어떻게 왔는지는 기억이 나지 않는다."
       - say:
           channel: thought
           with: []
@@ -391,6 +404,7 @@ scenes:
           channel: message
           side: them
           char: 준성
+          speakerName: "낯선 남자"
           with: []
           text: "번호 찍어 둘게요ㅎㅎ 뭐라고 저장해요?"
       - say:
@@ -495,6 +509,7 @@ scenes:
           text: "새 연락처 저장 · 어젯밤 받은 번호\n이름:"
       - say:
           char: 준성
+          speakerName: "낯선 남자"
           with: []
           delivery: whisper
           text: "…아무거나 씨."

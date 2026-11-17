@@ -8,13 +8,13 @@ scenes:
     title: "내려오는 사람들"
     actions:
       - bg: hospital_stairs
-      - place: "같은 날 · 병원 동쪽 계단"
+      - place: "면회 직후 · 병원 동쪽 계단"
       - music: street
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
       - say: { channel: action, with: [], text: "위에서 출입문이 열린다. 누가 ‘한수경 책임님, 잠깐만요’ 하고 부른다. 수경은 휴대폰을 주머니에 넣고 한 계단을 내려간다." }
       - say: { char: 지완, with: [수경], text: "이쪽으로요. 제 면회증으로 아직 문이 열려요." }
-      - say: { channel: action, with: [], text: "지완이 면회증을 댄다. 문이 닫히기 직전에 종이컵을 든 윤세라 간호사가 두 사람을 보고 발로 문을 받친다." }
+      - say: { channel: action, with: [], text: "지완이 면회증을 댄다. 닫히는 문을 종이컵을 든 간호사가 발로 받친다. 가슴의 명찰에 ‘윤세라’라고 적혀 있다." }
       - goto: staff_desk
 
   staff_desk:

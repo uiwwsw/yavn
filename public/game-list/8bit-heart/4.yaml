@@ -13,7 +13,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "FINAL STAGE · 나흘 뒤"
+          text: "FINAL STAGE\n식량 원정에서 돌아온 지 나흘"
       - place: "북쪽 데이터센터 · 코어 본체 앞"
       - say:
           char: 윤재

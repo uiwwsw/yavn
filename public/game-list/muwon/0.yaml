@@ -60,10 +60,14 @@ scenes:
       - wait: 250
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
-      # Zero-length pauses keep published save positions after adjacent dialogue is combined.
-      - wait: 0
+      - say:
+          channel: action
+          with: [서연, 막쇠]
+          camera: wide
+          text: "우물가에 쪼그려 앉은 사내가 거적 끝을 돌로 눌러 둔다. 다가오는 나를 보고 등잔을 들어 준다."
       - say:
           char: 막쇠
+          speakerName: "오작인"
           with: [서연]
           text: "난 오작인 막쇠요. 판관 나리 오실 때까진 거적을 덮어 둡시다."
       - say:
@@ -92,9 +96,14 @@ scenes:
           with: [서연]
           text: "정말 한글이네. 난 사십 년을 그림만 봤는데."
       - char: { id: 도원, position: center }
-      - wait: 0
+      - say:
+          channel: action
+          with: [서연, 막쇠, 도원]
+          camera: wide
+          text: "대문에서 발소리가 난다. 막쇠가 등잔을 내려놓고 관복을 입은 사내에게 자리를 내준다."
       - say:
           char: 도원.stern
+          speakerName: "한성부 판관"
           with: [서연, 막쇠]
           text: "한성부 판관 김도원이오. 마을에선 분이가 혼례를 겁내 우물에 몸을 던졌다더군."
       - wait: 0

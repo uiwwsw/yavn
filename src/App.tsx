@@ -3954,7 +3954,7 @@ export default function App() {
         data-stage-position={position}
         data-character-placement={slot.placement}
         data-character-framing={slot.framing.name}
-        aria-hidden={!rendererActive}
+        aria-hidden
         loading="eager"
         decoding="async"
         style={charStyle}

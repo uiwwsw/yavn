@@ -415,7 +415,7 @@ scenes:
   winter_in:
     pov: "???"
     actions:
-      - say: { channel: narration, text: "빠져나가다 멎는다." }
+      - say: { channel: narration, text: "편집실 기억은 멀어졌는데, 손끝에 차가운 기운이 남는다." }
       - wait: 900
       - say: { channel: narration, text: "하나가 더 온다." }
       - say: { channel: narration, text: "넷이 전부인 줄 알았다. 목록도 넷까지였다." }

@@ -12,7 +12,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 1 · 두 달 뒤"
+          text: "STAGE 1\n게임기를 구한 지 두 달"
       - place: "학원 가는 길 · 버스 정류장"
       - say:
           char: 비서
@@ -510,7 +510,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "CONTINUE? — 사흘 후"
+          text: "CONTINUE?\n재난 사흘 뒤"
       - place: "윤재네 집 · 사흘째 아침"
       - char: { id: 윤재, position: center }
       - say:
@@ -695,7 +695,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "CONTINUE? — 10일 후"
+          text: "CONTINUE?\n재난 열흘 뒤"
       - place: "털린 편의점 앞 · 윤재의 기지"
       - say:
           char: 윤재

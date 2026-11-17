@@ -442,24 +442,26 @@ scenes:
     title: "그린고시원"
     actions:
       - bg: { id: goshiwon, transition: fade, duration: 900 }
-      - place: "밤 9:00 · 망우동 그린고시원 304호"
+      - place: "4월 21일 밤 9:00 · 망우동 그린고시원 304호"
       - char: { id: 태민, position: right }
       - char: { id: 해수, position: left }
       - move: { id: 태민, toward: 해수, style: retreat }
       - say:
           char: 태민
+          speakerName: "문 안의 남자"
           with: [해수]
           text: "경찰이에요?"
       - say:
           char: 해수
           motion: bow
           with: [태민]
-          text: "아니요. 그린마트 상봉점 고객센터에서 일합니다."
+          text: "아니요. 그린마트 상봉점 고객센터에서 일합니다. 기태민 씨 맞으세요?"
       - say:
           char: 태민
+          speakerName: "문 안의 남자"
           motion: sway
           with: [해수]
-          text: "…그걸 왜 말해요."
+          text: "…기태민 맞는데, 마트에서 왜 왔어요."
       - wait: 600
       - say:
           char: 해수
@@ -468,7 +470,7 @@ scenes:
       - say:
           char: 해수
           with: [태민]
-          text: "어디서 왔냐고 물으시는 줄 알고요."
+          text: "회사에서 보낸 건 아니에요. 제가 물어볼 게 있어서요."
       - say:
           char: 태민
           with: [해수]

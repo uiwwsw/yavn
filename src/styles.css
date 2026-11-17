@@ -4565,6 +4565,8 @@ textarea,
   letter-spacing: 0.04em;
   line-height: 1.4;
   white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
   opacity: 0;
   animation: place-caption 4200ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   pointer-events: none;

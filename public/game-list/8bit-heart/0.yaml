@@ -641,7 +641,7 @@ scenes:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "왔다! 아 진짜 신문지네. 상자도 없어?"
+          text: "왔다! 들고 들어올게. …아 진짜 신문지로만 쌌네. 상자도 없어?"
       - say:
           char: 비서
           with: [윤재]

@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "속보 · 오전 7:30 · 서울 중랑구 대형마트 지하주차장서 50대 남성 숨진 채 발견 · 새벽 5시 10분 주차 관리원 신고 · 경찰 타살 가능성 수사"
+          text: "속보 · 4월 18일 오전 7:30 · 서울 중랑구 대형마트 지하주차장서 50대 남성 숨진 채 발견 · 새벽 5시 10분 주차 관리원 신고 · 경찰 타살 가능성 수사"
       - say:
           channel: system
           with: []
@@ -642,7 +642,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "튜토리얼 4/5 — 바꿔 보세요."
+          text: "레플라 · 모의 녹화실\n튜토리얼 4/5 — 바꿔 보세요."
       - say:
           channel: system
           with: []
@@ -819,7 +819,7 @@ scenes:
       - music: bleed
       - char: { id: 해수, position: left }
       - char: { id: 은숙, position: right }
-      - place: "4월 19일 오후 · 고객센터"
+      - place: "다음 날, 4월 19일 오후 · 그린마트 고객센터"
       - say:
           char: 해수.service
           motion: bow
@@ -1038,7 +1038,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상혁의 방문에 새 도어락이 달려 있다. 숫자 1, 2, 7, 0 자리만 손때가 묻어 있다."
+          text: "그날 밤 집에 돌아오니 상혁의 방문에 새 도어락이 달려 있다. 숫자 1, 2, 7, 0 자리만 손때가 묻어 있다."
       - say:
           char: 상혁
           with: []

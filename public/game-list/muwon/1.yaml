@@ -23,6 +23,7 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
+          speakerName: "비단전에서 온 여자"
           text: "비단전 여금이에요."
       - say:
           char: 여금.wary

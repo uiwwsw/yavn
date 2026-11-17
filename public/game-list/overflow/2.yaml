@@ -8,7 +8,7 @@ scenes:
     title: "연결"
     actions:
       - bg: hospital_stairs
-      - place: "월계병원 동쪽 계단"
+      - place: "면회 직전 · 월계병원 동쪽 계단"
       - music: street
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
@@ -27,7 +27,7 @@ scenes:
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right, emotion: far }
-      - say: { channel: action, with: [], text: "지완이 문턱에서 멈춘다. 아버지가 먼저 눈을 맞추더니 양말이 벗겨진 발을 내놓고 침대 밑을 가리킨다." }
+      - say: { channel: action, with: [지완, 동식], camera: wide, text: "교대 간호사가 문을 열어 준다. 지완이 문턱에 서자 아버지는 양말이 벗겨진 발을 내놓고 침대 밑을 가리킨다." }
       - say: { char: 지완, with: [동식], text: "거기 떨어졌어요? 제가 주울게요. 누워 있어요." }
       - say: { char: 동식, with: [지완], text: "…국." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: true }, text: "반만 얼리기로 했잖아요. 일요일에 제가 가면 그때 끓여요." }

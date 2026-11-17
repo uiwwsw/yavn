@@ -580,7 +580,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "과거\n유하린 · 18"
+          text: "열한 해 전\n유하린 · 18"
       - goto: e2_harin
 
   e2_harin:

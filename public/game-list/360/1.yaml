@@ -289,7 +289,7 @@ scenes:
 
   train:
     actions:
-      - say: { channel: action, with: [], text: "문이 등 뒤에서 닫힌다. 언덕을 내려오는 동안 영호는 한 번도 뒤를 보지 않았다." }
+      - say: { channel: action, with: [], text: "판잣집 문이 등 뒤에서 닫힌다. 영호의 손을 잡고 기차역 쪽으로 언덕을 내려간다. 영호는 한 번도 뒤를 보지 않았다." }
       - say: { channel: card, with: [], text: "1967년 삼월\n서울 영등포" }
       - goto: seoul
 
