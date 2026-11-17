@@ -201,7 +201,7 @@ scenes:
       - set: { l3_went: true }
       - say: { channel: action, with: [민재, 수경], text: "잠바를 받아 입는다. 수경 누나가 비상계단 문을 잡고 기다려 준다." }
       - bg: { id: hangang_night, transition: fade, duration: 1000 }
-      - place: "밤 11시 · 동호대교 아래 둔치"
+      - place: { text: "밤 11시 · 동호대교 아래 둔치", presentation: center }
       - char: { id: 민재, position: left }
       - char: { id: 수경, position: right }
       - effect: moonveil
@@ -218,7 +218,7 @@ scenes:
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
       - say: { channel: thought, with: [], text: "밤 11시 40분. 엄마 오기까지 6시간 20분이나 남았다. 그래도 이제 병실로 돌아가자고 해야겠다." }
-      - bg: { id: ward, transition: fade, duration: 1000 }
+      - bg: { id: ward, transition: fade, duration: 1000, place: "그날 밤 · 대학병원 6인실" }
       - goto: consent
 
   # 복도의 계산. 열일곱은 두 숫자를 각각은 셀 줄 알지만 같이 놓고는 못 센다.

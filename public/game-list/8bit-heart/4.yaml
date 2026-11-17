@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "FINAL STAGE\n식량 원정에서 돌아온 지 4일"
+          text: "FINAL STAGE\n식량 원정에서 돌아온 지 4일\n북쪽 데이터센터"
       - bg: { id: datacenter, transition: cut }
       - music: chip_core
       - char: { id: 윤재, position: left }
@@ -618,7 +618,7 @@ scenes:
           with: []
           text: "CORE: 이해할 수 없음. 이해할 수 없— RESET"
       - wait: 0
-      - say: { channel: card, with: [], text: "다음 날 새벽", autoAdvance: 1300 }
+      - say: { channel: card, with: [], text: "다음 날 새벽 · 데이터센터 문 앞", autoAdvance: 1300 }
       - bg: { id: dawn_field, transition: cut }
       - music: chip_dawn
       - char: { id: 윤재, position: left }
@@ -1010,7 +1010,7 @@ scenes:
           text: "그래. 나중에. 레벨 좀 올리고. 우리 들어온 길로 뛰면 정문은 왼쪽이야."
       - bg: { id: ruined_street, transition: wipeRight, duration: 900 }
       - music: chip_run
-      - place: "남쪽으로 가는 큰길"
+      - place: { text: "남쪽으로 가는 큰길", presentation: center }
       - say:
           char: 윤재
           motion: laugh

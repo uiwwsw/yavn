@@ -29,7 +29,7 @@ scenes:
     title: "단톡방"
     actions:
       - bg: { id: home_hall, transition: cut }
-      - place: "027번 호출 전, 같은 날 오전 8:12 · 집"
+      - place: { text: "027번 호출 전, 같은 날 오전 8:12 · 집", presentation: center }
       - music: fluoro
       - say:
           channel: system
@@ -92,7 +92,7 @@ scenes:
     title: "고객센터"
     actions:
       - bg: { id: cs_desk, transition: fade, duration: 700 }
-      - place: "같은 날 오전 · 그린마트 상봉점 1층 고객센터"
+      - place: { text: "같은 날 오전 · 그린마트 상봉점 1층 고객센터", presentation: center }
       - wait: 0
       - char: { id: 해수, position: left }
       - char: { id: 경준, position: right }
@@ -685,7 +685,7 @@ scenes:
     title: "우편함"
     actions:
       - bg: { id: home_hall, transition: fade, duration: 900 }
-      - place: "밤 10:40 · 상봉동 빌라"
+      - place: { text: "밤 10:40 · 상봉동 빌라", presentation: center }
       - say:
           char: 상혁
           with: []

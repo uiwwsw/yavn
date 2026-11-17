@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 1\n게임기를 구하고 두 달 뒤"
+          text: "STAGE 1\n게임기를 구하고 두 달 뒤\n학원 가는 길, 버스 정류장"
       - bg: { id: bus_stop, transition: cut }
       - music: chip_home
       - char: { id: 윤재, position: center }
@@ -433,7 +433,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "CONTINUE?\n재난 3일 뒤"
+          text: "CONTINUE?\n재난 사흘 뒤 · 윤재네 집"
       - bg: { id: bedroom, transition: cut }
       - music: chip_home
       - place: "윤재네 집 · 재난 사흘 뒤 아침"
@@ -535,7 +535,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "CONTINUE?\n재난 10일 뒤"
+          text: "CONTINUE?\n재난 10일 뒤 · 편의점 기지"
       - bg: { id: ruined_street, transition: cut }
       - music: chip_home
       - place: "털린 편의점 앞 · 윤재의 기지"
@@ -584,7 +584,7 @@ scenes:
       - emote: { id: 윤재, motion: nod, repeat: 2 }
       - say: { channel: action, with: [], text: "이어폰을 귀에 둔 채 컵라면을 찾으러 아파트 뒷골목으로 간다." }
       - bg: { id: android_found, transition: fade, duration: 700 }
-      - place: "아파트 뒷골목 · 컵라면 수색 중"
+      - place: { text: "아파트 뒷골목 · 컵라면 수색 중", presentation: center }
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
       - move: { id: 윤재, toward: 로봇, style: retreat }

@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "현재\n한도윤 · 29세 · 결혼 3주 전"
+          text: "현재 · 결혼 3주 전\n도윤과 지수의 집"
       - bg: { id: couple_home, transition: cut }
       - music: static
       - place: "토요일 오전 · 도윤과 지수의 집"
@@ -198,7 +198,7 @@ scenes:
     title: "엘리베이터"
     actions:
       - bg: { id: office_night, transition: cut }
-      - place: "월요일 21:10 · 회사 13층 엘리베이터"
+      - place: { text: "월요일 21:10 · 회사 13층 엘리베이터", presentation: center }
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say:
@@ -356,7 +356,7 @@ scenes:
     actions:
       - mood: off
       - bg: { id: office, transition: fade, duration: 900 }
-      - place: "수요일 오후 · 영업2팀"
+      - place: { text: "수요일 오후 · 영업2팀", presentation: center }
       - say: { channel: action, with: [도윤], text: "준성의 자리가 오늘도 비어 있다. 회사 단톡에 알림이 뜬다." }
       - say:
           channel: message
@@ -625,7 +625,7 @@ scenes:
           text: "하린은 문고리에서 손을 떼고, 실내화 소리가 나지 않게 복도를 걸어 나간다."
       - add: { deleted: 1 }
       - bg: { id: harin_room, transition: fade, duration: 900 }
-      - place: "그날 밤 · 하린의 방"
+      - place: { text: "그날 밤 · 하린의 방", presentation: center }
       - say: { channel: action, with: [], text: "하린이 가방을 내려놓자 아진에게서 톡이 온다." }
       - say:
           channel: message

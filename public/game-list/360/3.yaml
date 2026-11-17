@@ -118,7 +118,7 @@ scenes:
     title: "녹취 12"
     actions:
       - bg: { id: interview_room, transition: fade, duration: 900 }
-      - place: "3월 말 · 구산동 다온이네"
+      - place: { text: "3월 말 · 구산동 다온이네", presentation: center }
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "3월 말, 구산동. 녹취 사용 동의를 다시 받으러 다온이네 초인종을 눌렀다. 어머니가 현관에서 맞아 주셨다." }
       - char: { id: 다온, position: right }
@@ -161,7 +161,7 @@ scenes:
   munho_home:
     title: "파주"
     actions:
-      - say: { channel: card, with: [], text: "4월 · 파주", autoAdvance: 1400 }
+      - say: { channel: card, with: [], text: "4월 · 파주 오문호 씨 자택", autoAdvance: 1400 }
       - bg: { id: interview_room, transition: cut }
       - place: "4월 · 파주 오문호 씨 자택"
       - char: { id: 지안, position: left }
@@ -272,7 +272,7 @@ scenes:
     title: "유리창"
     actions:
       - bg: { id: glass_visit, transition: fade, duration: 900 }
-      - place: "4월 · 김포 요양병원"
+      - place: { text: "4월 · 김포 요양병원", presentation: center }
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "면회는 예약제다. 한 번에 10분이고, 남은 시간이 벽에 숫자로 떠 있다." }
       - say: { channel: action, with: [], continueLabel: "수화기를 든다", text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다." }
@@ -299,7 +299,7 @@ scenes:
   pattern:
     actions:
       - bg: { id: edit_room, transition: fade, duration: 900 }
-      - place: "5월 · 편집실"
+      - place: { text: "5월 · 편집실", presentation: center }
       - say: { channel: action, with: [], text: "사람이 같은 얘기로 자꾸 돌아오는 대목에 표시한다. 녹취를 풀 때 하는 일이다." }
       - say: { channel: action, with: [], text: "400건을 열어 봤다. 한 군데도 표시 안 한 파일은 없다." }
       - say: { channel: thought, with: [], text: "다음 녹취를 열었는데 재생을 누르기 전에 엄마 말이 떠올랐다. 그럼 그때 또 오겠네." }

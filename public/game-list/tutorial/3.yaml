@@ -14,7 +14,7 @@ scenes:
   second_interview:
     title: "2차 진술"
     actions:
-      - bg: { id: police_room, transition: fade, duration: 900 }
+      - bg: { id: police_room, transition: fade, duration: 900, place: "4월 21일 오전 · 중랑경찰서" }
       - music: bleed
       - say:
           channel: record
@@ -293,7 +293,7 @@ scenes:
     title: "주소"
     actions:
       - bg: { id: cs_desk, transition: cut }
-      - place: "4월 21일 오후 · 고객센터"
+      - place: { text: "4월 21일 오후 · 고객센터", presentation: center }
       - char: { id: 해수, position: left, emotion: service }
       - say:
           channel: action
@@ -419,7 +419,7 @@ scenes:
     title: "그린고시원"
     actions:
       - bg: { id: goshiwon, transition: fade, duration: 900 }
-      - place: "4월 21일 밤 9:00 · 망우동 그린고시원 304호"
+      - place: { text: "4월 21일 밤 9:00 · 망우동 그린고시원 304호", presentation: center }
       - char: { id: 태민, position: right }
       - char: { id: 해수, position: left }
       - move: { id: 태민, toward: 해수, style: retreat }
@@ -846,7 +846,7 @@ scenes:
     title: "1, 2, 7, 0"
     actions:
       - bg: { id: home_hall, transition: fade, duration: 900 }
-      - place: "다음 날 마감 뒤 · 4월 22일 밤 11:00 · 집"
+      - place: { text: "다음 날 마감 뒤 · 4월 22일 밤 11:00 · 집", presentation: center }
       - say:
           char: 해수
           with: []

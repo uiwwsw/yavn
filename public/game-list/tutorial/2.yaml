@@ -265,7 +265,7 @@ scenes:
     title: "노란 테이프"
     actions:
       - bg: { id: parking_real, transition: fade, duration: 900 }
-      - place: "오전 10:40 · B2 내려가는 계단참"
+      - place: { text: "오전 10:40 · B2 내려가는 계단참", presentation: center }
       - char: { id: 경준, position: left }
       - char: { id: 해수, position: center }
       - char: { id: 은숙, position: right }
@@ -364,7 +364,7 @@ scenes:
   interview:
     title: "진술 녹화실"
     actions:
-      - bg: { id: police_room, transition: fade, duration: 900 }
+      - bg: { id: police_room, transition: fade, duration: 900, place: "4월 18일 오후 · 중랑경찰서" }
       - say:
           channel: record
           with: []
@@ -605,8 +605,8 @@ scenes:
     title: "튜토리얼 4/5"
     actions:
       - bg: { id: haesu_room, transition: fade, duration: 800 }
-      - place: "4월 18일 밤 11:30 · 해수의 방"
-      - bg: { id: sim_desk, transition: wipeRight, duration: 900 }
+      - place: { text: "4월 18일 밤 11:30 · 해수의 방", presentation: center }
+      - bg: { id: sim_desk, transition: wipeRight, duration: 900, place: "레플라 · 모의 녹화실" }
       - music: tutorial
       - say:
           channel: system
@@ -777,7 +777,7 @@ scenes:
       - music: bleed
       - char: { id: 해수, position: left }
       - char: { id: 은숙, position: right }
-      - place: "다음 날, 4월 19일 오후 · 그린마트 고객센터"
+      - place: { text: "다음 날, 4월 19일 오후 · 그린마트 고객센터", presentation: center }
       - say:
           char: 해수.service
           motion: bow
@@ -996,7 +996,7 @@ scenes:
   new_lock:
     title: "도어락"
     actions:
-      - bg: { id: home_hall, transition: fade, duration: 900 }
+      - bg: { id: home_hall, transition: fade, duration: 900, place: "그날 밤 · 상봉동 빌라" }
       - say:
           channel: action
           with: []

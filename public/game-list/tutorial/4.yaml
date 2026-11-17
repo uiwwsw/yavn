@@ -8,7 +8,7 @@ scenes:
     title: "가산동"
     actions:
       - bg: { id: server_building, transition: fade, duration: 1100 }
-      - place: "4월 23일 새벽 2:50 · 가산동 옛 레플라 사옥"
+      - place: { text: "4월 23일 새벽 2:50 · 가산동 옛 레플라 사옥", presentation: center }
       - music: server
       - say:
           channel: action
@@ -580,7 +580,7 @@ scenes:
           text: "튜토리얼 5/5 · 완료 · 다음 안내 대상 배정 중"
       - bg: { id: home_hall, transition: fade, duration: 1200 }
       - music: bleed
-      - place: "4월 23일 아침 7:00 · 집 복도"
+      - place: { text: "4월 23일 아침 7:00 · 집 복도", presentation: center }
       - char: { id: 해수, position: left }
       - char: { id: 상혁, position: right, emotion: hollow }
       - move: { id: 상혁, toward: 해수, style: lunge }
@@ -622,7 +622,7 @@ scenes:
           text: "밥은 해 놨어. 네 것도."
       - wait: 0
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
-      - place: "5월 2일 · 그린마트 고객센터"
+      - place: { text: "5월 2일 · 그린마트 고객센터", presentation: center }
       - say:
           channel: message
           side: them
@@ -679,7 +679,7 @@ scenes:
           with: []
           text: "화면이 꺼진다. 일어서는데 발밑에서 팬이 계속 도는 소리가 들린다."
       - bg: { id: cs_desk_bleed, transition: fade, duration: 1200 }
-      - place: "같은 날 오전 9:30 · 고객센터"
+      - place: { text: "같은 날 오전 9:30 · 고객센터", presentation: center }
       - music: tutorial
       - char: { id: 지영, position: right }
       - char: { id: 해수, position: left, emotion: service }
@@ -816,7 +816,7 @@ scenes:
           channel: record
           with: []
           text: "USER 0001 · 세션 종료 · 접속 시간 4,394일 12시간 28분\n튜토리얼을 찾을 수 없습니다."
-      - bg: { id: police_room, transition: fade, duration: 1200 }
+      - bg: { id: police_room, transition: fade, duration: 1200, place: "4월 23일 아침 · 중랑경찰서" }
       - music: fluoro
       - char: { id: 해수, position: left }
       - char: { id: 은숙, position: right }
@@ -917,7 +917,7 @@ scenes:
       - move: { id: 은숙, style: reset }
       - bg: { id: cs_desk, transition: fade, duration: 1200 }
       - mood: off
-      - place: "그날 오후 · 고객센터"
+      - place: { text: "그날 오후 · 고객센터", presentation: center }
       - say:
           channel: record
           with: []

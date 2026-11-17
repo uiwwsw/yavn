@@ -9,7 +9,7 @@ scenes:
     actions:
       - bg: { id: rooftop, transition: fade, duration: 1400 }
       - music: wind
-      - place: "월요일 점심 · 회사 옥상"
+      - place: { text: "월요일 점심 · 회사 옥상", presentation: center }
       - char: { id: 도윤, position: center, emotion: hollow }
       - say: { channel: action, with: [도윤], text: "옥상에 올라와 문을 닫자마자 회사 단톡 알림이 울린다." }
       - say:
@@ -455,7 +455,7 @@ scenes:
     actions:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
-      - place: "그날 오전 · ERASE 클리닉"
+      - place: { text: "그날 오전 · ERASE 클리닉", presentation: center }
       - char: { id: 하린, position: center }
       - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요." }
       - say: { char: 하린, with: [], delivery: whisper, text: "지금 이름으로는 학교에 다시 가기 싫어요. 그냥 해 주세요." }
@@ -680,7 +680,7 @@ scenes:
       - bg: { id: surgery_reveal, transition: fade, duration: 1400 }
       - music: cold_room
       - char: { id: 도윤, position: center, emotion: hollow }
-      - place: "다음 날 오전 10시 · ERASE 클리닉"
+      - place: { text: "다음 날 오전 10시 · ERASE 클리닉", presentation: center }
       - say:
           char: 의사
           with: []
@@ -732,7 +732,7 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 1200 }
       - music: static
-      - place: "3주 뒤 · 영업2팀"
+      - place: { text: "3주 뒤 · 영업2팀", presentation: center }
       - say:
           channel: record
           with: []
@@ -819,7 +819,7 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1200 }
       - music: wind
-      - place: "3일 뒤 목요일 · 보건소"
+      - place: { text: "3일 뒤 목요일 · 보건소", presentation: center }
       - say:
           channel: action
           with: []
@@ -847,7 +847,7 @@ scenes:
     actions:
       - bg: { id: clinic_hall, transition: fade, duration: 1200 }
       - music: wind
-      - place: "다음 날 오전 9:00 · 보건소"
+      - place: { text: "다음 날 오전 9:00 · 보건소", presentation: center }
       - say:
           channel: action
           with: []

@@ -11,7 +11,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 0 · 2063년 · 새벽 2시"
+          text: "STAGE 0 · 2063년 새벽 2시\n윤재의 방"
       - place: "윤재의 방"
       - char: { id: 윤재, position: left }
       - char: { id: 비서, position: right }

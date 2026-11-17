@@ -10,7 +10,7 @@ scenes:
     title: "새 팀장"
     actions:
       - bg: { id: couple_home, transition: cut }
-      - place: "월요일 아침 · 출근 전"
+      - place: { text: "월요일 아침 · 도윤과 지수의 집", presentation: center }
       - char: { id: 도윤, position: left }
       - say: { channel: action, with: [도윤], text: "신발을 신는데 회사 단톡이 울린다. 도윤이 잠깐 멈춰 화면을 확인한다." }
       - say:
@@ -45,7 +45,7 @@ scenes:
           autoAdvance: 1632
       - bg: { id: office, transition: fade, duration: 500 }
       - music: neon
-      - place: "월요일 9:20 · 영업2팀"
+      - place: { text: "월요일 9:20 · 영업2팀", presentation: center }
       - char: { id: 도윤, position: left }
       - say: { channel: action, with: [도윤], text: "자리에 앉기도 전에 모르는 번호로 전화가 온다." }
       - say:
@@ -145,7 +145,7 @@ scenes:
     actions:
       - bg: { id: office_night, transition: fade, duration: 900 }
       - music: static
-      - place: "목요일 21:30 · 빈 사무실"
+      - place: { text: "목요일 21:30 · 빈 사무실", presentation: center }
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say:
@@ -391,7 +391,7 @@ scenes:
   e1_home:
     actions:
       - bg: { id: couple_home, transition: fade, duration: 600 }
-      - place: "금요일 밤 · 도윤과 지수의 집"
+      - place: { text: "금요일 밤 · 도윤과 지수의 집", presentation: center }
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say: { channel: action, with: [도윤], text: "집에 와서도 아까 단톡방이 마음에 걸린다. 도윤은 농담이 달린 메시지를 길게 누른다." }
@@ -599,7 +599,7 @@ scenes:
     pov: "유하린"
     actions:
       - bg: { id: harin_room, transition: fade, duration: 900 }
-      - place: "그날 밤 · 하린의 방"
+      - place: { text: "그날 밤 · 하린의 방", presentation: center }
       - say: { channel: action, with: [], text: "불을 끄고 누웠는데 휴대폰이 울린다. 하린은 아진의 이름이 뜬 알림을 연다." }
       - say:
           channel: message
