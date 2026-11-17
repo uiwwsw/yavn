@@ -237,6 +237,8 @@ export type SayAction = {
     unskippable?: boolean;
     /** message channel: which side of the chat the bubble sits on. */
     side?: 'me' | 'them';
+    /** message channel: the title of this chat, shared by its incoming and outgoing lines. */
+    thread?: string;
     /** message channel: a photo or clip sent with the line, or instead of it. */
     media?: PhoneMediaSource;
     /** Erase the line on screen once it has been read (message, record, thought, …). */
@@ -752,6 +754,8 @@ export type StoryLogEntry =
       channel?: DialogueChannel;
       /** message channel only: which side of the thread this bubble sat on. */
       side?: 'me' | 'them';
+      /** message channel only: the authored chat title. */
+      thread?: string;
       /** message channel only: the speaker's profile picture, already resolved to a URL. */
       avatar?: string;
       /** message channel only: the photo or clip this message carried. */

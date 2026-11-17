@@ -385,6 +385,7 @@ const actionBodySchema = z.union([
       wait: z.number().int().nonnegative().max(60000).optional(),
       unskippable: z.boolean().optional(),
       side: z.enum(['me', 'them']).optional(),
+      thread: z.string().trim().min(1).max(60).optional(),
       media: phoneMediaSchema.optional(),
       erase: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
@@ -395,6 +396,9 @@ const actionBodySchema = z.union([
     }).refine(say => say.text !== undefined || say.media !== undefined, {
       message: 'a say needs text, unless it sends media',
       path: ['text'],
+    }).refine(say => say.thread === undefined || say.channel === 'message', {
+      message: 'thread applies to message lines',
+      path: ['thread'],
     }),
   }),
 ]);

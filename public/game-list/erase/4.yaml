@@ -459,7 +459,7 @@ scenes:
       - char: { id: 하린, position: center }
       - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요." }
       - say: { char: 하린, with: [], delivery: whisper, text: "지금 이름으로는 학교에 다시 가기 싫어요. 그냥 해 주세요." }
-      - say: { channel: action, with: [하린], sound: consent_pen, text: "하린은 소매로 손바닥을 닦고 동의서 아래에 자기 이름을 쓴다." }
+      - say: { channel: action, with: [하린], sound: consent_pen, text: "하린은 소매로 손바닥을 닦는다. 동의서 맨 아래에 ‘유하린’이라고 쓴다." }
       - say: { char: 하린, with: [], text: "가방에 휴대폰 있어요. 사진 한 장만 남겨 놨어요. 그건 나중에 제가 가져갈게요." }
       - say: { char: 의사, with: [], text: "네. 소지품에 손대지 않아요." }
       - bg: { id: surgery_reveal, transition: dissolve, duration: 760 }

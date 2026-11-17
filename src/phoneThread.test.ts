@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneThread } from './phoneThread';
+import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
 import type { StoryLogEntry } from './types';
 
 const message = (
@@ -7,7 +7,7 @@ const message = (
   side: 'me' | 'them',
   actionIndex: number,
   speaker?: string,
-): StoryLogEntry => ({
+): Extract<StoryLogEntry, { kind: 'dialogue' }> => ({
   kind: 'dialogue',
   channel: 'message',
   text,
@@ -29,6 +29,18 @@ const spoken = (text: string, actionIndex: number): StoryLogEntry => ({
 });
 
 describe('selectPhoneThread', () => {
+  it('keeps named chats apart and brings back the right history when switching rooms', () => {
+    const invite = { ...message('클럽 올래?', 'them', 1, '민석'), thread: '민석' };
+    const leaving = { ...message('잠깐 나갔다 올게', 'me', 2, '도윤'), thread: '지수' };
+    const reply = { ...message('대리 불러', 'them', 3, '정지수'), thread: '지수' };
+    const check = { ...message('화장실에서 자냐', 'me', 4, '도윤'), thread: '민석' };
+
+    expect(selectPhoneThread([invite, leaving])).toEqual([]);
+    expect(selectPhoneContact([], leaving, leaving.thread)?.name).toBe('지수');
+    expect(selectPhoneThread([invite, leaving, reply, check]).map(bubble => bubble.text)).toEqual(['클럽 올래?']);
+    expect(selectPhoneThread([invite, leaving, reply]).map(bubble => bubble.text)).toEqual(['잠깐 나갔다 올게']);
+  });
+
   it('keeps the bubbles before the live line, oldest first', () => {
     const thread = selectPhoneThread([
       message('들어왔어?', 'them', 1),

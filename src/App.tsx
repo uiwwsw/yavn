@@ -1798,14 +1798,12 @@ export default function App() {
     () => (dialogChannel === 'message' ? selectPhoneThread(storyLog) : []),
     [dialogChannel, storyLog],
   );
-  // Whose phone screen this is: the last person who wrote in, so the header names the
-  // other end of the conversation rather than whoever happens to be speaking right now.
-  const phoneContact = useMemo(
-    () => (dialogChannel === 'message'
-      ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide, avatar: dialogAvatar })
-      : undefined),
-    [dialogChannel, phoneThread, dialogSide, dialogSpeaker, dialogAvatar],
-  );
+  // The chat title stays visible even when the first bubble is outgoing.
+  const livePhoneLine = storyLog.at(-1);
+  const phoneThreadName = livePhoneLine?.kind === 'dialogue' ? livePhoneLine.thread : undefined;
+  const phoneContact = useMemo(() => dialogChannel === 'message'
+    ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide, avatar: dialogAvatar }, phoneThreadName)
+    : undefined, [dialogChannel, phoneThread, dialogSide, dialogSpeaker, dialogAvatar, phoneThreadName]);
   // Outside a phone scene the name tag always shows; inside one it follows the thread's rule.
   const phoneLiveLeadsRun = dialogChannel !== 'message'
     || leadsRun(phoneThread[phoneThread.length - 1], { speaker: dialogSpeaker, side: dialogSide });
@@ -3069,7 +3067,8 @@ export default function App() {
       return;
     }
     const nextVisibleCharacterIds = [...visibleCharacterIds];
-    if (chapterLoading) {
+    if (chapterLoading || placeCaption?.centered) {
+      // Finish the old cast's exit while the transition covers the stage.
       previousLayoutCastKey.current = stageCastKey;
       previousLayoutMode.current = characterLayoutMode;
       leavingCharacterPlacementRef.current.clear();
@@ -3132,6 +3131,7 @@ export default function App() {
     characterLayoutMode,
     stageCastKey,
     chapterLoading,
+    placeCaption?.centered,
     characterStageLayout,
     characterStageSpacing,
     presentedVisibleCharacterIds,

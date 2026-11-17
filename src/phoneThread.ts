@@ -87,6 +87,12 @@ function collectRuns(storyLog: StoryLogEntry[]): MessageRun[] {
       open = undefined;
       continue;
     }
+    if (entry.thread) {
+      // An authored chat ends the stretch whose participants we must infer.
+      open = undefined;
+      runs.length = 0;
+      continue;
+    }
     if (!open) {
       open = { entries: [], correspondents: new Set() };
       runs.push(open);
@@ -135,23 +141,28 @@ export function selectPhoneThread(
     return [];
   }
 
-  const correspondents = new Set<string>();
-  if ((live.side ?? 'them') !== 'me' && live.speaker) {
-    correspondents.add(live.speaker);
-  }
-
-  const entries: MessageEntry[] = [];
-  const runs = collectRuns(storyLog.slice(0, -1));
-  // The stretch the live line is standing in is the live line's own; it is never a different
-  // conversation, however many people turn out to be in it once it is walked back.
-  const before = storyLog[storyLog.length - 2];
-  const ownRun = before && isMessage(before) ? runs.length - 1 : -1;
-  for (let index = runs.length - 1; index >= 0; index -= 1) {
-    const run = runs[index];
-    if (index !== ownRun && !sameConversation(correspondents, run)) break;
-    entries.unshift(...run.entries);
-    for (const name of run.correspondents) correspondents.add(name);
-    if (entries.length >= limit) break;
+  const previousEntries = storyLog.slice(0, -1);
+  let entries: MessageEntry[];
+  if (live.thread) {
+    entries = previousEntries.filter((entry): entry is MessageEntry =>
+      isMessage(entry) && entry.thread === live.thread);
+  } else {
+    const correspondents = new Set<string>();
+    if ((live.side ?? 'them') !== 'me' && live.speaker) {
+      correspondents.add(live.speaker);
+    }
+    entries = [];
+    const runs = collectRuns(previousEntries);
+    const before = previousEntries[previousEntries.length - 1];
+    // An uninterrupted inferred conversation can have more than one correspondent.
+    const ownRun = before && isMessage(before) && !before.thread ? runs.length - 1 : -1;
+    for (let index = runs.length - 1; index >= 0; index -= 1) {
+      const run = runs[index];
+      if (index !== ownRun && !sameConversation(correspondents, run)) break;
+      entries.unshift(...run.entries);
+      for (const name of run.correspondents) correspondents.add(name);
+      if (entries.length >= limit) break;
+    }
   }
 
   const bubbles: PhoneThreadBubble[] = entries.slice(-limit).map((entry) => ({
@@ -191,6 +202,7 @@ export type PhoneContact = { name: string; group: boolean; avatars: string[] };
 export function selectPhoneContact(
   bubbles: readonly (PhoneSender & { avatar?: string })[],
   live?: PhoneSender & { avatar?: string },
+  thread?: string,
 ): PhoneContact | undefined {
   const names: string[] = [];
   const avatars = new Map<string, string>();
@@ -202,10 +214,10 @@ export function selectPhoneContact(
   };
   for (const bubble of bubbles) if ((bubble.side ?? 'them') === 'them') add(bubble);
   if (live && live.side !== 'me') add(live);
-  if (names.length === 0) return undefined;
+  if (names.length === 0 && !thread) return undefined;
   const faces = names.map((name) => avatars.get(name)).filter((avatar): avatar is string => Boolean(avatar));
-  if (names.length === 1) return { name: names[0], group: false, avatars: faces };
-  return { name: `${names[0]} 외 ${names.length - 1}`, group: true, avatars: faces.slice(0, 3) };
+  if (names.length <= 1) return { name: thread ?? names[0], group: false, avatars: faces };
+  return { name: thread ?? `${names[0]} 외 ${names.length - 1}`, group: true, avatars: faces.slice(0, 3) };
 }
 
 /**

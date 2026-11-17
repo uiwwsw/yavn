@@ -163,6 +163,7 @@
 .app[data-place-caption='center'] :is(.dialog-box, .char-layer, .sticker-layer, .message-portrait) {
   opacity: 0;
   visibility: hidden;
+  transition: none;
 }
 
 .place-caption-overlay > span {

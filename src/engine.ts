@@ -537,6 +537,7 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker, channel,
         ...(action.say.side ? { side: action.say.side } : {}),
+        ...(action.say.thread ? { thread: action.say.thread } : {}),
         text: parseInlineSpeed(interpolateText(action.say.text ?? '', vars)).text });
     }
     if ('choice' in action || 'input' in action) {
@@ -2513,6 +2514,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
               return (
                 typeof value.text === 'string' &&
                 (value.speaker === undefined || typeof value.speaker === 'string') &&
+                (value.thread === undefined || typeof value.thread === 'string') &&
                 (value.channel === undefined ||
                   value.channel === 'dialogue' ||
                   value.channel === 'narration' ||
@@ -4603,6 +4605,7 @@ function runToNextPause(loopGuard = 0): void {
 function showPlaceCaption(text: string, centered: boolean, loopGuard: number): void {
   const state = useVNStore.getState();
   const caption = interpolateText(text, state.routeVars);
+  if (centered) state.setVisibleCharacters([]);
   if (!centered || state.skipReadActive) {
     state.setPlaceCaption(centered ? undefined : caption);
     incrementCursor();
@@ -5194,6 +5197,7 @@ function runActionsUntilPause(loopGuard: number): void {
       speaker: speakerName,
       channel,
       ...(channel === 'message' ? { side: action.say.side ?? 'them' } : {}),
+      ...(action.say.thread ? { thread: action.say.thread } : {}),
       ...(phoneAvatar ? { avatar: phoneAvatar } : {}),
       ...(phoneMedia ? { media: phoneMedia } : {}),
       text: parsed.text,

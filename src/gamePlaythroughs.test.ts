@@ -273,8 +273,13 @@ describe('ERASE', () => {
     const name = resolvePlayerName(opening.game, opening.currentSceneId, opening.routeVars);
     expect(name).toBe('???');
     expect(resolvePlayerCharacterId(opening.game, name, opening.routeVars)).toBeUndefined();
+    expect(opening.dialog.continueLabel).toBe('동의서에 서명한다');
+    await vi.advanceTimersByTimeAsync(3500);
+    handleAdvance();
+    expect(useVNStore.getState().dialog.continueLabel).toBe('동의서에 서명한다');
 
     const { state, shown } = await play({}, state => state.currentSceneId === 'studio');
+    expect(heard(shown, '동의서 아래에 이름을 쓴다')).toBe(true);
     expect(shown).toContain('결혼식 4주 전 · 청첩장 촬영');
     expect(heard(shown, '휴대전화는 돌려')).toBe(false);
     const revealed = resolvePlayerName(state.game, state.currentSceneId, state.routeVars);
