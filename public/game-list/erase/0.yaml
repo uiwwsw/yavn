@@ -56,14 +56,14 @@ scenes:
 
   e0_studio_smile:
     actions:
-      - say: { char: 도윤.smile, with: [지수], text: "응. 오늘 보낼 수 있어. 밥 먹기 전에 할게." }
-      - say: { char: 지수.warm, with: [도윤], text: "알았어. 자, 손 다시 잡아. 이제 찍으신대." }
+      - say: { char: 도윤.smile, with: [지수], text: "응. 잠깐만. 지금 보낼게." }
+      - say: { char: 지수.warm, with: [도윤], text: "왔어. 자, 손 다시 잡아. 이제 찍으신대." }
       - goto: e0_flash
 
   e0_studio_joke:
     actions:
       - say: { char: 도윤, with: [지수], text: "이번 달 카드값이 밀렸어. 43만 원." }
-      - say: { char: 지수, with: [도윤], text: "진작 말하지. 모자란 건 내가 먼저 낼게. 밥 먹고 얼마씩 낼지 보자." }
+      - say: { char: 지수, with: [도윤], text: "그럼 네 몫도 내가 보낼게. 다음엔 빠듯하면 바로 얘기해 줘." }
       - say: { char: 도윤, with: [지수], text: "…고마워. 그럼 칼국수는 내가 사." }
       - goto: e0_flash
 
@@ -71,7 +71,7 @@ scenes:
     actions:
       - move: { id: 도윤, toward: 지수, style: approach }
       - say: { char: 도윤, with: [지수], text: "아, 저기. 작가님 다시 오신다. 우리 아까처럼 손잡을까?" }
-      - say: { char: 지수, with: [도윤], text: "응. 밥 먹으면서 다시 얘기해." }
+      - say: { char: 지수, with: [도윤], text: "응. 계약금은 내가 먼저 넣을게. 칼국수 먹을 때 다시 얘기하자." }
       - goto: e0_flash
 
   e0_flash:
@@ -210,7 +210,7 @@ scenes:
           channel: action
           with: [도윤, 준성]
           text: "남자는 잔을 내려놓는다. 도윤이 다시 보니 호출 화면에는 아직 ‘기사 찾는 중’이라고 쓰여 있다."
-      - say: { channel: action, with: [도윤], text: "아직 기사가 잡히지 않았다. 도윤은 호출을 취소한다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 취소 버튼 위에서 잠깐 멈춘다. 준성이 자리에서 일어나려 하자 고개를 젓고 호출을 취소한다." }
       - say:
           channel: system
           with: []
@@ -229,7 +229,7 @@ scenes:
           motion: laugh
           with: [준성]
           text: "네. 저 이제 진짜 일어나야 돼요."
-      - say: { channel: action, with: [도윤], text: "도윤이 일어서다 다시 주저앉는다. 자정을 훌쩍 넘긴 시간이다. 지수에게 톡을 쓴다." }
+      - say: { channel: action, with: [도윤], text: "도윤이 일어서다 다시 주저앉는다. 지수에게 보낸 외출 문자가 화면에 떠 있다. 도윤은 시각을 보고 나서야 답장 칸을 연다." }
       - say:
           channel: message
           thread: 지수
@@ -257,7 +257,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다. 클럽에서 여기까지 어떻게 왔는지는 기억이 나지 않는다."
+          text: "잔을 건네던 남자가 침대 반대편에 등을 돌리고 자고 있다. 엘리베이터 거울에 비친 두 사람은 생각난다. 몇 층에서 내렸는지, 그 뒤 무슨 말을 했는지는 기억이 나지 않는다."
       - say:
           channel: thought
           with: []

@@ -7,12 +7,11 @@ import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } 
 // muwonGame.test.ts and threeSixtyGame.test.ts check their own game in detail; this one is the
 // floor under all of them, so a typo in a scene id or a goto that points nowhere fails here
 // instead of in a player's browser.
-const games = ['360', '8bit-heart', 'erase', 'live2dtest', 'muwon', 'overflow', 'tutorial'];
+const games = ['360', '8bit-heart', 'erase', 'muwon', 'overflow', 'tutorial'];
 
 const gameRoot = (id: string): string => fileURLToPath(new URL(`../public/game-list/${id}/`, import.meta.url));
 
-// Chapters do not have to start at 0 — the Live2D fixture ships 1.yaml only — so collect
-// whatever numbered files are there instead of stopping at the first gap.
+// Collect every numbered chapter, including games with gaps or a nonzero starting chapter.
 const chapterPaths = (id: string): string[] => {
   const root = gameRoot(id);
   const found: string[] = [];

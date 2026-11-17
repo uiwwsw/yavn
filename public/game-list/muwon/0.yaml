@@ -180,7 +180,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "산 채로 빠지면 숨을 들이켜요."
+          text: "살아서 빠졌으면 숨 쉬려고 물을 들이켜지요."
       - say:
           char: 막쇠
           with: [서연]
@@ -214,7 +214,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "살을 긁었으면 그놈 손등이나 팔에 자국이 남았을 거고."
+          text: "옷을 움켜쥐면서 손도 할퀴었을 수 있지. 사람을 잡아 오면 손부터 봐요."
       - say:
           channel: thought
           with: []
@@ -425,7 +425,7 @@ scenes:
       - say:
           char: 서연.resolve
           with: [강치수, 도원]
-          text: "분이 손톱이 두 개나 부러졌습니다. 이 사람 손등과 팔에는 긁힌 데가 없어요."
+          text: "손톱 두 개가 깨졌는데 이 사람 손등에는 생채기 하나 없습니다. 혼수 때문에 싸웠다는 말만 듣고 매를 들 일은 아니지요."
       - say:
           char: 강치수
           with: [서연]
@@ -437,7 +437,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 강치수]
-          text: "의녀가 손을 보자고 한 까닭을 나도 알겠소."
+          text: "이 사람 소매엔 남빛 실도 보이지 않는군. 못 박아 두기 전에 실부터 확인합시다."
       - set: { c1_brother: true }
       - goto: c1_follow_thread
 

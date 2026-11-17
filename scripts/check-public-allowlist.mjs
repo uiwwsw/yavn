@@ -13,7 +13,7 @@ const ALLOWED_PREFIXES = ['game-list/'];
 const NEVER_SHIPPED = [
   {
     test: (value) => /\.(?:cmo3|can3|psd|clip|xcf|blend|ai|sketch|fig)$/i.test(value),
-    hint: 'Editor source files belong outside public (for example: assets/live2d-source/...).',
+    hint: 'Editor source files belong outside public (for example: assets/model-source/...).',
   },
   {
     test: (value) => /\/assets\/music\/[^/]+\.wav$/i.test(value),

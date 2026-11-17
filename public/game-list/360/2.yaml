@@ -23,7 +23,7 @@ scenes:
       - say: { char: 수경, with: [민재], text: "난 스물하나. 학교는 쉬고 있어. 미대 다녀. 너 입원 처음이지?" }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
       - say: { char: 수경, with: [민재], text: "뭐긴 뭐야." }
-      - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그렇게 꽂아 뒀는데 쉽게 안 빠져." }
       - say: { char: 수경, with: [민재], text: "내가 줄넘기도 해 봤어." }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다." }
       - say: { char: 민재, with: [수경], text: "…누나 웃는 거, 어디서 본 것 같아요." }
@@ -138,7 +138,7 @@ scenes:
       - say: { char: 민재, with: [수경], delivery: whisper, text: "들키면요." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "혼나기야 하겠지. 근데 나 요즘은 차라리 혼나는 게 낫다 싶더라." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "비상계단으로 가면 당직 간호사랑 안 마주쳐. 2층하고 3층 사이 불도 꺼져 있어. 내가 봤어." }
-      - say: { char: 민재, with: [수경], delivery: whisper, text: "두 번 갔는데 왜 또 가요." }
+      - say: { char: 민재, with: [수경], delivery: whisper, text: "아까 두 번이나 갔다 왔다면서요. 근데 또 나가요?" }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "두 번 다 밤에 그냥 앉아만 있다 왔어. 오늘은 쏘는 날이잖아." }
       - say: { channel: action, with: [], text: "건너편 침대에서 할아버지가 몸을 돌린다. 보청기는 침대 옆 컵에 들어 있다." }
       - say: { channel: thought, with: [], text: "우리 말을 들은 걸까. 할아버지 눈이 떠 있다." }
@@ -215,7 +215,7 @@ scenes:
       - say: { char: 수경, with: [민재], text: "소원은 아껴야지. 그건 계획이야." }
       - effect: fireworks
       - say: { channel: action, with: [], text: "따라 고개를 들었다. 눈앞에서 초록 불빛이 퍼지고, 한참 뒤에 쿵 소리가 왔다." }
-      - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
+      - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요?" }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
       - say: { channel: thought, with: [], text: "밤 11시 40분. 엄마 오기까지 6시간 20분이나 남았다. 그래도 이제 병실로 돌아가자고 해야겠다." }
       - bg: { id: ward, transition: fade, duration: 1000, place: "그날 밤 · 대학병원 6인실" }
@@ -426,7 +426,7 @@ scenes:
       - say:
           channel: narration
           when: { var: l3_went, op: eq, value: true }
-          text: "다리를 언제 걷느냐고 묻지 말걸. 누나는 그걸 계획이라고 했는데."
+          text: "저 다리 몇 미터냐는 말만 했다. 나도 같이 걷겠다고 할걸."
       - wait: 900
       - say: { channel: narration, text: "끝내 대답할 말이 생각나지 않는다." }
       - say: { channel: narration, text: "엄마가 수건을 짜던 소리가 한 번 더 난다." }

@@ -295,7 +295,7 @@ describe('360 full playthrough', () => {
     const visit = state.storyLog.filter((entry) => entry.kind === 'dialogue').filter((entry) => entry.sceneId === 'glass');
     expect(visit.filter((entry) => entry.speaker === '엄마' && entry.channel === 'dialogue')).toHaveLength(6);
     expect(visit.some((entry) => entry.channel === 'message')).toBe(false);
-    expect(heard(shown, '거기다. 열 번 중에 열 번 다 거기서 돌아간다')).toBe(true);
+    expect(heard(shown, '다음 주로 미루는 말은 금방 나온다')).toBe(true);
     expect(heard(shown, '전송에 손을 대자 손가락이 굳는다')).toBe(true);
     expect(heard(shown, '‘토요일에’까지는 남겨 둔다')).toBe(true);
     // The fourth face knows her first, and says what is standing behind her when she looks back.

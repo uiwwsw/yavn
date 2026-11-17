@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneContact, selectPhoneThread } from './phoneThread';
+import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneConversation, selectPhoneThread } from './phoneThread';
 import type { StoryLogEntry } from './types';
 
 const message = (
@@ -36,8 +36,8 @@ describe('selectPhoneThread', () => {
     const check = { ...message('화장실에서 자냐', 'me', 4, '도윤'), thread: '민석' };
 
     expect(selectPhoneThread([invite, leaving])).toEqual([]);
-    expect(selectPhoneContact([], leaving, leaving.thread, 'jisu.svg')).toEqual({
-      name: '지수', group: false, avatars: ['jisu.svg'],
+    expect(selectPhoneConversation([invite, leaving], { threadAvatar: 'jisu.svg' }).contact).toEqual({
+      name: '지수', thread: '지수', participants: [{ speaker: '지수', avatar: 'jisu.svg' }],
     });
     expect(selectPhoneThread([invite, leaving, reply, check]).map(bubble => bubble.text)).toEqual(['클럽 올래?']);
     expect(selectPhoneThread([invite, leaving, reply]).map(bubble => bubble.text)).toEqual(['잠깐 나갔다 올게']);
@@ -106,10 +106,22 @@ describe('selectPhoneThread', () => {
 
   it('stops at the limit, keeping the newest bubbles', () => {
     const log = Array.from({ length: 20 }, (_, index) => message(`line ${index}`, 'them', index));
-    const thread = selectPhoneThread(log, { limit: 3 });
+    const { bubbles } = selectPhoneConversation(log, { limit: 3 });
 
     // 19 is the live line, so the thread ends at 18.
-    expect(thread.map((bubble) => bubble.text)).toEqual(['line 16', 'line 17', 'line 18']);
+    expect(bubbles.map((bubble) => bubble.text)).toEqual(['line 16', 'line 17', 'line 18']);
+  });
+
+  it.each([undefined, '주말 약속'])('keeps older group participants in the header of %s', (thread) => {
+    const first = { ...message('나도 갈래', 'them', 1, '경준'), thread, avatar: '/kyungjun.svg' };
+    const second = { ...message('그래', 'them', 2, '지영'), thread };
+    const recent = Array.from({ length: 12 }, (_, i) => ({ ...message('지금 갈게', 'them', i + 4, '지영'), thread }));
+    const { bubbles, contact } = selectPhoneConversation([first, second, spoken('시간이 지났다.', 3), ...recent]);
+
+    expect(bubbles).toHaveLength(10);
+    expect(bubbles.every(bubble => bubble.speaker === '지영')).toBe(true);
+    expect(contact?.name).toBe(thread ?? '경준');
+    expect(contact?.participants).toMatchObject([{ speaker: '경준', avatar: '/kyungjun.svg' }, { speaker: '지영' }]);
   });
 
   it('carries the speaker through and defaults an unlabelled bubble to the other side', () => {

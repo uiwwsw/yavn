@@ -67,9 +67,9 @@ scenes:
       - say: { channel: narration, text: "암흑." }
       - say: { channel: narration, text: "아까와 같은 어둠이다.", wait: 1300 }
       - say: { channel: narration, text: "방금까지 대답하던 내 이름이 생각나지 않는다." }
-      - bg: { id: void_light, transition: dissolve, duration: 2600 }
+      - bg: { id: void_light, transition: dissolve, duration: 1450 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
-      - say: { channel: narration, text: "꺼진 자리에서 시선을 떼자 다른 빛이 보인다." }
+      - say: { channel: narration, text: "꺼진 자리 옆에서 아직 들어가 보지 않은 빛이 손에 닿을 듯 깜박인다." }
       - goto: stars
 
   # 고르는 것은 사람이 아니라 그리움의 모양이다. 누군지는 가 봐야 안다.
@@ -263,7 +263,7 @@ scenes:
     actions:
       - sticker: { id: key, image: key_sticker, x: 50, y: 32, width: "clamp(150px, 20%, 280px)", enter: fadeIn, inputLockMs: 300 }
       - wait: 1100
-      - say: { channel: action, with: [], text: "열쇠를 자물쇠에 댄다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
+      - say: { channel: action, with: [], text: "열쇠를 자물쇠에 꽂는다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "열쇠를 돌리려는데 쥔 손에 힘만 더 들어간다. 대문 밖에선 여전히 열어 달라는 소리가 난다." }
       - clearSticker: { id: key, leave: fadeOut }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "주인어른? 여시는 겁니까, 마시는 겁니까." }
@@ -319,7 +319,7 @@ scenes:
           char: 봉구
           with: [만석]
           when: { var: l1_gave, op: eq, value: true }
-          text: "…두 병은 마흔 냥입니다. 궤에는 스물여덟 냥 있고요."
+          text: "…외상으로 나간 쌀만큼 다시 들여놓느라 궤에 스물여덟 냥밖에 없습니다."
       - say:
           char: 만석
           with: [봉구]
@@ -444,7 +444,7 @@ scenes:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 쌀은 곳간에 있다." }
       - say: { char: 만석, with: [봉구], text: "쌀값은 다시 오를 게다." }
-      - say: { channel: action, with: [], text: "가을에 햇곡이 나자 쌀값은 닷 냥으로 떨어졌다." }
+      - say: { channel: action, with: [], text: "그해 햇곡이 나자 쌀값은 닷 냥으로 떨어졌다. 이듬해 가을까지도 그 값이었다." }
       - say: { char: 끝순, with: [만석], text: "아버지, 묵은쌀에 바구미 생겨요. 덕이네 좀 주면 안 돼요?" }
       - say: { char: 끝순, with: [만석], text: "지금이라도요." }
       - say: { char: 만석, with: [끝순], text: "바구미는 체로 치면 된다." }
@@ -460,7 +460,7 @@ scenes:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 애가 일어났으면 됐다." }
       - say: { channel: action, with: [], text: "가을에 외상을 갚은 집은 두 집이었다. 햇곡이 풀리자 쌀값은 닷 냥이 됐다." }
-      - say: { channel: action, with: [], text: "맡은 쌀을 제 날짜에 못 내줬다. 강경 윤 객주가 사람을 보냈다." }
+      - say: { channel: action, with: [], text: "쌀 들여올 때 진 빚부터 갚았다. 맡은 쌀까지 내다 팔았다가 강경 윤 객주가 보낸 사람이 들이닥쳤다." }
       - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 쌀을 풀어 준 지 4년이 지난 여름에도 식구는 포구 뒷골목 셋방에 있었다." }
       - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "쌀을 풀고 4년 뒤 여름 · 제물포 뒷골목 셋방" }
       - say: { char: 끝순, with: [만석], text: "아버지, 저 내일부터 왜인 정미소 나가요. 쌀에서 뉘 고르는 일인데 하루 열두 전이래요." }
@@ -583,7 +583,7 @@ scenes:
       - say: { channel: narration, text: "미안하다고도." }
       - say: { channel: narration, when: { var: l1_end, op: eq, value: gone }, text: "포구를 비운 사흘 동안, 곳간에 둔 쌀부터 걱정했다." }
       - wait: 900
-      - say: { channel: narration, text: "대답할 차례다." }
+      - say: { channel: narration, text: "봉구한테 열쇠를 맡겨 두고 끝순이랑 포구 밖에나 나가 볼걸." }
       - say: { channel: narration, text: "쉰여섯 해를 다 뒤져도 변명 하나가 안 나온다." }
       - say: { channel: narration, text: "끝순아, 하고 불러 봤다. 이번엔 대답이 없다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }

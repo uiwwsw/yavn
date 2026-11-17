@@ -239,15 +239,11 @@ scenes:
           char: 비서
           with: [윤재]
           text: "코어 권장 거래가는 44,000원입니다."
-      - say:
-          char: 윤재
-          motion: bounce
-          with: [비서]
-          text: "거봐! 내가 두 달째 보고 있어서 알아."
+      - wait: 0
       - say:
           char: 윤재
           with: [비서]
-          text: "사진 봐 봐. 아, 내 화면은 못 보지."
+          text: "사진 무슨 모델인지 봐 봐. 아, 장터 화면은 내가 보내야 보이지."
       - say:
           char: 윤재
           with: [비서]
@@ -261,10 +257,7 @@ scenes:
           motion: shake
           with: [비서]
           text: "내가 쳐. 네 말투로 보내면 나 호구 돼."
-      - say:
-          char: 윤재
-          with: [비서]
-          text: "떨지 마. 떨면 호구 되는 거야."
+      - wait: 0
       - say:
           channel: message
           autoAdvance: 1250
@@ -411,24 +404,10 @@ scenes:
           motion: hop
           with: [비서]
           text: "택배비 빼면 이만 팔천이네. 봤지? 깎았다니까."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "축하드립니다."
-      - say:
-          char: 윤재
-          motion: headtilt
-          with: [비서]
-          text: "진심이야 그거?"
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "무료 요금제에는 진심 기능이 없습니다."
-      - say:
-          char: 윤재
-          motion: laugh
-          with: [비서]
-          text: "…야 너 그거 농담 맞잖아. 맞잖아!"
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           channel: message
           side: me
@@ -439,17 +418,9 @@ scenes:
           side: them
           with: []
           text: "판매자: 넣어 드림"
-      - say:
-          channel: message
-          side: me
-          with: []
-          text: "설명서도 있어요?"
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "판매자: 있음"
-      - say: { char: 윤재, with: [비서], text: "있대. 나 설명서는 안 읽는데." }
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           channel: message
           side: me
@@ -486,7 +457,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "판매자: 내일 문 앞에 놓아 드림"
+          text: "판매자: 아침에 그쪽 지나가요 문 앞에 놓을게요"
       - say:
           char: 윤재
           with: [비서]
@@ -507,20 +478,9 @@ scenes:
           char: 윤재
           with: [비서]
           text: "급식 먹으면 되잖아. 학원 끝나고 편의점 안 들르면 되고."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "편의점은 지난달 19번 가셨습니다."
-      - say:
-          char: 윤재
-          motion: startle
-          with: [비서]
-          text: "…열아홉 번?"
-      - say:
-          char: 윤재
-          motion: stomp
-          with: [비서]
-          text: "안 들르면 되잖아!"
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 비서
           with: [윤재]
@@ -743,7 +703,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "그 기기, 코어에 연결해 드릴까요? 등록하면 제가 볼 수 있습니다."
+          text: "화면을 계속 보여 주려면 중계 어댑터가 필요해요. 주문할까요?"
       - say:
           char: 윤재
           with: [비서]
@@ -756,7 +716,7 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "연결하면 느려져. 다 그래."
+          text: "게임기 하나에 케이블이 왜 또 필요해. 그냥 이대로 쓸래."
       - say:
           char: 비서
           with: [윤재]

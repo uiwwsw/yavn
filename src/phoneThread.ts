@@ -1,9 +1,10 @@
 import { countGraphemes } from './typing';
-import type { PhoneMedia, StoryLogEntry } from './types';
+import type { CharacterAssetDefinition, PhoneMedia, StoryLogEntry } from './types';
 
 export type PhoneThreadBubble = {
   key: string;
   speaker?: string;
+  speakerId?: string;
   /** The sender's profile picture, drawn once per run beside the run's last bubble. */
   avatar?: string;
   text: string;
@@ -18,7 +19,19 @@ export type PhoneThreadBubble = {
 };
 
 /** The part of a message that decides who is talking: used for runs and for the header. */
-export type PhoneSender = { speaker?: string; side?: 'me' | 'them' };
+export type PhoneSender = { speaker?: string; speakerId?: string; side?: 'me' | 'them'; avatar?: string };
+
+export function phoneAvatarPath(character?: CharacterAssetDefinition): string | undefined {
+  return [character?.avatar, character?.base].find(isPhoneImage);
+}
+
+function isPhoneImage(path?: string): path is string {
+  return Boolean(path && !/\.(?:json|moc3)(?:[?#]|$)/i.test(path));
+}
+
+function sameSender(a: PhoneSender, b: PhoneSender): boolean {
+  return a.speakerId && b.speakerId ? a.speakerId === b.speakerId : a.speaker === b.speaker;
+}
 
 /**
  * Whether a message opens a new run.
@@ -30,7 +43,8 @@ export function leadsRun(previous: PhoneSender | undefined, current: PhoneSender
   if (!previous) {
     return true;
   }
-  return (previous.side ?? 'them') !== (current.side ?? 'them') || previous.speaker !== current.speaker;
+  return (previous.side ?? 'them') !== (current.side ?? 'them')
+    || !sameSender(previous, current) || previous.speaker !== current.speaker;
 }
 
 /**
@@ -63,17 +77,10 @@ export function isEmojiOnly(text: string): boolean {
  */
 export const PHONE_THREAD_MAX_BUBBLES = 10;
 
-function toSender(entry: StoryLogEntry | undefined): PhoneSender | undefined {
-  if (!entry || entry.kind !== 'dialogue' || entry.channel !== 'message') {
-    return undefined;
-  }
-  return { speaker: entry.speaker, side: entry.side ?? 'them' };
-}
-
 type MessageEntry = Extract<StoryLogEntry, { kind: 'dialogue' }>;
 
 /** An unbroken stretch of messages, and who was writing in during it. */
-type MessageRun = { entries: MessageEntry[]; correspondents: Set<string> };
+type MessageRun = { entries: MessageEntry[]; correspondents: PhoneSender[] };
 
 function isMessage(entry: StoryLogEntry): entry is MessageEntry {
   return entry.kind === 'dialogue' && entry.channel === 'message';
@@ -94,12 +101,12 @@ function collectRuns(storyLog: StoryLogEntry[]): MessageRun[] {
       continue;
     }
     if (!open) {
-      open = { entries: [], correspondents: new Set() };
+      open = { entries: [], correspondents: [] };
       runs.push(open);
     }
     open.entries.push(entry);
     if ((entry.side ?? 'them') !== 'me' && entry.speaker) {
-      open.correspondents.add(entry.speaker);
+      open.correspondents.push(entry);
     }
   }
   return runs;
@@ -116,26 +123,14 @@ function collectRuns(storyLog: StoryLogEntry[]): MessageRun[] {
  * Shared names decide it, which is what lets a group thread keep its whole cast as the run
  * is walked back. A stretch nobody is named in belongs to whatever it touches.
  */
-function sameConversation(correspondents: Set<string>, run: MessageRun): boolean {
-  if (correspondents.size === 0 || run.correspondents.size === 0) {
+function sameConversation(correspondents: PhoneSender[], run: MessageRun): boolean {
+  if (correspondents.length === 0 || run.correspondents.length === 0) {
     return true;
   }
-  for (const name of run.correspondents) {
-    if (correspondents.has(name)) return true;
-  }
-  return false;
+  return run.correspondents.some(sender => correspondents.some(other => sameSender(sender, other)));
 }
 
-/**
- * The bubbles that belong above the line being spoken right now.
- *
- * The live line itself is left out: the view renders that one separately so it can still
- * type itself out.
- */
-export function selectPhoneThread(
-  storyLog: StoryLogEntry[],
-  { limit = PHONE_THREAD_MAX_BUBBLES }: { limit?: number } = {},
-): PhoneThreadBubble[] {
+function selectConversationEntries(storyLog: StoryLogEntry[]): MessageEntry[] {
   const live = storyLog[storyLog.length - 1];
   if (!live || !isMessage(live)) {
     return [];
@@ -147,10 +142,7 @@ export function selectPhoneThread(
     entries = previousEntries.filter((entry): entry is MessageEntry =>
       isMessage(entry) && entry.thread === live.thread);
   } else {
-    const correspondents = new Set<string>();
-    if ((live.side ?? 'them') !== 'me' && live.speaker) {
-      correspondents.add(live.speaker);
-    }
+    const correspondents: PhoneSender[] = live.side !== 'me' && live.speaker ? [live] : [];
     entries = [];
     const runs = collectRuns(previousEntries);
     const before = previousEntries[previousEntries.length - 1];
@@ -160,14 +152,25 @@ export function selectPhoneThread(
       const run = runs[index];
       if (index !== ownRun && !sameConversation(correspondents, run)) break;
       entries.unshift(...run.entries);
-      for (const name of run.correspondents) correspondents.add(name);
-      if (entries.length >= limit) break;
+      correspondents.push(...run.correspondents);
     }
   }
+  return [...entries, live];
+}
 
-  const bubbles: PhoneThreadBubble[] = entries.slice(-limit).map((entry) => ({
+export function selectPhoneConversation(
+  storyLog: StoryLogEntry[],
+  { limit = PHONE_THREAD_MAX_BUBBLES, threadAvatar }: { limit?: number; threadAvatar?: string } = {},
+): { bubbles: PhoneThreadBubble[]; contact?: PhoneContact } {
+  const entries = selectConversationEntries(storyLog);
+  const live = entries.at(-1);
+  const contact = selectPhoneContact(entries, live?.thread, threadAvatar);
+
+  // The live line is rendered separately so it can still type itself out.
+  const bubbles: PhoneThreadBubble[] = entries.slice(Math.max(0, entries.length - 1 - limit), -1).map((entry) => ({
     key: `${entry.chapterPath ?? ''}#${entry.sceneId}#${entry.actionIndex}`,
     ...(entry.speaker ? { speaker: entry.speaker } : {}),
+    ...(entry.speakerId ? { speakerId: entry.speakerId } : {}),
     ...(entry.avatar ? { avatar: entry.avatar } : {}),
     ...(entry.media ? { media: entry.media } : {}),
     text: entry.text,
@@ -179,48 +182,64 @@ export function selectPhoneThread(
 
   // Naming and corner-tightening follow from what comes next, and the bubble the thread ends
   // on is followed by the live line rather than by another bubble.
-  const liveSender = toSender(live);
-  return bubbles.map((bubble, index) => {
-    const next = bubbles[index + 1] ?? liveSender;
-    return {
-      ...bubble,
-      leadsRun: leadsRun(bubbles[index - 1], bubble),
-      endsRun: next ? leadsRun(bubble, next) : true,
-    };
-  });
+  return {
+    contact,
+    bubbles: bubbles.map((bubble, index) => {
+      const next = bubbles[index + 1] ?? live;
+      return {
+        ...bubble,
+        leadsRun: leadsRun(bubbles[index - 1], bubble),
+        endsRun: next ? leadsRun(bubble, next) : true,
+      };
+    }),
+  };
 }
 
-export type PhoneContact = { name: string; group: boolean; avatars: string[] };
+export function selectPhoneThread(storyLog: StoryLogEntry[], options?: { limit?: number }): PhoneThreadBubble[] {
+  return selectPhoneConversation(storyLog, options).bubbles;
+}
+
+type PhoneProfile = { speaker: string; speakerId?: string; avatar?: string };
+export type PhoneContact = { name: string; thread?: string; participants: PhoneProfile[] };
 
 /**
- * Who the phone screen is talking to.
- *
- * One correspondent names the header, and then repeating that name over every bubble is
- * something only a mock-up does. Several correspondents mean a group thread, so the header
- * says who is in it and the names stay on the bubbles, where they tell you who is talking.
+ * Build the header from the conversation, independently of how many bubbles fit on screen.
+ * Character IDs keep a new display name from turning the same person into another participant.
  */
 export function selectPhoneContact(
-  bubbles: readonly (PhoneSender & { avatar?: string })[],
-  live?: PhoneSender & { avatar?: string },
+  senders: readonly PhoneSender[],
   thread?: string,
   threadAvatar?: string,
 ): PhoneContact | undefined {
-  const names: string[] = [];
-  const avatars = new Map<string, string>();
-  const add = (sender: PhoneSender & { avatar?: string }) => {
-    const { speaker, avatar } = sender;
-    if (!speaker) return;
-    if (!names.includes(speaker)) names.push(speaker);
-    if (avatar && !avatars.has(speaker)) avatars.set(speaker, avatar);
-  };
-  for (const bubble of bubbles) if ((bubble.side ?? 'them') === 'them') add(bubble);
-  if (live && live.side !== 'me') add(live);
-  if (names.length === 0 && !thread) return undefined;
-  const faces = names.map((name) => avatars.get(name)).filter((avatar): avatar is string => Boolean(avatar));
-  if (names.length <= 1) {
-    return { name: thread ?? names[0], group: false, avatars: faces.length || !threadAvatar ? faces : [threadAvatar] };
+  const participants: PhoneProfile[] = [];
+  for (const sender of senders) {
+    if (sender.side === 'me' || !sender.speaker) continue;
+    const existing = participants.find(profile => sameSender(profile, sender));
+    const avatar = isPhoneImage(sender.avatar) ? sender.avatar : undefined;
+    if (existing) {
+      existing.speaker = sender.speaker;
+      existing.speakerId ??= sender.speakerId;
+      existing.avatar = avatar ?? existing.avatar;
+    } else {
+      participants.push({ speaker: sender.speaker, speakerId: sender.speakerId, avatar });
+    }
   }
-  return { name: thread ?? `${names[0]} 외 ${names.length - 1}`, group: true, avatars: faces.slice(0, 3) };
+  const first = participants[0];
+  if (!first) {
+    return thread ? { name: thread, thread, participants: [{ speaker: thread, avatar: threadAvatar }] } : undefined;
+  }
+  if (participants.length === 1 && thread && (first.speakerId === thread || first.speaker === thread)) {
+    first.avatar ??= threadAvatar;
+  }
+  return { name: thread ?? first.speaker, thread, participants };
+}
+
+export function phoneBubbleProfile(contact: PhoneContact | undefined, sender: PhoneSender): PhoneProfile {
+  const participant = contact?.participants.find(profile => sameSender(profile, sender));
+  return {
+    speaker: participant?.speaker ?? sender.speaker ?? '',
+    avatar: participant?.avatar ?? (isPhoneImage(sender.avatar) ? sender.avatar : undefined),
+  };
 }
 
 /**

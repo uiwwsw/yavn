@@ -92,7 +92,7 @@ scenes:
           char: 해수
           with: []
           erase: true
-          text: "주차장 어디쯤이요"
+          text: "지하 몇 층이래요"
       - say:
           channel: message
           side: me
@@ -312,26 +312,17 @@ scenes:
           char: 해수
           with: [경준]
           text: "주임님이 찾으면 거짓말이 길어져."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "경찰서 갔다고 해."
+      - wait: 0
       - say:
           char: 해수
           with: [경준]
           text: "참고인이라고."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "그렇게만 말해."
+      - wait: 0
       - say:
           char: 경준
           with: [해수]
           text: "…그렇게 말하면 애들이 딴 생각 할 텐데요."
-      - say:
-          char: 해수
-          with: [경준]
-          text: "그냥 들은 대로 말해 줘."
+      - wait: 0
       - say:
           char: 해수
           with: [경준]
@@ -629,7 +620,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "오늘 근무 중 취급한 물품이 이 방에 배치됩니다. 사용자 편의 기능입니다."
+          text: "오늘 접촉한 물품과 관련 기록을 불러왔습니다. 항목을 선택하세요."
       - say:
           channel: thought
           with: []
@@ -692,7 +683,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "손을 떼자 칸이 비었다. 사원증에는 아직 정해수라고 적혀 있다."
+          text: "손을 떼자 칸이 비었다. 일단 저기에서만 내 이름이 없어졌다. 낮에 형사님이 찍은 사진은 그대로겠지."
       - goto: tamper_pick
 
   tamper_pencil:
@@ -884,7 +875,7 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "빌라 현관 CCTV를 보면 그날 밤 집에 들어간 뒤 아침까지 안 나왔어요."
+          text: "마트 영상은 없어요. 그래서 빌라 현관 영상부터 받아 볼 거예요."
       - say:
           char: 해수.blank
           motion: nod

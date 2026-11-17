@@ -256,7 +256,7 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "…괜히 꺼냈네요. 미안해요."
+          text: "그날은 말이 잘 통했잖아요. 다음에 봐도 인사쯤은 할 수 있을 줄 알았어요."
       - say:
           char: 준성
           when: { var: e2_leaked, op: eq, value: true }
@@ -457,7 +457,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "톡을 닫아도 ‘제일 많이 붙어 있었잖아’가 자꾸 생각난다."
+          text: "톡을 닫고 사내 연락망에서 준성 번호를 찾는다. 직접 묻고 싶은데 통화 버튼 위에서 손이 멈춘다."
       - say:
           channel: card
           with: []

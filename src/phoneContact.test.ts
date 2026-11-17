@@ -1,41 +1,50 @@
 import { describe, expect, it } from 'vitest';
-import { selectPhoneContact, type PhoneSender } from './phoneThread';
+import { phoneAvatarPath, phoneBubbleProfile, selectPhoneContact, type PhoneSender } from './phoneThread';
 
-const them = (speaker: string, avatar?: string): PhoneSender & { avatar?: string } =>
-  ({ speaker, side: 'them', ...(avatar ? { avatar } : {}) });
-const me = (): PhoneSender => ({ side: 'me' });
+const them = (speaker: string, avatar?: string, speakerId?: string): PhoneSender =>
+  ({ speaker, side: 'them', avatar, speakerId });
 
-describe('selectPhoneContact', () => {
-  it('names the screen after the one person writing in', () => {
-    expect(selectPhoneContact([them('지영'), me(), them('지영')]))
-      .toEqual({ name: '지영', group: false, avatars: [] });
+describe('phone contacts', () => {
+  it('uses the displayed sender name for an untitled chat and leaves the player out', () => {
+    const contact = selectPhoneContact([them('엄마'), { speaker: '해수', side: 'me', avatar: '/haesu.svg' }]);
+    expect(contact?.name).toBe('엄마');
+    expect(contact?.participants.map(profile => profile.speaker)).toEqual(['엄마']);
+    expect(selectPhoneContact([{ speaker: '해수', side: 'me' }, { side: 'them' }])).toBeUndefined();
   });
 
-  it('counts the room when more than one person is writing', () => {
-    expect(selectPhoneContact([them('지영'), them('경준'), them('지영')]))
-      .toEqual({ name: '지영 외 1', group: true, avatars: [] });
+  it('keeps the authored title and shares the same portrait between the header and older bubbles', () => {
+    const older = them('이지수', undefined, '지수');
+    const live = them('이지수', '/jisu-profile.svg', '지수');
+    const contact = selectPhoneContact([older, live], '지수', '/old-jisu.svg');
+
+    expect(contact?.name).toBe('지수');
+    expect(phoneBubbleProfile(contact, older)).toEqual({ speaker: '이지수', avatar: '/jisu-profile.svg' });
+    expect(contact?.participants[0].avatar).toBe('/jisu-profile.svg');
   });
 
-  it('counts the live line too, so the header is right on the first message of a scene', () => {
-    expect(selectPhoneContact([], { speaker: '엄마', side: 'them' }))
-      .toEqual({ name: '엄마', group: false, avatars: [] });
+  it('keeps aliases of one character together and separates characters who share a name', () => {
+    const unknown = them('낯선 사람', '/first.svg', 'first');
+    const revealed = them('지영', undefined, 'first');
+    const other = them('지영', '/second.svg', 'second');
+    const contact = selectPhoneContact([unknown, revealed, other]);
+
+    expect(contact?.participants.map(profile => [profile.speaker, profile.avatar]))
+      .toEqual([['지영', '/first.svg'], ['지영', '/second.svg']]);
+    expect(phoneBubbleProfile(contact, unknown)).toEqual({ speaker: '지영', avatar: '/first.svg' });
+    expect(phoneBubbleProfile(contact, other).avatar).toBe('/second.svg');
   });
 
-  it('does not count your own messages as a correspondent', () => {
-    expect(selectPhoneContact([me(), me()], { speaker: '해수', side: 'me' })).toBeUndefined();
+  it('does not borrow the room’s portrait for a different sender', () => {
+    const sender = them('민석');
+    const contact = selectPhoneContact([sender], '지수', '/jisu.svg');
+    expect(phoneBubbleProfile(contact, sender).avatar).toBeUndefined();
+    expect(contact?.participants[0].avatar).toBeUndefined();
   });
 
-  it('leaves the header unnamed when nobody is attributed', () => {
-    expect(selectPhoneContact([{ side: 'them' }])).toBeUndefined();
-  });
-
-  it('collects one face per person, in the order they first wrote', () => {
-    expect(selectPhoneContact([them('지영', 'jiyoung.svg'), them('경준', 'kyungjun.svg'), them('지영', 'jiyoung.svg')]))
-      .toEqual({ name: '지영 외 1', group: true, avatars: ['jiyoung.svg', 'kyungjun.svg'] });
-  });
-
-  it('shows at most three faces, however crowded the room', () => {
-    const crowd = ['가', '나', '다', '라', '마'].map((name) => them(name, `${name}.svg`));
-    expect(selectPhoneContact(crowd)?.avatars).toEqual(['가.svg', '나.svg', '다.svg']);
+  it('uses dedicated profile art before the static sprite and rejects Live2D model assets', () => {
+    expect(phoneAvatarPath({ avatar: '/profile.svg', base: '/sprite.svg' })).toBe('/profile.svg');
+    expect(phoneAvatarPath({ base: '/sprite.svg' })).toBe('/sprite.svg');
+    expect(phoneAvatarPath({ base: '/art.model3.json?v=1' })).toBeUndefined();
+    expect(phoneBubbleProfile(undefined, them('엄마', '/old.model3.json')).avatar).toBeUndefined();
   });
 });

@@ -190,7 +190,7 @@ scenes:
           char: 준성
           motion: headtilt
           with: [도윤]
-          text: "무슨 날이요?"
+          text: "연락망 번호 확인한다고 한 거, 그날 번호인 줄 알면서 건 거예요. 아침에 가 버려서 말을 못 했거든요."
       - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤.panic
@@ -199,7 +199,7 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "농담이에요. 난 말할 생각 없어요."
+          text: "회사에서 그 얘기 안 할게요. 한대리님도 그 얘기 하려고 남으신 거죠?"
       - move: { id: 도윤, style: reset }
       - say:
           char: 준성
@@ -213,7 +213,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "알아요. 오늘도 이렇게 남아 있잖아요."
+          text: "아까부터 저한테 할 말 있는 줄 알았는데."
       - say:
           char: 준성
           with: [도윤]
@@ -244,7 +244,7 @@ scenes:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "이 화분 좀 봐줘요. 물은 종이컵으로 반 컵만 줘요. 지난번에 한 컵 줬더니 잎이 다 처지더라고요."
+          text: "저 이 화분 좀 봐줘요. 옮기다 잎이 꺾였는데, 새 잎은 나더라고요. 물은 종이컵 반 컵만요."
       - say:
           char: 준성
           with: [도윤]
@@ -402,7 +402,7 @@ scenes:
       - say: { char: 지수.warm, with: [도윤], text: "응. 네 거엔 파 빼 달라고 해. 저번에도 네가 다 건져냈잖아." }
       - say: { char: 도윤.smile, with: [지수], text: "나는 네가 주는 건 먹는데." }
       - say: { char: 지수.warm, with: [도윤], text: "알아. 내가 네 그릇에 먼저 넣고 봤거든." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수가 어깨에 머리를 기대자 도윤이 휴대폰을 엎는다." }
+      - say: { channel: action, with: [지수, 도윤], text: "지수가 어깨에 머리를 기대자 도윤이 휴대폰을 엎는다. 사진관에선 돈 얘기 꺼내기도 어려웠다. 지금은 어디서부터 말해야 할지 모르겠다." }
       - say: { channel: card, with: [], text: "11년 전 · 유하린", autoAdvance: 1550 }
       - goto: e1_harin
 

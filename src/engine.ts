@@ -18,6 +18,7 @@ import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from '.
 import { resolveCharacterCalibration, resolveStageCameraState } from './stageCamera';
 import { useVNStore } from './store';
 import type { ParsedBaseYaml, ParsedChapterYaml, ParsedConfigYaml } from './parser';
+import { phoneAvatarPath } from './phoneThread';
 import { collectChapterAssetPaths, collectStartupAssetPaths } from './preload';
 import { ReadHistory, readLineKey } from './readHistory';
 import { interpolateText, resolvePlayerName } from './textVariables';
@@ -534,10 +535,12 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
       const speakerId = parseCharacterRef(action.say.char).id;
       const channel = resolveDialogueChannel(action.say.channel, speakerId);
       const speaker = resolveLineSpeakerName(game, sceneId, vars, action.say.speakerName, speakerId, channel);
+      const avatar = channel === 'message' ? resolveMessageAvatar(game, useVNStore.getState().baseUrl, speakerId) : undefined;
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker, channel,
-        ...(action.say.side ? { side: action.say.side } : {}),
+        ...(channel === 'message' ? { side: action.say.side ?? 'them', speakerId } : {}),
         ...(action.say.thread ? { thread: action.say.thread } : {}),
+        ...(avatar ? { avatar } : {}),
         text: parseInlineSpeed(interpolateText(action.say.text ?? '', vars)).text });
     }
     if ('choice' in action || 'input' in action) {
@@ -1508,8 +1511,7 @@ function resolveMessageMedia(baseUrl: string, media: PhoneMediaSource | undefine
  * A messenger shows the same portrait across lines, regardless of stage expression.
  */
 function resolveMessageAvatar(game: GameData, baseUrl: string, speakerId?: string): string | undefined {
-  const character = speakerId ? game.assets.characters[speakerId] : undefined;
-  const portrait = character?.avatar ?? character?.base;
+  const portrait = phoneAvatarPath(speakerId ? game.assets.characters[speakerId] : undefined);
   return portrait ? resolveAsset(baseUrl, portrait) : undefined;
 }
 
@@ -5195,7 +5197,7 @@ function runActionsUntilPause(loopGuard: number): void {
       kind: 'dialogue',
       speaker: speakerName,
       channel,
-      ...(channel === 'message' ? { side: action.say.side ?? 'them' } : {}),
+      ...(channel === 'message' ? { side: action.say.side ?? 'them', speakerId: spokenSpeakerId } : {}),
       ...(action.say.thread ? { thread: action.say.thread } : {}),
       ...(phoneAvatar ? { avatar: phoneAvatar } : {}),
       ...(phoneMedia ? { media: phoneMedia } : {}),

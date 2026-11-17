@@ -10,9 +10,11 @@
 }
 .bg-current[data-background-transitioning='true'][data-background-kind='wipeLeft'] {
   animation: sceneWipeLeft var(--background-crossfade-duration) var(--background-crossfade-easing) both;
+  transition: none;
 }
 .bg-current[data-background-transitioning='true'][data-background-kind='wipeRight'] {
   animation: sceneWipeRight var(--background-crossfade-duration) var(--background-crossfade-easing) both;
+  transition: none;
 }
 @keyframes sceneFadeIn { 0%, 45% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes sceneFadeOut { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
