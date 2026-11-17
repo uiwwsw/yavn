@@ -63,13 +63,13 @@ scenes:
           char: 비서
           with: [윤재]
           text: "모르겠습니다."
-      - say: { channel: thought, with: [], text: "B버튼이 또 걸린다. 결국 돔은 못 갈았다." }
+      - say: { channel: thought, with: [], when: { var: bought_premium, op: eq, value: false }, text: "B버튼이 또 걸린다. 결국 돔은 못 갈았다." }
       - say:
           char: 비서
           when: { var: bought_premium, op: eq, value: false }
           with: [윤재]
           text: "부품은 아직 장바구니에 있습니다. 1,000원이에요."
-      - say: { channel: thought, with: [], text: "꾹 눌렀더니 엄지 끝이 빨개졌다." }
+      - say: { channel: thought, with: [], when: { var: bought_premium, op: eq, value: false }, text: "꾹 눌렀더니 엄지 끝이 빨개졌다." }
       - wait: 0
       - wait: 0
       - wait: 0
@@ -368,6 +368,7 @@ scenes:
 
   b1_premium_dies:
     actions:
+      - sticker: { id: b1_overheat, image: console_premium_sticker, x: 50, y: 38, width: "clamp(160px, 32%, 270px)", enter: fadeIn }
       - say:
           channel: system
           with: []

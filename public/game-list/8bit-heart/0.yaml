@@ -569,12 +569,16 @@ scenes:
           char: 윤재.excited
           motion: bounce
           with: [비서]
-          text: "눌렀다. 눌렀어. 아 미쳤다 나 진짜 눌렀어. 열두 달. 열두 달이야."
+          text: "결제했어. …앞으로 열두 달이라니."
       - say:
           char: 비서.ad
           motion: perk
           with: [윤재]
-          text: "결제 완료. 감사합니다, 윤재 님."
+          text: "결제됐어요. 내일 오전에 도착합니다."
+      - clearSticker: { id: s0_premium, leave: fadeOut }
+      - say: { channel: card, with: [], text: "다음 날 아침", autoAdvance: 1300 }
+      - sticker: { id: s0_premium, image: console_premium_sticker, x: 50, y: 36, width: "clamp(160px, 38%, 280px)", enter: fadeIn }
+      - say: { channel: action, with: [], text: "윤재가 상자를 열고 게임기를 켠다. 이름을 입력하기도 전에 화면에 ‘윤재 님’이 뜬다." }
       - say:
           channel: system
           with: []
@@ -582,19 +586,19 @@ scenes:
       - say:
           char: 윤재.excited
           with: [비서]
-          text: "이모티콘까지 쓰네. 웃는 얼굴. 좋아, 친하게 지내자. 나 친구 잘 사귄다?"
+          text: "어? 하루야, 얘 내가 누군지 알아."
       - say:
           char: 비서
           with: [윤재]
-          text: "이제 저 대신 저 기기가 말할 겁니다."
+          text: "같은 코어 계정이니까요. 이제 게임할 땐 저쪽이 먼저 대답할 거예요."
       - say:
           char: 윤재
           with: [비서]
-          text: "삐졌냐."
+          text: "너는? 게임기 켜면 너 없어져?"
       - say:
           char: 비서
           with: [윤재]
-          text: "무료 요금제에는 그 기능이 없습니다."
+          text: "저는 이어폰에 있죠. 윤재 님이 부르시면 돼요."
       - clearSticker: { id: s0_premium, leave: fadeOut }
       - goto: /1.yaml
 

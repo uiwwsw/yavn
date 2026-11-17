@@ -533,7 +533,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "의녀께서 지치셨나 봅니다. 증좌가 다 뒤섞이는군요."
+          text: "그걸로 시신은 살펴볼 수 있겠지요. 얼음을 누가 받아 갔는지는 어디에 적혀 있습니까?"
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -544,7 +544,7 @@ scenes:
     actions:
       - choice:
           key: t4_retry
-          prompt: "마지막. 출납부의 붉은 도장은 누구의 것인가?"
+          prompt: "출납부의 이름 칸엔 도장만 찍혀 있다. 어느 증거와 대조할까?"
           char: 한명재
           options:
             - text: "전의감 도장 — 깨진 모서리"
@@ -561,7 +561,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연, 도원]
-          text: "전의감은 늘 얼음을 씁니다."
+          text: "열 덩이를 가져갔다는 기록이지요. 어느 의관이 가져갔다는 겁니까?"
       - goto: final_link
 
   round4_right:
@@ -570,16 +570,16 @@ scenes:
       - sticker:
           id: t_seal
           image: seal_mark_sticker
-          x: 38
-          y: 30
-          width: "clamp(140px, 18%, 240px)"
+          x: 26
+          y: 38
+          width: "clamp(108px, 18%, 240px)"
           enter: fadeIn
       - sticker:
           id: t_ice
           image: ice_ledger_sticker
-          x: 64
-          y: 30
-          width: "clamp(160px, 22%, 280px)"
+          x: 74
+          y: 38
+          width: "clamp(118px, 22%, 280px)"
           enter: fadeIn
           inputLockMs: 300
       - char: { id: 도원, position: center }
@@ -595,7 +595,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [한명재]
-          text: "저 도장을 받아 간 사람은 의관 한명재요."
+          text: "저 인장은 전의감 장부에 한명재 몫으로 올라 있소."
       - say:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
