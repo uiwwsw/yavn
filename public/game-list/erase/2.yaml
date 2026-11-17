@@ -20,12 +20,12 @@ scenes:
       - say: { char: 지수.warm, with: [도윤], text: "네 컵 씻어 놨어. 커피 아직 따뜻해." }
       - say: { char: 도윤, with: [지수], text: "너 오늘 또 식장 가? 두 시랬지?" }
       - say: { char: 지수, with: [도윤], text: "응. 두 시. 청첩장 몇 장 할지도 정해야 돼." }
-      - say: { char: 도윤, with: [지수], text: "같이 갈까. 지난번에 실장님이 너 들어가니까 나한테만 값을 깎아 주더라. 이번엔 둘이 같이 듣자." }
-      - say: { char: 지수, with: [도윤], text: "그런 건 그날 얘기해 주지. …그래, 네가 옆에 있으면 나도 덜 긴장해." }
-      - say: { char: 도윤.smile, with: [지수], text: "네가 긴장해? 상담하는 동안 내가 네 손 계속 잡고 있었는데." }
-      - say: { char: 지수.warm, with: [도윤], text: "응. 손 놨으면 나 그날 그냥 나왔을걸." }
+      - say: { char: 도윤, with: [지수], text: "같이 갈까. 혼자 견적 듣고 오게 해서 미안해. 오늘은 나도 같이 들어가자." }
+      - say: { char: 지수, with: [도윤], text: "그래. 지난번엔 견적서 펼쳐 놓으니까 뭐부터 물어볼지도 모르겠더라." }
+      - say: { char: 도윤.smile, with: [지수], text: "들어가기 전에 적어 두자. 음료가 포함인지, 보증 인원이 몇 명인지." }
+      - say: { char: 지수.warm, with: [도윤], text: "좋아. 나 두 시까지는 들어가야 하니까 한 시 반에 나가자." }
       - place: "같은 날 오후 · 도윤과 지수의 집"
-      - say: { channel: action, with: [도윤], text: "지수가 현관에서 한 번 더 불렀는데도 도윤은 노트북을 닫지 못했다. 식장에 도착한 지수에게서 톡이 온다." }
+      - say: { channel: action, with: [도윤], text: "팀에 청첩장을 돌릴 생각을 하니 준성에게도 줘야 한다는 게 걸린다. 도윤은 준성 이름을 검색하다 시계를 놓쳤다. 지수가 먼저 식장에 들어가 톡을 보낸다." }
       - say:
           channel: message
           thread: 지수
@@ -85,7 +85,7 @@ scenes:
     actions:
       - choice:
           key: e2_dig
-          prompt: "지수에게 답장하는 대신 노트북 검색창에 ‘박준성’을 쳤다."
+          prompt: "‘새 팀장님도 드려?’에 아직 답을 못 했다. 노트북에는 준성 이름이 떠 있다."
           with: []
           options:
             - text: "검색을 그만두고 지수에게 답장한다"
@@ -220,15 +220,15 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "내일 보고 자료 다 됐어요?"
+          text: "보고 자료는 잘 받았어요. 3페이지 숫자 두 개만 내일 다시 봐 줘요."
       - say:
           char: 도윤
           with: [준성]
-          text: "네. 메일 보내 뒀어요."
+          text: "…확인할게요."
       - say:
           char: 준성
           with: [도윤]
-          text: "봤어요. 숫자 두 개만 다시 봐 줘요. 3페이지 하단."
+          text: "그리고 송과장님이 청첩장 얘기하던데. 제 건 따로 안 챙겨도 돼요."
       - say:
           char: 도윤
           with: [준성]
@@ -236,7 +236,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "결혼식 토요일이죠. 송과장님한테 들었어요."
+          text: "먼저 본 사이라고 다들 알면 더 시끄러워질 것 같아서요."
       - say:
           char: 도윤
           with: [준성]
@@ -246,7 +246,7 @@ scenes:
           char: 준성.smirk
           motion: headtilt
           with: [도윤]
-          text: "축의금은 얼마 내야 돼요? 우리처럼 먼저 본 사이면."
+          text: "아, 그날 얘긴 회사에서 한 번도 안 했어요. 그건 알아 둬요."
       - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤
@@ -256,7 +256,7 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "…재미없었네요. 미안해요."
+          text: "…괜히 꺼냈네요. 미안해요."
       - say:
           char: 준성
           when: { var: e2_leaked, op: eq, value: true }
@@ -290,11 +290,11 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "그날은 형이라고 안 했잖아요."
+          text: "뭘 조심하라는 건데요?"
       - say:
           char: 준성
           with: [도윤]
-          text: "그날은 아무것도 안 불렀죠. 이름도 안 물어봤고."
+          text: "저도 일하러 나온 거예요. 여기서 마저 안 할게요."
       - say:
           char: 도윤
           motion: tremble
@@ -387,31 +387,7 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 근데 팀장님 화분 누가 물 좀 줘요 다 말라가요"
-          autoAdvance: 2016
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 오대리: 그거 종이컵으로 반 컵만 주라고 하셨는데"
-          autoAdvance: 1888
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 송과장: 근데 그 병 있잖아… 아 아니다"
-          autoAdvance: 1728
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 오대리: 뭔데요 그 병"
-          autoAdvance: 1408
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 송과장: 회의 때 팀장님 폰에 감염내과 어쩌고 뜨는 거 봤어 나만 본 거 아님"
+          text: "[영업2팀] 송과장: 회의 때 폰에 감염내과 뜬 거 봤는데, 그거 때문인가"
           autoAdvance: 2400
       - say:
           channel: message
@@ -423,14 +399,8 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 밥 먹는 걸로는 안 옮아요 오대리님ㅋㅋ 검색 좀 하세요"
+          text: "[영업2팀] 윤주임: 병원 이름만 봤잖아요. 밥 먹고 옮는다는 말은 어디서 나온 거예요"
           autoAdvance: 2144
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "[영업2팀] 오대리: 아 그래도 찝찝하잖아요"
-          autoAdvance: 1568
       - say:
           channel: message
           side: them
@@ -441,25 +411,14 @@ scenes:
       - say:
           channel: message
           side: them
-          when: { var: e2_leaked, op: eq, value: true }
-          with: []
-          text: "[영업2팀] 송과장: 그건 그거고"
-          autoAdvance: 1376
-      - say:
-          channel: message
-          side: them
           with: []
           text: "[영업2팀] 송과장: 도윤대리는 좀 알지 않아? 제일 많이 붙어 있었잖아"
           autoAdvance: 2080
       - char: { id: 도윤, position: center }
       - say:
-          channel: message
-          side: me
-          char: 도윤
-          with: []
-          erase: true
-          wait: 700
-          text: "저도 그날 이후로는 연락을"
+          channel: action
+          with: [도윤]
+          text: "답장 칸에 ‘저도 그날 이후로는’까지 썼다가 전부 지운다."
       - emote: { id: 도윤, motion: droop }
       - say:
           channel: message
@@ -471,13 +430,13 @@ scenes:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 화분은 제가 줄게요"
+          text: "[영업2팀] 윤주임: 팀장님 자리 화분은 제가 물 줄게요"
           autoAdvance: 1504
       - say:
           channel: message
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 반 컵씩이요 오대리님 말대로"
+          text: "[영업2팀] 윤주임: 잎이 처져서요. 반 컵씩만 줄게요"
           autoAdvance: 1664
       - say:
           channel: message
@@ -498,11 +457,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "윤주임이 내 이름을 꺼냈다. 내 화면에서 지웠어도 다른 사람한텐 보인다."
-      - say:
-          channel: thought
-          with: []
-          text: "윤주임에게 ‘뭐라고 했어요?’까지 썼다가 전부 지운다."
+          text: "톡을 닫아도 ‘제일 많이 붙어 있었잖아’가 자꾸 생각난다."
       - say:
           channel: card
           with: []
@@ -563,15 +518,15 @@ scenes:
       - say:
           char: 아진.awkward
           with: [하린, 민재]
-          text: "하린아 너 체육복 사물함에 있어. 아까 봤어."
+          text: "하린아, 잠깐만. 어제 둘이 얘기하자고 한 거 있잖아. 민재 보내고 말할게."
       - say:
           char: 하린
           with: [아진, 민재]
-          text: "아 맞다. 내일 체육이지. 아 귀찮아. 그냥 두고 갈까."
+          text: "지금 해도 되는데. 뭐길래 그래?"
       - say:
           char: 아진
           with: [하린, 민재]
-          text: "두고 가면 또 빌리러 다니잖아."
+          text: "이따가. 너 체육복도 사물함에 있더라. 같이 챙기러 가자."
       - say:
           char: 하린
           motion: laugh
@@ -588,7 +543,7 @@ scenes:
           char: 아진.awkward
           with: [민재]
           delivery: whisper
-          text: "오늘 하린이한테 말하려고 했는데… 우리 얘기. 못 했어."
+          text: "오늘 하린이한테 우리 사귄다고 말하려고 했는데, 입이 안 떨어졌어."
       - say:
           char: 민재
           with: [아진]
@@ -625,7 +580,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "체육복은 내일 챙기면 돼. 지금 저 문 열고 들어갈 필요 없어."
+          text: "체육복만 가지러 왔는데. 둘이 무슨 얘기 하는지 물어보지 말 걸."
       - say:
           channel: action
           with: []
