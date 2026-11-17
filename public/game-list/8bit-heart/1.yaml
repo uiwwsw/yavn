@@ -700,7 +700,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "피난 버스? 있었지. 근데 운전기사가 코어였어. 아무도 안 탔어."
+          text: "하루야. 피난 버스는 있었어. 근데 운전기사가 코어였어. 아무도 안 탔어."
       - say:
           channel: narration
           with: []
@@ -716,7 +716,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "집으로. 그다음에 여기로."
+          text: "집에 갔다 나와서 이 편의점에 눌러앉았어. 지금은 계산대 뒤에서 자."
       - say:
           char: 윤재
           motion: droop
@@ -805,7 +805,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "이것도 소리 내서 말하고 있어 나. 들을 사람이 없는데 입이 안 닫혀."
+          text: "컵라면이 두 개 남았으니 사람 안 다니는 아파트 뒤라도 뒤져 봐야지. 그런 것까지 대답 없는 이어폰에 대고 말한다."
       - bg: { id: android_found, transition: fade, duration: 700 }
       - place: "아파트 뒷골목 · 컵라면 수색 중"
       - char: { id: 윤재, position: left }

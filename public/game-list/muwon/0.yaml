@@ -49,14 +49,14 @@ scenes:
   night_call:
     title: "혼례 전날 밤"
     actions:
-      - bg: { id: well_night, transition: fade, duration: 900 }
+      - bg: { id: well_night, transition: cut }
       - music: night_well
       - place: "한성 남부 훈도방 · 혼례 전날 밤"
       - say:
           channel: action
           with: []
           camera: wide
-          text: "담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 아무도 대답하지 않는다."
+          text: "초검 기록을 덮을 때 담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 아무도 대답하지 않는다."
       - wait: 250
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }

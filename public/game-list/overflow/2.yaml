@@ -66,12 +66,12 @@ scenes:
       - say: { channel: record, with: [], continueLabel: "경고창을 닫는다", text: "에모스 · 보호자 재확인\n정서 반응 01 · 무반응 의심" }
       - say: { channel: action, with: [], continueLabel: "양말을 주워 신긴다", text: "침대 바퀴 앞에 양말이 떨어져 있다. 아버지가 뒤꿈치를 살짝 든다." }
       - bg: ward_sock
-      - say: { channel: action, with: [], text: "몸을 숙여 양말을 줍는다. 뒤꿈치가 다 덮이도록 한 번 더 당기자 발가락이 꼼지락거린다." }
+      - say: { channel: action, with: [], text: "몸을 숙여 양말을 줍는다. 뒤꿈치가 다 덮이도록 신기고 나자 아버지가 발을 거둔다. 문가의 간호사가 시계를 가리킨다." }
       - bg: hospital_stairs
       - place: "면회 뒤 · 월계병원 동쪽 계단"
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, with: [지완], text: "같은 시각에 찍힌 숫자예요. 왼쪽은 렌즈가 읽은 값이고 오른쪽은 접수대 화면에 나온 값이에요." }
+      - say: { char: 수경, with: [지완], text: "병실에서 렌즈가 울렸을 때 찍힌 숫자예요. 왼쪽은 렌즈 값, 오른쪽은 접수대에 뜬 숫자예요." }
       - effect: glitch
       - get: raw_print
       - sticker: { id: diagnosis, image: raw_sticker, x: 50, y: 36, width: "clamp(140px, 23%, 270px)", enter: fadeIn }

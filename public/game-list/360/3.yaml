@@ -98,9 +98,9 @@ scenes:
 
   archive:
     actions:
-      - place: "같은 주 금요일 · 자료실"
-      - say: { channel: record, with: [], text: "자료실에서 꺼낸 1931년 경성 모 의원 진료부. 환자 김○○(34). \"전에 살았다고 주장. 캄캄한 데서 뒤를 보았다는 말을 되풀이.\" 처치: 격리." }
-      - say: { char: 지안, with: [차피디], text: "피디님, 1931년 진료부에도 같은 얘기가 있어요. 이 사람은 방송국 대신 병원에 갔네요." }
+      - place: "같은 주 금요일 · 편집실"
+      - say: { channel: record, with: [], text: "1931년 경성 모 의원 진료부. 환자 김○○(34). \"전에 살았다고 주장. 캄캄한 데서 뒤를 보았다는 말을 되풀이.\" 처치: 격리." }
+      - say: { char: 지안, with: [차피디], text: "자료실에서 복사해 왔어요. 1931년에도 같은 말을 한 사람이 있었네요. 방송국 대신 병원에 갔고요." }
       - say: { char: 차피디, with: [지안], text: "그럼 안 늘어난 건가? 아니지, 그때 한 명 찾은 걸로는 몰라. 숫자가 없잖아." }
       - say: { char: 지안, with: [차피디], text: "네. 모르는 거죠." }
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 주말에 오니? 김치 담갔다. 통 가져와라" }
@@ -154,7 +154,7 @@ scenes:
       - say: { channel: thought, with: [], text: "다온이가 밑창으로 의자 다리를 문지르며 대답을 기다린다." }
       - say: { char: 지안, with: [다온], text: "…아니. 못 봤어." }
       - mood: off
-      - say: { channel: action, with: [], text: "집을 나서고 나서야 녹음기를 한 번도 켜지 않았다는 걸 알았다." }
+      - say: { channel: action, with: [], text: "다온이네를 나오고 나서야 녹음기를 한 번도 안 켰다는 걸 알았다. 다음에 볼 문호 씨 자료 위에 녹음기를 올려 둔다." }
       - goto: munho_home
 
   munho_home:
@@ -460,7 +460,7 @@ scenes:
   late_message:
     actions:
       - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
-      - say: { channel: action, with: [], text: "45년 된 메시지다. 답장 칸에 커서가 깜박인다.", wait: 1800 }
+      - say: { channel: action, with: [], text: "대화창을 2026년까지 올리면 나오는 메시지다. 답장 칸에는 45년이 지나서도 커서가 깜박인다.", wait: 1800 }
       - say: { channel: thought, with: [], text: "통은 가져가지 않았다. 쉰 김치는 찌개를 하면 된다고 엄마가 말했었다." }
       - say: { channel: thought, with: [], text: "전화번호를 눌러 보면 지금도 엄마라고 뜰까." }
       - say: { channel: action, with: [], text: "커서는 밤새 깜박인다. 손은 이불 위에 있다.", wait: 2200 }

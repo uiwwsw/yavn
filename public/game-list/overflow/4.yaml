@@ -36,10 +36,10 @@ scenes:
   broadcast_end:
     title: "자료를 보내는 날"
     actions:
-      - bg: studio
+      - bg: { id: studio, transition: fade, duration: 700 }
       - place: "3일 뒤 · 지역 뉴스"
       - char: { id: 수경, position: right }
-      - say: { channel: action, with: [], text: "기자가 자막에 아버지 병동을 넣어도 되느냐고 묻는다. 지완은 카메라 앞 의자에 앉아 고개를 젓는다." }
+      - say: { channel: action, with: [], text: "접수대에서 내보내기로 한 판독 기록을 기자가 펼친다. 자막에 아버지 병동도 넣을지 묻자 지완은 카메라 앞에서 고개를 젓는다." }
       - say: { char: 지완, with: [], text: "제 이름이랑 제 판독 결과는 내보내세요. 같은 병실에 계신 분들 이름은 빼 주시고요." }
       - say: { channel: record, with: [], text: "문지완 · 본인 공개 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
       - say: { char: 수경, with: [], text: "제가 검수한 카드예요. 001을 받아도 01, 101을 받아도 01이 뜹니다." }
@@ -56,7 +56,7 @@ scenes:
       - say: { char: 지완, with: [세라], text: "제한은 풀어 주세요. 근데 아예 면회를 안 온 것처럼 정리하면 안 돼요. 제가 거기 있었거든요." }
       - say: { char: 세라, with: [지완], text: "그건 제가 봤으니까 쓸 수 있어요. 오후부터 밤까지 대기했다고." }
       - say: { channel: record, with: [], text: "문지완 · 면회 제한 이의 신청 인용\n‘무반응 의심’ 판정 철회 · 화면에 표시되지 않은 앞자리와 직원 확인 내용 첨부" }
-      - say: { channel: action, with: [], text: "문이 열리고 지완은 병실에 들어간다. 접수대에서는 다른 보호자가 왜 혼자 들어갈 수 없느냐고 묻는다." }
+      - say: { channel: action, with: [], text: "지완의 면회증에 자동문이 열린다. 문을 넘는 등 뒤로, 다른 보호자가 왜 자기는 혼자 들어갈 수 없느냐고 묻는 소리가 들린다." }
       - ending: one_file
 
   sealed_end:
@@ -69,7 +69,7 @@ scenes:
       - char: { id: 동식, position: right }
       - say: { char: 동식, with: [지완], text: "오늘은 문이 바로 열리더냐." }
       - say: { char: 지완, with: [동식], text: "네. 제 건 처리됐대요." }
-      - say: { channel: action, with: [], text: "아버지 드릴 물을 더 가지러 나왔다. 어제 내가 앉았던 의자에서 누가 면회표를 접고 있다." }
+      - say: { channel: action, with: [], text: "빈 물병을 들고 병실 문을 나서다 복도 건너편을 본다. 어제 내가 기다리던 자리에 또 누군가 앉아 면회표를 접고 있다." }
       - ending: sealed
 
   appeal_end:
@@ -83,8 +83,8 @@ scenes:
       - say: { channel: action, with: [], text: "지완이 신청서를 건네자 여자는 자기 접수 기록을 먼저 볼 수 있느냐고 묻는다. 이름은 아직 적지 않았다." }
       - say: { char: 지완, with: [세라], text: "그럼요. 여기 있을게요." }
       - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 제한 전 직원 확인. 당사자에게 판독 근거 제공.\n검토 중 · 서명 2건" }
-      - bg: dongsik_house
-      - place: "일요일 · 아버지 집"
+      - bg: { id: dongsik_house, transition: fade, duration: 800 }
+      - place: "아버지 퇴원 뒤, 일요일 · 아버지 집"
       - char: { id: 동식, position: right }
       - char: { id: 지완, position: left }
       - say: { channel: action, with: [], text: "냉동실에 작은 통 하나가 비스듬히 들어 있다. 뚜껑 아래로 국물이 한 줄 얼어붙었다. 아버지가 통을 빼서 지완 앞에 놓는다." }

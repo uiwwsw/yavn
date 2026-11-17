@@ -498,7 +498,7 @@ scenes:
           channel: thought
           when: { var: deokgu_saved, op: eq, value: false }
           with: [한명재]
-          text: "덕구가 했다는 말은 공초에 남아 있다. 이제 듣고 싶은 건 그 종이 바깥에 있는 말인데."
+          text: "덕구는 9월 26일 새남터에서 처형됐다. 공초에는 덕구가 한 말만 적혔지, 낫을 놓친 손은 적히지 않았다."
       - goto: round4
 
   round4:
@@ -811,14 +811,14 @@ scenes:
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠.grin
-          text: "아가씨, 오늘 판결문에 ‘오작인 막쇠 입회’라고 있습디다. 내 이름이 거기 올라간 건 처음이오."
+          text: "아가씨, 어제 판결문에 ‘오작인 막쇠 입회’라고 있습디다. 내 이름이 거기 올라간 건 처음이오."
       - say:
           char: 서연
           with: [막쇠]
           text: "다음 시장에는 아저씨 이름부터 쓸게요."
       - say:
           channel: narration
-          text: "성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맸다."
+          text: "재판 이튿날 새벽, 성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맸다."
       - say:
           char: 서연
           with: [막쇠]
@@ -851,7 +851,7 @@ scenes:
           text: "덕구의 낫은 아직 형조 창고에 있다. 찾아갈 사람이 없다."
       - say:
           channel: narration
-          text: "성문이 열렸다. {{player_name|은}} 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
+          text: "재판이 끝난 이튿날 새벽, 성문이 열렸다. {{player_name|은}} 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
       - say:
           channel: thought
           with: []

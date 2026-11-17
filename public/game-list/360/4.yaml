@@ -11,7 +11,7 @@ scenes:
       - bg: { id: void, transition: cut }
       - music: void
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "모니터를 끈 뒤에도 남던 파란 불빛이 없다." }
+      - say: { channel: narration, text: "요양 병동에서 마지막으로 붙들고 있던 답장 칸이 안 보인다. 편집실 모니터를 끄고 나면 남던 파란 불빛도 없다." }
       - say: { channel: narration, text: "가만히 귀를 기울여도 아무 소리도 들리지 않는다." }
       - say: { channel: narration, text: "일흔아홉 해가 전부 떠오른다." }
       - say:
@@ -40,9 +40,9 @@ scenes:
 
   leak_one:
     actions:
-      - say: { channel: record, text: "\"여든 먹어도 엿은 엿이라더라.\"" }
+      - say: { channel: record, text: "\"여든 먹어도 엿은 엿이죠.\"" }
       - say: { channel: narration, text: "…" }
-      - say: { channel: narration, text: "누가 그런 말을 했는지 안다. 얼굴도 기억난다." }
+      - say: { channel: narration, text: "녹음기로 들은 게 아니다. 그 말을 하면서 웃던 아이의 얼굴이 보인다." }
       - say: { channel: narration, text: "열여섯 살이었다. 웃을 때 왼쪽 눈이 먼저 감겼다." }
       - say: { channel: narration, text: "낮은 목소리로 내게 가르쳐 주듯 천천히 말한다." }
       - say: { channel: narration, text: "목소리 400개를 귀로 외웠다. 이건 그중에 없다." }

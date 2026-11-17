@@ -440,7 +440,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "과거\n유하린 · 18"
+          text: "11년 전\n유하린 · 18세"
       - goto: e1_harin
 
   e1_harin:

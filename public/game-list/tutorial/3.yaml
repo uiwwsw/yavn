@@ -321,7 +321,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "번호표 없이 온 남자 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
+          text: "조사실에서 들은 기태민 이름을 잊기 전에 물어보려고 휴대폰을 꺼낸다. 그때 번호표 없이 온 손님이 창구에 팔꿈치를 올리고 영수증을 흔든다."
       - say:
           char: 해수.service
           motion: lean_in
@@ -461,7 +461,7 @@ scenes:
           speakerName: "문 안의 남자"
           motion: sway
           with: [해수]
-          text: "…기태민 맞는데, 마트에서 왜 왔어요."
+          text: "…기태민 맞는데, 마트에서 왜 왔어요?"
       - wait: 600
       - say:
           char: 해수
@@ -583,7 +583,7 @@ scenes:
       - choice:
           key: t3_room
           presentation: explore
-          prompt: "모니터 세 대 중 한 대만 켜져 있다."
+          prompt: "태민이 문을 더 열어 준다. 문턱을 넘으니 모니터 세 대 중 한 대만 켜져 있다."
           with: [태민]
           camera: wide
           options:

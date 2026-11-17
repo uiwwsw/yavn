@@ -228,7 +228,7 @@ scenes:
 
   mother_choice_intro:
     actions:
-      - place: "2월 · 새벽 4시"
+      - place: "2월, 떠나는 날 · 새벽 4시 · 판잣집"
       - char: { id: 순임, position: left }
       - char: { id: 시어머니, position: right }
       - say: { channel: action, with: [시어머니], text: "어머이는 보따리를 싸는 동안 눈을 감고 있었다. 방문을 여는 소리가 나자 벽 쪽으로 돌아누웠다." }

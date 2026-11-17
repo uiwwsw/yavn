@@ -240,42 +240,70 @@ scenes:
       - place: "그날 밤 23:40 · 회사, 빈 사무실"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "안 와?"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: me
           char: 도윤
           with: []
           text: "회사 다시 들어왔어 자료가 여기 있어서"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "뭐 먹었는데"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: me
           char: 도윤
           with: []
           text: "김밥"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "오이는 뺐어?"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
           text: "너 혼자 먹을 때도 꼭 빼달라 하잖아"
       - say:
           channel: message
+          when:
+            all:
+              - { var: e2_search, op: eq, value: false }
+              - { var: e2_gallery, op: eq, value: false }
           side: them
           char: 지수
           with: []
@@ -283,7 +311,7 @@ scenes:
       - choice:
           key: e2_search
           presentation: explore
-          prompt: "자기 자리 쪽 불만 켠다. 빈 사무실에서 지수한테 또 톡이 온다."
+          prompt: "지수의 메시지 창을 내린다. 노트북의 검색창과 사진첩이 보인다."
           with: []
           camera: wide
           options:

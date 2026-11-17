@@ -73,7 +73,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "문틈으로 더운 바람이 발목에 닿는다. 로비는 입김이 날 만큼 추웠다."
+          text: "출입 승인등이 초록색으로 바뀌고, 지하 서버실 문틈으로 더운 바람이 발목에 닿는다. 로비는 입김이 날 만큼 추웠다."
       - goto: room_look
 
   room_look:
@@ -548,7 +548,7 @@ scenes:
           text: "해수는 전원선을 따라가 벽 콘센트를 본다. 모니터 아래에는 작은 전원 버튼이 있다."
       - choice:
           key: t4_end
-          prompt: "태민 말대로라면 전원선을 뽑는 순간 레플라에 들어갈 수 없게 된다. 모니터를 꺼도 본체는 켜져 있다."
+          prompt: "태민은 서버를 꺼도 끊기지 않는 세션이 하나 있다고 했다. 모니터 버튼을 누르면 화면만 꺼진다. 콘센트의 전원선을 뽑아야 이 서버가 멎는다."
           with: []
           options:
             - text: "전원선을 뽑는다"
@@ -664,7 +664,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "띵동 — 001번 고객님, 고객센터로 오세요. · 5월 2일"
+          text: "5월 2일 · 그린마트 고객센터\n띵동 — 001번 고객님, 고객센터로 오세요."
           wait: 700
       - char: { id: 해수, position: left, emotion: service }
       - wait: 600

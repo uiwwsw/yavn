@@ -920,14 +920,14 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 밴드를 책상에 엎어 놓고 불을 끈 채 눕는다."
-      - place: "4월 18일 새벽 1:50 · 해수의 방"
+          text: "새벽 1시 50분. 해수는 밴드를 책상에 엎어 놓는다. 방의 불을 끄고 누울 때도 밴드는 여전히 책상 위에 있다."
       - bg: { id: sim_parking, transition: cut }
+      - place: "레플라 · B2 주차장 C-14"
       - mood: { tone: dread, level: 2 }
       - say:
           channel: system
           with: []
-          text: "자동 접속되었습니다. 튜토리얼 3/5를 이어서 진행합니다. · 손에 쥔 물건 · 그린마트 연필 1"
+          text: "자동 접속되었습니다. 튜토리얼 3/5를 이어서 진행합니다.\n손에 쥔 물건 · 그린마트 연필 1"
           autoAdvance: 2736
       - goto: stab
 

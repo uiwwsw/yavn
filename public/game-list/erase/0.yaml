@@ -316,17 +316,17 @@ scenes:
           char: 준성
           speakerName: "낯선 남자"
           with: [도윤]
-          text: "금요일 이 시간에요? 이십 분은 걸릴걸요."
+          text: "주말에 이 시간이에요? 20분은 걸릴걸요."
       - say:
           char: 준성.smirk
           speakerName: "낯선 남자"
           motion: lean_in
           with: [도윤]
-          text: "이십 분 동안 그냥 서 있게요?"
+          text: "20분 동안 그냥 서 있게요?"
       - say:
           channel: system
           with: []
-          text: "대리운전 호출을 취소하시겠습니까?\n기사님이 배정되기 전입니다."
+          text: "대리운전 호출 · 취소됨\n배정된 기사 없음"
       - goto: e0_night
 
   e0_night:

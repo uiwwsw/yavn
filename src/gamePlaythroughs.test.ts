@@ -276,6 +276,8 @@ describe('ERASE', () => {
     expect(heard(run.shown, '뒤 네 자리가 지금 울리는 번호와 같다')).toBe(true);
     expect(heard(run.shown, '폰이 먼저 알아봤네')).toBe(true);
     expect(heard(run.shown, '내가 정리를 덜 한 거고')).toBe(true);
+    expect(run.state.storyLog.filter((entry) =>
+      entry.kind === 'dialogue' && entry.sceneId === 'search' && entry.text === '안 와?')).toHaveLength(1);
     // 하린 sent the message she usually deletes, so 아진 brings it up eleven years earlier.
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(true);
   });

@@ -652,7 +652,7 @@ scenes:
       - goto: junseong
 
   junseong:
-    pov: "유하린"
+    pov: "한도윤"
     title: "화분"
     actions:
       - say:
@@ -662,7 +662,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "‘유하린’을 한 번 더 입에 올려 보려는데 휴대폰이 울린다. 영업2팀 단톡방이다."
+          text: "난간에서 손을 떼고 ‘유하린’을 한 번 더 입에 올리려는데 휴대폰이 울린다. 영업2팀 단톡방이다."
       - say:
           channel: record
           when: { var: e2_leaked, op: eq, value: true }
@@ -744,7 +744,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "내일 열 시에 가면 두 번째다. 벌써 뭘 지워야 할지 순서부터 생각난다."
+          text: "내일 오전 10시에 가면 두 번째다. 벌써 뭘 지워야 할지 순서부터 생각난다."
       - say:
           channel: thought
           when: { var: deleted, op: gte, value: 6 }

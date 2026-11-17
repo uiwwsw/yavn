@@ -712,7 +712,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "가슴 화면에 ‘맞다’가 떴다가 금방 꺼진다."
+          text: "가슴 화면의 ‘맞다’가 꺼진다. 돌아가는 골목에 들어서자, 벽을 훑고 지나가는 불빛과 함께 모터 소리가 가까워진다."
       - goto: b3_drone
 
   b3_drone:
@@ -735,7 +735,7 @@ scenes:
           char: 윤재.scared
           motion: gasp
           with: [로봇, 드론]
-          text: "엎드려. 엎드리라고. 말하지 말고."
+          text: "저 불빛 지나갈 때까지 엎드려. 말하지 말고."
       - say:
           char: 윤재.scared
           with: [로봇, 드론]

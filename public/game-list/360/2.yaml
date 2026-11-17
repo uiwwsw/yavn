@@ -215,7 +215,7 @@ scenes:
       - say: { channel: action, with: [], text: "따라 고개를 들었다. 눈앞에서 초록 불빛이 퍼지고, 한참 뒤에 쿵 소리가 왔다." }
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요." }
       - say: { char: 수경, with: [민재], text: "몰라. 재 봐야 알지. 그래서 걸어 보겠다는 거야." }
-      - say: { channel: thought, with: [], text: "밤 11시 40분. 아침 6시까지 6시간 20분." }
+      - say: { channel: thought, with: [], text: "밤 11시 40분. 아침 6시까지 6시간 20분. 엄마 오기 전에 병실로 돌아가려면 지금 가야 한다." }
       - bg: { id: ward, transition: fade, duration: 1000 }
       - goto: consent
 
