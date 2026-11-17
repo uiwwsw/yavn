@@ -12,7 +12,6 @@ assets:
     busan_shack: assets/bg/busan_shack.svg
     seoul_room: assets/bg/seoul_room.svg
     ward: assets/bg/ward.svg
-    ward_packet: assets/bg/ward_packet.webp
     glass_visit: assets/bg/glass_visit.svg
     hangang_night: assets/bg/hangang_night.svg
     edit_room: assets/bg/edit_room.svg
@@ -20,6 +19,7 @@ assets:
     window_dawn: assets/bg/window_dawn.svg
     key_sticker: assets/items/key.svg
     receipt_sticker: assets/items/receipt.svg
+    folded_packet_sticker: assets/items/folded_packet.svg
     sketch_sticker: assets/items/sketch.svg
     sketch_two_sticker: assets/items/sketch_two.svg
     globe_sticker: assets/items/globe.svg

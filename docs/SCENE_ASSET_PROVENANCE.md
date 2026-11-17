@@ -5,6 +5,7 @@
 | 작품 | 추가 파일 | 제작 근거 |
 | --- | --- | --- |
 | 무원 | `assets/items/neck_traces.svg` | 기존 `assets/bg/sihyeongdo.svg`의 목 주변을 잘라 검안 표시를 추가했습니다. |
+| 360 | `assets/items/folded_packet.svg` | 기존 `assets/items/sketch.svg`의 종이 윤곽과 색을 사용했습니다. 기존 병실 위 같은 자리에 약봉지를 띄워 뒷면 그림으로 이어집니다. |
 | 오버플로 | `assets/bg/station_glove.svg`, `assets/bg/ward_sock.svg` | 기존 `wolgye_station.svg`와 `ward_bed.svg`를 확대해 개찰구와 침대 구조를 맞췄습니다. 장갑을 줍는 수경의 코트와 양말을 줍는 지완의 재킷에는 기존 초상의 색을 사용했습니다. |
 | 오버플로 | `assets/char/jiwan-call-tight.svg` | 기존 `jiwan-tight.svg`의 얼굴과 복장 위에 `jiwan-call.svg`의 팔과 휴대폰 레이어를 얹었습니다. 벨소리는 기존 `assets/sfx/call.wav`를 재사용합니다. |
 | ERASE | `assets/items/gallery_photo.svg`, `assets/items/gallery_empty.svg` | 새 사진첩 틀의 같은 위치에 기존 `assets/items/child_photo.svg` 또는 빈 자리를 표시합니다. |
