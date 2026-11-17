@@ -4203,7 +4203,7 @@ textarea,
     --char-actor-width-budget: calc(
       var(--char-actor-slot)
       * var(--character-visible-fraction, 1) / var(--character-source-ratio, 1)
-      / var(--stage-camera-render-scale, 1)
+      / var(--stage-camera-render-scale, 1) * var(--char-slot-width-scale, 1)
     );
   }
   .char-layer.char-layout-duo .char { --char-cast-size: 2; }
@@ -4360,6 +4360,11 @@ textarea,
     width: 100cqw;
     height: 100cqh;
     --character-headroom: max(88px, calc(env(safe-area-inset-top, 0px) + 80px));
+  }
+
+  /* Keep the pair's face positions stable and let their shoulders share a little space. */
+  .char-layer.char-layout-duo[data-character-count='2'] .char-image {
+    --char-slot-width-scale: 1.24;
   }
 
   .char-layer[data-character-count='1'] .char { --portrait-height-limit: 60cqh; }
