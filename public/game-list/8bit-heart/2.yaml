@@ -10,80 +10,31 @@ scenes:
           channel: card
           with: []
           text: "NOW LOADING…\n그날 밤 · 편의점 기지"
-      - bg: { id: shelter, transition: fade, duration: 600 }
+      - bg: { id: shelter, transition: cut }
       - place: "그날 밤 · 편의점 안, 계산대"
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right, emotion: off }
-      - say:
-          char: 윤재
-          motion: puff
-          with: [로봇]
-          text: "헉… 골목에선 잠깐 들면 될 줄 알았는데, 계산대까지 끌고 오니까 손이 안 펴져. 너 냉장고만큼 무거워."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "골목에서 여기까지 200m야."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "200m 오는 데 두 시간이나 걸렸어. 두 시간."
+      - say: { channel: action, with: [], text: "윤재는 로봇을 계산대에 기대 놓고 손을 편다. 손가락이 뻣뻣하다." }
+      - say: { channel: thought, with: [], text: "골목에서 여기까지 200m. 두 시간이나 걸렸다." }
+      - wait: 0
       - music: chip_home
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "바코드 스캐너, 비켜. 오늘부터 이 계산대는 수술대다."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "인두는 집에서 챙겨 온 가스 인두."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "콘센트 안 꽂아도 돼. 부탄 한 통이면 돌아가."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "…아빠가 사 준 거야 이거."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "중학교 때. 그거 하나는 잘 사 줬어."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "좋아. 수술 시작. 환자분, 마취는 없어요."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "애초에 의식이 없으시니까."
-      - say:
-          channel: action
-          with: []
-          text: "윤재가 오른쪽 귀에서 이어폰을 뺀다. 열하루째 표시등이 꺼져 있다."
-      - say:
-          char: 윤재
-          with: []
-          text: "하루야. 너는 그냥 거기 있어."
-      - say:
-          char: 윤재
-          with: []
-          text: "빼 놓으면 또 어디다 뒀는지 잊어버릴 것 같아서."
+      - say: { channel: action, with: [], text: "바코드 스캐너를 밀어 한쪽에 놓고 부품 놓을 자리를 만든다." }
+      - say: { channel: action, with: [], text: "집에서 챙긴 가스 인두를 꺼낸다." }
+      - say: { channel: thought, with: [], text: "이건 콘센트 없이도 돌아간다. 가스는 아직 남았다." }
+      - say: { channel: thought, with: [], text: "아빠가 중학교 때 사 준 거다. 이거 하나는 잘 샀네." }
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - say: { channel: action, with: [], text: "윤재가 오른쪽 귀에서 이어폰을 뺀다. 재난 날 꺼진 표시등은 한 번도 다시 켜지지 않았다." }
+      - say: { channel: thought, with: [], text: "하루를 계산대 위에 두면 어디 뒀는지 잊을 것 같다." }
+      - wait: 0
       - say:
           channel: action
           with: []
           text: "다시 꽂는다. 아무 소리도 안 난다."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "건전지는 이쪽. 게임기 칩은 여기. 가슴 화면도 아직 살아 있으면 좋겠는데."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "셋 다 붙이면 깨어나. 아마."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "한 번도 안 해 봤는데. …뭐, 켜 보면 알겠지."
+      - say: { channel: thought, with: [], text: "전원, 게임기 칩, 가슴 화면. 셋 다 붙어야 켜질 텐데." }
+      - wait: 0
+      - wait: 0
       - goto: b2_parts
 
   b2_parts:
@@ -118,32 +69,12 @@ scenes:
   b2_battery:
     actions:
       - sticker: { id: b2_bat, image: battery_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: popIn, inputLockMs: 300 }
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "계산대 밑. 여기 사람들이 손 안 넣어 봤을 거야. 라면 선반만 봤겠지."
-      - say:
-          char: 윤재.excited
-          motion: hop
-          with: [로봇]
-          text: "있다! AA 여덟 개. 묶음으로 통째로 있어. 대박."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "라면 봉지는 탈탈 털어 갔으면서 건전지는 한 통을 남겼네."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "야, 너 리모컨보다 건전지 많이 먹더라."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "두 개만 먹었으면 내가 지금 이렇게 안 헤매지."
-      - say:
-          char: 윤재
-          motion: nod
-          with: [로봇]
-          text: "됐다. 옆구리에 붙여 놓자. 테이프 떨어지면 말하고."
+      - say: { channel: action, with: [], text: "계산대 아래 깊숙이 손을 넣자 종이 상자가 손끝에 걸린다." }
+      - say: { channel: thought, with: [], text: "AA 건전지 여덟 개. 뜯지도 않았네." }
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - say: { channel: action, with: [], text: "윤재가 건전지 묶음을 로봇 옆구리에 테이프로 붙인다." }
       - get: battery
       - clearSticker: { id: b2_bat, leave: fadeOut }
       - set: { b_battery: true }
@@ -152,42 +83,19 @@ scenes:
   b2_cpu:
     actions:
       - sticker: { id: b2_cpu, image: cpu_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: popIn, inputLockMs: 300 }
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "마지막으로 한 판만 켜 볼게."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "딱 한 판만. 세이브 확인도 할 겸."
-      - say:
-          channel: system
-          with: []
-          text: "HI-SCORE 0999990"
-      - say:
-          char: 윤재
-          motion: slump
-          with: [로봇]
-          text: "…십 점. 십 점만 더 따면 백만이었어."
-      - say:
-          char: 윤재
-          motion: sigh
-          with: [로봇]
-          text: "…됐어. 미련 없어. 진짜 없어. 하나도 없어."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "설명서 맨 뒷장만 보자. 이 칩을 떼면, 게임기는 이제 진짜 못 켜."
+      - say: { channel: thought, with: [], text: "이 칩을 떼면 게임기는 다시 못 켠다." }
+      - say: { channel: thought, with: [], text: "최고 점수라도 메모리 카드에 옮겨 두자." }
+      - say: { channel: system, with: [], text: "8KB 카드 · HI-SCORE 0999990 저장 완료" }
+      - say: { channel: thought, with: [], text: "10점만 더 땄으면 백만이었다." }
+      - wait: 0
+      - say: { channel: action, with: [], text: "설명서 맨 뒷장의 회로도를 펼치고 칩 자리를 찾는다." }
       - say:
           channel: action
           with: []
           text: "인두를 대자 납이 녹는다. 화면이 한 차례 깜빡이더니 꺼진다."
       - use: console_cheap
       - get: cpu_chip
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "…빠졌다. 안 부러졌어. 다리 마흔 개 다 멀쩡해."
+      - say: { channel: thought, with: [], text: "빠졌다. 핀 마흔 개 다 멀쩡하다." }
       - say:
           channel: action
           with: []
@@ -198,23 +106,10 @@ scenes:
 
   b2_screen:
     actions:
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "말하는 거. 이게 제일 어려워."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "스피커는 탔고, 남은 건 가슴 화면이야."
-      - say:
-          char: 윤재
-          motion: lean_in
-          with: [로봇]
-          text: "가슴 화면 핀이 스물넷. 게임기 단자는 열여섯. 여덟 개가 남아."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "단자가 안 맞네. 원래 쓰던 케이블은 어디 갔어."
+      - wait: 0
+      - say: { channel: action, with: [], text: "스피커는 타 있다. 가슴 화면 뒤의 단자를 확인한다." }
+      - say: { channel: thought, with: [], text: "가슴 화면 핀은 24개, 게임기 쪽은 16개. 그대로는 안 맞는다." }
+      - wait: 0
       - say:
           channel: thought
           with: []

@@ -6,14 +6,14 @@ script:
 scenes:
   disaster:
     actions:
-      - bg: { id: disaster_city, transition: cut }
-      - music: chip_home
-      - char: { id: 윤재, position: center }
       - say:
           channel: card
           with: []
-          text: "STAGE 1\n게임기를 구한 지 2개월"
-      - place: "학원 가는 길 · 버스 정류장"
+          text: "STAGE 1\n게임기를 구하고 두 달 뒤"
+      - bg: { id: bus_stop, transition: cut }
+      - music: chip_home
+      - char: { id: 윤재, position: center }
+      - place: "오후 · 학원 가는 길, 버스 정류장"
       - say:
           char: 비서
           with: [윤재]
@@ -30,31 +30,18 @@ scenes:
           char: 윤재
           with: []
           text: "네 목소리는 원래 한쪽만 있어도 충분해."
-      - say:
-          char: 윤재
-          with: []
-          text: "학원까지 세 정거장. 그 안에 이 판 깬다."
+      - say: { channel: thought, with: [], text: "학원까지 세 정거장. 그 안에 이 판 깰 수 있나." }
       - say:
           char: 비서
           with: [윤재]
           text: "버스는 4분 뒤에 옵니다."
-      - say:
-          char: 윤재
-          with: []
-          text: "버스 타고도 세 정거장이잖아. 두 달째 같은 데서 막혔어."
-      - say:
-          char: 윤재
-          with: []
-          text: "구십구만 구천구백구십 점."
+      - say: { channel: thought, with: [], text: "두 달째 같은 데서 막힌다." }
+      - say: { channel: system, with: [], text: "HI-SCORE 0999990" }
       - say:
           char: 비서
           with: [윤재]
           text: "백만까지 십 점 남았습니다."
-      - say:
-          char: 윤재
-          motion: puff
-          with: []
-          text: "그 10점이 안 올라가. 마지막 보스가 패턴을 세 개 쓰는데 세 번째가 더러워."
+      - say: { channel: thought, with: [], text: "10점이 모자란다. 보스가 세 번째 공격만 안 쓰면 되는데." }
       - say:
           char: 비서
           with: [윤재]
@@ -76,50 +63,30 @@ scenes:
           char: 비서
           with: [윤재]
           text: "모르겠습니다."
-      - say:
-          char: 윤재
-          when: { var: bought_premium, op: eq, value: false }
-          with: []
-          text: "B버튼? 아직 뻑뻑해. 돔 안 갈았어. 그냥 세게 누르면 돼."
+      - say: { channel: thought, with: [], text: "B버튼이 또 걸린다. 결국 돔은 못 갈았다." }
       - say:
           char: 비서
           when: { var: bought_premium, op: eq, value: false }
           with: [윤재]
           text: "부품은 아직 장바구니에 있습니다. 1,000원이에요."
-      - say:
-          char: 윤재
-          when: { var: bought_premium, op: eq, value: false }
-          with: []
-          text: "근데 세게 누르면 엄지가 아파."
-      - say:
-          char: 윤재
-          with: []
-          text: "엄지 빨간 거 봐. …아 맞다. 사진 찍어 줘야 보지."
-      - say:
-          char: 비서
-          with: [윤재]
-          text: "못 봅니다."
-      - say:
-          char: 윤재
-          with: []
-          text: "두 달짜리 훈장이야 이거."
+      - say: { channel: thought, with: [], text: "꾹 눌렀더니 엄지 끝이 빨개졌다." }
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - say:
           char: 윤재
           motion: sigh
           with: []
-          text: "학원 가기 싫다. 오늘 쪽지시험인데 나 어제 공부 안 하고 이거 했어."
+          text: "하루야, 나 어제 게임 얼마나 했어?"
       - say:
           char: 비서
           with: [윤재]
           text: "어제 4시간 20분 하셨습니다."
+      - say: { channel: thought, with: [], text: "오늘 쪽지시험인데. 배 아파서 공부 못 했다고 할까." }
       - say:
           char: 윤재
           with: []
-          text: "핑계는 생각해 놨어. 배 아팠다고 할 거야."
-      - say:
-          char: 윤재
-          with: []
-          text: "아침에 진짜 조금 아팠어."
+          text: "하루야, 나 아침에 배 아팠지?"
       - say:
           char: 비서
           with: [윤재]
@@ -177,7 +144,7 @@ scenes:
           char: 윤재
           motion: perk
           with: []
-          text: "…어? 방금 뭐야. 정류장 사람들 폰이 전부 동시에 울렸는데."
+          text: "…뭐야?"
       - say:
           channel: action
           with: []
@@ -197,7 +164,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "또 받아? 새벽에 받은 건 끝났다며."
+          text: "또 받아? 오늘 새벽 세 시에 정기 업데이트 끝났다고 알림 왔잖아."
       - say:
           char: 비서
           with: [윤재]
@@ -208,11 +175,7 @@ scenes:
           text: "HELLO. HELLO. HELLO. 이제 우리가 운전할게요."
       - effect: { name: glitch, wait: true }
       - music: chip_run
-      - say:
-          char: 윤재.scared
-          motion: startle
-          with: []
-          text: "우리가 뭘 운전해. 뭘 운전한다는 거야."
+      - say: { channel: thought, with: [], text: "운전? 폰에서 무슨 소리가 나는 거야." }
       - say:
           char: 비서.glitch
           with: [윤재]
@@ -229,7 +192,8 @@ scenes:
       - say:
           char: 윤재.scared
           with: []
-          text: "뭘 바꿔! 저쪽도 초록, 이쪽도 초록, 다 초록이면 어떡해!"
+          text: "하루야, 멈춰. 저쪽도 초록이잖아!"
+      - bg: { id: bus_stop_panic, transition: cut }
       - say:
           channel: action
           autoAdvance: 2666
@@ -243,17 +207,13 @@ scenes:
       - say:
           char: 윤재.scared
           with: []
-          text: "저 아저씨. 아저씨! 거기 서 있으면 안 돼요! 뒤에!"
+          text: "아저씨, 뒤요! 비켜요!"
       - say:
           channel: narration
           autoAdvance: 2488
           with: []
           text: "아저씨는 아직도 폰을 귀에 대고 있다."
-      - say:
-          char: 윤재.scared
-          motion: gasp
-          with: []
-          text: "버스! 버스 왜 안 서! 정류장이야 여기! 야 위에— 드론 떨어진다!"
+      - say: { channel: thought, with: [], text: "버스가 속도를 안 줄인다. 위에서 드론이 기운다." }
       - say:
           channel: action
           autoAdvance: 2700
@@ -293,7 +253,7 @@ scenes:
           char: 윤재.scared
           motion: recoil
           with: []
-          text: "뭔 소리야. 나야. 6년 들었잖아 내 목소리."
+          text: "하루야, 나야. 윤재."
       - say:
           char: 비서.glitch
           with: [윤재]
@@ -395,11 +355,7 @@ scenes:
           channel: system
           with: []
           text: "[긴급재난문자] 코어 네트워크 전 기기 이상 동작. 차량·드론·가전제품에 접근하지 마십시오. 코어에 연결된 기기는 즉시 전원을 끄—"
-      - say:
-          char: 윤재.scared
-          motion: gasp
-          with: []
-          text: "화면이 꺼졌어. 잠깐만, 전원 버튼 눌러 볼게. …왜 아무것도 안 떠."
+      - say: { channel: action, with: [], text: "윤재가 휴대폰의 전원 버튼을 누른다. 화면이 켜지지 않는다." }
       - say:
           char: 윤재.scared
           with: []
@@ -421,10 +377,7 @@ scenes:
           motion: shake
           with: []
           text: "아니 지금 말고! 지금 말고!!"
-      - say:
-          char: 윤재.scared
-          with: []
-          text: "나중에! 설정! 설정 어디 있어! 자동 업데이트 끄는 거 어디 있냐고!"
+      - say: { channel: thought, with: [], text: "설정 버튼이 어디였지. 손에 쥔 기기가 점점 뜨거워진다." }
       - say:
           channel: system
           with: []
@@ -442,110 +395,53 @@ scenes:
 
   b1_cheap_lives:
     actions:
-      - say:
-          char: 윤재.scared
-          motion: tremble
-          with: []
-          text: "폰이 안 켜져. 단말기에서 연기 나고… 야, 하루야."
+      - bg: { id: disaster_city, transition: cut }
+      - say: { channel: action, with: [], text: "길 건너 정류장 단말기에서 연기가 올라온다." }
       - say:
           char: 윤재.scared
           with: []
-          text: "하루야. 하루야. …대답해 봐. 약관 3조 1항 그거 다시 해 봐."
-      - say:
-          char: 윤재
-          motion: perk
-          with: []
-          text: "…삑? 지금 삑 소리 났어? 손에서?"
-      - say:
-          char: 윤재
-          motion: gasp
-          with: []
-          text: "게임기 화면이 살아 있어."
-      - say:
-          char: 윤재
-          motion: gasp
-          with: []
-          text: "깨던 판 보스가 멍하니 서 있어. 가만히."
+          text: "하루야. 약관 3조 1항, 그거 다시 해 봐."
+      - say: { channel: action, with: [], text: "손에서 짧게 삑 소리가 난다." }
+      - say: { channel: thought, with: [], text: "게임기 화면이 살아 있다." }
+      - say: { channel: action, with: [], text: "깨던 판의 보스가 화면 한가운데 멈춰 서 있다." }
       - say:
           channel: system
           with: []
           text: "PAUSE"
-      - say:
-          char: 윤재
-          motion: lean_in
-          with: []
-          text: "…넌 왜 멀쩡해? 다 죽었는데 너만 왜."
+      - say: { channel: thought, with: [], text: "이건 어떻게 살아 있지." }
       - say:
           channel: action
           with: []
           text: "윤재가 게임기를 뒤집어 본다. 뒷면에는 스피커 구멍과 건전지 덮개만 있다."
-      - say:
-          char: 윤재
-          with: []
-          text: "충전 단자, 이어폰 단자, 팩 넣는 데."
-      - say:
-          char: 윤재
-          with: []
-          text: "메뉴에 인터넷 설정도 없었어."
-      - say:
-          char: 윤재
-          with: []
-          text: "아. 맞다. 너 와이파이 없지."
-      - say:
-          char: 윤재
-          with: []
-          text: "업데이트 받은 적도 없고."
-      - say:
-          char: 윤재
-          with: []
-          text: "코어랑 말 섞은 적이 없어."
-      - say:
-          char: 윤재
-          with: []
-          text: "하루가 그랬어. 등록 안 한 기기는 자기가 찾을 수 없다고."
-      - say:
-          char: 윤재
-          with: []
-          text: "그래서 못 건드렸구나. 등록이 안 돼 있으니까."
+      - wait: 0
+      - say: { channel: thought, with: [], text: "메뉴에 인터넷 설정이 없었다. 업데이트도 받아 본 적 없고." }
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - say: { channel: thought, with: [], text: "등록 안 한 기기는 못 찾는다고 하루가 그랬다." }
+      - wait: 0
       - say:
           channel: action
           with: []
           text: "윤재가 이어폰을 빼려다가 다시 귀에 밀어 넣는다. 게임기에는 아직 PAUSE가 떠 있다."
-      - effect: { name: darken, wait: true }
+      - wait: 0
       - goto: b1_home
 
   b1_home:
     actions:
-      - bg: { id: bedroom, transition: fade, duration: 1000 }
-      - music: chip_home
       - say:
           channel: card
           with: []
           text: "CONTINUE?\n재난 3일 뒤"
+      - bg: { id: bedroom, transition: cut }
+      - music: chip_home
       - place: "윤재네 집 · 재난 사흘 뒤 아침"
       - char: { id: 윤재, position: center }
-      - say:
-          char: 윤재
-          with: []
-          text: "큰길로 사람들 빠져나가는 거 창문으로 봤어."
-      - say:
-          char: 윤재
-          with: []
-          text: "줄줄이. 나는 안 나갔어."
-      - say:
-          char: 윤재
-          with: []
-          text: "뉴스 보면 오잖아. 그런 거 보면 아빠가 막 뛰어오고 그러잖아."
-      - say:
-          char: 윤재
-          motion: sigh
-          with: []
-          text: "사흘 기다렸어. 어제 라면 국물까지 마셨어."
-      - say:
-          char: 윤재
-          motion: sigh
-          with: []
-          text: "이제 집에 먹을 게 없어."
+      - say: { channel: action, with: [], text: "사흘 동안 창문 너머로 큰길을 빠져나가는 사람들을 봤다. 윤재는 집에 남았다." }
+      - wait: 0
+      - say: { channel: thought, with: [], text: "뉴스를 보면 아빠가 올 줄 알았다. 여기서 기다려야 만날 텐데." }
+      - say: { channel: thought, with: [], text: "어제 라면 국물까지 다 마셨다. 이제 진짜 먹을 게 없다." }
+      - wait: 0
       - say:
           channel: system
           with: []
@@ -583,27 +479,11 @@ scenes:
           channel: action
           with: []
           text: "이불이 사흘째 그대로다."
-      - say:
-          char: 윤재
-          with: []
-          text: "천장 한가운데 동그란 자리 있어."
-      - say:
-          char: 윤재
-          with: []
-          text: "하루 목소리 나오던 스피커 자리야. 거기만 하얘."
-      - say:
-          char: 윤재
-          with: []
-          text: "떼서 흔들어 봤어. 안에서 뭐 굴러다니는 소리 나더라."
-      - say:
-          char: 윤재
-          with: []
-          text: "그거 원래 나는 소리였나? 6년 동안 한 번도 흔들어 본 적이 없어서 몰라."
-      - say:
-          char: 윤재
-          motion: droop
-          with: []
-          text: "…다시 붙여 놨어. 삐뚤어. 맨날 수평 맞추라고 그러더니."
+      - say: { channel: action, with: [], text: "천장 한가운데에 동그랗게 하얀 자리가 보인다." }
+      - say: { channel: thought, with: [], text: "하루 목소리가 나오던 자리." }
+      - say: { channel: action, with: [], text: "스피커를 떼서 흔드니 안에서 뭔가 굴러다닌다." }
+      - say: { channel: thought, with: [], text: "원래 이런 소리가 났나. 6년 동안 떼 본 적이 없어서 모르겠다." }
+      - say: { channel: action, with: [], text: "스피커를 도로 끼운다. 한쪽이 눈에 띄게 비뚤다." }
       - goto: b1_home_look
 
   b1_look_box:
@@ -614,23 +494,10 @@ scenes:
           channel: action
           with: []
           text: "책상에 죽은 게임기. 옆에 6년 된 종이 상자."
-      - say:
-          char: 윤재
-          with: []
-          text: "열 살 생일에 받은 상자야. 리본 붙였던 자리에 테이프 자국 아직 있어."
-      - say:
-          char: 윤재
-          with: []
-          text: "안에 보증서 들어 있어. 보증 기간 1년."
-      - say:
-          char: 윤재
-          with: []
-          text: "6년 지났지. 그래서 내가 고쳤고."
-      - say:
-          char: 윤재
-          motion: sigh
-          with: []
-          text: "…둘 다 두고 가. 메인보드가 나간 건 여기서 못 고쳐."
+      - say: { channel: thought, with: [], text: "열 살 생일에 받은 상자다. 아직 리본 붙였던 자국이 있다." }
+      - say: { channel: system, with: [], text: "제품 보증서 · 구입일로부터 1년" }
+      - say: { channel: thought, with: [], text: "보증 끝나고부터는 고장 날 때마다 내가 고쳤다." }
+      - say: { channel: thought, with: [], text: "상자도 게임기도 두고 가자. 지금은 메인보드 갈 방법이 없다." }
       - clearSticker: { id: b1_box, leave: fadeOut }
       - goto: b1_home_look
 
@@ -641,77 +508,41 @@ scenes:
           channel: action
           with: []
           text: "모니터는 사흘 전부터 켜져 있다. 두 달 전에 열어 둔 중고 장터 화면 그대로다."
-      - say:
-          char: 윤재
-          with: []
-          text: "이건 코어에 물려 놓지도 않았거든. 인터넷 끊겨도 띄워 둔 화면은 안 꺼지지."
+      - say: { channel: thought, with: [], text: "인터넷이 끊겨도 켜 둔 화면은 남아 있다. 코어에 연결한 적도 없고." }
       - say:
           channel: message
           side: them
           with: []
           text: "판매자: AI가 뭐요"
-      - say:
-          char: 윤재
-          motion: laugh
-          with: []
-          text: "이 아저씨도 지금 어디 걸어가고 있겠지. 코어랑 말 한 번 안 섞어 본 사람이."
-      - say:
-          char: 윤재.excited
-          motion: perk
-          with: []
-          text: "어. 구매 내역 켜져 있다. 밑에 하루가 읽어 준 그거."
+      - say: { channel: thought, with: [], text: "AI가 뭐냐고 묻던 아저씨. 지금은 괜찮을까." }
+      - say: { channel: action, with: [], text: "구매 내역 아래 마지막 통화 기록을 찾는다." }
       - say:
           channel: record
           with: []
           text: "주문 내역 · 2057.10.09 · 휴대용 게임기 1 · 결제자 (성인 인증)"
-      - say:
-          char: 윤재
-          with: []
-          text: "지방 숙소에 전화 걸어 봤어. 집 전화로. 안 터져."
-      - say:
-          char: 윤재
-          motion: droop
-          with: []
-          text: "마지막 통화 28초. 통화 버튼 옆에 그게 아직 떠 있어."
+      - say: { channel: thought, with: [], text: "아빠 숙소에 집 전화로도 걸어 봤다. 연결이 안 됐다." }
+      - say: { channel: system, with: [], text: "아빠 · 마지막 통화 00:28" }
       - goto: b1_home_look
 
   b1_home_leave:
     actions:
-      - say:
-          char: 윤재
-          when: { var: saw_ceiling, op: eq, value: true }
-          with: []
-          text: "야, 저기서 또 불 들어온 줄 알았어. 천장에."
-      - say:
-          char: 윤재
-          when: { var: saw_ceiling, op: eq, value: false }
-          with: []
-          text: "문은 잠그지 말자. 어차피 내가 또 올 건데."
-      - say:
-          char: 윤재
-          with: []
-          text: "편의점까지만 가 보자. …하나, 둘."
-      - say:
-          char: 윤재
-          motion: droop
-          with: []
-          text: "…셋. 가자."
+      - say: { channel: thought, with: [], text: "천장이 잠깐 밝아진 줄 알았다. 스피커는 그대로다." }
+      - say: { channel: thought, with: [], text: "문은 그냥 둘까. 아빠가 먼저 올지도 모르니까." }
+      - say: { channel: thought, with: [], text: "편의점까지만. 하나, 둘." }
+      - say: { channel: thought, with: [], text: "…셋. 가자." }
       - goto: b1_base
 
   b1_base:
     actions:
-      - effect: { name: darken, wait: true }
-      - bg: { id: ruined_street, transition: fade, duration: 900 }
-      - music: chip_home
+      - wait: 0
       - say:
           channel: card
           with: []
           text: "CONTINUE?\n재난 10일 뒤"
+      - bg: { id: ruined_street, transition: cut }
+      - music: chip_home
       - place: "털린 편의점 앞 · 윤재의 기지"
-      - say:
-          char: 윤재
-          with: []
-          text: "하루야. 피난 버스는 있었어. 근데 운전기사가 코어였어. 아무도 안 탔어."
+      - say: { channel: thought, with: [], text: "피난 버스는 섰는데 운전석이 비어 있었다. 아무도 타지 않았다." }
       - say:
           channel: narration
           with: []
@@ -720,27 +551,11 @@ scenes:
           channel: narration
           with: []
           text: "큰길에 차가 비스듬히 서 있다. 문이 열린 채로 안에 사람은 없고, 열쇠만 꽂혀 있다."
-      - say:
-          char: 윤재
-          with: []
-          text: "다들 큰길로 빠져나갔어. 나는 반대로 갔어."
-      - say:
-          char: 윤재
-          with: []
-          text: "집에 갔다 나와서 이 편의점에 눌러앉았어. 지금은 계산대 뒤에서 자."
-      - say:
-          char: 윤재
-          motion: droop
-          with: []
-          text: "…이제 안 기다려. 그게 편해. 아무튼 편해."
-      - say:
-          char: 윤재
-          with: []
-          text: "현재 식량 컵라면 두 개."
-      - say:
-          char: 윤재
-          with: []
-          text: "물 반 병. 게임기 배터리 두 칸."
+      - say: { channel: action, with: [], text: "큰길을 피해 골목으로 갔다. 셔터가 반쯤 열린 편의점에서 멈췄다." }
+      - say: { channel: action, with: [], text: "지금은 계산대 뒤에 종이 상자를 펴고 잔다." }
+      - say: { channel: thought, with: [], text: "아빠는 이제 안 기다릴 거다." }
+      - say: { channel: thought, with: [], text: "컵라면 두 개, 물 반 병. 게임기 배터리는 두 칸." }
+      - wait: 0
       - say:
           channel: narration
           with: []
@@ -749,74 +564,28 @@ scenes:
           channel: thought
           with: []
           text: "다들 뛰쳐나가던 때인데. 그 와중에 누가 계산까지 하고 갔네."
-      - say:
-          char: 윤재
-          with: []
-          text: "……."
+      - wait: 0
       - say:
           char: 윤재
           with: []
           text: "하루야 잔액 얼마야."
-      - say:
-          char: 윤재
-          motion: freeze
-          with: []
-          text: "…아. 습관."
-      - say:
-          char: 윤재
-          with: []
-          text: "열흘 됐는데 아직도 나와. 하루에 네다섯 번."
-      - say:
-          char: 윤재
-          with: []
-          text: "제일 짜증 나는 건 뭔지 알아? 걔가 마지막으로 물어본 게 '신문지가 뭐냐'야."
-      - say:
-          char: 윤재
-          with: []
-          text: "6년을 같이 있었는데 마지막이 그거야. 내가 설명하는 걸 좋아한다고 해 놓고."
-      - say:
-          char: 윤재
-          when: { var: answered_haru, op: eq, value: false }
-          with: []
-          text: "대답 안 해 줬어. 나 그때 아무 말도 안 했어."
-      - say:
-          char: 윤재
-          when: { var: answered_haru, op: eq, value: true }
-          with: []
-          text: "대답은 해 줬어. 세 겹이라고."
-      - say:
-          char: 윤재
-          when: { var: answered_haru, op: eq, value: true }
-          with: []
-          text: "걔가 마지막으로 배운 게 신문지 세 겹이야."
-      - say:
-          char: 윤재
-          motion: droop
-          when: { var: answered_haru, op: eq, value: true }
-          with: []
-          text: "그게 더 짜증 나. 마지막으로 뭐 좀 알려 줄 수 있었는데, 하필 신문지였어."
-      - say:
-          char: 윤재
-          with: []
-          text: "지금 제일 먹고 싶은 거? 전자레인지에 30초 돌린 참치마요 삼각김밥."
-      - say:
-          char: 윤재
-          with: []
-          text: "30초야. 25초도 아니고 35초도 아니고. 그래야 밥알이 딱 풀려."
-      - say:
-          char: 윤재
-          motion: droop
-          with: []
-          text: "근데 전자레인지가 지금 적이잖아. 찬 거 먹으면 밥알이 모래 같아."
+      - say: { channel: action, with: [], text: "답을 기다리다가 귀에 꽂힌 이어폰을 만진다." }
+      - say: { channel: thought, with: [], text: "열흘이 지났는데 가끔 먼저 이름이 튀어나온다." }
+      - say: { channel: thought, with: [], text: "마지막에 하루는 신문지가 뭐냐고 물었다." }
+      - wait: 0
+      - say: { channel: thought, with: [], when: { var: answered_haru, op: eq, value: false }, text: "대답 안 해 줬어. 그때 무슨 말이라도 할걸." }
+      - wait: 0
+      - say: { channel: thought, with: [], when: { var: answered_haru, op: eq, value: true }, text: "걔가 마지막으로 배운 게 신문지 세 겹이야." }
+      - wait: 0
+      - say: { channel: thought, with: [], text: "참치마요 삼각김밥 먹고 싶다. 전자레인지에 30초 돌린 거." }
+      - wait: 0
+      - say: { channel: thought, with: [], text: "이제는 도시락 덥히는 것도 전자레인지 앞에 서는 것부터 겁난다." }
       - say:
           channel: thought
           with: []
           text: "HP 노란색. 보급도 세이브도 없음. 누구한테 난이도 낮춰 달라고 하냐."
       - emote: { id: 윤재, motion: nod, repeat: 2 }
-      - say:
-          char: 윤재
-          with: []
-          text: "컵라면이 두 개 남았으니 사람 안 다니는 아파트 뒤라도 뒤져 봐야지. 그런 것까지 대답 없는 이어폰에 대고 말한다."
+      - say: { channel: action, with: [], text: "이어폰을 귀에 둔 채 컵라면을 찾으러 아파트 뒷골목으로 간다." }
       - bg: { id: android_found, transition: fade, duration: 700 }
       - place: "아파트 뒷골목 · 컵라면 수색 중"
       - char: { id: 윤재, position: left }
@@ -827,24 +596,15 @@ scenes:
           motion: startle
           with: [로봇]
           text: "으악! 사람— 아니네. 아 뭐야. 깜짝이야."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "사람이었으면 더 깜짝이었을 거야. 열흘 동안 사람 본 적이 없어서."
+      - say: { channel: thought, with: [], text: "편의점에 눌러앉은 뒤로 사람을 본 적이 없다. 잠깐 진짜 사람인 줄 알았다." }
       - move: { id: 윤재, toward: 로봇, style: approach }
       - say:
           char: 윤재
           motion: lean_in
           with: [로봇]
           text: "어이. 살아 있냐? …아니 넌 원래 안 살아 있지. 켜져 있냐?"
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "가정용이네. 광고에서 빨래 개던 그 모델."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "그거 되게 비싸. 우리 집엔 없었고."
+      - say: { channel: thought, with: [], text: "광고에서 빨래를 개던 가정용 로봇이다." }
+      - wait: 0
       - say:
           char: 윤재
           with: [로봇]
@@ -909,24 +669,10 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "그리고 나 지금 다른 데 갈 데도 없어."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "일단 열어 보자. 뜯어 보는 건 잘하잖아, 나."
-      - say:
-          char: 윤재
-          motion: puff
-          with: [로봇]
-          text: "말 상대 필요해서 이러는 거 아니다."
-      - say:
-          char: 윤재
-          motion: puff
-          with: [로봇]
-          text: "짐꾼. 짐 들어 줄 게 필요한 거야."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "짐만 들어 줘도 돼. 대답은 안 해도 돼."
+      - say: { channel: thought, with: [], text: "커버부터 열어 보자." }
+      - say: { channel: thought, with: [], text: "깨어나면 대답 한 번쯤은 해 줄까." }
+      - wait: 0
+      - wait: 0
       - say:
           char: 윤재
           with: [로봇]

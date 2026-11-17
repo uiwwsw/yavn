@@ -199,7 +199,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "받습니다. 오늘 새벽 세 시요."
+          text: "받습니다. 정기 업데이트는 보통 새벽 세 시에 해요."
       - say:
           char: 윤재
           motion: shake

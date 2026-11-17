@@ -6,14 +6,14 @@ script:
 scenes:
   journey:
     actions:
-      - bg: { id: ruined_street, transition: wipeLeft, duration: 500 }
-      - music: chip_run
-      - char: { id: 윤재, position: left }
-      - char: { id: 로봇, position: right }
       - say:
           channel: card
           with: []
           text: "STAGE 3 · 안드로이드를 고친 지 3일\n식량 원정. 편의점 재고: 0"
+      - bg: { id: ruined_street, transition: cut }
+      - music: chip_run
+      - char: { id: 윤재, position: left }
+      - char: { id: 로봇, position: right }
       - wait: 460
       - say:
           char: 로봇
@@ -717,12 +717,12 @@ scenes:
 
   b3_drone:
     actions:
-      - bg: { id: drone_alley, transition: cut }
-      - music: chip_core
       - say:
           channel: card
           with: []
           text: "WORLD 1-2 · 돌아가는 골목\n상공에 드론 1기"
+      - bg: { id: drone_alley, transition: cut }
+      - music: chip_core
       - char: { id: 드론, position: center }
       - move: { id: 로봇, style: reset }
       - effect: { name: alarm, wait: true }
@@ -1291,7 +1291,7 @@ scenes:
 
   b3_think:
     actions:
-      - effect: { name: darken, wait: true }
+      - wait: 0
       - move: { id: 로봇, style: reset }
       - say:
           char: 로봇
