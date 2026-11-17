@@ -26,6 +26,7 @@ assets:
         tight: assets/char/jiwan-tight.svg
         break: assets/char/jiwan-break.svg
         call: assets/char/jiwan-call.svg
+        call_tight: assets/char/jiwan-call-tight.svg
     도겸:
       name: "임도겸"
       placement: prompt-top

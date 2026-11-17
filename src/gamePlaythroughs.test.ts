@@ -390,7 +390,7 @@ describe('오버플로', () => {
       .toEqual(['아버지', '문지완', '아버지', '문지완']);
     expect(call.some((entry) => entry.channel === 'message')).toBe(false);
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
-      sceneId: 'shift', channel: 'action', text: expect.stringContaining('수화기 너머에서 반찬집 아주머니'),
+      sceneId: 'shift', channel: 'action', text: expect.stringContaining('아버지 목소리가 아니다. 반찬집 아주머니다.'),
     }));
   });
 

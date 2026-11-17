@@ -92,9 +92,9 @@ scenes:
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
-      - say: { char: 도겸, with: [지완], text: "지완 씨, 휴대폰 여기 있어요. 아까부터 계속 울렸어요." }
+      - say: { char: 도겸, with: [지완], sound: call, text: "지완 씨. 여기, 휴대폰." }
       - say: { channel: action, with: [], continueLabel: "전화를 받는다", text: "화면에 ‘아버지’라고 떠 있다." }
-      - say: { channel: action, with: [지완.call], text: "수화기 너머에서 반찬집 아주머니가 말한다. “지완 씨? 아버지가 가게 앞에서 쓰러졌어요. 구급차 타셨어요. 월계병원으로 오세요.”" }
+      - say: { channel: action, with: [지완.call_tight], text: "“지완 씨?” 아버지 목소리가 아니다. 반찬집 아주머니다. “아버지가 가게 앞에서 쓰러졌어요. 구급차 타셨어요. 월계병원으로 오세요.”" }
       - say: { channel: thought, with: [지완.tight], text: "문이 어디 있지." }
       - say: { char: 도겸, with: [지완], text: "지완 씨. 출입증 뒷주머니. 내가 택시 부를게요." }
       - goto: admission
