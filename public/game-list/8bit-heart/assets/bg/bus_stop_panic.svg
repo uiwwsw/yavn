@@ -24,6 +24,7 @@
 <rect x="111" y="5" width="2" height="2" fill="#c197ad"/>
 <rect x="150" y="14" width="2" height="1" fill="#c197ad"/>
 <rect x="132" y="9" width="1" height="1" fill="#c197ad"/>
+<g transform="translate(0 -11)">
 <!-- Apartment blocks and street -->
 <rect x="2" y="28" width="12" height="2" fill="#343055"/>
 <rect x="0" y="30" width="16" height="24" fill="#282540"/>
@@ -249,4 +250,6 @@
   <rect x="12" y="-2" width="5" height="1" fill="#a47d9a"/>
   <rect x="13" y="0" width="6" height="1" fill="#793860"/>
 </g>
+</g>
+<rect x="0" y="79" width="160" height="11" fill="#4d4763"/>
 </svg>
