@@ -11,7 +11,7 @@ scenes:
     actions:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
-      - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요." }
+      - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요. 괜찮으시면 여기 서명해 주세요.", continueLabel: "동의서에 서명한다" }
       - say: { channel: action, with: [], sound: consent_pen, text: "펜을 쥔 손이 떨린다. 나는 동의서 아래에 이름을 쓴다." }
       - bg: { id: consent_turn, transition: cut }
       - say: { char: 의사, with: [], text: "이제 눈 감으세요." }
@@ -103,42 +103,45 @@ scenes:
       - say: { channel: action, with: [도윤], text: "도윤이 넥타이를 풀 때 휴대폰이 울린다. 민석이다." }
       - say:
           channel: message
+          thread: 민석
           side: them
+          speakerName: 민석
           with: []
-          text: "민석: 유부남 되기 전에 마지막으로 얼굴 좀 보자ㅋㅋ"
+          text: "우리 지금 클럽인데 올래? 유부남 되기 전에 얼굴 좀 보자ㅋㅋ"
       - say:
           channel: message
+          thread: 민석
           side: me
           char: 도윤
           with: []
-          text: "아직 유부남 아님"
+          text: "아직 유부남 아님ㅋㅋ 지금 갈게"
+      - say: { channel: action, with: [도윤], text: "도윤은 현관을 나서며 지수에게 톡을 보낸다." }
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
-          text: "민석이 생일ㅋㅋ 한잔만 하고 감 12시 전에 들어갈게"
+          text: "민석이 생일이라 잠깐 나갔다 올게. 12시 전엔 들어갈게"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "ㅇㅋ 대리 불러 운전 절대 xx"
-      - say:
-          channel: message
-          side: them
-          char: 지수
-          with: []
-          text: "빨래는 내가 걷었다"
       - bg: { id: club, transition: cut }
+      - music: neon
       - place: { text: "토요일 00:40 · 클럽", presentation: center }
+      - char: { id: 도윤, position: left }
+      - say: { channel: action, with: [도윤], text: "베이스에 바닥이 울린다. 화장실 간 민석이 아직 안 돌아왔다." }
       - say:
           channel: message
+          thread: 민석
           side: me
           char: 도윤
           with: []
           text: "민석아 화장실에서 자냐"
-      - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "여기 잠깐 앉아도 돼요?" }
       - say: { char: 도윤, with: [준성], text: "네. 친구 화장실 갔는데 올 생각을 안 하네요." }
@@ -204,12 +207,14 @@ scenes:
       - say: { channel: action, with: [도윤], text: "도윤이 자리에서 일어나다 주저앉는다. 약속한 시간이 지난 걸 보고 지수에게 톡을 쓴다." }
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "좀 늦을듯 먼저 자"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
@@ -339,24 +344,28 @@ scenes:
           text: "위치 기록은 그대로 둔다. 그걸 누가 열어 본다고."
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "들어왔어?"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "?"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "민석이네서 뻗었어 미안ㅠ 지금 감"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
