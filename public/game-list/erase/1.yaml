@@ -172,24 +172,15 @@ scenes:
       - say:
           char: 도윤
           with: [준성]
-          text: "그 화분, 집에서 가져오신 거예요?"
-      - say:
-          char: 준성.smirk
-          motion: laugh
-          with: [도윤]
-          text: "네. 물은 종이컵으로 반 컵만 줘요. 지난번에 한 컵 줬더니 잎이 다 처지더라고요."
-      - say:
-          char: 준성
-          with: [도윤]
-          text: "이사 갈 때도 이거부터 쌌어요. 옷보다 먼저."
+          text: "팀장님. 아까도 제 자리로 오시던데, 회사에서 그날 얘긴 안 하실 거죠?"
       - say:
           char: 도윤
           with: [준성]
-          text: "팀장님. 잠깐 얘기 좀 해도 될까요."
+          text: "월요일에 전화하셨을 때 제가 좀 놀랐어요."
       - say:
           char: 준성
           with: [도윤]
-          text: "네. 앉아요."
+          text: "미안해요. 그땐 제가 먼저 인사하는 게 나을 줄 알았어요."
       - move: { id: 도윤, toward: 준성, style: approach }
       - say:
           char: 도윤
@@ -249,6 +240,15 @@ scenes:
           with: [준성]
           text: "…네."
       - emote: { id: 도윤, motion: bow }
+      - say:
+          char: 준성.smirk
+          motion: laugh
+          with: [도윤]
+          text: "이 화분 좀 봐줘요. 물은 종이컵으로 반 컵만 줘요. 지난번에 한 컵 줬더니 잎이 다 처지더라고요."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "제가 내일 늦으면 반 컵만 부탁해요."
       - say:
           char: 준성
           with: [도윤]
@@ -416,118 +416,17 @@ scenes:
       - char: { id: 민재, position: left }
       - char: { id: 하린, position: center }
       - char: { id: 아진, position: right }
-      - say:
-          char: 하린
-          motion: bounce
-          with: [민재, 아진]
-          text: "야야야 오늘 돈까스였잖아. 근데 4교시에 체육을 넣으면 어떡해."
-      - say:
-          char: 하린
-          motion: bounce
-          with: [민재, 아진]
-          text: "체육 늦게 끝나는 날엔 뛰어 내려가도 끝에 작은 것만 남는다니까."
-      - say:
-          char: 하린
-          with: [민재, 아진]
-          text: "이거 학교가 일부러 이러는 거야. 백 퍼야. 교장쌤이 돈까스 아껴서 그래."
-      - say:
-          char: 하린
-          motion: laugh
-          with: [민재, 아진]
-          text: "아니 진짜래도? 작년에도 똑같았어. 내가 기록해 놨어 폰에."
-      - say:
-          char: 하린
-          with: [민재, 아진]
-          text: "증거가 있어야 되잖아. 나중에 민원 넣을 거야."
-      - say:
-          char: 민재.laugh
-          with: [하린, 아진]
-          text: "아니 그니까 아까 그 얘기. 2반 걔가 식판을 엎었는데, 지가 안 엎었대. 국이 바닥에 다 있는데."
-      - say:
-          char: 아진
-          motion: headtilt
-          with: [하린, 민재]
-          text: "근데 서민재, 너 여친 콩자반은 왜 니가 먹어."
-      - say:
-          char: 민재
-          with: [하린, 아진]
-          text: "얘 콩 못 먹잖아. 아무튼 걔가—"
-      - say:
-          char: 하린
-          motion: perk
-          with: [민재, 아진]
-          text: "나 그거 봤어! 나 진짜 바로 앞에 있었거든? 근데 걔 아니었어."
-      - say:
-          char: 하린
-          with: [민재, 아진]
-          text: "옆에 있던 애가 팔꿈치로 이렇게 치고 가서—"
-      - say:
-          char: 민재
-          with: [하린, 아진]
-          text: "아진아 어제 보낸 노래 들었어?"
-      - say:
-          char: 아진
-          with: [하린, 민재]
-          text: "어, 듣다가 잠들었어. 좋아서 잠든 거야. 진짜로."
-      - say:
-          char: 하린
-          motion: bounce
-          with: [민재, 아진]
-          text: "무슨 노래?"
-      - say:
-          char: 하린
-          with: [민재, 아진]
-          text: "컴백한 거? 티저 그거? 나 그거 알고리즘에 떴었는데."
-      - say:
-          char: 민재
-          with: [하린, 아진]
-          text: "아, 너 이런 거 안 듣잖아."
-      - say:
-          char: 하린
-          motion: laugh
-          with: [민재, 아진]
-          text: "…그치. 안 듣지."
-      - say:
-          channel: thought
-          with: [민재, 아진]
-          text: "나한텐 안 보냈네ㅋㅋ 아냐 괜찮아 어차피 안 들음 진짜로 안 들음"
-      - say:
-          char: 아진
-          with: [하린, 민재]
-          text: "아 맞다 하린아, 생윤 수행 그거 조 짰어?"
-      - say:
-          char: 하린
-          motion: perk
-          with: [아진, 민재]
-          text: "아직! 나 그거 완전 까먹고 있었어. 야 우리 셋이 하자 셋이."
-      - say:
-          char: 민재
-          with: [하린, 아진]
-          text: "나 아진이랑 이미 같은 조 했는데."
-      - emote: { id: 하린, motion: freeze }
-      - say:
-          char: 하린
-          motion: laugh
-          with: [민재, 아진]
-          text: "아 그래? 언제 짰어?"
-      - say:
-          char: 민재
-          with: [하린, 아진]
-          text: "아까 쉬는 시간에."
-      - say:
-          char: 하린
-          with: [민재, 아진]
-          text: "아 나 그때 화장실 갔었구나. 타이밍 봐 진짜ㅋㅋ"
-      - say:
-          char: 하린
-          motion: shake
-          with: [아진, 민재]
-          text: "괜찮아. 아진아, 2반에 조 안 짠 애 누군지 알아?"
-      - say:
-          char: 아진.awkward
-          motion: lean_in
-          with: [하린, 민재]
-          text: "하린아, 너도 들어 볼래? 한쪽."
+      - say: { char: 하린, with: [민재, 아진], text: "오늘 돈까스였잖아. 4교시에 체육 넣은 사람 진짜 너무해.", motion: bounce }
+      - say: { char: 아진, with: [하린, 민재], text: "너 지난번에 그래서 급식표 찍어 뒀잖아. 증거라면서." }
+      - say: { char: 하린, with: [민재, 아진], text: "오늘 것도 찍었지. 너 다음에 돈까스 두 개 받으면 하나 남겨 줘." }
+      - say: { char: 민재, with: [하린, 아진], text: "아진아, 어제 보낸 노래 들었어?" }
+      - say: { char: 아진, with: [하린, 민재], text: "응. 듣다가 잠들었어. 좋아서 잠든 거야." }
+      - say: { char: 하린, with: [민재, 아진], text: "뭔데? 나한테도 보내 봐." }
+      - say: { char: 민재, with: [하린, 아진], text: "너 이런 거 안 듣잖아." }
+      - say: { char: 하린, with: [민재, 아진], text: "내가 언제 그랬어? …됐어. 야, 생윤 조는 우리 셋이 할까?" }
+      - say: { char: 민재, with: [하린, 아진], text: "나 아진이랑 이미 냈는데. 아까 쉬는 시간에." }
+      - say: { char: 하린, with: [민재, 아진], text: "아. 나 화장실 간 사이에?", motion: freeze }
+      - say: { char: 아진.awkward, with: [하린, 민재], text: "하린아. 노래라도 같이 들을래? 한쪽 줄게." }
       - choice:
           key: e1_harin
           prompt: "아진이 이어폰 한쪽을 내민다."
@@ -572,7 +471,7 @@ scenes:
           char: 하린
           motion: bounce
           with: [민재, 아진]
-          text: "민재야, 너 아진이한테 보낸 거 나도 좀 봐도 돼?"
+          text: "민재야, 그 노래 나한텐 왜 안 보냈어?"
       - say:
           char: 민재
           with: [하린, 아진]
@@ -600,28 +499,10 @@ scenes:
     actions:
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: { text: "그날 밤 · 하린의 방", presentation: center }
-      - say: { channel: action, with: [], text: "불을 끄고 누웠는데 휴대폰이 울린다. 하린은 아진의 이름이 뜬 알림을 연다." }
-      - say:
-          channel: message
-          side: them
-          with: []
-          text: "♥ 정아진님이 서민재님의 스토리를 좋아합니다"
-      - say:
-          channel: message
-          side: them
-          char: 민재
-          with: []
-          text: "ㅋㅋㅋ이거 완전 너잖아 @정아진"
-      - say:
-          channel: action
-          with: []
-          text: "하린은 밝기를 끝까지 낮춘다. 불은 이미 꺼져 있다."
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
+      - say: { channel: action, with: [], text: "불을 끄고 누웠는데 셋이 쓰는 단톡이 울린다. 민재가 그 노래를 다시 올려 놨다." }
+      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "이거 1분 20초부터 들어봐 @아진" }
+      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 정아진, with: [], text: "아 아까 이어폰 뺀 데부터네ㅋㅋ" }
+      - say: { channel: action, with: [], text: "하린은 답장 칸에 ‘나도 봤는데ㅋㅋ 나도 껴줘’라고 써 본다." }
       - goto: h1_type
 
   h1_type:
@@ -645,124 +526,34 @@ scenes:
   h1_sent:
     pov: "유하린"
     actions:
-      - say:
-          channel: system
-          with: []
-          text: "읽음 2"
-      - say:
-          channel: action
-          with: []
-          text: "읽음 숫자가 바뀐다. 이름 옆에는 아무 표시도 뜨지 않는다."
-      - say:
-          channel: thought
-          with: []
-          text: "일 분, 이 분. 아무도 답을 안 한다."
-      - say:
-          channel: message
-          side: them
-          char: 민재
-          with: []
-          text: "ㅇㅇ"
-      - say:
-          channel: thought
-          with: []
-          text: "‘ㅇ’ 하나 치다가 지운다. 그래. 봤으면 됐지."
+      - say: { channel: message, thread: 셋이 쓰는 방, side: me, char: 하린, with: [], text: "나도 봤는데ㅋㅋ 나도 껴줘" }
+      - say: { channel: action, with: [], text: "말풍선 옆 숫자가 사라지는데 한동안 답이 없다." }
+      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "ㅇㅇ" }
       - goto: h1_shots
 
   h1_erased:
     pov: "유하린"
     actions:
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          erase: true
-          wait: 700
-          text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
-      - say:
-          channel: action
-          with: []
-          text: "뒤에서부터 한 글자씩 지운다. ‘나도’에서 잠깐 멈춘다."
-      - say:
-          channel: thought
-          with: []
-          text: "보낸 거 아님. 아무도 못 봤어."
+      - say: { channel: action, with: [], text: "뒤에서부터 한 글자씩 지운다. ‘나도’에서 잠깐 멈춘다." }
+      - say: { channel: thought, with: [], text: "보낸 거 아님. 아무도 못 봤어." }
       - goto: h1_shots
 
   h1_more:
     pov: "유하린"
     actions:
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          erase: true
-          wait: 700
-          text: "나도 봤는데ㅋㅋ 이거 웃기다 나도 껴줘"
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          erase: true
-          wait: 700
-          text: "야 근데 둘이 요즘"
-      - say:
-          channel: action
-          with: []
-          text: "뒤에 쓴 말을 먼저 지운다. 그러고도 한참 ‘나도 껴줘’가 남아 있다."
+      - say: { channel: action, with: [], text: "‘야 근데 둘이 요즘’까지 붙여 쓴다. 잠깐 내려다보다 두 줄 다 지운다." }
       - add: { deleted: 2 }
-      - say:
-          channel: thought
-          with: []
-          text: "그거 물어보면 걔들이 나 빼놓은 얘기까지 해야 되잖아."
+      - say: { channel: thought, with: [], text: "내일 물어봐야지. 아진이 혼자 있을 때." }
       - goto: h1_shots
 
   h1_shots:
     pov: "유하린"
     actions:
-      - say:
-          channel: system
-          with: []
-          text: "스크린샷 3장 · 최근 삭제된 항목에서 영구 삭제"
-          wait: 800
+      - say: { channel: action, with: [], text: "점심부터 캡처해 둔 대화가 세 장이다. 다시 읽다가 사진첩을 열어 세 장을 지운다." }
+      - say: { channel: system, with: [], text: "스크린샷 3장 · 최근 삭제된 항목에서 영구 삭제", wait: 600 }
       - add: { deleted: 3 }
-      - say:
-          channel: message
-          side: them
-          char: 아진
-          with: []
-          text: "하린아 자?"
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          text: "아니 야자 끝나고 지금 씻었어ㅋㅋ"
-      - say:
-          channel: message
-          side: them
-          char: 아진
-          with: []
-          text: "오늘 생윤 조 그거 미안"
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          text: "뭐가 미안해 진짜 괜찮은데"
-      - say:
-          channel: message
-          side: me
-          char: 하린
-          with: []
-          text: "나 혼자 하는 게 편해 걍"
-      - say:
-          channel: message
-          side: them
-          char: 아진
-          with: []
-          text: "낼 할 얘기 있어"
+      - say: { channel: action, with: [], text: "화면을 끄려는데 아진이 개인 톡을 보낸다." }
+      - say: { channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "하린아 오늘 생윤 조 그거 미안" }
+      - say: { channel: message, thread: 아진, side: me, char: 하린, with: [], text: "뭐가 미안해 ㅋㅋ 나 혼자 하는 게 편해" }
+      - say: { channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "낼 나랑 잠깐 얘기할래? 둘이서" }
       - goto: /2.yaml
