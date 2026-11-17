@@ -1505,13 +1505,12 @@ function resolveMessageMedia(baseUrl: string, media: PhoneMediaSource | undefine
 /**
  * The profile picture beside someone's messages.
  *
- * A messenger shows one picture per person, so this is the character's base art and not the
- * emotion they happen to wear in this line — a face that changed with every message would
- * read as a different person each time.
+ * A messenger shows the same portrait across lines, regardless of stage expression.
  */
 function resolveMessageAvatar(game: GameData, baseUrl: string, speakerId?: string): string | undefined {
-  const base = speakerId ? game.assets.characters[speakerId]?.base : undefined;
-  return base ? resolveAsset(baseUrl, base) : undefined;
+  const character = speakerId ? game.assets.characters[speakerId] : undefined;
+  const portrait = character?.avatar ?? character?.base;
+  return portrait ? resolveAsset(baseUrl, portrait) : undefined;
 }
 
 function isJsonAsset(path: string): boolean {
@@ -5772,6 +5771,7 @@ function materializeGameAssetsFromZip(game: GameData, yamlDir: string, zipUrlByK
   }
   for (const charDef of Object.values(cloned.assets.characters)) {
     charDef.base = replace(charDef.base);
+    if (charDef.avatar) charDef.avatar = replace(charDef.avatar);
     if (charDef.emotions) {
       for (const [emoKey, emoPath] of Object.entries(charDef.emotions)) {
         charDef.emotions[emoKey] = replace(emoPath);

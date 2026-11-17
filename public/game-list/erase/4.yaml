@@ -887,30 +887,35 @@ scenes:
       - say: { channel: action, with: [도윤], text: "도윤이 잠금 화면에 쌓여 있던 지수의 알림을 연다." }
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "반지는 신발장 위에 뒀어"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "식장은 내가 취소했어. 계약금은 반반 하자. 계좌 보낼게"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "검사는 끝까지 해. 그건 나랑 상관없이"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "나 아직 화났어 먼저 말해준 건 고마워 오늘은 답 안 해도 돼"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
@@ -919,36 +924,42 @@ scenes:
           text: "미안 내가 다 지울게 처음부터"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "응. 계좌 보내줘"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "지수야"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "나 열여덟 때 얘기 하나 해도 돼"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "지금?"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "응. 지금 할래."
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []

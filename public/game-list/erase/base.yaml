@@ -48,6 +48,7 @@ assets:
       name: "이지수"
       placement: prompt-top
       base: assets/char/jisu.svg
+      avatar: assets/char/jisu-profile.svg
       facing: left
       defaultDelivery: calm
       defaultFraming: portrait
@@ -136,6 +137,8 @@ state:
   e0_messages: false
   e0_photos: false
   e0_location: false
+  e0_jisu_message: "민석이 생일이라 잠깐 나갔다 올게. 12시 전엔 들어갈게"
+  e0_jisu_reply: "ㅇㅋ 대리 불러 운전 절대 xx"
   h1_sent: false
   e2_search: false
   e2_gallery: false

@@ -645,6 +645,7 @@ const characterAssetsSchema = z.record(
   z
     .object({
       base: z.string(),
+      avatar: z.string().trim().min(1).optional(),
       emotions: z.record(z.string()).optional(),
       facing: z.enum(['left', 'right', 'front']).optional(),
       placement: z.enum(['stage-bottom', 'prompt-top', 'offstage']).optional(),

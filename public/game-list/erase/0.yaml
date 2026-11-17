@@ -115,21 +115,38 @@ scenes:
           char: 도윤
           with: []
           text: "아직 유부남 아님ㅋㅋ 지금 갈게"
-      - say: { channel: action, with: [도윤], text: "도윤은 현관을 나서며 지수에게 톡을 보낸다." }
+      - choice:
+          key: e0_jisu_text
+          prompt: "아, 잠깐. 지수한텐 뭐라고 하지?"
+          promptHeight: 344
+          with: [도윤]
+          options:
+            - text: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
+              set:
+                e0_jisu_message: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
+                e0_jisu_reply: "클럽? ㅇㅋ 술 마시면 대리 불러"
+            - text: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
+              set:
+                e0_jisu_message: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
+                e0_jisu_reply: "ㅇㅋ 들어올 때 깨우진 마 ㅋㅋ"
+            - text: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
+              set:
+                e0_jisu_message: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
+                e0_jisu_reply: "ㅇㅋ 늦으면 나 먼저 잘게. 운전은 하지 말고"
       - say:
           channel: message
           thread: 지수
           side: me
           char: 도윤
           with: []
-          text: "민석이 생일이라 잠깐 나갔다 올게. 12시 전엔 들어갈게"
+          text: "{{e0_jisu_message}}"
       - say:
           channel: message
           thread: 지수
           side: them
           char: 지수
           with: []
-          text: "ㅇㅋ 대리 불러 운전 절대 xx"
+          text: "{{e0_jisu_reply}}"
       - bg: { id: club, transition: cut }
       - music: neon
       - place: { text: "토요일 00:40 · 클럽", presentation: center }
@@ -212,7 +229,7 @@ scenes:
           motion: laugh
           with: [준성]
           text: "네. 저 이제 진짜 일어나야 돼요."
-      - say: { channel: action, with: [도윤], text: "도윤이 자리에서 일어나다 주저앉는다. 약속한 시간이 지난 걸 보고 지수에게 톡을 쓴다." }
+      - say: { channel: action, with: [도윤], text: "도윤이 일어서다 다시 주저앉는다. 자정을 훌쩍 넘긴 시간이다. 지수에게 톡을 쓴다." }
       - say:
           channel: message
           thread: 지수
@@ -301,7 +318,7 @@ scenes:
   e0_erase_photos:
     actions:
       - say: { channel: action, with: [], text: "흔들린 사진 세 장을 넘긴다. 마지막 한 장에서 멈춘다." }
-      - sticker: { id: e0_club_photo, image: club_photo_sticker, x: 50, y: 45, width: "clamp(250px, 47%, 480px)", enter: fadeIn }
+      - sticker: { id: e0_club_photo, image: club_photo_sticker, x: 50, y: 45, width: "clamp(250px, 47%, 480px)", enter: blurIn, inputLockMs: 280 }
       - say:
           channel: thought
           with: []

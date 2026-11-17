@@ -431,6 +431,10 @@ function canonicalizeLayerAssets(
         },
       };
     }
+    const avatar = charDef.avatar ? canonicalizeDeclaredPath(charDef.avatar, sourceDir) : undefined;
+    if (charDef.avatar && !avatar) {
+      return { error: { message: `${sourcePath}: assets.characters.${charKey}.avatar has invalid path '${charDef.avatar}'` } };
+    }
     const emotions: Record<string, string> = {};
     for (const [emoKey, emoPath] of Object.entries(charDef.emotions ?? {})) {
       const normalized = canonicalizeDeclaredPath(emoPath, sourceDir);
@@ -463,6 +467,7 @@ function canonicalizeLayerAssets(
     }
     result.characters[charKey] = {
       base,
+      ...(avatar ? { avatar } : {}),
       ...(Object.keys(emotions).length > 0 ? { emotions } : {}),
       ...(charDef.facing ? { facing: charDef.facing } : {}),
       ...(charDef.placement ? { placement: charDef.placement } : {}),

@@ -28,42 +28,49 @@ scenes:
       - say: { channel: action, with: [도윤], text: "지수가 현관에서 한 번 더 불렀는데도 도윤은 노트북을 닫지 못했다. 식장에 도착한 지수에게서 톡이 온다." }
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "청첩장 수량 오늘까지 말해줘야 돼"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "실장님이 신랑님 왜 한번도 안오시냐더라ㅋㅋ 다음엔 끌고 갈게요 했어"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "150?"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "150장으로 해? 물음표 빼고 말해줘"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
           text: "회사는 몇 명인데"
       - say:
           channel: message
+          thread: 지수
           side: me
           char: 도윤
           with: []
           text: "팀만 하면 열둘"
       - say:
           channel: message
+          thread: 지수
           side: them
           char: 지수
           with: []
@@ -105,7 +112,7 @@ scenes:
 
   e2_answer_jisu:
     actions:
-      - say: { channel: message, side: me, char: 도윤, with: [], text: "150장으로 해 줘. 팀장님 건 내가 물어볼게. 오늘 못 간 거 미안해" }
+      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "150장으로 해 줘. 팀장님 건 내가 물어볼게. 오늘 못 간 거 미안해" }
       - goto: e2_elevator
 
   e2_dig_sns:

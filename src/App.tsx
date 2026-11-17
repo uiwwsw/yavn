@@ -1801,9 +1801,14 @@ export default function App() {
   // The chat title stays visible even when the first bubble is outgoing.
   const livePhoneLine = storyLog.at(-1);
   const phoneThreadName = livePhoneLine?.kind === 'dialogue' ? livePhoneLine.thread : undefined;
+  const threadCharacter = phoneThreadName ? game?.assets.characters[phoneThreadName] : undefined;
+  const threadPortrait = threadCharacter?.avatar ?? threadCharacter?.base;
+  const threadAvatar = threadPortrait && !/\.json(?:[?#]|$)/i.test(threadPortrait)
+    ? resolveRuntimeAssetUrl(threadPortrait, baseUrl, assetOverrides)
+    : undefined;
   const phoneContact = useMemo(() => dialogChannel === 'message'
-    ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide, avatar: dialogAvatar }, phoneThreadName)
-    : undefined, [dialogChannel, phoneThread, dialogSide, dialogSpeaker, dialogAvatar, phoneThreadName]);
+    ? selectPhoneContact(phoneThread, { speaker: dialogSpeaker, side: dialogSide, avatar: dialogAvatar }, phoneThreadName, threadAvatar)
+    : undefined, [dialogChannel, phoneThread, dialogSide, dialogSpeaker, dialogAvatar, phoneThreadName, threadAvatar]);
   // Outside a phone scene the name tag always shows; inside one it follows the thread's rule.
   const phoneLiveLeadsRun = dialogChannel !== 'message'
     || leadsRun(phoneThread[phoneThread.length - 1], { speaker: dialogSpeaker, side: dialogSide });
