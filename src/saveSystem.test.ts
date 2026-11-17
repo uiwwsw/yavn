@@ -3,6 +3,7 @@ import {
   exportSaveBackup,
   getChoiceRecoverySummary,
   getSaveSlotSummaries,
+  handleAdvance,
   importSaveBackup,
   loadUrlStartScreenPreview,
   restorePresentationToCursor,
@@ -325,6 +326,38 @@ describe('save system', () => {
     expect(JSON.parse(localStorage.getItem('vn-engine-autosave:choice-recovery') ?? '{}')).toMatchObject({
       sceneId: 'intro',
       actionIndex: 0,
+    });
+  });
+
+  it('coalesces a chain of presentation actions into one autosave at the readable line', () => {
+    const sequence: GameData = {
+      ...game,
+      scenes: {
+        intro: {
+          actions: [
+            { set: { opened: true } },
+            { set: { checked: true } },
+            { say: { text: 'Ready to read.' } },
+          ],
+        },
+      },
+    };
+    useVNStore.getState().setGame(sequence, '/');
+    const writes = vi.spyOn(localStorage, 'setItem');
+
+    vi.stubGlobal('window', { requestAnimationFrame: () => 1, cancelAnimationFrame: () => undefined });
+    try {
+      handleAdvance();
+      handleAdvance();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+
+    expect(writes.mock.calls.filter(([key]) => key === 'vn-engine-autosave')).toHaveLength(1);
+    expect(JSON.parse(localStorage.getItem('vn-engine-autosave') ?? '{}')).toMatchObject({
+      sceneId: 'intro',
+      actionIndex: 2,
+      routeVars: { opened: true, checked: true },
     });
   });
 

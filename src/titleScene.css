@@ -138,7 +138,7 @@
   .start-gate.is-scene .start-gate-actions-bottom-right { left: auto; right: 8%; transform: none; }
   .start-gate.is-scene .start-gate-actions-center { top: 56%; bottom: auto; left: 50%; transform: translate(-50%, -50%); }
 }
-.chapter-loading.scene-curtain { background: #080b10; backdrop-filter: none; z-index: 80; transition: opacity 440ms ease; animation: scene-curtain-in 180ms ease-out both; }
+.chapter-loading.scene-curtain { background: #080b10; backdrop-filter: none; z-index: 80; transition: opacity var(--scene-reveal-duration) ease; animation: scene-curtain-in 180ms ease-out both; }
 .scene-curtain.is-revealing { opacity: 0; animation: none; }
 .scene-curtain-center { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); text-align: center; width: min(80%, 680px); }
 .scene-curtain-ornament { display: block; color: #d5b986; font-size: 38px; margin-bottom: 24px; }

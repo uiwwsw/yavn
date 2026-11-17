@@ -105,8 +105,6 @@ const CHOICE_RECOVERY_SUFFIX = ':choice-recovery';
 const CHOICE_RECOVERY_TRAIL_SUFFIX = ':choice-recovery-trail';
 const MAX_CHAPTERS = 101;
 const INITIAL_CHAPTER_MIN_LOADING_MS = 240;
-const NEXT_CHAPTER_MIN_LOADING_MS = 100;
-const CHAPTER_LOADED_HOLD_MS = 80;
 const LIVE2D_READY_TIMEOUT_MS = 20000;
 const STATIC_IMAGE_READY_TIMEOUT_MS = 12000;
 const YOUTUBE_IFRAME_API_URL = 'https://www.youtube.com/iframe_api';
@@ -354,6 +352,8 @@ let storyJourney: { points: Record<string, SaveProgress>; seen: string[]; travel
 let storyJourneyIdentity: { title: string; version?: string; previousVersion?: string } | undefined;
 let storyJourneyPersistent = true;
 let previousStoryNode: string | undefined;
+let storyJourneySaveTimer: ReturnType<typeof setTimeout> | undefined;
+const storyEntryKeys = new WeakMap<object, string>();
 function loadStoryJourney() {
   storyJourney = { points: {}, seen: [], travelled: [], choices: {} };
   previousStoryNode = undefined;
@@ -397,15 +397,26 @@ function validateStoryJourneyIdentity() {
     ...(previousVersion && previousVersion !== game.meta.version ? { previousVersion } : {}) };
 }
 function persistStoryJourney() {
+  if (storyJourneySaveTimer !== undefined) {
+    clearTimeout(storyJourneySaveTimer);
+    storyJourneySaveTimer = undefined;
+  }
   try {
     const logs: StoryLogEntry[] = [];
     const routes: RouteHistoryEntry[] = [];
     const logIds = new Map<string, number>();
     const routeIds = new Map<string, number>();
-    const intern = <T>(value: T, pool: T[], ids: Map<string, number>) => {
-      const key = JSON.stringify(value);
-      if (!ids.has(key)) { ids.set(key, pool.length); pool.push(value); }
-      return ids.get(key)!;
+    const intern = <T extends object>(value: T, pool: T[], ids: Map<string, number>) => {
+      let key = storyEntryKeys.get(value);
+      if (key === undefined) {
+        key = JSON.stringify(value);
+        storyEntryKeys.set(value, key);
+      }
+      const existing = ids.get(key);
+      if (existing !== undefined) return existing;
+      const index = pool.push(value) - 1;
+      ids.set(key, index);
+      return index;
     };
     const points = Object.fromEntries(Object.entries(storyJourney.points).map(([id, point]) => {
       const { storyLog, routeHistory, ...progress } = point;
@@ -417,6 +428,11 @@ function persistStoryJourney() {
     storyJourneyPersistent = true;
   } catch { storyJourneyPersistent = false; }
 }
+
+function flushStoryJourney(): void {
+  if (storyJourneySaveTimer !== undefined) persistStoryJourney();
+}
+
 function recordStoryMapStop(suffix?: string) {
   const state = useVNStore.getState();
   const path = getCurrentChapterPathKey();
@@ -439,7 +455,10 @@ function recordStoryMapStop(suffix?: string) {
   }
   previousStoryNode = id;
   storyJourney.current = id;
-  persistStoryJourney();
+  // A chapter or choice can pass several map stops before the next paint.
+  if (storyJourneySaveTimer === undefined) {
+    storyJourneySaveTimer = setTimeout(persistStoryJourney, 250);
+  }
 }
 
 /** Rebuild old map checkpoints from an observed route, without running presentation or changing the live store. */
@@ -565,6 +584,7 @@ export async function getStoryMap(): Promise<StoryMapData> {
   const scope = currentAutosaveKey;
   const sessionRevision = storySessionRevision;
   validateStoryJourneyIdentity();
+  flushStoryJourney();
   const chapters = [...storyChapterCatalogue.values()];
   const result: StoryMapData['chapters'] = [];
   // YAML is inexpensive; media remains lazy and only unlocked thumbnails are mounted.
@@ -822,6 +842,7 @@ function persistRuntimeGameSettings(key: string = currentAutosaveKey): void {
 }
 
 function setAutosaveScopeKey(key: string): void {
+  flushStoryJourney();
   clearPlayerAutoAdvance();
   setSkipReadActive(false);
   currentDialogueHasAuthoredAutoAdvance = false;
@@ -972,7 +993,14 @@ let skipReadTimer: ReturnType<typeof setTimeout> | undefined;
 const SKIP_READ_STEP_MS = 70;
 
 if (typeof window !== 'undefined') {
-  window.addEventListener('pagehide', () => readHistory.flush());
+  const flushPlaybackHistory = () => {
+    readHistory.flush();
+    flushStoryJourney();
+  };
+  window.addEventListener('pagehide', flushPlaybackHistory);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushPlaybackHistory();
+  });
 }
 
 export function setSkipReadActive(active: boolean): void {
@@ -3064,14 +3092,20 @@ export function stopActiveBgm(): void {
   playMusic(undefined);
 }
 
-/**
- * Autosave is always on and follows the cursor, except onto a game over: the auto slot
- * must never point at a death, or 이어하기 would reload straight into it.
- */
+let pendingAutosaveCursor: { sceneId: string; actionIndex: number } | undefined;
+
+/** Keep the latest safe cursor in a synchronous action sequence. */
 function autosaveAt(sceneId: string, actionIndex: number) {
   const action = useVNStore.getState().game?.scenes[sceneId]?.actions[actionIndex];
   if (action && 'gameOver' in action) return;
-  saveProgress(sceneId, actionIndex);
+  pendingAutosaveCursor = { sceneId, actionIndex };
+}
+
+function writePendingAutosave(): void {
+  const cursor = pendingAutosaveCursor;
+  if (!cursor) return;
+  pendingAutosaveCursor = undefined;
+  saveProgress(cursor.sceneId, cursor.actionIndex);
 }
 
 function incrementCursor() {
@@ -3340,6 +3374,7 @@ function resolveAutoEndingId(
 }
 
 function finishStory(endingId?: string): void {
+  pendingAutosaveCursor = undefined;
   clearTimers();
   useVNStore.getState().setBusy(false);
   const stateBeforeEnding = useVNStore.getState();
@@ -3384,6 +3419,7 @@ function triggerGameOver(gameOver: GameOverDefinition): void {
     // The causing choice (recoverToChoice target or the latest one) becomes the way back,
     // and the auto slot points there so 이어하기 never lands on the death.
     setChoiceRecoveryPoint(recovery);
+    pendingAutosaveCursor = undefined;
     saveProgressToKey(resolveSaveSlotKey('auto'), { ...recovery, savedAt: new Date().toISOString() });
   }
   useVNStore.getState().setGameOver({
@@ -4177,6 +4213,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress, fallbac
   }
 
   try {
+    writePendingAutosave();
     cancelNextChapterWarm();
     activeChapterIndex = chapterIndex;
     resetLive2DLoadTracker();
@@ -4194,9 +4231,9 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress, fallbac
       true,
       collectStartupAssetPaths(game, startupResume?.sceneId, startupResume?.actionIndex ?? 0),
     );
-    const elapsed = performance.now() - loadStartedAt;
-    const minimumLoadingMs = chapterIndex === 0 ? INITIAL_CHAPTER_MIN_LOADING_MS : NEXT_CHAPTER_MIN_LOADING_MS;
-    await waitMs(minimumLoadingMs - elapsed);
+    if (chapterIndex === 0) {
+      await waitMs(INITIAL_CHAPTER_MIN_LOADING_MS - (performance.now() - loadStartedAt));
+    }
     useVNStore.getState().setChapterLoading(true, 0.98, 'Preparing scene...');
 
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
@@ -4279,9 +4316,7 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress, fallbac
       return resumed;
     }
 
-    useVNStore.getState().setChapterLoading(true, 1, `${chapterLabel} ready`);
     await waitNextFrame();
-    await waitMs(CHAPTER_LOADED_HOLD_MS);
     useVNStore.getState().setChapterLoading(false, 1, `${chapterLabel} ready`);
     if (nextChapter && canWarmNextChapterAssets()) {
       scheduleNextChapterWarm(nextChapter, chapterIndex);
@@ -4552,7 +4587,19 @@ function runAttack(attack: AttackDirective, loopGuard: number): void {
   }
 }
 
-function runToNextPause(loopGuard = 0) {
+let actionRunDepth = 0;
+
+function runToNextPause(loopGuard = 0): void {
+  actionRunDepth += 1;
+  try {
+    runActionsUntilPause(loopGuard);
+  } finally {
+    actionRunDepth -= 1;
+    if (actionRunDepth === 0) writePendingAutosave();
+  }
+}
+
+function runActionsUntilPause(loopGuard: number): void {
   if (loopGuard > 1000) {
     useVNStore.getState().setError({ message: 'Infinite loop detected in script execution' });
     return;
