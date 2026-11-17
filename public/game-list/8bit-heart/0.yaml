@@ -23,10 +23,10 @@ scenes:
           continueLabel: "전원을 켠다"
       - sound: repair_switch
       - say: { char: 윤재, motion: puff, with: [비서], text: "아, 진짜. 하루야, 또 안 켜져. 어제 여기서 게임 껐는데." }
-      - say: { char: 비서, with: [윤재], text: "아까 찍으신 사진에 모델 번호가 있어요. 찾아볼게요." }
-      - say: { char: 비서, with: [윤재], text: "제조사 안내가 나왔어요. 최신 펌웨어를 내려받고, PC에 연결해서 복구 모드로 들어가래요." }
-      - say: { char: 윤재, with: [비서], text: "잠깐. 복구 모드가 뭔데. 지금 손으로 해 볼 만한 거 없어?" }
-      - say: { char: 비서, with: [윤재], text: "오래된 수리 게시판에도 같은 증상이 있어요. 건전지부터 뺐다 끼워 보래요." }
+      - say: { char: 비서, with: [윤재], text: "사진에 모델 번호가 찍혔어요. 그걸로 찾아볼게요." }
+      - say: { char: 비서, with: [윤재], text: "제조사 글에는 PC에 연결해서 복구 모드로 들어가래요. 최신 펌웨어부터 받으시고요." }
+      - say: { char: 윤재, with: [비서], text: "복구 뭐? 컴퓨터 안 켜고 할 수 있는 거 없어?" }
+      - say: { char: 비서, with: [윤재], text: "옛날 수리 게시판에 같은 글이 있네요. 건전지부터 뺐다 끼워 보래요." }
       - say:
           channel: action
           with: []
@@ -37,7 +37,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "그대로네요. 댓글에는 옆을 두 번 두드려 보래요. 그 밑에 ‘살살’이라고 적혀 있어요."
+          text: "아직 꺼져 있어요. 다음 댓글은 옆을 두 번 두드려 보래요. “살살”이래요."
           continueLabel: "본체를 툭툭 친다"
       - sound: repair_tap
       - effect: shake
@@ -537,12 +537,12 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "하이퍼링크 X를 고르시면 저한테 추천 수당이 들어옵니다. 말씀드려야 해서요."
+          text: "참, 하이퍼링크 X를 사시면 제가 추천 수당을 받아요. 결제 전에 알려 드리게 돼 있어서요."
       - say:
           char: 윤재
           motion: headtilt
           with: [비서]
-          text: "…너 돈 받아? 뭐 하게 돈을 받아?"
+          text: "너도 돈을 받아? 그걸 어디다 써?"
       - say:
           char: 비서
           with: [윤재]

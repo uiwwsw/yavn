@@ -124,7 +124,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "실장님이 신랑님은 원래 상담 안 오세요? 이럼ㅋㅋ 원래 안 온다고 했어"
+          text: "실장님이 신랑님 왜 한번도 안오시냐더라ㅋㅋ 다음엔 끌고 갈게요 했어"
       - say:
           channel: message
           side: me
@@ -136,7 +136,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "물음표 좀 빼 결정을 해"
+          text: "150장으로 해? 물음표 빼고 말해줘"
       - say:
           channel: message
           side: them

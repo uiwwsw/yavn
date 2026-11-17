@@ -59,7 +59,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "잠깐 쉴게요. 내가 손 떼면 숨부터 쉬어요."
+          text: "손 뗄게요. 천천히 숨 쉬어요."
       - say:
           char: 덕구.scared
           with: [서연]
@@ -75,7 +75,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "덕구야. 그날 포교가 처음에 뭐라고 물었어요?"
+          text: "덕구야, 포교가 맨 처음에 뭐라 하던가요?"
       - say:
           char: 덕구.scared
           with: [서연]

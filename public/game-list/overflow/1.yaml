@@ -12,11 +12,11 @@ scenes:
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저기요. 아까 면회 화면에 01이 떴죠?" }
-      - say: { char: 지완, with: [수경], text: "아침에 제 장갑 주워 주셨죠? 병원 사람이세요?" }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "한수경이에요. 접수대에 뜬 그 카드, 제가 만든 겁니다." }
-      - say: { char: 지완, with: [수경], text: "그럼 위에 전화해서 저 들여보내 주세요. 지금 그것만 되면 돼요." }
-      - say: { char: 수경, with: [지완], text: "저도 이제 거기 전화 못 해요. …접수표 갖고 계세요? 이름 가리고 보여 주세요." }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저기요. 아까 접수대에 01 떴죠?" }
+      - say: { char: 지완, with: [수경], text: "아침에 뵀죠? 여기서 일하세요?" }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "한수경이에요. 접수대에 뜬 그 화면, 제가 만들었어요." }
+      - say: { char: 지완, with: [수경], text: "그럼 간호사한테 전화 한 통만 해 주시면 안 돼요? 저 아버지 좀 보게요." }
+      - say: { char: 수경, with: [지완], text: "저도 이제 거긴 전화 못 해요. 접수표 있어요? 이름은 접어서 가리시고요." }
       - choice:
           key: o1_trust
           prompt: "수경이 접수 기록을 보여 달라고 한다."
@@ -31,13 +31,13 @@ scenes:
     actions:
       - set: { shared_slip: true }
       - say: { channel: action, with: [], text: "지완이 접수표 맨 윗줄을 접는다. 수경은 표를 자기 쪽으로 끌어당기지 않고 거꾸로 읽는다." }
-      - say: { char: 수경, with: [지완], text: "숫자 바로 밑이요. 거기에 버전이 적혀 있어요. …아직 이걸 쓰네요." }
+      - say: { char: 수경, with: [지완], text: "01 밑에 작은 글씨요. 잠깐만. 아직도 이 버전이에요?" }
       - goto: investigation
 
   ask_report:
     actions:
-      - say: { char: 지완, with: [수경], text: "제가 뭘 주기 전에, 그쪽이 뭘 갖고 있는지 보고 싶어요." }
-      - say: { char: 수경, with: [지완], text: "맞아요. 제가 순서를 거꾸로 했네요. 여기요." }
+      - say: { char: 지완, with: [수경], text: "잠깐만요. 뭐 갖고 오신 건지 먼저 보여 주실래요?" }
+      - say: { char: 수경, with: [지완], text: "그러죠. 여기 보세요." }
       - goto: investigation
 
   investigation:
@@ -71,17 +71,17 @@ scenes:
       - set: { read_trial: true }
       - sound: read
       - say: { channel: record, with: [], text: "출시 전 시험 · 동일 버전의 판독 카드\n시험 신호 001 → 표시 01\n시험 신호 099 → 표시 99\n시험 신호 101 → 표시 01" }
-      - say: { char: 수경, with: [지완], text: "화면에 두 자리만 남아요. 101에서 앞의 1을 잘라 내면 001이랑 똑같죠." }
-      - say: { char: 지완, with: [수경], text: "저는 어느 쪽인데요?" }
-      - say: { char: 수경, with: [지완], text: "아직 몰라요. 렌즈가 받은 숫자와 접수대에 뜬 숫자를 같은 시각에 확인해야 해요." }
+      - say: { char: 수경, with: [지완], text: "맨 앞자리가 잘려요. 여기 101 보이죠? 1을 지우면 위에 거랑 똑같아요." }
+      - say: { char: 지완, with: [수경], text: "그럼 제 거는 1이에요, 101이에요?" }
+      - say: { char: 수경, with: [지완], text: "지금은 몰라요. 다음에 뜰 때 지완 씨 렌즈도 같이 봐야 해요." }
       - goto: desk
 
   report:
     actions:
       - set: { read_report: true }
       - say: { channel: record, with: [], text: "한신뉴로 결함 보고서 · 작성자 한수경\n판독 카드가 다른 입력에 같은 값을 표시함. 병원 배포 중지 요청.\n처리 결과 · 현장 재현 자료 부족. 배포 유지." }
-      - say: { char: 지완, with: [수경], text: "이 보고서 때문에 회사에서 나오신 거예요?" }
-      - say: { char: 수경, with: [지완], text: "승인 없이 자료를 반출했다고 돼 있어요. 여기엔 제 서명이 있는 결함 보고서만 가져왔고요." }
+      - say: { char: 지완, with: [수경], text: "이거 쓰고 잘리신 거예요?" }
+      - say: { char: 수경, with: [지완], text: "허락 없이 자료를 가져갔대요. 제가 쓴 보고서예요. 여기, 제 이름도 있고요." }
       - goto: desk
 
   check_phone:
@@ -96,9 +96,9 @@ scenes:
   ask_test:
     title: "다음 판독"
     actions:
-      - say: { char: 수경, with: [지완], text: "접수대엔 표시된 01만 남았어요. 다음에 검사용 단말기를 연결해 두면 화면에 뜨기 전 숫자도 기록할 수 있어요." }
-      - say: { char: 지완, with: [수경], text: "제가 뭘 해야 돼요? 아까처럼 놀라야 되나." }
-      - say: { char: 수경, with: [지완], text: "평소처럼 들어가세요. 이번에 01이 또 뜬다는 보장은 없어요. 안 뜨면 오늘은 거기까지고요." }
+      - say: { char: 수경, with: [지완], text: "아까 건 늦었어요. 접수대엔 01만 남으니까. 다음에 뜨기 전에 검사용 단말기를 붙여 둘 수는 있어요." }
+      - say: { char: 지완, with: [수경], text: "제가 뭐 해야 돼요? 일부러 놀라야 돼요?" }
+      - say: { char: 수경, with: [지완], text: "그냥 아버님 보고 오세요. 경고가 안 뜨면 오늘은 거기까지예요." }
       - say: { channel: action, with: [], text: "20시 10분 면회 안내가 뜬다. 일어서던 수경이 정문을 보고 멈춘다." }
-      - say: { char: 수경, with: [지완], text: "연결하는 건 옆 계단에서 해야겠어요. 정문에 서 있는 두 사람, 낮에 집 앞에도 있었거든요." }
+      - say: { char: 수경, with: [지완], text: "동쪽 계단으로 와요. 저기 정문에 두 사람 보이죠? 낮에 우리 집 앞에도 왔었어요." }
       - goto: /2.yaml

@@ -11,12 +11,12 @@ scenes:
       - place: "2033년 10월 · 월계역"
       - music: quant
       - char: { id: 지완, position: left }
-      - say: { channel: action, with: [지완], camera: wide, text: "출근하던 문지완이 월계역 개찰구 앞에서 장갑을 떨어뜨린다." }
+      - say: { channel: action, with: [지완], camera: wide, text: "출근길, 월계역 개찰구 앞에서 문지완의 장갑이 떨어진다." }
       - bg: station_glove
       - say: { channel: record, with: [], text: "에모스 렌즈 · 감정 판독\n문지완 · 안정 24\n안경 쓴 여자 · 안정 31" }
       - bg: { id: wolgye_station, transition: dissolve, duration: 240 }
       - char: { id: 수경, position: right }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "장갑 떨어뜨리셨어요." }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저기요. 장갑이요." }
       - say: { char: 지완, with: [수경], text: "고맙습니다." }
       - move: { id: 수경, style: exit }
       - camera: medium
@@ -37,9 +37,9 @@ scenes:
       - char: { id: 지완, position: left }
       - say: { char: 지완, with: [지완], text: "여보세요, 아버지." }
       - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "야, 국 냄비째 얼려도 되냐?" }
-      - say: { char: 지완, channel: dialogue, with: [지완], text: "작은 통에 나눠요. 냄비째 얼면 안 빠져요." }
-      - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "넌 일요일에 안 오냐?" }
-      - say: { char: 지완, channel: dialogue, with: [지완], text: "점심 지나서요. 반만 얼려요." }
+      - say: { char: 지완, channel: dialogue, with: [지완], text: "작은 통 있잖아요. 거기 나눠 담아요. 얼면 안 빠져요." }
+      - say: { char: 동식_연락처, speakerName: "아버지 (통화)", channel: dialogue, with: [지완], text: "일요일에 올 거지?" }
+      - say: { char: 지완, channel: dialogue, with: [지완], text: "점심 먹고 갈게요. 국은 반만 얼려요." }
       - wait: 0
       - goto: platform
 
@@ -47,8 +47,8 @@ scenes:
     actions:
       - wait: 0
       - say: { char: 지완, channel: message, side: me, with: [], text: "지금 지하철 타요. 이따 전화할게요" }
-      - say: { char: 동식_연락처, channel: message, side: them, with: [], text: "국 끓였다 냉동실에 넣어 놓으마" }
-      - say: { char: 지완, channel: message, side: me, with: [], text: "냄비째 넣지 말고요" }
+      - say: { char: 동식_연락처, channel: message, side: them, with: [], text: "국 끓여 놨다 냄비째 얼려 두면 되냐" }
+      - say: { char: 지완, channel: message, side: me, with: [], text: "반만 얼려요 작은 통에" }
       - goto: platform
 
   platform:
@@ -57,15 +57,15 @@ scenes:
       - bg: wolgye_station
       - char: { id: 지완, position: left }
       - char: { id: 도겸, position: right }
-      - say: { channel: action, with: [지완, 도겸], camera: wide, text: "같은 근무조 도겸이 개찰구를 가리킨다. 한 남자가 문에 낀 휠체어를 빼내려 한다." }
+      - say: { channel: action, with: [지완, 도겸], camera: wide, text: "같은 근무조 도겸이 개찰구 쪽을 가리킨다. 한 남자가 문에 낀 휠체어 바퀴를 빼고 있다." }
       - say: { channel: record, with: [], text: "역사 안전 경보\n흥분 94 · 직원 호출" }
       - say: { channel: action, with: [], text: "역무원 둘이 달려온다. 남자가 손잡이에서 손을 떼자 휠체어에 앉은 노인이 그에게 팔을 뻗는다." }
-      - say: { char: 도겸, with: [지완], text: "휠체어 좀 빼 달라고 한 거 아니에요?" }
+      - say: { char: 도겸, with: [지완], text: "저분 바퀴 빼 주던 거 같은데요." }
       - say: { channel: action, with: [], text: "렌즈가 다시 울린다. 도겸은 노란 선 앞에서 멈춘다." }
       - say: { channel: record, with: [], text: "월계역 대합실 전광판\n안전 모드 도입 후 역사 내 폭행 신고 18건 → 7건\n같은 기간 전년 대비 · 서울교통공사" }
-      - say: { char: 도겸, with: [지완], text: "지난겨울에도 여기서 알림 떴잖아요. 역무원이 사람 하나 붙잡았던 거. 엄마는 그 뒤로 꼭 이 역으로 다녀요." }
-      - say: { channel: action, with: [], text: "역무원이 비상 통로로 휠체어를 빼 준다. 남자가 노인에게 들리지 않게 묻는다. 호출 기록도 회사로 갑니까." }
-      - say: { channel: thought, with: [], text: "내 경보 기록도 예고 없이 학교로 갔었다." }
+      - say: { char: 도겸, with: [지완], text: "지난겨울에 여기서 역무원이 사람 잡은 거 기억나요? 우리 엄만 그 뒤로 여기서만 타요." }
+      - say: { channel: action, with: [], text: "역무원이 옆 통로를 열어 준다. 남자는 노인이 지나갈 때까지 기다렸다가 묻는다. “직장에도 연락이 갑니까?”" }
+      - say: { channel: thought, with: [], text: "내 기록은 나보다 먼저 학교에 갔다." }
       - goto: father_lesson
 
   father_lesson:
@@ -77,10 +77,10 @@ scenes:
       - char: { id: 동식, position: right }
       - say: { channel: record, with: [], text: "문지완 · 안전 면담 확인\n경보 3회 · 현장 실습 배정 보류" }
       - say: { channel: action, with: [], text: "아버지가 현관에 걸린 교복 주머니에서 구겨진 확인서를 꺼낸다. 그 아래엔 한 번도 신지 않은 작업화가 있다." }
-      - say: { char: 동식, with: [], text: "지완아. 밖에선 화나거나 겁나도 티 내지 마라. 또 학교에서 부르면 실습 못 나가." }
-      - say: { char: 동식, with: [], text: "말하기 전에 문부터 봐. 나갈 수 있으면 나가고. 못 나가면 셋 세고." }
-      - say: { char: 지완, with: [동식], text: "아버지는 어디 가요? 이 시간에." }
-      - say: { char: 동식, with: [], text: "학교. 내일 실습 나가야 될 거 아냐. 가방 싸 놔." }
+      - say: { char: 동식, with: [], text: "지완아, 밖에서 표정 좀 살펴. 학교에서 또 연락 오면 너 실습 못 나가." }
+      - say: { char: 동식, with: [], text: "뭐라고 하기 전에 문부터 봐. 나갈 수 있으면 나가. 못 나가면 셋 세고." }
+      - say: { char: 지완, with: [동식], text: "아버지, 지금 나가요?" }
+      - say: { char: 동식, with: [], text: "학교 간다. 넌 내일 갈 가방 싸 놔." }
       - say: { channel: action, with: [], text: "지완은 가방을 다 싸고도 작업화는 신발장에 넣어 두었다. 아버지는 어두워지고 나서야 돌아왔다." }
       - goto: shift
 
@@ -94,9 +94,9 @@ scenes:
       - char: { id: 도겸, position: right }
       - say: { channel: action, with: [지완, 도겸], sound: call, text: "휴대폰에 다시 ‘아버지’가 뜬다." }
       - say: { char: 지완, with: [지완], text: "네, 아버지?" }
-      - say: { channel: dialogue, speakerName: "반찬집 아주머니 (통화)", with: [지완], text: "지완 씨, 반찬집이에요. 아버지가 쓰러졌어요. 월계병원으로 오세요." }
+      - say: { channel: dialogue, speakerName: "반찬집 아주머니 (통화)", with: [지완], text: "지완 씨, 반찬집이에요. 아버님이 쓰러지셔서 월계병원으로 갔어요. 이리 좀 와요." }
       - say: { channel: thought, with: [지완], wait: 800, text: "문이 어디 있지." }
-      - say: { char: 도겸, with: [지완], text: "지완 씨. 출입증 뒷주머니. 내가 택시 부를게요." }
+      - say: { char: 도겸, with: [지완], text: "지완 씨, 출입증요. 뒷주머니에 있잖아요. 택시는 제가 부를게요." }
       - goto: admission
 
   admission:
@@ -106,14 +106,14 @@ scenes:
       - place: "그날 저녁 · 월계병원 신경과 면회 접수"
       - music: lowscore
       - char: { id: 지완, position: left }
-      - say: { channel: action, with: [], text: "간호사가 접수창을 열고 말한다. “아드님 오시면 목소리부터 들려 드리려고 했어요.”" }
-      - say: { char: 지완, with: [], text: "저 들어가면 알아보실 거예요. 아들입니다." }
+      - say: { channel: action, with: [], text: "간호사가 접수창을 연다. “문동식 환자분 아드님이시죠? 들어가시면 아버님 이름부터 불러 보세요.”" }
+      - say: { char: 지완, with: [], text: "네. 제 목소리는 아실 거예요." }
       - say: { channel: action, with: [], sound: ward_door, text: "접수대 옆 자동문이 반쯤 열리다 멎는다." }
       - sound: read
       - say: { channel: record, with: [], wait: 850, text: "에모스 · 보호자 면회 확인\n정서 반응 01 · 무반응 의심\n직원 동행 면회만 가능" }
       - say: { channel: action, with: [], text: "시트가 든 카트를 밀던 직원이 단말기와 지완의 얼굴을 번갈아 본다." }
-      - say: { char: 지완, with: [], text: "지금 이름 부르는 소리가 났는데요. 한 번만 가 보면 안 돼요?" }
-      - say: { channel: action, with: [], text: "교대할 간호사를 기다리라는 말에 지완은 문 앞에서 셋을 센다. 건너편에 아침에 장갑을 주워 준 여자가 앉아 있다." }
+      - say: { char: 지완, with: [], text: "잠깐만요. 안에서 제 이름 부른 거 같은데, 못 들어가요?" }
+      - say: { channel: action, with: [], text: "교대할 간호사가 올 때까지 기다리라고 한다. 지완이 속으로 셋을 세는데, 건너편에 아침에 장갑을 주워 준 여자가 앉아 있다." }
       - get: appeal_form
       - goto: across_the_hall
 
@@ -125,10 +125,10 @@ scenes:
       - place: "같은 시각 · 접수대 건너편"
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { channel: thought, char: 수경, speakerName: "안경 쓴 여자", with: [지완], camera: wide, text: "월계역에서 장갑을 주워 줬던 남자다. 면회 화면에 01이 떴다." }
+      - say: { channel: thought, char: 수경, speakerName: "안경 쓴 여자", with: [지완], camera: wide, text: "월계역에서 장갑 떨어뜨린 사람. 저 사람 화면에도 01이 떴다." }
       - say: { channel: record, with: [], text: "받은 메시지\n결함 보고서 쓴 계정까지 정지됐어요. 인사팀에서 해고 통지 보냈고요. 보안팀 두 명이 출입구에 있어요." }
       - say: { channel: record, with: [], text: "보낸 메시지\n01 뜬 분을 봤어요. 접수대에서." }
       - say: { channel: record, with: [], text: "받은 메시지\n01만 봐서는 같은 오류인지 몰라요. 당사자가 원하지 않으면 붙잡지 마세요. 제발." }
-      - say: { channel: action, with: [], text: "가방 속 결함 보고서 마지막 줄. ‘현장에서 다시 확인하지 못함.’" }
-      - say: { channel: action, with: [지완, 수경], camera: wide, text: "남자가 빈 물병을 들고 1층으로 내려간다. 나도 보고서를 챙긴다." }
+      - say: { channel: action, with: [], text: "가방에 넣어 온 보고서에는 아직 ‘현장에서 다시 확인하지 못함’이라고 적혀 있다." }
+      - say: { channel: action, with: [지완, 수경], camera: wide, text: "남자는 빈 물병을 들고 1층으로 내려간다. 나도 보고서를 들고 일어난다." }
       - goto: /1.yaml

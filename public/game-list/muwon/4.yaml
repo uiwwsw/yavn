@@ -49,11 +49,11 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "의녀께서 여러 날 애쓰셨다더군요."
+          text: "의녀가 여기까지 올라오셨군요."
       - say:
           char: 한명재
           with: [서연, 도원]
-          text: "혜민서에서 사람을 얼마나 살리셨는지는 아직 들어 보지 못했습니다만."
+          text: "혜민서에서 검안은 몇 번이나 맡으셨소?"
       - say:
           char: 한명재.cold
           with: [서연]
@@ -61,7 +61,7 @@ scenes:
       - say:
           char: 서연.resolve
           with: [한명재]
-          text: "제가 살핀 시신이 셋입니다. 그 기록을 보시지요."
+          text: "시신 셋을 살폈습니다. 기록을 가져왔습니다."
       - say:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }

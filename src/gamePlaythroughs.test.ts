@@ -402,7 +402,7 @@ describe('오버플로', () => {
     await start('overflow');
     const waking = useVNStore.getState();
     const portrait = waking.characters.left?.source;
-    expect(waking.dialog.fullText).toContain('출근하던 문지완이 월계역 개찰구 앞에서');
+    expect(waking.dialog.fullText).toContain('월계역 개찰구 앞에서 문지완의 장갑이 떨어진다');
     expect(portrait).toMatch(/\/jiwan\.svg$/);
     expect(waking.visibleCharacterIds).toEqual(['지완']);
 
@@ -431,14 +431,14 @@ describe('오버플로', () => {
     });
     finished(run);
     const beats = [
-      '출근하던 문지완이 월계역', '안경 쓴 여자 · 안정 31', '장갑 떨어뜨리셨어요.', '같은 근무조 도겸이',
+      '문지완의 장갑이 떨어진다', '안경 쓴 여자 · 안정 31', '저기요. 장갑이요.', '같은 근무조 도겸이',
       '흥분 94', '폭행 신고 18건 → 7건', '못 나가면 셋 세고',
       '정서 반응 01 · 무반응 의심', '아침에 장갑을 주워 준 여자가 앉아 있다',
-      '월계역에서 장갑을 주워 줬던 남자다', '01 뜬 분을 봤어요', '아침에 제 장갑 주워 주셨죠?',
-      '접수대에 뜬 그 카드, 제가 만든 겁니다',
-      '시험 신호 101 → 표시 01', '아까 접수표에서 가리신 이름', '반만 얼리기로 했잖아요',
-      '전화 받았는데 반찬집 아주머니였잖아요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
-      '아버지가 옆에 앉으라 그랬잖아요', '공동 이의신청 접수', '반만 얼렸다',
+      '월계역에서 장갑 떨어뜨린 사람', '01 뜬 분을 봤어요', '아침에 뵀죠?',
+      '한수경이에요. 접수대에 뜬 그 화면, 제가 만들었어요.',
+      '시험 신호 101 → 표시 01', '여기도 이름은 안 넣을게요', '반만 얼리기로 했잖아요',
+      '반찬집 아주머니 목소리가 나와서요', '침대 바퀴 앞에 양말이 떨어져 있다', '센서 입력 101 → 표시 01',
+      '아까는 옆에 앉으라고 하셨잖아요', '공동 이의신청 접수', '반만 얼렸다',
     ];
     const positions = beats.map((beat) => run.shown.findIndex((text) => text.includes(beat)));
     expect(beats.filter((_, index) => positions[index] < 0)).toEqual([]);
@@ -469,18 +469,20 @@ describe('오버플로', () => {
     });
     finished(run);
     expect(heard(run.shown, '지난번 네가 사 온 거 있네')).toBe(true);
-    expect(heard(run.shown, '아까 접수표 안 보여 주셔도 괜찮아요')).toBe(true);
-    expect(heard(run.shown, '아침에 전화 못 받았죠')).toBe(true);
-    expect(heard(run.shown, '아까 물부터 드렸죠. 겁났어요')).toBe(true);
+    expect(heard(run.shown, '접수표는 됐어요. 렌즈 연결만 눌러 주세요')).toBe(true);
+    expect(heard(run.shown, '아침에 전화 못 받았잖아요')).toBe(true);
+    expect(heard(run.shown, '아까 물부터 드렸죠. 사실 겁났어요')).toBe(true);
     expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);
-    expect(heard(run.shown, '전화 받았는데 반찬집 아주머니였잖아요')).toBe(false);
+    expect(heard(run.shown, '반찬집 아주머니 목소리가 나와서요')).toBe(false);
     const messages = run.state.storyLog.filter((entry) => entry.kind === 'dialogue')
       .filter((entry) => entry.sceneId === 'text_back' && entry.channel === 'message');
     expect(messages.map((entry) => entry.side)).toEqual(['me', 'them', 'me']);
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
       sceneId: 'check_phone', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
     }));
-    const broadcast = run.shown.slice(run.shown.findIndex((text) => text.includes('제 이름이랑 제 판독')));
+    const broadcastIndex = run.shown.findIndex((text) => text.includes('제 이름은 쓰세요. 병실은 빼 주시고요.'));
+    expect(broadcastIndex).toBeGreaterThan(-1);
+    const broadcast = run.shown.slice(broadcastIndex);
     expect(heard(broadcast, '센서 입력 101 / 렌즈 표시 01')).toBe(true);
     expect(heard(broadcast, '308호')).toBe(false);
   });

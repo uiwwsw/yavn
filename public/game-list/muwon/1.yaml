@@ -32,11 +32,11 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "생각보다 젊으시네요. 이 일은 혜민서에서 누구랑 맡으셨어요?"
+          text: "혜민서에서 혼자 오셨어요? 생각보다 젊으셔서."
       - say:
           char: 서연
           with: [여금]
-          text: "제가 맡았습니다. 검안이 아직 끝나지 않았어요. 분이는 목이 졸린 뒤 우물에 던져졌습니다."
+          text: "제가 맡았습니다. 분이는 목이 졸린 뒤 우물에 던져진 걸로 보입니다."
       - say:
           channel: action
           with: [여금]
@@ -64,7 +64,7 @@ scenes:
       - say:
           char: 서연
           with: [여금]
-          text: "입에 거품도 없었지만, 목에 남은 손자국을 보면 스스로 빠진 게 아닙니다."
+          text: "입에도 코에도 거품이 없었습니다. 그보다 목에 손자국이 남아 있었지요."
       - say:
           channel: action
           with: []
@@ -578,7 +578,7 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "내 시장은 아직 서랍에 있소. 포도청은 벌써 범인을 정해 놓았고."
+          text: "내가 쓴 시장도 아직 서랍에 있소. 읽어 보겠다 온 사람 하나 없더군."
       - say:
           channel: thought
           with: [도원]

@@ -42,7 +42,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…생존. 아니 됐어, 게임이라고 치자. 그게 덜 우울해."
+          text: "…살아남기? 그냥 게임이라고 해. 나도 지금 그게 낫겠다."
       - say:
           channel: narration
           with: []
@@ -472,7 +472,7 @@ scenes:
           char: 로봇.happy
           motion: bounce
           with: [윤재]
-          text: "원래 2P 대전 화면을 반으로 나누던 칩이라."
+          text: "내 칩이 하던 일이 2P 화면 반 가르기였음."
       - say:
           char: 윤재
           with: [로봇]

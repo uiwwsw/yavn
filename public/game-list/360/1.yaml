@@ -43,23 +43,23 @@ scenes:
       - say: { char: 기호, with: [순임], text: "럭키 스트라이크 두 보루, 스팸 열 통. 오늘은 초콜릿도 있소." }
       - say: { char: 순임, with: [기호], text: "초콜릿은 됐어요. 애 이 썩어요." }
       - say: { char: 기호, with: [순임], text: "아이고." }
-      - say: { char: 기호, with: [순임], motion: laugh, text: "영호 주라는 게 아니라 팔라는 거요, 아주머니. 장사를 이태 하고도 그러네." }
+      - say: { char: 기호, with: [순임], motion: laugh, text: "좌판에 내놓으라고 가져온 거요. 영호 몫은 내가 따로 챙겼고." }
       - say:
           char: 순임
           with: [기호]
           when: { var: t_say, op: eq, value: true }
-          text: "최 통역은 말끝이 또렷해요. 옆이 웅성거려도 하는 말이 다 들려요."
+          text: "최 통역 목소리는 저쪽 끝에서도 알아듣겠어요. 이리 시끄러운데."
       - say:
           char: 순임
           with: [기호]
           when: { var: t_say, op: eq, value: true }
-          text: "그게 보기 좋아요."
+          text: "오늘도 오는 줄 먼저 알았다니까요."
       - say:
           char: 기호
           with: [순임]
           motion: startle
           when: { var: t_say, op: eq, value: true }
-          text: "…그런 말을 물건 받다 말고 하오? 옆 좌판에서 다 듣는데."
+          text: "아이고, 다 듣겠소. 물건이나 받아요."
       - say:
           channel: thought
           with: []

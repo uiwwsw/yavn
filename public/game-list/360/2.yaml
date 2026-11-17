@@ -20,7 +20,7 @@ scenes:
       - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "할아버지 보청기 뺐어, 내가 봤어. 너 몇 살이라 그랬지?" }
       - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
       - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "난 수경이야. 그냥 누나라 불러." }
-      - say: { char: 수경, with: [민재], text: "난 스물하나. 미대 다니다 휴학했어. 너 입원 처음이지? 딱 보면 알아." }
+      - say: { char: 수경, with: [민재], text: "난 스물하나. 학교는 쉬고 있어. 미대 다녀. 너 입원 처음이지?" }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
       - say: { char: 수경, with: [민재], text: "뭐긴 뭐야." }
       - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그거 안 빠져." }
@@ -41,13 +41,13 @@ scenes:
           when: { var: t_stay, op: eq, value: true }
           text: "침대 난간에 엄마 목도리가 묶여 있다. 꼭 다시 오라고, 내가 묶었다."
       - say: { char: 민재, with: [수경], text: "저 애는 왜 혼자 들어가요." }
-      - say: { char: 수경, with: [민재], text: "몰라. 근데 십만 명이 쳐다보는데 혼자 들어가잖아." }
-      - say: { char: 수경, with: [민재], text: "나였으면 첫발에 저거 넘어뜨렸다." }
+      - say: { char: 수경, with: [민재], text: "몰라. 나 같으면 저기 들어가기 전에 다리부터 풀렸어." }
+      - say: { char: 수경, with: [민재], text: "굴렁쇠는 첫발에 넘어뜨리고." }
       - say: { channel: action, with: [], text: "아이가 운동장 가운데에 선다. 굴렁쇠가 넘어지지 않고 혼자 조금 더 굴러간다." }
       - say: { channel: thought, with: [], text: "다들 말없이 화면을 본다. 보청기를 빼 놓은 할아버지도 고개를 돌렸다." }
-      - say: { char: 수경, with: [민재], text: "개막식 끝나면 2주 뒤가 폐막식이야. 그날 밤에 불꽃 쏘는 거, 한강에서 보면 다 보인다더라." }
+      - say: { char: 수경, with: [민재], text: "2주 뒤에 폐막식 한대. 그날 불꽃 쏘는 건 한강에 가면 다 보인대." }
       - say: { char: 민재, with: [수경], text: "여기서 한강이 어떻게 보여요." }
-      - say: { char: 수경, with: [민재], text: "안 보이지. 그러니까 가야지." }
+      - say: { char: 수경, with: [민재], text: "창문 너머로 말고, 진짜 한강에 가서." }
       - goto: mom_visit
 
   mom_visit:
@@ -59,12 +59,12 @@ scenes:
       - say: { char: 엄마, with: [민재], text: "민재야, 갈치 조렸다. 가시 다 발랐어." }
       - say: { char: 엄마, with: [민재], text: "선생님 회진 도셨니?" }
       - say: { char: 민재, with: [엄마], text: "어제 저녁에요. 엄마, 가게는 어떡하고요." }
-      - say: { char: 엄마, with: [민재], text: "경매 끝나고 바로 왔지. 열 시에 열면 돼." }
+      - say: { char: 엄마, with: [민재], text: "경매 끝나고 온 거야. 열 시까진 문 열면 돼." }
       - say: { char: 엄마, with: [민재], text: "선생님이 뭐라셔?" }
       - say: { channel: action, with: [], text: "엄마가 보온 도시락 뚜껑을 연다. 가시를 발라낸 갈치 살이 한입 크기로 잘려 있다." }
       - say: { channel: thought, with: [], text: "나 먹기 좋게 해 온다고 엄마는 새벽부터 생선 가시를 골랐을 거다." }
       - say: { char: 민재, with: [엄마], text: "엄마, 나 가시 발라 먹을 수 있어요." }
-      - say: { char: 엄마, with: [민재], text: "할 줄 아는 거 알아. 손이 부으니까 하는 거야." }
+      - say: { char: 엄마, with: [민재], text: "네가 해 먹는 거 알아. 손 부었을 때는 엄마가 해 줄게." }
       - say: { channel: record, with: [엄마], text: "혈액검사 9월 25일. 백혈구 수치 재상승. 2차 항암 일정 조정 요함." }
       - say: { channel: action, with: [], text: "차트는 침대 발치에 걸려 있다. 글씨가 거꾸로 보이는데 숫자는 거꾸로도 읽힌다." }
       - say: { channel: thought, with: [], text: "지난주 숫자를 외워 뒀다. 이번 주 숫자가 더 크다." }
@@ -300,10 +300,10 @@ scenes:
       - char: { id: 민재, position: left }
       - char: { id: 엄마, position: right }
       - say: { char: 민재, with: [엄마], text: "엄마, 수경 누나 침대 시트 왜 걷었어요. 무균실 갔다가 온다 그랬는데." }
-      - say: { char: 엄마, with: [민재], motion: droop, text: "…어제 새벽에 수경이가 갔단다. 어머니가 이건 너 주라고 두고 가셨어." }
+      - say: { char: 엄마, with: [민재], motion: droop, text: "…수경이 어제 새벽에 세상을 떠났대. 어머니가 이거 너 주라고 하셨어." }
       - say: { channel: action, with: [], text: "시트가 걷힌 자리에서 매트리스 비닐이 번들거린다." }
       - say: { char: 민재, with: [엄마], text: "무균실 갔다가 온다고 했어요. 저한테 그렇게 말했어요." }
-      - say: { char: 엄마, with: [민재], text: "응. 수경이도 돌아올 줄 알았겠지." }
+      - say: { char: 엄마, with: [민재], text: "응. 수경이도 그렇게 알고 있었을 거야." }
       - say: { channel: thought, with: [], text: "누나 슬리퍼가 침대 밑에 한 짝 남아 있다. 발끝으로 끌어다 평소에 벗어 놓던 자리에 맞춘다." }
       - say: { channel: action, with: [엄마], continueLabel: "약봉지를 펼친다", text: "엄마가 이불 위에 약봉지를 놓아 준다. 꼭대기가 반으로 접혀 있다." }
       - sticker: { id: sketch, image: folded_packet_sticker, x: 50, y: 31, width: "clamp(166px, 25%, 300px)", enter: fadeIn }

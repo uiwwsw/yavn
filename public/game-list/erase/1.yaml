@@ -156,7 +156,7 @@ scenes:
           char: 준성
           motion: sigh
           with: [도윤]
-          text: "그 말 하는 사람들이 제일 오래 남아요. 나도 그랬고."
+          text: "저도 그것만 보내고 간다고 앉았다가 막차 놓치고 그랬어요."
       - say:
           char: 준성
           with: [도윤]
@@ -234,12 +234,12 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "현관문 닫히는 소리 났어요. 그냥 누워 있었어요."
+          text: "문 닫히는 소리까지 들었어요. 그냥 누워 있었고요."
       - say:
           char: 준성.tired
           motion: nod
           with: [도윤]
-          text: "나 이번 회사는 오래 다니고 싶어요. 그러니까 우리 그냥 일해요."
+          text: "저 여기 오래 다니고 싶어요. 회사에선 일 얘기만 해요, 우리."
       - say:
           char: 도윤
           with: [준성]
