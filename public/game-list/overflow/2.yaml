@@ -31,7 +31,7 @@ scenes:
       - say: { char: 지완, with: [동식], text: "아버지. 저 왔어요. 발 내려놓으세요." }
       - say: { char: 동식, with: [지완], text: "…국." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: true }, text: "반만 얼리기로 했잖아요. 일요일에 제가 가서 데워 먹을게요." }
-      - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: false }, text: "아침에 전화 못 받았잖아요. 그거 물어보려고 전화했어요?" }
+      - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: false }, text: "아침에 전화 못 받았잖아요. 작은 통 찾으셨어요? 제가 일요일에 가서 데워 먹을게요." }
       - say: { channel: action, with: [지완, 동식], sound: bed_rail, text: "아버지가 침대 난간을 두드린다. 지완이 가까이 가자 아버지가 아들 얼굴을 한참 본다." }
       - say: { char: 동식, with: [지완], text: "겁났냐." }
       - choice:
@@ -75,7 +75,7 @@ scenes:
       - sticker: { id: diagnosis, image: raw_sticker, x: 50, y: 46, width: "clamp(140px, 23%, 270px)", enter: fadeIn }
       - say: { channel: record, with: [], text: "20:14:09 · 문지완의 렌즈\n센서 입력 101 → 표시 01\n화면 판정: 무반응 의심" }
       - clearSticker: { id: diagnosis, leave: fadeOut }
-      - say: { char: 지완, with: [수경], text: "양말 집다 손이 떨려서 한 번 더 떨어뜨렸어요. 렌즈는 그때 제가 아무 반응도 없었다는 거죠." }
+      - say: { char: 지완, with: [수경], text: "양말 주우려고 허리를 숙였을 때였어요. 손이 떨려서 양말을 한 번 더 떨어뜨렸는데 렌즈엔 01이 떴어요." }
       - say: { char: 수경, with: [지완], text: "이걸 출력해서 면회표 옆에 붙여요. 제가 어느 자리에서 숫자가 잘렸는지 적을게요. 접수 간호사한테 아직 얘기할 수 있어요?" }
       - say: { char: 지완, with: [수경], text: "네, 아까 같이 들어가 주신 분 아직 계세요. 저랑 가요." }
       - goto: /3.yaml

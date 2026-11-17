@@ -41,7 +41,7 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
       - say: { channel: record, with: [], text: "공개 자료 · 문지완 본인 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
-      - say: { char: 수경, with: [지완], text: "네, 제가 검수한 버전입니다. 여기 보시면 병원에서 찍은 숫자랑 검사기에서 받은 숫자가 다르죠." }
+      - say: { char: 수경, with: [지완], text: "네, 제가 검수한 버전입니다. 병실에 들어간 뒤 다시 잰 기록이에요. 검사기는 101을 받았는데 렌즈 화면은 01이었어요." }
       - say: { char: 지완, with: [수경], text: "그 01 때문에 저는 밖에서 기다렸어요. 아버지한텐 제가 어디 있는지도 늦게 전해졌고요." }
       - bg: { id: wolgye_station, transition: fade, duration: 520 }
       - place: { text: "보도 다음 날 아침 · 월계역", presentation: center }
@@ -57,8 +57,8 @@ scenes:
       - char: { id: 세라, position: right }
       - say: { char: 지완, with: [세라], text: "어제 제가 몇 시에 왔는지도 적을 수 있어요? 아버지가 제가 늦게 온 줄 아셨어요." }
       - say: { char: 세라, with: [지완], text: "그날 접수한 시간이 남아 있어요. 같이 넣을게요. 결과 나오면 연락드릴 테니 오늘은 이 면회증으로 들어가세요." }
-      - say: { channel: card, with: [], text: "이틀 뒤", autoAdvance: 1200 }
-      - place: "이틀 뒤 · 월계병원 면회 접수"
+      - place: { text: "이틀 뒤 · 월계병원 면회 접수", presentation: center }
+      - say: { channel: action, with: [지완, 세라], text: "세라가 처음 받은 접수표 옆에 이의 신청 결과지를 나란히 놓는다." }
       - say: { channel: record, with: [], text: "문지완 · 이의 신청 처리 완료\n‘무반응 의심’ 판정 철회\n첨부: 진단 출력물, 당일 접수 시각 및 직원 확인 기록" }
       - say: { char: 지완, with: [세라], text: "처음에 뜬 것도 한 장 주실래요? 둘 다 아버지한테 갖다 드리려고요." }
       - ending: one_file
@@ -73,8 +73,8 @@ scenes:
       - bg: { id: ward_bed, transition: dissolve, duration: 420 }
       - place: "같은 날 아침 · 308호"
       - char: { id: 동식, position: right }
-      - say: { char: 지완, with: [동식], text: "문동식 씨. 아침 드셨어요?" }
-      - say: { char: 동식, with: [지완], text: "야. 간호사인 줄 알았다." }
+      - say: { char: 지완, with: [동식], text: "문동식 씨, 아드님 면회 왔습니다." }
+      - say: { char: 동식, with: [지완], text: "야, 네 목소리 알아. 아침부터 어디 갔다 왔냐." }
       - say: { channel: action, with: [지완, 동식], text: "아버지가 침대 옆 의자를 발끝으로 밀어 준다. 지완은 가방부터 내려놓는다." }
       - ending: sealed
 

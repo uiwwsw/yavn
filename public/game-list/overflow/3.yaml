@@ -13,7 +13,7 @@ scenes:
       - char: { id: 세라, position: right }
       - char: { id: 수경, position: center }
       - char: { id: 지완, position: left }
-      - say: { char: 세라, with: [지완, 수경], text: "아까 같이 들어간 윤세라예요. 두 분 잠깐 여기 앉으실래요?" }
+      - say: { char: 세라, with: [지완, 수경], text: "아까 면회 도와드린 간호사 윤세라예요. 문 닫고 얘기할까요?" }
       - say: { char: 지완, with: [세라, 수경], text: "아까 잠깐 앉아 있으라고 하셨을 때도 01이 또 떴어요. 같은 시간에 여기 검사기엔 101이 잡혔고요." }
       - say: { char: 세라, with: [지완], text: "봤어요. 첫 안내가 뜬 뒤에도 제 질문에 바로 대답하셨고요. 두 번 다 제가 본 대로 적으면 내일부터는 직원 확인으로 들어오실 수 있어요." }
       - say: { char: 지완, with: [세라], text: "출입은 그렇고, 저녁에 제 이름 옆에 뜬 건요? 그건 그냥 남아요?" }
@@ -45,7 +45,7 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right }
       - say: { char: 동식, with: [지완], text: "일찍 왔었다며." }
-      - say: { char: 지완, with: [동식], text: "네. 학교 때 그랬잖아요. 아버지 오실 때까지 복도에 앉아 있었던 거. 그 생각 나더라고요." }
+      - say: { char: 지완, with: [동식], text: "네. 고등학교 때 렌즈 경보 울려서 실습에서 빠졌잖아요. 아버지 오실 때까지 복도에 앉아 있었던 거 생각났어요." }
       - say: { char: 동식, with: [지완], text: "그날 네 선생도 계속 숫자 얘길 하더라." }
       - say: { char: 지완, with: [동식], text: "아버지는 뭐라고 하셨어요?" }
       - say: { char: 동식, with: [지완], text: "애가 겁먹었으니 나부터 들여보내 달랬지." }
