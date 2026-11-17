@@ -233,12 +233,12 @@ scenes:
           channel: record
           when: { var: look_ticket, op: eq, value: true }
           with: []
-          text: "└ 확인한 항목 · 번호표 발급기 · 2031.04.12 22:10"
+          text: "└ 확인한 항목 · 번호표 발급기 · 2031.04.13 00:56"
       - say:
           channel: record
           when: { var: look_pencil, op: eq, value: true }
           with: []
-          text: "└ 확인한 항목 · 연필꽂이 (비품) · 2031.04.12 22:10"
+          text: "└ 확인한 항목 · 연필꽂이 (비품) · 2031.04.13 00:56"
       - wait: 0
       - wait: 0
       - say:
@@ -542,7 +542,7 @@ scenes:
             - text: "전원선을 뽑는다"
               goto: end_cut
             - text: "모니터를 끄고 나간다"
-              saveText: "모니터를 끄고 나간다. 내일 오픈 근무다"
+              saveText: "모니터를 끄고 나간다. 오전 9시 반에 문을 열어야 한다"
               goto: end_stay
             - text: "세션 종료 창을 연다"
               when: { var: honest, op: gte, value: 3 }
@@ -628,7 +628,7 @@ scenes:
           side: them
           char: 은숙
           with: []
-          text: "차은숙입니다. 오광철 씨 사건 수사 중지됐어요. 연필 감정을 할 때마다 결과가 달라서요. 이제 안 바뀌는데, 어느 게 맞는지 모르겠어요."
+          text: "차은숙입니다. 오광철 씨 사건 수사 중지됐어요. 연필 감정을 할 때마다 결과가 달라서요. 이제 안 바뀌는데, 어느 게 맞는지 아직 모르겠어요."
       - say:
           channel: message
           side: me
@@ -838,7 +838,7 @@ scenes:
           char: 은숙
           when: { var: told_truth, op: eq, value: false }
           with: [해수]
-          text: "지난번에는 집에 있었다고 하셨죠. 오늘은 무슨 말씀을 하시려는 거예요?"
+          text: "지난번엔 레플라에서 뭘 했는지 말씀 안 하셨죠. 오늘은 그 얘기 하러 오신 거예요?"
       - say:
           char: 은숙
           with: [해수]

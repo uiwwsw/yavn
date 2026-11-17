@@ -30,12 +30,12 @@ scenes:
           char: 은숙
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
-          text: "어제 있던 게 오늘은 없더라고요. 남은 것부터 다시 봤어요."
+          text: "복사해 둔 증거랑 원본이 달라졌어요. 그대로 남은 건 주차 기록이더라고요."
       - say:
           char: 은숙
           when: { var: tampered, op: gt, value: 0 }
           with: [해수]
-          text: "주차 기록을 봤어요. 그날 새벽 지하 2층에 차를 댄 직원이 한 명이더라고요."
+          text: "그날 새벽에 지하 2층으로 들어간 직원 차량은 한 대였어요."
       - say:
           char: 은숙
           when: { var: tampered, op: gt, value: 0 }
