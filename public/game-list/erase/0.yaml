@@ -56,14 +56,14 @@ scenes:
 
   e0_studio_smile:
     actions:
-      - say: { char: 도윤.smile, with: [지수], text: "응. 오늘 보낼 수 있어. 밥 먹기 전에 할게." }
-      - say: { char: 지수.warm, with: [도윤], text: "알았어. 자, 손 다시 잡아. 이제 찍으신대." }
+      - say: { char: 도윤.smile, with: [지수], text: "응. 잠깐만. 지금 보낼게." }
+      - say: { char: 지수.warm, with: [도윤], text: "왔어. 자, 손 다시 잡아. 이제 찍으신대." }
       - goto: e0_flash
 
   e0_studio_joke:
     actions:
       - say: { char: 도윤, with: [지수], text: "이번 달 카드값이 밀렸어. 43만 원." }
-      - say: { char: 지수, with: [도윤], text: "진작 말하지. 모자란 건 내가 먼저 낼게. 밥 먹고 얼마씩 낼지 보자." }
+      - say: { char: 지수, with: [도윤], text: "그럼 네 몫도 내가 보낼게. 다음엔 빠듯하면 바로 얘기해 줘." }
       - say: { char: 도윤, with: [지수], text: "…고마워. 그럼 칼국수는 내가 사." }
       - goto: e0_flash
 
@@ -71,7 +71,7 @@ scenes:
     actions:
       - move: { id: 도윤, toward: 지수, style: approach }
       - say: { char: 도윤, with: [지수], text: "아, 저기. 작가님 다시 오신다. 우리 아까처럼 손잡을까?" }
-      - say: { char: 지수, with: [도윤], text: "응. 밥 먹으면서 다시 얘기해." }
+      - say: { char: 지수, with: [도윤], text: "응. 계약금은 내가 먼저 넣을게. 칼국수 먹을 때 다시 얘기하자." }
       - goto: e0_flash
 
   e0_flash:

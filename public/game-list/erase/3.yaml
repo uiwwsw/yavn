@@ -103,7 +103,7 @@ scenes:
       - choice:
           key: e3_room
           presentation: explore
-          prompt: "대답이 없다. 도윤은 문간에서 휴직 서류 봉투를 쥔 채 방 안을 본다."
+          prompt: "준성은 대답이 없다. 서류는 우편함에 넣고 가면 된다. 반쯤 열린 문 너머로 식탁이 보인다."
           with: []
           camera: wide
           options:
@@ -515,7 +515,7 @@ scenes:
       - say:
           char: 아진
           with: [하린]
-          text: "하린아. 너 화내도 돼."
+          text: "내가 먼저 말했어야 했어. 네가 웃으니까 그냥 모른 척했어. 미안."
       - say:
           char: 하린
           motion: laugh
@@ -528,15 +528,15 @@ scenes:
       - say:
           char: 아진.awkward
           with: [하린]
-          text: "하린아. 나 그 말 듣고 그냥 넘어가도 되는 거야?"
+          text: "내일 급식은 나랑 먹을래? 너 옆자리 비워 둘게."
       - say:
           char: 하린
           with: [아진]
-          text: "뭘 넘어가."
+          text: "…민재는?"
       - say:
           char: 아진
           with: [하린]
-          text: "방금도 웃었잖아. 보자마자 울 것 같은 얼굴이었는데."
+          text: "내일은 나 너랑 먹고 싶어."
       - say:
           char: 하린.blank
           with: [아진]
@@ -614,7 +614,9 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "피팅은 토요일에 다시 잡았어. 네 옷은 네가 입어 봐야 된대." }
       - say: { char: 도윤, with: [지수], text: "토요일엔 꼭 갈게." }
       - say: { char: 지수, with: [도윤], text: "오늘도 온다고 했잖아." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수가 도윤 앞에 놓인 밥그릇 뚜껑을 열었다가 다시 덮는다." }
+      - sticker: { id: e3_invitation, image: invitation_sticker, x: 50, y: 43, width: "clamp(165px, 27%, 290px)", enter: fadeIn }
+      - say: { channel: action, with: [], text: "식탁 한쪽에 사진관에서 고른 청첩장 시안이 있다. 지수는 그 종이를 밀어 두고 도윤을 본다." }
+      - clearSticker: { id: e3_invitation, leave: fadeOut }
       - say: { char: 지수.cold, with: [도윤], text: "오늘 어디 갔어? 회사 말고." }
       - choice:
           key: e2_jisu
@@ -714,8 +716,8 @@ scenes:
           when: { var: went_to_clinic, op: eq, value: false }
           with: [도윤]
           text: "그럼 다시 가. 오늘처럼 돌아오지 말고."
-      - say: { char: 지수, with: [도윤], text: "식장 보러 다니면서, 사람들한테 청첩장 줄 얘기까지 하면서 나한텐 언제 말하려고 했어?" }
-      - say: { char: 도윤.hollow, with: [지수], text: "네가 식장 얘기하면 나도 그냥 그 얘기만 했어. 그날 얘기 꺼냈다가 네가 어떻게 볼지 무서웠어." }
+      - say: { char: 지수, with: [도윤], text: "청첩장 숫자는 같이 세면서, 그 얘기는 나한테 언제 하려고 했어?" }
+      - say: { char: 도윤.hollow, with: [지수], text: "그 얘기만 하면 우리 아직 결혼 준비하는 사람들 같았어. 네가 계속 날 그렇게 봐 줬으면 했어." }
       - say: { char: 지수, with: [도윤], text: "오늘 거울 앞에서 혼자 서 있었어. 네가 들어오면 이제 같이 고를 수 있겠다 싶어서 문만 보고 있었어.", wait: 550 }
       - say: { char: 도윤, with: [지수], text: "미안해." }
       - say: { char: 지수, with: [도윤], text: "토요일 피팅은 가지 마. 내일 식장에도 전화할 거야. 식을 미룰 수 있는지부터 물어볼게." }
