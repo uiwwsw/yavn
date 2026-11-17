@@ -2,9 +2,9 @@ title: "ERASE"
 pov: "한도윤"
 author:
   name: "uiwwsw"
-version: "1.1.0"
+version: "1.2.0"
 seo:
-  description: "결혼을 앞둔 도윤은 낯선 방에서 깬 뒤 휴대폰에 남은 어젯밤의 흔적을 지운다. 오래전 하린도 지우고 싶은 일이 있었다. 기억을 지우는 시술 ERASE를 둘러싼 5장 심리 드라마."
+  description: "청첩장 사진을 찍은 도윤과 지수. 그날 밤 늦지 않겠다던 도윤은 낯선 방에서 아침을 맞는다. 다섯 장에 걸쳐 네 가지 결말로 이어지는 심리 드라마."
   keywords:
     - "심리 드라마"
     - "비주얼노벨"
@@ -30,10 +30,10 @@ startScreen:
   mobileImagePosition: "72% 50%"
   showTitle: true
   titleColor: "#e8eef2"
-  startButtonText: "눈을 뜬다"
+  startButtonText: "이야기 시작"
   buttonPosition: bottom-left
   eyebrow: "심리 드라마 · 5장 · 결말 4종"
-  subtitle: "“휴대전화는 돌려 드려요.” 의사가 수술대 옆에 선다. “사진이랑 문자는 그대로 남습니다.”"
+  subtitle: "청첩장에 넣을 사진을 골랐다. 그날 밤까지는 결혼 준비가 잘되는 줄 알았다."
   scene:
     layout: split
     motion: drift

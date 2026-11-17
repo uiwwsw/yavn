@@ -6,164 +6,91 @@ script:
 
 scenes:
   operating_room:
-    title: "수술실"
+    title: "시술실"
     pov: "???"
     actions:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
-      - say:
-          char: 의사
-          with: []
-          text: "이 시술을 받으면 지금 쓰는 이름과 얼굴이 바뀝니다. 지금까지의 기억도 사라집니다."
-      - say:
-          char: 의사
-          with: []
-          text: "휴대전화는 돌려 드려요. 사진이랑 문자는 그대로 남습니다."
-      - say:
-          channel: action
-          with: []
-          sound: consent_pen
-          text: "의사가 동의서 맨 아래에 펜을 놓는다. 내 이름이 인쇄돼 있다."
-          continueLabel: "시술에 동의한다"
+      - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요." }
+      - say: { channel: action, with: [], sound: consent_pen, text: "펜을 쥔 손이 떨린다. 나는 동의서 아래에 이름을 쓴다." }
       - bg: { id: consent_turn, transition: cut }
-      - say: { char: 의사, with: [], text: "서명 확인했어요. 이름표는 뒤집어 둘게요. 등이 차가울 거예요. 이제 눈 감으세요." }
-      - bg: { id: eyes_closed, transition: dissolve, duration: 640 }
-      - wait: 180
+      - say: { char: 의사, with: [], text: "이제 눈 감으세요." }
+      - bg: { id: eyes_closed, transition: dissolve, duration: 520 }
+      - music: null
+      - say: { channel: card, with: [], text: "결혼식 4주 전 · 청첩장 촬영", autoAdvance: 1500 }
 
   studio:
     title: "청첩장 사진"
     actions:
-      - bg: { id: photo_studio, transition: fade, duration: 520 }
+      - bg: { id: photo_studio, transition: cut }
       - music: studio
-      - place: "결혼식 1개월 전 · 청첩장 촬영"
+      - place: "금요일 저녁 · 사진관"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
-      - say: { char: 지수, with: [도윤], text: "도윤아, 눈 떠. 나 좀 봐." }
-      - say: { char: 도윤, with: [지수], text: "지금도 찍고 있는 거야?" }
+      - say: { char: 지수, with: [도윤], text: "도윤아, 나 봐 봐. 작가님 말고 나." }
+      - say: { char: 도윤.smile, with: [지수], text: "너 보면 웃음 나는데." }
       - move: { id: 지수, toward: 도윤, style: approach }
-      - say: { char: 지수.warm, with: [도윤], text: "아직. 넥타이 좀 봐, 또 돌아갔네." }
-      - say: { char: 도윤, with: [지수], text: "이거 처음 매 줬을 때 내가 목 조인다고 했잖아." }
-      - say: { char: 지수.warm, motion: laugh, with: [도윤], text: "네가 갑자기 고개 숙여서 우리 이마 부딪혔잖아." }
-      - say: { char: 도윤, with: [지수], text: "끝나면 뭐 먹을까? 아까 커피밖에 안 마셨지." }
-      - say: { char: 지수, with: [도윤], text: "칼국수. 넌 곱빼기 시켜. 나 한 입만." }
-      - say: { char: 도윤.smile, with: [지수], text: "네가 곱빼기 먹어. 한 입인 적이 없잖아." }
-      - say: { char: 지수, with: [도윤], text: "그러면 다 먹어야 되잖아." }
-      - say: { channel: action, with: [지수, 도윤], text: "촬영 조명이 꺼진 틈에 지수가 휴대폰을 꺼낸다. 화면에 식장 계좌가 떠 있다." }
-      - say: { char: 지수, with: [도윤], text: "아, 식장 계약금 오늘까지다. 내가 먼저 보낼게. 카톡으로 이체 내역 보내 줄 테니까 저장해 둬." }
-      - say: { char: 도윤, with: [지수], text: "응. 내 몫은 이따 바로 보낼게." }
-      - say: { char: 지수, with: [도윤], text: "지난번에도 이따 보낸다 그러고 내가 또 물어봤잖아." }
-      - say: { char: 도윤, with: [지수], text: "그땐 월급 들어오기 전이라 돈이 좀 모자랐어." }
-      - say: { char: 지수, with: [도윤], text: "아, 그래서 그랬어? 그냥 말하지. 나는 잊어버린 줄 알았지." }
-      - say: { char: 지수, with: [도윤], text: "이번엔 괜찮아? 모자라면 집에서 같이 보자." }
+      - say: { char: 지수.warm, with: [도윤], text: "그럼 웃어. 나 네가 그렇게 웃는 거 좋아해." }
+      - say: { channel: action, with: [지수, 도윤], text: "지수가 넥타이를 바로잡는다. 손끝이 차갑다. 도윤이 그 손을 잡아 준다." }
+      - say: { char: 도윤, with: [지수], text: "아까부터 손이 이래. 끝나면 뜨거운 거 먹자. 칼국수 어때?" }
+      - say: { char: 지수.warm, motion: laugh, with: [도윤], text: "좋아. 넌 곱빼기 시켜. 나 한 입만." }
+      - say: { char: 도윤.smile, with: [지수], text: "알았어. 네 앞접시에 덜어 줄게." }
+      - say: { channel: action, with: [지수, 도윤], text: "작가가 조명을 옮긴다. 지수는 붙잡은 손을 놓지 않은 채 목소리를 낮춘다." }
+      - say: { char: 지수, with: [도윤], text: "식장 계약금 오늘까지잖아. 내 몫은 보냈어. 너도 오늘 보낼 수 있어?" }
+      - say: { char: 도윤, with: [지수], text: "어. 이따가." }
+      - say: { char: 지수, with: [도윤], text: "지난번에도 그렇게 말하고 혼자 돈 메웠잖아. 이번에도 빠듯하면 나한테 말해." }
       - choice:
           key: e0_studio
-          prompt: "작가가 카메라를 내린다. 지수는 아직 도윤의 팔을 잡고 있다."
+          prompt: "지수가 대답을 기다린다."
           char: 지수
           options:
-            - text: "숨기는 게 없다고 한다"
-              saveText: "렌즈를 보면서 \"없어. 진짜 없어.\""
+            - text: "오늘 보낼 수 있다고 한다"
+              saveText: '밥 먹기 전에 계약금을 보내겠다고 한다'
               goto: e0_studio_smile
-            - text: "카드값 이야기로 넘긴다"
-              saveText: "\"…카드값 좀 밀린 거?\""
+            - text: "이번 달 카드값을 말한다"
+              saveText: '카드값 43만 원이 밀렸다고 말한다'
               goto: e0_studio_joke
-            - text: "대답을 피한다"
-              saveText: "대답 대신 지수 머리카락을 귀 뒤로 넘겨 준다"
+            - text: "촬영 얘기로 돌린다"
+              saveText: "작가가 돌아오는 걸 보고 다시 손잡자고 한다"
               goto: e0_studio_avoid
 
   e0_studio_smile:
     actions:
-      - say:
-          char: 도윤.smile
-          motion: laugh
-          with: [지수]
-          text: "없어. 진짜 없어."
-      - say:
-          char: 지수.warm
-          with: [도윤]
-          text: "그래. 그럼 이따 영수증 오면 저장만 해 줘."
+      - say: { char: 도윤.smile, with: [지수], text: "응. 오늘 보낼 수 있어. 밥 먹기 전에 할게." }
+      - say: { char: 지수.warm, with: [도윤], text: "알았어. 자, 손 다시 잡아. 이제 찍으신대." }
       - goto: e0_flash
 
   e0_studio_joke:
     actions:
-      - say:
-          char: 도윤.smile
-          motion: laugh
-          with: [지수]
-          text: "카드값? 이번 달 좀 밀렸는데."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "얼마."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "…사십?"
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "물음표 붙이지 마. 사십이야 오십이야."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "사십삼."
-      - say:
-          char: 지수.cold
-          motion: puff
-          with: [도윤]
-          text: "사십삼. 알았어. 이따 밥 먹고 같이 보자."
+      - say: { char: 도윤, with: [지수], text: "이번 달 카드값이 밀렸어. 43만 원." }
+      - say: { char: 지수, with: [도윤], text: "진작 말하지. 모자란 건 내가 먼저 낼게. 밥 먹고 얼마씩 낼지 보자." }
+      - say: { char: 도윤, with: [지수], text: "…고마워. 그럼 칼국수는 내가 사." }
       - goto: e0_flash
 
   e0_studio_avoid:
     actions:
       - move: { id: 도윤, toward: 지수, style: approach }
-      - say:
-          char: 지수.warm
-          motion: laugh
-          with: [도윤]
-          text: "뭐야, 간지러워. 아, 작가님 다시 찍으신다."
-      - say:
-          char: 도윤.smile
-          with: [지수]
-          text: "잠깐만. 머리카락 하나 붙었었어."
+      - say: { char: 도윤, with: [지수], text: "아, 저기. 작가님 다시 오신다. 우리 아까처럼 손잡을까?" }
+      - say: { char: 지수, with: [도윤], text: "응. 밥 먹으면서 다시 얘기해." }
       - goto: e0_flash
 
   e0_flash:
     actions:
+      - sound: shutter
       - effect: { name: flash, wait: true }
       - move: { id: 지수, style: reset }
       - move: { id: 도윤, style: reset }
+      - say: { channel: action, with: [지수, 도윤], text: "촬영이 끝나고 두 사람은 모니터 앞에 앉는다. 작가가 청첩장에 들어갈 사진을 띄워 준다." }
       - sticker:
           id: e0_invite
           image: invitation_sticker
           x: 50
-          y: 32
-          width: "clamp(170px, 24%, 320px)"
+          y: 42
+          width: "clamp(180px, 30%, 330px)"
           enter: fadeIn
-          inputLockMs: 300
-      - say:
-          char: 도윤
-          motion: bow
-          with: [지수]
-          sound: shutter
-          text: "앞에 찍은 거요. 저 눈 감은 건 지워 주세요."
-      - say:
-          char: 지수
-          motion: sigh
-          with: [도윤]
-          text: "작가님 그냥 두세요. 쟤 원래 저래요."
-      - say:
-          char: 도윤
-          with: [지수]
-          text: "눈 감은 게 남아 있으면 신경 쓰이잖아."
-      - say:
-          char: 지수
-          with: [도윤]
-          text: "나중에 앨범 받으면 나 저 사진부터 볼 건데."
-      - say:
-          char: 지수.warm
-          motion: lean_in
-          with: [도윤]
-          text: "이거 그대로 시안 들어가도 되겠대. 봐 봐, 너 이번엔 눈 떴어."
+      - say: { char: 도윤, with: [지수], text: "앞에 거 보셨어요? 저 눈 감은 건 빼 주세요." }
+      - say: { char: 지수.warm, with: [도윤], text: "청첩장은 이걸로 할게요. 눈 감은 것도 한 장만 보내 주세요. 그건 제가 갖고 싶어요." }
+      - say: { char: 도윤.smile, with: [지수], text: "그거까지 나 주면 안 돼? 나도 너 웃는 거 다시 보고 싶어." }
       - get: invitation
       - clearSticker: { id: e0_invite, leave: fadeOut }
       - goto: e0_club
@@ -171,6 +98,9 @@ scenes:
   e0_club:
     title: "클럽"
     actions:
+      - bg: { id: couple_home, transition: fade, duration: 570 }
+      - place: "그날 밤 · 도윤과 지수의 집"
+      - say: { channel: action, with: [도윤], text: "도윤이 넥타이를 풀 때 휴대폰이 울린다. 민석이다." }
       - say:
           channel: message
           side: them
@@ -210,90 +140,13 @@ scenes:
           text: "민석아 화장실에서 자냐"
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          motion: lean_in
-          with: [도윤]
-          text: "라이터 있어요?"
-      - say:
-          char: 도윤
-          motion: startle
-          with: [준성]
-          text: "네?"
-      - move: { id: 준성, toward: 도윤, style: approach }
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          with: [도윤]
-          delivery: shout
-          text: "라이터요!"
-      - say:
-          char: 도윤
-          motion: shake
-          with: [준성]
-          delivery: shout
-          text: "안 피워요!"
-      - say:
-          char: 준성.smirk
-          speakerName: "낯선 남자"
-          motion: laugh
-          with: [도윤]
-          text: "나도요. 그냥 말 걸어 본 거예요."
-      - say:
-          char: 도윤.smile
-          with: [준성]
-          text: "…아, 네."
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          motion: headtilt
-          with: [도윤]
-          text: "아까부터 폰만 보던데. 누가 답장 안 해요?"
-      - say:
-          char: 도윤
-          with: [준성]
-          text: "아뇨, 했어요. 대리 부르래요."
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          with: [도윤]
-          text: "착하네. 누가요?"
-      - say:
-          char: 도윤
-          with: [준성]
-          text: "…다음 달에 결혼해요."
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          motion: perk
-          with: [도윤]
-          text: "와. 축하해요."
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          with: [도윤]
-          text: "예비 신부가 보낸 거예요?"
-      - say:
-          char: 준성.smirk
-          speakerName: "낯선 남자"
-          motion: laugh
-          with: [도윤]
-          text: "아, 자꾸 캐묻네요. 그 얘긴 안 해도 돼요."
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          with: [도윤]
-          text: "다음 달이면 얼마 안 남았네요. 축하주 한 잔 살게요. 저도 일행이 가서 혼자거든요."
-      - say:
-          char: 도윤
-          with: [준성]
-          text: "이름도 모르는데요."
-      - say:
-          char: 준성
-          speakerName: "낯선 남자"
-          with: [도윤]
-          text: "이름은 그냥 모르고 마셔요. 오늘 또 볼 것도 아닌데."
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "여기 잠깐 앉아도 돼요?" }
+      - say: { char: 도윤, with: [준성], text: "네. 친구 화장실 갔는데 올 생각을 안 하네요." }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "아까부터 전화 기다리시는 줄 알았어요." }
+      - say: { char: 도윤, with: [준성], text: "집에 간다고 해 놨거든요. 다음 달에 결혼해요." }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "축하해요. 저도 일행이 먼저 갔어요. 한 잔 하고 가실래요?" }
+      - say: { char: 도윤, with: [준성], text: "이름도 모르는데요." }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "한 잔 하고 헤어질 건데요, 뭐." }
       - choice:
           key: e0_junseong
           prompt: "남자가 자기 잔을 들어 올린 채 기다린다."
@@ -301,10 +154,15 @@ scenes:
           options:
             - text: "잔을 받는다"
               saveText: "잔을 받는다. \"한 잔만이요.\""
-              goto: e0_night
+              goto: e0_night_drink
             - text: "대리를 불렀다고 한다"
               saveText: "폰 화면을 흔들어 보인다. \"저 대리 불러 놨어요.\""
               goto: e0_night_hesitate
+
+  e0_night_drink:
+    actions:
+      - say: { char: 도윤, with: [준성], text: "한 잔만요. 저도 곧 가야 돼서요." }
+      - goto: e0_night
 
   e0_night_hesitate:
     actions:
@@ -324,6 +182,7 @@ scenes:
           motion: lean_in
           with: [도윤]
           text: "20분 동안 그냥 서 있게요?"
+      - say: { channel: action, with: [도윤], text: "아직 기사가 잡히지 않았다. 도윤은 호출을 취소한다." }
       - say:
           channel: system
           with: []
@@ -342,6 +201,7 @@ scenes:
           motion: laugh
           with: [준성]
           text: "네. 저 이제 진짜 일어나야 돼요."
+      - say: { channel: action, with: [도윤], text: "도윤이 자리에서 일어나다 주저앉는다. 약속한 시간이 지난 걸 보고 지수에게 톡을 쓴다." }
       - say:
           channel: message
           side: me
@@ -419,7 +279,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "대화방에서 나갔습니다.\n이 번호를 차단했습니다."
+          text: "이 기기에서 대화가 삭제되었습니다."
           wait: 900
       - add: { deleted: 2 }
       - set: { e0_messages: true }
@@ -501,8 +361,15 @@ scenes:
           char: 지수
           with: []
           text: "물 사가지고 와 집에 없어"
-      - wait: 1200
+      - goto: e0_contact
+
+  e0_contact:
+    title: "남은 번호"
+    pov: "낯선 남자"
+    actions:
+      - place: "그 직후 · 도윤이 떠난 방"
       - char: { id: 준성, position: center, emotion: tired }
+      - say: { channel: action, with: [준성], text: "현관문이 닫히자 남자가 눈을 뜬다. 제 휴대폰을 꺼내 어젯밤 받은 번호를 찾는다." }
       - move: { id: 준성, toward: camera, style: approach }
       - say:
           channel: system

@@ -1,5 +1,5 @@
 languages: [ko]
-summary: "청첩장 사진을 찍은 다음 날 새벽, 도윤은 낯선 방에서 깨어 휴대폰에 남은 흔적을 지운다. 오래전 하린도 기억을 지우는 시술을 앞두고 같은 일을 했다. 5장 심리 드라마, 결말 4종."
+summary: "도윤과 지수는 청첩장에 넣을 사진을 고른다. 그날 밤 늦지 않겠다던 도윤은 낯선 방에서 아침을 맞는다. 5장 심리 드라마, 결말 4종."
 thumbnail: "assets/bg/title.svg"
 tags:
   - psychological-drama
@@ -24,4 +24,4 @@ showcase:
     offsetY: 0
 translations:
   en:
-    summary: "Doyun is about to marry; Harin, eighteen, always looks happy. Both believe that if nothing remains, nothing happened — until their stories meet on an operating table. A five-chapter psychological drama with sexual tension, HIV anxiety and self-destructive thoughts."
+    summary: "Doyun and Jisu pick a picture for their wedding invitation. Doyun promises he'll be home early, then wakes up in a room he doesn't recognize. A five-chapter psychological drama with four endings."
