@@ -301,7 +301,7 @@ scenes:
   e0_erase_photos:
     actions:
       - say: { channel: action, with: [], text: "흔들린 사진 세 장을 넘긴다. 마지막 한 장에서 멈춘다." }
-      - sticker: { id: e0_club_photo, image: club_photo_sticker, x: 50, y: 36, width: "clamp(250px, 47%, 540px)", enter: fadeIn }
+      - sticker: { id: e0_club_photo, image: club_photo_sticker, x: 50, y: 45, width: "clamp(250px, 47%, 480px)", enter: fadeIn }
       - say:
           channel: thought
           with: []
