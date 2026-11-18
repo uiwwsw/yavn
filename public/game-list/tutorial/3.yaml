@@ -271,11 +271,11 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "아무도 안 들어 줘요."
+          text: "이번에도 같은 자료냐고 먼저 묻게 되더라고요."
       - say:
           char: 은숙
           with: [해수]
-          text: "저도 안 들었고. 그냥 생각나서요."
+          text: "저도 제대로 안 봤어요. 이번엔 그 자료도 다시 보려고요."
       - say:
           char: 해수
           with: [은숙]
@@ -341,72 +341,84 @@ scenes:
           text: "영수증을 받은 손은 창구 위에 두고, 앞치마 주머니에서 몰래 휴대폰을 꺼낸다."
       - say:
           channel: message
+          thread: "지영"
           side: me
           char: 해수
           with: []
           text: "주임님 혹시 기태민이라는 사람 아세요?"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "레플라 갤 고닉. 왜"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "서버 없이 돌아간다고 글 쓰다가 영구 차단당한 사람"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "망우동 그린고시원 304호. 갤에 자기 주소를 올렸었어 와서 확인하라고"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "가지 마"
       - say:
           channel: message
+          thread: "지영"
           side: me
           char: 해수
           with: []
           text: "네 감사합니다 주임님"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "가지 말라니까"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "해수야"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "내가 체험권 준 거 때문이면 그거 내가 미안해"
       - say:
           channel: message
+          thread: "지영"
           side: me
           char: 해수
           with: []
           text: "아니에요 주임님"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "그럼 내일 마감 바꿔 줘 그걸로 갚아"
       - say:
           channel: message
+          thread: "지영"
           side: me
           char: 해수
           with: []
@@ -669,7 +681,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "가산동 서버실에 있던 거예요. 제 카드는 아직 거기서 먹혀요."
+          text: "가산동 서버실에 있던 거예요. 제 이름으로 된 출입 카드예요. 문 앞 단말에 대면 돼요."
       - clearSticker: { id: keycard, leave: fadeOut }
       - set: { seen_card: true }
       - goto: room
@@ -969,84 +981,98 @@ scenes:
           text: "상혁 어머니 · 연결되지 않았습니다"
       - say:
           channel: message
+          thread: "엄마"
           side: me
           char: 해수
           with: []
           text: "어머니 저 해수예요. 늦게 죄송합니다"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "해수야 왜 무슨 일 있어"
       - say:
           channel: message
+          thread: "엄마"
           side: me
           char: 해수
           with: []
           text: "상혁이가 며칠째 방에서 안 나와요. 와서 보셔야 할 것 같아요"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "걔 또 그거 하니"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "작년에 우리 집에서 끊고 올라갔는데"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "새벽 기차 타고 갈게. 비번 알려줘"
       - say:
           channel: message
+          thread: "엄마"
           side: me
           char: 해수
           with: []
           text: "1270이요. 현관은 0411이에요"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "0411은 뭐야 그거"
       - say:
           channel: message
+          thread: "엄마"
           side: me
           char: 해수
           with: []
           text: "제 입사일이에요 외우기 쉬워서요"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "그걸 비번으로 쓰니"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "해수야 너도 좀 쉬어라 너는 우리 애도 아닌데 왜 네가"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []
           text: "미안해 지금 말 잘못했다"
       - say:
           channel: message
+          thread: "엄마"
           side: me
           char: 해수
           with: []
           text: "괜찮습니다"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           with: []

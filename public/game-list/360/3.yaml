@@ -47,9 +47,9 @@ scenes:
           text: "전세금 빼서 차린 카페요. 거기도 2년 못 채웠죠? …됐어요, 일 얘기나 합시다."
       - say: { char: 차피디, with: [지안], text: "「기억하는 사람들」 폴더 열어요. 이름 뒤에 숫자 붙은 건 다 제보예요." }
       - say: { char: 차피디, with: [지안], text: "석 달 사이에 400건이 왔어요. 선배 말로는 10년 전만 해도 1년에 두 통 왔대요." }
-      - say: { char: 지안, with: [차피디], text: "기억하는 사람이 많아진 건지, 이제야 입을 여는 건지 모르겠네요." }
+      - say: { char: 지안, with: [차피디], text: "옛날 제보랑도 맞춰 볼게요. 같은 얘기 한 사람이 있었는지." }
       - say: { char: 차피디, with: [지안], text: "어." }
-      - say: { char: 차피디, with: [지안], motion: headtilt, text: "그걸 알면 내가 논문을 쓰지 방송을 하겠어요? 일단 이 세 개부터 풀어 줘요." }
+      - say: { char: 차피디, with: [지안], motion: headtilt, text: "그건 나중에. 오늘 편집에 넣을 이 세 개부터 풀어 줘요." }
       - say: { channel: record, with: [], text: "녹취 07. 유정림(71, 전 수학 교사). \"어두웠어요, 한참. 그러다 한쪽이 덜 어둡더라고. 그리로 갔지.\"" }
       - sticker: { id: globe, image: globe_sticker, x: 50, y: 30, width: "clamp(170px, 22%, 310px)", enter: fadeIn, inputLockMs: 300 }
       - say: { channel: record, with: [], text: "\"들고 갈 수 있는 게 하나였어요. 나는 그걸 각도라고 불러. 지구본에 점 하나 찍는 거지.\"" }
@@ -103,7 +103,7 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "자료실에서 복사해 왔어요. 1931년에도 같은 말을 한 사람이 있었네요. 방송국 대신 병원에 갔고요." }
       - say: { char: 차피디, with: [지안], text: "그럼 안 늘어난 건가? 아니지, 그때 한 명 찾은 걸로는 몰라. 숫자가 없잖아." }
       - say: { char: 지안, with: [차피디], text: "네. 모르는 거죠." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 지안아 주말에 오니? 김치 담갔다. 통 가져와라" }
+      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "지안아 주말에 오니? 김치 담갔다. 통 가져와라" }
       - say: { channel: action, with: [], text: "읽음 표시만 남긴다. 답은 인터뷰 다녀와서 하기로 한다." }
       - say: { char: 차피디, with: [지안], text: "그 1931년 환자, 그 뒤로 어떻게 됐는지는 있어요?" }
       - say: { char: 지안, with: [차피디], text: "진료부가 거기서 끊겨요. 그 병원이 1945년에 없어졌어요." }
@@ -242,7 +242,7 @@ scenes:
       - say: { char: 지안, with: [문호], text: "그건 선생님이 모르시는 일이에요. 저도 모르고요." }
       - move: { id: 문호, toward: 지안, style: retreat }
       - say: { char: 문호, with: [지안], text: "…내 기억은 진짜요. 갱목 부러지는 소리까지 나요." }
-      - say: { char: 지안, with: [문호], text: "선생님이 기억하는 일은 믿어요. 제가 어떻게 살았는지는 저한테도 모르는 일이에요." }
+      - say: { char: 지안, with: [문호], text: "운산 얘기는 녹취에 남길게요. 제 얘기엔 그렇게 적을 근거가 없어요." }
       - goto: munho_yuna
 
   munho_listen:
@@ -264,7 +264,7 @@ scenes:
       - say: { channel: thought, with: [], text: "아드님이 12년 동안 말을 안 했다고 했다. 그 얘기는 녹취에 넣으라고 했다." }
       - say: { channel: thought, with: [], text: "자기 아들한테 공부 시킨 얘기는 했지만 유나 씨한테 그 얘기까지 했는지는 모르겠다." }
       - say: { channel: action, with: [], text: "녹음기 남은 시간이 41분으로 떠 있다." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 김치 쉰다. 엄마가 택배로 부칠까" }
+      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "김치 쉰다. 엄마가 택배로 부칠까" }
       - goto: glass
 
   # 면회는 예약제고 한 번에 십 분이다. 유리 너머로 보고 수화기로 말한다.
@@ -310,7 +310,7 @@ scenes:
       - wait: 700
       - say: { channel: thought, with: [], text: "말이 안 되면 쓰면 된다. 쓰는 건 내 일이다." }
       - say: { channel: action, with: [], text: "메시지 창을 열었다." }
-      - say: { channel: message, side: me, with: [], text: "엄마 저 다음 주 말고 이번 주에 갈게요 토요일에" }
+      - say: { thread: "엄마", channel: message, side: me, with: [], text: "엄마 저 다음 주 말고 이번 주에 갈게요 토요일에" }
       - say: { channel: action, with: [], text: "전송 버튼을 누르기 전에 쓴 말을 한 번 더 읽는다." }
       - wait: 1100
       - say: { channel: action, with: [], text: "글자를 맨 끝부터 지웠다.", wait: 900, unskippable: true }
@@ -332,7 +332,7 @@ scenes:
       - say: { char: 차피디, with: [지안], text: "뒤에 붙은 건 녹취 원본 양도 동의서. 서명하면 원본은 회사 자산이에요. 편집권도." }
       - say: { char: 지안, with: [차피디], text: "원본도 드려야 돼요? 1부는 복사본으로 방송 잘 나갔잖아요." }
       - say: { char: 차피디, with: [지안], text: "1부 반응이 오니까 재방송이며 해외 판권 얘기가 들어와요. 그때마다 원본을 지안 씨한테 달랠 순 없잖아요." }
-      - say: { char: 차피디, with: [지안], text: "솔직히 말하면, 지안 씨가 그거 들고 나가면 회사가 못 막아요. 그래서 지금 받는 거예요." }
+      - say: { char: 차피디, with: [지안], text: "외부에 같은 원본이 돌면 판권 계약을 못 해요. 계약팀에서 그걸 같이 받으래요." }
       - say: { char: 지안, with: [차피디], text: "…솔직하게 말해 주셔서 감사해요." }
       - say: { char: 차피디, with: [지안], motion: sigh, text: "내가 여기서 14년 일했잖아요. 이런 서류가 무슨 뜻인지 모르고 사인하는 사람 많이 봤어요." }
       - say: { channel: action, with: [], text: "차 피디가 계약서를 넘겨 서명할 칸을 짚어 준다." }
@@ -404,19 +404,19 @@ scenes:
       - place: "그해 9월"
       - say: { channel: system, with: [], text: "「기억하는 사람들」 2부 시청률 6.8%. 클립 조회수 310만. 댓글 4만 2천." }
       - say: { channel: record, with: [], text: "시청자 게시판. \"다온이네 학교 아는데 애들이 걔 전생충이라고 부름\" (추천 912)" }
-      - say: { channel: message, side: them, with: [], text: "엄마: 방송 봤다. 네 이름 맨 끝에 지나가더라. 전화 좀 받아라" }
+      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "방송 봤다. 네 이름 맨 끝에 지나가더라. 전화 좀 받아라" }
       - say: { channel: action, with: [], text: "편집실. 3부 마감이 내일이라 전화는 진동으로 돌려 둔다." }
       - goto: late
 
   sign_no:
     actions:
-      - say: { char: 지안, with: [차피디], text: "죄송해요. 원본은 제가 받은 거라서요. 그분들이 저한테 말한 거지, 회사한테 한 게 아니에요." }
+      - say: { char: 지안, with: [차피디], text: "죄송해요. 원본은 제가 받은 거라서요. 그분들께 방송에 쓸 허락만 받았어요. 원본까지 넘겨도 되는지는 다시 여쭤야 해요." }
       - say: { char: 차피디, with: [지안], motion: sigh, text: "지안 씨. 이거 놓치면 다음은 없어요. 여섯 번째 회사 찾을 거예요?" }
       - say: { char: 지안, with: [차피디], text: "유 선생님부터 다시 뵙고 올게요." }
       - say: { channel: card, with: [], text: "이듬해 가을\n고시원 책상" }
       - say: { channel: system, with: [], text: "『돌아본 사람들』 초판 1,500부. 6개월 판매 412부." }
       - say: { channel: record, with: [], text: "독자 엽서. \"우리 애가 다섯 살 때 하던 말이 이 책에 있었습니다. 병원에 안 데려가도 되겠지요.\" 박다온 어머니." }
-      - say: { channel: message, side: them, with: [], text: "엄마: 책 샀다. 서점에 한 권 있더라. 밥은 먹고 다니니. 보증금은 엄마가 좀 보탤게" }
+      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "책 샀다. 서점에 한 권 있더라. 밥은 먹고 다니니. 보증금은 엄마가 좀 보탤게" }
       - say: { channel: action, with: [], text: "고시원 책상. 다음 증언자가 목포에 있어서, 답은 다녀와서 하기로 한다." }
       - goto: late
 
@@ -461,7 +461,7 @@ scenes:
 
   late_message:
     actions:
-      - say: { channel: message, side: them, with: [], text: "엄마: 지안아 김치 담갔다. 통 가져와라" }
+      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "지안아 김치 담갔다. 통 가져와라" }
       - say: { channel: action, with: [], text: "대화창을 2026년까지 올리면 나오는 메시지다. 답장 칸에는 45년이 지나서도 커서가 깜박인다.", wait: 1800 }
       - say: { channel: thought, with: [], text: "통은 가져가지 않았다. 쉰 김치는 찌개를 하면 된다고 엄마가 말했었다." }
       - say: { channel: thought, with: [], text: "전화번호를 눌러 보면 지금도 엄마라고 뜰까." }

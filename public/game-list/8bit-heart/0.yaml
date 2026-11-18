@@ -158,7 +158,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "저는 윤재 님 뒤에서 이해합니다."
+          text: "저는 윤재 님이 말씀해 주시면 알아요."
       - say:
           char: 윤재
           motion: recoil
@@ -260,22 +260,28 @@ scenes:
       - wait: 0
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1250
           side: me
           with: []
           text: "안녕하세요 혹시 아직 있나요"
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1250
           side: me
           with: []
           text: "혹시 이거 AI 기능 있어요?"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           autoAdvance: 1150
           side: them
           with: []
-          text: "판매자: AI가 뭐요"
+          text: "AI가 뭐요"
       - say:
           char: 윤재.excited
           motion: bounce
@@ -291,22 +297,28 @@ scenes:
           text: "그 0.4%가 지금 내 게임기 들고 있어."
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1250
           side: me
           with: []
           text: "아니에요 없는 게 좋아요"
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1700
           side: me
           with: []
           text: "버튼은 어때요? A랑 B 둘 다 눌러 보셨어요?"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           autoAdvance: 1300
           side: them
           with: []
-          text: "판매자: B 버튼 좀 뻑뻑함"
+          text: "B 버튼 좀 뻑뻑함"
       - say:
           char: 윤재
           motion: nod
@@ -332,12 +344,16 @@ scenes:
           text: "쉿."
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1500
           side: me
           with: []
           text: "버튼 뻑뻑하면 게임을 못 하는데요..."
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1600
           side: me
           with: []
@@ -354,14 +370,18 @@ scenes:
           text: "네."
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           side: me
           with: []
           text: "그래서 혹시 네고 좀 될까요"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           side: them
           with: []
-          text: "판매자: 네고 사절"
+          text: "네고 사절"
       - say:
           char: 윤재
           motion: perk
@@ -377,28 +397,36 @@ scenes:
           text: "나한테서."
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1650
           side: me
           with: []
           text: "2만 7천에 바로 입금 가능해요 지금 당장요"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           autoAdvance: 1050
           side: them
           with: []
-          text: "판매자: 3만 2천"
+          text: "3만 2천"
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           autoAdvance: 1550
           side: me
           with: []
           text: "3만 원에 해주시면 지금 바로 입금할게요"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           autoAdvance: 2000
           side: them
           with: []
-          text: "판매자: 3만 2천. 신문지에 싸서 보내서 택배비도 내가 냄"
+          text: "3만 2천. 신문지에 싸서 보내서 택배비도 내가 냄"
       - say:
           char: 윤재.excited
           motion: hop
@@ -410,27 +438,35 @@ scenes:
       - wait: 0
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           side: me
           with: []
           text: "건전지는요? 넣어주시나요"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           side: them
           with: []
-          text: "판매자: 넣어 드림"
+          text: "넣어 드림"
       - wait: 0
       - wait: 0
       - wait: 0
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           side: me
           with: []
           text: "세이브 되는 것도 확인하셨어요? 껐다 켜서 남아 있는지요"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           side: them
           with: []
-          text: "판매자: 안 해봄"
+          text: "안 해봄"
       - say:
           char: 윤재
           motion: puff
@@ -450,14 +486,18 @@ scenes:
           text: "저는 전부 저장합니다."
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           side: me
           with: []
           text: "언제 받을 수 있어요?"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           side: them
           with: []
-          text: "판매자: 내일 아침 그쪽 지나가요 문 앞에 놓을게요"
+          text: "내일 아침 그쪽 지나가요 문 앞에 놓을게요"
       - say:
           char: 윤재
           with: [비서]
@@ -567,14 +607,18 @@ scenes:
       - clearSticker: { id: s0_premium, leave: wipeRight }
       - say:
           channel: message
+          thread: "판매자"
+          char: "윤재"
           side: me
           with: []
           text: "보냈습니다! 32,000원 확인 부탁드려요"
       - say:
           channel: message
+          thread: "판매자"
+          speakerName: "판매자"
           side: them
           with: []
-          text: "판매자: 확인했어요 내일 아침에 둘게요"
+          text: "확인했어요 내일 아침에 둘게요"
       - say:
           char: 윤재.excited
           motion: bounce

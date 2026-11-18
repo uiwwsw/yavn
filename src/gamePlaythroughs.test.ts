@@ -585,7 +585,7 @@ describe('오버플로', () => {
     const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
       .filter(entry => entry.sceneId === 'phone_reply');
     expect(messages.map(entry => entry.side)).toEqual(['me', 'them', 'me']);
-    expect(messages.map(entry => entry.thread)).toEqual(['아버지', '아버지', '아버지']);
+    expect(messages.map(entry => entry.thread)).toEqual(['동식_연락처', '동식_연락처', '동식_연락처']);
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
       sceneId: 'hospital_message', thread: '월계병원',
     }));

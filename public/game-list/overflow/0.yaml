@@ -36,9 +36,9 @@ scenes:
   phone_reply:
     actions:
       - set: { picked_up: false }
-      - say: { char: 지완, channel: message, thread: 아버지, side: me, with: [], text: "출근 중이에요 이따 전화할게요" }
-      - say: { char: 동식_연락처, channel: message, thread: 아버지, side: them, with: [], text: "네 거 국 빼 놨다. 냄비째 얼려도 되냐" }
-      - say: { char: 지완, channel: message, thread: 아버지, side: me, with: [], text: "반만 얼려요 작은 통에. 일요일에 갈게요" }
+      - say: { thread: "동식_연락처", char: 지완, channel: message, side: me, with: [], text: "출근 중이에요 이따 전화할게요" }
+      - say: { thread: "동식_연락처", char: 동식_연락처, channel: message, side: them, with: [], text: "네 거 국 빼 놨다. 냄비째 얼려도 되냐" }
+      - say: { thread: "동식_연락처", char: 지완, channel: message, side: me, with: [], text: "반만 얼려요 작은 통에. 일요일에 갈게요" }
       - goto: dropped_glove
 
   dropped_glove:
@@ -99,7 +99,7 @@ scenes:
       - clearSticker: { id: o0_appeal, leave: fadeOut }
       - say: { char: 지완, with: [세라], text: "저요? 저 지금 이렇게 대답하고 있잖아요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "네, 저도 알아요. 근데 낮은 점수가 뜨면 혼자 못 들어가게 돼 있어요. 같이 들어갈 간호사가 8시 10분에 와요." }
-      - say: { char: 지완, with: [세라], text: "그럼 아버지한테 저 왔다고만 전해 주실래요? 밖에 있다고요." }
+      - say: { char: 지완, with: [세라], text: "저 왔다고 전해 주세요. 늦은 줄 아실 거예요. 문 밖에 있다고요." }
       - get: appeal_form
       - goto: waiting_area
 
@@ -110,5 +110,5 @@ scenes:
       - say: { channel: action, with: [지완, 수경], camera: wide, text: "지완이 면회표를 들고 돌아서자 건너편 의자에서 아침에 장갑을 주워 준 여자가 일어난다." }
       - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "월계역에서 뵀죠? 방금 01 때문에 문이 안 열린 거예요?" }
       - say: { char: 지완, with: [수경], text: "네. 제가 뭘 더 해야 들어갈 수 있는지 모르겠어요." }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "아침에 길 물어본 것도 이 일 때문이었어요. 저 화면을 만든 팀에서 일해요. 면회 기다리시는 동안 잠깐 얘기할 수 있을까요?" }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "아침에 길 물어본 것도 이 일 때문이었어요. 저 화면을 만든 팀에서 일해요. 잠깐 얘기해도 될까요?" }
       - goto: /1.yaml

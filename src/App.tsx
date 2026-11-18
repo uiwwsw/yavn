@@ -1804,9 +1804,11 @@ export default function App() {
     if (dialogChannel !== 'message') return undefined;
     const line = storyLog.at(-1);
     const thread = line?.kind === 'dialogue' && line.channel === 'message' ? line.thread : undefined;
-    const threadAvatar = resolveRuntimeAssetUrl(phoneAvatarPath(thread ? game?.assets.characters[thread] : undefined), baseUrl, assetOverrides);
-    return selectPhoneConversation(storyLog, { threadAvatar });
-  }, [dialogChannel, storyLog, game?.assets.characters, baseUrl, assetOverrides]);
+    const contactCharacter = thread ? game?.assets.characters[thread] : undefined;
+    const threadAvatar = resolveRuntimeAssetUrl(phoneAvatarPath(contactCharacter), baseUrl, assetOverrides);
+    const threadName = contactCharacter?.name ? fillText(contactCharacter.name) : undefined;
+    return selectPhoneConversation(storyLog, { threadAvatar, threadName });
+  }, [dialogChannel, storyLog, game?.assets.characters, baseUrl, assetOverrides, fillText]);
   const phoneThread = phoneConversation?.bubbles;
   const phoneLiveSender = { speaker: dialogSpeaker, speakerId: dialogSpeakerId, side: dialogSide, avatar: dialogAvatar };
   const phoneContact = dialogChannel === 'message'

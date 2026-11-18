@@ -15,33 +15,42 @@ scenes:
       - say: { channel: action, with: [도윤], text: "신발을 신는데 회사 단톡이 울린다. 도윤이 잠깐 멈춰 화면을 확인한다." }
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "오대리"
           side: them
           with: []
-          text: "[영업2팀] 오대리: 새 팀장님 오늘 오신대요"
+          text: "새 팀장님 오늘 오신대요"
           autoAdvance: 1600
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 9시반 B회의실. 커피 사오지 말래 팀장님이 쏘신대"
+          text: "9시반 B회의실. 커피 사오지 말래 팀장님이 쏘신대"
           autoAdvance: 2080
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 오 첫날부터 점수 따시네ㅋㅋ"
+          text: "오 첫날부터 점수 따시네ㅋㅋ"
           autoAdvance: 1664
       - say:
           channel: message
+          thread: "영업2팀"
           side: me
           char: 도윤
           with: []
           text: "ㅋㅋ"
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 도윤대리님 또 ㅋㅋ만 치심"
+          text: "도윤대리님 또 ㅋㅋ만 치심"
           autoAdvance: 1632
       - bg: { id: office, transition: fade, duration: 500 }
       - music: neon
@@ -90,9 +99,11 @@ scenes:
           text: "처음 뵙겠습니다."
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 두 분 인사 토씨 하나 안 틀리고 똑같으심ㅋㅋ 같은 군대 나오셨나"
+          text: "두 분 인사 토씨 하나 안 틀리고 똑같으심ㅋㅋ 같은 군대 나오셨나"
           autoAdvance: 2336
       - say:
           char: 준성.smirk
@@ -133,7 +144,7 @@ scenes:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "김치찌개 좋죠. 오늘 저도 같이 가도 돼요?"
+          text: "김치찌개 좋죠. 저도 끼워 줘요. 거기 어디에 시켜야 빨리 나오는지도 알려 주고요."
       - say:
           char: 도윤
           motion: bow
@@ -260,33 +271,43 @@ scenes:
       - say: { channel: action, with: [도윤], text: "퇴근길에도 단톡이 쉴 새 없이 울린다. 도윤 이름을 부르는 알림에서 화면을 연다." }
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 팀장님 오전에 병원 다녀오셨대 회의 미뤄진 거 그거 때문"
+          text: "팀장님 오전에 병원 다녀오셨대 회의 미뤄진 거 그거 때문"
           autoAdvance: 2176
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 팀장님 오늘도 도윤대리님만 찾으심ㅋㅋㅋ"
+          text: "팀장님 오늘도 도윤대리님만 찾으심ㅋㅋㅋ"
           autoAdvance: 1856
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 둘이 진짜 아는 사이 아님? 군대ㅋㅋ"
+          text: "둘이 진짜 아는 사이 아님? 군대ㅋㅋ"
           autoAdvance: 1824
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "오대리"
           side: them
           with: []
-          text: "[영업2팀] 오대리: 아 그 윙크ㅋㅋㅋㅋ 나 소름돋았잖아"
+          text: "아 그 윙크ㅋㅋㅋㅋ 나 소름돋았잖아"
           autoAdvance: 1792
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: @한도윤 해명하세요"
+          text: "@한도윤 해명하세요"
           autoAdvance: 1504
       - choice:
           key: e1_rumor
@@ -308,27 +329,33 @@ scenes:
     actions:
       - say:
           channel: message
+          thread: "영업2팀"
           side: me
           char: 도윤
           with: []
           text: "ㅋㅋ군대 어디냐고 나도 물어봄"
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: ㅋㅋㅋㅋ그래서요"
+          text: "ㅋㅋㅋㅋ그래서요"
           autoAdvance: 1440
       - say:
           channel: message
+          thread: "영업2팀"
           side: me
           char: 도윤
           with: []
           text: "말 안해줌"
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 내일 점심 뭐 먹냐"
+          text: "내일 점심 뭐 먹냐"
           autoAdvance: 1504
       - goto: e1_home
 
@@ -336,33 +363,42 @@ scenes:
     actions:
       - say:
           channel: message
+          thread: "영업2팀"
           side: me
           char: 도윤
           with: []
           text: "그런 농담 하지 마요. 팀장님 좀 이상한 사람 같던데"
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 오…"
+          text: "오…"
           autoAdvance: 1248
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "오대리"
           side: them
           with: []
-          text: "[영업2팀] 오대리: 이상한 게 뭔데요??"
+          text: "이상한 게 뭔데요??"
           autoAdvance: 1536
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 뭐 들은 거 있구나?"
+          text: "뭐 들은 거 있구나?"
           autoAdvance: 1536
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 도윤대리님 읽씹ㅋㅋ 궁금하게 해놓고"
+          text: "도윤대리님 읽씹ㅋㅋ 궁금하게 해놓고"
           autoAdvance: 1792
       - goto: e1_home
 
@@ -370,21 +406,27 @@ scenes:
     actions:
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "오대리"
           side: them
           with: []
-          text: "[영업2팀] 오대리: 읽고 튀셨다"
+          text: "읽고 튀셨다"
           autoAdvance: 1376
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 냅둬 결혼 준비 바쁘대"
+          text: "냅둬 결혼 준비 바쁘대"
           autoAdvance: 1568
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 그럼 더 수상한데ㅋㅋ"
+          text: "그럼 더 수상한데ㅋㅋ"
           autoAdvance: 1536
       - goto: e1_home
 
@@ -446,7 +488,7 @@ scenes:
           char: 하린
           motion: shake
           with: [민재, 아진]
-          text: "됐어 됐어. 나 그런 거 관심 없다니까. 둘이 들어."
+          text: "됐어 됐어. 나 혼자 들을 것도 있어. 둘이 들어."
       - say:
           char: 아진.awkward
           motion: nod
@@ -486,7 +528,7 @@ scenes:
           char: 아진.awkward
           motion: laugh
           with: [하린, 민재]
-          text: "아… 내가 너한테도 보내 줄게. 지금 보낼까?"
+          text: "아… 내가 너한테도 보낼걸. 잠깐만, 지금 보낼게."
       - say:
           char: 하린
           motion: laugh
@@ -500,8 +542,8 @@ scenes:
       - bg: { id: harin_room, transition: fade, duration: 900 }
       - place: { text: "그날 밤 · 하린의 방", presentation: center }
       - say: { channel: action, with: [], text: "불을 끄고 누웠는데 셋이 쓰는 단톡이 울린다. 민재가 그 노래를 다시 올려 놨다." }
-      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "이거 1분 20초부터 들어봐 @아진" }
-      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 정아진, with: [], text: "아 아까 이어폰 뺀 데부터네ㅋㅋ" }
+      - say: { char: "민재", channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "이거 1분 20초부터 들어봐 @아진" }
+      - say: { char: "아진", channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 정아진, with: [], text: "아 아까 이어폰 뺀 데부터네ㅋㅋ" }
       - say: { channel: action, with: [], text: "하린은 답장 칸에 ‘나도 봤는데ㅋㅋ 나도 껴줘’라고 써 본다." }
       - goto: h1_type
 
@@ -528,7 +570,7 @@ scenes:
     actions:
       - say: { channel: message, thread: 셋이 쓰는 방, side: me, char: 하린, with: [], text: "나도 봤는데ㅋㅋ 나도 껴줘" }
       - say: { channel: action, with: [], text: "말풍선 옆 숫자가 사라지는데 한동안 답이 없다." }
-      - say: { channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "ㅇㅇ" }
+      - say: { char: "민재", channel: message, thread: 셋이 쓰는 방, side: them, speakerName: 서민재, with: [], text: "ㅇㅇ" }
       - goto: h1_shots
 
   h1_erased:
@@ -553,7 +595,7 @@ scenes:
       - say: { channel: system, with: [], text: "스크린샷 3장 · 최근 삭제된 항목에서 영구 삭제", wait: 600 }
       - add: { deleted: 3 }
       - say: { channel: action, with: [], text: "화면을 끄려는데 아진이 개인 톡을 보낸다." }
-      - say: { channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "하린아 오늘 생윤 조 그거 미안" }
+      - say: { char: "아진", channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "하린아 오늘 생윤 조 그거 미안" }
       - say: { channel: message, thread: 아진, side: me, char: 하린, with: [], text: "뭐가 미안해 ㅋㅋ 나 혼자 하는 게 편해" }
-      - say: { channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "낼 나랑 잠깐 얘기할래? 둘이서" }
+      - say: { char: "아진", channel: message, thread: 아진, side: them, speakerName: 정아진, with: [], text: "낼 나랑 잠깐 얘기할래? 둘이서" }
       - goto: /2.yaml

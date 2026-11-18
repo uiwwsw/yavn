@@ -258,7 +258,7 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "속까지 얼지 않아도 팔다리 겉은 이렇게 단단해질 수 있소."
+          text: "속까지 얼진 않았어요. 턱은 움직이는데 팔다리 겉만 단단합니다."
       - say:
           char: 도원.troubled
           with: [서연, 막쇠]
@@ -727,11 +727,11 @@ scenes:
       - say:
           char: 서연
           with: [도원]
-          text: "그럼 안 하셔도 됩니다."
+          text: "나리 이름을 빼면, 제 시장만으로 고발할 수는 없습니까?"
       - say:
           char: 도원.stern
           with: [서연]
-          text: "그래도 내가 할 일이오. 형조에 같이 갑시다."
+          text: "초검관이 나였소. 내 이름으로 올리겠소. 같이 갑시다."
       - say:
           char: 서연
           with: [도원]

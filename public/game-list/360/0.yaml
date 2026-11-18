@@ -207,7 +207,7 @@ scenes:
       - say: { char: 봉구, with: [끝순], text: "왔지. 여덟 살 먹은 게 어미 등에 업혀 왔더라." }
       - say: { char: 만석, with: [끝순, 봉구], text: "기침이 왜 그 모양이냐." }
       - say: { char: 끝순, with: [만석], text: "밤바람 좀 쐤어요. 포구에 군사들 내리는 거 구경하느라고." }
-      - say: { char: 봉구, with: [만석], text: "열여섯 먹은 처자가 총 멘 것들을 구경해?" }
+      - say: { char: 봉구, with: [만석], text: "총 멘 것들한테 왜 가까이 가. 덕이보다 네가 더 애 같다." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 멀리 있었어요. 말이 코앞까지 왔는데, 고개를 한참 들어야 눈이 보이더라고요." }
       - mood: { tone: warm, level: 2 }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다. 어려서부터 그랬다." }
@@ -281,7 +281,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "그것도 안다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석, 봉구], text: "덕이네는 애가 넷이에요, 오라버니. 닷 되면 나흘인데." }
-      - say: { char: 봉구, with: [끝순, 만석], text: "그래서 엿 되 주자고? 네가 서기 해라, 그럼." }
+      - say: { char: 봉구, with: [끝순, 만석], text: "엿 되? 닷 되씩 해도 모자란다는데 너까지 왜 그래." }
       - say: { channel: action, with: [], text: "해 질 때까지 되로 쌀을 퍼 줬다. 우리 쌀 백마흔 섬 중에 스무 섬이 나갔다." }
       - say: { channel: action, with: [], text: "덕이 어멈이 절을 하려는 걸 그 애가 붙들어 일으켰다." }
       - goto: fever
@@ -465,7 +465,7 @@ scenes:
       - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "쌀을 풀고 4년 뒤 여름 · 제물포 뒷골목 셋방" }
       - say: { char: 끝순, with: [만석], text: "아버지, 저 내일부터 왜인 정미소 나가요. 쌀에서 뉘 고르는 일인데 하루 열두 전이래요." }
       - say: { char: 만석, with: [끝순], text: "거긴 겨 먼지가 눈처럼 날린다더라. 네 기침에 거길 어찌 가." }
-      - say: { char: 끝순, with: [만석], motion: laugh, text: "그럼 아버지가 벌어 오시든가요. …농이에요. 방세가 석 달 밀렸어요." }
+      - say: { char: 끝순, with: [만석], motion: laugh, text: "그럼 아버지가 대신 가실래요? …방세부터 내야죠. 석 달 밀렸잖아요." }
       - say: { char: 끝순, with: [만석], text: "아버지. 그때 쌀 푼 거요." }
       - say: { char: 만석, with: [끝순], text: "…" }
       - say: { char: 끝순, with: [만석], text: "잘한 거예요." }

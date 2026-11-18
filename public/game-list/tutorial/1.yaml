@@ -496,12 +496,14 @@ scenes:
           text: "접속 기록 · 4/14 00:12–04:04 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 11회"
       - say:
           channel: message
+          thread: "지영"
           side: them
           char: 지영
           with: []
           text: "해수 너 오늘 오픈인데 9시 41분이야"
       - say:
           channel: message
+          thread: "지영"
           side: me
           char: 해수
           with: []
@@ -509,6 +511,7 @@ scenes:
       - wait: 0
       - say:
           channel: message
+          thread: "경준"
           side: them
           char: 경준
           with: []
@@ -723,7 +726,7 @@ scenes:
           char: 광철.lost
           motion: shiver
           with: [해수]
-          text: "요 며칠 밤마다 집에서 누가 소릴 질러. 하도 그래서 경찰도 불렀어. 와 보니까 나밖에 없대."
+          text: "밤에 자꾸 소리가 나. 경찰이 왔는데 나 혼자라고 그냥 갔어. 며칠째 그래."
           wait: 950
       - say:
           char: 광철.lost
@@ -764,7 +767,7 @@ scenes:
       - say:
           char: 해수.service
           with: [광철]
-          text: "다시 사시면 됩니다, 고객님."
+          text: "…이번에는 낱개로 드릴까요, 고객님."
       - wait: 0
       - say:
           char: 광철

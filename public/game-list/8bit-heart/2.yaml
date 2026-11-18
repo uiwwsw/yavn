@@ -152,7 +152,7 @@ scenes:
           char: 윤재.excited
           motion: bounce
           with: [로봇]
-          text: "말했어. 말했다고. 계산기가 우주선을 띄웠어."
+          text: "야, 얘 말해! 고개도 움직여. 내가 이걸 켰어."
       - wait: 460
       - say:
           char: 로봇.glitch
@@ -257,7 +257,7 @@ scenes:
           char: 로봇
           speakerName: "안드로이드"
           with: [윤재]
-          text: "종이가 중요한 척."
+          text: "물건 가져가면 종이 줌."
       - say:
           char: 로봇
           speakerName: "안드로이드"
@@ -397,12 +397,12 @@ scenes:
           char: 로봇
           speakerName: "안드로이드"
           with: [윤재]
-          text: "그건 규칙에는 안 넣을게."
+          text: "업데이트 받는 곳 없음."
       - say:
           char: 로봇
           speakerName: "안드로이드"
           with: [윤재]
-          text: "업데이트는 안 받는 걸로 그냥 기억해 둘게."
+          text: "그럼 나도 이어폰처럼 꺼지지는 않음?"
       - say:
           char: 윤재
           with: [로봇]
@@ -781,7 +781,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그게 농담이 아니라 면책 조항이야, 이 고물아."
+          text: "꿈 이뤄 달라고 따지지 말라는 거야. 나도 딱 거기까지밖에 못 해."
       - say:
           channel: system
           with: []
@@ -822,7 +822,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "종이는 중요한 척."
+          text: "물건 가져가면 주는 종이."
       - say:
           char: 로봇
           with: [윤재]

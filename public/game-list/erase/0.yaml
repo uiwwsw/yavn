@@ -90,7 +90,7 @@ scenes:
           enter: fadeIn
       - say: { char: 도윤, with: [지수], text: "앞에 거 보셨어요? 저 눈 감은 건 빼 주세요." }
       - say: { char: 지수.warm, with: [도윤], text: "청첩장은 이걸로 할게요. 눈 감은 것도 한 장만 보내 주세요. 그건 제가 갖고 싶어요." }
-      - say: { char: 도윤.smile, with: [지수], text: "그거까지 나 주면 안 돼? 나도 너 웃는 거 다시 보고 싶어." }
+      - say: { char: 도윤.smile, with: [지수], text: "그건 너만 봐. 민석이 보면 식장에 틀어." }
       - get: invitation
       - clearSticker: { id: e0_invite, leave: fadeOut }
       - goto: e0_club
@@ -170,7 +170,7 @@ scenes:
       - say: { char: 도윤, with: [준성], text: "그쪽도 몇 번 보셨나 보네요." }
       - say: { char: 준성.smirk, speakerName: "낯선 남자", with: [도윤], text: "네. 저랑 눈 마주치고 얼른 잔 드시던데요." }
       - say: { char: 도윤, with: [준성], text: "계속 쳐다보긴 좀 그렇잖아요. 여긴 제 친구도 있고." }
-      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "저도 제 친구 있었으면 그냥 갔어요. 방금도 담배 얘기부터 했잖아요." }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "아까 일행 있는 거 보고 그냥 갈까 했어요. 담배 핑계 좀 댔죠." }
       - say: { char: 도윤.smile, with: [준성], text: "진짜 담배 피우는 줄 알았어요." }
       - say: { channel: action, with: [도윤, 준성], text: "둘이 웃는다. 도윤이 지수한테 보낸 톡을 다시 보고 휴대폰을 뒤집는다." }
       - say: { char: 도윤, with: [준성], text: "저 다음 달에 결혼해요.", wait: 400 }
@@ -293,6 +293,7 @@ scenes:
     actions:
       - say:
           channel: message
+          thread: "낯선 남자"
           side: them
           char: 준성
           speakerName: "낯선 남자"
@@ -300,6 +301,7 @@ scenes:
           text: "번호 찍어 둘게요ㅎㅎ 뭐라고 저장해요?"
       - say:
           channel: message
+          thread: "낯선 남자"
           side: me
           char: 도윤
           with: []

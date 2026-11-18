@@ -23,7 +23,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "네가 말한 드론 신호가 여기서 나오는 거지? 최종 던전 입구. BGM 바뀐 거 들리냐."
+          text: "네가 말한 드론 신호가 여기서 나오는 거지? 최종 던전 입구네. 브금 한번 요란하다."
       - emote: { id: 윤재, motion: shiver }
       - say:
           char: 로봇.thinking
@@ -747,7 +747,7 @@ scenes:
           char: 로봇.thinking
           motion: lean_in
           with: [윤재]
-          text: "말해 줄까?"
+          text: "지금 말해도 됨?"
       - emote: { id: 윤재, motion: shake, repeat: 2 }
       - say:
           char: 윤재
@@ -1032,12 +1032,12 @@ scenes:
           char: 로봇
           motion: hop
           with: [윤재]
-          text: "이유는 분석 안 할래."
+          text: "왜 좋은지는 나중에 물어봐."
       - say:
           char: 로봇
           motion: hop
           with: [윤재]
-          text: "아까우니까."
+          text: "걷는 데 배터리 써야 함."
       - say:
           char: 윤재
           with: [로봇]

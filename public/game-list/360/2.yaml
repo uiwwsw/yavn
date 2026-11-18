@@ -20,7 +20,7 @@ scenes:
       - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "할아버지 보청기 뺐어, 내가 봤어. 너 몇 살이라 그랬지?" }
       - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
       - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "난 수경이야. 그냥 누나라 불러." }
-      - say: { char: 수경, with: [민재], text: "난 스물하나. 학교는 쉬고 있어. 미대 다녀. 너 입원 처음이지?" }
+      - say: { char: 수경, with: [민재], text: "나 스물하나. 미대 다니다 쉬는 중. 넌 입원 처음이지?" }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
       - say: { char: 수경, with: [민재], text: "뭐긴 뭐야." }
       - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그렇게 꽂아 뒀는데 쉽게 안 빠져." }
@@ -190,7 +190,7 @@ scenes:
       - say: { char: 수경, with: [민재], delivery: whisper, text: "약봉지밖에 종이가 없더라. 이게 제일 큰 거. 이건 다리. 이 점이 나." }
       - clearSticker: { id: sketch, leave: fadeOut }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "점이네요, 진짜." }
-      - say: { char: 수경, with: [민재], delivery: whisper, text: "멀리서 보면 다 점이야. 너도 왔으면 점 두 개였을 텐데." }
+      - say: { char: 수경, with: [민재], delivery: whisper, text: "여기 네 점도 찍으려다 말았어. 다음엔 같이 와." }
       - say: { channel: action, with: [], text: "잠깐 빌려 본 약봉지를 누나에게 돌려준다. 누나는 더 그릴 자리가 남았는지 뒷면을 본다." }
       - say: { char: 민재, with: [수경], delivery: whisper, text: "…누나. 다리는 언제 걸어요." }
       - say: { char: 수경, with: [민재], delivery: whisper, text: "퇴원하면. 너도 와. 양쪽 끝에서 시작해서 가운데서 만나는 거야." }
@@ -212,7 +212,7 @@ scenes:
       - say: { char: 수경, with: [민재], motion: laugh, text: "아무도 우리 안 봐. 너도 고개 들어 봐. 저기 또 터진다." }
       - say: { char: 수경, with: [민재], text: "나 퇴원하면 저 다리 걸어서 건널 거야. 이쪽 끝에서 저쪽 끝까지." }
       - say: { char: 민재, with: [수경], text: "그게 소원이에요?" }
-      - say: { char: 수경, with: [민재], text: "소원은 아껴야지. 그건 계획이야." }
+      - say: { char: 수경, with: [민재], text: "소원까지야. 퇴원하면 그냥 가면 되지. 너도 올래?" }
       - effect: fireworks
       - say: { channel: action, with: [], text: "따라 고개를 들었다. 눈앞에서 초록 불빛이 퍼지고, 한참 뒤에 쿵 소리가 왔다." }
       - say: { char: 민재, with: [수경], text: "누나. 저 다리 몇 미터예요?" }

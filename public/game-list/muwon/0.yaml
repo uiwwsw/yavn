@@ -84,7 +84,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "등잔 좀 이리 주십시오. 검안할 차례는 읽어 왔습니다."
+          text: "아저씨, 등잔 좀 이리 주세요. 손부터 볼게요."
       - wait: 0
       - say:
           channel: action
@@ -105,7 +105,7 @@ scenes:
           char: 도원.stern
           speakerName: "한성부 판관"
           with: [서연, 막쇠]
-          text: "한성부 판관 김도원이오. 동네 사람들은 분이가 혼례가 두려워 우물에 뛰어들었다 하오."
+          text: "한성부 판관 김도원이오. 혼례가 두려워 몸을 던졌다는데, 직접 살펴보셨소?"
       - wait: 0
       - say:
           char: 도원.stern
@@ -188,7 +188,7 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "그럼 산 채로 물에 빠졌다고 단정할 순 없겠네요."
+          text: "거품이 없네요. 살아서 빠졌는지는 더 봐야겠어요."
       - set: { c1_mouth: true }
       - goto: c1_examine
 
@@ -307,7 +307,7 @@ scenes:
       - say:
           char: 도원
           with: [서연]
-          text: "그럼 목의 손자국은 누가 낸 것이오? 제 손으로는 저리 못 조르오."
+          text: "목에 손자국이 있지 않소. 그 자국은 어찌 생겼겠소?"
       - say:
           channel: thought
           text: "목에 남은 엄지 자국을 다시 본다."
@@ -425,7 +425,7 @@ scenes:
       - say:
           char: 서연.resolve
           with: [강치수, 도원]
-          text: "손톱 두 개가 깨졌는데 이 사람 손등에는 생채기 하나 없습니다. 혼수 때문에 싸웠다는 말만 듣고 매를 들 일은 아니지요."
+          text: "분이 손톱은 두 개가 깨졌습니다. 저 손등엔 생채기도 없는데, 무엇으로 범인이라 하십니까?"
       - say:
           char: 강치수
           with: [서연]
@@ -437,7 +437,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 강치수]
-          text: "이 사람 소매엔 남빛 실도 보이지 않는군. 못 박아 두기 전에 실부터 확인합시다."
+          text: "이 사람 소매엔 남빛 실도 없소. 포교, 실부터 확인하겠소."
       - set: { c1_brother: true }
       - goto: c1_follow_thread
 

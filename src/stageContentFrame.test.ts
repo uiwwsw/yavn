@@ -62,8 +62,9 @@ describe('responsive stage content frame', () => {
     expect(effectViewportRule).toContain('contain: paint;');
   });
 
-  it('normalizes static actor height across mobile and desktop play frames', () => {
+  it('uses the shared actor height with a portrait-phone width allowance for trios', () => {
     expect(styles).toContain('--char-image-height: 52cqh;');
+    expect(styles).toMatch(/\.char-layer\.char-layout-trio \.char-image \{\s*--char-slot-width-scale: 1\.5;/);
     expect(styles).not.toMatch(/\.char-layer\.char-layout-(?:duo|trio) \.char-image[^{}]*\{[^}]*--char-image-height:/);
     expect(styles).toMatch(
       /\.char-layer-prompt-top\.char-layout-trio \.char-image\s*\{\s*--char-image-height: min\(\s*calc\(var\(--prompt-character-stage-height\) \/ var\(--character-speaker-scale, 1\)\),\s*var\(--char-actor-width-budget\)/,

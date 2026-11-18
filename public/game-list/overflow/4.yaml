@@ -16,7 +16,7 @@ scenes:
       - say: { char: 지완, with: [세라], text: "어제 그냥 가셨다는 분은요? 전화 받으셨어요?" }
       - say: { char: 세라, with: [지완], text: "오고 계신댔어요. 제가 본 건 써 드릴 수 있는데, 저분 기록은 저분이 직접 확인하셔야 해요." }
       - char: { id: 수경, position: center }
-      - say: { char: 수경, with: [지완, 세라], text: "병원에 둘이 같이 내면 출입 기준을 다시 봐 달라고 할 수 있어요. 밖에 알리고 싶으시면 지역 기자한테 설명할게요. 어느 쪽이든 자료는 지완 씨 거예요." }
+      - say: { char: 수경, with: [지완, 세라], text: "저분도 원하시면 출입 기준을 같이 바꿔 달라고 요청해 봐요. 밖에 알리실 거면 제 설명도 붙일게요. 자료부터 보세요." }
       - say: { channel: action, with: [지완, 수경, 세라], text: "그때 한 여자가 아이 손을 잡고 들어온다. 어제 면회 못 하고 갔다고 이야기하자 세라가 접수표를 찾는다." }
       - choice:
           key: o4_end
@@ -45,8 +45,8 @@ scenes:
       - say: { char: 지완, with: [수경], text: "그 01 때문에 저는 밖에서 기다렸어요. 아버지한텐 제가 어디 있는지도 늦게 전해졌고요." }
       - bg: { id: wolgye_station, transition: fade, duration: 520 }
       - place: { text: "보도 다음 날 아침 · 월계역", presentation: center }
-      - say: { channel: message, side: them, char: 도겸, with: [], text: "팀장님이 뉴스에 지완 씨 맞냐는데요 일단 답 안 했어요" }
-      - say: { channel: message, side: me, char: 지완, with: [], text: "저 맞아요. 월요일 새벽조 그대로 간다고 해 주세요" }
+      - say: { thread: "도겸", channel: message, side: them, char: 도겸, with: [], text: "팀장님이 뉴스에 지완 씨 맞냐는데요 일단 답 안 했어요" }
+      - say: { thread: "도겸", channel: message, side: me, char: 지완, with: [], text: "저 맞아요. 월요일 새벽조 그대로 간다고 해 주세요" }
       - ending: broadcast
 
   correct_record:
@@ -84,10 +84,10 @@ scenes:
       - bg: ward_entry
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { char: 지완, with: [세라], text: "어제 저도 저분처럼 기다렸다고 얘기해도 될까요? 신청서 한 장 더 주세요. 원하시면 같이 내 보게요." }
+      - say: { char: 지완, with: [세라], text: "신청서 한 장 더 주세요. 저분한테도 얘기해 볼게요. 어제 저도 여기서 기다렸다고요." }
       - say: { channel: action, with: [지완], text: "여자는 어제 접수표를 받아 든다. 어제 도착한 시간 옆에 ‘면회 전 귀가’라고 적혀 있다." }
       - say: { channel: dialogue, speakerName: "보호자", with: [지완], text: "아빠는 내가 안 온 줄 알아요. 저도 같이 적어도 돼요?" }
-      - say: { char: 지완, with: [세라], text: "네. 면회를 막기 전에 직원이 먼저 직접 확인해 달라고 쓰려고요. 어제 몇 시까지 기다리셨어요?" }
+      - say: { char: 지완, with: [세라], text: "네. 몇 시까지 기다리셨어요? 저는 먼저 대답을 들어 보고 면회를 정해 달라고 쓰려고요." }
       - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 출입을 제한하기 전에 직원이 직접 확인할 것.\n신청인 두 명 · 병원 답변 대기" }
       - bg: { id: dongsik_house, transition: fade, duration: 650 }
       - place: { text: "퇴원 뒤 일요일 점심 · 아버지 집", presentation: center }
