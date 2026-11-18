@@ -12,11 +12,11 @@ scenes:
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { char: 세라, with: [지완], text: "문지완 님은 이 면회증으로 바로 들어가실 수 있어요. 어제 뜬 01도 고치시려면 이의 신청서에 이름 써 주세요." }
-      - say: { char: 지완, with: [세라], text: "어제 그냥 가셨다는 분은요? 전화 받으셨어요?" }
-      - say: { char: 세라, with: [지완], text: "오고 계신댔어요. 제가 본 건 써 드릴 수 있는데, 저분 기록은 저분이 직접 확인하셔야 해요." }
+      - say: { char: 세라, with: [지완], text: "오늘부터는 이걸로 들어가시면 돼요. 어제 판정은 이의 신청하실 수 있고요." }
+      - say: { char: 지완, with: [세라], text: "어제 면회 못 하고 가신 분, 연락은 됐어요?" }
+      - say: { char: 세라, with: [지완], text: "네, 지금 오고 계세요." }
       - char: { id: 수경, position: center }
-      - say: { char: 수경, with: [지완, 세라], text: "저분도 원하시면 출입 기준을 같이 바꿔 달라고 요청해 봐요. 밖에 알리실 거면 제 설명도 붙일게요. 자료부터 보세요." }
+      - say: { char: 수경, with: [지완, 세라], text: "신청서에 제 이름도 적어 주세요. 기기가 왜 잘못 표시했는지는 제가 설명할게요." }
       - say: { channel: action, with: [지완, 수경, 세라], text: "그때 한 여자가 아이 손을 잡고 들어온다. 어제 면회 못 하고 갔다고 이야기하자 세라가 접수표를 찾는다." }
       - choice:
           key: o4_end
@@ -35,14 +35,14 @@ scenes:
   publish_readings:
     title: "뉴스에 나온 이름"
     actions:
-      - say: { char: 지완, with: [수경], text: "제 이름하고 제 기록은 공개할게요. 아버지 병실이랑 다른 분들 정보는 빼 주세요." }
+      - say: { char: 지완, with: [수경], text: "제 기록은 써도 돼요. 아버지 이름은 빼 주시고요." }
       - bg: { id: studio, transition: fade, duration: 600 }
       - place: { text: "3일 뒤 · 지역 뉴스 녹화", presentation: center }
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
       - say: { channel: record, with: [], text: "공개 자료 · 문지완 본인 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
       - say: { char: 수경, with: [지완], text: "네, 제가 검수한 버전입니다. 병실에 들어간 뒤 다시 잰 기록이에요. 검사기는 101을 받았는데 렌즈 화면은 01이었어요." }
-      - say: { char: 지완, with: [수경], text: "그 01 때문에 저는 밖에서 기다렸어요. 아버지한텐 제가 어디 있는지도 늦게 전해졌고요." }
+      - say: { char: 지완, with: [수경], text: "저는 문 밖에서 기다렸어요. 아버지는 제가 아직 안 온 줄 아셨대요." }
       - bg: { id: wolgye_station, transition: fade, duration: 520 }
       - place: { text: "보도 다음 날 아침 · 월계역", presentation: center }
       - say: { thread: "도겸", channel: message, side: them, char: 도겸, with: [], text: "팀장님이 뉴스에 지완 씨 맞냐는데요 일단 답 안 했어요" }
@@ -55,12 +55,12 @@ scenes:
       - bg: ward_entry
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { char: 지완, with: [세라], text: "어제 제가 몇 시에 왔는지도 적을 수 있어요? 아버지가 제가 늦게 온 줄 아셨어요." }
-      - say: { char: 세라, with: [지완], text: "그날 접수한 시간이 남아 있어요. 같이 넣을게요. 결과 나오면 연락드릴 테니 오늘은 이 면회증으로 들어가세요." }
+      - say: { char: 지완, with: [세라], text: "접수한 시간도 같이 적어 주세요. 제가 늦게 온 건 아니었다고요." }
+      - say: { char: 세라, with: [지완], text: "네. 접수 기록 확인해서 같이 넣을게요. 결과는 나오는 대로 연락드릴게요." }
       - place: { text: "이틀 뒤 · 월계병원 면회 접수", presentation: center }
       - say: { channel: action, with: [지완, 세라], text: "세라가 처음 받은 접수표 옆에 이의 신청 결과지를 나란히 놓는다." }
       - say: { channel: record, with: [], text: "문지완 · 이의 신청 처리 완료\n‘무반응 의심’ 판정 철회\n첨부: 진단 출력물, 당일 접수 시각 및 직원 확인 기록" }
-      - say: { char: 지완, with: [세라], text: "처음에 뜬 것도 한 장 주실래요? 둘 다 아버지한테 갖다 드리려고요." }
+      - say: { char: 지완, with: [세라], text: "감사합니다. 두 장 다 아버지 보여 드려야겠어요." }
       - ending: one_file
 
   use_new_pass:
@@ -68,7 +68,7 @@ scenes:
     actions:
       - bg: ward_entry
       - char: { id: 지완, position: left }
-      - say: { char: 지완, with: [세라], text: "오늘은 그냥 들어갈게요. 아버지 점심 전에 봬야 돼서요." }
+      - say: { char: 지완, with: [세라], text: "감사합니다. 오늘은 들어가 볼게요." }
       - say: { channel: action, with: [], sound: ward_door, text: "지완이 새 면회증을 대자 자동문이 열린다. 어제 받은 표는 주머니에 넣는다." }
       - bg: { id: ward_bed, transition: dissolve, duration: 420 }
       - place: "같은 날 아침 · 308호"
@@ -84,10 +84,10 @@ scenes:
       - bg: ward_entry
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { char: 지완, with: [세라], text: "신청서 한 장 더 주세요. 저분한테도 얘기해 볼게요. 어제 저도 여기서 기다렸다고요." }
+      - say: { char: 지완, with: [세라], text: "신청서 한 장만 더 주시겠어요? 저분이랑 얘기해 보고 올게요." }
       - say: { channel: action, with: [지완], text: "여자는 어제 접수표를 받아 든다. 어제 도착한 시간 옆에 ‘면회 전 귀가’라고 적혀 있다." }
-      - say: { channel: dialogue, speakerName: "보호자", with: [지완], text: "아빠는 내가 안 온 줄 알아요. 저도 같이 적어도 돼요?" }
-      - say: { char: 지완, with: [세라], text: "네. 몇 시까지 기다리셨어요? 저는 먼저 대답을 들어 보고 면회를 정해 달라고 쓰려고요." }
+      - say: { channel: dialogue, speakerName: "보호자", with: [지완], text: "저도 같이 내도 될까요? 아버지가 제가 안 온 줄 아셔서요." }
+      - say: { char: 지완, with: [세라], text: "네. 여기 제 거 보시고 쓰셔도 돼요." }
       - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 출입을 제한하기 전에 직원이 직접 확인할 것.\n신청인 두 명 · 병원 답변 대기" }
       - bg: { id: dongsik_house, transition: fade, duration: 650 }
       - place: { text: "퇴원 뒤 일요일 점심 · 아버지 집", presentation: center }
@@ -95,5 +95,5 @@ scenes:
       - char: { id: 지완, position: left }
       - say: { channel: action, with: [지완, 동식], text: "지완이 식탁에 그릇을 두 개 놓는다. 아버지가 냉동실에서 작은 통을 꺼내 온다." }
       - say: { char: 동식, with: [지완], text: "반만 얼렸다. 나머진 냄비에." }
-      - say: { char: 지완, with: [동식], text: "아버지도 드셔야죠. 그건 넣어 둬요. 제가 데울게요." }
+      - say: { char: 지완, with: [동식], text: "앉아 계세요. 오늘은 제가 차릴게요." }
       - ending: appeal

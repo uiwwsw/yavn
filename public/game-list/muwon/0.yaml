@@ -105,7 +105,7 @@ scenes:
           char: 도원.stern
           speakerName: "한성부 판관"
           with: [서연, 막쇠]
-          text: "한성부 판관 김도원이오. 혼례가 두려워 몸을 던졌다는데, 직접 살펴보셨소?"
+          text: "한성부 판관 김도원이오. 혼례가 두려워 몸을 던졌다 하오."
       - wait: 0
       - say:
           char: 도원.stern
@@ -115,7 +115,7 @@ scenes:
       - say:
           char: 서연
           with: [도원, 막쇠]
-          text: "나리, 손톱 밑에 남빛 실이 있습니다. 이 실이 어찌 들어갔는지부터 보시지요."
+          text: "나리, 손톱 밑에 남빛 실이 있습니다. 먼저 손부터 살피겠습니다."
       - say:
           channel: action
           with: []
@@ -242,7 +242,7 @@ scenes:
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "송장 살피는 데 쓴다 하면 주모가 놀라겠구먼."
+          text: "얻어 오겠수. 송장 살핀다 하면 주모가 놀라겠구먼."
       - say:
           channel: action
           with: []
@@ -327,7 +327,7 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "…자진으로 올리면 오늘 밤 일이 끝났을 텐데."
+          text: "…밤이 길어지겠군."
       - say:
           char: 도원
           with: [서연]

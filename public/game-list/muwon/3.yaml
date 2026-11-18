@@ -70,7 +70,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연, 도원]
-          text: "그렇지."
+          text: "그건 아직 모르지요."
       - say:
           channel: thought
           with: []
@@ -98,7 +98,7 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연, 막쇠]
-          text: "얼음지기는 글을 못 읽소. 장부에 찍힌 도장은 알아보더군."
+          text: "이름은 모른다 하오. 글은 못 읽어도 장부의 도장은 알아보더군."
       - say:
           char: 막쇠
           with: [서연, 도원]
@@ -266,11 +266,11 @@ scenes:
       - say:
           char: 서연
           with: [도원]
-          text: "안 됩니다. 얼음지기는 본 대로 말한 거예요."
+          text: "예. 굳은 몸만 보고는 판단할 수 없습니다."
       - say:
           char: 서연
           with: [도원]
-          text: "누가 얼음 곁에 두었는지 출납부터 봐야겠어요."
+          text: "얼음을 누가 받아 갔는지 출납부부터 살피겠습니다."
       - set: { c4_stiff: true }
       - goto: c4_body
 
@@ -344,11 +344,11 @@ scenes:
       - say:
           char: 서연.think
           with: [도원]
-          text: "서빙고에서 방금 살핀 몸을 다시 보십시오. 윤길이 죽은 건 오늘 낮으로 보입니다."
+          text: "나리, 윤길이 죽은 것은 오늘 낮으로 보입니다."
       - say:
           char: 서연.think
           with: [도원]
-          text: "몸을 얼려 둔 탓에 죽은 지 며칠 된 것처럼 보였어요."
+          text: "몸이 얼어 있어 오래된 것처럼 보였던 겁니다."
       - say:
           char: 도원.troubled
           with: [서연]
@@ -364,11 +364,11 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "그동안 범인은?"
+          text: "윤길을 옮긴 사람이 누군지 알겠소?"
       - say:
           char: 서연
           with: [도원]
-          text: "얼음을 가져간 사람이 윤길을 옮겼는지부터 알아봐야겠어요."
+          text: "아직은 모릅니다. 오늘 얼음을 받아 간 사람부터 찾아봐야 합니다."
       - say:
           char: 도원
           with: [서연]
@@ -667,7 +667,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "나이 모름. 몇 살이오, 하고 내게 먼저 물어본 사람인데."
+          text: "나이 모름. 그 사람 나이를 한 번도 물어보지 않았다."
       - goto: c4_seal_owner
 
   c4_saved:

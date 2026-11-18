@@ -88,7 +88,7 @@ scenes:
           y: 42
           width: "clamp(180px, 30%, 330px)"
           enter: fadeIn
-      - say: { char: 도윤, with: [지수], text: "앞에 거 보셨어요? 저 눈 감은 건 빼 주세요." }
+      - say: { char: 도윤, with: [지수], text: "저 눈 감은 건 빼 주시겠어요? 청첩장에 들어갈 거라서요." }
       - say: { char: 지수.warm, with: [도윤], text: "청첩장은 이걸로 할게요. 눈 감은 것도 한 장만 보내 주세요. 그건 제가 갖고 싶어요." }
       - say: { char: 도윤.smile, with: [지수], text: "그건 너만 봐. 민석이 보면 식장에 틀어." }
       - get: invitation
@@ -161,12 +161,12 @@ scenes:
           text: "민석아 화장실에서 자냐"
       - char: { id: 준성, position: right }
       - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "저기, 담배 하나만 빌릴 수 있어요?" }
-      - say: { char: 도윤, with: [준성], text: "저 끊었어요. 라이터는 있는데." }
-      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "라이터는 왜 갖고 다녀요?" }
-      - say: { char: 도윤.smile, with: [준성], text: "그러게요. 벌써 석 달인데. 여기 앉으실래요? 일행이면 저쪽에 같이 앉아도 되고." }
-      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "저 혼자예요. 아까 바에서 같이 있던 분은요?" }
-      - say: { char: 도윤, with: [준성], text: "친구요. 오늘 걔 생일이에요. 왜요?" }
-      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "제가 몇 번 봤는데요. 자꾸 이쪽 보시길래 아는 사람 있나 했죠." }
+      - say: { char: 도윤, with: [준성], text: "아, 담배는 안 피워요. 라이터는 있는데." }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "라이터만요?" }
+      - say: { char: 도윤.smile, with: [준성], text: "끊은 지 석 달인데 아직 들고 다니네요. 여기 앉으실래요?" }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "네, 잠깐만요. 일행분은 어디 가셨어요?" }
+      - say: { char: 도윤, with: [준성], text: "화장실 갔어요. 걔 생일이라 나왔는데 안 오네요." }
+      - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "금방 오시겠죠. 아까부터 이쪽 보시길래, 아는 분인 줄 알았어요." }
       - say: { char: 도윤, with: [준성], text: "그쪽도 몇 번 보셨나 보네요." }
       - say: { char: 준성.smirk, speakerName: "낯선 남자", with: [도윤], text: "네. 저랑 눈 마주치고 얼른 잔 드시던데요." }
       - say: { char: 도윤, with: [준성], text: "계속 쳐다보긴 좀 그렇잖아요. 여긴 제 친구도 있고." }
@@ -223,7 +223,7 @@ scenes:
           char: 준성
           speakerName: "낯선 남자"
           with: [도윤]
-          text: "물 좀 마실래요? 아침에 일정 있으면 지금 그만 마시는 게 낫겠어요."
+          text: "물 좀 드세요. 아까 가야 된다고 하셨잖아요."
       - say:
           char: 도윤
           motion: laugh

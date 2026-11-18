@@ -29,11 +29,11 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "다만 하나만 여쭙겠습니다. 저 아이가 올해 몇 살입니까?"
+          text: "다만 저 의녀는 열여덟이라 들었습니다."
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "열여덟 의녀와 오작인의 말을 근거로 저를 고발하셨다지요?"
+          text: "그 의녀와 오작인의 말을 근거로 저를 고발하셨다지요."
       - say:
           char: 한명재.cold
           with: [서연]
@@ -58,7 +58,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "참의 나리. 이 의녀의 말만으로 저를 살인범이라 부르실 셈입니까?"
+          text: "참의 나리. 제 검안과 저 의녀의 말을 나란히 놓고 보시지요."
       - say:
           char: 서연.resolve
           with: [한명재]
@@ -272,7 +272,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "그 자국이 제 손에서 났다는 말씀이오?"
+          text: "누가 목을 졸랐는지는 아직 모르는 일이군요."
       - clearSticker: { id: t_sijang, leave: fadeOut }
       - say:
           char: 한명재
@@ -385,7 +385,7 @@ scenes:
       - say:
           char: 서연
           with: [한명재]
-          text: "혜민서에 계셨던 박 의녀님입니다. 재작년에 돌아가셨어요."
+          text: "혜민서에 계셨던 박 의녀님입니다. 재작년에 돌아가셨습니다."
       - say:
           char: 한명재.cold
           with: [서연]

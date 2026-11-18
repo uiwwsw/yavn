@@ -13,9 +13,9 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
       - set: { read_trial: false, read_report: false, checked_phone: false }
-      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "저 한수경이에요. 아까 렌즈랑 접수대에 같은 숫자 뜬 거 보셨죠? 그 표시를 제가 맡았어요." }
-      - say: { char: 지완, with: [수경], text: "문지완입니다. 그럼 아까 그거, 다시 재면 들어갈 수 있어요?" }
-      - say: { char: 수경, with: [지완], text: "문은 병원에서 열어 줘야 해요. 제가 볼 수 있는 건 왜 01이 떴는지예요. 혹시 접수표 받아 오셨어요?" }
+      - say: { char: 수경, speakerName: "안경 쓴 여자", with: [지완], text: "한수경이라고 합니다. 아까 보신 안내 화면을 개발했어요." }
+      - say: { char: 지완, with: [수경], text: "문지완입니다. 혹시 저한테 뜬 것도 잘못 나온 건가요?" }
+      - say: { char: 수경, with: [지완], text: "그럴 가능성은 있어요. 접수표를 잠깐 봐도 될까요? 이름은 가리셔도 돼요." }
       - choice:
           key: o1_trust
           prompt: "수경이 면회표의 이름을 가려도 된다고 말한다."
@@ -30,14 +30,14 @@ scenes:
     actions:
       - set: { shared_slip: true }
       - say: { channel: action, with: [지완, 수경], text: "지완이 이름이 적힌 부분을 접어 건넨다." }
-      - say: { char: 수경, with: [지완], text: "아, 이 번호. 병원에서 아직도 저희가 시험했던 버전을 쓰네요." }
+      - say: { char: 수경, with: [지완], text: "여기 아래 버전 번호요. 제가 확인하러 온 게 이거예요." }
       - goto: cafe_documents
 
   withhold_slip:
     actions:
       - set: { shared_slip: false }
-      - say: { char: 지완, with: [수경], text: "죄송한데 그쪽 자료부터 좀 볼게요. 병원에서 받은 건 아버지 것도 적혀 있어서요." }
-      - say: { char: 수경, with: [지완], text: "네. 접수표는 넣으세요. 저희가 시험할 때 뽑아 둔 게 있어요." }
+      - say: { char: 지완, with: [수경], text: "죄송합니다. 어떤 자료인지 먼저 볼 수 있을까요? 여기 아버지 이름도 적혀 있어서요." }
+      - say: { char: 수경, with: [지완], text: "네, 그러세요. 제가 가져온 것부터 보여 드릴게요." }
       - goto: cafe_documents
 
   cafe_documents:
@@ -70,17 +70,17 @@ scenes:
     actions:
       - set: { read_trial: true }
       - say: { channel: record, with: [], sound: read, text: "에모스 사내 시험 · 병원에 설치된 버전\n센서 입력 001 → 표시 01\n센서 입력 101 → 표시 01" }
-      - say: { char: 수경, with: [지완], text: "1이면 정말 낮은 거예요. 근데 101이 들어와도 앞자리 잘라서 똑같이 01로 띄워요." }
-      - say: { char: 지완, with: [수경], text: "그럼 접수표에 01이라고만 적혀 있으면, 애초에 1이었는지 101이었는지 몰라요?" }
-      - say: { char: 수경, with: [지완], text: "접수표만 봐서는 몰라요. 회사에선 시험할 때만 생기는 일이라는데, 지완 씨는 실제로 못 들어가셨잖아요." }
+      - say: { char: 수경, with: [지완], text: "왼쪽이 센서에서 읽은 값이고, 오른쪽이 화면이에요. 1이든 101이든 화면에는 01로 떠요." }
+      - say: { char: 지완, with: [수경], text: "그럼 제 것도… 101인데 01로 뜬 걸 수도 있겠네요?" }
+      - say: { char: 수경, with: [지완], text: "네. 다만 그때 실제 값은 접수표에 안 남아서, 지금은 확인할 수 없어요." }
       - goto: cafe_choices
 
   company_report:
     actions:
       - set: { read_report: true }
       - say: { channel: record, with: [], text: "한신뉴로 결함 보고서 · 한수경\n세 자리 입력의 앞자리가 화면에서 잘림. 병원 사용 중지 요청.\n회사 답변 · 실제 면회에 영향을 준 사례가 확인되면 재검토." }
-      - say: { char: 지완, with: [수경], text: "회사에서도 알면서 이걸 계속 쓰고 있다고요?" }
-      - say: { char: 수경, with: [지완], text: "두 달 전에 올렸어요. 병원 일에 손 떼라는 답을 받았고요. 그래서 직접 왔어요." }
+      - say: { char: 지완, with: [수경], text: "회사에 알렸는데도 아직 이걸 쓰는 거예요?" }
+      - say: { char: 수경, with: [지완], text: "네. 실제로 면회 못 한 사람이 있어야 다시 보겠대요. 두 달을 기다리다가 오늘 직접 와 봤어요." }
       - goto: cafe_choices
 
   hospital_message:
@@ -95,8 +95,8 @@ scenes:
   plan_measurement:
     title: "면회 전에"
     actions:
-      - say: { char: 수경, with: [지완], text: "처음 수치는 되찾을 수 없어요. 병실에서 렌즈가 한 번 더 재니까, 그때 검사기를 붙여 두면 잘리기 전 숫자와 표시값을 같이 볼 수 있어요." }
-      - say: { char: 지완, with: [수경], text: "그걸 병원에 내면 내일은 제가 혼자 들어갈 수 있을까요? 아버지 며칠 더 계셔야 한대요." }
-      - say: { char: 수경, with: [지완], text: "이번에도 잘리는지부터 확인해 봐요. 같이 찍힌 두 숫자를 내고 병원 답을 들어야 해요. 괜찮으면 면회 전에 붙여 드릴게요." }
+      - say: { char: 수경, with: [지완], text: "병실에 들어가면 렌즈가 한 번 더 재요. 그때 검사기를 연결해 두면, 잘리기 전 숫자도 같이 남길 수 있어요." }
+      - say: { char: 지완, with: [수경], text: "그걸 하면… 내일은 혼자 들어갈 수도 있을까요?" }
+      - say: { char: 수경, with: [지완], text: "그건 병원에 확인해야 해요. 우선 오류가 난 건지부터 알아보고요. 연결해 드려도 괜찮을까요?" }
       - say: { channel: action, with: [지완, 수경], text: "전광판에 저녁 8시 10분 면회 대기 장소가 뜬다. 지완이 시간을 보고 자리에서 일어난다." }
       - goto: /2.yaml

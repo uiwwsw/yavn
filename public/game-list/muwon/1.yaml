@@ -33,11 +33,11 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "혜민서에서 혼자 오셨어요? 생각보다 젊으셔서."
+          text: "어젯밤 검안하신 의녀님이세요?"
       - say:
           char: 서연
           with: [여금]
-          text: "제가 맡았습니다. 분이는 목이 졸린 뒤 우물에 던져진 걸로 보입니다."
+          text: "네. 제가 살폈습니다. 분이는 목이 졸린 뒤 우물에 던져진 걸로 보입니다."
       - say:
           channel: action
           with: [여금]
@@ -342,7 +342,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "불 속에서 숨을 쉬었으면 콧구멍이 시커메. 목구멍까지."
+          text: "불 속에서 숨을 쉬었으면 콧구멍이 시커메지요. 목구멍까지."
       - say:
           char: 서연.think
           with: [막쇠]
@@ -387,7 +387,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "네. 해요."
+          text: "네. 종이는 제가 받칠게요."
       - sticker:
           id: c2_rubbing
           image: wound_rubbing_sticker
@@ -431,7 +431,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연, 도원]
-          text: "비녀가 멀쩡하다고 독이 없던 건 아니유."
+          text: "비녀가 멀쩡해도 독이 없었다고는 못 해요."
       - say:
           char: 막쇠
           with: [서연, 도원]

@@ -13,27 +13,27 @@ scenes:
       - char: { id: 세라, position: right }
       - char: { id: 수경, position: center }
       - char: { id: 지완, position: left }
-      - say: { char: 세라, with: [지완, 수경], text: "아까 면회 도와드린 간호사 윤세라예요. 문 닫고 얘기할까요?" }
-      - say: { char: 지완, with: [세라, 수경], text: "아까 잠깐 앉아 있으라고 하셨을 때도 01이 또 떴어요. 같은 시간에 여기 검사기엔 101이 잡혔고요." }
-      - say: { char: 세라, with: [지완], text: "봤어요. 첫 안내가 뜬 뒤에도 제 질문에 바로 대답하셨고요. 두 번 다 제가 본 대로 적으면 내일부터는 직원 확인으로 들어오실 수 있어요." }
-      - say: { char: 지완, with: [세라], text: "출입은 그렇고, 저녁에 제 이름 옆에 뜬 건요? 그건 그냥 남아요?" }
-      - say: { char: 세라, with: [지완], text: "접수 시간은 남아 있지만 처음 수치는 없어요. 판정에 이의는 내실 수 있어요. 아까도 01 때문에 기다리다 애 데리러 가신 분이 있었어요." }
-      - say: { char: 수경, with: [세라], text: "그분 렌즈도 확인해 보고 싶어요. 먼저 연락해서 여쭤봐 주실래요?" }
-      - say: { char: 세라, with: [수경], text: "내일 오실 건지 전화해 볼게요. 오늘 건 지완 씨가 원하시면 제가 본 것까지 적어 드리고요." }
+      - say: { char: 세라, with: [지완, 수경], text: "들어오세요. 아까 면회 도와드렸던 윤세라예요." }
+      - say: { char: 지완, with: [세라, 수경], text: "아까 병실에서 01 뜨는 거 보셨죠? 이쪽 검사기에는 같은 시간에 101이 나왔대요." }
+      - say: { char: 세라, with: [지완], text: "네, 봤어요. 그때도 보호자님은 저랑 얘기하고 계셨고요. 두 번 다 제가 본 건 확인서에 적어 드릴게요." }
+      - say: { char: 지완, with: [세라], text: "그럼 오늘 제가 무반응이라고 뜬 것도 지울 수 있나요?" }
+      - say: { char: 세라, with: [지완], text: "제가 임의로 지울 수는 없어요. 이의 신청을 하시면 확인서를 같이 낼 수 있어요. 아까도 같은 안내 때문에 면회 못 하고 가신 분이 있었거든요." }
+      - say: { char: 수경, with: [세라], text: "혹시 그분께 제 연락처를 전해 주실 수 있을까요? 원하시면 그분 렌즈도 확인해 드릴게요." }
+      - say: { char: 세라, with: [수경], text: "제가 먼저 연락해서 여쭤볼게요." }
       - goto: sign_confirmation
 
   sign_confirmation:
     title: "확인자"
     actions:
-      - say: { char: 세라, with: [수경, 지완], text: "101이 잘렸다는 건 누가 확인해 주시겠어요? 병원 보고서에 이름을 써야 해서요." }
-      - say: { char: 수경, with: [세라, 지완], text: "한수경, 한신뉴로 개발팀이요. 처음 병원에 설치할 때도 제가 확인란에 사인했어요." }
-      - say: { char: 지완, with: [수경], text: "그때는 앞자리 잘리는 거 모르셨어요?" }
-      - say: { char: 수경, with: [지완], text: "제가 끝 두 자리만 보내게 만들었어요. 99가 넘으면 어떻게 되는지 확인 안 하고 검수에 사인했어요. 출입에 쓰이는 것도 알면서요." }
+      - say: { char: 세라, with: [수경, 지완], text: "기기 쪽은 어느 분이 확인하신 건가요?" }
+      - say: { char: 수경, with: [세라, 지완], text: "제가 확인했습니다. 한수경이고, 한신뉴로 개발팀에서 일했어요." }
+      - say: { char: 지완, with: [수경], text: "그럼 처음 설치할 때도… 수경 씨가 확인하신 거예요?" }
+      - say: { char: 수경, with: [지완], text: "네. 끝 두 자리만 보내게 만든 것도 저예요. 99를 넘을 때는 확인도 안 해 놓고 사인했어요." }
       - say: { channel: action, with: [지완, 수경], text: "수경이 확인서 아래에 회사 이름과 자기 이름을 적는다." }
-      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서도 같이 내요. 제가 언제 회사에 알렸는지 거기 나와요." }
-      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "회사에 멈춰 달라고 낸 보고서도 있어요. 이거랑 같이 받아 두세요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서도 받아 두세요. 제가 회사에 낸 날짜가 있어요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "이건 사용을 멈춰 달라고 회사에 냈던 보고서예요. 이것도 가져가세요." }
       - get: report
-      - say: { char: 세라, with: [지완], text: "아버님이 다시 찾으세요. 제가 문 열어 드릴게요. 서류는 내일 오셔서 정하세요." }
+      - say: { char: 세라, with: [지완], text: "아버님이 아드님 찾으세요. 우선 들어가 보세요. 서류는 내일 하셔도 돼요." }
       - goto: second_visit
 
   second_visit:
@@ -44,13 +44,13 @@ scenes:
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right }
-      - say: { char: 동식, with: [지완], text: "일찍 왔었다며." }
-      - say: { char: 지완, with: [동식], text: "네. 고등학교 때 렌즈 경보 울려서 실습에서 빠졌잖아요. 아버지 오실 때까지 복도에 앉아 있었던 거 생각났어요." }
-      - say: { char: 동식, with: [지완], text: "그날 네 선생도 계속 숫자 얘길 하더라." }
-      - say: { char: 지완, with: [동식], text: "아버지는 뭐라고 하셨어요?" }
-      - say: { char: 동식, with: [지완], text: "애가 겁먹었으니 나부터 들여보내 달랬지." }
-      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "아까 옆에 앉으라 하셨을 때요. 겨우 숨 좀 돌렸어요." }
-      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 물부터 드렸죠. 사실 겁났어요. 아버지 못 알아보시면 어떡하나 했어요." }
-      - say: { char: 동식, with: [지완], text: "알아봤지. 문 열릴 때마다 너인가 했는데." }
-      - say: { char: 지완, with: [동식], text: "내일도 올게요. 문 열리면 제가 먼저 소리 낼게요." }
+      - say: { char: 동식, with: [지완], text: "아까부터 와 있었다며." }
+      - say: { char: 지완, with: [동식], text: "네. 밖에서 기다리는데 고등학교 때 생각이 나더라고요. 경보 울려서 실습도 못 가고, 복도에 앉아 있던 날요." }
+      - say: { char: 동식, with: [지완], text: "그때 네 담임도 숫자 얘기만 하더라." }
+      - say: { char: 지완, with: [동식], text: "그때 선생님한텐 뭐라고 하셨어요?" }
+      - say: { char: 동식, with: [지완], text: "우리 애 겁먹은 거라고. 나 좀 들여보내 달랬지." }
+      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "아까 저 앉혀 주셨잖아요. 그제야 좀 숨이 쉬어졌어요." }
+      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 대답 안 했는데… 무서웠어요. 저 못 알아보실까 봐요." }
+      - say: { char: 동식, with: [지완], text: "알아보지. 문만 열리면 너 오는 줄 알고 봤는데." }
+      - say: { char: 지완, with: [동식], text: "내일은 아침에 올게요. 들어오면서 크게 부를게요." }
       - goto: /4.yaml

@@ -15,20 +15,20 @@ scenes:
       - char: { id: 수경, position: right }
       - say: { channel: action, with: [], text: "복도 쪽 벽에 텔레비전이 걸려 있다. 우리 병실 환자 여섯 중 다섯이 그쪽을 본다." }
       - say: { channel: action, with: [], text: "운동장 한가운데 아이가 선다. 어른들이 그 애 쪽을 보고 있다." }
-      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], motion: lean_in, text: "야, 굴렁쇠다. 쟤 혼자 저 넓은 데를 굴리고 간다." }
-      - say: { char: 민재, with: [수경], text: "누나, 소리 좀 줄여요. 옆에 할아버지 주무세요." }
-      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "할아버지 보청기 뺐어, 내가 봤어. 너 몇 살이라 그랬지?" }
+      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], motion: lean_in, text: "굴렁쇠다. 저 애 혼자 저 넓은 데를 가네." }
+      - say: { char: 민재, with: [수경], text: "저기, 소리 좀 줄여 주실래요? 옆에 할아버지 주무셔서요." }
+      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "아, 죄송해요. 할아버지는 보청기 빼신 것 같던데… 학생이에요?" }
       - say: { char: 민재, with: [수경], text: "열일곱이요. 고2." }
-      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "난 수경이야. 그냥 누나라 불러." }
-      - say: { char: 수경, with: [민재], text: "나 스물하나. 미대 다니다 쉬는 중. 넌 입원 처음이지?" }
+      - say: { char: 수경, speakerName: "옆 침대 누나", with: [민재], text: "수경이라고 해. 스물하나. 누나라고 불러도 돼." }
+      - say: { char: 수경, with: [민재], text: "미대 다니다가 쉬고 있어. 넌 입원 처음이지?" }
       - say: { char: 민재, with: [수경], text: "뭐가 티 나요." }
-      - say: { char: 수경, with: [민재], text: "뭐긴 뭐야." }
-      - say: { char: 수경, with: [민재], motion: laugh, text: "링거 줄 꼬일까 봐 팔을 안 움직이잖아. 그렇게 꽂아 뒀는데 쉽게 안 빠져." }
-      - say: { char: 수경, with: [민재], text: "내가 줄넘기도 해 봤어." }
+      - say: { char: 수경, with: [민재], text: "그 팔 좀 봐." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "줄 꼬일까 봐 팔을 딱 붙이고 있잖아. 어깨 힘 좀 빼." }
+      - say: { char: 수경, with: [민재], text: "나 뛰다가 간호사 선생님한테 혼난 적도 있어." }
       - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다." }
       - say: { char: 민재, with: [수경], text: "…누나 웃는 거, 어디서 본 것 같아요." }
       - say: { char: 수경, with: [민재], text: "뭐?" }
-      - say: { char: 수경, with: [민재], motion: laugh, text: "내가 누구 닮았어? 그런 소리 가끔 들어." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "가끔 그런 말 듣긴 해. 어디서 봤냐고." }
       - say: { channel: thought, with: [], text: "본 기억은 없는데 저렇게 웃는 얼굴을 전에도 기다린 것 같다." }
       - say:
           channel: thought
@@ -239,12 +239,12 @@ scenes:
       - wait: 900
       - say: { char: 엄마, with: [의사], motion: droop, text: "…" }
       - say: { char: 엄마, with: [의사], text: "안 하면요." }
-      - say: { char: 의사, with: [엄마], text: "그건 제가 말씀드릴 수 없습니다." }
-      - say: { char: 의사, with: [엄마], text: "지금은 병이 다시 빠르게 진행되고 있습니다. 얼마나 더 버틸지는 저도 장담 못 합니다." }
+      - say: { char: 의사, with: [엄마], text: "치료를 안 하면 더 빨리 나빠질 수 있습니다." }
+      - say: { char: 의사, with: [엄마], text: "지금도 병이 빠르게 진행되고 있어서요. 기간을 정확히 말씀드리기는 어렵습니다." }
       - wait: 700
       - say: { char: 엄마, with: [의사], text: "사백까지는 어떻게든 마련해 볼게요." }
       - say: { char: 엄마, with: [의사], text: "나머지는… 좀 기다려 주시면 안 될까요." }
-      - say: { char: 의사, with: [엄마], text: "그건 원무과에 말씀하셔야 합니다." }
+      - say: { char: 의사, with: [엄마], text: "납부 일정은 원무과에 한번 말씀해 보세요." }
       - say: { char: 엄마, with: [의사], text: "네." }
       - say: { char: 엄마, with: [의사], text: "네, 알겠습니다." }
       - move: { id: 의사, style: exit }

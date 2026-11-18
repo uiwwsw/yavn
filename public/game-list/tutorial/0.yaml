@@ -147,7 +147,7 @@ scenes:
           char: 해수.service
           motion: bow
           with: [경준]
-          text: "그러다 여기서도 영수증 안 들고 오는 거 아냐."
+          text: "난 안 해. 너 그러다 여기서도 영수증 안 들고 온다?"
       - wait: 0
 
   coupon:
@@ -176,7 +176,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "레플라 7일 체험권이야. 내 추천 코드로 가입하면 나도 한 달 공짜라서."
+          text: "응. 그래서 12주년 선물. 레플라 7일 체험권이야. 내 코드 쓰면 나도 한 달 공짜고."
       - say:
           char: 경준
           with: [지영]
@@ -262,7 +262,7 @@ scenes:
           char: 지영
           motion: headtilt
           with: [경준]
-          text: "그걸 왜 네가 먼저 알아봤어."
+          text: "그건 또 언제 알아봤어?"
       - say:
           char: 경준
           with: [지영]
@@ -270,12 +270,12 @@ scenes:
       - say:
           char: 지영
           with: [경준]
-          text: "누구."
+          text: "누구 주려고."
       - say:
           char: 경준
           motion: droop
           with: [지영]
-          text: "…안 받았어요."
+          text: "…있어요. 안 받았지만."
       - clearSticker: { id: coupon, leave: fadeOut }
       - say:
           char: 지영
@@ -409,7 +409,7 @@ scenes:
           char: 지영
           motion: sigh
           with: [해수]
-          text: "너 또 지갑 열었지. 1,580원. 아까 동전 통에서도 30원 꺼냈지. 네 점심값 이제 얼마 남았어?"
+          text: "너 또 지갑 열었지. 1,580원에 동전 통에서 30원까지. 네 점심값이잖아, 그거."
       - goto: kwang_after
 
   kwang_voice:
@@ -473,7 +473,7 @@ scenes:
           char: 지영.smirk
           motion: sigh
           with: [해수]
-          text: "너 그 아저씨한테 소리 듣고도 그렇게까지 해 줘?"
+          text: "그렇게 소리를 질러도 넌 테이프까지 챙겨 주네."
       - wait: 0
       - say:
           char: 해수
@@ -649,7 +649,7 @@ scenes:
           char: 상혁
           motion: headtilt
           with: [해수]
-          text: "근데 넌 왜 나보다 우리 엄마랑 통화를 더 오래 해?"
+          text: "우리 엄마는 나보다 너한테 전화를 더 해."
       - wait: 0
       - say:
           char: 상혁

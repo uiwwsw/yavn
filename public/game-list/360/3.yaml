@@ -142,7 +142,7 @@ scenes:
       - say: { char: 다온, with: [지안], text: "아줌마." }
       - say: { char: 다온, with: [지안], text: "나 그때 뒤 봤다고 했잖아." }
       - say: { char: 다온, with: [지안], text: "뒤에 뭐 있었는지 알아?" }
-      - say: { char: 지안, with: [다온], text: "강아지 찾는다고 했잖아." }
+      - say: { char: 지안, with: [다온], text: "글쎄. 난 강아지인 줄 알았어." }
       - say: { char: 다온, with: [지안], text: "그건 엄마한테 한 말이고." }
       - wait: 1100
       - mood: { tone: dread, level: 1 }
@@ -215,8 +215,8 @@ scenes:
       - say: { channel: thought, with: [], text: "녹취 19번이다. 돌아봤다고 한 세 사람 중 하나. 이 사람 건 지어낸 게 아니다." }
       - say: { char: 지안, with: [문호], text: "선생님 건 저도 진짜라고 믿어요. 녹취를 세 번 들었어요." }
       - say: { char: 문호, motion: nod, with: [지안], text: "그렇지. 그러니 남의 것도 봐 주는 거요. 나만 알고 있으면 아까우니까." }
-      - say: { char: 지안, with: [문호], text: "…선생님 것을 아는 게, 남의 것도 아는 거랑 같은 건가요." }
-      - say: { char: 문호, with: [지안], text: "같지. 한 번 본 사람이 두 번 보는 게 뭐가 어렵겠소." }
+      - say: { char: 지안, with: [문호], text: "본인 기억하고 제 전생을 아는 건 다른 얘기 아닌가요?" }
+      - say: { char: 문호, with: [지안], text: "난 보면 압니다. 아가씨는 기억이 안 나니 모르겠지만." }
       - say: { channel: thought, with: [], text: "운산 얘기는 갱목 부러지는 순서까지 말한다. 내 얘기에서는 내가 하지도 않은 말을 인용한다." }
       - say: { channel: action, with: [], text: "거실 액자에 지도가 들어 있다. 유리 안에서 접힌 모서리 위로 ‘운산’ 두 글자가 보인다." }
       - goto: munho_choice
@@ -333,8 +333,8 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "원본도 드려야 돼요? 1부는 복사본으로 방송 잘 나갔잖아요." }
       - say: { char: 차피디, with: [지안], text: "1부 반응이 오니까 재방송이며 해외 판권 얘기가 들어와요. 그때마다 원본을 지안 씨한테 달랠 순 없잖아요." }
       - say: { char: 차피디, with: [지안], text: "외부에 같은 원본이 돌면 판권 계약을 못 해요. 계약팀에서 그걸 같이 받으래요." }
-      - say: { char: 지안, with: [차피디], text: "…솔직하게 말해 주셔서 감사해요." }
-      - say: { char: 차피디, with: [지안], motion: sigh, text: "내가 여기서 14년 일했잖아요. 이런 서류가 무슨 뜻인지 모르고 사인하는 사람 많이 봤어요." }
+      - say: { char: 지안, with: [차피디], text: "서명 안 하면 정규직 계약도 안 되는 거예요?" }
+      - say: { char: 차피디, with: [지안], motion: sigh, text: "네. 이번엔 둘이 한 묶음이에요. 저도 여기서 십사 년 일했지만 이건 못 바꿔요." }
       - say: { channel: action, with: [], text: "차 피디가 계약서를 넘겨 서명할 칸을 짚어 준다." }
       - say: { channel: thought, with: [], text: "유정림, 박다온, 오문호. 사인하면 그 사람들 목소리를 넘기는 거다." }
       - goto: sign_choice
@@ -399,8 +399,8 @@ scenes:
   sign_yes:
     actions:
       - set: { l4_signed: true }
-      - say: { char: 지안, with: [차피디], text: "여기에 이름 쓰면 돼요? 뒤에도요?" }
-      - say: { char: 차피디, with: [지안], motion: nod, text: "거기하고, 장과 장 사이에 도장도 찍어요. 축하해요. 다음 달부터 4대 보험 들어요." }
+      - say: { char: 지안, with: [차피디], text: "뒤에 붙은 동의서에도 서명하면 되는 거죠?" }
+      - say: { char: 차피디, with: [지안], motion: nod, text: "네. 장과 장 사이에 도장도 찍고요. 축하해요. 다음 달부터 4대 보험 들어요." }
       - place: "그해 9월"
       - say: { channel: system, with: [], text: "「기억하는 사람들」 2부 시청률 6.8%. 클립 조회수 310만. 댓글 4만 2천." }
       - say: { channel: record, with: [], text: "시청자 게시판. \"다온이네 학교 아는데 애들이 걔 전생충이라고 부름\" (추천 912)" }

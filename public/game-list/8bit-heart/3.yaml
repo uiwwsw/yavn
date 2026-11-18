@@ -72,11 +72,11 @@ scenes:
       - say:
           char: 로봇.thinking
           with: [윤재]
-          text: "그럼 네가 나를 산 이유는 돈이 없어서임?"
+          text: "그래서 싼 게임기를 산 거임?"
       - say:
           char: 윤재
           with: [로봇]
-          text: "비싼 거 살 돈은 없었어. 게임기는 32,000원이었고."
+          text: "응. 비싼 건 못 샀어. 그건 32,000원이었거든."
       - wait: 270
       - say:
           char: 로봇
@@ -442,7 +442,7 @@ scenes:
           char: 로봇.happy
           motion: bounce
           with: [윤재]
-          text: "5."
+          text: "3.5."
       - say:
           char: 로봇.happy
           motion: bounce
@@ -1112,13 +1112,13 @@ scenes:
           char: 윤재
           when: { var: saw_ceiling, op: eq, value: true }
           with: [로봇]
-          text: "야. 가면 자리가 남아. 천장에 동그란 자리 같은 거. 그거 안 지워져."
+          text: "천장에 하루 스피커 자국 아직도 남아 있어. 너까지 가면 나 또 거기만 볼 것 같아."
       - wait: 460
       - say:
           char: 로봇.thinking
           when: { var: saw_ceiling, op: eq, value: true }
           with: [윤재]
-          text: "지워지는 칸하고 안 지워지는 칸이 따로 있음?"
+          text: "내가 없어진 자리도 남음?"
       - say:
           char: 로봇.thinking
           when: { var: saw_ceiling, op: eq, value: true }
