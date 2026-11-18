@@ -27,7 +27,6 @@
   color: var(--game-text);
   text-shadow: none;
 }
-.app .speaker-self { font: inherit; }
 
 /* All player options use the same light surface, including spatial investigation targets. */
 .app :is(.approach-stars, .approach-actions) .choice-gate-option,

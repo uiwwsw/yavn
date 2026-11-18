@@ -4937,7 +4937,6 @@ export default function App() {
     : dialogSpeaker ?? (dialogHasText && playerName === '???' && dialogChannel === 'narration' ? playerName : undefined);
   const readingPerspective = resolveReadingPerspective({ channel: dialogChannel, choiceActive: choiceGate.active,
     playerName, playerCharacterId, speaker: dialogSpeaker, speakerId: dialogSpeakerId });
-  const readingAsPlayer = readingPerspective === 'player' && Boolean(playerName && playerName !== '???');
   const hasPlayerOnStage = !messagePortrait && visibleCharactersByPosition.some(({ slot }) =>
     slot.id === playerCharacterId
     && (slot.placement === 'stage-bottom' || (slot.placement === 'prompt-top' && promptTopBaselineReady)),
@@ -5194,7 +5193,7 @@ export default function App() {
           {showPlayerBadge && (
             <div className="hud-pov">
               <PhoneAvatar src={playerPortrait} name={playerPortrait ? undefined : '?'} />
-              <span className="hud-pov-name">{playerName ? `${t("나")} · ${playerName}` : choicePlayerName}</span>
+              <span className="hud-pov-name">{playerName ?? choicePlayerName}</span>
             </div>
           )}
           {placeCaption && !placeCaption.centered && (
@@ -6101,7 +6100,7 @@ export default function App() {
           {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
           {dialogChannel !== 'message' && readingSpeaker && (
             <div className={`speaker delivery-${dialogDelivery}`} data-unknown={readingSpeaker === '???' || undefined}>
-              {readingAsPlayer && <span className="speaker-self">{t("나")} · </span>}{readingSpeaker}
+              {readingSpeaker}
             </div>
           )}
           {/* The handset says what channel this is, so the phone needs no label — and a label
