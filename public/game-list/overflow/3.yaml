@@ -30,8 +30,8 @@ scenes:
       - say: { char: 지완, with: [수경], text: "그럼 처음 설치할 때도… 수경 씨가 확인하신 거예요?" }
       - say: { char: 수경, with: [지완], text: "네. 끝 두 자리만 보내게 만든 것도 저예요. 99를 넘을 때는 확인도 안 해 놓고 사인했어요." }
       - say: { channel: action, with: [지완, 수경], text: "수경이 확인서 아래에 회사 이름과 자기 이름을 적는다." }
-      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서도 받아 두세요. 제가 회사에 낸 날짜가 있어요." }
-      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "이건 사용을 멈춰 달라고 회사에 냈던 보고서예요. 이것도 가져가세요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서도 드릴게요. 제가 회사에 냈던 날짜가 적혀 있어요." }
+      - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "처음부터 말씀드렸어야 했어요. 이건 회사에 사용 중단을 요청했던 보고서예요." }
       - get: report
       - say: { char: 세라, with: [지완], text: "아버님이 아드님 찾으세요. 우선 들어가 보세요. 서류는 내일 하셔도 돼요." }
       - goto: second_visit

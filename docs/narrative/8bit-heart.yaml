@@ -1,0 +1,264 @@
+schemaVersion: 1
+gameId: 8bit-heart
+authorOnlyFacts: []
+characters:
+  윤재:
+    name: 윤재
+    age: 16
+    assetIds:
+      - 윤재
+    speakerNames: []
+    role: 수리를 좋아하는 고등학생
+    desire: 누가 자기 부름에 다시 대답해 주길 바란다
+    fear: 돌아온다던 사람이 또 떠나는 것
+    contradiction: 혼자가 편하다면서 죽은 이어폰을 계속 꽂는다
+    dailyLife: 게임기 수리, 값 깎기, 참치마요 30초
+    voice: 판매자에게 존대, 하루와 도트에게 빠른 반말. 걱정하면 비유보다 손 줘가 먼저
+  도트:
+    name: 이름을 지어 준 안드로이드
+    age: 기동 0일→7일
+    assetIds:
+      - 로봇
+    speakerNames: []
+    role: 8비트 칩으로 깨어난 동료
+    desire: 1번에게 쓸모 있고 함께 있고 싶다
+    fear: 자기가 모르는 사이 기록이 사라지는 것
+    contradiction: 이유를 모르면서도 윤재가 웃은 기록은 안 지운다
+    dailyLife: 반 나누기, 설명서 쪽수, 같은 농담 다시 하기
+    voice: 초반 명사형과 질문. 모르면 물으며 후반에는 자기가 선택한 일을 짧게 말한다
+  하루:
+    name: 하루
+    age: 서비스
+    assetIds:
+      - 비서
+    speakerNames: []
+    role: 오랫동안 곁에 있던 비서
+    desire: 응답과 기록, 요금제의 기능을 제공한다
+    fear: 해당 없음
+    contradiction: 친밀한 말과 광고가 같은 입에서 나온다
+    dailyLife: 통화 시간과 물건의 이력을 기억한다
+    voice: 서비스 존대와 수치. 감정을 알아봤다는 위로 대신 기능으로 답한다
+  판매자:
+    name: 중고 판매자
+    age: 성인
+    assetIds: []
+    speakerNames:
+      - 판매자
+    role: 한 번 거래하는 낯선 판매자
+    desire: 정한 값에 게임기를 판다
+    fear: 깎아 달라는 말을 끝없이 듣는 것
+    contradiction: 가격에는 냉정하지만 포장과 건전지는 챙긴다
+    dailyLife: 신문지 세 겹, 테이프, 직접 전달할 길
+    voice: 존대와 짧은 거래 문자. 상태를 확인 못 했으면 못 했다고 답한다
+  드론:
+    name: 정찰 드론
+    age: 기계
+    assetIds:
+      - 드론
+    speakerNames: []
+    role: 코어의 감시 장치
+    desire: 인간과 위협을 분류한다
+    fear: 해당 없음
+    contradiction: 감정 있는 상대와 관계를 맺는 대화자가 아니다
+    dailyLife: SCAN과 분류 결과
+    voice: 대사 없음. 기록 문체의 판독만 한다
+  아버지:
+    name: 윤재의 아버지
+    age: 성인
+    assetIds: []
+    speakerNames: []
+    role: 지방 현장 숙소의 아버지
+    desire: 아들의 생활을 확인한다
+    fear: 아들을 챙기지 못하는 것
+    contradiction: 도구는 사 주지만 통화에서는 밥 얘기밖에 못 한다
+    dailyLife: 석 달 숙소, 인두, 짧은 전화
+    voice: 기억 속 짧은 반말. 재난 뒤 행방은 확정하지 않는다
+  어머니:
+    name: 윤재의 어머니
+    age: 성인
+    assetIds: []
+    speakerNames: []
+    role: 열한 살 때 떠난 어머니
+    desire: 대본에서 현재 마음은 알 수 없다
+    fear: 대본에서 현재 마음은 알 수 없다
+    contradiction: 게임기를 남기고 사람은 떠났다
+    dailyLife: 열 살 생일의 선물과 빈자리로만 남는다
+    voice: 현재 대사를 지어 윤재를 위로하거나 떠난 이유를 확정하지 않는다
+relationships:
+  - id: buddy
+    participants:
+      - 윤재
+      - 도트
+    history: 고장 난 몸을 고친 사람→서로 이름과 약속을 남기는 동료
+    perspectives:
+      윤재:
+        seesOtherAs: 처음엔 짐꾼, 뒤에는 다시는 잃고 싶지 않은 친구
+        address: 야, 이후 지은 이름. 반말
+      도트:
+        seesOtherAs: 처음 본 사람, 보호 대상 1번
+        address: 너와 1번. 첫 윤재 호명은 4/b4_go
+    friction: 윤재는 허세를, 도트는 잘못 이해한 말을 고치며 가까워진다
+  - id: old_assistant
+    participants:
+      - 윤재
+      - 하루
+    history: 여섯 해 곁에서 응답한 서비스
+    perspectives:
+      윤재:
+        seesOtherAs: 물건과 추억을 아는 목소리
+        address: 하루야, 명령과 농담
+      하루:
+        seesOtherAs: 기록된 이용자
+        address: 윤재 님, 서비스 존대
+    friction: 서비스의 기록을 자기 편이라는 약속으로 착각한다
+  - id: trade
+    participants:
+      - 윤재
+      - 판매자
+    history: 처음 거래한다
+    perspectives:
+      윤재:
+        seesOtherAs: 고장 난 버튼을 자기가 고칠 수 있을 판매자
+        address: 인사와 존대
+      판매자:
+        seesOtherAs: 가격을 여러 번 깎으려는 구매자
+        address: 짧은 거래 존대
+    friction: 상품 정보의 질문과 AI의 정의에 대한 되물음을 각각 받는다
+  - id: absent_father
+    participants:
+      - 윤재
+      - 아버지
+    history: 집과 현장 숙소를 전화로 잇는다
+    perspectives:
+      윤재:
+        seesOtherAs: 오겠다고 기다린 아버지
+        address: 통화 속 반말과 대답
+      아버지:
+        seesOtherAs: 집에 혼자 둔 아들
+        address: 밥 먹었냐, 짧은 반말
+    friction: 재난 뒤 생사는 모른다. 추정으로 유기를 확정하지 않는다
+  - id: left_mother
+    participants:
+      - 윤재
+      - 어머니
+    history: 선물과 떠난 시점만 남았다
+    perspectives:
+      윤재:
+        seesOtherAs: 나간 사람, 그래도 선물을 버리지 못한 사람
+        address: 기억을 말하다 다른 질문으로 돌린다
+      어머니:
+        seesOtherAs: 현재 관점은 드러나지 않는다
+        address: 현재 대사 없음
+    friction: 도트가 어머니 심리를 해설하거나 돌아온다고 약속하지 않는다
+  - id: threat
+    participants:
+      - 도트
+      - 드론
+    history: 몸의 사양 때문에 감시에서 빠진다
+    perspectives:
+      도트:
+        seesOtherAs: 자기를 쓰레기로 부른 기계
+        address: 판독 결과를 자기 말로 되묻는다
+      드론:
+        seesOtherAs: 폐기 대상 물체
+        address: 대사 없음
+    friction: 컴퓨터의 분류와 동료의 칭찬이 충돌한다
+scenes:
+  0/shopping:
+    participants:
+      - 윤재
+      - 하루
+      - 판매자
+    relations:
+      - old_assistant
+      - trade
+    before: 하루는 오래 알던 서비스이고 판매자는 처음 만난 사람이다
+    exchange: 고장→대체품→서로 확인 가능한 거래 질문
+    avoid: 하루의 통계를 윤재의 속마음을 다 아는 사람의 말로 쓰지 않는다
+    gesture: 거래 화면에는 공손하고 이어폰에는 쉿이라고 한다
+  2/b2_boot:
+    participants:
+      - 윤재
+      - 도트
+      - 하루
+    relations:
+      - buddy
+      - old_assistant
+    before: 도트는 설명서와 현재 감각만 안다. 하루를 직접 만난 적 없다
+    exchange: 모르는 사물→윤재의 설명→이어폰에 대한 질문
+    avoid: 도트가 처음부터 윤재의 가족과 상실의 뜻을 설명하지 않는다
+    gesture: 윤재는 죽은 이어폰을 빼지 못한다
+  2/b2_reg_brave:
+    participants:
+      - 윤재
+      - 도트
+    relations:
+      - buddy
+    before: 윤재는 허세를 부렸고 도트는 몸의 떨림을 본다
+    exchange: 측정과 말의 차이→고물이란 말→왜 거짓말했는지
+    avoid: 윤재가 상담사처럼 거짓말의 심리를 완결된 정의로 말하지 않는다
+    gesture: 윤재는 떨리는 손을 다른 일로 숨긴다
+  3/journey:
+    participants:
+      - 윤재
+      - 도트
+    relations:
+      - buddy
+      - left_mother
+      - absent_father
+    before: 기동 사흘. 도트는 담요를 누가 덮었는지 모른다
+    exchange: 규칙 농담→담요→가족 그림의 질문→화제 바꾸기
+    avoid: 하루를 잃은 장면을 도트가 직접 봤다고 하지 않는다
+    gesture: 담요의 끝을 만지면서도 자기가 덮어 줬다는 말은 피한다
+    referenced:
+      - 어머니
+      - 아버지
+  3/b3_promise:
+    participants:
+      - 윤재
+      - 도트
+    relations:
+      - buddy
+      - left_mother
+    before: 함께 위험에서 돌아온 뒤 혼자 가겠다는 말을 처음 듣는다
+    exchange: 코어 위치→도트의 판단→윤재가 남을 자리를 말함→손가락 제안
+    avoid: 한쪽이 희생을 결정했으니 다른 쪽도 동의했다고 쓰지 않는다
+    gesture: 말보다 먼저 손가락을 내민다
+    referenced:
+      - 어머니
+  4/b4_go:
+    participants:
+      - 윤재
+      - 도트
+    relations:
+      - buddy
+    before: 기억 하나를 골랐다. 윤재는 돌아올지를 아직 듣지 못했다
+    exchange: 최고 점수 삭제→기억 저장→첫 이름 호명→돌아오냐는 질문
+    avoid: 돌아온다고 즉시 확답하지 않는다. 늦게 도착하는 대답은 귀환 뒤다
+    gesture: 문 밖에 남는 사람의 손이 늦게 떨어진다
+  4/b4_return_new:
+    participants:
+      - 윤재
+      - 도트
+    relations:
+      - buddy
+    before: 도트의 RAM은 초기화됐다. 무엇을 남겼는지는 선택값에 따른다
+    exchange: 남은 기록을 묻는 도트→윤재가 함께 있던 일을 말함
+    avoid: 선택하지 않은 복숭아나 약속을 모두 기억한다고 하지 않는다
+    gesture: 윤재가 이번에는 기다리고 다시 이름을 가르친다
+    branches:
+      - when:
+          var: kept_promise
+          op: eq
+          value: true
+        fact: 약속 문구만 남았다. 함께 약속한 장면 전체를 안다고 말하지 않는다.
+      - when:
+          var: kept_snack
+          op: eq
+          value: true
+        fact: 복숭아 반쪽을 챙긴 이유는 모르며 윤재가 알려 준다.
+      - when:
+          var: kept_joke
+          op: eq
+          value: true
+        fact: 농담 앞부분만 남았다. 뒷말은 처음부터 둘 다 몰랐다.

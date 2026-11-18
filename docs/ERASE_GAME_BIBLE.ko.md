@@ -1,5 +1,7 @@
 # ERASE · 게임 바이블
 
+[인물 카드와 양방향 관계](narrative/erase.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
+
 원작 이야기: 사용자 제공 시놉시스 두 편(「ERASE 개선판」, 「더 잔혹한 버전」). 두 판을 한 편으로 합쳐 YAVN 비주얼노벨로 옮긴 기획서입니다. 인물·사건은 모두 창작이며 실존 인물·기존 작품과 무관합니다.
 
 ## 0. 공통 세계와 반전
