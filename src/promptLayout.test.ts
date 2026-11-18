@@ -159,6 +159,10 @@ describe('long dialogue stays readable', () => {
     expect(resolveDialogueScroll({ lineChanged: true, typing: false, thread: true })).toBe('bottom');
   });
 
+  it('keeps the final wrapped phone line visible when typing is completed instantly', () => {
+    expect(resolveDialogueScroll({ lineChanged: false, typing: false, thread: true })).toBe('bottom');
+  });
+
   it('leaves a finished line where the reader left it', () => {
     // Clicking to finish a long line should not throw away its opening.
     expect(resolveDialogueScroll({ lineChanged: false, typing: false })).toBe('keep');
