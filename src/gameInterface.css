@@ -859,7 +859,8 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
      handset is shifted half its width off centre. */
   transform: none;
   translate: -50% -50%;
-  z-index: 55;
+  /* Stay above the scene, below the HUD (5) and game menus (8). */
+  z-index: 4;
   width: min(410px, 92cqw);
   height: min(740px, 86cqh);
   min-height: 0;
@@ -1124,7 +1125,8 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   .app .stage-content-frame .dialog-box.channel-message {
     left: max(10px, env(safe-area-inset-left, 0px));
     right: max(10px, env(safe-area-inset-right, 0px));
-    top: max(10px, env(safe-area-inset-top, 0px));
+    /* Leave the chapter, player badge and menu controls clear above the handset. */
+    top: max(120px, calc(env(safe-area-inset-top, 0px) + 112px));
     bottom: max(10px, env(safe-area-inset-bottom, 0px));
     transform: none;
     translate: none;

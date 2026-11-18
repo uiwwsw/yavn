@@ -136,8 +136,9 @@ export function initializePromptLayout(): () => void {
 export function resolveDialogueScroll(
   { lineChanged, typing, thread = false }: { lineChanged: boolean; typing: boolean; thread?: boolean },
 ): 'top' | 'bottom' | 'keep' {
-  // A phone thread grows downwards like a real messenger, so a new bubble belongs at the
-  // bottom with the ones before it still above; everywhere else a new line reads from its start.
-  if (lineChanged) return thread ? 'bottom' : 'top';
+  // Finishing phone typing can add a wrapped line in the same update that clears `typing`.
+  // Follow that final height too, so the last bubble stays above the phone's footer.
+  if (thread) return 'bottom';
+  if (lineChanged) return 'top';
   return typing ? 'bottom' : 'keep';
 }
