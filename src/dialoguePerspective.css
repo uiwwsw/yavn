@@ -1,0 +1,60 @@
+/* Reading roles are shared across story templates; changing speakers never moves the text. */
+.app .dialog-box[data-reading-perspective] {
+  --game-dialog: #ffffff;
+  --game-text: #171717;
+  --game-muted: #595959;
+  --game-accent: #171717;
+  --game-paper: #ffffff;
+  --game-soft: #eeeeee;
+  --game-line: #d0d0d0;
+  --game-line-strong: #888888;
+  background: var(--game-dialog);
+  border-color: var(--game-line);
+  backdrop-filter: none;
+}
+.app .dialog-box[data-reading-perspective='other'] {
+  --game-dialog: #202020;
+  --game-text: #ffffff;
+  --game-muted: #c4c4c4;
+  --game-accent: #ffffff;
+  --game-paper: #202020;
+  --game-soft: #333333;
+  --game-line: #555555;
+  --game-line-strong: #aaaaaa;
+}
+.app .dialog-box[data-reading-perspective] .text,
+.app .dialog-box[data-reading-perspective] .speaker {
+  color: var(--game-text);
+  text-shadow: none;
+}
+.app .speaker-self { font: inherit; }
+
+/* All player options use the same light surface, including spatial investigation targets. */
+.app :is(.approach-stars, .approach-actions) .choice-gate-option,
+.app .approach-stars .approach-target[data-approach-active='true'],
+.app :is(.choice-gate-option, .investigation-option, .dialog-action-button, .input-gate-submit) {
+  background: #ffffff;
+  color: #171717;
+  border-color: #a8a8a8;
+  text-shadow: none;
+}
+.app :is(.approach-stars, .approach-actions) .choice-gate-option:hover:not(:disabled),
+.app :is(.choice-gate-option, .investigation-option, .dialog-action-button, .input-gate-submit):hover:not(:disabled) {
+  background: #eeeeee;
+  color: #171717;
+  border-color: #595959;
+  box-shadow: none;
+}
+.app .choice-gate-option :is(.choice-gate-option-index, .choice-gate-option-mark),
+.app .investigation-option > span { color: #595959; }
+.app .choice-gate-option .choice-gate-option-text { color: #171717; }
+.app .investigation-option.is-checked { background: #eeeeee; color: #595959; }
+.app .investigation-option small { color: #595959; }
+.app .input-gate-field { background: #ffffff; color: #171717; border-color: #a8a8a8; }
+.app .input-gate-field::placeholder { color: #595959; }
+.app :is(.approach-stars, .approach-actions) .choice-gate-option:focus-visible,
+.app :is(.choice-gate-option, .investigation-option, .dialog-action-button, .input-gate-submit, .input-gate-field):focus-visible {
+  outline: 2px solid #171717;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #ffffff;
+}

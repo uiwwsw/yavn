@@ -31,7 +31,7 @@ import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
 import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
 import { formatClipLength, isEmojiOnly, leadsRun, phoneAvatarPath, phoneBubbleProfile, selectPhoneContact, selectPhoneConversation } from './phoneThread';
-import { navigateGameTabs, trapGameDialogFocus } from './gameInterface';
+import { navigateGameTabs, resolveReadingPerspective, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
 import { interpolateText, resolvePlayerCharacterId, resolvePlayerName } from './textVariables';
 import { choiceSaveValue } from './history';
@@ -4935,6 +4935,9 @@ export default function App() {
   const readingSpeaker = choiceGate.active
     ? (hasStageApproach ? undefined : choicePlayerName)
     : dialogSpeaker ?? (dialogHasText && playerName === '???' && dialogChannel === 'narration' ? playerName : undefined);
+  const readingPerspective = resolveReadingPerspective({ channel: dialogChannel, choiceActive: choiceGate.active,
+    playerName, playerCharacterId, speaker: dialogSpeaker, speakerId: dialogSpeakerId });
+  const readingAsPlayer = readingPerspective === 'player' && Boolean(playerName && playerName !== '???');
   const hasPlayerOnStage = !messagePortrait && visibleCharactersByPosition.some(({ slot }) =>
     slot.id === playerCharacterId
     && (slot.placement === 'stage-bottom' || (slot.placement === 'prompt-top' && promptTopBaselineReady)),
@@ -6006,6 +6009,7 @@ export default function App() {
 
       <div
         ref={dialogBoxRef}
+        data-reading-perspective={readingPerspective}
         data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasStageApproach || undefined}
         data-investigation={investigation ? 'true' : undefined}
         className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
@@ -6096,7 +6100,9 @@ export default function App() {
           )}
           {/* Name tag first so it always reads on the left; a channel label moves to the right. */}
           {dialogChannel !== 'message' && readingSpeaker && (
-            <div className={`speaker delivery-${dialogDelivery}`} data-unknown={readingSpeaker === '???' || undefined}>{readingSpeaker}</div>
+            <div className={`speaker delivery-${dialogDelivery}`} data-unknown={readingSpeaker === '???' || undefined}>
+              {readingAsPlayer && <span className="speaker-self">{t("나")} · </span>}{readingSpeaker}
+            </div>
           )}
           {/* The handset says what channel this is, so the phone needs no label — and a label
               pinned out of flow at the top of the thread was both visible and, while the
