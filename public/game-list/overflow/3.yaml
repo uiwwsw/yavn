@@ -13,27 +13,43 @@ scenes:
       - char: { id: 세라, position: right }
       - char: { id: 수경, position: center }
       - char: { id: 지완, position: left }
-      - say: { char: 세라, with: [지완, 수경], text: "들어오세요. 아까 면회 도와드렸던 윤세라예요." }
-      - say: { char: 지완, with: [세라, 수경], text: "아까 병실에서 01 뜨는 거 보셨죠? 이쪽 검사기에는 같은 시간에 101이 나왔대요." }
-      - say: { char: 세라, with: [지완], text: "네, 봤어요. 그때도 보호자님은 저랑 얘기하고 계셨고요. 두 번 다 제가 본 건 확인서에 적어 드릴게요." }
-      - say: { char: 지완, with: [세라], text: "그럼 오늘 제가 무반응이라고 뜬 것도 지울 수 있나요?" }
-      - say: { char: 세라, with: [지완], text: "제가 임의로 지울 수는 없어요. 이의 신청을 하시면 확인서를 같이 낼 수 있어요. 아까도 같은 안내 때문에 면회 못 하고 가신 분이 있었거든요." }
-      - say: { char: 수경, with: [세라], text: "혹시 그분께 제 연락처를 전해 주실 수 있을까요? 원하시면 그분 렌즈도 확인해 드릴게요." }
-      - say: { char: 세라, with: [수경], text: "제가 먼저 연락해서 여쭤볼게요." }
+      - say: { char: 세라, with: [지완, 수경], text: "들어오세요. 아까 면회 같이 들어갔던 윤세라예요." }
+      - say: { channel: action, with: [지완, 수경, 세라], text: "지완이 출력물을 책상에 올려놓는다." }
+      - say: { char: 지완, with: [세라, 수경], text: "병실에서 01 뜬 거 보셨죠. 같은 시간에 이쪽에는 101이 찍혔어요." }
+      - say: { char: 세라, with: [지완], text: "네, 봤어요." }
+      - say: { char: 세라, with: [지완], text: "그때 보호자님은 아버님 양말 신기고 계셨고요." }
+      - say: { char: 세라, with: [지완], text: "접수대에서 한 번, 병실에서 한 번. 두 번 다 제가 본 건 확인서에 적어 드릴게요." }
+      - say: { char: 지완, with: [세라], text: "그럼 무반응이라고 뜬 건 지워져요?" }
+      - say: { char: 세라, with: [지완], text: "제가 지울 수는 없어요. 이의 신청을 하시면 확인서를 같이 낼 수 있고요." }
+      - say: { char: 세라, with: [지완], text: "오늘 같은 안내 받고 그냥 가신 분이 한 분 더 있어요." }
+      - say: { char: 수경, with: [세라], text: "그분께 제 연락처를 전해 주실 수 있을까요? 원하시면 그분 렌즈도 확인해 드릴게요." }
+      - say: { char: 세라, with: [수경], text: "연락처는 못 드려요. 제가 먼저 여쭤볼게요." }
       - goto: sign_confirmation
 
   sign_confirmation:
     title: "확인자"
     actions:
-      - say: { char: 세라, with: [수경, 지완], text: "기기 쪽은 어느 분이 확인하신 건가요?" }
-      - say: { char: 수경, with: [세라, 지완], text: "제가 확인했습니다. 한수경이고, 한신뉴로 개발팀에서 일했어요." }
-      - say: { char: 지완, with: [수경], text: "그럼 처음 설치할 때도… 수경 씨가 확인하신 거예요?" }
-      - say: { char: 수경, with: [지완], text: "네. 끝 두 자리만 보내게 만든 것도 저예요. 99를 넘을 때는 확인도 안 해 놓고 사인했어요." }
-      - say: { channel: action, with: [지완, 수경], text: "수경이 확인서 아래에 회사 이름과 자기 이름을 적는다." }
+      - say: { char: 세라, with: [수경, 지완], text: "여기 확인자 칸이 있어요. 기기 쪽은 어느 분이 확인하신 건가요?" }
+      - say: { char: 수경, with: [세라, 지완], text: "제가 확인했습니다. 한수경이고, 한신뉴로 개발팀이에요." }
+      - say: { channel: action, with: [지완, 수경], text: "수경이 회사 이름을 쓰다가 펜을 멈춘다." }
+      - say: { char: 지완, with: [수경], text: "그럼 처음 달 때는요. 그때는 누가 사인했어요?" }
+      - say: { char: 수경, with: [지완], text: "…저요." }
+      - say: { char: 수경, with: [지완], text: "끝 두 자리만 보내게 만든 것도 저예요. 99를 넘을 때는 확인도 안 해 놓고 사인했어요." }
+      - say: { char: 지완, with: [수경], text: "카페에서는 그 말 안 하셨잖아요." }
+      - say: { char: 수경, with: [지완], text: "네. 그 말부터 하면 렌즈를 안 빌려주실 것 같았어요." }
+      - say: { char: 지완, with: [수경], text: "맞아요." }
       - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: true }, text: "아까 보신 보고서도 드릴게요. 제가 회사에 냈던 날짜가 적혀 있어요." }
       - say: { char: 수경, with: [지완], when: { var: read_report, op: eq, value: false }, text: "처음부터 말씀드렸어야 했어요. 이건 회사에 사용 중단을 요청했던 보고서예요." }
       - get: report
-      - say: { char: 세라, with: [지완], text: "아버님이 아드님 찾으세요. 우선 들어가 보세요. 서류는 내일 하셔도 돼요." }
+      - say: { char: 지완, with: [수경], when: { var: read_report, op: eq, value: true }, text: "사례가 있어야 다시 본다고 했죠. 그게 저였네요." }
+      - say: { char: 지완, with: [수경], when: { var: read_report, op: eq, value: false }, text: "‘사례가 확인되면 재검토.’ …이게 저네요." }
+      - bg: desk_print
+      - say: { channel: action, with: [], text: "지완이 책상 위의 출력물을 자기 쪽으로 끌어온다." }
+      - bg: { id: office_night, transition: dissolve, duration: 320 }
+      - say: { char: 지완, with: [수경], text: "이건 제가 갖고 있을게요." }
+      - say: { char: 수경, with: [지완], text: "네. 지완 씨 거예요." }
+      - say: { channel: action, with: [지완, 수경, 세라], text: "수경이 확인자 칸에 회사 이름과 자기 이름을 끝까지 적는다. 세라가 그 아래에 본 것을 두 줄 쓴다." }
+      - say: { char: 세라, with: [지완], text: "아버님이 아드님 찾으세요. 서류는 내일 하셔도 돼요." }
       - goto: second_visit
 
   second_visit:
@@ -45,12 +61,20 @@ scenes:
       - char: { id: 지완, position: left }
       - char: { id: 동식, position: right }
       - say: { char: 동식, with: [지완], text: "아까부터 와 있었다며." }
-      - say: { char: 지완, with: [동식], text: "네. 밖에서 기다리는데 고등학교 때 생각이 나더라고요. 경보 울려서 실습도 못 가고, 복도에 앉아 있던 날요." }
-      - say: { char: 동식, with: [지완], text: "그때 네 담임도 숫자 얘기만 하더라." }
-      - say: { char: 지완, with: [동식], text: "그때 선생님한텐 뭐라고 하셨어요?" }
+      - say: { char: 지완, with: [동식], text: "문 앞에요." }
+      - say: { char: 동식, with: [지완], text: "나도 그랬다." }
+      - say: { char: 동식, with: [지완], text: "네 학교에서." }
+      - say: { char: 지완, with: [동식], text: "…실습 못 간 날요?" }
+      - say: { char: 동식, with: [지완], text: "복도에 너 앉아 있는데 못 들어가게 하더라. 담임이 숫자만 보여 주고." }
+      - say: { char: 지완, with: [동식], text: "그때 뭐라고 하셨어요?" }
       - say: { char: 동식, with: [지완], text: "우리 애 겁먹은 거라고. 나 좀 들여보내 달랬지." }
-      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "아까 저 앉혀 주셨잖아요. 그제야 좀 숨이 쉬어졌어요." }
-      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 대답 안 했는데… 무서웠어요. 저 못 알아보실까 봐요." }
+      - say: { char: 동식, with: [지완], text: "안 되더라. 그래서 너한테 셋 세라고 했다." }
+      - say: { char: 지완, with: [동식], text: "아까도 셌어요. 문 앞에서." }
+      - say: { char: 동식, with: [지완], text: "안다." }
+      - say: { char: 동식, with: [지완], text: "너 셀 때 얼굴이 그렇다." }
+      - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "아까 저 앉혀 주셨잖아요. 저 못 알아보실까 봐, 그게 제일 무서웠어요." }
+      - say: { char: 지완.break, with: [동식], when: { var: told_father, op: eq, value: false }, text: "아까 대답 안 했는데… 무서웠어요. 저 못 알아보실까 봐요." }
       - say: { char: 동식, with: [지완], text: "알아보지. 문만 열리면 너 오는 줄 알고 봤는데." }
+      - say: { char: 동식, with: [지완], text: "나한텐 세지 마라." }
       - say: { char: 지완, with: [동식], text: "내일은 아침에 올게요. 들어오면서 크게 부를게요." }
       - goto: /4.yaml

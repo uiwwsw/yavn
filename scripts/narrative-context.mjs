@@ -23,6 +23,21 @@ for (const id of ids) {
   need(Object.keys(data.characters ?? {}).length > 0, `${id}: no characters`);
   need(data.relationships?.length > 0, `${id}: no relationships`);
   need(Object.keys(data.scenes ?? {}).length > 0, `${id}: no scene contexts`);
+  const beats = ['기', '승', '전', '결'];
+  for (const field of ['premise', 'question']) need(typeof data.arc?.[field] === 'string' && data.arc[field].trim(), `${id}: arc missing ${field}`);
+  const beatOf = new Map();
+  for (const beat of beats) {
+    const part = data.arc?.[beat];
+    need(typeof part?.summary === 'string' && part.summary.trim(), `${id}: arc ${beat} missing summary`);
+    need(Array.isArray(part?.chapters) && part.chapters.length > 0, `${id}: arc ${beat} names no chapter`);
+    for (const n of part?.chapters ?? []) { need(!beatOf.has(n), `${id}: chapter ${n} sits in two beats`); beatOf.set(n, beat); }
+  }
+  for (let n = 0; n < 5; n += 1) {
+    const plan = data.chapters?.[n];
+    for (const field of ['title', 'tells', 'turn', 'carries']) need(typeof plan?.[field] === 'string' && plan[field].trim(), `${id}: chapter ${n} missing ${field}`);
+    need(beats.includes(plan?.beat) && beatOf.get(n) === plan?.beat, `${id}: chapter ${n} beat does not match arc`);
+  }
+  need(beats.every((beat, i) => i === 0 || Math.min(...(data.arc?.[beat]?.chapters ?? [NaN])) > Math.max(...(data.arc?.[beats[i - 1]]?.chapters ?? [NaN]))), `${id}: arc beats are out of chapter order`);
   for (const [key, card] of Object.entries(data.characters ?? {})) {
     for (const field of ['name', 'role', 'desire', 'fear', 'contradiction', 'dailyLife', 'voice'])
       need(typeof card[field] === 'string' && card[field].trim(), `${id}/${key}: missing ${field}`);
@@ -91,7 +106,8 @@ if (args.includes('--check')) {
   const variables = option('--vars') ? JSON.parse(option('--vars')) : {};
   if (!variables || Array.isArray(variables) || typeof variables !== 'object') throw new Error('--vars must be a JSON object');
   const facts = (context?.branches ?? []).map(branch => ({ ...branch, status: !(branch.when.var in variables) ? 'unknown' : (branch.when.op === 'eq' ? variables[branch.when.var] === branch.when.value : branch.when.op === 'gte' ? variables[branch.when.var] >= branch.when.value : false) ? 'applies' : 'does-not-apply' }));
-  console.log(JSON.stringify({ gameId: id, scene: ref, authorOnlyFacts: data.authorOnlyFacts, context: context ?? null, branchFacts: facts,
+  const chapterNumber = Number(ref.split('/')[0]);
+  console.log(JSON.stringify({ gameId: id, scene: ref, arc: data.arc, chapter: data.chapters?.[chapterNumber], authorOnlyFacts: data.authorOnlyFacts, context: context ?? null, branchFacts: facts,
     characters: Object.fromEntries([...people].map(k => [k, data.characters[k]])),
     relationships: data.relationships.filter(r => r.participants.every(p => people.has(p))),
     turns: scene.actions.flatMap((a, index) => a.say ? [{ index, person: aliases.get(a.say.char?.split('.')[0]) ?? voices.get(a.say.speakerName), ...a.say }] : a.choice ? [{ index, choice: a.choice }] : []),

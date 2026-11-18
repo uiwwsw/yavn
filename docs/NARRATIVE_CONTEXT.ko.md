@@ -4,14 +4,23 @@
 
 | 작품 | 인물·발신자 카드 | 양방향 관계 | 장면별 관계 상태 |
 | --- | ---: | ---: | ---: |
-| [오버플로](narrative/overflow.yaml) | 8 | 7 | 5 |
-| [ERASE](narrative/erase.yaml) | 12 | 10 | 6 |
-| [튜토리얼](narrative/tutorial.yaml) | 8 | 9 | 7 |
-| [360](narrative/360.yaml) | 20 | 16 | 8 |
-| [8비트 심장](narrative/8bit-heart.yaml) | 7 | 6 | 7 |
-| [무원](narrative/muwon.yaml) | 10 | 10 | 7 |
+| [오버플로](narrative/overflow.yaml) | 8 | 7 | 10 |
+| [ERASE](narrative/erase.yaml) | 12 | 10 | 8 |
+| [튜토리얼](narrative/tutorial.yaml) | 8 | 9 | 12 |
+| [360](narrative/360.yaml) | 20 | 16 | 19 |
+| [8비트 심장](narrative/8bit-heart.yaml) | 8 | 6 | 12 |
+| [무원](narrative/muwon.yaml) | 10 | 10 | 11 |
 
 [작품별 관계도](narrative/relationships.ko.md)에서는 두 사람이 서로를 어떻게 보는지 화살표 양쪽을 따로 읽습니다. 이름이 다른 같은 인물, 목소리만 나오는 동료, 회상 속 가족, 자동 안내 발신자도 카드에 포함합니다. 현재 마음을 알 수 없는 부재자의 속내는 확정하지 않습니다.
+
+## 이야기의 큰 틀부터 읽기
+
+각 YAML의 맨 위에는 작품 전체의 뼈대가 있습니다. 장면을 고치기 전에 이 두 항목을 먼저 읽습니다.
+
+- `arc`: `premise`(누가 무엇을 원하고 무엇이 막는가), `question`(작품이 끝까지 묻는 질문 하나), 그리고 `기`·`승`·`전`·`결` 각각이 맡는 챕터와 요약.
+- `chapters`: 0~4번 챕터마다 `title`, 속한 `beat`, 이 챕터가 하는 이야기(`tells`), 챕터 끝에서 달라지는 것(`turn`), 다음 챕터로 넘기는 질문·물건·감정(`carries`).
+
+챕터는 앞 챕터의 `carries`를 받아 시작하고 자기 `turn`에서 꺾입니다. 대사 한 줄을 고칠 때도 그 줄이 챕터의 `tells`에 속하는지, `turn`보다 먼저 답을 말해 버리지 않는지 확인합니다. 줄거리를 바꾸면 `arc`와 `chapters`, 작품 바이블의 같은 표를 함께 고칩니다. `--check`는 네 박자가 챕터 순서대로 놓였는지, 모든 챕터가 한 박자에만 속하는지 확인합니다. 장면 조회 결과에도 `arc`와 해당 `chapter`가 함께 나옵니다.
 
 ## 인물을 구체적으로 구분하기
 

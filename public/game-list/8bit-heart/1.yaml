@@ -669,7 +669,7 @@ scenes:
           with: [로봇]
           text: "그리고 나 지금 다른 데 갈 데도 없어."
       - say: { channel: thought, with: [], text: "커버부터 열어 보자." }
-      - say: { channel: thought, with: [], text: "깨어나면 대답 한 번쯤은 해 줄까." }
+      - wait: 0
       - wait: 0
       - wait: 0
       - say:

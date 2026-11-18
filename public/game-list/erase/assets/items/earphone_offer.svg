@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="336" viewBox="0 0 560 336" role="img" aria-labelledby="title desc">
+  <title id="title">내민 이어폰 한쪽</title>
+  <desc id="desc">교실 책상 위. 휴대폰에서 나온 줄 이어폰이 둘로 갈라진다. 한쪽은 화면 밖 아진의 귀로 올라가고, 다른 한쪽은 아진의 손끝에 들려 책상의 빈 쪽을 향한다.</desc>
+  <defs>
+    <linearGradient id="desk" x2="0" y2="1"><stop stop-color="#c2ad92"/><stop offset="1" stop-color="#9c8a75"/></linearGradient>
+    <linearGradient id="shade"><stop stop-color="#27232d" stop-opacity=".3"/><stop offset=".55" stop-color="#27232d" stop-opacity=".05"/><stop offset="1" stop-color="#27232d" stop-opacity=".16"/></linearGradient>
+    <clipPath id="frame"><rect x="5" y="5" width="550" height="326" rx="16"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)" stroke="#38373b" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="5" width="550" height="326" fill="url(#desk)"/>
+    <path d="M0 96Q250 84 560 101M0 262Q280 276 560 258" fill="none" stroke="#7d6c5a" opacity=".28"/>
+    <path d="M150 336 330 5h70L250 336Z" fill="#ddc3a0" opacity=".2" stroke="none"/>
+    <path d="M24 336 90 228" fill="none" stroke="#7d6c5a" stroke-width="2" opacity=".5"/>
+    <path d="M40 12 148 34 126 136 18 113Z" fill="#e3dacb" stroke-width="2"/>
+    <path d="m52 43 72 15m-76 5 72 15m-76 5 46 10" fill="none" stroke="#a69b87" stroke-width="1.8"/>
+    <path d="M62 30 74 33 71 47 59 44Z" fill="#af5855" stroke-width="1.4"/>
+    <g transform="rotate(14 372 70)">
+      <rect x="333" y="14" width="78" height="126" rx="11" fill="#2a2d37" stroke-width="2.4"/>
+      <rect x="340" y="28" width="64" height="94" rx="3" fill="#39414b" stroke="#1f2129" stroke-width="1.4"/>
+      <rect x="350" y="40" width="44" height="44" fill="#4f5a63" stroke="none"/>
+      <path d="M350 98h44" stroke="#6f7a82" stroke-width="2.4"/>
+      <path d="M350 98h17" stroke="#6bc0be" stroke-width="2.4"/>
+      <circle cx="367" cy="98" r="3.4" fill="#6bc0be" stroke="none"/>
+      <path d="m366 106 0 8m7-8 0 8" stroke="#aeb7bb" stroke-width="2.2"/>
+      <rect x="364" y="140" width="10" height="9" rx="2" fill="#dfe4e3" stroke-width="1.6"/>
+    </g>
+    <path d="M352 151Q346 186 384 196Q420 204 438 178" fill="none" stroke="#2f2e33" stroke-width="5.4"/>
+    <path d="M352 151Q346 186 384 196Q420 204 438 178" fill="none" stroke="#e9edee" stroke-width="3"/>
+    <rect x="431" y="166" width="14" height="18" rx="4" transform="rotate(28 438 175)" fill="#dfe4e3" stroke-width="1.8"/>
+    <path d="M443 168Q470 118 565 92" fill="none" stroke="#2f2e33" stroke-width="4.6"/>
+    <path d="M443 168Q470 118 565 92" fill="none" stroke="#e9edee" stroke-width="2.4"/>
+    <path d="M436 182Q434 214 404 232" fill="none" stroke="#2f2e33" stroke-width="4.6"/>
+    <path d="M436 182Q434 214 404 232" fill="none" stroke="#e9edee" stroke-width="2.4"/>
+    <ellipse cx="350" cy="250" rx="24" ry="5" fill="#27232d" opacity=".18" stroke="none"/>
+    <g transform="rotate(-14 362 230)">
+      <path d="M348 220h30q9 0 9 10t-9 10h-30Z" fill="#eef1f0" stroke-width="2"/>
+      <ellipse cx="344" cy="230" rx="8" ry="11" fill="#b9c0c3" stroke-width="2"/>
+      <path d="M340 223v14" fill="none" stroke="#8e959a" stroke-width="1.4"/>
+    </g>
+    <g transform="translate(562 -95) scale(-1.35 1.35)">
+      <path d="M5 294 54 250 95 291 63 336H5Z" fill="#343a4e" stroke-width="1.9"/>
+      <path d="M48 257 58 247 100 287 90 297Z" fill="#e4e5e2" stroke-width="1.5"/>
+      <path d="m53 254 21-20q7-7 17-7l37 6q10 2 9 9-1 7-12 5l-18-2 34 11q9 3 7 9-2 6-11 4l-25-7 23 12q8 4 4 10-3 5-12 1l-23-10 13 10q6 5 1 10-4 4-11 0l-29-18-11-9Z" fill="#dcb9a6" stroke-width="1.7"/>
+      <path d="m62 257 14 13m17-28 14 3m-17 11 22 6" fill="none" stroke="#a98a7d" stroke-width="1.2"/>
+    </g>
+    <path d="M5 5h550v326H5Z" fill="url(#shade)" stroke="none"/>
+  </g>
+  <rect x="5" y="5" width="550" height="326" rx="16" fill="none" stroke="#a99e90" stroke-width="2"/>
+</svg>

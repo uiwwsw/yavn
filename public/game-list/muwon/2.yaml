@@ -13,7 +13,7 @@ scenes:
       - music: pressure
       - say:
           channel: record
-          text: "9월 23일. 포도청 남옥. 약방에 불을 지르고 주인을 죽였다는 혐의로 짐꾼 덕구가 갇혀 있다."
+          text: "9월 23일. 포도청 남옥. 죄인 짐꾼 덕구. 박씨 약방 방화와 살인을 자복함. 처결 9월 26일."
       - say:
           channel: action
           with: []
@@ -100,7 +100,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "공초를 다시 봐야겠다. 어디에 불을 붙였는지는 빠져 있을 것이다."
+          text: "공초에 불 붙인 자리가 적혔는지 판관에게 물어야 한다."
       - say:
           channel: action
           with: [덕구]
@@ -109,7 +109,7 @@ scenes:
       - say:
           char: 강치수.angry
           with: [서연, 덕구]
-          text: "의녀가 죄인 엉덩이까지 돌보나. 판관 나리를 등에 업으니 겁날 게 없소?"
+          text: "의녀가 죄인 볼기까지 돌보나. 판관 나리를 등에 업으니 겁날 게 없소?"
       - say:
           char: 강치수
           with: [서연]
@@ -117,7 +117,7 @@ scenes:
       - say:
           char: 강치수
           with: [서연]
-          text: "사흘 뒤면 끝날 일이오."
+          text: "사흘 뒤면 끝나오."
       - goto: c3_look
 
   c3_look:
@@ -161,7 +161,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "탁본에 남은 자국은 한 치였다. 이 낫의 날은 그 두 배가 넘는다."
+          text: "박씨 목에서 뜬 탁본은 폭이 한 치였다."
       - say:
           char: 서연
           with: [강치수]
@@ -216,7 +216,7 @@ scenes:
       - say:
           char: 덕구.scared
           with: [서연]
-          text: "왼손은 어릴 때 짐수레에 깔려서…"
+          text: "아, 왼손은… 어릴 때 짐수레에 깔려서…"
       - say:
           char: 덕구.scared
           with: [서연]
@@ -224,7 +224,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "탁본의 자국은 오른쪽 위에서 왼쪽 아래로 비스듬하다. 마주 보고 그었다면 왼손이 먼저 떠오른다."
+          text: "탁본의 자국은 오른쪽 위에서 왼쪽 아래로 비스듬하다. 마주 서서 왼손으로 그으면 그렇게 된다."
       - say:
           char: 서연
           with: [덕구]
@@ -274,19 +274,19 @@ scenes:
       - say:
           char: 강치수
           with: [서연]
-          text: "박씨는 불이 나서 죽었다고 올리고, 덕구는 증좌가 모자라 풀어 줍시다. 의녀한테도 그게 낫소."
+          text: "박씨는 불에 죽었다고 올리고, 덕구는 증좌가 모자라 풀어 줍시다."
+      - say:
+          char: 강치수
+          with: [서연]
+          text: "분이 오라비 사흘도 내일이오. 그것도 없던 일로 하지."
       - say:
           char: 강치수
           with: [서연]
           text: "대신 감청 주머니 얘기는 그만하시오. 그 약을 누가 뒤에서 대는지 모를 테니."
       - say:
-          channel: thought
-          with: []
-          text: "나는 아직 아무 데서도 주머니 얘기를 하지 않았다."
-      - say:
           char: 서연
           with: [강치수]
-          text: "나리. 저는 주머니 얘기를 한 적이 없습니다."
+          text: "나리. 저는 포도청에 주머니 얘기를 올린 적이 없습니다."
       - say:
           char: 강치수
           with: [서연]
@@ -294,7 +294,7 @@ scenes:
       - say:
           char: 서연
           with: [강치수]
-          text: "여금에게 들으셨다면, 왜 그 주머니 얘기만은 덮으라 하십니까?"
+          text: "행수에게 들으셨다면, 왜 그 얘기만 덮으라 하십니까?"
       - say:
           char: 강치수.angry
           with: [서연]
@@ -302,7 +302,7 @@ scenes:
       - say:
           char: 서연
           with: [강치수]
-          text: "아닙니다. 어디까지 아시는지 여쭌 겁니다."
+          text: "아닙니다. 누구에게 들으셨는지 여쭌 겁니다."
       - say:
           char: 강치수
           with: [서연]
@@ -310,11 +310,11 @@ scenes:
       - say:
           char: 강치수
           with: [서연]
-          text: "내가 말을 잘못했다가 그 어린것들까지 해를 입으면, 누가 책임지겠소."
+          text: "내가 입을 잘못 놀려서 그 어린것들이 다치면, 의녀가 책임지겠소?"
       - say:
-          channel: thought
+          channel: action
           with: []
-          text: "옥 안에서 덕구가 몸을 뒤척인다. 이 말을 저 사람에게 들려줘도 될까."
+          text: "옥 안에서 덕구가 돌아눕는 소리가 난다. 짚이 또 살에 붙었을 것이다."
       - choice:
           key: c3_deal
           prompt: "덕구를 풀어 주는 대신, 더 캐묻지 말라고 한다."
@@ -334,17 +334,21 @@ scenes:
       - music: night_well
       - say:
           channel: narration
-          text: "이튿날 덕구는 풀려났다. 박씨 약방은 실화로 처리했고, 분이의 시장엔 끝내 범인 이름을 적지 않았다."
+          text: "이튿날 덕구는 풀려났다. 분이 오라비도 다시 잡혀가지 않았다. 박씨 약방은 실화로 적혔다."
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠
           with: [서연]
-          text: "아가씨 덕에 덕구는 집에 갔수. 오늘 장에 나가니 보입디다."
+          text: "덕구는 지게 지고 장에 나왔습디다. 걷는 건 아직 게걸음이고."
       - say:
           char: 막쇠
           with: [서연]
-          text: "근데 그 주머니, 오늘도 장에 나왔습디다."
+          text: "근데 그 주머니도 오늘 장에 나왔수."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "…네."
       - say:
           char: 막쇠
           with: [서연]
@@ -352,7 +356,7 @@ scenes:
       - say:
           channel: thought
           with: [막쇠]
-          text: "장터에 갔더니 감청 주머니가 약방 처마에 걸려 있었다."
+          text: "가 보니 약방 처마에 감청 주머니가 걸려 있었다. 값을 묻는 사람이 둘 있었다."
       - ending: price_of_silence
 
   c3_confront_intro:
@@ -365,7 +369,11 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 강치수]
-          text: "덕구도 이리 데려와 뜰 아래에 세웠소. 포교의 보고와 의녀가 옥에서 확인한 것을 대조하겠소. 자복부터 살펴봅시다."
+          text: "덕구도 뜰 아래 세웠소."
+      - say:
+          char: 도원.stern
+          with: [서연, 강치수]
+          text: "포교의 보고와 의녀가 옥에서 본 것을 대조하겠소. 자복부터 봅시다."
       - say:
           char: 도원
           with: [서연]
@@ -415,7 +423,7 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "…의녀. 낫 이야기를 하고 있소."
+          text: "의녀. 지금은 낫 이야기요."
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -474,9 +482,9 @@ scenes:
           with: [도원]
           text: "…나리. 그건 어느 옥에서나 하는 겁니다."
       - say:
-          channel: thought
+          channel: action
           with: []
-          text: "도원은 받아 적던 붓을 내려놓고 포교의 대답을 기다린다."
+          text: "도원이 받아 적던 붓을 내려놓는다."
       - goto: c3_r2
 
   c3_r2:
@@ -527,7 +535,7 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 강치수]
-          text: "포교가 못 찾았다는 말로는 자복을 뒤집을 수 없소. 다른 증좌가 있소?"
+          text: "독을 못 찾았다는 것만으로는 자복을 못 뒤집소. 의녀, 더 있소?"
       - goto: c3_r3
 
   c3_r3:
@@ -573,7 +581,7 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "…무고는 무고요. 내가 경고했소."
+          text: "…증좌로만 말하라 했소."
       - say:
           channel: narration
           text: "그날 밤 {{player_name|은}} 포도청 여옥에 갇혔다. 덕구의 처결은 예정대로 사흘 뒤였다."
@@ -607,7 +615,7 @@ scenes:
       - say:
           char: 서연
           with: [도원, 강치수]
-          text: "탁본대로 마주 서서 그으려면 왼손이 자연스럽습니다. 공초에는 덕구가 어느 손을 썼는지, 박씨의 어디를 그었는지조차 없습니다."
+          text: "탁본대로 그으려면 마주 서서 왼손을 써야 합니다. 공초에는 어느 손으로 어디를 그었는지가 없습니다."
       - say:
           channel: action
           with: [도원]
@@ -627,28 +635,40 @@ scenes:
       - say:
           char: 덕구
           with: [서연, 도원]
-          text: "지금 나가도 됩니까? …지게는 어디 가서 받으면 돼요?"
+          text: "어… 지금 나가도 됩니까?"
+      - say:
+          char: 덕구
+          with: [서연, 도원]
+          text: "지게는… 지게는 어디 가서 받으면 돼요?"
       - goto: c3_after
 
   c3_after:
     title: "사라진 서리"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 24일 · 한성부 마당" }
       - music: night_well
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - say:
+          char: 도원
+          with: [서연]
+          text: "분이 오라비는 오늘 아침 관아 문지기로 세웠소. 관아 사람은 포도청이 못 끌어가오."
+      - say:
           char: 도원.troubled
           with: [서연]
-          text: "의녀, 검안 기록을 베껴 쓰던 서리 윤길이 이틀째 관아에 안 나오오."
+          text: "그보다 의녀. 시장을 베껴 쓰던 서리 윤길이 이틀째 안 나오오."
       - say:
           char: 도원
           with: [서연]
-          text: "마지막으로 봤을 때 묻더군. 전의감에서 왜 우리 시장을 빌려 갔느냐고."
+          text: "마지막으로 봤을 때 묻더군. 전의감에서 왜 분이의 시장을 빌려 갔느냐고."
       - say:
-          channel: thought
+          char: 서연.think
           with: [도원]
-          text: "전의감. 임금의 약을 짓는 관청. 청심원을 만드는 곳."
+          text: "전의감이면… 청심원을 짓는 곳 아닙니까."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "그렇소."
       - say:
           channel: narration
           text: "9월 25일 밤, 서빙고지기가 한성부 문을 두드렸다. 얼음 사이에서 사람이 나왔다고."

@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "고객센터 직원 정해수. 번호표 027번 손님을 부를 차례다."
+          text: "표시판에 026. 대기 한 명."
           continueLabel: "027번을 호출한다"
       - set: { t0_refund_first: true }
       - goto: ticket
@@ -328,7 +328,12 @@ scenes:
           motion: lean_in
           with: [해수, 광철]
           delivery: whisper
-          text: "4월 11일. 오늘이네. 딱 12년 전이야. 해수야, 첫날 받은 손님이 이분이었어?"
+          text: "4월 11일. 오늘이네."
+      - say:
+          char: 지영
+          with: [해수, 광철]
+          delivery: whisper
+          text: "해수야, 네 첫날 손님이 이분이었어?"
       - say:
           char: 광철
           with: [지영, 해수]
@@ -395,7 +400,7 @@ scenes:
           char: 광철
           motion: stomp
           with: [해수]
-          text: "맛이 이상하니까 가져왔지. 뜯었으니 돈 못 준다는 게 말이 돼? …됐어. 나 내일 또 올 거야."
+          text: "맛이 이상하니까 가져왔지. 뜯었으니 돈 못 준다는 게 말이 돼? …됐어."
       - goto: kwang_after
 
   kwang_pay:
@@ -425,7 +430,7 @@ scenes:
           char: 광철
           motion: lean_in
           with: [해수]
-          text: "이름 뭐야. …정해수. 기억해 둔다."
+          text: "정해수. 정, 해, 수. 이 이름 내가 적어 간다."
       - wait: 600
       - say:
           char: 해수
@@ -450,10 +455,15 @@ scenes:
           char: 광철
           with: [해수]
           text: "큰 봉지 하나 줘. …얼마야. 공짜로 받는 거 아니야."
-      - wait: 0
-      - wait: 0
-      - wait: 0
-      - wait: 0
+      - say:
+          char: 광철
+          with: [해수]
+          text: "내일도 여기 앉아 있지? 내일 또 와."
+      - say:
+          char: 해수.service
+          motion: bow
+          with: [광철]
+          text: "네, 고객님. 내일도 나옵니다."
       - sticker: { id: pencil, image: pencil_sticker, x: 66, y: 40, width: "300px", rotate: 12, enter: slideUp }
       - say:
           channel: record
@@ -463,23 +473,23 @@ scenes:
           char: 지영
           with: [해수]
           text: "연필 세 봐. 볼펜 꽂아 놨을 땐 저 아저씨가 올 때마다 하나씩 가져갔잖아."
-      - wait: 0
-      - say:
-          char: 해수
-          with: [지영]
-          text: "테이프는 제가 드린 거예요. 차에 싣다가 박스가 터졌거든요."
-      - wait: 0
-      - say:
-          char: 지영.smirk
-          motion: sigh
-          with: [해수]
-          text: "그렇게 소리를 질러도 넌 테이프까지 챙겨 주네."
-      - wait: 0
       - say:
           char: 해수
           with: [지영]
           text: "스무 자루 다 있어요."
-      - wait: 0
+      - say:
+          char: 지영
+          with: [해수]
+          text: "테이프는. 저 아저씨가 들고 나가던데."
+      - say:
+          char: 해수
+          with: [지영]
+          text: "그건 제가 드렸어요. 지난번에 차에 싣다가 박스가 터졌대서요."
+      - say:
+          char: 지영.smirk
+          motion: sigh
+          with: [해수]
+          text: "소리는 소리대로 듣고 테이프까지 챙겨 주네."
       - clearSticker: { id: pencil, leave: fadeOut }
       - branch:
           cases:
@@ -809,3 +819,21 @@ scenes:
           channel: thought
           with: []
           text: "휴지. 우유. 또 안 샀다."
+      - say:
+          channel: action
+          with: []
+          text: "불을 끈다."
+      - say:
+          channel: action
+          with: []
+          text: "이불 속에서 입술만 움직인다. 소리, 지르지."
+          wait: 700
+      - say:
+          char: 상혁
+          with: []
+          delivery: whisper
+          text: "하하. 아, 진짜?"
+      - say:
+          channel: action
+          with: []
+          text: "해수는 입을 닫는다."

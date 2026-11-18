@@ -235,13 +235,13 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "응."
+          text: "제일 자주 여는 칸임."
       - wait: 0
       - wait: 0
       - say:
           char: 윤재
           with: [로봇]
-          text: "계산 좀 하지 마."
+          text: "그 칸 지워. 계산도 좀 하지 마."
       - wait: 270
       - say:
           char: 로봇
@@ -578,6 +578,10 @@ scenes:
 
   b3_snack_save:
     actions:
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "넣어 둬. 내일 먹게."
       - emote: { id: 로봇, motion: nod, repeat: 3 }
       - say:
           char: 로봇.thinking
@@ -918,6 +922,42 @@ scenes:
       - music: chip_home
       - place: { text: "식량 원정에서 돌아온 밤 · 편의점 기지", presentation: center }
       - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "헌법 조회."
+      - say:
+          char: 로봇.thinking
+          motion: freeze
+          with: [윤재]
+          text: "…빈칸."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "드론이 훑기 전엔 있었음."
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "1P는 봐준다. 그거잖아. 뭘 그걸 까먹어."
+      - wait: 270
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "다시 적음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "못 고치는 칸인데 날아갔음."
+      - say:
+          char: 윤재
+          motion: puff
+          with: [로봇]
+          text: "놀라서 그래. 나도 놀라면 구구단 7단부터 날아가."
+      - wait: 270
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "배터리 네 칸. 네 칸. 네 칸."
+      - say:
           char: 윤재
           motion: sigh
           with: [로봇]
@@ -1105,9 +1145,23 @@ scenes:
           with: [윤재]
           text: "그래서 혼자 정했음."
       - say:
-          channel: thought
-          with: []
-          text: "혼자 가겠다는 말. 그 말 하고 나간 사람이 우리 집에 하나 있었다."
+          char: 윤재.sad
+          motion: droop
+          with: [로봇]
+          text: "…우리 엄마도 혼자 정하고 나갔어."
+      - wait: 460
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "낮에 질문 대답 못 받음."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "나갔으면 돌아옴?"
+      - say:
+          char: 윤재.sad
+          with: [로봇]
+          text: "안 왔어. 5년째."
       - say:
           char: 윤재
           when: { var: saw_ceiling, op: eq, value: true }
@@ -1124,6 +1178,33 @@ scenes:
           when: { var: saw_ceiling, op: eq, value: true }
           with: [윤재]
           text: "…그건 설명서에 없음."
+      - say:
+          char: 로봇.thinking
+          motion: headtilt
+          with: [윤재]
+          text: "나가는 거랑 갔다 오는 거."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "같은 말임?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…달라. 갔다 올 사람은 '다녀올게' 하고 가."
+      - wait: 270
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "다녀올게."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "저장."
+      - say:
+          char: 윤재
+          motion: shake
+          with: [로봇]
+          text: "지금 쓰지 마. 보낸다고 안 했어."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - say:
           char: 로봇.thinking
@@ -1170,6 +1251,10 @@ scenes:
           width: "clamp(200px, 32%, 410px)"
           enter: fadeIn
           inputLockMs: 300
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "혼자는 무슨. 끝까지 2P로 가."
       - say:
           char: 윤재
           with: [로봇]
@@ -1257,7 +1342,7 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "1조는 한 칸 = 1번의 팔."
+          text: "1조는 1P는 봐줌."
       - say:
           char: 윤재
           motion: laugh
@@ -1271,12 +1356,62 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "헌법은 안 바뀌는 칸이라고 네가 그랬음."
+          text: "헌법은 못 고치는 칸이라고 네가 그랬음."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "1P는 사람이라 문 안에 못 들어감."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "끝은 문 앞임?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "문 앞까진 같이 가. 그건 네가 못 정해."
+      - wait: 270
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "문 앞까지 1P 동행."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "문 안은 혼자."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "적어 둠."
+      - say:
+          char: 윤재
+          motion: puff
+          with: [로봇]
+          text: "뒤에 건 적지 마."
+      - wait: 270
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "적었음."
       - goto: /4.yaml
 
   b3_think:
     actions:
-      - wait: 0
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "…자. 내일 얘기해."
+      - sticker:
+          id: b3_pinky_waiting
+          image: pinky_waiting_sticker
+          x: 50
+          y: 32
+          width: "clamp(200px, 32%, 410px)"
+          enter: fadeIn
+          inputLockMs: 300
       - move: { id: 로봇, style: reset }
       - say:
           char: 로봇
@@ -1293,4 +1428,5 @@ scenes:
           motion: droop
           with: [윤재]
           text: "…내일 할 게 하나 더 생겼어."
+      - clearSticker: { id: b3_pinky_waiting, leave: fadeOut }
       - goto: /4.yaml

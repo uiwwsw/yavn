@@ -103,7 +103,7 @@ scenes:
           char: 해수
           with: []
           erase: true
-          text: "저도 뉴스 봤어요"
+          text: "지하 어디쯤이래요"
       - say:
           channel: message
           thread: "상봉점 고객센터"
@@ -208,10 +208,6 @@ scenes:
           channel: thought
           with: []
           text: "세면대 아래 쓰레기통에 칫솔 포장이 없다. 영수증도 없다."
-      - say:
-          channel: thought
-          with: []
-          text: "두 개는 어디서 왔는지 모르겠고, 하나는 3년째 내가 쓰던 거다."
       - choice:
           key: t2_sh
           prompt: "상혁이 머리끈을 집어 손목에 낀다."
@@ -343,6 +339,22 @@ scenes:
           channel: action
           with: []
           text: "해수가 앞치마를 벗어 접는다. 접는 자리가 늘 같아서 선이 났다."
+      - sticker: { id: drink, image: drink_sticker, x: 64, y: 38, width: "260px", rotate: 0, enter: fadeIn }
+      - say:
+          channel: action
+          with: []
+          text: "접힌 주머니가 불룩하다. 드링크 병이다. 뚜껑은 그대로다."
+          wait: 700
+      - say:
+          char: 경준
+          with: [해수]
+          delivery: whisper
+          text: "…형. 그거 어제 그 아저씨가."
+      - say:
+          char: 해수
+          with: [경준]
+          text: "같이 넣어 놔."
+      - clearSticker: { id: drink, leave: fadeOut }
       - say:
           char: 은숙
           with: [해수, 경준]
@@ -537,7 +549,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "그러면 어제 스무 자루였다는 걸 확인하신 분은 해수 씨뿐이네요."
+          text: "그러면 어제 스무 자루였다는 건 정해수 씨만 아시네요."
       - say:
           channel: thought
           with: []
@@ -564,12 +576,12 @@ scenes:
           char: 은숙.sharp
           when: { var: rage, op: gte, value: 2 }
           with: [해수]
-          text: "신고할 때 저 말을 그대로 따라 했대요. 해수 씨는 어디서 들어 본 적 없으세요?"
+          text: "신고할 때 저 말을 그대로 따라 했대요. 정해수 씨는 들어 본 적 없으세요?"
       - say:
           char: 해수.shaken
           when: { var: rage, op: gte, value: 2 }
           with: [은숙]
-          text: "…어디서 들은 것 같긴 합니다."
+          text: "…들어 본 것 같긴 합니다."
       - say:
           char: 은숙
           with: [해수]
@@ -712,7 +724,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "로고가 지워지니 한 자루를 골라 바꿔 놔도 내 눈에 안 띌 것 같다."
+          text: "로고가 없으면 어느 마트 연필인지 모른다."
       - say:
           channel: system
           with: []
@@ -882,7 +894,7 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: [해수]
-          text: "오광철 씨가 죽기 전날 이 창구에 한 시간이나 서 있었어요. 해수 씨를 찾아왔고요."
+          text: "오광철 씨가 전날 이 창구 앞에 한 시간을 서 있었어요. 정해수 씨 보러 온 거고요."
       - say:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
@@ -969,11 +981,11 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "…거기서 만난 사람이 여기서도 자기 알아볼 줄 알았나 봐요."
+          text: "…거기 걔는 번호 차단을 안 한대요."
       - say:
           char: 지영
           with: [해수]
-          text: "아직도 그 손님한테 왜 자기를 모른다고 하느냐고 따진대."
+          text: "여기 손님은 했겠지. 신고까지 했는데."
       - say:
           char: 지영
           with: [해수]

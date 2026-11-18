@@ -50,11 +50,6 @@ scenes:
           when: { var: t_say, op: eq, value: true }
           text: "아까 저 끝에 있을 때도 다 들었어요. 물건 이름만 들으면 최 통역 온 줄 안다니까."
       - say:
-          char: 순임
-          with: [기호]
-          when: { var: t_say, op: eq, value: true }
-          text: "오늘도 오는 줄 먼저 알았다니까요."
-      - say:
           char: 기호
           with: [순임]
           motion: startle
@@ -65,6 +60,21 @@ scenes:
           with: []
           when: { var: t_say, op: eq, value: true }
           text: "말하고 나서야 옆 좌판에 사람 있는 게 보인다. 어려서부터 꼭 이랬다."
+      - say:
+          channel: action
+          with: []
+          when: { var: t_live, op: eq, value: true }
+          text: "물건을 받기 전에 시장 끝 계단부터 본다. 스물두 단. 불이 나면 그리로 뛴다."
+      - say:
+          channel: thought
+          with: []
+          when: { var: t_dare, op: eq, value: true }
+          text: "지난달엔 처음 보는 낙하산 천을 값도 안 깎고 두 필 샀다. 아직 한 필이 남았다."
+      - say:
+          channel: action
+          with: []
+          when: { var: t_free, op: eq, value: true }
+          text: "좌판 다리에는 못을 안 쳤다. 접으면 한 손에 들린다."
       - say:
           channel: action
           with: []
@@ -122,6 +132,7 @@ scenes:
 
   heart_cannot:
     actions:
+      - set: { l2_heart_blocked: true }
       - wait: 1100
       - say: { channel: action, with: [], text: "영수증부터 달라고 할 참이었다. 입을 열자 다른 말이 나왔다.", wait: 900, unskippable: true }
       - goto: heart_told
@@ -217,10 +228,13 @@ scenes:
           with: [영호]
           when: { var: l2_told, op: eq, value: false }
           text: "…날짜, 금액, 이름 석 자. 다 받았는데."
+      - bg: { id: busan_market, transition: fade, duration: 900 }
+      - place: { text: "그날 낮 · 국제시장 3열", presentation: center }
       - say: { channel: action, with: [], text: "우리 천막은 타고 쇠기둥만 남았다. 그 사이에 누가 벌써 새 천막을 쳐 놓았다." }
       - say: { char: 순임, with: [영호], text: "…저기 우리 자리였는데." }
       - say: { char: 영호, with: [순임], text: "아줌마가 어제부터 저기 섰대. 먼저 선 사람이 임자래." }
       - say: { channel: thought, with: [], text: "그 말을 두 달 전에 들었다. 그때는 내가 임자였다." }
+      - say: { channel: action, with: [], text: "새 천막 좌판에 초콜릿이 나와 있다. 영호가 그쪽을 한 번 보고 내 치맛자락을 잡는다." }
       - say: { char: 영호, with: [순임], text: "엄마, 저 벽보 좀 봐. 공장에서 사람 구한대. 방도 준대!" }
       - say: { char: 순임, with: [영호], text: "네가 그걸 읽었어?" }
       - say: { char: 영호, with: [순임], motion: perk, text: "'방' 자하고 '공' 자 읽었어. 나머진 옆집 형이." }
@@ -228,6 +242,7 @@ scenes:
 
   mother_choice_intro:
     actions:
+      - bg: { id: busan_shack, transition: fade, duration: 900 }
       - place: "2월, 떠나는 날 · 새벽 4시 · 판잣집"
       - char: { id: 순임, position: left }
       - char: { id: 시어머니, position: right }
@@ -264,6 +279,7 @@ scenes:
 
   mother_cannot:
     actions:
+      - set: { l2_mother_blocked: true }
       - wait: 1100
       - say: { channel: action, with: [시어머니], text: "어머이, 하고 불렀다. 보따리는 벌써 어깨에 있고 영호 손을 쥐고 있다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "나가려고 보따리를 멘 기억은 없다. 어깨에서 끈을 내려 보려 했는데 손이 안 간다." }
@@ -352,6 +368,8 @@ scenes:
       - say: { channel: narration, text: "미안하다고. 한마디." }
       - say: { channel: narration, text: "그 밤에 비어 있던 손." }
       - say: { channel: narration, text: "내가 먼저 뛰어갔으면 아이들은 나왔겠지. 옆 좌판 최 씨도 들어갈 일 없었을 테고." }
+      - say: { channel: narration, text: "초콜릿 하나만, 하던 애였다. 그 밤 뒤로는 뭘 사 달란 적이 없다." }
+      - say: { channel: narration, text: "휴강이라고 했다. 아닌 줄 알면서 등록금 얘기를 했다." }
       - say: { channel: narration, when: { var: l2_asked, op: eq, value: true }, text: "어머이한테 한 번만 더 같이 가자고 할걸. 기차 시간이 좀 남았었는데." }
       - say: { channel: narration, when: { var: l2_asked, op: eq, value: false }, text: "쌀값 놓고 나오기 전에 같이 가자고 한마디라도 할걸. 아직 기차 시간이 남았었는데." }
       - wait: 900

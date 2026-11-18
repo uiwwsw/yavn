@@ -17,10 +17,17 @@ scenes:
       - say:
           channel: message
           thread: "태민"
+          side: me
+          char: 해수
+          with: []
+          text: "도착했습니다 1층 유리문은 열려 있네요"
+      - say:
+          channel: message
+          thread: "태민"
           side: them
           char: 태민
           with: []
-          text: "도착하셨어요? 제가 같이 가진 못해요. 카드 찍으면 제 이름이 기록에 남거든요"
+          text: "같이 못 가서 미안해요. 카드 찍으면 제 이름으로 기록이 남을 거예요"
       - say:
           channel: message
           thread: "태민"
@@ -167,11 +174,6 @@ scenes:
           with: []
           text: "로고가 반쯤 지워져 있네요."
       - say:
-          char: 해수
-          when: { var: t_pencil, op: eq, value: true }
-          with: []
-          text: "레플라에서 내가 문지른 자리랑 같다."
-      - say:
           channel: thought
           when: { var: t_pencil, op: eq, value: true }
           text: "그날 밤 레플라에서 문지른 게 여기 서랍에 있다. 이 건물엔 오늘 처음 왔다."
@@ -263,7 +265,7 @@ scenes:
           channel: record
           when: { var: tried_polite, op: eq, value: true }
           with: []
-          text: "└ 발화 · \"고객님, 그건 제가 해 드릴 수 없습니다.\" · 음량 보통"
+          text: "└ 발화 · \"네, 고객님. 영수증 확인해 드릴게요.\" · 음량 보통 · 다시 하기 1회"
       - say:
           channel: record
           when: { var: rage, op: eq, value: 1 }
@@ -273,7 +275,7 @@ scenes:
           channel: record
           when: { var: rage, op: gte, value: 2 }
           with: []
-          text: "└ 발화 · 음량 초과 · 대상 신체 특징 언급 · 주변 좌석 7석에서 돌아봄"
+          text: "└ 발화 · 음량 초과 · 대상의 식사량 언급 · 주변 좌석 7석에서 돌아봄"
       - say:
           channel: thought
           when: { var: tried_polite, op: eq, value: true }
@@ -393,11 +395,6 @@ scenes:
           channel: record
           with: []
           text: "고객 상담 이력 · 오광철 님 · 최초 등록 2019.04.11 14:52 · 최초 처리자 정해수"
-      - wait: 0
-      - say:
-          channel: thought
-          with: []
-          text: "첫날 그 손님을 받은 순간에 이미 접속한 걸로 돼 있다."
       - effect: focus
       - say:
           char: 해수
@@ -405,10 +402,6 @@ scenes:
           delivery: whisper
           text: "…제가 0001이네요."
           wait: 1100
-      - say:
-          channel: action
-          with: []
-          text: "‘제가’라는 말이 서버 랙 사이에서 한 번 더 울린다."
       - say:
           channel: system
           with: []
@@ -427,11 +420,6 @@ scenes:
           channel: thought
           with: []
           text: "첫 출근 날부터 오늘까지 내 이름 아래 남은 항목이 다섯 개다."
-      - say:
-          channel: thought
-          with: []
-          text: "그날 창구에 앉아 처음으로 손님을 기다린 일은 어디에도 없다."
-          wait: 700
       - say:
           channel: thought
           when: { var: knocked, op: eq, value: true }
@@ -524,10 +512,6 @@ scenes:
           channel: thought
           when: { var: seen_card, op: eq, value: true }
           text: "태민이 뒤집어 보여 준 출입증. 사진 칸은 비어 있고 USER 0001만 적혀 있었다."
-      - say:
-          channel: thought
-          when: { var: seen_card, op: eq, value: true }
-          text: "사진이 들어갈 자리에 형광등만 반사되고 있었다."
       - say:
           channel: system
           when: { var: honest, op: gte, value: 3 }
@@ -899,13 +883,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "제 이름으로 남은 게 다섯 줄이었어요. 12년이나 일했는데요."
-      - wait: 0
-      - say:
-          char: 해수
-          with: [은숙]
-          text: "레플라에서 봤어요. 마트에서 했던 일도 거기선 튜토리얼이라고 써 있더라고요."
-      - wait: 0
+          text: "제 이름 밑에 다섯 줄이 있었어요. 12년 치가요."
       - say:
           char: 은숙
           with: [해수]
@@ -913,7 +891,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "마지막 줄은 오늘 새벽에 가산동에서 끝냈습니다."
+          text: "오늘 새벽에 제가 끝냈습니다. 제 번호를 쳐서요."
       - wait: 0
       - move: { id: 은숙, toward: 해수, style: approach }
       - mood: { tone: warm, level: 1 }
@@ -945,6 +923,7 @@ scenes:
           with: []
           text: "하루 먼저 봤으면 달랐을 거라고는 못 하겠다. 봤어도 접수증을 써 드렸을 것 같다."
       - char: { id: 지영, position: right }
+      - sticker: { id: corded_pen, image: corded_pen_sticker, x: 64, y: 40, width: "280px", rotate: 0, enter: fadeIn }
       - say:
           char: 지영
           motion: headtilt
@@ -963,6 +942,7 @@ scenes:
           char: 해수
           with: [지영]
           text: "그러게요. 저도 좀 놀랍네요."
+      - clearSticker: { id: corded_pen, leave: fadeOut }
       - sound: chime
       - say:
           channel: system

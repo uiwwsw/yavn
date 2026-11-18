@@ -44,7 +44,7 @@ scenes:
       - say:
           channel: action
           with: [서연]
-          text: "신고서 옆에 초검 기록을 펼친다. 죽은 까닭을 적는 칸에 붓을 대려다 멈춘다."
+          text: "신고서의 ‘익사’ 두 글자 아래는 비어 있다. 시장은 아직 한 줄도 없다."
       - wait: 250
   night_call:
     title: "혼례 전날 밤"
@@ -56,7 +56,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "초검 기록을 덮을 때 담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 아무도 대답하지 않는다."
+          text: "신고서를 접는데 담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 아무도 대답하지 않는다."
       - wait: 250
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
@@ -74,27 +74,44 @@ scenes:
           char: 서연
           with: [막쇠]
           text: "혜민서 의녀 {{player_name|이라}} 합니다."
-      - wait: 0
-      - wait: 0
       - say:
           char: 막쇠
           with: [서연]
           text: "속이 안 좋으면 담 밖으로 나가요. 우물 안엔 말고."
-      - wait: 0
       - say:
           char: 서연
           with: [막쇠]
           text: "아저씨, 등잔 좀 이리 주세요. 손부터 볼게요."
-      - wait: 0
+      - sticker: { id: c1_book, image: eonhae_sticker, x: 50, y: 34, width: "clamp(190px, 28%, 360px)", enter: fadeIn }
       - say:
           channel: action
           with: []
           text: "품에서 『무원록 언해』를 꺼낸다. 등잔 아래 한문 옆의 한글이 드러난다."
-      - wait: 0
       - say:
           char: 막쇠.grin
           with: [서연]
           text: "참말로 한글이네. 난 마흔 해를 그림만 보고 했는데."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "의녀가 그런 책은 어디서 났수?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "혜민서 박 의녀님이 베껴 주셨어요. 재작년에 돌아가셨고요. 빈칸 글씨도 그분 거예요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아, 박 의녀. 손이 찬 양반이었지."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아가씨 글씨는 없수?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "…아직요."
+      - clearSticker: { id: c1_book, leave: fadeOut }
       - char: { id: 도원, position: center }
       - say:
           channel: action
@@ -106,12 +123,10 @@ scenes:
           speakerName: "한성부 판관"
           with: [서연, 막쇠]
           text: "한성부 판관 김도원이오. 혼례가 두려워 몸을 던졌다 하오."
-      - wait: 0
       - say:
           char: 도원.stern
           with: [서연]
-          text: "날 밝기 전에 기록을 올려야 하오. 몸을 보고 알려 주시오. 사인은 내가 쓰겠소."
-      - wait: 0
+          text: "날 밝기 전에 시장을 올려야 하오. 몸을 보고 알려 주시오. 사인은 내가 쓰겠소."
       - say:
           char: 서연
           with: [도원, 막쇠]
@@ -132,7 +147,6 @@ scenes:
       - say:
           channel: record
           text: "몸을 그린 이 종이가 시형도다. 살핀 곳에 본 것을 적는다."
-      - wait: 0
       - say:
           char: 막쇠
           with: [서연]
@@ -188,7 +202,11 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "거품이 없네요. 살아서 빠졌는지는 더 봐야겠어요."
+          text: "없어요. 한 점도요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "음. 그것만 갖고는 판관 나리가 안 써 줘요. 더 봅시다."
       - set: { c1_mouth: true }
       - goto: c1_examine
 
@@ -214,7 +232,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "옷을 움켜쥐면서 손도 할퀴었을 수 있지. 사람을 잡아 오면 손부터 봐요."
+          text: "옷을 움켜쥐다 살도 긁었을 거요. 누굴 잡아 오거든 손등부터 봐요."
       - say:
           channel: thought
           with: []
@@ -327,15 +345,15 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "…밤이 길어지겠군."
+          text: "익사라 쓰면 날 밝기 전에 끝날 일이었소."
+      - say:
+          channel: action
+          with: [도원]
+          text: "도원이 신고서의 ‘익사’ 위에 붓을 대고 한참 있다가 줄을 긋는다."
       - say:
           char: 도원
           with: [서연]
-          text: "좋소."
-      - say:
-          char: 도원
-          with: [서연]
-          text: "그렇게 쓰겠소. 누가 죽였는지는 더 밝혀야 하오."
+          text: "교살이라 쓰겠소. 누가 졸랐는지는 아직 빈칸이오."
       - goto: c1_brother
 
   c1_brother:
@@ -354,7 +372,7 @@ scenes:
       - say:
           char: 강치수
           with: [서연, 도원]
-          text: "노름빚 갚는다고 분이 혼수 비단을 팔자다가 저녁에 크게 싸웠답디다."
+          text: "노름빚 갚는다고 혼수 비단을 팔자다가 저녁에 크게 싸웠답디다."
       - say:
           char: 강치수
           with: [서연, 도원]
@@ -425,15 +443,15 @@ scenes:
       - say:
           char: 서연.resolve
           with: [강치수, 도원]
-          text: "분이 손톱은 두 개가 깨졌습니다. 저 손등엔 생채기도 없는데, 무엇으로 범인이라 하십니까?"
+          text: "분이 손톱은 두 개가 깨졌습니다. 목을 조른 사람이면 손등이 긁혔을 겁니다."
       - say:
           char: 강치수
           with: [서연]
-          text: "…뭐."
+          text: "…뭐요."
       - say:
           char: 강치수.angry
           with: [서연, 도원]
-          text: "…계집이 시장 한 장 들고 포도청 일을 가르치려 드네."
+          text: "의녀가 종이 한 장 들고 포도청 일을 가르치려 드네."
       - say:
           char: 도원.stern
           with: [서연, 강치수]
@@ -481,13 +499,35 @@ scenes:
       - say:
           char: 도원
           with: [서연, 막쇠]
-          text: "분이가 비단전에서 바느질을 했다지. 여금에게 이 실을 보여 주시오."
-      - say:
-          channel: thought
-          with: []
-          text: "분이가 꿰맨 물건이라면 여금이 알아볼 것이다."
+          text: "분이가 비단전에서 바느질을 했다지. 의녀, 날이 밝으면 여금에게 이 실을 보여 주시오."
       - clearSticker: { id: c1_thread_end, leave: fadeOut }
+      - sticker:
+          id: c1_sijang_end
+          image: sijang_sticker
+          x: 50
+          y: 32
+          width: "clamp(160px, 22%, 300px)"
+          enter: fadeIn
+          inputLockMs: 300
       - say:
           channel: record
-          text: "초검 시장. 사인 교살. 숨이 끊어진 뒤 우물에 던져진 것으로 보임. 의녀 {{player_name}} 검안, 오작인 막쇠 입회."
+          sound: paper
+          text: "초검 시장. 사인 교살. 숨이 끊어진 뒤 우물에 던져진 것으로 보임. 초검관 한성부 판관 김도원."
+      - say:
+          channel: action
+          with: [서연, 막쇠]
+          text: "도원이 수결한 시장을 접어 소매에 넣고 먼저 대문을 나선다."
+      - clearSticker: { id: c1_sijang_end, leave: fadeOut }
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "우리 이름은 없수. 본래 그래요."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "지게미는 아저씨가 얻어 오셨는데요."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "주모 이름도 없지."
       - goto: /1.yaml

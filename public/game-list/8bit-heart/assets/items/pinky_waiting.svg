@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 192" width="320" height="192" shape-rendering="crispEdges">
+  <title>꺼진 촛불 옆에 혼자 내민 로봇의 새끼손가락</title>
+  <defs>
+    <clipPath id="frame">
+      <path d="M14 8h292v6h6v164h-6v6H14v-6H8V14h6z"/>
+    </clipPath>
+  </defs>
+  <path d="M15 11h293v7h7v165h-7v6H15v-6H6V18h9z" fill="#100e19" opacity=".7"/>
+  <g clip-path="url(#frame)">
+    <path fill="#15142a" d="M0 0h320v192H0z"/>
+    <path fill="#1d1b30" d="M0 30h320v8H0zM0 53h320v4H0z"/>
+    <path fill="#352a3d" d="M0 103h320v89H0z"/>
+    <path fill="#403044" d="M0 113h320v17H0zM0 155h320v14H0z"/>
+    <path fill="#4c3848" d="M0 141h320v3H0zM0 177h320v7H0zM172 152h148v3H172z"/>
+    <path fill="#2e2438" d="M0 161h75v2H0zM211 161h109v2H211zM0 185h320v7H0z"/>
+    <!-- 불 꺼진 초: 심지와 연기 -->
+    <path d="M278 59h3v6h-3z" fill="#262031"/>
+    <path d="M279 49h3v4h-3zM282 41h3v4h-3zM278 33h3v4h-3z" fill="#5f574f" opacity=".7"/>
+    <path d="M271 65h16v27h-16z" fill="#6f5a56"/>
+    <path d="M271 65h11v24h-11z" fill="#94807a"/>
+    <path d="M266 92h28v6h-28z" fill="#5e4a52"/>
+    <path d="M203 150h98v4h-98z" fill="#251e2e" opacity=".5"/>
+    <!-- 로봇의 손목과 내민 새끼손가락 (pinky_promise.svg와 같은 손) -->
+    <path d="M320 110h-29v-5h-20v-8h-19v-8h-21v7h-13v30h9v13h25v9h22v7h21v5h25z" fill="#191724"/>
+    <path d="M320 116h-31v-5h-24v-8h-20v-8h-12v34h20v8h23v8h23v5h21z" fill="#70708b"/>
+    <path d="M320 116h-32v-5h-23v-8h-19v6h18v8h25v5h31z" fill="#b3b0bf"/>
+    <path d="M320 141h-23v-6h-20v-7h-21v9h20v8h24v5h20z" fill="#48445d"/>
+    <path d="M240 126h-31v-8h-15v-13h-10V92h6V80h14v-6h18v4h18v7h14v20h-8v14h-6z" fill="#1a1826"/>
+    <path d="M242 121h-30v-9h-12v-12h-10V94h6V84h11v-5h12v4h19v6h11v13h-8v12h-8v7z" fill="#aaa8b5"/>
+    <path d="M209 82h11v5h16v6h-18v-5h-9zM197 91h11v7h-11zM204 104h23v8h-16v-4h-7z" fill="#dbd2c7"/>
+    <path d="M204 99h12v5h-12zM220 90h5v10h-5zM232 94h14v4h-14zM225 115h14v5h-14z" fill="#56516c"/>
+    <path d="M202 109h-14v-5h-11v-6h-13V84h5v-8h14v6h-8v9h9v5h12v5h6z" fill="#282333"/>
+    <path d="M198 105h-10v-6h-10v-5h-10v-9h5v-5h6v3h-6v9h11v6h11v4h3z" fill="#b5b1ba"/>
+    <path d="M174 90h7v4h-7zM186 100h5v4h-5z" fill="#71677f"/>
+  </g>
+  <path d="M14 8h292v6h6v164h-6v6H14v-6H8V14h6z" fill="none" stroke="#6e5a60" stroke-width="2"/>
+  <path d="M16 13h288M13 16v160M16 179h288M307 16v160" fill="none" stroke="#262031" stroke-width="2"/>
+</svg>

@@ -23,6 +23,8 @@ assets:
     bill_sticker: assets/items/bill.svg
     user_0001_card_sticker: assets/items/user-0001-card.svg
     cctv_sticker: assets/items/cctv.svg
+    drink_sticker: assets/items/drink.svg
+    corded_pen_sticker: assets/items/corded-pen.svg
   characters:
     해수:
       name: "정해수"
@@ -186,6 +188,12 @@ inventory:
     image: assets/items/pencil.svg
     category: "주머니"
     order: 20
+  drink:
+    name: "드링크 한 병"
+    description: "4월 17일 오전에 오광철 고객님이 창구에 놓고 간 것. 뚜껑을 따지 않았다."
+    image: assets/items/drink.svg
+    category: "주머니"
+    order: 25
   complaint:
     name: "고객의 소리 접수증 사본"
     description: "2031.04.12 15:07 접수. 대상 직원 칸에 정해수. 글씨를 세게 눌러 써서 뒷장까지 자국이 났다."
