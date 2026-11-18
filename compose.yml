@@ -1,0 +1,10 @@
+name: yavn
+services:
+  web:
+    build: .
+    image: yavn-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8441:80"
+    logging:
+      options: { max-size: 10m, max-file: "3" }
