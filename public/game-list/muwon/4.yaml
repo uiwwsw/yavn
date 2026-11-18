@@ -19,7 +19,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "도원이 보낸 고발장이 대청 한가운데 놓여 있다. 피고는 그 너머 자리에 앉았다. 버선 앞코에 흙 한 점 묻지 않았다."
+          text: "고발장이 대청 한가운데 펼쳐져 있다. 피고는 그 너머에 앉았다. 버선 앞코에 흙 한 점 없다."
       - char: { id: 서연, position: left }
       - char: { id: 한명재, position: right }
       - say:
@@ -29,57 +29,53 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "다만 저 의녀는 열여덟이라 들었습니다."
+          text: "다만 고발장 끝에 이름이 둘 더 있더군요. 의녀와 오작인."
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "그 의녀와 오작인의 말을 근거로 저를 고발하셨다지요."
-      - say:
-          char: 한명재.cold
-          with: [서연]
-          text: "그들이 형조 대청에서 증언할 자격이 있습니까?"
+          text: "참의 나리, 그들이 형조 대청에서 증언할 자격이 있습니까?"
       - say:
           channel: action
           when: { var: makssoe_alive, op: eq, value: true }
           with: []
-          text: "막쇠가 신을 벗어 마루 아래 내려놓는다. 포졸이 앞을 막자 흙마당에 그대로 서 있다."
+          text: "막쇠가 신을 벗어 마루 아래 내려놓는다. 포졸이 앞을 막자 흙마당에 그대로 선다."
       - say:
-          channel: thought
+          channel: action
+          when: { var: makssoe_alive, op: eq, value: false }
           with: []
-          text: "의녀는 의관에게 말을 올리지 못한다. 판관을 통해야 한다."
+          text: "고발장의 ‘오작인 막쇠’ 옆에 누가 잔글씨로 ‘사(死)’라고 써넣었다."
       - say:
           char: 한명재
           with: [서연]
-          text: "의녀가 여기까지 올라오셨군요."
-      - say:
-          char: 한명재
-          with: [서연, 도원]
-          text: "혜민서에서 검안은 몇 번이나 맡으셨소?"
-      - say:
-          char: 한명재.cold
-          with: [서연]
-          text: "참의 나리. 제 검안과 저 의녀의 말을 나란히 놓고 보시지요."
+          text: "의녀께 하나만 묻지요. 검안은 몇 번이나 맡으셨습니까?"
       - say:
           char: 서연.resolve
           with: [한명재]
-          text: "시신 셋을 살폈습니다. 기록을 가져왔습니다."
-      - say:
-          char: 막쇠.grin
-          when: { var: makssoe_alive, op: eq, value: true }
-          with: [서연]
-          text: "허."
+          text: "세 번입니다. 세 번 다 기록을 가져왔습니다."
       - say:
           char: 한명재
           motion: laugh
           with: [서연]
-          text: "참의 나리, 저 아이가 올린 것이 판관의 검안 기록으로 통하는 겁니까?"
+          text: "세 번."
       - say:
-          channel: record
-          text: "품에서 베껴 쓴 『무원록 언해』 한 권을 꺼낸다. 접어 둔 귀퉁이는 손때로 까맣다."
+          char: 막쇠
+          when: { var: makssoe_alive, op: eq, value: true }
+          with: [서연]
+          text: "허. 난 마흔 해요."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "참의 나리, 세 번 본 눈을 판관의 검안으로 치시겠습니까?"
+      - sticker: { id: t_book, image: eonhae_sticker, x: 50, y: 32, width: "clamp(180px, 26%, 340px)", enter: fadeIn }
+      - say:
+          channel: action
+          with: []
+          text: "품에서 『무원록 언해』를 꺼내 기록 옆에 놓는다. 접어 둔 귀퉁이가 손때로 까맣다."
       - say:
           channel: thought
           with: []
-          text: "스승이 물려준 책이다. 빈 곳마다 내가 알아본 것을 적었다."
+          text: "빈칸에는 아직 스승의 글씨뿐이다."
+      - clearSticker: { id: t_book, leave: fadeOut }
       - goto: standing
 
   standing:
@@ -160,11 +156,15 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 한명재]
-          text: "의녀가 본 것은 내 눈으로 다 확인했소. 내 이름으로 증언하겠소."
+          text: "의녀가 본 것은 내 눈으로도 다 보았소. 그 이름은 내가 적었소."
+      - say:
+          char: 도원.stern
+          with: [서연, 한명재]
+          text: "본 사람 입으로 듣는 것이 옳소. 의녀, 직접 답하시오."
       - say:
           channel: thought
           with: [도원]
-          text: "우물가에서 몸만 확인하라던 사람이 직접 나섰다."
+          text: "우물가에서는 사인은 자기가 쓰겠다던 사람이다."
       - goto: round1
 
   standing_doubted:
@@ -173,7 +173,7 @@ scenes:
       - say:
           char: 도원.troubled
           with: [서연, 한명재]
-          text: "…의녀의 검안이 틀린 적은 없었소. 그 이상은 장담하지 못하겠소."
+          text: "…의녀의 검안이 틀린 적은 없었소. 이름은 적었으나, 그 이상은 장담하지 못하겠소."
       - say:
           char: 서연
           with: [도원]
@@ -181,7 +181,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연, 도원]
-          text: "판관께서도 확신이 없으시군요. 그럼 의녀의 말은 반만 듣지요."
+          text: "이름을 적은 분도 확신이 없으시군요. 그럼 의녀의 말은 반만 듣지요."
       - say:
           channel: record
           text: "판관이 증언을 보증하지 않아 신뢰가 1 줄었다."
@@ -193,7 +193,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연, 한명재]
-          text: "비단전 침모 분이가 혼례가 두려워 제 발로 우물에 뛰어들었다고 들었습니다."
+          text: "비단전 침모는 혼례가 두려워 제 발로 우물에 들었다고 들었습니다."
       - say:
           char: 한명재
           with: [서연, 도원]
@@ -264,20 +264,17 @@ scenes:
           text: "입과 코에 거품이 없었습니다. 산 채로 물에 빠졌다고 보기 어렵습니다."
       - say:
           char: 서연
-          text: "검안 때 목에 손가락 자국이 드러났습니다."
-      - say:
-          char: 서연
           with: [한명재, 도원]
-          text: "엄지 자국이 목 앞에 있었습니다. 누군가 마주 보고 목을 조른 겁니다."
+          text: "지게미를 덮었더니 목 앞에 엄지 자국이 드러났습니다. 마주 보고 조른 겁니다."
       - say:
           char: 한명재
           with: [서연]
-          text: "누가 목을 졸랐는지는 아직 모르는 일이군요."
+          text: "지게미."
       - clearSticker: { id: t_sijang, leave: fadeOut }
       - say:
           char: 한명재
           with: [서연]
-          text: "설령 누가 목을 졸랐다고 해도, 그날 분이가 저를 만났다는 증거가 있습니까?"
+          text: "누가 졸랐다고 칩시다. 그 침모가 저를 만났다는 증좌는 있습니까?"
       - goto: round2
 
   round2:
@@ -352,12 +349,17 @@ scenes:
           char: 여금
           when: { var: trust_yeogeum, op: gte, value: 1 }
           with: [서연, 한명재]
-          text: "제가 주머니를 전의감 약고에 가져다줬어요. 약고 문에도 똑같은 표식이 달려 있었고요."
+          text: "삼백 개를 제가 전의감 약고에 가져다줬어요. 약고 문에 똑같은 표식이 달려 있었고요."
+      - say:
+          char: 여금
+          when: { var: trust_yeogeum, op: gte, value: 1 }
+          with: [서연, 한명재]
+          text: "이 말 하면 전의감 납품은 끝이에요. 셈은 하고 왔어요."
       - say:
           char: 여금.wary
           when: { var: trust_yeogeum, op: lte, value: 0 }
           with: [서연, 한명재]
-          text: "주문은 받았어요. 누가 맡겼는지는 묻지 마세요. 나도 살아야 하니까."
+          text: "주문은 받았어요. 누가 맡겼는지는 묻지 마세요. 나도 가게가 있어요."
       - say:
           char: 서연
           when: { var: trust_yeogeum, op: lte, value: 0 }
@@ -389,28 +391,28 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "그분에게 아이 둘이 실려 와 죽었습니다. 제 청심원을 먹은 아이들이라지요. 어느 사람의 잘못인지 그 기록에 나옵니까?"
+          text: "그분 손에서 아이 둘이 죽었지요. 혜민서 기록에 있습니다."
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "그분이 베껴 준 책을 들고 와서 제 검안이 틀렸다 하시는군요."
+          text: "아이 둘을 놓친 분이 베껴 준 책으로 의관의 약을 따지시는군요."
       - say:
           char: 서연.shock
           with: [한명재]
-          text: "두 아이는 혜민서에 업혀 왔을 때 이미 숨이 가빴습니다."
+          text: "…두 아이는 업혀 왔을 때 이미 숨이 가빴습니다."
       - say:
-          char: 서연.shock
+          char: 서연
           with: [한명재]
-          text: "기록 다음 장에 적혀 있습니다."
+          text: "박 의녀님이 그 기록을 지우지 않고 남기셨습니다. 그래서 제가 읽었습니다."
       - say:
           char: 한명재
           with: [서연]
-          text: "다음 기록도 읽어 보셨군요. 그럼 제 말도 끝까지 들어 주시지요."
+          text: "읽으셨군요. 그럼 제 말도 끝까지 들으시지요."
       - say:
           char: 도원.troubled
           when: { var: trust_dowon, op: lte, value: 1 }
           with: [서연, 한명재]
-          text: "의관, 박 의녀의 진료를 따지는 자리가 아니오. 박씨 약방 이야기로 돌아갑시다."
+          text: "의관, 박 의녀를 따지는 자리가 아니오. 약방 이야기로 돌아갑시다."
       - say:
           char: 도원.stern
           when: { var: trust_dowon, op: gte, value: 2 }
@@ -474,7 +476,7 @@ scenes:
           char: 한명재
           with: [서연]
           text: "장부에 '한' 자 하나. 한성에 한씨가 몇이나 되는지 아십니까."
-      - goto: round4
+      - goto: chisu_called
 
   round3_right:
     actions:
@@ -485,21 +487,57 @@ scenes:
           text: "박씨 콧속엔 그을음이 없었습니다. 독이 있는지 알아보려던 검시에서는 닭이 쓰러졌고요."
       - say:
           char: 서연
-          text: "처음에는 은비녀에 아무 변화가 없었습니다."
-      - say:
-          char: 서연
           with: [한명재, 도원]
-          text: "그 비녀만 보고 노환이라고 적었으면 독이 든 줄도 모르고 넘겼겠지요."
+          text: "은비녀는 변하지 않았습니다. 비녀가 못 잡는 독이 있다고 한 사람은 오작인입니다."
       - say:
           char: 덕구
           when: { var: deokgu_saved, op: eq, value: true }
           with: [한명재]
-          text: "저, 저는 약이라곤 사 본 적도 없어요. 낫도 풀 벨 때만 썼고요."
+          text: "저, 저는 약이라곤 사 본 적도 없어요. 낫도 풀만…"
       - say:
           channel: thought
           when: { var: deokgu_saved, op: eq, value: false }
           with: [한명재]
           text: "덕구는 9월 26일 새남터에서 처형됐다. 공초에는 덕구가 한 말만 적혔지, 낫을 놓친 손은 적히지 않았다."
+      - goto: chisu_called
+
+  chisu_called:
+    title: "포교의 대답"
+    actions:
+      - char: { id: 서연, position: left }
+      - char: { id: 도원, position: center }
+      - say:
+          char: 도원.stern
+          with: [서연, 강치수]
+          text: "그 자복을 받은 포교 강치수도 불렀소."
+      - say:
+          char: 도원.stern
+          with: [강치수]
+          text: "포교. 옥에서 의녀에게 감청 주머니 얘기를 먼저 꺼냈다지. 누구에게 들었소."
+      - say:
+          char: 강치수
+          with: [도원]
+          text: "…"
+      - say:
+          channel: action
+          with: [강치수]
+          text: "강치수가 피고 쪽으로 고개를 돌리다 만다. 발끝으로 마룻바닥의 옹이를 민다."
+      - say:
+          char: 강치수
+          with: [도원]
+          text: "막내가 아직 젖니도 안 빠졌습니다, 나리."
+      - say:
+          char: 도원.troubled
+          with: [강치수]
+          text: "묻는 말은 그게 아니오."
+      - say:
+          char: 강치수
+          with: [도원]
+          text: "…기억나지 않습니다."
+      - say:
+          char: 한명재
+          with: [서연]
+          text: "포교가 기억 못 하는 일까지 제 이름 밑에 적으시렵니까."
       - goto: round4
 
   round4:
@@ -591,11 +629,11 @@ scenes:
       - say:
           char: 도원.stern
           with: [서연, 한명재]
-          text: "전의감에서 도장을 찍어 둔 장부와 대 보았소."
+          text: "전의감 인장 대장과 대 보았소."
       - say:
           char: 도원.stern
           with: [한명재]
-          text: "저 인장은 전의감 장부에 한명재 몫으로 올라 있소."
+          text: "저 인장은 한명재 몫으로 올라 있소."
       - say:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
@@ -612,7 +650,7 @@ scenes:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
           with: [서연, 한명재]
-          text: "정강이에 헝겊을 감았더이다. 서빙고엔 어쩐 일로 다녀왔답디까?"
+          text: "정강이에 헝겊을 감았더이다. 왼손잡이고. 서빙고에 떨어뜨린 칼은 날이 한 치요."
       - goto: final_link
 
   final_link:
@@ -626,23 +664,19 @@ scenes:
       - say:
           char: 서연.resolve
           with: [한명재, 도원]
-          text: "참의 나리, 약고에서 거둔 장부의 마지막 장을 펴 주십시오. 한명재 의관이 직접 수결한 장입니다."
-      - say:
-          char: 서연.resolve
-          with: [한명재, 도원]
-          text: "맨 뒤에 사람 이름 셋과 날짜가 있습니다. 분이의 혼례 전날 밤, 약방에 불이 난 날, 윤길이 얼음 속에서 나온 날입니다."
+          text: "참의 나리. 죽은 세 사람이 종이를 한 장씩 남겼습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "분이는 주문서에 ‘약 냄새 없음. 박씨에게 확인’이라고 적었습니다."
+          text: "분이는 주문서 뒤에 ‘약 냄새 없음. 박씨에게 확인’이라고 적어 안섶에 꿰맸습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "박씨는 장부에 청심원 삼백 환과 그 환을 받아 간 사람의 성을 적었습니다."
+          text: "박씨는 장부에 청심원 삼백 환과 받아 간 사람의 성을 적어 궤짝에 넣었습니다."
       - say:
           char: 서연
           with: [한명재]
-          text: "두 사람의 검안 기록을 베낀 윤길은 그 기록을 빌려 간 이름을 따로 적어 뒀습니다."
+          text: "윤길은 분이의 시장을 빌려 간 이름에 붉은 동그라미를 쳐 소매에 넣고 다녔습니다."
       - say:
           char: 한명재
           with: [서연]
@@ -685,21 +719,35 @@ scenes:
       - say:
           char: 서연.resolve
           with: [한명재]
-          text: "전의감 약재를 빼돌리고 석회로 환을 빚었습니다. 분이가 만든 주머니에 담아 청심원으로 팔았고요."
+          text: "의관 나리께 여쭙니다."
       - say:
-          char: 서연
-          text: "분이는 가짜 약을 의심했고, 박씨는 약을 받아 간 이를 알았습니다. 윤길은 의관이 그 둘의 시장을 빌려 간 걸 알아냈고요."
-      - say:
-          char: 서연
-          with: [한명재, 도원]
-          text: "약고 장부에는 세 이름 옆에 같은 말이 적혀 있습니다. ‘뒤처리는 사환에게 맡김.’ 그 밑에 수결하신 게 나리입니다."
+          char: 서연.resolve
+          with: [한명재]
+          text: "분이가 죽은 이튿날, 비단전 침모의 시장을 왜 빌려 가셨습니까."
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "찾아온 사람들은 그 약을 먹고 나았다고 하던데요."
+          text: "…"
       - say:
-          char: 서연.shock
-          text: "제게 업혀 온 아이들은 일어나지도 못했습니다. 그 집에서 다시 약을 사러 올 수 있었겠습니까?"
+          char: 한명재.cold
+          with: [서연]
+          text: "의관이 검안 기록을 읽는 것도 죄입니까."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "얼음을 받아 간 도장도, 석회 환 상자의 도장도 나리 것입니다. 그 곳간에서 윤길이 나왔습니다."
+      - say:
+          channel: action
+          with: [한명재]
+          text: "한명재가 소매를 쓸어내리려다 손을 무릎에 얹는다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "저를 찾아온 사람들은 그 약을 먹고 나았다고 하던데요."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "나은 사람만 나리를 다시 찾아갑니다. 안 나은 아이는 혜민서로 업혀 옵니다."
       - branch:
           cases:
             - when: { var: truth, op: lte, value: 3 }
@@ -714,11 +762,11 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "판관 앞에 내밀었던 증거 가운데 몇 장은 상 위에 올라가지도 못했다."
+          text: "내밀었던 종이 가운데 몇 장은 참의의 상 위에 올라가지도 못했다."
       - say:
           char: 한명재
           with: [서연]
-          text: "의녀가 아무리 오래 말해도 그게 증좌가 되지는 않습니다."
+          text: "의녀께서 오래 말씀하셨습니다만, 말이 길다고 증좌가 되지는 않습니다."
       - goto: trial_collapse
 
   trial_collapse:
@@ -729,7 +777,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "한명재가 옷깃을 여미고 일어난다. 나가는 길에 서연 앞에서 한 번 멈춘다."
+          text: "한명재가 옷깃을 여미고 일어난다. 나가는 길에 내 앞에서 한 번 멈춘다."
       - say:
           char: 한명재
           with: [서연]
@@ -742,7 +790,7 @@ scenes:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
           with: [서연]
-          text: "아가씨, 우리가 쓴 시장은 남았수."
+          text: "아가씨, 우리가 본 건 종이에 남았수."
       - say:
           char: 막쇠.grin
           when: { var: makssoe_alive, op: eq, value: true }
@@ -813,29 +861,42 @@ scenes:
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠.grin
-          text: "아가씨, 어제 판결문에 ‘오작인 막쇠 입회’라고 있습디다. 내 이름이 거기 올라간 건 처음이오."
+          text: "판결문에도 ‘오작인 막쇠 입회’라고 있답디다. 서리한테 두 번 읽어 달랬수."
       - say:
           char: 서연
           with: [막쇠]
-          text: "다음에도 같이 봐주세요. 입회한 분 이름을 빼먹지 않게요."
+          text: "다음 검안에도 같이 가 주세요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "닭 값은 이제 관에서 내라 하고."
       - say:
           channel: narration
-          text: "재판 이튿날 새벽, 성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맸다."
+          text: "성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맨다."
       - say:
           char: 서연
           with: [막쇠]
-          text: "아저씨, 책 빈칸에 분이부터 적으려고요. 우물에서 건졌을 때 입과 코에 거품이 없었다고."
+          text: "아저씨, 책 빈칸에 처음으로 적으려고요. 분이부터요. 입과 코에 거품이 없었다고."
       - say:
           char: 막쇠.grin
           with: [서연]
-          text: "그건 내가 먼저 가르쳐 줬지요. 지게미 덮고 기다리는 건 책에서 찾았고."
+          text: "그건 내가 먼저 가르쳐 줬지요. 지게미는 책에서 찾았고."
       - say:
           char: 서연
           with: [막쇠]
           text: "네. 그래서 아저씨 이름이 먼저예요."
+      - sticker:
+          id: ep_book
+          image: eonhae_filled_sticker
+          x: 50
+          y: 32
+          width: "clamp(190px, 28%, 360px)"
+          enter: fadeIn
+          inputLockMs: 300
       - say:
           channel: narration
-          text: "책 맨 뒷장에 빈칸이 아직 많다. 오늘 채운 줄은 네 줄이다."
+          text: "스승의 글씨 옆에 네 줄이 생겼다. 빈칸은 아직 많다."
+      - clearSticker: { id: ep_book, leave: fadeOut }
       - ending: muwon
 
   epilogue_late:
@@ -845,7 +906,7 @@ scenes:
           channel: thought
           when: { var: makssoe_alive, op: eq, value: false }
           with: []
-          text: "판결문에 막쇠의 이름이 없다. 우물가에서 등잔을 든 사람부터 쓰고 싶었다."
+          text: "판결문에 막쇠의 이름은 없다. 죽은 오작인은 입회로 치지 않는다고 했다."
       - say:
           channel: thought
           when: { var: deokgu_saved, op: eq, value: false }
@@ -853,16 +914,17 @@ scenes:
           text: "덕구의 낫은 아직 형조 창고에 있다. 찾아갈 사람이 없다."
       - say:
           channel: narration
-          text: "재판이 끝난 이튿날 새벽, 성문이 열렸다. {{player_name|은}} 품에서 언해를 꺼내 맨 뒷장을 폈다. 빈칸이 많았다."
+          text: "재판이 끝난 이튿날 새벽, 성문이 열렸다. {{player_name|은}} 품에서 언해를 꺼내 맨 뒷장을 폈다."
       - say:
           channel: thought
           with: []
-          text: "네 줄을 적고 붓을 멈췄다. 문이 열리면 같이 나가고 싶었던 사람이 생각났다."
-      - say:
-          channel: thought
-          with: []
-          text: "붓 끝을 벼루에 대고 한동안 망설였다."
+          text: "스승의 글씨 옆에 네 줄을 적고 붓을 멈췄다."
       - say:
           channel: narration
-          text: "빈칸 옆에 한 줄을 적었다. 억울함이 없게 하라."
+          when: { var: makssoe_alive, op: eq, value: false }
+          text: "다섯째 줄에 적었다. ‘오작인 막쇠. 나이 모름. 우물가에서 등잔을 든 사람.’"
+      - say:
+          channel: narration
+          when: { var: deokgu_saved, op: eq, value: false }
+          text: "그 아래 한 줄을 더 적었다. ‘짐꾼 덕구. 왼손으로는 낫을 쥐지 못함.’"
       - ending: late_muwon

@@ -166,15 +166,21 @@ scenes:
           char: 지영
           when: { var: bowed, op: eq, value: false }
           with: [해수]
-          text: "팀장님이 상품권 5,000원 드리고 세 번 숙였다며. 너한테는 '그냥 숙이지 그랬어' 하고."
+          text: "팀장님이 나와서 상품권 5,000원 드리고 세 번 숙였다며."
       - say:
           char: 지영
           with: [해수]
-          text: "팀장님이 너한테 뭐라셨어?"
+          text: "팀장님이 너한테는 뭐라셔?"
       - say:
           char: 해수
+          when: { var: bowed, op: eq, value: false }
           with: [지영]
           text: "다음부터는 처음부터 숙이라고 하셨어요."
+      - say:
+          char: 해수
+          when: { var: bowed, op: eq, value: true }
+          with: [지영]
+          text: "숙일 거면 한 번에 깊이 숙이라고 하셨어요."
       - say:
           char: 지영
           motion: sigh
@@ -187,7 +193,7 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "너 그 소리 12년째야. 안 괜찮을 때도 기어이 괜찮다고 해."
+          text: "그 양반 편을 12년째 들어, 너는."
       - say:
           char: 지영
           with: [해수]
@@ -220,7 +226,11 @@ scenes:
       - say:
           char: 지영
           with: [해수]
-          text: "레플라 가면 우리 매장도 나와. 깜빡이는 형광등까지 똑같아. 그 아저씨도 와서 현실에서 하는 짓 그대로 해."
+          text: "레플라 가면 우리 매장도 나와. 깜빡이는 형광등까지 똑같아."
+      - say:
+          char: 지영
+          with: [해수]
+          text: "그 아저씨도 와. 여기서 하는 짓 그대로 해."
       - say:
           char: 해수
           with: [지영]
@@ -508,16 +518,27 @@ scenes:
           char: 해수
           with: []
           text: "아 졸아서요 죄송합니다"
-      - wait: 0
+      - say:
+          channel: message
+          thread: "경준"
+          side: me
+          char: 해수
+          with: []
+          text: "경준아 너 튜토리얼 2단계 해 봤어?"
       - say:
           channel: message
           thread: "경준"
           side: them
           char: 경준
           with: []
-          text: "저는 2단계는 못 하겠던데요. 부끄러워서 그냥 넘겼어요."
-      - wait: 0
-      - wait: 0
+          text: "저는 못 하겠던데요. 혼자 소리 지르는 게 부끄러워서 그냥 넘겼어요"
+      - say:
+          channel: message
+          thread: "경준"
+          side: them
+          char: 경준
+          with: []
+          text: "형은 했어요?? 뭐라고 했어요"
       - say:
           channel: record
           with: []
@@ -775,6 +796,11 @@ scenes:
           with: [해수]
           text: "아냐, 오늘은 됐어. 이거… 마셔. 수고하고."
           wait: 700
+      - sticker: { id: drink, image: drink_sticker, x: 64, y: 38, width: "260px", rotate: 0, enter: slideUp }
+      - say:
+          channel: action
+          with: []
+          text: "갈색 드링크 한 병이 창구 위에 놓인다. 병이 미지근하다."
       - move: { id: 광철, style: reset }
       - char: { id: 경준, position: right }
       - say:
@@ -791,6 +817,20 @@ scenes:
           motion: perk
           with: [해수]
           text: "아. 그럴걸."
+      - say:
+          char: 경준
+          with: [해수]
+          text: "근데 형 그거 안 마셔요? 뚜껑 따 드려요?"
+      - say:
+          char: 해수
+          with: [경준]
+          text: "…이따가."
+      - get: drink
+      - clearSticker: { id: drink, leave: fadeOut }
+      - say:
+          channel: action
+          with: []
+          text: "병은 앞치마 주머니로 들어간다."
 
   tutorial_three:
     title: "튜토리얼 3/5"
@@ -915,10 +955,14 @@ scenes:
       - music: fluoro
       - place: { text: "4월 18일 04:12 · 해수의 방", presentation: center }
       - say:
-          channel: thought
+          channel: action
           with: []
-          text: "눈을 뜨고 손을 편다. 연필은 없는데 손바닥은 아프다. 차 문 앞에서 광철 씨가 물러설 때 손을 뻗었던 게 기억난다."
+          text: "눈을 뜨고 오른손을 편다. 손바닥 한가운데가 연필 굵기로 눌려 있다."
       - say:
           channel: action
           with: []
-          text: "의자에 걸린 앞치마 주머니를 뒤집자 영수증 한 장과 고무줄 하나만 나온다."
+          text: "의자에 걸린 앞치마 주머니를 뒤집는다. 영수증 한 장, 고무줄 하나, 어제 받은 드링크."
+      - say:
+          char: 해수
+          with: []
+          text: "…연필은 없네요."

@@ -161,9 +161,12 @@ scenes:
           text: "저는 윤재 님이 말씀해 주시면 알아요."
       - say:
           char: 윤재
-          motion: recoil
           with: [비서]
-          text: "그게 더 무섭잖아."
+          text: "…그럼 말 안 한 건 모르겠네."
+      - say:
+          char: 비서
+          with: [윤재]
+          text: "네. 모릅니다."
       - say:
           char: 윤재
           with: [비서]

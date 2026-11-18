@@ -1667,6 +1667,8 @@ public/game-list/my-story/
 
 ## 14) 문서 변경 로그
 
+- 2026-11-18: 작가용 서사 자료(`docs/narrative/<작품>.yaml`)에 작품 전체의 뼈대 `arc`(전제, 끝까지 묻는 질문, 기·승·전·결)와 챕터별 계획 `chapters`(`title`·`beat`·`tells`·`turn`·`carries`)를 추가했습니다. `node scripts/narrative-context.mjs --check`가 두 항목을 검사하고, 장면 조회 결과에 `arc`와 해당 챕터 계획이 함께 나옵니다. 읽는 법은 `docs/NARRATIVE_CONTEXT.ko.md`에 있습니다. 엔진 DSL과 저장 형식은 바뀌지 않습니다.
+
 - 2026-11-14: 5장 작품 「오버플로」(`public/game-list/overflow/`)를 추가했습니다. `narration` 채널 없이 대사·`record`·`system`·`message`로만 설명을 내보내는 조사극의 예시입니다. 1장은 `choice.presentation: explore`로 다섯 곳을 직접 뒤지고, 결말 4종과 복구 가능한 실패 2종이 있습니다. 음악은 `scripts/generate-overflow-score.py`로 합성한 24초 루프 5곡이며 `scripts/compress-music.mjs`로 FLAC으로 내보냅니다. 엔진 DSL은 바뀌지 않습니다.
 
 - 2026-11-14: 5장 작품 「360」(`public/game-list/360/`)을 추가했습니다. 주인공을 그리지 않는 무대, 이전 장의 선택이 다음 장의 선택 하나를 막는 구조(`branch`로 가르는 `*_try` 장면), 게임 오버 없는 결말 4종의 예시입니다. 그림은 `scripts/generate-360-art.py`, 음악은 `scripts/generate-360-score.py`가 만듭니다. 엔진 DSL은 바뀌지 않습니다.

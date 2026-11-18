@@ -18,28 +18,28 @@ scenes:
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
       - say: { char: 지수.warm, with: [도윤], text: "네 컵 씻어 놨어. 커피 아직 따뜻해." }
-      - say: { char: 도윤, with: [지수], text: "너 오늘 또 식장 가? 두 시랬지?" }
-      - say: { char: 지수, with: [도윤], text: "응. 두 시. 청첩장 몇 장 할지도 정해야 돼." }
-      - say: { char: 도윤, with: [지수], text: "오늘은 나도 갈게. 두 시지?" }
-      - say: { char: 지수, with: [도윤], text: "응. 지난번엔 나 혼자 앉혀 놓고 자꾸 신랑님은요, 하더라." }
-      - say: { char: 도윤.smile, with: [지수], text: "내가 물어볼게. 견적서 챙겨 놔." }
-      - say: { char: 지수.warm, with: [도윤], text: "알았어. 한 시 반에는 나가야 돼." }
-      - place: "같은 날 오후 · 도윤과 지수의 집"
-      - say: { channel: action, with: [도윤], text: "팀에 청첩장을 돌릴 생각을 하니 준성에게도 줘야 한다는 게 걸린다. 도윤은 준성 이름을 검색하다 시계를 놓쳤다. 지수가 먼저 식장에 들어가 톡을 보낸다." }
+      - say: { char: 도윤, with: [지수], text: "오늘도 식장 가? 두 시?" }
+      - say: { char: 지수, with: [도윤], text: "응. 청첩장 몇 장 찍을지 오늘까지 말해 줘야 된대." }
+      - say: { char: 도윤, with: [지수], text: "나도 갈게." }
+      - say: { char: 지수, with: [도윤], text: "진짜지? 지난번엔 나 혼자 앉혀 놓고 자꾸 신랑님은요, 신랑님은요 하더라." }
+      - say: { char: 도윤.smile, with: [지수], text: "견적서 챙겨 놔. 내가 물어볼게." }
+      - say: { char: 지수.warm, with: [도윤], text: "한 시 반에 나갈 거야. 회사 명단은 그 전에 적어 놔. 늦으면 나 먼저 간다." }
+      - place: "같은 날 14:10 · 도윤과 지수의 집"
+      - say: { channel: action, with: [도윤], text: "노트북에 회사 명단이 열려 있다. 맨 윗줄 ‘팀장 박준성’ 다음으로 한 줄도 못 적었다." }
       - say:
           channel: message
           thread: 지수
           side: them
           char: 지수
           with: []
-          text: "청첩장 수량 오늘까지 말해줘야 돼"
+          text: "나 먼저 들어왔어. 수량 오늘까지 말해줘야 돼"
       - say:
           channel: message
           thread: 지수
           side: them
           char: 지수
           with: []
-          text: "실장님이 신랑님 왜 한번도 안오시냐더라ㅋㅋ 다음엔 끌고 갈게요 했어"
+          text: "실장님이 신랑님 오늘도 안 오시냐더라ㅋㅋ 다음엔 끌고 온다고 했어"
       - say:
           channel: message
           thread: 지수
@@ -76,6 +76,13 @@ scenes:
           with: []
           text: "새 팀장님도 드려? 인사는 해야지"
       - say:
+          channel: message
+          thread: 지수
+          side: them
+          char: 지수
+          with: []
+          text: "식장에서 나도 인사드릴게. 프린터 못 찾는 분ㅋㅋ"
+      - say:
           channel: system
           with: []
           text: "읽음"
@@ -85,7 +92,7 @@ scenes:
     actions:
       - choice:
           key: e2_dig
-          prompt: "‘새 팀장님도 드려?’에 아직 답을 못 했다. 노트북에는 준성 이름이 떠 있다."
+          prompt: "‘새 팀장님도 드려?’에 아직 답을 못 했다. 도윤은 검색창에 ‘박준성’을 쳐 놓았다."
           with: []
           options:
             - text: "검색을 그만두고 지수에게 답장한다"
@@ -112,7 +119,7 @@ scenes:
 
   e2_answer_jisu:
     actions:
-      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "150장으로 해 줘. 팀장님 건 내가 물어볼게. 오늘 못 간 거 미안해" }
+      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "150장. 팀장님 건 내가 물어볼게. 오늘 못 가서 미안" }
       - goto: e2_elevator
 
   e2_dig_sns:
@@ -218,7 +225,7 @@ scenes:
     title: "엘리베이터"
     actions:
       - bg: { id: office_night, transition: cut }
-      - place: { text: "월요일 21:10 · 회사 13층 엘리베이터", presentation: center }
+      - place: { text: "아흐레 뒤 월요일 21:10 · 회사 13층 엘리베이터", presentation: center }
       - char: { id: 도윤, position: left }
       - char: { id: 준성, position: right }
       - say:
@@ -233,48 +240,48 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "보고 자료는 잘 받았어요. 3페이지 숫자 두 개만 내일 다시 봐 줘요."
+          text: "보고 자료 잘 받았어요. 3페이지 숫자 두 개만 내일 다시 봐 줘요, 합계가 4페이지랑 안 맞아서."
       - say:
           char: 도윤
           with: [준성]
-          text: "…확인할게요."
+          text: "확인할게요."
       - say:
           char: 준성
-          with: [도윤]
-          text: "그리고 송과장님이 청첩장 얘기하던데. 제 건 따로 안 챙겨도 돼요."
-      - say:
-          char: 도윤
-          with: [준성]
-          text: "…네."
-      - say:
-          char: 준성
-          with: [도윤]
-          text: "먼저 본 사이라고 다들 알면 더 시끄러워질 것 같아서요."
-      - say:
-          char: 도윤
-          with: [준성]
-          text: "네."
-      - mood: { tone: dread, level: 2 }
-      - say:
-          char: 준성.smirk
           motion: headtilt
           with: [도윤]
-          text: "아, 그날 얘긴 회사에서 한 번도 안 했어요. 그건 알아 둬요."
+          text: "요즘 제가 탕비실 들어가면 한대리님은 컵도 안 씻고 나가시더라고요."
+      - say:
+          char: 도윤
+          with: [준성]
+          text: "…우연이에요."
+      - say:
+          char: 준성
+          with: [도윤]
+          text: "그날 얘긴 회사에서 한 번도 안 했어요. 연락도 내선으로만 했고요."
+      - say:
+          char: 준성.tired
+          with: [도윤]
+          text: "그래도 인사는 하고 지낼 줄 알았어요."
+      - say:
+          char: 준성
+          when: { var: e2_leaked, op: eq, value: true }
+          with: [도윤]
+          text: "단톡에 제 전 회사 물어보셨다면서요. 지난주 내내 점심마다 그 얘기던데, 저 탕비실에 있었어요."
       - move: { id: 도윤, toward: 준성, style: retreat }
       - say:
           char: 도윤
           motion: tremble
           with: [준성]
           text: "……"
-      - say:
-          char: 준성.tired
-          with: [도윤]
-          text: "그래도 인사는 하고 지낼 수 있을 줄 알았어요."
+      - mood: { tone: dread, level: 2 }
       - say:
           char: 준성
-          when: { var: e2_leaked, op: eq, value: true }
           with: [도윤]
-          text: "주말에 단톡에 제 얘기 쓰셨다면서요. 오늘도 점심 먹다 말고 다들 그 얘기를 하던데."
+          text: "송과장님이 청첩장 돌린다던데요. 저도 가도 되죠?"
+      - say:
+          char: 준성.smirk
+          with: [도윤]
+          text: "팀장이 안 가면 그게 더 말 나와요. 밥은 안 먹고 올게요, 식대 비싸다면서요."
       - choice:
           key: e2_threat
           prompt: "7층 표시를 지나자 귀가 먹먹해진다."
@@ -303,11 +310,11 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "뭘 조심하라는 건데요?"
+          text: "그날은 형이라고 안 했잖아요."
       - say:
           char: 준성
           with: [도윤]
-          text: "저도 일하러 나온 거예요. 회사에선 더 안 꺼낼게요."
+          text: "…청첩장은 안 받을게요."
       - say:
           char: 도윤
           motion: tremble
@@ -316,7 +323,7 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "내일 3페이지 숫자, 그것만 고쳐 주면 돼요."
+          text: "3페이지 숫자, 내일 그것만 고쳐 줘요."
       - say:
           channel: system
           with: []
@@ -334,7 +341,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "어느 쪽으로 가요? 저는 앞에 오피스텔이라 걸어가요."
+          text: "…대답은 천천히 해요. 어느 쪽으로 가요? 저는 요 앞 오피스텔이라 걸어가요."
       - say:
           char: 도윤
           with: [준성]
@@ -365,9 +372,9 @@ scenes:
           with: []
           text: "1층입니다. 문이 열립니다."
       - say:
-          channel: thought
+          channel: action
           with: []
-          text: "문이 다시 열려도 준성의 발소리가 멀어질 때까지 그대로 섰다."
+          text: "발소리가 안 들릴 때까지 서 있다가 내린다."
       - move: { id: 도윤, style: reset }
       - goto: e2_absent
 
@@ -377,7 +384,7 @@ scenes:
       - mood: off
       - bg: { id: office, transition: fade, duration: 900 }
       - place: { text: "수요일 오후 · 영업2팀", presentation: center }
-      - say: { channel: action, with: [도윤], text: "준성의 자리가 오늘도 비어 있다. 회사 단톡에 알림이 뜬다." }
+      - say: { channel: action, with: [도윤], text: "준성의 자리가 오늘도 비어 있다." }
       - say:
           channel: message
           thread: "영업2팀"
@@ -491,11 +498,16 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 단톡방 알림을 끈다. 화면을 닫았다가 다시 열어 아까 그 줄을 읽는다."
+          text: "도윤은 단톡방 알림을 끄고 사내 연락망에서 박준성을 찾는다."
       - say:
-          channel: thought
+          channel: system
           with: []
-          text: "톡을 닫고 사내 연락망에서 준성 번호를 찾는다. 직접 묻고 싶은데 통화 버튼 위에서 손이 멈춘다."
+          text: "박준성 팀장 · 휴대전화
+통화 · 메시지"
+      - say:
+          channel: action
+          with: []
+          text: "통화 버튼 위에서 엄지가 멈춘다. 화면이 꺼진다."
       - say:
           channel: card
           with: []
@@ -516,7 +528,7 @@ scenes:
           char: 하린
           motion: bounce
           with: [민재, 아진]
-          text: "야 오늘 야자 째자. 진짜로. 나 오늘 진짜 못 하겠어."
+          text: "야 오늘 야자 째자. 나 오늘 진짜 못 하겠어."
       - say:
           char: 하린
           motion: laugh
@@ -556,20 +568,20 @@ scenes:
       - say:
           char: 아진.awkward
           with: [하린, 민재]
-          text: "하린아, 잠깐만. 어제 둘이 얘기하자고 한 거 있잖아. 민재 보내고 말할게."
+          text: "하린아, 저번에 둘이 얘기하자고 한 거 있잖아. 그거 오늘 하자. 이따가."
       - say:
           char: 하린
           with: [아진, 민재]
-          text: "지금 해도 되는데. 뭐길래 그래?"
+          text: "지금 해. 뭔데?"
       - say:
           char: 아진
           with: [하린, 민재]
-          text: "이따가. 너 체육복도 사물함에 있더라. 같이 챙기러 가자."
+          text: "이따가. 아, 너 체육복 사물함에 그대로 있더라. 월요일 거. 같이 가지러 가자."
       - say:
           char: 하린
           motion: laugh
           with: [아진, 민재]
-          text: "아냐. 체육복 내가 챙길게. 나 먼저 간다."
+          text: "내가 챙길게. 나 먼저 간다."
       - say:
           char: 하린
           with: [아진, 민재]
@@ -581,11 +593,15 @@ scenes:
           char: 아진.awkward
           with: [민재]
           delivery: whisper
-          text: "오늘 하린이한테 우리 사귄다고 말하려고 했는데, 입이 안 떨어졌어."
+          text: "오늘은 진짜 말하려고 했어. 우리 사귀는 거. 근데 하린이 얼굴 보니까 입이 안 떨어져."
       - say:
           char: 민재
           with: [아진]
-          text: "뭘 말해. 걔 신경 안 쓸걸. 원래 아무 데도 관심 없잖아."
+          text: "뭘 말해. 걔 신경 안 쓸걸."
+      - say:
+          char: 민재
+          with: [아진]
+          text: "원래 아무 데도 관심 없잖아."
       - say:
           char: 아진
           when: { var: h1_sent, op: eq, value: true }
@@ -595,7 +611,7 @@ scenes:
           char: 민재
           when: { var: h1_sent, op: eq, value: true }
           with: [아진]
-          text: "그거 장난이잖아. ㅋㅋ 붙었던데."
+          text: "장난이잖아. ㅋㅋ 붙었던데."
       - say:
           char: 아진
           with: [민재]
@@ -604,11 +620,11 @@ scenes:
           char: 민재
           motion: headtilt
           with: [아진]
-          text: "그럼 왜 우리한테 말을 안 해?"
+          text: "그럼 걘 왜 말을 안 해?"
       - say:
           char: 아진.awkward
           with: [민재]
-          text: "…나도 모르겠어. 그래서 걔한테 직접 말하려던 거야."
+          text: "…몰라. 그러니까 내가 먼저 말하겠다는 거잖아. 내일은 진짜 할 거야."
       - move: { id: 아진, toward: 민재, style: retreat }
       - say:
           char: 아진.awkward
@@ -618,7 +634,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "체육복만 가지러 왔는데. 둘이 무슨 얘기 하는지 물어보지 말 걸."
+          text: "체육복만 가지러 왔는데."
       - say:
           channel: action
           with: []

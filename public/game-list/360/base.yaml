@@ -13,6 +13,8 @@ assets:
     seoul_room: assets/bg/seoul_room.svg
     ward: assets/bg/ward.svg
     glass_visit: assets/bg/glass_visit.svg
+    glass_visit_talk: assets/bg/glass_visit_talk.svg
+    glass_visit_hung: assets/bg/glass_visit_hung.svg
     hangang_night: assets/bg/hangang_night.svg
     edit_room: assets/bg/edit_room.svg
     interview_room: assets/bg/interview_room.svg
@@ -23,6 +25,7 @@ assets:
     sketch_sticker: assets/items/sketch.svg
     sketch_two_sticker: assets/items/sketch_two.svg
     globe_sticker: assets/items/globe.svg
+    blanket_sticker: assets/items/blanket.svg
   characters:
     지안어머니:
       name: "엄마"
@@ -232,5 +235,11 @@ state:
   l3_open_blocked: false
   l3_out_blocked: false
   l4_refuted: false
+  # 막힌 선택을 실제로 골랐던 자리. 다섯 번째 어둠에서 쥔 것과 짝을 맞춰 본다.
+  l1_rice_blocked: false
+  l1_leave_blocked: false
+  l2_heart_blocked: false
+  l2_mother_blocked: false
+  l4_sign_blocked: false
   l4_signed: false
   looked_back: false

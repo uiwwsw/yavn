@@ -2,7 +2,7 @@ title: "무원 — 한성 검안록"
 pov: "의녀 {{player_name}}"
 author:
   name: "uiwwsw"
-version: "1.1.2"
+version: "1.2.0"
 seo:
   description: "1792년 한성. 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서를 따라 세 죽음의 까닭을 좇습니다. 시형도에서 시신의 흔적을 살피고, 찾아낸 증거로 포도청의 자백을 뒤집는 5장 추리극입니다. 결말은 네 가지입니다."
   keywords:
@@ -45,7 +45,7 @@ startScreen:
 endings:
   muwon:
     title: "무원(無冤)"
-    message: "형조가 한명재에게 죄를 물었다. 덕구는 다시 지게를 졌고, 막쇠는 처음으로 관아 마루 끝에 자리를 얻었다."
+    message: "형조가 한명재에게 죄를 물었다. 덕구는 다시 지게를 졌고, 판결문에는 오작인 막쇠의 이름이 올랐다."
     epilogue: "그해 겨울부터 한성부 검안에는 의녀 한 사람의 이름이 함께 적혔다."
     background: dawn_gate
     music: dawn
@@ -60,7 +60,7 @@ endings:
   covered_ledger:
     title: "덮인 장부"
     message: "증거가 모자랐다. 한명재는 웃으며 형조를 나섰고, {{player_name|은}} 혜민서 명부에서 지워졌다."
-    epilogue: "막쇠가 남긴 메모 한 장. '장부는 하나가 아니다.'"
+    epilogue: "{{player_name|은}} 그날 밤 시장 석 장을 베껴 언해 뒷장에 끼워 두었다."
     background: alley_night
     music: night_well
     tone: mystery

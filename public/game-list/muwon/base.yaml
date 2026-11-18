@@ -25,6 +25,9 @@ assets:
     fake_pill_sticker: assets/items/fake_pill.svg
     seal_mark_sticker: assets/items/seal_mark.svg
     register_page_sticker: assets/items/register_page.svg
+    eonhae_sticker: assets/items/eonhae.svg
+    eonhae_filled_sticker: assets/items/eonhae_filled.svg
+    accusation_sticker: assets/items/accusation.svg
   characters:
     서연:
       name: "의녀 {{player_name}}"

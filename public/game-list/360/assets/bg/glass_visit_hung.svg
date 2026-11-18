@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <title>면회실 유리창, 건너편 수화기만 제자리에 걸린 뒤</title>
+  <defs>
+    <pattern id="grain" width="15" height="13" patternUnits="userSpaceOnUse">
+      <path d="M2 3h1m8 5h1m-8 3h2" stroke="#25303a" opacity=".18"/>
+    </pattern>
+  </defs>
+  <path d="M0 0h1600v900H0Z" fill="#414c50"/>
+  <path d="M0 0h1600l-96 174H94Z" fill="#576263"/>
+  <path d="M0 135 351 171v521L0 776Zm1600 0-351 36v521l351 84Z" fill="#5e6463"/>
+  <path d="M148 91H1451V657H148Z" fill="#343e42"/>
+  <path d="M170 113H1428V638H170Z" fill="#8d9890"/>
+  <path d="M171 114h1256v223H171Z" fill="#a1a99b"/>
+  <path d="M264 164h448v16H264zm634 0h436v16H898Z" fill="#c5c8b1" opacity=".75"/>
+  <path d="M1045 219h181v352h-181Z" fill="#727f78"/>
+  <path d="M1070 240h130v147h-130Z" fill="#5d6b68"/>
+  <path d="M789 113h16v528h-16z" fill="#515b59"/>
+  <path d="M203 113h58L451 638h-78zm343 0h23l232 525h-37zm397 0h97l221 525h-117Z" fill="#e2e0c8" opacity=".14"/>
+  <path d="M0 630h1600v270H0Z" fill="#353f40"/>
+  <path d="M0 648h1600l-112 85H109Z" fill="#a69b85"/>
+  <path d="M0 733h1600v15H0Z" fill="#625d52"/>
+  <path d="M646 470h97v157h-97zm211 0h97v157h-97z" fill="#4c5957"/>
+  <path d="M664 498h44v9h-44zm0 76h44v9h-44z" fill="#39464a"/>
+  <path d="M694 612q-8 52-52 86-62 46-132 202" fill="none" stroke="#2b3539" stroke-width="7" stroke-dasharray="2 3"/>
+  <path d="M884 489q-16 4-16 25v80q0 16 18 16h15q16 0 16-14v-21q0-11-18-14v-43q18-3 18-18 0-11-16-11Z" fill="#34423f"/>
+  <path d="M781 633h32v18h-32Z" fill="#545e5e"/>
+  <path d="M0 0h1600v900H0Z" fill="url(#grain)"/>
+</svg>

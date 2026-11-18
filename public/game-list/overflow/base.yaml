@@ -11,6 +11,8 @@ assets:
     studio: assets/bg/studio.svg
     wolgye_station: assets/bg/wolgye_station.svg
     station_glove: assets/bg/station_glove.svg
+    desk_print: assets/bg/desk_print.svg
+    appeal_turn: assets/bg/appeal_turn.svg
     raw_sticker: assets/items/raw_print.svg
     appeal_form_sticker: assets/items/appeal_form.svg
   characters:

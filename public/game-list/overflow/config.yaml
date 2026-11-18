@@ -2,7 +2,7 @@ title: "오버플로"
 pov: "문지완"
 author:
   name: "uiwwsw"
-version: "4.1.2"
+version: "4.2.0"
 seo:
   description: "2033년 서울. 문지완은 쓰러진 아버지를 보러 병원에 간다. 감정 판독 렌즈가 지완에게 01점을 띄우자 병실 문이 멈춘다. 그 숫자가 어떻게 나왔는지 확인하려는 개발자 한수경이 말을 건다."
   keywords:
@@ -67,7 +67,7 @@ endings:
   sealed:
     title: "출입 허용"
     message: "문지완의 면회 제한 해제"
-    epilogue: "지완은 아버지에게 물을 더 갖다 드리고 오전 내내 병실에 있었다."
+    epilogue: "지완은 아버지에게 물을 더 갖다 드리고 오전 내내 병실에 있었다. 출력물은 재킷 주머니에 접힌 채였다."
     background: ward_bed
     music: standard
     tone: tragic

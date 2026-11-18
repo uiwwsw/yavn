@@ -20,6 +20,8 @@ assets:
     battery_sticker: assets/items/battery.svg
     memory_sticker: assets/items/memory_card.svg
     pinky_promise_sticker: assets/items/pinky_promise.svg
+    pinky_waiting_sticker: assets/items/pinky_waiting.svg
+    hands_apart_sticker: assets/items/hands_apart.svg
   characters:
     윤재:
       placement: prompt-top

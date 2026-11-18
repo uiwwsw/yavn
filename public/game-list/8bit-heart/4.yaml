@@ -82,6 +82,21 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
+          when: { var: m_promise, op: eq, value: true }
+          text: "적어 둔 대로임. 문 앞까지 1P 동행."
+      - say:
+          char: 로봇
+          with: [윤재]
+          when: { var: m_promise, op: eq, value: false }
+          text: "'내일 얘기해'는 나흘째 안 왔음."
+      - say:
+          char: 윤재
+          with: [로봇]
+          when: { var: m_promise, op: eq, value: false }
+          text: "…걸으면서 생각했어. 아직 생각 중이야."
+      - say:
+          char: 로봇
+          with: [윤재]
           text: "그럼 정찰."
       - say:
           char: 로봇
@@ -109,7 +124,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "안은 코어 신호가 너무 세."
+          text: "드론 한 대가 훑었을 때 헌법 한 칸 날아갔음."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "안에는 그 신호가 전부 모여 있음."
       - say:
           char: 로봇
           with: [윤재]
@@ -139,16 +158,16 @@ scenes:
       - say:
           char: 윤재.sad
           with: [로봇]
-          text: "헌법은 안 바뀌는 칸이라며. 네가 그랬잖아."
+          text: "헌법은 못 고치는 칸이라며. 네가 그랬잖아."
       - wait: 270
       - say:
           char: 로봇
           with: [윤재]
-          text: "안 바뀜."
+          text: "못 고침."
       - say:
           char: 로봇
           with: [윤재]
-          text: "그래도 코어가 지우면 사라짐."
+          text: "그래도 지워지긴 함. 한 번 봤잖아."
       - say:
           char: 로봇
           with: [윤재]
@@ -348,7 +367,7 @@ scenes:
       - wait: 270
       - wait: 0
       - wait: 0
-      - say: { char: 윤재.sad, with: [로봇], text: "…그래서 너만 들어갈 수 있는 거야." }
+      - say: { char: 윤재.sad, with: [로봇], text: "…이렇게 엉성해서 너만 들어갈 수 있는 거야." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "카드 점검. 빈 카드 아님. 이미 뭐가 들어 있음." }
       - say: { char: 윤재, motion: perk, with: [로봇], text: "…그거 아직 읽혀? 전원 끄기 직전에 눌러서 안 된 줄 알았는데." }
@@ -596,11 +615,25 @@ scenes:
           motion: freeze
           with: [윤재]
           text: "처리 중…"
+      - sticker:
+          id: b4_hands
+          image: hands_apart_sticker
+          x: 50
+          y: 32
+          width: "clamp(200px, 32%, 410px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          when: { var: m_promise, op: eq, value: false }
+          text: "윤재가 그제야 새끼손가락을 내민다."
       - move: { id: 로봇, toward: camera, style: retreat, wait: true }
       - say:
           channel: action
           with: []
           text: "대답이 도착하기 전에 {{android_name|은}} 문 안으로 걸어 들어간다."
+      - clearSticker: { id: b4_hands, leave: fadeOut }
       - char: { id: 로봇, position: right, emotion: off }
       - say:
           channel: record
@@ -737,7 +770,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그날 네가 두 배 칭찬이라고 했음."
+          text: "그 소리 듣고 문 안에 들어갔음."
       - say:
           char: 로봇.thinking
           motion: lean_in
@@ -983,6 +1016,11 @@ scenes:
 
   b4_flee:
     actions:
+      - say:
+          char: 윤재
+          motion: shake
+          with: [로봇]
+          text: "안 해. 저장 안 해. 그냥 튀자."
       - say:
           char: 로봇.thinking
           motion: bow
