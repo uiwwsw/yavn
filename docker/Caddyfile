@@ -1,0 +1,44 @@
+:80 {
+	encode zstd gzip
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+	redir /game-list/deokman /game-list/muwon/ 308
+	redir /game-list/deokman/ /game-list/muwon/ 308
+	redir /game-list/deokman/* /game-list/muwon/ 308
+	redir /game-list/deokman-v8-preview /game-list/muwon/ 308
+	redir /game-list/deokman-v8-preview/ /game-list/muwon/ 308
+	redir /game-list/deokman-v8-preview/* /game-list/muwon/ 308
+	redir /game-list/english-deokman /game-list/muwon/ 308
+	redir /game-list/english-deokman/ /game-list/muwon/ 308
+	redir /game-list/english-deokman/* /game-list/muwon/ 308
+	redir /game-list/erase-first /game-list/erase/ 308
+	redir /game-list/erase-first/ /game-list/erase/ 308
+	redir /game-list/erase-first/* /game-list/erase/ 308
+	redir /game-list/conan / 308
+	redir /game-list/conan/ / 308
+	redir /game-list/conan/* / 308
+	redir /game-list/conan-demo / 308
+	redir /game-list/conan-demo/ / 308
+	redir /game-list/conan-demo/* / 308
+	redir /game-list/conan-midnight-alibi / 308
+	redir /game-list/conan-midnight-alibi/ / 308
+	redir /game-list/conan-midnight-alibi/* / 308
+	redir /game-list/english-conan / 308
+	redir /game-list/english-conan/ / 308
+	redir /game-list/english-conan/* / 308
+	redir /en /en/ 308
+	redir /create /create/ 308
+	redir /en/create /en/create/ 308
+	rewrite /en/create/ /en/create/index.html
+	rewrite /create/ /create/index.html
+	rewrite /en/ /en/index.html
+	root * /srv
+	try_files {path} {path}.html {path}/index.html
+	file_server
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server
+	}
+}
