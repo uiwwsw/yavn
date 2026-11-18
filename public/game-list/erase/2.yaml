@@ -20,10 +20,10 @@ scenes:
       - say: { char: 지수.warm, with: [도윤], text: "네 컵 씻어 놨어. 커피 아직 따뜻해." }
       - say: { char: 도윤, with: [지수], text: "너 오늘 또 식장 가? 두 시랬지?" }
       - say: { char: 지수, with: [도윤], text: "응. 두 시. 청첩장 몇 장 할지도 정해야 돼." }
-      - say: { char: 도윤, with: [지수], text: "같이 갈까. 혼자 견적 듣고 오게 해서 미안해. 오늘은 나도 같이 들어가자." }
-      - say: { char: 지수, with: [도윤], text: "그래. 지난번엔 견적서 펼쳐 놓으니까 뭐부터 물어볼지도 모르겠더라." }
-      - say: { char: 도윤.smile, with: [지수], text: "들어가기 전에 적어 두자. 음료가 포함인지, 보증 인원이 몇 명인지." }
-      - say: { char: 지수.warm, with: [도윤], text: "좋아. 나 두 시까지는 들어가야 하니까 한 시 반에 나가자." }
+      - say: { char: 도윤, with: [지수], text: "오늘은 나도 갈게. 두 시지?" }
+      - say: { char: 지수, with: [도윤], text: "응. 지난번엔 나 혼자 앉혀 놓고 자꾸 신랑님은요, 하더라." }
+      - say: { char: 도윤.smile, with: [지수], text: "내가 물어볼게. 견적서 챙겨 놔." }
+      - say: { char: 지수.warm, with: [도윤], text: "알았어. 한 시 반에는 나가야 돼." }
       - place: "같은 날 오후 · 도윤과 지수의 집"
       - say: { channel: action, with: [도윤], text: "팀에 청첩장을 돌릴 생각을 하니 준성에게도 줘야 한다는 게 걸린다. 도윤은 준성 이름을 검색하다 시계를 놓쳤다. 지수가 먼저 식장에 들어가 톡을 보낸다." }
       - say:
@@ -269,7 +269,7 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "그날은 말이 잘 통했잖아요. 다음에 봐도 인사쯤은 할 수 있을 줄 알았어요."
+          text: "그래도 인사는 하고 지낼 수 있을 줄 알았어요."
       - say:
           char: 준성
           when: { var: e2_leaked, op: eq, value: true }
@@ -334,15 +334,15 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "집이 어느 쪽이에요? 나 요 앞 오피스텔인데."
+          text: "어느 쪽으로 가요? 저는 앞에 오피스텔이라 걸어가요."
       - say:
           char: 도윤
           with: [준성]
-          text: "…그 근처요."
+          text: "…저도 그쪽이에요."
       - say:
           char: 준성
           with: [도윤]
-          text: "그럼 거의 이웃이네요. 세상 좁다."
+          text: "그렇구나. 조심히 들어가요."
       - say:
           channel: system
           with: []
@@ -521,7 +521,7 @@ scenes:
           char: 하린
           motion: laugh
           with: [민재, 아진]
-          text: "아 몰라 안 할래. 야 우리 떡볶이 먹으러 가자. 그 집 7시에 닫아."
+          text: "야, 떡볶이 먹으러 가자. 그 집 일곱 시에 닫잖아."
       - say:
           char: 하린
           with: [민재, 아진]
@@ -569,11 +569,11 @@ scenes:
           char: 하린
           motion: laugh
           with: [아진, 민재]
-          text: "아 됐어 나 먼저 간다. 둘이 청소 마저 해."
+          text: "아냐. 체육복 내가 챙길게. 나 먼저 간다."
       - say:
           char: 하린
           with: [아진, 민재]
-          text: "아진아 떡볶이는 내일. 내일은 진짜 가는 거다?"
+          text: "떡볶이는 내일이야. 아진아, 내일은 빼기 없다."
       - move: { id: 하린, toward: camera, style: retreat }
       - place: "10분 뒤 · 3학년 교실 뒷문"
       - move: { id: 민재, toward: 아진, style: approach }

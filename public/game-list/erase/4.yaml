@@ -827,7 +827,7 @@ scenes:
   end_photo:
     actions:
       - sticker: { id: e4_photo, image: child_photo_sticker, x: 50, y: 44, width: "clamp(170px, 30%, 320px)", enter: fadeIn }
-      - say: { char: 도윤, with: [], delivery: whisper, text: "…나였네. 아진이가 이 사진을 왜 남겨 두랬는지 이제 알겠다.", wait: 700 }
+      - say: { char: 도윤, with: [], delivery: whisper, text: "…아진이가 보내 준 거였어. 이게 나였는데.", wait: 700 }
       - say: { channel: action, with: [], text: "내일 가면 이 아이도 다시 모르는 얼굴이 될지 모른다. 도윤은 사진을 닫고 예약을 연다." }
       - clearSticker: { id: e4_photo, leave: fadeOut }
       - say: { thread: "ERASE 클리닉", channel: message, side: me, char: 도윤, with: [], text: "내일 오전 열 시 예약 취소해 주세요" }
@@ -935,7 +935,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "나 아직 화났어 그래도 네 입으로 들어서 다행이야 오늘은 답 안 해도 돼"
+          text: "나 아직 화났어. 네가 말해 준 건 고마운데 지금은 만나기 싫어"
       - say:
           channel: action
           with: []
@@ -987,6 +987,6 @@ scenes:
           with: []
           text: "첫 줄에 ‘하린’이라고 쓴다. 휴대폰이 다른 이름을 추천한다. 도윤은 그대로 보낸다."
       - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "나 열여덟 살 때 이름은 유하린이었어. 그때도 말 한마디 못 하고 학교를 떠났어" }
-      - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "읽고 있어. 오늘은 여기까지만 보내도 돼" }
+      - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "읽고 있어. 잠깐만, 나도 좀 생각할게" }
       - say: { channel: action, with: [], text: "예약 문자에서 취소를 누른다. 지수에게 보낸 문장은 채팅방에 그대로 둔다." }
       - ending: unfinished

@@ -103,7 +103,7 @@ scenes:
           char: 해수
           with: []
           erase: true
-          text: "지하 몇 층이래요"
+          text: "저도 뉴스 봤어요"
       - say:
           channel: message
           thread: "상봉점 고객센터"
@@ -294,7 +294,7 @@ scenes:
       - say:
           char: 은숙
           with: [경준]
-          text: "고객센터 분 계세요? 정해수 씨."
+          text: "정해수 씨 계세요? 고객센터에서 일하시는 분이요."
       - say:
           char: 경준
           motion: startle
@@ -305,7 +305,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "피해자분 일로 몇 가지 여쭤볼게요."
+          text: "매장에서 연락처 받았어요. 피해자분 일로 몇 가지 여쭤보려고요."
       - say:
           char: 은숙
           with: [해수]
@@ -338,7 +338,7 @@ scenes:
       - say:
           char: 해수
           with: [경준]
-          text: "내가 돌아와서 다시 설명할게."
+          text: "주임님께는 말씀드려 줘. 내가 돌아와서 다시 얘기할게."
       - say:
           channel: action
           with: []
@@ -403,7 +403,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "고객이셨죠. 어제도 마트에 들르셨고요."
+          text: "어제도 고객센터에 오래 계셨다던데요."
       - say:
           char: 해수
           motion: bow
@@ -413,7 +413,7 @@ scenes:
           char: 은숙
           motion: headtilt
           with: [해수]
-          text: "됐어요. 어제 몇 시에 퇴근하셨어요?"
+          text: "사과하실 건 아니고요. 어제는 몇 시에 퇴근하셨어요?"
       - say:
           char: 해수
           with: [은숙]
@@ -853,7 +853,7 @@ scenes:
           char: 은숙.sharp
           when: { var: t_form, op: eq, value: true }
           with: [해수]
-          text: "근데 제 휴대폰에 있는 사진까지 바뀌었어요."
+          text: "그런데 제 휴대폰에 있던 사진도 바뀌었어요."
       - mood: { tone: dread, level: 1 }
       - say:
           char: 은숙
@@ -994,7 +994,7 @@ scenes:
           char: 지영.worried
           motion: headtilt
           with: [해수]
-          text: "너도 요새 얼굴이 안 좋아. 잠은 자?"
+          text: "너도 요새 얼굴 안 좋아. 오늘은 집에 가서 좀 자."
 
   new_lock:
     title: "도어락"

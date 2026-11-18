@@ -110,7 +110,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "아빠는 지난주에 전화 왔어. 통화 시간 30초. '밥 먹었냐' '응' '끊는다.'"
+          text: "아빠는 지난주에도 밥 먹었냐고만 하더라. 응, 했더니 바로 끊고."
       - say:
           char: 비서
           with: [윤재]
@@ -118,7 +118,7 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "그래 28초. 나도 할 말은 없었어."
+          text: "그래, 딱 28초. 나도 더 할 말은 없었어."
       - say:
           char: 윤재
           with: []
@@ -675,7 +675,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "아니, 부르면 좀 돌아봐라. 그 정도는 되지?"
+          text: "켜지면 나 좀 봐라. 부를 때만이라도."
       - say:
           channel: action
           with: [로봇]

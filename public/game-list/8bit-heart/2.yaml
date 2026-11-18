@@ -75,7 +75,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "인두를 대자 납이 녹는다. 화면이 한 차례 깜빡이더니 꺼진다."
+          text: "“미련 없어. 진짜야. 진짜. 진짜.” 윤재가 중얼거리며 인두를 댄다. 납이 녹고 화면이 한 차례 깜빡이더니 꺼진다."
       - use: console_cheap
       - get: cpu_chip
       - say: { channel: thought, with: [], text: "빠졌다. 핀 마흔 개 다 멀쩡하다." }
@@ -406,7 +406,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…아무튼. 너 이름 있어?"
+          text: "그건 나도 몰라. …너 이름은 있어?"
       - wait: 460
       - say:
           char: 로봇
@@ -857,7 +857,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "야, 거기까지 적지 마. 누가 보면 내가 돈 안 내도 된다고 가르친 줄 알겠다."
+          text: "그건 나도 몰라. 남들은 그런 말 싫어해."
       - wait: 270
       - say:
           char: 로봇
@@ -1045,7 +1045,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…무서운 걸 말하면 더 무서워지니까."
+          text: "…쪽팔리잖아. 나 무섭다고 하면 너도 겁먹을 거고."
       - wait: 270
       - say:
           char: 로봇
@@ -1054,7 +1054,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "아니. 똑같아. 근데 말하면 상대가 같이 무서워하잖아."
+          text: "아니. 똑같이 무서워. 네가 그러면 나도 더 무서울 거 아냐."
       - wait: 270
       - say:
           char: 로봇

@@ -515,7 +515,7 @@ scenes:
           side: them
           char: 경준
           with: []
-          text: "형 어디까지 갔어요? 저는 2단계가 부끄러워서 넘겼어요."
+          text: "저는 2단계는 못 하겠던데요. 부끄러워서 그냥 넘겼어요."
       - wait: 0
       - wait: 0
       - say:
@@ -663,7 +663,7 @@ scenes:
           char: 상혁.grin
           motion: lean_in
           with: [해수]
-          text: "목말라서. 너 귀 뒤에 자국이나 가려. 고등학교 애들이 보면 네가 그렇게 하지 말라던 밤샘을 다 한다고 웃겠네."
+          text: "목말라서. 너도 밤새웠으면서 뭘. 귀 뒤에 자국이나 가려."
       - say:
           channel: action
           with: []
@@ -773,7 +773,7 @@ scenes:
           char: 광철
           motion: bow
           with: [해수]
-          text: "이거. 마셔. …수고하고."
+          text: "아냐, 오늘은 됐어. 이거… 마셔. 수고하고."
           wait: 700
       - move: { id: 광철, style: reset }
       - char: { id: 경준, position: right }
@@ -781,16 +781,16 @@ scenes:
           char: 경준
           motion: bounce
           with: [해수]
-          text: "형, 그 아저씨가 저한테도 수고하래요. 얼떨결에 네, 하고 인사할 뻔했어요."
+          text: "형, 그 아저씨가 저한테도 수고하래요. 저한테는 처음인데."
       - say:
           char: 해수
           with: [경준]
-          text: "존댓말로 대답해야지."
+          text: "그럼 인사해 드려야지."
       - say:
           char: 경준
           motion: perk
           with: [해수]
-          text: "아, 그러네요."
+          text: "아. 그럴걸."
 
   tutorial_three:
     title: "튜토리얼 3/5"

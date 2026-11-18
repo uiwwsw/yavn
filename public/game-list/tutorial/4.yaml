@@ -492,7 +492,7 @@ scenes:
           char: 엄마
           when: { var: called_mom, op: eq, value: true }
           with: []
-          text: "역에서 택시 타면 되지? 상혁이한테는 말 안 했어"
+          text: "역에서 택시 타고 갈게 상혁이한테는 말 안 했어"
       - say:
           channel: thought
           when: { var: called_mom, op: eq, value: true }
@@ -722,7 +722,7 @@ scenes:
           when: { var: bowed, op: eq, value: true }
           motion: lean_in
           with: [해수]
-          text: "그 민원 아줌마 또 왔어. 너 찾더라. 지난번에 네가 끝까지 숙이고 있어서 기분 좋았대."
+          text: "새 민원 들어왔어. 팀장님이 이번에도 네가 받아 달래."
       - say:
           char: 해수.service
           when: { var: bowed, op: eq, value: true }
@@ -860,7 +860,7 @@ scenes:
       - say:
           char: 해수
           with: [은숙]
-          text: "오늘 새벽에는 가산동 지하에 있었어요. 기태민 씨 카드 찍고 들어갔으니까 기록 보시면 나올 거예요."
+          text: "네. 그날은 집에 있었고요. 오늘 새벽에는 가산동 지하에 갔습니다. 기태민 씨 카드로 들어갔어요."
       - wait: 0
       - wait: 0
       - say:

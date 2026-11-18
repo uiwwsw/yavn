@@ -507,7 +507,7 @@ scenes:
       - say: { channel: narration, text: "그러다 낯익은 얼굴들이 하나씩 떠올랐다.", wait: 1400 }
       - say: { channel: narration, text: "여든 먹어도 엿은 엿이라던 열여섯." }
       - say: { channel: narration, text: "할머이 또 부두 나갔다고 뛰어오던 일곱 살." }
-      - say: { channel: narration, text: "링거 줄 안 빠진다고 줄넘기까지 해 봤다던 스물하나." }
+      - say: { channel: narration, text: "환자복으로 뛰다가 간호사 선생님께 혼났다던 스물하나." }
       - say: { channel: narration, text: "색연필 쥐고 아줌마 어디서 봤는데, 하던 여덟 살." }
       - wait: 1800
       - mood: { tone: warm, level: 2 }

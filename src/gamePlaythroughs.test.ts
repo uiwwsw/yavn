@@ -236,10 +236,13 @@ describe('8비트 심장', () => {
     // The three things he looked at on the third morning come back in chapter 3.
     expect(heard(run.shown, '나간 쪽이 게임기 사 줬어')).toBe(true);
     expect(heard(run.shown, '스물여덟 번 다 똑같은 말 나왔어')).toBe(true);
-    expect(heard(run.shown, '천장에 동그란 자리 같은 거')).toBe(true);
+    expect(heard(run.shown, '천장에 하루 스피커 자국')).toBe(true);
     // Chapter 2 asked "믿어도 됨?" and got "아니." Chapter 4 answers it the other way.
     expect(heard(run.shown, '이번엔 어')).toBe(true);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(false);
+    // Seven peach pieces are divided equally before each side receives its portion.
+    expect(heard(run.shown, '조각 일곱 개')).toBe(true);
+    expect(run.shown).toContain('3.5.');
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(true);
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(false);
   });
@@ -530,28 +533,28 @@ describe('오버플로', () => {
     expect(run.state.resolvedEndingId).toBe('appeal');
     const beats = [
       '아버지에게 전화가 온다',
-      '아버지도 드세요. 제 건 반만 얼려 두고요',
-      '저기요. 장갑 떨어뜨렸어요.',
-      '월계병원 가려면 어느 쪽으로 나가요?',
+      '제 건 반만 얼려요. 아버지도 좀 드시고요',
+      '저기요. 장갑 떨어뜨리셨어요.',
+      '월계병원이 어느 쪽인지 아세요?',
       '흥분 94 · 역무원 호출',
       '가게 앞에서 쓰러지셨어요',
       '문동식 환자분 아드님이세요?',
       '보호자 면회 확인 · 문지완',
-      '낮은 점수가 뜨면 혼자 못 들어가게 돼 있어요',
-      '방금 01 때문에 문이 안 열린 거예요?',
-      '저 한수경이에요',
+      '이 안내가 뜨면 직원이 같이 들어가야 해서요',
+      '잠깐 말씀드려도 괜찮을까요?',
+      '한수경이라고 합니다',
       '센서 입력 001 → 표시 01',
-      '접수표만 봐서는 몰라요',
-      '처음 수치는 되찾을 수 없어요',
+      '그때 실제 값은 접수표에 안 남아서',
+      '병실에 들어가면 렌즈가 한 번 더 재요',
       '영상 및 음성: 끔',
-      '반만 얼리기로 했잖아요',
-      '반찬집 아주머니 목소리가 나와서요',
+      '제 거 빼 두셨죠',
+      '전화 받았는데 아버지 목소리가 아니어서',
       '보호자 재확인 · 문지완',
       '센서 입력 101 → 표시 01\n화면 판정',
-      '두 번 다 제가 본 대로 적으면 내일부터는 직원 확인으로 들어오실 수 있어요',
-      '처음 병원에 설치할 때도 제가 확인란에 사인했어요',
-      '아까 옆에 앉으라 하셨을 때요',
-      '저도 같이 적어도 돼요?',
+      '두 번 다 제가 본 건 확인서에 적어 드릴게요',
+      '99를 넘을 때는 확인도 안 해 놓고 사인했어요',
+      '아까 저 앉혀 주셨잖아요',
+      '저도 같이 내도 될까요?',
       '공동 이의신청 접수',
       '반만 얼렸다. 나머진 냄비에',
     ];
@@ -562,8 +565,8 @@ describe('오버플로', () => {
     const introduction = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
       .filter(entry => entry.sceneId === 'cafe_introduction');
     expect(introduction.map(entry => entry.speaker)).toEqual(['안경 쓴 여자', '문지완', '한수경']);
-    expect(introduction[0]?.text).toContain('한수경이에요');
-    expect(heard(run.shown, '아까 물부터 드렸죠')).toBe(false);
+    expect(introduction[0]?.text).toContain('한수경이라고 합니다');
+    expect(heard(run.shown, '아까 대답 안 했는데')).toBe(false);
   });
 
   it('connects missed calls and a late admission to the public ending', async () => {
@@ -578,10 +581,10 @@ describe('오버플로', () => {
     finished(run);
     expect(run.state.resolvedEndingId).toBe('broadcast');
     expect(heard(run.shown, '접수표는 안 주셔도 돼요')).toBe(true);
-    expect(heard(run.shown, '아침에 전화 못 받았잖아요')).toBe(true);
-    expect(heard(run.shown, '아까 물부터 드렸죠. 사실 겁났어요')).toBe(true);
-    expect(heard(run.shown, '반만 얼리기로 했잖아요')).toBe(false);
-    expect(heard(run.shown, '반찬집 아주머니 목소리가 나와서요')).toBe(false);
+    expect(heard(run.shown, '아침에 전화 못 받아서 죄송해요')).toBe(true);
+    expect(heard(run.shown, '아까 대답 안 했는데… 무서웠어요')).toBe(true);
+    expect(heard(run.shown, '제 거 빼 두셨죠')).toBe(false);
+    expect(heard(run.shown, '전화 받았는데 아버지 목소리가 아니어서')).toBe(false);
     const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
       .filter(entry => entry.sceneId === 'phone_reply');
     expect(messages.map(entry => entry.side)).toEqual(['me', 'them', 'me']);
@@ -592,7 +595,7 @@ describe('오버플로', () => {
     expect(run.state.storyLog).toContainEqual(expect.objectContaining({
       sceneId: 'hospital_message', speaker: '아버지', channel: 'dialogue', text: expect.stringContaining('작은 통 찾았다'),
     }));
-    const consent = run.shown.findIndex(text => text.includes('제 이름하고 제 기록은 공개할게요'));
+    const consent = run.shown.findIndex(text => text.includes('제 기록은 써도 돼요'));
     expect(consent).toBeGreaterThan(-1);
     expect(heard(run.shown.slice(consent), '센서 입력 101 / 렌즈 표시 01')).toBe(true);
     expect(heard(run.shown.slice(consent), '308호')).toBe(false);

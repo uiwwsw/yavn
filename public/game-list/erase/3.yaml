@@ -268,7 +268,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "오이는 뺐어?"
+          text: "오이는 빼 달라고 하고"
       - say:
           channel: message
           thread: 지수
@@ -279,7 +279,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "너 혼자 먹을 때도 꼭 빼달라 하잖아"
+          text: "또 하나씩 골라내면서 먹지 말고ㅋㅋ"
       - say:
           channel: message
           thread: 지수
@@ -455,7 +455,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 번호표를 지갑 카드 칸 맨 안쪽, 영수증 뒤에 넣는다."
+          text: "직원이 번호로만 보관된다고 답한다. 도윤은 번호표를 지갑 카드 칸 맨 안쪽, 영수증 뒤에 넣는다."
       - goto: e3_harin
 
   e3_turn:
@@ -551,7 +551,7 @@ scenes:
       - say:
           char: 아진
           with: [하린]
-          text: "그날 말 못 해서 미안해. 내일은 너랑 먹고 싶어."
+          text: "민재한텐 따로 먹는다고 할게. 내일은 너랑 먹고 싶어."
       - say:
           char: 하린.blank
           with: [아진]
@@ -661,7 +661,7 @@ scenes:
           motion: laugh
           with: [지수]
           text: "은행. 대출 서류 하나 빠졌다고 해서. 말하면 너 또 신경 쓸까 봐."
-      - say: { char: 지수, with: [도윤], text: "그래서 해결했어? 내가 떼 줄 건 없어?" }
+      - say: { char: 지수, with: [도윤], text: "해결은 했어?" }
       - say: { char: 도윤, with: [지수], text: "어. 다 했어." }
       - say: { char: 지수, with: [도윤], text: "…알았어. 밥은 식었어. 먹을 거면 네가 데워." }
       - move: { id: 지수, toward: 도윤, style: retreat }
@@ -736,8 +736,8 @@ scenes:
           with: [도윤]
           text: "그럼 다시 가. 오늘처럼 돌아오지 말고."
       - say: { char: 지수, with: [도윤], text: "청첩장 숫자는 같이 세면서, 그 얘기는 나한테 언제 하려고 했어?" }
-      - say: { char: 도윤.hollow, with: [지수], text: "그 얘기만 하면 우리 아직 결혼 준비하는 사람들 같았어. 말하고 나면 네가 나가 버릴까 봐." }
-      - say: { char: 지수, with: [도윤], text: "오늘 거울 앞에서 혼자 서 있었어. 네가 들어오면 이제 같이 고를 수 있겠다 싶어서 문만 보고 있었어.", wait: 550 }
+      - say: { char: 도윤.hollow, with: [지수], text: "…말하면 끝날까 봐. 하루만 더 미루자고 했어." }
+      - say: { char: 지수, with: [도윤], text: "오늘도 나 혼자 입어 봤어. 너 온댔잖아.", wait: 550 }
       - say: { char: 도윤, with: [지수], text: "미안해." }
       - say: { char: 지수, with: [도윤], text: "토요일 피팅은 가지 마. 내일 식장에도 전화할 거야. 식을 미룰 수 있는지부터 물어볼게." }
       - say: { char: 도윤, with: [지수], text: "내가 전화할게." }

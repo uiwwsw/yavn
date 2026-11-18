@@ -265,7 +265,7 @@ scenes:
           autoAdvance: 1250
           side: me
           with: []
-          text: "안녕하세요 혹시 아직 있나요"
+          text: "안녕하세요 게임기 보고 연락드려요"
       - say:
           channel: message
           thread: "판매자"
@@ -302,7 +302,7 @@ scenes:
           autoAdvance: 1250
           side: me
           with: []
-          text: "아니에요 없는 게 좋아요"
+          text: "혼자 말 걸고 게임 골라 주는 거요. 없는 게 좋아요"
       - say:
           channel: message
           thread: "판매자"
@@ -318,7 +318,7 @@ scenes:
           autoAdvance: 1300
           side: them
           with: []
-          text: "B 버튼 좀 뻑뻑함"
+          text: "B 버튼만 좀 뻑뻑해요"
       - say:
           char: 윤재
           motion: nod
@@ -381,7 +381,7 @@ scenes:
           speakerName: "판매자"
           side: them
           with: []
-          text: "네고 사절"
+          text: "네고는 안 해요"
       - say:
           char: 윤재
           motion: perk
@@ -426,12 +426,12 @@ scenes:
           autoAdvance: 2000
           side: them
           with: []
-          text: "3만 2천. 신문지에 싸서 보내서 택배비도 내가 냄"
+          text: "3만 2천이요. 신문지 포장이라 배송비는 안 받아요"
       - say:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "택배비 빼면 이만 팔천이네. 봤지? 깎았다니까."
+          text: "배송비가 없대. 봤지? 사천 원 번 거다."
       - wait: 0
       - wait: 0
       - wait: 0
@@ -449,7 +449,7 @@ scenes:
           speakerName: "판매자"
           side: them
           with: []
-          text: "넣어 드림"
+          text: "넣어 드릴게요"
       - wait: 0
       - wait: 0
       - wait: 0
@@ -466,12 +466,12 @@ scenes:
           speakerName: "판매자"
           side: them
           with: []
-          text: "안 해봄"
+          text: "그건 확인 못 했어요"
       - say:
           char: 윤재
           motion: puff
           with: [비서]
-          text: "야, 안 해 봤대."
+          text: "야, 저장은 확인 못 했대."
       - say:
           char: 비서
           with: [윤재]
@@ -538,7 +538,7 @@ scenes:
           char: 윤재
           motion: headtilt
           with: [비서]
-          text: "너도 돈을 받아? 그걸 어디다 써?"
+          text: "너도 돈을 받아? 그걸로 뭘 하는데?"
       - say:
           char: 비서
           with: [윤재]

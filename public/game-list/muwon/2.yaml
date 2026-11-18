@@ -76,7 +76,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "덕구, 포교가 처음에 뭐라고 물었어요?"
+          text: "포교 나리가 처음에 뭐라고 물었어요?"
       - say:
           char: 덕구.scared
           with: [서연]
@@ -204,11 +204,11 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "덕구, 이쪽 좀 보세요."
+          text: "저 좀 봐 주세요."
       - say:
           char: 서연
           with: [덕구]
-          text: "이 물동이 좀 들어 봐요. 아무 손으로나."
+          text: "이 빈 동이 좀 들어 주실래요? 편한 손으로요."
       - say:
           channel: action
           with: [덕구]
@@ -228,7 +228,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "왼손으로 이 낫 들어 볼 수 있어요?"
+          text: "이번엔 왼손으로 자루만 잡아 보세요. 아프면 놓으시고요."
       - say:
           channel: action
           with: [덕구]
@@ -310,7 +310,7 @@ scenes:
       - say:
           char: 강치수
           with: [서연]
-          text: "의녀라고 그 어린것들까지 어찌할 순 없지 않소."
+          text: "내가 말을 잘못했다가 그 어린것들까지 해를 입으면, 누가 책임지겠소."
       - say:
           channel: thought
           with: []
@@ -464,7 +464,7 @@ scenes:
       - say:
           char: 강치수
           with: [도원]
-          text: "…자복을 받았습니다, 나리. 불 놓은 자리까지 물을 겨를은 없었습니다."
+          text: "낫도 나왔고 자복도 받았기에… 더 묻지 않았습니다, 나리."
       - say:
           char: 도원.stern
           with: [강치수]

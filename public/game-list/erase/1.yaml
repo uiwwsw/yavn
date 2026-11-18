@@ -144,7 +144,7 @@ scenes:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "김치찌개 좋죠. 저도 끼워 줘요. 거기 어디에 시켜야 빨리 나오는지도 알려 주고요."
+          text: "김치찌개 좋죠. 저도 같이 가도 되죠? 첫날부터 혼자 먹긴 좀 그래서요."
       - say:
           char: 도윤
           motion: bow
@@ -210,25 +210,25 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "회사에서 그 얘기 안 할게요. 한대리님도 그 얘기 하려고 남으신 거죠?"
+          text: "회사에서 그 얘기 안 할게요."
       - move: { id: 도윤, style: reset }
       - say:
           char: 준성
           with: [도윤]
-          text: "회사 일로 연락할 땐 내선으로 할게요."
+          text: "연락도 회사 일로만 할게요. 내선으로요."
       - say:
           char: 도윤
           motion: droop
           with: [준성]
-          text: "…네. 자리에 보통 있어요."
+          text: "네. 그렇게 해 주세요."
       - say:
           char: 준성
           with: [도윤]
-          text: "아까부터 저한테 할 말 있는 줄 알았는데."
+          text: "그런데 아침에 가실 때요."
       - say:
           char: 준성
           with: [도윤]
-          text: "그날 아침에 신발 들고 나가던데. 소리 안 나게."
+          text: "신발까지 들고 나가실 줄은 몰랐어요."
       - say:
           char: 도윤.panic
           with: [준성]
@@ -236,7 +236,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "처음부터요."
+          text: "네. 처음부터요."
       - say:
           char: 준성
           with: [도윤]
@@ -255,15 +255,15 @@ scenes:
           char: 준성.smirk
           motion: laugh
           with: [도윤]
-          text: "저 이 화분 좀 봐줘요. 옮기다 잎이 꺾였는데, 새 잎은 나더라고요. 물은 종이컵 반 컵만요."
+          text: "아, 이 화분도 옮겨 왔어요. 잎이 좀 꺾였죠."
       - say:
           char: 준성
           with: [도윤]
-          text: "제가 내일 늦으면 반 컵만 부탁해요."
+          text: "내일 제가 늦으면 물만 좀 주세요. 종이컵 반 정도요."
       - say:
           char: 준성
           with: [도윤]
-          text: "들어가요. 결혼 준비 바쁠 텐데."
+          text: "먼저 갈게요. 너무 늦게까지 있지 마요."
   rumor:
     title: "소문"
     actions:
@@ -468,7 +468,7 @@ scenes:
       - say: { char: 하린, with: [민재, 아진], text: "내가 언제 그랬어? …됐어. 야, 생윤 조는 우리 셋이 할까?" }
       - say: { char: 민재, with: [하린, 아진], text: "나 아진이랑 이미 냈는데. 아까 쉬는 시간에." }
       - say: { char: 하린, with: [민재, 아진], text: "아. 나 화장실 간 사이에?", motion: freeze }
-      - say: { char: 아진.awkward, with: [하린, 민재], text: "하린아. 노래라도 같이 들을래? 한쪽 줄게." }
+      - say: { char: 아진.awkward, with: [하린, 민재], text: "…응. 그때 얘기 나와서. 하린아, 노래라도 같이 들을래?" }
       - choice:
           key: e1_harin
           prompt: "아진이 이어폰 한쪽을 내민다."
@@ -503,7 +503,7 @@ scenes:
       - say:
           char: 하린
           with: [민재, 아진]
-          text: "…어. 그래. 줘."
+          text: "응. 난 괜찮아."
       - goto: e1_harin_night
 
   e1_harin_ask:
@@ -533,7 +533,7 @@ scenes:
           char: 하린
           motion: laugh
           with: [민재, 아진]
-          text: "아 종 친다. 나 먼저 들어간다?"
+          text: "아, 종 친다. 나 먼저 갈게."
       - goto: e1_harin_night
 
   e1_harin_night:
