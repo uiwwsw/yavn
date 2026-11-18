@@ -10,6 +10,7 @@ import './choiceLayout.mobile.css';
 import './promptLayout.css';
 import './gameInterface.css';
 import './immersiveStory.css';
+import './dialoguePerspective.css';
 
 initializePromptLayout();
 // Production only; in dev this unregisters any worker left from a preview build.

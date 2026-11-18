@@ -1,7 +1,29 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { resolveTabDestination } from './gameInterface';
+import { resolveReadingPerspective, resolveTabDestination } from './gameInterface';
+
+describe('reading perspective', () => {
+  const pov = { channel: 'dialogue' as const, choiceActive: false, playerName: '영호', playerCharacterId: '영호' };
+  it('recognizes the scene POV, including another age asset with the same name', () => {
+    expect(resolveReadingPerspective({ ...pov, speaker: '영호', speakerId: '청년영호' })).toBe('player');
+    expect(resolveReadingPerspective({ ...pov, speaker: '순임', speakerId: '순임' })).toBe('other');
+    expect(resolveReadingPerspective({ ...pov, playerName: '순임', playerCharacterId: '순임', speaker: '순임', speakerId: '순임' })).toBe('player');
+  });
+  it('does not identify an anonymous protagonist from an asset or matching question marks', () => {
+    expect(resolveReadingPerspective({ ...pov, playerName: '???', speaker: '???', speakerId: '영호' })).toBeUndefined();
+    expect(resolveReadingPerspective({ ...pov, playerName: undefined, speaker: '???' })).toBeUndefined();
+  });
+  it('separates player choices and thoughts from the preceding speaker', () => {
+    expect(resolveReadingPerspective({ ...pov, choiceActive: true, speaker: '순임' })).toBe('player');
+    expect(resolveReadingPerspective({ ...pov, channel: 'thought' })).toBe('player');
+    expect(resolveReadingPerspective({ ...pov, channel: 'narration' })).toBeUndefined();
+  });
+  it('leaves phones, title cards and records in their own presentation', () => {
+    for (const channel of ['message', 'card', 'record', 'system', 'action'] as const)
+      expect(resolveReadingPerspective({ ...pov, channel, speaker: '영호' })).toBeUndefined();
+  });
+});
 
 describe('game menu keyboard navigation', () => {
   it('wraps both horizontal and vertical menu navigation', () => {

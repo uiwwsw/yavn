@@ -1,4 +1,23 @@
 import type { KeyboardEvent } from 'react';
+import type { DialogueChannel } from './types';
+
+export function resolveReadingPerspective({ channel, choiceActive, playerName, playerCharacterId, speaker, speakerId }: {
+  channel: DialogueChannel;
+  choiceActive: boolean;
+  playerName?: string;
+  playerCharacterId?: string;
+  speaker?: string;
+  speakerId?: string;
+}): 'player' | 'other' | undefined {
+  if (channel === 'message' || channel === 'card') return undefined;
+  if (choiceActive) return 'player';
+  const identifiedPlayer = Boolean(playerName && playerName !== '???');
+  if (channel === 'thought' && identifiedPlayer && !speaker) return 'player';
+  if (channel !== 'dialogue' && channel !== 'thought') return undefined;
+  if (!speaker || speaker === '???') return undefined;
+  return identifiedPlayer && (speaker === playerName || Boolean(playerCharacterId && playerCharacterId === speakerId))
+    ? 'player' : 'other';
+}
 
 export function resolveTabDestination(key: string, index: number, count: number): number | undefined {
   if (count < 1) return undefined;
