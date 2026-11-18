@@ -16,30 +16,35 @@ scenes:
           text: "1층 로비에 안내 데스크가 있었던 자리만 바닥 색이 다르다. 유리문은 손으로 밀면 열린다."
       - say:
           channel: message
+          thread: "태민"
           side: them
           char: 태민
           with: []
           text: "도착하셨어요? 제가 같이 가진 못해요. 카드 찍으면 제 이름이 기록에 남거든요"
       - say:
           channel: message
+          thread: "태민"
           side: them
           char: 태민
           with: []
           text: "제 카드로는 지하 1층만 갈 수 있어요"
       - say:
           channel: message
+          thread: "태민"
           side: me
           char: 해수
           with: []
           text: "네 감사합니다 다녀와서 연락드릴게요"
       - say:
           channel: message
+          thread: "태민"
           side: them
           char: 태민
           with: []
           text: "정해수 씨"
       - say:
           channel: message
+          thread: "태민"
           side: them
           char: 태민
           with: []
@@ -181,7 +186,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "손님이 가져가기 쉽게 꽂아 두는 각도다. 몸이 그걸 먼저 한다."
+          text: "늘 창구에서 하던 대로 로고를 바깥으로 돌려 놓았다."
       - clearSticker: { id: pencil, leave: fadeOut }
       - set: { seen_drawer: true }
       - goto: room_look
@@ -474,6 +479,7 @@ scenes:
           text: "0003 옆에는 ‘튜토리얼 넘기기’라고 써 있었다."
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           when: { var: called_mom, op: eq, value: true }
@@ -481,6 +487,7 @@ scenes:
           text: "첫차 표 끊었어 5시 10분"
       - say:
           channel: message
+          thread: "엄마"
           side: them
           char: 엄마
           when: { var: called_mom, op: eq, value: true }
@@ -625,18 +632,21 @@ scenes:
       - place: { text: "5월 2일 · 그린마트 고객센터", presentation: center }
       - say:
           channel: message
+          thread: "은숙"
           side: them
           char: 은숙
           with: []
           text: "차은숙입니다. 오광철 씨 사건 수사 중지됐어요. 연필 감정을 할 때마다 결과가 달라서요. 이제 안 바뀌는데, 어느 게 맞는지 아직 모르겠어요."
       - say:
           channel: message
+          thread: "은숙"
           side: me
           char: 해수
           with: []
           text: "형사님 그 연필 지금도 스무 자루씩 들어옵니다"
       - say:
           channel: message
+          thread: "은숙"
           side: them
           char: 은숙
           with: []
@@ -720,6 +730,7 @@ scenes:
           text: "네. 제가 받겠습니다."
       - say:
           channel: message
+          thread: "은숙"
           side: them
           char: 은숙
           when: { var: tampered, op: gt, value: 0 }
@@ -727,13 +738,15 @@ scenes:
           text: "차은숙입니다. 변상혁 씨 다시 조사해야 해서 연락드렸는데 전화를 안 받네요. 집에 계시면 이 번호로 연락 달라고 전해 주세요."
       - say:
           channel: message
+          thread: "은숙"
           side: them
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: []
-          text: "차은숙입니다. 오광철 씨 사건 미제로 넘어갔어요. 정해수 씨 이름은 목록에 그대로 있어요. 그냥 그렇다고요."
+          text: "차은숙입니다. 오광철 씨 사건 미제로 넘어갔어요. 정해수 씨 진술도 그대로 남아 있어요. 추가할 말 있으면 이 번호로 연락 주세요."
       - say:
           channel: message
+          thread: "은숙"
           side: me
           char: 해수
           with: []

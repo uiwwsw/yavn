@@ -5,6 +5,15 @@ const them = (speaker: string, avatar?: string, speakerId?: string): PhoneSender
   ({ speaker, side: 'them', avatar, speakerId });
 
 describe('phone contacts', () => {
+  it('shows the contact name instead of an internal character ID, including an outgoing first message', () => {
+    const outgoing = { speaker: '지완', side: 'me' as const };
+    const first = selectPhoneContact([outgoing], '동식_연락처', '/father.svg', '아버지');
+    expect(first).toMatchObject({ name: '아버지', thread: '동식_연락처', participants: [{ speaker: '아버지', avatar: '/father.svg' }] });
+    const reply = selectPhoneContact([outgoing, them('아버지', undefined, '동식_연락처')], '동식_연락처', '/father.svg', '아버지');
+    expect(reply?.name).toBe('아버지');
+    expect(phoneBubbleProfile(reply, them('아버지', undefined, '동식_연락처')).avatar).toBe('/father.svg');
+  });
+
   it('uses the displayed sender name for an untitled chat and leaves the player out', () => {
     const contact = selectPhoneContact([them('엄마'), { speaker: '해수', side: 'me', avatar: '/haesu.svg' }]);
     expect(contact?.name).toBe('엄마');

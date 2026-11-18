@@ -27,48 +27,56 @@ scenes:
           text: "상봉점 고객센터 (3) · 4월 18일 금요일 오전 7:41"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 경준
           with: []
           text: "주임님 형 뉴스 봤어요??? 우리 지하주차장"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 경준
           with: []
           text: "경찰차 네 대 와 있어요 저 지금 버스정류장인데 다 보여요"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 지영
           with: []
           text: "오픈 11시로 미룬대 본사 공지 옴"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 경준
           with: []
           text: "주임님 그럼 저 11시까지 가면 돼요? 버스 막 탔는데요"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 지영
           with: []
           text: "내려서 집에 갔다 와 두 정거장이잖아"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 경준
           with: []
           text: "집에 가면 다시 못 나와요 저는"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 경준
           with: []
           text: "즉석밥 아저씨래요"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 지영
           with: []
@@ -76,18 +84,21 @@ scenes:
       - wait: 600
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 경준
           with: []
           text: "죄송합니다"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: them
           char: 지영
           with: []
           text: "근데 맞대. 지하 주차장 내려갔던 보안팀 김 기사님이 봤대"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: me
           char: 해수
           with: []
@@ -95,6 +106,7 @@ scenes:
           text: "지하 몇 층이래요"
       - say:
           channel: message
+          thread: "상봉점 고객센터"
           side: me
           char: 해수
           with: []
@@ -130,7 +142,7 @@ scenes:
       - say:
           char: 상혁.grin
           with: [해수]
-          text: "너는 아침부터 냄비를 왜 봐."
+          text: "뚜껑 닫아 둬. 아침부터 그걸 왜 봐."
       - say:
           char: 해수
           with: [상혁]
@@ -191,7 +203,7 @@ scenes:
       - say:
           char: 상혁
           with: [해수]
-          text: "…그럼 걔가 사 왔나 보지."
+          text: "…걔가 두고 갔나 봐. 왜, 버리려고?"
       - say:
           channel: thought
           with: []
@@ -303,7 +315,7 @@ scenes:
           char: 경준
           with: []
           delivery: whisper
-          text: "형, 앞치마 주세요. 제가 사물함에 넣어 놓을게요. 주임님한테는 형 화장실 갔다고 할게요."
+          text: "형, 앞치마 제가 넣어 놓을게요. 누가 물으면 화장실 갔다고 할까요?"
       - say:
           char: 해수
           with: [경준]

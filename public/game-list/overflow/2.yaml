@@ -75,7 +75,7 @@ scenes:
       - sticker: { id: diagnosis, image: raw_sticker, x: 50, y: 46, width: "clamp(140px, 23%, 270px)", enter: fadeIn }
       - say: { channel: record, with: [], text: "20:14:09 · 문지완의 렌즈\n센서 입력 101 → 표시 01\n화면 판정: 무반응 의심" }
       - clearSticker: { id: diagnosis, leave: fadeOut }
-      - say: { char: 지완, with: [수경], text: "양말 주우려고 허리를 숙였을 때였어요. 손이 떨려서 양말을 한 번 더 떨어뜨렸는데 렌즈엔 01이 떴어요." }
-      - say: { char: 수경, with: [지완], text: "이걸 출력해서 면회표 옆에 붙여요. 제가 어느 자리에서 숫자가 잘렸는지 적을게요. 접수 간호사한테 아직 얘기할 수 있어요?" }
+      - say: { char: 지완, with: [수경], text: "양말을 두 번이나 떨어뜨렸어요. 손이 떨렸는데. 그때 01이 뜬 거예요?" }
+      - say: { char: 수경, with: [지완], text: "이거 출력해 갈게요. 잘린 앞자리는 제가 표시하고요. 아까 그 간호사님 아직 계세요?" }
       - say: { char: 지완, with: [수경], text: "네, 아까 같이 들어가 주신 분 아직 계세요. 저랑 가요." }
       - goto: /3.yaml

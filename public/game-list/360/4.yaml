@@ -140,9 +140,9 @@ scenes:
   leak_name:
     actions:
       - bg: { id: void_light, transition: dissolve, duration: 2400 }
-      - say: { channel: narration, text: "제보자 성명을 적는 칸이 있다. 셋 다 비어 있다." }
+      - say: { channel: narration, text: "제보자 성명을 적으려는데 셋 다 이름이 생각나지 않는다." }
       - say: { channel: narration, text: "성명 미상으로 올리면 방송에 못 쓴다. 차 피디가 제일 먼저 빼는 것이 그거다." }
-      - say: { channel: narration, text: "이름부터 묻지 말고 그날 그 자리에 있던 사람한테서만 들을 수 있는 걸 물으면 된다." }
+      - say: { channel: narration, text: "녹취할 때도 이름 얘기에서 말이 끊기면, 먼저 그날 일을 물었다." }
       - say: { channel: narration, text: "무슨 냄새가 났지? 옆엔 누가 있었고, 그 사람은 뭘 신고 있었지?" }
       - say: { channel: narration, text: "질문을 하려는데 끝까지 말하기도 전에 답이 떠오른다." }
       - say: { channel: narration, text: "곳간 열쇠. 좌판 밑에 둔 보따리. 손끝에 걸리던 약봉지." }

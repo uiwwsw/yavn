@@ -272,7 +272,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "그래서요."
+          text: "그 자국이 제 손에서 났다는 말씀이오?"
       - clearSticker: { id: t_sijang, leave: fadeOut }
       - say:
           char: 한명재
@@ -305,7 +305,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "의녀께서 주머니와 칼을 헷갈리시는군요."
+          text: "참의 나리, 주머니를 물었는데 칼자국을 내놓는군요."
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -733,7 +733,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "다음에는 의녀가 몸에서 직접 본 것부터 말씀하십시오. 적어도 그 대목엔 제가 토를 달 수 없으니까요."
+          text: "참의 나리께서 들으실 말은 다 들으셨겠지요. 혜민서에는 제가 전하겠습니다."
       - say:
           channel: thought
           with: []
@@ -817,7 +817,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "다음 시장에는 아저씨 이름부터 쓸게요."
+          text: "다음에도 같이 봐주세요. 입회한 분 이름을 빼먹지 않게요."
       - say:
           channel: narration
           text: "재판 이튿날 새벽, 성문이 열리고 짐꾼들이 줄지어 나간다. 맨 앞에서 덕구가 오른손으로 지게 끈을 고쳐 맸다."

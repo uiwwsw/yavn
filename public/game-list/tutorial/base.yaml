@@ -130,6 +130,7 @@ assets:
       name: "상혁 어머니"
       placement: prompt-top
       base: assets/char/voice.svg
+      avatar: assets/char/mom-profile.svg
       facing: left
   music:
     fluoro: assets/music/fluoro.flac

@@ -28,6 +28,7 @@ assets:
       name: "엄마"
       placement: offstage
       base: assets/char/self.svg
+      avatar: assets/char/mom-profile.svg
     만석:
       name: "만석"
       placement: offstage

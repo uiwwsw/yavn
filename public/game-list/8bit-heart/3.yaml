@@ -95,7 +95,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "야. 유리할 때만 게임이라고 하지 마. 그거 반칙이야."
+          text: "밥 찾으러 가는 건 시간에 넣으면 안 되지. 그건 빼."
       - wait: 270
       - say:
           char: 로봇
@@ -429,7 +429,7 @@ scenes:
           char: 로봇.thinking
           motion: sway
           with: [윤재]
-          text: "일곱을 둘로 나누면 하나 남음."
+          text: "셋씩 나눴음. 하나 남음."
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -569,11 +569,11 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "학원은 이제 없는데."
+          text: "담요도 반으로 나누면 됨?"
       - say:
           char: 로봇
           with: [윤재]
-          text: "그래서 그 칸은 안 지움."
+          text: "그러면 너도 덮을 수 있음."
       - goto: b3_lag
 
   b3_snack_save:
@@ -985,15 +985,15 @@ scenes:
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "내가 가진 분류 중에 제일 긴 거임."
+          text: "이걸로 문 안에 들어갈 수 있음."
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "긴 게 좋음."
+          text: "지우면 안 됨."
       - say:
           char: 로봇.happy
           with: [윤재]
-          text: "윤재 말수 줄었음."
+          text: "1번 말수 줄었음."
       - say:
           char: 로봇.happy
           with: [윤재]

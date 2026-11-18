@@ -76,7 +76,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "덕구야, 포교가 맨 처음에 뭐라 하던가요?"
+          text: "덕구, 포교가 처음에 뭐라고 물었어요?"
       - say:
           char: 덕구.scared
           with: [서연]
@@ -204,7 +204,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "덕구야."
+          text: "덕구, 이쪽 좀 보세요."
       - say:
           char: 서연
           with: [덕구]
@@ -385,7 +385,7 @@ scenes:
       - say:
           char: 강치수.angry
           with: [서연, 도원]
-          text: "덕구가 그 낫으로 영감 목을 그었소."
+          text: "영감 목을 그은 낫이오. 덕구 지게에서 나왔소."
       - say:
           char: 강치수.angry
           with: [서연, 도원]
@@ -464,7 +464,7 @@ scenes:
       - say:
           char: 강치수
           with: [도원]
-          text: "…물어볼 겨를이 없었습니다. 그놈이 먼저 했다고 했으니."
+          text: "…자복을 받았습니다, 나리. 불 놓은 자리까지 물을 겨를은 없었습니다."
       - say:
           char: 도원.stern
           with: [강치수]

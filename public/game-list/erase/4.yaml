@@ -14,21 +14,27 @@ scenes:
       - say: { channel: action, with: [도윤], text: "점심을 사러 내려가는 대신 옥상에 올라왔다. 문을 닫는데 회사 단톡이 울린다." }
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 금요일 회식 투표 1.고깃집 2.횟집"
+          text: "금요일 회식 투표 1.고깃집 2.횟집"
           autoAdvance: 1824
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 도윤대리님 결혼 전에 보는 거니까 대리님이 골라요 ㅋㅋ"
+          text: "도윤대리님 결혼 전에 보는 거니까 대리님이 골라요 ㅋㅋ"
           autoAdvance: 2144
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 팀장님도 오시는 거 맞아요? 아직 자리 비어 있길래"
+          text: "팀장님도 오시는 거 맞아요? 아직 자리 비어 있길래"
           autoAdvance: 2080
       - say:
           channel: system
@@ -36,7 +42,7 @@ scenes:
           with: []
           text: "이지수 · 읽지 않은 메시지 4"
       - say: { channel: action, with: [도윤], text: "단톡을 닫으려는데 예약 알림이 새로 뜬다. 저장한 적 없는 이름이다." }
-      - say: { channel: message, side: them, with: [], text: "[ERASE 클리닉] 내일 오전 10시 예약 확인. 신분증을 지참해 주세요." }
+      - say: { thread: "ERASE 클리닉", speakerName: "ERASE 클리닉", channel: message, side: them, with: [], text: "내일 오전 10시 예약 확인. 신분증을 지참해 주세요." }
       - say:
           channel: system
           with: []
@@ -268,13 +274,11 @@ scenes:
           with: []
           text: "도윤은 검색창에 자기 이름을 치고 화면을 맨 아래까지 내린다."
       - say:
-          channel: message
-          side: me
+          channel: "system"
           with: []
           text: "한도윤 2016"
       - say:
-          channel: message
-          side: them
+          channel: "system"
           with: []
           text: "검색 결과 없음"
       - say:
@@ -344,24 +348,28 @@ scenes:
       - say: { channel: action, with: [], text: "책상에 적어 둔 클리닉 주소를 챙기려는데 아진에게서 다시 톡이 온다." }
       - say:
           channel: message
+          thread: "셋이 쓰는 방"
           side: them
           char: 아진
           with: []
           text: "하린아 전화 좀 받아"
       - say:
           channel: message
+          thread: "셋이 쓰는 방"
           side: them
           char: 아진
           with: []
           text: "내가 그날 문 봤다고 한 거 애들한테 말 안 했어 진짜 안 했어"
       - say:
           channel: message
+          thread: "셋이 쓰는 방"
           side: them
           char: 민재
           with: []
           text: "아진한테만이라도 연락해. 어제부터 계속 기다려"
       - say:
           channel: message
+          thread: "셋이 쓰는 방"
           side: them
           char: 아진
           when: { var: h1_sent, op: eq, value: true }
@@ -369,6 +377,7 @@ scenes:
           text: "너 그때 껴달라고 한 거 나 계속 생각나 그거 장난 아니었지"
       - say:
           channel: message
+          thread: "셋이 쓰는 방"
           side: me
           char: 하린
           with: []
@@ -529,7 +538,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_sns, op: eq, value: true }
-          text: "날짜를 한참 내리다 보니 화분 살 때 올린 사진이 나온다."
+          text: "약 이름을 찾다 말고 사진을 더 내린다. 흙 묻은 손으로 새 화분을 들고 있다."
       - say:
           channel: thought
           when: { var: e3_papers, op: eq, value: true }
@@ -552,9 +561,11 @@ scenes:
           text: "축의금 옆 물음표에 잉크가 한 방울 고여 있었다."
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 화분 잎 두 개 났어요 사진 찍어뒀습니다"
+          text: "화분 잎 두 개 났어요 사진 찍어뒀습니다"
           autoAdvance: 1888
       - say:
           channel: thought
@@ -698,21 +709,27 @@ scenes:
       - bg: { id: office_night, transition: cut }
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 금요일 고깃집 확정. 도윤대리 답 없어서 그냥 정함ㅋㅋ"
+          text: "금요일 고깃집 확정. 도윤대리 답 없어서 그냥 정함ㅋㅋ"
           autoAdvance: 2144
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 도윤대리님도 안 오시는 거예요?"
+          text: "도윤대리님도 안 오시는 거예요?"
           autoAdvance: 1728
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 화분 두 개 됐어요. 하나는 제 자리로 옮길게요"
+          text: "화분 두 개 됐어요. 하나는 제 자리로 옮길게요"
           autoAdvance: 2016
       - ending: erase_loop
 
@@ -727,57 +744,75 @@ scenes:
           text: "인트라넷 조직도 · 영업2팀\n팀장 · (공석)\n대리 · (공석)\n변경 사유 · 없음"
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 근데 그 소문 처음에 누가 냈더라"
+          text: "근데 그 소문 처음에 누가 냈더라"
           autoAdvance: 1760
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 몰라ㅋㅋ 이제 상관없잖아"
+          text: "몰라ㅋㅋ 이제 상관없잖아"
           autoAdvance: 1600
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "오대리"
           side: them
           with: []
-          text: "[영업2팀] 오대리: 새 팀장님 다음 주 월요일 오신대요"
+          text: "새 팀장님 다음 주 월요일 오신대요"
           autoAdvance: 1792
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 커피 사오지 말래"
+          text: "커피 사오지 말래"
           autoAdvance: 1472
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 화분은 누가 치웠어요"
+          text: "화분은 누가 치웠어요"
           autoAdvance: 1536
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "오대리"
           side: them
           with: []
-          text: "[영업2팀] 오대리: 두 분 책상 비운다고 해서 같이 내놓긴 했어요"
+          text: "두 분 책상 비운다고 해서 같이 내놓긴 했어요"
           autoAdvance: 1856
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 창가에 다시 가져다 놨어요. 제가 반 컵씩 주던 건데"
+          text: "창가에 다시 가져다 놨어요. 제가 반 컵씩 주던 건데"
           autoAdvance: 1632
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "송과장"
           side: them
           with: []
-          text: "[영업2팀] 송과장: 새 팀장님 쓰실 자리만 일단 좀 비워 줘"
+          text: "새 팀장님 쓰실 자리만 일단 좀 비워 줘"
           autoAdvance: 1760
       - say:
           channel: message
+          thread: "영업2팀"
+          speakerName: "윤주임"
           side: them
           with: []
-          text: "[영업2팀] 윤주임: 도윤대리님한테도 연락해 봤어요? 제 번호는 답이 없던데"
+          text: "도윤대리님한테도 연락해 봤어요? 제 번호는 답이 없던데"
           autoAdvance: 1568
       - say:
           channel: action
@@ -795,7 +830,7 @@ scenes:
       - say: { char: 도윤, with: [], delivery: whisper, text: "…나였네. 아진이가 이 사진을 왜 남겨 두랬는지 이제 알겠다.", wait: 700 }
       - say: { channel: action, with: [], text: "내일 가면 이 아이도 다시 모르는 얼굴이 될지 모른다. 도윤은 사진을 닫고 예약을 연다." }
       - clearSticker: { id: e4_photo, leave: fadeOut }
-      - say: { channel: message, side: me, char: 도윤, with: [], text: "내일 오전 열 시 예약 취소해 주세요" }
+      - say: { thread: "ERASE 클리닉", channel: message, side: me, char: 도윤, with: [], text: "내일 오전 열 시 예약 취소해 주세요" }
       - say: { channel: system, with: [], text: "내일 오전 10시 예약이 취소되었습니다." }
       - branch:
           cases:
@@ -900,7 +935,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "나 아직 화났어 먼저 말해준 건 고마워 오늘은 답 안 해도 돼"
+          text: "나 아직 화났어 그래도 네 입으로 들어서 다행이야 오늘은 답 안 해도 돼"
       - say:
           channel: action
           with: []

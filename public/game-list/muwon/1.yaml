@@ -29,7 +29,7 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "분이가 우리 가게에서 바느질했어요. 장례는 제가 치를 겁니다."
+          text: "분이는 우리 가게 침모예요. 장례 치를 돈은 챙겨 왔어요."
       - say:
           char: 여금.wary
           with: [서연]
@@ -117,7 +117,7 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "지난달에 삼백 개를 한꺼번에 주문받았어요. 분이가 혼자 다 꿰맸고요."
+          text: "지난달 삼백 개요. 분이가 밤까지 남아서 혼자 꿰맸어요."
       - say:
           char: 여금
           with: [서연]
@@ -487,7 +487,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "서른아홉 장에요. 닭 그림까지 있습니다."
+          text: "서른아홉 장이요. 아저씨 말씀 듣고 찾아봤어요. 닭 그림도 있어요."
       - wait: 0
       - say: { channel: card, with: [], text: "잠시 뒤", autoAdvance: 1300 }
       - say:
@@ -567,7 +567,7 @@ scenes:
       - say:
           char: 서연
           with: [도원]
-          text: "매부터 들었겠구먼."
+          text: "검안 기록도 안 갔는데 매부터 들었군요."
       - say:
           char: 도원.troubled
           with: [서연]

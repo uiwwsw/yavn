@@ -160,11 +160,11 @@ function selectConversationEntries(storyLog: StoryLogEntry[]): MessageEntry[] {
 
 export function selectPhoneConversation(
   storyLog: StoryLogEntry[],
-  { limit = PHONE_THREAD_MAX_BUBBLES, threadAvatar }: { limit?: number; threadAvatar?: string } = {},
+  { limit = PHONE_THREAD_MAX_BUBBLES, threadAvatar, threadName }: { limit?: number; threadAvatar?: string; threadName?: string } = {},
 ): { bubbles: PhoneThreadBubble[]; contact?: PhoneContact } {
   const entries = selectConversationEntries(storyLog);
   const live = entries.at(-1);
-  const contact = selectPhoneContact(entries, live?.thread, threadAvatar);
+  const contact = selectPhoneContact(entries, live?.thread, threadAvatar, threadName);
 
   // The live line is rendered separately so it can still type itself out.
   const bubbles: PhoneThreadBubble[] = entries.slice(Math.max(0, entries.length - 1 - limit), -1).map((entry) => ({
@@ -210,6 +210,7 @@ export function selectPhoneContact(
   senders: readonly PhoneSender[],
   thread?: string,
   threadAvatar?: string,
+  threadName?: string,
 ): PhoneContact | undefined {
   const participants: PhoneProfile[] = [];
   for (const sender of senders) {
@@ -226,12 +227,12 @@ export function selectPhoneContact(
   }
   const first = participants[0];
   if (!first) {
-    return thread ? { name: thread, thread, participants: [{ speaker: thread, avatar: threadAvatar }] } : undefined;
+    return thread ? { name: threadName ?? thread, thread, participants: [{ speaker: threadName ?? thread, avatar: threadAvatar }] } : undefined;
   }
   if (participants.length === 1 && thread && (first.speakerId === thread || first.speaker === thread)) {
     first.avatar ??= threadAvatar;
   }
-  return { name: thread ?? first.speaker, thread, participants };
+  return { name: threadName ?? thread ?? first.speaker, thread, participants };
 }
 
 export function phoneBubbleProfile(contact: PhoneContact | undefined, sender: PhoneSender): PhoneProfile {

@@ -48,7 +48,7 @@ scenes:
           char: 순임
           with: [기호]
           when: { var: t_say, op: eq, value: true }
-          text: "최 통역 목소리는 저쪽 끝에서도 알아듣겠어요. 이리 시끄러운데."
+          text: "아까 저 끝에 있을 때도 다 들었어요. 물건 이름만 들으면 최 통역 온 줄 안다니까."
       - say:
           char: 순임
           with: [기호]
@@ -59,7 +59,7 @@ scenes:
           with: [순임]
           motion: startle
           when: { var: t_say, op: eq, value: true }
-          text: "아이고, 다 듣겠소. 물건이나 받아요."
+          text: "아이고, 그러다 내 목소리 값도 받겠소. 이거 어디에 놓을까?"
       - say:
           channel: thought
           with: []
@@ -300,7 +300,7 @@ scenes:
       - place: "1967년 3월 · 영등포 셋방"
       - char: { id: 순임, position: left }
       - char: { id: 청년영호, position: right }
-      - say: { char: 청년영호, with: [순임], text: "엄마, 약 드세요. 공장 의무실에서 솜먼지를 14년이나 들이마셨으니 폐가 성할 턱이 없대요." }
+      - say: { char: 청년영호, with: [순임], text: "엄마, 약 드세요. 의무실에서 작업장엔 그만 나오시래요. 십사 년 솜먼지 마셨다고." }
       - say: { char: 순임, with: [청년영호], text: "너는 수업 안 가고 왜 여기 있니. 등록금이 얼만데." }
       - say: { char: 청년영호, with: [순임], text: "오늘 휴강이에요. 아, 그리고 이거. 부산 영주동 동사무소에서 답장 왔어요." }
       - say: { channel: record, with: [청년영호], text: "회신. 귀하가 문의한 영주동 산 3번지 일대 가옥은 1953년 11월 화재로 전소됨. 문의하신 분은 이재민 명부에 없음." }
