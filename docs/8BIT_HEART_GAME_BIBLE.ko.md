@@ -1,5 +1,7 @@
 # 8비트 심장 · 게임 바이블
 
+[인물 카드와 양방향 관계](narrative/8bit-heart.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
+
 원작 이야기: 사용자 제공 시놉시스(AI 재난 속 싸구려 레트로 게임기와 안드로이드). 인물·사건은 창작이며 실존 제품·브랜드를 쓰지 않는다.
 
 ## 1. 한 줄 소개

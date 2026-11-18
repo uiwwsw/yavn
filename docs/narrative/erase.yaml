@@ -1,0 +1,375 @@
+schemaVersion: 1
+gameId: erase
+authorOnlyFacts:
+  - 하린과 도윤은 같은 사람의 다른 신원이다. 4장 reveal 전에는 어느 대화자도 이 연결을 말할 수 없다.
+characters:
+  도윤:
+    name: 한도윤
+    age: 29
+    assetIds:
+      - 도윤
+    speakerNames: []
+    role: 영업2팀 대리, 지수의 약혼자
+    desire: 지수와의 익숙한 생활을 잃지 않으려 한다
+    fear: 자기가 원한 것과 한 일이 들키는 것
+    contradiction: 사람을 편하게 하는 농담은 잘하지만 불편한 대답은 지운다
+    dailyLife: 눈 감은 사진을 빼고 알림을 뒤집고 파를 골라낸다
+    voice: 지수에게 반말, 준성에게 팀장님과 존대. 압박받으면 네와 침묵이 늘어난다
+  지수:
+    name: 이지수
+    age: 29
+    assetIds:
+      - 지수
+    speakerNames: []
+    role: 결혼을 함께 준비하던 연인
+    desire: 준비와 책임을 함께 나누고 사실을 직접 듣고 싶다
+    fear: 또 혼자 뒷정리를 맡게 되는 것
+    contradiction: 다정한 잔소리가 먼저 나오지만 더는 기다리지 않겠다고 결정할 수 있다
+    dailyLife: 눈 감은 사진도 보관하고 돈 보낸 시각을 확인한다
+    voice: 도윤아, 친밀한 반말. 화가 나면 질문 하나씩. 이별 뒤에는 만날지와 답할 시간을 스스로 정한다
+  준성:
+    name: 박준성
+    age: 32
+    assetIds:
+      - 준성
+    speakerNames:
+      - 전화 속 남자
+    role: 클럽에서 만난 사람, 월요일부터 새 팀장
+    desire: 일터에서 오래 평범하게 지내고 싶다
+    fear: 호감이 소문과 위협의 구실이 되는 것
+    contradiction: 느긋한 농담을 하지만 무시당하면 상처받는다
+    dailyLife: 화분 물 반 컵, 복약 달력, 작은 성취의 사진
+    voice: 처음에는 이름 모르는 상대에게 존대. 회사에서는 한대리님. 위협 뒤에는 농담을 줄이고 업무로 돌아간다
+  하린:
+    name: 유하린
+    age: 18
+    assetIds:
+      - 하린
+    speakerNames: []
+    role: 아진·민재와 같은 반 학생
+    desire: 셋의 사이에서 빠지고 싶지 않다
+    fear: 끼워 달라는 말이 진지하다고 들키는 것
+    contradiction: 가장 관심 있으면서 관심 없다고 말한다
+    dailyLife: 급식표를 찍고 사천 원으로 떡볶이를 먹자고 한다
+    voice: 친구에게 반말과 ㅋㅋ. 상처받으면 먼저 됐어라고 끝낸다
+  아진:
+    name: 정아진
+    age: 18
+    assetIds:
+      - 아진
+    speakerNames: []
+    role: 하린의 오래된 친구, 민재의 연인
+    desire: 둘을 다 잃지 않고 관계를 밝히고 싶다
+    fear: 말한 순간 하린이 떠나는 것
+    contradiction: 친구를 챙기는 일을 중요한 설명 대신 쓴다
+    dailyLife: 체육복, 급식, 놀이터 사진을 기억한다
+    voice: 하린아, 반말. 해명을 늘어놓다가 나중에는 미룬 사실부터 인정한다
+  민재:
+    name: 서민재
+    age: 18
+    assetIds:
+      - 민재
+    speakerNames: []
+    role: 하린·아진의 반 친구
+    desire: 편한 분위기와 아진과의 연애
+    fear: 불편한 설명을 떠맡는 것
+    contradiction: 하린을 미워하지 않지만 괜찮다는 말을 믿으면 자기도 편하다
+    dailyLife: 아진에게 노래 구간을 골라 보낸다
+    voice: 친구에게 짧은 반말. 그냥과 장난이잖아로 대화를 닫는다
+  민석:
+    name: 민석
+    age: 29
+    assetIds: []
+    speakerNames:
+      - 민석
+    role: 대학 친구, 결혼식 사회 예정자
+    desire: 친구 얼굴을 보고 함께 놀고 싶다
+    fear: 친구 사이가 멀어지는 것
+    contradiction: 가벼운 초대가 도윤의 거짓말에 쓰이는 줄 모른다
+    dailyLife: 모임 장소와 사회 일정을 연락한다
+    voice: 도윤에게 반말과 짧은 문자
+  송과장:
+    name: 송과장
+    age: 성인
+    assetIds: []
+    speakerNames:
+      - 송과장
+    role: 팀 선임
+    desire: 팀 일정과 이야기의 주도권
+    fear: 자기 말에 책임을 묻는 것
+    contradiction: 동료를 챙기는 말과 소문을 같은 친근함으로 한다
+    dailyLife: 커피와 회식 투표로 화제를 돌린다
+    voice: 도윤대리, 직급 아래에는 반말. 위 사람의 소문도 가볍게 옮긴다
+  윤주임:
+    name: 윤주임
+    age: 성인
+    assetIds: []
+    speakerNames:
+      - 윤주임
+    role: 도윤의 후배 동료
+    desire: 모임에 끼고 사실도 놓치지 않으려 한다
+    fear: 자기가 방관했다는 걸 보는 것
+    contradiction: 농담에 먼저 끼었다가 잘못된 정보는 정정한다
+    dailyLife: 비어 있는 자리의 화분을 돌본다
+    voice: 도윤대리님과 해요체. 단톡 농담과 확인하는 말의 길이를 달리한다
+  오대리:
+    name: 오대리
+    age: 성인
+    assetIds: []
+    speakerNames:
+      - 오대리
+    role: 팀 동료
+    desire: 새 소식을 알아 불안하지 않고 싶다
+    fear: 소문이 자기에게 해가 되는 것
+    contradiction: 모르는 일을 가장 크게 걱정하며 퍼뜨린다
+    dailyLife: 누가 새로 오는지 먼저 단톡에 올린다
+    voice: 직장 동료에게 해요체, 단톡에서 짧은 감탄과 재질문
+  의사:
+    name: 시술 의사
+    age: 성인
+    assetIds:
+      - 의사
+    speakerNames: []
+    role: 시술 절차를 진행하는 목소리
+    desire: 동의와 소지품 절차를 확인한다
+    fear: 환자 사정을 자기가 판정하는 것
+    contradiction: 차분하지만 당사자의 사정을 전부 아는 사람은 아니다
+    dailyLife: 서명과 물건을 확인한다
+    voice: 절차 존대. 하린과 도윤을 동시점의 아는 사이로 부르지 않는다
+  클리닉:
+    name: ERASE 클리닉 알림
+    age: 해당 없음
+    assetIds: []
+    speakerNames:
+      - ERASE 클리닉
+    role: 예약 안내
+    desire: 예약 시각과 준비물을 알린다
+    fear: 해당 없음
+    contradiction: 감정 상담을 하지 않는 발신자
+    dailyLife: 문자와 본인 신청 내역만 보낸다
+    voice: 공식 안내문
+relationships:
+  - id: couple
+    participants:
+      - 도윤
+      - 지수
+    history: 동거하며 결혼을 준비한다
+    perspectives:
+      도윤:
+        seesOtherAs: 함께 살고 싶지만 진실을 미루는 상대
+        address: 반말, 음식과 농담으로 시간 벌기
+      지수:
+        seesOtherAs: 같이 결정하기로 했는데 자꾸 빠지는 상대
+        address: 도윤아, 질문에 답할 시간을 준다
+    friction: 지수는 3장 고백 전에는 클럽에서 한 일을 모른다
+  - id: private_and_work
+    participants:
+      - 도윤
+      - 준성
+    history: 익명의 호감→일터의 상하관계
+    perspectives:
+      도윤:
+        seesOtherAs: 숨기고 싶은 일을 아는 새 상사
+        address: 클럽 존대, 회사 팀장님. 형은 위협 경로에서만
+      준성:
+        seesOtherAs: 호감이 있었지만 일터에서 거리를 두는 동료
+        address: 익명 존대→한대리님
+    friction: 개인 연락과 업무 권한의 경계를 넘지 않으려 하지만 그 어색함이 남는다
+  - id: old_friend
+    participants:
+      - 도윤
+      - 민석
+    history: 대학 동기
+    perspectives:
+      도윤:
+        seesOtherAs: 말하기 편한 친구이자 외출 핑계
+        address: 반말
+      민석:
+        seesOtherAs: 결혼 전 함께 놀 친구
+        address: 반말
+    friction: 민석은 자기 이름으로 어떤 거짓말을 했는지 모른다
+  - id: team_senior
+    participants:
+      - 도윤
+      - 송과장
+    history: 같은 팀 대리와 과장
+    perspectives:
+      도윤:
+        seesOtherAs: 사생활을 흘릴까 불안한 선임
+        address: 과장님, 존대
+      송과장:
+        seesOtherAs: 보고서와 점심을 함께 하는 부하
+        address: 도윤대리, 반말
+    friction: 친밀한 호칭이 사생활을 캐물을 권한은 아니다
+  - id: team_junior
+    participants:
+      - 도윤
+      - 윤주임
+    history: 단톡에서 농담하는 동료
+    perspectives:
+      도윤:
+        seesOtherAs: 평소 웃어넘기던 후배
+        address: 직장 존대, 짧은 문자
+      윤주임:
+        seesOtherAs: 답이 짧아 놀리고 싶은 선배
+        address: 대리님, 해요체
+    friction: 후반에는 농담의 책임과 남은 화분이 관계를 바꾼다
+  - id: rumor_fear
+    participants:
+      - 도윤
+      - 오대리
+    history: 팀 동료
+    perspectives:
+      도윤:
+        seesOtherAs: 소문을 옮기는 사람
+        address: 직장 해요체
+      오대리:
+        seesOtherAs: 뭔가 알고 있는 것 같은 동료
+        address: 대리님, 해요체
+    friction: 검사나 성적 지향을 질문지처럼 캐묻지 않는다
+  - id: friendship
+    participants:
+      - 하린
+      - 아진
+    history: 어릴 때부터 사진을 나누던 친구
+    perspectives:
+      하린:
+        seesOtherAs: 자기를 제일 먼저 골라 줬으면 하는 친구
+        address: 반말, 농담으로 부탁을 감춘다
+      아진:
+        seesOtherAs: 상처 줄까 말을 미루는 친구
+        address: 하린아, 챙길 용건을 앞세운다
+    friction: 친구의 연애를 허락할 권리를 요구하는 것은 아니다
+  - id: excluded
+    participants:
+      - 하린
+      - 민재
+    history: 같은 반, 셋으로 어울렸다
+    perspectives:
+      하린:
+        seesOtherAs: 자기만 빼고 뭘 나누는 친구
+        address: 반말, 왜 안 보냈냐는 질문을 웃으며 한다
+      민재:
+        seesOtherAs: 관심 없다고 말하던 친구
+        address: 반말, 그냥으로 닫는다
+    friction: 민재는 하린의 ㅋㅋ가 진심을 감춘다는 걸 인정하기 싫다
+  - id: new_couple
+    participants:
+      - 아진
+      - 민재
+    history: 하린에게 아직 밝히지 못한 연인
+    perspectives:
+      아진:
+        seesOtherAs: 친구에게 함께 말해야 할 연인
+        address: 반말, 자기 책임도 말한다
+      민재:
+        seesOtherAs: 굳이 설명할 필요가 없다고 생각하는 연인
+        address: 반말, 불편한 사정을 가볍게 본다
+    friction: 하린을 두고 심리 진단을 주고받지 않는다
+  - id: correction
+    participants:
+      - 윤주임
+      - 오대리
+    history: 소문을 주고받는 직장 동료
+    perspectives:
+      윤주임:
+        seesOtherAs: 확인 없이 겁먹는 동료
+        address: 오대리님, 사실을 짚는다
+      오대리:
+        seesOtherAs: 자기보다 아는 게 많은 동료
+        address: 해요체, 걱정을 묻는다
+    friction: 소문을 곧바로 의학적 사실로 바꾸지 않는다
+scenes:
+  0/e0_club:
+    participants:
+      - 도윤
+      - 준성
+      - 민석
+      - 지수
+    relations:
+      - private_and_work
+      - old_friend
+      - couple
+    before: 도윤과 준성은 이름과 직장을 모른다. 준성은 대화 중에 결혼 소식을 듣는다
+    exchange: 담배 핑계→자리와 일행 확인→계속 함께 앉을지 확인
+    avoid: 그 밤 이후의 친밀함이나 팀장 직함을 앞당기지 않는다
+    gesture: 도윤은 연인의 톡을 보고 폰을 뒤집는다
+  1/overtime:
+    participants:
+      - 도윤
+      - 준성
+    relations:
+      - private_and_work
+    before: 직장에서 재회한 뒤 도윤이 개인적인 일을 숨기려 한다
+    exchange: 불편했던 전화에 대한 사과→업무 연락 경계→퇴근 용건
+    avoid: 준성이 상대의 불안을 전부 해설하거나 위협 뒤에도 추파를 던지지 않는다
+    gesture: 화분을 가리키며 어색한 대화를 닫는다
+  1/e1_harin:
+    participants:
+      - 하린
+      - 아진
+      - 민재
+    relations:
+      - friendship
+      - excluded
+      - new_couple
+    before: 하린만 두 사람의 연애를 모른다
+    exchange: 급식 농담→빠진 노래와 조 편성→친구의 제안
+    avoid: 열여덟이 자기 회피의 원인을 완벽한 상담 문장으로 설명하지 않는다
+    gesture: 내민 이어폰이 한동안 주인 없이 남는다
+  2/e2_harin:
+    participants:
+      - 하린
+      - 아진
+      - 민재
+    relations:
+      - friendship
+      - excluded
+      - new_couple
+    before: 하린은 앞부분에서는 아직 연애 사실을 직접 듣지 못했다
+    exchange: 친구를 부르는 가벼운 제안→설명 미루기→뒷문에서 엿듣는다
+    avoid: 문 밖 하린의 속마음을 방 안 두 사람이 확정하지 않는다
+    gesture: 돌아온 이유는 체육복. 문고리에서 손을 뗀다
+    branches:
+      - when:
+          var: h1_sent
+          op: eq
+          value: true
+        fact: 민재와 아진은 하린이 껴 달라는 문자를 보낸 것을 보았다.
+      - when:
+          var: h1_sent
+          op: eq
+          value: false
+        fact: 하린이 지운 문장은 다른 둘이 알 수 없다.
+  3/e2_jisu_all:
+    participants:
+      - 도윤
+      - 지수
+    relations:
+      - couple
+    before: 지수는 연차만 확인했고 외도·검사 경위는 지금 듣는다
+    exchange: 도윤이 한 일을 말함→지수가 이후 만남과 검사를 각각 확인함
+    avoid: 지수가 검사 여부를 대답 전에 알아맞히거나 바로 위로하지 않는다
+    gesture: 따뜻하게 해 둔 밥그릇에서 지수의 손이 떨어진다
+    branches:
+      - when:
+          var: went_to_clinic
+          op: eq
+          value: true
+        fact: 검사를 받았고 결과를 기다린다고 답한다.
+      - when:
+          var: went_to_clinic
+          op: eq
+          value: false
+        fact: 보건소 입구에서 돌아섰다고 답한다.
+    illustration: assets/items/two_bowls.svg
+  4/end_unfinished:
+    participants:
+      - 도윤
+      - 지수
+    relations:
+      - couple
+    before: 고백은 들었지만 이별과 금전 정리는 지수가 결정했다
+    exchange: 실무 연락→과거 얘기를 해도 되는지 질문→읽을 여유 요청
+    avoid: 들어 준다는 답을 재결합이나 용서로 해석하지 않는다
+    gesture: 답을 재촉하지 않고 서로 입력을 멈춘다

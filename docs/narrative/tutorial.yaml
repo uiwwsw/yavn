@@ -1,0 +1,318 @@
+schemaVersion: 1
+gameId: tutorial
+authorOnlyFacts: []
+characters:
+  해수:
+    name: 정해수
+    age: 31
+    assetIds:
+      - 해수
+    speakerNames: []
+    role: 마트 고객센터 12년 차
+    desire: 일과 집이 무사히 돌아가게 한다
+    fear: 자기 감정을 꺼내 관계가 깨지는 것
+    contradiction: 응대는 능숙하지만 자기 몫의 요구를 말하지 못한다
+    dailyLife: 수량, 근무표, 달걀과 분리수거를 기억한다
+    voice: 상혁·경준에게 반말, 지영·낯선 사람에게 존대. 압박받으면 고객님과 사과가 샌다
+  상혁:
+    name: 변상혁
+    age: 31
+    assetIds:
+      - 상혁
+    speakerNames: []
+    role: 고교 친구이자 동거인
+    desire: 현실에서도 자기를 알아보는 누군가가 필요하다
+    fear: 연락이 끊기고 상대가 자기를 모르는 것
+    contradiction: 해수를 편하게 여기면서 집안일과 가족 연락을 맡긴다
+    dailyLife: 고지서를 안 뜯고 물 두 병을 방으로 들인다
+    voice: 해수에게 옛 얘기와 짧은 반말. 자기 방을 묻는 순간 날카로워진다
+  지영:
+    name: 민지영
+    age: 34
+    assetIds:
+      - 지영
+    speakerNames: []
+    role: 고객센터 주임
+    desire: 근무를 버티고 자기 접속 시간도 챙긴다
+    fear: 후배에게 권한 서비스가 해를 끼쳤다는 것
+    contradiction: 이득 계산으로 말을 시작하지만 커피와 근무 교대로 돌본다
+    dailyLife: 커피를 자판기 고장 핑계로 건넨다
+    voice: 해수야, 직속 후배에게 익숙한 반말. 동료 사생활을 다 아는 사람은 아니다
+  경준:
+    name: 배경준
+    age: 22
+    assetIds:
+      - 경준
+    speakerNames: []
+    role: 계산대 아르바이트생
+    desire: 같이 웃고 소식에 끼고 싶다
+    fear: 선배의 일을 더 곤란하게 만드는 것
+    contradiction: 입이 먼저 나가지만 실수를 알면 사과하고 일을 맡는다
+    dailyLife: 전자레인지 순번표를 붙인다
+    voice: 형과 주임님, 해요체. 모르는 관계는 들은 것과 본 것을 구분해 말한다
+  광철:
+    name: 오광철
+    age: 58
+    assetIds:
+      - 광철
+    speakerNames: []
+    role: 오래된 단골 손님
+    desire: 사람과 이야기할 자리와 대접
+    fear: 집에 돌아가 혼자 남는 것
+    contradiction: 사과하고 싶어도 물건 잘못을 말하듯 꺼낸다
+    dailyLife: 즉석밥과 고객의 소리 용지를 챙기고 음료를 건넨다
+    voice: 반말·고성, 기가 꺾이면 자네. 외로움이 폭언의 면죄부는 아니다
+  은숙:
+    name: 차은숙
+    age: 45
+    assetIds:
+      - 은숙
+    speakerNames: []
+    role: 사건 담당 경위
+    desire: 진술과 확인한 증거의 차이를 남긴다
+    fear: 자기가 본 물증까지 믿을 수 없게 되는 것
+    contradiction: 확신이 강하지만 근거가 바뀌면 다시 확인한다
+    dailyLife: 물을 놓고 시각과 수량을 되묻는다
+    voice: 정해수 씨, 존대. 모르는 일을 아는 척하거나 서비스 말투를 따라 놀리지 않는다
+  태민:
+    name: 기태민
+    age: 41
+    assetIds:
+      - 태민
+    speakerNames: []
+    role: 초기 개발자, 고시원 거주
+    desire: 자기가 확인한 이상 현상을 누가 들어 주길 바란다
+    fear: 문 안으로 다시 들어가거나 다음 단계를 마친 사람
+    contradiction: 연락을 기다리지만 실제로 찾아오면 겁난다
+    dailyLife: 매주 같은 그래프를 출력해 벽에 붙인다
+    voice: 낯선 방문자에게 존대, 혼잣말에서만 어미가 무너진다
+  엄마:
+    name: 상혁 어머니
+    age: 성인
+    assetIds:
+      - 엄마
+    speakerNames: []
+    role: 멀리 사는 친구의 어머니
+    desire: 아들이 방 밖으로 나와 지내길 바란다
+    fear: 친구에게 아들을 떠맡기고 있다는 것
+    contradiction: 급하면 해수에게 부탁하다가 부담을 알아차려 말을 고친다
+    dailyLife: 기차 표, 두부, 방문 비밀번호부터 챙긴다
+    voice: 어릴 때부터 알던 해수야, 반말. 아들 사정을 다 안다고 단정하지 않는다
+relationships:
+  - id: roommates
+    participants:
+      - 해수
+      - 상혁
+    history: 고교 2학년 때부터 친구. 함께 산 것은 5년째.
+    perspectives:
+      해수:
+        seesOtherAs: 밥과 물을 챙겨야 하는 가까운 친구
+        address: 상혁아, 생활 반말
+      상혁:
+        seesOtherAs: 설명 안 해도 내 편일 친구
+        address: 해수야, 놀릴 때만 길어진다
+    friction: 오래 안다고 잠긴 방 안의 일까지 아는 것은 아니다
+  - id: supervisor
+    participants:
+      - 해수
+      - 지영
+    history: 12년 함께 일한 선후배
+    perspectives:
+      해수:
+        seesOtherAs: 거절하기 어렵지만 도움을 받는 주임
+        address: 주임님, 익숙한 존대
+      지영:
+        seesOtherAs: 자기 돈으로 손님을 달래는 후배
+        address: 해수야, 반말
+    friction: 추천권의 미안함을 새 부탁으로만 덮지 않는다
+  - id: younger_colleague
+    participants:
+      - 해수
+      - 경준
+    history: 나이 차이 있는 가까운 동료
+    perspectives:
+      해수:
+        seesOtherAs: 실수할까 챙기는 후배
+        address: 반말, 호통보다 짧은 부탁
+      경준:
+        seesOtherAs: 질문하고 기대도 되는 형
+        address: 형, 해요체
+    friction: 경준을 어린아이처럼 모든 예의를 배워야 하는 사람으로 쓰지 않는다
+  - id: customer
+    participants:
+      - 해수
+      - 광철
+    history: 첫 출근부터 만난 단골
+    perspectives:
+      해수:
+        seesOtherAs: 잘 처리해야 다시 민원이 안 생길 손님
+        address: 고객님, 절차 존대
+      광철:
+        seesOtherAs: 자기 이름과 불평을 기억할 직원
+        address: 직원에게 반말. 사과하려는 날에는 자네
+    friction: 가해를 당해도 직원은 자기 사과부터 꺼내는 습관이 있다
+  - id: investigation
+    participants:
+      - 해수
+      - 은숙
+    history: 참고인으로 처음 만난다
+    perspectives:
+      해수:
+        seesOtherAs: 자기가 아는 것을 들킬까 두려운 조사자
+        address: 형사님, 존대
+      은숙:
+        seesOtherAs: 말과 물증이 어긋나는 참고인
+        address: 정해수 씨, 질문 하나씩
+    friction: 형사는 용의자의 내면이나 레플라 규칙을 미리 안다고 말하지 않는다
+  - id: developer
+    participants:
+      - 해수
+      - 태민
+    history: 형사에게 들은 이름으로 고시원을 찾아간다
+    perspectives:
+      해수:
+        seesOtherAs: 알 수 없는 일을 설명해 줄 개발자
+        address: 기태민 씨, 자기소개와 용건부터
+      태민:
+        seesOtherAs: 이미 진행한 단계가 무서운 방문자
+        address: 정해수 씨, 존대
+    friction: 단계를 듣고 경계가 생겨도 범행 심리를 진단하지 않는다
+  - id: friend_mother
+    participants:
+      - 해수
+      - 엄마
+    history: 고교 때부터 아들의 친구로 안다
+    perspectives:
+      해수:
+        seesOtherAs: 상혁을 맡길 수 있지만 폐를 끼치기 싫은 어른
+        address: 어머니, 존대
+      엄마:
+        seesOtherAs: 자기 아들처럼 지내 온 친구
+        address: 해수야, 반말
+    friction: 가족의 친밀함과 친구에게 지울 수 없는 책임을 구별한다
+  - id: work_joke
+    participants:
+      - 지영
+      - 경준
+    history: 같은 매장에서 일하는 선임과 아르바이트생
+    perspectives:
+      지영:
+        seesOtherAs: 소문을 먼저 말하는 후배
+        address: 반말
+      경준:
+        seesOtherAs: 커피와 일을 쥔 주임
+        address: 주임님, 해요체
+    friction: 놀림 뒤에도 근무나 손님 정보는 정확하게 답한다
+  - id: work_seniority
+    participants:
+      - 상혁
+      - 지영
+    history: 물류팀 직원과 고객센터 주임
+    perspectives:
+      상혁:
+        seesOtherAs: 자기 접속을 놀리는 직장 선임
+        address: 주임님, 존대
+      지영:
+        seesOtherAs: 해수의 집안일을 맡기는 동료
+        address: 상혁 씨, 익숙한 반말
+    friction: 해수와 친구라는 이유로 직장 호칭까지 반말로 섞지 않는다
+scenes:
+  0/lunch:
+    participants:
+      - 해수
+      - 상혁
+      - 지영
+      - 경준
+    relations:
+      - roommates
+      - supervisor
+      - younger_colleague
+      - work_seniority
+    before: 해수·상혁의 과거는 둘만 세부를 안다. 경준은 동거 소문만 들었다
+    exchange: 근무·밥 얘기→경준의 동거 확인→오래된 친구의 정정
+    avoid: 낯선 청자에게 설명하려고 친구 둘이 자기 역사를 길게 읊지 않는다
+    gesture: 먹던 손을 멈추고 상혁 방문 얘기를 슬쩍 넘긴다
+  1/breakroom:
+    participants:
+      - 해수
+      - 지영
+      - 경준
+    relations:
+      - supervisor
+      - younger_colleague
+      - work_joke
+    before: 지영은 민원을 들었지만 해수의 속마음은 듣지 못했다
+    exchange: 괜찮다는 자동 대답→실제 근무 용건→음료를 건넨다
+    avoid: 지영이 해수의 감정을 정확한 진단처럼 대신 말하지 않는다
+    gesture: 커피를 밀어 두고 대답을 강요하지 않는다
+  2/tape:
+    participants:
+      - 해수
+      - 경준
+      - 은숙
+    relations:
+      - younger_colleague
+      - investigation
+    before: 경준과 해수는 경찰이 이름을 아는 경로를 모른다
+    exchange: 신원→이름을 아는 경로→참고인 요청→앞치마를 맡긴다
+    avoid: 범인이라고 단정하거나 경준이 수사 내용을 이미 안다고 하지 않는다
+    gesture: 접힌 앞치마를 동료가 받아 준다
+  2/interview:
+    participants:
+      - 해수
+      - 은숙
+    relations:
+      - investigation
+    before: 처음 조사. 해수는 현장 기둥 번호를 안다는 것을 숨기고 싶다
+    exchange: 퇴근 시각→귀가→발견 장소를 각각 묻는다
+    avoid: 형사가 말하지 않은 C-14를 정상 경로에서 먼저 꺼내지 않는다
+    gesture: 물컵을 놓고 녹음기에 눈길을 준다
+  3/corridor:
+    participants:
+      - 해수
+      - 태민
+    relations:
+      - developer
+    before: 처음 문 앞에서 만난다. 방문자가 경찰인지도 모른다
+    exchange: 경찰 여부→자기소개→찾아온 이유→진행 단계
+    avoid: 첫 대사부터 함께 일해 온 개발자처럼 설명을 시작하지 않는다
+    gesture: 좁은 방의 컵라면 용기를 피할 자리를 내준다
+    branches:
+      - when:
+          var: tampered
+          op: eq
+          value: 0
+        fact: 3단계를 했고 4단계에는 들어가기만 했다고 말한다.
+      - when:
+          var: tampered
+          op: gte
+          value: 1
+        fact: 4단계를 했다고 말한다. 태민은 바뀐 증거의 구체적인 종류를 아직 듣지 못했다.
+  3/door_mom:
+    participants:
+      - 해수
+      - 상혁
+      - 엄마
+    relations:
+      - roommates
+      - friend_mother
+    before: 해수는 며칠째 닫힌 방을 봤다. 어머니는 지금 처음 듣는다
+    exchange: 본 상태→어머니가 알고 있던 과거→첫차와 비밀번호
+    avoid: 전화 한 번으로 상혁의 상태나 병명을 확정하지 않는다
+    gesture: 통화가 안 되자 문자로 바꾸고 친구가 들을까 목소리를 낮춘다
+  2/interview_rest:
+    participants:
+      - 해수
+      - 은숙
+    relations:
+      - investigation
+    before: 조사에서 연필 수량과 신고 내용을 확인하는 중이다
+    exchange: 신고 속 말을 들어 봤냐는 질문→해수의 모호한 인정→당일 근무 확인
+    avoid: 알아들은 것처럼 맞장구만 치거나 아직 자백하지 않은 일을 전부 고백하지 않는다
+    gesture: 물을 놓아 두었지만 해수는 마시지 않는다
+    branches:
+      - when:
+          var: rage
+          op: gte
+          value: 2
+        fact: 해수는 자기 말이 신고에 남은 것을 알아보지만 정확한 출처를 감춘다.

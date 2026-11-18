@@ -6,6 +6,8 @@
 
 이 문서는 YAML V3 기준의 제작/유지보수 가이드입니다.
 
+작품 대사를 편집할 때는 [인물·관계·장면 상태 자료](NARRATIVE_CONTEXT.ko.md)를 먼저 읽습니다. `node scripts/narrative-context.mjs --check`로 모든 화자와 관계 참조를 확인하고, `--game`·`--scene`으로 해당 장면의 실제 대사와 조건부 사실을 함께 조회할 수 있습니다.
+
 ## 2026-11-13 변경 기록 — 설치형 웹앱(PWA)과 오프라인 플레이
 
 - **설치:** 빌드할 때 `scripts/pwa.mjs`(Vite 플러그인, 의존성 없음)가 `manifest.webmanifest`(`야븐 YAVN`/`야븐`, standalone, 테마 `#183e36`, 배경 `#f7f5ee`)와 favicon 표식으로 그린 PNG 아이콘(192·512·maskable 512·apple-touch 180)을 `dist`에 씁니다. `index.html`의 `<!-- yavn:pwa -->` 블록에 manifest·apple 태그가 있어 게임별 SEO 페이지에도 그대로 들어갑니다.

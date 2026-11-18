@@ -718,7 +718,7 @@ scenes:
       - say: { char: 도윤, with: [지수], text: "그 뒤로는 회사에서만 봤어. 이번 주엔 출근도 안 하고 연락도 안 돼." }
       - say: { char: 도윤.hollow, with: [지수], text: "회사에서 그 사람 병 얘기가 돌기 시작했어. 겁이 나서 오늘 보건소에 갔어." }
       - say: { channel: action, with: [지수, 도윤], text: "지수는 도윤 쪽으로 밀어 두었던 밥그릇에서 손을 뗀다." }
-      - mood: { tone: grief, level: 1 }
+      - sticker: { id: e3_two_bowls, image: two_bowls_sticker, x: 50, y: 22, width: "clamp(164px, 38%, 420px)", enter: fadeIn, inputLockMs: 250 }
       - say: { char: 지수.cold, with: [도윤], text: "검사는 받았어?" }
       - say:
           char: 도윤
@@ -742,5 +742,5 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "토요일 피팅은 가지 마. 내일 식장에도 전화할 거야. 식을 미룰 수 있는지부터 물어볼게." }
       - say: { char: 도윤, with: [지수], text: "내가 전화할게." }
       - say: { char: 지수, with: [도윤], text: "내가 할게. 부탁이야. 오늘은 방에 들어가 있어." }
-      - mood: off
+      - clearSticker: { id: e3_two_bowls, leave: fadeOut }
       - goto: /4.yaml

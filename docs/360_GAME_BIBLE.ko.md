@@ -1,5 +1,7 @@
 # 360 — 게임 바이블
 
+[인물 카드와 양방향 관계](narrative/360.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
+
 `public/game-list/360/`의 기획 문서입니다. 원작 설정 메모에서 정해진 것과 아직 열어 둔 것을 나누고, 게임으로 옮기면서 내린 결정을 적습니다.
 
 ## 1. 한 줄 소개

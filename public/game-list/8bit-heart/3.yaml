@@ -284,12 +284,12 @@ scenes:
           char: 윤재
           motion: droop
           with: [로봇]
-          text: "엄마는 나갔고 아빠는 지방에 가 있어. 저기 그려진 애들은 그냥 모델이고."
+          text: "우리 엄마는 집 나갔어. 아빠는 지방에 있고."
       - say:
           char: 윤재
           when: { var: saw_box, op: eq, value: true }
           with: [로봇]
-          text: "나간 쪽이 게임기 사 줬어."
+          text: "이 게임기는 엄마가 사 준 거야."
       - say:
           char: 윤재
           when: { var: saw_box, op: eq, value: true }
@@ -299,7 +299,7 @@ scenes:
           char: 윤재
           when: { var: saw_dad, op: eq, value: true }
           with: [로봇]
-          text: "지방에 있는 쪽은 집 전화로 스물여덟 번 걸어 봤어. 스물여덟 번 다 똑같은 말 나왔어."
+          text: "아빠 숙소엔 집 전화로도 걸어 봤어. 스물여덟 번. 계속 연결이 안 된대."
       - wait: 270
       - say:
           char: 로봇.thinking

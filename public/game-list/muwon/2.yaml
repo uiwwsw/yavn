@@ -76,7 +76,7 @@ scenes:
       - say:
           char: 서연
           with: [덕구]
-          text: "포교 나리가 처음에 뭐라고 물었어요?"
+          text: "약 바르면서 하나만 물을게요. 처음 잡혀 왔을 때 포교 나리가 뭐라 물었어요?"
       - say:
           char: 덕구.scared
           with: [서연]

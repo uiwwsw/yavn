@@ -17,6 +17,7 @@ assets:
     junseong_house: assets/bg/junseong_house.svg
     science_room: assets/bg/science_room.svg
     clinic_hall: assets/bg/clinic_hall.svg
+    two_bowls_sticker: assets/items/two_bowls.svg
     invitation_sticker: assets/items/invitation.svg
     club_photo_sticker: assets/items/club_photo.webp
     child_photo_sticker: assets/items/child_photo.svg

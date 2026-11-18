@@ -305,7 +305,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "매장에서 연락처 받았어요. 피해자분 일로 몇 가지 여쭤보려고요."
+          text: "직원 명단에서 봤어요. 오광철 씨 일로 몇 가지 여쭤보려고요."
       - say:
           char: 은숙
           with: [해수]
@@ -569,7 +569,7 @@ scenes:
           char: 해수.shaken
           when: { var: rage, op: gte, value: 2 }
           with: [은숙]
-          text: "…그러네요."
+          text: "…어디서 들은 것 같긴 합니다."
       - say:
           char: 은숙
           with: [해수]
