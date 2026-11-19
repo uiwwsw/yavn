@@ -4972,10 +4972,10 @@ function runActionsUntilPause(loopGuard: number): void {
     useVNStore.getState().setChoiceGate({
       active: true,
       presentation: action.choice.presentation ?? 'dialogue',
-      investigation: action.choice.investigation && {
-        ...action.choice.investigation,
-        targets: action.choice.options.filter(option => option.at),
-      },
+      investigation: action.choice.investigation,
+      spatialOptions: action.choice.options.filter(option => option.at),
+      clicks: action.choice.clicks,
+      approachBaseMood: action.choice.presentation === 'approach' ? state.mood : undefined,
       evidence: action.choice.evidence,
       key: action.choice.key ?? `${state.currentSceneId}:${state.actionIndex}`,
       prompt: interpolateText(action.choice.prompt, state.routeVars),
@@ -5012,6 +5012,7 @@ function runActionsUntilPause(loopGuard: number): void {
       side: undefined,
       erase: undefined,
       continueLabel: undefined,
+      continueAt: undefined,
       delivery: 'neutral',
     });
     if (action.choice.timeoutMs) {
@@ -5195,6 +5196,7 @@ function runActionsUntilPause(loopGuard: number): void {
       side: undefined,
       erase: undefined,
       continueLabel: undefined,
+      continueAt: undefined,
       delivery: 'neutral',
     });
     return;
@@ -5296,6 +5298,7 @@ function runActionsUntilPause(loopGuard: number): void {
       media: phoneMedia,
       erase: action.say.erase,
       continueLabel: action.say.continueLabel,
+      continueAt: action.say.at,
       delivery,
     });
     // A line held on screen is held for someone reading it. Skipping read lines goes past it.
@@ -6225,6 +6228,16 @@ function completeInputSuccess(answer: string, matchedRoute?: InputRoute) {
   runToNextPause();
 }
 
+export function resetApproachProgress() {
+  const state = useVNStore.getState();
+  const { choiceGate } = state;
+  if (storyClock.paused || state.busy || !choiceGate.active || choiceGate.presentation !== 'approach'
+      || !choiceGate.approachSteps.some(step => step > 0)) return;
+  state.setChoiceGate({ approachSteps: choiceGate.options.map(() => 0), approachSwitched: true });
+  state.setMood(choiceGate.approachBaseMood);
+  state.setDialog({ fullText: choiceGate.prompt, visibleText: choiceGate.prompt, typing: false });
+}
+
 export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false) {
   const state = useVNStore.getState();
   if (storyClock.paused || !state.game || state.busy || !state.waitingInput || !state.choiceGate.active) {
@@ -6237,10 +6250,11 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
   }
 
   // 다가가기: 아직 닿지 않았으면 한 걸음만 가고 선택지에 그대로 머문다.
-  if (state.choiceGate.presentation === 'approach' && selected.reveal?.length) {
+  if (state.choiceGate.presentation === 'approach' && selected.at) {
     const taken = state.choiceGate.approachSteps[optionIndex] ?? 0;
-    if (taken < selected.reveal.length) {
-      const line = selected.reveal[taken];
+    const clicks = state.choiceGate.clicks ?? (selected.reveal?.length ?? 0) + 1;
+    if (taken + 1 < clicks) {
+      const line = selected.reveal?.[taken];
       const previousTarget = state.choiceGate.approachSteps.findIndex(step => step > 0);
       const steps = state.choiceGate.options.map((_, index) => index === optionIndex ? taken + 1 : 0);
       useVNStore.getState().setChoiceGate({
@@ -6251,11 +6265,10 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
       if (tone) {
         const level = Math.min(3, taken + 1);
         useVNStore.getState().setMood({ tone, level, tremor: false });
-      } else if (previousTarget >= 0) {
-        const previousTone = state.choiceGate.options[previousTarget]?.mood ?? state.choiceGate.mood;
-        if (previousTone) useVNStore.getState().setMood(undefined);
+      } else {
+        useVNStore.getState().setMood(state.choiceGate.approachBaseMood);
       }
-      const text = interpolateText(line, useVNStore.getState().routeVars);
+      const text = line ? interpolateText(line, state.routeVars) : state.choiceGate.prompt;
       useVNStore.getState().setDialog({
         speaker: undefined,
         speakerId: undefined,
@@ -6264,7 +6277,7 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
         typing: false,
         channel: 'narration',
       });
-      useVNStore.getState().pushStoryLog({
+      if (line) useVNStore.getState().pushStoryLog({
         kind: 'dialogue',
         channel: 'narration',
         text,

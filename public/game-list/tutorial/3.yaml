@@ -658,6 +658,7 @@ scenes:
           with: [해수]
           text: "위에 있는 건 제 거 아니에요. 뒤집어 보세요."
           continueLabel: "출입증을 뒤집어 본다"
+          at: { x: 64, y: 43 }
       - sticker: { id: keycard, image: user_0001_card_sticker, x: 64, y: 34, width: "280px", rotate: 4, enter: popIn }
       - say:
           channel: action
@@ -876,6 +877,7 @@ scenes:
           with: []
           text: "태민이 내밀던 카드를 놓친다. 컵라면 용기 사이로 떨어진다. 태민은 줍지 않는다."
           continueLabel: "태민의 출입증을 줍는다"
+          at: { x: 66, y: 80 }
       - get: keycard
       - say:
           char: 태민.afraid

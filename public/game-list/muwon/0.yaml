@@ -17,6 +17,7 @@ scenes:
           with: []
           text: "한밤중, 의녀인 나를 우물가로 불렀다. 우물에서 건진 여인이 거적 아래 있다."
           continueLabel: "거적을 걷는다"
+          at: { x: 51, y: 66 }
       - effect: focus
       - sticker: { id: first_thread, image: well_hand_sticker, x: 50, y: 36, width: "clamp(260px, 40%, 520px)", enter: fadeIn }
       - say:
@@ -135,6 +136,7 @@ scenes:
           channel: action
           with: []
           continueLabel: "시형도를 펼친다"
+          at: { x: 53, y: 61 }
           text: "막쇠가 등잔을 낮춘다. 몸의 앞모습을 그려 둔 종이를 꺼낸다."
 
   chart_intro:
@@ -265,6 +267,7 @@ scenes:
           channel: action
           with: []
           continueLabel: "지게미를 덮고 기다린다"
+          at: { x: 52, y: 61 }
           text: "막쇠가 돌아와 식초와 지게미를 내려놓는다. 천에 고루 펴 목을 덮고 등불 심지를 한 번 자른다."
       - sticker: { id: neck_traces, image: neck_traces_sticker, x: 50, y: 32, width: "clamp(200px, 26%, 320px)", enter: fadeIn }
       - say:

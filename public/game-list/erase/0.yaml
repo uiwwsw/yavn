@@ -11,7 +11,7 @@ scenes:
     actions:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
-      - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요. 괜찮으시면 여기 서명해 주세요.", continueLabel: "동의서에 서명한다" }
+      - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요. 괜찮으시면 여기 서명해 주세요.", continueLabel: "동의서에 서명한다", at: { x: 54, y: 66 } }
       - say: { channel: action, with: [], sound: consent_pen, text: "펜을 쥔 손이 떨린다. 동의서에 이름을 쓰고 끝에 작은 점을 찍는다." }
       - bg: { id: consent_turn, transition: cut }
       - say: { char: 의사, with: [], text: "이제 눈 감으세요." }
@@ -326,6 +326,7 @@ scenes:
           with: []
           text: "둘 다 웃고 있네."
           continueLabel: "사진 4장을 삭제한다"
+          at: { x: 62, y: 63 }
       - clearSticker: { id: e0_club_photo, leave: fadeOut }
       - say:
           channel: system

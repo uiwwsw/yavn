@@ -265,14 +265,14 @@ describe('engine runtime safety', () => {
 
   it('requires a deliberate action after typing and pauses AUTO until the player acts', () => {
     useVNStore.getState().setGame({ ...game, scenes: { intro: { actions: [
-      { say: { channel: 'thought', text: 'A noise behind the door.', continueLabel: 'Open the door' } },
+      { say: { channel: 'thought', text: 'A noise behind the door.', continueLabel: 'Open the door', at: { x: 44, y: 55 } } },
       { say: { channel: 'action', text: 'Cold air rushes in.' } },
       { choice: { prompt: 'Which way?', options: [{ text: 'Left' }] } },
     ] } } }, '/');
     setPlayerExperienceSettings({ autoPlayEnabled: true, autoPlayDelayMs: 800 });
     handleAdvance();
     handleAdvance(true); // A click during typing only reveals the text.
-    expect(useVNStore.getState()).toMatchObject({ actionIndex: 0, dialog: { typing: false } });
+    expect(useVNStore.getState()).toMatchObject({ actionIndex: 0, dialog: { typing: false, continueAt: { x: 44, y: 55 } } });
     vi.advanceTimersByTime(5000);
     handleAdvance();
     expect(useVNStore.getState().actionIndex).toBe(0);
@@ -281,7 +281,7 @@ describe('engine runtime safety', () => {
     expect(useVNStore.getState().actionIndex).toBe(0);
     setScenePresentationPaused(false);
     handleAdvance(true);
-    expect(useVNStore.getState()).toMatchObject({ actionIndex: 1, dialog: { continueLabel: undefined, channel: 'action' } });
+    expect(useVNStore.getState()).toMatchObject({ actionIndex: 1, dialog: { continueLabel: undefined, continueAt: undefined, channel: 'action' } });
     handleAdvance();
     vi.advanceTimersByTime(1000);
     expect(useVNStore.getState().choiceGate.active).toBe(true);

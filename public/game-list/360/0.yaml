@@ -38,6 +38,7 @@ scenes:
       - choice:
           key: first_light
           presentation: approach
+          clicks: 3
           prompt: "멀리 작은 빛이 보인다."
           options:
             - text: "손을 뻗는다."
@@ -79,6 +80,7 @@ scenes:
       - choice:
           key: star
           presentation: approach
+          clicks: 3
           prompt: "빛마다 낯선 풍경이 비친다. 어느 쪽으로 갈까?"
           options:
             - text: "마루의 밥상"
@@ -114,7 +116,6 @@ scenes:
                   - { var: lives_done, op: gte, value: 3 }
               mood: pale
               reveal:
-                - "그쪽만 깜박인다."
                 - "글자 한 줄이 떠 있고, 그 아래가 비어 있다."
                 - "커서가 깜박인다. 아무도 치지 않는다."
               goto: go_2026

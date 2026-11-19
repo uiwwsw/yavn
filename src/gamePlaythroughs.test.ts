@@ -296,7 +296,7 @@ describe('ERASE', () => {
     const name = resolvePlayerName(opening.game, opening.currentSceneId, opening.routeVars);
     expect(name).toBe('???');
     expect(resolvePlayerCharacterId(opening.game, name, opening.routeVars)).toBeUndefined();
-    expect(opening.dialog.continueLabel).toBe('동의서에 서명한다');
+    expect(opening.dialog).toMatchObject({ continueLabel: '동의서에 서명한다', continueAt: { x: 54, y: 66 } });
     await vi.advanceTimersByTimeAsync(3500);
     handleAdvance();
     expect(useVNStore.getState().dialog.continueLabel).toBe('동의서에 서명한다');

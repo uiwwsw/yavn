@@ -77,6 +77,7 @@ scenes:
           with: []
           text: "레플라 가산 R&D · B1 서버실 · 기태민 · 출입 승인"
           continueLabel: "지하 1층으로 내려간다"
+          at: { x: 54, y: 47 }
       - goto: room
 
   room:
@@ -801,6 +802,7 @@ scenes:
           with: []
           text: "다른 사용자의 연결은 유지됩니다."
           continueLabel: "0001번 세션을 종료한다"
+          at: { x: 50, y: 48 }
       - bg: { id: server_room, transition: cut }
       - music: fan_idle
       - say:

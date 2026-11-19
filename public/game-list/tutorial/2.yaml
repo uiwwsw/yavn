@@ -752,6 +752,7 @@ scenes:
           with: []
           text: "두 사람이 잡힌 구간을 잘라 낸다. 다시 재생하니 차 문만 열리고 닫힌다."
           continueLabel: "저장 결과를 확인한다"
+          at: { x: 52, y: 50 }
       - say:
           channel: system
           with: []

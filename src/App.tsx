@@ -7,6 +7,7 @@ import {
   memo,
   MouseEvent,
   PointerEvent as ReactPointerEvent,
+  type ReactNode,
   Suspense,
   useCallback,
   useEffect,
@@ -75,6 +76,7 @@ import {
   loadZipStartScreenPreview,
   restartFromBeginning,
   restartCurrentChapter,
+  resetApproachProgress,
   resetVideoSkipProgress,
   revealVideoSkipGuide,
   setBgmEnabled,
@@ -179,6 +181,7 @@ import type {
   StickerSlot,
   UiTemplateId,
 } from './types';
+import { placeSceneMarkers } from './sceneMarkers';
 import type { InventorySortPreference, InventoryViewPreference } from './engine';
 import type { CSSProperties } from 'react';
 
@@ -314,11 +317,100 @@ function useLatchedMotionTempo(
   return effectiveMotionTempo;
 }
 
+function NumberedSceneMarker({
+  number, label, style, disabled, step, buttonRef, onActivate,
+}: {
+  number: number;
+  label: string;
+  style: CSSProperties;
+  disabled: boolean;
+  step?: number;
+  buttonRef?: (element: HTMLButtonElement | null) => void;
+  onActivate: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="investigation-marker"
+      style={style}
+      disabled={disabled}
+      data-approach-step={step}
+      aria-label={`${number}. ${label}`}
+      ref={buttonRef}
+      onKeyDown={event => {
+        if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+      }}
+      onClick={event => {
+        event.stopPropagation();
+        unlockAudioFromGesture();
+        onActivate();
+      }}
+    >
+      <span aria-hidden="true">{number}</span>
+    </button>
+  );
+}
+
+function useSeparateSceneMarkers(layoutKey: string) {
+  const fieldRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const field = fieldRef.current;
+    if (!field) return;
+    const layout = () => {
+      const markers = Array.from(field.querySelectorAll<HTMLElement>('.investigation-marker'));
+      // Transforms move hit areas without changing the authored position read by offsetLeft/Top.
+      const points = markers.map(marker => ({ x: marker.offsetLeft, y: marker.offsetTop }));
+      const placed = placeSceneMarkers(points, field.clientWidth, field.clientHeight);
+      markers.forEach((marker, index) => {
+        marker.style.setProperty('--marker-shift-x', `${placed[index].x - points[index].x}px`);
+        marker.style.setProperty('--marker-shift-y', `${placed[index].y - points[index].y}px`);
+      });
+    };
+    layout();
+    const observer = new ResizeObserver(layout);
+    observer.observe(field);
+    return () => observer.disconnect();
+  }, [layoutKey]);
+  return fieldRef;
+}
+
+function SceneChoiceField({
+  className, layoutKey, style, label, children,
+}: {
+  className: string;
+  layoutKey: string;
+  style: CSSProperties;
+  label: string;
+  children: ReactNode;
+}) {
+  const ref = useSeparateSceneMarkers(layoutKey);
+  return <div ref={ref} className={className} style={style} role="group" aria-label={label}>{children}</div>;
+}
+
+const DialogueActionMarker = memo(function DialogueActionMarker({ inset }: { inset: number }) {
+  const { at, label, typing, busy, waiting } = useVNStore(useShallow(state => ({
+    at: state.dialog.continueAt, label: state.dialog.continueLabel, typing: state.dialog.typing,
+    busy: state.busy, waiting: state.waitingInput,
+  })));
+  if (!label || !at || !waiting) return null;
+  const onActivate = () => handleAdvance(true);
+  return (
+    <div className="exploration-field" style={{ '--exploration-dialog-inset': `${inset}px` } as CSSProperties}>
+      <NumberedSceneMarker
+        number={1} label={label} disabled={typing || busy}
+        style={{ '--target-x': `${at.x}%`, '--target-y': `${at.y}%` } as CSSProperties}
+        onActivate={onActivate}
+      />
+    </div>
+  );
+});
+
 const DialogueActionButton = memo(function DialogueActionButton() {
-  const { label, typing, busy } = useVNStore(useShallow(state => ({
-    label: state.dialog.continueLabel, typing: state.dialog.typing, busy: state.busy,
+  const { label, at, typing, busy } = useVNStore(useShallow(state => ({
+    label: state.dialog.continueLabel, at: state.dialog.continueAt, typing: state.dialog.typing, busy: state.busy,
   })));
   if (!label) return null;
+  if (at) return <p className="scene-action-label"><b aria-hidden="true">1</b> {label}</p>;
   return (
     <button type="button" className="dialog-action-button" disabled={typing || busy}
       onClick={event => { event.stopPropagation(); handleAdvance(true); }}>
@@ -4814,31 +4906,25 @@ export default function App() {
     );
   }
 
-  const hasStageApproach = choiceGate.active && choiceGate.presentation === 'approach'
-    && choiceGate.options.some(option => option.at);
   const investigation = choiceGate.active ? choiceGate.investigation : undefined;
+  const isApproach = choiceGate.presentation === 'approach';
+  const isSpatialChoice = choiceGate.active && (choiceGate.presentation === 'explore' || isApproach);
+  const spatialTargets = isSpatialChoice ? (choiceGate.spatialOptions ?? choiceGate.options).flatMap((option, position) => {
+    if (!option.at) return [];
+    const index = choiceGate.options.indexOf(option);
+    if (index < 0 && (!investigation || isApproach)) return [];
+    return [{ option, index, number: position + 1, at: option.at }];
+  }) : [];
+  const hasSpatialTargets = spatialTargets.length > 0;
+  const listedChoices = choiceGate.options.flatMap((option, index) =>
+    isSpatialChoice && option.at ? [] : [{ option, index }]);
   const choiceEvidence = choiceGate.active && choiceGate.evidence
     ? inventoryCatalogEntries.find(entry => entry.id === choiceGate.evidence && entry.owned)
     : undefined;
-  const investigationTargets = investigation?.targets.map((option, position) => ({
-    option,
-    number: position + 1,
-    index: choiceGate.options.indexOf(option),
-  }));
-  const checkedTargets = investigationTargets?.filter(target => target.index === -1).length ?? 0;
-  const activeApproachIndex = hasStageApproach ? choiceGate.approachSteps.findIndex(step => step > 0) : -1;
-  const activeApproach = choiceGate.options[activeApproachIndex];
-  const canEnterApproach = activeApproach?.reveal
-    && choiceGate.approachSteps[activeApproachIndex] >= activeApproach.reveal.length;
-  const approachStatus = hasRecoveredFailedChoice
-    ? t("빛이 보이던 곳으로 돌아왔다.")
-    : choiceGate.approachSwitched
-      ? t("앞선 기억이 멀어졌다. 첫 단서부터.")
-      : canEnterApproach
-        ? t("같은 별을 눌러 들어가세요")
-        : activeApproach
-          ? t("같은 별을 눌러 더 가까이")
-          : t("다가갈 별을 누르세요");
+  const approachStatus = choiceGate.approachSwitched
+    ? t("처음부터 다시 다가갑니다.")
+    : t("같은 번호를 연속으로 눌러 다가가세요.");
+  const spatialHint = isApproach ? approachStatus : t("화면에서 살펴볼 곳을 누르세요");
 
   const chooseOption = (index: number) => {
     if (busy) return;
@@ -4849,16 +4935,9 @@ export default function App() {
   const renderChoiceOption = (
     option: typeof choiceGate.options[number],
     index: number,
-    spatial = false,
     displayNumber = index + 1,
   ) => {
-    const approachTotal = option.reveal?.length ?? 0;
-    const isApproach = choiceGate.presentation === 'approach' && spatial && approachTotal > 0;
-    const approachStep = isApproach ? (choiceGate.approachSteps[index] ?? 0) : 0;
-    const approachReady = isApproach && approachStep >= approachTotal;
-    const approachAction = approachReady ? t("들어간다") : approachStep > 0 ? t("한 걸음 더") : undefined;
     const optionText = fillText(option.text);
-    const optionLabel = approachReady ? `${approachAction} (${optionText})` : optionText;
     const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
     const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
     const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
@@ -4866,17 +4945,7 @@ export default function App() {
       <button
         key={`${choiceGate.key}-${option.text}-${index}`}
         type="button"
-        className={`choice-gate-option${spatial ? ' exploration-target' : ''}${isApproach ? ' approach-target' : ''}${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
-        data-approach-step={isApproach ? String(approachStep) : undefined}
-        data-approach-active={approachStep > 0 ? 'true' : undefined}
-        data-approach-near={approachReady ? 'true' : undefined}
-        style={spatial && option.at
-          ? ({
-              '--target-x': `${option.at.x}%`,
-              '--target-y': `${option.at.y}%`,
-              ...(isApproach ? { '--approach-step': String(approachStep), '--approach-total': String(approachTotal) } : {}),
-            } as CSSProperties)
-          : undefined}
+        className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
         ref={(el) => {
           choiceOptionButtonRefs.current[index] = el;
         }}
@@ -4887,7 +4956,6 @@ export default function App() {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
             event.stopPropagation();
-            if (isApproach && event.repeat) return;
             chooseOption(index);
           }
         }}
@@ -4896,15 +4964,14 @@ export default function App() {
           chooseOption(index);
         }}
         disabled={busy}
-        aria-label={`${optionLabel}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
+        aria-label={`${optionText}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
-            {isApproach ? '·'.repeat(Math.max(1, approachTotal - approachStep + 1)) : String(displayNumber).padStart(2, '0')}
+            {String(displayNumber).padStart(2, '0')}
           </span>
           <span className="choice-gate-option-text">
             {optionText}
-            {approachAction && <span className="approach-confirm-label">{approachAction}</span>}
           </span>
           <GameIcon name="arrow" className="choice-gate-option-mark" />
         </span>
@@ -4933,7 +5000,7 @@ export default function App() {
   }[dialogChannel];
   const choicePlayerName = playerName ?? t("나");
   const readingSpeaker = choiceGate.active
-    ? (hasStageApproach ? undefined : choicePlayerName)
+    ? (hasSpatialTargets ? undefined : choicePlayerName)
     : dialogSpeaker ?? (dialogHasText && playerName === '???' && dialogChannel === 'narration' ? playerName : undefined);
   const readingPerspective = resolveReadingPerspective({ channel: dialogChannel, choiceActive: choiceGate.active,
     playerName, playerCharacterId, speaker: dialogSpeaker, speakerId: dialogSpeakerId });
@@ -4959,7 +5026,7 @@ export default function App() {
       data-text-scale={textScale === 'base' ? undefined : textScale}
       data-motion-tempo={motionTempo}
       data-hud-idle={hudIdle ? 'true' : undefined}
-      onClick={() => {
+      onClick={(event) => {
         if (videoCutscene.active) {
           revealVideoSkipGuide();
           return;
@@ -4971,6 +5038,11 @@ export default function App() {
           return;
         }
         unlockAudioFromGesture();
+        if (hasSpatialTargets && isApproach && !isDialogHidden &&
+            !(event.target as Element).closest('.dialog-box, button, a, input, summary')) {
+          resetApproachProgress();
+          return;
+        }
         handleManualAdvance();
       }}
     >
@@ -5062,52 +5134,49 @@ export default function App() {
         </div>
       </div>
 
-      {choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && !isDialogHidden && (
-        <div
-          className={hasStageApproach ? 'exploration-field approach-field' : investigation ? 'exploration-field investigation-field' : 'exploration-field'}
-          role="group"
-          aria-label={choiceGate.presentation === 'approach' ? t("다가갈 곳") : t("주변 살펴보기")}
+      {!isDialogHidden && !choiceGate.active && <DialogueActionMarker inset={stickerSafeInset} />}
+      {hasSpatialTargets && !isDialogHidden && (
+        <SceneChoiceField
+          className={`exploration-field${investigation ? ' investigation-field' : ''}`}
+          label={t("조사 지점")}
+          layoutKey={`${choiceGate.key}:${spatialTargets.map(({ at }) => `${at.x},${at.y}`).join(';')}:${investigation?.width}:${investigation?.height}`}
           style={{
             '--exploration-dialog-inset': `${stickerSafeInset}px`,
             ...(investigation && {
               '--investigation-aspect': investigation.width / investigation.height,
               '--investigation-inverse-aspect': investigation.height / investigation.width,
             }),
-          } as CSSProperties}>
-          {hasStageApproach ? (
-            <>
-              <div className="approach-heading">
-                <span className="approach-player" data-unknown={choicePlayerName === '???' || undefined}>{choicePlayerName}</span>
-                <p className="approach-status" role="status">{approachStatus}</p>
-              </div>
-              <div className="approach-stars">
-                {choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
-              </div>
-              {choiceGate.options.some(option => !option.at) && (
-                <div className="approach-actions">
-                  {choiceGate.options.map((option, index) => !option.at ? renderChoiceOption(option, index) : null)}
-                </div>
-              )}
-            </>
-          ) : investigationTargets ? investigationTargets.map(({ option, number, index }) => {
-            const checked = index === -1;
+          } as CSSProperties}
+        >
+          {spatialTargets.map(({ option, index, number, at }) => {
+            const checked = index < 0;
+            const step = isApproach ? choiceGate.approachSteps[index] ?? 0 : 0;
+            const total = choiceGate.clicks ?? (option.reveal?.length ?? 0) + 1;
             const markerStyle = {
-              '--target-offset-x': option.at!.x / 100 - .5,
-              '--target-offset-y': option.at!.y / 100 - .5,
+              '--target-x': `${at.x}%`,
+              '--target-y': `${at.y}%`,
+              '--target-offset-x': at.x / 100 - .5,
+              '--target-offset-y': at.y / 100 - .5,
+              '--target-progress': step / Math.max(1, total - 1),
             } as CSSProperties;
             return checked ? (
               <span key={number} className="investigation-marker is-checked" style={markerStyle} aria-hidden="true">
                 <span>✓</span>
               </span>
             ) : (
-              <button key={number} type="button" className="investigation-marker" style={markerStyle} disabled={busy}
-                aria-label={uiLanguage === 'en' ? `Inspect ${number}: ${fillText(option.text)}` : `${number}번 조사: ${fillText(option.text)}`}
-                onClick={event => { event.stopPropagation(); chooseOption(index); }}>
-                <span aria-hidden="true">{number}</span>
-              </button>
+              <NumberedSceneMarker
+                key={number}
+                number={number}
+                label={`${fillText(option.text)}${isApproach && total > 1 ? `, ${step}/${total}` : ''}`}
+                style={markerStyle}
+                disabled={busy}
+                step={isApproach ? step : undefined}
+                buttonRef={element => { choiceOptionButtonRefs.current[index] = element; }}
+                onActivate={() => chooseOption(index)}
+              />
             );
-          }) : choiceGate.options.map((option, index) => option.at ? renderChoiceOption(option, index, true) : null)}
-        </div>
+          })}
+        </SceneChoiceField>
       )}
 
       {videoCutscene.active && (
@@ -6009,9 +6078,9 @@ export default function App() {
       <div
         ref={dialogBoxRef}
         data-reading-perspective={readingPerspective}
-        data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasStageApproach || undefined}
-        data-investigation={investigation ? 'true' : undefined}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${choiceGate.active && (choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') ? ' has-exploration' : ''}${hasStageApproach ? ' has-stage-approach' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasSpatialTargets || undefined}
+        data-investigation={hasSpatialTargets ? 'true' : undefined}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${isSpatialChoice ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
@@ -6169,9 +6238,9 @@ export default function App() {
               </button>
             </form>
           )}
-          {choiceGate.active && (!hasStageApproach || choiceGate.timeoutMs) && (
+          {choiceGate.active && (
             <div className="choice-gate" onClick={(event) => event.stopPropagation()}>
-              {hasRecoveredFailedChoice && !hasStageApproach && (
+              {hasRecoveredFailedChoice && (
                 <div className="choice-recovery-hint" role="status">
                   <span aria-hidden="true">!</span>
                   <p><strong>{t("죽음의 원인이 된 선택이 표시되어 있습니다.")}</strong>{t("다른 경로를 선택해 다시 진행할 수 있습니다.")}</p>
@@ -6193,27 +6262,23 @@ export default function App() {
                   </div>
                 </div>
               )}
-              {investigationTargets ? (
+              {hasSpatialTargets && (
                 <>
-                  <p className="choice-gate-explore-hint" role="status">
-                    {t("조사")} {checkedTargets}/{investigationTargets.length}
-                  </p>
-                  <div className="investigation-options" role="group" aria-label={t("조사 지점")}>
-                    {investigationTargets.map(({ option, number, index }) => index < 0 ? (
-                      <span key={number} className="investigation-option is-checked">
-                        <span aria-hidden="true">✓</span>{fillText(option.text)}<small>{t("확인함")}</small>
-                      </span>
-                    ) : (
-                      <button key={number} type="button" className="investigation-option" disabled={busy}
-                        ref={element => { choiceOptionButtonRefs.current[index] = element; }}
-                        onClick={() => chooseOption(index)}>
-                        <span aria-hidden="true">{number}</span>{fillText(option.text)}
-                      </button>
-                    ))}
-                  </div>
+                  <p className="choice-gate-explore-hint" role="status">{spatialHint}</p>
+                  <ul className="investigation-options" aria-label={t("조사 지점")}>
+                    {spatialTargets.map(({ option, number, index }) => {
+                      const step = choiceGate.approachSteps[index] ?? 0;
+                      const total = choiceGate.clicks ?? (option.reveal?.length ?? 0) + 1;
+                      return (
+                        <li key={number} className="investigation-option" data-active={step > 0 || undefined}>
+                          <b>{index < 0 ? '✓' : number}</b> {fillText(option.text)}
+                          {index < 0 && <small>{t("확인함")}</small>}
+                          {step > 0 && <small role="status">{step}/{total}</small>}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </>
-              ) : choiceGate.presentation === 'explore' && choiceGate.options.some(option => option.at) && (
-                <p className="choice-gate-explore-hint">{t("화면에서 살펴볼 곳을 누르세요")}</p>
               )}
               {choiceEvidence?.description && (
                 <details className="choice-evidence" key={choiceGate.key}>
@@ -6221,17 +6286,11 @@ export default function App() {
                   <p>{choiceEvidence.description}</p>
                 </details>
               )}
-              {!hasStageApproach && <div
-                className="choice-gate-options"
-                data-choice-count={choiceGate.options.filter(option => (choiceGate.presentation !== 'explore' && choiceGate.presentation !== 'approach') || !option.at).length}
-              >
-                {/* Number listed options by their visible position: spatial targets and options
-                    already explored are not in this list, so original indexes would skip numbers. */}
-                {choiceGate.options
-                  .map((option, index) => ({ option, index }))
-                  .filter(({ option }) => !((choiceGate.presentation === 'explore' || choiceGate.presentation === 'approach') && option.at))
-                  .map(({ option, index }, position) => renderChoiceOption(option, index, false, position + 1))}
-              </div>}
+              {listedChoices.length > 0 && (
+                <div className="choice-gate-options" data-choice-count={listedChoices.length}>
+                  {listedChoices.map(({ option, index }, position) => renderChoiceOption(option, index, position + 1))}
+                </div>
+              )}
             </div>
           )}
         </div>

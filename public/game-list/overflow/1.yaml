@@ -50,16 +50,20 @@ scenes:
     actions:
       - choice:
           key: o1_desk
+          presentation: explore
           prompt: "면회 시간까지 아직 조금 남았다."
-          with: [수경]
+          with: []
           options:
             - text: "시험 출력물을 읽는다"
+              at: { x: 31, y: 94 }
               when: { var: read_trial, op: eq, value: false }
               goto: display_test
             - text: "결함 보고서를 읽는다"
+              at: { x: 48, y: 90 }
               when: { var: read_report, op: eq, value: false }
               goto: company_report
             - text: "병동에서 연락이 왔는지 확인한다"
+              at: { x: 66, y: 88 }
               when: { var: checked_phone, op: eq, value: false }
               goto: hospital_message
             - text: "내 렌즈에서 무엇을 확인할지 묻는다"

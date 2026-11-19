@@ -36,87 +36,26 @@
 .app .dialog-action-button:disabled { opacity: .55; cursor: default; }
 .app .dialog-action-button .game-icon { width: 18px; flex-shrink: 0; }
 .exploration-field {
+  --marker-top: max(88px, var(--stage-safe-block-start));
+  --marker-bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 44px);
+  --marker-left: var(--stage-safe-inline-start);
+  --marker-right: var(--stage-safe-inline-end);
   position: absolute;
   z-index: 6;
-  top: max(88px, var(--stage-safe-block-start));
-  bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 48px);
-  left: max(16px, var(--stage-safe-inline-start));
-  right: max(16px, var(--stage-safe-inline-end));
-  container-type: size;
+  inset: var(--marker-top) var(--marker-right) var(--marker-bottom) var(--marker-left);
   pointer-events: none;
 }
-/* A place worth looking at is a point with a name beside it, not a form control parked on the
-   picture. The dot marks the spot; the label leans away from it and fades out at its own end so
-   the scene is still the thing you are looking at. */
-.app .exploration-target {
-  position: absolute;
-  height: auto;
-  width: min(210px, 44cqw);
-  min-height: 48px;
-  max-height: 100cqh;
-  overflow-y: auto;
-  left: clamp(0px, calc(var(--target-x) - min(105px, 22cqw)), calc(100% - min(210px, 44cqw)));
-  top: clamp(0px, calc(var(--target-y) - 28px), calc(100% - 64px));
-  pointer-events: auto;
-  background: linear-gradient(100deg, #05080ceb 0 68%, #05080c8c 88%, #05080c17 100%);
-  color: #fff8e8;
-  border: 0;
-  border-radius: 3px;
-  box-shadow: none;
-  padding: 11px 12px 11px 27px;
-  transform: none;
-  text-shadow: 0 1px 3px #000000b8;
-}
-.app .exploration-target::before {
-  content: '';
-  position: absolute;
-  left: 9px;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  margin-top: -4px;
-  border-radius: 50%;
-  background: #ffeec4;
-  box-shadow: 0 0 10px 2px #ffd98a9c, 0 0 26px 7px #ffd98a3d;
-  animation: exploration-pulse 2.6s ease-in-out infinite;
-}
-@keyframes exploration-pulse {
-  0%, 100% { opacity: .6; transform: scale(.8); }
-  50% { opacity: 1; transform: scale(1.15); }
-}
-.app .exploration-target:hover:not(:disabled),
-.app .exploration-target:active:not(:disabled),
-.app .exploration-target:focus-visible {
-  transform: none;
-  background: linear-gradient(100deg, #0b1118f5 0 72%, #0b1118a8 90%, #0b11182e 100%);
-}
-.app .exploration-target:hover:not(:disabled)::before,
-.app .exploration-target:active:not(:disabled)::before,
-.app .exploration-target:focus-visible::before {
-  background: #fffdf6;
-  box-shadow: 0 0 14px 3px #ffe8b0d6, 0 0 34px 10px #ffd98a5c;
-}
-@media (prefers-reduced-motion: reduce) {
-  .app .exploration-target::before { animation: none; opacity: .9; transform: none; }
-}
-.app .exploration-target .choice-gate-option-index,
-.app .exploration-target .choice-gate-option-mark { color: #e8d4a3b8; }
-.app .exploration-target .choice-gate-option-copy { gap: 8px; grid-template-columns: minmax(0, 1fr) 16px; }
-.app .exploration-target .choice-gate-option-index { display: none; }
-.app .exploration-target .choice-gate-option-text { font-size: 14px; }
-.app .exploration-target .choice-gate-option-badges:empty { display: none; }
-.app .has-exploration .choice-gate { margin-top: 8px; }
-.app .has-exploration .choice-gate-options { grid-template-columns: 1fr; }
 .investigation-field {
-  inset: 0;
   --investigation-image-width: max(100vw, calc(100dvh * var(--investigation-aspect)));
   --investigation-image-height: max(100dvh, calc(100vw * var(--investigation-inverse-aspect)));
 }
 .app .investigation-marker {
+  --marker-x: var(--target-x);
+  --marker-y: var(--target-y);
   position: absolute;
-  left: clamp(22px, calc(50% + var(--target-offset-x) * var(--investigation-image-width)), calc(100% - 22px));
-  top: calc(50% + var(--target-offset-y) * var(--investigation-image-height));
-  transform: translate(-50%, -50%);
+  left: clamp(22px, var(--marker-x), calc(100% - 22px));
+  top: clamp(22px, var(--marker-y), calc(100% - 22px));
+  transform: translate(calc(-50% + var(--marker-shift-x, 0px)), calc(-50% + var(--marker-shift-y, 0px)));
   display: grid;
   place-items: center;
   width: 44px;
@@ -126,7 +65,12 @@
   border-radius: 50%;
   background: transparent;
   pointer-events: auto;
+  touch-action: manipulation;
   cursor: pointer;
+}
+.investigation-field .investigation-marker {
+  --marker-x: calc((100% + var(--marker-right) - var(--marker-left)) / 2 + var(--target-offset-x) * var(--investigation-image-width));
+  --marker-y: calc((100% + var(--marker-bottom) - var(--marker-top)) / 2 + var(--target-offset-y) * var(--investigation-image-height));
 }
 .app .investigation-marker > span {
   display: grid;
@@ -141,32 +85,33 @@
   font-weight: 800;
   box-shadow: 0 1px 5px #0007;
 }
-.app .investigation-marker:hover > span { color: #392c21; background: #fff2d5; }
+.app .investigation-marker:is(:hover, :focus-visible):not(:disabled) > span { color: #392c21; background: #fff2d5; }
+.app .investigation-marker:focus-visible { outline: 2px solid #fff2d5; outline-offset: -2px; }
+.app .investigation-marker[data-approach-step] > span {
+  background: #19150f;
+  color: #fff2d5;
+  transform: scale(calc(1 + .4 * var(--target-progress)));
+  box-shadow: 0 0 calc(9px + 20px * var(--target-progress)) #ffdb8cb3;
+  transition: transform 240ms ease, box-shadow 240ms ease;
+}
+.app .investigation-marker[data-approach-step]:not([data-approach-step='0']) > span {
+  color: #261a0b;
+  background: #ffe2a7;
+}
 .app .investigation-marker.is-checked { pointer-events: none; }
 .app .investigation-marker.is-checked > span { color: #382e24; background: #e8dec9; }
-.app .dialog-box[data-investigation='true'] { padding-block: 12px; height: min(220px, var(--dialog-safe-max-height)); }
+.app .dialog-box[data-investigation='true'] { padding-block: 12px; height: min(184px, var(--dialog-safe-max-height)); }
 .app [data-investigation='true'] .choice-gate { margin-top: 4px; }
-.app [data-investigation='true'] .choice-gate-options:empty { display: none; }
+.app [data-investigation='true'] .choice-gate-options { grid-template-columns: 1fr; }
 .app [data-investigation='true'] .choice-gate-options[data-choice-count='1'] .choice-gate-option-copy { grid-template-columns: minmax(0, 1fr) auto; }
 .app [data-investigation='true'] .choice-gate-options[data-choice-count='1'] .choice-gate-option-index { display: none; }
-.investigation-options { display: flex; flex-wrap: wrap; gap: 6px; }
-.app .investigation-option {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  padding: 4px 9px;
-  border: 1px solid #ecd6a26b;
-  border-radius: 3px;
-  background: #16292b;
-  color: #f4f0e4;
-  font: inherit;
-  font-size: 13px;
-}
-.app button.investigation-option:hover { background: #274043; border-color: #ecd6a2; }
-.investigation-option > span { color: #ecd6a2; font-weight: 800; }
-.app .investigation-option.is-checked { color: #e1dbc9; background: transparent; }
-.investigation-option small { color: #c1c7c0; font-size: 12px; }
+.investigation-options { display: flex; flex-wrap: wrap; gap: 5px 16px; margin: 4px 0 8px; padding: 0; list-style: none; }
+.investigation-option { display: inline-flex; align-items: baseline; gap: 5px; color: var(--game-text); font-size: 13px; }
+.investigation-option b, .investigation-option[data-active='true'] { color: var(--game-accent); }
+.scene-action-label { margin: 6px 0 0; color: var(--game-text); font-size: 14px; }
+.scene-action-label b { margin-inline-end: 4px; color: var(--game-accent); }
+.app .investigation-marker:disabled { opacity: .5; cursor: default; }
+.investigation-option small { color: var(--game-muted); font-size: 12px; }
 .app .choice-evidence {
   margin: 0 0 8px;
   padding-inline: 12px;
@@ -192,194 +137,14 @@
 .app .choice-evidence summary:focus-visible { outline: 2px solid var(--game-focus); outline-offset: -2px; }
 .app .choice-evidence p { margin: 0 0 12px; color: var(--game-text); font-size: 14px; line-height: 1.6; }
 @media (max-height: 500px) and (orientation: landscape) {
-  .app .dialog-box.has-exploration { --dialog-safe-max-height: 155px; padding-top: 12px; padding-bottom: 12px; }
+  .app .dialog-box.has-exploration { --dialog-safe-max-height: min(155px, 39dvh); }
   .app .has-exploration .dialog-content-scroll { padding-top: 0; }
   .app .has-exploration .dialog-content-scroll:has(> .speaker) { padding-top: 24px; }
-  .exploration-field { top: 62px; bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 8px); }
-  .app .exploration-target { top: clamp(0px, calc(var(--target-y) - 24px), calc(100% - 48px)); padding: 8px 12px; }
-}
-
-@media (max-width: 900px), (max-height: 500px) and (orientation: landscape) {
-  .exploration-field:not(.approach-field, .investigation-field) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr));
-    gap: 8px;
-    align-content: center;
-  }
-  .app .exploration-field:not(.approach-field, .investigation-field) > .exploration-target {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    max-height: none;
-    padding-inline: 27px 12px;
+  .exploration-field {
+    --marker-top: max(62px, var(--stage-safe-block-start));
+    --marker-bottom: calc(var(--exploration-dialog-inset) + 28px);
   }
 }
-
-@media (max-height: 500px) and (orientation: landscape) {
-  .exploration-field:not(.approach-field, .investigation-field) {
-    top: max(134px, var(--stage-safe-block-start));
-    bottom: calc(var(--stage-safe-block-end) + var(--exploration-dialog-inset) + 22px);
-    align-content: safe center;
-  }
-  .app:has(.exploration-field:not(.approach-field, .investigation-field)) .dialog-box.has-exploration {
-    --dialog-safe-max-height: min(155px, 39dvh);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .app .dialog-action-button, .app .exploration-target { transition: none; }
-}
-
-.app .dialog-box.has-stage-approach {
-  height: clamp(86px, 16cqh, 110px);
-  min-height: 0;
-  --dialog-safe-max-height: min(33cqh, 180px);
-  padding: 12px 20px;
-}
-
-.app .has-stage-approach .dialog-content-scroll {
-  padding-top: 0;
-  scrollbar-gutter: auto;
-}
-
-.app .has-stage-approach .dialog-content-scroll:has(> :is(.speaker, .dialog-channel-label)) { padding-top: 24px; }
-.app .has-stage-approach .text { min-height: 0; }
-
-.exploration-field.approach-field {
-  top: max(88px, var(--stage-safe-block-start));
-  bottom: calc(var(--exploration-dialog-inset) + 56px);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.approach-status {
-  align-self: center;
-  margin: 0;
-  padding: 3px 10px;
-  color: #e8dac0;
-  background: #090a0dd6;
-  border-radius: 5px;
-  font-size: 13px;
-  line-height: 1.5;
-  text-align: center;
-  word-break: keep-all;
-}
-
-.approach-heading { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.approach-player { color: #f3ece1; font-size: 14px; font-weight: 800; line-height: 20px; }
-
-.approach-stars {
-  position: relative;
-  flex: 1;
-}
-
-.app .approach-stars .approach-target {
-  --approach-near: calc(var(--approach-step, 0) / var(--approach-total, 1));
-  --star-size: calc(8px + 6px * var(--approach-near));
-  width: min(170px, 34cqw);
-  left: clamp(0px, calc(var(--target-x) - min(85px, 17cqw)), calc(100% - min(170px, 34cqw)));
-  top: clamp(0px, calc(var(--target-y) - 44px), calc(100% - 94px));
-  min-height: 92px;
-  max-height: none;
-  overflow: visible;
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  gap: 0;
-  padding: 38px 6px 6px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background: transparent;
-  color: #eee4ce;
-  text-align: center;
-  text-shadow: 0 1px 5px #000;
-  transform: none;
-  transition: border-color 250ms ease, background-color 250ms ease, color 250ms ease;
-}
-
-.app .approach-stars .approach-target .choice-gate-option-copy { display: block; width: 100%; }
-.app .approach-stars .approach-target .choice-gate-option-text { line-height: 1.4; word-break: keep-all; }
-.app .approach-stars .approach-target .choice-gate-option-mark { display: none; }
-
-.app .approach-stars .approach-target[data-approach-active='true'] {
-  border-color: #f3d18a6b;
-  background: #0a0b10b8;
-  color: #fff5d9;
-}
-
-.app .approach-stars .approach-target:focus-visible { outline: 2px solid #f3d18a; outline-offset: 2px; }
-
-.app .approach-confirm-label {
-  display: block;
-  margin-top: 3px;
-  color: #f0d299;
-  font-size: 12px;
-}
-
-.app .approach-stars .approach-target::before {
-  width: var(--star-size);
-  height: var(--star-size);
-  margin: 0;
-  top: 21px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff1cd;
-  box-shadow:
-    0 0 calc(8px + 9px * var(--approach-near)) calc(2px + 2px * var(--approach-near)) #ffda8b8c,
-    0 0 calc(19px + 15px * var(--approach-near)) 5px #ffd98a2b;
-  animation: none;
-  transition: width 450ms ease, height 450ms ease, box-shadow 450ms ease;
-}
-
-.approach-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
-.app .approach-actions .choice-gate-option {
-  min-height: 44px;
-  width: auto;
-  align-items: center;
-  pointer-events: auto;
-  padding: 8px 14px;
-  color: #e8dac0;
-  background: #10131a;
-  border: 1px solid #e8dac045;
-  border-radius: 6px;
-  transform: none;
-}
-.app .approach-actions .choice-gate-option-copy { display: block; }
-.app .approach-actions .choice-gate-option-copy :is(.choice-gate-option-index, .choice-gate-option-mark) { display: none; }
-
-/* Give adjacent targets separate hit areas on narrow or shallow stages. */
-@media (max-width: 768px), (max-height: 500px) and (orientation: landscape) {
-  .approach-stars {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px 8px;
-    align-content: center;
-  }
-  .app .approach-stars .exploration-target {
-    position: relative;
-    inset: auto;
-    width: 100%;
-  }
-  .app .approach-stars .exploration-target:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: min(100%, 184px);
-  }
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-  .exploration-field.approach-field { top: max(62px, var(--stage-safe-block-start)); bottom: calc(var(--exploration-dialog-inset) + 44px); }
-  .approach-stars:has(> :nth-child(3)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .approach-stars:has(> :nth-child(4)) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .app .approach-stars:has(> :nth-child(3)) .exploration-target:last-child:nth-child(odd) { grid-column: auto; }
-  .app .approach-stars .approach-target { min-height: 76px; padding-top: 28px; }
-  .app .approach-stars .approach-target::before { top: 14px; }
-  .app .dialog-box.has-stage-approach { height: clamp(68px, 18cqh, 86px); padding-block: 9px; }
-  .app .has-stage-approach .text { line-height: 1.45; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .app .approach-stars .approach-target,
-  .app .approach-stars .approach-target::before { transition: none; }
+  .app .dialog-action-button, .app .investigation-marker > span { transition: none; }
 }

@@ -274,7 +274,7 @@ scenes:
       - say: { channel: action, with: [], text: "엄마가 입원한 요양병원에 면회를 예약했다. 집에 들러 김치통을 챙기려다 늦어서, 빈손으로 면회실에 앉았다." }
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "감염 예방 때문에 유리벽 너머로만 면회할 수 있다. 주어진 시간은 10분. 벽에 남은 시간이 뜬다." }
-      - say: { channel: action, with: [], continueLabel: "수화기를 든다", text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다." }
+      - say: { channel: action, with: [], continueLabel: "수화기를 든다", at: { x: 62, y: 58 }, text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다." }
       - bg: { id: glass_visit_talk, transition: cut }
       - say: { char: 지안어머니, with: [], text: "왔네. 밥은 먹었니?" }
       - say: { channel: action, with: [], text: "유리 너머로 엄마 입이 움직인다. 수화기를 귀에 더 바짝 댄다." }
