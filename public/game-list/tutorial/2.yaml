@@ -358,7 +358,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수, 경준]
-          text: "정해수 씨. 사십 분쯤 걸려요."
+          text: "정해수 씨. 앞치마는 동료분께 맡기세요. 돌아오는 건 제가 모셔다드릴게요."
       - say:
           char: 은숙
           with: [해수, 경준]
@@ -600,7 +600,7 @@ scenes:
       - say:
           char: 해수.shaken
           with: [은숙]
-          text: "…어제는 제가 그 시간에 창구에 앉아 있었어요."
+          text: "…저 맞을 거예요. 드링크도 주셨는데, 제가 나중에 마신다고 했어요."
       - sticker: { id: complaint, image: complaint_sticker, x: 64, y: 32, width: "260px", rotate: 2, enter: fadeIn }
       - say:
           char: 은숙
@@ -614,7 +614,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "또 연락드릴게요. 휴대폰 꺼 두지 마세요. 물 안 드셨네."
+          text: "또 연락드릴게요. 휴대폰 꺼 두지 마세요. 물은 가져가셔도 돼요. 뚜껑도 안 여셨네요."
 
   tamper:
     title: "튜토리얼 4/5"
@@ -1001,7 +1001,7 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "…있는 거 먹었어요."
+          text: "…아니, 아직 안 먹었어요. 조사 끝나면 먹으려고 했는데."
       - say:
           char: 지영.worried
           motion: headtilt
@@ -1035,4 +1035,4 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "생수는 샀다. 휴지는 또 못 샀다."
+          text: "생수 봉지를 내려놓는다. 상혁이 한 병이라도 가져가면, 내일은 밥 먹자고 다시 불러야겠다."

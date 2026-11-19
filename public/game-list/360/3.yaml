@@ -101,7 +101,7 @@ scenes:
       - place: "같은 주 금요일 · 편집실"
       - say: { channel: record, with: [], text: "1931년 경성 모 의원 진료부. 환자 김○○(34). \"전에 살았다고 주장. 캄캄한 데서 뒤를 보았다는 말을 되풀이.\" 처치: 격리." }
       - say: { char: 지안, with: [차피디], text: "자료실에서 복사해 왔어요. 1931년에도 같은 말을 한 사람이 있었네요. 방송국 대신 병원에 갔고요." }
-      - say: { char: 차피디, with: [지안], text: "그럼 안 늘어난 건가? 아니지, 그때 한 명 찾은 걸로는 몰라. 숫자가 없잖아." }
+      - say: { char: 차피디, with: [지안], text: "그래도 늘었다고는 못 하겠네. 우리가 옛날 제보를 얼마나 찾았는지도 모르잖아요." }
       - say: { char: 지안, with: [차피디], text: "네. 모르는 거죠." }
       - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "지안아 주말에 오니? 김치 담갔다. 통 가져와라" }
       - say: { channel: action, with: [], text: "읽음 표시만 남긴다. 답은 인터뷰 다녀와서 하기로 한다." }
@@ -261,7 +261,7 @@ scenes:
       - say: { char: 지안, with: [문호], text: "안 될 거라고 누가 정했어요." }
       - say: { char: 문호.lean, with: [지안], text: "아가씨. 그렇게 따지는 것도 타고난 거요." }
       - say: { channel: thought, with: [], text: "아드님이 12년 동안 말을 안 했다고 했다. 그 얘기는 녹취에 넣으라고 했다." }
-      - say: { channel: action, with: [], text: "녹음기 남은 시간이 41분으로 떠 있다." }
+      - say: { channel: action, with: [], text: "문호 씨가 녹음기를 끌 때까지 기다린다. 아들 얘기를 더 하려는 줄 알았다." }
       - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "김치 쉰다. 엄마 입원하기 전에 택배로 부칠까" }
       - goto: glass
 
@@ -285,7 +285,7 @@ scenes:
       - say: { char: 지안, with: [], text: "9월이요. 2부에 제가 편집한 게 나와요." }
       - say: { char: 지안어머니, with: [], text: "그럼 방송 나오면 또 같이 보겠네." }
       - say: { channel: thought, with: [], text: "그때까지는 안 온다는 말로 들린다. 엄마는 그렇게 말한 적이 없다." }
-      - say: { channel: action, with: [], text: "03:40. ‘그때까지 어떻게 기다려요’ 하고 웃어넘길까 하다가 시계만 봤다." }
+      - say: { channel: action, with: [], text: "엄마는 방송 날짜를 달력에 적는다. 그보다 먼저 오겠다는 말이 목에 걸린다." }
       - say: { char: 지안, with: [], text: "엄마." }
       - say: { char: 지안어머니, with: [], text: "응." }
       - wait: 1100
@@ -333,8 +333,8 @@ scenes:
       - say: { char: 차피디, with: [지안], text: "뒤에 붙은 건 녹취 원본 양도 동의서. 서명하면 원본은 회사 자산이에요. 편집권도." }
       - say: { char: 지안, with: [차피디], text: "원본도 드려야 돼요? 1부는 복사본으로 편집 다 끝냈잖아요." }
       - say: { char: 차피디, with: [지안], text: "시사 반응이 좋아서 벌써 재방송이며 해외 판권 얘기가 들어와요. 그때마다 원본을 지안 씨한테 달랠 순 없잖아요." }
-      - say: { char: 차피디, with: [지안], text: "외부에 같은 원본이 돌면 판권 계약을 못 해요. 계약팀에서 그걸 같이 받으래요." }
-      - say: { char: 지안, with: [차피디], text: "서명 안 하면 정규직 계약도 안 되는 거예요?" }
+      - say: { char: 차피디, with: [지안], text: "거절할 거면 저도 계약팀에 얘기를 해야 돼요. 오늘 안으로 답을 줘요." }
+      - say: { char: 지안, with: [차피디], text: "정규직 시켜 준다면서 이걸 같이 내미시면 어떡해요." }
       - say: { char: 차피디, with: [지안], motion: sigh, text: "네. 이번엔 둘이 한 묶음이에요. 저도 여기서 십사 년 일했지만 이건 못 바꿔요." }
       - say: { channel: action, with: [], text: "차 피디가 계약서를 넘겨 서명할 칸을 짚어 준다." }
       - say: { channel: thought, with: [], text: "유정림, 박다온, 오문호. 사인하면 그 사람들 목소리를 넘기는 거다." }
@@ -449,8 +449,8 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "뒤에 붙은 동의서에도 서명하면 되는 거죠?" }
       - say: { char: 차피디, with: [지안], motion: nod, text: "네. 장과 장 사이에 도장도 찍고요. 축하해요. 다음 달부터 4대 보험 들어요." }
       - place: "그해 9월"
-      - say: { channel: system, with: [], text: "「기억하는 사람들」 2부 시청률 6.8%. 클립 조회수 310만. 댓글 4만 2천." }
-      - say: { channel: record, with: [], text: "시청자 게시판. \"다온이네 학교 아는데 애들이 걔 전생충이라고 부름\" (추천 912)" }
+      - say: { channel: system, with: [], text: "「기억하는 사람들」 2부 방영. 다음 날 출근하니 재방송 일정이 붙어 있다." }
+      - say: { channel: record, with: [], text: "시청자 게시판. \"저 애 우리 학교임. 오늘 애들이 방송 따라 하면서 놀림.\"" }
       - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "방송 봤다. 네 이름 맨 끝에 지나가더라. 전화 좀 받아라" }
       - say: { channel: action, with: [], text: "편집실. 3부 마감이 내일이라 전화는 진동으로 돌려 둔다." }
       - goto: late
@@ -462,7 +462,7 @@ scenes:
       - say: { char: 차피디, with: [지안], motion: sigh, text: "지안 씨. 이거 놓치면 다음은 없어요. 여섯 번째 회사 찾을 거예요?" }
       - say: { char: 지안, with: [차피디], text: "유 선생님부터 다시 뵙고 올게요." }
       - say: { channel: card, with: [], text: "이듬해 가을\n고시원 책상" }
-      - say: { channel: system, with: [], text: "『돌아본 사람들』 초판 1,500부. 6개월 판매 412부." }
+      - say: { channel: system, with: [], text: "『돌아본 사람들』 출간. 서점에서 돌아온 책 상자가 고시원 문 앞에 쌓인다." }
       - say: { channel: record, with: [], text: "독자 엽서. \"우리 애가 다섯 살 때 하던 말이 이 책에 있었습니다. 병원에 안 데려가도 되겠지요.\" 박다온 어머니." }
       - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "책 샀다. 서점에 한 권 있더라. 밥은 먹고 다니니. 보증금은 엄마가 좀 보탤게" }
       - say: { channel: action, with: [], text: "고시원 책상. 다음 증언자가 목포에 있어서, 답은 다녀와서 하기로 한다." }

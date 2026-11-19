@@ -38,7 +38,7 @@ const WALK = '서명을 거절한다.';
 const BESIDE = '곁에 남지 못한 후회';
 // Which star the dark is asked for first. Once a life is lived its star goes out, so a route
 // names only its opening and the explore menu hands back whatever is left after that.
-const STAR_1894 = '깨 붙은 엿';
+const STAR_1894 = '마루의 밥상';
 const STAR_1952 = '부두의 고무신';
 const STAR_1988 = '갈치 가시';
 const OPENING: Route = { where_am_i: '모르겠음', first_light: '손을 뻗는다.' };
@@ -145,6 +145,43 @@ describe('360 full playthrough', () => {
     }));
   });
 
+  it('lets Manseok recognize his body, name and daughter before the granary dispute', async () => {
+    await start();
+    const { state, shown } = await play({ star: STAR_1894 }, 'l1_rice');
+    const beats = [
+      '어느 집 마당이지.', '묵직한 열쇠 꾸러미다.', '만석 어른, 어디 편찮으십니까?',
+      '어젯밤에도 저 사람과 곳간 쌀을 세었다.', '아버지, 봉구 오라버니 것도 퍼요?',
+      '내 뒤에는 아무도 없다.', '내 딸이다.', '오냐. 봉구 것도 퍼라.',
+      '덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다.',
+    ].map(fragment => shown.findIndex(line => line.includes(fragment)));
+    expect(beats.every(index => index >= 0)).toBe(true);
+    for (let i = 1; i < beats.length; i += 1) expect(beats[i]).toBeGreaterThan(beats[i - 1]);
+    expect(state.storyLog).toContainEqual(expect.objectContaining({
+      kind: 'dialogue', speaker: '사내', text: '만석 어른, 어디 편찮으십니까?',
+    }));
+    expect(state.storyLog).toContainEqual(expect.objectContaining({
+      kind: 'dialogue', channel: 'thought', speaker: '만석',
+      text: '봉구다. 어젯밤에도 저 사람과 곳간 쌀을 세었다.',
+    }));
+    expect(state.routeVars).toMatchObject({ lives_done: 1, l1_rice_blocked: false, l1_leave_blocked: false });
+    expect(state.choiceGate.options.map(option => option.text)).toEqual([OPEN, SHUT]);
+  });
+
+  it('resumes a previous-version yard save at the same line without replaying the arrival', async () => {
+    localStorage.setItem('vn-engine-autosave:game:360', JSON.stringify({
+      gameTitle: '360', gameVersion: '1.2.1', savedAt: new Date().toISOString(),
+      chapterIndex: 0, chapterPath: '0.yaml', sceneId: 'yard', actionIndex: 5,
+      backgroundAssetId: 'jemulpo_yard',
+      routeVars: { lives_done: 1, lived_1894: true }, inventory: {}, routeHistory: [], storyLog: [],
+    }));
+    await start();
+    const state = useVNStore.getState();
+    expect(state).toMatchObject({ currentSceneId: 'yard', actionIndex: 5,
+      routeVars: { lives_done: 1, lived_1894: true },
+      dialog: { fullText: '주인어른, 덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다.' } });
+    expect(state.storyLog.some(entry => entry.sceneId?.startsWith('arrival_1894'))).toBe(false);
+  });
+
   it('finds two dots on the medicine packet after going to see the fireworks together', async () => {
     await start();
     const { state, shown } = await play({ star: STAR_1988, l3_open: AFRAID, l3_out: JACKET }, 'v3');
@@ -204,7 +241,7 @@ describe('360 full playthrough', () => {
 
     submitChoiceOption(0);
     expect(state().choiceGate.approachSteps).toEqual([1, 0, 0]);
-    expect(state().dialog.fullText).toBe('종이가 눅눅하다. 깨가 붙어 있다.');
+    expect(state().dialog.fullText).toBe('소반 위에 밥이 두 그릇이다. 한 자리가 비어 있다.');
     expect(state().routeVars.lives_done).toBe(0);
 
     submitChoiceOption(0);
@@ -240,7 +277,7 @@ describe('360 full playthrough', () => {
     const firstMemory = shown.indexOf('조금 더 다가가자 어둠 속에 희미한 빛들이 보였다.');
     expect(shown.slice(firstMemory, firstMemory + 2)).toEqual([
       '조금 더 다가가자 어둠 속에 희미한 빛들이 보였다.',
-      '종이가 눅눅하다. 깨가 붙어 있다.',
+      '소반 위에 밥이 두 그릇이다. 한 자리가 비어 있다.',
     ]);
     // The first life is free: nothing has been handed down to it yet.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다')).toBe(true);
@@ -257,22 +294,22 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '그때 온 사람이 마지막이었다')).toBe(false);
     // The fifth dark hears the earlier lives back as testimony, then one more thing arrives:
     // the winter that was never judged, because the first time around it could not be.
-    expect(shown).toContain('"여든 먹어도 엿은 엿이죠."');
-    expect(heard(shown, '바구미 슨 삼백 섬을 그해 가을까지')).toBe(false);
-    expect(heard(shown, '사천삼백여든 냥이다')).toBe(true);
+    expect(shown).toContain('"아버지는 맨날 다 식은 다음에 오시잖아요."');
+    expect(heard(shown, '쌀에 벌레가 났다고 하니 체로 치면')).toBe(false);
+    expect(heard(shown, '거래 마쳤다. 약값도 넉넉히 남았어.')).toBe(true);
     expect(heard(shown, '그날 곳간을 열었더라면')).toBe(false);
     expect(heard(shown, '같은 점은 없어. 360도 어디에도')).toBe(true);
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
-    // The yard introduces Deok-i before the price of rice. The taffy comes back in the fever
-    // and at the end.
+    // Deok-i is a person before the granary is a dispute. The daughter's wish to share
+    // a meal returns in the illness and in the final memories.
     expect(heard(shown, '맡은 쌀에 손대면 그날로 끝이다')).toBe(true);
     const deokArrival = shown.findIndex((text) => text.includes('어미 등에 업혀 왔더라'));
     expect(deokArrival).toBeGreaterThan(-1);
-    expect(deokArrival).toBeLessThan(shown.findIndex((text) => text.includes('쌀이 열흘 새')));
-    expect(heard(shown, '여든 먹어도 엿은 엿이죠')).toBe(true);
-    expect(heard(shown, '종이가 눅눅하다')).toBe(true);
+    expect(deokArrival).toBeLessThan(shown.findIndex((text) => text.includes('쌀값이 또 뛰었습니다')));
+    expect(heard(shown, '아버지는 맨날 다 식은 다음에 오시잖아요')).toBe(true);
+    expect(heard(shown, '끝순이 앉던 쪽의 숟가락')).toBe(true);
     // The market stall was one seat with two people waiting for it, and the fire asks what the
     // free hand is for. Somebody else answers that question.
     expect(heard(shown, '먼저 낸 사람이 임자지')).toBe(true);
@@ -283,7 +320,7 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
     expect(heard(shown, '본 기억은 없는데 저렇게 웃는 얼굴을 전에도 기다린 것 같다')).toBe(true);
     // The ward is where the person finds out, because a ward is a place with time left in it.
-    expect(heard(shown, '삼십에서 사십. 우리 반 마흔 명이면 열둘에서 열여섯')).toBe(true);
+    expect(heard(shown, '엄마는 못 들은 사람처럼 수술 날짜를 물었다')).toBe(true);
     expect(heard(shown, '이번엔 내가 입을 다물었다')).toBe(true);
     expect(heard(shown, '그날은 뻗으려는 손이 내 손 같지가 않았다')).toBe(true);
     expect(heard(shown, '누가 고르는 것 같다. 나 말고')).toBe(true);

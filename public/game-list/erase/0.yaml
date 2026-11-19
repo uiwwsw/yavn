@@ -57,14 +57,14 @@ scenes:
   e0_studio_smile:
     actions:
       - say: { char: 도윤.smile, with: [지수], text: "응. 지금 보낼게." }
-      - say: { char: 지수.warm, with: [도윤], text: "왔어, 백오십. 손 다시 줘. 이제 찍으신대." }
+      - say: { char: 지수.warm, with: [도윤], text: "왔어. 됐다, 이제 손 줘. 작가님 기다리셔." }
       - goto: e0_flash
 
   e0_studio_joke:
     actions:
-      - say: { char: 도윤, with: [지수], text: "…카드값이 밀렸어. 43만 원." }
-      - say: { char: 지수, with: [도윤], text: "사십삼만. 알았어, 네 몫은 내가 넣어 둘게. 다음 달 25일에 갚아." }
-      - say: { char: 도윤, with: [지수], text: "…응. 칼국수는 내가 살게." }
+      - say: { char: 도윤, with: [지수], text: "…이번 달 카드값도 아직 못 냈어." }
+      - say: { char: 지수, with: [도윤], text: "그럼 오늘은 내가 넣을게. 다음엔 혼자 끙끙대지 말고 말해." }
+      - say: { char: 도윤, with: [지수], text: "…응. 미안. 칼국수는 내가 살게." }
       - goto: e0_flash
 
   e0_studio_avoid:
@@ -89,7 +89,7 @@ scenes:
           width: "clamp(180px, 30%, 330px)"
           enter: fadeIn
       - say: { char: 도윤, with: [지수], text: "저 눈 감은 건 지워 주세요." }
-      - say: { char: 지수, with: [도윤], text: "아뇨, 지우지 마시고요. 그건 저한테만 따로 보내 주세요." }
+      - say: { char: 지수, with: [도윤], text: "아뇨, 그것도 주세요. 얘 웃다 눈 감은 거라 저는 이게 더 좋아요." }
       - say: { char: 지수.warm, with: [도윤], text: "청첩장은 이걸로 할게요." }
       - say: { char: 도윤.smile, with: [지수], text: "너만 봐. 민석이 보면 식장에 튼다." }
       - get: invitation
@@ -168,7 +168,7 @@ scenes:
       - say: { char: 도윤, with: [준성], text: "계속 보긴 좀 그렇잖아요. 친구도 있고." }
       - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "일행 있는 거 보고 그냥 갈까 했는데, 혼자 계시길래 담배 핑계 좀 댔죠. 저도 안 피워요." }
       - say: { char: 도윤.smile, with: [준성], text: "라이터 꺼낼 뻔했네." }
-      - say: { channel: action, with: [도윤, 준성], text: "둘이 웃는다. 도윤은 휴대폰의 시각을 보고 화면을 뒤집는다. 집을 나설 때 한 말이 걸린다." }
+      - say: { channel: action, with: [도윤, 준성], text: "둘이 웃는다. 켜진 휴대폰의 잠금 화면에서 지수가 웃고 있다. 도윤은 시간을 보고 화면을 뒤집는다." }
       - say: { char: 도윤, with: [준성], text: "저 다음 달에 결혼해요.", wait: 400 }
       - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "…그럼 저 갈까요?" }
       - say: { char: 도윤, with: [준성], text: "…친구 올 때까지만요." }

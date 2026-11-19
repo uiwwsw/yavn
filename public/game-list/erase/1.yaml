@@ -257,7 +257,7 @@ scenes:
           char: 준성.tired
           motion: nod
           with: [도윤]
-          text: "저 여기 오래 다니고 싶어요. 그러니까 회사에선 일 얘기만 해요, 우리."
+          text: "저 이번엔 이사도 회사 근처로 했어요. 오래 다니고 싶어서. 회사에선 일 얘기만 해요."
       - say:
           char: 도윤
           with: [준성]
@@ -459,7 +459,7 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "참, 새 팀장님 왔다며. 어떤 분이야? 송과장님보다는 나아?" }
       - say: { char: 도윤, with: [지수], text: "…프린터를 못 찾아." }
       - say: { char: 지수.warm, motion: laugh, with: [도윤], text: "그게 뭐야." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수가 어깨에 머리를 기댄다. 도윤은 휴대폰을 엎어 놓는다." }
+      - say: { channel: action, with: [지수, 도윤], text: "지수가 어깨에 머리를 기댄다. 도윤은 휴대폰을 엎는다. 지수 머리카락이 화면 밑에 끼어 살짝 들어 빼 준다." }
       - say: { channel: card, with: [], text: "11년 전 · 유하린", autoAdvance: 1550 }
       - goto: e1_harin
 
@@ -551,7 +551,7 @@ scenes:
           char: 하린
           motion: laugh
           with: [민재, 아진]
-          text: "아, 종 친다. 나 먼저 갈게."
+          text: "아, 됐어. 지금 보내면 나만 달라고 한 것 같잖아. 종 친다, 가자."
       - goto: e1_harin_night
 
   e1_harin_night:

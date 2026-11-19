@@ -118,11 +118,11 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "그래, 딱 28초. 나도 더 할 말은 없었어."
+          text: "다 먹었다고 했는데도 밥은, 밥은, 두 번이나 묻더라."
       - say:
           char: 윤재
           with: []
-          text: "게임기 샀다고 할까 하다가 말았고."
+          text: "게임기 얘기하면 끊지는 않을 텐데. 또 잔소리할 거잖아."
       - say:
           char: 비서
           with: [윤재]
@@ -527,8 +527,8 @@ scenes:
     actions:
       - say: { channel: thought, with: [], text: "천장이 잠깐 밝아진 줄 알았다. 스피커는 그대로다." }
       - say: { channel: thought, with: [], text: "문은 그냥 둘까. 아빠가 먼저 올지도 모르니까." }
-      - say: { channel: thought, with: [], text: "편의점까지만. 하나, 둘." }
-      - say: { channel: thought, with: [], text: "…셋. 가자." }
+      - say: { channel: thought, with: [], text: "문에 편의점이라고 써 두자. 아빠 알아볼 만큼 크게." }
+      - say: { channel: thought, with: [], text: "…가자. 멀리 안 갈 거니까." }
       - goto: b1_base
 
   b1_base:

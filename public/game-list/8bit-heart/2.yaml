@@ -21,7 +21,7 @@ scenes:
       - say: { channel: action, with: [], text: "바코드 스캐너를 밀어 한쪽에 놓고 부품 놓을 자리를 만든다." }
       - say: { channel: action, with: [], text: "집에서 챙긴 가스 인두를 꺼낸다." }
       - say: { channel: thought, with: [], text: "이건 콘센트 없이도 돌아간다. 가스는 아직 남았다." }
-      - say: { channel: thought, with: [], text: "아빠가 중학교 때 사 준 거다. 이거 하나는 잘 샀네." }
+      - say: { channel: thought, with: [], text: "아빠가 사 준 거다. 처음엔 내 손 위에 자기 손을 얹고 납 녹이는 걸 가르쳐 줬다." }
       - wait: 0
       - wait: 0
       - wait: 0
@@ -91,12 +91,12 @@ scenes:
     actions:
       - wait: 0
       - say: { channel: action, with: [], text: "타 버린 스피커 옆에 작은 보조 발성기가 남아 있다. 칩을 소켓에 끼우고 가슴 화면 뒤의 단자를 확인한다." }
-      - say: { channel: thought, with: [], text: "가슴 화면 핀은 24개, 게임기 쪽은 16개. 그대로는 안 맞는다." }
+      - say: { channel: thought, with: [], text: "가슴 화면과 칩의 단자가 안 맞는다. 손전등을 이로 물고 선을 하나씩 골라낸다." }
       - wait: 0
       - say:
           channel: thought
           with: []
-          text: "열여섯 개만 먼저 잇자. 남은 핀은 띄워 두고, 껌 은박으로 차폐부터 해 보자."
+          text: "화면만 켜지게 먼저 잇자. 남는 선은 띄워 두고, 껌 은박으로 감싸면…."
       - set: { b_screen: true }
       - goto: b2_parts
 
@@ -616,7 +616,7 @@ scenes:
           char: 윤재
           motion: freeze
           with: [로봇]
-          text: "…그걸 벌써 세고 있었냐."
+          text: "…너 켜기 전에도 그 말 했는데. 들은 것처럼 말하네."
       - wait: 270
       - say:
           char: 로봇

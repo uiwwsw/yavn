@@ -71,7 +71,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "코트 안에 아직 유니폼을 입고 있다. 집에 들러 갈아입으려면 오전 9시 30분 오픈에 늦겠다."
+          text: "유니폼에서 명찰을 떼 주머니에 넣는다. 태민 씨가 답장을 보내고 있다. 내가 나올 때까지 안 잘 모양이다."
       - say:
           channel: system
           with: []
@@ -223,7 +223,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "0002와 0003은 2분 차이다. 0001은 그보다 7년 넘게 앞서 있다."
+          text: "0002에는 가입한 날과 넘기기 기록이 있다. 0001의 날짜를 읽자 첫 유니폼을 받던 사무실이 생각난다."
       - goto: log_steps
 
   log_steps:
@@ -256,7 +256,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "12년 동안 하루에 한 번꼴로 ‘못 했다’고 적혀 있다."
+          text: "광철이 돌아간 뒤 빈 창구를 닦다가 혼자 입을 달싹인 날들이 있었다. 그것도 세고 있었나."
       - say:
           channel: record
           with: []
@@ -921,7 +921,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "하루 먼저 봤으면 달랐을 거라고는 못 하겠다. 봤어도 접수증을 써 드렸을 것 같다."
+          text: "드링크는 아직 앞치마에 있다. 그날 마시고 빈 병이라도 보여 드릴걸. 그 사람이 다시 올 줄 알았다."
       - char: { id: 지영, position: right }
       - sticker: { id: corded_pen, image: corded_pen_sticker, x: 64, y: 40, width: "280px", rotate: 0, enter: fadeIn }
       - say:
@@ -941,7 +941,7 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "그러게요. 저도 좀 놀랍네요."
+          text: "주임님, 저 밥 먹고 올게요. 경준이랑 교대 좀 잡아 주세요."
       - clearSticker: { id: corded_pen, leave: fadeOut }
       - sound: chime
       - say:

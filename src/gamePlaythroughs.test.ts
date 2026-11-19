@@ -235,7 +235,7 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '걔가 마지막으로 배운 게 신문지 세 겹')).toBe(true);
     // The three things he looked at on the third morning come back in chapter 3.
     expect(heard(run.shown, '이 게임기는 엄마가 사 준 거야')).toBe(true);
-    expect(heard(run.shown, '스물여덟 번. 계속 연결이 안 된대')).toBe(true);
+    expect(heard(run.shown, '아빠가 그냥 안 받는 거면 좋겠어')).toBe(true);
     expect(heard(run.shown, '천장에 하루 스피커 자국')).toBe(true);
     // Chapter 2 asked "믿어도 됨?" and got "아니." Chapter 4 answers it the other way.
     expect(heard(run.shown, '이번엔 어')).toBe(true);
@@ -264,7 +264,7 @@ describe('8비트 심장', () => {
     });
     finished(run);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(true);
-    expect(heard(run.shown, '…셋. 가자.')).toBe(true);
+    expect(heard(run.shown, '…가자. 멀리 안 갈 거니까.')).toBe(true);
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
     expect(heard(run.shown, '이 게임기는 엄마가 사 준 거야')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);

@@ -352,18 +352,18 @@ scenes:
       - say: { char: 윤재, with: [로봇], text: "설명서도 읽어 가면서 들어가냐." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "너 읽기 싫어하니까 내가 다 봐 뒀음." }
-      - say: { char: 로봇, with: [윤재], text: "전원 — AA 여덟 개. 네가 계산대 밑에서 꺼낸 거." }
-      - say: { char: 윤재, with: [로봇], text: "라면 선반만 보고 간 사람들 덕이지." }
+      - say: { char: 로봇, with: [윤재], text: "건전지 붙인 테이프, 아직 안 떨어짐. 네가 꾹꾹 눌러 붙였음." }
+      - say: { char: 윤재, with: [로봇], text: "두 번 감았잖아. 문 안에서 떨어지면 안 되니까." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "문 안에서 전원이 끊기면 여기까지 못 돌아옴. 두 칸은 남겨 둘게." }
       - wait: 0
       - wait: 0
-      - say: { char: 로봇, with: [윤재], text: "화면 — 가슴 핀 스물넷, 단자 열여섯. 여덟 개는 아직 안 이어짐." }
-      - say: { char: 윤재.sad, with: [로봇], text: "그거 내가 못 이은 거야. 핀이 너무 작아서." }
+      - say: { char: 로봇, with: [윤재], text: "화면 모서리는 아직 안 나옴. 네가 밤새 붙였는데 거기만 안 됐음." }
+      - say: { char: 윤재.sad, with: [로봇], text: "그건 나와서 고치자. 불 밝은 데 가서. 손전등도 있고." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "지금 글자 다 나옴. 나한테는 이만큼이면 됨." }
       - say: { char: 로봇.thinking, with: [윤재], text: "은박지 차폐도 아직 붙어 있음. 문 안에서 떨어지면 다시 눌러 볼게." }
-      - say: { char: 윤재, with: [로봇], text: "그거 감아 놓고 나서 재부팅되다가 안 끊기더라." }
+      - say: { char: 윤재, with: [로봇], text: "어. 떨어지면 먼저 눌러 봐. 세게. 내가 했던 것처럼." }
       - wait: 270
       - wait: 0
       - wait: 0
@@ -653,7 +653,7 @@ scenes:
       - music: chip_dawn
       - char: { id: 윤재, position: left }
       - place: "오전 6시 · 데이터센터 문 앞"
-      - say: { channel: thought, with: [], text: "밤새 문 앞에 앉아 있었더니 무릎이 잘 안 펴진다. 안에서는 아직 발소리가 없다." }
+      - say: { channel: thought, with: [], text: "밤새 문만 봤다. 손을 내밀면 바로 잡을 수 있게, 자꾸 손바닥을 바지에 닦았다." }
       - say: { channel: action, with: [], text: "교차로의 초록빛이 꺼진다. 한참 만에 빨간불이 켜진다." }
       - say:
           channel: action
@@ -752,7 +752,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "지워진 줄 알았던 칸도 남아 있었어. 카드에 적힌 약속부터 읽으니 연결된 기록을 찾을 수 있음."
+          text: "하나가 생각나니까 다른 것도 났음. 네가 손가락 거는 법 알려 준 거. 아프니까 중요하다고 한 거."
       - mood: off
       - say:
           char: 로봇

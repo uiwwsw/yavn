@@ -56,7 +56,7 @@ scenes:
           channel: action
           with: []
           camera: wide
-          text: "신고서를 접는데 담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 아무도 대답하지 않는다."
+          text: "담 너머에서 누가 내일 혼례는 어쩌느냐고 묻는다. 대문 안에 놓인 새 짚신 한 켤레가 등잔에 비친다."
       - wait: 250
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
@@ -110,7 +110,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "…아직요."
+          text: "…틀린 걸 적을까 봐요."
       - clearSticker: { id: c1_book, leave: fadeOut }
       - char: { id: 도원, position: center }
       - say:

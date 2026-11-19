@@ -69,7 +69,7 @@ scenes:
       - say: { char: 지완, with: [도겸], text: "고등학교 때 한 번요." }
       - say: { char: 도겸, with: [지완], text: "에이, 지완 씨가요?" }
       - say: { char: 지완, with: [도겸], text: "그 뒤로는 셋 세고 말해요." }
-      - say: { char: 도겸, with: [지완], text: "아, 그래서 대답이 맨날 반 박자 늦구나." }
+      - say: { char: 도겸, with: [지완], text: "아…… 몰랐어요. 난 그냥 말수가 적은 줄 알았는데." }
       - say: { channel: action, with: [], text: "남자가 역무원에게 이름을 불러 준다." }
       - goto: warehouse_call
 

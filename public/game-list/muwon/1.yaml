@@ -61,7 +61,7 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "오늘 혼례를 치르기로 했어요. 혼수 비단도 내가 골라 줬고."
+          text: "혼수 비단을 골라 줬어요. 붉은 건 얼굴이 죽는다면서 끝내 노란 걸 가져갔어요."
       - say:
           char: 서연
           with: [여금]
@@ -133,7 +133,7 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "나는 대금 셈하느라 흘려들었어요."
+          text: "나는 잔금부터 받으라고 했어요. 그 애가 약 냄새를 안다고, 웃기나 했고."
       - clearSticker: { id: c2_thread, leave: fadeOut }
       - say:
           channel: action
@@ -256,7 +256,7 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "아가씨, 그 고리 놓으세요. 다 나왔수."
+          text: "아가씨, 손 펴요. 그 고리 뜨거워. 다 나왔수."
       - say:
           char: 막쇠.hurt
           with: [서연]
@@ -548,7 +548,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "…제 삯에서 드릴게요."
+          text: "…내일 제가 주모께 말씀드릴게요. 아저씨 다리부터 좀 봐요."
       - say:
           char: 막쇠
           with: [서연]

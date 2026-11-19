@@ -18,7 +18,7 @@ scenes:
       - say: { char: 수경, with: [지완], text: "안 찍혀요. 지완 씨 숫자 두 개만 남아요." }
       - say: { char: 수경, with: [지완], text: "화면에 뜨는 항목 보시고 누르세요." }
       - say: { channel: record, with: [], continueLabel: "내 렌즈 연결 허용", text: "검사기 연결 · 문지완의 렌즈\n저장 항목: 센서 입력값과 화면에 표시된 값\n영상 및 음성: 끔" }
-      - say: { char: 수경, with: [지완], text: "저는 여기 있을게요. 안에서는 검사기 생각 안 하셔도 돼요." }
+      - say: { char: 수경, with: [지완], text: "저는 여기 있을게요. 오래 기다리셨잖아요. 아버님 뵙고 오세요." }
       - goto: first_visit
 
   first_visit:
@@ -59,7 +59,7 @@ scenes:
     actions:
       - set: { told_father: false }
       - say: { char: 지완, with: [동식], text: "물부터 드세요. 천천히요." }
-      - say: { channel: action, with: [지완, 동식], text: "지완이 두 손으로 물컵을 받친다. 아버지는 한 모금 삼키고, 컵 너머로 아들을 본다." }
+      - say: { channel: action, with: [지완, 동식], text: "지완이 두 손으로 물컵을 받친다. 아버지가 컵을 잡아도 놓지 못한다. 아버지는 한 모금 마시고 아들 손을 두드린다." }
       - goto: compare_readings
 
   compare_readings:
