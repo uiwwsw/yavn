@@ -13,12 +13,8 @@
   },
   "rewrites": [
     {
-      "source": "/",
-      "destination": "https://yavn.movvcorp.duckdns.org/"
-    },
-    {
-      "source": "/:path*",
-      "destination": "https://yavn.movvcorp.duckdns.org/:path*"
+      "source": "/(.*)",
+      "destination": "https://yavn.movvcorp.duckdns.org/$1"
     }
   ]
 }
