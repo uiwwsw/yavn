@@ -648,7 +648,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "접수증 위에 놓인 연필을 보고 나도 모르게 손을 등 뒤로 뺐다."
+          text: "접수증 위에 연필이 놓여 있다. 주차장에서 광철에게 뻗었던 손을 등 뒤로 감춘다."
       - wait: 0
       - wait: 0
       - wait: 0
@@ -748,10 +748,10 @@ scenes:
           with: []
           text: "재생 막대를 옮겨 두 사람이 다가오는 구간을 고른다. 한 사람의 걷는 모습이 낯익다."
       - say:
-          channel: thought
+          channel: action
           with: []
-          text: "재생 막대를 옮기자 같은 차 문이 한 번 더 열린다."
-          continueLabel: "두 사람이 나온 구간을 비운다"
+          text: "두 사람이 잡힌 구간을 잘라 낸다. 다시 재생하니 차 문만 열리고 닫힌다."
+          continueLabel: "저장 결과를 확인한다"
       - say:
           channel: system
           with: []
@@ -832,7 +832,7 @@ scenes:
           char: 은숙
           when: { var: t_pencil, op: eq, value: true }
           with: [해수]
-          text: "그린마트 거 아니래요."
+          text: "어느 마트 것인지 확인할 수 없대요."
       - say:
           char: 은숙
           when: { var: t_pencil, op: eq, value: true }
@@ -1001,7 +1001,7 @@ scenes:
       - say:
           char: 해수
           with: [지영]
-          text: "…아니, 아직 안 먹었어요. 조사 끝나면 먹으려고 했는데."
+          text: "…아니, 아직 안 먹었어요. 아까 형사님 다녀가셔서 정신이 없었어요."
       - say:
           char: 지영.worried
           motion: headtilt

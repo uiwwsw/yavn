@@ -86,7 +86,7 @@ it('keeps the android’s manual and promise quotations intact', () => {
       .map(({ text }) => String(text)));
   expect(robotLines.filter((line) => (line.match(/'/g)?.length ?? 0) % 2)).toEqual([]);
   expect(robotLines).toEqual(expect.arrayContaining([
-    "'처음 켜면 이름을 입력하세요.'",
+    expect.stringContaining("'처음 켜면 이름을 입력하세요.'"),
     "'2P는 컨트롤러를 따로 구입하세요.'",
     "'추운 곳에서는 건전지가 빨리 닳습니다.'",
     "'전원을 끄기 전에 반드시 저장하세요.'",

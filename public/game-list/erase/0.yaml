@@ -12,7 +12,7 @@ scenes:
       - bg: { id: surgery, transition: cut }
       - music: cold_room
       - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요. 괜찮으시면 여기 서명해 주세요.", continueLabel: "동의서에 서명한다" }
-      - say: { channel: action, with: [], sound: consent_pen, text: "펜을 쥔 손이 떨린다. 나는 동의서 아래에 이름을 쓴다." }
+      - say: { channel: action, with: [], sound: consent_pen, text: "펜을 쥔 손이 떨린다. 동의서에 이름을 쓰고 끝에 작은 점을 찍는다." }
       - bg: { id: consent_turn, transition: cut }
       - say: { char: 의사, with: [], text: "이제 눈 감으세요." }
       - bg: { id: eyes_closed, transition: dissolve, duration: 520 }
@@ -38,7 +38,7 @@ scenes:
       - say: { channel: action, with: [지수, 도윤], text: "작가가 조명을 옮기러 간다. 지수가 목소리를 낮춘다." }
       - say: { char: 지수, with: [도윤], text: "식장 계약금 오늘까지잖아. 내 몫은 아침에 보냈는데, 너도 오늘 보낼 수 있어?" }
       - say: { char: 도윤, with: [지수], text: "어. 이따가." }
-      - say: { char: 지수, with: [도윤], text: "스튜디오 예약금 때도 이따가라고 하고 혼자 메웠잖아. 빠듯하면 지금 말해." }
+      - say: { char: 지수, with: [도윤], text: "스튜디오 예약금 때도 이따가라고 해서 내가 혼자 메웠잖아. 빠듯하면 지금 말해." }
       - choice:
           key: e0_studio
           prompt: "지수가 대답을 기다린다."

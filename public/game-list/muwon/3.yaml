@@ -120,15 +120,15 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "몸을 모로 돌린다. 등에 번진 붉은 얼룩을 누르자 그 자리만 하얗게 변한다."
+          text: "옷깃을 풀자 목에 깊은 끈 자국이 드러난다. 몸을 모로 돌려 등에 번진 붉은 얼룩을 누른다."
       - say:
           char: 막쇠
           with: [서연]
-          text: "어? 아직 눌리네."
+          text: "누른 데가 하얘지네. 손 떼 봐요."
       - say:
           char: 막쇠
           with: [서연]
-          text: "한나절 넘은 송장은 눌러도 이 색이 안 빠져요."
+          text: "오래된 송장에선 이렇게 쉽게 안 빠져요. 다만 여긴 추우니 때를 딱 잘라 말하긴 어렵소."
       - say:
           channel: action
           with: []
@@ -267,7 +267,7 @@ scenes:
       - say:
           char: 서연.think
           with: [도원]
-          text: "나리, 윤길이 죽은 것은 오늘 낮으로 보입니다. 시반이 아직 눌립니다."
+          text: "목에는 끈으로 조른 자국이 있습니다. 죽은 때는 오늘 낮으로 추정하지만, 추위 때문에 오차가 있을 겁니다."
       - say:
           char: 서연
           with: [도원]
@@ -292,7 +292,7 @@ scenes:
       - say:
           char: 도원
           with: [서연]
-          text: "…시장엔 오늘 낮이라 쓰겠소. 얼음지기 말은 빼고."
+          text: "…시장엔 추정한 때와 까닭을 함께 쓰겠소. 사흘 됐다는 얼음지기 말만 믿어선 안 되겠군."
       - say:
           channel: action
           with: []
@@ -414,7 +414,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상자 밑의 짚을 젖힌다. 얼음 일곱 덩이가 받쳐져 있다."
+          text: "상자 밑의 짚을 젖힌다. 약고로 가야 할 얼음 일곱 덩이가 석회 환을 받치고 있다. 가짜를 진짜 약처럼 보관했다."
       - get: fake_pill
       - get: seal_mark
       - clearSticker: { id: c4_pill, leave: fadeOut }
@@ -532,7 +532,7 @@ scenes:
       - say:
           char: 막쇠.hurt
           with: [서연]
-          text: "아가씨. 다리는 건드리지 말고, 여기 잠깐 앉아 봐요."
+          text: "다리 때문에 피하질 못했수. 아가씨, 여기 잠깐 앉아 봐요."
       - set: { makssoe_alive: false }
       - goto: c4_farewell
 
@@ -620,6 +620,7 @@ scenes:
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - mood: off
+      - say: { channel: action, with: [서연, 도원], text: "뜰 아래에 하인 하나가 묶여 있다. 정강이에 헝겊이 감겨 있다. 얼음지기가 그를 가리킨다." }
       - say:
           char: 도원.stern
           with: [서연]

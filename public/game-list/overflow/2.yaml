@@ -15,7 +15,7 @@ scenes:
       - say: { char: 수경, with: [지완], when: { var: shared_slip, op: eq, value: true }, text: "아까 접수표, 여기요. 이름은 옮겨 적지 않았어요." }
       - say: { char: 수경, with: [지완], when: { var: shared_slip, op: eq, value: false }, text: "접수표는 안 주셔도 돼요. 렌즈에 검사기만 연결할게요." }
       - say: { char: 지완, with: [수경], text: "아버지 쪽은요." }
-      - say: { char: 수경, with: [지완], text: "안 찍혀요. 지완 씨 숫자 두 개만 남아요." }
+      - say: { char: 수경, with: [지완], text: "안 찍혀요. 렌즈가 읽은 값과 화면에 뜬 값만 남아요. 아버님 모습이나 목소리는 저장 안 해요." }
       - say: { char: 수경, with: [지완], text: "화면에 뜨는 항목 보시고 누르세요." }
       - say: { channel: record, with: [], continueLabel: "내 렌즈 연결 허용", text: "검사기 연결 · 문지완의 렌즈\n저장 항목: 센서 입력값과 화면에 표시된 값\n영상 및 음성: 끔" }
       - say: { char: 수경, with: [지완], text: "저는 여기 있을게요. 오래 기다리셨잖아요. 아버님 뵙고 오세요." }
@@ -82,7 +82,7 @@ scenes:
       - clearSticker: { id: diagnosis, leave: fadeOut }
       - say: { char: 지완, with: [수경], text: "101." }
       - say: { char: 지완, with: [수경], text: "8시 14분. 아버지 옆에 있을 때예요." }
-      - say: { char: 수경, with: [지완], text: "안에서 뭘 하셨는지는 저한테 안 와요. 숫자 두 개만 왔어요." }
+      - say: { char: 수경, with: [지완], text: "검사기에는 입력 101, 화면 표시 01만 남았어요. 병실 안에서 뭘 하셨는지는 안 보이고요." }
       - say: { char: 지완, with: [수경], text: "그럼 저 무반응 아닌 거죠." }
       - say: { char: 수경, with: [지완], text: "화면이 앞자리를 잘랐다는 건 이걸로 말할 수 있어요. 지완 씨가 그때 어땠는지는 제가 못 써요." }
       - say: { char: 지완, with: [수경], text: "그건 본 사람이 있어요. 문 앞에 간호사님요." }

@@ -2,7 +2,7 @@ title: "8비트 심장"
 pov: "윤재"
 author:
   name: "uiwwsw"
-version: "1.4.0"
+version: "1.5.0"
 seo:
   description: "도시의 기계들이 한꺼번에 오작동을 일으킨다. 코어에 연결할 수 없는 중고 게임기는 살아남았다. 윤재는 그 칩을 떼어 고장 난 로봇을 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 3종."
   keywords:
@@ -29,7 +29,7 @@ startScreen:
   startButtonText: "PRESS START"
   buttonPosition: bottom-left
   eyebrow: "AI 재난 이후 · 생존극 · 5장 · 결말 3종"
-  subtitle: "3만 2천 원짜리 게임기는 아직 켜진다. 윤재가 그 칩을 로봇에 꽂자 가슴 화면에 글자가 뜬다. …8KB?"
+  subtitle: "코어에 연결되지 않는 낡은 게임기는 아직 켜진다. 윤재가 그 칩을 로봇에 꽂자 가슴 화면에 글자가 뜬다. …8KB?"
   scene:
     layout: split
     motion: drift
@@ -57,7 +57,7 @@ endings:
     tone: tragic
   off_screen:
     title: "화면 밖으로"
-    message: "코어는 아직 깨어 있다. 둘은 도시를 등지고 걷는다. 배터리 한 칸, 깜빡깜빡."
+    message: "코어는 아직 깨어 있다. 둘은 도시를 등지고 걷는다. 남은 배터리 표시가 깜빡인다."
     epilogue: "TO BE CONTINUED? — 참치마요를 찾아서."
     background: ruined_street
     music: chip_run

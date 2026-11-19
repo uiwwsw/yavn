@@ -83,7 +83,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "보건소 말고는 병원에 연락한 적이 없는데."
+          text: "새벽에 상담 창을 열었던 건 기억난다. 예약까지 눌렀던가."
       - say: { channel: record, with: [], text: "예약자 메모 · 토요일 전에 상담받을 수 있나요? 전화 말고 문자로 부탁드립니다." }
       - say: { channel: thought, with: [], text: "‘마음 바뀌셨으면 지금 말씀하셔도 돼요.’ 누가 한 말이더라." }
       - say: { char: 도윤.hollow, motion: shiver, with: [], delivery: whisper, text: "여기 처음 예약하는 거잖아." }
@@ -105,16 +105,16 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "토요일 밤엔 거실 소파에 셔츠도 안 갈아입고 누웠다. 그건 기억난다."
+          text: "토요일 밤에 소파에 누워 휴대폰을 켰다. 지수 방에 불이 꺼진 뒤였다."
       - say:
           channel: thought
           with: []
-          text: "그다음은 일요일 저녁, 다리미 앞이다. 그사이가 없다."
+          text: "없던 일로 만들 수 있느냐고 검색했다. 그때 연 상담 창에 이 로고가 있었다."
       - say:
           char: 도윤
           with: []
           delivery: whisper
-          text: "…술도 안 마셨는데."
+          text: "…내가 예약한 거네."
       - say:
           channel: action
           with: []
@@ -126,7 +126,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "회원 가입 · 2016. 3.\n상담 이력 · 2건"
+          text: "회원 가입 · 2016. 3.\n방문·예약 내역 · 2건"
       - say:
           char: 도윤.panic
           motion: startle
@@ -165,7 +165,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_search, op: eq, value: false }
-          text: "보건소에 갔던 길은 기억나는데, 이 병원은 어떻게 찾아냈는지 모르겠다."
+          text: "이번엔 검색하다 들어왔지만, 2016년에는 어떻게 이 병원을 찾았을까."
       - say:
           channel: action
           with: []
@@ -173,7 +173,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "ERASE 동의서 · 시술은 이미 작성된 메시지와 사진을 삭제하지 않습니다."
+          text: "ERASE 시술 안내 · 본인의 기억을 지웁니다. 타인의 기억과 기기 속 메시지·사진은 바뀌지 않습니다."
       - say:
           char: 도윤
           with: []
@@ -342,7 +342,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "2016년 3월 · 시술 완료\n시술 전 기록 열람 · 본인 인증 완료"
+          text: "2016년 3월 · 시술 완료\n시술 전 동의서 열람 · 본인 인증 완료"
       - wait: 0
       - goto: harin_morning
 
@@ -418,7 +418,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "사진 1,204장을 백업하시겠습니까?\n아니오 — 이 기기에만 보관됩니다."
+          text: "선택한 사진을 모두 삭제했습니다\n남은 사진 1장"
       - say:
           char: 하린.blank
           with: []
@@ -427,7 +427,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "하린은 사진첩을 끝까지 내려간다. 맨 아래 한 장에서 멈춘다."
+          text: "하린은 남겨 둔 한 장을 연다. 미끄럼틀 위에서 웃고 있는 어린 자기다."
       - sticker:
           id: e4_slide
           image: child_photo_sticker
@@ -477,7 +477,7 @@ scenes:
       - char: { id: 하린, position: center }
       - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요." }
       - say: { char: 하린, with: [], delivery: whisper, text: "전학도 생각했어요. 근데 거기 가서도 아침마다 애들 톡부터 볼 것 같아서요." }
-      - say: { channel: action, with: [하린], sound: consent_pen, text: "하린은 소매로 손바닥을 닦는다. 동의서 맨 아래에 ‘유하린’이라고 쓴다." }
+      - say: { channel: action, with: [하린], sound: consent_pen, text: "하린은 소매로 손바닥을 닦는다. 동의서에 ‘유하린’이라고 쓰고 끝에 작은 점을 찍는다." }
       - say: { char: 하린, with: [], text: "가방에 휴대폰 있어요. 사진 한 장 남겨 놨는데, 그건 버리지 말아 주세요." }
       - say: { char: 의사, with: [], text: "네. 소지품에 손대지 않아요." }
       - bg: { id: surgery_reveal, transition: dissolve, duration: 760 }
@@ -506,7 +506,7 @@ scenes:
           char: 도윤
           with: []
           delivery: whisper
-          text: "…린 자 받침을 나처럼 써."
+          text: "이름 끝에 점을 찍었네. 나도 늘 여기 찍는데."
       - say:
           channel: thought
           with: []
@@ -545,7 +545,7 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: false }
-          text: "단톡방에 쓰려다 지운 문장이 하나 있었다. 보내지는 않았다."
+          text: "그날 본 일을 단톡방에 보내지는 않았다. 아는 척하며 떠들고 싶진 않았다."
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: false }
@@ -714,7 +714,7 @@ scenes:
           with: []
           text: "마음 바뀌셨으면 지금 말씀하셔도 돼요."
           continueLabel: "동의서에 서명한다"
-      - say: { channel: action, with: [], sound: consent_pen, text: "이번에는 펜을 쥔 손이 떨리지 않는다. 도윤은 자기 이름을 끝까지 적는다." }
+      - say: { channel: action, with: [], sound: consent_pen, text: "이번에는 펜을 쥔 손이 떨리지 않는다. 도윤은 이름을 적고 끝에 작은 점을 찍는다." }
       - bg: { id: surgery_reveal, transition: dissolve, duration: 760 }
       - say:
           char: 도윤
@@ -724,7 +724,7 @@ scenes:
       - say:
           char: 의사
           with: []
-          text: "예전 기록은 진료실에선 볼 수 없어요."
+          text: "그때 상담에서 하신 말씀까지 남아 있지는 않아요."
       - say:
           char: 의사
           with: []
@@ -875,7 +875,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "지갑 카드 칸 맨 안쪽, 영수증 뒤에서 번호표를 꺼낸다. 접힌 자리가 하얗다."
+          text: "목요일 아침, 지갑 안쪽에서 번호표를 꺼낸다. 지난주부터 접어 둔 자리가 하얗다."
       - say:
           channel: system
           with: []

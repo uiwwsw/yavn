@@ -33,7 +33,7 @@ assets:
     void_light: false
     void_near: false
     jemulpo_yard: "제물포 객주 마당"
-    jemulpo_room: "제물포 셋방"
+    jemulpo_room: "제물포 · 방 안"
     busan_market: "부산 국제시장"
     market_fire: "부산 국제시장"
     busan_shack: "영주동 판잣집"
@@ -42,7 +42,7 @@ assets:
     glass_visit: "김포 요양병원"
     glass_visit_talk: "김포 요양병원"
     glass_visit_hung: "김포 요양병원"
-    hangang_night: "동호대교 아래 둔치"
+    hangang_night: "잠실대교 아래 둔치"
     edit_room: "상암동 편집실"
     interview_room: "인터뷰 장소"
     window_dawn: "요양 병동"

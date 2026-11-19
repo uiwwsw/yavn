@@ -372,7 +372,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "최근 항목 · 맨 아래로 이동\n2016년 3월 — 사진 1,204장\n그 아래 1장 · 날짜 정보 없음"
+          text: "최근 항목 · 맨 아래로 이동\n가장 오래된 사진 · 2016년 3월\n그 아래 1장 · 날짜 정보 없음"
       - choice:
           key: e2_photo
           prompt: "손가락이 휴지통 아이콘 바로 위에 멈춘다."
@@ -529,7 +529,7 @@ scenes:
       - say:
           char: 아진
           with: [하린]
-          text: "하린아, 그 나비 핀 안 꽂아도 돼. 수행평가 그냥 사진으로 내도 된대, 아까 쌤이 그랬어."
+          text: "하린아, 나비 표본 그만 만들어도 돼. 수행평가는 사진으로 내도 된대, 아까 쌤이 그랬어."
       - say:
           char: 하린.blank
           with: [아진]
@@ -593,7 +593,7 @@ scenes:
       - say:
           char: 하린.blank
           with: [아진]
-          text: "…핀 좀 줘. 날개 쪽."
+          text: "…그 핀 좀 줘. 날개만 고정하면 다 돼."
       - emote: { id: 하린, motion: droop, wait: true }
       - move: { id: 아진, style: reset }
       - clearSticker: { id: e3_butterfly, leave: fadeOut }
@@ -773,7 +773,7 @@ scenes:
           when: { var: went_to_clinic, op: eq, value: false }
           with: [도윤]
           text: "다시 가. 이번엔 들어가."
-      - say: { char: 지수, with: [도윤], text: "청첩장 백오십 장은 나랑 세어 놓고, 이 얘기는 언제 하려고 했어?" }
+      - say: { char: 지수, with: [도윤], text: "청첩장 몇 장 찍을지는 나랑 의논하면서, 이 얘기는 언제 하려고 했어?" }
       - say: { char: 도윤.hollow, with: [지수], text: "…말하면 끝날까 봐. 하루만, 하루만 했어." }
       - say: { char: 지수, with: [도윤], text: "나 오늘 그 옷 입고 너 나오면 뭐라고 할지 연습했어. 직원이 예쁘다고 해 주더라.", wait: 550 }
       - say: { char: 도윤, with: [지수], text: "미안해." }

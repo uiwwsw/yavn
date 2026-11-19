@@ -185,7 +185,7 @@ describe('8비트 심장', () => {
     expect(morning.state.inventory.console_cheap).toBeFalsy();
     expect(morning.shown).not.toContain('55,000원입니다.');
 
-    const notice = await play(route, state => state.dialog.fullText.includes('현관에 뭔가 놓였습니다'));
+    const notice = await play(route, state => state.dialog.fullText.includes('현관에 신문지로 싼 물건이 놓였어요'));
     expect(notice.state.inventory.console_cheap).toBeFalsy();
 
     const unpacked = await play(route, state => state.dialog.fullText === '신문지가 뭔가요?');
@@ -222,7 +222,7 @@ describe('8비트 심장', () => {
     const run = await play({
       b0_buy: CHEAP,
       b1_haru: '신문지가 뭔지 설명한다',
-      b1_home: '침대||책상 위||켜진 모니터||가방을 메고 나간다',
+      b1_home: '침대||책상 위||수리용 단말||가방을 메고 나간다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
@@ -234,7 +234,7 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(true);
     expect(heard(run.shown, '걔가 마지막으로 배운 게 신문지 세 겹')).toBe(true);
     // The three things he looked at on the third morning come back in chapter 3.
-    expect(heard(run.shown, '이 게임기는 엄마가 사 준 거야')).toBe(true);
+    expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(true);
     expect(heard(run.shown, '아빠가 그냥 안 받는 거면 좋겠어')).toBe(true);
     expect(heard(run.shown, '천장에 하루 스피커 자국')).toBe(true);
     // Chapter 2 asked "믿어도 됨?" and got "아니." Chapter 4 answers it the other way.
@@ -266,15 +266,21 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(true);
     expect(heard(run.shown, '…가자. 멀리 안 갈 거니까.')).toBe(true);
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
-    expect(heard(run.shown, '이 게임기는 엄마가 사 준 거야')).toBe(false);
+    expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
     expect(heard(run.shown, '그거 좋은 뜻이라며.')).toBe(true);
     expect(heard(run.shown, '그럼 나한테 하는 말도 욕임?')).toBe(false);
-    const warning = run.shown.findIndex(text => text.includes('재가동하려면 최고 점수를 지워야 한다'));
+    const warning = run.shown.findIndex(text => text.includes('카드를 준비하면 최고 점수는 지워진다'));
     expect(warning).toBeGreaterThan(-1);
     expect(run.shown.findIndex(text => text.includes('HI-SCORE 0999990 — 삭제됨'))).toBeGreaterThan(warning);
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
+    expect(run.state.resolvedEndingId).toBe('new_game');
+    const rebootLines = run.state.storyLog.flatMap(entry =>
+      entry.kind === 'dialogue' && entry.sceneId === 'b4_return_new' ? [entry.text] : []);
+    const rescan = rebootLines.findIndex(text => text.includes('가방에서 설명서를 꺼내'));
+    expect(rescan).toBeGreaterThan(-1);
+    expect(rebootLines.findIndex(text => text.includes('설명서엔'))).toBeGreaterThan(rescan);
     expect(heard(run.shown, '아껴 둔 복숭아도 다음 날 아침에 다 먹었고')).toBe(true);
   });
 });
@@ -296,7 +302,7 @@ describe('ERASE', () => {
     expect(useVNStore.getState().dialog.continueLabel).toBe('동의서에 서명한다');
 
     const { state, shown } = await play({}, state => state.currentSceneId === 'studio');
-    expect(heard(shown, '동의서 아래에 이름을 쓴다')).toBe(true);
+    expect(heard(shown, '동의서에 이름을 쓰고 끝에 작은 점을 찍는다')).toBe(true);
     expect(shown).toContain('결혼식 4주 전 · 청첩장 촬영');
     expect(heard(shown, '휴대전화는 돌려')).toBe(false);
     const revealed = resolvePlayerName(state.game, state.currentSceneId, state.routeVars);
@@ -365,7 +371,7 @@ describe('ERASE', () => {
       entry.kind === 'dialogue' && entry.sceneId === 'search' && entry.text === '안 와?')).toHaveLength(1);
     // 하린 sent the message she usually deletes, so 아진 brings it up eleven years earlier.
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(true);
-    expect(run.shown).toContain('나도 봤는데ㅋㅋ 나도 껴줘');
+    expect(run.shown).toContain('나도 듣고 있는데ㅋㅋ 나도 껴줘');
     expect(run.shown).not.toContain('2016년 3월 아래 · 항목 없음');
     expect(run.shown).toContain('청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아.');
     const invitation = run.shown.findIndex(line => line.startsWith('식탁 한쪽에 사진관에서 고른 청첩장'));
@@ -446,7 +452,7 @@ describe('튜토리얼', () => {
     expect(run.state.storyLog.some(entry => entry.kind === 'dialogue' && entry.channel === 'message' && entry.thread === '상혁 어머니')).toBe(true);
   });
 
-  it('cuts the local fan and screen on confirmation and restores a dark, quiet save', async () => {
+  it('ends only the selected user session and preserves the other connections on save restore', async () => {
     await start('tutorial');
     const route = {
       ...honestRoute,
@@ -463,9 +469,9 @@ describe('튜토리얼', () => {
     expect(before.state.currentMusic).toContain('/fan_idle.flac');
     expect(before.state.background).toContain('/server_room.svg');
 
-    const after = await play(route, state => state.dialog.fullText.startsWith('모니터가 꺼진다.'));
-    expect(after.state.background).toContain('/server_room_off.svg');
-    expect(after.state.currentMusic).toBeUndefined();
+    const after = await play(route, state => state.dialog.fullText.startsWith('화면에서 내 번호가 사라진다.'));
+    expect(after.state.background).toContain('/server_room.svg');
+    expect(after.state.currentMusic).toContain('/fan_idle.flac');
 
     await vi.advanceTimersByTimeAsync(1000);
     expect(saveCurrentProgress().exists).toBe(true);
@@ -473,9 +479,9 @@ describe('튜토리얼', () => {
     await vi.advanceTimersByTimeAsync(3000);
     expect(await loaded).toBe(true);
     expect(useVNStore.getState()).toMatchObject({
-      background: expect.stringContaining('/server_room_off.svg'),
-      currentMusic: undefined,
-      dialog: { fullText: expect.stringContaining('팬이 느려지다 멎는다.') },
+      background: expect.stringContaining('/server_room.svg'),
+      currentMusic: expect.stringContaining('/fan_idle.flac'),
+      dialog: { fullText: expect.stringContaining('팬은 계속 돈다.') },
     });
 
     const end = await play({});
@@ -569,7 +575,7 @@ describe('오버플로', () => {
       '보호자 재확인 · 문지완',
       '센서 입력 101 → 표시 01\n화면 판정',
       '두 번 다 제가 본 건 확인서에 적어 드릴게요',
-      '99를 넘을 때는 확인도 안 해 놓고 사인했어요',
+      '세 자리 값이 들어올 때는 시험도 안 해 보고 통과시켰어요',
       '아까 저 앉혀 주셨잖아요',
       '저도 같이 내도 될까요?',
       '공동 이의신청 접수',
@@ -629,7 +635,7 @@ describe('오버플로', () => {
     });
     finished(run);
     expect(run.state.resolvedEndingId).toBe('one_file');
-    const oldSlip = run.shown.findIndex(text => text.includes('결과지를 나란히 놓는다'));
+    const oldSlip = run.shown.findIndex(text => text.includes('결과지를 나란히 놓고'));
     expect(oldSlip).toBeGreaterThan(-1);
     expect(run.shown[oldSlip + 1]).toContain('‘무반응 의심’ 판정 철회');
     expect(run.shown[oldSlip + 1]).not.toContain('101');

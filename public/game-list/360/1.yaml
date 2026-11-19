@@ -32,7 +32,7 @@ scenes:
       - say: { char: 복례, with: [순임], text: "순임아." }
       - say: { char: 복례, with: [순임], text: "좋은 자리야. 잘 써." }
       - move: { id: 복례, style: exit }
-      - say: { channel: action, with: [], text: "복례 아주머니가 짐을 들고 길목으로 간다. 한 번도 돌아보지 않았다." }
+      - say: { channel: action, with: [], text: "복례가 짐을 들고 길목으로 간다. 나는 새 좌판에 물건을 올리며 그쪽을 보지 않으려 했다." }
       - goto: stall
 
   stall:
@@ -40,7 +40,7 @@ scenes:
     actions:
       - char: { id: 순임, position: left }
       - char: { id: 기호, position: right }
-      - say: { char: 기호, with: [순임], text: "오늘은 초콜릿도 있소. 영호가 어제 내 주머니부터 뒤지더군." }
+      - say: { char: 기호, with: [순임], text: "미군 부대에서 초콜릿도 가져왔소. 영호가 어제 내 주머니부터 뒤지더군." }
       - say: { char: 순임, with: [기호], text: "초콜릿은 됐어요. 애 이 썩어요." }
       - say: { char: 기호, with: [순임], text: "아이고." }
       - say: { char: 기호, with: [순임], motion: laugh, text: "좌판에 내놓으라고 가져온 거요. 영호 몫은 내가 따로 챙겼고." }
@@ -59,7 +59,7 @@ scenes:
           channel: thought
           with: []
           when: { var: t_say, op: eq, value: true }
-          text: "말하고 나서야 옆 좌판에 사람 있는 게 보인다. 어려서부터 꼭 이랬다."
+          text: "목소리가 컸다. 옆 좌판 사람들이 돌아본다. 부대 물건을 판다는 말을 길에서 해 버렸다."
       - say:
           channel: action
           with: []
@@ -96,16 +96,16 @@ scenes:
       - say: { char: 기호, with: [영호, 순임], text: "옜다. 이건 아저씨가 주는 거다. 엄마한텐 비밀이고." }
       - say: { char: 순임, with: [기호], text: "제 앞에서 주면서 무슨 비밀이에요." }
       - say: { char: 기호, with: [순임], text: "허허." }
-      - say: { char: 기호, with: [순임], text: "그건 그렇고, 서울 수복된 지가 언젠데 아직 여기서 좌판을 하오. 명동에 점방 자리가 났어." }
+      - say: { char: 기호, with: [순임], text: "그건 그렇고, 서울에 다시 장사하는 사람들이 많아졌소. 명동에 작은 가게가 하나 났어." }
       - say: { char: 기호, with: [순임], text: "곗돈 받은 걸로 시작할 만해요. 방도 붙어 있어. 영호는 골목에서 안 재워도 되고." }
-      - say: { char: 기호, with: [순임], text: "가 봅시다. 도강증은 내가 알아볼게. 아주머니 혼자 보내겠다는 거 아니오." }
+      - say: { char: 기호, with: [순임], text: "그 가게 계약금부터 보내 놓읍시다. 한강 건널 통행증도 내가 알아볼게. 나도 같이 갈 거요." }
       - goto: heart_choice
 
   heart_choice:
     actions:
       - choice:
           key: l2_heart
-          prompt: "기호가 좌판에 팔꿈치를 대고 웃는다."
+          prompt: "기호가 가게를 잡아 두려면 곗돈을 먼저 달라고 한다."
           char: 기호
           with: [기호]
           options:
@@ -156,7 +156,7 @@ scenes:
       - sticker: { id: receipt, image: receipt_sticker, x: 50, y: 32, width: "clamp(160px, 22%, 300px)", enter: fadeIn, inputLockMs: 300 }
       - say: { channel: record, with: [], text: "영수증. 일금 삼백오십만 원정. 단기 4285년 12월 9일. 영수인 최기호 (인)" }
       - clearSticker: { id: receipt, leave: fadeOut }
-      - say: { char: 순임, with: [기호], text: "됐어요. 도강증은 언제 돼요?" }
+      - say: { char: 순임, with: [기호], text: "됐어요. 한강 건널 통행증은 언제 받아요?" }
       - say: { char: 기호, with: [순임], text: "정월 안에. 믿으시오." }
       - goto: shack
 
@@ -203,7 +203,7 @@ scenes:
       - say: { channel: thought, with: [], text: "영호 손을 놓지 못한 채 다른 손으로 치맛자락만 움켜쥐었다." }
       - say: { char: 영호, with: [순임], delivery: shout, text: "엄마, 보따리! 좌판 밑에!" }
       - say: { char: 순임, with: [영호], text: "두고 와. 손 놓지 마." }
-      - say: { channel: thought, with: [], text: "이태를 안 풀었던 것이 그 밤에 없어졌다. 안에 뭐가 있었는지는 끝까지 모른다." }
+      - say: { channel: thought, with: [], text: "보따리는 어머이와 함께 꾸린 뒤 한 번도 풀지 않았다. 이젠 열어 볼 수도 없다." }
       - say: { channel: record, with: [], text: "부산 국제시장. 단기 4286년 1월 30일 밤 화재. 점포 수천 호 소실. 사망 및 행방불명 다수." }
       - mood: off
       - bg: { id: busan_shack, transition: fade, duration: 1000 }
@@ -222,7 +222,7 @@ scenes:
           char: 순임
           with: [영호]
           when: { var: l2_told, op: eq, value: true }
-          text: "…말끝을 또렷하게 하는 사람이었는데."
+          text: "…영호 앞에서도 같이 간다고 했는데."
       - say:
           char: 순임
           with: [영호]
@@ -256,7 +256,7 @@ scenes:
           prompt: "서울 가는 기차는 다섯 시다. 영호는 신을 신고 문간에 서 있다."
           with: [시어머니]
           options:
-            - text: "어머니를 모시고 간다."
+            - text: "어머니에게 함께 가자고 설득한다."
               saveText: "어머이를 일으킨다. 업고라도 같이 간다고 한다."
               goto: mother_try
             - text: "쌀값을 두고 영호와 떠난다."
@@ -367,7 +367,7 @@ scenes:
       - say: { channel: narration, text: "거기 서는 사람이 꼭 나였어야 했나." }
       - say: { channel: narration, text: "미안하다고. 한마디." }
       - say: { channel: narration, text: "그 밤에 비어 있던 손." }
-      - say: { channel: narration, text: "내가 먼저 뛰어갔으면 아이들은 나왔겠지. 옆 좌판 최 씨도 들어갈 일 없었을 테고." }
+      - say: { channel: narration, text: "최 씨는 아이들을 데리고 나오고 못 돌아왔다. 나는 영호 손만 붙들고 서 있었다." }
       - say: { channel: narration, text: "초콜릿 하나만, 하던 애였다. 그 밤 뒤로는 뭘 사 달란 적이 없다." }
       - say: { channel: narration, text: "휴강이라고 했다. 아닌 줄 알면서 등록금 얘기를 했다." }
       - say: { channel: narration, when: { var: l2_asked, op: eq, value: true }, text: "어머이한테 한 번만 더 같이 가자고 할걸. 기차 시간이 좀 남았었는데." }

@@ -1012,15 +1012,13 @@ def props():
     sketch.append('</g>')
     write('items', 'sketch', sketch, width=400, height=400)
 
-    globe = [circle(200, 200, 150, '#f3efe2'), circle(200, 200, 126, 'none', ' stroke="#2c2a27" stroke-width="3.4"')]
-    for ry in (40, 84):
-        globe.append(ellipse(200, 200, 126, ry, 'none', ' stroke="#2c2a27" stroke-width="1.8" opacity="0.7"'))
-    for rx in (46, 92):
-        globe.append(ellipse(200, 200, rx, 126, 'none', ' stroke="#2c2a27" stroke-width="1.8" opacity="0.7"'))
-    globe.append(line(200, 66, 200, 334, '#2c2a27', 1.8))
-    globe.append(circle(262, 148, 8, '#c8442f'))
-    globe.append(circle(274, 154, 4, 'none', ' stroke="#c8442f" stroke-width="2"'))
-    globe.append(path('M282 140 q30 -30 62 -24', 'none', ' stroke="#c8442f" stroke-width="2.4" stroke-linecap="round"'))
+    # A direction on a circle matches the teacher's account; this is not a globe coordinate.
+    globe = [circle(200, 200, 150, '#f0ead7'), circle(200, 200, 126, 'none', ' stroke="#332f2a" stroke-width="3.4"')]
+    globe.append(line(200, 200, 326, 200, '#332f2a', 1.8, ' opacity="0.5"'))
+    globe.append(line(200, 200, 308, 135, '#b64c37', 2.4))
+    globe.append(path('M244 200 A44 44 0 0 0 238 177', 'none', ' stroke="#b64c37" stroke-width="1.8"'))
+    globe.append(circle(200, 200, 4, '#332f2a'))
+    globe.append(circle(308, 135, 8, '#b64c37'))
     write('items', 'globe', globe, width=400, height=400)
 
 

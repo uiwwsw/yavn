@@ -20,7 +20,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "표시판에 026. 대기 한 명."
+          text: "고객센터 창구에 앉아 호출 버튼에 손을 얹는다. 표시판에는 026. 기다리는 손님은 한 명이다."
           continueLabel: "027번을 호출한다"
       - set: { t0_refund_first: true }
       - goto: ticket
@@ -458,7 +458,7 @@ scenes:
       - say:
           char: 광철
           with: [해수]
-          text: "내일도 여기 앉아 있지? 내일 또 와."
+          text: "내일도 여기 앉아 있지? 나 내일 또 와."
       - say:
           char: 해수.service
           motion: bow

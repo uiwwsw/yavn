@@ -211,7 +211,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "다른 세션에는 가입 경로가 나오는데 맨 위 0001만 미등록이다."
+          text: "바로 아래 세션에는 가입 경로가 있는데 맨 위 0001만 미등록이다."
       - say:
           channel: record
           with: []
@@ -223,7 +223,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "0002에는 가입한 날과 넘기기 기록이 있다. 0001의 날짜를 읽자 첫 유니폼을 받던 사무실이 생각난다."
+          text: "0002는 베타 가입, 0003은 튜토리얼 넘기기. 그보다 훨씬 위의 0001 날짜를 읽자 첫 출근 날이 생각난다."
       - goto: log_steps
 
   log_steps:
@@ -801,13 +801,12 @@ scenes:
           with: []
           text: "다른 사용자의 연결은 유지됩니다."
           continueLabel: "0001번 세션을 종료한다"
-      - bg: { id: server_room_off, transition: cut }
-      - music: null
+      - bg: { id: server_room, transition: cut }
+      - music: fan_idle
       - say:
           channel: action
           with: []
-          sound: fan_stop
-          text: "모니터가 꺼진다. 팬이 느려지다 멎는다. 4월 새벽의 지하는 춥다."
+          text: "화면에서 내 번호가 사라진다. 팬은 계속 돈다. 의자를 밀고 일어서자 4월 새벽의 한기가 느껴진다."
           wait: 1000
       - say:
           channel: record

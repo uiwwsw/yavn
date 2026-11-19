@@ -240,7 +240,7 @@ scenes:
       - say:
           char: 준성
           with: [도윤]
-          text: "보고 자료 잘 받았어요. 3페이지 숫자 두 개만 내일 다시 봐 줘요, 합계가 4페이지랑 안 맞아서."
+          text: "자료 잘 받았어요. 합계가 안 맞는 데가 있던데 내일 같이 봐요."
       - say:
           char: 도윤
           with: [준성]
@@ -323,7 +323,7 @@ scenes:
       - say:
           char: 준성.tired
           with: [도윤]
-          text: "3페이지 숫자, 내일 그것만 고쳐 줘요."
+          text: "보내 주신 자료, 내일 그것만 고쳐 줘요."
       - say:
           channel: system
           with: []
