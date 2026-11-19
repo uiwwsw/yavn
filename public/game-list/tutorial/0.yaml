@@ -22,6 +22,7 @@ scenes:
           with: []
           text: "고객센터 창구에 앉아 호출 버튼에 손을 얹는다. 표시판에는 026. 기다리는 손님은 한 명이다."
           continueLabel: "027번을 호출한다"
+          at: { x: 63, y: 60 }
       - set: { t0_refund_first: true }
       - goto: ticket
 
@@ -317,6 +318,7 @@ scenes:
           with: [광철]
           text: "환불하려면 영수증을 찍어야 해서요."
           continueLabel: "영수증을 찍는다"
+          at: { x: 59, y: 61 }
       - sound: snap
       - effect: focus
       - say:

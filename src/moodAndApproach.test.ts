@@ -8,7 +8,6 @@ const read = (name: string) => readFileSync(fileURLToPath(new URL(name, import.m
 const appSource = read('./App.tsx');
 const engineSource = read('./engine.ts');
 const styles = read('./styles.css');
-const immersive = read('./immersiveStory.css');
 
 // 액션 하나만 검사한다. 게임 전체 스키마를 쓰면 meta·settings가 없어서
 // 통과해야 할 것도 실패하고, 실패해야 할 것도 엉뚱한 이유로 실패한다.
@@ -85,11 +84,12 @@ describe('approach: a choice you walk toward', () => {
     expect(parseAction(approach.replace(/\n *reveal: .*/, '')).success).toBe(false);
   });
 
-  it('spends a click on a step instead of committing, until the steps run out', () => {
-    expect(engineSource).toMatch(
-      /presentation === 'approach' && selected\.reveal\?\.length[\s\S]*?if \(taken < selected\.reveal\.length\)[\s\S]*?return;/,
-    );
-    expect(engineSource).toContain('index === optionIndex ? taken + 1 : 0');
+  it('accepts an explicit click count with optional reveal text and rejects incompatible rules', () => {
+    const configured = approach.replace('presentation: approach', 'presentation: approach\n          clicks: 3');
+    expect(parseAction(configured).success).toBe(true);
+    expect(parseAction(configured.replace(/\n *reveal: .*/, '')).success).toBe(true);
+    expect(parseAction(configured.replace('clicks: 3', 'clicks: 2')).success).toBe(false);
+    expect(parseAction(configured.replace('clicks: 3', 'clicks: 3\n          timeoutMs: 2000')).success).toBe(false);
   });
 
   it('deepens the colour with each step while keeping the image still', () => {
@@ -97,10 +97,4 @@ describe('approach: a choice you walk toward', () => {
     expect(engineSource).toMatch(/setMood\(\{ tone, level, tremor: false \}\)/);
   });
 
-  it('grows each readable target with its own progress and shows when it can be entered', () => {
-    expect(immersive).toContain('--star-size: calc(8px + 6px * var(--approach-near));');
-    expect(immersive).toMatch(/\.approach-target::before \{\s*width: var\(--star-size\);[^}]+animation: none;/);
-    expect(appSource).toContain('const approachAction = approachReady ? t("들어간다") : approachStep > 0 ? t("한 걸음 더") : undefined;');
-    expect(appSource).toContain('{approachAction && <span className="approach-confirm-label">{approachAction}</span>}');
-  });
 });

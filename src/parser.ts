@@ -1133,8 +1133,8 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
       }
       for (const [actionIndex, action] of scene.actions.entries()) {
         const texts = 'say' in action ? [action.say.text]
-          : 'choice' in action ? [action.choice.prompt, ...action.choice.options.map((option) => option.text),
-            ...action.choice.options.flatMap((option) => [option.gameOver?.title, option.gameOver?.message])]
+          : 'choice' in action ? [action.choice.prompt, ...action.choice.options.flatMap((option) =>
+            [option.text, ...(option.reveal ?? []), option.gameOver?.title, option.gameOver?.message])]
             : 'input' in action ? [action.input.prompt, action.input.defaultValue]
               : 'gameOver' in action ? [action.gameOver.title, action.gameOver.message] : [];
         for (const text of texts) {

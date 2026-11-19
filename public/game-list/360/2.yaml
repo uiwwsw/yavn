@@ -370,9 +370,9 @@ scenes:
       - say: { char: 민재, with: [엄마], text: "무균실 갔다가 온다고 했어요. 저한테 그렇게 말했어요." }
       - say: { char: 엄마, with: [민재], text: "응. 수경이도 그렇게 알고 있었을 거야." }
       - say: { channel: thought, with: [], text: "누나 슬리퍼가 침대 밑에 한 짝 남아 있다. 발끝으로 끌어다 평소에 벗어 놓던 자리에 맞춘다." }
-      - say: { channel: action, with: [엄마], continueLabel: "약봉지를 펼친다", text: "엄마가 이불 위에 약봉지를 놓아 준다. 꼭대기가 반으로 접혀 있다." }
+      - say: { channel: action, with: [엄마], continueLabel: "약봉지를 펼친다", at: { x: 55, y: 67 }, text: "엄마가 이불 위에 약봉지를 놓아 준다. 꼭대기가 반으로 접혀 있다." }
       - sticker: { id: sketch, image: folded_packet_sticker, x: 50, y: 31, width: "clamp(166px, 25%, 300px)", enter: fadeIn }
-      - say: { channel: action, with: [], continueLabel: "뒷면을 본다", text: "접힌 자리를 따라 하얗게 일어난 종이 올이 손끝에 걸린다." }
+      - say: { channel: action, with: [], continueLabel: "뒷면을 본다", at: { x: 55, y: 67 }, text: "접힌 자리를 따라 하얗게 일어난 종이 올이 손끝에 걸린다." }
       - branch:
           cases:
             - when: { var: l3_went, op: eq, value: true }

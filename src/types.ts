@@ -235,6 +235,7 @@ export type SayAction = {
     camera?: CameraDirective;
     channel?: DialogueChannel;
     continueLabel?: string;
+    at?: { x: number; y: number };
     when?: ConditionNode;
     /** Plays an asset from sfx once when this line appears. */
     sound?: string;
@@ -363,7 +364,7 @@ export type ChoiceOption = {
   forgiveMessage?: string;
   /**
    * `presentation: 'approach'` only. Each line is one step closer: clicking shows the
-   * next line and stays in the choice. The option commits on the click after the last.
+   * next line and stays in the choice. By default the next click after the last line commits.
    */
   reveal?: string[];
   /** The mood this target raises as it is approached; falls back to the choice's own. */
@@ -376,6 +377,8 @@ export type ChoiceAction = {
     presentation?: 'dialogue' | 'explore' | 'approach';
     /** Place numbered targets over a cover-fitted background and list checked targets below. */
     investigation?: { width: number; height: number };
+    /** Consecutive activations of one positioned option before it commits. */
+    clicks?: number;
     evidence?: string;
     prompt: string;
     /** `approach` only: the mood tone that builds while the player closes in. */
@@ -735,7 +738,10 @@ export type InputGateState = {
 export type ChoiceGateState = {
   active: boolean;
   presentation: 'dialogue' | 'explore' | 'approach';
-  investigation?: { width: number; height: number; targets: ChoiceOption[] };
+  investigation?: { width: number; height: number };
+  spatialOptions?: ChoiceOption[];
+  clicks?: number;
+  approachBaseMood?: MoodState;
   evidence?: string;
   key: string;
   prompt: string;

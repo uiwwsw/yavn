@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getChoiceRecoverySummary, handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
+import { getChoiceRecoverySummary, handleAdvance, loadGameFromUrl, resetApproachProgress, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
 import { useVNStore } from './store';
 // The engine imports the YAML parser lazily. Load it up front so the first game load
 // does not wait on real module transformation while fake timers are advanced.
@@ -252,6 +252,32 @@ describe('360 full playthrough', () => {
     submitChoiceOption(0);
     expect(state().choiceGate.active).toBe(false);
     expect(state().routeVars.lives_done).toBe(1);
+  });
+
+  it('starts a new streak after a background tap and enters the last star on tap three', async () => {
+    localStorage.setItem('vn-engine-autosave:game:360', JSON.stringify({
+      gameTitle: '360', gameVersion: '1.4.0', savedAt: new Date().toISOString(),
+      chapterIndex: 0, chapterPath: '0.yaml', sceneId: 'stars', actionIndex: 0,
+      backgroundAssetId: 'void_light',
+      routeVars: { lives_done: 3, lived_1894: true, lived_1952: true, lived_1988: true },
+      inventory: {}, routeHistory: [], storyLog: [],
+    }));
+    await start();
+    const state = useVNStore.getState;
+    expect(state().choiceGate.options.map(option => option.text)).toEqual(['답장을 못 받은 사람']);
+    submitChoiceOption(0);
+    submitChoiceOption(0);
+    resetApproachProgress();
+    expect(state().choiceGate.approachSteps).toEqual([0]);
+    expect(state().dialog.fullText).toBe(state().choiceGate.prompt);
+    expect(state().mood).toBeUndefined();
+    submitChoiceOption(0);
+    submitChoiceOption(0);
+    expect(state().currentSceneId).toBe('stars');
+    expect(state().routeHistory).toHaveLength(0);
+    submitChoiceOption(0);
+    expect(state().currentSceneId).toBe('go_2026');
+    expect(state().routeHistory).toContainEqual(expect.objectContaining({ key: 'star', value: '답장을 못 받은 사람' }));
   });
 
   it('runs the chain in the order the dark is asked for, and looks back at the end', async () => {

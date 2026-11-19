@@ -453,16 +453,21 @@ scenes:
     actions:
       - choice:
           key: b1_home
+          presentation: explore
           prompt: "가방은 현관에 두었다. 나가기 전에 집 안을 한 번 더 볼 수 있다."
+          with: []
           camera: wide
           options:
             - text: "침대"
+              at: { x: 19, y: 93 }
               when: { var: saw_ceiling, op: eq, value: false }
               goto: b1_look_bed
             - text: "책상 위"
+              at: { x: 39, y: 88 }
               when: { var: saw_box, op: eq, value: false }
               goto: b1_look_box
             - text: "수리용 단말"
+              at: { x: 54, y: 40 }
               saveText: "켜진 채로 둔 모니터"
               when: { var: saw_dad, op: eq, value: false }
               goto: b1_look_monitor

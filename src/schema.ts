@@ -99,11 +99,13 @@ const gameOverSchema = z
   })
   .strict();
 
+const scenePointSchema = z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).strict();
+
 const choiceOptionSchema = z
   .object({
     text: z.string().min(1),
     saveText: z.string().min(1).optional(),
-    at: z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).strict().optional(),
+    at: scenePointSchema.optional(),
     when: conditionSchema.optional(),
     set: stateSetMapSchema.optional(),
     add: stateAddMapSchema.optional(),
@@ -264,6 +266,7 @@ const actionBodySchema = z.union([
         key: z.string().min(1).optional(),
         presentation: z.enum(['dialogue', 'explore', 'approach']).optional(),
         investigation: z.object({ width: z.number().positive(), height: z.number().positive() }).optional(),
+        clicks: z.number().int().min(2).max(7).optional(),
         evidence: z.string().min(1).optional(),
         mood: screenEffectNameSchema.optional(),
         prompt: z.string().min(1),
@@ -281,8 +284,8 @@ const actionBodySchema = z.union([
       })
       .superRefine((choice, ctx) => {
         const spatial = choice.presentation === 'explore' || choice.presentation === 'approach';
-        if (choice.investigation && choice.presentation !== 'explore') {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['investigation'], message: 'Investigation requires presentation: explore' });
+        if (choice.investigation && !spatial) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['investigation'], message: 'Image coordinates require presentation: explore or approach' });
         }
         if (!spatial && choice.options.some(option => option.at)) {
           ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'Positioned options require presentation: explore or approach' });
@@ -293,9 +296,28 @@ const actionBodySchema = z.union([
         if (choice.presentation !== 'approach' && choice.options.some(option => option.reveal)) {
           ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['presentation'], message: 'option.reveal requires presentation: approach' });
         }
-        if (choice.presentation === 'approach' && !choice.options.some(option => option.reveal)) {
+        if (choice.presentation === 'approach' && !choice.clicks && !choice.options.some(option => option.reveal)) {
           ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Approaching needs at least one option with reveal steps' });
         }
+        if (choice.clicks !== undefined) {
+          if (choice.presentation !== 'approach') {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['clicks'], message: 'clicks requires presentation: approach' });
+          }
+          if (choice.timeoutMs !== undefined) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['timeoutMs'], message: 'Timed choices cannot require consecutive clicks' });
+          }
+        }
+        choice.options.forEach((option, index) => {
+          if (option.reveal && !option.at) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options', index, 'at'], message: 'Reveal steps require a positioned target' });
+          }
+          if (choice.clicks !== undefined && (option.reveal?.length ?? 0) >= choice.clicks) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options', index, 'reveal'], message: 'Leave the last click for committing the option' });
+          }
+          if (choice.clicks !== undefined && option.at && (option.forgiveOnce ?? choice.forgiveOnceDefault)) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options', index, 'forgiveOnce'], message: 'Consecutive clicks already provide a confirmation step' });
+          }
+        });
         if (
           choice.timeoutOptionIndex !== undefined &&
           choice.timeoutOptionIndex >= choice.options.length
@@ -386,6 +408,7 @@ const actionBodySchema = z.union([
       camera: cameraDirectiveSchema.optional(),
       channel: dialogueChannelSchema.optional(),
       continueLabel: z.string().trim().min(1).max(60).optional(),
+      at: scenePointSchema.optional(),
       when: conditionSchema.optional(),
       sound: z.string().trim().min(1).optional(),
       text: z.string().optional(),
@@ -402,6 +425,9 @@ const actionBodySchema = z.union([
     }).refine(say => !(say.continueLabel && say.autoAdvance), {
       message: 'An explicit player action cannot auto-advance',
       path: ['continueLabel'],
+    }).refine(say => !say.at || Boolean(say.continueLabel), {
+      message: 'A positioned action requires continueLabel',
+      path: ['at'],
     }).refine(say => say.text !== undefined || say.media !== undefined, {
       message: 'a say needs text, unless it sends media',
       path: ['text'],
