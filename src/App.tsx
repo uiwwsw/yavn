@@ -5176,8 +5176,8 @@ export default function App() {
         </div>
       )}
 
-      {placeCaption?.centered && (
-        <div className="place-caption-overlay" key={placeCaption.revision} role="status">
+      {placeCaption && (placeCaption.centered || placeCaption.automatic) && (
+        <div className={`place-caption-overlay${placeCaption.automatic ? " is-automatic" : ""}`} key={placeCaption.revision} role="status">
           <span>{placeCaption.text}</span>
         </div>
       )}
@@ -5196,7 +5196,7 @@ export default function App() {
               <span className="hud-pov-name">{playerName ?? choicePlayerName}</span>
             </div>
           )}
-          {placeCaption && !placeCaption.centered && (
+          {placeCaption && !placeCaption.centered && !placeCaption.automatic && (
             <div className="place-caption" key={placeCaption.revision} role="status">{placeCaption.text}</div>
           )}
           <VersionStamp contentVersion={game?.meta.version} />

@@ -134,12 +134,19 @@ export type ScreenEffectOptions = {
 };
 
 export type BackgroundTransitionKind = 'dissolve' | 'fade' | 'wipeLeft' | 'wipeRight' | 'cut';
+export type SceneLabelOptions = boolean | {
+  name?: string | false;
+  time?: string | false;
+};
+export type BackgroundLabel = string | false | { name?: string; time?: string };
+
 export type BackgroundDirective = string | {
   id: string;
   transition?: BackgroundTransitionKind;
   duration?: number;
   wait?: boolean;
   place?: string;
+  label?: SceneLabelOptions;
 };
 export type BackgroundPresentation = {
   transition: BackgroundTransitionKind;
@@ -466,6 +473,8 @@ export type MoodState = {
 };
 
 export type Scene = {
+  /** Authored story time, inherited by subsequent backgrounds and chapters. */
+  time?: string;
   title?: string;
   pov?: string;
   layout?: CharacterLayoutMode;
@@ -588,9 +597,11 @@ export type GameData = {
     /** Deprecated: autosave is always on. Still accepted so older configs parse. */
     autoSave?: boolean;
     clickToInstant: boolean;
+    sceneLabels?: boolean;
   };
   assets: {
     backgrounds: Record<string, string>;
+    backgroundLabels?: Record<string, BackgroundLabel>;
     characters: Record<string, CharacterAssetDefinition>;
     music: Record<string, string>;
     sfx: Record<string, string>;
@@ -657,6 +668,7 @@ export type PlaceCaption = {
   text: string;
   revision: number;
   centered: boolean;
+  automatic?: boolean;
 };
 
 export type CharacterSlot = {

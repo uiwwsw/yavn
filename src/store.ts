@@ -48,6 +48,9 @@ type DialogState = {
   delivery: DialogueDelivery;
 };
 
+// Captions can be cleared and replaced in one React batch; keys must still change.
+let placeCaptionSequence = 0;
+
 type VNState = {
   game?: GameData;
   baseUrl: string;
@@ -67,6 +70,7 @@ type VNState = {
   characterStances: Record<string, CharacterStance>;
   characterMotions: Record<string, CharacterMotionState>;
   placeCaption?: PlaceCaption;
+  sceneTime?: string;
   stickers: Record<string, StickerSlot>;
   characters: Partial<Record<Position, CharacterSlot>>;
   speakerOrder: string[];
@@ -102,7 +106,8 @@ type VNState = {
   setAttack: (attack?: AttackPresentation) => void;
   setCharacterStance: (id: string, stance?: Omit<CharacterStance, 'revision'>) => void;
   setCharacterMotion: (id: string, motion?: Omit<CharacterMotionState, 'revision'>) => void;
-  setPlaceCaption: (text?: string, centered?: boolean) => void;
+  setPlaceCaption: (text?: string, centered?: boolean, automatic?: boolean) => void;
+  setSceneTime: (time?: string) => void;
   setSticker: (sticker: StickerSlot) => void;
   clearSticker: (id: string) => void;
   clearAllStickers: () => void;
@@ -297,6 +302,7 @@ export const useVNStore = create<VNState>((set) => ({
       characterStances: {},
       characterMotions: {},
       placeCaption: undefined,
+      sceneTime: game.scenes[game.script[0].scene]?.time,
       effect: undefined,
       mood: undefined,
       busy: false,
@@ -332,9 +338,10 @@ export const useVNStore = create<VNState>((set) => ({
     return { characterMotions: { ...state.characterMotions, [id]: { ...motion, revision } } };
   }),
   setResumeNotice: (resumeNotice) => set({ resumeNotice }),
-  setPlaceCaption: (text, centered = false) => set((state) => ({
-    placeCaption: text ? { text, centered, revision: (state.placeCaption?.revision ?? 0) + 1 } : undefined,
-  })),
+  setSceneTime: (sceneTime) => set({ sceneTime }),
+  setPlaceCaption: (text, centered = false, automatic = false) => set({
+    placeCaption: text ? { text, centered, automatic, revision: ++placeCaptionSequence } : undefined,
+  }),
   setSticker: (sticker) =>
     set((state) => {
       const next = reconcileSticker(state.stickers[sticker.id], sticker);
@@ -495,6 +502,7 @@ export const useVNStore = create<VNState>((set) => ({
       characterStances: {},
       characterMotions: {},
       placeCaption: undefined,
+      sceneTime: undefined,
       effect: undefined,
       mood: undefined,
       busy: false,

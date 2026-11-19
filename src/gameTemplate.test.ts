@@ -1,4 +1,4 @@
-import { readFileSync, mkdtempSync, mkdirSync, cpSync, rmSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync, mkdirSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
@@ -30,7 +30,12 @@ describe('contributor game starter', () => {
       if (!ending || !('ending' in ending)) throw new Error('Starter route needs an ending');
       expect(config.data.data.endings?.[ending.ending]).toBeDefined();
     }
-    expect(game.assets.backgrounds).toEqual({});
+    expect(game.assets.backgroundLabels?.hallway).toBe('집 복도');
+    expect(opening[0]).toEqual({ bg: 'hallway' });
+    expect(game.scenes.opening.time).toBe('오전 8시');
+    for (const asset of Object.values(game.assets.backgrounds)) {
+      expect(existsSync(join(template, asset))).toBe(true);
+    }
     expect(game.assets.characters).toEqual({});
   });
 

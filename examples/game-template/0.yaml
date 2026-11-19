@@ -4,7 +4,9 @@ script:
 scenes:
   opening:
     title: "봉투 앞에서"
+    time: "오전 8시"
     actions:
+      - bg: hallway # 자동 시간·장소 라벨; place 액션은 필요 없음
       - say: { text: "문 앞에 편지 한 장이 놓여 있었다." }
       - choice:
           key: first_letter

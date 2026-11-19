@@ -160,6 +160,15 @@
   pointer-events: none;
 }
 
+.place-caption-overlay.is-automatic {
+  inset: 14% 16px auto;
+  padding: 12px;
+}
+.place-caption-overlay.is-automatic > span {
+  max-width: min(28em, 100%);
+  font-size: clamp(16px, 2.4vw, 25px);
+}
+
 .app[data-place-caption='center'] :is(.dialog-box, .char-layer, .sticker-layer, .message-portrait) {
   opacity: 0;
   visibility: hidden;

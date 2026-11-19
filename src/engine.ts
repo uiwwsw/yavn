@@ -4,6 +4,7 @@ import { PresentationClock } from './presentationClock';
 import { collectStartSceneAssets, mapStartSceneAssets } from './startScene';
 import { CINEMATIC_SOUNDS } from './cinematicAudio';
 import { backgroundId, normalizeAttack, normalizeBackground } from './cinematic';
+import { captionContext, followingPlace, resolveSceneLabel } from './sceneLabels';
 import type JSZip from 'jszip';
 import { beginStickerLeave } from './assetTransition';
 import { resolveDeclaredChapterNumbers } from './chapterDiscovery';
@@ -203,6 +204,7 @@ type SaveProgress = {
   sceneId: string;
   actionIndex: number;
   backgroundAssetId?: string;
+  sceneTime?: string;
   routeVars: Record<string, RouteVarValue>;
   inventory: InventoryOwnedMap;
   routeHistory: RouteHistoryEntry[];
@@ -1169,6 +1171,7 @@ function clearCinematics() {
   for (const cancel of cinematicTimers.values()) cancel();
   cinematicTimers.clear();
   pendingBackground = undefined;
+  if (useVNStore.getState().placeCaption?.automatic) useVNStore.getState().setPlaceCaption();
   useVNStore.getState().setAttack(undefined);
   stopSoundEffects();
 }
@@ -1188,7 +1191,9 @@ function clearScreenEffect() {
 function clearTimers() {
   clearCinematics();
   clearScreenEffect();
-  if (useVNStore.getState().placeCaption?.centered) useVNStore.getState().setPlaceCaption();
+  if (useVNStore.getState().placeCaption?.centered || useVNStore.getState().placeCaption?.automatic) {
+    useVNStore.getState().setPlaceCaption();
+  }
   if (waitTimer) {
     storyClock.clear(waitTimer);
     waitTimer = undefined;
@@ -2444,6 +2449,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
       actionIndex?: number;
       chapterPath?: unknown;
       backgroundAssetId?: unknown;
+      sceneTime?: unknown;
       routeVars?: unknown;
       inventory?: unknown;
       routeHistory?: unknown;
@@ -2568,6 +2574,7 @@ function parseSaveProgress(raw: string | null): SaveProgress | undefined {
         typeof parsed.chapterPath === 'string'
           ? normalizeGotoChapterTarget(parsed.chapterPath) ?? normalizeChapterPathKey(parsed.chapterPath)
           : undefined,
+      ...(typeof parsed.sceneTime === 'string' && parsed.sceneTime.trim() ? { sceneTime: parsed.sceneTime } : {}),
       sceneId: parsed.sceneId,
       actionIndex: parsed.actionIndex,
       backgroundAssetId:
@@ -2771,6 +2778,7 @@ function createSaveProgress(sceneId: string, actionIndex: number): SaveProgress 
     sceneId,
     actionIndex,
     backgroundAssetId,
+    sceneTime: state.sceneTime,
     routeVars: state.routeVars,
     inventory: state.inventory,
     routeHistory: state.routeHistory,
@@ -3119,7 +3127,11 @@ function incrementCursor() {
 }
 
 function setCursor(sceneId: string, actionIndex: number) {
-  useVNStore.getState().setCursor(sceneId, actionIndex);
+  const state = useVNStore.getState();
+  if (state.currentSceneId !== sceneId && state.game?.scenes[sceneId]?.time) {
+    state.setSceneTime(state.game.scenes[sceneId].time);
+  }
+  state.setCursor(sceneId, actionIndex);
   autosaveAt(sceneId, actionIndex);
 }
 
@@ -3959,6 +3971,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
   let actionIndex = 0;
   let guard = 0;
   let musicUrl: string | undefined;
+  useVNStore.getState().setSceneTime(undefined);
 
   const setBg = useVNStore.getState().setBackground;
   const setSticker = useVNStore.getState().setSticker;
@@ -3985,6 +3998,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
     if (!scene) {
       break;
     }
+    if (actionIndex === 0 && scene.time) useVNStore.getState().setSceneTime(scene.time);
     const action = scene.actions[actionIndex];
     if (!action) {
       const orderIdx = sceneOrder.indexOf(sceneId);
@@ -3998,7 +4012,21 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
     }
 
     if ('bg' in action) {
+      const followingIndex = followingPlace(scene.actions, actionIndex);
+      const following = followingIndex === undefined ? undefined : scene.actions[followingIndex];
+      const place = typeof action.bg === 'string' ? undefined : action.bg.place;
+      const legacyText = place ?? (following && 'place' in following
+        ? typeof following.place === 'string' ? following.place : following.place.text : undefined);
+      useVNStore.getState().setSceneTime(resolveSceneLabel(game, scene, action.bg,
+        useVNStore.getState().sceneTime, legacyText).time);
       setBg(resolveAsset(chapter.baseUrl, game.assets.backgrounds[backgroundId(action.bg)]));
+      actionIndex += 1;
+      continue;
+    }
+    if ('place' in action) {
+      const text = typeof action.place === 'string' ? action.place : action.place.text;
+      const time = captionContext(text).time;
+      if (time) useVNStore.getState().setSceneTime(time);
       actionIndex += 1;
       continue;
     }
@@ -4205,6 +4233,7 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
   if (typeof savedBackgroundPath === 'string' && savedBackgroundPath.trim().length > 0) {
     setBg(resolveAsset(chapter.baseUrl, savedBackgroundPath));
   }
+  if (resume.sceneTime) useVNStore.getState().setSceneTime(resume.sceneTime);
   setMusic(musicUrl);
   playMusic(musicUrl);
 }
@@ -4240,7 +4269,10 @@ async function startChapter(chapterIndex: number, resume?: SaveProgress, fallbac
     }
     useVNStore.getState().setChapterLoading(true, 0.98, 'Preparing scene...');
 
+    const previousSceneTime = useVNStore.getState().sceneTime;
     useVNStore.getState().setGame(game, chapter.baseUrl, chapter.assetOverrides);
+    useVNStore.getState().setSceneTime(resume ? resume.sceneTime
+      : game.scenes[game.script[0].scene]?.time ?? previousSceneTime);
     const defaults = game.state?.defaults;
     const inventoryDefaults = game.inventory?.defaults;
     const currentRouteVars = useVNStore.getState().routeVars;
@@ -4603,9 +4635,23 @@ function runToNextPause(loopGuard = 0): void {
   }
 }
 
+let consumedBackgroundPlace: { game: GameData; sceneId: string; index: number } | undefined;
+
+function showAutomaticPlaceCaption(text?: string): void {
+  const state = useVNStore.getState();
+  state.setPlaceCaption(text && !state.skipReadActive ? interpolateText(text, state.routeVars) : undefined, false, true);
+  if (!state.game || !text || state.skipReadActive) return;
+  const caption = useVNStore.getState().placeCaption;
+  scheduleCinematic(() => {
+    if (useVNStore.getState().placeCaption === caption) useVNStore.getState().setPlaceCaption();
+  }, 2600, true);
+}
+
 function showPlaceCaption(text: string, centered: boolean, loopGuard: number): void {
   const state = useVNStore.getState();
   const caption = interpolateText(text, state.routeVars);
+  const time = captionContext(caption).time;
+  if (time) state.setSceneTime(time);
   if (centered) state.setVisibleCharacters([]);
   if (!centered || state.skipReadActive) {
     state.setPlaceCaption(centered ? undefined : caption);
@@ -4671,18 +4717,38 @@ function runActionsUntilPause(loopGuard: number): void {
     const url = resolveAsset(state.baseUrl, path);
     const options = normalizeBackground(action.bg);
     const place = typeof action.bg === 'string' ? undefined : action.bg.place;
+    const labelOverride = typeof action.bg === 'string' ? undefined : action.bg.label;
+    const changed = state.background !== url;
+    const followingIndex = followingPlace(scene.actions, state.actionIndex);
+    const following = followingIndex === undefined ? undefined : scene.actions[followingIndex];
+    const legacyText = place ?? (following && 'place' in following
+      ? typeof following.place === 'string' ? following.place : following.place.text : undefined);
+    const label = resolveSceneLabel(game, scene, action.bg, state.sceneTime, legacyText);
     const continueAfterBackground = () => {
-      if (place) {
+      useVNStore.getState().setSceneTime(label.time);
+      if (changed) {
+        if (followingIndex !== undefined) {
+          consumedBackgroundPlace = { game, sceneId: state.currentSceneId, index: followingIndex };
+        }
+        const authoredCenter = place !== undefined || (following && 'place' in following && typeof following.place !== 'string');
+        if (authoredCenter && label.text && labelOverride === undefined) {
+          showPlaceCaption(label.text, true, loopGuard);
+          return;
+        }
+        showAutomaticPlaceCaption(label.text);
+      } else if (place) {
         showPlaceCaption(place, true, loopGuard);
         return;
       }
       incrementCursor();
       runToNextPause(loopGuard + 1);
     };
-    if (state.background === url) {
+    if (!changed) {
       continueAfterBackground();
       return;
     }
+    // Hide the previous location during the image transition.
+    useVNStore.getState().setPlaceCaption();
     useVNStore.getState().setBackground(url, options);
     if (options.wait) {
       const revision = useVNStore.getState().backgroundPresentation.revision;
@@ -5014,6 +5080,13 @@ function runActionsUntilPause(loopGuard: number): void {
   }
 
   if ('place' in action) {
+    if (consumedBackgroundPlace?.game === game && consumedBackgroundPlace.sceneId === state.currentSceneId
+      && consumedBackgroundPlace.index === state.actionIndex) {
+      consumedBackgroundPlace = undefined;
+      incrementCursor();
+      runToNextPause(loopGuard + 1);
+      return;
+    }
     if (typeof action.place === 'string') showPlaceCaption(action.place, false, loopGuard);
     else showPlaceCaption(action.place.text, true, loopGuard);
     return;
@@ -6104,6 +6177,7 @@ export async function restartFromBeginning() {
   useVNStore.getState().setDialog({ speaker: undefined, speakerId: undefined, fullText: '', visibleText: '', typing: false });
   useVNStore.getState().setRouteVars({});
   useVNStore.getState().setInventory({});
+  useVNStore.getState().setSceneTime(undefined);
   useVNStore.getState().clearRouteHistory();
   useVNStore.getState().clearStoryLog();
   useVNStore.getState().setResolvedEndingId(undefined);

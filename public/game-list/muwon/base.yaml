@@ -28,6 +28,18 @@ assets:
     eonhae_sticker: assets/items/eonhae.svg
     eonhae_filled_sticker: assets/items/eonhae_filled.svg
     accusation_sticker: assets/items/accusation.svg
+  backgroundLabels:
+    title: false
+    well_night: "한성 남부 훈도방"
+    hanseongbu_yard: "한성부 마당"
+    sihyeongdo: false
+    apothecary_burnt: "박씨 약방"
+    hyeminseo: "혜민서"
+    jail: "포도청 옥"
+    seobinggo: "한강 변 서빙고"
+    hyeongjo_hall: "형조 대청"
+    alley_night: "한성 골목"
+    dawn_gate: "관아 문 앞"
   characters:
     서연:
       name: "의녀 {{player_name}}"
