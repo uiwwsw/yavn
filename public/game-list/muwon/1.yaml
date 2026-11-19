@@ -294,7 +294,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "그을린 장부에 ‘청심원 삼백 환’, 그 뒤에 ‘한’ 자 하나가 남아 있다."
+          text: "도원이 마당을 비우게 하고 박씨의 몸을 거적 위에 눕힌다. 그 옆 장부에 ‘청심원 삼백 환’, 그 뒤에 ‘한’ 자 하나가 보인다."
       - say:
           channel: thought
           with: []

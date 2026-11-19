@@ -12,7 +12,7 @@ scenes:
       - music: quant
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { char: 세라, with: [지완], text: "문지완 님, 오늘부터는 이걸로 들어가시면 돼요. 동행 없이요." }
+      - say: { char: 세라, with: [지완], text: "문지완 님, 담당자가 어제 확인서를 보고 면회 제한부터 풀었어요. 오늘부터 이걸로 들어가시면 돼요. 동행 없이요." }
       - say: { char: 지완, with: [세라], text: "어제 뜬 건요." }
       - say: { char: 세라, with: [지완], text: "기록에는 그대로 있어요. 지우려면 이의 신청을 하셔야 하고요." }
       - say: { char: 지완, with: [세라], text: "이건 저만 되는 거죠." }

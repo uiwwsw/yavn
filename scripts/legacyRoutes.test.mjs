@@ -8,7 +8,9 @@ import { generateNotFoundPage, renderNotFoundHtml } from './generate-not-found.m
 // at them. Each retired id must redirect somewhere real, and anything else must land on a 404
 // page that offers the library instead of the host's bare error page.
 
-const vercel = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+const caddy = await readFile(new URL('../docker/Caddyfile', import.meta.url), 'utf8');
+const redirects = [...caddy.matchAll(/^\s*redir\s+(\S+)\s+(\S+)\s+(\d+)\s*$/gm)]
+  .map(([, source, destination, status]) => ({ source, destination, status: Number(status) }));
 const manifest = JSON.parse(await readFile(new URL('../public/game-list/index.json', import.meta.url), 'utf8'));
 const liveGameIds = new Set(manifest.games.map((game) => game.id));
 
@@ -24,15 +26,15 @@ const RETIRED = {
 };
 
 describe('retired game routes', () => {
-  const bySource = new Map(vercel.redirects.map((entry) => [entry.source, entry]));
+  const bySource = new Map(redirects.map((entry) => [entry.source, entry]));
 
   it.each(Object.entries(RETIRED))('sends /game-list/%s and everything under it to %s', (id, destination) => {
     // The bare address, the trailing-slash form search engines index, and anything under it.
-    for (const source of [`/game-list/${id}`, `/game-list/${id}/`, `/game-list/${id}/:path*`]) {
+    for (const source of [`/game-list/${id}`, `/game-list/${id}/`, `/game-list/${id}/*`]) {
       const redirect = bySource.get(source);
       expect(redirect, source).toBeDefined();
       expect(redirect.destination).toBe(destination);
-      expect(redirect.permanent).toBe(true);
+      expect(redirect.status).toBe(308);
     }
   });
 
@@ -49,8 +51,10 @@ describe('retired game routes', () => {
   });
 
   it('keeps a redirect for a retired id ahead of the trailing-slash rules', () => {
-    const firstRetired = vercel.redirects.findIndex((entry) => entry.source.startsWith('/game-list/'));
+    const firstRetired = redirects.findIndex((entry) => entry.source.startsWith('/game-list/'));
     expect(firstRetired).toBeGreaterThanOrEqual(0);
+    const firstSlashRule = redirects.findIndex((entry) => entry.source === '/en');
+    expect(firstSlashRule).toBeGreaterThan(firstRetired);
   });
 });
 

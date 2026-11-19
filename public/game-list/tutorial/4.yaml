@@ -467,7 +467,7 @@ scenes:
           text: "0003 옆에는 ‘튜토리얼 넘기기’라고 써 있었다."
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           when: { var: called_mom, op: eq, value: true }
@@ -475,7 +475,7 @@ scenes:
           text: "첫차 표 끊었어 5시 10분"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           when: { var: called_mom, op: eq, value: true }
@@ -511,7 +511,7 @@ scenes:
       - say:
           channel: thought
           when: { var: seen_card, op: eq, value: true }
-          text: "태민이 뒤집어 보여 준 출입증. 사진 칸은 비어 있고 USER 0001만 적혀 있었다."
+          text: "태민 씨 책상에서 내가 뒤집어 본 출입증. 사진 칸은 비어 있고 USER 0001만 적혀 있었다."
       - say:
           channel: system
           when: { var: honest, op: gte, value: 3 }
@@ -727,7 +727,7 @@ scenes:
           char: 은숙
           when: { var: tampered, op: eq, value: 0 }
           with: []
-          text: "차은숙입니다. 오광철 씨 사건 미제로 넘어갔어요. 정해수 씨 진술도 그대로 남아 있어요. 추가할 말 있으면 이 번호로 연락 주세요."
+          text: "차은숙입니다. 오광철 씨 사건 계속 확인 중이에요. 정해수 씨 진술도 그대로 남아 있어요. 추가할 말 있으면 이 번호로 연락 주세요."
       - say:
           channel: message
           thread: "은숙"

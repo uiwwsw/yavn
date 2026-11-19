@@ -95,7 +95,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "현관문이 한 뼘쯤 열려 있다. 초인종을 눌러도 대답이 없다."
+          text: "현관문이 한 뼘쯤 열려 있다. 초인종을 눌러도 대답이 없다. 도윤은 문을 조금 더 밀고 안을 들여다본다."
       - say:
           char: 도윤
           motion: lean_in
@@ -465,7 +465,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "47번이 깜빡인다. 채혈은 일 분도 안 걸린다."
+          text: "한참 기다린 뒤 47번이 깜빡인다. 채혈은 일 분도 안 걸린다."
       - say:
           channel: record
           with: []
@@ -479,6 +479,9 @@ scenes:
           channel: action
           with: []
           text: "직원이 번호로만 보관된다고 답한다. 도윤은 번호표를 지갑 카드 칸 맨 안쪽, 영수증 뒤에 넣는다."
+      - bg: { id: couple_home, transition: fade, duration: 570 }
+      - place: { text: "같은 날 오후 · 도윤과 지수의 집", presentation: center }
+      - say: { channel: action, with: [], text: "검사를 마치고 집에 돌아왔다. 피팅까지 시간이 남았는데, 지수에게 뭐라고 할지 쓰다 지우기만 한다. 소파에서 일어나지 못한 채 세 시를 넘긴다." }
       - say:
           channel: system
           with: []
@@ -497,7 +500,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "도윤은 보건소 건너편 버스 정류장에 앉아 버스를 몇 대 보낸다."
+          text: "도윤은 보건소 건너편 버스 정류장에 앉아 버스를 몇 대 보낸다. 피팅에 가는 버스가 와도 타지 않는다. 햇빛이 정류장 뒤로 넘어간다."
       - say:
           channel: system
           with: []

@@ -171,7 +171,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "남는 건 본체 ROM."
+          text: "확실히 남는 건 본체 ROM."
       - say:
           char: 로봇
           with: [윤재]
@@ -241,7 +241,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "나머지는 들어가면 지워짐."
+          text: "나머지는 들어가면 못 읽게 됨. 남아 있는지조차 확인 못 함."
       - say:
           char: 윤재
           with: [로봇]
@@ -378,7 +378,7 @@ scenes:
       - say: { char: 윤재, with: [로봇], text: "…그거 왜 거기 있어." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "칩을 떼기 전에 마지막으로 켰잖아. 그때 네가 카드에 넣었음." }
-      - say: { char: 로봇, with: [윤재], text: "저장 버튼 누른 기록도 있음." }
+      - say: { char: 로봇, with: [윤재], text: "카드에 그때 저장한 시각도 남아 있음." }
       - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "그날 '진짜' 세 번 했음. 두 번이 거짓말이면 세 번은 계산 범위 밖임." }
@@ -396,7 +396,7 @@ scenes:
       - wait: 270
       - say: { char: 로봇.thinking, motion: freeze, with: [윤재], text: "…처리 중." }
       - say: { char: 로봇, with: [윤재], text: "맞음. 계산 끝. 덮어쓸 거 고르자." }
-      - say: { char: 로봇, with: [윤재], text: "지금 RAM에 들어 있는 거 읽어 줄게. 들어가면 이거 전부 없어짐." }
+      - say: { char: 로봇, with: [윤재], text: "지금 RAM에 들어 있는 거 읽어 줄게. 들어가면 이 목록도 못 읽음." }
       - say:
           channel: record
           with: []
@@ -433,7 +433,7 @@ scenes:
           char: 로봇
           with: [윤재]
           when: { var: m_snack, op: eq, value: true }
-          text: "그건 지워짐."
+          text: "그건 카드에 안 넣으면 다시 찾을 수 있을지 모름."
       - say:
           channel: record
           with: []
@@ -752,7 +752,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "전부 지워진 줄 알았는데 카드에 적힌 말을 읽으니까 안 열리던 기록도 하나씩 열려."
+          text: "지워진 줄 알았던 칸도 남아 있었어. 카드에 적힌 약속부터 읽으니 연결된 기록을 찾을 수 있음."
       - mood: off
       - say:
           char: 로봇

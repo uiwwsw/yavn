@@ -135,7 +135,7 @@ scenes:
       - say: { char: 지안, with: [다온엄마], text: "…네. 저도 가끔요." }
       - say: { char: 다온, with: [지안], motion: laugh, text: "거봐." }
       - say: { channel: action, with: [지안, 다온], text: "아이가 웃는다. 웃을 때 왼쪽 눈이 먼저 감긴다." }
-      - say: { channel: thought, with: [], text: "녹취를 400건이나 풀었는데 웃을 때 어느 쪽 눈이 감겼는지는 한 번도 적은 적이 없다." }
+      - say: { channel: thought, with: [], text: "들어온 제보가 400건인데 웃을 때 어느 쪽 눈이 감겼는지는 한 번도 적은 적이 없다." }
       - say: { char: 다온엄마, with: [지안], text: "저는 주방에 있을게요. 커피 드실래요?" }
       - say: { char: 지안, with: [다온엄마], text: "아, 괜찮습니다." }
       - move: { id: 다온엄마, style: exit }
@@ -262,7 +262,7 @@ scenes:
       - say: { char: 문호.lean, with: [지안], text: "아가씨. 그렇게 따지는 것도 타고난 거요." }
       - say: { channel: thought, with: [], text: "아드님이 12년 동안 말을 안 했다고 했다. 그 얘기는 녹취에 넣으라고 했다." }
       - say: { channel: action, with: [], text: "녹음기 남은 시간이 41분으로 떠 있다." }
-      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "김치 쉰다. 엄마가 택배로 부칠까" }
+      - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "김치 쉰다. 엄마 입원하기 전에 택배로 부칠까" }
       - goto: glass
 
   # 면회는 예약제고 한 번에 십 분이다. 유리 너머로 보고 수화기로 말한다.
@@ -271,6 +271,7 @@ scenes:
     actions:
       - bg: { id: glass_visit, transition: fade, duration: 900 }
       - place: { text: "4월 · 김포 요양병원", presentation: center }
+      - say: { channel: action, with: [], text: "엄마가 입원한 요양병원에 면회를 예약했다. 집에 들러 김치통을 챙기려다 늦어서, 빈손으로 면회실에 앉았다." }
       - char: { id: 지안, position: left }
       - say: { channel: action, with: [], text: "면회는 예약제다. 한 번에 10분이고, 남은 시간이 벽에 숫자로 떠 있다." }
       - say: { channel: action, with: [], continueLabel: "수화기를 든다", text: "엄마가 들어와 앉는다. 머리가 지난번보다 짧다." }
@@ -330,8 +331,8 @@ scenes:
       - say: { char: 지안, with: [차피디], text: "그분 건 자기 기억이라면서요. 남의 전생 얘기는 그분 짐작이고요." }
       - say: { char: 차피디, with: [지안], text: "알아요. 그래도 사람들이 보잖아. 참, 지안 씨 정규직 계약서 왔어요. 본부장 결재 났어요." }
       - say: { char: 차피디, with: [지안], text: "뒤에 붙은 건 녹취 원본 양도 동의서. 서명하면 원본은 회사 자산이에요. 편집권도." }
-      - say: { char: 지안, with: [차피디], text: "원본도 드려야 돼요? 1부는 복사본으로 방송 잘 나갔잖아요." }
-      - say: { char: 차피디, with: [지안], text: "1부 반응이 오니까 재방송이며 해외 판권 얘기가 들어와요. 그때마다 원본을 지안 씨한테 달랠 순 없잖아요." }
+      - say: { char: 지안, with: [차피디], text: "원본도 드려야 돼요? 1부는 복사본으로 편집 다 끝냈잖아요." }
+      - say: { char: 차피디, with: [지안], text: "시사 반응이 좋아서 벌써 재방송이며 해외 판권 얘기가 들어와요. 그때마다 원본을 지안 씨한테 달랠 순 없잖아요." }
       - say: { char: 차피디, with: [지안], text: "외부에 같은 원본이 돌면 판권 계약을 못 해요. 계약팀에서 그걸 같이 받으래요." }
       - say: { char: 지안, with: [차피디], text: "서명 안 하면 정규직 계약도 안 되는 거예요?" }
       - say: { char: 차피디, with: [지안], motion: sigh, text: "네. 이번엔 둘이 한 묶음이에요. 저도 여기서 십사 년 일했지만 이건 못 바꿔요." }

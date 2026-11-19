@@ -341,7 +341,7 @@ scenes:
           char: 봉구
           with: [만석]
           when: { var: l1_gave, op: eq, value: true }
-          text: "…외상으로 나간 쌀만큼 다시 들여놓느라 궤에 스물여덟 냥밖에 없습니다."
+          text: "…내준 쌀을 가을에 다시 받기로 하고 선금을 치렀습니다. 궤엔 스물여덟 냥뿐입니다."
       - say:
           char: 만석
           with: [봉구]
@@ -492,7 +492,7 @@ scenes:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 애가 일어났으면 됐다." }
       - say: { channel: action, with: [], text: "가을에 외상을 갚은 집은 두 집이었다. 햇곡이 풀리자 쌀값은 닷 냥이 됐다." }
-      - say: { channel: action, with: [], text: "쌀 들여올 때 진 빚부터 갚았다. 맡은 쌀까지 내다 팔았다가 강경 윤 객주가 보낸 사람이 들이닥쳤다." }
+      - say: { channel: action, with: [], text: "가을에 선금을 치른 쌀이 들어왔다. 나머지 값을 갚으려고 맡은 쌀까지 내다 팔았다가 강경 윤 객주가 보낸 사람이 들이닥쳤다." }
       - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 쌀을 풀어 준 지 4년이 지난 여름에도 식구는 포구 뒷골목 셋방에 있었다." }
       - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "쌀을 풀고 4년 뒤 여름 · 제물포 뒷골목 셋방" }
       - say: { char: 끝순, with: [만석], text: "아버지, 저 내일부터 왜인 정미소 나가요. 쌀에서 뉘 고르는 일인데 하루 열두 전이래요." }

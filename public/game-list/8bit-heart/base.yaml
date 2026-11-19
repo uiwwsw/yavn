@@ -85,6 +85,7 @@ state:
   android_name: "도트"
   bought_premium: false
   answered_haru: false
+  explained_junk: false
   saw_ceiling: false
   saw_box: false
   saw_dad: false

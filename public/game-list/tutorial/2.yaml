@@ -631,7 +631,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "녹화실 책상에 낮에 은숙이 가져간 접수증이 놓여 있다. 접었다 편 자국까지 같다."
+          text: "녹화실 책상에 낮에 은숙이 가져간 고객의 소리 용지가 놓여 있다. 접었다 편 자국까지 같다."
           wait: 800
       - say:
           channel: thought
@@ -1015,12 +1015,14 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "그날 밤 집에 돌아오니 상혁의 방문에 새 도어락이 달려 있다. 숫자 1, 2, 7, 0 자리만 손때가 묻어 있다."
+          text: "그날 밤 상혁의 방문에 번호 도어락이 달려 있다. 전에는 잠금쇠뿐이었다. 신발장에 보관하던 예전 현관 도어락이 없어졌다. 1, 2, 7, 0 자리만 닳아 있다."
       - say:
           char: 상혁
           with: []
           delivery: whisper
           text: "해수야? 해수 맞지."
+      - say: { char: 해수, with: [], text: "응. 현관에서 떼 둔 거 달았어? 번호도 그대로야?" }
+      - say: { char: 상혁, with: [], delivery: whisper, text: "어. 1270. 바꾸려다 말았어." }
       - say:
           char: 상혁
           with: []
