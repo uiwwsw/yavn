@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "installCommand": "",
-  "buildCommand": "",
+  "installCommand": "true",
+  "buildCommand": "true",
   "outputDirectory": "vercel-proxy",
   "git": {
     "deploymentEnabled": {
@@ -12,6 +12,10 @@
     }
   },
   "rewrites": [
+    {
+      "source": "/",
+      "destination": "https://yavn.movvcorp.duckdns.org/"
+    },
     {
       "source": "/:path*",
       "destination": "https://yavn.movvcorp.duckdns.org/:path*"
