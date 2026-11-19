@@ -12,6 +12,7 @@ Make choice-driven browser games with YAML scenes, dialogue, branching choices, 
 - Numbered investigation targets, evidence review within choices, and explicit music stops. See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#narrative-and-presentation) for YAML examples.
 - Chapter story maps, discovered paths and replay checkpoints.
 - Always-on autosave, three manual slots with scene previews, portable save backups, and a notice when a new version is deployed.
+- Automatic location/story-time labels on background changes, with reusable metadata and per-transition text/visibility overrides. See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#automatic-location-and-story-time-labels).
 - Korean and English launcher/engine controls; catalog language labels, search and filters.
 - Browser demos with per-game public search pages and language metadata.
 

@@ -25,6 +25,23 @@ assets:
     cctv_sticker: assets/items/cctv.svg
     drink_sticker: assets/items/drink.svg
     corded_pen_sticker: assets/items/corded-pen.svg
+  backgroundLabels:
+    title: false
+    cs_desk: "그린마트 고객센터"
+    cs_desk_bleed: "그린마트 고객센터"
+    home_hall: "집 복도"
+    breakroom: "휴게실"
+    haesu_room: "해수의 방"
+    sim_desk: "레플라 · 그린마트 고객센터"
+    sim_parking: "레플라 · 지하 주차장"
+    parking_real: "그린마트 지하 주차장"
+    police_room: "중랑경찰서"
+    goshiwon: "망우동 그린고시원 304호"
+    server_building: "가산동 옛 레플라 사옥"
+    server_room: "레플라 서버실"
+    server_room_off: "레플라 서버실"
+    server_room_monitor_off: "레플라 서버실"
+    server_room_pc_off: "레플라 서버실"
   characters:
     해수:
       name: "정해수"

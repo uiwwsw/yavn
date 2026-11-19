@@ -26,6 +26,26 @@ assets:
     sketch_two_sticker: assets/items/sketch_two.svg
     globe_sticker: assets/items/globe.svg
     blanket_sticker: assets/items/blanket.svg
+  backgroundLabels:
+    title: false
+    void_empty: false
+    void: false
+    void_light: false
+    void_near: false
+    jemulpo_yard: "제물포 객주 마당"
+    jemulpo_room: "제물포 셋방"
+    busan_market: "부산 국제시장"
+    market_fire: "부산 국제시장"
+    busan_shack: "영주동 판잣집"
+    seoul_room: "영등포 셋방"
+    ward: "혜화동 대학병원 6인실"
+    glass_visit: "김포 요양병원"
+    glass_visit_talk: "김포 요양병원"
+    glass_visit_hung: "김포 요양병원"
+    hangang_night: "동호대교 아래 둔치"
+    edit_room: "상암동 편집실"
+    interview_room: "인터뷰 장소"
+    window_dawn: "요양 병동"
   characters:
     지안어머니:
       name: "엄마"

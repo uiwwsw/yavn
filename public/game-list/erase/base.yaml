@@ -28,6 +28,24 @@ assets:
     butterfly_sticker: assets/items/pinned_butterfly.svg
     ticket_sticker: assets/items/test_ticket.svg
     phone_erased_sticker: assets/items/phone_erased.svg
+  backgroundLabels:
+    title: false
+    surgery: "ERASE 클리닉"
+    consent_turn: false
+    eyes_closed: false
+    surgery_reveal: "ERASE 클리닉"
+    photo_studio: "사진관"
+    club: "클럽"
+    dawn_room: "처음 보는 방"
+    couple_home: "도윤과 지수의 집"
+    office: "영업2팀"
+    office_night: "빈 사무실"
+    classroom: "3학년 교실"
+    harin_room: "하린의 방"
+    rooftop: "회사 옥상"
+    junseong_house: "오피스텔 9층"
+    science_room: "과학실"
+    clinic_hall: "보건소"
   characters:
     도윤:
       name: "한도윤"

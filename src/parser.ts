@@ -17,6 +17,7 @@ type ConfigYamlData = {
   textSpeed: number;
   autoSave?: boolean;
   clickToInstant: boolean;
+  sceneLabels?: boolean;
   chapters?: number;
   endings?: GameData['endings'];
   endingRules?: GameData['endingRules'];
@@ -28,6 +29,7 @@ type ConfigYamlData = {
 
 type LayerAssets = {
   backgrounds?: GameData['assets']['backgrounds'];
+  backgroundLabels?: GameData['assets']['backgroundLabels'];
   characters?: GameData['assets']['characters'];
   music?: GameData['assets']['music'];
   sfx?: GameData['assets']['sfx'];
@@ -82,6 +84,7 @@ const CONFIG_ONLY_KEYS = [
   'textSpeed',
   'autoSave',
   'clickToInstant',
+  'sceneLabels',
   'chapters',
   'endings',
   'endingRules',
@@ -410,6 +413,8 @@ function canonicalizeLayerAssets(
     sfx: {},
   };
 
+  if (assets.backgroundLabels) result.backgroundLabels = { ...assets.backgroundLabels };
+
   for (const [key, value] of Object.entries(assets.backgrounds ?? {})) {
     const normalized = canonicalizeDeclaredPath(value, sourceDir);
     if (!normalized) {
@@ -506,6 +511,7 @@ function canonicalizeLayerAssets(
   }
 
   if (
+    Object.keys(result.backgroundLabels ?? {}).length === 0 &&
     Object.keys(result.backgrounds).length === 0 &&
     Object.keys(result.characters).length === 0 &&
     Object.keys(result.music).length === 0 &&
@@ -830,6 +836,9 @@ function mergeLayerAssets(target: GameData['assets'], source?: LayerAssets) {
     return;
   }
   Object.assign(target.backgrounds, source.backgrounds ?? {});
+  if (source.backgroundLabels) {
+    target.backgroundLabels = { ...target.backgroundLabels, ...source.backgroundLabels };
+  }
   Object.assign(target.characters, source.characters ?? {});
   Object.assign(target.music, source.music ?? {});
   Object.assign(target.sfx, source.sfx ?? {});
@@ -911,6 +920,7 @@ export function resolveChapterGame(input: ResolveChapterInput): { data?: GameDat
       textSpeed: input.config.data.textSpeed,
       autoSave: input.config.data.autoSave,
       clickToInstant: input.config.data.clickToInstant,
+      sceneLabels: input.config.data.sceneLabels,
     },
     assets: mergedAssets,
     chapterTitle: input.chapter.data.chapterTitle,
@@ -934,6 +944,11 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
   try {
     gameSchema.parse(data);
 
+    for (const id of Object.keys(data.assets.backgroundLabels ?? {})) {
+      if (!Object.prototype.hasOwnProperty.call(data.assets.backgrounds, id)) {
+        return { error: { message: `assets.backgroundLabels references unknown background '${id}'` } };
+      }
+    }
     const defaults = data.state?.defaults ?? {};
     const inventoryDefaults = data.inventory?.defaults ?? {};
     for (const key of Object.keys(inventoryDefaults)) {

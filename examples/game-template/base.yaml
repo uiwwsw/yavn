@@ -1,2 +1,6 @@
-# Add shared assets, state and inventory here as the story grows.
-assets: {}
+# Shared assets and their reusable location names.
+assets:
+  backgrounds:
+    hallway: assets/bg/hallway.svg
+  backgroundLabels:
+    hallway: "집 복도"

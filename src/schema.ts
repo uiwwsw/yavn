@@ -168,6 +168,14 @@ const stickerLeaveSchema = z.union([
 
 
 const placeTextSchema = z.string().trim().min(1).max(60);
+const sceneLabelOptionsSchema = z.union([z.boolean(), z.object({
+  name: z.union([placeTextSchema, z.literal(false)]).optional(),
+  time: z.union([placeTextSchema, z.literal(false)]).optional(),
+}).strict()]);
+const backgroundLabelsSchema = z.record(z.union([
+  placeTextSchema, z.literal(false),
+  z.object({ name: placeTextSchema.optional(), time: placeTextSchema.optional() }).strict(),
+]));
 
 const actionBodySchema = z.union([
   z.object({ bg: z.union([z.string().min(1), z.object({
@@ -176,6 +184,7 @@ const actionBodySchema = z.union([
     duration: z.number().int().min(0).max(5000).optional(),
     wait: z.boolean().optional(),
     place: placeTextSchema.optional(),
+    label: sceneLabelOptionsSchema.optional(),
   }).strict()]) }),
   z.object({ attack: z.object({
     attacker: z.string().min(1),
@@ -684,6 +693,7 @@ const inventoryItemSchema = z
 
 const fullAssetsSchema = z.object({
   backgrounds: z.record(z.string()),
+  backgroundLabels: backgroundLabelsSchema.optional(),
   characters: characterAssetsSchema,
   music: z.record(z.string()),
   sfx: z.record(z.string()),
@@ -692,6 +702,7 @@ const fullAssetsSchema = z.object({
 export const layerAssetsSchema = z
   .object({
     backgrounds: z.record(z.string()).optional(),
+    backgroundLabels: backgroundLabelsSchema.optional(),
     characters: characterAssetsSchema.optional(),
     music: z.record(z.string()).optional(),
     sfx: z.record(z.string()).optional(),
@@ -720,6 +731,7 @@ export const configSchema = z
     textSpeed: z.number().positive(),
     autoSave: z.boolean().optional(),
     clickToInstant: z.boolean(),
+    sceneLabels: z.boolean().optional(),
     /** How many numbered chapter files the game ships; stated so the loader never probes past the end. */
     chapters: z.number().int().positive().optional(),
     endings: z.record(endingDefinitionSchema).optional(),
@@ -751,6 +763,7 @@ export const chapterSchema = z
       z.object({
         title: z.string().trim().min(1).max(120).optional(),
         pov: povSchema,
+        time: placeTextSchema.optional(),
         layout: z.enum(['auto', 'fixed']).optional(),
         actions: z.array(actionSchema),
       }),
@@ -770,6 +783,7 @@ export const gameSchema = z.object({
     textSpeed: z.number().positive(),
     autoSave: z.boolean().optional(),
     clickToInstant: z.boolean(),
+    sceneLabels: z.boolean().optional(),
   }),
   assets: fullAssetsSchema,
   state: runtimeStateSchema.optional(),
@@ -787,6 +801,7 @@ export const gameSchema = z.object({
     z.object({
       title: z.string().trim().min(1).max(120).optional(),
       pov: povSchema,
+      time: placeTextSchema.optional(),
       layout: z.enum(['auto', 'fixed']).optional(),
       actions: z.array(actionSchema),
     }),

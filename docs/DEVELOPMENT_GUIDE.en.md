@@ -101,3 +101,34 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 - Put only the message body in `say.text`; use `say.char` for the sender or `say.speakerName` for contacts without character art. Keep names and room labels out of the body. Give both incoming and outgoing messages the same `say.thread`, including the first outgoing message. If the thread is a character ID, the header resolves its display `name` and profile. Use `system` or `record` for search results rather than presenting them as messages.
 - `say.media` sends a photo or a clip — a path on its own, or `{ src, kind, alt }` — which is drawn without a bubble, and lets `say.text` be left out entirely. A message of up to three emoji is drawn large and bubble-less.
 - New games built from the owner's stories: ERASE (4 chapters), ERASE: First to Erase (5 chapters) and 8-bit Heart (5 chapters). The ERASE pair carries content notes (sexual tension without description, HIV anxiety, self-destructive thoughts) with crisis-line and anonymous testing information.
+
+## Automatic location and story-time labels
+
+When a background URL changes, the engine shows a nonblocking label near the top of the stage for 2.6 seconds. Repeating the same image does not retrigger it. Object-form `bg` waits for decoded transition completion; shorthand and `wait: false` retain their immediate execution.
+
+Register each location once in `base.yaml`; individual transitions need no `place` action:
+
+```yaml
+assets:
+  backgrounds:
+    cafe: assets/bg/cafe.svg
+    blackout: assets/bg/blackout.svg
+  backgroundLabels:
+    cafe: Hospital cafe
+    blackout: false
+```
+
+Set `time: "15:20"` on a scene to establish story time. Background metadata may also use `{ name: Hospital cafe, time: "15:20" }`. Entering a scene applies its `time`; subsequent backgrounds inherit it. Metadata time is a fallback when no story time is known. Time carries across backgrounds, chapters and saves. The engine uses authored time, never the device clock. Without metadata, the background ID is shown with underscores/hyphens replaced by spaces; unknown time is displayed as `시간 미상` (time unknown).
+
+```yaml
+- bg: cafe
+- say: { text: We ordered coffee. }
+- bg: { id: blackout, label: false }
+- bg: { id: cafe, label: { time: false } } # location only
+- bg: { id: blackout, label: false }
+- bg: { id: cafe, label: { name: false, time: "23:00" } } # time only
+```
+
+`bg.label: false` hides the entire label. An object replaces `name`/`time` with strings or hides either field with `false`; hiding both suppresses the label. Hidden time remains part of the story context. `config.yaml` can set `sceneLabels: false` to disable defaults throughout a game; `bg.label: true` or an object opts a transition back in. Base/chapter metadata merges by background ID; unknown background references are rejected.
+
+Existing `bg.place` or a following `place` is reused once. Setup actions such as music, characters and camera may intervene; dialogue, choices, branching and waits stop that lookup. Existing caption time updates the story context; explicit `bg.label.time` takes highest priority. Explicit centered captions preserve their 1.5-second hold unless a `bg.label` object selects the automatic presentation. `label: false` also suppresses the associated legacy caption. Standalone manual `place` actions still work. Older saves reconstruct story time from their traversed script, and loading does not replay label animations. The runnable [game template](../examples/game-template/) demonstrates an uncaptioned automatic background transition.

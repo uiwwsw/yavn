@@ -22,6 +22,18 @@ assets:
     pinky_promise_sticker: assets/items/pinky_promise.svg
     pinky_waiting_sticker: assets/items/pinky_waiting.svg
     hands_apart_sticker: assets/items/hands_apart.svg
+  backgroundLabels:
+    title: false
+    bedroom: "윤재네 집"
+    bus_stop: "버스 정류장"
+    bus_stop_panic: "버스 정류장"
+    disaster_city: "도심"
+    ruined_street: "편의점 앞"
+    android_found: "아파트 뒷골목"
+    shelter: "편의점 기지"
+    drone_alley: "골목"
+    datacenter: "북쪽 데이터센터"
+    dawn_field: "데이터센터 문 앞"
   characters:
     윤재:
       placement: prompt-top
