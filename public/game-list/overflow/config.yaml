@@ -2,7 +2,7 @@ title: "오버플로"
 pov: "문지완"
 author:
   name: "uiwwsw"
-version: "4.2.1"
+version: "4.3.0"
 seo:
   description: "2033년 서울. 문지완은 쓰러진 아버지를 보러 병원에 간다. 감정 판독 렌즈가 지완에게 01점을 띄우자 병실 문이 멈춘다. 그 숫자가 어떻게 나왔는지 확인하려는 개발자 한수경이 말을 건다."
   keywords:
@@ -53,7 +53,7 @@ endings:
   broadcast:
     title: "공개"
     message: "보도 뒤 병원이 면회 판독 오류를 조사하겠다고 밝혔다."
-    epilogue: "지완은 월요일 새벽에 제시간에 출근했다. 도겸은 아무 말 없이 지완 몫의 작업 장갑을 꺼내 두었다."
+    epilogue: "월요일 새벽, 도겸이 지완 몫의 작업 장갑을 내밀었다. 지완은 이번 일요일에도 아버지 집에 간다며 근무표를 먼저 확인했다."
     background: studio
     music: street
     tone: mystery
@@ -74,7 +74,7 @@ endings:
   appeal:
     title: "이의신청"
     message: "에모스 공동 이의신청 접수 · 심사일 미정"
-    epilogue: "월요일에 병동은 접수대에 빈 서식을 더 놓았다. 두 사람이 낸 신청의 답은 아직 오지 않았다."
+    epilogue: "신청의 답은 아직 오지 않았다. 일요일에 지완은 빈 통을 씻어 가져갔다. 아버지는 또 가져왔냐면서 국부터 담았다."
     background: dongsik_house
     music: quant
     tone: hopeful

@@ -603,12 +603,12 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "아진이가 내일 옆자리를 비워 둔다고 했다. 그 급식실에 나는 안 갔다."
+          text: "아진이가 옆자리를 비워 둔다고 했다. 돈까스가 나오는 날이었다. 나는 학교에 안 갔다."
       - say:
           char: 도윤
           with: []
           delivery: whisper
-          text: "자리 비워 놓고 얼마나 기다렸을까."
+          text: "걔는 내 것도 받아 놨을까."
       - goto: final_turn
 
   final_turn:
@@ -964,7 +964,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "나 아직 화났어. 네가 말해 준 건 고마운데 지금은 만나기 싫어"
+          text: "말해 준 건 알아. 그래도 지금 네 얼굴 보면 괜찮은 척부터 할 것 같아. 오늘은 만나기 싫어"
       - say:
           channel: action
           with: []
@@ -1015,7 +1015,7 @@ scenes:
           channel: action
           with: []
           text: "첫 줄에 ‘하린’이라고 쓴다. 휴대폰이 다른 이름을 추천한다. 도윤은 그대로 보낸다."
-      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "나 열여덟 살 때 이름은 유하린이었어. 그때도 말 한마디 못 하고 학교를 떠났어" }
+      - say: { channel: message, thread: 지수, side: me, char: 도윤, with: [], text: "나 열여덟 살 때 이름은 유하린이었어. 나 기다리는 친구가 있었는데, 안 갔어" }
       - say: { channel: message, thread: 지수, side: them, char: 지수, with: [], text: "읽고 있어. 잠깐만, 나도 좀 생각할게" }
       - say: { channel: action, with: [], text: "예약 문자에서 취소를 누른다. 지수에게 보낸 문장은 채팅방에 그대로 둔다." }
       - ending: unfinished

@@ -68,8 +68,8 @@ scenes:
       - say: { char: 동식, with: [지완], text: "복도에 너 앉아 있는데 못 들어가게 하더라. 담임이 숫자만 보여 주고." }
       - say: { char: 지완, with: [동식], text: "그때 뭐라고 하셨어요?" }
       - say: { char: 동식, with: [지완], text: "우리 애 겁먹은 거라고. 나 좀 들여보내 달랬지." }
-      - say: { char: 동식, with: [지완], text: "안 되더라. 그래서 너한테 셋 세라고 했다." }
-      - say: { char: 지완, with: [동식], text: "아까도 셌어요. 문 앞에서." }
+      - say: { char: 동식, with: [지완], text: "안 되더라. 너한테 화내지 말라고만 했다. 내가." }
+      - say: { char: 지완, with: [동식], text: "셋 세라고 하셨잖아요. 아까도 셌어요. 문 앞에서." }
       - say: { char: 동식, with: [지완], text: "안다." }
       - say: { char: 동식, with: [지완], text: "너 셀 때 얼굴이 그렇다." }
       - say: { char: 지완, with: [동식], when: { var: told_father, op: eq, value: true }, text: "아까 저 앉혀 주셨잖아요. 저 못 알아보실까 봐, 그게 제일 무서웠어요." }

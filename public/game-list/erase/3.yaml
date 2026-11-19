@@ -670,7 +670,7 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "세 번 걸었는데 안 받길래. 사고 난 줄 알았어." }
       - say: { char: 지수, with: [도윤], text: "피팅은 토요일 열한 시로 다시 잡았어. 네 옷은 네가 입어 봐야 된대." }
       - say: { char: 도윤, with: [지수], text: "토요일엔 꼭 갈게." }
-      - say: { char: 지수, with: [도윤], text: "오늘도 온다고 했잖아." }
+      - say: { char: 지수, with: [도윤], text: "오늘은 내가 먼저 전화할 일 없겠다고 생각했어." }
       - sticker: { id: e3_invitation, image: invitation_sticker, x: 50, y: 43, width: "clamp(165px, 27%, 290px)", enter: fadeIn }
       - say: { channel: action, with: [], text: "식탁 한쪽에 사진관에서 고른 청첩장 시안이 있다. 지수가 그 종이를 옆으로 밀어 놓는다." }
       - clearSticker: { id: e3_invitation, leave: fadeOut }
@@ -755,7 +755,7 @@ scenes:
       - say: { char: 지수.cold, with: [도윤], text: "그 뒤에도 만났어?" }
       - say: { char: 도윤, with: [지수], text: "회사에서만. 이번 주엔 출근을 안 해. 연락도 안 되고." }
       - say: { char: 도윤.hollow, with: [지수], text: "회사에 그 사람 아프다는 소문이 돌아. 그래서 오늘 보건소에 갔어." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수는 도윤 쪽으로 밀어 두었던 밥그릇에서 손을 뗀다." }
+      - say: { channel: action, with: [지수, 도윤], text: "지수는 도윤 쪽으로 밀던 밥그릇을 멈춘다. 손에 묻은 물기를 바지에 닦고, 다시 도윤을 본다." }
       - sticker: { id: e3_two_bowls, image: two_bowls_sticker, x: 50, y: 22, width: "clamp(164px, 38%, 420px)", enter: fadeIn, inputLockMs: 250 }
       - say: { char: 지수.cold, with: [도윤], text: "검사는 받았어?" }
       - say:
@@ -775,7 +775,7 @@ scenes:
           text: "다시 가. 이번엔 들어가."
       - say: { char: 지수, with: [도윤], text: "청첩장 백오십 장은 나랑 세어 놓고, 이 얘기는 언제 하려고 했어?" }
       - say: { char: 도윤.hollow, with: [지수], text: "…말하면 끝날까 봐. 하루만, 하루만 했어." }
-      - say: { char: 지수, with: [도윤], text: "오늘도 나 혼자 입어 봤어. 거울 앞에서 사십 분을 기다렸어.", wait: 550 }
+      - say: { char: 지수, with: [도윤], text: "나 오늘 그 옷 입고 너 나오면 뭐라고 할지 연습했어. 직원이 예쁘다고 해 주더라.", wait: 550 }
       - say: { char: 도윤, with: [지수], text: "미안해." }
       - say: { char: 지수, with: [도윤], text: "토요일 피팅은 오지 마. 식장엔 내일 내가 전화해서 미룰 수 있는지부터 물어볼게." }
       - say: { char: 도윤, with: [지수], text: "내가 전화할게." }

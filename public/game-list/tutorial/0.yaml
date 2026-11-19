@@ -414,7 +414,7 @@ scenes:
           char: 지영
           motion: sigh
           with: [해수]
-          text: "너 또 지갑 열었지. 1,580원에 동전 통에서 30원까지. 네 점심값이잖아, 그거."
+          text: "또 네 돈으로 메웠어? 그 돈 없으면 너 점심은 뭘 먹는데."
       - goto: kwang_after
 
   kwang_voice:
@@ -711,7 +711,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "봉투 창에 비친 요금 안내 · 변상혁 님 · 4월 청구 409,000원 (무제한 219,000원 + 프라이빗 확장팩 190,000원) · 3월분 미납"
+          text: "봉투 창에 비친 요금 안내 · 변상혁 님 · 무제한 이용권, 프라이빗 확장팩 · 지난달 미납 · 이번 달 재청구"
       - choice:
           key: t0_mail
           prompt: "신발장 위에 뜯지 않은 지난달 봉투가 하나 더 있다."
@@ -822,7 +822,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "불을 끈다."
+          text: "침대 옆에 우유 사 올 때 쓸 빈 장바구니가 있다. 해수는 알람을 다시 맞추고 불을 끈다."
       - say:
           channel: action
           with: []

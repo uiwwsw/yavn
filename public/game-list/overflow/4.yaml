@@ -58,7 +58,7 @@ scenes:
       - say: { thread: "도겸", channel: message, side: them, char: 도겸, with: [], text: "팀장님이 뉴스에 지완 씨 맞냐는데요 일단 답 안 했어요" }
       - say: { thread: "도겸", channel: message, side: me, char: 지완, with: [], text: "저 맞아요. 월요일 새벽조 그대로 간다고 해 주세요" }
       - say: { thread: "도겸", channel: message, side: them, char: 도겸, with: [], text: "엄마가 역 경보도 저런 거냐고 묻던데요" }
-      - say: { thread: "도겸", channel: message, side: me, char: 지완, with: [], text: "저도 몰라요. 월요일에 얘기해요" }
+      - say: { thread: "도겸", channel: message, side: me, char: 지완, with: [], text: "저도 몰라요. 월요일에 얘기해요. 어제 출고 대신 해 준 거, 고마웠어요" }
       - ending: broadcast
 
   correct_record:
@@ -113,7 +113,7 @@ scenes:
       - place: { text: "퇴원 뒤 일요일 점심 · 아버지 집", presentation: center }
       - char: { id: 동식, position: right }
       - char: { id: 지완, position: left }
-      - say: { channel: action, with: [지완, 동식], text: "지완이 식탁에 그릇을 두 개 놓는다. 아버지가 냉동실에서 작은 통을 꺼내 온다." }
+      - say: { channel: action, with: [지완, 동식], text: "퇴원 뒤 첫 일요일, 지완이 식탁에 그릇을 놓는다. 아버지가 냉동실에서 작은 통을 꺼내려다 아들을 부른다." }
       - say: { char: 동식, with: [지완], text: "반만 얼렸다. 나머진 냄비에." }
       - say: { char: 지완, with: [동식], text: "앉아 계세요. 오늘은 제가 차릴게요." }
       - say: { char: 동식, with: [지완], text: "파는." }

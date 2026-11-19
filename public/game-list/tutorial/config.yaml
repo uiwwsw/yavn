@@ -2,7 +2,7 @@ title: "튜토리얼"
 pov: "정해수"
 author:
   name: "uiwwsw"
-version: "1.3.1"
+version: "1.4.0"
 seo:
   description: "마트 고객센터에서 12년째 일하는 정해수가 현실을 복제한 레플라에 접속한다. 체험판에서 손님에게 처음으로 화를 낸 뒤, 가상 매장에서 한 말과 행동이 현실로 새어 나오기 시작한다. 5장 SF 미스터리, 결말 3종."
   keywords:
@@ -62,7 +62,7 @@ endings:
   session_closed:
     title: "세션 종료"
     message: "USER 0001 · 2019.04.11 14:52 접속 · 2031.04.23 03:20 종료."
-    epilogue: "차은숙 경위는 진술서를 사건 서류철에 끼우려다가 자기 책상 서랍에 넣었다."
+    epilogue: "다음번에 마감을 바꿔 달라는 문자가 왔을 때, 해수는 어렵다고 답했다. 지영은 알았다고 했다. 해수는 답장을 한 번 더 읽고 휴대폰을 넣었다."
     background: cs_desk
     music: fluoro
     tone: hopeful

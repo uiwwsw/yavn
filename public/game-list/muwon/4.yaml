@@ -354,7 +354,7 @@ scenes:
           char: 여금
           when: { var: trust_yeogeum, op: gte, value: 1 }
           with: [서연, 한명재]
-          text: "이 말 하면 전의감 납품은 끝이에요. 셈은 하고 왔어요."
+          text: "가게에 돌아가면 주문이 끊겨 있겠지요. 분이한테 마지막으로 한 말도 잔금 받으라는 말이었어요."
       - say:
           char: 여금.wary
           when: { var: trust_yeogeum, op: lte, value: 0 }
@@ -818,23 +818,23 @@ scenes:
       - say:
           char: 서연
           with: [한명재]
-          text: "거두어들인 주머니부터 세겠습니다."
+          text: "열한 개가 상자에 없었습니다. 벌써 어느 집에 들어갔겠지요."
       - say:
           char: 서연
           with: [한명재]
-          text: "그래야 아직 돌아오지 않은 수를 알 테니까요."
+          text: "거둬들이는 동안 혜민서에도 알릴 겁니다. 아이를 데려올 때 주머니도 가져오라고요."
       - say:
           char: 한명재
           with: [서연]
-          text: "못 찾은 수를 알아서 어디에 쓰시려고요?"
+          text: "그걸 의녀 한 사람이 다 하시겠다?"
       - say:
           char: 서연
           with: [한명재]
-          text: "장부에 남겨야지요."
+          text: "혼자 못 하면 사람을 더 부르겠습니다."
       - say:
           char: 서연.resolve
           with: [한명재]
-          text: "다음에 어디서 감청 주머니가 나오면, 이번에 못 찾은 것부터 대조할 수 있게요."
+          text: "아픈 아이 어미한테 무슨 약을 먹였는지 묻고도, 그 손에 든 것은 안 봤습니다. 다음엔 보겠습니다."
       - mood: { tone: warm, level: 1 }
       - say:
           channel: record
@@ -865,7 +865,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "다음 검안에도 같이 가 주세요."
+          text: "다음엔 종이를 아저씨 쪽으로 놓을게요. 이름 쓰는 것부터 같이 봐요."
       - say:
           char: 막쇠
           with: [서연]

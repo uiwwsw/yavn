@@ -94,7 +94,7 @@ scenes:
       - say: { thread: "월계병원", speakerName: "월계병원", channel: message, side: them, with: [], text: "월계병원입니다. 보호자 면회는 저녁 8시 10분에 시작합니다. 접수대에서 기다려 주세요." }
       - say: { channel: action, with: [], when: { var: picked_up, op: eq, value: false }, text: "병원 문자를 닫는데 부재중 전화 알림에 아버지가 남긴 음성 메시지가 보인다. 지완은 휴대폰을 귀에 댄다." }
       - say: { char: 동식_연락처, channel: dialogue, with: [], when: { var: picked_up, op: eq, value: false }, text: "지완아, 작은 통 찾았다. 지난번에 네가 사 온 거." }
-      - say: { char: 동식_연락처, channel: dialogue, with: [], when: { var: picked_up, op: eq, value: false }, text: "빈 통 들고 오지 마라." }
+      - say: { char: 동식_연락처, channel: dialogue, with: [], when: { var: picked_up, op: eq, value: false }, text: "지난번 통은 안 가져와도 된다. 먹고 씻지도 않고 가더니." }
       - say: { channel: thought, with: [], when: { var: picked_up, op: eq, value: true }, text: "아버지한테 저 왔다고 전해 줬을까. 아까 한 번 더 부탁할걸." }
       - goto: cafe_choices
 
@@ -108,5 +108,5 @@ scenes:
       - say: { char: 수경, with: [지완], text: "저요. 숫자가 남아야 회사에 다시 낼 수 있어요. 지완 씨한테는… 틀렸다는 종이 한 장이 생기고요." }
       - say: { char: 지완, with: [수경], text: "제 건 제가 먼저 볼게요. 아버지 쪽은 아무것도 안 남기고요." }
       - say: { char: 수경, with: [지완], text: "네. 그렇게 할게요." }
-      - say: { channel: action, with: [지완, 수경], text: "전광판에 저녁 8시 10분 면회 대기 장소가 뜬다. 지완이 먼저 일어난다." }
+      - say: { channel: action, with: [지완, 수경], text: "휴대폰에 8시 10분 알람이 울린다. 지완은 식은 커피를 그대로 두고 일어난다. 수경이 종이를 챙겨 뒤따른다." }
       - goto: /2.yaml

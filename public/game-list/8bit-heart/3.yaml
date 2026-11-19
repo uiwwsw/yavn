@@ -76,7 +76,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "응. 비싼 건 못 샀어. 그건 32,000원이었거든."
+          text: "그냥 돈이 없어서 그거 샀어. 네가 될 줄은 몰랐지."
       - wait: 270
       - say:
           char: 로봇
@@ -85,7 +85,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "그건 적어 둬야겠다."
+          text: "그 게임기 판 사람 만나면 말해 줘야겠음."
       - say:
           char: 로봇
           with: [윤재]
@@ -299,7 +299,7 @@ scenes:
           char: 윤재
           when: { var: saw_dad, op: eq, value: true }
           with: [로봇]
-          text: "아빠 숙소엔 집 전화로도 걸어 봤어. 스물여덟 번. 계속 연결이 안 된대."
+          text: "아빠 숙소에도 전화해 봤어. 연결이 안 된대. 아빠가 그냥 안 받는 거면 좋겠어."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -457,7 +457,7 @@ scenes:
           char: 로봇.happy
           motion: bounce
           with: [윤재]
-          text: "내 칩이 하던 일이 2P 화면 반 가르기였음."
+          text: "설명서 그림에서도 둘이 나눠 먹고 있었음."
       - say:
           char: 윤재
           with: [로봇]
@@ -1100,7 +1100,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "까먹은 데. 까먹은 게 웃긴 거야."
+          text: "…너 진짜 몰라서 그런 거잖아. 그게 웃겨."
       - move: { id: 로봇, toward: 윤재, style: lunge }
       - move: { id: 윤재, toward: 로봇, style: retreat }
       - say:

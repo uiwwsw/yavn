@@ -17,11 +17,11 @@ scenes:
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: true }
-          text: "간인 찍힌 동의서. 6.8퍼센트. 여덟 살 아이한테 붙은 별명."
+          text: "서명한 날 차 피디가 악수를 청했다. 방송 뒤 다온이 어머니에게서 온 전화는 받지 못했다."
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: false }
-          text: "412부. 목포행 버스. 엽서 한 장."
+          text: "팔리지 않은 책 상자 사이에 다온이 어머니가 보낸 엽서가 끼어 있었다."
       - say:
           channel: narration
           when: { var: l4_refuted, op: eq, value: true }
@@ -41,7 +41,7 @@ scenes:
 
   leak_one:
     actions:
-      - say: { channel: record, text: "\"여든 먹어도 엿은 엿이죠.\"" }
+      - say: { channel: record, text: "\"아버지는 맨날 다 식은 다음에 오시잖아요.\"" }
       - say: { channel: narration, text: "…" }
       - say: { channel: narration, text: "녹음기에서 나는 소리가 아니다. 이어폰도 없다." }
       - say: { channel: narration, text: "열여섯쯤 된 여자아이다. 웃음이 섞여서 끝이 올라간다." }
@@ -53,11 +53,11 @@ scenes:
       - say:
           channel: record
           when: { var: l1_end, op: eq, value: gone }
-          text: "\"깨 붙은 엿이 궤짝에 아직 있다. 버려라.\""
+          text: "\"끝순이 쓰던 숟가락은 그대로 둬라.\""
       - say:
           channel: record
           when: { var: l1_end, op: eq, value: kept }
-          text: "\"바구미 슨 삼백 섬을 그해 가을까지 쥐고 있었다.\""
+          text: "\"쌀에 벌레가 났다고 하니 체로 치면 된다고 했다.\""
       - say:
           channel: record
           when: { var: l1_end, op: eq, value: gone }
@@ -163,7 +163,7 @@ scenes:
       - say: { channel: narration, text: "질문을 하려는데 끝까지 말하기도 전에 답이 떠오른다." }
       - say: { channel: narration, text: "곳간 열쇠. 좌판 밑에 둔 보따리. 손끝에 걸리던 약봉지." }
       - say: { channel: narration, text: "누구한테 묻는 건지 모르겠다. 답할 사람은 하나뿐이다." }
-      - say: { channel: record, text: "깨 붙은 걸로. 엿 사 달라던 애가 그렇게 말했다." }
+      - say: { channel: record, text: "오늘은 같이 먹자고 했다. 그 애 밥그릇만 오래 마루에 남아 있었다." }
       - say: { channel: record, text: "국제시장 3열 17번. 상인회 벽에 붙은 종이를 떼었다가 다시 붙이니 귀가 말려 올라갔다." }
       - say: { channel: record, text: "갈치 비린내. 가시를 발라 온 엄마 손에서 났다." }
       - say: { channel: narration, text: "셋 다 내가 답했다." }
@@ -298,7 +298,7 @@ scenes:
       - say:
           channel: narration
           when: { var: t_free, op: eq, value: true }
-          text: "118.5. 말을 했어야 했다. 딸 앞에서 엿 얘기만 하던 사람의 후회다."
+          text: "118.5. 말을 했어야 했다. 같이 먹자는 딸한테 끝내 장부를 덮지 못했다."
       - say:
           channel: narration
           when: { var: t_free, op: eq, value: true }
@@ -347,7 +347,7 @@ scenes:
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: false }
-          text: "다른 하나는 녹취 원본이다. 내 손에 뒀지만, 책은 412부밖에 팔리지 않았다."
+          text: "다른 하나는 녹취 원본이다. 팔리지 않은 책에도 그 사람들 목소리는 남아 있다."
       - say: { channel: narration, text: "김치통 쪽으로 기울면 223.7이다." }
       - say: { channel: narration, text: "원본 쪽으로 기울면 041.2다." }
       - say: { channel: narration, text: "앞에 적힌 세 수 옆에 놓아 본다. 둘 다 겹치는 자리가 없다." }
@@ -535,7 +535,7 @@ scenes:
       - say: { channel: narration, text: "아이 얼굴이 생각나지 않는다. 그렇게 오래 떠올려 본 얼굴인데." }
       - wait: 1400
       - say: { channel: narration, text: "그러다 낯익은 얼굴들이 하나씩 떠올랐다.", wait: 1400 }
-      - say: { channel: narration, text: "여든 먹어도 엿은 엿이라던 열여섯." }
+      - say: { channel: narration, text: "밥이 식는다고 마루에서 나를 기다리던 열여섯." }
       - say: { channel: narration, text: "할머이 또 부두 나갔다고 뛰어오던 일곱 살." }
       - say: { channel: narration, text: "환자복으로 뛰다가 간호사 선생님께 혼났다던 스물하나." }
       - say: { channel: narration, text: "색연필 쥐고 아줌마 어디서 봤는데, 하던 여덟 살." }
