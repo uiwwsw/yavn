@@ -525,7 +525,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "손을 그린 것도 아저씨잖아요. 제가 실을 놓을 동안 계속 받쳐 주셨고요."
+          text: "지게미는 아저씨가 얻어 오셨는데요."
       - say:
           char: 막쇠.grin
           with: [서연]
