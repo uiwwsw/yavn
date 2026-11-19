@@ -145,6 +145,43 @@ describe('360 full playthrough', () => {
     }));
   });
 
+  it('lets Manseok recognize his body, name and daughter before the granary dispute', async () => {
+    await start();
+    const { state, shown } = await play({ star: STAR_1894 }, 'l1_rice');
+    const beats = [
+      '어느 집 마당이지.', '묵직한 열쇠 꾸러미다.', '만석 어른, 어디 편찮으십니까?',
+      '어젯밤에도 저 사람과 곳간 쌀을 세었다.', '아버지, 봉구 오라버니 것도 퍼요?',
+      '내 뒤에는 아무도 없다.', '내 딸이다.', '오냐. 봉구 것도 퍼라.',
+      '덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다.',
+    ].map(fragment => shown.findIndex(line => line.includes(fragment)));
+    expect(beats.every(index => index >= 0)).toBe(true);
+    for (let i = 1; i < beats.length; i += 1) expect(beats[i]).toBeGreaterThan(beats[i - 1]);
+    expect(state.storyLog).toContainEqual(expect.objectContaining({
+      kind: 'dialogue', speaker: '사내', text: '만석 어른, 어디 편찮으십니까?',
+    }));
+    expect(state.storyLog).toContainEqual(expect.objectContaining({
+      kind: 'dialogue', channel: 'thought', speaker: '만석',
+      text: '봉구다. 어젯밤에도 저 사람과 곳간 쌀을 세었다.',
+    }));
+    expect(state.routeVars).toMatchObject({ lives_done: 1, l1_rice_blocked: false, l1_leave_blocked: false });
+    expect(state.choiceGate.options.map(option => option.text)).toEqual([OPEN, SHUT]);
+  });
+
+  it('resumes a previous-version yard save at the same line without replaying the arrival', async () => {
+    localStorage.setItem('vn-engine-autosave:game:360', JSON.stringify({
+      gameTitle: '360', gameVersion: '1.2.1', savedAt: new Date().toISOString(),
+      chapterIndex: 0, chapterPath: '0.yaml', sceneId: 'yard', actionIndex: 5,
+      backgroundAssetId: 'jemulpo_yard',
+      routeVars: { lives_done: 1, lived_1894: true }, inventory: {}, routeHistory: [], storyLog: [],
+    }));
+    await start();
+    const state = useVNStore.getState();
+    expect(state).toMatchObject({ currentSceneId: 'yard', actionIndex: 5,
+      routeVars: { lives_done: 1, lived_1894: true },
+      dialog: { fullText: '주인어른, 덕이 어멈이 화도진 사람 열댓을 데리고 왔습니다.' } });
+    expect(state.storyLog.some(entry => entry.sceneId?.startsWith('arrival_1894'))).toBe(false);
+  });
+
   it('finds two dots on the medicine packet after going to see the fireworks together', async () => {
     await start();
     const { state, shown } = await play({ star: STAR_1988, l3_open: AFRAID, l3_out: JACKET }, 'v3');

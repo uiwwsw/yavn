@@ -129,9 +129,9 @@ scenes:
       - wait: 950
       - say: { channel: narration, text: "선창에 매 놓은 배의 돛대가 하나씩 드러났다.", wait: 1400 }
       - wait: 300
-      - say: { channel: card, with: [], text: "1894년 6월\n제물포\n내 이름은 만석.", wait: 2000 }
+      - say: { channel: card, with: [], text: "1894년 6월\n제물포", wait: 2000 }
       - mood: off
-      - goto: yard
+      - goto: arrival_1894
 
   go_1952:
     pov: "???"
@@ -185,6 +185,35 @@ scenes:
       - bg: { id: void, transition: dissolve, duration: 2600 }
       - say: { channel: narration, text: "손을 내린다. 저쪽 빛은 그대로다." }
       - ending: still
+
+  arrival_1894:
+    title: "마당에 선 사람"
+    pov: "???"
+    time: "1894년 6월"
+    actions:
+      - bg: { id: jemulpo_yard, transition: fade, duration: 700 }
+      - music: port
+      - say: { channel: action, with: [], text: "발밑에서 모래가 밀린다. 짚신 코가 돌부리에 걸려 한 발을 고쳐 디딘다." }
+      - say: { channel: thought, with: [], text: "어느 집 마당이지." }
+      - say: { channel: action, with: [], text: "허리춤에서 쇠붙이가 부딪친다. 손을 대 보니 묵직한 열쇠 꾸러미다." }
+      - char: { id: 봉구, position: right }
+      - say: { char: 봉구, speakerName: "사내", with: [봉구], text: "만석 어른, 어디 편찮으십니까?" }
+      - say: { channel: thought, with: [봉구], text: "만석. 나를 부르는 말이다." }
+      - goto: arrival_1894_family
+
+  arrival_1894_family:
+    title: "아버지"
+    actions:
+      - say: { channel: thought, with: [봉구], text: "봉구다. 어젯밤에도 저 사람과 곳간 쌀을 세었다." }
+      - say: { char: 끝순, speakerName: "부엌 쪽 목소리", with: [봉구], text: "아버지, 봉구 오라버니 것도 퍼요?" }
+      - say: { channel: action, with: [봉구], text: "고개를 돌려 뒤를 본다. 내 뒤에는 아무도 없다." }
+      - char: { id: 끝순, position: center }
+      - say: { channel: action, with: [끝순], text: "부엌 문간에 선 아이가 이쪽을 보고 있다. 소반을 배로 받친 채 대답을 기다린다." }
+      - say: { channel: thought, with: [끝순], text: "끝순이. 내 딸이다. 아침상도 다 먹지 않고 나왔더니 또 밥을 들고 쫓아 나왔다." }
+      - say: { char: 만석, with: [끝순], text: "오냐. 봉구 것도 퍼라." }
+      - move: { id: 끝순, style: exit }
+      - say: { channel: action, with: [봉구], text: "끝순이는 부엌으로 돌아간다. 봉구가 치부책을 펴 들고 다시 입을 연다." }
+      - goto: yard
 
   yard:
     title: "객주 마당"
