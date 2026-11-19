@@ -29,3 +29,7 @@ See [CONTRIBUTING](CONTRIBUTING.en.md) for setup, collaboration, validation and 
 Use [the scene continuity guidelines](docs/DEVELOPMENT_GUIDE.en.md#scene-continuity) when staging a cut, moving between times or places, or introducing a character.
 
 The library's main story, *Muwon*, is a five-chapter forensic mystery set in Hanseong in 1792. Its characters and cases are original; only the period setting and the historical inquest methods are borrowed. It is currently available in Korean.
+
+## Production hosting
+
+Vercel installs and builds `main` directly and serves `dist/`; automatic branch previews are disabled. Keep the existing public origin so browser saves remain accessible. Manage retained output with Vercel’s [Deployment Retention Policy](https://vercel.com/docs/deployment-retention). Docker Compose is an optional local runner and does not serve the production Vercel address.
