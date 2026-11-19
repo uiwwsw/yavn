@@ -932,7 +932,7 @@ scenes:
 
   stab:
     actions:
-      - char: { id: 해수, position: left }
+      - char: { id: 해수, position: left, emotion: blank }
       - char: { id: 광철, position: right, emotion: wire }
       - move: { id: 해수, toward: 광철, style: approach, wait: true }
       - say: { channel: action, with: [해수, 광철], text: "광철에게 팔을 뻗는다. 연필을 쥔 손이 가슴에 닿고, 광철이 차 문에 기대 주저앉는다. 손을 빼자 부러진 심이 보인다." }
