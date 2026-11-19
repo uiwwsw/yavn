@@ -29,7 +29,7 @@ const GO = '마포에 간다.';
 const STAY = '봉구를 보내고 남는다.';
 const RECEIPT = '거래 조건만 이야기한다.';
 const CONFESS = '기호가 함께 가자는 이유를 묻는다.';
-const CARRY = '어머니를 모시고 간다.';
+const CARRY = '어머니에게 함께 가자고 설득한다.';
 const SLIP_OUT = '쌀값을 두고 영호와 떠난다.';
 const AFRAID = '엄마에게 무섭다고 말한다.';
 const JACKET = '잠바를 받는다.';
@@ -211,6 +211,9 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '엄마가 동의서를 들고 서 있던 게 생각난다')).toBe(true);
     expect(heard(shown, '그날 난간을 쥔 손은 아무리 힘을 줘도 펴지지 않았다')).toBe(false);
     expect(heard(shown, '그날 누나가 그려 온 불꽃이다')).toBe(true);
+    const bridgePlan = shown.findIndex(text => text.includes('퇴원하면 이 다리 끝까지 걸어 볼 거야'));
+    expect(bridgePlan).toBeGreaterThan(-1);
+    expect(shown.indexOf('…저도 같이 걸어도 돼요?')).toBeGreaterThan(bridgePlan);
   });
 
   it('ends the run at the first light when the player stays and offers that choice again', async () => {
@@ -288,6 +291,9 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '입을 열자 다른 말이 나왔다')).toBe(true);
     expect(heard(shown, '정신을 차려 보니 침대 난간을 쥐고 있다')).toBe(true);
     expect(heard(shown, '그날 누나가 그려 온 불꽃이다')).toBe(true);
+    const bridgePlan = shown.findIndex(text => text.includes('퇴원하면 이 다리 끝까지 걸어 볼 거야'));
+    expect(bridgePlan).toBeGreaterThan(-1);
+    expect(shown.indexOf('…저도 같이 걸어도 돼요?')).toBeGreaterThan(bridgePlan);
     expect(heard(shown, '점 두 개가 나란히 찍혀 있다')).toBe(false);
     expect(heard(shown, '가방끈이 어깨에 걸려 있다')).toBe(true);
     expect(heard(shown, '박다온(53), 오후 두 시')).toBe(true);
@@ -298,7 +304,7 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '쌀에 벌레가 났다고 하니 체로 치면')).toBe(false);
     expect(heard(shown, '거래 마쳤다. 약값도 넉넉히 남았어.')).toBe(true);
     expect(heard(shown, '그날 곳간을 열었더라면')).toBe(false);
-    expect(heard(shown, '같은 점은 없어. 360도 어디에도')).toBe(true);
+    expect(heard(shown, '같은 자리는 없을 거라고 생각해요')).toBe(true);
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
@@ -318,7 +324,8 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '그때는 내가 임자였다')).toBe(true);
     // The habit belongs to one soul across all five lives, and in this one it is the son's.
     expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
-    expect(heard(shown, '본 기억은 없는데 저렇게 웃는 얼굴을 전에도 기다린 것 같다')).toBe(true);
+    expect(heard(shown, '누나 웃으면 왼쪽 눈이 먼저 감기네요')).toBe(true);
+    expect(heard(shown, '본 기억은 없는데 저렇게 웃는 얼굴을 전에도 기다린 것 같다')).toBe(false);
     // The ward is where the person finds out, because a ward is a place with time left in it.
     expect(heard(shown, '엄마는 못 들은 사람처럼 수술 날짜를 물었다')).toBe(true);
     expect(heard(shown, '이번엔 내가 입을 다물었다')).toBe(true);
@@ -343,8 +350,8 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '넷 다 웃을 때 왼쪽 눈이 먼저 감겼다')).toBe(true);
     expect(heard(shown, '딸이었다가, 아들이었다가, 옆 침대였다가, 모르는 사람이었다')).toBe(true);
     expect(heard(shown, '이불을 덮어 주고 집에 두고 나간 아이였다')).toBe(true);
-    expect(heard(shown, '따라온 것이 아니다. 먼저 와 있었다')).toBe(true);
-    expect(heard(shown, '얼굴이 안 보이는 쪽이 나였다')).toBe(true);
+    expect(heard(shown, '그 아이를 다시 만나고도 나는 몰랐다')).toBe(true);
+    expect(heard(shown, '얼굴 없는 사람이 나였다')).toBe(true);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
       l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,

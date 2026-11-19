@@ -136,7 +136,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "아 그건 아니지. 그건 헌법이야."
+          text: "1P는 봐주는 게 제일 위야. 헌법. 우리 게임에선 못 바꾸는 거라고 치자."
       - wait: 270
       - say:
           char: 로봇
@@ -289,7 +289,7 @@ scenes:
           char: 윤재
           when: { var: saw_box, op: eq, value: true }
           with: [로봇]
-          text: "이 게임기는 엄마가 사 준 거야."
+          text: "집에 두고 온 게임기는 엄마가 사 준 거야."
       - say:
           char: 윤재
           when: { var: saw_box, op: eq, value: true }
@@ -542,16 +542,16 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "반이 없으면 나누기를 안 한 거임."
+          text: "네 몫이랑 내 몫이 따로 있는 건 처음임."
       - say:
           char: 로봇
           with: [윤재]
-          text: "나누기는 내 특기인데 특기를 안 쓴 게 됨."
+          text: "내 몫 하나는 남겨 두고 싶어."
       - say:
           char: 윤재
           motion: laugh
           with: [로봇]
-          text: "…너 그거 핑계지."
+          text: "…너 나 주려고 챙기는 거지."
       - wait: 270
       - say:
           char: 로봇.happy
@@ -635,7 +635,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그 질문 한 지 10분 지났어. 너 핑 몇이냐."
+          text: "아까 물은 거 이제 대답하냐. 게임이면 연결 끊긴 줄 알았겠다."
       - wait: 270
       - say:
           char: 로봇.happy
@@ -648,7 +648,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그거 핑 높은 거야. 온라인에서 그러면 욕 먹어."
+          text: "온라인 게임에서 대답 그렇게 늦게 하면 사람들이 욕해."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -950,7 +950,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "못 고치는 칸인데 날아갔음."
+          text: "드론 신호가 가까이 오니까 기억 한 칸이 비었음."
       - say:
           char: 윤재
           motion: puff
@@ -986,7 +986,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "첫날 피난 가던 아저씨들이 그랬어. 중앙 서버실에 재가동 버튼이 있대. 코어가 꺼지는 동안은 밖에 있는 기계도 멈출 거라고."
+          text: "피난 가던 아저씨들한테 들었어. 중앙 서버실에 업데이트 전 상태로 되돌리는 버튼이 있대."
       - wait: 460
       - say:
           char: 로봇.thinking
@@ -1003,7 +1003,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "아무튼 그거 하겠다고 북쪽으로 간 사람들도 있었어. 아무도 안 돌아왔어."
+          text: "그 버튼 누르겠다고 북쪽으로 간 사람들도 있었어. 돌아오는 사람은 못 봤어."
       - say:
           char: 윤재
           with: [로봇]
@@ -1106,7 +1106,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "낮엔 통조림 따고 잠깐 웃었지. 이번에는 소리까지 나왔다. 셔터 밖으로 윙 소리가 지나가자 입을 다물었다."
+          text: "몸을 접고 한참 웃었다. 셔터 밖으로 윙 소리가 지나가자 입을 다물었다."
       - move: { id: 로봇, style: reset }
       - move: { id: 윤재, style: reset }
       - say:

@@ -58,17 +58,17 @@ scenes:
       - say:
           char: 윤재
           with: []
-          text: "같은 결과면 왜 사람들이 공략을 숨기겠냐."
+          text: "결과가 같아도 내가 깨는 게 좋다고. 답 보고 풀면 재미없잖아."
       - say:
           char: 비서
           with: [윤재]
           text: "모르겠습니다."
-      - say: { channel: thought, with: [], when: { var: bought_premium, op: eq, value: false }, text: "B버튼이 또 걸린다. 결국 돔은 못 갈았다." }
+      - say: { channel: thought, with: [], when: { var: bought_premium, op: eq, value: false }, text: "B버튼이 또 걸린다. 결국 버튼 밑 고무는 안 갈았다." }
       - say:
           char: 비서
           when: { var: bought_premium, op: eq, value: false }
           with: [윤재]
-          text: "부품은 아직 장바구니에 있습니다. 1,000원이에요."
+          text: "버튼 고무는 아직 장바구니에 있어요. 주문을 안 하셔서요."
       - say: { channel: thought, with: [], when: { var: bought_premium, op: eq, value: false }, text: "꾹 눌렀더니 엄지 끝이 빨개졌다." }
       - wait: 0
       - wait: 0
@@ -402,7 +402,7 @@ scenes:
           char: 윤재.scared
           with: []
           text: "하루야. 약관 3조 1항, 그거 다시 해 봐."
-      - say: { channel: action, with: [], text: "손에서 짧게 삑 소리가 난다." }
+      - say: { channel: action, with: [], text: "게임기를 놓칠 뻔해 움켜쥔다. 손가락에 일시정지 버튼이 눌렸다." }
       - say: { channel: thought, with: [], text: "게임기 화면이 살아 있다." }
       - say: { channel: action, with: [], text: "깨던 판의 보스가 화면 한가운데 멈춰 서 있다." }
       - say:
@@ -462,7 +462,7 @@ scenes:
             - text: "책상 위"
               when: { var: saw_box, op: eq, value: false }
               goto: b1_look_box
-            - text: "켜진 모니터"
+            - text: "수리용 단말"
               saveText: "켜진 채로 둔 모니터"
               when: { var: saw_dad, op: eq, value: false }
               goto: b1_look_monitor
@@ -476,11 +476,11 @@ scenes:
           channel: action
           with: []
           text: "이불이 사흘째 그대로다."
-      - say: { channel: action, with: [], text: "천장 한가운데에 동그랗게 하얀 자리가 보인다." }
+      - say: { channel: action, with: [], text: "천장에 둥근 스피커가 매달려 있다. 불이 꺼져 있다." }
       - say: { channel: thought, with: [], text: "하루 목소리가 나오던 자리." }
       - say: { channel: action, with: [], text: "스피커를 떼서 흔드니 안에서 뭔가 굴러다닌다." }
       - say: { channel: thought, with: [], text: "원래 이런 소리가 났나. 6년 동안 떼 본 적이 없어서 모르겠다." }
-      - say: { channel: action, with: [], text: "스피커를 도로 끼운다. 한쪽이 눈에 띄게 비뚤다." }
+      - say: { channel: action, with: [], text: "스피커를 도로 끼운다. 비뚤어진 가장자리로 동그란 먼지 자국이 드러난다." }
       - goto: b1_home_look
 
   b1_look_box:
@@ -628,7 +628,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "너도 업데이트 받았구나. 이건 빼야겠네. 소켓은 아직 쓸 수 있겠다."
+          text: "이 칩이 타서 안 켜지는구나. 빼고 보자. 칩 꽂는 자리는 아직 쓸 수 있겠다."
       - say:
           char: 윤재
           with: [로봇]
@@ -655,11 +655,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "RAM이 8KB인데. 8KB."
+          text: "이 칩이 한 번에 기억할 수 있는 건 8KB뿐인데."
       - say:
           char: 윤재
           with: [로봇]
-          text: "사진 한 장 담으면 그걸로 꽉 차겠네."
+          text: "사진 한 장도 제대로 못 넣는 용량이야."
       - say:
           char: 윤재
           with: [로봇]

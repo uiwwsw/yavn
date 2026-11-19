@@ -19,7 +19,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "윤재가 전원 버튼을 눌렀다. 어제까지 잘 켜지던 화면이 오늘은 그대로다."
+          text: "윤재가 전원 버튼을 눌렀다. 화면이 켜지지 않는다. 사진을 비서 하루에게 보내자 천장 스피커가 울린다."
       - sound: repair_switch
       - say: { char: 윤재, motion: puff, with: [비서], text: "아, 진짜. 하루야, 또 안 켜져. 어제 여기서 게임 껐는데." }
       - say: { char: 비서, with: [윤재], text: "사진에 모델 번호가 찍혔어요. 그걸로 찾아볼게요." }
@@ -70,7 +70,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "6년 2개월 3일입니다."
+          text: "그동안 수리한 기록도 남아 있어요."
       - mood: { tone: grief, level: 1 }
       - say:
           char: 윤재
@@ -104,7 +104,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "통화 시간 평균 41초예요."
+          text: "요즘엔 아버님 쪽에서 먼저 거셨어요."
       - say:
           char: 윤재
           motion: puff
@@ -228,7 +228,7 @@ scenes:
           char: 윤재.excited
           motion: perk
           with: [비서]
-          text: "어 잠깐만. 잠깐만잠깐만. 이거 봐 이거. 32,000원?"
+          text: "어, 잠깐. 이거 봐. 중고 하나 새로 올라왔다."
       - say:
           char: 비서
           motion: headtilt
@@ -237,7 +237,7 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "휴대용 게임기, 와이파이 없음, 앱 없음, 계정 없음. 32,000원."
+          text: "휴대용 게임기. 와이파이 없음, 앱 없음, 계정 없음. 이거지."
       - say:
           char: 비서
           with: [윤재]
@@ -331,11 +331,11 @@ scenes:
           char: 윤재
           motion: nod
           with: [비서]
-          text: "안에 고무 돔이 삭아서 그래."
+          text: "버튼 밑에서 받쳐 주는 고무가 삭아서 그래."
       - say:
           char: 비서
           with: [윤재]
-          text: "고무 돔 교체 부품은 1,000원입니다. 주문해 드릴까요?"
+          text: "버튼 고무는 지금도 팔아요. 주문해 드릴까요?"
       - say:
           char: 윤재
           motion: startle
@@ -361,7 +361,7 @@ scenes:
           side: me
           with: []
           text: "그거 수리비 되게 비싸요 부품도 단종이고"
-      - say: { char: 비서, with: [윤재], text: "아까 1,000원이라고 말씀드렸는데요." }
+      - say: { char: 비서, with: [윤재], text: "교체 부품은 싼데요." }
       - say:
           char: 윤재
           motion: sway
@@ -405,7 +405,7 @@ scenes:
           autoAdvance: 1650
           side: me
           with: []
-          text: "2만 7천에 바로 입금 가능해요 지금 당장요"
+          text: "바로 입금할게요. 조금만 빼 주시면 안 될까요"
       - say:
           channel: message
           thread: "판매자"
@@ -413,7 +413,7 @@ scenes:
           autoAdvance: 1050
           side: them
           with: []
-          text: "3만 2천"
+          text: "가격은 못 내려요"
       - say:
           channel: message
           thread: "판매자"
@@ -421,7 +421,7 @@ scenes:
           autoAdvance: 1550
           side: me
           with: []
-          text: "3만 원에 해주시면 지금 바로 입금할게요"
+          text: "그럼 배송비만 빼 주시면 바로 살게요"
       - say:
           channel: message
           thread: "판매자"
@@ -429,12 +429,12 @@ scenes:
           autoAdvance: 2000
           side: them
           with: []
-          text: "3만 2천이요. 신문지 포장이라 배송비는 안 받아요"
+          text: "배송비는 안 받을게요. 대신 신문지로 싸서 가요"
       - say:
           char: 윤재.excited
           motion: hop
           with: [비서]
-          text: "배송비가 없대. 봤지? 사천 원 번 거다."
+          text: "배송비 굳었다. 봤지? 한 번 더 물어보길 잘했어."
       - wait: 0
       - wait: 0
       - wait: 0
@@ -614,7 +614,7 @@ scenes:
           char: "윤재"
           side: me
           with: []
-          text: "보냈습니다! 32,000원 확인 부탁드려요"
+          text: "입금했습니다! 확인 부탁드려요"
       - say:
           channel: message
           thread: "판매자"
@@ -640,7 +640,7 @@ scenes:
           char: 비서
           motion: perk
           with: [윤재]
-          text: "현관에 뭔가 놓였습니다. 420g. 등록되지 않은 물체예요."
+          text: "현관에 신문지로 싼 물건이 놓였어요. 택배로 등록된 건 없는데요."
       - say:
           char: 윤재.excited
           motion: hop
@@ -691,11 +691,11 @@ scenes:
       - say:
           char: 윤재
           with: [비서]
-          text: "아 뭐 이 정도야. 눌리긴 눌리잖아. 돔 갈면 돼. 나중에."
+          text: "이 정도야 뭐. 세게 누르면 되잖아. 버튼 밑 고무는 나중에 갈지 뭐."
       - say:
           char: 비서
           with: [윤재]
-          text: "1,000원입니다."
+          text: "버튼 고무는 제가 찾아 뒀어요."
       - say:
           char: 윤재
           with: [비서]
@@ -729,7 +729,7 @@ scenes:
       - say:
           char: 비서
           with: [윤재]
-          text: "8KB면 제 인사말 한 줄도 안 들어갑니다."
+          text: "8KB면 제 음성 인사 파일 하나도 못 넣겠네요."
       - say:
           char: 윤재
           with: [비서]

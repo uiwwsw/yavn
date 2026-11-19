@@ -97,14 +97,14 @@ scenes:
       - say:
           channel: record
           when: { var: l2_asked, op: eq, value: true }
-          text: "\"새벽 네 시에 어머니를 깨웠다. 기차는 다섯 시였다.\""
+          text: "\"새벽 네 시에 어머니에게 같이 가자고 했다. 기차는 다섯 시였다.\""
       - say:
           channel: record
           text: "\"불에 들어간 건 내가 아니고 옆 좌판 사람이었다. 아이 둘은 나왔다.\""
       - say:
           channel: record
           when: { var: l2_asked, op: eq, value: false }
-          text: "\"새벽 네 시에 신을 신고 문간에 섰다. 깨우지 않고 나왔다.\""
+          text: "\"새벽 네 시에 신을 신고 문간에 섰다. 같이 가자는 말은 못 하고 나왔다.\""
       - say:
           channel: record
           when: { var: l2_heart_blocked, op: eq, value: true }
@@ -136,11 +136,11 @@ scenes:
       - say:
           channel: record
           when: { var: l3_went, op: eq, value: false }
-          text: "\"병실에 남았다. 새벽에 누나가 약봉지에 불꽃을 그려 가지고 돌아왔다.\""
+          text: "\"병실에 남았다. 그날 밤 누나가 약봉지에 불꽃을 그려 가지고 돌아왔다.\""
       - say:
           channel: record
           when: { var: l3_open_blocked, op: eq, value: true }
-          text: "\"무섭다고 하려 했는데 '무'에서 끊겼다. 다시 해 봐도 그 뒤가 안 나왔다.\""
+          text: "\"무섭다고 말하려고 했는데 그 말만 나오지 않았다.\""
       - say:
           channel: record
           when: { var: l3_out_blocked, op: eq, value: true }
@@ -164,7 +164,7 @@ scenes:
       - say: { channel: narration, text: "곳간 열쇠. 좌판 밑에 둔 보따리. 손끝에 걸리던 약봉지." }
       - say: { channel: narration, text: "누구한테 묻는 건지 모르겠다. 답할 사람은 하나뿐이다." }
       - say: { channel: record, text: "오늘은 같이 먹자고 했다. 그 애 밥그릇만 오래 마루에 남아 있었다." }
-      - say: { channel: record, text: "국제시장 3열 17번. 상인회 벽에 붙은 종이를 떼었다가 다시 붙이니 귀가 말려 올라갔다." }
+      - say: { channel: record, text: "국제시장 3열 17번. 복례 아주머니가 좋은 자리라고 했다. 나는 미안하다는 말을 못 했다." }
       - say: { channel: record, text: "갈치 비린내. 가시를 발라 온 엄마 손에서 났다." }
       - say: { channel: narration, text: "셋 다 내가 답했다." }
       - say: { channel: narration, text: "목소리는 셋인데 그날 본 것은 다 내 눈앞에 있다." }
@@ -207,9 +207,9 @@ scenes:
           when: { var: t_dare, op: eq, value: true }
           text: "339.4"
       - say: { channel: narration, text: "소수점 아래 한 자리까지 적힌 숫자 셋. 같은 건 없다." }
-      - say: { channel: record, text: "녹취 07. 유정림(71, 전 수학 교사). \"나는 그걸 각도라고 불러. 지구본에 점 하나 찍는 거지.\"" }
-      - say: { channel: record, text: "\"옆 사람하고 0.001도 차이일 수도 있어요. 그래도 같은 점은 없어. 360도 어디에도.\"" }
-      - say: { channel: narration, text: "유 선생님은 그 말을 하면서 손가락으로 지구본을 한 바퀴 돌렸다." }
+      - say: { channel: record, text: "녹취 07. 유정림(71, 전 수학 교사). \"후회를 하나 고르니까 몸이 한쪽으로 기울었어요. 그 방향을 각도라고 불렀지요.\"" }
+      - say: { channel: record, text: "\"원 둘레에 점을 찍는 거예요. 사람마다 다른 자리에. 같은 자리는 없을 거라고 생각해요.\"" }
+      - say: { channel: narration, text: "유 선생님은 다음 삶으로 향하던 방향을 원 둘레의 점에 빗댔다. 한 점에는 한 사람만 있을 거라 여겼다." }
       - say: { channel: narration, text: "그땐 한 사람이 찍은 점 여러 개를 나란히 놓고 볼 길이 없었다." }
       - say: { channel: narration, text: "지금 셋을 본다. 셋 다 한 사람 것이다." }
       - say: { channel: narration, text: "내 쪽에는 아직 적을 숫자가 없다." }
@@ -267,7 +267,7 @@ scenes:
               - { var: l3_open_blocked, op: eq, value: true }
               - { var: l3_out_blocked, op: eq, value: true }
               - { var: l4_sign_blocked, op: eq, value: true }
-          text: "고쳐 보려고 쥔 것이 다음 사람의 손목을 잡고 있었다."
+          text: "다음 삶에선 다르게 살겠다고 쥔 후회였다. 그런데 그쪽 행동밖에 못 하게 되었다."
       - goto: leftover_look
 
   leftover_look:
@@ -316,7 +316,7 @@ scenes:
       - say:
           channel: narration
           when: { var: t_live, op: eq, value: true }
-          text: "더 살고 싶다는 쪽을 쥐었더니 일흔아홉까지 왔다. 어느 방에 들어가도 비상구를 먼저 봤다."
+          text: "더 살고 싶다는 마음을 쥐고 또 살았다. 지안으로 살 때도 어느 방에 들어가든 비상구부터 봤다."
       - say:
           channel: narration
           when: { var: t_dare, op: eq, value: true }
@@ -339,7 +339,7 @@ scenes:
   stake:
     actions:
       - say: { channel: narration, text: "손이 닿는 것이 두 개다. 둘 다 일흔아홉 해에서 나왔다." }
-      - say: { channel: narration, text: "하나는 김치통이다. ‘통 가져와라’ 아래 답장 칸에 썼다 지운 것이 마흔다섯 해 치다." }
+      - say: { channel: narration, text: "하나는 김치통이다. 엄마 살아 계실 때 미룬 답장을, 돌아가신 뒤에도 썼다 지웠다." }
       - say:
           channel: narration
           when: { var: l4_signed, op: eq, value: true }
@@ -547,10 +547,10 @@ scenes:
       - say: { channel: narration, text: "그 겨울, 이불을 덮어 주고 집에 두고 나간 아이였다.", wait: 2200 }
       - mood: off
       - effect: { name: eclipse, wait: true }
-      - say: { channel: narration, text: "따라온 것이 아니다. 먼저 와 있었다. 다섯 번 다." }
+      - say: { channel: narration, text: "끝순이도, 영호도, 수경 누나도, 다온이도. 그 아이를 다시 만나고도 나는 몰랐다." }
       - wait: 1400
-      - say: { channel: narration, text: "맨날 거기 서 있다고 했다. 얼굴은 안 보인다고 했다." }
-      - say: { channel: narration, text: "얼굴이 안 보이는 쪽이 나였다." }
+      - say: { channel: narration, text: "다온이가 어둠 속에서 봤다는 사람. 그 애가 누군가를 알아본 얼굴로 나를 보던 것이 생각난다." }
+      - say: { channel: narration, text: "다온이가 뒤에서 봤다는, 얼굴 없는 사람이 나였다. 그 아이는 나를 기억하는데, 나는 그 아이를 몰랐다." }
       - goto: winter_churn
 
   # 서른 해 동안 되씹은 것들이 한꺼번에 올라온다. 쥘 수 있는 것은 그중 하나뿐이다.
@@ -567,7 +567,7 @@ scenes:
       - say: { channel: narration, text: "기억을 더듬을수록 아이를 이불 속에 두고 문을 닫던 순간으로 돌아간다." }
       - wait: 900
       - say: { channel: narration, text: "쥐면 기운다. 기울면 또 누군가로 눈을 뜬다." }
-      - say: { channel: narration, text: "그 애는 그때도 먼저 와 있을 것이다. 나는 또 모르고 볼 것이다." }
+      - say: { channel: narration, text: "그 아이를 또 만날지도 모른다. 나는 다시 만나도 못 알아볼 것 같다." }
       - bg: { id: void_near, transition: dissolve, duration: 3200 }
       - wait: 800
       - say: { channel: narration, text: "등 뒤에 있던 빛이 조금 더 가까이 왔다." }
@@ -662,7 +662,7 @@ scenes:
   end_circle:
     actions:
       - bg: { id: window_dawn, transition: fade, duration: 1600 }
-      - say: { channel: narration, text: "같은 점이 두 번이다. 유 선생님은 없다고 했다." }
+      - say: { channel: narration, text: "같은 점이 두 번이다. 유 선생님은 없을 거라 여겼다." }
       - say: { channel: narration, text: "눈을 뜨면 그 수부터 잊어버린다." }
       - ending: circle
 

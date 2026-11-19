@@ -47,16 +47,16 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "의녀께 하나만 묻지요. 검안은 몇 번이나 맡으셨습니까?"
+          text: "의녀께 하나만 묻지요. 몇 사건이나 검안하셨습니까?"
       - say:
           char: 서연.resolve
           with: [한명재]
-          text: "세 번입니다. 세 번 다 기록을 가져왔습니다."
+          text: "세 사건입니다. 죽은 세 사람의 기록을 가져왔습니다."
       - say:
           char: 한명재
           motion: laugh
           with: [서연]
-          text: "세 번."
+          text: "세 사건."
       - say:
           char: 막쇠
           when: { var: makssoe_alive, op: eq, value: true }
@@ -65,7 +65,7 @@ scenes:
       - say:
           char: 한명재
           with: [서연]
-          text: "참의 나리, 세 번 본 눈을 판관의 검안으로 치시겠습니까?"
+          text: "참의 나리, 세 사건 본 눈을 판관의 검안으로 치시겠습니까?"
       - sticker: { id: t_book, image: eonhae_sticker, x: 50, y: 32, width: "clamp(180px, 26%, 340px)", enter: fadeIn }
       - say:
           channel: action
@@ -553,7 +553,7 @@ scenes:
           text: "출납부에 제 이름이 있습니까? 없을 겁니다."
       - choice:
           key: t4
-          prompt: "얼음을 받아 간 사람이 한명재라는 걸 무엇으로 밝힐까?"
+          prompt: "출납부의 인장이 한명재 것임을 밝힐 증좌는?"
           char: 한명재
           timeoutMs: 15000
           timeoutOptionIndex: 0
@@ -810,7 +810,7 @@ scenes:
       - effect: { name: inkstamp, wait: true }
       - say:
           channel: record
-          text: "형조 판결. 한명재의 가짜 약 제조와 살인 세 건 인정. 전의감 약고를 봉하고 남은 약주머니를 거둔다."
+          text: "형조 판결. 한명재의 가짜 약 제조와 세 사람의 살인 지시 인정. 전의감 약고를 봉하고 남은 약주머니를 거둔다."
       - say:
           char: 한명재.cold
           with: [서연]

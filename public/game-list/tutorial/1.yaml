@@ -276,7 +276,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "레플라 체험용 밴드 · 매장 시연품 · 앉은 상태에서 귀 뒤 뼈 위에 붙이세요. · 접속은 30초 이내, 접속 중에는 잠든 상태가 유지됩니다."
+          text: "레플라 체험용 밴드 · 매장 시연품 · 앉은 상태에서 귀 뒤 뼈 위에 붙이세요. · 접속 중에는 잠든 상태가 유지됩니다. · 체험 기간 7일, 총 14시간"
           continueLabel: "밴드를 붙인다"
       - say:
           char: 상혁
@@ -749,7 +749,7 @@ scenes:
           char: 광철.lost
           motion: shiver
           with: [해수]
-          text: "밤에 자꾸 소리가 나. 경찰이 왔는데 나 혼자라고 그냥 갔어. 며칠째 그래."
+          text: "밤마다 소리가 나. 경찰도 아무도 없대. 요 며칠은 여기 주차장에 차 세워 놓고 자."
           wait: 950
       - say:
           char: 광철.lost
@@ -842,7 +842,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "체험 시간 14시간을 모두 사용했습니다. 레플라 라이트로 계속하시겠습니까? 월 39,000원"
+          text: "체험 시간을 모두 사용했습니다. 유료 이용권으로 계속하시겠습니까?"
           autoAdvance: 2634
       - say:
           channel: system
@@ -932,9 +932,10 @@ scenes:
 
   stab:
     actions:
-      - char: { id: 해수, position: left }
+      - char: { id: 해수, position: left, emotion: blank }
       - char: { id: 광철, position: right, emotion: wire }
       - move: { id: 해수, toward: 광철, style: approach, wait: true }
+      - say: { channel: action, with: [해수, 광철], text: "광철에게 팔을 뻗는다. 연필을 쥔 손이 가슴에 닿고, 광철이 차 문에 기대 주저앉는다. 손을 빼자 부러진 심이 보인다." }
       - bg: { id: sim_void, transition: cut }
       - move: { id: 해수, style: reset }
       - sound: chime
@@ -968,3 +969,4 @@ scenes:
           char: 해수
           with: []
           text: "…연필은 없네요."
+      - say: { channel: action, with: [], text: "복도에 나가니 상혁의 방문이 열려 있다. 불은 꺼져 있고, 침대에도 의자에도 사람이 없다." }

@@ -44,7 +44,7 @@ scenes:
       - say:
           channel: action
           with: [서연]
-          text: "신고서의 ‘익사’ 두 글자 아래는 비어 있다. 시장은 아직 한 줄도 없다."
+          text: "신고서에는 ‘익사’ 두 글자뿐이다. 몸을 살핀 기록인 시장은 아직 쓰지 않았다."
       - wait: 250
   night_call:
     title: "혼례 전날 밤"
@@ -69,7 +69,7 @@ scenes:
           char: 막쇠
           speakerName: "오작인"
           with: [서연]
-          text: "오작인 막쇠요. 판관 나리 오실 때까진 거적 덮어 두시오."
+          text: "시신 거두고 살피는 오작인 막쇠요. 판관 나리 오실 때까진 거적 덮어 두시오."
       - say:
           char: 서연
           with: [막쇠]
@@ -232,11 +232,11 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "옷을 움켜쥐다 살도 긁었을 거요. 누굴 잡아 오거든 손등부터 봐요."
+          text: "뭘 붙잡다 살도 긁었을 거요. 누굴 잡아 오거든 손등부터 봐요."
       - say:
           channel: thought
           with: []
-          text: "몇 시진을 물에 있었는데 실이 안 빠졌다."
+          text: "물에서 건져 올릴 때까지 손톱에 실이 걸려 있었다. 죽기 전에 무언가를 세게 움켜쥔 것이다."
       - get: blue_thread
       - clearSticker: { id: c1_thread, leave: fadeOut }
       - set: { c1_nails: true }
@@ -419,7 +419,7 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "분이 손톱 밑의 실은 이 사람 옷에서 나온 게 아니었다."
+          text: "분이 손톱 밑의 실을 이 사람 옷과 맞춰 보지도 않았다."
       - gameOver:
           title: "곤장 아래의 자백"
           message: "분이의 손톱은 부러졌는데 오라비의 손등과 팔에는 생채기 하나 없었다."
@@ -443,7 +443,7 @@ scenes:
       - say:
           char: 서연.resolve
           with: [강치수, 도원]
-          text: "분이 손톱은 두 개가 깨졌습니다. 목을 조른 사람이면 손등이 긁혔을 겁니다."
+          text: "분이 손톱은 두 개가 깨졌습니다. 저 사람 손에는 긁힌 자국이 없습니다. 옷의 실도 맞춰 봐야 합니다."
       - say:
           char: 강치수
           with: [서연]

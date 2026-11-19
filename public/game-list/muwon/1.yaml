@@ -207,7 +207,7 @@ scenes:
       - say:
           channel: action
           with: [막쇠]
-          text: "연기 사이로 쓰러진 사람의 발이 보인다. 그 옆에 쇠 장식 궤짝. 대들보에서 우지끈 소리가 난다."
+          text: "연기 사이로 쓰러진 사람의 발이 보인다. 그 옆 궤짝 뚜껑에 ‘장부’라고 적혀 있다. 대들보에서 우지끈 소리가 난다."
       - say:
           channel: thought
           with: []
@@ -358,11 +358,11 @@ scenes:
       - say:
           char: 서연.think
           with: [막쇠]
-          text: "그럼 불이 났을 땐 이미 숨이 없었네요."
+          text: "불이 나기 전에 죽었을 수 있겠네요."
       - say:
           char: 막쇠
           with: [서연]
-          text: "어. 그렇지."
+          text: "더 봐야지. 목에도 자국이 있던데."
       - set: { c2_nose: true }
       - goto: c2_examine
 
@@ -548,7 +548,7 @@ scenes:
       - say:
           char: 서연
           with: [막쇠]
-          text: "…내일 제가 주모께 말씀드릴게요. 아저씨 다리부터 좀 봐요."
+          text: "닭 값은 나중에요. 아저씨도 불 속에 들어갔잖아요. 데인 데는 없으세요?"
       - say:
           char: 막쇠
           with: [서연]

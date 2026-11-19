@@ -247,7 +247,7 @@ scenes:
       - say: { char: 만석, with: [끝순], text: "매일 한집에서 먹으면서 뭘 또 같이 먹어." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "아버지는 맨날 다 식은 다음에 오시잖아요." }
       - mood: off
-      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 왜선이 또 들어왔습니다. 오늘만 넉 척째예요." }
+      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 일본 군함이 또 들어왔습니다. 오늘만 넉 척째예요." }
       - say:
           channel: action
           with: []
@@ -371,7 +371,7 @@ scenes:
           char: 봉구
           with: [만석]
           when: { var: l1_gave, op: eq, value: true }
-          text: "쌀을 다시 채우느라 돈을 묶어 뒀습니다. 지금 있는 걸로는 한 병밖에 못 삽니다."
+          text: "곳간 채울 새 쌀값을 미리 보냈습니다. 가을에 받기로 해서, 지금은 약 한 병 살 돈만 남았습니다."
       - say:
           char: 만석
           with: [봉구]
@@ -383,7 +383,7 @@ scenes:
           when: { var: l1_gave, op: eq, value: false }
           text: "예. 사람 보내 놓겠습니다. 주인어른은 애 옆에 계세요."
       - say: { char: 봉구, with: [만석], text: "그런데 하나 더 있습니다. 마포 김 주사한테서 기별이 왔어요." }
-      - say: { char: 봉구, with: [만석], text: "곳간 쌀을 한꺼번에 사겠답니다. 모레까지 주인어른이 직접 와야 한답니다." }
+      - say: { char: 봉구, with: [만석], text: "곳간 쌀을 한꺼번에 사겠답니다. 모레까지 직접 와서 계약 문서에 이름을 쓰셔야 한답니다." }
       - say: { char: 봉구, with: [만석], when: { var: l1_gave, op: eq, value: true }, text: "나눠 준 쌀은 빼고 넘기겠다고 했습니다. 그쪽도 알았답니다." }
       - say: { char: 만석, with: [봉구], text: "맡아 둔 쌀까지 달라는 게냐." }
       - say: { char: 봉구, with: [만석], text: "윤 객주 몫은 돈으로 치르면 됩니다. 이런 값에 사겠다는 데는 다시 없을 겁니다." }
@@ -457,7 +457,7 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "끝순이는 밥 먹었느냐." }
       - say: { channel: action, with: [], text: "봉구가 대문 안쪽에 서 있다. 저녁인데 마당에 불이 안 켜져 있다." }
       - say: { char: 만석, with: [봉구], text: "…너는 왜 마당에 나와 섰느냐." }
-      - say: { char: 봉구, with: [만석], motion: droop, text: "어제 새벽입니다." }
+      - say: { char: 봉구, with: [만석], motion: droop, text: "끝순이가… 어제 새벽에 숨을 거뒀습니다." }
       - mood: { tone: grief, level: 2 }
       - wait: 1100
       - say: { channel: action, with: [], text: "대문 안으로 한 발 들어선다. 부엌에서도, 안채에서도 아무 소리가 안 난다.", wait: 900, unskippable: true }
@@ -510,7 +510,7 @@ scenes:
       - say: { char: 끝순, with: [만석], text: "아버지, 묵은쌀에 바구미 생겨요. 덕이네 좀 주면 안 돼요?" }
       - say: { char: 끝순, with: [만석], text: "지금이라도요." }
       - say: { char: 만석, with: [끝순], text: "바구미는 체로 치면 된다." }
-      - say: { char: 끝순, with: [만석], text: "덕이 지난겨울에 갔어요." }
+      - say: { char: 끝순, with: [만석], text: "덕이 지난겨울에 굶어 죽었대요." }
       - wait: 900
       - say: { channel: action, with: [], text: "체를 가져오라 했더니 그 애가 부엌 문을 닫고 나갔다. 저녁에 들인 진지는 다 식어 있었다." }
       - say: { channel: action, with: [], text: "끝순이는 스물에 강화로 시집을 갔다. 혼수는 넉넉히 넣었다." }
@@ -521,7 +521,7 @@ scenes:
   after_ruined:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 애가 일어났으면 됐다." }
-      - say: { channel: action, with: [], text: "가을이 와도 꾸어 간 쌀은 거의 돌아오지 않았다. 다시 채워 둔 쌀값만 갚을 날이 됐다." }
+      - say: { channel: action, with: [], text: "가을에 약속한 쌀은 왔지만 꾸어 간 쌀은 돌아오지 않았다. 새로 받은 쌀의 잔금이 남았다." }
       - say: { channel: action, with: [], text: "막아 보려고 맡은 쌀까지 팔았다. 며칠 뒤 윤 객주가 보낸 사람이 곳간 문에 새 자물쇠를 채웠다." }
       - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 쌀을 풀어 준 지 4년이 지난 여름에도 식구는 포구 뒷골목 셋방에 있었다." }
       - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "쌀을 풀고 4년 뒤 여름 · 제물포 뒷골목 셋방" }
@@ -635,7 +635,7 @@ scenes:
           when: { var: l1_end, op: eq, value: poor }
           text: "정미소 문 앞에서 매일 기침이 멎기를 기다렸다. 쉬라는 말만 했고, 쉬게 해 주지는 못했다."
       - wait: 700
-      - say: { channel: narration, text: "묻는 소리가 난다." }
+      - say: { channel: narration, text: "‘그때 왜 그랬을까.’ 묻는 소리가 난다." }
       - say: { channel: narration, text: "어디서 나는지 찾다가 그만둔다. 내 안에서 난다." }
       - effect: { name: tilt, wait: true }
       - say: { channel: narration, when: { var: l1_gave, op: eq, value: false }, text: "그날 곳간을 열었더라면." }

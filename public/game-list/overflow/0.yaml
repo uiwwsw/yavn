@@ -55,7 +55,7 @@ scenes:
       - move: { id: 수경, style: exit }
       - char: { id: 도겸, position: right }
       - say: { char: 도겸, with: [지완], text: "지완 씨, 이쪽으로 와요. 저기는 휠체어가 걸렸나 봐요." }
-      - say: { channel: action, with: [], text: "한 남자가 개찰구에 낀 휠체어 바퀴를 들어 올린다. 지완의 에모스 렌즈에 빨간 테두리가 뜬다." }
+      - say: { channel: action, with: [], text: "남자가 개찰구에 낀 휠체어를 들어 올린다. 지완의 감정 판독 렌즈가 남자 얼굴 옆에 경고를 띄운다." }
       - say: { channel: record, with: [], sound: read, text: "에모스 렌즈 · 역사 안전 경보\n흥분 94 · 역무원 호출" }
       - say: { channel: action, with: [], text: "역무원이 달려와 남자 앞을 막는다. 휠체어의 노인이 돌아본다. “저분이 저 도와주신 건데요.”" }
       - goto: station_alert
@@ -68,7 +68,7 @@ scenes:
       - say: { char: 도겸, with: [지완], text: "역무원이 들어 보면 풀리잖아요. 지완 씨는 저거 울려 본 적 없죠?" }
       - say: { char: 지완, with: [도겸], text: "고등학교 때 한 번요." }
       - say: { char: 도겸, with: [지완], text: "에이, 지완 씨가요?" }
-      - say: { char: 지완, with: [도겸], text: "그 뒤로는 셋 세고 말해요." }
+      - say: { char: 지완, with: [도겸], text: "그 뒤로는 화가 나도 셋 세고 말해요. 다시 울릴까 봐." }
       - say: { char: 도겸, with: [지완], text: "아…… 몰랐어요. 난 그냥 말수가 적은 줄 알았는데." }
       - say: { channel: action, with: [], text: "남자가 역무원에게 이름을 불러 준다." }
       - goto: warehouse_call
@@ -106,7 +106,7 @@ scenes:
       - say: { char: 지완, with: [세라], text: "잠깐 뵐 수 있을까요." }
       - say: { channel: action, with: [], sound: ward_door, text: "간호사가 면회증을 찍는다. 열리던 자동문이 멈춘다." }
       - sticker: { id: o0_appeal, image: appeal_form_sticker, x: 50, y: 46, width: "clamp(150px, 24%, 280px)", enter: fadeIn }
-      - say: { channel: record, with: [], sound: read, text: "보호자 면회 확인 · 문지완\n정서 반응 01 · 무반응 의심\n직원 동행 면회만 가능" }
+      - say: { channel: record, with: [], sound: read, text: "보호자 면회 확인 · 문지완\n감정 판독 렌즈 측정: 01 · 무반응 의심\n직원 동행 면회만 가능" }
       - clearSticker: { id: o0_appeal, leave: fadeOut }
       - say: { char: 지완, with: [세라], text: "저요? 저 지금 대답하고 있잖아요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "대답하시는 건 저도 봤어요." }

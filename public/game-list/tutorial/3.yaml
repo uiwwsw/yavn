@@ -284,7 +284,7 @@ scenes:
       - say:
           char: 은숙
           with: [해수]
-          text: "서버를 다 껐는데 접속자가 그대로래요. 껐다는 날부터 그 말만 해요."
+          text: "서버를 다 껐는데 접속자가 그대로래요. 끈 날부터 기록한 표를 계속 보내요."
       - say:
           char: 은숙
           with: [해수]
@@ -703,7 +703,7 @@ scenes:
       - say:
           char: 해수
           with: [태민]
-          text: "그럼 서버는요?"
+          text: "그럼 지금은 어디로 접속해요?"
       - wait: 0
       - say:
           char: 태민
@@ -744,7 +744,7 @@ scenes:
           char: 태민.afraid
           motion: shiver
           with: [해수]
-          text: "처음엔 컵이 다른 자리에 가 있는 정도였어요."
+          text: "레플라에서 옮긴 컵이 현실에서도 옮겨져 있었어요. 처음엔 그 정도였어요."
       - say:
           char: 태민.afraid
           motion: shiver

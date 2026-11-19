@@ -132,7 +132,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "내 RAM 8KB가 버티질 못해."
+          text: "인터넷에는 안 붙었는데도, 저 신호가 가까우면 기억을 읽을 수가 없어."
       - say:
           char: 로봇
           with: [윤재]
@@ -171,7 +171,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "확실히 남는 건 본체 ROM."
+          text: "확실히 남는 건 본체에 처음부터 있던 기능. ROM이라고 함."
       - say:
           char: 로봇
           with: [윤재]
@@ -224,7 +224,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "한 글자씩 옮겨야 함."
+          text: "화면의 글자만 옮기는 게 아님. 그때 본 것하고 들은 것도 같이 옮겨야 함."
       - say:
           char: 로봇
           with: [윤재]
@@ -492,7 +492,7 @@ scenes:
       - clearSticker: { id: b4_mem, leave: fadeOut }
       - choice:
           key: b4_save
-          prompt: "SAVE SLOT 1\n재가동하려면 최고 점수를 지워야 한다. 기억은 하나만 남길 수 있다."
+          prompt: "SAVE SLOT 1\n카드를 준비하면 최고 점수는 지워진다. 새 기억은 하나만 남길 수 있다."
           char: 로봇
           options:
             - text: "새끼손가락 약속"
@@ -646,7 +646,7 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "CORE: 3초. 재가동 중… 연결된 기기 정지."
+          text: "CORE: 3초. 최근 업데이트 삭제. 초기 상태 복원 중… 연결된 기기 정지."
       - wait: 0
       - say: { channel: card, with: [], text: "다음 날 새벽 · 데이터센터 문 앞", autoAdvance: 1300 }
       - bg: { id: dawn_field, transition: cut }
@@ -836,9 +836,9 @@ scenes:
           with: [윤재]
           text: "그냥 안녕."
       - say:
-          char: 윤재.sad
-          with: [로봇]
-          text: "…이 말도 그대로네. 처음 켰을 때도 이랬는데."
+          channel: action
+          with: [윤재, 로봇]
+          text: "가방에서 설명서를 꺼내 로봇 앞에 편다. 처음 켜던 날처럼 카메라가 종이를 따라간다."
       - wait: 460
       - say:
           char: 로봇
@@ -1060,7 +1060,7 @@ scenes:
           char: 로봇
           motion: hop
           with: [윤재]
-          text: "배터리 한 칸 남음."
+          text: "배터리 얼마 안 남음."
       - say:
           char: 로봇
           motion: hop
