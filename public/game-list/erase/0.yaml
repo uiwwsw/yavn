@@ -45,7 +45,7 @@ scenes:
           char: 지수
           options:
             - text: "오늘 보낼 수 있다고 한다"
-              saveText: '밥 먹기 전에 계약금을 보내겠다고 한다'
+              saveText: '지금 계약금을 보내겠다고 한다'
               goto: e0_studio_smile
             - text: "이번 달 카드값을 말한다"
               saveText: '카드값 43만 원이 밀렸다고 말한다'
@@ -101,7 +101,7 @@ scenes:
     actions:
       - bg: { id: couple_home, transition: fade, duration: 570 }
       - place: { text: "그날 밤 · 도윤과 지수의 집", presentation: center }
-      - say: { channel: action, with: [도윤], text: "넥타이를 푸는데 휴대폰이 울린다. 민석이다." }
+      - say: { channel: action, with: [도윤, 지수], text: "칼국수를 먹고 돌아왔다. 지수가 소파에 앉고, 도윤은 넥타이를 푼다. 휴대폰이 울린다. 민석이다." }
       - say:
           channel: message
           thread: 민석
@@ -118,41 +118,36 @@ scenes:
           text: "아직 유부남 아님ㅋㅋ 지금 갈게"
       - choice:
           key: e0_jisu_text
-          prompt: "아, 잠깐. 지수한텐 뭐라고 하지?"
+          prompt: "지수가 옆에서 누구냐고 묻는다."
           promptHeight: 344
-          with: [도윤]
+          with: [도윤, 지수]
           options:
             - text: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
               set:
                 e0_jisu_message: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
-                e0_jisu_reply: "클럽? ㅇㅋ 술 마시면 대리 불러"
+                e0_jisu_reply: "클럽? 알았어. 술 마시면 대리 불러."
             - text: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
               set:
                 e0_jisu_message: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
-                e0_jisu_reply: "ㅇㅋ 들어올 때 깨우진 마 ㅋㅋ"
+                e0_jisu_reply: "알았어. 열두 시 넘으면 나 먼저 잘 거야. 들어올 때 깨우진 마."
             - text: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
               set:
                 e0_jisu_message: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
-                e0_jisu_reply: "ㅇㅋ 늦으면 나 먼저 잘게. 운전은 하지 말고"
+                e0_jisu_reply: "생일이야? 그럼 잘 놀다 와. 늦으면 나 먼저 잘게. 운전은 하지 말고."
       - say:
-          channel: message
-          thread: 지수
-          side: me
           char: 도윤
-          with: []
+          with: [지수]
           text: "{{e0_jisu_message}}"
       - say:
-          channel: message
-          thread: 지수
-          side: them
           char: 지수
-          with: []
+          with: [도윤]
           text: "{{e0_jisu_reply}}"
+      - say: { channel: action, with: [도윤, 지수], text: "도윤이 겉옷을 집어 든다. 지수는 소파에서 손을 흔든다. 현관문이 닫힌다." }
       - bg: { id: club, transition: cut }
       - music: neon
       - place: { text: "토요일 00:40 · 클럽", presentation: center }
       - char: { id: 도윤, position: left }
-      - say: { channel: action, with: [도윤], text: "베이스에 바닥이 울린다. 화장실 간 민석이 아직 안 돌아왔다." }
+      - say: { channel: action, with: [도윤], text: "근처에 차를 세워 두고 민석과 마셨다. 베이스에 바닥이 울린다. 화장실 간 민석이 아직 안 돌아왔다." }
       - say:
           channel: message
           thread: 민석
@@ -173,7 +168,7 @@ scenes:
       - say: { char: 도윤, with: [준성], text: "계속 보긴 좀 그렇잖아요. 친구도 있고." }
       - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "일행 있는 거 보고 그냥 갈까 했는데, 혼자 계시길래 담배 핑계 좀 댔죠. 저도 안 피워요." }
       - say: { char: 도윤.smile, with: [준성], text: "라이터 꺼낼 뻔했네." }
-      - say: { channel: action, with: [도윤, 준성], text: "둘이 웃는다. 도윤이 지수한테 보낸 톡을 다시 보고 휴대폰을 뒤집는다." }
+      - say: { channel: action, with: [도윤, 준성], text: "둘이 웃는다. 도윤은 휴대폰의 시각을 보고 화면을 뒤집는다. 집을 나설 때 한 말이 걸린다." }
       - say: { char: 도윤, with: [준성], text: "저 다음 달에 결혼해요.", wait: 400 }
       - say: { char: 준성, speakerName: "낯선 남자", with: [도윤], text: "…그럼 저 갈까요?" }
       - say: { char: 도윤, with: [준성], text: "…친구 올 때까지만요." }

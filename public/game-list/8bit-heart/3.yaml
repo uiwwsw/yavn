@@ -662,20 +662,24 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "…고물. 그런 거."
+      - say: { char: 로봇, with: [윤재], when: { var: explained_junk, op: eq, value: false }, text: "고물. 나도 오래된 건데." }
+      - say: { char: 로봇, with: [윤재], when: { var: explained_junk, op: eq, value: false }, text: "그럼 나한테 하는 말도 욕임?" }
       - wait: 270
       - say:
           char: 로봇
           with: [윤재]
+          when: { var: explained_junk, op: eq, value: true }
           text: "그거 좋은 뜻이라며."
       - say:
           char: 로봇
           with: [윤재]
+          when: { var: explained_junk, op: eq, value: true }
           text: "오래돼서 믿음직하다고 했음."
       - say:
           char: 윤재
           motion: freeze
           with: [로봇]
-          text: "…어. 그래. 좋은 뜻 맞아. 맞다고."
+          text: "…너한테 하는 건 좋은 뜻이야. 오래돼서 믿음직하다는 거. 맞아, 맞다고."
       - wait: 270
       - say:
           char: 로봇.thinking

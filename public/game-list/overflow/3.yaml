@@ -23,7 +23,7 @@ scenes:
       - say: { char: 세라, with: [지완], text: "제가 지울 수는 없어요. 이의 신청을 하시면 확인서를 같이 낼 수 있고요." }
       - say: { char: 세라, with: [지완], text: "오늘 같은 안내 받고 그냥 가신 분이 한 분 더 있어요." }
       - say: { char: 수경, with: [세라], text: "그분께 제 연락처를 전해 주실 수 있을까요? 원하시면 그분 렌즈도 확인해 드릴게요." }
-      - say: { char: 세라, with: [수경], text: "연락처는 못 드려요. 제가 먼저 여쭤볼게요." }
+      - say: { char: 세라, with: [수경], text: "네. 제가 먼저 도움을 받아 보실지 여쭙고, 원하시면 전해 드릴게요." }
       - goto: sign_confirmation
 
   sign_confirmation:
@@ -49,7 +49,7 @@ scenes:
       - say: { char: 지완, with: [수경], text: "이건 제가 갖고 있을게요." }
       - say: { char: 수경, with: [지완], text: "네. 지완 씨 거예요." }
       - say: { channel: action, with: [지완, 수경, 세라], text: "수경이 확인자 칸에 회사 이름과 자기 이름을 끝까지 적는다. 세라가 그 아래에 본 것을 두 줄 쓴다." }
-      - say: { char: 세라, with: [지완], text: "아버님이 아드님 찾으세요. 서류는 내일 하셔도 돼요." }
+      - say: { char: 세라, with: [지완], text: "아버님이 아드님 찾으세요. 지금은 제가 같이 들어갈게요. 내일 혼자 면회하실 수 있을지는 이 확인서로 담당자에게 먼저 물어둘게요." }
       - goto: second_visit
 
   second_visit:

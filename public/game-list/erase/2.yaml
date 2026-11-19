@@ -24,7 +24,7 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "진짜지? 지난번엔 나 혼자 앉혀 놓고 자꾸 신랑님은요, 신랑님은요 하더라." }
       - say: { char: 도윤.smile, with: [지수], text: "견적서 챙겨 놔. 내가 물어볼게." }
       - say: { char: 지수.warm, with: [도윤], text: "한 시 반에 나갈 거야. 회사 명단은 그 전에 적어 놔. 늦으면 나 먼저 간다." }
-      - place: "같은 날 14:10 · 도윤과 지수의 집"
+      - place: "같은 날 14:10 · 지수가 먼저 나간 집"
       - say: { channel: action, with: [도윤], text: "노트북에 회사 명단이 열려 있다. 맨 윗줄 ‘팀장 박준성’ 다음으로 한 줄도 못 적었다." }
       - say:
           channel: message
@@ -32,7 +32,7 @@ scenes:
           side: them
           char: 지수
           with: []
-          text: "나 먼저 들어왔어. 수량 오늘까지 말해줘야 돼"
+          text: "나 먼저 식장 들어왔어. 수량 오늘까지 말해줘야 돼"
       - say:
           channel: message
           thread: 지수

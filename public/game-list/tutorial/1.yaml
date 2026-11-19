@@ -270,6 +270,8 @@ scenes:
     actions:
       - bg: { id: haesu_room, transition: fade, duration: 900 }
       - place: { text: "4월 13일 0:49 · 해수의 방", presentation: center }
+      - say: { channel: action, with: [], when: { var: took_coupon, op: eq, value: true }, text: "퇴근길에 주머니의 체험권을 꺼내 시연용 밴드 대여란에 이름을 썼다. 지금은 그 밴드를 책상에 올려놓고 있다." }
+      - say: { channel: action, with: [], when: { var: took_coupon, op: eq, value: false }, text: "퇴근 전에 둘째 서랍을 다시 열었다. 체험권을 챙겨 시연용 밴드를 빌렸다. 집에 와서도 한참 포장을 만지작거렸다." }
       - get: coupon
       - say:
           channel: record
@@ -688,7 +690,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "상혁이 문을 닫는다. 도어락에서 잠기는 소리가 나고, 안에서 손잡이를 한 번 더 당긴다."
+          text: "상혁이 문을 닫는다. 안에서 잠금쇠를 돌리고 손잡이를 한 번 더 당긴다."
 
   quiet_customer:
     title: "044번"

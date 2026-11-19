@@ -532,7 +532,7 @@ scenes:
       - say:
           channel: system
           with: []
-          text: "박준성 팀장 · 수요일 21:48 보낸 메시지 2\n읽지 않음"
+          text: "박준성 팀장 · 수요일 밤 보낸 메시지 2\n읽지 않음"
       - say:
           channel: record
           when: { var: e2_leaked, op: eq, value: true }
@@ -640,7 +640,7 @@ scenes:
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 1 }
-          text: "지수한테서 ‘토요일 전에’로 시작하는 톡이 와 있다."
+          text: "지수한테서 ‘오늘 저녁엔 집에서 얘기해’라는 톡이 와 있다."
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 0 }

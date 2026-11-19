@@ -240,6 +240,9 @@ describe('8비트 심장', () => {
     // Chapter 2 asked "믿어도 됨?" and got "아니." Chapter 4 answers it the other way.
     expect(heard(run.shown, '이번엔 어')).toBe(true);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(false);
+    expect(heard(run.shown, '그럼 나한테 하는 말도 욕임?')).toBe(true);
+    expect(heard(run.shown, '그거 좋은 뜻이라며.')).toBe(false);
+    expect(heard(run.shown, '켜지기 전 건 모름.')).toBe(true);
     // Seven peach pieces are divided equally before each side receives its portion.
     expect(heard(run.shown, '조각 일곱 개')).toBe(true);
     expect(run.shown).toContain('3.5.');
@@ -265,6 +268,8 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
     expect(heard(run.shown, '이 게임기는 엄마가 사 준 거야')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
+    expect(heard(run.shown, '그거 좋은 뜻이라며.')).toBe(true);
+    expect(heard(run.shown, '그럼 나한테 하는 말도 욕임?')).toBe(false);
     const warning = run.shown.findIndex(text => text.includes('재가동하려면 최고 점수를 지워야 한다'));
     expect(warning).toBeGreaterThan(-1);
     expect(run.shown.findIndex(text => text.includes('HI-SCORE 0999990 — 삭제됨'))).toBeGreaterThan(warning);
@@ -300,21 +305,27 @@ describe('ERASE', () => {
   });
 
   it.each([
-    [directText, '클럽? ㅇㅋ 술 마시면 대리 불러'],
-    [briefText, 'ㅇㅋ 들어올 때 깨우진 마 ㅋㅋ'],
-    [lateText, 'ㅇㅋ 늦으면 나 먼저 잘게. 운전은 하지 말고'],
-  ])('sends the selected text and receives its matching reply in Jisu’s chat (%s)', async (sent, reply) => {
+    [directText, '클럽? 알았어. 술 마시면 대리 불러.'],
+    [briefText, '알았어. 열두 시 넘으면 나 먼저 잘 거야. 들어올 때 깨우진 마.'],
+    [lateText, '생일이야? 그럼 잘 놀다 와. 늦으면 나 먼저 잘게. 운전은 하지 말고.'],
+  ])('talks to Jisu at home before leaving, then texts her from the club (%s)', async (spoken, reply) => {
     await start('erase');
-    const route = { e0_studio: '오늘 보낼 수 있다고 한다', e0_jisu_text: sent };
-    const { state } = await play(route, state => state.placeCaption?.text === '토요일 00:40 · 클럽');
-    const messages = state.storyLog.flatMap(entry =>
-      entry.kind === 'dialogue' && entry.channel === 'message' && entry.thread === '지수'
-        ? [{ side: entry.side, text: entry.text, avatar: entry.avatar }]
-        : []);
-    expect(messages).toMatchObject([
-      { side: 'me', text: sent },
-      { side: 'them', text: reply, avatar: expect.stringContaining('/jisu-profile.svg') },
-    ]);
+    const route = { e0_studio: '오늘 보낼 수 있다고 한다', e0_jisu_text: spoken, e0_junseong: '잔을 받는다' };
+    const answer = await play(route, state => state.dialog.fullText === spoken);
+    expect(answer.state.background).toContain('/couple_home.svg');
+    expect(answer.state.dialog).toMatchObject({ channel: 'dialogue', speakerId: '도윤' });
+    expect(answer.state.visibleCharacterIds).toEqual(expect.arrayContaining(['도윤', '지수']));
+    const response = await play(route, state => state.dialog.fullText === reply);
+    expect(response.state.dialog).toMatchObject({ channel: 'dialogue', speakerId: '지수' });
+    expect(response.state.visibleCharacterIds).toEqual(expect.arrayContaining(['도윤', '지수']));
+    const club = await play(route, state => state.dialog.fullText === '좀 늦을듯 먼저 자');
+    expect(club.state.background).toContain('/club.svg');
+    expect(club.state.dialog).toMatchObject({ channel: 'message', side: 'me' });
+    expect(heard(club.shown, '현관문이 닫힌다')).toBe(true);
+    expect(club.state.visibleCharacterIds).not.toContain('지수');
+    const messages = club.state.storyLog.filter(entry =>
+      entry.kind === 'dialogue' && entry.channel === 'message' && entry.thread === '지수');
+    expect(messages).toMatchObject([{ side: 'me', text: '좀 늦을듯 먼저 자' }]);
   });
 
   it('새벽에 아무것도 안 지우면 남은 것이 1·3·4장에서 돌아온다', async () => {
@@ -412,7 +423,7 @@ describe('튜토리얼', () => {
     t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
     t3_tell: '레플라에서 한 일을 털어놓는다',
     t3_room: '벽에 붙은 그래프||책상 위 출입 카드||레플라가 어떻게 작동하는지 묻는다',
-    t3_door: '상혁이 어머니께 전화한다',
+    t3_door: '상혁의 어머니에게 연락한다',
     t4_room: '모니터||벽 콘센트||책상 서랍||모니터 앞에 앉는다',
     t4_end: '전원선을 뽑는다',
   };
@@ -429,6 +440,10 @@ describe('튜토리얼', () => {
     expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(false);
     // 상혁 opens the door a crack for someone who has been looking after him.
     expect(heard(run.shown, '밥 고맙다. 네 차례 아니었잖아')).toBe(true);
+    expect(heard(run.shown, '시연용 밴드 대여란에 이름을 썼다')).toBe(true);
+    expect(heard(run.shown, '퇴근 전에 둘째 서랍을 다시 열었다')).toBe(false);
+    expect(heard(run.shown, '어. 1270. 바꾸려다 말았어.')).toBe(true);
+    expect(run.state.storyLog.some(entry => entry.kind === 'dialogue' && entry.channel === 'message' && entry.thread === '상혁 어머니')).toBe(true);
   });
 
   it('cuts the local fan and screen on confirmation and restores a dark, quiet save', async () => {
@@ -494,6 +509,8 @@ describe('튜토리얼', () => {
     expect(heard(run.shown, '대답이 없다. 의자가 한 번 더 끌린다')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서')).toBe(false);
     expect(heard(run.shown, '밥 고맙다')).toBe(false);
+    expect(heard(run.shown, '퇴근 전에 둘째 서랍을 다시 열었다')).toBe(true);
+    expect(heard(run.shown, '시연용 밴드 대여란에 이름을 썼다')).toBe(false);
   });
 });
 

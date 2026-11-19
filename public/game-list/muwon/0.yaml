@@ -265,7 +265,7 @@ scenes:
           channel: action
           with: []
           continueLabel: "지게미를 덮고 기다린다"
-          text: "젖은 천 위로 시큼한 지게미를 고루 펴 바른다. 등불 심지를 한 번 자른다."
+          text: "막쇠가 돌아와 식초와 지게미를 내려놓는다. 천에 고루 펴 목을 덮고 등불 심지를 한 번 자른다."
       - sticker: { id: neck_traces, image: neck_traces_sticker, x: 50, y: 32, width: "clamp(200px, 26%, 320px)", enter: fadeIn }
       - say:
           channel: action

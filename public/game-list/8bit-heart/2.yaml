@@ -90,13 +90,13 @@ scenes:
   b2_screen:
     actions:
       - wait: 0
-      - say: { channel: action, with: [], text: "스피커는 타 있다. 가슴 화면 뒤의 단자를 확인한다." }
+      - say: { channel: action, with: [], text: "타 버린 스피커 옆에 작은 보조 발성기가 남아 있다. 칩을 소켓에 끼우고 가슴 화면 뒤의 단자를 확인한다." }
       - say: { channel: thought, with: [], text: "가슴 화면 핀은 24개, 게임기 쪽은 16개. 그대로는 안 맞는다." }
       - wait: 0
       - say:
           channel: thought
           with: []
-          text: "기술실 테이프는 이렇게 잘 찢어지지 않았는데. 껌 싸고 남은 은박이라도 써 볼까."
+          text: "열여섯 개만 먼저 잇자. 남은 핀은 띄워 두고, 껌 은박으로 차폐부터 해 보자."
       - set: { b_screen: true }
       - goto: b2_parts
 
@@ -589,7 +589,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "…좋아. 하나 더. 내가 괜찮다고 두 번 말하면 그거 거짓말이야."
+          text: "…좋아. 게임기는 미련 없어. 진짜야. 진짜. 진짜. 하나 더, 내가 괜찮다고 두 번 말하면 그거 거짓말이야."
       - wait: 270
       - say:
           char: 로봇.thinking
@@ -607,7 +607,7 @@ scenes:
       - say:
           char: 로봇
           with: [윤재]
-          text: "아까 게임기 끌 때 세 번 했음."
+          text: "방금 게임기 얘기할 때 세 번 했음."
       - say:
           char: 로봇
           with: [윤재]
@@ -616,16 +616,16 @@ scenes:
           char: 윤재
           motion: freeze
           with: [로봇]
-          text: "…그거 듣고 있었어? 너 그때 안 켜져 있었잖아."
+          text: "…그걸 벌써 세고 있었냐."
       - wait: 270
       - say:
           char: 로봇
           with: [윤재]
-          text: "화면은 안 켜졌는데 단자는 붙어 있었음."
+          text: "켜진 뒤에 네가 한 말은 다 들음."
       - say:
           char: 로봇
           with: [윤재]
-          text: "켜지기 전에도 그 소리는 들어왔음."
+          text: "켜지기 전 건 모름. 방금 한 말만 셌음."
       - move: { id: 로봇, toward: 윤재, style: approach }
       - say:
           char: 로봇.thinking
@@ -929,6 +929,7 @@ scenes:
 
   b2_reg_brave:
     actions:
+      - set: { explained_junk: true }
       - say:
           char: 윤재
           motion: puff

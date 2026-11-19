@@ -1,7 +1,7 @@
 /**
- * Writes <dist>/404.html, the page Vercel serves for any address that no longer exists.
+ * Writes <dist>/404.html, the page the static host serves for any address that no longer exists.
  *
- * Retired games keep their own 301 redirects in vercel.json, so this page is the catch-all
+ * Retired games keep their own 308 redirects in docker/Caddyfile, so this page is the catch-all
  * for everything else: mistyped links, assets of a game that was taken down, and pages that
  * search engines still remember. It answers with a real 404 and offers the library, so a
  * visitor who arrives from a stale search result has somewhere to go.

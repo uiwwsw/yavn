@@ -219,7 +219,7 @@ describe('owner story playthroughs', () => {
       t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
       t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
       t3_tell: '레플라에서 한 일을 털어놓는다',
-      t3_door: '상혁이 어머니께 전화한다',
+      t3_door: '상혁의 어머니에게 연락한다',
       t4_end: '세션 종료 창을 연다',
     }, '0001'],
   ] as Array<[string, Route, string]>)('튜토리얼 reaches %s', async (ending, route, typed) => {

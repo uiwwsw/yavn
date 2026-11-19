@@ -249,7 +249,7 @@ scenes:
           char: 은숙
           when: { var: sh_night, op: eq, value: true }
           with: [해수]
-          text: "그날 밤에는 방에 없었다면서요. 차에 있었다는 말도 하셨고요."
+          text: "정해수 씨가 주임님께 그날 밤엔 방에 없었고 차에 있었다고 하셨다면서요."
       - say:
           char: 은숙
           motion: headtilt
@@ -342,7 +342,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "영수증을 받은 손은 창구 위에 두고, 앞치마 주머니에서 몰래 휴대폰을 꺼낸다."
+          text: "환불을 마치고 영수증을 돌려준다. 손님이 떠나자 휴대폰을 꺼낸다. 매장 지원을 나간 지영에게 톡을 보낸다."
       - say:
           channel: message
           thread: "지영"
@@ -775,7 +775,7 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "벽에 있는 그래프 보이죠. 선 밖에 혼자 떨어진 점, 그게 다음 단계로 넘어간 세션이에요."
+          text: "벽에 있는 그래프 보이죠. 선 밖에 혼자 떨어진 점이 있죠. 그 오래된 세션이 지난주에 다음 단계로 넘어갔어요."
       - say:
           channel: thought
           with: []
@@ -961,7 +961,7 @@ scenes:
             - text: "상혁에게 외출을 알린다"
               saveText: "\"상혁아, 나 잠깐 어디 좀 다녀올게.\""
               goto: door_leave
-            - text: "상혁이 어머니께 전화한다"
+            - text: "상혁의 어머니에게 연락한다"
               set: { called_mom: true }
               add: { sh_care: 1, honest: 1 }
               goto: door_mom
@@ -1020,104 +1020,105 @@ scenes:
 
   door_mom:
     actions:
+      - say: { channel: thought, with: [], text: "방문 번호는 예전 현관 번호 그대로라고 했다. 1270. 어머니가 오시면 열 수 있다." }
       - say:
           channel: system
           with: []
           text: "상혁 어머니 · 연결되지 않았습니다"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: me
           char: 해수
           with: []
           text: "어머니 저 해수예요. 늦게 죄송합니다"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "해수야 왜 무슨 일 있어"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: me
           char: 해수
           with: []
           text: "상혁이가 며칠째 방에서 안 나와요. 와서 보셔야 할 것 같아요"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "걔 또 그거 하는구나"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "작년에 우리 집에서 끊고 올라갔는데"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "새벽 기차 타고 갈게. 비번 알려줘"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: me
           char: 해수
           with: []
           text: "1270이요. 현관은 0411이에요"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "0411은 뭐야 그거"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: me
           char: 해수
           with: []
           text: "제 입사일이에요 외우기 쉬워서요"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "그걸 비번으로 쓰니"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "해수야 너도 좀 쉬어라 너는 우리 애도 아닌데 왜 네가"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
           text: "미안해 지금 말 잘못했다"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: me
           char: 해수
           with: []
           text: "괜찮습니다"
       - say:
           channel: message
-          thread: "엄마"
+          thread: "상혁 어머니"
           side: them
           char: 엄마
           with: []
