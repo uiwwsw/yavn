@@ -64,11 +64,11 @@ scenes:
     actions:
       - bg: { id: void, transition: cut }
       - say: { channel: narration, text: "암흑." }
-      - say: { channel: narration, text: "아까와 같은 어둠이다.", wait: 1300 }
+      - say: { channel: narration, text: "아까와 같은 어둠이다.", wait: 550 }
       - say: { channel: narration, text: "방금까지 대답하던 내 이름이 생각나지 않는다." }
-      - bg: { id: void_light, transition: dissolve, duration: 1450 }
+      - bg: { id: void_light, transition: dissolve, duration: 750 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
-      - say: { channel: narration, text: "꺼진 자리 옆에서 아직 들어가 보지 않은 빛이 손에 닿을 듯 깜박인다." }
+      - say: { channel: narration, text: "이름은 잊었는데 방금 쥔 마음은 남았다. 다시 빛이 깜박인다." }
       - goto: stars
 
   # 고르는 것은 사람이 아니라 그리움의 모양이다. 누군지는 가 봐야 안다.

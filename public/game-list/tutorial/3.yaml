@@ -695,12 +695,9 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "다 끄고 다시 들어가 봤어요. 아까 두고 나온 컵부터 만져 봤죠. 나올 땐 김이 났는데 미지근하더라고요."
+          text: "서버를 다 끄고 들어가 봤어요. 식을 수 없다고 생각했던 컵부터 만져 봤죠. 미지근하더라고요."
       - wait: 0
-      - say:
-          char: 태민
-          with: [해수]
-          text: "서버에서 그 물 온도까지 계산했거든요. 다 껐는데도 물은 식었어요."
+      - wait: 0
       - say:
           char: 해수
           with: [태민]
@@ -711,10 +708,7 @@ scenes:
           with: [해수]
           text: "남은 건 가산동 지하에 PC 한 대예요. 그걸로 접속해요."
       - wait: 0
-      - say:
-          char: 태민
-          with: [해수]
-          text: "레플라 처음 돌려 본 컴퓨터요. 그 화면을 볼 때는 접속자 목록이 그대로 떠요. 본체 팬도 돌아가고."
+      - wait: 0
       - say:
           char: 태민.afraid
           with: [해수]
@@ -729,7 +723,7 @@ scenes:
           char: 태민
           motion: slump
           with: [해수]
-          text: "지난번에 서버를 껐다 켰는데도 컵은 그대로였어요. 이번에도 그쪽은 남을 거예요. 다만 여기서 들어갈 문이 닫히겠죠."
+          text: "컵이 식은 걸 보면 저쪽은 남겠죠. 여기서 들어가는 문만 닫힐 거예요."
       - say:
           char: 태민
           motion: slump
@@ -752,16 +746,12 @@ scenes:
           with: [해수]
           text: "거기서 잠근 문이 여기서도 잠겨요. 거기서 한 말이 현실에서 들린 지도 몇 년 됐고요."
       - wait: 0
-      - say:
-          char: 태민
-          motion: lean_in
-          with: [해수]
-          text: "지난주에는 처음으로 일이 크게 났고요."
+      - wait: 0
       - wait: 0
       - say:
           char: 태민.afraid
           with: [해수]
-          text: "사람이 죽었어요. 이쪽에서."
+          text: "그러다 지난주에는 사람이 죽었어요. 이쪽에서."
           wait: 850
       - say:
           char: 태민.afraid
@@ -772,24 +762,15 @@ scenes:
       - say:
           char: 태민
           with: [해수]
-          text: "그 세션이 지난주에 처음 움직였어요. 3단계 완료라고. 그날 그 시각에요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "마트 이름하고 기둥 번호도 보냈어요. 저기 혼자 떨어진 점, 그 세션에서 나온 기록이에요."
+          text: "저기 동그라미 친 세션이 그 시각에 처음 움직였어요. ‘3단계 완료. 지하 2층, C-14.’"
+      - wait: 0
       - say:
           channel: thought
           with: []
           text: "주차장이었다. 지하 2층, C-14. 세 걸음이었다."
           wait: 850
-      - say:
-          char: 해수
-          with: [태민]
-          text: "…그 사람은 그걸 알까요."
-      - say:
-          char: 태민
-          with: [해수]
-          text: "모를걸요. 나도 처음엔 컵 내려놓은 자리를 잘못 본 줄 알았어요."
+      - wait: 0
+      - wait: 0
       - say:
           char: 해수
           when: { var: told_truth, op: eq, value: false }
@@ -804,22 +785,14 @@ scenes:
           char: 해수
           when: { var: told_truth, op: eq, value: true }
           with: [태민]
-          text: "그 사람이 경찰서에서 말은 했대요. 자기가 했다고."
-      - say:
-          char: 태민
-          when: { var: told_truth, op: eq, value: true }
-          with: [해수]
-          text: "…적어 줬대요?"
-      - say:
-          char: 해수
-          when: { var: told_truth, op: eq, value: true }
-          with: [태민]
-          text: "적기는 했대요."
+          text: "그 사람이 자기가 했다고 말했다면요. 녹음기 켜 놓고 들었다면."
+      - wait: 0
+      - wait: 0
       - say:
           char: 태민.laugh
           when: { var: told_truth, op: eq, value: true }
           with: [해수]
-          text: "적기만 했겠죠. 내 것도 처음엔 적어 줬어요."
+          text: "제 말도 받아 적기는 했어요. 그게 다였고요."
       - move: { id: 태민, toward: 해수, style: retreat }
       - say:
           char: 태민.afraid

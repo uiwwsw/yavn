@@ -31,9 +31,11 @@ const publicRoot = fileURLToPath(new URL('../public/', import.meta.url));
 const serve = (path: string): string | undefined => {
   try {
     const source = readFileSync(`${publicRoot}${path.replace(/^\//, '')}`, 'utf8');
-    // Background transitions are served in their non-waiting short form: there is no renderer
-    // here to report that a dissolve finished. Everything else is the shipped YAML.
-    return path.endsWith('.yaml') ? source.replace(/- bg: \{ id: ([a-z_]+)[^}]*\}/g, '- bg: $1') : source;
+    // There is no renderer to finish transitions. Keep authored caption suppression.
+    return path.endsWith('.yaml')
+      ? source.replace(/- bg: \{ id: ([a-z_]+)[^}]*\}/g, (action, id) =>
+        action.includes('label: false') ? `- bg: { id: ${id}, wait: false, label: false }` : `- bg: ${id}`)
+      : source;
   } catch {
     return undefined;
   }
@@ -170,6 +172,28 @@ const finished = (run: Run): void => {
 
 describe('8비트 심장', () => {
   const CHEAP = '중고 게임기를 산다';
+
+  it('restores a save from the old shopping scene without resuming at an unrelated line', async () => {
+    localStorage.setItem('vn-engine-autosave:game:8bit-heart', JSON.stringify({
+      gameTitle: '8비트 심장',
+      gameVersion: '1.6.0',
+      savedAt: new Date().toISOString(),
+      chapterIndex: 0,
+      chapterPath: './0.yaml',
+      sceneId: 'shopping',
+      actionIndex: 48,
+      routeVars: {},
+      inventory: {},
+      routeHistory: [],
+      storyLog: [],
+    }));
+    await start('8bit-heart');
+    expect(useVNStore.getState()).toMatchObject({ currentSceneId: 'shopping_night', chapterIndex: 1 });
+    const purchase = await play({}, state => state.choiceGate.key === 'b0_buy');
+    expect(purchase.state.choiceGate.options.map(option => option.text)).toEqual(['HYPERLINK X를 산다', CHEAP]);
+    expect(heard(purchase.shown, '자동으로 업데이트돼요')).toBe(true);
+    expect(heard(purchase.shown, '와이파이도 계정도 필요 없어')).toBe(true);
+  });
 
   it('shows the overnight cut before the secondhand console is picked up', async () => {
     await start('8bit-heart');
@@ -476,6 +500,10 @@ describe('튜토리얼', () => {
 
   it('심한 말을 했으면 광철과 112 기록이 그 말을 돌려준다', async () => {
     await start('tutorial');
+    expect(useVNStore.getState().background).toContain('/cs_desk_wait.svg');
+    const called = await play(honestRoute, state => state.dialog.fullText.startsWith('띵동 — 027번 고객님'));
+    expect(called.state.background).toContain('/cs_desk.svg');
+    expect(called.state.placeCaption?.automatic).not.toBe(true);
     const run = await play(honestRoute);
     finished(run);
     expect(run.picked.slice(0, 2).map(entry => entry.split('=')[0])).toEqual(['t0_kwang', 't0_coupon']);
@@ -609,6 +637,7 @@ describe('오버플로', () => {
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
+      o2_evidence: '20시 14분에 나온 두 값을 증거로 남긴다',
       o4_end: '기다린 사람들과 함께 이의를 낸다',
     });
     finished(run);
@@ -626,6 +655,7 @@ describe('오버플로', () => {
       '잠깐 말씀드려도 괜찮을까요?',
       '한수경이라고 합니다',
       '센서 입력 001 → 표시 01',
+      '왼쪽은 001, 101. 오른쪽은 둘 다 01이네요.',
       '그때 실제 값은 접수표에 안 남아서',
       '병실에 들어가면 렌즈가 한 번 더 재요',
       '아버님 모습이나 목소리는 저장 안 해요',
@@ -633,6 +663,7 @@ describe('오버플로', () => {
       '전화 받았는데 아버지 목소리가 아니어서',
       '보호자 재확인 · 문지완',
       '센서 입력 101 → 표시 01\n화면 판정',
+      '둘 다 같은 시각이라는 것도요',
       '두 번 다 제가 본 건 확인서에 적어 드릴게요',
       '세 자리 값이 들어올 때는 시험도 안 해 보고 통과시켰어요',
       '아까 저 앉혀 주셨잖아요',
@@ -649,6 +680,7 @@ describe('오버플로', () => {
     expect(introduction.map(entry => entry.speaker)).toEqual(['안경 쓴 여자', '문지완', '한수경']);
     expect(introduction[0]?.text).toContain('한수경이라고 합니다');
     expect(heard(run.shown, '아까 대답 안 했는데')).toBe(false);
+    expect(heard(run.shown, '첫 입력값은 남아 있지 않아요')).toBe(false);
   });
 
   it('connects missed calls and a late admission to the public ending', async () => {
@@ -659,6 +691,7 @@ describe('오버플로', () => {
       o1_desk: '결함 보고서를 읽는다||병동에서 연락이 왔는지 확인한다||시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '물부터 건넨다',
+      o2_evidence: '20시 14분에 나온 두 값을 증거로 남긴다',
       o4_end: '내 판독과 수경의 설명을 공개한다',
     });
     finished(run);
@@ -692,10 +725,12 @@ describe('오버플로', () => {
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
+      o2_evidence: '첫 접수 수치도 101로 고쳐 달라고 한다',
       o4_end: '내 기록의 정정을 신청한다',
     });
     finished(run);
     expect(run.state.resolvedEndingId).toBe('one_file');
+    expect(heard(run.shown, '첫 입력값은 남아 있지 않아요. 이건 8시 14분에 다시 잰 값이에요.')).toBe(true);
     const oldSlip = run.shown.findIndex(text => text.includes('결과지를 나란히 놓고'));
     expect(oldSlip).toBeGreaterThan(-1);
     expect(run.shown[oldSlip + 1]).toContain('‘무반응 의심’ 판정 철회');
