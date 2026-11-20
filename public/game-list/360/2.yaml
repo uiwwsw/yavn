@@ -180,7 +180,7 @@ scenes:
       - say: { char: 수경, with: [민재], delivery: whisper, text: "그냥 강가에 앉아 있었어. 오늘은 불꽃도 볼 수 있잖아." }
       - say: { channel: action, with: [], text: "건너편 침대에서 할아버지가 몸을 돌린다. 커튼을 잡고 일어나 이쪽을 본다." }
       - say: { channel: thought, with: [], text: "나도 모르게 누나와 거리를 벌린다. 이불만 자꾸 반듯하게 편다." }
-      - say: { channel: thought, with: [], when: { var: last_taken, op: eq, value: stay }, text: "낯선 역에서 신을 신고 기다리던 아이가 불쑥 떠오른다. 엄마가 와서 빈 침대를 보면 어떡하지. 난간부터 잡는다." }
+      - say: { channel: thought, with: [], when: { var: last_taken, op: eq, value: stay }, text: "문간에서 신을 신고 기다리던 아이가 불쑥 떠오른다. 엄마가 와서 빈 침대를 보면 어떡하지. 난간부터 잡는다." }
       - say: { channel: thought, with: [], when: { var: last_taken, op: eq, value: free }, text: "누나 뒤로 열린 문에서 방문 닫히는 소리가 난다. 그때처럼 혼자 나가고 싶다. 난간 쥔 손에 힘이 들어간다." }
       - goto: out_choice
 
