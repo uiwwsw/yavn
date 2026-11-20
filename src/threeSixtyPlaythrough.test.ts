@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getChoiceRecoverySummary, handleAdvance, loadGameFromUrl, resetApproachProgress, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
+import { handleAdvance, loadGameFromUrl, resetApproachProgress, setScenePresentationPaused, setSkipReadActive, submitChoiceOption } from './engine';
 import { useVNStore } from './store';
 // The engine imports the YAML parser lazily. Load it up front so the first game load
 // does not wait on real module transformation while fake timers are advanced.
@@ -41,7 +41,7 @@ const BESIDE = '곁에 남지 못한 후회';
 const STAR_1894 = '마루의 밥상';
 const STAR_1952 = '부두의 고무신';
 const STAR_1988 = '갈치 가시';
-const OPENING: Route = { where_am_i: '모르겠음', first_light: '손을 뻗는다.' };
+const OPENING: Route = { first_light: '손을 뻗는다.' };
 const WINTER_JAR = '비어 버린 쌀독';
 const WINTER_OUT = '집을 나선 후회';
 
@@ -117,10 +117,9 @@ async function start() {
 describe('360 full playthrough', () => {
   it('reveals the first three lives only after approaching the first light', async () => {
     await start();
-    const { state, picked, shown } = await play({ where_am_i: '천국' }, 'star');
+    const { state, picked, shown } = await play({}, 'star');
 
     expect(picked).toEqual([
-      'where_am_i=천국',
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
@@ -216,15 +215,14 @@ describe('360 full playthrough', () => {
     expect(shown.indexOf('…저도 같이 걸어도 돼요?')).toBeGreaterThan(bridgePlan);
   });
 
-  it('ends the run at the first light when the player stays and offers that choice again', async () => {
+  it('ends in Stillness before any of the lives if the player stays', async () => {
     await start();
-    const { state, picked } = await play({ where_am_i: '지옥', first_light: '그대로 있는다.' });
+    const { state, picked } = await play({ first_light: '그대로 있는다.' });
 
-    expect(picked).toEqual(['where_am_i=지옥', 'first_light=그대로 있는다.']);
-    expect(state.gameOver?.message).toBe('한참 뒤, 빛이 꺼졌다.');
-    expect(state.resolvedEndingId).toBeUndefined();
+    expect(picked).toEqual(['first_light=그대로 있는다.']);
+    expect(state.gameOver).toBeUndefined();
+    expect(state.resolvedEndingId).toBe('still');
     expect(state.routeVars.lives_done).toBe(0);
-    expect(getChoiceRecoverySummary()?.failedChoice?.key).toBe('first_light');
   });
 
   it('loses the previous star’s progress, even when it was ready to enter', async () => {

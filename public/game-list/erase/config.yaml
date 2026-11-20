@@ -2,9 +2,9 @@ title: "ERASE"
 pov: "한도윤"
 author:
   name: "uiwwsw"
-version: "1.7.1"
+version: "1.8.0"
 seo:
-  description: "청첩장 사진을 찍은 도윤과 지수. 그날 밤 늦지 않겠다던 도윤은 낯선 방에서 아침을 맞는다. 다섯 장에 걸쳐 네 가지 결말로 이어지는 심리 드라마."
+  description: "청첩장 사진을 찍은 도윤과 지수. 그날 밤, 도윤에게 친구의 문자가 온다. 어디에 가는지 말하는 순간부터 갈라지는 5장 심리 드라마, 결말 6종."
   keywords:
     - "심리 드라마"
     - "비주얼노벨"
@@ -32,7 +32,7 @@ startScreen:
   titleColor: "#e8eef2"
   startButtonText: "이야기 시작"
   buttonPosition: bottom-left
-  eyebrow: "심리 드라마 · 5장 · 결말 4종"
+  eyebrow: "심리 드라마 · 5장 · 결말 6종"
   subtitle: "청첩장에 넣을 사진을 골랐다. 그날 밤까지는 결혼 준비가 잘되는 줄 알았다."
   scene:
     layout: split
@@ -45,6 +45,20 @@ startScreen:
     light: breathe
     accent: "#b05b67"
 endings:
+  stayed_home:
+    title: "오늘은 집에"
+    message: "민석에게서 ‘ㅇㅋ 담에’라는 답이 온다. 차 키는 신발장 위에 있다."
+    epilogue: "사진관에서 미리보기 한 장을 보내 왔다. 도윤은 눈을 감고 웃는 사진을 지수 휴대폰에도 보냈다."
+    background: couple_home
+    music: studio
+    tone: hopeful
+  came_home:
+    title: "늦은 귀가"
+    message: "도윤은 식탁에 놓인 물을 마신다. 안방 문은 조금 열려 있다."
+    epilogue: "아침에 도윤은 어젯밤 어디에서 누구를 만났는지 먼저 얘기했다. 지수는 커피를 따르다 내려놓고 들었다."
+    background: couple_home
+    music: studio
+    tone: mystery
   erase_loop:
     title: "ERASE"
     message: "동의서에 적은 이름은 한도윤이다. 뒤집힌 이름표는 새 이름이 나올 때까지 그대로 놓여 있다."

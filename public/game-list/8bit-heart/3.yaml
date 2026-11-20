@@ -768,8 +768,6 @@ scenes:
           prompt: "드론이 골목 쪽으로 다시 돌아선다."
           char: 드론
           motion: lean_in
-          timeoutMs: 8000
-          timeoutOptionIndex: 1
           options:
             - text: "{{android_name}} 뒤에 숨는다"
               saveText: "{{android_name}} 등 뒤에 납작 붙는다"
@@ -894,31 +892,27 @@ scenes:
       - say:
           channel: record
           with: []
-          text: "SCAN: 대상 소실. 앞에 물체 1 — 분류: 가전제품(폐기 대상). 다음."
+          text: "SCAN 4회차: 대상 시야 이탈. 마지막 감지 지점에 발사."
       - say:
-          char: 윤재.scared
-          motion: gasp
-          with: [로봇]
-          text: "…어? 바로 앞에 있는데 그냥 가네?"
-      - move: { id: 드론, toward: camera, style: retreat }
+          channel: action
+          with: []
+          text: "윤재가 담벼락 뒤로 구른다. 등 뒤에서 금속이 바닥에 부딪힌다."
+      - move: { id: 드론, style: exit }
       - move: { id: 로봇, style: reset }
       - move: { id: 윤재, style: reset }
       - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "나를 추적 대상으로 안 봄."
+          char: 윤재.scared
+          with: [로봇.off]
+          text: "나 여기 있어. 이제 가도 돼. 일어나 봐."
       - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "그리고 방금 나 쓰레기라고 했어."
+          channel: action
+          with: [윤재.sad, 로봇.off]
+          text: "벌어진 가슴판 사이로 게임기에서 떼어 낸 칩이 보인다. 가운데가 두 조각으로 갈라져 있다."
       - say:
-          char: 로봇.thinking
-          motion: headtilt
-          with: [윤재]
-          text: "둘 다 생각 중."
-      - goto: b3_promise
+          channel: action
+          with: [윤재.sad, 로봇.off]
+          text: "윤재는 멀리서 드론 소리가 다시 날 때까지 그 자리에 앉아 있었다."
+      - ending: no_response
 
   b3_promise:
     actions:

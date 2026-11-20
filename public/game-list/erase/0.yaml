@@ -115,7 +115,7 @@ scenes:
           side: me
           char: 도윤
           with: []
-          text: "아직 유부남 아님ㅋㅋ 지금 갈게"
+          text: "아직 유부남 아님ㅋㅋ 잠깐만"
       - choice:
           key: e0_jisu_text
           prompt: "지수가 옆에서 누구냐고 묻는다."
@@ -125,7 +125,7 @@ scenes:
             - text: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
               set:
                 e0_jisu_message: "민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게"
-                e0_jisu_reply: "클럽? 알았어. 술 마시면 대리 불러."
+              goto: e0_stay_home
             - text: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
               set:
                 e0_jisu_message: "민석이 잠깐 보자네. 12시 전엔 들어갈게"
@@ -134,6 +134,7 @@ scenes:
               set:
                 e0_jisu_message: "민석이 생일이래. 나갔다 올게. 늦으면 톡할게"
                 e0_jisu_reply: "생일이야? 그럼 잘 놀다 와. 늦으면 나 먼저 잘게. 운전은 하지 말고."
+                e0_jisu_recall: "민석이 생일이라며. 그래서 늦는다는 톡에도 더 안 물어본 거야."
       - say:
           char: 도윤
           with: [지수]
@@ -201,17 +202,44 @@ scenes:
           char: 준성
           speakerName: "낯선 남자"
           with: [도윤]
-          text: "아, 벌써요? 그럼 기사님 잡힐 때까지만 있을게요."
+          text: "아, 네. 조심히 가요."
       - say:
           channel: action
           with: [도윤, 준성]
-          text: "남자가 잔을 내려놓는다. 호출 화면은 아직 ‘기사 찾는 중’이다."
-      - say: { channel: action, with: [도윤], text: "남자가 일어나려 한다. 도윤이 고개를 젓고 취소를 누른다." }
+          text: "남자가 잔을 내려놓고 일어난다. 호출 화면에 기사 이름이 뜬다."
+      - say: { channel: action, with: [도윤], text: "도윤은 민석에게 먼저 간다고 보내고, 겉옷을 챙겨 밖으로 나간다." }
       - say:
-          channel: system
+          channel: message
+          thread: 지수
+          side: me
+          char: 도윤
           with: []
-          text: "대리운전 호출 · 취소됨\n배정된 기사 없음"
-      - goto: e0_night
+          text: "늦어서 미안. 대리 잡혔어. 지금 집에 가."
+      - goto: e0_back_home
+
+  e0_stay_home:
+    title: "현관에서"
+    actions:
+      - say: { char: 도윤, with: [지수], text: "{{e0_jisu_message}}" }
+      - say: { char: 지수, with: [도윤], text: "지금 가면 열두 시 금방이잖아. 갔다 오는 것 말고, 오늘은 무슨 일로 나가고 싶은 건지 먼저 말해 줄래?" }
+      - say: { char: 도윤, with: [지수], text: "…하루 종일 정신없어서 좀 나가 있고 싶었어. 네가 싫어서 그런 건 아니고." }
+      - say: { char: 지수, with: [도윤], text: "나도 오늘 힘들었어. 사진 오면 같이 한 번만 더 보자. 지금은 일단 좀 앉고." }
+      - say: { channel: message, thread: 민석, side: me, char: 도윤, with: [], text: "오늘은 집에 있을게. 다음에 보자." }
+      - say: { channel: action, with: [도윤, 지수], text: "도윤은 현관에 둔 차 키를 신발장 위로 올려놓는다. 지수가 소파 한쪽을 비운다." }
+      - ending: stayed_home
+
+  e0_back_home:
+    title: "돌아오는 길"
+    actions:
+      - music: null
+      - bg: { id: couple_home, transition: fade, duration: 570 }
+      - place: { text: "토요일 새벽 · 도윤과 지수의 집", presentation: center }
+      - char: { id: 도윤, position: left }
+      - char: { id: 지수, position: right }
+      - say: { char: 지수, with: [도윤], text: "왔어? 물은 식탁에 있어." }
+      - say: { char: 도윤, with: [지수], text: "클럽에 갔었어. 다음엔 어디 가는지 얘기하고 나갈게." }
+      - say: { char: 지수, with: [도윤], text: "그래. 그 얘긴 내일 하자. 물 마시고 들어와." }
+      - ending: came_home
 
   e0_night:
     actions:

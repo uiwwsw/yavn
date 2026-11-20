@@ -154,16 +154,15 @@ describe('무원 full playthrough', () => {
     expect(state.resolvedEndingId).toBe('covered_ledger');
   }, 60000);
 
-  it('places Deokgu’s execution after the icehouse report on the failed confrontation route', async () => {
+  it('closes the case before the icehouse investigation if the confrontation fails', async () => {
     await start();
     const { state, seen } = await play({ ...best, c3_r1: '은비녀 — 검게 변하지 않았다' });
     const scheduled = seen.findIndex((text) => text.includes('처결은 9월 26일'));
-    const discovered = seen.findIndex((text) => text.includes('9월 25일 밤, 서빙고지기가'));
-    const remembered = seen.findIndex((text) => text.includes('9월 26일 새남터에서 처형됐다'));
+    const after = seen.findIndex((text) => text.includes('처결이 끝난 날 저녁'));
     expect(scheduled).toBeGreaterThanOrEqual(0);
-    expect(discovered).toBeGreaterThan(scheduled);
-    expect(remembered).toBeGreaterThan(discovered);
-    expect(state.resolvedEndingId).toBe('late_muwon');
+    expect(after).toBeGreaterThan(scheduled);
+    expect(seen.some((text) => text.includes('서빙고지기가 한성부 문을 두드렸다'))).toBe(false);
+    expect(state).toMatchObject({ chapterIndex: 3, resolvedEndingId: 'forced_confession' });
   }, 60000);
 
   it('ends in silence when the officer’s deal is accepted', async () => {

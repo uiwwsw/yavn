@@ -258,7 +258,7 @@ describe('8비트 심장', () => {
       b1_home: '가방을 메고 나간다',
       b2_register: '아무 일도 없다고 한다',
       b3_snack: '복숭아를 내일로 남겨 둔다',
-      b3_drone: '반대쪽으로 달아난다',
+      b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '대답을 내일로 미룬다',
       b4_save: '슬롯을 비워 둔다',
     });
@@ -283,12 +283,28 @@ describe('8비트 심장', () => {
     expect(rebootLines.findIndex(text => text.includes('설명서엔'))).toBeGreaterThan(rescan);
     expect(heard(run.shown, '아껴 둔 복숭아도 다음 날 아침에 다 먹었고')).toBe(true);
   });
+
+  it('ends in the alley if Yunjae gives the drone a target', async () => {
+    await start('8bit-heart');
+    const run = await play({
+      b0_buy: CHEAP,
+      b1_haru: '신문지가 뭔지 설명한다',
+      b1_home: '가방을 메고 나간다',
+      b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b3_snack: '내 몫의 복숭아를 다 먹는다',
+      b3_drone: '반대쪽으로 달아난다',
+    });
+    finished(run);
+    expect(run.state).toMatchObject({ chapterIndex: 4, resolvedEndingId: 'no_response' });
+    expect(heard(run.shown, '가운데가 두 조각으로 갈라져 있다')).toBe(true);
+  });
 });
 
 describe('ERASE', () => {
   const directText = '민석이 있는 클럽에 잠깐 갈게. 12시 전엔 들어갈게';
   const briefText = '민석이 잠깐 보자네. 12시 전엔 들어갈게';
   const lateText = '민석이 생일이래. 나갔다 올게. 늦으면 톡할게';
+  const studioChoice = { e0_studio: '오늘 보낼 수 있다고 한다' };
 
   it('withholds the player portrait until the studio scene', async () => {
     await start('erase');
@@ -311,12 +327,11 @@ describe('ERASE', () => {
   });
 
   it.each([
-    [directText, '클럽? 알았어. 술 마시면 대리 불러.'],
     [briefText, '알았어. 열두 시 넘으면 나 먼저 잘 거야. 들어올 때 깨우진 마.'],
     [lateText, '생일이야? 그럼 잘 놀다 와. 늦으면 나 먼저 잘게. 운전은 하지 말고.'],
   ])('talks to Jisu at home before leaving, then texts her from the club (%s)', async (spoken, reply) => {
     await start('erase');
-    const route = { e0_studio: '오늘 보낼 수 있다고 한다', e0_jisu_text: spoken, e0_junseong: '잔을 받는다' };
+    const route = { ...studioChoice, e0_jisu_text: spoken, e0_junseong: '잔을 받는다' };
     const answer = await play(route, state => state.dialog.fullText === spoken);
     expect(answer.state.background).toContain('/couple_home.svg');
     expect(answer.state.dialog).toMatchObject({ channel: 'dialogue', speakerId: '도윤' });
@@ -334,11 +349,36 @@ describe('ERASE', () => {
     expect(messages).toMatchObject([{ side: 'me', text: '좀 늦을듯 먼저 자' }]);
   });
 
-  it('새벽에 아무것도 안 지우면 남은 것이 1·3·4장에서 돌아온다', async () => {
+  it('stays home after telling Jisu where the invitation is for', async () => {
+    await start('erase');
+    const run = await play({ ...studioChoice, e0_jisu_text: directText });
+    finished(run);
+    expect(run.state).toMatchObject({ chapterIndex: 1, resolvedEndingId: 'stayed_home' });
+    expect(run.shown).toContain(directText);
+    expect(run.shown).toContain('오늘은 집에 있을게. 다음에 보자.');
+    expect(heard(run.shown, '담배 하나만 빌릴 수 있어요?')).toBe(false);
+  });
+
+  it('returns home when Doyun takes the designated driver', async () => {
+    await start('erase');
+    const run = await play({
+      ...studioChoice, e0_jisu_text: lateText, e0_junseong: '대리를 불렀다고 한다',
+    });
+    finished(run);
+    expect(run.state).toMatchObject({ chapterIndex: 1, resolvedEndingId: 'came_home' });
+    expect(run.state.background).toContain('/couple_home.svg');
+    expect(run.shown).toContain('늦어서 미안. 대리 잡혔어. 지금 집에 가.');
+    expect(heard(run.shown, '호출 · 취소됨')).toBe(false);
+  });
+
+  it.each([
+    [briefText, '청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아.'],
+    [lateText, '민석이 생일이라며. 그래서 늦는다는 톡에도 더 안 물어본 거야.'],
+  ])('새벽에 아무것도 안 지우면 남은 것이 1·3·4장에서 돌아온다 (%s)', async (excuse, recall) => {
     await start('erase');
     const run = await play({
       e0_studio: '오늘 보낼 수 있다고 한다',
-      e0_jisu_text: directText,
+      e0_jisu_text: excuse,
       e0_junseong: '잔을 받는다',
       e0_erase: '방을 나간다',
       e1_rumor: '농담에 맞장구친다',
@@ -373,7 +413,7 @@ describe('ERASE', () => {
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(true);
     expect(run.shown).toContain('나도 듣고 있는데ㅋㅋ 나도 껴줘');
     expect(run.shown).not.toContain('2016년 3월 아래 · 항목 없음');
-    expect(run.shown).toContain('청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아.');
+    expect(run.shown).toContain(recall);
     const invitation = run.shown.findIndex(line => line.startsWith('식탁 한쪽에 사진관에서 고른 청첩장'));
     expect(invitation).toBeGreaterThan(-1);
     expect(run.shown.indexOf('오늘 어디 갔어? 회사 말고.')).toBeGreaterThan(invitation);
@@ -384,7 +424,7 @@ describe('ERASE', () => {
     const run = await play({
       e0_studio: '이번 달 카드값을 말한다',
       e0_jisu_text: lateText,
-      e0_junseong: '대리를 불렀다고 한다',
+      e0_junseong: '잔을 받는다',
       e0_erase: '메시지||사진||위치 기록||방을 나간다',
       e1_rumor: '답장하지 않는다',
       h1_send: '한 글자씩 지운다',
@@ -457,14 +497,14 @@ describe('튜토리얼', () => {
     const route = {
       ...honestRoute,
       t1_pencil: '연필을 내려놓는다',
-      t1_pencil_again: '귀 뒤의 밴드를 뗀다',
+      t1_pencil_again: '연필을 든 채 다가간다',
       t4_end: '세션 종료 창을 연다',
       __input: '0001',
     };
     const before = await play(route, state => state.dialog.continueLabel === '0001번 세션을 종료한다');
     expect(before.state.currentSceneId).toBe('end_close');
     expect(heard(before.shown, '바닥에 닿는다')).toBe(true);
-    expect(heard(before.shown, '자동 접속되었습니다')).toBe(true);
+    expect(heard(before.shown, '튜토리얼 3/5 완료')).toBe(true);
     expect(heard(before.shown, '번호표 발급기 · 2031.04.13 00:56')).toBe(true);
     expect(before.state.currentMusic).toContain('/fan_idle.flac');
     expect(before.state.background).toContain('/server_room.svg');
@@ -518,6 +558,24 @@ describe('튜토리얼', () => {
     expect(heard(run.shown, '퇴근 전에 둘째 서랍을 다시 열었다')).toBe(true);
     expect(heard(run.shown, '시연용 밴드 대여란에 이름을 썼다')).toBe(false);
   });
+
+  it.each([false, true])('lets Haesu stop the demo by taking off the band (timeout: %s)', async (timeout) => {
+    await start('tutorial');
+    const route = {
+      ...honestRoute,
+      t1_pencil: '연필을 내려놓는다',
+      t1_pencil_again: '귀 뒤의 밴드를 뗀다',
+    };
+    if (timeout) {
+      await play(route, state => state.choiceGate.active && state.choiceGate.key === 't1_pencil');
+      await vi.advanceTimersByTimeAsync(9500);
+    }
+    const run = await play(route);
+    finished(run);
+    expect(run.state).toMatchObject({ chapterIndex: 2, resolvedEndingId: 'demo_left' });
+    expect(heard(run.shown, '배터리를 빼고 밴드를')).toBe(true);
+    expect(heard(run.shown, '튜토리얼 3/5 완료')).toBe(false);
+  });
 });
 
 describe('오버플로', () => {
@@ -549,6 +607,7 @@ describe('오버플로', () => {
       o0_call: '전화를 받는다',
       o1_trust: '이름을 가리고 기록을 보여준다',
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
+      o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
       o4_end: '기다린 사람들과 함께 이의를 낸다',
     });
@@ -569,7 +628,7 @@ describe('오버플로', () => {
       '센서 입력 001 → 표시 01',
       '그때 실제 값은 접수표에 안 남아서',
       '병실에 들어가면 렌즈가 한 번 더 재요',
-      '영상 및 음성: 끔',
+      '아버님 모습이나 목소리는 저장 안 해요',
       '제 거 빼 두셨죠',
       '전화 받았는데 아버지 목소리가 아니어서',
       '보호자 재확인 · 문지완',
@@ -598,6 +657,7 @@ describe('오버플로', () => {
       o0_call: '문자로 답한다',
       o1_trust: '수경의 자료부터 보여달라고 한다',
       o1_desk: '결함 보고서를 읽는다||병동에서 연락이 왔는지 확인한다||시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
+      o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '물부터 건넨다',
       o4_end: '내 판독과 수경의 설명을 공개한다',
     });
@@ -630,6 +690,7 @@ describe('오버플로', () => {
       o0_call: '전화를 받는다',
       o1_trust: '이름을 가리고 기록을 보여준다',
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
+      o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
       o4_end: '내 기록의 정정을 신청한다',
     });
@@ -639,6 +700,21 @@ describe('오버플로', () => {
     expect(oldSlip).toBeGreaterThan(-1);
     expect(run.shown[oldSlip + 1]).toContain('‘무반응 의심’ 판정 철회');
     expect(run.shown[oldSlip + 1]).not.toContain('101');
+  });
+
+  it('lets Jiwan visit without recording a new sensor reading', async () => {
+    await start('overflow');
+    const run = await play({
+      o0_call: '전화를 받는다',
+      o1_trust: '이름을 가리고 기록을 보여준다',
+      o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
+      o2_pair_lens: '연결하지 않고 아버지를 뵙는다',
+    });
+    finished(run);
+    expect(run.state).toMatchObject({ chapterIndex: 3, resolvedEndingId: 'visiting_hours' });
+    expect(run.state.inventory.raw_print).toBeFalsy();
+    expect(heard(run.shown, '정서 반응 01 · 무반응 의심')).toBe(true);
+    expect(heard(run.shown, '센서 입력 101 → 표시 01\n화면 판정')).toBe(false);
   });
 
   it('starts a saved 3.0 chapter at its new opening and preserves prior decisions and evidence', async () => {

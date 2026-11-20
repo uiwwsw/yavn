@@ -159,6 +159,7 @@ state:
   e0_location: false
   e0_jisu_message: "민석이 생일이라 잠깐 나갔다 올게. 12시 전엔 들어갈게"
   e0_jisu_reply: "ㅇㅋ 대리 불러 운전 절대 xx"
+  e0_jisu_recall: "청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아."
   h1_sent: false
   e2_search: false
   e2_gallery: false

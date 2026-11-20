@@ -384,7 +384,7 @@ scenes:
           text: "증좌 없는 고발은 무고죄요. 알겠소?"
       - say:
           channel: record
-          text: "포교의 말을 반박할 증거를 고른다. 엉뚱한 증거를 내면 판관의 신뢰가 떨어진다."
+          text: "포교의 말을 반박할 증거를 고른다. 세 차례 증좌를 대지 못하면 판관은 대질을 끝낸다."
       - set: { credibility: 3 }
       - goto: c3_r1
 
@@ -604,7 +604,16 @@ scenes:
           with: []
           text: "덕구는 끌려가다 오른손으로 풀어진 짚신 끈을 쥐었다. 옥에서 낫을 놓쳤던 건 그 반대쪽 손이다."
       - set: { deokgu_saved: false }
-      - goto: c3_after
+      - goto: c3_closed_case
+
+  c3_closed_case:
+    title: "대질이 끝난 뒤"
+    actions:
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 26일 · 한성부 마당" }
+      - music: night_well
+      - say: { channel: narration, with: [], text: "처결이 끝난 날 저녁, 옥졸이 덕구의 짚신 한 켤레를 내다 놓았다. 찾으러 오는 사람이 없었다." }
+      - say: { channel: action, with: [], text: "시장을 다시 보여 달랬더니 관아 서리가 접힌 공초만 내밀었다. 아랫줄에 덕구 이름과 손도장이 있었다." }
+      - ending: forced_confession
 
   c3_r3_right:
     actions:

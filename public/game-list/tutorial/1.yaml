@@ -877,7 +877,7 @@ scenes:
           prompt: "기둥에 C-14. 광철이 차 문을 잡고 서 있다."
           with: [광철]
           timeoutMs: 9000
-          timeoutOptionIndex: 0
+          timeoutOptionIndex: 1
           options:
             - text: "연필을 든 채 다가간다"
               saveText: "연필을 쥔다"
@@ -920,16 +920,15 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "해수는 밴드를 책상에 내려놓는다. 밴드가 닿던 자리를 누르는데 방 형광등이 두 번 깜빡인다."
-      - bg: { id: sim_parking, transition: cut }
-      - place: { text: "레플라 · B2 주차장 C-14", presentation: center }
-      - mood: { tone: dread, level: 2 }
+          text: "눈을 뜨니 손에는 밴드만 있다. 해수는 연필을 쥐었던 손가락을 하나씩 편다."
+      - music: fluoro
+      - place: "4월 18일 새벽 · 해수의 방"
+      - mood: off
       - say:
-          channel: system
+          channel: action
           with: []
-          text: "자동 접속되었습니다. 튜토리얼 3/5를 이어서 진행합니다.\n손에 쥔 물건 · 그린마트 연필 1"
-          wait: 650
-      - goto: stab
+          text: "밴드에서 연결음이 난다. 해수는 배터리를 빼고 밴드를 빈 도시락 통에 넣어 뚜껑을 닫는다."
+      - ending: demo_left
 
   stab:
     actions:

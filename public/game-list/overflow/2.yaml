@@ -17,9 +17,32 @@ scenes:
       - say: { char: 지완, with: [수경], text: "아버지 쪽은요." }
       - say: { char: 수경, with: [지완], text: "안 찍혀요. 렌즈가 읽은 값과 화면에 뜬 값만 남아요. 아버님 모습이나 목소리는 저장 안 해요." }
       - say: { char: 수경, with: [지완], text: "화면에 뜨는 항목 보시고 누르세요." }
-      - say: { channel: record, with: [], continueLabel: "내 렌즈 연결 허용", text: "검사기 연결 · 문지완의 렌즈\n저장 항목: 센서 입력값과 화면에 표시된 값\n영상 및 음성: 끔" }
+      - choice:
+          key: o2_pair_lens
+          prompt: "검사기에 센서 입력값과 화면 표시값을 저장할까? 영상과 음성은 저장하지 않는다."
+          with: [수경]
+          options:
+            - text: "내 렌즈 연결 허용"
+            - text: "연결하지 않고 아버지를 뵙는다"
+              goto: visit_without_test
       - say: { char: 수경, with: [지완], text: "저는 여기 있을게요. 오래 기다리셨잖아요. 아버님 뵙고 오세요." }
       - goto: first_visit
+
+  visit_without_test:
+    title: "면회 시간"
+    actions:
+      - say: { char: 지완, with: [수경], text: "오늘은 아버지만 뵙고 싶어요. 검사기 연결은 안 할게요." }
+      - say: { char: 수경, with: [지완], text: "네. 기기는 제가 가져갈게요. 아버님 잘 뵙고 오세요." }
+      - bg: { id: ward_bed, transition: fade, duration: 420 }
+      - place: "저녁 8시 10분 · 308호"
+      - music: lowscore
+      - char: { id: 지완, position: left }
+      - char: { id: 동식, position: right, emotion: far }
+      - say: { char: 동식, with: [지완], text: "왔냐. 냄비는… 불 껐나." }
+      - say: { char: 지완, with: [동식], text: "껐다고 아래 가게에서 그러셨어요. 내일 제가 들를게요." }
+      - say: { channel: record, with: [], sound: read, text: "보호자 재확인 · 문지완\n정서 반응 01 · 무반응 의심" }
+      - say: { channel: action, with: [지완, 동식], text: "지완은 경고창을 닫고 아버지 옆에 앉았다. 침대에서 떨어진 양말을 주워 무릎 위에 올렸다." }
+      - ending: visiting_hours
 
   first_visit:
     title: "아버지"

@@ -2,7 +2,7 @@ title: "오버플로"
 pov: "문지완"
 author:
   name: "uiwwsw"
-version: "4.4.1"
+version: "4.5.0"
 seo:
   description: "2033년 서울. 문지완은 쓰러진 아버지를 보러 병원에 간다. 감정 판독 렌즈가 지완에게 01점을 띄우자 병실 문이 멈춘다. 그 숫자가 어떻게 나왔는지 확인하려는 개발자 한수경이 말을 건다."
   keywords:
@@ -37,7 +37,7 @@ startScreen:
   titleColor: "#e8eef9"
   startButtonText: "이야기 시작"
   buttonPosition: bottom-left
-  eyebrow: "2033 한국 · SF 미스터리 · 5장 · 결말 4종"
+  eyebrow: "2033 한국 · SF 미스터리 · 5장 · 결말 5종"
   subtitle: "아침에 아버지가 국을 끓여 놨다고 했다. 그날 저녁, 나는 병실 밖에서 아버지를 기다렸다."
   scene:
     layout: split
@@ -78,4 +78,11 @@ endings:
     background: dongsik_house
     music: quant
     tone: hopeful
+  visiting_hours:
+    title: "면회 시간"
+    message: "재측정 표시는 01이었다. 이번에도 잘리기 전 숫자는 남지 않았다."
+    epilogue: "다음 날에도 간호사는 문 앞 의자에 앉아 있었다. 지완은 아버지에게 집에서 가져온 양말을 건넸다."
+    background: ward_bed
+    music: lowscore
+    tone: mystery
 defaultEnding: appeal
