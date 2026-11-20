@@ -24,13 +24,7 @@ scenes:
       - say: { channel: narration, text: "눈을 떴다. 앞이 보이지 않는다.", wait: 650 }
       - music: void
       - say: { channel: narration, text: "숨을 쉬어 보는데, 내 숨소리도 들리지 않는다.", wait: 650 }
-      - choice:
-          key: where_am_i
-          prompt: "여긴 어디지?"
-          options:
-            - { text: "모르겠음", saveText: "모르겠다.", goto: first_light }
-            - { text: "지옥", saveText: "지옥인가.", goto: first_light }
-            - { text: "천국", saveText: "천국인가.", goto: first_light }
+      - goto: first_light
 
   first_light:
     pov: "???"
@@ -49,9 +43,13 @@ scenes:
                 - "조금 더 다가가자 어둠 속에 희미한 빛들이 보였다."
               goto: first_memories
             - text: "그대로 있는다."
-              gameOver:
-                message: "한참 뒤, 빛이 꺼졌다."
-                recoverToChoice: first_light
+              goto: first_still
+
+  first_still:
+    pov: "???"
+    actions:
+      - say: { channel: narration, text: "한참을 기다렸다. 빛은 같은 자리에 있었다. 나는 거기까지 가 보지 않았다." }
+      - ending: still
 
   first_memories:
     pov: "???"

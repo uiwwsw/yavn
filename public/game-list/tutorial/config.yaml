@@ -2,9 +2,9 @@ title: "튜토리얼"
 pov: "정해수"
 author:
   name: "uiwwsw"
-version: "1.5.1"
+version: "1.6.0"
 seo:
-  description: "마트 고객센터에서 12년째 일하는 정해수가 현실을 복제한 레플라에 접속한다. 체험판에서 손님에게 처음으로 화를 낸 뒤, 가상 매장에서 한 말과 행동이 현실로 새어 나오기 시작한다. 5장 SF 미스터리, 결말 3종."
+  description: "마트 고객센터에서 12년째 일하는 정해수가 현실을 복제한 레플라에 접속한다. 체험판에서 손님에게 처음으로 화를 낸 뒤, 가상 매장에서 한 말과 행동이 현실로 새어 나오기 시작한다. 5장 SF 미스터리, 결말 4종."
   keywords:
     - "SF 미스터리"
     - "비주얼노벨"
@@ -32,7 +32,7 @@ startScreen:
   titleColor: "#f2fbf5"
   startButtonText: "튜토리얼 시작"
   buttonPosition: bottom-left
-  eyebrow: "근미래 · SF 미스터리 · 5장 · 결말 3종"
+  eyebrow: "근미래 · SF 미스터리 · 5장 · 결말 4종"
   subtitle: "퇴근하고 체험판을 켰다. 고객센터였다. 낮에 보던 번호표 호출기에 027이 떠 있었다."
   scene:
     layout: split
@@ -64,6 +64,13 @@ endings:
     message: "USER 0001 · 2019.04.11 14:52 접속 · 2031.04.23 03:20 종료."
     epilogue: "다음번에 마감을 바꿔 달라는 문자가 왔을 때, 해수는 어렵다고 답했다. 지영은 알았다고 했다. 해수는 답장을 한 번 더 읽고 휴대폰을 넣었다."
     background: cs_desk
+    music: fluoro
+    tone: hopeful
+  demo_left:
+    title: "체험 중단"
+    message: "튜토리얼 3/5 · 기기 연결 끊김"
+    epilogue: "아침에 상혁이 나가며 현관문을 두드렸다. 해수는 밴드를 돌려주러 가는 길에 같이 아침이나 먹자고 했다."
+    background: haesu_room
     music: fluoro
     tone: hopeful
 defaultEnding: disconnected

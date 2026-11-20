@@ -1,5 +1,5 @@
 languages: [ko]
-summary: "쓰러진 아버지를 찾아간 지완에게 감정 판독 렌즈가 01점을 띄운다. 병실 문이 멈추자, 그 화면을 만든 한수경이 지완에게 말을 건다. 2033년 서울을 배경으로 한 5장 SF 미스터리. 결말 4종."
+summary: "쓰러진 아버지를 찾아간 지완에게 감정 판독 렌즈가 01점을 띄운다. 병실 문이 멈추자, 그 화면을 만든 한수경이 지완에게 말을 건다. 2033년 서울을 배경으로 한 5장 SF 미스터리. 결말 5종."
 thumbnail: "assets/bg/title.svg"
 tags:
   - sci-fi
@@ -26,4 +26,4 @@ showcase:
     offsetY: 0
 translations:
   en:
-    summary: "In 2033 Seoul, Jiwan goes to the hospital after his father collapses. When his emotion-reading lens gives him a score of 01, the ward doors stop opening for him. Then the engineer who built the display approaches him. A sci-fi mystery in five chapters with four endings."
+    summary: "In 2033 Seoul, Jiwan goes to the hospital after his father collapses. When his emotion-reading lens gives him a score of 01, the ward doors stop opening for him. Then the engineer who built the display approaches him. A sci-fi mystery in five chapters with five endings."

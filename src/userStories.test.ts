@@ -27,10 +27,10 @@ const collectKey = (value: unknown, key: string, result: unknown[] = []): unknow
 };
 
 const games = [
-  { id: 'erase', chapters: 5, endings: ['erase_loop', 'erased_name', 'kept_photo', 'unfinished'] },
-  { id: 'tutorial', chapters: 5, endings: ['disconnected', 'session_closed', 'still_online'] },
-  { id: '8bit-heart', chapters: 5, endings: ['new_game', 'off_screen', 'saved_together'] },
-  { id: 'overflow', chapters: 5, endings: ['appeal', 'broadcast', 'one_file', 'sealed'] },
+  { id: 'erase', chapters: 5, endings: ['came_home', 'erase_loop', 'erased_name', 'kept_photo', 'stayed_home', 'unfinished'] },
+  { id: 'tutorial', chapters: 5, endings: ['demo_left', 'disconnected', 'session_closed', 'still_online'] },
+  { id: '8bit-heart', chapters: 5, endings: ['new_game', 'no_response', 'off_screen', 'saved_together'] },
+  { id: 'overflow', chapters: 5, endings: ['appeal', 'broadcast', 'one_file', 'sealed', 'visiting_hours'] },
 ];
 
 const read = (game: string, file: string) => readFileSync(`${publicRoot}game-list/${game}/${file}`, 'utf8');
@@ -177,7 +177,7 @@ describe('owner story playthroughs', () => {
     ['unfinished', { e2_jisu: '지수에게 전부 말한다', e3_final: '지수의 메시지를 연다' }],
   ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
     await start('erase');
-    const state = await play(route);
+    const state = await play({ e0_jisu_text: '민석이 잠깐 보자네. 12시 전엔 들어갈게', ...route });
     expect(state.gameOver).toBeUndefined();
     expect(state.resolvedEndingId).toBe(ending);
   }, 60000);
@@ -215,7 +215,7 @@ describe('owner story playthroughs', () => {
     ['still_online', { t4_end: '모니터를 끄고 나간다' }, ''],
     ['session_closed', {
       t1_pencil: '연필을 내려놓는다',
-      t1_pencil_again: '귀 뒤의 밴드를 뗀다',
+      t1_pencil_again: '연필을 든 채 다가간다',
       t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
       t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
       t3_tell: '레플라에서 한 일을 털어놓는다',

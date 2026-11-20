@@ -66,10 +66,10 @@ describe('무원 — 한성 검안록', () => {
     });
   });
 
-  it('reaches all four endings from the story', () => {
+  it('reaches every ending from the story', () => {
     const declared = Object.keys(asRecord(readYaml('config.yaml').endings));
     const used = new Set(chapters.flatMap((chapter) => collectKey(chapter, 'ending')).map(String));
-    expect(declared.sort()).toEqual(['covered_ledger', 'late_muwon', 'muwon', 'price_of_silence']);
+    expect(declared.sort()).toEqual(['covered_ledger', 'forced_confession', 'late_muwon', 'muwon', 'price_of_silence']);
     declared.forEach((ending) => expect(used.has(ending), ending).toBe(true));
   });
 

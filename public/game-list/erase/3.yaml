@@ -750,7 +750,7 @@ scenes:
   e2_jisu_all:
     actions:
       - say: { char: 도윤.hollow, with: [지수], text: "청첩장 사진 찍은 날. 그날 밤에 클럽에서 만난 사람이랑 잤어.", wait: 650 }
-      - say: { char: 지수.cold, with: [도윤], text: "청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아." }
+      - say: { char: 지수.cold, with: [도윤], text: "{{e0_jisu_recall}}" }
       - say: { char: 도윤, with: [지수], text: "…응. 그 사람이 다음 월요일에 우리 팀장으로 왔어." }
       - say: { char: 지수.cold, with: [도윤], text: "그 뒤에도 만났어?" }
       - say: { char: 도윤, with: [지수], text: "회사에서만. 이번 주엔 출근을 안 해. 연락도 안 되고." }
