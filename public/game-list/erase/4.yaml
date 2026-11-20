@@ -97,11 +97,7 @@ scenes:
           with: []
           delivery: whisper
           text: "일요일 새벽 3시 2분."
-      - say:
-          char: 도윤
-          with: []
-          delivery: whisper
-          text: "그 시간에 나 뭐 했지."
+      - wait: 0
       - say:
           channel: thought
           with: []
@@ -110,11 +106,7 @@ scenes:
           channel: thought
           with: []
           text: "없던 일로 만들 수 있느냐고 검색했다. 그때 연 상담 창에 이 로고가 있었다."
-      - say:
-          char: 도윤
-          with: []
-          delivery: whisper
-          text: "…내가 예약한 거네."
+      - wait: 0
       - say:
           channel: action
           with: []
@@ -138,10 +130,10 @@ scenes:
   mismatch_dig:
     actions:
       - say: { channel: record, with: [], text: "방문 이력\n2016년 3월 · 시술 완료\n내일 오전 10시 · 예약" }
-      - say: { char: 도윤, with: [], delivery: whisper, text: "2016년이면 나 고3인데." }
-      - say: { channel: action, with: [], text: "도윤은 사진첩에서 고등학교 사진을 찾는다. 맨 아래에 닿을 때까지 교복 입은 자기가 한 장도 없다." }
-      - say: { channel: system, with: [], text: "가장 오래된 사진 · 2016년 3월" }
-      - say: { channel: action, with: [], text: "예약 문자에서 가져오라는 신분증을 꺼낸다." }
+      - say: { channel: thought, with: [], text: "2016년이면 고3이다. 사진첩을 끝까지 내렸는데 교복 입은 내가 한 장도 없다." }
+      - wait: 0
+      - wait: 0
+      - say: { channel: action, with: [], text: "휴대폰 옆에 신분증을 놓는다." }
       - say: { channel: record, with: [], text: "주민등록증 · 한도윤\n발급일 · 2016년 3월 28일" }
       - say: { channel: thought, with: [], text: "같은 달이다. 그 전에 찍은 증명사진이 어떻게 생겼는지 모르겠다." }
       - goto: mismatch_two
@@ -545,11 +537,8 @@ scenes:
       - say:
           channel: thought
           when: { var: e2_leaked, op: eq, value: false }
-          text: "그날 본 일을 단톡방에 보내지는 않았다. 아는 척하며 떠들고 싶진 않았다."
-      - say:
-          channel: thought
-          when: { var: e2_leaked, op: eq, value: false }
           text: "그 사람한테 직접 물어본 건 하나도 없다."
+      - wait: 0
       - say:
           channel: record
           when: { var: e2_hospital, op: eq, value: true }
@@ -572,10 +561,7 @@ scenes:
           channel: thought
           when: { var: e3_papers, op: eq, value: true }
           text: "외래 기록 미검출 줄에 형광펜이 그어져 있었다. 여백에 연필로 굿."
-      - say:
-          channel: thought
-          when: { var: e3_papers, op: eq, value: true }
-          text: "꾹 눌러 써서 뒷장까지 자국이 나 있었다."
+      - wait: 0
       - say:
           channel: thought
           when: { var: e3_bag, op: eq, value: true }
@@ -584,10 +570,7 @@ scenes:
           channel: thought
           when: { var: e3_note, op: eq, value: true }
           text: "냉장고 달력에는 다음 주 토요일이 적혀 있었다. 한대리 결혼식 — 축의금?"
-      - say:
-          channel: thought
-          when: { var: e3_note, op: eq, value: true }
-          text: "축의금 옆 물음표에 잉크가 한 방울 고여 있었다."
+      - wait: 0
       - say:
           channel: message
           thread: "영업2팀"
@@ -636,11 +619,11 @@ scenes:
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 2 }
-          text: "지수에게는 다 말했다. 읽지 않은 메시지가 네 개 있다."
+          text: "‘식장은 내가 취소했어.’ 잠금 화면에 거기까지만 보인다. 촬영 예약금을 대신 보냈다고 했던 지수의 목소리가 생각난다."
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 1 }
-          text: "지수한테서 ‘오늘 저녁엔 집에서 얘기해’라는 톡이 와 있다."
+          text: "‘오늘 저녁엔 집에서 얘기해.’ 회사 얘기만 했는데도 지수는 내가 남겨 둔 말이 있다는 걸 알았다."
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 0 }
@@ -656,20 +639,20 @@ scenes:
           text: "[ERASE 클리닉] 상담 예약이 확정되었습니다. 내일 오전 10:00."
       - choice:
           key: e3_final
-          prompt: "내일 오전 열 시 예약이 남아 있다. 도윤은 휴대폰을 손에 쥔 채 한참 앉아 있다."
+          prompt: "잠금 화면에 클리닉 예약 알림이 뜬다. 도윤은 알림만 밀어 두고 휴대폰을 연다."
           with: []
           options:
-            - text: "휴대폰을 초기화한다"
-              saveText: "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다"
-              goto: end_erase
-            - text: "놀이터 사진을 연다"
-              saveText: "사진첩 맨 아래, 놀이터 사진을 연다"
-              when: { var: kept_photo, op: eq, value: true }
-              goto: end_photo
             - text: "지수의 메시지를 연다"
               saveText: "지수한테 온 메시지 네 개를 연다"
               when: { var: told_jisu, op: eq, value: 2 }
               goto: end_unfinished
+            - text: "놀이터 사진을 연다"
+              saveText: "사진첩 맨 아래, 놀이터 사진을 연다"
+              when: { var: kept_photo, op: eq, value: true }
+              goto: end_photo
+            - text: "휴대폰을 초기화한다"
+              saveText: "설정에서 '모든 콘텐츠 및 설정 지우기'를 누른다"
+              goto: end_erase
 
   end_erase:
     actions:

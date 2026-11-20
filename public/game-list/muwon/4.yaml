@@ -200,14 +200,15 @@ scenes:
           text: "저와 무슨 상관입니까."
       - choice:
           key: t1
-          prompt: "분이가 스스로 들어가지 않았다는 증좌는?"
+          prompt: "한명재는 분이가 제 발로 우물에 들어갔다고 한다. 무엇을 펼칠까?"
           char: 한명재
           options:
-            - text: "분이의 시장 — 거품 없음, 목의 손자국"
+            - text: "분이의 초검 기록"
+              saveText: "분이의 시장 — 거품 없음, 목의 손자국"
               goto: round1_right
-            - text: "은비녀 — 검게 변하지 않았다"
+            - text: "분이 손톱 밑의 감청 실"
               goto: round1_wrong
-            - text: "얼음 출납부 — 열 덩이 반출"
+            - text: "분이가 간직한 주머니 주문서"
               goto: round1_wrong
 
   round1_wrong:
@@ -216,7 +217,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "은비녀요? 얼음이요? 우물 이야기를 하고 있습니다만."
+          text: "그 물건을 지녔다는 건 알겠습니다. 우물에 들어갈 때도 살아 있었는지가 지금 묻는 바입니다."
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -227,7 +228,7 @@ scenes:
     actions:
       - choice:
           key: t1_retry
-          prompt: "다시 살펴보자. 분이의 사인을 밝힐 증좌는?"
+          prompt: "분이의 몸을 살핀 밤을 떠올린다. 그때 무엇을 적어 뒀지?"
           char: 한명재
           options:
             - text: "분이의 시장 — 거품 없음, 목의 손자국"
@@ -286,14 +287,15 @@ scenes:
           text: "분이 손톱 밑에 감청 실이 있었다지요. 육의전 물건은 누구든 살 수 있습니다."
       - choice:
           key: t2
-          prompt: "그 주머니를 산 사람을 가리킬 증좌는?"
+          prompt: "한명재는 누구나 그 실을 살 수 있다고 한다. 어디부터 맞춰 볼까?"
           char: 한명재
           options:
-            - text: "상처 탁본 — 폭 한 치"
+            - text: "분이 손톱 밑의 감청 실"
               goto: round2_wrong
-            - text: "주머니 주문서 — 붉은 표식"
+            - text: "분이가 간직한 주머니 주문서"
+              saveText: "주머니 주문서 — 붉은 표식"
               goto: round2_right
-            - text: "덕구의 낫 — 날 폭 두 치"
+            - text: "약방에서 건진 장부 조각"
               goto: round2_wrong
 
   round2_wrong:
@@ -302,7 +304,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "참의 나리, 주머니를 물었는데 칼자국을 내놓는군요."
+          text: "색이 같고 수가 같으면 다 제가 가져간 겁니까? 누가 주문했는지는 어느 줄에 있습니까?"
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -432,15 +434,14 @@ scenes:
           text: "저와는 무관합니다."
       - choice:
           key: t3
-          prompt: "박씨가 불이 나기 전에 죽었다는 증좌는?"
+          prompt: "불이 날 때까지 박씨가 살아 있었다는 말에 무엇을 내밀까?"
           char: 한명재
           options:
-            - text: "감청 실 — 비단전 물건"
+            - text: "박씨의 목 상처 탁본"
               goto: round3_wrong
-            - text: "윤길이 베껴 쓴 문서 · 붉게 표시한 이름"
-              saveText: "윤길의 베껴 쓴 장 — 붉은 동그라미"
+            - text: "약방에서 건진 장부 조각"
               goto: round3_wrong
-            - text: "닭 실험 기록 · 독살의 단서"
+            - text: "약방에서 건진 밥의 실험 기록"
               saveText: "닭 실험 기록 — 불 전에 독"
               goto: round3_right
 
@@ -450,7 +451,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "그건 불과 아무 상관이 없군요."
+          text: "불이 나기 전에 박씨가 죽었다고 하셨지요. 그 기록으로 죽은 때를 어찌 아십니까?"
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }
@@ -553,16 +554,17 @@ scenes:
           text: "출납부에 제 이름이 있습니까? 없을 겁니다."
       - choice:
           key: t4
-          prompt: "출납부의 인장이 한명재 것임을 밝힐 증좌는?"
+          prompt: "출납부에 한명재 이름은 없다. 출납부 곁에 무엇을 놓을까?"
           char: 한명재
           timeoutMs: 15000
           timeoutOptionIndex: 0
           options:
-            - text: "분이의 시장 — 목의 손자국"
+            - text: "윤길이 베껴 남긴 문서"
               goto: round4_wrong
-            - text: "전의감 도장 — 깨진 모서리"
+            - text: "청심원 상자에 찍힌 인장"
+              saveText: "전의감 도장 — 깨진 모서리"
               goto: round4_right
-            - text: "은비녀 — 검게 변하지 않았다"
+            - text: "분이가 간직한 주머니 주문서"
               goto: round4_wrong
 
   round4_wrong:
@@ -571,7 +573,7 @@ scenes:
       - say:
           char: 한명재.cold
           with: [서연]
-          text: "그걸로 시신은 살펴볼 수 있겠지요. 얼음을 누가 받아 갔는지는 어디에 적혀 있습니까?"
+          text: "그 종이가 출납부의 어느 줄과 이어집니까? 얼음을 제가 받아 갔다는 대목을 읽어 주시오."
       - branch:
           cases:
             - when: { var: credibility, op: lte, value: 0 }

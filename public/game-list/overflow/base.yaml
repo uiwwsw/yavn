@@ -109,6 +109,7 @@ state:
   read_report: false
   checked_phone: false
   told_father: false
+  asked_for_first_value: false
 
 inventory:
   appeal_form:

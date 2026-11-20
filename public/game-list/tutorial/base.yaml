@@ -2,6 +2,7 @@ assets:
   backgrounds:
     title: assets/bg/title.svg
     cs_desk: assets/bg/cs_desk.svg
+    cs_desk_wait: assets/bg/cs_desk_wait.svg
     cs_desk_bleed: assets/bg/cs_desk_bleed.svg
     breakroom: assets/bg/breakroom.svg
     home_hall: assets/bg/home_hall.svg
@@ -28,6 +29,7 @@ assets:
   backgroundLabels:
     title: false
     cs_desk: "그린마트 고객센터"
+    cs_desk_wait: "그린마트 고객센터"
     cs_desk_bleed: "그린마트 고객센터"
     home_hall: "집 복도"
     breakroom: "휴게실"

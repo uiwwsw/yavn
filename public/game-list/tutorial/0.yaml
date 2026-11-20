@@ -14,7 +14,7 @@ scenes:
   ticket_opening:
     title: "호출 대기"
     actions:
-      - bg: { id: cs_desk, transition: cut }
+      - bg: { id: cs_desk_wait, transition: cut }
       - music: fluoro
       - place: "4월 11일 금요일 · 그린마트 상봉점 고객센터"
       - say:
@@ -22,8 +22,9 @@ scenes:
           with: []
           text: "고객센터 창구에 앉아 호출 버튼에 손을 얹는다. 표시판에는 026. 기다리는 손님은 한 명이다."
           continueLabel: "027번을 호출한다"
-          at: { x: 63, y: 60 }
+          at: { x: 23, y: 89 }
       - set: { t0_refund_first: true }
+      - bg: { id: cs_desk, transition: cut, label: false }
       - goto: ticket
 
   chat:
@@ -173,28 +174,15 @@ scenes:
           with: [해수]
           text: "오늘 마감 바꿔 줘서 고마워. 아, 인사팀 메일 봤어? 너 여기 온 지 오늘로 딱 12년이래."
       - sticker: { id: coupon, image: coupon_sticker, x: 62, y: 34, width: "240px", rotate: -4, enter: popIn }
-      - say: { char: 해수, with: [지영], text: "오늘이었어요?" }
+      - wait: 0
       - say:
           char: 지영
           with: [해수]
-          text: "응. 그래서 12주년 선물. 레플라 7일 체험권이야. 내 코드 쓰면 나도 한 달 공짜고."
-      - say:
-          char: 경준
-          with: [지영]
-          text: "이번 달에 몇 명 추천했어요, 주임님?"
-      - say:
-          char: 지영
-          with: [경준]
-          text: "너까지 셋."
-      - say:
-          char: 경준
-          motion: gasp
-          with: [지영]
-          text: "저 그거 모르고 쓴 건데요."
-      - say:
-          char: 지영
-          with: [경준]
-          text: "알았으면 네가 안 써 줬겠지."
+          text: "12주년 선물. 레플라 7일 체험권이야. 내 코드 쓰면 나도 한 달 공짜고."
+      - wait: 0
+      - wait: 0
+      - wait: 0
+      - wait: 0
       - choice:
           key: t0_coupon
           prompt: "체험권 모서리가 커피 컵 물기에 조금 젖었다."
@@ -221,11 +209,7 @@ scenes:
           motion: bow
           with: [지영]
           text: "쓸지는 모르겠는데요."
-      - say:
-          char: 지영
-          motion: sigh
-          with: [해수]
-          text: "다들 그렇게 말해. 나도 그랬어."
+      - wait: 0
       - say:
           char: 지영
           with: [해수]
@@ -243,14 +227,8 @@ scenes:
           char: 지영
           with: [해수]
           text: "할 거면 오늘 해. 너 미뤄 두면 까먹잖아."
-      - say:
-          char: 해수
-          with: [지영]
-          text: "생각해 볼게요."
-      - say:
-          char: 지영
-          with: [해수]
-          text: "생각하면 안 하는 거야, 너는."
+      - wait: 0
+      - wait: 0
       - goto: after_coupon
 
   coupon_refuse:
