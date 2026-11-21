@@ -20,6 +20,10 @@ scenes:
           with: []
           camera: wide
           text: "고발장이 대청 한가운데 펼쳐져 있다. 피고는 그 너머에 앉았다. 버선 앞코에 흙 한 점 없다."
+      - say:
+          channel: thought
+          with: []
+          text: "저 버선을 본 적이 있다. 분이를 살핀 이튿날 아침, 약재실 문간이다."
       - char: { id: 서연, position: left }
       - char: { id: 한명재, position: right }
       - say:
