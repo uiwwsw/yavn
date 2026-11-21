@@ -26,6 +26,10 @@ scenes:
       - say:
           channel: action
           with: []
+          text: "약재실 문간으로 처음 보는 의관 하나가 지나간다. 평상의 아이를 한 번 보고도 걸음을 늦추지 않는다. 버선 앞코에 흙 한 점 없다."
+      - say:
+          channel: action
+          with: []
           text: "문을 나서기 전에 비단전에서 사람이 먼저 왔다. 분이의 시신을 거두러 왔다고 한다."
       - char: { id: 서연, position: left }
       - char: { id: 여금, position: right }
@@ -597,6 +601,24 @@ scenes:
           char: 도원.troubled
           with: [서연]
           text: "내가 쓴 시장도 아직 서랍에 있소. 읽어 보겠다 온 사람 하나 없더군."
+      - say:
+          channel: action
+          with: []
+          text: "마루 끝에서 분이의 시장을 베끼던 젊은 서리가 붓을 든 채 고개를 든다."
+      - say:
+          channel: dialogue
+          speakerName: "서리 윤길"
+          with: [서연]
+          text: "의녀님. 지게미는 덮고 얼마나 둡니까? 베끼는 김에 적어 두려고요."
+      - say:
+          char: 서연
+          with: [도원]
+          text: "등잔 심지 한 번 자를 동안이요."
+      - say:
+          channel: dialogue
+          speakerName: "서리 윤길"
+          with: [서연]
+          text: "심지 한 번. …적었습니다."
       - say:
           channel: thought
           with: [도원]
