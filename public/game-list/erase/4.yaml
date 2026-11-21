@@ -248,10 +248,14 @@ scenes:
           enter: fadeIn
           inputLockMs: 600
       - say:
+          channel: action
+          with: []
+          text: "미끄럼틀 위에서 아이 하나가 눈이 안 보이게 웃고 있다."
+      - say:
           char: 도윤
           with: []
           delivery: whisper
-          text: "미끄럼틀에서 눈이 안 보이게 웃고 있다. 어디서 본 얼굴 같은데."
+          text: "…어디서 본 얼굴인데."
       - say:
           channel: thought
           with: []
@@ -318,7 +322,7 @@ scenes:
           motion: shiver
           with: []
           delivery: whisper
-          text: "2016년 전엔 이 이름을 안 썼던 걸까."
+          text: "한, 도, 윤."
       - say:
           channel: thought
           with: []
