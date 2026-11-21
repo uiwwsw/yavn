@@ -65,7 +65,8 @@ scenes:
       - say: { char: 동식, with: [지완], text: "나도 그랬다." }
       - say: { char: 동식, with: [지완], text: "네 학교에서 경보 울렸을 때." }
       - say: { char: 지완, with: [동식], text: "…실습 못 간 날요?" }
-      - say: { char: 동식, with: [지완], text: "너는 복도에 앉아 있었어. 담임이 흥분 수치가 높다면서 진정할 때까지 나도 못 만나게 하더라." }
+      - say: { char: 동식, with: [지완], text: "너 복도에 앉아 있었다." }
+      - say: { char: 동식, with: [지완], text: "담임이… 수치가 높다고. 가라앉을 때까지 나도 못 본다더라." }
       - say: { char: 지완, with: [동식], text: "그때 뭐라고 하셨어요?" }
       - say: { char: 동식, with: [지완], text: "우리 애 겁먹은 거라고. 나 좀 들여보내 달랬지." }
       - say: { char: 동식, with: [지완], text: "안 되더라. 너한테 화내지 말라고만 했다. 내가." }
