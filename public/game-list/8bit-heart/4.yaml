@@ -93,7 +93,7 @@ scenes:
           char: 윤재
           with: [로봇]
           when: { var: m_promise, op: eq, value: false }
-          text: "…걸으면서 생각했어. 아직 생각 중이야."
+          text: "…네가 먼저 걸어갔잖아. 따라오면서 생각했어. 아직 생각 중이야."
       - say:
           char: 로봇
           with: [윤재]
@@ -377,8 +377,8 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "구십구만 구천구백구십 점. 십 점 남음." }
       - say: { char: 윤재, with: [로봇], text: "…그거 왜 거기 있어." }
       - wait: 270
-      - say: { char: 로봇, with: [윤재], text: "칩을 떼기 전에 마지막으로 켰잖아. 그때 네가 카드에 넣었음." }
-      - say: { char: 로봇, with: [윤재], text: "카드에 그때 저장한 시각도 남아 있음." }
+      - say: { char: 로봇, with: [윤재], text: "카드에 저장 시각이 남아 있음. 내가 켜지기 전임." }
+      - say: { char: 로봇, with: [윤재], text: "칩 떼기 직전에 네가 넣은 거임. 나는 못 봤고, 카드가 봤음." }
       - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아." }
       - wait: 270
       - say: { char: 로봇.thinking, with: [윤재], text: "그날 '진짜' 세 번 했음. 두 번이 거짓말이면 세 번은 계산 범위 밖임." }
