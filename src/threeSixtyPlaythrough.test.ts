@@ -374,8 +374,11 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '넷 다 웃을 때 왼쪽 눈이 먼저 감겼다')).toBe(true);
     expect(heard(shown, '딸이었다가, 아들이었다가, 옆 침대였다가, 모르는 사람이었다')).toBe(true);
     expect(heard(shown, '이불을 덮어 주고 집에 두고 나간 아이였다')).toBe(true);
-    expect(heard(shown, '그 아이를 다시 만나고도 나는 몰랐다')).toBe(true);
-    expect(heard(shown, '얼굴 없는 사람이 나였다')).toBe(true);
+    expect(heard(shown, '네 번을 만났다. 한 번도 알아보지 못했다')).toBe(true);
+    // The reveal is said once. 다온's own words come back, and then the one line the bible ends on.
+    expect(heard(shown, '얼굴은 안 보인다고. 맨날 거기 서 있다고')).toBe(true);
+    expect(heard(shown, '얼굴이 안 보이는 쪽이 나였다')).toBe(true);
+    expect(heard(shown, '그 아이는 나를 기억하는데')).toBe(false);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,
       l1_gave: true, l1_end: 'gone', t_say: true, t_stay: true, t_dare: true,

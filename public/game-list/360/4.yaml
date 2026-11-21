@@ -547,10 +547,10 @@ scenes:
       - say: { channel: narration, text: "그 겨울, 이불을 덮어 주고 집에 두고 나간 아이였다.", wait: 2200 }
       - mood: off
       - effect: { name: eclipse, wait: true }
-      - say: { channel: narration, text: "끝순이도, 영호도, 수경 누나도, 다온이도. 그 아이를 다시 만나고도 나는 몰랐다." }
+      - say: { channel: narration, text: "네 번을 만났다. 한 번도 알아보지 못했다." }
       - wait: 1400
-      - say: { channel: narration, text: "다온이가 어둠 속에서 봤다는 사람. 그 애가 누군가를 알아본 얼굴로 나를 보던 것이 생각난다." }
-      - say: { channel: narration, text: "다온이가 뒤에서 봤다는, 얼굴 없는 사람이 나였다. 그 아이는 나를 기억하는데, 나는 그 아이를 몰랐다." }
+      - say: { channel: narration, text: "다온이는 뒤에 사람이 서 있다고 했다. 얼굴은 안 보인다고. 맨날 거기 서 있다고." }
+      - say: { channel: narration, text: "얼굴이 안 보이는 쪽이 나였다." }
       - goto: winter_churn
 
   # 서른 해 동안 되씹은 것들이 한꺼번에 올라온다. 쥘 수 있는 것은 그중 하나뿐이다.
