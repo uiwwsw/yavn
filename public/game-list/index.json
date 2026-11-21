@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-21T13:38:07.819Z",
+  "generatedAt": "2026-11-21T13:42:44.641Z",
   "games": [
     {
       "id": "360",
@@ -330,7 +330,7 @@
       "name": "ERASE",
       "path": "/game-list/erase/",
       "author": "uiwwsw",
-      "version": "1.8.1",
+      "version": "1.8.2",
       "summary": "도윤과 지수는 청첩장에 넣을 사진을 고른다. 그날 밤 민석에게 연락이 온다. 지수가 누구냐고 묻는다. 5장 심리 드라마, 결말 6종.",
       "summaryEn": "Doyun and Jisu pick a picture for their wedding invitation. That evening, Doyun gets a text from a friend. Jisu asks who it is. A five-chapter psychological drama with six endings.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",

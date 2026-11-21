@@ -95,7 +95,7 @@ scenes:
           channel: narration
           with: []
           camera: wide
-          text: "현관문이 한 뼘쯤 열려 있다. 초인종을 눌러도 대답이 없다. 도윤은 문을 조금 더 밀고 안을 들여다본다."
+          text: "현관문이 한 뼘쯤 열려 있다. 초인종을 눌러도 대답이 없다. 도윤은 문을 밀고 신발을 신은 채 현관에 선다. 원룸이라 식탁과 냉장고가 손 닿을 데에 있다."
       - say:
           char: 도윤
           motion: lean_in
@@ -113,7 +113,7 @@ scenes:
       - choice:
           key: e3_room
           presentation: explore
-          prompt: "서류는 우편함에 넣고 가면 된다. 열린 문틈으로 식탁이 보인다."
+          prompt: "서류는 우편함에 넣고 가면 된다. 도윤은 현관에서 움직이지 않는다."
           with: []
           camera: wide
           options:

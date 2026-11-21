@@ -221,9 +221,10 @@ scenes:
     title: "현관에서"
     actions:
       - say: { char: 도윤, with: [지수], text: "{{e0_jisu_message}}" }
-      - say: { char: 지수, with: [도윤], text: "지금 가면 열두 시 금방이잖아. 갔다 오는 것 말고, 오늘은 무슨 일로 나가고 싶은 건지 먼저 말해 줄래?" }
-      - say: { char: 도윤, with: [지수], text: "…하루 종일 정신없어서 좀 나가 있고 싶었어. 네가 싫어서 그런 건 아니고." }
-      - say: { char: 지수, with: [도윤], text: "나도 오늘 힘들었어. 사진 오면 같이 한 번만 더 보자. 지금은 일단 좀 앉고." }
+      - say: { char: 지수, with: [도윤], text: "지금 가면 열두 시 금방인데. …아까 계약금 얘기 때문에 그래?" }
+      - say: { char: 도윤, with: [지수], text: "아니야. 그냥, 하루 종일 카메라 앞에서 웃었더니." }
+      - say: { char: 지수, with: [도윤], text: "나도 웃었어, 하루 종일. 구두 벗고 십 분만 앉아 있어. 그러고도 가고 싶으면 가." }
+      - say: { char: 도윤, with: [지수], text: "…십 분 앉으면 못 일어나는 거 알면서." }
       - say: { channel: message, thread: 민석, side: me, char: 도윤, with: [], text: "오늘은 집에 있을게. 다음에 보자." }
       - say: { channel: action, with: [도윤, 지수], text: "도윤은 현관에 둔 차 키를 신발장 위로 올려놓는다. 지수가 소파 한쪽을 비운다." }
       - ending: stayed_home
@@ -237,8 +238,9 @@ scenes:
       - char: { id: 도윤, position: left }
       - char: { id: 지수, position: right }
       - say: { char: 지수, with: [도윤], text: "왔어? 물은 식탁에 있어." }
-      - say: { char: 도윤, with: [지수], text: "클럽에 갔었어. 다음엔 어디 가는지 얘기하고 나갈게." }
-      - say: { char: 지수, with: [도윤], text: "그래. 그 얘긴 내일 하자. 물 마시고 들어와." }
+      - say: { char: 도윤, with: [지수], text: "…클럽이었어. 민석이랑." }
+      - say: { char: 지수, with: [도윤], text: "알아. 옷에서 냄새 나." }
+      - say: { char: 지수, with: [도윤], text: "그 얘긴 내일 해. 물 마시고 들어와." }
       - ending: came_home
 
   e0_night:
