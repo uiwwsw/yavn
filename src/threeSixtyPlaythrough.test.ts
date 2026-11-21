@@ -124,7 +124,9 @@ describe('360 full playthrough', () => {
       'first_light=손을 뻗는다.',
       'first_light=손을 뻗는다.',
     ]);
-    expect(heard(shown, '숨을 쉬어 보는데, 내 숨소리도 들리지 않는다.')).toBe(true);
+    // The first dark opens on the novel's own three beats, and never on a missing body.
+    expect(shown.slice(0, 3)).toEqual(['암흑.', '끊임없는 공허함.', '눈을 떴다.']);
+    expect(heard(shown, '숨소리')).toBe(false);
     expect(heard(shown, '어둠 속에 희미한 빛들이 보였다.')).toBe(true);
     expect(state.choiceGate.key).toBe('star');
     expect(state.choiceGate.options.map((option) => option.text)).toEqual([STAR_1894, STAR_1952, STAR_1988]);

@@ -209,6 +209,7 @@ scenes:
       - say: { channel: narration, text: "소수점 아래 한 자리까지 적힌 숫자 셋. 같은 건 없다." }
       - say: { channel: record, text: "녹취 07. 유정림(71, 전 수학 교사). \"후회를 하나 고르니까 몸이 한쪽으로 기울었어요. 그 방향을 각도라고 불렀지요.\"" }
       - say: { channel: record, text: "\"원 둘레에 점을 찍는 거예요. 사람마다 다른 자리에. 같은 자리는 없을 거라고 생각해요.\"" }
+      - say: { channel: record, text: "\"가까운 점끼리는 닮았어요. 맞은편에 찍힌 사람은 딴판이고요. 0.001도만 달라도 다른 사람이지요.\"" }
       - say: { channel: narration, text: "유 선생님은 다음 삶으로 향하던 방향을 원 둘레의 점에 빗댔다. 한 점에는 한 사람만 있을 거라 여겼다." }
       - say: { channel: narration, text: "그땐 한 사람이 찍은 점 여러 개를 나란히 놓고 볼 길이 없었다." }
       - say: { channel: narration, text: "지금 셋을 본다. 셋 다 한 사람 것이다." }
@@ -243,6 +244,7 @@ scenes:
           when: { var: t_dare, op: eq, value: true }
           text: "164.8 — 더 살고 싶었다."
       - say: { channel: narration, text: "하나를 쥘 때마다 하나를 두고 갔다. 두고 간 셋도 여기 그대로 있다." }
+      - say: { channel: narration, text: "두고 간 숫자는 쥔 숫자의 거의 맞은편이다. 쥘 때마다 원의 반대쪽으로 기울었다." }
       - say:
           channel: narration
           when:
@@ -351,6 +353,8 @@ scenes:
       - say: { channel: narration, text: "김치통 쪽으로 기울면 223.7이다." }
       - say: { channel: narration, text: "원본 쪽으로 기울면 041.2다." }
       - say: { channel: narration, text: "앞에 적힌 세 수 옆에 놓아 본다. 둘 다 겹치는 자리가 없다." }
+      - say: { channel: narration, text: "겹치지는 않아도 이웃은 있다. 223.7은 251.0 곁이고, 041.2는 076.3 곁이다." }
+      - say: { channel: narration, text: "곁에 있었어야 했다는 것과 떠나지 말았어야 했다는 것. 닮은 후회는 가까운 자리에 찍힌다." }
       - say: { channel: narration, text: "같은 점이 없다는 걸 확인한 사람은 없다. 두 번 살고 두 번 다 기억해야 하니까." }
       - say: { channel: narration, text: "앞의 셋은 눈을 뜨고 아무것도 기억하지 못했다." }
       - bg: { id: void_light, transition: dissolve, duration: 1800 }
