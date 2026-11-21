@@ -21,9 +21,12 @@ scenes:
     pov: "???"
     actions:
       - bg: { id: void_empty, transition: cut }
-      - say: { channel: narration, text: "눈을 떴다. 앞이 보이지 않는다.", wait: 650 }
+      - say: { channel: narration, text: "암흑.", wait: 650 }
       - music: void
-      - say: { channel: narration, text: "숨을 쉬어 보는데, 내 숨소리도 들리지 않는다.", wait: 650 }
+      - say: { channel: narration, text: "끊임없는 공허함.", wait: 650 }
+      - say: { channel: narration, text: "눈을 떴다." }
+      - say: { channel: narration, text: "위도 아래도 없이 어둠이 이어진다. 아무리 보아도 끝에 닿는 것이 없다." }
+      - say: { channel: narration, text: "한참을 있어도 가까워지는 것도, 멀어지는 것도 없다." }
       - goto: first_light
 
   first_light:

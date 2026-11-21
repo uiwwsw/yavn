@@ -54,6 +54,7 @@ scenes:
       - sticker: { id: globe, image: globe_sticker, x: 50, y: 30, width: "clamp(170px, 22%, 310px)", enter: fadeIn, inputLockMs: 300 }
       - say: { channel: record, with: [], text: "\"후회를 하나 고르니까 몸이 한쪽으로 기울었어요. 그 방향을 각도라고 불렀지요.\"" }
       - say: { channel: record, with: [], text: "\"원 둘레에 점을 찍는 거예요. 사람마다 다른 자리에. 같은 자리는 없을 거라고 생각해요.\"" }
+      - say: { channel: record, with: [], text: "\"가까운 점끼리는 닮았어요. 맞은편에 찍힌 사람은 딴판이고요. 0.001도만 달라도 다른 사람이지요.\"" }
       - clearSticker: { id: globe, leave: fadeOut }
       - say: { channel: record, with: [], text: "\"가다가 돌아봤어요. 교탁에 두고 온 출석부가 생각나서. 그 순간이 아직 생생해.\"" }
       - say: { channel: record, with: [], text: "녹취 12. 박다온(8). \"깜깜했어. 근데 안 무서웠어. 그러다 슝 갔어. 가다가 뒤 봤어. 강아지 있나 하고.\"" }
