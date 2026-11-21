@@ -232,6 +232,10 @@ scenes:
           with: [해수]
           text: "그 아저씨도 와. 여기서 하는 짓 그대로 해."
       - say:
+          char: 지영
+          with: [해수]
+          text: "거기선 한마디 해도 돼. 다치는 사람 없잖아."
+      - say:
           char: 해수
           with: [지영]
           text: "주임님은 거기서 뭐 하세요?"
@@ -850,6 +854,10 @@ scenes:
           with: []
           text: "완료하지 않은 튜토리얼이 있습니다. 튜토리얼은 무료입니다."
           continueLabel: "네, 이어서 할게요"
+      - say:
+          channel: action
+          with: []
+          text: "손이 먼저 누른다. 접수 건을 남겨 두고 퇴근한 적이 없다."
       - bg: { id: sim_parking, transition: wipeRight, duration: 900, place: "레플라 · 그린마트 지하 주차장" }
       - music: tutorial
       - say:
@@ -872,6 +880,10 @@ scenes:
           channel: system
           with: []
           text: "손에 쥔 물건 · 그린마트 연필 1"
+      - say:
+          channel: thought
+          with: []
+          text: "튜토리얼이다. 주임님이 그랬다. 여기선 다치는 사람 없다고."
       - choice:
           key: t1_pencil
           prompt: "기둥에 C-14. 광철이 차 문을 잡고 서 있다."
