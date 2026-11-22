@@ -367,6 +367,29 @@ scenes:
           channel: action
           with: []
           text: "방에는 아무도 없는데 휴대폰 밝기를 끝까지 낮춘다."
+      - say: { channel: action, with: [], text: "반 단톡에 읽지 않은 숫자가 붙어 있다. 목요일 밤 열한 시부터다." }
+      - say:
+          channel: message
+          thread: "3학년 4반"
+          speakerName: "반 친구"
+          side: them
+          with: []
+          text: "서민재 정아진 사귄대. 유하린만 몰랐대ㅋㅋ"
+      - say:
+          channel: message
+          thread: "3학년 4반"
+          speakerName: "반 친구"
+          side: them
+          with: []
+          text: "몰랐던 게 아니라 뒷문에서 듣고 있었다던데"
+      - say:
+          channel: message
+          thread: "3학년 4반"
+          speakerName: "반 친구"
+          side: them
+          with: []
+          text: "@유하린 해명하세요ㅋㅋ"
+      - say: { channel: thought, with: [], text: "금요일에는 학교에 안 갔다. 아진이가 비워 둔다던 자리가 어땠는지는 모른다." }
       - say: { channel: action, with: [], text: "셋이 쓰는 방이 또 울린다." }
       - say:
           channel: message

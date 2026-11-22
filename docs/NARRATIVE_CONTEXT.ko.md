@@ -5,7 +5,7 @@
 | 작품 | 인물·발신자 카드 | 양방향 관계 | 장면별 관계 상태 |
 | --- | ---: | ---: | ---: |
 | [오버플로](narrative/overflow.yaml) | 8 | 7 | 10 |
-| [ERASE](narrative/erase.yaml) | 12 | 10 | 8 |
+| [ERASE](narrative/erase.yaml) | 13 | 10 | 8 |
 | [튜토리얼](narrative/tutorial.yaml) | 8 | 9 | 12 |
 | [360](narrative/360.yaml) | 20 | 16 | 21 |
 | [8비트 심장](narrative/8bit-heart.yaml) | 8 | 6 | 14 |
