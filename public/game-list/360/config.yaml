@@ -1,7 +1,7 @@
 title: "360"
 author:
   name: "uiwwsw"
-version: "1.5.3"
+version: "1.5.4"
 seo:
   description: "1809년 조선에서 2026년 서울까지. 죽은 뒤에야 한꺼번에 떠오르는 기억 속에서 후회 하나를 골라 다음 삶으로 가져간다. 다섯 삶을 다룬 비주얼노벨. 5장, 결말 4종."
   keywords:
@@ -48,7 +48,7 @@ endings:
   onward:
     title: "한 점"
     message: "{{deg_last}}°. 어느 해 어느 나라인지는 고를 수 없었다."
-    epilogue: "갓난아이가 운다. 받아 든 사람이 웃는다. 왼쪽 눈이 먼저 감긴다."
+    epilogue: "갓난아이가 운다. 받아 든 사람이 웃는다. 처음 보는 얼굴이다."
     background: window_dawn
     music: birth
     tone: hopeful

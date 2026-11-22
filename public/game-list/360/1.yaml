@@ -89,7 +89,7 @@ scenes:
           text: "펴 놓으면 여기서 아주 살게 될 것 같았다. 어느새 이태가 지났다."
       - char: { id: 영호, position: center }
       - say: { char: 영호, with: [순임], motion: hop, text: "엄마! 할머이 또 부두 나갔어. 아버지 온다고." }
-      - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데 나는 본 기억이 없다." }
+      - say: { channel: action, with: [], text: "숨이 차서 말끝마다 어깨가 들썩인다. 고무신 한 짝은 손에 들고 왔다." }
       - say: { char: 순임, with: [영호], text: "오늘은 배 들어오는 날이 아닌데." }
       - say: { char: 순임, with: [영호], text: "…참." }
       - say: { char: 영호, with: [순임], text: "날마다 들어온대, 할머이가. 나 초콜릿 하나만." }

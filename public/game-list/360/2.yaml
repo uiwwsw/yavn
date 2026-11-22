@@ -26,10 +26,10 @@ scenes:
       - say: { char: 수경, with: [민재], motion: laugh, text: "오늘도 잠 안 오면 나 불러. 나도 밤엔 잘 못 자니까." }
       - say: { char: 수경, with: [민재], text: "한 번은 밤에 떡볶이 사러 뛰어나갔다가 간호사 선생님한테 혼났어." }
       - say: { char: 수경, with: [민재], text: "대학로에 자주 가던 떡볶이집이 있거든. 병원에 오니까 그게 자꾸 생각나더라." }
-      - say: { channel: action, with: [], text: "웃을 때 왼쪽 눈이 먼저 감긴다." }
-      - say: { char: 민재, with: [수경], text: "…누나 웃으면 왼쪽 눈이 먼저 감기네요." }
+      - say: { channel: action, with: [], text: "말하면서 손가락으로 이불 위에 동그라미를 그린다. 떡볶이 접시만 하다." }
+      - say: { char: 민재, with: [수경], text: "…누나 지금 이불에 뭐 그렸어요." }
       - say: { char: 수경, with: [민재], text: "뭐?" }
-      - say: { char: 수경, with: [민재], motion: laugh, text: "내가 그래? 사진 찍으면 꼭 눈 감았다고 하더니. 그래서 그랬나." }
+      - say: { char: 수경, with: [민재], motion: laugh, text: "내가 그랬어? 손이 심심하면 그래. 미대 다니면 다 이래." }
       - say: { channel: thought, with: [], text: "어젯밤엔 주사 맞은 손만 보고 있었다. 오늘은 옆에서 말을 걸어 주는 사람이 있다." }
       - say:
           channel: thought

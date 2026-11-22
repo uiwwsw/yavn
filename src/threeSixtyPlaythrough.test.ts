@@ -309,7 +309,7 @@ describe('360 full playthrough', () => {
       '소반 위에 밥이 두 그릇이다. 한 자리가 비어 있다.',
     ]);
     // The first life is free: nothing has been handed down to it yet.
-    expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다')).toBe(true);
+    expect(heard(shown, '까치발을 해도 모자란다')).toBe(true);
     // The first dark answers in Mansuk's own voice and returns him to his daughter.
     expect(heard(shown, '어디서 나는지 찾다가 그만둔다. 내 안에서 난다')).toBe(true);
     expect(heard(shown, '끝순아, 하고 불러 봤다')).toBe(true);
@@ -348,9 +348,11 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '비어 있는 손으로 뭘 해야 하는지 알면서 모르는 척한다')).toBe(true);
     expect(heard(shown, '아이 둘은 나왔다. 최 씨는 안 나왔다')).toBe(true);
     expect(heard(shown, '그때는 내가 임자였다')).toBe(true);
-    // The habit belongs to one soul across all five lives, and in this one it is the son's.
-    expect(heard(shown, '웃을 때 왼쪽 눈이 먼저 감긴다. 제 아비도 그랬다던데')).toBe(true);
-    expect(heard(shown, '누나 웃으면 왼쪽 눈이 먼저 감기네요')).toBe(true);
+    // Nobody comes back. Each person beside the protagonist has a gesture of their own, and no
+    // mark repeats from one life to the next.
+    expect(heard(shown, '고무신 한 짝은 손에 들고 왔다')).toBe(true);
+    expect(heard(shown, '누나 지금 이불에 뭐 그렸어요')).toBe(true);
+    expect(heard(shown, '왼쪽 눈')).toBe(false);
     expect(heard(shown, '본 기억은 없는데 저렇게 웃는 얼굴을 전에도 기다린 것 같다')).toBe(false);
     // The ward is where the person finds out, because a ward is a place with time left in it.
     expect(heard(shown, '엄마는 못 들은 사람처럼 수술 날짜를 물었다')).toBe(true);
@@ -368,18 +370,27 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '다음 주로 미루는 말은 금방 나온다')).toBe(true);
     expect(heard(shown, '전송에 손을 대자 손가락이 굳는다')).toBe(true);
     expect(heard(shown, '‘토요일에’까지는 남겨 둔다')).toBe(true);
-    // The fourth face knows her first, and says what is standing behind her when she looks back.
-    expect(heard(shown, '아줌마, 어디서 봤는데')).toBe(true);
+    // The child tells her because she did not cut the child off in this life, not because of an
+    // earlier one. Then the child says what is standing behind her when she looks back.
+    expect(heard(shown, '저번에 내 말 안 끊은 아줌마다')).toBe(true);
+    expect(heard(shown, '어디서 봤는데')).toBe(false);
     expect(heard(shown, '근데 얼굴은 안 보여. 맨날 거기 서 있어')).toBe(true);
-    // And the winter names who kept coming back, after the lives are done and before the last
-    // thing is taken: one soul, four faces, each one further away than the last.
-    expect(heard(shown, '넷 다 웃을 때 왼쪽 눈이 먼저 감겼다')).toBe(true);
-    expect(heard(shown, '딸이었다가, 아들이었다가, 옆 침대였다가, 모르는 사람이었다')).toBe(true);
-    expect(heard(shown, '이불을 덮어 주고 집에 두고 나간 아이였다')).toBe(true);
-    expect(heard(shown, '네 번을 만났다. 한 번도 알아보지 못했다')).toBe(true);
-    // The reveal is said once. 다온's own words come back, and then the one line the bible ends on.
+    // The winter does not name anyone who came back. Four unlike people stood beside this
+    // person, once each; the child was there once too. What repeats is the one who left.
+    expect(heard(shown, '저녁을 같이 먹자던 열여섯. 나는 장부를 폈다')).toBe(true);
+    expect(heard(shown, '벽 쪽으로 돌아눕던 어머이. 나는 기차를 탔다')).toBe(true);
+    expect(heard(shown, '앞치마를 벗고 병실에 들어온 엄마. 나는 입을 다물었다')).toBe(true);
+    expect(heard(shown, '수화기를 먼저 내려놓던 엄마. 나는 다음 주에 온다고 했다')).toBe(true);
+    expect(heard(shown, '넷은 닮은 데가 없다')).toBe(true);
+    expect(heard(shown, '그 아이도 그 겨울에 한 번 있었다')).toBe(true);
+    expect(heard(shown, '같은 것은 내 쪽이다')).toBe(true);
+    // 다온's own words come back, and what stands behind this person is the blanket.
     expect(heard(shown, '얼굴은 안 보인다고. 맨날 거기 서 있다고')).toBe(true);
-    expect(heard(shown, '얼굴이 안 보이는 쪽이 나였다')).toBe(true);
+    expect(heard(shown, '내가 덮어 놓아서 얼굴이 안 보인다')).toBe(true);
+    expect(heard(shown, '눈을 뜨면 곁에 처음 보는 사람이 있다')).toBe(true);
+    // The returning child is gone from the script and must not come back.
+    expect(heard(shown, '네 번을 만났다')).toBe(false);
+    expect(heard(shown, '다시 만나도 못 알아볼')).toBe(false);
     expect(heard(shown, '그 아이는 나를 기억하는데')).toBe(false);
     expect(state.routeVars).toMatchObject({
       lives_done: 4, lived_1894: true, lived_1952: true, lived_1988: true, lived_2026: true,

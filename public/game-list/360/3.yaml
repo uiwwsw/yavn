@@ -127,16 +127,16 @@ scenes:
       - say: { channel: action, with: [다온, 다온엄마], text: "아이가 식탁에서 색연필을 쥐고 있다." }
       - say: { char: 다온엄마, with: [지안, 다온], text: "다온아, 인사해야지." }
       - say: { channel: action, with: [지안, 다온], text: "아이가 색연필을 놓지 않은 채 나를 한참 본다." }
-      - say: { char: 다온, with: [지안], text: "아줌마, 어디서 봤는데." }
-      - say: { char: 지안, with: [다온], text: "방송국에서 봤지. 저번에 녹음할 때." }
-      - say: { char: 다온, with: [지안], text: "그거 말고." }
+      - say: { char: 다온, with: [지안], text: "아줌마, 저번에 내 말 안 끊은 아줌마다." }
+      - say: { char: 지안, with: [다온], text: "응. 방송국에서 녹음할 때 봤지." }
+      - say: { char: 다온, with: [지안], text: "다른 사람은 끊어." }
       - wait: 900
-      - say: { char: 다온엄마, with: [지안, 다온], motion: laugh, text: "얘가 아무한테나 그래요." }
-      - say: { char: 다온엄마, with: [지안, 다온], text: "선생님도 누구 처음 봤는데 꼭 아는 사람 같을 때 있죠?" }
-      - say: { char: 지안, with: [다온엄마], text: "…네. 저도 가끔요." }
+      - say: { char: 다온엄마, with: [지안, 다온], motion: laugh, text: "얘가 말이 좀 느려요." }
+      - say: { char: 다온엄마, with: [지안, 다온], text: "어른들이 기다리다 못해 뒷말을 대신 해 버리잖아요. 그게 싫대요." }
+      - say: { char: 지안, with: [다온엄마], text: "…끊으면 녹취를 못 써서요. 일이 그래요." }
       - say: { char: 다온, with: [지안], motion: laugh, text: "거봐." }
-      - say: { channel: action, with: [지안, 다온], text: "아이가 웃는다. 웃을 때 왼쪽 눈이 먼저 감긴다." }
-      - say: { channel: thought, with: [], text: "들어온 제보가 400건인데 웃을 때 어느 쪽 눈이 감겼는지는 한 번도 적은 적이 없다." }
+      - say: { channel: action, with: [지안, 다온], text: "아이가 웃는다. 아랫니 하나가 빠진 자리가 보인다." }
+      - say: { channel: thought, with: [], text: "제보 400건을 받아 적었다. 말하던 얼굴은 한 줄도 안 적었다." }
       - say: { char: 다온엄마, with: [지안], text: "저는 주방에 있을게요. 커피 드실래요?" }
       - say: { char: 지안, with: [다온엄마], text: "아, 괜찮습니다." }
       - move: { id: 다온엄마, style: exit }
@@ -493,7 +493,7 @@ scenes:
       - say: { char: 어른다온, with: [], text: "그럼 날짜만 쓰세요." }
       - say: { char: 어른다온, with: [], text: "날짜도 선생님 글씨잖아요." }
       - wait: 900
-      - say: { channel: action, with: [어른다온], text: "2071. 12. 거기까지 쓴다. 다온이 책을 받아 들고 웃는다. 왼쪽 눈이 먼저 감긴다." }
+      - say: { channel: action, with: [어른다온], text: "2071. 12. 거기까지 쓴다. 다온이 책을 받아 들고 잉크가 마를 때까지 덮지 않는다." }
       - say: { char: 어른다온, with: [], text: "다음 달에 또 올게요." }
       - say: { channel: action, with: [어른다온], text: "같은 말을 4년째 한다. 4년째 온다." }
       - move: { id: 어른다온, style: exit }
