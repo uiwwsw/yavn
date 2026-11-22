@@ -105,13 +105,15 @@ scenes:
       - say: { char: 지완, with: [세라], text: "네, 아들입니다." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "지금 깨어 계세요. 말은 아직 길게 못 하시고요." }
       - say: { char: 지완, with: [세라], text: "잠깐 뵐 수 있을까요." }
+      - say: { char: 세라, speakerName: "간호사", with: [지완], text: "병동 문은 보호자 렌즈를 한 번 읽고 열려요. 문 쪽 봐 주세요." }
       - say: { channel: action, with: [], sound: ward_door, text: "간호사가 면회증을 찍는다. 열리던 자동문이 멈춘다." }
       - sticker: { id: o0_appeal, image: appeal_form_sticker, x: 50, y: 46, width: "clamp(150px, 24%, 280px)", enter: fadeIn }
       - say: { channel: record, with: [], sound: read, text: "보호자 면회 확인 · 문지완\n감정 판독 렌즈 측정: 01 · 무반응 의심\n직원 동행 면회만 가능" }
       - clearSticker: { id: o0_appeal, leave: fadeOut }
       - say: { char: 지완, with: [세라], text: "저요? 저 지금 대답하고 있잖아요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "대답하시는 건 저도 봤어요." }
-      - say: { char: 세라, speakerName: "간호사", with: [지완], text: "그런데 이 안내가 뜨면 직원이 같이 들어가야 해서요. 동행 면회는 8시 10분부터예요." }
+      - say: { char: 세라, speakerName: "간호사", with: [지완], text: "재작년에 이 병동에서 보호자가 환자분을 다치게 한 일이 있었어요. 그날 그분 렌즈가 01이었고요." }
+      - say: { char: 세라, speakerName: "간호사", with: [지완], text: "그 뒤로 이 안내가 뜨면 직원이 같이 들어가야 해서요. 동행 면회는 8시 10분부터예요." }
       - say: { char: 지완, with: [세라], text: "저 왔다고만 전해 주세요. 문 밖에 있다고요." }
       - say: { char: 지완, with: [세라], text: "늦게 온 줄 아실 거예요." }
       - get: appeal_form

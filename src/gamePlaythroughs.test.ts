@@ -454,6 +454,11 @@ describe('ERASE', () => {
     // 하린 sent the message she usually deletes, so 아진 brings it up eleven years earlier.
     expect(heard(run.shown, '관심 없는 애가 지난주에 껴 달라고 했는데')).toBe(true);
     expect(run.shown).toContain('나도 듣고 있는데ㅋㅋ 나도 껴줘');
+    // The class chat she never opened is the same demand 도윤 gets from his team eleven years on.
+    expect(run.shown).toContain('@한도윤 해명하세요');
+    expect(run.shown).toContain('@유하린 해명하세요ㅋㅋ');
+    expect(run.shown.indexOf('@유하린 해명하세요ㅋㅋ')).toBeGreaterThan(run.shown.indexOf('@한도윤 해명하세요'));
+    expect(heard(run.shown, '금요일에는 학교에 안 갔다')).toBe(true);
     expect(run.shown).not.toContain('2016년 3월 아래 · 항목 없음');
     expect(run.shown).toContain(recall);
     const invitation = run.shown.findIndex(line => line.startsWith('식탁 한쪽에 사진관에서 고른 청첩장'));
@@ -668,7 +673,9 @@ describe('오버플로', () => {
       '흥분 94 · 역무원 호출',
       '가게 앞에서 쓰러지셨어요',
       '문동식 환자분 아드님이세요?',
+      '병동 문은 보호자 렌즈를 한 번 읽고 열려요',
       '보호자 면회 확인 · 문지완',
+      '그날 그분 렌즈가 01이었고요',
       '이 안내가 뜨면 직원이 같이 들어가야 해서요',
       '잠깐 말씀드려도 괜찮을까요?',
       '한수경이라고 합니다',
