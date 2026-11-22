@@ -6,7 +6,7 @@
 | --- | ---: | ---: | ---: |
 | [오버플로](narrative/overflow.yaml) | 8 | 7 | 10 |
 | [ERASE](narrative/erase.yaml) | 13 | 10 | 8 |
-| [튜토리얼](narrative/tutorial.yaml) | 8 | 9 | 12 |
+| [튜토리얼](narrative/tutorial.yaml) | 8 | 9 | 13 |
 | [360](narrative/360.yaml) | 20 | 16 | 21 |
 | [8비트 심장](narrative/8bit-heart.yaml) | 8 | 6 | 14 |
 | [무원](narrative/muwon.yaml) | 11 | 10 | 11 |

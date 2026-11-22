@@ -365,6 +365,7 @@ scenes:
           char: 해수
           with: []
           text: "종이는 안 나오네요."
+      - say: { channel: action, with: [], text: "기계 옆면에 테이프 자국이 있다. 지난달에 ‘고장’ 종이를 붙였다 뗀 자리다. 그걸 붙인 건 나다." }
       - say:
           char: 해수
           with: []
@@ -375,6 +376,8 @@ scenes:
   look_pencil:
     actions:
       - get: pencil
+      - say: { channel: action, with: [], text: "연필 끝을 손톱으로 눌러 본다. 자국이 난다. 손톱 밑에 흑연이 묻는다." }
+      - say: { channel: action, with: [], text: "옆에 있는 바코드 스캐너를 들어 본다. 무게가 없다. 내려놓아도 소리가 안 난다." }
       - say:
           char: 해수
           motion: nod
@@ -485,6 +488,7 @@ scenes:
           with: [광철]
           delivery: shout
           text: "안 된다고요!"
+      - say: { channel: action, with: [], text: "소리가 천장에 맞고 돌아온다. 줄 선 사람도 옆 창구도 없다. 목이 따갑다. 목은 진짜로 따갑다." }
       - say:
           channel: system
           with: []
@@ -592,6 +596,8 @@ scenes:
           channel: record
           with: []
           text: "접속 기록 · 4/16 23:58–4/17 04:20 · 레플라 상봉점 고객센터 · 튜토리얼 2/5 다시 하기 31회"
+      - say: { channel: action, with: [], text: "서른한 번째 밤에는 즉석밥 포장에 상표가 찍혀 있었다. 광철의 윤곽선 안쪽에 점퍼 색이 차기 시작했다." }
+      - say: { channel: thought, with: [], text: "소리를 지르고 나온 아침에는 목이 쉬어 있다. 매장에서 쉰 목이 아니다." }
 
   hallway:
     title: "새벽 네 시"
@@ -871,22 +877,43 @@ scenes:
       - place: "레플라 · 그린마트 상봉점 B2 · C-14"
       - char: { id: 해수, position: left }
       - char: { id: 광철, position: right, emotion: wire }
+      - say: { channel: action, with: [], text: "젖은 콘크리트 냄새가 난다. 기둥 모서리 페인트가 벗겨진 자리까지 매장 지하와 같다." }
+      - say: { channel: action, with: [], text: "차들은 윤곽선뿐이고 번호판 칸이 비어 있다. 한 대만 색이 있다. 엘리베이터 옆, 뒷문이 찌그러진 은색 차." }
       - say:
           char: 광철.wire
           motion: nod
           with: [해수]
           text: "번호표 뽑고 기다려."
+      - char: { id: 광철, position: right }
+      - say: { channel: action, with: [해수, 광철], text: "윤곽선뿐이던 얼굴에 색이 찬다. 눈 밑 검버섯, 귀에 꽂은 볼펜. 창구에서 없어진 우리 볼펜이다." }
+      - say: { char: 해수.service, motion: bow, with: [광철], text: "고객님, 주차장에는 번호표 기계가 없습니다." }
+      - say: { char: 광철, with: [해수], text: "없으면 올라가서 뽑아 와. 12년을 앉아 있었으면 다리는 성할 거 아냐." }
       - say:
           channel: system
           with: []
           text: "손에 쥔 물건 · 그린마트 연필 1"
+      - say: { channel: action, with: [해수, 광철], text: "광철이 조수석에서 갈색 드링크를 꺼낸다. 낮에 창구에 놓고 간 것과 같은 병이다." }
+      - say: { char: 광철, with: [해수], text: "이거 아직 안 마셨지. 주머니에 넣는 거 다 봤어." }
+      - say: { channel: action, with: [해수, 광철], text: "해수가 두 손을 내민다. 광철이 뚜껑을 따서 해수 신발 위에 붓는다. 양말이 젖는다. 미지근하다." }
+      - say:
+          char: 광철.shout
+          when: { var: bowed, op: eq, value: true }
+          with: [해수]
+          text: "수고는 무슨 수고. 숙일 거면 한 번에 깊이 숙이라며, 너희 팀장이."
+      - say:
+          char: 광철.shout
+          when: { var: bowed, op: eq, value: false }
+          with: [해수]
+          text: "수고는 무슨 수고. 다음부터는 처음부터 숙이라며, 너희 팀장이."
+      - say: { channel: thought, with: [], text: "그 말은 휴게실에서 나온 말이다. 아저씨는 거기 없었다." }
+      - say: { channel: thought, with: [], text: "낮의 아저씨는 드링크를 놓고 수고하라고 했다. 이건 그 사람이 아니다. 내 머릿속에서 꺼내다 만든 거다." }
       - say:
           channel: thought
           with: []
           text: "튜토리얼이다. 주임님이 그랬다. 여기선 다치는 사람 없다고."
       - choice:
           key: t1_pencil
-          prompt: "기둥에 C-14. 광철이 차 문을 잡고 서 있다."
+          prompt: "젖은 양말이 식는다. 광철이 빈 병을 해수 가슴에 대고 민다."
           with: [광철]
           timeoutMs: 9000
           timeoutOptionIndex: 1
@@ -914,9 +941,10 @@ scenes:
           motion: nod
           with: []
           text: "번호표 뽑고 기다려."
+      - say: { channel: action, with: [], text: "신발은 말라 있다. 광철이 조수석에서 같은 병을 또 꺼낸다. 이번에는 붓기 전에 웃는다." }
       - choice:
           key: t1_pencil_again
-          prompt: "기둥에는 또 C-14. 운전석 문도 아까처럼 열린다."
+          prompt: "기둥에는 또 C-14. 양말이 다시 젖는다."
           with: [광철]
           options:
             - text: "연필을 든 채 다가간다"
@@ -945,9 +973,16 @@ scenes:
   stab:
     actions:
       - char: { id: 해수, position: left, emotion: blank }
-      - char: { id: 광철, position: right, emotion: wire }
+      - char: { id: 광철, position: right }
+      - say: { channel: thought, with: [], text: "한 번만. 여기서 한 번 해 보고 끄면 된다." }
+      - say: { channel: action, with: [해수, 광철], text: "연필을 고쳐 쥔다. 손님에게 건넬 때는 늘 뭉툭한 쪽을 내밀었다. 심 쪽이 앞을 보는 건 처음이다." }
       - move: { id: 해수, toward: 광철, style: approach, wait: true }
-      - say: { channel: action, with: [해수, 광철], text: "광철에게 팔을 뻗는다. 연필을 쥔 손이 가슴에 닿고, 광철이 차 문에 기대 주저앉는다. 손을 빼자 부러진 심이 보인다." }
+      - say: { channel: action, with: [해수, 광철], text: "세 걸음. 팔을 뻗는다. 윤곽선처럼 그냥 지나갈 줄 알았다. 손이 점퍼에 걸리고, 그 안쪽에서 무언가 버틴다." }
+      - say: { channel: action, with: [해수, 광철], text: "심이 부러지는 게 손바닥으로 온다. 손등에 닿는 것이 드링크보다 따뜻하다." }
+      - say: { char: 광철.lost, with: [해수], text: "…자네가 왜." }
+      - say: { channel: thought, with: [], text: "자네. 낮에 창구 앞에서 듣던 말투다." }
+      - say: { char: 해수.service, with: [광철], text: "죄송합니다, 고객님." }
+      - say: { channel: action, with: [해수, 광철], text: "광철이 차 문에 기대 주저앉는다. 손을 빼자 부러진 심이 보인다." }
       - bg: { id: sim_void, transition: cut }
       - move: { id: 해수, style: reset }
       - sound: chime
@@ -973,6 +1008,7 @@ scenes:
           channel: action
           with: []
           text: "눈을 뜨고 오른손을 편다. 손바닥 한가운데가 연필 굵기로 눌려 있다."
+      - say: { channel: action, with: [], text: "양말을 벗어 본다. 말라 있다. 발등에서 드링크 냄새가 난다." }
       - say:
           channel: action
           with: []
