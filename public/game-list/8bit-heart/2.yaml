@@ -102,6 +102,7 @@ scenes:
 
   b2_boot:
     actions:
+      - say: { channel: thought, with: [], text: "건전지 묶음의 테이프 끝을 왼손에 쥔다. 일어나서 내 손목을 잡으면 그대로 뜯는다." }
       - say:
           char: 윤재
           motion: stomp

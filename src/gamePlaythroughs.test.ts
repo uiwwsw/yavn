@@ -257,6 +257,24 @@ describe('8비트 심장', () => {
     expect(run.state.routeVars).toMatchObject({ b_battery: true, b_cpu: true, b_screen: true });
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(true);
     expect(heard(run.shown, '걔가 마지막으로 배운 게 신문지 세 겹')).toBe(true);
+    // The stop is not the whole disaster. The father says three days on the landline, the block
+    // comes apart while Yunjae waits, and a household robot knocks on his door.
+    expect(heard(run.shown, '걸어서라도 온다고 한다. 사흘이면 온다고')).toBe(true);
+    expect(heard(run.shown, '그러다 누가 유리를 깼다')).toBe(true);
+    expect(heard(run.shown, '경찰 사이렌은 첫날 밤에 제일 많았다')).toBe(true);
+    expect(heard(run.shown, '확인될 때까지 모시겠습니다')).toBe(true);
+    expect(heard(run.shown, '응답 없음. 빈집으로 기록합니다')).toBe(true);
+    expect(heard(run.shown, '저건 계단을 올라와서 문을 두드린다')).toBe(true);
+    const knock = run.shown.findIndex((text) => text.includes('빈집으로 기록합니다'));
+    const leftHome = run.shown.findIndex((text) => text.includes('사흘이면 온다고 했다. 사흘이 지났다'));
+    const found = run.shown.findIndex((text) => text.includes('문을 두드리던 것과 같은 모델이다'));
+    expect(knock).toBeGreaterThan(-1);
+    expect(leftHome).toBeGreaterThan(knock);
+    expect(found).toBeGreaterThan(leftHome);
+    // So the robot in the alley is checked before it is touched, and he keeps a hand on the power.
+    expect(heard(run.shown, '열까지 센다. 안 움직인다. 스물까지 센다')).toBe(true);
+    expect(heard(run.shown, '내 손목을 잡으면 그대로 뜯는다')).toBe(true);
+    expect(heard(run.shown, '오늘이 열사흘째야')).toBe(true);
     // The three things he looked at on the third morning come back in chapter 3.
     expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(true);
     expect(heard(run.shown, '아빠가 그냥 안 받는 거면 좋겠어')).toBe(true);
