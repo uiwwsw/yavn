@@ -496,6 +496,9 @@ scenes:
       - char: { id: 하린, position: center }
       - say: { char: 의사, with: [], text: "마음 바뀌셨으면 지금 말씀하셔도 돼요." }
       - say: { char: 하린, with: [], delivery: whisper, text: "전학도 생각했어요. 근데 거기 가서도 아침마다 애들 톡부터 볼 것 같아서요." }
+      - say: { char: 의사, with: [], text: "지우고 나면 그 친구들 얼굴도 모르세요. 길에서 마주쳐도 그냥 지나가실 거예요." }
+      - say: { char: 하린, with: [], delivery: whisper, text: "…네. 그게 좋아요." }
+      - say: { channel: action, with: [하린], text: "시술대 종이 시트가 등 밑에서 바스락거린다. 가방은 발치에 있다. 하린은 가방끈을 발목에 한 번 감아 둔다." }
       - say: { channel: action, with: [하린], sound: consent_pen, text: "하린은 소매로 손바닥을 닦는다. 동의서에 ‘유하린’이라고 쓰고 끝에 작은 점을 찍는다." }
       - say: { char: 하린, with: [], text: "가방에 휴대폰 있어요. 사진 한 장 남겨 놨는데, 그건 버리지 말아 주세요." }
       - say: { char: 의사, with: [], text: "네. 소지품에 손대지 않아요." }

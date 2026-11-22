@@ -527,6 +527,8 @@ scenes:
       - say: { channel: narration, text: "아이가 있었다. 사흘째 울지 않았다." }
       - say: { channel: narration, text: "울지 않는 걸 괜찮다고 쳤다." }
       - say: { channel: narration, text: "덮어 두고 나갔다. 돌아왔을 때 불은 꺼져 있었다." }
+      - say: { channel: narration, text: "이불은 아침에 여며 둔 그대로였다. 귀퉁이 하나 들춰져 있지 않았다." }
+      - say: { channel: narration, text: "꾸어 온 좁쌀 자루를 내려놓지도 못하고 문턱에 서 있었다." }
       - clearSticker: { id: blanket, leave: fadeOut }
       - effect: { name: pulse, wait: true }
       - say: { channel: narration, text: "그 뒤로 서른 해를 더 살았다. 그런데 그 겨울만 자꾸 떠오른다." }

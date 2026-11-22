@@ -784,6 +784,10 @@ scenes:
   b3_hide:
     actions:
       - move: { id: 윤재, toward: 로봇, style: lunge, wait: true }
+      - say: { channel: action, with: [윤재, 로봇], text: "윤재는 {{android_name}}의 등에 이마를 붙인다. 테이프로 감은 건전지 묶음이 광대뼈에 닿는다. 따뜻하다." }
+      - say: { channel: thought, with: [], text: "한 칸. 내 팔 길이. 그 안에 무릎까지 다 들어가야 한다." }
+      - say: { channel: action, with: [윤재, 로봇, 드론], text: "불빛이 골목 바닥을 훑어 온다. 운동화 코 앞에서 멈췄다가 {{android_name}}의 가슴 화면으로 올라간다." }
+      - say: { channel: thought, with: [], text: "그 새벽 현관에서처럼 두 손으로 입을 막는다. 숨소리가 모터 도는 소리보다 크다." }
       - say:
           channel: record
           with: []

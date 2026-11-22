@@ -287,6 +287,9 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '켜지기 전 건 모름.')).toBe(true);
     // Seven peach pieces are divided equally before each side receives its portion.
     expect(heard(run.shown, '조각 일곱 개')).toBe(true);
+    // Hiding behind the robot is a body pressed into one arm's length, not a menu result.
+    expect(heard(run.shown, '건전지 묶음이 광대뼈에 닿는다')).toBe(true);
+    expect(heard(run.shown, '그 새벽 현관에서처럼 두 손으로 입을 막는다')).toBe(true);
     expect(run.shown).toContain('3.5.');
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(true);
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(false);
@@ -447,6 +450,11 @@ describe('ERASE', () => {
     expect(run.shown).not.toContain('둘 다 웃고 있네.');
     expect(heard(run.shown, '번호를 저장하지 않으면 연락처에서는 안 뜬다')).toBe(true);
     expect(heard(run.shown, '전화가 온 번호도 같은 번호였다')).toBe(true);
+    // The friend he was waiting for leaves first, and the morning has someone else's order in it.
+    expect(heard(run.shown, '친구 올 때까지만이라고 했다. 그 친구가 갔다')).toBe(true);
+    expect(heard(run.shown, '내가 개는 모양이 아니다')).toBe(true);
+    expect(heard(run.shown, '민재는 그걸 그대로 믿었다')).toBe(true);
+    expect(heard(run.shown, '길에서 마주쳐도 그냥 지나가실 거예요')).toBe(true);
     expect(heard(run.shown, '폰이 먼저 알아봤네')).toBe(true);
     expect(heard(run.shown, '내가 정리를 덜 한 거고')).toBe(true);
     expect(run.state.storyLog.filter((entry) =>
@@ -695,7 +703,9 @@ describe('오버플로', () => {
       '흥분 94 · 역무원 호출',
       '가게 앞에서 쓰러지셨어요',
       '문동식 환자분 아드님이세요?',
+      '지금 입을 열면 소리가 갈라진다',
       '병동 문은 보호자 렌즈를 한 번 읽고 열려요',
+      '이불 밖으로 맨발 하나가 나와 있다',
       '보호자 면회 확인 · 문지완',
       '그날 그분 렌즈가 01이었고요',
       '이 안내가 뜨면 직원이 같이 들어가야 해서요',

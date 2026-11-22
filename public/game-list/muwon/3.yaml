@@ -440,6 +440,14 @@ scenes:
           sound: ice_movement
           text: "등불을 들고 안쪽으로 간다. 기울어진 얼음 더미 너머에서 무언가 끌리는 소리."
       - say:
+          channel: action
+          with: []
+          text: "발밑에 물이 고였다. 얼음 녹은 물인 줄 알았다. 등불을 낮추니 붉다."
+      - say:
+          channel: thought
+          with: []
+          text: "숨을 쉬면 입김이 등불을 가린다. 숨을 참는다."
+      - say:
           char: 막쇠.hurt
           with: []
           text: "아가씨… 오지 마! 왼손에 칼—"
@@ -496,7 +504,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "어깨로 더미를 민다. 얼음 덩이들이 굴러 복면과 나 사이로 쏟아진다."
+          text: "어깨로 더미를 민다. 저고리가 얼음에 붙었다 뜯긴다. 얼음 덩이들이 굴러 복면과 나 사이로 쏟아진다."
       - say:
           channel: narration
           text: "복면은 얼음에 정강이를 맞고 비틀거리다 뒷문으로 달아났다. 왼손의 칼이 바닥에 떨어졌다."

@@ -58,7 +58,9 @@ scenes:
       - say: { char: 동식, with: [지완], text: "…국." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: true }, text: "알아요, 제 거 빼 두셨죠. 일요일에 먹으러 갈게요." }
       - say: { char: 지완, with: [동식], when: { var: picked_up, op: eq, value: false }, text: "아침에 전화 못 받아서 죄송해요. 국은 일요일에 먹으러 갈게요." }
+      - say: { channel: action, with: [지완, 동식], text: "아버지 입 오른쪽이 처져 있다. 지완은 거기를 안 보려고 링거 줄을 본다. 방울이 떨어지는 걸 센다." }
       - say: { channel: action, with: [지완, 동식], sound: bed_rail, text: "아버지가 침대 난간을 세 번 두드린다. 마지막 한 번이 늦다." }
+      - say: { channel: action, with: [지완, 동식], text: "두드린 건 왼손이다. 오른손은 이불 위에 놓인 채 움직이지 않는다." }
       - say: { channel: action, with: [지완, 동식], text: "지완이 다가선다." }
       - say: { char: 동식, with: [지완], text: "겁났냐." }
       - choice:
