@@ -90,6 +90,8 @@ scenes:
       - say: { char: 도겸, with: [지완], text: "출고는 제가 할 테니까 가 봐요. 택시 불러 드릴까요?" }
       - say: { char: 지완, with: [도겸], text: "남은 게 4번 도크 두 대예요. 송장은 제 자리에—" }
       - say: { char: 도겸, with: [지완], text: "지완 씨. 가요." }
+      - say: { channel: action, with: [지완, 도겸], text: "지완은 출고표를 든 채 문까지 간다. 손에 든 걸 보고 돌아와 책상에 놓는다. 모서리를 맞추고 나서야 뛴다." }
+      - say: { channel: thought, with: [지완], text: "택시에서 병원 이름을 두 번 말했다. 기사는 처음에 알아들었다." }
       - goto: ward_check_in
 
   ward_check_in:
@@ -100,16 +102,20 @@ scenes:
       - music: lowscore
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
+      - say: { channel: action, with: [지완], text: "신경과 복도 끝이다. 지완은 아침에 떨어뜨렸던 작업 장갑 한 짝을 아직 쥐고 있다. 손바닥 쪽이 젖었다." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "문동식 환자분 아드님이세요?" }
+      - say: { channel: thought, with: [세라], text: "숨이 목에 걸려 있다. 지금 입을 열면 소리가 갈라진다." }
       - say: { channel: thought, with: [세라], text: "하나, 둘, 셋." }
       - say: { char: 지완, with: [세라], text: "네, 아들입니다." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "지금 깨어 계세요. 말은 아직 길게 못 하시고요." }
       - say: { char: 지완, with: [세라], text: "잠깐 뵐 수 있을까요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "병동 문은 보호자 렌즈를 한 번 읽고 열려요. 문 쪽 봐 주세요." }
       - say: { channel: action, with: [], sound: ward_door, text: "간호사가 면회증을 찍는다. 열리던 자동문이 멈춘다." }
+      - say: { channel: action, with: [], text: "한 뼘 열린 틈으로 침대 발치가 보인다. 이불 밖으로 맨발 하나가 나와 있다. 문이 도로 닫힌다." }
       - sticker: { id: o0_appeal, image: appeal_form_sticker, x: 50, y: 46, width: "clamp(150px, 24%, 280px)", enter: fadeIn }
       - say: { channel: record, with: [], sound: read, text: "보호자 면회 확인 · 문지완\n감정 판독 렌즈 측정: 01 · 무반응 의심\n직원 동행 면회만 가능" }
       - clearSticker: { id: o0_appeal, leave: fadeOut }
+      - say: { channel: action, with: [지완], text: "장갑 쥔 손이 떨린다. 지완은 그 손을 점퍼 주머니에 넣는다." }
       - say: { char: 지완, with: [세라], text: "저요? 저 지금 대답하고 있잖아요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "대답하시는 건 저도 봤어요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "재작년에 이 병동에서 보호자가 환자분을 다치게 한 일이 있었어요. 그날 그분 렌즈가 01이었고요." }

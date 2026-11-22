@@ -631,6 +631,9 @@ scenes:
           motion: droop
           with: [민재]
           text: "……"
+      - say: { channel: thought, with: [], text: "‘아무 데도 관심 없잖아.’ 내가 입에 달고 다닌 말이다. 민재는 그걸 그대로 믿었다." }
+      - say: { channel: action, with: [], text: "뒷문 유리에는 시간표가 붙어 있어 안이 안 보인다. 문 밑 틈으로 실내화 두 켤레가 붙어 서 있다." }
+      - say: { channel: action, with: [], text: "문고리가 차다. 돌리면 둘이 돌아볼 것이다. 하린은 입으로 숨을 쉰다." }
       - say:
           channel: thought
           with: []

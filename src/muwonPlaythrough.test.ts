@@ -101,8 +101,11 @@ async function start() {
 describe('무원 full playthrough', () => {
   it('reaches the true ending when everyone is saved and every proof lands', async () => {
     await start();
-    const { state, picked } = await play(best);
+    const { state, picked, seen } = await play(best);
     expect(state.gameOver, picked.join('\n')).toBeUndefined();
+    // Her first body and the dark of the ice house are written out, not skipped.
+    expect(seen.some((text) => text.includes('식은 손을 이렇게 오래 쥐어 본 적이 없다'))).toBe(true);
+    expect(seen.some((text) => text.includes('등불을 낮추니 붉다'))).toBe(true);
     expect(state.isFinished).toBe(true);
     expect(state.routeVars).toMatchObject({ truth: 4, deokgu_saved: true, makssoe_alive: true, player_name: '서연' });
     expect(state.resolvedEndingId).toBe('muwon');

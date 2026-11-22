@@ -45,6 +45,14 @@ scenes:
       - say:
           channel: action
           with: [서연]
+          text: "우물물 냄새가 난다. 이끼와 쇠 냄새다. 젖은 손은 내 손보다 차고, 검지 마디에 바늘 굳은살이 있다."
+      - say:
+          channel: thought
+          with: [서연]
+          text: "혜민서에서는 열이 내리면 손을 놓았다. 식은 손을 이렇게 오래 쥐어 본 적이 없다."
+      - say:
+          channel: action
+          with: [서연]
           text: "신고서에는 ‘익사’ 두 글자뿐이다. 몸을 살핀 기록인 시장은 아직 쓰지 않았다."
       - wait: 250
   night_call:

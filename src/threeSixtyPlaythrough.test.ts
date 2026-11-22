@@ -334,6 +334,8 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
+    expect(heard(shown, '귀퉁이 하나 들춰져 있지 않았다')).toBe(true);
+    expect(heard(shown, '좁쌀 자루를 내려놓지도 못하고 문턱에 서 있었다')).toBe(true);
     // Deok-i is a person before the granary is a dispute. The daughter's wish to share
     // a meal returns in the illness and in the final memories.
     expect(heard(shown, '맡은 쌀에 손대면 그날로 끝이다')).toBe(true);
