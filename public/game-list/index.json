@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-22T09:40:24.878Z",
+  "generatedAt": "2026-11-22T10:03:05.812Z",
   "games": [
     {
       "id": "360",
@@ -72,7 +72,7 @@
       "name": "8비트 심장",
       "path": "/game-list/8bit-heart/",
       "author": "uiwwsw",
-      "version": "1.7.1",
+      "version": "1.7.2",
       "summary": "도시의 기계들이 일제히 멈추거나 멋대로 움직인다. 윤재 손에 남은 건 코어에 연결되지 않는 중고 게임기. 그 칩으로 깨운 로봇은 뭐든 한 박자 늦게 대답한다. 5장, 결말 4종.",
       "summaryEn": "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits. A survival story with four endings.",
       "thumbnail": "/game-list/8bit-heart/assets/bg/title.svg",

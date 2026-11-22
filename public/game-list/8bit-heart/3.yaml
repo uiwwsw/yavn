@@ -287,6 +287,10 @@ scenes:
           text: "우리 엄마는 집 나갔어. 아빠는 지방에 있고."
       - say:
           char: 윤재
+          with: [로봇]
+          text: "아빠는 온다고는 했어. 사흘이면 온다고. 오늘이 열사흘째야."
+      - say:
+          char: 윤재
           when: { var: saw_box, op: eq, value: true }
           with: [로봇]
           text: "집에 두고 온 게임기는 엄마가 사 준 거야."
