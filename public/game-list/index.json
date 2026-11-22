@@ -1,13 +1,13 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-21T23:01:39.497Z",
+  "generatedAt": "2026-11-22T09:40:24.878Z",
   "games": [
     {
       "id": "360",
       "name": "360",
       "path": "/game-list/360/",
       "author": "uiwwsw",
-      "version": "1.5.3",
+      "version": "1.5.4",
       "summary": "죽고 나니 평생 잊고 살던 일까지 돌아온다. 그중 하나를 쥐고 가면 다음 생에는 기억 대신 버릇이 남는다. 1809년 겨울에서 2026년의 편집실까지 이어지는 다섯 번의 삶. 5장, 결말 4종.",
       "summaryEn": "After death, a vast dark where you remember one whole life and may carry a single thing onward. The next person lives by it without knowing why. Five lives, from a starving winter in 1809 to an editing room in 2026. A Korean-language story in five chapters with four endings.",
       "thumbnail": "/game-list/360/assets/bg/title.svg",
