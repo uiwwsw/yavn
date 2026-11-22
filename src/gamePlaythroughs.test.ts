@@ -601,6 +601,28 @@ describe('튜토리얼', () => {
     });
     finished(run);
     expect(heard(run.shown, '나한테 지르지 말라는 거야')).toBe(true);
+    // Step 3 is not a blank menu choice. The lot is exact where only he would know and hollow
+    // elsewhere, the man does what the real one did not, and that is what makes it feel safe.
+    const beats = [
+      '손톱 밑에 흑연이 묻는다',
+      '무게가 없다. 내려놓아도 소리가 안 난다',
+      '목은 진짜로 따갑다',
+      '광철의 윤곽선 안쪽에 점퍼 색이 차기 시작했다',
+      '번호판 칸이 비어 있다',
+      '윤곽선뿐이던 얼굴에 색이 찬다',
+      '뚜껑을 따서 해수 신발 위에 붓는다',
+      '너희 팀장이',
+      '이건 그 사람이 아니다',
+      '한 번만. 여기서 한 번 해 보고 끄면 된다',
+      '심 쪽이 앞을 보는 건 처음이다',
+      '그 안쪽에서 무언가 버틴다',
+      '…자네가 왜.',
+      '손을 빼자 부러진 심이 보인다',
+      '발등에서 드링크 냄새가 난다',
+    ];
+    const at = beats.map(beat => run.shown.findIndex(text => text.includes(beat)));
+    expect(beats.filter((_, index) => at[index] < 0)).toEqual([]);
+    expect(at).toEqual([...at].sort((a, b) => a - b));
     expect(heard(run.shown, '무슨 말인지는 모르겠고 계속 지르기만 한다')).toBe(true);
     expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(true);
     expect(heard(run.shown, '대답이 없다. 의자가 한 번 더 끌린다')).toBe(true);

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-22T10:10:02.640Z",
+  "generatedAt": "2026-11-22T10:31:43.338Z",
   "games": [
     {
       "id": "360",
@@ -266,7 +266,7 @@
       "name": "튜토리얼",
       "path": "/game-list/tutorial/",
       "author": "uiwwsw",
-      "version": "1.6.2",
+      "version": "1.6.3",
       "summary": "마트 고객센터에서 12년째 일하는 정해수는 레플라 체험권을 받는다. 현실과 똑같이 생긴 가상 매장에서도 호출기에 027번이 뜬다. 5장 SF 미스터리, 결말 4종.",
       "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
       "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
