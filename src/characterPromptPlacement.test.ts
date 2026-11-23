@@ -42,7 +42,9 @@ describe('prompt-top character placement', () => {
   });
 
   it('anchors the prompt composition to the measured dialog top without an initial jump', () => {
-    expect(appSource).toContain('Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop)');
+    // Measured against where the frame settles, so an easing height does not move the actors.
+    expect(appSource).toContain('const settledTop = dialogEl.offsetTop - (settledHeight - dialogEl.offsetHeight);');
+    expect(appSource).toContain('Math.ceil(stageFrameEl.clientHeight - settledTop)');
     expect(appSource).toContain('if (dialogUiHidden)');
     expect(appSource).toContain('}, [dialogChannel, dialogUiHidden]);');
     expect(appSource).toContain('const promptTopBaselineReady = isDialogHidden || characterPromptFitInset > 0;');

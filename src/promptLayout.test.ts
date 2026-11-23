@@ -7,6 +7,7 @@ import {
   resolveGamePromptHeight,
   resolveInteractivePromptHeight,
   resolvePromptActorInset,
+  isPromptVacant,
   resolvePromptActionHeight,
   resolveDialogueScroll,
 } from './promptLayout';
@@ -15,6 +16,36 @@ import type { Action, GameData } from './types';
 const promptStyles = readFileSync(fileURLToPath(new URL('./promptLayout.css', import.meta.url)), 'utf8');
 const appSource = readFileSync(fileURLToPath(new URL('./App.tsx', import.meta.url)), 'utf8');
 const baseStyles = readFileSync(fileURLToPath(new URL('./styles.css', import.meta.url)), 'utf8');
+const interfaceStyles = readFileSync(fileURLToPath(new URL('./gameInterface.css', import.meta.url)), 'utf8');
+
+describe('an empty prompt frame', () => {
+  const line = { hidden: false, hasText: true, choiceActive: false, inputActive: false, channel: 'dialogue' };
+
+  it('steps out when there is nothing to read or answer', () => {
+    expect(isPromptVacant(line)).toBe(false);
+    expect(isPromptVacant({ ...line, hasText: false })).toBe(true);
+    // A choice with no prompt text and an answer field are still something to act on.
+    expect(isPromptVacant({ ...line, hasText: false, choiceActive: true })).toBe(false);
+    expect(isPromptVacant({ ...line, hasText: false, inputActive: true })).toBe(false);
+  });
+
+  it('leaves the phone and full-screen cards in place between two lines', () => {
+    expect(isPromptVacant({ ...line, hasText: false, channel: 'message' })).toBe(false);
+    expect(isPromptVacant({ ...line, hasText: false, channel: 'card' })).toBe(false);
+  });
+
+  it('is not a second way of hiding a frame the system or the player already hid', () => {
+    expect(isPromptVacant({ ...line, hasText: false, hidden: true })).toBe(false);
+  });
+
+  it('fades after a short hold, eases its height only while visible, and snaps on return', () => {
+    expect(appSource).toContain("${dialogVacant ? ' is-vacant' : ''}");
+    expect(interfaceStyles).toMatch(/\.app \.dialog-box \{ transition: opacity 220ms ease, height 240ms /);
+    expect(interfaceStyles).toMatch(/\.app \.dialog-box\.is-vacant \{ opacity: 0; pointer-events: none; transition: opacity 180ms ease 160ms, height 0s linear 340ms; \}/);
+    expect(interfaceStyles).toContain('.app .dialog-box[data-snap] { transition: opacity 220ms ease; }');
+    expect(interfaceStyles).toContain('.app .dialog-box[data-resizing] .dialog-content-scroll { overflow-y: hidden; }');
+  });
+});
 
 describe('stable prompt layout', () => {
   it('accepts a game-level prompt height and falls back to the engine default', () => {

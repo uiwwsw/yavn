@@ -212,6 +212,20 @@
 /* A stable reading frame, with the controls attached to its edge. */
 .app .dialog-box { width: min(1080px, calc(100% - 64px)); left: 50%; right: auto; bottom: 24px; transform: translateX(-50%); padding: 23px 32px 22px; border: 1px solid var(--game-line); border-radius: 4px; background: var(--game-dialog); box-shadow: 0 24px 80px #0003; backdrop-filter: none; }
 .app .dialog-box::before { content: ''; position: absolute; left: 32px; top: -1px; width: 52px; height: 2px; background: var(--game-accent); pointer-events: none; }
+/* A choice or an answer field needs more room than a line of dialogue. The frame grows into
+   that room instead of snapping to it, and clips its contents while it does. */
+.app .dialog-box { transition: opacity 220ms ease, height 240ms cubic-bezier(.2, .7, .2, 1); }
+.app .dialog-box[data-resizing] .dialog-content-scroll { overflow-y: hidden; }
+/* Between lines there are stretches with nothing to read or answer. The frame leaves for
+   those. The delay holds it in place across the short gap between two lines, and any change
+   of size waits until it is out of sight. */
+.app .dialog-box.is-vacant { opacity: 0; pointer-events: none; transition: opacity 180ms ease 160ms, height 0s linear 340ms; }
+/* Returning from an empty stretch, or changing into or out of the phone, it is already the
+   size the next prompt needs. */
+.app .dialog-box[data-snap] { transition: opacity 220ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  .app .dialog-box, .app .dialog-box.is-vacant, .app .dialog-box[data-snap] { transition: opacity 120ms linear; }
+}
 .app .dialog-box.channel-record, .app .dialog-box.channel-system { background: var(--game-dialog); box-shadow: 0 24px 80px #0003; }
 .app .dialog-box.has-choice-gate { --dialog-safe-max-height: min(60cqh, calc(100cqh - 80px)); }
 .app .dialog-box[data-single-choice='true']:not(.has-exploration) { --dialog-safe-max-height: calc(100cqh - 80px); }
