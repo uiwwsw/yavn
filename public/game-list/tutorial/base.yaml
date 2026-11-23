@@ -175,6 +175,8 @@ state:
   tried_polite: false
   rage: 0
   hesitated: false
+  # 낮에 광철이 연필을 내려놓으라고 했을 때(down | held)
+  day_pencil: ""
   logged_out: false
   look_ticket: false
   look_pencil: false

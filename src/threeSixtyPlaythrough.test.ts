@@ -219,12 +219,22 @@ describe('360 full playthrough', () => {
 
   it('ends in Stillness before any of the lives if the player stays', async () => {
     await start();
-    const { state, picked } = await play({ first_light: '그대로 있는다.' });
+    const { state, picked } = await play({ first_light: '그대로 있는다.', first_wait: '여기 남는다.' });
 
-    expect(picked).toEqual(['first_light=그대로 있는다.']);
+    expect(picked).toEqual(['first_light=그대로 있는다.', 'first_wait=여기 남는다.']);
     expect(state.gameOver).toBeUndefined();
     expect(state.resolvedEndingId).toBe('still');
     expect(state.routeVars.lives_done).toBe(0);
+  });
+
+  it('asks once more before the first dark ends the story, like every later dark', async () => {
+    await start();
+    const { state, picked, shown } = await play({ first_light: '그대로 있는다.', first_wait: '손을 뻗는다.' }, 'star');
+
+    expect(picked).toEqual(['first_light=그대로 있는다.', 'first_wait=손을 뻗는다.']);
+    expect(heard(shown, '깜박이는 사이가 숨 쉬는 것과 비슷하다')).toBe(true);
+    expect(state.isFinished).toBe(false);
+    expect(state.choiceGate.key).toBe('star');
   });
 
   it('loses the previous star’s progress, even when it was ready to enter', async () => {

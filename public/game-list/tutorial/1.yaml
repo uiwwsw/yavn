@@ -777,6 +777,17 @@ scenes:
           char: 광철.lost
           with: [해수]
           text: "그 연필 좀 내려놓고 들어 봐. 그 목소리가 어디서 들은 목소리 같아서."
+      - choice:
+          key: t1_day_pencil
+          prompt: "광철이 해수 손의 연필을 보고 있다."
+          with: [광철]
+          options:
+            - text: "연필을 연필꽂이에 꽂는다"
+              set: { day_pencil: down }
+            - text: "연필을 쥔 채 듣는다"
+              set: { day_pencil: held }
+      - say: { channel: action, with: [해수, 광철], when: { var: day_pencil, op: eq, value: down }, text: "해수가 연필을 연필꽂이에 꽂는다. 빈 손을 둘 데가 없어 창구 모서리를 잡는다." }
+      - say: { channel: action, with: [해수, 광철], when: { var: day_pencil, op: eq, value: held }, text: "해수는 고개만 든다. 엄지가 연필 옆면을 누르고 있다." }
       - emote: { id: 해수, motion: freeze }
       - say:
           char: 광철.lost
@@ -907,6 +918,8 @@ scenes:
           text: "수고는 무슨 수고. 다음부터는 처음부터 숙이라며, 너희 팀장이."
       - say: { channel: thought, with: [], text: "그 말은 휴게실에서 나온 말이다. 아저씨는 거기 없었다." }
       - say: { channel: thought, with: [], text: "낮의 아저씨는 드링크를 놓고 수고하라고 했다. 이건 그 사람이 아니다. 내 머릿속에서 꺼내다 만든 거다." }
+      - say: { channel: thought, with: [], when: { var: day_pencil, op: eq, value: down }, text: "낮의 아저씨는 연필 좀 내려놓으라고 했다. 내려놓았다. 여기서는 손에 쥔 걸 써 보라고 한다." }
+      - say: { channel: thought, with: [], when: { var: day_pencil, op: eq, value: held }, text: "낮에는 내려놓으라는데도 못 내려놓았다. 손가락이 벌써 이 굵기로 굽어 있다." }
       - say:
           channel: thought
           with: []

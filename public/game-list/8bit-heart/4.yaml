@@ -655,6 +655,7 @@ scenes:
       - place: "오전 6시 · 데이터센터 문 앞"
       - say: { channel: thought, with: [], text: "밤새 문만 봤다. 손을 내밀면 바로 잡을 수 있게, 자꾸 손바닥을 바지에 닦았다." }
       - say: { channel: action, with: [], text: "교차로의 초록빛이 꺼진다. 한참 만에 빨간불이 켜진다." }
+      - say: { channel: thought, with: [], text: "신호등이 돌아왔으면 집 전화도 신호가 갈까. 집까지 걸어서 나흘이다. 현관에는 아직 ‘편의점’이라고 붙어 있다." }
       - say:
           channel: action
           with: []

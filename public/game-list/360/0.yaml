@@ -46,7 +46,20 @@ scenes:
                 - "조금 더 다가가자 어둠 속에 희미한 빛들이 보였다."
               goto: first_memories
             - text: "그대로 있는다."
+              goto: first_wait
+
+  first_wait:
+    pov: "???"
+    actions:
+      - say: { channel: narration, text: "기다린다. 빛은 커지지도 꺼지지도 않는다. 깜박이는 사이가 숨 쉬는 것과 비슷하다." }
+      - choice:
+          key: first_wait
+          prompt: "빛은 같은 자리에 있다."
+          options:
+            - text: "여기 남는다."
               goto: first_still
+            - text: "손을 뻗는다."
+              goto: first_memories
 
   first_still:
     pov: "???"

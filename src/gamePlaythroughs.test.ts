@@ -260,6 +260,8 @@ describe('8비트 심장', () => {
     // The stop is not the whole disaster. The father says three days on the landline, the block
     // comes apart while Yunjae waits, and a household robot knocks on his door.
     expect(heard(run.shown, '걸어서라도 온다고 한다. 사흘이면 온다고')).toBe(true);
+    // The reset is also the phone that went dead mid-sentence.
+    expect(heard(run.shown, '신호등이 돌아왔으면 집 전화도 신호가 갈까')).toBe(true);
     expect(heard(run.shown, '그러다 누가 유리를 깼다')).toBe(true);
     expect(heard(run.shown, '경찰 사이렌은 첫날 밤에 제일 많았다')).toBe(true);
     expect(heard(run.shown, '확인될 때까지 모시겠습니다')).toBe(true);
@@ -427,6 +429,7 @@ describe('ERASE', () => {
       e0_junseong: '잔을 받는다',
       e0_erase: '방을 나간다',
       e1_rumor: '농담에 맞장구친다',
+      e1_awake: '왜 가만히 있었느냐고 묻는다',
       h1_send: '보낸다',
       e1_harin: '이어폰을 받지 않는다',
       e2_dig: '검색을 그만두고 지수에게 답장한다',
@@ -439,6 +442,10 @@ describe('ERASE', () => {
       e3_final: '놀이터 사진을 연다',
     });
     finished(run);
+    // The one thing he asks the man himself is remembered on the roof as the only one.
+    expect(heard(run.shown, '인사하면 더 빨리 가실 것 같았어요')).toBe(true);
+    expect(heard(run.shown, '직접 물어본 건 야근하던 날 한 번이다')).toBe(true);
+    expect(heard(run.shown, '직접 물어본 건 하나도 없다')).toBe(false);
     const clubConversation = run.shown.filter(line =>
       /담배 하나만 빌릴 수 있어요|그쪽도 몇 번 보셨나 보네요|저 다음 달에 결혼해요|빈 잔 하나 더 있는데/.test(line));
     expect(clubConversation).toEqual([
@@ -482,6 +489,7 @@ describe('ERASE', () => {
       e0_junseong: '잔을 받는다',
       e0_erase: '메시지||사진||위치 기록||방을 나간다',
       e1_rumor: '답장하지 않는다',
+      e1_awake: '모니터로 눈을 돌린다',
       h1_send: '한 글자씩 지운다',
       e1_harin: '민재에게 왜 안 보냈는지 묻는다',
       e2_dig: '검색을 그만두고 지수에게 답장한다',
@@ -499,6 +507,8 @@ describe('ERASE', () => {
     );
     expect(run.state.routeVars.e0_photos).toBe(true);
     expect(heard(run.shown, '손이 알아서 했다')).toBe(true);
+    expect(heard(run.shown, '인사하면 더 빨리 가실 것 같았어요')).toBe(false);
+    expect(heard(run.shown, '그 사람한테 직접 물어본 건 하나도 없다')).toBe(true);
     expect(heard(run.shown, '방금도 본 곳이다')).toBe(true);
     expect(heard(run.shown, '‘나도’에서 잠깐 멈춘다')).toBe(true);
     expect(run.shown).not.toContain('나도 봤는데ㅋㅋ 나도 껴줘');
@@ -518,6 +528,7 @@ describe('튜토리얼', () => {
     t1_bow: '고개를 숙인다',
     t1_look: '번호표 기계||연필꽂이||다음 단계로',
     t1_say: '왜 그렇게 많이 사냐고 쏘아붙인다',
+    t1_day_pencil: '연필을 연필꽂이에 꽂는다',
     t1_pencil: '연필을 든 채 다가간다',
     t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
     t2_where: '들은 장소만 말한다',
@@ -541,6 +552,10 @@ describe('튜토리얼', () => {
     expect(heard(run.shown, '최초 처리자 정해수')).toBe(true);
     expect(heard(run.shown, '혼자 다 먹지도 못하면서 왜 사느냐고')).toBe(true);
     expect(heard(run.shown, '틀린 말은 아니더라. 혼자 그걸 다 먹을 수는 없지')).toBe(true);
+    // By day the man asked him to put the pencil down and he did; the lot at night asks the opposite.
+    expect(heard(run.shown, '빈 손을 둘 데가 없어 창구 모서리를 잡는다')).toBe(true);
+    expect(heard(run.shown, '내려놓았다. 여기서는 손에 쥔 걸 써 보라고 한다')).toBe(true);
+    expect(heard(run.shown, '손가락이 벌써 이 굵기로 굽어 있다')).toBe(false);
     expect(heard(run.shown, '신고할 때 저 말을 그대로 따라 했대요')).toBe(true);
     expect(heard(run.shown, '제 폰으로 찍었어요. 어제 녹화실에서.')).toBe(false);
     // 상혁 opens the door a crack for someone who has been looking after him.
@@ -597,6 +612,7 @@ describe('튜토리얼', () => {
       t1_bow: '응대를 그만둔다',
       t1_look: '번호표 기계||연필꽂이||다음 단계로',
       t1_say: '소리 지르지 말라고 한다',
+      t1_day_pencil: '연필을 쥔 채 듣는다',
       t1_pencil: '연필을 든 채 다가간다',
       t2_sh: '모른 척하고 신발을 신는다',
       t2_where: '단톡방을 못 봤다고 둘러댄다',
@@ -609,6 +625,9 @@ describe('튜토리얼', () => {
     });
     finished(run);
     expect(heard(run.shown, '나한테 지르지 말라는 거야')).toBe(true);
+    expect(heard(run.shown, '엄지가 연필 옆면을 누르고 있다')).toBe(true);
+    expect(heard(run.shown, '손가락이 벌써 이 굵기로 굽어 있다')).toBe(true);
+    expect(heard(run.shown, '여기서는 손에 쥔 걸 써 보라고 한다')).toBe(false);
     // Step 3 is not a blank menu choice. The lot is exact where only he would know and hollow
     // elsewhere, the man does what the real one did not, and that is what makes it feel safe.
     const beats = [
@@ -686,11 +705,13 @@ describe('오버플로', () => {
     await start('overflow');
     const run = await play({
       o0_call: '전화를 받는다',
+      o0_door: '지금 대답하고 있지 않느냐고 묻는다',
       o1_trust: '이름을 가리고 기록을 보여준다',
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
       o2_evidence: '20시 14분에 나온 두 값을 증거로 남긴다',
+      o3_sugyeong: '아침에 역에서 병원을 물은 것도 그래서였는지 묻는다',
       o4_end: '기다린 사람들과 함께 이의를 낸다',
     });
     finished(run);
@@ -707,6 +728,7 @@ describe('오버플로', () => {
       '병동 문은 보호자 렌즈를 한 번 읽고 열려요',
       '이불 밖으로 맨발 하나가 나와 있다',
       '보호자 면회 확인 · 문지완',
+      '저요? 저 지금 대답하고 있잖아요',
       '그날 그분 렌즈가 01이었고요',
       '이 안내가 뜨면 직원이 같이 들어가야 해서요',
       '잠깐 말씀드려도 괜찮을까요?',
@@ -729,8 +751,13 @@ describe('오버플로', () => {
       '같은 시각이라고',
       '본 사람이 있어요. 문 앞에 간호사님요',
       '두 번 다 제가 본 건 확인서에 적어 드릴게요',
+      // What he said at the door is on the nurse's statement, word for word.
+      '그 말도 들은 대로 적을게요',
       '세 자리 값이 들어올 때는 시험도 안 해 보고 통과시켰어요',
+      '그때도 저 같은 사람 기다리러 가던 길이었어요?',
+      '장갑은 고마웠어요. 그건 따로예요.',
       '아까 저 앉혀 주셨잖아요',
+      '낼 걸 내러 왔어요',
       '저도 같이 내도 될까요?',
       '공동 이의신청 접수',
       '반만 얼렸다. 나머진 냄비에',
@@ -745,12 +772,15 @@ describe('오버플로', () => {
     expect(introduction[0]?.text).toContain('한수경이라고 합니다');
     expect(heard(run.shown, '아까 대답 안 했는데')).toBe(false);
     expect(heard(run.shown, '첫 입력값은 남아 있지 않아요')).toBe(false);
+    expect(heard(run.shown, '그럼 언제 들어갈 수 있어요')).toBe(false);
   });
 
   it('connects missed calls and a late admission to the public ending', async () => {
     await start('overflow');
     const run = await play({
       o0_call: '문자로 답한다',
+      o0_door: '셋을 세고 언제 들어갈 수 있는지 묻는다',
+      o3_sugyeong: '아무 말 없이 출력물을 끌어온다',
       o1_trust: '수경의 자료부터 보여달라고 한다',
       o1_desk: '결함 보고서를 읽는다||병동에서 연락이 왔는지 확인한다||시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
@@ -761,6 +791,14 @@ describe('오버플로', () => {
     finished(run);
     expect(run.state.resolvedEndingId).toBe('broadcast');
     expect(heard(run.shown, '접수표는 안 주셔도 돼요')).toBe(true);
+    // He counted at the door instead of protesting, and that is what the nurse saw.
+    expect(heard(run.shown, '셋까지 세는데 숨이 두 번 끊긴다')).toBe(true);
+    expect(heard(run.shown, '…그럼 언제 들어갈 수 있어요.')).toBe(true);
+    expect(heard(run.shown, '저요? 저 지금 대답하고 있잖아요')).toBe(false);
+    expect(heard(run.shown, '한참 있다가 면회 시간부터 물으셨어요')).toBe(true);
+    expect(heard(run.shown, '그 말도 들은 대로 적을게요')).toBe(false);
+    expect(heard(run.shown, '장갑은 고마웠어요')).toBe(false);
+    expect(heard(run.shown, '낼 걸 내러 왔어요')).toBe(false);
     expect(heard(run.shown, '아침에 전화 못 받아서 죄송해요')).toBe(true);
     expect(heard(run.shown, '아까 대답 안 했는데… 무서웠어요')).toBe(true);
     expect(heard(run.shown, '제 거 빼 두셨죠')).toBe(false);
@@ -790,6 +828,8 @@ describe('오버플로', () => {
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
       o2_evidence: '첫 접수 수치도 101로 고쳐 달라고 한다',
+      o0_door: '지금 대답하고 있지 않느냐고 묻는다',
+      o3_sugyeong: '아무 말 없이 출력물을 끌어온다',
       o4_end: '내 기록의 정정을 신청한다',
     });
     finished(run);
@@ -808,6 +848,7 @@ describe('오버플로', () => {
       o1_trust: '이름을 가리고 기록을 보여준다',
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '연결하지 않고 아버지를 뵙는다',
+      o0_door: '셋을 세고 언제 들어갈 수 있는지 묻는다',
     });
     finished(run);
     expect(run.state).toMatchObject({ chapterIndex: 3, resolvedEndingId: 'visiting_hours' });

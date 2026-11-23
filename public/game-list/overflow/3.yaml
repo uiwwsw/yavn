@@ -19,6 +19,8 @@ scenes:
       - say: { char: 세라, with: [지완], text: "경고음이 나서 문 쪽을 봤어요. 01 아래에 ‘무반응 의심’이라고 써 있었죠." }
       - say: { char: 세라, with: [지완], text: "그때 보호자님은 아버님 양말 신기고 계셨고요." }
       - say: { char: 세라, with: [지완], text: "접수대에서 한 번, 병실에서 한 번. 두 번 다 제가 본 건 확인서에 적어 드릴게요." }
+      - say: { char: 세라, with: [지완], when: { var: door_reply, op: eq, value: asked }, text: "접수대에서는 ‘지금 대답하고 있잖아요’ 하셨죠. 그 말도 들은 대로 적을게요." }
+      - say: { char: 세라, with: [지완], when: { var: door_reply, op: eq, value: counted }, text: "접수대에서는 한참 있다가 면회 시간부터 물으셨어요. 장갑 쥔 손은 주머니에 넣으시고요. 그것도 적을게요." }
       - say: { char: 지완, with: [세라], text: "그럼 무반응이라고 뜬 건 지워져요?" }
       - say: { char: 세라, with: [지완], text: "제가 지울 수는 없어요. 이의 신청을 하시면 확인서를 같이 낼 수 있고요." }
       - say: { char: 세라, with: [지완], text: "오늘 같은 안내 받고 그냥 가신 분이 한 분 더 있어요." }
@@ -43,6 +45,17 @@ scenes:
       - get: report
       - say: { char: 지완, with: [수경], when: { var: read_report, op: eq, value: true }, text: "사례가 있어야 다시 본다고 했죠. 그게 저였네요." }
       - say: { char: 지완, with: [수경], when: { var: read_report, op: eq, value: false }, text: "‘사례가 확인되면 재검토.’ …이게 저네요." }
+      - choice:
+          key: o3_sugyeong
+          prompt: "수경의 펜이 회사 이름을 쓰다 만 자리에 멈춰 있다."
+          with: [수경]
+          options:
+            - text: "아침에 역에서 병원을 물은 것도 그래서였는지 묻는다"
+              set: { asked_morning: true }
+            - text: "아무 말 없이 출력물을 끌어온다"
+      - say: { char: 지완, with: [수경], when: { var: asked_morning, op: eq, value: true }, text: "아침에 역에서 병원이 어느 쪽이냐고 물으셨죠. 그때도 저 같은 사람 기다리러 가던 길이었어요?" }
+      - say: { char: 수경, with: [지완], when: { var: asked_morning, op: eq, value: true }, text: "네. 그게 지완 씨일 줄은 몰랐어요. 장갑은… 그냥 떨어져서 주운 거예요." }
+      - say: { char: 지완, with: [수경], when: { var: asked_morning, op: eq, value: true }, text: "장갑은 고마웠어요. 그건 따로예요." }
       - bg: desk_print
       - say: { channel: action, with: [], text: "지완이 책상 위의 출력물을 자기 쪽으로 끌어온다." }
       - bg: { id: office_night, transition: dissolve, duration: 320 }
