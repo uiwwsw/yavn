@@ -74,6 +74,18 @@ function getCurrentPromptAction(game: GameData | undefined, sceneId: string, act
   return game?.scenes[sceneId]?.actions[actionIndex];
 }
 
+/**
+ * Nothing to read and nothing to answer: a wait, a background change, an actor crossing the
+ * stage. The frame steps out for those instead of standing empty. The phone and full-screen
+ * cards are places rather than frames, so they stay through the gap between two messages.
+ */
+export function isPromptVacant(prompt: {
+  hidden: boolean; hasText: boolean; choiceActive: boolean; inputActive: boolean; channel: string;
+}): boolean {
+  return !prompt.hidden && !prompt.hasText && !prompt.choiceActive && !prompt.inputActive
+    && prompt.channel !== 'message' && prompt.channel !== 'card';
+}
+
 export function resolvePromptActorInset(measuredInset: number, measuredHeight: number, readingHeight: number): number {
   return Math.max(0, measuredInset - Math.max(0, measuredHeight - readingHeight));
 }

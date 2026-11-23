@@ -80,7 +80,7 @@ describe('responsive stage content frame', () => {
 
     expect(appSource).toContain('const stageContentFrameRef = useRef<HTMLDivElement | null>(null);');
     expect(appSource).toContain(
-      'Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop)',
+      'Math.ceil(stageFrameEl.clientHeight - settledTop)',
     );
     expect(appSource).toContain('observer.observe(stageFrameEl);');
     expect(appSource).not.toContain('choiceGate.active, dialog.visibleText, inputGate.active');

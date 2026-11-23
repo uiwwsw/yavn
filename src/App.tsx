@@ -30,7 +30,7 @@ import { GameIcon } from './GameIcon';
 import { ResourceImage } from './ResourceImage';
 import { StickerArtwork } from './StickerArtwork';
 import { measureStickerBox } from './stickerMeasurement';
-import { resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
+import { isPromptVacant, resolveDialogueScroll, resolvePromptActorInset } from './promptLayout';
 import { formatClipLength, isEmojiOnly, leadsRun, phoneAvatarPath, phoneBubbleProfile, selectPhoneContact, selectPhoneConversation } from './phoneThread';
 import { navigateGameTabs, resolveReadingPerspective, trapGameDialogFocus } from './gameInterface';
 import { useRetainedCast } from './retainedCast';
@@ -418,6 +418,14 @@ const DialogueActionButton = memo(function DialogueActionButton() {
     </button>
   );
 });
+
+/** The height the dialogue frame is easing toward, or its current height when it is at rest. */
+function settledDialogHeight(element: HTMLElement): number {
+  const running = element.getAnimations?.().find(animation => (animation as CSSTransition).transitionProperty === 'height');
+  const target = (running?.effect as KeyframeEffect | null | undefined)?.getKeyframes().at(-1)?.height;
+  const parsed = typeof target === 'string' ? Number.parseFloat(target) : Number.NaN;
+  return Number.isFinite(parsed) ? parsed : element.offsetHeight;
+}
 
 const DialogueNextButton = memo(function DialogueNextButton({ onAdvance }: { onAdvance: () => void }) {
   const { visible, typing, locked, showHint } = useVNStore(useShallow(state => ({
@@ -3892,6 +3900,44 @@ export default function App() {
     }
   }, [videoCutscene.active]);
 
+  const dialogVacant = isPromptVacant({ hidden: isDialogHidden, hasText: dialogHasText,
+    choiceActive: choiceGate.active, inputActive: inputGate.active, channel: dialogChannel });
+  const dialogFrameKind = dialogChannel === 'message' || dialogChannel === 'card' ? dialogChannel : 'frame';
+  const previousDialogFrameRef = useRef({ vacant: dialogVacant, kind: dialogFrameKind });
+  useLayoutEffect(() => {
+    const dialogEl = dialogBoxRef.current;
+    const previous = previousDialogFrameRef.current;
+    previousDialogFrameRef.current = { vacant: dialogVacant, kind: dialogFrameKind };
+    // The height eases only between two prompts the reader can see. Returning from an empty
+    // stretch, or changing into or out of the phone, the frame is already the size it needs.
+    if (!dialogEl || !((previous.vacant && !dialogVacant) || previous.kind !== dialogFrameKind)) return;
+    dialogEl.dataset.snap = 'true';
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => { delete dialogEl.dataset.snap; });
+    });
+    return () => { cancelAnimationFrame(first); cancelAnimationFrame(second); delete dialogEl.dataset.snap; };
+  }, [dialogVacant, dialogFrameKind]);
+
+  // While the frame is easing to a new height its contents are clipped, not scrolled, so no
+  // scrollbar flashes for the length of the transition.
+  useEffect(() => {
+    const dialogEl = dialogBoxRef.current;
+    if (!dialogEl) return;
+    const isOwnHeight = (event: TransitionEvent) => event.target === dialogEl && event.propertyName === 'height';
+    const mark = (event: TransitionEvent) => { if (isOwnHeight(event)) dialogEl.dataset.resizing = 'true'; };
+    const clear = (event: TransitionEvent) => { if (isOwnHeight(event)) delete dialogEl.dataset.resizing; };
+    dialogEl.addEventListener('transitionrun', mark);
+    dialogEl.addEventListener('transitionend', clear);
+    dialogEl.addEventListener('transitioncancel', clear);
+    return () => {
+      dialogEl.removeEventListener('transitionrun', mark);
+      dialogEl.removeEventListener('transitionend', clear);
+      dialogEl.removeEventListener('transitioncancel', clear);
+      delete dialogEl.dataset.resizing;
+    };
+  }, [bootMode, startGate, isDialogHiddenBySystem]);
+
   const updateStickerSafeInset = useCallback(() => {
     const stageFrameEl = stageContentFrameRef.current;
     const dialogEl = dialogBoxRef.current;
@@ -3905,12 +3951,16 @@ export default function App() {
       setCharacterPromptInset(0);
       return;
     }
-    const nextInset = Math.max(0, Math.ceil(stageFrameEl.clientHeight - dialogEl.offsetTop));
+    // Measure where the frame is going, not where it is mid-transition, so everything that
+    // keeps clear of it moves once instead of on every frame of the ease.
+    const settledHeight = settledDialogHeight(dialogEl);
+    const settledTop = dialogEl.offsetTop - (settledHeight - dialogEl.offsetHeight);
+    const nextInset = Math.max(0, Math.ceil(stageFrameEl.clientHeight - settledTop));
     setStickerSafeInset(nextInset);
     // Phone and full-screen cards can cover the stage, but do not move the
     // reading prompt's character baseline for the next line.
     if (dialogChannel === 'message' || dialogChannel === 'card') return;
-    const dialogHeight = dialogEl.offsetHeight;
+    const dialogHeight = settledHeight;
     const readingHeight = Number.parseFloat(getComputedStyle(document.documentElement)
       .getPropertyValue('--yavn-character-prompt-height')) || dialogHeight;
     const readingInset = resolvePromptActorInset(nextInset, dialogHeight, readingHeight);
@@ -6080,7 +6130,7 @@ export default function App() {
         data-reading-perspective={readingPerspective}
         data-single-choice={choiceGate.active && choiceGate.options.length === 1 && !hasSpatialTargets || undefined}
         data-investigation={hasSpatialTargets ? 'true' : undefined}
-        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${isSpatialChoice ? ' has-exploration' : ''} ${isDialogHidden ? 'hidden' : ''}`}
+        className={`dialog-box channel-${dialogChannel}${dialogChannel === 'message' ? ` side-${dialogSide ?? 'them'}` : ''}${dialogErasing ? ' is-erasing' : ''} delivery-${dialogDelivery}${choiceGate.active ? ' has-choice-gate' : ''}${isSpatialChoice ? ' has-exploration' : ''}${dialogVacant ? ' is-vacant' : ''} ${isDialogHidden ? 'hidden' : ''}`}
       >
         {!isDialogHiddenBySystem && !dialogUiHidden && (
           <div className="dialog-controls">
