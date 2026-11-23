@@ -103,24 +103,29 @@ scenes:
       - say: { char: 수경, with: [지완], text: "오셨어요. 이번에는 잘리기 전 값도 남았어요." }
       - get: raw_print
       - sticker: { id: diagnosis, image: raw_sticker, x: 50, y: 46, width: "clamp(140px, 23%, 270px)", enter: fadeIn }
-      - say: { channel: record, with: [], text: "20:14:09 · 문지완의 렌즈\n센서 입력 101 → 표시 01\n화면 판정: 무반응 의심" }
+      - say: { channel: record, with: [], text: "20:14:09 · 문지완의 렌즈\n센서 입력 001 → 표시 01\n화면 판정: 무반응 의심" }
       - clearSticker: { id: diagnosis, leave: fadeOut }
-      - say: { char: 지완, with: [수경], text: "101." }
+      - say: { char: 지완, with: [수경], text: "…001." }
+      - say: { char: 수경.tired, with: [지완], text: "잘린 자리가 없어요. 들어온 값이 1이에요." }
       - say: { char: 지완, with: [수경], text: "8시 14분. 아버지 옆에 있을 때예요." }
-      - say: { char: 지완, with: [수경], text: "그럼 저 무반응 아닌 거죠." }
-      - say: { char: 수경, with: [지완], text: "화면이 앞자리를 잘랐다는 건 이걸로 말할 수 있어요. 지완 씨가 그때 어땠는지는 제가 못 써요." }
+      - say: { char: 지완.tight, with: [수경], text: "그럼 기계는 안 틀린 거네요." }
+      - say: { char: 수경.tired, with: [지완], text: "…네. 렌즈는 읽은 대로 띄웠어요. 틀린 건 저예요." }
+      - say: { channel: thought, with: [수경], text: "팔 년 동안 한 번도 안 틀린 기계가 두 번 재서 두 번 다 1이라고 했다. 아버지 옆에서." }
       - choice:
           key: o2_evidence
-          prompt: "첫 접수표에는 01만 있다. 출력물에는 20시 14분과 두 숫자가 찍혀 있다."
+          prompt: "출력물에는 20시 14분과 숫자 두 개가 찍혀 있다. 001, 01."
           with: [수경]
           options:
-            - text: "첫 접수 수치도 101로 고쳐 달라고 한다"
-              set: { asked_for_first_value: true }
-            - text: "20시 14분에 나온 두 값을 증거로 남긴다"
-              set: { asked_for_first_value: false }
-      - say: { char: 수경, with: [지완], when: { var: asked_for_first_value, op: eq, value: true }, text: "첫 입력값은 남아 있지 않아요. 이건 8시 14분에 다시 잰 값이에요." }
-      - say: { char: 지완, with: [수경], text: "그럼 이것만 그대로 써 주세요. 8시 14분, 101, 01. 같은 시각이라고." }
-      - say: { char: 수경, with: [지완], text: "네. 그대로 쓸게요." }
+            - text: "지금 여기서 다시 재 달라고 한다"
+              set: { asked_remeasure: true }
+            - text: "출력물을 접어 주머니에 넣는다"
+      - say: { char: 지완, with: [수경], when: { var: asked_remeasure, op: eq, value: true }, text: "지금 다시 재 주세요. 여기서요." }
+      - say: { channel: action, with: [지완, 수경], when: { var: asked_remeasure, op: eq, value: true }, text: "수경이 검사기를 든다. 지완은 주머니에 넣었던 손을 꺼내 계단 난간을 잡는다. 난간이 같이 떨린다." }
+      - say: { channel: record, with: [], sound: read, when: { var: asked_remeasure, op: eq, value: true }, text: "20:31:40 · 문지완의 렌즈\n센서 입력 001 → 표시 01" }
+      - say: { channel: action, with: [지완, 수경], when: { var: asked_remeasure, op: ne, value: true }, text: "지완이 출력물을 반으로 접는다. 손이 떨려서 모서리가 안 맞는다. 다시 접는다." }
+      - say: { char: 수경, with: [지완], text: "…손은 떨고 계시네요." }
+      - say: { char: 지완, with: [수경], text: "렌즈는 손은 안 보죠." }
+      - say: { char: 수경, with: [지완], text: "네. 눈가하고 관자놀이를 봐요. 거기는 아무것도 안 움직였어요." }
       - say: { char: 지완, with: [수경], text: "제가 그때 어땠는지는 본 사람이 있어요. 문 앞에 간호사님요. 접수대에서도 그분이었어요." }
       - say: { char: 수경, with: [지완], text: "그분께 같이 말씀드려도 될까요?" }
       - say: { char: 지완, with: [수경], text: "같이 가요." }

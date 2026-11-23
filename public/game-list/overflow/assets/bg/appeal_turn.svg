@@ -44,7 +44,7 @@
     <text x="22" y="84" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="19" fill="#5c6b77">문지완 · 20:14:09</text>
     <path d="M20 160H310M20 236H310" stroke="#b9c1bd" stroke-width="3"/>
     <text x="22" y="210" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="20" fill="#5c6b77">센서 입력</text>
-    <text x="310" y="212" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="34" font-weight="800" text-anchor="end" fill="#212c38">101</text>
+    <text x="310" y="212" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="34" font-weight="800" text-anchor="end" fill="#212c38">001</text>
     <text x="22" y="288" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="20" fill="#5c6b77">렌즈 표시</text>
     <text x="310" y="290" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="34" font-weight="800" text-anchor="end" fill="#ac6354">01</text>
   </g>

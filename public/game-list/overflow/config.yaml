@@ -2,9 +2,9 @@ title: "오버플로"
 pov: "문지완"
 author:
   name: "uiwwsw"
-version: "4.7.0"
+version: "5.0.0"
 seo:
-  description: "2033년 서울. 문지완은 쓰러진 아버지를 보러 병원에 간다. 감정 판독 렌즈가 지완에게 01점을 띄우자 병실 문이 멈춘다. 그 숫자가 어떻게 나왔는지 확인하려는 개발자 한수경이 말을 건다."
+  description: "2033년 서울. 감정을 숫자로 읽는 렌즈는 팔 년 동안 한 번도 틀린 적이 없다. 쓰러진 아버지를 보러 간 문지완에게 렌즈가 01을 띄우고, 병실 문이 멈춘다. 틀리지 않는 기계가 읽은 0은 정말 0일까."
   keywords:
     - "SF 미스터리"
     - "비주얼노벨"
@@ -52,14 +52,14 @@ startScreen:
 endings:
   broadcast:
     title: "공개"
-    message: "보도 뒤 병원이 면회 판독 오류를 조사하겠다고 밝혔다."
+    message: "보도 뒤 병원은 낮은 숫자가 뜬 보호자에게도 직원이 먼저 묻기로 했다. 한신뉴로는 답하지 않았다."
     epilogue: "월요일 새벽, 도겸이 지완 몫의 작업 장갑을 내밀었다. 지완은 이번 일요일에도 아버지 집에 간다며 근무표를 먼저 확인했다."
     background: studio
     music: street
     tone: mystery
   one_file:
     title: "정정 이력"
-    message: "문지완의 무반응 의심 기록 정정"
+    message: "문지완 · 수치 01 유지 · ‘무반응 의심’ 판정 철회"
     epilogue: "아버지는 접수 시간이 적힌 줄에 손가락을 대고 한참 들여다봤다. “이렇게 일찍 온 줄 몰랐지.”"
     background: ward_entry
     music: lowscore
@@ -80,7 +80,7 @@ endings:
     tone: hopeful
   visiting_hours:
     title: "면회 시간"
-    message: "재측정 표시는 01이었다. 이번에도 잘리기 전 숫자는 남지 않았다."
+    message: "다시 뜬 숫자도 01이었다. 그 안쪽 숫자가 얼마였는지는 끝내 보지 않았다."
     epilogue: "다음 날에도 간호사는 문 앞 의자에 앉아 있었다. 지완은 아버지에게 집에서 가져온 양말을 건넸다."
     background: ward_bed
     music: lowscore
