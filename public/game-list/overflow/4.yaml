@@ -14,12 +14,12 @@ scenes:
       - char: { id: 세라, position: right }
       - say: { char: 세라, with: [지완], text: "문지완 님, 담당자가 어제 확인서를 보고 면회 제한부터 풀었어요. 오늘부터 이걸로 들어가시면 돼요. 동행 없이요." }
       - say: { char: 지완, with: [세라], text: "어제 뜬 건요." }
-      - say: { char: 세라, with: [지완], text: "기록에는 그대로 있어요. 지우려면 이의 신청을 하셔야 하고요." }
+      - say: { char: 세라, with: [지완], text: "기록에는 그대로 있어요. 01은 맞게 읽힌 거라서 못 지우고요. 이의 신청을 하시면 ‘무반응 의심’이라는 말은 뺄 수 있어요." }
       - say: { char: 지완, with: [세라], text: "이건 저만 되는 거죠." }
       - say: { char: 세라, with: [지완], text: "네." }
       - say: { char: 세라, with: [지완], text: "한 분 앞으로 나온 거예요." }
       - char: { id: 수경, position: center }
-      - say: { char: 수경, with: [지완, 세라], text: "어젯밤에 제 확인서는 병원에 냈어요. 제 이름하고 시험 출력물만 넣었어요." }
+      - say: { char: 수경, with: [지완, 세라], text: "어젯밤에 검증 보고서를 회사에 올렸어요. ‘오류 0건’ 옆에 한 줄 넣었어요. 0 판정은 확인한 적 없음." }
       - say: { char: 수경, with: [지완], text: "지완 씨 출력물은… 아니에요. 그건 지완 씨가 정하세요." }
       - say: { char: 수경, with: [지완], when: { var: asked_morning, op: eq, value: true }, text: "오늘은 누굴 기다리러 온 게 아니에요. 낼 걸 내러 왔어요." }
       - say: { channel: action, with: [지완, 수경, 세라], text: "한 여자가 아이 손을 잡고 들어온다." }
@@ -27,7 +27,7 @@ scenes:
       - say: { channel: action, with: [지완, 수경, 세라], text: "세라가 여자의 어제 접수표를 찾아 접수대에 올려놓는다. 지완의 것과 같은 자리에 01이 찍혀 있다." }
       - choice:
           key: o4_end
-          prompt: "새 면회증 옆에 정정 신청서가 놓여 있다."
+          prompt: "새 면회증 옆에 이의 신청서가 놓여 있다."
           with: [수경, 세라]
           options:
             - text: "내 판독과 수경의 설명을 공개한다"
@@ -49,11 +49,11 @@ scenes:
       - place: { text: "3일 뒤 · 지역 뉴스 녹화", presentation: center }
       - char: { id: 지완, position: left }
       - char: { id: 수경, position: right }
-      - say: { channel: record, with: [], text: "공개 자료 · 문지완 본인 동의\n같은 시각의 센서 입력 101 / 렌즈 표시 01" }
-      - say: { char: 수경, with: [지완], text: "네, 제가 검수하고 서명한 버전입니다. 검사기는 101을 받았는데 렌즈 화면은 01이었어요." }
+      - say: { channel: record, with: [], text: "공개 자료 · 문지완 본인 동의\n같은 시각의 센서 입력 001 / 렌즈 표시 01" }
+      - say: { char: 수경, with: [지완], text: "네, ‘오류 0건’ 팔 년 치 가운데 삼 년 치에 제가 서명했습니다. 높게 뜬 판독은 전부 확인했습니다. 낮게 뜬 판독은 맞았는지 확인한 적이 없습니다." }
       - say: { char: 지완, with: [수경], text: "저는 문 밖에서 기다렸어요." }
       - say: { char: 지완, with: [수경], text: "01이라고 떴을 때요." }
-      - say: { char: 지완.break, with: [수경], text: "아버지가 쓰러졌다는 전화를 받고 왔어요. 무서워서 말도 못 하는데, 기계는 아무렇지도 않대요." }
+      - say: { char: 지완.break, with: [수경], text: "기계가 틀렸다고는 못 하겠어요. 두 번 재서 두 번 다 1이었어요. 그날 무서웠다는 건 제가 알아요. 아버지도 알고요." }
       - bg: { id: wolgye_station, transition: fade, duration: 520 }
       - place: { text: "보도 다음 날 아침 · 월계역", presentation: center }
       - say: { thread: "도겸", channel: message, side: them, char: 도겸, with: [], text: "팀장님이 뉴스에 지완 씨 맞냐는데요 일단 답 안 했어요" }
@@ -68,12 +68,14 @@ scenes:
       - bg: ward_entry
       - char: { id: 지완, position: left }
       - char: { id: 세라, position: right }
-      - say: { channel: action, with: [지완, 세라], text: "지완이 출력물을 정정 신청서 위에 얹어 세라 쪽으로 민다." }
+      - say: { channel: action, with: [지완, 세라], text: "지완이 출력물을 이의 신청서 위에 얹어 세라 쪽으로 민다." }
       - say: { char: 지완, with: [세라], text: "접수한 시간도 같이 적어 주세요. 제가 늦게 온 건 아니었다고요." }
       - say: { char: 세라, with: [지완], text: "접수 기록에서 찾아서 같이 넣을게요. 결과 나오면 연락드리고요." }
       - place: { text: "이틀 뒤 · 월계병원 면회 접수", presentation: center }
       - say: { channel: action, with: [지완, 세라], text: "세라가 지완의 접수표와 정정 결과지를 나란히 놓고 하나씩 설명한다." }
-      - say: { channel: record, with: [], text: "문지완 · 이의 신청 처리 완료\n‘무반응 의심’ 판정 철회\n첨부: 진단 출력물, 당일 접수 시각 및 직원 확인 기록" }
+      - say: { channel: record, with: [], text: "문지완 · 이의 신청 처리 완료\n수치 01 유지 · ‘무반응 의심’ 판정 철회\n첨부: 당일 접수 시각, 직원이 본 것 두 줄" }
+      - say: { char: 지완, with: [세라], text: "숫자는 그대로네요." }
+      - say: { char: 세라, with: [지완], text: "네. 그 옆에 제가 본 게 붙었어요." }
       - say: { char: 지완, with: [세라], text: "두 장 다 가져가도 되죠. 아버지 보여 드리게요." }
       - ending: one_file
 
@@ -109,7 +111,7 @@ scenes:
       - say: { char: 지완, with: [세라], text: "제 거 보고 쓰세요. 사유 칸에는 본 것만 적었어요." }
       - say: { channel: dialogue, speakerName: "보호자", with: [지완], text: "여섯 시 이 분에 왔거든요. 그것도 써도 돼요?" }
       - say: { char: 지완, with: [세라], text: "쓰세요. 저도 시간부터 썼어요." }
-      - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 보호자 출입을 제한하기 전에 직원이 직접 확인할 것.\n신청인 두 명 · 병원 답변 대기" }
+      - say: { channel: record, with: [], text: "공동 이의신청 접수\n요청: 낮은 수치로 보호자 출입을 막기 전에 직원이 직접 볼 것.\n신청인 두 명 · 병원 답변 대기" }
       - bg: { id: dongsik_house, transition: fade, duration: 650 }
       - place: { text: "퇴원 뒤 일요일 점심 · 아버지 집", presentation: center }
       - char: { id: 동식, position: right }

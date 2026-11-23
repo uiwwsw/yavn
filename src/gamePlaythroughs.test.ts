@@ -681,7 +681,9 @@ describe('튜토리얼', () => {
 describe('오버플로', () => {
   it('starts with Jiwan’s call and keeps the same portrait through the conversation', async () => {
     await start('overflow');
-    const waking = useVNStore.getState();
+    // The world comes first: what the lens is, and that it has not been wrong in eight years.
+    expect(useVNStore.getState().dialog.fullText).toContain('한신뉴로라는 회사가 안경 하나를 내놓았다');
+    const waking = (await play({}, state => state.dialog.fullText.includes('아버지에게 전화가 온다'))).state;
     const portrait = waking.characters.left?.source;
     expect(waking.dialog.fullText).toContain('아버지에게 전화가 온다');
     expect(portrait).toMatch(/\/jiwan\.svg$/);
@@ -710,13 +712,21 @@ describe('오버플로', () => {
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
-      o2_evidence: '20시 14분에 나온 두 값을 증거로 남긴다',
+      o2_evidence: '지금 여기서 다시 재 달라고 한다',
       o3_sugyeong: '아침에 역에서 병원을 물은 것도 그래서였는지 묻는다',
       o4_end: '기다린 사람들과 함께 이의를 낸다',
     });
     finished(run);
     expect(run.state.resolvedEndingId).toBe('appeal');
     const beats = [
+      // Eight years in which nobody found the lens wrong, before anything happens to Jiwan.
+      '한신뉴로라는 회사가 안경 하나를 내놓았다',
+      '남자 옆에 뜬 숫자는 97이었다',
+      '딸 앞에서 61을 띄웠다',
+      '렌즈가 재는 것은 얼굴이다',
+      '현장 판독 오류 0건 · 8년 연속',
+      '틀리지 않는 것과 싸우는 법을 나는 모른다',
+      '낮은 숫자가 뜨면 문이 닫힌다',
       '아버지에게 전화가 온다',
       '제 건 반만 얼려요. 아버지도 좀 드시고요',
       '저기요. 장갑 떨어뜨리셨어요.',
@@ -728,35 +738,54 @@ describe('오버플로', () => {
       '병동 문은 보호자 렌즈를 한 번 읽고 열려요',
       '이불 밖으로 맨발 하나가 나와 있다',
       '보호자 면회 확인 · 문지완',
+      '그러면 지금 나는 아무렇지도 않은 사람이다',
       '저요? 저 지금 대답하고 있잖아요',
       '그날 그분 렌즈가 01이었고요',
       '이 안내가 뜨면 직원이 같이 들어가야 해서요',
       '잠깐 말씀드려도 괜찮을까요?',
+      '없어요. 아직은요.',
       '한수경이라고 합니다',
       '센서 입력 001 → 표시 01',
       '왼쪽은 001, 101. 오른쪽은 둘 다 01이네요.',
       // The answer below is only an answer if the question is still asked.
       '그럼 저는 1이에요, 101이에요?',
       '그때 실제 값은 접수표에 안 남아서',
+      // The overflow is offered as the hopeful explanation, not as the answer.
+      '…넘쳐서 1이 됐다.',
       '병실에 들어가면 렌즈가 한 번 더 재요',
       '그러면 내일은 혼자 들어가요?',
       '그건 병원이 정해요',
+      '그게 있으면 나는 아무렇지 않은 사람이 아니게 된다',
       '아버님 모습이나 목소리는 저장 안 해요',
       '제 거 빼 두셨죠',
       '전화 받았는데 아버지 목소리가 아니어서',
       '보호자 재확인 · 문지완',
-      '센서 입력 101 → 표시 01\n화면 판정',
-      '그럼 저 무반응 아닌 거죠',
-      '지완 씨가 그때 어땠는지는 제가 못 써요',
-      '같은 시각이라고',
+      // The reading at the bedside is not a truncated 101. The machine was right.
+      '센서 입력 001 → 표시 01\n화면 판정',
+      '잘린 자리가 없어요. 들어온 값이 1이에요.',
+      '그럼 기계는 안 틀린 거네요',
+      '틀린 건 저예요',
+      '20:31:40 · 문지완의 렌즈',
+      '손은 떨고 계시네요',
+      '거기는 아무것도 안 움직였어요',
       '본 사람이 있어요. 문 앞에 간호사님요',
       '두 번 다 제가 본 건 확인서에 적어 드릴게요',
       // What he said at the door is on the nurse's statement, word for word.
       '그 말도 들은 대로 적을게요',
-      '세 자리 값이 들어올 때는 시험도 안 해 보고 통과시켰어요',
+      '적는 칸이 없어서 여백에 써요',
+      // Never wrong, because nobody went back to ask the people who read zero.
+      '0이 뜬 사람한테는 아무도 안 가요',
+      '맞았다고 확인한 0은 팔 년 동안 그 한 건이에요',
+      '그럼 안 틀린 게 아니라 안 물어본 거네요',
+      '버그이기를 바랐어요',
       '그때도 저 같은 사람 기다리러 가던 길이었어요?',
       '장갑은 고마웠어요. 그건 따로예요.',
+      '사람도 넘치면 0부터 다시 세요?',
+      '그건 제가 검증한 적이 없어요',
+      '오른쪽 얼굴이 움직이지 않는 사람의 숫자다',
       '아까 저 앉혀 주셨잖아요',
+      '나는 3이란다',
+      '합쳐서 4냐',
       '낼 걸 내러 왔어요',
       '저도 같이 내도 될까요?',
       '공동 이의신청 접수',
@@ -771,7 +800,7 @@ describe('오버플로', () => {
     expect(introduction.map(entry => entry.speaker)).toEqual(['안경 쓴 여자', '문지완', '한수경']);
     expect(introduction[0]?.text).toContain('한수경이라고 합니다');
     expect(heard(run.shown, '아까 대답 안 했는데')).toBe(false);
-    expect(heard(run.shown, '첫 입력값은 남아 있지 않아요')).toBe(false);
+    expect(run.shown.some(text => text.includes('문지완의 렌즈') && text.includes('101'))).toBe(false);
     expect(heard(run.shown, '그럼 언제 들어갈 수 있어요')).toBe(false);
   });
 
@@ -785,7 +814,7 @@ describe('오버플로', () => {
       o1_desk: '결함 보고서를 읽는다||병동에서 연락이 왔는지 확인한다||시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '물부터 건넨다',
-      o2_evidence: '20시 14분에 나온 두 값을 증거로 남긴다',
+      o2_evidence: '출력물을 접어 주머니에 넣는다',
       o4_end: '내 판독과 수경의 설명을 공개한다',
     });
     finished(run);
@@ -815,7 +844,11 @@ describe('오버플로', () => {
     }));
     const consent = run.shown.findIndex(text => text.includes('제 기록은 써도 돼요'));
     expect(consent).toBeGreaterThan(-1);
-    expect(heard(run.shown.slice(consent), '센서 입력 101 / 렌즈 표시 01')).toBe(true);
+    expect(heard(run.shown.slice(consent), '센서 입력 001 / 렌즈 표시 01')).toBe(true);
+    expect(heard(run.shown.slice(consent), '낮게 뜬 판독은 맞았는지 확인한 적이 없습니다')).toBe(true);
+    expect(heard(run.shown.slice(consent), '두 번 재서 두 번 다 1이었어요')).toBe(true);
+    expect(heard(run.shown, '모서리가 안 맞는다')).toBe(true);
+    expect(heard(run.shown, '20:31:40')).toBe(false);
     expect(heard(run.shown.slice(consent), '308호')).toBe(false);
   });
 
@@ -827,17 +860,20 @@ describe('오버플로', () => {
       o1_desk: '시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
-      o2_evidence: '첫 접수 수치도 101로 고쳐 달라고 한다',
+      o2_evidence: '지금 여기서 다시 재 달라고 한다',
       o0_door: '지금 대답하고 있지 않느냐고 묻는다',
       o3_sugyeong: '아무 말 없이 출력물을 끌어온다',
       o4_end: '내 기록의 정정을 신청한다',
     });
     finished(run);
     expect(run.state.resolvedEndingId).toBe('one_file');
-    expect(heard(run.shown, '첫 입력값은 남아 있지 않아요. 이건 8시 14분에 다시 잰 값이에요.')).toBe(true);
+    expect(heard(run.shown, '20:31:40 · 문지완의 렌즈\n센서 입력 001 → 표시 01')).toBe(true);
     const oldSlip = run.shown.findIndex(text => text.includes('결과지를 나란히 놓고'));
     expect(oldSlip).toBeGreaterThan(-1);
     expect(run.shown[oldSlip + 1]).toContain('‘무반응 의심’ 판정 철회');
+    // The number stays. What a person saw is attached next to it.
+    expect(run.shown[oldSlip + 1]).toContain('수치 01 유지');
+    expect(heard(run.shown, '그 옆에 제가 본 게 붙었어요')).toBe(true);
     expect(run.shown[oldSlip + 1]).not.toContain('101');
   });
 
@@ -854,7 +890,7 @@ describe('오버플로', () => {
     expect(run.state).toMatchObject({ chapterIndex: 3, resolvedEndingId: 'visiting_hours' });
     expect(run.state.inventory.raw_print).toBeFalsy();
     expect(heard(run.shown, '정서 반응 01 · 무반응 의심')).toBe(true);
-    expect(heard(run.shown, '센서 입력 101 → 표시 01\n화면 판정')).toBe(false);
+    expect(heard(run.shown, '센서 입력 001 → 표시 01\n화면 판정')).toBe(false);
   });
 
   it('starts a saved 3.0 chapter at its new opening and preserves prior decisions and evidence', async () => {

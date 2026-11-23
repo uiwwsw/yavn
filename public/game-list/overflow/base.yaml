@@ -10,6 +10,7 @@ assets:
     hospital_stairs: assets/bg/hospital_stairs.svg
     studio: assets/bg/studio.svg
     wolgye_station: assets/bg/wolgye_station.svg
+    hansin_lobby: assets/bg/hansin_lobby.svg
     station_glove: assets/bg/station_glove.svg
     desk_print: assets/bg/desk_print.svg
     appeal_turn: assets/bg/appeal_turn.svg
@@ -26,6 +27,7 @@ assets:
     hospital_stairs: "신경과 옆 계단"
     studio: "지역 뉴스 녹화실"
     wolgye_station: "월계역"
+    hansin_lobby: false
     station_glove: false
     desk_print: false
     appeal_turn: false
@@ -110,6 +112,7 @@ state:
   checked_phone: false
   told_father: false
   asked_for_first_value: false
+  asked_remeasure: false
   # 문 앞에서 한 말(asked | counted). 3장에서 간호사가 본 대로 적는다.
   door_reply: ""
   asked_morning: false
@@ -123,12 +126,12 @@ inventory:
     order: 10
   raw_print:
     name: "동시 판독 기록"
-    description: "20시 14분 9초. 문지완의 센서 입력 101, 렌즈 표시 01. 대상자의 영상·음성은 저장하지 않았다."
+    description: "20시 14분 9초. 문지완의 센서 입력 001, 렌즈 표시 01. 잘린 자리는 없다. 대상자의 영상·음성은 저장하지 않았다."
     image: assets/items/raw_print.svg
     category: "기록"
     order: 20
   report:
-    name: "수경의 결함 보고서"
-    description: "배포 중지 요청과 현장 재현 확인서. 두 문서의 작성자 이름은 모두 한수경이다."
+    name: "수경의 검증 보고서"
+    description: "에모스 연례 검증 보고 초안. ‘현장 판독 오류 0건’ 옆에 손으로 쓴 한 줄이 있다. 0 판정은 확인한 적 없음. 작성자 한수경."
     category: "기록"
     order: 30

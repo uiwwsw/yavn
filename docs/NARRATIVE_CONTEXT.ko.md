@@ -144,7 +144,7 @@ node scripts/narrative-context.mjs --graph > docs/narrative/relationships.ko.md
 
 | 작품 | 선택 | 그 선택을 받는 곳 |
 | --- | --- | --- |
-| OVERFLOW | 문이 멈춘 직후 `0.yaml` `o0_door`, 수경의 고백 뒤 `3.yaml` `o3_sugyeong` | `3.yaml` 간호사의 확인서, `4.yaml` 아침 수경의 한마디 |
+| OVERFLOW | 문이 멈춘 직후 `0.yaml` `o0_door`, 001을 본 뒤 `2.yaml` `o2_evidence`, 수경의 고백 뒤 `3.yaml` `o3_sugyeong` | `3.yaml` 간호사의 확인서, 다시 재도 001인 숫자와 떨리는 손, `4.yaml` 아침 수경의 한마디 |
 | ERASE | 야근 `1.yaml` `e1_awake` | `4.yaml` 옥상에서 준성에게 직접 물은 것을 세는 생각 |
 | 튜토리얼 | 낮의 광철 앞 `1.yaml` `t1_day_pencil` | 그날 밤 3/5 주차장(`parking`), 연필을 쥐기 직전 |
 | 360 | 첫 어둠 `0.yaml` `first_wait` | "머무름" 결말에 닿기 전 한 번 더 묻는다 |

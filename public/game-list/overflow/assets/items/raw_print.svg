@@ -8,7 +8,7 @@
 <text x="322" y="173" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" text-anchor="end" fill="#5c6b77">기록값</text>
 <path d="M 78 188 L 322 188 M 78 252 L 322 252" stroke="#b9c1bd" stroke-width="3"/>
 <text x="80" y="230" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" fill="#5c6b77">센서 입력</text>
-<text x="322" y="230" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="27" font-weight="800" text-anchor="end" fill="#212c38">101</text>
+<text x="322" y="230" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="27" font-weight="800" text-anchor="end" fill="#212c38">001</text>
 <text x="80" y="296" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" fill="#5c6b77">렌즈 표시</text>
 <text x="322" y="296" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="27" font-weight="800" text-anchor="end" fill="#ac6354">01</text>
 </g></g>
