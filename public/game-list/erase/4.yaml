@@ -566,8 +566,15 @@ scenes:
           text: "지우고 나니까 셋 중에 누가 읽었는지도 못 본다."
       - say:
           channel: thought
-          when: { var: e2_leaked, op: eq, value: false }
+          when:
+            all:
+              - { var: e2_leaked, op: eq, value: false }
+              - { var: asked_awake, op: ne, value: true }
           text: "그 사람한테 직접 물어본 건 하나도 없다."
+      - say:
+          channel: thought
+          when: { var: asked_awake, op: eq, value: true }
+          text: "그 사람한테 직접 물어본 건 야근하던 날 한 번이다. 왜 가만히 있었느냐고. 그 뒤로는 본인한테 물은 게 없다."
       - wait: 0
       - say:
           channel: record

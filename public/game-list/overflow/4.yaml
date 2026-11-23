@@ -21,6 +21,7 @@ scenes:
       - char: { id: 수경, position: center }
       - say: { char: 수경, with: [지완, 세라], text: "어젯밤에 제 확인서는 병원에 냈어요. 제 이름하고 시험 출력물만 넣었어요." }
       - say: { char: 수경, with: [지완], text: "지완 씨 출력물은… 아니에요. 그건 지완 씨가 정하세요." }
+      - say: { char: 수경, with: [지완], when: { var: asked_morning, op: eq, value: true }, text: "오늘은 누굴 기다리러 온 게 아니에요. 낼 걸 내러 왔어요." }
       - say: { channel: action, with: [지완, 수경, 세라], text: "한 여자가 아이 손을 잡고 들어온다." }
       - say: { channel: dialogue, speakerName: "보호자", with: [세라], text: "어제 여섯 시에 왔다가 그냥 간 사람인데요. 연락 받고 왔어요." }
       - say: { channel: action, with: [지완, 수경, 세라], text: "세라가 여자의 어제 접수표를 찾아 접수대에 올려놓는다. 지완의 것과 같은 자리에 01이 찍혀 있다." }

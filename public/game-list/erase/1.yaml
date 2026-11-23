@@ -253,6 +253,26 @@ scenes:
           char: 준성
           with: [도윤]
           text: "문 닫히는 소리까지 들었어요. 그냥 누워 있었고요."
+      - choice:
+          key: e1_awake
+          prompt: "도윤의 모니터에 보내다 만 마감 자료가 떠 있다."
+          with: [준성]
+          options:
+            - text: "왜 가만히 있었느냐고 묻는다"
+              saveText: "\"…그럼 왜 가만히 계셨어요.\""
+              set: { asked_awake: true }
+            - text: "모니터로 눈을 돌린다"
+              saveText: "보내기 버튼 위에 커서를 올린다"
+      - say:
+          char: 도윤
+          when: { var: asked_awake, op: eq, value: true }
+          with: [준성]
+          text: "…그럼 왜 가만히 계셨어요."
+      - say:
+          char: 준성
+          when: { var: asked_awake, op: eq, value: true }
+          with: [도윤]
+          text: "일어나면 인사를 해야 하잖아요. 인사하면 더 빨리 가실 것 같았어요."
       - say:
           char: 준성.tired
           motion: nod

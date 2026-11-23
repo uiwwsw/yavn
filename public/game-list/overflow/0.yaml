@@ -116,7 +116,19 @@ scenes:
       - say: { channel: record, with: [], sound: read, text: "보호자 면회 확인 · 문지완\n감정 판독 렌즈 측정: 01 · 무반응 의심\n직원 동행 면회만 가능" }
       - clearSticker: { id: o0_appeal, leave: fadeOut }
       - say: { channel: action, with: [지완], text: "장갑 쥔 손이 떨린다. 지완은 그 손을 점퍼 주머니에 넣는다." }
-      - say: { char: 지완, with: [세라], text: "저요? 저 지금 대답하고 있잖아요." }
+      - choice:
+          key: o0_door
+          prompt: "자동문이 도로 닫혔다. 간호사가 면회표를 내민다."
+          with: [세라]
+          options:
+            - text: "지금 대답하고 있지 않느냐고 묻는다"
+              set: { door_reply: asked }
+            - text: "셋을 세고 언제 들어갈 수 있는지 묻는다"
+              set: { door_reply: counted }
+      - say: { char: 지완, with: [세라], when: { var: door_reply, op: ne, value: counted }, text: "저요? 저 지금 대답하고 있잖아요." }
+      - say: { channel: thought, with: [세라], when: { var: door_reply, op: eq, value: counted }, text: "하나, 둘, 셋. 셋까지 세는데 숨이 두 번 끊긴다." }
+      - say: { char: 지완, with: [세라], when: { var: door_reply, op: eq, value: counted }, text: "…그럼 언제 들어갈 수 있어요." }
+      - say: { char: 세라, speakerName: "간호사", with: [지완], when: { var: door_reply, op: eq, value: counted }, text: "잠깐만요. 그 전에 말씀드릴 게 있어요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "대답하시는 건 저도 봤어요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "재작년에 이 병동에서 보호자가 환자분을 다치게 한 일이 있었어요. 그날 그분 렌즈가 01이었고요." }
       - say: { char: 세라, speakerName: "간호사", with: [지완], text: "그 뒤로 이 안내가 뜨면 직원이 같이 들어가야 해서요. 동행 면회는 8시 10분부터예요." }

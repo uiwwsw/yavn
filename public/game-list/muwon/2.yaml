@@ -663,6 +663,11 @@ scenes:
           with: [서연]
           text: "분이 오라비는 관아 문지기로 세웠소. 포도청이 못 끌어가게. 오늘 아침엔 제 발로 나한테 인사하더군."
       - say:
+          char: 도원
+          when: { var: c1_brother, op: eq, value: true }
+          with: [서연]
+          text: "의녀한테 전해 달라 하오. 그날 묶기 전에 제 손등부터 봐 준 사람은 의녀뿐이었다고."
+      - say:
           char: 도원.troubled
           with: [서연]
           text: "그보다 의녀. 시장을 베껴 쓰던 서리 윤길이 이틀째 안 나오오."
