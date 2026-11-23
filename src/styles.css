@@ -605,17 +605,20 @@ textarea,
 
 .start-gate-legal-notices .legal-notice h4 {
   color: var(--start-gate-accent);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
+/* A content warning is read before the story starts, so it is set at a size that can be read. */
 .start-gate-legal-notices .legal-notice p {
-  font-size: 0.63rem;
-  line-height: 1.45;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .start-gate-legal-notices .legal-notice small,
 .start-gate-legal-notices .legal-notice a {
-  font-size: 0.59rem;
+  font-size: 0.69rem;
 }
 
 .start-gate.has-legal-notices .start-gate-actions-auto,

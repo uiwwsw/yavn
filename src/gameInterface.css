@@ -270,7 +270,11 @@
 .app .dialog-content-scroll > .speaker[data-unknown='true'],
 .app .approach-player[data-unknown='true'] { padding-inline: 9px; border-radius: 3px; background: #090b11; color: #f3ece1; }
 .app .dialog-channel-label { color: var(--game-accent); font-size: 13px; letter-spacing: .08em; }
-.app .dialog-box .text { color: var(--game-text); font-family: var(--ui-body-font); font-size: calc(18px * var(--game-text-scale)); font-weight: 500; line-height: 1.8; letter-spacing: -.015em; text-shadow: none; }
+/* Korean breaks between words, not inside them; the unrevealed remainder is laid out from the
+   first character, so keeping words whole does not make a line jump while it types. */
+.app .dialog-box .text { color: var(--game-text); font-family: var(--ui-body-font); font-size: calc(18px * var(--game-text-scale)); font-weight: 500; line-height: 1.8; letter-spacing: -.015em; text-shadow: none; word-break: keep-all; overflow-wrap: anywhere; text-wrap: pretty; }
+/* A chat bubble wraps the way a messenger does, wherever the line runs out. */
+.app .dialog-box.channel-message .text { word-break: normal; text-wrap: wrap; }
 .app .dialog-controls { transform: none; right: 0; top: -43px; gap: 4px; padding: 0; }
 .app .dialog-toggle-button, .app .dialog-restore-button { min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid #ffffff26; border-radius: 4px; color: #f5f4ee; background: #111819bd; font-size: 13px; font-weight: 700; letter-spacing: .04em; box-shadow: none; backdrop-filter: blur(12px); }
 .app .dialog-toggle-button .game-icon { width: 13px; height: 13px; }
@@ -284,7 +288,7 @@
 .app .choice-gate-option:active:not(:disabled) { transform: translateX(1px); }
 .app .choice-gate-option-copy { gap: 12px; align-items: center; }
 .app .choice-gate-option-index { width: 24px; height: auto; min-width: 24px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--game-muted); font-size: 13px; font-weight: 650; letter-spacing: .08em; }
-.app .choice-gate-option-text { font-size: calc(15px * var(--game-text-scale)); line-height: 1.55; font-weight: 650; }
+.app .choice-gate-option-text { font-size: calc(15px * var(--game-text-scale)); line-height: 1.55; font-weight: 650; word-break: keep-all; overflow-wrap: anywhere; }
 .app .choice-gate-option-mark { width: 16px; height: 16px; color: var(--game-accent); }
 .app .choice-gate-option-badges:empty { display: none; }
 .app .choice-gate-option-badge { border-radius: 3px; font-size: 13px; }
