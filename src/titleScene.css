@@ -163,7 +163,8 @@
 @media (max-width: 768px) and (orientation: portrait) {
   .start-gate.is-scene .start-gate-content {
     position: absolute; width: auto; height: auto; min-height: 0;
-    inset: max(90px, calc(env(safe-area-inset-top, 0px) + 72px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, calc(env(safe-area-inset-bottom, 0px) + 12px)) max(16px, env(safe-area-inset-left, 0px));
+    /* The bottom inset clears the version line, which sits in the corner under the notices. */
+    inset: max(90px, calc(env(safe-area-inset-top, 0px) + 72px)) max(16px, env(safe-area-inset-right, 0px)) max(36px, calc(env(safe-area-inset-bottom, 0px) + 30px)) max(16px, env(safe-area-inset-left, 0px));
     display: flex; flex-direction: column; gap: 20px;
     overflow-y: auto; overscroll-behavior: contain; padding: 8px;
     scroll-padding: 8px;
@@ -171,11 +172,20 @@
   .start-gate.is-scene .start-gate-title-block,
   .start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { position: relative; inset: auto; width: 100%; flex: 0 0 auto; margin-top: clamp(8px, 4dvh, 38px); padding-bottom: clamp(16px, 8dvh, 80px); }
   .start-gate.is-scene .start-gate-title-block h1 { font-size: clamp(30px, 8.4vw, 54px); }
-  .start-gate.is-scene .start-gate-prologue { max-width: 100%; }
+  /* On a phone the title copy runs the full width, straight across whatever the key art puts
+     there. Darken the band the copy sits in and leave the lower half of the picture alone. */
+  .start-gate.is-scene .start-gate-overlay,
+  .start-gate.is-scene[data-scene-layout='centered'] .start-gate-overlay { background: linear-gradient(0deg, #050910ef, #05091012 52%, transparent 60%), linear-gradient(180deg, #050910b8 0%, #050910a8 30%, #0509104d 46%, transparent 58%); }
+  .start-gate.is-scene .start-gate-eyebrow { text-shadow: 0 1px 8px #05080bcc; }
+  .start-gate.is-scene .start-gate-prologue { max-width: 100%; font-size: 14px; color: #f1e9dbf0; text-shadow: 0 1px 10px #05080bd9; }
   .start-gate.is-scene .start-gate-content .start-gate-actions,
   .start-gate.is-scene[data-scene-layout='centered'] .start-gate-actions { position: relative; inset: auto; width: 100%; margin-top: auto; flex: 0 0 auto; gap: 10px; }
   .start-gate.is-scene .start-gate-button { min-height: 56px; }
   .start-gate.is-scene .start-gate-button-load { font-size: 14px; background: #0b101ad9; }
   .start-gate.is-scene .start-gate-hint { text-align: center; line-height: 1.6; margin: 4px 0 0; }
-  .start-gate.is-scene .start-gate-legal-notices { position: relative; inset: auto; width: 100%; max-height: 82px; flex: 0 0 auto; padding: 5px; box-sizing: border-box; }
+  .start-gate.is-scene .start-gate-legal-notices { position: relative; inset: auto; width: 100%; max-height: 104px; flex: 0 0 auto; padding: 5px; box-sizing: border-box; }
+  /* A waiting update is announced under the top controls. Start the title copy below it
+     instead of underneath it. */
+  .start-gate.is-scene:has(+ .vs-update-banner) .start-gate-content { top: max(196px, calc(env(safe-area-inset-top, 0px) + 178px)); }
+  .start-gate.is-scene:has(+ .vs-update-banner) .start-gate-title-block { margin-top: 0; }
 }
