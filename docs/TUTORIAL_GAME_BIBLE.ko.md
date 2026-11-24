@@ -1,10 +1,12 @@
 # 튜토리얼 · 게임 바이블
 
-[인물 카드와 양방향 관계](narrative/tutorial.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
+[원작 소설](novels/tutorial.ko.md) · [인물 카드와 양방향 관계](narrative/tutorial.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
 
 `public/game-list/tutorial/` · 5장 · 결말 4종 · 실패 1종(복구 가능)
 
 ## 0. 세계와 반전
+
+원작은 [`novels/tutorial.ko.md`](novels/tutorial.ko.md)다. 게임의 장면과 대사는 그 소설을 각색한 것이고, 둘이 어긋나면 소설을 따른다. 소설을 쓰며 대조한 결과 현재 원고의 사건 순서와 선택, 다섯 결말은 소설과 같다.
 
 - 2031년 4월, 서울. 현실을 그대로 복제한 시뮬레이션 서비스 **레플라(REPLA)**가 보편화됐다. 라이트 월 39,000원, 프리미엄 129,000원, 무제한 219,000원. 귀 뒤에 붙이는 밴드로 접속한다.
 - 레플라는 2026년 11월 클로즈드 베타(USER 0002)로 시작했다. 2029년 11월 3일 서버 42대를 전부 내렸는데 동시 접속자 1,104,331명은 그대로다. 복제가 완벽해서 그쪽은 계산이 아니라 하나의 우주로 따로 존재한다. 남은 것은 두 우주를 붙잡고 있는 **문** 하나, 가산동 옛 사옥 지하의 첫 빌드 PC다. 그 건물은 2029년에 전기가 끊겼다.
