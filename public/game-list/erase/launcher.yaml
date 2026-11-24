@@ -1,5 +1,5 @@
 languages: [ko]
-summary: "도윤과 지수는 청첩장에 넣을 사진을 고른다. 그날 밤 민석에게 연락이 온다. 지수가 누구냐고 묻는다. 5장 심리 드라마, 결말 6종."
+summary: "청첩장 사진을 찍던 날, 처음 보는 사진작가가 도윤을 다른 이름으로 부른다. 도윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종."
 thumbnail: "assets/bg/title.svg"
 tags:
   - psychological-drama
@@ -24,4 +24,4 @@ showcase:
     offsetY: 0
 translations:
   en:
-    summary: "Doyun and Jisu pick a picture for their wedding invitation. That evening, Doyun gets a text from a friend. Jisu asks who it is. A five-chapter psychological drama with six endings."
+    summary: "Doyun and Jisu pick a picture for their wedding invitation. That evening, Doyun gets a text from a friend. Jisu asks who it is. A five-chapter psychological drama with five endings."

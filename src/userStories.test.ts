@@ -27,7 +27,7 @@ const collectKey = (value: unknown, key: string, result: unknown[] = []): unknow
 };
 
 const games = [
-  { id: 'erase', chapters: 5, endings: ['came_home', 'erase_loop', 'erased_name', 'kept_photo', 'stayed_home', 'unfinished'] },
+  { id: 'erase', chapters: 5, endings: ['erase_loop', 'side_seat', 'two_names', 'unfinished', 'walked_past'] },
   { id: '8bit-heart', chapters: 5, endings: ['new_game', 'no_response', 'off_screen', 'saved_together'] },
 ];
 
@@ -157,25 +157,15 @@ describe('owner story playthroughs', () => {
     await vi.advanceTimersByTimeAsync(3000);
   }
 
-  const eraseAll = "휴대폰을 초기화한다";
   it.each([
-    ['erase_loop', { e3_final: eraseAll }],
-    ['erased_name', {
-      e1_rumor: '농담을 끊으려고 준성을 깎아내린다',
-      e2_dig: ['단톡방에 준성의 퇴사 이유를 묻는다', '검색을 그만두고 지수에게 답장한다'],
-      e2_threat: '준성에게 경고한다',
-      e3_final: eraseAll,
-    }],
-    ['kept_photo', {
-      e2_photo: '사진을 남긴다',
-      e3_clinic: '번호표를 뽑는다',
-      e2_jisu: '회사 소문만 이야기한다',
-      e3_final: '놀이터 사진을 연다',
-    }],
-    ['unfinished', { e2_jisu: '지수에게 전부 말한다', e3_final: '지수의 메시지를 연다' }],
+    ['side_seat', { e2_listen: '그 사람 얘기를 더 해 달라고 한다', e5_final: '사진관으로 간다' }],
+    ['erase_loop', { e5_final: '3층으로 올라간다' }],
+    ['two_names', { e2_jisu: '사실대로 말한다', e4_tell: '전부 말한다', e5_final: '지수에게 전화한다' }],
+    ['unfinished', { e2_jisu: '앨범 얘기만 했다고 한다', e4_tell: '아무 일도 없다고 한다', e5_final: '지수에게 전화한다' }],
+    ['walked_past', { e1_photo: '사진을 지운다', e2_listen: '앨범만 받고 일어난다' }],
   ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
     await start('erase');
-    const state = await play({ e0_jisu_text: '민석이 잠깐 보자네. 12시 전엔 들어갈게', ...route });
+    const state = await play(route);
     expect(state.gameOver).toBeUndefined();
     expect(state.resolvedEndingId).toBe(ending);
   }, 60000);
