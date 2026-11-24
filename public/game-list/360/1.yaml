@@ -306,7 +306,37 @@ scenes:
   train:
     actions:
       - say: { channel: action, with: [], text: "판잣집 문이 등 뒤에서 닫힌다. 영호의 손을 잡고 기차역 쪽으로 언덕을 내려간다. 영호는 한 번도 뒤를 보지 않았다." }
-      - say: { channel: card, with: [], text: "1967년 3월\n서울 영등포" }
+      - goto: years_1953
+
+  years_1953:
+    title: "열네 해"
+    actions:
+      - say: { channel: card, with: [], text: "그 뒤로 열네 해", autoAdvance: 1800 }
+      - bg: { id: seoul_room, transition: fade, duration: 1200 }
+      - place: "1953년 2월 · 서울 가는 기차"
+      - say: { channel: thought, with: [], text: "기차는 하루를 꼬박 달렸다. 영호는 내 무릎에서 자다 깰 때마다 아직 부산이냐고 물었다." }
+      - say: { channel: thought, with: [], text: "어머이 가락지가 든 주머니를 밤새 쥐고 있었다.", when: { var: l2_asked, op: eq, value: true } }
+      - say: { channel: thought, with: [], text: "목도리를 둘러 준 손으로 영호 등을 쓸었다. 대답 안 하고 나온 그 새벽이 기차 소리에 섞여 왔다.", when: { var: l2_asked, op: eq, value: false } }
+      - wait: 800
+      - place: "1953년 여름 · 영등포 방직 공장"
+      - say: { channel: thought, with: [], text: "기숙사 방 하나를 다섯 집이 나눠 썼다. 솜먼지가 머리에 하얗게 앉아서 아침마다 영호가 털어 주었다." }
+      - say: { channel: thought, with: [], text: "칠월에 싸움이 멈췄다는 방송이 나왔다. 마당에 나가 우는 사람들 틈에서 나는 부산에 편지부터 썼다." }
+      - wait: 800
+      - place: "1953년 12월 · 영등포"
+      - say: { channel: thought, with: [], text: "부산역 앞에 큰불이 났다는 신문을 봤다. 영주동이 거기서 멀지 않다. 그해부터 해마다 한 통씩 부산에 편지를 보냈다." }
+      - wait: 800
+      - place: "1959년 봄 · 영등포"
+      - say: { channel: thought, with: [], text: "가락지를 들고 금방에 갔다. 주인이 저울에 달고 값을 불렀다. 그 돈이 영호 중학교 입학금이 되었다.", when: { var: l2_asked, op: eq, value: true } }
+      - say: { channel: thought, with: [], text: "중학교 입학금은 반년 치 잔업으로 댔다. 겨울마다 영호 목도리를 새로 떴다.", when: { var: l2_asked, op: eq, value: false } }
+      - wait: 800
+      - place: "1960년 4월 · 영등포"
+      - say: { channel: thought, with: [], text: "학생들이 거리로 나간다는 날, 영호가 신을 신었다. 문간에서 손목을 잡았다. 손 놓지 마. 그 밤 시장에서 한 말이 또 나왔다." }
+      - say: { channel: thought, with: [], text: "영호는 그날 나가지 않았다. 그게 잘한 일인지 나는 지금도 모른다." }
+      - wait: 800
+      - place: "1966년 2월 · 영등포"
+      - say: { channel: thought, with: [], text: "영호가 대학에 붙었다. 학교 담벼락에 붙은 합격자 명부에서 그 애 이름을 찾았다." }
+      - say: { channel: thought, with: [], text: "명부에 이름이 있는 걸 보고 운 건 그때가 처음이었다. 부산에 보낸 편지는 열세 통이 되어 있었다. 답은 한 통도 없었다." }
+      - say: { channel: card, with: [], text: "1967년 3월\n서울 영등포", autoAdvance: 1800 }
       - goto: seoul
 
   seoul:

@@ -454,7 +454,7 @@ scenes:
       - say: { channel: record, with: [], text: "시청자 게시판. \"저 애 우리 학교임. 오늘 애들이 방송 따라 하면서 놀림.\"" }
       - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "방송 봤다. 네 이름 맨 끝에 지나가더라. 전화 좀 받아라" }
       - say: { channel: action, with: [], text: "편집실. 3부 마감이 내일이라 전화는 진동으로 돌려 둔다." }
-      - goto: late
+      - goto: years_2026
 
   sign_no:
     actions:
@@ -467,6 +467,64 @@ scenes:
       - say: { channel: record, with: [], text: "독자 엽서. \"우리 애가 다섯 살 때 하던 말이 이 책에 있었습니다. 병원에 안 데려가도 되겠지요.\" 박다온 어머니." }
       - say: { thread: "엄마", char: 지안어머니, speakerName: "엄마", channel: message, side: them, with: [], text: "책 샀다. 서점에 한 권 있더라. 밥은 먹고 다니니. 보증금은 엄마가 좀 보탤게" }
       - say: { channel: action, with: [], text: "고시원 책상. 다음 증언자가 목포에 있어서, 답은 다녀와서 하기로 한다." }
+      - goto: years_2026
+
+  years_2026:
+    title: "마흔다섯 해"
+    actions:
+      - bg: { id: window_dawn, transition: fade, duration: 1200 }
+      - branch:
+          cases:
+            - when: { var: l4_signed, op: eq, value: true }
+              goto: years_2026_signed
+          default: years_2026_book
+
+  years_2026_signed:
+    actions:
+      - say: { channel: card, with: [], text: "그 뒤로 마흔다섯 해", autoAdvance: 1800 }
+      - place: "2026년 10월 · 편집실"
+      - say: { channel: thought, with: [], text: "3부가 나간 주에 다온이 어머니에게서 전화가 세 번 왔다. 세 번 다 편집실에 있었다. 다시 걸지는 않았다." }
+      - goto: years_2026_mother
+
+  years_2026_book:
+    actions:
+      - say: { channel: card, with: [], text: "그 뒤로 마흔네 해", autoAdvance: 1800 }
+      - goto: years_2026_mother
+
+  years_2026_mother:
+    actions:
+      - place: "2027년 · 김포 요양병원"
+      - say: { channel: thought, with: [], text: "한 달에 한 번은 김포에 갔다. 유리 너머 십 분. 엄마는 그때마다 수화기를 먼저 내려놓았고, 나는 그때마다 다음 주에 온다고 했다." }
+      - wait: 800
+      - place: "2029년 겨울 · 김포"
+      - say: { channel: thought, with: [], text: "마흔세 번째 면회를 예약해 둔 주에 요양병원에서 전화가 왔다. 면회 말고 다른 일로 온 전화는 그게 처음이었다." }
+      - say: { channel: thought, with: [], text: "장례식장에서 휴대폰을 열었다. 엄마와 나눈 방을 거슬러 올라가니 김치 얘기가 있었다. 그 방은 지우지 않았다." }
+      - branch:
+          cases:
+            - when: { var: l4_signed, op: eq, value: true }
+              goto: years_2026_desk
+          default: years_2026_books
+
+  years_2026_desk:
+    actions:
+      - place: "2045년 · 상암동"
+      - say: { channel: thought, with: [], text: "다큐국이 없어졌다. 원본은 회사 서버 어딘가에 남았다. 들어 볼 권한은 출입증과 함께 반납했다." }
+      - wait: 800
+      - place: "2068년 4월 · 요양 병동"
+      - say: { channel: thought, with: [], text: "후배 피디가 찾아왔다. 「기억하는 사람들」을 다시 만든다며, 그때 편집한 사람이라고 내 인터뷰를 따 갔다." }
+      - say: { channel: thought, with: [], text: "유 선생님 목소리를 한 번만 들려 달라고 했다. 권한이 없다고 했다. 그 뒤로는 아무도 오지 않았다." }
+      - goto: late
+
+  years_2026_books:
+    actions:
+      - place: "2031년 · 고시원"
+      - say: { channel: thought, with: [], text: "목포에서 시작해 백열두 명을 더 만났다. 녹음기는 매번 켰다. 둘째 권은 첫째 권보다 덜 팔렸다." }
+      - wait: 800
+      - place: "2041년 · 고시원"
+      - say: { channel: thought, with: [], text: "다온이가 스물셋에 편지를 보냈다. 이제 뒤를 봐도 아무도 안 서 있다고 했다. 그래도 가끔 돌아본다고." }
+      - wait: 800
+      - place: "2067년 겨울 · 요양 병동"
+      - say: { channel: thought, with: [], text: "다온이가 처음 면회를 왔다. 마흔아홉이었다. 다음 달에 또 오겠다고 했다." }
       - goto: late
 
   late:
