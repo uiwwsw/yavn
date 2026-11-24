@@ -379,10 +379,10 @@ scenes:
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "카드에 저장 시각이 남아 있음. 내가 켜지기 전임." }
       - say: { char: 로봇, with: [윤재], text: "칩 떼기 직전에 네가 넣은 거임. 나는 못 봤고, 카드가 봤음." }
-      - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없다고 했잖아." }
+      - say: { char: 윤재.sad, motion: droop, with: [로봇], text: "…미련 없는 줄 알았어." }
       - wait: 270
-      - say: { char: 로봇.thinking, with: [윤재], text: "그날 '진짜' 세 번 했음. 두 번이 거짓말이면 세 번은 계산 범위 밖임." }
-      - say: { char: 윤재, motion: stomp, with: [로봇], text: "그래서 그 칸도 안 지웠지." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "미련 없는 사람은 점수를 카드에 안 옮김. 설명서엔 없는데 그건 계산됨." }
+      - say: { char: 윤재, motion: stomp, with: [로봇], text: "…계산 좀 그만하라니까." }
       - wait: 270
       - say: { char: 로봇, with: [윤재], text: "응." }
       - say: { channel: system, with: [], text: "슬롯이 하나입니다. 저장하면 기존 데이터를 덮어씁니다.\n덮어쓰시겠습니까?" }
