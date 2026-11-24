@@ -309,6 +309,11 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '네가 처음 알려 준 너 사용법이라서')).toBe(true);
     expect(heard(run.shown, '카드에 같이 들어갔나 봄')).toBe(false);
     expect(heard(run.shown, '미련 없는 사람은 점수를 카드에 안 옮김')).toBe(true);
+    // Father arrives at Seoul Station
+    expect(heard(run.shown, '문짝 봤다. 철길 따라왔다.')).toBe(true);
+    expect(heard(run.shown, '…아니. 안 먹었어.')).toBe(true);
+    expect(heard(run.shown, '…너도 밥은 먹었냐.')).toBe(true);
+    expect(heard(run.shown, '질문. 2P임?')).toBe(true);
     // Seven peach pieces are divided equally before each side receives its portion.
     expect(heard(run.shown, '조각 일곱 개')).toBe(true);
     // Hiding behind the robot is a body pressed into one arm's length, not a menu result.
@@ -348,6 +353,11 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
     expect(run.state.resolvedEndingId).toBe('new_game');
+    // Father arrives at Seoul Station
+    expect(heard(run.shown, '문짝 봤다. 철길 따라왔다.')).toBe(true);
+    expect(heard(run.shown, '…아니. 안 먹었어.')).toBe(true);
+    expect(heard(run.shown, '…너도 밥은 먹었냐.')).toBe(true);
+    expect(heard(run.shown, '질문. 이 사람, 위험해?')).toBe(true);
     const rebootLines = run.state.storyLog.flatMap(entry =>
       entry.kind === 'dialogue' && entry.sceneId === 'b4_return_new' ? [entry.text] : []);
     const rescan = rebootLines.findIndex(text => text.includes('가방에서 설명서를 꺼내'));
@@ -369,6 +379,27 @@ describe('8비트 심장', () => {
     finished(run);
     expect(run.state).toMatchObject({ chapterIndex: 4, resolvedEndingId: 'no_response' });
     expect(heard(run.shown, '가운데가 두 조각으로 갈라져 있다')).toBe(true);
+    // Father does not appear in no_response ending
+    expect(heard(run.shown, '문짝 봤다')).toBe(false);
+  });
+
+  it('reaches off_screen when fleeing without saving', async () => {
+    await start('8bit-heart');
+    const run = await play({
+      b0_buy: CHEAP,
+      b1_haru: '신문지가 뭔지 설명한다',
+      b1_home: '다용도실 문을 연다',
+      b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b3_snack: '내 몫의 복숭아를 다 먹는다',
+      b3_drone: '{{android_name}} 뒤에 숨는다',
+      b3_promise: '끝까지 함께하겠다고 약속한다',
+      b4_save: '저장을 그만두고 도망친다',
+    });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe('off_screen');
+    // Father arrives on the tracks
+    expect(heard(run.shown, '그래. 같이 가자.')).toBe(true);
+    expect(heard(run.shown, '질문. 3P임?')).toBe(true);
   });
 });
 

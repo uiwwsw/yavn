@@ -46,6 +46,12 @@ assets:
         sad: assets/char/yunjae-sad.svg
       emotionMotions:
         scared: startle
+    아빠:
+      name: "아빠"
+      placement: prompt-top
+      base: assets/char/father.svg
+      facing: left
+      defaultDelivery: neutral
     로봇:
       name: "{{android_name}}"
       placement: prompt-top

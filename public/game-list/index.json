@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-24T04:10:02.355Z",
+  "generatedAt": "2026-11-24T04:12:44.708Z",
   "games": [
     {
       "id": "360",
@@ -72,7 +72,7 @@
       "name": "8비트 심장",
       "path": "/game-list/8bit-heart/",
       "author": "uiwwsw",
-      "version": "2.0.1",
+      "version": "2.1.0",
       "summary": "도시의 기계들이 일제히 멋대로 움직인다. 침입자들이 한 층씩 올라오는 밤, 윤재는 다용도실에 서 있던 엄마의 안드로이드에 중고 게임기 칩을 꽂는다. 몸은 크고 머리는 8KB. 둘은 코어가 있는 서울역까지 걷는다. 5장, 결말 4종.",
       "summaryEn": "When an AI disaster turns every connected machine, looters climb the stairs floor by floor. A boy puts the chip from a cheap retro handheld into the android his mother once brought home. A huge body with an 8 KB mind walks with him to the Core under Seoul Station. Four endings.",
       "thumbnail": "/game-list/8bit-heart/assets/bg/title.svg",
