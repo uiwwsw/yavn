@@ -1,8 +1,10 @@
 # 무원(無冤) — 한성 검안록 · 게임 바이블
 
-[인물 카드와 양방향 관계](narrative/muwon.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
+[원작 소설](novels/muwon.ko.md) · [인물 카드와 양방향 관계](narrative/muwon.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
 
 YAVN 대표 샘플 게임의 기획서입니다. 등장인물과 사건은 모두 창작이며, 시대 배경과 『무원록』의 검시 방법만 역사에서 빌려 옵니다. 실존 인물을 등장시키지 않고, 기존 드라마·소설·게임의 설정이나 캐릭터를 사용하지 않습니다. 그림·음악은 모두 이 저장소에서 직접 만든 창작물입니다.
+
+원작은 [`novels/muwon.ko.md`](novels/muwon.ko.md)다. 게임의 장면과 대사는 그 소설을 각색한 것이고, 둘이 어긋나면 소설을 따른다. 소설을 쓰며 대조한 결과 사건 순서와 선택, 다섯 결말은 소설과 같다. 5장의 `standing_deal`(포교의 거래를 받고도 재판까지 온 경우)은 소설에 없는 길이다. 3장에서 거래를 받으면 "침묵의 값"으로 끝나므로 지금은 닿지 않는다.
 
 ## 1. 한 줄 소개
 
