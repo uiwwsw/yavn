@@ -116,6 +116,7 @@ state:
   # 문 앞에서 한 말(asked | counted). 3장에서 간호사가 본 대로 적는다.
   door_reply: ""
   asked_morning: false
+  asked_2031: false
 
 inventory:
   appeal_form:

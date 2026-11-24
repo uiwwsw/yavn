@@ -735,6 +735,7 @@ describe('오버플로', () => {
       o2_pair_lens: '내 렌즈 연결 허용',
       o2_father: '겁났다고 말한다',
       o2_evidence: '지금 여기서 다시 재 달라고 한다',
+      o3_ask_2031: '재작년 그 보호자는 어땠는지 묻는다',
       o3_sugyeong: '아침에 역에서 병원을 물은 것도 그래서였는지 묻는다',
       o4_end: '기다린 사람들과 함께 이의를 낸다',
     });
@@ -796,18 +797,26 @@ describe('오버플로', () => {
       '그 말도 들은 대로 적을게요',
       '적는 칸이 없어서 여백에 써요',
       // Never wrong, because nobody went back to ask the people who read zero.
+      // The one confirmed zero was a guardian who froze. Asked, the nurse tells it before the signature.
+      '사십 초쯤요. 손도 안 움직이시고',
+      '얼어 있었어요. 그런 칸이 없었어요.',
       '0이 뜬 사람한테는 아무도 안 가요',
-      '맞았다고 확인한 0은 팔 년 동안 그 한 건이에요',
+      '맞았다고 확인한 0은 팔 년 동안 재작년 그 한 건이에요',
       '그럼 안 틀린 게 아니라 안 물어본 거네요',
+      // The verifier signed the zero the year she was a zero herself.
+      '병실 앞에서 제 렌즈에 02가 떴어요',
+      '그리고 두 달 뒤에 0건에 서명했어요',
       '버그이기를 바랐어요',
       '그때도 저 같은 사람 기다리러 가던 길이었어요?',
       '장갑은 고마웠어요. 그건 따로예요.',
       '사람도 넘치면 0부터 다시 세요?',
       '그건 제가 검증한 적이 없어요',
       '오른쪽 얼굴이 움직이지 않는 사람의 숫자다',
-      '아까 저 앉혀 주셨잖아요',
       '나는 3이란다',
       '합쳐서 4냐',
+      '얼굴이 이래서 말로 한다',
+      '무섭다. 아까부터. 네가 못 들어올까 봐',
+      '아까 저 앉혀 주셨잖아요',
       '낼 걸 내러 왔어요',
       '저도 같이 내도 될까요?',
       '공동 이의신청 접수',
@@ -821,7 +830,7 @@ describe('오버플로', () => {
       .filter(entry => entry.sceneId === 'cafe_introduction');
     expect(introduction.map(entry => entry.speaker)).toEqual(['안경 쓴 여자', '문지완', '한수경']);
     expect(introduction[0]?.text).toContain('한수경이라고 합니다');
-    expect(heard(run.shown, '아까 대답 안 했는데')).toBe(false);
+    expect(heard(run.shown, '아까 대답 못 했는데')).toBe(false);
     expect(run.shown.some(text => text.includes('문지완의 렌즈') && text.includes('101'))).toBe(false);
     expect(heard(run.shown, '그럼 언제 들어갈 수 있어요')).toBe(false);
   });
@@ -831,6 +840,7 @@ describe('오버플로', () => {
     const run = await play({
       o0_call: '문자로 답한다',
       o0_door: '셋을 세고 언제 들어갈 수 있는지 묻는다',
+      o3_ask_2031: '확인서만 받아 든다',
       o3_sugyeong: '아무 말 없이 출력물을 끌어온다',
       o1_trust: '수경의 자료부터 보여달라고 한다',
       o1_desk: '결함 보고서를 읽는다||병동에서 연락이 왔는지 확인한다||시험 출력물을 읽는다||내 렌즈에서 무엇을 확인할지 묻는다',
@@ -851,7 +861,7 @@ describe('오버플로', () => {
     expect(heard(run.shown, '장갑은 고마웠어요')).toBe(false);
     expect(heard(run.shown, '낼 걸 내러 왔어요')).toBe(false);
     expect(heard(run.shown, '아침에 전화 못 받아서 죄송해요')).toBe(true);
-    expect(heard(run.shown, '아까 대답 안 했는데… 무서웠어요')).toBe(true);
+    expect(heard(run.shown, '아까 대답 못 했는데, 아버지가 저 못 알아보실까 봐요')).toBe(true);
     expect(heard(run.shown, '제 거 빼 두셨죠')).toBe(false);
     expect(heard(run.shown, '전화 받았는데 아버지 목소리가 아니어서')).toBe(false);
     const messages = run.state.storyLog.filter(entry => entry.kind === 'dialogue')
@@ -871,6 +881,12 @@ describe('오버플로', () => {
     expect(heard(run.shown.slice(consent), '두 번 재서 두 번 다 1이었어요')).toBe(true);
     expect(heard(run.shown, '모서리가 안 맞는다')).toBe(true);
     expect(heard(run.shown, '20:31:40')).toBe(false);
+    // Not asked, the nurse still tells the frozen guardian, after the verifier names the one confirmed zero.
+    const named = run.shown.findIndex(text => text.includes('재작년 그 한 건이에요'));
+    const told = run.shown.findIndex(text => text.includes('그 한 건, 제가 적은 거예요'));
+    expect(named).toBeGreaterThan(-1);
+    expect(told).toBeGreaterThan(named);
+    expect(heard(run.shown, '재작년에 01이 떴다는 그분은 어땠어요')).toBe(false);
     expect(heard(run.shown.slice(consent), '308호')).toBe(false);
   });
 
@@ -884,6 +900,7 @@ describe('오버플로', () => {
       o2_father: '겁났다고 말한다',
       o2_evidence: '지금 여기서 다시 재 달라고 한다',
       o0_door: '지금 대답하고 있지 않느냐고 묻는다',
+      o3_ask_2031: '확인서만 받아 든다',
       o3_sugyeong: '아무 말 없이 출력물을 끌어온다',
       o4_end: '내 기록의 정정을 신청한다',
     });
