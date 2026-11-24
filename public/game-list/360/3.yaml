@@ -292,7 +292,8 @@ scenes:
       - wait: 1100
       - say: { char: 지안, with: [], text: "…다음 주에 올게요." }
       - say: { char: 지안어머니, with: [], text: "그래. 밥 먹고 다녀." }
-      - say: { channel: action, with: [], text: "02:51. 엄마가 먼저 수화기를 내려놓는다." }
+      - wait: 1200
+      - say: { channel: action, with: [], text: "02:51. 엄마가 먼저 수화기를 내려놓는다.", wait: 2400, unskippable: true }
       - bg: { id: glass_visit_hung, transition: cut }
       - say: { channel: thought, with: [], text: "유리 너머 엄마 쪽 수화기가 제자리에 돌아가 있다. 내 것은 아직 귀에 있다.", wait: 1200 }
       - goto: pattern

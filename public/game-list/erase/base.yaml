@@ -14,6 +14,7 @@ assets:
     science_room: assets/bg/science_room.svg
     clinic_hall: assets/bg/clinic_hall.svg
     two_bowls_sticker: assets/items/two_bowls.svg
+    harin_photo_sticker: assets/items/harin_classroom_photo.svg
     earphone_sticker: assets/items/earphone_offer.svg
     invitation_sticker: assets/items/invitation.svg
     child_photo_sticker: assets/items/child_photo.svg

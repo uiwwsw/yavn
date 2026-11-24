@@ -13,14 +13,16 @@ scenes:
       - place: "ERASE 클리닉 3층 · 상담실"
       - char: { id: 도윤, position: right }
       - say: { channel: action, with: [도윤], text: "도윤에게는 서류가 한 장 있다. 2016년 3월 29일 자 퇴원 확인서. 발급처 ERASE 클리닉." }
-      - say: { channel: thought, with: [], text: "열한 해 동안 사고 뒤 재활 병원 이름인 줄 알았다." }
+      - say: { channel: thought, with: [도윤], text: "열한 해 동안 사고 뒤 재활 병원 이름인 줄 알았다." }
       - char: { id: 상담사, position: left }
       - say: { char: 상담사, with: [도윤], text: "본인 확인됐습니다. 화면 보시겠어요?" }
-      - say: { channel: record, with: [], text: "신청인 본인. 2016년 3월 29일 시술 완료. 시술 전 성명 유하린, 열여덟." }
+      - say: { channel: record, with: [], text: "신청인 본인. 2016년 3월 29일 시술 완료. 시술 전 성명 유하린, 열여덟.", continueLabel: "화면을 끝까지 읽는다" }
       - bg: { id: surgery_reveal, transition: cut }
       - say: { channel: record, with: [], text: "동의서 사본 · 서명 유하린." }
-      - say: { channel: action, with: [], text: "이름 끝에 작은 점이 있다. 도윤이 매번 찍는 자리다." }
-      - say: { channel: thought, with: [], text: "사고가 아니었다. 내가 신청했다." }
+      - say: { channel: action, with: [도윤, 상담사], text: "이름 끝에 작은 점이 있다. 도윤이 매번 찍는 자리다." }
+      - music: null
+      - wait: 1200
+      - say: { channel: thought, with: [도윤, 상담사], text: "사고가 아니었다. 내가 신청했다.", wait: 2400, unskippable: true }
       - say: { char: 상담사, with: [도윤], text: "저희 시술은 본인의 기억만 지웁니다. 다른 분들의 기억이나 기기 속 기록은 바뀌지 않아요." }
       - say: { char: 도윤.hollow, with: [상담사], text: "그럼 저를 기억하는 사람은요." }
       - say: { char: 상담사, with: [도윤], text: "그대로 기억하고 계시겠죠." }
@@ -83,8 +85,9 @@ scenes:
       - say: { char: 어른아진, with: [도윤], text: "다음 날 수업 빼고 갔어요. 비가 왔고요. 1층 유리문 밖에서 네 시간 기다렸어요. 처음 보는 사람이 나왔어요." }
       - say: { char: 어른아진.awkward, with: [도윤], text: "근데 그 사람이 간호사 선생님 말을 듣고 웃더라고요. 눈이 없어지게. 그래서 알았어요." }
       - say: { char: 도윤.hollow, with: [어른아진], text: "……" }
-      - say: { char: 어른아진, with: [도윤], text: "그 사람이 제 앞을 그냥 지나갔어요. 저를 안 봤어요. 우산 쓴 사람처럼 지나갔어요. 우산도 없으면서." }
-      - say: { channel: action, with: [], text: "교실 시계가 한 칸 넘어간다." }
+      - wait: 900
+      - say: { char: 어른아진, with: [도윤], text: "그 사람이 제 앞을 그냥 지나갔어요. 저를 한 번도 안 보고요. 비를 다 맞으면서.", wait: 2200, unskippable: true, delivery: "sad" }
+      - say: { channel: action, with: [도윤, 어른아진], text: "교실 시계가 한 칸 넘어간다." }
       - say: { char: 어른아진, with: [도윤], text: "원망하려고 하는 말 아니에요. 한 번은 말하고 싶었어요. 그 자리 비워 뒀다고." }
       - choice:
           key: e3_ajin
@@ -141,13 +144,14 @@ scenes:
       - move: { id: 아진, style: exit }
       - bg: { id: harin_room, transition: fade, duration: 600 }
       - place: "그날 밤 · 하린의 방"
-      - sticker:
-          id: e3_child_photo
-          image: child_photo_sticker
-          x: 50
-          y: 45
-          width: "clamp(180px, 32%, 350px)"
-          enter: fadeIn
+      - say:
+          channel: message
+          thread: 아진
+          side: them
+          speakerName: 아진
+          with: []
+          media: { src: assets/items/child_photo.svg, alt: "미끄럼틀 위에서 눈이 없어지게 웃는 일곱 살 아이의 사진" }
+          text: "엄마 폰에서 찾았어. 우리 일곱 살 때 놀이터."
       - say:
           channel: message
           thread: 아진
@@ -156,5 +160,4 @@ scenes:
           with: []
           text: "눈 없어질 때까지 웃는 거 아직도 똑같아. 너 저장해 둬. 지우지 말고."
       - say: { channel: action, with: [하린], text: "하린은 사진을 저장한다." }
-      - clearSticker: { id: e3_child_photo, leave: fadeOut }
       - goto: /3.yaml

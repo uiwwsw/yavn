@@ -46,9 +46,12 @@ scenes:
           channel: action
           with: [서연]
           text: "우물물 냄새가 난다. 이끼와 쇠 냄새다. 젖은 손은 내 손보다 차고, 검지 마디에 바늘 굳은살이 있다."
+      - wait: 700
       - say:
           channel: thought
           with: [서연]
+          continueLabel: "손을 놓지 않는다"
+          wait: 1600
           text: "혜민서에서는 열이 내리면 손을 놓았다. 식은 손을 이렇게 오래 쥐어 본 적이 없다."
       - say:
           channel: action

@@ -576,12 +576,13 @@ scenes:
               - { var: kept_joke, op: eq, value: false }
           text: "슬롯 비어 있음 · 카드 준비 완료\n배터리 ▓▓░░ 2/4"
       - wait: 720
+      - wait: 900
       - say:
           char: 로봇.happy
           motion: bow
           with: [윤재]
           text: "다 됐어. 다녀올게, 윤재."
-          wait: 1170
+          wait: 2200
           unskippable: true
       - say:
           char: 윤재.sad
@@ -656,9 +657,12 @@ scenes:
       - say: { channel: thought, with: [], text: "밤새 문만 봤다. 손을 내밀면 바로 잡을 수 있게, 자꾸 손바닥을 바지에 닦았다." }
       - say: { channel: action, with: [], text: "대합실 전광판에서 같은 광고가 꺼진다. 한참 만에 첫 열차 시각이 뜬다." }
       - say: { channel: thought, with: [], text: "전광판이 돌아왔으면 집 전화도 신호가 갈까. 현관 문짝에는 ‘서울역’이라고 써 두고 왔다." }
+      - wait: 1400
       - say:
           channel: action
           with: []
+          wait: 2800
+          unskippable: true
           text: "문이 열린다. 발을 끄는 소리가 난다. 다음 발소리까지가 길다."
       - char: { id: 로봇, position: right, emotion: thinking }
       - move: { id: 로봇, toward: 윤재, style: approach, wait: true }
@@ -1101,9 +1105,11 @@ scenes:
   b4_dad:
     actions:
       - char: { id: 아빠, position: left }
+      - wait: 1200
       - say:
           channel: action
           with: []
+          wait: 1800
           text: "대합실 끝, 승강장으로 내려가는 계단에서 사람이 하나 올라온다. 운동화 밑창이 덜렁거린다."
       - say:
           channel: thought
@@ -1197,9 +1203,11 @@ scenes:
   b4_dad_tracks:
     actions:
       - char: { id: 아빠, position: left }
+      - wait: 1200
       - say:
           channel: action
           with: []
+          wait: 1800
           text: "철길 저쪽에서 누가 걸어온다. 남쪽에서 북쪽으로. 운동화 밑창이 덜렁거린다."
       - say:
           channel: thought

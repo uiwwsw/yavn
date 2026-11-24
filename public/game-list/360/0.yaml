@@ -682,7 +682,9 @@ scenes:
       - say: { char: 만석, with: [봉구], text: "봉구야. 가지 말고 좀 앉아라." }
       - say: { char: 봉구, with: [만석], motion: headtilt, text: "예. 여기 있겠습니다. 하실 말씀 있으십니까?" }
       - wait: 1400
-      - say: { char: 만석, with: [봉구], text: "끝순이한테…… 아니다. 불이나 끄지 마라.", wait: 1900 }
+      - music: null
+      - wait: 1200
+      - say: { char: 만석, with: [봉구], text: "끝순이한테…… 아니다. 불이나 끄지 마라.", wait: 2600, unskippable: true, delivery: "whisper" }
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void
       - goto: void_one

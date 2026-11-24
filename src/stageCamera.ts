@@ -91,8 +91,16 @@ export function resolveStageCameraTransitionTiming(
   };
 }
 
-function resolveShotScale(shot: CameraShot, visibleCharacterCount: number): number {
+// With two or three actors the anchors sit a quarter of the stage out from the centre. At the
+// solo push-in (1.62) a 1024px stage threw the outer pair to 97px and 927px, half of each body
+// past the edge, so every entrance looked like the cast had been placed wrong and then snapped.
+// A shared group framing keeps the whole cast inside the frame; a camera that pans to one actor
+// still gets the authored shot.
+export const GROUP_SHOT_SCALE_LIMIT = 1.3;
+
+function resolveShotScale(shot: CameraShot, visibleCharacterCount: number, panned = false): number {
   if (visibleCharacterCount <= 0) return 1;
+  if (visibleCharacterCount > 1 && !panned) return Math.min(SHOT_SCALE[shot], GROUP_SHOT_SCALE_LIMIT);
   return SHOT_SCALE[shot];
 }
 
@@ -180,7 +188,7 @@ export function resolveStageCameraPresentation(
 
   return {
     shot: presentationShot,
-    scale: resolveShotScale(presentationShot, visibleCharacterCount),
+    scale: resolveShotScale(presentationShot, visibleCharacterCount, shouldApplyHorizontalTarget),
     mobileScale: resolveMobileShotScale(presentationShot, visibleCharacterCount),
     panX,
     mobilePanX,

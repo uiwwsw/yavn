@@ -83,7 +83,8 @@ describe('360', () => {
         const id = typeof bg === 'string' ? bg : String(asRecord(bg).id);
         expect(backgrounds[id], `${index}.yaml bg ${id}`).toBeTruthy();
       });
-      collectKey(chapter, 'music').forEach((cue) => expect(music[String(cue)], `${index}.yaml music ${cue}`).toBeTruthy());
+      // `music: null` stops the track; it is not a cue to look up.
+      collectKey(chapter, 'music').filter((cue) => cue !== null).forEach((cue) => expect(music[String(cue)], `${index}.yaml music ${cue}`).toBeTruthy());
       collectKey(chapter, 'sticker').forEach((sticker) =>
         expect(backgrounds[String(asRecord(sticker).image)], `${index}.yaml sticker`).toBeTruthy());
       const speakers = [

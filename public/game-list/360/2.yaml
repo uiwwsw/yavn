@@ -368,7 +368,9 @@ scenes:
       - char: { id: 엄마, position: right }
       - say: { char: 민재, with: [엄마], text: "엄마, 수경 누나 침대 시트 왜 걷었어요. 무균실 갔다가 온다 그랬는데." }
       - say: { char: 엄마, with: [민재], motion: droop, text: "…수경이 어제 새벽에 세상을 떠났대. 어머니가 이거 너 주라고 하셨어." }
-      - say: { channel: action, with: [], text: "시트가 걷힌 자리에서 매트리스 비닐이 번들거린다." }
+      - music: null
+      - wait: 900
+      - say: { channel: action, with: [], text: "시트가 걷힌 자리에서 매트리스 비닐이 번들거린다.", wait: 1800 }
       - say: { char: 민재, with: [엄마], text: "무균실 갔다가 온다고 했어요. 저한테 그렇게 말했어요." }
       - say: { char: 엄마, with: [민재], text: "응. 수경이도 그렇게 알고 있었을 거야." }
       - say: { channel: thought, with: [], text: "누나 슬리퍼가 침대 밑에 한 짝 남아 있다. 발끝으로 끌어다 평소에 벗어 놓던 자리에 맞춘다." }

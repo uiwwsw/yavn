@@ -46,14 +46,16 @@ scenes:
           enter: fadeIn
       - say: { channel: action, with: [하린], text: "하린은 사진을 모두 지운다. 한 장만 남는다. 미끄럼틀 위에서 웃는 일곱 살." }
       - say: { channel: action, with: [하린], text: "날짜와 위치 정보를 지운다." }
-      - say: { channel: thought, with: [], text: "날짜도 동네도 없으면 그냥 애기 사진이잖아." }
+      - say: { channel: thought, with: [하린], text: "날짜도 동네도 없으면 그냥 애기 사진이잖아." }
       - say: { channel: action, with: [하린], text: "교복 이름표를 실밥째 뜯어 서랍에 넣는다." }
       - clearSticker: { id: e4_phone_erased, leave: fadeOut }
       - place: "월요일 아침"
       - say: { char: 하린.blank, with: [], text: "엄마, 나 그 병원 갈래." }
       - bg: { id: clinic_hall, transition: fade, duration: 600 }
       - place: "화요일 · 비 · ERASE 클리닉 1층"
-      - say: { channel: action, with: [하린], text: "1층 유리문 너머에 아진이 서 있다. 우산이 없다. 목에 카메라가 걸려 있다." }
+      - music: null
+      - wait: 800
+      - say: { channel: action, with: [하린], text: "1층 유리문 너머에 아진이 서 있다. 우산이 없다. 목에 카메라가 걸려 있다.", wait: 2200, unskippable: true }
       - say: { channel: action, with: [하린], text: "하린은 계단 쪽으로 몸을 돌린다." }
       - bg: { id: surgery, transition: cut }
       - music: cold_room
@@ -61,7 +63,7 @@ scenes:
       - say: { char: 의사, with: [하린], text: "지우고 나면 그 친구들 얼굴도 모를 거예요. 길에서 마주쳐도 그냥 지나갈 거고요." }
       - say: { char: 하린.blank, with: [의사], text: "네. 그게 좋아요." }
       - sound: consent_pen
-      - say: { channel: action, with: [하린], text: "동의서에 유하린이라고 쓰고 끝에 작은 점을 찍는다." }
+      - say: { channel: action, with: [하린], text: "동의서에 유하린이라고 쓰고 끝에 작은 점을 찍는다.", continueLabel: "이름을 쓴다", wait: 1400 }
       - say: { char: 하린, with: [의사], text: "가방에 휴대폰이 있어요. 사진 한 장 남겨 놨는데, 그건 버리지 말아 주세요." }
       - bg: { id: eyes_closed, transition: dissolve, duration: 520 }
       - music: null
@@ -102,7 +104,7 @@ scenes:
       - say: { char: 지수.cold, with: [도윤], text: "나는? 나도 언젠가 지울 수 있는 거야?" }
       - say: { char: 도윤.hollow, with: [지수], text: "……모르겠어." }
       - say: { char: 지수, with: [도윤], text: "모르겠다는 말은 처음 듣네. 맨날 괜찮다고만 했잖아." }
-      - say: { char: 지수.warm, with: [도윤], text: "그게 더 나아. 모르겠다는 게." }
+      - say: { char: 지수.warm, with: [도윤], text: "그래도 오늘은 대답은 했네." }
       - add: { told_jisu: 2 }
       - goto: e4_night
 

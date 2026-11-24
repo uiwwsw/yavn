@@ -410,13 +410,16 @@ describe("ERASE", () => {
     finished(run);
     expect(run.state.resolvedEndingId).toBe("erase_loop");
 
-    const harin = run.shown.findIndex(text => text.includes("……하린아?"));
-    const school = run.shown.findIndex(text => text.includes("실례지만, 고등학교 어디 나오셨어요?"));
+    const harin = run.shown.findIndex(text => text === "……하린아.");
+    const school = run.shown.findIndex(text => text.includes("혹시 고등학교를 어디 나오셨어요?"));
     expect(harin).toBeGreaterThan(-1);
     expect(school).toBeGreaterThan(-1);
     expect(harin).toBeLessThan(school);
 
-    expect(heard(run.shown, "계약서에 도윤이 이름을 쓰고 끝에 작은 점을 찍는다")).toBe(true);
+    expect(heard(run.shown, "도윤이 이름을 쓰고 끝에 작은 점을 찍는다")).toBe(true);
+    // She asks before she sends, and the photo arrives inside the message.
+    expect(heard(run.shown, "사진 한 장만 보여 드려도 될까요?")).toBe(true);
+    expect(heard(run.shown, "제가 열여덟 살 때 찍은 거예요. 같은 반 친구요.")).toBe(true);
     expect(heard(run.shown, "도윤의 사진첩은 2016년 3월에서 시작한다")).toBe(true);
     expect(heard(run.shown, "도윤은 그 앞을 지나간다.")).toBe(true);
     expect(heard(run.shown, "안 지워요.")).toBe(false);
@@ -456,7 +459,7 @@ describe("ERASE", () => {
     expect(run.state.resolvedEndingId).toBe("side_seat");
 
     const accident = run.shown.findIndex(text => text.includes("사고가 아니었다. 내가 신청했다."));
-    const walked = run.shown.findIndex(text => text.includes("우산 쓴 사람처럼 지나갔어요"));
+    const walked = run.shown.findIndex(text => text.includes("저를 한 번도 안 보고요. 비를 다 맞으면서."));
     expect(accident).toBeGreaterThan(-1);
     expect(walked).toBeGreaterThan(-1);
     expect(accident).toBeLessThan(walked);
@@ -514,7 +517,7 @@ describe("ERASE", () => {
     });
     finished(twoNames);
     expect(twoNames.state.resolvedEndingId).toBe("two_names");
-    expect(heard(twoNames.shown, "하린아. 저녁 먹으러 와.")).toBe(true);
+    expect(heard(twoNames.shown, "하린아. 저녁 먹으러 가자. 도윤이도 같이.")).toBe(true);
     expect(heard(twoNames.shown, "나 열여덟 살 때 이름은 유하린이었어.")).toBe(true);
   });
 
@@ -532,7 +535,7 @@ describe("ERASE", () => {
     });
     finished(unfinished);
     expect(unfinished.state.resolvedEndingId).toBe("unfinished");
-    expect(heard(unfinished.shown, "반지는 신발장 위에 뒀어.")).toBe(true);
+    expect(heard(unfinished.shown, "반지는 네가 들고 있어. 지우지 말고.")).toBe(true);
     expect(heard(unfinished.shown, "나 열여덟 살 때 이름은 유하린이었어.")).toBe(true);
   });
 });

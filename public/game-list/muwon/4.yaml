@@ -351,9 +351,13 @@ scenes:
           char: 서연.shock
           with: [한명재]
           text: "…두 아이는 업혀 왔을 때 이미 숨이 가빴습니다."
+      - music: null
+      - wait: 900
       - say:
           channel: thought
           with: []
+          wait: 1600
+          unskippable: true
           text: "약 냄새 없음. 어디서 읽었는지 이제 안다."
       - say:
           channel: action
@@ -362,6 +366,8 @@ scenes:
       - say:
           channel: record
           with: []
+          continueLabel: "스승의 글씨를 읽는다"
+          wait: 2400
           text: "정조 14년 동짓달. 아이 둘 업혀 옴. 집에서 청심원 한 환씩 먹였다 함. 주머니는 남빛. 약 냄새 없음. 둘 다 그 밤을 넘기지 못함."
       - say:
           char: 서연
@@ -378,7 +384,9 @@ scenes:
       - say:
           char: 서연
           with: [한명재]
+          wait: 1600
           text: "그 아이들은 혜민서에서 죽었다고 적혔습니다. 무엇을 먹고 왔는지는 스승님 책에만 남았습니다."
+      - music: pressure
       - say:
           char: 도원.troubled
           when: { var: trust_dowon, op: lte, value: 1 }
@@ -811,8 +819,10 @@ scenes:
           with: [한명재]
           text: "아픈 아이 어미한테 무슨 약을 먹였는지 묻고도, 그 손에 든 것은 안 봤습니다. 다음엔 보겠습니다."
       - mood: { tone: warm, level: 1 }
+      - wait: 900
       - say:
           channel: record
+          wait: 2200
           text: "책 첫 장. 원(冤), 억울함이 없게 하라."
       - say:
           channel: thought
