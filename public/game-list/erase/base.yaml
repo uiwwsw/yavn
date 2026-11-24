@@ -6,27 +6,19 @@ assets:
     eyes_closed: assets/bg/eyes_closed.svg
     surgery_reveal: assets/bg/surgery_reveal.svg
     photo_studio: assets/bg/photo_studio.svg
-    club: assets/bg/club.svg
-    dawn_room: assets/bg/dawn_room.svg
     couple_home: assets/bg/couple_home.svg
     office: assets/bg/office.svg
-    office_night: assets/bg/office_night.svg
     classroom: assets/bg/classroom.svg
     harin_room: assets/bg/harin_room.svg
     rooftop: assets/bg/rooftop.svg
-    junseong_house: assets/bg/junseong_house.svg
     science_room: assets/bg/science_room.svg
     clinic_hall: assets/bg/clinic_hall.svg
     two_bowls_sticker: assets/items/two_bowls.svg
     earphone_sticker: assets/items/earphone_offer.svg
     invitation_sticker: assets/items/invitation.svg
-    club_photo_sticker: assets/items/club_photo.webp
     child_photo_sticker: assets/items/child_photo.svg
     gallery_photo_sticker: assets/items/gallery_photo.svg
-    gallery_empty_sticker: assets/items/gallery_empty.svg
-    pharmacy_bag_sticker: assets/items/pharmacy_bag.svg
     butterfly_sticker: assets/items/pinned_butterfly.svg
-    ticket_sticker: assets/items/test_ticket.svg
     phone_erased_sticker: assets/items/phone_erased.svg
   backgroundLabels:
     title: false
@@ -35,17 +27,13 @@ assets:
     eyes_closed: false
     surgery_reveal: "ERASE 클리닉"
     photo_studio: "사진관"
-    club: "클럽"
-    dawn_room: "처음 보는 방"
     couple_home: "도윤과 지수의 집"
     office: "영업2팀"
-    office_night: "빈 사무실"
     classroom: "3학년 교실"
     harin_room: "하린의 방"
     rooftop: "회사 옥상"
-    junseong_house: "오피스텔 9층"
     science_room: "과학실"
-    clinic_hall: "보건소"
+    clinic_hall: "ERASE 클리닉 1층"
   characters:
     도윤:
       name: "한도윤"
@@ -78,21 +66,18 @@ assets:
       emotions:
         warm: assets/char/jisu-warm.svg
         cold: assets/char/jisu-cold.svg
-    준성:
-      name: "박준성"
+    어른아진:
+      name: "정아진"
       placement: prompt-top
-      base: assets/char/junseong.svg
+      base: assets/char/ajin-adult.svg
       facing: left
-      defaultDelivery: calm
+      defaultDelivery: neutral
       defaultFraming: portrait
       framings:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        smirk: assets/char/junseong-smirk.svg
-        tired: assets/char/junseong-tired.svg
-      emotionMotions:
-        tired: sigh
+        awkward: assets/char/ajin-adult-awkward.svg
     하린:
       name: "유하린"
       placement: prompt-top
@@ -137,6 +122,18 @@ assets:
       base: assets/char/voice.svg
       facing: left
       defaultDelivery: whisper
+    상담사:
+      name: "상담사"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: whisper
+    윤주임:
+      name: "윤주임"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: neutral
   music:
     cold_room: assets/music/cold-room.flac
     neon: assets/music/neon.flac
@@ -150,26 +147,13 @@ assets:
 
 state:
   deleted: 0
+  gap_told: false
+  ajin_photo: ""
+  listened: false
+  walked_out: false
   told_jisu: 0
-  kept_photo: false
-  cruelty: 0
-  went_to_clinic: false
-  e0_messages: false
-  e0_photos: false
-  e0_location: false
-  e0_jisu_message: "민석이 생일이라 잠깐 나갔다 올게. 12시 전엔 들어갈게"
-  e0_jisu_reply: "ㅇㅋ 대리 불러 운전 절대 xx"
-  e0_jisu_recall: "청첩장 그 사진 골랐던 날? 나한테 민석이 만나러 간다고 했잖아."
-  h1_sent: false
-  asked_awake: false
-  e2_search: false
-  e2_gallery: false
-  e2_sns: false
-  e2_hospital: false
-  e2_leaked: false
-  e3_bag: false
-  e3_papers: false
-  e3_note: false
+  booked: false
+  sorry: false
 
 inventory:
   invitation:
@@ -184,15 +168,3 @@ inventory:
     image: assets/items/child_photo.svg
     category: "남은 것"
     order: 20
-  pharmacy_bag:
-    name: "약국 봉투"
-    description: "준성의 식탁 위에 놓인 약 봉투. ‘밤 10시’라고 적혀 있고 약은 보름 치가 남았다."
-    image: assets/items/pharmacy_bag.svg
-    category: "남은 것"
-    order: 30
-  test_ticket:
-    name: "대기 번호표"
-    description: "보건소 익명 검사 47번. 이름 대신 번호로 부른다."
-    image: assets/items/test_ticket.svg
-    category: "남은 것"
-    order: 40

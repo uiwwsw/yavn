@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-24T04:00:28.221Z",
+  "generatedAt": "2026-11-24T04:10:02.355Z",
   "games": [
     {
       "id": "360",
@@ -193,9 +193,9 @@
       "name": "ERASE",
       "path": "/game-list/erase/",
       "author": "uiwwsw",
-      "version": "1.9.1",
-      "summary": "도윤과 지수는 청첩장에 넣을 사진을 고른다. 그날 밤 민석에게 연락이 온다. 지수가 누구냐고 묻는다. 5장 심리 드라마, 결말 6종.",
-      "summaryEn": "Doyun and Jisu pick a picture for their wedding invitation. That evening, Doyun gets a text from a friend. Jisu asks who it is. A five-chapter psychological drama with six endings.",
+      "version": "2.0.0",
+      "summary": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 도윤을 다른 이름으로 부른다. 도윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
+      "summaryEn": "Doyun and Jisu pick a picture for their wedding invitation. That evening, Doyun gets a text from a friend. Jisu asks who it is. A five-chapter psychological drama with five endings.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",
       "tags": [
         "psychological-drama",
@@ -229,14 +229,14 @@
         {
           "id": "content-warning",
           "title": "내용 안내",
-          "text": "이 작품에는 성적 긴장(묘사 없음), HIV에 대한 불안, 자기 파괴적 생각과 옥상 장면(결과·방법 묘사 없음)이 나옵니다. 힘든 마음이 들면 자살예방 상담전화 109(24시간)에 연락할 수 있습니다. HIV 검사는 가까운 보건소에서 익명·무료로 받을 수 있습니다."
+          "text": "이 작품에는 단체 대화방 따돌림과 기억을 지우는 선택이 나옵니다. 힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 전화할 수 있습니다."
         }
       ],
       "chapterCount": 5,
-      "endingCount": 6,
+      "endingCount": 5,
       "seo": {
         "title": "ERASE",
-        "description": "청첩장 사진을 찍은 도윤과 지수. 그날 밤, 도윤에게 친구의 문자가 온다. 어디에 가는지 말하는 순간부터 갈라지는 5장 심리 드라마, 결말 6종.",
+        "description": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 도윤을 다른 이름으로 부른다. 도윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
         "keywords": [
           "심리 드라마",
           "비주얼노벨",
