@@ -1,5 +1,5 @@
 languages: [ko]
-summary: "도시의 기계들이 일제히 멈추거나 멋대로 움직인다. 윤재 손에 남은 건 코어에 연결되지 않는 중고 게임기. 그 칩으로 깨운 로봇은 뭐든 한 박자 늦게 대답한다. 5장, 결말 4종."
+summary: "도시의 기계들이 일제히 멋대로 움직인다. 침입자들이 한 층씩 올라오는 밤, 윤재는 다용도실에 서 있던 엄마의 안드로이드에 중고 게임기 칩을 꽂는다. 몸은 크고 머리는 8KB. 둘은 코어가 있는 서울역까지 걷는다. 5장, 결말 4종."
 thumbnail: "assets/bg/title.svg"
 tags:
   - sci-fi
@@ -24,4 +24,4 @@ showcase:
     offsetY: 0
 translations:
   en:
-    summary: "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits. A survival story with four endings."
+    summary: "When an AI disaster turns every connected machine, looters climb the stairs floor by floor. A boy puts the chip from a cheap retro handheld into the android his mother once brought home. A huge body with an 8 KB mind walks with him to the Core under Seoul Station. Four endings."

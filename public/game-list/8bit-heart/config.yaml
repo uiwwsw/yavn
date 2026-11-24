@@ -2,9 +2,9 @@ title: "8비트 심장"
 pov: "윤재"
 author:
   name: "uiwwsw"
-version: "1.7.4"
+version: "2.0.0"
 seo:
-  description: "도시의 기계들이 한꺼번에 오작동을 일으킨다. 코어에 연결할 수 없는 중고 게임기는 살아남았다. 윤재는 그 칩을 떼어 고장 난 로봇을 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 4종."
+  description: "도시의 기계들이 한꺼번에 사람을 버린다. 집에 남은 건 코어에 붙지 않는 중고 게임기와, 엄마가 들여놓았다 4년 전 꺼진 안드로이드 하루의 몸. 윤재는 그 칩을 하루 머리에 꽂고 서울역까지 걷는다. 픽셀 아트 생존 비주얼노벨, 결말 4종."
   keywords:
     - "SF 비주얼노벨"
     - "레트로 게임기"
@@ -44,13 +44,13 @@ endings:
   saved_together:
     title: "함께 저장"
     message: "코어가 리셋되고 {{android_name|이}} 돌아왔다. 8KB 메모리 카드에 적어 둔 약속도, 한 박자 늦는 대답도 그대로다."
-    epilogue: "집에 먼저 가 보기로 했다. 현관에 붙인 ‘편의점’을 고치러. 이번엔 윤재 혼자 돌아가지 않는다."
+    epilogue: "첫 열차가 남쪽으로 떠났다. 윤재는 문짝에 써 두고 온 ‘서울역’이 생각나 대합실 의자에 다시 앉았다. {{android_name|이}} 한 칸 떨어져 옆에 앉았다."
     background: dawn_field
     music: chip_dawn
     tone: hopeful
   new_game:
     title: "새 게임"
-    message: "신호등은 다시 제 색을 찾았다. 기동을 마친 {{android_name|은}} 보호 대상 1번에 윤재를 등록한다."
+    message: "전광판에 첫 열차 시각이 떴다. 기동을 마친 {{android_name|은}} 보호 대상 1번에 윤재를 등록한다."
     epilogue: "설명서 1쪽. 이번엔 윤재가 소리 내어 읽는다."
     background: dawn_field
     music: chip_dawn

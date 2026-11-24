@@ -246,7 +246,7 @@ describe('8비트 심장', () => {
     const run = await play({
       b0_buy: CHEAP,
       b1_haru: '신문지가 뭔지 설명한다',
-      b1_home: '침대||책상 위||수리용 단말||가방을 메고 나간다',
+      b1_home: '침대||책상 위||수리용 단말||다용도실 문을 연다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
@@ -261,22 +261,41 @@ describe('8비트 심장', () => {
     // comes apart while Yunjae waits, and a household robot knocks on his door.
     expect(heard(run.shown, '걸어서라도 온다고 한다. 사흘이면 온다고')).toBe(true);
     // The reset is also the phone that went dead mid-sentence.
-    expect(heard(run.shown, '신호등이 돌아왔으면 집 전화도 신호가 갈까')).toBe(true);
+    expect(heard(run.shown, '전광판이 돌아왔으면 집 전화도 신호가 갈까')).toBe(true);
     expect(heard(run.shown, '그러다 누가 유리를 깼다')).toBe(true);
     expect(heard(run.shown, '경찰 사이렌은 첫날 밤에 제일 많았다')).toBe(true);
     expect(heard(run.shown, '확인될 때까지 모시겠습니다')).toBe(true);
     expect(heard(run.shown, '응답 없음. 빈집으로 기록합니다')).toBe(true);
     expect(heard(run.shown, '저건 계단을 올라와서 문을 두드린다')).toBe(true);
+    // The android is not a stranger found in an alley. It is the first Haru, the body his mother
+    // brought home, standing dead in the utility room since its support ended.
+    expect(heard(run.shown, '다용도실에 제 옛날 몸이 있잖아요')).toBe(true);
     const knock = run.shown.findIndex((text) => text.includes('빈집으로 기록합니다'));
-    const leftHome = run.shown.findIndex((text) => text.includes('사흘이면 온다고 했다. 사흘이 지났다'));
-    const found = run.shown.findIndex((text) => text.includes('문을 두드리던 것과 같은 모델이다'));
+    const waited = run.shown.findIndex((text) => text.includes('오늘이 닷새째다'));
+    const body = run.shown.findIndex((text) => text.includes('하루. 엄마가 들여놓은 하루다'));
+    const raid = run.shown.findIndex((text) => text.includes('기계는 부숴. 꺼져 있어도 부숴'));
+    const transplant = run.shown.findIndex((text) => text.includes('게임기 칩을 하루 머리에 누른다'));
+    const stands = run.shown.findIndex((text) => text.includes('그 불빛 앞으로 하루가 일어선다'));
+    const hello = run.shown.findIndex((text) => text === '1P 감지.');
     expect(knock).toBeGreaterThan(-1);
-    expect(leftHome).toBeGreaterThan(knock);
-    expect(found).toBeGreaterThan(leftHome);
-    // So the robot in the alley is checked before it is touched, and he keeps a hand on the power.
-    expect(heard(run.shown, '열까지 센다. 안 움직인다. 스물까지 센다')).toBe(true);
+    expect([knock, waited, body, raid, transplant, stands, hello]).toEqual(
+      [knock, waited, body, raid, transplant, stands, hello].slice().sort((a, b) => a - b));
+    expect(heard(run.shown, '서울역 지하에 코어 관제실이 있대')).toBe(true);
+    expect(heard(run.shown, '1번 — 윤재 (7) · 2054.04.02 등록')).toBe(true);
+    expect(heard(run.shown, '…가정용이다.')).toBe(true);
+    // He does not talk himself out of it. There is no muttering about whether 8 KB can work.
+    expect(heard(run.shown, '이 칩으로 그게 되나')).toBe(false);
+    expect(heard(run.shown, '미쳤어. 게임기 칩으로')).toBe(false);
     expect(heard(run.shown, '내 손목을 잡으면 그대로 뜯는다')).toBe(true);
-    expect(heard(run.shown, '오늘이 열사흘째야')).toBe(true);
+    expect(heard(run.shown, '1번 — 윤재 (16)')).toBe(true);
+    expect(heard(run.shown, '서울역. 철길 따라감. — 윤재')).toBe(true);
+    // The journey runs south along the line, and the body does what the head cannot.
+    expect(heard(run.shown, '1호선 선로를 따라 남쪽으로 걸었다')).toBe(true);
+    expect(heard(run.shown, '문짝을 두 손으로 벌렸다')).toBe(true);
+    expect(heard(run.shown, '네 몸도 엄마가 들여놓은 거야')).toBe(true);
+    expect(heard(run.shown, '오늘이 여드레째야')).toBe(true);
+    expect(heard(run.shown, '서울역 지하. 코어 관제실이 거기 있대')).toBe(true);
+    expect(heard(run.shown, '현관 문짝에는 ‘서울역’이라고 써 두고 왔다')).toBe(true);
     // The three things he looked at on the third morning come back in chapter 3.
     expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(true);
     expect(heard(run.shown, '아빠가 그냥 안 받는 거면 좋겠어')).toBe(true);
@@ -302,7 +321,7 @@ describe('8비트 심장', () => {
     const run = await play({
       b0_buy: CHEAP,
       b1_haru: '입을 연다',
-      b1_home: '가방을 메고 나간다',
+      b1_home: '다용도실 문을 연다',
       b2_register: '아무 일도 없다고 한다',
       b3_snack: '복숭아를 내일로 남겨 둔다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
@@ -311,7 +330,10 @@ describe('8비트 심장', () => {
     });
     finished(run);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(true);
-    expect(heard(run.shown, '…가자. 멀리 안 갈 거니까.')).toBe(true);
+    expect(heard(run.shown, '천을 다시 덮지 않고 문을 닫는다')).toBe(true);
+    expect(heard(run.shown, '고물한테 거짓말한 사람')).toBe(true);
+    // Wiped, it still carries the one line his mother registered.
+    expect(heard(run.shown, '다 지워졌는데 엄마가 적은 줄은 남았다')).toBe(true);
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
     expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
@@ -336,7 +358,7 @@ describe('8비트 심장', () => {
     const run = await play({
       b0_buy: CHEAP,
       b1_haru: '신문지가 뭔지 설명한다',
-      b1_home: '가방을 메고 나간다',
+      b1_home: '다용도실 문을 연다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '반대쪽으로 달아난다',
