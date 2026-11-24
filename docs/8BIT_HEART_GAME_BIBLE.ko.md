@@ -1,8 +1,10 @@
 # 8비트 심장 · 게임 바이블
 
-[인물 카드와 양방향 관계](narrative/8bit-heart.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
+[원작 소설](novels/8bit-heart.ko.md) · [인물 카드와 양방향 관계](narrative/8bit-heart.yaml) · [관계도](narrative/relationships.ko.md) · [장면별 대사 검토 방법](NARRATIVE_CONTEXT.ko.md)
 
 원작 이야기: 사용자 제공 시놉시스(AI 재난 속 싸구려 레트로 게임기와 안드로이드). 인물·사건은 창작이며 실존 제품·브랜드를 쓰지 않는다.
+
+원작 소설은 [`novels/8bit-heart.ko.md`](novels/8bit-heart.ko.md)다. 게임의 장면과 대사는 그 소설을 각색한 것이고, 둘이 어긋나면 소설을 따른다. 소설을 쓰며 대조한 결과 한 군데를 고쳤다. 칩을 떼기 전 윤재가 혼자 "미련 없어. 진짜야. 진짜. 진짜."라고 중얼거리고, 켜진 뒤의 로봇이 그 말을 들은 것처럼 "세 번 했음"이라고 세던 대목이다. 메모리 카드는 소리를 듣지 못한다. 이제 그 순간은 윤재의 속생각으로 지나가고, '진짜' 두 번 규칙은 윤재가 기동 뒤에 직접 알려 준다. 4장에서 로봇은 카드에 옮겨진 점수만 보고 미련을 짚는다.
 
 ## 1. 한 줄 소개
 

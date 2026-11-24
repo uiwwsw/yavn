@@ -305,7 +305,10 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(false);
     expect(heard(run.shown, '그럼 나한테 하는 말도 욕임?')).toBe(true);
     expect(heard(run.shown, '그거 좋은 뜻이라며.')).toBe(false);
-    expect(heard(run.shown, '켜지기 전 건 모름.')).toBe(true);
+    // The robot learns the 'twice' rule from Yunjae after boot; a memory card cannot hear.
+    expect(heard(run.shown, '네가 처음 알려 준 너 사용법이라서')).toBe(true);
+    expect(heard(run.shown, '카드에 같이 들어갔나 봄')).toBe(false);
+    expect(heard(run.shown, '미련 없는 사람은 점수를 카드에 안 옮김')).toBe(true);
     // Seven peach pieces are divided equally before each side receives its portion.
     expect(heard(run.shown, '조각 일곱 개')).toBe(true);
     // Hiding behind the robot is a body pressed into one arm's length, not a menu result.

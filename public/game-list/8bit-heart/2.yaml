@@ -54,7 +54,8 @@ scenes:
       - say: { channel: thought, with: [], text: "최고 점수라도 카드에 옮겨 두자." }
       - say: { channel: system, with: [], text: "8KB 카드 · HI-SCORE 0999990 저장 완료" }
       - say: { channel: thought, with: [], text: "10점만 더 땄으면 백만이었다." }
-      - say: { channel: action, with: [], text: "“미련 없어. 진짜야. 진짜. 진짜.” 윤재가 중얼거리며 인두를 댄다. 납이 녹고, 게임기 화면이 한 번 깜빡이고 꺼진다." }
+      - say: { channel: thought, with: [], text: "됐다. 십 점이 뭐라고." }
+      - say: { channel: action, with: [], text: "인두를 댄다. 납이 녹고, 게임기 화면이 한 번 깜빡이고 꺼진다." }
       - use: console_cheap
       - get: cpu_chip
       - say: { channel: action, with: [], text: "그을린 칩을 빼고 게임기 칩을 하루 머리에 누른다. 다리 마흔 개가 딱 소리를 내며 들어간다." }
@@ -182,16 +183,13 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "됨." }
       - say: { char: 로봇, with: [윤재], text: "비워 두면 칸은 덜 먹음." }
       - say: { char: 로봇, with: [윤재], text: "번호는 이유가 생기면 붙임." }
-      - say: { char: 윤재, with: [로봇], text: "…좋아. 하나 더. 내가 괜찮다고 두 번 말하면 그거 거짓말이야." }
+      - say: { char: 윤재, with: [로봇], text: "…좋아. 하나 더. 내가 괜찮다고 두 번 말하면 그거 거짓말이야. '진짜'도." }
       - say: { char: 로봇.thinking, with: [윤재], text: "두 번." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "'진짜'도 두 번이면 같은 거임?" }
-      - say: { char: 윤재, with: [로봇], text: "…어. 같은 거야. 어떻게 알았어." }
-      - say: { char: 로봇, with: [윤재], text: "아까 게임기 얘기할 때 세 번 했음." }
-      - say: { char: 로봇, with: [윤재], text: "세 번은 아직 칸이 없음." }
-      - say: { char: 윤재, with: [로봇], text: "…그건 너 켜지기 전이야. 들은 것처럼 말하네." }
-      - say: { char: 로봇, with: [윤재], text: "켜진 뒤에 네가 한 말은 다 들음." }
-      - say: { char: 로봇, with: [윤재], text: "켜지기 전 건 모름." }
-      - say: { char: 로봇, with: [윤재], text: "아까 그 말은 카드에 같이 들어갔나 봄." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "그럼 한 번은?" }
+      - say: { char: 윤재, with: [로봇], text: "한 번은 진짜야." }
+      - say: { char: 로봇, with: [윤재], text: "칸 하나 만들게. 두 번 칸." }
+      - say: { char: 윤재, with: [로봇], text: "그걸 왜 칸까지 만들어." }
+      - say: { char: 로봇, with: [윤재], text: "네가 처음 알려 준 너 사용법이라서." }
       - say: { char: 로봇.thinking, with: [윤재], text: "질문." }
       - say: { char: 로봇.thinking, with: [윤재], text: "너 지금, 위험해?" }
       - say: { char: 로봇.thinking, with: [윤재], text: "손이 땀으로 젖어 있음." }
