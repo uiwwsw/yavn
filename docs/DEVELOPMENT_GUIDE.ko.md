@@ -785,7 +785,7 @@ assets:
 - 같은 사건에서 쇼트가 바뀌면 직전의 소품, 소리, 시선이나 동작을 다음 화면에서 받습니다. 손동작을 가까이 보여 준 뒤 인물이 말을 걸면, 먼저 `camera: wide`로 몸과 위치를 보여 줄 수 있습니다.
 - 시간·장소·시점이 바뀌면 앞 장면이 끝날 호흡을 주고, `place`나 `say.channel: card`에 작품에서 확인할 수 있는 시간과 장소를 표시합니다. 시점만 바뀌면 같은 순간의 행동을 상대 쪽에서 처음 한 번 받습니다.
 - 날짜, 시각, 정확한 경과 기간과 화면에 표시된 수치는 숫자로 씁니다. 같은 값을 다른 장면에서 다시 보여 줄 때도 표기를 맞춥니다. 예를 들어 자막은 ‘2019년 4월 11일’, 그날을 떠올리는 대사는 ‘12년 전’, 장부에 적힌 정가는 ‘32,000원’으로 씁니다. 일상 대사의 ‘한 번’, ‘두 사람’이나 인물이 입으로 세는 ‘열여덟, 열아홉, 스무 자루’는 장면의 말투에 맞춥니다.
-- 현재 시점의 인물이 이름을 알기 전에는 `say.speakerName`으로 “낯선 여자”, “오작인”, “???” 같은 이름표를 씁니다. 이름을 말하는 대사까지 그 이름표를 유지하고, 다음 대사부터 생략하면 캐릭터 이름으로 돌아갑니다. 대사, 휴대폰 메시지, 기록에도 같은 이름표가 적용됩니다. [오버플로 1장 실행 예시](../public/game-list/overflow/1.yaml)
+- 현재 시점의 인물이 이름을 알기 전에는 `say.speakerName`으로 “낯선 여자”, “오작인”, “???” 같은 이름표를 씁니다. 이름을 말하는 대사까지 그 이름표를 유지하고, 다음 대사부터 생략하면 캐릭터 이름으로 돌아갑니다. 대사, 휴대폰 메시지, 기록에도 같은 이름표가 적용됩니다.
 
 ### `mood` — 화면에 남는 감정
 
@@ -1226,7 +1226,7 @@ scenes:
 
 `choice.evidence`에는 선언된 소지품 ID를 넣습니다. 해당 아이템을 획득했고 설명이 있으면 선택지 위에 펼쳐 볼 수 있는 기록이 표시됩니다. 기록을 열고 닫아도 선택이나 소지품 상태는 바뀌지 않습니다. 같은 무원 챕터의 `c1_reasoning`에 예가 있습니다.
 
-`music: null`은 재생 중인 배경 음악을 멈춥니다. 다음 `music` 액션에서 지정한 트랙부터 재생하며, 정지 상태가 저장·복원에도 반영됩니다. [튜토리얼 마지막 장](../public/game-list/tutorial/4.yaml)의 `end_close`에서 화면 전환과 함께 사용합니다.
+`music: null`은 재생 중인 배경 음악을 멈춥니다. 다음 `music` 액션에서 지정한 트랙부터 재생하며, 정지 상태가 저장·복원에도 반영됩니다.
 
 ### 9-4-2) `say.when` 조건부 대사
 
@@ -1694,7 +1694,6 @@ public/game-list/my-story/
 - `docs/YAML_STORY_TO_DSL_PROMPT.ko.md`
 - `docs/AI_GAME_WRITING_PROMPT.ko.md` (시놉시스 → 기획 → 제작 → 다듬기, AI에게 게임을 맡길 때)
 - `docs/MUWON_GAME_BIBLE.ko.md`
-- `docs/OVERFLOW_GAME_BIBLE.ko.md`
 - 추리극 분기 샘플: `public/game-list/muwon/*.yaml`
 - DSL 축약 샘플: `sample.yaml`
 
@@ -1708,6 +1707,7 @@ public/game-list/my-story/
 
 ## 14) 문서 변경 로그
 
+- 2026-11-24: 「오버플로」와 「튜토리얼」을 지웠습니다. 작품 폴더, 바이블, 서사 자료, 원작 소설, 음악 생성 스크립트, 사이트맵 항목과 작품별 테스트를 함께 정리했습니다. 엔진 DSL은 바뀌지 않습니다.
 - 2026-11-18: 작가용 서사 자료(`docs/narrative/<작품>.yaml`)에 작품 전체의 뼈대 `arc`(전제, 끝까지 묻는 질문, 기·승·전·결)와 챕터별 계획 `chapters`(`title`·`beat`·`tells`·`turn`·`carries`)를 추가했습니다. `node scripts/narrative-context.mjs --check`가 두 항목을 검사하고, 장면 조회 결과에 `arc`와 해당 챕터 계획이 함께 나옵니다. 읽는 법은 `docs/NARRATIVE_CONTEXT.ko.md`에 있습니다. 엔진 DSL과 저장 형식은 바뀌지 않습니다.
 
 - 2026-11-14: 5장 작품 「오버플로」(`public/game-list/overflow/`)를 추가했습니다. `narration` 채널 없이 대사·`record`·`system`·`message`로만 설명을 내보내는 조사극의 예시입니다. 1장은 `choice.presentation: explore`로 다섯 곳을 직접 뒤지고, 결말 4종과 복구 가능한 실패 2종이 있습니다. 음악은 `scripts/generate-overflow-score.py`로 합성한 24초 루프 5곡이며 `scripts/compress-music.mjs`로 FLAC으로 내보냅니다. 엔진 DSL은 바뀌지 않습니다.

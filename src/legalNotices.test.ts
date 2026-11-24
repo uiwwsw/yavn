@@ -25,13 +25,13 @@ describe('data-driven legal notices', () => {
 
   it('ships story notices as game data and excludes former demos', () => {
     const config = parseConfigYaml(
-      readSource('public/game-list/overflow/config.yaml'),
-      'public/game-list/overflow/config.yaml',
+      readSource('public/game-list/360/config.yaml'),
+      'public/game-list/360/config.yaml',
     );
 
     expect(config.error).toBeUndefined();
-    expect(config.data?.data.legalNotices?.map(notice => notice.id)).toEqual(['content-warning', 'fiction']);
-    for (const game of ['conan', 'conan-demo', 'english-conan', 'live2dtest']) {
+    expect(config.data?.data.legalNotices?.map(notice => notice.id)).toContain('content-warning');
+    for (const game of ['conan', 'conan-demo', 'english-conan', 'live2dtest', 'overflow', 'tutorial']) {
       expect(existsSync(resolve(process.cwd(), 'public/game-list', game)), game).toBe(false);
     }
     expect(readSource('public/game-list/index.json')).not.toMatch(/conan|코난|live2dtest/i);

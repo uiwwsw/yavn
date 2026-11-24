@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-24T03:43:32.375Z",
+  "generatedAt": "2026-11-24T04:00:28.221Z",
   "games": [
     {
       "id": "360",
@@ -189,143 +189,6 @@
       }
     },
     {
-      "id": "overflow",
-      "name": "오버플로",
-      "path": "/game-list/overflow/",
-      "author": "uiwwsw",
-      "version": "5.1.0",
-      "summary": "감정을 숫자로 읽는 렌즈는 팔 년 동안 틀린 적이 없다. 쓰러진 아버지를 찾아간 지완에게 그 렌즈가 01을 띄우고 병실 문이 멈춘다. 2033년 서울을 배경으로 한 5장 SF 미스터리. 결말 5종.",
-      "summaryEn": "In 2033 Seoul, the lens that reads emotion as a number has not been wrong once in eight years. When Jiwan reaches the hospital after his father collapses, it reads him at 01 and the ward door stops. A sci-fi mystery in five chapters with five endings.",
-      "thumbnail": "/game-list/overflow/assets/bg/title.svg",
-      "tags": [
-        "sci-fi",
-        "mystery",
-        "modern",
-        "investigation",
-        "twist",
-        "complete"
-      ],
-      "tagLabels": {
-        "sci-fi": "SF",
-        "mystery": "미스터리",
-        "modern": "근미래",
-        "investigation": "직접 조사",
-        "twist": "반전",
-        "complete": "완결"
-      },
-      "languages": [
-        "ko"
-      ],
-      "showcase": {
-        "label": "OVERFLOW · 5 CHAPTERS",
-        "backgroundColor": "#0c111a",
-        "image": {
-          "positionX": 72,
-          "positionY": 50,
-          "scale": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
-      "legalNotices": [
-        {
-          "id": "content-warning",
-          "title": "내용 안내",
-          "text": "이 작품에는 가족의 응급 입원, 정서 반응 수치에 따른 차별, 직장 내 압박이 나옵니다."
-        },
-        {
-          "id": "fiction",
-          "title": "허구 안내",
-          "text": "에모스와 한신뉴로, 작중의 모든 법령·판례·수치는 지어낸 것입니다. 실제 기업·제도·사건과 관계가 없습니다."
-        }
-      ],
-      "chapterCount": 5,
-      "endingCount": 5,
-      "seo": {
-        "title": "오버플로",
-        "description": "2033년 서울. 감정을 숫자로 읽는 렌즈는 팔 년 동안 한 번도 틀린 적이 없다. 쓰러진 아버지를 보러 간 문지완에게 렌즈가 01을 띄우고, 병실 문이 멈춘다. 틀리지 않는 기계가 읽은 0은 정말 0일까.",
-        "keywords": [
-          "SF 미스터리",
-          "비주얼노벨",
-          "감정 측정",
-          "AI 렌즈",
-          "반전",
-          "sci-fi",
-          "mystery",
-          "modern",
-          "investigation",
-          "twist",
-          "complete"
-        ],
-        "image": "/game-list/overflow/assets/bg/title.svg",
-        "imageAlt": "병동 자동문과 황갈색 숫자 01이 빛나는 판독기"
-      }
-    },
-    {
-      "id": "tutorial",
-      "name": "튜토리얼",
-      "path": "/game-list/tutorial/",
-      "author": "uiwwsw",
-      "version": "1.7.1",
-      "summary": "마트 고객센터에서 12년째 일하는 정해수는 레플라 체험권을 받는다. 현실과 똑같이 생긴 가상 매장에서도 호출기에 027번이 뜬다. 5장 SF 미스터리, 결말 4종.",
-      "summaryEn": "In a near future where everyone lives a second life in REPLA, a perfect copy of reality, a mild-mannered supermarket service-desk worker finally loses his temper inside the free tutorial. The next morning a real body is found in the same parking spot. A five-chapter sci-fi mystery with verbal abuse, a murder case and addiction.",
-      "thumbnail": "/game-list/tutorial/assets/bg/title.svg",
-      "tags": [
-        "sci-fi",
-        "mystery",
-        "modern",
-        "twist",
-        "complete"
-      ],
-      "tagLabels": {
-        "sci-fi": "SF",
-        "mystery": "미스터리",
-        "modern": "근미래",
-        "twist": "반전",
-        "complete": "완결"
-      },
-      "languages": [
-        "ko"
-      ],
-      "showcase": {
-        "label": "TUTORIAL · 5 CHAPTERS",
-        "backgroundColor": "#e4efe9",
-        "image": {
-          "positionX": 60,
-          "positionY": 50,
-          "scale": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
-      "legalNotices": [
-        {
-          "id": "content-warning",
-          "title": "내용 안내",
-          "text": "이 작품에는 고객의 폭언, 살인 사건과 죽음, 경찰 조사, 중독과 집착(성적 묘사 없음)이 나옵니다. 폭력 장면은 화면 밖에서 소리로만 처리합니다."
-        }
-      ],
-      "chapterCount": 5,
-      "endingCount": 4,
-      "seo": {
-        "title": "튜토리얼",
-        "description": "마트 고객센터에서 12년째 일하는 정해수가 현실을 복제한 레플라에 접속한다. 체험판에서 손님에게 처음으로 화를 낸 뒤, 가상 매장에서 한 말과 행동이 현실로 새어 나오기 시작한다. 5장 SF 미스터리, 결말 4종.",
-        "keywords": [
-          "SF 미스터리",
-          "비주얼노벨",
-          "시뮬레이션",
-          "반전",
-          "sci-fi",
-          "mystery",
-          "modern",
-          "twist",
-          "complete"
-        ],
-        "image": "/game-list/tutorial/assets/bg/title.svg",
-        "imageAlt": "마트 고객센터가 오른쪽에서 청색 도면으로 이어지는 그림"
-      }
-    },
-    {
       "id": "erase",
       "name": "ERASE",
       "path": "/game-list/erase/",
@@ -392,13 +255,11 @@
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록, 오버플로, 튜토리얼, ERASE.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록, ERASE.",
     "keywords": [
       "360",
       "8비트 심장",
       "무원 — 한성 검안록",
-      "오버플로",
-      "튜토리얼",
       "ERASE",
       "philosophical-sf",
       "reincarnation",
@@ -413,9 +274,9 @@
       "joseon",
       "investigation",
       "consequential-choices",
+      "psychological-drama",
       "modern",
       "twist",
-      "psychological-drama",
       "mature",
       "환생 비주얼노벨",
       "철학 SF",
@@ -431,23 +292,17 @@
       "무원록",
       "역사 비주얼노벨",
       "추리 게임",
-      "SF 미스터리",
-      "비주얼노벨",
-      "감정 측정",
-      "AI 렌즈",
-      "반전",
-      "시뮬레이션",
       "심리 드라마",
+      "비주얼노벨",
+      "반전",
       "현대극"
     ],
     "gameTitles": [
       "360",
       "8비트 심장",
       "무원 — 한성 검안록",
-      "오버플로",
-      "튜토리얼",
       "ERASE"
     ],
-    "gameCount": 6
+    "gameCount": 4
   }
 }

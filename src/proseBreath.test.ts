@@ -40,9 +40,9 @@ const authorLines = (game: string): Array<{ where: string; text: string }> => {
 
 describe('prose', () => {
   it('reads the author voice out of every published work', () => {
-    // A demo can be all dialogue; a story cannot. Six of these have a narrator.
+    // A demo can be all dialogue; a story cannot. Every published work has a narrator.
     const narrated = games.filter((game) => authorLines(game).length > 0);
-    expect(narrated.length, narrated.join(', ')).toBeGreaterThanOrEqual(6);
+    expect(narrated, narrated.join(', ')).toEqual(games);
   });
 
   it('never has the narrator name the feeling', () => {

@@ -7,7 +7,7 @@ import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } 
 // muwonGame.test.ts and threeSixtyGame.test.ts check their own game in detail; this one is the
 // floor under all of them, so a typo in a scene id or a goto that points nowhere fails here
 // instead of in a player's browser.
-const games = ['360', '8bit-heart', 'erase', 'muwon', 'overflow', 'tutorial'];
+const games = ['360', '8bit-heart', 'erase', 'muwon'];
 
 const gameRoot = (id: string): string => fileURLToPath(new URL(`../public/game-list/${id}/`, import.meta.url));
 

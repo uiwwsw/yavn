@@ -35,7 +35,7 @@ For a complete runnable package, copy `examples/game-template/` as described in 
 - In an `explore` choice, give each scene target `at: { x: 40, y: 60 }` to place a numbered marker in the playable area. Add `investigation: { width: 1600, height: 900 }` to use percentages of the source background instead. In image-based exploration, unavailable targets display as checked, so tie each `when` to its own completion flag. See [the Muwon inquest](../public/game-list/muwon/0.yaml).
 - Use `presentation: approach` with `clicks: 3` to require three consecutive activations of the same marker. Optional `reveal` lines appear on the preceding taps. Another marker starts its own sequence, and tapping the empty scene resets the sequence. See [360’s opening](../public/game-list/360/0.yaml).
 - To display a single in-scene action as a marker, use `say: { text: "An envelope lies on the table.", continueLabel: "Open the envelope", at: { x: 54, y: 62 } }`. The marker continues to the next action.
-- Set `choice.evidence` to a declared inventory ID to let players review an owned item's description without making a choice. Write `music: null` to stop the active background music. A later music action starts a new track. See [the server shutdown scene](../public/game-list/tutorial/4.yaml).
+- Set `choice.evidence` to a declared inventory ID to let players review an owned item's description without making a choice. Write `music: null` to stop the active background music. A later music action starts a new track.
 - Characters, backgrounds, music, sound effects and video belong in the declared assets. Respect asset licenses and game-specific legal notices.
 - Start-screen image positioning supports desktop and mobile focal points. Live2D and cinematic effects are optional; verify fallback and mobile behavior.
 - Test all branches and ending conditions. Save/load, automatic checkpoints, manual saves and exported save backups are separate controls.
@@ -94,7 +94,7 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 
 - Carry a prop, sound, movement, or eyeline across a cut within the same event. Use a wide shot to establish where people are before moving in for dialogue.
 - Give the previous scene a beat to land when time, place, or viewpoint changes. Use `place` or a caption card for established time and location. When two viewpoints share a moment, let the new viewpoint pick up the same action.
-- Set `say.speakerName` to “Unknown woman” or another label the viewpoint character could use. Keep it on the line that reveals the name, then omit it on later lines to use the character's name. The alias also appears in messages and the story log. [Playable example in Overflow, chapter 1](../public/game-list/overflow/1.yaml)
+- Set `say.speakerName` to “Unknown woman” or another label the viewpoint character could use. Keep it on the line that reveals the name, then omit it on later lines to use the character's name. The alias also appears in messages and the story log.
 
 ## Caption cards, phone messages and three new stories (2026-11-13)
 
