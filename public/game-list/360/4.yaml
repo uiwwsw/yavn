@@ -256,6 +256,38 @@ scenes:
               - { var: l3_out_blocked, op: eq, value: true }
               - { var: l4_sign_blocked, op: eq, value: true }
           text: "쥔 것 옆에, 그다음 삶에서 하려는데 안 되던 일을 놓아 본다. 하나씩 짝이 맞는다."
+      - say:
+          channel: narration
+          when: { var: l1_rice_blocked, op: eq, value: true }
+          text: "포구에서는 열쇠를 꽂고도 손목이 돌아가지 않았다."
+      - say:
+          channel: narration
+          when: { var: l1_leave_blocked, op: eq, value: true }
+          text: "포구에서는 문지방 앞에서 발이 넘어가지 않았다."
+      - say:
+          channel: narration
+          when: { var: l2_heart_blocked, op: eq, value: true }
+          text: "부두에서는 영수증을 달라는 말이 나오지 않았다."
+      - say:
+          channel: narration
+          when: { var: l2_mother_blocked, op: eq, value: true }
+          text: "부두에서는 어머이를 부르는 사이 보따리가 벌써 어깨에 있었다."
+      - say:
+          channel: narration
+          when: { var: l3_open_blocked, op: eq, value: true }
+          text: "병실에서는 무섭다는 말이 나오지 않았다."
+      - say:
+          channel: narration
+          when: { var: l3_out_blocked, op: eq, value: true }
+          text: "병실에서는 잠바 대신 난간을 쥐었다."
+      - say:
+          channel: narration
+          when: { all: [{ var: l4_sign_blocked, op: eq, value: true }, { var: l4_signed, op: eq, value: true }] }
+          text: "편집실에서는 일어서려는데 손이 펜을 쥐고 있었다."
+      - say:
+          channel: narration
+          when: { all: [{ var: l4_sign_blocked, op: eq, value: true }, { var: l4_signed, op: eq, value: false }] }
+          text: "편집실에서는 펜촉이 서명 칸 위에서 내려가지 않았다."
       - wait: 900
       - say:
           channel: narration

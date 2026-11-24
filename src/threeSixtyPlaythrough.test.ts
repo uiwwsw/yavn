@@ -332,6 +332,12 @@ describe('360 full playthrough', () => {
     expect(shown.indexOf('…저도 같이 걸어도 돼요?')).toBeGreaterThan(bridgePlan);
     expect(heard(shown, '점 두 개가 나란히 찍혀 있다')).toBe(false);
     expect(heard(shown, '가방끈이 어깨에 걸려 있다')).toBe(true);
+    // The fifth dark lays each held regret beside what it stopped in the next life.
+    expect(heard(shown, '부두에서는 영수증을 달라는 말이 나오지 않았다')).toBe(true);
+    expect(heard(shown, '병실에서는 잠바 대신 난간을 쥐었다')).toBe(true);
+    expect(heard(shown, '편집실에서는 펜촉이 서명 칸 위에서 내려가지 않았다')).toBe(true);
+    expect(heard(shown, '편집실에서는 일어서려는데')).toBe(false);
+    expect(heard(shown, '포구에서는')).toBe(false);
     expect(heard(shown, '박다온(53), 오후 두 시')).toBe(true);
     expect(heard(shown, '그때 온 사람이 마지막이었다')).toBe(false);
     // The fifth dark hears the earlier lives back as testimony, then one more thing arrives:
@@ -482,6 +488,9 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '손목이 돌아가지 않는다')).toBe(true);
     expect(heard(shown, '열쇠를 돌리려는데 쥔 손에 힘만 더 들어간다')).toBe(true);
     expect(heard(shown, '보따리는 벌써 어깨에 있고')).toBe(true);
+    expect(heard(shown, '포구에서는 열쇠를 꽂고도 손목이 돌아가지 않았다')).toBe(true);
+    expect(heard(shown, '부두에서는 어머이를 부르는 사이 보따리가 벌써 어깨에 있었다')).toBe(true);
+    expect(heard(shown, '편집실에서는')).toBe(false);
     expect(state.routeVars).toMatchObject({ lives_done: 4, t_live: true, v_end: 'hold', deg_last: '041.2' });
     expect(state.resolvedEndingId).toBe('onward');
   }, 120000);
