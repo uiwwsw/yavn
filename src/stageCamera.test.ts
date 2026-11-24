@@ -61,7 +61,8 @@ describe('stage camera', () => {
     );
     expect(medium).toMatchObject({
       shot: 'medium',
-      scale: 1.62,
+      // A group framing holds the trio inside the stage; see the cast-size test below.
+      scale: 1.3,
       // A phone holds a trio only at the composed width; see the cast-size test below.
       mobileScale: 1,
       panX: '0cqw',
@@ -168,7 +169,8 @@ describe('stage camera', () => {
       duoLayout,
     );
     expect(duoMedium).toMatchObject({
-      scale: 1.62,
+      // A pair is framed so both stay inside the stage.
+      scale: 1.3,
       // Same portrait and crop as the solo shot above — only the phone's zoom differs, because
       // zooming a pair walks the outer actor off a 375px screen.
       mobileScale: 1,
@@ -192,8 +194,7 @@ describe('stage camera', () => {
       mobilePanX: '25cqw',
     });
 
-    expect(medium.scale).toBe(duoMedium.scale);
-    expect(medium.scale).toBe(
+    expect(duoMedium.scale).toBe(
       resolveStageCameraPresentation(
         resolveStageCameraState({ shot: 'medium' }),
         3,
@@ -203,7 +204,7 @@ describe('stage camera', () => {
     );
   });
 
-  it('keeps every camera shot on one absolute scale profile for every cast size', () => {
+  it('frames a group inside the stage and keeps the solo push-in', () => {
     const soloLayout: CharacterStageLayout = {
       mode: 'default',
       duoSideByPosition: {},
@@ -246,8 +247,9 @@ describe('stage camera', () => {
         layout,
       );
 
-      // Desktop keeps one profile whatever the cast size.
-      expect(medium.scale).toBe(1.62);
+      // Alone, the authored push-in. With company, a group framing that keeps everyone inside the
+      // stage, unless the camera pans to one actor.
+      expect(medium.scale).toBe(count === 1 ? 1.62 : 1.3);
       expect(medium.originY).toBe(86);
       expect(medium.mobileOriginY).toBe(82);
       expect(wide.scale).toBeCloseTo(1.18);
@@ -343,7 +345,7 @@ describe('stage camera', () => {
 
     expect(untargetedClose).toMatchObject({
       shot: 'close',
-      scale: 1.86,
+      scale: 1.3,
       mobileScale: 1,
       panX: '0cqw',
       mobileOriginY: 82,

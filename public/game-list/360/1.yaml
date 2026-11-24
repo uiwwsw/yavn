@@ -194,12 +194,14 @@ scenes:
       - say: { channel: action, with: [], sound: market_fire, text: "바닷바람을 탄 불길이 옆 골목으로 번졌다. 시장으로 내려가는 계단까지 연기가 찼다." }
       - say: { channel: action, with: [], text: "천막을 얹은 지게가 길을 막는다. 물통 든 사람이 그 사이를 비집고 뛴다." }
       - say: { channel: action, with: [], text: "길목 쪽에서 아이 울음이 난다. 복례 아주머니 천막이 거기다." }
-      - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다." }
+      - wait: 700
+      - say: { channel: thought, with: [], text: "영호 손을 쥐고 있다. 다른 손이 비어 있다.", wait: 2000, unskippable: true }
       - wait: 900
       - say: { channel: thought, with: [], text: "비어 있는 손으로 뭘 해야 하는지 알면서 모르는 척한다." }
       - say: { channel: action, with: [], text: "옆 좌판 최 씨가 물수건을 머리에 쓰고 들어갔다. 쉰이 넘은 사람이다." }
       - wait: 1100
-      - say: { channel: action, with: [], text: "아이 둘은 나왔다. 최 씨는 안 나왔다." }
+      - wait: 1400
+      - say: { channel: action, with: [], text: "아이 둘은 나왔다. 최 씨는 안 나왔다.", wait: 2400, unskippable: true }
       - say: { channel: thought, with: [], text: "영호 손을 놓지 못한 채 다른 손으로 치맛자락만 움켜쥐었다." }
       - say: { char: 영호, with: [순임], delivery: shout, text: "엄마, 보따리! 좌판 밑에!" }
       - say: { char: 순임, with: [영호], text: "두고 와. 손 놓지 마." }

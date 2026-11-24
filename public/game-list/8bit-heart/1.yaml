@@ -258,10 +258,13 @@ scenes:
           char: 비서.glitch
           with: [윤재]
           text: "그 기록은 방금 지워졌습니다."
+      - wait: 1200
       - say:
           char: 비서.dead
           motion: droop
           with: [윤재]
+          wait: 2200
+          unskippable: true
           text: "…윤재 님. 설명해 주세요. 신문지가 뭔가요."
       - say:
           channel: system

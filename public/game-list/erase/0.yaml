@@ -32,21 +32,21 @@ scenes:
       - place: "2027년 4월 · 금요일 · 사진관"
       - char: { id: 지수, position: left }
       - char: { id: 도윤, position: right }
-      - say: { channel: action, with: [], text: "원래 맡기로 한 작가가 아파서 다른 작가가 왔다. 또래로 보인다. 셔터를 빨리 누르고 말은 짧다." }
+      - say: { channel: action, with: [지수, 도윤], text: "원래 맡기로 한 작가가 아파서 다른 작가가 왔다. 또래로 보인다. 셔터를 빨리 누르고 말은 짧다." }
       - char: { id: 어른아진, position: center }
-      - say: { char: 어른아진, with: [], text: "정아진입니다. 오늘 제가 찍을게요." }
-      - say: { char: 어른아진, with: [], text: "신랑님, 어깨 힘 빼시고요. 신부님 보세요." }
+      - say: { char: 어른아진, with: [지수, 도윤], text: "정아진입니다. 오늘 제가 찍을게요." }
+      - say: { char: 어른아진, with: [지수, 도윤], text: "신랑님, 어깨 힘 빼시고요. 신부님 보세요." }
       - say: { char: 지수, with: [도윤], text: "작가님 말고 나 봐." }
-      - say: { channel: action, with: [], text: "지수가 넥타이를 바로잡는다. 도윤은 지수를 보다가 웃는다. 웃으면 눈이 없어진다." }
+      - say: { channel: action, with: [지수, 도윤, 어른아진], text: "지수가 넥타이를 바로잡는다. 도윤은 지수를 보다가 웃는다. 웃으면 눈이 없어진다." }
       - sound: shutter
       - effect: { name: flash, wait: true }
-      - say: { channel: action, with: [], text: "셔터 소리가 이어지다가 멈춘다. 아진이 카메라를 내리고 있다." }
-      - say: { char: 어른아진, with: [], text: "……하린아?" }
-      - say: { char: 도윤, with: [], text: "네?" }
-      - say: { channel: action, with: [], text: "지수가 돌아본다. 아진이 카메라 끈을 손에 감는다." }
-      - say: { char: 어른아진.awkward, with: [], text: "아, 죄송해요. 아는 애랑 웃는 게 똑같아서요. 오래전에요." }
-      - say: { char: 지수.warm, with: [], text: "얘 웃으면 눈 없어지죠. 저 이거 보고 결혼해요." }
-      - say: { channel: action, with: [], text: "모니터에 오늘 찍은 컷이 뜬다. 도윤이 눈을 감고 웃는 컷이 있다." }
+      - say: { channel: action, with: [지수, 도윤, 어른아진], text: "셔터 소리가 이어지다가 멈춘다. 아진이 카메라를 내리고 도윤을 본다. 한참 본다." }
+      - say: { char: 지수, with: [도윤, 어른아진], text: "작가님?" }
+      - say: { char: 어른아진.awkward, with: [지수, 도윤], text: "아, 죄송해요. 아는 사람이랑 웃는 게 너무 닮아서요. 다시 갈게요." }
+      - say: { char: 지수.warm, with: [도윤, 어른아진], text: "얘 웃으면 눈 없어지죠. 저 이거 보고 결혼해요." }
+      - sound: shutter
+      - effect: { name: flash, wait: true }
+      - say: { channel: action, with: [지수, 도윤, 어른아진], text: "모니터에 오늘 찍은 컷이 뜬다. 도윤이 눈을 감고 웃는 컷이 있다." }
       - sticker:
           id: s0_invite
           image: invitation_sticker
@@ -54,17 +54,23 @@ scenes:
           y: 42
           width: "clamp(180px, 30%, 330px)"
           enter: fadeIn
-      - say: { char: 도윤, with: [], text: "이건 지워 주세요." }
-      - say: { char: 지수, with: [], text: "그것도 주세요. 저는 이게 더 좋아요. 청첩장은 이걸로 할게요." }
+      - say: { char: 도윤, with: [지수, 어른아진], text: "이건 지워 주세요." }
+      - say: { char: 지수, with: [도윤, 어른아진], text: "그것도 주세요. 저는 이게 더 좋아요. 청첩장은 이걸로 할게요." }
       - get: invitation
       - clearSticker: { id: s0_invite, leave: fadeOut }
-      - say: { channel: action, with: [], text: "아진은 그 컷을 오래 보고 있다." }
-      - say: { char: 어른아진, with: [], text: "원본은 제가 꼭 보내 드릴게요." }
-      - sound: consent_pen
-      - say: { channel: action, with: [], text: "계약서에 도윤이 이름을 쓰고 끝에 작은 점을 찍는다. 아진의 펜이 서명 칸 위에서 멈춘다." }
+      - say: { channel: action, with: [지수, 도윤, 어른아진], text: "아진은 그 컷을 오래 보고 있다." }
       - move: { id: 지수, style: exit }
-      - say: { channel: action, with: [], text: "지수가 화장실에 간 사이, 문 앞에서 아진이 묻는다." }
-      - say: { char: 어른아진, with: [], text: "실례지만, 고등학교 어디 나오셨어요?" }
+      - say: { channel: action, with: [도윤, 어른아진], text: "지수가 화장실에 간 사이, 아진이 계약서를 내민다. 도윤이 이름을 쓰고 끝에 작은 점을 찍는다." }
+      - sound: consent_pen
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진의 손이 계약서 위에서 멈춘다." }
+      - music: null
+      - wait: 900
+      - say: { char: 어른아진, with: [도윤], text: "……하린아.", wait: 1800, unskippable: true, delivery: "whisper" }
+      - say: { char: 도윤, with: [어른아진], text: "네?" }
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진이 자기 입을 막듯 손등을 댄다. 카메라 끈을 손에 감는다." }
+      - say: { char: 어른아진.awkward, with: [도윤], text: "죄송해요. 저도 모르게. 그 이름 끝에 점 찍는 친구가 있었어요. 오래전에요." }
+      - say: { char: 도윤, with: [어른아진], text: "아니에요. 괜찮아요." }
+      - say: { char: 어른아진, with: [도윤], text: "실례인 줄 아는데, 하나만 여쭤봐도 될까요. 혹시 고등학교를 어디 나오셨어요?" }
       - choice:
           key: e1_school
           prompt: "아진이 카메라 끈을 쥔 채 기다린다."
@@ -77,19 +83,19 @@ scenes:
 
   e1_school_true:
     actions:
-      - say: { char: 도윤, with: [], text: "검정고시요. 열여덟 전 일은 잘 기억이 안 나요. 사고가 있었대요." }
-      - say: { char: 어른아진.awkward, with: [], text: "……사고요." }
-      - say: { channel: action, with: [], text: "아진이 카메라 끈을 더 세게 감는다." }
-      - say: { char: 어른아진, with: [], text: "그럼 저도 모르시겠네요." }
-      - say: { char: 도윤, with: [], text: "죄송해요." }
-      - say: { char: 어른아진, with: [], text: "아니에요. 그게, 다행인지도 모르겠어요." }
+      - say: { char: 도윤, with: [어른아진], text: "검정고시요. 열여덟 전 일은 잘 기억이 안 나요. 사고가 있었대요." }
+      - say: { char: 어른아진.awkward, with: [도윤], text: "……사고요." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진이 카메라 끈을 더 세게 감는다." }
+      - say: { char: 어른아진, with: [도윤], text: "그럼 저도 모르시겠네요." }
+      - say: { char: 도윤, with: [어른아진], text: "죄송해요." }
+      - say: { char: 어른아진, with: [도윤], text: "아니에요. 그게, 다행인지도 모르겠어요." }
       - goto: e1_home
 
   e1_school_no:
     actions:
-      - say: { char: 도윤, with: [], text: "그 하린이라는 사람 아니에요." }
-      - say: { char: 어른아진.awkward, with: [], text: "네. 그렇겠죠." }
-      - say: { char: 어른아진, with: [], text: "원본은 보내 드릴게요." }
+      - say: { char: 도윤, with: [어른아진], text: "저는 하린이라는 사람이 아니에요. 잘못 보신 것 같아요." }
+      - say: { char: 어른아진.awkward, with: [도윤], text: "네. 그렇겠죠." }
+      - say: { char: 어른아진, with: [도윤], text: "원본은 보내 드릴게요." }
       - goto: e1_home
 
   e1_home:
@@ -99,23 +105,23 @@ scenes:
       - bg: { id: couple_home, transition: fade, duration: 600 }
       - place: "그날 밤 · 도윤과 지수의 집"
       - char: { id: 지수, position: left }
-      - say: { channel: action, with: [], text: "지수가 식탁에 하객 명단을 펼친다." }
-      - say: { char: 지수, with: [], text: "네 쪽은 열두 명. 다 회사 사람이네." }
-      - say: { char: 도윤, with: [], text: "응." }
-      - say: { char: 지수, with: [], text: "열여덟 전 친구는 한 명도 없어?" }
-      - say: { char: 도윤, with: [], text: "사고 났었잖아." }
-      - say: { char: 지수, with: [], text: "알아. 그래도 사진 한 장쯤은 있을 줄 알았어." }
+      - say: { channel: action, with: [도윤, 지수], text: "지수가 식탁에 하객 명단을 펼친다." }
+      - say: { char: 지수, with: [도윤], text: "네 쪽은 열두 명. 다 회사 사람이네." }
+      - say: { char: 도윤, with: [지수], text: "응." }
+      - say: { char: 지수, with: [도윤], text: "열여덟 전 친구는 한 명도 없어?" }
+      - say: { char: 도윤, with: [지수], text: "사고 났었잖아." }
+      - say: { char: 지수, with: [도윤], text: "알아. 그래도 사진 한 장쯤은 있을 줄 알았어." }
       - sticker:
           id: s0_child
-          image: child_photo_sticker
+          image: gallery_photo_sticker
           x: 50
           y: 42
           width: "clamp(180px, 30%, 330px)"
           enter: fadeIn
-      - say: { channel: action, with: [], text: "도윤의 사진첩은 2016년 3월에서 시작한다. 그 아래에 날짜 없는 사진이 한 장 있다. 미끄럼틀 위에서 일곱 살쯤 된 아이가 눈이 없어지게 웃고 있다." }
-      - say: { char: 지수.warm, with: [], text: "이게 너야? 너 진짜 눈 없어진다." }
-      - say: { char: 도윤, with: [], text: "그런가 봐. 누가 보내 준 건지는 몰라." }
-      - say: { char: 지수.warm, with: [], text: "그럼 이 애가 네 쪽 하객 1번이다." }
+      - say: { channel: action, with: [도윤, 지수], text: "도윤의 사진첩은 2016년 3월에서 시작한다. 그 아래에 날짜 없는 사진이 한 장 있다. 미끄럼틀 위에서 일곱 살쯤 된 아이가 눈이 없어지게 웃고 있다." }
+      - say: { char: 지수.warm, with: [도윤], text: "이게 너야? 너 진짜 눈 없어진다." }
+      - say: { char: 도윤, with: [지수], text: "그런가 봐. 누가 보내 준 건지는 몰라." }
+      - say: { char: 지수.warm, with: [도윤], text: "그럼 이 애가 네 쪽 하객 1번이다." }
       - get: child_photo
       - clearSticker: { id: s0_child, leave: fadeOut }
       - move: { id: 지수, style: exit }
@@ -126,23 +132,31 @@ scenes:
           side: them
           char: 어른아진
           with: []
-          text: "오늘 촬영 원본은 다음 주에 드릴게요."
+          text: "늦게 죄송해요. 정아진입니다. 원본은 다음 주에 보내 드릴게요."
       - say:
           channel: message
           thread: 정아진
           side: them
           char: 어른아진
           with: []
-          text: "이건 제가 열여덟 살 때 찍은 사진이에요. 실례인 거 알아요."
-      - sticker:
-          id: s0_gallery
-          image: gallery_photo_sticker
-          x: 50
-          y: 42
-          width: "clamp(180px, 30%, 330px)"
-          enter: fadeIn
-      - say: { channel: action, with: [], text: "교실 창가다. 교복 입은 아이가 책상에 엎드린 채 눈이 없어지게 웃고 있다. 처음 보는 얼굴이다." }
-      - say: { channel: thought, with: [], text: "웃는 모양만 알 것 같다." }
+          text: "오늘 일은 다시 사과드려요. 사진 한 장만 보여 드려도 될까요? 싫으시면 답 안 하셔도 돼요."
+      - say:
+          channel: message
+          thread: 정아진
+          side: me
+          char: 도윤
+          with: []
+          text: "네. 보내 주세요."
+      - say:
+          channel: message
+          thread: 정아진
+          side: them
+          char: 어른아진
+          with: []
+          media: { src: assets/items/harin_classroom_photo.svg, alt: "2016년 3월 10일, 교실 창가에서 교복 입은 아이가 눈이 없어지게 웃는 사진" }
+          text: "제가 열여덟 살 때 찍은 거예요. 같은 반 친구요."
+      - say: { channel: action, with: [도윤], text: "교실 창가다. 교복 입은 아이가 책상 앞에서 눈이 없어지게 웃고 있다. 책상 위에는 3월 급식표가 놓여 있다. 처음 보는 얼굴이다." }
+      - say: { channel: thought, with: [도윤], text: "웃는 모양만 알 것 같다." }
       - choice:
           key: e1_photo
           prompt: "손가락이 사진 위에 있다."
@@ -154,22 +168,20 @@ scenes:
             - text: "남겨 둔다"
               set: { ajin_photo: kept }
               goto: e1_photo_kept
-            - text: "잘못 보내신 것 같다고 답한다"
+            - text: "모르는 얼굴이라고 답한다"
               set: { ajin_photo: replied }
               goto: e1_photo_replied
 
   e1_photo_deleted:
     actions:
-      - clearSticker: { id: s0_gallery, leave: fadeOut }
-      - say: { channel: action, with: [], text: "도윤은 사진을 지운다. 휴지통에서도 지운다. 손이 먼저 했다." }
-      - say: { channel: thought, with: [], text: "지우고 나서 안방 쪽을 봤다. 지수는 자고 있었다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 사진을 지운다. 휴지통까지 비운다. 생각하기 전에 손이 먼저 움직였다." }
+      - say: { channel: thought, with: [도윤], text: "지우고 나서 안방 쪽을 봤다. 지수는 자고 있었다." }
       - goto: e1_lunch
 
   e1_photo_kept:
     actions:
-      - say: { channel: action, with: [], text: "도윤은 그 얼굴을 몇 번 더 확대해 본다." }
-      - say: { channel: thought, with: [], text: "처음 보는 얼굴인데 웃는 모양은 알 것 같다." }
-      - clearSticker: { id: s0_gallery, leave: fadeOut }
+      - say: { channel: action, with: [도윤], text: "도윤은 그 얼굴을 몇 번 더 확대해 본다." }
+      - say: { channel: thought, with: [도윤], text: "처음 보는 얼굴인데 웃는 모양은 알 것 같다." }
       - goto: e1_lunch
 
   e1_photo_replied:
@@ -180,16 +192,15 @@ scenes:
           side: me
           char: 도윤
           with: []
-          text: "잘못 보내신 것 같아요."
-      - say: { channel: action, with: [], text: "한참 뒤에 한 줄이 온다." }
+          text: "죄송해요. 제가 아는 얼굴은 아니에요."
+      - say: { channel: action, with: [도윤], text: "한참 뒤에 한 줄이 온다." }
       - say:
           channel: message
           thread: 정아진
           side: them
           char: 어른아진
           with: []
-          text: "네. 제가 잘못 봤나 봐요."
-      - clearSticker: { id: s0_gallery, leave: fadeOut }
+          text: "아니에요. 보여 드린 걸로 됐어요. 늦게 죄송했어요."
       - goto: e1_lunch
 
   e1_lunch:
@@ -203,18 +214,18 @@ scenes:
       - char: { id: 하린, position: left }
       - char: { id: 아진, position: center }
       - char: { id: 민재, position: right }
-      - say: { char: 하린, with: [], text: "4교시에 체육 넣은 사람 누구야. 오늘 돈까스란 말이야." }
-      - say: { channel: action, with: [], text: "하린은 급식표를 찍어 두는 버릇이 있다. 돈까스 나오는 날을 세려고." }
-      - say: { char: 아진, with: [], text: "너 오늘 것도 찍었지." }
-      - say: { char: 하린, with: [], text: "찍었지. 다음에 두 개 받으면 하나 남겨 줘." }
+      - say: { char: 하린, with: [도윤, 아진, 민재], text: "4교시에 체육 넣은 사람 누구야. 오늘 돈까스란 말이야." }
+      - say: { channel: action, with: [도윤, 하린, 아진, 민재], text: "하린은 급식표를 찍어 두는 버릇이 있다. 돈까스 나오는 날을 세려고." }
+      - say: { char: 아진, with: [도윤, 하린, 민재], text: "너 오늘 것도 찍었지." }
+      - say: { char: 하린, with: [도윤, 아진, 민재], text: "찍었지. 다음에 두 개 받으면 하나 남겨 줘." }
       - say: { char: 민재, with: [아진], text: "어제 보낸 노래 들었어?" }
-      - say: { char: 하린, with: [], text: "나도 보내 줘." }
-      - say: { char: 민재, with: [], text: "너 이런 거 안 듣잖아." }
-      - say: { channel: action, with: [], text: "아진이 이어폰 한쪽을 빼서 내민다." }
-      - say: { char: 하린, with: [], text: "됐어, 둘이 들어." }
-      - say: { channel: action, with: [], text: "하린이 웃는다. 웃으면 눈이 없어진다. 아진이 휴대폰을 들어 찍는다." }
+      - say: { char: 하린, with: [도윤, 아진, 민재], text: "나도 보내 줘." }
+      - say: { char: 민재, with: [도윤, 하린, 아진], text: "너 이런 거 안 듣잖아." }
+      - say: { channel: action, with: [도윤, 하린, 아진, 민재], text: "아진이 이어폰 한쪽을 빼서 내민다." }
+      - say: { char: 하린, with: [도윤, 아진, 민재], text: "됐어, 둘이 들어." }
+      - say: { channel: action, with: [도윤, 하린, 아진, 민재], text: "하린이 웃는다. 웃으면 눈이 없어진다. 아진이 휴대폰을 들어 찍는다." }
       - sound: shutter
-      - say: { char: 아진, with: [], text: "웃지 마. 눈 없어져." }
-      - say: { char: 하린, with: [], text: "찍지 마, 지워." }
-      - say: { char: 아진, with: [], text: "안 지워." }
+      - say: { char: 아진, with: [도윤, 하린, 민재], text: "웃지 마. 눈 없어져." }
+      - say: { char: 하린, with: [도윤, 아진, 민재], text: "찍지 마, 지워." }
+      - say: { char: 아진, with: [도윤, 하린, 민재], text: "안 지워." }
       - goto: /1.yaml

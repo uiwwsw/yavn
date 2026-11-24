@@ -2174,6 +2174,9 @@ function stageDeclaredCharacter(game: GameData, baseUrl: string, char: CharActio
   }
   const definition = game.assets.characters[char.id];
   const path = char.emotion ? definition.emotions?.[char.emotion] ?? definition.base : definition.base;
+  // Someone who walked off with `move: exit` keeps that stance on their id. Placing them again
+  // is a fresh entrance, so the walk-off must not carry over and leave them past the edge.
+  if (state.characterStances[char.id]?.style === 'exit') state.setCharacterStance(char.id, undefined);
   state.setCharacter(position, buildCharacterSlot(baseUrl, char.id, path, definition, char.emotion, char.framing, char.enter));
   return true;
 }

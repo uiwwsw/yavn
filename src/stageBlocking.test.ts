@@ -41,6 +41,8 @@ scenes:
       - say: { char: a, with: [b], text: "카메라로." }
       - move: { id: b, toward: a, style: exit }
       - say: { char: a, text: "나갔다." }
+      - char: { id: b, position: right }
+      - say: { char: b, with: [a], text: "다시 왔다." }
       - ending: done
 `,
   'captions.yaml': `script: [{scene: start}]
@@ -178,6 +180,12 @@ describe('stage blocking playback', () => {
     expect(state.dialog.fullText).toBe('나갔다.');
     // b (right) leaves a (left): off the right edge.
     expect(state.characterStances.b).toMatchObject({ style: 'exit', x: 60 });
+
+    // Placing b again is a fresh entrance; the walk-off must not leave b past the edge.
+    await next();
+    state = useVNStore.getState();
+    expect(state.dialog.fullText).toBe('다시 왔다.');
+    expect(state.characterStances.b).toBeUndefined();
 
     await next();
     expect(useVNStore.getState().resolvedEndingId).toBe('done');

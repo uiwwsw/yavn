@@ -13,8 +13,8 @@ scenes:
       - place: "월요일 아침 · 회사 식당 앞"
       - char: { id: 도윤, position: right }
       - sound: shutter
-      - say: { channel: action, with: [], text: "도윤은 회사 식당 앞에 붙은 주간 메뉴를 찍는다. 매주 월요일마다 하는 일이다." }
-      - say: { char: 윤주임, with: [], text: "대리님 그거 왜 맨날 찍어요?" }
+      - say: { channel: action, with: [도윤], text: "도윤은 회사 식당 앞에 붙은 주간 메뉴를 찍는다. 매주 월요일마다 하는 일이다." }
+      - say: { char: 윤주임, with: [도윤], text: "대리님 그거 왜 맨날 찍어요?" }
       - say: { char: 도윤, with: [], text: "몰라요. 버릇이에요." }
       - goto: e2_album
 
@@ -25,17 +25,18 @@ scenes:
       - music: studio
       - place: "수요일 저녁 · 사진관"
       - char: { id: 어른아진, position: left }
-      - say: { channel: action, with: [], text: "아진이 앨범 시안을 건네겠다며 불렀다. 지수는 야근이다. 아진은 시안을 펼쳐 놓고 먼저 말하지 않는다." }
-      - say: { channel: action, with: [], text: "시안을 다 넘기고 나서야 아진이 묻는다." }
-      - say: { char: 어른아진, with: [], text: "점심 메뉴, 찍으세요?" }
-      - say: { channel: action, with: [], text: "도윤의 손이 시안 위에서 멈춘다." }
-      - say: { char: 도윤.panic, with: [], text: "어떻게 아세요." }
-      - say: { char: 어른아진, with: [], text: "하린이가 그랬어요. 급식표를 찍어 뒀어요. 돈까스 나오는 날 세려고요." }
-      - say: { char: 어른아진, with: [], text: "더 귀찮게 안 할게요. 하나만 말하고 갈게요." }
-      - say: { char: 도윤, with: [], text: "……네." }
-      - say: { char: 어른아진, with: [], text: "걔가 없어지기 전 주에, 제가 옆자리 비워 둔다고 했거든요. 내일 같이 먹자고. 걔는 안 왔어요." }
-      - say: { channel: action, with: [], text: "아진이 웃는다. 눈은 웃지 않는다." }
-      - say: { char: 어른아진.awkward, with: [], text: "그래서 그 학년 끝날 때까지 그 자리 비워 뒀어요. 바보같이." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "앨범 시안이 나왔다고 사진관에서 연락이 왔다. 두 사람 중 한 명만 와도 된다고 했다. 지수는 야근이다." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진은 시안을 펼쳐 놓고 한 장씩 넘긴다. 도윤은 지수가 고른 문구를 보여 주려고 휴대폰 사진첩을 연다. 식당 메뉴판 사진이 줄줄이 지나간다." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "시안을 다 넘기고 나서야 아진이 묻는다." }
+      - say: { char: 어른아진, with: [도윤], text: "점심 메뉴, 찍으세요?" }
+      - say: { channel: action, with: [도윤, 어른아진], text: "도윤의 손이 시안 위에서 멈춘다." }
+      - say: { char: 도윤.panic, with: [어른아진], text: "어떻게 아세요." }
+      - say: { char: 어른아진, with: [도윤], text: "하린이가 그랬어요. 급식표를 찍어 뒀어요. 돈까스 나오는 날 세려고요." }
+      - say: { char: 어른아진, with: [도윤], text: "더 귀찮게 안 할게요. 하나만 말하고 갈게요." }
+      - say: { char: 도윤, with: [어른아진], text: "……네." }
+      - say: { char: 어른아진, with: [도윤], text: "걔가 없어지기 전 주에, 제가 옆자리 비워 둔다고 했거든요. 내일 같이 먹자고. 걔는 안 왔어요." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진이 웃으려다 만다." }
+      - say: { char: 어른아진.awkward, with: [도윤], text: "그래서 그 학년 끝날 때까지 그 자리 비워 뒀어요. 바보같이." }
       - choice:
           key: e2_listen
           prompt: "아진이 시안을 덮는다."
@@ -51,24 +52,24 @@ scenes:
 
   e2_listen_more:
     actions:
-      - say: { char: 도윤, with: [], text: "그 사람 얘기, 더 해 주세요." }
-      - say: { channel: action, with: [], text: "아진이 한참 도윤을 본다." }
-      - say: { char: 어른아진, with: [], text: "돈까스를 진짜 좋아했어요. 사천 원밖에 없으면서 떡볶이는 반 쏜다고 하고." }
-      - say: { char: 어른아진, with: [], text: "말은 맨날 됐어, 관심 없어, 그랬는데 다 듣고 있었어요. 그래서 그 말을 믿은 애들이 있었어요." }
-      - say: { char: 도윤, with: [], text: "아진 씨도요?" }
-      - say: { char: 어른아진.awkward, with: [], text: "저는 안 믿었어요. 믿는 척했죠. 그게 더 나빴어요." }
+      - say: { char: 도윤, with: [어른아진], text: "그 사람 얘기, 더 해 주세요." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진이 한참 도윤을 본다." }
+      - say: { char: 어른아진, with: [도윤], text: "돈까스를 진짜 좋아했어요. 사천 원밖에 없으면서 떡볶이는 반 쏜다고 하고." }
+      - say: { char: 어른아진, with: [도윤], text: "말은 맨날 됐어, 관심 없어, 그랬는데 다 듣고 있었어요. 그래서 그 말을 믿은 애들이 있었어요." }
+      - say: { char: 도윤, with: [어른아진], text: "아진 씨도요?" }
+      - say: { char: 어른아진.awkward, with: [도윤], text: "저요? 안 믿었어요. 그냥 믿는 척했어요. 그게 편했으니까." }
       - goto: e2_home
 
   e2_listen_why:
     actions:
-      - say: { char: 도윤, with: [], text: "저한테 왜 이런 얘기를 하세요." }
-      - say: { char: 어른아진.awkward, with: [], text: "그러게요." }
-      - say: { channel: action, with: [], text: "아진이 시안을 두고 먼저 나간다." }
+      - say: { char: 도윤, with: [어른아진], text: "저한테 왜 이런 얘기를 하세요." }
+      - say: { char: 어른아진.awkward, with: [도윤], text: "그러게요." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "아진이 시안을 두고 먼저 나간다." }
       - goto: e2_home
 
   e2_listen_leave:
     actions:
-      - say: { channel: action, with: [], text: "도윤은 앨범을 받아 들고 일어난다. 아진은 문까지 배웅하고 아무 말도 하지 않는다." }
+      - say: { channel: action, with: [도윤, 어른아진], text: "도윤은 앨범을 받아 들고 일어난다. 아진은 문까지 배웅하고 아무 말도 하지 않는다." }
       - branch:
           cases:
             - when: { var: ajin_photo, op: eq, value: deleted }
@@ -81,11 +82,11 @@ scenes:
       - move: { id: 어른아진, style: exit }
       - bg: { id: couple_home, transition: fade, duration: 600 }
       - music: wind
-      - say: { channel: action, with: [], text: "아진은 더 연락하지 않았다." }
+      - say: { channel: action, with: [도윤], text: "아진은 더 연락하지 않았다." }
       - say: { channel: card, with: [], text: "결혼식 날", autoAdvance: 1500 }
       - place: "결혼식 날 · 식장 로비"
-      - say: { channel: action, with: [], text: "로비에 놓인 화환 리본에 정아진이라는 이름이 적혀 있다." }
-      - say: { channel: action, with: [], text: "도윤은 그 앞을 지나간다." }
+      - say: { channel: action, with: [도윤], text: "로비에 놓인 화환 리본에 정아진이라는 이름이 적혀 있다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 그 앞을 지나간다." }
       - ending: walked_past
 
   e2_home:
@@ -95,7 +96,7 @@ scenes:
       - bg: { id: couple_home, transition: fade, duration: 600 }
       - place: "그날 밤 · 도윤과 지수의 집"
       - char: { id: 지수, position: left }
-      - say: { char: 지수, with: [], text: "작가님, 너 아는 사람이랑 닮았다며. 오늘 또 만났어?" }
+      - say: { char: 지수, with: [도윤], text: "작가님, 너 아는 사람이랑 닮았다며. 오늘 또 만났어?" }
       - choice:
           key: e2_jisu
           prompt: "지수가 대답을 기다린다."
@@ -109,18 +110,18 @@ scenes:
 
   e2_jisu_true:
     actions:
-      - say: { char: 도윤, with: [], text: "날 하린이라고 불러. 열여덟 전에 알던 사람일지도 몰라." }
-      - say: { channel: action, with: [], text: "지수가 숟가락을 내려놓는다." }
-      - say: { char: 지수, with: [], text: "무서워?" }
-      - say: { char: 도윤, with: [], text: "응." }
-      - say: { char: 지수.warm, with: [], text: "그럼 나한테도 말해 줘. 그 사람한테만 말고." }
+      - say: { char: 도윤, with: [지수], text: "날 하린이라고 불러. 열여덟 전에 알던 사람일지도 몰라." }
+      - say: { channel: action, with: [도윤, 지수], text: "지수가 숟가락을 내려놓는다." }
+      - say: { char: 지수, with: [도윤], text: "무서워?" }
+      - say: { char: 도윤, with: [지수], text: "응." }
+      - say: { char: 지수.warm, with: [도윤], text: "그럼 나한테도 말해 줘. 그 사람한테만 말고." }
       - goto: e2_backdoor
 
   e2_jisu_album:
     actions:
-      - say: { char: 도윤, with: [], text: "앨범 얘기만 했어." }
-      - say: { char: 지수, with: [], text: "알았어." }
-      - say: { channel: action, with: [], text: "지수는 더 묻지 않는다. 그날 밤 도윤은 통화 목록에서 아진의 번호를 지운다." }
+      - say: { char: 도윤, with: [지수], text: "앨범 얘기만 했어." }
+      - say: { char: 지수, with: [도윤], text: "알았어." }
+      - say: { channel: action, with: [도윤, 지수], text: "지수는 더 묻지 않는다. 그날 밤 도윤은 통화 목록에서 아진의 번호를 지운다." }
       - goto: e2_backdoor
 
   e2_backdoor:
@@ -136,16 +137,16 @@ scenes:
       - char: { id: 하린, position: left }
       - char: { id: 아진, position: center }
       - char: { id: 민재, position: right }
-      - say: { char: 하린, with: [], text: "떡볶이 먹으러 가자. 사천 원밖에 없는데 반은 쏠게." }
-      - say: { char: 민재, with: [], text: "나 뭐 좀 할 게 있어." }
-      - say: { char: 아진, with: [], text: "이따가 둘이 얘기하자." }
+      - say: { char: 하린, with: [아진, 민재], text: "떡볶이 먹으러 가자. 사천 원밖에 없는데 반은 쏠게." }
+      - say: { char: 민재, with: [하린, 아진], text: "나 뭐 좀 할 게 있어." }
+      - say: { char: 아진, with: [하린, 민재], text: "이따가 둘이 얘기하자." }
       - move: { id: 아진, style: exit }
       - move: { id: 민재, style: exit }
-      - say: { channel: action, with: [], text: "하린은 체육복을 가지러 먼저 교실로 돌아간다. 뒷문 유리에는 시간표가 붙어 있어 안이 보이지 않는다. 문 밑 틈으로 실내화 두 켤레가 붙어 서 있다." }
-      - say: { char: 아진, with: [], text: "오늘은 진짜 말하려고 했어. 우리 사귀는 거. 근데 하린이 얼굴 보니까 입이 안 떨어져." }
-      - say: { char: 민재, with: [], text: "걔 신경 안 쓸걸. 원래 아무 데도 관심 없잖아." }
-      - say: { channel: thought, with: [], text: "내 입버릇이다. 민재는 그걸 그대로 믿었다." }
-      - say: { channel: action, with: [], text: "문고리가 차다. 돌리면 둘이 돌아볼 것이다. 하린은 손을 뗀다." }
+      - say: { channel: action, with: [하린], text: "하린은 체육복을 가지러 먼저 교실로 돌아간다. 뒷문 유리에는 시간표가 붙어 있어 안이 보이지 않는다. 문 밑 틈으로 실내화 두 켤레가 붙어 서 있다." }
+      - say: { char: 아진, with: [하린], text: "오늘은 진짜 말하려고 했어. 우리 사귀는 거. 근데 하린이 얼굴 보니까 입이 안 떨어져." }
+      - say: { char: 민재, with: [하린], text: "걔 신경 안 쓸걸. 원래 아무 데도 관심 없잖아." }
+      - say: { channel: thought, with: [하린], text: "내 입버릇이다. 민재는 그걸 그대로 믿었다." }
+      - say: { channel: action, with: [하린], text: "문고리가 차다. 돌리면 둘이 돌아볼 것이다. 하린은 손을 뗀다." }
       - bg: { id: harin_room, transition: fade, duration: 600 }
       - place: "그날 밤 · 하린의 방"
       - say:
@@ -162,5 +163,5 @@ scenes:
           char: 하린
           with: []
           text: "급식 카레가 이상했어ㅋㅋ"
-      - say: { channel: thought, with: [], text: "체육복은 못 가져왔다." }
+      - say: { channel: thought, with: [하린], text: "체육복은 못 가져왔다." }
       - goto: /2.yaml

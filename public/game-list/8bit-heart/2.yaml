@@ -74,7 +74,8 @@ scenes:
   b2_boot:
     actions:
       - say: { channel: thought, with: [], text: "건전지 테이프 끝을 왼손에 쥔다. 일어나서 내 손목을 잡으면 그대로 뜯는다." }
-      - say: { char: 윤재, with: [로봇], motion: stomp, text: "켠다. 하나, 둘. …둘 반." }
+      - wait: 600
+      - say: { char: 윤재, with: [로봇], motion: stomp, text: "켠다. 하나, 둘. …둘 반.", continueLabel: "전원을 넣는다", wait: 1200 }
       - effect: heal
       - say: { channel: system, with: [], sound: boot, text: "BIOS v0.8 … RAM CHECK … 8KB … OK" }
       - char: { id: 로봇, position: right, emotion: thinking }
