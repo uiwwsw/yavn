@@ -420,6 +420,12 @@ scenes:
           when: { var: l3_said, op: eq, value: false }
           text: "…네. 엄마 가게 늦겠다."
           wait: 2000
+      - say: { channel: card, with: [], text: "12월", autoAdvance: 1400 }
+      - place: "12월 · 같은 병실"
+      - say: { channel: thought, with: [], text: "수치는 다시 내려오지 않았다. 이식 날짜는 달력에 동그라미로만 남았다." }
+      - say: { channel: thought, with: [], text: "엄마는 가게를 넘기고 아침 여섯 시 대신 하루 종일 있었다. 손에서 비린내가 나지 않았다. 그게 더 무서웠다." }
+      - say: { channel: thought, with: [], text: "눈이 온 날 창가 침대에 새 사람이 들어왔다. 나는 그쪽으로 돌아눕지 않았다." }
+      - wait: 1200
       - bg: { id: void, transition: fade, duration: 2600 }
       - music: void
       - goto: void_three

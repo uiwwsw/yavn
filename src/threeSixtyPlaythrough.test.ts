@@ -349,6 +349,17 @@ describe('360 full playthrough', () => {
     expect(heard(shown, '같은 자리는 없을 거라고 생각해요')).toBe(true);
     expect(heard(shown, '하나가 더 온다')).toBe(true);
     expect(heard(shown, '1809년')).toBe(true);
+    // Years are never skipped in one cut: each long gap is told back year by year.
+    const train = shown.findIndex(text => text.includes('그 기차가 다섯 해만 일찍 놓였더라면'));
+    expect(train).toBeGreaterThan(-1);
+    expect(train).toBeLessThan(shown.findIndex(text => text.includes('불이나 끄지 마라')));
+    expect(heard(shown, '열쇠를 뺏긴 지 열다섯 해')).toBe(false);
+    expect(heard(shown, '가락지를 들고 금방에 갔다')).toBe(true);
+    expect(heard(shown, '명부에 이름이 있는 걸 보고 운 건 그때가 처음이었다')).toBe(true);
+    expect(heard(shown, '이식 날짜는 달력에 동그라미로만 남았다')).toBe(true);
+    expect(heard(shown, '마흔세 번째 면회를 예약해 둔 주에')).toBe(true);
+    expect(heard(shown, '다온이가 처음 면회를 왔다. 마흔아홉이었다')).toBe(true);
+    expect(heard(shown, '다큐국이 없어졌다')).toBe(false);
     expect(heard(shown, '울지 않는 걸 괜찮다고 쳤다')).toBe(true);
     expect(heard(shown, '귀퉁이 하나 들춰져 있지 않았다')).toBe(true);
     expect(heard(shown, '좁쌀 자루를 내려놓지도 못하고 문턱에 서 있었다')).toBe(true);
@@ -449,6 +460,10 @@ describe('360 full playthrough', () => {
     // Shutting the gate is what the daughter defends him for, out at the gate, where he hears it.
     expect(heard(shown, '우리 아버지 그런 사람 아니에요')).toBe(true);
     expect(heard(shown, '그때 온 사람이 마지막이었다')).toBe(true);
+    expect(heard(shown, '배가 선창을 떠날 때 그 애는 한 번도 이쪽을 돌아보지 않았다')).toBe(true);
+    expect(heard(shown, '강화로 간 뒤로 그 애는 친정에 한 번도 오지 않았다')).toBe(true);
+    expect(heard(shown, '대답 안 하고 나온 그 새벽이 기차 소리에 섞여 왔다')).toBe(true);
+    expect(heard(shown, '들어 볼 권한은 출입증과 함께 반납했다')).toBe(true);
     expect(heard(shown, '박다온(53), 오후 두 시')).toBe(false);
     expect(heard(winter.shown, '목록에 이미 있는 숫자다')).toBe(true);
     expect(heard(winter.shown, '같은 점이 두 번이다')).toBe(true);

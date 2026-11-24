@@ -500,7 +500,7 @@ scenes:
       - say: { channel: action, with: [], text: "안채에 소반이 놓여 있었다. 끝순이 앉던 쪽의 숟가락을 봉구가 치우려다 만다." }
       - mood: off
       - set: { l1_end: gone }
-      - goto: old_age
+      - goto: years_1894
 
   stay_home:
     actions:
@@ -528,10 +528,8 @@ scenes:
       - say: { char: 끝순, with: [만석], text: "덕이 지난겨울에 굶어 죽었대요." }
       - wait: 900
       - say: { channel: action, with: [], text: "체를 가져오라 했더니 그 애가 부엌 문을 닫고 나갔다. 저녁에 들인 진지는 다 식어 있었다." }
-      - say: { channel: action, with: [], text: "끝순이는 스물에 강화로 시집을 갔다. 혼수는 넉넉히 넣었다." }
-      - say: { channel: action, with: [], text: "강화로 간 뒤로 그 애는 친정에 한 번도 오지 않았다." }
       - set: { l1_end: kept }
-      - goto: old_age
+      - goto: years_1894
 
   after_ruined:
     actions:
@@ -551,6 +549,75 @@ scenes:
       - say: { channel: action, with: [], text: "말릴 돈이 없었다. 아침마다 정미소 문 앞까지 데려다주기를 여섯 해 했다." }
       - say: { channel: action, with: [], text: "스물여섯 되던 겨울에 다시 누웠다. 이번엔 내가 곁에 있었지만, 약을 사러 나갈 돈이 없었다." }
       - set: { l1_end: poor }
+      - goto: years_1894
+
+  years_1894:
+    title: "열여섯 해"
+    actions:
+      - bg: { id: jemulpo_room, transition: fade, duration: 1200 }
+      - say: { channel: card, with: [], text: "그 뒤로 열여섯 해", autoAdvance: 1800, when: { var: l1_end, op: ne, value: poor } }
+      - say: { channel: card, with: [], text: "그 뒤로 여섯 해", autoAdvance: 1800, when: { var: l1_end, op: eq, value: poor } }
+      - branch:
+          cases:
+            - when: { var: l1_end, op: eq, value: gone }
+              goto: years_1894_gone
+            - when: { var: l1_end, op: eq, value: kept }
+              goto: years_1894_kept
+          default: years_1894_poor
+
+  years_1894_gone:
+    actions:
+      - place: "1895년 봄 · 제물포"
+      - say: { channel: thought, with: [], text: "끝순이 없이 맞는 첫 봄이었다. 부엌 궤짝을 열면 숟가락이 먼저 보였다." }
+      - say: { channel: thought, with: [], text: "그래서 궤짝은 봉구가 열었다. 나는 부엌에 들어가지 않았다." }
+      - wait: 800
+      - place: "1899년 가을 · 제물포"
+      - say: { channel: thought, with: [], text: "제물포에서 노량진까지 기차가 놓였다. 팔십 리 마포 길이 반나절로 줄었다." }
+      - say: { channel: thought, with: [], text: "그 기차가 다섯 해만 일찍 놓였더라면. 정거장 앞을 지날 때마다 그 셈부터 했다. 그래서 끝내 타지 않았다." }
+      - wait: 800
+      - place: "1905년 겨울 · 제물포"
+      - say: { channel: thought, with: [], text: "포구에 일본 사람 객주가 셋 더 섰다. 쌀값은 그쪽에서 정했다." }
+      - say: { channel: thought, with: [], text: "그 애가 잠들기를 기다릴 일이 없는데도 장부는 늦게 덮었다." }
+      - wait: 900
+      - goto: years_1910
+
+  years_1894_kept:
+    actions:
+      - place: "1895년 봄 · 제물포"
+      - say: { channel: thought, with: [], text: "묵은쌀은 봄까지 다 팔지 못했다. 체로 쳐서 반값에 넘겼다." }
+      - say: { channel: thought, with: [], text: "덕이네 집 앞은 돌아서 다녔다. 그 집 대문에는 다른 이름이 붙었다." }
+      - wait: 800
+      - place: "1898년 가을 · 강화로 가는 배"
+      - say: { channel: action, with: [], text: "끝순이는 스물에 강화로 시집을 갔다. 혼수는 넉넉히 넣었다." }
+      - say: { channel: thought, with: [], text: "배가 선창을 떠날 때 그 애는 한 번도 이쪽을 돌아보지 않았다." }
+      - wait: 800
+      - place: "1903년 여름 · 제물포"
+      - say: { channel: thought, with: [], text: "강화에서 손주가 났다는 기별이 왔다. 봉구가 대신 쓴 답장에 쌀 두 섬을 실어 보냈다." }
+      - say: { channel: thought, with: [], text: "쌀은 잘 받았다는 기별만 돌아왔다. 그 애 글씨가 아니었다." }
+      - say: { channel: action, with: [], text: "강화로 간 뒤로 그 애는 친정에 한 번도 오지 않았다." }
+      - wait: 900
+      - goto: years_1910
+
+  years_1894_poor:
+    actions:
+      - place: "1905년 봄 · 제물포 뒷골목"
+      - say: { channel: thought, with: [], text: "끝순이를 묻고 나서는 정미소 앞을 지나지 않으려고 포구 쪽으로 돌아다녔다. 길이 두 배였다." }
+      - say: { channel: thought, with: [], text: "겨 먼지가 눈처럼 날린다고 말한 건 나였다. 그 애는 그걸 여섯 해 맞았다." }
+      - wait: 800
+      - place: "1907년 가을 · 제물포"
+      - say: { channel: thought, with: [], text: "봉구가 서기 삯을 모아 저자에 작은 객주를 냈다. 장부를 봐 달라기에 장부 대신 대문 옆에 앉았다." }
+      - say: { channel: thought, with: [], text: "쌀을 꾸러 오는 사람이 있으면 봉구보다 내가 먼저 일어섰다." }
+      - wait: 900
+      - goto: years_1910
+
+  years_1910:
+    actions:
+      - place: "1910년 8월 · 제물포"
+      - say: { channel: thought, with: [], text: "나라가 넘어갔다고 봉구가 신문을 읽어 주었다. 나는 허리춤의 열쇠부터 만졌다.", when: { var: l1_end, op: ne, value: poor } }
+      - say: { channel: thought, with: [], text: "열여섯 해 동안 고치지 못한 버릇이었다.", when: { var: l1_end, op: ne, value: poor } }
+      - say: { channel: thought, with: [], text: "나라가 넘어갔다고 봉구가 신문을 읽어 주었다. 나는 허리춤부터 더듬었다. 열쇠를 뺏긴 지 열다섯 해인데도 손이 먼저 갔다.", when: { var: l1_end, op: eq, value: poor } }
+      - say: { channel: thought, with: [], text: "가을부터는 일어나 앉는 날보다 누워 있는 날이 많았다." }
+      - wait: 1200
       - goto: old_age
 
   old_age:
