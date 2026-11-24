@@ -210,7 +210,6 @@ scenes:
       - say: { channel: record, text: "녹취 07. 유정림(71, 전 수학 교사). \"후회를 하나 고르니까 몸이 한쪽으로 기울었어요. 그 방향을 각도라고 불렀지요.\"" }
       - say: { channel: record, text: "\"원 둘레에 점을 찍는 거예요. 사람마다 다른 자리에. 같은 자리는 없을 거라고 생각해요.\"" }
       - say: { channel: record, text: "\"가까운 점끼리는 닮았어요. 맞은편에 찍힌 사람은 딴판이고요. 0.001도만 달라도 다른 사람이지요.\"" }
-      - say: { channel: narration, text: "유 선생님은 다음 삶으로 향하던 방향을 원 둘레의 점에 빗댔다. 한 점에는 한 사람만 있을 거라 여겼다." }
       - say: { channel: narration, text: "그땐 한 사람이 찍은 점 여러 개를 나란히 놓고 볼 길이 없었다." }
       - say: { channel: narration, text: "지금 셋을 본다. 셋 다 한 사람 것이다." }
       - say: { channel: narration, text: "내 쪽에는 아직 적을 숫자가 없다." }

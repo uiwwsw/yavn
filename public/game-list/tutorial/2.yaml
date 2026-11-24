@@ -199,7 +199,7 @@ scenes:
       - say:
           char: 해수
           with: [상혁]
-          text: "내가 사 와."
+          text: "칫솔은 내가 사 와."
       - say:
           char: 상혁
           with: [해수]

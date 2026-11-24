@@ -611,7 +611,7 @@ scenes:
           char: 민재
           when: { var: h1_sent, op: eq, value: true }
           with: [아진]
-          text: "장난이잖아. ㅋㅋ 붙었던데."
+          text: "장난이잖아. 끝에 ㅋㅋ 붙였던데."
       - say:
           char: 아진
           with: [민재]

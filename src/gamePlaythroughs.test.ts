@@ -485,7 +485,7 @@ describe('ERASE', () => {
     expect(heard(run.shown, '민재는 그걸 그대로 믿었다')).toBe(true);
     expect(heard(run.shown, '길에서 마주쳐도 그냥 지나가실 거예요')).toBe(true);
     expect(heard(run.shown, '폰이 먼저 알아봤네')).toBe(true);
-    expect(heard(run.shown, '내가 정리를 덜 한 거고')).toBe(true);
+    expect(heard(run.shown, '3주 전 새벽 것 중에 안 지운 게 남아 있다')).toBe(true);
     expect(run.state.storyLog.filter((entry) =>
       entry.kind === 'dialogue' && entry.sceneId === 'search' && entry.text === '안 와?')).toHaveLength(1);
     // 하린 sent the message she usually deletes, so 아진 brings it up eleven years earlier.

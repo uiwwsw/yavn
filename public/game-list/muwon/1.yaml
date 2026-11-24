@@ -556,7 +556,7 @@ scenes:
       - say:
           char: 막쇠
           with: [서연]
-          text: "농이오. 내가 물지."
+          text: "데인 건 수염 끝뿐이오."
       - say:
           char: 막쇠
           with: [서연]
