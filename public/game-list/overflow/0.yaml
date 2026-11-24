@@ -92,7 +92,7 @@ scenes:
       - say: { char: 지완, with: [도겸], text: "저분은 도와준 건데요." }
       - say: { char: 도겸, with: [지완], text: "숫자가 틀린 건 아니잖아요. 저 아저씨 지금 진짜 열 받았을걸요. 휠체어는 무겁지, 뒤에서는 밀지." }
       - say: { char: 도겸, with: [지완], text: "역무원이 들어 보면 풀리잖아요. 지완 씨는 저거 울려 본 적 없죠?" }
-      - say: { char: 지완, with: [도겸], text: "고등학교 때 한 번요." }
+      - say: { char: 지완, with: [도겸], text: "고등학교 때 한 번요. 렌즈 처음 들어온 해에." }
       - say: { char: 도겸, with: [지완], text: "에이, 지완 씨가요?" }
       - say: { channel: thought, with: [도겸], text: "하나, 둘, 셋." }
       - say: { char: 지완, with: [도겸], text: "네. 그 뒤로 세고 말해요. 셋까지." }
