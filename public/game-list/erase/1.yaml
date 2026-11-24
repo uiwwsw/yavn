@@ -479,7 +479,7 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "참, 새 팀장님 왔다며. 어떤 분이야? 송과장님보다는 나아?" }
       - say: { char: 도윤, with: [지수], text: "…프린터를 못 찾아." }
       - say: { char: 지수.warm, motion: laugh, with: [도윤], text: "그게 뭐야." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수가 어깨에 머리를 기댄다. 도윤은 휴대폰을 엎는다. 지수 머리카락이 화면 밑에 끼어 살짝 들어 빼 준다." }
+      - say: { channel: action, with: [지수, 도윤], text: "지수가 어깨에 머리를 기댄다. 도윤은 휴대폰을 엎어 놓다가, 그 밑에 낀 지수 머리카락을 빼 준다." }
       - say: { channel: card, with: [], text: "11년 전 · 유하린", autoAdvance: 1550 }
       - goto: e1_harin
 
@@ -615,7 +615,7 @@ scenes:
     pov: "유하린"
     actions:
       - say: { channel: action, with: [], text: "뒤에서부터 한 글자씩 지운다. ‘나도’에서 잠깐 멈춘다." }
-      - say: { channel: thought, with: [], text: "보낸 거 아님. 아무도 못 봤어." }
+      - say: { channel: thought, with: [], text: "안 보냈으니까 아무도 못 본 거야." }
       - goto: h1_shots
 
   h1_more:

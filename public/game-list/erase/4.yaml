@@ -197,7 +197,7 @@ scenes:
               - { var: e0_messages, op: eq, value: false }
               - { var: e0_photos, op: eq, value: false }
               - { var: e0_location, op: eq, value: false }
-          text: "3주 전 것도 안 지운 게 있다. 그건 내가 정리를 덜 한 거고, 그래서 남았다."
+          text: "3주 전 새벽 것 중에 안 지운 게 남아 있다."
       - say:
           channel: thought
           when:
@@ -656,7 +656,7 @@ scenes:
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 2 }
-          text: "‘식장은 내가 취소했어.’ 잠금 화면에 거기까지만 보인다. 촬영 예약금을 대신 보냈다고 했던 지수의 목소리가 생각난다."
+          text: "‘식장은 내가 취소했어.’ 잠금 화면에 거기까지만 보인다. 스튜디오 예약금도 그때 지수가 혼자 메웠다."
       - say:
           channel: thought
           when: { var: told_jisu, op: eq, value: 1 }

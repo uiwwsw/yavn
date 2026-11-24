@@ -670,7 +670,7 @@ scenes:
       - say: { char: 지수, with: [도윤], text: "세 번 걸었는데 안 받길래. 사고 난 줄 알았어." }
       - say: { char: 지수, with: [도윤], text: "피팅은 토요일 열한 시로 다시 잡았어. 네 옷은 네가 입어 봐야 된대." }
       - say: { char: 도윤, with: [지수], text: "토요일엔 꼭 갈게." }
-      - say: { char: 지수, with: [도윤], text: "오늘은 내가 먼저 전화할 일 없겠다고 생각했어." }
+      - say: { char: 지수, with: [도윤], text: "오늘은 네가 먼저 전화할 줄 알았어." }
       - sticker: { id: e3_invitation, image: invitation_sticker, x: 50, y: 43, width: "clamp(165px, 27%, 290px)", enter: fadeIn }
       - say: { channel: action, with: [], text: "식탁 한쪽에 사진관에서 고른 청첩장 시안이 있다. 지수가 그 종이를 옆으로 밀어 놓는다." }
       - clearSticker: { id: e3_invitation, leave: fadeOut }
