@@ -194,6 +194,10 @@ scenes:
           channel: action
           with: []
           text: "‘감청 주머니 삼백.’ 주문한 집 이름 자리에 붉은 표식이 있고, 뒤에는 분이 글씨로 ‘약 냄새 없음. 박씨에게 확인’이라고 적혀 있다."
+      - say:
+          channel: thought
+          with: []
+          text: "약 냄새 없음. 어디서 읽은 말이다. 어디였는지는 떠오르지 않는다."
       - clearSticker: { id: c2_slip, leave: fadeOut }
       - mood: { tone: dread, level: 1 }
       - say:

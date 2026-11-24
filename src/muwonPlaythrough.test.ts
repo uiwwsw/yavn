@@ -108,6 +108,12 @@ describe('무원 full playthrough', () => {
     expect(seen.some((text) => text.includes('등불을 낮추니 붉다'))).toBe(true);
     // Looking at the brother's hands before he was bound comes back two chapters later.
     expect(seen.some((text) => text.includes('제 손등부터 봐 준 사람은 의녀뿐이었다고'))).toBe(true);
+    // The phrase on Buni's order slip is planted in chapter 2 and found again in the teacher's margin.
+    const planted = seen.findIndex((text) => text.includes('어디서 읽은 말이다. 어디였는지는 떠오르지 않는다'));
+    const margin = seen.findIndex((text) => text.includes('주머니는 남빛. 약 냄새 없음. 둘 다 그 밤을 넘기지 못함'));
+    expect(planted).toBeGreaterThan(-1);
+    expect(margin).toBeGreaterThan(planted);
+    expect(seen.some((text) => text.includes('넷 다 같은 주머니를 가리킵니다'))).toBe(true);
     expect(state.isFinished).toBe(true);
     expect(state.routeVars).toMatchObject({ truth: 4, deokgu_saved: true, makssoe_alive: true, player_name: '서연' });
     expect(state.resolvedEndingId).toBe('muwon');

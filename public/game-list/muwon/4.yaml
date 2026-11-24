@@ -86,61 +86,6 @@ scenes:
     actions:
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
-      - branch:
-          cases:
-            - when: { var: struck_deal, op: eq, value: true }
-              goto: standing_deal
-          default: standing_trust
-
-  standing_deal:
-    actions:
-      - char: { id: 강치수, position: right }
-      - say:
-          char: 한명재
-          with: [서연, 강치수]
-          text: "참의 나리, 포도청에서 이미 조사를 끝낸 일입니다."
-      - say:
-          char: 강치수.angry
-          with: [서연, 한명재]
-          text: "박씨 약방은 실화로 처리했고, 분이는 범인을 찾지 못했습니다. 의녀도 그 자리에 있었습니다."
-      - say:
-          char: 한명재.cold
-          with: [서연]
-          text: "덕구를 풀어 주면 따르겠다고 하셨지요."
-      - say:
-          char: 강치수
-          with: [서연]
-          text: "…참."
-      - say:
-          channel: thought
-          with: []
-          text: "덕구는 살았다. 그 뒤에도 장에는 남빛 약주머니가 나왔다."
-      - say:
-          char: 서연
-          with: [한명재]
-          text: "예. 그때는 덕구를 살리려고 더 묻지 않았습니다."
-      - say:
-          char: 서연
-          with: [한명재, 도원]
-          text: "오늘은 물어야겠습니다. 그 뒤에도 같은 약주머니가 나왔습니다."
-      - say:
-          char: 한명재
-          with: [서연]
-          text: "그날과 오늘 말이 다르니, 어느 쪽을 믿을지는 참의 나리께서 정하시겠지요."
-      - add: { credibility: -1 }
-      - say:
-          channel: record
-          text: "앞서 한 말과 달라 증언의 신뢰가 1 줄었다."
-      - say:
-          char: 막쇠.grin
-          when: { var: makssoe_alive, op: eq, value: true }
-          with: [서연]
-          text: "아가씨."
-      - say:
-          char: 막쇠.grin
-          when: { var: makssoe_alive, op: eq, value: true }
-          with: [서연]
-          text: "나도 틀렸다고 뒤늦게 말한 적이 많수. 오늘 본 대로 얘기해요."
       - goto: standing_trust
 
   standing_trust:
@@ -407,13 +352,33 @@ scenes:
           with: [한명재]
           text: "…두 아이는 업혀 왔을 때 이미 숨이 가빴습니다."
       - say:
+          channel: thought
+          with: []
+          text: "약 냄새 없음. 어디서 읽었는지 이제 안다."
+      - say:
+          channel: action
+          with: []
+          text: "서연은 『무원록 언해』의 맨 뒤 빈칸을 편다. 스승의 글씨가 한 단 있다."
+      - say:
+          channel: record
+          with: []
+          text: "정조 14년 동짓달. 아이 둘 업혀 옴. 집에서 청심원 한 환씩 먹였다 함. 주머니는 남빛. 약 냄새 없음. 둘 다 그 밤을 넘기지 못함."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "박 의녀님은 그 아이들이 먹고 온 약을 적어 두셨습니다. 남빛 주머니, 약 냄새 없음."
+      - say:
+          char: 서연
+          with: [한명재, 도원]
+          text: "분이가 주문서 뒤에 적은 말과 같습니다. 두 사람은 서로 모릅니다."
+      - say:
+          char: 한명재.cold
+          with: [서연]
+          text: "이 년 전 아이 둘이 이 일과 무슨 상관입니까."
+      - say:
           char: 서연
           with: [한명재]
-          text: "박 의녀님이 그 기록을 지우지 않고 남기셨습니다. 그래서 제가 읽었습니다."
-      - say:
-          char: 한명재
-          with: [서연]
-          text: "읽으셨군요. 그럼 제 말도 끝까지 들으시지요."
+          text: "그 아이들은 혜민서에서 죽었다고 적혔습니다. 무엇을 먹고 왔는지는 스승님 책에만 남았습니다."
       - say:
           char: 도원.troubled
           when: { var: trust_dowon, op: lte, value: 1 }
@@ -683,6 +648,10 @@ scenes:
           char: 서연
           with: [한명재]
           text: "윤길은 분이의 시장을 빌려 간 이름에 붉은 동그라미를 쳐 소매에 넣고 다녔습니다."
+      - say:
+          char: 서연
+          with: [한명재]
+          text: "그리고 이 년 전, 박 의녀님이 책 빈칸에 한 줄을 남기셨습니다. 넷 다 같은 주머니를 가리킵니다."
       - say:
           char: 한명재
           with: [서연]
