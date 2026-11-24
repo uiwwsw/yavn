@@ -812,7 +812,7 @@ scenes:
           text: "'진짜' 두 번."
       - move: { id: 로봇, toward: 윤재, style: lunge }
       - move: { id: 윤재, toward: 로봇, style: retreat }
-      - ending: saved_together
+      - goto: b4_dad
 
   b4_return_new:
     actions:
@@ -1010,7 +1010,7 @@ scenes:
           char: 윤재.sad
           with: [로봇]
           text: "응. 너한테 하는 말은 좋은 뜻이야. 다시 알려 줄게."
-      - ending: new_game
+      - goto: b4_dad
 
   b4_flee:
     actions:
@@ -1096,4 +1096,146 @@ scenes:
           motion: laugh
           with: [로봇]
           text: "가면서 설명해 줄게. 긴 얘기야. 한 30초 걸려."
+      - goto: b4_dad_tracks
+
+  b4_dad:
+    actions:
+      - char: { id: 아빠, position: left }
+      - say:
+          channel: action
+          with: []
+          text: "대합실 끝, 승강장으로 내려가는 계단에서 사람이 하나 올라온다. 운동화 밑창이 덜렁거린다."
+      - say:
+          channel: thought
+          with: []
+          text: "걸음 사이가 일정하지 않다. 사람이다."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "윤재야."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "문짝 봤다. 철길 따라왔다."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "밥은 먹었냐."
+      - say:
+          channel: thought
+          with: []
+          text: "늘 먹었다고 했다. 28초 안에 끊기려고."
+      - say:
+          char: 윤재.sad
+          with: [아빠]
+          text: "…아니. 안 먹었어."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "그래. 먹자."
+      - say:
+          channel: action
+          with: []
+          text: "아빠가 윤재 뒤에 선 것을 올려다본다. 머리가 대합실 기둥 표지판에 닿는다."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "…저거 하루냐. 엄마가 들여놓은."
+      - say:
+          char: 윤재
+          with: [아빠]
+          text: "{{android_name}}. 내가 고쳤어. 아빠가 사 준 인두로."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          when: { all: [{ var: kept_promise, op: eq, value: true }, { var: bond, op: gte, value: 3 }] }
+          text: "질문. 2P임?"
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          when: { any: [{ var: kept_promise, op: eq, value: false }, { var: bond, op: lt, value: 3 }] }
+          text: "질문. 이 사람, 위험해?"
+      - say:
+          char: 윤재
+          with: [로봇]
+          text: "아빠야."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "아빠."
+      - say:
+          char: 로봇
+          with: [윤재]
+          text: "설명서에 없는 단어임. 가면서 알려 준다고 했음."
+      - say:
+          char: 아빠
+          with: [로봇]
+          text: "…너도 밥은 먹었냐."
+      - say:
+          char: 로봇.happy
+          with: [아빠]
+          text: "못 먹음. 그래도 내 몫은 있음."
+      - say:
+          char: 윤재
+          motion: laugh
+          with: [아빠]
+          text: "아빠, 얘한테는 그거 안 물어봐도 돼."
+      - branch:
+          cases:
+            - when: { all: [{ var: kept_promise, op: eq, value: true }, { var: bond, op: gte, value: 3 }] }
+              goto: b4_dad_whole_end
+          default: b4_dad_new_end
+
+  b4_dad_whole_end:
+    actions:
+      - ending: saved_together
+
+  b4_dad_new_end:
+    actions:
+      - ending: new_game
+
+  b4_dad_tracks:
+    actions:
+      - char: { id: 아빠, position: left }
+      - say:
+          channel: action
+          with: []
+          text: "철길 저쪽에서 누가 걸어온다. 남쪽에서 북쪽으로. 운동화 밑창이 덜렁거린다."
+      - say:
+          channel: thought
+          with: []
+          text: "걸음 사이가 일정하지 않다. 사람이다."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "윤재야."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "문짝 봤다. 철길 따라왔다."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "밥은 먹었냐."
+      - say:
+          char: 윤재.sad
+          with: [아빠]
+          text: "…아니. 안 먹었어. 지금 참치마요 찾으러 가는 중이야."
+      - say:
+          char: 아빠
+          with: [윤재]
+          text: "그래. 같이 가자."
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "질문. 3P임?"
+      - say:
+          char: 로봇.thinking
+          with: [윤재]
+          text: "설명서엔 2P까지밖에 없음."
+      - say:
+          char: 윤재
+          motion: laugh
+          with: [로봇]
+          text: "그럼 네가 새로 적어."
       - ending: off_screen
