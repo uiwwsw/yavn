@@ -6,7 +6,7 @@ import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipRead
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { useVNStore } from './store';
 
-// ERASE, 8비트 심장, 튜토리얼 and 오버플로 are built from the owner's stories. These tests pin
+// ERASE and 8비트 심장 are built from the owner's stories. These tests pin
 // their structure (schema, assets, endings, fair failures) and play each one to every ending
 // through the real engine. Background transitions are served in their non-waiting short form
 // because there is no renderer here to report that a dissolve finished.
@@ -28,9 +28,7 @@ const collectKey = (value: unknown, key: string, result: unknown[] = []): unknow
 
 const games = [
   { id: 'erase', chapters: 5, endings: ['came_home', 'erase_loop', 'erased_name', 'kept_photo', 'stayed_home', 'unfinished'] },
-  { id: 'tutorial', chapters: 5, endings: ['demo_left', 'disconnected', 'session_closed', 'still_online'] },
   { id: '8bit-heart', chapters: 5, endings: ['new_game', 'no_response', 'off_screen', 'saved_together'] },
-  { id: 'overflow', chapters: 5, endings: ['appeal', 'broadcast', 'one_file', 'sealed', 'visiting_hours'] },
 ];
 
 const read = (game: string, file: string) => readFileSync(`${publicRoot}game-list/${game}/${file}`, 'utf8');
@@ -210,39 +208,5 @@ describe('owner story playthroughs', () => {
     expect(lines.some(text => /B버튼\? 아직 뻑뻑해|세 겹 싸 줬어/.test(text))).toBe(false);
   }, 60000);
 
-  it.each([
-    ['disconnected', { t4_end: '전원선을 뽑는다' }, ''],
-    ['still_online', { t4_end: '모니터를 끄고 나간다' }, ''],
-    ['session_closed', {
-      t1_pencil: '연필을 내려놓는다',
-      t1_pencil_again: '연필을 든 채 다가간다',
-      t2_sh: '오늘은 레플라에 접속하지 말라고 한다',
-      t2_tamper: '아무것도 건드리지 않고 로그아웃한다',
-      t3_tell: '레플라에서 한 일을 털어놓는다',
-      t3_door: '상혁의 어머니에게 연락한다',
-      t4_end: '세션 종료 창을 연다',
-    }, '0001'],
-  ] as Array<[string, Route, string]>)('튜토리얼 reaches %s', async (ending, route, typed) => {
-    await start('tutorial');
-    const state = await play(route, typed);
-    expect(state.gameOver).toBeUndefined();
-    expect(state.resolvedEndingId).toBe(ending);
-  }, 60000);
 
-  it('튜토리얼 fails recoverably when he names a pillar only the simulation showed', async () => {
-    await start('tutorial');
-    const state = await play({ t2_where: 'C-14라고 말한다' });
-    expect(state.gameOver?.title).toBe('아무도 말하지 않은 번호');
-  }, 60000);
-  it.each([
-    ['broadcast', '내 판독과 수경의 설명을 공개한다'],
-    ['one_file', '내 기록의 정정을 신청한다'],
-    ['sealed', '면회 제한 해제를 받고 끝낸다'],
-    ['appeal', '기다린 사람들과 함께 이의를 낸다'],
-  ])('오버플로 reaches %s', async (ending, option) => {
-    await start('overflow');
-    const state = await play({ o4_end: option });
-    expect(state.gameOver).toBeUndefined();
-    expect(state.resolvedEndingId).toBe(ending);
-  }, 60000);
 });

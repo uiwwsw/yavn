@@ -63,7 +63,6 @@ OPEN = ((0, 7), (-2, 5), (-5, 2), (0, 7))
 DISTANT = ((0, 7, 14), (-3, 4, 11), (-5, 2, 9), (-2, 5, 12))
 TENSE = ((0, 1, 7), (0, 6, 7), (-3, 0, 5), (-5, 0, 6))
 NONE = (None,) * 16
-TUTORIAL_MOTIF = (0, 4, 7, 9, 7, None, 4, None, 2, 5, 7, None, 4, 2, 0, None)
 CHIP_MOTIF = (0, None, 4, 7, 9, None, 7, 4, 2, None, 5, 9, 7, 5, 4, None)
 
 SCORES = {
@@ -93,18 +92,6 @@ SCORES = {
         Track("inquest", 82, 45, MINOR, (0, None, 3, 5, None, 7, None, 5, 3, None, 0, None, 5, None, 3, None), "silk", "pad", "skin", level=.061),
         Track("pressure", 105, 43, TENSE, (0, None, 2, 0, 7, None, 6, None, 0, 3, 5, None, 2, 0, None, None), "bow", "sub", "skin", level=.067, phrase=0),
         Track("dawn", 66, 48, DISTANT, (0, None, 2, None, 7, None, 9, None, 7, None, 4, None, 2, None, 0, None), "breath", "silk", level=.057),
-    ),
-    "overflow": (
-        Track("quant", 92, 44, MINOR, (0, None, 7, None, 5, None, None, 3, 2, None, 5, None, 3, None, None, None), "felt", "pad", "meter", level=.064),
-        Track("lowscore", 68, 43, DISTANT, (7, None, None, None, 5, None, None, None, 0, None, None, 2, None, None, None, None), "felt", "pad", level=.054),
-        Track("standard", 72, 47, MAJOR, (4, None, 7, None, None, 9, 7, None, 4, None, None, 2, None, 0, None, None), "felt", "bow", level=.059),
-        Track("street", 84, 43, MINOR, (0, None, 3, None, 7, None, 8, 7, None, 3, None, 5, None, 2, None, None), "glass", "pad", "meter", "rain", .062),
-    ),
-    "tutorial": (
-        Track("fluoro", 76, 46, OPEN, (0, None, None, 7, None, 4, None, None, None, None, 2, None, 0, None, None, None), "felt", "pad", ambience="electrical", level=.045),
-        Track("tutorial", 111, 48, MAJOR, TUTORIAL_MOTIF, "glass", "triangle", "meter", level=.066),
-        Track("bleed", 72, 48, TENSE, (0, 4, None, None, 7, None, 3, None, None, 5, None, None, 4, 1, 0, None), "glass", "bow", ambience="radio", level=.049, phrase=12),
-        Track("server", 61, 40, TENSE, (None, None, 7, None, None, None, 1, None, None, None, None, None, 6, None, 0, None), "reed", "sub", ambience="fan", level=.045),
     ),
 }
 
@@ -249,8 +236,6 @@ SOUNDSTAGES = {
     "8bit-heart": Soundstage(1.2, .48, (), .42, .91, .92, (0, 0)),
     "erase": Soundstage(11.0, 1.8, ((.72, .21, -.65), (1.1, .10, .60)), .94, .78, .57, (.038, .09)),
     "muwon": Soundstage(7.1, 2.7, ((.31, .16, .27), (.79, .11, -.53)), .78, .85, .58, (.126, .17)),
-    "overflow": Soundstage(8.8, 1.6, ((.16, .11, -.34), (.38, .06, .38)), .75, .82, .46, (.047, .060)),
-    "tutorial": Soundstage(7.5, 1.2, ((.34, .13, -.62), (.68, .08, .57)), .98, .72, .68, (.067, .13)),
 }
 
 
@@ -329,9 +314,6 @@ def render_score(game, track):
             if game == "muwon" and step in {0, 8}:
                 grace = pitched(lead, pitch - 2, round(.46 * beat))
                 mix(left, right, grace, position - round(.21 * beat), gain * .29, -.14)
-            if game == "tutorial" and track.name in {"tutorial", "bleed"} and step % 4 == 0:
-                doubled = pitched("glass", pitch + (12 if track.name == "tutorial" else 11), round(.38 * beat))
-                mix(left, right, doubled, position + round(.06 * beat), gain * .24, .51)
     percussion(track, left, right, beat)
     return finish_score(game, left, right)
 
@@ -357,18 +339,6 @@ FOLEY = {
         "well_rope": [Layer(0, .56, .36, 272, 144, .49, .10, .06), Layer(.17, .19, .24, 88, 44, .66, .18), Layer(.38, .55, .25, 164, 36, .82, .42, .024)],
         "paper": [Layer(0, .24, .55, noise=1, tone=.46, attack=.018), Layer(.19, .21, .32, noise=1, tone=.26, attack=.012)],
         "ice_movement": [Layer(0, .77, .52, 293, 105, .81, .34, .048), Layer(.31, .18, .22, 1460, 340, .52, .16), Layer(.53, .25, .37, 406, 123, .72, .45)],
-    },
-    "overflow": {
-        "read": [Layer(0, .11, .70, 1260, 1010, .05), Layer(.11, .20, .53, 760, 732, .05)],
-        "call": [Layer(0, .19, .58, 146, 137, .23, .22, .022), Layer(.26, .20, .46, 145, 138, .23, .22, .018)],
-        "ward_door": [Layer(0, .48, .34, 118, 88, .67, .13, .04), Layer(.42, .18, .68, 178, 59, .58, .18)],
-        "bed_rail": [Layer(0, .12, .61, 528, 146, .36), Layer(.21, .12, .54, 537, 153, .33), Layer(.67, .20, .69, 557, 166, .36)],
-    },
-    "tutorial": {
-        "chime": [Layer(0, .21, .67, 587, 587, .03), Layer(.12, .28, .46, 784, 784, .025), Layer(.24, .24, .19, 880, 877, .05)],
-        "snap": [Layer(0, .065, .62, 910, 320, .71, .70), Layer(.05, .25, .34, 384, 96, .77, .23)],
-        "door_knock": [Layer(0, .14, .63, 129, 52, .62, .16), Layer(.16, .16, .56, 135, 60, .58, .15)],
-        "fan_wake": [Layer(0, 1.40, .49, 61, 112, .50, .16, .43, .70), Layer(.30, .95, .31, noise=1, tone=.095, attack=.39, decay=.9)],
     },
 }
 

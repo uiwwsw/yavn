@@ -484,7 +484,7 @@ scenes:
 - `sound`
 - `char`
 - `say`
-  - 이름을 알기 전의 대사는 `speakerName: "낯선 여자"`처럼 이름표를 지정합니다. 자기소개 다음 대사부터 생략하면 캐릭터 이름을 표시합니다. 실행 예시는 [오버플로 1장](public/game-list/overflow/1.yaml)의 `introduction`을 참고하세요.
+  - 이름을 알기 전의 대사는 `speakerName: "낯선 여자"`처럼 이름표를 지정합니다. 자기소개 다음 대사부터 생략하면 캐릭터 이름을 표시합니다.
 - `wait`
 - `effect`
 - `goto`
@@ -1124,13 +1124,7 @@ scenes:
 - 배경 11장, 인물 8명(표정 포함 19장), 증거물 12종은 모두 이 저장소에서 직접 그린 SVG입니다. 배경음 4곡은 외부 샘플 없이 `scripts/generate-muwon-score.py`로 합성합니다.
 - 기획·인물·장 구성·결말 조건·미술 규격은 [`docs/MUWON_GAME_BIBLE.ko.md`](docs/MUWON_GAME_BIBLE.ko.md)에 있고, 결말 연결·실패 복귀·에셋 존재는 `src/muwonGame.test.ts`가 검사합니다.
 
-## 오버플로
 
-- `/game-list/overflow/`의 5장은 감정을 읽는 AI 렌즈가 일상이 된 2033년 서울을 배경으로 합니다. 쓰러진 아버지를 찾아간 문지완은 무반응 의심 판정으로 병실 앞에 멈춥니다. 렌즈의 결함을 보고한 뒤 해고된 한수경이 건너편에서 지완의 숫자를 봅니다.
-- 렌즈를 검사기에 연결하지 않고 아버지를 만나면 「면회 시간」에서 끝납니다. 연결을 허용하면 판독 자료를 어디까지 공개하고 누구와 이의를 낼지에 따라 네 가지 결말로 이어집니다.
-- 기획은 [오버플로 게임 바이블](docs/OVERFLOW_GAME_BIBLE.ko.md), 배경·인물·소리는 [게임 에셋 기록](docs/GAME_ART_ASSETS.ko.md)에 정리했습니다.
-
-## 360
 
 - `/game-list/360/`(5장)은 죽은 뒤의 어둠에서 삶 하나를 통째로 기억하고 그중 하나만 쥐고 나아가는 이야기입니다. 1894년 제물포 객주, 1952년 부산 피란민, 1988년 병동의 열일곱 살, 2026년 편집실의 녹취 담당으로 이어지며, 다음 사람은 아무것도 기억하지 못합니다.
 - 어둠에서 고른 하나는 다음 삶에서 할 수 없는 선택으로 돌아옵니다. 선택지는 화면에 있지만 고르면 인물이 까닭도 모른 채 하지 못합니다(`branch`로 가르는 `*_try` → `*_cannot` 장면). 같은 장을 다른 방향으로 다시 살면 막히는 선택이 달라집니다.
@@ -1145,12 +1139,6 @@ scenes:
 - 전체 화면 자막 카드(`say.channel: card`)로 현재·과거를 오가고, 휴대폰 메시지 채널(`say.channel: message`)과 지워지는 연출(`say.erase`)로 흔적을 지우는 손맛을 만듭니다. 
 - 기획: [`docs/ERASE_GAME_BIBLE.ko.md`](docs/ERASE_GAME_BIBLE.ko.md)
 
-## 튜토리얼
-
-- `/game-list/tutorial/`(5장)는 현실 복제 시뮬레이션 레플라가 흔해진 2031년, 마트 고객센터 12년 차 해수의 이야기입니다. 가상 주차장에서 밴드를 떼면 「체험 중단」으로 끝납니다. 체험을 계속하면 다음 날 현실에서 같은 자리에 사건이 일어나고, 서버실에서 「연결 해제」, 「접속 유지」, 「세션 종료」로 갈립니다.
-- 폭력은 화면 밖 소리로만, 친구의 집착은 청구서와 잠긴 방으로만 보여 줍니다. 현실과 시뮬레이션은 색과 선으로 구분하고, 장이 갈수록 둘이 번집니다. 음악과 효과음은 [게임 에셋 기록](docs/GAME_ART_ASSETS.ko.md)에 정리했습니다.
-- 기획: [`docs/TUTORIAL_GAME_BIBLE.ko.md`](docs/TUTORIAL_GAME_BIBLE.ko.md)
-
 ## 8비트 심장
 
 - `/game-list/8bit-heart/`(5장)는 AI 재난으로 모든 칩이 미쳐 버린 날, 유일하게 멀쩡한 싸구려 레트로 게임기의 CPU로 고장 난 안드로이드를 깨우는 소년의 생존기입니다. 처음에 비싼 기기를 사면 재난 날 그 기기가 폭주합니다. 안드로이드 이름은 플레이어가 짓고, 마지막에는 8KB 메모리 카드에 어떤 기억을 남길지 고릅니다.
@@ -1158,7 +1146,7 @@ scenes:
 - 그림은 16색 픽셀 아트 SVG, 음악은 사각파 칩튠입니다.
 - 기획: [`docs/8BIT_HEART_GAME_BIBLE.ko.md`](docs/8BIT_HEART_GAME_BIBLE.ko.md)
 
-배경음 8곡은 외부 샘플 없이 `scripts/generate-story-scores.py`로 합성합니다. ERASE·튜토리얼·8비트 심장·오버플로의 대본 구조와 결말 분기는 `src/userStories.test.ts`와 `src/gamePlaythroughs.test.ts`에서 확인합니다.
+배경음 8곡은 외부 샘플 없이 `scripts/generate-story-scores.py`로 합성합니다. ERASE·8비트 심장의 대본 구조와 결말 분기는 `src/userStories.test.ts`와 `src/gamePlaythroughs.test.ts`에서 확인합니다.
 
 ## 샘플
 
