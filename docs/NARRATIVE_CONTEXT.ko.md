@@ -8,7 +8,7 @@
 | [ERASE](narrative/erase.yaml) | 13 | 10 | 8 |
 | [튜토리얼](narrative/tutorial.yaml) | 8 | 9 | 13 |
 | [360](narrative/360.yaml) | 20 | 16 | 21 |
-| [8비트 심장](narrative/8bit-heart.yaml) | 8 | 6 | 14 |
+| [8비트 심장](narrative/8bit-heart.yaml) | 9 | 6 | 15 |
 | [무원](narrative/muwon.yaml) | 11 | 10 | 11 |
 
 [작품별 관계도](narrative/relationships.ko.md)에서는 두 사람이 서로를 어떻게 보는지 화살표 양쪽을 따로 읽습니다. 이름이 다른 같은 인물, 목소리만 나오는 동료, 회상 속 가족, 자동 안내 발신자도 카드에 포함합니다. 현재 마음을 알 수 없는 부재자의 속내는 확정하지 않습니다.
@@ -149,6 +149,6 @@ node scripts/narrative-context.mjs --graph > docs/narrative/relationships.ko.md
 | 튜토리얼 | 낮의 광철 앞 `1.yaml` `t1_day_pencil` | 그날 밤 3/5 주차장(`parking`), 연필을 쥐기 직전 |
 | 360 | 첫 어둠 `0.yaml` `first_wait` | "머무름" 결말에 닿기 전 한 번 더 묻는다 |
 | 무원 | `0.yaml` `c1_accuse`(오라비의 손등) | `2.yaml` 끝 도원이 전하는 오라비의 인사 |
-| 8비트 심장 | 1장 밤의 집 전화(선택 아님) | `4.yaml` 새벽, 돌아온 신호등 앞에서 끊긴 집 전화를 떠올린다 |
+| 8비트 심장 | 1장 밤의 집 전화(선택 아님) | `2.yaml` 새벽 문짝에 쓴 "서울역", `4.yaml` 대합실 전광판 앞에서 끊긴 집 전화를 떠올린다 |
 
 새 선택이 쓰는 변수는 `base.yaml`에 기본값과 함께 선언한다. 옛 저장에는 그 값이 없으므로, 기존 대사는 그대로 두고 새 값일 때만 나오는 줄을 더한다.

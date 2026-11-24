@@ -9,12 +9,12 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "FINAL STAGE\n식량 원정에서 돌아온 지 4일\n북쪽 데이터센터"
+          text: "FINAL STAGE\n집을 나선 지 나흘\n서울역 지하"
       - bg: { id: datacenter, transition: cut }
       - music: chip_core
       - char: { id: 윤재, position: left }
       - char: { id: 로봇, position: right }
-      - place: "오후 6시 · 북쪽 데이터센터"
+      - place: "오후 6시 · 서울역 지하 3층 관제실 앞"
       - say:
           char: 로봇
           with: [윤재]
@@ -60,12 +60,12 @@ scenes:
           char: 윤재
           motion: sigh
           with: [로봇]
-          text: "살면서래. 너 깨어난 지 일주일이야."
+          text: "살면서래. 너 깨어난 지 나흘이야."
       - wait: 270
       - say:
           char: 로봇
           with: [윤재]
-          text: "일주일이 내 전부임."
+          text: "나흘이 내 전부임."
       - say:
           char: 로봇
           with: [윤재]
@@ -648,14 +648,14 @@ scenes:
           with: []
           text: "CORE: 3초. 최근 업데이트 삭제. 초기 상태 복원 중… 연결된 기기 정지."
       - wait: 0
-      - say: { channel: card, with: [], text: "다음 날 새벽 · 데이터센터 문 앞", autoAdvance: 1300 }
+      - say: { channel: card, with: [], text: "다음 날 새벽 · 서울역", autoAdvance: 1300 }
       - bg: { id: dawn_field, transition: cut }
       - music: chip_dawn
       - char: { id: 윤재, position: left }
-      - place: "오전 6시 · 데이터센터 문 앞"
+      - place: "오전 6시 · 서울역 대합실"
       - say: { channel: thought, with: [], text: "밤새 문만 봤다. 손을 내밀면 바로 잡을 수 있게, 자꾸 손바닥을 바지에 닦았다." }
-      - say: { channel: action, with: [], text: "교차로의 초록빛이 꺼진다. 한참 만에 빨간불이 켜진다." }
-      - say: { channel: thought, with: [], text: "신호등이 돌아왔으면 집 전화도 신호가 갈까. 집까지 걸어서 나흘이다. 현관에는 아직 ‘편의점’이라고 붙어 있다." }
+      - say: { channel: action, with: [], text: "대합실 전광판에서 같은 광고가 꺼진다. 한참 만에 첫 열차 시각이 뜬다." }
+      - say: { channel: thought, with: [], text: "전광판이 돌아왔으면 집 전화도 신호가 갈까. 현관 문짝에는 ‘서울역’이라고 써 두고 왔다." }
       - say:
           channel: action
           with: []
@@ -966,11 +966,13 @@ scenes:
           with: [윤재]
           text: "너, 위험해?"
       - move: { id: 윤재, toward: 로봇, style: approach }
-      - say:
-          char: 윤재.sad
-          motion: nod
-          with: [로봇]
-          text: "응. 엄청. 그러니까 1번으로 등록해. 이름은 윤재. 두 글자."
+      - say: { char: 윤재.sad, with: [로봇], text: "응. 엄청." }
+      - say: { channel: system, with: [], text: "보호 대상 기록 1건
+1번 — 윤재 (7) · 2054.04.02 등록" }
+      - say: { char: 로봇.thinking, with: [윤재], text: "1번이 일곱 살이라고 돼 있음." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "근데 너 큼." }
+      - say: { char: 윤재.sad, with: [로봇], text: "…열여섯이야. 고쳐." }
+      - say: { channel: thought, with: [], text: "다 지워졌는데 엄마가 적은 줄은 남았다." }
       - say:
           char: 윤재.sad
           with: [로봇]
@@ -986,11 +988,6 @@ scenes:
           motion: bounce
           with: [윤재]
           text: "짧아서 좋다."
-      - say:
-          char: 로봇.happy
-          motion: bounce
-          with: [윤재]
-          text: "메모리가 고맙대."
       - say:
           char: 윤재.sad
           motion: laugh
@@ -1043,10 +1040,10 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그래. 나중에. 레벨 좀 올리고. 우리 들어온 길로 뛰면 정문은 왼쪽이야."
+          text: "그래. 나중에. 레벨 좀 올리고. 올라온 계단으로 뛰어. 광장은 오른쪽이야."
       - bg: { id: ruined_street, transition: wipeRight, duration: 900 }
       - music: chip_run
-      - place: { text: "남쪽으로 가는 큰길", presentation: center }
+      - place: { text: "서울역 광장에서 남쪽으로", presentation: center }
       - say:
           char: 윤재
           motion: laugh

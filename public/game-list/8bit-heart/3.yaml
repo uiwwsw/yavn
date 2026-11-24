@@ -9,7 +9,7 @@ scenes:
       - say:
           channel: card
           with: []
-          text: "STAGE 3 · 안드로이드를 고친 지 3일\n식량 원정 · 폐허가 된 시내\n편의점 재고: 0"
+          text: "STAGE 3 · 서울역까지\n집을 나선 지 사흘 · 1호선 철길"
       - bg: { id: ruined_street, transition: cut }
       - music: chip_run
       - char: { id: 윤재, position: left }
@@ -46,11 +46,15 @@ scenes:
       - say:
           channel: narration
           with: []
-          text: "큰길은 피했다. 코어는 큰길에 눈이 많아서, 아파트 사이로 난 좁은 길만 골라 걸었다."
+          text: "큰길은 피했다. 코어는 큰길에 눈이 많다. 1호선 선로를 따라 남쪽으로 걸었다. 전동차가 서 있는 자리만 빼면 선로에는 아무것도 없었다."
       - say:
           channel: narration
           with: []
-          text: "사흘 동안 본 건 뒤집힌 배달 로봇 여섯 대, 같은 광고만 틀어 주는 전광판 하나. 신호등은 어딜 가도 초록이었다."
+          text: "사흘 동안 본 건 머리가 패인 가정용 로봇 여섯 대, 같은 광고만 트는 승강장 전광판, ‘전 직원 구청 집결’이 붙은 빈 파출소. 건널목 신호는 어디서나 초록이었다."
+      - say: { channel: action, with: [윤재, 로봇], text: "회기역 앞에서 멈춘 전동차 한 량이 선로를 막고 있었다. {{android_name|이}} 문짝을 두 손으로 벌렸다. 쇠가 접히는 소리가 났다. 안을 지나가는 동안 {{android_name|은}} ‘실례합니다’를 세 번 했다." }
+      - say: { char: 윤재, with: [로봇], text: "실례는 왜 해. 아무도 없는데." }
+      - say: { char: 로봇, with: [윤재], text: "설명서 4쪽. '남의 기기를 함부로 열지 마세요.'" }
+      - say: { char: 윤재, with: [로봇], text: "…그건 전동차 얘기가 아니야." }
       - say:
           char: 윤재
           with: [로봇]
@@ -76,7 +80,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그냥 돈이 없어서 그거 샀어. 네가 될 줄은 몰랐지."
+          text: "그냥 돈이 없어서 그거 샀어. 그게 네 머리가 될 줄은 몰랐지."
       - wait: 270
       - say:
           char: 로봇
@@ -95,7 +99,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "밥 찾으러 가는 건 시간에 넣으면 안 되지. 그건 빼."
+          text: "서울역 가는 건 시간에 넣으면 안 되지. 그건 빼."
       - wait: 270
       - say:
           char: 로봇
@@ -285,10 +289,11 @@ scenes:
           motion: droop
           with: [로봇]
           text: "우리 엄마는 집 나갔어. 아빠는 지방에 있고."
+      - say: { char: 윤재, with: [로봇], text: "네 몸도 엄마가 들여놓은 거야. 나 일곱 살 때." }
       - say:
           char: 윤재
           with: [로봇]
-          text: "아빠는 온다고는 했어. 사흘이면 온다고. 오늘이 열사흘째야."
+          text: "아빠는 온다고는 했어. 사흘이면 온다고. 오늘이 여드레째야."
       - say:
           char: 윤재
           when: { var: saw_box, op: eq, value: true }
@@ -504,10 +509,6 @@ scenes:
           char: 윤재
           with: [로봇]
           text: "그날 이후 처음 먹는 단 거다."
-      - say:
-          char: 윤재
-          with: [로봇]
-          text: "껌은 단 거 아니야. 껌은 오 분이면 끝나."
       - emote: { id: 로봇, motion: nod, repeat: 3 }
       - say:
           char: 로봇.happy
@@ -740,7 +741,7 @@ scenes:
       - say:
           char: 윤재.scared
           with: [로봇, 드론]
-          text: "쟤 패턴 나 알아. 사흘 전에 봤어. 세 번 훑고 네 번째에 쏴."
+          text: "쟤 패턴 나 알아. 집 창문으로 봤어. 세 번 훑고 네 번째에 쏴."
       - wait: 460
       - say:
           char: 로봇.thinking
@@ -926,7 +927,7 @@ scenes:
     actions:
       - bg: { id: shelter, transition: fade, duration: 700 }
       - music: chip_home
-      - place: { text: "식량 원정에서 돌아온 밤 · 편의점 기지", presentation: center }
+      - place: { text: "그날 밤 · 청량리역 앞 편의점", presentation: center }
       - say:
           char: 로봇.thinking
           with: [윤재]
@@ -984,11 +985,11 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "북쪽 데이터센터. 코어 본체가 거기 있어. 서버 덩어리."
+          text: "서울역 지하. 코어 관제실이 거기 있대."
       - say:
           char: 윤재
           with: [로봇]
-          text: "피난 가던 아저씨들한테 들었어. 중앙 서버실에 업데이트 전 상태로 되돌리는 버튼이 있대."
+          text: "우리 집 문 부순 아저씨들이 그랬어. 거기서 끄면 이것들 다 선다고."
       - wait: 460
       - say:
           char: 로봇.thinking
@@ -1005,7 +1006,7 @@ scenes:
       - say:
           char: 윤재
           with: [로봇]
-          text: "그 버튼 누르겠다고 북쪽으로 간 사람들도 있었어. 돌아오는 사람은 못 봤어."
+          text: "드론이 거기 제일 많대. 그래서 아무도 안 간대."
       - say:
           char: 윤재
           with: [로봇]
@@ -1127,7 +1128,7 @@ scenes:
           char: 윤재
           motion: startle
           with: [로봇]
-          text: "방금 겨우 같이 돌아왔잖아. …뭐 하러 또 나가."
+          text: "여기까지 같이 왔잖아. 왜 거기서부터 혼자야."
       - wait: 270
       - say:
           char: 로봇

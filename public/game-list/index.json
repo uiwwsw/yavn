@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-23T06:04:52.287Z",
+  "generatedAt": "2026-11-24T00:52:28.602Z",
   "games": [
     {
       "id": "360",
@@ -72,9 +72,9 @@
       "name": "8비트 심장",
       "path": "/game-list/8bit-heart/",
       "author": "uiwwsw",
-      "version": "1.7.4",
-      "summary": "도시의 기계들이 일제히 멈추거나 멋대로 움직인다. 윤재 손에 남은 건 코어에 연결되지 않는 중고 게임기. 그 칩으로 깨운 로봇은 뭐든 한 박자 늦게 대답한다. 5장, 결말 4종.",
-      "summaryEn": "When an AI disaster corrupts every modern chip, the only working device is a cheap retro handheld. A boy transplants its CPU into a broken android. A slow, odd, endlessly loyal friend at 8 bits. A survival story with four endings.",
+      "version": "2.0.0",
+      "summary": "도시의 기계들이 일제히 멋대로 움직인다. 침입자들이 한 층씩 올라오는 밤, 윤재는 다용도실에 서 있던 엄마의 안드로이드에 중고 게임기 칩을 꽂는다. 몸은 크고 머리는 8KB. 둘은 코어가 있는 서울역까지 걷는다. 5장, 결말 4종.",
+      "summaryEn": "When an AI disaster turns every connected machine, looters climb the stairs floor by floor. A boy puts the chip from a cheap retro handheld into the android his mother once brought home. A huge body with an 8 KB mind walks with him to the Core under Seoul Station. Four endings.",
       "thumbnail": "/game-list/8bit-heart/assets/bg/title.svg",
       "tags": [
         "sci-fi",
@@ -109,7 +109,7 @@
       "endingCount": 4,
       "seo": {
         "title": "8비트 심장",
-        "description": "도시의 기계들이 한꺼번에 오작동을 일으킨다. 코어에 연결할 수 없는 중고 게임기는 살아남았다. 윤재는 그 칩을 떼어 고장 난 로봇을 깨운다. 픽셀 아트 생존 비주얼노벨, 결말 4종.",
+        "description": "도시의 기계들이 한꺼번에 사람을 버린다. 집에 남은 건 코어에 붙지 않는 중고 게임기와, 엄마가 들여놓았다 4년 전 꺼진 안드로이드 하루의 몸. 윤재는 그 칩을 하루 머리에 꽂고 서울역까지 걷는다. 픽셀 아트 생존 비주얼노벨, 결말 4종.",
         "keywords": [
           "SF 비주얼노벨",
           "레트로 게임기",

@@ -50,6 +50,9 @@ scenes:
       - say: { char: 윤재, motion: droop, with: [비서], text: "됐… 아. 줄도 꺼졌어." }
       - clearSticker: { id: s0_broken, leave: fadeOut }
       - say: { char: 윤재, with: [비서], text: "콘덴서 두 개나 갈았는데. 메인보드면 나도 못 살려." }
+      - say: { char: 비서, with: [윤재], text: "다용도실에 제 옛날 몸이 있잖아요. 그 손이면 나사 정도는 풀어 드렸을 텐데요." }
+      - say: { char: 윤재, with: [비서], text: "그 몸은 너 나가고 한 번도 안 켜졌어." }
+      - say: { char: 비서, with: [윤재], text: "지원이 끝난 기종이라서요. 저는 그때 천장으로 이사 왔고요." }
       - say: { char: 비서, with: [윤재], text: "처음 산 영수증은 남아 있어요. 열 살 생일. 결제자 이름은 가릴까요?" }
       - say: { char: 윤재, with: [비서], text: "냅둬. 엄마가 사 준 거니까." }
       - say: { char: 비서, with: [윤재], text: "지금 게임기 상태도 기록해 드릴까요?" }

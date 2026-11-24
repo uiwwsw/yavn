@@ -28,12 +28,12 @@ assets:
     bus_stop: "버스 정류장"
     bus_stop_panic: "버스 정류장"
     disaster_city: "도심"
-    ruined_street: "편의점 앞"
+    ruined_street: "철길 옆 거리"
     android_found: "아파트 뒷골목"
-    shelter: "편의점 기지"
+    shelter: "청량리역 앞 편의점"
     drone_alley: "골목"
-    datacenter: "북쪽 데이터센터"
-    dawn_field: "데이터센터 문 앞"
+    datacenter: "서울역 지하 관제실"
+    dawn_field: "서울역"
   characters:
     윤재:
       placement: prompt-top
@@ -122,13 +122,13 @@ inventory:
     order: 10
   cpu_chip:
     name: "8비트 CPU"
-    description: "고장 난 로봇에 넣으려고 게임기에서 떼어 낸 칩."
+    description: "하루의 머리에 넣으려고 게임기에서 떼어 낸 칩. 다리가 마흔 개다."
     image: assets/items/cpu_chip.svg
     category: "부품"
     order: 20
   battery:
     name: "건전지 묶음"
-    description: "AA 건전지 여덟 개. 편의점 계산대 밑에서 찾았다."
+    description: "AA 건전지 여덟 개. 아빠가 싸 둔 비상 가방에 들어 있었다. 테이프를 두 번 감았다."
     image: assets/items/battery.svg
     category: "부품"
     order: 30
