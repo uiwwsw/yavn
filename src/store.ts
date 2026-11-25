@@ -228,6 +228,7 @@ const initialChoiceGate: ChoiceGateState = {
   timeoutOptionIndex: undefined,
   approachSteps: [],
   mood: undefined,
+  lockedOptionIndexes: [],
   options: [],
 };
 

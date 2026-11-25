@@ -100,6 +100,10 @@
 }
 .app .investigation-marker.is-checked { pointer-events: none; }
 .app .investigation-marker.is-checked > span { color: #382e24; background: #e8dec9; }
+.app .investigation-marker.is-locked { cursor: not-allowed; }
+.app .investigation-marker.is-locked > span { border-style: dashed; color: #cbbfa9; background: #2a231cd9; box-shadow: none; }
+.app .investigation-marker.is-locked:is(:hover, :focus-visible) > span { color: #fff2d5; background: #2a231c; }
+.app .investigation-marker-lock-icon { width: 14px; height: 14px; }
 .app .dialog-box[data-investigation='true'] { padding-block: 12px; height: min(184px, var(--dialog-safe-max-height)); }
 .app [data-investigation='true'] .choice-gate { margin-top: 4px; }
 .app [data-investigation='true'] .choice-gate-options { grid-template-columns: 1fr; }

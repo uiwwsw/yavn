@@ -361,6 +361,10 @@ export type ChoiceOption = {
   saveText?: string;
   at?: { x: number; y: number };
   when?: ConditionNode;
+  /** Condition that must be satisfied to unlock this option. When false, the option is visible but locked. */
+  requires?: ConditionNode;
+  /** Text shown when the option is locked (1-60 chars). Required when `requires` is present. */
+  lockedText?: string;
   set?: StateSetMap;
   add?: StateAddMap;
   goto?: string;
@@ -761,6 +765,10 @@ export type ChoiceGateState = {
   /** `approach` only: the tone raised while approaching, unless a target names its own. */
   mood?: string;
   options: ChoiceOption[];
+  /** Indexes of options that are visible but locked (by `requires` condition). */
+  lockedOptionIndexes: number[];
+  /** Text to show when a locked option is clicked (in explore mode). */
+  lockedNotice?: string;
 };
 
 export type RouteHistoryEntry = {

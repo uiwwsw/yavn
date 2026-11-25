@@ -105,6 +105,10 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 - `say.unread` prints a messenger's small yellow unread count beside the bubble: `true` prints 1, a number prints that number (people in a group chat who have not read it, up to 999), and `false`, `0` or nothing prints nothing. See the 2026-11-25 update below.
 - New games built from the owner's stories: ERASE (4 chapters), ERASE: First to Erase (5 chapters) and 8-bit Heart (5 chapters). The ERASE pair carries content notes (sexual tension without description, HIV anxiety, self-destructive thoughts) with crisis-line and anonymous testing information.
 
+## Locked but visible options (2026-11-25)
+
+`choice.options[].requires` with `lockedText` shows an option that cannot be chosen yet, with the reason. See "Locked but visible options" below.
+
 ## Unread counts on phone messages (2026-11-25)
 
 ```yaml
@@ -151,5 +155,26 @@ Set `time: "15:20"` on a scene to establish story time. Background metadata may 
 ```
 
 `bg.label: false` hides the entire label. An object replaces `name`/`time` with strings or hides either field with `false`; hiding both suppresses the label. Hidden time remains part of the story context. `config.yaml` can set `sceneLabels: false` to disable defaults throughout a game; `bg.label: true` or an object opts a transition back in. Base/chapter metadata merges by background ID; unknown background references are rejected.
+
+### Locked but visible options: `requires` · `lockedText`
+
+An option whose `when` fails is hidden. An option whose `requires` fails is **shown but cannot be chosen**. Use it to tell the player "not yet — something is missing".
+
+```yaml
+- choice:
+    prompt: "The living room light is the only one on."
+    options:
+      - text: "Look for the clinic"
+        requires: { var: discharge_paper, op: eq, value: true }   # an inventory ID works too
+        lockedText: "You don't know where to start."
+        goto: clinic
+```
+
+- `requires` takes the same condition syntax as `when` and must come with `lockedText` (up to 60 characters); either one alone is a validation error.
+- `when` is checked first: false hides the option; true with a failing `requires` locks it.
+- Listed choices draw a dimmed button with a lock and `lockedText` on a second line; mouse and number keys cannot choose it.
+- In `explore`, the spot is drawn as a dashed lock instead of a number. Pressing it does not choose; it shows `lockedText` where the exploration hint sits.
+- A `timeoutOptionIndex` that points at a locked option falls back to the first open option. A choice whose visible options are all locked is an authoring error.
+- Locks are recalculated whenever the choice is drawn again, so a look-around scene that `set`s a flag or `get`s an item and returns to the same choice opens it.
 
 Existing `bg.place` or a following `place` is reused once. Setup actions such as music, characters and camera may intervene; dialogue, choices, branching and waits stop that lookup. Existing caption time updates the story context; explicit `bg.label.time` takes highest priority. Explicit centered captions preserve their 1.5-second hold unless a `bg.label` object selects the automatic presentation. `label: false` also suppresses the associated legacy caption. Standalone manual `place` actions still work. Older saves reconstruct story time from their traversed script, and loading does not replay label animations. The runnable [game template](../examples/game-template/) demonstrates an uncaptioned automatic background transition.

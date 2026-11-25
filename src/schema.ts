@@ -114,6 +114,8 @@ const choiceOptionSchema = z
     saveText: z.string().min(1).optional(),
     at: scenePointSchema.optional(),
     when: conditionSchema.optional(),
+    requires: conditionSchema.optional(),
+    lockedText: z.string().trim().min(1).max(60).optional(),
     set: stateSetMapSchema.optional(),
     add: stateAddMapSchema.optional(),
     goto: z.string().min(1).optional(),
@@ -125,6 +127,19 @@ const choiceOptionSchema = z
   })
   .refine((option) => !(option.goto && option.gameOver), {
     message: 'choice option cannot declare both goto and gameOver',
+  })
+  .refine((option) => {
+    // If `requires` is present, `lockedText` must also be present
+    if (option.requires && !option.lockedText) {
+      return false;
+    }
+    // If `lockedText` is present, `requires` must also be present
+    if (option.lockedText && !option.requires) {
+      return false;
+    }
+    return true;
+  }, {
+    message: 'choice option requires both requires and lockedText when either is present',
   });
 
 const stickerLengthSchema = z.union([z.number(), z.string().min(1)]);

@@ -186,6 +186,10 @@ state:
   sorry: false
   forgave: false
   told_all: false
+  home_envelope: false
+  home_phone: false
+  home_jisu: false
+  home_box: false
 
 inventory:
   invitation:
@@ -200,3 +204,9 @@ inventory:
     image: assets/items/child_photo.svg
     category: "남은 것"
     order: 20
+  discharge_paper:
+    name: "퇴원 확인서"
+    description: "2016년 3월 29일, 발급처 정림의원. 엄마 상자에서 나왔다."
+    image: assets/items/discharge_paper.svg
+    category: "남은 것"
+    order: 30
