@@ -302,11 +302,12 @@
 .app .choice-gate-option.is-locked { opacity: 0.55; cursor: not-allowed; }
 .app .choice-gate-option.is-locked:hover { transform: none; }
 .app .choice-gate-option.is-locked .choice-gate-option-text { opacity: 0.6; }
-.app .choice-gate-option.is-locked .choice-gate-option-lock-icon { color: var(--game-muted); margin-right: 6px; }
 .app .choice-gate-option.is-locked .choice-gate-option-mark { opacity: 0.3; }
 .app .choice-gate-option.is-locked .choice-gate-option-badges { opacity: 0.5; }
-.app .choice-gate-option-locked-text { margin-top: 4px; width: 100%; text-align: left; color: var(--game-muted); font-size: 13px; }
-.app .choice-gate-option-lock-icon { width: 14px; height: 14px; flex-shrink: 0; vertical-align: middle; }
+.app .choice-gate-option.is-locked { flex-wrap: wrap; row-gap: 2px; }
+.app .choice-gate-option.is-locked .choice-gate-option-text { display: flex; align-items: center; }
+.app .choice-gate-option-locked-text { flex: 1 0 100%; text-align: left; color: var(--game-muted); font-size: 13px; font-weight: 500; }
+.app .choice-gate-option-lock-icon { width: 14px; height: 14px; margin-right: 6px; vertical-align: -2px; }
 .app .choice-gate-option:active:not(:disabled) { transform: translateX(1px); }
 .app .choice-gate-option-copy { gap: 12px; align-items: center; }
 .app .choice-gate-option-index { width: 24px; height: auto; min-width: 24px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--game-muted); font-size: 13px; font-weight: 650; letter-spacing: .08em; }

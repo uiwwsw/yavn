@@ -5069,9 +5069,9 @@ export default function App() {
             {String(displayNumber).padStart(2, '0')}
           </span>
           <span className="choice-gate-option-text">
+            {isLocked && <GameIcon name="lock" className="choice-gate-option-lock-icon" />}
             {optionText}
           </span>
-          {isLocked && <GameIcon name="lock" className="choice-gate-option-lock-icon" />}
           <GameIcon name="arrow" className="choice-gate-option-mark" />
         </span>
         {lockedTextDisplay}

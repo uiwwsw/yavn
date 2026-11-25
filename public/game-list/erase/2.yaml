@@ -48,19 +48,19 @@ scenes:
           with: []
           options:
             - text: "식탁 위 봉투"
-              at: { x: 52, y: 62 }
+              at: { x: 32, y: 58 }
               when: { var: home_envelope, op: eq, value: false }
               goto: e3_home_envelope
             - text: "휴대폰"
-              at: { x: 34, y: 70 }
+              at: { x: 46, y: 56 }
               when: { var: home_phone, op: eq, value: false }
               goto: e3_home_phone
             - text: "안방 문"
-              at: { x: 82, y: 40 }
+              at: { x: 14, y: 46 }
               when: { var: home_jisu, op: eq, value: false }
               goto: e3_home_jisu
             - text: "베란다 수납장"
-              at: { x: 14, y: 46 }
+              at: { x: 82, y: 40 }
               when: { var: home_box, op: eq, value: false }
               requires: { var: home_envelope, op: eq, value: true }
               lockedText: "장례 뒤로 한 번도 열지 않은 칸이다."
