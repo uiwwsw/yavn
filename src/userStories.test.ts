@@ -157,11 +157,13 @@ describe('owner story playthroughs', () => {
     await vi.advanceTimersByTimeAsync(3000);
   }
 
+  // ERASE's last morning: look at the form, the phone and the door before a way out opens.
+  const lobbyThen = (way: string) => ['서류철', '휴대폰', '유리문', way];
   it.each([
-    ['side_seat', { e2_listen: '그 사람 얘기를 더 해 달라고 한다', e5_final: '사진관으로 간다' }],
-    ['erase_loop', { e5_final: '3층으로 올라간다' }],
-    ['two_names', { e2_jisu: '사실대로 말한다', e4_tell: '전부 말한다', e5_final: '지수에게 전화한다' }],
-    ['unfinished', { e2_jisu: '앨범 얘기만 했다고 한다', e4_tell: '아무 일도 없다고 한다', e5_final: '지수에게 전화한다' }],
+    ['side_seat', { e2_listen: '그 사람 얘기를 더 해 달라고 한다', e5_lobby: lobbyThen('사진관으로 간다') }],
+    ['erase_loop', { e5_lobby: lobbyThen('3층으로 올라간다') }],
+    ['two_names', { e2_jisu: '사실대로 말한다', e4_tell: '전부 말한다', e5_lobby: lobbyThen('유리문을 밀고 나간다') }],
+    ['unfinished', { e2_jisu: '앨범 얘기만 했다고 한다', e4_tell: '아무 일도 없다고 한다', e5_lobby: lobbyThen('유리문을 밀고 나간다') }],
     ['walked_past', { e3_go: '답하지 않는다' }],
   ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
     await start('erase');

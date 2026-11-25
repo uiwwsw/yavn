@@ -41,6 +41,7 @@ const best: Route = {
   t3_doorway: '약재실 문간의 의관',
   t4_time: '윤길의 시장',
   t5_margin: '언해 맨 뒷장',
+  margin_desk: ['언해 첫 장', '언해 맨 뒷장'],
 };
 
 async function play(route: Route, maxSteps = 5000) {

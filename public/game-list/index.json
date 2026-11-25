@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-25T00:06:20.720Z",
+  "generatedAt": "2026-11-25T13:23:42.794Z",
   "games": [
     {
       "id": "360",
@@ -193,8 +193,8 @@
       "name": "ERASE",
       "path": "/game-list/erase/",
       "author": "uiwwsw",
-      "version": "3.0.0",
-      "summary": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 도윤을 다른 이름으로 부른다. 도윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
+      "version": "4.0.0",
+      "summary": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 서윤을 다른 이름으로 부른다. 서윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
       "summaryEn": "The day Doyun and Jisu shoot their wedding invitation, the stand-in photographer calls Doyun by a name he does not know. He remembers nothing from before eighteen. On her old phone, eleven messages to that name are still unread. A five-chapter psychological drama with five endings.",
       "thumbnail": "/game-list/erase/assets/bg/title.svg",
       "tags": [
@@ -236,7 +236,7 @@
       "endingCount": 5,
       "seo": {
         "title": "ERASE",
-        "description": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 도윤을 다른 이름으로 부른다. 도윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
+        "description": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 서윤을 다른 이름으로 부른다. 서윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
         "keywords": [
           "심리 드라마",
           "비주얼노벨",

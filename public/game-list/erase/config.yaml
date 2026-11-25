@@ -1,10 +1,10 @@
 title: "ERASE"
-pov: "한도윤"
+pov: "한서윤"
 author:
   name: "uiwwsw"
-version: "3.0.0"
+version: "4.0.0"
 seo:
-  description: "청첩장 사진을 찍던 날, 처음 보는 사진작가가 도윤을 다른 이름으로 부른다. 도윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종."
+  description: "청첩장 사진을 찍던 날, 처음 보는 사진작가가 서윤을 다른 이름으로 부른다. 서윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종."
   keywords:
     - "심리 드라마"
     - "비주얼노벨"
@@ -48,34 +48,34 @@ endings:
   side_seat:
     title: "옆자리"
     message: "아진은 토요일 촬영을 실장님에게 돌려주지 않았다."
-    epilogue: "5월 1일, 사진은 정아진이 찍었다. 식이 끝나고 아진이 보낸 사진 중에 도윤이 눈을 감고 웃는 컷이 있었다. 아무도 지우자고 하지 않았다."
+    epilogue: "5월 1일, 사진은 정아진이 찍었다. 식이 끝나고 아진이 보낸 사진 중에 서윤이 눈을 감고 웃는 컷이 있었다. 아무도 지우자고 하지 않았다."
     background: photo_studio
     music: studio
     tone: hopeful
   two_names:
     title: "두 이름"
-    message: "지수는 두 이름을 다 알고도 날짜를 바꾸지 않았다."
-    epilogue: "5월 1일, 신랑 입장 직전에 지수가 작게 불렀다. 하린아. 도윤이 대답했다. 사진은 정아진 작가가 찍었다."
+    message: "지수는 두 이름과 두 번의 청혼을 다 알고도 날짜를 바꾸지 않았다."
+    epilogue: "5월 1일, 신부 입장 직전에 지수가 작게 불렀다. 하린아. 서윤이 대답했다. 사진은 정아진 작가가 찍었다."
     background: couple_home
     music: studio
     tone: hopeful
   unfinished:
     title: "완성되지 않은 사람"
-    message: "식은 미뤄졌다. 반지는 도윤의 주머니에 있다."
-    epilogue: "5월 1일에는 아무 일도 없었다. 6월 어느 저녁 지수에게서 문자가 왔다. 사진관 앨범, 같이 보러 갈래. 도윤은 그 문자를 지우지 않았다."
+    message: "식은 미뤄졌다. 반지 상자는 서윤의 손에 있다."
+    epilogue: "5월 1일에는 아무 일도 없었다. 6월 어느 저녁 지수에게서 문자가 왔다. 사진관 앨범, 같이 보러 갈래. 서윤은 그 문자를 지우지 않았다."
     background: couple_home
     music: wind
     tone: mystery
   erase_loop:
     title: "ERASE"
-    message: "도윤은 청첩장 사진을 언제 찍었는지 모른다."
-    epilogue: "유리문 밖에서 기다린 사람을 도윤은 이번에도 보지 못했다. 청첩장 교정지는 지수의 서랍에 들어갔다.\n\n도움이 필요할 때\n힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 전화할 수 있습니다."
+    message: "서윤은 청첩장 사진을 언제 찍었는지 모른다."
+    epilogue: "지수는 1층에서 세 번째로 기다렸다. 반지 안쪽의 날짜는 서윤만 모른다.\n\n도움이 필요할 때\n힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 전화할 수 있습니다."
     background: surgery_reveal
     music: cold_room
     tone: tragic
   walked_past:
     title: "지나간 사람"
-    message: "화환 리본에 적힌 이름을 도윤은 읽지 않았다."
+    message: "화환 리본에 적힌 이름을 서윤은 읽지 않았다."
     epilogue: "아진은 식이 끝날 때까지 로비에 있었다. 카메라는 들지 않았다."
     background: couple_home
     music: wind

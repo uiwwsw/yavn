@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<title>날짜 각인 약혼반지</title>
+<g transform="rotate(-2 200 200)" stroke-linecap="round" stroke-linejoin="round">
+<!-- 반지 상자 안감 -->
+<rect x="62" y="58" width="276" height="220" rx="18" fill="#232a3b" stroke="#141823" stroke-width="4"/>
+<path d="M92 210h216" stroke="#171c28" stroke-width="6"/>
+<!-- 금반지: 바깥 타원과 안쪽 타원 사이만 칠한다 -->
+<path fill-rule="evenodd" fill="#c9a45c" stroke="#8a6d33" stroke-width="2"
+  d="M114 170a86 58 0 1 0 172 0a86 58 0 1 0 -172 0Z M130 170a70 46 0 1 0 140 0a70 46 0 1 0 -140 0Z"/>
+<!-- 보석 -->
+<path d="M200 100l9 10-9 10-9-10Z" fill="#eef2f6" stroke="#8a6d33" stroke-width="2"/>
+<!-- 안쪽 각인 확대 -->
+<rect x="96" y="296" width="208" height="52" rx="4" fill="#efe9dc" stroke="#3a3f4a" stroke-width="2"/>
+<text x="200" y="330" text-anchor="middle" font-family="Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="26" fill="#5a5f6a">2024. 6. 2.</text>
+</g>
+</svg>

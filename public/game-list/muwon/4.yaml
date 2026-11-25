@@ -128,11 +128,61 @@ scenes:
     actions:
       - bg: { id: room_night, transition: fade, duration: 900, place: "그날 밤 · 집" }
       - music: null
+      - say: { channel: action, with: [], text: "집에 돌아와 등잔을 켠다. 소매에서 꺼낸 것들을 서안 위에 늘어놓는다." }
+      - goto: margin_desk
+
+  margin_desk:
+    title: "뒷장"
+    actions:
+      - choice:
+          key: margin_desk
+          presentation: explore
+          investigation: { width: 1600, height: 900 }
+          prompt: "등잔 하나가 서안을 비춘다."
+          with: []
+          options:
+            - text: "감청 주머니"
+              at: { x: 42, y: 52 }
+              when:
+                all:
+                  - { var: child_pouch, op: eq, value: true }
+                  - { var: night_pouch, op: eq, value: false }
+              goto: margin_pouch
+            - text: "언해 첫 장"
+              at: { x: 55, y: 50 }
+              when: { var: night_first, op: eq, value: false }
+              goto: margin_first
+            - text: "언해 맨 뒷장"
+              at: { x: 60, y: 46 }
+              requires: { var: night_first, op: eq, value: true }
+              lockedText: "접힌 자리에 손이 가지 않는다."
+              goto: margin_back
+
+  margin_pouch:
+    actions:
+      - sticker: { id: m_pouch, image: pouch_plain_sticker, x: 50, y: 34, width: "clamp(140px, 20%, 240px)", enter: fadeIn, inputLockMs: 300 }
+      - say: { channel: action, with: [], text: "점순 어미의 주머니를 등잔 옆에 놓는다. 짙은 남빛이다." }
+      - say: { channel: action, with: [], text: "쪼개 둔 환 반쪽이 굴러 나온다. 속이 희다. 약 냄새가 없다." }
+      - clearSticker: { id: m_pouch, leave: fadeOut }
+      - set: { night_pouch: true }
+      - goto: margin_desk
+
+  margin_first:
+    actions:
+      - sticker: { id: m_first, image: eonhae_sticker, x: 50, y: 34, width: "clamp(160px, 24%, 300px)", enter: fadeIn, inputLockMs: 300 }
+      - say: { channel: action, with: [], text: "언해 첫 장을 편다. 책 이름 아래 원(冤) 자 옆에 같은 글자가 하나 더 있다." }
+      - say: { channel: action, with: [], text: "둘째 글자는 먹이 뒷면까지 배어 있다. 접힌 맨 뒷장 쪽으로 번진 자국이 이어진다." }
+      - clearSticker: { id: m_first, leave: fadeOut }
+      - set: { night_first: true }
+      - goto: margin_desk
+
+  margin_back:
+    actions:
       - say:
           channel: action
           with: []
           continueLabel: "뒷장을 편다"
-          text: "집에 돌아와 등잔을 켠다. 언해 맨 뒷장의 접힌 자리를 손톱으로 편다."
+          text: "언해 맨 뒷장의 접힌 자리를 손톱으로 편다."
       - wait: 900
       - sticker: { id: i_margin, image: eonhae_margin_sticker, x: 50, y: 32, width: "clamp(180px, 26%, 340px)", enter: fadeIn, inputLockMs: 900 }
       - say:

@@ -160,6 +160,8 @@ assets:
 state:
   player_name: "서연"
   trust_dowon: 0
+  night_pouch: false
+  night_first: false
   trust_yeogeum: 0
   credibility: 4
   truth: 0
