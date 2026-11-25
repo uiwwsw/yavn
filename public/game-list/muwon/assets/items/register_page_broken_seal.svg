@@ -25,6 +25,12 @@
     <!-- ink blot from haste -->
     <path d="M270 300 c6 -6 14 -2 14 6 c0 8 -10 10 -14 4 c-4 -2 -4 -6 0 -10 z" fill="#2f221a"/>
     <circle cx="290" cy="296" r="2.5" fill="#2f221a"/>
+    <!-- ink rubbing of the lending seal, pasted on: bottom-right corner missing -->
+    <g transform="rotate(4 140 290)">
+      <path d="M108 262 h62 v46 l-10 6 l-2 8 h-50 z" fill="#2f221a"/>
+      <path d="M116 270 h46 v34 l-8 5 h-38 z" fill="none" stroke="#dbd3bd" stroke-width="2.5"/>
+      <path d="M139 270 v39" stroke="#dbd3bd" stroke-width="2"/>
+    </g>
     <!-- grain -->
     <g stroke="#c6b083" stroke-width="1.2" opacity="0.6">
       <path d="M110 310 l12 0 M160 316 l10 1 M300 76 l10 0 M200 80 l12 1 M320 200 l9 0"/>

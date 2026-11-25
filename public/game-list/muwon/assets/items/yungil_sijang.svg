@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><!-- 윤길의 시장: 목 끈 자국, 손목 끈 자국 두 줄, 등의 시반 -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfcba5"/><stop offset="0.55" stop-color="#ddc9a4"/><stop offset="0.553" stop-color="#b2a388"/><stop offset="1" stop-color="#b2a388"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddd4bb"/><stop offset="0.55" stop-color="#dbd3bd"/><stop offset="0.553" stop-color="#b0ab9b"/><stop offset="1" stop-color="#b0ab9b"/></linearGradient><linearGradient id="art-ink-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9734f"/><stop offset="0.55" stop-color="#c46240"/><stop offset="0.553" stop-color="#9e533a"/><stop offset="1" stop-color="#9e533a"/></linearGradient></defs>
+  <g transform="rotate(-4 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- folded hanji: two leaves -->
+    <path d="M60 50 L200 46 L202 352 L64 356 Z" fill="url(#art-ink-0)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M200 46 L340 52 L336 354 L202 352 Z" fill="url(#art-ink-1)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M200 46 L202 352" stroke="#2f221a" stroke-width="2"/>
+    <path d="M206 50 L208 350" stroke="#ceb990" stroke-width="3"/>
+    <!-- paper grain -->
+    <g stroke="#c6b083" stroke-width="1.2" opacity="0.6">
+      <path d="M80 90 l14 1 M120 140 l10 -1 M90 210 l16 0 M150 260 l12 1 M100 320 l14 -1 M160 100 l10 1 M76 280 l9 0"/>
+      <path d="M230 300 l14 1 M300 320 l12 0 M320 110 l10 1 M250 70 l12 -1 M310 250 l9 1"/>
+    </g>
+    <!-- title -->
+    <text x="130" y="88" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="30" font-weight="700" fill="#2f221a" text-anchor="middle">시장</text>
+    <path d="M100 100 L160 99" stroke="#2f221a" stroke-width="2"/>
+    <!-- body outline sketch -->
+    <g fill="none" stroke="#2f221a" stroke-width="2.5">
+      <circle cx="131" cy="135" r="15"/>
+      <path d="M124 150 L123 160 M138 150 L139 160"/>
+      <path d="M123 160 C104 162 98 172 96 186 L90 240 M139 160 C158 162 164 172 166 186 L172 240"/>
+      <path d="M104 186 L108 252 L116 320 M158 186 L154 252 L146 320"/>
+      <path d="M108 252 L131 256 L154 252 M131 256 L130 320"/>
+    </g>
+    <!-- marks: deep rope line at the neck, two bands on each wrist, lividity on the back -->
+    <path d="M120 154 L142 154 M121 158 L141 158" stroke="#c46240" stroke-width="3"/>
+    <path d="M86 236 l10 2 M85 242 l10 2 M168 238 l10 -2 M169 244 l10 -2" stroke="#c46240" stroke-width="2.5"/>
+    <path d="M110 200 c10 6 32 6 42 0" fill="none" stroke="#c46240" stroke-width="2" stroke-dasharray="4 4"/>
+    <!-- frost tick by the jaw -->
+    <path d="M150 128 l8 -6 M152 136 l9 -2" stroke="#2e4a62" stroke-width="2"/>
+    <!-- brush notes in columns -->
+    <g fill="none" stroke="#2f221a" stroke-width="3">
+      <path d="M312 80 c-3 10 4 16 0 26 c-4 10 3 18 -1 30 M312 150 c3 8 -3 14 1 24"/>
+      <path d="M284 80 c-3 12 4 18 0 30 c-3 10 3 16 0 28 c-3 10 2 20 -1 32 M284 186 c3 10 -3 16 0 28"/>
+      <path d="M256 80 c-3 10 3 18 0 28 c-3 12 4 18 0 30 M256 152 c3 8 -2 14 1 22 c3 10 -3 16 0 26"/>
+      <path d="M228 80 c-3 12 3 16 0 28 c-3 10 3 18 0 26"/>
+    </g>
+    <path d="M296 230 l-3 10 M300 238 l6 4" stroke="#2f221a" stroke-width="2.5"/>
+    <!-- red seal -->
+    <g transform="rotate(5 290 300)">
+      <rect x="262" y="272" width="56" height="56" fill="url(#art-ink-2)" stroke="#863623" stroke-width="2"/>
+      <rect x="268" y="278" width="44" height="44" fill="none" stroke="#dbd3bd" stroke-width="2.5"/>
+      <path d="M276 288 h12 v10 h-12 z M294 286 v26 M300 290 h8 M300 300 h8 M276 306 h14 M282 300 v16" fill="none" stroke="#dbd3bd" stroke-width="2.5"/>
+      <path d="M266 324 l6 -3 M312 276 l3 6" stroke="#dbd3bd" stroke-width="2"/>
+    </g>
+  </g>
+
+</svg>

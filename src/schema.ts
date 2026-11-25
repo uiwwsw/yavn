@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { UI_TEMPLATE_IDS } from './uiTemplates';
 import { CHARACTER_MOTION_IDS, MAX_MOTION_REPEAT } from './characterEmotes';
+import { MAX_PHONE_UNREAD } from './phoneThread';
 
 export const routeVarValueSchema = z.union([z.boolean(), z.number(), z.string()]);
 export const stateSetMapSchema = z.record(routeVarValueSchema);
@@ -24,6 +25,12 @@ export const phoneMediaSchema = z.union([
     kind: z.enum(['image', 'video']).optional(),
     alt: z.string().trim().min(1).max(160).optional(),
   }).strict(),
+]);
+
+/** A message's unread count: `true` for the one person on the other end, or a group's count. */
+export const phoneUnreadSchema = z.union([
+  z.boolean(),
+  z.number().int().nonnegative().max(MAX_PHONE_UNREAD),
 ]);
 
 export const dialogueChannelSchema = z.enum(['dialogue', 'narration', 'record', 'system', 'thought', 'action', 'message', 'card']);
@@ -419,6 +426,7 @@ const actionBodySchema = z.union([
       side: z.enum(['me', 'them']).optional(),
       thread: z.string().trim().min(1).max(60).optional(),
       media: phoneMediaSchema.optional(),
+      unread: phoneUnreadSchema.optional(),
       erase: z.boolean().optional(),
       autoAdvance: z.number().int().positive().max(60000).optional(),
       motion: characterMotionSchema.optional(),
@@ -434,6 +442,9 @@ const actionBodySchema = z.union([
     }).refine(say => say.thread === undefined || say.channel === 'message', {
       message: 'thread applies to message lines',
       path: ['thread'],
+    }).refine(say => say.unread === undefined || say.channel === 'message', {
+      message: 'unread applies to message lines',
+      path: ['unread'],
     }),
   }),
 ]);

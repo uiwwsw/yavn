@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><!-- 약재실 문간을 지나간 의관의 버선: 앞코에 흙 한 점 없다 -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- threshold boards -->
+    <path d="M30 300 H370 V330 H30 Z" fill="#8d6a45" stroke="#2f221a" stroke-width="3"/>
+    <path d="M30 314 H370" stroke="#6b5440" stroke-width="2"/>
+    <g stroke="#6b5440" stroke-width="1.5" opacity="0.7"><path d="M80 304 l30 0 M200 322 l40 0 M300 306 l28 0"/></g>
+    <!-- hem of a grey-blue robe -->
+    <path d="M70 60 C120 70 260 70 330 58 L344 196 C280 214 130 214 58 198 Z" fill="#5c6f7d" stroke="#2f221a" stroke-width="3"/>
+    <g stroke="#45555f" stroke-width="2.5"><path d="M120 80 l-6 120 M180 82 l-2 126 M240 82 l2 124 M296 76 l8 122"/></g>
+    <!-- left beoseon, toe curled up, spotless -->
+    <path d="M92 300 C88 264 96 226 120 206 L170 206 C176 238 176 262 186 276 C206 282 224 286 230 276 C238 266 232 258 240 262 C244 280 232 300 206 302 Z" fill="#f3ecdc" stroke="#2f221a" stroke-width="3"/>
+    <!-- right beoseon -->
+    <path d="M222 300 C218 262 226 226 250 206 L300 206 C306 238 306 262 316 276 C334 282 350 286 356 276 C362 268 358 260 366 262 C370 282 360 300 334 302 Z" fill="#f3ecdc" stroke="#2f221a" stroke-width="3"/>
+    <!-- centre seams -->
+    <path d="M150 210 C152 240 160 262 182 282 M280 210 C282 240 290 262 312 282" fill="none" stroke="#c9bea4" stroke-width="2.5"/>
+    <!-- a little shadow, no dirt -->
+    <path d="M100 298 C140 304 180 304 204 300 M230 298 C270 304 310 304 332 300" fill="none" stroke="#d9ccb0" stroke-width="3"/>
+  </g>
+</svg>

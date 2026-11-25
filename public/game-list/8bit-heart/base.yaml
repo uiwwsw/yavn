@@ -11,9 +11,11 @@ assets:
     drone_alley: assets/bg/drone_alley.svg
     datacenter: assets/bg/datacenter.svg
     dawn_field: assets/bg/dawn_field.svg
+    station_hall: assets/bg/station_hall.svg
     console_old_sticker: assets/items/console_old.svg
     console_old_line_sticker: assets/items/console_old_line.svg
     console_cheap_sticker: assets/items/console_cheap.svg
+    console_cheap_off_sticker: assets/items/console_cheap_off.svg
     console_premium_sticker: assets/items/console_premium.svg
     cpu_sticker: assets/items/cpu_chip.svg
     iron_sticker: assets/items/soldering_iron.svg
@@ -22,6 +24,8 @@ assets:
     pinky_promise_sticker: assets/items/pinky_promise.svg
     pinky_waiting_sticker: assets/items/pinky_waiting.svg
     hands_apart_sticker: assets/items/hands_apart.svg
+    onigiri_sticker: assets/items/onigiri.svg
+    earphone_sticker: assets/items/earphone.svg
   backgroundLabels:
     title: false
     bedroom: "윤재네 집"
@@ -34,6 +38,7 @@ assets:
     drone_alley: "골목"
     datacenter: "서울역 지하 관제실"
     dawn_field: "서울역"
+    station_hall: "서울역 대합실"
   characters:
     윤재:
       placement: prompt-top
@@ -107,14 +112,14 @@ state:
   saw_ceiling: false
   saw_box: false
   saw_dad: false
-  bond: 0
-  memories: 0
   m_snack: false
   m_promise: false
   m_joke: false
   kept_promise: false
   kept_snack: false
   kept_joke: false
+  kept_score: false
+  reached_in: false
   b_battery: false
   b_cpu: false
   b_screen: false

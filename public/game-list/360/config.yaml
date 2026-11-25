@@ -1,7 +1,7 @@
 title: "360"
 author:
   name: "uiwwsw"
-version: "1.6.1"
+version: "2.0.0"
 seo:
   description: "1809년 조선에서 2026년 서울까지. 죽은 뒤에야 한꺼번에 떠오르는 기억 속에서 후회 하나를 골라 다음 삶으로 가져간다. 다섯 삶을 다룬 비주얼노벨. 5장, 결말 4종."
   keywords:
@@ -47,22 +47,19 @@ startScreen:
 endings:
   onward:
     title: "한 점"
-    message: "{{deg_last}}°. 어느 해 어느 나라인지는 고를 수 없었다."
-    epilogue: "갓난아이가 운다. 받아 든 사람이 웃는다. 처음 보는 얼굴이다."
+    message: "{{deg_last}}°"
     background: window_dawn
     music: birth
     tone: hopeful
   circle:
     title: "한 바퀴"
-    message: "{{deg_last}}°. 일흔아홉 해를 살고 떠날 때 골랐던 자리와 같다. 같은 자리에 두 번 닿았다."
-    epilogue: "갓난아이는 그 겨울을 모른다. 젖을 물고, 주먹을 쥔다."
+    message: "{{deg_last}}°. 같은 자리에 두 번 닿았다."
     background: window_dawn
     music: birth
     tone: mystery
   returner:
     title: "돌아본 사람"
-    message: "여섯 살 되던 해, 아이가 저녁을 먹다 말했다. \"엄마, 나 전에 편집실에서 일했어.\""
-    epilogue: "엄마는 웃으면서 휴대폰 녹음 버튼을 눌렀다. 그해 제보는 구백 건을 넘었다."
+    message: "다섯 개를 센 채로 닿았다."
     background: window_dawn
     music: now
     tone: mystery

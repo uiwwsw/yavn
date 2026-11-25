@@ -162,7 +162,7 @@ describe('owner story playthroughs', () => {
     ['erase_loop', { e5_final: '3층으로 올라간다' }],
     ['two_names', { e2_jisu: '사실대로 말한다', e4_tell: '전부 말한다', e5_final: '지수에게 전화한다' }],
     ['unfinished', { e2_jisu: '앨범 얘기만 했다고 한다', e4_tell: '아무 일도 없다고 한다', e5_final: '지수에게 전화한다' }],
-    ['walked_past', { e1_photo: '사진을 지운다', e2_listen: '앨범만 받고 일어난다' }],
+    ['walked_past', { e3_go: '답하지 않는다' }],
   ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
     await start('erase');
     const state = await play(route);
@@ -177,9 +177,15 @@ describe('owner story playthroughs', () => {
     b3_drone: '{{android_name}} 뒤에 숨는다',
     b3_promise: '끝까지 함께하겠다고 약속한다',
   };
+  const sit = '손바닥을 바지에 닦고 앉는다';
+  const reach = '틈으로 손을 넣는다';
   it.each([
-    ['saved_together', { ...loyal, b4_save: '새끼손가락 약속' }],
-    ['new_game', { ...loyal, b4_save: '슬롯을 비워 둔다' }],
+    ['saved_together', { ...loyal, b4_save: '새끼손가락 약속', b4_hold: sit }],
+    ['new_game', { ...loyal, b4_save: '복숭아 3.5조각', b4_hold: sit }],
+    ['new_game', { ...loyal, b4_save: '똑똑 농담', b4_hold: sit }],
+    ['new_game', { ...loyal, b4_save: '최고 점수를 남긴다', b4_hold: sit }],
+    ['no_response', { ...loyal, b4_save: '새끼손가락 약속', b4_hold: reach }],
+    ['no_response', { ...loyal, b4_save: '최고 점수를 남긴다', b4_hold: reach }],
     ['off_screen', { ...loyal, b4_save: '저장을 그만두고 도망친다' }],
   ] as Array<[string, Route]>)('8비트 심장 reaches %s', async (ending, route) => {
     await start('8bit-heart');
@@ -196,6 +202,13 @@ describe('owner story playthroughs', () => {
     const lines = state.storyLog.flatMap(entry => 'text' in entry ? [entry.text] : []);
     expect(lines.some(text => text.includes('뉴스를 종이에 찍은 거야'))).toBe(true);
     expect(lines.some(text => /B버튼\? 아직 뻑뻑해|세 겹 싸 줬어/.test(text))).toBe(false);
+  }, 60000);
+
+  it('8비트 심장 fails recoverably when Yunjae runs from the drone', async () => {
+    await start('8bit-heart');
+    const state = await play({ ...loyal, b3_drone: '반대쪽으로 달아난다' }, '비트');
+    expect(state.gameOver?.title).toBe('네 번째 훑기');
+    expect(state.resolvedEndingId).toBeFalsy();
   }, 60000);
 
 

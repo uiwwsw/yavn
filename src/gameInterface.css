@@ -876,6 +876,9 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
   --phone-them-ink: #e6ecf2;
   --phone-mine: var(--ui-speaker-color, #3fd0c9);
   --phone-rail: color-mix(in srgb, var(--phone-them-ink) 14%, transparent);
+  /* The unread count. A messenger prints it in yellow, and it has to read on the dark screen
+     beside either bubble without borrowing the story's accent, which the outgoing bubble uses. */
+  --phone-unread: #f2c94c;
 
   position: absolute;
   left: 50%;
@@ -1100,6 +1103,21 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .app .phone-thread-bubble.side-me :is(.phone-thread-text, .text) {
   background: var(--phone-mine);
   color: color-mix(in srgb, #04070a 88%, var(--phone-mine));
+}
+
+/* say.unread: the count of people who have not opened a message, the way a Korean messenger
+   prints it. It sits outside the bubble at its bottom corner — the bubble's row is aligned to
+   the bottom and the count comes after the message, so it lands left of what you sent (the
+   row is reversed) and right of what came in. A photo sent alone gets one too. */
+.app .phone-unread {
+  flex: 0 0 auto;
+  padding-bottom: 2px;
+  color: var(--phone-unread);
+  font-family: var(--ui-body-font);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 /* A photo is the message. No bubble around it, no padding inside it. */

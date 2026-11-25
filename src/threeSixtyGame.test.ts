@@ -156,6 +156,58 @@ describe('360', () => {
     });
   });
 
+  it('names what is held with the same words in the dark, in the save and in the fifth dark', () => {
+    const fifth = readSource('4.yaml');
+    const grips = ['v1', 'v2', 'v3', 'v4', 'v_end'].flatMap((key) => {
+      const chapter = chapters.find((entry) => collectKey(entry, 'choice').map(asRecord).some((choice) => choice.key === key));
+      const choice = collectKey(chapter, 'choice').map(asRecord).find((entry) => entry.key === key)!;
+      return (choice.options as unknown[]).map(asRecord).filter((option) => option.set !== undefined && asRecord(option.set).v_end !== 'left')
+        .map((option) => ({ key, text: String(option.text), saveText: String(option.saveText) }));
+    });
+    expect(grips.length).toBe(12);
+    grips.forEach(({ key, text, saveText }) => {
+      expect(saveText, `${key} ${text}`).toBe(text);
+      // The three earlier lives are read back beside their numbers, taken and left alike.
+      if (['v1', 'v2', 'v3'].includes(key)) expect(fifth.split(`— ${text}"`).length - 1, text).toBe(2);
+    });
+    // The winter answers in the same tail as the seventy-nine years: same tail, same number.
+    const tail = (text: string) => text.split(' ').slice(-4).join(' ');
+    const lastLife = grips.filter((grip) => grip.key === 'v4').map((grip) => tail(grip.text));
+    grips.filter((grip) => grip.key === 'v_end').forEach((grip) => expect(lastLife, grip.text).toContain(tail(grip.text)));
+  });
+
+  it('notes what the hand held on the way into every life that can come after another', () => {
+    const scenes = asRecord(chapters[0].scenes);
+    const enters: Record<string, string[]> = {
+      '1894': ['guard', 'stay', 'live', 'dare'],
+      '1952': ['say', 'free', 'live', 'dare'],
+      '1988': ['say', 'free', 'guard', 'stay'],
+      '2026': ['say', 'free', 'guard', 'stay', 'live', 'dare'],
+    };
+    Object.entries(enters).forEach(([year, taken]) => {
+      const cases = collectKey(asRecord(scenes[`go_${year}`]).actions, 'cases').flat().map(asRecord);
+      taken.forEach((value) => {
+        const entry = cases.find((item) => asRecord(item.when).value === value);
+        expect(entry, `go_${year} ${value}`).toBeTruthy();
+        const set = collectKey(asRecord(scenes[String(entry!.goto)]).actions, 'set').map(asRecord);
+        expect(set, `${entry!.goto}`).toContainEqual({ [`pre_${year}`]: value });
+      });
+    });
+    // The fifth dark pairs or counterfactuals every one of those, so no held thing goes unread.
+    const fifth = readSource('4.yaml');
+    Object.entries(enters).forEach(([year, taken]) => taken.forEach((value) =>
+      expect(fifth.split(`var: pre_${year}, op: eq, value: ${value} }`).length - 1, `${year} ${value}`).toBeGreaterThanOrEqual(2)));
+  });
+
+  it('flashes the held number at every door it shuts', () => {
+    chapters.slice(0, 4).forEach((chapter, index) => {
+      Object.entries(asRecord(chapter.scenes)).filter(([id]) => id.includes('cannot')).forEach(([id, scene]) => {
+        const cards = collectKey(asRecord(scene).actions, 'say').map(asRecord).filter((say) => say.channel === 'card');
+        expect(cards.map((card) => card.text), `${index}.yaml ${id}`).toContain('{{deg_last}}°');
+      });
+    });
+  });
+
   it('keeps lines short enough for the dialogue box', () => {
     const lines = chapters.flatMap((chapter) => collectKey(chapter, 'say')).map((say) => String(asRecord(say).text));
     expect(lines.length).toBeGreaterThan(250);

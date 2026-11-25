@@ -84,7 +84,8 @@ scenes:
       - say: { channel: narration, text: "방금까지 대답하던 내 이름이 생각나지 않는다." }
       - bg: { id: void_light, transition: dissolve, duration: 750 }
       - say: { channel: narration, text: "반짝이던 것 중 하나가 꺼져 있다." }
-      - say: { channel: narration, text: "이름은 잊었는데 방금 쥔 마음은 남았다. 다시 빛이 깜박인다." }
+      - say: { channel: narration, text: "손이 뭔가를 쥐고 있다. 펴 보지는 않는다." }
+      - say: { channel: narration, text: "다시 빛이 깜박인다." }
       - goto: stars
 
   # 고르는 것은 사람이 아니라 그리움의 모양이다. 누군지는 가 봐야 안다.
@@ -98,7 +99,7 @@ scenes:
           prompt: "빛마다 낯선 풍경이 비친다. 어느 쪽으로 갈까?"
           options:
             - text: "마루의 밥상"
-              saveText: "깨 붙은 엿"
+              saveText: "마루의 밥상"
               at: { x: 26, y: 63 }
               when: { var: lived_1894, op: eq, value: false }
               mood: ember
@@ -147,7 +148,17 @@ scenes:
       - wait: 300
       - say: { channel: card, with: [], text: "1894년 6월\n제물포", wait: 2000 }
       - mood: off
-      - goto: arrival_1894
+      - branch:
+          cases:
+            - when: { var: last_taken, op: eq, value: guard }
+              goto: pre_1894_guard
+            - when: { var: last_taken, op: eq, value: stay }
+              goto: pre_1894_stay
+            - when: { var: last_taken, op: eq, value: live }
+              goto: pre_1894_live
+            - when: { var: last_taken, op: eq, value: dare }
+              goto: pre_1894_dare
+          default: arrival_1894
 
   go_1952:
     pov: "???"
@@ -162,7 +173,17 @@ scenes:
       - wait: 300
       - say: { channel: card, with: [], text: "1952년 12월\n부산\n내 이름은 순임.", wait: 2000 }
       - mood: off
-      - goto: /1.yaml
+      - branch:
+          cases:
+            - when: { var: last_taken, op: eq, value: say }
+              goto: pre_1952_say
+            - when: { var: last_taken, op: eq, value: free }
+              goto: pre_1952_free
+            - when: { var: last_taken, op: eq, value: live }
+              goto: pre_1952_live
+            - when: { var: last_taken, op: eq, value: dare }
+              goto: pre_1952_dare
+          default: /1.yaml
 
   go_1988:
     pov: "???"
@@ -177,7 +198,17 @@ scenes:
       - wait: 300
       - say: { channel: card, with: [], text: "1988년 9월\n서울\n내 이름은 민재.", wait: 2000 }
       - mood: off
-      - goto: /2.yaml
+      - branch:
+          cases:
+            - when: { var: last_taken, op: eq, value: say }
+              goto: pre_1988_say
+            - when: { var: last_taken, op: eq, value: free }
+              goto: pre_1988_free
+            - when: { var: last_taken, op: eq, value: guard }
+              goto: pre_1988_guard
+            - when: { var: last_taken, op: eq, value: stay }
+              goto: pre_1988_stay
+          default: /2.yaml
 
   go_2026:
     pov: "???"
@@ -192,6 +223,111 @@ scenes:
       - wait: 300
       - say: { channel: card, with: [], text: "2026년 3월\n서울\n내 이름은 지안.", wait: 2000 }
       - mood: off
+      - branch:
+          cases:
+            - when: { var: last_taken, op: eq, value: say }
+              goto: pre_2026_say
+            - when: { var: last_taken, op: eq, value: free }
+              goto: pre_2026_free
+            - when: { var: last_taken, op: eq, value: guard }
+              goto: pre_2026_guard
+            - when: { var: last_taken, op: eq, value: stay }
+              goto: pre_2026_stay
+            - when: { var: last_taken, op: eq, value: live }
+              goto: pre_2026_live
+            - when: { var: last_taken, op: eq, value: dare }
+              goto: pre_2026_dare
+          default: /3.yaml
+
+  # 삶에 들어갈 때 손에 쥐고 있던 것을 적어 둔다. 다섯 번째 어둠이 이걸로 짝을 맞춘다.
+  pre_1894_guard:
+    actions:
+      - set: { pre_1894: guard }
+      - goto: arrival_1894
+
+  pre_1894_stay:
+    actions:
+      - set: { pre_1894: stay }
+      - goto: arrival_1894
+
+  pre_1894_live:
+    actions:
+      - set: { pre_1894: live }
+      - goto: arrival_1894
+
+  pre_1894_dare:
+    actions:
+      - set: { pre_1894: dare }
+      - goto: arrival_1894
+
+  pre_1952_say:
+    actions:
+      - set: { pre_1952: say }
+      - goto: /1.yaml
+
+  pre_1952_free:
+    actions:
+      - set: { pre_1952: free }
+      - goto: /1.yaml
+
+  pre_1952_live:
+    actions:
+      - set: { pre_1952: live }
+      - goto: /1.yaml
+
+  pre_1952_dare:
+    actions:
+      - set: { pre_1952: dare }
+      - goto: /1.yaml
+
+  pre_1988_say:
+    actions:
+      - set: { pre_1988: say }
+      - goto: /2.yaml
+
+  pre_1988_free:
+    actions:
+      - set: { pre_1988: free }
+      - goto: /2.yaml
+
+  pre_1988_guard:
+    actions:
+      - set: { pre_1988: guard }
+      - goto: /2.yaml
+
+  pre_1988_stay:
+    actions:
+      - set: { pre_1988: stay }
+      - goto: /2.yaml
+
+  pre_2026_say:
+    actions:
+      - set: { pre_2026: say }
+      - goto: /3.yaml
+
+  pre_2026_free:
+    actions:
+      - set: { pre_2026: free }
+      - goto: /3.yaml
+
+  pre_2026_guard:
+    actions:
+      - set: { pre_2026: guard }
+      - goto: /3.yaml
+
+  pre_2026_stay:
+    actions:
+      - set: { pre_2026: stay }
+      - goto: /3.yaml
+
+  pre_2026_live:
+    actions:
+      - set: { pre_2026: live }
+      - goto: /3.yaml
+
+  pre_2026_dare:
+    actions:
+      - set: { pre_2026: dare }
       - goto: /3.yaml
 
   # 어느 어둠에서든 쥐지 않기로 하면 여기로 온다. 게임 오버가 아니다.
@@ -253,6 +389,12 @@ scenes:
       - say: { char: 끝순, with: [만석], motion: laugh, text: "총은 멀리 있었어요. 말이 코앞까지 왔는데, 고개를 한참 들어야 눈이 보이더라고요." }
       - mood: { tone: warm, level: 2 }
       - say: { channel: action, with: [], text: "손을 머리 위로 올려 말 눈이 있던 높이를 짚어 보인다. 까치발을 해도 모자란다." }
+      - say: { char: 끝순, with: [만석], text: "월미도엔 굴뚝 셋 달린 배가 들어왔대요. 아버지, 내일 같이 보러 가요." }
+      - say: { char: 만석, with: [끝순], text: "곳간은 누가 보고." }
+      - say: { char: 끝순, with: [만석], text: "봉구 오라버니가 보면 되잖아요." }
+      - say: { channel: action, with: [], text: "열쇠 꾸러미에 손이 간다." }
+      - mood: off
+      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 일본 군함이 또 들어왔습니다. 오늘만 넉 척째예요." }
       - say: { char: 끝순, with: [만석], text: "아버지, 오늘 저녁은 같이 드세요. 저 혼자 먹기 싫어요." }
       - say:
           channel: thought
@@ -261,8 +403,6 @@ scenes:
           text: "마포는 해마다 간다. 갈 때마다 떠나기 전날 밤을 꼬박 샌다."
       - say: { char: 만석, with: [끝순], text: "매일 한집에서 먹으면서 뭘 또 같이 먹어." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "아버지는 맨날 다 식은 다음에 오시잖아요." }
-      - mood: off
-      - say: { char: 봉구, with: [만석], text: "주인어른, 포구에 일본 군함이 또 들어왔습니다. 오늘만 넉 척째예요." }
       - say:
           channel: action
           with: []
@@ -319,8 +459,11 @@ scenes:
   rice_cannot:
     actions:
       - set: { l1_rice_blocked: true }
+      - say: { channel: card, with: [], text: "{{deg_last}}°", autoAdvance: 1000 }
+      - effect: { name: tilt, wait: true }
+      - wait: 1000
       - sticker: { id: key, image: key_sticker, x: 50, y: 32, width: "clamp(150px, 20%, 280px)", enter: fadeIn, inputLockMs: 300 }
-      - wait: 1100
+      - wait: 600
       - say: { channel: action, with: [], text: "열쇠를 자물쇠에 꽂는다. 손목이 돌아가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: thought, with: [], text: "열쇠를 돌리려는데 쥔 손에 힘만 더 들어간다. 대문 밖에선 여전히 열어 달라는 소리가 난다." }
       - clearSticker: { id: key, leave: fadeOut }
@@ -397,12 +540,13 @@ scenes:
           with: [만석]
           when: { var: l1_gave, op: eq, value: false }
           text: "예. 사람 보내 놓겠습니다. 주인어른은 애 옆에 계세요."
+      - say: { char: 봉구, with: [만석], text: "제물포에는 그게 끝이랍니다. 더 있는 데는 서울 정동 양인 병원이고요." }
       - say: { char: 봉구, with: [만석], text: "그런데 하나 더 있습니다. 마포 김 주사한테서 기별이 왔어요." }
       - say: { char: 봉구, with: [만석], text: "곳간 쌀을 한꺼번에 사겠답니다. 모레까지 직접 와서 계약 문서에 이름을 쓰셔야 한답니다." }
       - say: { char: 봉구, with: [만석], when: { var: l1_gave, op: eq, value: true }, text: "나눠 준 쌀은 빼고 넘기겠다고 했습니다. 그쪽도 알았답니다." }
       - say: { char: 만석, with: [봉구], text: "맡아 둔 쌀까지 달라는 게냐." }
       - say: { char: 봉구, with: [만석], text: "윤 객주 몫은 돈으로 치르면 됩니다. 이런 값에 사겠다는 데는 다시 없을 겁니다." }
-      - say: { channel: thought, with: [], text: "약값이며 빚 걱정을 한꺼번에 덜 수 있는 거래다." }
+      - say: { channel: thought, with: [], text: "마포에서 정동까지는 반나절이다. 이름 쓰고 약도 더 사 오면 된다." }
       - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: false }, text: "거래만 마치면 당분간 집 비울 일은 없겠구나." }
       - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: true }, text: "이번 것만 마치면 애 약값은 걱정 없겠구나." }
       - say: { char: 봉구, with: [만석], text: "예. 오가는 데 사흘입니다." }
@@ -418,7 +562,7 @@ scenes:
           prompt: "이마가 불덩이다. 마포까지는 팔십 리."
           with: [끝순]
           options:
-            - text: "마포에 간다."
+            - text: "마포에 가서 정동 약까지 사 온다."
               saveText: "마포에 올라간다. 사흘이면 돌아온다."
               goto: leave_try
             - text: "봉구를 보내고 남는다."
@@ -442,7 +586,9 @@ scenes:
   leave_cannot:
     actions:
       - set: { l1_leave_blocked: true }
-      - wait: 1100
+      - say: { channel: card, with: [], text: "{{deg_last}}°", autoAdvance: 1000 }
+      - effect: { name: tilt, wait: true }
+      - wait: 1000
       - say: { channel: action, with: [], text: "짚신을 신고 문지방에 선다. 발이 넘어가지 않는다.", wait: 900, unskippable: true }
       - say: { channel: action, with: [], text: "등 뒤에서 기침 소리가 난다. 돌아보니 호롱불은 켜져 있다." }
       - say:
@@ -461,12 +607,14 @@ scenes:
 
   go_mapo:
     actions:
+      - say: { channel: action, with: [끝순], text: "새벽에 나서기 전에 그 애 이불을 턱 밑까지 여며 준다." }
       - say: { char: 만석, with: [봉구], text: "약 먹이고, 밤에 물수건 갈아 줘라. 사흘이다." }
       - say: { char: 봉구, with: [만석], motion: nod, text: "예. 다녀오십시오." }
       - bg: { id: jemulpo_yard, transition: fade, duration: 1200 }
       - place: "3일 뒤 저녁 · 객주 마당"
       - char: { id: 만석, position: left }
       - char: { id: 봉구, position: right }
+      - say: { channel: action, with: [], text: "허리에 찬 전대가 묵직하다. 돈과, 정동에서 산 가루약 두 병이 들었다." }
       - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: false }, text: "거래는 잘됐다. 이제 한동안 나갈 일 없다." }
       - say: { char: 만석, with: [봉구], when: { var: l1_gave, op: eq, value: true }, text: "거래 마쳤다. 약값도 넉넉히 남았어." }
       - say: { char: 만석, with: [봉구], text: "끝순이는 밥 먹었느냐." }
@@ -498,6 +646,8 @@ scenes:
       - say: { char: 봉구, with: [만석], motion: droop, text: "아버지 진지 드셨느냐고요. 두 번 다 그것만 물었습니다." }
       - wait: 900
       - say: { channel: action, with: [], text: "안채에 소반이 놓여 있었다. 끝순이 앉던 쪽의 숟가락을 봉구가 치우려다 만다." }
+      - wait: 900
+      - say: { channel: action, with: [], text: "허리에서 전대 속 약병 두 개가 부딪친다.", wait: 1600, unskippable: true }
       - mood: off
       - set: { l1_end: gone }
       - goto: years_1894
@@ -505,7 +655,8 @@ scenes:
   stay_home:
     actions:
       - say: { char: 봉구, with: [만석], text: "김 주사가 제 수결을 받아 줄까요. …가 보기는 하겠습니다." }
-      - say: { channel: action, with: [], text: "사흘 밤 물수건을 갈았다. 나흘째 아침에 그 애가 미음을 달라고 했다." }
+      - say: { channel: action, with: [], text: "사흘 밤 물수건을 갈았다. 새벽마다 그 애 이불을 여며 주고 곳간에 나가 섬을 셌다." }
+      - say: { channel: action, with: [], text: "나흘째 아침에 그 애가 미음을 달라고 했다." }
       - char: { id: 끝순, position: center }
       - say: { char: 끝순, with: [만석], text: "아버지, 거울 좀 보세요. 수염이 다 뻗쳤어." }
       - say: { channel: action, with: [], text: "웃는다. 나흘 만에 듣는 소리다." }
@@ -521,11 +672,13 @@ scenes:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 쌀은 곳간에 있다." }
       - say: { char: 만석, with: [봉구], text: "쌀값은 다시 오를 게다." }
+      - say: { channel: card, with: [], text: "그 뒤로 열여섯 해", autoAdvance: 1800 }
       - say: { channel: action, with: [], text: "햇곡이 풀리자 쌀을 사겠다는 사람이 끊겼다. 봉구는 몇 번이나 값부터 낮추자고 했다." }
+      - place: "1895년 봄 · 제물포"
       - say: { char: 끝순, with: [만석], text: "아버지, 묵은쌀에 바구미 생겨요. 덕이네 좀 주면 안 돼요?" }
       - say: { char: 끝순, with: [만석], text: "지금이라도요." }
       - say: { char: 만석, with: [끝순], text: "바구미는 체로 치면 된다." }
-      - say: { char: 끝순, with: [만석], text: "덕이 지난겨울에 굶어 죽었대요." }
+      - say: { char: 끝순, with: [만석], text: "덕이 이번 겨울에 굶어 죽었대요." }
       - wait: 900
       - say: { channel: action, with: [], text: "체를 가져오라 했더니 그 애가 부엌 문을 닫고 나갔다. 저녁에 들인 진지는 다 식어 있었다." }
       - set: { l1_end: kept }
@@ -534,10 +687,12 @@ scenes:
   after_ruined:
     actions:
       - say: { char: 만석, with: [봉구], text: "됐다. 애가 일어났으면 됐다." }
+      - say: { channel: card, with: [], text: "그 뒤로 열여섯 해", autoAdvance: 1800 }
       - say: { channel: action, with: [], text: "가을에 약속한 쌀은 왔지만 꾸어 간 쌀은 돌아오지 않았다. 새로 받은 쌀의 잔금이 남았다." }
       - say: { channel: action, with: [], text: "막아 보려고 맡은 쌀까지 팔았다. 며칠 뒤 윤 객주가 보낸 사람이 곳간 문에 새 자물쇠를 채웠다." }
-      - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다. 쌀을 풀어 준 지 4년이 지난 여름에도 식구는 포구 뒷골목 셋방에 있었다." }
-      - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "쌀을 풀고 4년 뒤 여름 · 제물포 뒷골목 셋방" }
+      - say: { channel: action, with: [], text: "허리춤의 열쇠는 그대로인데 맞는 자물쇠가 없었다." }
+      - say: { channel: action, with: [], text: "이듬해 봄에 객주 문을 닫았다." }
+      - bg: { id: jemulpo_room, transition: fade, duration: 900, place: "1898년 여름 · 제물포 뒷골목 셋방" }
       - say: { char: 끝순, with: [만석], text: "아버지, 저 내일부터 정미소 나가요. 앉아서 뉘 고르는 일이라 괜찮대요." }
       - say: { char: 만석, with: [끝순], text: "거긴 겨 먼지가 눈처럼 날린다더라. 네 기침에 거길 어찌 가." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "그럼 아버지가 대신 가실래요? …방세부터 내야죠. 석 달 밀렸잖아요." }
@@ -546,17 +701,42 @@ scenes:
       - say: { char: 끝순, with: [만석], text: "잘한 거예요." }
       - say: { char: 끝순, with: [만석], motion: laugh, text: "덕이 지금 열둘이에요. 저번에 장에서 봤는데 키가 저만해요." }
       - say: { channel: action, with: [], text: "한 대꾸도 못 했다. 그 애도 두 번 다시 그 일을 입에 올리지 않았다." }
-      - say: { channel: action, with: [], text: "말릴 돈이 없었다. 아침마다 정미소 문 앞까지 데려다주기를 여섯 해 했다." }
-      - say: { channel: action, with: [], text: "스물여섯 되던 겨울에 다시 누웠다. 이번엔 내가 곁에 있었지만, 약을 사러 나갈 돈이 없었다." }
+      - say: { channel: action, with: [], text: "말릴 돈이 없었다. 아침마다 정미소 문 앞까지 데려다주었다." }
       - set: { l1_end: poor }
+      - goto: winter_1904
+
+  # 곳간을 열고 남은 길에서만 오는 해. 이번에는 곁에 있다. 나갈 데가 없어서.
+  winter_1904:
+    title: "겨"
+    actions:
+      - bg: { id: jemulpo_room, transition: fade, duration: 900 }
+      - place: { text: "1904년 겨울 · 제물포 뒷골목 셋방", presentation: center }
+      - char: { id: 만석, position: left }
+      - char: { id: 끝순, position: center }
+      - say: { channel: action, with: [끝순], text: "정미소 문 앞에서 기다렸다가 같이 돌아왔다. 그 애는 스물여섯이다." }
+      - say: { channel: action, with: [끝순], text: "문간에서 그 애가 머릿수건을 푼다. 받아서 문밖에 대고 턴다." }
+      - say: { channel: action, with: [], text: "겨가 눈처럼 날린다.", wait: 900 }
+      - say: { channel: action, with: [끝순], text: "반쯤 털었을 때 그 애가 기침을 시작한다. 수건을 쥔 채로 등을 두드린다." }
+      - say: { char: 끝순, with: [만석], text: "아버지, 내일부터는 정미소 앞까지 안 오셔도 돼요." }
+      - say: { char: 끝순, with: [만석], motion: laugh, text: "사람들이 웃어요. 다 큰 딸 데려다준다고." }
+      - say: { char: 만석, with: [끝순], text: "그럼 골목 어귀까지만 가마." }
+      - say: { channel: action, with: [끝순], text: "그 애가 웃다가 또 기침을 한다." }
+      - say: { char: 끝순, with: [만석], text: "덕이 다음 달에 장가간대요." }
+      - wait: 900
+      - say: { char: 만석, with: [끝순], text: "…그렇구나." }
+      - music: null
+      - wait: 1200
+      - say: { channel: action, with: [끝순], text: "그날 밤 그 애가 다시 누웠다. 이불을 여며 주고 그 옆에 앉았다.", wait: 1400, unskippable: true }
+      - say: { channel: action, with: [], text: "약을 사러 나갈 돈이 없었다. 나가지 않고 앉아 있었다." }
+      - say: { channel: action, with: [], text: "털다 만 머릿수건이 무릎에 있다. 접힌 자리마다 겨가 남아 있다.", wait: 2200, unskippable: true }
+      - move: { id: 끝순, style: exit }
       - goto: years_1894
 
   years_1894:
     title: "열여섯 해"
     actions:
       - bg: { id: jemulpo_room, transition: fade, duration: 1200 }
-      - say: { channel: card, with: [], text: "그 뒤로 열여섯 해", autoAdvance: 1800, when: { var: l1_end, op: ne, value: poor } }
-      - say: { channel: card, with: [], text: "그 뒤로 여섯 해", autoAdvance: 1800, when: { var: l1_end, op: eq, value: poor } }
+      - say: { channel: card, with: [], text: "그 뒤로 열여섯 해", autoAdvance: 1800, when: { var: l1_end, op: eq, value: gone } }
       - branch:
           cases:
             - when: { var: l1_end, op: eq, value: gone }
@@ -570,10 +750,17 @@ scenes:
       - place: "1895년 봄 · 제물포"
       - say: { channel: thought, with: [], text: "끝순이 없이 맞는 첫 봄이었다. 부엌 궤짝을 열면 숟가락이 먼저 보였다." }
       - say: { channel: thought, with: [], text: "그래서 궤짝은 봉구가 열었다. 나는 부엌에 들어가지 않았다." }
+      - say: { channel: thought, with: [], text: "정동에서 사 온 약 두 병은 뜯지 않은 채 그 궤짝 맨 아래에 있었다." }
       - wait: 800
       - place: "1899년 가을 · 제물포"
       - say: { channel: thought, with: [], text: "제물포에서 노량진까지 기차가 놓였다. 팔십 리 마포 길이 반나절로 줄었다." }
-      - say: { channel: thought, with: [], text: "그 기차가 다섯 해만 일찍 놓였더라면. 정거장 앞을 지날 때마다 그 셈부터 했다. 그래서 끝내 타지 않았다." }
+      - char: { id: 봉구, position: right }
+      - say: { char: 봉구, with: [만석], text: "마포 김 주사 댁 회갑이랍니다. 표 두 장 끊어 왔습니다." }
+      - say: { channel: action, with: [봉구], text: "정거장 앞까지 갔다. 기차 들어오는 소리가 나자 표를 봉구 손에 도로 쥐여 주었다." }
+      - say: { char: 만석, with: [봉구], text: "너 혼자 다녀와라." }
+      - move: { id: 봉구, style: exit }
+      - say: { channel: thought, with: [], text: "그 기차가 다섯 해만 일찍 놓였더라면." }
+      - say: { channel: thought, with: [], text: "정거장 앞을 지날 때마다 그 셈부터 했다. 끝내 타지 않았다." }
       - wait: 800
       - place: "1905년 겨울 · 제물포"
       - say: { channel: thought, with: [], text: "포구에 일본 사람 객주가 셋 더 섰다. 쌀값은 그쪽에서 정했다." }
@@ -583,12 +770,15 @@ scenes:
 
   years_1894_kept:
     actions:
-      - place: "1895년 봄 · 제물포"
       - say: { channel: thought, with: [], text: "묵은쌀은 봄까지 다 팔지 못했다. 체로 쳐서 반값에 넘겼다." }
       - say: { channel: thought, with: [], text: "덕이네 집 앞은 돌아서 다녔다. 그 집 대문에는 다른 이름이 붙었다." }
       - wait: 800
-      - place: "1898년 가을 · 강화로 가는 배"
+      - place: "1898년 가을 · 제물포 선창"
       - say: { channel: action, with: [], text: "끝순이는 스물에 강화로 시집을 갔다. 혼수는 넉넉히 넣었다." }
+      - char: { id: 끝순, position: center }
+      - say: { channel: action, with: [끝순], text: "선창에서 그 애가 절을 하고 일어선다." }
+      - say: { char: 끝순, with: [만석], text: "아버지, 진지 거르지 마세요. 장부 보시다가요." }
+      - move: { id: 끝순, style: exit }
       - say: { channel: thought, with: [], text: "배가 선창을 떠날 때 그 애는 한 번도 이쪽을 돌아보지 않았다." }
       - wait: 800
       - place: "1903년 여름 · 제물포"
@@ -600,6 +790,7 @@ scenes:
 
   years_1894_poor:
     actions:
+      - music: port
       - place: "1905년 봄 · 제물포 뒷골목"
       - say: { channel: thought, with: [], text: "끝순이를 묻고 나서는 정미소 앞을 지나지 않으려고 포구 쪽으로 돌아다녔다. 길이 두 배였다." }
       - say: { channel: thought, with: [], text: "겨 먼지가 눈처럼 날린다고 말한 건 나였다. 그 애는 그걸 여섯 해 맞았다." }
@@ -615,7 +806,7 @@ scenes:
       - place: "1910년 8월 · 제물포"
       - say: { channel: thought, with: [], text: "나라가 넘어갔다고 봉구가 신문을 읽어 주었다. 나는 허리춤의 열쇠부터 만졌다.", when: { var: l1_end, op: ne, value: poor } }
       - say: { channel: thought, with: [], text: "열여섯 해 동안 고치지 못한 버릇이었다.", when: { var: l1_end, op: ne, value: poor } }
-      - say: { channel: thought, with: [], text: "나라가 넘어갔다고 봉구가 신문을 읽어 주었다. 나는 허리춤부터 더듬었다. 열쇠를 뺏긴 지 열다섯 해인데도 손이 먼저 갔다.", when: { var: l1_end, op: eq, value: poor } }
+      - say: { channel: thought, with: [], text: "나라가 넘어갔다고 봉구가 신문을 읽어 주었다. 나는 허리춤부터 더듬었다. 맞는 자물쇠 없는 열쇠가 아직 거기 있었다.", when: { var: l1_end, op: eq, value: poor } }
       - say: { channel: thought, with: [], text: "가을부터는 일어나 앉는 날보다 누워 있는 날이 많았다." }
       - wait: 1200
       - goto: old_age
@@ -696,6 +887,7 @@ scenes:
       - bg: { id: void, transition: fade, duration: 1800 }
       - say: { channel: narration, text: "암흑." }
       - say: { channel: narration, text: "포구에서 밤바다를 보고 있으면 눈이 어둠에 익었다. 여기는 아무리 있어도 앞이 안 보인다." }
+      - say: { channel: narration, text: "어디선가 식은 재 냄새가 난다. 객주 부엌에서 나던 냄새와는 다르다." }
       - say:
           channel: narration
           when:
@@ -732,11 +924,10 @@ scenes:
       - say: { channel: narration, text: "고맙다고 했어야 했다." }
       - say: { channel: narration, text: "미안하다고도." }
       - wait: 900
-      - say: { channel: narration, text: "봉구한테 열쇠를 맡겨 두고 끝순이랑 포구 밖에나 나가 볼걸." }
-      - say: { channel: narration, text: "쉰여섯 해를 다 뒤져도 변명 하나가 안 나온다." }
+      - say: { channel: narration, text: "월미도에 굴뚝 셋 달린 배가 들어왔다던 날, 곳간은 누가 보느냐고 했다." }
       - say: { channel: narration, text: "끝순아, 하고 불러 봤다. 이번엔 대답이 없다." }
       - bg: { id: void_light, transition: dissolve, duration: 2600 }
-      - say: { channel: narration, text: "가져갈 수 있는 것은 하나다. 나머지는 여기 두고 간다." }
+      - say: { channel: narration, text: "손이 두 군데로 간다. 한쪽을 쥐면 다른 쪽이 빠져나갈 것 같다." }
       - goto: void_one_choice
 
   void_one_choice:
@@ -745,12 +936,12 @@ scenes:
           key: v1
           prompt: "쉰여섯 해 동안 남은 후회 중 하나를 가져간다."
           options:
-            - text: "하지 못한 말"
-              saveText: "말을 했어야 했다."
+            - text: "끝순이한테 끝내 말하지 못한 것"
+              saveText: "끝순이한테 끝내 말하지 못한 것"
               set: { t_say: true, last_taken: say, deg_last: "118.5" }
               goto: void_one_go
-            - text: "자유롭게 살고 싶었던 마음"
-              saveText: "어디에도 매이지 말았어야 했다."
+            - text: "열쇠를 풀고 끝순이랑 월미도에 가 보지 못한 것"
+              saveText: "열쇠를 풀고 끝순이랑 월미도에 가 보지 못한 것"
               set: { t_free: true, last_taken: free, deg_last: "307.9" }
               goto: void_one_go
             - text: "쥐지 않는다."

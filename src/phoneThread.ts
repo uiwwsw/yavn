@@ -9,6 +9,8 @@ export type PhoneThreadBubble = {
   avatar?: string;
   text: string;
   media?: PhoneMedia;
+  /** How many have not read it yet, printed beside the bubble the way a messenger does. */
+  unread?: number;
   side: 'me' | 'them';
   /** True when this bubble opens a run, which is the only place the sender is named. */
   leadsRun: boolean;
@@ -69,6 +71,22 @@ export function isEmojiOnly(text: string): boolean {
   }
   // A flag and a family are each one emoji; counting code points would call them five.
   return countGraphemes(trimmed) <= MAX_LARGE_EMOJI;
+}
+
+/** A group chat larger than this still prints a number, just not a longer one. */
+export const MAX_PHONE_UNREAD = 999;
+
+/**
+ * The small number beside a message that the other side has not read yet.
+ *
+ * `unread: true` is the one person on the other end, so it prints 1; a group chat counts the
+ * people who have not opened it. Anything else — false, 0, or a value a damaged save carries —
+ * prints nothing rather than a stray digit.
+ */
+export function phoneUnreadCount(unread: unknown): number | undefined {
+  if (unread === true) return 1;
+  if (typeof unread !== 'number' || !Number.isInteger(unread) || unread <= 0) return undefined;
+  return Math.min(unread, MAX_PHONE_UNREAD);
 }
 
 /**
@@ -167,18 +185,22 @@ export function selectPhoneConversation(
   const contact = selectPhoneContact(entries, live?.thread, threadAvatar, threadName);
 
   // The live line is rendered separately so it can still type itself out.
-  const bubbles: PhoneThreadBubble[] = entries.slice(Math.max(0, entries.length - 1 - limit), -1).map((entry) => ({
-    key: `${entry.chapterPath ?? ''}#${entry.sceneId}#${entry.actionIndex}`,
-    ...(entry.speaker ? { speaker: entry.speaker } : {}),
-    ...(entry.speakerId ? { speakerId: entry.speakerId } : {}),
-    ...(entry.avatar ? { avatar: entry.avatar } : {}),
-    ...(entry.media ? { media: entry.media } : {}),
-    text: entry.text,
-    side: entry.side ?? 'them',
-    leadsRun: true,
-    endsRun: true,
-    emojiOnly: isEmojiOnly(entry.text),
-  }));
+  const bubbles: PhoneThreadBubble[] = entries.slice(Math.max(0, entries.length - 1 - limit), -1).map((entry) => {
+    const unread = phoneUnreadCount(entry.unread);
+    return {
+      key: `${entry.chapterPath ?? ''}#${entry.sceneId}#${entry.actionIndex}`,
+      ...(entry.speaker ? { speaker: entry.speaker } : {}),
+      ...(entry.speakerId ? { speakerId: entry.speakerId } : {}),
+      ...(entry.avatar ? { avatar: entry.avatar } : {}),
+      ...(entry.media ? { media: entry.media } : {}),
+      ...(unread ? { unread } : {}),
+      text: entry.text,
+      side: entry.side ?? 'them',
+      leadsRun: true,
+      endsRun: true,
+      emojiOnly: isEmojiOnly(entry.text),
+    };
+  });
 
   // Naming and corner-tightening follow from what comes next, and the bubble the thread ends
   // on is followed by the live line rather than by another bubble.

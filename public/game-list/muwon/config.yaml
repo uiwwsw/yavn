@@ -2,9 +2,9 @@ title: "무원 — 한성 검안록"
 pov: "의녀 {{player_name}}"
 author:
   name: "uiwwsw"
-version: "1.6.1"
+version: "2.0.0"
 seo:
-  description: "1792년 한성. 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서를 따라 세 죽음의 까닭을 좇습니다. 시형도에서 시신의 흔적을 살피고, 찾아낸 증거로 포도청의 자백을 뒤집는 5장 추리극입니다. 결말은 다섯 가지입니다."
+  description: "1792년 한성. 혜민서 의녀 서연이 한글로 풀어 쓴 검시 지침서를 따라 세 죽음의 까닭을 좇습니다. 시형도에서 시신의 흔적을 살피고, 찾아낸 증거로 포도청의 자백을 뒤집고 형조에서 의관과 맞서는 5장 추리극입니다. 결말은 여섯 가지입니다."
   keywords:
     - "조선 추리"
     - "검시"
@@ -30,7 +30,7 @@ startScreen:
   titleColor: "#f0d9a8"
   startButtonText: "검안 시작"
   buttonPosition: bottom-left
-  eyebrow: "1792 한성 · 검시 추리극 · 5장 · 결말 5종"
+  eyebrow: "1792 한성 · 검시 추리극 · 5장 · 결말 6종"
   subtitle: "혼례를 앞둔 분이가 우물에서 건져졌다. 신고서에는 벌써 익사라고 적혀 있다."
   scene:
     layout: split
@@ -45,36 +45,43 @@ startScreen:
 endings:
   muwon:
     title: "무원(無冤)"
-    message: "형조가 한명재에게 죄를 물었다. 덕구는 다시 지게를 졌고, 판결문에는 오작인 막쇠의 이름이 올랐다."
-    epilogue: "그해 겨울부터 한성부 검안에는 의녀 한 사람의 이름이 함께 적혔다."
+    message: "형조가 한명재에게 죄를 물었다. 정조 14년 기록이 다시 적혀 송 의녀에게 씌운 죄가 지워졌고, 판결문에는 오작인 막쇠의 이름이 올랐다."
+    epilogue: "그해 겨울부터 한성부 시장 끝에는 검안 의녀와 입회 오작인의 이름이 함께 적혔다."
     background: dawn_gate
     music: dawn
     tone: hopeful
   late_muwon:
     title: "늦은 무원"
-    message: "판결문이 돌았다. 이 소식을 함께 듣고 싶던 사람은 성문이 열릴 때도 오지 않았다."
-    epilogue: "{{player_name|은}} 언해를 펴 놓고 등잔을 낮췄다. 불을 어디에 놓아야 잘 보이는지, 이제는 알고 있었다."
+    message: "판결이 섰고 송 의녀의 죄는 지워졌다. 이 소식을 함께 듣고 싶던 사람은 성문이 열릴 때도 오지 않았다."
+    epilogue: "언해 둘째 장에는 두 번 접은 약 싸는 종이가 아직 끼워져 있다."
     background: dawn_gate
     music: dawn
     tone: tragic
+  half_verdict:
+    title: "반쪽 판결"
+    message: "한명재는 가짜 약을 판 죄로 먼 섬에 갔다. 세 사람의 죽음은 곤장 아래 자복한 하인 혼자 한 일로 적혔다."
+    epilogue: "거둬들인 감청 주머니 열 개가 혜민서 선반에 쌓였다. 반 환씩 먹인 두 집 아이는 살았다."
+    background: hyeminseo
+    music: night_well
+    tone: tragic
   covered_ledger:
     title: "덮인 장부"
-    message: "증거가 모자랐다. 한명재는 웃으며 형조를 나섰고, {{player_name|은}} 혜민서 명부에서 지워졌다."
-    epilogue: "{{player_name|은}} 그날 밤 시장 석 장을 베껴 언해 뒷장에 끼워 두었다."
+    message: "증거가 모자랐다. 한명재는 형조를 걸어 나갔고, {{player_name|은}} 혜민서 명부에서 지워졌다."
+    epilogue: "언해 뒷장, 스승의 글씨 아래에 ‘형조에 냈으나 받지 않음’ 한 줄이 남았다."
     background: alley_night
     music: night_well
     tone: mystery
   price_of_silence:
     title: "침묵의 값"
     message: "덕구는 풀려났고 관아는 더 조사하지 않았다. 다음 장날에도 가짜 청심원이 팔렸다."
-    epilogue: "{{player_name|은}} 그 뒤로 감청 주머니를 볼 때마다 걸음을 멈췄다."
+    epilogue: "{{player_name|은}} 스승의 기록 아래에 한 줄을 적고, 그 장을 다시 접었다."
     background: hyeminseo
     music: night_well
     tone: tragic
   forced_confession:
     title: "남은 자백"
     message: "덕구가 죽었다. 관아는 살인 사건을 종결했다."
-    epilogue: "{{player_name|은}} 관아를 나와 짚신 두 짝을 주웠다. 덕구가 오른손으로 다시 맨 끈이 그대로였다."
+    epilogue: "공초에는 덕구의 오른손 엄지가 찍혔다. 언해 빈칸에는 덕구의 왼손이 적혔다."
     background: hanseongbu_yard
     music: night_well
     tone: tragic

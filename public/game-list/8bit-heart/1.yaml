@@ -108,17 +108,21 @@ scenes:
           with: [윤재]
           text: "약관입니다."
       - say:
+          char: 비서
+          with: [윤재]
+          text: "부재중 전화 1건. 아버님입니다. 어제 저녁 7시."
+      - say:
           char: 윤재
           with: []
-          text: "아빠는 지난주에도 밥 먹었냐고만 하더라. 응, 했더니 바로 끊고."
+          text: "밥 얘기겠지."
       - say:
           char: 비서
           with: [윤재]
-          text: "28초였습니다."
+          text: "지난번 통화는 28초였습니다."
       - say:
           char: 윤재
           with: []
-          text: "다 먹었다고 했는데도 밥은, 밥은, 두 번이나 묻더라."
+          text: "다 먹었다고 했는데도 밥은, 밥은, 두 번이나 묻고 끊더라."
       - say:
           char: 윤재
           with: []
@@ -282,10 +286,11 @@ scenes:
               saveText: "\"종이야. 글자 찍힌 종이. 세 겹으로 싸면 안 깨져.\""
               set: { answered_haru: true }
               goto: b1_told
-            - text: "하루를 부른다"
+            - text: "다른 걸 물어보라고 소리친다"
               saveText: "\"그게 지금 중요해?! 나 봐! 나 여기 있어!\""
               goto: b1_shout
-            - text: "입을 연다"
+            - text: "말이 안 나온다"
+              saveText: "입을 연다"
               goto: b1_mute
 
   b1_told:
@@ -566,9 +571,11 @@ scenes:
   b1_look_box:
     actions:
       - set: { saw_box: true }
-      - sticker: { id: b1_box, image: console_cheap_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: fadeIn, inputLockMs: 300 }
+      - sticker: { id: b1_box, image: console_old_sticker, x: 50, y: 32, width: "clamp(140px, 18%, 240px)", enter: fadeIn, inputLockMs: 300 }
       - say: { channel: action, with: [], text: "책상에 죽은 게임기. 옆에 6년 된 종이 상자." }
       - say: { channel: thought, with: [], text: "열 살 생일에 받은 상자다. 아직 리본 붙였던 자국이 있다." }
+      - say: { channel: action, with: [], text: "상자 바닥에 접힌 영수증이 있다." }
+      - say: { channel: record, with: [], text: "영수증 · 2057.10.09 · 휴대용 게임기 1 · 결제자 서정은" }
       - say: { channel: system, with: [], text: "제품 보증서 · 구입일로부터 1년" }
       - say: { channel: thought, with: [], text: "보증 끝나고부터는 고장 날 때마다 내가 고쳤다. 메인보드는 이제 구할 데가 없다." }
       - clearSticker: { id: b1_box, leave: fadeOut }
@@ -587,8 +594,7 @@ scenes:
           with: []
           text: "AI가 뭐요"
       - say: { channel: thought, with: [], text: "AI가 뭐냐고 묻던 아저씨. 지금은 괜찮을까." }
-      - say: { channel: action, with: [], text: "거래 내역을 닫고 예전 게임기의 보증서 사진을 꺼낸다." }
-      - say: { channel: record, with: [], text: "주문 내역 · 2057.10.09 · 휴대용 게임기 1 · 결제자 (성인 인증)" }
+      - say: { channel: action, with: [], text: "거래 내역을 닫는다. 통화 기록 맨 위에 아빠 이름이 있다." }
       - say: { channel: thought, with: [], text: "그날 밤 뒤로 집 전화는 신호음도 안 난다. 아빠 숙소 번호는 그래도 스무 번쯤 눌러 봤다." }
       - say: { channel: system, with: [], text: "아빠 · 마지막 통화 00:28" }
       - goto: b1_home_look

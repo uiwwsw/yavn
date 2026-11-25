@@ -244,8 +244,17 @@ state:
   # 처음 쥔 것과 끝에 쥔 것. 둘이 같으면 한 바퀴다.
   v_first: ""
   last_taken: ""
+  # 겨울에서 고른 것: hold / kin / left(겨울을 두고 감). 비어 있으면 아직 안 골랐다.
   v_end: ""
+  # 겨울 뒤 다음 삶으로 가는 값. 바꿔 쥐면 v_end, 겨울을 두고 가면 v4(last_taken).
+  v_final: ""
   deg_last: ""
+  # 각 삶에 들어갈 때 손에 쥐고 있던 것(그때의 last_taken). 다섯 번째 어둠의 짝 맞추기가 읽는다.
+  # 첫 삶은 ""로 남는다. 옛 저장에는 없던 값이라 기본값을 둔다.
+  pre_1894: ""
+  pre_1952: ""
+  pre_1988: ""
+  pre_2026: ""
   l1_gave: false
   l1_end: ""
   l2_told: false

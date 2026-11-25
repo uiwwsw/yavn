@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatClipLength, isEmojiOnly, leadsRun, selectPhoneConversation, selectPhoneThread } from './phoneThread';
+import { MAX_PHONE_UNREAD, formatClipLength, isEmojiOnly, leadsRun, phoneUnreadCount, selectPhoneConversation, selectPhoneThread } from './phoneThread';
 import type { StoryLogEntry } from './types';
 
 const message = (
@@ -259,5 +259,65 @@ describe('formatClipLength', () => {
     expect(formatClipLength(Number.NaN)).toBeUndefined();
     expect(formatClipLength(0)).toBeUndefined();
     expect(formatClipLength(Number.POSITIVE_INFINITY)).toBeUndefined();
+  });
+});
+
+describe('phoneUnreadCount', () => {
+  it('prints 1 for `unread: true` and the authored number for a group', () => {
+    expect(phoneUnreadCount(true)).toBe(1);
+    expect(phoneUnreadCount(1)).toBe(1);
+    expect(phoneUnreadCount(32)).toBe(32);
+  });
+
+  it('prints nothing when the line is read or says nothing about it', () => {
+    expect(phoneUnreadCount(undefined)).toBeUndefined();
+    expect(phoneUnreadCount(false)).toBeUndefined();
+    expect(phoneUnreadCount(0)).toBeUndefined();
+  });
+
+  it('prints nothing for a value a damaged save might carry, and caps a huge group', () => {
+    expect(phoneUnreadCount('1')).toBeUndefined();
+    expect(phoneUnreadCount(-2)).toBeUndefined();
+    expect(phoneUnreadCount(1.5)).toBeUndefined();
+    expect(phoneUnreadCount(Number.NaN)).toBeUndefined();
+    expect(phoneUnreadCount(5000)).toBe(MAX_PHONE_UNREAD);
+  });
+});
+
+describe('unread messages in the thread', () => {
+  const unread = (entry: Extract<StoryLogEntry, { kind: 'dialogue' }>, count: number) => ({ ...entry, unread: count });
+
+  it('keeps each bubble’s count and gives none to a bubble without one', () => {
+    const thread = selectPhoneThread([
+      unread(message('하린아', 'me', 1, '아진'), 1),
+      message('누구세요?', 'them', 2, '도윤'),
+      unread(message('반 단톡 봤어?', 'me', 3, '아진'), 32),
+      message('지금 가요', 'me', 4, '아진'),
+    ]);
+
+    expect(thread.map(bubble => bubble.unread)).toEqual([1, undefined, 32]);
+    expect(thread[1]).not.toHaveProperty('unread');
+  });
+
+  it('keeps the count on a photo sent without a caption', () => {
+    const photo = { ...unread(message('', 'me', 1, '아진'), 1), media: { src: '/photo.png', kind: 'image' as const } };
+    const [bubble] = selectPhoneThread([photo, message('뭐야', 'them', 2, '도윤')]);
+    expect(bubble).toMatchObject({ text: '', media: { src: '/photo.png' }, unread: 1 });
+  });
+
+  it('shows the same count after the log has been saved and read back', () => {
+    const log: StoryLogEntry[] = [
+      { ...unread(message('하린아', 'me', 1, '아진'), 1), thread: '하린' },
+      { ...message('답장', 'them', 2, '하린'), thread: '하린' },
+    ];
+    const restored = JSON.parse(JSON.stringify(log)) as StoryLogEntry[];
+    expect(selectPhoneThread(restored)).toEqual(selectPhoneThread(log));
+    expect(selectPhoneThread(restored)[0].unread).toBe(1);
+  });
+
+  it('drops a count a damaged save carries instead of printing it', () => {
+    const damaged = { ...message('하린아', 'me', 1, '아진'), unread: 'many' } as unknown as StoryLogEntry;
+    const [bubble] = selectPhoneThread([damaged, message('응', 'them', 2, '하린')]);
+    expect(bubble).not.toHaveProperty('unread');
   });
 });

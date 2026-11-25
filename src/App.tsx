@@ -480,6 +480,21 @@ const PhoneAvatar = memo(function PhoneAvatar({ src, name }: { src?: string; nam
 });
 
 /**
+ * The number a messenger prints beside a message nobody has opened yet.
+ *
+ * It hangs outside the bubble at its bottom corner — to the left of what you sent, to the
+ * right of what came in — which the bubble's own row puts it in by coming after the message.
+ * A reader hears that the message is unread; the digit itself is only how the screen shows it.
+ */
+export const PhoneUnreadMark = memo(function PhoneUnreadMark({ count }: { count?: number }) {
+  if (!count) return null;
+  const label = count === 1
+    ? t("읽지 않음")
+    : uiLanguage === 'en' ? `Unread by ${count}` : `${count}명 읽지 않음`;
+  return <span className="phone-unread" role="img" aria-label={label}>{count}</span>;
+});
+
+/**
  * A photo or a clip sent in the thread.
  *
  * Attachments have no bubble around them in any messenger worth copying — the picture is
@@ -1825,6 +1840,7 @@ export default function App() {
     dialogSide,
     dialogAvatar,
     dialogMedia,
+    dialogUnread,
     dialogFullText,
     dialogErasing,
     dialogDelivery,
@@ -1872,6 +1888,7 @@ export default function App() {
     dialogSide: state.dialog.side,
     dialogAvatar: state.dialog.avatar,
     dialogMedia: state.dialog.media,
+    dialogUnread: state.dialog.unread,
     dialogFullText: state.dialog.fullText,
     dialogErasing: Boolean(state.dialog.erase && !state.dialog.typing),
     dialogDelivery: state.dialog.delivery,
@@ -6211,6 +6228,7 @@ export default function App() {
                       {bubble.media && <PhoneMediaView media={bubble.media} />}
                       {bubble.text && <span className="phone-thread-text">{bubble.text}</span>}
                     </span>
+                    <PhoneUnreadMark count={bubble.unread} />
                   </li>
                 );
               })}
@@ -6243,6 +6261,7 @@ export default function App() {
                 {dialogMedia && <PhoneMediaView media={dialogMedia} />}
                 {dialogHasText && <DialogueText />}
               </div>
+              <PhoneUnreadMark count={dialogUnread} />
             </div>
           ) : (
             <DialogueText />
